@@ -1,11 +1,11 @@
 @interface SUScriptCanvasContext
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
-- (BOOL)isPointInPathWithX:(double)a3 y:(double)a4;
+- (BOOL)isPointInPathWithX:(double)x y:(double)y;
 - (CGPath)copyCanvasPath;
 - (NSString)globalCompositeOperation;
-- (SUScriptCanvasContext)initWithWidth:(double)a3 height:(double)a4;
+- (SUScriptCanvasContext)initWithWidth:(double)width height:(double)height;
 - (double)globalAlpha;
 - (double)height;
 - (double)lineWidth;
@@ -18,51 +18,51 @@
 - (id)fillStyle;
 - (id)lineCap;
 - (id)lineJoin;
-- (id)makeLinearGradientWithX0:(double)a3 y0:(double)a4 x1:(double)a5 y1:(double)a6;
-- (id)makeRadialGradientWithX0:(double)a3 y0:(double)a4 r0:(double)a5 x1:(double)a6 y1:(double)a7 r1:(double)a8;
+- (id)makeLinearGradientWithX0:(double)x0 y0:(double)y0 x1:(double)x1 y1:(double)y1;
+- (id)makeRadialGradientWithX0:(double)x0 y0:(double)y0 r0:(double)r0 x1:(double)x1 y1:(double)y1 r1:(double)r1;
 - (id)scriptAttributeKeys;
 - (id)shadowColor;
 - (id)strokeStyle;
 - (void)_ntsApplyShadow;
-- (void)arcToX1:(double)a3 y1:(double)a4 x2:(double)a5 y2:(double)a6 radius:(double)a7;
-- (void)arcWithX:(double)a3 y:(double)a4 radius:(double)a5 startAngle:(double)a6 endAngle:(double)a7 antiClockwise:(BOOL)a8;
+- (void)arcToX1:(double)x1 y1:(double)y1 x2:(double)x2 y2:(double)y2 radius:(double)radius;
+- (void)arcWithX:(double)x y:(double)y radius:(double)radius startAngle:(double)angle endAngle:(double)endAngle antiClockwise:(BOOL)clockwise;
 - (void)beginPath;
-- (void)bezierCurveToCP1X:(double)a3 cp1y:(double)a4 cp2x:(double)a5 cp2y:(double)a6 x:(double)a7 y:(double)a8;
-- (void)clearRectWithX:(double)a3 y:(double)a4 width:(double)a5 height:(double)a6;
+- (void)bezierCurveToCP1X:(double)x cp1y:(double)cp1y cp2x:(double)cp2x cp2y:(double)cp2y x:(double)a7 y:(double)y;
+- (void)clearRectWithX:(double)x y:(double)y width:(double)width height:(double)height;
 - (void)clip;
 - (void)closePath;
 - (void)dealloc;
 - (void)fill;
-- (void)fillRectWithX:(double)a3 y:(double)a4 width:(double)a5 height:(double)a6;
-- (void)lineToX:(double)a3 y:(double)a4;
-- (void)moveToX:(double)a3 y:(double)a4;
-- (void)quadraticCurveToCPX:(double)a3 cpy:(double)a4 x:(double)a5 y:(double)a6;
+- (void)fillRectWithX:(double)x y:(double)y width:(double)width height:(double)height;
+- (void)lineToX:(double)x y:(double)y;
+- (void)moveToX:(double)x y:(double)y;
+- (void)quadraticCurveToCPX:(double)x cpy:(double)cpy x:(double)a5 y:(double)y;
 - (void)restoreState;
-- (void)rotateWithAngle:(double)a3;
+- (void)rotateWithAngle:(double)angle;
 - (void)saveState;
-- (void)scaleWithX:(double)a3 y:(double)a4;
-- (void)setFillStyle:(id)a3;
-- (void)setGlobalAlpha:(double)a3;
-- (void)setGlobalCompositeOperation:(id)a3;
-- (void)setLineCap:(id)a3;
-- (void)setLineJoin:(id)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setMiterLimit:(double)a3;
-- (void)setShadowBlur:(double)a3;
-- (void)setShadowColor:(id)a3;
-- (void)setShadowOffsetX:(double)a3;
-- (void)setShadowOffsetY:(double)a3;
-- (void)setStrokeStyle:(id)a3;
-- (void)setTransformWithM11:(double)a3 m12:(double)a4 m21:(double)a5 m22:(double)a6 dx:(double)a7 dy:(double)a8;
+- (void)scaleWithX:(double)x y:(double)y;
+- (void)setFillStyle:(id)style;
+- (void)setGlobalAlpha:(double)alpha;
+- (void)setGlobalCompositeOperation:(id)operation;
+- (void)setLineCap:(id)cap;
+- (void)setLineJoin:(id)join;
+- (void)setLineWidth:(double)width;
+- (void)setMiterLimit:(double)limit;
+- (void)setShadowBlur:(double)blur;
+- (void)setShadowColor:(id)color;
+- (void)setShadowOffsetX:(double)x;
+- (void)setShadowOffsetY:(double)y;
+- (void)setStrokeStyle:(id)style;
+- (void)setTransformWithM11:(double)m11 m12:(double)m12 m21:(double)m21 m22:(double)m22 dx:(double)dx dy:(double)dy;
 - (void)stroke;
-- (void)strokeRectWithX:(double)a3 y:(double)a4 width:(double)a5 height:(double)a6;
-- (void)transformWithM11:(double)a3 m12:(double)a4 m21:(double)a5 m22:(double)a6 dx:(double)a7 dy:(double)a8;
-- (void)translateWithX:(double)a3 y:(double)a4;
+- (void)strokeRectWithX:(double)x y:(double)y width:(double)width height:(double)height;
+- (void)transformWithM11:(double)m11 m12:(double)m12 m21:(double)m21 m22:(double)m22 dx:(double)dx dy:(double)dy;
+- (void)translateWithX:(double)x y:(double)y;
 @end
 
 @implementation SUScriptCanvasContext
 
-- (SUScriptCanvasContext)initWithWidth:(double)a3 height:(double)a4
+- (SUScriptCanvasContext)initWithWidth:(double)width height:(double)height
 {
   v6 = [(SUScriptObject *)self init];
   if (!v6)
@@ -75,11 +75,11 @@
   {
     [objc_msgSend(MEMORY[0x1E69DCEB0] "mainScreen")];
     v6->_scale = v8;
-    v9 = v8 * a4;
-    a4 = ceilf(v9);
-    *&v8 = v8 * a3;
-    a3 = ceilf(*&v8);
-    context = CGBitmapContextCreate(0, vcvtps_u32_f32(*&v8), vcvtps_u32_f32(v9), 8uLL, (vcvtd_n_u64_f64(a3, 3uLL) + 31) & 0xFFFFFFFFFFFFFFE0, DeviceRGB, 0x2002u);
+    v9 = v8 * height;
+    height = ceilf(v9);
+    *&v8 = v8 * width;
+    width = ceilf(*&v8);
+    context = CGBitmapContextCreate(0, vcvtps_u32_f32(*&v8), vcvtps_u32_f32(v9), 8uLL, (vcvtd_n_u64_f64(width, 3uLL) + 31) & 0xFFFFFFFFFFFFFFE0, DeviceRGB, 0x2002u);
     v6->_context = context;
     if (context)
     {
@@ -106,13 +106,13 @@ LABEL_8:
 LABEL_4:
   CGContextSetShouldAntialias(context, 1);
   CGContextSetFillColorSpace(v6->_context, DeviceRGB);
-  CGContextTranslateCTM(v6->_context, 0.0, a4);
+  CGContextTranslateCTM(v6->_context, 0.0, height);
   CGContextScaleCTM(v6->_context, v6->_scale, -v6->_scale);
   CGContextGetCTM(&v12, v6->_context);
   CGContextSetBaseCTM();
   v6->_contextPath = CGPathCreateMutable();
-  v6->_height = a4;
-  v6->_width = a3;
+  v6->_height = height;
+  v6->_width = width;
   if (DeviceRGB)
   {
 LABEL_5:
@@ -141,24 +141,24 @@ LABEL_5:
   [(SUScriptObject *)&v5 dealloc];
 }
 
-- (void)arcToX1:(double)a3 y1:(double)a4 x2:(double)a5 y2:(double)a6 radius:(double)a7
+- (void)arcToX1:(double)x1 y1:(double)y1 x2:(double)x2 y2:(double)y2 radius:(double)radius
 {
   [(SUScriptObject *)self lock];
   memset(&v13, 0, sizeof(v13));
   CGContextGetCTM(&v13, self->_context);
-  CGPathAddArcToPoint(self->_contextPath, &v13, a3, a4, a5, a6, a7);
-  CGContextAddArcToPoint(self->_context, a3, a4, a5, a6, a7);
+  CGPathAddArcToPoint(self->_contextPath, &v13, x1, y1, x2, y2, radius);
+  CGContextAddArcToPoint(self->_context, x1, y1, x2, y2, radius);
   [(SUScriptObject *)self unlock];
 }
 
-- (void)arcWithX:(double)a3 y:(double)a4 radius:(double)a5 startAngle:(double)a6 endAngle:(double)a7 antiClockwise:(BOOL)a8
+- (void)arcWithX:(double)x y:(double)y radius:(double)radius startAngle:(double)angle endAngle:(double)endAngle antiClockwise:(BOOL)clockwise
 {
-  v8 = a8;
+  clockwiseCopy = clockwise;
   [(SUScriptObject *)self lock];
   memset(&v15, 0, sizeof(v15));
   CGContextGetCTM(&v15, self->_context);
-  CGPathAddArc(self->_contextPath, &v15, a3, a4, a5, a6, a7, !v8);
-  CGContextAddArc(self->_context, a3, a4, a5, a6, a7, !v8);
+  CGPathAddArc(self->_contextPath, &v15, x, y, radius, angle, endAngle, !clockwiseCopy);
+  CGContextAddArc(self->_context, x, y, radius, angle, endAngle, !clockwiseCopy);
   [(SUScriptObject *)self unlock];
 }
 
@@ -176,13 +176,13 @@ LABEL_5:
   [(SUScriptObject *)self unlock];
 }
 
-- (void)bezierCurveToCP1X:(double)a3 cp1y:(double)a4 cp2x:(double)a5 cp2y:(double)a6 x:(double)a7 y:(double)a8
+- (void)bezierCurveToCP1X:(double)x cp1y:(double)cp1y cp2x:(double)cp2x cp2y:(double)cp2y x:(double)a7 y:(double)y
 {
   [(SUScriptObject *)self lock];
   memset(&v15, 0, sizeof(v15));
   CGContextGetCTM(&v15, self->_context);
-  CGPathAddCurveToPoint(self->_contextPath, &v15, a3, a4, a5, a6, a7, a8);
-  CGContextAddCurveToPoint(self->_context, a3, a4, a5, a6, a7, a8);
+  CGPathAddCurveToPoint(self->_contextPath, &v15, x, cp1y, cp2x, cp2y, a7, y);
+  CGContextAddCurveToPoint(self->_context, x, cp1y, cp2x, cp2y, a7, y);
   [(SUScriptObject *)self unlock];
 }
 
@@ -221,13 +221,13 @@ LABEL_5:
   return contextPath;
 }
 
-- (void)clearRectWithX:(double)a3 y:(double)a4 width:(double)a5 height:(double)a6
+- (void)clearRectWithX:(double)x y:(double)y width:(double)width height:(double)height
 {
   [(SUScriptObject *)self lock];
-  v12.origin.x = a3;
-  v12.origin.y = a4;
-  v12.size.width = a5;
-  v12.size.height = a6;
+  v12.origin.x = x;
+  v12.origin.y = y;
+  v12.size.width = width;
+  v12.size.height = height;
   CGContextClearRect(self->_context, v12);
 
   [(SUScriptObject *)self unlock];
@@ -256,11 +256,11 @@ LABEL_5:
   fillStyleType = self->_fillStyleType;
   if (fillStyleType == 1)
   {
-    v4 = [self->_fillStyle copyNativeGradient];
-    v5 = [v4 copyShading];
-    if (v5)
+    copyNativeGradient = [self->_fillStyle copyNativeGradient];
+    copyShading = [copyNativeGradient copyShading];
+    if (copyShading)
     {
-      v6 = v5;
+      v6 = copyShading;
       CGContextSaveGState(self->_context);
       CGContextClip(self->_context);
       CGContextDrawShading(self->_context, v6);
@@ -277,22 +277,22 @@ LABEL_5:
   [(SUScriptObject *)self unlock];
 }
 
-- (void)fillRectWithX:(double)a3 y:(double)a4 width:(double)a5 height:(double)a6
+- (void)fillRectWithX:(double)x y:(double)y width:(double)width height:(double)height
 {
   [(SUScriptObject *)self lock];
   fillStyleType = self->_fillStyleType;
   if (fillStyleType == 1)
   {
-    v12 = [self->_fillStyle copyNativeGradient];
-    v13 = [v12 copyShading];
-    if (v13)
+    copyNativeGradient = [self->_fillStyle copyNativeGradient];
+    copyShading = [copyNativeGradient copyShading];
+    if (copyShading)
     {
-      v14 = v13;
+      v14 = copyShading;
       CGContextSaveGState(self->_context);
-      v17.origin.x = a3;
-      v17.origin.y = a4;
-      v17.size.width = a5;
-      v17.size.height = a6;
+      v17.origin.x = x;
+      v17.origin.y = y;
+      v17.size.width = width;
+      v17.size.height = height;
       CGContextClipToRect(self->_context, v17);
       CGContextDrawShading(self->_context, v14);
       CGContextRestoreGState(self->_context);
@@ -302,67 +302,67 @@ LABEL_5:
 
   else if (!fillStyleType)
   {
-    v16.origin.x = a3;
-    v16.origin.y = a4;
-    v16.size.width = a5;
-    v16.size.height = a6;
+    v16.origin.x = x;
+    v16.origin.y = y;
+    v16.size.width = width;
+    v16.size.height = height;
     CGContextFillRect(self->_context, v16);
   }
 
   [(SUScriptObject *)self unlock];
 }
 
-- (BOOL)isPointInPathWithX:(double)a3 y:(double)a4
+- (BOOL)isPointInPathWithX:(double)x y:(double)y
 {
   [(SUScriptObject *)self lock];
-  v9.x = a3;
-  v9.y = a4;
+  v9.x = x;
+  v9.y = y;
   v7 = CGContextPathContainsPoint(self->_context, v9, kCGPathStroke);
   [(SUScriptObject *)self unlock];
   return v7;
 }
 
-- (void)lineToX:(double)a3 y:(double)a4
+- (void)lineToX:(double)x y:(double)y
 {
   [(SUScriptObject *)self lock];
   memset(&v7, 0, sizeof(v7));
   CGContextGetCTM(&v7, self->_context);
-  CGPathAddLineToPoint(self->_contextPath, &v7, a3, a4);
-  CGContextAddLineToPoint(self->_context, a3, a4);
+  CGPathAddLineToPoint(self->_contextPath, &v7, x, y);
+  CGContextAddLineToPoint(self->_context, x, y);
   [(SUScriptObject *)self unlock];
 }
 
-- (id)makeLinearGradientWithX0:(double)a3 y0:(double)a4 x1:(double)a5 y1:(double)a6
+- (id)makeLinearGradientWithX0:(double)x0 y0:(double)y0 x1:(double)x1 y1:(double)y1
 {
-  v6 = [[SUScriptGradient alloc] initLinearGradientWithX0:a3 y0:a4 x1:a5 y1:a6];
+  v6 = [[SUScriptGradient alloc] initLinearGradientWithX0:x0 y0:y0 x1:x1 y1:y1];
 
   return v6;
 }
 
-- (id)makeRadialGradientWithX0:(double)a3 y0:(double)a4 r0:(double)a5 x1:(double)a6 y1:(double)a7 r1:(double)a8
+- (id)makeRadialGradientWithX0:(double)x0 y0:(double)y0 r0:(double)r0 x1:(double)x1 y1:(double)y1 r1:(double)r1
 {
-  v8 = [[SUScriptGradient alloc] initRadialGraidentWithX0:a3 y0:a4 r0:a5 x1:a6 y1:a7 r1:a8];
+  v8 = [[SUScriptGradient alloc] initRadialGraidentWithX0:x0 y0:y0 r0:r0 x1:x1 y1:y1 r1:r1];
 
   return v8;
 }
 
-- (void)moveToX:(double)a3 y:(double)a4
+- (void)moveToX:(double)x y:(double)y
 {
   [(SUScriptObject *)self lock];
   memset(&v7, 0, sizeof(v7));
   CGContextGetCTM(&v7, self->_context);
-  CGPathMoveToPoint(self->_contextPath, &v7, a3, a4);
-  CGContextMoveToPoint(self->_context, a3, a4);
+  CGPathMoveToPoint(self->_contextPath, &v7, x, y);
+  CGContextMoveToPoint(self->_context, x, y);
   [(SUScriptObject *)self unlock];
 }
 
-- (void)quadraticCurveToCPX:(double)a3 cpy:(double)a4 x:(double)a5 y:(double)a6
+- (void)quadraticCurveToCPX:(double)x cpy:(double)cpy x:(double)a5 y:(double)y
 {
   [(SUScriptObject *)self lock];
   memset(&v11, 0, sizeof(v11));
   CGContextGetCTM(&v11, self->_context);
-  CGPathAddQuadCurveToPoint(self->_contextPath, &v11, a3, a4, a5, a6);
-  CGContextAddQuadCurveToPoint(self->_context, a3, a4, a5, a6);
+  CGPathAddQuadCurveToPoint(self->_contextPath, &v11, x, cpy, a5, y);
+  CGContextAddQuadCurveToPoint(self->_context, x, cpy, a5, y);
   [(SUScriptObject *)self unlock];
 }
 
@@ -374,10 +374,10 @@ LABEL_5:
   [(SUScriptObject *)self unlock];
 }
 
-- (void)rotateWithAngle:(double)a3
+- (void)rotateWithAngle:(double)angle
 {
   [(SUScriptObject *)self lock];
-  CGContextRotateCTM(self->_context, a3);
+  CGContextRotateCTM(self->_context, angle);
 
   [(SUScriptObject *)self unlock];
 }
@@ -390,39 +390,39 @@ LABEL_5:
   [(SUScriptObject *)self unlock];
 }
 
-- (void)scaleWithX:(double)a3 y:(double)a4
+- (void)scaleWithX:(double)x y:(double)y
 {
   [(SUScriptObject *)self lock];
-  CGContextScaleCTM(self->_context, a3, a4);
+  CGContextScaleCTM(self->_context, x, y);
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setTransformWithM11:(double)a3 m12:(double)a4 m21:(double)a5 m22:(double)a6 dx:(double)a7 dy:(double)a8
+- (void)setTransformWithM11:(double)m11 m12:(double)m12 m21:(double)m21 m22:(double)m22 dx:(double)dx dy:(double)dy
 {
   [(SUScriptObject *)self lock];
   CGContextSetCTM();
-  [(SUScriptObject *)self unlock:*&a3];
+  [(SUScriptObject *)self unlock:*&m11];
 }
 
-- (void)transformWithM11:(double)a3 m12:(double)a4 m21:(double)a5 m22:(double)a6 dx:(double)a7 dy:(double)a8
+- (void)transformWithM11:(double)m11 m12:(double)m12 m21:(double)m21 m22:(double)m22 dx:(double)dx dy:(double)dy
 {
   [(SUScriptObject *)self lock];
   context = self->_context;
-  v16.a = a3;
-  v16.b = a4;
-  v16.c = a5;
-  v16.d = a6;
-  v16.tx = a7;
-  v16.ty = a8;
+  v16.a = m11;
+  v16.b = m12;
+  v16.c = m21;
+  v16.d = m22;
+  v16.tx = dx;
+  v16.ty = dy;
   CGContextConcatCTM(context, &v16);
   [(SUScriptObject *)self unlock];
 }
 
-- (void)translateWithX:(double)a3 y:(double)a4
+- (void)translateWithX:(double)x y:(double)y
 {
   [(SUScriptObject *)self lock];
-  CGContextTranslateCTM(self->_context, a3, a4);
+  CGContextTranslateCTM(self->_context, x, y);
 
   [(SUScriptObject *)self unlock];
 }
@@ -433,11 +433,11 @@ LABEL_5:
   strokeStyleType = self->_strokeStyleType;
   if (strokeStyleType == 1)
   {
-    v4 = [self->_strokeStyle copyNativeGradient];
-    v5 = [v4 copyShading];
-    if (v5)
+    copyNativeGradient = [self->_strokeStyle copyNativeGradient];
+    copyShading = [copyNativeGradient copyShading];
+    if (copyShading)
     {
-      v6 = v5;
+      v6 = copyShading;
       CGContextSaveGState(self->_context);
       CGContextReplacePathWithStrokedPath(self->_context);
       CGContextClip(self->_context);
@@ -455,22 +455,22 @@ LABEL_5:
   [(SUScriptObject *)self unlock];
 }
 
-- (void)strokeRectWithX:(double)a3 y:(double)a4 width:(double)a5 height:(double)a6
+- (void)strokeRectWithX:(double)x y:(double)y width:(double)width height:(double)height
 {
   [(SUScriptObject *)self lock];
   strokeStyleType = self->_strokeStyleType;
   if (strokeStyleType == 1)
   {
-    v12 = [self->_strokeStyle copyNativeGradient];
-    v13 = [v12 copyShading];
-    if (v13)
+    copyNativeGradient = [self->_strokeStyle copyNativeGradient];
+    copyShading = [copyNativeGradient copyShading];
+    if (copyShading)
     {
-      v14 = v13;
+      v14 = copyShading;
       CGContextSaveGState(self->_context);
-      v17.origin.x = a3;
-      v17.origin.y = a4;
-      v17.size.width = a5;
-      v17.size.height = a6;
+      v17.origin.x = x;
+      v17.origin.y = y;
+      v17.size.width = width;
+      v17.size.height = height;
       CGContextAddRect(self->_context, v17);
       CGContextReplacePathWithStrokedPath(self->_context);
       CGContextClip(self->_context);
@@ -482,10 +482,10 @@ LABEL_5:
 
   else if (!strokeStyleType)
   {
-    v16.origin.x = a3;
-    v16.origin.y = a4;
-    v16.size.width = a5;
-    v16.size.height = a6;
+    v16.origin.x = x;
+    v16.origin.y = y;
+    v16.size.width = width;
+    v16.size.height = height;
     CGContextStrokeRect(self->_context, v16);
   }
 
@@ -602,12 +602,12 @@ LABEL_5:
   return v4;
 }
 
-- (void)setFillStyle:(id)a3
+- (void)setFillStyle:(id)style
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [[SUScriptColor alloc] initWithStyleString:a3];
+    styleCopy2 = [[SUScriptColor alloc] initWithStyleString:style];
   }
 
   else
@@ -618,10 +618,10 @@ LABEL_5:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = a3;
+        styleCopy2 = style;
         v7 = 0;
         v6 = 1;
-        if (v5)
+        if (styleCopy2)
         {
           goto LABEL_6;
         }
@@ -633,18 +633,18 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v5 = a3;
+    styleCopy2 = style;
   }
 
   v6 = 0;
   v7 = 1;
-  if (!v5)
+  if (!styleCopy2)
   {
     goto LABEL_13;
   }
 
 LABEL_6:
-  v12 = v5;
+  v12 = styleCopy2;
   [(SUScriptObject *)self lock];
   fillStyle = self->_fillStyle;
   if (fillStyle != v12)
@@ -654,11 +654,11 @@ LABEL_6:
     self->_fillStyleType = v6;
     if (v7)
     {
-      v9 = [self->_fillStyle copyCGColor];
-      if (v9)
+      copyCGColor = [self->_fillStyle copyCGColor];
+      if (copyCGColor)
       {
-        v10 = v9;
-        CGContextSetFillColorWithColor(self->_context, v9);
+        v10 = copyCGColor;
+        CGContextSetFillColorWithColor(self->_context, copyCGColor);
         CGColorRelease(v10);
       }
     }
@@ -669,22 +669,22 @@ LABEL_6:
 LABEL_14:
 }
 
-- (void)setGlobalAlpha:(double)a3
+- (void)setGlobalAlpha:(double)alpha
 {
   [(SUScriptObject *)self lock];
-  CGContextSetAlpha(self->_context, a3);
+  CGContextSetAlpha(self->_context, alpha);
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setGlobalCompositeOperation:(id)a3
+- (void)setGlobalCompositeOperation:(id)operation
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (([a3 isEqualToString:@"copy"] & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", @"destination-atop") & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", @"destination-in") & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", @"destination-out") & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", @"destination-over") & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", @"lighter") & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", @"source-in") & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", @"source-out") & 1) == 0)
+    if (([operation isEqualToString:@"copy"] & 1) == 0 && (objc_msgSend(operation, "isEqualToString:", @"destination-atop") & 1) == 0 && (objc_msgSend(operation, "isEqualToString:", @"destination-in") & 1) == 0 && (objc_msgSend(operation, "isEqualToString:", @"destination-out") & 1) == 0 && (objc_msgSend(operation, "isEqualToString:", @"destination-over") & 1) == 0 && (objc_msgSend(operation, "isEqualToString:", @"lighter") & 1) == 0 && (objc_msgSend(operation, "isEqualToString:", @"source-in") & 1) == 0 && (objc_msgSend(operation, "isEqualToString:", @"source-out") & 1) == 0)
     {
-      [a3 isEqualToString:@"xor"];
+      [operation isEqualToString:@"xor"];
     }
 
     [(SUScriptObject *)self lock];
@@ -701,17 +701,17 @@ LABEL_14:
   }
 }
 
-- (void)setLineCap:(id)a3
+- (void)setLineCap:(id)cap
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([a3 isEqualToString:@"round"])
+    if ([cap isEqualToString:@"round"])
     {
       v5 = kCGLineCapRound;
     }
 
-    else if ([a3 isEqualToString:@"square"])
+    else if ([cap isEqualToString:@"square"])
     {
       v5 = kCGLineCapSquare;
     }
@@ -735,19 +735,19 @@ LABEL_14:
   }
 }
 
-- (void)setLineJoin:(id)a3
+- (void)setLineJoin:(id)join
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([a3 isEqualToString:@"bevel"])
+    if ([join isEqualToString:@"bevel"])
     {
       v5 = kCGLineJoinBevel;
     }
 
     else
     {
-      v5 = [a3 isEqualToString:@"round"];
+      v5 = [join isEqualToString:@"round"];
     }
 
     [(SUScriptObject *)self lock];
@@ -764,46 +764,46 @@ LABEL_14:
   }
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
   [(SUScriptObject *)self lock];
-  CGContextSetLineWidth(self->_context, a3);
+  CGContextSetLineWidth(self->_context, width);
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setMiterLimit:(double)a3
+- (void)setMiterLimit:(double)limit
 {
   [(SUScriptObject *)self lock];
-  CGContextSetMiterLimit(self->_context, a3);
+  CGContextSetMiterLimit(self->_context, limit);
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setShadowBlur:(double)a3
+- (void)setShadowBlur:(double)blur
 {
   [(SUScriptObject *)self lock];
-  self->_shadowBlur = a3;
+  self->_shadowBlur = blur;
   [(SUScriptCanvasContext *)self _ntsApplyShadow];
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [[SUScriptColor alloc] initWithStyleString:a3];
+    colorCopy = [[SUScriptColor alloc] initWithStyleString:color];
   }
 
   else
   {
-    v5 = a3;
+    colorCopy = color;
   }
 
-  v7 = v5;
-  if (v5)
+  v7 = colorCopy;
+  if (colorCopy)
   {
     [(SUScriptObject *)self lock];
     shadowColor = self->_shadowColor;
@@ -823,30 +823,30 @@ LABEL_14:
   }
 }
 
-- (void)setShadowOffsetX:(double)a3
+- (void)setShadowOffsetX:(double)x
 {
   [(SUScriptObject *)self lock];
-  self->_shadowOffsetX = a3;
+  self->_shadowOffsetX = x;
   [(SUScriptCanvasContext *)self _ntsApplyShadow];
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setShadowOffsetY:(double)a3
+- (void)setShadowOffsetY:(double)y
 {
   [(SUScriptObject *)self lock];
-  self->_shadowOffsetY = a3;
+  self->_shadowOffsetY = y;
   [(SUScriptCanvasContext *)self _ntsApplyShadow];
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setStrokeStyle:(id)a3
+- (void)setStrokeStyle:(id)style
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [[SUScriptColor alloc] initWithStyleString:a3];
+    styleCopy2 = [[SUScriptColor alloc] initWithStyleString:style];
   }
 
   else
@@ -857,10 +857,10 @@ LABEL_14:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = a3;
+        styleCopy2 = style;
         v7 = 0;
         v6 = 1;
-        if (v5)
+        if (styleCopy2)
         {
           goto LABEL_6;
         }
@@ -872,18 +872,18 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v5 = a3;
+    styleCopy2 = style;
   }
 
   v6 = 0;
   v7 = 1;
-  if (!v5)
+  if (!styleCopy2)
   {
     goto LABEL_13;
   }
 
 LABEL_6:
-  v12 = v5;
+  v12 = styleCopy2;
   [(SUScriptObject *)self lock];
   strokeStyle = self->_strokeStyle;
   if (strokeStyle != v12)
@@ -893,11 +893,11 @@ LABEL_6:
     self->_strokeStyleType = v6;
     if (v7)
     {
-      v9 = [self->_strokeStyle copyCGColor];
-      if (v9)
+      copyCGColor = [self->_strokeStyle copyCGColor];
+      if (copyCGColor)
       {
-        v10 = v9;
-        CGContextSetStrokeColorWithColor(self->_context, v9);
+        v10 = copyCGColor;
+        CGContextSetStrokeColorWithColor(self->_context, copyCGColor);
         CGColorRelease(v10);
       }
     }
@@ -985,27 +985,27 @@ LABEL_14:
   }
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_30 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptCanvasContext;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_24, 24);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_24, 24);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptCanvasContext;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -1015,14 +1015,14 @@ LABEL_14:
 {
   v4.receiver = self;
   v4.super_class = SUScriptCanvasContext;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_30 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_30 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_24 = sel_arcToX1_y1_x2_y2_radius_;
     *algn_1EBF3AD48 = @"arcTo";

@@ -1,18 +1,18 @@
 @interface AdvertisementCacheTrampoline
 - (_TtC12searchpartydP33_EBCE4CC9FC18641636B173DB27D7BE0028AdvertisementCacheTrampoline)init;
-- (void)advertisementsForSearchCriteria:(id)a3 completion:(id)a4;
-- (void)beaconAdvertisementAtFileURL:(id)a3 beaconIdentifier:(id)a4 scanDate:(id)a5 completion:(id)a6;
-- (void)beaconPayloadsForSearchCriteria:(id)a3 completion:(id)a4;
-- (void)clearCacheWithCompletion:(id)a3;
-- (void)markAdvertisementsProcessed:(id)a3 completion:(id)a4;
-- (void)markFilesProcessed:(id)a3 completion:(id)a4;
+- (void)advertisementsForSearchCriteria:(id)criteria completion:(id)completion;
+- (void)beaconAdvertisementAtFileURL:(id)l beaconIdentifier:(id)identifier scanDate:(id)date completion:(id)completion;
+- (void)beaconPayloadsForSearchCriteria:(id)criteria completion:(id)completion;
+- (void)clearCacheWithCompletion:(id)completion;
+- (void)markAdvertisementsProcessed:(id)processed completion:(id)completion;
+- (void)markFilesProcessed:(id)processed completion:(id)completion;
 @end
 
 @implementation AdvertisementCacheTrampoline
 
-- (void)markFilesProcessed:(id)a3 completion:(id)a4
+- (void)markFilesProcessed:(id)processed completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   type metadata accessor for URL();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = swift_allocObject();
@@ -23,15 +23,15 @@
   v10 = v8[3];
   ObjectType = swift_getObjectType();
   v12 = *(v10 + 32);
-  v13 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
   v12(v6, sub_10026AE30, v7, ObjectType, v10);
   swift_unknownObjectRelease();
 }
 
-- (void)beaconPayloadsForSearchCriteria:(id)a3 completion:(id)a4
+- (void)beaconPayloadsForSearchCriteria:(id)criteria completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = (self + OBJC_IVAR____TtC12searchpartydP33_EBCE4CC9FC18641636B173DB27D7BE0028AdvertisementCacheTrampoline_implementation);
@@ -39,8 +39,8 @@
   v9 = *v8;
   v10 = v8[3];
   ObjectType = swift_getObjectType();
-  v11 = a3;
-  v20 = self;
+  criteriaCopy = criteria;
+  selfCopy = self;
   swift_unknownObjectRetain();
   v12 = sub_1003CCA70();
   v14 = v13;
@@ -54,27 +54,27 @@
   swift_unknownObjectRelease();
 }
 
-- (void)beaconAdvertisementAtFileURL:(id)a3 beaconIdentifier:(id)a4 scanDate:(id)a5 completion:(id)a6
+- (void)beaconAdvertisementAtFileURL:(id)l beaconIdentifier:(id)identifier scanDate:(id)date completion:(id)completion
 {
   v8 = type metadata accessor for Date();
   v35 = *(v8 - 8);
   v36 = v8;
   v9 = *(v35 + 64);
   __chkstk_darwin(v8);
-  v30 = &v29 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v30 = &selfCopy - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   v11 = type metadata accessor for UUID();
   v33 = *(v11 - 8);
   v34 = v11;
   v12 = *(v33 + 64);
   __chkstk_darwin(v11);
-  v14 = &v29 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v14 = &selfCopy - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   v15 = type metadata accessor for URL();
   v31 = *(v15 - 8);
   v32 = v15;
   v16 = *(v31 + 64);
   __chkstk_darwin(v15);
-  v18 = &v29 - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v19 = _Block_copy(a6);
+  v18 = &selfCopy - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v19 = _Block_copy(completion);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
@@ -86,7 +86,7 @@
   v23 = v21[1];
   ObjectType = swift_getObjectType();
   v25 = *(v23 + 8);
-  v29 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
   v26 = v14;
   v27 = v14;
@@ -99,36 +99,36 @@
   swift_unknownObjectRelease();
 }
 
-- (void)markAdvertisementsProcessed:(id)a3 completion:(id)a4
+- (void)markAdvertisementsProcessed:(id)processed completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   type metadata accessor for UUID();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   _Block_copy(v5);
-  v7 = self;
-  sub_10026A388(v6, v7, v5);
+  selfCopy = self;
+  sub_10026A388(v6, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }
 
-- (void)advertisementsForSearchCriteria:(id)a3 completion:(id)a4
+- (void)advertisementsForSearchCriteria:(id)criteria completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_10026AC00(v8, v6);
+  criteriaCopy = criteria;
+  selfCopy = self;
+  sub_10026AC00(selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)clearCacheWithCompletion:(id)a3
+- (void)clearCacheWithCompletion:(id)completion
 {
   v4 = sub_1000BC4D4(&qword_101698C00, &qword_10138B570);
   v5 = *(*(v4 - 8) + 64);
   __chkstk_darwin(v4 - 8);
   v7 = &v12 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = type metadata accessor for TaskPriority();

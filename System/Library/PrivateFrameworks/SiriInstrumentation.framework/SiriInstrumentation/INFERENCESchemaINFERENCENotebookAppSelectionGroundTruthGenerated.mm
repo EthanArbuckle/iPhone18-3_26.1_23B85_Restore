@@ -1,27 +1,27 @@
 @interface INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addInferenceNotebookAppSelectionTrainingAppDependentSignals:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addInferenceNotebookAppSelectionTrainingAppDependentSignals:(id)signals;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated
 
-- (INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated;
   v5 = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"inferenceNotebookAppSelectionTrainingAppIndependentSignals"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"inferenceNotebookAppSelectionTrainingAppIndependentSignals"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)v5 setInferenceNotebookAppSelectionTrainingAppIndependentSignals:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"inferenceNotebookAppSelectionTrainingAppDependentSignals"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"inferenceNotebookAppSelectionTrainingAppDependentSignals"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,10 +118,10 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_inferenceNotebookAppSelectionTrainingAppDependentSignals count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -141,16 +141,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -160,52 +160,52 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"inferenceNotebookAppSelectionTrainingAppDependentSignals"];
+    [dictionary setObject:array forKeyedSubscript:@"inferenceNotebookAppSelectionTrainingAppDependentSignals"];
   }
 
   if (self->_inferenceNotebookAppSelectionTrainingAppIndependentSignals)
   {
-    v12 = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppIndependentSignals];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    inferenceNotebookAppSelectionTrainingAppIndependentSignals = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppIndependentSignals];
+    dictionaryRepresentation2 = [inferenceNotebookAppSelectionTrainingAppIndependentSignals dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"inferenceNotebookAppSelectionTrainingAppIndependentSignals"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"inferenceNotebookAppSelectionTrainingAppIndependentSignals"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"inferenceNotebookAppSelectionTrainingAppIndependentSignals"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"inferenceNotebookAppSelectionTrainingAppIndependentSignals"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppIndependentSignals];
-  v6 = [v4 inferenceNotebookAppSelectionTrainingAppIndependentSignals];
-  if ((v5 != 0) == (v6 == 0))
+  inferenceNotebookAppSelectionTrainingAppIndependentSignals = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppIndependentSignals];
+  inferenceNotebookAppSelectionTrainingAppIndependentSignals2 = [equalCopy inferenceNotebookAppSelectionTrainingAppIndependentSignals];
+  if ((inferenceNotebookAppSelectionTrainingAppIndependentSignals != 0) == (inferenceNotebookAppSelectionTrainingAppIndependentSignals2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppIndependentSignals];
-  if (v7)
+  inferenceNotebookAppSelectionTrainingAppIndependentSignals3 = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppIndependentSignals];
+  if (inferenceNotebookAppSelectionTrainingAppIndependentSignals3)
   {
-    v8 = v7;
-    v9 = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppIndependentSignals];
-    v10 = [v4 inferenceNotebookAppSelectionTrainingAppIndependentSignals];
-    v11 = [v9 isEqual:v10];
+    v8 = inferenceNotebookAppSelectionTrainingAppIndependentSignals3;
+    inferenceNotebookAppSelectionTrainingAppIndependentSignals4 = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppIndependentSignals];
+    inferenceNotebookAppSelectionTrainingAppIndependentSignals5 = [equalCopy inferenceNotebookAppSelectionTrainingAppIndependentSignals];
+    v11 = [inferenceNotebookAppSelectionTrainingAppIndependentSignals4 isEqual:inferenceNotebookAppSelectionTrainingAppIndependentSignals5];
 
     if (!v11)
     {
@@ -217,12 +217,12 @@
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppDependentSignals];
-  v6 = [v4 inferenceNotebookAppSelectionTrainingAppDependentSignals];
-  if ((v5 != 0) != (v6 == 0))
+  inferenceNotebookAppSelectionTrainingAppIndependentSignals = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppDependentSignals];
+  inferenceNotebookAppSelectionTrainingAppIndependentSignals2 = [equalCopy inferenceNotebookAppSelectionTrainingAppDependentSignals];
+  if ((inferenceNotebookAppSelectionTrainingAppIndependentSignals != 0) != (inferenceNotebookAppSelectionTrainingAppIndependentSignals2 == 0))
   {
-    v12 = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppDependentSignals];
-    if (!v12)
+    inferenceNotebookAppSelectionTrainingAppDependentSignals = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppDependentSignals];
+    if (!inferenceNotebookAppSelectionTrainingAppDependentSignals)
     {
 
 LABEL_15:
@@ -230,10 +230,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppDependentSignals];
-    v15 = [v4 inferenceNotebookAppSelectionTrainingAppDependentSignals];
-    v16 = [v14 isEqual:v15];
+    v13 = inferenceNotebookAppSelectionTrainingAppDependentSignals;
+    inferenceNotebookAppSelectionTrainingAppDependentSignals2 = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppDependentSignals];
+    inferenceNotebookAppSelectionTrainingAppDependentSignals3 = [equalCopy inferenceNotebookAppSelectionTrainingAppDependentSignals];
+    v16 = [inferenceNotebookAppSelectionTrainingAppDependentSignals2 isEqual:inferenceNotebookAppSelectionTrainingAppDependentSignals3];
 
     if (v16)
     {
@@ -253,15 +253,15 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppIndependentSignals];
+  toCopy = to;
+  inferenceNotebookAppSelectionTrainingAppIndependentSignals = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppIndependentSignals];
 
-  if (v5)
+  if (inferenceNotebookAppSelectionTrainingAppIndependentSignals)
   {
-    v6 = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppIndependentSignals];
+    inferenceNotebookAppSelectionTrainingAppIndependentSignals2 = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppIndependentSignals];
     PBDataWriterWriteSubmessage();
   }
 
@@ -297,41 +297,41 @@ LABEL_13:
   }
 }
 
-- (void)addInferenceNotebookAppSelectionTrainingAppDependentSignals:(id)a3
+- (void)addInferenceNotebookAppSelectionTrainingAppDependentSignals:(id)signals
 {
-  v4 = a3;
+  signalsCopy = signals;
   inferenceNotebookAppSelectionTrainingAppDependentSignals = self->_inferenceNotebookAppSelectionTrainingAppDependentSignals;
-  v8 = v4;
+  v8 = signalsCopy;
   if (!inferenceNotebookAppSelectionTrainingAppDependentSignals)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_inferenceNotebookAppSelectionTrainingAppDependentSignals;
-    self->_inferenceNotebookAppSelectionTrainingAppDependentSignals = v6;
+    self->_inferenceNotebookAppSelectionTrainingAppDependentSignals = array;
 
-    v4 = v8;
+    signalsCopy = v8;
     inferenceNotebookAppSelectionTrainingAppDependentSignals = self->_inferenceNotebookAppSelectionTrainingAppDependentSignals;
   }
 
-  [(NSArray *)inferenceNotebookAppSelectionTrainingAppDependentSignals addObject:v4];
+  [(NSArray *)inferenceNotebookAppSelectionTrainingAppDependentSignals addObject:signalsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppIndependentSignals];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  inferenceNotebookAppSelectionTrainingAppIndependentSignals = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppIndependentSignals];
+  v7 = [inferenceNotebookAppSelectionTrainingAppIndependentSignals applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self deleteInferenceNotebookAppSelectionTrainingAppIndependentSignals];
   }
 
-  v9 = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppDependentSignals];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  inferenceNotebookAppSelectionTrainingAppDependentSignals = [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self inferenceNotebookAppSelectionTrainingAppDependentSignals];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:inferenceNotebookAppSelectionTrainingAppDependentSignals underConditions:policyCopy];
   [(INFERENCESchemaINFERENCENotebookAppSelectionGroundTruthGenerated *)self setInferenceNotebookAppSelectionTrainingAppDependentSignals:v10];
 
   return v5;

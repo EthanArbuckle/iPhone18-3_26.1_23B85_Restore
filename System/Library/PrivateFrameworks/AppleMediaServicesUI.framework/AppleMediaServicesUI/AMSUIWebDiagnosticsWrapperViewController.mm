@@ -1,44 +1,44 @@
 @interface AMSUIWebDiagnosticsWrapperViewController
-- (AMSUIWebDiagnosticsWrapperViewController)initWithContext:(id)a3;
+- (AMSUIWebDiagnosticsWrapperViewController)initWithContext:(id)context;
 - (DADiagnosticsRemoteViewController)diagnosticsViewController;
-- (unint64_t)_destinationForValue:(id)a3;
-- (void)reportFinishWithReason:(unint64_t)a3;
+- (unint64_t)_destinationForValue:(id)value;
+- (void)reportFinishWithReason:(unint64_t)reason;
 - (void)viewDidLayoutSubviews;
-- (void)willPresentPageModel:(id)a3 appearance:(id)a4;
+- (void)willPresentPageModel:(id)model appearance:(id)appearance;
 @end
 
 @implementation AMSUIWebDiagnosticsWrapperViewController
 
-- (AMSUIWebDiagnosticsWrapperViewController)initWithContext:(id)a3
+- (AMSUIWebDiagnosticsWrapperViewController)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = AMSUIWebDiagnosticsWrapperViewController;
   v6 = [(AMSUICommonViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
 }
 
-- (unint64_t)_destinationForValue:(id)a3
+- (unint64_t)_destinationForValue:(id)value
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  valueCopy = value;
+  v4 = valueCopy;
+  if (valueCopy)
   {
-    v5 = [v3 integerValue];
-    if ((v5 - 1) >= 6)
+    integerValue = [valueCopy integerValue];
+    if ((integerValue - 1) >= 6)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = v5;
+      v6 = integerValue;
     }
   }
 
@@ -50,23 +50,23 @@
   return v6;
 }
 
-- (void)reportFinishWithReason:(unint64_t)a3
+- (void)reportFinishWithReason:(unint64_t)reason
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = [(AMSUIWebDiagnosticsWrapperViewController *)self context];
-  v6 = [v5 logKey];
-  v7 = AMSUIWebSetSubLogKey(v6, 0);
+  context = [(AMSUIWebDiagnosticsWrapperViewController *)self context];
+  logKey = [context logKey];
+  v7 = AMSUIWebSetSubLogKey(logKey, 0);
 
   v8 = [[AMSUIWebJSRequest alloc] initWithServiceName:@"DeviceDiagnostics" logKey:v7];
   v15 = @"finishReason";
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:reason];
   v16[0] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
   [(AMSUIWebJSRequest *)v8 setOptions:v10];
 
-  v11 = [(AMSUIWebDiagnosticsWrapperViewController *)self context];
-  v12 = [v11 dataProvider];
-  v13 = [v12 runJSRequest:v8];
+  context2 = [(AMSUIWebDiagnosticsWrapperViewController *)self context];
+  dataProvider = [context2 dataProvider];
+  v13 = [dataProvider runJSRequest:v8];
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -267,25 +267,25 @@ LABEL_33:
   v14.receiver = self;
   v14.super_class = AMSUIWebDiagnosticsWrapperViewController;
   [(AMSUIWebDiagnosticsWrapperViewController *)&v14 viewDidLayoutSubviews];
-  v3 = [(AMSUICommonViewController *)self view];
-  [v3 bounds];
+  view = [(AMSUICommonViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(AMSUIWebDiagnosticsWrapperViewController *)self diagnosticsViewController];
-  v13 = [v12 view];
-  [v13 setFrame:{v5, v7, v9, v11}];
+  diagnosticsViewController = [(AMSUIWebDiagnosticsWrapperViewController *)self diagnosticsViewController];
+  view2 = [diagnosticsViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)willPresentPageModel:(id)a3 appearance:(id)a4
+- (void)willPresentPageModel:(id)model appearance:(id)appearance
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  modelCopy = model;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = modelCopy;
   }
 
   else
@@ -300,25 +300,25 @@ LABEL_33:
 
   else
   {
-    v7 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v7)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v7 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
-      v10 = [(AMSUIWebDiagnosticsWrapperViewController *)self context];
-      v11 = [v10 logKey];
+      context = [(AMSUIWebDiagnosticsWrapperViewController *)self context];
+      logKey = [context logKey];
       v13 = 138543874;
       v14 = v9;
       v15 = 2114;
-      v16 = v11;
+      v16 = logKey;
       v17 = 2114;
-      v18 = v5;
-      _os_log_impl(&dword_1BB036000, v8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Invalid model: %{public}@", &v13, 0x20u);
+      v18 = modelCopy;
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Invalid model: %{public}@", &v13, 0x20u);
     }
   }
 

@@ -2,15 +2,15 @@
 + (id)sharedInstance;
 - (id)_initInternal;
 - (id)_internalPrintableState;
-- (id)_prepareUwbSessionTrackingObjectsForClientTracking:(id)a3 outServiceRequest:(void *)a4 outStartOptions:(void *)a5 outShareableConfigData:(id *)a6;
-- (id)addServiceClient:(id)a3 identifier:(id)a4 processName:(id)a5 configuration:(id)a6;
+- (id)_prepareUwbSessionTrackingObjectsForClientTracking:(id)tracking outServiceRequest:(void *)request outStartOptions:(void *)options outShareableConfigData:(id *)data;
+- (id)addServiceClient:(id)client identifier:(id)identifier processName:(id)name configuration:(id)configuration;
 - (id)printableState;
-- (optional<unsigned)_generateUwbSessionIdForNewServiceClientWithProcessName:(id)a3 parsedAccessoryConfigData:(const void *)a4 debugParameters:(id)a5;
+- (optional<unsigned)_generateUwbSessionIdForNewServiceClientWithProcessName:(id)name parsedAccessoryConfigData:(const void *)data debugParameters:(id)parameters;
 - (void)_cleanupExcessiveDetachedSessions;
-- (void)_prepareUwbSessionTrackingObjectsFromDebugParameters:(id)a3 outServiceRequest:(void *)a4 outStartOptions:(void *)a5;
-- (void)_relayToClientsOfUWBSessionId:(unsigned int)a3 blockToRelay:(id)a4;
-- (void)notifyServiceClientWithIdentifier:(id)a3 isRunning:(BOOL)a4;
-- (void)removeServiceClientWithIdentifier:(id)a3;
+- (void)_prepareUwbSessionTrackingObjectsFromDebugParameters:(id)parameters outServiceRequest:(void *)request outStartOptions:(void *)options;
+- (void)_relayToClientsOfUWBSessionId:(unsigned int)id blockToRelay:(id)relay;
+- (void)notifyServiceClientWithIdentifier:(id)identifier isRunning:(BOOL)running;
+- (void)removeServiceClientWithIdentifier:(id)identifier;
 @end
 
 @implementation NIServerNearbyAccessoryRangingService
@@ -27,12 +27,12 @@
   return v3;
 }
 
-- (id)addServiceClient:(id)a3 identifier:(id)a4 processName:(id)a5 configuration:(id)a6
+- (id)addServiceClient:(id)client identifier:(id)identifier processName:(id)name configuration:(id)configuration
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  clientCopy = client;
+  identifierCopy = identifier;
+  nameCopy = name;
+  configurationCopy = configuration;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -44,16 +44,16 @@
   v21[1] = 3221225472;
   v21[2] = sub_1002F5974;
   v21[3] = &unk_1009A3D60;
-  v22 = v11;
-  v23 = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v10;
+  v22 = identifierCopy;
+  selfCopy = self;
+  v24 = nameCopy;
+  v25 = configurationCopy;
+  v26 = clientCopy;
   v27 = &v28;
-  v15 = v10;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
+  v15 = clientCopy;
+  v16 = configurationCopy;
+  v17 = nameCopy;
+  v18 = identifierCopy;
   dispatch_sync(queue, v21);
   v19 = v29[5];
 
@@ -62,32 +62,32 @@
   return v19;
 }
 
-- (void)removeServiceClientWithIdentifier:(id)a3
+- (void)removeServiceClientWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002F6428;
   v7[3] = &unk_10098A2E8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)notifyServiceClientWithIdentifier:(id)a3 isRunning:(BOOL)a4
+- (void)notifyServiceClientWithIdentifier:(id)identifier isRunning:(BOOL)running
 {
-  v6 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002F66EC;
   block[3] = &unk_10099BAD8;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = identifierCopy;
+  selfCopy = self;
+  runningCopy = running;
+  v8 = identifierCopy;
   dispatch_sync(queue, block);
 }
 
@@ -189,14 +189,14 @@
   return v2;
 }
 
-- (optional<unsigned)_generateUwbSessionIdForNewServiceClientWithProcessName:(id)a3 parsedAccessoryConfigData:(const void *)a4 debugParameters:(id)a5
+- (optional<unsigned)_generateUwbSessionIdForNewServiceClientWithProcessName:(id)name parsedAccessoryConfigData:(const void *)data debugParameters:(id)parameters
 {
-  v30 = a3;
-  v29 = a5;
+  nameCopy = name;
+  parametersCopy = parameters;
   dispatch_assert_queue_V2(self->_queue);
   if (+[NIPlatformInfo isInternalBuild])
   {
-    v8 = [v29 objectForKey:@"UWBSessionIdOverride"];
+    v8 = [parametersCopy objectForKey:@"UWBSessionIdOverride"];
     if (v8)
     {
       objc_opt_class();
@@ -206,7 +206,7 @@
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          *&buf[4] = v30;
+          *&buf[4] = nameCopy;
           *&buf[12] = 1024;
           *&buf[14] = [v8 unsignedIntValue];
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#accessory-service,Generate UWB session ID - process %@ will use UWB session ID %u in overrides", buf, 0x12u);
@@ -221,7 +221,7 @@
     }
   }
 
-  if (*(a4 + 48))
+  if (*(data + 48))
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -269,7 +269,7 @@
     v39 = &v38;
     v40 = 0x2020000000;
     v41 = 0;
-    if ((*(a4 + 48) & 1) == 0)
+    if ((*(data + 48) & 1) == 0)
     {
       sub_1000195BC();
     }
@@ -279,13 +279,13 @@
     v31[1] = 3221225472;
     v31[2] = sub_1002F7E60;
     v31[3] = &unk_1009A3E00;
-    v21 = v30;
+    v21 = nameCopy;
     v36 = 0;
     v37 = 0;
     v32 = v21;
     v33 = buf;
     v34 = &v38;
-    v35 = a4;
+    dataCopy = data;
     [(NSMutableDictionary *)v20 enumerateKeysAndObjectsUsingBlock:v31];
     if ((*(*&buf[8] + 52) & 1) == 0)
     {
@@ -354,52 +354,52 @@ LABEL_28:
   return (v11 | v13 | v12 | v10);
 }
 
-- (id)_prepareUwbSessionTrackingObjectsForClientTracking:(id)a3 outServiceRequest:(void *)a4 outStartOptions:(void *)a5 outShareableConfigData:(id *)a6
+- (id)_prepareUwbSessionTrackingObjectsForClientTracking:(id)tracking outServiceRequest:(void *)request outStartOptions:(void *)options outShareableConfigData:(id *)data
 {
-  v9 = a3;
+  trackingCopy = tracking;
   dispatch_assert_queue_V2(self->_queue);
-  __dst = a4;
-  if (*(a4 + 576) == 1)
+  __dst = request;
+  if (*(request + 576) == 1)
   {
-    *(a4 + 576) = 0;
+    *(request + 576) = 0;
   }
 
-  if (*(a5 + 112) == 1)
+  if (*(options + 112) == 1)
   {
-    *(a5 + 112) = 0;
+    *(options + 112) = 0;
   }
 
-  *a6 = 0;
-  if (!v9)
+  *data = 0;
+  if (!trackingCopy)
   {
     v19 = 0;
     goto LABEL_243;
   }
 
-  v141 = a6;
-  v10 = [v9 niConfiguration];
+  dataCopy = data;
+  niConfiguration = [trackingCopy niConfiguration];
   v11 = qword_1009F9820;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v9 processName];
-    v13 = [v9 uwbSessionId];
-    v14 = [v10 debugParameters];
+    processName = [trackingCopy processName];
+    uwbSessionId = [trackingCopy uwbSessionId];
+    debugParameters = [niConfiguration debugParameters];
     *buf = 138412802;
-    *&buf[4] = v12;
+    *&buf[4] = processName;
     *&buf[12] = 1024;
-    *&buf[14] = v13;
+    *&buf[14] = uwbSessionId;
     *&buf[18] = 2112;
-    *&buf[20] = v14;
+    *&buf[20] = debugParameters;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "#accessory-service,Prep session objects: process %@, UWB session ID %u. Configuration debug parameters: %@", buf, 0x1Cu);
   }
 
   if (!+[NIPlatformInfo isInternalBuild])
   {
-    v15 = [v10 debugParameters];
-    if (v15)
+    debugParameters2 = [niConfiguration debugParameters];
+    if (debugParameters2)
     {
-      v16 = [v10 debugParameters];
-      v17 = [v16 count] == 0;
+      debugParameters3 = [niConfiguration debugParameters];
+      v17 = [debugParameters3 count] == 0;
 
       if (!v17)
       {
@@ -408,9 +408,9 @@ LABEL_28:
     }
   }
 
-  if (![v10 dataExchangeDisabledAndUsingParameterOverrides])
+  if (![niConfiguration dataExchangeDisabledAndUsingParameterOverrides])
   {
-    if ((*([v9 parsedAccessoryConfigData] + 48) & 1) == 0)
+    if ((*([trackingCopy parsedAccessoryConfigData] + 48) & 1) == 0)
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
@@ -420,19 +420,19 @@ LABEL_28:
       goto LABEL_22;
     }
 
-    v20 = [v9 parsedAccessoryConfigData];
-    if ((v20[48] & 1) == 0)
+    parsedAccessoryConfigData = [trackingCopy parsedAccessoryConfigData];
+    if ((parsedAccessoryConfigData[48] & 1) == 0)
     {
       sub_1000195BC();
     }
 
-    v133 = (v20 + 16);
-    v21 = v20[4];
-    v140 = v20;
-    v22 = *(v20 + 8) && (*(v20 + 8) != 1 || *(v20 + 9));
-    v134 = v20[32];
-    v23 = *(v20 + 33);
-    if (*(v20 + 35) <= 0x64u)
+    v133 = (parsedAccessoryConfigData + 16);
+    v21 = parsedAccessoryConfigData[4];
+    v140 = parsedAccessoryConfigData;
+    v22 = *(parsedAccessoryConfigData + 8) && (*(parsedAccessoryConfigData + 8) != 1 || *(parsedAccessoryConfigData + 9));
+    v134 = parsedAccessoryConfigData[32];
+    v23 = *(parsedAccessoryConfigData + 33);
+    if (*(parsedAccessoryConfigData + 35) <= 0x64u)
     {
       v22 = 0;
     }
@@ -447,8 +447,8 @@ LABEL_28:
     }
 
     while (v25 == v23);
-    v26 = [v10 debugParameters];
-    v138 = [v26 objectForKeyedSubscript:@"LocalAddressOverride"];
+    debugParameters4 = [niConfiguration debugParameters];
+    v138 = [debugParameters4 objectForKeyedSubscript:@"LocalAddressOverride"];
 
     if (v138)
     {
@@ -464,8 +464,8 @@ LABEL_28:
 
     v168 = *&buf[4];
     v167 = *buf;
-    v28 = [v10 debugParameters];
-    v139 = [v28 objectForKeyedSubscript:@"STSInitVectorOverride"];
+    debugParameters5 = [niConfiguration debugParameters];
+    v139 = [debugParameters5 objectForKeyedSubscript:@"STSInitVectorOverride"];
 
     if (v139)
     {
@@ -547,10 +547,10 @@ LABEL_28:
 
           else
           {
-            v31 = [v9 niConfiguration];
-            v32 = [v31 backgroundMode];
+            niConfiguration2 = [trackingCopy niConfiguration];
+            backgroundMode = [niConfiguration2 backgroundMode];
 
-            if (v32)
+            if (backgroundMode)
             {
               v33 = 2000;
             }
@@ -561,7 +561,7 @@ LABEL_28:
             }
 
             v34 = v140[23];
-            if (v32)
+            if (backgroundMode)
             {
               v35 = 400;
             }
@@ -574,7 +574,7 @@ LABEL_28:
             if (v34 > v33 || v35 > v34)
             {
               v42 = @"Background";
-              if (!v32)
+              if (!backgroundMode)
               {
                 v42 = @"None Background";
               }
@@ -622,8 +622,8 @@ LABEL_100:
                 __assert_rtn("[NIServerNearbyAccessoryRangingService _prepareUwbSessionTrackingObjectsForClientTracking:outServiceRequest:outStartOptions:outShareableConfigData:]", "NIServerNearbyAccessoryRangingService.mm", 1105, "rangingIntervalMsec > 0");
               }
 
-              v47 = [v10 debugParameters];
-              v132 = [v47 objectForKeyedSubscript:@"RangingIntervalMsOverride"];
+              debugParameters6 = [niConfiguration debugParameters];
+              v132 = [debugParameters6 objectForKeyedSubscript:@"RangingIntervalMsOverride"];
 
               if (v132)
               {
@@ -668,27 +668,27 @@ LABEL_100:
                 v52 = floor(v136 / v51);
                 if (v52 < 65535.0)
                 {
-                  v53 = [v10 backgroundMode];
+                  backgroundMode2 = [niConfiguration backgroundMode];
                   v54 = sub_1000054A8();
                   v55 = sub_10041C964(v54[144]);
-                  v56 = v53 == 0;
+                  v56 = backgroundMode2 == 0;
                   v57 = *(sub_1000054A8() + 186);
                   v59 = v137 > 0xE0F || v57 != 0;
                   v60 = +[NSUserDefaults standardUserDefaults];
                   v130 = [v60 objectForKey:@"NIAccessoryUseDedicatedAntennasOverride"];
 
-                  v61 = v59 && (v55 || v56);
+                  bOOLValue = v59 && (v55 || v56);
                   if (v130)
                   {
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      v61 = [v130 BOOLValue];
+                      bOOLValue = [v130 BOOLValue];
                       v62 = qword_1009F9820;
                       if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
                       {
                         *buf = 67109120;
-                        *&buf[4] = v61;
+                        *&buf[4] = bOOLValue;
                         _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEFAULT, "#accessory-service,Prep session objects: Use dedicated antennas via defaults write: %d", buf, 8u);
                       }
                     }
@@ -708,13 +708,13 @@ LABEL_100:
                     *&buf[12] = 2112;
                     *&buf[14] = v64;
                     *&buf[22] = 1024;
-                    *&buf[24] = v61;
+                    *&buf[24] = bOOLValue;
                     _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "#accessory-service,Prep session objects: %s ranging mode, role: %@, useDedicatedAntennasIfAvailable: %d", buf, 0x1Cu);
                   }
 
                   v149 = 0;
                   v150 = 0;
-                  v151 = [v9 uwbSessionId];
+                  uwbSessionId2 = [trackingCopy uwbSessionId];
                   v152 = v137;
                   v153 = v135;
                   v154 = v52;
@@ -724,7 +724,7 @@ LABEL_100:
                   v157 = v25;
                   v158 = v65;
                   v159 = 0x400000003;
-                  v160 = v61;
+                  v160 = bOOLValue;
                   v161 = 257;
                   v162 = v127;
                   v163 = 50528256;
@@ -811,11 +811,11 @@ LABEL_240:
                   }
 
                   *(__dst + 17) |= 9u;
-                  v71 = [v10 backgroundMode];
+                  backgroundMode3 = [niConfiguration backgroundMode];
                   v72 = v140;
-                  if (v71)
+                  if (backgroundMode3)
                   {
-                    if (v71 != 2)
+                    if (backgroundMode3 != 2)
                     {
 LABEL_170:
                       if (v134 == 1)
@@ -828,13 +828,13 @@ LABEL_170:
                         v85 = qword_1009F9820;
                         if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
                         {
-                          v86 = [v9 uwbSessionId];
+                          uwbSessionId3 = [trackingCopy uwbSessionId];
                           v87 = __dst[36];
                           v88 = __dst[37];
                           v89 = __dst[38];
                           v90 = __dst[39];
                           *buf = 67110144;
-                          *&buf[4] = v86;
+                          *&buf[4] = uwbSessionId3;
                           *&buf[8] = 1024;
                           *&buf[10] = v87;
                           *&buf[14] = 1024;
@@ -865,7 +865,7 @@ LABEL_170:
                         v94 = 1;
                         while (1)
                         {
-                          v95 = v10;
+                          v95 = niConfiguration;
                           v96 = *v93;
                           if (v96 >= 0xF)
                           {
@@ -916,7 +916,7 @@ LABEL_170:
                           v106 = os_log_type_enabled(v105, OS_LOG_TYPE_DEFAULT);
                           if (!v96)
                           {
-                            v10 = v95;
+                            niConfiguration = v95;
                             if (v106)
                             {
                               *buf = 67109120;
@@ -927,7 +927,7 @@ LABEL_170:
                             goto LABEL_210;
                           }
 
-                          v10 = v95;
+                          niConfiguration = v95;
                           if (v106)
                           {
                             *buf = 67110400;
@@ -1000,7 +1000,7 @@ LABEL_210:
                       }
 
 LABEL_212:
-                      v111 = sub_1002FA1EC([v10 backgroundMode]);
+                      v111 = sub_1002FA1EC([niConfiguration backgroundMode]);
                       LOWORD(v112) = v129;
                       if (v129)
                       {
@@ -1022,22 +1022,22 @@ LABEL_212:
                         LOBYTE(v113) = 0;
                       }
 
-                      v114 = *(a5 + 112);
-                      *a5 = 0;
-                      *(a5 + 40) = 0;
-                      *(a5 + 6) = 250000;
-                      *(a5 + 56) = 1;
-                      *(a5 + 15) = v111;
-                      *(a5 + 8) = 0;
-                      *(a5 + 9) = 0;
-                      *(a5 + 78) = 0;
-                      *(a5 + 43) = v113 | (v112 << 8);
-                      *(a5 + 12) = 0;
-                      *(a5 + 13) = 0;
-                      *(a5 + 11) = 0;
+                      v114 = *(options + 112);
+                      *options = 0;
+                      *(options + 40) = 0;
+                      *(options + 6) = 250000;
+                      *(options + 56) = 1;
+                      *(options + 15) = v111;
+                      *(options + 8) = 0;
+                      *(options + 9) = 0;
+                      *(options + 78) = 0;
+                      *(options + 43) = v113 | (v112 << 8);
+                      *(options + 12) = 0;
+                      *(options + 13) = 0;
+                      *(options + 11) = 0;
                       if ((v114 & 1) == 0)
                       {
-                        *(a5 + 112) = 1;
+                        *(options + 112) = 1;
                       }
 
                       if ((*(__dst + 355) & 1) == 0)
@@ -1063,10 +1063,10 @@ LABEL_212:
                       }
 
                       v117 = sub_1002FA4F8(*(__dst + 354));
-                      v118 = [v9 uwbSessionId];
-                      sub_1002FA31C(&v148, v133, v116, v117, v118, v137, v135, v136, v146, v161, &v167, v25, 0, 2, 0, 0, v128);
+                      uwbSessionId4 = [trackingCopy uwbSessionId];
+                      sub_1002FA31C(&v148, v133, v116, v117, uwbSessionId4, v137, v135, v136, v146, v161, &v167, v25, 0, 2, 0, 0, v128);
                       sub_1002FA5EC(v146, &__p);
-                      *v141 = [NSData dataWithBytes:__p length:v145 - __p];
+                      *dataCopy = [NSData dataWithBytes:__p length:v145 - __p];
                       v119 = qword_1009F9820;
                       if (os_log_type_enabled(v119, OS_LOG_TYPE_DEFAULT))
                       {
@@ -1112,22 +1112,22 @@ LABEL_212:
 
                     if (v74 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                     {
-                      v79 = [v74 unsignedIntValue];
+                      unsignedIntValue = [v74 unsignedIntValue];
                     }
 
                     else
                     {
-                      v79 = -1;
+                      unsignedIntValue = -1;
                     }
 
                     if (v76 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                     {
-                      v83 = [v76 unsignedIntValue];
+                      unsignedIntValue2 = [v76 unsignedIntValue];
                     }
 
                     else
                     {
-                      v83 = -1;
+                      unsignedIntValue2 = -1;
                     }
 
                     if (v78)
@@ -1154,22 +1154,22 @@ LABEL_212:
 
                     if (v74 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                     {
-                      v79 = [v74 unsignedIntValue];
+                      unsignedIntValue = [v74 unsignedIntValue];
                     }
 
                     else
                     {
-                      v79 = 600;
+                      unsignedIntValue = 600;
                     }
 
                     if (v76 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                     {
-                      v83 = [v76 unsignedIntValue];
+                      unsignedIntValue2 = [v76 unsignedIntValue];
                     }
 
                     else
                     {
-                      v83 = -1;
+                      unsignedIntValue2 = -1;
                     }
 
                     if (v78)
@@ -1178,12 +1178,12 @@ LABEL_212:
                       if (objc_opt_isKindOfClass())
                       {
 LABEL_164:
-                        v84 = [v78 unsignedIntValue];
+                        unsignedIntValue3 = [v78 unsignedIntValue];
 LABEL_169:
-                        __dst[36] = v79;
-                        __dst[37] = v83;
+                        __dst[36] = unsignedIntValue;
+                        __dst[37] = unsignedIntValue2;
                         __dst[38] = -1;
-                        __dst[39] = v84;
+                        __dst[39] = unsignedIntValue3;
                         __dst[40] = -1;
                         *(__dst + 82) = 0;
                         *(__dst + 87) = -1;
@@ -1195,7 +1195,7 @@ LABEL_169:
                     }
                   }
 
-                  v84 = 7200;
+                  unsignedIntValue3 = 7200;
                   goto LABEL_169;
                 }
 
@@ -1226,7 +1226,7 @@ LABEL_241:
     }
 
 LABEL_60:
-    if ([v10 backgroundMode])
+    if ([niConfiguration backgroundMode])
     {
       if (v21)
       {
@@ -1257,7 +1257,7 @@ LABEL_97:
           v37 = qword_1009F9820;
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
           {
-            v46 = [v10 backgroundMode] != 0;
+            v46 = [niConfiguration backgroundMode] != 0;
             *buf = 67110400;
             *&buf[4] = v126;
             *&buf[8] = 1024;
@@ -1339,8 +1339,8 @@ LABEL_82:
     goto LABEL_92;
   }
 
-  v18 = [v10 debugParameters];
-  [(NIServerNearbyAccessoryRangingService *)self _prepareUwbSessionTrackingObjectsFromDebugParameters:v18 outServiceRequest:__dst outStartOptions:a5];
+  debugParameters7 = [niConfiguration debugParameters];
+  [(NIServerNearbyAccessoryRangingService *)self _prepareUwbSessionTrackingObjectsFromDebugParameters:debugParameters7 outServiceRequest:__dst outStartOptions:options];
 
 LABEL_22:
   v19 = 0;
@@ -1351,23 +1351,23 @@ LABEL_243:
   return v19;
 }
 
-- (void)_prepareUwbSessionTrackingObjectsFromDebugParameters:(id)a3 outServiceRequest:(void *)a4 outStartOptions:(void *)a5
+- (void)_prepareUwbSessionTrackingObjectsFromDebugParameters:(id)parameters outServiceRequest:(void *)request outStartOptions:(void *)options
 {
-  v8 = a3;
+  parametersCopy = parameters;
   dispatch_assert_queue_V2(self->_queue);
-  if (!v8)
+  if (!parametersCopy)
   {
     __assert_rtn("[NIServerNearbyAccessoryRangingService _prepareUwbSessionTrackingObjectsFromDebugParameters:outServiceRequest:outStartOptions:]", "NIServerNearbyAccessoryRangingService.mm", 1402, "debugParameters");
   }
 
-  if (*(a4 + 576) == 1)
+  if (*(request + 576) == 1)
   {
-    *(a4 + 576) = 0;
+    *(request + 576) = 0;
   }
 
-  if (*(a5 + 112) == 1)
+  if (*(options + 112) == 1)
   {
-    *(a5 + 112) = 0;
+    *(options + 112) = 0;
   }
 
   v104 = 0;
@@ -1378,13 +1378,13 @@ LABEL_243:
   v101[1] = 3221225472;
   v101[2] = sub_1002FB3EC;
   v101[3] = &unk_1009A1520;
-  v9 = v8;
+  v9 = parametersCopy;
   v102 = v9;
   v103 = &v104;
   [&off_1009C3CE0 enumerateObjectsUsingBlock:v101];
   if (*(v105 + 24) != 1)
   {
-    v77 = [v9 objectForKeyedSubscript:{@"InitiatorRoleOverride", v8}];
+    v77 = [v9 objectForKeyedSubscript:{@"InitiatorRoleOverride", parametersCopy}];
     v70 = [v9 objectForKeyedSubscript:@"UWBChannelOverride"];
     v74 = [v9 objectForKeyedSubscript:@"UWBSessionIdOverride"];
     v79 = [v9 objectForKeyedSubscript:@"NumRSTUsPerSlotOverride"];
@@ -1417,31 +1417,31 @@ LABEL_243:
       LOBYTE(v12) = ([v79 unsignedShortValue] > 0xE0F) & v12;
     }
 
-    v55 = [v77 BOOLValue];
+    bOOLValue = [v77 BOOLValue];
     [v76 getBytes:&v99 length:6];
-    v13 = [v79 unsignedShortValue];
-    v14 = [v75 unsignedShortValue];
-    v15 = [v78 unsignedShortValue];
+    unsignedShortValue = [v79 unsignedShortValue];
+    unsignedShortValue2 = [v75 unsignedShortValue];
+    unsignedShortValue3 = [v78 unsignedShortValue];
     v16 = +[NSUserDefaults standardUserDefaults];
     v17 = [v16 objectForKey:@"NIAccessoryRangingIntervalMsOverride"];
 
     if (v17)
     {
-      v15 = [v17 unsignedIntValue];
+      unsignedShortValue3 = [v17 unsignedIntValue];
       v18 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        *&buf[4] = v15;
+        *&buf[4] = unsignedShortValue3;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "#accessory-service,Prep session objects: Ranging interval override via defaults write: %d ms", buf, 8u);
       }
     }
 
-    if (v13)
+    if (unsignedShortValue)
     {
-      if (v14)
+      if (unsignedShortValue2)
       {
-        v19 = v13 * v14 / 1200.0;
+        v19 = unsignedShortValue * unsignedShortValue2 / 1200.0;
         if (v19 <= 0.0)
         {
           v53 = "numMillisecondsPerRound > 0";
@@ -1450,26 +1450,26 @@ LABEL_243:
 
         else
         {
-          v20 = floor(v15 / v19);
+          v20 = floor(unsignedShortValue3 / v19);
           if (v20 < 65535.0)
           {
             v81 = 0;
             v82 = 0;
-            v83 = [v74 unsignedIntValue];
-            v84 = v13;
-            v85 = v14;
+            unsignedIntValue = [v74 unsignedIntValue];
+            v84 = unsignedShortValue;
+            v85 = unsignedShortValue2;
             v86 = v20;
             v87 = v99;
             v88 = v100;
-            v89 = [v73 unsignedLongLongValue];
-            v90 = [v72 unsignedLongLongValue];
+            unsignedLongLongValue = [v73 unsignedLongLongValue];
+            unsignedLongLongValue2 = [v72 unsignedLongLongValue];
             v91 = 0x400000003;
             v92 = v12 & 1;
             v93 = 257;
-            v94 = [v71 BOOLValue];
+            bOOLValue2 = [v71 BOOLValue];
             v95 = 50528256;
-            v96 = v15;
-            v97 = 0;
+            v96 = unsignedShortValue3;
+            bOOLValue3 = 0;
             v98 = 6;
             v21 = sub_100428540([v70 unsignedIntValue] | 0x10000u);
             if ((v21 & 0x100) == 0)
@@ -1514,8 +1514,8 @@ LABEL_89:
             HIBYTE(v95) = [v62 unsignedIntValue];
             BYTE2(v95) = [v61 unsignedIntValue];
 LABEL_27:
-            v97 = [v68 BOOLValue];
-            if (v55)
+            bOOLValue3 = [v68 BOOLValue];
+            if (bOOLValue)
             {
               sub_10019D570(&v81, buf);
             }
@@ -1525,11 +1525,11 @@ LABEL_27:
               sub_10019D940(&v81, buf);
             }
 
-            v23 = *(a4 + 576);
-            memcpy(a4, buf, 0x240uLL);
+            v23 = *(request + 576);
+            memcpy(request, buf, 0x240uLL);
             if ((v23 & 1) == 0)
             {
-              *(a4 + 576) = 1;
+              *(request + 576) = 1;
             }
 
             v24 = qword_1009F9820;
@@ -1558,7 +1558,7 @@ LABEL_27:
               *buf = 136315906;
               *&buf[4] = v26;
               *&buf[12] = 2112;
-              if (v55)
+              if (bOOLValue)
               {
                 v27 = @"Initiator";
               }
@@ -1572,28 +1572,28 @@ LABEL_27:
               *&buf[22] = 1024;
               *&buf[24] = v12 & 1;
               *&buf[28] = 1024;
-              *&buf[30] = v97;
+              *&buf[30] = bOOLValue3;
               _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "#accessory-service,Prep session(from debug parameters) objects: %s ranging mode, role: %@, useDedicatedAntennasIfAvailable: %d, hoppingEnabled: %d", buf, 0x22u);
             }
 
             if ([v67 BOOLValue])
             {
-              if (*(a4 + 576) != 1)
+              if (*(request + 576) != 1)
               {
                 goto LABEL_99;
               }
 
-              *(a4 + 17) |= 8u;
+              *(request + 17) |= 8u;
             }
 
             if ([v69 BOOLValue] && objc_msgSend(v66, "intValue") >= 1)
             {
-              if (*(a4 + 576) != 1)
+              if (*(request + 576) != 1)
               {
                 goto LABEL_99;
               }
 
-              v28 = [v66 intValue];
+              intValue = [v66 intValue];
               [v59 doubleValue];
               v30 = v29;
               [v60 doubleValue];
@@ -1619,7 +1619,7 @@ LABEL_27:
                 LOWORD(v34) = 15;
               }
 
-              if (!v28 || !v33 || (v35 = a4 + 91, v36 = *(a4 + 91), (v36 & 1) != 0) && ((v35 = a4 + 93, (*(a4 + 93) & 1) != 0) || ((v36 >> 1) & 0xF) >= v28 || ((v36 >> 5) & 0x7F) >= v33))
+              if (!intValue || !v33 || (v35 = request + 91, v36 = *(request + 91), (v36 & 1) != 0) && ((v35 = request + 93, (*(request + 93) & 1) != 0) || ((v36 >> 1) & 0xF) >= intValue || ((v36 >> 5) & 0x7F) >= v33))
               {
                 if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
                 {
@@ -1635,12 +1635,12 @@ LABEL_27:
                 v37 = 0;
               }
 
-              *v35 = (2 * (v28 & 0xF)) | (32 * v33) | v37 | 1;
+              *v35 = (2 * (intValue & 0xF)) | (32 * v33) | v37 | 1;
               if ([v58 intValue] >= 1)
               {
-                if (*(a4 + 576))
+                if (*(request + 576))
                 {
-                  v38 = [v58 intValue];
+                  intValue2 = [v58 intValue];
                   [v56 doubleValue];
                   v40 = v39;
                   [v57 doubleValue];
@@ -1677,7 +1677,7 @@ LABEL_27:
                     v46 = v45;
                   }
 
-                  if ((sub_1002FA174(a4 + 68, v38, v44, v46) & 1) == 0)
+                  if ((sub_1002FA174(request + 68, intValue2, v44, v46) & 1) == 0)
                   {
                     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
                     {
@@ -1698,7 +1698,7 @@ LABEL_99:
 LABEL_77:
             if (v65)
             {
-              v47 = v55;
+              v47 = bOOLValue;
             }
 
             else
@@ -1708,34 +1708,34 @@ LABEL_77:
 
             if (v47 == 1)
             {
-              v48 = [v65 unsignedIntValue];
+              unsignedIntValue2 = [v65 unsignedIntValue];
               v49 = 1;
             }
 
             else
             {
-              v48 = 0;
+              unsignedIntValue2 = 0;
               v49 = 0;
             }
 
-            v50 = [v63 intValue];
-            v51 = [v64 intValue];
-            *(a5 + 6) = v50;
-            v52 = *(a5 + 112);
-            *a5 = 0;
-            *(a5 + 40) = 0;
-            *(a5 + 56) = 1;
-            *(a5 + 15) = v51;
-            *(a5 + 8) = 0;
-            *(a5 + 9) = 0;
-            *(a5 + 78) = 0;
-            *(a5 + 43) = v48 | (v49 << 8);
-            *(a5 + 12) = 0;
-            *(a5 + 13) = 0;
-            *(a5 + 11) = 0;
+            intValue3 = [v63 intValue];
+            intValue4 = [v64 intValue];
+            *(options + 6) = intValue3;
+            v52 = *(options + 112);
+            *options = 0;
+            *(options + 40) = 0;
+            *(options + 56) = 1;
+            *(options + 15) = intValue4;
+            *(options + 8) = 0;
+            *(options + 9) = 0;
+            *(options + 78) = 0;
+            *(options + 43) = unsignedIntValue2 | (v49 << 8);
+            *(options + 12) = 0;
+            *(options + 13) = 0;
+            *(options + 11) = 0;
             if ((v52 & 1) == 0)
             {
-              *(a5 + 112) = 1;
+              *(options + 112) = 1;
             }
 
             goto LABEL_89;
@@ -1780,12 +1780,12 @@ LABEL_90:
 
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 unsignedIntValue];
+    unsignedIntValue = [v4 unsignedIntValue];
   }
 
   else
   {
-    v5 = 12;
+    unsignedIntValue = 12;
   }
 
   v6 = objc_opt_new();
@@ -1797,7 +1797,7 @@ LABEL_90:
   v8 = v6;
   v12 = v8;
   [(NSMutableDictionary *)uwbSessionTracking enumerateKeysAndObjectsUsingBlock:v11];
-  if ([v8 count] > v5)
+  if ([v8 count] > unsignedIntValue)
   {
     v9 = qword_1009F9820;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1806,7 +1806,7 @@ LABEL_90:
       *buf = 67109376;
       v14 = v10;
       v15 = 1024;
-      v16 = v5;
+      v16 = unsignedIntValue;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#accessory-service,Cleaning up detached sessions. %d found, exceeds max of %d", buf, 0xEu);
     }
 
@@ -1814,22 +1814,22 @@ LABEL_90:
   }
 }
 
-- (void)_relayToClientsOfUWBSessionId:(unsigned int)a3 blockToRelay:(id)a4
+- (void)_relayToClientsOfUWBSessionId:(unsigned int)id blockToRelay:(id)relay
 {
-  v6 = a4;
+  relayCopy = relay;
   dispatch_assert_queue_V2(self->_queue);
   clientTracking = self->_clientTracking;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1002FC814;
   v12[3] = &unk_1009A3EF8;
-  v13 = a3;
+  idCopy = id;
   v8 = [(NSMutableDictionary *)clientTracking keysOfEntriesPassingTest:v12];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1002FC848;
   v10[3] = &unk_1009A3F20;
-  v9 = v6;
+  v9 = relayCopy;
   v10[4] = self;
   v11 = v9;
   [v8 enumerateObjectsUsingBlock:v10];

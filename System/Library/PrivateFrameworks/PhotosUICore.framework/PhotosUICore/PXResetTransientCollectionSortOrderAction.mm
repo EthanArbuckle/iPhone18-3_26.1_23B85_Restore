@@ -1,34 +1,34 @@
 @interface PXResetTransientCollectionSortOrderAction
-+ (BOOL)canPerformOnCollection:(id)a3;
-- (PXResetTransientCollectionSortOrderAction)initWithCollection:(id)a3;
-- (PXResetTransientCollectionSortOrderAction)initWithPhotoLibrary:(id)a3;
++ (BOOL)canPerformOnCollection:(id)collection;
+- (PXResetTransientCollectionSortOrderAction)initWithCollection:(id)collection;
+- (PXResetTransientCollectionSortOrderAction)initWithPhotoLibrary:(id)library;
 @end
 
 @implementation PXResetTransientCollectionSortOrderAction
 
-+ (BOOL)canPerformOnCollection:(id)a3
++ (BOOL)canPerformOnCollection:(id)collection
 {
-  v3 = a3;
-  if ([v3 px_isUtilitiesFolder])
+  collectionCopy = collection;
+  if ([collectionCopy px_isUtilitiesFolder])
   {
-    v4 = 1;
+    px_isMediaTypesFolder = 1;
   }
 
   else
   {
-    v4 = [v3 px_isMediaTypesFolder];
+    px_isMediaTypesFolder = [collectionCopy px_isMediaTypesFolder];
   }
 
-  return v4;
+  return px_isMediaTypesFolder;
 }
 
-- (PXResetTransientCollectionSortOrderAction)initWithCollection:(id)a3
+- (PXResetTransientCollectionSortOrderAction)initWithCollection:(id)collection
 {
   *(&self->super.super.super.isa + OBJC_IVAR___PXResetTransientCollectionSortOrderAction_undoOrderedMediaTypes) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___PXResetTransientCollectionSortOrderAction_undoOrderedUtilityTypes) = 0;
-  *(&self->super.super.super.isa + OBJC_IVAR___PXResetTransientCollectionSortOrderAction_collection) = a3;
-  v4 = a3;
-  result = [v4 photoLibrary];
+  *(&self->super.super.super.isa + OBJC_IVAR___PXResetTransientCollectionSortOrderAction_collection) = collection;
+  collectionCopy = collection;
+  result = [collectionCopy photoLibrary];
   if (result)
   {
     v6 = result;
@@ -47,7 +47,7 @@
   return result;
 }
 
-- (PXResetTransientCollectionSortOrderAction)initWithPhotoLibrary:(id)a3
+- (PXResetTransientCollectionSortOrderAction)initWithPhotoLibrary:(id)library
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -3,9 +3,9 @@
 - (BOOL)isStreaming;
 - (CSCommandControlStreamEventMonitor)init;
 - (void)_notifyStopCommandControl;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)commandControlBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6;
+- (void)commandControlBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option;
 @end
 
 @implementation CSCommandControlStreamEventMonitor
@@ -54,9 +54,9 @@
   }
 }
 
-- (void)commandControlBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6
+- (void)commandControlBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option
 {
-  if (a5)
+  if (successfully)
   {
     self->_isCommandControlStreaming = 1;
   }
@@ -66,7 +66,7 @@
   v6[2] = sub_10014ACD4;
   v6[3] = &unk_100253B48;
   v6[4] = self;
-  [(CSCommandControlStreamEventMonitor *)self enumerateObserversInQueue:v6, a4];
+  [(CSCommandControlStreamEventMonitor *)self enumerateObserversInQueue:v6, context];
 }
 
 - (void)_stopMonitoring
@@ -77,7 +77,7 @@
   self->_isCommandControlStreaming = 0;
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v4 = +[CSCommandControlBehaviorMonitor sharedInstance];
   [v4 registerObserver:self];

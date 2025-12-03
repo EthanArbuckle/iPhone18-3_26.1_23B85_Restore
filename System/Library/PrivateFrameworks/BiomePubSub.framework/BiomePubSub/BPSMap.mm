@@ -1,10 +1,10 @@
 @interface BPSMap
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5;
-- (BPSMap)initWithUpstream:(id)a3 transform:(id)a4;
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state;
+- (BPSMap)initWithUpstream:(id)upstream transform:(id)transform;
 - (id)bookmarkableUpstreams;
 - (id)nextEvent;
 - (id)upstreamPublishers;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSMap
@@ -12,8 +12,8 @@
 - (id)upstreamPublishers
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BPSMap *)self upstream];
-  v6[0] = v2;
+  upstream = [(BPSMap *)self upstream];
+  v6[0] = upstream;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -23,26 +23,26 @@
 
 - (id)nextEvent
 {
-  v3 = [(BPSMap *)self upstream];
-  v4 = [v3 nextEvent];
+  upstream = [(BPSMap *)self upstream];
+  nextEvent = [upstream nextEvent];
 
-  if (v4)
+  if (nextEvent)
   {
     while (1)
     {
-      v5 = [(BPSMap *)self transform];
-      v6 = (v5)[2](v5, v4);
+      transform = [(BPSMap *)self transform];
+      v6 = (transform)[2](transform, nextEvent);
 
       if (v6)
       {
         break;
       }
 
-      v7 = [(BPSMap *)self upstream];
-      v8 = [v7 nextEvent];
+      upstream2 = [(BPSMap *)self upstream];
+      nextEvent2 = [upstream2 nextEvent];
 
-      v4 = v8;
-      if (!v8)
+      nextEvent = nextEvent2;
+      if (!nextEvent2)
       {
         goto LABEL_4;
       }
@@ -58,18 +58,18 @@ LABEL_4:
   return v6;
 }
 
-- (BPSMap)initWithUpstream:(id)a3 transform:(id)a4
+- (BPSMap)initWithUpstream:(id)upstream transform:(id)transform
 {
-  v7 = a3;
-  v8 = a4;
+  upstreamCopy = upstream;
+  transformCopy = transform;
   v14.receiver = self;
   v14.super_class = BPSMap;
   v9 = [(BPSMap *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_upstream, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_upstream, upstream);
+    v11 = [transformCopy copy];
     transform = v10->_transform;
     v10->_transform = v11;
   }
@@ -77,10 +77,10 @@ LABEL_4:
   return v10;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  subscribeCopy = subscribe;
   v5 = __biome_log_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -91,24 +91,24 @@ LABEL_4:
   }
 
   v7 = [_BPSMapInner alloc];
-  v8 = [(BPSMap *)self transform];
-  v9 = [(_BPSMapInner *)v7 initWithDownstream:v4 transform:v8];
+  transform = [(BPSMap *)self transform];
+  v9 = [(_BPSMapInner *)v7 initWithDownstream:subscribeCopy transform:transform];
 
-  v10 = [(BPSMap *)self upstream];
-  [v10 subscribe:v9];
+  upstream = [(BPSMap *)self upstream];
+  [upstream subscribe:v9];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  publisherCopy = publisher;
+  upstreamsCopy = upstreams;
   v8 = [BPSMap alloc];
-  v9 = [v7 objectAtIndexedSubscript:0];
+  v9 = [upstreamsCopy objectAtIndexedSubscript:0];
 
-  v10 = [v6 transform];
-  v11 = [(BPSMap *)v8 initWithUpstream:v9 transform:v10];
+  transform = [publisherCopy transform];
+  v11 = [(BPSMap *)v8 initWithUpstream:v9 transform:transform];
 
   return v11;
 }
@@ -116,8 +116,8 @@ LABEL_4:
 - (id)bookmarkableUpstreams
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BPSMap *)self upstream];
-  v6[0] = v2;
+  upstream = [(BPSMap *)self upstream];
+  v6[0] = upstream;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];

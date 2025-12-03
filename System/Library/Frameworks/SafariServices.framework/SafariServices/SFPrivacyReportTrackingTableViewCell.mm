@@ -1,24 +1,24 @@
 @interface SFPrivacyReportTrackingTableViewCell
-- (SFPrivacyReportTrackingTableViewCell)initWithDetailLabel:(BOOL)a3 reuseIdentifier:(id)a4;
+- (SFPrivacyReportTrackingTableViewCell)initWithDetailLabel:(BOOL)label reuseIdentifier:(id)identifier;
 - (void)_updateCountViews;
-- (void)setCount:(double)a3;
-- (void)setMaxCount:(double)a3;
+- (void)setCount:(double)count;
+- (void)setMaxCount:(double)count;
 @end
 
 @implementation SFPrivacyReportTrackingTableViewCell
 
-- (SFPrivacyReportTrackingTableViewCell)initWithDetailLabel:(BOOL)a3 reuseIdentifier:(id)a4
+- (SFPrivacyReportTrackingTableViewCell)initWithDetailLabel:(BOOL)label reuseIdentifier:(id)identifier
 {
-  v4 = a3;
+  labelCopy = label;
   v87[10] = *MEMORY[0x1E69E9840];
   v85.receiver = self;
   v85.super_class = SFPrivacyReportTrackingTableViewCell;
-  v5 = [(SFPrivacyReportTrackingTableViewCell *)&v85 initWithStyle:0 reuseIdentifier:a4];
+  v5 = [(SFPrivacyReportTrackingTableViewCell *)&v85 initWithStyle:0 reuseIdentifier:identifier];
   v6 = v5;
   if (v5)
   {
     [(SFPrivacyReportTrackingTableViewCell *)v5 setAccessoryType:1];
-    v7 = [(SFPrivacyReportTrackingTableViewCell *)v6 contentView];
+    contentView = [(SFPrivacyReportTrackingTableViewCell *)v6 contentView];
     v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     domainLabel = v6->_domainLabel;
     v6->_domainLabel = v8;
@@ -26,15 +26,15 @@
     v10 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
     [(UILabel *)v6->_domainLabel setFont:v10];
 
-    v11 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v6->_domainLabel setTextColor:v11];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v6->_domainLabel setTextColor:labelColor];
 
     [(UILabel *)v6->_domainLabel setNumberOfLines:1];
     [(UILabel *)v6->_domainLabel setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)v6->_domainLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v7 addSubview:v6->_domainLabel];
-    v78 = v4;
-    if (v4)
+    [contentView addSubview:v6->_domainLabel];
+    v78 = labelCopy;
+    if (labelCopy)
     {
       v12 = objc_alloc_init(MEMORY[0x1E69DCC10]);
       domainDetailLabel = v6->_domainDetailLabel;
@@ -43,36 +43,36 @@
       v14 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
       [(UILabel *)v6->_domainDetailLabel setFont:v14];
 
-      v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      [(UILabel *)v6->_domainDetailLabel setTextColor:v15];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      [(UILabel *)v6->_domainDetailLabel setTextColor:secondaryLabelColor];
 
       [(UILabel *)v6->_domainDetailLabel setNumberOfLines:0];
       [(UILabel *)v6->_domainDetailLabel setAdjustsFontForContentSizeCategory:1];
       [(UILabel *)v6->_domainDetailLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v7 addSubview:v6->_domainDetailLabel];
+      [contentView addSubview:v6->_domainDetailLabel];
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __76__SFPrivacyReportTrackingTableViewCell_initWithDetailLabel_reuseIdentifier___block_invoke;
     aBlock[3] = &unk_1E8494A40;
-    v16 = v7;
+    v16 = contentView;
     v84 = v16;
     v17 = _Block_copy(aBlock);
     v18 = v17[2]();
     countLabel = v6->_countLabel;
     v6->_countLabel = v18;
 
-    v20 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v6->_countLabel setTextColor:v20];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v6->_countLabel setTextColor:secondaryLabelColor2];
 
     v80 = v17;
     v21 = (v17[2])(v17);
     maxCountLabel = v6->_maxCountLabel;
     v6->_maxCountLabel = v21;
 
-    v23 = [MEMORY[0x1E69DC888] systemRedColor];
-    [(UILabel *)v6->_maxCountLabel setTextColor:v23];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+    [(UILabel *)v6->_maxCountLabel setTextColor:systemRedColor];
 
     [(UILabel *)v6->_maxCountLabel setHidden:1];
     v24 = objc_alloc_init(SFPrivacyReportMeterBar);
@@ -86,49 +86,49 @@
     v6->_maxCountMeterGuide = v26;
 
     [v16 addLayoutGuide:v6->_maxCountMeterGuide];
-    v28 = [v16 layoutMarginsGuide];
+    layoutMarginsGuide = [v16 layoutMarginsGuide];
     v61 = MEMORY[0x1E696ACD8];
-    v76 = [(UILabel *)v6->_domainLabel leadingAnchor];
-    v74 = [v28 leadingAnchor];
-    v72 = [v76 constraintEqualToAnchor:v74];
+    leadingAnchor = [(UILabel *)v6->_domainLabel leadingAnchor];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v72 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v87[0] = v72;
-    v70 = [(UILabel *)v6->_domainLabel trailingAnchor];
-    v69 = [v28 trailingAnchor];
-    v68 = [v70 constraintEqualToAnchor:v69];
+    trailingAnchor = [(UILabel *)v6->_domainLabel trailingAnchor];
+    trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+    v68 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v87[1] = v68;
-    v67 = [(UILayoutGuide *)v6->_maxCountMeterGuide leadingAnchor];
-    v66 = [v28 leadingAnchor];
-    v65 = [v67 constraintEqualToAnchor:v66];
+    leadingAnchor3 = [(UILayoutGuide *)v6->_maxCountMeterGuide leadingAnchor];
+    leadingAnchor4 = [layoutMarginsGuide leadingAnchor];
+    v65 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v87[2] = v65;
-    v64 = [(UILabel *)v6->_maxCountLabel leadingAnchor];
-    v63 = [(UILayoutGuide *)v6->_maxCountMeterGuide trailingAnchor];
-    v62 = [v64 constraintEqualToSystemSpacingAfterAnchor:v63 multiplier:1.0];
+    leadingAnchor5 = [(UILabel *)v6->_maxCountLabel leadingAnchor];
+    trailingAnchor3 = [(UILayoutGuide *)v6->_maxCountMeterGuide trailingAnchor];
+    v62 = [leadingAnchor5 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor3 multiplier:1.0];
     v87[3] = v62;
-    v60 = [(UILabel *)v6->_maxCountLabel trailingAnchor];
-    v59 = [v16 trailingAnchor];
-    v58 = [v60 constraintEqualToAnchor:v59 constant:-12.0];
+    trailingAnchor4 = [(UILabel *)v6->_maxCountLabel trailingAnchor];
+    trailingAnchor5 = [v16 trailingAnchor];
+    v58 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-12.0];
     v87[4] = v58;
-    v57 = [(UILabel *)v6->_countLabel leadingAnchor];
-    v56 = [(SFPrivacyReportMeterBar *)v6->_countMeter trailingAnchor];
-    v55 = [v57 constraintEqualToSystemSpacingAfterAnchor:v56 multiplier:1.0];
+    leadingAnchor6 = [(UILabel *)v6->_countLabel leadingAnchor];
+    trailingAnchor6 = [(SFPrivacyReportMeterBar *)v6->_countMeter trailingAnchor];
+    v55 = [leadingAnchor6 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor6 multiplier:1.0];
     v87[5] = v55;
-    v54 = [(SFPrivacyReportMeterBar *)v6->_countMeter leadingAnchor];
-    v82 = v28;
-    v53 = [v28 leadingAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53];
+    leadingAnchor7 = [(SFPrivacyReportMeterBar *)v6->_countMeter leadingAnchor];
+    v82 = layoutMarginsGuide;
+    leadingAnchor8 = [layoutMarginsGuide leadingAnchor];
+    v52 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v87[6] = v52;
-    v51 = [(UILabel *)v6->_domainLabel topAnchor];
-    v29 = [v16 topAnchor];
-    v30 = [v51 constraintEqualToSystemSpacingBelowAnchor:v29 multiplier:1.0];
+    topAnchor = [(UILabel *)v6->_domainLabel topAnchor];
+    topAnchor2 = [v16 topAnchor];
+    v30 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
     v87[7] = v30;
     v81 = v16;
-    v31 = [v16 bottomAnchor];
-    v32 = [(UILabel *)v6->_countLabel bottomAnchor];
-    v33 = [v31 constraintEqualToSystemSpacingBelowAnchor:v32 multiplier:1.0];
+    bottomAnchor = [v16 bottomAnchor];
+    bottomAnchor2 = [(UILabel *)v6->_countLabel bottomAnchor];
+    v33 = [bottomAnchor constraintEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
     v87[8] = v33;
-    v34 = [(SFPrivacyReportMeterBar *)v6->_countMeter centerYAnchor];
-    v35 = [(UILabel *)v6->_countLabel centerYAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
+    centerYAnchor = [(SFPrivacyReportMeterBar *)v6->_countMeter centerYAnchor];
+    centerYAnchor2 = [(UILabel *)v6->_countLabel centerYAnchor];
+    v36 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v87[9] = v36;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v87 count:10];
     [v61 activateConstraints:v37];
@@ -136,21 +136,21 @@
     if (v78)
     {
       v75 = MEMORY[0x1E696ACD8];
-      v38 = [(UILabel *)v6->_domainDetailLabel leadingAnchor];
-      v39 = [v82 leadingAnchor];
-      v40 = [v38 constraintEqualToAnchor:v39];
+      leadingAnchor9 = [(UILabel *)v6->_domainDetailLabel leadingAnchor];
+      leadingAnchor10 = [v82 leadingAnchor];
+      v40 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
       v86[0] = v40;
-      v79 = [(UILabel *)v6->_domainDetailLabel trailingAnchor];
-      v77 = [v82 trailingAnchor];
-      v73 = [v79 constraintEqualToAnchor:v77];
+      trailingAnchor7 = [(UILabel *)v6->_domainDetailLabel trailingAnchor];
+      trailingAnchor8 = [v82 trailingAnchor];
+      v73 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
       v86[1] = v73;
-      v71 = [(UILabel *)v6->_domainDetailLabel topAnchor];
-      v41 = [(UILabel *)v6->_domainLabel bottomAnchor];
-      v42 = [v71 constraintEqualToSystemSpacingBelowAnchor:v41 multiplier:0.25];
+      topAnchor3 = [(UILabel *)v6->_domainDetailLabel topAnchor];
+      bottomAnchor3 = [(UILabel *)v6->_domainLabel bottomAnchor];
+      v42 = [topAnchor3 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor3 multiplier:0.25];
       v86[2] = v42;
-      v43 = [(UILabel *)v6->_countLabel topAnchor];
-      v44 = [(UILabel *)v6->_domainDetailLabel bottomAnchor];
-      v45 = [v43 constraintEqualToSystemSpacingBelowAnchor:v44 multiplier:0.25];
+      topAnchor4 = [(UILabel *)v6->_countLabel topAnchor];
+      bottomAnchor4 = [(UILabel *)v6->_domainDetailLabel bottomAnchor];
+      v45 = [topAnchor4 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor4 multiplier:0.25];
       v86[3] = v45;
       v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:v86 count:4];
       [v75 activateConstraints:v46];
@@ -158,9 +158,9 @@
 
     else
     {
-      v38 = [(UILabel *)v6->_countLabel topAnchor];
-      v39 = [(UILabel *)v6->_domainLabel bottomAnchor];
-      v40 = [v38 constraintEqualToSystemSpacingBelowAnchor:v39 multiplier:0.25];
+      leadingAnchor9 = [(UILabel *)v6->_countLabel topAnchor];
+      leadingAnchor10 = [(UILabel *)v6->_domainLabel bottomAnchor];
+      v40 = [leadingAnchor9 constraintEqualToSystemSpacingBelowAnchor:leadingAnchor10 multiplier:0.25];
       [v40 setActive:1];
     }
 
@@ -193,20 +193,20 @@ id __76__SFPrivacyReportTrackingTableViewCell_initWithDetailLabel_reuseIdentifie
   return v2;
 }
 
-- (void)setCount:(double)a3
+- (void)setCount:(double)count
 {
-  if (self->_count != a3)
+  if (self->_count != count)
   {
-    self->_count = a3;
+    self->_count = count;
     [(SFPrivacyReportTrackingTableViewCell *)self _updateCountViews];
   }
 }
 
-- (void)setMaxCount:(double)a3
+- (void)setMaxCount:(double)count
 {
-  if (self->_maxCount != a3)
+  if (self->_maxCount != count)
   {
-    self->_maxCount = a3;
+    self->_maxCount = count;
     [(SFPrivacyReportTrackingTableViewCell *)self _updateCountViews];
   }
 }
@@ -225,11 +225,11 @@ id __76__SFPrivacyReportTrackingTableViewCell_initWithDetailLabel_reuseIdentifie
 
   [(NSLayoutConstraint *)self->_countMeterWidthConstraint setActive:0];
   maxCount = self->_maxCount;
-  v10 = [(SFPrivacyReportMeterBar *)self->_countMeter widthAnchor];
-  v11 = v10;
+  widthAnchor = [(SFPrivacyReportMeterBar *)self->_countMeter widthAnchor];
+  v11 = widthAnchor;
   if (maxCount <= 0.0001)
   {
-    v15 = [v10 constraintEqualToConstant:0.0];
+    v15 = [widthAnchor constraintEqualToConstant:0.0];
     countMeterWidthConstraint = self->_countMeterWidthConstraint;
     self->_countMeterWidthConstraint = v15;
   }

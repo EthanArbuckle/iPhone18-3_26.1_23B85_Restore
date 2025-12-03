@@ -1,25 +1,25 @@
 @interface FedStatsDataEncoder
-+ (BOOL)encodeDataAndRecord:(id)a3 dataTypeContent:(id)a4 baseKey:(id)a5 errorOut:(id *)a6;
-+ (BOOL)encodeDataAndRecord:(id)a3 dataTypeContent:(id)a4 metadata:(id)a5 baseKey:(id)a6 errorOut:(id *)a7;
-+ (BOOL)encodeDataArrayAndRecord:(id)a3 dataTypeContent:(id)a4 metadata:(id)a5 baseKey:(id)a6 errorOut:(id *)a7;
-+ (BOOL)record:(id)a3 metadata:(id)a4 baseKey:(id)a5;
-+ (id)createWithDataTypeContent:(id)a3 possibleError:(id *)a4;
-+ (id)encodeDataArray:(id)a3 dataTypeContent:(id)a4 resultType:(unint64_t *)a5 errorOut:(id *)a6;
-- (FedStatsDataEncoder)initWithDataTypes:(id)a3 combinationTypes:(id)a4;
-- (id)decodeFromBitVector:(id)a3 possibleError:(id *)a4;
-- (id)decodeFromBitVector:(id)a3 withType:(id)a4 possibleError:(id *)a5;
-- (id)encodeToBitVector:(id)a3 possibleError:(id *)a4;
-- (id)encodeToBitVector:(id)a3 withType:(id)a4 possibleError:(id *)a5;
-- (id)encodeToIndex:(id)a3 error:(id *)a4;
-- (id)encodeToIndex:(id)a3 withType:(id)a4 error:(id *)a5;
++ (BOOL)encodeDataAndRecord:(id)record dataTypeContent:(id)content baseKey:(id)key errorOut:(id *)out;
++ (BOOL)encodeDataAndRecord:(id)record dataTypeContent:(id)content metadata:(id)metadata baseKey:(id)key errorOut:(id *)out;
++ (BOOL)encodeDataArrayAndRecord:(id)record dataTypeContent:(id)content metadata:(id)metadata baseKey:(id)key errorOut:(id *)out;
++ (BOOL)record:(id)record metadata:(id)metadata baseKey:(id)key;
++ (id)createWithDataTypeContent:(id)content possibleError:(id *)error;
++ (id)encodeDataArray:(id)array dataTypeContent:(id)content resultType:(unint64_t *)type errorOut:(id *)out;
+- (FedStatsDataEncoder)initWithDataTypes:(id)types combinationTypes:(id)combinationTypes;
+- (id)decodeFromBitVector:(id)vector possibleError:(id *)error;
+- (id)decodeFromBitVector:(id)vector withType:(id)type possibleError:(id *)error;
+- (id)encodeToBitVector:(id)vector possibleError:(id *)error;
+- (id)encodeToBitVector:(id)vector withType:(id)type possibleError:(id *)error;
+- (id)encodeToIndex:(id)index error:(id *)error;
+- (id)encodeToIndex:(id)index withType:(id)type error:(id *)error;
 @end
 
 @implementation FedStatsDataEncoder
 
-- (FedStatsDataEncoder)initWithDataTypes:(id)a3 combinationTypes:(id)a4
+- (FedStatsDataEncoder)initWithDataTypes:(id)types combinationTypes:(id)combinationTypes
 {
-  v7 = a3;
-  v8 = a4;
+  typesCopy = types;
+  combinationTypesCopy = combinationTypes;
   v42.receiver = self;
   v42.super_class = FedStatsDataEncoder;
   v9 = [(FedStatsDataEncoder *)&v42 init];
@@ -27,13 +27,13 @@
   if (v9)
   {
     v31 = v9;
-    objc_storeStrong(&v9->_dataTypes, a3);
-    v11 = [v8 allKeys];
-    v12 = [v11 sortedArrayUsingComparator:&stru_10002C870];
+    objc_storeStrong(&v9->_dataTypes, types);
+    allKeys = [combinationTypesCopy allKeys];
+    v12 = [allKeys sortedArrayUsingComparator:&stru_10002C870];
 
-    v32 = v7;
-    v13 = [v7 allKeys];
-    v14 = [NSMutableSet setWithArray:v13];
+    v32 = typesCopy;
+    allKeys2 = [typesCopy allKeys];
+    v14 = [NSMutableSet setWithArray:allKeys2];
 
     v40 = 0u;
     v41 = 0u;
@@ -60,10 +60,10 @@
           v35 = 0u;
           v36 = 0u;
           v37 = 0u;
-          v20 = [v8 objectForKey:v19];
-          v21 = [v20 typesInCombination];
+          v20 = [combinationTypesCopy objectForKey:v19];
+          typesInCombination = [v20 typesInCombination];
 
-          v22 = [v21 countByEnumeratingWithState:&v34 objects:v43 count:16];
+          v22 = [typesInCombination countByEnumeratingWithState:&v34 objects:v43 count:16];
           if (v22)
           {
             v23 = v22;
@@ -75,7 +75,7 @@
               {
                 if (*v35 != v24)
                 {
-                  objc_enumerationMutation(v21);
+                  objc_enumerationMutation(typesInCombination);
                 }
 
                 [v14 removeObject:*(*(&v34 + 1) + 8 * v25)];
@@ -83,7 +83,7 @@
               }
 
               while (v23 != v25);
-              v23 = [v21 countByEnumeratingWithState:&v34 objects:v43 count:16];
+              v23 = [typesInCombination countByEnumeratingWithState:&v34 objects:v43 count:16];
             }
 
             while (v23);
@@ -100,29 +100,29 @@
       while (v16);
     }
 
-    v26 = [v14 allObjects];
-    v27 = [v26 sortedArrayUsingComparator:&stru_10002C870];
+    allObjects = [v14 allObjects];
+    v27 = [allObjects sortedArrayUsingComparator:&stru_10002C870];
     v28 = [obj arrayByAddingObjectsFromArray:v27];
     v10 = v31;
     typeConfiguration = v31->_typeConfiguration;
     v31->_typeConfiguration = v28;
 
-    v7 = v32;
+    typesCopy = v32;
   }
 
   return v10;
 }
 
-+ (id)createWithDataTypeContent:(id)a3 possibleError:(id *)a4
++ (id)createWithDataTypeContent:(id)content possibleError:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ![v6 count])
+  contentCopy = content;
+  v7 = contentCopy;
+  if (!contentCopy || ![contentCopy count])
   {
-    if (a4)
+    if (error)
     {
       [FedStatsError errorWithCode:100 description:@"Missing data type content"];
-      *a4 = v30 = 0;
+      *error = v30 = 0;
     }
 
     else
@@ -133,7 +133,7 @@
     goto LABEL_42;
   }
 
-  v44 = a4;
+  errorCopy = error;
   v41 = +[NSMutableArray array];
   v45 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v7 count]);
   v50 = 0u;
@@ -164,13 +164,13 @@
       v15 = [v14 objectForKey:@"dataType"];
       if (!v15)
       {
-        v31 = v44;
-        if (!v44)
+        v31 = errorCopy;
+        if (!errorCopy)
         {
           goto LABEL_39;
         }
 
-        v32 = [NSString stringWithFormat:@"Missing data type specifier key %@", @"dataType"];
+        localizedDescription = [NSString stringWithFormat:@"Missing data type specifier key %@", @"dataType"];
         v33 = 100;
         goto LABEL_35;
       }
@@ -180,7 +180,7 @@
       {
         if (v16 != -1)
         {
-          v17 = [FedStatsDataTypeFactory createFedStatsDataType:v15 dataTypeParams:v14 possibleError:v44];
+          v17 = [FedStatsDataTypeFactory createFedStatsDataType:v15 dataTypeParams:v14 possibleError:errorCopy];
           if (v17)
           {
             v18 = v17;
@@ -189,12 +189,12 @@
             goto LABEL_14;
           }
 
-          if (v44)
+          if (errorCopy)
           {
-            v37 = [*v44 code];
-            v32 = [*v44 localizedDescription];
-            v38 = [NSString stringWithFormat:@"Could not create data type %@: %@", v13, v32];
-            *v44 = [FedStatsError errorWithCode:v37 description:v38];
+            code = [*errorCopy code];
+            localizedDescription = [*errorCopy localizedDescription];
+            v38 = [NSString stringWithFormat:@"Could not create data type %@: %@", v13, localizedDescription];
+            *errorCopy = [FedStatsError errorWithCode:code description:v38];
 
             goto LABEL_38;
           }
@@ -207,16 +207,16 @@ LABEL_40:
           goto LABEL_41;
         }
 
-        v31 = v44;
-        if (!v44)
+        v31 = errorCopy;
+        if (!errorCopy)
         {
           goto LABEL_39;
         }
 
-        v32 = [NSString stringWithFormat:@"The data type %@ is not supported", v15];
+        localizedDescription = [NSString stringWithFormat:@"The data type %@ is not supported", v15];
         v33 = 101;
 LABEL_35:
-        *v31 = [FedStatsError errorWithCode:v33 description:v32];
+        *v31 = [FedStatsError errorWithCode:v33 description:localizedDescription];
 LABEL_38:
         v7 = v40;
         v29 = v45;
@@ -270,15 +270,15 @@ LABEL_16:
         v25 = [NSDictionary dictionaryWithObjects:&v55 forKeys:&v54 count:1];
         [v15 addEntriesFromDictionary:v25];
 
-        v26 = [FedStatsCombinationType createFromDict:v15 possibleError:v44];
+        v26 = [FedStatsCombinationType createFromDict:v15 possibleError:errorCopy];
         if (!v26)
         {
-          if (v44)
+          if (errorCopy)
           {
-            v34 = [*v44 code];
-            v35 = [*v44 localizedDescription];
-            v36 = [NSString stringWithFormat:@"Could not create data type %@: %@", v22, v35];
-            *v44 = [FedStatsError errorWithCode:v34 description:v36];
+            code2 = [*errorCopy code];
+            localizedDescription2 = [*errorCopy localizedDescription];
+            v36 = [NSString stringWithFormat:@"Could not create data type %@: %@", v22, localizedDescription2];
+            *errorCopy = [FedStatsError errorWithCode:code2 description:v36];
           }
 
           v30 = 0;
@@ -301,7 +301,7 @@ LABEL_16:
     }
   }
 
-  v28 = [a1 alloc];
+  v28 = [self alloc];
   v29 = v45;
   v14 = [NSDictionary dictionaryWithDictionary:v45];
   v8 = v43;
@@ -315,21 +315,21 @@ LABEL_42:
   return v30;
 }
 
-- (id)encodeToIndex:(id)a3 withType:(id)a4 error:(id *)a5
+- (id)encodeToIndex:(id)index withType:(id)type error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  indexCopy = index;
+  typeCopy = type;
+  if (indexCopy)
   {
-    v10 = [(FedStatsDataEncoder *)self dataTypes];
-    v11 = [v10 objectForKey:v9];
+    dataTypes = [(FedStatsDataEncoder *)self dataTypes];
+    v11 = [dataTypes objectForKey:typeCopy];
 
     if (!v11)
     {
-      if (a5)
+      if (error)
       {
-        v26 = [NSString stringWithFormat:@"The data type %@ is not valid", v9];
-        *a5 = [FedStatsError errorWithCode:200 description:v26];
+        typeCopy = [NSString stringWithFormat:@"The data type %@ is not valid", typeCopy];
+        *error = [FedStatsError errorWithCode:200 description:typeCopy];
       }
 
       v25 = 0;
@@ -338,15 +338,15 @@ LABEL_42:
 
     if ([v11 dataType] == 99)
     {
-      v30 = a5;
+      errorCopy = error;
       v29 = v11;
-      v12 = [v29 typesInCombination];
-      v13 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v12 count]);
+      typesInCombination = [v29 typesInCombination];
+      v13 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [typesInCombination count]);
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v14 = v12;
+      v14 = typesInCombination;
       v15 = [v14 countByEnumeratingWithState:&v33 objects:v37 count:16];
       if (v15)
       {
@@ -362,7 +362,7 @@ LABEL_42:
             }
 
             v19 = *(*(&v33 + 1) + 8 * i);
-            v20 = [v8 objectForKey:v19];
+            v20 = [indexCopy objectForKey:v19];
             [v13 setValue:v20 forKey:v19];
           }
 
@@ -378,12 +378,12 @@ LABEL_42:
       v23 = [v29 encodeToIndex:v21 possibleError:&v32];
       v24 = v32;
 
-      a5 = v30;
+      error = errorCopy;
     }
 
     else
     {
-      v22 = [v8 objectForKey:v9];
+      v22 = [indexCopy objectForKey:typeCopy];
       v31 = 0;
       v23 = [v11 encodeToIndex:v22 possibleError:&v31];
       v24 = v31;
@@ -391,21 +391,21 @@ LABEL_42:
 
     if (v23)
     {
-      v27 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v11 classCount]);
-      v25 = [FedStatsDataEncoderDimensionalResult resultWithIndex:v23 dimensionality:v27];
+      typeCopy2 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v11 classCount]);
+      v25 = [FedStatsDataEncoderDimensionalResult resultWithIndex:v23 dimensionality:typeCopy2];
     }
 
     else
     {
-      if (!a5)
+      if (!error)
       {
         v25 = 0;
         goto LABEL_23;
       }
 
-      v27 = [NSString stringWithFormat:@"Cannot encode data to %@", v9];
-      [FedStatsError errorWithCode:401 underlyingError:v24 description:v27];
-      *a5 = v25 = 0;
+      typeCopy2 = [NSString stringWithFormat:@"Cannot encode data to %@", typeCopy];
+      [FedStatsError errorWithCode:401 underlyingError:v24 description:typeCopy2];
+      *error = v25 = 0;
     }
 
 LABEL_23:
@@ -414,10 +414,10 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (a5)
+  if (error)
   {
     [FedStatsError errorWithCode:401 description:@"Provided data is empty"];
-    *a5 = v25 = 0;
+    *error = v25 = 0;
   }
 
   else
@@ -430,28 +430,28 @@ LABEL_25:
   return v25;
 }
 
-- (id)encodeToBitVector:(id)a3 withType:(id)a4 possibleError:(id *)a5
+- (id)encodeToBitVector:(id)vector withType:(id)type possibleError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  vectorCopy = vector;
+  typeCopy = type;
+  if (vectorCopy)
   {
-    v10 = [(FedStatsDataEncoder *)self dataTypes];
-    v11 = [v10 objectForKey:v9];
+    dataTypes = [(FedStatsDataEncoder *)self dataTypes];
+    v11 = [dataTypes objectForKey:typeCopy];
 
     if (v11)
     {
       if ([v11 dataType] == 99)
       {
-        v27 = a5;
+        errorCopy = error;
         v26 = v11;
-        v12 = [v26 typesInCombination];
-        v13 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v12 count]);
+        typesInCombination = [v26 typesInCombination];
+        v13 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [typesInCombination count]);
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v14 = v12;
+        v14 = typesInCombination;
         v15 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
         if (v15)
         {
@@ -467,7 +467,7 @@ LABEL_25:
               }
 
               v19 = *(*(&v28 + 1) + 8 * i);
-              v20 = [v8 objectForKey:v19];
+              v20 = [vectorCopy objectForKey:v19];
               [v13 setValue:v20 forKey:v19];
             }
 
@@ -478,32 +478,32 @@ LABEL_25:
         }
 
         v21 = [NSDictionary dictionaryWithDictionary:v13];
-        v22 = [v26 encodeToOneHotVector:v21 possibleError:v27];
+        v22 = [v26 encodeToOneHotVector:v21 possibleError:errorCopy];
       }
 
       else
       {
-        v24 = [v8 objectForKey:v9];
-        v22 = [v11 encodeToOneHotVector:v24 possibleError:a5];
+        v24 = [vectorCopy objectForKey:typeCopy];
+        v22 = [v11 encodeToOneHotVector:v24 possibleError:error];
       }
     }
 
     else
     {
-      if (a5)
+      if (error)
       {
-        v23 = [NSString stringWithFormat:@"The data type %@ is not valid", v9];
-        *a5 = [FedStatsError errorWithCode:200 description:v23];
+        typeCopy = [NSString stringWithFormat:@"The data type %@ is not valid", typeCopy];
+        *error = [FedStatsError errorWithCode:200 description:typeCopy];
       }
 
       v22 = 0;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     [FedStatsError errorWithCode:401 description:@"Provided data is empty"];
-    *a5 = v22 = 0;
+    *error = v22 = 0;
   }
 
   else
@@ -514,36 +514,36 @@ LABEL_25:
   return v22;
 }
 
-- (id)decodeFromBitVector:(id)a3 withType:(id)a4 possibleError:(id *)a5
+- (id)decodeFromBitVector:(id)vector withType:(id)type possibleError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  vectorCopy = vector;
+  typeCopy = type;
+  if (vectorCopy)
   {
-    v10 = [(FedStatsDataEncoder *)self dataTypes];
-    v11 = [v10 objectForKey:v9];
+    dataTypes = [(FedStatsDataEncoder *)self dataTypes];
+    v11 = [dataTypes objectForKey:typeCopy];
 
     if (v11)
     {
-      v12 = [v11 decodeFromOneHotVector:v8 possibleError:a5];
+      v12 = [v11 decodeFromOneHotVector:vectorCopy possibleError:error];
     }
 
     else
     {
-      if (a5)
+      if (error)
       {
-        v13 = [NSString stringWithFormat:@"The data type %@ is not valid", v9];
-        *a5 = [FedStatsError errorWithCode:200 description:v13];
+        typeCopy = [NSString stringWithFormat:@"The data type %@ is not valid", typeCopy];
+        *error = [FedStatsError errorWithCode:200 description:typeCopy];
       }
 
       v12 = 0;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     [FedStatsError errorWithCode:401 description:@"Provided data is empty"];
-    *a5 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -554,15 +554,15 @@ LABEL_25:
   return v12;
 }
 
-- (id)encodeToBitVector:(id)a3 possibleError:(id *)a4
+- (id)encodeToBitVector:(id)vector possibleError:(id *)error
 {
-  v30 = a3;
-  if (!v30)
+  vectorCopy = vector;
+  if (!vectorCopy)
   {
-    if (a4)
+    if (error)
     {
       [FedStatsError errorWithCode:401 description:@"Provided data is empty"];
-      *a4 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_30;
     }
 
@@ -573,8 +573,8 @@ LABEL_25:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v6 = [(FedStatsDataEncoder *)self typeConfiguration];
-  v7 = [v6 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  typeConfiguration = [(FedStatsDataEncoder *)self typeConfiguration];
+  v7 = [typeConfiguration countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v7)
   {
     v8 = v7;
@@ -586,26 +586,26 @@ LABEL_25:
       {
         if (*v36 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(typeConfiguration);
         }
 
         v12 = *(*(&v35 + 1) + 8 * i);
-        v13 = [(FedStatsDataEncoder *)self dataTypes];
-        v14 = [v13 objectForKey:v12];
+        dataTypes = [(FedStatsDataEncoder *)self dataTypes];
+        v14 = [dataTypes objectForKey:v12];
         v9 += [v14 classCount];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v8 = [typeConfiguration countByEnumeratingWithState:&v35 objects:v40 count:16];
     }
 
     while (v8);
 
     if (v9 > 0x186A0)
     {
-      if (a4)
+      if (error)
       {
-        v15 = [NSString stringWithFormat:@"Resulting dimensionality %lu is larger than max dimensionality %lu", v9, 100000];
-        *a4 = [FedStatsError errorWithCode:900 description:v15];
+        100000 = [NSString stringWithFormat:@"Resulting dimensionality %lu is larger than max dimensionality %lu", v9, 100000];
+        *error = [FedStatsError errorWithCode:900 description:100000];
       }
 
 LABEL_14:
@@ -623,8 +623,8 @@ LABEL_14:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v18 = [(FedStatsDataEncoder *)self typeConfiguration];
-  v19 = [v18 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  typeConfiguration2 = [(FedStatsDataEncoder *)self typeConfiguration];
+  v19 = [typeConfiguration2 countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v19)
   {
     v20 = v19;
@@ -638,20 +638,20 @@ LABEL_14:
       {
         if (*v32 != v22)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(typeConfiguration2);
         }
 
         v25 = *(*(&v31 + 1) + 8 * v23);
-        v21 = [(FedStatsDataEncoder *)self encodeToBitVector:v30 withType:v25 possibleError:a4];
+        v21 = [(FedStatsDataEncoder *)self encodeToBitVector:vectorCopy withType:v25 possibleError:error];
 
         if (!v21)
         {
-          if (a4)
+          if (error)
           {
-            v26 = [*a4 code];
-            v27 = [*a4 localizedDescription];
-            v28 = [NSString stringWithFormat:@"Error encoding %@ type: %@", v25, v27];
-            *a4 = [FedStatsError errorWithCode:v26 description:v28];
+            code = [*error code];
+            localizedDescription = [*error localizedDescription];
+            v28 = [NSString stringWithFormat:@"Error encoding %@ type: %@", v25, localizedDescription];
+            *error = [FedStatsError errorWithCode:code description:v28];
           }
 
           v16 = 0;
@@ -664,7 +664,7 @@ LABEL_14:
       }
 
       while (v20 != v23);
-      v20 = [v18 countByEnumeratingWithState:&v31 objects:v39 count:16];
+      v20 = [typeConfiguration2 countByEnumeratingWithState:&v31 objects:v39 count:16];
       if (v20)
       {
         continue;
@@ -682,21 +682,21 @@ LABEL_30:
   return v16;
 }
 
-- (id)encodeToIndex:(id)a3 error:(id *)a4
+- (id)encodeToIndex:(id)index error:(id *)error
 {
-  v6 = a3;
-  v7 = [(FedStatsDataEncoder *)self typeConfiguration];
-  v8 = [v7 count];
+  indexCopy = index;
+  typeConfiguration = [(FedStatsDataEncoder *)self typeConfiguration];
+  v8 = [typeConfiguration count];
 
   if (v8 != 1)
   {
-    if (a4)
+    if (error)
     {
       v23 = @"This API is only available for single type in encoding schema";
       v24 = 900;
 LABEL_19:
       [FedStatsError errorWithCode:v24 description:v23];
-      *a4 = v20 = 0;
+      *error = v20 = 0;
       goto LABEL_27;
     }
 
@@ -705,9 +705,9 @@ LABEL_23:
     goto LABEL_27;
   }
 
-  if (!v6)
+  if (!indexCopy)
   {
-    if (a4)
+    if (error)
     {
       v23 = @"Provided data is empty";
       v24 = 401;
@@ -717,13 +717,13 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v30 = a4;
+  errorCopy = error;
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v9 = [(FedStatsDataEncoder *)self dataTypes];
-  v10 = [v9 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  dataTypes = [(FedStatsDataEncoder *)self dataTypes];
+  v10 = [dataTypes countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v10)
   {
     v11 = v10;
@@ -734,26 +734,26 @@ LABEL_23:
       {
         if (*v33 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(dataTypes);
         }
 
         v14 = *(*(&v32 + 1) + 8 * i);
-        v15 = [(FedStatsDataEncoder *)self dataTypes];
-        v16 = [v15 objectForKey:v14];
+        dataTypes2 = [(FedStatsDataEncoder *)self dataTypes];
+        v16 = [dataTypes2 objectForKey:v14];
         if ([v16 dataType] == 99)
         {
         }
 
         else
         {
-          v17 = [v6 objectForKey:v14];
+          v17 = [indexCopy objectForKey:v14];
 
           if (!v17)
           {
-            if (v30)
+            if (errorCopy)
             {
               v25 = [NSString stringWithFormat:@"Provided data does not contain a value for %@", v14];
-              *v30 = [FedStatsError errorWithCode:200 description:v25];
+              *errorCopy = [FedStatsError errorWithCode:200 description:v25];
             }
 
             goto LABEL_23;
@@ -761,7 +761,7 @@ LABEL_23:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v11 = [dataTypes countByEnumeratingWithState:&v32 objects:v36 count:16];
       if (v11)
       {
         continue;
@@ -771,10 +771,10 @@ LABEL_23:
     }
   }
 
-  v18 = [(FedStatsDataEncoder *)self typeConfiguration];
-  v19 = [v18 firstObject];
+  typeConfiguration2 = [(FedStatsDataEncoder *)self typeConfiguration];
+  firstObject = [typeConfiguration2 firstObject];
   v31 = 0;
-  v20 = [(FedStatsDataEncoder *)self encodeToIndex:v6 withType:v19 error:&v31];
+  v20 = [(FedStatsDataEncoder *)self encodeToIndex:indexCopy withType:firstObject error:&v31];
   v21 = v31;
 
   if (v20)
@@ -782,12 +782,12 @@ LABEL_23:
     v22 = v20;
   }
 
-  else if (v30)
+  else if (errorCopy)
   {
-    v26 = [(FedStatsDataEncoder *)self typeConfiguration];
-    v27 = [v26 firstObject];
-    v28 = [NSString stringWithFormat:@"Cannot encode data to %@", v27];
-    *v30 = [FedStatsError errorWithCode:401 underlyingError:v21 description:v28];
+    typeConfiguration3 = [(FedStatsDataEncoder *)self typeConfiguration];
+    firstObject2 = [typeConfiguration3 firstObject];
+    v28 = [NSString stringWithFormat:@"Cannot encode data to %@", firstObject2];
+    *errorCopy = [FedStatsError errorWithCode:401 underlyingError:v21 description:v28];
   }
 
 LABEL_27:
@@ -795,11 +795,11 @@ LABEL_27:
   return v20;
 }
 
-- (id)decodeFromBitVector:(id)a3 possibleError:(id *)a4
+- (id)decodeFromBitVector:(id)vector possibleError:(id *)error
 {
-  v25 = a3;
-  v6 = [(FedStatsDataEncoder *)self typeConfiguration];
-  v22 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v6 count]);
+  vectorCopy = vector;
+  typeConfiguration = [(FedStatsDataEncoder *)self typeConfiguration];
+  v22 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [typeConfiguration count]);
 
   v29 = 0u;
   v30 = 0u;
@@ -815,18 +815,18 @@ LABEL_3:
     v8 = 0;
     while (1)
     {
-      v9 = a4;
+      errorCopy = error;
       if (*v28 != v23)
       {
         objc_enumerationMutation(obj);
       }
 
       v10 = *(*(&v27 + 1) + 8 * v8);
-      v11 = [(FedStatsDataEncoder *)self dataTypes];
-      v12 = [v11 objectForKey:v10];
+      dataTypes = [(FedStatsDataEncoder *)self dataTypes];
+      v12 = [dataTypes objectForKey:v10];
 
-      v13 = [v12 classCount];
-      v14 = [v25 subdataWithRange:{v7, v13}];
+      classCount = [v12 classCount];
+      v14 = [vectorCopy subdataWithRange:{v7, classCount}];
       v26 = 0;
       v15 = [(FedStatsDataEncoder *)self decodeFromBitVector:v14 withType:v10 possibleError:&v26];
       v16 = v26;
@@ -835,14 +835,14 @@ LABEL_3:
         break;
       }
 
-      if (!v9)
+      if (!errorCopy)
       {
         goto LABEL_13;
       }
 
       v17 = [NSString stringWithFormat:@"The decoder for %@ failed", v10];
-      a4 = v9;
-      *v9 = [FedStatsError errorWithCode:500 underlyingError:v16 description:v17];
+      error = errorCopy;
+      *errorCopy = [FedStatsError errorWithCode:500 underlyingError:v16 description:v17];
 
 LABEL_14:
       if (!v15)
@@ -876,9 +876,9 @@ LABEL_14:
       [v22 setValue:v15 forKey:v10];
     }
 
-    v7 += v13;
+    v7 += classCount;
 LABEL_13:
-    a4 = v9;
+    error = errorCopy;
     goto LABEL_14;
   }
 
@@ -891,18 +891,18 @@ LABEL_19:
   return v19;
 }
 
-+ (id)encodeDataArray:(id)a3 dataTypeContent:(id)a4 resultType:(unint64_t *)a5 errorOut:(id *)a6
++ (id)encodeDataArray:(id)array dataTypeContent:(id)content resultType:(unint64_t *)type errorOut:(id *)out
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  arrayCopy = array;
+  contentCopy = content;
+  if (!contentCopy)
   {
-    if (a6)
+    if (out)
     {
       v26 = @"encodeDataArray missing data type content";
 LABEL_22:
       [FedStatsError errorWithCode:400 description:v26];
-      *a6 = v15 = 0;
+      *out = v15 = 0;
       goto LABEL_44;
     }
 
@@ -911,9 +911,9 @@ LABEL_23:
     goto LABEL_44;
   }
 
-  if (!v9)
+  if (!arrayCopy)
   {
-    if (a6)
+    if (out)
     {
       v26 = @"encodeDataArray missing data array";
       goto LABEL_22;
@@ -923,23 +923,23 @@ LABEL_23:
   }
 
   v53 = 0;
-  v11 = [FedStatsDataEncoder createWithDataTypeContent:v10 possibleError:&v53];
+  v11 = [FedStatsDataEncoder createWithDataTypeContent:contentCopy possibleError:&v53];
   v12 = v53;
   v13 = v12;
   if (v11)
   {
     v38 = v12;
-    v39 = v10;
-    v40 = v9;
-    v14 = [FedStatsDataSampler pickSamplesFrom:v9 length:20];
+    v39 = contentCopy;
+    v40 = arrayCopy;
+    v14 = [FedStatsDataSampler pickSamplesFrom:arrayCopy length:20];
     v15 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v14 count]);
-    v16 = [v11 typeConfiguration];
-    v17 = [v16 count];
+    typeConfiguration = [v11 typeConfiguration];
+    v17 = [typeConfiguration count];
 
     v37 = v14;
     if (v17 < 2)
     {
-      *a5 = 1;
+      *type = 1;
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
@@ -999,7 +999,7 @@ LABEL_23:
 
     else
     {
-      *a5 = 2;
+      *type = 2;
       v49 = 0u;
       v50 = 0u;
       v51 = 0u;
@@ -1044,15 +1044,15 @@ LABEL_23:
       }
     }
 
-    v10 = v39;
-    v9 = v40;
+    contentCopy = v39;
+    arrayCopy = v40;
     v13 = v38;
   }
 
-  else if (a6)
+  else if (out)
   {
     [FedStatsError errorWithCode:302 underlyingError:v12 description:@"encodeDataArray encoder construction failed"];
-    *a6 = v15 = 0;
+    *out = v15 = 0;
   }
 
   else
@@ -1065,16 +1065,16 @@ LABEL_44:
   return v15;
 }
 
-+ (BOOL)encodeDataArrayAndRecord:(id)a3 dataTypeContent:(id)a4 metadata:(id)a5 baseKey:(id)a6 errorOut:(id *)a7
++ (BOOL)encodeDataArrayAndRecord:(id)record dataTypeContent:(id)content metadata:(id)metadata baseKey:(id)key errorOut:(id *)out
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (v14)
+  recordCopy = record;
+  contentCopy = content;
+  metadataCopy = metadata;
+  keyCopy = key;
+  v15 = keyCopy;
+  if (keyCopy)
   {
-    v16 = [v14 length];
+    v16 = [keyCopy length];
     if (v16 >= [@"fedstats:" length] && (objc_msgSend(v15, "substringToIndex:", objc_msgSend(@"fedstats:", "length")), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isEqualToString:", @"fedstats:"), v17, (v18 & 1) != 0))
     {
       v19 = v15;
@@ -1094,14 +1094,14 @@ LABEL_44:
 
     v70 = 0;
     v71 = 0;
-    v22 = [FedStatsDataEncoder encodeDataArray:v11 dataTypeContent:v12 resultType:&v71 errorOut:&v70];
+    v22 = [FedStatsDataEncoder encodeDataArray:recordCopy dataTypeContent:contentCopy resultType:&v71 errorOut:&v70];
     v23 = v70;
     if (!v22)
     {
-      if (a7)
+      if (out)
       {
         [FedStatsError errorWithCode:401 underlyingError:v23 description:@"encodeDataArrayAndRecord failed at encoding"];
-        *a7 = v26 = 0;
+        *out = v26 = 0;
       }
 
       else
@@ -1121,10 +1121,10 @@ LABEL_44:
     v61 = [[_DPBitValueRecorder alloc] initWithKey:v20];
     if (!v61)
     {
-      if (a7)
+      if (out)
       {
         [FedStatsError errorWithCode:600 description:@"encodeDataArrayAndRecord failed at recorder allocation"];
-        *a7 = v26 = 0;
+        *out = v26 = 0;
       }
 
       else
@@ -1135,9 +1135,9 @@ LABEL_44:
       goto LABEL_60;
     }
 
-    if ([v13 count])
+    if ([metadataCopy count])
     {
-      v25 = v13;
+      v25 = metadataCopy;
     }
 
     else
@@ -1156,11 +1156,11 @@ LABEL_44:
     if (v71 == 1)
     {
       v54 = v23;
-      v58 = v11;
+      v58 = recordCopy;
       v59 = v20;
       v55 = v15;
-      v56 = v13;
-      v57 = v12;
+      v56 = metadataCopy;
+      v57 = contentCopy;
       v27 = +[NSMutableDictionary dictionary];
       v66 = 0u;
       v67 = 0u;
@@ -1182,22 +1182,22 @@ LABEL_44:
             }
 
             v33 = *(*(&v66 + 1) + 8 * i);
-            v34 = [v33 dimensionality];
-            v35 = [v27 objectForKey:v34];
+            dimensionality = [v33 dimensionality];
+            v35 = [v27 objectForKey:dimensionality];
 
-            v36 = [v33 index];
+            index = [v33 index];
             if (v35)
             {
-              [v35 arrayByAddingObject:v36];
+              [v35 arrayByAddingObject:index];
             }
 
             else
             {
-              [NSArray arrayWithObject:v36];
+              [NSArray arrayWithObject:index];
             }
             v37 = ;
-            v38 = [v33 dimensionality];
-            [v27 setObject:v37 forKey:v38];
+            dimensionality2 = [v33 dimensionality];
+            [v27 setObject:v37 forKey:dimensionality2];
           }
 
           v30 = [v28 countByEnumeratingWithState:&v66 objects:v77 count:16];
@@ -1264,10 +1264,10 @@ LABEL_44:
       }
 
       v26 = 1;
-      v12 = v57;
-      v11 = v58;
+      contentCopy = v57;
+      recordCopy = v58;
       v15 = v55;
-      v13 = v56;
+      metadataCopy = v56;
       v20 = v59;
       v23 = v54;
     }
@@ -1297,7 +1297,7 @@ LABEL_61:
 
     else
     {
-      if (!a7)
+      if (!out)
       {
         v26 = 0;
         goto LABEL_59;
@@ -1305,16 +1305,16 @@ LABEL_61:
 
       v39 = [NSString stringWithFormat:@"Unsupported result type %lu in data encoder", v71];
       [FedStatsError errorWithCode:900 description:v39];
-      *a7 = v26 = 0;
+      *out = v26 = 0;
     }
 
     goto LABEL_59;
   }
 
-  if (a7)
+  if (out)
   {
     [FedStatsError errorWithCode:400 description:@"encodeDataArrayAndRecord missing collection ID key"];
-    *a7 = v26 = 0;
+    *out = v26 = 0;
   }
 
   else
@@ -1327,40 +1327,40 @@ LABEL_62:
   return v26;
 }
 
-+ (BOOL)encodeDataAndRecord:(id)a3 dataTypeContent:(id)a4 metadata:(id)a5 baseKey:(id)a6 errorOut:(id *)a7
++ (BOOL)encodeDataAndRecord:(id)record dataTypeContent:(id)content metadata:(id)metadata baseKey:(id)key errorOut:(id *)out
 {
-  v17 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [NSArray arrayWithObjects:&v17 count:1];
-  LOBYTE(a7) = [FedStatsDataEncoder encodeDataArrayAndRecord:v15 dataTypeContent:v13 metadata:v12 baseKey:v11 errorOut:a7, v17];
+  recordCopy = record;
+  keyCopy = key;
+  metadataCopy = metadata;
+  contentCopy = content;
+  recordCopy2 = record;
+  v15 = [NSArray arrayWithObjects:&recordCopy count:1];
+  LOBYTE(out) = [FedStatsDataEncoder encodeDataArrayAndRecord:v15 dataTypeContent:contentCopy metadata:metadataCopy baseKey:keyCopy errorOut:out, recordCopy];
 
-  return a7;
+  return out;
 }
 
-+ (BOOL)encodeDataAndRecord:(id)a3 dataTypeContent:(id)a4 baseKey:(id)a5 errorOut:(id *)a6
++ (BOOL)encodeDataAndRecord:(id)record dataTypeContent:(id)content baseKey:(id)key errorOut:(id *)out
 {
-  v14 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [NSArray arrayWithObjects:&v14 count:1];
-  LOBYTE(a6) = [FedStatsDataEncoder encodeDataArrayAndRecord:v12 dataTypeContent:v10 baseKey:v9 errorOut:a6, v14];
+  recordCopy = record;
+  keyCopy = key;
+  contentCopy = content;
+  recordCopy2 = record;
+  v12 = [NSArray arrayWithObjects:&recordCopy count:1];
+  LOBYTE(out) = [FedStatsDataEncoder encodeDataArrayAndRecord:v12 dataTypeContent:contentCopy baseKey:keyCopy errorOut:out, recordCopy];
 
-  return a6;
+  return out;
 }
 
-+ (BOOL)record:(id)a3 metadata:(id)a4 baseKey:(id)a5
++ (BOOL)record:(id)record metadata:(id)metadata baseKey:(id)key
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[_DPBitValueRecorder alloc] initWithKey:v7];
+  keyCopy = key;
+  metadataCopy = metadata;
+  recordCopy = record;
+  v10 = [[_DPBitValueRecorder alloc] initWithKey:keyCopy];
 
-  LOBYTE(v7) = [v10 record:v9 metadata:v8];
-  return v7;
+  LOBYTE(keyCopy) = [v10 record:recordCopy metadata:metadataCopy];
+  return keyCopy;
 }
 
 @end

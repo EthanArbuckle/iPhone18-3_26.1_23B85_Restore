@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __47__ARReferenceObject_ARKitAdditions__initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken != -1)
   {
     dispatch_once(&initialize_onceToken, block);
@@ -24,10 +24,10 @@
   v6 = a3;
   v7 = objc_opt_new();
   v8 = MEMORY[0x277CE53A8];
-  v9 = [a1 trackingData];
-  [v8 boundsForTrackingData:v9];
+  trackingData = [self trackingData];
+  [v8 boundsForTrackingData:trackingData];
 
-  [a1 referenceOriginTransform];
+  [self referenceOriginTransform];
   v37 = v11;
   v38 = v10;
   v35 = v13;
@@ -62,7 +62,7 @@
   }
 
   v23 = objc_opt_new();
-  v24 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "version")}];
+  v24 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "version")}];
   [v23 setObject:v24 forKeyedSubscript:@"Version"];
 
   [v23 setObject:@"trackingData.cv3dmap" forKeyedSubscript:@"TrackingDataReference"];
@@ -78,8 +78,8 @@
   if (v26)
   {
     [v7 addData:v26 withPath:@"Info.plist"];
-    v27 = [a1 trackingData];
-    [v7 addData:v27 withPath:@"trackingData.cv3dmap"];
+    trackingData2 = [self trackingData];
+    [v7 addData:trackingData2 withPath:@"trackingData.cv3dmap"];
 
     if ([v22 length])
     {
@@ -105,7 +105,7 @@
       *buf = 138543618;
       *&buf[4] = v32;
       *&buf[12] = 2048;
-      *&buf[14] = a1;
+      *&buf[14] = self;
       _os_log_impl(&dword_23D3AE000, v30, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to serialize object metadata.", buf, 0x16u);
     }
 

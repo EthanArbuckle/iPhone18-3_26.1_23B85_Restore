@@ -16,9 +16,9 @@
 
 - (BOOL)isWiFiPrimary
 {
-  v2 = [(NWPathEvaluator *)self->mWiFiPathEvaluator path];
+  path = [(NWPathEvaluator *)self->mWiFiPathEvaluator path];
 
-  return [v2 usesInterfaceType:1];
+  return [path usesInterfaceType:1];
 }
 
 + (id)WRM_SCServiceControllerSingleton
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000855B0;
   block[3] = &unk_10023DB28;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B7E58 != -1)
   {
     dispatch_once(&qword_1002B7E58, block);

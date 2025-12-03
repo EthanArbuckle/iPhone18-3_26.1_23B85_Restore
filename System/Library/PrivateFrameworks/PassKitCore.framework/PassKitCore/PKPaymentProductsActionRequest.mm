@@ -1,24 +1,24 @@
 @interface PKPaymentProductsActionRequest
-- (PKPaymentProductsActionRequest)initWithCoder:(id)a3;
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (PKPaymentProductsActionRequest)initWithCoder:(id)coder;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentProductsActionRequest
 
-- (PKPaymentProductsActionRequest)initWithCoder:(id)a3
+- (PKPaymentProductsActionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPaymentProductsActionRequest;
-  v5 = [(PKOverlayableWebServiceRequest *)&v11 initWithCoder:v4];
+  v5 = [(PKOverlayableWebServiceRequest *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
     action = v5->_action;
     v5->_action = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productIdentifier"];
     productIdentifier = v5->_productIdentifier;
     v5->_productIdentifier = v8;
   }
@@ -26,31 +26,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPaymentProductsActionRequest;
-  v4 = a3;
-  [(PKOverlayableWebServiceRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_action forKey:{@"action", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_productIdentifier forKey:@"productIdentifier"];
+  coderCopy = coder;
+  [(PKOverlayableWebServiceRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_action forKey:{@"action", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_productIdentifier forKey:@"productIdentifier"];
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  identifierCopy = identifier;
+  informationCopy = information;
   productIdentifier = self->_productIdentifier;
-  if (productIdentifier && v9 && self->_action)
+  if (productIdentifier && identifierCopy && self->_action)
   {
     v23[0] = @"devices";
-    v23[1] = v9;
+    v23[1] = identifierCopy;
     v23[2] = @"products";
     v23[3] = productIdentifier;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:4];
-    v13 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v8 endpointComponents:v12 queryParameters:0 appleAccountInformation:v10];
+    v13 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v12 queryParameters:0 appleAccountInformation:informationCopy];
 
     [v13 setHTTPMethod:@"POST"];
     v14 = objc_opt_class();

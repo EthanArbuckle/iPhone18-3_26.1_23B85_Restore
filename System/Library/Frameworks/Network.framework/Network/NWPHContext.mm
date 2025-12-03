@@ -1,5 +1,5 @@
 @interface NWPHContext
-- (NWPHContext)initWithRequest:(id)a3 onConnection:(id)a4;
+- (NWPHContext)initWithRequest:(id)request onConnection:(id)connection;
 - (int)pid;
 @end
 
@@ -7,27 +7,27 @@
 
 - (int)pid
 {
-  v2 = [(NWPHContext *)self connection];
-  pid = xpc_connection_get_pid(v2);
+  connection = [(NWPHContext *)self connection];
+  pid = xpc_connection_get_pid(connection);
 
   return pid;
 }
 
-- (NWPHContext)initWithRequest:(id)a3 onConnection:(id)a4
+- (NWPHContext)initWithRequest:(id)request onConnection:(id)connection
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  connectionCopy = connection;
   v31.receiver = self;
   v31.super_class = NWPHContext;
   v8 = [(NWPHContext *)&v31 init];
   if (v8)
   {
-    reply = xpc_dictionary_create_reply(v6);
+    reply = xpc_dictionary_create_reply(requestCopy);
     if (reply)
     {
-      [(NWPHContext *)v8 setConnection:v7];
-      [(NWPHContext *)v8 setRequest:v6];
+      [(NWPHContext *)v8 setConnection:connectionCopy];
+      [(NWPHContext *)v8 setRequest:requestCopy];
       [(NWPHContext *)v8 setReply:reply];
       v10 = v8;
 LABEL_16:

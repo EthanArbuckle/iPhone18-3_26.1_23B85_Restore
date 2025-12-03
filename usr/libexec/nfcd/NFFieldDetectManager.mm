@@ -1,5 +1,5 @@
 @interface NFFieldDetectManager
-- (BOOL)containsFieldDetectSession:(id)a3;
+- (BOOL)containsFieldDetectSession:(id)session;
 - (BOOL)isActive;
 - (NFFieldDetectManager)init;
 - (NSArray)fieldDetectSessionClientNames;
@@ -7,14 +7,14 @@
 - (id)getStateDumpInfo;
 - (unint64_t)totalFieldDetectSessions;
 - (unint64_t)totalPersistentClient;
-- (void)addFieldDetectSession:(id)a3;
-- (void)addPersistentFieldObserver:(id)a3;
-- (void)enumerateFieldDetectSessionsUsingBlock:(id)a3;
+- (void)addFieldDetectSession:(id)session;
+- (void)addPersistentFieldObserver:(id)observer;
+- (void)enumerateFieldDetectSessionsUsingBlock:(id)block;
 - (void)removeAllPersistentFieldObservers;
-- (void)removeFieldDetectSession:(id)a3;
-- (void)removePersistentFieldObserver:(id)a3;
-- (void)resume:(id)a3;
-- (void)suspend:(id)a3;
+- (void)removeFieldDetectSession:(id)session;
+- (void)removePersistentFieldObserver:(id)observer;
+- (void)resume:(id)resume;
+- (void)suspend:(id)suspend;
 @end
 
 @implementation NFFieldDetectManager
@@ -22,12 +22,12 @@
 - (BOOL)isActive
 {
   sub_100004370(self);
-  v4 = [(NFFieldDetectManager *)self fieldDetectSessions];
-  v5 = [v4 count];
+  fieldDetectSessions = [(NFFieldDetectManager *)self fieldDetectSessions];
+  v5 = [fieldDetectSessions count];
   if (!v5)
   {
-    v2 = [(NFFieldDetectManager *)self persistentFieldDetectClients];
-    if (![v2 count])
+    persistentFieldDetectClients = [(NFFieldDetectManager *)self persistentFieldDetectClients];
+    if (![persistentFieldDetectClients count])
     {
       v7 = 0;
 LABEL_6:
@@ -36,8 +36,8 @@ LABEL_6:
     }
   }
 
-  v6 = [(NFFieldDetectManager *)self suspensionRequestor];
-  v7 = [v6 count] == 0;
+  suspensionRequestor = [(NFFieldDetectManager *)self suspensionRequestor];
+  v7 = [suspensionRequestor count] == 0;
 
   if (!v5)
   {
@@ -103,8 +103,8 @@ LABEL_7:
               {
                 if ([v15 lengthOfBytesUsingEncoding:4])
                 {
-                  v16 = [(NFFieldDetectManager *)v2 persistentFieldDetectClients];
-                  [v16 addObject:v15];
+                  persistentFieldDetectClients = [(NFFieldDetectManager *)v2 persistentFieldDetectClients];
+                  [persistentFieldDetectClients addObject:v15];
                 }
 
                 else
@@ -128,8 +128,8 @@ LABEL_7:
                   }
 
                   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-                  v16 = NFSharedLogGetLogger();
-                  if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+                  persistentFieldDetectClients = NFSharedLogGetLogger();
+                  if (os_log_type_enabled(persistentFieldDetectClients, OS_LOG_TYPE_ERROR))
                   {
                     v36 = object_getClass(v2);
                     if (class_isMetaClass(v36))
@@ -152,7 +152,7 @@ LABEL_7:
                     v70 = v39;
                     v71 = 1024;
                     v72 = 62;
-                    _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Dropping invalid entry, empty", buf, 0x22u);
+                    _os_log_impl(&_mh_execute_header, persistentFieldDetectClients, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Dropping invalid entry, empty", buf, 0x22u);
                   }
                 }
               }
@@ -179,8 +179,8 @@ LABEL_7:
                 }
 
                 dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-                v16 = NFSharedLogGetLogger();
-                if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+                persistentFieldDetectClients = NFSharedLogGetLogger();
+                if (os_log_type_enabled(persistentFieldDetectClients, OS_LOG_TYPE_ERROR))
                 {
                   v24 = object_getClass(v2);
                   if (class_isMetaClass(v24))
@@ -207,7 +207,7 @@ LABEL_7:
                   v73 = 2112;
                   v74 = v28;
                   v29 = v28;
-                  _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Dropping invalid entry (%@)", buf, 0x2Cu);
+                  _os_log_impl(&_mh_execute_header, persistentFieldDetectClients, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Dropping invalid entry (%@)", buf, 0x2Cu);
                 }
               }
             }
@@ -218,8 +218,8 @@ LABEL_7:
           while (v12);
         }
 
-        v40 = [(NFFieldDetectManager *)v2 persistentFieldDetectClients];
-        [v40 count];
+        persistentFieldDetectClients2 = [(NFFieldDetectManager *)v2 persistentFieldDetectClients];
+        [persistentFieldDetectClients2 count];
 
         v10 = v57;
         v9 = v58;
@@ -285,26 +285,26 @@ LABEL_7:
 
 - (unint64_t)totalPersistentClient
 {
-  v2 = [(NFFieldDetectManager *)self persistentFieldDetectClients];
-  v3 = [v2 count];
+  persistentFieldDetectClients = [(NFFieldDetectManager *)self persistentFieldDetectClients];
+  v3 = [persistentFieldDetectClients count];
 
   return v3;
 }
 
 - (unint64_t)totalFieldDetectSessions
 {
-  v2 = [(NFFieldDetectManager *)self fieldDetectSessions];
-  v3 = [v2 count];
+  fieldDetectSessions = [(NFFieldDetectManager *)self fieldDetectSessions];
+  v3 = [fieldDetectSessions count];
 
   return v3;
 }
 
 - (NSArray)persistentObserverNames
 {
-  v2 = [(NFFieldDetectManager *)self persistentFieldDetectClients];
-  v3 = [v2 allObjects];
+  persistentFieldDetectClients = [(NFFieldDetectManager *)self persistentFieldDetectClients];
+  allObjects = [persistentFieldDetectClients allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)fieldDetectSessionClientNames
@@ -314,8 +314,8 @@ LABEL_7:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(NFFieldDetectManager *)self fieldDetectSessions];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  fieldDetectSessions = [(NFFieldDetectManager *)self fieldDetectSessions];
+  v5 = [fieldDetectSessions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -326,7 +326,7 @@ LABEL_7:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(fieldDetectSessions);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -335,12 +335,12 @@ LABEL_7:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v10 = [v9 connection];
-            v11 = [v10 NF_clientName];
+            connection = [v9 connection];
+            nF_clientName = [connection NF_clientName];
 
-            if (v11)
+            if (nF_clientName)
             {
-              v12 = v11;
+              v12 = nF_clientName;
             }
 
             else
@@ -353,7 +353,7 @@ LABEL_7:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [fieldDetectSessions countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -362,11 +362,11 @@ LABEL_7:
   return v3;
 }
 
-- (void)suspend:(id)a3
+- (void)suspend:(id)suspend
 {
-  v4 = a3;
-  v5 = [(NFFieldDetectManager *)self suspensionRequestor];
-  v6 = [v5 containsObject:v4];
+  suspendCopy = suspend;
+  suspensionRequestor = [(NFFieldDetectManager *)self suspensionRequestor];
+  v6 = [suspensionRequestor containsObject:suspendCopy];
 
   if (v6)
   {
@@ -374,13 +374,13 @@ LABEL_7:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
       *buf = 138543362;
-      v15 = v4;
+      v15 = suspendCopy;
       _os_log_fault_impl(&_mh_execute_header, v7, OS_LOG_TYPE_FAULT, "SuspensionOwner %{public}@ is currently active", buf, 0xCu);
     }
   }
 
-  v8 = [(NFFieldDetectManager *)self suspensionRequestor];
-  [v8 addObject:v4];
+  suspensionRequestor2 = [(NFFieldDetectManager *)self suspensionRequestor];
+  [suspensionRequestor2 addObject:suspendCopy];
 
   v9 = +[_NFHardwareManager sharedHardwareManager];
   v10 = sub_100007D90(v9);
@@ -393,11 +393,11 @@ LABEL_7:
   dispatch_async(v10, block);
 }
 
-- (void)resume:(id)a3
+- (void)resume:(id)resume
 {
-  v4 = a3;
-  v5 = [(NFFieldDetectManager *)self suspensionRequestor];
-  v6 = [v5 containsObject:v4];
+  resumeCopy = resume;
+  suspensionRequestor = [(NFFieldDetectManager *)self suspensionRequestor];
+  v6 = [suspensionRequestor containsObject:resumeCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -405,13 +405,13 @@ LABEL_7:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
       *buf = 138543362;
-      v15 = v4;
+      v15 = resumeCopy;
       _os_log_fault_impl(&_mh_execute_header, v7, OS_LOG_TYPE_FAULT, "SuspensionOwner %{public}@ unavailable", buf, 0xCu);
     }
   }
 
-  v8 = [(NFFieldDetectManager *)self suspensionRequestor];
-  [v8 removeObject:v4];
+  suspensionRequestor2 = [(NFFieldDetectManager *)self suspensionRequestor];
+  [suspensionRequestor2 removeObject:resumeCopy];
 
   v9 = +[_NFHardwareManager sharedHardwareManager];
   v10 = sub_100007D90(v9);
@@ -424,15 +424,15 @@ LABEL_7:
   dispatch_async(v10, block);
 }
 
-- (void)addFieldDetectSession:(id)a3
+- (void)addFieldDetectSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   sub_100004370(self);
-  v5 = [(NFFieldDetectManager *)self fieldDetectSessions];
-  v6 = [v5 count];
+  fieldDetectSessions = [(NFFieldDetectManager *)self fieldDetectSessions];
+  v6 = [fieldDetectSessions count];
 
-  v7 = [(NFFieldDetectManager *)self fieldDetectSessions];
-  [v7 addObject:v4];
+  fieldDetectSessions2 = [(NFFieldDetectManager *)self fieldDetectSessions];
+  [fieldDetectSessions2 addObject:sessionCopy];
 
   if (!v6)
   {
@@ -441,15 +441,15 @@ LABEL_7:
   }
 }
 
-- (void)removeFieldDetectSession:(id)a3
+- (void)removeFieldDetectSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   sub_100004370(self);
-  v5 = [(NFFieldDetectManager *)self fieldDetectSessions];
-  [v5 removeObject:v4];
+  fieldDetectSessions = [(NFFieldDetectManager *)self fieldDetectSessions];
+  [fieldDetectSessions removeObject:sessionCopy];
 
-  v6 = [(NFFieldDetectManager *)self fieldDetectSessions];
-  v7 = [v6 count];
+  fieldDetectSessions2 = [(NFFieldDetectManager *)self fieldDetectSessions];
+  v7 = [fieldDetectSessions2 count];
 
   if (!v7)
   {
@@ -458,24 +458,24 @@ LABEL_7:
   }
 }
 
-- (BOOL)containsFieldDetectSession:(id)a3
+- (BOOL)containsFieldDetectSession:(id)session
 {
-  v4 = a3;
-  v5 = [(NFFieldDetectManager *)self fieldDetectSessions];
-  v6 = [v5 containsObject:v4];
+  sessionCopy = session;
+  fieldDetectSessions = [(NFFieldDetectManager *)self fieldDetectSessions];
+  v6 = [fieldDetectSessions containsObject:sessionCopy];
 
   return v6;
 }
 
-- (void)enumerateFieldDetectSessionsUsingBlock:(id)a3
+- (void)enumerateFieldDetectSessionsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NFFieldDetectManager *)self fieldDetectSessions];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  fieldDetectSessions = [(NFFieldDetectManager *)self fieldDetectSessions];
+  v6 = [fieldDetectSessions countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -487,49 +487,49 @@ LABEL_7:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(fieldDetectSessions);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9));
+        blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9));
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [fieldDetectSessions countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)addPersistentFieldObserver:(id)a3
+- (void)addPersistentFieldObserver:(id)observer
 {
-  v8 = [a3 NF_clientName];
-  v4 = [(NFFieldDetectManager *)self persistentFieldDetectClients];
-  [v4 addObject:v8];
+  nF_clientName = [observer NF_clientName];
+  persistentFieldDetectClients = [(NFFieldDetectManager *)self persistentFieldDetectClients];
+  [persistentFieldDetectClients addObject:nF_clientName];
 
   v5 = +[NSUserDefaults standardUserDefaults];
-  v6 = [(NFFieldDetectManager *)self persistentFieldDetectClients];
-  v7 = [v6 allObjects];
-  [v5 setObject:v7 forKey:@"FieldDetectClients"];
+  persistentFieldDetectClients2 = [(NFFieldDetectManager *)self persistentFieldDetectClients];
+  allObjects = [persistentFieldDetectClients2 allObjects];
+  [v5 setObject:allObjects forKey:@"FieldDetectClients"];
 }
 
-- (void)removePersistentFieldObserver:(id)a3
+- (void)removePersistentFieldObserver:(id)observer
 {
-  v11 = [a3 NF_clientName];
-  v4 = [(NFFieldDetectManager *)self persistentFieldDetectClients];
-  [v4 removeObject:v11];
+  nF_clientName = [observer NF_clientName];
+  persistentFieldDetectClients = [(NFFieldDetectManager *)self persistentFieldDetectClients];
+  [persistentFieldDetectClients removeObject:nF_clientName];
 
-  v5 = [(NFFieldDetectManager *)self persistentFieldDetectClients];
-  v6 = [v5 count];
+  persistentFieldDetectClients2 = [(NFFieldDetectManager *)self persistentFieldDetectClients];
+  v6 = [persistentFieldDetectClients2 count];
 
   v7 = +[NSUserDefaults standardUserDefaults];
   v8 = v7;
   if (v6)
   {
-    v9 = [(NFFieldDetectManager *)self persistentFieldDetectClients];
-    v10 = [v9 allObjects];
-    [v8 setObject:v10 forKey:@"FieldDetectClients"];
+    persistentFieldDetectClients3 = [(NFFieldDetectManager *)self persistentFieldDetectClients];
+    allObjects = [persistentFieldDetectClients3 allObjects];
+    [v8 setObject:allObjects forKey:@"FieldDetectClients"];
   }
 
   else
@@ -540,13 +540,13 @@ LABEL_7:
 
 - (void)removeAllPersistentFieldObservers
 {
-  v3 = [(NFFieldDetectManager *)self persistentFieldDetectClients];
-  v4 = [v3 count];
+  persistentFieldDetectClients = [(NFFieldDetectManager *)self persistentFieldDetectClients];
+  v4 = [persistentFieldDetectClients count];
 
   if (v4)
   {
-    v5 = [(NFFieldDetectManager *)self persistentFieldDetectClients];
-    [v5 removeAllObjects];
+    persistentFieldDetectClients2 = [(NFFieldDetectManager *)self persistentFieldDetectClients];
+    [persistentFieldDetectClients2 removeAllObjects];
 
     v6 = +[NSUserDefaults standardUserDefaults];
     [v6 removeObjectForKey:@"FieldDetectClients"];
@@ -556,18 +556,18 @@ LABEL_7:
 - (id)getStateDumpInfo
 {
   v10[0] = @"persistentFieldDetectClients";
-  v3 = [(NFFieldDetectManager *)self persistentObserverNames];
-  v11[0] = v3;
+  persistentObserverNames = [(NFFieldDetectManager *)self persistentObserverNames];
+  v11[0] = persistentObserverNames;
   v10[1] = @"numFieldDetectSessions";
   v4 = [NSNumber numberWithUnsignedInteger:[(NFFieldDetectManager *)self totalFieldDetectSessions]];
   v11[1] = v4;
   v10[2] = @"fieldDetectClients";
-  v5 = [(NFFieldDetectManager *)self fieldDetectSessionClientNames];
-  v11[2] = v5;
+  fieldDetectSessionClientNames = [(NFFieldDetectManager *)self fieldDetectSessionClientNames];
+  v11[2] = fieldDetectSessionClientNames;
   v10[3] = @"suspensionRequestors";
-  v6 = [(NFFieldDetectManager *)self suspensionRequestor];
-  v7 = [v6 allObjects];
-  v11[3] = v7;
+  suspensionRequestor = [(NFFieldDetectManager *)self suspensionRequestor];
+  allObjects = [suspensionRequestor allObjects];
+  v11[3] = allObjects;
   v8 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:4];
 
   return v8;

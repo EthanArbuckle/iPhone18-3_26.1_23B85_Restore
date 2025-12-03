@@ -6,12 +6,12 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(TransitScheduleCardVehiclePositionAnnotationView *)self layer];
-  [v3 size];
+  layer = [(TransitScheduleCardVehiclePositionAnnotationView *)self layer];
+  [layer size];
   v5 = v4;
 
-  v6 = [(TransitScheduleCardVehiclePositionAnnotationView *)self layer];
-  [v6 size];
+  layer2 = [(TransitScheduleCardVehiclePositionAnnotationView *)self layer];
+  [layer2 size];
   v8 = v7;
 
   v9 = v8;

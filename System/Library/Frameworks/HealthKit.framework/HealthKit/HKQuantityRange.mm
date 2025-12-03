@@ -1,74 +1,74 @@
 @interface HKQuantityRange
-+ (BOOL)areRangesDisjoint:(id)a3;
-+ (id)ATTDEuglycemicRangeWithUnit:(id)a3;
-+ (id)ATTDGlycemicRangesWithUnit:(id)a3;
-+ (id)ATTDHyperglycemicRangeWithUnit:(id)a3;
-+ (id)ATTDLevel1HypoglycemicRangeWithUnit:(id)a3;
-+ (id)ATTDLevel2HypoglycemicRangeWithUnit:(id)a3;
-+ (id)exclusiveRangeWithMinimum:(id)a3 maximum:(id)a4;
-+ (id)inclusiveRangeWithMinimum:(id)a3 maximum:(id)a4;
-- (BOOL)containsQuantity:(id)a3;
-- (BOOL)intersectsRange:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToQuantityRange:(id)a3 withAccuracy:(id)a4;
-- (HKQuantityRange)initWithCoder:(id)a3;
-- (HKQuantityRange)initWithMinimum:(id)a3 maximum:(id)a4 isMinimumInclusive:(BOOL)a5 isMaximumInclusive:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)areRangesDisjoint:(id)disjoint;
++ (id)ATTDEuglycemicRangeWithUnit:(id)unit;
++ (id)ATTDGlycemicRangesWithUnit:(id)unit;
++ (id)ATTDHyperglycemicRangeWithUnit:(id)unit;
++ (id)ATTDLevel1HypoglycemicRangeWithUnit:(id)unit;
++ (id)ATTDLevel2HypoglycemicRangeWithUnit:(id)unit;
++ (id)exclusiveRangeWithMinimum:(id)minimum maximum:(id)maximum;
++ (id)inclusiveRangeWithMinimum:(id)minimum maximum:(id)maximum;
+- (BOOL)containsQuantity:(id)quantity;
+- (BOOL)intersectsRange:(id)range;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToQuantityRange:(id)range withAccuracy:(id)accuracy;
+- (HKQuantityRange)initWithCoder:(id)coder;
+- (HKQuantityRange)initWithMinimum:(id)minimum maximum:(id)maximum isMinimumInclusive:(BOOL)inclusive isMaximumInclusive:(BOOL)maximumInclusive;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKQuantityRange
 
-- (HKQuantityRange)initWithMinimum:(id)a3 maximum:(id)a4 isMinimumInclusive:(BOOL)a5 isMaximumInclusive:(BOOL)a6
+- (HKQuantityRange)initWithMinimum:(id)minimum maximum:(id)maximum isMinimumInclusive:(BOOL)inclusive isMaximumInclusive:(BOOL)maximumInclusive
 {
-  v12 = a3;
-  v13 = a4;
+  minimumCopy = minimum;
+  maximumCopy = maximum;
   v16.receiver = self;
   v16.super_class = HKQuantityRange;
   v14 = [(HKQuantityRange *)&v16 init];
   if (v14)
   {
-    if ([v13 hk_isLessThanQuantity:v12])
+    if ([maximumCopy hk_isLessThanQuantity:minimumCopy])
     {
       [HKQuantityRange initWithMinimum:a2 maximum:v14 isMinimumInclusive:? isMaximumInclusive:?];
     }
 
-    objc_storeStrong(&v14->_minimum, a3);
-    objc_storeStrong(&v14->_maximum, a4);
-    v14->_isMinimumInclusive = a5;
-    v14->_isMaximumInclusive = a6;
+    objc_storeStrong(&v14->_minimum, minimum);
+    objc_storeStrong(&v14->_maximum, maximum);
+    v14->_isMinimumInclusive = inclusive;
+    v14->_isMaximumInclusive = maximumInclusive;
   }
 
   return v14;
 }
 
-+ (id)inclusiveRangeWithMinimum:(id)a3 maximum:(id)a4
++ (id)inclusiveRangeWithMinimum:(id)minimum maximum:(id)maximum
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithMinimum:v7 maximum:v6 isMinimumInclusive:1 isMaximumInclusive:1];
+  maximumCopy = maximum;
+  minimumCopy = minimum;
+  v8 = [[self alloc] initWithMinimum:minimumCopy maximum:maximumCopy isMinimumInclusive:1 isMaximumInclusive:1];
 
   return v8;
 }
 
-+ (id)exclusiveRangeWithMinimum:(id)a3 maximum:(id)a4
++ (id)exclusiveRangeWithMinimum:(id)minimum maximum:(id)maximum
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithMinimum:v7 maximum:v6 isMinimumInclusive:0 isMaximumInclusive:0];
+  maximumCopy = maximum;
+  minimumCopy = minimum;
+  v8 = [[self alloc] initWithMinimum:minimumCopy maximum:maximumCopy isMinimumInclusive:0 isMaximumInclusive:0];
 
   return v8;
 }
 
-- (BOOL)containsQuantity:(id)a3
+- (BOOL)containsQuantity:(id)quantity
 {
-  v4 = a3;
-  v5 = v4;
+  quantityCopy = quantity;
+  v5 = quantityCopy;
   minimum = self->_minimum;
   if (self->_isMinimumInclusive)
   {
-    if ([v4 hk_isLessThanQuantity:minimum])
+    if ([quantityCopy hk_isLessThanQuantity:minimum])
     {
 LABEL_3:
       LOBYTE(v7) = 0;
@@ -76,7 +76,7 @@ LABEL_3:
     }
   }
 
-  else if (![v4 hk_isGreaterThanQuantity:minimum])
+  else if (![quantityCopy hk_isGreaterThanQuantity:minimum])
   {
     goto LABEL_3;
   }
@@ -97,12 +97,12 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)intersectsRange:(id)a3
+- (BOOL)intersectsRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   minimum = self->_minimum;
-  v6 = [v4 maximum];
-  v7 = [(HKQuantity *)minimum compare:v6];
+  maximum = [rangeCopy maximum];
+  v7 = [(HKQuantity *)minimum compare:maximum];
 
   if (v7 == 1)
   {
@@ -112,8 +112,8 @@ LABEL_8:
   if (v7)
   {
     maximum = self->_maximum;
-    v10 = [v4 minimum];
-    v11 = [(HKQuantity *)maximum compare:v10];
+    minimum = [rangeCopy minimum];
+    v11 = [(HKQuantity *)maximum compare:minimum];
 
     if (v11 != -1)
     {
@@ -125,7 +125,7 @@ LABEL_8:
 
       if (self->_isMaximumInclusive)
       {
-        v8 = [v4 isMinimumInclusive];
+        isMinimumInclusive = [rangeCopy isMinimumInclusive];
         goto LABEL_9;
       }
     }
@@ -140,20 +140,20 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v8 = [v4 isMaximumInclusive];
+  isMinimumInclusive = [rangeCopy isMaximumInclusive];
 LABEL_9:
-  v12 = v8;
+  v12 = isMinimumInclusive;
 LABEL_11:
 
   return v12;
 }
 
-+ (BOOL)areRangesDisjoint:(id)a3
++ (BOOL)areRangesDisjoint:(id)disjoint
 {
-  v3 = a3;
-  if ([v3 count] >= 2)
+  disjointCopy = disjoint;
+  if ([disjointCopy count] >= 2)
   {
-    v5 = [v3 sortedArrayUsingComparator:&__block_literal_global_69];
+    v5 = [disjointCopy sortedArrayUsingComparator:&__block_literal_global_69];
     v6 = [v5 objectAtIndexedSubscript:0];
     if ([v5 count] >= 2)
     {
@@ -205,33 +205,33 @@ uint64_t __37__HKQuantityRange_areRangesDisjoint___block_invoke(uint64_t a1, voi
   return v7;
 }
 
-- (BOOL)isEqualToQuantityRange:(id)a3 withAccuracy:(id)a4
+- (BOOL)isEqualToQuantityRange:(id)range withAccuracy:(id)accuracy
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKQuantity *)self->_minimum isEqualToQuantity:v6[2] withAccuracy:v7]&& [(HKQuantity *)self->_maximum isEqualToQuantity:v6[3] withAccuracy:v7]&& self->_isMinimumInclusive == *(v6 + 8) && self->_isMaximumInclusive == *(v6 + 9);
+  rangeCopy = range;
+  accuracyCopy = accuracy;
+  v8 = [(HKQuantity *)self->_minimum isEqualToQuantity:rangeCopy[2] withAccuracy:accuracyCopy]&& [(HKQuantity *)self->_maximum isEqualToQuantity:rangeCopy[3] withAccuracy:accuracyCopy]&& self->_isMinimumInclusive == *(rangeCopy + 8) && self->_isMaximumInclusive == *(rangeCopy + 9);
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
-  else if ([(HKQuantityRange *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(HKQuantityRange *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     minimum = self->_minimum;
-    v7 = [(HKQuantityRange *)v5 minimum];
-    if ([(HKQuantity *)minimum isEqual:v7])
+    minimum = [(HKQuantityRange *)v5 minimum];
+    if ([(HKQuantity *)minimum isEqual:minimum])
     {
       maximum = self->_maximum;
-      v9 = [(HKQuantityRange *)v5 maximum];
-      if ([(HKQuantity *)maximum isEqual:v9]&& (isMinimumInclusive = self->_isMinimumInclusive, isMinimumInclusive == [(HKQuantityRange *)v5 isMinimumInclusive]))
+      maximum = [(HKQuantityRange *)v5 maximum];
+      if ([(HKQuantity *)maximum isEqual:maximum]&& (isMinimumInclusive = self->_isMinimumInclusive, isMinimumInclusive == [(HKQuantityRange *)v5 isMinimumInclusive]))
       {
         isMaximumInclusive = self->_isMaximumInclusive;
         v12 = isMaximumInclusive == [(HKQuantityRange *)v5 isMaximumInclusive];
@@ -257,7 +257,7 @@ uint64_t __37__HKQuantityRange_areRangesDisjoint___block_invoke(uint64_t a1, voi
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HKQuantityRange alloc];
   minimum = self->_minimum;
@@ -289,169 +289,169 @@ uint64_t __37__HKQuantityRange_areRangesDisjoint___block_invoke(uint64_t a1, voi
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@, %@%@", v2, self->_minimum, self->_maximum, v3];
 }
 
-- (HKQuantityRange)initWithCoder:(id)a3
+- (HKQuantityRange)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minimum"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maximum"];
-  v7 = [v4 decodeBoolForKey:@"isMinimumInclusive"];
-  v8 = [v4 decodeBoolForKey:@"isMaximumInclusive"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minimum"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maximum"];
+  v7 = [coderCopy decodeBoolForKey:@"isMinimumInclusive"];
+  v8 = [coderCopy decodeBoolForKey:@"isMaximumInclusive"];
 
   v9 = [(HKQuantityRange *)self initWithMinimum:v5 maximum:v6 isMinimumInclusive:v7 isMaximumInclusive:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   minimum = self->_minimum;
-  v5 = a3;
-  [v5 encodeObject:minimum forKey:@"minimum"];
-  [v5 encodeObject:self->_maximum forKey:@"maximum"];
-  [v5 encodeBool:self->_isMinimumInclusive forKey:@"isMinimumInclusive"];
-  [v5 encodeBool:self->_isMaximumInclusive forKey:@"isMaximumInclusive"];
+  coderCopy = coder;
+  [coderCopy encodeObject:minimum forKey:@"minimum"];
+  [coderCopy encodeObject:self->_maximum forKey:@"maximum"];
+  [coderCopy encodeBool:self->_isMinimumInclusive forKey:@"isMinimumInclusive"];
+  [coderCopy encodeBool:self->_isMaximumInclusive forKey:@"isMaximumInclusive"];
 }
 
-+ (id)ATTDLevel2HypoglycemicRangeWithUnit:(id)a3
++ (id)ATTDLevel2HypoglycemicRangeWithUnit:(id)unit
 {
-  v4 = a3;
+  unitCopy = unit;
   v5 = +[HKUnit _milligramsPerDeciliterUnit];
-  v6 = [v4 isEqual:v5];
+  v6 = [unitCopy isEqual:v5];
 
   if (v6)
   {
     v7 = [HKQuantityRange alloc];
-    v8 = [HKQuantity quantityWithUnit:v4 doubleValue:0.0];
+    v8 = [HKQuantity quantityWithUnit:unitCopy doubleValue:0.0];
     v9 = 54.0;
 LABEL_5:
-    v12 = [HKQuantity quantityWithUnit:v4 doubleValue:v9];
+    v12 = [HKQuantity quantityWithUnit:unitCopy doubleValue:v9];
     v13 = [(HKQuantityRange *)v7 initWithMinimum:v8 maximum:v12 isMinimumInclusive:1 isMaximumInclusive:0];
 
     goto LABEL_7;
   }
 
   v10 = +[HKUnit _millimolesBloodGlucosePerLiterUnit];
-  v11 = [v4 isEqual:v10];
+  v11 = [unitCopy isEqual:v10];
 
   if (v11)
   {
     v7 = [HKQuantityRange alloc];
-    v8 = [HKQuantity quantityWithUnit:v4 doubleValue:0.0];
+    v8 = [HKQuantity quantityWithUnit:unitCopy doubleValue:0.0];
     v9 = 3.0;
     goto LABEL_5;
   }
 
   v14 = MEMORY[0x1E695DF30];
   v15 = *MEMORY[0x1E695D940];
-  v16 = [v4 unitString];
-  [v14 raise:v15 format:{@"Unsupported unit for standard glucose range: %@", v16}];
+  unitString = [unitCopy unitString];
+  [v14 raise:v15 format:{@"Unsupported unit for standard glucose range: %@", unitString}];
 
   v8 = +[HKUnit _milligramsPerDeciliterUnit];
-  v13 = [a1 ATTDLevel2HypoglycemicRangeWithUnit:v8];
+  v13 = [self ATTDLevel2HypoglycemicRangeWithUnit:v8];
 LABEL_7:
 
   return v13;
 }
 
-+ (id)ATTDLevel1HypoglycemicRangeWithUnit:(id)a3
++ (id)ATTDLevel1HypoglycemicRangeWithUnit:(id)unit
 {
-  v4 = a3;
+  unitCopy = unit;
   v5 = +[HKUnit _milligramsPerDeciliterUnit];
-  v6 = [v4 isEqual:v5];
+  v6 = [unitCopy isEqual:v5];
 
   if (v6)
   {
     v7 = [HKQuantityRange alloc];
-    v8 = [HKQuantity quantityWithUnit:v4 doubleValue:54.0];
+    v8 = [HKQuantity quantityWithUnit:unitCopy doubleValue:54.0];
     v9 = 70.0;
 LABEL_5:
-    v12 = [HKQuantity quantityWithUnit:v4 doubleValue:v9];
+    v12 = [HKQuantity quantityWithUnit:unitCopy doubleValue:v9];
     v13 = [(HKQuantityRange *)v7 initWithMinimum:v8 maximum:v12 isMinimumInclusive:1 isMaximumInclusive:0];
 
     goto LABEL_7;
   }
 
   v10 = +[HKUnit _millimolesBloodGlucosePerLiterUnit];
-  v11 = [v4 isEqual:v10];
+  v11 = [unitCopy isEqual:v10];
 
   if (v11)
   {
     v7 = [HKQuantityRange alloc];
-    v8 = [HKQuantity quantityWithUnit:v4 doubleValue:3.0];
+    v8 = [HKQuantity quantityWithUnit:unitCopy doubleValue:3.0];
     v9 = 3.9;
     goto LABEL_5;
   }
 
   v14 = MEMORY[0x1E695DF30];
   v15 = *MEMORY[0x1E695D940];
-  v16 = [v4 unitString];
-  [v14 raise:v15 format:{@"Unsupported unit for standard glucose range: %@", v16}];
+  unitString = [unitCopy unitString];
+  [v14 raise:v15 format:{@"Unsupported unit for standard glucose range: %@", unitString}];
 
   v8 = +[HKUnit _milligramsPerDeciliterUnit];
-  v13 = [a1 ATTDLevel1HypoglycemicRangeWithUnit:v8];
+  v13 = [self ATTDLevel1HypoglycemicRangeWithUnit:v8];
 LABEL_7:
 
   return v13;
 }
 
-+ (id)ATTDEuglycemicRangeWithUnit:(id)a3
++ (id)ATTDEuglycemicRangeWithUnit:(id)unit
 {
-  v4 = a3;
+  unitCopy = unit;
   v5 = +[HKUnit _milligramsPerDeciliterUnit];
-  v6 = [v4 isEqual:v5];
+  v6 = [unitCopy isEqual:v5];
 
   if (v6)
   {
-    v7 = [HKQuantity quantityWithUnit:v4 doubleValue:70.0];
+    v7 = [HKQuantity quantityWithUnit:unitCopy doubleValue:70.0];
     v8 = 180.0;
 LABEL_5:
-    v11 = [HKQuantity quantityWithUnit:v4 doubleValue:v8];
+    v11 = [HKQuantity quantityWithUnit:unitCopy doubleValue:v8];
     v12 = [HKQuantityRange inclusiveRangeWithMinimum:v7 maximum:v11];
 
     goto LABEL_7;
   }
 
   v9 = +[HKUnit _millimolesBloodGlucosePerLiterUnit];
-  v10 = [v4 isEqual:v9];
+  v10 = [unitCopy isEqual:v9];
 
   if (v10)
   {
-    v7 = [HKQuantity quantityWithUnit:v4 doubleValue:3.9];
+    v7 = [HKQuantity quantityWithUnit:unitCopy doubleValue:3.9];
     v8 = 10.0;
     goto LABEL_5;
   }
 
   v13 = MEMORY[0x1E695DF30];
   v14 = *MEMORY[0x1E695D940];
-  v15 = [v4 unitString];
-  [v13 raise:v14 format:{@"Unsupported unit for standard glucose range: %@", v15}];
+  unitString = [unitCopy unitString];
+  [v13 raise:v14 format:{@"Unsupported unit for standard glucose range: %@", unitString}];
 
   v7 = +[HKUnit _milligramsPerDeciliterUnit];
-  v12 = [a1 ATTDEuglycemicRangeWithUnit:v7];
+  v12 = [self ATTDEuglycemicRangeWithUnit:v7];
 LABEL_7:
 
   return v12;
 }
 
-+ (id)ATTDHyperglycemicRangeWithUnit:(id)a3
++ (id)ATTDHyperglycemicRangeWithUnit:(id)unit
 {
-  v4 = a3;
+  unitCopy = unit;
   v5 = +[HKUnit _milligramsPerDeciliterUnit];
-  v6 = [v4 isEqual:v5];
+  v6 = [unitCopy isEqual:v5];
 
   if (v6)
   {
     v7 = [HKQuantityRange alloc];
     v8 = 180.0;
 LABEL_5:
-    v11 = [HKQuantity quantityWithUnit:v4 doubleValue:v8];
-    v12 = [HKQuantity quantityWithUnit:v4 doubleValue:1.79769313e308];
+    v11 = [HKQuantity quantityWithUnit:unitCopy doubleValue:v8];
+    v12 = [HKQuantity quantityWithUnit:unitCopy doubleValue:1.79769313e308];
     v13 = [(HKQuantityRange *)v7 initWithMinimum:v11 maximum:v12 isMinimumInclusive:0 isMaximumInclusive:1];
 
     goto LABEL_7;
   }
 
   v9 = +[HKUnit _millimolesBloodGlucosePerLiterUnit];
-  v10 = [v4 isEqual:v9];
+  v10 = [unitCopy isEqual:v9];
 
   if (v10)
   {
@@ -462,27 +462,27 @@ LABEL_5:
 
   v14 = MEMORY[0x1E695DF30];
   v15 = *MEMORY[0x1E695D940];
-  v16 = [v4 unitString];
-  [v14 raise:v15 format:{@"Unsupported unit for standard glucose range: %@", v16}];
+  unitString = [unitCopy unitString];
+  [v14 raise:v15 format:{@"Unsupported unit for standard glucose range: %@", unitString}];
 
   v11 = +[HKUnit _milligramsPerDeciliterUnit];
-  v13 = [a1 ATTDHyperglycemicRangeWithUnit:v11];
+  v13 = [self ATTDHyperglycemicRangeWithUnit:v11];
 LABEL_7:
 
   return v13;
 }
 
-+ (id)ATTDGlycemicRangesWithUnit:(id)a3
++ (id)ATTDGlycemicRangesWithUnit:(id)unit
 {
   v12[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 ATTDLevel2HypoglycemicRangeWithUnit:v4];
+  unitCopy = unit;
+  v5 = [self ATTDLevel2HypoglycemicRangeWithUnit:unitCopy];
   v12[0] = v5;
-  v6 = [a1 ATTDLevel1HypoglycemicRangeWithUnit:v4];
+  v6 = [self ATTDLevel1HypoglycemicRangeWithUnit:unitCopy];
   v12[1] = v6;
-  v7 = [a1 ATTDEuglycemicRangeWithUnit:v4];
+  v7 = [self ATTDEuglycemicRangeWithUnit:unitCopy];
   v12[2] = v7;
-  v8 = [a1 ATTDHyperglycemicRangeWithUnit:v4];
+  v8 = [self ATTDHyperglycemicRangeWithUnit:unitCopy];
 
   v12[3] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:4];

@@ -1,19 +1,19 @@
 @interface MailSceneLifecycleController
 + (id)log;
-- (id)stateRestorationActivityForScene:(id)a3;
-- (void)_installDebugHandlerForScene:(id)a3;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5;
-- (void)scene:(id)a3 didUpdateUserActivity:(id)a4;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)scene:(id)a3 willContinueUserActivityWithType:(id)a4;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
+- (id)stateRestorationActivityForScene:(id)scene;
+- (void)_installDebugHandlerForScene:(id)scene;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene didFailToContinueUserActivityWithType:(id)type error:(id)error;
+- (void)scene:(id)scene didUpdateUserActivity:(id)activity;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)scene:(id)scene willContinueUserActivityWithType:(id)type;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler;
 @end
 
 @implementation MailSceneLifecycleController
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000B514;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD150 != -1)
   {
     dispatch_once(&qword_1006DD150, block);
@@ -35,22 +35,22 @@
   return v2;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v29 = a5;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   v11 = +[MailSceneLifecycleController log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = v10;
+    v12 = sessionCopy;
     v13 = a2;
-    v14 = v9;
+    v14 = sceneCopy;
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    v17 = [v14 session];
-    v18 = [v17 persistentIdentifier];
-    v19 = [NSString stringWithFormat:@"%@:%@", v16, v18];
+    session = [v14 session];
+    persistentIdentifier = [session persistentIdentifier];
+    v19 = [NSString stringWithFormat:@"%@:%@", v16, persistentIdentifier];
 
     *buf = 138543618;
     v31 = v19;
@@ -59,28 +59,28 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "scene: %{public}@ willConnectToSession: %@", buf, 0x16u);
 
     a2 = v13;
-    v10 = v12;
+    sessionCopy = v12;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v9 conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([sceneCopy conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
   {
     v27 = +[NSAssertionHandler currentHandler];
     [v27 handleFailureInMethod:a2 object:self file:@"MailSceneLifecycleController.m" lineNumber:33 description:@"Scenes used with MailSceneLifecycleController should be instances of MailScene subclasses."];
   }
 
-  v20 = v9;
+  v20 = sceneCopy;
   v21 = [[MFWindow alloc] initWithWindowScene:v20];
   v22 = +[UIColor mailInteractiveColor];
   [(MFWindow *)v21 setTintColor:v22];
 
-  v23 = [(MFWindow *)v21 layer];
-  [v23 setHitTestsAsOpaque:1];
+  layer = [(MFWindow *)v21 layer];
+  [layer setHitTestsAsOpaque:1];
 
   [(MailSceneLifecycleController *)self setWindow:v21];
-  [v20 mailSceneDidConnectWithOptions:v29];
-  v24 = [v20 mf_rootViewController];
-  if (!v24)
+  [v20 mailSceneDidConnectWithOptions:optionsCopy];
+  mf_rootViewController = [v20 mf_rootViewController];
+  if (!mf_rootViewController)
   {
     v28 = +[NSAssertionHandler currentHandler];
     [v28 handleFailureInMethod:a2 object:self file:@"MailSceneLifecycleController.m" lineNumber:41 description:@"Scene must provide a root view controller after connection."];
@@ -89,32 +89,32 @@
   v25 = objc_opt_class();
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v25 wantsDeferredConnectionActions])
   {
-    [(MailSceneLifecycleController *)self setDeferredConnectionOptions:v29];
+    [(MailSceneLifecycleController *)self setDeferredConnectionOptions:optionsCopy];
   }
 
   [(MailSceneLifecycleController *)self _installDebugHandlerForScene:v20];
-  [(MFWindow *)v21 setRootViewController:v24];
+  [(MFWindow *)v21 setRootViewController:mf_rootViewController];
   if ([v20 conformsToProtocol:&OBJC_PROTOCOL___MFWindowDelegate])
   {
     [(MFWindow *)v21 setDelegate:v20];
   }
 
-  v26 = [(MailSceneLifecycleController *)self window];
-  [v26 makeKeyAndVisible];
+  window = [(MailSceneLifecycleController *)self window];
+  [window makeKeyAndVisible];
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v5 = a3;
+  disconnectCopy = disconnect;
   v6 = +[MailSceneLifecycleController log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = v5;
+    v7 = disconnectCopy;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v7 session];
-    v11 = [v10 persistentIdentifier];
-    v12 = [NSString stringWithFormat:@"%@:%@", v9, v11];
+    session = [v7 session];
+    persistentIdentifier = [session persistentIdentifier];
+    v12 = [NSString stringWithFormat:@"%@:%@", v9, persistentIdentifier];
 
     *buf = 138543362;
     v17 = v12;
@@ -122,32 +122,32 @@
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v5 conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([disconnectCopy conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
   {
     v15 = +[NSAssertionHandler currentHandler];
     [v15 handleFailureInMethod:a2 object:self file:@"MailSceneLifecycleController.m" lineNumber:60 description:@"Scenes used with MailSceneLifecycleController should be instances of MailScene subclasses."];
   }
 
-  v13 = v5;
+  v13 = disconnectCopy;
   [v13 mailSceneDidDisconnect];
-  v14 = [(MailSceneLifecycleController *)self window];
-  [v14 setRootViewController:0];
+  window = [(MailSceneLifecycleController *)self window];
+  [window setRootViewController:0];
 
   [(MailSceneLifecycleController *)self setWindow:0];
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v5 = a3;
+  activeCopy = active;
   v6 = +[MailSceneLifecycleController log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = v5;
+    v7 = activeCopy;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v7 session];
-    v11 = [v10 persistentIdentifier];
-    v12 = [NSString stringWithFormat:@"%@:%@", v9, v11];
+    session = [v7 session];
+    persistentIdentifier = [session persistentIdentifier];
+    v12 = [NSString stringWithFormat:@"%@:%@", v9, persistentIdentifier];
 
     *buf = 138543362;
     v15 = v12;
@@ -155,27 +155,27 @@
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v5 conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([activeCopy conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
   {
     v13 = +[NSAssertionHandler currentHandler];
     [v13 handleFailureInMethod:a2 object:self file:@"MailSceneLifecycleController.m" lineNumber:74 description:@"Scenes used with MailSceneLifecycleController should be instances of MailScene subclasses."];
   }
 
-  [v5 mailSceneDidBecomeActive];
+  [activeCopy mailSceneDidBecomeActive];
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v5 = a3;
+  activeCopy = active;
   v6 = +[MailSceneLifecycleController log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = v5;
+    v7 = activeCopy;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v7 session];
-    v11 = [v10 persistentIdentifier];
-    v12 = [NSString stringWithFormat:@"%@:%@", v9, v11];
+    session = [v7 session];
+    persistentIdentifier = [session persistentIdentifier];
+    v12 = [NSString stringWithFormat:@"%@:%@", v9, persistentIdentifier];
 
     *buf = 138543362;
     v15 = v12;
@@ -183,27 +183,27 @@
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v5 conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([activeCopy conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
   {
     v13 = +[NSAssertionHandler currentHandler];
     [v13 handleFailureInMethod:a2 object:self file:@"MailSceneLifecycleController.m" lineNumber:81 description:@"Scenes used with MailSceneLifecycleController should be instances of MailScene subclasses."];
   }
 
-  [v5 mailSceneWillResignActive];
+  [activeCopy mailSceneWillResignActive];
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v5 = a3;
+  foregroundCopy = foreground;
   v6 = +[MailSceneLifecycleController log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = v5;
+    v7 = foregroundCopy;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v7 session];
-    v11 = [v10 persistentIdentifier];
-    v12 = [NSString stringWithFormat:@"%@:%@", v9, v11];
+    session = [v7 session];
+    persistentIdentifier = [session persistentIdentifier];
+    v12 = [NSString stringWithFormat:@"%@:%@", v9, persistentIdentifier];
 
     *buf = 138543362;
     v20 = v12;
@@ -211,24 +211,24 @@
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v5 conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([foregroundCopy conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
   {
     v18 = +[NSAssertionHandler currentHandler];
     [v18 handleFailureInMethod:a2 object:self file:@"MailSceneLifecycleController.m" lineNumber:88 description:@"Scenes used with MailSceneLifecycleController should be instances of MailScene subclasses."];
   }
 
-  v13 = v5;
+  v13 = foregroundCopy;
   [v13 mailSceneWillEnterForeground];
-  v14 = [(MailSceneLifecycleController *)self deferredConnectionOptions];
+  deferredConnectionOptions = [(MailSceneLifecycleController *)self deferredConnectionOptions];
   [(MailSceneLifecycleController *)self setDeferredConnectionOptions:0];
-  if (v14)
+  if (deferredConnectionOptions)
   {
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v14 URLContexts];
-      if ([v15 count])
+      uRLContexts = [deferredConnectionOptions URLContexts];
+      if ([uRLContexts count])
       {
-        [v13 mailSceneOpenURLContexts:v15];
+        [v13 mailSceneOpenURLContexts:uRLContexts];
 LABEL_17:
 
         goto LABEL_18;
@@ -237,25 +237,25 @@ LABEL_17:
 
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      v16 = [v14 userActivities];
-      v15 = [v16 anyObject];
+      userActivities = [deferredConnectionOptions userActivities];
+      uRLContexts = [userActivities anyObject];
 
-      if (v15)
+      if (uRLContexts)
       {
-        v17 = [v15 activityType];
-        [v13 mailSceneWillContinueUserActivityWithType:v17];
+        activityType = [uRLContexts activityType];
+        [v13 mailSceneWillContinueUserActivityWithType:activityType];
 
-        [v13 mailSceneContinueUserActivity:v15];
+        [v13 mailSceneContinueUserActivity:uRLContexts];
         goto LABEL_17;
       }
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v14 shortcutItem];
-      if (v15)
+      uRLContexts = [deferredConnectionOptions shortcutItem];
+      if (uRLContexts)
       {
-        [v13 mailScenePerformActionForShortcutItem:v15 completionHandler:&stru_100650FF0];
+        [v13 mailScenePerformActionForShortcutItem:uRLContexts completionHandler:&stru_100650FF0];
         goto LABEL_17;
       }
     }
@@ -264,18 +264,18 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v5 = a3;
+  backgroundCopy = background;
   v6 = +[MailSceneLifecycleController log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = v5;
+    v7 = backgroundCopy;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v7 session];
-    v11 = [v10 persistentIdentifier];
-    v12 = [NSString stringWithFormat:@"%@:%@", v9, v11];
+    session = [v7 session];
+    persistentIdentifier = [session persistentIdentifier];
+    v12 = [NSString stringWithFormat:@"%@:%@", v9, persistentIdentifier];
 
     *buf = 138543362;
     v15 = v12;
@@ -283,27 +283,27 @@ LABEL_18:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v5 conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([backgroundCopy conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
   {
     v13 = +[NSAssertionHandler currentHandler];
     [v13 handleFailureInMethod:a2 object:self file:@"MailSceneLifecycleController.m" lineNumber:129 description:@"Scenes used with MailSceneLifecycleController should be instances of MailScene subclasses."];
   }
 
-  [v5 mailSceneDidEnterBackground];
+  [backgroundCopy mailSceneDidEnterBackground];
 }
 
-- (void)scene:(id)a3 willContinueUserActivityWithType:(id)a4
+- (void)scene:(id)scene willContinueUserActivityWithType:(id)type
 {
-  v7 = a3;
-  v8 = a4;
+  sceneCopy = scene;
+  typeCopy = type;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v7 conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([sceneCopy conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
   {
     v17 = +[NSAssertionHandler currentHandler];
     [v17 handleFailureInMethod:a2 object:self file:@"MailSceneLifecycleController.m" lineNumber:137 description:@"Scenes used with MailSceneLifecycleController should be instances of MailScene subclasses."];
   }
 
-  v9 = v7;
+  v9 = sceneCopy;
   if (objc_opt_respondsToSelector())
   {
     v10 = +[MailSceneLifecycleController log];
@@ -312,33 +312,33 @@ LABEL_18:
       v11 = v9;
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
-      v14 = [v11 session];
-      v15 = [v14 persistentIdentifier];
-      v16 = [NSString stringWithFormat:@"%@:%@", v13, v15];
+      session = [v11 session];
+      persistentIdentifier = [session persistentIdentifier];
+      v16 = [NSString stringWithFormat:@"%@:%@", v13, persistentIdentifier];
 
       *buf = 138543618;
       v19 = v16;
       v20 = 2112;
-      v21 = v8;
+      v21 = typeCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "scene: %{public}@ willContinueUserActivityWithType: %@", buf, 0x16u);
     }
 
-    [v9 mailSceneWillContinueUserActivityWithType:v8];
+    [v9 mailSceneWillContinueUserActivityWithType:typeCopy];
   }
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v7 = a3;
-  v8 = a4;
+  sceneCopy = scene;
+  activityCopy = activity;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v7 conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([sceneCopy conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
   {
     v20 = +[NSAssertionHandler currentHandler];
     [v20 handleFailureInMethod:a2 object:self file:@"MailSceneLifecycleController.m" lineNumber:146 description:@"Scenes used with MailSceneLifecycleController should be instances of MailScene subclasses."];
   }
 
-  v9 = v7;
+  v9 = sceneCopy;
   if (objc_opt_respondsToSelector())
   {
     v10 = +[MailSceneLifecycleController log];
@@ -347,39 +347,39 @@ LABEL_18:
       v11 = v9;
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
-      v14 = [v11 session];
-      v15 = [v14 persistentIdentifier];
-      v16 = [NSString stringWithFormat:@"%@:%@", v13, v15];
+      session = [v11 session];
+      persistentIdentifier = [session persistentIdentifier];
+      v16 = [NSString stringWithFormat:@"%@:%@", v13, persistentIdentifier];
 
       v17 = v16;
-      v18 = [v8 activityType];
-      v19 = [v8 targetContentIdentifier];
+      activityType = [activityCopy activityType];
+      targetContentIdentifier = [activityCopy targetContentIdentifier];
       *buf = 138543874;
       v22 = v17;
       v23 = 2112;
-      v24 = v18;
+      v24 = activityType;
       v25 = 2112;
-      v26 = v19;
+      v26 = targetContentIdentifier;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "scene: %{public}@ continueUserActivity: %@, identifier: %@", buf, 0x20u);
     }
 
-    [v9 mailSceneContinueUserActivity:v8];
+    [v9 mailSceneContinueUserActivity:activityCopy];
   }
 }
 
-- (void)scene:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5
+- (void)scene:(id)scene didFailToContinueUserActivityWithType:(id)type error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sceneCopy = scene;
+  typeCopy = type;
+  errorCopy = error;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v9 conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([sceneCopy conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
   {
     v22 = +[NSAssertionHandler currentHandler];
     [v22 handleFailureInMethod:a2 object:self file:@"MailSceneLifecycleController.m" lineNumber:155 description:@"Scenes used with MailSceneLifecycleController should be instances of MailScene subclasses."];
   }
 
-  v12 = v9;
+  v12 = sceneCopy;
   if (objc_opt_respondsToSelector())
   {
     v13 = +[MailSceneLifecycleController log];
@@ -388,37 +388,37 @@ LABEL_18:
       v14 = v12;
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      v17 = [v14 session];
-      v18 = [v17 persistentIdentifier];
-      v19 = [NSString stringWithFormat:@"%@:%@", v16, v18];
+      session = [v14 session];
+      persistentIdentifier = [session persistentIdentifier];
+      v19 = [NSString stringWithFormat:@"%@:%@", v16, persistentIdentifier];
 
       v20 = v19;
-      v21 = [v11 ef_publicDescription];
+      ef_publicDescription = [errorCopy ef_publicDescription];
       *buf = 138543874;
       v24 = v20;
       v25 = 2112;
-      v26 = v10;
+      v26 = typeCopy;
       v27 = 2114;
-      v28 = v21;
+      v28 = ef_publicDescription;
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "scene: %{public}@ didFailToContinueUserActivityWithType: %@ error: %{public}@", buf, 0x20u);
     }
 
-    [v12 mailSceneDidFailToContinueUserActivityWithType:v10 error:v11];
+    [v12 mailSceneDidFailToContinueUserActivityWithType:typeCopy error:errorCopy];
   }
 }
 
-- (void)scene:(id)a3 didUpdateUserActivity:(id)a4
+- (void)scene:(id)scene didUpdateUserActivity:(id)activity
 {
-  v7 = a3;
-  v8 = a4;
+  sceneCopy = scene;
+  activityCopy = activity;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v7 conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([sceneCopy conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
   {
     v17 = +[NSAssertionHandler currentHandler];
     [v17 handleFailureInMethod:a2 object:self file:@"MailSceneLifecycleController.m" lineNumber:164 description:@"Scenes used with MailSceneLifecycleController should be instances of MailScene subclasses."];
   }
 
-  v9 = v7;
+  v9 = sceneCopy;
   if (objc_opt_respondsToSelector())
   {
     v10 = +[MailSceneLifecycleController log];
@@ -427,33 +427,33 @@ LABEL_18:
       v11 = v9;
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
-      v14 = [v11 session];
-      v15 = [v14 persistentIdentifier];
-      v16 = [NSString stringWithFormat:@"%@:%@", v13, v15];
+      session = [v11 session];
+      persistentIdentifier = [session persistentIdentifier];
+      v16 = [NSString stringWithFormat:@"%@:%@", v13, persistentIdentifier];
 
       *buf = 138543618;
       v19 = v16;
       v20 = 2112;
-      v21 = v8;
+      v21 = activityCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "scene: %{public}@ didUpdateUserActivity: %@", buf, 0x16u);
     }
 
-    [v9 mailSceneDidUpdateUserActivity:v8];
+    [v9 mailSceneDidUpdateUserActivity:activityCopy];
   }
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
-  v7 = a3;
-  v8 = a4;
+  sceneCopy = scene;
+  contextsCopy = contexts;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v7 conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([sceneCopy conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
   {
     v17 = +[NSAssertionHandler currentHandler];
     [v17 handleFailureInMethod:a2 object:self file:@"MailSceneLifecycleController.m" lineNumber:175 description:@"Scenes used with MailSceneLifecycleController should be instances of MailScene subclasses."];
   }
 
-  v9 = v7;
+  v9 = sceneCopy;
   if (objc_opt_respondsToSelector())
   {
     v10 = +[MailSceneLifecycleController log];
@@ -462,34 +462,34 @@ LABEL_18:
       v11 = v9;
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
-      v14 = [v11 session];
-      v15 = [v14 persistentIdentifier];
-      v16 = [NSString stringWithFormat:@"%@:%@", v13, v15];
+      session = [v11 session];
+      persistentIdentifier = [session persistentIdentifier];
+      v16 = [NSString stringWithFormat:@"%@:%@", v13, persistentIdentifier];
 
       *buf = 138543618;
       v19 = v16;
       v20 = 2112;
-      v21 = v8;
+      v21 = contextsCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "scene: %{public}@ openURLContexts: %@", buf, 0x16u);
     }
 
-    [v9 mailSceneOpenURLContexts:v8];
+    [v9 mailSceneOpenURLContexts:contextsCopy];
   }
 }
 
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sceneCopy = scene;
+  itemCopy = item;
+  handlerCopy = handler;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v9 conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([sceneCopy conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
   {
     v20 = +[NSAssertionHandler currentHandler];
     [v20 handleFailureInMethod:a2 object:self file:@"MailSceneLifecycleController.m" lineNumber:186 description:@"Scenes used with MailSceneLifecycleController should be instances of MailScene subclasses."];
   }
 
-  v12 = v9;
+  v12 = sceneCopy;
   if (objc_opt_respondsToSelector())
   {
     v13 = +[MailSceneLifecycleController log];
@@ -498,44 +498,44 @@ LABEL_18:
       v14 = v12;
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      v17 = [v14 session];
-      v18 = [v17 persistentIdentifier];
-      v19 = [NSString stringWithFormat:@"%@:%@", v16, v18];
+      session = [v14 session];
+      persistentIdentifier = [session persistentIdentifier];
+      v19 = [NSString stringWithFormat:@"%@:%@", v16, persistentIdentifier];
 
       *buf = 138543618;
       v22 = v19;
       v23 = 2112;
-      v24 = v10;
+      v24 = itemCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "windowScene: %{public}@ performActionForShortcutItems: %@", buf, 0x16u);
     }
 
-    [v12 mailScenePerformActionForShortcutItem:v10 completionHandler:v11];
+    [v12 mailScenePerformActionForShortcutItem:itemCopy completionHandler:handlerCopy];
   }
 }
 
-- (id)stateRestorationActivityForScene:(id)a3
+- (id)stateRestorationActivityForScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v5 conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([sceneCopy conformsToProtocol:&OBJC_PROTOCOL___MailSceneLifecycleResponder] & 1) == 0)
   {
     v16 = +[NSAssertionHandler currentHandler];
     [v16 handleFailureInMethod:a2 object:self file:@"MailSceneLifecycleController.m" lineNumber:196 description:@"Scenes used with MailSceneLifecycleController should be instances of MailScene subclasses."];
   }
 
-  v6 = v5;
+  v6 = sceneCopy;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 stateRestorationActivityForMailScene];
+    stateRestorationActivityForMailScene = [v6 stateRestorationActivityForMailScene];
     v8 = +[MailSceneLifecycleController log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = v6;
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [v9 session];
-      v13 = [v12 persistentIdentifier];
-      v14 = [NSString stringWithFormat:@"%@:%@", v11, v13];
+      session = [v9 session];
+      persistentIdentifier = [session persistentIdentifier];
+      v14 = [NSString stringWithFormat:@"%@:%@", v11, persistentIdentifier];
 
       *buf = 138543362;
       v18 = v14;
@@ -545,21 +545,21 @@ LABEL_18:
 
   else
   {
-    v7 = 0;
+    stateRestorationActivityForMailScene = 0;
   }
 
-  return v7;
+  return stateRestorationActivityForMailScene;
 }
 
-- (void)_installDebugHandlerForScene:(id)a3
+- (void)_installDebugHandlerForScene:(id)scene
 {
-  v3 = a3;
+  sceneCopy = scene;
   if (objc_opt_respondsToSelector())
   {
-    objc_initWeak(&location, v3);
+    objc_initWeak(&location, sceneCopy);
     objc_copyWeak(&v6, &location);
-    v4 = [v3 statusBarManager];
-    [v4 setDebugMenuHandler:&v5];
+    statusBarManager = [sceneCopy statusBarManager];
+    [statusBarManager setDebugMenuHandler:&v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);

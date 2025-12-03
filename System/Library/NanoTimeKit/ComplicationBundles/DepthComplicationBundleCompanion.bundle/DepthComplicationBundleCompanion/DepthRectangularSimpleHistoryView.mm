@@ -1,5 +1,5 @@
 @interface DepthRectangularSimpleHistoryView
-- (_TtC32DepthComplicationBundleCompanion33DepthRectangularSimpleHistoryView)initWithFrame:(CGRect)a3;
+- (_TtC32DepthComplicationBundleCompanion33DepthRectangularSimpleHistoryView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2EC8();
 }
 
-- (_TtC32DepthComplicationBundleCompanion33DepthRectangularSimpleHistoryView)initWithFrame:(CGRect)a3
+- (_TtC32DepthComplicationBundleCompanion33DepthRectangularSimpleHistoryView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

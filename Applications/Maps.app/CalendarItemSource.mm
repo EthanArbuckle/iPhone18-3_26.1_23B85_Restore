@@ -1,36 +1,36 @@
 @interface CalendarItemSource
 + (id)sharedDateFormatter;
-+ (id)subtitleFromEventName:(id)a3 eventDate:(id)a4;
++ (id)subtitleFromEventName:(id)name eventDate:(id)date;
 + (void)initialize;
-- (BOOL)shouldIncludeEvent:(id)a3;
+- (BOOL)shouldIncludeEvent:(id)event;
 - (CalendarItemSource)init;
 - (id)_nextUpdateDate;
 - (id)allItems;
-- (id)predicateForDateRangeSince:(id)a3;
+- (id)predicateForDateRangeSince:(id)since;
 - (id)predicateForIncompleteReminders;
-- (id)predicateForRemindersDueAfter:(id)a3;
+- (id)predicateForRemindersDueAfter:(id)after;
 - (void)_clearUpdateTimer;
 - (void)_scheduleUpdateTimer;
 - (void)_updateCalendarItems;
-- (void)applicationWillEnterForeground:(id)a3;
-- (void)dateHasChanged:(id)a3;
-- (void)excludeItemsFromSource:(id)a3;
+- (void)applicationWillEnterForeground:(id)foreground;
+- (void)dateHasChanged:(id)changed;
+- (void)excludeItemsFromSource:(id)source;
 - (void)loadCalendarItems;
-- (void)userDefaultsDidChange:(id)a3;
+- (void)userDefaultsDidChange:(id)change;
 @end
 
 @implementation CalendarItemSource
 
-- (BOOL)shouldIncludeEvent:(id)a3
+- (BOOL)shouldIncludeEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 structuredLocation];
+  eventCopy = event;
+  structuredLocation = [eventCopy structuredLocation];
 
-  if (v4 && ([v3 structuredLocation], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isPrediction"), v5, (v6 & 1) == 0))
+  if (structuredLocation && ([eventCopy structuredLocation], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isPrediction"), v5, (v6 & 1) == 0))
   {
-    v8 = [v3 selfAttendee];
-    v9 = v8;
-    v7 = !v8 || ([v8 participantStatus] & 0xFFFFFFFFFFFFFFFDLL) != 1;
+    selfAttendee = [eventCopy selfAttendee];
+    v9 = selfAttendee;
+    v7 = !selfAttendee || ([selfAttendee participantStatus] & 0xFFFFFFFFFFFFFFFDLL) != 1;
   }
 
   else
@@ -56,13 +56,13 @@
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("_updateCalendarItems", v7);
 
-    v9 = [(PersonalizedItemSource *)self->_exclusionSource allItems];
+    allItems = [(PersonalizedItemSource *)self->_exclusionSource allItems];
     v10 = +[NSMutableSet set];
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    obj = v9;
+    obj = allItems;
     v11 = [obj countByEnumeratingWithState:&v55 objects:v62 count:16];
     if (v11)
     {
@@ -77,10 +77,10 @@
             objc_enumerationMutation(obj);
           }
 
-          v15 = [*(*(&v55 + 1) + 8 * i) keys];
-          if (v15)
+          keys = [*(*(&v55 + 1) + 8 * i) keys];
+          if (keys)
           {
-            [v10 unionSet:v15];
+            [v10 unionSet:keys];
           }
         }
 
@@ -98,7 +98,7 @@
     v51 = v33;
     v34 = v8;
     v52 = v34;
-    v53 = self;
+    selfCopy = self;
     v32 = v31;
     v54 = v32;
     v16 = objc_retainBlock(v50);
@@ -125,7 +125,7 @@
           if ([(CalendarItemSource *)self shouldIncludeEvent:v22])
           {
             dispatch_group_enter(v6);
-            v23 = [v22 structuredLocation];
+            structuredLocation = [v22 structuredLocation];
             v43[0] = _NSConcreteStackBlock;
             v43[1] = 3221225472;
             v43[2] = sub_100D06878;
@@ -133,7 +133,7 @@
             v45 = v16;
             v43[4] = v22;
             v44 = v6;
-            sub_100D068FC(v23, v43);
+            sub_100D068FC(structuredLocation, v43);
           }
         }
 
@@ -143,7 +143,7 @@
       while (v19);
     }
 
-    v24 = [(CalendarItemSource *)self predicateForIncompleteReminders];
+    predicateForIncompleteReminders = [(CalendarItemSource *)self predicateForIncompleteReminders];
     dispatch_group_enter(v6);
     v25 = +[MapsSuggestionsSharedEventStore sharedEventStore];
     v40[0] = _NSConcreteStackBlock;
@@ -154,7 +154,7 @@
     v42 = v16;
     v26 = v16;
     v27 = v6;
-    v28 = [v25 fetchRemindersMatchingPredicate:v24 completion:v40];
+    v28 = [v25 fetchRemindersMatchingPredicate:predicateForIncompleteReminders completion:v40];
 
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -203,28 +203,28 @@
   return v3;
 }
 
-- (id)predicateForRemindersDueAfter:(id)a3
+- (id)predicateForRemindersDueAfter:(id)after
 {
-  v3 = a3;
+  afterCopy = after;
   v4 = +[NSCalendar currentCalendar];
   v5 = objc_alloc_init(NSDateComponents);
   [v5 setDay:7];
-  v6 = [v4 dateByAddingComponents:v5 toDate:v3 options:0];
+  v6 = [v4 dateByAddingComponents:v5 toDate:afterCopy options:0];
   v7 = +[MapsSuggestionsSharedEventStore sharedEventStore];
-  v8 = [v7 predicateForIncompleteRemindersWithDueDateStarting:v3 ending:v6 calendars:0];
+  v8 = [v7 predicateForIncompleteRemindersWithDueDateStarting:afterCopy ending:v6 calendars:0];
 
   return v8;
 }
 
-- (id)predicateForDateRangeSince:(id)a3
+- (id)predicateForDateRangeSince:(id)since
 {
-  v3 = a3;
+  sinceCopy = since;
   v4 = +[NSCalendar currentCalendar];
   v5 = objc_alloc_init(NSDateComponents);
   [v5 setDay:7];
-  v6 = [v4 dateByAddingComponents:v5 toDate:v3 options:0];
+  v6 = [v4 dateByAddingComponents:v5 toDate:sinceCopy options:0];
   v7 = +[MapsSuggestionsSharedEventStore sharedEventStore];
-  v8 = [v7 predicateForEventsWithStartDate:v3 endDate:v6 calendars:0];
+  v8 = [v7 predicateForEventsWithStartDate:sinceCopy endDate:v6 calendars:0];
 
   return v8;
 }
@@ -262,8 +262,8 @@
 
 - (void)_scheduleUpdateTimer
 {
-  v6 = [(CalendarItemSource *)self _nextUpdateDate];
-  v3 = [[NSTimer alloc] initWithFireDate:v6 interval:self target:"dateHasChanged:" selector:0 userInfo:0 repeats:0.0];
+  _nextUpdateDate = [(CalendarItemSource *)self _nextUpdateDate];
+  v3 = [[NSTimer alloc] initWithFireDate:_nextUpdateDate interval:self target:"dateHasChanged:" selector:0 userInfo:0 repeats:0.0];
   updateTimer = self->_updateTimer;
   self->_updateTimer = v3;
 
@@ -278,7 +278,7 @@
   self->_updateTimer = 0;
 }
 
-- (void)dateHasChanged:(id)a3
+- (void)dateHasChanged:(id)changed
 {
   [(CalendarItemSource *)self _clearUpdateTimer];
   [(CalendarItemSource *)self _scheduleUpdateTimer];
@@ -286,21 +286,21 @@
   [(CalendarItemSource *)self loadCalendarItems];
 }
 
-- (void)excludeItemsFromSource:(id)a3
+- (void)excludeItemsFromSource:(id)source
 {
-  objc_storeStrong(&self->_exclusionSource, a3);
-  v5 = a3;
-  [v5 addObserver:self];
+  objc_storeStrong(&self->_exclusionSource, source);
+  sourceCopy = source;
+  [sourceCopy addObserver:self];
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   [(CalendarItemSource *)self _clearUpdateTimer];
 
   [(CalendarItemSource *)self _scheduleUpdateTimer];
 }
 
-- (void)userDefaultsDidChange:(id)a3
+- (void)userDefaultsDidChange:(id)change
 {
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 BOOLForKey:@"__personalizedMapsCalendarItemsUseGenericPOI"];
@@ -365,15 +365,15 @@
   return v2;
 }
 
-+ (id)subtitleFromEventName:(id)a3 eventDate:(id)a4
++ (id)subtitleFromEventName:(id)name eventDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  dateCopy = date;
   v7 = +[CalendarItemSource sharedDateFormatter];
   v8 = v7;
-  if (v6)
+  if (dateCopy)
   {
-    v9 = [v7 stringFromDate:v6];
+    v9 = [v7 stringFromDate:dateCopy];
   }
 
   else
@@ -381,7 +381,7 @@
     v9 = 0;
   }
 
-  v10 = v5;
+  v10 = nameCopy;
   if ([v10 length])
   {
     v11 = [NSString stringWithFormat:@"\b%@\b", v10];
@@ -434,7 +434,7 @@
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CalendarItemSource;
   objc_msgSendSuper2(&v2, "initialize");
   if (qword_10195EFF8 != -1)

@@ -1,17 +1,17 @@
 @interface ADSettingsRequestHandler
-- (void)handleSiriRequest:(id)a3 deliveryHandler:(id)a4 completionHandler:(id)a5;
+- (void)handleSiriRequest:(id)request deliveryHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation ADSettingsRequestHandler
 
-- (void)handleSiriRequest:(id)a3 deliveryHandler:(id)a4 completionHandler:(id)a5
+- (void)handleSiriRequest:(id)request deliveryHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v12)
+  requestCopy = request;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  if (requestCopy)
   {
-    if (!v9)
+    if (!handlerCopy)
     {
       goto LABEL_4;
     }
@@ -22,14 +22,14 @@
   v11 = +[NSAssertionHandler currentHandler];
   [v11 handleFailureInMethod:a2 object:self file:@"ADSettingsRequestHandler.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"request"}];
 
-  if (v9)
+  if (handlerCopy)
   {
 LABEL_3:
-    v9[2](v9);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_4:
-  [v12 _ad_handleSettingsRequestWithCompletionHandler:v10];
+  [requestCopy _ad_handleSettingsRequestWithCompletionHandler:completionHandlerCopy];
 }
 
 @end

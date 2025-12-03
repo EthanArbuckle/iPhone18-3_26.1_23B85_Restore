@@ -1,21 +1,21 @@
 @interface CPSMapButton
-+ (id)buttonWithCPMapButton:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)setButtonFocusedImage:(id)a3;
-- (void)setButtonImage:(id)a3;
++ (id)buttonWithCPMapButton:(id)button;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)setButtonFocusedImage:(id)image;
+- (void)setButtonImage:(id)image;
 - (void)updateConfiguration;
 @end
 
 @implementation CPSMapButton
 
-+ (id)buttonWithCPMapButton:(id)a3
++ (id)buttonWithCPMapButton:(id)button
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v24 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v21.receiver = v24;
+  objc_storeStrong(location, button);
+  v21.receiver = selfCopy;
   v21.super_class = &OBJC_METACLASS___CPSMapButton;
   v22 = objc_msgSendSuper2(&v21, sel_buttonWithType_, 0);
   [v22 setMapButton:location[0]];
@@ -23,23 +23,23 @@
   if (v22)
   {
     v15 = v22;
-    v16 = [location[0] identifier];
+    identifier = [location[0] identifier];
     [v15 setIdentifier:?];
-    *&v3 = MEMORY[0x277D82BD8](v16).n128_u64[0];
-    v4 = [location[0] isEnabled];
-    [v22 setEnabled:v4];
-    v5 = [location[0] isHidden];
-    [v22 setHidden:v5];
-    v18 = [v22 mapButton];
-    v17 = [v18 image];
+    *&v3 = MEMORY[0x277D82BD8](identifier).n128_u64[0];
+    isEnabled = [location[0] isEnabled];
+    [v22 setEnabled:isEnabled];
+    isHidden = [location[0] isHidden];
+    [v22 setHidden:isHidden];
+    mapButton = [v22 mapButton];
+    image = [mapButton image];
     [v22 setButtonImage:?];
-    MEMORY[0x277D82BD8](v17);
-    *&v6 = MEMORY[0x277D82BD8](v18).n128_u64[0];
-    v20 = [v22 mapButton];
-    v19 = [v20 focusedImage];
+    MEMORY[0x277D82BD8](image);
+    *&v6 = MEMORY[0x277D82BD8](mapButton).n128_u64[0];
+    mapButton2 = [v22 mapButton];
+    focusedImage = [mapButton2 focusedImage];
     [v22 setButtonFocusedImage:?];
-    MEMORY[0x277D82BD8](v19);
-    *&v7 = MEMORY[0x277D82BD8](v20).n128_u64[0];
+    MEMORY[0x277D82BD8](focusedImage);
+    *&v7 = MEMORY[0x277D82BD8](mapButton2).n128_u64[0];
     [v22 updateConfiguration];
   }
 
@@ -60,27 +60,27 @@
   return v14;
 }
 
-- (void)setButtonImage:(id)a3
+- (void)setButtonImage:(id)image
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, image);
   CGSizeMake_3();
   v3 = CPUIImageByScalingImageToSize();
-  buttonImage = v7->_buttonImage;
-  v7->_buttonImage = v3;
+  buttonImage = selfCopy->_buttonImage;
+  selfCopy->_buttonImage = v3;
   *&v5 = MEMORY[0x277D82BD8](buttonImage).n128_u64[0];
-  [(CPSMapButton *)v7 setNeedsUpdateConfiguration];
+  [(CPSMapButton *)selfCopy setNeedsUpdateConfiguration];
   objc_storeStrong(location, 0);
 }
 
-- (void)setButtonFocusedImage:(id)a3
+- (void)setButtonFocusedImage:(id)image
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, image);
   v11 = location[0] == 0;
   if (location[0])
   {
@@ -89,7 +89,7 @@
 
   else
   {
-    v3 = MEMORY[0x277D82BE0](v13->_buttonImage);
+    v3 = MEMORY[0x277D82BE0](selfCopy->_buttonImage);
   }
 
   v10 = v3;
@@ -102,52 +102,52 @@
     *&v6 = MEMORY[0x277D82BD8](v5).n128_u64[0];
     if (v11)
     {
-      v9 = [MEMORY[0x277D75348] _carSystemFocusColor];
+      _carSystemFocusColor = [MEMORY[0x277D75348] _carSystemFocusColor];
       v7 = [v10 _flatImageWithColor:?];
       v8 = v10;
       v10 = v7;
       MEMORY[0x277D82BD8](v8);
-      MEMORY[0x277D82BD8](v9);
+      MEMORY[0x277D82BD8](_carSystemFocusColor);
     }
   }
 
-  objc_storeStrong(&v13->_buttonFocusedImage, v10);
-  v13->_hasFocusedImage = !v11;
-  [(CPSMapButton *)v13 setNeedsUpdateConfiguration];
+  objc_storeStrong(&selfCopy->_buttonFocusedImage, v10);
+  selfCopy->_hasFocusedImage = !v11;
+  [(CPSMapButton *)selfCopy setNeedsUpdateConfiguration];
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v10.receiver = v13;
+  objc_storeStrong(&v11, coordinator);
+  v10.receiver = selfCopy;
   v10.super_class = CPSMapButton;
   [(CPSMapButton *)&v10 didUpdateFocusInContext:location[0] withAnimationCoordinator:v11];
-  v6 = [location[0] nextFocusedItem];
+  nextFocusedItem = [location[0] nextFocusedItem];
   v8 = 0;
   v7 = 1;
-  if (v6 != v13)
+  if (nextFocusedItem != selfCopy)
   {
-    v9 = [location[0] previouslyFocusedItem];
+    previouslyFocusedItem = [location[0] previouslyFocusedItem];
     v8 = 1;
-    v7 = v9 == v13;
+    v7 = previouslyFocusedItem == selfCopy;
   }
 
   if (v8)
   {
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](previouslyFocusedItem);
   }
 
-  *&v4 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+  *&v4 = MEMORY[0x277D82BD8](nextFocusedItem).n128_u64[0];
   if (v7)
   {
-    [(CPSMapButton *)v13 setNeedsUpdateConfiguration];
+    [(CPSMapButton *)selfCopy setNeedsUpdateConfiguration];
   }
 
   objc_storeStrong(&v11, 0);
@@ -157,121 +157,121 @@
 - (void)updateConfiguration
 {
   v31 = *MEMORY[0x277D85DE8];
-  v29 = self;
+  selfCopy = self;
   v28 = a2;
-  v10 = 1;
+  isSelected = 1;
   if (([(CPSMapButton *)self isFocused]& 1) == 0)
   {
-    v10 = 1;
-    if (([(CPSMapButton *)v29 isHighlighted]& 1) == 0)
+    isSelected = 1;
+    if (([(CPSMapButton *)selfCopy isHighlighted]& 1) == 0)
     {
-      v10 = [(CPSMapButton *)v29 isSelected];
+      isSelected = [(CPSMapButton *)selfCopy isSelected];
     }
   }
 
-  v27 = v10 & 1;
+  v27 = isSelected & 1;
   v24 = 0;
   v22 = 0;
-  if ((v10 & 1) == 0 || [(CPSMapButton *)v29 hasFocusedImage])
+  if ((isSelected & 1) == 0 || [(CPSMapButton *)selfCopy hasFocusedImage])
   {
-    v23 = [MEMORY[0x277D75230] _glassButtonConfiguration];
+    _glassButtonConfiguration = [MEMORY[0x277D75230] _glassButtonConfiguration];
     v22 = 1;
-    v2 = MEMORY[0x277D82BE0](v23);
+    v2 = MEMORY[0x277D82BE0](_glassButtonConfiguration);
   }
 
   else
   {
-    v25 = [MEMORY[0x277D75230] _tintedGlassButtonConfiguration];
+    _tintedGlassButtonConfiguration = [MEMORY[0x277D75230] _tintedGlassButtonConfiguration];
     v24 = 1;
-    v2 = MEMORY[0x277D82BE0](v25);
+    v2 = MEMORY[0x277D82BE0](_tintedGlassButtonConfiguration);
   }
 
   v26 = v2;
   if (v22)
   {
-    MEMORY[0x277D82BD8](v23);
+    MEMORY[0x277D82BD8](_glassButtonConfiguration);
   }
 
   if (v24)
   {
-    MEMORY[0x277D82BD8](v25);
+    MEMORY[0x277D82BD8](_tintedGlassButtonConfiguration);
   }
 
   v20 = 0;
   v18 = 0;
-  if (([(CPSMapButton *)v29 isFocused]& 1) != 0)
+  if (([(CPSMapButton *)selfCopy isFocused]& 1) != 0)
   {
-    v21 = [(CPSMapButton *)v29 buttonFocusedImage];
+    buttonFocusedImage = [(CPSMapButton *)selfCopy buttonFocusedImage];
     v20 = 1;
-    v9 = v21;
+    v9 = buttonFocusedImage;
   }
 
   else
   {
-    v19 = [(CPSMapButton *)v29 buttonImage];
+    buttonImage = [(CPSMapButton *)selfCopy buttonImage];
     v18 = 1;
-    v9 = v19;
+    v9 = buttonImage;
   }
 
   [v26 setImage:v9];
   if (v18)
   {
-    MEMORY[0x277D82BD8](v19);
+    MEMORY[0x277D82BD8](buttonImage);
   }
 
   if (v20)
   {
-    MEMORY[0x277D82BD8](v21);
+    MEMORY[0x277D82BD8](buttonFocusedImage);
   }
 
   location = CarPlaySupportGeneralLogging();
   v16 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(location, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(CPSMapButton *)v29 buttonFocusedImage];
-    v7 = [(UIImage *)v8 description];
-    v6 = [(CPSMapButton *)v29 buttonImage];
-    v5 = [(UIImage *)v6 description];
+    buttonFocusedImage2 = [(CPSMapButton *)selfCopy buttonFocusedImage];
+    v7 = [(UIImage *)buttonFocusedImage2 description];
+    buttonImage2 = [(CPSMapButton *)selfCopy buttonImage];
+    v5 = [(UIImage *)buttonImage2 description];
     __os_log_helper_16_2_2_8_66_8_66(v30, v7, v5);
     _os_log_impl(&dword_242FE8000, location, v16, "CPSMapButton Focused Image: %{public}@ Unfocused Image: %{public}@", v30, 0x16u);
     MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](buttonImage2);
     MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](buttonFocusedImage2);
   }
 
   objc_storeStrong(&location, 0);
-  v15 = [MEMORY[0x277D751C0] clearConfiguration];
-  [v15 setCornerRadius:18.0];
+  clearConfiguration = [MEMORY[0x277D751C0] clearConfiguration];
+  [clearConfiguration setCornerRadius:18.0];
   v13 = 0;
   v11 = 0;
-  if ((v27 & 1) == 0 || [(CPSMapButton *)v29 hasFocusedImage])
+  if ((v27 & 1) == 0 || [(CPSMapButton *)selfCopy hasFocusedImage])
   {
-    v12 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
     v11 = 1;
-    v4 = v12;
+    v4 = clearColor;
   }
 
   else
   {
-    v14 = [MEMORY[0x277D75348] _carSystemFocusColor];
+    _carSystemFocusColor = [MEMORY[0x277D75348] _carSystemFocusColor];
     v13 = 1;
-    v4 = v14;
+    v4 = _carSystemFocusColor;
   }
 
-  [v15 setBackgroundColor:v4];
+  [clearConfiguration setBackgroundColor:v4];
   if (v11)
   {
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](clearColor);
   }
 
   if (v13)
   {
-    MEMORY[0x277D82BD8](v14);
+    MEMORY[0x277D82BD8](_carSystemFocusColor);
   }
 
-  [v26 setBackground:{v15, &v15}];
-  [(CPSMapButton *)v29 setConfiguration:v26];
+  [v26 setBackground:{clearConfiguration, &clearConfiguration}];
+  [(CPSMapButton *)selfCopy setConfiguration:v26];
   objc_storeStrong(v3, 0);
   objc_storeStrong(&v26, 0);
 }

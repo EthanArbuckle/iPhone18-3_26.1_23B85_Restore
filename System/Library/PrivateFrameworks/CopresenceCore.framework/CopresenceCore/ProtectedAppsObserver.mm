@@ -1,6 +1,6 @@
 @interface ProtectedAppsObserver
 - (_TtC14CopresenceCore21ProtectedAppsObserver)init;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 @end
 
 @implementation ProtectedAppsObserver
@@ -21,12 +21,12 @@
   return v5;
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   type metadata accessor for APSubject();
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   specialized ProtectedAppsObserver.appProtectionSubjectsChanged(_:for:)(v5);
   swift_unknownObjectRelease();
 }

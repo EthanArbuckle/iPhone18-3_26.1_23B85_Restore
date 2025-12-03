@@ -1,27 +1,27 @@
 @interface REElementUserActivityShortcutAction
-- (BOOL)isEqual:(id)a3;
-- (REElementUserActivityShortcutAction)initWithUserActivity:(id)a3 applicationID:(id)a4 isLocalDonation:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REElementUserActivityShortcutAction)initWithUserActivity:(id)activity applicationID:(id)d isLocalDonation:(BOOL)donation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_submitMetricsWithSuccess:(BOOL)a3;
+- (void)_submitMetricsWithSuccess:(BOOL)success;
 @end
 
 @implementation REElementUserActivityShortcutAction
 
-- (REElementUserActivityShortcutAction)initWithUserActivity:(id)a3 applicationID:(id)a4 isLocalDonation:(BOOL)a5
+- (REElementUserActivityShortcutAction)initWithUserActivity:(id)activity applicationID:(id)d isLocalDonation:(BOOL)donation
 {
   v7.receiver = self;
   v7.super_class = REElementUserActivityShortcutAction;
-  result = [(REElementUserActivityAction *)&v7 initWithUserActivity:a3 applicationID:a4];
+  result = [(REElementUserActivityAction *)&v7 initWithUserActivity:activity applicationID:d];
   if (result)
   {
-    result->_isLocalDonation = a5;
+    result->_isLocalDonation = donation;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = REElementUserActivityShortcutAction;
@@ -30,32 +30,32 @@
   return result;
 }
 
-- (void)_submitMetricsWithSuccess:(BOOL)a3
+- (void)_submitMetricsWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   v12 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:6];
   [v12 setObject:@"activityAppLaunch" forKey:@"actionType"];
-  v5 = [(REElementUserActivityShortcutAction *)self isLocalDonation];
+  isLocalDonation = [(REElementUserActivityShortcutAction *)self isLocalDonation];
   v6 = RELocal;
-  if (!v5)
+  if (!isLocalDonation)
   {
     v6 = RERemote;
   }
 
   [v12 setObject:*v6 forKey:@"deviceSource"];
   v7 = RETrue;
-  if (!v3)
+  if (!successCopy)
   {
     v7 = REFalse;
   }
 
   [v12 setObject:*v7 forKey:@"success"];
-  v8 = [(REElementUserActivityAction *)self applicationID];
-  v9 = v8;
+  applicationID = [(REElementUserActivityAction *)self applicationID];
+  v9 = applicationID;
   v10 = @"unknown";
-  if (v8)
+  if (applicationID)
   {
-    v10 = v8;
+    v10 = applicationID;
   }
 
   v11 = v10;
@@ -71,13 +71,13 @@
   return [(REElementUserActivityAction *)&v3 hash]^ self->_isLocalDonation;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v8.receiver = self;
     v8.super_class = REElementUserActivityShortcutAction;
     if ([(REElementUserActivityAction *)&v8 isEqual:v5])

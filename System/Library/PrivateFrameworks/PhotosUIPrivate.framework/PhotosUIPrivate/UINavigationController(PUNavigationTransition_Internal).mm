@@ -6,10 +6,10 @@
 
 - (double)px_imageModulationIntensityWithProposedValue:()PUNavigationTransition_Internal
 {
-  v3 = [a1 pu_currentNavigationTransition];
-  if ([v3 isInteractive])
+  pu_currentNavigationTransition = [self pu_currentNavigationTransition];
+  if ([pu_currentNavigationTransition isInteractive])
   {
-    [v3 imageModulationIntensity];
+    [pu_currentNavigationTransition imageModulationIntensity];
     a2 = v4;
   }
 

@@ -1,15 +1,15 @@
 @interface BuddyFinishedControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation BuddyFinishedControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BuddyFinishedController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"BuddyFinishedController" hasProperty:@"instructionalLabel" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BuddyFinishedController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"BuddyFinishedController" hasProperty:@"instructionalLabel" withType:"@"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

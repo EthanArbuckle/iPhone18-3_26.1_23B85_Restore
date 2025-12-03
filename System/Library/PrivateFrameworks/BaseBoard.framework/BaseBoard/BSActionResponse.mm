@@ -1,17 +1,17 @@
 @interface BSActionResponse
-+ (BSActionResponse)responseWithInfo:(id)a3;
++ (BSActionResponse)responseWithInfo:(id)info;
 + (id)response;
-+ (id)responseForError:(id)a3;
-+ (id)responseForErrorCode:(uint64_t)a1;
++ (id)responseForError:(id)error;
++ (id)responseForErrorCode:(uint64_t)code;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (BSActionResponse)initWithInfo:(id)a3 error:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BSActionResponse)initWithInfo:(id)info error:(id)error;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)membersForCoder;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)_setAuditToken:(uint64_t)a1;
+- (void)_setAuditToken:(uint64_t)token;
 - (void)dealloc;
 @end
 
@@ -27,10 +27,10 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    BSXPCAutoCodingInitialize(a1, &__block_literal_global_35);
+    BSXPCAutoCodingInitialize(self, &__block_literal_global_35);
   }
 }
 
@@ -96,12 +96,12 @@ void __30__BSActionResponse_initialize__block_invoke(uint64_t a1, void *a2)
 
 + (id)response
 {
-  v2 = [[a1 alloc] initWithInfo:0 error:0];
+  v2 = [[self alloc] initWithInfo:0 error:0];
 
   return v2;
 }
 
-+ (id)responseForErrorCode:(uint64_t)a1
++ (id)responseForErrorCode:(uint64_t)code
 {
   v10[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -116,10 +116,10 @@ void __30__BSActionResponse_initialize__block_invoke(uint64_t a1, void *a2)
   return v7;
 }
 
-- (BSActionResponse)initWithInfo:(id)a3 error:(id)a4
+- (BSActionResponse)initWithInfo:(id)info error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  errorCopy = error;
   if (self)
   {
     v11.receiver = self;
@@ -127,40 +127,40 @@ void __30__BSActionResponse_initialize__block_invoke(uint64_t a1, void *a2)
     self = [(BSActionResponse *)&v11 init];
     if (self)
     {
-      v8 = [v6 copy];
+      v8 = [infoCopy copy];
       info = self->_info;
       self->_info = v8;
 
       [(BSSettings *)self->_info setDescriptionProvider:self];
-      objc_storeStrong(&self->_error, a4);
+      objc_storeStrong(&self->_error, error);
     }
   }
 
   return self;
 }
 
-+ (BSActionResponse)responseWithInfo:(id)a3
++ (BSActionResponse)responseWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithInfo:v4 error:0];
+  infoCopy = info;
+  v5 = [[self alloc] initWithInfo:infoCopy error:0];
 
   return v5;
 }
 
-+ (id)responseForError:(id)a3
++ (id)responseForError:(id)error
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithInfo:0 error:v4];
+  errorCopy = error;
+  v5 = [[self alloc] initWithInfo:0 error:errorCopy];
 
   return v5;
 }
 
-- (void)_setAuditToken:(uint64_t)a1
+- (void)_setAuditToken:(uint64_t)token
 {
   v4 = a2;
-  if (a1)
+  if (token)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((token + 24), a2);
   }
 }
 
@@ -174,14 +174,14 @@ void __30__BSActionResponse_initialize__block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
+  equalCopy = equal;
+  v5 = equalCopy;
   v7 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
-    if (!v4 || (v6 = objc_opt_class(), v6 != objc_opt_class()) || (info = self->_info, info != v5->_info) && ![(BSSettings *)info isEqual:?]|| (error = self->_error, error != v5->_error) && ![(NSError *)error isEqual:?])
+    if (!equalCopy || (v6 = objc_opt_class(), v6 != objc_opt_class()) || (info = self->_info, info != v5->_info) && ![(BSSettings *)info isEqual:?]|| (error = self->_error, error != v5->_error) && ![(NSError *)error isEqual:?])
     {
       v7 = 0;
     }
@@ -192,24 +192,24 @@ void __30__BSActionResponse_initialize__block_invoke(uint64_t a1, void *a2)
 
 - (id)succinctDescription
 {
-  v2 = [(BSActionResponse *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSActionResponse *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSActionResponse *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSActionResponse *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(BSActionResponse *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(BSActionResponse *)self succinctDescriptionBuilder];
   info = self->_info;
   if (info && ![(BSSettings *)info isEmpty])
   {
@@ -217,17 +217,17 @@ void __30__BSActionResponse_initialize__block_invoke(uint64_t a1, void *a2)
     v9[1] = 3221225472;
     v9[2] = __58__BSActionResponse_descriptionBuilderWithMultilinePrefix___block_invoke;
     v9[3] = &unk_1E72CACC0;
-    v10 = v5;
-    v11 = self;
-    [v10 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+    v10 = succinctDescriptionBuilder;
+    selfCopy = self;
+    [v10 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
   }
 
   else
   {
-    v7 = [v5 appendObject:self->_error withName:@"error" skipIfNil:1];
+    v7 = [succinctDescriptionBuilder appendObject:self->_error withName:@"error" skipIfNil:1];
   }
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
 @end

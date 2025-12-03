@@ -1,7 +1,7 @@
 @interface CLPCReportingSchema
 - (CLPCReportingSchema)init;
 - (void)finalizeColumns;
-- (void)stageColumn:(uint64_t)a1;
+- (void)stageColumn:(uint64_t)column;
 @end
 
 @implementation CLPCReportingSchema
@@ -15,13 +15,13 @@
   if (v2)
   {
     v2->_schemaID = 0;
-    v4 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     columns = v3->_columns;
-    v3->_columns = v4;
+    v3->_columns = array;
 
-    v6 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     stagedColumns = v3->stagedColumns;
-    v3->stagedColumns = v6;
+    v3->stagedColumns = array2;
 
     v8 = v3;
   }
@@ -31,23 +31,23 @@
 
 - (void)finalizeColumns
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x277CBEA60] arrayWithArray:*(a1 + 8)];
-    v3 = *(a1 + 24);
-    *(a1 + 24) = v2;
+    v2 = [MEMORY[0x277CBEA60] arrayWithArray:*(self + 8)];
+    v3 = *(self + 24);
+    *(self + 24) = v2;
 
-    v4 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    v4 = *(self + 8);
+    *(self + 8) = 0;
   }
 }
 
-- (void)stageColumn:(uint64_t)a1
+- (void)stageColumn:(uint64_t)column
 {
   v3 = a2;
-  if (a1)
+  if (column)
   {
-    [*(a1 + 8) addObject:v3];
+    [*(column + 8) addObject:v3];
   }
 }
 

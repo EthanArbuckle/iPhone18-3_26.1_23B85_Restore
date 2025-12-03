@@ -1,22 +1,22 @@
 @interface AVCaptureSynchronizedCameraCalibrationData
 - (AVCameraCalibrationData)cameraCalibrationData;
-- (id)_initWithCameraCalibrationData:(id)a3 timestamp:(id *)a4 cameraCalibrationDataWasDropped:(BOOL)a5 droppedReason:(int64_t)a6;
+- (id)_initWithCameraCalibrationData:(id)data timestamp:(id *)timestamp cameraCalibrationDataWasDropped:(BOOL)dropped droppedReason:(int64_t)reason;
 - (void)dealloc;
 @end
 
 @implementation AVCaptureSynchronizedCameraCalibrationData
 
-- (id)_initWithCameraCalibrationData:(id)a3 timestamp:(id *)a4 cameraCalibrationDataWasDropped:(BOOL)a5 droppedReason:(int64_t)a6
+- (id)_initWithCameraCalibrationData:(id)data timestamp:(id *)timestamp cameraCalibrationDataWasDropped:(BOOL)dropped droppedReason:(int64_t)reason
 {
   v12.receiver = self;
   v12.super_class = AVCaptureSynchronizedCameraCalibrationData;
-  v11 = *a4;
+  v11 = *timestamp;
   v9 = [(AVCaptureSynchronizedData *)&v12 _initWithTimestamp:&v11];
   if (v9)
   {
-    v9[2] = a3;
-    *(v9 + 24) = a5;
-    v9[4] = a6;
+    v9[2] = data;
+    *(v9 + 24) = dropped;
+    v9[4] = reason;
   }
 
   return v9;

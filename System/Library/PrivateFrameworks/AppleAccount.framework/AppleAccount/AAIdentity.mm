@@ -1,8 +1,8 @@
 @interface AAIdentity
 - (AAIdentity)init;
-- (AAIdentity)initWithCoder:(id)a3;
+- (AAIdentity)initWithCoder:(id)coder;
 - (NSUUID)identifier;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AAIdentity
@@ -28,25 +28,25 @@
   return result;
 }
 
-- (AAIdentity)initWithCoder:(id)a3
+- (AAIdentity)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_1B700C868();
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = sub_1B70557A0();
   v7 = sub_1B7055820();
-  [v4 encodeObject:v6 forKey:v7];
+  [coderCopy encodeObject:v6 forKey:v7];
 
-  v8 = *(v5 + OBJC_IVAR___AAIdentity_avatar);
+  v8 = *(selfCopy + OBJC_IVAR___AAIdentity_avatar);
   v9 = sub_1B7055820();
-  [v4 encodeObject:v8 forKey:v9];
+  [coderCopy encodeObject:v8 forKey:v9];
 }
 
 @end

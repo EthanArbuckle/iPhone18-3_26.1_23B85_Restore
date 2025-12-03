@@ -1,13 +1,13 @@
 @interface ARCoachingSpline
-+ (double)interpolate:(float32x4_t)a1 p1:(float32x4_t)a2 p2:(float32x4_t)a3 p3:(float32x4_t)a4 t:(float)a5;
-+ (double)interpolateTangent:(float32x4_t)a1 p1:(float32x4_t)a2 p2:(float32x4_t)a3 p3:(float32x4_t)a4 t:(float)a5;
++ (double)interpolate:(float32x4_t)interpolate p1:(float32x4_t)p1 p2:(float32x4_t)p2 p3:(float32x4_t)p3 t:(float)t;
++ (double)interpolateTangent:(float32x4_t)tangent p1:(float32x4_t)p1 p2:(float32x4_t)p2 p3:(float32x4_t)p3 t:(float)t;
 - ($3BA783FF50B239963188BE194EBFFEBA)controlPoints;
 - ($8EF4127CF77ECA3DDB612FCF233DC3A8)patchData;
-- (ARCoachingSpline)initWithPoints:(ARCoachingSpline *)self numPoints:(SEL)a2 relativeThickness:pattern:mat:;
+- (ARCoachingSpline)initWithPoints:(ARCoachingSpline *)self numPoints:(SEL)points relativeThickness:pattern:mat:;
 - (id).cxx_construct;
 - (unsigned)indices;
-- (void)genRightCapWithWidth:(float)a3;
-- (void)genTubeIndicesWithPattern:(unint64_t)a3;
+- (void)genRightCapWithWidth:(float)width;
+- (void)genTubeIndicesWithPattern:(unint64_t)pattern;
 @end
 
 @implementation ARCoachingSpline
@@ -51,7 +51,7 @@
   }
 }
 
-- (ARCoachingSpline)initWithPoints:(ARCoachingSpline *)self numPoints:(SEL)a2 relativeThickness:pattern:mat:
+- (ARCoachingSpline)initWithPoints:(ARCoachingSpline *)self numPoints:(SEL)points relativeThickness:pattern:mat:
 {
   v10 = v4;
   v11 = v3;
@@ -156,7 +156,7 @@
   return v15;
 }
 
-- (void)genRightCapWithWidth:(float)a3
+- (void)genRightCapWithWidth:(float)width
 {
   v40 = *MEMORY[0x277D85DE8];
   begin = self->_controlPoints.__begin_;
@@ -176,7 +176,7 @@
   *&v17 = v16.f32[2] + vaddv_f32(*v16.f32);
   *v16.f32 = vrsqrte_f32(v17);
   *v16.f32 = vmul_f32(*v16.f32, vrsqrts_f32(v17, vmul_f32(*v16.f32, *v16.f32)));
-  _Q0 = vmulq_n_f32(vmulq_n_f32(v15, vmul_f32(*v16.f32, vrsqrts_f32(v17, vmul_f32(*v16.f32, *v16.f32))).f32[0]), a3);
+  _Q0 = vmulq_n_f32(vmulq_n_f32(v15, vmul_f32(*v16.f32, vrsqrts_f32(v17, vmul_f32(*v16.f32, *v16.f32))).f32[0]), width);
   v19 = vdupq_n_s32(0x3F7FBE77u);
   v20 = vmlaq_f32(v27, v19, _Q0);
   v19.i32[0] = HIDWORD(p_controlPoints[3].__begin_);
@@ -211,11 +211,11 @@
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)genTubeIndicesWithPattern:(unint64_t)a3
+- (void)genTubeIndicesWithPattern:(unint64_t)pattern
 {
-  if (a3)
+  if (pattern)
   {
-    if (a3 == 1)
+    if (pattern == 1)
     {
       LOWORD(v19) = 0;
       std::vector<unsigned short>::push_back[abi:ne200100](&self->_indices.__begin_, &v19);
@@ -265,7 +265,7 @@
       std::vector<ARCoachingPatchData>::push_back[abi:ne200100](&self->_patchData, &v19);
     }
 
-    else if (a3 == 2)
+    else if (pattern == 2)
     {
       v4 = self->_controlPoints.__end_ - self->_controlPoints.__begin_;
       if (v4)
@@ -320,37 +320,37 @@
   }
 }
 
-+ (double)interpolate:(float32x4_t)a1 p1:(float32x4_t)a2 p2:(float32x4_t)a3 p3:(float32x4_t)a4 t:(float)a5
++ (double)interpolate:(float32x4_t)interpolate p1:(float32x4_t)p1 p2:(float32x4_t)p2 p3:(float32x4_t)p3 t:(float)t
 {
   __asm { FMOV            V5.4S, #3.0 }
 
-  v10 = vsubq_f32(vmlaq_f32(vmlsq_f32(a4, _Q5, a3), _Q5, a2), a1);
+  v10 = vsubq_f32(vmlaq_f32(vmlsq_f32(p3, _Q5, p2), _Q5, p1), interpolate);
   __asm { FMOV            V6.4S, #-6.0 }
 
-  v12 = vmlaq_f32(vmlaq_f32(vmulq_f32(a2, _Q6), _Q5, a3), _Q5, a1);
+  v12 = vmlaq_f32(vmlaq_f32(vmulq_f32(p1, _Q6), _Q5, p2), _Q5, interpolate);
   __asm { FMOV            V7.4S, #-3.0 }
 
-  v14 = vmlaq_f32(vmulq_f32(a1, _Q7), _Q5, a3);
+  v14 = vmlaq_f32(vmulq_f32(interpolate, _Q7), _Q5, p2);
   __asm { FMOV            V5.4S, #4.0 }
 
-  v16 = vmlaq_n_f32(vaddq_f32(a1, vmlaq_f32(a3, _Q5, a2)), vmlaq_n_f32(v14, vmlaq_n_f32(v12, v10, a5), a5), a5);
+  v16 = vmlaq_n_f32(vaddq_f32(interpolate, vmlaq_f32(p2, _Q5, p1)), vmlaq_n_f32(v14, vmlaq_n_f32(v12, v10, t), t), t);
   __asm { FMOV            V1.4S, #6.0 }
 
   *&result = vdivq_f32(v16, _Q1).u64[0];
   return result;
 }
 
-+ (double)interpolateTangent:(float32x4_t)a1 p1:(float32x4_t)a2 p2:(float32x4_t)a3 p3:(float32x4_t)a4 t:(float)a5
++ (double)interpolateTangent:(float32x4_t)tangent p1:(float32x4_t)p1 p2:(float32x4_t)p2 p3:(float32x4_t)p3 t:(float)t
 {
   __asm { FMOV            V5.4S, #3.0 }
 
-  v10 = vsubq_f32(vmlaq_f32(vmlsq_f32(a4, _Q5, a3), _Q5, a2), a1);
+  v10 = vsubq_f32(vmlaq_f32(vmlsq_f32(p3, _Q5, p2), _Q5, p1), tangent);
   __asm { FMOV            V6.4S, #-6.0 }
 
-  v12 = vmlaq_f32(vmlaq_f32(vmulq_f32(a2, _Q6), _Q5, a3), _Q5, a1);
+  v12 = vmlaq_f32(vmlaq_f32(vmulq_f32(p1, _Q6), _Q5, p2), _Q5, tangent);
   __asm { FMOV            V6.4S, #-3.0 }
 
-  v14 = vaddq_f32(vmlaq_f32(vmulq_f32(a1, _Q6), _Q5, a3), vmlaq_n_f32(vmulq_n_f32(vmlaq_n_f32(v12, v10, a5), a5), vmlaq_n_f32(v12, vaddq_f32(v10, v10), a5), a5));
+  v14 = vaddq_f32(vmlaq_f32(vmulq_f32(tangent, _Q6), _Q5, p2), vmlaq_n_f32(vmulq_n_f32(vmlaq_n_f32(v12, v10, t), t), vmlaq_n_f32(v12, vaddq_f32(v10, v10), t), t));
   __asm { FMOV            V1.4S, #6.0 }
 
   *&result = vdivq_f32(v14, _Q1).u64[0];

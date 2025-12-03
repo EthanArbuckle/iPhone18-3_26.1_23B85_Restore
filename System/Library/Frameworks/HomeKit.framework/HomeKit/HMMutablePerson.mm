@@ -1,17 +1,17 @@
 @interface HMMutablePerson
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMMutablePerson
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMPerson allocWithZone:a3];
-  v5 = [(HMPerson *)self UUID];
-  v6 = [(HMPerson *)self name];
-  v7 = [(HMPerson *)self personLinks];
-  v8 = [(HMPerson *)self externalPersonUUID];
-  v9 = [(HMPerson *)v4 initWithUUID:v5 name:v6 personLinks:v7 externalPersonUUID:v8];
+  v4 = [HMPerson allocWithZone:zone];
+  uUID = [(HMPerson *)self UUID];
+  name = [(HMPerson *)self name];
+  personLinks = [(HMPerson *)self personLinks];
+  externalPersonUUID = [(HMPerson *)self externalPersonUUID];
+  v9 = [(HMPerson *)v4 initWithUUID:uUID name:name personLinks:personLinks externalPersonUUID:externalPersonUUID];
 
   return v9;
 }

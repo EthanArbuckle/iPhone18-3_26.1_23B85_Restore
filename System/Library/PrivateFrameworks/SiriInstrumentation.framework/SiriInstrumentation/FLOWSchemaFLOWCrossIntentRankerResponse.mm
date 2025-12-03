@@ -1,27 +1,27 @@
 @interface FLOWSchemaFLOWCrossIntentRankerResponse
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWCrossIntentRankerResponse)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWCrossIntentRankerResponse)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWCrossIntentRankerResponse)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWCrossIntentRankerResponse)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addCrossDomainRankerScoreKeeper:(id)a3;
-- (void)addCrossIntentRankerScoreKeeper:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCrossDomainRankerScoreKeeper:(id)keeper;
+- (void)addCrossIntentRankerScoreKeeper:(id)keeper;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWCrossIntentRankerResponse
 
-- (FLOWSchemaFLOWCrossIntentRankerResponse)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWCrossIntentRankerResponse)initWithDictionary:(id)dictionary
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = FLOWSchemaFLOWCrossIntentRankerResponse;
   v5 = [(FLOWSchemaFLOWCrossIntentRankerResponse *)&v32 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"crossDomainRankerScoreKeeper"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"crossDomainRankerScoreKeeper"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"crossIntentRankerScoreKeeper"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"crossIntentRankerScoreKeeper"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -113,30 +113,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWCrossIntentRankerResponse)initWithJSON:(id)a3
+- (FLOWSchemaFLOWCrossIntentRankerResponse)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -149,48 +149,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_crossDomainRankerScoreKeepers)
   {
-    v4 = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self crossDomainRankerScoreKeepers];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"crossDomainRankerScoreKeeper"];
+    crossDomainRankerScoreKeepers = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self crossDomainRankerScoreKeepers];
+    v5 = [crossDomainRankerScoreKeepers copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"crossDomainRankerScoreKeeper"];
   }
 
   if (self->_crossIntentRankerScoreKeepers)
   {
-    v6 = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self crossIntentRankerScoreKeepers];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"crossIntentRankerScoreKeeper"];
+    crossIntentRankerScoreKeepers = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self crossIntentRankerScoreKeepers];
+    v7 = [crossIntentRankerScoreKeepers copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"crossIntentRankerScoreKeeper"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self crossDomainRankerScoreKeepers];
-  v6 = [v4 crossDomainRankerScoreKeepers];
-  if ((v5 != 0) == (v6 == 0))
+  crossDomainRankerScoreKeepers = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self crossDomainRankerScoreKeepers];
+  crossDomainRankerScoreKeepers2 = [equalCopy crossDomainRankerScoreKeepers];
+  if ((crossDomainRankerScoreKeepers != 0) == (crossDomainRankerScoreKeepers2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self crossDomainRankerScoreKeepers];
-  if (v7)
+  crossDomainRankerScoreKeepers3 = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self crossDomainRankerScoreKeepers];
+  if (crossDomainRankerScoreKeepers3)
   {
-    v8 = v7;
-    v9 = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self crossDomainRankerScoreKeepers];
-    v10 = [v4 crossDomainRankerScoreKeepers];
-    v11 = [v9 isEqual:v10];
+    v8 = crossDomainRankerScoreKeepers3;
+    crossDomainRankerScoreKeepers4 = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self crossDomainRankerScoreKeepers];
+    crossDomainRankerScoreKeepers5 = [equalCopy crossDomainRankerScoreKeepers];
+    v11 = [crossDomainRankerScoreKeepers4 isEqual:crossDomainRankerScoreKeepers5];
 
     if (!v11)
     {
@@ -202,12 +202,12 @@
   {
   }
 
-  v5 = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self crossIntentRankerScoreKeepers];
-  v6 = [v4 crossIntentRankerScoreKeepers];
-  if ((v5 != 0) != (v6 == 0))
+  crossDomainRankerScoreKeepers = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self crossIntentRankerScoreKeepers];
+  crossDomainRankerScoreKeepers2 = [equalCopy crossIntentRankerScoreKeepers];
+  if ((crossDomainRankerScoreKeepers != 0) != (crossDomainRankerScoreKeepers2 == 0))
   {
-    v12 = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self crossIntentRankerScoreKeepers];
-    if (!v12)
+    crossIntentRankerScoreKeepers = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self crossIntentRankerScoreKeepers];
+    if (!crossIntentRankerScoreKeepers)
     {
 
 LABEL_15:
@@ -215,10 +215,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self crossIntentRankerScoreKeepers];
-    v15 = [v4 crossIntentRankerScoreKeepers];
-    v16 = [v14 isEqual:v15];
+    v13 = crossIntentRankerScoreKeepers;
+    crossIntentRankerScoreKeepers2 = [(FLOWSchemaFLOWCrossIntentRankerResponse *)self crossIntentRankerScoreKeepers];
+    crossIntentRankerScoreKeepers3 = [equalCopy crossIntentRankerScoreKeepers];
+    v16 = [crossIntentRankerScoreKeepers2 isEqual:crossIntentRankerScoreKeepers3];
 
     if (v16)
     {
@@ -238,10 +238,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -305,40 +305,40 @@ LABEL_13:
   }
 }
 
-- (void)addCrossIntentRankerScoreKeeper:(id)a3
+- (void)addCrossIntentRankerScoreKeeper:(id)keeper
 {
-  v4 = a3;
+  keeperCopy = keeper;
   crossIntentRankerScoreKeepers = self->_crossIntentRankerScoreKeepers;
-  v8 = v4;
+  v8 = keeperCopy;
   if (!crossIntentRankerScoreKeepers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_crossIntentRankerScoreKeepers;
-    self->_crossIntentRankerScoreKeepers = v6;
+    self->_crossIntentRankerScoreKeepers = array;
 
-    v4 = v8;
+    keeperCopy = v8;
     crossIntentRankerScoreKeepers = self->_crossIntentRankerScoreKeepers;
   }
 
-  [(NSArray *)crossIntentRankerScoreKeepers addObject:v4];
+  [(NSArray *)crossIntentRankerScoreKeepers addObject:keeperCopy];
 }
 
-- (void)addCrossDomainRankerScoreKeeper:(id)a3
+- (void)addCrossDomainRankerScoreKeeper:(id)keeper
 {
-  v4 = a3;
+  keeperCopy = keeper;
   crossDomainRankerScoreKeepers = self->_crossDomainRankerScoreKeepers;
-  v8 = v4;
+  v8 = keeperCopy;
   if (!crossDomainRankerScoreKeepers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_crossDomainRankerScoreKeepers;
-    self->_crossDomainRankerScoreKeepers = v6;
+    self->_crossDomainRankerScoreKeepers = array;
 
-    v4 = v8;
+    keeperCopy = v8;
     crossDomainRankerScoreKeepers = self->_crossDomainRankerScoreKeepers;
   }
 
-  [(NSArray *)crossDomainRankerScoreKeepers addObject:v4];
+  [(NSArray *)crossDomainRankerScoreKeepers addObject:keeperCopy];
 }
 
 - (id)suppressMessageUnderConditions

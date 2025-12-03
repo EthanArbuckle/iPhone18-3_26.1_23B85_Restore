@@ -1,30 +1,30 @@
 @interface VGModelPose
-- (BOOL)isEqual:(id)a3;
-- (VGModelPose)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VGModelPose)initWithCoder:(id)coder;
 - (__n128)modelPose;
-- (__n128)setModelPose:(__n128)a3;
-- (void)encodeWithCoder:(id)a3;
+- (__n128)setModelPose:(__n128)pose;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VGModelPose
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEA90];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 dataWithBytes:&self[1] length:64];
-  [v5 encodeObject:v6 forKey:@"modelPose"];
+  [coderCopy encodeObject:v6 forKey:@"modelPose"];
 }
 
-- (VGModelPose)initWithCoder:(id)a3
+- (VGModelPose)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = VGModelPose;
   v5 = [(VGModelPose *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modelPose"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modelPose"];
     [v6 getBytes:&v5[1] length:64];
     v7 = v5;
   }
@@ -32,13 +32,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(VGModelPose *)self modelPose];
     v16 = v7;
     v17 = v6;
@@ -62,17 +62,17 @@
 
 - (__n128)modelPose
 {
-  result = *(a1 + 16);
-  v2 = *(a1 + 32);
-  v3 = *(a1 + 48);
-  v4 = *(a1 + 64);
+  result = *(self + 16);
+  v2 = *(self + 32);
+  v3 = *(self + 48);
+  v4 = *(self + 64);
   return result;
 }
 
-- (__n128)setModelPose:(__n128)a3
+- (__n128)setModelPose:(__n128)pose
 {
   result[1] = a2;
-  result[2] = a3;
+  result[2] = pose;
   result[3] = a4;
   result[4] = a5;
   return result;

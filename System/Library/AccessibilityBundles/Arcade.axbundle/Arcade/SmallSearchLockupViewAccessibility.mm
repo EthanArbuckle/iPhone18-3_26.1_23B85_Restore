@@ -16,62 +16,62 @@
   v6 = [(SmallSearchLockupViewAccessibility *)self safeSwiftValueForKey:@"editorsChoiceView"];
   v20.receiver = self;
   v20.super_class = SmallSearchLockupViewAccessibility;
-  v7 = [(SmallSearchLockupViewAccessibility *)&v20 accessibilityLabel];
-  v8 = [v3 accessibilityLabel];
+  accessibilityLabel = [(SmallSearchLockupViewAccessibility *)&v20 accessibilityLabel];
+  accessibilityLabel2 = [v3 accessibilityLabel];
 
-  if (v8)
+  if (accessibilityLabel2)
   {
     v9 = MEMORY[0x29EDBA0F8];
     v10 = accessibilityAppStoreLocalizedString(@"user.ratings");
-    v11 = [v3 accessibilityLabel];
-    v12 = [v9 stringWithFormat:v10, v11];
+    accessibilityLabel3 = [v3 accessibilityLabel];
+    v12 = [v9 stringWithFormat:v10, accessibilityLabel3];
 
     v13 = __UIAXStringForVariables();
 
-    v7 = v13;
+    accessibilityLabel = v13;
   }
 
   if (v6)
   {
-    v18 = [v6 accessibilityLabel];
+    accessibilityLabel4 = [v6 accessibilityLabel];
     v14 = __UIAXStringForVariables();
 
-    v7 = v14;
+    accessibilityLabel = v14;
   }
 
   if (v19)
   {
-    v15 = [(SmallSearchLockupViewAccessibility *)self _accessibilityAdvertisement];
+    _accessibilityAdvertisement = [(SmallSearchLockupViewAccessibility *)self _accessibilityAdvertisement];
     v16 = __UIAXStringForVariables();
 
-    v7 = v16;
+    accessibilityLabel = v16;
   }
 
-  return v7;
+  return accessibilityLabel;
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v10.receiver = self;
   v10.super_class = SmallSearchLockupViewAccessibility;
-  v4 = [(SmallSearchLockupViewAccessibility *)&v10 _accessibilitySupplementaryFooterViews];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  _accessibilitySupplementaryFooterViews = [(SmallSearchLockupViewAccessibility *)&v10 _accessibilitySupplementaryFooterViews];
+  [array axSafelyAddObjectsFromArray:_accessibilitySupplementaryFooterViews];
 
   v5 = [(SmallSearchLockupViewAccessibility *)self safeValueForKey:@"accessibilityAdButton"];
-  v6 = [(SmallSearchLockupViewAccessibility *)self _accessibilityAdvertisement];
-  [v5 setAccessibilityLabel:v6];
+  _accessibilityAdvertisement = [(SmallSearchLockupViewAccessibility *)self _accessibilityAdvertisement];
+  [v5 setAccessibilityLabel:_accessibilityAdvertisement];
 
   [v5 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
-  [v3 axSafelyAddObject:v5];
+  [array axSafelyAddObject:v5];
   v7 = [(SmallSearchLockupViewAccessibility *)self safeValueForKey:@"accessibilityMetadataRibbonView"];
   [v7 setIsAccessibilityElement:0];
-  [v3 axSafelyAddObject:v7];
+  [array axSafelyAddObject:v7];
   v8 = [(SmallSearchLockupViewAccessibility *)self safeValueForKey:@"accessibilitySearchTagsRibbonView"];
   [v8 setIsAccessibilityElement:0];
-  [v3 axSafelyAddObject:v8];
+  [array axSafelyAddObject:v8];
 
-  return v3;
+  return array;
 }
 
 - (unint64_t)accessibilityTraits

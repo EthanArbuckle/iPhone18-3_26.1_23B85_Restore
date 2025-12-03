@@ -1,28 +1,28 @@
 @interface VCAggregatorVideoStream
-- (VCAggregatorVideoStream)initWithDelegate:(id)a3;
+- (VCAggregatorVideoStream)initWithDelegate:(id)delegate;
 - (id)aggregatedCallReports;
-- (id)aggregatedSegmentReport:(int)a3;
+- (id)aggregatedSegmentReport:(int)report;
 - (id)aggregatedSessionReport;
 - (id)dispatchedAggregatedSessionReport;
 - (void)dealloc;
 - (void)flushCurrentSegment;
-- (void)processBitratesWithPayload:(id)a3;
-- (void)processPoorConnection:(id)a3;
-- (void)processRTEvent:(id)a3;
-- (void)processVideoDegraded:(id)a3 time:(double)a4;
-- (void)processVideoFrameRate:(id)a3;
-- (void)processVideoStallTime:(id)a3;
+- (void)processBitratesWithPayload:(id)payload;
+- (void)processPoorConnection:(id)connection;
+- (void)processRTEvent:(id)event;
+- (void)processVideoDegraded:(id)degraded time:(double)time;
+- (void)processVideoFrameRate:(id)rate;
+- (void)processVideoStallTime:(id)time;
 - (void)reset;
-- (void)updateTotalConnectionTime:(id)a3;
+- (void)updateTotalConnectionTime:(id)time;
 @end
 
 @implementation VCAggregatorVideoStream
 
-- (VCAggregatorVideoStream)initWithDelegate:(id)a3
+- (VCAggregatorVideoStream)initWithDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = VCAggregatorVideoStream;
-  v3 = [(VCAggregator *)&v6 initWithDelegate:a3];
+  v3 = [(VCAggregator *)&v6 initWithDelegate:delegate];
   if (!v3)
   {
     [VCAggregatorVideoStream initWithDelegate:];
@@ -76,7 +76,7 @@ uint64_t __75__VCAggregatorVideoStream_dispatchedProcessEventWithCategory_type_p
   self->_rtcpTimeoutCount = 0;
 }
 
-- (id)aggregatedSegmentReport:(int)a3
+- (id)aggregatedSegmentReport:(int)report
 {
   v8 = 0;
   v9 = &v8;
@@ -91,7 +91,7 @@ uint64_t __75__VCAggregatorVideoStream_dispatchedProcessEventWithCategory_type_p
   block[3] = &unk_278BD4890;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  reportCopy = report;
   dispatch_sync(stateQueue, block);
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v9[5]];
   _Block_object_dispose(&v8, 8);
@@ -173,9 +173,9 @@ uint64_t __50__VCAggregatorVideoStream_aggregatedSessionReport__block_invoke(uin
   return result;
 }
 
-- (void)processBitratesWithPayload:(id)a3
+- (void)processBitratesWithPayload:(id)payload
 {
-  v4 = [a3 objectForKeyedSubscript:@"VCVSRxAvgBitrate"];
+  v4 = [payload objectForKeyedSubscript:@"VCVSRxAvgBitrate"];
   if (v4)
   {
     v5 = v4;
@@ -185,9 +185,9 @@ uint64_t __50__VCAggregatorVideoStream_aggregatedSessionReport__block_invoke(uin
   }
 }
 
-- (void)processVideoStallTime:(id)a3
+- (void)processVideoStallTime:(id)time
 {
-  v4 = [a3 objectForKeyedSubscript:@"VCVSRxVideoStallDuration"];
+  v4 = [time objectForKeyedSubscript:@"VCVSRxVideoStallDuration"];
   if (v4)
   {
     [v4 doubleValue];
@@ -207,14 +207,14 @@ uint64_t __50__VCAggregatorVideoStream_aggregatedSessionReport__block_invoke(uin
   }
 }
 
-- (void)processVideoDegraded:(id)a3 time:(double)a4
+- (void)processVideoDegraded:(id)degraded time:(double)time
 {
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCSPVideoDegraded", "intValue"}];
+  v6 = [objc_msgSend(degraded objectForKeyedSubscript:{@"VCSPVideoDegraded", "intValue"}];
   if (v6)
   {
     if (!self->_isVideoDegraded)
     {
-      self->_videoDegradedStartTime = a4;
+      self->_videoDegradedStartTime = time;
     }
   }
 
@@ -224,7 +224,7 @@ uint64_t __50__VCAggregatorVideoStream_aggregatedSessionReport__block_invoke(uin
     if (videoDegradedStartTime != 0.0)
     {
       ++self->_videoDegradedTotalCounter;
-      v8 = a4 - videoDegradedStartTime;
+      v8 = time - videoDegradedStartTime;
       self->_videoDegradedTotalTime = v8 + self->_videoDegradedTotalTime;
       videoDegradedMaxLength = self->_videoDegradedMaxLength;
       if (videoDegradedMaxLength < v8)
@@ -245,7 +245,7 @@ uint64_t __50__VCAggregatorVideoStream_aggregatedSessionReport__block_invoke(uin
   self->_isVideoDegraded = v6 != 0;
 }
 
-- (void)processPoorConnection:(id)a3
+- (void)processPoorConnection:(id)connection
 {
   if (self->_videoDegradedStartTime == 0.0)
   {
@@ -272,15 +272,15 @@ uint64_t __50__VCAggregatorVideoStream_aggregatedSessionReport__block_invoke(uin
   }
 }
 
-- (void)processVideoFrameRate:(id)a3
+- (void)processVideoFrameRate:(id)rate
 {
-  v5 = [a3 objectForKeyedSubscript:@"VCVSRxMinFramerate"];
+  v5 = [rate objectForKeyedSubscript:@"VCVSRxMinFramerate"];
   if (v5)
   {
     v6 = v5;
-    v7 = [v5 intValue];
+    intValue = [v5 intValue];
     minRxFrameRate = self->_minRxFrameRate;
-    if (v7)
+    if (intValue)
     {
       minRxFrameRate = fmin(minRxFrameRate, [v6 intValue]);
     }
@@ -288,7 +288,7 @@ uint64_t __50__VCAggregatorVideoStream_aggregatedSessionReport__block_invoke(uin
     self->_minRxFrameRate = minRxFrameRate;
   }
 
-  v9 = [a3 objectForKeyedSubscript:@"VCVSRxAvgFramerate"];
+  v9 = [rate objectForKeyedSubscript:@"VCVSRxAvgFramerate"];
   if (v9)
   {
     [v9 doubleValue];
@@ -296,22 +296,22 @@ uint64_t __50__VCAggregatorVideoStream_aggregatedSessionReport__block_invoke(uin
   }
 }
 
-- (void)processRTEvent:(id)a3
+- (void)processRTEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = VCAggregatorVideoStream;
   [(VCAggregator *)&v5 processRTEvent:?];
-  [(VCAggregatorVideoStream *)self processBitratesWithPayload:a3];
-  [(VCAggregatorVideoStream *)self processVideoStallTime:a3];
-  [(VCAggregatorVideoStream *)self processPoorConnection:a3];
-  [(VCAggregatorVideoStream *)self processVideoFrameRate:a3];
+  [(VCAggregatorVideoStream *)self processBitratesWithPayload:event];
+  [(VCAggregatorVideoStream *)self processVideoStallTime:event];
+  [(VCAggregatorVideoStream *)self processPoorConnection:event];
+  [(VCAggregatorVideoStream *)self processVideoFrameRate:event];
 }
 
 - (id)dispatchedAggregatedSessionReport
 {
   v16.receiver = self;
   v16.super_class = VCAggregatorVideoStream;
-  v3 = [(VCAggregator *)&v16 dispatchedAggregatedSessionReport];
+  dispatchedAggregatedSessionReport = [(VCAggregator *)&v16 dispatchedAggregatedSessionReport];
   sessionRealtimeEventCount = self->super._sessionRealtimeEventCount;
   v5 = [(VCAggregator *)self RTPeriod]* sessionRealtimeEventCount;
   v6 = v5;
@@ -337,7 +337,7 @@ uint64_t __50__VCAggregatorVideoStream_aggregatedSessionReport__block_invoke(uin
     v10 = 0;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v10), @"AVTRBR"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v10), @"AVTRBR"}];
   if (v5)
   {
     v11 = self->_totalVideoStallTime / 1000.0;
@@ -354,13 +354,13 @@ uint64_t __50__VCAggregatorVideoStream_aggregatedSessionReport__block_invoke(uin
     v12 = 0.0;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", v12), @"VSP"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", self->_significantVideoStallCount), @"NSVST"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", self->_totalVideoStallTime), @"TVST"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", self->_videoDegradedTotalCounter), @"PCSWCNT"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", self->_videoDegradedMaxLength * 1000.0), @"SPCONMAXLEN"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", self->_videoDegradedTotalTime * 1000.0), @"TPCT"}];
-  [v3 setObject:-[VCHistogram description](self->_poorConnection forKeyedSubscript:{"description"), @"PCON"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", v12), @"VSP"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", self->_significantVideoStallCount), @"NSVST"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", self->_totalVideoStallTime), @"TVST"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", self->_videoDegradedTotalCounter), @"PCSWCNT"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", self->_videoDegradedMaxLength * 1000.0), @"SPCONMAXLEN"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", self->_videoDegradedTotalTime * 1000.0), @"TPCT"}];
+  [dispatchedAggregatedSessionReport setObject:-[VCHistogram description](self->_poorConnection forKeyedSubscript:{"description"), @"PCON"}];
   v13 = self->super._sessionRealtimeEventCount;
   if (v13)
   {
@@ -372,28 +372,28 @@ uint64_t __50__VCAggregatorVideoStream_aggregatedSessionReport__block_invoke(uin
     v14 = 0;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v14), @"ARFR"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", self->_mediaStreamEndReason == 0), @"MSSuccess"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_mediaStreamEndReason), @"MSEndReason"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_totalConnectionTime), @"CTCT"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_poorConnectionCount), @"PCONFQ"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", v7), @"PCONP"}];
-  return v3;
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v14), @"ARFR"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", self->_mediaStreamEndReason == 0), @"MSSuccess"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_mediaStreamEndReason), @"MSEndReason"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_totalConnectionTime), @"CTCT"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_poorConnectionCount), @"PCONFQ"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", v7), @"PCONP"}];
+  return dispatchedAggregatedSessionReport;
 }
 
-- (void)updateTotalConnectionTime:(id)a3
+- (void)updateTotalConnectionTime:(id)time
 {
   v20 = *MEMORY[0x277D85DE8];
-  if ([a3 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCACA0], "stringWithUTF8String:", &unk_23D59AAE5)}])
+  if ([time objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCACA0], "stringWithUTF8String:", &unk_23D59AAE5)}])
   {
-    self->_totalConnectionTime = [objc_msgSend(a3 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCACA0], "stringWithUTF8String:", &unk_23D59AAE5)), "unsignedIntValue"}];
+    self->_totalConnectionTime = [objc_msgSend(time objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCACA0], "stringWithUTF8String:", &unk_23D59AAE5)), "unsignedIntValue"}];
     if (VRTraceGetErrorLogLevelForModule("") >= 6)
     {
       v5 = VRTraceErrorLogLevelToCSTR(6u);
       v6 = gVRTraceOSLog;
       if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [a3 objectForKeyedSubscript:@"VCMSStreamToken"];
+        v7 = [time objectForKeyedSubscript:@"VCMSStreamToken"];
         totalConnectionTime = self->_totalConnectionTime;
         v10 = 136316162;
         v11 = v5;

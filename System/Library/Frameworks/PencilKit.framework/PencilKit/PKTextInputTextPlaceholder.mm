@@ -1,43 +1,43 @@
 @interface PKTextInputTextPlaceholder
-+ (PKTextInputTextPlaceholder)placeholderWithText:(id)a3 rects:(id)a4;
-+ (PKTextInputTextPlaceholder)placeholderWithTextPlaceholder:(id)a3;
-+ (PKTextInputTextPlaceholder)placeholderWithToken:(id)a3 frame:(CGRect)a4;
-+ (PKTextInputTextPlaceholder)placeholderWithWebTextPlaceholder:(id)a3;
++ (PKTextInputTextPlaceholder)placeholderWithText:(id)text rects:(id)rects;
++ (PKTextInputTextPlaceholder)placeholderWithTextPlaceholder:(id)placeholder;
++ (PKTextInputTextPlaceholder)placeholderWithToken:(id)token frame:(CGRect)frame;
++ (PKTextInputTextPlaceholder)placeholderWithWebTextPlaceholder:(id)placeholder;
 - (id)rects;
 @end
 
 @implementation PKTextInputTextPlaceholder
 
-+ (PKTextInputTextPlaceholder)placeholderWithTextPlaceholder:(id)a3
++ (PKTextInputTextPlaceholder)placeholderWithTextPlaceholder:(id)placeholder
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setPlaceholder:v4];
+  placeholderCopy = placeholder;
+  v5 = objc_alloc_init(self);
+  [v5 setPlaceholder:placeholderCopy];
 
   return v5;
 }
 
-+ (PKTextInputTextPlaceholder)placeholderWithWebTextPlaceholder:(id)a3
++ (PKTextInputTextPlaceholder)placeholderWithWebTextPlaceholder:(id)placeholder
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setPlaceholder:v4];
+  placeholderCopy = placeholder;
+  v5 = objc_alloc_init(self);
+  [v5 setPlaceholder:placeholderCopy];
 
   [v5 setShouldIgnoreOrigin:1];
 
   return v5;
 }
 
-+ (PKTextInputTextPlaceholder)placeholderWithToken:(id)a3 frame:(CGRect)a4
++ (PKTextInputTextPlaceholder)placeholderWithToken:(id)token frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v17[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = objc_alloc_init(a1);
-  [v10 setPlaceholder:v9];
+  tokenCopy = token;
+  v10 = objc_alloc_init(self);
+  [v10 setPlaceholder:tokenCopy];
 
   v11 = [PKTextInputTextSelectionRect alloc];
   if (v11)
@@ -67,46 +67,46 @@
   return v10;
 }
 
-+ (PKTextInputTextPlaceholder)placeholderWithText:(id)a3 rects:(id)a4
++ (PKTextInputTextPlaceholder)placeholderWithText:(id)text rects:(id)rects
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  [v8 setPlaceholder:v7];
+  rectsCopy = rects;
+  textCopy = text;
+  v8 = objc_alloc_init(self);
+  [v8 setPlaceholder:textCopy];
 
-  [v8 set_rects:v6];
+  [v8 set_rects:rectsCopy];
 
   return v8;
 }
 
 - (id)rects
 {
-  v3 = [(PKTextInputTextPlaceholder *)self _rects];
+  _rects = [(PKTextInputTextPlaceholder *)self _rects];
 
-  if (v3)
+  if (_rects)
   {
-    v4 = [(PKTextInputTextPlaceholder *)self _rects];
+    _rects2 = [(PKTextInputTextPlaceholder *)self _rects];
   }
 
   else
   {
-    v5 = [(PKTextInputTextPlaceholder *)self placeholder];
+    placeholder = [(PKTextInputTextPlaceholder *)self placeholder];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [(PKTextInputTextPlaceholder *)self placeholder];
-      v4 = [v7 rects];
+      placeholder2 = [(PKTextInputTextPlaceholder *)self placeholder];
+      _rects2 = [placeholder2 rects];
     }
 
     else
     {
-      v4 = MEMORY[0x1E695E0F0];
+      _rects2 = MEMORY[0x1E695E0F0];
     }
   }
 
-  return v4;
+  return _rects2;
 }
 
 @end

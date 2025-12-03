@@ -1,47 +1,47 @@
 @interface ACCiAP2ShimServer
 + (id)sharedInstance;
-+ (void)markClientAsInterestedInBleNotifications:(id)a3;
-+ (void)notifyInterestedClientsOfACCBLEAccessoryEvent:(id)a3 withPayload:(id)a4;
-+ (void)postNSDistributeNotificationType:(id)a3 notifyDict:(id)a4;
-+ (void)postNotifydNotificationType:(id)a3;
++ (void)markClientAsInterestedInBleNotifications:(id)notifications;
++ (void)notifyInterestedClientsOfACCBLEAccessoryEvent:(id)event withPayload:(id)payload;
++ (void)postNSDistributeNotificationType:(id)type notifyDict:(id)dict;
++ (void)postNotifydNotificationType:(id)type;
 - (ACCiAP2ShimServer)init;
-- (BOOL)processXPCMessage:(id)a3 connection:(id)a4;
-- (id)_findAccessoryForAccessoryUID:(id)a3 andKeyTag:(id)a4;
-- (id)_findAccessoryForConnectionID:(unsigned int)a3;
-- (id)findAccessoryForAccessoryUID:(id)a3 andKeyTag:(id)a4;
-- (id)findAccessoryForConnectionID:(unsigned int)a3;
-- (id)findAccessoryForConnectionID:(unsigned int)a3 andKeyTag:(id)a4;
-- (id)findClientWithXPCConnection:(id)a3;
+- (BOOL)processXPCMessage:(id)message connection:(id)connection;
+- (id)_findAccessoryForAccessoryUID:(id)d andKeyTag:(id)tag;
+- (id)_findAccessoryForConnectionID:(unsigned int)d;
+- (id)findAccessoryForAccessoryUID:(id)d andKeyTag:(id)tag;
+- (id)findAccessoryForConnectionID:(unsigned int)d;
+- (id)findAccessoryForConnectionID:(unsigned int)d andKeyTag:(id)tag;
+- (id)findClientWithXPCConnection:(id)connection;
 - (unsigned)generateClientID;
-- (void)_addAccessory:(id)a3;
-- (void)_addDelegate:(id)a3;
-- (void)_attachAccessory:(id)a3;
-- (void)_detachAccessory:(id)a3;
-- (void)_iterateAccessories:(id)a3;
-- (void)_iterateDelegates:(id)a3;
-- (void)_removeAccessory:(id)a3;
-- (void)_removeDelegate:(id)a3;
+- (void)_addAccessory:(id)accessory;
+- (void)_addDelegate:(id)delegate;
+- (void)_attachAccessory:(id)accessory;
+- (void)_detachAccessory:(id)accessory;
+- (void)_iterateAccessories:(id)accessories;
+- (void)_iterateDelegates:(id)delegates;
+- (void)_removeAccessory:(id)accessory;
+- (void)_removeDelegate:(id)delegate;
 - (void)_resetServerState;
 - (void)_startServer;
 - (void)_stopServer;
 - (void)_takeClientAssertionsForAccessoryConnection;
 - (void)_takeClientAssertionsForAccessoryDisconnection;
-- (void)addAccessory:(id)a3;
-- (void)addDelegate:(id)a3;
+- (void)addAccessory:(id)accessory;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
-- (void)iterateAccessoriesAsync:(id)a3;
-- (void)iterateAccessoriesSync:(id)a3;
-- (void)iterateDelegatesAsync:(id)a3;
-- (void)iterateDelegatesSync:(id)a3;
-- (void)notifyEAClient:(id)a3 ofAccessoryEvent:(const char *)a4 accessory:(id)a5;
-- (void)notifyEAClientsOfAccessoryEvent:(const char *)a3 accessory:(id)a4;
-- (void)processDetachXPCConnection:(id)a3;
-- (void)removeAccessory:(id)a3;
+- (void)iterateAccessoriesAsync:(id)async;
+- (void)iterateAccessoriesSync:(id)sync;
+- (void)iterateDelegatesAsync:(id)async;
+- (void)iterateDelegatesSync:(id)sync;
+- (void)notifyEAClient:(id)client ofAccessoryEvent:(const char *)event accessory:(id)accessory;
+- (void)notifyEAClientsOfAccessoryEvent:(const char *)event accessory:(id)accessory;
+- (void)processDetachXPCConnection:(id)connection;
+- (void)removeAccessory:(id)accessory;
 - (void)removeAllClients;
-- (void)removeClientForXPCConnection:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)sendToClient:(id)a3 notification:(const char *)a4 withPayload:(id)a5;
-- (void)sendToInterestedClientsACCBLENotification:(id)a3 withPayload:(id)a4;
+- (void)removeClientForXPCConnection:(id)connection;
+- (void)removeDelegate:(id)delegate;
+- (void)sendToClient:(id)client notification:(const char *)notification withPayload:(id)payload;
+- (void)sendToInterestedClientsACCBLENotification:(id)notification withPayload:(id)payload;
 - (void)startServer;
 - (void)stopServer;
 @end
@@ -575,8 +575,8 @@ void __33__ACCiAP2ShimServer__startServer__block_invoke(uint64_t a1)
 - (void)_stopServer
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(NSMutableDictionary *)self->_delegateList allValues];
-  v4 = [v3 count];
+  allValues = [(NSMutableDictionary *)self->_delegateList allValues];
+  v4 = [allValues count];
 
   if (gLogObjects)
   {
@@ -631,8 +631,8 @@ void __33__ACCiAP2ShimServer__startServer__block_invoke(uint64_t a1)
 
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v14 = [(NSMutableDictionary *)self->_delegateList allValues];
-      v15 = [v14 count];
+      allValues2 = [(NSMutableDictionary *)self->_delegateList allValues];
+      v15 = [allValues2 count];
       *buf = 134217984;
       v36 = v15;
       _os_log_impl(&dword_23DC47000, v12, OS_LOG_TYPE_INFO, "[#Server] IAPServer: stopServer, _delegateList count %lu", buf, 0xCu);
@@ -804,9 +804,9 @@ LABEL_74:
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v10 = [(NSMutableDictionary *)self->_delegateList allValues];
+    allValues3 = [(NSMutableDictionary *)self->_delegateList allValues];
     *buf = 134217984;
-    v36 = [v10 count];
+    v36 = [allValues3 count];
     _os_log_impl(&dword_23DC47000, v7, OS_LOG_TYPE_INFO, "[#Server] IAPServer: Skip stopServer, there are still %lu delegates registered", buf, 0xCu);
   }
 
@@ -833,11 +833,11 @@ void __32__ACCiAP2ShimServer__stopServer__block_invoke(uint64_t a1)
   dispatch_async(listQueue, block);
 }
 
-- (void)_addDelegate:(id)a3
+- (void)_addDelegate:(id)delegate
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 getUID];
+  delegateCopy = delegate;
+  getUID = [delegateCopy getUID];
   if (gLogObjects)
   {
     v6 = gNumLogObjects < 1;
@@ -868,17 +868,17 @@ void __32__ACCiAP2ShimServer__stopServer__block_invoke(uint64_t a1)
   {
     delegateList = self->_delegateList;
     v15 = 138412546;
-    v16 = v4;
+    v16 = delegateCopy;
     v17 = 2112;
     v18 = delegateList;
     _os_log_impl(&dword_23DC47000, v8, OS_LOG_TYPE_INFO, "[#Server] ACCiAP2ShimServer before addDelegate %@, delegateList=%@", &v15, 0x16u);
   }
 
-  v10 = [(NSMutableDictionary *)self->_delegateList objectForKey:v5];
+  v10 = [(NSMutableDictionary *)self->_delegateList objectForKey:getUID];
 
   if (!v10)
   {
-    [(NSMutableDictionary *)self->_delegateList setObject:v4 forKey:v5];
+    [(NSMutableDictionary *)self->_delegateList setObject:delegateCopy forKey:getUID];
   }
 
   if (gLogObjects && gNumLogObjects >= 1)
@@ -901,7 +901,7 @@ void __32__ACCiAP2ShimServer__stopServer__block_invoke(uint64_t a1)
   {
     v13 = self->_delegateList;
     v15 = 138412546;
-    v16 = v4;
+    v16 = delegateCopy;
     v17 = 2112;
     v18 = v13;
     _os_log_impl(&dword_23DC47000, v11, OS_LOG_TYPE_INFO, "[#Server] ACCiAP2ShimServer after addDelegate %@, delegateList=%@", &v15, 0x16u);
@@ -910,25 +910,25 @@ void __32__ACCiAP2ShimServer__stopServer__block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   listQueue = self->_listQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__ACCiAP2ShimServer_addDelegate___block_invoke;
   v7[3] = &unk_278BF8810;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(listQueue, v7);
 }
 
-- (void)_removeDelegate:(id)a3
+- (void)_removeDelegate:(id)delegate
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 getUID];
+  delegateCopy = delegate;
+  getUID = [delegateCopy getUID];
   if (gLogObjects)
   {
     v6 = gNumLogObjects < 1;
@@ -959,17 +959,17 @@ void __32__ACCiAP2ShimServer__stopServer__block_invoke(uint64_t a1)
   {
     delegateList = self->_delegateList;
     v15 = 138412546;
-    v16 = v4;
+    v16 = delegateCopy;
     v17 = 2112;
     v18 = delegateList;
     _os_log_impl(&dword_23DC47000, v8, OS_LOG_TYPE_INFO, "[#Server] ACCiAP2ShimServer before removeDelegate %@, delegateList=%@", &v15, 0x16u);
   }
 
-  v10 = [(NSMutableDictionary *)self->_delegateList objectForKey:v5];
+  v10 = [(NSMutableDictionary *)self->_delegateList objectForKey:getUID];
 
   if (v10)
   {
-    [(NSMutableDictionary *)self->_delegateList removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_delegateList removeObjectForKey:getUID];
   }
 
   if (gLogObjects && gNumLogObjects >= 1)
@@ -992,7 +992,7 @@ void __32__ACCiAP2ShimServer__stopServer__block_invoke(uint64_t a1)
   {
     v13 = self->_delegateList;
     v15 = 138412546;
-    v16 = v4;
+    v16 = delegateCopy;
     v17 = 2112;
     v18 = v13;
     _os_log_impl(&dword_23DC47000, v11, OS_LOG_TYPE_INFO, "[#Server] ACCiAP2ShimServer after removeDelegate %@, delegateList=%@", &v15, 0x16u);
@@ -1001,24 +1001,24 @@ void __32__ACCiAP2ShimServer__stopServer__block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   listQueue = self->_listQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__ACCiAP2ShimServer_removeDelegate___block_invoke;
   v7[3] = &unk_278BF8810;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(listQueue, v7);
 }
 
-- (void)_iterateDelegates:(id)a3
+- (void)_iterateDelegates:(id)delegates
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegatesCopy = delegates;
   delegateList = self->_delegateList;
   p_delegateList = &self->_delegateList;
   v7 = [(NSMutableDictionary *)delegateList count];
@@ -1060,8 +1060,8 @@ void __32__ACCiAP2ShimServer__stopServer__block_invoke(uint64_t a1)
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v11 = [(NSMutableDictionary *)*p_delegateList allValues];
-    v19 = [v11 countByEnumeratingWithState:&v27 objects:v33 count:16];
+    allValues = [(NSMutableDictionary *)*p_delegateList allValues];
+    v19 = [allValues countByEnumeratingWithState:&v27 objects:v33 count:16];
     if (v19)
     {
       v20 = v19;
@@ -1072,12 +1072,12 @@ LABEL_19:
       {
         if (*v28 != v21)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allValues);
         }
 
         v23 = *(*(&v27 + 1) + 8 * v22);
         buf[0] = 1;
-        v4[2](v4, v23, buf);
+        delegatesCopy[2](delegatesCopy, v23, buf);
         if (buf[0] != 1)
         {
           break;
@@ -1085,7 +1085,7 @@ LABEL_19:
 
         if (v20 == ++v22)
         {
-          v20 = [v11 countByEnumeratingWithState:&v27 objects:v33 count:16];
+          v20 = [allValues countByEnumeratingWithState:&v27 objects:v33 count:16];
           if (v20)
           {
             goto LABEL_19;
@@ -1101,7 +1101,7 @@ LABEL_19:
   {
     if (v9)
     {
-      v11 = *gLogObjects;
+      allValues = *gLogObjects;
     }
 
     else
@@ -1111,54 +1111,54 @@ LABEL_19:
         [ACCiAP2ShimServerUnregisteredClient takeProcessAssertion:];
       }
 
-      v11 = MEMORY[0x277D86220];
+      allValues = MEMORY[0x277D86220];
       v24 = MEMORY[0x277D86220];
     }
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(allValues, OS_LOG_TYPE_INFO))
     {
       v25 = *p_delegateList;
       *buf = 138412290;
       v32 = v25;
-      _os_log_impl(&dword_23DC47000, v11, OS_LOG_TYPE_INFO, "[#Server] ACCiAP2ShimServer iterateDelegates, no registered delegate! _delegateList=%@", buf, 0xCu);
+      _os_log_impl(&dword_23DC47000, allValues, OS_LOG_TYPE_INFO, "[#Server] ACCiAP2ShimServer iterateDelegates, no registered delegate! _delegateList=%@", buf, 0xCu);
     }
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)iterateDelegatesAsync:(id)a3
+- (void)iterateDelegatesAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   listQueue = self->_listQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__ACCiAP2ShimServer_iterateDelegatesAsync___block_invoke;
   v7[3] = &unk_278BF8838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = asyncCopy;
+  v6 = asyncCopy;
   dispatch_async(listQueue, v7);
 }
 
-- (void)iterateDelegatesSync:(id)a3
+- (void)iterateDelegatesSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   listQueue = self->_listQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__ACCiAP2ShimServer_iterateDelegatesSync___block_invoke;
   v7[3] = &unk_278BF8838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = syncCopy;
+  v6 = syncCopy;
   dispatch_sync(listQueue, v7);
 }
 
-- (void)_addAccessory:(id)a3
+- (void)_addAccessory:(id)accessory
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -1188,28 +1188,28 @@ LABEL_19:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = accessoryCopy;
     _os_log_impl(&dword_23DC47000, v7, OS_LOG_TYPE_INFO, "[#Server] ACCiAP2ShimServer addAccessory %@", &v16, 0xCu);
   }
 
-  v8 = [v4 keyAccessoryUID];
-  v9 = [v4 keyConnectionID];
+  keyAccessoryUID = [accessoryCopy keyAccessoryUID];
+  keyConnectionID = [accessoryCopy keyConnectionID];
   p_accessoryViaKeyUIDList = &self->_accessoryViaKeyUIDList;
-  v11 = [(NSMutableDictionary *)self->_accessoryViaKeyUIDList objectForKey:v8];
+  v11 = [(NSMutableDictionary *)self->_accessoryViaKeyUIDList objectForKey:keyAccessoryUID];
 
   if (!v11)
   {
-    [(NSMutableDictionary *)*p_accessoryViaKeyUIDList setObject:v4 forKey:v8];
+    [(NSMutableDictionary *)*p_accessoryViaKeyUIDList setObject:accessoryCopy forKey:keyAccessoryUID];
   }
 
-  v12 = [(NSMutableDictionary *)self->_accessoryViaConnectionIDList objectForKey:v9];
+  v12 = [(NSMutableDictionary *)self->_accessoryViaConnectionIDList objectForKey:keyConnectionID];
 
   if (!v12)
   {
-    [(NSMutableDictionary *)self->_accessoryViaConnectionIDList setObject:v4 forKey:v9];
+    [(NSMutableDictionary *)self->_accessoryViaConnectionIDList setObject:accessoryCopy forKey:keyConnectionID];
   }
 
-  [(ACCiAP2ShimServer *)self _attachAccessory:v4];
+  [(ACCiAP2ShimServer *)self _attachAccessory:accessoryCopy];
   if (gLogObjects && gNumLogObjects >= 1)
   {
     v13 = *gLogObjects;
@@ -1228,30 +1228,30 @@ LABEL_19:
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    [(ACCiAP2ShimServer *)v4 _addAccessory:?];
+    [(ACCiAP2ShimServer *)accessoryCopy _addAccessory:?];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addAccessory:(id)a3
+- (void)addAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   listQueue = self->_listQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__ACCiAP2ShimServer_addAccessory___block_invoke;
   v7[3] = &unk_278BF8810;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessoryCopy;
+  v6 = accessoryCopy;
   dispatch_async(listQueue, v7);
 }
 
-- (void)_removeAccessory:(id)a3
+- (void)_removeAccessory:(id)accessory
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -1281,33 +1281,33 @@ LABEL_19:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v15 = 138412290;
-    v16 = v4;
+    v16 = accessoryCopy;
     _os_log_impl(&dword_23DC47000, v7, OS_LOG_TYPE_INFO, "[#Server] ACCiAP2ShimServer removeAccessory %@", &v15, 0xCu);
   }
 
-  v8 = [v4 keyAccessoryUID];
-  v9 = [v4 keyConnectionID];
-  if (v8)
+  keyAccessoryUID = [accessoryCopy keyAccessoryUID];
+  keyConnectionID = [accessoryCopy keyConnectionID];
+  if (keyAccessoryUID)
   {
-    v10 = [(NSMutableDictionary *)self->_accessoryViaKeyUIDList objectForKey:v8];
+    v10 = [(NSMutableDictionary *)self->_accessoryViaKeyUIDList objectForKey:keyAccessoryUID];
 
     if (v10)
     {
-      [(NSMutableDictionary *)self->_accessoryViaKeyUIDList removeObjectForKey:v8];
+      [(NSMutableDictionary *)self->_accessoryViaKeyUIDList removeObjectForKey:keyAccessoryUID];
     }
   }
 
-  if (v9)
+  if (keyConnectionID)
   {
-    v11 = [(NSMutableDictionary *)self->_accessoryViaConnectionIDList objectForKey:v9];
+    v11 = [(NSMutableDictionary *)self->_accessoryViaConnectionIDList objectForKey:keyConnectionID];
 
     if (v11)
     {
-      [(NSMutableDictionary *)self->_accessoryViaConnectionIDList removeObjectForKey:v9];
+      [(NSMutableDictionary *)self->_accessoryViaConnectionIDList removeObjectForKey:keyConnectionID];
     }
   }
 
-  [(ACCiAP2ShimServer *)self _detachAccessory:v4];
+  [(ACCiAP2ShimServer *)self _detachAccessory:accessoryCopy];
   if (gLogObjects && gNumLogObjects >= 1)
   {
     v12 = *gLogObjects;
@@ -1326,30 +1326,30 @@ LABEL_19:
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [(ACCiAP2ShimServer *)v4 _removeAccessory:?];
+    [(ACCiAP2ShimServer *)accessoryCopy _removeAccessory:?];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAccessory:(id)a3
+- (void)removeAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   listQueue = self->_listQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__ACCiAP2ShimServer_removeAccessory___block_invoke;
   v7[3] = &unk_278BF8810;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessoryCopy;
+  v6 = accessoryCopy;
   dispatch_async(listQueue, v7);
 }
 
-- (void)_iterateAccessories:(id)a3
+- (void)_iterateAccessories:(id)accessories
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoriesCopy = accessories;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -1385,8 +1385,8 @@ LABEL_19:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v14 = [(NSMutableDictionary *)self->_accessoryViaKeyUIDList allValues];
-  v15 = [v14 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  allValues = [(NSMutableDictionary *)self->_accessoryViaKeyUIDList allValues];
+  v15 = [allValues countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v15)
   {
     v16 = v15;
@@ -1398,7 +1398,7 @@ LABEL_13:
     {
       if (*v28 != v17)
       {
-        objc_enumerationMutation(v14);
+        objc_enumerationMutation(allValues);
       }
 
       v20 = *(*(&v27 + 1) + 8 * v19);
@@ -1432,7 +1432,7 @@ LABEL_13:
       }
 
       buf[0] = 1;
-      v4[2](v4, v20, buf);
+      accessoriesCopy[2](accessoriesCopy, v20, buf);
       if (buf[0] != 1)
       {
         break;
@@ -1440,7 +1440,7 @@ LABEL_13:
 
       if (v16 == ++v19)
       {
-        v16 = [v14 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v16 = [allValues countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v16)
         {
           goto LABEL_13;
@@ -1454,43 +1454,43 @@ LABEL_13:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)iterateAccessoriesAsync:(id)a3
+- (void)iterateAccessoriesAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   listQueue = self->_listQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__ACCiAP2ShimServer_iterateAccessoriesAsync___block_invoke;
   v7[3] = &unk_278BF8838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = asyncCopy;
+  v6 = asyncCopy;
   dispatch_async(listQueue, v7);
 }
 
-- (void)iterateAccessoriesSync:(id)a3
+- (void)iterateAccessoriesSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   listQueue = self->_listQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__ACCiAP2ShimServer_iterateAccessoriesSync___block_invoke;
   v7[3] = &unk_278BF8838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = syncCopy;
+  v6 = syncCopy;
   dispatch_sync(listQueue, v7);
 }
 
-- (id)_findAccessoryForConnectionID:(unsigned int)a3
+- (id)_findAccessoryForConnectionID:(unsigned int)d
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(NSMutableDictionary *)self->_accessoryViaConnectionIDList allValues];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_accessoryViaConnectionIDList allValues];
+  v5 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1501,18 +1501,18 @@ LABEL_13:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 connectionID] == a3)
+        if ([v9 connectionID] == d)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -1530,7 +1530,7 @@ LABEL_11:
   return v10;
 }
 
-- (id)findAccessoryForConnectionID:(unsigned int)a3
+- (id)findAccessoryForConnectionID:(unsigned int)d
 {
   v8 = 0;
   v9 = &v8;
@@ -1545,7 +1545,7 @@ LABEL_11:
   block[3] = &unk_278BF8860;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  dCopy = d;
   dispatch_sync(listQueue, block);
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -1563,9 +1563,9 @@ uint64_t __50__ACCiAP2ShimServer_findAccessoryForConnectionID___block_invoke(uin
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)findAccessoryForConnectionID:(unsigned int)a3 andKeyTag:(id)a4
+- (id)findAccessoryForConnectionID:(unsigned int)d andKeyTag:(id)tag
 {
-  v6 = a4;
+  tagCopy = tag;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -1577,11 +1577,11 @@ uint64_t __50__ACCiAP2ShimServer_findAccessoryForConnectionID___block_invoke(uin
   v11[1] = 3221225472;
   v11[2] = __60__ACCiAP2ShimServer_findAccessoryForConnectionID_andKeyTag___block_invoke;
   v11[3] = &unk_278BF8888;
-  v12 = v6;
+  v12 = tagCopy;
   v13 = &v15;
-  v14 = a3;
+  dCopy = d;
   v11[4] = self;
-  v8 = v6;
+  v8 = tagCopy;
   dispatch_sync(listQueue, v11);
   v9 = v16[5];
 
@@ -1600,18 +1600,18 @@ uint64_t __60__ACCiAP2ShimServer_findAccessoryForConnectionID_andKeyTag___block_
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_findAccessoryForAccessoryUID:(id)a3 andKeyTag:(id)a4
+- (id)_findAccessoryForAccessoryUID:(id)d andKeyTag:(id)tag
 {
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", a4, a3];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", tag, d];
   v6 = [(NSMutableDictionary *)self->_accessoryViaKeyUIDList objectForKey:v5];
 
   return v6;
 }
 
-- (id)findAccessoryForAccessoryUID:(id)a3 andKeyTag:(id)a4
+- (id)findAccessoryForAccessoryUID:(id)d andKeyTag:(id)tag
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  tagCopy = tag;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1624,11 +1624,11 @@ uint64_t __60__ACCiAP2ShimServer_findAccessoryForConnectionID_andKeyTag___block_
   v13[2] = __60__ACCiAP2ShimServer_findAccessoryForAccessoryUID_andKeyTag___block_invoke;
   v13[3] = &unk_278BF88B0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = dCopy;
+  v15 = tagCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = tagCopy;
+  v10 = dCopy;
   dispatch_sync(listQueue, v13);
   v11 = v18[5];
 
@@ -1647,25 +1647,25 @@ uint64_t __60__ACCiAP2ShimServer_findAccessoryForAccessoryUID_andKeyTag___block_
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)processXPCMessage:(id)a3 connection:(id)a4
+- (BOOL)processXPCMessage:(id)message connection:(id)connection
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  connectionCopy = connection;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  string = xpc_dictionary_get_string(v6, "requestType");
+  string = xpc_dictionary_get_string(messageCopy, "requestType");
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __50__ACCiAP2ShimServer_processXPCMessage_connection___block_invoke;
   v17[3] = &unk_278BF88D8;
-  v9 = v6;
+  v9 = messageCopy;
   v18 = v9;
-  v10 = v7;
+  v10 = connectionCopy;
   v19 = v10;
-  v20 = self;
+  selfCopy = self;
   v21 = &v23;
   v22 = string;
   [(ACCiAP2ShimServer *)self iterateDelegatesSync:v17];
@@ -1788,16 +1788,16 @@ void __50__ACCiAP2ShimServer_processXPCMessage_connection___block_invoke(void *a
   }
 }
 
-- (void)processDetachXPCConnection:(id)a3
+- (void)processDetachXPCConnection:(id)connection
 {
-  v4 = a3;
-  [(ACCiAP2ShimServer *)self removeClientForXPCConnection:v4];
+  connectionCopy = connection;
+  [(ACCiAP2ShimServer *)self removeClientForXPCConnection:connectionCopy];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__ACCiAP2ShimServer_processDetachXPCConnection___block_invoke;
   v6[3] = &unk_278BF8900;
-  v7 = v4;
-  v5 = v4;
+  v7 = connectionCopy;
+  v5 = connectionCopy;
   [(ACCiAP2ShimServer *)self iterateDelegatesSync:v6];
 }
 
@@ -1810,10 +1810,10 @@ void __48__ACCiAP2ShimServer_processDetachXPCConnection___block_invoke(uint64_t 
   }
 }
 
-- (void)_attachAccessory:(id)a3
+- (void)_attachAccessory:(id)accessory
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -1843,29 +1843,29 @@ void __48__ACCiAP2ShimServer_processDetachXPCConnection___block_invoke(uint64_t 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v38 = v4;
+    v38 = accessoryCopy;
     _os_log_impl(&dword_23DC47000, v7, OS_LOG_TYPE_DEFAULT, "[#Server] ACCiAP2ShimServer _attachAccessory %@", buf, 0xCu);
   }
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "connectionID")}];
-  v10 = [v4 name];
-  [v8 setObject:v10 forKey:*MEMORY[0x277D183F0]];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(accessoryCopy, "connectionID")}];
+  name = [accessoryCopy name];
+  [v8 setObject:name forKey:*MEMORY[0x277D183F0]];
 
-  v11 = [v4 manufacturer];
-  [v8 setObject:v11 forKey:*MEMORY[0x277D183E0]];
+  manufacturer = [accessoryCopy manufacturer];
+  [v8 setObject:manufacturer forKey:*MEMORY[0x277D183E0]];
 
-  v12 = [v4 model];
-  [v8 setObject:v12 forKey:*MEMORY[0x277D183E8]];
+  model = [accessoryCopy model];
+  [v8 setObject:model forKey:*MEMORY[0x277D183E8]];
 
-  v13 = [v4 serialNumber];
-  [v8 setObject:v13 forKey:*MEMORY[0x277D18458]];
+  serialNumber = [accessoryCopy serialNumber];
+  [v8 setObject:serialNumber forKey:*MEMORY[0x277D18458]];
 
-  v14 = [v4 firmwareVersion];
-  [v8 setObject:v14 forKey:*MEMORY[0x277D183B8]];
+  firmwareVersion = [accessoryCopy firmwareVersion];
+  [v8 setObject:firmwareVersion forKey:*MEMORY[0x277D183B8]];
 
-  v15 = [v4 hardwareVersion];
-  [v8 setObject:v15 forKey:*MEMORY[0x277D183C8]];
+  hardwareVersion = [accessoryCopy hardwareVersion];
+  [v8 setObject:hardwareVersion forKey:*MEMORY[0x277D183C8]];
 
   if (gLogObjects && gNumLogObjects >= 1)
   {
@@ -1885,26 +1885,26 @@ void __48__ACCiAP2ShimServer_processDetachXPCConnection___block_invoke(uint64_t 
 
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v4 name];
-    [v4 manufacturer];
+    name2 = [accessoryCopy name];
+    [accessoryCopy manufacturer];
     v35 = v9;
     v20 = v19 = self;
-    v21 = [v4 model];
-    v22 = [v4 serialNumber];
-    v23 = [v4 firmwareVersion];
-    v24 = [v4 hardwareVersion];
+    model2 = [accessoryCopy model];
+    serialNumber2 = [accessoryCopy serialNumber];
+    firmwareVersion2 = [accessoryCopy firmwareVersion];
+    hardwareVersion2 = [accessoryCopy hardwareVersion];
     *buf = 138413826;
-    v38 = v18;
+    v38 = name2;
     v39 = 2112;
     v40 = v20;
     v41 = 2112;
-    v42 = v21;
+    v42 = model2;
     v43 = 2112;
-    v44 = v22;
+    v44 = serialNumber2;
     v45 = 2112;
-    v46 = v23;
+    v46 = firmwareVersion2;
     v47 = 2112;
-    v48 = v24;
+    v48 = hardwareVersion2;
     v49 = 2112;
     v50 = @"---";
     _os_log_impl(&dword_23DC47000, v16, OS_LOG_TYPE_DEFAULT, "[#Server] ACCiAP2ShimServer _attachAccessory: AccName=%@, AccManufacturer=%@, AccModel=%@, AccSerialNumber=%@, AccFWVersion=%@, AccHWVersion=%@, AccDockType=%@", buf, 0x48u);
@@ -1914,8 +1914,8 @@ void __48__ACCiAP2ShimServer_processDetachXPCConnection___block_invoke(uint64_t 
   }
 
   [v8 setObject:v9 forKey:*MEMORY[0x277D18480]];
-  v25 = [v4 model];
-  shouldHideAccessoryWithModelNumber = acc_policies_shouldHideAccessoryWithModelNumber(v25);
+  model3 = [accessoryCopy model];
+  shouldHideAccessoryWithModelNumber = acc_policies_shouldHideAccessoryWithModelNumber(model3);
 
   if (shouldHideAccessoryWithModelNumber)
   {
@@ -1959,7 +1959,7 @@ void __48__ACCiAP2ShimServer_processDetachXPCConnection___block_invoke(uint64_t 
   v31 = [MEMORY[0x277CCABB0] numberWithLong:v36.tv_sec];
   [v8 setObject:v31 forKey:*MEMORY[0x277D18398]];
 
-  if ([v4 dontPublish])
+  if ([accessoryCopy dontPublish])
   {
     if (gLogObjects && gNumLogObjects >= 1)
     {
@@ -1980,7 +1980,7 @@ void __48__ACCiAP2ShimServer_processDetachXPCConnection___block_invoke(uint64_t 
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v38 = v4;
+      v38 = accessoryCopy;
       v39 = 2112;
       v40 = v8;
       _os_log_impl(&dword_23DC47000, v32, OS_LOG_TYPE_INFO, "[#Server] ACCiAP2ShimServer _attachAccessory: %@, dontPublish set! accessoryDict=%@", buf, 0x16u);
@@ -1995,11 +1995,11 @@ void __48__ACCiAP2ShimServer_processDetachXPCConnection___block_invoke(uint64_t 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_detachAccessory:(id)a3
+- (void)_detachAccessory:(id)accessory
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 accessoryInfoDict];
+  accessoryCopy = accessory;
+  accessoryInfoDict = [accessoryCopy accessoryInfoDict];
   if (gLogObjects)
   {
     v6 = gNumLogObjects < 1;
@@ -2029,15 +2029,15 @@ void __48__ACCiAP2ShimServer_processDetachXPCConnection___block_invoke(uint64_t 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v18 = 138412546;
-    v19 = v4;
+    v19 = accessoryCopy;
     v20 = 2112;
-    v21 = v5;
+    v21 = accessoryInfoDict;
     _os_log_impl(&dword_23DC47000, v8, OS_LOG_TYPE_INFO, "[#Server] ACCiAP2ShimServer _detachAccessory: %@, accessoryDict=%@", &v18, 0x16u);
   }
 
-  if ([v5 count])
+  if ([accessoryInfoDict count])
   {
-    if ([v4 dontPublish])
+    if ([accessoryCopy dontPublish])
     {
       if (gLogObjects && gNumLogObjects >= 1)
       {
@@ -2060,11 +2060,11 @@ void __48__ACCiAP2ShimServer_processDetachXPCConnection___block_invoke(uint64_t 
         goto LABEL_30;
       }
 
-      v11 = [v4 connectionID];
+      connectionID = [accessoryCopy connectionID];
       v18 = 138412546;
-      v19 = v4;
+      v19 = accessoryCopy;
       v20 = 1024;
-      LODWORD(v21) = v11;
+      LODWORD(v21) = connectionID;
       v12 = "[#Server] ACCiAP2ShimServer _detachAccessory: %@, dontPublish set! connectionID=%d";
       v13 = v9;
       v14 = 18;
@@ -2073,7 +2073,7 @@ void __48__ACCiAP2ShimServer_processDetachXPCConnection___block_invoke(uint64_t 
     else
     {
       [(ACCiAP2ShimServer *)self _takeClientAssertionsForAccessoryDisconnection];
-      [(ACCiAP2ShimServer *)self notifyEAClientsOfAccessoryDisconnection:v5];
+      [(ACCiAP2ShimServer *)self notifyEAClientsOfAccessoryDisconnection:accessoryInfoDict];
       if (gLogObjects && gNumLogObjects >= 1)
       {
         v9 = *gLogObjects;
@@ -2095,9 +2095,9 @@ void __48__ACCiAP2ShimServer_processDetachXPCConnection___block_invoke(uint64_t 
         goto LABEL_30;
       }
 
-      v16 = [v4 connectionID];
+      connectionID2 = [accessoryCopy connectionID];
       v18 = 67109120;
-      LODWORD(v19) = v16;
+      LODWORD(v19) = connectionID2;
       v12 = "[#Server] ACCiAP2ShimServer _detachAccessory: accessory with connectionID=%d detached";
       v13 = v9;
       v14 = 8;
@@ -2202,10 +2202,10 @@ void __148__ACCiAP2ShimServer_addClientWithCapabilities_auditToken_currentClient
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)findClientWithXPCConnection:(id)a3
+- (id)findClientWithXPCConnection:(id)connection
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   [(NSLock *)self->_clientLock lock];
   if (gLogObjects)
   {
@@ -2235,15 +2235,15 @@ void __148__ACCiAP2ShimServer_addClientWithCapabilities_auditToken_currentClient
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(ACCiAP2ShimServer *)v4 findClientWithXPCConnection:?];
+    [(ACCiAP2ShimServer *)connectionCopy findClientWithXPCConnection:?];
   }
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(NSMutableDictionary *)self->_clients allValues];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allValues = [(NSMutableDictionary *)self->_clients allValues];
+  v9 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = *v19;
@@ -2253,20 +2253,20 @@ void __148__ACCiAP2ShimServer_addClientWithCapabilities_auditToken_currentClient
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 xpcConnection];
+        xpcConnection = [v12 xpcConnection];
 
-        if (v13 == v4)
+        if (xpcConnection == connectionCopy)
         {
           v9 = v12;
           goto LABEL_21;
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v9)
       {
         continue;
@@ -2305,10 +2305,10 @@ LABEL_21:
   return v9;
 }
 
-- (void)removeClientForXPCConnection:(id)a3
+- (void)removeClientForXPCConnection:(id)connection
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   [(NSLock *)self->_clientLock lock];
   if (gLogObjects)
   {
@@ -2340,7 +2340,7 @@ LABEL_21:
   {
     clients = self->_clients;
     *buf = 138412546;
-    v32 = v4;
+    v32 = connectionCopy;
     v33 = 2112;
     v34 = clients;
     _os_log_impl(&dword_23DC47000, v7, OS_LOG_TYPE_DEFAULT, "[#Server] removeClientForXPCConnection: clientConnection=%@ _clients=%@", buf, 0x16u);
@@ -2350,8 +2350,8 @@ LABEL_21:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = [(NSMutableDictionary *)self->_clients allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  allKeys = [(NSMutableDictionary *)self->_clients allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2362,20 +2362,20 @@ LABEL_13:
     {
       if (*v27 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(allKeys);
       }
 
       v14 = [(NSMutableDictionary *)self->_clients objectForKey:*(*(&v26 + 1) + 8 * v13)];
-      v15 = [v14 xpcConnection];
+      xpcConnection = [v14 xpcConnection];
 
-      if (v15 == v4)
+      if (xpcConnection == connectionCopy)
       {
         break;
       }
 
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v11 = [allKeys countByEnumeratingWithState:&v26 objects:v30 count:16];
         if (v11)
         {
           goto LABEL_13;
@@ -2404,9 +2404,9 @@ LABEL_13:
 
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v19 = [v16 bundleId];
+      bundleId = [v16 bundleId];
       *buf = 138412290;
-      v32 = v19;
+      v32 = bundleId;
       _os_log_impl(&dword_23DC47000, v17, OS_LOG_TYPE_INFO, "[#Server] Found client to remove, client bundleID is %@", buf, 0xCu);
     }
 
@@ -2415,9 +2415,9 @@ LABEL_13:
       goto LABEL_31;
     }
 
-    v20 = [v16 clientID];
+    clientID = [v16 clientID];
     v21 = self->_clients;
-    v22 = [ACCiAP2ShimServer stringForClientID:v20];
+    v22 = [ACCiAP2ShimServer stringForClientID:clientID];
     [(NSMutableDictionary *)v21 removeObjectForKey:v22];
 
     if ([(NSMutableDictionary *)self->_clients count])
@@ -2453,7 +2453,7 @@ LABEL_31:
     if (os_log_type_enabled(&v23->super.super, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v32 = v4;
+      v32 = connectionCopy;
       _os_log_impl(&dword_23DC47000, &v23->super.super, OS_LOG_TYPE_DEFAULT, "[#Server] ERROR - couldn't find client for xpc client %@", buf, 0xCu);
     }
 
@@ -2494,14 +2494,14 @@ LABEL_41:
 
         v5 = [(NSMutableDictionary *)self->_clients objectForKey:*(*(&v15 + 1) + 8 * v7)];
 
-        v9 = [v5 clientID];
+        clientID = [v5 clientID];
         v10 = dispatch_get_global_queue(0, 0);
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __37__ACCiAP2ShimServer_removeAllClients__block_invoke;
         block[3] = &unk_278BF8950;
         block[4] = self;
-        v14 = v9;
+        v14 = clientID;
         dispatch_async(v10, block);
 
         ++v7;
@@ -2598,9 +2598,9 @@ uint64_t __37__ACCiAP2ShimServer_removeAllClients__block_invoke(uint64_t a1)
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
           v14 = [(NSMutableDictionary *)self->_clients objectForKey:v8];
-          v15 = [v14 bundleId];
+          bundleId = [v14 bundleId];
           *buf = 138412290;
-          v25 = v15;
+          v25 = bundleId;
           _os_log_impl(&dword_23DC47000, v13, OS_LOG_TYPE_INFO, "[#Server] client %@\n", buf, 0xCu);
         }
 
@@ -2618,12 +2618,12 @@ uint64_t __37__ACCiAP2ShimServer_removeAllClients__block_invoke(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyEAClient:(id)a3 ofAccessoryEvent:(const char *)a4 accessory:(id)a5
+- (void)notifyEAClient:(id)client ofAccessoryEvent:(const char *)event accessory:(id)accessory
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 canSendConnectionEventForAccessory:v8];
+  clientCopy = client;
+  accessoryCopy = accessory;
+  v9 = [clientCopy canSendConnectionEventForAccessory:accessoryCopy];
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 1;
@@ -2652,37 +2652,37 @@ uint64_t __37__ACCiAP2ShimServer_removeAllClients__block_invoke(uint64_t a1)
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v7 bundleId];
+    bundleId = [clientCopy bundleId];
     v18 = 138413058;
-    v19 = v13;
+    v19 = bundleId;
     v20 = 2080;
-    v21 = a4;
+    eventCopy = event;
     v22 = 1024;
     v23 = v9;
     v24 = 2112;
-    v25 = v8;
+    v25 = accessoryCopy;
     _os_log_impl(&dword_23DC47000, v12, OS_LOG_TYPE_INFO, "[#Server] clientToNotify bundle = %@, request = %s, canSendConnectionEvent = %d, accessory=%@", &v18, 0x26u);
   }
 
   if (v9)
   {
-    v14 = [MEMORY[0x277CCAC58] dataWithPropertyList:v8 format:200 options:0 error:0];
+    v14 = [MEMORY[0x277CCAC58] dataWithPropertyList:accessoryCopy format:200 options:0 error:0];
     v15 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_string(v15, "requestType", a4);
+    xpc_dictionary_set_string(v15, "requestType", event);
     xpc_dictionary_set_data(v15, "EAProtocolAccessoryPlistData", [v14 bytes], objc_msgSend(v14, "length"));
-    v16 = [v7 xpcConnection];
-    xpc_connection_send_message(v16, v15);
+    xpcConnection = [clientCopy xpcConnection];
+    xpc_connection_send_message(xpcConnection, v15);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendToClient:(id)a3 notification:(const char *)a4 withPayload:(id)a5
+- (void)sendToClient:(id)client notification:(const char *)notification withPayload:(id)payload
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
+  clientCopy = client;
+  payloadCopy = payload;
+  v9 = payloadCopy;
   if (gLogObjects)
   {
     v10 = gNumLogObjects <= 0;
@@ -2694,7 +2694,7 @@ uint64_t __37__ACCiAP2ShimServer_removeAllClients__block_invoke(uint64_t a1)
   }
 
   v11 = !v10;
-  if (v7 && a4 && v8)
+  if (clientCopy && notification && payloadCopy)
   {
     if (v11)
     {
@@ -2714,13 +2714,13 @@ uint64_t __37__ACCiAP2ShimServer_removeAllClients__block_invoke(uint64_t a1)
 
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v7 bundleId];
+      bundleId = [clientCopy bundleId];
       v20 = 138413058;
-      v21 = v16;
+      v21 = bundleId;
       v22 = 2080;
       v23 = "kXPCACCNotificationKey";
       v24 = 2080;
-      v25 = a4;
+      notificationCopy2 = notification;
       v26 = 2112;
       v27 = v9;
       _os_log_impl(&dword_23DC47000, v12, OS_LOG_TYPE_DEFAULT, "[#Server] clientToNotify bundle = %@, request = %s, notificationName = %s, notificationPayload=%@", &v20, 0x2Au);
@@ -2729,10 +2729,10 @@ uint64_t __37__ACCiAP2ShimServer_removeAllClients__block_invoke(uint64_t a1)
     v13 = [MEMORY[0x277CCAC58] dataWithPropertyList:v9 format:200 options:0 error:0];
     v17 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_string(v17, "requestType", "kXPCACCNotificationKey");
-    xpc_dictionary_set_string(v17, "kXPCACCNotificationNameKey", a4);
+    xpc_dictionary_set_string(v17, "kXPCACCNotificationNameKey", notification);
     xpc_dictionary_set_data(v17, "kXPCACCNotificationPlistData", [v13 bytes], [v13 length]);
-    v18 = [v7 xpcConnection];
-    xpc_connection_send_message(v18, v17);
+    xpcConnection = [clientCopy xpcConnection];
+    xpc_connection_send_message(xpcConnection, v17);
   }
 
   else
@@ -2758,9 +2758,9 @@ uint64_t __37__ACCiAP2ShimServer_removeAllClients__block_invoke(uint64_t a1)
       v20 = 136315906;
       v21 = "[ACCiAP2ShimServer sendToClient:notification:withPayload:]";
       v22 = 2112;
-      v23 = v7;
+      v23 = clientCopy;
       v24 = 2080;
-      v25 = a4;
+      notificationCopy2 = notification;
       v26 = 2112;
       v27 = v9;
       _os_log_error_impl(&dword_23DC47000, v13, OS_LOG_TYPE_ERROR, "[#Server] %s: Received nil param. clientToNotify %@ notificationName %s notificationPayload %@", &v20, 0x2Au);
@@ -2770,18 +2770,18 @@ uint64_t __37__ACCiAP2ShimServer_removeAllClients__block_invoke(uint64_t a1)
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyEAClientsOfAccessoryEvent:(const char *)a3 accessory:(id)a4
+- (void)notifyEAClientsOfAccessoryEvent:(const char *)event accessory:(id)accessory
 {
-  v6 = a4;
+  accessoryCopy = accessory;
   v7 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__ACCiAP2ShimServer_notifyEAClientsOfAccessoryEvent_accessory___block_invoke;
   block[3] = &unk_278BF8978;
-  v10 = v6;
-  v11 = a3;
+  v10 = accessoryCopy;
+  eventCopy = event;
   block[4] = self;
-  v8 = v6;
+  v8 = accessoryCopy;
   dispatch_async(v7, block);
 }
 
@@ -2827,12 +2827,12 @@ uint64_t __63__ACCiAP2ShimServer_notifyEAClientsOfAccessoryEvent_accessory___blo
   return result;
 }
 
-- (void)sendToInterestedClientsACCBLENotification:(id)a3 withPayload:(id)a4
+- (void)sendToInterestedClientsACCBLENotification:(id)notification withPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  notificationCopy = notification;
+  payloadCopy = payload;
+  v8 = payloadCopy;
+  if (notificationCopy && payloadCopy)
   {
     v9 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
@@ -2840,7 +2840,7 @@ uint64_t __63__ACCiAP2ShimServer_notifyEAClientsOfAccessoryEvent_accessory___blo
     block[2] = __75__ACCiAP2ShimServer_sendToInterestedClientsACCBLENotification_withPayload___block_invoke;
     block[3] = &unk_278BF89A0;
     block[4] = self;
-    v14 = v6;
+    v14 = notificationCopy;
     v15 = v8;
     dispatch_async(v9, block);
   }
@@ -2925,15 +2925,15 @@ uint64_t __75__ACCiAP2ShimServer_sendToInterestedClientsACCBLENotification_withP
   return result;
 }
 
-+ (void)notifyInterestedClientsOfACCBLEAccessoryEvent:(id)a3 withPayload:(id)a4
++ (void)notifyInterestedClientsOfACCBLEAccessoryEvent:(id)event withPayload:(id)payload
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  eventCopy = event;
+  payloadCopy = payload;
+  v7 = payloadCopy;
+  if (eventCopy && payloadCopy)
   {
     v8 = +[ACCiAP2ShimServer sharedInstance];
-    [v8 sendToInterestedClientsACCBLENotification:v5 withPayload:v7];
+    [v8 sendToInterestedClientsACCBLENotification:eventCopy withPayload:v7];
   }
 
   else
@@ -3135,10 +3135,10 @@ LABEL_51:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)postNotifydNotificationType:(id)a3
++ (void)postNotifydNotificationType:(id)type
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  typeCopy = type;
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 1;
@@ -3168,19 +3168,19 @@ LABEL_51:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v3;
+    v9 = typeCopy;
     _os_log_impl(&dword_23DC47000, v6, OS_LOG_TYPE_INFO, "[#Server] post darwin notification %@", &v8, 0xCu);
   }
 
-  notify_post([v3 cStringUsingEncoding:4]);
+  notify_post([typeCopy cStringUsingEncoding:4]);
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)postNSDistributeNotificationType:(id)a3 notifyDict:(id)a4
++ (void)postNSDistributeNotificationType:(id)type notifyDict:(id)dict
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  typeCopy = type;
+  dictCopy = dict;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 1;
@@ -3210,22 +3210,22 @@ LABEL_51:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v13 = 138412546;
-    v14 = v5;
+    v14 = typeCopy;
     v15 = 2112;
-    v16 = v6;
+    v16 = dictCopy;
     _os_log_impl(&dword_23DC47000, v9, OS_LOG_TYPE_INFO, "[#Server] post distributed notification %@, userInfo %@", &v13, 0x16u);
   }
 
-  v10 = [MEMORY[0x277CCA9A0] defaultCenter];
-  v11 = v10;
-  if (v6)
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  v11 = defaultCenter;
+  if (dictCopy)
   {
-    [v10 postNotificationName:v5 object:0 userInfo:v6];
+    [defaultCenter postNotificationName:typeCopy object:0 userInfo:dictCopy];
   }
 
   else
   {
-    [v10 postNotificationName:v5 object:0];
+    [defaultCenter postNotificationName:typeCopy object:0];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -3238,10 +3238,10 @@ uint64_t __35__ACCiAP2ShimServer_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)markClientAsInterestedInBleNotifications:(id)a3
++ (void)markClientAsInterestedInBleNotifications:(id)notifications
 {
   v52 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  notificationsCopy = notifications;
   if (gLogObjects)
   {
     v4 = gNumLogObjects <= 0;
@@ -3253,8 +3253,8 @@ uint64_t __35__ACCiAP2ShimServer_sharedInstance__block_invoke()
   }
 
   v5 = !v4;
-  object2 = v3;
-  if (v3)
+  object2 = notificationsCopy;
+  if (notificationsCopy)
   {
     if (v5)
     {
@@ -3280,8 +3280,8 @@ uint64_t __35__ACCiAP2ShimServer_sharedInstance__block_invoke()
     }
 
     v7 = +[ACCiAP2ShimServer sharedInstance];
-    v9 = [v7 clientLock];
-    [v9 lock];
+    clientLock = [v7 clientLock];
+    [clientLock lock];
 
     v47 = 0u;
     v48 = 0u;
@@ -3306,13 +3306,13 @@ uint64_t __35__ACCiAP2ShimServer_sharedInstance__block_invoke()
           }
 
           v16 = *(*(&v45 + 1) + 8 * i);
-          v17 = [v7 clients];
-          v18 = [v17 objectForKey:v16];
+          clients = [v7 clients];
+          v18 = [clients objectForKey:v16];
 
-          v19 = [v18 xpcConnection];
-          LODWORD(v17) = xpc_equal(v19, object2);
+          xpcConnection = [v18 xpcConnection];
+          LODWORD(clients) = xpc_equal(xpcConnection, object2);
 
-          if (v17)
+          if (clients)
           {
             v20 = gLogObjects;
             v21 = gNumLogObjects;
@@ -3338,17 +3338,17 @@ uint64_t __35__ACCiAP2ShimServer_sharedInstance__block_invoke()
 
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
             {
-              v24 = [v18 clientID];
-              v25 = [v18 bundleId];
+              clientID = [v18 clientID];
+              bundleId = [v18 bundleId];
               *buf = 67109378;
-              *v51 = v24;
+              *v51 = clientID;
               *&v51[4] = 2112;
-              *&v51[6] = v25;
+              *&v51[6] = bundleId;
               _os_log_impl(&dword_23DC47000, v22, OS_LOG_TYPE_DEFAULT, "[#Server] xpc_connection object interested in BLE notifications matches the one for clientID = %u, bundleID = %@", buf, 0x12u);
             }
 
-            v26 = [v18 hasEntitlementForAllAccessories];
-            v27 = v26;
+            hasEntitlementForAllAccessories = [v18 hasEntitlementForAllAccessories];
+            v27 = hasEntitlementForAllAccessories;
             v28 = gLogObjects;
             v29 = gNumLogObjects;
             if (gLogObjects)
@@ -3362,7 +3362,7 @@ uint64_t __35__ACCiAP2ShimServer_sharedInstance__block_invoke()
             }
 
             v31 = !v30;
-            if (v26)
+            if (hasEntitlementForAllAccessories)
             {
               if (v31)
               {
@@ -3386,12 +3386,12 @@ uint64_t __35__ACCiAP2ShimServer_sharedInstance__block_invoke()
 
               if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
               {
-                v34 = [v18 clientID];
-                v35 = [v18 bundleId];
+                clientID2 = [v18 clientID];
+                bundleId2 = [v18 bundleId];
                 *buf = 67109378;
-                *v51 = v34;
+                *v51 = clientID2;
                 *&v51[4] = 2112;
-                *&v51[6] = v35;
+                *&v51[6] = bundleId2;
                 _os_log_impl(&dword_23DC47000, v32, OS_LOG_TYPE_DEFAULT, "[#Server] client has required entitlement. marking as interested for BLE notifications. clientID = %u, bundleID = %@", buf, 0x12u);
               }
             }
@@ -3420,12 +3420,12 @@ uint64_t __35__ACCiAP2ShimServer_sharedInstance__block_invoke()
 
               if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
               {
-                v37 = [v18 clientID];
-                v38 = [v18 bundleId];
+                clientID3 = [v18 clientID];
+                bundleId3 = [v18 bundleId];
                 *buf = 67109378;
-                *v51 = v37;
+                *v51 = clientID3;
                 *&v51[4] = 2112;
-                *&v51[6] = v38;
+                *&v51[6] = bundleId3;
                 _os_log_error_impl(&dword_23DC47000, v32, OS_LOG_TYPE_ERROR, "[#Server] interested client does not have entitlement! not marking as interested for BLE notifications. clientID = %u, bundleID = %@", buf, 0x12u);
               }
             }
@@ -3440,8 +3440,8 @@ uint64_t __35__ACCiAP2ShimServer_sharedInstance__block_invoke()
       while (v12);
     }
 
-    v39 = [v7 clientLock];
-    [v39 unlock];
+    clientLock2 = [v7 clientLock];
+    [clientLock2 unlock];
   }
 
   else

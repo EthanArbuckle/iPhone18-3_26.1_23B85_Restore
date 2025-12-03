@@ -1,21 +1,21 @@
 @interface SBHFocusModeManager
-- (SBHFocusModeManager)initWithIconManager:(id)a3;
+- (SBHFocusModeManager)initWithIconManager:(id)manager;
 - (SBHIconManager)iconManager;
 - (id)_focusModesRequiringIntroduction;
 - (id)computeCurrentFocusMode;
-- (void)_iconEditingDidChange:(id)a3;
-- (void)_iconModelDidChange:(id)a3;
+- (void)_iconEditingDidChange:(id)change;
+- (void)_iconModelDidChange:(id)change;
 - (void)_notifyObserversOfActiveFocusModeChange;
-- (void)_updateDockWithActiveFocusMode:(id)a3 rootFolder:(id)a4;
-- (void)addFocusModeRequiringIntroduction:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)applyFocusMode:(id)a3;
+- (void)_updateDockWithActiveFocusMode:(id)mode rootFolder:(id)folder;
+- (void)addFocusModeRequiringIntroduction:(id)introduction;
+- (void)addObserver:(id)observer;
+- (void)applyFocusMode:(id)mode;
 - (void)dealloc;
 - (void)dismissAllFocusModePopovers;
-- (void)donateFocusMode:(id)a3 fromSource:(int64_t)a4;
-- (void)folder:(id)a3 didAddList:(id)a4;
-- (void)removeFocusModeRequiringIntroduction:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)donateFocusMode:(id)mode fromSource:(int64_t)source;
+- (void)folder:(id)folder didAddList:(id)list;
+- (void)removeFocusModeRequiringIntroduction:(id)introduction;
+- (void)removeObserver:(id)observer;
 - (void)updateFocusModePopoverVisibility;
 @end
 
@@ -24,16 +24,16 @@
 - (void)updateFocusModePopoverVisibility
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHFocusModeManager *)self activeFocusMode];
-  v4 = v3;
-  if (v3)
+  activeFocusMode = [(SBHFocusModeManager *)self activeFocusMode];
+  v4 = activeFocusMode;
+  if (activeFocusMode)
   {
-    v5 = [v3 identifier];
-    v6 = [(SBHFocusModeManager *)self _focusModesRequiringIntroduction];
-    if ([v6 containsObject:v5])
+    identifier = [activeFocusMode identifier];
+    _focusModesRequiringIntroduction = [(SBHFocusModeManager *)self _focusModesRequiringIntroduction];
+    if ([_focusModesRequiringIntroduction containsObject:identifier])
     {
-      v7 = [(SBHFocusModeManager *)self focusModeFeatureIntroductionItem];
-      if (v7)
+      focusModeFeatureIntroductionItem = [(SBHFocusModeManager *)self focusModeFeatureIntroductionItem];
+      if (focusModeFeatureIntroductionItem)
       {
         [(SBHFocusModeManager *)self dismissAllFocusModePopovers];
       }
@@ -48,11 +48,11 @@
         _os_log_impl(&dword_1BEB18000, v8, OS_LOG_TYPE_DEFAULT, "[%@] Creating feature introduction item for Focus", &v15, 0xCu);
       }
 
-      v11 = [(SBHFocusModeManager *)self iconManager];
-      v12 = [[SBHFocusModeFeatureIntroductionItem alloc] initWithIconManager:v11];
+      iconManager = [(SBHFocusModeManager *)self iconManager];
+      v12 = [[SBHFocusModeFeatureIntroductionItem alloc] initWithIconManager:iconManager];
 
       [(SBHFocusModeManager *)self setFocusModeFeatureIntroductionItem:v12];
-      [v11 displayFeatureIntroductionItemIfUnlocked:v12];
+      [iconManager displayFeatureIntroductionItemIfUnlocked:v12];
     }
 
     else
@@ -77,41 +77,41 @@
 
 - (void)dismissAllFocusModePopovers
 {
-  v3 = [(SBHFocusModeManager *)self focusModeFeatureIntroductionItem];
-  if (v3)
+  focusModeFeatureIntroductionItem = [(SBHFocusModeManager *)self focusModeFeatureIntroductionItem];
+  if (focusModeFeatureIntroductionItem)
   {
-    v6 = v3;
-    [v3 tearDown];
-    v4 = [(SBHFocusModeManager *)self iconManager];
-    v5 = [v4 featureIntroductionManager];
-    [v5 removeFeatureIntroductionAtAllLocationsWithItem:v6];
+    v6 = focusModeFeatureIntroductionItem;
+    [focusModeFeatureIntroductionItem tearDown];
+    iconManager = [(SBHFocusModeManager *)self iconManager];
+    featureIntroductionManager = [iconManager featureIntroductionManager];
+    [featureIntroductionManager removeFeatureIntroductionAtAllLocationsWithItem:v6];
     [(SBHFocusModeManager *)self setFocusModeFeatureIntroductionItem:0];
 
-    v3 = v6;
+    focusModeFeatureIntroductionItem = v6;
   }
 }
 
-- (SBHFocusModeManager)initWithIconManager:(id)a3
+- (SBHFocusModeManager)initWithIconManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = SBHFocusModeManager;
   v5 = [(SBHFocusModeManager *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_iconManager, v4);
+    objc_storeWeak(&v5->_iconManager, managerCopy);
     v7 = objc_opt_new();
     focusModesBySourceNumber = v6->_focusModesBySourceNumber;
     v6->_focusModesBySourceNumber = v7;
 
-    v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v6->_observers;
-    v6->_observers = v9;
+    v6->_observers = weakObjectsHashTable;
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v6 selector:sel__iconEditingDidChange_ name:@"SBHIconManagerEditingStateChanged" object:v4];
-    [v11 addObserver:v6 selector:sel__iconModelDidChange_ name:@"SBHIconManagerIconModelDidChange" object:v4];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__iconEditingDidChange_ name:@"SBHIconManagerEditingStateChanged" object:managerCopy];
+    [defaultCenter addObserver:v6 selector:sel__iconModelDidChange_ name:@"SBHIconManagerIconModelDidChange" object:managerCopy];
   }
 
   return v6;
@@ -119,34 +119,34 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBHFocusModeManager;
   [(SBHFocusModeManager *)&v4 dealloc];
 }
 
-- (void)donateFocusMode:(id)a3 fromSource:(int64_t)a4
+- (void)donateFocusMode:(id)mode fromSource:(int64_t)source
 {
-  v6 = a3;
+  modeCopy = mode;
   BSDispatchQueueAssertMain();
-  [v6 setSource:a4];
-  v7 = [(SBHFocusModeManager *)self focusModesBySourceNumber];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v7 setObject:v6 forKeyedSubscript:v8];
+  [modeCopy setSource:source];
+  focusModesBySourceNumber = [(SBHFocusModeManager *)self focusModesBySourceNumber];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:source];
+  [focusModesBySourceNumber setObject:modeCopy forKeyedSubscript:v8];
 
-  v9 = [(SBHFocusModeManager *)self computeCurrentFocusMode];
-  v10 = [(SBHFocusModeManager *)self iconManager];
-  v11 = [v10 rootFolderController];
+  computeCurrentFocusMode = [(SBHFocusModeManager *)self computeCurrentFocusMode];
+  iconManager = [(SBHFocusModeManager *)self iconManager];
+  rootFolderController = [iconManager rootFolderController];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __50__SBHFocusModeManager_donateFocusMode_fromSource___block_invoke;
   v13[3] = &unk_1E8088F18;
   v13[4] = self;
-  v14 = v9;
-  v12 = v9;
-  [v11 performWhenScrollingEndsUsingBlock:v13];
+  v14 = computeCurrentFocusMode;
+  v12 = computeCurrentFocusMode;
+  [rootFolderController performWhenScrollingEndsUsingBlock:v13];
 }
 
 void __50__SBHFocusModeManager_donateFocusMode_fromSource___block_invoke(uint64_t a1)
@@ -171,14 +171,14 @@ void __50__SBHFocusModeManager_donateFocusMode_fromSource___block_invoke(uint64_
   v10 = __Block_byref_object_copy__13;
   v11 = __Block_byref_object_dispose__13;
   v12 = 0;
-  v3 = [(SBHFocusModeManager *)self focusModesBySourceNumber];
+  focusModesBySourceNumber = [(SBHFocusModeManager *)self focusModesBySourceNumber];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__SBHFocusModeManager_computeCurrentFocusMode__block_invoke;
   v6[3] = &unk_1E808D760;
   v6[4] = v13;
   v6[5] = &v7;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [focusModesBySourceNumber enumerateKeysAndObjectsUsingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -200,10 +200,10 @@ void __46__SBHFocusModeManager_computeCurrentFocusMode__block_invoke(uint64_t a1
   }
 }
 
-- (void)applyFocusMode:(id)a3
+- (void)applyFocusMode:(id)mode
 {
   v53 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  modeCopy = mode;
   v6 = SBLogFocusModes();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -212,16 +212,16 @@ void __46__SBHFocusModeManager_computeCurrentFocusMode__block_invoke(uint64_t a1
     *buf = 138412546;
     v50 = v8;
     v51 = 2114;
-    v52 = v5;
+    v52 = modeCopy;
     _os_log_impl(&dword_1BEB18000, v6, OS_LOG_TYPE_DEFAULT, "[%@] applying focus mode: %{public}@", buf, 0x16u);
   }
 
-  objc_storeStrong(&self->_activeFocusMode, a3);
-  v9 = [(SBHFocusModeManager *)self iconManager];
-  v10 = [v9 rootFolderController];
-  v11 = [v10 contentView];
+  objc_storeStrong(&self->_activeFocusMode, mode);
+  iconManager = [(SBHFocusModeManager *)self iconManager];
+  rootFolderController = [iconManager rootFolderController];
+  contentView = [rootFolderController contentView];
   v12 = objc_opt_class();
-  v13 = v11;
+  v13 = contentView;
   if (v12)
   {
     if (objc_opt_isKindOfClass())
@@ -243,21 +243,21 @@ void __46__SBHFocusModeManager_computeCurrentFocusMode__block_invoke(uint64_t a1
   v15 = v14;
 
   v38 = v15;
-  v37 = [v15 currentIconListModel];
-  v35 = [v10 currentPageIndex];
-  v34 = [v10 trailingCustomViewPageIndex];
-  v33 = [v9 isMainDisplayLibraryViewVisible];
-  v16 = [v9 rootFolder];
-  [(SBHFocusModeManager *)self _updateDockWithActiveFocusMode:v5 rootFolder:v16];
-  v36 = v16;
-  v17 = [v16 lists];
-  if (v5 && [v5 customizedHomeScreenPagesEnabled])
+  currentIconListModel = [v15 currentIconListModel];
+  currentPageIndex = [rootFolderController currentPageIndex];
+  trailingCustomViewPageIndex = [rootFolderController trailingCustomViewPageIndex];
+  isMainDisplayLibraryViewVisible = [iconManager isMainDisplayLibraryViewVisible];
+  rootFolder = [iconManager rootFolder];
+  [(SBHFocusModeManager *)self _updateDockWithActiveFocusMode:modeCopy rootFolder:rootFolder];
+  v36 = rootFolder;
+  lists = [rootFolder lists];
+  if (modeCopy && [modeCopy customizedHomeScreenPagesEnabled])
   {
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v18 = v17;
+    v18 = lists;
     v19 = [v18 countByEnumeratingWithState:&v43 objects:v48 count:16];
     if (v19)
     {
@@ -272,7 +272,7 @@ void __46__SBHFocusModeManager_computeCurrentFocusMode__block_invoke(uint64_t a1
             objc_enumerationMutation(v18);
           }
 
-          [*(*(&v43 + 1) + 8 * i) updateForFocusModeActivated:1 wantsListVisible:{objc_msgSend(v5, "wantsListVisible:", *(*(&v43 + 1) + 8 * i))}];
+          [*(*(&v43 + 1) + 8 * i) updateForFocusModeActivated:1 wantsListVisible:{objc_msgSend(modeCopy, "wantsListVisible:", *(*(&v43 + 1) + 8 * i))}];
         }
 
         v20 = [v18 countByEnumeratingWithState:&v43 objects:v48 count:16];
@@ -288,7 +288,7 @@ void __46__SBHFocusModeManager_computeCurrentFocusMode__block_invoke(uint64_t a1
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v23 = v17;
+    v23 = lists;
     v24 = [v23 countByEnumeratingWithState:&v39 objects:v47 count:16];
     if (v24)
     {
@@ -313,9 +313,9 @@ void __46__SBHFocusModeManager_computeCurrentFocusMode__block_invoke(uint64_t a1
     }
   }
 
-  if (v35 == v34)
+  if (currentPageIndex == trailingCustomViewPageIndex)
   {
-    v28 = v33;
+    v28 = isMainDisplayLibraryViewVisible;
   }
 
   else
@@ -325,95 +325,95 @@ void __46__SBHFocusModeManager_computeCurrentFocusMode__block_invoke(uint64_t a1
 
   if (v28 == 1)
   {
-    v29 = [v10 trailingCustomViewPageIndex];
-    v31 = v37;
+    trailingCustomViewPageIndex2 = [rootFolderController trailingCustomViewPageIndex];
+    v31 = currentIconListModel;
     v30 = v38;
     v32 = v36;
 LABEL_33:
-    [v10 setCurrentPageIndex:v29 animated:0];
+    [rootFolderController setCurrentPageIndex:trailingCustomViewPageIndex2 animated:0];
     goto LABEL_34;
   }
 
-  v31 = v37;
+  v31 = currentIconListModel;
   v30 = v38;
   v32 = v36;
-  if (v37)
+  if (currentIconListModel)
   {
-    v29 = [v38 pageIndexForIconListModel:v37];
-    if (v29 == 0x7FFFFFFFFFFFFFFFLL)
+    trailingCustomViewPageIndex2 = [v38 pageIndexForIconListModel:currentIconListModel];
+    if (trailingCustomViewPageIndex2 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v29 = [v38 defaultPageIndex];
+      trailingCustomViewPageIndex2 = [v38 defaultPageIndex];
     }
 
     goto LABEL_33;
   }
 
 LABEL_34:
-  [v9 updateIconViewAccessoryVisibility];
+  [iconManager updateIconViewAccessoryVisibility];
   [(SBHFocusModeManager *)self updateFocusModePopoverVisibility];
   [(SBHFocusModeManager *)self _notifyObserversOfActiveFocusModeChange];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   BSDispatchQueueAssertMain();
-  v5 = [(SBHFocusModeManager *)self observers];
-  [v5 addObject:v4];
+  observers = [(SBHFocusModeManager *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   BSDispatchQueueAssertMain();
-  v5 = [(SBHFocusModeManager *)self observers];
-  [v5 removeObject:v4];
+  observers = [(SBHFocusModeManager *)self observers];
+  [observers removeObject:observerCopy];
 }
 
-- (void)addFocusModeRequiringIntroduction:(id)a3
+- (void)addFocusModeRequiringIntroduction:(id)introduction
 {
-  v8 = a3;
-  v4 = [(SBHFocusModeManager *)self iconManager];
-  v5 = [v4 homeScreenDefaults];
-  v6 = [v5 focusModesRequiringIntroduction];
-  if (!v6)
+  introductionCopy = introduction;
+  iconManager = [(SBHFocusModeManager *)self iconManager];
+  homeScreenDefaults = [iconManager homeScreenDefaults];
+  focusModesRequiringIntroduction = [homeScreenDefaults focusModesRequiringIntroduction];
+  if (!focusModesRequiringIntroduction)
   {
-    v6 = objc_alloc_init(MEMORY[0x1E695DEC8]);
+    focusModesRequiringIntroduction = objc_alloc_init(MEMORY[0x1E695DEC8]);
   }
 
-  if (([v6 containsObject:v8] & 1) == 0)
+  if (([focusModesRequiringIntroduction containsObject:introductionCopy] & 1) == 0)
   {
-    v7 = [v6 arrayByAddingObject:v8];
+    v7 = [focusModesRequiringIntroduction arrayByAddingObject:introductionCopy];
 
-    [v5 setFocusModesRequiringIntroduction:v7];
-    v6 = v7;
+    [homeScreenDefaults setFocusModesRequiringIntroduction:v7];
+    focusModesRequiringIntroduction = v7;
   }
 }
 
-- (void)removeFocusModeRequiringIntroduction:(id)a3
+- (void)removeFocusModeRequiringIntroduction:(id)introduction
 {
-  v4 = a3;
-  v8 = [(SBHFocusModeManager *)self iconManager];
-  v5 = [v8 homeScreenDefaults];
-  v6 = [(SBHFocusModeManager *)self _focusModesRequiringIntroduction];
-  [v6 removeObject:v4];
+  introductionCopy = introduction;
+  iconManager = [(SBHFocusModeManager *)self iconManager];
+  homeScreenDefaults = [iconManager homeScreenDefaults];
+  _focusModesRequiringIntroduction = [(SBHFocusModeManager *)self _focusModesRequiringIntroduction];
+  [_focusModesRequiringIntroduction removeObject:introductionCopy];
 
-  v7 = [v6 allObjects];
-  [v5 setFocusModesRequiringIntroduction:v7];
+  allObjects = [_focusModesRequiringIntroduction allObjects];
+  [homeScreenDefaults setFocusModesRequiringIntroduction:allObjects];
 }
 
 - (void)_notifyObserversOfActiveFocusModeChange
 {
   v15 = *MEMORY[0x1E69E9840];
   BSDispatchQueueAssertMain();
-  v3 = [(SBHFocusModeManager *)self observers];
-  v4 = [v3 allObjects];
+  observers = [(SBHFocusModeManager *)self observers];
+  allObjects = [observers allObjects];
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = v4;
+  v5 = allObjects;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -442,14 +442,14 @@ LABEL_34:
 
 - (id)_focusModesRequiringIntroduction
 {
-  v2 = [(SBHFocusModeManager *)self iconManager];
-  v3 = [v2 homeScreenDefaults];
-  v4 = [v3 focusModesRequiringIntroduction];
-  if (v4)
+  iconManager = [(SBHFocusModeManager *)self iconManager];
+  homeScreenDefaults = [iconManager homeScreenDefaults];
+  focusModesRequiringIntroduction = [homeScreenDefaults focusModesRequiringIntroduction];
+  if (focusModesRequiringIntroduction)
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v4];
-    v6 = [v5 allObjects];
-    [v3 setFocusModesRequiringIntroduction:v6];
+    v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:focusModesRequiringIntroduction];
+    allObjects = [v5 allObjects];
+    [homeScreenDefaults setFocusModesRequiringIntroduction:allObjects];
   }
 
   else
@@ -460,12 +460,12 @@ LABEL_34:
   return v5;
 }
 
-- (void)_updateDockWithActiveFocusMode:(id)a3 rootFolder:(id)a4
+- (void)_updateDockWithActiveFocusMode:(id)mode rootFolder:(id)folder
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && ([v6 dockList], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  modeCopy = mode;
+  folderCopy = folder;
+  if (modeCopy && ([modeCopy dockList], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
     v9 = SBLogFocusModes();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -477,7 +477,7 @@ LABEL_34:
       _os_log_impl(&dword_1BEB18000, v9, OS_LOG_TYPE_INFO, "[%@] Configuring the dock for the active focus mode", &v24, 0xCu);
     }
 
-    v12 = [v6 dockList];
+    dockList = [modeCopy dockList];
     if (self->_cachedDock)
     {
       goto LABEL_14;
@@ -493,8 +493,8 @@ LABEL_34:
       _os_log_impl(&dword_1BEB18000, v13, OS_LOG_TYPE_INFO, "[%@] Caching original dock configuration", &v24, 0xCu);
     }
 
-    v16 = [v7 dock];
-    v17 = [v16 copy];
+    dock = [folderCopy dock];
+    v17 = [dock copy];
     cachedDock = self->_cachedDock;
     self->_cachedDock = v17;
   }
@@ -516,46 +516,46 @@ LABEL_34:
       _os_log_impl(&dword_1BEB18000, v19, OS_LOG_TYPE_INFO, "[%@] Restoring original dock configuration", &v24, 0xCu);
     }
 
-    v12 = self->_cachedDock;
-    v16 = self->_cachedDock;
+    dockList = self->_cachedDock;
+    dock = self->_cachedDock;
     self->_cachedDock = 0;
   }
 
 LABEL_14:
-  if (v12)
+  if (dockList)
   {
-    v22 = [v7 dock];
-    v23 = [v22 setIconsFromIconListModel:v12];
+    dock2 = [folderCopy dock];
+    v23 = [dock2 setIconsFromIconListModel:dockList];
   }
 
 LABEL_16:
 }
 
-- (void)folder:(id)a3 didAddList:(id)a4
+- (void)folder:(id)folder didAddList:(id)list
 {
-  v7 = a4;
-  v5 = [(SBHFocusModeManager *)self activeFocusMode];
-  v6 = v5;
-  if (v5 && [v5 customizedHomeScreenPagesEnabled])
+  listCopy = list;
+  activeFocusMode = [(SBHFocusModeManager *)self activeFocusMode];
+  v6 = activeFocusMode;
+  if (activeFocusMode && [activeFocusMode customizedHomeScreenPagesEnabled])
   {
-    [v6 addToList:v7];
+    [v6 addToList:listCopy];
   }
 }
 
-- (void)_iconEditingDidChange:(id)a3
+- (void)_iconEditingDidChange:(id)change
 {
-  v4 = [a3 object];
-  if ([v4 isEditing])
+  object = [change object];
+  if ([object isEditing])
   {
     [(SBHFocusModeManager *)self dismissAllFocusModePopovers];
   }
 }
 
-- (void)_iconModelDidChange:(id)a3
+- (void)_iconModelDidChange:(id)change
 {
-  v5 = [a3 object];
-  v4 = [v5 rootFolder];
-  [v4 addFolderObserver:self];
+  object = [change object];
+  rootFolder = [object rootFolder];
+  [rootFolder addFolderObserver:self];
 }
 
 - (SBHIconManager)iconManager

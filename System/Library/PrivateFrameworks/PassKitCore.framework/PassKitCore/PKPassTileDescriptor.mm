@@ -1,19 +1,19 @@
 @interface PKPassTileDescriptor
-+ (id)createWithPassDictionary:(id)a3 privateDictionary:(id)a4;
-+ (uint64_t)_createConcreteTilesForDictionaries:(void *)a3 privateDictionaryMap:(uint64_t)a4 context:;
++ (id)createWithPassDictionary:(id)dictionary privateDictionary:(id)privateDictionary;
++ (uint64_t)_createConcreteTilesForDictionaries:(void *)dictionaries privateDictionaryMap:(uint64_t)map context:;
 - (id)_init;
-- (id)_initWithMetadata:(void *)a3 dictionary:(void *)a4 privateDictionary:;
-- (id)createTileForState:(id)a3 childTiles:(id)a4 withBundle:(id)a5 privateBundle:(id)a6;
+- (id)_initWithMetadata:(void *)metadata dictionary:(void *)dictionary privateDictionary:;
+- (id)createTileForState:(id)state childTiles:(id)tiles withBundle:(id)bundle privateBundle:(id)privateBundle;
 @end
 
 @implementation PKPassTileDescriptor
 
-+ (id)createWithPassDictionary:(id)a3 privateDictionary:(id)a4
++ (id)createWithPassDictionary:(id)dictionary privateDictionary:(id)privateDictionary
 {
   v70 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 PKArrayForKey:@"tilesV2"];
+  dictionaryCopy = dictionary;
+  privateDictionaryCopy = privateDictionary;
+  v7 = [privateDictionaryCopy PKArrayForKey:@"tilesV2"];
   v8 = v7;
   if (v7)
   {
@@ -22,7 +22,7 @@
 
   else
   {
-    v9 = [v6 PKArrayForKey:@"tiles"];
+    v9 = [privateDictionaryCopy PKArrayForKey:@"tiles"];
   }
 
   v10 = v9;
@@ -30,12 +30,12 @@
   v11 = off_1E79C0000;
   v51 = [PKPassTileMetadata _createDictionaryMapForDictionaries:v10];
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v13 = [v5 PKArrayForKey:@"tilesV2"];
+  v13 = [dictionaryCopy PKArrayForKey:@"tilesV2"];
   if ([v13 count])
   {
     v43 = v10;
-    v44 = v6;
-    v45 = v5;
+    v44 = privateDictionaryCopy;
+    v45 = dictionaryCopy;
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
@@ -111,8 +111,8 @@
                         v36 = [(PKPassTileDescriptor *)v57 _createConcreteTilesForDictionaries:v35 privateDictionaryMap:v25 context:v21];
                         [v33 setChildDescriptors:v36];
 
-                        v37 = [v33 childDescriptors];
-                        v38 = [v37 count];
+                        childDescriptors = [v33 childDescriptors];
+                        v38 = [childDescriptors count];
 
                         if (v38)
                         {
@@ -167,17 +167,17 @@
       while (v16);
     }
 
-    v6 = v44;
-    v5 = v45;
+    privateDictionaryCopy = v44;
+    dictionaryCopy = v45;
     v10 = v43;
     goto LABEL_37;
   }
 
-  v14 = [v5 PKArrayForKey:@"tiles"];
+  v14 = [dictionaryCopy PKArrayForKey:@"tiles"];
 
   if ([v14 count])
   {
-    v40 = [(PKPassTileDescriptor *)a1 _createConcreteTilesForDictionaries:v14 privateDictionaryMap:v51 context:1];
+    v40 = [(PKPassTileDescriptor *)self _createConcreteTilesForDictionaries:v14 privateDictionaryMap:v51 context:1];
     [v12 pk_safelyAddObjectsFromArray:v40];
 
 LABEL_37:
@@ -191,11 +191,11 @@ LABEL_38:
   return v41;
 }
 
-+ (uint64_t)_createConcreteTilesForDictionaries:(void *)a3 privateDictionaryMap:(uint64_t)a4 context:
++ (uint64_t)_createConcreteTilesForDictionaries:(void *)dictionaries privateDictionaryMap:(uint64_t)map context:
 {
   v35 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
+  dictionariesCopy = dictionaries;
   objc_opt_self();
   if ([v6 count])
   {
@@ -223,16 +223,16 @@ LABEL_38:
 
           v14 = *(*(&v28 + 1) + 8 * i);
           v27 = 0;
-          v15 = [PKPassTileMetadata _createWithDictionary:v14 privateDictionaryMap:v7 privateDictionary:&v27 context:a4];
+          v15 = [PKPassTileMetadata _createWithDictionary:v14 privateDictionaryMap:dictionariesCopy privateDictionary:&v27 context:map];
           v16 = v15;
           if (v15)
           {
-            v17 = [v15 isSelectable];
+            isSelectable = [v15 isSelectable];
             if (v11)
             {
               if (v11 == 1)
               {
-                if ((v17 & 1) == 0)
+                if ((isSelectable & 1) == 0)
                 {
                   goto LABEL_25;
                 }
@@ -242,15 +242,15 @@ LABEL_38:
 
               else
               {
-                if (v17)
+                if (isSelectable)
                 {
 LABEL_25:
                   v22 = PKLogFacilityTypeGetObject(0);
                   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
                   {
-                    v23 = [v16 identifier];
+                    identifier = [v16 identifier];
                     *buf = 138412290;
-                    v33 = v23;
+                    v33 = identifier;
                     _os_log_impl(&dword_1AD337000, v22, OS_LOG_TYPE_DEFAULT, "PKPassTileDescriptor: invalid configuration of tiles found by tile %@ - rejecting all tiles.", buf, 0xCu);
                   }
 
@@ -264,7 +264,7 @@ LABEL_25:
               }
             }
 
-            else if (v17)
+            else if (isSelectable)
             {
               v11 = 1;
             }
@@ -316,42 +316,42 @@ LABEL_30:
   return v21;
 }
 
-- (id)_initWithMetadata:(void *)a3 dictionary:(void *)a4 privateDictionary:
+- (id)_initWithMetadata:(void *)metadata dictionary:(void *)dictionary privateDictionary:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  metadataCopy = metadata;
+  dictionaryCopy = dictionary;
+  if (self)
   {
-    v11 = [a1 _init];
-    v12 = v11;
-    if (v11)
+    _init = [self _init];
+    v12 = _init;
+    if (_init)
     {
-      objc_storeStrong((v11 + 16), a2);
-      v13 = [*(v12 + 16) type];
+      objc_storeStrong((_init + 16), a2);
+      type = [*(v12 + 16) type];
       v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v28 = MEMORY[0x1E69E9820];
       v29 = 3221225472;
       v30 = __71__PKPassTileDescriptor__initWithMetadata_dictionary_privateDictionary___block_invoke;
       v31 = &unk_1E79E2CB0;
-      v33 = v13;
+      v33 = type;
       v15 = v14;
       v32 = v15;
       v16 = _Block_copy(&v28);
-      if (v10)
+      if (dictionaryCopy)
       {
-        v17 = [v10 PKDictionaryForKey:{@"states", v28, v29, v30, v31}];
+        v17 = [dictionaryCopy PKDictionaryForKey:{@"states", v28, v29, v30, v31}];
         v16[2](v16, v17);
       }
 
-      v18 = [v9 PKDictionaryForKey:{@"states", v28, v29, v30, v31}];
+      v18 = [metadataCopy PKDictionaryForKey:{@"states", v28, v29, v30, v31}];
       v16[2](v16, v18);
 
       v19 = [v15 copy];
       v20 = *(v12 + 24);
       *(v12 + 24) = v19;
 
-      v21 = [v9 PKDictionaryForKey:@"defaultConfiguration"];
+      v21 = [metadataCopy PKDictionaryForKey:@"defaultConfiguration"];
       v22 = [v21 PKStringForKey:@"state"];
       v23 = *(v12 + 40);
       *(v12 + 40) = v22;
@@ -360,21 +360,21 @@ LABEL_30:
       v25 = v24;
       if (v24)
       {
-        v26 = [v24 BOOLValue];
+        bOOLValue = [v24 BOOLValue];
       }
 
       else
       {
-        v26 = 1;
+        bOOLValue = 1;
       }
 
-      *(v12 + 8) = v26;
+      *(v12 + 8) = bOOLValue;
     }
 
-    a1 = v12;
+    self = v12;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_init
@@ -414,34 +414,34 @@ void __71__PKPassTileDescriptor__initWithMetadata_dictionary_privateDictionary__
   }
 }
 
-- (id)createTileForState:(id)a3 childTiles:(id)a4 withBundle:(id)a5 privateBundle:(id)a6
+- (id)createTileForState:(id)state childTiles:(id)tiles withBundle:(id)bundle privateBundle:(id)privateBundle
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 isSupported] && (v14 = objc_msgSend(v10, "isEnabled"), v14 != 2) && (v14 || self->_defaultEnabled))
+  stateCopy = state;
+  tilesCopy = tiles;
+  bundleCopy = bundle;
+  privateBundleCopy = privateBundle;
+  if ([stateCopy isSupported] && (v14 = objc_msgSend(stateCopy, "isEnabled"), v14 != 2) && (v14 || self->_defaultEnabled))
   {
-    v15 = [v10 stateIdentifier];
-    defaultStateIdentifier = v15;
-    if (!v15)
+    stateIdentifier = [stateCopy stateIdentifier];
+    defaultStateIdentifier = stateIdentifier;
+    if (!stateIdentifier)
     {
       defaultStateIdentifier = self->_defaultStateIdentifier;
     }
 
     v17 = defaultStateIdentifier;
 
-    v18 = [v10 stateOverride];
-    if (!v18 && v17)
+    stateOverride = [stateCopy stateOverride];
+    if (!stateOverride && v17)
     {
-      v18 = [(NSDictionary *)self->_states objectForKeyedSubscript:v17];
+      stateOverride = [(NSDictionary *)self->_states objectForKeyedSubscript:v17];
     }
 
-    v19 = [v18 createResolvedStateWithBundle:v12 privateBundle:v13];
+    v19 = [stateOverride createResolvedStateWithBundle:bundleCopy privateBundle:privateBundleCopy];
 
     if (v19)
     {
-      v20 = -[PKPassTile _initWithMetadata:childTiles:stateIdentifier:state:inProgress:]([PKPassTile alloc], "_initWithMetadata:childTiles:stateIdentifier:state:inProgress:", self->_metadata, v11, v17, v19, [v10 isInProgress]);
+      v20 = -[PKPassTile _initWithMetadata:childTiles:stateIdentifier:state:inProgress:]([PKPassTile alloc], "_initWithMetadata:childTiles:stateIdentifier:state:inProgress:", self->_metadata, tilesCopy, v17, v19, [stateCopy isInProgress]);
     }
 
     else

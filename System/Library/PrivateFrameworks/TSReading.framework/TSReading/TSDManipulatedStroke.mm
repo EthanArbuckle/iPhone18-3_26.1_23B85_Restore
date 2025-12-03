@@ -1,14 +1,14 @@
 @interface TSDManipulatedStroke
-- (CGPath)manipulatePath:(CGPath *)a3 withLineWidth:(double)a4;
-- (CGPath)pathToStrokeFromCGPath:(CGPath *)a3;
-- (TSDManipulatedStroke)initWithName:(id)a3 color:(id)a4 width:(double)a5 cap:(int)a6 join:(int)a7 pattern:(id)a8 miterLimit:(double)a9;
+- (CGPath)manipulatePath:(CGPath *)path withLineWidth:(double)width;
+- (CGPath)pathToStrokeFromCGPath:(CGPath *)path;
+- (TSDManipulatedStroke)initWithName:(id)name color:(id)color width:(double)width cap:(int)cap join:(int)join pattern:(id)pattern miterLimit:(double)limit;
 - (double)renderedWidth;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)strokeLineEnd:(id)a3;
-- (void)applyInteriorWrapPropertiesInContext:(CGContext *)a3 insideStroke:(BOOL)a4;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)strokeLineEnd:(id)end;
+- (void)applyInteriorWrapPropertiesInContext:(CGContext *)context insideStroke:(BOOL)stroke;
 - (void)dealloc;
 - (void)p_setupDoodlesManipulation;
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8;
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order;
 @end
 
 @implementation TSDManipulatedStroke
@@ -19,12 +19,12 @@
   [(TSDManipulatedStroke *)self setPathManipulation:v3];
 }
 
-- (TSDManipulatedStroke)initWithName:(id)a3 color:(id)a4 width:(double)a5 cap:(int)a6 join:(int)a7 pattern:(id)a8 miterLimit:(double)a9
+- (TSDManipulatedStroke)initWithName:(id)name color:(id)color width:(double)width cap:(int)cap join:(int)join pattern:(id)pattern miterLimit:(double)limit
 {
   v12.receiver = self;
   v12.super_class = TSDManipulatedStroke;
-  v10 = [(TSDSmartStroke *)&v12 initWithName:a3 color:a4 width:*&a6 cap:*&a7 join:a8 pattern:a5 miterLimit:a9];
-  if (v10 && [a3 isEqualToString:@"Doodles"])
+  v10 = [(TSDSmartStroke *)&v12 initWithName:name color:color width:*&cap cap:*&join join:pattern pattern:width miterLimit:limit];
+  if (v10 && [name isEqualToString:@"Doodles"])
   {
     [(TSDManipulatedStroke *)v10 p_setupDoodlesManipulation];
   }
@@ -39,88 +39,88 @@
   [(TSDSmartStroke *)&v3 dealloc];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TSDMutableManipulatedStroke alloc];
-  v5 = [(TSDSmartStroke *)self strokeName];
-  v6 = [(TSDStroke *)self color];
+  strokeName = [(TSDSmartStroke *)self strokeName];
+  color = [(TSDStroke *)self color];
   [(TSDStroke *)self width];
   v8 = v7;
   v9 = [(TSDStroke *)self cap];
-  v10 = [(TSDStroke *)self join];
-  v11 = [(TSDStroke *)self pattern];
+  join = [(TSDStroke *)self join];
+  pattern = [(TSDStroke *)self pattern];
   [(TSDStroke *)self miterLimit];
-  v13 = [(TSDManipulatedStroke *)v4 initWithName:v5 color:v6 width:v9 cap:v10 join:v11 pattern:v8 miterLimit:v12];
+  v13 = [(TSDManipulatedStroke *)v4 initWithName:strokeName color:color width:v9 cap:join join:pattern pattern:v8 miterLimit:v12];
   [(TSDManipulatedStroke *)v13 setRandomSeed:[(TSDManipulatedStroke *)self randomSeed]];
   return v13;
 }
 
-- (void)applyInteriorWrapPropertiesInContext:(CGContext *)a3 insideStroke:(BOOL)a4
+- (void)applyInteriorWrapPropertiesInContext:(CGContext *)context insideStroke:(BOOL)stroke
 {
   v4.receiver = self;
   v4.super_class = TSDManipulatedStroke;
-  [(TSDStroke *)&v4 applyToContext:a3 insideStroke:a4];
+  [(TSDStroke *)&v4 applyToContext:context insideStroke:stroke];
 }
 
-- (id)strokeLineEnd:(id)a3
+- (id)strokeLineEnd:(id)end
 {
-  v3 = a3;
-  v5 = [a3 identifier];
-  if (v3 && ([v5 hasPrefix:{-[TSDSmartStroke strokeName](self, "strokeName")}] & 1) == 0 && self->mArrows)
+  endCopy = end;
+  identifier = [end identifier];
+  if (endCopy && ([identifier hasPrefix:{-[TSDSmartStroke strokeName](self, "strokeName")}] & 1) == 0 && self->mArrows)
   {
-    v6 = [v5 rangeOfString:@":"];
+    v6 = [identifier rangeOfString:@":"];
     if (v6 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v5 = [v5 substringFromIndex:v6 + v7];
+      identifier = [identifier substringFromIndex:v6 + v7];
     }
 
     mArrows = self->mArrows;
 
-    return [(NSMutableDictionary *)mArrows objectForKey:v5];
+    return [(NSMutableDictionary *)mArrows objectForKey:identifier];
   }
 
   else
   {
-    if (([v5 hasPrefix:{-[TSDSmartStroke strokeName](self, "strokeName")}] & 1) == 0)
+    if (([identifier hasPrefix:{-[TSDSmartStroke strokeName](self, "strokeName")}] & 1) == 0)
     {
       v10.receiver = self;
       v10.super_class = TSDManipulatedStroke;
-      return [(TSDStroke *)&v10 strokeLineEnd:v3];
+      return [(TSDStroke *)&v10 strokeLineEnd:endCopy];
     }
 
-    return v3;
+    return endCopy;
   }
 }
 
-- (CGPath)manipulatePath:(CGPath *)a3 withLineWidth:(double)a4
+- (CGPath)manipulatePath:(CGPath *)path withLineWidth:(double)width
 {
   [(TSDManipulatedStroke *)self seedRandom];
   mManipulation = self->mManipulation;
   if (!mManipulation)
   {
-    return a3;
+    return path;
   }
 
-  return [(TSDPathManipulation *)mManipulation manipulatePath:a3 withLineWidth:a4];
+  return [(TSDPathManipulation *)mManipulation manipulatePath:path withLineWidth:width];
 }
 
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a6;
-  v12 = a4;
+  orderCopy = order;
+  parameterizedCopy = parameterized;
+  drawingCopy = drawing;
+  strokeCopy = stroke;
   [(TSDStroke *)self width];
   v15.receiver = self;
   v15.super_class = TSDManipulatedStroke;
-  [(TSDStroke *)&v15 paintPath:[(TSDManipulatedStroke *)self manipulatePath:a3 withLineWidth:?] wantsInteriorStroke:v12 inContext:a5 useFastDrawing:v10 parameterized:v9 shouldReverseDrawOrder:v8];
+  [(TSDStroke *)&v15 paintPath:[(TSDManipulatedStroke *)self manipulatePath:path withLineWidth:?] wantsInteriorStroke:strokeCopy inContext:context useFastDrawing:drawingCopy parameterized:parameterizedCopy shouldReverseDrawOrder:orderCopy];
 }
 
-- (CGPath)pathToStrokeFromCGPath:(CGPath *)a3
+- (CGPath)pathToStrokeFromCGPath:(CGPath *)path
 {
   [(TSDStroke *)self width];
 
-  return [(TSDManipulatedStroke *)self manipulatePath:a3 withLineWidth:?];
+  return [(TSDManipulatedStroke *)self manipulatePath:path withLineWidth:?];
 }
 
 - (double)renderedWidth

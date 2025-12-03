@@ -1,38 +1,38 @@
 @interface BMSiriAssistantSuggestionFeaturesEnvironmentFeatures
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriAssistantSuggestionFeaturesEnvironmentFeatures)initWithFocusMode:(id)a3 deviceMotion:(id)a4 location:(int)a5 isPlayingMedia:(id)a6 isAirplaneMode:(id)a7 isTimerRunning:(id)a8 isConnectedToWifi:(id)a9 hasInternetConnection:(id)a10 isScreenSharing:(id)a11 audioIsMuted:(id)a12 screenBrightness:(id)a13 homeGraph:(id)a14 batteryIsCharging:(id)a15 isLowBatteryMode:(id)a16;
-- (BMSiriAssistantSuggestionFeaturesEnvironmentFeatures)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriAssistantSuggestionFeaturesEnvironmentFeatures)initWithFocusMode:(id)mode deviceMotion:(id)motion location:(int)location isPlayingMedia:(id)media isAirplaneMode:(id)airplaneMode isTimerRunning:(id)running isConnectedToWifi:(id)wifi hasInternetConnection:(id)self0 isScreenSharing:(id)self1 audioIsMuted:(id)self2 screenBrightness:(id)self3 homeGraph:(id)self4 batteryIsCharging:(id)self5 isLowBatteryMode:(id)self6;
+- (BMSiriAssistantSuggestionFeaturesEnvironmentFeatures)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriAssistantSuggestionFeaturesEnvironmentFeatures
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self focusMode];
-    v7 = [v5 focusMode];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    focusMode = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self focusMode];
+    focusMode2 = [v5 focusMode];
+    v8 = focusMode2;
+    if (focusMode == focusMode2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self focusMode];
-      v10 = [v5 focusMode];
-      v11 = [v9 isEqual:v10];
+      focusMode3 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self focusMode];
+      focusMode4 = [v5 focusMode];
+      v11 = [focusMode3 isEqual:focusMode4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self deviceMotion];
-    v14 = [v5 deviceMotion];
-    v15 = v14;
-    if (v13 == v14)
+    deviceMotion = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self deviceMotion];
+    deviceMotion2 = [v5 deviceMotion];
+    v15 = deviceMotion2;
+    if (deviceMotion == deviceMotion2)
     {
     }
 
     else
     {
-      v16 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self deviceMotion];
-      v17 = [v5 deviceMotion];
-      v18 = [v16 isEqual:v17];
+      deviceMotion3 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self deviceMotion];
+      deviceMotion4 = [v5 deviceMotion];
+      v18 = [deviceMotion3 isEqual:deviceMotion4];
 
       if (!v18)
       {
@@ -59,21 +59,21 @@
       }
     }
 
-    v19 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self location];
-    if (v19 == [v5 location])
+    location = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self location];
+    if (location == [v5 location])
     {
-      v20 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self isPlayingMedia];
-      v21 = [v5 isPlayingMedia];
-      v22 = v21;
-      if (v20 == v21)
+      isPlayingMedia = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self isPlayingMedia];
+      isPlayingMedia2 = [v5 isPlayingMedia];
+      v22 = isPlayingMedia2;
+      if (isPlayingMedia == isPlayingMedia2)
       {
       }
 
       else
       {
-        v23 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self isPlayingMedia];
-        v24 = [v5 isPlayingMedia];
-        v25 = [v23 isEqual:v24];
+        isPlayingMedia3 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self isPlayingMedia];
+        isPlayingMedia4 = [v5 isPlayingMedia];
+        v25 = [isPlayingMedia3 isEqual:isPlayingMedia4];
 
         if (!v25)
         {
@@ -93,8 +93,8 @@
           goto LABEL_65;
         }
 
-        v26 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self isAirplaneMode];
-        if (v26 != [v5 isAirplaneMode])
+        isAirplaneMode = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self isAirplaneMode];
+        if (isAirplaneMode != [v5 isAirplaneMode])
         {
           goto LABEL_65;
         }
@@ -112,8 +112,8 @@
           goto LABEL_65;
         }
 
-        v27 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self isTimerRunning];
-        if (v27 != [v5 isTimerRunning])
+        isTimerRunning = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self isTimerRunning];
+        if (isTimerRunning != [v5 isTimerRunning])
         {
           goto LABEL_65;
         }
@@ -131,8 +131,8 @@
           goto LABEL_65;
         }
 
-        v28 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self isConnectedToWifi];
-        if (v28 != [v5 isConnectedToWifi])
+        isConnectedToWifi = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self isConnectedToWifi];
+        if (isConnectedToWifi != [v5 isConnectedToWifi])
         {
           goto LABEL_65;
         }
@@ -150,8 +150,8 @@
           goto LABEL_65;
         }
 
-        v29 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self hasInternetConnection];
-        if (v29 != [v5 hasInternetConnection])
+        hasInternetConnection = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self hasInternetConnection];
+        if (hasInternetConnection != [v5 hasInternetConnection])
         {
           goto LABEL_65;
         }
@@ -169,8 +169,8 @@
           goto LABEL_65;
         }
 
-        v30 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self isScreenSharing];
-        if (v30 != [v5 isScreenSharing])
+        isScreenSharing = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self isScreenSharing];
+        if (isScreenSharing != [v5 isScreenSharing])
         {
           goto LABEL_65;
         }
@@ -188,8 +188,8 @@
           goto LABEL_65;
         }
 
-        v31 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self audioIsMuted];
-        if (v31 != [v5 audioIsMuted])
+        audioIsMuted = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self audioIsMuted];
+        if (audioIsMuted != [v5 audioIsMuted])
         {
           goto LABEL_65;
         }
@@ -207,25 +207,25 @@
           goto LABEL_65;
         }
 
-        v32 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self screenBrightness];
-        if (v32 != [v5 screenBrightness])
+        screenBrightness = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self screenBrightness];
+        if (screenBrightness != [v5 screenBrightness])
         {
           goto LABEL_65;
         }
       }
 
-      v33 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self homeGraph];
-      v34 = [v5 homeGraph];
-      v35 = v34;
-      if (v33 == v34)
+      homeGraph = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self homeGraph];
+      homeGraph2 = [v5 homeGraph];
+      v35 = homeGraph2;
+      if (homeGraph == homeGraph2)
       {
       }
 
       else
       {
-        v36 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self homeGraph];
-        v37 = [v5 homeGraph];
-        v38 = [v36 isEqual:v37];
+        homeGraph3 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self homeGraph];
+        homeGraph4 = [v5 homeGraph];
+        v38 = [homeGraph3 isEqual:homeGraph4];
 
         if (!v38)
         {
@@ -243,8 +243,8 @@
 
         if (-[BMSiriAssistantSuggestionFeaturesEnvironmentFeatures hasIsLowBatteryMode](self, "hasIsLowBatteryMode") && [v5 hasIsLowBatteryMode])
         {
-          v40 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self isLowBatteryMode];
-          v12 = v40 ^ [v5 isLowBatteryMode] ^ 1;
+          isLowBatteryMode = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self isLowBatteryMode];
+          v12 = isLowBatteryMode ^ [v5 isLowBatteryMode] ^ 1;
 LABEL_66:
 
           goto LABEL_67;
@@ -266,10 +266,10 @@ LABEL_67:
 - (id)jsonDictionary
 {
   v48[14] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self focusMode];
-  v4 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self deviceMotion];
+  focusMode = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self focusMode];
+  deviceMotion = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self deviceMotion];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriAssistantSuggestionFeaturesEnvironmentFeatures location](self, "location")}];
-  v6 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self isPlayingMedia];
+  isPlayingMedia = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self isPlayingMedia];
   if ([(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self hasIsAirplaneMode])
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesEnvironmentFeatures isAirplaneMode](self, "isAirplaneMode")}];
@@ -340,8 +340,8 @@ LABEL_67:
     v41 = 0;
   }
 
-  v8 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self homeGraph];
-  v40 = [v8 jsonDictionary];
+  homeGraph = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self homeGraph];
+  jsonDictionary = [homeGraph jsonDictionary];
 
   if ([(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self hasBatteryIsCharging])
   {
@@ -364,129 +364,129 @@ LABEL_67:
   }
 
   v47[0] = @"focusMode";
-  v11 = v3;
-  if (!v3)
+  null = focusMode;
+  if (!focusMode)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v34 = v11;
-  v48[0] = v11;
+  v34 = null;
+  v48[0] = null;
   v47[1] = @"deviceMotion";
-  v12 = v4;
-  if (!v4)
+  null2 = deviceMotion;
+  if (!deviceMotion)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33 = v12;
-  v48[1] = v12;
+  v33 = null2;
+  v48[1] = null2;
   v47[2] = @"location";
-  v13 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v13;
-  v48[2] = v13;
+  v32 = null3;
+  v48[2] = null3;
   v47[3] = @"isPlayingMedia";
-  v14 = v6;
-  if (!v6)
+  null4 = isPlayingMedia;
+  if (!isPlayingMedia)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = v14;
-  v48[3] = v14;
+  v31 = null4;
+  v48[3] = null4;
   v47[4] = @"isAirplaneMode";
-  v15 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v39 = v3;
-  v30 = v15;
-  v48[4] = v15;
+  v39 = focusMode;
+  v30 = null5;
+  v48[4] = null5;
   v47[5] = @"isTimerRunning";
-  v16 = v46;
+  null6 = v46;
   if (!v46)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
   v38 = v5;
-  v48[5] = v16;
+  v48[5] = null6;
   v47[6] = @"isConnectedToWifi";
-  v17 = v45;
+  null7 = v45;
   if (!v45)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v37 = v6;
-  v48[6] = v17;
+  v37 = isPlayingMedia;
+  v48[6] = null7;
   v47[7] = @"hasInternetConnection";
-  v18 = v44;
+  null8 = v44;
   if (!v44)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
   v36 = v7;
-  v48[7] = v18;
+  v48[7] = null8;
   v47[8] = @"isScreenSharing";
-  v19 = v43;
+  null9 = v43;
   if (!v43)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v48[8] = v19;
+  v48[8] = null9;
   v47[9] = @"audioIsMuted";
-  v20 = v42;
+  null10 = v42;
   if (!v42)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v4;
-  v48[9] = v20;
+  v21 = deviceMotion;
+  v48[9] = null10;
   v47[10] = @"screenBrightness";
-  v22 = v41;
+  null11 = v41;
   if (!v41)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29 = v16;
-  v48[10] = v22;
+  v29 = null6;
+  v48[10] = null11;
   v47[11] = @"homeGraph";
-  v23 = v40;
-  if (!v40)
+  null12 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v17;
-  v48[11] = v23;
+  v28 = null7;
+  v48[11] = null12;
   v47[12] = @"batteryIsCharging";
-  v24 = v9;
+  null13 = v9;
   if (!v9)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v48[12] = v24;
+  v48[12] = null13;
   v47[13] = @"isLowBatteryMode";
-  v25 = v10;
+  null14 = v10;
   if (!v10)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v48[13] = v25;
+  v48[13] = null14;
   v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:14];
   if (v10)
   {
@@ -506,7 +506,7 @@ LABEL_67:
   }
 
 LABEL_58:
-  if (!v40)
+  if (!jsonDictionary)
   {
   }
 
@@ -596,11 +596,11 @@ LABEL_77:
   return v35;
 }
 
-- (BMSiriAssistantSuggestionFeaturesEnvironmentFeatures)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriAssistantSuggestionFeaturesEnvironmentFeatures)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v155[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"focusMode"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"focusMode"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v126 = 0;
@@ -612,15 +612,15 @@ LABEL_77:
   {
     v126 = v7;
 LABEL_4:
-    v8 = [v6 objectForKeyedSubscript:@"deviceMotion"];
-    v125 = self;
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"deviceMotion"];
+    selfCopy = self;
     if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v9 = 0;
 LABEL_7:
-      v10 = [v6 objectForKeyedSubscript:@"location"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"location"];
       v122 = v9;
-      v120 = a4;
+      errorCopy = error;
       if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
@@ -635,7 +635,7 @@ LABEL_7:
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
             v57 = v10;
-            if (!a4)
+            if (!error)
             {
               v16 = 0;
               v13 = 0;
@@ -648,7 +648,7 @@ LABEL_7:
             v123 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"location"];
             v151 = v123;
             [MEMORY[0x1E695DF20] dictionaryWithObjects:&v151 forKeys:&v150 count:1];
-            v61 = v60 = a4;
+            v61 = v60 = error;
             v16 = 0;
             v13 = 0;
             *v60 = [v58 initWithDomain:v59 code:2 userInfo:v61];
@@ -667,13 +667,13 @@ LABEL_7:
         v121 = 0;
       }
 
-      v19 = [v6 objectForKeyedSubscript:@"isPlayingMedia"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"isPlayingMedia"];
       if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v123 = 0;
             v13 = 0;
@@ -695,7 +695,7 @@ LABEL_118:
           v41 = [v124 initWithDomain:v40 code:2 userInfo:v39];
           v123 = 0;
           v13 = 0;
-          *a4 = v41;
+          *error = v41;
           v20 = v39;
           v16 = v121;
           goto LABEL_117;
@@ -709,7 +709,7 @@ LABEL_118:
         v123 = 0;
       }
 
-      v20 = [v6 objectForKeyedSubscript:@"isAirplaneMode"];
+      v20 = [dictionaryCopy objectForKeyedSubscript:@"isAirplaneMode"];
       if (!v20 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v118 = 0;
@@ -721,14 +721,14 @@ LABEL_118:
       {
         v118 = v20;
 LABEL_28:
-        v21 = [v6 objectForKeyedSubscript:@"isTimerRunning"];
+        v21 = [dictionaryCopy objectForKeyedSubscript:@"isTimerRunning"];
         if (!v21 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v111 = v7;
           v22 = v8;
           v117 = 0;
 LABEL_31:
-          v23 = [v6 objectForKeyedSubscript:@"isConnectedToWifi"];
+          v23 = [dictionaryCopy objectForKeyedSubscript:@"isConnectedToWifi"];
           v110 = v21;
           v115 = v23;
           if (v23 && (v24 = v23, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -736,7 +736,7 @@ LABEL_31:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (!v120)
+              if (!errorCopy)
               {
                 v116 = 0;
                 v13 = 0;
@@ -760,7 +760,7 @@ LABEL_31:
               v109 = v55;
               v116 = 0;
               v13 = 0;
-              *v120 = [v52 initWithDomain:v56 code:2 userInfo:?];
+              *errorCopy = [v52 initWithDomain:v56 code:2 userInfo:?];
               v16 = v121;
               v7 = v111;
               goto LABEL_127;
@@ -774,7 +774,7 @@ LABEL_31:
             v116 = 0;
           }
 
-          v25 = [v6 objectForKeyedSubscript:@"hasInternetConnection"];
+          v25 = [dictionaryCopy objectForKeyedSubscript:@"hasInternetConnection"];
           v109 = v25;
           if (!v25)
           {
@@ -790,14 +790,14 @@ LABEL_31:
           {
             v113 = 0;
 LABEL_48:
-            [v6 objectForKeyedSubscript:@"isScreenSharing"];
+            [dictionaryCopy objectForKeyedSubscript:@"isScreenSharing"];
             v27 = v8 = v22;
             if (v27 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
             {
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!v120)
+                if (!errorCopy)
                 {
                   v107 = 0;
                   v13 = 0;
@@ -820,7 +820,7 @@ LABEL_48:
                 v72 = [v108 initWithDomain:v71 code:2 userInfo:?];
                 v107 = 0;
                 v13 = 0;
-                *v120 = v72;
+                *errorCopy = v72;
                 v16 = v121;
                 goto LABEL_112;
               }
@@ -835,7 +835,7 @@ LABEL_48:
               v107 = 0;
             }
 
-            v28 = [v6 objectForKeyedSubscript:@"audioIsMuted"];
+            v28 = [dictionaryCopy objectForKeyedSubscript:@"audioIsMuted"];
             v104 = v28;
             v105 = v10;
             v94 = v27;
@@ -844,7 +844,7 @@ LABEL_48:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!v120)
+                if (!errorCopy)
                 {
                   v112 = 0;
                   v13 = 0;
@@ -868,7 +868,7 @@ LABEL_48:
                 v95 = v76;
                 v112 = 0;
                 v13 = 0;
-                *v120 = [v77 initWithDomain:v78 code:2 userInfo:?];
+                *errorCopy = [v77 initWithDomain:v78 code:2 userInfo:?];
                 v16 = v121;
                 v8 = v96;
 LABEL_111:
@@ -885,7 +885,7 @@ LABEL_112:
               v112 = 0;
             }
 
-            v30 = [v6 objectForKeyedSubscript:@"screenBrightness"];
+            v30 = [dictionaryCopy objectForKeyedSubscript:@"screenBrightness"];
             v8 = v96;
             v97 = v20;
             v95 = v30;
@@ -894,7 +894,7 @@ LABEL_112:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!v120)
+                if (!errorCopy)
                 {
                   v98 = 0;
                   v13 = 0;
@@ -910,7 +910,7 @@ LABEL_112:
                 v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v135 forKeys:&v134 count:1];
                 v98 = 0;
                 v13 = 0;
-                *v120 = [v79 initWithDomain:v80 code:2 userInfo:?];
+                *errorCopy = [v79 initWithDomain:v80 code:2 userInfo:?];
                 v16 = v121;
                 goto LABEL_109;
               }
@@ -923,13 +923,13 @@ LABEL_112:
               v98 = 0;
             }
 
-            v32 = [v6 objectForKeyedSubscript:@"homeGraph"];
+            v32 = [dictionaryCopy objectForKeyedSubscript:@"homeGraph"];
             if (v32 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
             {
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!v120)
+                if (!errorCopy)
                 {
                   v13 = 0;
                   v16 = v121;
@@ -942,7 +942,7 @@ LABEL_112:
                 v33 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"homeGraph"];
                 v133 = v33;
                 v82 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v133 forKeys:&v132 count:1];
-                *v120 = [v92 initWithDomain:v81 code:2 userInfo:v82];
+                *errorCopy = [v92 initWithDomain:v81 code:2 userInfo:v82];
 
                 v13 = 0;
                 v37 = v32;
@@ -965,10 +965,10 @@ LABEL_110:
               if (v62)
               {
                 v16 = v121;
-                if (v120)
+                if (errorCopy)
                 {
                   v62 = v62;
-                  *v120 = v62;
+                  *errorCopy = v62;
                 }
 
                 v13 = 0;
@@ -981,13 +981,13 @@ LABEL_110:
               v33 = 0;
             }
 
-            v34 = [v6 objectForKeyedSubscript:@"batteryIsCharging"];
+            v34 = [dictionaryCopy objectForKeyedSubscript:@"batteryIsCharging"];
             if (v34 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
             {
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!v120)
+                if (!errorCopy)
                 {
                   v91 = 0;
                   v13 = 0;
@@ -1003,7 +1003,7 @@ LABEL_110:
                 v85 = [v93 initWithDomain:v89 code:2 userInfo:v35];
                 v91 = 0;
                 v13 = 0;
-                *v120 = v85;
+                *errorCopy = v85;
                 goto LABEL_67;
               }
 
@@ -1015,13 +1015,13 @@ LABEL_110:
               v91 = 0;
             }
 
-            v35 = [v6 objectForKeyedSubscript:@"isLowBatteryMode"];
+            v35 = [dictionaryCopy objectForKeyedSubscript:@"isLowBatteryMode"];
             if (v35 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
             {
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (v120)
+                if (errorCopy)
                 {
                   v90 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v88 = *MEMORY[0x1E698F240];
@@ -1029,7 +1029,7 @@ LABEL_110:
                   v86 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"isLowBatteryMode"];
                   v129 = v86;
                   v87 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v129 forKeys:&v128 count:1];
-                  *v120 = [v90 initWithDomain:v88 code:2 userInfo:v87];
+                  *errorCopy = [v90 initWithDomain:v88 code:2 userInfo:v87];
                 }
 
                 v36 = 0;
@@ -1045,8 +1045,8 @@ LABEL_110:
               v36 = 0;
             }
 
-            v13 = -[BMSiriAssistantSuggestionFeaturesEnvironmentFeatures initWithFocusMode:deviceMotion:location:isPlayingMedia:isAirplaneMode:isTimerRunning:isConnectedToWifi:hasInternetConnection:isScreenSharing:audioIsMuted:screenBrightness:homeGraph:batteryIsCharging:isLowBatteryMode:](v125, "initWithFocusMode:deviceMotion:location:isPlayingMedia:isAirplaneMode:isTimerRunning:isConnectedToWifi:hasInternetConnection:isScreenSharing:audioIsMuted:screenBrightness:homeGraph:batteryIsCharging:isLowBatteryMode:", v126, v122, [v121 intValue], v123, v118, v117, v116, v113, v107, v112, v98, v33, v91, v36);
-            v125 = v13;
+            v13 = -[BMSiriAssistantSuggestionFeaturesEnvironmentFeatures initWithFocusMode:deviceMotion:location:isPlayingMedia:isAirplaneMode:isTimerRunning:isConnectedToWifi:hasInternetConnection:isScreenSharing:audioIsMuted:screenBrightness:homeGraph:batteryIsCharging:isLowBatteryMode:](selfCopy, "initWithFocusMode:deviceMotion:location:isPlayingMedia:isAirplaneMode:isTimerRunning:isConnectedToWifi:hasInternetConnection:isScreenSharing:audioIsMuted:screenBrightness:homeGraph:batteryIsCharging:isLowBatteryMode:", v126, v122, [v121 intValue], v123, v118, v117, v116, v113, v107, v112, v98, v33, v91, v36);
+            selfCopy = v13;
 LABEL_67:
 
             v27 = v94;
@@ -1064,7 +1064,7 @@ LABEL_68:
             goto LABEL_48;
           }
 
-          if (v120)
+          if (errorCopy)
           {
             v114 = objc_alloc(MEMORY[0x1E696ABC0]);
             v102 = v19;
@@ -1079,7 +1079,7 @@ LABEL_68:
             v67 = [v114 initWithDomain:v66 code:2 userInfo:v65];
             v113 = 0;
             v13 = 0;
-            *v120 = v67;
+            *errorCopy = v67;
             v16 = v121;
             v8 = v22;
             v27 = v65;
@@ -1107,7 +1107,7 @@ LABEL_127:
           goto LABEL_31;
         }
 
-        if (a4)
+        if (error)
         {
           v47 = objc_alloc(MEMORY[0x1E696ABC0]);
           v100 = v19;
@@ -1123,7 +1123,7 @@ LABEL_127:
           v115 = v50;
           v117 = 0;
           v13 = 0;
-          *v120 = [v47 initWithDomain:v51 code:2 userInfo:?];
+          *errorCopy = [v47 initWithDomain:v51 code:2 userInfo:?];
           v16 = v121;
 LABEL_115:
 
@@ -1139,7 +1139,7 @@ LABEL_116:
         goto LABEL_117;
       }
 
-      if (a4)
+      if (error)
       {
         v119 = objc_alloc(MEMORY[0x1E696ABC0]);
         v99 = v19;
@@ -1155,7 +1155,7 @@ LABEL_116:
         v46 = [v119 initWithDomain:v45 code:2 userInfo:v44];
         v118 = 0;
         v13 = 0;
-        *a4 = v46;
+        *error = v46;
         v21 = v44;
         v16 = v121;
         goto LABEL_116;
@@ -1176,7 +1176,7 @@ LABEL_117:
       goto LABEL_7;
     }
 
-    if (a4)
+    if (error)
     {
       v14 = objc_alloc(MEMORY[0x1E696ABC0]);
       v15 = *MEMORY[0x1E698F240];
@@ -1188,10 +1188,10 @@ LABEL_117:
       v10 = v17;
       v9 = 0;
       v13 = 0;
-      *a4 = [v14 initWithDomain:v18 code:2 userInfo:v17];
+      *error = [v14 initWithDomain:v18 code:2 userInfo:v17];
 LABEL_119:
 
-      self = v125;
+      self = selfCopy;
       goto LABEL_120;
     }
 
@@ -1202,7 +1202,7 @@ LABEL_120:
     goto LABEL_121;
   }
 
-  if (a4)
+  if (error)
   {
     v11 = objc_alloc(MEMORY[0x1E696ABC0]);
     v12 = *MEMORY[0x1E698F240];
@@ -1212,7 +1212,7 @@ LABEL_120:
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v155 forKeys:&v154 count:1];
     v126 = 0;
     v13 = 0;
-    *a4 = [v11 initWithDomain:v12 code:2 userInfo:v8];
+    *error = [v11 initWithDomain:v12 code:2 userInfo:v8];
     goto LABEL_120;
   }
 
@@ -1228,14 +1228,14 @@ LABEL_121:
 {
   v3 = objc_opt_new();
   [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_focusMode)
   {
     PBDataWriterWriteStringField();
@@ -1298,7 +1298,7 @@ LABEL_121:
   if (self->_homeGraph)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriAssistantSuggestionFeaturesEnvironmentFeaturesHomeGraphStatus *)self->_homeGraph writeTo:v4];
+    [(BMSiriAssistantSuggestionFeaturesEnvironmentFeaturesHomeGraphStatus *)self->_homeGraph writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1315,9 +1315,9 @@ LABEL_121:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v87.receiver = self;
   v87.super_class = BMSiriAssistantSuggestionFeaturesEnvironmentFeatures;
   v5 = [(BMEventBase *)&v87 init];
@@ -1326,12 +1326,12 @@ LABEL_121:
     goto LABEL_146;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1342,18 +1342,18 @@ LABEL_121:
       while (1)
       {
         LOBYTE(v88[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v88 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v88 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v88[0] & 0x7F) << v7;
@@ -1371,9 +1371,9 @@ LABEL_121:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -1395,18 +1395,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v88[0]) = 0;
-            v41 = [v4 position] + 1;
-            if (v41 >= [v4 position] && (v42 = objc_msgSend(v4, "position") + 1, v42 <= objc_msgSend(v4, "length")))
+            v41 = [fromCopy position] + 1;
+            if (v41 >= [fromCopy position] && (v42 = objc_msgSend(fromCopy, "position") + 1, v42 <= objc_msgSend(fromCopy, "length")))
             {
-              v43 = [v4 data];
-              [v43 getBytes:v88 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:v88 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v40 |= (v88[0] & 0x7F) << v38;
@@ -1422,7 +1422,7 @@ LABEL_16:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v40 > 3)
+          if (([fromCopy hasError] & 1) != 0 || v40 > 3)
           {
 LABEL_126:
             LODWORD(v40) = 0;
@@ -1446,18 +1446,18 @@ LABEL_70:
           while (1)
           {
             LOBYTE(v88[0]) = 0;
-            v22 = [v4 position] + 1;
-            if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 1, v23 <= objc_msgSend(v4, "length")))
+            v22 = [fromCopy position] + 1;
+            if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 1, v23 <= objc_msgSend(fromCopy, "length")))
             {
-              v24 = [v4 data];
-              [v24 getBytes:v88 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:v88 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v21 |= (v88[0] & 0x7F) << v19;
@@ -1475,7 +1475,7 @@ LABEL_70:
             }
           }
 
-          v25 = (v21 != 0) & ~[v4 hasError];
+          v25 = (v21 != 0) & ~[fromCopy hasError];
 LABEL_119:
           v83 = 16;
           goto LABEL_142;
@@ -1487,18 +1487,18 @@ LABEL_119:
           while (1)
           {
             LOBYTE(v88[0]) = 0;
-            v55 = [v4 position] + 1;
-            if (v55 >= [v4 position] && (v56 = objc_msgSend(v4, "position") + 1, v56 <= objc_msgSend(v4, "length")))
+            v55 = [fromCopy position] + 1;
+            if (v55 >= [fromCopy position] && (v56 = objc_msgSend(fromCopy, "position") + 1, v56 <= objc_msgSend(fromCopy, "length")))
             {
-              v57 = [v4 data];
-              [v57 getBytes:v88 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:v88 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v54 |= (v88[0] & 0x7F) << v52;
@@ -1516,7 +1516,7 @@ LABEL_119:
             }
           }
 
-          v25 = (v54 != 0) & ~[v4 hasError];
+          v25 = (v54 != 0) & ~[fromCopy hasError];
 LABEL_131:
           v83 = 18;
           goto LABEL_142;
@@ -1528,18 +1528,18 @@ LABEL_131:
           while (1)
           {
             LOBYTE(v88[0]) = 0;
-            v67 = [v4 position] + 1;
-            if (v67 >= [v4 position] && (v68 = objc_msgSend(v4, "position") + 1, v68 <= objc_msgSend(v4, "length")))
+            v67 = [fromCopy position] + 1;
+            if (v67 >= [fromCopy position] && (v68 = objc_msgSend(fromCopy, "position") + 1, v68 <= objc_msgSend(fromCopy, "length")))
             {
-              v69 = [v4 data];
-              [v69 getBytes:v88 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:v88 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v66 |= (v88[0] & 0x7F) << v64;
@@ -1557,7 +1557,7 @@ LABEL_131:
             }
           }
 
-          v25 = (v66 != 0) & ~[v4 hasError];
+          v25 = (v66 != 0) & ~[fromCopy hasError];
 LABEL_135:
           v83 = 20;
           goto LABEL_142;
@@ -1569,18 +1569,18 @@ LABEL_135:
           while (1)
           {
             LOBYTE(v88[0]) = 0;
-            v48 = [v4 position] + 1;
-            if (v48 >= [v4 position] && (v49 = objc_msgSend(v4, "position") + 1, v49 <= objc_msgSend(v4, "length")))
+            v48 = [fromCopy position] + 1;
+            if (v48 >= [fromCopy position] && (v49 = objc_msgSend(fromCopy, "position") + 1, v49 <= objc_msgSend(fromCopy, "length")))
             {
-              v50 = [v4 data];
-              [v50 getBytes:v88 range:{objc_msgSend(v4, "position"), 1}];
+              data6 = [fromCopy data];
+              [data6 getBytes:v88 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v47 |= (v88[0] & 0x7F) << v45;
@@ -1598,7 +1598,7 @@ LABEL_135:
             }
           }
 
-          v25 = (v47 != 0) & ~[v4 hasError];
+          v25 = (v47 != 0) & ~[fromCopy hasError];
 LABEL_129:
           v83 = 22;
           goto LABEL_142;
@@ -1610,18 +1610,18 @@ LABEL_129:
           while (1)
           {
             LOBYTE(v88[0]) = 0;
-            v80 = [v4 position] + 1;
-            if (v80 >= [v4 position] && (v81 = objc_msgSend(v4, "position") + 1, v81 <= objc_msgSend(v4, "length")))
+            v80 = [fromCopy position] + 1;
+            if (v80 >= [fromCopy position] && (v81 = objc_msgSend(fromCopy, "position") + 1, v81 <= objc_msgSend(fromCopy, "length")))
             {
-              v82 = [v4 data];
-              [v82 getBytes:v88 range:{objc_msgSend(v4, "position"), 1}];
+              data7 = [fromCopy data];
+              [data7 getBytes:v88 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v79 |= (v88[0] & 0x7F) << v77;
@@ -1639,7 +1639,7 @@ LABEL_129:
             }
           }
 
-          v25 = (v79 != 0) & ~[v4 hasError];
+          v25 = (v79 != 0) & ~[fromCopy hasError];
 LABEL_141:
           v83 = 24;
           goto LABEL_142;
@@ -1651,18 +1651,18 @@ LABEL_141:
           while (1)
           {
             LOBYTE(v88[0]) = 0;
-            v35 = [v4 position] + 1;
-            if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 1, v36 <= objc_msgSend(v4, "length")))
+            v35 = [fromCopy position] + 1;
+            if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 1, v36 <= objc_msgSend(fromCopy, "length")))
             {
-              v37 = [v4 data];
-              [v37 getBytes:v88 range:{objc_msgSend(v4, "position"), 1}];
+              data8 = [fromCopy data];
+              [data8 getBytes:v88 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v34 |= (v88[0] & 0x7F) << v32;
@@ -1680,7 +1680,7 @@ LABEL_141:
             }
           }
 
-          v25 = (v34 != 0) & ~[v4 hasError];
+          v25 = (v34 != 0) & ~[fromCopy hasError];
 LABEL_123:
           v83 = 26;
           goto LABEL_142;
@@ -1692,18 +1692,18 @@ LABEL_123:
           while (1)
           {
             LOBYTE(v88[0]) = 0;
-            v73 = [v4 position] + 1;
-            if (v73 >= [v4 position] && (v74 = objc_msgSend(v4, "position") + 1, v74 <= objc_msgSend(v4, "length")))
+            v73 = [fromCopy position] + 1;
+            if (v73 >= [fromCopy position] && (v74 = objc_msgSend(fromCopy, "position") + 1, v74 <= objc_msgSend(fromCopy, "length")))
             {
-              v75 = [v4 data];
-              [v75 getBytes:v88 range:{objc_msgSend(v4, "position"), 1}];
+              data9 = [fromCopy data];
+              [data9 getBytes:v88 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v72 |= (v88[0] & 0x7F) << v70;
@@ -1721,7 +1721,7 @@ LABEL_123:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v76 = 0;
           }
@@ -1742,7 +1742,7 @@ LABEL_139:
             goto LABEL_145;
           }
 
-          v17 = [[BMSiriAssistantSuggestionFeaturesEnvironmentFeaturesHomeGraphStatus alloc] initByReadFrom:v4];
+          v17 = [[BMSiriAssistantSuggestionFeaturesEnvironmentFeaturesHomeGraphStatus alloc] initByReadFrom:fromCopy];
           if (!v17)
           {
             goto LABEL_145;
@@ -1761,18 +1761,18 @@ LABEL_139:
           while (1)
           {
             LOBYTE(v88[0]) = 0;
-            v29 = [v4 position] + 1;
-            if (v29 >= [v4 position] && (v30 = objc_msgSend(v4, "position") + 1, v30 <= objc_msgSend(v4, "length")))
+            v29 = [fromCopy position] + 1;
+            if (v29 >= [fromCopy position] && (v30 = objc_msgSend(fromCopy, "position") + 1, v30 <= objc_msgSend(fromCopy, "length")))
             {
-              v31 = [v4 data];
-              [v31 getBytes:v88 range:{objc_msgSend(v4, "position"), 1}];
+              data10 = [fromCopy data];
+              [data10 getBytes:v88 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v28 |= (v88[0] & 0x7F) << v26;
@@ -1790,7 +1790,7 @@ LABEL_139:
             }
           }
 
-          v25 = (v28 != 0) & ~[v4 hasError];
+          v25 = (v28 != 0) & ~[fromCopy hasError];
 LABEL_121:
           v83 = 29;
           goto LABEL_142;
@@ -1812,18 +1812,18 @@ LABEL_121:
       while (1)
       {
         LOBYTE(v88[0]) = 0;
-        v61 = [v4 position] + 1;
-        if (v61 >= [v4 position] && (v62 = objc_msgSend(v4, "position") + 1, v62 <= objc_msgSend(v4, "length")))
+        v61 = [fromCopy position] + 1;
+        if (v61 >= [fromCopy position] && (v62 = objc_msgSend(fromCopy, "position") + 1, v62 <= objc_msgSend(fromCopy, "length")))
         {
-          v63 = [v4 data];
-          [v63 getBytes:v88 range:{objc_msgSend(v4, "position"), 1}];
+          data11 = [fromCopy data];
+          [data11 getBytes:v88 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v60 |= (v88[0] & 0x7F) << v58;
@@ -1841,19 +1841,19 @@ LABEL_121:
         }
       }
 
-      v25 = (v60 != 0) & ~[v4 hasError];
+      v25 = (v60 != 0) & ~[fromCopy hasError];
 LABEL_133:
       v83 = 31;
 LABEL_142:
       *(&v5->super.super.isa + v83) = v25;
 LABEL_143:
-      v84 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v84 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_145:
     v85 = 0;
@@ -1871,10 +1871,10 @@ LABEL_146:
 - (NSString)description
 {
   v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v13 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self focusMode];
-  v19 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self deviceMotion];
+  focusMode = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self focusMode];
+  deviceMotion = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self deviceMotion];
   v18 = BMSiriAssistantSuggestionFeaturesEnvironmentFeaturesHashedLocationAsString([(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self location]);
-  v17 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self isPlayingMedia];
+  isPlayingMedia = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self isPlayingMedia];
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesEnvironmentFeatures isAirplaneMode](self, "isAirplaneMode")}];
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesEnvironmentFeatures isTimerRunning](self, "isTimerRunning")}];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesEnvironmentFeatures isConnectedToWifi](self, "isConnectedToWifi")}];
@@ -1882,44 +1882,44 @@ LABEL_146:
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesEnvironmentFeatures isScreenSharing](self, "isScreenSharing")}];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesEnvironmentFeatures audioIsMuted](self, "audioIsMuted")}];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriAssistantSuggestionFeaturesEnvironmentFeatures screenBrightness](self, "screenBrightness")}];
-  v7 = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self homeGraph];
+  homeGraph = [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self homeGraph];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesEnvironmentFeatures batteryIsCharging](self, "batteryIsCharging")}];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesEnvironmentFeatures isLowBatteryMode](self, "isLowBatteryMode")}];
-  v15 = [v14 initWithFormat:@"BMSiriAssistantSuggestionFeaturesEnvironmentFeatures with focusMode: %@, deviceMotion: %@, location: %@, isPlayingMedia: %@, isAirplaneMode: %@, isTimerRunning: %@, isConnectedToWifi: %@, hasInternetConnection: %@, isScreenSharing: %@, audioIsMuted: %@, screenBrightness: %@, homeGraph: %@, batteryIsCharging: %@, isLowBatteryMode: %@", v13, v19, v18, v17, v16, v12, v11, v3, v4, v5, v6, v7, v8, v9];
+  v15 = [v14 initWithFormat:@"BMSiriAssistantSuggestionFeaturesEnvironmentFeatures with focusMode: %@, deviceMotion: %@, location: %@, isPlayingMedia: %@, isAirplaneMode: %@, isTimerRunning: %@, isConnectedToWifi: %@, hasInternetConnection: %@, isScreenSharing: %@, audioIsMuted: %@, screenBrightness: %@, homeGraph: %@, batteryIsCharging: %@, isLowBatteryMode: %@", focusMode, deviceMotion, v18, isPlayingMedia, v16, v12, v11, v3, v4, v5, v6, homeGraph, v8, v9];
 
   return v15;
 }
 
-- (BMSiriAssistantSuggestionFeaturesEnvironmentFeatures)initWithFocusMode:(id)a3 deviceMotion:(id)a4 location:(int)a5 isPlayingMedia:(id)a6 isAirplaneMode:(id)a7 isTimerRunning:(id)a8 isConnectedToWifi:(id)a9 hasInternetConnection:(id)a10 isScreenSharing:(id)a11 audioIsMuted:(id)a12 screenBrightness:(id)a13 homeGraph:(id)a14 batteryIsCharging:(id)a15 isLowBatteryMode:(id)a16
+- (BMSiriAssistantSuggestionFeaturesEnvironmentFeatures)initWithFocusMode:(id)mode deviceMotion:(id)motion location:(int)location isPlayingMedia:(id)media isAirplaneMode:(id)airplaneMode isTimerRunning:(id)running isConnectedToWifi:(id)wifi hasInternetConnection:(id)self0 isScreenSharing:(id)self1 audioIsMuted:(id)self2 screenBrightness:(id)self3 homeGraph:(id)self4 batteryIsCharging:(id)self5 isLowBatteryMode:(id)self6
 {
-  v42 = a3;
-  v36 = a4;
-  v41 = a4;
-  v38 = a6;
-  v40 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = v20;
-  v25 = a11;
-  v26 = v21;
-  v43 = a12;
-  v27 = v25;
-  v28 = a13;
-  v29 = a14;
-  v30 = a15;
-  v31 = a16;
+  modeCopy = mode;
+  motionCopy = motion;
+  motionCopy2 = motion;
+  mediaCopy = media;
+  mediaCopy2 = media;
+  airplaneModeCopy = airplaneMode;
+  runningCopy = running;
+  wifiCopy = wifi;
+  connectionCopy = connection;
+  v24 = airplaneModeCopy;
+  sharingCopy = sharing;
+  v26 = runningCopy;
+  mutedCopy = muted;
+  v27 = sharingCopy;
+  brightnessCopy = brightness;
+  graphCopy = graph;
+  chargingCopy = charging;
+  batteryModeCopy = batteryMode;
   v44.receiver = self;
   v44.super_class = BMSiriAssistantSuggestionFeaturesEnvironmentFeatures;
   v32 = [(BMEventBase *)&v44 init];
   if (v32)
   {
     v32->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v32->_focusMode, a3);
-    objc_storeStrong(&v32->_deviceMotion, v36);
-    v32->_location = a5;
-    objc_storeStrong(&v32->_isPlayingMedia, v38);
+    objc_storeStrong(&v32->_focusMode, mode);
+    objc_storeStrong(&v32->_deviceMotion, motionCopy);
+    v32->_location = location;
+    objc_storeStrong(&v32->_isPlayingMedia, mediaCopy);
     if (v24)
     {
       v32->_hasIsAirplaneMode = 1;
@@ -1944,10 +1944,10 @@ LABEL_146:
       v32->_isTimerRunning = 0;
     }
 
-    if (v22)
+    if (wifiCopy)
     {
       v32->_hasIsConnectedToWifi = 1;
-      v32->_isConnectedToWifi = [v22 BOOLValue];
+      v32->_isConnectedToWifi = [wifiCopy BOOLValue];
     }
 
     else
@@ -1956,10 +1956,10 @@ LABEL_146:
       v32->_isConnectedToWifi = 0;
     }
 
-    if (v23)
+    if (connectionCopy)
     {
       v32->_hasHasInternetConnection = 1;
-      v32->_hasInternetConnection = [v23 BOOLValue];
+      v32->_hasInternetConnection = [connectionCopy BOOLValue];
     }
 
     else
@@ -1980,10 +1980,10 @@ LABEL_146:
       v32->_isScreenSharing = 0;
     }
 
-    if (v43)
+    if (mutedCopy)
     {
       v32->_hasAudioIsMuted = 1;
-      v32->_audioIsMuted = [v43 BOOLValue];
+      v32->_audioIsMuted = [mutedCopy BOOLValue];
     }
 
     else
@@ -1992,24 +1992,24 @@ LABEL_146:
       v32->_audioIsMuted = 0;
     }
 
-    if (v28)
+    if (brightnessCopy)
     {
       v32->_hasScreenBrightness = 1;
-      v33 = [v28 intValue];
+      intValue = [brightnessCopy intValue];
     }
 
     else
     {
       v32->_hasScreenBrightness = 0;
-      v33 = -1;
+      intValue = -1;
     }
 
-    v32->_screenBrightness = v33;
-    objc_storeStrong(&v32->_homeGraph, a14);
-    if (v30)
+    v32->_screenBrightness = intValue;
+    objc_storeStrong(&v32->_homeGraph, graph);
+    if (chargingCopy)
     {
       v32->_hasBatteryIsCharging = 1;
-      v32->_batteryIsCharging = [v30 BOOLValue];
+      v32->_batteryIsCharging = [chargingCopy BOOLValue];
     }
 
     else
@@ -2018,10 +2018,10 @@ LABEL_146:
       v32->_batteryIsCharging = 0;
     }
 
-    if (v31)
+    if (batteryModeCopy)
     {
       v32->_hasIsLowBatteryMode = 1;
-      v32->_isLowBatteryMode = [v31 BOOLValue];
+      v32->_isLowBatteryMode = [batteryModeCopy BOOLValue];
     }
 
     else
@@ -2120,9 +2120,9 @@ id __63__BMSiriAssistantSuggestionFeaturesEnvironmentFeatures_columns__block_inv
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -2130,8 +2130,8 @@ id __63__BMSiriAssistantSuggestionFeaturesEnvironmentFeatures_columns__block_inv
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriAssistantSuggestionFeaturesEnvironmentFeatures alloc] initByReadFrom:v7];
     v4 = v8;

@@ -16,17 +16,17 @@
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "Guided Access blocking canBecomeFirstResponder:", buf, 2u);
     }
 
-    v4 = 0;
+    _canBecomeFirstResponder = 0;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = GAXUIResponderOverride;
-    v4 = [(GAXUIResponderOverride *)&v7 _canBecomeFirstResponder];
+    _canBecomeFirstResponder = [(GAXUIResponderOverride *)&v7 _canBecomeFirstResponder];
   }
 
-  return v4;
+  return _canBecomeFirstResponder;
 }
 
 @end

@@ -1,30 +1,30 @@
 @interface MUPlaceTileCollectionViewCell
-+ (CGSize)preferredSizeForViewModels:(id)a3 cellConfiguration:(id)a4 usingMeasurements:(id)a5;
++ (CGSize)preferredSizeForViewModels:(id)models cellConfiguration:(id)configuration usingMeasurements:(id)measurements;
 + (id)reuseIdentifier;
 - (void)_addSelectionBadgeIfNeeded;
 - (void)_updateAccessoryViewsForCurrentCellConfiguration;
 - (void)_updateSelectionBadgeState;
-- (void)_updateTemplateViewWithOldCellConfiguration:(id)a3;
-- (void)setCellConfiguration:(id)a3;
+- (void)_updateTemplateViewWithOldCellConfiguration:(id)configuration;
+- (void)setCellConfiguration:(id)configuration;
 @end
 
 @implementation MUPlaceTileCollectionViewCell
 
-+ (CGSize)preferredSizeForViewModels:(id)a3 cellConfiguration:(id)a4 usingMeasurements:(id)a5
++ (CGSize)preferredSizeForViewModels:(id)models cellConfiguration:(id)configuration usingMeasurements:(id)measurements
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 variant];
-  if (v10 != 2)
+  modelsCopy = models;
+  configurationCopy = configuration;
+  measurementsCopy = measurements;
+  variant = [configurationCopy variant];
+  if (variant != 2)
   {
-    if (v10 == 1)
+    if (variant == 1)
     {
       v11 = MUPlaceCompactTileContentView;
       goto LABEL_6;
     }
 
-    if (v10)
+    if (variant)
     {
       v13 = *MEMORY[0x1E695F060];
       v15 = *(MEMORY[0x1E695F060] + 8);
@@ -34,7 +34,7 @@
 
   v11 = MUPlaceTileContentView;
 LABEL_6:
-  [(__objc2_class *)v11 preferredSizeForViewModels:v7 cellConfiguration:v8 usingMeasurements:v9];
+  [(__objc2_class *)v11 preferredSizeForViewModels:modelsCopy cellConfiguration:configurationCopy usingMeasurements:measurementsCopy];
   v13 = v12;
   v15 = v14;
 LABEL_8:
@@ -57,15 +57,15 @@ LABEL_8:
 {
   if ([(MUPlaceTileCellConfiguration *)self->_cellConfiguration showSelectionControlWhileEditing])
   {
-    v3 = [(MUPlaceTileCollectionViewCell *)self configurationState];
-    v4 = [v3 isEditing];
+    configurationState = [(MUPlaceTileCollectionViewCell *)self configurationState];
+    isEditing = [configurationState isEditing];
 
-    if (v4)
+    if (isEditing)
     {
-      v5 = [(MUPlaceTileCollectionViewCell *)self configurationState];
-      v6 = [v5 isSelected];
+      configurationState2 = [(MUPlaceTileCollectionViewCell *)self configurationState];
+      isSelected = [configurationState2 isSelected];
 
-      if (v6)
+      if (isSelected)
       {
         v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark.circle.fill"];
         v8 = [v7 imageWithRenderingMode:1];
@@ -85,7 +85,7 @@ LABEL_8:
 
     selectionBadgeView = self->_selectionBadgeView;
 
-    [(UIImageView *)selectionBadgeView setHidden:v4 ^ 1u];
+    [(UIImageView *)selectionBadgeView setHidden:isEditing ^ 1u];
   }
 }
 
@@ -107,27 +107,27 @@ LABEL_8:
       selectionBadgeView = self->_selectionBadgeView;
     }
 
-    v7 = [(UIImageView *)selectionBadgeView superview];
-    v8 = [(MUPlaceTileCollectionViewCell *)self contentView];
+    superview = [(UIImageView *)selectionBadgeView superview];
+    contentView = [(MUPlaceTileCollectionViewCell *)self contentView];
 
-    v9 = [(MUPlaceTileCollectionViewCell *)self contentView];
-    v10 = v9;
+    contentView2 = [(MUPlaceTileCollectionViewCell *)self contentView];
+    array = contentView2;
     v11 = self->_selectionBadgeView;
-    if (v7 == v8)
+    if (superview == contentView)
     {
-      [v9 bringSubviewToFront:v11];
+      [contentView2 bringSubviewToFront:v11];
     }
 
     else
     {
-      [v9 addSubview:v11];
+      [contentView2 addSubview:v11];
 
-      v10 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v12 = [[MUSizeLayout alloc] initWithItem:self->_selectionBadgeView size:24.0, 24.0];
-      [v10 addObject:v12];
+      [array addObject:v12];
       v13 = [MUBoxLayout alloc];
-      v14 = [(MUPlaceTileCollectionViewCell *)self contentView];
-      v15 = [(MUBoxLayout *)v13 initWithContainer:v14];
+      contentView3 = [(MUPlaceTileCollectionViewCell *)self contentView];
+      v15 = [(MUBoxLayout *)v13 initWithContainer:contentView3];
 
       v18[0] = self->_selectionBadgeView;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
@@ -136,8 +136,8 @@ LABEL_8:
       [(MUBoxLayout *)v15 setHorizontalAlignment:3];
       [(MUBoxLayout *)v15 setVerticalAlignment:1];
       [(MUBoxLayout *)v15 setOffset:self->_selectionBadgeView forArrangedLayoutItem:-16.0, 16.0];
-      [v10 addObject:v15];
-      [MEMORY[0x1E696ACD8] _mapsui_activateLayouts:v10];
+      [array addObject:v15];
+      [MEMORY[0x1E696ACD8] _mapsui_activateLayouts:array];
     }
 
     [(MUPlaceTileCollectionViewCell *)self _updateSelectionBadgeState];
@@ -156,46 +156,46 @@ LABEL_8:
   }
 }
 
-- (void)_updateTemplateViewWithOldCellConfiguration:(id)a3
+- (void)_updateTemplateViewWithOldCellConfiguration:(id)configuration
 {
   [(MUPlaceTileTemplateView *)self->_tileContentView removeFromSuperview];
-  v4 = [(MUPlaceTileCellConfiguration *)self->_cellConfiguration variant];
-  if (v4 > 2)
+  variant = [(MUPlaceTileCellConfiguration *)self->_cellConfiguration variant];
+  if (variant > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [objc_alloc(*off_1E8219690[v4]) initWithCellConfiguration:self->_cellConfiguration];
+    v5 = [objc_alloc(*off_1E8219690[variant]) initWithCellConfiguration:self->_cellConfiguration];
   }
 
   tileContentView = self->_tileContentView;
   self->_tileContentView = v5;
   v7 = v5;
 
-  v8 = [(MUPlaceTileCollectionViewCell *)self viewModel];
-  [(MUPlaceTileTemplateView *)v7 setViewModel:v8];
+  viewModel = [(MUPlaceTileCollectionViewCell *)self viewModel];
+  [(MUPlaceTileTemplateView *)v7 setViewModel:viewModel];
 
-  v9 = [(MUPlaceTileCollectionViewCell *)self contentView];
-  [v9 addSubview:v7];
+  contentView = [(MUPlaceTileCollectionViewCell *)self contentView];
+  [contentView addSubview:v7];
 
   v10 = [MUEdgeLayout alloc];
-  v11 = [(MUPlaceTileCollectionViewCell *)self contentView];
-  v12 = [(MUEdgeLayout *)v10 initWithItem:v7 container:v11];
+  contentView2 = [(MUPlaceTileCollectionViewCell *)self contentView];
+  v12 = [(MUEdgeLayout *)v10 initWithItem:v7 container:contentView2];
 
   [(MUConstraintLayout *)v12 activate];
 
   [(MUPlaceTileCollectionViewCell *)self _updateAccessoryViewsForCurrentCellConfiguration];
 }
 
-- (void)setCellConfiguration:(id)a3
+- (void)setCellConfiguration:(id)configuration
 {
-  v8 = a3;
+  configurationCopy = configuration;
   if (([(MUPlaceTileCellConfiguration *)self->_cellConfiguration isEqual:?]& 1) == 0)
   {
     cellConfiguration = self->_cellConfiguration;
-    v5 = v8;
+    v5 = configurationCopy;
     v6 = self->_cellConfiguration;
     self->_cellConfiguration = v5;
     v7 = cellConfiguration;

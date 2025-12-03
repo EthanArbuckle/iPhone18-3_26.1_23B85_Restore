@@ -1,11 +1,11 @@
 @interface CRLTextRepAccessibility
-+ (id)crlaxCastFrom:(id)a3;
-- (BOOL)_accessibilityReplaceTextInRange:(_NSRange)a3 withString:(id)a4;
++ (id)crlaxCastFrom:(id)from;
+- (BOOL)_accessibilityReplaceTextInRange:(_NSRange)range withString:(id)string;
 - (BOOL)_accessibilitySupportsActivateAction;
 - (BOOL)_crlaxHasTextContent;
 - (BOOL)_crlaxTextIsEditable;
 - (BOOL)accessibilityActivate;
-- (BOOL)accessibilityEditOperationAction:(id)a3;
+- (BOOL)accessibilityEditOperationAction:(id)action;
 - (BOOL)crlaxIsBeingEdited;
 - (BOOL)crlaxIsDecorativeElement;
 - (BOOL)crlaxIsLockedDirectly;
@@ -16,9 +16,9 @@
 - (BOOL)crlaxNeedsFormatEditOperation;
 - (BOOL)crlaxNeedsTextEntryTrait;
 - (CGPoint)accessibilityActivationPoint;
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3;
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range;
 - (CGRect)accessibilityFrameForScrolling;
-- (CGRect)crlaxBoundsForStorageRange:(_NSRange)a3;
+- (CGRect)crlaxBoundsForStorageRange:(_NSRange)range;
 - (CRLTextEditorAccessibility)crlaxTextEditor;
 - (CRLTextInteractiveCanvasControllerAccessibility)crlaxInteractiveCanvasController;
 - (CRLWPRep)crlaxRetainedTarget;
@@ -26,25 +26,25 @@
 - (NSArray)crlaxAccessibilityLabelCustomAttributes;
 - (NSArray)crlaxColumns;
 - (NSSet)crlaxSiblings;
-- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)a3;
-- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)a3;
-- (_NSRange)_accessibilityRawRangeForUITextRange:(id)a3;
+- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)position;
+- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)column;
+- (_NSRange)_accessibilityRawRangeForUITextRange:(id)range;
 - (_NSRange)_accessibilitySelectedTextRange;
-- (_NSRange)crlaxClampRangeToStorageRange:(_NSRange)a3;
-- (_NSRange)crlaxRepRangeWithStorageRange:(_NSRange)a3;
+- (_NSRange)crlaxClampRangeToStorageRange:(_NSRange)range;
+- (_NSRange)crlaxRepRangeWithStorageRange:(_NSRange)range;
 - (_NSRange)crlaxStorageRangeOfRep;
-- (_NSRange)crlaxStorageRangeWithRepRange:(_NSRange)a3;
-- (id)_accessibilityAttributedValueForRange:(_NSRange *)a3;
-- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)a3;
+- (_NSRange)crlaxStorageRangeWithRepRange:(_NSRange)range;
+- (id)_accessibilityAttributedValueForRange:(_NSRange *)range;
+- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)point;
 - (id)_accessibilitySpeakThisStringValue;
 - (id)_accessibilityTextOperations;
-- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)a3;
-- (id)_accessibilityValueForRange:(_NSRange *)a3;
-- (id)_crlaxGetDictionaryForLineNumber:(unint64_t)a3 columnNumber:(unint64_t)a4;
-- (id)_crlaxLineNumberAndColumnForPosition:(unint64_t)a3;
+- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)range;
+- (id)_accessibilityValueForRange:(_NSRange *)range;
+- (id)_crlaxGetDictionaryForLineNumber:(unint64_t)number columnNumber:(unint64_t)columnNumber;
+- (id)_crlaxLineNumberAndColumnForPosition:(unint64_t)position;
 - (id)_crlaxParentShapeHint;
 - (id)_crlaxParentShapeTypeLabel;
-- (id)_crlaxProcessStringForObjectReplacements:(id)a3 rangeOffset:(unint64_t)a4;
+- (id)_crlaxProcessStringForObjectReplacements:(id)replacements rangeOffset:(unint64_t)offset;
 - (id)accessibilityAttributedValue;
 - (id)accessibilityCustomActions;
 - (id)accessibilityDragSourceDescriptors;
@@ -53,60 +53,60 @@
 - (id)accessibilityTextualContext;
 - (id)accessibilityValue;
 - (id)automationElements;
-- (id)crlaxAttachmentElementForStorageIndex:(unint64_t)a3;
-- (id)crlaxAttributedSubstringInStorageWithRange:(_NSRange)a3;
-- (id)crlaxBeginEditingRangeInStorage:(_NSRange)a3 chosenTextRepReference:(id *)a4;
+- (id)crlaxAttachmentElementForStorageIndex:(unint64_t)index;
+- (id)crlaxAttributedSubstringInStorageWithRange:(_NSRange)range;
+- (id)crlaxBeginEditingRangeInStorage:(_NSRange)storage chosenTextRepReference:(id *)reference;
 - (id)crlaxCollaboratorDescription;
 - (id)crlaxCollaboratorDescriptionDirect;
-- (id)crlaxColumnForCharIndex:(unint64_t)a3;
-- (id)crlaxContentSiblingInDirection:(unint64_t)a3;
+- (id)crlaxColumnForCharIndex:(unint64_t)index;
+- (id)crlaxContentSiblingInDirection:(unint64_t)direction;
 - (id)crlaxKnobLabel;
 - (id)crlaxLabel;
-- (id)crlaxSelectionPathForTextRange:(_NSRange)a3;
+- (id)crlaxSelectionPathForTextRange:(_NSRange)range;
 - (id)crlaxSortedSiblingsByStorageRange;
-- (id)crlaxStringForNumberAttachment:(id)a3;
-- (id)crlaxSubstringInStorageWithRange:(_NSRange)a3;
+- (id)crlaxStringForNumberAttachment:(id)attachment;
+- (id)crlaxSubstringInStorageWithRange:(_NSRange)range;
 - (id)crlaxSummaryDescription;
-- (unint64_t)_accessibilityPositionInDirection:(int64_t)a3 offset:(unint64_t)a4 forPosition:(unint64_t)a5;
-- (unint64_t)_crlaxPositionOfLastSelectedLine:(BOOL)a3;
+- (unint64_t)_accessibilityPositionInDirection:(int64_t)direction offset:(unint64_t)offset forPosition:(unint64_t)position;
+- (unint64_t)_crlaxPositionOfLastSelectedLine:(BOOL)line;
 - (unint64_t)_crlaxSpeakThisVisibleStorageOffset;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilityInsertText:(id)a3 atPosition:(int64_t)a4;
-- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)a3 withString:(id)a4;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
+- (void)_accessibilityInsertText:(id)text atPosition:(int64_t)position;
+- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)cursor withString:(id)string;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
 - (void)_cleanupRotorCache;
-- (void)_crlaxActivationShouldBeginEditing:(BOOL *)a3 shouldHandleCanvasSelection:(BOOL *)a4;
-- (void)_crlaxCondenseAttributedString:(id)a3;
-- (void)_crlaxGetEffectiveLineNumber:(unint64_t *)a3 columnNumber:(unint64_t *)a4 forPoint:(CGPoint)a5;
-- (void)_crlaxGetEffectiveLineNumber:(unint64_t *)a3 columnNumber:(unint64_t *)a4 forPosition:(unint64_t)a5;
-- (void)_crlaxSetSelectedTextRange:(_NSRange)a3 skipSelectionChangedNotification:(BOOL)a4;
+- (void)_crlaxActivationShouldBeginEditing:(BOOL *)editing shouldHandleCanvasSelection:(BOOL *)selection;
+- (void)_crlaxCondenseAttributedString:(id)string;
+- (void)_crlaxGetEffectiveLineNumber:(unint64_t *)number columnNumber:(unint64_t *)columnNumber forPoint:(CGPoint)point;
+- (void)_crlaxGetEffectiveLineNumber:(unint64_t *)number columnNumber:(unint64_t *)columnNumber forPosition:(unint64_t)position;
+- (void)_crlaxSetSelectedTextRange:(_NSRange)range skipSelectionChangedNotification:(BOOL)notification;
 - (void)crlaxLoadAccessibilityInformation;
-- (void)crlaxPreventSelectedTextRangeChangesForInterval:(double)a3;
+- (void)crlaxPreventSelectedTextRangeChangesForInterval:(double)interval;
 - (void)pulseCaret;
 @end
 
 @implementation CRLTextRepAccessibility
 
-- (id)_crlaxProcessStringForObjectReplacements:(id)a3 rangeOffset:(unint64_t)a4
+- (id)_crlaxProcessStringForObjectReplacements:(id)replacements rangeOffset:(unint64_t)offset
 {
   v6 = qword_101A348E0;
-  v7 = a3;
+  replacementsCopy = replacements;
   if (v6 != -1)
   {
     sub_10133B2C0();
   }
 
-  v8 = [[NSMutableAttributedString alloc] initWithString:v7 attributes:0];
+  v8 = [[NSMutableAttributedString alloc] initWithString:replacementsCopy attributes:0];
   v9 = qword_101A348D8;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100250D80;
   v14[3] = &unk_10184C658;
-  v16 = a4;
+  offsetCopy = offset;
   v14[4] = self;
   v10 = v8;
   v15 = v10;
-  [v7 crl_enumerateRangesOfCharactersInSet:v9 usingBlock:v14];
+  [replacementsCopy crl_enumerateRangesOfCharactersInSet:v9 usingBlock:v14];
 
   v11 = v15;
   v12 = v10;
@@ -128,18 +128,18 @@
 {
   v10.receiver = self;
   v10.super_class = CRLTextRepAccessibility;
-  v3 = [(CRLCanvasRepAccessibility *)&v10 accessibilityCustomActions];
-  v4 = [v3 mutableCopy];
+  accessibilityCustomActions = [(CRLCanvasRepAccessibility *)&v10 accessibilityCustomActions];
+  v4 = [accessibilityCustomActions mutableCopy];
 
   if (!v4)
   {
     v4 = +[NSMutableArray array];
   }
 
-  v5 = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
-  v6 = [v5 crlaxCurrentSelectionContainsVisibleTrackedChanges];
+  crlaxInteractiveCanvasController = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
+  crlaxCurrentSelectionContainsVisibleTrackedChanges = [crlaxInteractiveCanvasController crlaxCurrentSelectionContainsVisibleTrackedChanges];
 
-  if (v6)
+  if (crlaxCurrentSelectionContainsVisibleTrackedChanges)
   {
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"Show change" value:0 table:0];
@@ -154,21 +154,21 @@
 {
   v6.receiver = self;
   v6.super_class = CRLTextRepAccessibility;
-  v2 = [(CRLCanvasRepAccessibility *)&v6 _accessibilityTextOperations];
-  v3 = [NSMutableArray arrayWithArray:v2];
+  _accessibilityTextOperations = [(CRLCanvasRepAccessibility *)&v6 _accessibilityTextOperations];
+  v3 = [NSMutableArray arrayWithArray:_accessibilityTextOperations];
 
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (BOOL)accessibilityEditOperationAction:(id)a3
+- (BOOL)accessibilityEditOperationAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"Remove smart annotation" value:0 table:0];
 
-  if ([v4 isEqualToString:v6])
+  if ([actionCopy isEqualToString:v6])
   {
     v7 = 1;
   }
@@ -177,7 +177,7 @@
   {
     v9.receiver = self;
     v9.super_class = CRLTextRepAccessibility;
-    v7 = [(CRLCanvasRepAccessibility *)&v9 accessibilityEditOperationAction:v4];
+    v7 = [(CRLCanvasRepAccessibility *)&v9 accessibilityEditOperationAction:actionCopy];
   }
 
   return v7;
@@ -185,25 +185,25 @@
 
 - (BOOL)crlaxNeedsTextEntryTrait
 {
-  v3 = [(CRLTextRepAccessibility *)self crlaxStorage];
-  v4 = [v3 crlaxUnsignedIntValueForKey:@"wpKind"];
+  crlaxStorage = [(CRLTextRepAccessibility *)self crlaxStorage];
+  v4 = [crlaxStorage crlaxUnsignedIntValueForKey:@"wpKind"];
   if (v4 == 4 || (v4 & 0xFC) == 0)
   {
-    v6 = [(CRLTextRepAccessibility *)self _crlaxTextIsEditable];
+    _crlaxTextIsEditable = [(CRLTextRepAccessibility *)self _crlaxTextIsEditable];
   }
 
   else
   {
-    v6 = 0;
+    _crlaxTextIsEditable = 0;
   }
 
-  return v6;
+  return _crlaxTextIsEditable;
 }
 
-- (void)_crlaxCondenseAttributedString:(id)a3
+- (void)_crlaxCondenseAttributedString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 length];
+  stringCopy = string;
+  v4 = [stringCopy length];
   if (v4)
   {
     v5 = v4;
@@ -217,7 +217,7 @@
     do
     {
       v11 = v9;
-      v9 = [v3 attributesAtIndex:v6 effectiveRange:&v16];
+      v9 = [stringCopy attributesAtIndex:v6 effectiveRange:&v16];
 
       if ([v7 isEqual:v9])
       {
@@ -234,7 +234,7 @@
       {
         if (v7)
         {
-          [v3 setAttributes:v7 range:{location, length}];
+          [stringCopy setAttributes:v7 range:{location, length}];
         }
 
         v15 = v9;
@@ -252,31 +252,31 @@
     while (v14 + v13 < v5);
     if (v7)
     {
-      [v3 setAttributes:v7 range:{location, length}];
+      [stringCopy setAttributes:v7 range:{location, length}];
     }
   }
 }
 
-- (id)crlaxSubstringInStorageWithRange:(_NSRange)a3
+- (id)crlaxSubstringInStorageWithRange:(_NSRange)range
 {
-  v3 = [(CRLTextRepAccessibility *)self crlaxAttributedSubstringInStorageWithRange:a3.location, a3.length];
-  v4 = [v3 string];
+  v3 = [(CRLTextRepAccessibility *)self crlaxAttributedSubstringInStorageWithRange:range.location, range.length];
+  string = [v3 string];
 
-  return v4;
+  return string;
 }
 
-- (id)crlaxAttributedSubstringInStorageWithRange:(_NSRange)a3
+- (id)crlaxAttributedSubstringInStorageWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(CRLTextRepAccessibility *)self crlaxStorage];
-  v41.location = [v6 crlaxRange];
+  length = range.length;
+  location = range.location;
+  crlaxStorage = [(CRLTextRepAccessibility *)self crlaxStorage];
+  v41.location = [crlaxStorage crlaxRange];
   v41.length = v7;
   v40.location = location;
   v40.length = length;
   v8 = NSIntersectionRange(v40, v41);
-  v9 = [v6 substringWithRange:{v8.location, v8.length}];
-  v10 = [v6 stringEquivalentFromRange:{v8.location, v8.length}];
+  v9 = [crlaxStorage substringWithRange:{v8.location, v8.length}];
+  v10 = [crlaxStorage stringEquivalentFromRange:{v8.location, v8.length}];
   v11 = v10;
   if (v9)
   {
@@ -363,9 +363,9 @@ LABEL_18:
   return v24;
 }
 
-- (id)_accessibilityAttributedValueForRange:(_NSRange *)a3
+- (id)_accessibilityAttributedValueForRange:(_NSRange *)range
 {
-  v4 = [(CRLTextRepAccessibility *)self crlaxStorageRangeWithRepRange:a3->location, a3->length];
+  v4 = [(CRLTextRepAccessibility *)self crlaxStorageRangeWithRepRange:range->location, range->length];
   v6 = v5;
   v30.location = [(CRLTextRepAccessibility *)self crlaxStorageRangeOfRep];
   v30.length = v7;
@@ -387,10 +387,10 @@ LABEL_18:
         break;
       }
 
-      v13 = [(CRLTextRepAccessibility *)self crlaxTarget];
-      v14 = [v13 textIsVertical];
+      crlaxTarget = [(CRLTextRepAccessibility *)self crlaxTarget];
+      textIsVertical = [crlaxTarget textIsVertical];
 
-      if (v14)
+      if (textIsVertical)
       {
         v15 = +[NSBundle mainBundle];
         v16 = [v15 localizedStringForKey:@"Vertical text" value:0 table:0];
@@ -418,8 +418,8 @@ LABEL_18:
       qword_101A348F8 = v20;
     }
 
-    v22 = [v11 mutableString];
-    [v22 replaceOccurrencesOfString:qword_101A348F0 withString:qword_101A348F8 options:0 range:{0, objc_msgSend(v11, "length")}];
+    mutableString = [v11 mutableString];
+    [mutableString replaceOccurrencesOfString:qword_101A348F0 withString:qword_101A348F8 options:0 range:{0, objc_msgSend(v11, "length")}];
 
     [v11 endEditing];
     [(CRLTextRepAccessibility *)self _crlaxCondenseAttributedString:v11];
@@ -434,9 +434,9 @@ LABEL_18:
   return v11;
 }
 
-- (id)_accessibilityValueForRange:(_NSRange *)a3
+- (id)_accessibilityValueForRange:(_NSRange *)range
 {
-  v4 = [(CRLTextRepAccessibility *)self crlaxStorageRangeWithRepRange:a3->location, a3->length];
+  v4 = [(CRLTextRepAccessibility *)self crlaxStorageRangeWithRepRange:range->location, range->length];
   v6 = v5;
   v14.location = [(CRLTextRepAccessibility *)self crlaxStorageRangeOfRep];
   v14.length = v7;
@@ -446,22 +446,22 @@ LABEL_18:
   if (v8.length)
   {
     v9 = [(CRLTextRepAccessibility *)self crlaxAttributedSubstringInStorageWithRange:v8.location, v8.length];
-    v10 = [v9 string];
+    string = [v9 string];
   }
 
   else
   {
-    v10 = 0;
+    string = 0;
   }
 
-  return v10;
+  return string;
 }
 
 - (BOOL)_crlaxTextIsEditable
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
-  v5 = __CRLAccessibilityCastAsSafeCategory(v3, v4, 0, 0);
+  crlaxParentRep = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
+  v5 = __CRLAccessibilityCastAsSafeCategory(v3, crlaxParentRep, 0, 0);
 
   if (v5)
   {
@@ -478,33 +478,33 @@ LABEL_18:
   return v7 & v6;
 }
 
-- (void)_crlaxActivationShouldBeginEditing:(BOOL *)a3 shouldHandleCanvasSelection:(BOOL *)a4
+- (void)_crlaxActivationShouldBeginEditing:(BOOL *)editing shouldHandleCanvasSelection:(BOOL *)selection
 {
-  v7 = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
+  crlaxInteractiveCanvasController = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
 
-  if (v7)
+  if (crlaxInteractiveCanvasController)
   {
-    v8 = [(CRLCanvasRepAccessibility *)self crlaxRepForSelecting];
-    v9 = v8;
-    if (v8 && (![v8 crlaxIsSelected] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
+    crlaxRepForSelecting = [(CRLCanvasRepAccessibility *)self crlaxRepForSelecting];
+    v9 = crlaxRepForSelecting;
+    if (crlaxRepForSelecting && (![crlaxRepForSelecting crlaxIsSelected] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
     {
-      v10 = 0;
+      _crlaxTextIsEditable = 0;
       v11 = 1;
     }
 
     else if ([(CRLTextRepAccessibility *)self crlaxIsBeingEdited])
     {
       v11 = 0;
-      v10 = 0;
+      _crlaxTextIsEditable = 0;
     }
 
     else
     {
-      v10 = [(CRLTextRepAccessibility *)self _crlaxTextIsEditable];
+      _crlaxTextIsEditable = [(CRLTextRepAccessibility *)self _crlaxTextIsEditable];
       v11 = 0;
     }
 
-    if (a3)
+    if (editing)
     {
       goto LABEL_12;
     }
@@ -512,18 +512,18 @@ LABEL_18:
 
   else
   {
-    v10 = 0;
+    _crlaxTextIsEditable = 0;
     v11 = 1;
-    if (a3)
+    if (editing)
     {
 LABEL_12:
-      *a3 = v10;
+      *editing = _crlaxTextIsEditable;
     }
   }
 
-  if (a4)
+  if (selection)
   {
-    *a4 = v11;
+    *selection = v11;
   }
 }
 
@@ -549,13 +549,13 @@ LABEL_12:
 - (BOOL)accessibilityActivate
 {
   v17 = 0;
-  v3 = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
-  v4 = [v3 crlaxTarget];
-  v5 = [v4 layerHost];
-  v6 = [v5 asiOSCVC];
-  v7 = [v6 isCurrentlyInQuickSelectMode];
+  crlaxInteractiveCanvasController = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
+  crlaxTarget = [crlaxInteractiveCanvasController crlaxTarget];
+  layerHost = [crlaxTarget layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
+  isCurrentlyInQuickSelectMode = [asiOSCVC isCurrentlyInQuickSelectMode];
 
-  if (v7)
+  if (isCurrentlyInQuickSelectMode)
   {
     return 0;
   }
@@ -578,20 +578,20 @@ LABEL_12:
   v10 = v16;
   if (v10 != self)
   {
-    v11 = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
+    crlaxParentRep = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
 
-    if (!v11)
+    if (!crlaxParentRep)
     {
       [(CRLTextRepAccessibility *)self _crlaxSetShapeContainedTextRep:v10];
     }
   }
 
-  v12 = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
-  [v12 crlaxScrollCurrentSelectionToVisible];
+  crlaxInteractiveCanvasController2 = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
+  [crlaxInteractiveCanvasController2 crlaxScrollCurrentSelectionToVisible];
 
-  v13 = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
+  crlaxInteractiveCanvasController3 = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
   [(CRLTextRepAccessibility *)self accessibilityActivationPoint];
-  v8 = [v13 crlaxHandleDoubleTapAtPoint:?];
+  v8 = [crlaxInteractiveCanvasController3 crlaxHandleDoubleTapAtPoint:?];
 
   return v8;
 }
@@ -599,18 +599,18 @@ LABEL_12:
 - (CGPoint)accessibilityActivationPoint
 {
   y = CGPointZero.y;
-  v4 = [(CRLTextRepAccessibility *)self accessibilityTraits];
+  accessibilityTraits = [(CRLTextRepAccessibility *)self accessibilityTraits];
   v6 = y;
   x = CGPointZero.x;
-  if ((CRLAccessibilityTraitIsEditing & v4) != 0)
+  if ((CRLAccessibilityTraitIsEditing & accessibilityTraits) != 0)
   {
     [(CRLTextRepAccessibility *)self crlaxCGRectValueForKey:@"caretRect"];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(CRLCanvasRepAccessibility *)self crlaxCanvas];
-    [v16 crlaxScreenFrameFromUnscaledCanvas:{v9, v11, v13, v15}];
+    crlaxCanvas = [(CRLCanvasRepAccessibility *)self crlaxCanvas];
+    [crlaxCanvas crlaxScreenFrameFromUnscaledCanvas:{v9, v11, v13, v15}];
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -667,8 +667,8 @@ LABEL_12:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CRLTextRepAccessibility *)self accessibilityTraits];
-  if ((CRLAccessibilityTraitIsEditing & v11) != 0)
+  accessibilityTraits = [(CRLTextRepAccessibility *)self accessibilityTraits];
+  if ((CRLAccessibilityTraitIsEditing & accessibilityTraits) != 0)
   {
     [(CRLTextRepAccessibility *)self crlaxCGRectValueForKey:@"caretRect"];
     [(CRLCanvasRepAccessibility *)self crlaxConvertNaturalRectToScreenSpace:?];
@@ -691,24 +691,24 @@ LABEL_12:
 
 - (_NSRange)_accessibilitySelectedTextRange
 {
-  v3 = [(CRLTextRepAccessibility *)self crlaxTextEditor];
-  v4 = [v3 crlaxSelectedTextRange];
+  crlaxTextEditor = [(CRLTextRepAccessibility *)self crlaxTextEditor];
+  crlaxSelectedTextRange = [crlaxTextEditor crlaxSelectedTextRange];
   v6 = v5;
 
-  v7 = [(CRLTextRepAccessibility *)self crlaxRepRangeWithStorageRange:v4, v6];
+  v7 = [(CRLTextRepAccessibility *)self crlaxRepRangeWithStorageRange:crlaxSelectedTextRange, v6];
   result.length = v8;
   result.location = v7;
   return result;
 }
 
-- (void)_crlaxSetSelectedTextRange:(_NSRange)a3 skipSelectionChangedNotification:(BOOL)a4
+- (void)_crlaxSetSelectedTextRange:(_NSRange)range skipSelectionChangedNotification:(BOOL)notification
 {
-  v4 = a4;
-  v6 = [(CRLTextRepAccessibility *)self crlaxStorageRangeWithRepRange:a3.location, a3.length];
+  notificationCopy = notification;
+  v6 = [(CRLTextRepAccessibility *)self crlaxStorageRangeWithRepRange:range.location, range.length];
   v8 = v7;
-  v9 = [(CRLTextRepAccessibility *)self crlaxStorageRangeOfRep];
-  v11 = v9;
-  if (v8 || v6 < &v9[v10 + 1])
+  crlaxStorageRangeOfRep = [(CRLTextRepAccessibility *)self crlaxStorageRangeOfRep];
+  v11 = crlaxStorageRangeOfRep;
+  if (v8 || v6 < &crlaxStorageRangeOfRep[v10 + 1])
   {
     if (v8)
     {
@@ -735,8 +735,8 @@ LABEL_12:
   else
   {
     length = 0;
-    location = &v9[v10];
-    if (&v9[v10])
+    location = &crlaxStorageRangeOfRep[v10];
+    if (&crlaxStorageRangeOfRep[v10])
     {
       goto LABEL_12;
     }
@@ -745,8 +745,8 @@ LABEL_12:
   if (v11 == v6)
   {
 LABEL_12:
-    v16 = [(CRLTextRepAccessibility *)self crlaxTextEditor];
-    v19 = v16;
+    crlaxTextEditor = [(CRLTextRepAccessibility *)self crlaxTextEditor];
+    v19 = crlaxTextEditor;
     v17 = location;
     v18 = length;
     goto LABEL_13;
@@ -757,37 +757,37 @@ LABEL_12:
     return;
   }
 
-  v16 = [(CRLTextRepAccessibility *)self crlaxTextEditor];
-  v19 = v16;
+  crlaxTextEditor = [(CRLTextRepAccessibility *)self crlaxTextEditor];
+  v19 = crlaxTextEditor;
   v17 = v11;
   v18 = 0;
 LABEL_13:
-  [v16 crlaxSetSelectedTextRange:v17 skipSelectionChangedNotification:{v18, v4}];
+  [crlaxTextEditor crlaxSetSelectedTextRange:v17 skipSelectionChangedNotification:{v18, notificationCopy}];
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if (![(CRLTextRepAccessibility *)self crlaxPreventSelectedTextRangeChanges])
   {
     v6 = [(CRLTextRepAccessibility *)self crlaxStorageRangeWithRepRange:location, length];
     v8 = [(CRLTextRepAccessibility *)self crlaxClampRangeToStorageRange:v6, v7];
     v10 = v9;
-    v11 = [(CRLTextRepAccessibility *)self crlaxTextEditor];
-    [v11 crlaxSetSelectedTextRange:v8 skipSelectionChangedNotification:{v10, 0}];
+    crlaxTextEditor = [(CRLTextRepAccessibility *)self crlaxTextEditor];
+    [crlaxTextEditor crlaxSetSelectedTextRange:v8 skipSelectionChangedNotification:{v10, 0}];
   }
 }
 
-- (unint64_t)_crlaxPositionOfLastSelectedLine:(BOOL)a3
+- (unint64_t)_crlaxPositionOfLastSelectedLine:(BOOL)line
 {
-  v3 = a3;
-  v5 = [(CRLTextRepAccessibility *)self crlaxTextEditor];
-  v6 = [v5 crlaxSelectedTextRange];
-  v8 = v6 + v7;
+  lineCopy = line;
+  crlaxTextEditor = [(CRLTextRepAccessibility *)self crlaxTextEditor];
+  crlaxSelectedTextRange = [crlaxTextEditor crlaxSelectedTextRange];
+  v8 = crlaxSelectedTextRange + v7;
 
-  v9 = [(CRLTextRepAccessibility *)self crlaxTextEditor];
-  v10 = [v9 crlaxStorageRangeOfLineFragmentAtCharIndex:v8];
+  crlaxTextEditor2 = [(CRLTextRepAccessibility *)self crlaxTextEditor];
+  v10 = [crlaxTextEditor2 crlaxStorageRangeOfLineFragmentAtCharIndex:v8];
   v12 = v11;
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL && v12 == 0)
@@ -804,7 +804,7 @@ LABEL_13:
     return -1;
   }
 
-  else if (v3)
+  else if (lineCopy)
   {
     return [(CRLTextRepAccessibility *)self crlaxRepRangeWithStorageRange:v10, v12];
   }
@@ -820,15 +820,15 @@ LABEL_13:
 {
   v24.receiver = self;
   v24.super_class = CRLTextRepAccessibility;
-  v3 = [(CRLCanvasRepAccessibility *)&v24 accessibilityTraits];
-  v4 = [(CRLTextRepAccessibility *)self crlaxNeedsTextEntryTrait];
+  accessibilityTraits = [(CRLCanvasRepAccessibility *)&v24 accessibilityTraits];
+  crlaxNeedsTextEntryTrait = [(CRLTextRepAccessibility *)self crlaxNeedsTextEntryTrait];
   v5 = CRLAccessibilityTraitTextEntry;
-  if (!v4)
+  if (!crlaxNeedsTextEntryTrait)
   {
     v5 = 0;
   }
 
-  v6 = v5 | v3;
+  v6 = v5 | accessibilityTraits;
   if (-[CRLTextRepAccessibility crlaxIsBeingEdited](self, "crlaxIsBeingEdited") || (-[CRLCanvasRepAccessibility crlaxParentRep](self, "crlaxParentRep"), v8 = objc_claimAutoreleasedReturnValue(), v8, !v8) && (-[CRLTextRepAccessibility _crlaxShapeContainedTextRep](self, "_crlaxShapeContainedTextRep"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 crlaxIsBeingEdited], v9, v10))
   {
     v7 = CRLAccessibilityTraitIsEditing | CRLAccessibilityTraitTextOperationsAvailable | v6;
@@ -840,8 +840,8 @@ LABEL_13:
   }
 
   v11 = objc_opt_class();
-  v12 = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
-  v13 = __CRLAccessibilityCastAsSafeCategory(v11, v12, 0, 0);
+  crlaxParentRep = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
+  v13 = __CRLAccessibilityCastAsSafeCategory(v11, crlaxParentRep, 0, 0);
 
   v14 = CRLAccessibilityTraitTextArea;
   if (v13)
@@ -850,14 +850,14 @@ LABEL_13:
   }
 
   v15 = v14 | v7;
-  v16 = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
-  if (v16 && (v17 = v16, v18 = [(CRLCanvasRepAccessibility *)self crlaxInReadOnlyMode], v17, (v18 & 1) == 0))
+  crlaxInteractiveCanvasController = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
+  if (crlaxInteractiveCanvasController && (v17 = crlaxInteractiveCanvasController, v18 = [(CRLCanvasRepAccessibility *)self crlaxInReadOnlyMode], v17, (v18 & 1) == 0))
   {
     if ((CRLAccessibilityTraitTextEntry & v15) != 0)
     {
-      v19 = [(CRLCanvasRepAccessibility *)self crlaxRepForSelecting];
-      v20 = v19;
-      if (v19 && ([v19 crlaxIsSelected] & 1) == 0)
+      crlaxRepForSelecting = [(CRLCanvasRepAccessibility *)self crlaxRepForSelecting];
+      v20 = crlaxRepForSelecting;
+      if (crlaxRepForSelecting && ([crlaxRepForSelecting crlaxIsSelected] & 1) == 0)
       {
         v15 |= CRLAccessibilityTraitStaticText;
       }
@@ -869,31 +869,31 @@ LABEL_13:
     v15 &= ~(CRLAccessibilityTraitTextArea | CRLAccessibilityTraitTextEntry);
   }
 
-  v21 = [(CRLTextRepAccessibility *)self crlaxStorage];
-  v22 = [v21 accessibilityTraits];
+  crlaxStorage = [(CRLTextRepAccessibility *)self crlaxStorage];
+  accessibilityTraits2 = [crlaxStorage accessibilityTraits];
 
-  return v22 | v15;
+  return accessibilityTraits2 | v15;
 }
 
 - (id)automationElements
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
-  v5 = __CRLAccessibilityCastAsSafeCategory(v3, v4, 0, 0);
+  crlaxParentRep = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
+  v5 = __CRLAccessibilityCastAsSafeCategory(v3, crlaxParentRep, 0, 0);
 
   if (v5)
   {
-    v6 = [v5 crlaxKnobAccessibilityElements];
+    crlaxKnobAccessibilityElements = [v5 crlaxKnobAccessibilityElements];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = CRLTextRepAccessibility;
-    v6 = [(CRLTextRepAccessibility *)&v9 automationElements];
+    crlaxKnobAccessibilityElements = [(CRLTextRepAccessibility *)&v9 automationElements];
   }
 
-  v7 = v6;
+  v7 = crlaxKnobAccessibilityElements;
 
   return v7;
 }
@@ -907,17 +907,17 @@ LABEL_13:
 
   else
   {
-    v4 = [(CRLTextRepAccessibility *)self _crlaxParentShapeHint];
-    if (![v4 length])
+    _crlaxParentShapeHint = [(CRLTextRepAccessibility *)self _crlaxParentShapeHint];
+    if (![_crlaxParentShapeHint length])
     {
       v13.receiver = self;
       v13.super_class = CRLTextRepAccessibility;
-      v11 = [(CRLCanvasRepAccessibility *)&v13 accessibilityHint];
+      accessibilityHint = [(CRLCanvasRepAccessibility *)&v13 accessibilityHint];
 
-      v4 = v11;
+      _crlaxParentShapeHint = accessibilityHint;
     }
 
-    v3 = __CRLAccessibilityStringForVariables(1, 0, v5, v6, v7, v8, v9, v10, v4);
+    v3 = __CRLAccessibilityStringForVariables(1, 0, v5, v6, v7, v8, v9, v10, _crlaxParentShapeHint);
   }
 
   return v3;
@@ -933,21 +933,21 @@ LABEL_13:
 
 - (id)accessibilityValue
 {
-  v2 = [(CRLTextRepAccessibility *)self accessibilityAttributedValue];
-  v3 = [v2 string];
+  accessibilityAttributedValue = [(CRLTextRepAccessibility *)self accessibilityAttributedValue];
+  string = [accessibilityAttributedValue string];
 
-  return v3;
+  return string;
 }
 
 - (id)accessibilityAttributedValue
 {
   if ([(CRLCanvasRepAccessibility *)self crlaxIsTitle]&& ![(CRLTextRepAccessibility *)self crlaxIsBeingEdited])
   {
-    v7 = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
-    v8 = [v7 crlaxParentRep];
-    v6 = [v8 crlaxTitle];
+    crlaxParentRep = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
+    v7CrlaxParentRep = [crlaxParentRep crlaxParentRep];
+    crlaxTitle = [v7CrlaxParentRep crlaxTitle];
 
-    if ([v6 length])
+    if ([crlaxTitle length])
     {
       goto LABEL_11;
     }
@@ -958,30 +958,30 @@ LABEL_13:
 
   if (![(CRLCanvasRepAccessibility *)self crlaxIsCaption]|| [(CRLTextRepAccessibility *)self crlaxIsBeingEdited])
   {
-    v3 = [(CRLTextRepAccessibility *)self crlaxStorageRangeOfRep];
-    v5 = [(CRLTextRepAccessibility *)self crlaxAttributedSubstringInStorageWithRange:v3, v4];
-    v6 = 0;
+    crlaxStorageRangeOfRep = [(CRLTextRepAccessibility *)self crlaxStorageRangeOfRep];
+    v5 = [(CRLTextRepAccessibility *)self crlaxAttributedSubstringInStorageWithRange:crlaxStorageRangeOfRep, v4];
+    crlaxTitle = 0;
     goto LABEL_14;
   }
 
-  v10 = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
-  v11 = [v10 crlaxParentRep];
-  v6 = [v11 crlaxCaption];
+  crlaxParentRep2 = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
+  v10CrlaxParentRep = [crlaxParentRep2 crlaxParentRep];
+  crlaxTitle = [v10CrlaxParentRep crlaxCaption];
 
-  if (![v6 length])
+  if (![crlaxTitle length])
   {
     v9 = @"Empty caption";
 LABEL_10:
     v12 = +[NSBundle mainBundle];
     v13 = [v12 localizedStringForKey:v9 value:0 table:0];
 
-    v6 = v13;
+    crlaxTitle = v13;
   }
 
 LABEL_11:
-  if (v6)
+  if (crlaxTitle)
   {
-    v5 = [[NSAttributedString alloc] initWithString:v6];
+    v5 = [[NSAttributedString alloc] initWithString:crlaxTitle];
   }
 
   else
@@ -997,53 +997,53 @@ LABEL_14:
 - (id)_crlaxParentShapeTypeLabel
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
-  v5 = __CRLAccessibilityCastAsSafeCategory(v3, v4, 0, 0);
-  v6 = [v5 accessibilityLabel];
+  crlaxParentRep = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
+  v5 = __CRLAccessibilityCastAsSafeCategory(v3, crlaxParentRep, 0, 0);
+  accessibilityLabel = [v5 accessibilityLabel];
 
-  return v6;
+  return accessibilityLabel;
 }
 
 - (id)_crlaxParentShapeHint
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
-  v5 = __CRLAccessibilityCastAsSafeCategory(v3, v4, 0, 0);
+  crlaxParentRep = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
+  v5 = __CRLAccessibilityCastAsSafeCategory(v3, crlaxParentRep, 0, 0);
 
   if (v5)
   {
-    v6 = [v5 accessibilityHint];
+    accessibilityHint = [v5 accessibilityHint];
   }
 
   else
   {
-    v6 = 0;
+    accessibilityHint = 0;
   }
 
-  return v6;
+  return accessibilityHint;
 }
 
-- (id)_crlaxGetDictionaryForLineNumber:(unint64_t)a3 columnNumber:(unint64_t)a4
+- (id)_crlaxGetDictionaryForLineNumber:(unint64_t)number columnNumber:(unint64_t)columnNumber
 {
-  v5 = [NSNumber numberWithInteger:a3];
-  v6 = [NSNumber numberWithInteger:a4];
+  v5 = [NSNumber numberWithInteger:number];
+  v6 = [NSNumber numberWithInteger:columnNumber];
   v7 = [NSDictionary dictionaryWithObjectsAndKeys:v5, @"lineNumber", v6, @"lineColumn", 0];
 
   return v7;
 }
 
-- (void)_crlaxGetEffectiveLineNumber:(unint64_t *)a3 columnNumber:(unint64_t *)a4 forPosition:(unint64_t)a5
+- (void)_crlaxGetEffectiveLineNumber:(unint64_t *)number columnNumber:(unint64_t *)columnNumber forPosition:(unint64_t)position
 {
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0x7FFFFFFFFFFFFFFFLL;
-  v9 = [(CRLTextRepAccessibility *)self crlaxColumns];
+  crlaxColumns = [(CRLTextRepAccessibility *)self crlaxColumns];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v11 = 0x7FFFFFFFFFFFFFFFLL;
-    if (!a3)
+    if (!number)
     {
       goto LABEL_6;
     }
@@ -1051,52 +1051,52 @@ LABEL_14:
     goto LABEL_5;
   }
 
-  [(CRLTextRepAccessibility *)self columnForCharIndex:a5];
+  [(CRLTextRepAccessibility *)self columnForCharIndex:position];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_100252C54;
   v10 = v15 = &unk_10184C6E8;
   v16 = v10;
   v17 = &v18;
-  [v9 enumerateObjectsUsingBlock:&v12];
-  v11 = [v10 lineIndexForCharIndex:a5 eol:{1, v12, v13, v14, v15}];
+  [crlaxColumns enumerateObjectsUsingBlock:&v12];
+  v11 = [v10 lineIndexForCharIndex:position eol:{1, v12, v13, v14, v15}];
 
-  if (a3)
+  if (number)
   {
 LABEL_5:
-    *a3 = v11;
+    *number = v11;
   }
 
 LABEL_6:
-  if (a4)
+  if (columnNumber)
   {
-    *a4 = v19[3];
+    *columnNumber = v19[3];
   }
 
   _Block_object_dispose(&v18, 8);
 }
 
-- (id)_crlaxLineNumberAndColumnForPosition:(unint64_t)a3
+- (id)_crlaxLineNumberAndColumnForPosition:(unint64_t)position
 {
   v6 = 0x7FFFFFFFFFFFFFFFLL;
   v7 = 0x7FFFFFFFFFFFFFFFLL;
-  [(CRLTextRepAccessibility *)self _crlaxGetEffectiveLineNumber:&v7 columnNumber:&v6 forPosition:a3];
+  [(CRLTextRepAccessibility *)self _crlaxGetEffectiveLineNumber:&v7 columnNumber:&v6 forPosition:position];
   v4 = [(CRLTextRepAccessibility *)self _crlaxGetDictionaryForLineNumber:v7 columnNumber:v6];
 
   return v4;
 }
 
-- (void)_crlaxGetEffectiveLineNumber:(unint64_t *)a3 columnNumber:(unint64_t *)a4 forPoint:(CGPoint)a5
+- (void)_crlaxGetEffectiveLineNumber:(unint64_t *)number columnNumber:(unint64_t *)columnNumber forPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
+  y = point.y;
+  x = point.x;
   v31 = 0x7FFFFFFFFFFFFFFFLL;
   v32 = 0x7FFFFFFFFFFFFFFFLL;
-  v10 = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
+  crlaxInteractiveCanvasController = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
   v30 = 0;
-  v11 = [v10 crlaxCanvasView];
+  crlaxCanvasView = [crlaxInteractiveCanvasController crlaxCanvasView];
   v12 = objc_opt_class();
-  v13 = __CRLAccessibilityCastAsClass(v12, v11, 1, &v30);
+  v13 = __CRLAccessibilityCastAsClass(v12, crlaxCanvasView, 1, &v30);
   if (v30 == 1)
   {
     abort();
@@ -1104,11 +1104,11 @@ LABEL_6:
 
   v14 = v13;
 
-  v15 = [v14 window];
-  v16 = v15;
+  window = [v14 window];
+  v16 = window;
   if (v14)
   {
-    v17 = v15 == 0;
+    v17 = window == 0;
   }
 
   else
@@ -1118,14 +1118,14 @@ LABEL_6:
 
   if (!v17)
   {
-    [v14 convertPoint:v15 fromView:{x, y}];
-    [v10 crlaxConvertBoundsToUnscaledPoint:?];
+    [v14 convertPoint:window fromView:{x, y}];
+    [crlaxInteractiveCanvasController crlaxConvertBoundsToUnscaledPoint:?];
     [(CRLCanvasRepAccessibility *)self crlaxConvertNaturalPointFromUnscaledCanvas:?];
     v19 = v18;
     v21 = v20;
-    v22 = [(CRLTextRepAccessibility *)self crlaxTarget];
-    v23 = [v22 layout];
-    v24 = [CRLWPColumn charIndexForPointWithPinning:v23 inLayoutTarget:v19, v21];
+    crlaxTarget = [(CRLTextRepAccessibility *)self crlaxTarget];
+    layout = [crlaxTarget layout];
+    v24 = [CRLWPColumn charIndexForPointWithPinning:layout inLayoutTarget:v19, v21];
 
     [(CRLTextRepAccessibility *)self _crlaxGetEffectiveLineNumber:&v32 columnNumber:&v31 forPosition:v24];
     if (v32)
@@ -1133,8 +1133,8 @@ LABEL_6:
       if (v32 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v25 = [(CRLTextRepAccessibility *)self crlaxColumnForCharIndex:v24];
-        v26 = [v25 crlaxLineCount];
-        if (v32 - 1 < v26)
+        crlaxLineCount = [v25 crlaxLineCount];
+        if (v32 - 1 < crlaxLineCount)
         {
           [v25 boundsOfLineFragmentAtIndex:?];
           if (v27 <= v21 && v21 <= v27 + v28 && v32 >= 2)
@@ -1146,45 +1146,45 @@ LABEL_6:
     }
   }
 
-  if (a3)
+  if (number)
   {
-    *a3 = v32;
+    *number = v32;
   }
 
-  if (a4)
+  if (columnNumber)
   {
-    *a4 = v31;
+    *columnNumber = v31;
   }
 }
 
-- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)a3
+- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)point
 {
   v6 = 0x7FFFFFFFFFFFFFFFLL;
   v7 = 0x7FFFFFFFFFFFFFFFLL;
-  [(CRLTextRepAccessibility *)self _crlaxGetEffectiveLineNumber:&v7 columnNumber:&v6 forPoint:a3.x, a3.y];
+  [(CRLTextRepAccessibility *)self _crlaxGetEffectiveLineNumber:&v7 columnNumber:&v6 forPoint:point.x, point.y];
   v4 = [(CRLTextRepAccessibility *)self _crlaxGetDictionaryForLineNumber:v7 columnNumber:v6];
 
   return v4;
 }
 
-- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)a3
+- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)column
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"lineNumber"];
+  columnCopy = column;
+  v5 = [columnCopy objectForKey:@"lineNumber"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 integerValue];
-    v8 = [v4 objectForKey:@"lineColumn"];
-    v9 = [v8 integerValue];
+    integerValue = [v5 integerValue];
+    v8 = [columnCopy objectForKey:@"lineColumn"];
+    integerValue2 = [v8 integerValue];
 
-    v10 = [(CRLTextRepAccessibility *)self crlaxColumns];
+    crlaxColumns = [(CRLTextRepAccessibility *)self crlaxColumns];
     objc_opt_class();
     v11 = 0;
     v12 = 0x7FFFFFFFLL;
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v9 & 0x8000000000000000) == 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (integerValue2 & 0x8000000000000000) == 0)
     {
-      if (v9 >= [v10 count])
+      if (integerValue2 >= [crlaxColumns count])
       {
         v11 = 0;
         v12 = 0x7FFFFFFFLL;
@@ -1193,7 +1193,7 @@ LABEL_6:
       else
       {
         LOBYTE(v26[0]) = 0;
-        v13 = [v10 objectAtIndexedSubscript:v9];
+        v13 = [crlaxColumns objectAtIndexedSubscript:integerValue2];
         v14 = objc_opt_class();
         v15 = __CRLAccessibilityCastAsSafeCategory(v14, v13, 1, v26);
         if (LOBYTE(v26[0]) == 1)
@@ -1203,12 +1203,12 @@ LABEL_6:
 
         v16 = v15;
 
-        v17 = [v16 crlaxLineCount];
+        crlaxLineCount = [v16 crlaxLineCount];
         v11 = 0;
         v12 = 0x7FFFFFFFLL;
-        if ((v7 & 0x8000000000000000) == 0 && v7 < v17)
+        if ((integerValue & 0x8000000000000000) == 0 && integerValue < crlaxLineCount)
         {
-          v18 = [v16 rangeOfLineFragmentAtIndex:v7];
+          v18 = [v16 rangeOfLineFragmentAtIndex:integerValue];
           if (v19 <= 0x7FFFFFFFFFFFFFFELL)
           {
             v20 = [(CRLTextRepAccessibility *)self crlaxRepRangeWithStorageRange:v18, v19];
@@ -1222,9 +1222,9 @@ LABEL_6:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v23 = [v22 string];
+                string = [v22 string];
 
-                v22 = v23;
+                v22 = string;
               }
 
               if ([v22 hasSuffix:@"\n"])
@@ -1257,9 +1257,9 @@ LABEL_6:
   return result;
 }
 
-- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)a3
+- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)position
 {
-  v4 = [(CRLTextRepAccessibility *)self _crlaxLineNumberAndColumnForPosition:[(CRLTextRepAccessibility *)self crlaxStorageRangeWithRepRange:a3, 0]];
+  v4 = [(CRLTextRepAccessibility *)self _crlaxLineNumberAndColumnForPosition:[(CRLTextRepAccessibility *)self crlaxStorageRangeWithRepRange:position, 0]];
   v5 = [(CRLTextRepAccessibility *)self _accessibilityRangeForLineNumberAndColumn:v4];
   v7 = v6;
 
@@ -1270,9 +1270,9 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range
 {
-  v4 = [(CRLTextRepAccessibility *)self crlaxStorageRangeWithRepRange:a3.location, a3.length];
+  v4 = [(CRLTextRepAccessibility *)self crlaxStorageRangeWithRepRange:range.location, range.length];
   v6 = v5;
   if (!v5)
   {
@@ -1284,12 +1284,12 @@ LABEL_6:
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(CRLTextRepAccessibility *)self crlaxColumns];
-  v16 = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
+  crlaxColumns = [(CRLTextRepAccessibility *)self crlaxColumns];
+  crlaxInteractiveCanvasController = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
   v51 = 0;
-  v17 = [v16 crlaxCanvasView];
+  crlaxCanvasView = [crlaxInteractiveCanvasController crlaxCanvasView];
   v18 = objc_opt_class();
-  v19 = __CRLAccessibilityCastAsClass(v18, v17, 1, &v51);
+  v19 = __CRLAccessibilityCastAsClass(v18, crlaxCanvasView, 1, &v51);
   if (v51 == 1)
   {
 LABEL_25:
@@ -1302,12 +1302,12 @@ LABEL_25:
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v21 = v15;
+  v21 = crlaxColumns;
   v22 = [v21 countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (v22)
   {
     v23 = v22;
-    v46 = v16;
+    v46 = crlaxInteractiveCanvasController;
     v24 = *v48;
     while (2)
     {
@@ -1330,23 +1330,23 @@ LABEL_25:
 
         v30 = v29;
 
-        v31 = [v30 crlaxRange];
-        if (v4 >= v31 && v4 < &v31[v32])
+        crlaxRange = [v30 crlaxRange];
+        if (v4 >= crlaxRange && v4 < &crlaxRange[v32])
         {
           v34 = [(CRLTextRepAccessibility *)self crlaxAttributedSubstringInStorageWithRange:v4, v6];
-          v35 = [v34 string];
+          string = [v34 string];
 
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
           if (isKindOfClass)
           {
-            v37 = [v35 string];
+            v35String = [string string];
 
-            v35 = v37;
+            string = v35String;
           }
 
-          v16 = v46;
-          if ([v35 isEqualToString:{@"\n", v20, v46, v47}])
+          crlaxInteractiveCanvasController = v46;
+          if ([string isEqualToString:{@"\n", v20, v46, v47}])
           {
             [v30 crlaxColumnRectForRange:{v4, v6}];
           }
@@ -1357,7 +1357,7 @@ LABEL_25:
           }
 
           [(CRLCanvasRepAccessibility *)self crlaxConvertNaturalRectToUnscaledCanvas:?];
-          [v16 crlaxConvertUnscaledToBoundsRect:?];
+          [crlaxInteractiveCanvasController crlaxConvertUnscaledToBoundsRect:?];
           [v20 crlaxFrameFromBounds:?];
           v8 = v38;
           v10 = v39;
@@ -1377,7 +1377,7 @@ LABEL_25:
       break;
     }
 
-    v16 = v46;
+    crlaxInteractiveCanvasController = v46;
   }
 
 LABEL_24:
@@ -1393,37 +1393,37 @@ LABEL_24:
   return result;
 }
 
-- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)a3 withString:(id)a4
+- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)cursor withString:(id)string
 {
-  v16 = a4;
-  v6 = [(CRLTextRepAccessibility *)self crlaxTextEditor];
-  v7 = [v6 crlaxSelectedTextRange];
+  stringCopy = string;
+  crlaxTextEditor = [(CRLTextRepAccessibility *)self crlaxTextEditor];
+  crlaxSelectedTextRange = [crlaxTextEditor crlaxSelectedTextRange];
 
-  v8 = v7 - a3;
-  v9 = [(CRLTextRepAccessibility *)self crlaxStorage];
-  v19.location = [v9 crlaxRange];
+  v8 = crlaxSelectedTextRange - cursor;
+  crlaxStorage = [(CRLTextRepAccessibility *)self crlaxStorage];
+  v19.location = [crlaxStorage crlaxRange];
   v19.length = v10;
   v18.location = v8;
-  v18.length = a3;
+  v18.length = cursor;
   length = NSIntersectionRange(v18, v19).length;
 
   if (length)
   {
-    v12 = [[_TtC8Freeform12CRLTextRange alloc] initWithRange:v8, a3];
-    v13 = [(CRLTextRepAccessibility *)self crlaxTextEditor];
-    v14 = [v13 crlaxTarget];
-    v15 = [[_TtC8Freeform15CRLWPTextString alloc] initWithString:v16];
-    [v14 replace:v12 with:v15];
+    cursor = [[_TtC8Freeform12CRLTextRange alloc] initWithRange:v8, cursor];
+    crlaxTextEditor2 = [(CRLTextRepAccessibility *)self crlaxTextEditor];
+    crlaxTarget = [crlaxTextEditor2 crlaxTarget];
+    v15 = [[_TtC8Freeform15CRLWPTextString alloc] initWithString:stringCopy];
+    [crlaxTarget replace:cursor with:v15];
   }
 }
 
-- (void)_accessibilityInsertText:(id)a3 atPosition:(int64_t)a4
+- (void)_accessibilityInsertText:(id)text atPosition:(int64_t)position
 {
-  v14 = a3;
-  if (a4 == -1)
+  textCopy = text;
+  if (position == -1)
   {
-    v12 = [(CRLTextRepAccessibility *)self crlaxTextEditor];
-    [v12 crlaxInsertText:v14];
+    crlaxTextEditor = [(CRLTextRepAccessibility *)self crlaxTextEditor];
+    [crlaxTextEditor crlaxInsertText:textCopy];
   }
 
   else if (CRLAccessibilityShouldPerformValidationChecks())
@@ -1443,33 +1443,33 @@ LABEL_24:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CRLCanvasRepAccessibility *)self crlaxCanvasView];
-  v12 = [v11 crlaxTarget];
-  [v12 convertRect:0 fromView:{v4, v6, v8, v10}];
+  crlaxCanvasView = [(CRLCanvasRepAccessibility *)self crlaxCanvasView];
+  crlaxTarget = [crlaxCanvasView crlaxTarget];
+  [crlaxTarget convertRect:0 fromView:{v4, v6, v8, v10}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  v21 = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
-  [v21 crlaxConvertBoundsToUnscaledRect:{v14, v16, v18, v20}];
+  crlaxInteractiveCanvasController = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
+  [crlaxInteractiveCanvasController crlaxConvertBoundsToUnscaledRect:{v14, v16, v18, v20}];
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
 
-  v30 = [(CRLTextRepAccessibility *)self crlaxTarget];
-  [v30 convertNaturalRectFromUnscaledCanvas:{v23, v25, v27, v29}];
+  crlaxTarget2 = [(CRLTextRepAccessibility *)self crlaxTarget];
+  [crlaxTarget2 convertNaturalRectFromUnscaledCanvas:{v23, v25, v27, v29}];
   v32 = v31;
   v34 = v33;
 
-  v35 = [(CRLTextRepAccessibility *)self crlaxTarget];
-  LODWORD(v12) = [v35 textIsVertical];
+  crlaxTarget3 = [(CRLTextRepAccessibility *)self crlaxTarget];
+  LODWORD(crlaxTarget) = [crlaxTarget3 textIsVertical];
 
-  if (v12)
+  if (crlaxTarget)
   {
-    v36 = [(CRLTextRepAccessibility *)self crlaxTarget];
-    v37 = [v36 closestColumnForPoint:{v32, v34}];
+    crlaxTarget4 = [(CRLTextRepAccessibility *)self crlaxTarget];
+    v37 = [crlaxTarget4 closestColumnForPoint:{v32, v34}];
 
     if (v37)
     {
@@ -1498,22 +1498,22 @@ LABEL_24:
     v32 = v44;
   }
 
-  v45 = [(CRLTextRepAccessibility *)self crlaxTarget];
-  v46 = [v45 layout];
-  v47 = [CRLWPColumn charIndexForPointWithPinning:v46 inLayoutTarget:v32, v34];
+  crlaxTarget5 = [(CRLTextRepAccessibility *)self crlaxTarget];
+  layout = [crlaxTarget5 layout];
+  v47 = [CRLWPColumn charIndexForPointWithPinning:layout inLayoutTarget:v32, v34];
 
   return v47;
 }
 
 - (id)_accessibilitySpeakThisStringValue
 {
-  v3 = [(CRLTextRepAccessibility *)self _crlaxSpeakThisVisibleStorageOffset];
-  [(CRLTextRepAccessibility *)self _crlaxSetLastSpeakThisVisibleStorageOffset:v3];
-  v4 = [(CRLTextRepAccessibility *)self crlaxStorageRangeOfRep];
-  v6 = v4 + v5 - v3;
-  if (v4 > v3)
+  _crlaxSpeakThisVisibleStorageOffset = [(CRLTextRepAccessibility *)self _crlaxSpeakThisVisibleStorageOffset];
+  [(CRLTextRepAccessibility *)self _crlaxSetLastSpeakThisVisibleStorageOffset:_crlaxSpeakThisVisibleStorageOffset];
+  crlaxStorageRangeOfRep = [(CRLTextRepAccessibility *)self crlaxStorageRangeOfRep];
+  v6 = crlaxStorageRangeOfRep + v5 - _crlaxSpeakThisVisibleStorageOffset;
+  if (crlaxStorageRangeOfRep > _crlaxSpeakThisVisibleStorageOffset)
   {
-    v7 = v4;
+    v7 = crlaxStorageRangeOfRep;
     v8 = v5;
     v9 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1525,7 +1525,7 @@ LABEL_24:
     if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
     {
       log = v10;
-      v37.location = v3;
+      v37.location = _crlaxSpeakThisVisibleStorageOffset;
       v37.length = v6;
       v20 = NSStringFromRange(v37);
       v38.location = v7;
@@ -1559,7 +1559,7 @@ LABEL_24:
 
     v12 = [NSString stringWithUTF8String:"[CRLTextRepAccessibility(iOS) _accessibilitySpeakThisStringValue]"];
     v13 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLAccessibility/Text/Accessibility/iOS/CRLTextRepAccessibility+iOS.m"];
-    v35.location = v3;
+    v35.location = _crlaxSpeakThisVisibleStorageOffset;
     v35.length = v6;
     v14 = NSStringFromRange(v35);
     v36.location = v7;
@@ -1568,28 +1568,28 @@ LABEL_24:
     [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:1289 isFatal:0 description:"Adjusted speak this range is outside of rep's storage range: adjusted: %@; rep: %@", v14, v15];
   }
 
-  v16 = [(CRLTextRepAccessibility *)self crlaxStorage];
-  v17 = [v16 crlaxSubstringWithRange:{v3, v6}];
+  crlaxStorage = [(CRLTextRepAccessibility *)self crlaxStorage];
+  v17 = [crlaxStorage crlaxSubstringWithRange:{_crlaxSpeakThisVisibleStorageOffset, v6}];
 
   return v17;
 }
 
-- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)a3
+- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)range
 {
-  range = a3.length;
-  location = a3.location;
-  v5 = [(CRLTextRepAccessibility *)self _accessibilitySpeakThisString];
-  v6 = [v5 length];
-  v7 = [(CRLTextRepAccessibility *)self _accessibilitySpeakThisStringValue];
-  v8 = v6 - [v7 length];
+  range = range.length;
+  location = range.location;
+  _accessibilitySpeakThisString = [(CRLTextRepAccessibility *)self _accessibilitySpeakThisString];
+  v6 = [_accessibilitySpeakThisString length];
+  _accessibilitySpeakThisStringValue = [(CRLTextRepAccessibility *)self _accessibilitySpeakThisStringValue];
+  v8 = v6 - [_accessibilitySpeakThisStringValue length];
 
   v9 = location >= v8;
   v10 = location - v8;
   if (v9)
   {
     v11 = [(CRLTextRepAccessibility *)self _crlaxLastSpeakThisVisibleStorageOffset]+ v10;
-    v12 = [(CRLTextRepAccessibility *)self crlaxStorageRangeOfRep];
-    if (v12 > v11 || v12 + v13 < v11 + range)
+    crlaxStorageRangeOfRep = [(CRLTextRepAccessibility *)self crlaxStorageRangeOfRep];
+    if (crlaxStorageRangeOfRep > v11 || crlaxStorageRangeOfRep + v13 < v11 + range)
     {
       v14 = +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -1652,13 +1652,13 @@ LABEL_24:
   v21 = 0;
   if (v11 != 0x7FFFFFFFFFFFFFFFLL && range)
   {
-    v22 = [(CRLTextRepAccessibility *)self crlaxColumns];
+    crlaxColumns = [(CRLTextRepAccessibility *)self crlaxColumns];
     v49 = +[NSMutableArray array];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    obj = v22;
+    obj = crlaxColumns;
     v48 = [obj countByEnumeratingWithState:&v54 objects:v58 count:16];
     if (v48)
     {
@@ -1748,19 +1748,19 @@ LABEL_24:
 
 - (BOOL)_crlaxHasTextContent
 {
-  v2 = self;
-  v3 = [(CRLTextRepAccessibility *)self crlaxStorage];
-  v4 = [v3 crlaxRange];
+  selfCopy = self;
+  crlaxStorage = [(CRLTextRepAccessibility *)self crlaxStorage];
+  crlaxRange = [crlaxStorage crlaxRange];
   v6 = v5;
-  v8.location = [(CRLTextRepAccessibility *)v2 crlaxStorageRangeOfRep];
-  v9.location = v4;
+  v8.location = [(CRLTextRepAccessibility *)selfCopy crlaxStorageRangeOfRep];
+  v9.location = crlaxRange;
   v9.length = v6;
-  LOBYTE(v2) = NSIntersectionRange(v8, v9).length != 0;
+  LOBYTE(selfCopy) = NSIntersectionRange(v8, v9).length != 0;
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)crlaxPreventSelectedTextRangeChangesForInterval:(double)a3
+- (void)crlaxPreventSelectedTextRangeChangesForInterval:(double)interval
 {
   [(CRLTextRepAccessibility *)self crlaxSetPreventSelectedTextRangeChanges:1];
   objc_initWeak(&location, self);
@@ -1769,14 +1769,14 @@ LABEL_24:
   v5[2] = sub_1002542D4;
   v5[3] = &unk_10183AF10;
   objc_copyWeak(&v6, &location);
-  CRLAccessibilityPerformBlockOnMainThreadAfterDelay(v5, a3);
+  CRLAccessibilityPerformBlockOnMainThreadAfterDelay(v5, interval);
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
 
-- (CGRect)crlaxBoundsForStorageRange:(_NSRange)a3
+- (CGRect)crlaxBoundsForStorageRange:(_NSRange)range
 {
-  v5 = [(CRLTextRepAccessibility *)self crlaxRepRangeWithStorageRange:a3.location, a3.length];
+  v5 = [(CRLTextRepAccessibility *)self crlaxRepRangeWithStorageRange:range.location, range.length];
 
   [(CRLTextRepAccessibility *)self _accessibilityBoundsForRange:v5, v4];
   result.size.height = v9;
@@ -1786,10 +1786,10 @@ LABEL_24:
   return result;
 }
 
-- (id)crlaxAttachmentElementForStorageIndex:(unint64_t)a3
+- (id)crlaxAttachmentElementForStorageIndex:(unint64_t)index
 {
-  v5 = [(CRLTextRepAccessibility *)self crlaxStorage];
-  v6 = [v5 crlaxAttachmentOrFootnoteAtCharIndex:a3];
+  crlaxStorage = [(CRLTextRepAccessibility *)self crlaxStorage];
+  v6 = [crlaxStorage crlaxAttachmentOrFootnoteAtCharIndex:index];
 
   v7 = [objc_opt_class() crlaxAttachmentElementForAttachment:v6 inTextRep:self];
 
@@ -1798,31 +1798,31 @@ LABEL_24:
 
 - (id)accessibilityTextualContext
 {
-  v2 = [(CRLCanvasRepAccessibility *)self accessibilityContainer];
-  if (v2)
+  accessibilityContainer = [(CRLCanvasRepAccessibility *)self accessibilityContainer];
+  if (accessibilityContainer)
   {
-    v3 = v2;
+    v3 = accessibilityContainer;
     while (1)
     {
-      v4 = [v3 accessibilityTextualContext];
+      accessibilityTextualContext = [v3 accessibilityTextualContext];
 
-      if (v4)
+      if (accessibilityTextualContext)
       {
         break;
       }
 
-      v5 = [v3 accessibilityContainer];
+      accessibilityContainer2 = [v3 accessibilityContainer];
 
-      v3 = v5;
-      if (!v5)
+      v3 = accessibilityContainer2;
+      if (!accessibilityContainer2)
       {
         goto LABEL_5;
       }
     }
 
-    v7 = [v3 accessibilityTextualContext];
+    accessibilityTextualContext2 = [v3 accessibilityTextualContext];
 
-    v6 = v7 == 0;
+    v6 = accessibilityTextualContext2 == 0;
   }
 
   else
@@ -1844,39 +1844,39 @@ LABEL_5:
   return v8;
 }
 
-- (unint64_t)_accessibilityPositionInDirection:(int64_t)a3 offset:(unint64_t)a4 forPosition:(unint64_t)a5
+- (unint64_t)_accessibilityPositionInDirection:(int64_t)direction offset:(unint64_t)offset forPosition:(unint64_t)position
 {
-  v8 = [[_TtC8Freeform15CRLTextPosition alloc] init:a5];
-  v9 = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
-  v10 = [v9 crlaxTextInputResponder];
-  v11 = [v10 crlaxVoiceControlPositionFromPosition:v8 inDirection:a3 offset:a4];
+  v8 = [[_TtC8Freeform15CRLTextPosition alloc] init:position];
+  crlaxInteractiveCanvasController = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
+  crlaxTextInputResponder = [crlaxInteractiveCanvasController crlaxTextInputResponder];
+  v11 = [crlaxTextInputResponder crlaxVoiceControlPositionFromPosition:v8 inDirection:direction offset:offset];
 
   v12 = objc_opt_class();
   v13 = sub_100014370(v12, v11);
-  v14 = [v13 location];
+  location = [v13 location];
 
-  return v14;
+  return location;
 }
 
-- (_NSRange)_accessibilityRawRangeForUITextRange:(id)a3
+- (_NSRange)_accessibilityRawRangeForUITextRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, rangeCopy);
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 nsRange];
+    nsRange = [v6 nsRange];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = CRLTextRepAccessibility;
-    v8 = [(CRLTextRepAccessibility *)&v14 _accessibilityRawRangeForUITextRange:v4];
+    nsRange = [(CRLTextRepAccessibility *)&v14 _accessibilityRawRangeForUITextRange:rangeCopy];
   }
 
-  v10 = v8;
+  v10 = nsRange;
   v11 = v9;
 
   v12 = v10;
@@ -1886,22 +1886,22 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)_accessibilityReplaceTextInRange:(_NSRange)a3 withString:(id)a4
+- (BOOL)_accessibilityReplaceTextInRange:(_NSRange)range withString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v8 = objc_opt_class();
-  v9 = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
-  v10 = [v9 crlaxTarget];
-  v11 = [v10 editorController];
-  v12 = [v11 textInputEditor];
-  v13 = sub_100013F00(v8, v12);
+  crlaxInteractiveCanvasController = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
+  crlaxTarget = [crlaxInteractiveCanvasController crlaxTarget];
+  editorController = [crlaxTarget editorController];
+  textInputEditor = [editorController textInputEditor];
+  v13 = sub_100013F00(v8, textInputEditor);
 
   if (v13)
   {
     v14 = [[_TtC8Freeform12CRLTextRange alloc] initWithRange:location, length];
-    v15 = [[_TtC8Freeform15CRLWPTextString alloc] initWithString:v7];
+    v15 = [[_TtC8Freeform15CRLWPTextString alloc] initWithString:stringCopy];
     [v13 replace:v14 with:v15];
   }
 
@@ -1910,31 +1910,31 @@ LABEL_5:
 
 - (id)accessibilityDragSourceDescriptors
 {
-  v3 = [(CRLTextRepAccessibility *)self _accessibilitySelectedTextRange];
-  if (!v4 || (-[CRLTextRepAccessibility _accessibilityBoundsForRange:](self, "_accessibilityBoundsForRange:", v3, v4), v6 = v5, v8 = v7, v10 = v9, v12 = v11, -[CRLCanvasRepAccessibility crlaxCanvasView](self, "crlaxCanvasView"), v13 = objc_claimAutoreleasedReturnValue(), [v13 crlaxTarget], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "convertRect:fromView:", 0, v6, v8, v10, v12), v16 = v15, v18 = v17, v20 = v19, v22 = v21, v14, v13, v23 = [UIAccessibilityLocationDescriptor alloc], +[NSBundle mainBundle](NSBundle, "mainBundle"), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "localizedStringForKey:value:table:", @"Drag Text", 0, 0), v25 = objc_claimAutoreleasedReturnValue(), v26 = sub_100120414(v16, v18, v20, v22), v28 = v27, -[CRLCanvasRepAccessibility crlaxCanvasView](self, "crlaxCanvasView"), v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v23, "initWithName:point:inView:", v25, v29, v26, v28), v29, v25, v24, v34 = v30, +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v34, 1), v31 = objc_claimAutoreleasedReturnValue(), v30, !v31))
+  _accessibilitySelectedTextRange = [(CRLTextRepAccessibility *)self _accessibilitySelectedTextRange];
+  if (!v4 || (-[CRLTextRepAccessibility _accessibilityBoundsForRange:](self, "_accessibilityBoundsForRange:", _accessibilitySelectedTextRange, v4), v6 = v5, v8 = v7, v10 = v9, v12 = v11, -[CRLCanvasRepAccessibility crlaxCanvasView](self, "crlaxCanvasView"), v13 = objc_claimAutoreleasedReturnValue(), [v13 crlaxTarget], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "convertRect:fromView:", 0, v6, v8, v10, v12), v16 = v15, v18 = v17, v20 = v19, v22 = v21, v14, v13, v23 = [UIAccessibilityLocationDescriptor alloc], +[NSBundle mainBundle](NSBundle, "mainBundle"), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "localizedStringForKey:value:table:", @"Drag Text", 0, 0), v25 = objc_claimAutoreleasedReturnValue(), v26 = sub_100120414(v16, v18, v20, v22), v28 = v27, -[CRLCanvasRepAccessibility crlaxCanvasView](self, "crlaxCanvasView"), v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v23, "initWithName:point:inView:", v25, v29, v26, v28), v29, v25, v24, v34 = v30, +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v34, 1), accessibilityDragSourceDescriptors = objc_claimAutoreleasedReturnValue(), v30, !accessibilityDragSourceDescriptors))
   {
     v33.receiver = self;
     v33.super_class = CRLTextRepAccessibility;
-    v31 = [(CRLCanvasRepAccessibility *)&v33 accessibilityDragSourceDescriptors];
+    accessibilityDragSourceDescriptors = [(CRLCanvasRepAccessibility *)&v33 accessibilityDragSourceDescriptors];
   }
 
-  return v31;
+  return accessibilityDragSourceDescriptors;
 }
 
 - (id)accessibilityDropPointDescriptors
 {
-  v3 = [(CRLTextRepAccessibility *)self crlaxTarget];
-  v4 = [v3 selection];
-  v5 = [v4 isInsertionPoint];
+  crlaxTarget = [(CRLTextRepAccessibility *)self crlaxTarget];
+  selection = [crlaxTarget selection];
+  isInsertionPoint = [selection isInsertionPoint];
 
-  if (!v5 || (-[CRLTextRepAccessibility crlaxTarget](self, "crlaxTarget"), v6 = objc_claimAutoreleasedReturnValue(), [v6 caretRect], v8 = v7, v10 = v9, v12 = v11, v14 = v13, v6, v45.origin.x = v8, v45.origin.y = v10, v45.size.width = v12, v45.size.height = v14, CGRectIsNull(v45)) || (v47.origin.x = CGRectZero.origin.x, v47.origin.y = CGRectZero.origin.y, v47.size.width = CGRectZero.size.width, v47.size.height = CGRectZero.size.height, v46.origin.x = v8, v46.origin.y = v10, v46.size.width = v12, v46.size.height = v14, CGRectEqualToRect(v46, v47)) || (-[CRLCanvasRepAccessibility crlaxConvertNaturalRectToUnscaledCanvas:](self, "crlaxConvertNaturalRectToUnscaledCanvas:", v8, v10, v12, v14), v16 = v15, v18 = v17, v20 = v19, v22 = v21, -[CRLTextRepAccessibility crlaxInteractiveCanvasController](self, "crlaxInteractiveCanvasController"), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "crlaxConvertUnscaledToBoundsRect:", v16, v18, v20, v22), v25 = v24, v27 = v26, v29 = v28, v31 = v30, v23, v32 = [UIAccessibilityLocationDescriptor alloc], +[NSBundle mainBundle](NSBundle, "mainBundle"), v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v33, "localizedStringForKey:value:table:", @"Drop Text", 0, 0), v34 = objc_claimAutoreleasedReturnValue(), v35 = sub_100120414(v25, v27, v29, v31), v37 = v36, -[CRLCanvasRepAccessibility crlaxCanvasView](self, "crlaxCanvasView"), v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v32, "initWithName:point:inView:", v34, v38, v35, v37), v38, v34, v33, v43 = v39, +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v43, 1), v40 = objc_claimAutoreleasedReturnValue(), v39, !v40))
+  if (!isInsertionPoint || (-[CRLTextRepAccessibility crlaxTarget](self, "crlaxTarget"), v6 = objc_claimAutoreleasedReturnValue(), [v6 caretRect], v8 = v7, v10 = v9, v12 = v11, v14 = v13, v6, v45.origin.x = v8, v45.origin.y = v10, v45.size.width = v12, v45.size.height = v14, CGRectIsNull(v45)) || (v47.origin.x = CGRectZero.origin.x, v47.origin.y = CGRectZero.origin.y, v47.size.width = CGRectZero.size.width, v47.size.height = CGRectZero.size.height, v46.origin.x = v8, v46.origin.y = v10, v46.size.width = v12, v46.size.height = v14, CGRectEqualToRect(v46, v47)) || (-[CRLCanvasRepAccessibility crlaxConvertNaturalRectToUnscaledCanvas:](self, "crlaxConvertNaturalRectToUnscaledCanvas:", v8, v10, v12, v14), v16 = v15, v18 = v17, v20 = v19, v22 = v21, -[CRLTextRepAccessibility crlaxInteractiveCanvasController](self, "crlaxInteractiveCanvasController"), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "crlaxConvertUnscaledToBoundsRect:", v16, v18, v20, v22), v25 = v24, v27 = v26, v29 = v28, v31 = v30, v23, v32 = [UIAccessibilityLocationDescriptor alloc], +[NSBundle mainBundle](NSBundle, "mainBundle"), v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v33, "localizedStringForKey:value:table:", @"Drop Text", 0, 0), v34 = objc_claimAutoreleasedReturnValue(), v35 = sub_100120414(v25, v27, v29, v31), v37 = v36, -[CRLCanvasRepAccessibility crlaxCanvasView](self, "crlaxCanvasView"), v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v32, "initWithName:point:inView:", v34, v38, v35, v37), v38, v34, v33, v43 = v39, +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v43, 1), accessibilityDropPointDescriptors = objc_claimAutoreleasedReturnValue(), v39, !accessibilityDropPointDescriptors))
   {
     v42.receiver = self;
     v42.super_class = CRLTextRepAccessibility;
-    v40 = [(CRLCanvasRepAccessibility *)&v42 accessibilityDropPointDescriptors];
+    accessibilityDropPointDescriptors = [(CRLCanvasRepAccessibility *)&v42 accessibilityDropPointDescriptors];
   }
 
-  return v40;
+  return accessibilityDropPointDescriptors;
 }
 
 - (void)_cleanupRotorCache
@@ -1951,8 +1951,8 @@ LABEL_5:
 {
   if ([(CRLCanvasRepAccessibility *)self crlaxIsSelected]|| [(CRLCanvasRepAccessibility *)self crlaxIsSelectedIgnoringLocking])
   {
-    v3 = [(CRLTextRepAccessibility *)self crlaxTarget];
-    v4 = [v3 isBeingEdited] ^ 1;
+    crlaxTarget = [(CRLTextRepAccessibility *)self crlaxTarget];
+    v4 = [crlaxTarget isBeingEdited] ^ 1;
   }
 
   else
@@ -1963,11 +1963,11 @@ LABEL_5:
   return v4;
 }
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -1977,9 +1977,9 @@ LABEL_5:
   v8 = 0;
   v7.receiver = self;
   v7.super_class = CRLTextRepAccessibility;
-  v2 = [(CRLCanvasRepAccessibility *)&v7 crlaxRetainedTarget];
+  crlaxRetainedTarget = [(CRLCanvasRepAccessibility *)&v7 crlaxRetainedTarget];
   v3 = objc_opt_class();
-  v4 = __CRLAccessibilityCastAsClass(v3, v2, 1, &v8);
+  v4 = __CRLAccessibilityCastAsClass(v3, crlaxRetainedTarget, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -1992,38 +1992,38 @@ LABEL_5:
 
 - (id)crlaxLabel
 {
-  v3 = [(CRLTextRepAccessibility *)self crlaxTarget];
-  v4 = [v3 info];
-  v5 = [v4 crlaxValueForKey:@"crlaxString"];
+  crlaxTarget = [(CRLTextRepAccessibility *)self crlaxTarget];
+  info = [crlaxTarget info];
+  v5 = [info crlaxValueForKey:@"crlaxString"];
 
-  v6 = [(CRLTextRepAccessibility *)self crlaxCollaboratorDescription];
-  v13 = __CRLAccessibilityStringForVariables(1, v5, v7, v8, v9, v10, v11, v12, v6);
+  crlaxCollaboratorDescription = [(CRLTextRepAccessibility *)self crlaxCollaboratorDescription];
+  v13 = __CRLAccessibilityStringForVariables(1, v5, v7, v8, v9, v10, v11, v12, crlaxCollaboratorDescription);
 
   return v13;
 }
 
 - (BOOL)crlaxIsBeingEdited
 {
-  v2 = [(CRLTextRepAccessibility *)self crlaxRetainedTarget];
-  v3 = [v2 isBeingEdited];
+  crlaxRetainedTarget = [(CRLTextRepAccessibility *)self crlaxRetainedTarget];
+  isBeingEdited = [crlaxRetainedTarget isBeingEdited];
 
-  return v3;
+  return isBeingEdited;
 }
 
 - (BOOL)crlaxIsLockedDirectly
 {
-  v3 = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
-  v4 = [v3 crlaxIsLockedDirectly];
+  crlaxParentRep = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
+  crlaxIsLockedDirectly = [crlaxParentRep crlaxIsLockedDirectly];
 
-  if (v4)
+  if (crlaxIsLockedDirectly)
   {
     return 1;
   }
 
   v11 = 0;
-  v6 = [(CRLCanvasRepAccessibility *)self crlaxInfo];
+  crlaxInfo = [(CRLCanvasRepAccessibility *)self crlaxInfo];
   v7 = objc_opt_class();
-  v8 = __CRLAccessibilityCastAsClassAndProtocol(v7, &OBJC_PROTOCOL___CRLCanvasLockableElementInfo, v6, 1, &v11);
+  v8 = __CRLAccessibilityCastAsClassAndProtocol(v7, &OBJC_PROTOCOL___CRLCanvasLockableElementInfo, crlaxInfo, 1, &v11);
   if (v11 == 1)
   {
     abort();
@@ -2033,28 +2033,28 @@ LABEL_5:
 
   if (v9)
   {
-    v5 = [v9 locked];
+    locked = [v9 locked];
   }
 
   else
   {
-    v5 = 0;
+    locked = 0;
   }
 
-  return v5;
+  return locked;
 }
 
 - (BOOL)crlaxIsDecorativeElement
 {
-  v3 = [(CRLCanvasRepAccessibility *)self crlaxRepForSelecting];
-  if (v3 || [(CRLCanvasRepAccessibility *)self crlaxIsLocked])
+  crlaxRepForSelecting = [(CRLCanvasRepAccessibility *)self crlaxRepForSelecting];
+  if (crlaxRepForSelecting || [(CRLCanvasRepAccessibility *)self crlaxIsLocked])
   {
     isKindOfClass = 0;
   }
 
   else
   {
-    v6 = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
+    crlaxParentRep = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -2064,11 +2064,11 @@ LABEL_5:
 
 - (_NSRange)crlaxStorageRangeOfRep
 {
-  v2 = [(CRLTextRepAccessibility *)self crlaxTarget];
-  v3 = [v2 range];
+  crlaxTarget = [(CRLTextRepAccessibility *)self crlaxTarget];
+  range = [crlaxTarget range];
   v5 = v4;
 
-  v6 = v3;
+  v6 = range;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -2078,11 +2078,11 @@ LABEL_5:
 - (CRLWPStorageAccessibility)crlaxStorage
 {
   v8 = 0;
-  v2 = [(CRLTextRepAccessibility *)self crlaxTarget];
-  v3 = [v2 storage];
+  crlaxTarget = [(CRLTextRepAccessibility *)self crlaxTarget];
+  storage = [crlaxTarget storage];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, storage, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -2098,13 +2098,13 @@ LABEL_5:
   if ([(CRLTextRepAccessibility *)self crlaxIsBeingEdited])
   {
     v11 = 0;
-    v3 = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
-    v4 = [v3 crlaxTarget];
-    v5 = [v4 editorController];
-    v6 = [v5 textInputEditor];
+    crlaxInteractiveCanvasController = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
+    crlaxTarget = [crlaxInteractiveCanvasController crlaxTarget];
+    editorController = [crlaxTarget editorController];
+    textInputEditor = [editorController textInputEditor];
 
     v7 = objc_opt_class();
-    v8 = __CRLAccessibilityCastAsSafeCategory(v7, v6, 1, &v11);
+    v8 = __CRLAccessibilityCastAsSafeCategory(v7, textInputEditor, 1, &v11);
     if (v11 == 1)
     {
       abort();
@@ -2123,20 +2123,20 @@ LABEL_5:
 
 - (BOOL)crlaxIsSelectionHighlightSuppressed
 {
-  v2 = [(CRLTextRepAccessibility *)self crlaxTarget];
-  v3 = [v2 isSelectionHighlightSuppressed];
+  crlaxTarget = [(CRLTextRepAccessibility *)self crlaxTarget];
+  isSelectionHighlightSuppressed = [crlaxTarget isSelectionHighlightSuppressed];
 
-  return v3;
+  return isSelectionHighlightSuppressed;
 }
 
 - (NSArray)crlaxColumns
 {
   v8 = 0;
-  v2 = [(CRLTextRepAccessibility *)self crlaxTarget];
-  v3 = [v2 columns];
+  crlaxTarget = [(CRLTextRepAccessibility *)self crlaxTarget];
+  columns = [crlaxTarget columns];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsClass(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsClass(v4, columns, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -2149,37 +2149,37 @@ LABEL_5:
 
 - (BOOL)crlaxJumpToNextInferredHeading
 {
-  v3 = [(CRLTextRepAccessibility *)self crlaxTextEditor];
-  v4 = [v3 crlaxSelectedTextRange];
+  crlaxTextEditor = [(CRLTextRepAccessibility *)self crlaxTextEditor];
+  crlaxSelectedTextRange = [crlaxTextEditor crlaxSelectedTextRange];
 
-  v5 = [(CRLTextRepAccessibility *)self crlaxStorage];
-  [v5 crlaxNextInferredHeadingRangeFromCharacterIndex:v4 wrap:1];
+  crlaxStorage = [(CRLTextRepAccessibility *)self crlaxStorage];
+  [crlaxStorage crlaxNextInferredHeadingRangeFromCharacterIndex:crlaxSelectedTextRange wrap:1];
 
   return 0;
 }
 
 - (BOOL)crlaxJumpToPreviousInferredHeading
 {
-  v3 = [(CRLTextRepAccessibility *)self crlaxTextEditor];
-  v4 = [v3 crlaxSelectedTextRange];
+  crlaxTextEditor = [(CRLTextRepAccessibility *)self crlaxTextEditor];
+  crlaxSelectedTextRange = [crlaxTextEditor crlaxSelectedTextRange];
 
-  v5 = [(CRLTextRepAccessibility *)self crlaxStorage];
-  [v5 crlaxPreviousInferredHeadingRangeFromCharacterIndex:v4 wrap:1];
+  crlaxStorage = [(CRLTextRepAccessibility *)self crlaxStorage];
+  [crlaxStorage crlaxPreviousInferredHeadingRangeFromCharacterIndex:crlaxSelectedTextRange wrap:1];
 
   return 0;
 }
 
-- (id)crlaxSelectionPathForTextRange:(_NSRange)a3
+- (id)crlaxSelectionPathForTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
+  length = range.length;
+  location = range.location;
+  crlaxInteractiveCanvasController = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
   v16 = 0;
-  v7 = [v6 crlaxTarget];
-  v8 = [v7 selectionModelTranslator];
-  v9 = [(CRLTextRepAccessibility *)self crlaxStorage];
-  v10 = [v9 crlaxTarget];
-  v11 = [v8 selectionPathForRange:location onStorage:{length, v10}];
+  crlaxTarget = [crlaxInteractiveCanvasController crlaxTarget];
+  selectionModelTranslator = [crlaxTarget selectionModelTranslator];
+  crlaxStorage = [(CRLTextRepAccessibility *)self crlaxStorage];
+  crlaxTarget2 = [crlaxStorage crlaxTarget];
+  v11 = [selectionModelTranslator selectionPathForRange:location onStorage:{length, crlaxTarget2}];
 
   v12 = objc_opt_class();
   v13 = __CRLAccessibilityCastAsSafeCategory(v12, v11, 1, &v16);
@@ -2195,19 +2195,19 @@ LABEL_5:
 
 - (NSSet)crlaxSiblings
 {
-  v2 = [(CRLTextRepAccessibility *)self crlaxTarget];
-  v3 = [v2 siblings];
+  crlaxTarget = [(CRLTextRepAccessibility *)self crlaxTarget];
+  siblings = [crlaxTarget siblings];
 
-  return v3;
+  return siblings;
 }
 
 - (NSArray)crlaxAccessibilityLabelCustomAttributes
 {
   v3 = +[NSMutableArray array];
-  v4 = [(CRLTextRepAccessibility *)self crlaxTarget];
-  v5 = [v4 textIsVertical];
+  crlaxTarget = [(CRLTextRepAccessibility *)self crlaxTarget];
+  textIsVertical = [crlaxTarget textIsVertical];
 
-  if (v5)
+  if (textIsVertical)
   {
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"Vertical text" value:0 table:0];
@@ -2218,13 +2218,13 @@ LABEL_5:
   return v3;
 }
 
-- (id)crlaxStringForNumberAttachment:(id)a3
+- (id)crlaxStringForNumberAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [(CRLTextRepAccessibility *)self crlaxAttachmentNumberProvider];
-  if (v5)
+  attachmentCopy = attachment;
+  crlaxAttachmentNumberProvider = [(CRLTextRepAccessibility *)self crlaxAttachmentNumberProvider];
+  if (crlaxAttachmentNumberProvider)
   {
-    v6 = [v4 stringEquivalentWithNumberProvider:v5];
+    v6 = [attachmentCopy stringEquivalentWithNumberProvider:crlaxAttachmentNumberProvider];
   }
 
   else
@@ -2240,9 +2240,9 @@ LABEL_5:
   v8 = 0;
   v7.receiver = self;
   v7.super_class = CRLTextRepAccessibility;
-  v2 = [(CRLCanvasRepAccessibility *)&v7 crlaxInteractiveCanvasController];
+  crlaxInteractiveCanvasController = [(CRLCanvasRepAccessibility *)&v7 crlaxInteractiveCanvasController];
   v3 = objc_opt_class();
-  v4 = __CRLAccessibilityCastAsSafeCategory(v3, v2, 1, &v8);
+  v4 = __CRLAccessibilityCastAsSafeCategory(v3, crlaxInteractiveCanvasController, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -2255,58 +2255,58 @@ LABEL_5:
 
 - (id)crlaxCollaboratorDescription
 {
-  v3 = [(CRLTextRepAccessibility *)self crlaxCollaboratorDescriptionDirect];
-  if (![v3 length])
+  crlaxCollaboratorDescriptionDirect = [(CRLTextRepAccessibility *)self crlaxCollaboratorDescriptionDirect];
+  if (![crlaxCollaboratorDescriptionDirect length])
   {
-    v4 = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
-    v5 = [v4 crlaxCollaboratorDescriptionDirect];
+    crlaxParentRep = [(CRLCanvasRepAccessibility *)self crlaxParentRep];
+    crlaxCollaboratorDescriptionDirect2 = [crlaxParentRep crlaxCollaboratorDescriptionDirect];
 
-    v3 = v5;
+    crlaxCollaboratorDescriptionDirect = crlaxCollaboratorDescriptionDirect2;
   }
 
-  return v3;
+  return crlaxCollaboratorDescriptionDirect;
 }
 
 - (id)crlaxCollaboratorDescriptionDirect
 {
   v13.receiver = self;
   v13.super_class = CRLTextRepAccessibility;
-  v3 = [(CRLCanvasRepAccessibility *)&v13 crlaxCollaboratorDescriptionDirect];
-  v4 = [(CRLTextRepAccessibility *)self crlaxTarget];
-  if ([v4 isShowingCaret])
+  crlaxCollaboratorDescriptionDirect = [(CRLCanvasRepAccessibility *)&v13 crlaxCollaboratorDescriptionDirect];
+  crlaxTarget = [(CRLTextRepAccessibility *)self crlaxTarget];
+  if ([crlaxTarget isShowingCaret])
   {
-    v5 = [(CRLCanvasRepAccessibility *)self crlaxCanvas];
-    v6 = [v5 crlaxInteractiveCanvasController];
+    crlaxCanvas = [(CRLCanvasRepAccessibility *)self crlaxCanvas];
+    crlaxInteractiveCanvasController = [crlaxCanvas crlaxInteractiveCanvasController];
 
-    if (!v6)
+    if (!crlaxInteractiveCanvasController)
     {
       goto LABEL_6;
     }
 
-    v7 = [(CRLTextRepAccessibility *)self crlaxTarget];
-    v8 = [v7 p_currentCollaboratorPresence];
-    v4 = [v8 displayName];
+    crlaxTarget2 = [(CRLTextRepAccessibility *)self crlaxTarget];
+    p_currentCollaboratorPresence = [crlaxTarget2 p_currentCollaboratorPresence];
+    crlaxTarget = [p_currentCollaboratorPresence displayName];
 
-    if ([v4 length])
+    if ([crlaxTarget length])
     {
       v9 = +[NSBundle mainBundle];
       v10 = [v9 localizedStringForKey:@"Edited by %@" value:0 table:0];
 
-      v11 = [NSString stringWithFormat:v10, v4];
+      v11 = [NSString stringWithFormat:v10, crlaxTarget];
 
-      v3 = v11;
+      crlaxCollaboratorDescriptionDirect = v11;
     }
   }
 
 LABEL_6:
 
-  return v3;
+  return crlaxCollaboratorDescriptionDirect;
 }
 
-- (id)crlaxBeginEditingRangeInStorage:(_NSRange)a3 chosenTextRepReference:(id *)a4
+- (id)crlaxBeginEditingRangeInStorage:(_NSRange)storage chosenTextRepReference:(id *)reference
 {
-  length = a3.length;
-  location = a3.location;
+  length = storage.length;
+  location = storage.location;
   if (CRLAccessibilityShouldPerformValidationChecks())
   {
     if ([(CRLCanvasRepAccessibility *)self crlaxInReadOnlyMode])
@@ -2319,15 +2319,15 @@ LABEL_6:
     }
   }
 
-  v14 = self;
+  selfCopy = self;
   v15 = objc_opt_class();
-  v16 = [(CRLCanvasRepAccessibility *)v14 crlaxParentRep];
-  v17 = __CRLAccessibilityCastAsSafeCategory(v15, v16, 0, 0);
+  crlaxParentRep = [(CRLCanvasRepAccessibility *)selfCopy crlaxParentRep];
+  v17 = __CRLAccessibilityCastAsSafeCategory(v15, crlaxParentRep, 0, 0);
 
   v49 = 0;
-  v18 = [(CRLCanvasRepAccessibility *)v14 crlaxInfo];
+  crlaxInfo = [(CRLCanvasRepAccessibility *)selfCopy crlaxInfo];
   v19 = objc_opt_class();
-  v20 = __CRLAccessibilityCastAsSafeCategory(v19, v18, 1, &v49);
+  v20 = __CRLAccessibilityCastAsSafeCategory(v19, crlaxInfo, 1, &v49);
   if (v49 == 1)
   {
     goto LABEL_20;
@@ -2335,7 +2335,7 @@ LABEL_6:
 
   v21 = v20;
 
-  v22 = v14;
+  crlaxContainedRep = selfCopy;
   if (v17)
   {
     v46[0] = _NSConcreteStackBlock;
@@ -2350,27 +2350,27 @@ LABEL_6:
       goto LABEL_20;
     }
 
-    v22 = [v23 crlaxContainedRep];
+    crlaxContainedRep = [v23 crlaxContainedRep];
   }
 
   v44 = v21;
   v45 = v17;
-  v24 = a4;
+  referenceCopy = reference;
   if (location == 0x7FFFFFFFFFFFFFFFLL && length == 0)
   {
-    location = [(CRLTextRepAccessibility *)v14 crlaxStorageRangeOfRep];
+    location = [(CRLTextRepAccessibility *)selfCopy crlaxStorageRangeOfRep];
     length = 0;
   }
 
-  v26 = [(CRLTextRepAccessibility *)v14 crlaxClampRangeToStorageRange:location, length];
+  v26 = [(CRLTextRepAccessibility *)selfCopy crlaxClampRangeToStorageRange:location, length];
   v28 = v27;
-  v29 = [(CRLTextRepAccessibility *)v14 crlaxInteractiveCanvasController];
+  crlaxInteractiveCanvasController = [(CRLTextRepAccessibility *)selfCopy crlaxInteractiveCanvasController];
   v49 = 0;
-  v30 = [v29 crlaxTarget];
-  v31 = [v30 selectionModelTranslator];
-  v32 = [v22 crlaxStorage];
-  v33 = [v32 crlaxTarget];
-  v34 = [v31 selectionPathForRange:v26 onStorage:{v28, v33}];
+  crlaxTarget = [crlaxInteractiveCanvasController crlaxTarget];
+  selectionModelTranslator = [crlaxTarget selectionModelTranslator];
+  crlaxStorage = [crlaxContainedRep crlaxStorage];
+  crlaxTarget2 = [crlaxStorage crlaxTarget];
+  v34 = [selectionModelTranslator selectionPathForRange:v26 onStorage:{v28, crlaxTarget2}];
 
   v35 = objc_opt_class();
   v36 = __CRLAccessibilityCastAsSafeCategory(v35, v34, 1, &v49);
@@ -2382,27 +2382,27 @@ LABEL_20:
 
   v37 = v36;
 
-  v38 = [v29 crlaxEditorController];
-  [v38 crlaxSetSelectionPath:v37];
+  crlaxEditorController = [crlaxInteractiveCanvasController crlaxEditorController];
+  [crlaxEditorController crlaxSetSelectionPath:v37];
 
-  if (v24)
+  if (referenceCopy)
   {
-    v39 = v22;
-    *v24 = v22;
+    v39 = crlaxContainedRep;
+    *referenceCopy = crlaxContainedRep;
   }
 
-  v40 = [v29 crlaxEditorController];
-  v41 = [v40 crlaxTextInputEditor];
+  crlaxEditorController2 = [crlaxInteractiveCanvasController crlaxEditorController];
+  crlaxTextInputEditor = [crlaxEditorController2 crlaxTextInputEditor];
 
-  return v41;
+  return crlaxTextInputEditor;
 }
 
-- (_NSRange)crlaxClampRangeToStorageRange:(_NSRange)a3
+- (_NSRange)crlaxClampRangeToStorageRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(CRLTextRepAccessibility *)self crlaxStorage];
-  v6.location = [v5 crlaxRange];
+  length = range.length;
+  location = range.location;
+  crlaxStorage = [(CRLTextRepAccessibility *)self crlaxStorage];
+  v6.location = [crlaxStorage crlaxRange];
   if (location + length != v6.location + v6.length)
   {
     v11.location = location;
@@ -2419,20 +2419,20 @@ LABEL_20:
   return result;
 }
 
-- (id)crlaxContentSiblingInDirection:(unint64_t)a3
+- (id)crlaxContentSiblingInDirection:(unint64_t)direction
 {
-  v5 = [(CRLTextRepAccessibility *)self crlaxSortedSiblingsByStorageRange];
-  v6 = [v5 indexOfObject:self];
+  crlaxSortedSiblingsByStorageRange = [(CRLTextRepAccessibility *)self crlaxSortedSiblingsByStorageRange];
+  v6 = [crlaxSortedSiblingsByStorageRange indexOfObject:self];
   v7 = v6;
-  if (a3 == 1 && v6)
+  if (direction == 1 && v6)
   {
     v8 = -1;
 LABEL_4:
-    v9 = [v5 objectAtIndex:&v7[v8]];
+    v9 = [crlaxSortedSiblingsByStorageRange objectAtIndex:&v7[v8]];
     goto LABEL_9;
   }
 
-  if (!a3 && v6 < [v5 count] - 1)
+  if (!direction && v6 < [crlaxSortedSiblingsByStorageRange count] - 1)
   {
     v8 = 1;
     goto LABEL_4;
@@ -2446,9 +2446,9 @@ LABEL_9:
 
 - (id)crlaxSortedSiblingsByStorageRange
 {
-  v3 = [(CRLTextRepAccessibility *)self crlaxSiblings];
-  v4 = [v3 allObjects];
-  v5 = [v4 mutableCopy];
+  crlaxSiblings = [(CRLTextRepAccessibility *)self crlaxSiblings];
+  allObjects = [crlaxSiblings allObjects];
+  v5 = [allObjects mutableCopy];
 
   [v5 addObject:self];
   [v5 sortUsingComparator:&stru_10185C420];
@@ -2457,27 +2457,27 @@ LABEL_9:
   return v6;
 }
 
-- (_NSRange)crlaxRepRangeWithStorageRange:(_NSRange)a3
+- (_NSRange)crlaxRepRangeWithStorageRange:(_NSRange)range
 {
-  length = a3.length;
-  v4 = [(CRLTextRepAccessibility *)self crlaxRepPositionWithStoragePosition:a3.location];
+  length = range.length;
+  v4 = [(CRLTextRepAccessibility *)self crlaxRepPositionWithStoragePosition:range.location];
   v5 = length;
   result.length = v5;
   result.location = v4;
   return result;
 }
 
-- (_NSRange)crlaxStorageRangeWithRepRange:(_NSRange)a3
+- (_NSRange)crlaxStorageRangeWithRepRange:(_NSRange)range
 {
-  length = a3.length;
-  v4 = [(CRLTextRepAccessibility *)self crlaxStoragePositionWithRepPosition:a3.location];
+  length = range.length;
+  v4 = [(CRLTextRepAccessibility *)self crlaxStoragePositionWithRepPosition:range.location];
   v5 = length;
   result.length = v5;
   result.location = v4;
   return result;
 }
 
-- (id)crlaxColumnForCharIndex:(unint64_t)a3
+- (id)crlaxColumnForCharIndex:(unint64_t)index
 {
   v15 = 0;
   v9 = 0;
@@ -2492,7 +2492,7 @@ LABEL_9:
   v8[3] = &unk_10183B670;
   v8[4] = self;
   v8[5] = &v9;
-  v8[6] = a3;
+  v8[6] = index;
   if (__CRLAccessibilityPerformSafeBlock(v8) || (v3 = v10[5], _Block_object_dispose(&v9, 8), v14, v4 = objc_opt_class(), __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v15), v5 = objc_claimAutoreleasedReturnValue(), v15 == 1))
   {
     abort();
@@ -2508,11 +2508,11 @@ LABEL_9:
   v11.receiver = self;
   v11.super_class = CRLTextRepAccessibility;
   [(CRLTextRepAccessibility *)&v11 crlaxLoadAccessibilityInformation];
-  v3 = [(CRLTextRepAccessibility *)self crlaxStorage];
+  crlaxStorage = [(CRLTextRepAccessibility *)self crlaxStorage];
   v10 = 0;
-  v4 = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
+  crlaxInteractiveCanvasController = [(CRLTextRepAccessibility *)self crlaxInteractiveCanvasController];
   v5 = objc_opt_class();
-  v6 = __CRLAccessibilityCastAsSafeCategory(v5, v4, 1, &v10);
+  v6 = __CRLAccessibilityCastAsSafeCategory(v5, crlaxInteractiveCanvasController, 1, &v10);
   if (v10 == 1)
   {
     abort();
@@ -2520,30 +2520,30 @@ LABEL_9:
 
   v7 = v6;
 
-  if (v3 && v7)
+  if (crlaxStorage && v7)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1003B3D94;
     v8[3] = &unk_10185C448;
     v9 = v7;
-    [v3 crlaxEnumerateSmartFieldsUsingBlock:v8];
+    [crlaxStorage crlaxEnumerateSmartFieldsUsingBlock:v8];
   }
 }
 
 - (id)crlaxSummaryDescription
 {
-  v3 = [(CRLTextRepAccessibility *)self crlaxStorage];
-  v4 = [v3 crlaxInferredHeadingRanges];
+  crlaxStorage = [(CRLTextRepAccessibility *)self crlaxStorage];
+  crlaxInferredHeadingRanges = [crlaxStorage crlaxInferredHeadingRanges];
 
-  if ([v4 count])
+  if ([crlaxInferredHeadingRanges count])
   {
     v5 = objc_opt_new();
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v6 = v4;
+    v6 = crlaxInferredHeadingRanges;
     v7 = [v6 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v7)
     {
@@ -2558,16 +2558,16 @@ LABEL_9:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v31 + 1) + 8 * i) rangeValue];
+          rangeValue = [*(*(&v31 + 1) + 8 * i) rangeValue];
           v13 = v12;
           v38.location = [(CRLTextRepAccessibility *)self crlaxStorageRangeOfRep];
           v38.length = v14;
-          v37.location = v11;
+          v37.location = rangeValue;
           v37.length = v13;
           if (NSIntersectionRange(v37, v38).length)
           {
-            v15 = [(CRLTextRepAccessibility *)self crlaxStorage];
-            v16 = [v15 crlaxSubstringWithRange:{v11, v13}];
+            crlaxStorage2 = [(CRLTextRepAccessibility *)self crlaxStorage];
+            v16 = [crlaxStorage2 crlaxSubstringWithRange:{rangeValue, v13}];
             [v5 addObject:v16];
           }
         }
@@ -2596,22 +2596,22 @@ LABEL_9:
 
   if (![v17 length] && -[CRLTextRepAccessibility crlaxRespondsToSelector:fromExtrasProtocol:](self, "crlaxRespondsToSelector:fromExtrasProtocol:", "crlaxSubstringInStorageWithRange:", &OBJC_PROTOCOL___CRLTextRepAccessibilityExtras))
   {
-    v18 = [(CRLTextRepAccessibility *)self crlaxStorageRangeOfRep];
-    v20 = [(CRLTextRepAccessibility *)self crlaxSubstringInStorageWithRange:v18, v19];
+    crlaxStorageRangeOfRep = [(CRLTextRepAccessibility *)self crlaxStorageRangeOfRep];
+    v20 = [(CRLTextRepAccessibility *)self crlaxSubstringInStorageWithRange:crlaxStorageRangeOfRep, v19];
 
     v17 = v20;
   }
 
   if (![v17 length])
   {
-    v21 = [(CRLGroupRepAccessibility *)self crlaxChildReps];
-    v22 = [v21 count];
+    crlaxChildReps = [(CRLGroupRepAccessibility *)self crlaxChildReps];
+    v22 = [crlaxChildReps count];
 
     if (v22)
     {
       v23 = objc_opt_new();
-      v24 = [(CRLGroupRepAccessibility *)self crlaxChildReps];
-      v25 = [v24 sortedArrayUsingComparator:&stru_10185C468];
+      crlaxChildReps2 = [(CRLGroupRepAccessibility *)self crlaxChildReps];
+      v25 = [crlaxChildReps2 sortedArrayUsingComparator:&stru_10185C468];
 
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;

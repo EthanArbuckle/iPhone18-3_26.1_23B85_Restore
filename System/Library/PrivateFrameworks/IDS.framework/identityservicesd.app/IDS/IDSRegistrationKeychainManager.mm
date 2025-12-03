@@ -1,35 +1,35 @@
 @interface IDSRegistrationKeychainManager
 + (IDSRegistrationKeychainManager)sharedInstance;
-+ (id)_UpdateKeychainDataDictToCurrentVersion:(id)a3;
-+ (id)_UpdateKeychainDataDictV0ToV1:(id)a3;
-+ (id)_UpdateKeychainDataDictV1ToV2:(id)a3;
-+ (id)_UpdateKeychainDataDictV2ToV3:(id)a3;
-+ (id)keychainAccountForVersion:(unint64_t)a3;
-+ (id)keychainServiceForVersion:(unint64_t)a3;
++ (id)_UpdateKeychainDataDictToCurrentVersion:(id)version;
++ (id)_UpdateKeychainDataDictV0ToV1:(id)v1;
++ (id)_UpdateKeychainDataDictV1ToV2:(id)v2;
++ (id)_UpdateKeychainDataDictV2ToV3:(id)v3;
++ (id)keychainAccountForVersion:(unint64_t)version;
++ (id)keychainServiceForVersion:(unint64_t)version;
 - (BOOL)__saveToKeychain;
 - (BOOL)_saveToKeychain;
-- (BOOL)addRegistration:(id)a3;
+- (BOOL)addRegistration:(id)registration;
 - (BOOL)removeAllRegistrations;
-- (BOOL)removeRegistration:(id)a3;
+- (BOOL)removeRegistration:(id)registration;
 - (IDSRegistrationKeychainManager)init;
 - (NSArray)registrations;
-- (id)authenticationCertForID:(id)a3;
-- (id)registrationWithServiceType:(id)a3 registrationType:(int)a4 value:(id)a5;
+- (id)authenticationCertForID:(id)d;
+- (id)registrationWithServiceType:(id)type registrationType:(int)registrationType value:(id)value;
 - (id)smsIDs;
-- (id)smsSignatureForID:(id)a3;
-- (id)smsSignatureMechanismForID:(id)a3;
-- (id)tempPhoneCredentialForID:(id)a3;
+- (id)smsSignatureForID:(id)d;
+- (id)smsSignatureMechanismForID:(id)d;
+- (id)tempPhoneCredentialForID:(id)d;
 - (void)_flush;
 - (void)_loadIfNeeded;
 - (void)_purgeTimerFiredOnMain;
-- (void)_reloadFromDictionary:(id)a3;
+- (void)_reloadFromDictionary:(id)dictionary;
 - (void)_setPurgeTimer;
 - (void)dealloc;
 - (void)reloadFromKeychain;
-- (void)setAuthenticationCert:(id)a3 forID:(id)a4;
-- (void)setSMSSignature:(id)a3 mainID:(id)a4;
-- (void)setSMSSignatureMechanism:(id)a3 mainID:(id)a4;
-- (void)setTempPhoneCredential:(id)a3 forID:(id)a4;
+- (void)setAuthenticationCert:(id)cert forID:(id)d;
+- (void)setSMSSignature:(id)signature mainID:(id)d;
+- (void)setSMSSignatureMechanism:(id)mechanism mainID:(id)d;
+- (void)setTempPhoneCredential:(id)credential forID:(id)d;
 - (void)systemDidFinishMigration;
 @end
 
@@ -243,27 +243,27 @@ LABEL_45:
           v26 = v25;
           if (v25)
           {
-            v27 = [v25 unsignedIntegerValue];
+            unsignedIntegerValue = [v25 unsignedIntegerValue];
           }
 
           else
           {
-            v27 = 0;
+            unsignedIntegerValue = 0;
           }
 
-          if (v27 < v36)
+          if (unsignedIntegerValue < v36)
           {
             v28 = +[IMRGLog keychainManager];
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 67109120;
-              *v41 = v27;
+              *v41 = unsignedIntegerValue;
               _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Keychain dictionary V%d needs upgrade", buf, 8u);
             }
 
             if (os_log_shim_legacy_logging_enabled())
             {
-              v32 = v27;
+              v32 = unsignedIntegerValue;
               MarcoLogRegistration();
             }
 
@@ -360,7 +360,7 @@ LABEL_57:
     v73 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v61 = self;
+    selfCopy = self;
     obj = self->_registrationData;
     v4 = [(NSMutableArray *)obj countByEnumeratingWithState:&v72 objects:v80 count:16];
     v5 = &uuid_unparse_upper_ptr;
@@ -378,38 +378,38 @@ LABEL_57:
           }
 
           v9 = *(*(&v72 + 1) + 8 * i);
-          v10 = [v9 dictionaryRepresentation];
-          v11 = [v5[504] keychainManager];
-          if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+          dictionaryRepresentation = [v9 dictionaryRepresentation];
+          keychainManager = [v5[504] keychainManager];
+          if (os_log_type_enabled(keychainManager, OS_LOG_TYPE_DEFAULT))
           {
-            v12 = [v9 serviceType];
-            v13 = [v9 mainID];
+            serviceType = [v9 serviceType];
+            mainID = [v9 mainID];
             *buf = 138412546;
-            v77 = v12;
+            v77 = serviceType;
             v78 = 2112;
-            v79 = v13;
-            _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "  => Adding registration for service: %@  ID: %@  to keychain dictionary", buf, 0x16u);
+            v79 = mainID;
+            _os_log_impl(&_mh_execute_header, keychainManager, OS_LOG_TYPE_DEFAULT, "  => Adding registration for service: %@  ID: %@  to keychain dictionary", buf, 0x16u);
 
             v5 = &uuid_unparse_upper_ptr;
           }
 
           if (os_log_shim_legacy_logging_enabled())
           {
-            v14 = [v9 serviceType];
+            serviceType2 = [v9 serviceType];
             [v9 mainID];
-            v60 = v55 = v14;
+            v60 = v55 = serviceType2;
             MarcoLogRegistration();
 
             v5 = &uuid_unparse_upper_ptr;
           }
 
-          v15 = [v5[504] keychainManager];
-          if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+          keychainManager2 = [v5[504] keychainManager];
+          if (os_log_type_enabled(keychainManager2, OS_LOG_TYPE_DEFAULT))
           {
             v16 = [v9 description];
             *buf = 138412290;
             v77 = v16;
-            _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "     => Registration %@", buf, 0xCu);
+            _os_log_impl(&_mh_execute_header, keychainManager2, OS_LOG_TYPE_DEFAULT, "     => Registration %@", buf, 0xCu);
           }
 
           if (os_log_shim_legacy_logging_enabled())
@@ -418,19 +418,19 @@ LABEL_57:
             MarcoLogRegistration();
           }
 
-          v17 = [v5[504] keychainManager];
-          v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-          if (v10)
+          keychainManager3 = [v5[504] keychainManager];
+          v18 = os_log_type_enabled(keychainManager3, OS_LOG_TYPE_DEFAULT);
+          if (dictionaryRepresentation)
           {
             if (v18)
             {
-              v19 = [v10 count];
+              v19 = [dictionaryRepresentation count];
               *buf = 134217984;
               v77 = v19;
-              _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "    => Dictionary has %lu key-value pairs", buf, 0xCu);
+              _os_log_impl(&_mh_execute_header, keychainManager3, OS_LOG_TYPE_DEFAULT, "    => Dictionary has %lu key-value pairs", buf, 0xCu);
             }
 
-            [v64 addObject:v10];
+            [v64 addObject:dictionaryRepresentation];
           }
 
           else
@@ -438,7 +438,7 @@ LABEL_57:
             if (v18)
             {
               *buf = 0;
-              _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "    => Not saving, got a nil dictionary representation", buf, 2u);
+              _os_log_impl(&_mh_execute_header, keychainManager3, OS_LOG_TYPE_DEFAULT, "    => Not saving, got a nil dictionary representation", buf, 2u);
             }
 
             if (os_log_shim_legacy_logging_enabled())
@@ -458,13 +458,13 @@ LABEL_57:
     v21 = IDSKeychainBlobCurrentVersion;
     v22 = [v20 keychainServiceForVersion:IDSKeychainBlobCurrentVersion];
     v23 = [objc_opt_class() keychainAccountForVersion:v21];
-    v24 = [v5[504] keychainManager];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    keychainManager4 = [v5[504] keychainManager];
+    if (os_log_type_enabled(keychainManager4, OS_LOG_TYPE_DEFAULT))
     {
       v25 = [v64 count];
       *buf = 134217984;
       v77 = v25;
-      _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Final keychain data array count: %lu", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, keychainManager4, OS_LOG_TYPE_DEFAULT, "Final keychain data array count: %lu", buf, 0xCu);
     }
 
     v26 = v62;
@@ -476,20 +476,20 @@ LABEL_57:
     v27 = [NSNumber numberWithUnsignedInteger:v21];
     [v62 setObject:v27 forKey:@"version"];
 
-    if ([(NSMutableDictionary *)v61->_authenticationCerts count])
+    if ([(NSMutableDictionary *)selfCopy->_authenticationCerts count])
     {
-      [v62 setObject:v61->_authenticationCerts forKey:@"auth-certs"];
+      [v62 setObject:selfCopy->_authenticationCerts forKey:@"auth-certs"];
       v28 = &uuid_unparse_upper_ptr;
       v29 = +[IMRGLog keychainManager];
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = [(NSMutableDictionary *)v61->_authenticationCerts count];
-        v31 = [(NSMutableDictionary *)v61->_authenticationCerts allKeys];
+        v30 = [(NSMutableDictionary *)selfCopy->_authenticationCerts count];
+        allKeys = [(NSMutableDictionary *)selfCopy->_authenticationCerts allKeys];
         *buf = 134218242;
         v77 = v30;
         v28 = &uuid_unparse_upper_ptr;
         v78 = 2112;
-        v79 = v31;
+        v79 = allKeys;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "  => Adding %lu auth certs for users %@", buf, 0x16u);
 
         v26 = v62;
@@ -497,8 +497,8 @@ LABEL_57:
 
       if (os_log_shim_legacy_logging_enabled())
       {
-        v32 = [(NSMutableDictionary *)v61->_authenticationCerts count];
-        [(NSMutableDictionary *)v61->_authenticationCerts allKeys];
+        v32 = [(NSMutableDictionary *)selfCopy->_authenticationCerts count];
+        [(NSMutableDictionary *)selfCopy->_authenticationCerts allKeys];
         v60 = v55 = v32;
         MarcoLogRegistration();
 
@@ -522,21 +522,21 @@ LABEL_57:
       }
     }
 
-    if ([(NSMutableDictionary *)v61->_smsSignatures count:v55])
+    if ([(NSMutableDictionary *)selfCopy->_smsSignatures count:v55])
     {
-      [v26 setObject:v61->_smsSignatures forKey:@"sms-signatures"];
-      v36 = [v28[504] keychainManager];
-      if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+      [v26 setObject:selfCopy->_smsSignatures forKey:@"sms-signatures"];
+      keychainManager5 = [v28[504] keychainManager];
+      if (os_log_type_enabled(keychainManager5, OS_LOG_TYPE_DEFAULT))
       {
-        v37 = [(NSMutableDictionary *)v61->_smsSignatures count];
+        v37 = [(NSMutableDictionary *)selfCopy->_smsSignatures count];
         *buf = 134217984;
         v77 = v37;
-        _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "  => Adding %lu SMS signatures", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, keychainManager5, OS_LOG_TYPE_DEFAULT, "  => Adding %lu SMS signatures", buf, 0xCu);
       }
 
       if (os_log_shim_legacy_logging_enabled())
       {
-        v57 = [(NSMutableDictionary *)v61->_smsSignatures count];
+        v57 = [(NSMutableDictionary *)selfCopy->_smsSignatures count];
 LABEL_55:
         MarcoLogRegistration();
       }
@@ -544,11 +544,11 @@ LABEL_55:
 
     else
     {
-      v38 = [v28[504] keychainManager];
-      if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
+      keychainManager6 = [v28[504] keychainManager];
+      if (os_log_type_enabled(keychainManager6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "  => We don't have any SMS signatures to save", buf, 2u);
+        _os_log_impl(&_mh_execute_header, keychainManager6, OS_LOG_TYPE_DEFAULT, "  => We don't have any SMS signatures to save", buf, 2u);
       }
 
       if (os_log_shim_legacy_logging_enabled())
@@ -557,21 +557,21 @@ LABEL_55:
       }
     }
 
-    if ([(NSMutableDictionary *)v61->_smsSignatureMechanisms count])
+    if ([(NSMutableDictionary *)selfCopy->_smsSignatureMechanisms count])
     {
-      [v26 setObject:v61->_smsSignatureMechanisms forKey:@"sms-signature-mechanisms"];
-      v39 = [v28[504] keychainManager];
-      if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+      [v26 setObject:selfCopy->_smsSignatureMechanisms forKey:@"sms-signature-mechanisms"];
+      keychainManager7 = [v28[504] keychainManager];
+      if (os_log_type_enabled(keychainManager7, OS_LOG_TYPE_DEFAULT))
       {
-        v40 = [(NSMutableDictionary *)v61->_smsSignatureMechanisms count];
+        v40 = [(NSMutableDictionary *)selfCopy->_smsSignatureMechanisms count];
         *buf = 134217984;
         v77 = v40;
-        _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "  => Adding %lu SMS signature types", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, keychainManager7, OS_LOG_TYPE_DEFAULT, "  => Adding %lu SMS signature types", buf, 0xCu);
       }
 
       if (os_log_shim_legacy_logging_enabled())
       {
-        v58 = [(NSMutableDictionary *)v61->_smsSignatureMechanisms count];
+        v58 = [(NSMutableDictionary *)selfCopy->_smsSignatureMechanisms count];
 LABEL_64:
         MarcoLogRegistration();
       }
@@ -579,11 +579,11 @@ LABEL_64:
 
     else
     {
-      v41 = [v28[504] keychainManager];
-      if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
+      keychainManager8 = [v28[504] keychainManager];
+      if (os_log_type_enabled(keychainManager8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "  => We don't have any SMS signature types to save", buf, 2u);
+        _os_log_impl(&_mh_execute_header, keychainManager8, OS_LOG_TYPE_DEFAULT, "  => We don't have any SMS signature types to save", buf, 2u);
       }
 
       if (os_log_shim_legacy_logging_enabled())
@@ -592,16 +592,16 @@ LABEL_64:
       }
     }
 
-    if ([(NSMutableDictionary *)v61->_tempPhoneCredentials count])
+    if ([(NSMutableDictionary *)selfCopy->_tempPhoneCredentials count])
     {
-      [v26 setObject:v61->_tempPhoneCredentials forKey:@"temp-phone-creds"];
-      v42 = [v28[504] keychainManager];
-      if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+      [v26 setObject:selfCopy->_tempPhoneCredentials forKey:@"temp-phone-creds"];
+      keychainManager9 = [v28[504] keychainManager];
+      if (os_log_type_enabled(keychainManager9, OS_LOG_TYPE_DEFAULT))
       {
-        v43 = [(NSMutableDictionary *)v61->_tempPhoneCredentials count];
+        v43 = [(NSMutableDictionary *)selfCopy->_tempPhoneCredentials count];
         *buf = 134217984;
         v77 = v43;
-        _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "  => Adding %lu temp phone credentials", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, keychainManager9, OS_LOG_TYPE_DEFAULT, "  => Adding %lu temp phone credentials", buf, 0xCu);
       }
 
       if (!os_log_shim_legacy_logging_enabled())
@@ -609,16 +609,16 @@ LABEL_64:
         goto LABEL_74;
       }
 
-      v59 = [(NSMutableDictionary *)v61->_tempPhoneCredentials count];
+      v59 = [(NSMutableDictionary *)selfCopy->_tempPhoneCredentials count];
     }
 
     else
     {
-      v44 = [v28[504] keychainManager];
-      if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
+      keychainManager10 = [v28[504] keychainManager];
+      if (os_log_type_enabled(keychainManager10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "  => We don't have any temp phone credentials to save", buf, 2u);
+        _os_log_impl(&_mh_execute_header, keychainManager10, OS_LOG_TYPE_DEFAULT, "  => We don't have any temp phone credentials to save", buf, 2u);
       }
 
       if (!os_log_shim_legacy_logging_enabled())
@@ -640,7 +640,7 @@ LABEL_74:
     if (v47)
     {
       v49 = [objc_opt_class() keychainAccessGroupForVersion:v21];
-      saveQueue = v61->_saveQueue;
+      saveQueue = selfCopy->_saveQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10002445C;
@@ -674,7 +674,7 @@ LABEL_74:
       }
     }
 
-    [(NSRecursiveLock *)v61->_lock unlock];
+    [(NSRecursiveLock *)selfCopy->_lock unlock];
 
     return v34;
   }
@@ -773,16 +773,16 @@ LABEL_74:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Reloading keychain information: %@", &v4, 0xCu);
   }
 
   [(IDSRegistrationKeychainManager *)self reloadFromKeychain];
 }
 
-+ (id)keychainServiceForVersion:(unint64_t)a3
++ (id)keychainServiceForVersion:(unint64_t)version
 {
-  if (a3)
+  if (version)
   {
     v4 = @"com.apple.facetime";
   }
@@ -795,19 +795,19 @@ LABEL_74:
   return v4;
 }
 
-+ (id)keychainAccountForVersion:(unint64_t)a3
++ (id)keychainAccountForVersion:(unint64_t)version
 {
-  if (a3)
+  if (version)
   {
-    v3 = [NSString stringWithFormat:@"%@V%d", @"registration", a3];
+    version = [NSString stringWithFormat:@"%@V%d", @"registration", version];
   }
 
   else
   {
-    v3 = IDSKeychainAccountNameV0;
+    version = IDSKeychainAccountNameV0;
   }
 
-  return v3;
+  return version;
 }
 
 - (void)_flush
@@ -867,14 +867,14 @@ LABEL_74:
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (void)_reloadFromDictionary:(id)a3
+- (void)_reloadFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   [(NSRecursiveLock *)self->_lock lock];
-  v5 = [v4 objectForKey:@"data"];
+  v5 = [dictionaryCopy objectForKey:@"data"];
   [(NSMutableArray *)self->_registrationData removeAllObjects];
   [(NSMutableDictionary *)self->_authenticationCerts removeAllObjects];
-  v62 = self;
+  selfCopy = self;
   authenticationCerts = self->_authenticationCerts;
   if (!authenticationCerts)
   {
@@ -885,18 +885,18 @@ LABEL_74:
     authenticationCerts = self->_authenticationCerts;
   }
 
-  v9 = [v4 objectForKey:@"auth-certs"];
+  v9 = [dictionaryCopy objectForKey:@"auth-certs"];
   [(NSMutableDictionary *)authenticationCerts addEntriesFromDictionary:v9];
 
   v10 = +[IMRGLog keychainManager];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = [(NSMutableDictionary *)self->_authenticationCerts count];
-    v12 = [(NSMutableDictionary *)self->_authenticationCerts allKeys];
+    allKeys = [(NSMutableDictionary *)self->_authenticationCerts allKeys];
     *buf = 67109378;
     v74 = v11;
     v75 = 2112;
-    v76 = v12;
+    v76 = allKeys;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Loaded %d auth certs for users %@", buf, 0x12u);
   }
 
@@ -919,7 +919,7 @@ LABEL_74:
     smsSignatures = self->_smsSignatures;
   }
 
-  v17 = [v4 objectForKey:@"sms-signatures"];
+  v17 = [dictionaryCopy objectForKey:@"sms-signatures"];
   [(NSMutableDictionary *)smsSignatures addEntriesFromDictionary:v17];
 
   v18 = +[IMRGLog keychainManager];
@@ -948,7 +948,7 @@ LABEL_74:
     tempPhoneCredentials = self->_tempPhoneCredentials;
   }
 
-  v23 = [v4 objectForKey:@"temp-phone-creds"];
+  v23 = [dictionaryCopy objectForKey:@"temp-phone-creds"];
   [(NSMutableDictionary *)tempPhoneCredentials addEntriesFromDictionary:v23];
 
   v24 = +[IMRGLog keychainManager];
@@ -966,8 +966,8 @@ LABEL_74:
     MarcoLogRegistration();
   }
 
-  v26 = [v4 _numberForKey:{@"save-identifier", v56}];
-  v27 = [v26 unsignedIntValue];
+  v26 = [dictionaryCopy _numberForKey:{@"save-identifier", v56}];
+  unsignedIntValue = [v26 unsignedIntValue];
 
   v28 = [v5 count];
   v29 = +[IMRGLog keychainManager];
@@ -976,16 +976,16 @@ LABEL_74:
     *buf = 67109376;
     v74 = v28;
     v75 = 1024;
-    LODWORD(v76) = v27;
+    LODWORD(v76) = unsignedIntValue;
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Reloading registration objects from keychain dictionary, %d entries {saveIdentifier: %u}", buf, 0xEu);
   }
 
-  v61 = v4;
+  v61 = dictionaryCopy;
 
   if (os_log_shim_legacy_logging_enabled())
   {
     v57 = v28;
-    v59 = v27;
+    v59 = unsignedIntValue;
     MarcoLogRegistration();
   }
 
@@ -1031,7 +1031,7 @@ LABEL_74:
         {
           v40 = [v35 objectForKey:@"migrated-v0-dictionary"];
           [(IDSRegistration *)v39 setMigrationContext:v40];
-          [(NSMutableArray *)v62->_registrationData addObject:v39];
+          [(NSMutableArray *)selfCopy->_registrationData addObject:v39];
         }
       }
 
@@ -1080,7 +1080,7 @@ LABEL_74:
         {
           v50 = [v46 objectForKey:@"migrated-v0-dictionary"];
           [(IDSRegistration *)v47 setMigrationContext:v50];
-          [(NSMutableArray *)v62->_registrationData addObject:v47];
+          [(NSMutableArray *)selfCopy->_registrationData addObject:v47];
         }
       }
     }
@@ -1091,7 +1091,7 @@ LABEL_74:
   while (v43);
 LABEL_48:
 
-  v51 = [(NSMutableArray *)v62->_registrationData count];
+  v51 = [(NSMutableArray *)selfCopy->_registrationData count];
   if (v51 != v60)
   {
     v52 = v51;
@@ -1113,34 +1113,34 @@ LABEL_48:
     }
   }
 
-  [(NSRecursiveLock *)v62->_lock unlock:v57];
+  [(NSRecursiveLock *)selfCopy->_lock unlock:v57];
 }
 
-- (id)registrationWithServiceType:(id)a3 registrationType:(int)a4 value:(id)a5
+- (id)registrationWithServiceType:(id)type registrationType:(int)registrationType value:(id)value
 {
-  v8 = a3;
-  v31 = a5;
+  typeCopy = type;
+  valueCopy = value;
   [(IDSRegistrationKeychainManager *)self _loadIfNeeded];
   [(NSRecursiveLock *)self->_lock lock];
   v9 = +[IMRGLog keychainManager];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = _StringForIDSRegistrationServiceType();
-    v11 = _StringForIDSRegistrationType(a4);
+    v11 = _StringForIDSRegistrationType(registrationType);
     *buf = 138412802;
     v38 = v10;
     v39 = 2112;
     v40 = v11;
     v41 = 2112;
-    v42 = v31;
+    v42 = valueCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Looking up registration with service type: %@  registration type: %@   value: %@", buf, 0x20u);
   }
 
   if (os_log_shim_legacy_logging_enabled())
   {
     v12 = _StringForIDSRegistrationServiceType();
-    v28 = _StringForIDSRegistrationType(a4);
-    v29 = v31;
+    v28 = _StringForIDSRegistrationType(registrationType);
+    v29 = valueCopy;
     v27 = v12;
     MarcoLogRegistration();
   }
@@ -1158,7 +1158,7 @@ LABEL_48:
   }
 
   v15 = v14;
-  v30 = self;
+  selfCopy = self;
   v16 = *v33;
   while (2)
   {
@@ -1170,18 +1170,18 @@ LABEL_48:
       }
 
       v18 = *(*(&v32 + 1) + 8 * i);
-      if ([v18 registrationType] == a4)
+      if ([v18 registrationType] == registrationType)
       {
-        v19 = [v18 serviceType];
-        v20 = v19;
-        if (v19 == v8)
+        serviceType = [v18 serviceType];
+        v20 = serviceType;
+        if (serviceType == typeCopy)
         {
         }
 
         else
         {
-          v21 = [v18 serviceType];
-          v22 = [v21 isEqualToString:v8];
+          serviceType2 = [v18 serviceType];
+          v22 = [serviceType2 isEqualToString:typeCopy];
 
           if (!v22)
           {
@@ -1189,8 +1189,8 @@ LABEL_48:
           }
         }
 
-        v23 = [v18 _keychain_comparisonValue];
-        v24 = [v23 isEqualToString:v31];
+        _keychain_comparisonValue = [v18 _keychain_comparisonValue];
+        v24 = [_keychain_comparisonValue isEqualToString:valueCopy];
 
         if (v24)
         {
@@ -1211,7 +1211,7 @@ LABEL_48:
 
   v25 = 0;
 LABEL_20:
-  self = v30;
+  self = selfCopy;
 LABEL_22:
 
   [(NSRecursiveLock *)self->_lock unlock];
@@ -1240,12 +1240,12 @@ LABEL_22:
   return v5;
 }
 
-- (BOOL)addRegistration:(id)a3
+- (BOOL)addRegistration:(id)registration
 {
-  v4 = a3;
+  registrationCopy = registration;
   [(IDSRegistrationKeychainManager *)self _loadIfNeeded];
   [(NSRecursiveLock *)self->_lock lock];
-  if (v4)
+  if (registrationCopy)
   {
     if ([(NSMutableArray *)self->_registrationData count]>= 0x29)
     {
@@ -1272,7 +1272,7 @@ LABEL_22:
       while (1)
       {
         v7 = [(NSMutableArray *)self->_registrationData objectAtIndex:v6];
-        if ([v7 _keychain_isEqual:v4])
+        if ([v7 _keychain_isEqual:registrationCopy])
         {
           break;
         }
@@ -1290,40 +1290,40 @@ LABEL_22:
     }
 
 LABEL_16:
-    [(NSMutableArray *)self->_registrationData addObject:v4];
-    v8 = [(IDSRegistrationKeychainManager *)self _saveToKeychain];
+    [(NSMutableArray *)self->_registrationData addObject:registrationCopy];
+    _saveToKeychain = [(IDSRegistrationKeychainManager *)self _saveToKeychain];
   }
 
   else
   {
-    v8 = 0;
+    _saveToKeychain = 0;
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
 
-  return v8;
+  return _saveToKeychain;
 }
 
-- (BOOL)removeRegistration:(id)a3
+- (BOOL)removeRegistration:(id)registration
 {
-  v4 = a3;
+  registrationCopy = registration;
   [(IDSRegistrationKeychainManager *)self _loadIfNeeded];
   [(NSRecursiveLock *)self->_lock lock];
   v5 = +[IMRGLog keychainManager];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = registrationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing registration : %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled())
   {
-    v11 = v4;
+    v11 = registrationCopy;
     MarcoLogRegistration();
   }
 
-  if (!v4)
+  if (!registrationCopy)
   {
     goto LABEL_14;
   }
@@ -1344,7 +1344,7 @@ LABEL_10:
     }
 
 LABEL_14:
-    v9 = 0;
+    _saveToKeychain = 0;
     goto LABEL_15;
   }
 
@@ -1352,7 +1352,7 @@ LABEL_14:
   while (1)
   {
     v7 = [(NSMutableArray *)self->_registrationData objectAtIndex:v6, v11];
-    if ([v7 _keychain_isEqual:v4])
+    if ([v7 _keychain_isEqual:registrationCopy])
     {
       break;
     }
@@ -1365,11 +1365,11 @@ LABEL_14:
 
   [(NSMutableArray *)self->_registrationData removeObjectAtIndex:v6];
 
-  v9 = [(IDSRegistrationKeychainManager *)self _saveToKeychain];
+  _saveToKeychain = [(IDSRegistrationKeychainManager *)self _saveToKeychain];
 LABEL_15:
   [(NSRecursiveLock *)self->_lock unlock];
 
-  return v9;
+  return _saveToKeychain;
 }
 
 - (BOOL)removeAllRegistrations
@@ -1389,16 +1389,16 @@ LABEL_15:
   }
 
   [(NSMutableArray *)self->_registrationData removeAllObjects];
-  v4 = [(IDSRegistrationKeychainManager *)self __saveToKeychain];
+  __saveToKeychain = [(IDSRegistrationKeychainManager *)self __saveToKeychain];
   [(NSRecursiveLock *)self->_lock unlock];
-  return v4;
+  return __saveToKeychain;
 }
 
-+ (id)_UpdateKeychainDataDictToCurrentVersion:(id)a3
++ (id)_UpdateKeychainDataDictToCurrentVersion:(id)version
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ![v3 count])
+  versionCopy = version;
+  v4 = versionCopy;
+  if (!versionCopy || ![versionCopy count])
   {
     v11 = 0;
     goto LABEL_45;
@@ -1406,11 +1406,11 @@ LABEL_15:
 
   v5 = v4;
   v6 = [v5 objectForKey:@"version"];
-  v7 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
   v8 = IDSKeychainBlobCurrentVersion;
   v9 = +[IMRGLog keychainManager];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v7 <= v8)
+  if (unsignedIntegerValue <= v8)
   {
     if (v10)
     {
@@ -1440,7 +1440,7 @@ LABEL_15:
     }
 
     v21 = v6;
-    if (v7 >= v8)
+    if (unsignedIntegerValue >= v8)
     {
 LABEL_39:
       v17 = +[IMRGLog keychainManager];
@@ -1464,7 +1464,7 @@ LABEL_39:
 
     while (1)
     {
-      if (v7 == 2)
+      if (unsignedIntegerValue == 2)
       {
         v16 = +[IMRGLog keychainManager];
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -1479,16 +1479,16 @@ LABEL_39:
         }
 
         v14 = [IDSRegistrationKeychainManager _UpdateKeychainDataDictV2ToV3:v5, v20];
-        v7 = 3;
+        unsignedIntegerValue = 3;
         goto LABEL_37;
       }
 
-      if (v7 == 1)
+      if (unsignedIntegerValue == 1)
       {
         break;
       }
 
-      if (!v7)
+      if (!unsignedIntegerValue)
       {
         v13 = +[IMRGLog keychainManager];
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1503,13 +1503,13 @@ LABEL_39:
         }
 
         v14 = [IDSRegistrationKeychainManager _UpdateKeychainDataDictV0ToV1:v5, v20];
-        v7 = 1;
+        unsignedIntegerValue = 1;
 LABEL_37:
 
         v5 = v14;
       }
 
-      if (v7 >= v8)
+      if (unsignedIntegerValue >= v8)
       {
         goto LABEL_39;
       }
@@ -1528,14 +1528,14 @@ LABEL_37:
     }
 
     v14 = [IDSRegistrationKeychainManager _UpdateKeychainDataDictV1ToV2:v5, v20];
-    v7 = 2;
+    unsignedIntegerValue = 2;
     goto LABEL_37;
   }
 
   if (v10)
   {
     *buf = 67109376;
-    LODWORD(v23[0]) = v7;
+    LODWORD(v23[0]) = unsignedIntegerValue;
     WORD2(v23[0]) = 1024;
     *(v23 + 6) = v8;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Invalid keychain dict version (%d) -- current is %d", buf, 0xEu);
@@ -1554,21 +1554,21 @@ LABEL_45:
   return v11;
 }
 
-+ (id)_UpdateKeychainDataDictV0ToV1:(id)a3
++ (id)_UpdateKeychainDataDictV0ToV1:(id)v1
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  v1Copy = v1;
+  v4 = v1Copy;
+  if (v1Copy && [v1Copy count])
   {
     v5 = +[NSMutableDictionary dictionary];
     v6 = [v4 mutableCopy];
     v7 = [v4 mutableCopy];
     v8 = [v4 objectForKey:@"type"];
-    v9 = [v8 intValue];
+    intValue = [v8 intValue];
 
-    if (v9)
+    if (intValue)
     {
-      if (v9 != 1)
+      if (intValue != 1)
       {
 LABEL_24:
         CFDictionarySetValue(v6, @"migrated-v0-dictionary", v4);
@@ -1656,11 +1656,11 @@ LABEL_25:
   return v5;
 }
 
-+ (id)_UpdateKeychainDataDictV1ToV2:(id)a3
++ (id)_UpdateKeychainDataDictV1ToV2:(id)v2
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  v2Copy = v2;
+  v4 = v2Copy;
+  if (v2Copy && [v2Copy count])
   {
     v5 = [v4 objectForKey:@"sms-signatures"];
     v6 = [v5 mutableCopy];
@@ -1714,20 +1714,20 @@ LABEL_25:
   return v15;
 }
 
-+ (id)_UpdateKeychainDataDictV2ToV3:(id)a3
++ (id)_UpdateKeychainDataDictV2ToV3:(id)v3
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  v3Copy = v3Copy;
+  v3Copy2 = v3Copy;
+  if (v3Copy && [v3Copy count])
   {
-    v5 = [v4 objectForKey:@"sms-signatures"];
+    v5 = [v3Copy2 objectForKey:@"sms-signatures"];
     v6 = objc_alloc_init(NSMutableDictionary);
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [v5 allKeys];
-    v8 = [v7 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    allKeys = [v5 allKeys];
+    v8 = [allKeys countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1738,19 +1738,19 @@ LABEL_25:
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allKeys);
           }
 
           [v6 setObject:&off_100C3C970 forKey:*(*(&v19 + 1) + 8 * i)];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v9 = [allKeys countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v9);
     }
 
-    v12 = [v4 mutableCopy];
+    v12 = [v3Copy2 mutableCopy];
     v13 = v12;
     if (v6)
     {
@@ -1789,14 +1789,14 @@ LABEL_25:
   return v16;
 }
 
-- (id)authenticationCertForID:(id)a3
+- (id)authenticationCertForID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     [(NSRecursiveLock *)self->_lock lock];
     [(IDSRegistrationKeychainManager *)self _loadIfNeeded];
-    v5 = [(NSMutableDictionary *)self->_authenticationCerts objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_authenticationCerts objectForKey:dCopy];
     [(NSRecursiveLock *)self->_lock unlock];
   }
 
@@ -1808,26 +1808,26 @@ LABEL_25:
   return v5;
 }
 
-- (void)setAuthenticationCert:(id)a3 forID:(id)a4
+- (void)setAuthenticationCert:(id)cert forID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  certCopy = cert;
+  dCopy = d;
+  if ([dCopy length])
   {
     v8 = +[IMRGLog keychainManager];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v15 = v6;
+      v15 = certCopy;
       v16 = 2112;
-      v17 = v7;
+      v17 = dCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Setting IDS auth cert: %p   for ID: %@", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
-      v12 = v6;
-      v13 = v7;
+      v12 = certCopy;
+      v13 = dCopy;
       MarcoLogRegistration();
     }
 
@@ -1841,14 +1841,14 @@ LABEL_25:
     }
 
     v11 = self->_authenticationCerts;
-    if (v6)
+    if (certCopy)
     {
-      [(NSMutableDictionary *)v11 setObject:v6 forKey:v7];
+      [(NSMutableDictionary *)v11 setObject:certCopy forKey:dCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)v11 removeObjectForKey:v7];
+      [(NSMutableDictionary *)v11 removeObjectForKey:dCopy];
     }
 
     [(NSRecursiveLock *)self->_lock unlock];
@@ -1856,14 +1856,14 @@ LABEL_25:
   }
 }
 
-- (id)smsSignatureForID:(id)a3
+- (id)smsSignatureForID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSRegistrationKeychainManager *)self _loadIfNeeded];
-  if (v4)
+  if (dCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_smsSignatures objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_smsSignatures objectForKey:dCopy];
   }
 
   else
@@ -1878,7 +1878,7 @@ LABEL_25:
     v7 = [v5 description];
     v8 = IMTruncatedLoggingStringForString();
     *buf = 138412546;
-    v13 = v4;
+    v13 = dCopy;
     v14 = 2112;
     v15 = v8;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Returning SMS sig for ID: %@   signature: %@", buf, 0x16u);
@@ -1898,13 +1898,13 @@ LABEL_25:
 {
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSRegistrationKeychainManager *)self _loadIfNeeded];
-  v3 = [(NSMutableDictionary *)self->_smsSignatures allKeys];
+  allKeys = [(NSMutableDictionary *)self->_smsSignatures allKeys];
   [(NSRecursiveLock *)self->_lock unlock];
   v4 = +[IMRGLog keychainManager];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = v3;
+    v7 = allKeys;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Returning SMS IDs: %@", buf, 0xCu);
   }
 
@@ -1913,20 +1913,20 @@ LABEL_25:
     MarcoLogRegistration();
   }
 
-  return v3;
+  return allKeys;
 }
 
-- (void)setSMSSignature:(id)a3 mainID:(id)a4
+- (void)setSMSSignature:(id)signature mainID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  signatureCopy = signature;
+  dCopy = d;
   v8 = +[IMRGLog keychainManager];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 description];
+    v9 = [signatureCopy description];
     v10 = IMTruncatedLoggingStringForString();
     *buf = 138412546;
-    v17 = v7;
+    v17 = dCopy;
     v18 = 2112;
     v19 = v10;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Setting SMS main ID: %@   signature: %@", buf, 0x16u);
@@ -1934,9 +1934,9 @@ LABEL_25:
 
   if (os_log_shim_legacy_logging_enabled())
   {
-    v11 = [v6 description];
+    v11 = [signatureCopy description];
     IMTruncatedLoggingStringForString();
-    v15 = v14 = v7;
+    v15 = v14 = dCopy;
     MarcoLogRegistration();
   }
 
@@ -1949,28 +1949,28 @@ LABEL_25:
     self->_smsSignatures = Mutable;
   }
 
-  if ([v6 length] && objc_msgSend(v7, "length"))
+  if ([signatureCopy length] && objc_msgSend(dCopy, "length"))
   {
-    [(NSMutableDictionary *)self->_smsSignatures setObject:v6 forKey:v7];
+    [(NSMutableDictionary *)self->_smsSignatures setObject:signatureCopy forKey:dCopy];
   }
 
-  else if (v7)
+  else if (dCopy)
   {
-    [(NSMutableDictionary *)self->_smsSignatures removeObjectForKey:v7];
+    [(NSMutableDictionary *)self->_smsSignatures removeObjectForKey:dCopy];
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
   [(IDSRegistrationKeychainManager *)self _saveToKeychain];
 }
 
-- (id)smsSignatureMechanismForID:(id)a3
+- (id)smsSignatureMechanismForID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSRegistrationKeychainManager *)self _loadIfNeeded];
-  if (v4)
+  if (dCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_smsSignatureMechanisms objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_smsSignatureMechanisms objectForKey:dCopy];
   }
 
   else
@@ -1983,7 +1983,7 @@ LABEL_25:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v9 = v4;
+    v9 = dCopy;
     v10 = 2112;
     v11 = v5;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Returning SMS Sig mechanism for ID: %@ signature mechanism: %@", buf, 0x16u);
@@ -1997,24 +1997,24 @@ LABEL_25:
   return v5;
 }
 
-- (void)setSMSSignatureMechanism:(id)a3 mainID:(id)a4
+- (void)setSMSSignatureMechanism:(id)mechanism mainID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  mechanismCopy = mechanism;
+  dCopy = d;
   v8 = +[IMRGLog keychainManager];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v14 = v7;
+    v14 = dCopy;
     v15 = 2112;
-    v16 = v6;
+    v16 = mechanismCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Setting SMS mainID: %@ signature mechanism: %@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled())
   {
-    v11 = v7;
-    v12 = v6;
+    v11 = dCopy;
+    v12 = mechanismCopy;
     MarcoLogRegistration();
   }
 
@@ -2022,7 +2022,7 @@ LABEL_25:
   [(IDSRegistrationKeychainManager *)self _loadIfNeeded];
   if (self->_smsSignatureMechanisms)
   {
-    if (!v6)
+    if (!mechanismCopy)
     {
       goto LABEL_11;
     }
@@ -2034,22 +2034,22 @@ LABEL_25:
     smsSignatureMechanisms = self->_smsSignatureMechanisms;
     self->_smsSignatureMechanisms = Mutable;
 
-    if (!v6)
+    if (!mechanismCopy)
     {
       goto LABEL_11;
     }
   }
 
-  if ([v7 length])
+  if ([dCopy length])
   {
-    [(NSMutableDictionary *)self->_smsSignatureMechanisms setObject:v6 forKey:v7];
+    [(NSMutableDictionary *)self->_smsSignatureMechanisms setObject:mechanismCopy forKey:dCopy];
     goto LABEL_13;
   }
 
 LABEL_11:
-  if (v7)
+  if (dCopy)
   {
-    [(NSMutableDictionary *)self->_smsSignatureMechanisms removeObjectForKey:v7];
+    [(NSMutableDictionary *)self->_smsSignatureMechanisms removeObjectForKey:dCopy];
   }
 
 LABEL_13:
@@ -2057,14 +2057,14 @@ LABEL_13:
   [(IDSRegistrationKeychainManager *)self _saveToKeychain];
 }
 
-- (id)tempPhoneCredentialForID:(id)a3
+- (id)tempPhoneCredentialForID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSRegistrationKeychainManager *)self _loadIfNeeded];
-  if (v4)
+  if (dCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_tempPhoneCredentials objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_tempPhoneCredentials objectForKeyedSubscript:dCopy];
   }
 
   else
@@ -2077,7 +2077,7 @@ LABEL_13:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v9 = v4;
+    v9 = dCopy;
     v10 = 2112;
     v11 = v5;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Returning temp phone credential for ID: %@ cert: %@", buf, 0x16u);
@@ -2091,24 +2091,24 @@ LABEL_13:
   return v5;
 }
 
-- (void)setTempPhoneCredential:(id)a3 forID:(id)a4
+- (void)setTempPhoneCredential:(id)credential forID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  dCopy = d;
   v8 = +[IMRGLog keychainManager];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v16 = v7;
+    v16 = dCopy;
     v17 = 2112;
-    v18 = v6;
+    v18 = credentialCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Returning temp phone credential for ID: %@ tempCredential: %@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled())
   {
-    v13 = v7;
-    v14 = v6;
+    v13 = dCopy;
+    v14 = credentialCopy;
     MarcoLogRegistration();
   }
 
@@ -2121,16 +2121,16 @@ LABEL_13:
     self->_tempPhoneCredentials = Mutable;
   }
 
-  if ([v7 length])
+  if ([dCopy length])
   {
     v11 = self->_tempPhoneCredentials;
-    v12 = v6;
+    v12 = credentialCopy;
 LABEL_11:
-    [(NSMutableDictionary *)v11 setObject:v12 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)v11 setObject:v12 forKeyedSubscript:dCopy];
     goto LABEL_12;
   }
 
-  if (v7)
+  if (dCopy)
   {
     v11 = self->_tempPhoneCredentials;
     v12 = 0;

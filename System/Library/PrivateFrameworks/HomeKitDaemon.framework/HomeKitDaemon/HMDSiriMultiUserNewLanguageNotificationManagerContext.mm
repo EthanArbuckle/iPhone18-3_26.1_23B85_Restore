@@ -1,20 +1,20 @@
 @interface HMDSiriMultiUserNewLanguageNotificationManagerContext
 + (id)logCategory;
-+ (id)userReadableLanguageFromCode:(id)a3;
++ (id)userReadableLanguageFromCode:(id)code;
 - (BOOL)hasCurrentUserSeenNotification;
 - (BOOL)isRMVEnabledForCurrentUser;
-- (HMDSiriMultiUserNewLanguageNotificationManagerContext)initWithUser:(id)a3 workQueue:(id)a4;
+- (HMDSiriMultiUserNewLanguageNotificationManagerContext)initWithUser:(id)user workQueue:(id)queue;
 - (HMDSiriMultiUserNewLanguageNotificationManagerContextDelegate)delegate;
 - (HMDUser)user;
 - (NSArray)mediaAccessories;
 - (NSString)currentDeviceSiriLanguage;
-- (id)siriLanguageForMediaAccessory:(id)a3;
-- (id)siriLanguagesRequiringNotificationForVersion:(id)a3;
+- (id)siriLanguageForMediaAccessory:(id)accessory;
+- (id)siriLanguagesRequiringNotificationForVersion:(id)version;
 - (void)configure;
-- (void)handleMediaAccessorySoftwareVersionUpdated:(id)a3;
+- (void)handleMediaAccessorySoftwareVersionUpdated:(id)updated;
 - (void)setCurrentUserHasSeenNotification;
-- (void)showNotificationForNewlySupportedLanguage:(id)a3;
-- (void)submitLogEventForShownNotificationWithLanguage:(id)a3;
+- (void)showNotificationForNewlySupportedLanguage:(id)language;
+- (void)submitLogEventForShownNotificationWithLanguage:(id)language;
 @end
 
 @implementation HMDSiriMultiUserNewLanguageNotificationManagerContext
@@ -33,35 +33,35 @@
   return WeakRetained;
 }
 
-- (void)submitLogEventForShownNotificationWithLanguage:(id)a3
+- (void)submitLogEventForShownNotificationWithLanguage:(id)language
 {
-  v3 = a3;
-  v5 = [[HMDMultiUserNewLanguageNotificationLogEvent alloc] initWithLanguage:v3];
+  languageCopy = language;
+  v5 = [[HMDMultiUserNewLanguageNotificationLogEvent alloc] initWithLanguage:languageCopy];
 
   v4 = +[HMDMetricsManager sharedLogEventSubmitter];
   [v4 submitLogEvent:v5];
 }
 
-- (void)showNotificationForNewlySupportedLanguage:(id)a3
+- (void)showNotificationForNewlySupportedLanguage:(id)language
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDSiriMultiUserNewLanguageNotificationManagerContext *)self user];
-  v6 = [v5 home];
+  languageCopy = language;
+  user = [(HMDSiriMultiUserNewLanguageNotificationManagerContext *)self user];
+  home = [user home];
 
-  if (v6)
+  if (home)
   {
-    v7 = [HMDSiriMultiUserNewLanguageNotificationManagerContext userReadableLanguageFromCode:v4];
+    v7 = [HMDSiriMultiUserNewLanguageNotificationManagerContext userReadableLanguageFromCode:languageCopy];
     if (v7)
     {
       v8 = +[HMDBulletinBoard sharedBulletinBoard];
-      [v8 insertNewRMVLanguageBulletinForHome:v6 language:v7];
+      [v8 insertNewRMVLanguageBulletinForHome:home language:v7];
     }
 
     else
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
@@ -78,7 +78,7 @@
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -94,26 +94,26 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)siriLanguageForMediaAccessory:(id)a3
+- (id)siriLanguageForMediaAccessory:(id)accessory
 {
-  v3 = [a3 settingsController];
-  v4 = [v3 siriLanguage];
+  settingsController = [accessory settingsController];
+  siriLanguage = [settingsController siriLanguage];
 
-  return v4;
+  return siriLanguage;
 }
 
-- (id)siriLanguagesRequiringNotificationForVersion:(id)a3
+- (id)siriLanguagesRequiringNotificationForVersion:(id)version
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v6 = [v5 preferenceForKey:@"forceSiriRMVNewLanguageToEnglish"];
-  v7 = [v6 BOOLValue];
+  versionCopy = version;
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v6 = [mEMORY[0x277D0F8D0] preferenceForKey:@"forceSiriRMVNewLanguageToEnglish"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -129,12 +129,12 @@
 
   else
   {
-    v13 = [v4 shortVersionString];
+    shortVersionString = [versionCopy shortVersionString];
 
-    if (v13)
+    if (shortVersionString)
     {
       v14 = MEMORY[0x277CBEB98];
-      v15 = [v4 shortVersionString];
+      shortVersionString2 = [versionCopy shortVersionString];
       v16 = AFPreferencesMultiUserCompanionNotificationLanguageCodesForHomePodVersion();
       v17 = [v14 setWithArray:v16];
 
@@ -142,7 +142,7 @@
     }
 
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -166,26 +166,26 @@ LABEL_11:
 
 - (NSString)currentDeviceSiriLanguage
 {
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  v3 = [v2 languageCode];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
 
-  return v3;
+  return languageCode;
 }
 
 - (BOOL)isRMVEnabledForCurrentUser
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDSiriMultiUserNewLanguageNotificationManagerContext *)self user];
-  v4 = v3;
-  if (v3)
+  user = [(HMDSiriMultiUserNewLanguageNotificationManagerContext *)self user];
+  v4 = user;
+  if (user)
   {
-    v5 = [v3 siriIdentifyVoiceEnabled];
+    siriIdentifyVoiceEnabled = [user siriIdentifyVoiceEnabled];
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -196,21 +196,21 @@ LABEL_11:
     }
 
     objc_autoreleasePoolPop(v6);
-    v5 = 0;
+    siriIdentifyVoiceEnabled = 0;
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v5;
+  return siriIdentifyVoiceEnabled;
 }
 
 - (void)setCurrentUserHasSeenNotification
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDSiriMultiUserNewLanguageNotificationManagerContext *)self user];
-  v4 = v3;
-  if (v3)
+  user = [(HMDSiriMultiUserNewLanguageNotificationManagerContext *)self user];
+  v4 = user;
+  if (user)
   {
-    v5 = [v3 setHasUserSeenRMVNewLanguageNotification:1];
+    v5 = [user setHasUserSeenRMVNewLanguageNotification:1];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __90__HMDSiriMultiUserNewLanguageNotificationManagerContext_setCurrentUserHasSeenNotification__block_invoke;
@@ -223,7 +223,7 @@ LABEL_11:
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -287,22 +287,22 @@ LABEL_6:
   v14 = *MEMORY[0x277D85DE8];
   if ([(HMDSiriMultiUserNewLanguageNotificationManagerContext *)self cachedHasCurrentUserSeenNotification])
   {
-    v3 = 1;
+    ownerHasUserSeenRMVNewLanguageNotification = 1;
   }
 
   else
   {
-    v4 = [(HMDSiriMultiUserNewLanguageNotificationManagerContext *)self user];
-    v5 = v4;
-    if (v4)
+    user = [(HMDSiriMultiUserNewLanguageNotificationManagerContext *)self user];
+    v5 = user;
+    if (user)
     {
-      v3 = [v4 ownerHasUserSeenRMVNewLanguageNotification];
+      ownerHasUserSeenRMVNewLanguageNotification = [user ownerHasUserSeenRMVNewLanguageNotification];
     }
 
     else
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = self;
+      selfCopy = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
@@ -313,32 +313,32 @@ LABEL_6:
       }
 
       objc_autoreleasePoolPop(v6);
-      v3 = 1;
+      ownerHasUserSeenRMVNewLanguageNotification = 1;
     }
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v3;
+  return ownerHasUserSeenRMVNewLanguageNotification;
 }
 
 - (NSArray)mediaAccessories
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDSiriMultiUserNewLanguageNotificationManagerContext *)self user];
-  v4 = v3;
-  if (v3)
+  user = [(HMDSiriMultiUserNewLanguageNotificationManagerContext *)self user];
+  v4 = user;
+  if (user)
   {
-    v5 = [v3 home];
-    v6 = v5;
-    if (v5)
+    home = [user home];
+    v6 = home;
+    if (home)
     {
-      v7 = [v5 appleMediaAccessories];
+      appleMediaAccessories = [home appleMediaAccessories];
     }
 
     else
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
@@ -349,14 +349,14 @@ LABEL_6:
       }
 
       objc_autoreleasePoolPop(v12);
-      v7 = MEMORY[0x277CBEBF8];
+      appleMediaAccessories = MEMORY[0x277CBEBF8];
     }
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -367,23 +367,23 @@ LABEL_6:
     }
 
     objc_autoreleasePoolPop(v8);
-    v7 = MEMORY[0x277CBEBF8];
+    appleMediaAccessories = MEMORY[0x277CBEBF8];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return appleMediaAccessories;
 }
 
-- (void)handleMediaAccessorySoftwareVersionUpdated:(id)a3
+- (void)handleMediaAccessorySoftwareVersionUpdated:(id)updated
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
+  updatedCopy = updated;
+  object = [updatedCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -395,17 +395,17 @@ LABEL_6:
 
   if (v7)
   {
-    v8 = [(HMDSiriMultiUserNewLanguageNotificationManagerContext *)self delegate];
-    if (v8)
+    delegate = [(HMDSiriMultiUserNewLanguageNotificationManagerContext *)self delegate];
+    if (delegate)
     {
-      v9 = [v7 softwareVersion];
-      [v8 mediaAccessory:v7 didUpdateSoftwareToVersion:v9];
+      softwareVersion = [v7 softwareVersion];
+      [delegate mediaAccessory:v7 didUpdateSoftwareToVersion:softwareVersion];
     }
 
     else
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -422,7 +422,7 @@ LABEL_6:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -440,20 +440,20 @@ LABEL_6:
 
 - (void)configure
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_handleMediaAccessorySoftwareVersionUpdated_ name:@"HMDAppleMediaAccessorySoftwareVersionUpdatedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleMediaAccessorySoftwareVersionUpdated_ name:@"HMDAppleMediaAccessorySoftwareVersionUpdatedNotification" object:0];
 }
 
-- (HMDSiriMultiUserNewLanguageNotificationManagerContext)initWithUser:(id)a3 workQueue:(id)a4
+- (HMDSiriMultiUserNewLanguageNotificationManagerContext)initWithUser:(id)user workQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  queueCopy = queue;
   v8 = [(HMDSiriMultiUserNewLanguageNotificationManagerContext *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_user, v6);
-    objc_storeStrong(&v9->_workQueue, a4);
+    objc_storeWeak(&v8->_user, userCopy);
+    objc_storeStrong(&v9->_workQueue, queue);
   }
 
   return v9;
@@ -479,12 +479,12 @@ void __68__HMDSiriMultiUserNewLanguageNotificationManagerContext_logCategory__bl
   logCategory__hmf_once_v20 = v1;
 }
 
-+ (id)userReadableLanguageFromCode:(id)a3
++ (id)userReadableLanguageFromCode:(id)code
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  codeCopy = code;
   v5 = objc_autoreleasePoolPush();
-  v6 = a1;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -492,14 +492,14 @@ void __68__HMDSiriMultiUserNewLanguageNotificationManagerContext_logCategory__bl
     v31 = 138543618;
     v32 = v8;
     v33 = 2112;
-    v34 = v4;
+    v34 = codeCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@languageCode: %@", &v31, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [MEMORY[0x277CBEAF8] deviceLanguage];
+  deviceLanguage = [MEMORY[0x277CBEAF8] deviceLanguage];
   v10 = objc_autoreleasePoolPush();
-  v11 = v6;
+  v11 = selfCopy;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -507,12 +507,12 @@ void __68__HMDSiriMultiUserNewLanguageNotificationManagerContext_logCategory__bl
     v31 = 138543618;
     v32 = v13;
     v33 = 2112;
-    v34 = v9;
+    v34 = deviceLanguage;
     _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@preferredLocalization: %@", &v31, 0x16u);
   }
 
   objc_autoreleasePoolPop(v10);
-  v14 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v9];
+  v14 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:deviceLanguage];
   v15 = objc_autoreleasePoolPush();
   v16 = v11;
   v17 = HMFGetOSLogHandle();
@@ -527,7 +527,7 @@ void __68__HMDSiriMultiUserNewLanguageNotificationManagerContext_logCategory__bl
   }
 
   objc_autoreleasePoolPop(v15);
-  v19 = [MEMORY[0x277CBEAF8] baseLanguageFromLanguage:v4];
+  v19 = [MEMORY[0x277CBEAF8] baseLanguageFromLanguage:codeCopy];
   v20 = objc_autoreleasePoolPush();
   v21 = v16;
   v22 = HMFGetOSLogHandle();

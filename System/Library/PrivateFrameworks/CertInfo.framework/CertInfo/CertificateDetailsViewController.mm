@@ -1,18 +1,18 @@
 @interface CertificateDetailsViewController
 - (CertificateDetailsViewController)init;
-- (CertificateDetailsViewController)initWithCertificate:(__SecCertificate *)a3;
-- (CertificateDetailsViewController)initWithCertificateProperties:(id)a3;
-- (CertificateDetailsViewController)initWithStyle:(int64_t)a3;
-- (CertificateDetailsViewController)initWithTrust:(__SecTrust *)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (CertificateDetailsViewController)initWithCertificate:(__SecCertificate *)certificate;
+- (CertificateDetailsViewController)initWithCertificateProperties:(id)properties;
+- (CertificateDetailsViewController)initWithStyle:(int64_t)style;
+- (CertificateDetailsViewController)initWithTrust:(__SecTrust *)trust;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_setup;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)preferredContentSizeChanged:(id)a3;
-- (void)setCertificateProperties:(id)a3;
+- (void)preferredContentSizeChanged:(id)changed;
+- (void)setCertificateProperties:(id)properties;
 - (void)viewDidLoad;
 @end
 
@@ -32,11 +32,11 @@
   return v3;
 }
 
-- (CertificateDetailsViewController)initWithStyle:(int64_t)a3
+- (CertificateDetailsViewController)initWithStyle:(int64_t)style
 {
   v6.receiver = self;
   v6.super_class = CertificateDetailsViewController;
-  v3 = [(CertificateDetailsViewController *)&v6 initWithStyle:a3];
+  v3 = [(CertificateDetailsViewController *)&v6 initWithStyle:style];
   v4 = v3;
   if (v3)
   {
@@ -46,21 +46,21 @@
   return v4;
 }
 
-- (CertificateDetailsViewController)initWithCertificate:(__SecCertificate *)a3
+- (CertificateDetailsViewController)initWithCertificate:(__SecCertificate *)certificate
 {
   v10.receiver = self;
   v10.super_class = CertificateDetailsViewController;
   v4 = [(CertificateDetailsViewController *)&v10 initWithStyle:1];
   if (v4)
   {
-    v5 = [[CertUICertificatePropertiesInfo alloc] initWithCertificate:a3];
-    v6 = [(CertUICertificatePropertiesInfo *)v5 sections];
-    if ([v6 count])
+    v5 = [[CertUICertificatePropertiesInfo alloc] initWithCertificate:certificate];
+    sections = [(CertUICertificatePropertiesInfo *)v5 sections];
+    if ([sections count])
     {
-      objc_storeStrong(&v4->_keyValueSections, v6);
-      v7 = [(CertUICertificatePropertiesInfo *)v5 sectionTitles];
+      objc_storeStrong(&v4->_keyValueSections, sections);
+      sectionTitles = [(CertUICertificatePropertiesInfo *)v5 sectionTitles];
       keyValueSectionTitles = v4->_keyValueSectionTitles;
-      v4->_keyValueSectionTitles = v7;
+      v4->_keyValueSectionTitles = sectionTitles;
     }
 
     [(CertificateDetailsViewController *)v4 _setup];
@@ -69,22 +69,22 @@
   return v4;
 }
 
-- (CertificateDetailsViewController)initWithCertificateProperties:(id)a3
+- (CertificateDetailsViewController)initWithCertificateProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v11.receiver = self;
   v11.super_class = CertificateDetailsViewController;
   v5 = [(CertificateDetailsViewController *)&v11 initWithStyle:1];
   if (v5)
   {
-    v6 = [[CertUICertificatePropertiesInfo alloc] initWithCertificateProperties:v4];
-    v7 = [(CertUICertificatePropertiesInfo *)v6 sections];
-    if ([v7 count])
+    v6 = [[CertUICertificatePropertiesInfo alloc] initWithCertificateProperties:propertiesCopy];
+    sections = [(CertUICertificatePropertiesInfo *)v6 sections];
+    if ([sections count])
     {
-      objc_storeStrong(&v5->_keyValueSections, v7);
-      v8 = [(CertUICertificatePropertiesInfo *)v6 sectionTitles];
+      objc_storeStrong(&v5->_keyValueSections, sections);
+      sectionTitles = [(CertUICertificatePropertiesInfo *)v6 sectionTitles];
       keyValueSectionTitles = v5->_keyValueSectionTitles;
-      v5->_keyValueSectionTitles = v8;
+      v5->_keyValueSectionTitles = sectionTitles;
     }
 
     [(CertificateDetailsViewController *)v5 _setup];
@@ -93,7 +93,7 @@
   return v5;
 }
 
-- (CertificateDetailsViewController)initWithTrust:(__SecTrust *)a3
+- (CertificateDetailsViewController)initWithTrust:(__SecTrust *)trust
 {
   v11.receiver = self;
   v11.super_class = CertificateDetailsViewController;
@@ -101,15 +101,15 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_certificateTrust, a3);
-    v6 = [[CertUICertificatePropertiesInfo alloc] initWithTrust:a3];
-    v7 = [(CertUICertificatePropertiesInfo *)v6 sections];
-    if ([v7 count])
+    objc_storeStrong(&v4->_certificateTrust, trust);
+    v6 = [[CertUICertificatePropertiesInfo alloc] initWithTrust:trust];
+    sections = [(CertUICertificatePropertiesInfo *)v6 sections];
+    if ([sections count])
     {
-      objc_storeStrong(&v5->_keyValueSections, v7);
-      v8 = [(CertUICertificatePropertiesInfo *)v6 sectionTitles];
+      objc_storeStrong(&v5->_keyValueSections, sections);
+      sectionTitles = [(CertUICertificatePropertiesInfo *)v6 sectionTitles];
       keyValueSectionTitles = v5->_keyValueSectionTitles;
-      v5->_keyValueSectionTitles = v8;
+      v5->_keyValueSectionTitles = sectionTitles;
     }
 
     [(CertificateDetailsViewController *)v5 _setup];
@@ -120,8 +120,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CertificateDetailsViewController;
@@ -130,22 +130,22 @@
 
 - (void)_setup
 {
-  v3 = [(CertificateDetailsViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"CertificateDetailsKeyDataCell"];
+  tableView = [(CertificateDetailsViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"CertificateDetailsKeyDataCell"];
 
-  v4 = [(CertificateDetailsViewController *)self tableView];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"CertificateDetailsKeyValueCell"];
+  tableView2 = [(CertificateDetailsViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"CertificateDetailsKeyValueCell"];
 
-  v5 = [(CertificateDetailsViewController *)self tableView];
-  [v5 setCellLayoutMarginsFollowReadableWidth:0];
+  tableView3 = [(CertificateDetailsViewController *)self tableView];
+  [tableView3 setCellLayoutMarginsFollowReadableWidth:0];
 
   v6 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CertInfo"];
   v7 = [v6 localizedStringForKey:@"DETAILS" value:&stru_28561D260 table:@"CertInfo"];
-  v8 = [(CertificateDetailsViewController *)self navigationItem];
-  [v8 setTitle:v7];
+  navigationItem = [(CertificateDetailsViewController *)self navigationItem];
+  [navigationItem setTitle:v7];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 addObserver:self selector:sel_preferredContentSizeChanged_ name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_preferredContentSizeChanged_ name:*MEMORY[0x277D76810] object:0];
 }
 
 - (void)viewDidLoad
@@ -162,76 +162,76 @@
   [(CertificateDetailsViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)setCertificateProperties:(id)a3
+- (void)setCertificateProperties:(id)properties
 {
-  v9 = [a3 firstObject];
-  v4 = [[CertUICertificatePropertiesInfo alloc] initWithSendableCertificateProperties:v9];
-  v5 = [(CertUICertificatePropertiesInfo *)v4 sections];
-  if ([v5 count])
+  firstObject = [properties firstObject];
+  v4 = [[CertUICertificatePropertiesInfo alloc] initWithSendableCertificateProperties:firstObject];
+  sections = [(CertUICertificatePropertiesInfo *)v4 sections];
+  if ([sections count])
   {
-    objc_storeStrong(&self->_keyValueSections, v5);
-    v6 = [(CertUICertificatePropertiesInfo *)v4 sectionTitles];
+    objc_storeStrong(&self->_keyValueSections, sections);
+    sectionTitles = [(CertUICertificatePropertiesInfo *)v4 sectionTitles];
     keyValueSectionTitles = self->_keyValueSectionTitles;
-    self->_keyValueSectionTitles = v6;
+    self->_keyValueSectionTitles = sectionTitles;
   }
 
-  v8 = [(CertificateDetailsViewController *)self tableView];
-  [v8 reloadData];
+  tableView = [(CertificateDetailsViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(CertificateDetailsViewController *)self keyValueSections];
-  v4 = [v3 count];
+  keyValueSections = [(CertificateDetailsViewController *)self keyValueSections];
+  v4 = [keyValueSections count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(CertificateDetailsViewController *)self keyValueSections];
-  v7 = [v6 count];
+  keyValueSections = [(CertificateDetailsViewController *)self keyValueSections];
+  v7 = [keyValueSections count];
 
-  if (v7 <= a4)
+  if (v7 <= section)
   {
     return 0;
   }
 
-  v8 = [(CertificateDetailsViewController *)self keyValueSections];
-  v9 = [v8 objectAtIndex:a4];
+  keyValueSections2 = [(CertificateDetailsViewController *)self keyValueSections];
+  v9 = [keyValueSections2 objectAtIndex:section];
 
   v10 = ([v9 count] >> 1);
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = [(CertificateDetailsViewController *)self keyValueSectionTitles];
-  v7 = [v6 count];
+  keyValueSectionTitles = [(CertificateDetailsViewController *)self keyValueSectionTitles];
+  v7 = [keyValueSectionTitles count];
 
-  if (v7 <= a4)
+  if (v7 <= section)
   {
     v9 = 0;
   }
 
   else
   {
-    v8 = [(CertificateDetailsViewController *)self keyValueSectionTitles];
-    v9 = [v8 objectAtIndex:a4];
+    keyValueSectionTitles2 = [(CertificateDetailsViewController *)self keyValueSectionTitles];
+    v9 = [keyValueSectionTitles2 objectAtIndex:section];
   }
 
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CertificateDetailsViewController *)self keyValueSections];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v7, "section")}];
+  viewCopy = view;
+  pathCopy = path;
+  keyValueSections = [(CertificateDetailsViewController *)self keyValueSections];
+  v9 = [keyValueSections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
-  v10 = [v9 objectAtIndex:{2 * objc_msgSend(v7, "row")}];
-  v11 = [v9 objectAtIndex:{(2 * objc_msgSend(v7, "row")) | 1}];
+  v10 = [v9 objectAtIndex:{2 * objc_msgSend(pathCopy, "row")}];
+  v11 = [v9 objectAtIndex:{(2 * objc_msgSend(pathCopy, "row")) | 1}];
   objc_opt_class();
   v12 = @"CertificateDetailsKeyDataCell";
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -243,16 +243,16 @@
     }
   }
 
-  v13 = [v6 dequeueReusableCellWithIdentifier:v12 forIndexPath:v7];
+  v13 = [viewCopy dequeueReusableCellWithIdentifier:v12 forIndexPath:pathCopy];
   [v13 setValue:v11 forKey:v10];
 
   return v13;
 }
 
-- (void)preferredContentSizeChanged:(id)a3
+- (void)preferredContentSizeChanged:(id)changed
 {
-  v3 = [(CertificateDetailsViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(CertificateDetailsViewController *)self tableView];
+  [tableView reloadData];
 }
 
 @end

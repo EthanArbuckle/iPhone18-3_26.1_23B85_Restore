@@ -1,5 +1,5 @@
 @interface CKNavigationButtonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,19 +7,19 @@
 
 @implementation CKNavigationButtonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKNavigationButtonView" hasInstanceMethod:@"iconImageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKNavigationButtonView" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKNavigationButtonView" hasInstanceMethod:@"iconImageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKNavigationButtonView" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(CKNavigationButtonViewAccessibility *)self safeValueForKey:@"textLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (CGRect)accessibilityFrame

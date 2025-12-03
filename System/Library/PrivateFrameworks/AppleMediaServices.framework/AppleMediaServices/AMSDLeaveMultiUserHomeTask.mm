@@ -1,21 +1,21 @@
 @interface AMSDLeaveMultiUserHomeTask
-- (AMSDLeaveMultiUserHomeTask)initWithHomeIdentifier:(id)a3;
+- (AMSDLeaveMultiUserHomeTask)initWithHomeIdentifier:(id)identifier;
 - (id)_generateAppProvidedData;
 - (id)performTask;
 @end
 
 @implementation AMSDLeaveMultiUserHomeTask
 
-- (AMSDLeaveMultiUserHomeTask)initWithHomeIdentifier:(id)a3
+- (AMSDLeaveMultiUserHomeTask)initWithHomeIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = AMSDLeaveMultiUserHomeTask;
   v6 = [(AMSDLeaveMultiUserHomeTask *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_homeIdentifier, a3);
+    objc_storeStrong(&v6->_homeIdentifier, identifier);
   }
 
   return v7;
@@ -38,8 +38,8 @@
 
 - (id)_generateAppProvidedData
 {
-  v2 = [(AMSDLeaveMultiUserHomeTask *)self homeIdentifier];
-  v3 = [AMSAuthenticateOptions amsd_createAppProvidedDataWithMultiUserAction:@"leave" homeIdentifier:v2];
+  homeIdentifier = [(AMSDLeaveMultiUserHomeTask *)self homeIdentifier];
+  v3 = [AMSAuthenticateOptions amsd_createAppProvidedDataWithMultiUserAction:@"leave" homeIdentifier:homeIdentifier];
 
   return v3;
 }

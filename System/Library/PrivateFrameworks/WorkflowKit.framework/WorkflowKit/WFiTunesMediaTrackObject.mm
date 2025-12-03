@@ -80,7 +80,7 @@ id __51__WFiTunesMediaTrackObject_durationJSONTransformer__block_invoke(uint64_t
 + (id)JSONKeyPathsByPropertyKey
 {
   v9[11] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___WFiTunesMediaTrackObject;
   v2 = objc_msgSendSuper2(&v7, sel_JSONKeyPathsByPropertyKey);
   v3 = [v2 mutableCopy];

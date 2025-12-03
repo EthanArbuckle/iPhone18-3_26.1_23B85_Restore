@@ -1,10 +1,10 @@
 @interface CarStatusBannerLabel
-- (CarStatusBannerLabel)initWithChromeViewController:(id)a3;
+- (CarStatusBannerLabel)initWithChromeViewController:(id)controller;
 - (id)maskImage;
 - (void)dealloc;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)reloadContent;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)valueChangedForGEOConfigKey:(id)key;
 @end
 
 @implementation CarStatusBannerLabel
@@ -32,12 +32,12 @@
 
   if (([(CarStatusBannerLabel *)self isFocused]& 1) != 0 || ([(CarStatusBannerLabel *)self isSelected]& 1) != 0)
   {
-    v5 = 1;
+    isHighlighted = 1;
   }
 
   else
   {
-    v5 = [(CarStatusBannerLabel *)self isHighlighted];
+    isHighlighted = [(CarStatusBannerLabel *)self isHighlighted];
   }
 
   v6 = +[NSBundle mainBundle];
@@ -62,7 +62,7 @@
   BOOL = GEOConfigGetBOOL();
   [(CarFocusableControl *)self setEnabled:BOOL];
   [(UIImageView *)self->_chevronImageView setHidden:BOOL ^ 1];
-  if (v5)
+  if (isHighlighted)
   {
     v12 = @"chevron.forward.circle.fill";
   }
@@ -76,8 +76,8 @@
   [(UIImageView *)self->_chevronImageView setImage:v13];
 
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
-  v15 = [WeakRetained lightLevelController];
-  if ([v15 shouldUseNightMode])
+  lightLevelController = [WeakRetained lightLevelController];
+  if ([lightLevelController shouldUseNightMode])
   {
     +[UIColor systemWhiteColor];
   }
@@ -89,8 +89,8 @@
   v27 = ;
 
   v16 = objc_loadWeakRetained(&self->_chromeViewController);
-  v17 = [v16 lightLevelController];
-  if ([v17 shouldUseNightMode])
+  lightLevelController2 = [v16 lightLevelController];
+  if ([lightLevelController2 shouldUseNightMode])
   {
     +[UIColor systemBlackColor];
   }
@@ -101,7 +101,7 @@
   }
   v18 = ;
 
-  if (v5)
+  if (isHighlighted)
   {
     v19 = v18;
   }
@@ -113,7 +113,7 @@
 
   [(MUFadingLabel *)self->_titleLabel setTextColor:v19];
   [(UIImageView *)self->_chevronImageView setTintColor:v19];
-  if (v5)
+  if (isHighlighted)
   {
     v20 = +[UIColor _carSystemFocusColor];
     p_blurView = &self->_blurView;
@@ -153,23 +153,23 @@
   [(NSLayoutConstraint *)self->_trailingConstraint setConstant:v23];
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  if (a3.var0 == 569 && a3.var1 == &unk_101642C20)
+  if (key.var0 == 569 && key.var1 == &unk_101642C20)
   {
     [(CarStatusBannerLabel *)self reloadContent];
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = CarStatusBannerLabel;
-  [(CarFocusableControl *)&v10 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedItem];
-  v8 = v7;
-  if (v7 == self)
+  [(CarFocusableControl *)&v10 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedItem = [contextCopy nextFocusedItem];
+  v8 = nextFocusedItem;
+  if (nextFocusedItem == self)
   {
 
 LABEL_5:
@@ -177,9 +177,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [v6 previouslyFocusedItem];
+  previouslyFocusedItem = [contextCopy previouslyFocusedItem];
 
-  if (v9 == self)
+  if (previouslyFocusedItem == self)
   {
     goto LABEL_5;
   }
@@ -213,28 +213,28 @@ LABEL_6:
   [(CarStatusBannerLabel *)&v4 dealloc];
 }
 
-- (CarStatusBannerLabel)initWithChromeViewController:(id)a3
+- (CarStatusBannerLabel)initWithChromeViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v76.receiver = self;
   v76.super_class = CarStatusBannerLabel;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v8 = [(CarFocusableBlurControl *)&v76 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(CarFocusableBlurControl *)&v76 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    [(CarFocusableBlurControl *)v8 setCastsShadow:0];
+    [(CarFocusableBlurControl *)height setCastsShadow:0];
     [(CarFocusableBlurControl *)v9 setHidesBlur:1];
     [(CarStatusBannerLabel *)v9 setAccessibilityIdentifier:@"CarStatusBannerLabel"];
-    v10 = objc_storeWeak(&v9->_chromeViewController, v4);
-    v9->_sceneType = [v4 sceneType];
-    v75 = v4;
+    v10 = objc_storeWeak(&v9->_chromeViewController, controllerCopy);
+    v9->_sceneType = [controllerCopy sceneType];
+    v75 = controllerCopy;
 
     v11 = [MUBlurView alloc];
-    v12 = [(CarStatusBannerLabel *)v9 maskImage];
-    v13 = [v11 initWithVariableBlurWithRadius:v12 maskImage:2.0];
+    maskImage = [(CarStatusBannerLabel *)v9 maskImage];
+    v13 = [v11 initWithVariableBlurWithRadius:maskImage maskImage:2.0];
     blurView = v9->_blurView;
     v9->_blurView = v13;
 
@@ -286,75 +286,75 @@ LABEL_6:
     [v28 setSpacing:3.0];
     [v28 setAlignment:3];
     [(CarFocusableControl *)v9 addSubview:v28];
-    v29 = [(MUBlurView *)v9->_blurView widthAnchor];
-    v30 = [v29 constraintEqualToConstant:172.0];
+    widthAnchor = [(MUBlurView *)v9->_blurView widthAnchor];
+    v30 = [widthAnchor constraintEqualToConstant:172.0];
     widthConstraint = v9->_widthConstraint;
     v9->_widthConstraint = v30;
 
     WeakRetained = objc_loadWeakRetained(&v9->_chromeViewController);
-    v33 = [WeakRetained sceneType];
+    sceneType = [WeakRetained sceneType];
 
-    if (v33 == 1)
+    if (sceneType == 1)
     {
       [(NSLayoutConstraint *)v9->_widthConstraint setActive:1];
     }
 
-    v34 = [(MUBlurView *)v9->_blurView topAnchor];
-    v35 = [(CarStatusBannerLabel *)v9 topAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
+    topAnchor = [(MUBlurView *)v9->_blurView topAnchor];
+    topAnchor2 = [(CarStatusBannerLabel *)v9 topAnchor];
+    v36 = [topAnchor constraintEqualToAnchor:topAnchor2];
     topConstraint = v9->_topConstraint;
     v9->_topConstraint = v36;
 
-    v38 = [(MUBlurView *)v9->_blurView bottomAnchor];
-    v39 = [(CarStatusBannerLabel *)v9 bottomAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    bottomAnchor = [(MUBlurView *)v9->_blurView bottomAnchor];
+    bottomAnchor2 = [(CarStatusBannerLabel *)v9 bottomAnchor];
+    v40 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     bottomConstraint = v9->_bottomConstraint;
     v9->_bottomConstraint = v40;
 
-    v42 = [v28 leadingAnchor];
-    v43 = [(CarStatusBannerLabel *)v9 leadingAnchor];
-    v44 = [v42 constraintGreaterThanOrEqualToAnchor:v43 constant:6.0];
+    leadingAnchor = [v28 leadingAnchor];
+    leadingAnchor2 = [(CarStatusBannerLabel *)v9 leadingAnchor];
+    v44 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:6.0];
     leadingConstraint = v9->_leadingConstraint;
     v9->_leadingConstraint = v44;
 
-    v46 = [v28 trailingAnchor];
-    v47 = [(CarStatusBannerLabel *)v9 trailingAnchor];
-    v48 = [v46 constraintLessThanOrEqualToAnchor:v47 constant:-6.0];
+    trailingAnchor = [v28 trailingAnchor];
+    trailingAnchor2 = [(CarStatusBannerLabel *)v9 trailingAnchor];
+    v48 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-6.0];
     trailingConstraint = v9->_trailingConstraint;
     v9->_trailingConstraint = v48;
 
-    v74 = [(MUBlurView *)v9->_blurView leadingAnchor];
-    v73 = [(CarStatusBannerLabel *)v9 leadingAnchor];
-    v72 = [v74 constraintEqualToAnchor:v73];
+    leadingAnchor3 = [(MUBlurView *)v9->_blurView leadingAnchor];
+    leadingAnchor4 = [(CarStatusBannerLabel *)v9 leadingAnchor];
+    v72 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v77[0] = v72;
-    v71 = [(MUBlurView *)v9->_blurView trailingAnchor];
-    v70 = [(CarStatusBannerLabel *)v9 trailingAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70];
+    trailingAnchor3 = [(MUBlurView *)v9->_blurView trailingAnchor];
+    trailingAnchor4 = [(CarStatusBannerLabel *)v9 trailingAnchor];
+    v69 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v77[1] = v69;
     v77[2] = v9->_topConstraint;
     v77[3] = v9->_bottomConstraint;
-    v68 = [v28 topAnchor];
-    v67 = [(CarStatusBannerLabel *)v9 topAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67];
+    topAnchor3 = [v28 topAnchor];
+    topAnchor4 = [(CarStatusBannerLabel *)v9 topAnchor];
+    v66 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v77[4] = v66;
-    v65 = [v28 bottomAnchor];
-    v64 = [(CarStatusBannerLabel *)v9 bottomAnchor];
-    v63 = [v65 constraintEqualToAnchor:v64];
+    bottomAnchor3 = [v28 bottomAnchor];
+    bottomAnchor4 = [(CarStatusBannerLabel *)v9 bottomAnchor];
+    v63 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v77[5] = v63;
     v77[6] = v9->_leadingConstraint;
     v77[7] = v9->_trailingConstraint;
-    v62 = [v28 centerXAnchor];
-    v61 = [(CarStatusBannerLabel *)v9 centerXAnchor];
-    v50 = [v62 constraintEqualToAnchor:v61];
+    centerXAnchor = [v28 centerXAnchor];
+    centerXAnchor2 = [(CarStatusBannerLabel *)v9 centerXAnchor];
+    v50 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v77[8] = v50;
-    v51 = [v28 heightAnchor];
-    v52 = [v51 constraintEqualToConstant:20.0];
+    heightAnchor = [v28 heightAnchor];
+    v52 = [heightAnchor constraintEqualToConstant:20.0];
     v77[9] = v52;
-    v53 = [(UIImageView *)v9->_chevronImageView widthAnchor];
-    v54 = [v53 constraintEqualToConstant:14.0];
+    widthAnchor2 = [(UIImageView *)v9->_chevronImageView widthAnchor];
+    v54 = [widthAnchor2 constraintEqualToConstant:14.0];
     v77[10] = v54;
-    v55 = [(UIImageView *)v9->_chevronImageView heightAnchor];
-    v56 = [v55 constraintEqualToConstant:14.0];
+    heightAnchor2 = [(UIImageView *)v9->_chevronImageView heightAnchor];
+    v56 = [heightAnchor2 constraintEqualToConstant:14.0];
     v77[11] = v56;
     v57 = [NSArray arrayWithObjects:v77 count:12];
     [NSLayoutConstraint activateConstraints:v57];
@@ -370,7 +370,7 @@ LABEL_6:
     v9->_disableBlur = GEOConfigGetBOOL();
     [(CarStatusBannerLabel *)v9 reloadContent];
 
-    v4 = v75;
+    controllerCopy = v75;
   }
 
   return v9;

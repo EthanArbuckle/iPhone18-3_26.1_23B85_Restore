@@ -1,65 +1,65 @@
 @interface PKPassSharePreviewViewController
-- (PKPassSharePreviewViewController)initWithSharesController:(id)a3 context:(id)a4 delegate:(id)a5;
-- (id)searchController:(id)a3 composeRecipientForAddress:(id)a4;
+- (PKPassSharePreviewViewController)initWithSharesController:(id)controller context:(id)context delegate:(id)delegate;
+- (id)searchController:(id)controller composeRecipientForAddress:(id)address;
 - (void)_cancelPressed;
 - (void)_continueButtonPressed;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
 - (void)contextDidChange;
-- (void)didTapTextViewAccessoryButtonForSearchController:(id)a3 anchoredToView:(id)a4;
+- (void)didTapTextViewAccessoryButtonForSearchController:(id)controller anchoredToView:(id)view;
 - (void)loadView;
-- (void)searchController:(id)a3 didAddRecipient:(id)a4;
-- (void)setShowHeaderSpinner:(BOOL)a3;
-- (void)sharePreviewSectionControllerDidSelectEntitlements:(id)a3;
-- (void)sharePreviewSectionControllerDidSelectShowContactPicker:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)searchController:(id)controller didAddRecipient:(id)recipient;
+- (void)setShowHeaderSpinner:(BOOL)spinner;
+- (void)sharePreviewSectionControllerDidSelectEntitlements:(id)entitlements;
+- (void)sharePreviewSectionControllerDidSelectShowContactPicker:(id)picker;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKPassSharePreviewViewController
 
-- (PKPassSharePreviewViewController)initWithSharesController:(id)a3 context:(id)a4 delegate:(id)a5
+- (PKPassSharePreviewViewController)initWithSharesController:(id)controller context:(id)context delegate:(id)delegate
 {
   v37[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  contextCopy = context;
+  delegateCopy = delegate;
   v36.receiver = self;
   v36.super_class = PKPassSharePreviewViewController;
   v12 = [(PKPaymentSetupOptionsViewController *)&v36 initWithContext:0];
   v13 = v12;
   if (v12)
   {
-    v35 = v10;
-    objc_storeStrong(&v12->_sharesController, a3);
-    objc_storeStrong(&v13->_context, a4);
-    objc_storeWeak(&v13->_delegate, v11);
+    v35 = contextCopy;
+    objc_storeStrong(&v12->_sharesController, controller);
+    objc_storeStrong(&v13->_context, context);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
     v14 = objc_alloc_init(PKPassSnapshotter);
     passSnapshotter = v13->_passSnapshotter;
     v13->_passSnapshotter = v14;
 
     v16 = objc_alloc(MEMORY[0x1E69B8A38]);
-    v17 = [(PKPassShareInitiationContext *)v13->_context composedShare];
-    v18 = [v17 sharedEntitlements];
-    v19 = [(PKSharedPassSharesController *)v13->_sharesController shareableEntitlements];
-    v20 = [(PKSharedPassSharesController *)v13->_sharesController possiblePredefinedEntitlements];
-    v21 = [v16 initWithSharedEntitlements:v18 availableEntitlements:v19 predefinedSharedEntitlements:v20 editable:1];
+    composedShare = [(PKPassShareInitiationContext *)v13->_context composedShare];
+    sharedEntitlements = [composedShare sharedEntitlements];
+    shareableEntitlements = [(PKSharedPassSharesController *)v13->_sharesController shareableEntitlements];
+    possiblePredefinedEntitlements = [(PKSharedPassSharesController *)v13->_sharesController possiblePredefinedEntitlements];
+    v21 = [v16 initWithSharedEntitlements:sharedEntitlements availableEntitlements:shareableEntitlements predefinedSharedEntitlements:possiblePredefinedEntitlements editable:1];
     entitlementComposer = v13->_entitlementComposer;
     v13->_entitlementComposer = v21;
 
     [(PKPassEntitlementsComposer *)v13->_entitlementComposer setMaxSelectionCount:[(PKSharedPassSharesController *)v13->_sharesController maxEntitlementSelectionCount]];
-    v23 = [(PKPassEntitlementsComposer *)v13->_entitlementComposer predefinedEntitlementEntries];
-    if ([v23 count])
+    predefinedEntitlementEntries = [(PKPassEntitlementsComposer *)v13->_entitlementComposer predefinedEntitlementEntries];
+    if ([predefinedEntitlementEntries count])
     {
       v24 = v13->_entitlementComposer;
-      v25 = [v23 objectAtIndexedSubscript:0];
+      v25 = [predefinedEntitlementEntries objectAtIndexedSubscript:0];
       v26 = [(PKPassEntitlementsComposer *)v24 viewForPredefined:v25];
 
       [v26 setEnabled:1];
     }
 
     v27 = [PKSharePreviewOverviewSectionController alloc];
-    v28 = [(PKSharedPassSharesController *)v13->_sharesController pass];
-    v10 = v35;
-    v29 = -[PKSharePreviewOverviewSectionController initWithInitiationContext:accessType:entitlementComposer:delegate:](v27, "initWithInitiationContext:accessType:entitlementComposer:delegate:", v35, [v28 accessType], v13->_entitlementComposer, v13);
+    pass = [(PKSharedPassSharesController *)v13->_sharesController pass];
+    contextCopy = v35;
+    v29 = -[PKSharePreviewOverviewSectionController initWithInitiationContext:accessType:entitlementComposer:delegate:](v27, "initWithInitiationContext:accessType:entitlementComposer:delegate:", v35, [pass accessType], v13->_entitlementComposer, v13);
     overviewSectionController = v13->_overviewSectionController;
     v13->_overviewSectionController = v29;
 
@@ -83,26 +83,26 @@
   v30.receiver = self;
   v30.super_class = PKPassSharePreviewViewController;
   [(PKDynamicCollectionViewController *)&v30 loadView];
-  v3 = [(PKPassSharePreviewViewController *)self navigationItem];
+  navigationItem = [(PKPassSharePreviewViewController *)self navigationItem];
   v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancelPressed];
-  [v3 setLeftBarButtonItem:v4];
+  [navigationItem setLeftBarButtonItem:v4];
 
   v5 = objc_alloc(MEMORY[0x1E69DC708]);
   v6 = PKLocalizedPaymentString(&cfstr_Continue.isa);
   v7 = [v5 initWithTitle:v6 style:0 target:self action:sel__continueButtonPressed];
-  [v3 setRightBarButtonItem:v7];
+  [navigationItem setRightBarButtonItem:v7];
 
-  v8 = [(PKSharedPassSharesController *)self->_sharesController pass];
+  pass = [(PKSharedPassSharesController *)self->_sharesController pass];
   v9 = PKLocalizationKeyForPassType();
   v10 = PKLocalizedShareableCredentialString(v9);
   [(PKPaymentSetupOptionsViewController *)self setTitleText:v10];
 
   v11 = PKLocalizationKeyForPassType();
-  v12 = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
-  [v12 shareability];
+  globalView = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
+  [globalView shareability];
   CanAllowResharing = PKSharingCapabilityShareabilityCanAllowResharing();
 
-  if ([v8 isCarKeyPass] && CanAllowResharing)
+  if ([pass isCarKeyPass] && CanAllowResharing)
   {
     v14 = [v11 stringByAppendingString:@"_VEHICLE"];
 
@@ -112,30 +112,30 @@
   v15 = PKLocalizedShareableCredentialString(v11);
   [(PKPaymentSetupOptionsViewController *)self setSubtitleText:v15];
 
-  v16 = [(PKPaymentSetupOptionsViewController *)self headerView];
+  headerView = [(PKPaymentSetupOptionsViewController *)self headerView];
   v17 = [[PKHeroCardExplanationHeaderView alloc] initWithImage:0];
   [(PKHeroCardExplanationHeaderView *)v17 setPadding:1];
-  v18 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(PKHeroCardExplanationHeaderView *)v17 setBackgroundColor:v18];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(PKHeroCardExplanationHeaderView *)v17 setBackgroundColor:systemBackgroundColor];
 
   [(PKHeroCardExplanationHeaderView *)v17 setSize:0];
-  [v16 setTopArtView:v17];
+  [headerView setTopArtView:v17];
   passSnapshotter = self->_passSnapshotter;
-  v20 = [(PKSharedPassSharesController *)self->_sharesController pass];
+  pass2 = [(PKSharedPassSharesController *)self->_sharesController pass];
   v24 = MEMORY[0x1E69E9820];
   v25 = 3221225472;
   v26 = __44__PKPassSharePreviewViewController_loadView__block_invoke;
   v27 = &unk_1E8010AB0;
   v28 = v17;
-  v29 = self;
+  selfCopy = self;
   v21 = v17;
-  [(PKPassSnapshotter *)passSnapshotter snapshotWithPass:v20 size:&v24 completion:142.0, 90.0];
+  [(PKPassSnapshotter *)passSnapshotter snapshotWithPass:pass2 size:&v24 completion:142.0, 90.0];
 
-  [v16 setAdditionalBottomPadding:{5.0, v24, v25, v26, v27}];
-  v22 = [(PKPaymentSetupOptionsViewController *)self dockView];
-  v23 = [v22 footerView];
-  [v22 setPrimaryButton:0];
-  [v23 setSetUpLaterButton:0];
+  [headerView setAdditionalBottomPadding:{5.0, v24, v25, v26, v27}];
+  dockView = [(PKPaymentSetupOptionsViewController *)self dockView];
+  footerView = [dockView footerView];
+  [dockView setPrimaryButton:0];
+  [footerView setSetUpLaterButton:0];
 }
 
 void __44__PKPassSharePreviewViewController_loadView__block_invoke(uint64_t a1, void *a2)
@@ -159,22 +159,22 @@ void __44__PKPassSharePreviewViewController_loadView__block_invoke_2(uint64_t a1
   [v2 setNeedsLayout];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKPassSharePreviewViewController;
-  [(PKPaymentSetupOptionsViewController *)&v5 viewWillAppear:a3];
+  [(PKPaymentSetupOptionsViewController *)&v5 viewWillAppear:appear];
   [(PKPassSharePreviewViewController *)self contextDidChange];
-  v4 = [(PKPassSharePreviewViewController *)self sheetPresentationController];
-  [v4 setDelegate:self];
+  sheetPresentationController = [(PKPassSharePreviewViewController *)self sheetPresentationController];
+  [sheetPresentationController setDelegate:self];
 }
 
 - (void)_continueButtonPressed
 {
   context = self->_context;
   v8 = 0;
-  v4 = [(PKSharedPassSharesController *)self->_sharesController pass];
-  v5 = [(PKPassShareInitiationContext *)context isShareConfiguredEnoughToBeSentOverChannelWithDisplayableError:&v8 pass:v4];
+  pass = [(PKSharedPassSharesController *)self->_sharesController pass];
+  v5 = [(PKPassShareInitiationContext *)context isShareConfiguredEnoughToBeSentOverChannelWithDisplayableError:&v8 pass:pass];
   v6 = v8;
 
   if (v5)
@@ -199,15 +199,15 @@ void __44__PKPassSharePreviewViewController_loadView__block_invoke_2(uint64_t a1
 - (void)contextDidChange
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPassEntitlementsComposer *)self->_entitlementComposer composeSharedEntitlements];
-  v4 = [(PKPassShareInitiationContext *)self->_context composedShare];
-  [v4 setSharedEntitlements:v3];
+  composeSharedEntitlements = [(PKPassEntitlementsComposer *)self->_entitlementComposer composeSharedEntitlements];
+  composedShare = [(PKPassShareInitiationContext *)self->_context composedShare];
+  [composedShare setSharedEntitlements:composeSharedEntitlements];
 
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = composeSharedEntitlements;
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Entitlements To Shares: %@", &v6, 0xCu);
   }
 
@@ -215,24 +215,24 @@ void __44__PKPassSharePreviewViewController_loadView__block_invoke_2(uint64_t a1
   [(PKSharePreviewOverviewSectionController *)self->_overviewSectionController reloadItemsAnimated:0];
 }
 
-- (void)setShowHeaderSpinner:(BOOL)a3
+- (void)setShowHeaderSpinner:(BOOL)spinner
 {
-  v3 = a3;
+  spinnerCopy = spinner;
   v9.receiver = self;
   v9.super_class = PKPassSharePreviewViewController;
   [(PKPaymentSetupOptionsViewController *)&v9 setShowHeaderSpinner:?];
-  v5 = [(PKPassSharePreviewViewController *)self navigationItem];
-  v6 = [v5 rightBarButtonItem];
-  [v6 setEnabled:!v3];
+  navigationItem = [(PKPassSharePreviewViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:!spinnerCopy];
 
-  v7 = [v5 leftBarButtonItem];
-  [v7 setEnabled:!v3];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  [leftBarButtonItem setEnabled:!spinnerCopy];
 
-  v8 = [(PKPassSharePreviewViewController *)self view];
-  [v8 setUserInteractionEnabled:!v3];
+  view = [(PKPassSharePreviewViewController *)self view];
+  [view setUserInteractionEnabled:!spinnerCopy];
 }
 
-- (void)sharePreviewSectionControllerDidSelectShowContactPicker:(id)a3
+- (void)sharePreviewSectionControllerDidSelectShowContactPicker:(id)picker
 {
   v4 = [objc_alloc(MEMORY[0x1E69963C0]) initWithSearchType:5];
   contactSearchController = self->_contactSearchController;
@@ -243,83 +243,83 @@ void __44__PKPassSharePreviewViewController_loadView__block_invoke_2(uint64_t a1
   [(CNAutocompleteSearchController *)v6 setSuggestionsHeaderTitleOverride:v7];
 
   [(CNAutocompleteSearchController *)self->_contactSearchController setDelegate:self];
-  v11 = [(CNAutocompleteSearchController *)self->_contactSearchController navigationItem];
+  navigationItem = [(CNAutocompleteSearchController *)self->_contactSearchController navigationItem];
   v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__closeContactPicker];
-  [v11 setRightBarButtonItem:v8];
+  [navigationItem setRightBarButtonItem:v8];
 
   v9 = PKLocalizedShareableCredentialString(&cfstr_ShareOverviewS_1.isa);
-  [v11 setTitle:v9];
+  [navigationItem setTitle:v9];
 
   v10 = [[PKNavigationController alloc] initWithRootViewController:self->_contactSearchController];
   [(PKPassSharePreviewViewController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)sharePreviewSectionControllerDidSelectEntitlements:(id)a3
+- (void)sharePreviewSectionControllerDidSelectEntitlements:(id)entitlements
 {
-  v8 = [(PKSharedPassSharesController *)self->_sharesController pass];
-  v4 = [(PKPassEntitlementsComposer *)self->_entitlementComposer predefinedEntitlementEntries];
+  pass = [(PKSharedPassSharesController *)self->_sharesController pass];
+  predefinedEntitlementEntries = [(PKPassEntitlementsComposer *)self->_entitlementComposer predefinedEntitlementEntries];
 
-  if (v4)
+  if (predefinedEntitlementEntries)
   {
-    v5 = [[PKPassSharePredefinedEntitlementSelectionViewController alloc] initWithMode:0 entitlementComposer:self->_entitlementComposer pass:v8];
+    v5 = [[PKPassSharePredefinedEntitlementSelectionViewController alloc] initWithMode:0 entitlementComposer:self->_entitlementComposer pass:pass];
   }
 
   else
   {
-    v5 = -[PKPassShareEntitlementSelectionViewController initWithAccessType:mode:entitlementComposer:]([PKPassShareEntitlementSelectionViewController alloc], "initWithAccessType:mode:entitlementComposer:", [v8 accessType], 0, self->_entitlementComposer);
+    v5 = -[PKPassShareEntitlementSelectionViewController initWithAccessType:mode:entitlementComposer:]([PKPassShareEntitlementSelectionViewController alloc], "initWithAccessType:mode:entitlementComposer:", [pass accessType], 0, self->_entitlementComposer);
   }
 
   v6 = v5;
-  v7 = [(PKPassSharePreviewViewController *)self navigationController];
-  [v7 pushViewController:v6 animated:1];
+  navigationController = [(PKPassSharePreviewViewController *)self navigationController];
+  [navigationController pushViewController:v6 animated:1];
 }
 
-- (id)searchController:(id)a3 composeRecipientForAddress:(id)a4
+- (id)searchController:(id)controller composeRecipientForAddress:(id)address
 {
   v4 = MEMORY[0x1E6996408];
-  v5 = a4;
-  v6 = [[v4 alloc] initWithContact:0 address:v5 kind:2];
+  addressCopy = address;
+  v6 = [[v4 alloc] initWithContact:0 address:addressCopy kind:2];
 
   return v6;
 }
 
-- (void)searchController:(id)a3 didAddRecipient:(id)a4
+- (void)searchController:(id)controller didAddRecipient:(id)recipient
 {
-  v10 = a4;
-  [a3 dismissViewControllerAnimated:1 completion:0];
-  v6 = [v10 displayString];
-  if (![v6 length])
+  recipientCopy = recipient;
+  [controller dismissViewControllerAnimated:1 completion:0];
+  displayString = [recipientCopy displayString];
+  if (![displayString length])
   {
-    v7 = [v10 address];
+    address = [recipientCopy address];
 
-    v6 = v7;
+    displayString = address;
   }
 
   context = self->_context;
-  v9 = [v10 contact];
-  [(PKPassShareInitiationContext *)context setRecipient:v9 fallbackNickname:v6];
+  contact = [recipientCopy contact];
+  [(PKPassShareInitiationContext *)context setRecipient:contact fallbackNickname:displayString];
 
   [(PKPassSharePreviewViewController *)self contextDidChange];
 }
 
-- (void)didTapTextViewAccessoryButtonForSearchController:(id)a3 anchoredToView:(id)a4
+- (void)didTapTextViewAccessoryButtonForSearchController:(id)controller anchoredToView:(id)view
 {
   v5 = MEMORY[0x1E695D120];
-  v6 = a4;
+  viewCopy = view;
   v8 = [[v5 alloc] initWithNibName:0 bundle:0];
   [v8 setDelegate:self];
   [v8 setEditing:0];
-  v7 = [v8 popoverPresentationController];
-  [v7 setSourceView:v6];
+  popoverPresentationController = [v8 popoverPresentationController];
+  [popoverPresentationController setSourceView:viewCopy];
 
   [(CNAutocompleteSearchController *)self->_contactSearchController presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
   v5 = MEMORY[0x1E6996408];
-  v6 = a4;
-  v7 = [[v5 alloc] initWithContact:v6 address:0 kind:2];
+  contactCopy = contact;
+  v7 = [[v5 alloc] initWithContact:contactCopy address:0 kind:2];
 
   [(PKPassSharePreviewViewController *)self searchController:self->_contactSearchController didAddRecipient:v7];
 }

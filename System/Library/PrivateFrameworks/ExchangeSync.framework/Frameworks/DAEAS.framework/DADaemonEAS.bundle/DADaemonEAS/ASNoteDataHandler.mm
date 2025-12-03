@@ -2,35 +2,35 @@
 - (BOOL)saveContainer;
 - (BOOL)wipeServerIds;
 - (id)copyOfAllLocalObjectsInContainer;
-- (int)getIdFromLocalObject:(void *)a3;
+- (int)getIdFromLocalObject:(void *)object;
 - (void)drainContainer;
 - (void)openDB;
 @end
 
 @implementation ASNoteDataHandler
 
-- (int)getIdFromLocalObject:(void *)a3
+- (int)getIdFromLocalObject:(void *)object
 {
-  v3 = [a3 integerId];
-  v4 = [v3 intValue];
+  integerId = [object integerId];
+  intValue = [integerId intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (BOOL)saveContainer
 {
   v2 = +[ASLocalDBHelper sharedInstance];
-  v3 = [v2 noteSaveDB];
+  noteSaveDB = [v2 noteSaveDB];
 
-  return v3;
+  return noteSaveDB;
 }
 
 - (id)copyOfAllLocalObjectsInContainer
 {
   v3 = +[ASLocalDBHelper sharedInstance];
-  v4 = [v3 noteDB];
+  noteDB = [v3 noteDB];
 
-  v5 = [v4 allVisibleNotesInCollection:*&self->super.ESDataHandler_opaque[OBJC_IVAR___ESDataHandler__container]];
+  v5 = [noteDB allVisibleNotesInCollection:*&self->super.ESDataHandler_opaque[OBJC_IVAR___ESDataHandler__container]];
 
   return v5;
 }
@@ -41,8 +41,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(ASNoteDataHandler *)self copyOfAllLocalObjectsInContainer];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  copyOfAllLocalObjectsInContainer = [(ASNoteDataHandler *)self copyOfAllLocalObjectsInContainer];
+  v3 = [copyOfAllLocalObjectsInContainer countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -54,20 +54,20 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(copyOfAllLocalObjectsInContainer);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v8 serverId];
+        serverId = [v8 serverId];
 
-        if (v9)
+        if (serverId)
         {
           [v8 setServerId:0];
           v5 = 1;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [copyOfAllLocalObjectsInContainer countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -84,14 +84,14 @@
 - (void)drainContainer
 {
   v3 = +[ASLocalDBHelper sharedInstance];
-  v4 = [v3 noteDB];
+  noteDB = [v3 noteDB];
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(ASNoteDataHandler *)self copyOfAllLocalObjectsInContainer];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  copyOfAllLocalObjectsInContainer = [(ASNoteDataHandler *)self copyOfAllLocalObjectsInContainer];
+  v6 = [copyOfAllLocalObjectsInContainer countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -102,19 +102,19 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(copyOfAllLocalObjectsInContainer);
         }
 
-        [v4 deleteNoteRegardlessOfConstraints:*(*(&v10 + 1) + 8 * i)];
+        [noteDB deleteNoteRegardlessOfConstraints:*(*(&v10 + 1) + 8 * i)];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [copyOfAllLocalObjectsInContainer countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
 
-    v5 = +[ASLocalDBHelper sharedInstance];
-    [v5 noteSaveDB];
+    copyOfAllLocalObjectsInContainer = +[ASLocalDBHelper sharedInstance];
+    [copyOfAllLocalObjectsInContainer noteSaveDB];
   }
 }
 

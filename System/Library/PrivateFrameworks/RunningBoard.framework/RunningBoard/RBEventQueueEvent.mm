@@ -1,14 +1,14 @@
 @interface RBEventQueueEvent
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation RBEventQueueEvent
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   eventTime = self->_eventTime;
-  v4 = *(a3 + 2);
+  v4 = *(compare + 2);
   if (eventTime < v4)
   {
     return -1;

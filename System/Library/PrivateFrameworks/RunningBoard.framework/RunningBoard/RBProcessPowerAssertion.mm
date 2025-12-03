@@ -1,5 +1,5 @@
 @interface RBProcessPowerAssertion
-- (id)initWithProcess:(id *)a1;
+- (id)initWithProcess:(id *)process;
 - (int)_targetPid;
 @end
 
@@ -17,26 +17,26 @@
   return [(RBProcess *)process rbs_pid];
 }
 
-- (id)initWithProcess:(id *)a1
+- (id)initWithProcess:(id *)process
 {
   v4 = a2;
-  if (a1)
+  if (process)
   {
-    v10.receiver = a1;
+    v10.receiver = process;
     v10.super_class = RBProcessPowerAssertion;
     v5 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v5;
+    process = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 7, a2);
-      v6 = [a1[7] identity];
-      v7 = [v6 shortDescription];
-      v8 = a1[4];
-      a1[4] = v7;
+      identity = [process[7] identity];
+      shortDescription = [identity shortDescription];
+      v8 = process[4];
+      process[4] = shortDescription;
     }
   }
 
-  return a1;
+  return process;
 }
 
 @end

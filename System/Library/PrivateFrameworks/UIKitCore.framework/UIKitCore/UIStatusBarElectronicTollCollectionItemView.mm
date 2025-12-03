@@ -1,14 +1,14 @@
 @interface UIStatusBarElectronicTollCollectionItemView
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4;
-- (double)alphaForAvailable:(BOOL)a3;
-- (void)setVisible:(BOOL)a3;
+- (BOOL)updateForNewData:(id)data actions:(int)actions;
+- (double)alphaForAvailable:(BOOL)available;
+- (void)setVisible:(BOOL)visible;
 @end
 
 @implementation UIStatusBarElectronicTollCollectionItemView
 
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4
+- (BOOL)updateForNewData:(id)data actions:(int)actions
 {
-  v5 = *([a3 rawData] + 3149) & 1;
+  v5 = *([data rawData] + 3149) & 1;
   if (v5 != self->_available)
   {
     self->_available = v5;
@@ -18,12 +18,12 @@
   return 0;
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  v3 = a3;
-  [(UIStatusBarItemView *)self setVisible:a3 settingAlpha:0];
+  visibleCopy = visible;
+  [(UIStatusBarItemView *)self setVisible:visible settingAlpha:0];
   v5 = 0.0;
-  if (v3)
+  if (visibleCopy)
   {
     [(UIStatusBarElectronicTollCollectionItemView *)self alphaForAvailable:self->_available, 0.0];
   }
@@ -31,10 +31,10 @@
   [(UIView *)self setAlpha:v5];
 }
 
-- (double)alphaForAvailable:(BOOL)a3
+- (double)alphaForAvailable:(BOOL)available
 {
   result = 0.4;
-  if (a3)
+  if (available)
   {
     return 1.0;
   }

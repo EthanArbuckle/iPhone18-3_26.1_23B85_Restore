@@ -6,22 +6,22 @@
 
 - (uint64_t)shiftItem:()PXZoomablePhotosContentLayoutAdoption toColumn:topPaddingRows:hideIncompleteRows:
 {
-  v12 = [a1 numberOfColumns];
-  v13 = v12;
-  v14 = v12 - 1;
-  if (v12 - 1 >= a4)
+  numberOfColumns = [self numberOfColumns];
+  v13 = numberOfColumns;
+  v14 = numberOfColumns - 1;
+  if (numberOfColumns - 1 >= a4)
   {
     v14 = a4;
   }
 
-  v15 = (v14 & ~(v14 >> 63)) + a3 / v12 * v12 - a3;
+  v15 = (v14 & ~(v14 >> 63)) + a3 / numberOfColumns * numberOfColumns - a3;
   if (v15 < 0)
   {
-    v15 += v12;
+    v15 += numberOfColumns;
     if (v15 < 0)
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
-      [v18 handleFailureInMethod:a2 object:a1 file:@"PXZoomablePhotosContentLayout.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"visualItemShift >= 0"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosContentLayout.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"visualItemShift >= 0"}];
     }
   }
 
@@ -35,7 +35,7 @@
     v16 = 0;
   }
 
-  [a1 setVisualItemShift:v15 + v13 * a5 - v16];
+  [self setVisualItemShift:v15 + v13 * a5 - v16];
   return 1;
 }
 

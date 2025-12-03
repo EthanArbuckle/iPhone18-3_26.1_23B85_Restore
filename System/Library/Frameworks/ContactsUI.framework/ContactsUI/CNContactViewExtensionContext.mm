@@ -1,25 +1,25 @@
 @interface CNContactViewExtensionContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (BOOL)shouldPerformDefaultActionForContact:(id)a3 propertyKey:(id)a4 propertyIdentifier:(id)a5;
+- (BOOL)shouldPerformDefaultActionForContact:(id)contact propertyKey:(id)key propertyIdentifier:(id)identifier;
 - (id)host;
-- (void)asyncShouldPerformDefaultActionForContact:(id)a3 propertyKey:(id)a4 propertyIdentifier:(id)a5;
-- (void)asyncShouldPerformDefaultActionResponse:(BOOL)a3;
-- (void)didChangePreferredContentSize:(CGSize)a3;
-- (void)didChangeToEditMode:(BOOL)a3;
-- (void)didChangeToShowTitle:(BOOL)a3;
-- (void)didCompleteWithContact:(id)a3;
-- (void)didDeleteContact:(id)a3;
+- (void)asyncShouldPerformDefaultActionForContact:(id)contact propertyKey:(id)key propertyIdentifier:(id)identifier;
+- (void)asyncShouldPerformDefaultActionResponse:(BOOL)response;
+- (void)didChangePreferredContentSize:(CGSize)size;
+- (void)didChangeToEditMode:(BOOL)mode;
+- (void)didChangeToShowTitle:(BOOL)title;
+- (void)didCompleteWithContact:(id)contact;
+- (void)didDeleteContact:(id)contact;
 - (void)didExecuteClearRecentsDataAction;
 - (void)didExecuteDeleteFromDowntimeWhitelistAction;
 - (void)editCancel;
-- (void)isPresentingEditingController:(BOOL)a3;
-- (void)isPresentingFullscreen:(BOOL)a3;
+- (void)isPresentingEditingController:(BOOL)controller;
+- (void)isPresentingFullscreen:(BOOL)fullscreen;
 - (void)performConfirmedCancel;
 - (void)presentCancelConfirmationAlert;
-- (void)setupWithOptions:(id)a3 readyBlock:(id)a4;
+- (void)setupWithOptions:(id)options readyBlock:(id)block;
 - (void)toggleEditing;
-- (void)updateEditing:(BOOL)a3 doneButtonEnabled:(BOOL)a4 doneButtonText:(id)a5;
+- (void)updateEditing:(BOOL)editing doneButtonEnabled:(BOOL)enabled doneButtonText:(id)text;
 - (void)viewDidAppear;
 @end
 
@@ -79,7 +79,7 @@ void __66__CNContactViewExtensionContext__extensionAuxiliaryVendorProtocol__bloc
   [v15 setClasses:v14 forSelector:sel_setupWithOptions_readyBlock_ argumentIndex:0 ofReply:0];
 }
 
-- (void)asyncShouldPerformDefaultActionForContact:(id)a3 propertyKey:(id)a4 propertyIdentifier:(id)a5
+- (void)asyncShouldPerformDefaultActionForContact:(id)contact propertyKey:(id)key propertyIdentifier:(id)identifier
 {
   v5 = CNUILogViewService();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -91,99 +91,99 @@ void __66__CNContactViewExtensionContext__extensionAuxiliaryVendorProtocol__bloc
 
 - (void)presentCancelConfirmationAlert
 {
-  v2 = [(CNContactViewExtensionContext *)self host];
-  [v2 presentCancelConfirmationAlert];
+  host = [(CNContactViewExtensionContext *)self host];
+  [host presentCancelConfirmationAlert];
 }
 
 - (void)didExecuteDeleteFromDowntimeWhitelistAction
 {
-  v2 = [(CNContactViewExtensionContext *)self host];
-  [v2 didExecuteDeleteFromDowntimeWhitelistAction];
+  host = [(CNContactViewExtensionContext *)self host];
+  [host didExecuteDeleteFromDowntimeWhitelistAction];
 }
 
 - (void)didExecuteClearRecentsDataAction
 {
-  v2 = [(CNContactViewExtensionContext *)self host];
-  [v2 didExecuteClearRecentsDataAction];
+  host = [(CNContactViewExtensionContext *)self host];
+  [host didExecuteClearRecentsDataAction];
 }
 
 - (void)viewDidAppear
 {
-  v2 = [(CNContactViewExtensionContext *)self host];
-  [v2 viewDidAppear];
+  host = [(CNContactViewExtensionContext *)self host];
+  [host viewDidAppear];
 }
 
-- (void)didChangePreferredContentSize:(CGSize)a3
+- (void)didChangePreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CNContactViewExtensionContext *)self host];
-  [v5 didChangePreferredContentSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  host = [(CNContactViewExtensionContext *)self host];
+  [host didChangePreferredContentSize:{width, height}];
 }
 
-- (void)isPresentingEditingController:(BOOL)a3
+- (void)isPresentingEditingController:(BOOL)controller
 {
-  v3 = a3;
-  v4 = [(CNContactViewExtensionContext *)self host];
-  [v4 isPresentingEditingController:v3];
+  controllerCopy = controller;
+  host = [(CNContactViewExtensionContext *)self host];
+  [host isPresentingEditingController:controllerCopy];
 }
 
-- (void)isPresentingFullscreen:(BOOL)a3
+- (void)isPresentingFullscreen:(BOOL)fullscreen
 {
-  v3 = a3;
-  v4 = [(CNContactViewExtensionContext *)self host];
-  [v4 isPresentingFullscreen:v3];
+  fullscreenCopy = fullscreen;
+  host = [(CNContactViewExtensionContext *)self host];
+  [host isPresentingFullscreen:fullscreenCopy];
 }
 
-- (void)didDeleteContact:(id)a3
+- (void)didDeleteContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNContactViewExtensionContext *)self host];
-  [v5 didDeleteContact:v4];
+  contactCopy = contact;
+  host = [(CNContactViewExtensionContext *)self host];
+  [host didDeleteContact:contactCopy];
 }
 
-- (void)didCompleteWithContact:(id)a3
+- (void)didCompleteWithContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNContactViewExtensionContext *)self host];
-  [v5 didCompleteWithContact:v4];
+  contactCopy = contact;
+  host = [(CNContactViewExtensionContext *)self host];
+  [host didCompleteWithContact:contactCopy];
 }
 
-- (void)updateEditing:(BOOL)a3 doneButtonEnabled:(BOOL)a4 doneButtonText:(id)a5
+- (void)updateEditing:(BOOL)editing doneButtonEnabled:(BOOL)enabled doneButtonText:(id)text
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [(CNContactViewExtensionContext *)self host];
-  [v9 updateEditing:v6 doneButtonEnabled:v5 doneButtonText:v8];
+  enabledCopy = enabled;
+  editingCopy = editing;
+  textCopy = text;
+  host = [(CNContactViewExtensionContext *)self host];
+  [host updateEditing:editingCopy doneButtonEnabled:enabledCopy doneButtonText:textCopy];
 }
 
-- (BOOL)shouldPerformDefaultActionForContact:(id)a3 propertyKey:(id)a4 propertyIdentifier:(id)a5
+- (BOOL)shouldPerformDefaultActionForContact:(id)contact propertyKey:(id)key propertyIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  identifierCopy = identifier;
+  keyCopy = key;
+  contactCopy = contact;
   v11 = dispatch_semaphore_create(0);
   [(CNContactViewExtensionContext *)self setAsyncShouldPerformSemaphore:v11];
 
   [(CNContactViewExtensionContext *)self setAsyncShouldPerformResponse:1];
-  v12 = [(CNContactViewExtensionContext *)self host];
-  [v12 asyncShouldPerformDefaultActionForContact:v10 propertyKey:v9 propertyIdentifier:v8];
+  host = [(CNContactViewExtensionContext *)self host];
+  [host asyncShouldPerformDefaultActionForContact:contactCopy propertyKey:keyCopy propertyIdentifier:identifierCopy];
 
-  v13 = [(CNContactViewExtensionContext *)self asyncShouldPerformSemaphore];
+  asyncShouldPerformSemaphore = [(CNContactViewExtensionContext *)self asyncShouldPerformSemaphore];
 
-  if (v13)
+  if (asyncShouldPerformSemaphore)
   {
-    v14 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v15 = [v14 timeProvider];
-    [v15 timestamp];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    timeProvider = [currentEnvironment timeProvider];
+    [timeProvider timestamp];
     v17 = v16;
 
-    v18 = [(CNContactViewExtensionContext *)self asyncShouldPerformSemaphore];
-    LOBYTE(v15) = CNDispatchSemaphoreWait();
+    asyncShouldPerformSemaphore2 = [(CNContactViewExtensionContext *)self asyncShouldPerformSemaphore];
+    LOBYTE(timeProvider) = CNDispatchSemaphoreWait();
 
-    if ((v15 & 1) == 0)
+    if ((timeProvider & 1) == 0)
     {
       v24 = CNUILogViewService();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
@@ -195,9 +195,9 @@ void __66__CNContactViewExtensionContext__extensionAuxiliaryVendorProtocol__bloc
       goto LABEL_8;
     }
 
-    v19 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v20 = [v19 timeProvider];
-    [v20 timestamp];
+    currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+    timeProvider2 = [currentEnvironment2 timeProvider];
+    [timeProvider2 timestamp];
     v22 = v21;
 
     v23 = v22 - v17;
@@ -219,15 +219,15 @@ LABEL_8:
   return [(CNContactViewExtensionContext *)self asyncShouldPerformResponse];
 }
 
-- (void)asyncShouldPerformDefaultActionResponse:(BOOL)a3
+- (void)asyncShouldPerformDefaultActionResponse:(BOOL)response
 {
-  [(CNContactViewExtensionContext *)self setAsyncShouldPerformResponse:a3];
-  v4 = [(CNContactViewExtensionContext *)self asyncShouldPerformSemaphore];
+  [(CNContactViewExtensionContext *)self setAsyncShouldPerformResponse:response];
+  asyncShouldPerformSemaphore = [(CNContactViewExtensionContext *)self asyncShouldPerformSemaphore];
 
-  if (v4)
+  if (asyncShouldPerformSemaphore)
   {
-    v5 = [(CNContactViewExtensionContext *)self asyncShouldPerformSemaphore];
-    dispatch_semaphore_signal(v5);
+    asyncShouldPerformSemaphore2 = [(CNContactViewExtensionContext *)self asyncShouldPerformSemaphore];
+    dispatch_semaphore_signal(asyncShouldPerformSemaphore2);
   }
 }
 
@@ -282,14 +282,14 @@ void __43__CNContactViewExtensionContext_editCancel__block_invoke(uint64_t a1)
   [v1 editCancel];
 }
 
-- (void)didChangeToShowTitle:(BOOL)a3
+- (void)didChangeToShowTitle:(BOOL)title
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __54__CNContactViewExtensionContext_didChangeToShowTitle___block_invoke;
   v3[3] = &unk_1E74E4768;
   v3[4] = self;
-  v4 = a3;
+  titleCopy = title;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
@@ -300,14 +300,14 @@ void __54__CNContactViewExtensionContext_didChangeToShowTitle___block_invoke(uin
   [v2 didChangeToShowTitle:*(a1 + 40)];
 }
 
-- (void)didChangeToEditMode:(BOOL)a3
+- (void)didChangeToEditMode:(BOOL)mode
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __53__CNContactViewExtensionContext_didChangeToEditMode___block_invoke;
   v3[3] = &unk_1E74E4768;
   v3[4] = self;
-  v4 = a3;
+  modeCopy = mode;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
@@ -318,19 +318,19 @@ void __53__CNContactViewExtensionContext_didChangeToEditMode___block_invoke(uint
   [v2 didChangeToEditMode:*(a1 + 40)];
 }
 
-- (void)setupWithOptions:(id)a3 readyBlock:(id)a4
+- (void)setupWithOptions:(id)options readyBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  blockCopy = block;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__CNContactViewExtensionContext_setupWithOptions_readyBlock___block_invoke;
   block[3] = &unk_1E74E6650;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = optionsCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = optionsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -375,13 +375,13 @@ void __61__CNContactViewExtensionContext_setupWithOptions_readyBlock___block_inv
 
 - (id)host
 {
-  v4 = [(CNContactViewExtensionContext *)self _auxiliaryConnection];
-  v5 = [v4 remoteObjectProxyWithErrorHandler:&__block_literal_global_118];
+  _auxiliaryConnection = [(CNContactViewExtensionContext *)self _auxiliaryConnection];
+  v5 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_118];
 
   if (!v5)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"CNContactViewServiceViewController.m" lineNumber:193 description:@"host object is nil!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContactViewServiceViewController.m" lineNumber:193 description:@"host object is nil!"];
   }
 
   return v5;

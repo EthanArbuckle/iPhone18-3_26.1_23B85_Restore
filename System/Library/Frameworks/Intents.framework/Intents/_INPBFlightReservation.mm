@@ -1,31 +1,31 @@
 @interface _INPBFlightReservation
-- (BOOL)isEqual:(id)a3;
-- (_INPBFlightReservation)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBFlightReservation)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBFlightReservation
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBFlightReservation *)self flight];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"flight"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  flight = [(_INPBFlightReservation *)self flight];
+  dictionaryRepresentation = [flight dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"flight"];
 
-  v6 = [(_INPBFlightReservation *)self reservation];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"reservation"];
+  reservation = [(_INPBFlightReservation *)self reservation];
+  dictionaryRepresentation2 = [reservation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"reservation"];
 
-  v8 = [(_INPBFlightReservation *)self reservedSeat];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"reservedSeat"];
+  reservedSeat = [(_INPBFlightReservation *)self reservedSeat];
+  dictionaryRepresentation3 = [reservedSeat dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"reservedSeat"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -35,28 +35,28 @@
   return v4 ^ [(_INPBSeat *)self->_reservedSeat hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBFlightReservation *)self flight];
-  v6 = [v4 flight];
-  if ((v5 != 0) == (v6 == 0))
+  flight = [(_INPBFlightReservation *)self flight];
+  flight2 = [equalCopy flight];
+  if ((flight != 0) == (flight2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBFlightReservation *)self flight];
-  if (v7)
+  flight3 = [(_INPBFlightReservation *)self flight];
+  if (flight3)
   {
-    v8 = v7;
-    v9 = [(_INPBFlightReservation *)self flight];
-    v10 = [v4 flight];
-    v11 = [v9 isEqual:v10];
+    v8 = flight3;
+    flight4 = [(_INPBFlightReservation *)self flight];
+    flight5 = [equalCopy flight];
+    v11 = [flight4 isEqual:flight5];
 
     if (!v11)
     {
@@ -68,20 +68,20 @@
   {
   }
 
-  v5 = [(_INPBFlightReservation *)self reservation];
-  v6 = [v4 reservation];
-  if ((v5 != 0) == (v6 == 0))
+  flight = [(_INPBFlightReservation *)self reservation];
+  flight2 = [equalCopy reservation];
+  if ((flight != 0) == (flight2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBFlightReservation *)self reservation];
-  if (v12)
+  reservation = [(_INPBFlightReservation *)self reservation];
+  if (reservation)
   {
-    v13 = v12;
-    v14 = [(_INPBFlightReservation *)self reservation];
-    v15 = [v4 reservation];
-    v16 = [v14 isEqual:v15];
+    v13 = reservation;
+    reservation2 = [(_INPBFlightReservation *)self reservation];
+    reservation3 = [equalCopy reservation];
+    v16 = [reservation2 isEqual:reservation3];
 
     if (!v16)
     {
@@ -93,12 +93,12 @@
   {
   }
 
-  v5 = [(_INPBFlightReservation *)self reservedSeat];
-  v6 = [v4 reservedSeat];
-  if ((v5 != 0) != (v6 == 0))
+  flight = [(_INPBFlightReservation *)self reservedSeat];
+  flight2 = [equalCopy reservedSeat];
+  if ((flight != 0) != (flight2 == 0))
   {
-    v17 = [(_INPBFlightReservation *)self reservedSeat];
-    if (!v17)
+    reservedSeat = [(_INPBFlightReservation *)self reservedSeat];
+    if (!reservedSeat)
     {
 
 LABEL_20:
@@ -106,10 +106,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_INPBFlightReservation *)self reservedSeat];
-    v20 = [v4 reservedSeat];
-    v21 = [v19 isEqual:v20];
+    v18 = reservedSeat;
+    reservedSeat2 = [(_INPBFlightReservation *)self reservedSeat];
+    reservedSeat3 = [equalCopy reservedSeat];
+    v21 = [reservedSeat2 isEqual:reservedSeat3];
 
     if (v21)
     {
@@ -129,73 +129,73 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBFlightReservation allocWithZone:](_INPBFlightReservation init];
-  v6 = [(_INPBFlight *)self->_flight copyWithZone:a3];
+  v6 = [(_INPBFlight *)self->_flight copyWithZone:zone];
   [(_INPBFlightReservation *)v5 setFlight:v6];
 
-  v7 = [(_INPBReservation *)self->_reservation copyWithZone:a3];
+  v7 = [(_INPBReservation *)self->_reservation copyWithZone:zone];
   [(_INPBFlightReservation *)v5 setReservation:v7];
 
-  v8 = [(_INPBSeat *)self->_reservedSeat copyWithZone:a3];
+  v8 = [(_INPBSeat *)self->_reservedSeat copyWithZone:zone];
   [(_INPBFlightReservation *)v5 setReservedSeat:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBFlightReservation *)self data];
+  coderCopy = coder;
+  data = [(_INPBFlightReservation *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBFlightReservation)initWithCoder:(id)a3
+- (_INPBFlightReservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBFlightReservation *)self initWithData:v6];
+    self = [(_INPBFlightReservation *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(_INPBFlightReservation *)self flight];
+  toCopy = to;
+  flight = [(_INPBFlightReservation *)self flight];
 
-  if (v4)
+  if (flight)
   {
-    v5 = [(_INPBFlightReservation *)self flight];
+    flight2 = [(_INPBFlightReservation *)self flight];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBFlightReservation *)self reservation];
+  reservation = [(_INPBFlightReservation *)self reservation];
 
-  if (v6)
+  if (reservation)
   {
-    v7 = [(_INPBFlightReservation *)self reservation];
+    reservation2 = [(_INPBFlightReservation *)self reservation];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBFlightReservation *)self reservedSeat];
+  reservedSeat = [(_INPBFlightReservation *)self reservedSeat];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (reservedSeat)
   {
-    v10 = [(_INPBFlightReservation *)self reservedSeat];
+    reservedSeat2 = [(_INPBFlightReservation *)self reservedSeat];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 

@@ -1,25 +1,25 @@
 @interface CRTextRecognizerModelEspressoInput
-- (CRTextRecognizerModelEspressoInput)initWithImgInput:(vImage_Buffer *)a3 batchSize:(unint64_t)a4 featureInfo:(id)a5;
+- (CRTextRecognizerModelEspressoInput)initWithImgInput:(vImage_Buffer *)input batchSize:(unint64_t)size featureInfo:(id)info;
 - (vImage_Buffer)img_input;
 - (void)dealloc;
 @end
 
 @implementation CRTextRecognizerModelEspressoInput
 
-- (CRTextRecognizerModelEspressoInput)initWithImgInput:(vImage_Buffer *)a3 batchSize:(unint64_t)a4 featureInfo:(id)a5
+- (CRTextRecognizerModelEspressoInput)initWithImgInput:(vImage_Buffer *)input batchSize:(unint64_t)size featureInfo:(id)info
 {
-  v9 = a5;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = CRTextRecognizerModelEspressoInput;
   v10 = [(CRTextRecognizerModelEspressoInput *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    v12 = *&a3->data;
-    *(v10 + 40) = *&a3->width;
+    v12 = *&input->data;
+    *(v10 + 40) = *&input->width;
     *(v10 + 24) = v12;
-    objc_storeStrong(v10 + 1, a5);
-    v11->_batchSize = a4;
+    objc_storeStrong(v10 + 1, info);
+    v11->_batchSize = size;
   }
 
   return v11;

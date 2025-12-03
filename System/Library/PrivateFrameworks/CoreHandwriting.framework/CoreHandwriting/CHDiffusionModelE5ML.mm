@@ -2,8 +2,8 @@
 + (id)defaultURLOfModelInThisBundle;
 + (id)inputNames;
 + (id)outputNames;
-- (CHDiffusionModelE5ML)initWithProgramLibrary:(id)a3 functionName:(id)a4 error:(id *)a5;
-- (CHDiffusionModelE5ML)initWithProgramLibrary:(id)a3 width:(unint64_t)a4;
+- (CHDiffusionModelE5ML)initWithProgramLibrary:(id)library functionName:(id)name error:(id *)error;
+- (CHDiffusionModelE5ML)initWithProgramLibrary:(id)library width:(unint64_t)width;
 - (id)createExecutionContext;
 @end
 
@@ -50,20 +50,20 @@
   return v4;
 }
 
-- (CHDiffusionModelE5ML)initWithProgramLibrary:(id)a3 width:(unint64_t)a4
+- (CHDiffusionModelE5ML)initWithProgramLibrary:(id)library width:(unint64_t)width
 {
-  v6 = a3;
-  v11 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"main_%zu", v8, v9, v10, a4);
-  v14 = objc_msgSend_initWithProgramLibrary_functionName_error_(self, v12, v6, v11, 0, v13);
+  libraryCopy = library;
+  v11 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"main_%zu", v8, v9, v10, width);
+  v14 = objc_msgSend_initWithProgramLibrary_functionName_error_(self, v12, libraryCopy, v11, 0, v13);
 
   return v14;
 }
 
-- (CHDiffusionModelE5ML)initWithProgramLibrary:(id)a3 functionName:(id)a4 error:(id *)a5
+- (CHDiffusionModelE5ML)initWithProgramLibrary:(id)library functionName:(id)name error:(id *)error
 {
   v60 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  libraryCopy = library;
+  nameCopy = name;
   v57.receiver = self;
   v57.super_class = CHDiffusionModelE5ML;
   v10 = [(CHDiffusionModelE5ML *)&v57 init];
@@ -72,11 +72,11 @@
     goto LABEL_15;
   }
 
-  v11 = v9;
-  v12 = v8;
+  v11 = nameCopy;
+  v12 = libraryCopy;
   objc_opt_self();
   v18 = objc_msgSend_visionCoreProgramLibrary(v12, v13, v14, v15, v16, v17);
-  v22 = objc_msgSend_functionNamed_error_(v18, v19, v11, a5, v20, v21);
+  v22 = objc_msgSend_functionNamed_error_(v18, v19, v11, error, v20, v21);
 
   if (!v22)
   {
@@ -98,7 +98,7 @@
 
   v23 = objc_opt_class();
   v29 = objc_msgSend_inputNames(v23, v24, v25, v26, v27, v28);
-  v33 = objc_msgSend_descriptorsForInputs_error_(v22, v30, v29, a5, v31, v32);
+  v33 = objc_msgSend_descriptorsForInputs_error_(v22, v30, v29, error, v31, v32);
 
   if (!v33)
   {
@@ -109,7 +109,7 @@ LABEL_10:
 
   v34 = objc_opt_class();
   v40 = objc_msgSend_outputNames(v34, v35, v36, v37, v38, v39);
-  v44 = objc_msgSend_descriptorsForOutputs_error_(v22, v41, v40, a5, v42, v43);
+  v44 = objc_msgSend_descriptorsForOutputs_error_(v22, v41, v40, error, v42, v43);
 
   if (v44)
   {

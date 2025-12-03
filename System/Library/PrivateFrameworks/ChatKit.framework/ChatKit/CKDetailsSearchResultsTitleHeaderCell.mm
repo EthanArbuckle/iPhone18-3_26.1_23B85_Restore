@@ -1,34 +1,34 @@
 @interface CKDetailsSearchResultsTitleHeaderCell
-- (CKDetailsSearchResultsTitleHeaderCell)initWithFrame:(CGRect)a3;
+- (CKDetailsSearchResultsTitleHeaderCell)initWithFrame:(CGRect)frame;
 - (CKDetailsSearchResultsTitleHeaderCellDelegate)detailsViewDelegate;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)_showAllButtonTapped:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)_showAllButtonTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)layoutSubviewsForWolfWithBounds:(CGRect)a3 layoutMargins:(UIEdgeInsets)a4 isLTR:(BOOL)a5;
-- (void)layoutSubviewsWithBounds:(CGRect)a3 layoutMargins:(UIEdgeInsets)a4 isLTR:(BOOL)a5;
-- (void)setTitle:(id)a3;
+- (void)layoutSubviewsForWolfWithBounds:(CGRect)bounds layoutMargins:(UIEdgeInsets)margins isLTR:(BOOL)r;
+- (void)layoutSubviewsWithBounds:(CGRect)bounds layoutMargins:(UIEdgeInsets)margins isLTR:(BOOL)r;
+- (void)setTitle:(id)title;
 @end
 
 @implementation CKDetailsSearchResultsTitleHeaderCell
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(CKSearchResultsTitleHeaderCell *)self sectionTitle];
-  [v5 setText:v4];
+  titleCopy = title;
+  sectionTitle = [(CKSearchResultsTitleHeaderCell *)self sectionTitle];
+  [sectionTitle setText:titleCopy];
 }
 
-- (CKDetailsSearchResultsTitleHeaderCell)initWithFrame:(CGRect)a3
+- (CKDetailsSearchResultsTitleHeaderCell)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = CKDetailsSearchResultsTitleHeaderCell;
-  v3 = [(CKSearchResultsTitleHeaderCell *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKSearchResultsTitleHeaderCell *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[CKUIBehavior sharedBehaviors];
-    v5 = [v4 isAccessibilityPreferredContentSizeCategory];
+    isAccessibilityPreferredContentSizeCategory = [v4 isAccessibilityPreferredContentSizeCategory];
 
-    if ((v5 & 1) == 0)
+    if ((isAccessibilityPreferredContentSizeCategory & 1) == 0)
     {
       v6 = +[CKUIBehavior sharedBehaviors];
       [v6 searchResultsTitleHeaderDetailsTopPadding];
@@ -37,10 +37,10 @@
       [(CKSearchResultsTitleHeaderCell *)v3 setTitleBottomPadding:0.0];
     }
 
-    v7 = [(CKSearchResultsTitleHeaderCell *)v3 sectionTitle];
+    sectionTitle = [(CKSearchResultsTitleHeaderCell *)v3 sectionTitle];
     v8 = +[CKUIBehavior sharedBehaviors];
-    v9 = [v8 searchDetailsHeaderFontIdentity];
-    [v7 setFont:v9];
+    searchDetailsHeaderFontIdentity = [v8 searchDetailsHeaderFontIdentity];
+    [sectionTitle setFont:searchDetailsHeaderFontIdentity];
   }
 
   return v3;
@@ -51,8 +51,8 @@
   v23.receiver = self;
   v23.super_class = CKDetailsSearchResultsTitleHeaderCell;
   [(CKSearchResultsTitleHeaderCell *)&v23 layoutSubviews];
-  v3 = [(CKSearchResultsTitleHeaderCell *)self topHairline];
-  [v3 setHidden:1];
+  topHairline = [(CKSearchResultsTitleHeaderCell *)self topHairline];
+  [topHairline setHidden:1];
 
   [(CKDetailsSearchResultsTitleHeaderCell *)self bounds];
   v5 = v4;
@@ -64,12 +64,12 @@
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  LODWORD(v3) = [(CKDetailsSearchResultsTitleHeaderCell *)self _shouldReverseLayoutDirection];
+  LODWORD(topHairline) = [(CKDetailsSearchResultsTitleHeaderCell *)self _shouldReverseLayoutDirection];
   v20 = +[CKUIBehavior sharedBehaviors];
-  v21 = [v20 isAccessibilityPreferredContentSizeCategory];
+  isAccessibilityPreferredContentSizeCategory = [v20 isAccessibilityPreferredContentSizeCategory];
 
-  v22 = v3 ^ 1;
-  if (v21)
+  v22 = topHairline ^ 1;
+  if (isAccessibilityPreferredContentSizeCategory)
   {
     [(CKSearchResultsTitleHeaderCell *)self layoutSubviewsAXFontSizeWithBounds:v22 layoutMargins:v5 isLTR:v7, v9, v11, v13, v15, v17, v19];
   }
@@ -80,25 +80,25 @@
   }
 }
 
-- (void)layoutSubviewsWithBounds:(CGRect)a3 layoutMargins:(UIEdgeInsets)a4 isLTR:(BOOL)a5
+- (void)layoutSubviewsWithBounds:(CGRect)bounds layoutMargins:(UIEdgeInsets)margins isLTR:(BOOL)r
 {
-  right = a4.right;
-  rect.size.width = a4.left;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  right = margins.right;
+  rect.size.width = margins.left;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   *&rect.size.height = self;
   v53 = CKDetailsSearchResultsTitleHeaderCell;
-  [(CGFloat *)&rect.size.height layoutSubviewsWithBounds:a3.origin.x layoutMargins:a3.origin.y isLTR:a3.size.width, a3.size.height, a4.top, a4.left, a4.bottom];
-  v11 = [(CKSearchResultsTitleHeaderCell *)self sectionTitle];
-  [v11 frame];
+  [(CGFloat *)&rect.size.height layoutSubviewsWithBounds:bounds.origin.x layoutMargins:bounds.origin.y isLTR:bounds.size.width, bounds.size.height, margins.top, margins.left, margins.bottom];
+  sectionTitle = [(CKSearchResultsTitleHeaderCell *)self sectionTitle];
+  [sectionTitle frame];
   rect.origin.x = v12;
   v49 = v14;
   v50 = v13;
 
-  v15 = [(CKSearchResultsTitleHeaderCell *)self showAllButton];
-  [v15 frame];
+  showAllButton = [(CKSearchResultsTitleHeaderCell *)self showAllButton];
+  [showAllButton frame];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -147,7 +147,7 @@
     v35 = MaxY - CGRectGetHeight(v57);
     [(CKSearchResultsTitleHeaderCell *)self titleBottomPadding];
     v29 = v35 - v36;
-    if (!a5)
+    if (!r)
     {
       v58.origin.x = v47;
       v58.origin.y = y;
@@ -176,45 +176,45 @@
     v33 = rect.size.width;
   }
 
-  v39 = [(CKSearchResultsTitleHeaderCell *)self sectionTitle];
-  [v39 setFrame:{v33, v29, v28, v30}];
+  sectionTitle2 = [(CKSearchResultsTitleHeaderCell *)self sectionTitle];
+  [sectionTitle2 setFrame:{v33, v29, v28, v30}];
 
-  v40 = [(CKSearchResultsTitleHeaderCell *)self showAllButton];
-  v41 = [v40 titleLabel];
-  [v41 _baselineOffsetFromBottom];
+  showAllButton2 = [(CKSearchResultsTitleHeaderCell *)self showAllButton];
+  titleLabel = [showAllButton2 titleLabel];
+  [titleLabel _baselineOffsetFromBottom];
   v43 = v42;
 
-  v44 = [(CKSearchResultsTitleHeaderCell *)self showAllButton];
-  [v44 setFrame:{v17, v31 + v43, v32, rect.origin.y}];
+  showAllButton3 = [(CKSearchResultsTitleHeaderCell *)self showAllButton];
+  [showAllButton3 setFrame:{v17, v31 + v43, v32, rect.origin.y}];
 }
 
-- (void)layoutSubviewsForWolfWithBounds:(CGRect)a3 layoutMargins:(UIEdgeInsets)a4 isLTR:(BOOL)a5
+- (void)layoutSubviewsForWolfWithBounds:(CGRect)bounds layoutMargins:(UIEdgeInsets)margins isLTR:(BOOL)r
 {
-  v5 = a5;
-  right = a4.right;
-  left = a4.left;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  rCopy = r;
+  right = margins.right;
+  left = margins.left;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v58.receiver = self;
   v58.super_class = CKDetailsSearchResultsTitleHeaderCell;
-  width = a3.size.width;
-  height = a3.size.height;
-  [(CKSearchResultsTitleHeaderCell *)&v58 layoutSubviewsForWolfWithBounds:a3.origin.x layoutMargins:a3.origin.y isLTR:a3.size.width, a3.size.height, a4.top, a4.left, a4.bottom];
-  v11 = [(CKSearchResultsTitleHeaderCell *)self sectionTitle];
-  [v11 frame];
+  width = bounds.size.width;
+  height = bounds.size.height;
+  [(CKSearchResultsTitleHeaderCell *)&v58 layoutSubviewsForWolfWithBounds:bounds.origin.x layoutMargins:bounds.origin.y isLTR:bounds.size.width, bounds.size.height, margins.top, margins.left, margins.bottom];
+  sectionTitle = [(CKSearchResultsTitleHeaderCell *)self sectionTitle];
+  [sectionTitle frame];
   v52 = v12;
   v53 = v13;
   v54 = v14;
 
-  v15 = [(CKSearchResultsTitleHeaderCell *)self showAllButton];
-  [v15 frame];
+  showAllButton = [(CKSearchResultsTitleHeaderCell *)self showAllButton];
+  [showAllButton frame];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
   v55 = left;
-  if (v5)
+  if (rCopy)
   {
     v59.origin.x = x;
     v59.origin.y = y;
@@ -240,8 +240,8 @@
     v24 = right;
   }
 
-  v31 = [(CKSearchResultsTitleHeaderCell *)self showAllButton];
-  [v31 setFrame:{v29, v19, v21, v23}];
+  showAllButton2 = [(CKSearchResultsTitleHeaderCell *)self showAllButton];
+  [showAllButton2 setFrame:{v29, v19, v21, v23}];
 
   v61.origin.x = x;
   v61.origin.y = y;
@@ -263,7 +263,7 @@
   [v40 searchResultsTitleHeaderInterItemSpacing];
   v42 = v39 - v41;
 
-  if (v5)
+  if (rCopy)
   {
     v43 = +[CKUIBehavior sharedBehaviors];
     [v43 searchResultsDetailsTitleHeaderTextLeadingMargin];
@@ -291,32 +291,32 @@
     v46 = v49 - v50;
   }
 
-  v51 = [(CKSearchResultsTitleHeaderCell *)self sectionTitle];
-  [v51 setFrame:{v46, v47, v42, v44}];
+  sectionTitle2 = [(CKSearchResultsTitleHeaderCell *)self sectionTitle];
+  [sectionTitle2 setFrame:{v46, v47, v42, v44}];
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  [v4 frame];
+  attributesCopy = attributes;
+  [attributesCopy frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v13 = +[CKUIBehavior sharedBehaviors];
-  v14 = [v13 searchDetailsHeaderFont];
-  [v14 capHeight];
+  searchDetailsHeaderFont = [v13 searchDetailsHeaderFont];
+  [searchDetailsHeaderFont capHeight];
   v16 = v15;
 
-  v17 = [(CKSearchResultsTitleHeaderCell *)self showAllButton];
-  [v17 sizeThatFits:{v10, v12}];
+  showAllButton = [(CKSearchResultsTitleHeaderCell *)self showAllButton];
+  [showAllButton sizeThatFits:{v10, v12}];
   v19 = v18;
 
   v20 = +[CKUIBehavior sharedBehaviors];
-  LODWORD(v14) = [v20 isAccessibilityPreferredContentSizeCategory];
+  LODWORD(searchDetailsHeaderFont) = [v20 isAccessibilityPreferredContentSizeCategory];
 
   [(CKSearchResultsTitleHeaderCell *)self titleTopPadding];
-  if (v14)
+  if (searchDetailsHeaderFont)
   {
     v22 = v19 + v16 + v21;
     [(CKSearchResultsTitleHeaderCell *)self titleBottomPadding];
@@ -330,23 +330,23 @@
     v24 = v25 + v26;
   }
 
-  [v4 setFrame:{v6, v8, v10, v24}];
+  [attributesCopy setFrame:{v6, v8, v10, v24}];
 
-  return v4;
+  return attributesCopy;
 }
 
-- (void)_showAllButtonTapped:(id)a3
+- (void)_showAllButtonTapped:(id)tapped
 {
   if (CKIsRunningInMacCatalyst())
   {
-    v4 = [(CKSearchResultsTitleHeaderCell *)self delegate];
-    [v4 searchResultsTitleCellShowAllButtonTapped:self];
+    delegate = [(CKSearchResultsTitleHeaderCell *)self delegate];
+    [delegate searchResultsTitleCellShowAllButtonTapped:self];
   }
 
   else
   {
-    v4 = [(CKDetailsSearchResultsTitleHeaderCell *)self detailsViewDelegate];
-    [v4 searchDetailsShowAllButtonTapped:self];
+    delegate = [(CKDetailsSearchResultsTitleHeaderCell *)self detailsViewDelegate];
+    [delegate searchDetailsShowAllButtonTapped:self];
   }
 }
 

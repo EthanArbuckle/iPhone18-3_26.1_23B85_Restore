@@ -1,9 +1,9 @@
 @interface PTCinematographyStreamOptions
 - (CGSize)fixedFocusNormalizedRectSize;
 - (PTCinematographyStreamOptions)init;
-- (PTCinematographyStreamOptions)initWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (PTCinematographyStreamOptions)initWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PTCinematographyStreamOptions
@@ -22,38 +22,38 @@
   return result;
 }
 
-- (PTCinematographyStreamOptions)initWithOptions:(id)a3
+- (PTCinematographyStreamOptions)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = PTCinematographyStreamOptions;
   v5 = [(PTCinematographyStreamOptions *)&v12 init];
   if (v5)
   {
-    v5->_version = [v4 version];
-    [v4 fixedFocusNormalizedRectSize];
+    v5->_version = [optionsCopy version];
+    [optionsCopy fixedFocusNormalizedRectSize];
     v5->_fixedFocusNormalizedRectSize.width = v6;
     v5->_fixedFocusNormalizedRectSize.height = v7;
-    v8 = [v4 cinematographyParameters];
-    v9 = [v8 copy];
+    cinematographyParameters = [optionsCopy cinematographyParameters];
+    v9 = [cinematographyParameters copy];
     cinematographyParameters = v5->_cinematographyParameters;
     v5->_cinematographyParameters = v9;
 
-    v5->_snapshotPolicy = [v4 _snapshotPolicy];
-    v5->_overrideFrameSnapshotPolicy = [v4 _overrideFrameSnapshotPolicy];
+    v5->_snapshotPolicy = [optionsCopy _snapshotPolicy];
+    v5->_overrideFrameSnapshotPolicy = [optionsCopy _overrideFrameSnapshotPolicy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PTCinematographyStreamOptions alloc];
 
   return [(PTCinematographyStreamOptions *)v4 initWithOptions:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [PTCinematographyStreamOptions alloc];
 

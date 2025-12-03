@@ -1,26 +1,26 @@
 @interface FIUIPushyLabelView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (FIUIPushyLabelView)initWithFrame:(CGRect)a3;
-- (id)_snapshotCharactersFromAttributedText:(id)a3 perCharacter:(BOOL)a4;
-- (void)_layoutForPushStartWithDirection:(unint64_t)a3;
-- (void)_layoutViewsAtIndex:(unint64_t)a3 forPushEndWithDirection:(unint64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (FIUIPushyLabelView)initWithFrame:(CGRect)frame;
+- (id)_snapshotCharactersFromAttributedText:(id)text perCharacter:(BOOL)character;
+- (void)_layoutForPushStartWithDirection:(unint64_t)direction;
+- (void)_layoutViewsAtIndex:(unint64_t)index forPushEndWithDirection:(unint64_t)direction;
 - (void)_processPendingStringIfNeeded;
-- (void)_setCurrentSnapshotCharacters:(id)a3;
-- (void)_setIncomingSnapshotCharacters:(id)a3;
-- (void)_swapCurrentSnapshotCharacters:(id)a3 forIncomingCharacters:(id)a4;
-- (void)pushToAttributedText:(id)a3 direction:(unint64_t)a4 perCharacter:(BOOL)a5;
-- (void)setAttributedTextUnanimated:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)sizeToFitAttributedText:(id)a3;
+- (void)_setCurrentSnapshotCharacters:(id)characters;
+- (void)_setIncomingSnapshotCharacters:(id)characters;
+- (void)_swapCurrentSnapshotCharacters:(id)characters forIncomingCharacters:(id)incomingCharacters;
+- (void)pushToAttributedText:(id)text direction:(unint64_t)direction perCharacter:(BOOL)character;
+- (void)setAttributedTextUnanimated:(id)unanimated;
+- (void)setFrame:(CGRect)frame;
+- (void)sizeToFitAttributedText:(id)text;
 @end
 
 @implementation FIUIPushyLabelView
 
-- (FIUIPushyLabelView)initWithFrame:(CGRect)a3
+- (FIUIPushyLabelView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = FIUIPushyLabelView;
-  v3 = [(FIUIPushyLabelView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FIUIPushyLabelView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -31,11 +31,11 @@
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v26 = *MEMORY[0x1E69E9840];
   p_incomingSnapshotCharacters = &self->_incomingSnapshotCharacters;
-  if (![(NSArray *)self->_incomingSnapshotCharacters count:a3.width])
+  if (![(NSArray *)self->_incomingSnapshotCharacters count:fits.width])
   {
     p_incomingSnapshotCharacters = &self->_currentSnapshotCharacters;
   }
@@ -44,9 +44,9 @@
   v6 = *p_incomingSnapshotCharacters;
   if ([(NSArray *)v6 count])
   {
-    v7 = [(NSArray *)v6 firstObject];
-    v8 = [v7 renderedView];
-    [v8 frame];
+    firstObject = [(NSArray *)v6 firstObject];
+    renderedView = [firstObject renderedView];
+    [renderedView frame];
     v10 = v9;
   }
 
@@ -76,8 +76,8 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v21 + 1) + 8 * v16) renderedView];
-        [v17 frame];
+        renderedView2 = [*(*(&v21 + 1) + 8 * v16) renderedView];
+        [renderedView2 frame];
         v11 = v11 + v18;
 
         ++v16;
@@ -97,12 +97,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v27 = *MEMORY[0x1E69E9840];
   [(FIUIPushyLabelView *)self frame];
   v31.origin.x = v8;
@@ -128,8 +128,8 @@
         v24 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v14 = [(FIUIPushyLabelView *)self subviews];
-        v15 = [v14 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        subviews = [(FIUIPushyLabelView *)self subviews];
+        v15 = [subviews countByEnumeratingWithState:&v21 objects:v26 count:16];
         if (v15)
         {
           v16 = v15;
@@ -141,7 +141,7 @@
             {
               if (*v22 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(subviews);
               }
 
               v20 = *(*(&v21 + 1) + 8 * i);
@@ -150,7 +150,7 @@
               [v20 setFrame:{v30.origin.x, v30.origin.y, v30.size.width, v30.size.height}];
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v21 objects:v26 count:16];
+            v16 = [subviews countByEnumeratingWithState:&v21 objects:v26 count:16];
           }
 
           while (v16);
@@ -160,39 +160,39 @@
   }
 }
 
-- (void)sizeToFitAttributedText:(id)a3
+- (void)sizeToFitAttributedText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   [(FIUIPushyLabelView *)self frame];
   v6 = v5;
   v8 = v7;
-  [v4 size];
+  [textCopy size];
   v10 = v9;
   v12 = v11;
 
   [(FIUIPushyLabelView *)self setFrame:v6, v8, v10, v12];
 }
 
-- (void)setAttributedTextUnanimated:(id)a3
+- (void)setAttributedTextUnanimated:(id)unanimated
 {
-  v6 = a3;
-  if (([v6 isEqualToAttributedString:self->_currentAttributedText] & 1) == 0)
+  unanimatedCopy = unanimated;
+  if (([unanimatedCopy isEqualToAttributedString:self->_currentAttributedText] & 1) == 0)
   {
-    v5 = [(FIUIPushyLabelView *)self _snapshotCharactersFromAttributedText:v6 perCharacter:0];
+    v5 = [(FIUIPushyLabelView *)self _snapshotCharactersFromAttributedText:unanimatedCopy perCharacter:0];
     [(FIUIPushyLabelView *)self _setIncomingSnapshotCharacters:v5];
     [(FIUIPushyLabelView *)self _layoutViewsAtIndex:0 forPushEndWithDirection:0];
     [(FIUIPushyLabelView *)self _swapCurrentSnapshotCharacters:self->_currentSnapshotCharacters forIncomingCharacters:v5];
-    objc_storeStrong(&self->_currentAttributedText, a3);
+    objc_storeStrong(&self->_currentAttributedText, unanimated);
   }
 }
 
-- (void)pushToAttributedText:(id)a3 direction:(unint64_t)a4 perCharacter:(BOOL)a5
+- (void)pushToAttributedText:(id)text direction:(unint64_t)direction perCharacter:(BOOL)character
 {
-  v5 = a5;
-  v9 = a3;
-  if (([v9 isEqualToAttributedString:self->_currentAttributedText] & 1) == 0)
+  characterCopy = character;
+  textCopy = text;
+  if (([textCopy isEqualToAttributedString:self->_currentAttributedText] & 1) == 0)
   {
-    v10 = v5 & ~[(FIUIPushyLabelView *)self _shouldReverseLayoutDirection];
+    v10 = characterCopy & ~[(FIUIPushyLabelView *)self _shouldReverseLayoutDirection];
     Current = CFAbsoluteTimeGetCurrent();
     if (self->_currentAnimationFinishTime - Current >= 0.0)
     {
@@ -206,12 +206,12 @@
 
     if (v11 <= 0.0)
     {
-      obj = a3;
+      obj = text;
       v13 = self->_currentSnapshotCharacters;
-      v35 = v9;
-      v14 = [(FIUIPushyLabelView *)self _snapshotCharactersFromAttributedText:v9 perCharacter:v10];
+      v35 = textCopy;
+      v14 = [(FIUIPushyLabelView *)self _snapshotCharactersFromAttributedText:textCopy perCharacter:v10];
       [(FIUIPushyLabelView *)self _setIncomingSnapshotCharacters:v14];
-      [(FIUIPushyLabelView *)self _layoutForPushStartWithDirection:a4];
+      [(FIUIPushyLabelView *)self _layoutForPushStartWithDirection:direction];
       currentAnimationFinishTime = self->_currentAnimationFinishTime;
       if (v10)
       {
@@ -240,14 +240,14 @@
         v20 = 0;
         v21 = 0;
         v22 = v45;
-        v36 = a4;
+        directionCopy = direction;
         do
         {
           v23 = 0.75;
           if (v21 < -[NSArray count](v13, "count") && v21 < [v14 count])
           {
             v24 = [(NSArray *)v13 objectAtIndexedSubscript:v21];
-            v25 = [v24 sourceText];
+            sourceText = [v24 sourceText];
 
             v26 = [v14 objectAtIndexedSubscript:v21];
             [v26 sourceText];
@@ -255,7 +255,7 @@
             v28 = v19;
             v30 = v29 = v22;
 
-            if ([v25 isEqualToAttributedString:v30])
+            if ([sourceText isEqualToAttributedString:v30])
             {
               v23 = 0.0;
             }
@@ -269,7 +269,7 @@
             v19 = v28;
             v14 = v27;
 
-            a4 = v36;
+            direction = directionCopy;
           }
 
           v31 = v11 + v16 * v20;
@@ -285,7 +285,7 @@
           v45[1] = &unk_1E878C448;
           v45[2] = self;
           v45[3] = v21;
-          v45[4] = a4;
+          v45[4] = direction;
           v38[0] = MEMORY[0x1E69E9820];
           v38[1] = 3221225472;
           v38[2] = __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___block_invoke_2;
@@ -293,7 +293,7 @@
           v39 = v13;
           v42 = v21;
           v40 = v14;
-          v41 = self;
+          selfCopy = self;
           v43 = v16;
           [v32 animateWithDuration:0x10000 delay:v44 usingSpringWithDamping:v38 initialSpringVelocity:v23 options:v11 + v16 * v20 animations:0.6 completion:-5.0];
           if (v23 > 2.22044605e-16)
@@ -310,23 +310,23 @@
       *(&self->super.super.super.isa + v33) = v16 + currentAnimationFinishTime;
       objc_storeStrong(&self->_currentAttributedText, obj);
 
-      v9 = v35;
+      textCopy = v35;
     }
 
     else
     {
-      v12 = v9;
-      if (!v9)
+      null = textCopy;
+      if (!textCopy)
       {
-        v12 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
 
-      objc_storeStrong(&self->_pendingAttributedString, v12);
-      if (!v9)
+      objc_storeStrong(&self->_pendingAttributedString, null);
+      if (!textCopy)
       {
       }
 
-      self->_pendingDirection = a4;
+      self->_pendingDirection = direction;
       self->_pendingPushPerCharacter = v10;
     }
   }
@@ -386,8 +386,8 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
   pendingAttributedString = self->_pendingAttributedString;
   if (pendingAttributedString)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
-    v5 = [pendingAttributedString isEqual:v4];
+    null = [MEMORY[0x1E695DFB0] null];
+    v5 = [pendingAttributedString isEqual:null];
 
     if (v5)
     {
@@ -408,10 +408,10 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
   }
 }
 
-- (void)_setCurrentSnapshotCharacters:(id)a3
+- (void)_setCurrentSnapshotCharacters:(id)characters
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  charactersCopy = characters;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -432,8 +432,8 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v22 + 1) + 8 * v10) renderedView];
-        [v11 removeFromSuperview];
+        renderedView = [*(*(&v22 + 1) + 8 * v10) renderedView];
+        [renderedView removeFromSuperview];
 
         ++v10;
       }
@@ -445,12 +445,12 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
     while (v8);
   }
 
-  objc_storeStrong(&self->_currentSnapshotCharacters, a3);
+  objc_storeStrong(&self->_currentSnapshotCharacters, characters);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = v5;
+  v12 = charactersCopy;
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {
@@ -466,8 +466,8 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v18 + 1) + 8 * v16) renderedView];
-        [(FIUIPushyLabelView *)self addSubview:v17];
+        renderedView2 = [*(*(&v18 + 1) + 8 * v16) renderedView];
+        [(FIUIPushyLabelView *)self addSubview:renderedView2];
 
         ++v16;
       }
@@ -480,10 +480,10 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
   }
 }
 
-- (void)_setIncomingSnapshotCharacters:(id)a3
+- (void)_setIncomingSnapshotCharacters:(id)characters
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  charactersCopy = characters;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -504,8 +504,8 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v22 + 1) + 8 * v10) renderedView];
-        [v11 removeFromSuperview];
+        renderedView = [*(*(&v22 + 1) + 8 * v10) renderedView];
+        [renderedView removeFromSuperview];
 
         ++v10;
       }
@@ -517,12 +517,12 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
     while (v8);
   }
 
-  objc_storeStrong(&self->_incomingSnapshotCharacters, a3);
+  objc_storeStrong(&self->_incomingSnapshotCharacters, characters);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = v5;
+  v12 = charactersCopy;
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {
@@ -538,8 +538,8 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v18 + 1) + 8 * v16) renderedView];
-        [(FIUIPushyLabelView *)self addSubview:v17];
+        renderedView2 = [*(*(&v18 + 1) + 8 * v16) renderedView];
+        [(FIUIPushyLabelView *)self addSubview:renderedView2];
 
         ++v16;
       }
@@ -552,19 +552,19 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
   }
 }
 
-- (void)_swapCurrentSnapshotCharacters:(id)a3 forIncomingCharacters:(id)a4
+- (void)_swapCurrentSnapshotCharacters:(id)characters forIncomingCharacters:(id)incomingCharacters
 {
-  v5 = a4;
+  incomingCharactersCopy = incomingCharacters;
   [(FIUIPushyLabelView *)self _setCurrentSnapshotCharacters:0];
   currentSnapshotCharacters = self->_currentSnapshotCharacters;
-  self->_currentSnapshotCharacters = v5;
-  v8 = v5;
+  self->_currentSnapshotCharacters = incomingCharactersCopy;
+  v8 = incomingCharactersCopy;
 
   incomingSnapshotCharacters = self->_incomingSnapshotCharacters;
   self->_incomingSnapshotCharacters = 0;
 }
 
-- (void)_layoutForPushStartWithDirection:(unint64_t)a3
+- (void)_layoutForPushStartWithDirection:(unint64_t)direction
 {
   v34 = *MEMORY[0x1E69E9840];
   v28 = 0u;
@@ -587,9 +587,9 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v28 + 1) + 8 * v9) renderedView];
-        [v10 frame];
-        [v10 setFrame:?];
+        renderedView = [*(*(&v28 + 1) + 8 * v9) renderedView];
+        [renderedView frame];
+        [renderedView setFrame:?];
 
         ++v9;
       }
@@ -621,12 +621,12 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v24 + 1) + 8 * v15) renderedView];
-        [v16 frame];
+        renderedView2 = [*(*(&v24 + 1) + 8 * v15) renderedView];
+        [renderedView2 frame];
         v19 = v18;
         v21 = v20;
         v22 = v17;
-        if (a3)
+        if (direction)
         {
           Height = -v17;
         }
@@ -637,7 +637,7 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
           Height = CGRectGetHeight(v35);
         }
 
-        [v16 setFrame:{v19, Height, v21, v22}];
+        [renderedView2 setFrame:{v19, Height, v21, v22}];
 
         ++v15;
       }
@@ -650,17 +650,17 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
   }
 }
 
-- (void)_layoutViewsAtIndex:(unint64_t)a3 forPushEndWithDirection:(unint64_t)a4
+- (void)_layoutViewsAtIndex:(unint64_t)index forPushEndWithDirection:(unint64_t)direction
 {
-  if ([(NSArray *)self->_currentSnapshotCharacters count]> a3)
+  if ([(NSArray *)self->_currentSnapshotCharacters count]> index)
   {
-    v7 = [(NSArray *)self->_currentSnapshotCharacters objectAtIndexedSubscript:a3];
-    v8 = [v7 renderedView];
-    [v8 frame];
+    v7 = [(NSArray *)self->_currentSnapshotCharacters objectAtIndexedSubscript:index];
+    renderedView = [v7 renderedView];
+    [renderedView frame];
     v11 = v10;
     v13 = v12;
     v14 = v9;
-    if (a4)
+    if (direction)
     {
       [(FIUIPushyLabelView *)self bounds];
       Height = CGRectGetHeight(v19);
@@ -671,30 +671,30 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
       Height = -v9;
     }
 
-    [v8 setFrame:{v11, Height, v13, v14}];
+    [renderedView setFrame:{v11, Height, v13, v14}];
   }
 
-  if ([(NSArray *)self->_incomingSnapshotCharacters count]> a3)
+  if ([(NSArray *)self->_incomingSnapshotCharacters count]> index)
   {
-    v17 = [(NSArray *)self->_incomingSnapshotCharacters objectAtIndexedSubscript:a3];
-    v16 = [v17 renderedView];
-    [v16 frame];
-    [v16 setFrame:?];
+    v17 = [(NSArray *)self->_incomingSnapshotCharacters objectAtIndexedSubscript:index];
+    renderedView2 = [v17 renderedView];
+    [renderedView2 frame];
+    [renderedView2 setFrame:?];
   }
 }
 
-- (id)_snapshotCharactersFromAttributedText:(id)a3 perCharacter:(BOOL)a4
+- (id)_snapshotCharactersFromAttributedText:(id)text perCharacter:(BOOL)character
 {
-  v4 = a4;
-  v6 = a3;
-  v40 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "length")}];
-  if ([v6 length])
+  characterCopy = character;
+  textCopy = text;
+  v40 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(textCopy, "length")}];
+  if ([textCopy length])
   {
-    v7 = [objc_alloc(MEMORY[0x1E69DB850]) initWithAttributedString:v6];
+    v7 = [objc_alloc(MEMORY[0x1E69DB850]) initWithAttributedString:textCopy];
     v8 = objc_alloc_init(MEMORY[0x1E69DB7C0]);
     [v7 addLayoutManager:v8];
     v9 = objc_alloc(MEMORY[0x1E69DB800]);
-    [v6 size];
+    [textCopy size];
     v10 = [v9 initWithSize:?];
     [v10 setLineFragmentPadding:0.0];
     v39 = v10;
@@ -703,17 +703,17 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
     v44 = 0;
     scale = FIUIDeviceScale();
     v34 = v7;
-    if (v4)
+    if (characterCopy)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = [v6 length];
+      v11 = [textCopy length];
     }
 
-    if ([v6 length])
+    if ([textCopy length])
     {
       v12 = 0;
       v14 = *MEMORY[0x1E695EFF8];
@@ -724,7 +724,7 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
       v37 = *MEMORY[0x1E695EFF8];
       do
       {
-        v16 = [v6 attributedSubstringFromRange:{v12, v11}];
+        v16 = [textCopy attributedSubstringFromRange:{v12, v11}];
         [v8 characterRangeForGlyphRange:v12 actualGlyphRange:{v11, &v43}];
         [v8 boundingRectForGlyphRange:v43 inTextContainer:{v44, v39}];
         v18 = v17;
@@ -732,7 +732,7 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
         [v16 size];
         v23 = v21;
         v24 = v22;
-        if (!v4)
+        if (!characterCopy)
         {
           v14 = -v18 / v41;
           v13 = -v20 / v41;
@@ -751,7 +751,7 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
           v20 = 0.0;
         }
 
-        if ([(FIUIPushyLabelView *)self _shouldReverseLayoutDirection]&& !v4)
+        if ([(FIUIPushyLabelView *)self _shouldReverseLayoutDirection]&& !characterCopy)
         {
           [(FIUIPushyLabelView *)self frame];
           v18 = v25 - v23;
@@ -774,7 +774,7 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
         UIGraphicsEndImageContext();
         v29 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v28];
         v30 = v29;
-        if (v4)
+        if (characterCopy)
         {
           v31 = v15;
         }
@@ -784,7 +784,7 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
           v31 = v18;
         }
 
-        if (v4)
+        if (characterCopy)
         {
           v15 = v15 + v23;
         }
@@ -798,7 +798,7 @@ void __66__FIUIPushyLabelView_pushToAttributedText_direction_perCharacter___bloc
         v12 += v11;
       }
 
-      while (v12 < [v6 length]);
+      while (v12 < [textCopy length]);
     }
   }
 

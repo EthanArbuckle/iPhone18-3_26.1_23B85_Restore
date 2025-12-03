@@ -1,33 +1,33 @@
 @interface ATXModeSetupPredictionTrainer
 - (ATXModeSetupPredictionTrainer)init;
-- (ATXModeSetupPredictionTrainer)initWithCacheBasePath:(id)a3;
-- (BOOL)modeIsCurrentlyCreated:(unint64_t)a3;
-- (BOOL)modeIsEligibleForSetupPrediction:(unint64_t)a3;
-- (BOOL)trainSetupPredictionIfModeAffinityWasTrainedRecentlyForMode:(unint64_t)a3;
-- (id)pathForModeEntityTypeIdentifier:(id)a3 modeIdentifier:(id)a4;
-- (void)persistPredictionScores:(id)a3;
-- (void)trainWithXPCActivity:(id)a3 shouldSkipRetrainingIfTrainedRecently:(BOOL)a4 shouldSkipEligiblilityCheckForSetupPrediction:(BOOL)a5;
+- (ATXModeSetupPredictionTrainer)initWithCacheBasePath:(id)path;
+- (BOOL)modeIsCurrentlyCreated:(unint64_t)created;
+- (BOOL)modeIsEligibleForSetupPrediction:(unint64_t)prediction;
+- (BOOL)trainSetupPredictionIfModeAffinityWasTrainedRecentlyForMode:(unint64_t)mode;
+- (id)pathForModeEntityTypeIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier;
+- (void)persistPredictionScores:(id)scores;
+- (void)trainWithXPCActivity:(id)activity shouldSkipRetrainingIfTrainedRecently:(BOOL)recently shouldSkipEligiblilityCheckForSetupPrediction:(BOOL)prediction;
 @end
 
 @implementation ATXModeSetupPredictionTrainer
 
 - (ATXModeSetupPredictionTrainer)init
 {
-  v3 = [MEMORY[0x277CEBCB0] modeCachesRootDirectory];
-  v4 = [(ATXModeSetupPredictionTrainer *)self initWithCacheBasePath:v3];
+  modeCachesRootDirectory = [MEMORY[0x277CEBCB0] modeCachesRootDirectory];
+  v4 = [(ATXModeSetupPredictionTrainer *)self initWithCacheBasePath:modeCachesRootDirectory];
 
   return v4;
 }
 
-- (ATXModeSetupPredictionTrainer)initWithCacheBasePath:(id)a3
+- (ATXModeSetupPredictionTrainer)initWithCacheBasePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = ATXModeSetupPredictionTrainer;
   v5 = [(ATXModeSetupPredictionTrainer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     cacheBasePath = v5->_cacheBasePath;
     v5->_cacheBasePath = v6;
   }
@@ -35,13 +35,13 @@
   return v5;
 }
 
-- (void)trainWithXPCActivity:(id)a3 shouldSkipRetrainingIfTrainedRecently:(BOOL)a4 shouldSkipEligiblilityCheckForSetupPrediction:(BOOL)a5
+- (void)trainWithXPCActivity:(id)activity shouldSkipRetrainingIfTrainedRecently:(BOOL)recently shouldSkipEligiblilityCheckForSetupPrediction:(BOOL)prediction
 {
-  v5 = a5;
-  v6 = a4;
+  predictionCopy = prediction;
+  recentlyCopy = recently;
   v43 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  if (v6)
+  activityCopy = activity;
+  if (recentlyCopy)
   {
     v8 = [(ATXModeSetupPredictionTrainer *)self pathForModeSetupPredictionCacheWithDirectory:@"modeSetupPredictions"];
     v9 = [MEMORY[0x277CEBCB0] modificationDateOfFileAtPath:v8];
@@ -97,15 +97,15 @@
 
       v19 = *(*(&v36 + 1) + 8 * v18);
       v20 = objc_autoreleasePoolPush();
-      v21 = [v19 unsignedIntegerValue];
-      if (v5)
+      unsignedIntegerValue = [v19 unsignedIntegerValue];
+      if (predictionCopy)
       {
         self->_modeIsEligibleForSetupPrediction = 1;
       }
 
       else
       {
-        v22 = [(ATXModeSetupPredictionTrainer *)self modeIsEligibleForSetupPrediction:v21];
+        v22 = [(ATXModeSetupPredictionTrainer *)self modeIsEligibleForSetupPrediction:unsignedIntegerValue];
         self->_modeIsEligibleForSetupPrediction = v22;
         if (!v22)
         {
@@ -123,14 +123,14 @@
         _os_log_impl(&dword_2263AA000, v23, OS_LOG_TYPE_DEFAULT, "ATXModeSetupPredictionTrainer: Running Mode Prediction inference for Mode %@...", buf, 0xCu);
       }
 
-      v25 = [[ATXModeSetupPredictionModel alloc] initWithMode:v21];
+      v25 = [[ATXModeSetupPredictionModel alloc] initWithMode:unsignedIntegerValue];
       [(ATXModeSetupPredictionModel *)v25 probabilityScore];
       v26 = [MEMORY[0x277CCABB0] numberWithDouble:?];
       v27 = ATXModeToString();
       [v34 setObject:v26 forKey:v27];
 
 LABEL_21:
-      if ([v35 didDefer])
+      if ([activityCopy didDefer])
       {
         v29 = __atxlog_handle_modes();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -179,7 +179,7 @@ LABEL_30:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)trainSetupPredictionIfModeAffinityWasTrainedRecentlyForMode:(unint64_t)a3
+- (BOOL)trainSetupPredictionIfModeAffinityWasTrainedRecentlyForMode:(unint64_t)mode
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = ATXModeToString();
@@ -206,27 +206,27 @@ LABEL_30:
   return v9;
 }
 
-- (BOOL)modeIsCurrentlyCreated:(unint64_t)a3
+- (BOOL)modeIsCurrentlyCreated:(unint64_t)created
 {
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v4 = [MEMORY[0x277CEB440] sharedInstance];
-  v5 = [v4 getAllModeConfigurationsWithoutCache];
+  mEMORY[0x277CEB440] = [MEMORY[0x277CEB440] sharedInstance];
+  getAllModeConfigurationsWithoutCache = [mEMORY[0x277CEB440] getAllModeConfigurationsWithoutCache];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__ATXModeSetupPredictionTrainer_modeIsCurrentlyCreated___block_invoke;
   v8[3] = &unk_27859F510;
-  v6 = v4;
+  v6 = mEMORY[0x277CEB440];
   v9 = v6;
   v10 = &v12;
-  v11 = a3;
-  [v5 enumerateKeysAndObjectsUsingBlock:v8];
-  LOBYTE(a3) = *(v13 + 24);
+  createdCopy = created;
+  [getAllModeConfigurationsWithoutCache enumerateKeysAndObjectsUsingBlock:v8];
+  LOBYTE(created) = *(v13 + 24);
 
   _Block_object_dispose(&v12, 8);
-  return a3;
+  return created;
 }
 
 void __56__ATXModeSetupPredictionTrainer_modeIsCurrentlyCreated___block_invoke(void *a1, uint64_t a2, void *a3, _BYTE *a4)
@@ -261,35 +261,35 @@ void __56__ATXModeSetupPredictionTrainer_modeIsCurrentlyCreated___block_invoke(v
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)modeIsEligibleForSetupPrediction:(unint64_t)a3
+- (BOOL)modeIsEligibleForSetupPrediction:(unint64_t)prediction
 {
   if ([(ATXModeSetupPredictionTrainer *)self modeIsCurrentlyCreated:?])
   {
     return 0;
   }
 
-  return [(ATXModeSetupPredictionTrainer *)self trainSetupPredictionIfModeAffinityWasTrainedRecentlyForMode:a3];
+  return [(ATXModeSetupPredictionTrainer *)self trainSetupPredictionIfModeAffinityWasTrainedRecentlyForMode:prediction];
 }
 
-- (id)pathForModeEntityTypeIdentifier:(id)a3 modeIdentifier:(id)a4
+- (id)pathForModeEntityTypeIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier
 {
   cacheBasePath = self->_cacheBasePath;
   v6 = MEMORY[0x277CCACA8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithFormat:@"%@_%@", v8, v7];
+  modeIdentifierCopy = modeIdentifier;
+  identifierCopy = identifier;
+  modeIdentifierCopy = [[v6 alloc] initWithFormat:@"%@_%@", identifierCopy, modeIdentifierCopy];
 
-  v10 = [(NSString *)cacheBasePath stringByAppendingPathComponent:v9];
+  v10 = [(NSString *)cacheBasePath stringByAppendingPathComponent:modeIdentifierCopy];
 
   return v10;
 }
 
-- (void)persistPredictionScores:(id)a3
+- (void)persistPredictionScores:(id)scores
 {
-  v4 = a3;
+  scoresCopy = scores;
   v5 = objc_autoreleasePoolPush();
   v18 = 0;
-  v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v18];
+  v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:scoresCopy requiringSecureCoding:1 error:&v18];
   v7 = v18;
   v8 = v7;
   if (v6)

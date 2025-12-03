@@ -1,26 +1,26 @@
 @interface RadioNowPlayingViewController
-- ($04B05C73ED6AEEF31C5815932084562D)durationSnapshotForNowPlayingViewController:(SEL)a3;
-- (BOOL)nowPlayingViewController:(id)a3 buttonShouldBeActive:(int64_t)a4;
-- (BOOL)nowPlayingViewController:(id)a3 shouldDisplayButton:(int64_t)a4 withImage:(id *)a5 existingIdentifier:(id)a6 tinted:(BOOL *)a7;
-- (BOOL)nowPlayingViewControllerCanShowAlbumArt:(id)a3;
-- (BOOL)nowPlayingViewControllerIsPlaying:(id)a3;
-- (BOOL)nowPlayingViewControllerIsRightHandDrive:(id)a3;
-- (_TtC5Media29RadioNowPlayingViewController)initWithBundleIdentifier:(id)a3 dataSource:(id)a4 delegate:(id)a5;
-- (_TtC5Media29RadioNowPlayingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)backgroundArtForNowPlayingController:(id)a3;
-- (id)badgeAnnotationViewForNowPlayingViewController:(id)a3;
-- (id)customPlaybackControlButtonsForNowPlayingViewController:(id)a3;
-- (id)nowPlayingViewControllerGetPlaybackRate:(id)a3;
-- (id)progressBarLocalizedDurationStringForNowPlayingViewController:(id)a3;
-- (int64_t)overrideRenderingModeForNowPlayingViewController:(id)a3;
-- (int64_t)placeholderTypeForNowPlayingViewController:(id)a3;
+- ($04B05C73ED6AEEF31C5815932084562D)durationSnapshotForNowPlayingViewController:(SEL)controller;
+- (BOOL)nowPlayingViewController:(id)controller buttonShouldBeActive:(int64_t)active;
+- (BOOL)nowPlayingViewController:(id)controller shouldDisplayButton:(int64_t)button withImage:(id *)image existingIdentifier:(id)identifier tinted:(BOOL *)tinted;
+- (BOOL)nowPlayingViewControllerCanShowAlbumArt:(id)art;
+- (BOOL)nowPlayingViewControllerIsPlaying:(id)playing;
+- (BOOL)nowPlayingViewControllerIsRightHandDrive:(id)drive;
+- (_TtC5Media29RadioNowPlayingViewController)initWithBundleIdentifier:(id)identifier dataSource:(id)source delegate:(id)delegate;
+- (_TtC5Media29RadioNowPlayingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)backgroundArtForNowPlayingController:(id)controller;
+- (id)badgeAnnotationViewForNowPlayingViewController:(id)controller;
+- (id)customPlaybackControlButtonsForNowPlayingViewController:(id)controller;
+- (id)nowPlayingViewControllerGetPlaybackRate:(id)rate;
+- (id)progressBarLocalizedDurationStringForNowPlayingViewController:(id)controller;
+- (int64_t)overrideRenderingModeForNowPlayingViewController:(id)controller;
+- (int64_t)placeholderTypeForNowPlayingViewController:(id)controller;
 - (void)hideDialer;
 - (void)invalidate;
-- (void)nowPlayingService:(id)a3 didUpdateArtwork:(id)a4;
-- (void)nowPlayingService:(id)a3 didUpdateCurrentMediaSourceIdentifier:(id)a4;
-- (void)nowPlayingServiceDidUpdateSetArtistSongNotification:(id)a3;
-- (void)nowPlayingViewController:(id)a3 didSelectButton:(id)a4;
-- (void)nowPlayingViewController:(id)a3 didSendAction:(int64_t)a4 state:(int64_t)a5;
+- (void)nowPlayingService:(id)service didUpdateArtwork:(id)artwork;
+- (void)nowPlayingService:(id)service didUpdateCurrentMediaSourceIdentifier:(id)identifier;
+- (void)nowPlayingServiceDidUpdateSetArtistSongNotification:(id)notification;
+- (void)nowPlayingViewController:(id)controller didSelectButton:(id)button;
+- (void)nowPlayingViewController:(id)controller didSendAction:(int64_t)action state:(int64_t)state;
 - (void)setArtistSongNotification;
 - (void)showSoundSettings;
 - (void)viewDidLoad;
@@ -30,30 +30,30 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10009C6EC();
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_10009C354();
   v3 = OBJC_IVAR____TtC5Media29RadioNowPlayingViewController_subscribers;
   swift_beginAccess();
-  v4 = *&v2->CPUINowPlayingViewController_opaque[v3];
-  *&v2->CPUINowPlayingViewController_opaque[v3] = &_swiftEmptySetSingleton;
+  v4 = *&selfCopy->CPUINowPlayingViewController_opaque[v3];
+  *&selfCopy->CPUINowPlayingViewController_opaque[v3] = &_swiftEmptySetSingleton;
 }
 
-- (id)backgroundArtForNowPlayingController:(id)a3
+- (id)backgroundArtForNowPlayingController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v6 = sub_1000A4F20();
 
   return v6;
 }
 
-- ($04B05C73ED6AEEF31C5815932084562D)durationSnapshotForNowPlayingViewController:(SEL)a3
+- ($04B05C73ED6AEEF31C5815932084562D)durationSnapshotForNowPlayingViewController:(SEL)controller
 {
   retstr->var4 = 0.0;
   *&retstr->var0 = 0u;
@@ -66,25 +66,25 @@
   return self;
 }
 
-- (BOOL)nowPlayingViewControllerIsPlaying:(id)a3
+- (BOOL)nowPlayingViewControllerIsPlaying:(id)playing
 {
-  v4 = a3;
-  v5 = self;
+  playingCopy = playing;
+  selfCopy = self;
   LOBYTE(self) = sub_1000A5390();
 
   return self & 1;
 }
 
-- (int64_t)placeholderTypeForNowPlayingViewController:(id)a3
+- (int64_t)placeholderTypeForNowPlayingViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v6 = sub_1000A5528();
 
   return v6;
 }
 
-- (id)progressBarLocalizedDurationStringForNowPlayingViewController:(id)a3
+- (id)progressBarLocalizedDurationStringForNowPlayingViewController:(id)controller
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
@@ -92,8 +92,8 @@
     v6 = *&Strong[OBJC_IVAR____TtC5Media15RadioCarManager_nowPlayingManager];
     v7 = Strong;
 
-    v8 = a3;
-    v9 = self;
+    controllerCopy = controller;
+    selfCopy = self;
 
     if (v6)
     {
@@ -121,80 +121,80 @@ LABEL_7:
   return Strong;
 }
 
-- (int64_t)overrideRenderingModeForNowPlayingViewController:(id)a3
+- (int64_t)overrideRenderingModeForNowPlayingViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v6 = sub_1000A5614();
 
   return v6;
 }
 
-- (id)badgeAnnotationViewForNowPlayingViewController:(id)a3
+- (id)badgeAnnotationViewForNowPlayingViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1000A571C();
   v7 = v6;
 
   return v7;
 }
 
-- (BOOL)nowPlayingViewController:(id)a3 buttonShouldBeActive:(int64_t)a4
+- (BOOL)nowPlayingViewController:(id)controller buttonShouldBeActive:(int64_t)active
 {
-  v6 = a3;
-  v7 = self;
-  LOBYTE(a4) = sub_1000A6540(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  LOBYTE(active) = sub_1000A6540(active);
 
-  return a4 & 1;
+  return active & 1;
 }
 
-- (BOOL)nowPlayingViewController:(id)a3 shouldDisplayButton:(int64_t)a4 withImage:(id *)a5 existingIdentifier:(id)a6 tinted:(BOOL *)a7
+- (BOOL)nowPlayingViewController:(id)controller shouldDisplayButton:(int64_t)button withImage:(id *)image existingIdentifier:(id)identifier tinted:(BOOL *)tinted
 {
-  v10 = a3;
-  v11 = self;
-  LOBYTE(a5) = sub_1000A6744(a4, a5);
+  controllerCopy = controller;
+  selfCopy = self;
+  LOBYTE(image) = sub_1000A6744(button, image);
 
-  return a5 & 1;
+  return image & 1;
 }
 
-- (BOOL)nowPlayingViewControllerCanShowAlbumArt:(id)a3
+- (BOOL)nowPlayingViewControllerCanShowAlbumArt:(id)art
 {
-  v4 = a3;
-  v5 = self;
+  artCopy = art;
+  selfCopy = self;
   LOBYTE(self) = sub_1000A6EB8();
 
   return self & 1;
 }
 
-- (BOOL)nowPlayingViewControllerIsRightHandDrive:(id)a3
+- (BOOL)nowPlayingViewControllerIsRightHandDrive:(id)drive
 {
-  v4 = a3;
-  v5 = self;
+  driveCopy = drive;
+  selfCopy = self;
   LOBYTE(self) = sub_1000A713C();
 
   return self & 1;
 }
 
-- (id)nowPlayingViewControllerGetPlaybackRate:(id)a3
+- (id)nowPlayingViewControllerGetPlaybackRate:(id)rate
 {
   v3 = [objc_allocWithZone(NSNumber) initWithDouble:1.0];
 
   return v3;
 }
 
-- (void)nowPlayingViewController:(id)a3 didSelectButton:(id)a4
+- (void)nowPlayingViewController:(id)controller didSelectButton:(id)button
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  buttonCopy = button;
+  selfCopy = self;
   sub_1000A71F4();
 }
 
-- (id)customPlaybackControlButtonsForNowPlayingViewController:(id)a3
+- (id)customPlaybackControlButtonsForNowPlayingViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1000A7564();
 
   sub_100005A50(0, &qword_1000EEE78, UIButton_ptr);
@@ -203,11 +203,11 @@ LABEL_7:
   return v6.super.isa;
 }
 
-- (void)nowPlayingViewController:(id)a3 didSendAction:(int64_t)a4 state:(int64_t)a5
+- (void)nowPlayingViewController:(id)controller didSendAction:(int64_t)action state:(int64_t)state
 {
-  v8 = a3;
-  v9 = self;
-  sub_1000A7F38(a4, a5);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1000A7F38(action, state);
 }
 
 - (void)hideDialer
@@ -221,9 +221,9 @@ LABEL_7:
   v6[2] = sub_100064D70;
   v6[3] = &unk_1000E2AF0;
   v4 = _Block_copy(v6);
-  v5 = self;
+  selfCopy = self;
 
-  [(RadioNowPlayingViewController *)v5 dismissViewControllerAnimated:1 completion:v4];
+  [(RadioNowPlayingViewController *)selfCopy dismissViewControllerAnimated:1 completion:v4];
 
   _Block_release(v4);
 }
@@ -234,29 +234,29 @@ LABEL_7:
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
+    selfCopy = self;
     sub_100010424(1);
   }
 }
 
 - (void)setArtistSongNotification
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000A14FC();
 }
 
-- (_TtC5Media29RadioNowPlayingViewController)initWithBundleIdentifier:(id)a3 dataSource:(id)a4 delegate:(id)a5
+- (_TtC5Media29RadioNowPlayingViewController)initWithBundleIdentifier:(id)identifier dataSource:(id)source delegate:(id)delegate
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return sub_1000A1694(v7, v9, a4, a5);
+  return sub_1000A1694(v7, v9, source, delegate);
 }
 
-- (_TtC5Media29RadioNowPlayingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Media29RadioNowPlayingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -268,26 +268,26 @@ LABEL_7:
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1000A18A0(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1000A18A0(v5, v7, bundle);
 }
 
-- (void)nowPlayingService:(id)a3 didUpdateCurrentMediaSourceIdentifier:(id)a4
+- (void)nowPlayingService:(id)service didUpdateCurrentMediaSourceIdentifier:(id)identifier
 {
-  v4 = self;
+  selfCopy = self;
   sub_10009CA74();
 }
 
-- (void)nowPlayingService:(id)a3 didUpdateArtwork:(id)a4
+- (void)nowPlayingService:(id)service didUpdateArtwork:(id)artwork
 {
-  v6 = a4;
+  artworkCopy = artwork;
   v4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   sub_100072620(v4, v5);
 }
 
-- (void)nowPlayingServiceDidUpdateSetArtistSongNotification:(id)a3
+- (void)nowPlayingServiceDidUpdateSetArtistSongNotification:(id)notification
 {
-  v3 = self;
+  selfCopy = self;
   sub_10009CA74();
 }
 

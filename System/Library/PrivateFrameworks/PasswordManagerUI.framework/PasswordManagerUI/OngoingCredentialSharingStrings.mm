@@ -10,7 +10,7 @@
 + (NSString)sharedPasswordsGroupsUnavailableAlertTitle;
 + (NSString)unableToInviteAllParticipantsBecauseOfUnsupportedDevicesAlertMessage;
 + (NSString)unableToInviteMultipleContactsBecauseOfUnsupportedDevicesAlertMessage;
-+ (id)unableToInviteContactBecauseOfUnsupportedDevicesAlertMessageWithContactName:(id)a3;
++ (id)unableToInviteContactBecauseOfUnsupportedDevicesAlertMessageWithContactName:(id)name;
 - (_TtC17PasswordManagerUI31OngoingCredentialSharingStrings)init;
 @end
 
@@ -161,7 +161,7 @@
   return v7;
 }
 
-+ (id)unableToInviteContactBecauseOfUnsupportedDevicesAlertMessageWithContactName:(id)a3
++ (id)unableToInviteContactBecauseOfUnsupportedDevicesAlertMessageWithContactName:(id)name
 {
   v3 = sub_21CB81024();
   v4 = *(v3 - 8);

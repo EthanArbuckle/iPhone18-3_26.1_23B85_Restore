@@ -1,7 +1,7 @@
 @interface NTFeedTransformationItemFeedTransformation
 - (NTFeedTransformationItemFeedTransformation)init;
-- (NTFeedTransformationItemFeedTransformation)initWithFeedItemTransformation:(id)a3;
-- (id)transformFeedItems:(id)a3;
+- (NTFeedTransformationItemFeedTransformation)initWithFeedItemTransformation:(id)transformation;
+- (id)transformFeedItems:(id)items;
 @end
 
 @implementation NTFeedTransformationItemFeedTransformation
@@ -32,10 +32,10 @@
   objc_exception_throw(v6);
 }
 
-- (NTFeedTransformationItemFeedTransformation)initWithFeedItemTransformation:(id)a3
+- (NTFeedTransformationItemFeedTransformation)initWithFeedItemTransformation:(id)transformation
 {
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  transformationCopy = transformation;
+  if (!transformationCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTFeedTransformationItemFeedTransformation initWithFeedItemTransformation:];
   }
@@ -46,36 +46,36 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_feedItemTransformation, a3);
+    objc_storeStrong(&v6->_feedItemTransformation, transformation);
   }
 
   return v7;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  itemsCopy = items;
+  if (!itemsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTFeedTransformationItemFeedTransformation transformFeedItems:];
   }
 
-  if ([v4 fc_containsObjectPassingTest:&__block_literal_global_8] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if ([itemsCopy fc_containsObjectPassingTest:&__block_literal_global_8] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTFeedTransformationItemFeedTransformation transformFeedItems:];
   }
 
-  v5 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v6 = objc_opt_new();
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __65__NTFeedTransformationItemFeedTransformation_transformFeedItems___block_invoke_18;
   v16 = &unk_2799828C8;
-  v17 = v5;
+  v17 = strongToStrongObjectsMapTable;
   v18 = v6;
   v7 = v6;
-  v8 = v5;
-  [v4 enumerateObjectsUsingBlock:&v13];
+  v8 = strongToStrongObjectsMapTable;
+  [itemsCopy enumerateObjectsUsingBlock:&v13];
   v9 = [(NTFeedTransformationItemFeedTransformation *)self feedItemTransformation:v13];
   v10 = [v9 transformFeedItems:v7];
 

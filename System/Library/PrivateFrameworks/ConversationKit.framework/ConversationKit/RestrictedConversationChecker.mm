@@ -1,25 +1,25 @@
 @interface RestrictedConversationChecker
-- (void)conversationManager:(id)a3 migratingFromConversation:(id)a4 toConversation:(id)a5;
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4;
+- (void)conversationManager:(id)manager migratingFromConversation:(id)conversation toConversation:(id)toConversation;
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation;
 @end
 
 @implementation RestrictedConversationChecker
 
-- (void)conversationManager:(id)a3 migratingFromConversation:(id)a4 toConversation:(id)a5
+- (void)conversationManager:(id)manager migratingFromConversation:(id)conversation toConversation:(id)toConversation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  toConversationCopy = toConversation;
+  selfCopy = self;
   RestrictedConversationChecker.conversationManager(_:migratingFrom:to:)();
 }
 
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  RestrictedConversationChecker.conversationManager(_:removedActiveConversation:)(v8, v7);
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
+  RestrictedConversationChecker.conversationManager(_:removedActiveConversation:)(selfCopy, conversationCopy);
 }
 
 @end

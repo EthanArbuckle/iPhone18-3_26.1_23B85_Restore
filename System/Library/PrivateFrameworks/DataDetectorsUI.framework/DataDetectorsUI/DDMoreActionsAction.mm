@@ -29,8 +29,8 @@
     v8 = DDLocalizedString(@"Cancel");
     v9 = [v7 actionWithTitle:v8 style:1 handler:0];
 
-    v10 = [(DDMoreActionsAction *)self alertActions];
-    v11 = [v10 arrayByAddingObject:v9];
+    alertActions = [(DDMoreActionsAction *)self alertActions];
+    v11 = [alertActions arrayByAddingObject:v9];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __37__DDMoreActionsAction_viewController__block_invoke;

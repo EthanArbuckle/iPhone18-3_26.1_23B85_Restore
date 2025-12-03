@@ -1,33 +1,33 @@
 @interface ATXPBLightweightClientModelCacheUpdate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSuggestions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSuggestions:(id)suggestions;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBLightweightClientModelCacheUpdate
 
-- (void)addSuggestions:(id)a3
+- (void)addSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   suggestions = self->_suggestions;
-  v8 = v4;
+  v8 = suggestionsCopy;
   if (!suggestions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_suggestions;
     self->_suggestions = v6;
 
-    v4 = v8;
+    suggestionsCopy = v8;
     suggestions = self->_suggestions;
   }
 
-  [(NSMutableArray *)suggestions addObject:v4];
+  [(NSMutableArray *)suggestions addObject:suggestionsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBLightweightClientModelCacheUpdate;
   v4 = [(ATXPBLightweightClientModelCacheUpdate *)&v8 description];
-  v5 = [(ATXPBLightweightClientModelCacheUpdate *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBLightweightClientModelCacheUpdate *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   uuidString = self->_uuidString;
   if (uuidString)
   {
-    [v3 setObject:uuidString forKey:@"uuidString"];
+    [dictionary setObject:uuidString forKey:@"uuidString"];
   }
 
   if ([(NSMutableArray *)self->_suggestions count])
@@ -75,8 +75,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -105,10 +105,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_uuidString)
   {
     PBDataWriterWriteStringField();
@@ -160,46 +160,46 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_uuidString)
   {
-    [v8 setUuidString:?];
+    [toCopy setUuidString:?];
   }
 
   if ([(ATXPBLightweightClientModelCacheUpdate *)self suggestionsCount])
   {
-    [v8 clearSuggestions];
-    v4 = [(ATXPBLightweightClientModelCacheUpdate *)self suggestionsCount];
-    if (v4)
+    [toCopy clearSuggestions];
+    suggestionsCount = [(ATXPBLightweightClientModelCacheUpdate *)self suggestionsCount];
+    if (suggestionsCount)
     {
-      v5 = v4;
+      v5 = suggestionsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ATXPBLightweightClientModelCacheUpdate *)self suggestionsAtIndex:i];
-        [v8 addSuggestions:v7];
+        [toCopy addSuggestions:v7];
       }
     }
   }
 
   if (self->_clientModelId)
   {
-    [v8 setClientModelId:?];
+    [toCopy setClientModelId:?];
   }
 
   if (*&self->_has)
   {
-    *(v8 + 1) = *&self->_cacheCreationDate;
-    *(v8 + 40) |= 1u;
+    *(toCopy + 1) = *&self->_cacheCreationDate;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuidString copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuidString copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -223,7 +223,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * v12) copyWithZone:{a3, v18}];
+        v13 = [*(*(&v18 + 1) + 8 * v12) copyWithZone:{zone, v18}];
         [v5 addSuggestions:v13];
 
         ++v12;
@@ -236,7 +236,7 @@
     while (v10);
   }
 
-  v14 = [(NSString *)self->_clientModelId copyWithZone:a3];
+  v14 = [(NSString *)self->_clientModelId copyWithZone:zone];
   v15 = *(v5 + 16);
   *(v5 + 16) = v14;
 
@@ -250,16 +250,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   uuidString = self->_uuidString;
-  if (uuidString | *(v4 + 4))
+  if (uuidString | *(equalCopy + 4))
   {
     if (![(NSString *)uuidString isEqual:?])
     {
@@ -268,7 +268,7 @@
   }
 
   suggestions = self->_suggestions;
-  if (suggestions | *(v4 + 3))
+  if (suggestions | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)suggestions isEqual:?])
     {
@@ -277,7 +277,7 @@
   }
 
   clientModelId = self->_clientModelId;
-  if (clientModelId | *(v4 + 2))
+  if (clientModelId | *(equalCopy + 2))
   {
     if (![(NSString *)clientModelId isEqual:?])
     {
@@ -285,10 +285,10 @@
     }
   }
 
-  v8 = (*(v4 + 40) & 1) == 0;
+  v8 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) != 0 && self->_cacheCreationDate == *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) != 0 && self->_cacheCreationDate == *(equalCopy + 1))
     {
       v8 = 1;
       goto LABEL_13;
@@ -344,11 +344,11 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(ATXPBLightweightClientModelCacheUpdate *)self setUuidString:?];
   }
@@ -357,7 +357,7 @@ LABEL_13:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -381,14 +381,14 @@ LABEL_13:
     while (v7);
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ATXPBLightweightClientModelCacheUpdate *)self setClientModelId:?];
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
-    self->_cacheCreationDate = *(v4 + 1);
+    self->_cacheCreationDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

@@ -4,16 +4,16 @@
 - (void)_loadParkedCarViewControllerIfNeeded;
 - (void)didBecomeCurrent;
 - (void)didResignCurrent;
-- (void)handleDismissAction:(id)a3;
-- (void)parkedCarViewControllerDidBeginEditing:(id)a3;
-- (void)parkedCarViewControllerDidRequestDismissal:(id)a3;
-- (void)parkedCarViewControllerDidSelectShare:(id)a3;
-- (void)parkerCarViewControllerDidSelectDoDirections:(id)a3 transportType:(int64_t)a4;
-- (void)setParkedCar:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)handleDismissAction:(id)action;
+- (void)parkedCarViewControllerDidBeginEditing:(id)editing;
+- (void)parkedCarViewControllerDidRequestDismissal:(id)dismissal;
+- (void)parkedCarViewControllerDidSelectShare:(id)share;
+- (void)parkerCarViewControllerDidSelectDoDirections:(id)directions transportType:(int64_t)type;
+- (void)setParkedCar:(id)car;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willChangeLayout:(unint64_t)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willChangeLayout:(unint64_t)layout;
 @end
 
 @implementation ParkedCarInfoCardViewController
@@ -32,19 +32,19 @@
   return WeakRetained;
 }
 
-- (void)parkedCarViewControllerDidBeginEditing:(id)a3
+- (void)parkedCarViewControllerDidBeginEditing:(id)editing
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 wantsLayout:3];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController wantsLayout:3];
 }
 
-- (void)parkedCarViewControllerDidRequestDismissal:(id)a3
+- (void)parkedCarViewControllerDidRequestDismissal:(id)dismissal
 {
-  v4 = [(ParkedCarInfoCardViewController *)self actionDelegate];
-  [v4 parkedCarInfoCardViewControllerWantsDismiss:self];
+  actionDelegate = [(ParkedCarInfoCardViewController *)self actionDelegate];
+  [actionDelegate parkedCarInfoCardViewControllerWantsDismiss:self];
 }
 
-- (void)parkerCarViewControllerDidSelectDoDirections:(id)a3 transportType:(int64_t)a4
+- (void)parkerCarViewControllerDidSelectDoDirections:(id)directions transportType:(int64_t)type
 {
   v6 = objc_alloc_init(SearchFieldItem);
   v7 = +[SearchResult currentLocationSearchResult];
@@ -52,68 +52,68 @@
 
   v8 = objc_alloc_init(SearchFieldItem);
   v9 = [SearchResult alloc];
-  v10 = [(ParkedCarInfoCardViewController *)self parkedCar];
-  v11 = [(SearchResult *)v9 initWithParkedCar:v10];
+  parkedCar = [(ParkedCarInfoCardViewController *)self parkedCar];
+  v11 = [(SearchResult *)v9 initWithParkedCar:parkedCar];
   [(SearchFieldItem *)v8 setSearchResult:v11];
 
   v12 = [DirectionItem alloc];
   v19[0] = v6;
   v19[1] = v8;
   v13 = [NSArray arrayWithObjects:v19 count:2];
-  v14 = [(DirectionItem *)v12 initWithItems:v13 transportType:a4];
+  v14 = [(DirectionItem *)v12 initWithItems:v13 transportType:type];
 
   v17 = @"DirectionsSessionInitiatorKey";
   v18 = &off_1016E6860;
   v15 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-  v16 = [(ParkedCarInfoCardViewController *)self actionDelegate];
-  [v16 parkedCarInfoCardViewController:self showDirectionsForItem:v14 userInfo:v15];
+  actionDelegate = [(ParkedCarInfoCardViewController *)self actionDelegate];
+  [actionDelegate parkedCarInfoCardViewController:self showDirectionsForItem:v14 userInfo:v15];
 }
 
-- (void)parkedCarViewControllerDidSelectShare:(id)a3
+- (void)parkedCarViewControllerDidSelectShare:(id)share
 {
-  v4 = a3;
+  shareCopy = share;
   v5 = [SearchResult alloc];
-  v6 = [(ParkedCarInfoCardViewController *)self parkedCar];
-  v12 = [(SearchResult *)v5 initWithParkedCar:v6];
+  parkedCar = [(ParkedCarInfoCardViewController *)self parkedCar];
+  v12 = [(SearchResult *)v5 initWithParkedCar:parkedCar];
 
   [(SearchResult *)v12 setReverseGeocoded:1];
-  v7 = [(SearchResult *)v12 contactForSharingToMessages];
-  v8 = [ShareItem shareItemWithSearchResult:v12 contact:v7 includePrintActivity:0];
+  contactForSharingToMessages = [(SearchResult *)v12 contactForSharingToMessages];
+  v8 = [ShareItem shareItemWithSearchResult:v12 contact:contactForSharingToMessages includePrintActivity:0];
 
-  v9 = [v4 view];
+  view = [shareCopy view];
 
-  v10 = [MUPresentationOptions optionsWithSender:v9];
+  v10 = [MUPresentationOptions optionsWithSender:view];
 
-  v11 = [(ParkedCarInfoCardViewController *)self shareDelegate];
-  [v11 shareItem:v8 presentationOptions:v10 completion:0];
+  shareDelegate = [(ParkedCarInfoCardViewController *)self shareDelegate];
+  [shareDelegate shareItem:v8 presentationOptions:v10 completion:0];
 }
 
-- (void)willChangeLayout:(unint64_t)a3
+- (void)willChangeLayout:(unint64_t)layout
 {
   v5.receiver = self;
   v5.super_class = ParkedCarInfoCardViewController;
   [(InfoCardViewController *)&v5 willChangeLayout:?];
-  if (a3 - 1 <= 1)
+  if (layout - 1 <= 1)
   {
     [(ParkedCarViewController *)self->_parkedCarViewController dismissTextField];
   }
 }
 
-- (void)setParkedCar:(id)a3
+- (void)setParkedCar:(id)car
 {
-  v4 = a3;
+  carCopy = car;
   [(ParkedCarInfoCardViewController *)self _loadParkedCarViewControllerIfNeeded];
-  [(ParkedCarViewController *)self->_parkedCarViewController setParkedCar:v4];
-  v5 = [v4 title];
+  [(ParkedCarViewController *)self->_parkedCarViewController setParkedCar:carCopy];
+  title = [carCopy title];
 
-  [(InfoCardViewController *)self setHeaderTitle:v5];
+  [(InfoCardViewController *)self setHeaderTitle:title];
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
   [(ParkedCarViewController *)self->_parkedCarViewController instrumentDismissAction];
-  v4 = [(ParkedCarInfoCardViewController *)self actionDelegate];
-  [v4 parkedCarInfoCardViewControllerWantsDismiss:self];
+  actionDelegate = [(ParkedCarInfoCardViewController *)self actionDelegate];
+  [actionDelegate parkedCarInfoCardViewControllerWantsDismiss:self];
 }
 
 - (void)_loadParkedCarViewControllerIfNeeded
@@ -131,19 +131,19 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = ParkedCarInfoCardViewController;
-  [(InfoCardViewController *)&v4 viewDidDisappear:a3];
+  [(InfoCardViewController *)&v4 viewDidDisappear:disappear];
   [(ParkedCarViewController *)self->_parkedCarViewController setActive:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ParkedCarInfoCardViewController;
-  [(ContaineeViewController *)&v4 viewWillAppear:a3];
+  [(ContaineeViewController *)&v4 viewWillAppear:appear];
   [(ParkedCarViewController *)self->_parkedCarViewController setActive:1];
 }
 

@@ -1,47 +1,47 @@
 @interface FCCKDatabaseEncryptionMiddleware
-- (id)_clientZoneIDFromServerZoneID:(void *)a3 error:;
-- (id)_decryptedRecordIDWithOriginalRecordID:(void *)a3 withEncryptionKey:(void *)a4 mapping:(void *)a5 error:;
-- (id)_encryptedRecordIDWithOriginalRecordID:(void *)a3 withEncryptionKey:(void *)a4 mapping:(void *)a5 error:;
-- (id)_encryptionKeyForClientRecordID:(void *)a3 inDatabase:;
-- (id)_serverZoneIDFromClientZoneID:(uint64_t)a3 database:(void *)a4 error:;
-- (id)clientToServerRecord:(id)a3 inDatabase:(id)a4 error:(id *)a5;
-- (id)clientToServerRecordID:(id)a3 inDatabase:(id)a4 error:(id *)a5;
-- (id)clientToServerRecordType:(id)a3 withRecordID:(id)a4 inDatabase:(id)a5 error:(id *)a6;
-- (id)clientToServerRecordZone:(id)a3 inDatabase:(id)a4 error:(id *)a5;
-- (id)initWithEncryptionSchema:(void *)a3 recordNameCipher:;
-- (id)serverToClientRecord:(id)a3 inDatabase:(id)a4 error:(id *)a5;
-- (id)serverToClientRecordID:(id)a3 inDatabase:(id)a4 error:(id *)a5;
-- (id)serverToClientRecordType:(id)a3 withRecordID:(id)a4 inDatabase:(id)a5 error:(id *)a6;
-- (id)serverToClientRecordZone:(id)a3 inDatabase:(id)a4 error:(id *)a5;
-- (int64_t)database:(id)a3 willEnqueueOperation:(id)a4 error:(id *)a5;
-- (void)_encryptionKeyForServerRecordID:(void *)a3 inDatabase:;
-- (void)_removeField:(void *)a1 fromRecord:(void *)a2;
+- (id)_clientZoneIDFromServerZoneID:(void *)d error:;
+- (id)_decryptedRecordIDWithOriginalRecordID:(void *)d withEncryptionKey:(void *)key mapping:(void *)mapping error:;
+- (id)_encryptedRecordIDWithOriginalRecordID:(void *)d withEncryptionKey:(void *)key mapping:(void *)mapping error:;
+- (id)_encryptionKeyForClientRecordID:(void *)d inDatabase:;
+- (id)_serverZoneIDFromClientZoneID:(uint64_t)d database:(void *)database error:;
+- (id)clientToServerRecord:(id)record inDatabase:(id)database error:(id *)error;
+- (id)clientToServerRecordID:(id)d inDatabase:(id)database error:(id *)error;
+- (id)clientToServerRecordType:(id)type withRecordID:(id)d inDatabase:(id)database error:(id *)error;
+- (id)clientToServerRecordZone:(id)zone inDatabase:(id)database error:(id *)error;
+- (id)initWithEncryptionSchema:(void *)schema recordNameCipher:;
+- (id)serverToClientRecord:(id)record inDatabase:(id)database error:(id *)error;
+- (id)serverToClientRecordID:(id)d inDatabase:(id)database error:(id *)error;
+- (id)serverToClientRecordType:(id)type withRecordID:(id)d inDatabase:(id)database error:(id *)error;
+- (id)serverToClientRecordZone:(id)zone inDatabase:(id)database error:(id *)error;
+- (int64_t)database:(id)database willEnqueueOperation:(id)operation error:(id *)error;
+- (void)_encryptionKeyForServerRecordID:(void *)d inDatabase:;
+- (void)_removeField:(void *)field fromRecord:(void *)record;
 @end
 
 @implementation FCCKDatabaseEncryptionMiddleware
 
-- (id)initWithEncryptionSchema:(void *)a3 recordNameCipher:
+- (id)initWithEncryptionSchema:(void *)schema recordNameCipher:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  schemaCopy = schema;
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = FCCKDatabaseEncryptionMiddleware;
     v8 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      if (!v7)
+      objc_storeStrong(self + 2, schema);
+      if (!schemaCopy)
       {
         [(FCCKPrivateDatabaseSchema *)v6 enumerateZoneSchemasWithBlock:?];
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __78__FCCKDatabaseEncryptionMiddleware_initWithEncryptionSchema_recordNameCipher___block_invoke(uint64_t a1, uint64_t a2)
@@ -64,37 +64,37 @@ void __78__FCCKDatabaseEncryptionMiddleware_initWithEncryptionSchema_recordNameC
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)database:(id)a3 willEnqueueOperation:(id)a4 error:(id *)a5
+- (int64_t)database:(id)database willEnqueueOperation:(id)operation error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7 || *(v7 + 10) != 1 || v7[5] > 0 || (v7[1] & 1) == 0 || ([(CKDatabaseOperation *)v8 fc_canBypassEncryptionRequirement]& 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  databaseCopy = database;
+  operationCopy = operation;
+  v9 = operationCopy;
+  if (!databaseCopy || *(databaseCopy + 10) != 1 || databaseCopy[5] > 0 || (databaseCopy[1] & 1) == 0 || ([(CKDatabaseOperation *)operationCopy fc_canBypassEncryptionRequirement]& 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v10 = 0;
   }
 
   else
   {
-    *a5 = [MEMORY[0x1E696ABC0] fc_encryptionRequiredError];
+    *error = [MEMORY[0x1E696ABC0] fc_encryptionRequiredError];
     v10 = 1;
   }
 
   return v10;
 }
 
-- (id)_serverZoneIDFromClientZoneID:(uint64_t)a3 database:(void *)a4 error:
+- (id)_serverZoneIDFromClientZoneID:(uint64_t)d database:(void *)database error:
 {
   v7 = a2;
   v8 = v7;
-  if (a1)
+  if (self)
   {
     v9 = v7;
-    v10 = *(a1 + 8);
+    v10 = *(self + 8);
     v11 = v10;
-    if (a3)
+    if (d)
     {
-      v12 = *(a3 + 40);
+      v12 = *(d + 40);
     }
 
     else
@@ -107,11 +107,11 @@ void __78__FCCKDatabaseEncryptionMiddleware_initWithEncryptionSchema_recordNameC
     if ([v13 hasChanges])
     {
       v14 = objc_alloc(MEMORY[0x1E695BA90]);
-      v15 = [v13 toZoneSchema];
-      v16 = v15;
-      if (v15)
+      toZoneSchema = [v13 toZoneSchema];
+      v16 = toZoneSchema;
+      if (toZoneSchema)
       {
-        v17 = *(v15 + 16);
+        v17 = *(toZoneSchema + 16);
       }
 
       else
@@ -120,15 +120,15 @@ void __78__FCCKDatabaseEncryptionMiddleware_initWithEncryptionSchema_recordNameC
       }
 
       v18 = v17;
-      v19 = [v9 ownerName];
-      v20 = [v14 initWithZoneName:v18 ownerName:v19];
+      ownerName = [v9 ownerName];
+      v20 = [v14 initWithZoneName:v18 ownerName:ownerName];
 
       v9 = v20;
     }
 
-    if (a4)
+    if (database)
     {
-      *a4 = 0;
+      *database = 0;
     }
   }
 
@@ -140,22 +140,22 @@ void __78__FCCKDatabaseEncryptionMiddleware_initWithEncryptionSchema_recordNameC
   return v9;
 }
 
-- (id)_clientZoneIDFromServerZoneID:(void *)a3 error:
+- (id)_clientZoneIDFromServerZoneID:(void *)d error:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v7 = v5;
-    v8 = [(FCCKPrivateDatabaseSchema *)*(a1 + 8) mappingFromRecordZoneID:v7 toVersion:0];
+    v8 = [(FCCKPrivateDatabaseSchema *)*(self + 8) mappingFromRecordZoneID:v7 toVersion:0];
     if ([v8 hasChanges])
     {
       v9 = objc_alloc(MEMORY[0x1E695BA90]);
-      v10 = [v8 toZoneSchema];
-      v11 = v10;
-      if (v10)
+      toZoneSchema = [v8 toZoneSchema];
+      v11 = toZoneSchema;
+      if (toZoneSchema)
       {
-        v12 = *(v10 + 16);
+        v12 = *(toZoneSchema + 16);
       }
 
       else
@@ -164,15 +164,15 @@ void __78__FCCKDatabaseEncryptionMiddleware_initWithEncryptionSchema_recordNameC
       }
 
       v13 = v12;
-      v14 = [v7 ownerName];
-      v15 = [v9 initWithZoneName:v13 ownerName:v14];
+      ownerName = [v7 ownerName];
+      v15 = [v9 initWithZoneName:v13 ownerName:ownerName];
 
       v7 = v15;
     }
 
-    if (a3)
+    if (d)
     {
-      *a3 = 0;
+      *d = 0;
     }
   }
 
@@ -184,11 +184,11 @@ void __78__FCCKDatabaseEncryptionMiddleware_initWithEncryptionSchema_recordNameC
   return v7;
 }
 
-- (id)clientToServerRecordID:(id)a3 inDatabase:(id)a4 error:(id *)a5
+- (id)clientToServerRecordID:(id)d inDatabase:(id)database error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(FCCKDatabaseEncryptionMiddleware *)self _encryptionKeyForClientRecordID:v9 inDatabase:v8];
+  databaseCopy = database;
+  dCopy = d;
+  v10 = [(FCCKDatabaseEncryptionMiddleware *)self _encryptionKeyForClientRecordID:dCopy inDatabase:databaseCopy];
   if (self)
   {
     encryptionSchema = self->_encryptionSchema;
@@ -200,9 +200,9 @@ void __78__FCCKDatabaseEncryptionMiddleware_initWithEncryptionSchema_recordNameC
   }
 
   v12 = encryptionSchema;
-  if (v8)
+  if (databaseCopy)
   {
-    v13 = v8[5];
+    v13 = databaseCopy[5];
   }
 
   else
@@ -210,10 +210,10 @@ void __78__FCCKDatabaseEncryptionMiddleware_initWithEncryptionSchema_recordNameC
     v13 = 0;
   }
 
-  v14 = [(FCCKPrivateDatabaseSchema *)v12 mappingFromRecordID:v9 toVersion:v13];
+  v14 = [(FCCKPrivateDatabaseSchema *)v12 mappingFromRecordID:dCopy toVersion:v13];
 
   v20 = 0;
-  v15 = [(FCCKDatabaseEncryptionMiddleware *)self _encryptedRecordIDWithOriginalRecordID:v9 withEncryptionKey:v10 mapping:v14 error:&v20];
+  v15 = [(FCCKDatabaseEncryptionMiddleware *)self _encryptedRecordIDWithOriginalRecordID:dCopy withEncryptionKey:v10 mapping:v14 error:&v20];
 
   v16 = v20;
   if (v15)
@@ -221,25 +221,25 @@ void __78__FCCKDatabaseEncryptionMiddleware_initWithEncryptionSchema_recordNameC
     v17 = v15;
   }
 
-  if (a5)
+  if (error)
   {
     v18 = v16;
-    *a5 = v16;
+    *error = v16;
   }
 
   return v15;
 }
 
-- (id)_encryptionKeyForClientRecordID:(void *)a3 inDatabase:
+- (id)_encryptionKeyForClientRecordID:(void *)d inDatabase:
 {
-  v5 = a3;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
-    v6 = *(a1 + 8);
+    v6 = *(self + 8);
     v7 = a2;
-    if (v5)
+    if (dCopy)
     {
-      v8 = v5[5];
+      v8 = dCopy[5];
     }
 
     else
@@ -249,15 +249,15 @@ void __78__FCCKDatabaseEncryptionMiddleware_initWithEncryptionSchema_recordNameC
 
     v9 = [(FCCKPrivateDatabaseSchema *)v6 mappingFromRecordID:v7 toVersion:v8];
 
-    v10 = [v9 toZoneSchema];
-    v12 = v10;
-    if (v10 && (*(v10 + 10) & 1) != 0)
+    toZoneSchema = [v9 toZoneSchema];
+    v12 = toZoneSchema;
+    if (toZoneSchema && (*(toZoneSchema + 10) & 1) != 0)
     {
-      if (v5)
+      if (dCopy)
       {
         v13 = 56;
 LABEL_10:
-        Property = objc_getProperty(v5, v11, v13, 1);
+        Property = objc_getProperty(dCopy, v11, v13, 1);
 LABEL_11:
         v15 = Property;
 
@@ -265,7 +265,7 @@ LABEL_11:
       }
     }
 
-    else if (v5)
+    else if (dCopy)
     {
       v13 = 48;
       goto LABEL_10;
@@ -281,40 +281,40 @@ LABEL_12:
   return v15;
 }
 
-- (id)_encryptedRecordIDWithOriginalRecordID:(void *)a3 withEncryptionKey:(void *)a4 mapping:(void *)a5 error:
+- (id)_encryptedRecordIDWithOriginalRecordID:(void *)d withEncryptionKey:(void *)key mapping:(void *)mapping error:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (!a1)
+  dCopy = d;
+  keyCopy = key;
+  v12 = keyCopy;
+  if (!self)
   {
     v49 = 0;
     goto LABEL_27;
   }
 
-  v13 = [v11 toRecordName];
-  v14 = [v12 fromRecordName];
-  v15 = [v13 isEqualToString:v14];
+  toRecordName = [keyCopy toRecordName];
+  fromRecordName = [v12 fromRecordName];
+  v15 = [toRecordName isEqualToString:fromRecordName];
 
   if (v15)
   {
-    v16 = [v12 toZoneSchema];
-    v17 = [v12 toRecordName];
-    if (!v16 || ([v16[4] containsObject:v17] & 1) == 0)
+    toZoneSchema = [v12 toZoneSchema];
+    toRecordName2 = [v12 toRecordName];
+    if (!toZoneSchema || ([toZoneSchema[4] containsObject:toRecordName2] & 1) == 0)
     {
-      v18 = [v12 toZoneSchema];
-      v19 = v18;
-      if (v18 && (v18[8] & 1) != 0)
+      toZoneSchema2 = [v12 toZoneSchema];
+      v19 = toZoneSchema2;
+      if (toZoneSchema2 && (toZoneSchema2[8] & 1) != 0)
       {
-        v20 = [v12 fromZoneSchema];
-        if (!v20)
+        fromZoneSchema = [v12 fromZoneSchema];
+        if (!fromZoneSchema)
         {
 
 LABEL_9:
-          v22 = *(a1 + 16);
-          v23 = [v9 recordName];
-          v24 = [v22 encryptRecordName:v23 withKey:v10];
+          v22 = *(self + 16);
+          recordName = [v9 recordName];
+          v24 = [v22 encryptRecordName:recordName withKey:dCopy];
 
           if (v24)
           {
@@ -325,7 +325,7 @@ LABEL_9:
             {
               v27 = v24;
 LABEL_32:
-              v53 = v27;
+              recordName3 = v27;
 
               goto LABEL_18;
             }
@@ -334,15 +334,15 @@ LABEL_32:
           else
           {
             v51 = MEMORY[0x1E696ABC0];
-            v52 = [v9 recordName];
-            v26 = [v51 fc_encryptionErrorWithCode:2 descriptionFormat:@"Cipher failed to encrypt record name: %@", v52];
+            recordName2 = [v9 recordName];
+            v26 = [v51 fc_encryptionErrorWithCode:2 descriptionFormat:@"Cipher failed to encrypt record name: %@", recordName2];
           }
 
           v27 = 0;
           goto LABEL_32;
         }
 
-        v21 = v20[8];
+        v21 = fromZoneSchema[8];
 
         if ((v21 & 1) == 0)
         {
@@ -354,43 +354,43 @@ LABEL_32:
     }
 
 LABEL_17:
-    v53 = [v9 recordName];
+    recordName3 = [v9 recordName];
     v26 = 0;
     goto LABEL_18;
   }
 
   v28 = MEMORY[0x1E695BA70];
-  v29 = [v12 toRecordName];
+  toRecordName3 = [v12 toRecordName];
   v55 = 0;
-  v30 = [v28 isValidRecordName:v29 outError:&v55];
+  v30 = [v28 isValidRecordName:toRecordName3 outError:&v55];
   v26 = v55;
 
   if (v30)
   {
-    v53 = [v12 toRecordName];
+    recordName3 = [v12 toRecordName];
   }
 
   else
   {
     v31 = MEMORY[0x1E696ABC0];
-    v32 = [v12 toRecordName];
-    v33 = [v31 fc_encryptionErrorWithCode:4 descriptionFormat:@"Record name is invalid: %@", v32];
+    toRecordName4 = [v12 toRecordName];
+    v33 = [v31 fc_encryptionErrorWithCode:4 descriptionFormat:@"Record name is invalid: %@", toRecordName4];
 
-    v53 = 0;
+    recordName3 = 0;
     v26 = v33;
   }
 
 LABEL_18:
-  v34 = a5;
+  mappingCopy = mapping;
   v35 = objc_alloc(MEMORY[0x1E695BA90]);
   v36 = v12;
-  v37 = [v12 toZoneSchema];
-  v38 = v37;
+  toZoneSchema3 = [v12 toZoneSchema];
+  v38 = toZoneSchema3;
   v39 = v26;
-  v40 = v10;
-  if (v37)
+  v40 = dCopy;
+  if (toZoneSchema3)
   {
-    v41 = *(v37 + 16);
+    v41 = *(toZoneSchema3 + 16);
   }
 
   else
@@ -400,26 +400,26 @@ LABEL_18:
 
   v42 = v41;
   v43 = v9;
-  v44 = [v9 zoneID];
-  v45 = [v44 ownerName];
-  v46 = [v35 initWithZoneName:v42 ownerName:v45];
+  zoneID = [v9 zoneID];
+  ownerName = [zoneID ownerName];
+  v46 = [v35 initWithZoneName:v42 ownerName:ownerName];
 
   v47 = v39;
-  if (v34)
+  if (mappingCopy)
   {
     v48 = v39;
-    *v34 = v39;
+    *mappingCopy = v39;
   }
 
   v49 = 0;
-  v10 = v40;
-  if (v53)
+  dCopy = v40;
+  if (recordName3)
   {
     v9 = v43;
     v12 = v36;
     if (v46)
     {
-      v49 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v53 zoneID:v46];
+      v49 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:recordName3 zoneID:v46];
     }
   }
 
@@ -434,10 +434,10 @@ LABEL_27:
   return v49;
 }
 
-- (id)serverToClientRecordID:(id)a3 inDatabase:(id)a4 error:(id *)a5
+- (id)serverToClientRecordID:(id)d inDatabase:(id)database error:(id *)error
 {
-  v8 = a3;
-  v9 = [(FCCKDatabaseEncryptionMiddleware *)self _encryptionKeyForServerRecordID:v8 inDatabase:a4];
+  dCopy = d;
+  v9 = [(FCCKDatabaseEncryptionMiddleware *)self _encryptionKeyForServerRecordID:dCopy inDatabase:database];
   if (self)
   {
     encryptionSchema = self->_encryptionSchema;
@@ -448,9 +448,9 @@ LABEL_27:
     encryptionSchema = 0;
   }
 
-  v11 = [(FCCKPrivateDatabaseSchema *)encryptionSchema mappingFromRecordID:v8 toVersion:0];
+  v11 = [(FCCKPrivateDatabaseSchema *)encryptionSchema mappingFromRecordID:dCopy toVersion:0];
   v17 = 0;
-  v12 = [(FCCKDatabaseEncryptionMiddleware *)self _decryptedRecordIDWithOriginalRecordID:v8 withEncryptionKey:v9 mapping:v11 error:&v17];
+  v12 = [(FCCKDatabaseEncryptionMiddleware *)self _decryptedRecordIDWithOriginalRecordID:dCopy withEncryptionKey:v9 mapping:v11 error:&v17];
 
   v13 = v17;
   if (v12)
@@ -458,37 +458,37 @@ LABEL_27:
     v14 = v12;
   }
 
-  if (a5)
+  if (error)
   {
     v15 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
   return v12;
 }
 
-- (void)_encryptionKeyForServerRecordID:(void *)a3 inDatabase:
+- (void)_encryptionKeyForServerRecordID:(void *)d inDatabase:
 {
-  v5 = a3;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
-    v6 = [(FCCKPrivateDatabaseSchema *)a1[1] schemaForZoneContainingRecordID:a2];
+    v6 = [(FCCKPrivateDatabaseSchema *)self[1] schemaForZoneContainingRecordID:a2];
     v8 = v6;
     if (v6 && (*(v6 + 10) & 1) != 0)
     {
-      if (v5)
+      if (dCopy)
       {
         v9 = 56;
 LABEL_8:
-        Property = objc_getProperty(v5, v7, v9, 1);
+        Property = objc_getProperty(dCopy, v7, v9, 1);
 LABEL_9:
-        a1 = Property;
+        self = Property;
 
         goto LABEL_10;
       }
     }
 
-    else if (v5)
+    else if (dCopy)
     {
       v9 = 48;
       goto LABEL_8;
@@ -500,43 +500,43 @@ LABEL_9:
 
 LABEL_10:
 
-  return a1;
+  return self;
 }
 
-- (id)_decryptedRecordIDWithOriginalRecordID:(void *)a3 withEncryptionKey:(void *)a4 mapping:(void *)a5 error:
+- (id)_decryptedRecordIDWithOriginalRecordID:(void *)d withEncryptionKey:(void *)key mapping:(void *)mapping error:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (!a1)
+  dCopy = d;
+  keyCopy = key;
+  v12 = keyCopy;
+  if (!self)
   {
     v49 = 0;
     goto LABEL_27;
   }
 
-  v13 = [v11 toRecordName];
-  v14 = [v12 fromRecordName];
-  v15 = [v13 isEqualToString:v14];
+  toRecordName = [keyCopy toRecordName];
+  fromRecordName = [v12 fromRecordName];
+  v15 = [toRecordName isEqualToString:fromRecordName];
 
   if (v15)
   {
-    v16 = [v12 fromZoneSchema];
-    v17 = [v12 fromRecordName];
-    if (!v16 || ([v16[4] containsObject:v17] & 1) == 0)
+    fromZoneSchema = [v12 fromZoneSchema];
+    fromRecordName2 = [v12 fromRecordName];
+    if (!fromZoneSchema || ([fromZoneSchema[4] containsObject:fromRecordName2] & 1) == 0)
     {
-      v18 = [v12 fromZoneSchema];
-      v19 = v18;
-      if (v18 && (v18[8] & 1) != 0)
+      fromZoneSchema2 = [v12 fromZoneSchema];
+      v19 = fromZoneSchema2;
+      if (fromZoneSchema2 && (fromZoneSchema2[8] & 1) != 0)
       {
-        v20 = [v12 toZoneSchema];
-        if (!v20)
+        toZoneSchema = [v12 toZoneSchema];
+        if (!toZoneSchema)
         {
 
 LABEL_9:
-          v22 = *(a1 + 16);
-          v23 = [v9 recordName];
-          v24 = [v22 decryptRecordName:v23 withKey:v10];
+          v22 = *(self + 16);
+          recordName = [v9 recordName];
+          v24 = [v22 decryptRecordName:recordName withKey:dCopy];
 
           if (v24)
           {
@@ -547,7 +547,7 @@ LABEL_9:
             {
               v27 = v24;
 LABEL_32:
-              v53 = v27;
+              recordName3 = v27;
 
               goto LABEL_18;
             }
@@ -556,15 +556,15 @@ LABEL_32:
           else
           {
             v51 = MEMORY[0x1E696ABC0];
-            v52 = [v9 recordName];
-            v26 = [v51 fc_encryptionErrorWithCode:2 descriptionFormat:@"Cipher failed to decrypt record name: %@", v52];
+            recordName2 = [v9 recordName];
+            v26 = [v51 fc_encryptionErrorWithCode:2 descriptionFormat:@"Cipher failed to decrypt record name: %@", recordName2];
           }
 
           v27 = 0;
           goto LABEL_32;
         }
 
-        v21 = v20[8];
+        v21 = toZoneSchema[8];
 
         if ((v21 & 1) == 0)
         {
@@ -576,43 +576,43 @@ LABEL_32:
     }
 
 LABEL_17:
-    v53 = [v9 recordName];
+    recordName3 = [v9 recordName];
     v26 = 0;
     goto LABEL_18;
   }
 
   v28 = MEMORY[0x1E695BA70];
-  v29 = [v12 toRecordName];
+  toRecordName2 = [v12 toRecordName];
   v55 = 0;
-  v30 = [v28 isValidRecordName:v29 outError:&v55];
+  v30 = [v28 isValidRecordName:toRecordName2 outError:&v55];
   v26 = v55;
 
   if (v30)
   {
-    v53 = [v12 toRecordName];
+    recordName3 = [v12 toRecordName];
   }
 
   else
   {
     v31 = MEMORY[0x1E696ABC0];
-    v32 = [v12 toRecordName];
-    v33 = [v31 fc_encryptionErrorWithCode:4 descriptionFormat:@"Record name is invalid: %@", v32];
+    toRecordName3 = [v12 toRecordName];
+    v33 = [v31 fc_encryptionErrorWithCode:4 descriptionFormat:@"Record name is invalid: %@", toRecordName3];
 
-    v53 = 0;
+    recordName3 = 0;
     v26 = v33;
   }
 
 LABEL_18:
-  v34 = a5;
+  mappingCopy = mapping;
   v35 = objc_alloc(MEMORY[0x1E695BA90]);
   v36 = v12;
-  v37 = [v12 toZoneSchema];
-  v38 = v37;
+  toZoneSchema2 = [v12 toZoneSchema];
+  v38 = toZoneSchema2;
   v39 = v26;
-  v40 = v10;
-  if (v37)
+  v40 = dCopy;
+  if (toZoneSchema2)
   {
-    v41 = *(v37 + 16);
+    v41 = *(toZoneSchema2 + 16);
   }
 
   else
@@ -622,26 +622,26 @@ LABEL_18:
 
   v42 = v41;
   v43 = v9;
-  v44 = [v9 zoneID];
-  v45 = [v44 ownerName];
-  v46 = [v35 initWithZoneName:v42 ownerName:v45];
+  zoneID = [v9 zoneID];
+  ownerName = [zoneID ownerName];
+  v46 = [v35 initWithZoneName:v42 ownerName:ownerName];
 
   v47 = v39;
-  if (v34)
+  if (mappingCopy)
   {
     v48 = v39;
-    *v34 = v39;
+    *mappingCopy = v39;
   }
 
   v49 = 0;
-  v10 = v40;
-  if (v53)
+  dCopy = v40;
+  if (recordName3)
   {
     v9 = v43;
     v12 = v36;
     if (v46)
     {
-      v49 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v53 zoneID:v46];
+      v49 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:recordName3 zoneID:v46];
     }
   }
 
@@ -656,12 +656,12 @@ LABEL_27:
   return v49;
 }
 
-- (id)clientToServerRecord:(id)a3 inDatabase:(id)a4 error:(id *)a5
+- (id)clientToServerRecord:(id)record inDatabase:(id)database error:(id *)error
 {
   v124 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  recordCopy = record;
+  databaseCopy = database;
+  v10 = recordCopy;
   if (self)
   {
     encryptionSchema = self->_encryptionSchema;
@@ -674,9 +674,9 @@ LABEL_27:
 
   v12 = encryptionSchema;
   v13 = v12;
-  if (v9)
+  if (databaseCopy)
   {
-    v14 = v9[5];
+    v14 = databaseCopy[5];
   }
 
   else
@@ -689,8 +689,8 @@ LABEL_27:
   if ([v15 hasChanges])
   {
     v16 = [v10 copy];
-    v17 = [v10 recordID];
-    v18 = [(FCCKDatabaseEncryptionMiddleware *)self _encryptionKeyForClientRecordID:v17 inDatabase:v9];
+    recordID = [v10 recordID];
+    v18 = [(FCCKDatabaseEncryptionMiddleware *)self _encryptionKeyForClientRecordID:recordID inDatabase:databaseCopy];
 
     v19 = v16;
     v20 = v18;
@@ -713,24 +713,24 @@ LABEL_27:
         _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", v116, 0x26u);
       }
 
-      v93 = self;
+      selfCopy = self;
       v94 = v20;
       v95 = v15;
-      v96 = a5;
+      errorCopy = error;
       v97 = v10;
-      v98 = v9;
+      v98 = databaseCopy;
       v111 = 0u;
       v112 = 0u;
       v109 = 0u;
       v110 = 0u;
-      v23 = [v19 allKeys];
-      v24 = [v23 countByEnumeratingWithState:&v109 objects:v116 count:16];
+      allKeys = [v19 allKeys];
+      v24 = [allKeys countByEnumeratingWithState:&v109 objects:v116 count:16];
       if (v24)
       {
         v25 = v24;
         v108 = 0;
         v26 = *v110;
-        v100 = v23;
+        v100 = allKeys;
         v99 = v19;
         v103 = *v110;
         while (2)
@@ -741,12 +741,12 @@ LABEL_27:
           {
             if (*v110 != v26)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(allKeys);
             }
 
             v28 = *(*(&v109 + 1) + 8 * v27);
-            v29 = [v22 toRecordSchema];
-            v30 = [(FCCKRecordSchema *)v29 schemaForField:v28];
+            toRecordSchema = [v22 toRecordSchema];
+            v30 = [(FCCKRecordSchema *)toRecordSchema schemaForField:v28];
 
             if (v30)
             {
@@ -759,24 +759,24 @@ LABEL_27:
                 if (v31)
                 {
                   v107 = v33;
-                  v35 = [v32 valueStore];
-                  v36 = [v35 changedKeysSet];
-                  v37 = [v36 containsObject:v31];
+                  valueStore = [v32 valueStore];
+                  changedKeysSet = [valueStore changedKeysSet];
+                  v37 = [changedKeysSet containsObject:v31];
 
                   if (v37)
                   {
-                    v38 = [v32 valueStore];
-                    v39 = [v38 changedKeysSet];
-                    [v39 removeObject:v31];
+                    valueStore2 = [v32 valueStore];
+                    changedKeysSet2 = [valueStore2 changedKeysSet];
+                    [changedKeysSet2 removeObject:v31];
 
-                    v40 = [v32 encryptedValueStore];
-                    v41 = [v40 changedKeysSet];
-                    [v41 addObject:v31];
+                    encryptedValueStore = [v32 encryptedValueStore];
+                    changedKeysSet3 = [encryptedValueStore changedKeysSet];
+                    [changedKeysSet3 addObject:v31];
                   }
 
-                  v42 = [v32 valueStore];
-                  v43 = [v42 values];
-                  v44 = [v43 objectForKey:v31];
+                  valueStore3 = [v32 valueStore];
+                  values = [valueStore3 values];
+                  v44 = [values objectForKey:v31];
 
                   v105 = v44;
                   if (v44)
@@ -786,13 +786,13 @@ LABEL_27:
                     v106 = v46 != 0;
                     if (v46)
                     {
-                      v47 = [v32 valueStore];
-                      v48 = [v47 values];
-                      [v48 removeObjectForKey:v31];
+                      valueStore4 = [v32 valueStore];
+                      values2 = [valueStore4 values];
+                      [values2 removeObjectForKey:v31];
 
-                      v49 = [v32 encryptedValueStore];
-                      v50 = [v49 values];
-                      [v50 setObject:v46 forKey:v31];
+                      encryptedValueStore2 = [v32 encryptedValueStore];
+                      values3 = [encryptedValueStore2 values];
+                      [values3 setObject:v46 forKey:v31];
 
                       v44 = 0;
                     }
@@ -800,8 +800,8 @@ LABEL_27:
                     else
                     {
                       v54 = MEMORY[0x1E696ABC0];
-                      v49 = [v32 recordType];
-                      v44 = [v54 fc_encryptionErrorWithCode:3 descriptionFormat:@"CKRecord failed to serialize value {%@.%@, %@}", v49, v31, v45];
+                      encryptedValueStore2 = [v32 recordType];
+                      v44 = [v54 fc_encryptionErrorWithCode:3 descriptionFormat:@"CKRecord failed to serialize value {%@.%@, %@}", encryptedValueStore2, v31, v45];
                     }
                   }
 
@@ -810,9 +810,9 @@ LABEL_27:
                     v106 = 1;
                   }
 
-                  v55 = [v32 valueStore];
-                  v56 = [v55 originalValues];
-                  v57 = [v56 objectForKey:v31];
+                  valueStore5 = [v32 valueStore];
+                  originalValues = [valueStore5 originalValues];
+                  v57 = [originalValues objectForKey:v31];
 
                   if (v57)
                   {
@@ -821,15 +821,15 @@ LABEL_27:
                     v101 = v57;
                     if (objc_opt_isKindOfClass())
                     {
-                      v59 = [v32 valueStore];
-                      [v59 originalValues];
+                      valueStore6 = [v32 valueStore];
+                      [valueStore6 originalValues];
                       v60 = v19;
                       v62 = v61 = v58;
                       [v62 removeObjectForKey:v31];
 
-                      v63 = [v32 encryptedValueStore];
-                      v64 = [v63 originalValues];
-                      [v64 setObject:v61 forKey:v31];
+                      encryptedValueStore3 = [v32 encryptedValueStore];
+                      originalValues2 = [encryptedValueStore3 originalValues];
+                      [originalValues2 setObject:v61 forKey:v31];
                     }
 
                     else
@@ -837,24 +837,24 @@ LABEL_27:
                       v65 = [objc_alloc(MEMORY[0x1E695B8E0]) initWithValue:v58];
                       if (v65)
                       {
-                        v66 = [v32 valueStore];
-                        v67 = [v66 originalValues];
-                        [v67 removeObjectForKey:v31];
+                        valueStore7 = [v32 valueStore];
+                        originalValues3 = [valueStore7 originalValues];
+                        [originalValues3 removeObjectForKey:v31];
 
-                        v64 = [v32 encryptedValueStore];
-                        v68 = [v64 originalValues];
-                        v63 = v65;
-                        [v68 setObject:v65 forKey:v31];
+                        originalValues2 = [v32 encryptedValueStore];
+                        v64OriginalValues = [originalValues2 originalValues];
+                        encryptedValueStore3 = v65;
+                        [v64OriginalValues setObject:v65 forKey:v31];
                       }
 
                       else
                       {
-                        v63 = 0;
+                        encryptedValueStore3 = 0;
                         v69 = MEMORY[0x1E696ABC0];
-                        v64 = [v32 recordType];
-                        [v69 fc_encryptionErrorWithCode:3 descriptionFormat:@"CKRecord failed to serialize original value {%@.%@, %@}", v64, v31, v58];
+                        originalValues2 = [v32 recordType];
+                        [v69 fc_encryptionErrorWithCode:3 descriptionFormat:@"CKRecord failed to serialize original value {%@.%@, %@}", originalValues2, v31, v58];
                         v106 = 0;
-                        v44 = v68 = v44;
+                        v44 = v64OriginalValues = v44;
                       }
 
                       v60 = v99;
@@ -873,7 +873,7 @@ LABEL_27:
                     v22 = v102;
                   }
 
-                  v23 = v100;
+                  allKeys = v100;
                   v34 = v107;
                   v53 = v106;
                 }
@@ -892,11 +892,11 @@ LABEL_27:
                 {
                   v76 = 0;
                   v10 = v97;
-                  v9 = v98;
+                  databaseCopy = v98;
                   v15 = v95;
                   v20 = v94;
                   v19 = v52;
-                  a5 = v96;
+                  error = errorCopy;
                   goto LABEL_53;
                 }
 
@@ -913,9 +913,9 @@ LABEL_27:
               if (os_log_type_enabled(FCPrivateDataEncryptionLog, OS_LOG_TYPE_ERROR))
               {
                 v72 = v51;
-                v73 = [v19 recordType];
+                recordType = [v19 recordType];
                 *buf = 138543618;
-                *&buf[4] = v73;
+                *&buf[4] = recordType;
                 v114 = 2114;
                 v115 = v28;
                 _os_log_error_impl(&dword_1B63EF000, v72, OS_LOG_TYPE_ERROR, "Client record field is missing from the schema: %{public}@.%{public}@", buf, 0x16u);
@@ -930,7 +930,7 @@ LABEL_27:
           }
 
           while (v25 != v27);
-          v25 = [v23 countByEnumeratingWithState:&v109 objects:v116 count:16];
+          v25 = [allKeys countByEnumeratingWithState:&v109 objects:v116 count:16];
           if (v25)
           {
             continue;
@@ -945,26 +945,26 @@ LABEL_27:
         v108 = 0;
       }
 
-      v77 = [v19 recordID];
+      recordID2 = [v19 recordID];
       [v22 recordIDMapping];
       v79 = v78 = v22;
       *buf = v108;
       v20 = v94;
-      v80 = [(FCCKDatabaseEncryptionMiddleware *)v93 _encryptedRecordIDWithOriginalRecordID:v77 withEncryptionKey:v94 mapping:v79 error:buf];
+      v80 = [(FCCKDatabaseEncryptionMiddleware *)selfCopy _encryptedRecordIDWithOriginalRecordID:recordID2 withEncryptionKey:v94 mapping:v79 error:buf];
       v71 = *buf;
 
       if (v80)
       {
         v100 = v80;
         [v19 setRecordID:v80];
-        v81 = [v78 toRecordSchema];
+        toRecordSchema2 = [v78 toRecordSchema];
         v10 = v97;
-        v9 = v98;
-        a5 = v96;
-        if (v81)
+        databaseCopy = v98;
+        error = errorCopy;
+        if (toRecordSchema2)
         {
-          v82 = v81;
-          v83 = *(v81 + 16);
+          v82 = toRecordSchema2;
+          v83 = *(toRecordSchema2 + 16);
         }
 
         else
@@ -986,9 +986,9 @@ LABEL_53:
       {
         v76 = 1;
         v10 = v97;
-        v9 = v98;
+        databaseCopy = v98;
         v15 = v95;
-        a5 = v96;
+        error = errorCopy;
       }
 
       v85 = v71;
@@ -1007,13 +1007,13 @@ LABEL_53:
       v75 = v19;
     }
 
-    if (a5)
+    if (error)
     {
       if (v74 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
       {
         v89 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v90 = [v10 recordType];
-        v91 = [v89 initWithFormat:@"Failed to encrypt record of type %@ with error: %@", v90, v74];
+        recordType2 = [v10 recordType];
+        v91 = [v89 initWithFormat:@"Failed to encrypt record of type %@ with error: %@", recordType2, v74];
         *v116 = 136315906;
         v117 = "[FCCKDatabaseEncryptionMiddleware clientToServerRecord:inDatabase:error:]";
         v118 = 2080;
@@ -1033,11 +1033,11 @@ LABEL_53:
   {
     v74 = 0;
     v75 = v10;
-    if (a5)
+    if (error)
     {
 LABEL_61:
       v86 = v74;
-      *a5 = v74;
+      *error = v74;
     }
   }
 
@@ -1046,12 +1046,12 @@ LABEL_61:
   return v75;
 }
 
-- (id)serverToClientRecord:(id)a3 inDatabase:(id)a4 error:(id *)a5
+- (id)serverToClientRecord:(id)record inDatabase:(id)database error:(id *)error
 {
   v114 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  recordCopy = record;
+  databaseCopy = database;
+  v10 = recordCopy;
   if (self)
   {
     encryptionSchema = self->_encryptionSchema;
@@ -1066,34 +1066,34 @@ LABEL_61:
   if ([v12 hasChanges])
   {
     v13 = [v10 copy];
-    v14 = [v10 recordID];
-    v15 = [(FCCKDatabaseEncryptionMiddleware *)self _encryptionKeyForServerRecordID:v14 inDatabase:v9];
+    recordID = [v10 recordID];
+    v15 = [(FCCKDatabaseEncryptionMiddleware *)self _encryptionKeyForServerRecordID:recordID inDatabase:databaseCopy];
 
     v16 = v13;
     v17 = v15;
     v18 = v12;
     v92 = v16;
-    v86 = self;
+    selfCopy = self;
     if (self)
     {
       v87 = v17;
       v88 = v12;
-      v89 = a5;
+      errorCopy = error;
       v90 = v10;
-      v91 = v9;
+      v91 = databaseCopy;
       v101 = 0u;
       v102 = 0u;
       v99 = 0u;
       v100 = 0u;
-      v19 = [v16 allKeys];
-      v20 = [v19 countByEnumeratingWithState:&v99 objects:v106 count:16];
+      allKeys = [v16 allKeys];
+      v20 = [allKeys countByEnumeratingWithState:&v99 objects:v106 count:16];
       v21 = v16;
       if (v20)
       {
         v22 = v20;
         v23 = 0;
         v24 = *v100;
-        v93 = v19;
+        v93 = allKeys;
         v94 = *v100;
         while (2)
         {
@@ -1103,17 +1103,17 @@ LABEL_61:
           {
             if (*v100 != v24)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(allKeys);
             }
 
             v26 = *(*(&v99 + 1) + 8 * v25);
-            v27 = [v18 fromRecordSchema];
-            v28 = [(FCCKRecordSchema *)v27 isFieldKnown:v26];
+            fromRecordSchema = [v18 fromRecordSchema];
+            v28 = [(FCCKRecordSchema *)fromRecordSchema isFieldKnown:v26];
 
             if (v28)
             {
-              v29 = [v18 fromRecordSchema];
-              v30 = [(FCCKRecordSchema *)v29 isFieldEncrypted:v26];
+              fromRecordSchema2 = [v18 fromRecordSchema];
+              v30 = [(FCCKRecordSchema *)fromRecordSchema2 isFieldEncrypted:v26];
 
               if (v30)
               {
@@ -1122,49 +1122,49 @@ LABEL_61:
                 v33 = v32;
                 if (v31)
                 {
-                  v34 = [v32 encryptedValueStore];
-                  v35 = [v34 changedKeysSet];
-                  v36 = [v35 containsObject:v31];
+                  encryptedValueStore = [v32 encryptedValueStore];
+                  changedKeysSet = [encryptedValueStore changedKeysSet];
+                  v36 = [changedKeysSet containsObject:v31];
 
                   if (v36)
                   {
-                    v37 = [v33 encryptedValueStore];
-                    v38 = [v37 changedKeysSet];
-                    [v38 removeObject:v31];
+                    encryptedValueStore2 = [v33 encryptedValueStore];
+                    changedKeysSet2 = [encryptedValueStore2 changedKeysSet];
+                    [changedKeysSet2 removeObject:v31];
 
-                    v39 = [v33 valueStore];
-                    v40 = [v39 changedKeysSet];
-                    [v40 addObject:v31];
+                    valueStore = [v33 valueStore];
+                    changedKeysSet3 = [valueStore changedKeysSet];
+                    [changedKeysSet3 addObject:v31];
                   }
 
-                  v41 = [v33 encryptedValueStore];
-                  v42 = [v41 values];
-                  v43 = [v42 objectForKey:v31];
+                  encryptedValueStore3 = [v33 encryptedValueStore];
+                  values = [encryptedValueStore3 values];
+                  selfCopy = [values objectForKey:v31];
 
-                  v96 = v43;
+                  v96 = selfCopy;
                   v97 = v23;
-                  if (v43)
+                  if (selfCopy)
                   {
-                    v44 = [v43 value];
-                    v98 = v44 != 0;
-                    if (v44)
+                    value = [selfCopy value];
+                    v98 = value != 0;
+                    if (value)
                     {
-                      v45 = [v33 encryptedValueStore];
-                      v46 = [v45 values];
-                      [v46 removeObjectForKey:v31];
+                      encryptedValueStore4 = [v33 encryptedValueStore];
+                      values2 = [encryptedValueStore4 values];
+                      [values2 removeObjectForKey:v31];
 
-                      v47 = [v33 valueStore];
-                      v48 = [v47 values];
-                      [v48 setObject:v44 forKey:v31];
+                      valueStore2 = [v33 valueStore];
+                      values3 = [valueStore2 values];
+                      [values3 setObject:value forKey:v31];
 
-                      v43 = 0;
+                      selfCopy = 0;
                     }
 
                     else
                     {
                       v51 = MEMORY[0x1E696ABC0];
-                      v47 = [v33 recordType];
-                      v43 = [v51 fc_encryptionErrorWithCode:3 descriptionFormat:@"CKRecord failed to deserialize value {%@.%@}", v47, v31, v86];
+                      valueStore2 = [v33 recordType];
+                      selfCopy = [v51 fc_encryptionErrorWithCode:3 descriptionFormat:@"CKRecord failed to deserialize value {%@.%@}", valueStore2, v31, selfCopy];
                     }
                   }
 
@@ -1173,52 +1173,52 @@ LABEL_61:
                     v98 = 1;
                   }
 
-                  v52 = [v33 encryptedValueStore];
-                  v53 = [v52 originalValues];
-                  v54 = [v53 objectForKey:v31];
+                  encryptedValueStore5 = [v33 encryptedValueStore];
+                  originalValues = [encryptedValueStore5 originalValues];
+                  v54 = [originalValues objectForKey:v31];
 
                   if (v54)
                   {
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      v55 = [v33 encryptedValueStore];
-                      v56 = [v55 originalValues];
-                      [v56 removeObjectForKey:v31];
+                      encryptedValueStore6 = [v33 encryptedValueStore];
+                      originalValues2 = [encryptedValueStore6 originalValues];
+                      [originalValues2 removeObjectForKey:v31];
 
-                      v57 = [v33 valueStore];
-                      v58 = [v57 originalValues];
-                      [v58 setObject:v54 forKey:v31];
+                      valueStore3 = [v33 valueStore];
+                      originalValues3 = [valueStore3 originalValues];
+                      [originalValues3 setObject:v54 forKey:v31];
                     }
 
                     else
                     {
                       v59 = objc_opt_class();
-                      v57 = FCCheckedDynamicCast(v59, v54);
-                      v58 = [v57 value];
-                      if (v58)
+                      valueStore3 = FCCheckedDynamicCast(v59, v54);
+                      originalValues3 = [valueStore3 value];
+                      if (originalValues3)
                       {
-                        v60 = [v33 encryptedValueStore];
-                        v61 = [v60 originalValues];
-                        [v61 removeObjectForKey:v31];
+                        encryptedValueStore7 = [v33 encryptedValueStore];
+                        originalValues4 = [encryptedValueStore7 originalValues];
+                        [originalValues4 removeObjectForKey:v31];
 
-                        v62 = [v33 valueStore];
-                        v63 = [v62 originalValues];
-                        [v63 setObject:v58 forKey:v31];
+                        valueStore4 = [v33 valueStore];
+                        originalValues5 = [valueStore4 originalValues];
+                        [originalValues5 setObject:originalValues3 forKey:v31];
                       }
 
                       else
                       {
                         v66 = MEMORY[0x1E696ABC0];
-                        v62 = [v33 recordType];
-                        [v66 fc_encryptionErrorWithCode:3 descriptionFormat:@"CKRecord failed to deserialize original value {%@.%@}", v62, v31];
+                        valueStore4 = [v33 recordType];
+                        [v66 fc_encryptionErrorWithCode:3 descriptionFormat:@"CKRecord failed to deserialize original value {%@.%@}", valueStore4, v31];
                         v98 = 0;
-                        v43 = v63 = v43;
+                        selfCopy = originalValues5 = selfCopy;
                       }
                     }
 
                     v21 = v92;
-                    v19 = v93;
+                    allKeys = v93;
                   }
 
                   v23 = v97;
@@ -1228,20 +1228,20 @@ LABEL_61:
 
                 else
                 {
-                  v43 = 0;
+                  selfCopy = 0;
                   v50 = 1;
                 }
 
-                v67 = v43;
+                v67 = selfCopy;
 
-                v68 = v43;
+                v68 = selfCopy;
                 if ((v50 & 1) == 0)
                 {
                   v71 = 0;
                   v10 = v90;
-                  v9 = v91;
+                  databaseCopy = v91;
                   v12 = v88;
-                  a5 = v89;
+                  error = errorCopy;
                   v17 = v87;
                   goto LABEL_49;
                 }
@@ -1258,9 +1258,9 @@ LABEL_61:
               if (os_log_type_enabled(FCPrivateDataEncryptionLog, OS_LOG_TYPE_ERROR))
               {
                 v64 = v49;
-                v65 = [v21 recordType];
+                recordType = [v21 recordType];
                 *buf = 138543618;
-                *&buf[4] = v65;
+                *&buf[4] = recordType;
                 v104 = 2114;
                 v105 = v26;
                 _os_log_error_impl(&dword_1B63EF000, v64, OS_LOG_TYPE_ERROR, "Server record field is missing from the schema: %{public}@.%{public}@", buf, 0x16u);
@@ -1273,7 +1273,7 @@ LABEL_61:
           }
 
           while (v22 != v25);
-          v22 = [v19 countByEnumeratingWithState:&v99 objects:v106 count:16];
+          v22 = [allKeys countByEnumeratingWithState:&v99 objects:v106 count:16];
           if (v22)
           {
             continue;
@@ -1288,24 +1288,24 @@ LABEL_61:
         v23 = 0;
       }
 
-      v72 = [v21 recordID];
-      v73 = [v18 recordIDMapping];
+      recordID2 = [v21 recordID];
+      recordIDMapping = [v18 recordIDMapping];
       *buf = v23;
       v17 = v87;
-      v74 = [(FCCKDatabaseEncryptionMiddleware *)v86 _decryptedRecordIDWithOriginalRecordID:v72 withEncryptionKey:v87 mapping:v73 error:buf];
+      v74 = [(FCCKDatabaseEncryptionMiddleware *)selfCopy _decryptedRecordIDWithOriginalRecordID:recordID2 withEncryptionKey:v87 mapping:recordIDMapping error:buf];
       v68 = *buf;
 
       if (v74)
       {
         v93 = v74;
         [v21 setRecordID:v74];
-        v75 = [v18 toRecordSchema];
-        v76 = v75;
-        a5 = v89;
+        toRecordSchema = [v18 toRecordSchema];
+        v76 = toRecordSchema;
+        error = errorCopy;
         v10 = v90;
-        if (v75)
+        if (toRecordSchema)
         {
-          v77 = *(v75 + 16);
+          v77 = *(toRecordSchema + 16);
         }
 
         else
@@ -1317,7 +1317,7 @@ LABEL_61:
         [v21 setRecordType:v78];
 
         v71 = 1;
-        v9 = v91;
+        databaseCopy = v91;
       }
 
       else
@@ -1325,8 +1325,8 @@ LABEL_61:
         v93 = 0;
         v71 = 1;
         v10 = v90;
-        v9 = v91;
-        a5 = v89;
+        databaseCopy = v91;
+        error = errorCopy;
       }
 
       v12 = v88;
@@ -1348,13 +1348,13 @@ LABEL_49:
       v70 = v92;
     }
 
-    if (a5)
+    if (error)
     {
       if (v69 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
       {
         v83 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v84 = [v10 recordType];
-        v85 = [v83 initWithFormat:@"Failed to decrypt record of type %@ with error: %@", v84, v69];
+        recordType2 = [v10 recordType];
+        v85 = [v83 initWithFormat:@"Failed to decrypt record of type %@ with error: %@", recordType2, v69];
         *v106 = 136315906;
         v107 = "[FCCKDatabaseEncryptionMiddleware serverToClientRecord:inDatabase:error:]";
         v108 = 2080;
@@ -1374,11 +1374,11 @@ LABEL_49:
   {
     v69 = 0;
     v70 = v10;
-    if (a5)
+    if (error)
     {
 LABEL_56:
       v80 = v69;
-      *a5 = v69;
+      *error = v69;
     }
   }
 
@@ -1387,63 +1387,63 @@ LABEL_56:
   return v70;
 }
 
-- (id)clientToServerRecordZone:(id)a3 inDatabase:(id)a4 error:(id *)a5
+- (id)clientToServerRecordZone:(id)zone inDatabase:(id)database error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 zoneID];
-  v11 = [(FCCKDatabaseEncryptionMiddleware *)self _serverZoneIDFromClientZoneID:v10 database:v9 error:a5];
+  zoneCopy = zone;
+  databaseCopy = database;
+  zoneID = [zoneCopy zoneID];
+  v11 = [(FCCKDatabaseEncryptionMiddleware *)self _serverZoneIDFromClientZoneID:zoneID database:databaseCopy error:error];
 
-  v12 = [v8 zoneID];
-  LOBYTE(v9) = [v11 isEqual:v12];
+  zoneID2 = [zoneCopy zoneID];
+  LOBYTE(databaseCopy) = [v11 isEqual:zoneID2];
 
-  v13 = v8;
-  if ((v9 & 1) == 0)
+  v13 = zoneCopy;
+  if ((databaseCopy & 1) == 0)
   {
-    v13 = [v8 copy];
+    v13 = [zoneCopy copy];
 
     [v13 setZoneID:v11];
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   return v13;
 }
 
-- (id)serverToClientRecordZone:(id)a3 inDatabase:(id)a4 error:(id *)a5
+- (id)serverToClientRecordZone:(id)zone inDatabase:(id)database error:(id *)error
 {
-  v7 = a3;
-  v8 = [v7 zoneID];
+  zoneCopy = zone;
+  zoneID = [zoneCopy zoneID];
   v16 = 0;
-  v9 = [(FCCKDatabaseEncryptionMiddleware *)self _clientZoneIDFromServerZoneID:v8 error:&v16];
+  v9 = [(FCCKDatabaseEncryptionMiddleware *)self _clientZoneIDFromServerZoneID:zoneID error:&v16];
   v10 = v16;
 
-  v11 = [v7 zoneID];
-  v12 = [v9 isEqual:v11];
+  zoneID2 = [zoneCopy zoneID];
+  v12 = [v9 isEqual:zoneID2];
 
-  v13 = v7;
+  v13 = zoneCopy;
   if ((v12 & 1) == 0)
   {
-    v13 = [v7 copy];
+    v13 = [zoneCopy copy];
 
     [v13 setZoneID:v9];
   }
 
-  if (a5)
+  if (error)
   {
     v14 = v10;
-    *a5 = v10;
+    *error = v10;
   }
 
   return v13;
 }
 
-- (id)clientToServerRecordType:(id)a3 withRecordID:(id)a4 inDatabase:(id)a5 error:(id *)a6
+- (id)clientToServerRecordType:(id)type withRecordID:(id)d inDatabase:(id)database error:(id *)error
 {
-  v10 = a3;
+  typeCopy = type;
   if (self)
   {
     encryptionSchema = self->_encryptionSchema;
@@ -1455,11 +1455,11 @@ LABEL_56:
   }
 
   v12 = encryptionSchema;
-  v13 = a5;
-  v14 = [a4 zoneID];
-  if (v13)
+  databaseCopy = database;
+  zoneID = [d zoneID];
+  if (databaseCopy)
   {
-    v15 = v13[5];
+    v15 = databaseCopy[5];
   }
 
   else
@@ -1467,16 +1467,16 @@ LABEL_56:
     v15 = 0;
   }
 
-  v16 = [(FCCKPrivateDatabaseSchema *)v12 mappingFromRecordType:v10 inZoneID:v14 toVersion:v15];
+  v16 = [(FCCKPrivateDatabaseSchema *)v12 mappingFromRecordType:typeCopy inZoneID:zoneID toVersion:v15];
 
-  v17 = v10;
+  v17 = typeCopy;
   if ([v16 hasChanges])
   {
-    v18 = [v16 toRecordSchema];
-    v19 = v18;
-    if (v18)
+    toRecordSchema = [v16 toRecordSchema];
+    v19 = toRecordSchema;
+    if (toRecordSchema)
     {
-      v20 = *(v18 + 16);
+      v20 = *(toRecordSchema + 16);
     }
 
     else
@@ -1487,17 +1487,17 @@ LABEL_56:
     v17 = v20;
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   return v17;
 }
 
-- (id)serverToClientRecordType:(id)a3 withRecordID:(id)a4 inDatabase:(id)a5 error:(id *)a6
+- (id)serverToClientRecordType:(id)type withRecordID:(id)d inDatabase:(id)database error:(id *)error
 {
-  v9 = a3;
+  typeCopy = type;
   if (self)
   {
     encryptionSchema = self->_encryptionSchema;
@@ -1509,17 +1509,17 @@ LABEL_56:
   }
 
   v11 = encryptionSchema;
-  v12 = [a4 zoneID];
-  v13 = [(FCCKPrivateDatabaseSchema *)v11 mappingFromRecordType:v9 inZoneID:v12 toVersion:0];
+  zoneID = [d zoneID];
+  v13 = [(FCCKPrivateDatabaseSchema *)v11 mappingFromRecordType:typeCopy inZoneID:zoneID toVersion:0];
 
-  v14 = v9;
+  v14 = typeCopy;
   if ([v13 hasChanges])
   {
-    v15 = [v13 toRecordSchema];
-    v16 = v15;
-    if (v15)
+    toRecordSchema = [v13 toRecordSchema];
+    v16 = toRecordSchema;
+    if (toRecordSchema)
     {
-      v17 = *(v15 + 16);
+      v17 = *(toRecordSchema + 16);
     }
 
     else
@@ -1530,44 +1530,44 @@ LABEL_56:
     v14 = v17;
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   return v14;
 }
 
-- (void)_removeField:(void *)a1 fromRecord:(void *)a2
+- (void)_removeField:(void *)field fromRecord:(void *)record
 {
-  if (a1)
+  if (field)
   {
-    v4 = a2;
-    v5 = a1;
-    v6 = [v4 valueStore];
-    v7 = [v6 changedKeysSet];
-    [v7 removeObject:v5];
+    recordCopy = record;
+    fieldCopy = field;
+    valueStore = [recordCopy valueStore];
+    changedKeysSet = [valueStore changedKeysSet];
+    [changedKeysSet removeObject:fieldCopy];
 
-    v8 = [v4 valueStore];
-    v9 = [v8 values];
-    [v9 removeObjectForKey:v5];
+    valueStore2 = [recordCopy valueStore];
+    values = [valueStore2 values];
+    [values removeObjectForKey:fieldCopy];
 
-    v10 = [v4 encryptedValueStore];
-    v11 = [v10 changedKeysSet];
-    [v11 removeObject:v5];
+    encryptedValueStore = [recordCopy encryptedValueStore];
+    changedKeysSet2 = [encryptedValueStore changedKeysSet];
+    [changedKeysSet2 removeObject:fieldCopy];
 
-    v12 = [v4 encryptedValueStore];
-    v13 = [v12 values];
-    [v13 removeObjectForKey:v5];
+    encryptedValueStore2 = [recordCopy encryptedValueStore];
+    values2 = [encryptedValueStore2 values];
+    [values2 removeObjectForKey:fieldCopy];
 
-    v14 = [v4 valueStore];
-    v15 = [v14 originalValues];
-    [v15 removeObjectForKey:v5];
+    valueStore3 = [recordCopy valueStore];
+    originalValues = [valueStore3 originalValues];
+    [originalValues removeObjectForKey:fieldCopy];
 
-    v17 = [v4 encryptedValueStore];
+    encryptedValueStore3 = [recordCopy encryptedValueStore];
 
-    v16 = [v17 originalValues];
-    [v16 removeObjectForKey:v5];
+    originalValues2 = [encryptedValueStore3 originalValues];
+    [originalValues2 removeObjectForKey:fieldCopy];
   }
 }
 

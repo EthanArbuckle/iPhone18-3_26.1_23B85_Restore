@@ -1,12 +1,12 @@
 @interface NFHostCardEmulationDeviceHandle
-- (BOOL)sendAPDU:(id)a3;
-- (id)readApduAndReturnError:(id *)a3;
-- (void)readAPDUWithCompletion:(id)a3;
+- (BOOL)sendAPDU:(id)u;
+- (id)readApduAndReturnError:(id *)error;
+- (void)readAPDUWithCompletion:(id)completion;
 @end
 
 @implementation NFHostCardEmulationDeviceHandle
 
-- (id)readApduAndReturnError:(id *)a3
+- (id)readApduAndReturnError:(id *)error
 {
   devHandle = self->_devHandle;
   v4 = sub_100196C90(self->_driver);
@@ -25,28 +25,28 @@
   return v5;
 }
 
-- (void)readAPDUWithCompletion:(id)a3
+- (void)readAPDUWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   driver = self->_driver;
   devHandle = self->_devHandle;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100147014;
   v8[3] = &unk_100319690;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   sub_100197048(driver, devHandle, v8);
 }
 
-- (BOOL)sendAPDU:(id)a3
+- (BOOL)sendAPDU:(id)u
 {
   driver = self->_driver;
   devHandle = self->_devHandle;
-  v8 = a3;
-  v9 = a3;
-  [v9 bytes];
-  [v9 length];
+  uCopy = u;
+  uCopy2 = u;
+  [uCopy2 bytes];
+  [uCopy2 length];
 
   v10 = sub_100197918(driver);
   if ((v10 & 1) == 0)

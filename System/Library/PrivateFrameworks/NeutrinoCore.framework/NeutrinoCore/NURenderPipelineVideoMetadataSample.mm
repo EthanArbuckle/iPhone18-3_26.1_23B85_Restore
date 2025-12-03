@@ -1,23 +1,23 @@
 @interface NURenderPipelineVideoMetadataSample
-- (NURenderPipelineVideoMetadataSample)initWithFrameTime:(id *)a3 metadataGroup:(id)a4;
+- (NURenderPipelineVideoMetadataSample)initWithFrameTime:(id *)time metadataGroup:(id)group;
 - (id)description;
 @end
 
 @implementation NURenderPipelineVideoMetadataSample
 
-- (NURenderPipelineVideoMetadataSample)initWithFrameTime:(id *)a3 metadataGroup:(id)a4
+- (NURenderPipelineVideoMetadataSample)initWithFrameTime:(id *)time metadataGroup:(id)group
 {
-  v7 = a4;
+  groupCopy = group;
   v12.receiver = self;
   v12.super_class = NURenderPipelineVideoMetadataSample;
   v8 = [(NURenderPipelineVideoMetadataSample *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    v10 = *&a3->var0;
-    v8->_frameTime.epoch = a3->var3;
+    v10 = *&time->var0;
+    v8->_frameTime.epoch = time->var3;
     *&v8->_frameTime.value = v10;
-    objc_storeStrong(&v8->_metadataGroup, a4);
+    objc_storeStrong(&v8->_metadataGroup, group);
   }
 
   return v9;

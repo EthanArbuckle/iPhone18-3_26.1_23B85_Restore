@@ -1,7 +1,7 @@
 @interface SDWindowsBrowser
-- (SDWindowsBrowser)initWithWorkgroup:(id)a3;
+- (SDWindowsBrowser)initWithWorkgroup:(id)workgroup;
 - (SDWindowsBrowserDelegate)delegate;
-- (void)bonjourNodesDidChange:(id)a3;
+- (void)bonjourNodesDidChange:(id)change;
 - (void)dealloc;
 - (void)start;
 - (void)stop;
@@ -9,9 +9,9 @@
 
 @implementation SDWindowsBrowser
 
-- (SDWindowsBrowser)initWithWorkgroup:(id)a3
+- (SDWindowsBrowser)initWithWorkgroup:(id)workgroup
 {
-  v5 = a3;
+  workgroupCopy = workgroup;
   v10.receiver = self;
   v10.super_class = SDWindowsBrowser;
   v6 = [(SDWindowsBrowser *)&v10 init];
@@ -21,7 +21,7 @@
     browser = v6->_browser;
     v6->_browser = 0;
 
-    objc_storeStrong(&v7->_workgroup, a3);
+    objc_storeStrong(&v7->_workgroup, workgroup);
   }
 
   return v7;
@@ -35,7 +35,7 @@
   [(SDWindowsBrowser *)&v3 dealloc];
 }
 
-- (void)bonjourNodesDidChange:(id)a3
+- (void)bonjourNodesDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained windowsNodesDidChange:self];

@@ -1,10 +1,10 @@
 @interface CAMNebulaDaemon
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CAMNebulaDaemon)init;
-- (id)allowedProtocolForClientAccess:(id)a3;
-- (void)daemonConnectionManagerHasBeenDisconnected:(id)a3;
-- (void)performPendingWorkAfterDelay:(double)a3;
-- (void)persistenceController:(id)a3 didGenerateVideoLocalPersistenceResult:(id)a4 forCaptureResult:(id)a5 fromRequest:(id)a6;
+- (id)allowedProtocolForClientAccess:(id)access;
+- (void)daemonConnectionManagerHasBeenDisconnected:(id)disconnected;
+- (void)performPendingWorkAfterDelay:(double)delay;
+- (void)persistenceController:(id)controller didGenerateVideoLocalPersistenceResult:(id)result forCaptureResult:(id)captureResult fromRequest:(id)request;
 @end
 
 @implementation CAMNebulaDaemon
@@ -42,9 +42,9 @@
 
     [(CAMNebulaKeepAliveController *)v2->__keepAliveController removeKeepAliveFileIfNotKeptForAnyIdentifiers];
     [MEMORY[0x1E696B0D8] enableTransactions];
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     connections = v2->__connections;
-    v2->__connections = v12;
+    v2->__connections = array;
 
     v14 = dispatch_queue_create("com.apple.assetsd.nebulad.daemon", 0);
     queue = v2->__queue;
@@ -62,19 +62,19 @@
   return v2;
 }
 
-- (void)performPendingWorkAfterDelay:(double)a3
+- (void)performPendingWorkAfterDelay:(double)delay
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.camera", "Nebula");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v12 = a3;
+    delayCopy = delay;
     _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "Timelapse daemon will check for pending work after %.2f seconds", buf, 0xCu);
   }
 
   v6 = os_transaction_create();
-  v7 = dispatch_time(0, (a3 * 1000000000.0));
+  v7 = dispatch_time(0, (delay * 1000000000.0));
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__CAMNebulaDaemon_performPendingWorkAfterDelay___block_invoke;
@@ -100,10 +100,10 @@ void __48__CAMNebulaDaemon_performPendingWorkAfterDelay___block_invoke(uint64_t 
   [v4 performIrisCrashRecoveryForceFileSystemCheck:0];
 }
 
-- (id)allowedProtocolForClientAccess:(id)a3
+- (id)allowedProtocolForClientAccess:(id)access
 {
-  v3 = a3;
-  if ([v3 isEqual:@"camera"])
+  accessCopy = access;
+  if ([accessCopy isEqual:@"camera"])
   {
     v4 = &protocolRef_CAMNebulaDaemonProtocol;
 LABEL_5:
@@ -111,7 +111,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqual:@"photos"])
+  if ([accessCopy isEqual:@"photos"])
   {
     v4 = &protocolRef_CAMNebulaDaemonProtocolLimited;
     goto LABEL_5;
@@ -123,11 +123,11 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.private.assetsd.nebulad.access"];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.private.assetsd.nebulad.access"];
   if (v6)
   {
     v7 = v6;
@@ -143,7 +143,7 @@ LABEL_7:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      *&buf[4] = v5;
+      *&buf[4] = connectionCopy;
       *&buf[12] = 2114;
       *&buf[14] = @"com.apple.private.assetsd.nebulad.access";
       _os_log_impl(&dword_1A3640000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: value for entitlement %{public}@ is invalid", buf, 0x16u);
@@ -154,7 +154,7 @@ LABEL_7:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    *&buf[4] = v5;
+    *&buf[4] = connectionCopy;
     *&buf[12] = 2114;
     *&buf[14] = @"com.apple.private.assetsd.nebulad.access";
     _os_log_impl(&dword_1A3640000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ has no valid entitlement for %{public}@. Will fallback on bundle identifier", buf, 0x16u);
@@ -166,9 +166,9 @@ LABEL_7:
 LABEL_10:
   v36 = 0u;
   v37 = 0u;
-  if (v5)
+  if (connectionCopy)
   {
-    [v5 auditToken];
+    [connectionCopy auditToken];
   }
 
   v35 = 0;
@@ -180,11 +180,11 @@ LABEL_10:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v5;
+      *&buf[4] = connectionCopy;
       _os_log_impl(&dword_1A3640000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ has no bundle identifier. Will fallback on process ID", buf, 0xCu);
     }
 
-    v13 = [v5 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
@@ -200,7 +200,7 @@ LABEL_10:
     v43 = 0u;
     v44 = 0u;
     memset(buf, 0, sizeof(buf));
-    if (proc_name(v13, buf, 0x100u))
+    if (proc_name(processIdentifier, buf, 0x100u))
     {
       v35 = CFStringCreateWithCString(0, buf, 0x8000100u);
       if (v35)
@@ -233,7 +233,7 @@ LABEL_22:
       v18 = __error();
       v19 = strerror(*v18);
       *v38 = 138543618;
-      v39 = v5;
+      v39 = connectionCopy;
       v40 = 2080;
       v41 = v19;
       v15 = "Can't get process name for %{public}@: %s";
@@ -292,7 +292,7 @@ LABEL_25:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      *&buf[4] = v5;
+      *&buf[4] = connectionCopy;
       *&buf[12] = 2114;
       *&buf[14] = @"com.apple.private.assetsd.nebulad.access";
       *&buf[22] = 2114;
@@ -317,7 +317,7 @@ LABEL_32:
     {
       v25 = NSStringFromProtocol(v22);
       *buf = 138544130;
-      *&buf[4] = v5;
+      *&buf[4] = connectionCopy;
       *&buf[12] = 2114;
       *&buf[14] = v20;
       *&buf[22] = 2114;
@@ -328,7 +328,7 @@ LABEL_32:
     }
 
     v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@[%@]", v20, v7];
-    v27 = [[CAMNebulaDaemonConnectionManager alloc] initWithConnection:v5 name:v26 bundleIdentifier:v20 queue:self->__queue clientAccess:v7 allowedProtocol:v22];
+    v27 = [[CAMNebulaDaemonConnectionManager alloc] initWithConnection:connectionCopy name:v26 bundleIdentifier:v20 queue:self->__queue clientAccess:v7 allowedProtocol:v22];
     [(CAMNebulaDaemonConnectionManager *)v27 setDelegate:self];
     [(CAMNebulaDaemonConnectionManager *)v27 addTarget:self->__timelapseBackendController forProtocol:&unk_1F173BAC0];
     [(CAMNebulaDaemonConnectionManager *)v27 addTarget:self->__irisBackendController forProtocol:&unk_1F173BBC8];
@@ -338,7 +338,7 @@ LABEL_32:
     block[2] = __54__CAMNebulaDaemon_listener_shouldAcceptNewConnection___block_invoke;
     block[3] = &unk_1E76F7960;
     v33 = v27;
-    v34 = self;
+    selfCopy = self;
     v28 = v27;
     dispatch_async(MEMORY[0x1E69E96A0], block);
 
@@ -351,7 +351,7 @@ LABEL_32:
     *buf = 138543874;
     *&buf[4] = v7;
     *&buf[12] = 2114;
-    *&buf[14] = v5;
+    *&buf[14] = connectionCopy;
     *&buf[22] = 2114;
     *&buf[24] = v20;
     _os_log_impl(&dword_1A3640000, v23, OS_LOG_TYPE_DEFAULT, "Unknown access type '%{public}@' from %{public}@ (%{public}@)", buf, 0x20u);
@@ -361,7 +361,7 @@ LABEL_39:
   v22 = os_log_create("com.apple.camera", "Nebula");
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
-    [CAMNebulaDaemon listener:v5 shouldAcceptNewConnection:v22];
+    [CAMNebulaDaemon listener:connectionCopy shouldAcceptNewConnection:v22];
   }
 
   v29 = 0;
@@ -384,16 +384,16 @@ void __54__CAMNebulaDaemon_listener_shouldAcceptNewConnection___block_invoke(uin
   }
 }
 
-- (void)daemonConnectionManagerHasBeenDisconnected:(id)a3
+- (void)daemonConnectionManagerHasBeenDisconnected:(id)disconnected
 {
-  v4 = a3;
+  disconnectedCopy = disconnected;
   v6 = MEMORY[0x1E69E9820];
   v7 = 3221225472;
   v8 = __62__CAMNebulaDaemon_daemonConnectionManagerHasBeenDisconnected___block_invoke;
   v9 = &unk_1E76F7960;
-  v10 = v4;
-  v11 = self;
-  v5 = v4;
+  v10 = disconnectedCopy;
+  selfCopy = self;
+  v5 = disconnectedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], &v6);
   [(NSMutableArray *)self->__connections removeObject:v5, v6, v7, v8, v9];
 }
@@ -412,13 +412,13 @@ void __62__CAMNebulaDaemon_daemonConnectionManagerHasBeenDisconnected___block_in
   }
 }
 
-- (void)persistenceController:(id)a3 didGenerateVideoLocalPersistenceResult:(id)a4 forCaptureResult:(id)a5 fromRequest:(id)a6
+- (void)persistenceController:(id)controller didGenerateVideoLocalPersistenceResult:(id)result forCaptureResult:(id)captureResult fromRequest:(id)request
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  if ([v10 type] == 1)
+  requestCopy = request;
+  captureResultCopy = captureResult;
+  resultCopy = result;
+  controllerCopy = controller;
+  if ([requestCopy type] == 1)
   {
     [(CAMNebulaDaemon *)self _timelapseBackendController];
   }
@@ -428,7 +428,7 @@ void __62__CAMNebulaDaemon_daemonConnectionManagerHasBeenDisconnected___block_in
     [(CAMNebulaDaemon *)self _irisBackendController];
   }
   v14 = ;
-  [v14 persistenceController:v13 didGenerateVideoLocalPersistenceResult:v12 forCaptureResult:v11 fromRequest:v10];
+  [v14 persistenceController:controllerCopy didGenerateVideoLocalPersistenceResult:resultCopy forCaptureResult:captureResultCopy fromRequest:requestCopy];
 }
 
 - (void)listener:(uint64_t)a1 shouldAcceptNewConnection:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

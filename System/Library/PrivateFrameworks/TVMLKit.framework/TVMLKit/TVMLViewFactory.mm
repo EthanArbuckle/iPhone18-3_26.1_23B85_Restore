@@ -1,32 +1,32 @@
 @interface TVMLViewFactory
-+ (id)_organizerViewWithElement:(id)a3 elements:(id)a4 existingView:(id)a5;
-+ (id)buttonForElement:(id)a3 existingView:(id)a4;
-+ (id)buttonLockupForElement:(id)a3 existingView:(id)a4;
-+ (id)imageStackViewWithElement:(id)a3 layout:(id)a4 existingView:(id)a5;
-+ (id)imageViewWithElement:(id)a3 layout:(id)a4 existingView:(id)a5;
-+ (id)organizerViewWithElements:(id)a3 existingView:(id)a4;
++ (id)_organizerViewWithElement:(id)element elements:(id)elements existingView:(id)view;
++ (id)buttonForElement:(id)element existingView:(id)view;
++ (id)buttonLockupForElement:(id)element existingView:(id)view;
++ (id)imageStackViewWithElement:(id)element layout:(id)layout existingView:(id)view;
++ (id)imageViewWithElement:(id)element layout:(id)layout existingView:(id)view;
++ (id)organizerViewWithElements:(id)elements existingView:(id)view;
 - (TVMLViewFactory)init;
-- (id)_activityIndicatorViewForElement:(id)a3 existingView:(id)a4;
-- (id)_buttonForElement:(id)a3 existingView:(id)a4;
-- (id)_buttonLockupForElement:(id)a3 existingView:(id)a4;
-- (id)_cardViewFromElement:(id)a3 existingView:(id)a4;
-- (id)_headerColumnViewForElement:(id)a3 existingView:(id)a4;
-- (id)_imageViewForBadgeElement:(id)a3 existingView:(id)a4;
-- (id)_imageViewForElement:(id)a3 layout:(id)a4 existingView:(id)a5;
-- (id)_labelViewForElement:(id)a3 existingView:(id)a4;
-- (id)_listItemLockupWithElement:(id)a3 existingView:(id)a4;
-- (id)_loadingImageViewForElement:(id)a3 existingView:(id)a4;
-- (id)_monogramViewForElement:(id)a3 layout:(id)a4 existingView:(id)a5;
-- (id)_organizerViewForElement:(id)a3 existingView:(id)a4;
-- (id)_progressBarFromElement:(id)a3 existingView:(id)a4;
-- (id)_ratingBadgeFromElement:(id)a3 existingView:(id)a4;
-- (id)_rowViewForElement:(id)a3 existingView:(id)a4;
-- (id)_seasonsBadgeWithElement:(id)a3 existingView:(id)a4;
-- (id)_segmentedControlForElement:(id)a3 existingView:(id)a4;
-- (id)_separatorViewForElement:(id)a3 existingView:(id)a4;
-- (id)_textBoxViewForElement:(id)a3 existingView:(id)a4;
-- (id)_textViewWithElement:(id)a3 existingView:(id)a4;
-- (id)_zoomableTextViewFromElement:(id)a3 alwaysFocusable:(BOOL)a4 existingView:(id)a5;
+- (id)_activityIndicatorViewForElement:(id)element existingView:(id)view;
+- (id)_buttonForElement:(id)element existingView:(id)view;
+- (id)_buttonLockupForElement:(id)element existingView:(id)view;
+- (id)_cardViewFromElement:(id)element existingView:(id)view;
+- (id)_headerColumnViewForElement:(id)element existingView:(id)view;
+- (id)_imageViewForBadgeElement:(id)element existingView:(id)view;
+- (id)_imageViewForElement:(id)element layout:(id)layout existingView:(id)view;
+- (id)_labelViewForElement:(id)element existingView:(id)view;
+- (id)_listItemLockupWithElement:(id)element existingView:(id)view;
+- (id)_loadingImageViewForElement:(id)element existingView:(id)view;
+- (id)_monogramViewForElement:(id)element layout:(id)layout existingView:(id)view;
+- (id)_organizerViewForElement:(id)element existingView:(id)view;
+- (id)_progressBarFromElement:(id)element existingView:(id)view;
+- (id)_ratingBadgeFromElement:(id)element existingView:(id)view;
+- (id)_rowViewForElement:(id)element existingView:(id)view;
+- (id)_seasonsBadgeWithElement:(id)element existingView:(id)view;
+- (id)_segmentedControlForElement:(id)element existingView:(id)view;
+- (id)_separatorViewForElement:(id)element existingView:(id)view;
+- (id)_textBoxViewForElement:(id)element existingView:(id)view;
+- (id)_textViewWithElement:(id)element existingView:(id)view;
+- (id)_zoomableTextViewFromElement:(id)element alwaysFocusable:(BOOL)focusable existingView:(id)view;
 - (void)_registerViewCreators;
 @end
 
@@ -588,25 +588,25 @@ id __40__TVMLViewFactory__registerViewCreators__block_invoke_31(uint64_t a1, voi
   return v8;
 }
 
-+ (id)organizerViewWithElements:(id)a3 existingView:(id)a4
++ (id)organizerViewWithElements:(id)elements existingView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() _organizerViewWithElement:0 elements:v6 existingView:v5];
+  viewCopy = view;
+  elementsCopy = elements;
+  v7 = [objc_opt_class() _organizerViewWithElement:0 elements:elementsCopy existingView:viewCopy];
 
   return v7;
 }
 
-+ (id)_organizerViewWithElement:(id)a3 elements:(id)a4 existingView:(id)a5
++ (id)_organizerViewWithElement:(id)element elements:(id)elements existingView:(id)view
 {
   v94 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  elementCopy = element;
+  elementsCopy = elements;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = viewCopy;
   }
 
   else
@@ -616,25 +616,25 @@ id __40__TVMLViewFactory__registerViewCreators__block_invoke_31(uint64_t a1, voi
   }
 
   v12 = v10;
-  v79 = [v7 tv_semanticContentAttribute];
+  tv_semanticContentAttribute = [elementCopy tv_semanticContentAttribute];
   [(_TVOrganizerView *)v12 setSemanticContentAttribute:?];
-  v75 = [MEMORY[0x277CBEB18] array];
-  v71 = v8;
-  if (v7)
+  array = [MEMORY[0x277CBEB18] array];
+  v71 = elementsCopy;
+  if (elementCopy)
   {
-    v13 = [v7 children];
+    children = [elementCopy children];
   }
 
   else
   {
-    v13 = v8;
+    children = elementsCopy;
   }
 
-  v14 = v13;
-  v72 = v7;
-  v70 = v9;
-  v15 = [v9 components];
-  v16 = [v15 mutableCopy];
+  v14 = children;
+  v72 = elementCopy;
+  v70 = viewCopy;
+  components = [viewCopy components];
+  v16 = [components mutableCopy];
 
   v90[0] = MEMORY[0x277D85DD0];
   v90[1] = 3221225472;
@@ -675,8 +675,8 @@ id __40__TVMLViewFactory__registerViewCreators__block_invoke_31(uint64_t a1, voi
           v85 = 0u;
           v82 = 0u;
           v83 = 0u;
-          v24 = [v23 children];
-          v25 = [v24 countByEnumeratingWithState:&v82 objects:v92 count:16];
+          children2 = [v23 children];
+          v25 = [children2 countByEnumeratingWithState:&v82 objects:v92 count:16];
           if (v25)
           {
             v26 = v25;
@@ -687,35 +687,35 @@ id __40__TVMLViewFactory__registerViewCreators__block_invoke_31(uint64_t a1, voi
               {
                 if (*v83 != v27)
                 {
-                  objc_enumerationMutation(v24);
+                  objc_enumerationMutation(children2);
                 }
 
                 v29 = *(*(&v82 + 1) + 8 * i);
                 if ([v29 tv_elementType] == 16 && !objc_msgSend(v29, "tv_imageType"))
                 {
                   v30 = v12;
-                  v31 = [(_TVOrganizerView *)v12 backgroundImageView];
+                  backgroundImageView = [(_TVOrganizerView *)v12 backgroundImageView];
                   v32 = +[TVInterfaceFactory sharedInterfaceFactory];
-                  v33 = [v32 _viewFromElement:v29 existingView:v31];
+                  v33 = [v32 _viewFromElement:v29 existingView:backgroundImageView];
 
-                  v34 = [v29 attributes];
-                  v35 = [v34 objectForKeyedSubscript:@"contentsMode"];
+                  attributes = [v29 attributes];
+                  v35 = [attributes objectForKeyedSubscript:@"contentsMode"];
 
                   if ([v35 length])
                   {
-                    v36 = [v29 tv_scaleMode];
+                    tv_scaleMode = [v29 tv_scaleMode];
                     v37 = 4;
-                    if (v36 != 4)
+                    if (tv_scaleMode != 4)
                     {
                       v37 = 5;
                     }
 
-                    if (v36 == 3)
+                    if (tv_scaleMode == 3)
                     {
                       v37 = 2;
                     }
 
-                    if ((v36 - 1) >= 2)
+                    if ((tv_scaleMode - 1) >= 2)
                     {
                       v38 = v37;
                     }
@@ -728,10 +728,10 @@ id __40__TVMLViewFactory__registerViewCreators__block_invoke_31(uint64_t a1, voi
 
                   else
                   {
-                    v39 = [v29 style];
-                    v40 = [v39 tv_position];
+                    style = [v29 style];
+                    tv_position = [style tv_position];
 
-                    v38 = [TVMLUtilities contentModeForPosition:[TVMLUtilities semanticPositionForPosition:v40 semanticContentAttribute:v79] defaultMode:5];
+                    v38 = [TVMLUtilities contentModeForPosition:[TVMLUtilities semanticPositionForPosition:tv_position semanticContentAttribute:tv_semanticContentAttribute] defaultMode:5];
                   }
 
                   [v33 setContentMode:v38];
@@ -741,7 +741,7 @@ id __40__TVMLViewFactory__registerViewCreators__block_invoke_31(uint64_t a1, voi
                 }
               }
 
-              v26 = [v24 countByEnumeratingWithState:&v82 objects:v92 count:16];
+              v26 = [children2 countByEnumeratingWithState:&v82 objects:v92 count:16];
             }
 
             while (v26);
@@ -753,12 +753,12 @@ id __40__TVMLViewFactory__registerViewCreators__block_invoke_31(uint64_t a1, voi
 
         else
         {
-          v41 = [v23 tv_elementType];
-          v42 = [v23 elementName];
-          v24 = (v17)[2](v17, v41, v42);
+          tv_elementType = [v23 tv_elementType];
+          elementName = [v23 elementName];
+          children2 = (v17)[2](v17, tv_elementType, elementName);
 
           v43 = +[TVInterfaceFactory sharedInterfaceFactory];
-          v44 = [v43 _viewFromElement:v23 existingView:v24];
+          v44 = [v43 _viewFromElement:v23 existingView:children2];
 
           if (v44)
           {
@@ -768,15 +768,15 @@ id __40__TVMLViewFactory__registerViewCreators__block_invoke_31(uint64_t a1, voi
               if (objc_opt_isKindOfClass())
               {
                 v45 = v44;
-                v46 = [v45 textColor];
-                v47 = [v46 colorWithAlphaComponent:0.4];
+                textColor = [v45 textColor];
+                v47 = [textColor colorWithAlphaComponent:0.4];
 
                 [v45 setTextColor:v47];
               }
             }
 
-            [v44 setSemanticContentAttribute:v79];
-            [v75 addObject:v44];
+            [v44 setSemanticContentAttribute:tv_semanticContentAttribute];
+            [array addObject:v44];
           }
         }
 
@@ -796,7 +796,7 @@ id __40__TVMLViewFactory__registerViewCreators__block_invoke_31(uint64_t a1, voi
   }
 
   [(_TVOrganizerView *)v12 setBackgroundImageView:v20];
-  [(_TVOrganizerView *)v12 setComponents:v75];
+  [(_TVOrganizerView *)v12 setComponents:array];
   v80 = TVCornerRadiiZero;
   v81 = *&qword_26CE880D8;
   if ([TVMLUtilities _cornerRadiiFromElement:v72 cornerRadii:&v80 circle:0])
@@ -806,15 +806,15 @@ id __40__TVMLViewFactory__registerViewCreators__block_invoke_31(uint64_t a1, voi
     [(_TVOrganizerView *)v12 setClipsToBounds:1];
   }
 
-  v48 = [v72 style];
-  v49 = [v48 tv_imageTreatment];
-  v50 = [v49 isEqualToString:@"blur"];
+  style2 = [v72 style];
+  tv_imageTreatment = [style2 tv_imageTreatment];
+  v50 = [tv_imageTreatment isEqualToString:@"blur"];
 
   if (v50)
   {
-    v51 = [v72 appDocument];
-    v52 = [v51 templateElement];
-    v53 = [TVMLUtilities interfaceStyleForTemplateElement:v52];
+    appDocument = [v72 appDocument];
+    templateElement = [appDocument templateElement];
+    v53 = [TVMLUtilities interfaceStyleForTemplateElement:templateElement];
 
     if (v53 == 1)
     {
@@ -831,19 +831,19 @@ id __40__TVMLViewFactory__registerViewCreators__block_invoke_31(uint64_t a1, voi
     [(_TVOrganizerView *)v12 setBackgroundImageView:v56];
   }
 
-  v57 = [v72 style];
-  v58 = [v57 tv_columnColor];
+  style3 = [v72 style];
+  tv_columnColor = [style3 tv_columnColor];
 
-  if (v58)
+  if (tv_columnColor)
   {
     [(_TVOrganizerView *)v12 setColumnDividersEnabled:1];
-    v59 = [v72 style];
-    v60 = [v59 tv_columnColor];
-    v61 = [v60 color];
-    [(_TVOrganizerView *)v12 setColumnDividerColor:v61];
+    style4 = [v72 style];
+    tv_columnColor2 = [style4 tv_columnColor];
+    color = [tv_columnColor2 color];
+    [(_TVOrganizerView *)v12 setColumnDividerColor:color];
 
-    v62 = [v72 style];
-    [v62 tv_columnPadding];
+    style5 = [v72 style];
+    [style5 tv_columnPadding];
     [(_TVOrganizerView *)v12 setColumnDividerPadding:?];
   }
 
@@ -852,13 +852,13 @@ id __40__TVMLViewFactory__registerViewCreators__block_invoke_31(uint64_t a1, voi
     [(_TVOrganizerView *)v12 setColumnDividersEnabled:0];
   }
 
-  v63 = [v72 attributes];
-  v64 = [v63 objectForKey:@"remembersFocus"];
+  attributes2 = [v72 attributes];
+  v64 = [attributes2 objectForKey:@"remembersFocus"];
 
   if (v64)
   {
-    v65 = [v72 attributes];
-    v66 = [v65 objectForKey:@"remembersFocus"];
+    attributes3 = [v72 attributes];
+    v66 = [attributes3 objectForKey:@"remembersFocus"];
     -[_TVOrganizerView setRemembersLastFocusedItem:](v12, "setRemembersLastFocusedItem:", [v66 BOOLValue]);
   }
 
@@ -919,48 +919,48 @@ void __67__TVMLViewFactory__organizerViewWithElement_elements_existingView___blo
   }
 }
 
-+ (id)imageStackViewWithElement:(id)a3 layout:(id)a4 existingView:(id)a5
++ (id)imageStackViewWithElement:(id)element layout:(id)layout existingView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 tv_elementType] != 16)
+  elementCopy = element;
+  layoutCopy = layout;
+  viewCopy = view;
+  if ([elementCopy tv_elementType] != 16)
   {
     v14 = 0;
     goto LABEL_16;
   }
 
-  v10 = v7;
-  v11 = [v10 tv_imageType];
-  if (v11 != 3 && v11)
+  v10 = elementCopy;
+  tv_imageType = [v10 tv_imageType];
+  if (tv_imageType != 3 && tv_imageType)
   {
     v14 = 0;
   }
 
   else
   {
-    v12 = [v9 tv_associatedIKViewElement];
-    v13 = v12;
-    if (v12 != v10)
+    tv_associatedIKViewElement = [viewCopy tv_associatedIKViewElement];
+    v13 = tv_associatedIKViewElement;
+    if (tv_associatedIKViewElement != v10)
     {
 
 LABEL_10:
-      if (!v8)
+      if (!layoutCopy)
       {
-        v8 = objc_alloc_init(TVImageLayout);
-        [(TVViewLayout *)v8 setAcceptsFocus:1];
+        layoutCopy = objc_alloc_init(TVImageLayout);
+        [(TVViewLayout *)layoutCopy setAcceptsFocus:1];
       }
 
-      v16 = v8;
-      v8 = [TVImageLayout layoutWithLayout:v8 element:v10];
+      v16 = layoutCopy;
+      layoutCopy = [TVImageLayout layoutWithLayout:layoutCopy element:v10];
 
-      v17 = [v10 tv_imageProxyWithLayout:v8];
+      v17 = [v10 tv_imageProxyWithLayout:layoutCopy];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v18 = [v10 appDocument];
-        v19 = [v18 requestLoader];
-        [v17 setRequestLoader:v19];
+        appDocument = [v10 appDocument];
+        requestLoader = [appDocument requestLoader];
+        [v17 setRequestLoader:requestLoader];
       }
 
       v20 = objc_alloc_init(TVImageDescription);
@@ -969,22 +969,22 @@ LABEL_10:
       -[TVImageDescription setConfigureForMetrics:](v20, "setConfigureForMetrics:", [v21 BOOLValue]);
 
       [(TVImageDescription *)v20 configureForMetrics];
-      v22 = [TVMLUtilities _placeholderImageForViewElement:v10 imageLayout:v8];
+      v22 = [TVMLUtilities _placeholderImageForViewElement:v10 imageLayout:layoutCopy];
       [(TVImageDescription *)v20 setPlaceholderImage:v22];
 
-      v14 = [TVViewFactory imageStackViewWithDescription:v20 layout:v8 existingView:v9];
+      v14 = [TVViewFactory imageStackViewWithDescription:v20 layout:layoutCopy existingView:viewCopy];
 
       goto LABEL_15;
     }
 
-    v15 = [v10 updateType];
+    updateType = [v10 updateType];
 
-    if (v15 != 2)
+    if (updateType != 2)
     {
       goto LABEL_10;
     }
 
-    v14 = v9;
+    v14 = viewCopy;
   }
 
 LABEL_15:
@@ -994,16 +994,16 @@ LABEL_16:
   return v14;
 }
 
-+ (id)imageViewWithElement:(id)a3 layout:(id)a4 existingView:(id)a5
++ (id)imageViewWithElement:(id)element layout:(id)layout existingView:(id)view
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v7;
-  v10 = [TVImageLayout layoutWithLayout:a4 element:v9];
+  elementCopy = element;
+  viewCopy = view;
+  v9 = elementCopy;
+  v10 = [TVImageLayout layoutWithLayout:layout element:v9];
   v11 = [v9 tv_urlWithLayout:v10];
   if ([v11 tv_imageURLType] == 1)
   {
-    v12 = [TVMLViewFactory imageStackViewWithElement:v9 layout:v10 existingView:v8];
+    v12 = [TVMLViewFactory imageStackViewWithElement:v9 layout:v10 existingView:viewCopy];
     goto LABEL_40;
   }
 
@@ -1018,9 +1018,9 @@ LABEL_16:
     else
     {
       v17 = [v9 url];
-      v18 = [v17 tv_isSymbolURL];
+      tv_isSymbolURL = [v17 tv_isSymbolURL];
 
-      if ((v18 & 1) == 0)
+      if ((tv_isSymbolURL & 1) == 0)
       {
         v27 = TVMLKitLogObject;
         if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_ERROR))
@@ -1034,17 +1034,17 @@ LABEL_16:
     }
   }
 
-  v19 = [v9 appDocument];
-  v20 = [v19 templateElement];
+  appDocument = [v9 appDocument];
+  templateElement = [appDocument templateElement];
 
   v21 = objc_alloc_init(TVImageDescription);
   v22 = [v9 tv_imageProxyWithLayout:v10];
   [(TVImageDescription *)v21 setImageProxy:v22];
-  v23 = [v9 style];
-  v24 = [v23 valueForStyle:@"tv-placeholder"];
+  style = [v9 style];
+  v24 = [style valueForStyle:@"tv-placeholder"];
 
   v59 = v24;
-  v60 = v20;
+  v60 = templateElement;
   if ([v9 tv_isResource] & 1) != 0 || (objc_msgSend(v9, "tv_isSymbol"))
   {
     goto LABEL_13;
@@ -1052,17 +1052,17 @@ LABEL_16:
 
   if (![v24 length])
   {
-    v26 = [v10 placeholderArtworkName];
-    if (v26)
+    placeholderArtworkName = [v10 placeholderArtworkName];
+    if (placeholderArtworkName)
     {
     }
 
     else
     {
-      v28 = [v9 parent];
-      v29 = [v28 tv_elementType];
+      parent = [v9 parent];
+      tv_elementType = [parent tv_elementType];
 
-      if (v29 != 24)
+      if (tv_elementType != 24)
       {
 LABEL_13:
         v25 = 0;
@@ -1080,29 +1080,29 @@ LABEL_22:
   v30 = [v9 objectForKeyedSubscript:@"TVConfigureForMetrics"];
   -[TVImageDescription setConfigureForMetrics:](v21, "setConfigureForMetrics:", [v30 BOOLValue]);
 
-  v31 = [v9 attributes];
-  v32 = [v31 objectForKeyedSubscript:@"accessibilityText"];
+  attributes = [v9 attributes];
+  v32 = [attributes objectForKeyedSubscript:@"accessibilityText"];
   [(TVImageDescription *)v21 setAccessibilityText:v32];
 
-  v33 = [v9 attributes];
-  v34 = [v33 objectForKeyedSubscript:@"data-siri"];
+  attributes2 = [v9 attributes];
+  v34 = [attributes2 objectForKeyedSubscript:@"data-siri"];
   [(TVImageDescription *)v21 setSiriData:v34];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v35 = [v9 appDocument];
-    v36 = [v35 requestLoader];
-    [v22 setRequestLoader:v36];
+    appDocument2 = [v9 appDocument];
+    requestLoader = [appDocument2 requestLoader];
+    [v22 setRequestLoader:requestLoader];
 
-    v37 = [v9 parent];
-    if ([v37 tv_elementType] == 4)
+    parent2 = [v9 parent];
+    if ([parent2 tv_elementType] == 4)
     {
-      v38 = [v9 parent];
-      v39 = [v38 parent];
-      v40 = [v39 tv_elementType];
+      parent3 = [v9 parent];
+      v38Parent = [parent3 parent];
+      tv_elementType2 = [v38Parent tv_elementType];
 
-      if (v40 == 12)
+      if (tv_elementType2 == 12)
       {
         [(TVImageDescription *)v21 setIsInBackgroundOrBanner:1];
         goto LABEL_29;
@@ -1113,41 +1113,41 @@ LABEL_22:
     {
     }
 
-    v41 = [v9 style];
-    v42 = [v41 tv_tintColor];
-    v43 = [v42 gradientType];
+    style2 = [v9 style];
+    tv_tintColor = [style2 tv_tintColor];
+    gradientType = [tv_tintColor gradientType];
 
-    if (v43)
+    if (gradientType)
     {
       [(TVImageDescription *)v21 setHasGradient:1];
     }
   }
 
 LABEL_29:
-  v12 = [TVViewFactory imageViewWithDescription:v21 layout:v10 existingView:v8];
-  v44 = [v12 imageProxy];
-  v45 = [v44 isEqual:v22];
+  v12 = [TVViewFactory imageViewWithDescription:v21 layout:v10 existingView:viewCopy];
+  imageProxy = [v12 imageProxy];
+  v45 = [imageProxy isEqual:v22];
 
   if (v12)
   {
     v57 = v11;
-    v46 = v8;
-    v47 = [v9 attributes];
-    v48 = [v47 objectForKeyedSubscript:@"handlesInteraction"];
-    v49 = [v48 BOOLValue];
+    v46 = viewCopy;
+    attributes3 = [v9 attributes];
+    v48 = [attributes3 objectForKeyedSubscript:@"handlesInteraction"];
+    bOOLValue = [v48 BOOLValue];
 
-    [v12 setUserInteractionEnabled:v49];
+    [v12 setUserInteractionEnabled:bOOLValue];
     [_TVControlTarget addTargetInControl:v12 withViewElement:v9];
-    v50 = [v9 parent];
-    if (v50)
+    parent4 = [v9 parent];
+    if (parent4)
     {
-      v51 = v50;
+      v51 = parent4;
       while ([v51 tv_elementType] != 35)
       {
-        v52 = [v51 parent];
+        parent5 = [v51 parent];
 
-        v51 = v52;
-        if (!v52)
+        v51 = parent5;
+        if (!parent5)
         {
           goto LABEL_34;
         }
@@ -1155,20 +1155,20 @@ LABEL_29:
 
       [v12 _loadImage];
 
-      v8 = v46;
+      viewCopy = v46;
     }
 
     else
     {
 LABEL_34:
-      v8 = v46;
+      viewCopy = v46;
       if (((v46 != 0) & v45) == 1)
       {
         v53 = [v9 url];
-        v54 = [v53 tv_isResourceURL];
+        tv_isResourceURL = [v53 tv_isResourceURL];
 
-        v8 = v46;
-        if (v54)
+        viewCopy = v46;
+        if (tv_isResourceURL)
         {
           [v12 _reloadImageForLayoutDirectionChange];
         }
@@ -1185,53 +1185,53 @@ LABEL_40:
   return v12;
 }
 
-- (id)_textViewWithElement:(id)a3 existingView:(id)a4
+- (id)_textViewWithElement:(id)element existingView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 attributes];
-  v8 = [v7 objectForKeyedSubscript:@"handlesOverflow"];
+  elementCopy = element;
+  viewCopy = view;
+  attributes = [elementCopy attributes];
+  v8 = [attributes objectForKeyedSubscript:@"handlesOverflow"];
   if ([v8 BOOLValue])
   {
-    v9 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v10 = [v7 objectForKeyedSubscript:@"allowsZooming"];
-    v9 = [v10 BOOLValue];
+    v10 = [attributes objectForKeyedSubscript:@"allowsZooming"];
+    bOOLValue = [v10 BOOLValue];
   }
 
-  v11 = [v7 objectForKeyedSubscript:@"handlesOverflow"];
+  v11 = [attributes objectForKeyedSubscript:@"handlesOverflow"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v7 objectForKeyedSubscript:@"handlesOverflow"];
-    v13 = [v12 lowercaseString];
+    v12 = [attributes objectForKeyedSubscript:@"handlesOverflow"];
+    lowercaseString = [v12 lowercaseString];
   }
 
   else
   {
-    v13 = 0;
+    lowercaseString = 0;
   }
 
-  v14 = [v13 isEqualToString:@"always"];
-  v15 = [v5 parent];
-  if ([v15 tv_elementType] == 15)
+  v14 = [lowercaseString isEqualToString:@"always"];
+  parent = [elementCopy parent];
+  if ([parent tv_elementType] == 15)
   {
-    v16 = [v5 parent];
-    v17 = [v16 parent];
-    v18 = [v17 tv_elementType];
+    parent2 = [elementCopy parent];
+    v16Parent = [parent2 parent];
+    tv_elementType = [v16Parent tv_elementType];
 
-    if (v18 != 18)
+    if (tv_elementType != 18)
     {
       v20 = 0;
       goto LABEL_13;
     }
 
-    v15 = [v5 text];
-    v19 = [v15 string];
-    v20 = [v19 containsString:@"\r"];
+    parent = [elementCopy text];
+    string = [parent string];
+    v20 = [string containsString:@"\r"];
   }
 
   else
@@ -1240,12 +1240,12 @@ LABEL_40:
   }
 
 LABEL_13:
-  v21 = v14 | v9;
-  if ([v5 tv_textStyle] == 3 && (objc_msgSend(v5, "appDocument"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "templateElement"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "tv_elementType"), v23, v22, v24 == 62))
+  v21 = v14 | bOOLValue;
+  if ([elementCopy tv_textStyle] == 3 && (objc_msgSend(elementCopy, "appDocument"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "templateElement"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "tv_elementType"), v23, v22, v24 == 62))
   {
     if ((v21 & 1) == 0)
     {
-      v25 = [(TVMLViewFactory *)self _textBoxViewForElement:v5 existingView:v6];
+      v25 = [(TVMLViewFactory *)self _textBoxViewForElement:elementCopy existingView:viewCopy];
       goto LABEL_23;
     }
   }
@@ -1254,72 +1254,72 @@ LABEL_13:
   {
     if (v20)
     {
-      [(TVMLViewFactory *)self _headerColumnViewForElement:v5 existingView:v6];
+      [(TVMLViewFactory *)self _headerColumnViewForElement:elementCopy existingView:viewCopy];
     }
 
     else
     {
-      [(TVMLViewFactory *)self _labelViewForElement:v5 existingView:v6];
+      [(TVMLViewFactory *)self _labelViewForElement:elementCopy existingView:viewCopy];
     }
     v25 = ;
     goto LABEL_23;
   }
 
-  v25 = [(TVMLViewFactory *)self _zoomableTextViewFromElement:v5 alwaysFocusable:v14 existingView:v6];
+  v25 = [(TVMLViewFactory *)self _zoomableTextViewFromElement:elementCopy alwaysFocusable:v14 existingView:viewCopy];
 LABEL_23:
   v26 = v25;
 
   return v26;
 }
 
-- (id)_listItemLockupWithElement:(id)a3 existingView:(id)a4
+- (id)_listItemLockupWithElement:(id)element existingView:(id)view
 {
-  v6 = a3;
-  v7 = [(TVMLViewFactory *)self _organizerViewForElement:v6 existingView:a4];
+  elementCopy = element;
+  v7 = [(TVMLViewFactory *)self _organizerViewForElement:elementCopy existingView:view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
-    [v8 setDisabled:{objc_msgSend(v6, "isDisabled")}];
+    [v8 setDisabled:{objc_msgSend(elementCopy, "isDisabled")}];
     [v8 setClipsToBounds:0];
-    v9 = [v6 style];
-    v10 = [v9 tv_backgroundColor];
-    v11 = [v10 color];
-    [v8 setBackgroundColor:v11 forState:0];
+    style = [elementCopy style];
+    tv_backgroundColor = [style tv_backgroundColor];
+    color = [tv_backgroundColor color];
+    [v8 setBackgroundColor:color forState:0];
 
-    v12 = [v6 style];
-    v13 = [v12 tv_highlightColor];
-    v14 = [v13 color];
-    [v8 setBackgroundColor:v14 forState:8];
+    style2 = [elementCopy style];
+    tv_highlightColor = [style2 tv_highlightColor];
+    color2 = [tv_highlightColor color];
+    [v8 setBackgroundColor:color2 forState:8];
 
-    v15 = [v6 style];
-    v16 = [v15 tv_highlightColor];
-    v17 = [v16 color];
-    [v8 setBackgroundColor:v17 forState:1];
+    style3 = [elementCopy style];
+    tv_highlightColor2 = [style3 tv_highlightColor];
+    color3 = [tv_highlightColor2 color];
+    [v8 setBackgroundColor:color3 forState:1];
 
-    LODWORD(v16) = +[TVMLUtilities _isSolariumMetricsEnabled];
-    v18 = [v8 floatingView];
-    v19 = v18;
-    if (v16)
+    LODWORD(tv_highlightColor2) = +[TVMLUtilities _isSolariumMetricsEnabled];
+    floatingView = [v8 floatingView];
+    v19 = floatingView;
+    if (tv_highlightColor2)
     {
-      [v18 setAsymmetricFocusedSizeIncrease:{8.0, 8.0}];
+      [floatingView setAsymmetricFocusedSizeIncrease:{8.0, 8.0}];
     }
 
     else
     {
-      [v18 setFocusedSizeIncrease:30.0];
+      [floatingView setFocusedSizeIncrease:30.0];
     }
 
-    v20 = [v6 style];
-    v21 = [v20 tv_visualEffect];
-    [v8 setVisualEffectViewBackgroundEnabled:{objc_msgSend(v21, "isEqualToString:", @"background-blur"}];
+    style4 = [elementCopy style];
+    tv_visualEffect = [style4 tv_visualEffect];
+    [v8 setVisualEffectViewBackgroundEnabled:{objc_msgSend(tv_visualEffect, "isEqualToString:", @"background-blur"}];
 
     memset(&v36, 0, sizeof(v36));
-    v22 = [v6 style];
-    v23 = v22;
-    if (v22)
+    style5 = [elementCopy style];
+    v23 = style5;
+    if (style5)
     {
-      [v22 tv_focusTransform];
+      [style5 tv_focusTransform];
     }
 
     else
@@ -1334,49 +1334,49 @@ LABEL_23:
       v34 = v33;
       v35 = v36;
       [TVMLUtilities getValuesFromTransform:&v35 translation:&v34 rotation:&v33];
-      v24 = [v8 floatingView];
-      [v24 setContentMotionRotation:v33 translation:v34];
+      floatingView2 = [v8 floatingView];
+      [floatingView2 setContentMotionRotation:v33 translation:v34];
     }
 
     memset(&v35, 0, 32);
-    if ([TVMLUtilities _cornerRadiiFromElement:v6 cornerRadii:&v35 circle:0])
+    if ([TVMLUtilities _cornerRadiiFromElement:elementCopy cornerRadii:&v35 circle:0])
     {
       [TVCornerUtilities radiusFromCornerRadii:v35.a, v35.b, v35.c, v35.d];
       v26 = v25;
-      v27 = [v8 floatingView];
-      [v27 setCornerRadius:v26];
+      floatingView3 = [v8 floatingView];
+      [floatingView3 setCornerRadius:v26];
     }
 
-    v28 = [v6 style];
-    v29 = [v28 tv_backgroundColor];
-    v30 = [v29 color];
+    style6 = [elementCopy style];
+    tv_backgroundColor2 = [style6 tv_backgroundColor];
+    color4 = [tv_backgroundColor2 color];
 
-    if (v30)
+    if (color4)
     {
-      v31 = [v8 floatingView];
-      [v31 setRoundContentWhenDeselected:1];
+      floatingView4 = [v8 floatingView];
+      [floatingView4 setRoundContentWhenDeselected:1];
     }
   }
 
   return v7;
 }
 
-- (id)_cardViewFromElement:(id)a3 existingView:(id)a4
+- (id)_cardViewFromElement:(id)element existingView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
-    v9 = [v8 contentView];
-    v10 = [v9 subviews];
-    v11 = [v10 firstObject];
+    v8 = viewCopy;
+    contentView = [v8 contentView];
+    subviews = [contentView subviews];
+    firstObject = [subviews firstObject];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v11;
+      v12 = firstObject;
     }
 
     else
@@ -1384,17 +1384,17 @@ LABEL_23:
       v12 = 0;
     }
 
-    v13 = [v8 contentView];
-    v14 = [v13 subviews];
-    [v14 makeObjectsPerformSelector:sel_removeFromSuperview];
+    contentView2 = [v8 contentView];
+    subviews2 = [contentView2 subviews];
+    [subviews2 makeObjectsPerformSelector:sel_removeFromSuperview];
 
-    v15 = [objc_opt_class() _organizerViewWithElement:v6 elements:0 existingView:v12];
+    v15 = [objc_opt_class() _organizerViewWithElement:elementCopy elements:0 existingView:v12];
 
     [v8 bounds];
     v17 = v16;
     v19 = v18;
-    v20 = [v6 style];
-    [v20 tv_padding];
+    style = [elementCopy style];
+    [style tv_padding];
     v22 = v21;
     v24 = v23;
     v26 = v25;
@@ -1405,62 +1405,62 @@ LABEL_23:
     [v15 setFrame:{v24, v22, v29, v30}];
     v56 = TVCornerRadiiZero;
     v57 = *&qword_26CE880D8;
-    [TVMLUtilities _cornerRadiiFromElement:v6 cornerRadii:&v56 circle:0];
+    [TVMLUtilities _cornerRadiiFromElement:elementCopy cornerRadii:&v56 circle:0];
     [TVCornerUtilities radiusFromCornerRadii:v56, v57];
     v32 = v31;
-    v33 = [v6 style];
-    v34 = [v33 tv_backgroundColor];
-    v35 = [v34 color];
+    style2 = [elementCopy style];
+    tv_backgroundColor = [style2 tv_backgroundColor];
+    color = [tv_backgroundColor color];
 
-    v36 = [v8 contentView];
-    v37 = v36;
-    if (v35)
+    contentView3 = [v8 contentView];
+    v37 = contentView3;
+    if (color)
     {
-      [v36 setBackgroundColor:v35];
+      [contentView3 setBackgroundColor:color];
     }
 
     else
     {
-      v38 = [MEMORY[0x277D75348] clearColor];
-      [v37 setBackgroundColor:v38];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [v37 setBackgroundColor:clearColor];
     }
 
-    v39 = [v8 contentView];
-    v40 = [v39 layer];
-    [v40 setCornerRadius:v32];
+    contentView4 = [v8 contentView];
+    layer = [contentView4 layer];
+    [layer setCornerRadius:v32];
 
-    v41 = [v8 contentView];
-    [v41 addSubview:v15];
+    contentView5 = [v8 contentView];
+    [contentView5 addSubview:v15];
 
-    [v8 setAllowsFocus:{objc_msgSend(v6, "isDisabled") ^ 1}];
-    v42 = [v6 style];
-    v43 = [v42 tv_shadow];
+    [v8 setAllowsFocus:{objc_msgSend(elementCopy, "isDisabled") ^ 1}];
+    style3 = [elementCopy style];
+    tv_shadow = [style3 tv_shadow];
 
-    v44 = [v8 contentView];
-    v45 = [v44 layer];
-    v46 = v45;
-    if (v43)
+    contentView6 = [v8 contentView];
+    layer2 = [contentView6 layer];
+    v46 = layer2;
+    if (tv_shadow)
     {
-      [v45 setShadowPath:{+[TVMLUtilities _shadowPathForViewElement:withCornerRadii:andScaledSize:](TVMLUtilities, "_shadowPathForViewElement:withCornerRadii:andScaledSize:", v6, v56, v57, v29, v30)}];
+      [layer2 setShadowPath:{+[TVMLUtilities _shadowPathForViewElement:withCornerRadii:andScaledSize:](TVMLUtilities, "_shadowPathForViewElement:withCornerRadii:andScaledSize:", elementCopy, v56, v57, v29, v30)}];
 
-      v47 = [v8 contentView];
-      v48 = [v47 layer];
-      [v43 shadowOffset];
-      [v48 setShadowOffset:?];
+      contentView7 = [v8 contentView];
+      layer3 = [contentView7 layer];
+      [tv_shadow shadowOffset];
+      [layer3 setShadowOffset:?];
 
-      v49 = [v8 contentView];
-      v50 = [v49 layer];
-      [v43 shadowBlurRadius];
-      [v50 setShadowRadius:?];
+      contentView8 = [v8 contentView];
+      layer4 = [contentView8 layer];
+      [tv_shadow shadowBlurRadius];
+      [layer4 setShadowRadius:?];
 
-      v51 = [v8 contentView];
-      v52 = [v51 layer];
-      v53 = [v43 shadowColor];
-      [v52 setShadowColor:{objc_msgSend(v53, "CGColor")}];
+      contentView9 = [v8 contentView];
+      layer5 = [contentView9 layer];
+      shadowColor = [tv_shadow shadowColor];
+      [layer5 setShadowColor:{objc_msgSend(shadowColor, "CGColor")}];
 
-      v44 = [v8 contentView];
-      v45 = [v44 layer];
-      v46 = v45;
+      contentView6 = [v8 contentView];
+      layer2 = [contentView6 layer];
+      v46 = layer2;
       LODWORD(v54) = 1.0;
     }
 
@@ -1469,25 +1469,25 @@ LABEL_23:
       v54 = 0.0;
     }
 
-    [v45 setShadowOpacity:v54];
+    [layer2 setShadowOpacity:v54];
   }
 
   else
   {
-    v8 = [(TVMLViewFactory *)self _organizerViewForElement:v6 existingView:v7];
+    v8 = [(TVMLViewFactory *)self _organizerViewForElement:elementCopy existingView:viewCopy];
   }
 
   return v8;
 }
 
-- (id)_textBoxViewForElement:(id)a3 existingView:(id)a4
+- (id)_textBoxViewForElement:(id)element existingView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = viewCopy;
   }
 
   else
@@ -1497,21 +1497,21 @@ LABEL_23:
   }
 
   v9 = v7;
-  v10 = [v5 style];
-  v11 = [v10 ikColor];
-  v12 = [v11 color];
-  v13 = [v9 _accessibilityHigherContrastTintColorForColor:v12];
+  style = [elementCopy style];
+  ikColor = [style ikColor];
+  color = [ikColor color];
+  v13 = [v9 _accessibilityHigherContrastTintColorForColor:color];
 
-  v14 = [v5 tv_attributedStringWithForegroundColor:v13 textAlignment:{objc_msgSend(v10, "tv_textAlignment")}];
+  v14 = [elementCopy tv_attributedStringWithForegroundColor:v13 textAlignment:{objc_msgSend(style, "tv_textAlignment")}];
   v15 = [v14 mutableCopy];
-  v16 = [v5 attributes];
-  v17 = [v16 objectForKeyedSubscript:@"showsScrollIndicator"];
-  v38 = [v17 BOOLValue];
+  attributes = [elementCopy attributes];
+  v17 = [attributes objectForKeyedSubscript:@"showsScrollIndicator"];
+  bOOLValue = [v17 BOOLValue];
 
   if ([v15 length])
   {
     v36 = v13;
-    v37 = v6;
+    v37 = viewCopy;
     v35 = v14;
     v18 = [v14 length];
     v19 = [v15 attributesAtIndex:0 effectiveRange:0];
@@ -1532,8 +1532,8 @@ LABEL_23:
     v25 = v24;
 
     [v25 setLineBreakMode:0];
-    v26 = [v5 style];
-    [v26 tv_textHyphenationFactor];
+    style2 = [elementCopy style];
+    [style2 tv_textHyphenationFactor];
     *&v27 = v27;
     [v25 setHyphenationFactor:v27];
 
@@ -1543,28 +1543,28 @@ LABEL_23:
 
     [v15 tv_addLanguageAwareness:0];
     v13 = v36;
-    v6 = v37;
+    viewCopy = v37;
     v14 = v35;
   }
 
   v29 = [v15 copy];
   [v9 setAttributedText:v29];
 
-  v30 = [v5 style];
-  v31 = +[TVMLUtilities semanticAlignmentForAlignment:semanticContentAttribute:](TVMLUtilities, "semanticAlignmentForAlignment:semanticContentAttribute:", [v30 tv_alignment], objc_msgSend(v5, "tv_semanticContentAttribute"));
+  style3 = [elementCopy style];
+  v31 = +[TVMLUtilities semanticAlignmentForAlignment:semanticContentAttribute:](TVMLUtilities, "semanticAlignmentForAlignment:semanticContentAttribute:", [style3 tv_alignment], objc_msgSend(elementCopy, "tv_semanticContentAttribute"));
 
   if (!v31)
   {
     [v9 setTextAlignment:4];
   }
 
-  [v10 tv_padding];
+  [style tv_padding];
   [v9 setTextContainerInset:?];
   [v9 setBounces:1];
-  [v9 setShowsVerticalScrollIndicator:v38];
-  v32 = [v10 tv_backgroundColor];
-  v33 = [v32 color];
-  [v9 setBackgroundColor:v33];
+  [v9 setShowsVerticalScrollIndicator:bOOLValue];
+  tv_backgroundColor = [style tv_backgroundColor];
+  color2 = [tv_backgroundColor color];
+  [v9 setBackgroundColor:color2];
 
   [v9 setEditable:0];
   [v9 _setGradientMaskInsets:{90.0, 0.0, 90.0, 0.0}];
@@ -1574,18 +1574,18 @@ LABEL_23:
   return v9;
 }
 
-- (id)_labelViewForElement:(id)a3 existingView:(id)a4
+- (id)_labelViewForElement:(id)element existingView:(id)view
 {
   v118 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
+  elementCopy = element;
+  viewCopy = view;
+  style = [elementCopy style];
   objc_opt_class();
-  v108 = v6;
-  v111 = v7;
+  v108 = viewCopy;
+  v111 = style;
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = viewCopy;
   }
 
   else
@@ -1595,18 +1595,18 @@ LABEL_23:
   }
 
   v10 = v8;
-  v11 = [v5 style];
-  v12 = [v11 tv_color];
-  v109 = [v12 color];
+  style2 = [elementCopy style];
+  tv_color = [style2 tv_color];
+  color = [tv_color color];
 
-  v13 = [v5 style];
-  v14 = [v13 tv_highlightColor];
-  v112 = [v14 color];
+  style3 = [elementCopy style];
+  tv_highlightColor = [style3 tv_highlightColor];
+  color2 = [tv_highlightColor color];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = v5;
+    v15 = elementCopy;
   }
 
   else
@@ -1619,8 +1619,8 @@ LABEL_23:
   v115 = 0u;
   v116 = 0u;
   v110 = v15;
-  v16 = [v110 badges];
-  v17 = [v16 countByEnumeratingWithState:&v113 objects:v117 count:16];
+  badges = [v110 badges];
+  v17 = [badges countByEnumeratingWithState:&v113 objects:v117 count:16];
   if (v17)
   {
     v18 = v17;
@@ -1631,29 +1631,29 @@ LABEL_23:
       {
         if (*v114 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(badges);
         }
 
         v21 = *(*(&v113 + 1) + 8 * i);
-        v22 = [v21 badge];
-        v23 = [v22 style];
-        v24 = [v23 tv_tintColor];
-        [v21 setTintColor:v24];
+        badge = [v21 badge];
+        style4 = [badge style];
+        tv_tintColor = [style4 tv_tintColor];
+        [v21 setTintColor:tv_tintColor];
 
-        v25 = [v22 style];
-        v26 = [v25 tv_highlightColor];
-        [v21 tv_setHighlightColor:v26];
+        style5 = [badge style];
+        tv_highlightColor2 = [style5 tv_highlightColor];
+        [v21 tv_setHighlightColor:tv_highlightColor2];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v113 objects:v117 count:16];
+      v18 = [badges countByEnumeratingWithState:&v113 objects:v117 count:16];
     }
 
     while (v18);
   }
 
-  v27 = [v5 style];
-  v28 = [v27 tv_textHighlightStyle];
-  if ([v28 isEqualToString:@"show-on-highlight"])
+  style6 = [elementCopy style];
+  tv_textHighlightStyle = [style6 tv_textHighlightStyle];
+  if ([tv_textHighlightStyle isEqualToString:@"show-on-highlight"])
   {
 
     v29 = v110;
@@ -1661,90 +1661,90 @@ LABEL_23:
 
   else
   {
-    v30 = [v5 style];
-    v31 = [v30 tv_textHighlightStyle];
-    v32 = [v31 isEqualToString:@"marquee-and-show-on-highlight"];
+    style7 = [elementCopy style];
+    tv_textHighlightStyle2 = [style7 tv_textHighlightStyle];
+    v32 = [tv_textHighlightStyle2 isEqualToString:@"marquee-and-show-on-highlight"];
 
     v29 = v110;
     if (!v32)
     {
-      [(_TVLabel *)v10 setHighlightedTextColor:v112];
-      v33 = [v110 cachedAttributedString];
-      if (!v33)
+      [(_TVLabel *)v10 setHighlightedTextColor:color2];
+      cachedAttributedString = [v110 cachedAttributedString];
+      if (!cachedAttributedString)
       {
-        v37 = [v5 tv_attributedString];
+        tv_attributedString = [elementCopy tv_attributedString];
         goto LABEL_24;
       }
 
 LABEL_23:
-      v37 = v33;
-      v33 = v37;
+      tv_attributedString = cachedAttributedString;
+      cachedAttributedString = tv_attributedString;
 LABEL_24:
-      v36 = v37;
+      v36 = tv_attributedString;
       goto LABEL_25;
     }
   }
 
   [(_TVLabel *)v10 setHighlightedTextColor:0];
-  v33 = [v29 cachedAttributedString];
-  if (v33)
+  cachedAttributedString = [v29 cachedAttributedString];
+  if (cachedAttributedString)
   {
     goto LABEL_23;
   }
 
-  if (v112)
+  if (color2)
   {
-    v34 = v112;
+    v34 = color2;
   }
 
   else
   {
-    v34 = v109;
+    v34 = color;
   }
 
-  v35 = [v5 style];
-  v36 = [v5 tv_attributedStringWithForegroundColor:v34 textAlignment:{objc_msgSend(v35, "tv_textAlignment")}];
+  style8 = [elementCopy style];
+  v36 = [elementCopy tv_attributedStringWithForegroundColor:v34 textAlignment:{objc_msgSend(style8, "tv_textAlignment")}];
 
 LABEL_25:
   v38 = v111;
 
   [v29 setCachedAttributedString:v36];
-  v39 = [v5 style];
-  v40 = [v39 tv_textTransform];
-  v41 = [v40 length];
+  style9 = [elementCopy style];
+  tv_textTransform = [style9 tv_textTransform];
+  v41 = [tv_textTransform length];
 
   if (!v41)
   {
     goto LABEL_36;
   }
 
-  v42 = [v5 style];
-  v43 = [v42 tv_textTransform];
-  v44 = [v43 isEqualToString:@"uppercase"];
+  style10 = [elementCopy style];
+  tv_textTransform2 = [style10 tv_textTransform];
+  v44 = [tv_textTransform2 isEqualToString:@"uppercase"];
 
   if (v44)
   {
-    v45 = [v36 string];
-    v46 = [v45 localizedUppercaseString];
+    string = [v36 string];
+    localizedUppercaseString = [string localizedUppercaseString];
   }
 
   else
   {
-    v47 = [v5 style];
-    v48 = [v47 tv_textTransform];
-    v49 = [v48 isEqualToString:@"lowercase"];
+    style11 = [elementCopy style];
+    tv_textTransform3 = [style11 tv_textTransform];
+    v49 = [tv_textTransform3 isEqualToString:@"lowercase"];
 
     if (v49)
     {
-      v45 = [v36 string];
-      v46 = [v45 localizedLowercaseString];
+      string = [v36 string];
+      localizedUppercaseString = [string localizedLowercaseString];
     }
 
     else
     {
-      v50 = [v5 style];
-      v51 = [v50 tv_textTransform];
-      v52 = [v51 isEqualToString:@"capitalize"];
+      style12 = [elementCopy style];
+      tv_textTransform4 = [style12 tv_textTransform];
+      v52 = [tv_textTransform4 isEqualToString:@"capitalize"];
 
       if (!v52)
       {
@@ -1752,12 +1752,12 @@ LABEL_25:
         goto LABEL_33;
       }
 
-      v45 = [v36 string];
-      v46 = [v45 localizedCapitalizedString];
+      string = [v36 string];
+      localizedUppercaseString = [string localizedCapitalizedString];
     }
   }
 
-  v53 = v46;
+  v53 = localizedUppercaseString;
 
 LABEL_33:
   if ([v53 length])
@@ -1770,18 +1770,18 @@ LABEL_33:
   }
 
 LABEL_36:
-  v56 = [v36 tv_defaultAttributes];
-  v57 = v56;
-  if (v56)
+  tv_defaultAttributes = [v36 tv_defaultAttributes];
+  v57 = tv_defaultAttributes;
+  if (tv_defaultAttributes)
   {
-    v58 = [v56 mutableCopy];
+    v58 = [tv_defaultAttributes mutableCopy];
     v59 = *MEMORY[0x277D740C0];
     v60 = [v57 objectForKeyedSubscript:*MEMORY[0x277D740C0]];
 
     if (!v60)
     {
-      v61 = [MEMORY[0x277D75348] blackColor];
-      [v58 setObject:v61 forKeyedSubscript:v59];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [v58 setObject:blackColor forKeyedSubscript:v59];
     }
 
     v62 = *MEMORY[0x277D74138];
@@ -1798,32 +1798,32 @@ LABEL_36:
   }
 
   [(_TVLabel *)v10 setAttributedText:v36];
-  v66 = [v5 style];
-  -[_TVLabel setNumberOfLines:](v10, "setNumberOfLines:", [v66 tv_maxTextLines]);
+  style13 = [elementCopy style];
+  -[_TVLabel setNumberOfLines:](v10, "setNumberOfLines:", [style13 tv_maxTextLines]);
 
-  v67 = [v5 style];
-  -[_TVLabel setAdjustsFontSizeToFitWidth:](v10, "setAdjustsFontSizeToFitWidth:", [v67 tv_adjustsFontSizeToFitWidth]);
+  style14 = [elementCopy style];
+  -[_TVLabel setAdjustsFontSizeToFitWidth:](v10, "setAdjustsFontSizeToFitWidth:", [style14 tv_adjustsFontSizeToFitWidth]);
 
-  v68 = [v5 style];
-  [v68 tv_minimumScaleFactor];
+  style15 = [elementCopy style];
+  [style15 tv_minimumScaleFactor];
   [(_TVLabel *)v10 setMinimumScaleFactor:?];
 
-  v69 = [v5 style];
-  [v69 tv_fontSize];
+  style16 = [elementCopy style];
+  [style16 tv_fontSize];
   [(_TVLabel *)v10 setAdjustsFontForContentSizeCategory:v70 == 0.0];
 
-  v71 = [v5 style];
-  [v71 tv_padding];
+  style17 = [elementCopy style];
+  [style17 tv_padding];
   [(_TVLabel *)v10 setPadding:?];
 
-  v72 = [v111 tv_backgroundColor];
-  v73 = [v72 color];
+  tv_backgroundColor = [v111 tv_backgroundColor];
+  color3 = [tv_backgroundColor color];
 
-  if (v73)
+  if (color3)
   {
-    v74 = [v111 tv_backgroundColor];
-    v75 = [v74 color];
-    [(_TVLabel *)v10 setBackgroundColor:v75];
+    tv_backgroundColor2 = [v111 tv_backgroundColor];
+    color4 = [tv_backgroundColor2 color];
+    [(_TVLabel *)v10 setBackgroundColor:color4];
   }
 
   else
@@ -1832,52 +1832,52 @@ LABEL_36:
     [(_TVLabel *)v10 setOpaque:0];
   }
 
-  v76 = [v5 style];
-  v77 = [v76 valueForStyle:@"text-shadow"];
+  style18 = [elementCopy style];
+  v77 = [style18 valueForStyle:@"text-shadow"];
 
   if (v77)
   {
     [v77 shadowBlurRadius];
     [(_TVLabel *)v10 setShadowBlur:?];
-    v78 = [v77 shadowColor];
+    shadowColor = [v77 shadowColor];
 
-    if (v78)
+    if (shadowColor)
     {
-      v79 = [v77 shadowColor];
-      [(_TVLabel *)v10 setShadowColor:v79];
+      shadowColor2 = [v77 shadowColor];
+      [(_TVLabel *)v10 setShadowColor:shadowColor2];
     }
 
     [v77 shadowOffset];
     [(_TVLabel *)v10 setShadowOffset:?];
   }
 
-  if ([v5 tv_elementType] == 33)
+  if ([elementCopy tv_elementType] == 33)
   {
-    v80 = [v5 attributes];
-    v81 = [v80 objectForKeyedSubscript:@"minLength"];
-    v82 = [v81 integerValue];
+    attributes = [elementCopy attributes];
+    v81 = [attributes objectForKeyedSubscript:@"minLength"];
+    integerValue = [v81 integerValue];
 
     v107 = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"%d", 0];
-    v83 = [&stru_287E12870 stringByPaddingToLength:v82 withString:? startingAtIndex:?];
-    v84 = [(_TVLabel *)v10 attributedText];
-    v85 = [v84 mutableCopy];
+    v83 = [&stru_287E12870 stringByPaddingToLength:integerValue withString:? startingAtIndex:?];
+    attributedText = [(_TVLabel *)v10 attributedText];
+    v85 = [attributedText mutableCopy];
 
-    v86 = [v85 mutableString];
-    v87 = [v85 mutableString];
-    [v86 replaceCharactersInRange:0 withString:{objc_msgSend(v87, "length"), v83}];
+    mutableString = [v85 mutableString];
+    mutableString2 = [v85 mutableString];
+    [mutableString replaceCharactersInRange:0 withString:{objc_msgSend(mutableString2, "length"), v83}];
 
     v88 = *MEMORY[0x277CBF3A8];
     v89 = *(MEMORY[0x277CBF3A8] + 8);
     [v85 boundingRectWithSize:3 options:0 context:{*MEMORY[0x277CBF3A8], v89}];
     v91 = v90;
     v92 = ceilf(v91);
-    v93 = [(_TVLabel *)v10 attributedText];
-    v94 = [v93 length];
+    attributedText2 = [(_TVLabel *)v10 attributedText];
+    v94 = [attributedText2 length];
 
-    if (v94 == v82)
+    if (v94 == integerValue)
     {
-      v95 = [(_TVLabel *)v10 attributedText];
-      [v95 boundingRectWithSize:3 options:0 context:{v88, v89}];
+      attributedText3 = [(_TVLabel *)v10 attributedText];
+      [attributedText3 boundingRectWithSize:3 options:0 context:{v88, v89}];
       v97 = v96;
 
       v98 = v97;
@@ -1885,7 +1885,7 @@ LABEL_36:
     }
 
     v99 = v10;
-    [(UIView *)v99 transferLayoutStylesFromElement:v5];
+    [(UIView *)v99 transferLayoutStylesFromElement:elementCopy];
     v100 = [MEMORY[0x277CCABB0] numberWithDouble:v92];
     [(UIView *)v99 setValue:v100 forTVViewStyle:@"width"];
 
@@ -1898,27 +1898,27 @@ LABEL_36:
     v38 = v111;
   }
 
-  [(UIView *)v10 transferLayoutStylesFromElement:v5];
-  v104 = [v5 style];
-  v105 = [v104 tv_textHighlightStyle];
-  [(UIView *)v10 setValue:v105 forTVViewStyle:@"tv-text-highlight-style"];
+  [(UIView *)v10 transferLayoutStylesFromElement:elementCopy];
+  style19 = [elementCopy style];
+  tv_textHighlightStyle3 = [style19 tv_textHighlightStyle];
+  [(UIView *)v10 setValue:tv_textHighlightStyle3 forTVViewStyle:@"tv-text-highlight-style"];
 
   return v10;
 }
 
-- (id)_headerColumnViewForElement:(id)a3 existingView:(id)a4
+- (id)_headerColumnViewForElement:(id)element existingView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [v8 text];
-  v10 = [v9 string];
-  v11 = [v10 componentsSeparatedByString:@"\r"];
+  elementCopy = element;
+  viewCopy = view;
+  v8 = elementCopy;
+  text = [v8 text];
+  string = [text string];
+  v11 = [string componentsSeparatedByString:@"\r"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v7;
+    v12 = viewCopy;
   }
 
   else
@@ -1927,19 +1927,19 @@ LABEL_36:
   }
 
   v13 = v12;
-  v14 = [(_TVHeaderColumnView *)v12 labelViews];
+  labelViews = [(_TVHeaderColumnView *)v12 labelViews];
   v15 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v11, "count")}];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __60__TVMLViewFactory__headerColumnViewForElement_existingView___block_invoke;
   v23[3] = &unk_279D70830;
-  v24 = v14;
-  v25 = self;
+  v24 = labelViews;
+  selfCopy = self;
   v26 = v8;
   v27 = v15;
   v16 = v13;
   v28 = v16;
-  v17 = v14;
+  v17 = labelViews;
   v18 = v8;
   v19 = v15;
   [v11 enumerateObjectsUsingBlock:v23];
@@ -2010,15 +2010,15 @@ void __60__TVMLViewFactory__headerColumnViewForElement_existingView___block_invo
   }
 }
 
-- (id)_zoomableTextViewFromElement:(id)a3 alwaysFocusable:(BOOL)a4 existingView:(id)a5
+- (id)_zoomableTextViewFromElement:(id)element alwaysFocusable:(BOOL)focusable existingView:(id)view
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = a3;
+  focusableCopy = focusable;
+  viewCopy = view;
+  elementCopy = element;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v7;
+    v9 = viewCopy;
   }
 
   else
@@ -2028,32 +2028,32 @@ void __60__TVMLViewFactory__headerColumnViewForElement_existingView___block_invo
   }
 
   v11 = v9;
-  [(TVFocusableTextView *)v9 setAlwaysFocusable:v5];
-  [(_TVZoomableTextView *)v11 updateWithViewElement:v8];
+  [(TVFocusableTextView *)v9 setAlwaysFocusable:focusableCopy];
+  [(_TVZoomableTextView *)v11 updateWithViewElement:elementCopy];
 
   return v11;
 }
 
-- (id)_organizerViewForElement:(id)a3 existingView:(id)a4
+- (id)_organizerViewForElement:(id)element existingView:(id)view
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v7 = v6;
+    v7 = viewCopy;
     objc_opt_class();
     objc_opt_isKindOfClass();
-    v8 = [v7 contentView];
-    v21 = [v7 isFocused];
+    contentView = [v7 contentView];
+    isFocused = [v7 isFocused];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v22 = v8;
-    v9 = [v8 subviews];
-    v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v22 = contentView;
+    subviews = [contentView subviews];
+    v10 = [subviews countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2065,7 +2065,7 @@ void __60__TVMLViewFactory__headerColumnViewForElement_existingView___block_invo
         {
           if (*v24 != v13)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(subviews);
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
@@ -2080,7 +2080,7 @@ void __60__TVMLViewFactory__headerColumnViewForElement_existingView___block_invo
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v11 = [subviews countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v11);
@@ -2095,7 +2095,7 @@ void __60__TVMLViewFactory__headerColumnViewForElement_existingView___block_invo
     else
     {
 
-      v16 = v8;
+      v16 = contentView;
     }
 
     v17 = [_TVOrganizerView alloc];
@@ -2104,31 +2104,31 @@ void __60__TVMLViewFactory__headerColumnViewForElement_existingView___block_invo
     [(_TVOrganizerView *)v12 setAutoresizingMask:18];
     [v16 addSubview:v12];
 LABEL_18:
-    v18 = [objc_opt_class() _organizerViewWithElement:v5 elements:0 existingView:v12];
-    [v18 transferLayoutStylesFromElement:v5];
-    [v18 tv_setAssociatedIKViewElement:v5];
-    [v18 setSelected:v21 animated:0];
+    v18 = [objc_opt_class() _organizerViewWithElement:elementCopy elements:0 existingView:v12];
+    [v18 transferLayoutStylesFromElement:elementCopy];
+    [v18 tv_setAssociatedIKViewElement:elementCopy];
+    [v18 setSelected:isFocused animated:0];
     v19 = v7;
 
     goto LABEL_20;
   }
 
-  v19 = [objc_opt_class() _organizerViewWithElement:v5 elements:0 existingView:v6];
-  [v19 transferLayoutStylesFromElement:v5];
+  v19 = [objc_opt_class() _organizerViewWithElement:elementCopy elements:0 existingView:viewCopy];
+  [v19 transferLayoutStylesFromElement:elementCopy];
 LABEL_20:
 
   return v19;
 }
 
-- (id)_activityIndicatorViewForElement:(id)a3 existingView:(id)a4
+- (id)_activityIndicatorViewForElement:(id)element existingView:(id)view
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = viewCopy;
   }
 
   else
@@ -2141,8 +2141,8 @@ LABEL_20:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v9 = [v5 children];
-  v10 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  children = [elementCopy children];
+  v10 = [children countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2153,7 +2153,7 @@ LABEL_20:
       {
         if (*v30 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(children);
         }
 
         v14 = *(*(&v29 + 1) + 8 * i);
@@ -2171,7 +2171,7 @@ LABEL_20:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v11 = [children countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v11)
       {
         continue;
@@ -2184,32 +2184,32 @@ LABEL_20:
 LABEL_15:
 
   v17 = [_TVSpinnerView alloc];
-  v18 = [v5 style];
-  [v18 tv_width];
+  style = [elementCopy style];
+  [style tv_width];
   v20 = v19;
-  v21 = [v5 style];
-  [v21 tv_height];
+  style2 = [elementCopy style];
+  [style2 tv_height];
   v23 = v22;
-  v24 = [v5 style];
-  v25 = [v24 tv_color];
-  v26 = [v25 color];
-  v27 = [(_TVSpinnerView *)v17 initWithFrame:v26 color:0.0, 0.0, v20, v23];
+  style3 = [elementCopy style];
+  tv_color = [style3 tv_color];
+  color = [tv_color color];
+  v27 = [(_TVSpinnerView *)v17 initWithFrame:color color:0.0, 0.0, v20, v23];
 
   [(_TVSpinnerView *)v27 startAnimating];
-  [(UIView *)v27 transferLayoutStylesFromElement:v5];
+  [(UIView *)v27 transferLayoutStylesFromElement:elementCopy];
   [(_TVActivityView *)v8 setActivityView:v27];
 
   return v8;
 }
 
-- (id)_imageViewForBadgeElement:(id)a3 existingView:(id)a4
+- (id)_imageViewForBadgeElement:(id)element existingView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = viewCopy;
   }
 
   else
@@ -2218,20 +2218,20 @@ LABEL_15:
   }
 
   v8 = v7;
-  v9 = v5;
-  v10 = [v9 tv_imageProxy];
+  v9 = elementCopy;
+  tv_imageProxy = [v9 tv_imageProxy];
   [v9 tv_imageScaleToSize];
   v12 = v11;
   v14 = v13;
-  v15 = [v9 style];
-  v16 = [v15 tv_tintColor];
-  v17 = [v16 color];
+  style = [v9 style];
+  tv_tintColor = [style tv_tintColor];
+  color = [tv_tintColor color];
 
-  v18 = [v9 style];
-  v19 = [v18 tv_highlightColor];
-  v20 = [v19 color];
+  style2 = [v9 style];
+  tv_highlightColor = [style2 tv_highlightColor];
+  color2 = [tv_highlightColor color];
 
-  if (!v10)
+  if (!tv_imageProxy)
   {
     v34 = TVMLKitLogObject;
     if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_ERROR))
@@ -2243,9 +2243,9 @@ LABEL_15:
     goto LABEL_22;
   }
 
-  v49 = v17;
-  v21 = [v9 style];
-  [v21 tv_borderWidths];
+  v49 = color;
+  style3 = [v9 style];
+  [style3 tv_borderWidths];
   v23.f64[1] = v22;
   v25.f64[1] = v24;
   if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v23, *MEMORY[0x277D768C8]), vceqq_f64(v25, *(MEMORY[0x277D768C8] + 16))))))
@@ -2254,52 +2254,52 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  v26 = [v9 style];
-  v27 = [v26 tv_borderColor];
-  v28 = [v27 color];
+  style4 = [v9 style];
+  tv_borderColor = [style4 tv_borderColor];
+  color3 = [tv_borderColor color];
 
-  if (!v28)
+  if (!color3)
   {
 LABEL_12:
     v33 = objc_alloc_init(TVImageScaleDecorator);
     goto LABEL_13;
   }
 
-  v29 = [v9 style];
-  v30 = [v29 tv_borderColor];
-  v31 = [v30 color];
-  v32 = [v9 style];
-  [v32 tv_borderWidths];
-  v33 = [TVImageOutlineDecorator decoratorWithOutlineColor:v31 outlineWidths:?];
+  style5 = [v9 style];
+  tv_borderColor2 = [style5 tv_borderColor];
+  color4 = [tv_borderColor2 color];
+  style6 = [v9 style];
+  [style6 tv_borderWidths];
+  v33 = [TVImageOutlineDecorator decoratorWithOutlineColor:color4 outlineWidths:?];
 
 LABEL_13:
   [(TVImageScaleDecorator *)v33 setScaleToSize:v12, v14];
-  [v10 setDecorator:v33];
-  v36 = [v9 appDocument];
-  v37 = [v36 requestLoader];
-  [v10 setRequestLoader:v37];
+  [tv_imageProxy setDecorator:v33];
+  appDocument = [v9 appDocument];
+  requestLoader = [appDocument requestLoader];
+  [tv_imageProxy setRequestLoader:requestLoader];
 
-  [v10 setLoadSynchronouslyIfCached:1];
-  v38 = [(_TVImageView *)v8 imageProxy];
-  v39 = [v38 isEqual:v10];
+  [tv_imageProxy setLoadSynchronouslyIfCached:1];
+  imageProxy = [(_TVImageView *)v8 imageProxy];
+  v39 = [imageProxy isEqual:tv_imageProxy];
 
-  [(_TVImageView *)v8 setImageProxy:v10];
+  [(_TVImageView *)v8 setImageProxy:tv_imageProxy];
   [(_TVImageView *)v8 setContentMode:1];
   [(_TVImageView *)v8 setContentsPosition:2];
-  v17 = v49;
+  color = v49;
   [(_TVImageView *)v8 _setTintColor:v49];
-  [(_TVImageView *)v8 _setFocusedColor:v20];
+  [(_TVImageView *)v8 _setFocusedColor:color2];
   -[_TVImageView setSemanticContentAttribute:](v8, "setSemanticContentAttribute:", [v9 tv_semanticContentAttribute]);
-  v40 = [v9 parent];
-  if (v40)
+  parent = [v9 parent];
+  if (parent)
   {
-    v41 = v40;
+    v41 = parent;
     while ([v41 tv_elementType] != 35)
     {
-      v42 = [v41 parent];
+      parent2 = [v41 parent];
 
-      v41 = v42;
-      if (!v42)
+      v41 = parent2;
+      if (!parent2)
       {
         goto LABEL_17;
       }
@@ -2311,23 +2311,23 @@ LABEL_13:
   else
   {
 LABEL_17:
-    if (((v6 != 0) & v39) == 1)
+    if (((viewCopy != 0) & v39) == 1)
     {
       v43 = [v9 url];
-      v44 = [v43 tv_isResourceURL];
+      tv_isResourceURL = [v43 tv_isResourceURL];
 
-      if (v44)
+      if (tv_isResourceURL)
       {
         [(_TVImageView *)v8 _reloadImageForLayoutDirectionChange];
       }
     }
   }
 
-  v45 = [v9 attributes];
-  v46 = [v45 objectForKeyedSubscript:@"handlesInteraction"];
-  v47 = [v46 BOOLValue];
+  attributes = [v9 attributes];
+  v46 = [attributes objectForKeyedSubscript:@"handlesInteraction"];
+  bOOLValue = [v46 BOOLValue];
 
-  [(_TVImageView *)v8 setUserInteractionEnabled:v47];
+  [(_TVImageView *)v8 setUserInteractionEnabled:bOOLValue];
   [_TVControlTarget addTargetInControl:v8 withViewElement:v9];
   v35 = v8;
 
@@ -2336,49 +2336,49 @@ LABEL_22:
   return v35;
 }
 
-- (id)_imageViewForElement:(id)a3 layout:(id)a4 existingView:(id)a5
+- (id)_imageViewForElement:(id)element layout:(id)layout existingView:(id)view
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() imageViewWithElement:v9 layout:v8 existingView:v7];
+  viewCopy = view;
+  layoutCopy = layout;
+  elementCopy = element;
+  v10 = [objc_opt_class() imageViewWithElement:elementCopy layout:layoutCopy existingView:viewCopy];
 
   return v10;
 }
 
-- (id)_loadingImageViewForElement:(id)a3 existingView:(id)a4
+- (id)_loadingImageViewForElement:(id)element existingView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 attributes];
-  v6 = [v5 objectForKey:*MEMORY[0x277D1AF40]];
+  elementCopy = element;
+  attributes = [elementCopy attributes];
+  v6 = [attributes objectForKey:*MEMORY[0x277D1AF40]];
 
-  v7 = [v4 attributes];
-  v8 = [v7 objectForKey:*MEMORY[0x277D1AF38]];
+  attributes2 = [elementCopy attributes];
+  v8 = [attributes2 objectForKey:*MEMORY[0x277D1AF38]];
 
-  v9 = 0.0;
-  v10 = 0.0;
+  integerValue2 = 0.0;
+  integerValue = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 integerValue];
+    integerValue2 = [v8 integerValue];
   }
 
-  v11 = [v4 style];
-  [v11 tv_width];
+  style = [elementCopy style];
+  [style tv_width];
   v13 = v12;
 
-  v14 = [v4 style];
-  [v14 tv_height];
+  style2 = [elementCopy style];
+  [style2 tv_height];
   v16 = v15;
 
   if (v13 == 0.0 || v16 == 0.0)
   {
-    v13 = v10;
-    v16 = v9;
+    v13 = integerValue;
+    v16 = integerValue2;
   }
 
   v17 = [[_TVLoadingImageView alloc] initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), v13, v16];
@@ -2386,13 +2386,13 @@ LABEL_22:
   return v17;
 }
 
-- (id)_monogramViewForElement:(id)a3 layout:(id)a4 existingView:(id)a5
+- (id)_monogramViewForElement:(id)element layout:(id)layout existingView:(id)view
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v7;
-  v10 = a4;
-  v11 = [(objc_class *)[TVViewLayout layoutClassForElement:?]element:"layoutWithLayout:element:", v10, v9];
+  elementCopy = element;
+  viewCopy = view;
+  v9 = elementCopy;
+  layoutCopy = layout;
+  v11 = [(objc_class *)[TVViewLayout layoutClassForElement:?]element:"layoutWithLayout:element:", layoutCopy, v9];
 
   [v11 decoratorSize];
   v13 = v12;
@@ -2402,16 +2402,16 @@ LABEL_22:
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v24 = [v9 attributes];
-  v25 = [v24 objectForKey:@"contentsMode"];
+  attributes = [v9 attributes];
+  v25 = [attributes objectForKey:@"contentsMode"];
   if (v25)
   {
-    v26 = [v9 tv_scaleMode];
+    tv_scaleMode = [v9 tv_scaleMode];
   }
 
   else
   {
-    v26 = 0;
+    tv_scaleMode = 0;
   }
 
   if (v13 < 0.00000011920929 || v15 < 0.00000011920929)
@@ -2427,7 +2427,7 @@ LABEL_22:
 
   else
   {
-    v75 = v26;
+    v75 = tv_scaleMode;
     v80[0] = 0;
     v78 = TVCornerRadiiZero;
     v79 = *&qword_26CE880D8;
@@ -2436,18 +2436,18 @@ LABEL_22:
     v31 = v30;
     v32 = [TVMonogramViewConfiguration alloc];
     v33 = [(TVMonogramViewConfiguration *)v32 initWithShadowImages:v80[0]];
-    v34 = [v11 highlightColor];
-    v35 = [v11 tintColor];
+    highlightColor = [v11 highlightColor];
+    tintColor = [v11 tintColor];
     [v11 focusSizeIncrease];
     [(TVMonogramViewConfiguration *)v33 setFocusedSizeIncrease:?];
-    [(TVMonogramViewConfiguration *)v33 setFocusedBgColor:v34];
-    v77 = v35;
-    [(TVMonogramViewConfiguration *)v33 setUnfocusedBgColor:v35];
+    [(TVMonogramViewConfiguration *)v33 setFocusedBgColor:highlightColor];
+    v77 = tintColor;
+    [(TVMonogramViewConfiguration *)v33 setUnfocusedBgColor:tintColor];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
-      v37 = v8;
+      v37 = viewCopy;
     }
 
     else
@@ -2461,8 +2461,8 @@ LABEL_22:
     [(TVMonogramViewConfiguration *)v33 focusedSizeIncrease];
     [(_UIFloatingContentView *)v29 setFocusedSizeIncrease:?];
     [(UIView *)v29 transferLayoutStylesFromElement:v9];
-    v38 = [v11 placeholderArtworkName];
-    if (([v38 isEqualToString:@"none"] & 1) != 0 || (objc_msgSend(v9, "tv_isResource") & 1) != 0 || (objc_msgSend(v9, "tv_isSymbol") & 1) != 0 || !objc_msgSend(v38, "length"))
+    placeholderArtworkName = [v11 placeholderArtworkName];
+    if (([placeholderArtworkName isEqualToString:@"none"] & 1) != 0 || (objc_msgSend(v9, "tv_isResource") & 1) != 0 || (objc_msgSend(v9, "tv_isSymbol") & 1) != 0 || !objc_msgSend(placeholderArtworkName, "length"))
     {
       v39 = 0;
     }
@@ -2475,30 +2475,30 @@ LABEL_22:
     v76 = v39;
     [(_TVMonogramView *)v29 setPlaceholderImage:v39];
     v40 = [v9 objectForKeyedSubscript:@"TVConfigureForMetrics"];
-    v41 = [v40 BOOLValue];
+    bOOLValue = [v40 BOOLValue];
 
-    if ((v41 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      v71 = v38;
-      v72 = v34;
+      v71 = placeholderArtworkName;
+      v72 = highlightColor;
       v73 = v33;
-      v74 = v8;
+      v74 = viewCopy;
       [(TVMonogramViewConfiguration *)v33 focusedSizeIncrease];
       v43 = [v9 tv_urlWithSize:v13 focusSizeIncrease:{v15, v42}];
       v69 = [_TVMonogramDescription alloc];
-      v44 = [v9 attributes];
-      v45 = [v44 objectForKeyedSubscript:@"firstName"];
-      v46 = [v9 attributes];
-      v47 = [v46 objectForKeyedSubscript:@"lastName"];
-      v48 = [v9 style];
-      v49 = [TVMLUtilities fontFromStyle:v48];
+      attributes2 = [v9 attributes];
+      v45 = [attributes2 objectForKeyedSubscript:@"firstName"];
+      attributes3 = [v9 attributes];
+      v47 = [attributes3 objectForKeyedSubscript:@"lastName"];
+      style = [v9 style];
+      v49 = [TVMLUtilities fontFromStyle:style];
       v50 = v69;
       v70 = v43;
       v51 = [(_TVMonogramDescription *)v50 initWithFirstName:v45 lastName:v47 imageURL:v43 font:v49];
 
-      v52 = [v9 appDocument];
-      v53 = [v52 requestLoader];
-      [(_TVMonogramDescription *)v51 setRequestLoader:v53];
+      appDocument = [v9 appDocument];
+      requestLoader = [appDocument requestLoader];
+      [(_TVMonogramDescription *)v51 setRequestLoader:requestLoader];
 
       [(_TVMonogramDescription *)v51 setSize:v13, v15];
       [(_TVMonogramDescription *)v51 setPadding:v17, v19, v21, v23];
@@ -2507,8 +2507,8 @@ LABEL_22:
         [(_TVMonogramDescription *)v51 setScaleMode:v75];
         if (v75 == 2)
         {
-          v54 = [v11 backgroundColor];
-          [(_TVMonogramDescription *)v51 setBackgroundColor:v54];
+          backgroundColor = [v11 backgroundColor];
+          [(_TVMonogramDescription *)v51 setBackgroundColor:backgroundColor];
         }
       }
 
@@ -2516,43 +2516,43 @@ LABEL_22:
       [(TVMonogramViewConfiguration *)v73 focusedSizeIncrease];
       [(_TVMonogramDescription *)v51 setUpscaleAdjustment:?];
       [(_TVMonogramDescription *)v51 setCornerRadius:v31];
-      v55 = [v9 style];
-      [v55 tv_borderWidths];
+      style2 = [v9 style];
+      [style2 tv_borderWidths];
       v57 = v56;
       v59 = v58;
       v61 = v60;
       v63 = v62;
 
       [(_TVMonogramDescription *)v51 setBorderWidth:fmax(fmax(v57, v61), fmax(v59, v63))];
-      v64 = [v9 style];
-      v65 = [v64 tv_borderColor];
-      v66 = [v65 color];
-      [(_TVMonogramDescription *)v51 setBorderColor:v66];
+      style3 = [v9 style];
+      tv_borderColor = [style3 tv_borderColor];
+      color = [tv_borderColor color];
+      [(_TVMonogramDescription *)v51 setBorderColor:color];
 
       [(_TVMonogramDescription *)v51 setFillColor:v77];
       [(_TVMonogramDescription *)v51 setShouldFallBackToSilhouette:v71 == 0];
-      v67 = [v9 tv_imageProxy];
-      [(_TVMonogramView *)v29 setImageProxy:v67];
+      tv_imageProxy = [v9 tv_imageProxy];
+      [(_TVMonogramView *)v29 setImageProxy:tv_imageProxy];
 
-      v38 = v71;
+      placeholderArtworkName = v71;
       [(_TVMonogramView *)v29 setMonogramDescription:v51];
 
-      v8 = v74;
-      v34 = v72;
+      viewCopy = v74;
+      highlightColor = v72;
     }
   }
 
   return v29;
 }
 
-- (id)_rowViewForElement:(id)a3 existingView:(id)a4
+- (id)_rowViewForElement:(id)element existingView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = viewCopy;
   }
 
   else
@@ -2562,66 +2562,66 @@ LABEL_22:
   }
 
   v9 = v7;
-  v10 = [v5 tv_semanticContentAttribute];
-  [(_TVRowView *)v9 setSemanticContentAttribute:v10];
-  v11 = [v6 tv_associatedIKViewElement];
-  if (v11 == v5 && ([v5 updateType] == 1 || objc_msgSend(v5, "updateType") == 3))
+  tv_semanticContentAttribute = [elementCopy tv_semanticContentAttribute];
+  [(_TVRowView *)v9 setSemanticContentAttribute:tv_semanticContentAttribute];
+  tv_associatedIKViewElement = [viewCopy tv_associatedIKViewElement];
+  if (tv_associatedIKViewElement == elementCopy && ([elementCopy updateType] == 1 || objc_msgSend(elementCopy, "updateType") == 3))
   {
-    v12 = [v6 components];
+    components = [viewCopy components];
   }
 
   else
   {
-    v12 = 0;
+    components = 0;
   }
 
-  v13 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
   v40 = 0x7FFFFFFFFFFFFFFFLL;
-  v14 = [v5 attributes];
-  v15 = [v14 objectForKeyedSubscript:@"firstItem"];
+  attributes = [elementCopy attributes];
+  v15 = [attributes objectForKeyedSubscript:@"firstItem"];
 
   if ([v15 length] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v16 = [v15 integerValue];
-    v38[3] = v16;
+    integerValue = [v15 integerValue];
+    v38[3] = integerValue;
   }
 
-  v17 = [v5 style];
-  -[_TVRowView setContentVerticalAlignment:](v9, "setContentVerticalAlignment:", [v17 tv_contentAlignment]);
+  style = [elementCopy style];
+  -[_TVRowView setContentVerticalAlignment:](v9, "setContentVerticalAlignment:", [style tv_contentAlignment]);
 
-  v18 = [v5 children];
+  children = [elementCopy children];
   v29 = MEMORY[0x277D85DD0];
   v30 = 3221225472;
   v31 = __51__TVMLViewFactory__rowViewForElement_existingView___block_invoke;
   v32 = &unk_279D70858;
-  v19 = v12;
+  v19 = components;
   v33 = v19;
   v35 = &v37;
-  v36 = v10;
-  v20 = v13;
+  v36 = tv_semanticContentAttribute;
+  v20 = array;
   v34 = v20;
-  [v18 enumerateObjectsUsingBlock:&v29];
+  [children enumerateObjectsUsingBlock:&v29];
 
   [(_TVRowView *)v9 setComponents:v20, v29, v30, v31, v32];
   v21 = v38[3];
   if (v21 != 0x7FFFFFFFFFFFFFFFLL && v21 < [v20 count])
   {
     v22 = [v20 objectAtIndexedSubscript:v38[3]];
-    v23 = [v22 canBecomeFocused];
+    canBecomeFocused = [v22 canBecomeFocused];
 
-    if (v23)
+    if (canBecomeFocused)
     {
       v24 = [v20 objectAtIndexedSubscript:v38[3]];
       [(_TVRowView *)v9 setPreferredFocusedComponent:v24];
     }
   }
 
-  v25 = [MEMORY[0x277D759A0] mainScreen];
-  v26 = [v25 focusedView];
-  v27 = [v26 isDescendantOfView:v9];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  focusedView = [mainScreen focusedView];
+  v27 = [focusedView isDescendantOfView:v9];
 
   if (v27)
   {
@@ -2670,24 +2670,24 @@ void __51__TVMLViewFactory__rowViewForElement_existingView___block_invoke(uint64
   }
 }
 
-- (id)_buttonForElement:(id)a3 existingView:(id)a4
+- (id)_buttonForElement:(id)element existingView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() buttonForElement:v6 existingView:v5];
+  viewCopy = view;
+  elementCopy = element;
+  v7 = [objc_opt_class() buttonForElement:elementCopy existingView:viewCopy];
 
   return v7;
 }
 
-+ (id)buttonForElement:(id)a3 existingView:(id)a4
++ (id)buttonForElement:(id)element existingView:(id)view
 {
   v116 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 appDocument];
-  v8 = [v7 templateElement];
+  elementCopy = element;
+  viewCopy = view;
+  appDocument = [elementCopy appDocument];
+  templateElement = [appDocument templateElement];
 
-  if ([TVMLUtilities interfaceStyleForTemplateElement:v8]== 1)
+  if ([TVMLUtilities interfaceStyleForTemplateElement:templateElement]== 1)
   {
     v9 = 4005;
   }
@@ -2697,26 +2697,26 @@ void __51__TVMLViewFactory__rowViewForElement_existingView___block_invoke(uint64
     v9 = 4000;
   }
 
-  v101 = v8;
-  if ([v8 tv_elementType] == 61 || objc_msgSend(v8, "elementType") == 62)
+  v101 = templateElement;
+  if ([templateElement tv_elementType] == 61 || objc_msgSend(templateElement, "elementType") == 62)
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [v8 appDocument];
-    v12 = [v11 templateElement];
-    v10 = [v12 elementType] != 64;
+    appDocument2 = [templateElement appDocument];
+    templateElement2 = [appDocument2 templateElement];
+    v10 = [templateElement2 elementType] != 64;
   }
 
-  v13 = [v5 elementName];
-  [v13 isEqualToString:@"roundButton"];
+  elementName = [elementCopy elementName];
+  [elementName isEqualToString:@"roundButton"];
 
   v14 = objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 backdropStyle] == v9)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [viewCopy backdropStyle] == v9)
   {
-    v15 = v6;
+    v15 = viewCopy;
   }
 
   else
@@ -2726,11 +2726,11 @@ void __51__TVMLViewFactory__rowViewForElement_existingView___block_invoke(uint64
   }
 
   v108 = v15;
-  if (v10 && ([v5 parent], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "tv_elementType"), v17, v18 == 44))
+  if (v10 && ([elementCopy parent], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "tv_elementType"), v17, v18 == 44))
   {
     v19 = MEMORY[0x277CCACA8];
-    v20 = [v5 parent];
-    v21 = [v19 stringWithFormat:@"%p", v20];
+    parent = [elementCopy parent];
+    v21 = [v19 stringWithFormat:@"%p", parent];
 
     [v108 setGroupName:v21];
   }
@@ -2740,14 +2740,14 @@ void __51__TVMLViewFactory__rowViewForElement_existingView___block_invoke(uint64
     [v108 setGroupName:0];
   }
 
-  v102 = v6;
+  v102 = viewCopy;
   v113 = 0u;
   v114 = 0u;
   v111 = 0u;
   v112 = 0u;
-  obj = [v5 children];
+  obj = [elementCopy children];
   v22 = [obj countByEnumeratingWithState:&v111 objects:v115 count:16];
-  v104 = v5;
+  v104 = elementCopy;
   if (v22)
   {
     v23 = v22;
@@ -2771,37 +2771,37 @@ void __51__TVMLViewFactory__rowViewForElement_existingView___block_invoke(uint64
         if ([v28 tv_elementType] == 55 && v24 == 0)
         {
           v36 = +[TVInterfaceFactory sharedInterfaceFactory];
-          v37 = [v26 textContentView];
-          v24 = [v36 _viewFromElement:v28 existingView:v37];
+          textContentView = [v26 textContentView];
+          v24 = [v36 _viewFromElement:v28 existingView:textContentView];
 
-          v38 = [v28 style];
-          v39 = [v38 tv_color];
+          style = [v28 style];
+          tv_color = [style tv_color];
 
-          if (!v39)
+          if (!tv_color)
           {
-            v40 = [MEMORY[0x277D75348] whiteColor];
-            [v24 setTextColor:v40];
+            whiteColor = [MEMORY[0x277D75348] whiteColor];
+            [v24 setTextColor:whiteColor];
           }
 
-          v41 = [v28 style];
-          v42 = [v41 tv_highlightColor];
+          style2 = [v28 style];
+          tv_highlightColor = [style2 tv_highlightColor];
 
-          if (!v42)
+          if (!tv_highlightColor)
           {
-            v43 = [MEMORY[0x277D75348] blackColor];
-            [v24 setHighlightedTextColor:v43];
+            blackColor = [MEMORY[0x277D75348] blackColor];
+            [v24 setHighlightedTextColor:blackColor];
           }
 
-          if ([v5 isDisabled])
+          if ([elementCopy isDisabled])
           {
-            v44 = [v24 textColor];
-            v45 = [v44 colorWithAlphaComponent:0.4];
+            textColor = [v24 textColor];
+            v45 = [textColor colorWithAlphaComponent:0.4];
 
             [v24 setTextColor:v45];
           }
 
-          v46 = [v28 attributes];
-          v47 = [v46 tv_BOOLForKey:@"usesTintColor" defaultValue:0];
+          attributes = [v28 attributes];
+          v47 = [attributes tv_BOOLForKey:@"usesTintColor" defaultValue:0];
 
           [v24 _setTextColorFollowsTintColor:v47];
           [v24 _setWantsUnderlineForAccessibilityButtonShapesEnabled:1];
@@ -2811,8 +2811,8 @@ void __51__TVMLViewFactory__rowViewForElement_existingView___block_invoke(uint64
         else if ([v28 tv_elementType] == 16 && (!objc_msgSend(v28, "tv_imageType") ? (v30 = v105 == 0) : (v30 = 0), v30))
         {
           v48 = +[TVInterfaceFactory sharedInterfaceFactory];
-          v49 = [v26 imageView];
-          v50 = [v48 _viewFromElement:v28 existingView:v49];
+          imageView = [v26 imageView];
+          v50 = [v48 _viewFromElement:v28 existingView:imageView];
 
           v26 = v108;
           objc_opt_class();
@@ -2831,24 +2831,24 @@ void __51__TVMLViewFactory__rowViewForElement_existingView___block_invoke(uint64
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v52 = [v28 style];
-            v53 = [v52 tv_visualEffect];
-            v54 = [v53 isEqualToString:@"punch-through"];
+            style3 = [v28 style];
+            tv_visualEffect = [style3 tv_visualEffect];
+            v54 = [tv_visualEffect isEqualToString:@"punch-through"];
 
             [v108 setShouldPunchThroughImage:v54];
           }
 
           v103 = v24 != 0;
-          v5 = v104;
+          elementCopy = v104;
         }
 
         else if ([v28 tv_elementType] == 5 && v107 == 0)
         {
           v32 = +[TVInterfaceFactory sharedInterfaceFactory];
-          v33 = [v26 accessoryView];
-          v34 = [v32 _viewFromElement:v28 existingView:v33];
+          accessoryView = [v26 accessoryView];
+          v34 = [v32 _viewFromElement:v28 existingView:accessoryView];
 
-          v5 = v104;
+          elementCopy = v104;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -2883,20 +2883,20 @@ void __51__TVMLViewFactory__rowViewForElement_existingView___block_invoke(uint64
     v26 = v108;
   }
 
-  [v5 style];
-  v57 = v56 = v5;
-  v58 = [v57 tv_backgroundColor];
-  v59 = [v58 color];
+  [elementCopy style];
+  v57 = v56 = elementCopy;
+  tv_backgroundColor = [v57 tv_backgroundColor];
+  color = [tv_backgroundColor color];
 
-  if (v59)
+  if (color)
   {
-    v60 = [v56 style];
-    v61 = [v60 tv_highlightColor];
-    v62 = [v61 color];
-    v63 = v62;
-    if (v62)
+    style4 = [v56 style];
+    tv_highlightColor2 = [style4 tv_highlightColor];
+    color2 = [tv_highlightColor2 color];
+    v63 = color2;
+    if (color2)
     {
-      v64 = v62;
+      v64 = color2;
     }
 
     else
@@ -2906,30 +2906,30 @@ void __51__TVMLViewFactory__rowViewForElement_existingView___block_invoke(uint64
 
     v65 = v64;
 
-    v66 = [v56 style];
-    v67 = [v66 tv_backgroundColor];
-    v68 = [v67 color];
-    [v108 setBackgroundColor:v68];
+    style5 = [v56 style];
+    tv_backgroundColor2 = [style5 tv_backgroundColor];
+    color3 = [tv_backgroundColor2 color];
+    [v108 setBackgroundColor:color3];
 
     v26 = v108;
     [v108 setHighlightColor:v65];
   }
 
-  v69 = [v56 style];
-  [v69 tv_borderWidths];
+  style6 = [v56 style];
+  [style6 tv_borderWidths];
   v71 = v70;
   v73 = v72;
   v75 = v74;
   v77 = v76;
 
-  v78 = [v26 layer];
-  [v78 setBorderWidth:{fmax(fmax(v71, v75), fmax(v73, v77))}];
+  layer = [v26 layer];
+  [layer setBorderWidth:{fmax(fmax(v71, v75), fmax(v73, v77))}];
 
-  v79 = [v26 layer];
-  v80 = [v56 style];
-  v81 = [v80 tv_borderColor];
-  v82 = [v81 color];
-  [v79 setBorderColor:{objc_msgSend(v82, "CGColor")}];
+  layer2 = [v26 layer];
+  style7 = [v56 style];
+  tv_borderColor = [style7 tv_borderColor];
+  color4 = [tv_borderColor color];
+  [layer2 setBorderColor:{objc_msgSend(color4, "CGColor")}];
 
   v109 = TVCornerRadiiZero;
   v110 = *&qword_26CE880D8;
@@ -2945,7 +2945,7 @@ void __51__TVMLViewFactory__rowViewForElement_existingView___block_invoke(uint64
 
   v84 = v108;
   [v108 setCornerRadius:v83];
-  v85 = [v56 parent];
+  parent2 = [v56 parent];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2955,20 +2955,20 @@ LABEL_75:
     goto LABEL_78;
   }
 
-  if ([v85 tv_elementType] != 44)
+  if ([parent2 tv_elementType] != 44)
   {
     v86 = 0.0;
     goto LABEL_75;
   }
 
-  v87 = [v85 parent];
-  v88 = [v87 children];
-  v89 = [v88 indexOfObjectIdenticalTo:v85];
+  v85Parent = [parent2 parent];
+  children = [v85Parent children];
+  v89 = [children indexOfObjectIdenticalTo:parent2];
 
-  if (!v89 || ([v87 children], v90 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v90, "objectAtIndex:", v89 - 1), v91 = objc_claimAutoreleasedReturnValue(), v92 = objc_msgSend(v91, "tv_elementType"), v91, v84 = v108, v90, v93 = 8.0, v92 != 6))
+  if (!v89 || ([v85Parent children], v90 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v90, "objectAtIndex:", v89 - 1), v91 = objc_claimAutoreleasedReturnValue(), v92 = objc_msgSend(v91, "tv_elementType"), v91, v84 = v108, v90, v93 = 8.0, v92 != 6))
   {
-    v94 = [v87 children];
-    if (v89 >= [v94 count] - 1)
+    children2 = [v85Parent children];
+    if (v89 >= [children2 count] - 1)
     {
 
       v93 = 0.0;
@@ -2976,12 +2976,12 @@ LABEL_75:
 
     else
     {
-      v95 = [v87 children];
-      v96 = [v95 objectAtIndex:v89 + 1];
-      v97 = [v96 tv_elementType];
+      children3 = [v85Parent children];
+      v96 = [children3 objectAtIndex:v89 + 1];
+      tv_elementType = [v96 tv_elementType];
 
       v84 = v108;
-      if (v97 == 6)
+      if (tv_elementType == 6)
       {
         v93 = 8.0;
       }
@@ -3003,8 +3003,8 @@ LABEL_78:
   [v84 setAccessoryView:v107];
   [v84 setViewElement:v56];
   [v84 setDisabled:{objc_msgSend(v56, "isDisabled")}];
-  v98 = [v56 style];
-  [v98 tv_focusSizeIncrease];
+  style8 = [v56 style];
+  [style8 tv_focusSizeIncrease];
   [v84 setFocusSizeIncrease:?];
 
   [v84 setExclusiveTouch:1];
@@ -3013,25 +3013,25 @@ LABEL_78:
   return v99;
 }
 
-- (id)_buttonLockupForElement:(id)a3 existingView:(id)a4
+- (id)_buttonLockupForElement:(id)element existingView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() buttonLockupForElement:v6 existingView:v5];
+  viewCopy = view;
+  elementCopy = element;
+  v7 = [objc_opt_class() buttonLockupForElement:elementCopy existingView:viewCopy];
 
   return v7;
 }
 
-+ (id)buttonLockupForElement:(id)a3 existingView:(id)a4
++ (id)buttonLockupForElement:(id)element existingView:(id)view
 {
   v79 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 appDocument];
-  v8 = [v7 templateElement];
+  elementCopy = element;
+  viewCopy = view;
+  appDocument = [elementCopy appDocument];
+  templateElement = [appDocument templateElement];
 
-  v68 = v8;
-  v9 = [TVMLUtilities interfaceStyleForTemplateElement:v8];
+  v68 = templateElement;
+  v9 = [TVMLUtilities interfaceStyleForTemplateElement:templateElement];
   if (v9 == 1)
   {
     v10 = 4005;
@@ -3042,18 +3042,18 @@ LABEL_78:
     v10 = 4000;
   }
 
-  v11 = [v5 attributes];
-  v12 = [v11 objectForKeyedSubscript:@"theme"];
+  attributes = [elementCopy attributes];
+  v12 = [attributes objectForKeyedSubscript:@"theme"];
 
   if (v12)
   {
-    v13 = [v5 attributes];
-    v14 = [v13 objectForKeyedSubscript:@"theme"];
-    v15 = [v14 lowercaseString];
+    attributes2 = [elementCopy attributes];
+    v14 = [attributes2 objectForKeyedSubscript:@"theme"];
+    lowercaseString = [v14 lowercaseString];
 
-    if ([v15 length])
+    if ([lowercaseString length])
     {
-      if ([v15 isEqualToString:@"light"])
+      if ([lowercaseString isEqualToString:@"light"])
       {
         v9 = 1;
         v10 = 4005;
@@ -3061,7 +3061,7 @@ LABEL_78:
 
       else
       {
-        if ([v15 isEqualToString:@"dark"])
+        if ([lowercaseString isEqualToString:@"dark"])
         {
           v9 = 2;
         }
@@ -3076,12 +3076,12 @@ LABEL_78:
     }
   }
 
-  v16 = [v5 parent];
-  if ([v16 tv_elementType] == 44)
+  parent = [elementCopy parent];
+  if ([parent tv_elementType] == 44)
   {
     v17 = MEMORY[0x277CCACA8];
-    v18 = [v5 parent];
-    v19 = [v17 stringWithFormat:@"%p", v18];
+    parent2 = [elementCopy parent];
+    v19 = [v17 stringWithFormat:@"%p", parent2];
   }
 
   else
@@ -3090,9 +3090,9 @@ LABEL_78:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 backdropStyle] == v10)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [viewCopy backdropStyle] == v10)
   {
-    v20 = v6;
+    v20 = viewCopy;
   }
 
   else
@@ -3102,36 +3102,36 @@ LABEL_78:
   }
 
   v71 = v20;
-  v22 = [v5 attributes];
-  v23 = [v22 objectForKeyedSubscript:@"theme"];
+  attributes3 = [elementCopy attributes];
+  v23 = [attributes3 objectForKeyedSubscript:@"theme"];
 
   if (v23)
   {
-    v24 = [v5 attributes];
-    v25 = [v24 objectForKeyedSubscript:@"theme"];
-    v26 = [v25 lowercaseString];
+    attributes4 = [elementCopy attributes];
+    v25 = [attributes4 objectForKeyedSubscript:@"theme"];
+    lowercaseString2 = [v25 lowercaseString];
 
-    if ([v26 length])
+    if ([lowercaseString2 length])
     {
       [(TVButtonLockup *)v71 setVibrantLabelThemeOverride:v9];
     }
   }
 
-  v73 = [v5 isDisabled];
-  v27 = [v5 style];
-  v28 = [v27 tv_backgroundColor];
-  v29 = [v28 color];
+  isDisabled = [elementCopy isDisabled];
+  style = [elementCopy style];
+  tv_backgroundColor = [style tv_backgroundColor];
+  color = [tv_backgroundColor color];
 
   v67 = v19;
-  if (v29)
+  if (color)
   {
-    v30 = [v5 style];
-    v31 = [v30 tv_highlightColor];
-    v32 = [v31 color];
-    v33 = v32;
-    if (v32)
+    style2 = [elementCopy style];
+    tv_highlightColor = [style2 tv_highlightColor];
+    color2 = [tv_highlightColor color];
+    v33 = color2;
+    if (color2)
     {
-      v34 = v32;
+      v34 = color2;
     }
 
     else
@@ -3141,11 +3141,11 @@ LABEL_78:
 
     v36 = v34;
 
-    v37 = [v5 style];
-    v38 = [v37 tv_backgroundColor];
-    v39 = [v38 color];
+    style3 = [elementCopy style];
+    tv_backgroundColor2 = [style3 tv_backgroundColor];
+    color3 = [tv_backgroundColor2 color];
     v35 = v71;
-    [(TVButtonLockup *)v71 setBackgroundColor:v39];
+    [(TVButtonLockup *)v71 setBackgroundColor:color3];
 
     [(TVButtonLockup *)v71 setHighlightColor:v36];
   }
@@ -3157,13 +3157,13 @@ LABEL_78:
     [(TVButtonLockup *)v71 setHighlightColor:0];
   }
 
-  v69 = v6;
+  v69 = viewCopy;
   v76 = 0u;
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v40 = [v5 children];
-  v41 = [v40 countByEnumeratingWithState:&v74 objects:v78 count:16];
+  children = [elementCopy children];
+  v41 = [children countByEnumeratingWithState:&v74 objects:v78 count:16];
   if (!v41)
   {
 
@@ -3175,10 +3175,10 @@ LABEL_78:
   }
 
   v42 = v41;
-  v66 = v5;
+  v66 = elementCopy;
   v43 = 0;
   v44 = 0;
-  v70 = 0;
+  tv_maxTextLines = 0;
   v72 = 0;
   v45 = *v75;
   v46 = 1.0;
@@ -3188,7 +3188,7 @@ LABEL_78:
     {
       if (*v75 != v45)
       {
-        objc_enumerationMutation(v40);
+        objc_enumerationMutation(children);
       }
 
       v48 = *(*(&v74 + 1) + 8 * i);
@@ -3200,31 +3200,31 @@ LABEL_78:
           if (!v72)
           {
             v50 = +[TVInterfaceFactory sharedInterfaceFactory];
-            v51 = [(TVButtonLockup *)v35 titleView];
-            v72 = [v50 _viewFromElement:v49 existingView:v51];
+            titleView = [(TVButtonLockup *)v35 titleView];
+            v72 = [v50 _viewFromElement:v49 existingView:titleView];
             goto LABEL_53;
           }
         }
 
         else if (!(v44 | v43))
         {
-          v54 = [v49 style];
-          v55 = [v54 tv_color];
-          v56 = [v55 color];
-          v57 = v56;
-          if (v56)
+          style4 = [v49 style];
+          tv_color = [style4 tv_color];
+          color4 = [tv_color color];
+          v57 = color4;
+          if (color4)
           {
-            v58 = v56;
+            whiteColor = color4;
           }
 
           else
           {
-            v58 = [MEMORY[0x277D75348] whiteColor];
+            whiteColor = [MEMORY[0x277D75348] whiteColor];
           }
 
-          v50 = v58;
+          v50 = whiteColor;
 
-          if (v73)
+          if (isDisabled)
           {
             v59 = [v50 colorWithAlphaComponent:0.4];
 
@@ -3233,12 +3233,12 @@ LABEL_78:
 
           v35 = v71;
           v44 = [v49 tv_attributedStringWithForegroundColor:v50 textAlignment:1];
-          v60 = [v49 style];
-          [v60 tv_minimumScaleFactor];
+          style5 = [v49 style];
+          [style5 tv_minimumScaleFactor];
           v46 = v61;
 
-          v51 = [v49 style];
-          v70 = [v51 tv_maxTextLines];
+          titleView = [v49 style];
+          tv_maxTextLines = [titleView tv_maxTextLines];
 LABEL_53:
         }
 
@@ -3250,49 +3250,49 @@ LABEL_53:
         if (!(v44 | v43))
         {
           v52 = +[TVInterfaceFactory sharedInterfaceFactory];
-          v53 = [(TVButtonLockup *)v35 imageView];
-          v43 = [v52 _viewFromElement:v48 existingView:v53];
+          imageView = [(TVButtonLockup *)v35 imageView];
+          v43 = [v52 _viewFromElement:v48 existingView:imageView];
         }
 
-        if (v73)
+        if (isDisabled)
         {
           [v43 setAlpha:0.4];
         }
       }
     }
 
-    v42 = [v40 countByEnumeratingWithState:&v74 objects:v78 count:16];
+    v42 = [children countByEnumeratingWithState:&v74 objects:v78 count:16];
   }
 
   while (v42);
 
   if (v44)
   {
-    [(TVButtonLockup *)v35 setText:v44 minimumScale:v70 maxNumberOfLines:v46];
+    [(TVButtonLockup *)v35 setText:v44 minimumScale:tv_maxTextLines maxNumberOfLines:v46];
   }
 
-  v5 = v66;
+  elementCopy = v66;
   v62 = v67;
   v63 = v72;
 LABEL_61:
   [(TVButtonLockup *)v35 setImageView:v43];
   [(TVButtonLockup *)v35 setTitleView:v63];
-  [(TVButtonLockup *)v35 setViewElement:v5];
-  [(TVButtonLockup *)v35 setDisabled:v73];
+  [(TVButtonLockup *)v35 setViewElement:elementCopy];
+  [(TVButtonLockup *)v35 setDisabled:isDisabled];
   v64 = v35;
 
   return v35;
 }
 
-- (id)_segmentedControlForElement:(id)a3 existingView:(id)a4
+- (id)_segmentedControlForElement:(id)element existingView:(id)view
 {
   v84 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = viewCopy;
   }
 
   else
@@ -3302,12 +3302,12 @@ LABEL_61:
   }
 
   v9 = v7;
-  v42 = (![v5 updateType] || objc_msgSend(v5, "updateType") == 2) && v9 == v6;
-  v10 = [v5 attributes];
-  v11 = [v10 objectForKey:@"segmentWidthsByContent"];
+  v42 = (![elementCopy updateType] || objc_msgSend(elementCopy, "updateType") == 2) && v9 == viewCopy;
+  attributes = [elementCopy attributes];
+  v11 = [attributes objectForKey:@"segmentWidthsByContent"];
   [v9 setApportionsSegmentWidthsByContent:{objc_msgSend(v11, "BOOLValue")}];
 
-  v46 = [v9 selectedSegmentIndex];
+  selectedSegmentIndex = [v9 selectedSegmentIndex];
   if (!v42)
   {
     [v9 removeAllSegments];
@@ -3344,21 +3344,21 @@ LABEL_61:
   v59[6] = &v60;
   v59[7] = &v78;
   v41 = MEMORY[0x26D6AFBB0](v59);
-  (v41)[2](v41, v5);
-  v43 = [MEMORY[0x277CBEB18] array];
+  (v41)[2](v41, elementCopy);
+  array = [MEMORY[0x277CBEB18] array];
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v12 = [v5 children];
-  v13 = [v12 countByEnumeratingWithState:&v55 objects:v83 count:16];
+  children = [elementCopy children];
+  v13 = [children countByEnumeratingWithState:&v55 objects:v83 count:16];
   if (v13)
   {
     v50 = 0;
     v48 = *v56;
     v47 = *MEMORY[0x277D1AF18];
     v44 = v9;
-    obj = v12;
+    obj = children;
     do
     {
       v49 = v13;
@@ -3372,10 +3372,10 @@ LABEL_61:
         v15 = *(*(&v55 + 1) + 8 * i);
         if ([v15 tv_elementType] == 51)
         {
-          v16 = [v15 autoHighlightIdentifier];
-          if ([v16 length])
+          autoHighlightIdentifier = [v15 autoHighlightIdentifier];
+          if ([autoHighlightIdentifier length])
           {
-            v17 = v46 == -1;
+            v17 = selectedSegmentIndex == -1;
           }
 
           else
@@ -3387,24 +3387,24 @@ LABEL_61:
 
           if (v18)
           {
-            v19 = [v5 children];
-            v46 = [v19 indexOfObject:v15];
+            children2 = [elementCopy children];
+            selectedSegmentIndex = [children2 indexOfObject:v15];
           }
 
           [v15 resetProperty:2];
-          v20 = [v15 attributes];
-          v21 = [v20 objectForKey:v47];
+          attributes2 = [v15 attributes];
+          v21 = [attributes2 objectForKey:v47];
 
           v53 = 0u;
           v54 = 0u;
           v51 = 0u;
           v52 = 0u;
-          v22 = [v15 children];
-          v23 = [v22 countByEnumeratingWithState:&v51 objects:v82 count:16];
+          children3 = [v15 children];
+          v23 = [children3 countByEnumeratingWithState:&v51 objects:v82 count:16];
           if (v23)
           {
-            v24 = v6;
-            v25 = v5;
+            v24 = viewCopy;
+            v25 = elementCopy;
             v26 = *v52;
             while (2)
             {
@@ -3412,35 +3412,35 @@ LABEL_61:
               {
                 if (*v52 != v26)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(children3);
                 }
 
                 v28 = *(*(&v51 + 1) + 8 * j);
                 if ([v28 tv_elementType] == 55)
                 {
-                  v5 = v25;
-                  v6 = v24;
+                  elementCopy = v25;
+                  viewCopy = v24;
                   v9 = v44;
                   if ((v79[3] & 1) == 0)
                   {
                     (v41)[2](v41, v28);
                   }
 
-                  v29 = [v28 text];
-                  v30 = [v29 string];
+                  text = [v28 text];
+                  string = [text string];
                   if (v42)
                   {
-                    [v44 setTitle:v30 forSegmentAtIndex:v50];
+                    [v44 setTitle:string forSegmentAtIndex:v50];
                   }
 
                   else
                   {
-                    [v44 insertSegmentWithTitle:v30 atIndex:v50 animated:0];
+                    [v44 insertSegmentWithTitle:string atIndex:v50 animated:0];
                   }
 
-                  [v43 addObject:v15];
-                  v31 = [v28 attributes];
-                  v32 = [v31 objectForKey:v47];
+                  [array addObject:v15];
+                  attributes3 = [v28 attributes];
+                  v32 = [attributes3 objectForKey:v47];
                   v33 = v32;
                   if (v32)
                   {
@@ -3460,7 +3460,7 @@ LABEL_61:
                 }
               }
 
-              v23 = [v22 countByEnumeratingWithState:&v51 objects:v82 count:16];
+              v23 = [children3 countByEnumeratingWithState:&v51 objects:v82 count:16];
               if (v23)
               {
                 continue;
@@ -3469,22 +3469,22 @@ LABEL_61:
               break;
             }
 
-            v5 = v25;
-            v6 = v24;
+            elementCopy = v25;
+            viewCopy = v24;
             v9 = v44;
           }
 
 LABEL_42:
 
-          v36 = [v9 accessibilityElements];
-          if (v50 - 1 >= [v36 count])
+          accessibilityElements = [v9 accessibilityElements];
+          if (v50 - 1 >= [accessibilityElements count])
           {
             v37 = 0;
           }
 
           else
           {
-            v37 = [v36 objectAtIndexedSubscript:?];
+            v37 = [accessibilityElements objectAtIndexedSubscript:?];
           }
 
           [v15 tv_setProxyView:v37];
@@ -3496,7 +3496,7 @@ LABEL_42:
         }
       }
 
-      v12 = obj;
+      children = obj;
       v13 = [obj countByEnumeratingWithState:&v55 objects:v83 count:16];
     }
 
@@ -3515,12 +3515,12 @@ LABEL_42:
   if (v50)
   {
     v38 = v50 - 1;
-    if (v46 < v50 - 1)
+    if (selectedSegmentIndex < v50 - 1)
     {
-      v38 = v46;
+      v38 = selectedSegmentIndex;
     }
 
-    if (v46 == -1)
+    if (selectedSegmentIndex == -1)
     {
       v39 = 0;
     }
@@ -3533,7 +3533,7 @@ LABEL_42:
     [v9 setSelectedSegmentIndex:v39];
   }
 
-  [_TVSegmentedControlTarget addTargetInSegmentedControl:v9 withHighlightViewElements:v43];
+  [_TVSegmentedControlTarget addTargetInSegmentedControl:v9 withHighlightViewElements:array];
 
   _Block_object_dispose(&v60, 8);
   _Block_object_dispose(&v66, 8);
@@ -3619,30 +3619,30 @@ LABEL_5:
   }
 }
 
-- (id)_ratingBadgeFromElement:(id)a3 existingView:(id)a4
+- (id)_ratingBadgeFromElement:(id)element existingView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [TVRatingBadgeLayout layoutWithLayout:0 element:v6];
-  v8 = [v6 attributes];
+  viewCopy = view;
+  elementCopy = element;
+  v7 = [TVRatingBadgeLayout layoutWithLayout:0 element:elementCopy];
+  attributes = [elementCopy attributes];
 
-  v9 = [v8 objectForKeyedSubscript:@"value"];
+  v9 = [attributes objectForKeyedSubscript:@"value"];
   [v9 floatValue];
   v11 = v10;
 
-  v12 = [TVRatingBadgeView ratingBadgeViewWithValue:v7 layout:v5 existingBadgeView:v11];
+  v12 = [TVRatingBadgeView ratingBadgeViewWithValue:v7 layout:viewCopy existingBadgeView:v11];
 
   return v12;
 }
 
-- (id)_progressBarFromElement:(id)a3 existingView:(id)a4
+- (id)_progressBarFromElement:(id)element existingView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = viewCopy;
   }
 
   else
@@ -3652,12 +3652,12 @@ LABEL_5:
   }
 
   v9 = v7;
-  v10 = [v5 style];
-  v11 = [v10 borderRadius];
-  if (v11)
+  style = [elementCopy style];
+  borderRadius = [style borderRadius];
+  if (borderRadius)
   {
-    v12 = v11;
-    v13 = [TVMLUtilities _cornerRadiiFromElement:v5 cornerRadii:v35 circle:0];
+    v12 = borderRadius;
+    v13 = [TVMLUtilities _cornerRadiiFromElement:elementCopy cornerRadii:v35 circle:0];
 
     if (v13)
     {
@@ -3670,34 +3670,34 @@ LABEL_5:
   {
   }
 
-  v14 = [v5 style];
-  v15 = [v14 tv_progressStyle];
+  style2 = [elementCopy style];
+  tv_progressStyle = [style2 tv_progressStyle];
 
-  -[_TVProgressView setStyle:](v9, "setStyle:", [v15 isEqualToString:@"unshadowed"]);
-  v16 = [v5 style];
-  v17 = [v16 tv_tintColor];
-  v18 = [v17 color];
-  v19 = v18;
-  if (v18)
+  -[_TVProgressView setStyle:](v9, "setStyle:", [tv_progressStyle isEqualToString:@"unshadowed"]);
+  style3 = [elementCopy style];
+  tv_tintColor = [style3 tv_tintColor];
+  color = [tv_tintColor color];
+  v19 = color;
+  if (color)
   {
-    v20 = v18;
+    whiteColor = color;
   }
 
   else
   {
-    v20 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  v21 = v20;
+  v21 = whiteColor;
 
   [(_TVProgressView *)v9 setProgressTintColor:v21];
-  v22 = [v5 style];
-  v23 = [v22 tv_tintColor2];
-  v24 = [v23 color];
-  v25 = v24;
-  if (v24)
+  style4 = [elementCopy style];
+  tv_tintColor2 = [style4 tv_tintColor2];
+  color2 = [tv_tintColor2 color];
+  v25 = color2;
+  if (color2)
   {
-    v26 = v24;
+    v26 = color2;
   }
 
   else
@@ -3708,28 +3708,28 @@ LABEL_5:
   v27 = v26;
 
   [(_TVProgressView *)v9 setCompleteTintColor:v27];
-  v28 = [v5 attributes];
-  v29 = [v28 objectForKeyedSubscript:@"value"];
+  attributes = [elementCopy attributes];
+  v29 = [attributes objectForKeyedSubscript:@"value"];
   [v29 floatValue];
   [(_TVProgressView *)v9 setProgress:v30];
 
-  v31 = [v5 style];
-  v32 = [v31 tv_imageTreatment];
-  v33 = [v32 isEqualToString:@"blur"];
+  style5 = [elementCopy style];
+  tv_imageTreatment = [style5 tv_imageTreatment];
+  v33 = [tv_imageTreatment isEqualToString:@"blur"];
 
   [(_TVProgressView *)v9 setUseMaterial:v33];
 
   return v9;
 }
 
-- (id)_seasonsBadgeWithElement:(id)a3 existingView:(id)a4
+- (id)_seasonsBadgeWithElement:(id)element existingView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
+  viewCopy = view;
+  elementCopy = element;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = viewCopy;
   }
 
   else
@@ -3746,9 +3746,9 @@ LABEL_5:
   [v12 size];
   v14 = v13;
   v16 = v15;
-  v17 = [v6 tv_attributedString];
-  v18 = [MEMORY[0x277D759A0] mainScreen];
-  [v18 scale];
+  tv_attributedString = [elementCopy tv_attributedString];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v20 = v19;
   v28.width = v14;
   v28.height = v16;
@@ -3757,46 +3757,46 @@ LABEL_5:
   [v12 drawInRect:{0.0, 0.0, v14, v16}];
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSetBlendMode(CurrentContext, kCGBlendModeDestinationOut);
-  [v17 drawInRect:{0.0, 0.0, 43.0, 30.0}];
+  [tv_attributedString drawInRect:{0.0, 0.0, 43.0, 30.0}];
   v22 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   [(_TVImageView *)v9 setImage:v22];
   [(_TVImageView *)v9 setContentMode:1];
   [(_TVImageView *)v9 setContentsPosition:2];
-  v23 = [v6 style];
+  style = [elementCopy style];
 
-  v24 = [v23 tv_tintColor];
-  v25 = [v24 color];
+  tv_tintColor = [style tv_tintColor];
+  color = [tv_tintColor color];
 
-  if (v25)
+  if (color)
   {
-    [(_TVImageView *)v9 _setTintColor:v25];
+    [(_TVImageView *)v9 _setTintColor:color];
   }
 
   return v9;
 }
 
-- (id)_separatorViewForElement:(id)a3 existingView:(id)a4
+- (id)_separatorViewForElement:(id)element existingView:(id)view
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [v7 contentView];
-    v9 = [v8 subviews];
-    v10 = [v9 firstObject];
+    v7 = viewCopy;
+    contentView = [v7 contentView];
+    subviews = [contentView subviews];
+    firstObject = [subviews firstObject];
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v11 = [v7 contentView];
-    v12 = [v11 subviews];
+    contentView2 = [v7 contentView];
+    subviews2 = [contentView2 subviews];
 
-    v13 = [v12 countByEnumeratingWithState:&v36 objects:v40 count:16];
+    v13 = [subviews2 countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v13)
     {
       v14 = v13;
@@ -3807,40 +3807,40 @@ LABEL_5:
         {
           if (*v37 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(subviews2);
           }
 
           v17 = *(*(&v36 + 1) + 8 * i);
-          if (v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+          if (firstObject || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             [v17 removeFromSuperview];
           }
 
           else
           {
-            v10 = v17;
+            firstObject = v17;
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v36 objects:v40 count:16];
+        v14 = [subviews2 countByEnumeratingWithState:&v36 objects:v40 count:16];
       }
 
       while (v14);
     }
 
-    v18 = [_TVSeparatorView separatorViewWithElement:v5 existingView:v10];
-    [v18 transferLayoutStylesFromElement:v5];
-    v19 = [v18 superview];
+    v18 = [_TVSeparatorView separatorViewWithElement:elementCopy existingView:firstObject];
+    [v18 transferLayoutStylesFromElement:elementCopy];
+    superview = [v18 superview];
 
-    if (!v19)
+    if (!superview)
     {
       [v18 setAutoresizingMask:18];
-      v20 = [v7 contentView];
-      [v20 addSubview:v18];
+      contentView3 = [v7 contentView];
+      [contentView3 addSubview:v18];
     }
 
-    v21 = [v7 contentView];
-    [v21 bounds];
+    contentView4 = [v7 contentView];
+    [contentView4 bounds];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -3853,8 +3853,8 @@ LABEL_5:
 
   else
   {
-    v34 = [_TVSeparatorView separatorViewWithElement:v5 existingView:v6];
-    [v34 transferLayoutStylesFromElement:v5];
+    v34 = [_TVSeparatorView separatorViewWithElement:elementCopy existingView:viewCopy];
+    [v34 transferLayoutStylesFromElement:elementCopy];
   }
 
   return v34;

@@ -1,59 +1,59 @@
 @interface PKFeatureOnBoardingViewController
-- (PKFeatureOnBoardingViewController)initWithParentFlowController:(id)a3 setupDelegate:(id)a4 setupContext:(int64_t)a5 onboardingContext:(int64_t)a6 featureIdentifier:(unint64_t)a7 provisioningController:(id)a8 paymentSetupProduct:(id)a9 currentPage:(id)a10;
-- (id)_analyticsPartialEventDictionaryForButtonTapWithButtonTagKey:(id)a3;
+- (PKFeatureOnBoardingViewController)initWithParentFlowController:(id)controller setupDelegate:(id)delegate setupContext:(int64_t)context onboardingContext:(int64_t)onboardingContext featureIdentifier:(unint64_t)identifier provisioningController:(id)provisioningController paymentSetupProduct:(id)product currentPage:(id)self0;
+- (id)_analyticsPartialEventDictionaryForButtonTapWithButtonTagKey:(id)key;
 - (id)_appleCardWelcomeExperiment;
-- (id)_subjectForFeature:(unint64_t)a3;
+- (id)_subjectForFeature:(unint64_t)feature;
 - (id)loadHeroImageFromWelcomeExperiment;
-- (id)nextOnboardingViewControllerWithPage:(id)a3 product:(id)a4;
+- (id)nextOnboardingViewControllerWithPage:(id)page product:(id)product;
 - (void)_beginReportingIfNecessary;
-- (void)_checkSecurityCapabilities:(unint64_t)a3 nextStep:(id)a4;
-- (void)_defaultFeatureAccountAnalyticsWithCompletion:(id)a3;
-- (void)_defaultFeatureAccountWithCompletion:(id)a3;
+- (void)_checkSecurityCapabilities:(unint64_t)capabilities nextStep:(id)step;
+- (void)_defaultFeatureAccountAnalyticsWithCompletion:(id)completion;
+- (void)_defaultFeatureAccountWithCompletion:(id)completion;
 - (void)_endReportingIfNecessary;
-- (void)_handleAccountCredential:(id)a3 completion:(id)a4;
-- (void)_handleApplyFlowWithCompletion:(id)a3;
+- (void)_handleAccountCredential:(id)credential completion:(id)completion;
+- (void)_handleApplyFlowWithCompletion:(id)completion;
 - (void)_openSecondaryActionItem;
 - (void)_openTermsAndConditions;
-- (void)_reportAnalyticsSubject:(id)a3 withPartialEventDictionary:(id)a4;
-- (void)_reportAnalyticsViewDidAppear:(BOOL)a3;
+- (void)_reportAnalyticsSubject:(id)subject withPartialEventDictionary:(id)dictionary;
+- (void)_reportAnalyticsViewDidAppear:(BOOL)appear;
 - (void)_reportCancelTapped;
 - (void)_reportContinueTapped;
 - (void)_reportRatesAndTermsTapped;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)explanationViewControllerDidSelectCancel:(id)a3;
-- (void)explanationViewDidUpdateLayout:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)explanationViewControllerDidSelectCancel:(id)cancel;
+- (void)explanationViewDidUpdateLayout:(id)layout;
 - (void)handleProductAvailable;
 - (void)handleSetupLater;
-- (void)preflightWithCompletion:(id)a3;
+- (void)preflightWithCompletion:(id)completion;
 - (void)updateForHeroImage;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKFeatureOnBoardingViewController
 
-- (PKFeatureOnBoardingViewController)initWithParentFlowController:(id)a3 setupDelegate:(id)a4 setupContext:(int64_t)a5 onboardingContext:(int64_t)a6 featureIdentifier:(unint64_t)a7 provisioningController:(id)a8 paymentSetupProduct:(id)a9 currentPage:(id)a10
+- (PKFeatureOnBoardingViewController)initWithParentFlowController:(id)controller setupDelegate:(id)delegate setupContext:(int64_t)context onboardingContext:(int64_t)onboardingContext featureIdentifier:(unint64_t)identifier provisioningController:(id)provisioningController paymentSetupProduct:(id)product currentPage:(id)self0
 {
-  v17 = a10;
+  pageCopy = page;
   v25.receiver = self;
   v25.super_class = PKFeatureOnBoardingViewController;
-  v18 = [(PKOnBoardingViewController *)&v25 initWithParentFlowController:a3 setupDelegate:a4 context:a5 provisioningController:a8 paymentSetupProduct:a9 currentPage:v17];
+  v18 = [(PKOnBoardingViewController *)&v25 initWithParentFlowController:controller setupDelegate:delegate context:context provisioningController:provisioningController paymentSetupProduct:product currentPage:pageCopy];
   v19 = v18;
   if (v18)
   {
-    v18->_featureIdentifier = a7;
-    v18->_onboardingContext = a6;
-    v20 = [v17 identifier];
-    v19->_isMainFeatureOnboardingPage = [v20 isEqualToString:*MEMORY[0x1E69BBAE8]];
+    v18->_featureIdentifier = identifier;
+    v18->_onboardingContext = onboardingContext;
+    identifier = [pageCopy identifier];
+    v19->_isMainFeatureOnboardingPage = [identifier isEqualToString:*MEMORY[0x1E69BBAE8]];
 
     v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
     defaultFeatureAccountCompletions = v19->_defaultFeatureAccountCompletions;
     v19->_defaultFeatureAccountCompletions = v21;
 
-    if (a7 <= 5)
+    if (identifier <= 5)
     {
-      v23 = ((1 << a7) & 0x13) == 0 || v19->_isMainFeatureOnboardingPage;
+      v23 = ((1 << identifier) & 0x13) == 0 || v19->_isMainFeatureOnboardingPage;
       v19->_featureSupportsAnalytics = v23;
     }
   }
@@ -67,39 +67,39 @@
   v108.super_class = PKFeatureOnBoardingViewController;
   [(PKOnBoardingViewController *)&v108 viewDidLoad];
   [(PKExplanationViewController *)self setShowDoneButton:0];
-  v103 = [(PKFeatureOnBoardingViewController *)self navigationItem];
-  [v103 setHidesBackButton:1];
-  v3 = [(PKExplanationViewController *)self explanationView];
-  v4 = [v3 dockView];
-  v105 = [v4 footerView];
+  navigationItem = [(PKFeatureOnBoardingViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  footerView = [dockView footerView];
   v106 = [PKApplyController preferredLanguageForFeatureIdentifier:self->_featureIdentifier account:0];
-  v5 = [(PKOnBoardingViewController *)self currentPage];
-  v102 = [(PKOnBoardingViewController *)self provisioningController];
-  v6 = [v102 associatedCredentials];
-  v7 = [v6 firstObject];
-  v8 = [v7 isAccountCredential];
+  currentPage = [(PKOnBoardingViewController *)self currentPage];
+  provisioningController = [(PKOnBoardingViewController *)self provisioningController];
+  associatedCredentials = [provisioningController associatedCredentials];
+  firstObject = [associatedCredentials firstObject];
+  isAccountCredential = [firstObject isAccountCredential];
 
-  v9 = [v5 layout];
-  self->_layout = v9;
-  if (!v9)
+  layout = [currentPage layout];
+  self->_layout = layout;
+  if (!layout)
   {
     if (self->_installmentConfiguration)
     {
-      v9 = 2;
+      layout = 2;
     }
 
     else
     {
-      v9 = 1;
+      layout = 1;
     }
 
-    self->_layout = v9;
+    self->_layout = layout;
   }
 
-  self->_useCompactLayout = v9 == 2;
+  self->_useCompactLayout = layout == 2;
   if (!self->_isMainFeatureOnboardingPage)
   {
-    [v3 setShowPrivacyView:0];
+    [explanationView setShowPrivacyView:0];
     [(PKExplanationViewController *)self setShowCancelButton:0];
     goto LABEL_30;
   }
@@ -132,7 +132,7 @@ LABEL_22:
       if (v16)
       {
 LABEL_23:
-        [v3 setShowPrivacyView:1];
+        [explanationView setShowPrivacyView:1];
         [(PKExplanationViewController *)self setPrivacyLinkController:v16];
 
         goto LABEL_24;
@@ -167,9 +167,9 @@ LABEL_16:
   }
 
 LABEL_24:
-  v17 = [(PKFeatureOnBoardingViewController *)self navigationController];
-  v18 = [v17 viewControllers];
-  v19 = [v18 count];
+  navigationController = [(PKFeatureOnBoardingViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v19 = [viewControllers count];
 
   if (v19 < 2)
   {
@@ -187,22 +187,22 @@ LABEL_24:
   else
   {
     [(PKExplanationViewController *)self setShowCancelButton:0];
-    v20 = [(PKFeatureOnBoardingViewController *)self navigationItem];
-    [v20 setHidesBackButton:0];
+    navigationItem2 = [(PKFeatureOnBoardingViewController *)self navigationItem];
+    [navigationItem2 setHidesBackButton:0];
   }
 
 LABEL_30:
   [(PKFeatureOnBoardingViewController *)self updateForHeroImage];
-  v21 = [v5 title];
-  v101 = v21;
-  if ((v21 == 0) | v8 & 1)
+  title = [currentPage title];
+  v101 = title;
+  if ((title == 0) | isAccountCredential & 1)
   {
     v22 = self->_featureIdentifier;
     if (v22 == 5)
     {
       PKSavingsFDICSignageEnabled();
       v23 = PKLocalizedApplyFeatureString();
-      [v3 setBodyText:v23];
+      [explanationView setBodyText:v23];
     }
 
     else
@@ -212,55 +212,55 @@ LABEL_30:
         goto LABEL_39;
       }
 
-      if (v8 & 1 | !self->_useCompactLayout)
+      if (isAccountCredential & 1 | !self->_useCompactLayout)
       {
-        [v3 setTitleText:0];
+        [explanationView setTitleText:0];
         v23 = PKUIImageNamed(@"AppleCardLogo-Onboarding");
-        [v3 setTitleImage:v23];
-        [v3 setTitleAlignment:PKOBKTextAlignment()];
-        [v3 setTopLogoBottomPadding:12.0];
+        [explanationView setTitleImage:v23];
+        [explanationView setTitleAlignment:PKOBKTextAlignment()];
+        [explanationView setTopLogoBottomPadding:12.0];
       }
 
       else
       {
         v23 = PKLocalizedApplyFeatureString();
-        [v3 setTitleText:v23];
+        [explanationView setTitleText:v23];
       }
     }
   }
 
   else
   {
-    [v3 setTitleText:v21];
-    [v3 setTitleAccessoriesEnabled:0];
+    [explanationView setTitleText:title];
+    [explanationView setTitleAccessoriesEnabled:0];
   }
 
 LABEL_39:
-  v24 = [v5 subtitle];
-  v100 = v24;
-  if ((v24 == 0) | v8 & 1)
+  subtitle = [currentPage subtitle];
+  v100 = subtitle;
+  if ((subtitle == 0) | isAccountCredential & 1)
   {
-    v25 = v4;
+    v25 = dockView;
     if (self->_isMainFeatureOnboardingPage && (self->_installmentConfiguration || self->_featureIdentifier == 2))
     {
       v26 = PKLocalizedApplyFeatureString();
-      [v3 setBodyText:v26];
+      [explanationView setBodyText:v26];
     }
   }
 
   else
   {
-    [v3 setBodyText:v24];
-    v25 = v4;
+    [explanationView setBodyText:subtitle];
+    v25 = dockView;
   }
 
-  v27 = [v5 body];
-  v107 = v3;
-  v99 = v27;
+  body = [currentPage body];
+  v107 = explanationView;
+  v99 = body;
   v104 = v25;
-  if (v27)
+  if (body)
   {
-    v28 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v27];
+    v28 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:body];
     goto LABEL_60;
   }
 
@@ -284,11 +284,11 @@ LABEL_39:
 
       v91 = *MEMORY[0x1E69DB688];
       [v31 setObject:v30 forKey:?];
-      v35 = [v5 footnote];
-      v36 = v35;
-      if (v35)
+      footnote = [currentPage footnote];
+      v36 = footnote;
+      if (footnote)
       {
-        v37 = v35;
+        v37 = footnote;
       }
 
       else
@@ -310,8 +310,8 @@ LABEL_39:
       v76 = [v73 stringWithFormat:@"%@%@", v75, v72];
       v77 = v31;
       v28 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v76 attributes:v31];
-      v78 = [v5 footnoteDisclosure];
-      if ([v78 length])
+      footnoteDisclosure = [currentPage footnoteDisclosure];
+      if ([footnoteDisclosure length])
       {
         v90 = v30;
         v79 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
@@ -332,14 +332,14 @@ LABEL_39:
           v85 = &stru_1F3BD7330;
         }
 
-        v86 = [v83 stringWithFormat:@"%@%@", v85, v78];
+        v86 = [v83 stringWithFormat:@"%@%@", v85, footnoteDisclosure];
         v87 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v86 attributes:v80];
         [v28 appendAttributedString:v87];
 
         v30 = v90;
       }
 
-      v3 = v107;
+      explanationView = v107;
       v25 = v104;
       goto LABEL_60;
     }
@@ -365,74 +365,74 @@ LABEL_59:
   v96 = v39;
   v97 = v38;
   [v39 setObject:v38 forKey:*MEMORY[0x1E69DB688]];
-  v41 = [v5 footnote];
-  if (!v41)
+  footnote2 = [currentPage footnote];
+  if (!footnote2)
   {
     v42 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     [v42 setNumberStyle:3];
     [v42 setMinimumFractionDigits:2];
     [v42 setMultiplier:&unk_1F3CC7640];
-    v43 = [(PKOnBoardingViewController *)self paymentSetupProduct];
-    v44 = [v43 clientInfo];
-    v45 = [v44 objectForKey:*MEMORY[0x1E69BC260]];
+    paymentSetupProduct = [(PKOnBoardingViewController *)self paymentSetupProduct];
+    clientInfo = [paymentSetupProduct clientInfo];
+    v45 = [clientInfo objectForKey:*MEMORY[0x1E69BC260]];
 
     v46 = PKLocalizedApplyFeatureString();
-    [v3 setTitleText:v46];
+    [explanationView setTitleText:v46];
 
-    [v3 setTitleAccessoriesEnabled:0];
-    v47 = [(PKOnBoardingViewController *)self paymentSetupProduct];
-    v48 = [v47 clientInfo];
-    v49 = [v48 objectForKey:*MEMORY[0x1E69BC2C0]];
+    [explanationView setTitleAccessoriesEnabled:0];
+    paymentSetupProduct2 = [(PKOnBoardingViewController *)self paymentSetupProduct];
+    clientInfo2 = [paymentSetupProduct2 clientInfo];
+    v49 = [clientInfo2 objectForKey:*MEMORY[0x1E69BC2C0]];
 
     PKSavingsFDICSignageEnabled();
     v50 = [v42 stringFromNumber:v45];
     [v42 stringFromNumber:v49];
     v89 = v88 = v50;
-    v41 = PKLocalizedApplyFeatureString();
+    footnote2 = PKLocalizedApplyFeatureString();
 
-    v3 = v107;
+    explanationView = v107;
   }
 
   v51 = MEMORY[0x1E696AEC0];
-  v52 = [v41 length];
+  v52 = [footnote2 length];
   v53 = @"\n";
   if (!v52)
   {
     v53 = &stru_1F3BD7330;
   }
 
-  v54 = [v51 stringWithFormat:@"%@%@", v53, v41];
+  v54 = [v51 stringWithFormat:@"%@%@", v53, footnote2];
   v28 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v54 attributes:v96];
 
 LABEL_60:
   if (self->_isMainFeatureOnboardingPage && self->_featureIdentifier == 5 && PKSavingsFDICSignageEnabled())
   {
-    v55 = [v3 dockView];
+    dockView2 = [explanationView dockView];
     v56 = [[PKFDICSignageView alloc] initWithFeature:5 displayingBankName:0];
-    [v55 setAdditionalView:v56];
+    [dockView2 setAdditionalView:v56];
   }
 
-  [v3 setAttributedSecondaryBodyText:v28];
-  v57 = [v5 learnMore];
-  v58 = [v57 buttonTitle];
-  if (v58)
+  [explanationView setAttributedSecondaryBodyText:v28];
+  learnMore = [currentPage learnMore];
+  buttonTitle = [learnMore buttonTitle];
+  if (buttonTitle)
   {
-    [v3 setBodyButtonText:v58];
+    [explanationView setBodyButtonText:buttonTitle];
   }
 
-  v59 = [v5 disclosureTitle];
-  if (v59)
+  disclosureTitle = [currentPage disclosureTitle];
+  if (disclosureTitle)
   {
-    [v25 setButtonExplanationText:v59];
+    [v25 setButtonExplanationText:disclosureTitle];
   }
 
-  v60 = v5;
-  v61 = [v5 primaryActionTitle];
-  v62 = [v25 primaryButton];
-  v63 = v62;
-  if (v61)
+  v60 = currentPage;
+  primaryActionTitle = [currentPage primaryActionTitle];
+  primaryButton = [v25 primaryButton];
+  v63 = primaryButton;
+  if (primaryActionTitle)
   {
-    [v62 setTitle:v61 forState:0];
+    [primaryButton setTitle:primaryActionTitle forState:0];
   }
 
   else
@@ -441,22 +441,22 @@ LABEL_60:
     [v63 setTitle:v64 forState:0];
   }
 
-  v65 = [v60 secondaryActionItem];
-  v66 = [v65 buttonTitle];
-  if (v66 || ([v60 secondaryActionTitle], (v66 = objc_claimAutoreleasedReturnValue()) != 0))
+  secondaryActionItem = [v60 secondaryActionItem];
+  buttonTitle2 = [secondaryActionItem buttonTitle];
+  if (buttonTitle2 || ([v60 secondaryActionTitle], (buttonTitle2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v67 = v66;
+    v67 = buttonTitle2;
     [v107 setForceShowSetupLaterButton:1];
-    v68 = [v105 setUpLaterButton];
-    [v68 setTitle:v67 forState:0];
+    setUpLaterButton = [footerView setUpLaterButton];
+    [setUpLaterButton setTitle:v67 forState:0];
   }
 
   else if (self->_isMainFeatureOnboardingPage && self->_featureIdentifier == 2)
   {
     [v107 setForceShowSetupLaterButton:1];
-    v70 = [v105 setUpLaterButton];
+    setUpLaterButton2 = [footerView setUpLaterButton];
     v71 = PKLocalizedApplyFeatureString();
-    [v70 setTitle:v71 forState:0];
+    [setUpLaterButton2 setTitle:v71 forState:0];
   }
 
   else
@@ -466,38 +466,38 @@ LABEL_60:
 
   if (self->_isMainFeatureOnboardingPage && self->_featureIdentifier == 2)
   {
-    v69 = [(PKFeatureOnBoardingViewController *)self loadHeroImageFromWelcomeExperiment];
-    if (v69)
+    loadHeroImageFromWelcomeExperiment = [(PKFeatureOnBoardingViewController *)self loadHeroImageFromWelcomeExperiment];
+    if (loadHeroImageFromWelcomeExperiment)
     {
-      [(PKOnBoardingViewController *)self setHeroImage:v69];
+      [(PKOnBoardingViewController *)self setHeroImage:loadHeroImageFromWelcomeExperiment];
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKFeatureOnBoardingViewController;
-  [(PKFeatureOnBoardingViewController *)&v4 viewDidAppear:a3];
+  [(PKFeatureOnBoardingViewController *)&v4 viewDidAppear:appear];
   [(PKFeatureOnBoardingViewController *)self _beginReportingIfNecessary];
   [(PKFeatureOnBoardingViewController *)self _reportAnalyticsViewDidAppear:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKFeatureOnBoardingViewController;
-  [(PKFeatureOnBoardingViewController *)&v4 viewDidDisappear:a3];
+  [(PKFeatureOnBoardingViewController *)&v4 viewDidDisappear:disappear];
   [(PKFeatureOnBoardingViewController *)self _reportAnalyticsViewDidAppear:0];
   [(PKFeatureOnBoardingViewController *)self _endReportingIfNecessary];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = PKFeatureOnBoardingViewController;
   [(PKFeatureOnBoardingViewController *)&v5 didMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     [(PKFeatureOnBoardingViewController *)self _reportCancelTapped];
   }
@@ -506,47 +506,47 @@ LABEL_60:
 - (void)updateForHeroImage
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PKOnBoardingViewController *)self currentPage];
-  v4 = [(PKExplanationViewController *)self explanationView];
-  v5 = [(PKOnBoardingViewController *)self heroImage];
-  v6 = v5;
+  currentPage = [(PKOnBoardingViewController *)self currentPage];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  heroImage = [(PKOnBoardingViewController *)self heroImage];
+  v6 = heroImage;
   if (self->_useCompactLayout && self->_isMainFeatureOnboardingPage)
   {
-    v7 = PKFeatureApplicationHeaderImageWithImage(self->_featureIdentifier, v5);
-    [v4 setImage:v7];
-    [v4 setTopMargin:30.0];
+    v7 = PKFeatureApplicationHeaderImageWithImage(self->_featureIdentifier, heroImage);
+    [explanationView setImage:v7];
+    [explanationView setTopMargin:30.0];
     v8 = PKProvisioningBackgroundColor();
-    [v4 setTopBackgroundColor:v8];
+    [explanationView setTopBackgroundColor:v8];
 
     goto LABEL_13;
   }
 
-  if (v5)
+  if (heroImage)
   {
-    v9 = v4;
+    v9 = explanationView;
     v10 = v6;
 LABEL_6:
     [v9 setImage:v10];
     goto LABEL_13;
   }
 
-  v11 = [v3 heroImageURL];
-  if (v11)
+  heroImageURL = [currentPage heroImageURL];
+  if (heroImageURL)
   {
-    v12 = v11;
-    v13 = [(PKOnBoardingViewController *)self preflightCalled];
+    v12 = heroImageURL;
+    preflightCalled = [(PKOnBoardingViewController *)self preflightCalled];
 
-    if (!v13)
+    if (!preflightCalled)
     {
       v16 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138412290;
-        v18 = v3;
+        v18 = currentPage;
         _os_log_impl(&dword_1BD026000, v16, OS_LOG_TYPE_DEFAULT, "heroImageURL is set for the current page but we haven't been preflighted: %@", &v17, 0xCu);
       }
 
-      v9 = v4;
+      v9 = explanationView;
       v10 = 0;
       goto LABEL_6;
     }
@@ -565,38 +565,38 @@ LABEL_6:
   v15 = [[PKApplyHeroCardView alloc] initWithFeatureIdentifier:self->_featureIdentifier];
   [(PKHeroCardExplanationHeaderView *)v15 setHideShadow:1];
   [(PKApplyHeroCardView *)v15 setBackgroundColor:v14];
-  [v4 setHeroView:v15];
-  [v4 setTopBackgroundColor:v14];
+  [explanationView setHeroView:v15];
+  [explanationView setTopBackgroundColor:v14];
 
 LABEL_13:
 }
 
-- (void)explanationViewControllerDidSelectCancel:(id)a3
+- (void)explanationViewControllerDidSelectCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   [(PKFeatureOnBoardingViewController *)self _reportCancelTapped];
   v5.receiver = self;
   v5.super_class = PKFeatureOnBoardingViewController;
-  [(PKOnBoardingViewController *)&v5 explanationViewControllerDidSelectCancel:v4];
+  [(PKOnBoardingViewController *)&v5 explanationViewControllerDidSelectCancel:cancelCopy];
 }
 
-- (void)explanationViewDidUpdateLayout:(id)a3
+- (void)explanationViewDidUpdateLayout:(id)layout
 {
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v6 = [(PKExplanationViewController *)self explanationView];
-    v4 = [v6 scrollView];
-    v5 = [(PKFeatureOnBoardingViewController *)self navigationItem];
-    [v4 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v5];
+    explanationView = [(PKExplanationViewController *)self explanationView];
+    scrollView = [explanationView scrollView];
+    navigationItem = [(PKFeatureOnBoardingViewController *)self navigationItem];
+    [scrollView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_isMainFeatureOnboardingPage && self->_featureIdentifier == 2 && (-[PKOnBoardingViewController paymentSetupProduct](self, "paymentSetupProduct"), v5 = objc_claimAutoreleasedReturnValue(), [v5 augmentedProduct], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
   {
-    v7 = [MEMORY[0x1E69B8DB8] paymentService];
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     v8 = PKLogFacilityTypeGetObject();
     v9 = os_signpost_id_make_with_pointer(v8, self);
     if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -609,23 +609,23 @@ LABEL_13:
       }
     }
 
-    v11 = [(PKFeatureOnBoardingViewController *)self _appleCardWelcomeExperiment];
-    v12 = [(PKFeatureOnBoardingViewController *)self installmentConfiguration];
-    v13 = [v11 experimentDetails];
+    _appleCardWelcomeExperiment = [(PKFeatureOnBoardingViewController *)self _appleCardWelcomeExperiment];
+    installmentConfiguration = [(PKFeatureOnBoardingViewController *)self installmentConfiguration];
+    experimentDetails = [_appleCardWelcomeExperiment experimentDetails];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __61__PKFeatureOnBoardingViewController_preflightWithCompletion___block_invoke;
     v15[3] = &unk_1E8015198;
     v15[4] = self;
-    v16 = v4;
-    [v7 augmentedProductForInstallmentConfiguration:v12 experimentDetails:v13 withCompletion:v15];
+    v16 = completionCopy;
+    [paymentService augmentedProductForInstallmentConfiguration:installmentConfiguration experimentDetails:experimentDetails withCompletion:v15];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = PKFeatureOnBoardingViewController;
-    [(PKOnBoardingViewController *)&v14 preflightWithCompletion:v4];
+    [(PKOnBoardingViewController *)&v14 preflightWithCompletion:completionCopy];
   }
 }
 
@@ -675,7 +675,7 @@ void __61__PKFeatureOnBoardingViewController_preflightWithCompletion___block_inv
   }
 }
 
-- (void)_reportAnalyticsViewDidAppear:(BOOL)a3
+- (void)_reportAnalyticsViewDidAppear:(BOOL)appear
 {
   if (self->_featureSupportsAnalytics)
   {
@@ -685,7 +685,7 @@ void __61__PKFeatureOnBoardingViewController_preflightWithCompletion___block_inv
     v5[1] = 3221225472;
     v5[2] = __67__PKFeatureOnBoardingViewController__reportAnalyticsViewDidAppear___block_invoke;
     v5[3] = &unk_1E8019D18;
-    v6 = a3;
+    appearCopy = appear;
     v5[4] = self;
     [(PKFeatureOnBoardingViewController *)self _defaultFeatureAccountAnalyticsWithCompletion:v5];
   }
@@ -719,10 +719,10 @@ void __67__PKFeatureOnBoardingViewController__reportAnalyticsViewDidAppear___blo
 {
   if (self->_isMainFeatureOnboardingPage)
   {
-    v3 = [(PKOnBoardingViewController *)self currentPage];
-    v4 = [v3 secondaryActionItem];
+    currentPage = [(PKOnBoardingViewController *)self currentPage];
+    secondaryActionItem = [currentPage secondaryActionItem];
 
-    if (v4)
+    if (secondaryActionItem)
     {
       [(PKFeatureOnBoardingViewController *)self _openSecondaryActionItem];
     }
@@ -746,18 +746,18 @@ void __67__PKFeatureOnBoardingViewController__reportAnalyticsViewDidAppear___blo
 {
   [(PKFeatureOnBoardingViewController *)self _reportContinueTapped];
   [(PKExplanationViewController *)self showNavigationBarSpinner:1];
-  v3 = [(PKOnBoardingViewController *)self provisioningController];
-  v4 = [v3 associatedCredentials];
+  provisioningController = [(PKOnBoardingViewController *)self provisioningController];
+  associatedCredentials = [provisioningController associatedCredentials];
 
-  v5 = [v4 firstObject];
-  if (self->_onboardingContext == 1 && [v4 count] == 1 && objc_msgSend(v5, "isAccountCredential"))
+  firstObject = [associatedCredentials firstObject];
+  if (self->_onboardingContext == 1 && [associatedCredentials count] == 1 && objc_msgSend(firstObject, "isAccountCredential"))
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __59__PKFeatureOnBoardingViewController_handleProductAvailable__block_invoke;
     v7[3] = &unk_1E8012FD0;
-    v8 = v5;
-    v9 = self;
+    v8 = firstObject;
+    selfCopy = self;
     [(PKFeatureOnBoardingViewController *)self _checkSecurityCapabilities:58 nextStep:v7];
   }
 
@@ -814,43 +814,43 @@ uint64_t __59__PKFeatureOnBoardingViewController_handleProductAvailable__block_i
   }
 }
 
-- (id)nextOnboardingViewControllerWithPage:(id)a3 product:(id)a4
+- (id)nextOnboardingViewControllerWithPage:(id)page product:(id)product
 {
-  v6 = a4;
-  v7 = a3;
+  productCopy = product;
+  pageCopy = page;
   v8 = [PKFeatureOnBoardingViewController alloc];
-  v9 = [(PKOnBoardingViewController *)self parentFlowController];
-  v10 = [(PKOnBoardingViewController *)self setupDelegate];
-  v11 = [(PKExplanationViewController *)self context];
+  parentFlowController = [(PKOnBoardingViewController *)self parentFlowController];
+  setupDelegate = [(PKOnBoardingViewController *)self setupDelegate];
+  context = [(PKExplanationViewController *)self context];
   onboardingContext = self->_onboardingContext;
   featureIdentifier = self->_featureIdentifier;
-  v14 = [(PKOnBoardingViewController *)self provisioningController];
-  v15 = [(PKFeatureOnBoardingViewController *)v8 initWithParentFlowController:v9 setupDelegate:v10 setupContext:v11 onboardingContext:onboardingContext featureIdentifier:featureIdentifier provisioningController:v14 paymentSetupProduct:v6 currentPage:v7];
+  provisioningController = [(PKOnBoardingViewController *)self provisioningController];
+  v15 = [(PKFeatureOnBoardingViewController *)v8 initWithParentFlowController:parentFlowController setupDelegate:setupDelegate setupContext:context onboardingContext:onboardingContext featureIdentifier:featureIdentifier provisioningController:provisioningController paymentSetupProduct:productCopy currentPage:pageCopy];
 
   return v15;
 }
 
-- (void)_handleAccountCredential:(id)a3 completion:(id)a4
+- (void)_handleAccountCredential:(id)credential completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  credentialCopy = credential;
   v8 = [PKAccountFlowController alloc];
-  v9 = [(PKOnBoardingViewController *)self provisioningController];
-  v10 = [(PKOnBoardingViewController *)self setupDelegate];
-  v11 = [(PKAccountFlowController *)v8 initWithAccountCredential:v7 provisioningController:v9 setupDelegate:v10 context:[(PKExplanationViewController *)self context] operations:63];
+  provisioningController = [(PKOnBoardingViewController *)self provisioningController];
+  setupDelegate = [(PKOnBoardingViewController *)self setupDelegate];
+  v11 = [(PKAccountFlowController *)v8 initWithAccountCredential:credentialCopy provisioningController:provisioningController setupDelegate:setupDelegate context:[(PKExplanationViewController *)self context] operations:63];
 
-  v12 = [(PKOnBoardingViewController *)self parentFlowController];
-  [(PKAccountFlowController *)v11 setParentFlowController:v12];
+  parentFlowController = [(PKOnBoardingViewController *)self parentFlowController];
+  [(PKAccountFlowController *)v11 setParentFlowController:parentFlowController];
 
-  v13 = [(PKFeatureOnBoardingViewController *)self navigationController];
-  v14 = [(PKAccountFlowController *)v11 firstAccountViewController];
+  navigationController = [(PKFeatureOnBoardingViewController *)self navigationController];
+  firstAccountViewController = [(PKAccountFlowController *)v11 firstAccountViewController];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __73__PKFeatureOnBoardingViewController__handleAccountCredential_completion___block_invoke;
   v16[3] = &unk_1E8010AD8;
-  v17 = v6;
-  v15 = v6;
-  [v13 pk_presentPaymentSetupViewController:v14 animated:1 completion:v16];
+  v17 = completionCopy;
+  v15 = completionCopy;
+  [navigationController pk_presentPaymentSetupViewController:firstAccountViewController animated:1 completion:v16];
 }
 
 uint64_t __73__PKFeatureOnBoardingViewController__handleAccountCredential_completion___block_invoke(uint64_t a1)
@@ -864,29 +864,29 @@ uint64_t __73__PKFeatureOnBoardingViewController__handleAccountCredential_comple
   return result;
 }
 
-- (void)_handleApplyFlowWithCompletion:(id)a3
+- (void)_handleApplyFlowWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKOnBoardingViewController *)self provisioningController];
-  v6 = [v5 paymentSetupProductModel];
-  v7 = [v6 productsForFeatureIdentifier:self->_featureIdentifier];
+  completionCopy = completion;
+  provisioningController = [(PKOnBoardingViewController *)self provisioningController];
+  paymentSetupProductModel = [provisioningController paymentSetupProductModel];
+  v7 = [paymentSetupProductModel productsForFeatureIdentifier:self->_featureIdentifier];
 
-  v8 = [v7 firstObject];
-  v9 = [v8 featureApplications];
-  v10 = [v9 sortedArrayUsingComparator:&__block_literal_global_115];
+  firstObject = [v7 firstObject];
+  featureApplications = [firstObject featureApplications];
+  v10 = [featureApplications sortedArrayUsingComparator:&__block_literal_global_115];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __68__PKFeatureOnBoardingViewController__handleApplyFlowWithCompletion___block_invoke_2;
   v15[3] = &unk_1E8019D60;
   v16 = v10;
-  v17 = self;
-  v18 = v5;
-  v19 = v8;
-  v20 = v4;
-  v11 = v4;
-  v12 = v8;
-  v13 = v5;
+  selfCopy = self;
+  v18 = provisioningController;
+  v19 = firstObject;
+  v20 = completionCopy;
+  v11 = completionCopy;
+  v12 = firstObject;
+  v13 = provisioningController;
   v14 = v10;
   [(PKFeatureOnBoardingViewController *)self _defaultFeatureAccountWithCompletion:v15];
 }
@@ -1027,9 +1027,9 @@ uint64_t __68__PKFeatureOnBoardingViewController__handleApplyFlowWithCompletion_
   return result;
 }
 
-- (void)_checkSecurityCapabilities:(unint64_t)a3 nextStep:(id)a4
+- (void)_checkSecurityCapabilities:(unint64_t)capabilities nextStep:(id)step
 {
-  v6 = a4;
+  stepCopy = step;
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1037,14 +1037,14 @@ uint64_t __68__PKFeatureOnBoardingViewController__handleApplyFlowWithCompletion_
     _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Checking security capabilities for feature", buf, 2u);
   }
 
-  v8 = [[PKSecurityCapabilitiesController alloc] initWithRequirements:a3 feature:self->_featureIdentifier context:[(PKExplanationViewController *)self context]];
+  v8 = [[PKSecurityCapabilitiesController alloc] initWithRequirements:capabilities feature:self->_featureIdentifier context:[(PKExplanationViewController *)self context]];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __73__PKFeatureOnBoardingViewController__checkSecurityCapabilities_nextStep___block_invoke;
   v10[3] = &unk_1E8019DB0;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = stepCopy;
+  v9 = stepCopy;
   [(PKSecurityCapabilitiesController *)v8 presentSecurityRepairFlowWithPresentingViewController:self completion:v10];
 }
 
@@ -1107,10 +1107,10 @@ void __73__PKFeatureOnBoardingViewController__checkSecurityCapabilities_nextStep
   if (!self->_applyController)
   {
     v4 = [PKApplyControllerConfiguration alloc];
-    v5 = [(PKOnBoardingViewController *)self setupDelegate];
-    v6 = [(PKExplanationViewController *)self context];
-    v7 = [(PKOnBoardingViewController *)self provisioningController];
-    v8 = [(PKApplyControllerConfiguration *)v4 initWithSetupDelegate:v5 context:v6 provisioningController:v7];
+    setupDelegate = [(PKOnBoardingViewController *)self setupDelegate];
+    context = [(PKExplanationViewController *)self context];
+    provisioningController = [(PKOnBoardingViewController *)self provisioningController];
+    v8 = [(PKApplyControllerConfiguration *)v4 initWithSetupDelegate:setupDelegate context:context provisioningController:provisioningController];
 
     [(PKApplyControllerConfiguration *)v8 setFeature:self->_featureIdentifier];
     [(PKApplyControllerConfiguration *)v8 setApplicationType:1];
@@ -1121,34 +1121,34 @@ void __73__PKFeatureOnBoardingViewController__checkSecurityCapabilities_nextStep
 
   v11 = [PKApplyTermsAndConditionsViewController alloc];
   v12 = self->_applyController;
-  v13 = [(PKOnBoardingViewController *)self setupDelegate];
-  v14 = [(PKApplyTermsAndConditionsViewController *)v11 initWithController:v12 setupDelegate:v13 context:[(PKExplanationViewController *)self context] termsIdentifier:0];
+  setupDelegate2 = [(PKOnBoardingViewController *)self setupDelegate];
+  v14 = [(PKApplyTermsAndConditionsViewController *)v11 initWithController:v12 setupDelegate:setupDelegate2 context:[(PKExplanationViewController *)self context] termsIdentifier:0];
 
   [(PKFeatureTermsAndConditionsViewController *)v14 setUseModalPresentation:1];
-  v15 = [(PKFeatureOnBoardingViewController *)self navigationController];
-  [v15 pk_presentPaymentSetupViewController:v14 animated:1 completion:0];
+  navigationController = [(PKFeatureOnBoardingViewController *)self navigationController];
+  [navigationController pk_presentPaymentSetupViewController:v14 animated:1 completion:0];
 }
 
 - (void)_openSecondaryActionItem
 {
-  v3 = [(PKOnBoardingViewController *)self currentPage];
-  v10 = [v3 secondaryActionItem];
+  currentPage = [(PKOnBoardingViewController *)self currentPage];
+  secondaryActionItem = [currentPage secondaryActionItem];
 
-  if (v10)
+  if (secondaryActionItem)
   {
     v4 = [[PKPaymentMoreInformationViewController alloc] initWithContext:[(PKExplanationViewController *)self context]];
-    v5 = [v10 title];
-    [(PKPaymentMoreInformationViewController *)v4 setDetailTitle:v5];
+    title = [secondaryActionItem title];
+    [(PKPaymentMoreInformationViewController *)v4 setDetailTitle:title];
 
-    v6 = [v10 subtitle];
-    [(PKPaymentMoreInformationViewController *)v4 setDetailSubtitle:v6];
+    subtitle = [secondaryActionItem subtitle];
+    [(PKPaymentMoreInformationViewController *)v4 setDetailSubtitle:subtitle];
 
-    v7 = [v10 body];
-    [(PKPaymentMoreInformationViewController *)v4 setDetailBody:v7];
+    body = [secondaryActionItem body];
+    [(PKPaymentMoreInformationViewController *)v4 setDetailBody:body];
 
     v8 = [[PKNavigationController alloc] initWithRootViewController:v4];
-    v9 = [(PKFeatureOnBoardingViewController *)self navigationController];
-    [v9 presentModalViewController:v8 withPaymentSetupContext:{-[PKExplanationViewController context](self, "context")}];
+    navigationController = [(PKFeatureOnBoardingViewController *)self navigationController];
+    [navigationController presentModalViewController:v8 withPaymentSetupContext:{-[PKExplanationViewController context](self, "context")}];
   }
 }
 
@@ -1177,32 +1177,32 @@ void __73__PKFeatureOnBoardingViewController__checkSecurityCapabilities_nextStep
   [(PKFeatureOnBoardingViewController *)self _reportAnalyticsSubject:*MEMORY[0x1E69BB6A0] withPartialEventDictionary:v3];
 }
 
-- (id)_analyticsPartialEventDictionaryForButtonTapWithButtonTagKey:(id)a3
+- (id)_analyticsPartialEventDictionaryForButtonTapWithButtonTagKey:(id)key
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_alloc_init(v3);
   [v5 setObject:*MEMORY[0x1E69BA6F0] forKeyedSubscript:*MEMORY[0x1E69BA680]];
-  [v5 setObject:v4 forKeyedSubscript:*MEMORY[0x1E69BA440]];
+  [v5 setObject:keyCopy forKeyedSubscript:*MEMORY[0x1E69BA440]];
 
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (void)_reportAnalyticsSubject:(id)a3 withPartialEventDictionary:(id)a4
+- (void)_reportAnalyticsSubject:(id)subject withPartialEventDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && self->_featureSupportsAnalytics)
+  subjectCopy = subject;
+  dictionaryCopy = dictionary;
+  v8 = dictionaryCopy;
+  if (subjectCopy && self->_featureSupportsAnalytics)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __88__PKFeatureOnBoardingViewController__reportAnalyticsSubject_withPartialEventDictionary___block_invoke;
     v9[3] = &unk_1E8019DD8;
-    v10 = v7;
-    v11 = v6;
+    v10 = dictionaryCopy;
+    v11 = subjectCopy;
     [(PKFeatureOnBoardingViewController *)self _defaultFeatureAccountAnalyticsWithCompletion:v9];
   }
 }
@@ -1217,11 +1217,11 @@ void __88__PKFeatureOnBoardingViewController__reportAnalyticsSubject_withPartial
   [MEMORY[0x1E69B8540] subject:*(a1 + 40) sendEvent:v5];
 }
 
-- (void)_defaultFeatureAccountAnalyticsWithCompletion:(id)a3
+- (void)_defaultFeatureAccountAnalyticsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     if (self->_featureSupportsAnalytics)
     {
@@ -1230,13 +1230,13 @@ void __88__PKFeatureOnBoardingViewController__reportAnalyticsSubject_withPartial
       v6[2] = __83__PKFeatureOnBoardingViewController__defaultFeatureAccountAnalyticsWithCompletion___block_invoke;
       v6[3] = &unk_1E8019E00;
       v6[4] = self;
-      v7 = v4;
+      v7 = completionCopy;
       [(PKFeatureOnBoardingViewController *)self _defaultFeatureAccountWithCompletion:v6];
     }
 
     else
     {
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -1310,38 +1310,38 @@ void __83__PKFeatureOnBoardingViewController__defaultFeatureAccountAnalyticsWith
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_defaultFeatureAccountWithCompletion:(id)a3
+- (void)_defaultFeatureAccountWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     if (self->_featureSupportsAnalytics)
     {
       if (!self->_defaultFeatureAccount && !self->_fetchedDefaultFeatureAccount)
       {
         defaultFeatureAccountCompletions = self->_defaultFeatureAccountCompletions;
-        v8 = _Block_copy(v4);
+        v8 = _Block_copy(completionCopy);
         [(NSMutableArray *)defaultFeatureAccountCompletions addObject:v8];
 
-        v9 = [MEMORY[0x1E69B8400] sharedInstance];
+        mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
         featureIdentifier = self->_featureIdentifier;
         v11[0] = MEMORY[0x1E69E9820];
         v11[1] = 3221225472;
         v11[2] = __74__PKFeatureOnBoardingViewController__defaultFeatureAccountWithCompletion___block_invoke;
         v11[3] = &unk_1E80112C0;
         v11[4] = self;
-        [v9 defaultAccountForFeature:featureIdentifier completion:v11];
+        [mEMORY[0x1E69B8400] defaultAccountForFeature:featureIdentifier completion:v11];
 
         goto LABEL_8;
       }
 
-      v6 = v4[2];
+      v6 = completionCopy[2];
     }
 
     else
     {
-      v6 = v4[2];
+      v6 = completionCopy[2];
     }
 
     v6();
@@ -1430,9 +1430,9 @@ void __74__PKFeatureOnBoardingViewController__defaultFeatureAccountWithCompletio
   }
 }
 
-- (id)_subjectForFeature:(unint64_t)a3
+- (id)_subjectForFeature:(unint64_t)feature
 {
-  if (a3 == 2)
+  if (feature == 2)
   {
     v4 = MEMORY[0x1E69BB6A0];
 LABEL_5:
@@ -1441,7 +1441,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 5)
+  if (feature == 5)
   {
     v4 = MEMORY[0x1E69BB6D0];
     goto LABEL_5;
@@ -1479,16 +1479,16 @@ LABEL_5:
 
 - (id)loadHeroImageFromWelcomeExperiment
 {
-  v3 = [(PKFeatureOnBoardingViewController *)self _appleCardWelcomeExperiment];
-  v4 = v3;
+  _appleCardWelcomeExperiment = [(PKFeatureOnBoardingViewController *)self _appleCardWelcomeExperiment];
+  v4 = _appleCardWelcomeExperiment;
   if (self->_installmentConfiguration)
   {
-    [v3 heroInstallmentImagePath];
+    [_appleCardWelcomeExperiment heroInstallmentImagePath];
   }
 
   else
   {
-    [v3 heroImagePath];
+    [_appleCardWelcomeExperiment heroImagePath];
   }
   v5 = ;
   if (v5)

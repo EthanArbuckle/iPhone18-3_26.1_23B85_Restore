@@ -1,7 +1,7 @@
 @interface WFVariablePillView
-+ (double)widthForVariableViewWithName:(id)a3 icon:(id)a4 font:(id)a5 height:(double)a6;
++ (double)widthForVariableViewWithName:(id)name icon:(id)icon font:(id)font height:(double)height;
 - (CGSize)intrinsicContentSize;
-- (WFVariablePillView)initWithName:(id)a3 icon:(id)a4 font:(id)a5 available:(BOOL)a6 height:(double)a7 controlState:(unint64_t)a8;
+- (WFVariablePillView)initWithName:(id)name icon:(id)icon font:(id)font available:(BOOL)available height:(double)height controlState:(unint64_t)state;
 @end
 
 @implementation WFVariablePillView
@@ -14,18 +14,18 @@
   return result;
 }
 
-- (WFVariablePillView)initWithName:(id)a3 icon:(id)a4 font:(id)a5 available:(BOOL)a6 height:(double)a7 controlState:(unint64_t)a8
+- (WFVariablePillView)initWithName:(id)name icon:(id)icon font:(id)font available:(BOOL)available height:(double)height controlState:(unint64_t)state
 {
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  availableCopy = available;
+  nameCopy = name;
+  iconCopy = icon;
+  fontCopy = font;
   v22.receiver = self;
   v22.super_class = WFVariablePillView;
   v17 = [(WFVariablePillView *)&v22 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v17)
   {
-    v18 = [[WFVariablePillHostingView alloc] initWithName:v14 icon:v15 font:v16 available:v10 height:a8 controlState:a7];
+    v18 = [[WFVariablePillHostingView alloc] initWithName:nameCopy icon:iconCopy font:fontCopy available:availableCopy height:state controlState:height];
     [(WFVariablePillHostingView *)v18 setTranslatesAutoresizingMaskIntoConstraints:1];
     [(WFVariablePillHostingView *)v18 setAutoresizingMask:18];
     [(WFVariablePillView *)v17 addSubview:v18];
@@ -38,12 +38,12 @@
   return v17;
 }
 
-+ (double)widthForVariableViewWithName:(id)a3 icon:(id)a4 font:(id)a5 height:(double)a6
++ (double)widthForVariableViewWithName:(id)name icon:(id)icon font:(id)font height:(double)height
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[WFVariablePillLayoutMetrics alloc] initWithName:v11 icon:v10 font:v9 height:a6];
+  fontCopy = font;
+  iconCopy = icon;
+  nameCopy = name;
+  v12 = [[WFVariablePillLayoutMetrics alloc] initWithName:nameCopy icon:iconCopy font:fontCopy height:height];
 
   [(WFVariablePillLayoutMetrics *)v12 totalWidth];
   v14 = v13;

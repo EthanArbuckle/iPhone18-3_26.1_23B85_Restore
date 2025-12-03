@@ -1,13 +1,13 @@
 @interface SeparatorView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC23ShelfKitCollectionViews13SeparatorView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC23ShelfKitCollectionViews13SeparatorView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation SeparatorView
 
-- (_TtC23ShelfKitCollectionViews13SeparatorView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews13SeparatorView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC23ShelfKitCollectionViews13SeparatorView_lineColor;
   *(&self->super.super.super.isa + v3) = [objc_opt_self() separatorColor];
@@ -16,11 +16,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
-  v5 = [(SeparatorView *)v4 traitCollection];
+  width = fits.width;
+  selfCopy = self;
+  traitCollection = [(SeparatorView *)selfCopy traitCollection];
   sub_3043A8();
   v7 = v6;
 
@@ -33,8 +33,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  v3 = [(SeparatorView *)v2 traitCollection];
+  selfCopy = self;
+  traitCollection = [(SeparatorView *)selfCopy traitCollection];
   sub_3043A8();
   v5 = v4;
 
@@ -47,7 +47,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_19EAC4();
 }
 

@@ -1,20 +1,20 @@
 @interface SKFSTaskPair
-- (SKFSTaskPair)initWithMessageHandler:(id)a3;
+- (SKFSTaskPair)initWithMessageHandler:(id)handler;
 @end
 
 @implementation SKFSTaskPair
 
-- (SKFSTaskPair)initWithMessageHandler:(id)a3
+- (SKFSTaskPair)initWithMessageHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = SKFSTaskPair;
   v6 = [(SKFSTaskPair *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_msgHandler, a3);
-    v8 = [FSMessageReceiver receiverWithDelegate:v5];
+    objc_storeStrong(&v6->_msgHandler, handler);
+    v8 = [FSMessageReceiver receiverWithDelegate:handlerCopy];
     receiver = v7->_receiver;
     v7->_receiver = v8;
   }

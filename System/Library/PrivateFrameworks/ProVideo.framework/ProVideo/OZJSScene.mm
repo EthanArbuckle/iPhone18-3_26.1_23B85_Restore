@@ -1,34 +1,34 @@
 @interface OZJSScene
-+ (id)sceneWithScene:(void *)a3;
-- (OZJSScene)initWithScene:(void *)a3;
-- (id)get3DElementWithID:(unsigned int)a3;
-- (id)get3DElementWithName:(id)a3;
-- (id)getElementWithID:(unsigned int)a3;
++ (id)sceneWithScene:(void *)scene;
+- (OZJSScene)initWithScene:(void *)scene;
+- (id)get3DElementWithID:(unsigned int)d;
+- (id)get3DElementWithName:(id)name;
+- (id)getElementWithID:(unsigned int)d;
 @end
 
 @implementation OZJSScene
 
-+ (id)sceneWithScene:(void *)a3
++ (id)sceneWithScene:(void *)scene
 {
-  v3 = [[OZJSScene alloc] initWithScene:a3];
+  v3 = [[OZJSScene alloc] initWithScene:scene];
 
   return v3;
 }
 
-- (OZJSScene)initWithScene:(void *)a3
+- (OZJSScene)initWithScene:(void *)scene
 {
   v5.receiver = self;
   v5.super_class = OZJSScene;
   result = [(OZJSScene *)&v5 init];
   if (result)
   {
-    result->_scene = a3;
+    result->_scene = scene;
   }
 
   return result;
 }
 
-- (id)getElementWithID:(unsigned int)a3
+- (id)getElementWithID:(unsigned int)d
 {
   scene = self->_scene;
   if (!scene)
@@ -36,7 +36,7 @@
     return 0;
   }
 
-  Node = OZScene::getNode(scene, a3);
+  Node = OZScene::getNode(scene, d);
   if (!Node)
   {
     return 0;
@@ -50,12 +50,12 @@
   return [OZJSElement elementWithElement:v5];
 }
 
-- (id)get3DElementWithID:(unsigned int)a3
+- (id)get3DElementWithID:(unsigned int)d
 {
   result = self->_scene;
   if (result)
   {
-    result = OZScene::getNode(result, a3);
+    result = OZScene::getNode(result, d);
     if (result)
     {
       if (result)
@@ -78,7 +78,7 @@
   return result;
 }
 
-- (id)get3DElementWithName:(id)a3
+- (id)get3DElementWithName:(id)name
 {
   scene = self->_scene;
   if (!scene)
@@ -108,7 +108,7 @@ LABEL_5:
     while (1)
     {
       Name = OZObjectManipulator::getName((v10 + 16));
-      if (![(__CFString *)PCString::ns_str(Name) compare:a3])
+      if (![(__CFString *)PCString::ns_str(Name) compare:name])
       {
         break;
       }

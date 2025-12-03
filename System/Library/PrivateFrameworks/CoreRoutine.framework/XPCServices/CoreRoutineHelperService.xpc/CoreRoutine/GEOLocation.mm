@@ -1,26 +1,26 @@
 @interface GEOLocation
-- (id)initWithRTLocation:(id)a3 includeTimeStamp:(BOOL)a4;
+- (id)initWithRTLocation:(id)location includeTimeStamp:(BOOL)stamp;
 @end
 
 @implementation GEOLocation
 
-- (id)initWithRTLocation:(id)a3 includeTimeStamp:(BOOL)a4
+- (id)initWithRTLocation:(id)location includeTimeStamp:(BOOL)stamp
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  stampCopy = stamp;
+  locationCopy = location;
+  if (locationCopy)
   {
     v7 = [GEOLocation alloc];
-    [v6 latitude];
+    [locationCopy latitude];
     v9 = v8;
-    [v6 longitude];
+    [locationCopy longitude];
     v11 = [v7 initWithLatitude:v9 longitude:v10];
-    [v6 horizontalUncertainty];
+    [locationCopy horizontalUncertainty];
     [v11 setHorizontalAccuracy:?];
-    if (v4)
+    if (stampCopy)
     {
-      v12 = [v6 date];
-      [v12 timeIntervalSinceReferenceDate];
+      date = [locationCopy date];
+      [date timeIntervalSinceReferenceDate];
       [v11 setTimestamp:?];
     }
 
@@ -29,15 +29,15 @@
       [v11 setTimestamp:0.0];
     }
 
-    v14 = [v6 referenceFrame];
-    if (v14 > 2)
+    referenceFrame = [locationCopy referenceFrame];
+    if (referenceFrame > 2)
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = dword_1000927A0[v14];
+      v15 = dword_1000927A0[referenceFrame];
     }
 
     [v11 setReferenceFrame:v15];

@@ -1,9 +1,9 @@
 @interface HomeCollectionContentInjector
 - (ActionCoordination)actionCoordinator;
-- (HomeCollectionContentInjector)initWithCollection:(id)a3 selectedMapItem:(id)a4;
+- (HomeCollectionContentInjector)initWithCollection:(id)collection selectedMapItem:(id)item;
 - (id)_searchResults;
 - (void)addContentToMapView;
-- (void)collectionHandlerContentUpdated:(id)a3;
+- (void)collectionHandlerContentUpdated:(id)updated;
 - (void)removeContentFromMapView;
 @end
 
@@ -16,7 +16,7 @@
   return WeakRetained;
 }
 
-- (void)collectionHandlerContentUpdated:(id)a3
+- (void)collectionHandlerContentUpdated:(id)updated
 {
   updateContentInjection = self->_updateContentInjection;
   if (updateContentInjection)
@@ -28,20 +28,20 @@
 - (void)removeContentFromMapView
 {
   WeakRetained = objc_loadWeakRetained(&self->_actionCoordinator);
-  v2 = [WeakRetained searchPinsManager];
-  [v2 clearCollectionPins];
+  searchPinsManager = [WeakRetained searchPinsManager];
+  [searchPinsManager clearCollectionPins];
 }
 
 - (void)addContentToMapView
 {
-  v7 = [(HomeCollectionContentInjector *)self _searchResults];
-  if ([v7 count])
+  _searchResults = [(HomeCollectionContentInjector *)self _searchResults];
+  if ([_searchResults count])
   {
-    v3 = [SearchInfo searchInfoWithResults:v7];
+    v3 = [SearchInfo searchInfoWithResults:_searchResults];
     WeakRetained = objc_loadWeakRetained(&self->_actionCoordinator);
-    v5 = [WeakRetained searchPinsManager];
-    v6 = [(HomeCollectionContentInjector *)self selectedSearchResult];
-    [v5 setCollectionsPinsFromSearchInfo:v3 scrollToResults:1 displayPlaceCardForResult:v6 animated:1];
+    searchPinsManager = [WeakRetained searchPinsManager];
+    selectedSearchResult = [(HomeCollectionContentInjector *)self selectedSearchResult];
+    [searchPinsManager setCollectionsPinsFromSearchInfo:v3 scrollToResults:1 displayPlaceCardForResult:selectedSearchResult animated:1];
   }
 }
 
@@ -54,8 +54,8 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [(CollectionHandler *)self->_collection content];
-    v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    content = [(CollectionHandler *)self->_collection content];
+    v5 = [content countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v5)
     {
       v6 = v5;
@@ -66,7 +66,7 @@
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(content);
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
@@ -88,7 +88,7 @@
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v6 = [content countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v6);
@@ -100,22 +100,22 @@
   return v13;
 }
 
-- (HomeCollectionContentInjector)initWithCollection:(id)a3 selectedMapItem:(id)a4
+- (HomeCollectionContentInjector)initWithCollection:(id)collection selectedMapItem:(id)item
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  itemCopy = item;
   v14.receiver = self;
   v14.super_class = HomeCollectionContentInjector;
   v9 = [(HomeCollectionContentInjector *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_collection, a3);
+    objc_storeStrong(&v9->_collection, collection);
     [(CollectionHandler *)v10->_collection addObserver:v10];
-    objc_storeStrong(&v10->_selectedMapItem, a4);
-    if (v8)
+    objc_storeStrong(&v10->_selectedMapItem, item);
+    if (itemCopy)
     {
-      v11 = [[SearchResult alloc] initWithMapItem:v8];
+      v11 = [[SearchResult alloc] initWithMapItem:itemCopy];
       selectedSearchResult = v10->_selectedSearchResult;
       v10->_selectedSearchResult = v11;
     }

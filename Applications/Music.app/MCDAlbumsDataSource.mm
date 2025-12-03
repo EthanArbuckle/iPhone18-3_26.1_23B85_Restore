@@ -1,6 +1,6 @@
 @interface MCDAlbumsDataSource
-- (MCDAlbumsDataSource)initWithGenre:(id)a3;
-- (MCDAlbumsDataSource)initWithPerson:(id)a3;
+- (MCDAlbumsDataSource)initWithGenre:(id)genre;
+- (MCDAlbumsDataSource)initWithPerson:(id)person;
 - (id)containerObject;
 - (id)itemSortDescriptors;
 - (id)requestItemKind;
@@ -10,31 +10,31 @@
 
 @implementation MCDAlbumsDataSource
 
-- (MCDAlbumsDataSource)initWithPerson:(id)a3
+- (MCDAlbumsDataSource)initWithPerson:(id)person
 {
-  v5 = a3;
+  personCopy = person;
   v9.receiver = self;
   v9.super_class = MCDAlbumsDataSource;
   v6 = [(MCDAlbumsDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_person, a3);
+    objc_storeStrong(&v6->_person, person);
   }
 
   return v7;
 }
 
-- (MCDAlbumsDataSource)initWithGenre:(id)a3
+- (MCDAlbumsDataSource)initWithGenre:(id)genre
 {
-  v5 = a3;
+  genreCopy = genre;
   v9.receiver = self;
   v9.super_class = MCDAlbumsDataSource;
   v6 = [(MCDAlbumsDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_genre, a3);
+    objc_storeStrong(&v6->_genre, genre);
   }
 
   return v7;
@@ -80,15 +80,15 @@
 
 - (id)itemSortDescriptors
 {
-  v3 = [(_MCDLibraryDataSource *)self sortingPreference];
+  sortingPreference = [(_MCDLibraryDataSource *)self sortingPreference];
   if ([(_MCDLibraryDataSource *)self limitedUI])
   {
     v4 = MCDSortByRecentlyPlayed;
 
-    v3 = v4;
+    sortingPreference = v4;
   }
 
-  if ([v3 isEqualToString:MCDSortByRecentlyAdded])
+  if ([sortingPreference isEqualToString:MCDSortByRecentlyAdded])
   {
     v5 = [NSSortDescriptor sortDescriptorWithKey:MPModelPropertyAlbumLibraryAddedDate ascending:0];
     v20 = v5;
@@ -100,7 +100,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:MCDSortByRecentlyPlayed])
+  if ([sortingPreference isEqualToString:MCDSortByRecentlyPlayed])
   {
     v5 = [NSSortDescriptor sortDescriptorWithKey:MPModelPropertyAlbumLastDevicePlaybackDate ascending:0];
     v19 = v5;
@@ -108,8 +108,8 @@ LABEL_14:
     goto LABEL_7;
   }
 
-  v8 = [v3 isEqualToString:MCDSortByArtist];
-  if (!v3 || v8)
+  v8 = [sortingPreference isEqualToString:MCDSortByArtist];
+  if (!sortingPreference || v8)
   {
     v17[0] = MPModelRelationshipAlbumArtist;
     v17[1] = MPModelPropertyArtistName;
@@ -122,7 +122,7 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:MCDSortByReleaseDateAscending])
+  if ([sortingPreference isEqualToString:MCDSortByReleaseDateAscending])
   {
     v15 = MPModelPropertyAlbumReleaseDateComponents;
     v5 = [NSArray arrayWithObjects:&v15 count:1];
@@ -137,7 +137,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:MCDSortByReleaseDateDescending])
+  if ([sortingPreference isEqualToString:MCDSortByReleaseDateDescending])
   {
     v13 = MPModelPropertyAlbumReleaseDateComponents;
     v5 = [NSArray arrayWithObjects:&v13 count:1];
@@ -157,42 +157,42 @@ LABEL_15:
 
 - (id)scopedContainers
 {
-  v3 = [(MCDAlbumsDataSource *)self person];
+  person = [(MCDAlbumsDataSource *)self person];
 
-  if (v3)
+  if (person)
   {
-    v4 = [(MCDAlbumsDataSource *)self person];
-    v9 = v4;
+    person2 = [(MCDAlbumsDataSource *)self person];
+    v9 = person2;
     v5 = &v9;
   }
 
   else
   {
-    v6 = [(MCDAlbumsDataSource *)self genre];
+    genre = [(MCDAlbumsDataSource *)self genre];
 
-    if (!v6)
+    if (!genre)
     {
       goto LABEL_6;
     }
 
-    v4 = [(MCDAlbumsDataSource *)self genre];
-    v8 = v4;
+    person2 = [(MCDAlbumsDataSource *)self genre];
+    v8 = person2;
     v5 = &v8;
   }
 
-  v6 = [NSArray arrayWithObjects:v5 count:1];
+  genre = [NSArray arrayWithObjects:v5 count:1];
 
 LABEL_6:
 
-  return v6;
+  return genre;
 }
 
 - (id)containerObject
 {
-  v2 = [(MCDAlbumsDataSource *)self scopedContainers];
-  v3 = [v2 firstObject];
+  scopedContainers = [(MCDAlbumsDataSource *)self scopedContainers];
+  firstObject = [scopedContainers firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 @end

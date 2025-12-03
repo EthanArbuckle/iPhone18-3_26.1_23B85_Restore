@@ -6,7 +6,7 @@
 
 - (NSString)databaseFilePath
 {
-  v2 = self;
+  selfCopy = self;
   GDLanguageView.databaseFilePath.getter();
   v4 = v3;
 

@@ -7,18 +7,18 @@
 
 - (id)predicate
 {
-  v3 = [(BKLibrarySortByMode *)self allowExplicitPredicate];
+  allowExplicitPredicate = [(BKLibrarySortByMode *)self allowExplicitPredicate];
   v4 = +[BKLibraryManager defaultManager];
-  v5 = [v4 isExplicitMaterialAllowed];
+  isExplicitMaterialAllowed = [v4 isExplicitMaterialAllowed];
 
-  if ((v5 & 1) == 0)
+  if ((isExplicitMaterialAllowed & 1) == 0)
   {
-    v6 = [(BKLibrarySortByMode *)self hideExplicitPredicate];
+    hideExplicitPredicate = [(BKLibrarySortByMode *)self hideExplicitPredicate];
 
-    v3 = v6;
+    allowExplicitPredicate = hideExplicitPredicate;
   }
 
-  return v3;
+  return allowExplicitPredicate;
 }
 
 - (id)description

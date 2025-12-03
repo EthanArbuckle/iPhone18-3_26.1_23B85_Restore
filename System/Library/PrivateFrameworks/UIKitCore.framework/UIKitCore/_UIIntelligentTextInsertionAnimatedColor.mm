@@ -1,17 +1,17 @@
 @interface _UIIntelligentTextInsertionAnimatedColor
-- (_UIIntelligentTextInsertionAnimatedColor)initWithBounds:(CGRect)a3 invalidationHandler:(id)a4;
-- (void)_drawPalette:(id)a3 boundingRect:(CGRect)a4 usingContext:(CGContext *)a5 progress:(double)a6;
-- (void)drawRect:(CGRect)a3 usingContext:(CGContext *)a4 progress:(double)a5;
-- (void)setResolvedColor:(id)a3;
+- (_UIIntelligentTextInsertionAnimatedColor)initWithBounds:(CGRect)bounds invalidationHandler:(id)handler;
+- (void)_drawPalette:(id)palette boundingRect:(CGRect)rect usingContext:(CGContext *)context progress:(double)progress;
+- (void)drawRect:(CGRect)rect usingContext:(CGContext *)context progress:(double)progress;
+- (void)setResolvedColor:(id)color;
 @end
 
 @implementation _UIIntelligentTextInsertionAnimatedColor
 
-- (_UIIntelligentTextInsertionAnimatedColor)initWithBounds:(CGRect)a3 invalidationHandler:(id)a4
+- (_UIIntelligentTextInsertionAnimatedColor)initWithBounds:(CGRect)bounds invalidationHandler:(id)handler
 {
   v11.receiver = self;
   v11.super_class = _UIIntelligentTextInsertionAnimatedColor;
-  v4 = [(_UIAnimatedColor *)&v11 initWithBounds:a4 invalidationHandler:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(_UIAnimatedColor *)&v11 initWithBounds:handler invalidationHandler:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   if (v4)
   {
     v5 = +[_UIColorPalette textAssistantReplacementSheenPalette];
@@ -29,13 +29,13 @@
   return v4;
 }
 
-- (void)setResolvedColor:(id)a3
+- (void)setResolvedColor:(id)color
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  objc_storeStrong(&self->_resolvedColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_resolvedColor, color);
+  colorCopy = color;
   v6 = [_UIColorPalette alloc];
-  v11[0] = v5;
+  v11[0] = colorCopy;
   v7 = +[UIColor clearColor];
   v11[1] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
@@ -44,25 +44,25 @@
   self->_resolvedBackgroundPalette = v9;
 }
 
-- (void)_drawPalette:(id)a3 boundingRect:(CGRect)a4 usingContext:(CGContext *)a5 progress:(double)a6
+- (void)_drawPalette:(id)palette boundingRect:(CGRect)rect usingContext:(CGContext *)context progress:(double)progress
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  v10 = [a3 gradientRepresentation];
+  height = rect.size.height;
+  width = rect.size.width;
+  gradientRepresentation = [palette gradientRepresentation];
 
-  v12.x = (width + width) * a6 - width;
+  v12.x = (width + width) * progress - width;
   v12.y = height * -2.0;
-  v13.x = width * 4.0 * a6;
-  v13.y = height * 4.0 * a6;
-  CGContextDrawLinearGradient(a5, v10, v12, v13, 3u);
+  v13.x = width * 4.0 * progress;
+  v13.y = height * 4.0 * progress;
+  CGContextDrawLinearGradient(context, gradientRepresentation, v12, v13, 3u);
 }
 
-- (void)drawRect:(CGRect)a3 usingContext:(CGContext *)a4 progress:(double)a5
+- (void)drawRect:(CGRect)rect usingContext:(CGContext *)context progress:(double)progress
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v17[3] = *MEMORY[0x1E69E9840];
   v12 = self->_resolvedBackgroundPalette;
   v16 = v12;
@@ -74,7 +74,7 @@
     v13 = v17;
     do
     {
-      [(_UIIntelligentTextInsertionAnimatedColor *)self _drawPalette:v12 boundingRect:a4 usingContext:x progress:y, width, height, a5];
+      [(_UIIntelligentTextInsertionAnimatedColor *)self _drawPalette:v12 boundingRect:context usingContext:x progress:y, width, height, progress];
       v14 = *v13++;
       v12 = v14;
     }

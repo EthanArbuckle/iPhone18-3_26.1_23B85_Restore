@@ -1,7 +1,7 @@
 @interface ContinuityCaptureButtonPressTracker
 - (BOOL)valid;
 - (ContinuityCaptureButtonPressTracker)init;
-- (void)registerCordPress:(int64_t)a3 down:(BOOL)a4;
+- (void)registerCordPress:(int64_t)press down:(BOOL)down;
 @end
 
 @implementation ContinuityCaptureButtonPressTracker
@@ -39,7 +39,7 @@
     v7 = self->_creationTime;
     buttonLongPressTimeout = self->_buttonLongPressTimeout;
     v10 = 138544130;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
     v13 = v7;
     v14 = 2048;
@@ -52,17 +52,17 @@
   return ![(NSMutableSet *)self->_buttonPressStateByUsage count]&& v5 < self->_buttonLongPressTimeout;
 }
 
-- (void)registerCordPress:(int64_t)a3 down:(BOOL)a4
+- (void)registerCordPress:(int64_t)press down:(BOOL)down
 {
-  if (a3 == 48 && a4)
+  if (press == 48 && down)
   {
     self->_creationTime = CMContinuityCaptureGetHostTimeInNanoSec();
     return;
   }
 
-  if (a3 == 48 || !a4)
+  if (press == 48 || !down)
   {
-    if (a3 == 48 || a4 || self->_creationTime)
+    if (press == 48 || down || self->_creationTime)
     {
       return;
     }

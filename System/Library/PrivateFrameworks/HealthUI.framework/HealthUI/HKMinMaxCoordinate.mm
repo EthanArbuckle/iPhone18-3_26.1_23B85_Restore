@@ -1,24 +1,24 @@
 @interface HKMinMaxCoordinate
-- (BOOL)isVisibleInChartRect:(CGRect)a3;
+- (BOOL)isVisibleInChartRect:(CGRect)rect;
 - (CGPoint)max;
 - (CGPoint)min;
-- (HKMinMaxCoordinate)initWithChartPoint:(id)a3 xAxisTransform:(id)a4 yAxisTransform:(id)a5;
-- (HKMinMaxCoordinate)initWithMin:(CGPoint)a3 max:(CGPoint)a4 userInfo:(id)a5;
+- (HKMinMaxCoordinate)initWithChartPoint:(id)point xAxisTransform:(id)transform yAxisTransform:(id)axisTransform;
+- (HKMinMaxCoordinate)initWithMin:(CGPoint)min max:(CGPoint)max userInfo:(id)info;
 - (NSString)description;
-- (double)distanceToPoint:(CGPoint)a3;
-- (double)yAxisDifferenceToPoint:(CGPoint)a3;
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4;
+- (double)distanceToPoint:(CGPoint)point;
+- (double)yAxisDifferenceToPoint:(CGPoint)point;
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale;
 @end
 
 @implementation HKMinMaxCoordinate
 
-- (HKMinMaxCoordinate)initWithMin:(CGPoint)a3 max:(CGPoint)a4 userInfo:(id)a5
+- (HKMinMaxCoordinate)initWithMin:(CGPoint)min max:(CGPoint)max userInfo:(id)info
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3.y;
-  v9 = a3.x;
-  v11 = a5;
+  y = max.y;
+  x = max.x;
+  v8 = min.y;
+  v9 = min.x;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = HKMinMaxCoordinate;
   v12 = [(HKMinMaxCoordinate *)&v15 init];
@@ -29,51 +29,51 @@
     v12->_min.y = v8;
     v12->_max.x = x;
     v12->_max.y = y;
-    objc_storeStrong(&v12->_userInfo, a5);
+    objc_storeStrong(&v12->_userInfo, info);
   }
 
   return v13;
 }
 
-- (HKMinMaxCoordinate)initWithChartPoint:(id)a3 xAxisTransform:(id)a4 yAxisTransform:(id)a5
+- (HKMinMaxCoordinate)initWithChartPoint:(id)point xAxisTransform:(id)transform yAxisTransform:(id)axisTransform
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 xValueAsGenericType];
-  [v9 coordinateForValue:v11];
+  axisTransformCopy = axisTransform;
+  transformCopy = transform;
+  pointCopy = point;
+  xValueAsGenericType = [pointCopy xValueAsGenericType];
+  [transformCopy coordinateForValue:xValueAsGenericType];
   v13 = v12;
 
-  v14 = [v10 minYValue];
-  [v8 coordinateForValue:v14];
+  minYValue = [pointCopy minYValue];
+  [axisTransformCopy coordinateForValue:minYValue];
   v16 = v15;
 
-  v17 = [v10 maxYValue];
-  [v8 coordinateForValue:v17];
+  maxYValue = [pointCopy maxYValue];
+  [axisTransformCopy coordinateForValue:maxYValue];
   v19 = v18;
 
-  v20 = [v10 userInfo];
+  userInfo = [pointCopy userInfo];
 
-  v21 = [(HKMinMaxCoordinate *)self initWithMin:v20 max:v13 userInfo:v16, v13, v19];
+  v21 = [(HKMinMaxCoordinate *)self initWithMin:userInfo max:v13 userInfo:v16, v13, v19];
   return v21;
 }
 
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale
 {
   x = self->_min.x;
   y = self->_min.y;
-  b = a3->b;
-  c = a3->c;
-  d = a3->d;
-  tx = a3->tx;
-  ty = a3->ty;
-  v12 = tx + y * c + a3->a * x;
+  b = transform->b;
+  c = transform->c;
+  d = transform->d;
+  tx = transform->tx;
+  ty = transform->ty;
+  v12 = tx + y * c + transform->a * x;
   v13 = ty + y * d + b * x;
   v14 = self->_max.x;
   v15 = self->_max.y;
-  v16 = tx + c * v15 + a3->a * v14;
+  v16 = tx + c * v15 + transform->a * v14;
   v17 = ty + d * v15 + b * v14;
-  if (a4)
+  if (scale)
   {
     v12 = HKUIFloorCGPointToScreenScale(v12, v13);
     v13 = v18;
@@ -87,7 +87,7 @@
   return [v20 initWithMin:userInfo max:v12 userInfo:{v13, v16, v17}];
 }
 
-- (double)distanceToPoint:(CGPoint)a3
+- (double)distanceToPoint:(CGPoint)point
 {
   [(HKMinMaxCoordinate *)self min];
   UIDistanceBetweenPoints();
@@ -102,9 +102,9 @@
   return result;
 }
 
-- (double)yAxisDifferenceToPoint:(CGPoint)a3
+- (double)yAxisDifferenceToPoint:(CGPoint)point
 {
-  y = a3.y;
+  y = point.y;
   [(HKMinMaxCoordinate *)self min];
   v6 = v5;
   v7 = v5 - y;
@@ -131,13 +131,13 @@
   return v7;
 }
 
-- (BOOL)isVisibleInChartRect:(CGRect)a3
+- (BOOL)isVisibleInChartRect:(CGRect)rect
 {
   v4.origin.x = self->_min.x;
   v4.origin.y = self->_min.y;
   v4.size.height = self->_max.y - v4.origin.y;
   v4.size.width = 1.0;
-  return CGRectIntersectsRect(v4, a3);
+  return CGRectIntersectsRect(v4, rect);
 }
 
 - (CGPoint)min

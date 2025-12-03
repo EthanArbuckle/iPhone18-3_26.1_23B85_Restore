@@ -1,37 +1,37 @@
 @interface _CNUILikenessFingerprintPersistedContactImpl
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_CNUILikenessFingerprintPersistedContactImpl)init;
-- (_CNUILikenessFingerprintPersistedContactImpl)initWithContact:(id)a3;
-- (_CNUILikenessFingerprintPersistedContactImpl)initWithContactIdentifier:(id)a3;
+- (_CNUILikenessFingerprintPersistedContactImpl)initWithContact:(id)contact;
+- (_CNUILikenessFingerprintPersistedContactImpl)initWithContactIdentifier:(id)identifier;
 @end
 
 @implementation _CNUILikenessFingerprintPersistedContactImpl
 
 - (_CNUILikenessFingerprintPersistedContactImpl)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (_CNUILikenessFingerprintPersistedContactImpl)initWithContact:(id)a3
+- (_CNUILikenessFingerprintPersistedContactImpl)initWithContact:(id)contact
 {
-  v4 = [a3 identifier];
-  v5 = [(_CNUILikenessFingerprintPersistedContactImpl *)self initWithContactIdentifier:v4];
+  identifier = [contact identifier];
+  v5 = [(_CNUILikenessFingerprintPersistedContactImpl *)self initWithContactIdentifier:identifier];
 
   return v5;
 }
 
-- (_CNUILikenessFingerprintPersistedContactImpl)initWithContactIdentifier:(id)a3
+- (_CNUILikenessFingerprintPersistedContactImpl)initWithContactIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = _CNUILikenessFingerprintPersistedContactImpl;
   v5 = [(_CNUILikenessFingerprintPersistedContactImpl *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     contactIdentifier = v5->_contactIdentifier;
     v5->_contactIdentifier = v6;
 
@@ -45,19 +45,19 @@
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"contactIdentifier" object:self->_contactIdentifier];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || (contactIdentifier = self->_contactIdentifier, contactIdentifier | v4->_contactIdentifier) && ![(NSString *)contactIdentifier isEqual:?])
+    if ((objc_opt_isKindOfClass() & 1) == 0 || (contactIdentifier = self->_contactIdentifier, contactIdentifier | equalCopy->_contactIdentifier) && ![(NSString *)contactIdentifier isEqual:?])
     {
       v6 = 0;
     }

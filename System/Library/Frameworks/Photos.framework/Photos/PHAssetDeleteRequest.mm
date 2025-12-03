@@ -1,20 +1,20 @@
 @interface PHAssetDeleteRequest
-- (BOOL)validateForDeleteManagedObject:(id)a3 error:(id *)a4;
-- (PHAssetDeleteRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
-- (void)_updateSyndicationStateForSyndicationIdentifier:(id)a3 savedAssetType:(signed __int16)a4 sourceLibraryID:(int64_t)a5;
-- (void)deleteManagedObject:(id)a3 photoLibrary:(id)a4;
-- (void)encodeToXPCDict:(id)a3;
+- (BOOL)validateForDeleteManagedObject:(id)object error:(id *)error;
+- (PHAssetDeleteRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
+- (void)_updateSyndicationStateForSyndicationIdentifier:(id)identifier savedAssetType:(signed __int16)type sourceLibraryID:(int64_t)d;
+- (void)deleteManagedObject:(id)object photoLibrary:(id)library;
+- (void)encodeToXPCDict:(id)dict;
 @end
 
 @implementation PHAssetDeleteRequest
 
-- (void)_updateSyndicationStateForSyndicationIdentifier:(id)a3 savedAssetType:(signed __int16)a4 sourceLibraryID:(int64_t)a5
+- (void)_updateSyndicationStateForSyndicationIdentifier:(id)identifier savedAssetType:(signed __int16)type sourceLibraryID:(int64_t)d
 {
-  v8 = a3;
-  v6 = [(PHTrashableObjectDeleteRequest *)self operation];
-  if (v6)
+  identifierCopy = identifier;
+  operation = [(PHTrashableObjectDeleteRequest *)self operation];
+  if (operation)
   {
-    if (v6 != 2)
+    if (operation != 2)
     {
       goto LABEL_6;
     }
@@ -27,63 +27,63 @@
     v7 = &__block_literal_global_4773;
   }
 
-  [MEMORY[0x1E69BE540] performTransactionOnSyndicationLibraryWithSyndicationIdentifier:v8 block:v7];
+  [MEMORY[0x1E69BE540] performTransactionOnSyndicationLibraryWithSyndicationIdentifier:identifierCopy block:v7];
 LABEL_6:
 }
 
-- (void)deleteManagedObject:(id)a3 photoLibrary:(id)a4
+- (void)deleteManagedObject:(id)object photoLibrary:(id)library
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [v8 additionalAttributes];
-  v10 = [v9 syndicationIdentifier];
+  objectCopy = object;
+  libraryCopy = library;
+  v8 = objectCopy;
+  additionalAttributes = [v8 additionalAttributes];
+  syndicationIdentifier = [additionalAttributes syndicationIdentifier];
 
-  v11 = [v8 savedAssetType];
-  v12 = [v7 libraryServicesManager];
-  v13 = [v12 wellKnownPhotoLibraryIdentifier];
+  savedAssetType = [v8 savedAssetType];
+  libraryServicesManager = [libraryCopy libraryServicesManager];
+  wellKnownPhotoLibraryIdentifier = [libraryServicesManager wellKnownPhotoLibraryIdentifier];
 
-  if (v13 != 3)
+  if (wellKnownPhotoLibraryIdentifier != 3)
   {
-    v16 = [(PHTrashableObjectDeleteRequest *)self operation];
-    if (v16 == 2)
+    operation = [(PHTrashableObjectDeleteRequest *)self operation];
+    if (operation == 2)
     {
       v25 = v8;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
-      [v7 userUntrashAssets:v20];
+      [libraryCopy userUntrashAssets:v20];
     }
 
-    else if (v16 == 1)
+    else if (operation == 1)
     {
-      v22 = [(PHAssetDeleteRequest *)self deleteOptions];
-      v23 = [v22 expungeSource];
+      deleteOptions = [(PHAssetDeleteRequest *)self deleteOptions];
+      expungeSource = [deleteOptions expungeSource];
 
-      if (v23 > 8)
+      if (expungeSource > 8)
       {
         v24 = 0;
       }
 
       else
       {
-        v24 = off_1E75A41F8[v23];
+        v24 = off_1E75A41F8[expungeSource];
       }
 
       v26 = v8;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
-      [v7 userExpungeAssets:v20 localOnlyDelete:0 expungeReasonFromClient:v24];
+      [libraryCopy userExpungeAssets:v20 localOnlyDelete:0 expungeReasonFromClient:v24];
     }
 
     else
     {
-      if (v16)
+      if (operation)
       {
         goto LABEL_18;
       }
 
-      v17 = [(PHObjectDeleteRequest *)self clientBundleID];
-      v18 = [v17 lowercaseString];
-      v19 = [v18 hasPrefix:@"com.apple."];
+      clientBundleID = [(PHObjectDeleteRequest *)self clientBundleID];
+      lowercaseString = [clientBundleID lowercaseString];
+      v19 = [lowercaseString hasPrefix:@"com.apple."];
 
       v27 = v8;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
@@ -97,11 +97,11 @@ LABEL_6:
         v21 = 2;
       }
 
-      [v7 userTrashAssets:v20 withTrashedReason:v21];
+      [libraryCopy userTrashAssets:v20 withTrashedReason:v21];
     }
 
 LABEL_18:
-    if (v13 != 1)
+    if (wellKnownPhotoLibraryIdentifier != 1)
     {
       goto LABEL_21;
     }
@@ -112,35 +112,35 @@ LABEL_18:
   v14 = PLSyndicationGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    v15 = [v8 uuid];
+    uuid = [v8 uuid];
     *buf = 138543618;
-    v29 = v15;
+    v29 = uuid;
     v30 = 2114;
-    v31 = v10;
+    v31 = syndicationIdentifier;
     _os_log_impl(&dword_19C86F000, v14, OS_LOG_TYPE_INFO, "Preventing PhotoKit delete of asset %{public}@ / %{public}@ in syndication library", buf, 0x16u);
   }
 
 LABEL_19:
-  if (v10)
+  if (syndicationIdentifier)
   {
-    [(PHAssetDeleteRequest *)self _updateSyndicationStateForSyndicationIdentifier:v10 savedAssetType:v11 sourceLibraryID:v13];
+    [(PHAssetDeleteRequest *)self _updateSyndicationStateForSyndicationIdentifier:syndicationIdentifier savedAssetType:savedAssetType sourceLibraryID:wellKnownPhotoLibraryIdentifier];
   }
 
 LABEL_21:
 }
 
-- (BOOL)validateForDeleteManagedObject:(id)a3 error:(id *)a4
+- (BOOL)validateForDeleteManagedObject:(id)object error:(id *)error
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  objectCopy = object;
   v28.receiver = self;
   v28.super_class = PHAssetDeleteRequest;
   v29 = 0;
-  v7 = [(PHTrashableObjectDeleteRequest *)&v28 validateForDeleteManagedObject:v6 error:&v29];
+  v7 = [(PHTrashableObjectDeleteRequest *)&v28 validateForDeleteManagedObject:objectCopy error:&v29];
   v8 = v29;
   if (v7)
   {
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v6 isCloudSharedAsset] && !-[PHObjectDeleteRequest isClientEntitled](self, "isClientEntitled"))
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [objectCopy isCloudSharedAsset] && !-[PHObjectDeleteRequest isClientEntitled](self, "isClientEntitled"))
     {
       v18 = MEMORY[0x1E696ABC0];
       v36 = *MEMORY[0x1E696A578];
@@ -154,7 +154,7 @@ LABEL_21:
       v8 = v20;
 LABEL_22:
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_25;
       }
@@ -168,7 +168,7 @@ LABEL_22:
       goto LABEL_25;
     }
 
-    v9 = v6;
+    v9 = objectCopy;
     if ([v9 hasLibraryScope] && !objc_msgSend(v9, "canPerformEditOperation:", 101))
     {
       v21 = MEMORY[0x1E696ABC0];
@@ -182,16 +182,16 @@ LABEL_22:
 
     else
     {
-      v10 = [(PHObjectDeleteRequest *)self clientBundleID];
-      v11 = [v10 lowercaseString];
-      if ([v11 hasPrefix:@"com.apple."])
+      clientBundleID = [(PHObjectDeleteRequest *)self clientBundleID];
+      lowercaseString = [clientBundleID lowercaseString];
+      if ([lowercaseString hasPrefix:@"com.apple."])
       {
 
 LABEL_14:
-        v16 = [(PHAssetDeleteRequest *)self deleteOptions];
-        v17 = [v16 expungeSource];
+        deleteOptions = [(PHAssetDeleteRequest *)self deleteOptions];
+        expungeSource = [deleteOptions expungeSource];
 
-        if (v17)
+        if (expungeSource)
         {
           v12 = 1;
           goto LABEL_22;
@@ -207,9 +207,9 @@ LABEL_14:
         goto LABEL_20;
       }
 
-      v13 = [(PHObjectDeleteRequest *)self clientBundleID];
-      v14 = [v13 lowercaseString];
-      v15 = [v14 hasPrefix:@"com.appleinternal."];
+      clientBundleID2 = [(PHObjectDeleteRequest *)self clientBundleID];
+      lowercaseString2 = [clientBundleID2 lowercaseString];
+      v15 = [lowercaseString2 hasPrefix:@"com.appleinternal."];
 
       if (v15)
       {
@@ -234,7 +234,7 @@ LABEL_20:
   }
 
   v12 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_25;
   }
@@ -244,7 +244,7 @@ LABEL_23:
   {
     v26 = v8;
     v12 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_25:
@@ -252,28 +252,28 @@ LABEL_25:
   return v12;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v6.receiver = self;
   v6.super_class = PHAssetDeleteRequest;
-  [(PHTrashableObjectDeleteRequest *)&v6 encodeToXPCDict:v4];
+  [(PHTrashableObjectDeleteRequest *)&v6 encodeToXPCDict:dictCopy];
   if (self->_deleteOptions)
   {
-    v5 = [(PHAssetDeleteRequest *)self deleteOptions];
-    [v5 encodeToXPCDict:v4];
+    deleteOptions = [(PHAssetDeleteRequest *)self deleteOptions];
+    [deleteOptions encodeToXPCDict:dictCopy];
   }
 }
 
-- (PHAssetDeleteRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHAssetDeleteRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
+  dictCopy = dict;
   v15.receiver = self;
   v15.super_class = PHAssetDeleteRequest;
-  v9 = [(PHTrashableObjectDeleteRequest *)&v15 initWithXPCDict:v8 request:a4 clientAuthorization:a5];
+  v9 = [(PHTrashableObjectDeleteRequest *)&v15 initWithXPCDict:dictCopy request:request clientAuthorization:authorization];
   if (v9)
   {
-    v10 = [[PHAssetDeleteOptions alloc] initWithXPCDict:v8];
+    v10 = [[PHAssetDeleteOptions alloc] initWithXPCDict:dictCopy];
     deleteOptions = v9->_deleteOptions;
     v9->_deleteOptions = v10;
 

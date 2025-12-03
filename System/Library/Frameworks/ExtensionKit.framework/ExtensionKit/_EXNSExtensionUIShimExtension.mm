@@ -1,13 +1,13 @@
 @interface _EXNSExtensionUIShimExtension
-- (void)prepareForSceneConnectionWithConfiguration:(id)a3;
+- (void)prepareForSceneConnectionWithConfiguration:(id)configuration;
 @end
 
 @implementation _EXNSExtensionUIShimExtension
 
-- (void)prepareForSceneConnectionWithConfiguration:(id)a3
+- (void)prepareForSceneConnectionWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  [v3 setSceneClass:objc_opt_class()];
+  configurationCopy = configuration;
+  [configurationCopy setSceneClass:objc_opt_class()];
 }
 
 @end

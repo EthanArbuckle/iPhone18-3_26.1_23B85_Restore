@@ -1,20 +1,20 @@
 @interface DTAssertionManager
 + (id)sharedInstance;
-+ (void)defaultAssertionFactories:(id *)a3 andDisableKeys:(id *)a4;
++ (void)defaultAssertionFactories:(id *)factories andDisableKeys:(id *)keys;
 - (DTAssertionManager)init;
-- (DTAssertionManager)initWithAssertionFactories:(id)a3 andDisableKeys:(id)a4;
-- (void)removeAssertionsForPid:(int)a3 onBehalfOfClient:(id)a4;
-- (void)removeClaimsHeldByClient:(id)a3;
-- (void)takeAssertionsForPid:(int)a3 onBehalfOfClient:(id)a4 withOptions:(id)a5;
+- (DTAssertionManager)initWithAssertionFactories:(id)factories andDisableKeys:(id)keys;
+- (void)removeAssertionsForPid:(int)pid onBehalfOfClient:(id)client;
+- (void)removeClaimsHeldByClient:(id)client;
+- (void)takeAssertionsForPid:(int)pid onBehalfOfClient:(id)client withOptions:(id)options;
 @end
 
 @implementation DTAssertionManager
 
-+ (void)defaultAssertionFactories:(id *)a3 andDisableKeys:(id *)a4
++ (void)defaultAssertionFactories:(id *)factories andDisableKeys:(id *)keys
 {
   if (qword_27EE84418 == -1)
   {
-    if (!a3)
+    if (!factories)
     {
       goto LABEL_4;
     }
@@ -23,16 +23,16 @@
   }
 
   sub_24802F8DC();
-  if (a3)
+  if (factories)
   {
 LABEL_3:
-    *a3 = qword_27EE84420;
+    *factories = qword_27EE84420;
   }
 
 LABEL_4:
-  if (a4)
+  if (keys)
   {
-    *a4 = qword_27EE84428;
+    *keys = qword_27EE84428;
   }
 }
 
@@ -60,20 +60,20 @@ LABEL_4:
   return v5;
 }
 
-- (DTAssertionManager)initWithAssertionFactories:(id)a3 andDisableKeys:(id)a4
+- (DTAssertionManager)initWithAssertionFactories:(id)factories andDisableKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
+  factoriesCopy = factories;
+  keysCopy = keys;
   v18.receiver = self;
   v18.super_class = DTAssertionManager;
   v8 = [(DTAssertionManager *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [factoriesCopy copy];
     assertionFactories = v8->_assertionFactories;
     v8->_assertionFactories = v9;
 
-    v11 = [v7 copy];
+    v11 = [keysCopy copy];
     disableKeys = v8->_disableKeys;
     v8->_disableKeys = v11;
 
@@ -89,48 +89,48 @@ LABEL_4:
   return v8;
 }
 
-- (void)takeAssertionsForPid:(int)a3 onBehalfOfClient:(id)a4 withOptions:(id)a5
+- (void)takeAssertionsForPid:(int)pid onBehalfOfClient:(id)client withOptions:(id)options
 {
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  clientCopy = client;
+  optionsCopy = options;
+  if (clientCopy)
   {
     guard = self->_guard;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = sub_247FD6ECC;
     v11[3] = &unk_278EF28C0;
-    v14 = a3;
+    pidCopy = pid;
     v11[4] = self;
-    v12 = v8;
-    v13 = v9;
+    v12 = clientCopy;
+    v13 = optionsCopy;
     dispatch_sync(guard, v11);
   }
 }
 
-- (void)removeAssertionsForPid:(int)a3 onBehalfOfClient:(id)a4
+- (void)removeAssertionsForPid:(int)pid onBehalfOfClient:(id)client
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  clientCopy = client;
+  v7 = clientCopy;
+  if (clientCopy)
   {
     guard = self->_guard;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_247FD7380;
     block[3] = &unk_278EF2898;
-    v11 = a3;
+    pidCopy = pid;
     block[4] = self;
-    v10 = v6;
+    v10 = clientCopy;
     dispatch_sync(guard, block);
   }
 }
 
-- (void)removeClaimsHeldByClient:(id)a3
+- (void)removeClaimsHeldByClient:(id)client
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  clientCopy = client;
+  v5 = clientCopy;
+  if (clientCopy)
   {
     guard = self->_guard;
     v7[0] = MEMORY[0x277D85DD0];
@@ -138,7 +138,7 @@ LABEL_4:
     v7[2] = sub_247FD74D0;
     v7[3] = &unk_278EF1550;
     v7[4] = self;
-    v8 = v4;
+    v8 = clientCopy;
     dispatch_sync(guard, v7);
   }
 }

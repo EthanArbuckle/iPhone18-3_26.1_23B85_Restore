@@ -7,24 +7,24 @@
 
 - (id)hf_faceClassificationName
 {
-  v1 = [a1 faceClassification];
-  v2 = [v1 person];
-  v3 = [v2 name];
+  faceClassification = [self faceClassification];
+  person = [faceClassification person];
+  name = [person name];
 
-  return v3;
+  return name;
 }
 
 - (__CFString)hf_reasonKey
 {
-  v1 = [a1 reason];
-  if ((v1 - 2) > 4)
+  reason = [self reason];
+  if ((reason - 2) > 4)
   {
     return @"AnyMotion";
   }
 
   else
   {
-    return off_277E00D10[v1 - 2];
+    return off_277E00D10[reason - 2];
   }
 }
 

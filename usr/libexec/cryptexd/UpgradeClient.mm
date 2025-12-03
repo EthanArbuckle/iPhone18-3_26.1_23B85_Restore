@@ -1,17 +1,17 @@
 @interface UpgradeClient
-- (UpgradeClient)initWithConn:(id)a3 log:(id)a4;
-- (void)_handleInterfaceLockMessage:(id)a3;
+- (UpgradeClient)initWithConn:(id)conn log:(id)log;
+- (void)_handleInterfaceLockMessage:(id)message;
 - (void)activate;
 - (void)dealloc;
-- (void)onCancel:(id)a3;
+- (void)onCancel:(id)cancel;
 @end
 
 @implementation UpgradeClient
 
-- (UpgradeClient)initWithConn:(id)a3 log:(id)a4
+- (UpgradeClient)initWithConn:(id)conn log:(id)log
 {
-  v7 = a3;
-  v8 = a4;
+  connCopy = conn;
+  logCopy = log;
   v31 = 0u;
   memset(v32, 0, sizeof(v32));
   v29 = 0u;
@@ -33,14 +33,14 @@
   v9 = [(UpgradeClient *)&v15 init];
   if (v9)
   {
-    pid = xpc_connection_get_pid(v7);
+    pid = xpc_connection_get_pid(connCopy);
     snprintf(__str, 0xFFuLL, "com.apple.security.cryptexd.upgrade_lock.pid%d", pid);
     v11 = os_transaction_create();
     transaction = v9->_transaction;
     v9->_transaction = v11;
 
-    objc_storeStrong(&v9->_conn, a3);
-    objc_storeStrong(&v9->_logHandle, a4);
+    objc_storeStrong(&v9->_conn, conn);
+    objc_storeStrong(&v9->_logHandle, log);
     v13 = malloc_type_calloc(1uLL, 0x20uLL, 0x8709206FuLL);
     if (!v13)
     {
@@ -58,13 +58,13 @@
 - (void)activate
 {
   objc_initWeak(&location, self);
-  v3 = [(UpgradeClient *)self conn];
+  conn = [(UpgradeClient *)self conn];
   v5 = _NSConcreteStackBlock;
   v6 = 3221225472;
   v7 = __25__UpgradeClient_activate__block_invoke;
   v8 = &unk_100071468;
   objc_copyWeak(&v9, &location);
-  xpc_connection_set_event_handler(v3, &v5);
+  xpc_connection_set_event_handler(conn, &v5);
 
   v4 = [(UpgradeClient *)self conn:v5];
   xpc_connection_activate(v4);
@@ -80,29 +80,29 @@ void __25__UpgradeClient_activate__block_invoke(uint64_t a1, void *a2)
   [WeakRetained _handleInterfaceLockMessage:v3];
 }
 
-- (void)onCancel:(id)a3
+- (void)onCancel:(id)cancel
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(cancel);
   cancelHandler = self->_cancelHandler;
   self->_cancelHandler = v4;
 
   _objc_release_x1();
 }
 
-- (void)_handleInterfaceLockMessage:(id)a3
+- (void)_handleInterfaceLockMessage:(id)message
 {
-  v5 = a3;
-  v6 = [(UpgradeClient *)self conn];
-  v7 = 0;
-  is_entitled = cryptex_xpc_connection_is_entitled(v6, "com.apple.private.security.cryptex.upgrade");
+  messageCopy = message;
+  conn = [(UpgradeClient *)self conn];
+  conn7 = 0;
+  is_entitled = cryptex_xpc_connection_is_entitled(conn, "com.apple.private.security.cryptex.upgrade");
 
   if (is_entitled)
   {
-    v9 = xpc_copy_description(v5);
-    if (xpc_get_type(v5) == &_xpc_type_error)
+    v9 = xpc_copy_description(messageCopy);
+    if (xpc_get_type(messageCopy) == &_xpc_type_error)
     {
-      v22 = [(UpgradeClient *)self cancelHandler];
-      v22[2]();
+      cancelHandler = [(UpgradeClient *)self cancelHandler];
+      cancelHandler[2]();
 
       transaction = self->_transaction;
       self->_transaction = 0;
@@ -115,19 +115,19 @@ void __25__UpgradeClient_activate__block_invoke(uint64_t a1, void *a2)
     {
       *buffer = *"unknown";
       *&buffer[16] = *&qword_100059128;
-      v10 = [(UpgradeClient *)self conn];
-      pid = xpc_connection_get_pid(v10);
+      conn2 = [(UpgradeClient *)self conn];
+      pid = xpc_connection_get_pid(conn2);
       proc_name(pid, buffer, 0x20u);
 
       v12 = *__error();
-      v13 = [(UpgradeClient *)self logHandle];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      logHandle = [(UpgradeClient *)self logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
-        v14 = [(UpgradeClient *)self conn];
-        if (v14)
+        conn3 = [(UpgradeClient *)self conn];
+        if (conn3)
         {
-          v3 = [(UpgradeClient *)self conn];
-          v15 = xpc_connection_get_pid(v3);
+          conn4 = [(UpgradeClient *)self conn];
+          v15 = xpc_connection_get_pid(conn4);
         }
 
         else
@@ -143,15 +143,15 @@ void __25__UpgradeClient_activate__block_invoke(uint64_t a1, void *a2)
         v32 = v9;
         v33 = 1024;
         v34 = 5;
-        _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "XPC client <process=%s pid=%d>: unexpected message: %{public}s: %{darwin.errno}d", &v27, 0x22u);
-        if (v14)
+        _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_ERROR, "XPC client <process=%s pid=%d>: unexpected message: %{public}s: %{darwin.errno}d", &v27, 0x22u);
+        if (conn3)
         {
         }
       }
 
       *__error() = v12;
-      v26 = [(UpgradeClient *)self conn];
-      xpc_connection_cancel(v26);
+      conn5 = [(UpgradeClient *)self conn];
+      xpc_connection_cancel(conn5);
     }
   }
 
@@ -162,14 +162,14 @@ void __25__UpgradeClient_activate__block_invoke(uint64_t a1, void *a2)
     proc_name(v17, &v27, 0x20u);
 
     v18 = *__error();
-    v19 = [(UpgradeClient *)self logHandle];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    logHandle2 = [(UpgradeClient *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
     {
-      v20 = [(UpgradeClient *)self conn];
-      if (v20)
+      conn6 = [(UpgradeClient *)self conn];
+      if (conn6)
       {
-        v7 = [(UpgradeClient *)self conn];
-        v21 = xpc_connection_get_pid(v7);
+        conn7 = [(UpgradeClient *)self conn];
+        v21 = xpc_connection_get_pid(conn7);
       }
 
       else
@@ -183,15 +183,15 @@ void __25__UpgradeClient_activate__block_invoke(uint64_t a1, void *a2)
       *&buffer[14] = v21;
       *&buffer[18] = 1024;
       *&buffer[20] = 144;
-      _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "XPC client <process=%s pid=%d>: Client lacks entitlement.: %{darwin.errno}d", buffer, 0x18u);
-      if (v20)
+      _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_ERROR, "XPC client <process=%s pid=%d>: Client lacks entitlement.: %{darwin.errno}d", buffer, 0x18u);
+      if (conn6)
       {
       }
     }
 
     *__error() = v18;
-    v25 = [(UpgradeClient *)self conn];
-    xpc_connection_cancel(v25);
+    conn8 = [(UpgradeClient *)self conn];
+    xpc_connection_cancel(conn8);
 
     v9 = 0;
   }

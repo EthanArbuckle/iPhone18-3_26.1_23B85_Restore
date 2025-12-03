@@ -1,38 +1,38 @@
 @interface PLAutoBugCapture
-+ (BOOL)_shouldThrottleReportForType:(id)a3 subType:(id)a4 subtypeContextBase:(id)a5;
-+ (id)_actionDictionaryWithLogArchive:(BOOL)a3 networkInfo:(BOOL)a4 crashAndSpinLogs:(BOOL)a5 diagnosticExtensions:(BOOL)a6;
-+ (id)_bucketCountDescriptionForCount:(int64_t)a3 policy:(unint64_t)a4;
-+ (id)_countEventWithName:(id)a3 result:(id)a4;
-+ (id)_eventWithName:(id)a3 result:(id)a4;
-+ (id)_eventWithName:(id)a3 result:(id)a4 count:(id)a5;
++ (BOOL)_shouldThrottleReportForType:(id)type subType:(id)subType subtypeContextBase:(id)base;
++ (id)_actionDictionaryWithLogArchive:(BOOL)archive networkInfo:(BOOL)info crashAndSpinLogs:(BOOL)logs diagnosticExtensions:(BOOL)extensions;
++ (id)_bucketCountDescriptionForCount:(int64_t)count policy:(unint64_t)policy;
++ (id)_countEventWithName:(id)name result:(id)result;
++ (id)_eventWithName:(id)name result:(id)result;
++ (id)_eventWithName:(id)name result:(id)result count:(id)count;
 + (id)_sThrottleLock_untilDates;
-+ (void)_captureSnapshotWithType:(id)a3 subType:(id)a4 subtypeContextBase:(id)a5 subtypeContextModifier:(id)a6 triggerThresholdValues:(id)a7 events:(id)a8 actions:(id)a9 completion:(id)a10;
-+ (void)_captureSpotlightClientHandlerReindexItemsWithCountDescription:(id)a3 reason:(id)a4 completion:(id)a5;
-+ (void)_registerCompletedReportForType:(id)a3 subType:(id)a4 subtypeContextBase:(id)a5 success:(BOOL)a6;
-+ (void)captureImageWriterInvalidLivePhotoMetadataWithStillDisplayTimeNotNumeric:(BOOL)a3 videoDurationIsNotNumeric:(BOOL)a4 photoIrisMediaGroupUUIDDoesNotMatch:(BOOL)a5 existingPhotoIrisMediaGroupUUIDIsMissing:(BOOL)a6 completion:(id)a7;
-+ (void)captureSpotlightClientHandlerReindexItemsWithIdentifiers:(id)a3 reason:(id)a4 completion:(id)a5;
-+ (void)captureSpotlightClientStateMissingSnapshotWithSpotlightAssetCountResult:(id)a3 spotlightError:(id)a4 searchIndexingEvents:(id)a5 completion:(id)a6;
++ (void)_captureSnapshotWithType:(id)type subType:(id)subType subtypeContextBase:(id)base subtypeContextModifier:(id)modifier triggerThresholdValues:(id)values events:(id)events actions:(id)actions completion:(id)self0;
++ (void)_captureSpotlightClientHandlerReindexItemsWithCountDescription:(id)description reason:(id)reason completion:(id)completion;
++ (void)_registerCompletedReportForType:(id)type subType:(id)subType subtypeContextBase:(id)base success:(BOOL)success;
++ (void)captureImageWriterInvalidLivePhotoMetadataWithStillDisplayTimeNotNumeric:(BOOL)numeric videoDurationIsNotNumeric:(BOOL)notNumeric photoIrisMediaGroupUUIDDoesNotMatch:(BOOL)match existingPhotoIrisMediaGroupUUIDIsMissing:(BOOL)missing completion:(id)completion;
++ (void)captureSpotlightClientHandlerReindexItemsWithIdentifiers:(id)identifiers reason:(id)reason completion:(id)completion;
++ (void)captureSpotlightClientStateMissingSnapshotWithSpotlightAssetCountResult:(id)result spotlightError:(id)error searchIndexingEvents:(id)events completion:(id)completion;
 @end
 
 @implementation PLAutoBugCapture
 
-+ (void)captureImageWriterInvalidLivePhotoMetadataWithStillDisplayTimeNotNumeric:(BOOL)a3 videoDurationIsNotNumeric:(BOOL)a4 photoIrisMediaGroupUUIDDoesNotMatch:(BOOL)a5 existingPhotoIrisMediaGroupUUIDIsMissing:(BOOL)a6 completion:(id)a7
++ (void)captureImageWriterInvalidLivePhotoMetadataWithStillDisplayTimeNotNumeric:(BOOL)numeric videoDurationIsNotNumeric:(BOOL)notNumeric photoIrisMediaGroupUUIDDoesNotMatch:(BOOL)match existingPhotoIrisMediaGroupUUIDIsMissing:(BOOL)missing completion:(id)completion
 {
-  v7 = a6;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  missingCopy = missing;
+  matchCopy = match;
+  notNumericCopy = notNumeric;
+  numericCopy = numeric;
   v32[1] = *MEMORY[0x1E69E9840];
-  v12 = a7;
+  completionCopy = completion;
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = v13;
-  if (v7)
+  if (missingCopy)
   {
     [v13 addObject:@"IdentifierMissing"];
-    if (!v8)
+    if (!matchCopy)
     {
 LABEL_3:
-      if (!v10)
+      if (!numericCopy)
       {
         goto LABEL_4;
       }
@@ -41,16 +41,16 @@ LABEL_3:
     }
   }
 
-  else if (!v8)
+  else if (!matchCopy)
   {
     goto LABEL_3;
   }
 
   [v14 addObject:@"IdentifierDoesNotMatch"];
-  if (!v10)
+  if (!numericCopy)
   {
 LABEL_4:
-    if (!v9)
+    if (!notNumericCopy)
     {
       goto LABEL_6;
     }
@@ -60,7 +60,7 @@ LABEL_4:
 
 LABEL_10:
   [v14 addObject:@"ImageDisplayTimeNotNumeric"];
-  if (v9)
+  if (notNumericCopy)
   {
 LABEL_5:
     [v14 addObject:@"VideoDurationNotNumeric"];
@@ -70,8 +70,8 @@ LABEL_6:
   if ([v14 count])
   {
     v15 = [v14 componentsJoinedByString:@"|"];
-    v16 = [a1 _actionDictionaryWithLogArchive:1 networkInfo:0 crashAndSpinLogs:1 diagnosticExtensions:1];
-    [a1 _captureSnapshotWithType:@"ImageWriter" subType:@"InvalidLivePhotoMetadata" subtypeContextBase:v15 subtypeContextModifier:0 triggerThresholdValues:0 events:0 actions:v16 completion:v12];
+    v16 = [self _actionDictionaryWithLogArchive:1 networkInfo:0 crashAndSpinLogs:1 diagnosticExtensions:1];
+    [self _captureSnapshotWithType:@"ImageWriter" subType:@"InvalidLivePhotoMetadata" subtypeContextBase:v15 subtypeContextModifier:0 triggerThresholdValues:0 events:0 actions:v16 completion:completionCopy];
   }
 
   else
@@ -94,9 +94,9 @@ LABEL_6:
     _Block_object_dispose(&v27, 8);
     if (!v19)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"const int getkSymptomDiagnosticErrorInvalidParameters(void)"];
-      [v25 handleFailureInFunction:v26 file:@"PLAutoBugCapture.m" lineNumber:50 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v26 file:@"PLAutoBugCapture.m" lineNumber:50 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
@@ -107,54 +107,54 @@ LABEL_6:
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
     v23 = [v18 errorWithDomain:@"PLAutoBugCaptureErrorDomain" code:v21 userInfo:v22];
     v24 = [v17 failureWithError:v23];
-    v12[2](v12, v24);
+    completionCopy[2](completionCopy, v24);
   }
 }
 
-+ (void)captureSpotlightClientHandlerReindexItemsWithIdentifiers:(id)a3 reason:(id)a4 completion:(id)a5
++ (void)captureSpotlightClientHandlerReindexItemsWithIdentifiers:(id)identifiers reason:(id)reason completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a1 _bucketCountDescriptionForCount:objc_msgSend(a3 policy:{"count"), 1}];
-  [a1 _captureSpotlightClientHandlerReindexItemsWithCountDescription:v10 reason:v9 completion:v8];
+  completionCopy = completion;
+  reasonCopy = reason;
+  v10 = [self _bucketCountDescriptionForCount:objc_msgSend(identifiers policy:{"count"), 1}];
+  [self _captureSpotlightClientHandlerReindexItemsWithCountDescription:v10 reason:reasonCopy completion:completionCopy];
 }
 
-+ (void)_captureSpotlightClientHandlerReindexItemsWithCountDescription:(id)a3 reason:(id)a4 completion:(id)a5
++ (void)_captureSpotlightClientHandlerReindexItemsWithCountDescription:(id)description reason:(id)reason completion:(id)completion
 {
-  v11 = a3;
-  v8 = a5;
-  if (a4)
+  descriptionCopy = description;
+  completionCopy = completion;
+  if (reason)
   {
-    v9 = [@"SpotlightReindex" stringByAppendingFormat:@":%@", a4];
+    reason = [@"SpotlightReindex" stringByAppendingFormat:@":%@", reason];
   }
 
   else
   {
-    v9 = @"SpotlightReindex";
+    reason = @"SpotlightReindex";
   }
 
-  v10 = [a1 _actionDictionaryWithLogArchive:1 networkInfo:0 crashAndSpinLogs:1 diagnosticExtensions:1];
-  [a1 _captureSnapshotWithType:@"Search" subType:v9 subtypeContextBase:@"ItemCount" subtypeContextModifier:v11 triggerThresholdValues:0 events:0 actions:v10 completion:v8];
+  v10 = [self _actionDictionaryWithLogArchive:1 networkInfo:0 crashAndSpinLogs:1 diagnosticExtensions:1];
+  [self _captureSnapshotWithType:@"Search" subType:reason subtypeContextBase:@"ItemCount" subtypeContextModifier:descriptionCopy triggerThresholdValues:0 events:0 actions:v10 completion:completionCopy];
 }
 
-+ (void)captureSpotlightClientStateMissingSnapshotWithSpotlightAssetCountResult:(id)a3 spotlightError:(id)a4 searchIndexingEvents:(id)a5 completion:(id)a6
++ (void)captureSpotlightClientStateMissingSnapshotWithSpotlightAssetCountResult:(id)result spotlightError:(id)error searchIndexingEvents:(id)events completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v29 = a6;
-  if ([v10 isSuccess])
+  resultCopy = result;
+  errorCopy = error;
+  eventsCopy = events;
+  completionCopy = completion;
+  if ([resultCopy isSuccess])
   {
-    v13 = [v10 result];
-    v14 = [v13 unsignedIntegerValue];
+    result = [resultCopy result];
+    unsignedIntegerValue = [result unsignedIntegerValue];
 
-    v15 = [a1 _bucketCountDescriptionForCount:v14 policy:0];
-    if (v11)
+    v15 = [self _bucketCountDescriptionForCount:unsignedIntegerValue policy:0];
+    if (errorCopy)
     {
 LABEL_3:
-      v16 = [v11 domain];
-      v17 = -[__CFString stringByAppendingFormat:](v15, "stringByAppendingFormat:", @"(%@:%ld)", v16, [v11 code]);
+      domain = [errorCopy domain];
+      v17 = -[__CFString stringByAppendingFormat:](v15, "stringByAppendingFormat:", @"(%@:%ld)", domain, [errorCopy code]);
 
       goto LABEL_6;
     }
@@ -163,7 +163,7 @@ LABEL_3:
   else
   {
     v15 = @"Failed";
-    if (v11)
+    if (errorCopy)
     {
       goto LABEL_3;
     }
@@ -172,7 +172,7 @@ LABEL_3:
   v17 = v15;
 LABEL_6:
   v28 = v15;
-  v18 = [v12 sortedArrayUsingComparator:&__block_literal_global_109534];
+  v18 = [eventsCopy sortedArrayUsingComparator:&__block_literal_global_109534];
 
   v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v30 = 0u;
@@ -195,8 +195,8 @@ LABEL_6:
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v30 + 1) + 8 * v24) autoBugCaptureEventDictionary];
-        [v19 addObject:v25];
+        autoBugCaptureEventDictionary = [*(*(&v30 + 1) + 8 * v24) autoBugCaptureEventDictionary];
+        [v19 addObject:autoBugCaptureEventDictionary];
 
         ++v24;
       }
@@ -208,11 +208,11 @@ LABEL_6:
     while (v22);
   }
 
-  v26 = [a1 _countEventWithName:@"SpotlightAssetCountQuery" result:v10];
+  v26 = [self _countEventWithName:@"SpotlightAssetCountQuery" result:resultCopy];
   [v19 addObject:v26];
 
-  v27 = [a1 _actionDictionaryWithLogArchive:1 networkInfo:0 crashAndSpinLogs:1 diagnosticExtensions:1];
-  [a1 _captureSnapshotWithType:@"Search" subType:@"SpotlightClientStateMissing" subtypeContextBase:@"AssetCount" subtypeContextModifier:v17 triggerThresholdValues:0 events:v19 actions:v27 completion:v29];
+  v27 = [self _actionDictionaryWithLogArchive:1 networkInfo:0 crashAndSpinLogs:1 diagnosticExtensions:1];
+  [self _captureSnapshotWithType:@"Search" subType:@"SpotlightClientStateMissing" subtypeContextBase:@"AssetCount" subtypeContextModifier:v17 triggerThresholdValues:0 events:v19 actions:v27 completion:completionCopy];
 }
 
 uint64_t __139__PLAutoBugCapture_captureSpotlightClientStateMissingSnapshotWithSpotlightAssetCountResult_spotlightError_searchIndexingEvents_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -225,29 +225,29 @@ uint64_t __139__PLAutoBugCapture_captureSpotlightClientStateMissingSnapshotWithS
   return v7;
 }
 
-+ (void)_captureSnapshotWithType:(id)a3 subType:(id)a4 subtypeContextBase:(id)a5 subtypeContextModifier:(id)a6 triggerThresholdValues:(id)a7 events:(id)a8 actions:(id)a9 completion:(id)a10
++ (void)_captureSnapshotWithType:(id)type subType:(id)subType subtypeContextBase:(id)base subtypeContextModifier:(id)modifier triggerThresholdValues:(id)values events:(id)events actions:(id)actions completion:(id)self0
 {
   v63 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v44 = a7;
-  v45 = a8;
-  v46 = a9;
-  v47 = a10;
-  if (v17)
+  typeCopy = type;
+  subTypeCopy = subType;
+  baseCopy = base;
+  modifierCopy = modifier;
+  valuesCopy = values;
+  eventsCopy = events;
+  actionsCopy = actions;
+  completionCopy = completion;
+  if (typeCopy)
   {
-    if (v18)
+    if (subTypeCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_21:
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:a1 file:@"PLAutoBugCapture.m" lineNumber:251 description:{@"Invalid parameter not satisfying: %@", @"subType"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAutoBugCapture.m" lineNumber:251 description:{@"Invalid parameter not satisfying: %@", @"subType"}];
 
-    if (v19)
+    if (baseCopy)
     {
       goto LABEL_4;
     }
@@ -255,36 +255,36 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v39 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v39 handleFailureInMethod:a2 object:a1 file:@"PLAutoBugCapture.m" lineNumber:250 description:{@"Invalid parameter not satisfying: %@", @"type"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAutoBugCapture.m" lineNumber:250 description:{@"Invalid parameter not satisfying: %@", @"type"}];
 
-  if (!v18)
+  if (!subTypeCopy)
   {
     goto LABEL_21;
   }
 
 LABEL_3:
-  if (v19)
+  if (baseCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_22:
-  v41 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v41 handleFailureInMethod:a2 object:a1 file:@"PLAutoBugCapture.m" lineNumber:252 description:{@"Invalid parameter not satisfying: %@", @"subtypeContextBase"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLAutoBugCapture.m" lineNumber:252 description:{@"Invalid parameter not satisfying: %@", @"subtypeContextBase"}];
 
 LABEL_4:
-  if ([a1 _shouldThrottleReportForType:v17 subType:v18 subtypeContextBase:v19])
+  if ([self _shouldThrottleReportForType:typeCopy subType:subTypeCopy subtypeContextBase:baseCopy])
   {
     v21 = PLBackendGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      *&buf[4] = v17;
+      *&buf[4] = typeCopy;
       *&buf[12] = 2114;
-      *&buf[14] = v18;
+      *&buf[14] = subTypeCopy;
       *&buf[22] = 2114;
-      v61 = v19;
+      v61 = baseCopy;
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEFAULT, "Auto bug capture for %{public}@/%{public}@/%{public}@ throttled because a similar report was made recently", buf, 0x20u);
     }
 
@@ -312,9 +312,9 @@ LABEL_4:
     _Block_object_dispose(&v54, 8);
     if (!v24)
     {
-      v42 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v43 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"const int getkSymptomDiagnosticErrorRequestThrottled(void)"];
-      [v42 handleFailureInFunction:v43 file:@"PLAutoBugCapture.m" lineNumber:48 description:{@"%s", dlerror()}];
+      [currentHandler4 handleFailureInFunction:v43 file:@"PLAutoBugCapture.m" lineNumber:48 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
@@ -325,29 +325,29 @@ LABEL_4:
     v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
     v29 = [v23 errorWithDomain:@"PLAutoBugCaptureErrorDomain" code:v27 userInfo:v28];
     v30 = [v22 failureWithError:v29];
-    v47[2](v47, v30);
+    completionCopy[2](completionCopy, v30);
   }
 
   else
   {
-    if (v20)
+    if (modifierCopy)
     {
-      v31 = [v19 stringByAppendingFormat:@":%@", v20];
+      modifierCopy = [baseCopy stringByAppendingFormat:@":%@", modifierCopy];
     }
 
     else
     {
-      v31 = v19;
+      modifierCopy = baseCopy;
     }
 
-    v28 = v31;
-    v32 = [MEMORY[0x1E696AE30] processInfo];
-    v33 = [v32 processName];
-    v34 = v33;
+    v28 = modifierCopy;
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
+    v34 = processName;
     v35 = @"unknown";
-    if (v33)
+    if (processName)
     {
-      v35 = v33;
+      v35 = processName;
     }
 
     v29 = v35;
@@ -371,17 +371,17 @@ LABEL_4:
     v37 = v36;
     _Block_object_dispose(&v54, 8);
     v30 = objc_alloc_init(v36);
-    v38 = [v30 signatureWithDomain:@"PhotosBackend" type:v17 subType:v18 subtypeContext:v28 detectedProcess:v29 triggerThresholdValues:v44];
+    v38 = [v30 signatureWithDomain:@"PhotosBackend" type:typeCopy subType:subTypeCopy subtypeContext:v28 detectedProcess:v29 triggerThresholdValues:valuesCopy];
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __144__PLAutoBugCapture__captureSnapshotWithType_subType_subtypeContextBase_subtypeContextModifier_triggerThresholdValues_events_actions_completion___block_invoke;
     v48[3] = &unk_1E7576BC0;
-    v53 = a1;
-    v49 = v17;
-    v50 = v18;
-    v51 = v19;
-    v52 = v47;
-    [v30 snapshotWithSignature:v38 delay:v45 events:0 payload:v46 actions:v48 reply:0.0];
+    selfCopy = self;
+    v49 = typeCopy;
+    v50 = subTypeCopy;
+    v51 = baseCopy;
+    v52 = completionCopy;
+    [v30 snapshotWithSignature:v38 delay:eventsCopy events:0 payload:actionsCopy actions:v48 reply:0.0];
   }
 }
 
@@ -490,12 +490,12 @@ LABEL_14:
   (*(*(a1 + 56) + 16))();
 }
 
-+ (id)_actionDictionaryWithLogArchive:(BOOL)a3 networkInfo:(BOOL)a4 crashAndSpinLogs:(BOOL)a5 diagnosticExtensions:(BOOL)a6
++ (id)_actionDictionaryWithLogArchive:(BOOL)archive networkInfo:(BOOL)info crashAndSpinLogs:(BOOL)logs diagnosticExtensions:(BOOL)extensions
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  extensionsCopy = extensions;
+  logsCopy = logs;
+  infoCopy = info;
+  archiveCopy = archive;
   v43[4] = *MEMORY[0x1E69E9840];
   v37 = 0;
   v38 = &v37;
@@ -513,16 +513,16 @@ LABEL_14:
   _Block_object_dispose(&v37, 8);
   if (!v10)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v30 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkSymptomDiagnosticActionLogArchive(void)"];
-    [v29 handleFailureInFunction:v30 file:@"PLAutoBugCapture.m" lineNumber:39 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v30 file:@"PLAutoBugCapture.m" lineNumber:39 description:{@"%s", dlerror()}];
 
     goto LABEL_20;
   }
 
   v12 = *v10;
   v41[0] = v12;
-  v13 = [MEMORY[0x1E696AD98] numberWithBool:v9];
+  v13 = [MEMORY[0x1E696AD98] numberWithBool:archiveCopy];
   v43[0] = v13;
   v37 = 0;
   v38 = &v37;
@@ -540,16 +540,16 @@ LABEL_14:
   _Block_object_dispose(&v37, 8);
   if (!v14)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v32 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkSymptomDiagnosticActionGetNetworkInfo(void)"];
-    [v31 handleFailureInFunction:v32 file:@"PLAutoBugCapture.m" lineNumber:41 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v32 file:@"PLAutoBugCapture.m" lineNumber:41 description:{@"%s", dlerror()}];
 
     goto LABEL_20;
   }
 
   v16 = *v14;
   v41[1] = v16;
-  v17 = [MEMORY[0x1E696AD98] numberWithBool:v8];
+  v17 = [MEMORY[0x1E696AD98] numberWithBool:infoCopy];
   v43[1] = v17;
   v37 = 0;
   v38 = &v37;
@@ -567,16 +567,16 @@ LABEL_14:
   _Block_object_dispose(&v37, 8);
   if (!v18)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v34 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkSymptomDiagnosticActionCrashAndSpinLogs(void)"];
-    [v33 handleFailureInFunction:v34 file:@"PLAutoBugCapture.m" lineNumber:43 description:{@"%s", dlerror()}];
+    [currentHandler3 handleFailureInFunction:v34 file:@"PLAutoBugCapture.m" lineNumber:43 description:{@"%s", dlerror()}];
 
     goto LABEL_20;
   }
 
   v20 = *v18;
   v41[2] = v20;
-  v21 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v21 = [MEMORY[0x1E696AD98] numberWithBool:logsCopy];
   v43[2] = v21;
   v37 = 0;
   v38 = &v37;
@@ -594,9 +594,9 @@ LABEL_14:
   _Block_object_dispose(&v37, 8);
   if (!v22)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
     v36 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkSymptomDiagnosticActionDiagnosticExtensions(void)"];
-    [v35 handleFailureInFunction:v36 file:@"PLAutoBugCapture.m" lineNumber:45 description:{@"%s", dlerror()}];
+    [currentHandler4 handleFailureInFunction:v36 file:@"PLAutoBugCapture.m" lineNumber:45 description:{@"%s", dlerror()}];
 
 LABEL_20:
     __break(1u);
@@ -605,21 +605,21 @@ LABEL_20:
   v42 = *v22;
   v24 = MEMORY[0x1E696AD98];
   v25 = v42;
-  v26 = [v24 numberWithBool:v6];
+  v26 = [v24 numberWithBool:extensionsCopy];
   v43[3] = v26;
   v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v41 count:4];
 
   return v27;
 }
 
-+ (void)_registerCompletedReportForType:(id)a3 subType:(id)a4 subtypeContextBase:(id)a5 success:(BOOL)a6
++ (void)_registerCompletedReportForType:(id)type subType:(id)subType subtypeContextBase:(id)base success:(BOOL)success
 {
-  v8 = a3;
-  v12 = a4;
-  v13 = a5;
-  v9 = v13;
-  v10 = v12;
-  v11 = v8;
+  typeCopy = type;
+  subTypeCopy = subType;
+  baseCopy = base;
+  v9 = baseCopy;
+  v10 = subTypeCopy;
+  v11 = typeCopy;
   PLRunWithUnfairLock();
 }
 
@@ -638,20 +638,20 @@ void __87__PLAutoBugCapture__registerCompletedReportForType_subType_subtypeConte
   [v5 setObject:v6 forKeyedSubscript:*(a1 + 48)];
 }
 
-+ (BOOL)_shouldThrottleReportForType:(id)a3 subType:(id)a4 subtypeContextBase:(id)a5
++ (BOOL)_shouldThrottleReportForType:(id)type subType:(id)subType subtypeContextBase:(id)base
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  typeCopy = type;
+  subTypeCopy = subType;
+  baseCopy = base;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__109590;
   v20 = __Block_byref_object_dispose__109591;
   v21 = 0;
-  v10 = v7;
-  v11 = v8;
-  v12 = v9;
+  v10 = typeCopy;
+  v11 = subTypeCopy;
+  v12 = baseCopy;
   PLRunWithUnfairLock();
   if (v17[5])
   {
@@ -695,42 +695,42 @@ void __76__PLAutoBugCapture__shouldThrottleReportForType_subType_subtypeContextB
   return v2;
 }
 
-+ (id)_countEventWithName:(id)a3 result:(id)a4
++ (id)_countEventWithName:(id)name result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isSuccess])
+  nameCopy = name;
+  resultCopy = result;
+  if ([resultCopy isSuccess])
   {
-    v8 = [v7 result];
-    v9 = [a1 _eventWithName:v6 result:@"Success" count:v8];
+    result = [resultCopy result];
+    v9 = [self _eventWithName:nameCopy result:@"Success" count:result];
   }
 
   else
   {
-    v9 = [a1 _eventWithName:v6 result:@"Failure"];
+    v9 = [self _eventWithName:nameCopy result:@"Failure"];
   }
 
   return v9;
 }
 
-+ (id)_eventWithName:(id)a3 result:(id)a4 count:(id)a5
++ (id)_eventWithName:(id)name result:(id)result count:(id)count
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  nameCopy = name;
+  resultCopy = result;
+  countCopy = count;
+  if (nameCopy)
   {
-    if (v10)
+    if (resultCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PLAutoBugCapture.m" lineNumber:182 description:{@"Invalid parameter not satisfying: %@", @"result"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAutoBugCapture.m" lineNumber:182 description:{@"Invalid parameter not satisfying: %@", @"result"}];
 
-    if (v11)
+    if (countCopy)
     {
       goto LABEL_4;
     }
@@ -738,48 +738,48 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:a1 file:@"PLAutoBugCapture.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAutoBugCapture.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
-  if (!v10)
+  if (!resultCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (countCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:a1 file:@"PLAutoBugCapture.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"count"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLAutoBugCapture.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"count"}];
 
 LABEL_4:
   v12 = getkSymptomDiagnosticKeyEventName();
   v20[0] = v12;
-  v21[0] = v9;
+  v21[0] = nameCopy;
   v13 = getkSymptomDiagnosticKeyEventResult();
   v20[1] = v13;
-  v21[1] = v10;
+  v21[1] = resultCopy;
   v14 = getkSymptomDiagnosticKeyEventCount();
   v20[2] = v14;
-  v21[2] = v11;
+  v21[2] = countCopy;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:3];
 
   return v15;
 }
 
-+ (id)_eventWithName:(id)a3 result:(id)a4
++ (id)_eventWithName:(id)name result:(id)result
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  nameCopy = name;
+  resultCopy = result;
+  v9 = resultCopy;
+  if (nameCopy)
   {
-    if (v8)
+    if (resultCopy)
     {
       goto LABEL_3;
     }
@@ -787,8 +787,8 @@ LABEL_4:
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PLAutoBugCapture.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAutoBugCapture.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
     if (v9)
     {
@@ -796,13 +796,13 @@ LABEL_4:
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:a1 file:@"PLAutoBugCapture.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"result"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAutoBugCapture.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"result"}];
 
 LABEL_3:
   v10 = getkSymptomDiagnosticKeyEventName();
   v16[0] = v10;
-  v17[0] = v7;
+  v17[0] = nameCopy;
   v11 = getkSymptomDiagnosticKeyEventResult();
   v16[1] = v11;
   v17[1] = v9;
@@ -811,14 +811,14 @@ LABEL_3:
   return v12;
 }
 
-+ (id)_bucketCountDescriptionForCount:(int64_t)a3 policy:(unint64_t)a4
++ (id)_bucketCountDescriptionForCount:(int64_t)count policy:(unint64_t)policy
 {
-  if (a4)
+  if (policy)
   {
-    if (a4 == 1)
+    if (policy == 1)
     {
       v5 = 10;
-      while (v5 <= a3)
+      while (v5 <= count)
       {
         v6 = v5 >= 0x186A1;
         v5 *= 10;
@@ -828,37 +828,37 @@ LABEL_3:
         }
       }
 
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%tu", v5];
-      if (v7)
+      1000000 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%tu", v5];
+      if (1000000)
       {
         goto LABEL_19;
       }
 
 LABEL_18:
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@">=%tu", 1000000];
+      1000000 = [MEMORY[0x1E696AEC0] stringWithFormat:@">=%tu", 1000000];
 LABEL_19:
     }
 
     else
     {
-      v7 = @"invalid";
+      1000000 = @"invalid";
     }
   }
 
   else
   {
-    if (a3)
+    if (count)
     {
-      v7 = @"NonZero";
+      1000000 = @"NonZero";
     }
 
     else
     {
-      v7 = @"Zero";
+      1000000 = @"Zero";
     }
   }
 
-  return v7;
+  return 1000000;
 }
 
 @end

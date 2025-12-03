@@ -1,17 +1,17 @@
 @interface AVMobileChromelessContentTabsViewControllerAccessibility
-- (void)contentTabsView:(id)a3 didChangeContentTab:(id)a4 withReason:(unint64_t)a5;
+- (void)contentTabsView:(id)view didChangeContentTab:(id)tab withReason:(unint64_t)reason;
 @end
 
 @implementation AVMobileChromelessContentTabsViewControllerAccessibility
 
-- (void)contentTabsView:(id)a3 didChangeContentTab:(id)a4 withReason:(unint64_t)a5
+- (void)contentTabsView:(id)view didChangeContentTab:(id)tab withReason:(unint64_t)reason
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  tabCopy = tab;
   v12.receiver = self;
   v12.super_class = AVMobileChromelessContentTabsViewControllerAccessibility;
-  [(AVMobileChromelessContentTabsViewControllerAccessibility *)&v12 contentTabsView:v8 didChangeContentTab:v9 withReason:a5];
-  objc_initWeak(&location, v8);
+  [(AVMobileChromelessContentTabsViewControllerAccessibility *)&v12 contentTabsView:viewCopy didChangeContentTab:tabCopy withReason:reason];
+  objc_initWeak(&location, viewCopy);
   objc_copyWeak(&v10, &location);
   AXPerformBlockOnMainThreadAfterDelay();
   objc_destroyWeak(&v10);

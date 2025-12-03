@@ -1,9 +1,9 @@
 @interface W5RapportClient
 - (BOOL)_configureDiscoveryClient;
 - (W5RapportClient)init;
-- (id)sendMessageToDevice:(id)a3 request:(id)a4;
-- (void)_handleDeviceFound:(id)a3;
-- (void)_handleDeviceLost:(id)a3;
+- (id)sendMessageToDevice:(id)device request:(id)request;
+- (void)_handleDeviceFound:(id)found;
+- (void)_handleDeviceLost:(id)lost;
 - (void)_invalidateRapportClient;
 - (void)startDiscoveringDevices;
 - (void)stopDiscoveryingDevices;
@@ -64,9 +64,9 @@
 
 - (BOOL)_configureDiscoveryClient
 {
-  v3 = [(W5RapportClient *)self discoveryClient];
+  discoveryClient = [(W5RapportClient *)self discoveryClient];
 
-  if (v3)
+  if (discoveryClient)
   {
     LOBYTE(v4) = 1;
   }
@@ -77,8 +77,8 @@
     v4 = v5 != 0;
     if (v5)
     {
-      v6 = [(W5RapportClient *)self queue];
-      [v5 setDispatchQueue:v6];
+      queue = [(W5RapportClient *)self queue];
+      [v5 setDispatchQueue:queue];
 
       [v5 setControlFlags:{objc_msgSend(v5, "controlFlags") | 0x818126}];
       [v5 setServiceType:@"com.apple.wifivelocityd.rapportWake"];
@@ -144,29 +144,29 @@
 
 - (void)_invalidateRapportClient
 {
-  v3 = [(W5RapportClient *)self discoveryClient];
-  [v3 invalidate];
+  discoveryClient = [(W5RapportClient *)self discoveryClient];
+  [discoveryClient invalidate];
 
   [(W5RapportClient *)self setDiscoveryClient:0];
 }
 
-- (void)_handleDeviceFound:(id)a3
+- (void)_handleDeviceFound:(id)found
 {
-  v4 = a3;
+  foundCopy = found;
   v5 = sub_100098A04();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    [v4 statusFlags];
-    [v4 statusFlags];
-    v6 = [v4 serviceTypes];
-    [v6 containsObject:@"com.apple.wifivelocityd.rapportWake"];
-    if (v4)
+    [foundCopy statusFlags];
+    [foundCopy statusFlags];
+    serviceTypes = [foundCopy serviceTypes];
+    [serviceTypes containsObject:@"com.apple.wifivelocityd.rapportWake"];
+    if (foundCopy)
     {
-      [v4 operatingSystemVersion];
+      [foundCopy operatingSystemVersion];
       v7 = v17;
-      [v4 operatingSystemVersion];
+      [foundCopy operatingSystemVersion];
       v8 = v15;
-      [v4 operatingSystemVersion];
+      [foundCopy operatingSystemVersion];
       v9 = v13;
     }
 
@@ -193,13 +193,13 @@
   deviceFoundHandler = self->_deviceFoundHandler;
   if (deviceFoundHandler)
   {
-    deviceFoundHandler[2](deviceFoundHandler, v4);
+    deviceFoundHandler[2](deviceFoundHandler, foundCopy);
   }
 }
 
-- (void)_handleDeviceLost:(id)a3
+- (void)_handleDeviceLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   v5 = sub_100098A04();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -209,7 +209,7 @@
   deviceFoundHandler = self->_deviceFoundHandler;
   if (deviceFoundHandler)
   {
-    deviceFoundHandler[2](deviceFoundHandler, v4);
+    deviceFoundHandler[2](deviceFoundHandler, lostCopy);
   }
 }
 
@@ -234,10 +234,10 @@ LABEL_11:
     return;
   }
 
-  v4 = [(W5RapportClient *)self _configureDiscoveryClient];
+  _configureDiscoveryClient = [(W5RapportClient *)self _configureDiscoveryClient];
   v2 = sub_100098A04();
   v5 = os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT);
-  if ((v4 & 1) == 0)
+  if ((_configureDiscoveryClient & 1) == 0)
   {
     if (v5)
     {
@@ -266,13 +266,13 @@ LABEL_11:
 
   self->_discoveringDevices = 1;
   objc_initWeak(location, self);
-  v6 = [(W5RapportClient *)self discoveryClient];
+  discoveryClient = [(W5RapportClient *)self discoveryClient];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10004D610;
   v7[3] = &unk_1000E2A70;
   objc_copyWeak(&v8, location);
-  [v6 activateWithCompletion:v7];
+  [discoveryClient activateWithCompletion:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(location);
@@ -303,12 +303,12 @@ LABEL_11:
   }
 }
 
-- (id)sendMessageToDevice:(id)a3 request:(id)a4
+- (id)sendMessageToDevice:(id)device request:(id)request
 {
-  v5 = a3;
-  v6 = a4;
+  deviceCopy = device;
+  requestCopy = request;
   v7 = objc_alloc_init(RPCompanionLinkClient);
-  [v7 setDestinationDevice:v5];
+  [v7 setDestinationDevice:deviceCopy];
   v8 = sub_100098A04();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -319,24 +319,24 @@ LABEL_11:
     v28 = 1024;
     v29 = 204;
     v30 = 2112;
-    v31 = v6;
+    v31 = requestCopy;
     v32 = 2112;
-    v33 = v5;
+    v33 = deviceCopy;
     LODWORD(v20) = 48;
     v19 = location;
     _os_log_send_and_compose_impl();
   }
 
-  v9 = [v5 model];
-  if ([v9 containsString:@"Mac"])
+  model = [deviceCopy model];
+  if ([model containsString:@"Mac"])
   {
   }
 
   else
   {
-    v10 = [v6 peer];
-    v11 = [v10 model];
-    v12 = [v11 containsString:@"Mac"];
+    peer = [requestCopy peer];
+    model2 = [peer model];
+    v12 = [model2 containsString:@"Mac"];
 
     if ((v12 & 1) == 0)
     {
@@ -344,15 +344,15 @@ LABEL_11:
     }
   }
 
-  v13 = ([v6 controlFlags] & 1) == 0;
-  v14 = [v7 controlFlags];
+  v13 = ([requestCopy controlFlags] & 1) == 0;
+  controlFlags = [v7 controlFlags];
   v15 = 6291712;
   if (v13)
   {
     v15 = 4227334;
   }
 
-  [v7 setControlFlags:v15 | v14];
+  [v7 setControlFlags:v15 | controlFlags];
   [v7 setInvalidationHandler:&stru_1000E2A90];
   objc_initWeak(location, v7);
   v21[0] = _NSConcreteStackBlock;
@@ -360,9 +360,9 @@ LABEL_11:
   v21[2] = sub_10004DC74;
   v21[3] = &unk_1000E2AE0;
   objc_copyWeak(&v24, location);
-  v16 = v6;
+  v16 = requestCopy;
   v22 = v16;
-  v17 = v5;
+  v17 = deviceCopy;
   v23 = v17;
   [v7 activateWithCompletion:v21];
 

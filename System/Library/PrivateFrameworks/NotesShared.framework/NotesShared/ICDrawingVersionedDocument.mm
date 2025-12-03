@@ -1,8 +1,8 @@
 @interface ICDrawingVersionedDocument
 - (ICDrawing)drawing;
-- (id)serializeCurrentVersion:(unsigned int *)a3;
-- (unint64_t)mergeWithDrawingVersionedDocument:(id)a3;
-- (void)mergeVersion:(unsigned int)a3 fromData:(id)a4;
+- (id)serializeCurrentVersion:(unsigned int *)version;
+- (unint64_t)mergeWithDrawingVersionedDocument:(id)document;
+- (void)mergeVersion:(unsigned int)version fromData:(id)data;
 @end
 
 @implementation ICDrawingVersionedDocument
@@ -13,15 +13,15 @@
   if (drawing)
   {
     v4 = drawing;
-    v5 = self->_drawing;
+    replicaID = self->_drawing;
     self->_drawing = v4;
   }
 
   else
   {
     v6 = [ICDrawing alloc];
-    v5 = [(ICTTVersionedDocument *)self replicaID];
-    v7 = [(ICDrawing *)v6 initWithReplicaID:v5];
+    replicaID = [(ICTTVersionedDocument *)self replicaID];
+    v7 = [(ICDrawing *)v6 initWithReplicaID:replicaID];
     v8 = self->_drawing;
     self->_drawing = v7;
   }
@@ -31,27 +31,27 @@
   return v9;
 }
 
-- (unint64_t)mergeWithDrawingVersionedDocument:(id)a3
+- (unint64_t)mergeWithDrawingVersionedDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(ICDrawingVersionedDocument *)self drawing];
-  v6 = [v4 drawing];
-  v7 = [v5 mergeWithDrawing:v6];
+  documentCopy = document;
+  drawing = [(ICDrawingVersionedDocument *)self drawing];
+  drawing2 = [documentCopy drawing];
+  v7 = [drawing mergeWithDrawing:drawing2];
 
   v9.receiver = self;
   v9.super_class = ICDrawingVersionedDocument;
-  [(ICTTVersionedDocument *)&v9 mergeWithVersionedDocument:v4];
+  [(ICTTVersionedDocument *)&v9 mergeWithVersionedDocument:documentCopy];
 
   return v7;
 }
 
-- (void)mergeVersion:(unsigned int)a3 fromData:(id)a4
+- (void)mergeVersion:(unsigned int)version fromData:(id)data
 {
-  v4 = *&a3;
-  v11 = a4;
+  v4 = *&version;
+  dataCopy = data;
   v6 = [ICDrawing alloc];
-  v7 = [(ICTTVersionedDocument *)self replicaID];
-  v8 = [(ICDrawing *)v6 initWithData:v11 version:v4 replicaID:v7];
+  replicaID = [(ICTTVersionedDocument *)self replicaID];
+  v8 = [(ICDrawing *)v6 initWithData:dataCopy version:v4 replicaID:replicaID];
 
   if (self->_drawing)
   {
@@ -74,10 +74,10 @@
 LABEL_6:
 }
 
-- (id)serializeCurrentVersion:(unsigned int *)a3
+- (id)serializeCurrentVersion:(unsigned int *)version
 {
-  v4 = [(ICDrawingVersionedDocument *)self drawing];
-  v5 = [v4 serializeWithPathData:1 toVersion:a3];
+  drawing = [(ICDrawingVersionedDocument *)self drawing];
+  v5 = [drawing serializeWithPathData:1 toVersion:version];
 
   return v5;
 }

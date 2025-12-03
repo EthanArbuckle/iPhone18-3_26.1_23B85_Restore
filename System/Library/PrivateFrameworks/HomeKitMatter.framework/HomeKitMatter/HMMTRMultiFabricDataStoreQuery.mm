@@ -1,11 +1,11 @@
 @interface HMMTRMultiFabricDataStoreQuery
 + (id)logCategory;
-- (HMMTRMultiFabricDataStoreQuery)initWithCHIPStorageDelegate:(id)a3 keychainDelegate:(id)a4 v2FabricDataStoreDelegate:(id)a5;
+- (HMMTRMultiFabricDataStoreQuery)initWithCHIPStorageDelegate:(id)delegate keychainDelegate:(id)keychainDelegate v2FabricDataStoreDelegate:(id)storeDelegate;
 - (HMMTRMultiFabricDataStoreQueryCHIPStorageDelegate)chipStorageDelegate;
 - (HMMTRMultiFabricDataStoreQueryKeychainDelegate)keychainDelegate;
 - (HMMTRMultiFabricDataStoreQueryV2FabricDataStoreDelegate)v2FabricDataStoreDelegate;
-- (id)fabricDataFromV2FabricDataItem:(id)a3;
-- (id)locallyStoredFabricDataWithDataPresentInV2FabricDataStore:(BOOL *)a3 error:(id *)a4;
+- (id)fabricDataFromV2FabricDataItem:(id)item;
+- (id)locallyStoredFabricDataWithDataPresentInV2FabricDataStore:(BOOL *)store error:(id *)error;
 - (id)logIdentifier;
 @end
 
@@ -34,37 +34,37 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMMTRMultiFabricDataStoreQuery *)self chipStorageDelegate];
-  v3 = [v2 identifier];
+  chipStorageDelegate = [(HMMTRMultiFabricDataStoreQuery *)self chipStorageDelegate];
+  identifier = [chipStorageDelegate identifier];
 
-  return v3;
+  return identifier;
 }
 
-- (id)fabricDataFromV2FabricDataItem:(id)a3
+- (id)fabricDataFromV2FabricDataItem:(id)item
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 rootKeyPair];
-  v6 = [v4 residentOpKeyPair];
-  v7 = [v4 fabricID];
-  v8 = [v4 residentNodeID];
-  v9 = [v4 rcac];
-  v10 = [v4 ipk];
-  v11 = [HMMTRFabricDataCreator fabricDataForRootKeyPair:v5 opKeyPair:v6 fabricID:v7 residentNodeID:v8 overridingRCAC:v9 ipk:v10];
+  itemCopy = item;
+  rootKeyPair = [itemCopy rootKeyPair];
+  residentOpKeyPair = [itemCopy residentOpKeyPair];
+  fabricID = [itemCopy fabricID];
+  residentNodeID = [itemCopy residentNodeID];
+  rcac = [itemCopy rcac];
+  v10 = [itemCopy ipk];
+  v11 = [HMMTRFabricDataCreator fabricDataForRootKeyPair:rootKeyPair opKeyPair:residentOpKeyPair fabricID:fabricID residentNodeID:residentNodeID overridingRCAC:rcac ipk:v10];
 
   if (!v11)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [v4 uuid];
+      uuid = [itemCopy uuid];
       v19 = 138543618;
       v20 = v15;
       v21 = 2112;
-      v22 = v16;
+      v22 = uuid;
       _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_ERROR, "%{public}@Failed to derive fabric data from combined data item: %@", &v19, 0x16u);
     }
 
@@ -76,31 +76,31 @@
   return v11;
 }
 
-- (id)locallyStoredFabricDataWithDataPresentInV2FabricDataStore:(BOOL *)a3 error:(id *)a4
+- (id)locallyStoredFabricDataWithDataPresentInV2FabricDataStore:(BOOL *)store error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  storeCopy = store;
+  selfCopy = self;
   v186 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (store)
   {
-    *a3 = 0;
+    *store = 0;
   }
 
-  v7 = [(HMMTRMultiFabricDataStoreQuery *)self v2FabricDataStoreDelegate];
-  v8 = [v7 fabricDataItems];
+  v2FabricDataStoreDelegate = [(HMMTRMultiFabricDataStoreQuery *)self v2FabricDataStoreDelegate];
+  fabricDataItems = [v2FabricDataStoreDelegate fabricDataItems];
 
   v179 = 0u;
   v180 = 0u;
   v177 = 0u;
   v178 = 0u;
-  v9 = v8;
+  v9 = fabricDataItems;
   v10 = [v9 countByEnumeratingWithState:&v177 objects:v185 count:16];
-  v174 = v6;
+  v174 = selfCopy;
   if (!v10)
   {
 
     v13 = 0;
-    if (!v5)
+    if (!storeCopy)
     {
       goto LABEL_30;
     }
@@ -109,8 +109,8 @@
   }
 
   v11 = v10;
-  v168 = a4;
-  v170 = v5;
+  errorCopy = error;
+  v170 = storeCopy;
   v12 = 0;
   v13 = 0;
   v14 = *v178;
@@ -126,7 +126,7 @@
       }
 
       v13 = *(*(&v177 + 1) + 8 * i);
-      v17 = [(HMMTRMultiFabricDataStoreQuery *)v6 fabricDataFromV2FabricDataItem:v13];
+      v17 = [(HMMTRMultiFabricDataStoreQuery *)selfCopy fabricDataFromV2FabricDataItem:v13];
       if (!v17)
       {
         v13 = v16;
@@ -142,9 +142,9 @@
       v18 = v12;
       v19 = v9;
       v20 = v13;
-      v21 = [v13 version];
-      v22 = [v16 version];
-      v23 = [v21 compare:v22];
+      version = [v13 version];
+      version2 = [v16 version];
+      v23 = [version compare:version2];
 
       if (v23)
       {
@@ -158,7 +158,7 @@ LABEL_16:
 LABEL_17:
           v12 = v18;
           v14 = v172;
-          v6 = v174;
+          selfCopy = v174;
 LABEL_18:
           v29 = v17;
 
@@ -183,9 +183,9 @@ LABEL_18:
         [v16 creationTime];
         if (v31 == v32)
         {
-          v33 = [v20 uuid];
-          v34 = [v16 uuid];
-          v35 = [v33 compare:v34];
+          uuid = [v20 uuid];
+          uuid2 = [v16 uuid];
+          v35 = [uuid compare:uuid2];
 
           if (v35 == 1)
           {
@@ -202,7 +202,7 @@ LABEL_18:
       v9 = v19;
       v12 = v18;
       v14 = v172;
-      v6 = v174;
+      selfCopy = v174;
 LABEL_23:
     }
 
@@ -213,19 +213,19 @@ LABEL_23:
 
   if (!v12)
   {
-    a4 = v168;
-    v5 = v170;
+    error = errorCopy;
+    storeCopy = v170;
     if (!v170)
     {
 LABEL_30:
-      v37 = [(HMMTRMultiFabricDataStoreQuery *)v6 chipStorageDelegate];
-      v38 = [v37 keyValueStore];
-      v39 = [v38 objectForKeyedSubscript:@"HMDHMMKVS.fabricID"];
+      chipStorageDelegate = [(HMMTRMultiFabricDataStoreQuery *)selfCopy chipStorageDelegate];
+      keyValueStore = [chipStorageDelegate keyValueStore];
+      fabricID = [keyValueStore objectForKeyedSubscript:@"HMDHMMKVS.fabricID"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v40 = v39;
+        v40 = fabricID;
       }
 
       else
@@ -237,13 +237,13 @@ LABEL_30:
 
       if (!v41 || [v41 isEqual:&unk_283EE8310])
       {
-        v39 = [v37 fabricID];
+        fabricID = [chipStorageDelegate fabricID];
 
-        if (!v39 || [v39 isEqual:&unk_283EE8310])
+        if (!fabricID || [fabricID isEqual:&unk_283EE8310])
         {
-          v42 = a4;
+          errorCopy2 = error;
           v43 = objc_autoreleasePoolPush();
-          v44 = v6;
+          v44 = selfCopy;
           v45 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
           {
@@ -258,12 +258,12 @@ LABEL_30:
 
           objc_autoreleasePoolPop(v43);
           [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
-          *v42 = v48 = 0;
+          *errorCopy2 = v48 = 0;
           goto LABEL_117;
         }
 
         v49 = objc_autoreleasePoolPush();
-        v50 = v6;
+        v50 = selfCopy;
         v51 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
         {
@@ -272,27 +272,27 @@ LABEL_30:
           *buf = 138543618;
           v182 = v53;
           v183 = 2112;
-          v184 = v39;
+          v184 = fabricID;
           _os_log_impl(&dword_22AEAE000, v51, OS_LOG_TYPE_INFO, "%{public}@In-memory fabric ID %@ is used while KVS hasn't stored fabric ID yet", buf, 0x16u);
 
           v13 = v52;
         }
 
         objc_autoreleasePoolPop(v49);
-        v6 = v174;
+        selfCopy = v174;
       }
 
       v173 = v13;
-      [(HMMTRMultiFabricDataStoreQuery *)v6 keychainDelegate];
-      v55 = v54 = v6;
-      v56 = [v55 nocSigner];
-      v57 = [v56 copyV0KeyPair];
+      [(HMMTRMultiFabricDataStoreQuery *)selfCopy keychainDelegate];
+      v55 = v54 = selfCopy;
+      nocSigner = [v55 nocSigner];
+      copyV0KeyPair = [nocSigner copyV0KeyPair];
 
-      if (!v57)
+      if (!copyV0KeyPair)
       {
         v81 = MEMORY[0x277CCA9B8];
         v82 = [MEMORY[0x277CCA9B8] hmmtrErrorWithCode:1];
-        *a4 = [v81 hapErrorWithCode:36 description:0 reason:0 suggestion:0 underlyingError:v82];
+        *error = [v81 hapErrorWithCode:36 description:0 reason:0 suggestion:0 underlyingError:v82];
 
         v83 = objc_autoreleasePoolPush();
         v84 = v54;
@@ -311,9 +311,9 @@ LABEL_30:
         goto LABEL_116;
       }
 
-      v58 = SecKeyCopyExternalRepresentation([v57 publicKey], 0);
-      v59 = [v37 keyValueStore];
-      v60 = [v59 objectForKeyedSubscript:@"IPK"];
+      v58 = SecKeyCopyExternalRepresentation([copyV0KeyPair publicKey], 0);
+      keyValueStore2 = [chipStorageDelegate keyValueStore];
+      v60 = [keyValueStore2 objectForKeyedSubscript:@"IPK"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -333,7 +333,7 @@ LABEL_30:
         v72 = v62;
         v73 = MEMORY[0x277CCA9B8];
         v74 = [MEMORY[0x277CCA9B8] hmmtrErrorWithCode:2];
-        *a4 = [v73 hapErrorWithCode:36 description:0 reason:0 suggestion:0 underlyingError:v74];
+        *error = [v73 hapErrorWithCode:36 description:0 reason:0 suggestion:0 underlyingError:v74];
 
         v75 = objc_autoreleasePoolPush();
         v76 = v174;
@@ -361,15 +361,15 @@ LABEL_30:
       v166 = v62;
       v167 = v58;
       v169 = v9;
-      v65 = [v37 keyValueStore];
+      keyValueStore3 = [chipStorageDelegate keyValueStore];
       v175 = 0;
       v176 = 0;
-      v156 = [HMMTRStorage knownFabricInStorage:v65 fabricID:v39 keyPair:v57 controllerNodeID:&v176 rootCertificate:&v175];
+      v156 = [HMMTRStorage knownFabricInStorage:keyValueStore3 fabricID:fabricID keyPair:copyV0KeyPair controllerNodeID:&v176 rootCertificate:&v175];
       v66 = v176;
       v171 = v175;
 
-      v67 = [v37 keyValueStore];
-      v68 = [v67 objectForKeyedSubscript:@"HMD.MTRPlugin.OperationalCert"];
+      keyValueStore4 = [chipStorageDelegate keyValueStore];
+      v68 = [keyValueStore4 objectForKeyedSubscript:@"HMD.MTRPlugin.OperationalCert"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -398,18 +398,18 @@ LABEL_30:
       v163 = v71;
       v162 = [MEMORY[0x277CD5230] convertX509Certificate:v71];
       v161 = [objc_alloc(MEMORY[0x277CD5228]) initWithTLVBytes:v162];
-      v87 = [v161 subject];
-      v88 = [v87 nodeID];
+      subject = [v161 subject];
+      nodeID = [subject nodeID];
 
       v165 = v66;
       v160 = v64;
-      if (!v88)
+      if (!nodeID)
       {
         if (!v66)
         {
           v118 = MEMORY[0x277CCA9B8];
           v119 = [MEMORY[0x277CCA9B8] hmmtrErrorWithCode:2];
-          *a4 = [v118 hapErrorWithCode:36 description:0 reason:0 suggestion:0 underlyingError:v119];
+          *error = [v118 hapErrorWithCode:36 description:0 reason:0 suggestion:0 underlyingError:v119];
 
           v120 = objc_autoreleasePoolPush();
           v121 = v174;
@@ -431,12 +431,12 @@ LABEL_30:
           goto LABEL_114;
         }
 
-        v88 = v66;
+        nodeID = v66;
       }
 
-      v159 = v88;
-      v89 = [v37 keyValueStore];
-      v90 = [v89 objectForKeyedSubscript:@"HMD.MTRPlugin.RootCert"];
+      v159 = nodeID;
+      keyValueStore5 = [chipStorageDelegate keyValueStore];
+      v90 = [keyValueStore5 objectForKeyedSubscript:@"HMD.MTRPlugin.RootCert"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -459,7 +459,7 @@ LABEL_30:
         {
           v112 = MEMORY[0x277CCA9B8];
           v113 = [MEMORY[0x277CCA9B8] hmmtrErrorWithCode:2];
-          *a4 = [v112 hapErrorWithCode:36 description:0 reason:0 suggestion:0 underlyingError:v113];
+          *error = [v112 hapErrorWithCode:36 description:0 reason:0 suggestion:0 underlyingError:v113];
 
           v114 = objc_autoreleasePoolPush();
           v115 = v174;
@@ -482,19 +482,19 @@ LABEL_30:
         v93 = v171;
       }
 
-      if ([MEMORY[0x277CD5230] keypair:v57 matchesCertificate:v93])
+      if ([MEMORY[0x277CD5230] keypair:copyV0KeyPair matchesCertificate:v93])
       {
         v154 = v93;
-        v94 = [(HMMTRMultiFabricDataStoreQuery *)v174 keychainDelegate];
-        v95 = [v94 ownerSharedOperationalKeyPair];
-        v96 = [v95 copyV0KeyPair];
+        keychainDelegate = [(HMMTRMultiFabricDataStoreQuery *)v174 keychainDelegate];
+        ownerSharedOperationalKeyPair = [keychainDelegate ownerSharedOperationalKeyPair];
+        copyV0KeyPair2 = [ownerSharedOperationalKeyPair copyV0KeyPair];
 
-        v155 = v96;
-        if (!v96)
+        v155 = copyV0KeyPair2;
+        if (!copyV0KeyPair2)
         {
           v133 = MEMORY[0x277CCA9B8];
           v134 = [MEMORY[0x277CCA9B8] hmmtrErrorWithCode:2];
-          *a4 = [v133 hapErrorWithCode:36 description:0 reason:0 suggestion:0 underlyingError:v134];
+          *error = [v133 hapErrorWithCode:36 description:0 reason:0 suggestion:0 underlyingError:v134];
 
           v135 = objc_autoreleasePoolPush();
           v136 = v174;
@@ -517,8 +517,8 @@ LABEL_30:
           goto LABEL_112;
         }
 
-        v97 = [v37 keyValueStore];
-        v98 = [v97 objectForKeyedSubscript:@"HMD.MTRPlugin.OperationalCert"];
+        keyValueStore6 = [chipStorageDelegate keyValueStore];
+        v98 = [keyValueStore6 objectForKeyedSubscript:@"HMD.MTRPlugin.OperationalCert"];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -547,9 +547,9 @@ LABEL_30:
         v153 = v100;
         if (v156)
         {
-          v124 = [MEMORY[0x277CCACA8] stringWithFormat:@"f/%x/n", v156];
-          v125 = [v37 keyValueStore];
-          v126 = [v125 objectForKeyedSubscript:v124];
+          v156 = [MEMORY[0x277CCACA8] stringWithFormat:@"f/%x/n", v156];
+          keyValueStore7 = [chipStorageDelegate keyValueStore];
+          v126 = [keyValueStore7 objectForKeyedSubscript:v156];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -567,7 +567,7 @@ LABEL_30:
           if (v128 && (v129 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v128 options:0]) != 0)
           {
             v130 = v129;
-            v131 = v124;
+            v131 = v156;
             v132 = [MEMORY[0x277CD5230] convertMatterCertificate:v129];
             if ([MEMORY[0x277CD5230] keypair:v155 matchesCertificate:v132])
             {
@@ -591,7 +591,7 @@ LABEL_80:
               if ([*(v101 + 560) keypair:v155 matchesCertificate:v102])
               {
                 v58 = v167;
-                v48 = [[HMMTRFabricData alloc] initWithRootPublicKey:v167 fabricID:v39 ipk:v64 residentNodeID:v159 rootKeyPair:v57 rootCert:v154 residentOperationalKeyPair:v155 residentOperationalCert:v104];
+                v48 = [[HMMTRFabricData alloc] initWithRootPublicKey:v167 fabricID:fabricID ipk:v64 residentNodeID:v159 rootKeyPair:copyV0KeyPair rootCert:v154 residentOperationalKeyPair:v155 residentOperationalCert:v104];
 
 LABEL_111:
                 v13 = v173;
@@ -604,7 +604,7 @@ LABEL_112:
               v153 = v100;
               v139 = MEMORY[0x277CCA9B8];
               v140 = [MEMORY[0x277CCA9B8] hmmtrErrorWithCode:2];
-              *a4 = [v139 hapErrorWithCode:36 description:0 reason:0 suggestion:0 underlyingError:v140];
+              *error = [v139 hapErrorWithCode:36 description:0 reason:0 suggestion:0 underlyingError:v140];
 
               v141 = objc_autoreleasePoolPush();
               v142 = v174;
@@ -636,7 +636,7 @@ LABEL_110:
 
         v145 = MEMORY[0x277CCA9B8];
         v146 = [MEMORY[0x277CCA9B8] hmmtrErrorWithCode:2];
-        *a4 = [v145 hapErrorWithCode:36 description:0 reason:0 suggestion:0 underlyingError:v146];
+        *error = [v145 hapErrorWithCode:36 description:0 reason:0 suggestion:0 underlyingError:v146];
 
         v147 = objc_autoreleasePoolPush();
         v148 = v174;
@@ -657,7 +657,7 @@ LABEL_110:
 
       v105 = MEMORY[0x277CCA9B8];
       v106 = [MEMORY[0x277CCA9B8] hmmtrErrorWithCode:2];
-      *a4 = [v105 hapErrorWithCode:36 description:0 reason:0 suggestion:0 underlyingError:v106];
+      *error = [v105 hapErrorWithCode:36 description:0 reason:0 suggestion:0 underlyingError:v106];
 
       v107 = objc_autoreleasePoolPush();
       v108 = v174;
@@ -693,7 +693,7 @@ LABEL_117:
     }
 
 LABEL_29:
-    *v5 = 0;
+    *storeCopy = 0;
     goto LABEL_30;
   }
 
@@ -709,20 +709,20 @@ LABEL_118:
   return v12;
 }
 
-- (HMMTRMultiFabricDataStoreQuery)initWithCHIPStorageDelegate:(id)a3 keychainDelegate:(id)a4 v2FabricDataStoreDelegate:(id)a5
+- (HMMTRMultiFabricDataStoreQuery)initWithCHIPStorageDelegate:(id)delegate keychainDelegate:(id)keychainDelegate v2FabricDataStoreDelegate:(id)storeDelegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  keychainDelegateCopy = keychainDelegate;
+  storeDelegateCopy = storeDelegate;
   v14.receiver = self;
   v14.super_class = HMMTRMultiFabricDataStoreQuery;
   v11 = [(HMMTRMultiFabricDataStoreQuery *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_chipStorageDelegate, v8);
-    objc_storeWeak(&v12->_keychainDelegate, v9);
-    objc_storeWeak(&v12->_v2FabricDataStoreDelegate, v10);
+    objc_storeWeak(&v11->_chipStorageDelegate, delegateCopy);
+    objc_storeWeak(&v12->_keychainDelegate, keychainDelegateCopy);
+    objc_storeWeak(&v12->_v2FabricDataStoreDelegate, storeDelegateCopy);
   }
 
   return v12;

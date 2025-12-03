@@ -1,27 +1,27 @@
 @interface MTTableViewCell
-- (MTTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MTTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)createSeparator;
-- (void)didTransitionToState:(unint64_t)a3;
+- (void)didTransitionToState:(unint64_t)state;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setCellEmphasis:(int64_t)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setLeftAccessoryView:(id)a3;
-- (void)setLeftEditingAccessoryView:(id)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShowsSeparator:(BOOL)a3;
+- (void)setCellEmphasis:(int64_t)emphasis;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setLeftAccessoryView:(id)view;
+- (void)setLeftEditingAccessoryView:(id)view;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setShowsSeparator:(BOOL)separator;
 - (void)setupCell;
-- (void)updateCellShadows:(BOOL)a3 animated:(BOOL)a4;
+- (void)updateCellShadows:(BOOL)shadows animated:(BOOL)animated;
 @end
 
 @implementation MTTableViewCell
 
-- (MTTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MTTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = MTTableViewCell;
-  v4 = [(MTTableViewCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MTTableViewCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     if (isTV())
@@ -50,9 +50,9 @@
   [(MTTableViewCell *)self setDeleteButtonBlock:0];
   [(MTTableViewCell *)self setSwipeToDeleteButtonColor:0];
   [(MTTableViewCell *)self _clearCellEmphasis];
-  v3 = [(MTTableViewCell *)self textLabel];
+  textLabel = [(MTTableViewCell *)self textLabel];
   v4 = +[UIColor clearColor];
-  [v3 setBackgroundColor:v4];
+  [textLabel setBackgroundColor:v4];
 }
 
 - (void)setupCell
@@ -83,40 +83,40 @@
   }
 }
 
-- (void)setLeftAccessoryView:(id)a3
+- (void)setLeftAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   leftAccessoryView = self->_leftAccessoryView;
-  if (leftAccessoryView != v5)
+  if (leftAccessoryView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)leftAccessoryView removeFromSuperview];
-    objc_storeStrong(&self->_leftAccessoryView, a3);
+    objc_storeStrong(&self->_leftAccessoryView, view);
     [(MTTableViewCell *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setLeftEditingAccessoryView:(id)a3
+- (void)setLeftEditingAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   leftEditingAccessoryView = self->_leftEditingAccessoryView;
-  if (leftEditingAccessoryView != v5)
+  if (leftEditingAccessoryView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)leftEditingAccessoryView removeFromSuperview];
-    objc_storeStrong(&self->_leftEditingAccessoryView, a3);
+    objc_storeStrong(&self->_leftEditingAccessoryView, view);
     [(MTTableViewCell *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setShowsSeparator:(BOOL)a3
+- (void)setShowsSeparator:(BOOL)separator
 {
-  if (self->_showsSeparator != a3)
+  if (self->_showsSeparator != separator)
   {
-    self->_showsSeparator = a3;
-    if (a3)
+    self->_showsSeparator = separator;
+    if (separator)
     {
 
       [(MTTableViewCell *)self createSeparator];
@@ -131,15 +131,15 @@
   }
 }
 
-- (void)setCellEmphasis:(int64_t)a3
+- (void)setCellEmphasis:(int64_t)emphasis
 {
-  if (self->_cellEmphasis != a3)
+  if (self->_cellEmphasis != emphasis)
   {
-    self->_cellEmphasis = a3;
-    v5 = [(MTTableViewCell *)self _isTextEmphasized];
-    v6 = [(MTTableViewCell *)self _isBackgroundEmphasized];
-    v7 = [(MTTableViewCell *)self textLabel];
-    if (v5)
+    self->_cellEmphasis = emphasis;
+    _isTextEmphasized = [(MTTableViewCell *)self _isTextEmphasized];
+    _isBackgroundEmphasized = [(MTTableViewCell *)self _isBackgroundEmphasized];
+    textLabel = [(MTTableViewCell *)self textLabel];
+    if (_isTextEmphasized)
     {
       +[UIColor cellEmpahsisTextColor];
     }
@@ -149,9 +149,9 @@
       [objc_opt_class() textColor];
     }
     v8 = ;
-    [v7 setTextColor:v8];
+    [textLabel setTextColor:v8];
 
-    if (v6)
+    if (_isBackgroundEmphasized)
     {
       +[UIColor cellEmpahsisBackgroundColor];
     }
@@ -172,8 +172,8 @@
   [(MTTableViewCell *)&v49 layoutSubviews];
   if (self->_separator)
   {
-    v3 = [(MTTableViewCell *)self separator];
-    [v3 frame];
+    separator = [(MTTableViewCell *)self separator];
+    [separator frame];
     v5 = v4;
 
     [(MTTableViewCell *)self bounds];
@@ -195,11 +195,11 @@
     y = v12 + v15;
     v18 = Width - (v13 + v17);
     v20 = v10 - (v15 + v19);
-    v21 = [(MTTableViewCell *)self separator];
-    [v21 setFrame:{x, y, v18, v20}];
+    separator2 = [(MTTableViewCell *)self separator];
+    [separator2 setFrame:{x, y, v18, v20}];
 
-    v22 = [(MTTableViewCell *)self separator];
-    [(MTTableViewCell *)self bringSubviewToFront:v22];
+    separator3 = [(MTTableViewCell *)self separator];
+    [(MTTableViewCell *)self bringSubviewToFront:separator3];
   }
 
   else
@@ -214,44 +214,44 @@
   [UIView setAnimationsEnabled:0];
   if ([(MTTableViewCell *)self isEditing]&& ![(MTTableViewCell *)self editingStyle])
   {
-    v31 = [(MTTableViewCell *)self leftEditingAccessoryView];
+    leftEditingAccessoryView = [(MTTableViewCell *)self leftEditingAccessoryView];
 
-    if (v31)
+    if (leftEditingAccessoryView)
     {
-      v32 = [(MTTableViewCell *)self leftEditingAccessoryView];
-      v33 = [v32 superview];
+      leftEditingAccessoryView2 = [(MTTableViewCell *)self leftEditingAccessoryView];
+      superview = [leftEditingAccessoryView2 superview];
 
-      if (v33 == self)
+      if (superview == self)
       {
         goto LABEL_10;
       }
 
-      v27 = [(MTTableViewCell *)self leftEditingAccessoryView];
+      leftEditingAccessoryView3 = [(MTTableViewCell *)self leftEditingAccessoryView];
       goto LABEL_9;
     }
   }
 
   else
   {
-    v24 = [(MTTableViewCell *)self leftAccessoryView];
+    leftAccessoryView = [(MTTableViewCell *)self leftAccessoryView];
 
-    if (v24)
+    if (leftAccessoryView)
     {
-      v25 = [(MTTableViewCell *)self leftAccessoryView];
-      v26 = [v25 superview];
+      leftAccessoryView2 = [(MTTableViewCell *)self leftAccessoryView];
+      superview2 = [leftAccessoryView2 superview];
 
-      if (v26 == self)
+      if (superview2 == self)
       {
 LABEL_10:
         v30 = 1;
         goto LABEL_15;
       }
 
-      v27 = [(MTTableViewCell *)self leftAccessoryView];
+      leftEditingAccessoryView3 = [(MTTableViewCell *)self leftAccessoryView];
 LABEL_9:
-      v28 = v27;
-      v29 = [(MTTableViewCell *)self contentView];
-      [(MTTableViewCell *)self insertSubview:v28 belowSubview:v29];
+      v28 = leftEditingAccessoryView3;
+      contentView = [(MTTableViewCell *)self contentView];
+      [(MTTableViewCell *)self insertSubview:v28 belowSubview:contentView];
 
       goto LABEL_10;
     }
@@ -269,8 +269,8 @@ LABEL_15:
     [(MTTableViewCell *)self leftAccessoryView];
   }
   v34 = ;
-  v35 = [(MTTableViewCell *)self contentView];
-  [v35 frame];
+  contentView2 = [(MTTableViewCell *)self contentView];
+  [contentView2 frame];
   v37 = v36;
   v39 = v38;
   v41 = v40;
@@ -283,8 +283,8 @@ LABEL_15:
     v53.size.width = v18;
     v53.size.height = v20;
     MinY = CGRectGetMinY(v53);
-    v44 = [(MTTableViewCell *)self contentView];
-    [v44 setFrame:{v37, v39, v41, MinY}];
+    contentView3 = [(MTTableViewCell *)self contentView];
+    [contentView3 setFrame:{v37, v39, v41, MinY}];
   }
 
   if (v34)
@@ -301,90 +301,90 @@ LABEL_15:
     MaxX = CGRectGetMaxX(v54);
     v46 = v37 + MaxX;
     v47 = v41 - (MaxX + 0.0);
-    v48 = [(MTTableViewCell *)self contentView];
-    [v48 setFrame:{v46, v39 + 0.0, v47, MinY}];
+    contentView4 = [(MTTableViewCell *)self contentView];
+    [contentView4 setFrame:{v46, v39 + 0.0, v47, MinY}];
   }
 }
 
-- (void)updateCellShadows:(BOOL)a3 animated:(BOOL)a4
+- (void)updateCellShadows:(BOOL)shadows animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_100074F58;
     v5[3] = &unk_1004D8748;
     v5[4] = self;
-    v6 = a3;
+    shadowsCopy = shadows;
     [UIView animateWithDuration:0 delay:v5 options:0 animations:0.25 completion:0.0];
   }
 
   else
   {
 
-    [(MTTableViewCell *)self updateCellShadows:a3];
+    [(MTTableViewCell *)self updateCellShadows:shadows];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  highlightedCopy = highlighted;
   [MTTableViewCell updateCellShadows:"updateCellShadows:animated:" animated:?];
   v7.receiver = self;
   v7.super_class = MTTableViewCell;
-  [(MTTableViewCell *)&v7 setHighlighted:v5 animated:v4];
+  [(MTTableViewCell *)&v7 setHighlighted:highlightedCopy animated:animatedCopy];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  selectedCopy = selected;
   [MTTableViewCell updateCellShadows:"updateCellShadows:animated:" animated:?];
   v7.receiver = self;
   v7.super_class = MTTableViewCell;
-  [(MTTableViewCell *)&v7 setSelected:v5 animated:v4];
+  [(MTTableViewCell *)&v7 setSelected:selectedCopy animated:animatedCopy];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  self->_enabled = a3;
+  self->_enabled = enabled;
   [(MTTableViewCell *)self setUserInteractionEnabled:?];
-  v4 = [(MTTableViewCell *)self textLabel];
-  [v4 setEnabled:self->_enabled];
+  textLabel = [(MTTableViewCell *)self textLabel];
+  [textLabel setEnabled:self->_enabled];
 
-  v5 = [(MTTableViewCell *)self detailTextLabel];
-  [v5 setEnabled:self->_enabled];
+  detailTextLabel = [(MTTableViewCell *)self detailTextLabel];
+  [detailTextLabel setEnabled:self->_enabled];
 
-  v6 = [(MTTableViewCell *)self imageView];
-  v8 = v6;
+  imageView = [(MTTableViewCell *)self imageView];
+  v8 = imageView;
   v7 = 0.400000006;
   if (self->_enabled)
   {
     v7 = 1.0;
   }
 
-  [v6 setAlpha:v7];
+  [imageView setAlpha:v7];
 }
 
-- (void)didTransitionToState:(unint64_t)a3
+- (void)didTransitionToState:(unint64_t)state
 {
-  if ((a3 & 1) != 0 && ![(MTTableViewCell *)self editingStyle])
+  if ((state & 1) != 0 && ![(MTTableViewCell *)self editingStyle])
   {
-    v5 = [(MTTableViewCell *)self leftAccessoryView];
+    leftAccessoryView = [(MTTableViewCell *)self leftAccessoryView];
   }
 
   else
   {
-    v5 = [(MTTableViewCell *)self leftEditingAccessoryView];
+    leftAccessoryView = [(MTTableViewCell *)self leftEditingAccessoryView];
   }
 
-  v6 = v5;
-  [v5 removeFromSuperview];
+  v6 = leftAccessoryView;
+  [leftAccessoryView removeFromSuperview];
 
   v7.receiver = self;
   v7.super_class = MTTableViewCell;
-  [(MTTableViewCell *)&v7 didTransitionToState:a3];
+  [(MTTableViewCell *)&v7 didTransitionToState:state];
 }
 
 @end

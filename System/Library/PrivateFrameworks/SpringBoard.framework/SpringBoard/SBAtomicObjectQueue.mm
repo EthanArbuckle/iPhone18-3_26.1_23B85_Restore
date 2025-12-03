@@ -1,7 +1,7 @@
 @interface SBAtomicObjectQueue
 - (SBAtomicObjectQueue)init;
 - (id)dequeue;
-- (void)enqueue:(id)a3;
+- (void)enqueue:(id)enqueue;
 @end
 
 @implementation SBAtomicObjectQueue
@@ -9,10 +9,10 @@
 - (id)dequeue
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableArray *)self->_data _sb_dequeue];
+  _sb_dequeue = [(NSMutableArray *)self->_data _sb_dequeue];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _sb_dequeue;
 }
 
 - (SBAtomicObjectQueue)init
@@ -24,19 +24,19 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     data = v3->_data;
-    v3->_data = v4;
+    v3->_data = array;
   }
 
   return v3;
 }
 
-- (void)enqueue:(id)a3
+- (void)enqueue:(id)enqueue
 {
-  v4 = a3;
+  enqueueCopy = enqueue;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_data _sb_enqueue:v4];
+  [(NSMutableArray *)self->_data _sb_enqueue:enqueueCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

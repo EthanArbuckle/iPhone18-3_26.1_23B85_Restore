@@ -4,8 +4,8 @@
 - (id)anyVisit;
 - (id)currentVisit;
 - (id)previousVisit;
-- (id)startVisitUpdatesWithIdentifier:(id)a3 handler:(id)a4;
-- (void)stopVisitUpdatesForToken:(id)a3;
+- (id)startVisitUpdatesWithIdentifier:(id)identifier handler:(id)handler;
+- (void)stopVisitUpdatesForToken:(id)token;
 @end
 
 @implementation NTKVisitManager
@@ -49,7 +49,7 @@ void __37__NTKVisitManager_sharedVisitManager__block_invoke()
   return [v2 fallbackVisit];
 }
 
-- (id)startVisitUpdatesWithIdentifier:(id)a3 handler:(id)a4
+- (id)startVisitUpdatesWithIdentifier:(id)identifier handler:(id)handler
 {
   OUTLINED_FUNCTION_1_6();
   OUTLINED_FUNCTION_0_7();
@@ -57,7 +57,7 @@ void __37__NTKVisitManager_sharedVisitManager__block_invoke()
   return &stru_284110E98;
 }
 
-- (void)stopVisitUpdatesForToken:(id)a3
+- (void)stopVisitUpdatesForToken:(id)token
 {
   OUTLINED_FUNCTION_1_6();
   OUTLINED_FUNCTION_0_7();

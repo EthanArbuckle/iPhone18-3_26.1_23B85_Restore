@@ -10,21 +10,21 @@
 - (WFAssociationStateView)associationStateView;
 - (double)_paddingDefaultByDevice;
 - (double)_verticalPadding;
-- (id)imageFromSignalBars:(unint64_t)a3;
+- (id)imageFromSignalBars:(unint64_t)bars;
 - (void)_adjustStackViewPadding;
 - (void)_updateSignalImage;
-- (void)_updateTextColorForLabel:(id)a3;
-- (void)_updateTintColorForImageView:(id)a3;
+- (void)_updateTextColorForLabel:(id)label;
+- (void)_updateTintColorForImageView:(id)view;
 - (void)awakeFromNib;
 - (void)prepareForReuse;
-- (void)setBars:(unint64_t)a3;
-- (void)setConnectionError:(BOOL)a3;
-- (void)setPersonalHotspot:(BOOL)a3;
-- (void)setSecure:(BOOL)a3;
-- (void)setState:(int64_t)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBars:(unint64_t)bars;
+- (void)setConnectionError:(BOOL)error;
+- (void)setPersonalHotspot:(BOOL)hotspot;
+- (void)setSecure:(BOOL)secure;
+- (void)setState:(int64_t)state;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation WFNetworkListCell
@@ -34,45 +34,45 @@
   v20.receiver = self;
   v20.super_class = WFNetworkListCell;
   [(WFNetworkListCell *)&v20 awakeFromNib];
-  v3 = [(WFNetworkListCell *)self nameLabel];
-  [v3 setNumberOfLines:0];
+  nameLabel = [(WFNetworkListCell *)self nameLabel];
+  [nameLabel setNumberOfLines:0];
 
-  v4 = [(WFNetworkListCell *)self nameLabel];
-  [(WFNetworkListCell *)self _updateTextColorForLabel:v4];
+  nameLabel2 = [(WFNetworkListCell *)self nameLabel];
+  [(WFNetworkListCell *)self _updateTextColorForLabel:nameLabel2];
 
-  v5 = [(WFNetworkListCell *)self subtitleLabel];
-  [v5 setNumberOfLines:0];
+  subtitleLabel = [(WFNetworkListCell *)self subtitleLabel];
+  [subtitleLabel setNumberOfLines:0];
 
   v6 = [MEMORY[0x277D74300] preferredFontForStyle:*MEMORY[0x277D76938] weight:*MEMORY[0x277D74418]];
-  v7 = [(WFNetworkListCell *)self subtitleLabel];
-  [v7 setFont:v6];
+  subtitleLabel2 = [(WFNetworkListCell *)self subtitleLabel];
+  [subtitleLabel2 setFont:v6];
 
-  v8 = [(WFNetworkListCell *)self subtitleLabel];
-  [(WFNetworkListCell *)self _updateTextColorForLabel:v8];
+  subtitleLabel3 = [(WFNetworkListCell *)self subtitleLabel];
+  [(WFNetworkListCell *)self _updateTextColorForLabel:subtitleLabel3];
 
   [(WFNetworkListCell *)self setState:0];
-  v9 = [(WFNetworkListCell *)self lockImageView];
-  [v9 setHidden:1];
+  lockImageView = [(WFNetworkListCell *)self lockImageView];
+  [lockImageView setHidden:1];
 
   v10 = +[WFImageCache sharedImageCache];
   v11 = [v10 imageNamed:@"Lock"];
   v12 = [v11 imageWithRenderingMode:2];
-  v13 = [(WFNetworkListCell *)self lockImageView];
-  [v13 setImage:v12];
+  lockImageView2 = [(WFNetworkListCell *)self lockImageView];
+  [lockImageView2 setImage:v12];
 
-  v14 = [(WFNetworkListCell *)self lockImageView];
-  [(WFNetworkListCell *)self _updateTintColorForImageView:v14];
+  lockImageView3 = [(WFNetworkListCell *)self lockImageView];
+  [(WFNetworkListCell *)self _updateTintColorForImageView:lockImageView3];
 
-  v15 = [(WFNetworkListCell *)self signalImageView];
-  [v15 setHidden:1];
+  signalImageView = [(WFNetworkListCell *)self signalImageView];
+  [signalImageView setHidden:1];
 
   v16 = [(WFNetworkListCell *)self imageFromSignalBars:3];
   v17 = [v16 imageWithRenderingMode:2];
-  v18 = [(WFNetworkListCell *)self signalImageView];
-  [v18 setImage:v17];
+  signalImageView2 = [(WFNetworkListCell *)self signalImageView];
+  [signalImageView2 setImage:v17];
 
-  v19 = [(WFNetworkListCell *)self signalImageView];
-  [(WFNetworkListCell *)self _updateTintColorForImageView:v19];
+  signalImageView3 = [(WFNetworkListCell *)self signalImageView];
+  [(WFNetworkListCell *)self _updateTintColorForImageView:signalImageView3];
 
   [(WFNetworkListCell *)self _adjustStackViewPadding];
 }
@@ -93,21 +93,21 @@
     v6 = v7 + -8.0;
   }
 
-  v8 = [(WFNetworkListCell *)self stackViewTopConstraint];
-  [v8 setConstant:v6];
+  stackViewTopConstraint = [(WFNetworkListCell *)self stackViewTopConstraint];
+  [stackViewTopConstraint setConstant:v6];
 
-  v9 = [(WFNetworkListCell *)self stackViewBottomConstraint];
-  [v9 setConstant:v6];
+  stackViewBottomConstraint = [(WFNetworkListCell *)self stackViewBottomConstraint];
+  [stackViewBottomConstraint setConstant:v6];
 }
 
 - (double)_paddingDefaultByDevice
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
 
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 bounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   v7 = v6;
 
   if (v4 >= v7)
@@ -132,19 +132,19 @@
 
 - (double)_verticalPadding
 {
-  v3 = [(WFNetworkListCell *)self nameLabel];
-  v4 = [v3 font];
-  [v4 _bodyLeading];
+  nameLabel = [(WFNetworkListCell *)self nameLabel];
+  font = [nameLabel font];
+  [font _bodyLeading];
   v6 = v5 * 0.5;
 
-  v7 = [(WFNetworkListCell *)self subtitleLabel];
-  LOBYTE(v4) = [v7 isHidden];
+  subtitleLabel = [(WFNetworkListCell *)self subtitleLabel];
+  LOBYTE(font) = [subtitleLabel isHidden];
 
-  if ((v4 & 1) == 0)
+  if ((font & 1) == 0)
   {
-    v8 = [(WFNetworkListCell *)self subtitleLabel];
-    v9 = [v8 font];
-    [v9 _bodyLeading];
+    subtitleLabel2 = [(WFNetworkListCell *)self subtitleLabel];
+    font2 = [subtitleLabel2 font];
+    [font2 _bodyLeading];
     v6 = v6 + v10 * -0.5;
 
     if (v6 < 0.0)
@@ -156,26 +156,26 @@
   return v6;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [a3 preferredContentSizeCategory];
-  v5 = [(WFNetworkListCell *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 isEqualToString:v6];
+  preferredContentSizeCategory = [change preferredContentSizeCategory];
+  traitCollection = [(WFNetworkListCell *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+  v7 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v7 & 1) == 0)
   {
     [(WFNetworkListCell *)self _adjustStackViewPadding];
-    v9 = [(WFNetworkListCell *)self subtitleLabel];
+    subtitleLabel = [(WFNetworkListCell *)self subtitleLabel];
     LODWORD(v8) = 1.0;
-    [v9 _setHyphenationFactor:v8];
+    [subtitleLabel _setHyphenationFactor:v8];
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v4 = [(WFNetworkListCell *)self associationStateView];
-  [v4 setState:a3];
+  associationStateView = [(WFNetworkListCell *)self associationStateView];
+  [associationStateView setState:state];
 }
 
 - (void)prepareForReuse
@@ -185,8 +185,8 @@
   [(WFNetworkListCell *)&v4 prepareForReuse];
   [(WFNetworkListCell *)self setTitle:0];
   [(WFNetworkListCell *)self setSubtitle:0];
-  v3 = [(WFNetworkListCell *)self lockImageView];
-  [v3 setHidden:1];
+  lockImageView = [(WFNetworkListCell *)self lockImageView];
+  [lockImageView setHidden:1];
 
   [(WFNetworkListCell *)self setState:0];
   [(WFNetworkListCell *)self setAccessoryType:0];
@@ -196,31 +196,31 @@
   [(WFNetworkListCell *)self setSecure:0];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
   WeakRetained = objc_loadWeakRetained(&self->_nameLabel);
-  [WeakRetained setText:v5];
+  [WeakRetained setText:titleCopy];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v14 = a3;
-  objc_storeStrong(&self->_subtitle, a3);
-  v5 = [(WFNetworkListCell *)self subtitleLabel];
-  if (v14)
+  subtitleCopy = subtitle;
+  objc_storeStrong(&self->_subtitle, subtitle);
+  subtitleLabel = [(WFNetworkListCell *)self subtitleLabel];
+  if (subtitleCopy)
   {
-    [v5 setHidden:0];
+    [subtitleLabel setHidden:0];
 
-    v6 = [(WFNetworkListCell *)self subtitleLabel];
-    [v6 setText:v14];
+    subtitleLabel2 = [(WFNetworkListCell *)self subtitleLabel];
+    [subtitleLabel2 setText:subtitleCopy];
 
     if ([(WFNetworkListCell *)self connectionError])
     {
-      v7 = [MEMORY[0x277D75348] systemOrangeColor];
-      v8 = [(WFNetworkListCell *)self subtitleLabel];
-      [v8 setTextColor:v7];
+      systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+      subtitleLabel3 = [(WFNetworkListCell *)self subtitleLabel];
+      [subtitleLabel3 setTextColor:systemOrangeColor];
 
       v9 = MEMORY[0x277D74300];
       v10 = *MEMORY[0x277D76938];
@@ -229,96 +229,96 @@
 
     else
     {
-      v12 = [(WFNetworkListCell *)self subtitleLabel];
-      [(WFNetworkListCell *)self _updateTextColorForLabel:v12];
+      subtitleLabel4 = [(WFNetworkListCell *)self subtitleLabel];
+      [(WFNetworkListCell *)self _updateTextColorForLabel:subtitleLabel4];
 
       v9 = MEMORY[0x277D74300];
       v10 = *MEMORY[0x277D76938];
       v11 = MEMORY[0x277D74418];
     }
 
-    v5 = [v9 preferredFontForStyle:v10 weight:*v11];
-    v13 = [(WFNetworkListCell *)self subtitleLabel];
-    [v13 setFont:v5];
+    subtitleLabel = [v9 preferredFontForStyle:v10 weight:*v11];
+    subtitleLabel5 = [(WFNetworkListCell *)self subtitleLabel];
+    [subtitleLabel5 setFont:subtitleLabel];
   }
 
   else
   {
-    [v5 setHidden:1];
+    [subtitleLabel setHidden:1];
   }
 
   [(WFNetworkListCell *)self _adjustStackViewPadding];
 }
 
-- (void)setConnectionError:(BOOL)a3
+- (void)setConnectionError:(BOOL)error
 {
-  if (self->_connectionError != a3)
+  if (self->_connectionError != error)
   {
-    self->_connectionError = a3;
+    self->_connectionError = error;
     [(WFNetworkListCell *)self _updateSignalImage];
   }
 }
 
-- (void)setPersonalHotspot:(BOOL)a3
+- (void)setPersonalHotspot:(BOOL)hotspot
 {
-  if (self->_personalHotspot != a3)
+  if (self->_personalHotspot != hotspot)
   {
-    self->_personalHotspot = a3;
+    self->_personalHotspot = hotspot;
     [(WFNetworkListCell *)self _updateSignalImage];
   }
 }
 
-- (void)setBars:(unint64_t)a3
+- (void)setBars:(unint64_t)bars
 {
-  if (self->_bars != a3)
+  if (self->_bars != bars)
   {
-    self->_bars = a3;
+    self->_bars = bars;
     [(WFNetworkListCell *)self _updateSignalImage];
   }
 }
 
-- (void)setSecure:(BOOL)a3
+- (void)setSecure:(BOOL)secure
 {
-  if (self->_secure != a3)
+  if (self->_secure != secure)
   {
-    v4 = a3;
-    self->_secure = a3;
-    v6 = [(WFNetworkListCell *)self lockImageView];
-    v10 = v6;
-    if (v4)
+    secureCopy = secure;
+    self->_secure = secure;
+    lockImageView = [(WFNetworkListCell *)self lockImageView];
+    v10 = lockImageView;
+    if (secureCopy)
     {
-      [v6 setHidden:0];
+      [lockImageView setHidden:0];
 
       v10 = +[WFImageCache sharedImageCache];
       v7 = [v10 imageNamed:@"Lock"];
       v8 = [v7 imageWithRenderingMode:2];
-      v9 = [(WFNetworkListCell *)self lockImageView];
-      [v9 setImage:v8];
+      lockImageView2 = [(WFNetworkListCell *)self lockImageView];
+      [lockImageView2 setImage:v8];
     }
 
     else
     {
-      [v6 setHidden:1];
+      [lockImageView setHidden:1];
     }
   }
 }
 
 - (void)_updateSignalImage
 {
-  v3 = [(WFNetworkListCell *)self signalImageView];
-  [v3 setHidden:0];
+  signalImageView = [(WFNetworkListCell *)self signalImageView];
+  [signalImageView setHidden:0];
 
   if ([(WFNetworkListCell *)self connectionError])
   {
     v4 = +[WFImageCache sharedImageCache];
     v5 = [v4 imageNamed:@"WiFiBarsError"];
     v6 = [v5 imageWithRenderingMode:2];
-    v7 = [(WFNetworkListCell *)self signalImageView];
-    [v7 setImage:v6];
+    signalImageView2 = [(WFNetworkListCell *)self signalImageView];
+    [signalImageView2 setImage:v6];
 
-    v8 = [MEMORY[0x277D75348] systemOrangeColor];
-    v9 = [(WFNetworkListCell *)self subtitleLabel];
-    [v9 setTextColor:v8];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    subtitleLabel = [(WFNetworkListCell *)self subtitleLabel];
+    [subtitleLabel setTextColor:systemOrangeColor];
 
     v10 = MEMORY[0x277D74410];
   }
@@ -327,11 +327,11 @@
   {
     if ([(WFNetworkListCell *)self personalHotspot])
     {
-      v11 = +[WFImageCache sharedImageCache];
-      v12 = [v11 imageNamed:@"Personal_Hotspot"];
+      signalImageView5 = +[WFImageCache sharedImageCache];
+      v12 = [signalImageView5 imageNamed:@"Personal_Hotspot"];
       v13 = [v12 imageWithRenderingMode:2];
-      v14 = [(WFNetworkListCell *)self signalImageView];
-      [v14 setImage:v13];
+      signalImageView3 = [(WFNetworkListCell *)self signalImageView];
+      [signalImageView3 setImage:v13];
 
       v15 = 1.0;
     }
@@ -340,48 +340,48 @@
     {
       v16 = [(WFNetworkListCell *)self imageFromSignalBars:self->_bars];
       v17 = [v16 imageWithRenderingMode:2];
-      v18 = [(WFNetworkListCell *)self signalImageView];
-      [v18 setImage:v17];
+      signalImageView4 = [(WFNetworkListCell *)self signalImageView];
+      [signalImageView4 setImage:v17];
 
-      v11 = [(WFNetworkListCell *)self signalImageView];
-      [(WFNetworkListCell *)self _updateTintColorForImageView:v11];
+      signalImageView5 = [(WFNetworkListCell *)self signalImageView];
+      [(WFNetworkListCell *)self _updateTintColorForImageView:signalImageView5];
       v15 = 0.0;
     }
 
-    v19 = [(WFNetworkListCell *)self signalImageViewCenterConstraint];
-    [v19 setConstant:v15];
+    signalImageViewCenterConstraint = [(WFNetworkListCell *)self signalImageViewCenterConstraint];
+    [signalImageViewCenterConstraint setConstant:v15];
 
-    v8 = [(WFNetworkListCell *)self subtitleLabel];
-    [(WFNetworkListCell *)self _updateTextColorForLabel:v8];
+    systemOrangeColor = [(WFNetworkListCell *)self subtitleLabel];
+    [(WFNetworkListCell *)self _updateTextColorForLabel:systemOrangeColor];
     v10 = MEMORY[0x277D74418];
   }
 
   v21 = [MEMORY[0x277D74300] preferredFontForStyle:*MEMORY[0x277D76938] weight:*v10];
-  v20 = [(WFNetworkListCell *)self subtitleLabel];
-  [v20 setFont:v21];
+  subtitleLabel2 = [(WFNetworkListCell *)self subtitleLabel];
+  [subtitleLabel2 setFont:v21];
 }
 
-- (void)_updateTextColorForLabel:(id)a3
+- (void)_updateTextColorForLabel:(id)label
 {
   v3 = MEMORY[0x277D75348];
-  v4 = a3;
-  v5 = [v3 defaultTextColor];
-  [v4 setTextColor:v5];
+  labelCopy = label;
+  defaultTextColor = [v3 defaultTextColor];
+  [labelCopy setTextColor:defaultTextColor];
 }
 
-- (void)_updateTintColorForImageView:(id)a3
+- (void)_updateTintColorForImageView:(id)view
 {
   v3 = MEMORY[0x277D75348];
-  v4 = a3;
-  v5 = [v3 defaultTextColor];
-  [v4 setTintColor:v5];
+  viewCopy = view;
+  defaultTextColor = [v3 defaultTextColor];
+  [viewCopy setTintColor:defaultTextColor];
 }
 
-- (id)imageFromSignalBars:(unint64_t)a3
+- (id)imageFromSignalBars:(unint64_t)bars
 {
-  if (a3 / 3.0 <= 3.0)
+  if (bars / 3.0 <= 3.0)
   {
-    v3 = a3 / 3.0;
+    v3 = bars / 3.0;
   }
 
   else

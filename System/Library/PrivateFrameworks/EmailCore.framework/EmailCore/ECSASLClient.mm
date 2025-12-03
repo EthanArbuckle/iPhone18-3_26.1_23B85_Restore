@@ -1,19 +1,19 @@
 @interface ECSASLClient
 + (NSArray)installedMechanisms;
 + (OS_os_log)log;
-- (BOOL)_logGenericError:(int)a3 saslConnection:(sasl_conn *)a4 description:(id)a5 error:(id *)a6;
+- (BOOL)_logGenericError:(int)error saslConnection:(sasl_conn *)connection description:(id)description error:(id *)a6;
 - (BOOL)lastResponseIncludesPlainTextCredential;
 - (ECAuthenticationCredentials)credentials;
 - (ECSASLClient)init;
-- (ECSASLClient)initWithMechanismNames:(id)a3 credentials:(id)a4 externalSecurityLayer:(unsigned int)a5 allowPlainText:(BOOL)a6;
+- (ECSASLClient)initWithMechanismNames:(id)names credentials:(id)credentials externalSecurityLayer:(unsigned int)layer allowPlainText:(BOOL)text;
 - (NSString)description;
-- (id)newDecryptedDataForBytes:(const char *)a3 length:(unsigned int)a4;
-- (id)newEncryptedDataForBytes:(const char *)a3 length:(unsigned int)a4;
-- (id)responseForServerData:(id)a3;
+- (id)newDecryptedDataForBytes:(const char *)bytes length:(unsigned int)length;
+- (id)newEncryptedDataForBytes:(const char *)bytes length:(unsigned int)length;
+- (id)responseForServerData:(id)data;
 - (id)start;
 - (void)_clearAuthenticationCallbackBuffers;
-- (void)_handleNeedsUserInteraction:(sasl_interact *)a3;
-- (void)_handleStartFailure:(int)a3;
+- (void)_handleNeedsUserInteraction:(sasl_interact *)interaction;
+- (void)_handleStartFailure:(int)failure;
 - (void)_retrieveEncryptionBufferSize;
 - (void)dealloc;
 @end
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __19__ECSASLClient_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_3 != -1)
   {
     dispatch_once(&log_onceToken_3, block);
@@ -45,19 +45,19 @@ void __19__ECSASLClient_log__block_invoke(uint64_t a1)
   log_log_3 = v1;
 }
 
-- (ECSASLClient)initWithMechanismNames:(id)a3 credentials:(id)a4 externalSecurityLayer:(unsigned int)a5 allowPlainText:(BOOL)a6
+- (ECSASLClient)initWithMechanismNames:(id)names credentials:(id)credentials externalSecurityLayer:(unsigned int)layer allowPlainText:(BOOL)text
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  value = a5;
-  if (![v10 count])
+  textCopy = text;
+  namesCopy = names;
+  credentialsCopy = credentials;
+  value = layer;
+  if (![namesCopy count])
   {
     v29 = @"mechanismNames cannot be nil or empty";
     goto LABEL_27;
   }
 
-  if (!v11)
+  if (!credentialsCopy)
   {
     v29 = @"credentials cannot be nil";
 LABEL_27:
@@ -137,14 +137,14 @@ LABEL_27:
     v13[13].id = 0;
     v13[13].proc = 0;
     v13[13].context = 0;
-    v15 = [v11 saslProfileName];
-    v16 = [v15 UTF8String];
+    saslProfileName = [credentialsCopy saslProfileName];
+    uTF8String = [saslProfileName UTF8String];
 
-    v17 = [v11 hostname];
-    v18 = [v17 UTF8String];
+    hostname = [credentialsCopy hostname];
+    uTF8String2 = [hostname UTF8String];
 
     pconn = 0;
-    v19 = sasl_client_new(v16, v18, 0, 0, v14, 0, &pconn);
+    v19 = sasl_client_new(uTF8String, uTF8String2, 0, 0, v14, 0, &pconn);
     if (v19)
     {
       [(ECSASLClient *)v12 _logGenericError:v19 saslConnection:pconn description:@"Failed to create a new SASL connection" error:0];
@@ -156,7 +156,7 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    if (a5)
+    if (layer)
     {
       v21 = sasl_setprop(pconn, 100, &value);
       if (v21)
@@ -173,7 +173,7 @@ LABEL_20:
       v31 = 0;
       v34 = 0u;
       v32 = 0x280000000800;
-      v33 = !v6;
+      v33 = !textCopy;
       v21 = sasl_setprop(pconn, 101, &v31);
       if (v21)
       {
@@ -182,17 +182,17 @@ LABEL_20:
       }
     }
 
-    v22 = [v11 username];
-    v23 = [v22 UTF8String];
+    username = [credentialsCopy username];
+    uTF8String3 = [username UTF8String];
 
-    v24 = sasl_setprop(pconn, 102, v23);
+    v24 = sasl_setprop(pconn, 102, uTF8String3);
     if (!v24)
     {
-      v26 = [v10 copy];
+      v26 = [namesCopy copy];
       mechanismNames = v12->_mechanismNames;
       v12->_mechanismNames = v26;
 
-      objc_storeWeak(&v12->_credentials, v11);
+      objc_storeWeak(&v12->_credentials, credentialsCopy);
       v28 = pconn;
       v12->_callbacks = v14;
       v12->_saslConnection = v28;
@@ -210,8 +210,8 @@ LABEL_23:
 
 - (ECSASLClient)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"ECSASLClient.m" lineNumber:265 description:{@"Invalid initializer called, returning nil"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ECSASLClient.m" lineNumber:265 description:{@"Invalid initializer called, returning nil"}];
 
   return 0;
 }
@@ -239,19 +239,19 @@ LABEL_23:
 
 - (NSString)description
 {
-  v3 = [(ECSASLClient *)self saslStatus];
-  if (v3 > 1)
+  saslStatus = [(ECSASLClient *)self saslStatus];
+  if (saslStatus > 1)
   {
-    if (v3 == 2)
+    if (saslStatus == 2)
     {
       v5 = @"AuthenticationCompleted";
     }
 
-    else if (v3 == 3)
+    else if (saslStatus == 3)
     {
       v6 = objc_alloc(MEMORY[0x277CCACA8]);
-      v7 = [(ECSASLClient *)self saslError];
-      v5 = [v6 initWithFormat:@"Error[%@]", v7];
+      saslError = [(ECSASLClient *)self saslError];
+      v5 = [v6 initWithFormat:@"Error[%@]", saslError];
     }
 
     else
@@ -263,12 +263,12 @@ LABEL_23:
   else
   {
     v4 = @"NegotiatingAuthentication";
-    if (v3 != 1)
+    if (saslStatus != 1)
     {
       v4 = 0;
     }
 
-    if (v3)
+    if (saslStatus)
     {
       v5 = v4;
     }
@@ -283,17 +283,17 @@ LABEL_23:
   v17.receiver = self;
   v17.super_class = ECSASLClient;
   v9 = [(ECSASLClient *)&v17 description];
-  v10 = [(ECSASLClient *)self selectedMechanismName];
-  v11 = [(ECSASLClient *)self mechanismNames];
-  v12 = [v11 componentsJoinedByString:{@", "}];
-  v13 = [(ECSASLClient *)self encryptionBufferSize];
+  selectedMechanismName = [(ECSASLClient *)self selectedMechanismName];
+  mechanismNames = [(ECSASLClient *)self mechanismNames];
+  v12 = [mechanismNames componentsJoinedByString:{@", "}];
+  encryptionBufferSize = [(ECSASLClient *)self encryptionBufferSize];
   v14 = @"yes";
-  if (!v13)
+  if (!encryptionBufferSize)
   {
     v14 = @"no";
   }
 
-  v15 = [v8 stringWithFormat:@"%@ status: %@, selected mechanism: %@ (out of %@), security layer: %@", v9, v5, v10, v12, v14];
+  v15 = [v8 stringWithFormat:@"%@ status: %@, selected mechanism: %@ (out of %@), security layer: %@", v9, v5, selectedMechanismName, v12, v14];
 
   return v15;
 }
@@ -303,14 +303,14 @@ LABEL_23:
   v26[2] = *MEMORY[0x277D85DE8];
   if ([(ECSASLClient *)self saslStatus])
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"ECSASLClient.m" lineNumber:314 description:@"This method must be called in the Unauthenticated state"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ECSASLClient.m" lineNumber:314 description:@"This method must be called in the Unauthenticated state"];
   }
 
-  v4 = [(ECSASLClient *)self saslConnection];
-  v5 = [(ECSASLClient *)self mechanismNames];
-  v6 = [v5 componentsJoinedByString:@" "];
-  v7 = [v6 UTF8String];
+  saslConnection = [(ECSASLClient *)self saslConnection];
+  mechanismNames = [(ECSASLClient *)self mechanismNames];
+  v6 = [mechanismNames componentsJoinedByString:@" "];
+  uTF8String = [v6 UTF8String];
 
   clientout[0] = 0;
   clientoutlen = 0;
@@ -318,22 +318,22 @@ LABEL_23:
   mech = 0;
   if ([(ECSASLClient *)self excludeInitialResponse])
   {
-    v8 = sasl_client_start(v4, v7, 0, 0, 0, &mech);
+    v8 = sasl_client_start(saslConnection, uTF8String, 0, 0, 0, &mech);
   }
 
   else
   {
-    v8 = sasl_client_start(v4, v7, &v22, clientout, &clientoutlen, &mech);
+    v8 = sasl_client_start(saslConnection, uTF8String, &v22, clientout, &clientoutlen, &mech);
   }
 
   v9 = v8;
   if (mech)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:?];
-    if (([v5 containsObject:v10] & 1) == 0)
+    if (([mechanismNames containsObject:v10] & 1) == 0)
     {
-      v21 = [MEMORY[0x277CCA890] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"ECSASLClient.m" lineNumber:335 description:@"SASL selected a mechanism outside of the requested ones"];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"ECSASLClient.m" lineNumber:335 description:@"SASL selected a mechanism outside of the requested ones"];
     }
 
     v11 = v10;
@@ -403,8 +403,8 @@ LABEL_20:
 
   else
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"ECSASLClient.m" lineNumber:370 description:@"SASL selected a mechanism whose name is longer than permitted by the standard"];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"ECSASLClient.m" lineNumber:370 description:@"SASL selected a mechanism whose name is longer than permitted by the standard"];
 
     v16 = malloc_type_malloc(v14 + 1, 0xF6DA48BDuLL);
     strcpy(v16, mech);
@@ -461,17 +461,17 @@ LABEL_29:
   return v2;
 }
 
-- (id)responseForServerData:(id)a3
+- (id)responseForServerData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   if ([(ECSASLClient *)self saslStatus]!= 1)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"ECSASLClient.m" lineNumber:419 description:@"This method must be called in the NegotiatingAuthentication state"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ECSASLClient.m" lineNumber:419 description:@"This method must be called in the NegotiatingAuthentication state"];
   }
 
   [(ECSASLClient *)self setLastResponseIncludesCredential:0];
-  v6 = [v5 length];
+  v6 = [dataCopy length];
   v7 = v6;
   if (HIDWORD(v6))
   {
@@ -482,7 +482,7 @@ LABEL_29:
   clientout = 0;
   clientoutlen = 0;
   prompt_need = 0;
-  v8 = sasl_client_step(-[ECSASLClient saslConnection](self, "saslConnection"), [v5 bytes], v7, &prompt_need, &clientout, &clientoutlen);
+  v8 = sasl_client_step(-[ECSASLClient saslConnection](self, "saslConnection"), [dataCopy bytes], v7, &prompt_need, &clientout, &clientoutlen);
   if (v8)
   {
     if (v8 == 1)
@@ -519,21 +519,21 @@ LABEL_29:
 
 - (BOOL)lastResponseIncludesPlainTextCredential
 {
-  v3 = [(ECSASLClient *)self lastResponseIncludesCredential];
-  if (v3)
+  lastResponseIncludesCredential = [(ECSASLClient *)self lastResponseIncludesCredential];
+  if (lastResponseIncludesCredential)
   {
 
-    LOBYTE(v3) = [(ECSASLClient *)self mechanismUsesPlainText];
+    LOBYTE(lastResponseIncludesCredential) = [(ECSASLClient *)self mechanismUsesPlainText];
   }
 
-  return v3;
+  return lastResponseIncludesCredential;
 }
 
 - (void)_retrieveEncryptionBufferSize
 {
-  v3 = [(ECSASLClient *)self saslConnection];
+  saslConnection = [(ECSASLClient *)self saslConnection];
   pvalue = 0;
-  v4 = sasl_getprop(v3, 1, &pvalue);
+  v4 = sasl_getprop(saslConnection, 1, &pvalue);
   if (v4)
   {
     v5 = v4;
@@ -546,7 +546,7 @@ LABEL_3:
   if (*pvalue)
   {
     v8 = 0;
-    v7 = sasl_getprop(v3, 2, &v8);
+    v7 = sasl_getprop(saslConnection, 2, &v8);
     if (!v7)
     {
       [(ECSASLClient *)self setEncryptionBufferSize:*v8];
@@ -559,17 +559,17 @@ LABEL_3:
   }
 }
 
-- (id)newEncryptedDataForBytes:(const char *)a3 length:(unsigned int)a4
+- (id)newEncryptedDataForBytes:(const char *)bytes length:(unsigned int)length
 {
   if ([(ECSASLClient *)self saslStatus]!= 2)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"ECSASLClient.m" lineNumber:738 description:@"This method must be called in the Authenticated state"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ECSASLClient.m" lineNumber:738 description:@"This method must be called in the Authenticated state"];
   }
 
   output = 0;
   outputlen = 0;
-  v8 = sasl_encode([(ECSASLClient *)self saslConnection], a3, a4, &output, &outputlen);
+  v8 = sasl_encode([(ECSASLClient *)self saslConnection], bytes, length, &output, &outputlen);
   if (v8)
   {
     [(ECSASLClient *)self _handleGenericError:v8 description:@"Failed to encrypt data"];
@@ -583,17 +583,17 @@ LABEL_3:
   }
 }
 
-- (id)newDecryptedDataForBytes:(const char *)a3 length:(unsigned int)a4
+- (id)newDecryptedDataForBytes:(const char *)bytes length:(unsigned int)length
 {
   if ([(ECSASLClient *)self saslStatus]!= 2)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"ECSASLClient.m" lineNumber:755 description:@"This method must be called in the Authenticated state"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ECSASLClient.m" lineNumber:755 description:@"This method must be called in the Authenticated state"];
   }
 
   output = 0;
   outputlen = 0;
-  v8 = sasl_decode([(ECSASLClient *)self saslConnection], a3, a4, &output, &outputlen);
+  v8 = sasl_decode([(ECSASLClient *)self saslConnection], bytes, length, &output, &outputlen);
   if (v8)
   {
     [(ECSASLClient *)self _handleGenericError:v8 description:@"Failed to decrypt data"];
@@ -617,16 +617,16 @@ LABEL_3:
   self->_password = 0;
 }
 
-- (BOOL)_logGenericError:(int)a3 saslConnection:(sasl_conn *)a4 description:(id)a5 error:(id *)a6
+- (BOOL)_logGenericError:(int)error saslConnection:(sasl_conn *)connection description:(id)description error:(id *)a6
 {
   v25 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:sasl_errdetail(a4)];
+  descriptionCopy = description;
+  v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:sasl_errdetail(connection)];
   v11 = +[ECSASLClient log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v22 = v9;
+    v22 = descriptionCopy;
     v23 = 2114;
     v24 = v10;
     _os_log_impl(&dword_22D092000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@\n%{public}@", buf, 0x16u);
@@ -637,7 +637,7 @@ LABEL_3:
     v19 = *MEMORY[0x277CCA498];
     v20 = v10;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-    v13 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"SASLErrorDomain" code:a3 userInfo:v12];
+    v13 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"SASLErrorDomain" code:error userInfo:v12];
     v17 = *MEMORY[0x277CCA7E8];
     v18 = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
@@ -649,13 +649,13 @@ LABEL_3:
   return 0;
 }
 
-- (void)_handleStartFailure:(int)a3
+- (void)_handleStartFailure:(int)failure
 {
-  if (a3 == -4)
+  if (failure == -4)
   {
-    v4 = [(ECSASLClient *)self saslConnection];
+    saslConnection = [(ECSASLClient *)self saslConnection];
     memset(value, 0, sizeof(value));
-    if (sasl_setprop(v4, 101, value))
+    if (sasl_setprop(saslConnection, 101, value))
     {
       v5 = 1046;
     }
@@ -663,11 +663,11 @@ LABEL_3:
     else
     {
       prompt_need = 0;
-      v6 = [(ECSASLClient *)self mechanismNames];
-      v7 = [v6 componentsJoinedByString:@" "];
-      v8 = [v7 UTF8String];
+      mechanismNames = [(ECSASLClient *)self mechanismNames];
+      v7 = [mechanismNames componentsJoinedByString:@" "];
+      uTF8String = [v7 UTF8String];
 
-      if (sasl_client_start(v4, v8, &prompt_need, 0, 0, 0) == -4)
+      if (sasl_client_start(saslConnection, uTF8String, &prompt_need, 0, 0, 0) == -4)
       {
         v5 = 1046;
       }
@@ -690,32 +690,32 @@ LABEL_3:
   }
 }
 
-- (void)_handleNeedsUserInteraction:(sasl_interact *)a3
+- (void)_handleNeedsUserInteraction:(sasl_interact *)interaction
 {
-  v3 = a3;
-  if (!a3)
+  interactionCopy = interaction;
+  if (!interaction)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"ECSASLClient.m" lineNumber:858 description:@"libsasl returned SASL_INTERACT without a corresponding sasl_interact_t"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ECSASLClient.m" lineNumber:858 description:@"libsasl returned SASL_INTERACT without a corresponding sasl_interact_t"];
   }
 
-  v12 = [(ECSASLClient *)self credentials];
+  credentials = [(ECSASLClient *)self credentials];
   do
   {
     v5 = 0;
-    id = v3->id;
-    if (v3->id > 18947)
+    id = interactionCopy->id;
+    if (interactionCopy->id > 18947)
     {
       if (id == 18948)
       {
-        v7 = [v12 password];
-        if (!v7)
+        password = [credentials password];
+        if (!password)
         {
-          v8 = [v12 appleAuthenticationToken];
-          if (!v8)
+          appleAuthenticationToken = [credentials appleAuthenticationToken];
+          if (!appleAuthenticationToken)
           {
 LABEL_24:
-            v9 = [v12 base64EncodedAppleAuthenticationToken2];
+            base64EncodedAppleAuthenticationToken2 = [credentials base64EncodedAppleAuthenticationToken2];
             goto LABEL_25;
           }
 
@@ -734,15 +734,15 @@ LABEL_26:
           goto LABEL_28;
         }
 
-        v7 = [v12 password];
-        if (!v7)
+        password = [credentials password];
+        if (!password)
         {
-          v8 = [v12 oauthToken];
-          if (!v8)
+          appleAuthenticationToken = [credentials oauthToken];
+          if (!appleAuthenticationToken)
           {
-            v9 = [v12 appleAuthenticationToken];
+            base64EncodedAppleAuthenticationToken2 = [credentials appleAuthenticationToken];
 LABEL_25:
-            v5 = v9 == 0;
+            v5 = base64EncodedAppleAuthenticationToken2 == 0;
 
             goto LABEL_26;
           }
@@ -761,11 +761,11 @@ LABEL_27:
     switch(id)
     {
       case 16388:
-        v7 = [v12 appleAuthenticationToken];
-        if (!v7)
+        password = [credentials appleAuthenticationToken];
+        if (!password)
         {
-          v8 = [v12 oauthToken];
-          if (!v8)
+          appleAuthenticationToken = [credentials oauthToken];
+          if (!appleAuthenticationToken)
           {
             goto LABEL_24;
           }
@@ -775,11 +775,11 @@ LABEL_27:
 
         goto LABEL_19;
       case 18946:
-        v7 = [v12 password];
-        if (!v7)
+        password = [credentials password];
+        if (!password)
         {
-          v8 = [v12 oauthToken];
-          if (!v8)
+          appleAuthenticationToken = [credentials oauthToken];
+          if (!appleAuthenticationToken)
           {
             goto LABEL_24;
           }
@@ -794,7 +794,7 @@ LABEL_27:
     }
 
 LABEL_28:
-    ++v3;
+    ++interactionCopy;
   }
 
   while (!v5);

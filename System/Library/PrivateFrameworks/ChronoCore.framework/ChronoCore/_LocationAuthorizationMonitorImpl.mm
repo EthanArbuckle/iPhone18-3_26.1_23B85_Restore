@@ -1,7 +1,7 @@
 @interface _LocationAuthorizationMonitorImpl
 - (_TtC10ChronoCore33_LocationAuthorizationMonitorImpl)init;
 - (void)dealloc;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation _LocationAuthorizationMonitorImpl
@@ -22,9 +22,9 @@
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v3 = self;
+  selfCopy = self;
   sub_224DA7A08();
 }
 

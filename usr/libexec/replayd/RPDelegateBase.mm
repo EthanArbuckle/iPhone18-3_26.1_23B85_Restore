@@ -1,15 +1,15 @@
 @interface RPDelegateBase
-- (BOOL)containsDelegate:(id)a3;
-- (BOOL)hasDelegate:(id)a3;
+- (BOOL)containsDelegate:(id)delegate;
+- (BOOL)hasDelegate:(id)delegate;
 - (BOOL)valid;
 - (RPDelegateBase)init;
 - (unint64_t)delegateCount;
-- (void)addDelegate:(id)a3;
-- (void)callDelegate:(id)a3 forProtocol:(id)a4;
+- (void)addDelegate:(id)delegate;
+- (void)callDelegate:(id)delegate forProtocol:(id)protocol;
 - (void)dealloc;
 - (void)invalidate;
 - (void)removeAllDelegates;
-- (void)removeDelegate:(id)a3;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation RPDelegateBase
@@ -65,7 +65,7 @@
     v6 = 1024;
     v7 = 39;
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -96,21 +96,21 @@
   return isValid;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   [(NSLock *)self->_lock lock];
-  if (self->_isValid && ![(RPDelegateBase *)self containsDelegate:v4])
+  if (self->_isValid && ![(RPDelegateBase *)self containsDelegate:delegateCopy])
   {
-    [(NSMutableArray *)self->_delegateArray addObject:v4];
+    [(NSMutableArray *)self->_delegateArray addObject:delegateCopy];
   }
 
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   [(NSLock *)self->_lock lock];
   if (self->_isValid)
   {
@@ -134,9 +134,9 @@
             objc_enumerationMutation(v5);
           }
 
-          if (*(*(&v10 + 1) + 8 * v9) == v4)
+          if (*(*(&v10 + 1) + 8 * v9) == delegateCopy)
           {
-            [(NSMutableArray *)self->_delegateArray removeObject:v4, v10];
+            [(NSMutableArray *)self->_delegateArray removeObject:delegateCopy, v10];
             [(NSLock *)self->_lock unlock];
 
             goto LABEL_13;
@@ -182,21 +182,21 @@ LABEL_13:
   return v3;
 }
 
-- (BOOL)hasDelegate:(id)a3
+- (BOOL)hasDelegate:(id)delegate
 {
   lock = self->_lock;
-  v5 = a3;
+  delegateCopy = delegate;
   [(NSLock *)lock lock];
-  LOBYTE(lock) = [(RPDelegateBase *)self containsDelegate:v5];
+  LOBYTE(lock) = [(RPDelegateBase *)self containsDelegate:delegateCopy];
 
   [(NSLock *)self->_lock unlock];
   return lock;
 }
 
-- (void)callDelegate:(id)a3 forProtocol:(id)a4
+- (void)callDelegate:(id)delegate forProtocol:(id)protocol
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  protocolCopy = protocol;
   [(NSLock *)self->_lock lock];
   if (self->_isValid)
   {
@@ -224,7 +224,7 @@ LABEL_13:
           }
 
           v15 = *(*(&v21 + 1) + 8 * i);
-          if ([v15 conformsToProtocol:{v7, v18}])
+          if ([v15 conformsToProtocol:{protocolCopy, v18}])
           {
             delegateQueue = self->_delegateQueue;
             if (delegateQueue)
@@ -233,7 +233,7 @@ LABEL_13:
               block[1] = 3221225472;
               block[2] = sub_10003FB64;
               block[3] = &unk_1000A2308;
-              v17 = v6;
+              v17 = delegateCopy;
               block[4] = v15;
               v20 = v17;
               dispatch_async(delegateQueue, block);
@@ -241,7 +241,7 @@ LABEL_13:
 
             else
             {
-              (*(v6 + 2))(v6, v15);
+              (*(delegateCopy + 2))(delegateCopy, v15);
             }
           }
 
@@ -268,9 +268,9 @@ LABEL_13:
   }
 }
 
-- (BOOL)containsDelegate:(id)a3
+- (BOOL)containsDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -289,7 +289,7 @@ LABEL_13:
           objc_enumerationMutation(v5);
         }
 
-        if (*(*(&v10 + 1) + 8 * i) == v4)
+        if (*(*(&v10 + 1) + 8 * i) == delegateCopy)
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;

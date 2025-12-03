@@ -1,47 +1,47 @@
 @interface PXSpatialOverlayController
-- (BOOL)canAddOverlayViewForAsset:(id)a3;
+- (BOOL)canAddOverlayViewForAsset:(id)asset;
 - (PXSpatialOverlayController)init;
-- (void)addOverlayViewForAsset:(id)a3 toView:(id)a4 animated:(BOOL)a5;
-- (void)prepareOverlayViewForAssets:(id)a3;
-- (void)removeOverlayViewFromView:(id)a3 animated:(BOOL)a4;
+- (void)addOverlayViewForAsset:(id)asset toView:(id)view animated:(BOOL)animated;
+- (void)prepareOverlayViewForAssets:(id)assets;
+- (void)removeOverlayViewFromView:(id)view animated:(BOOL)animated;
 @end
 
 @implementation PXSpatialOverlayController
 
-- (BOOL)canAddOverlayViewForAsset:(id)a3
+- (BOOL)canAddOverlayViewForAsset:(id)asset
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_1A4629FC0(a3);
+  selfCopy = self;
+  v6 = sub_1A4629FC0(asset);
   swift_unknownObjectRelease();
 
   return v6 & 1;
 }
 
-- (void)prepareOverlayViewForAssets:(id)a3
+- (void)prepareOverlayViewForAssets:(id)assets
 {
   sub_1A3DB58C8();
   v4 = sub_1A524CA34();
-  v5 = self;
+  selfCopy = self;
   sub_1A4627C60(v4);
 }
 
-- (void)addOverlayViewForAsset:(id)a3 toView:(id)a4 animated:(BOOL)a5
+- (void)addOverlayViewForAsset:(id)asset toView:(id)view animated:(BOOL)animated
 {
   swift_unknownObjectRetain();
-  v8 = a4;
-  v9 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1A46281AC();
-  v10 = a3;
-  OverlayViewController.addOverlay(for:to:animationDuration:animations:)(&v10, v8, 0);
+  assetCopy = asset;
+  OverlayViewController.addOverlay(for:to:animationDuration:animations:)(&assetCopy, viewCopy, 0);
 }
 
-- (void)removeOverlayViewFromView:(id)a3 animated:(BOOL)a4
+- (void)removeOverlayViewFromView:(id)view animated:(BOOL)animated
 {
-  v5 = a3;
+  viewCopy = view;
   self;
   sub_1A46281AC();
-  OverlayViewController.removeOverlay(from:animationDuration:animations:)(v5);
+  OverlayViewController.removeOverlay(from:animationDuration:animations:)(viewCopy);
 }
 
 - (PXSpatialOverlayController)init

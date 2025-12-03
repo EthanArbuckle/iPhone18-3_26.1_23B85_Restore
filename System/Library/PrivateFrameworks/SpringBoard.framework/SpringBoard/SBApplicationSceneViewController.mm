@@ -1,10 +1,10 @@
 @interface SBApplicationSceneViewController
-- (SBApplicationSceneViewController)initWithSceneHandle:(id)a3;
+- (SBApplicationSceneViewController)initWithSceneHandle:(id)handle;
 - (SBApplicationSceneViewControllingStatusBarDelegate)applicationSceneStatusBarDelegate;
 - (double)_applicationStatusBarAlpha;
 - (double)statusBarAlpha;
 - (int64_t)overrideStatusBarStyle;
-- (void)_setOverrideStatusBarSettings:(id)a3;
+- (void)_setOverrideStatusBarSettings:(id)settings;
 @end
 
 @implementation SBApplicationSceneViewController
@@ -32,12 +32,12 @@
 
 - (double)statusBarAlpha
 {
-  v3 = [(SBStatusBarSettings *)self->_overrideStatusBarSettings alpha];
+  alpha = [(SBStatusBarSettings *)self->_overrideStatusBarSettings alpha];
 
-  if (v3)
+  if (alpha)
   {
-    v4 = [(SBStatusBarSettings *)self->_overrideStatusBarSettings alpha];
-    [v4 doubleValue];
+    alpha2 = [(SBStatusBarSettings *)self->_overrideStatusBarSettings alpha];
+    [alpha2 doubleValue];
     v6 = v5;
 
     return v6;
@@ -54,13 +54,13 @@
 
 - (double)_applicationStatusBarAlpha
 {
-  v2 = [(SBSceneViewController *)self sceneHandle];
-  v3 = [v2 sceneIfExists];
+  sceneHandle = [(SBSceneViewController *)self sceneHandle];
+  sceneIfExists = [sceneHandle sceneIfExists];
 
-  if (v3)
+  if (sceneIfExists)
   {
-    v4 = [v3 uiClientSettings];
-    [v4 statusBarAlpha];
+    uiClientSettings = [sceneIfExists uiClientSettings];
+    [uiClientSettings statusBarAlpha];
     v6 = v5;
   }
 
@@ -72,34 +72,34 @@
   return v6;
 }
 
-- (SBApplicationSceneViewController)initWithSceneHandle:(id)a3
+- (SBApplicationSceneViewController)initWithSceneHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [(SBApplicationSceneViewController *)a2 initWithSceneHandle:v5];
+    [(SBApplicationSceneViewController *)a2 initWithSceneHandle:handleCopy];
   }
 
   v8.receiver = self;
   v8.super_class = SBApplicationSceneViewController;
-  v6 = [(SBSceneViewController *)&v8 initWithSceneHandle:v5];
+  v6 = [(SBSceneViewController *)&v8 initWithSceneHandle:handleCopy];
 
   return v6;
 }
 
-- (void)_setOverrideStatusBarSettings:(id)a3
+- (void)_setOverrideStatusBarSettings:(id)settings
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBStatusBarSettings *)self->_overrideStatusBarSettings isEqual:v4];
+  settingsCopy = settings;
+  v5 = [(SBStatusBarSettings *)self->_overrideStatusBarSettings isEqual:settingsCopy];
   v6 = SBLogAppStatusBars();
-  v7 = v6;
+  applicationSceneStatusBarDelegate = v6;
   if (v5)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      [(SBApplicationSceneViewController *)self _setOverrideStatusBarSettings:v4, v7];
+      [(SBApplicationSceneViewController *)self _setOverrideStatusBarSettings:settingsCopy, applicationSceneStatusBarDelegate];
     }
   }
 
@@ -107,24 +107,24 @@
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v8 = [(SBSceneViewController *)self sceneHandle];
-      v9 = [v8 sceneIdentifier];
+      sceneHandle = [(SBSceneViewController *)self sceneHandle];
+      sceneIdentifier = [sceneHandle sceneIdentifier];
       v13 = 138412802;
-      v14 = v9;
+      v14 = sceneIdentifier;
       v15 = 2112;
       v16 = objc_opt_class();
       v17 = 2114;
-      v18 = v4;
+      v18 = settingsCopy;
       v10 = v16;
-      _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "(%@) %@ Override status bar settings did change: %{public}@", &v13, 0x20u);
+      _os_log_impl(&dword_21ED4E000, applicationSceneStatusBarDelegate, OS_LOG_TYPE_INFO, "(%@) %@ Override status bar settings did change: %{public}@", &v13, 0x20u);
     }
 
-    v11 = [v4 copy];
+    v11 = [settingsCopy copy];
     overrideStatusBarSettings = self->_overrideStatusBarSettings;
     self->_overrideStatusBarSettings = v11;
 
-    v7 = [(SBApplicationSceneViewController *)self applicationSceneStatusBarDelegate];
-    [v7 applicationSceneViewController:self didUpdateStatusBarSettings:v4];
+    applicationSceneStatusBarDelegate = [(SBApplicationSceneViewController *)self applicationSceneStatusBarDelegate];
+    [applicationSceneStatusBarDelegate applicationSceneViewController:self didUpdateStatusBarSettings:settingsCopy];
   }
 }
 

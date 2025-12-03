@@ -1,27 +1,27 @@
 @interface DS_TDSHelperConnectionHandler
-- (DS_TDSHelperConnectionHandler)initWithHelper:(void *)a3;
+- (DS_TDSHelperConnectionHandler)initWithHelper:(void *)helper;
 - (id).cxx_construct;
 - (void)clearHelper;
-- (void)handleHelperEvent:(id)a3;
+- (void)handleHelperEvent:(id)event;
 @end
 
 @implementation DS_TDSHelperConnectionHandler
 
-- (DS_TDSHelperConnectionHandler)initWithHelper:(void *)a3
+- (DS_TDSHelperConnectionHandler)initWithHelper:(void *)helper
 {
   result = [(DS_TDSHelperConnectionHandler *)self init];
-  *(result + 1) = a3;
+  *(result + 1) = helper;
   return result;
 }
 
-- (void)handleHelperEvent:(id)a3
+- (void)handleHelperEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   std::mutex::lock((self + 16));
   v4 = *(self + 1);
   if (v4)
   {
-    TDSHelperContext::HandleHelperEvent(v4, v5);
+    TDSHelperContext::HandleHelperEvent(v4, eventCopy);
   }
 
   std::mutex::unlock((self + 16));

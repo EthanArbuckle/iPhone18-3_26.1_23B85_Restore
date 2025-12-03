@@ -1,14 +1,14 @@
 @interface TSTCustomFormatListUpgradeHelper
-+ (id)upgradedCustomFormatList:(id)a3;
++ (id)upgradedCustomFormatList:(id)list;
 @end
 
 @implementation TSTCustomFormatListUpgradeHelper
 
-+ (id)upgradedCustomFormatList:(id)a3
++ (id)upgradedCustomFormatList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v4 = objc_alloc(MEMORY[0x277D80648]);
-  v9 = objc_msgSend_context(v3, v5, v6, v7, v8);
+  v9 = objc_msgSend_context(listCopy, v5, v6, v7, v8);
   v13 = objc_msgSend_initWithContext_(v4, v10, v9, v11, v12);
 
   objc_msgSend_setUpgrading_(v13, v14, 1, v15, v16);

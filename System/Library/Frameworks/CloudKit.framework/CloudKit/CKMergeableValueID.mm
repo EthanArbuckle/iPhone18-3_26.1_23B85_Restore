@@ -1,37 +1,37 @@
 @interface CKMergeableValueID
-- (BOOL)isEqual:(id)a3;
-- (CKMergeableValueID)initWithCoder:(id)a3;
-- (CKMergeableValueID)initWithData:(id)a3 zoneName:(id)a4 zoneOwner:(id)a5 recordName:(id)a6 recordFieldName:(id)a7 encrypted:(BOOL)a8;
-- (CKMergeableValueID)initWithName:(id)a3;
-- (CKMergeableValueID)initWithName:(id)a3 recordID:(id)a4 key:(id)a5 encrypted:(BOOL)a6;
-- (CKMergeableValueID)initWithName:(id)a3 zoneID:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CKMergeableValueID)initWithCoder:(id)coder;
+- (CKMergeableValueID)initWithData:(id)data zoneName:(id)name zoneOwner:(id)owner recordName:(id)recordName recordFieldName:(id)fieldName encrypted:(BOOL)encrypted;
+- (CKMergeableValueID)initWithName:(id)name;
+- (CKMergeableValueID)initWithName:(id)name recordID:(id)d key:(id)key encrypted:(BOOL)encrypted;
+- (CKMergeableValueID)initWithName:(id)name zoneID:(id)d;
 - (CKRoughlyEquivalentProperties)equivalencyProperties;
 - (id)description;
 - (id)name;
 - (id)recordID;
 - (id)zoneID;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKMergeableValueID
 
-- (CKMergeableValueID)initWithName:(id)a3
+- (CKMergeableValueID)initWithName:(id)name
 {
-  v4 = objc_msgSend_dataUsingEncoding_(a3, a2, 4);
+  v4 = objc_msgSend_dataUsingEncoding_(name, a2, 4);
   v6 = objc_msgSend_initWithData_zoneName_zoneOwner_(self, v5, v4, 0, 0);
 
   return v6;
 }
 
-- (CKMergeableValueID)initWithData:(id)a3 zoneName:(id)a4 zoneOwner:(id)a5 recordName:(id)a6 recordFieldName:(id)a7 encrypted:(BOOL)a8
+- (CKMergeableValueID)initWithData:(id)data zoneName:(id)name zoneOwner:(id)owner recordName:(id)recordName recordFieldName:(id)fieldName encrypted:(BOOL)encrypted
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v21 = a7;
-  if ((v18 != 0) != (v21 != 0))
+  dataCopy = data;
+  nameCopy = name;
+  ownerCopy = owner;
+  recordNameCopy = recordName;
+  fieldNameCopy = fieldName;
+  if ((recordNameCopy != 0) != (fieldNameCopy != 0))
   {
     v44 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v19, v20);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v44, v45, a2, self, @"CKMergeableValueID.m", 36, @"Record name and record field name must either both be nil, or both be present");
@@ -42,58 +42,58 @@
   v24 = [(CKMergeableValueID *)&v46 init];
   if (v24)
   {
-    v25 = objc_msgSend_copy(v15, v22, v23);
+    v25 = objc_msgSend_copy(dataCopy, v22, v23);
     identifier = v24->_identifier;
     v24->_identifier = v25;
 
-    v29 = objc_msgSend_copy(v16, v27, v28);
+    v29 = objc_msgSend_copy(nameCopy, v27, v28);
     zoneName = v24->_zoneName;
     v24->_zoneName = v29;
 
-    v33 = objc_msgSend_copy(v17, v31, v32);
+    v33 = objc_msgSend_copy(ownerCopy, v31, v32);
     zoneOwner = v24->_zoneOwner;
     v24->_zoneOwner = v33;
 
-    v37 = objc_msgSend_copy(v18, v35, v36);
+    v37 = objc_msgSend_copy(recordNameCopy, v35, v36);
     recordName = v24->_recordName;
     v24->_recordName = v37;
 
-    v41 = objc_msgSend_copy(v21, v39, v40);
+    v41 = objc_msgSend_copy(fieldNameCopy, v39, v40);
     recordFieldName = v24->_recordFieldName;
     v24->_recordFieldName = v41;
 
-    v24->_encrypted = a8;
+    v24->_encrypted = encrypted;
   }
 
   return v24;
 }
 
-- (CKMergeableValueID)initWithName:(id)a3 zoneID:(id)a4
+- (CKMergeableValueID)initWithName:(id)name zoneID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_anonymousCKUserID(v7, v8, v9);
+  nameCopy = name;
+  dCopy = d;
+  v10 = objc_msgSend_anonymousCKUserID(dCopy, v8, v9);
 
   if (v10)
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v11, *MEMORY[0x1E695D940], @"Anonymous user ID not currently supported");
   }
 
-  v12 = objc_msgSend_dataUsingEncoding_(v6, v11, 4);
-  v15 = objc_msgSend_zoneName(v7, v13, v14);
-  v18 = objc_msgSend_ownerName(v7, v16, v17);
+  v12 = objc_msgSend_dataUsingEncoding_(nameCopy, v11, 4);
+  v15 = objc_msgSend_zoneName(dCopy, v13, v14);
+  v18 = objc_msgSend_ownerName(dCopy, v16, v17);
 
   v20 = objc_msgSend_initWithData_zoneName_zoneOwner_(self, v19, v12, v15, v18);
   return v20;
 }
 
-- (CKMergeableValueID)initWithName:(id)a3 recordID:(id)a4 key:(id)a5 encrypted:(BOOL)a6
+- (CKMergeableValueID)initWithName:(id)name recordID:(id)d key:(id)key encrypted:(BOOL)encrypted
 {
-  v38 = a6;
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
-  v14 = objc_msgSend_zoneID(v11, v12, v13);
+  encryptedCopy = encrypted;
+  nameCopy = name;
+  keyCopy = key;
+  dCopy = d;
+  v14 = objc_msgSend_zoneID(dCopy, v12, v13);
   v17 = objc_msgSend_anonymousCKUserID(v14, v15, v16);
 
   if (v17)
@@ -101,14 +101,14 @@
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v18, *MEMORY[0x1E695D940], @"Anonymous user ID not currently supported");
   }
 
-  v19 = objc_msgSend_dataUsingEncoding_(v9, v18, 4);
-  v22 = objc_msgSend_zoneID(v11, v20, v21);
+  v19 = objc_msgSend_dataUsingEncoding_(nameCopy, v18, 4);
+  v22 = objc_msgSend_zoneID(dCopy, v20, v21);
   v25 = objc_msgSend_zoneName(v22, v23, v24);
-  v28 = objc_msgSend_zoneID(v11, v26, v27);
+  v28 = objc_msgSend_zoneID(dCopy, v26, v27);
   v31 = objc_msgSend_ownerName(v28, v29, v30);
-  v34 = objc_msgSend_recordName(v11, v32, v33);
+  v34 = objc_msgSend_recordName(dCopy, v32, v33);
 
-  v36 = objc_msgSend_initWithData_zoneName_zoneOwner_recordName_recordFieldName_encrypted_(self, v35, v19, v25, v31, v34, v10, v38);
+  v36 = objc_msgSend_initWithData_zoneName_zoneOwner_recordName_recordFieldName_encrypted_(self, v35, v19, v25, v31, v34, keyCopy, encryptedCopy);
   return v36;
 }
 
@@ -121,10 +121,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
-  if (v7 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v20) = 1;
   }
@@ -134,7 +134,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = equalCopy;
       v11 = objc_msgSend_identifier(self, v9, v10);
       v16 = objc_msgSend_identifier(v8, v12, v13);
       if (v11 != v16)
@@ -379,45 +379,45 @@ LABEL_39:
   return v3;
 }
 
-- (CKMergeableValueID)initWithCoder:(id)a3
+- (CKMergeableValueID)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v7 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"i");
+  v7 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"i");
   v8 = objc_opt_class();
-  v10 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v9, v8, @"z");
+  v10 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v9, v8, @"z");
   v11 = objc_opt_class();
-  v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"o");
+  v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"o");
   v14 = objc_opt_class();
-  v16 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v15, v14, @"r");
+  v16 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v15, v14, @"r");
   v17 = objc_opt_class();
-  v19 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v18, v17, @"f");
-  v21 = objc_msgSend_decodeBoolForKey_(v4, v20, @"e");
+  v19 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v18, v17, @"f");
+  v21 = objc_msgSend_decodeBoolForKey_(coderCopy, v20, @"e");
 
   v23 = objc_msgSend_initWithData_zoneName_zoneOwner_recordName_recordFieldName_encrypted_(self, v22, v7, v10, v13, v16, v19, v21);
   return v23;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v28 = a3;
+  coderCopy = coder;
   v6 = objc_msgSend_identifier(self, v4, v5);
-  objc_msgSend_encodeObject_forKey_(v28, v7, v6, @"i");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, v6, @"i");
 
   v10 = objc_msgSend_zoneName(self, v8, v9);
-  objc_msgSend_encodeObject_forKey_(v28, v11, v10, @"z");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v11, v10, @"z");
 
   v14 = objc_msgSend_zoneOwner(self, v12, v13);
-  objc_msgSend_encodeObject_forKey_(v28, v15, v14, @"o");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v15, v14, @"o");
 
   v18 = objc_msgSend_recordName(self, v16, v17);
-  objc_msgSend_encodeObject_forKey_(v28, v19, v18, @"r");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v19, v18, @"r");
 
   v22 = objc_msgSend_recordFieldName(self, v20, v21);
-  objc_msgSend_encodeObject_forKey_(v28, v23, v22, @"f");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v23, v22, @"f");
 
   isEncrypted = objc_msgSend_isEncrypted(self, v24, v25);
-  objc_msgSend_encodeBool_forKey_(v28, v27, isEncrypted, @"e");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v27, isEncrypted, @"e");
 }
 
 - (id)zoneID
@@ -444,7 +444,7 @@ LABEL_39:
     if (os_log_type_enabled(ck_log_facility_distributed_sync, OS_LOG_TYPE_FAULT))
     {
       v17 = 138412290;
-      v18 = self;
+      selfCopy = self;
       _os_log_fault_impl(&dword_1883EA000, v14, OS_LOG_TYPE_FAULT, "Trying to access nil zone ID on mergeable value ID: %@", &v17, 0xCu);
     }
 
@@ -478,7 +478,7 @@ LABEL_39:
     if (os_log_type_enabled(ck_log_facility_distributed_sync, OS_LOG_TYPE_FAULT))
     {
       v17 = 138412290;
-      v18 = self;
+      selfCopy = self;
       _os_log_fault_impl(&dword_1883EA000, v14, OS_LOG_TYPE_FAULT, "Trying to access nil record ID on mergeable value ID: %@", &v17, 0xCu);
     }
 

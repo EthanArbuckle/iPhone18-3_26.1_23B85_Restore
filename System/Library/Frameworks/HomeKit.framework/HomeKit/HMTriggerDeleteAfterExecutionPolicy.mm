@@ -1,17 +1,17 @@
 @interface HMTriggerDeleteAfterExecutionPolicy
 + (id)deleteAfterExecutionPolicy;
-- (HMTriggerDeleteAfterExecutionPolicy)initWithCoder:(id)a3;
-- (HMTriggerDeleteAfterExecutionPolicy)initWithPayload:(id)a3 payload:(id)a4;
+- (HMTriggerDeleteAfterExecutionPolicy)initWithCoder:(id)coder;
+- (HMTriggerDeleteAfterExecutionPolicy)initWithPayload:(id)payload payload:(id)a4;
 - (id)_init;
 @end
 
 @implementation HMTriggerDeleteAfterExecutionPolicy
 
-- (HMTriggerDeleteAfterExecutionPolicy)initWithCoder:(id)a3
+- (HMTriggerDeleteAfterExecutionPolicy)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = HMTriggerDeleteAfterExecutionPolicy;
-  return [(HMTriggerDeletePolicy *)&v4 initWithCoder:a3];
+  return [(HMTriggerDeletePolicy *)&v4 initWithCoder:coder];
 }
 
 - (id)_init
@@ -24,11 +24,11 @@
   return v4;
 }
 
-- (HMTriggerDeleteAfterExecutionPolicy)initWithPayload:(id)a3 payload:(id)a4
+- (HMTriggerDeleteAfterExecutionPolicy)initWithPayload:(id)payload payload:(id)a4
 {
   v5.receiver = self;
   v5.super_class = HMTriggerDeleteAfterExecutionPolicy;
-  return [(HMTriggerDeletePolicy *)&v5 _initWithIdentifier:a3, a4];
+  return [(HMTriggerDeletePolicy *)&v5 _initWithIdentifier:payload, a4];
 }
 
 + (id)deleteAfterExecutionPolicy
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = __65__HMTriggerDeleteAfterExecutionPolicy_deleteAfterExecutionPolicy__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (deleteAfterExecutionPolicy_onceToken != -1)
   {
     dispatch_once(&deleteAfterExecutionPolicy_onceToken, block);

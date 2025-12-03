@@ -1,24 +1,24 @@
 @interface TSDConnectionLinePathSource
-+ (id)pathSourceAtAngleOfSize:(CGSize)a3 forType:(int)a4;
-+ (id)pathSourceOfLength:(double)a3;
++ (id)pathSourceAtAngleOfSize:(CGSize)size forType:(int)type;
++ (id)pathSourceOfLength:(double)length;
 - (CGPoint)fixedPointForControlKnobChange;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
-- (TSDConnectionLinePathSource)initWithBezierPath:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
+- (TSDConnectionLinePathSource)initWithBezierPath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)pathElementIndexForKnobTag:(unint64_t)a3;
+- (int64_t)pathElementIndexForKnobTag:(unint64_t)tag;
 - (void)bend;
-- (void)p_setBezierPath:(id)a3;
-- (void)scaleToNaturalSize:(CGSize)a3;
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4;
+- (void)p_setBezierPath:(id)path;
+- (void)scaleToNaturalSize:(CGSize)size;
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point;
 @end
 
 @implementation TSDConnectionLinePathSource
 
-- (TSDConnectionLinePathSource)initWithBezierPath:(id)a3
+- (TSDConnectionLinePathSource)initWithBezierPath:(id)path
 {
-  v3 = a3;
-  if ([a3 elementCount] < 1)
+  pathCopy = path;
+  if ([path elementCount] < 1)
   {
     v5 = *(MEMORY[0x277CBF398] + 16);
     v6 = *(MEMORY[0x277CBF398] + 24);
@@ -26,39 +26,39 @@
 
   else
   {
-    [v3 controlPointBounds];
+    [pathCopy controlPointBounds];
   }
 
   v7 = v5 == *MEMORY[0x277CBF3A8] && v6 == *(MEMORY[0x277CBF3A8] + 8);
-  if (v7 || (TSDRectHasNaNComponents() & 1) != 0 || [v3 elementCount] != 3)
+  if (v7 || (TSDRectHasNaNComponents() & 1) != 0 || [pathCopy elementCount] != 3)
   {
-    v3 = +[TSDBezierPath bezierPath];
-    [v3 moveToPoint:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
-    [v3 lineToPoint:{50.0, 50.0}];
-    [v3 lineToPoint:{100.0, 100.0}];
+    pathCopy = +[TSDBezierPath bezierPath];
+    [pathCopy moveToPoint:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+    [pathCopy lineToPoint:{50.0, 50.0}];
+    [pathCopy lineToPoint:{100.0, 100.0}];
   }
 
   v9.receiver = self;
   v9.super_class = TSDConnectionLinePathSource;
-  return [(TSDBezierPathSource *)&v9 initWithBezierPath:v3];
+  return [(TSDBezierPathSource *)&v9 initWithBezierPath:pathCopy];
 }
 
-+ (id)pathSourceOfLength:(double)a3
++ (id)pathSourceOfLength:(double)length
 {
   v4 = +[TSDBezierPath bezierPath];
   [v4 moveToPoint:{0.0, 0.0}];
-  [v4 lineToPoint:{a3 * 0.5, 0.0}];
-  [v4 lineToPoint:{a3, 0.0}];
+  [v4 lineToPoint:{length * 0.5, 0.0}];
+  [v4 lineToPoint:{length, 0.0}];
   v5 = [[TSDConnectionLinePathSource alloc] initWithBezierPath:v4];
 
   return v5;
 }
 
-+ (id)pathSourceAtAngleOfSize:(CGSize)a3 forType:(int)a4
++ (id)pathSourceAtAngleOfSize:(CGSize)size forType:(int)type
 {
-  v4 = *&a4;
-  height = a3.height;
-  width = a3.width;
+  v4 = *&type;
+  height = size.height;
+  width = size.width;
   v7 = +[TSDBezierPath bezierPath];
   v8 = v7;
   if (v4)
@@ -119,11 +119,11 @@ LABEL_6:
   [(TSDConnectionLinePathSource *)self setControlKnobPosition:12 toPoint:v28];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = TSDConnectionLinePathSource;
-  v4 = [(TSDBezierPathSource *)&v6 copyWithZone:a3];
+  v4 = [(TSDBezierPathSource *)&v6 copyWithZone:zone];
   [v4 setType:self->mType];
   [(TSDConnectionLinePathSource *)self outsetFrom];
   [v4 setOutsetFrom:?];
@@ -132,23 +132,23 @@ LABEL_6:
   return v4;
 }
 
-- (int64_t)pathElementIndexForKnobTag:(unint64_t)a3
+- (int64_t)pathElementIndexForKnobTag:(unint64_t)tag
 {
-  if (a3 - 10 > 2)
+  if (tag - 10 > 2)
   {
     return -1;
   }
 
   else
   {
-    return qword_26CA66418[a3 - 10];
+    return qword_26CA66418[tag - 10];
   }
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
   v7 = *MEMORY[0x277CBF348];
-  v4 = [(TSDConnectionLinePathSource *)self pathElementIndexForKnobTag:a3];
+  v4 = [(TSDConnectionLinePathSource *)self pathElementIndexForKnobTag:position];
   if ((v4 & 0x8000000000000000) == 0)
   {
     [(TSDBezierPath *)self->super.mPath elementAtIndex:v4 associatedPoints:&v7];
@@ -161,19 +161,19 @@ LABEL_6:
   return result;
 }
 
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point
 {
-  v5 = [(TSDConnectionLinePathSource *)self pathElementIndexForKnobTag:a3, *&a4.x, *&a4.y];
+  v5 = [(TSDConnectionLinePathSource *)self pathElementIndexForKnobTag:position, *&point.x, *&point.y];
   if ((v5 & 0x8000000000000000) == 0)
   {
     [(TSDBezierPath *)self->super.mPath setAssociatedPoints:&v6 atIndex:v5];
   }
 }
 
-- (void)scaleToNaturalSize:(CGSize)a3
+- (void)scaleToNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(TSDBezierPath *)self->super.mPath bounds];
   memset(&v10, 0, sizeof(v10));
   CGAffineTransformMakeScale(&v10, width / v6, height / v7);
@@ -195,31 +195,31 @@ LABEL_6:
   return result;
 }
 
-- (void)p_setBezierPath:(id)a3
+- (void)p_setBezierPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v14 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!path)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDConnectionLinePathSource p_setBezierPath:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDConnectionLinePathSource.m"), 199, @"invalid nil value for '%s'", "path"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDConnectionLinePathSource.m"), 199, @"invalid nil value for '%s'", "path"}];
   }
 
-  if ([(TSDBezierPath *)v3 elementCount]== 2 && [(TSDBezierPath *)v3 elementAtIndex:1]== 2)
+  if ([(TSDBezierPath *)pathCopy elementCount]== 2 && [(TSDBezierPath *)pathCopy elementAtIndex:1]== 2)
   {
-    [(TSDBezierPath *)v3 elementAtIndex:1 allPoints:v11];
-    v3 = +[TSDBezierPath bezierPath];
-    [(TSDBezierPath *)v3 moveToPoint:*v11];
-    [(TSDBezierPath *)v3 lineToPoint:TSDPointOnCurve(v11, 0.5)];
-    [(TSDBezierPath *)v3 lineToPoint:v12, v13];
+    [(TSDBezierPath *)pathCopy elementAtIndex:1 allPoints:v11];
+    pathCopy = +[TSDBezierPath bezierPath];
+    [(TSDBezierPath *)pathCopy moveToPoint:*v11];
+    [(TSDBezierPath *)pathCopy lineToPoint:TSDPointOnCurve(v11, 0.5)];
+    [(TSDBezierPath *)pathCopy lineToPoint:v12, v13];
   }
 
-  v7 = v3;
+  v7 = pathCopy;
 
-  self->super.mPath = v3;
+  self->super.mPath = pathCopy;
   p_mNaturalSize = &self->super.mNaturalSize;
-  [(TSDBezierPath *)v3 bounds];
+  [(TSDBezierPath *)pathCopy bounds];
   p_mNaturalSize->width = v9;
   p_mNaturalSize->height = v10;
 }
@@ -230,9 +230,9 @@ LABEL_6:
   v8.super_class = TSDConnectionLinePathSource;
   v3 = [-[TSDBezierPathSource description](&v8 description)];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(TSDConnectionLinePathSource *)self type];
+  type = [(TSDConnectionLinePathSource *)self type];
   v6 = @"curved";
-  if (v5 == 1)
+  if (type == 1)
   {
     v6 = @"orthogonal";
   }

@@ -2,7 +2,7 @@
 - (BLOperationProgress)init;
 - (NSString)description;
 - (double)estimatedTimeRemaining;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)currentValue;
 - (int64_t)maxValue;
 - (int64_t)normalizedCurrentValue;
@@ -10,10 +10,10 @@
 - (int64_t)units;
 - (void)_updateStatisticsFromSnapshots;
 - (void)resetSnapshots;
-- (void)setCurrentValue:(int64_t)a3;
-- (void)setEstimatedTimeRemaining:(double)a3;
-- (void)setMaxValue:(int64_t)a3;
-- (void)setUnits:(int64_t)a3;
+- (void)setCurrentValue:(int64_t)value;
+- (void)setEstimatedTimeRemaining:(double)remaining;
+- (void)setMaxValue:(int64_t)value;
+- (void)setUnits:(int64_t)units;
 - (void)snapshot;
 @end
 
@@ -39,9 +39,9 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   dispatchQueue = self->_dispatchQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -49,7 +49,7 @@
   v9[3] = &unk_10011D1A8;
   v6 = v4;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   dispatch_sync(dispatchQueue, v9);
   v7 = v6;
 
@@ -162,7 +162,7 @@
   dispatch_sync(dispatchQueue, block);
 }
 
-- (void)setCurrentValue:(int64_t)a3
+- (void)setCurrentValue:(int64_t)value
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -170,11 +170,11 @@
   v4[2] = sub_100086B60;
   v4[3] = &unk_10011D408;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = value;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setEstimatedTimeRemaining:(double)a3
+- (void)setEstimatedTimeRemaining:(double)remaining
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -182,11 +182,11 @@
   v4[2] = sub_100086BE4;
   v4[3] = &unk_10011D408;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = remaining;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setMaxValue:(int64_t)a3
+- (void)setMaxValue:(int64_t)value
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -194,11 +194,11 @@
   v4[2] = sub_100086C68;
   v4[3] = &unk_10011D408;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = value;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setUnits:(int64_t)a3
+- (void)setUnits:(int64_t)units
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -206,7 +206,7 @@
   v4[2] = sub_100086CE8;
   v4[3] = &unk_10011D408;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = units;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -286,9 +286,9 @@
       v13 = v10 - v12;
 
       v14 = [(NSMutableArray *)self->_snapshotValues objectAtIndex:i];
-      v15 = [v14 longLongValue];
+      longLongValue = [v14 longLongValue];
       v16 = [(NSMutableArray *)self->_snapshotValues objectAtIndex:i - 1];
-      v17 = v15 - [v16 longLongValue];
+      v17 = longLongValue - [v16 longLongValue];
 
       v6 = v6 + v17 / v13;
     }

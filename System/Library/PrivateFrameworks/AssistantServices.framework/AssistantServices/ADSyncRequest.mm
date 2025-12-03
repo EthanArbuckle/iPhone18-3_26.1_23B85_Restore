@@ -2,7 +2,7 @@
 - (ADSyncRequest)init;
 - (void)dealloc;
 - (void)invalidateTimer;
-- (void)startTimerOnQueue:(id)a3 withTimeoutHandler:(id)a4;
+- (void)startTimerOnQueue:(id)queue withTimeoutHandler:(id)handler;
 @end
 
 @implementation ADSyncRequest
@@ -14,20 +14,20 @@
   self->_timer = 0;
 }
 
-- (void)startTimerOnQueue:(id)a3 withTimeoutHandler:(id)a4
+- (void)startTimerOnQueue:(id)queue withTimeoutHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   self->_timedout = 0;
-  v7 = a3;
+  queueCopy = queue;
   v8 = [AFWatchdogTimer alloc];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_1000AC7DC;
   v15 = &unk_10051E038;
-  v16 = self;
-  v17 = v6;
-  v9 = v6;
-  v10 = [v8 initWithTimeoutInterval:v7 onQueue:&v12 timeoutHandler:60.0];
+  selfCopy = self;
+  v17 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [v8 initWithTimeoutInterval:queueCopy onQueue:&v12 timeoutHandler:60.0];
 
   timer = self->_timer;
   self->_timer = v10;

@@ -1,16 +1,16 @@
 @interface SBHIconStateUnarchivingSlugIconSource
-- (id)leafIconForIdentifier:(id)a3;
+- (id)leafIconForIdentifier:(id)identifier;
 @end
 
 @implementation SBHIconStateUnarchivingSlugIconSource
 
-- (id)leafIconForIdentifier:(id)a3
+- (id)leafIconForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_leafAppIcons objectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_leafAppIcons objectForKey:identifierCopy];
   if (!v5)
   {
-    v5 = [(SBLeafIcon *)[SBHApplicationIcon alloc] initWithLeafIdentifier:v4 applicationBundleID:v4];
+    v5 = [(SBLeafIcon *)[SBHApplicationIcon alloc] initWithLeafIdentifier:identifierCopy applicationBundleID:identifierCopy];
     leafAppIcons = self->_leafAppIcons;
     if (!leafAppIcons)
     {
@@ -21,7 +21,7 @@
       leafAppIcons = self->_leafAppIcons;
     }
 
-    [(NSMutableDictionary *)leafAppIcons setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)leafAppIcons setObject:v5 forKey:identifierCopy];
   }
 
   return v5;

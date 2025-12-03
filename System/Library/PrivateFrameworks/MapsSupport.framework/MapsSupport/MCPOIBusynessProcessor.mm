@@ -1,8 +1,8 @@
 @interface MCPOIBusynessProcessor
 + (MCPOIBusynessProcessor)sharedProcessor;
 - (MCPOIBusynessProcessor)init;
-- (void)didUpdateLocation:(id)a3;
-- (void)didUpdateVisit:(id)a3;
+- (void)didUpdateLocation:(id)location;
+- (void)didUpdateVisit:(id)visit;
 - (void)finished;
 - (void)leechLocation;
 - (void)noLocationAuth;
@@ -92,14 +92,14 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)didUpdateLocation:(id)a3
+- (void)didUpdateLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = GEOGetPOIBusynessLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    v12 = v4;
+    v12 = locationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "MCPOIBusynessProcessor didUpdateLocation : %{private}@", buf, 0xCu);
   }
 
@@ -108,20 +108,20 @@
   v8[1] = 3221225472;
   v8[2] = sub_100002458;
   v8[3] = &unk_10001C678;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = locationCopy;
+  selfCopy = self;
+  v7 = locationCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)didUpdateVisit:(id)a3
+- (void)didUpdateVisit:(id)visit
 {
-  v4 = a3;
+  visitCopy = visit;
   v5 = GEOGetPOIBusynessLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    v11 = v4;
+    v11 = visitCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "MCPOIBusynessProcessor didUpdateVisit : %{private}@", buf, 0xCu);
   }
 
@@ -131,8 +131,8 @@
   v8[2] = sub_100002600;
   v8[3] = &unk_10001C678;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = visitCopy;
+  v7 = visitCopy;
   dispatch_async(queue, v8);
 }
 
@@ -164,8 +164,8 @@
       v9 = v8;
       [(CLVisit *)self->_visit horizontalAccuracy];
       v11 = v10;
-      v12 = [(CLVisit *)self->_visit arrivalDate];
-      v13 = [v5 initWithCoordinate:v12 altitude:v7 horizontalAccuracy:v9 verticalAccuracy:NAN timestamp:{v11, NAN}];
+      arrivalDate = [(CLVisit *)self->_visit arrivalDate];
+      v13 = [v5 initWithCoordinate:arrivalDate altitude:v7 horizontalAccuracy:v9 verticalAccuracy:NAN timestamp:{v11, NAN}];
     }
 
     v14 = [[MCPOIBusynessData alloc] initWithLocation:self->_location visit:self->_visit];

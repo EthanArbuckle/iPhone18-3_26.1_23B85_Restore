@@ -1,18 +1,18 @@
 @interface MADHEVCAlphaSequenceWriter
-+ (id)assetWriterWithURL:(id)a3;
-- (MADHEVCAlphaSequenceWriter)initWithFrameCount:(unint64_t)a3;
-- (id)finishWithEndTime:(id *)a3;
-- (int)addPixelBuffer:(__CVBuffer *)a3 withTime:(id *)a4;
-- (int)createAssetWriterInputWithFormatDescription:(opaqueCMFormatDescription *)a3;
++ (id)assetWriterWithURL:(id)l;
+- (MADHEVCAlphaSequenceWriter)initWithFrameCount:(unint64_t)count;
+- (id)finishWithEndTime:(id *)time;
+- (int)addPixelBuffer:(__CVBuffer *)buffer withTime:(id *)time;
+- (int)createAssetWriterInputWithFormatDescription:(opaqueCMFormatDescription *)description;
 - (opaqueCMSampleBuffer)popSample;
 - (void)dealloc;
 - (void)processMediaRequest;
-- (void)pushSample:(opaqueCMSampleBuffer *)a3;
+- (void)pushSample:(opaqueCMSampleBuffer *)sample;
 @end
 
 @implementation MADHEVCAlphaSequenceWriter
 
-- (MADHEVCAlphaSequenceWriter)initWithFrameCount:(unint64_t)a3
+- (MADHEVCAlphaSequenceWriter)initWithFrameCount:(unint64_t)count
 {
   v43 = *MEMORY[0x1E69E9840];
   v38.receiver = self;
@@ -22,41 +22,41 @@
   {
     v4 = MEMORY[0x1E695DFF8];
     v5 = NSTemporaryDirectory();
-    v6 = [MEMORY[0x1E696AFB0] UUID];
-    v7 = [v6 UUIDString];
-    v8 = [v7 stringByAppendingPathExtension:@".mov"];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v8 = [uUIDString stringByAppendingPathExtension:@".mov"];
     v9 = [v5 stringByAppendingPathComponent:v8];
     v10 = [v4 fileURLWithPath:v9];
     url = v3->_url;
     v3->_url = v10;
 
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
-    v13 = [(NSURL *)v3->_url path];
-    LODWORD(v6) = [v12 fileExistsAtPath:v13];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [(NSURL *)v3->_url path];
+    LODWORD(uUID) = [defaultManager fileExistsAtPath:path];
 
-    if (v6)
+    if (uUID)
     {
       if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(NSURL *)v3->_url path];
+        path2 = [(NSURL *)v3->_url path];
         *buf = 138412290;
-        v40 = v14;
+        v40 = path2;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Removing existing file at path %@", buf, 0xCu);
       }
 
-      v15 = [(NSURL *)v3->_url path];
+      path3 = [(NSURL *)v3->_url path];
       v37 = 0;
-      v16 = [v12 removeItemAtPath:v15 error:&v37];
+      v16 = [defaultManager removeItemAtPath:path3 error:&v37];
       v17 = v37;
 
       if ((v16 & 1) == 0)
       {
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v18 = [(NSURL *)v3->_url path];
+          path4 = [(NSURL *)v3->_url path];
           v19 = [v17 description];
           *buf = 138412546;
-          v40 = v18;
+          v40 = path4;
           v41 = 2112;
           v42 = v19;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to remove existing file at path %@ (%@)", buf, 0x16u);
@@ -97,9 +97,9 @@ LABEL_18:
       goto LABEL_18;
     }
 
-    v25 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     sampleQueue = v3->_sampleQueue;
-    v3->_sampleQueue = v25;
+    v3->_sampleQueue = array;
 
     v27 = dispatch_semaphore_create(5);
     enqueueSemaphore = v3->_enqueueSemaphore;
@@ -122,10 +122,10 @@ LABEL_19:
   return v33;
 }
 
-+ (id)assetWriterWithURL:(id)a3
++ (id)assetWriterWithURL:(id)l
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithURL:v3];
+  lCopy = l;
+  v4 = [objc_alloc(objc_opt_class()) initWithURL:lCopy];
 
   return v4;
 }
@@ -149,26 +149,26 @@ LABEL_19:
     CF<__CVBuffer *>::~CF(buf);
   }
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   url = self->_url;
   if (url)
   {
-    v7 = [(NSURL *)url path];
-    v8 = [v5 fileExistsAtPath:v7];
+    path = [(NSURL *)url path];
+    v8 = [defaultManager fileExistsAtPath:path];
 
     if (v8)
     {
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
-        v9 = [(NSURL *)self->_url path];
+        path2 = [(NSURL *)self->_url path];
         *buf = 138412290;
-        *&buf[4] = v9;
+        *&buf[4] = path2;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Removing temporary file at path %@", buf, 0xCu);
       }
 
-      v10 = [(NSURL *)self->_url path];
+      path3 = [(NSURL *)self->_url path];
       v16 = 0;
-      v11 = [v5 removeItemAtPath:v10 error:&v16];
+      v11 = [defaultManager removeItemAtPath:path3 error:&v16];
       v12 = v16;
 
       if ((v11 & 1) == 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -189,14 +189,14 @@ LABEL_19:
   [(MADHEVCAlphaSequenceWriter *)&v15 dealloc];
 }
 
-- (void)pushSample:(opaqueCMSampleBuffer *)a3
+- (void)pushSample:(opaqueCMSampleBuffer *)sample
 {
   dispatch_semaphore_wait(self->_enqueueSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (sample)
   {
     v5 = self->_sampleQueue;
     objc_sync_enter(v5);
-    [(NSMutableArray *)self->_sampleQueue addObject:a3];
+    [(NSMutableArray *)self->_sampleQueue addObject:sample];
     objc_sync_exit(v5);
   }
 
@@ -234,9 +234,9 @@ LABEL_19:
   {
     while (1)
     {
-      v6 = [(MADHEVCAlphaSequenceWriter *)self popSample];
+      popSample = [(MADHEVCAlphaSequenceWriter *)self popSample];
       input = self->_input;
-      if (!v6)
+      if (!popSample)
       {
         [(AVAssetWriterInput *)input markAsFinished];
         writer = self->_writer;
@@ -254,7 +254,7 @@ LABEL_19:
         break;
       }
 
-      CF<__CVBuffer *>::~CF(&v6);
+      CF<__CVBuffer *>::~CF(&popSample);
       if (![(AVAssetWriterInput *)self->_input isReadyForMoreMediaData])
       {
         return;
@@ -265,14 +265,14 @@ LABEL_19:
     [(AVAssetWriter *)self->_writer cancelWriting];
     dispatch_semaphore_signal(self->_completionSemaphore);
 LABEL_8:
-    CF<__CVBuffer *>::~CF(&v6);
+    CF<__CVBuffer *>::~CF(&popSample);
   }
 }
 
-- (int)createAssetWriterInputWithFormatDescription:(opaqueCMFormatDescription *)a3
+- (int)createAssetWriterInputWithFormatDescription:(opaqueCMFormatDescription *)description
 {
   v26[4] = *MEMORY[0x1E69E9840];
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3);
+  Dimensions = CMVideoFormatDescriptionGetDimensions(description);
   v5 = *MEMORY[0x1E6987CB0];
   v26[0] = *MEMORY[0x1E6987CF8];
   v6 = *MEMORY[0x1E6987E08];
@@ -344,9 +344,9 @@ LABEL_12:
   return v16;
 }
 
-- (int)addPixelBuffer:(__CVBuffer *)a3 withTime:(id *)a4
+- (int)addPixelBuffer:(__CVBuffer *)buffer withTime:(id *)time
 {
-  if (!a3)
+  if (!buffer)
   {
     return -50;
   }
@@ -358,15 +358,15 @@ LABEL_12:
   }
 
   formatDescriptionOut = 0;
-  v8 = CMVideoFormatDescriptionCreateForImageBuffer(0, a3, &formatDescriptionOut);
+  v8 = CMVideoFormatDescriptionCreateForImageBuffer(0, buffer, &formatDescriptionOut);
   if (!v8 && (self->_input || (v8 = [(MADHEVCAlphaSequenceWriter *)self createAssetWriterInputWithFormatDescription:formatDescriptionOut]) == 0))
   {
     *&sampleTiming.duration.value = *MEMORY[0x1E6960C70];
     sampleTiming.duration.epoch = *(MEMORY[0x1E6960C70] + 16);
-    sampleTiming.presentationTimeStamp = *a4;
+    sampleTiming.presentationTimeStamp = *time;
     sampleTiming.decodeTimeStamp = sampleTiming.duration;
     sampleBufferOut = 0;
-    v8 = CMSampleBufferCreateForImageBuffer(0, a3, 1u, 0, 0, formatDescriptionOut, &sampleTiming, &sampleBufferOut);
+    v8 = CMSampleBufferCreateForImageBuffer(0, buffer, 1u, 0, 0, formatDescriptionOut, &sampleTiming, &sampleBufferOut);
     if (!v8)
     {
       if (sampleBufferOut)
@@ -389,7 +389,7 @@ LABEL_12:
   return v8;
 }
 
-- (id)finishWithEndTime:(id *)a3
+- (id)finishWithEndTime:(id *)time
 {
   p_status = &self->_status;
   v4 = atomic_load(&self->_status);

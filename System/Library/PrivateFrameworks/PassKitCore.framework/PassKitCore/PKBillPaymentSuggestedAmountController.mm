@@ -1,52 +1,52 @@
 @interface PKBillPaymentSuggestedAmountController
-+ (id)_transactionsRequestForPreviousStatementForAccount:(id)a3 transactionSource:(id)a4 transactionType:(int64_t)a5;
-+ (id)_transactionsRequestSinceStatementForAccount:(id)a3 transactionSource:(id)a4 transactionType:(int64_t)a5;
-+ (void)_transactionsTotalAmountForRequest:(id)a3 completion:(id)a4;
-+ (void)approvedTransactionsSpendingTotalForPreviousStatementForAccount:(id)a3 transactionSource:(id)a4 merchantCategory:(int64_t)a5 completion:(id)a6;
-+ (void)approvedTransactionsSpendingTotalSinceStatementForAccount:(id)a3 transactionSource:(id)a4 merchantCategory:(int64_t)a5 completion:(id)a6;
-+ (void)approvedTransactionsTotalForPreviousStatementForAccount:(id)a3 transactionSource:(id)a4 transactionType:(int64_t)a5 completion:(id)a6;
-+ (void)approvedTransactionsTotalSinceStatementForAccount:(id)a3 transactionSource:(id)a4 transactionType:(int64_t)a5 completion:(id)a6;
-+ (void)currentStatementSelectedSuggestedAmountEventsForAccount:(id)a3 completion:(id)a4;
-+ (void)defaultControllerForAccount:(id)a3 accountUserCollection:(id)a4 transactionSource:(id)a5 configuration:(id)a6 completion:(id)a7;
-+ (void)previousStatementSelectedSuggestedAmountEventsForAccount:(id)a3 completion:(id)a4;
++ (id)_transactionsRequestForPreviousStatementForAccount:(id)account transactionSource:(id)source transactionType:(int64_t)type;
++ (id)_transactionsRequestSinceStatementForAccount:(id)account transactionSource:(id)source transactionType:(int64_t)type;
++ (void)_transactionsTotalAmountForRequest:(id)request completion:(id)completion;
++ (void)approvedTransactionsSpendingTotalForPreviousStatementForAccount:(id)account transactionSource:(id)source merchantCategory:(int64_t)category completion:(id)completion;
++ (void)approvedTransactionsSpendingTotalSinceStatementForAccount:(id)account transactionSource:(id)source merchantCategory:(int64_t)category completion:(id)completion;
++ (void)approvedTransactionsTotalForPreviousStatementForAccount:(id)account transactionSource:(id)source transactionType:(int64_t)type completion:(id)completion;
++ (void)approvedTransactionsTotalSinceStatementForAccount:(id)account transactionSource:(id)source transactionType:(int64_t)type completion:(id)completion;
++ (void)currentStatementSelectedSuggestedAmountEventsForAccount:(id)account completion:(id)completion;
++ (void)defaultControllerForAccount:(id)account accountUserCollection:(id)collection transactionSource:(id)source configuration:(id)configuration completion:(id)completion;
++ (void)previousStatementSelectedSuggestedAmountEventsForAccount:(id)account completion:(id)completion;
 - (BOOL)_allMandatoryValuesAreSameAmount;
 - (BOOL)_calculateCurrentStatementIsLastMonthsStatement;
-- (BOOL)_suggestedAmountListIsValidAfterPurgeIfNecessary:(id)a3;
-- (PKBillPaymentSuggestedAmountController)initWithAccount:(id)a3 accountUserCollection:(id)a4 transactionSource:(id)a5 currentStatementSelectedSuggestedAmountEvents:(id)a6 previousStatementSelectedSuggestedAmountEvents:(id)a7 currentStatementPaymentsSum:(id)a8 previousStatementPaymentsSum:(id)a9 currentStatementPurchasesSum:(id)a10 previousStatementPurchasesSum:(id)a11 currentStatementMerchantCategoryTransactionSums:(id)a12 previousStatementMerchantCategoryTransactionSums:(id)a13 configuration:(id)a14;
-- (id)_calculateThresholdForLastPaymentCategory:(unint64_t)a3 statementBalance:(id)a4 suggestedAmountWithSameCategory:(id)a5;
+- (BOOL)_suggestedAmountListIsValidAfterPurgeIfNecessary:(id)necessary;
+- (PKBillPaymentSuggestedAmountController)initWithAccount:(id)account accountUserCollection:(id)collection transactionSource:(id)source currentStatementSelectedSuggestedAmountEvents:(id)events previousStatementSelectedSuggestedAmountEvents:(id)amountEvents currentStatementPaymentsSum:(id)sum previousStatementPaymentsSum:(id)paymentsSum currentStatementPurchasesSum:(id)self0 previousStatementPurchasesSum:(id)self1 currentStatementMerchantCategoryTransactionSums:(id)self2 previousStatementMerchantCategoryTransactionSums:(id)self3 configuration:(id)self4;
+- (id)_calculateThresholdForLastPaymentCategory:(unint64_t)category statementBalance:(id)balance suggestedAmountWithSameCategory:(id)sameCategory;
 - (id)_createDefaultAmountSuggestionListFromAccount;
-- (id)_filterSuggestions:(id)a3 belowThreshold:(id)a4;
-- (id)_messageForSuggestion:(id)a3;
+- (id)_filterSuggestions:(id)suggestions belowThreshold:(id)threshold;
+- (id)_messageForSuggestion:(id)suggestion;
 - (id)_planCompletionTitleString;
 - (id)_remainingStatementBalanceGapDescriptionText;
 - (id)_remainingStatementBalanceGapTitleText;
 - (id)_remainingStatementBalanceMessageString;
 - (id)_remainingStatementBalanceTitleString;
-- (id)_suggestedAmountsForPayOffDateForStatementBalance:(id)a3 creditUtilization:(id)a4 lastPaymentCategory:(unint64_t)a5;
-- (id)_titleForSuggestion:(id)a3;
-- (id)generateAmountSuggestionListWithFinHealth:(BOOL)a3;
+- (id)_suggestedAmountsForPayOffDateForStatementBalance:(id)balance creditUtilization:(id)utilization lastPaymentCategory:(unint64_t)category;
+- (id)_titleForSuggestion:(id)suggestion;
+- (id)generateAmountSuggestionListWithFinHealth:(BOOL)health;
 - (id)paymentRingInstrumentationRecordAsString;
-- (void)_generateAmountSuggestionListUsingTransactionHistoryForList:(id)a3;
-- (void)_initializeDifferentialPrivacy:(id)a3 accountSummary:(id)a4;
-- (void)_initializePaymentRingInstrumentationRecord:(id)a3 accountSummary:(id)a4;
-- (void)_minimumMerchcantCategoriesAboveMinimumAmount:(id)a3 minMerchantCategory1:(int64_t *)a4 minMerchantCategory2:(int64_t *)a5 minMerchantCategorySum1:(id *)a6 minMerchantCategorySum2:(id *)a7;
-- (void)_populatePriorityValuesForList:(id)a3;
-- (void)_populateStringValuesForList:(id)a3;
-- (void)_setDifferentialPrivacyFeature:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)_zerothOrFirstMonthBillPaymentSuggestionsForList:(id)a3;
-- (void)recordPaymentActionWithDifferentialPrivacy:(unint64_t)a3;
-- (void)recordPaymentRingAction:(unint64_t)a3;
+- (void)_generateAmountSuggestionListUsingTransactionHistoryForList:(id)list;
+- (void)_initializeDifferentialPrivacy:(id)privacy accountSummary:(id)summary;
+- (void)_initializePaymentRingInstrumentationRecord:(id)record accountSummary:(id)summary;
+- (void)_minimumMerchcantCategoriesAboveMinimumAmount:(id)amount minMerchantCategory1:(int64_t *)category1 minMerchantCategory2:(int64_t *)category2 minMerchantCategorySum1:(id *)sum1 minMerchantCategorySum2:(id *)sum2;
+- (void)_populatePriorityValuesForList:(id)list;
+- (void)_populateStringValuesForList:(id)list;
+- (void)_setDifferentialPrivacyFeature:(unint64_t)feature atIndex:(unint64_t)index;
+- (void)_zerothOrFirstMonthBillPaymentSuggestionsForList:(id)list;
+- (void)recordPaymentActionWithDifferentialPrivacy:(unint64_t)privacy;
+- (void)recordPaymentRingAction:(unint64_t)action;
 @end
 
 @implementation PKBillPaymentSuggestedAmountController
 
-+ (void)defaultControllerForAccount:(id)a3 accountUserCollection:(id)a4 transactionSource:(id)a5 configuration:(id)a6 completion:(id)a7
++ (void)defaultControllerForAccount:(id)account accountUserCollection:(id)collection transactionSource:(id)source configuration:(id)configuration completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  accountCopy = account;
+  collectionCopy = collection;
+  sourceCopy = source;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v17 = dispatch_group_create();
   v86[0] = 0;
   v86[1] = v86;
@@ -95,7 +95,7 @@
   v72[2] = 0x3032000000;
   v72[3] = __Block_byref_object_copy__65;
   v72[4] = __Block_byref_object_dispose__65;
-  v31 = v13;
+  v31 = collectionCopy;
   v73 = objc_alloc_init(MEMORY[0x1E695DF90]);
   dispatch_group_enter(v17);
   v69[0] = MEMORY[0x1E69E9820];
@@ -105,7 +105,7 @@
   v71 = v80;
   v18 = v17;
   v70 = v18;
-  [a1 approvedTransactionsTotalForPreviousStatementForAccount:v12 transactionSource:v14 transactionType:10 completion:v69];
+  [self approvedTransactionsTotalForPreviousStatementForAccount:accountCopy transactionSource:sourceCopy transactionType:10 completion:v69];
   dispatch_group_enter(v18);
   v66[0] = MEMORY[0x1E69E9820];
   v66[1] = 3221225472;
@@ -114,7 +114,7 @@
   v68 = v82;
   v19 = v18;
   v67 = v19;
-  [a1 approvedTransactionsTotalSinceStatementForAccount:v12 transactionSource:v14 transactionType:10 completion:v66];
+  [self approvedTransactionsTotalSinceStatementForAccount:accountCopy transactionSource:sourceCopy transactionType:10 completion:v66];
   dispatch_group_enter(v19);
   v63[0] = MEMORY[0x1E69E9820];
   v63[1] = 3221225472;
@@ -123,7 +123,7 @@
   v65 = v78;
   v20 = v19;
   v64 = v20;
-  [a1 approvedTransactionsTotalSinceStatementForAccount:v12 transactionSource:v14 transactionType:0 completion:v63];
+  [self approvedTransactionsTotalSinceStatementForAccount:accountCopy transactionSource:sourceCopy transactionType:0 completion:v63];
   dispatch_group_enter(v20);
   v60[0] = MEMORY[0x1E69E9820];
   v60[1] = 3221225472;
@@ -132,7 +132,7 @@
   v62 = v76;
   v21 = v20;
   v61 = v21;
-  [a1 approvedTransactionsTotalForPreviousStatementForAccount:v12 transactionSource:v14 transactionType:0 completion:v60];
+  [self approvedTransactionsTotalForPreviousStatementForAccount:accountCopy transactionSource:sourceCopy transactionType:0 completion:v60];
   for (i = 0; i != 8; ++i)
   {
     if (i && i != 6)
@@ -146,7 +146,7 @@
       v59 = i;
       v23 = v21;
       v57 = v23;
-      [a1 approvedTransactionsSpendingTotalSinceStatementForAccount:v12 transactionSource:v14 merchantCategory:i completion:v56];
+      [self approvedTransactionsSpendingTotalSinceStatementForAccount:accountCopy transactionSource:sourceCopy merchantCategory:i completion:v56];
       dispatch_group_enter(v23);
       v52[0] = MEMORY[0x1E69E9820];
       v52[1] = 3221225472;
@@ -155,7 +155,7 @@
       v54 = v72;
       v55 = i;
       v53 = v23;
-      [a1 approvedTransactionsSpendingTotalForPreviousStatementForAccount:v12 transactionSource:v14 merchantCategory:i completion:v52];
+      [self approvedTransactionsSpendingTotalForPreviousStatementForAccount:accountCopy transactionSource:sourceCopy merchantCategory:i completion:v52];
     }
   }
 
@@ -167,7 +167,7 @@
   v51 = v86;
   v24 = v21;
   v50 = v24;
-  [a1 currentStatementSelectedSuggestedAmountEventsForAccount:v12 completion:v49];
+  [self currentStatementSelectedSuggestedAmountEventsForAccount:accountCopy completion:v49];
   dispatch_group_enter(v24);
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
@@ -176,12 +176,12 @@
   v48 = v84;
   v25 = v24;
   v47 = v25;
-  [a1 previousStatementSelectedSuggestedAmountEventsForAccount:v12 completion:v46];
+  [self previousStatementSelectedSuggestedAmountEventsForAccount:accountCopy completion:v46];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __135__PKBillPaymentSuggestedAmountController_defaultControllerForAccount_accountUserCollection_transactionSource_configuration_completion___block_invoke_9;
   block[3] = &unk_1E79DEBB0;
-  v33 = v12;
+  v33 = accountCopy;
   v34 = v31;
   v39 = v84;
   v40 = v82;
@@ -190,15 +190,15 @@
   v43 = v76;
   v44 = v74;
   v45 = v72;
-  v35 = v14;
-  v36 = v15;
+  v35 = sourceCopy;
+  v36 = configurationCopy;
   v38 = v86;
-  v37 = v16;
-  v26 = v16;
-  v27 = v15;
-  v28 = v14;
+  v37 = completionCopy;
+  v26 = completionCopy;
+  v27 = configurationCopy;
+  v28 = sourceCopy;
   v29 = v31;
-  v30 = v12;
+  v30 = accountCopy;
   dispatch_group_notify(v25, MEMORY[0x1E69E96A0], block);
 
   _Block_object_dispose(v72, 8);
@@ -310,210 +310,210 @@ void __135__PKBillPaymentSuggestedAmountController_defaultControllerForAccount_a
   (*(a1[8] + 16))();
 }
 
-+ (void)approvedTransactionsTotalSinceStatementForAccount:(id)a3 transactionSource:(id)a4 transactionType:(int64_t)a5 completion:(id)a6
++ (void)approvedTransactionsTotalSinceStatementForAccount:(id)account transactionSource:(id)source transactionType:(int64_t)type completion:(id)completion
 {
-  v10 = a6;
-  v11 = [a1 _transactionsRequestSinceStatementForAccount:a3 transactionSource:a4 transactionType:a5];
-  [a1 _transactionsTotalAmountForRequest:v11 completion:v10];
+  completionCopy = completion;
+  v11 = [self _transactionsRequestSinceStatementForAccount:account transactionSource:source transactionType:type];
+  [self _transactionsTotalAmountForRequest:v11 completion:completionCopy];
 }
 
-+ (void)approvedTransactionsTotalForPreviousStatementForAccount:(id)a3 transactionSource:(id)a4 transactionType:(int64_t)a5 completion:(id)a6
++ (void)approvedTransactionsTotalForPreviousStatementForAccount:(id)account transactionSource:(id)source transactionType:(int64_t)type completion:(id)completion
 {
-  v10 = a6;
-  v11 = [a1 _transactionsRequestForPreviousStatementForAccount:a3 transactionSource:a4 transactionType:a5];
-  [a1 _transactionsTotalAmountForRequest:v11 completion:v10];
+  completionCopy = completion;
+  v11 = [self _transactionsRequestForPreviousStatementForAccount:account transactionSource:source transactionType:type];
+  [self _transactionsTotalAmountForRequest:v11 completion:completionCopy];
 }
 
-+ (void)approvedTransactionsSpendingTotalForPreviousStatementForAccount:(id)a3 transactionSource:(id)a4 merchantCategory:(int64_t)a5 completion:(id)a6
++ (void)approvedTransactionsSpendingTotalForPreviousStatementForAccount:(id)account transactionSource:(id)source merchantCategory:(int64_t)category completion:(id)completion
 {
-  v10 = a6;
-  v11 = [a1 _transactionsRequestForPreviousStatementForAccount:a3 transactionSource:a4 transactionType:0];
-  [v11 setMerchantCategory:a5];
-  [a1 _transactionsTotalAmountForRequest:v11 completion:v10];
+  completionCopy = completion;
+  v11 = [self _transactionsRequestForPreviousStatementForAccount:account transactionSource:source transactionType:0];
+  [v11 setMerchantCategory:category];
+  [self _transactionsTotalAmountForRequest:v11 completion:completionCopy];
 }
 
-+ (void)approvedTransactionsSpendingTotalSinceStatementForAccount:(id)a3 transactionSource:(id)a4 merchantCategory:(int64_t)a5 completion:(id)a6
++ (void)approvedTransactionsSpendingTotalSinceStatementForAccount:(id)account transactionSource:(id)source merchantCategory:(int64_t)category completion:(id)completion
 {
-  v10 = a6;
-  v11 = [a1 _transactionsRequestSinceStatementForAccount:a3 transactionSource:a4 transactionType:0];
-  [v11 setMerchantCategory:a5];
-  [a1 _transactionsTotalAmountForRequest:v11 completion:v10];
+  completionCopy = completion;
+  v11 = [self _transactionsRequestSinceStatementForAccount:account transactionSource:source transactionType:0];
+  [v11 setMerchantCategory:category];
+  [self _transactionsTotalAmountForRequest:v11 completion:completionCopy];
 }
 
-+ (id)_transactionsRequestForPreviousStatementForAccount:(id)a3 transactionSource:(id)a4 transactionType:(int64_t)a5
++ (id)_transactionsRequestForPreviousStatementForAccount:(id)account transactionSource:(id)source transactionType:(int64_t)type
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 creditDetails];
-  v10 = [v9 accountSummary];
-  v11 = [v10 currentStatement];
+  sourceCopy = source;
+  accountCopy = account;
+  creditDetails = [accountCopy creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  currentStatement = [accountSummary currentStatement];
 
-  v12 = [v8 associatedPassUniqueID];
-  v13 = [v11 openingDate];
-  v14 = [v11 closingDate];
-  v15 = [v8 creditDetails];
+  associatedPassUniqueID = [accountCopy associatedPassUniqueID];
+  openingDate = [currentStatement openingDate];
+  closingDate = [currentStatement closingDate];
+  creditDetails2 = [accountCopy creditDetails];
 
-  v16 = [v15 currencyCode];
+  currencyCode = [creditDetails2 currencyCode];
 
   v17 = 0;
-  if (v13 && v14 && v12 && v16)
+  if (openingDate && closingDate && associatedPassUniqueID && currencyCode)
   {
     v17 = objc_alloc_init(PKPaymentTransactionRequest);
-    v18 = [v7 transactionSourceIdentifiers];
-    [(PKPaymentTransactionRequest *)v17 setTransactionSourceIdentifiers:v18];
+    transactionSourceIdentifiers = [sourceCopy transactionSourceIdentifiers];
+    [(PKPaymentTransactionRequest *)v17 setTransactionSourceIdentifiers:transactionSourceIdentifiers];
 
-    [(PKPaymentTransactionRequest *)v17 setStartStatusChangeDate:v13];
-    [(PKPaymentTransactionRequest *)v17 setEndStatusChangeDate:v14];
-    v19 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+    [(PKPaymentTransactionRequest *)v17 setStartStatusChangeDate:openingDate];
+    [(PKPaymentTransactionRequest *)v17 setEndStatusChangeDate:closingDate];
+    v19 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     v22[0] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
     [(PKPaymentTransactionRequest *)v17 setTransactionTypes:v20];
 
     [(PKPaymentTransactionRequest *)v17 setTransactionStatuses:&unk_1F23B4430];
-    [(PKPaymentTransactionRequest *)v17 setCurrencyCode:v16];
+    [(PKPaymentTransactionRequest *)v17 setCurrencyCode:currencyCode];
   }
 
   return v17;
 }
 
-+ (id)_transactionsRequestSinceStatementForAccount:(id)a3 transactionSource:(id)a4 transactionType:(int64_t)a5
++ (id)_transactionsRequestSinceStatementForAccount:(id)account transactionSource:(id)source transactionType:(int64_t)type
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 creditDetails];
-  v10 = [v9 accountSummary];
-  v11 = [v10 balanceSummary];
+  sourceCopy = source;
+  accountCopy = account;
+  creditDetails = [accountCopy creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  balanceSummary = [accountSummary balanceSummary];
 
-  v12 = [v8 associatedPassUniqueID];
-  v13 = [v11 openingDate];
-  v14 = [v11 closingDate];
-  v15 = [v8 creditDetails];
+  associatedPassUniqueID = [accountCopy associatedPassUniqueID];
+  openingDate = [balanceSummary openingDate];
+  closingDate = [balanceSummary closingDate];
+  creditDetails2 = [accountCopy creditDetails];
 
-  v16 = [v15 currencyCode];
+  currencyCode = [creditDetails2 currencyCode];
 
   v17 = 0;
-  if (v13 && v14 && v12 && v16)
+  if (openingDate && closingDate && associatedPassUniqueID && currencyCode)
   {
     v17 = objc_alloc_init(PKPaymentTransactionRequest);
-    v18 = [v7 transactionSourceIdentifiers];
-    [(PKPaymentTransactionRequest *)v17 setTransactionSourceIdentifiers:v18];
+    transactionSourceIdentifiers = [sourceCopy transactionSourceIdentifiers];
+    [(PKPaymentTransactionRequest *)v17 setTransactionSourceIdentifiers:transactionSourceIdentifiers];
 
-    [(PKPaymentTransactionRequest *)v17 setStartStatusChangeDate:v13];
-    [(PKPaymentTransactionRequest *)v17 setEndStatusChangeDate:v14];
-    v19 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+    [(PKPaymentTransactionRequest *)v17 setStartStatusChangeDate:openingDate];
+    [(PKPaymentTransactionRequest *)v17 setEndStatusChangeDate:closingDate];
+    v19 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     v22[0] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
     [(PKPaymentTransactionRequest *)v17 setTransactionTypes:v20];
 
     [(PKPaymentTransactionRequest *)v17 setTransactionStatuses:&unk_1F23B4448];
-    [(PKPaymentTransactionRequest *)v17 setCurrencyCode:v16];
+    [(PKPaymentTransactionRequest *)v17 setCurrencyCode:currencyCode];
   }
 
   return v17;
 }
 
-+ (void)_transactionsTotalAmountForRequest:(id)a3 completion:(id)a4
++ (void)_transactionsTotalAmountForRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v5 = a4;
-  if (v5)
+  requestCopy = request;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v7)
+    if (requestCopy)
     {
       v6 = +[PKPaymentService paymentService];
-      [v6 transactionsTotalAmountForRequest:v7 completion:v5];
+      [v6 transactionsTotalAmountForRequest:requestCopy completion:completionCopy];
     }
 
     else
     {
-      v5[2](v5, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-+ (void)currentStatementSelectedSuggestedAmountEventsForAccount:(id)a3 completion:(id)a4
++ (void)currentStatementSelectedSuggestedAmountEventsForAccount:(id)account completion:(id)completion
 {
-  v5 = a4;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v6 = a3;
-    v7 = [v6 creditDetails];
-    v8 = [v7 accountSummary];
-    v9 = [v8 currentStatement];
+    accountCopy = account;
+    creditDetails = [accountCopy creditDetails];
+    accountSummary = [creditDetails accountSummary];
+    currentStatement = [accountSummary currentStatement];
 
-    v10 = [v9 identifier];
-    v11 = [v6 accountIdentifier];
+    identifier = [currentStatement identifier];
+    accountIdentifier = [accountCopy accountIdentifier];
 
-    if (v11 && v9 && v10)
+    if (accountIdentifier && currentStatement && identifier)
     {
       v12 = +[PKAccountService sharedInstance];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __109__PKBillPaymentSuggestedAmountController_currentStatementSelectedSuggestedAmountEventsForAccount_completion___block_invoke;
       v13[3] = &unk_1E79C5440;
-      v14 = v5;
-      [v12 billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier:v11 withStatementIdentifier:v10 completion:v13];
+      v14 = completionCopy;
+      [v12 billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier:accountIdentifier withStatementIdentifier:identifier completion:v13];
     }
 
     else
     {
-      (*(v5 + 2))(v5, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-+ (void)previousStatementSelectedSuggestedAmountEventsForAccount:(id)a3 completion:(id)a4
++ (void)previousStatementSelectedSuggestedAmountEventsForAccount:(id)account completion:(id)completion
 {
-  v5 = a4;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v6 = a3;
-    v7 = [v6 creditDetails];
-    v8 = [v7 accountSummary];
-    v9 = [v8 currentStatement];
+    accountCopy = account;
+    creditDetails = [accountCopy creditDetails];
+    accountSummary = [creditDetails accountSummary];
+    currentStatement = [accountSummary currentStatement];
 
-    v10 = [v6 accountIdentifier];
+    accountIdentifier = [accountCopy accountIdentifier];
 
-    v11 = [v9 openingDate];
-    v12 = [v9 closingDate];
-    v13 = v12;
-    if (v11 && v12)
+    openingDate = [currentStatement openingDate];
+    closingDate = [currentStatement closingDate];
+    v13 = closingDate;
+    if (openingDate && closingDate)
     {
       v14 = +[PKAccountService sharedInstance];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __110__PKBillPaymentSuggestedAmountController_previousStatementSelectedSuggestedAmountEventsForAccount_completion___block_invoke;
       v15[3] = &unk_1E79C5440;
-      v16 = v5;
-      [v14 billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier:v10 withStartDate:v11 endDate:v13 completion:v15];
+      v16 = completionCopy;
+      [v14 billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier:accountIdentifier withStartDate:openingDate endDate:v13 completion:v15];
     }
 
     else
     {
-      (*(v5 + 2))(v5, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (PKBillPaymentSuggestedAmountController)initWithAccount:(id)a3 accountUserCollection:(id)a4 transactionSource:(id)a5 currentStatementSelectedSuggestedAmountEvents:(id)a6 previousStatementSelectedSuggestedAmountEvents:(id)a7 currentStatementPaymentsSum:(id)a8 previousStatementPaymentsSum:(id)a9 currentStatementPurchasesSum:(id)a10 previousStatementPurchasesSum:(id)a11 currentStatementMerchantCategoryTransactionSums:(id)a12 previousStatementMerchantCategoryTransactionSums:(id)a13 configuration:(id)a14
+- (PKBillPaymentSuggestedAmountController)initWithAccount:(id)account accountUserCollection:(id)collection transactionSource:(id)source currentStatementSelectedSuggestedAmountEvents:(id)events previousStatementSelectedSuggestedAmountEvents:(id)amountEvents currentStatementPaymentsSum:(id)sum previousStatementPaymentsSum:(id)paymentsSum currentStatementPurchasesSum:(id)self0 previousStatementPurchasesSum:(id)self1 currentStatementMerchantCategoryTransactionSums:(id)self2 previousStatementMerchantCategoryTransactionSums:(id)self3 configuration:(id)self4
 {
   v91 = *MEMORY[0x1E69E9840];
-  v87 = a3;
-  v75 = a4;
-  v86 = a4;
-  v85 = a5;
-  v84 = a6;
-  v76 = a7;
-  v19 = a7;
-  v83 = a8;
-  v82 = a9;
-  v81 = a10;
-  v80 = a11;
-  v20 = a12;
-  v21 = a13;
-  v79 = a14;
+  accountCopy = account;
+  collectionCopy = collection;
+  collectionCopy2 = collection;
+  sourceCopy = source;
+  eventsCopy = events;
+  amountEventsCopy = amountEvents;
+  amountEventsCopy2 = amountEvents;
+  sumCopy = sum;
+  paymentsSumCopy = paymentsSum;
+  purchasesSumCopy = purchasesSum;
+  statementPurchasesSumCopy = statementPurchasesSum;
+  sumsCopy = sums;
+  transactionSumsCopy = transactionSums;
+  configurationCopy = configuration;
   v88.receiver = self;
   v88.super_class = PKBillPaymentSuggestedAmountController;
   v22 = [(PKBillPaymentSuggestedAmountController *)&v88 init];
@@ -523,30 +523,30 @@ void __135__PKBillPaymentSuggestedAmountController_defaultControllerForAccount_a
     goto LABEL_33;
   }
 
-  objc_storeStrong(&v22->_account, a3);
-  objc_storeStrong(&v23->_accountUserCollection, v75);
-  objc_storeStrong(&v23->_transactionSource, a5);
-  objc_storeStrong(&v23->_currentStatementSelectedSuggestedAmountEvents, a6);
-  objc_storeStrong(&v23->_previousStatementSelectedSuggestedAmountEvents, v76);
-  objc_storeStrong(&v23->_currentStatementPaymentsSum, a8);
-  objc_storeStrong(&v23->_previousStatementPaymentsSum, a9);
-  objc_storeStrong(&v23->_currentStatementPurchasesSum, a10);
-  objc_storeStrong(&v23->_previousStatementPurchasesSum, a11);
-  v24 = [v20 copy];
+  objc_storeStrong(&v22->_account, account);
+  objc_storeStrong(&v23->_accountUserCollection, collectionCopy);
+  objc_storeStrong(&v23->_transactionSource, source);
+  objc_storeStrong(&v23->_currentStatementSelectedSuggestedAmountEvents, events);
+  objc_storeStrong(&v23->_previousStatementSelectedSuggestedAmountEvents, amountEventsCopy);
+  objc_storeStrong(&v23->_currentStatementPaymentsSum, sum);
+  objc_storeStrong(&v23->_previousStatementPaymentsSum, paymentsSum);
+  objc_storeStrong(&v23->_currentStatementPurchasesSum, purchasesSum);
+  objc_storeStrong(&v23->_previousStatementPurchasesSum, statementPurchasesSum);
+  v24 = [sumsCopy copy];
   currentStatementMerchantCategoryTransactionSums = v23->_currentStatementMerchantCategoryTransactionSums;
   v23->_currentStatementMerchantCategoryTransactionSums = v24;
 
-  v26 = [v21 copy];
+  v26 = [transactionSumsCopy copy];
   previousStatementMerchantCategoryTransactionSums = v23->_previousStatementMerchantCategoryTransactionSums;
   v23->_previousStatementMerchantCategoryTransactionSums = v26;
 
-  objc_storeStrong(&v23->_configuration, a14);
+  objc_storeStrong(&v23->_configuration, configuration);
   v28 = PKLogFacilityTypeGetObject(0xFuLL);
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     previousStatementPaymentsSum = v23->_previousStatementPaymentsSum;
     *buf = 138412290;
-    v90 = previousStatementPaymentsSum;
+    configurationCopy2 = previousStatementPaymentsSum;
     _os_log_impl(&dword_1AD337000, v28, OS_LOG_TYPE_DEFAULT, "Bill payment suggested amount controller using previousStatementPaymentsSum: %@", buf, 0xCu);
   }
 
@@ -554,7 +554,7 @@ void __135__PKBillPaymentSuggestedAmountController_defaultControllerForAccount_a
   {
     currentStatementPaymentsSum = v23->_currentStatementPaymentsSum;
     *buf = 138412290;
-    v90 = currentStatementPaymentsSum;
+    configurationCopy2 = currentStatementPaymentsSum;
     _os_log_impl(&dword_1AD337000, v28, OS_LOG_TYPE_DEFAULT, "Bill payment suggested amount controller using currentStatementPaymentsSum: %@", buf, 0xCu);
   }
 
@@ -562,7 +562,7 @@ void __135__PKBillPaymentSuggestedAmountController_defaultControllerForAccount_a
   {
     previousStatementPurchasesSum = v23->_previousStatementPurchasesSum;
     *buf = 138412290;
-    v90 = previousStatementPurchasesSum;
+    configurationCopy2 = previousStatementPurchasesSum;
     _os_log_impl(&dword_1AD337000, v28, OS_LOG_TYPE_DEFAULT, "Bill payment suggested amount controller using previousStatementPurchasesSum: %@", buf, 0xCu);
   }
 
@@ -570,7 +570,7 @@ void __135__PKBillPaymentSuggestedAmountController_defaultControllerForAccount_a
   {
     currentStatementPurchasesSum = v23->_currentStatementPurchasesSum;
     *buf = 138412290;
-    v90 = currentStatementPurchasesSum;
+    configurationCopy2 = currentStatementPurchasesSum;
     _os_log_impl(&dword_1AD337000, v28, OS_LOG_TYPE_DEFAULT, "Bill payment suggested amount controller using currentStatementPurchasesSum: %@", buf, 0xCu);
   }
 
@@ -578,7 +578,7 @@ void __135__PKBillPaymentSuggestedAmountController_defaultControllerForAccount_a
   {
     v33 = v23->_currentStatementMerchantCategoryTransactionSums;
     *buf = 138412290;
-    v90 = v33;
+    configurationCopy2 = v33;
     _os_log_impl(&dword_1AD337000, v28, OS_LOG_TYPE_DEFAULT, "Bill payment suggested amount controller using currentStatementMerchantCategoryTransactionSums: %@", buf, 0xCu);
   }
 
@@ -586,7 +586,7 @@ void __135__PKBillPaymentSuggestedAmountController_defaultControllerForAccount_a
   {
     v34 = v23->_previousStatementMerchantCategoryTransactionSums;
     *buf = 138412290;
-    v90 = v34;
+    configurationCopy2 = v34;
     _os_log_impl(&dword_1AD337000, v28, OS_LOG_TYPE_DEFAULT, "Bill payment suggested amount controller using previousStatementMerchantCategoryTransactionSums: %@", buf, 0xCu);
   }
 
@@ -594,7 +594,7 @@ void __135__PKBillPaymentSuggestedAmountController_defaultControllerForAccount_a
   {
     currentStatementSelectedSuggestedAmountEvents = v23->_currentStatementSelectedSuggestedAmountEvents;
     *buf = 138412290;
-    v90 = currentStatementSelectedSuggestedAmountEvents;
+    configurationCopy2 = currentStatementSelectedSuggestedAmountEvents;
     _os_log_impl(&dword_1AD337000, v28, OS_LOG_TYPE_DEFAULT, "Bill payment suggested amount controller using currentStatementSelectedSuggestedAmountEvents: %@", buf, 0xCu);
   }
 
@@ -602,49 +602,49 @@ void __135__PKBillPaymentSuggestedAmountController_defaultControllerForAccount_a
   {
     previousStatementSelectedSuggestedAmountEvents = v23->_previousStatementSelectedSuggestedAmountEvents;
     *buf = 138412290;
-    v90 = previousStatementSelectedSuggestedAmountEvents;
+    configurationCopy2 = previousStatementSelectedSuggestedAmountEvents;
     _os_log_impl(&dword_1AD337000, v28, OS_LOG_TYPE_DEFAULT, "Bill payment suggested amount controller using previousStatementSelectedSuggestedAmountEvents: %@", buf, 0xCu);
   }
 
-  v78 = v21;
-  v37 = v20;
+  v78 = transactionSumsCopy;
+  v37 = sumsCopy;
 
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     configuration = v23->_configuration;
     *buf = 138412290;
-    v90 = configuration;
+    configurationCopy2 = configuration;
     _os_log_impl(&dword_1AD337000, v28, OS_LOG_TYPE_DEFAULT, "Bill payment suggested amount controller using configuration: %@", buf, 0xCu);
   }
 
-  v39 = [(PKAccount *)v23->_account creditDetails];
-  v40 = [v39 productTimeZone];
+  creditDetails = [(PKAccount *)v23->_account creditDetails];
+  productTimeZone = [creditDetails productTimeZone];
 
   v41 = objc_alloc_init(MEMORY[0x1E696AB78]);
   monthAndDayFormatter = v23->_monthAndDayFormatter;
   v23->_monthAndDayFormatter = v41;
 
-  [(NSDateFormatter *)v23->_monthAndDayFormatter setTimeZone:v40];
+  [(NSDateFormatter *)v23->_monthAndDayFormatter setTimeZone:productTimeZone];
   [(NSDateFormatter *)v23->_monthAndDayFormatter setLocalizedDateFormatFromTemplate:@"MMM d"];
   v43 = objc_alloc_init(MEMORY[0x1E696AB78]);
   monthFormatter = v23->_monthFormatter;
   v23->_monthFormatter = v43;
 
-  [(NSDateFormatter *)v23->_monthFormatter setTimeZone:v40];
+  [(NSDateFormatter *)v23->_monthFormatter setTimeZone:productTimeZone];
   [(NSDateFormatter *)v23->_monthFormatter setLocalizedDateFormatFromTemplate:@"MMMM"];
-  v45 = [(PKAccount *)v23->_account creditDetails];
-  v46 = [v45 accountSummary];
-  v47 = [v46 currentStatement];
-  v48 = [v47 identifier];
-  v49 = [v48 length];
+  creditDetails2 = [(PKAccount *)v23->_account creditDetails];
+  accountSummary = [creditDetails2 accountSummary];
+  currentStatement = [accountSummary currentStatement];
+  identifier = [currentStatement identifier];
+  v49 = [identifier length];
   v50 = v49 != 0;
   v51 = v49 == 0;
 
-  v52 = [(NSDecimalNumber *)v23->_previousStatementPaymentsSum pk_isPositiveNumber];
+  pk_isPositiveNumber = [(NSDecimalNumber *)v23->_previousStatementPaymentsSum pk_isPositiveNumber];
   v23->_isMonthZero = v51;
-  v23->_isMonthOne = v50 & (v52 ^ 1);
-  v23->_numberOfActiveInstallments = [v45 numberOfActiveInstallments];
-  v23->_numberOfActiveStatementedInstallments = [v45 numberOfActiveStatementedInstallments];
+  v23->_isMonthOne = v50 & (pk_isPositiveNumber ^ 1);
+  v23->_numberOfActiveInstallments = [creditDetails2 numberOfActiveInstallments];
+  v23->_numberOfActiveStatementedInstallments = [creditDetails2 numberOfActiveStatementedInstallments];
   v53 = [(NSArray *)v23->_currentStatementSelectedSuggestedAmountEvents sortedArrayUsingComparator:&__block_literal_global_184];
   v54 = v23->_currentStatementSelectedSuggestedAmountEvents;
   v23->_currentStatementSelectedSuggestedAmountEvents = v53;
@@ -654,9 +654,9 @@ void __135__PKBillPaymentSuggestedAmountController_defaultControllerForAccount_a
   v23->_previousStatementSelectedSuggestedAmountEvents = v55;
 
   v57 = v23->_currentStatementPaymentsSum;
-  v58 = [MEMORY[0x1E696AB90] zero];
-  v59 = v58;
-  if (!v57 || !v58)
+  zero = [MEMORY[0x1E696AB90] zero];
+  v59 = zero;
+  if (!v57 || !zero)
   {
 
     if (v57 != v59)
@@ -667,7 +667,7 @@ void __135__PKBillPaymentSuggestedAmountController_defaultControllerForAccount_a
     goto LABEL_23;
   }
 
-  v60 = [(NSDecimalNumber *)v57 isEqual:v58];
+  v60 = [(NSDecimalNumber *)v57 isEqual:zero];
 
   if (v60)
   {
@@ -678,9 +678,9 @@ LABEL_23:
 
 LABEL_24:
   v62 = v23->_previousStatementPaymentsSum;
-  v63 = [MEMORY[0x1E696AB90] zero];
-  v64 = v63;
-  if (!v62 || !v63)
+  zero2 = [MEMORY[0x1E696AB90] zero];
+  v64 = zero2;
+  if (!v62 || !zero2)
   {
 
     if (v62 != v64)
@@ -691,7 +691,7 @@ LABEL_24:
     goto LABEL_27;
   }
 
-  v65 = [(NSDecimalNumber *)v62 isEqual:v63];
+  v65 = [(NSDecimalNumber *)v62 isEqual:zero2];
 
   if (v65)
   {
@@ -719,14 +719,14 @@ LABEL_28:
   v23->_merchantCategoryTransactionSums = v69;
 
   v23->_currentStatementIsLastMonthsStatement = [(PKBillPaymentSuggestedAmountController *)v23 _calculateCurrentStatementIsLastMonthsStatement];
-  [(PKBillPaymentSuggestedAmountController *)v23 _initializeDifferentialPrivacy:v19 accountSummary:v46];
-  [(PKBillPaymentSuggestedAmountController *)v23 _initializePaymentRingInstrumentationRecord:v19 accountSummary:v46];
+  [(PKBillPaymentSuggestedAmountController *)v23 _initializeDifferentialPrivacy:amountEventsCopy2 accountSummary:accountSummary];
+  [(PKBillPaymentSuggestedAmountController *)v23 _initializePaymentRingInstrumentationRecord:amountEventsCopy2 accountSummary:accountSummary];
   v71 = objc_alloc_init(getFHPaymentRingSuggestionControllerClass[0]());
   fhController = v23->_fhController;
   v23->_fhController = v71;
 
-  v20 = v37;
-  v21 = v78;
+  sumsCopy = v37;
+  transactionSumsCopy = v78;
 LABEL_33:
 
   return v23;
@@ -794,58 +794,58 @@ uint64_t __418__PKBillPaymentSuggestedAmountController_initWithAccount_accountUs
 
 - (id)_createDefaultAmountSuggestionListFromAccount
 {
-  v3 = [(PKAccount *)self->_account creditDetails];
-  v4 = [(PKAccount *)self->_account creditDetails];
-  v5 = [v4 accountSummary];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  creditDetails2 = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails2 accountSummary];
 
-  v6 = [v5 adjustedBalance];
-  v7 = [v5 currentBalance];
-  v30 = [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration earlyInstallmentPlan];
-  v27 = v7;
-  if (v30)
+  adjustedBalance = [accountSummary adjustedBalance];
+  currentBalance = [accountSummary currentBalance];
+  earlyInstallmentPlan = [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration earlyInstallmentPlan];
+  v27 = currentBalance;
+  if (earlyInstallmentPlan)
   {
-    v8 = [v7 compare:{v6, v7}];
+    v8 = [currentBalance compare:{adjustedBalance, currentBalance}];
     v29 = v8 == 1;
     if (v8 == 1)
     {
-      v9 = v7;
+      v9 = currentBalance;
     }
 
     else
     {
-      v9 = v6;
+      v9 = adjustedBalance;
     }
   }
 
   else
   {
     v29 = 0;
-    v9 = v6;
+    v9 = adjustedBalance;
   }
 
   v10 = v9;
   v11 = [PKBillPaymentSuggestedAmountList alloc];
-  v31 = v3;
-  v12 = [v3 currencyCode];
-  v13 = [v5 remainingMinimumPayment];
-  v14 = [v5 remainingStatementBalance];
+  v31 = creditDetails;
+  currencyCode = [creditDetails currencyCode];
+  remainingMinimumPayment = [accountSummary remainingMinimumPayment];
+  remainingStatementBalance = [accountSummary remainingStatementBalance];
   if (v10)
   {
-    v15 = [(PKBillPaymentSuggestedAmountList *)v11 initWithCurrencyCode:v12 remainingMinimumPayment:v13 remainingStatementBalance:v14 currentBalance:v10];
+    v15 = [(PKBillPaymentSuggestedAmountList *)v11 initWithCurrencyCode:currencyCode remainingMinimumPayment:remainingMinimumPayment remainingStatementBalance:remainingStatementBalance currentBalance:v10];
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696AB90] zero];
-    v15 = [(PKBillPaymentSuggestedAmountList *)v11 initWithCurrencyCode:v12 remainingMinimumPayment:v13 remainingStatementBalance:v14 currentBalance:v16];
+    zero = [MEMORY[0x1E696AB90] zero];
+    v15 = [(PKBillPaymentSuggestedAmountList *)v11 initWithCurrencyCode:currencyCode remainingMinimumPayment:remainingMinimumPayment remainingStatementBalance:remainingStatementBalance currentBalance:zero];
   }
 
-  v17 = [(PKBillPaymentSuggestedAmountList *)v15 minimumAmount];
-  if (!v17 || (-[PKBillPaymentSuggestedAmountList maximumAmount](v15, "maximumAmount"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v17 isEqual:v18], v18, v19))
+  minimumAmount = [(PKBillPaymentSuggestedAmountList *)v15 minimumAmount];
+  if (!minimumAmount || (-[PKBillPaymentSuggestedAmountList maximumAmount](v15, "maximumAmount"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [minimumAmount isEqual:v18], v18, v19))
   {
-    v20 = [(PKBillPaymentSuggestedAmountList *)v15 remainingStatementAmount];
+    remainingStatementAmount = [(PKBillPaymentSuggestedAmountList *)v15 remainingStatementAmount];
 
-    if (v20)
+    if (remainingStatementAmount)
     {
       v21 = 1;
     }
@@ -856,15 +856,15 @@ uint64_t __418__PKBillPaymentSuggestedAmountController_initWithAccount_accountUs
     }
 
     v22 = [PKBillPaymentSuggestedAmount alloc];
-    v23 = [MEMORY[0x1E696AB90] zero];
-    v24 = [(PKBillPaymentSuggestedAmount *)v22 initWithAmount:v23 category:v21];
+    zero2 = [MEMORY[0x1E696AB90] zero];
+    v24 = [(PKBillPaymentSuggestedAmount *)v22 initWithAmount:zero2 category:v21];
 
     [(PKBillPaymentSuggestedAmountList *)v15 setInitialSuggestedAmount:v24];
   }
 
   if (v29)
   {
-    v25 = [[PKBillPaymentSuggestedAmount alloc] initWithAmount:v6 category:30];
+    v25 = [[PKBillPaymentSuggestedAmount alloc] initWithAmount:adjustedBalance category:30];
     [(PKBillPaymentSuggestedAmountList *)v15 addSuggestedAmount:v25];
   }
 
@@ -873,28 +873,28 @@ uint64_t __418__PKBillPaymentSuggestedAmountController_initWithAccount_accountUs
   return v15;
 }
 
-- (id)generateAmountSuggestionListWithFinHealth:(BOOL)a3
+- (id)generateAmountSuggestionListWithFinHealth:(BOOL)health
 {
-  v3 = a3;
+  healthCopy = health;
   v62 = *MEMORY[0x1E69E9840];
-  v5 = [(PKBillPaymentSuggestedAmountController *)self _createDefaultAmountSuggestionListFromAccount];
-  if (v3)
+  _createDefaultAmountSuggestionListFromAccount = [(PKBillPaymentSuggestedAmountController *)self _createDefaultAmountSuggestionListFromAccount];
+  if (healthCopy)
   {
-    v48 = [(PKAccount *)self->_account creditDetails];
-    v45 = [v48 accountSummary];
-    v6 = [v45 remainingStatementBalance];
-    v7 = v6;
-    if (v6)
+    creditDetails = [(PKAccount *)self->_account creditDetails];
+    accountSummary = [creditDetails accountSummary];
+    remainingStatementBalance = [accountSummary remainingStatementBalance];
+    v7 = remainingStatementBalance;
+    if (remainingStatementBalance)
     {
-      v8 = v6;
+      zero = remainingStatementBalance;
     }
 
     else
     {
-      v8 = [MEMORY[0x1E696AB90] zero];
+      zero = [MEMORY[0x1E696AB90] zero];
     }
 
-    v47 = v8;
+    v47 = zero;
 
     v49 = objc_opt_new();
     v54 = 0u;
@@ -916,14 +916,14 @@ uint64_t __418__PKBillPaymentSuggestedAmountController_initWithAccount_accountUs
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v54 + 1) + 8 * i) items];
-          v16 = [v15 allObjects];
-          v17 = [v16 firstObject];
+          items = [*(*(&v54 + 1) + 8 * i) items];
+          allObjects = [items allObjects];
+          firstObject = [allObjects firstObject];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v49 addObject:v17];
+            [v49 addObject:firstObject];
           }
         }
 
@@ -974,10 +974,10 @@ uint64_t __418__PKBillPaymentSuggestedAmountController_initWithAccount_accountUs
           }
 
           v33 = *(*(&v50 + 1) + 8 * j);
-          if (!self->_isMonthZero && !self->_isMonthOne && ([v48 isInMonthOfMerge] & 1) == 0)
+          if (!self->_isMonthZero && !self->_isMonthOne && ([creditDetails isInMonthOfMerge] & 1) == 0)
           {
-            v34 = [v33 amount];
-            v35 = [v34 compare:v47];
+            amount = [v33 amount];
+            v35 = [amount compare:v47];
 
             if (v35 != -1)
             {
@@ -985,7 +985,7 @@ uint64_t __418__PKBillPaymentSuggestedAmountController_initWithAccount_accountUs
             }
           }
 
-          [v5 addSuggestedAmount:v33];
+          [_createDefaultAmountSuggestionListFromAccount addSuggestedAmount:v33];
         }
 
         v30 = [v28 countByEnumeratingWithState:&v50 objects:v58 count:16];
@@ -996,10 +996,10 @@ uint64_t __418__PKBillPaymentSuggestedAmountController_initWithAccount_accountUs
 
     if (v49 && [v49 count])
     {
-      v36 = [v49 lastObject];
-      v37 = [v36 suggestedAmountCategory];
+      lastObject = [v49 lastObject];
+      suggestedAmountCategory = [lastObject suggestedAmountCategory];
 
-      v38 = PKBillPaymentSuggestedAmountCategoryToPaymentRingInstrumentation(v37);
+      v38 = PKBillPaymentSuggestedAmountCategoryToPaymentRingInstrumentation(suggestedAmountCategory);
       paymentRingInstrumentationRecord = self->_paymentRingInstrumentationRecord;
       v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v38];
       v41 = _MergedGlobals_179();
@@ -1011,21 +1011,21 @@ uint64_t __418__PKBillPaymentSuggestedAmountController_initWithAccount_accountUs
 
   else
   {
-    [(PKBillPaymentSuggestedAmountController *)self _generateAmountSuggestionListUsingTransactionHistoryForList:v5];
+    [(PKBillPaymentSuggestedAmountController *)self _generateAmountSuggestionListUsingTransactionHistoryForList:_createDefaultAmountSuggestionListFromAccount];
     v9 = PKLogFacilityTypeGetObject(0xFuLL);
   }
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v60 = v5;
+    v60 = _createDefaultAmountSuggestionListFromAccount;
     _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Bill Payment Suggested Amount List from transaction history API: %@", buf, 0xCu);
   }
 
-  [(PKBillPaymentSuggestedAmountController *)self _populatePriorityValuesForList:v5];
-  if ([(PKBillPaymentSuggestedAmountController *)self _suggestedAmountListIsValidAfterPurgeIfNecessary:v5])
+  [(PKBillPaymentSuggestedAmountController *)self _populatePriorityValuesForList:_createDefaultAmountSuggestionListFromAccount];
+  if ([(PKBillPaymentSuggestedAmountController *)self _suggestedAmountListIsValidAfterPurgeIfNecessary:_createDefaultAmountSuggestionListFromAccount])
   {
-    v42 = v5;
+    _createDefaultAmountSuggestionListFromAccount2 = _createDefaultAmountSuggestionListFromAccount;
   }
 
   else
@@ -1036,16 +1036,16 @@ uint64_t __418__PKBillPaymentSuggestedAmountController_initWithAccount_accountUs
       _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Bill Payment Suggested Amount List Error for transaction history API. Using fallback suggestions.", buf, 2u);
     }
 
-    v42 = [(PKBillPaymentSuggestedAmountController *)self _createDefaultAmountSuggestionListFromAccount];
+    _createDefaultAmountSuggestionListFromAccount2 = [(PKBillPaymentSuggestedAmountController *)self _createDefaultAmountSuggestionListFromAccount];
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v60 = v42;
+      v60 = _createDefaultAmountSuggestionListFromAccount2;
       _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Bill Payment Suggested Amount fallback list: %@", buf, 0xCu);
     }
 
-    if (![(PKBillPaymentSuggestedAmountController *)self _suggestedAmountListIsValidAfterPurgeIfNecessary:v42])
+    if (![(PKBillPaymentSuggestedAmountController *)self _suggestedAmountListIsValidAfterPurgeIfNecessary:_createDefaultAmountSuggestionListFromAccount2])
     {
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
@@ -1055,45 +1055,45 @@ uint64_t __418__PKBillPaymentSuggestedAmountController_initWithAccount_accountUs
     }
   }
 
-  [(PKBillPaymentSuggestedAmountController *)self _populateStringValuesForList:v42];
+  [(PKBillPaymentSuggestedAmountController *)self _populateStringValuesForList:_createDefaultAmountSuggestionListFromAccount2];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v60 = v42;
+    v60 = _createDefaultAmountSuggestionListFromAccount2;
     _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Final Bill Payment Suggested Amount List with titles and descriptions %@", buf, 0xCu);
   }
 
-  return v42;
+  return _createDefaultAmountSuggestionListFromAccount2;
 }
 
-- (void)_generateAmountSuggestionListUsingTransactionHistoryForList:(id)a3
+- (void)_generateAmountSuggestionListUsingTransactionHistoryForList:(id)list
 {
   v114 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  listCopy = list;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v84 = [(PKAccount *)self->_account creditDetails];
-  v85 = [v84 accountSummary];
-  v81 = [v85 currentStatement];
-  v6 = [v85 remainingStatementBalance];
-  v7 = [v85 remainingMinimumPayment];
-  v8 = v7;
-  if (v7)
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  currentStatement = [accountSummary currentStatement];
+  remainingStatementBalance = [accountSummary remainingStatementBalance];
+  remainingMinimumPayment = [accountSummary remainingMinimumPayment];
+  v8 = remainingMinimumPayment;
+  if (remainingMinimumPayment)
   {
-    v78 = v7;
+    zero = remainingMinimumPayment;
   }
 
   else
   {
-    v78 = [MEMORY[0x1E696AB90] zero];
+    zero = [MEMORY[0x1E696AB90] zero];
   }
 
-  v82 = [v85 creditLimit];
-  v83 = [v81 statementBalance];
-  v80 = [v85 remainingStatementBalanceForInterestCalculation];
-  if (v6)
+  creditLimit = [accountSummary creditLimit];
+  statementBalance = [currentStatement statementBalance];
+  remainingStatementBalanceForInterestCalculation = [accountSummary remainingStatementBalanceForInterestCalculation];
+  if (remainingStatementBalance)
   {
-    v9 = [MEMORY[0x1E696AB90] zero];
-    v10 = [v6 compare:v9] == 1;
+    zero2 = [MEMORY[0x1E696AB90] zero];
+    v10 = [remainingStatementBalance compare:zero2] == 1;
   }
 
   else
@@ -1101,35 +1101,35 @@ uint64_t __418__PKBillPaymentSuggestedAmountController_initWithAccount_accountUs
     v10 = 0;
   }
 
-  v79 = [MEMORY[0x1E696AB90] zero];
-  if (v83)
+  zero3 = [MEMORY[0x1E696AB90] zero];
+  if (statementBalance)
   {
-    if (v82)
+    if (creditLimit)
     {
-      v11 = [MEMORY[0x1E696AB90] zero];
-      v12 = [v82 isEqualToNumber:v11];
+      zero4 = [MEMORY[0x1E696AB90] zero];
+      v12 = [creditLimit isEqualToNumber:zero4];
 
       if ((v12 & 1) == 0)
       {
-        v13 = [v83 decimalNumberByDividingBy:v82];
+        v13 = [statementBalance decimalNumberByDividingBy:creditLimit];
 
-        v79 = v13;
+        zero3 = v13;
       }
     }
   }
 
-  if ([v84 isInMonthOfMerge] && objc_msgSend(v80, "pk_isPositiveNumber"))
+  if ([creditDetails isInMonthOfMerge] && objc_msgSend(remainingStatementBalanceForInterestCalculation, "pk_isPositiveNumber"))
   {
-    v14 = [[PKBillPaymentSuggestedAmount alloc] initWithAmount:v80 category:31];
+    v14 = [[PKBillPaymentSuggestedAmount alloc] initWithAmount:remainingStatementBalanceForInterestCalculation category:31];
     [v5 safelyAddObject:v14];
-    [v4 addSuggestedAmount:v14];
+    [listCopy addSuggestedAmount:v14];
 
     goto LABEL_20;
   }
 
   if (self->_isMonthZero || self->_isMonthOne || (previousStatementPaymentsSum = self->_previousStatementPaymentsSum) == 0 || ([MEMORY[0x1E696AB90] zero], (v16 = objc_claimAutoreleasedReturnValue()) != 0) && (v17 = -[NSDecimalNumber isEqual:](previousStatementPaymentsSum, "isEqual:", v16), v16, (v17 & 1) != 0))
   {
-    [(PKBillPaymentSuggestedAmountController *)self _zerothOrFirstMonthBillPaymentSuggestionsForList:v4];
+    [(PKBillPaymentSuggestedAmountController *)self _zerothOrFirstMonthBillPaymentSuggestionsForList:listCopy];
     goto LABEL_20;
   }
 
@@ -1157,7 +1157,7 @@ uint64_t __418__PKBillPaymentSuggestedAmountController_initWithAccount_accountUs
     v98[3] = &unk_1E79DEBF8;
     v100 = &v108;
     v98[4] = self;
-    v99 = v6;
+    v99 = remainingStatementBalance;
     v101 = &v102;
     [(NSArray *)previousStatementSelectedSuggestedAmountEvents enumerateObjectsUsingBlock:v98];
 
@@ -1198,12 +1198,12 @@ uint64_t __418__PKBillPaymentSuggestedAmountController_initWithAccount_accountUs
 
   v96 = 0;
   v97 = 0;
-  v26 = [v4 minimumSuggestedAmount];
-  v77 = [v26 amount];
+  minimumSuggestedAmount = [listCopy minimumSuggestedAmount];
+  amount = [minimumSuggestedAmount amount];
 
   v94 = 0;
   v95 = 0;
-  [(PKBillPaymentSuggestedAmountController *)self _minimumMerchcantCategoriesAboveMinimumAmount:v77 minMerchantCategory1:&v97 minMerchantCategory2:&v96 minMerchantCategorySum1:&v95 minMerchantCategorySum2:&v94];
+  [(PKBillPaymentSuggestedAmountController *)self _minimumMerchcantCategoriesAboveMinimumAmount:amount minMerchantCategory1:&v97 minMerchantCategory2:&v96 minMerchantCategorySum1:&v95 minMerchantCategorySum2:&v94];
   v27 = v95;
   v74 = v94;
   v69 = v27;
@@ -1254,9 +1254,9 @@ uint64_t __418__PKBillPaymentSuggestedAmountController_initWithAccount_accountUs
     }
   }
 
-  if (v83 && self->_statementPurchasesSum && v79)
+  if (statementBalance && self->_statementPurchasesSum && zero3)
   {
-    v31 = [(PKBillPaymentSuggestedAmountController *)self _suggestedAmountsForPayOffDateForStatementBalance:v83 creditUtilization:v79 lastPaymentCategory:v109[3]];
+    v31 = [(PKBillPaymentSuggestedAmountController *)self _suggestedAmountsForPayOffDateForStatementBalance:statementBalance creditUtilization:zero3 lastPaymentCategory:v109[3]];
 
     [v5 safelyAddObject:v31];
     v24 = v31;
@@ -1264,33 +1264,33 @@ uint64_t __418__PKBillPaymentSuggestedAmountController_initWithAccount_accountUs
 
   if (self->_isOnPaymentPlan)
   {
-    v32 = [v103[5] suggestedAmountCategory];
+    suggestedAmountCategory = [v103[5] suggestedAmountCategory];
     v33 = v109[3];
   }
 
   else
   {
     v33 = v109[3];
-    v32 = v33;
+    suggestedAmountCategory = v33;
   }
 
-  v68 = [v4 suggestedAmountWithCategory:v33];
-  v76 = [(PKBillPaymentSuggestedAmountController *)self _calculateThresholdForLastPaymentCategory:v32 statementBalance:v83 suggestedAmountWithSameCategory:v68];
+  v68 = [listCopy suggestedAmountWithCategory:v33];
+  v76 = [(PKBillPaymentSuggestedAmountController *)self _calculateThresholdForLastPaymentCategory:suggestedAmountCategory statementBalance:statementBalance suggestedAmountWithSameCategory:v68];
   v75 = [(PKBillPaymentSuggestedAmountController *)self _filterSuggestions:v5 belowThreshold:v76];
 
-  if (!v83)
+  if (!statementBalance)
   {
     goto LABEL_64;
   }
 
-  if (self->_statementPurchasesSum && (![v83 compare:?] || objc_msgSend(v83, "compare:", self->_statementPurchasesSum) == -1) && objc_msgSend(v82, "compare:", v83) == 1)
+  if (self->_statementPurchasesSum && (![statementBalance compare:?] || objc_msgSend(statementBalance, "compare:", self->_statementPurchasesSum) == -1) && objc_msgSend(creditLimit, "compare:", statementBalance) == 1)
   {
     v34 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"2"];
-    v70 = [v83 decimalNumberByDividingBy:v34];
-    v35 = [v83 decimalNumberBySubtracting:v70];
+    v70 = [statementBalance decimalNumberByDividingBy:v34];
+    v35 = [statementBalance decimalNumberBySubtracting:v70];
     v36 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"2"];
-    v37 = [v83 decimalNumberByDividingBy:v36];
-    v38 = [v82 decimalNumberBySubtracting:v37];
+    v37 = [statementBalance decimalNumberByDividingBy:v36];
+    v38 = [creditLimit decimalNumberBySubtracting:v37];
     v67 = [v35 decimalNumberByDividingBy:v38];
 
     v39 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"0.33"];
@@ -1300,12 +1300,12 @@ uint64_t __418__PKBillPaymentSuggestedAmountController_initWithAccount_accountUs
     {
       v73 = [PKBillPaymentSuggestedAmount alloc];
       v42 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"2"];
-      v43 = [v83 decimalNumberByDividingBy:v42];
-      v44 = [v83 decimalNumberBySubtracting:v43];
+      v43 = [statementBalance decimalNumberByDividingBy:v42];
+      v44 = [statementBalance decimalNumberBySubtracting:v43];
       v45 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"3"];
       v66 = [v44 decimalNumberByDividingBy:v45];
       v46 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"2"];
-      v65 = [v83 decimalNumberByDividingBy:v46];
+      v65 = [statementBalance decimalNumberByDividingBy:v46];
       v47 = [v66 decimalNumberByAdding:v65];
       v72 = [(PKBillPaymentSuggestedAmount *)v73 initWithAmount:v47 category:23];
     }
@@ -1319,24 +1319,24 @@ uint64_t __418__PKBillPaymentSuggestedAmountController_initWithAccount_accountUs
       [MEMORY[0x1E696AB90] decimalNumberWithString:@"2"];
       if (v41)
         v42 = {;
-        v43 = [v83 decimalNumberByDividingBy:v42];
-        v44 = [v83 decimalNumberBySubtracting:v43];
+        v43 = [statementBalance decimalNumberByDividingBy:v42];
+        v44 = [statementBalance decimalNumberBySubtracting:v43];
         v45 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"6"];
         v66 = [v44 decimalNumberByDividingBy:v45];
         v46 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"2"];
-        v65 = [v83 decimalNumberByDividingBy:v46];
+        v65 = [statementBalance decimalNumberByDividingBy:v46];
         v47 = [v66 decimalNumberByAdding:v65];
         v72 = [(PKBillPaymentSuggestedAmount *)v71 initWithAmount:v47 category:24];
       }
 
       else
         v42 = {;
-        v43 = [v83 decimalNumberByDividingBy:v42];
-        v44 = [v83 decimalNumberBySubtracting:v43];
+        v43 = [statementBalance decimalNumberByDividingBy:v42];
+        v44 = [statementBalance decimalNumberBySubtracting:v43];
         v45 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"9"];
         v66 = [v44 decimalNumberByDividingBy:v45];
         v46 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"2"];
-        v65 = [v83 decimalNumberByDividingBy:v46];
+        v65 = [statementBalance decimalNumberByDividingBy:v46];
         v47 = [v66 decimalNumberByAdding:v65];
         v72 = [(PKBillPaymentSuggestedAmount *)v71 initWithAmount:v47 category:25];
       }
@@ -1346,10 +1346,10 @@ uint64_t __418__PKBillPaymentSuggestedAmountController_initWithAccount_accountUs
     goto LABEL_65;
   }
 
-  if (v78 && ![(PKBillPaymentSuggestedAmountController *)self _categoryIsPaymentPlan:v109[3]])
+  if (zero && ![(PKBillPaymentSuggestedAmountController *)self _categoryIsPaymentPlan:v109[3]])
   {
     v61 = [PKBillPaymentSuggestedAmount alloc];
-    v62 = [v83 decimalNumberByAdding:v78];
+    v62 = [statementBalance decimalNumberByAdding:zero];
     v63 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"2"];
     v64 = [v62 decimalNumberByDividingBy:v63];
     v72 = [(PKBillPaymentSuggestedAmount *)v61 initWithAmount:v64 category:29];
@@ -1385,8 +1385,8 @@ LABEL_65:
           }
 
           v52 = *(*(&v90 + 1) + 8 * i);
-          v53 = [v52 amount];
-          v54 = [v53 decimalNumberBySubtracting:self->_currentStatementPaymentsSum];
+          amount2 = [v52 amount];
+          v54 = [amount2 decimalNumberBySubtracting:self->_currentStatementPaymentsSum];
           [v52 setAmount:v54];
         }
 
@@ -1416,12 +1416,12 @@ LABEL_65:
         }
 
         v58 = *(*(&v86 + 1) + 8 * j);
-        v59 = [v58 amount];
-        v60 = [v59 compare:v6] == -1;
+        amount3 = [v58 amount];
+        v60 = [amount3 compare:remainingStatementBalance] == -1;
 
         if (v60)
         {
-          [v4 addSuggestedAmount:v58];
+          [listCopy addSuggestedAmount:v58];
         }
       }
 
@@ -1469,83 +1469,83 @@ void __102__PKBillPaymentSuggestedAmountController__generateAmountSuggestionList
   }
 }
 
-- (void)_zerothOrFirstMonthBillPaymentSuggestionsForList:(id)a3
+- (void)_zerothOrFirstMonthBillPaymentSuggestionsForList:(id)list
 {
   v100 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKAccount *)self->_account creditDetails];
-  v6 = [v5 accountSummary];
-  v7 = [v6 currentStatement];
-  v8 = [v6 creditLimit];
-  v9 = [v6 adjustedBalance];
-  v10 = [v6 remainingMinimumPayment];
-  v11 = v10;
+  listCopy = list;
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  currentStatement = [accountSummary currentStatement];
+  creditLimit = [accountSummary creditLimit];
+  adjustedBalance = [accountSummary adjustedBalance];
+  remainingMinimumPayment = [accountSummary remainingMinimumPayment];
+  v11 = remainingMinimumPayment;
   v12 = 0x1E696A000uLL;
-  if (v10)
+  if (remainingMinimumPayment)
   {
-    v13 = v10;
+    zero = remainingMinimumPayment;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E696AB90] zero];
+    zero = [MEMORY[0x1E696AB90] zero];
   }
 
-  v84 = v13;
+  v84 = zero;
 
-  v14 = [v6 remainingStatementBalance];
-  v15 = v14;
-  if (v14)
+  remainingStatementBalance = [accountSummary remainingStatementBalance];
+  v15 = remainingStatementBalance;
+  if (remainingStatementBalance)
   {
-    v16 = v14;
+    zero2 = remainingStatementBalance;
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696AB90] zero];
+    zero2 = [MEMORY[0x1E696AB90] zero];
   }
 
-  v83 = v16;
+  v83 = zero2;
 
-  v17 = [v7 minimumDue];
-  v18 = v17;
-  if (v17)
+  minimumDue = [currentStatement minimumDue];
+  v18 = minimumDue;
+  if (minimumDue)
   {
-    v19 = v17;
+    zero3 = minimumDue;
   }
 
   else
   {
-    v19 = [MEMORY[0x1E696AB90] zero];
+    zero3 = [MEMORY[0x1E696AB90] zero];
   }
 
-  v86 = v19;
+  v86 = zero3;
 
-  v20 = [v7 statementBalance];
-  v21 = v20;
-  if (v20)
+  statementBalance = [currentStatement statementBalance];
+  v21 = statementBalance;
+  if (statementBalance)
   {
-    v22 = v20;
+    zero4 = statementBalance;
   }
 
   else
   {
-    v22 = [MEMORY[0x1E696AB90] zero];
+    zero4 = [MEMORY[0x1E696AB90] zero];
   }
 
-  v90 = v22;
+  v90 = zero4;
 
   v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [MEMORY[0x1E696AB90] zero];
   v89 = v88 = v23;
-  if (v9 && v8)
+  if (adjustedBalance && creditLimit)
   {
-    v24 = [MEMORY[0x1E696AB90] zero];
-    v25 = [v8 isEqualToNumber:v24];
+    zero5 = [MEMORY[0x1E696AB90] zero];
+    v25 = [creditLimit isEqualToNumber:zero5];
 
     if ((v25 & 1) == 0)
     {
-      v26 = [v9 decimalNumberByDividingBy:v8];
+      v26 = [adjustedBalance decimalNumberByDividingBy:creditLimit];
 
       v89 = v26;
     }
@@ -1553,17 +1553,17 @@ void __102__PKBillPaymentSuggestedAmountController__generateAmountSuggestionList
     v23 = v88;
   }
 
-  v87 = [MEMORY[0x1E696AB90] zero];
-  if (v90 && v8)
+  zero6 = [MEMORY[0x1E696AB90] zero];
+  if (v90 && creditLimit)
   {
-    v27 = [MEMORY[0x1E696AB90] zero];
-    v28 = [v8 isEqualToNumber:v27];
+    zero7 = [MEMORY[0x1E696AB90] zero];
+    v28 = [creditLimit isEqualToNumber:zero7];
 
     if ((v28 & 1) == 0)
     {
-      v29 = [v90 decimalNumberByDividingBy:v8];
+      v29 = [v90 decimalNumberByDividingBy:creditLimit];
 
-      v87 = v29;
+      zero6 = v29;
     }
 
     v23 = v88;
@@ -1611,12 +1611,12 @@ void __102__PKBillPaymentSuggestedAmountController__generateAmountSuggestionList
       v36 = v35;
       if (self->_isMonthZero || (self->_isMonthOne || !self->_previousStatementPaymentsSum) && [v35 compare:v83] == -1)
       {
-        v38 = v9;
+        v38 = adjustedBalance;
         v39 = [[PKBillPaymentSuggestedAmount alloc] initWithAmount:v36 category:4];
 
         [(PKBillPaymentSuggestedAmount *)v39 setMerchantCategory:v97];
         v37 = v39;
-        v9 = v38;
+        adjustedBalance = v38;
       }
 
       else
@@ -1629,12 +1629,12 @@ void __102__PKBillPaymentSuggestedAmountController__generateAmountSuggestionList
       [v88 safelyAddObject:?];
     }
 
-    v79 = v6;
-    v80 = v5;
-    v77 = v8;
-    v78 = v7;
-    v81 = v9;
-    if (v9 && self->_isMonthZero && v89)
+    v79 = accountSummary;
+    v80 = creditDetails;
+    v77 = creditLimit;
+    v78 = currentStatement;
+    v81 = adjustedBalance;
+    if (adjustedBalance && self->_isMonthZero && v89)
     {
       v40 = [*(v12 + 2960) decimalNumberWithString:@"0.33"];
       v41 = [v89 compare:v40];
@@ -1680,13 +1680,13 @@ void __102__PKBillPaymentSuggestedAmountController__generateAmountSuggestionList
 
     else
     {
-      if ((!v90 || !self->_isMonthOne || !v87) && self->_previousStatementPaymentsSum)
+      if ((!v90 || !self->_isMonthOne || !zero6) && self->_previousStatementPaymentsSum)
       {
         goto LABEL_61;
       }
 
       v51 = [*(v12 + 2960) decimalNumberWithString:@"0.33"];
-      v52 = [v87 compare:v51];
+      v52 = [zero6 compare:v51];
 
       if (v52 == -1)
       {
@@ -1701,7 +1701,7 @@ void __102__PKBillPaymentSuggestedAmountController__generateAmountSuggestionList
       else
       {
         v53 = [*(v12 + 2960) decimalNumberWithString:@"0.67"];
-        v54 = [v87 compare:v53];
+        v54 = [zero6 compare:v53];
 
         v55 = [PKBillPaymentSuggestedAmount alloc];
         v56 = *(v12 + 2960);
@@ -1726,8 +1726,8 @@ void __102__PKBillPaymentSuggestedAmountController__generateAmountSuggestionList
 
       v64 = [(PKBillPaymentSuggestedAmount *)v59 initWithAmount:v60 category:v61];
 
-      v65 = [(PKBillPaymentSuggestedAmount *)v64 amount];
-      v66 = [v65 compare:v83];
+      amount = [(PKBillPaymentSuggestedAmount *)v64 amount];
+      v66 = [amount compare:v83];
 
       v85 = v64;
       v23 = v88;
@@ -1763,15 +1763,15 @@ LABEL_61:
           v73 = *(*(&v91 + 1) + 8 * i);
           if (v67)
           {
-            v74 = [*(*(&v91 + 1) + 8 * i) amount];
+            amount2 = [*(*(&v91 + 1) + 8 * i) amount];
             if (!-[PKBillPaymentSuggestedAmountController _categoryIsCurrentBalanceType:](self, "_categoryIsCurrentBalanceType:", [v73 category]))
             {
-              v75 = [v74 decimalNumberBySubtracting:v67];
+              v75 = [amount2 decimalNumberBySubtracting:v67];
               [v73 setAmount:v75];
             }
           }
 
-          [v4 addSuggestedAmount:v73];
+          [listCopy addSuggestedAmount:v73];
         }
 
         v70 = [v68 countByEnumeratingWithState:&v91 objects:v99 count:16];
@@ -1780,26 +1780,26 @@ LABEL_61:
       while (v70);
     }
 
-    v6 = v79;
-    v5 = v80;
-    v8 = v77;
-    v7 = v78;
-    v9 = v81;
+    accountSummary = v79;
+    creditDetails = v80;
+    creditLimit = v77;
+    currentStatement = v78;
+    adjustedBalance = v81;
     v23 = v88;
   }
 }
 
-- (void)_populateStringValuesForList:(id)a3
+- (void)_populateStringValuesForList:(id)list
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKAccount *)self->_account feature];
+  listCopy = list;
+  feature = [(PKAccount *)self->_account feature];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v6 = [v4 sortedSuggestedAmounts];
-  v7 = [v6 countByEnumeratingWithState:&v67 objects:v71 count:16];
+  sortedSuggestedAmounts = [listCopy sortedSuggestedAmounts];
+  v7 = [sortedSuggestedAmounts countByEnumeratingWithState:&v67 objects:v71 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1811,16 +1811,16 @@ LABEL_61:
       {
         if (*v68 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sortedSuggestedAmounts);
         }
 
         v11 = *(*(&v67 + 1) + 8 * v10);
         if (self->_isOnPlanCompletion && [*(*(&v67 + 1) + 8 * v10) category] == 18)
         {
-          v12 = [(PKBillPaymentSuggestedAmountController *)self _planCompletionTitleString];
-          [v11 setTitle:v12];
+          _planCompletionTitleString = [(PKBillPaymentSuggestedAmountController *)self _planCompletionTitleString];
+          [v11 setTitle:_planCompletionTitleString];
 
-          v18 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_IN_PLAN_COMPLETION_MESSAGE", v5, 0, v13, v14, v15, v16, v17, v67);
+          v18 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_IN_PLAN_COMPLETION_MESSAGE", feature, 0, v13, v14, v15, v16, v17, v67);
         }
 
         else
@@ -1838,48 +1838,48 @@ LABEL_61:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v67 objects:v71 count:16];
+      v8 = [sortedSuggestedAmounts countByEnumeratingWithState:&v67 objects:v71 count:16];
     }
 
     while (v8);
   }
 
-  v21 = [v4 suggestedAmountWithCategory:1];
-  v22 = [v4 initialSuggestedAmount];
-  v23 = v22;
+  v21 = [listCopy suggestedAmountWithCategory:1];
+  initialSuggestedAmount = [listCopy initialSuggestedAmount];
+  v23 = initialSuggestedAmount;
   if (v21)
   {
     v24 = objc_alloc_init(PKBillPaymentSuggestedAmountMessage);
-    v30 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_MINIMUM_GAP_TITLE", v5, 0, v25, v26, v27, v28, v29, v67);
+    v30 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_MINIMUM_GAP_TITLE", feature, 0, v25, v26, v27, v28, v29, v67);
     [(PKBillPaymentSuggestedAmountMessage *)v24 setTitle:v30];
 
-    v36 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_MINIMUM_GAP_MESSAGE", v5, 0, v31, v32, v33, v34, v35, v67);
+    v36 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_MINIMUM_GAP_MESSAGE", feature, 0, v31, v32, v33, v34, v35, v67);
     [(PKBillPaymentSuggestedAmountMessage *)v24 setMessage:v36];
 
-    [v4 addSuggestedAmountGapMessage:v24 forStartSuggestedAmount:v21];
+    [listCopy addSuggestedAmountGapMessage:v24 forStartSuggestedAmount:v21];
   }
 
   else
   {
-    if (!v22)
+    if (!initialSuggestedAmount)
     {
       goto LABEL_20;
     }
 
-    v37 = [v4 remainingStatementAmount];
+    remainingStatementAmount = [listCopy remainingStatementAmount];
 
-    if (v37)
+    if (remainingStatementAmount)
     {
-      v43 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_NO_REMAINING_MINIMUM_GAP_TITLE", v5, 0, v38, v39, v40, v41, v42, v67);
+      v43 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_NO_REMAINING_MINIMUM_GAP_TITLE", feature, 0, v38, v39, v40, v41, v42, v67);
       [v23 setTitle:v43];
 
-      PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_NO_REMAINING_MINIMUM_GAP_MESSAGE", v5, 0, v44, v45, v46, v47, v48, v67);
+      PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_NO_REMAINING_MINIMUM_GAP_MESSAGE", feature, 0, v44, v45, v46, v47, v48, v67);
     }
 
     else
     {
-      v49 = [(PKBillPaymentSuggestedAmountController *)self _remainingStatementBalanceGapTitleText];
-      [v23 setTitle:v49];
+      _remainingStatementBalanceGapTitleText = [(PKBillPaymentSuggestedAmountController *)self _remainingStatementBalanceGapTitleText];
+      [v23 setTitle:_remainingStatementBalanceGapTitleText];
 
       [(PKBillPaymentSuggestedAmountController *)self _remainingStatementBalanceGapDescriptionText];
     }
@@ -1888,23 +1888,23 @@ LABEL_61:
   }
 
 LABEL_20:
-  v50 = [v4 suggestedAmountWithCategory:18];
+  v50 = [listCopy suggestedAmountWithCategory:18];
   if (v50)
   {
     v51 = objc_alloc_init(PKBillPaymentSuggestedAmountMessage);
-    v52 = [(PKBillPaymentSuggestedAmountController *)self _remainingStatementBalanceGapTitleText];
-    [(PKBillPaymentSuggestedAmountMessage *)v51 setTitle:v52];
+    _remainingStatementBalanceGapTitleText2 = [(PKBillPaymentSuggestedAmountController *)self _remainingStatementBalanceGapTitleText];
+    [(PKBillPaymentSuggestedAmountMessage *)v51 setTitle:_remainingStatementBalanceGapTitleText2];
 
-    v53 = [(PKBillPaymentSuggestedAmountController *)self _remainingStatementBalanceGapDescriptionText];
-    [(PKBillPaymentSuggestedAmountMessage *)v51 setMessage:v53];
+    _remainingStatementBalanceGapDescriptionText = [(PKBillPaymentSuggestedAmountController *)self _remainingStatementBalanceGapDescriptionText];
+    [(PKBillPaymentSuggestedAmountMessage *)v51 setMessage:_remainingStatementBalanceGapDescriptionText];
 
-    [v4 addSuggestedAmountGapMessage:v51 forStartSuggestedAmount:v50];
+    [listCopy addSuggestedAmountGapMessage:v51 forStartSuggestedAmount:v50];
   }
 
-  v54 = [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration earlyInstallmentPlan];
-  if (v54)
+  earlyInstallmentPlan = [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration earlyInstallmentPlan];
+  if (earlyInstallmentPlan)
   {
-    v55 = [v4 suggestedAmountWithCategory:30];
+    v55 = [listCopy suggestedAmountWithCategory:30];
     if (!v55)
     {
 LABEL_31:
@@ -1924,17 +1924,17 @@ LABEL_31:
       if (numberOfActiveInstallments < 2)
       {
 LABEL_30:
-        v66 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_CARD_BALANCE_GAP_INSTALLMENT_MESSAGE", v5, 0, v56, v57, v58, v59, v60, v67);
+        v66 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_CARD_BALANCE_GAP_INSTALLMENT_MESSAGE", feature, 0, v56, v57, v58, v59, v60, v67);
         [(PKBillPaymentSuggestedAmountMessage *)v61 setMessage:v66];
 
-        [v4 addSuggestedAmountGapMessage:v61 forStartSuggestedAmount:v55];
+        [listCopy addSuggestedAmountGapMessage:v61 forStartSuggestedAmount:v55];
         goto LABEL_31;
       }
 
       v63 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_CARD_BALANCE_GAP_MULTI_INSTALLMENT_TITLE";
     }
 
-    v64 = PKLocalizedFeatureString(v63, v5, 0, v56, v57, v58, v59, v60, v67);
+    v64 = PKLocalizedFeatureString(v63, feature, 0, v56, v57, v58, v59, v60, v67);
     if (v64)
     {
       v65 = v64;
@@ -1947,15 +1947,15 @@ LABEL_30:
 LABEL_32:
 }
 
-- (void)_populatePriorityValuesForList:(id)a3
+- (void)_populatePriorityValuesForList:(id)list
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [a3 sortedSuggestedAmounts];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  sortedSuggestedAmounts = [list sortedSuggestedAmounts];
+  v5 = [sortedSuggestedAmounts countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1966,28 +1966,28 @@ LABEL_32:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sortedSuggestedAmounts);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 category];
-        if (v10 <= 0x1E && ((1 << v10) & 0x400C0002) != 0)
+        category = [v9 category];
+        if (category <= 0x1E && ((1 << category) & 0x400C0002) != 0)
         {
           [v9 setPriority:1000];
         }
 
-        if ([(PKBillPaymentSuggestedAmountController *)self _categoryIsPaymentPlan:v10])
+        if ([(PKBillPaymentSuggestedAmountController *)self _categoryIsPaymentPlan:category])
         {
           [v9 setPriority:850];
         }
 
-        v12 = [(PKBillPaymentSuggestedAmountController *)self _categoryIsCurrentBalanceType:v10];
-        if (v10 - 27 < 2 || v12 || ((v13 = [v9 category], v10 != 3) ? (v14 = v13 == 26) : (v14 = 1), v14 || objc_msgSend(v9, "category") == 4))
+        v12 = [(PKBillPaymentSuggestedAmountController *)self _categoryIsCurrentBalanceType:category];
+        if (category - 27 < 2 || v12 || ((v13 = [v9 category], category != 3) ? (v14 = v13 == 26) : (v14 = 1), v14 || objc_msgSend(v9, "category") == 4))
         {
           [v9 setPriority:700];
         }
 
-        switch(v10)
+        switch(category)
         {
           case 2uLL:
             v15 = 550;
@@ -2005,7 +2005,7 @@ LABEL_32:
         [v9 setPriority:v15];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [sortedSuggestedAmounts countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -2014,49 +2014,49 @@ LABEL_32:
 
 - (BOOL)_allMandatoryValuesAreSameAmount
 {
-  v2 = [(PKAccount *)self->_account creditDetails];
-  v3 = [v2 accountSummary];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
 
-  v4 = [v3 adjustedBalance];
-  v5 = [v3 remainingStatementBalance];
-  v6 = [v3 remainingMinimumPayment];
-  v7 = [MEMORY[0x1E696AB90] zero];
-  if (v4 && [v4 compare:v7] == -1)
+  adjustedBalance = [accountSummary adjustedBalance];
+  remainingStatementBalance = [accountSummary remainingStatementBalance];
+  remainingMinimumPayment = [accountSummary remainingMinimumPayment];
+  zero = [MEMORY[0x1E696AB90] zero];
+  if (adjustedBalance && [adjustedBalance compare:zero] == -1)
   {
-    v8 = v7;
+    v8 = zero;
 
-    v4 = v8;
+    adjustedBalance = v8;
   }
 
-  if (v5 && [v5 compare:v7] == -1)
+  if (remainingStatementBalance && [remainingStatementBalance compare:zero] == -1)
   {
-    v11 = v7;
+    v11 = zero;
 
-    v5 = v11;
-    if (!v6)
+    remainingStatementBalance = v11;
+    if (!remainingMinimumPayment)
     {
       goto LABEL_15;
     }
   }
 
-  else if (!v6)
+  else if (!remainingMinimumPayment)
   {
     goto LABEL_15;
   }
 
-  if ([v6 compare:v7] == -1)
+  if ([remainingMinimumPayment compare:zero] == -1)
   {
-    v9 = v7;
+    v9 = zero;
 
-    v6 = v9;
+    remainingMinimumPayment = v9;
   }
 
   v10 = 0;
-  if (v4 && v5 && v6)
+  if (adjustedBalance && remainingStatementBalance && remainingMinimumPayment)
   {
-    if ([v4 isEqual:v5])
+    if ([adjustedBalance isEqual:remainingStatementBalance])
     {
-      v10 = [v5 isEqual:v6];
+      v10 = [remainingStatementBalance isEqual:remainingMinimumPayment];
       goto LABEL_16;
     }
 
@@ -2069,10 +2069,10 @@ LABEL_16:
   return v10;
 }
 
-- (void)_minimumMerchcantCategoriesAboveMinimumAmount:(id)a3 minMerchantCategory1:(int64_t *)a4 minMerchantCategory2:(int64_t *)a5 minMerchantCategorySum1:(id *)a6 minMerchantCategorySum2:(id *)a7
+- (void)_minimumMerchcantCategoriesAboveMinimumAmount:(id)amount minMerchantCategory1:(int64_t *)category1 minMerchantCategory2:(int64_t *)category2 minMerchantCategorySum1:(id *)sum1 minMerchantCategorySum2:(id *)sum2
 {
-  v12 = a3;
-  v13 = v12;
+  amountCopy = amount;
+  v13 = amountCopy;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -2093,14 +2093,14 @@ LABEL_16:
   v24 = __Block_byref_object_copy__65;
   v25 = __Block_byref_object_dispose__65;
   v26 = 0;
-  if (v12)
+  if (amountCopy)
   {
     merchantCategoryTransactionSums = self->_merchantCategoryTransactionSums;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __178__PKBillPaymentSuggestedAmountController__minimumMerchcantCategoriesAboveMinimumAmount_minMerchantCategory1_minMerchantCategory2_minMerchantCategorySum1_minMerchantCategorySum2___block_invoke;
     v15[3] = &unk_1E79DEC20;
-    v16 = v12;
+    v16 = amountCopy;
     v17 = &v27;
     v18 = &v37;
     v19 = &v21;
@@ -2108,24 +2108,24 @@ LABEL_16:
     [(NSDictionary *)merchantCategoryTransactionSums enumerateKeysAndObjectsUsingBlock:v15];
   }
 
-  if (a4)
+  if (category1)
   {
-    *a4 = v38[3];
+    *category1 = v38[3];
   }
 
-  if (a5)
+  if (category2)
   {
-    *a5 = v34[3];
+    *category2 = v34[3];
   }
 
-  if (a6)
+  if (sum1)
   {
-    *a6 = v28[5];
+    *sum1 = v28[5];
   }
 
-  if (a7)
+  if (sum2)
   {
-    *a7 = v22[5];
+    *sum2 = v22[5];
   }
 
   _Block_object_dispose(&v21, 8);
@@ -2196,21 +2196,21 @@ LABEL_15:
 LABEL_16:
 }
 
-- (id)_suggestedAmountsForPayOffDateForStatementBalance:(id)a3 creditUtilization:(id)a4 lastPaymentCategory:(unint64_t)a5
+- (id)_suggestedAmountsForPayOffDateForStatementBalance:(id)balance creditUtilization:(id)utilization lastPaymentCategory:(unint64_t)category
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  balanceCopy = balance;
+  utilizationCopy = utilization;
+  v10 = utilizationCopy;
   v11 = 0;
-  if (v8 && v9 && self->_statementPurchasesSum)
+  if (balanceCopy && utilizationCopy && self->_statementPurchasesSum)
   {
-    switch(a5)
+    switch(category)
     {
       case 6uLL:
       case 0xEuLL:
       case 0x19uLL:
         v12 = [PKBillPaymentSuggestedAmount alloc];
-        v13 = [v8 decimalNumberBySubtracting:self->_statementPurchasesSum];
+        v13 = [balanceCopy decimalNumberBySubtracting:self->_statementPurchasesSum];
         v14 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"8"];
         v15 = [v13 decimalNumberByDividingBy:v14];
         v16 = [v15 decimalNumberByAdding:self->_statementPurchasesSum];
@@ -2220,7 +2220,7 @@ LABEL_16:
         goto LABEL_18;
       case 7uLL:
         v25 = [PKBillPaymentSuggestedAmount alloc];
-        v13 = [v8 decimalNumberBySubtracting:self->_statementPurchasesSum];
+        v13 = [balanceCopy decimalNumberBySubtracting:self->_statementPurchasesSum];
         v14 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"7"];
         v15 = [v13 decimalNumberByDividingBy:v14];
         v16 = [v15 decimalNumberByAdding:self->_statementPurchasesSum];
@@ -2230,7 +2230,7 @@ LABEL_16:
         goto LABEL_18;
       case 8uLL:
         v22 = [PKBillPaymentSuggestedAmount alloc];
-        v13 = [v8 decimalNumberBySubtracting:self->_statementPurchasesSum];
+        v13 = [balanceCopy decimalNumberBySubtracting:self->_statementPurchasesSum];
         v14 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"6"];
         v15 = [v13 decimalNumberByDividingBy:v14];
         v16 = [v15 decimalNumberByAdding:self->_statementPurchasesSum];
@@ -2242,7 +2242,7 @@ LABEL_16:
       case 0xFuLL:
       case 0x18uLL:
         v21 = [PKBillPaymentSuggestedAmount alloc];
-        v13 = [v8 decimalNumberBySubtracting:self->_statementPurchasesSum];
+        v13 = [balanceCopy decimalNumberBySubtracting:self->_statementPurchasesSum];
         v14 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"5"];
         v15 = [v13 decimalNumberByDividingBy:v14];
         v16 = [v15 decimalNumberByAdding:self->_statementPurchasesSum];
@@ -2252,7 +2252,7 @@ LABEL_16:
         goto LABEL_18;
       case 0xAuLL:
         v24 = [PKBillPaymentSuggestedAmount alloc];
-        v13 = [v8 decimalNumberBySubtracting:self->_statementPurchasesSum];
+        v13 = [balanceCopy decimalNumberBySubtracting:self->_statementPurchasesSum];
         v14 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"4"];
         v15 = [v13 decimalNumberByDividingBy:v14];
         v16 = [v15 decimalNumberByAdding:self->_statementPurchasesSum];
@@ -2262,7 +2262,7 @@ LABEL_16:
         goto LABEL_18;
       case 0xBuLL:
         v23 = [PKBillPaymentSuggestedAmount alloc];
-        v13 = [v8 decimalNumberBySubtracting:self->_statementPurchasesSum];
+        v13 = [balanceCopy decimalNumberBySubtracting:self->_statementPurchasesSum];
         v14 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"3"];
         v15 = [v13 decimalNumberByDividingBy:v14];
         v16 = [v15 decimalNumberByAdding:self->_statementPurchasesSum];
@@ -2274,7 +2274,7 @@ LABEL_16:
       case 0x10uLL:
       case 0x17uLL:
         v20 = [PKBillPaymentSuggestedAmount alloc];
-        v13 = [v8 decimalNumberBySubtracting:self->_statementPurchasesSum];
+        v13 = [balanceCopy decimalNumberBySubtracting:self->_statementPurchasesSum];
         v14 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"2"];
         v15 = [v13 decimalNumberByDividingBy:v14];
         v16 = [v15 decimalNumberByAdding:self->_statementPurchasesSum];
@@ -2283,7 +2283,7 @@ LABEL_16:
         v19 = 13;
         goto LABEL_18;
       case 0xDuLL:
-        v11 = [[PKBillPaymentSuggestedAmount alloc] initWithAmount:v8 category:17];
+        v11 = [[PKBillPaymentSuggestedAmount alloc] initWithAmount:balanceCopy category:17];
         break;
       default:
         v26 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"0.33"];
@@ -2292,7 +2292,7 @@ LABEL_16:
         if (v27 == -1)
         {
           v31 = [PKBillPaymentSuggestedAmount alloc];
-          v13 = [v8 decimalNumberBySubtracting:self->_statementPurchasesSum];
+          v13 = [balanceCopy decimalNumberBySubtracting:self->_statementPurchasesSum];
           v14 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"3"];
           v15 = [v13 decimalNumberByDividingBy:v14];
           v16 = [v15 decimalNumberByAdding:self->_statementPurchasesSum];
@@ -2307,7 +2307,7 @@ LABEL_16:
           v29 = [v10 compare:v28];
 
           v30 = [PKBillPaymentSuggestedAmount alloc];
-          v13 = [v8 decimalNumberBySubtracting:self->_statementPurchasesSum];
+          v13 = [balanceCopy decimalNumberBySubtracting:self->_statementPurchasesSum];
           if (v29 == -1)
           {
             v14 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"6"];
@@ -2339,57 +2339,57 @@ LABEL_18:
   return v11;
 }
 
-- (id)_calculateThresholdForLastPaymentCategory:(unint64_t)a3 statementBalance:(id)a4 suggestedAmountWithSameCategory:(id)a5
+- (id)_calculateThresholdForLastPaymentCategory:(unint64_t)category statementBalance:(id)balance suggestedAmountWithSameCategory:(id)sameCategory
 {
-  v8 = a4;
-  v9 = a5;
+  balanceCopy = balance;
+  sameCategoryCopy = sameCategory;
   previousStatementPaymentsSum = self->_previousStatementPaymentsSum;
   if (previousStatementPaymentsSum)
   {
     v11 = previousStatementPaymentsSum;
-    switch(a3)
+    switch(category)
     {
       case 0uLL:
-        v17 = self->_previousStatementPaymentsSum;
+        amount2 = self->_previousStatementPaymentsSum;
         goto LABEL_13;
       case 6uLL:
       case 0xEuLL:
       case 0x19uLL:
-        v12 = [v8 decimalNumberBySubtracting:self->_statementPurchasesSum];
+        v12 = [balanceCopy decimalNumberBySubtracting:self->_statementPurchasesSum];
         v13 = MEMORY[0x1E696AB90];
         v14 = @"8";
         goto LABEL_16;
       case 7uLL:
-        v12 = [v8 decimalNumberBySubtracting:self->_statementPurchasesSum];
+        v12 = [balanceCopy decimalNumberBySubtracting:self->_statementPurchasesSum];
         v13 = MEMORY[0x1E696AB90];
         v14 = @"7";
         goto LABEL_16;
       case 8uLL:
-        v12 = [v8 decimalNumberBySubtracting:self->_statementPurchasesSum];
+        v12 = [balanceCopy decimalNumberBySubtracting:self->_statementPurchasesSum];
         v13 = MEMORY[0x1E696AB90];
         v14 = @"6";
         goto LABEL_16;
       case 9uLL:
       case 0xFuLL:
       case 0x18uLL:
-        v12 = [v8 decimalNumberBySubtracting:self->_statementPurchasesSum];
+        v12 = [balanceCopy decimalNumberBySubtracting:self->_statementPurchasesSum];
         v13 = MEMORY[0x1E696AB90];
         v14 = @"5";
         goto LABEL_16;
       case 0xAuLL:
-        v12 = [v8 decimalNumberBySubtracting:self->_statementPurchasesSum];
+        v12 = [balanceCopy decimalNumberBySubtracting:self->_statementPurchasesSum];
         v13 = MEMORY[0x1E696AB90];
         v14 = @"4";
         goto LABEL_16;
       case 0xBuLL:
-        v12 = [v8 decimalNumberBySubtracting:self->_statementPurchasesSum];
+        v12 = [balanceCopy decimalNumberBySubtracting:self->_statementPurchasesSum];
         v13 = MEMORY[0x1E696AB90];
         v14 = @"3";
         goto LABEL_16;
       case 0xCuLL:
       case 0x10uLL:
       case 0x17uLL:
-        v12 = [v8 decimalNumberBySubtracting:self->_statementPurchasesSum];
+        v12 = [balanceCopy decimalNumberBySubtracting:self->_statementPurchasesSum];
         v13 = MEMORY[0x1E696AB90];
         v14 = @"2";
 LABEL_16:
@@ -2400,20 +2400,20 @@ LABEL_16:
         v11 = v12;
         goto LABEL_17;
       case 0xDuLL:
-        v17 = v8;
+        amount2 = balanceCopy;
         goto LABEL_13;
       default:
-        v15 = [v9 amount];
-        v16 = [v15 compare:self->_previousStatementPaymentsSum];
+        amount = [sameCategoryCopy amount];
+        v16 = [amount compare:self->_previousStatementPaymentsSum];
 
         if (v16 != 1)
         {
           break;
         }
 
-        v17 = [v9 amount];
+        amount2 = [sameCategoryCopy amount];
 LABEL_13:
-        v18 = v17;
+        v18 = amount2;
 LABEL_17:
 
         v11 = v18;
@@ -2429,12 +2429,12 @@ LABEL_17:
   return v11;
 }
 
-- (BOOL)_suggestedAmountListIsValidAfterPurgeIfNecessary:(id)a3
+- (BOOL)_suggestedAmountListIsValidAfterPurgeIfNecessary:(id)necessary
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  necessaryCopy = necessary;
   v12 = 0;
-  v4 = [(__CFString *)v3 isValidWithUnableReason:&v12];
+  v4 = [(__CFString *)necessaryCopy isValidWithUnableReason:&v12];
   v5 = PKLogFacilityTypeGetObject(0xFuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2459,7 +2459,7 @@ LABEL_17:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v3;
+    v14 = necessaryCopy;
     _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Generated bill payment suggested amount list: %@", buf, 0xCu);
   }
 
@@ -2476,8 +2476,8 @@ LABEL_17:
       _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Trying to purge any invalid suggestion amounts from list...", buf, 2u);
     }
 
-    [(__CFString *)v3 attemptToPurgeInvalidSuggestedAmounts];
-    v8 = [(__CFString *)v3 isValidWithUnableReason:&v12];
+    [(__CFString *)necessaryCopy attemptToPurgeInvalidSuggestedAmounts];
+    v8 = [(__CFString *)necessaryCopy isValidWithUnableReason:&v12];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       if (v8)
@@ -2501,7 +2501,7 @@ LABEL_17:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v3;
+      v14 = necessaryCopy;
       _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "New generated bill payment suggested amount list: %@", buf, 0xCu);
     }
   }
@@ -2509,26 +2509,26 @@ LABEL_17:
   return v8;
 }
 
-- (id)_titleForSuggestion:(id)a3
+- (id)_titleForSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [v4 category];
-  v6 = [(PKAccount *)self->_account feature];
-  v7 = [(PKAccount *)self->_account creditDetails];
-  v8 = [v7 accountSummary];
-  v9 = [v8 currentStatement];
-  v15 = [v8 balanceSummary];
+  suggestionCopy = suggestion;
+  category = [suggestionCopy category];
+  feature = [(PKAccount *)self->_account feature];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  currentStatement = [accountSummary currentStatement];
+  balanceSummary = [accountSummary balanceSummary];
   if (self->_currentStatementIsLastMonthsStatement)
   {
-    v16 = [v9 closingDate];
+    closingDate = [currentStatement closingDate];
   }
 
   else
   {
-    v16 = 0;
+    closingDate = 0;
   }
 
-  switch(v5)
+  switch(category)
   {
     case 1:
       v17 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_MINIMUM_TITLE";
@@ -2537,8 +2537,8 @@ LABEL_17:
       v17 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_LAST_PAYMENT_TITLE";
       goto LABEL_54;
     case 3:
-      v22 = [v4 merchantCategory];
-      v35 = PKLocalizedBillPaymentStringFromMerchantCategory(v22, v23, v24, v25, v26, v27, v28, v29);
+      merchantCategory = [suggestionCopy merchantCategory];
+      v35 = PKLocalizedBillPaymentStringFromMerchantCategory(merchantCategory, v23, v24, v25, v26, v27, v28, v29);
       if (self->_isMonthZero)
       {
         v36 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_LAST_PAYMENT_PLUS_MERCHANT_CATEGORY1_MONTH_ZERO_TITLE";
@@ -2550,8 +2550,8 @@ LABEL_17:
       v60 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_LAST_PAYMENT_PLUS_MERCHANT_CATEGORY1_MONTH_ONE_TITLE";
       goto LABEL_61;
     case 4:
-      v37 = [v4 merchantCategory];
-      v35 = PKLocalizedBillPaymentStringFromMerchantCategory(v37, v38, v39, v40, v41, v42, v43, v44);
+      merchantCategory2 = [suggestionCopy merchantCategory];
+      v35 = PKLocalizedBillPaymentStringFromMerchantCategory(merchantCategory2, v38, v39, v40, v41, v42, v43, v44);
       if (self->_isMonthZero)
       {
         v36 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_LAST_PAYMENT_PLUS_MERCHANT_CATEGORY2_MONTH_ZERO_TITLE";
@@ -2575,25 +2575,25 @@ LABEL_61:
       }
 
 LABEL_64:
-      v21 = PKLocalizedFeatureString(v36, v6, @"%@", v30, v31, v32, v33, v34, v35);
+      v21 = PKLocalizedFeatureString(v36, feature, @"%@", v30, v31, v32, v33, v34, v35);
       goto LABEL_120;
     case 5:
-      if (v16)
+      if (closingDate)
       {
-        v19 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:v16];
+        v19 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:closingDate];
         if (v19)
         {
           v20 = v19;
-          v21 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_NEW_PURCHASES_TITLE", v6, @"%@", v10, v11, v12, v13, v14, v19);
+          v21 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_NEW_PURCHASES_TITLE", feature, @"%@", v10, v11, v12, v13, v14, v19);
           goto LABEL_124;
         }
       }
 
       v17 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_NEW_PURCHASES_NO_DATE_TITLE";
 LABEL_54:
-      v18 = PKLocalizedFeatureString(v17, v6, 0, v10, v11, v12, v13, v14, v94);
+      _planCompletionTitleString = PKLocalizedFeatureString(v17, feature, 0, v10, v11, v12, v13, v14, v94);
 LABEL_55:
-      v21 = v18;
+      v21 = _planCompletionTitleString;
       goto LABEL_56;
     case 6:
       v17 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_IN_NINE_MONTHS_TITLE";
@@ -2629,20 +2629,20 @@ LABEL_55:
       v17 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_IN_THREE_MONTHS_FROM_UTILIZATION_TITLE";
       goto LABEL_54;
     case 17:
-      v18 = [(PKBillPaymentSuggestedAmountController *)self _planCompletionTitleString];
+      _planCompletionTitleString = [(PKBillPaymentSuggestedAmountController *)self _planCompletionTitleString];
       goto LABEL_55;
     case 18:
-      v18 = [(PKBillPaymentSuggestedAmountController *)self _remainingStatementBalanceTitleString];
+      _planCompletionTitleString = [(PKBillPaymentSuggestedAmountController *)self _remainingStatementBalanceTitleString];
       goto LABEL_55;
     case 19:
-      v99 = [v8 inGrace];
-      v45 = [v15 pendingPurchases];
-      v102 = v45;
-      if (v45)
+      inGrace = [accountSummary inGrace];
+      pendingPurchases = [balanceSummary pendingPurchases];
+      v102 = pendingPurchases;
+      if (pendingPurchases)
       {
-        v46 = v45;
-        v47 = [MEMORY[0x1E696AB90] zero];
-        v96 = [v46 compare:v47] == 1;
+        v46 = pendingPurchases;
+        zero = [MEMORY[0x1E696AB90] zero];
+        v96 = [v46 compare:zero] == 1;
       }
 
       else
@@ -2651,11 +2651,11 @@ LABEL_55:
       }
 
       numberOfActiveInstallments = self->_numberOfActiveInstallments;
-      v71 = [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration earlyInstallmentPlan];
+      earlyInstallmentPlan = [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration earlyInstallmentPlan];
 
-      if (v99)
+      if (inGrace)
       {
-        v78 = numberOfActiveInstallments < 1 || v71 == 0;
+        v78 = numberOfActiveInstallments < 1 || earlyInstallmentPlan == 0;
         if (v96)
         {
           if (v78)
@@ -2682,7 +2682,7 @@ LABEL_55:
       v101 = numberOfActiveInstallments;
       if (!v96)
       {
-        if (numberOfActiveInstallments < 1 || !v71)
+        if (numberOfActiveInstallments < 1 || !earlyInstallmentPlan)
         {
 LABEL_104:
           v79 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_CURRENT_BALANCE_TITLE";
@@ -2692,19 +2692,19 @@ LABEL_104:
 LABEL_103:
         v79 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_TOTAL_BALANCE_TITLE_INSTALLMENT";
 LABEL_112:
-        v21 = PKLocalizedFeatureString(v79, v6, 0, v72, v73, v74, v75, v76, v94);
+        v21 = PKLocalizedFeatureString(v79, feature, 0, v72, v73, v74, v75, v76, v94);
         v35 = v102;
         goto LABEL_120;
       }
 
-      v80 = [v8 remainingStatementBalance];
-      v81 = [v8 adjustedBalance];
-      v95 = v81;
-      v98 = v80;
-      if (!v80 || !v81)
+      remainingStatementBalance = [accountSummary remainingStatementBalance];
+      adjustedBalance = [accountSummary adjustedBalance];
+      v95 = adjustedBalance;
+      v98 = remainingStatementBalance;
+      if (!remainingStatementBalance || !adjustedBalance)
       {
         v35 = v102;
-        if (v101 < 1 || !v71)
+        if (v101 < 1 || !earlyInstallmentPlan)
         {
           goto LABEL_116;
         }
@@ -2714,18 +2714,18 @@ LABEL_110:
         goto LABEL_118;
       }
 
-      v87 = [v80 isEqual:v81];
-      v89 = v101 < 1 || v71 == 0;
+      v87 = [remainingStatementBalance isEqual:adjustedBalance];
+      v89 = v101 < 1 || earlyInstallmentPlan == 0;
       if (v87 && v89)
       {
         v35 = v102;
-        if (v16)
+        if (closingDate)
         {
-          v90 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:v16];
+          v90 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:closingDate];
           if (v90)
           {
             v91 = v90;
-            v21 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_REMAINING_STATEMENT_BALANCE_DATE_TITLE", v6, @"%@", v82, v83, v84, v85, v86, v90);
+            v21 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_REMAINING_STATEMENT_BALANCE_DATE_TITLE", feature, @"%@", v82, v83, v84, v85, v86, v90);
 
             goto LABEL_119;
           }
@@ -2744,7 +2744,7 @@ LABEL_110:
 LABEL_116:
       v93 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_CURRENT_BALANCE_TITLE_PENDING_REVOLVER";
 LABEL_118:
-      v21 = PKLocalizedFeatureString(v93, v6, 0, v82, v83, v84, v85, v86, v94);
+      v21 = PKLocalizedFeatureString(v93, feature, 0, v82, v83, v84, v85, v86, v94);
 LABEL_119:
 
 LABEL_120:
@@ -2782,23 +2782,23 @@ LABEL_56:
       v17 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_AVERAGE_OF_MINIMUM_AND_STATEMENT_BALANCE_TITLE";
       goto LABEL_54;
     case 30:
-      v103 = [v8 inGrace];
-      v48 = [v15 pendingPurchases];
-      v100 = v48;
-      if (v48)
+      inGrace2 = [accountSummary inGrace];
+      pendingPurchases2 = [balanceSummary pendingPurchases];
+      v100 = pendingPurchases2;
+      if (pendingPurchases2)
       {
-        v49 = [MEMORY[0x1E696AB90] zero];
-        LODWORD(v48) = [v48 compare:v49] == 1;
+        zero2 = [MEMORY[0x1E696AB90] zero];
+        LODWORD(pendingPurchases2) = [pendingPurchases2 compare:zero2] == 1;
       }
 
       v97 = self->_numberOfActiveInstallments;
-      v50 = [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration earlyInstallmentPlan];
+      earlyInstallmentPlan2 = [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration earlyInstallmentPlan];
 
-      if (v103)
+      if (inGrace2)
       {
-        if (v48)
+        if (pendingPurchases2)
         {
-          if (v97 >= 1 && v50)
+          if (v97 >= 1 && earlyInstallmentPlan2)
           {
             v56 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_CARD_BALANCE_TITLE_PENDING_INSTALLMENT";
           }
@@ -2814,28 +2814,28 @@ LABEL_56:
 LABEL_72:
         v56 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_CURRENT_BALANCE_TITLE";
 LABEL_73:
-        v21 = PKLocalizedFeatureString(v56, v6, 0, v51, v52, v53, v54, v55, v94);
+        v21 = PKLocalizedFeatureString(v56, feature, 0, v51, v52, v53, v54, v55, v94);
         v20 = v100;
         goto LABEL_124;
       }
 
-      if (!v48)
+      if (!pendingPurchases2)
       {
         goto LABEL_72;
       }
 
-      v61 = [v8 remainingStatementBalance];
-      v62 = [v8 adjustedBalance];
-      v104 = v62;
-      if (v61 && v62 && [v61 isEqual:v62])
+      remainingStatementBalance2 = [accountSummary remainingStatementBalance];
+      adjustedBalance2 = [accountSummary adjustedBalance];
+      v104 = adjustedBalance2;
+      if (remainingStatementBalance2 && adjustedBalance2 && [remainingStatementBalance2 isEqual:adjustedBalance2])
       {
-        if (v16)
+        if (closingDate)
         {
-          v68 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:v16];
+          v68 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:closingDate];
           if (v68)
           {
             v69 = v68;
-            v21 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_REMAINING_STATEMENT_BALANCE_DATE_TITLE", v6, @"%@", v63, v64, v65, v66, v67, v68);
+            v21 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_REMAINING_STATEMENT_BALANCE_DATE_TITLE", feature, @"%@", v63, v64, v65, v66, v67, v68);
 
             goto LABEL_123;
           }
@@ -2844,7 +2844,7 @@ LABEL_73:
         v92 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_REMAINING_STATEMENT_BALANCE_TITLE";
       }
 
-      else if (v97 >= 1 && v50)
+      else if (v97 >= 1 && earlyInstallmentPlan2)
       {
         v92 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_CARD_BALANCE_TITLE_PENDING_INSTALLMENT";
       }
@@ -2854,7 +2854,7 @@ LABEL_73:
         v92 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_CURRENT_BALANCE_TITLE_PENDING_REVOLVER";
       }
 
-      v21 = PKLocalizedFeatureString(v92, v6, 0, v63, v64, v65, v66, v67, v94);
+      v21 = PKLocalizedFeatureString(v92, feature, 0, v63, v64, v65, v66, v67, v94);
 LABEL_123:
       v20 = v100;
 
@@ -2884,36 +2884,36 @@ LABEL_124:
   }
 }
 
-- (id)_messageForSuggestion:(id)a3
+- (id)_messageForSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [(PKAccount *)self->_account feature];
-  v6 = [v4 category];
-  v7 = [(PKAccount *)self->_account creditDetails];
-  v8 = [v7 accountSummary];
-  v9 = [v8 balanceSummary];
-  v10 = [v8 currentStatement];
-  v16 = v10;
+  suggestionCopy = suggestion;
+  feature = [(PKAccount *)self->_account feature];
+  category = [suggestionCopy category];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  balanceSummary = [accountSummary balanceSummary];
+  currentStatement = [accountSummary currentStatement];
+  v16 = currentStatement;
   if (self->_currentStatementIsLastMonthsStatement)
   {
-    v17 = [v10 closingDate];
+    closingDate = [currentStatement closingDate];
   }
 
   else
   {
-    v17 = 0;
+    closingDate = 0;
   }
 
-  switch(v6)
+  switch(category)
   {
     case 0:
       v18 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_NONE_MESSAGE";
       goto LABEL_77;
     case 1:
-      v27 = [v8 pastDueAmount];
-      if ([v8 cyclesPastDue] <= 0)
+      pastDueAmount = [accountSummary pastDueAmount];
+      if ([accountSummary cyclesPastDue] <= 0)
       {
-        if (!v27 || ([MEMORY[0x1E696AB90] zero], v80 = objc_claimAutoreleasedReturnValue(), v107 = v27, v81 = objc_msgSend(v27, "compare:", v80), v80, v55 = v81 == 1, v27 = v107, !v55))
+        if (!pastDueAmount || ([MEMORY[0x1E696AB90] zero], v80 = objc_claimAutoreleasedReturnValue(), v107 = pastDueAmount, v81 = objc_msgSend(pastDueAmount, "compare:", v80), v80, v55 = v81 == 1, pastDueAmount = v107, !v55))
         {
           numberOfActiveStatementedInstallments = self->_numberOfActiveStatementedInstallments;
           if (numberOfActiveStatementedInstallments == 1)
@@ -2935,9 +2935,9 @@ LABEL_124:
         }
       }
 
-      if (v17)
+      if (closingDate)
       {
-        v40 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:v17];
+        v40 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:closingDate];
       }
 
       else
@@ -2947,23 +2947,23 @@ LABEL_124:
 
       if ([v40 length])
       {
-        PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_MINIMUM_PAST_DUE_MESSAGE", v5, @"%@", v85, v86, v87, v88, v89, v40);
+        PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_MINIMUM_PAST_DUE_MESSAGE", feature, @"%@", v85, v86, v87, v88, v89, v40);
       }
 
       else
       {
-        PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_MINIMUM_PAST_DUE_NO_DATE_MESSAGE", v5, 0, v85, v86, v87, v88, v89, v99);
+        PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_MINIMUM_PAST_DUE_NO_DATE_MESSAGE", feature, 0, v85, v86, v87, v88, v89, v99);
       }
       v60 = ;
 
       goto LABEL_89;
     case 2:
-      if (v17)
+      if (closingDate)
       {
-        v31 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:v17];
+        v31 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:closingDate];
         if (v31)
         {
-          v27 = v31;
+          pastDueAmount = v31;
           v28 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_LAST_PAYMENT_MESSAGE";
           goto LABEL_87;
         }
@@ -2972,8 +2972,8 @@ LABEL_124:
       v18 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_LAST_PAYMENT_NO_DATE_MESSAGE";
       goto LABEL_77;
     case 3:
-      v32 = [v4 merchantCategory];
-      v27 = PKLocalizedBillPaymentStringFromMerchantCategory(v32, v33, v34, v35, v36, v37, v38, v39);
+      merchantCategory = [suggestionCopy merchantCategory];
+      pastDueAmount = PKLocalizedBillPaymentStringFromMerchantCategory(merchantCategory, v33, v34, v35, v36, v37, v38, v39);
       if (self->_isMonthZero)
       {
         v28 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_LAST_PAYMENT_PLUS_MERCHANT_CATEGORY1_MONTH_ZERO_MESSAGE";
@@ -2985,8 +2985,8 @@ LABEL_124:
       v64 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_LAST_PAYMENT_PLUS_MERCHANT_CATEGORY1_MONTH_ONE_MESSAGE";
       goto LABEL_84;
     case 4:
-      v19 = [v4 merchantCategory];
-      v27 = PKLocalizedBillPaymentStringFromMerchantCategory(v19, v20, v21, v22, v23, v24, v25, v26);
+      merchantCategory2 = [suggestionCopy merchantCategory];
+      pastDueAmount = PKLocalizedBillPaymentStringFromMerchantCategory(merchantCategory2, v20, v21, v22, v23, v24, v25, v26);
       if (self->_isMonthZero)
       {
         v28 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_LAST_PAYMENT_PLUS_MERCHANT_CATEGORY2_MONTH_ZERO_MESSAGE";
@@ -3011,12 +3011,12 @@ LABEL_84:
 
       goto LABEL_87;
     case 5:
-      if (v17)
+      if (closingDate)
       {
-        v41 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:v17];
+        v41 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:closingDate];
         if (v41)
         {
-          v27 = v41;
+          pastDueAmount = v41;
           v28 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_NEW_PURCHASES_MESSAGE";
           goto LABEL_87;
         }
@@ -3061,32 +3061,32 @@ LABEL_84:
       v18 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_IN_PLAN_COMPLETION_MESSAGE";
       goto LABEL_77;
     case 18:
-      v42 = [(PKBillPaymentSuggestedAmountController *)self _remainingStatementBalanceMessageString];
+      _remainingStatementBalanceMessageString = [(PKBillPaymentSuggestedAmountController *)self _remainingStatementBalanceMessageString];
       goto LABEL_78;
     case 19:
-      v105 = [v8 inGrace];
-      v46 = [v9 pendingPurchases];
-      v102 = v46;
-      if (v46)
+      inGrace = [accountSummary inGrace];
+      pendingPurchases = [balanceSummary pendingPurchases];
+      v102 = pendingPurchases;
+      if (pendingPurchases)
       {
-        v47 = [MEMORY[0x1E696AB90] zero];
-        LODWORD(v46) = [v46 compare:v47] == 1;
+        zero = [MEMORY[0x1E696AB90] zero];
+        LODWORD(pendingPurchases) = [pendingPurchases compare:zero] == 1;
       }
 
       numberOfActiveInstallments = self->_numberOfActiveInstallments;
-      v49 = [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration earlyInstallmentPlan];
+      earlyInstallmentPlan = [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration earlyInstallmentPlan];
 
-      if (v105)
+      if (inGrace)
       {
-        v55 = numberOfActiveInstallments < 1 || v49 == 0;
+        v55 = numberOfActiveInstallments < 1 || earlyInstallmentPlan == 0;
         v56 = v55;
-        if (v46)
+        if (pendingPurchases)
         {
           if (v56)
           {
             v57 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_CURRENT_BALANCE_MESSAGE_TRANSACTOR_PENDING";
 LABEL_139:
-            v60 = PKLocalizedFeatureString(v57, v5, 0, v50, v51, v52, v53, v54, v99);
+            v60 = PKLocalizedFeatureString(v57, feature, 0, v50, v51, v52, v53, v54, v99);
             goto LABEL_142;
           }
         }
@@ -3102,9 +3102,9 @@ LABEL_130:
         goto LABEL_139;
       }
 
-      if (!v46)
+      if (!pendingPurchases)
       {
-        if (numberOfActiveInstallments < 1 || !v49)
+        if (numberOfActiveInstallments < 1 || !earlyInstallmentPlan)
         {
           v57 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_CURRENT_BALANCE_MESSAGE_REVOLVER";
           goto LABEL_139;
@@ -3113,13 +3113,13 @@ LABEL_130:
         goto LABEL_130;
       }
 
-      v67 = [v8 remainingStatementBalance];
-      v68 = [v8 adjustedBalance];
-      v106 = v67;
-      if (!v67 || !v68)
+      remainingStatementBalance = [accountSummary remainingStatementBalance];
+      adjustedBalance = [accountSummary adjustedBalance];
+      v106 = remainingStatementBalance;
+      if (!remainingStatementBalance || !adjustedBalance)
       {
-        v74 = v68;
-        if (numberOfActiveInstallments >= 1 && v49)
+        v74 = adjustedBalance;
+        if (numberOfActiveInstallments >= 1 && earlyInstallmentPlan)
         {
           v79 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_TOTAL_BALANCE_MESSAGE_INSTALLMENT";
           goto LABEL_141;
@@ -3128,9 +3128,9 @@ LABEL_130:
         goto LABEL_140;
       }
 
-      v74 = v68;
-      v75 = [v106 isEqual:v68];
-      v77 = numberOfActiveInstallments < 1 || v49 == 0;
+      v74 = adjustedBalance;
+      v75 = [v106 isEqual:adjustedBalance];
+      v77 = numberOfActiveInstallments < 1 || earlyInstallmentPlan == 0;
       v78 = v75 & v77;
       if ((v75 & v77) != 0)
       {
@@ -3149,7 +3149,7 @@ LABEL_140:
       }
 
 LABEL_141:
-      v60 = PKLocalizedFeatureString(v79, v5, 0, v69, v70, v71, v72, v73, v99);
+      v60 = PKLocalizedFeatureString(v79, feature, 0, v69, v70, v71, v72, v73, v99);
 
 LABEL_142:
 LABEL_79:
@@ -3165,12 +3165,12 @@ LABEL_79:
       v18 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_ONE_NINTH_MESSAGE";
       goto LABEL_77;
     case 23:
-      if (v17)
+      if (closingDate)
       {
-        v58 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:v17];
+        v58 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:closingDate];
         if (v58)
         {
-          v27 = v58;
+          pastDueAmount = v58;
           v28 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_IN_THREE_MONTHS_FOR_TRANSACTOR_DATE_MESSAGE";
           goto LABEL_87;
         }
@@ -3179,12 +3179,12 @@ LABEL_79:
       v18 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_IN_THREE_MONTHS_FOR_TRANSACTOR_MESSAGE";
       goto LABEL_77;
     case 24:
-      if (v17)
+      if (closingDate)
       {
-        v30 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:v17];
+        v30 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:closingDate];
         if (v30)
         {
-          v27 = v30;
+          pastDueAmount = v30;
           v28 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_IN_SIX_MONTHS_FOR_TRANSACTOR_DATE_MESSAGE";
           goto LABEL_87;
         }
@@ -3193,12 +3193,12 @@ LABEL_79:
       v18 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_IN_SIX_MONTHS_FOR_TRANSACTOR_MESSAGE";
       goto LABEL_77;
     case 25:
-      if (v17)
+      if (closingDate)
       {
-        v29 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:v17];
+        v29 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:closingDate];
         if (v29)
         {
-          v27 = v29;
+          pastDueAmount = v29;
           v28 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_IN_NINE_MONTHS_FOR_TRANSACTOR_DATE_MESSAGE";
           goto LABEL_87;
         }
@@ -3216,36 +3216,36 @@ LABEL_79:
       v18 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_ONE_NINTH_STATEMENT_BALANCE_MESSAGE";
       goto LABEL_77;
     case 29:
-      if (v17)
+      if (closingDate)
       {
-        v59 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:v17];
+        v59 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:closingDate];
         if (v59)
         {
-          v27 = v59;
+          pastDueAmount = v59;
           v28 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_AVERAGE_OF_MINIMUM_AND_STATEMENT_BALANCE_DATE_MESSAGE";
 LABEL_87:
-          v99 = v27;
+          v99 = pastDueAmount;
           v65 = @"%@";
-          v66 = v5;
+          v66 = feature;
           goto LABEL_88;
         }
       }
 
       v18 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_AVERAGE_OF_MINIMUM_AND_STATEMENT_BALANCE_MESSAGE";
 LABEL_77:
-      v42 = PKLocalizedFeatureString(v18, v5, 0, v11, v12, v13, v14, v15, v99);
+      _remainingStatementBalanceMessageString = PKLocalizedFeatureString(v18, feature, 0, v11, v12, v13, v14, v15, v99);
 LABEL_78:
-      v60 = v42;
+      v60 = _remainingStatementBalanceMessageString;
       goto LABEL_79;
     case 30:
-      v100 = [v8 inGrace];
-      v43 = [v9 pendingPurchases];
-      v104 = v43;
-      if (v43)
+      inGrace2 = [accountSummary inGrace];
+      pendingPurchases2 = [balanceSummary pendingPurchases];
+      v104 = pendingPurchases2;
+      if (pendingPurchases2)
       {
-        v44 = v43;
-        v45 = [MEMORY[0x1E696AB90] zero];
-        v101 = [v44 compare:v45] == 1;
+        v44 = pendingPurchases2;
+        zero2 = [MEMORY[0x1E696AB90] zero];
+        v101 = [v44 compare:zero2] == 1;
       }
 
       else
@@ -3254,22 +3254,22 @@ LABEL_78:
       }
 
       v83 = self->_numberOfActiveInstallments;
-      v84 = [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration earlyInstallmentPlan];
+      earlyInstallmentPlan2 = [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration earlyInstallmentPlan];
 
       v60 = 0;
       if (v83 < 1)
       {
-        v27 = v104;
+        pastDueAmount = v104;
         goto LABEL_89;
       }
 
-      v27 = v104;
-      if (!v84)
+      pastDueAmount = v104;
+      if (!earlyInstallmentPlan2)
       {
         goto LABEL_89;
       }
 
-      if (v100)
+      if (inGrace2)
       {
         if (v101)
         {
@@ -3286,11 +3286,11 @@ LABEL_78:
       {
         if (v101)
         {
-          v90 = [v8 remainingStatementBalance];
-          v91 = [v8 adjustedBalance];
-          v97 = v91;
-          v103 = v90;
-          if (v90 && v91 && ([v90 isEqual:v91] & 1) != 0)
+          remainingStatementBalance2 = [accountSummary remainingStatementBalance];
+          adjustedBalance2 = [accountSummary adjustedBalance];
+          v97 = adjustedBalance2;
+          v103 = remainingStatementBalance2;
+          if (remainingStatementBalance2 && adjustedBalance2 && ([remainingStatementBalance2 isEqual:adjustedBalance2] & 1) != 0)
           {
             v98 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_CURRENT_BALANCE_MESSAGE_REVOLVER_PENDING_STATMENT_BALANCE_SAME";
           }
@@ -3300,7 +3300,7 @@ LABEL_78:
             v98 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_CURRENT_BALANCE_MESSAGE_REVOLVER_PENDING";
           }
 
-          v60 = PKLocalizedFeatureString(v98, v5, 0, v92, v93, v94, v95, v96, v99);
+          v60 = PKLocalizedFeatureString(v98, feature, 0, v92, v93, v94, v95, v96, v99);
 
           goto LABEL_89;
         }
@@ -3309,7 +3309,7 @@ LABEL_78:
       }
 
 LABEL_146:
-      v66 = v5;
+      v66 = feature;
       v65 = 0;
 LABEL_88:
       v60 = PKLocalizedFeatureString(v28, v66, v65, v11, v12, v13, v14, v15, v99);
@@ -3342,21 +3342,21 @@ LABEL_89:
 
 - (id)_remainingStatementBalanceTitleString
 {
-  v3 = [(PKAccount *)self->_account feature];
-  v4 = [(PKAccount *)self->_account creditDetails];
-  v5 = [v4 accountSummary];
-  v6 = [v5 currentStatement];
-  v12 = v6;
+  feature = [(PKAccount *)self->_account feature];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  currentStatement = [accountSummary currentStatement];
+  v12 = currentStatement;
   if (self->_currentStatementIsLastMonthsStatement)
   {
-    v13 = [v6 closingDate];
-    if (v13)
+    closingDate = [currentStatement closingDate];
+    if (closingDate)
     {
-      v14 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:v13];
+      v14 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:closingDate];
       if (v14)
       {
         v15 = v14;
-        v16 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_REMAINING_STATEMENT_BALANCE_DATE_TITLE", v3, @"%@", v7, v8, v9, v10, v11, v14);
+        v16 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_REMAINING_STATEMENT_BALANCE_DATE_TITLE", feature, @"%@", v7, v8, v9, v10, v11, v14);
 
         goto LABEL_7;
       }
@@ -3365,10 +3365,10 @@ LABEL_89:
 
   else
   {
-    v13 = 0;
+    closingDate = 0;
   }
 
-  v16 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_REMAINING_STATEMENT_BALANCE_TITLE", v3, 0, v7, v8, v9, v10, v11, v18);
+  v16 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_REMAINING_STATEMENT_BALANCE_TITLE", feature, 0, v7, v8, v9, v10, v11, v18);
 LABEL_7:
 
   return v16;
@@ -3376,10 +3376,10 @@ LABEL_7:
 
 - (id)_remainingStatementBalanceMessageString
 {
-  v3 = [(PKAccount *)self->_account feature];
-  v4 = [(PKAccount *)self->_account creditDetails];
-  v5 = [v4 accountSummary];
-  if ([v5 inGrace])
+  feature = [(PKAccount *)self->_account feature];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  if ([accountSummary inGrace])
   {
     v11 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_REMAINING_STATEMENT_BALANCE_MESSAGE_TRANSACTOR";
   }
@@ -3389,19 +3389,19 @@ LABEL_7:
     v11 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_REMAINING_STATEMENT_BALANCE_MESSAGE_REVOLVER";
   }
 
-  v12 = PKLocalizedFeatureString(v11, v3, 0, v6, v7, v8, v9, v10, v14);
+  v12 = PKLocalizedFeatureString(v11, feature, 0, v6, v7, v8, v9, v10, v14);
 
   return v12;
 }
 
 - (id)_remainingStatementBalanceGapTitleText
 {
-  v3 = [(PKAccount *)self->_account feature];
-  v4 = [(PKAccount *)self->_account creditDetails];
-  v5 = [v4 accountSummary];
-  v6 = [v5 currentStatement];
-  v12 = v6;
-  if (v6 && ([v6 identifier], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
+  feature = [(PKAccount *)self->_account feature];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  currentStatement = [accountSummary currentStatement];
+  v12 = currentStatement;
+  if (currentStatement && ([currentStatement identifier], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
   {
     v14 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_REMAINING_STATEMENT_BALANCE_GAP_TITLE";
   }
@@ -3411,19 +3411,19 @@ LABEL_7:
     v14 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_REMAINING_STATEMENT_BALANCE_GAP_TITLE_NO_STATEMENT";
   }
 
-  v15 = PKLocalizedFeatureString(v14, v3, 0, v7, v8, v9, v10, v11, v17);
+  v15 = PKLocalizedFeatureString(v14, feature, 0, v7, v8, v9, v10, v11, v17);
 
   return v15;
 }
 
 - (id)_remainingStatementBalanceGapDescriptionText
 {
-  v3 = [(PKAccount *)self->_account feature];
-  v4 = [(PKAccount *)self->_account creditDetails];
-  v5 = [v4 accountSummary];
-  v6 = [v5 currentStatement];
-  v12 = v6;
-  if (v6 && ([v6 identifier], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
+  feature = [(PKAccount *)self->_account feature];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  currentStatement = [accountSummary currentStatement];
+  v12 = currentStatement;
+  if (currentStatement && ([currentStatement identifier], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
   {
     v14 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_REMAINING_STATEMENT_BALANCE_GAP_MESSAGE";
   }
@@ -3433,28 +3433,28 @@ LABEL_7:
     v14 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_REMAINING_STATEMENT_BALANCE_GAP_MESSAGE_NO_STATEMENT";
   }
 
-  v15 = PKLocalizedFeatureString(v14, v3, 0, v7, v8, v9, v10, v11, v17);
+  v15 = PKLocalizedFeatureString(v14, feature, 0, v7, v8, v9, v10, v11, v17);
 
   return v15;
 }
 
 - (id)_planCompletionTitleString
 {
-  v3 = [(PKAccount *)self->_account feature];
-  v4 = [(PKAccount *)self->_account creditDetails];
-  v5 = [v4 accountSummary];
-  v6 = [v5 currentStatement];
-  v12 = v6;
+  feature = [(PKAccount *)self->_account feature];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  currentStatement = [accountSummary currentStatement];
+  v12 = currentStatement;
   if (self->_currentStatementIsLastMonthsStatement)
   {
-    v13 = [v6 closingDate];
-    if (v13)
+    closingDate = [currentStatement closingDate];
+    if (closingDate)
     {
-      v14 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:v13];
+      v14 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:closingDate];
       if (v14)
       {
         v15 = v14;
-        v16 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_IN_PLAN_COMPLETION_DATE_TITLE", v3, @"%@", v7, v8, v9, v10, v11, v14);
+        v16 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_IN_PLAN_COMPLETION_DATE_TITLE", feature, @"%@", v7, v8, v9, v10, v11, v14);
 
         goto LABEL_7;
       }
@@ -3463,44 +3463,44 @@ LABEL_7:
 
   else
   {
-    v13 = 0;
+    closingDate = 0;
   }
 
-  v16 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_IN_PLAN_COMPLETION_TITLE", v3, 0, v7, v8, v9, v10, v11, v18);
+  v16 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_BILL_PAYMENT_CATEGORY_PAY_IN_PLAN_COMPLETION_TITLE", feature, 0, v7, v8, v9, v10, v11, v18);
 LABEL_7:
 
   return v16;
 }
 
-- (id)_filterSuggestions:(id)a3 belowThreshold:(id)a4
+- (id)_filterSuggestions:(id)suggestions belowThreshold:(id)threshold
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 copy];
+  suggestionsCopy = suggestions;
+  thresholdCopy = threshold;
+  v7 = [suggestionsCopy copy];
   v8 = PKLogFacilityTypeGetObject(0xFuLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v6;
+    v15 = thresholdCopy;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Bill Payment Suggested Amounts Threshold set: %@", buf, 0xCu);
   }
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v5;
+    v15 = suggestionsCopy;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Bill Payment Suggested Amounts before threshold: %@", buf, 0xCu);
   }
 
-  if (v6)
+  if (thresholdCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __76__PKBillPaymentSuggestedAmountController__filterSuggestions_belowThreshold___block_invoke;
     v12[3] = &unk_1E79DEC48;
-    v13 = v6;
-    v9 = [v5 pk_objectsPassingTest:v12];
+    v13 = thresholdCopy;
+    v9 = [suggestionsCopy pk_objectsPassingTest:v12];
 
     v7 = v9;
   }
@@ -3527,24 +3527,24 @@ BOOL __76__PKBillPaymentSuggestedAmountController__filterSuggestions_belowThresh
 
 - (BOOL)_calculateCurrentStatementIsLastMonthsStatement
 {
-  v26 = [(PKAccount *)self->_account creditDetails];
-  v3 = [v26 accountSummary];
-  v4 = [v3 balanceSummary];
-  v25 = v3;
-  v5 = [v3 currentStatement];
-  v6 = [v5 openingDate];
-  v7 = [v5 closingDate];
-  v8 = PKDatesMidpoint(v6, v7);
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  balanceSummary = [accountSummary balanceSummary];
+  v25 = accountSummary;
+  currentStatement = [accountSummary currentStatement];
+  openingDate = [currentStatement openingDate];
+  closingDate = [currentStatement closingDate];
+  v8 = PKDatesMidpoint(openingDate, closingDate);
 
-  v9 = [v4 openingDate];
-  v10 = [v4 closingDate];
-  v11 = PKDatesMidpoint(v9, v10);
+  openingDate2 = [balanceSummary openingDate];
+  closingDate2 = [balanceSummary closingDate];
+  v11 = PKDatesMidpoint(openingDate2, closingDate2);
 
   v12 = objc_alloc(MEMORY[0x1E695DEE8]);
   v13 = [v12 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-  v14 = [(PKAccount *)self->_account creditDetails];
-  v15 = [v14 productTimeZone];
-  [v13 setTimeZone:v15];
+  creditDetails2 = [(PKAccount *)self->_account creditDetails];
+  productTimeZone = [creditDetails2 productTimeZone];
+  [v13 setTimeZone:productTimeZone];
 
   v16 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v16 setMonth:-1];
@@ -3552,11 +3552,11 @@ BOOL __76__PKBillPaymentSuggestedAmountController__filterSuggestions_belowThresh
   v18 = [v13 components:12 fromDate:v17];
   v19 = v8;
   v20 = [v13 components:12 fromDate:v8];
-  v21 = [v18 month];
-  if (v21 == [v20 month])
+  month = [v18 month];
+  if (month == [v20 month])
   {
-    v22 = [v18 year];
-    v23 = v22 == [v20 year];
+    year = [v18 year];
+    v23 = year == [v20 year];
   }
 
   else
@@ -3567,9 +3567,9 @@ BOOL __76__PKBillPaymentSuggestedAmountController__filterSuggestions_belowThresh
   return v23;
 }
 
-- (void)_initializeDifferentialPrivacy:(id)a3 accountSummary:(id)a4
+- (void)_initializeDifferentialPrivacy:(id)privacy accountSummary:(id)summary
 {
-  v14 = a4;
+  summaryCopy = summary;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   differentialPrivacyFeatures = self->_differentialPrivacyFeatures;
   self->_differentialPrivacyFeatures = v6;
@@ -3585,7 +3585,7 @@ BOOL __76__PKBillPaymentSuggestedAmountController__filterSuggestions_belowThresh
   }
 
   while (v8);
-  if ([v14 inGrace])
+  if ([summaryCopy inGrace])
   {
     v11 = 1;
   }
@@ -3605,7 +3605,7 @@ BOOL __76__PKBillPaymentSuggestedAmountController__filterSuggestions_belowThresh
   }
 
   [(PKBillPaymentSuggestedAmountController *)self _setDifferentialPrivacyFeature:v11 atIndex:0];
-  if (a3)
+  if (privacy)
   {
     v13 = 13;
   }
@@ -3618,10 +3618,10 @@ BOOL __76__PKBillPaymentSuggestedAmountController__filterSuggestions_belowThresh
   [(PKBillPaymentSuggestedAmountController *)self _setDifferentialPrivacyFeature:v13 atIndex:1];
 }
 
-- (void)_initializePaymentRingInstrumentationRecord:(id)a3 accountSummary:(id)a4
+- (void)_initializePaymentRingInstrumentationRecord:(id)record accountSummary:(id)summary
 {
   v6 = MEMORY[0x1E695DF90];
-  v7 = a4;
+  summaryCopy = summary;
   v8 = objc_alloc_init(v6);
   paymentRingInstrumentationRecord = self->_paymentRingInstrumentationRecord;
   self->_paymentRingInstrumentationRecord = v8;
@@ -3634,7 +3634,7 @@ BOOL __76__PKBillPaymentSuggestedAmountController__filterSuggestions_belowThresh
   v13 = off_1ED6D1150();
   [(NSMutableDictionary *)v12 setObject:&unk_1F23B5498 forKey:v13];
 
-  LOBYTE(v12) = [v7 inGrace];
+  LOBYTE(v12) = [summaryCopy inGrace];
   v14 = &unk_1F23B54B0;
   if ((v12 & 1) == 0)
   {
@@ -3654,7 +3654,7 @@ BOOL __76__PKBillPaymentSuggestedAmountController__filterSuggestions_belowThresh
   v17 = off_1ED6D1158();
   [(NSMutableDictionary *)v16 setObject:v14 forKey:v17];
 
-  if (a3)
+  if (record)
   {
     v18 = &unk_1F23B5498;
   }
@@ -3669,30 +3669,30 @@ BOOL __76__PKBillPaymentSuggestedAmountController__filterSuggestions_belowThresh
   [(NSMutableDictionary *)v19 setObject:v18 forKey:v20];
 }
 
-- (void)_setDifferentialPrivacyFeature:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)_setDifferentialPrivacyFeature:(unint64_t)feature atIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_differentialPrivacyFeatures count]> a4)
+  if ([(NSMutableArray *)self->_differentialPrivacyFeatures count]> index)
   {
     differentialPrivacyFeatures = self->_differentialPrivacyFeatures;
-    v8 = PKBillPaymentDifferentialPrivacyFeatureToString(a3);
-    [(NSMutableArray *)differentialPrivacyFeatures replaceObjectAtIndex:a4 withObject:v8];
+    v8 = PKBillPaymentDifferentialPrivacyFeatureToString(feature);
+    [(NSMutableArray *)differentialPrivacyFeatures replaceObjectAtIndex:index withObject:v8];
   }
 }
 
-- (void)recordPaymentActionWithDifferentialPrivacy:(unint64_t)a3
+- (void)recordPaymentActionWithDifferentialPrivacy:(unint64_t)privacy
 {
   v16[1] = *MEMORY[0x1E69E9840];
   differentialPrivacyFeatures = self->_differentialPrivacyFeatures;
-  v5 = PKBillPaymentDifferentialPrivacyButtonActionToString(a3);
+  v5 = PKBillPaymentDifferentialPrivacyButtonActionToString(privacy);
   [(NSMutableArray *)differentialPrivacyFeatures replaceObjectAtIndex:3 withObject:v5];
 
-  v6 = [(PKBillPaymentSuggestedAmountController *)self differentialPrivacyFeaturesAsString];
+  differentialPrivacyFeaturesAsString = [(PKBillPaymentSuggestedAmountController *)self differentialPrivacyFeaturesAsString];
   v7 = [objc_alloc(MEMORY[0x1E699A0E0]) initWithKey:@"com.apple.wallet.suggestions"];
   differentialPrivacyRecorder = self->_differentialPrivacyRecorder;
   self->_differentialPrivacyRecorder = v7;
 
   v9 = self->_differentialPrivacyRecorder;
-  v16[0] = v6;
+  v16[0] = differentialPrivacyFeaturesAsString;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   v11 = [(_DPStringRecorder *)v9 record:v10];
 
@@ -3711,11 +3711,11 @@ BOOL __76__PKBillPaymentSuggestedAmountController__filterSuggestions_belowThresh
   }
 }
 
-- (void)recordPaymentRingAction:(unint64_t)a3
+- (void)recordPaymentRingAction:(unint64_t)action
 {
   v11 = *MEMORY[0x1E69E9840];
   paymentRingInstrumentationRecord = self->_paymentRingInstrumentationRecord;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:action];
   v6 = off_1ED6D1150();
   [(NSMutableDictionary *)paymentRingInstrumentationRecord setObject:v5 forKey:v6];
 
@@ -3736,26 +3736,26 @@ BOOL __76__PKBillPaymentSuggestedAmountController__filterSuggestions_belowThresh
   paymentRingInstrumentationRecord = self->_paymentRingInstrumentationRecord;
   v5 = off_1ED6D1158();
   v6 = [(NSMutableDictionary *)paymentRingInstrumentationRecord objectForKey:v5];
-  v7 = [v6 stringValue];
-  [v3 addObject:v7];
+  stringValue = [v6 stringValue];
+  [v3 addObject:stringValue];
 
   v8 = self->_paymentRingInstrumentationRecord;
   v9 = off_1ED6D1160();
   v10 = [(NSMutableDictionary *)v8 objectForKey:v9];
-  v11 = [v10 stringValue];
-  [v3 addObject:v11];
+  stringValue2 = [v10 stringValue];
+  [v3 addObject:stringValue2];
 
   v12 = self->_paymentRingInstrumentationRecord;
   v13 = _MergedGlobals_179();
   v14 = [(NSMutableDictionary *)v12 objectForKey:v13];
-  v15 = [v14 stringValue];
-  [v3 addObject:v15];
+  stringValue3 = [v14 stringValue];
+  [v3 addObject:stringValue3];
 
   v16 = self->_paymentRingInstrumentationRecord;
   v17 = off_1ED6D1150();
   v18 = [(NSMutableDictionary *)v16 objectForKey:v17];
-  v19 = [v18 stringValue];
-  [v3 addObject:v19];
+  stringValue4 = [v18 stringValue];
+  [v3 addObject:stringValue4];
 
   v20 = [v3 componentsJoinedByString:{@", "}];
 

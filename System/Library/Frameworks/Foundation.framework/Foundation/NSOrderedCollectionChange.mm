@@ -1,7 +1,7 @@
 @interface NSOrderedCollectionChange
 + (NSOrderedCollectionChange)changeWithObject:(id)anObject type:(NSCollectionChangeType)type index:(NSUInteger)index;
 + (NSOrderedCollectionChange)changeWithObject:(id)anObject type:(NSCollectionChangeType)type index:(NSUInteger)index associatedIndex:(NSUInteger)associatedIndex;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSOrderedCollectionChange)initWithObject:(id)anObject type:(NSCollectionChangeType)type index:(NSUInteger)index associatedIndex:(NSUInteger)associatedIndex;
 - (id)debugDescription;
 - (id)init;
@@ -21,14 +21,14 @@
 
 + (NSOrderedCollectionChange)changeWithObject:(id)anObject type:(NSCollectionChangeType)type index:(NSUInteger)index
 {
-  v5 = [[a1 alloc] initWithObject:anObject type:type index:index];
+  v5 = [[self alloc] initWithObject:anObject type:type index:index];
 
   return v5;
 }
 
 + (NSOrderedCollectionChange)changeWithObject:(id)anObject type:(NSCollectionChangeType)type index:(NSUInteger)index associatedIndex:(NSUInteger)associatedIndex
 {
-  v6 = [[a1 alloc] initWithObject:anObject type:type index:index associatedIndex:associatedIndex];
+  v6 = [[self alloc] initWithObject:anObject type:type index:index associatedIndex:associatedIndex];
 
   return v6;
 }
@@ -106,7 +106,7 @@
   return [NSString stringWithFormat:@"<%@: %p>(%@ %@at index %lu%@)", v4, self, v10, v7, index, v9];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -121,11 +121,11 @@
   }
 
   object = self->_object;
-  if (object == *(a3 + 1) || (v6 = [object isEqual:?]) != 0)
+  if (object == *(equal + 1) || (v6 = [object isEqual:?]) != 0)
   {
-    if (self->_changeType == *(a3 + 2) && self->_index == *(a3 + 3))
+    if (self->_changeType == *(equal + 2) && self->_index == *(equal + 3))
     {
-      LOBYTE(v6) = self->_associatedIndex == *(a3 + 4);
+      LOBYTE(v6) = self->_associatedIndex == *(equal + 4);
       return v6;
     }
 

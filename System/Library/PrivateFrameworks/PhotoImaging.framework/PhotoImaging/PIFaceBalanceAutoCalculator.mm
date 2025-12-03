@@ -1,29 +1,29 @@
 @interface PIFaceBalanceAutoCalculator
-+ ($1AB5FA073B851C12C2339EC22442E995)faceBalanceFromFaceImage:(id)a3 forFaceRect:(id *)a4;
-+ ($721907E0E1CDE8B6CD3FA271A8B25860)faceRectFromNormalizedFaceRet:(SEL)a3 forImageExtent:(CGRect)a4 scaleX:(id *)a5 scaleY:(double)a6;
-+ (id)faceBalanceResultFromFaceObservations:(id)a3 request:(id)a4 error:(id *)a5;
-+ (void)calculateRAWWithRequest:(id)a3 completion:(id)a4;
-+ (void)calculateWithRequest:(id)a3 completion:(id)a4;
-- (PIFaceBalanceAutoCalculator)initWithRequest:(id)a3 isRAW:(BOOL)a4;
-- (void)submit:(id)a3;
++ ($1AB5FA073B851C12C2339EC22442E995)faceBalanceFromFaceImage:(id)image forFaceRect:(id *)rect;
++ ($721907E0E1CDE8B6CD3FA271A8B25860)faceRectFromNormalizedFaceRet:(SEL)ret forImageExtent:(CGRect)extent scaleX:(id *)x scaleY:(double)y;
++ (id)faceBalanceResultFromFaceObservations:(id)observations request:(id)request error:(id *)error;
++ (void)calculateRAWWithRequest:(id)request completion:(id)completion;
++ (void)calculateWithRequest:(id)request completion:(id)completion;
+- (PIFaceBalanceAutoCalculator)initWithRequest:(id)request isRAW:(BOOL)w;
+- (void)submit:(id)submit;
 @end
 
 @implementation PIFaceBalanceAutoCalculator
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
-  v4 = a3;
+  submitCopy = submit;
   rawState = self->_rawState;
   if (rawState)
   {
     if (rawState == 2)
     {
-      [PIFaceBalanceAutoCalculator calculateRAWWithRequest:self completion:v4];
+      [PIFaceBalanceAutoCalculator calculateRAWWithRequest:self completion:submitCopy];
     }
 
     else if (rawState == 1)
     {
-      [PIFaceBalanceAutoCalculator calculateWithRequest:self completion:v4];
+      [PIFaceBalanceAutoCalculator calculateWithRequest:self completion:submitCopy];
     }
   }
 
@@ -36,7 +36,7 @@
     v7[2] = __38__PIFaceBalanceAutoCalculator_submit___block_invoke;
     v7[3] = &unk_1E82ACC00;
     v7[4] = self;
-    v8 = v4;
+    v8 = submitCopy;
     [v6 submit:v7];
   }
 }
@@ -72,14 +72,14 @@ void __38__PIFaceBalanceAutoCalculator_submit___block_invoke(uint64_t a1, void *
   }
 }
 
-- (PIFaceBalanceAutoCalculator)initWithRequest:(id)a3 isRAW:(BOOL)a4
+- (PIFaceBalanceAutoCalculator)initWithRequest:(id)request isRAW:(BOOL)w
 {
-  v4 = a4;
+  wCopy = w;
   v7.receiver = self;
   v7.super_class = PIFaceBalanceAutoCalculator;
-  result = [(NURenderRequest *)&v7 initWithRequest:a3];
+  result = [(NURenderRequest *)&v7 initWithRequest:request];
   v6 = 1;
-  if (v4)
+  if (wCopy)
   {
     v6 = 2;
   }
@@ -88,10 +88,10 @@ void __38__PIFaceBalanceAutoCalculator_submit___block_invoke(uint64_t a1, void *
   return result;
 }
 
-+ ($1AB5FA073B851C12C2339EC22442E995)faceBalanceFromFaceImage:(id)a3 forFaceRect:(id *)a4
++ ($1AB5FA073B851C12C2339EC22442E995)faceBalanceFromFaceImage:(id)image forFaceRect:(id *)rect
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  imageCopy = image;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3810000000;
@@ -99,9 +99,9 @@ void __38__PIFaceBalanceAutoCalculator_submit___block_invoke(uint64_t a1, void *
   v46 = 0;
   v47 = 0;
   v48 = 0;
-  v6 = [v5 format];
-  v7 = [MEMORY[0x1E69B3BF0] ARGB8];
-  v8 = [v6 isEqualToPixelFormat:v7];
+  format = [imageCopy format];
+  aRGB8 = [MEMORY[0x1E69B3BF0] ARGB8];
+  v8 = [format isEqualToPixelFormat:aRGB8];
 
   if (v8)
   {
@@ -111,9 +111,9 @@ void __38__PIFaceBalanceAutoCalculator_submit___block_invoke(uint64_t a1, void *
 
   else
   {
-    v11 = [v5 format];
-    v12 = [MEMORY[0x1E69B3BF0] RGBA8];
-    v13 = [v11 isEqualToPixelFormat:v12];
+    format2 = [imageCopy format];
+    rGBA8 = [MEMORY[0x1E69B3BF0] RGBA8];
+    v13 = [format2 isEqualToPixelFormat:rGBA8];
 
     if (v13)
     {
@@ -123,9 +123,9 @@ void __38__PIFaceBalanceAutoCalculator_submit___block_invoke(uint64_t a1, void *
 
     else
     {
-      v14 = [v5 format];
-      v15 = [MEMORY[0x1E69B3BF0] BGRA8];
-      v16 = [v14 isEqualToPixelFormat:v15];
+      format3 = [imageCopy format];
+      bGRA8 = [MEMORY[0x1E69B3BF0] BGRA8];
+      v16 = [format3 isEqualToPixelFormat:bGRA8];
 
       if ((v16 & 1) == 0)
       {
@@ -147,8 +147,8 @@ void __38__PIFaceBalanceAutoCalculator_submit___block_invoke(uint64_t a1, void *
           if (v30)
           {
             v33 = dispatch_get_specific(*v27);
-            v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-            v35 = [v34 componentsJoinedByString:@"\n"];
+            callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+            v35 = [callStackSymbols componentsJoinedByString:@"\n"];
             *buf = 138543618;
             *&buf[4] = v33;
             *&buf[12] = 2114;
@@ -159,8 +159,8 @@ void __38__PIFaceBalanceAutoCalculator_submit___block_invoke(uint64_t a1, void *
 
         else if (v30)
         {
-          v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-          v32 = [v31 componentsJoinedByString:@"\n"];
+          callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+          v32 = [callStackSymbols2 componentsJoinedByString:@"\n"];
           *buf = 138543362;
           *&buf[4] = v32;
           _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -179,19 +179,19 @@ void __38__PIFaceBalanceAutoCalculator_submit___block_invoke(uint64_t a1, void *
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v50 = 0;
-  v17 = [v5 validRegion];
+  validRegion = [imageCopy validRegion];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __68__PIFaceBalanceAutoCalculator_faceBalanceFromFaceImage_forFaceRect___block_invoke;
   v37[3] = &unk_1E82AA478;
-  var1 = a4->var1;
-  var0 = a4->var0;
+  var1 = rect->var1;
+  var0 = rect->var0;
   v39 = var1;
   v40 = v9;
   v41 = v10;
   v37[4] = &v42;
   v37[5] = buf;
-  [v5 readBufferRegion:v17 withBlock:v37];
+  [imageCopy readBufferRegion:validRegion withBlock:v37];
 
   v19 = *(*&buf[8] + 24);
   v20 = v43;
@@ -234,13 +234,13 @@ void __68__PIFaceBalanceAutoCalculator_faceBalanceFromFaceImage_forFaceRect___bl
   NUPixelRectIntersection();
 }
 
-+ ($721907E0E1CDE8B6CD3FA271A8B25860)faceRectFromNormalizedFaceRet:(SEL)a3 forImageExtent:(CGRect)a4 scaleX:(id *)a5 scaleY:(double)a6
++ ($721907E0E1CDE8B6CD3FA271A8B25860)faceRectFromNormalizedFaceRet:(SEL)ret forImageExtent:(CGRect)extent scaleX:(id *)x scaleY:(double)y
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  CGAffineTransformMakeScale(&v16, a6, a7);
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  x = extent.origin.x;
+  CGAffineTransformMakeScale(&v16, y, a7);
   v17.origin.x = x;
   v17.origin.y = y;
   v17.size.width = width;
@@ -264,13 +264,13 @@ void __68__PIFaceBalanceAutoCalculator_faceBalanceFromFaceImage_forFaceRect___bl
   return result;
 }
 
-+ (id)faceBalanceResultFromFaceObservations:(id)a3 request:(id)a4 error:(id *)a5
++ (id)faceBalanceResultFromFaceObservations:(id)observations request:(id)request error:(id *)error
 {
-  v9 = v91;
+  faces = v91;
   v98 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v72 = a4;
-  if (!a5)
+  observationsCopy = observations;
+  requestCopy = request;
+  if (!error)
   {
     v59 = NUAssertLogger_7479();
     if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
@@ -283,8 +283,8 @@ void __68__PIFaceBalanceAutoCalculator_faceBalanceFromFaceImage_forFaceRect___bl
 
     v61 = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    v10 = NUAssertLogger_7479();
-    v63 = os_log_type_enabled(v10, OS_LOG_TYPE_ERROR);
+    observationsCopy = NUAssertLogger_7479();
+    v63 = os_log_type_enabled(observationsCopy, OS_LOG_TYPE_ERROR);
     if (specific)
     {
       if (v63)
@@ -292,23 +292,23 @@ void __68__PIFaceBalanceAutoCalculator_faceBalanceFromFaceImage_forFaceRect___bl
         v5 = dispatch_get_specific(*v61);
         v66 = MEMORY[0x1E696AF00];
         v67 = v5;
-        v68 = [v66 callStackSymbols];
-        v9 = [v68 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v66 callStackSymbols];
+        faces = [callStackSymbols componentsJoinedByString:@"\n"];
         *v91 = 138543618;
         *&v91[4] = v5;
         *&v91[12] = 2114;
-        *&v91[14] = v9;
-        _os_log_error_impl(&dword_1C7694000, v10, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", v91, 0x16u);
+        *&v91[14] = faces;
+        _os_log_error_impl(&dword_1C7694000, observationsCopy, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", v91, 0x16u);
       }
     }
 
     else if (v63)
     {
-      v64 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v65 = [v64 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v65 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v91 = 138543362;
       *&v91[4] = v65;
-      _os_log_error_impl(&dword_1C7694000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v91, 0xCu);
+      _os_log_error_impl(&dword_1C7694000, observationsCopy, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v91, 0xCu);
     }
 
     v69 = "error != nil";
@@ -318,21 +318,21 @@ void __68__PIFaceBalanceAutoCalculator_faceBalanceFromFaceImage_forFaceRect___bl
   }
 
   group = dispatch_group_create();
-  v9 = [v10 faces];
-  if (![v9 count])
+  faces = [observationsCopy faces];
+  if (![faces count])
   {
     v25 = MEMORY[0x1E695E0F8];
     goto LABEL_28;
   }
 
-  v11 = [v10 imageSize];
+  imageSize = [observationsCopy imageSize];
   v13 = v12;
   v5 = objc_alloc_init(MEMORY[0x1E69B3BB0]);
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v14 = v9;
+  v14 = faces;
   v15 = [v14 countByEnumeratingWithState:&v84 objects:v97 count:16];
   if (v15)
   {
@@ -354,7 +354,7 @@ void __68__PIFaceBalanceAutoCalculator_faceBalanceFromFaceImage_forFaceRect___bl
         CGRectIntersection(v100, v101);
         memset(v91, 0, sizeof(v91));
         v78 = 0uLL;
-        *&v79 = v11;
+        *&v79 = imageSize;
         *(&v79 + 1) = v13;
         NUPixelRectDenormalize();
         v78 = *v91;
@@ -379,7 +379,7 @@ void __68__PIFaceBalanceAutoCalculator_faceBalanceFromFaceImage_forFaceRect___bl
   v79 = v83;
   *buf = 0;
   *&buf[8] = 0;
-  *&buf[16] = v11;
+  *&buf[16] = imageSize;
   v96 = v13;
   NUPixelRectFlipYOrigin();
   v82 = *v91;
@@ -391,7 +391,7 @@ void __68__PIFaceBalanceAutoCalculator_faceBalanceFromFaceImage_forFaceRect___bl
   v92 = 0;
   v93 = 0;
   v94 = 0;
-  v6 = [objc_alloc(MEMORY[0x1E69B39A0]) initWithRequest:v72];
+  v6 = [objc_alloc(MEMORY[0x1E69B39A0]) initWithRequest:requestCopy];
   [v6 setName:@"PIWhiteBalanceAutoCalculator-face-balance"];
   v18 = +[PIPipelineFilters rawFaceBalanceFilter];
   v90 = v18;
@@ -459,12 +459,12 @@ LABEL_16:
       v35 = *(*&v91[8] + 48);
       v70 = [PICompositionController settingForAdjustmentKey:@"whiteBalance" settingKey:@"warmTemp", v69];
       v37 = [PICompositionController settingForAdjustmentKey:@"whiteBalance" settingKey:@"warmTint"];
-      v38 = [v70 minimumValue];
-      [v38 doubleValue];
+      minimumValue = [v70 minimumValue];
+      [minimumValue doubleValue];
       v40 = v39;
 
-      v41 = [v70 maximumValue];
-      [v41 doubleValue];
+      maximumValue = [v70 maximumValue];
+      [maximumValue doubleValue];
       v43 = v42;
 
       v44 = 0.055 - v36;
@@ -480,12 +480,12 @@ LABEL_16:
         v40 = v46;
       }
 
-      v47 = [v37 minimumValue];
-      [v47 doubleValue];
+      minimumValue2 = [v37 minimumValue];
+      [minimumValue2 doubleValue];
       v49 = v48;
 
-      v50 = [v37 maximumValue];
-      [v50 doubleValue];
+      maximumValue2 = [v37 maximumValue];
+      [maximumValue2 doubleValue];
       v52 = v51;
 
       v53 = (v44 + v45 * 5.0) * 4.0;
@@ -528,7 +528,7 @@ LABEL_39:
   }
 
   [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failure in rendering image" object:v5 underlyingError:?];
-  *a5 = v25 = 0;
+  *error = v25 = 0;
 LABEL_27:
 
   _Block_object_dispose(&v78, 8);
@@ -640,12 +640,12 @@ void __83__PIFaceBalanceAutoCalculator_faceBalanceResultFromFaceObservations_req
   dispatch_group_leave(*(a1 + 40));
 }
 
-+ (void)calculateRAWWithRequest:(id)a3 completion:(id)a4
++ (void)calculateRAWWithRequest:(id)request completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  requestCopy = request;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v14 = NUAssertLogger_7479();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -667,8 +667,8 @@ void __83__PIFaceBalanceAutoCalculator_faceBalanceResultFromFaceObservations_req
         v22 = dispatch_get_specific(*v16);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v32 = v22;
         v33 = 2114;
@@ -679,8 +679,8 @@ void __83__PIFaceBalanceAutoCalculator_faceBalanceResultFromFaceObservations_req
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v21;
       _os_log_error_impl(&dword_1C7694000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -689,8 +689,8 @@ void __83__PIFaceBalanceAutoCalculator_faceBalanceResultFromFaceObservations_req
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
-  v8 = [objc_alloc(MEMORY[0x1E69B3A50]) initWithRequest:v5];
+  v7 = completionCopy;
+  v8 = [objc_alloc(MEMORY[0x1E69B3A50]) initWithRequest:requestCopy];
   v9 = +[PIPipelineFilters rawFaceBalanceFilter];
   v30 = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
@@ -705,10 +705,10 @@ void __83__PIFaceBalanceAutoCalculator_faceBalanceResultFromFaceObservations_req
   v27[1] = 3221225472;
   v27[2] = __66__PIFaceBalanceAutoCalculator_calculateRAWWithRequest_completion___block_invoke;
   v27[3] = &unk_1E82ACC00;
-  v28 = v5;
+  v28 = requestCopy;
   v29 = v7;
   v12 = v7;
-  v13 = v5;
+  v13 = requestCopy;
   [v8 submit:v27];
 }
 
@@ -745,12 +745,12 @@ void __66__PIFaceBalanceAutoCalculator_calculateRAWWithRequest_completion___bloc
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)calculateWithRequest:(id)a3 completion:(id)a4
++ (void)calculateWithRequest:(id)request completion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  requestCopy = request;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v13 = NUAssertLogger_7479();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -772,8 +772,8 @@ void __66__PIFaceBalanceAutoCalculator_calculateRAWWithRequest_completion___bloc
         v21 = dispatch_get_specific(*v15);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v30 = v21;
         v31 = 2114;
@@ -784,8 +784,8 @@ void __66__PIFaceBalanceAutoCalculator_calculateRAWWithRequest_completion___bloc
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v20;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -794,8 +794,8 @@ void __66__PIFaceBalanceAutoCalculator_calculateRAWWithRequest_completion___bloc
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
-  v8 = [objc_alloc(MEMORY[0x1E69B3AE8]) initWithRequest:v5 dataExtractor:@"CIFaceBalance" options:0];
+  v7 = completionCopy;
+  v8 = [objc_alloc(MEMORY[0x1E69B3AE8]) initWithRequest:requestCopy dataExtractor:@"CIFaceBalance" options:0];
   [v8 setName:@"PIFaceBalanceAutoCalculator-calculate"];
   v9 = [PIPipelineFilters stopAtTagIncludeOrientationFilter:@"/Master/Source"];
   v28 = v9;

@@ -1,39 +1,39 @@
 @interface __HMDRegisteredDeviceIdentity
-- (__HMDRegisteredDeviceIdentity)initWithIdentity:(id)a3;
-- (__HMDRegisteredDeviceIdentity)initWithIdentity:(id)a3 device:(id)a4;
+- (__HMDRegisteredDeviceIdentity)initWithIdentity:(id)identity;
+- (__HMDRegisteredDeviceIdentity)initWithIdentity:(id)identity device:(id)device;
 @end
 
 @implementation __HMDRegisteredDeviceIdentity
 
-- (__HMDRegisteredDeviceIdentity)initWithIdentity:(id)a3 device:(id)a4
+- (__HMDRegisteredDeviceIdentity)initWithIdentity:(id)identity device:(id)device
 {
-  v7 = a4;
-  if (v7)
+  deviceCopy = device;
+  if (deviceCopy)
   {
     v12.receiver = self;
     v12.super_class = __HMDRegisteredDeviceIdentity;
-    v8 = [(__HMDRegisteredIdentity *)&v12 initWithIdentity:a3];
+    v8 = [(__HMDRegisteredIdentity *)&v12 initWithIdentity:identity];
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_device, a4);
+      objc_storeStrong(&v8->_device, device);
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (__HMDRegisteredDeviceIdentity)initWithIdentity:(id)a3
+- (__HMDRegisteredDeviceIdentity)initWithIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

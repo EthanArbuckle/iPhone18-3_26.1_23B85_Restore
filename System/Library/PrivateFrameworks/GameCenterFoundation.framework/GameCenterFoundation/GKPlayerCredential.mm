@@ -1,6 +1,6 @@
 @interface GKPlayerCredential
 + (id)secureCodedPropertyKeys;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)scopeAsString;
 - (id)description;
 - (unint64_t)hash;
@@ -8,15 +8,15 @@
 
 @implementation GKPlayerCredential
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GKPlayerCredential *)self environment];
-    if (v6 != [v5 environment])
+    v5 = equalCopy;
+    environment = [(GKPlayerCredential *)self environment];
+    if (environment != [v5 environment])
     {
       v15 = 0;
 LABEL_15:
@@ -24,37 +24,37 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v7 = [(GKPlayerCredential *)self altDSID];
-    if (v7 || ([v5 altDSID], (v7 = objc_claimAutoreleasedReturnValue()) != 0) || (-[GKPlayerCredential DSID](self, "DSID"), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+    altDSID = [(GKPlayerCredential *)self altDSID];
+    if (altDSID || ([v5 altDSID], (altDSID = objc_claimAutoreleasedReturnValue()) != 0) || (-[GKPlayerCredential DSID](self, "DSID"), (altDSID = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v17 = [v5 DSID];
+      dSID = [v5 DSID];
 
-      if (!v17)
+      if (!dSID)
       {
-        v11 = [(GKPlayerCredential *)self authenticationToken];
-        v12 = [v5 authenticationToken];
+        authenticationToken = [(GKPlayerCredential *)self authenticationToken];
+        authenticationToken2 = [v5 authenticationToken];
         goto LABEL_10;
       }
     }
 
-    v8 = [(GKPlayerCredential *)self altDSID];
-    if (!v8 || (v9 = v8, [v5 altDSID], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, !v10))
+    altDSID2 = [(GKPlayerCredential *)self altDSID];
+    if (!altDSID2 || (v9 = altDSID2, [v5 altDSID], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, !v10))
     {
-      v11 = [(GKPlayerCredential *)self DSID];
-      v13 = [v5 DSID];
-      v14 = [v11 isEqual:v13];
+      authenticationToken = [(GKPlayerCredential *)self DSID];
+      dSID2 = [v5 DSID];
+      v14 = [authenticationToken isEqual:dSID2];
       goto LABEL_14;
     }
 
-    v11 = [(GKPlayerCredential *)self altDSID];
-    v12 = [v5 altDSID];
+    authenticationToken = [(GKPlayerCredential *)self altDSID];
+    authenticationToken2 = [v5 altDSID];
 LABEL_10:
-    v13 = v12;
-    v14 = [v11 isEqualToString:v12];
+    dSID2 = authenticationToken2;
+    v14 = [authenticationToken isEqualToString:authenticationToken2];
 LABEL_14:
     v15 = v14;
 
@@ -69,20 +69,20 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v2 = [(GKPlayerCredential *)self playerInternal];
-  v3 = [v2 hash];
+  playerInternal = [(GKPlayerCredential *)self playerInternal];
+  v3 = [playerInternal hash];
 
   return v3;
 }
 
 - (NSString)scopeAsString
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = v3;
+  string = [MEMORY[0x277CCAB68] string];
+  v4 = string;
   scope = self->_scope;
   if ((scope & 2) != 0)
   {
-    [v3 appendString:@"Authorized "];
+    [string appendString:@"Authorized "];
     scope = self->_scope;
     if ((scope & 8) == 0)
     {
@@ -109,8 +109,8 @@ LABEL_4:
   }
 
 LABEL_5:
-  v6 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v7 = [v4 stringByTrimmingCharactersInSet:v6];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v7 = [v4 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v7;
 }
@@ -119,11 +119,11 @@ LABEL_5:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(GKPlayerCredential *)self accountName];
-  v6 = [(GKPlayerInternal *)self->_playerInternal conciseDescription];
-  v7 = [(GKPlayerCredential *)self scopeAsString];
+  accountName = [(GKPlayerCredential *)self accountName];
+  conciseDescription = [(GKPlayerInternal *)self->_playerInternal conciseDescription];
+  scopeAsString = [(GKPlayerCredential *)self scopeAsString];
   altDSID = self->_altDSID;
-  v9 = [v3 stringWithFormat:@"<%@ %p> account:%@ player:(%@) scope:<%@> (%@) environment:%d token:%@ altDSID:%@ DSID:%@", v4, self, v5, v6, v7, self->_scopeModificationDate, self->_environment, self->_authenticationToken, altDSID, self->_DSID];
+  v9 = [v3 stringWithFormat:@"<%@ %p> account:%@ player:(%@) scope:<%@> (%@) environment:%d token:%@ altDSID:%@ DSID:%@", v4, self, accountName, conciseDescription, scopeAsString, self->_scopeModificationDate, self->_environment, self->_authenticationToken, altDSID, self->_DSID];
 
   return v9;
 }

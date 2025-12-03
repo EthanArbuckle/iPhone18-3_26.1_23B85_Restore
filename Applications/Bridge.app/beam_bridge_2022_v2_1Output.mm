@@ -1,43 +1,43 @@
 @interface beam_bridge_2022_v2_1Output
-- (beam_bridge_2022_v2_1Output)initWithCell_leaf_fully_connected_BiasAdd:(id)a3 leaf_leaf_predictions_probabilities:(id)a4;
-- (id)featureValueForName:(id)a3;
+- (beam_bridge_2022_v2_1Output)initWithCell_leaf_fully_connected_BiasAdd:(id)add leaf_leaf_predictions_probabilities:(id)leaf_leaf_predictions_probabilities;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation beam_bridge_2022_v2_1Output
 
-- (beam_bridge_2022_v2_1Output)initWithCell_leaf_fully_connected_BiasAdd:(id)a3 leaf_leaf_predictions_probabilities:(id)a4
+- (beam_bridge_2022_v2_1Output)initWithCell_leaf_fully_connected_BiasAdd:(id)add leaf_leaf_predictions_probabilities:(id)leaf_leaf_predictions_probabilities
 {
-  v7 = a3;
-  v8 = a4;
+  addCopy = add;
+  leaf_leaf_predictions_probabilitiesCopy = leaf_leaf_predictions_probabilities;
   v12.receiver = self;
   v12.super_class = beam_bridge_2022_v2_1Output;
   v9 = [(beam_bridge_2022_v2_1Output *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cell_leaf_fully_connected_BiasAdd, a3);
-    objc_storeStrong(&v10->_leaf_leaf_predictions_probabilities, a4);
+    objc_storeStrong(&v9->_cell_leaf_fully_connected_BiasAdd, add);
+    objc_storeStrong(&v10->_leaf_leaf_predictions_probabilities, leaf_leaf_predictions_probabilities);
   }
 
   return v10;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"cell_leaf_fully_connected_BiasAdd"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"cell_leaf_fully_connected_BiasAdd"])
   {
-    v5 = [(beam_bridge_2022_v2_1Output *)self cell_leaf_fully_connected_BiasAdd];
+    cell_leaf_fully_connected_BiasAdd = [(beam_bridge_2022_v2_1Output *)self cell_leaf_fully_connected_BiasAdd];
 LABEL_5:
-    v6 = v5;
-    v7 = [MLFeatureValue featureValueWithMultiArray:v5];
+    v6 = cell_leaf_fully_connected_BiasAdd;
+    v7 = [MLFeatureValue featureValueWithMultiArray:cell_leaf_fully_connected_BiasAdd];
 
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"leaf_leaf_predictions_probabilities"])
+  if ([nameCopy isEqualToString:@"leaf_leaf_predictions_probabilities"])
   {
-    v5 = [(beam_bridge_2022_v2_1Output *)self leaf_leaf_predictions_probabilities];
+    cell_leaf_fully_connected_BiasAdd = [(beam_bridge_2022_v2_1Output *)self leaf_leaf_predictions_probabilities];
     goto LABEL_5;
   }
 

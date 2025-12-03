@@ -1,12 +1,12 @@
 @interface MTLToolsResource
-- (BOOL)doesAliasAllResources:(const void *)a3 count:(unint64_t)a4;
-- (BOOL)doesAliasAnyResources:(const void *)a3 count:(unint64_t)a4;
-- (BOOL)doesAliasResource:(id)a3;
+- (BOOL)doesAliasAllResources:(const void *)resources count:(unint64_t)count;
+- (BOOL)doesAliasAnyResources:(const void *)resources count:(unint64_t)count;
+- (BOOL)doesAliasResource:(id)resource;
 - (BOOL)isAliasable;
 - (BOOL)isComplete;
 - (BOOL)isPurgeable;
-- (MTLToolsResource)initWithBaseObject:(id)a3 parent:(id)a4;
-- (MTLToolsResource)initWithBaseObject:(id)a3 parent:(id)a4 heap:(id)a5;
+- (MTLToolsResource)initWithBaseObject:(id)object parent:(id)parent;
+- (MTLToolsResource)initWithBaseObject:(id)object parent:(id)parent heap:(id)heap;
 - (NSString)label;
 - (int)responsibleProcess;
 - (unint64_t)allocatedSize;
@@ -16,12 +16,12 @@
 - (unint64_t)heapOffset;
 - (unint64_t)protectionOptions;
 - (unint64_t)resourceOptions;
-- (unint64_t)setPurgeableState:(unint64_t)a3;
+- (unint64_t)setPurgeableState:(unint64_t)state;
 - (unint64_t)storageMode;
 - (unint64_t)unfilteredResourceOptions;
 - (void)dealloc;
 - (void)makeAliasable;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 - (void)validateCPUReadable;
 - (void)validateCPUWriteable;
 - (void)waitUntilComplete;
@@ -31,134 +31,134 @@
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setLabel:a3];
+  [baseObject setLabel:label];
 }
 
 - (unint64_t)cpuCacheMode
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 cpuCacheMode];
+  return [baseObject cpuCacheMode];
 }
 
 - (unint64_t)storageMode
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 storageMode];
+  return [baseObject storageMode];
 }
 
 - (unint64_t)hazardTrackingMode
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 hazardTrackingMode];
+  return [baseObject hazardTrackingMode];
 }
 
 - (unint64_t)resourceOptions
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 resourceOptions];
+  return [baseObject resourceOptions];
 }
 
 - (unint64_t)unfilteredResourceOptions
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 unfilteredResourceOptions];
+  return [baseObject unfilteredResourceOptions];
 }
 
 - (BOOL)isAliasable
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 isAliasable];
+  return [baseObject isAliasable];
 }
 
 - (void)makeAliasable
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 makeAliasable];
+  [baseObject makeAliasable];
 }
 
-- (unint64_t)setPurgeableState:(unint64_t)a3
+- (unint64_t)setPurgeableState:(unint64_t)state
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 setPurgeableState:a3];
+  return [baseObject setPurgeableState:state];
 }
 
 - (unint64_t)heapOffset
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 heapOffset];
+  return [baseObject heapOffset];
 }
 
 - (BOOL)isPurgeable
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 isPurgeable];
+  return [baseObject isPurgeable];
 }
 
 - (int)responsibleProcess
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 responsibleProcess];
+  return [baseObject responsibleProcess];
 }
 
 - (unint64_t)protectionOptions
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 protectionOptions];
+  return [baseObject protectionOptions];
 }
 
 - (unint64_t)allocationID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 allocationID];
+  return [baseObject allocationID];
 }
 
-- (MTLToolsResource)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTLToolsResource)initWithBaseObject:(id)object parent:(id)parent
 {
   v7.receiver = self;
   v7.super_class = MTLToolsResource;
-  v5 = [(MTLToolsObject *)&v7 initWithBaseObject:a3 parent:?];
+  v5 = [(MTLToolsObject *)&v7 initWithBaseObject:object parent:?];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5->_heap = [a4 heap];
+      v5->_heap = [parent heap];
     }
   }
 
   return v5;
 }
 
-- (MTLToolsResource)initWithBaseObject:(id)a3 parent:(id)a4 heap:(id)a5
+- (MTLToolsResource)initWithBaseObject:(id)object parent:(id)parent heap:(id)heap
 {
   v8.receiver = self;
   v8.super_class = MTLToolsResource;
-  v6 = [(MTLToolsObject *)&v8 initWithBaseObject:a3 parent:a4];
+  v6 = [(MTLToolsObject *)&v8 initWithBaseObject:object parent:parent];
   if (v6)
   {
-    v6->_heap = a5;
+    v6->_heap = heap;
   }
 
   return v6;
@@ -173,31 +173,31 @@
   [(MTLToolsObject *)&v3 dealloc];
 }
 
-- (BOOL)doesAliasResource:(id)a3
+- (BOOL)doesAliasResource:(id)resource
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v5 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [resource baseObject];
 
-  return [v4 doesAliasResource:v5];
+  return [baseObject doesAliasResource:baseObject2];
 }
 
-- (BOOL)doesAliasAllResources:(const void *)a3 count:(unint64_t)a4
+- (BOOL)doesAliasAllResources:(const void *)resources count:(unint64_t)count
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = v13 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a4)
+  v6 = v13 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0);
+  if (count)
   {
-    v7 = a3;
-    v8 = (v13 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0));
-    v9 = a4;
+    resourcesCopy = resources;
+    v8 = (v13 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0));
+    countCopy = count;
     do
     {
-      v10 = *v7++;
+      v10 = *resourcesCopy++;
       *v8++ = [v10 baseObject];
-      --v9;
+      --countCopy;
     }
 
-    while (v9);
+    while (countCopy);
   }
 
   result = [-[MTLToolsObject baseObject](self baseObject];
@@ -205,23 +205,23 @@
   return result;
 }
 
-- (BOOL)doesAliasAnyResources:(const void *)a3 count:(unint64_t)a4
+- (BOOL)doesAliasAnyResources:(const void *)resources count:(unint64_t)count
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = v13 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a4)
+  v6 = v13 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0);
+  if (count)
   {
-    v7 = a3;
-    v8 = (v13 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0));
-    v9 = a4;
+    resourcesCopy = resources;
+    v8 = (v13 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0));
+    countCopy = count;
     do
     {
-      v10 = *v7++;
+      v10 = *resourcesCopy++;
       *v8++ = [v10 baseObject];
-      --v9;
+      --countCopy;
     }
 
-    while (v9);
+    while (countCopy);
   }
 
   result = [-[MTLToolsObject baseObject](self baseObject];
@@ -231,16 +231,16 @@
 
 - (BOOL)isComplete
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 isComplete];
+  return [baseObject isComplete];
 }
 
 - (void)waitUntilComplete
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 waitUntilComplete];
+  [baseObject waitUntilComplete];
 }
 
 - (void)validateCPUReadable
@@ -281,9 +281,9 @@ LABEL_6:
 
 - (unint64_t)allocatedSize
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 allocatedSize];
+  return [baseObject allocatedSize];
 }
 
 @end

@@ -2,7 +2,7 @@
 + (MPSNNImageNode)exportedNodeWithHandle:(NSObject *)handle;
 + (MPSNNImageNode)nodeWithHandle:(NSObject *)handle;
 - (MPSNNImageNode)initWithHandle:(NSObject *)handle;
-- (MPSNNImageNode)initWithParent:(id)a3;
+- (MPSNNImageNode)initWithParent:(id)parent;
 - (id)debugDescription;
 - (void)dealloc;
 @end
@@ -33,7 +33,7 @@
 
 + (MPSNNImageNode)nodeWithHandle:(NSObject *)handle
 {
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   v11 = objc_msgSend_initWithHandle_(v4, v5, handle, v6, v7, v8, v9, v10);
 
   return v11;
@@ -41,7 +41,7 @@
 
 + (MPSNNImageNode)exportedNodeWithHandle:(NSObject *)handle
 {
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   result = objc_msgSend_initWithHandle_(v4, v5, handle, v6, v7, v8, v9, v10);
   if (result)
   {
@@ -51,7 +51,7 @@
   return result;
 }
 
-- (MPSNNImageNode)initWithParent:(id)a3
+- (MPSNNImageNode)initWithParent:(id)parent
 {
   v20.receiver = self;
   v20.super_class = MPSNNImageNode;
@@ -59,7 +59,7 @@
   if (result)
   {
     result->_handle = 0;
-    result->_parent = a3;
+    result->_parent = parent;
     v12 = result;
     v13 = objc_msgSend_defaultAllocator(MEMORY[0x277CD72A8], v5, v6, v7, v8, v9, v10, v11);
     objc_msgSend_setImageAllocator_(v12, v14, v13, v15, v16, v17, v18, v19);

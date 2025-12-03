@@ -1,28 +1,28 @@
 @interface MSStickerBrowserViewController
 - (CGRect)initialFrameBeforeAppearance;
-- (MSStickerBrowserViewController)initWithCoder:(id)a3;
-- (MSStickerBrowserViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (MSStickerBrowserViewController)initWithCoder:(id)coder;
+- (MSStickerBrowserViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (MSStickerBrowserViewController)initWithStickerSize:(MSStickerSize)stickerSize;
-- (void)_setContentOverlayInsets:(UIEdgeInsets)a3;
-- (void)didTransitionToPresentationStyle:(unint64_t)a3;
+- (void)_setContentOverlayInsets:(UIEdgeInsets)insets;
+- (void)didTransitionToPresentationStyle:(unint64_t)style;
 - (void)disableUserInteraction;
 - (void)enableUserInteraction;
 - (void)loadView;
-- (void)updateSnapshotWithCompletionBlock:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateSnapshotWithCompletionBlock:(id)block;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willTransitionToPresentationStyle:(unint64_t)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willTransitionToPresentationStyle:(unint64_t)style;
 @end
 
 @implementation MSStickerBrowserViewController
 
-- (MSStickerBrowserViewController)initWithCoder:(id)a3
+- (MSStickerBrowserViewController)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = MSStickerBrowserViewController;
-  result = [(MSStickerBrowserViewController *)&v4 initWithCoder:a3];
+  result = [(MSStickerBrowserViewController *)&v4 initWithCoder:coder];
   if (result)
   {
     result->_stickerSize = 1;
@@ -31,7 +31,7 @@
   return result;
 }
 
-- (MSStickerBrowserViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MSStickerBrowserViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = MSStickerBrowserViewController;
@@ -67,35 +67,35 @@
   [(MSStickerBrowserViewController *)&v13 loadView];
   [(MSStickerBrowserViewController *)self setViewHasAppeared:0];
   v3 = [MSStickerBrowserView alloc];
-  v4 = [(MSStickerBrowserViewController *)self stickerSize];
-  v5 = [(MSStickerBrowserView *)v3 initWithFrame:v4 stickerSize:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  stickerSize = [(MSStickerBrowserViewController *)self stickerSize];
+  v5 = [(MSStickerBrowserView *)v3 initWithFrame:stickerSize stickerSize:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(MSStickerBrowserView *)v5 setDataSource:self];
   [(MSStickerBrowserViewController *)self setStickerBrowserView:v5];
-  v6 = [(MSStickerBrowserViewController *)self view];
-  [v6 addSubview:v5];
+  view = [(MSStickerBrowserViewController *)self view];
+  [view addSubview:v5];
 
-  v7 = [MEMORY[0x1E696AAE8] mainBundle];
-  v8 = [v7 bundleIdentifier];
-  v9 = MSStickerBrowserStateRestorationInfo(v8);
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v9 = MSStickerBrowserStateRestorationInfo(bundleIdentifier);
 
   if ([v9 count])
   {
-    v10 = [(MSStickerBrowserViewController *)self stickerBrowserView];
-    [v10 restoreFromState:v9];
+    stickerBrowserView = [(MSStickerBrowserViewController *)self stickerBrowserView];
+    [stickerBrowserView restoreFromState:v9];
   }
 
-  v11 = [(MSStickerBrowserViewController *)self view];
-  v12 = [v11 layer];
-  [v12 setHitTestsAsOpaque:1];
+  view2 = [(MSStickerBrowserViewController *)self view];
+  layer = [view2 layer];
+  [layer setHitTestsAsOpaque:1];
 }
 
-- (void)_setContentOverlayInsets:(UIEdgeInsets)a3
+- (void)_setContentOverlayInsets:(UIEdgeInsets)insets
 {
-  bottom = a3.bottom;
-  top = a3.top;
+  bottom = insets.bottom;
+  top = insets.top;
   v6.receiver = self;
   v6.super_class = MSStickerBrowserViewController;
-  [(MSStickerBrowserViewController *)&v6 _setContentOverlayInsets:a3.top, a3.left, a3.bottom, a3.right];
+  [(MSStickerBrowserViewController *)&v6 _setContentOverlayInsets:insets.top, insets.left, insets.bottom, insets.right];
   [(MSStickerBrowserViewController *)self _setNavigationControllerContentInsetAdjustment:top, 0.0, bottom, 0.0];
 }
 
@@ -104,106 +104,106 @@
   v17.receiver = self;
   v17.super_class = MSStickerBrowserViewController;
   [(MSStickerBrowserViewController *)&v17 viewDidLayoutSubviews];
-  v3 = [(MSStickerBrowserViewController *)self stickerSize];
-  v4 = [(MSStickerBrowserViewController *)self stickerBrowserView];
-  v5 = [v4 stickerSize];
+  stickerSize = [(MSStickerBrowserViewController *)self stickerSize];
+  stickerBrowserView = [(MSStickerBrowserViewController *)self stickerBrowserView];
+  stickerSize2 = [stickerBrowserView stickerSize];
 
-  if (v3 != v5)
+  if (stickerSize != stickerSize2)
   {
-    v6 = [(MSStickerBrowserViewController *)self stickerBrowserView];
-    [v6 reloadData];
+    stickerBrowserView2 = [(MSStickerBrowserViewController *)self stickerBrowserView];
+    [stickerBrowserView2 reloadData];
   }
 
-  v7 = [(MSStickerBrowserViewController *)self view];
-  [v7 bounds];
+  view = [(MSStickerBrowserViewController *)self view];
+  [view bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(MSStickerBrowserViewController *)self stickerBrowserView];
-  [v16 setFrame:{v9, v11, v13, v15}];
+  stickerBrowserView3 = [(MSStickerBrowserViewController *)self stickerBrowserView];
+  [stickerBrowserView3 setFrame:{v9, v11, v13, v15}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MSStickerBrowserViewController;
-  [(MSStickerBrowserViewController *)&v4 viewWillAppear:a3];
+  [(MSStickerBrowserViewController *)&v4 viewWillAppear:appear];
   [(MSStickerBrowserViewController *)self setInitialFrameBeforeAppearance:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = MSStickerBrowserViewController;
-  [(MSStickerBrowserViewController *)&v6 viewDidAppear:a3];
+  [(MSStickerBrowserViewController *)&v6 viewDidAppear:appear];
   if (![(MSStickerBrowserViewController *)self viewHasAppeared])
   {
-    v4 = [(MSStickerBrowserViewController *)self extensionContext];
-    [v4 _remoteViewDidBecomeReadyForDisplay];
+    extensionContext = [(MSStickerBrowserViewController *)self extensionContext];
+    [extensionContext _remoteViewDidBecomeReadyForDisplay];
 
     [(MSStickerBrowserViewController *)self setViewHasAppeared:1];
   }
 
-  v5 = [(MSStickerBrowserViewController *)self stickerBrowserView];
-  [v5 _startAnimating];
+  stickerBrowserView = [(MSStickerBrowserViewController *)self stickerBrowserView];
+  [stickerBrowserView _startAnimating];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = MSStickerBrowserViewController;
-  [(MSStickerBrowserViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(MSStickerBrowserViewController *)self stickerBrowserView];
-  [v4 _stopAnimating];
+  [(MSStickerBrowserViewController *)&v5 viewDidDisappear:disappear];
+  stickerBrowserView = [(MSStickerBrowserViewController *)self stickerBrowserView];
+  [stickerBrowserView _stopAnimating];
 }
 
-- (void)willTransitionToPresentationStyle:(unint64_t)a3
+- (void)willTransitionToPresentationStyle:(unint64_t)style
 {
-  v3 = [(MSStickerBrowserViewController *)self stickerBrowserView];
-  [v3 setUserInteractionEnabled:0];
+  stickerBrowserView = [(MSStickerBrowserViewController *)self stickerBrowserView];
+  [stickerBrowserView setUserInteractionEnabled:0];
 }
 
-- (void)didTransitionToPresentationStyle:(unint64_t)a3
+- (void)didTransitionToPresentationStyle:(unint64_t)style
 {
-  v3 = [(MSStickerBrowserViewController *)self stickerBrowserView];
-  [v3 setUserInteractionEnabled:1];
+  stickerBrowserView = [(MSStickerBrowserViewController *)self stickerBrowserView];
+  [stickerBrowserView setUserInteractionEnabled:1];
 }
 
-- (void)updateSnapshotWithCompletionBlock:(id)a3
+- (void)updateSnapshotWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MSStickerBrowserViewController *)self stickerBrowserView];
-  v21 = [v5 stateRestorationInfo];
+  blockCopy = block;
+  stickerBrowserView = [(MSStickerBrowserViewController *)self stickerBrowserView];
+  stateRestorationInfo = [stickerBrowserView stateRestorationInfo];
 
-  v6 = [MEMORY[0x1E696AAE8] mainBundle];
-  v7 = [v6 bundleIdentifier];
-  v8 = MSStickerBrowserStateRestorationInfoPath(v7);
-  [v21 writeToFile:v8 atomically:1];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v8 = MSStickerBrowserStateRestorationInfoPath(bundleIdentifier);
+  [stateRestorationInfo writeToFile:v8 atomically:1];
 
-  v9 = [(MSStickerBrowserViewController *)self stickerBrowserView];
-  [v9 prepareForSnapshotting];
+  stickerBrowserView2 = [(MSStickerBrowserViewController *)self stickerBrowserView];
+  [stickerBrowserView2 prepareForSnapshotting];
 
-  v10 = [(MSStickerBrowserViewController *)self view];
-  [v10 bounds];
+  view = [(MSStickerBrowserViewController *)self view];
+  [view bounds];
   v12 = v11;
   v14 = v13;
 
-  v15 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v15 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v17 = v16;
   v23.width = v12;
   v23.height = v14;
   UIGraphicsBeginImageContextWithOptions(v23, 0, v17);
 
-  v18 = [(MSStickerBrowserViewController *)self view];
-  v19 = [v18 layer];
-  [v19 renderInContext:UIGraphicsGetCurrentContext()];
+  view2 = [(MSStickerBrowserViewController *)self view];
+  layer = [view2 layer];
+  [layer renderInContext:UIGraphicsGetCurrentContext()];
 
   v20 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  v4[2](v4, v20);
+  blockCopy[2](blockCopy, v20);
 }
 
 - (void)enableUserInteraction

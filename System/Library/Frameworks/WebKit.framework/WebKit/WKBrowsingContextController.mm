@@ -1,22 +1,22 @@
 @interface WKBrowsingContextController
-+ (WTF::StringImpl)registerSchemeForCustomProtocol:(uint64_t)a1;
-+ (WTF::StringImpl)unregisterSchemeForCustomProtocol:(uint64_t)a1;
++ (WTF::StringImpl)registerSchemeForCustomProtocol:(uint64_t)protocol;
++ (WTF::StringImpl)unregisterSchemeForCustomProtocol:(uint64_t)protocol;
 + (uint64_t)registerSchemeForCustomProtocol:(WTF *)this;
 + (uint64_t)unregisterSchemeForCustomProtocol:(WTF *)this;
-+ (void)registerSchemeForCustomProtocol:(id)a3;
-+ (void)registerSchemeForCustomProtocol:(void *)a1;
-+ (void)unregisterSchemeForCustomProtocol:(id)a3;
-+ (void)unregisterSchemeForCustomProtocol:(void *)a1;
++ (void)registerSchemeForCustomProtocol:(id)protocol;
++ (void)registerSchemeForCustomProtocol:(void *)protocol;
++ (void)unregisterSchemeForCustomProtocol:(id)protocol;
++ (void)unregisterSchemeForCustomProtocol:(void *)protocol;
 @end
 
 @implementation WKBrowsingContextController
 
-+ (void)registerSchemeForCustomProtocol:(id)a3
++ (void)registerSchemeForCustomProtocol:(id)protocol
 {
-  v4 = [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  isMainThread = [MEMORY[0x1E696AF00] isMainThread];
+  if (isMainThread)
   {
-    MEMORY[0x19EB02040](&v12, a3);
+    MEMORY[0x19EB02040](&v12, protocol);
     WebKit::WebProcessPool::registerGlobalURLSchemeAsHavingCustomProtocolHandlers(&v12, v5);
     v7 = v12;
     v12 = 0;
@@ -31,15 +31,15 @@
 
   else
   {
-    v8 = WTF::WorkQueue::mainSingleton(v4);
-    if (a3)
+    v8 = WTF::WorkQueue::mainSingleton(isMainThread);
+    if (protocol)
     {
-      v9 = a3;
+      protocolCopy = protocol;
     }
 
     v10 = WTF::fastMalloc(0x10);
     *v10 = &unk_1F10F49D8;
-    *(v10 + 1) = a3;
+    *(v10 + 1) = protocol;
     v12 = v10;
     (*(*v8 + 48))(v8, &v12);
     v11 = v12;
@@ -51,12 +51,12 @@
   }
 }
 
-+ (void)unregisterSchemeForCustomProtocol:(id)a3
++ (void)unregisterSchemeForCustomProtocol:(id)protocol
 {
-  v4 = [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  isMainThread = [MEMORY[0x1E696AF00] isMainThread];
+  if (isMainThread)
   {
-    MEMORY[0x19EB02040](&v12, a3);
+    MEMORY[0x19EB02040](&v12, protocol);
     WebKit::WebProcessPool::unregisterGlobalURLSchemeAsHavingCustomProtocolHandlers(&v12, v5);
     v7 = v12;
     v12 = 0;
@@ -71,15 +71,15 @@
 
   else
   {
-    v8 = WTF::WorkQueue::mainSingleton(v4);
-    if (a3)
+    v8 = WTF::WorkQueue::mainSingleton(isMainThread);
+    if (protocol)
     {
-      v9 = a3;
+      protocolCopy = protocol;
     }
 
     v10 = WTF::fastMalloc(0x10);
     *v10 = &unk_1F10F4A00;
-    *(v10 + 1) = a3;
+    *(v10 + 1) = protocol;
     v12 = v10;
     (*(*v8 + 48))(v8, &v12);
     v11 = v12;
@@ -91,16 +91,16 @@
   }
 }
 
-+ (void)registerSchemeForCustomProtocol:(void *)a1
++ (void)registerSchemeForCustomProtocol:(void *)protocol
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10F49D8;
-  a1[1] = 0;
+  v2 = protocol[1];
+  *protocol = &unk_1F10F49D8;
+  protocol[1] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return protocol;
 }
 
 + (uint64_t)registerSchemeForCustomProtocol:(WTF *)this
@@ -115,9 +115,9 @@
   return WTF::fastFree(this, a2);
 }
 
-+ (WTF::StringImpl)registerSchemeForCustomProtocol:(uint64_t)a1
++ (WTF::StringImpl)registerSchemeForCustomProtocol:(uint64_t)protocol
 {
-  MEMORY[0x19EB02040](&v4, *(a1 + 8));
+  MEMORY[0x19EB02040](&v4, *(protocol + 8));
   WebKit::WebProcessPool::registerGlobalURLSchemeAsHavingCustomProtocolHandlers(&v4, v1);
   result = v4;
   v4 = 0;
@@ -132,16 +132,16 @@
   return result;
 }
 
-+ (void)unregisterSchemeForCustomProtocol:(void *)a1
++ (void)unregisterSchemeForCustomProtocol:(void *)protocol
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10F4A00;
-  a1[1] = 0;
+  v2 = protocol[1];
+  *protocol = &unk_1F10F4A00;
+  protocol[1] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return protocol;
 }
 
 + (uint64_t)unregisterSchemeForCustomProtocol:(WTF *)this
@@ -156,9 +156,9 @@
   return WTF::fastFree(this, a2);
 }
 
-+ (WTF::StringImpl)unregisterSchemeForCustomProtocol:(uint64_t)a1
++ (WTF::StringImpl)unregisterSchemeForCustomProtocol:(uint64_t)protocol
 {
-  MEMORY[0x19EB02040](&v4, *(a1 + 8));
+  MEMORY[0x19EB02040](&v4, *(protocol + 8));
   WebKit::WebProcessPool::unregisterGlobalURLSchemeAsHavingCustomProtocolHandlers(&v4, v1);
   result = v4;
   v4 = 0;

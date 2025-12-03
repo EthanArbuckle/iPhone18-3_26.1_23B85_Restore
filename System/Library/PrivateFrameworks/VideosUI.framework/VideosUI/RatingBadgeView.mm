@@ -1,13 +1,13 @@
 @interface RatingBadgeView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)drawRect:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation RatingBadgeView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1E3F73ADC();
   v6 = v5;
 
@@ -18,9 +18,9 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   sub_1E3F74158();
 }
 

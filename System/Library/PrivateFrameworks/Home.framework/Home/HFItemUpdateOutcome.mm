@@ -1,39 +1,39 @@
 @interface HFItemUpdateOutcome
-+ (id)outcomeWithResults:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)outcomeWithResults:(id)results;
+- (BOOL)isEqual:(id)equal;
 - (HFItemUpdateOutcome)init;
-- (HFItemUpdateOutcome)initWithResults:(id)a3 type:(unint64_t)a4;
+- (HFItemUpdateOutcome)initWithResults:(id)results type:(unint64_t)type;
 - (NSArray)allKeys;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)objectForKeyedSubscript:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)objectForKeyedSubscript:(id)subscript;
 - (unint64_t)hash;
 @end
 
 @implementation HFItemUpdateOutcome
 
-+ (id)outcomeWithResults:(id)a3
++ (id)outcomeWithResults:(id)results
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithResults:v3];
+  resultsCopy = results;
+  v4 = [objc_alloc(objc_opt_class()) initWithResults:resultsCopy];
 
   return v4;
 }
 
-- (HFItemUpdateOutcome)initWithResults:(id)a3 type:(unint64_t)a4
+- (HFItemUpdateOutcome)initWithResults:(id)results type:(unint64_t)type
 {
-  v8 = a3;
-  if (!v8)
+  resultsCopy = results;
+  if (!resultsCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HFItemUpdateOutcome.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"results != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFItemUpdateOutcome.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"results != nil"}];
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HFItemUpdateOutcome.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"[results isKindOfClass:[NSDictionary class]]"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFItemUpdateOutcome.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"[results isKindOfClass:[NSDictionary class]]"}];
   }
 
   v14.receiver = self;
@@ -42,8 +42,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_results, a3);
-    v10->_outcomeType = a4;
+    objc_storeStrong(&v9->_results, results);
+    v10->_outcomeType = type;
   }
 
   return v10;
@@ -51,42 +51,42 @@
 
 - (HFItemUpdateOutcome)init
 {
-  v3 = [MEMORY[0x277CBEAC0] dictionary];
-  v4 = [(HFItemUpdateOutcome *)self initWithResults:v3];
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
+  v4 = [(HFItemUpdateOutcome *)self initWithResults:dictionary];
 
   return v4;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
-  v5 = [(HFItemUpdateOutcome *)self results];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  subscriptCopy = subscript;
+  results = [(HFItemUpdateOutcome *)self results];
+  v6 = [results objectForKeyedSubscript:subscriptCopy];
 
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HFMutableItemUpdateOutcome alloc];
-  v5 = [(HFItemUpdateOutcome *)self results];
-  v6 = [(HFMutableItemUpdateOutcome *)v4 initWithResults:v5 type:[(HFItemUpdateOutcome *)self outcomeType]];
+  results = [(HFItemUpdateOutcome *)self results];
+  v6 = [(HFMutableItemUpdateOutcome *)v4 initWithResults:results type:[(HFItemUpdateOutcome *)self outcomeType]];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HFItemUpdateOutcome *)self results];
-  v3 = [v2 hash];
+  results = [(HFItemUpdateOutcome *)self results];
+  v3 = [results hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -96,23 +96,23 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HFItemUpdateOutcome *)v5 results];
-      v7 = [(HFItemUpdateOutcome *)self results];
-      if (v6 == v7)
+      v5 = equalCopy;
+      results = [(HFItemUpdateOutcome *)v5 results];
+      results2 = [(HFItemUpdateOutcome *)self results];
+      if (results == results2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(HFItemUpdateOutcome *)v5 results];
-        v9 = [(HFItemUpdateOutcome *)self results];
-        v10 = [v8 isEqualToDictionary:v9];
+        results3 = [(HFItemUpdateOutcome *)v5 results];
+        results4 = [(HFItemUpdateOutcome *)self results];
+        v10 = [results3 isEqualToDictionary:results4];
       }
 
-      v12 = [(HFItemUpdateOutcome *)v5 outcomeType];
-      v11 = (v12 == [(HFItemUpdateOutcome *)self outcomeType]) & v10;
+      outcomeType = [(HFItemUpdateOutcome *)v5 outcomeType];
+      v11 = (outcomeType == [(HFItemUpdateOutcome *)self outcomeType]) & v10;
     }
 
     else
@@ -126,22 +126,22 @@
 
 - (NSArray)allKeys
 {
-  v2 = [(HFItemUpdateOutcome *)self results];
-  v3 = [v2 allKeys];
+  results = [(HFItemUpdateOutcome *)self results];
+  allKeys = [results allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 - (id)description
 {
-  v3 = [(HFItemUpdateOutcome *)self outcomeType];
+  outcomeType = [(HFItemUpdateOutcome *)self outcomeType];
   v4 = @"Not set";
-  if (v3 == 1)
+  if (outcomeType == 1)
   {
     v4 = @"No new data";
   }
 
-  if (v3 == 2)
+  if (outcomeType == 2)
   {
     v5 = @"New data";
   }
@@ -153,8 +153,8 @@
 
   v6 = MEMORY[0x277CCACA8];
   v7 = objc_opt_class();
-  v8 = [(HFItemUpdateOutcome *)self results];
-  v9 = [v6 stringWithFormat:@"<%@: %p> type: %@, results: %@>", v7, self, v5, v8];
+  results = [(HFItemUpdateOutcome *)self results];
+  v9 = [v6 stringWithFormat:@"<%@: %p> type: %@, results: %@>", v7, self, v5, results];
 
   return v9;
 }

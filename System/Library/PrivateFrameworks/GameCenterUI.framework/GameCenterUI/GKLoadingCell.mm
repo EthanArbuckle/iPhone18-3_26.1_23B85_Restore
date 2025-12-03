@@ -11,8 +11,8 @@
   [(GKLoadingCell *)&v6 awakeFromNib];
   v3 = GKGameCenterUIFrameworkBundle();
   v4 = GKGetLocalizedStringFromTableInBundle();
-  v5 = [(GKLoadingCell *)self loading];
-  [v5 setText:v4];
+  loading = [(GKLoadingCell *)self loading];
+  [loading setText:v4];
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface PXPhotosGridPromptHeaderView
-+ (CGSize)_instanceLayoutSubviews:(id)a3 forTitle:(id)a4 inBounds:(CGRect)a5;
-+ (CGSize)sizeThatFits:(CGSize)a3 forTitle:(id)a4;
++ (CGSize)_instanceLayoutSubviews:(id)subviews forTitle:(id)title inBounds:(CGRect)bounds;
++ (CGSize)sizeThatFits:(CGSize)fits forTitle:(id)title;
 + (id)_newTitleLabel;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PXPhotosGridPromptHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PXPhotosGridPromptHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PXPhotosGridPromptHeaderView
 
 - (void)layoutSubviews
 {
-  v7 = [(PXPhotosGridPromptHeaderView *)self title];
+  title = [(PXPhotosGridPromptHeaderView *)self title];
   [(PXPhotosGridPromptHeaderView *)self bounds];
-  [objc_opt_class() _instanceLayoutSubviews:self forTitle:v7 inBounds:{v3, v4, v5, v6}];
+  [objc_opt_class() _instanceLayoutSubviews:self forTitle:title inBounds:{v3, v4, v5, v6}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = objc_opt_class();
-  v7 = [(PXPhotosGridPromptHeaderView *)self title];
-  [v6 sizeThatFits:v7 forTitle:{width, height}];
+  title = [(PXPhotosGridPromptHeaderView *)self title];
+  [v6 sizeThatFits:title forTitle:{width, height}];
   v9 = v8;
   v11 = v10;
 
@@ -34,94 +34,94 @@
   return result;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (self->_title != a3)
+  if (self->_title != title)
   {
-    v4 = a3;
-    v5 = [v4 copy];
+    titleCopy = title;
+    v5 = [titleCopy copy];
     title = self->_title;
     self->_title = v5;
 
-    [(UILabel *)self->_titleLabel setText:v4];
+    [(UILabel *)self->_titleLabel setText:titleCopy];
 
     [(PXPhotosGridPromptHeaderView *)self setNeedsLayout];
   }
 }
 
-- (PXPhotosGridPromptHeaderView)initWithFrame:(CGRect)a3
+- (PXPhotosGridPromptHeaderView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = PXPhotosGridPromptHeaderView;
-  v3 = [(PXPhotosGridPromptHeaderView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXPhotosGridPromptHeaderView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [objc_opt_class() _newTitleLabel];
+    _newTitleLabel = [objc_opt_class() _newTitleLabel];
     titleLabel = v3->_titleLabel;
-    v3->_titleLabel = v4;
+    v3->_titleLabel = _newTitleLabel;
 
     [(PXPhotosGridPromptHeaderView *)v3 addSubview:v3->_titleLabel];
-    v6 = [(PXPhotosGridPromptHeaderView *)v3 traitCollection];
-    [v6 displayScale];
+    traitCollection = [(PXPhotosGridPromptHeaderView *)v3 traitCollection];
+    [traitCollection displayScale];
     v8 = 1.0 / v7;
 
     [(PXPhotosGridPromptHeaderView *)v3 bounds];
     v12 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v10, v9 - v8, v11, v8}];
     [(UIView *)v12 setAutoresizingMask:10];
     separatorView = v3->_separatorView;
-    v14 = [MEMORY[0x1E69DC888] separatorColor];
-    [(UIView *)separatorView setBackgroundColor:v14];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+    [(UIView *)separatorView setBackgroundColor:separatorColor];
 
     v15 = v3->_separatorView;
     v3->_separatorView = v12;
     v16 = v12;
 
     [(PXPhotosGridPromptHeaderView *)v3 addSubview:v16];
-    v17 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
 
-    [(PXPhotosGridPromptHeaderView *)v3 setBackgroundColor:v17];
+    [(PXPhotosGridPromptHeaderView *)v3 setBackgroundColor:secondarySystemBackgroundColor];
   }
 
   return v3;
 }
 
-+ (CGSize)sizeThatFits:(CGSize)a3 forTitle:(id)a4
++ (CGSize)sizeThatFits:(CGSize)fits forTitle:(id)title
 {
-  [a1 _instanceLayoutSubviews:0 forTitle:a4 inBounds:{0.0, 0.0, a3.width, a3.height}];
+  [self _instanceLayoutSubviews:0 forTitle:title inBounds:{0.0, 0.0, fits.width, fits.height}];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-+ (CGSize)_instanceLayoutSubviews:(id)a3 forTitle:(id)a4 inBounds:(CGRect)a5
++ (CGSize)_instanceLayoutSubviews:(id)subviews forTitle:(id)title inBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  v9 = a3;
-  v10 = a4;
-  if (v9)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  subviewsCopy = subviews;
+  titleCopy = title;
+  if (subviewsCopy)
   {
-    v11 = v9[62];
+    _newTitleLabel = subviewsCopy[62];
   }
 
   else
   {
-    v11 = [a1 _newTitleLabel];
-    [v11 setText:v10];
+    _newTitleLabel = [self _newTitleLabel];
+    [_newTitleLabel setText:titleCopy];
   }
 
-  [v11 sizeThatFits:{fmax(width + -22.0, 0.0), height}];
+  [_newTitleLabel sizeThatFits:{fmax(width + -22.0, 0.0), height}];
   v13 = v12;
   v15 = v14 + 28.0;
-  if (v9)
+  if (subviewsCopy)
   {
-    [v11 frame];
+    [_newTitleLabel frame];
     v19.origin.x = (width - v13) * 0.5;
     v19.origin.y = (height - v15) * 0.5;
     v19.size.width = v13;
     v19.size.height = v15;
     v20 = CGRectIntegral(v19);
-    [v11 setFrame:{v20.origin.x, v20.origin.y, v20.size.width, v20.size.height}];
+    [_newTitleLabel setFrame:{v20.origin.x, v20.origin.y, v20.size.width, v20.size.height}];
   }
 
   v16 = v13;
@@ -137,8 +137,8 @@
   v3 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
   [v2 setFont:v3];
 
-  v4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v2 setTextColor:v4];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v2 setTextColor:secondaryLabelColor];
 
   [v2 setNumberOfLines:0];
   return v2;

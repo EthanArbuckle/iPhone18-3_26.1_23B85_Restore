@@ -1,16 +1,16 @@
 @interface SleepScheduleDayPickerDay
 - (BOOL)isSelected;
-- (_TtC13SleepHealthUI25SleepScheduleDayPickerDay)initWithCoder:(id)a3;
-- (_TtC13SleepHealthUI25SleepScheduleDayPickerDay)initWithFrame:(CGRect)a3;
+- (_TtC13SleepHealthUI25SleepScheduleDayPickerDay)initWithCoder:(id)coder;
+- (_TtC13SleepHealthUI25SleepScheduleDayPickerDay)initWithFrame:(CGRect)frame;
 - (id)accessibilityWeekday;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 - (void)tintColorDidChange;
 @end
 
 @implementation SleepScheduleDayPickerDay
 
-- (_TtC13SleepHealthUI25SleepScheduleDayPickerDay)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI25SleepScheduleDayPickerDay)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -20,7 +20,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_269C83648();
 }
 
@@ -34,7 +34,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_269C826B4();
 }
 
@@ -50,7 +50,7 @@
 
   v4.receiver = self;
   v4.super_class = type metadata accessor for SleepScheduleDayPickerDay();
-  v3 = self;
+  selfCopy = self;
   [(SleepScheduleDayPickerDay *)&v4 tintColorDidChange];
   sub_269C82B24();
 }
@@ -67,14 +67,14 @@
 
   v5.receiver = self;
   v5.super_class = type metadata accessor for SleepScheduleDayPickerDay();
-  v3 = [(SleepScheduleDayPickerDay *)&v5 isSelected];
+  isSelected = [(SleepScheduleDayPickerDay *)&v5 isSelected];
 
-  return v3;
+  return isSelected;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   sub_269D9A8E0();
   sub_269D9A8D0();
   sub_269D9A880();
@@ -85,8 +85,8 @@
 
   v6.receiver = self;
   v6.super_class = type metadata accessor for SleepScheduleDayPickerDay();
-  v5 = self;
-  [(SleepScheduleDayPickerDay *)&v6 setSelected:v3];
+  selfCopy = self;
+  [(SleepScheduleDayPickerDay *)&v6 setSelected:selectedCopy];
   sub_269C82B24();
 }
 
@@ -100,11 +100,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
-  v4 = [(SleepScheduleDayPickerDay *)v3 largeContentTitle];
-  if (v4 || (v4 = [*(&v3->super.super.super.super.isa + OBJC_IVAR____TtC13SleepHealthUI25SleepScheduleDayPickerDay_dayLabel) text]) != 0)
+  selfCopy = self;
+  largeContentTitle = [(SleepScheduleDayPickerDay *)selfCopy largeContentTitle];
+  if (largeContentTitle || (largeContentTitle = [*(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC13SleepHealthUI25SleepScheduleDayPickerDay_dayLabel) text]) != 0)
   {
-    v5 = v4;
+    v5 = largeContentTitle;
     sub_269D9A630();
 
     v6 = sub_269D9A5F0();
@@ -119,7 +119,7 @@
   return v6;
 }
 
-- (_TtC13SleepHealthUI25SleepScheduleDayPickerDay)initWithFrame:(CGRect)a3
+- (_TtC13SleepHealthUI25SleepScheduleDayPickerDay)initWithFrame:(CGRect)frame
 {
   sub_269D9A8E0();
   sub_269D9A8D0();

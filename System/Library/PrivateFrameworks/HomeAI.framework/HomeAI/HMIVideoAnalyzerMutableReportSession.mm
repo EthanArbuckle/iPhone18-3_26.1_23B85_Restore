@@ -1,77 +1,77 @@
 @interface HMIVideoAnalyzerMutableReportSession
-- (HMIVideoAnalyzerMutableReportSession)initWithCoder:(id)a3;
-- (HMIVideoAnalyzerMutableReportSession)initWithSource:(id)a3;
+- (HMIVideoAnalyzerMutableReportSession)initWithCoder:(id)coder;
+- (HMIVideoAnalyzerMutableReportSession)initWithSource:(id)source;
 - (id)attributeDescriptions;
-- (void)appendFragmentResult:(id)a3 redactFrames:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendFragmentResult:(id)result redactFrames:(BOOL)frames;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMIVideoAnalyzerMutableReportSession
 
-- (HMIVideoAnalyzerMutableReportSession)initWithSource:(id)a3
+- (HMIVideoAnalyzerMutableReportSession)initWithSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = HMIVideoAnalyzerMutableReportSession;
   v6 = [(HMIVideoAnalyzerMutableReportSession *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_source, a3);
-    v8 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v6->_source, source);
+    array = [MEMORY[0x277CBEB18] array];
     fragments = v7->_fragments;
-    v7->_fragments = v8;
+    v7->_fragments = array;
   }
 
   return v7;
 }
 
-- (void)appendFragmentResult:(id)a3 redactFrames:(BOOL)a4
+- (void)appendFragmentResult:(id)result redactFrames:(BOOL)frames
 {
-  v4 = a4;
-  v6 = a3;
-  v8 = [(HMIVideoAnalyzerMutableReportSession *)self fragments];
-  v7 = [v6 redactedCopyWithFrameResults:v4 fragment:1];
+  framesCopy = frames;
+  resultCopy = result;
+  fragments = [(HMIVideoAnalyzerMutableReportSession *)self fragments];
+  v7 = [resultCopy redactedCopyWithFrameResults:framesCopy fragment:1];
 
-  [v8 addObject:v7];
+  [fragments addObject:v7];
 }
 
 - (id)attributeDescriptions
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMIVideoAnalyzerMutableReportSession *)self source];
-  v5 = [v3 initWithName:@"Source" value:v4];
+  source = [(HMIVideoAnalyzerMutableReportSession *)self source];
+  v5 = [v3 initWithName:@"Source" value:source];
   v11[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMIVideoAnalyzerMutableReportSession *)self fragments];
-  v8 = [v6 initWithName:@"Fragments" value:v7];
+  fragments = [(HMIVideoAnalyzerMutableReportSession *)self fragments];
+  v8 = [v6 initWithName:@"Fragments" value:fragments];
   v11[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMIVideoAnalyzerMutableReportSession *)self source];
+  coderCopy = coder;
+  source = [(HMIVideoAnalyzerMutableReportSession *)self source];
   v6 = NSStringFromSelector(sel_source);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:source forKey:v6];
 
-  v9 = [(HMIVideoAnalyzerMutableReportSession *)self fragments];
-  v7 = [v9 copy];
+  fragments = [(HMIVideoAnalyzerMutableReportSession *)self fragments];
+  v7 = [fragments copy];
   v8 = NSStringFromSelector(sel_fragments);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:v7 forKey:v8];
 }
 
-- (HMIVideoAnalyzerMutableReportSession)initWithCoder:(id)a3
+- (HMIVideoAnalyzerMutableReportSession)initWithCoder:(id)coder
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_source);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = MEMORY[0x277CBEB98];
   v19[0] = objc_opt_class();
@@ -79,7 +79,7 @@
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
   v10 = [v8 setWithArray:v9];
   v11 = NSStringFromSelector(sel_fragments);
-  v12 = [v4 decodeObjectOfClasses:v10 forKey:v11];
+  v12 = [coderCopy decodeObjectOfClasses:v10 forKey:v11];
 
   v18.receiver = self;
   v18.super_class = HMIVideoAnalyzerMutableReportSession;

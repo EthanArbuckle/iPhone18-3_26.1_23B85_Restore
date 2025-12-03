@@ -1,6 +1,6 @@
 @interface BadgingCoordinator
 - (BadgingCoordinator)init;
-- (void)pushService:(id)a3 didReceiveMessage:(id)a4 completionHandler:(id)a5;
+- (void)pushService:(id)service didReceiveMessage:(id)message completionHandler:(id)handler;
 @end
 
 @implementation BadgingCoordinator
@@ -34,16 +34,16 @@
   return v2;
 }
 
-- (void)pushService:(id)a3 didReceiveMessage:(id)a4 completionHandler:(id)a5
+- (void)pushService:(id)service didReceiveMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a5;
+  messageCopy = message;
+  handlerCopy = handler;
   v8 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = objc_opt_class();
     v10 = v9;
-    v11 = sub_1002EA14C(v6, @"aps");
+    v11 = sub_1002EA14C(messageCopy, @"aps");
     v12 = 138543618;
     v13 = v9;
     v14 = 2114;
@@ -51,7 +51,7 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}@] Ignoring: %{public}@", &v12, 0x16u);
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 @end

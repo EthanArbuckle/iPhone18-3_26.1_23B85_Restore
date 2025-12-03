@@ -1,28 +1,28 @@
 @interface COSPairedDeviceListTableCell
 - (BOOL)_shouldUseSpaceConstrainedLayout;
-- (COSPairedDeviceListTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (COSPairedDeviceListTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)_addProgressBar;
 - (void)_configureWatchMessage;
-- (void)contentSizeCategoryDidChangeNotification:(id)a3;
+- (void)contentSizeCategoryDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)dimCellUI:(BOOL)a3;
+- (void)dimCellUI:(BOOL)i;
 - (void)displaySoftwareUpdatePane;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
 - (void)updateCellLayout;
-- (void)updateCellState:(unint64_t)a3 percentageComplete:(double)a4 migratingDevice:(id)a5;
+- (void)updateCellState:(unint64_t)state percentageComplete:(double)complete migratingDevice:(id)device;
 @end
 
 @implementation COSPairedDeviceListTableCell
 
-- (COSPairedDeviceListTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (COSPairedDeviceListTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v122.receiver = self;
   v122.super_class = COSPairedDeviceListTableCell;
-  v9 = [(COSPairedDeviceListTableCell *)&v122 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(COSPairedDeviceListTableCell *)&v122 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   if (v9)
   {
     v10 = objc_opt_new();
@@ -31,37 +31,37 @@
 
     [(UIStackView *)v9->_horizontalStack setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)v9->_horizontalStack setAlignment:3];
-    v12 = [(COSPairedDeviceListTableCell *)v9 contentView];
-    [v12 addSubview:v9->_horizontalStack];
+    contentView = [(COSPairedDeviceListTableCell *)v9 contentView];
+    [contentView addSubview:v9->_horizontalStack];
 
     v13 = objc_opt_new();
-    v14 = [(UIStackView *)v9->_horizontalStack leadingAnchor];
-    v15 = [(COSPairedDeviceListTableCell *)v9 contentView];
-    [v15 leadingAnchor];
-    v16 = v121 = v8;
-    v17 = [v14 constraintEqualToAnchor:v16 constant:18.0];
+    leadingAnchor = [(UIStackView *)v9->_horizontalStack leadingAnchor];
+    contentView2 = [(COSPairedDeviceListTableCell *)v9 contentView];
+    [contentView2 leadingAnchor];
+    v16 = v121 = specifierCopy;
+    v17 = [leadingAnchor constraintEqualToAnchor:v16 constant:18.0];
     leadingSpaceConstraint = v9->_leadingSpaceConstraint;
     v9->_leadingSpaceConstraint = v17;
 
     LODWORD(v19) = 1148829696;
     [(NSLayoutConstraint *)v9->_leadingSpaceConstraint setPriority:v19];
     [v13 addObject:v9->_leadingSpaceConstraint];
-    v20 = [(UIStackView *)v9->_horizontalStack trailingAnchor];
-    v21 = [(COSPairedDeviceListTableCell *)v9 contentView];
-    v22 = [v21 trailingAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    trailingAnchor = [(UIStackView *)v9->_horizontalStack trailingAnchor];
+    contentView3 = [(COSPairedDeviceListTableCell *)v9 contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v13 addObject:v23];
 
-    v24 = [(UIStackView *)v9->_horizontalStack topAnchor];
-    v25 = [(COSPairedDeviceListTableCell *)v9 contentView];
-    v26 = [v25 topAnchor];
-    v27 = [v24 constraintEqualToAnchor:v26];
+    topAnchor = [(UIStackView *)v9->_horizontalStack topAnchor];
+    contentView4 = [(COSPairedDeviceListTableCell *)v9 contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v13 addObject:v27];
 
-    v28 = [(COSPairedDeviceListTableCell *)v9 contentView];
-    v29 = [v28 bottomAnchor];
-    v30 = [(UIStackView *)v9->_horizontalStack bottomAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    contentView5 = [(COSPairedDeviceListTableCell *)v9 contentView];
+    bottomAnchor = [contentView5 bottomAnchor];
+    bottomAnchor2 = [(UIStackView *)v9->_horizontalStack bottomAnchor];
+    v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     horizontalStackBottomConstraint = v9->_horizontalStackBottomConstraint;
     v9->_horizontalStackBottomConstraint = v31;
 
@@ -84,13 +84,13 @@
     [(COSWatchView *)v9->_watchView setContentHuggingPriority:0 forAxis:v39];
     LODWORD(v40) = 1148829696;
     [(COSWatchView *)v9->_watchView setContentCompressionResistancePriority:0 forAxis:v40];
-    v41 = [(COSWatchView *)v9->_watchView widthAnchor];
-    v42 = [v41 constraintLessThanOrEqualToConstant:0.0];
+    widthAnchor = [(COSWatchView *)v9->_watchView widthAnchor];
+    v42 = [widthAnchor constraintLessThanOrEqualToConstant:0.0];
     watchViewWidthConstraint = v9->_watchViewWidthConstraint;
     v9->_watchViewWidthConstraint = v42;
 
-    v44 = [(COSWatchView *)v9->_watchView heightAnchor];
-    v45 = [v44 constraintLessThanOrEqualToConstant:0.0];
+    heightAnchor = [(COSWatchView *)v9->_watchView heightAnchor];
+    v45 = [heightAnchor constraintLessThanOrEqualToConstant:0.0];
     watchViewHeightConstraint = v9->_watchViewHeightConstraint;
     v9->_watchViewHeightConstraint = v45;
 
@@ -213,72 +213,72 @@
     profileImageView = v9->_profileImageView;
     v9->_profileImageView = v84;
 
-    v86 = [(UIImageView *)v9->_profileImageView layer];
+    layer = [(UIImageView *)v9->_profileImageView layer];
     v87 = BPSTinkerSupportProfilePictureDiameter;
-    [v86 setCornerRadius:BPSTinkerSupportProfilePictureDiameter * 0.5];
+    [layer setCornerRadius:BPSTinkerSupportProfilePictureDiameter * 0.5];
 
-    v88 = [(UIImageView *)v9->_profileImageView layer];
+    layer2 = [(UIImageView *)v9->_profileImageView layer];
     v89 = +[UIColor blackColor];
-    [v88 setBorderColor:{objc_msgSend(v89, "cgColor")}];
+    [layer2 setBorderColor:{objc_msgSend(v89, "cgColor")}];
 
-    v90 = [(UIImageView *)v9->_profileImageView layer];
-    [v90 setBorderWidth:2.0];
+    layer3 = [(UIImageView *)v9->_profileImageView layer];
+    [layer3 setBorderWidth:2.0];
 
-    v91 = [(UIImageView *)v9->_profileImageView layer];
+    layer4 = [(UIImageView *)v9->_profileImageView layer];
     v92 = +[UIColor blackColor];
-    [v91 setShadowColor:{objc_msgSend(v92, "cgColor")}];
+    [layer4 setShadowColor:{objc_msgSend(v92, "cgColor")}];
 
-    v93 = [(UIImageView *)v9->_profileImageView layer];
-    [v93 setShadowOffset:{CGSizeZero.width, CGSizeZero.height}];
+    layer5 = [(UIImageView *)v9->_profileImageView layer];
+    [layer5 setShadowOffset:{CGSizeZero.width, CGSizeZero.height}];
 
-    v94 = [(UIImageView *)v9->_profileImageView layer];
-    [v94 setShadowRadius:4.0];
+    layer6 = [(UIImageView *)v9->_profileImageView layer];
+    [layer6 setShadowRadius:4.0];
 
-    v95 = [(UIImageView *)v9->_profileImageView layer];
+    layer7 = [(UIImageView *)v9->_profileImageView layer];
     LODWORD(v96) = 0.5;
-    [v95 setShadowOpacity:v96];
+    [layer7 setShadowOpacity:v96];
 
     v97 = v9->_profileImageView;
     v98 = +[UIColor blackColor];
     [(UIImageView *)v97 setBackgroundColor:v98];
 
     [(UIImageView *)v9->_profileImageView setContentMode:2];
-    v99 = [(COSPairedDeviceListTableCell *)v9 contentView];
-    [v99 addSubview:v9->_profileImageView];
+    contentView6 = [(COSPairedDeviceListTableCell *)v9 contentView];
+    [contentView6 addSubview:v9->_profileImageView];
 
     [(UIImageView *)v9->_profileImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v117 = [(UIImageView *)v9->_profileImageView bottomAnchor];
-    v116 = [(COSWatchView *)v9->_watchView bottomAnchor];
-    v115 = [v117 constraintEqualToAnchor:v116 constant:6.0];
+    bottomAnchor3 = [(UIImageView *)v9->_profileImageView bottomAnchor];
+    bottomAnchor4 = [(COSWatchView *)v9->_watchView bottomAnchor];
+    v115 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:6.0];
     v123[0] = v115;
-    v114 = [(UIImageView *)v9->_profileImageView rightAnchor];
-    v113 = [(COSWatchView *)v9->_watchView rightAnchor];
-    v112 = [v114 constraintEqualToAnchor:v113 constant:6.0];
+    rightAnchor = [(UIImageView *)v9->_profileImageView rightAnchor];
+    rightAnchor2 = [(COSWatchView *)v9->_watchView rightAnchor];
+    v112 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:6.0];
     v123[1] = v112;
-    v100 = [(UIImageView *)v9->_profileImageView heightAnchor];
-    v101 = [v100 constraintEqualToConstant:v87];
+    heightAnchor2 = [(UIImageView *)v9->_profileImageView heightAnchor];
+    v101 = [heightAnchor2 constraintEqualToConstant:v87];
     v123[2] = v101;
-    v102 = [(UIImageView *)v9->_profileImageView widthAnchor];
-    v103 = [v102 constraintEqualToConstant:v87];
+    widthAnchor2 = [(UIImageView *)v9->_profileImageView widthAnchor];
+    v103 = [widthAnchor2 constraintEqualToConstant:v87];
     v123[3] = v103;
-    v104 = [(UILabel *)v9->_watchMessage trailingAnchor];
-    v105 = [(COSPairedDeviceListTableCell *)v9 trailingAnchor];
-    v106 = [v104 constraintEqualToAnchor:v105 constant:-14.0];
+    trailingAnchor3 = [(UILabel *)v9->_watchMessage trailingAnchor];
+    trailingAnchor4 = [(COSPairedDeviceListTableCell *)v9 trailingAnchor];
+    v106 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-14.0];
     v123[4] = v106;
     v107 = [NSArray arrayWithObjects:v123 count:5];
     [NSLayoutConstraint activateConstraints:v107];
 
-    v8 = v121;
+    specifierCopy = v121;
     [(UIImageView *)v9->_profileImageView setHidden:1];
     v108 = +[NSNotificationCenter defaultCenter];
     [v108 addObserver:v9 selector:"contentSizeCategoryDidChangeNotification:" name:UIContentSizeCategoryDidChangeNotification object:0];
   }
 
-  v109 = [v8 propertyForKey:@"COSPairedDeviceListTableCellEnabled"];
+  v109 = [specifierCopy propertyForKey:@"COSPairedDeviceListTableCellEnabled"];
   v9->_enabled = [v109 BOOLValue];
 
   cellSpecifier = v9->_cellSpecifier;
-  v9->_cellSpecifier = v8;
+  v9->_cellSpecifier = specifierCopy;
 
   return v9;
 }
@@ -291,8 +291,8 @@
     v3 = [(PSSpecifier *)self->_cellSpecifier propertyForKey:@"COSMigrationManager"];
     progressView = self->_progressView;
     v33 = v3;
-    v5 = [v3 currentSession];
-    [v5 sessionProgress];
+    currentSession = [v3 currentSession];
+    [currentSession sessionProgress];
     *&v6 = v6;
     [(UIProgressView *)progressView setProgress:1 animated:v6];
 
@@ -320,39 +320,39 @@
 
     [(UIProgressView *)self->_progressView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIProgressView *)self->_progressView addSubview:v9];
-    v14 = [(COSPairedDeviceListTableCell *)self contentView];
-    [v14 addSubview:self->_progressView];
+    contentView = [(COSPairedDeviceListTableCell *)self contentView];
+    [contentView addSubview:self->_progressView];
 
-    v34 = [v9 topAnchor];
-    v32 = [(UIProgressView *)self->_progressView bottomAnchor];
-    v31 = [v34 constraintEqualToAnchor:v32 constant:6.0];
+    topAnchor = [v9 topAnchor];
+    bottomAnchor = [(UIProgressView *)self->_progressView bottomAnchor];
+    v31 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:6.0];
     v35[0] = v31;
-    v30 = [v9 leadingAnchor];
-    v29 = [(UIProgressView *)self->_progressView leadingAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29];
+    leadingAnchor = [v9 leadingAnchor];
+    leadingAnchor2 = [(UIProgressView *)self->_progressView leadingAnchor];
+    v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v35[1] = v28;
-    v27 = [v9 trailingAnchor];
-    v26 = [(UIProgressView *)self->_progressView trailingAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26];
+    trailingAnchor = [v9 trailingAnchor];
+    trailingAnchor2 = [(UIProgressView *)self->_progressView trailingAnchor];
+    v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v35[2] = v25;
-    v24 = [(UIProgressView *)self->_progressView topAnchor];
-    v15 = [(UIStackView *)self->_labelStack bottomAnchor];
-    v16 = [v24 constraintEqualToAnchor:v15 constant:6.0];
+    topAnchor2 = [(UIProgressView *)self->_progressView topAnchor];
+    bottomAnchor2 = [(UIStackView *)self->_labelStack bottomAnchor];
+    v16 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2 constant:6.0];
     v35[3] = v16;
-    v17 = [(UIProgressView *)self->_progressView leadingAnchor];
-    v18 = [(UIStackView *)self->_labelStack leadingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    leadingAnchor3 = [(UIProgressView *)self->_progressView leadingAnchor];
+    leadingAnchor4 = [(UIStackView *)self->_labelStack leadingAnchor];
+    v19 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v35[4] = v19;
-    v20 = [(UIProgressView *)self->_progressView trailingAnchor];
-    v21 = [(COSPairedDeviceListTableCell *)self trailingAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21 constant:-14.0];
+    trailingAnchor3 = [(UIProgressView *)self->_progressView trailingAnchor];
+    trailingAnchor4 = [(COSPairedDeviceListTableCell *)self trailingAnchor];
+    v22 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-14.0];
     v35[5] = v22;
     v23 = [NSArray arrayWithObjects:v35 count:6];
     [NSLayoutConstraint activateConstraints:v23];
   }
 }
 
-- (void)contentSizeCategoryDidChangeNotification:(id)a3
+- (void)contentSizeCategoryDidChangeNotification:(id)notification
 {
   [(COSPairedDeviceListTableCell *)self layoutSubviews];
 
@@ -374,7 +374,7 @@
   }
 
   v6 = *v5;
-  v7 = [UIApp preferredContentSizeCategory];
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
   v8 = _UIContentSizeCategoryCompareToContentSizeCategory() != 1;
 
   return v8;
@@ -401,9 +401,9 @@
       v7 = *p_labelStack;
       [v34 _scaledValueForValue:23.0];
       [(UIStackView *)v7 setCustomSpacing:self->_watchSubtitle afterView:?];
-      v8 = [(UILabel *)self->_watchSubtitle isHidden];
+      isHidden = [(UILabel *)self->_watchSubtitle isHidden];
       v9 = *p_labelStack;
-      if (v8)
+      if (isHidden)
       {
         [v34 _scaledValueForValue:23.0];
       }
@@ -421,8 +421,8 @@
         [(UIStackView *)v10 setCustomSpacing:self->_watchSize afterView:?];
       }
 
-      v11 = [(COSPairedDeviceListTableCell *)self _shouldUseSpaceConstrainedLayout];
-      if (v11)
+      _shouldUseSpaceConstrainedLayout = [(COSPairedDeviceListTableCell *)self _shouldUseSpaceConstrainedLayout];
+      if (_shouldUseSpaceConstrainedLayout)
       {
         v12 = p_labelStack;
       }
@@ -433,9 +433,9 @@
       }
 
       v13 = *v12;
-      v14 = [(COSWatchView *)self->_watchView superview];
+      superview = [(COSWatchView *)self->_watchView superview];
 
-      if (v14 != v13)
+      if (superview != v13)
       {
         [(UIStackView *)*p_horizontalStack setSpacing:14.0];
         [(COSWatchView *)self->_watchView removeFromSuperview];
@@ -445,19 +445,19 @@
         [NSLayoutConstraint activateConstraints:v16];
 
         [(COSPairedDeviceListCheckmark *)self->_checkmark removeFromSuperview];
-        if (v11)
+        if (_shouldUseSpaceConstrainedLayout)
         {
-          v17 = [(COSPairedDeviceListTableCell *)self contentView];
-          [v17 addSubview:self->_checkmark];
+          contentView = [(COSPairedDeviceListTableCell *)self contentView];
+          [contentView addSubview:self->_checkmark];
 
           v18 = _NSDictionaryOfVariableBindings(@"_checkmark, _horizontalStack", self->_checkmark, *p_horizontalStack, 0);
           v19 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-[_checkmark]-[_horizontalStack]", 0, 0, v18);
           [NSLayoutConstraint activateConstraints:v19];
 
-          v20 = [(COSPairedDeviceListCheckmark *)self->_checkmark centerYAnchor];
-          v21 = [(COSPairedDeviceListTableCell *)self contentView];
-          v22 = [v21 centerYAnchor];
-          v23 = [v20 constraintEqualToAnchor:v22];
+          centerYAnchor = [(COSPairedDeviceListCheckmark *)self->_checkmark centerYAnchor];
+          contentView2 = [(COSPairedDeviceListTableCell *)self contentView];
+          centerYAnchor2 = [contentView2 centerYAnchor];
+          v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
           [v23 setActive:1];
 
           v24 = 16.0;
@@ -476,9 +476,9 @@
       v25 = [(PSSpecifier *)self->_cellSpecifier propertyForKey:@"COSMigrationManager"];
       v26 = [(PSSpecifier *)self->_cellSpecifier propertyForKey:@"COSAssociatedDevice"];
       v27 = [v26 valueForProperty:NRDevicePropertyIsAltAccount];
-      v28 = [v27 BOOLValue];
+      bOOLValue = [v27 BOOLValue];
 
-      -[COSPairedDeviceListTableCell dimCellUI:](self, "dimCellUI:", [v25 isDeviceWaitingToMigrate:v26] & (v28 ^ 1));
+      -[COSPairedDeviceListTableCell dimCellUI:](self, "dimCellUI:", [v25 isDeviceWaitingToMigrate:v26] & (bOOLValue ^ 1));
       [(COSPairedDeviceListTableCell *)self setEnabled:self->_enabled];
       watchView = self->_watchView;
       [(COSWatchView *)watchView bounds];
@@ -504,23 +504,23 @@
   v4.receiver = self;
   v4.super_class = COSPairedDeviceListTableCell;
   [(COSPairedDeviceListTableCell *)&v4 layoutSubviews];
-  v3 = [(COSPairedDeviceListTableCell *)self textLabel];
-  [v3 setHidden:1];
+  textLabel = [(COSPairedDeviceListTableCell *)self textLabel];
+  [textLabel setHidden:1];
 
   [(NSLayoutConstraint *)self->_leadingSpaceConstraint setConstant:16.0];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v5 = a3;
-  objc_storeStrong(&self->_cellSpecifier, a3);
+  specifierCopy = specifier;
+  objc_storeStrong(&self->_cellSpecifier, specifier);
   v104.receiver = self;
   v104.super_class = COSPairedDeviceListTableCell;
-  [(COSPairedDeviceListTableCell *)&v104 refreshCellContentsWithSpecifier:v5];
-  v6 = [v5 propertyForKey:@"COSAssociatedDevice"];
+  [(COSPairedDeviceListTableCell *)&v104 refreshCellContentsWithSpecifier:specifierCopy];
+  v6 = [specifierCopy propertyForKey:@"COSAssociatedDevice"];
   [(COSWatchView *)self->_watchView setAssociatedDevice:v6];
-  v97 = v5;
-  v7 = [v5 propertyForKey:@"COSDeviceState"];
+  v97 = specifierCopy;
+  v7 = [specifierCopy propertyForKey:@"COSDeviceState"];
   self->_deviceState = [v7 integerValue];
 
   v8 = [v6 valueForProperty:NRDevicePropertyProductType];
@@ -595,9 +595,9 @@
   }
 
   v28 = [v99 valueForProperty:NRDevicePropertyDeviceBrand];
-  v29 = [v28 integerValue];
+  integerValue = [v28 integerValue];
   watchBehavior = self->_watchBehavior;
-  if (v29)
+  if (integerValue)
   {
     [v28 intValue];
     v31 = BPSLocalizedShortEdition();
@@ -613,9 +613,9 @@
   v33 = pbb_bridge_log();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
-    v34 = [(UILabel *)self->_watchBehavior text];
+    text = [(UILabel *)self->_watchBehavior text];
     *buf = 138412290;
-    v108 = v34;
+    v108 = text;
     _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "_watchBehavior: (%@)", buf, 0xCu);
   }
 
@@ -637,8 +637,8 @@
   {
     [(COSPairedDeviceListTableCell *)self _addProgressBar];
     progressView = self->_progressView;
-    v65 = [v38 currentSession];
-    [v65 sessionProgress];
+    currentSession = [v38 currentSession];
+    [currentSession sessionProgress];
     *&v66 = v66;
     [(UIProgressView *)progressView setProgress:0 animated:v66];
   }
@@ -650,27 +650,27 @@
 
   v39 = NRDevicePropertyIsAltAccount;
   v40 = [v99 valueForProperty:NRDevicePropertyIsAltAccount];
-  v41 = [v40 BOOLValue];
+  bOOLValue = [v40 BOOLValue];
 
-  if (v41)
+  if (bOOLValue)
   {
     v42 = [v99 valueForProperty:@"_altAccountIdentifier"];
     v43 = +[BPSTinkerSupport sharedInstance];
-    v44 = [v43 cachedFamilyCircle];
+    cachedFamilyCircle = [v43 cachedFamilyCircle];
 
-    if (v42 && v44)
+    if (v42 && cachedFamilyCircle)
     {
       v102 = 0u;
       v103 = 0u;
       v100 = 0u;
       v101 = 0u;
-      v45 = [v44 members];
-      v46 = [v45 countByEnumeratingWithState:&v100 objects:v105 count:16];
+      members = [cachedFamilyCircle members];
+      v46 = [members countByEnumeratingWithState:&v100 objects:v105 count:16];
       if (v46)
       {
         v47 = v46;
         v88 = 200;
-        v89 = v44;
+        v89 = cachedFamilyCircle;
         v48 = v39;
         v49 = *v101;
 LABEL_25:
@@ -679,12 +679,12 @@ LABEL_25:
         {
           if (*v101 != v49)
           {
-            objc_enumerationMutation(v45);
+            objc_enumerationMutation(members);
           }
 
           v51 = *(*(&v100 + 1) + 8 * v50);
-          v52 = [v51 appleID];
-          v53 = [v42 isEqualToString:v52];
+          appleID = [v51 appleID];
+          v53 = [v42 isEqualToString:appleID];
 
           if (v53)
           {
@@ -693,7 +693,7 @@ LABEL_25:
 
           if (v47 == ++v50)
           {
-            v47 = [v45 countByEnumeratingWithState:&v100 objects:v105 count:16];
+            v47 = [members countByEnumeratingWithState:&v100 objects:v105 count:16];
             if (v47)
             {
               goto LABEL_25;
@@ -701,7 +701,7 @@ LABEL_25:
 
             v37 = v97;
             v39 = v48;
-            v44 = v89;
+            cachedFamilyCircle = v89;
             goto LABEL_47;
           }
         }
@@ -710,7 +710,7 @@ LABEL_25:
 
         v37 = v97;
         v39 = v48;
-        v44 = v89;
+        cachedFamilyCircle = v89;
         if (!v56)
         {
           goto LABEL_48;
@@ -725,8 +725,8 @@ LABEL_25:
         }
 
         [*&self->PSTableCell_opaque[v88] setHidden:0];
-        v58 = [v56 appleID];
-        v59 = [v58 stringByReplacingOccurrencesOfString:@"@" withString:@"​@"];
+        appleID2 = [v56 appleID];
+        v59 = [appleID2 stringByReplacingOccurrencesOfString:@"@" withString:@"​@"];
 
         [*&self->PSTableCell_opaque[v88] setText:v59];
         v60 = +[BPSTinkerSupport sharedInstance];
@@ -774,9 +774,9 @@ LABEL_48:
       v56 = 0;
 LABEL_52:
 
-      v67 = [(UILabel *)self->_watchMessage text];
+      text2 = [(UILabel *)self->_watchMessage text];
 
-      if (v67)
+      if (text2)
       {
         [(UIStackView *)self->_labelStack spacing];
         v69 = v68;
@@ -791,10 +791,10 @@ LABEL_52:
     }
 
     v54 = pbb_bridge_log();
-    v45 = v54;
-    if (v44)
+    members = v54;
+    if (cachedFamilyCircle)
     {
-      if (!os_log_type_enabled(v54, OS_LOG_TYPE_ERROR) || !os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled(v54, OS_LOG_TYPE_ERROR) || !os_log_type_enabled(members, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_47;
       }
@@ -816,14 +816,14 @@ LABEL_52:
       v55 = "%s: tinker device, but family circle is not loaded yet, waiting...";
     }
 
-    _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, v55, buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, members, OS_LOG_TYPE_DEFAULT, v55, buf, 0xCu);
     goto LABEL_47;
   }
 
 LABEL_55:
   [(COSPairedDeviceListTableCell *)self updateCellLayout];
-  v71 = [v37 identifier];
-  v72 = [v71 isEqualToString:@"LOADING_WATCH_ITEM"];
+  identifier = [v37 identifier];
+  v72 = [identifier isEqualToString:@"LOADING_WATCH_ITEM"];
 
   if (v72)
   {
@@ -840,13 +840,13 @@ LABEL_61:
 
   [(COSPairedDeviceListTableCell *)self setLoading:0];
   v73 = [v22 valueForProperty:v39];
-  v74 = [v73 BOOLValue];
+  bOOLValue2 = [v73 BOOLValue];
 
   v75 = [COSTinkerHealthSharingSetupDelegate tinkerDevice]_0();
   v76 = [v22 isEqual:v75];
 
   deviceState = self->_deviceState;
-  if (v74 && v76 && deviceState == 1)
+  if (bOOLValue2 && v76 && deviceState == 1)
   {
     v78 = [v37 propertyForKey:@"COSPairedDeviceListTableCellEnabled"];
     self->_enabled = [v78 BOOLValue];
@@ -971,26 +971,26 @@ LABEL_12:
   v6[2](v6, v5);
 }
 
-- (void)dimCellUI:(BOOL)a3
+- (void)dimCellUI:(BOOL)i
 {
-  v3 = a3;
-  [(UILabel *)self->_watchName setEnabled:!a3];
-  [(UILabel *)self->_watchSubtitle setEnabled:!v3];
-  [(COSWatchView *)self->_watchView setUserInteractionEnabled:!v3];
-  [(UILabel *)self->_watchBehavior setEnabled:!v3];
-  [(UILabel *)self->_watchSize setEnabled:!v3];
+  iCopy = i;
+  [(UILabel *)self->_watchName setEnabled:!i];
+  [(UILabel *)self->_watchSubtitle setEnabled:!iCopy];
+  [(COSWatchView *)self->_watchView setUserInteractionEnabled:!iCopy];
+  [(UILabel *)self->_watchBehavior setEnabled:!iCopy];
+  [(UILabel *)self->_watchSize setEnabled:!iCopy];
   watchMaterial = self->_watchMaterial;
 
-  [(UILabel *)watchMaterial setEnabled:!v3];
+  [(UILabel *)watchMaterial setEnabled:!iCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = COSPairedDeviceListTableCell;
-  [(COSPairedDeviceListTableCell *)&v7 setHighlighted:a3 animated:a4];
-  if (v4)
+  [(COSPairedDeviceListTableCell *)&v7 setHighlighted:highlighted animated:animated];
+  if (highlightedCopy)
   {
     BPSDevicePickerCellHighlightColor();
   }
@@ -1013,22 +1013,22 @@ LABEL_12:
   [(UILabel *)self->_watchMessage setHidden:1];
 }
 
-- (void)updateCellState:(unint64_t)a3 percentageComplete:(double)a4 migratingDevice:(id)a5
+- (void)updateCellState:(unint64_t)state percentageComplete:(double)complete migratingDevice:(id)device
 {
-  v12 = a5;
-  if (a3 != 2 || (v8 = 1.0, a4 == 1.0) || (self->_deviceState & 0xFFFFFFFFFFFFFFFELL) == 6)
+  deviceCopy = device;
+  if (state != 2 || (v8 = 1.0, complete == 1.0) || (self->_deviceState & 0xFFFFFFFFFFFFFFFELL) == 6)
   {
     v9 = 1.0;
-    if (a4 == 1.0)
+    if (complete == 1.0)
     {
       LODWORD(v9) = 1.0;
       [(UIProgressView *)self->_progressView setProgress:1 animated:v9];
     }
 
-    v10 = [(COSPairedDeviceListTableCell *)self progressView];
-    [v10 setHidden:1];
+    progressView = [(COSPairedDeviceListTableCell *)self progressView];
+    [progressView setHidden:1];
 
-    if (!a3)
+    if (!state)
     {
       [(COSPairedDeviceListTableCell *)self _configureWatchMessage];
     }
@@ -1043,7 +1043,7 @@ LABEL_12:
       progressView = self->_progressView;
     }
 
-    *&v8 = a4;
+    *&v8 = complete;
     [(UIProgressView *)progressView setProgress:1 animated:v8];
   }
 

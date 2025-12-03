@@ -1,19 +1,19 @@
 @interface MusicKit_SoftLinking_MPMusicPlayerPlayParametersQueueDescriptor
-- (MusicKit_SoftLinking_MPMusicPlayerPlayParametersQueueDescriptor)initWithPlayParametersQueue:(id)a3;
-- (void)setContainerPlayParameters:(id)a3;
-- (void)setEndTime:(double)a3 forItemWithPlayParameters:(id)a4;
-- (void)setPlayActivityFeatureName:(id)a3;
-- (void)setPlayActivityRecommendationData:(id)a3;
-- (void)setStartItemPlayParameters:(id)a3;
-- (void)setStartTime:(double)a3 forItemWithPlayParameters:(id)a4;
+- (MusicKit_SoftLinking_MPMusicPlayerPlayParametersQueueDescriptor)initWithPlayParametersQueue:(id)queue;
+- (void)setContainerPlayParameters:(id)parameters;
+- (void)setEndTime:(double)time forItemWithPlayParameters:(id)parameters;
+- (void)setPlayActivityFeatureName:(id)name;
+- (void)setPlayActivityRecommendationData:(id)data;
+- (void)setStartItemPlayParameters:(id)parameters;
+- (void)setStartTime:(double)time forItemWithPlayParameters:(id)parameters;
 @end
 
 @implementation MusicKit_SoftLinking_MPMusicPlayerPlayParametersQueueDescriptor
 
-- (MusicKit_SoftLinking_MPMusicPlayerPlayParametersQueueDescriptor)initWithPlayParametersQueue:(id)a3
+- (MusicKit_SoftLinking_MPMusicPlayerPlayParametersQueueDescriptor)initWithPlayParametersQueue:(id)queue
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queueCopy = queue;
   v23.receiver = self;
   v23.super_class = MusicKit_SoftLinking_MPMusicPlayerPlayParametersQueueDescriptor;
   v5 = [(MusicKit_SoftLinking_MPMusicPlayerPlayParametersQueueDescriptor *)&v23 init];
@@ -24,7 +24,7 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = v4;
+    v7 = queueCopy;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v29 count:16];
     if (v8)
     {
@@ -39,8 +39,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v11 = [*(*(&v19 + 1) + 8 * v10) _underlyingPlayParameters];
-          [v6 addObject:v11];
+          _underlyingPlayParameters = [*(*(&v19 + 1) + 8 * v10) _underlyingPlayParameters];
+          [v6 addObject:_underlyingPlayParameters];
 
           ++v10;
         }
@@ -80,14 +80,14 @@
   return v5;
 }
 
-- (void)setPlayActivityFeatureName:(id)a3
+- (void)setPlayActivityFeatureName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   playActivityFeatureName = self->_playActivityFeatureName;
-  if (playActivityFeatureName != v4)
+  if (playActivityFeatureName != nameCopy)
   {
-    v8 = v4;
-    if (([(NSString *)playActivityFeatureName isEqual:v4]& 1) == 0)
+    v8 = nameCopy;
+    if (([(NSString *)playActivityFeatureName isEqual:nameCopy]& 1) == 0)
     {
       v6 = [(NSString *)v8 copy];
       v7 = self->_playActivityFeatureName;
@@ -100,14 +100,14 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setPlayActivityRecommendationData:(id)a3
+- (void)setPlayActivityRecommendationData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   playActivityRecommendationData = self->_playActivityRecommendationData;
-  if (playActivityRecommendationData != v4)
+  if (playActivityRecommendationData != dataCopy)
   {
-    v8 = v4;
-    if (([(NSData *)playActivityRecommendationData isEqual:v4]& 1) == 0)
+    v8 = dataCopy;
+    if (([(NSData *)playActivityRecommendationData isEqual:dataCopy]& 1) == 0)
     {
       v6 = [(NSData *)v8 copy];
       v7 = self->_playActivityRecommendationData;
@@ -120,50 +120,50 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setStartItemPlayParameters:(id)a3
+- (void)setStartItemPlayParameters:(id)parameters
 {
-  v5 = a3;
+  parametersCopy = parameters;
   p_startItemPlayParameters = &self->_startItemPlayParameters;
-  if (self->_startItemPlayParameters != v5)
+  if (self->_startItemPlayParameters != parametersCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_startItemPlayParameters, a3);
-    v7 = [(MusicKit_SoftLinking_MPMusicPlayerPlayParameters *)self->_startItemPlayParameters _underlyingPlayParameters];
-    [(MPMusicPlayerPlayParametersQueueDescriptor *)self->_underlyingQueueDescriptor setStartItemPlayParameters:v7];
+    v8 = parametersCopy;
+    objc_storeStrong(p_startItemPlayParameters, parameters);
+    _underlyingPlayParameters = [(MusicKit_SoftLinking_MPMusicPlayerPlayParameters *)self->_startItemPlayParameters _underlyingPlayParameters];
+    [(MPMusicPlayerPlayParametersQueueDescriptor *)self->_underlyingQueueDescriptor setStartItemPlayParameters:_underlyingPlayParameters];
 
-    v5 = v8;
+    parametersCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_startItemPlayParameters, v5);
+  MEMORY[0x2821F96F8](p_startItemPlayParameters, parametersCopy);
 }
 
-- (void)setContainerPlayParameters:(id)a3
+- (void)setContainerPlayParameters:(id)parameters
 {
-  v5 = a3;
+  parametersCopy = parameters;
   p_containerPlayParameters = &self->_containerPlayParameters;
-  if (self->_containerPlayParameters != v5)
+  if (self->_containerPlayParameters != parametersCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_containerPlayParameters, a3);
-    v7 = [(MusicKit_SoftLinking_MPMusicPlayerPlayParameters *)self->_containerPlayParameters _underlyingPlayParameters];
-    [(MPMusicPlayerPlayParametersQueueDescriptor *)self->_underlyingQueueDescriptor setContainerPlayParameters:v7];
+    v8 = parametersCopy;
+    objc_storeStrong(p_containerPlayParameters, parameters);
+    _underlyingPlayParameters = [(MusicKit_SoftLinking_MPMusicPlayerPlayParameters *)self->_containerPlayParameters _underlyingPlayParameters];
+    [(MPMusicPlayerPlayParametersQueueDescriptor *)self->_underlyingQueueDescriptor setContainerPlayParameters:_underlyingPlayParameters];
 
-    v5 = v8;
+    parametersCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_containerPlayParameters, v5);
+  MEMORY[0x2821F96F8](p_containerPlayParameters, parametersCopy);
 }
 
-- (void)setStartTime:(double)a3 forItemWithPlayParameters:(id)a4
+- (void)setStartTime:(double)time forItemWithPlayParameters:(id)parameters
 {
-  v6 = [a4 _underlyingPlayParameters];
-  [(MPMusicPlayerPlayParametersQueueDescriptor *)self->_underlyingQueueDescriptor setStartTime:v6 forItemWithPlayParameters:a3];
+  _underlyingPlayParameters = [parameters _underlyingPlayParameters];
+  [(MPMusicPlayerPlayParametersQueueDescriptor *)self->_underlyingQueueDescriptor setStartTime:_underlyingPlayParameters forItemWithPlayParameters:time];
 }
 
-- (void)setEndTime:(double)a3 forItemWithPlayParameters:(id)a4
+- (void)setEndTime:(double)time forItemWithPlayParameters:(id)parameters
 {
-  v6 = [a4 _underlyingPlayParameters];
-  [(MPMusicPlayerPlayParametersQueueDescriptor *)self->_underlyingQueueDescriptor setEndTime:v6 forItemWithPlayParameters:a3];
+  _underlyingPlayParameters = [parameters _underlyingPlayParameters];
+  [(MPMusicPlayerPlayParametersQueueDescriptor *)self->_underlyingQueueDescriptor setEndTime:_underlyingPlayParameters forItemWithPlayParameters:time];
 }
 
 @end

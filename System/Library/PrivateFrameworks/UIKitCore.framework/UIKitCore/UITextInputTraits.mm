@@ -1,51 +1,51 @@
 @interface UITextInputTraits
-+ (BOOL)keyboardTypeRequiresASCIICapable:(int64_t)a3;
++ (BOOL)keyboardTypeRequiresASCIICapable:(int64_t)capable;
 + (id)defaultTextInputTraits;
-+ (id)traitEnvironmentFromTraits:(id)a3;
-+ (id)traitsByAdoptingTraits:(id)a3;
-+ (id)traitsByAdoptingTraits:(id)a3 lightweight:(BOOL)a4;
-+ (int64_t)accessibleAppearanceForAppearance:(int64_t)a3;
-+ (int64_t)configuredAppearanceForAppearance:(int64_t)a3 withTraitEnvironment:(id)a4;
-+ (int64_t)translateToPublicUIKeyboardAppearance:(unint64_t)a3;
-+ (int64_t)translateToUIAutocapitalizationType:(unint64_t)a3;
-+ (int64_t)translateToUIAutocorrectionType:(unint64_t)a3;
-+ (int64_t)translateToUIInlinePredictionType:(unint64_t)a3;
-+ (int64_t)translateToUIKeyboardAppearance:(unint64_t)a3;
-+ (int64_t)translateToUIKeyboardType:(unint64_t)a3;
-+ (int64_t)translateToUIReturnKeyType:(unint64_t)a3;
-+ (int64_t)translateToUISmartDashesType:(unint64_t)a3;
-+ (int64_t)translateToUISmartInsertDeleteEnabled:(BOOL)a3;
-+ (int64_t)translateToUISmartQuotesType:(unint64_t)a3;
-+ (int64_t)translateToUISpellCheckingType:(unint64_t)a3;
-+ (int64_t)translateToUITextAllowsTextAnimationsType:(int64_t)a3;
-+ (int64_t)translateToUITextMathExpressionCompletionType:(int64_t)a3;
-+ (int64_t)translateToUITextScriptType:(unint64_t)a3;
++ (id)traitEnvironmentFromTraits:(id)traits;
++ (id)traitsByAdoptingTraits:(id)traits;
++ (id)traitsByAdoptingTraits:(id)traits lightweight:(BOOL)lightweight;
++ (int64_t)accessibleAppearanceForAppearance:(int64_t)appearance;
++ (int64_t)configuredAppearanceForAppearance:(int64_t)appearance withTraitEnvironment:(id)environment;
++ (int64_t)translateToPublicUIKeyboardAppearance:(unint64_t)appearance;
++ (int64_t)translateToUIAutocapitalizationType:(unint64_t)type;
++ (int64_t)translateToUIAutocorrectionType:(unint64_t)type;
++ (int64_t)translateToUIInlinePredictionType:(unint64_t)type;
++ (int64_t)translateToUIKeyboardAppearance:(unint64_t)appearance;
++ (int64_t)translateToUIKeyboardType:(unint64_t)type;
++ (int64_t)translateToUIReturnKeyType:(unint64_t)type;
++ (int64_t)translateToUISmartDashesType:(unint64_t)type;
++ (int64_t)translateToUISmartInsertDeleteEnabled:(BOOL)enabled;
++ (int64_t)translateToUISmartQuotesType:(unint64_t)type;
++ (int64_t)translateToUISpellCheckingType:(unint64_t)type;
++ (int64_t)translateToUITextAllowsTextAnimationsType:(int64_t)type;
++ (int64_t)translateToUITextMathExpressionCompletionType:(int64_t)type;
++ (int64_t)translateToUITextScriptType:(unint64_t)type;
 - (BOOL)allowsSuggestionsOnlyMode;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)publicTraitsMatchTraits:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)publicTraitsMatchTraits:(id)traits;
 - (NSString)description;
 - (UIEdgeInsets)floatingKeyboardEdgeInsets;
 - (UIEdgeInsets)selectionEdgeInsets;
 - (UITextInputTraits)init;
 - (_NSRange)validTextRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (int64_t)dictationInfoKeyboardType;
 - (int64_t)dictationKeyboardType;
-- (int64_t)updateResultComparedToTraits:(id)a3;
-- (void)_setColorsToMatchTintColor:(id)a3;
+- (int64_t)updateResultComparedToTraits:(id)traits;
+- (void)_setColorsToMatchTintColor:(id)color;
 - (void)dealloc;
-- (void)extendedPathToObtainTraitsFrom:(id)a3 lightweight:(BOOL)a4;
-- (void)fastPathToObtainTraitsFrom:(id)a3;
-- (void)overlayWithTITextInputTraits:(id)a3;
-- (void)overrideWithPrivateTraits:(id)a3;
-- (void)overrideWithTraits:(id)a3;
-- (void)setDevicePasscodeEntry:(BOOL)a3;
-- (void)setSecureTextEntry:(BOOL)a3;
-- (void)setTextTrimmingSet:(__CFCharacterSet *)a3;
+- (void)extendedPathToObtainTraitsFrom:(id)from lightweight:(BOOL)lightweight;
+- (void)fastPathToObtainTraitsFrom:(id)from;
+- (void)overlayWithTITextInputTraits:(id)traits;
+- (void)overrideWithPrivateTraits:(id)traits;
+- (void)overrideWithTraits:(id)traits;
+- (void)setDevicePasscodeEntry:(BOOL)entry;
+- (void)setSecureTextEntry:(BOOL)entry;
+- (void)setTextTrimmingSet:(__CFCharacterSet *)set;
 - (void)setToDefaultValues;
 - (void)setToSecureValues;
-- (void)takeTraitsFrom:(id)a3 lightweight:(BOOL)a4;
+- (void)takeTraitsFrom:(id)from lightweight:(BOOL)lightweight;
 @end
 
 @implementation UITextInputTraits
@@ -233,9 +233,9 @@
 
 - (BOOL)allowsSuggestionsOnlyMode
 {
-  v3 = [(UITextInputTraits *)self keyboardType];
+  keyboardType = [(UITextInputTraits *)self keyboardType];
   LOBYTE(v4) = 0;
-  if ((v3 > 0xC || ((1 << v3) & 0x15FE) == 0) && v3 != 120 && v3 != 124)
+  if ((keyboardType > 0xC || ((1 << keyboardType) & 0x15FE) == 0) && keyboardType != 120 && keyboardType != 124)
   {
     v4 = dyld_program_sdk_at_least();
     if (v4)
@@ -247,143 +247,143 @@
   return v4;
 }
 
-- (void)overlayWithTITextInputTraits:(id)a3
+- (void)overlayWithTITextInputTraits:(id)traits
 {
-  v5 = a3;
-  -[UITextInputTraits setAutocapitalizationType:](self, "setAutocapitalizationType:", [objc_opt_class() translateToUIAutocapitalizationType:{objc_msgSend(v5, "autocapitalizationType")}]);
-  -[UITextInputTraits setAutocorrectionType:](self, "setAutocorrectionType:", [objc_opt_class() translateToUIAutocorrectionType:{objc_msgSend(v5, "autocorrectionType")}]);
-  -[UITextInputTraits setSpellCheckingType:](self, "setSpellCheckingType:", [objc_opt_class() translateToUISpellCheckingType:{objc_msgSend(v5, "spellCheckingType")}]);
-  -[UITextInputTraits setKeyboardType:](self, "setKeyboardType:", [objc_opt_class() translateToUIKeyboardType:{objc_msgSend(v5, "keyboardType")}]);
-  -[UITextInputTraits setKeyboardAppearance:](self, "setKeyboardAppearance:", [objc_opt_class() translateToUIKeyboardAppearance:{objc_msgSend(v5, "keyboardAppearance")}]);
-  -[UITextInputTraits setReturnKeyType:](self, "setReturnKeyType:", [objc_opt_class() translateToUIReturnKeyType:{objc_msgSend(v5, "returnKeyType")}]);
-  -[UITextInputTraits setEnablesReturnKeyAutomatically:](self, "setEnablesReturnKeyAutomatically:", [v5 enablesReturnKeyAutomatically]);
-  -[UITextInputTraits setSecureTextEntry:](self, "setSecureTextEntry:", [v5 secureTextEntry]);
-  v4 = [v5 textContentType];
-  [(UITextInputTraits *)self setTextContentType:v4];
+  traitsCopy = traits;
+  -[UITextInputTraits setAutocapitalizationType:](self, "setAutocapitalizationType:", [objc_opt_class() translateToUIAutocapitalizationType:{objc_msgSend(traitsCopy, "autocapitalizationType")}]);
+  -[UITextInputTraits setAutocorrectionType:](self, "setAutocorrectionType:", [objc_opt_class() translateToUIAutocorrectionType:{objc_msgSend(traitsCopy, "autocorrectionType")}]);
+  -[UITextInputTraits setSpellCheckingType:](self, "setSpellCheckingType:", [objc_opt_class() translateToUISpellCheckingType:{objc_msgSend(traitsCopy, "spellCheckingType")}]);
+  -[UITextInputTraits setKeyboardType:](self, "setKeyboardType:", [objc_opt_class() translateToUIKeyboardType:{objc_msgSend(traitsCopy, "keyboardType")}]);
+  -[UITextInputTraits setKeyboardAppearance:](self, "setKeyboardAppearance:", [objc_opt_class() translateToUIKeyboardAppearance:{objc_msgSend(traitsCopy, "keyboardAppearance")}]);
+  -[UITextInputTraits setReturnKeyType:](self, "setReturnKeyType:", [objc_opt_class() translateToUIReturnKeyType:{objc_msgSend(traitsCopy, "returnKeyType")}]);
+  -[UITextInputTraits setEnablesReturnKeyAutomatically:](self, "setEnablesReturnKeyAutomatically:", [traitsCopy enablesReturnKeyAutomatically]);
+  -[UITextInputTraits setSecureTextEntry:](self, "setSecureTextEntry:", [traitsCopy secureTextEntry]);
+  textContentType = [traitsCopy textContentType];
+  [(UITextInputTraits *)self setTextContentType:textContentType];
 
-  -[UITextInputTraits setTextScriptType:](self, "setTextScriptType:", [objc_opt_class() translateToUITextScriptType:{objc_msgSend(v5, "textScriptType")}]);
-  -[UITextInputTraits setSmartInsertDeleteType:](self, "setSmartInsertDeleteType:", [objc_opt_class() translateToUISmartInsertDeleteEnabled:{objc_msgSend(v5, "smartInsertDeleteEnabled")}]);
-  -[UITextInputTraits setInlinePredictionType:](self, "setInlinePredictionType:", [objc_opt_class() translateToUIInlinePredictionType:{objc_msgSend(v5, "inlineCompletionType")}]);
-  -[UITextInputTraits setSmartDashesType:](self, "setSmartDashesType:", [objc_opt_class() translateToUISmartDashesType:{objc_msgSend(v5, "smartDashesType")}]);
-  -[UITextInputTraits setSmartQuotesType:](self, "setSmartQuotesType:", [objc_opt_class() translateToUISmartQuotesType:{objc_msgSend(v5, "smartQuotesType")}]);
+  -[UITextInputTraits setTextScriptType:](self, "setTextScriptType:", [objc_opt_class() translateToUITextScriptType:{objc_msgSend(traitsCopy, "textScriptType")}]);
+  -[UITextInputTraits setSmartInsertDeleteType:](self, "setSmartInsertDeleteType:", [objc_opt_class() translateToUISmartInsertDeleteEnabled:{objc_msgSend(traitsCopy, "smartInsertDeleteEnabled")}]);
+  -[UITextInputTraits setInlinePredictionType:](self, "setInlinePredictionType:", [objc_opt_class() translateToUIInlinePredictionType:{objc_msgSend(traitsCopy, "inlineCompletionType")}]);
+  -[UITextInputTraits setSmartDashesType:](self, "setSmartDashesType:", [objc_opt_class() translateToUISmartDashesType:{objc_msgSend(traitsCopy, "smartDashesType")}]);
+  -[UITextInputTraits setSmartQuotesType:](self, "setSmartQuotesType:", [objc_opt_class() translateToUISmartQuotesType:{objc_msgSend(traitsCopy, "smartQuotesType")}]);
   if (objc_opt_respondsToSelector())
   {
-    -[UITextInputTraits setMathExpressionCompletionType:](self, "setMathExpressionCompletionType:", [objc_opt_class() translateToUITextMathExpressionCompletionType:{objc_msgSend(v5, "mathExpressionCompletionType")}]);
+    -[UITextInputTraits setMathExpressionCompletionType:](self, "setMathExpressionCompletionType:", [objc_opt_class() translateToUITextMathExpressionCompletionType:{objc_msgSend(traitsCopy, "mathExpressionCompletionType")}]);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    -[UITextInputTraits setAllowsTextAnimationsType:](self, "setAllowsTextAnimationsType:", [objc_opt_class() translateToUITextAllowsTextAnimationsType:{objc_msgSend(v5, "allowsTextAnimationsType")}]);
+    -[UITextInputTraits setAllowsTextAnimationsType:](self, "setAllowsTextAnimationsType:", [objc_opt_class() translateToUITextAllowsTextAnimationsType:{objc_msgSend(traitsCopy, "allowsTextAnimationsType")}]);
   }
 }
 
-+ (int64_t)translateToUIAutocapitalizationType:(unint64_t)a3
++ (int64_t)translateToUIAutocapitalizationType:(unint64_t)type
 {
-  if (a3 - 1 >= 3)
+  if (type - 1 >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-+ (int64_t)translateToUIAutocorrectionType:(unint64_t)a3
++ (int64_t)translateToUIAutocorrectionType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return type == 1;
   }
 }
 
-+ (int64_t)translateToUISpellCheckingType:(unint64_t)a3
++ (int64_t)translateToUISpellCheckingType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return type == 1;
   }
 }
 
-+ (int64_t)translateToUIKeyboardType:(unint64_t)a3
++ (int64_t)translateToUIKeyboardType:(unint64_t)type
 {
-  if (a3 - 1 > 0x10)
+  if (type - 1 > 0x10)
   {
     return 0;
   }
 
   else
   {
-    return qword_18A67E500[a3 - 1];
+    return qword_18A67E500[type - 1];
   }
 }
 
-+ (int64_t)translateToUIKeyboardAppearance:(unint64_t)a3
++ (int64_t)translateToUIKeyboardAppearance:(unint64_t)appearance
 {
-  if (a3 - 1 > 5)
+  if (appearance - 1 > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_18A67E588[a3 - 1];
+    return qword_18A67E588[appearance - 1];
   }
 }
 
-+ (int64_t)translateToPublicUIKeyboardAppearance:(unint64_t)a3
++ (int64_t)translateToPublicUIKeyboardAppearance:(unint64_t)appearance
 {
-  if (a3 == 6)
+  if (appearance == 6)
   {
     return 1;
   }
 
   else
   {
-    return [a1 translateToUIKeyboardAppearance:?];
+    return [self translateToUIKeyboardAppearance:?];
   }
 }
 
-+ (int64_t)translateToUIReturnKeyType:(unint64_t)a3
++ (int64_t)translateToUIReturnKeyType:(unint64_t)type
 {
-  if (a3 - 1 > 0xC)
+  if (type - 1 > 0xC)
   {
     return 0;
   }
 
   else
   {
-    return qword_18A67E5B8[a3 - 1];
+    return qword_18A67E5B8[type - 1];
   }
 }
 
-+ (int64_t)translateToUITextScriptType:(unint64_t)a3
++ (int64_t)translateToUITextScriptType:(unint64_t)type
 {
-  if (a3 - 1 >= 4)
+  if (type - 1 >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-+ (int64_t)translateToUISmartInsertDeleteEnabled:(BOOL)a3
++ (int64_t)translateToUISmartInsertDeleteEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     return 2;
   }
@@ -394,68 +394,68 @@
   }
 }
 
-+ (int64_t)translateToUIInlinePredictionType:(unint64_t)a3
++ (int64_t)translateToUIInlinePredictionType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return type == 1;
   }
 }
 
-+ (int64_t)translateToUITextMathExpressionCompletionType:(int64_t)a3
++ (int64_t)translateToUITextMathExpressionCompletionType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return type == 1;
   }
 }
 
-+ (int64_t)translateToUITextAllowsTextAnimationsType:(int64_t)a3
++ (int64_t)translateToUITextAllowsTextAnimationsType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return type == 1;
   }
 }
 
-+ (int64_t)translateToUISmartDashesType:(unint64_t)a3
++ (int64_t)translateToUISmartDashesType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return type == 1;
   }
 }
 
-+ (int64_t)translateToUISmartQuotesType:(unint64_t)a3
++ (int64_t)translateToUISmartQuotesType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return type == 1;
   }
 }
 
@@ -477,29 +477,29 @@
   v7 = [v22 dictionaryWithObjectsAndKeys:{v21, @"Version", v20, @"KeyboardType", v19, @"AcceptsEmoji", v18, @"ForceEnableDictation", v3, @"ReturnKeyGoesToNextResponder", v4, @"ReturnKeyType", v17, @"SecureTextEntry", v16, @"SpellCheckingTypeKey", v15, @"AutocorrectionType", v14, @"AutocapitalizationType", v5, @"TextSelectionBehavior", v6, @"ContentIsSingleValue", 0}];
 
   v8 = [v7 mutableCopy];
-  v9 = [(UITextInputTraits *)self textContentType];
+  textContentType = [(UITextInputTraits *)self textContentType];
 
-  if (v9)
+  if (textContentType)
   {
-    v10 = [(UITextInputTraits *)self textContentType];
-    [v8 setObject:v10 forKey:@"TextContentType"];
+    textContentType2 = [(UITextInputTraits *)self textContentType];
+    [v8 setObject:textContentType2 forKey:@"TextContentType"];
   }
 
-  v11 = [(UITextInputTraits *)self passwordRules];
+  passwordRules = [(UITextInputTraits *)self passwordRules];
 
-  if (v11)
+  if (passwordRules)
   {
-    v12 = [(UITextInputTraits *)self passwordRules];
-    [v8 setObject:v12 forKey:@"PasswordRules"];
+    passwordRules2 = [(UITextInputTraits *)self passwordRules];
+    [v8 setObject:passwordRules2 forKey:@"PasswordRules"];
   }
 
   return v8;
 }
 
-+ (int64_t)accessibleAppearanceForAppearance:(int64_t)a3
++ (int64_t)accessibleAppearanceForAppearance:(int64_t)appearance
 {
-  v3 = a3;
-  if (a3 != 127 && _AXSUseDarkerKeyboard())
+  appearanceCopy = appearance;
+  if (appearance != 127 && _AXSUseDarkerKeyboard())
   {
     if (_AXSInvertColorsEnabled())
     {
@@ -512,22 +512,22 @@
     }
   }
 
-  return v3;
+  return appearanceCopy;
 }
 
-+ (int64_t)configuredAppearanceForAppearance:(int64_t)a3 withTraitEnvironment:(id)a4
++ (int64_t)configuredAppearanceForAppearance:(int64_t)appearance withTraitEnvironment:(id)environment
 {
-  v6 = a4;
-  v7 = [a1 accessibleAppearanceForAppearance:a3];
-  if (!v6)
+  environmentCopy = environment;
+  v7 = [self accessibleAppearanceForAppearance:appearance];
+  if (!environmentCopy)
   {
     goto LABEL_29;
   }
 
-  v8 = [v6 traitCollection];
-  v9 = [v8 userInterfaceIdiom];
+  traitCollection = [environmentCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if ((v9 > 3 || v9 == 2 || v7) && v7 != 10)
+  if ((userInterfaceIdiom > 3 || userInterfaceIdiom == 2 || v7) && v7 != 10)
   {
     v12 = 10;
     if (v7)
@@ -538,20 +538,20 @@
     goto LABEL_24;
   }
 
-  v10 = [v6 traitCollection];
-  v11 = [v10 userInterfaceStyle];
+  traitCollection2 = [environmentCopy traitCollection];
+  userInterfaceStyle = [traitCollection2 userInterfaceStyle];
 
   v7 = 10;
-  if (v11 > 1)
+  if (userInterfaceStyle > 1)
   {
     v12 = 1;
     v13 = 9;
-    if (v11 != 1000)
+    if (userInterfaceStyle != 1000)
     {
       v13 = 10;
     }
 
-    if (v11 == 2)
+    if (userInterfaceStyle == 2)
     {
       v7 = 1;
     }
@@ -561,7 +561,7 @@
       v7 = v13;
     }
 
-    if (v11 != 2)
+    if (userInterfaceStyle != 2)
     {
       v12 = v13;
     }
@@ -569,10 +569,10 @@
     goto LABEL_24;
   }
 
-  if (v11)
+  if (userInterfaceStyle)
   {
     v12 = 10;
-    if (v11 != 1)
+    if (userInterfaceStyle != 1)
     {
       goto LABEL_24;
     }
@@ -580,7 +580,7 @@
     goto LABEL_23;
   }
 
-  if (v9 != 2)
+  if (userInterfaceIdiom != 2)
   {
 LABEL_23:
     v7 = 2;
@@ -591,7 +591,7 @@ LABEL_23:
   v7 = 10;
   v12 = 10;
 LABEL_24:
-  if (v9 != 2)
+  if (userInterfaceIdiom != 2)
   {
     v12 = v7;
   }
@@ -611,13 +611,13 @@ LABEL_29:
   return v7;
 }
 
-- (void)setTextTrimmingSet:(__CFCharacterSet *)a3
+- (void)setTextTrimmingSet:(__CFCharacterSet *)set
 {
   textTrimmingSet = self->textTrimmingSet;
-  self->textTrimmingSet = a3;
-  if (a3)
+  self->textTrimmingSet = set;
+  if (set)
   {
-    CFRetain(a3);
+    CFRetain(set);
   }
 
   if (textTrimmingSet)
@@ -627,10 +627,10 @@ LABEL_29:
   }
 }
 
-- (void)setSecureTextEntry:(BOOL)a3
+- (void)setSecureTextEntry:(BOOL)entry
 {
-  self->secureTextEntry = a3;
-  if (a3)
+  self->secureTextEntry = entry;
+  if (entry)
   {
     [(UITextInputTraits *)self setToSecureValues];
   }
@@ -641,10 +641,10 @@ LABEL_29:
   }
 }
 
-- (void)setDevicePasscodeEntry:(BOOL)a3
+- (void)setDevicePasscodeEntry:(BOOL)entry
 {
-  self->devicePasscodeEntry = a3;
-  if (a3)
+  self->devicePasscodeEntry = entry;
+  if (entry)
   {
     [(UITextInputTraits *)self setSecureTextEntry:1];
   }
@@ -652,10 +652,10 @@ LABEL_29:
 
 - (int64_t)dictationKeyboardType
 {
-  v3 = [(UITextInputTraits *)self keyboardType];
+  keyboardType = [(UITextInputTraits *)self keyboardType];
   if ([(UITextInputTraits *)self forceDictationKeyboardType]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    return v3;
+    return keyboardType;
   }
 
   return [(UITextInputTraits *)self forceDictationKeyboardType];
@@ -663,7 +663,7 @@ LABEL_29:
 
 - (int64_t)dictationInfoKeyboardType
 {
-  v3 = [(UITextInputTraits *)self keyboardType];
+  keyboardType = [(UITextInputTraits *)self keyboardType];
   if ([(UITextInputTraits *)self forceDictationKeyboardType]== 0x7FFFFFFFFFFFFFFFLL)
   {
     if ([(UITextInputTraits *)self forceDefaultDictationInfo])
@@ -673,7 +673,7 @@ LABEL_29:
 
     else
     {
-      return v3;
+      return keyboardType;
     }
   }
 
@@ -684,106 +684,106 @@ LABEL_29:
   }
 }
 
-- (void)overrideWithTraits:(id)a3
+- (void)overrideWithTraits:(id)traits
 {
-  v20 = a3;
-  if (v20)
+  traitsCopy = traits;
+  if (traitsCopy)
   {
     v4 = objc_alloc_init(UITextInputTraits);
-    v5 = [v20 autocapitalizationType];
-    if (v5 != [(UITextInputTraits *)v4 autocapitalizationType])
+    autocapitalizationType = [traitsCopy autocapitalizationType];
+    if (autocapitalizationType != [(UITextInputTraits *)v4 autocapitalizationType])
     {
-      -[UITextInputTraits setAutocapitalizationType:](self, "setAutocapitalizationType:", [v20 autocapitalizationType]);
+      -[UITextInputTraits setAutocapitalizationType:](self, "setAutocapitalizationType:", [traitsCopy autocapitalizationType]);
     }
 
-    v6 = [v20 autocorrectionType];
-    if (v6 != [(UITextInputTraits *)v4 autocorrectionType])
+    autocorrectionType = [traitsCopy autocorrectionType];
+    if (autocorrectionType != [(UITextInputTraits *)v4 autocorrectionType])
     {
-      -[UITextInputTraits setAutocorrectionType:](self, "setAutocorrectionType:", [v20 autocorrectionType]);
+      -[UITextInputTraits setAutocorrectionType:](self, "setAutocorrectionType:", [traitsCopy autocorrectionType]);
     }
 
-    v7 = [v20 spellCheckingType];
-    if (v7 != [(UITextInputTraits *)v4 spellCheckingType])
+    spellCheckingType = [traitsCopy spellCheckingType];
+    if (spellCheckingType != [(UITextInputTraits *)v4 spellCheckingType])
     {
-      -[UITextInputTraits setSpellCheckingType:](self, "setSpellCheckingType:", [v20 spellCheckingType]);
+      -[UITextInputTraits setSpellCheckingType:](self, "setSpellCheckingType:", [traitsCopy spellCheckingType]);
     }
 
-    v8 = [v20 keyboardType];
-    if (v8 != [(UITextInputTraits *)v4 keyboardType])
+    keyboardType = [traitsCopy keyboardType];
+    if (keyboardType != [(UITextInputTraits *)v4 keyboardType])
     {
-      -[UITextInputTraits setKeyboardType:](self, "setKeyboardType:", [v20 keyboardType]);
+      -[UITextInputTraits setKeyboardType:](self, "setKeyboardType:", [traitsCopy keyboardType]);
     }
 
-    v9 = [v20 keyboardAppearance];
-    if (v9 != [(UITextInputTraits *)v4 keyboardAppearance])
+    keyboardAppearance = [traitsCopy keyboardAppearance];
+    if (keyboardAppearance != [(UITextInputTraits *)v4 keyboardAppearance])
     {
-      -[UITextInputTraits setKeyboardAppearance:](self, "setKeyboardAppearance:", [v20 keyboardAppearance]);
+      -[UITextInputTraits setKeyboardAppearance:](self, "setKeyboardAppearance:", [traitsCopy keyboardAppearance]);
     }
 
-    v10 = [v20 returnKeyType];
-    if (v10 != [(UITextInputTraits *)v4 returnKeyType])
+    returnKeyType = [traitsCopy returnKeyType];
+    if (returnKeyType != [(UITextInputTraits *)v4 returnKeyType])
     {
-      -[UITextInputTraits setReturnKeyType:](self, "setReturnKeyType:", [v20 returnKeyType]);
+      -[UITextInputTraits setReturnKeyType:](self, "setReturnKeyType:", [traitsCopy returnKeyType]);
     }
 
-    v11 = [v20 enablesReturnKeyAutomatically];
-    if (v11 != [(UITextInputTraits *)v4 enablesReturnKeyAutomatically])
+    enablesReturnKeyAutomatically = [traitsCopy enablesReturnKeyAutomatically];
+    if (enablesReturnKeyAutomatically != [(UITextInputTraits *)v4 enablesReturnKeyAutomatically])
     {
-      -[UITextInputTraits setEnablesReturnKeyAutomatically:](self, "setEnablesReturnKeyAutomatically:", [v20 enablesReturnKeyAutomatically]);
+      -[UITextInputTraits setEnablesReturnKeyAutomatically:](self, "setEnablesReturnKeyAutomatically:", [traitsCopy enablesReturnKeyAutomatically]);
     }
 
-    v12 = [v20 textContentType];
-    v13 = [(UITextInputTraits *)v4 textContentType];
+    textContentType = [traitsCopy textContentType];
+    textContentType2 = [(UITextInputTraits *)v4 textContentType];
 
-    if (v12 != v13)
+    if (textContentType != textContentType2)
     {
-      v14 = [v20 textContentType];
-      [(UITextInputTraits *)self setTextContentType:v14];
+      textContentType3 = [traitsCopy textContentType];
+      [(UITextInputTraits *)self setTextContentType:textContentType3];
     }
 
-    v15 = [v20 smartInsertDeleteType];
-    if (v15 != [(UITextInputTraits *)v4 smartInsertDeleteType])
+    smartInsertDeleteType = [traitsCopy smartInsertDeleteType];
+    if (smartInsertDeleteType != [(UITextInputTraits *)v4 smartInsertDeleteType])
     {
-      -[UITextInputTraits setSmartInsertDeleteType:](self, "setSmartInsertDeleteType:", [v20 smartInsertDeleteType]);
+      -[UITextInputTraits setSmartInsertDeleteType:](self, "setSmartInsertDeleteType:", [traitsCopy smartInsertDeleteType]);
     }
 
-    v16 = [v20 smartQuotesType];
-    if (v16 != [(UITextInputTraits *)v4 smartQuotesType])
+    smartQuotesType = [traitsCopy smartQuotesType];
+    if (smartQuotesType != [(UITextInputTraits *)v4 smartQuotesType])
     {
-      -[UITextInputTraits setSmartQuotesType:](self, "setSmartQuotesType:", [v20 smartQuotesType]);
+      -[UITextInputTraits setSmartQuotesType:](self, "setSmartQuotesType:", [traitsCopy smartQuotesType]);
     }
 
-    v17 = [v20 smartDashesType];
-    if (v17 != [(UITextInputTraits *)v4 smartDashesType])
+    smartDashesType = [traitsCopy smartDashesType];
+    if (smartDashesType != [(UITextInputTraits *)v4 smartDashesType])
     {
-      -[UITextInputTraits setSmartDashesType:](self, "setSmartDashesType:", [v20 smartDashesType]);
+      -[UITextInputTraits setSmartDashesType:](self, "setSmartDashesType:", [traitsCopy smartDashesType]);
     }
 
-    v18 = [v20 writingToolsBehavior];
-    if (v18 != [(UITextInputTraits *)v4 writingToolsBehavior])
+    writingToolsBehavior = [traitsCopy writingToolsBehavior];
+    if (writingToolsBehavior != [(UITextInputTraits *)v4 writingToolsBehavior])
     {
-      -[UITextInputTraits setWritingToolsBehavior:](self, "setWritingToolsBehavior:", [v20 writingToolsBehavior]);
+      -[UITextInputTraits setWritingToolsBehavior:](self, "setWritingToolsBehavior:", [traitsCopy writingToolsBehavior]);
     }
 
-    v19 = [v20 allowedWritingToolsResultOptions];
-    if (v19 != [(UITextInputTraits *)v4 allowedWritingToolsResultOptions])
+    allowedWritingToolsResultOptions = [traitsCopy allowedWritingToolsResultOptions];
+    if (allowedWritingToolsResultOptions != [(UITextInputTraits *)v4 allowedWritingToolsResultOptions])
     {
-      -[UITextInputTraits setAllowedWritingToolsResultOptions:](self, "setAllowedWritingToolsResultOptions:", [v20 allowedWritingToolsResultOptions]);
+      -[UITextInputTraits setAllowedWritingToolsResultOptions:](self, "setAllowedWritingToolsResultOptions:", [traitsCopy allowedWritingToolsResultOptions]);
     }
 
-    [(UITextInputTraits *)self overrideWithPrivateTraits:v20];
+    [(UITextInputTraits *)self overrideWithPrivateTraits:traitsCopy];
   }
 }
 
-- (void)overrideWithPrivateTraits:(id)a3
+- (void)overrideWithPrivateTraits:(id)traits
 {
-  v4 = a3;
-  if (v4)
+  traitsCopy = traits;
+  if (traitsCopy)
   {
-    v31 = v4;
+    v31 = traitsCopy;
     v5 = objc_alloc_init(UITextInputTraits);
-    v6 = [v31 forceFloatingKeyboard];
-    if (v6 != [(UITextInputTraits *)v5 forceFloatingKeyboard])
+    forceFloatingKeyboard = [v31 forceFloatingKeyboard];
+    if (forceFloatingKeyboard != [(UITextInputTraits *)v5 forceFloatingKeyboard])
     {
       -[UITextInputTraits setForceFloatingKeyboard:](self, "setForceFloatingKeyboard:", [v31 forceFloatingKeyboard]);
     }
@@ -800,142 +800,142 @@ LABEL_29:
       [(UITextInputTraits *)self setFloatingKeyboardEdgeInsets:?];
     }
 
-    v22 = [v31 acceptsInitialEmojiKeyboard];
-    if (v22 != [(UITextInputTraits *)v5 acceptsInitialEmojiKeyboard])
+    acceptsInitialEmojiKeyboard = [v31 acceptsInitialEmojiKeyboard];
+    if (acceptsInitialEmojiKeyboard != [(UITextInputTraits *)v5 acceptsInitialEmojiKeyboard])
     {
       -[UITextInputTraits setAcceptsInitialEmojiKeyboard:](self, "setAcceptsInitialEmojiKeyboard:", [v31 acceptsInitialEmojiKeyboard]);
     }
 
-    v23 = [v31 recentInputIdentifier];
-    v24 = [(UITextInputTraits *)v5 recentInputIdentifier];
+    recentInputIdentifier = [v31 recentInputIdentifier];
+    recentInputIdentifier2 = [(UITextInputTraits *)v5 recentInputIdentifier];
 
-    if (v23 != v24)
+    if (recentInputIdentifier != recentInputIdentifier2)
     {
-      v25 = [v31 recentInputIdentifier];
-      [(UITextInputTraits *)self setRecentInputIdentifier:v25];
+      recentInputIdentifier3 = [v31 recentInputIdentifier];
+      [(UITextInputTraits *)self setRecentInputIdentifier:recentInputIdentifier3];
     }
 
-    v26 = [v31 inlinePredictionType];
-    if (v26 != [(UITextInputTraits *)v5 inlinePredictionType])
+    inlinePredictionType = [v31 inlinePredictionType];
+    if (inlinePredictionType != [(UITextInputTraits *)v5 inlinePredictionType])
     {
       -[UITextInputTraits setInlinePredictionType:](self, "setInlinePredictionType:", [v31 inlinePredictionType]);
     }
 
-    v27 = [v31 mathExpressionCompletionType];
-    if (v27 != [(UITextInputTraits *)v5 mathExpressionCompletionType])
+    mathExpressionCompletionType = [v31 mathExpressionCompletionType];
+    if (mathExpressionCompletionType != [(UITextInputTraits *)v5 mathExpressionCompletionType])
     {
       -[UITextInputTraits setMathExpressionCompletionType:](self, "setMathExpressionCompletionType:", [v31 mathExpressionCompletionType]);
     }
 
-    v28 = [v31 allowsTextAnimationsType];
-    if (v28 != [(UITextInputTraits *)v5 allowsTextAnimationsType])
+    allowsTextAnimationsType = [v31 allowsTextAnimationsType];
+    if (allowsTextAnimationsType != [(UITextInputTraits *)v5 allowsTextAnimationsType])
     {
       -[UITextInputTraits setAllowsTextAnimationsType:](self, "setAllowsTextAnimationsType:", [v31 allowsTextAnimationsType]);
     }
 
-    v29 = [v31 keyboardSuggestionOptions];
-    if (v29 != [(UITextInputTraits *)v5 keyboardSuggestionOptions])
+    keyboardSuggestionOptions = [v31 keyboardSuggestionOptions];
+    if (keyboardSuggestionOptions != [(UITextInputTraits *)v5 keyboardSuggestionOptions])
     {
       -[UITextInputTraits setKeyboardSuggestionOptions:](self, "setKeyboardSuggestionOptions:", [v31 keyboardSuggestionOptions]);
     }
 
-    v30 = [v31 allowsNumberPadPopover];
-    if (v30 != [(UITextInputTraits *)v5 allowsNumberPadPopover])
+    allowsNumberPadPopover = [v31 allowsNumberPadPopover];
+    if (allowsNumberPadPopover != [(UITextInputTraits *)v5 allowsNumberPadPopover])
     {
       -[UITextInputTraits setAllowsNumberPadPopover:](self, "setAllowsNumberPadPopover:", [v31 allowsNumberPadPopover]);
     }
 
-    v4 = v31;
+    traitsCopy = v31;
   }
 }
 
-- (void)fastPathToObtainTraitsFrom:(id)a3
+- (void)fastPathToObtainTraitsFrom:(id)from
 {
-  v4 = a3;
-  self->autocapitalizationType = [v4 autocapitalizationType];
-  self->autocorrectionType = [v4 autocorrectionType];
-  self->spellCheckingType = [v4 spellCheckingType];
-  *(self + 32) = [v4 keyboardType];
-  *(self + 33) = [v4 keyboardAppearance];
-  self->returnKeyType = [v4 returnKeyType];
-  self->enablesReturnKeyAutomatically = [v4 enablesReturnKeyAutomatically];
-  self->secureTextEntry = [v4 isSecureTextEntry];
-  if (v4)
+  fromCopy = from;
+  self->autocapitalizationType = [fromCopy autocapitalizationType];
+  self->autocorrectionType = [fromCopy autocorrectionType];
+  self->spellCheckingType = [fromCopy spellCheckingType];
+  *(self + 32) = [fromCopy keyboardType];
+  *(self + 33) = [fromCopy keyboardAppearance];
+  self->returnKeyType = [fromCopy returnKeyType];
+  self->enablesReturnKeyAutomatically = [fromCopy enablesReturnKeyAutomatically];
+  self->secureTextEntry = [fromCopy isSecureTextEntry];
+  if (fromCopy)
   {
-    *&self->_privateInputTraitFlags = *&self->_privateInputTraitFlags & 0xF7 | v4[360] & 8;
+    *&self->_privateInputTraitFlags = *&self->_privateInputTraitFlags & 0xF7 | fromCopy[360] & 8;
   }
 
-  self->devicePasscodeEntry = [v4 isDevicePasscodeEntry];
-  v5 = [v4 passwordRules];
+  self->devicePasscodeEntry = [fromCopy isDevicePasscodeEntry];
+  passwordRules = [fromCopy passwordRules];
   passwordRules = self->passwordRules;
-  self->passwordRules = v5;
+  self->passwordRules = passwordRules;
 
-  v7 = [v4 textContentType];
+  textContentType = [fromCopy textContentType];
   textContentType = self->textContentType;
-  self->textContentType = v7;
+  self->textContentType = textContentType;
 
-  self->smartInsertDeleteType = [v4 smartInsertDeleteType];
-  self->smartQuotesType = [v4 smartQuotesType];
-  self->smartDashesType = [v4 smartDashesType];
-  v9 = [v4 recentInputIdentifier];
-  [(UITextInputTraits *)self setRecentInputIdentifier:v9];
+  self->smartInsertDeleteType = [fromCopy smartInsertDeleteType];
+  self->smartQuotesType = [fromCopy smartQuotesType];
+  self->smartDashesType = [fromCopy smartDashesType];
+  recentInputIdentifier = [fromCopy recentInputIdentifier];
+  [(UITextInputTraits *)self setRecentInputIdentifier:recentInputIdentifier];
 
-  -[UITextInputTraits setWritingToolsBehavior:](self, "setWritingToolsBehavior:", [v4 writingToolsBehavior]);
-  -[UITextInputTraits setAllowedWritingToolsResultOptions:](self, "setAllowedWritingToolsResultOptions:", [v4 allowedWritingToolsResultOptions]);
+  -[UITextInputTraits setWritingToolsBehavior:](self, "setWritingToolsBehavior:", [fromCopy writingToolsBehavior]);
+  -[UITextInputTraits setAllowedWritingToolsResultOptions:](self, "setAllowedWritingToolsResultOptions:", [fromCopy allowedWritingToolsResultOptions]);
   if (_os_feature_enabled_impl())
   {
-    v10 = [(UITextInputTraits *)self inputContextHistory];
-    if (!v10)
+    inputContextHistory = [(UITextInputTraits *)self inputContextHistory];
+    if (!inputContextHistory)
     {
       if (objc_opt_respondsToSelector())
       {
-        v11 = [v4 conversationContext];
+        conversationContext = [fromCopy conversationContext];
 
-        if (!v11)
+        if (!conversationContext)
         {
           goto LABEL_10;
         }
 
-        v10 = [v4 conversationContext];
-        v12 = [v10 inputContextHistoryRepresentation];
-        [(UITextInputTraits *)self setInputContextHistory:v12];
+        inputContextHistory = [fromCopy conversationContext];
+        inputContextHistoryRepresentation = [inputContextHistory inputContextHistoryRepresentation];
+        [(UITextInputTraits *)self setInputContextHistory:inputContextHistoryRepresentation];
       }
 
       else
       {
-        v10 = 0;
+        inputContextHistory = 0;
       }
     }
   }
 
 LABEL_10:
-  v46 = v4;
+  v46 = fromCopy;
   -[UITextInputTraits setManageRecentInputs:](self, "setManageRecentInputs:", [v46 manageRecentInputs]);
-  v13 = [v46 validTextRange];
-  [(UITextInputTraits *)self setValidTextRange:v13, v14];
-  v15 = [v46 PINEntrySeparatorIndexes];
-  [(UITextInputTraits *)self setPINEntrySeparatorIndexes:v15];
+  validTextRange = [v46 validTextRange];
+  [(UITextInputTraits *)self setValidTextRange:validTextRange, v14];
+  pINEntrySeparatorIndexes = [v46 PINEntrySeparatorIndexes];
+  [(UITextInputTraits *)self setPINEntrySeparatorIndexes:pINEntrySeparatorIndexes];
 
   -[UITextInputTraits setTextTrimmingSet:](self, "setTextTrimmingSet:", [v46 textTrimmingSet]);
-  v16 = [v46 insertionPointColor];
+  insertionPointColor = [v46 insertionPointColor];
   insertionPointColor = self->_insertionPointColor;
-  self->_insertionPointColor = v16;
+  self->_insertionPointColor = insertionPointColor;
 
-  v18 = [v46 selectionBarColor];
+  selectionBarColor = [v46 selectionBarColor];
   selectionBarColor = self->_selectionBarColor;
-  self->_selectionBarColor = v18;
+  self->_selectionBarColor = selectionBarColor;
 
-  v20 = [v46 selectionHighlightColor];
+  selectionHighlightColor = [v46 selectionHighlightColor];
   selectionHighlightColor = self->_selectionHighlightColor;
-  self->_selectionHighlightColor = v20;
+  self->_selectionHighlightColor = selectionHighlightColor;
 
-  v22 = [v46 matchHighlightColor];
+  matchHighlightColor = [v46 matchHighlightColor];
   matchHighlightColor = self->_matchHighlightColor;
-  self->_matchHighlightColor = v22;
+  self->_matchHighlightColor = matchHighlightColor;
 
-  v24 = [v46 selectionBorderColor];
+  selectionBorderColor = [v46 selectionBorderColor];
   selectionBorderColor = self->_selectionBorderColor;
-  self->_selectionBorderColor = v24;
+  self->_selectionBorderColor = selectionBorderColor;
 
   [v46 selectionBorderWidth];
   self->_selectionBorderWidth = v26;
@@ -946,15 +946,15 @@ LABEL_10:
   self->_selectionEdgeInsets.left = v29;
   self->_selectionEdgeInsets.bottom = v30;
   self->_selectionEdgeInsets.right = v31;
-  v32 = [v46 selectionDragDotImage];
-  [(UITextInputTraits *)self setSelectionDragDotImage:v32];
+  selectionDragDotImage = [v46 selectionDragDotImage];
+  [(UITextInputTraits *)self setSelectionDragDotImage:selectionDragDotImage];
 
   self->insertionPointWidth = [v46 insertionPointWidth];
   self->textLoupeVisibility = [v46 textLoupeVisibility];
   self->textSelectionBehavior = [v46 textSelectionBehavior];
-  v33 = [v46 textSuggestionDelegate];
+  textSuggestionDelegate = [v46 textSuggestionDelegate];
   textSuggestionDelegate = self->textSuggestionDelegate;
-  self->textSuggestionDelegate = v33;
+  self->textSuggestionDelegate = textSuggestionDelegate;
 
   self->isSingleLineDocument = [v46 isSingleLineDocument];
   self->contentsIsSingleValue = [v46 contentsIsSingleValue];
@@ -989,18 +989,18 @@ LABEL_10:
   self->useInterfaceLanguageForLocalization = [v46 useInterfaceLanguageForLocalization];
   self->deferBecomingResponder = [v46 deferBecomingResponder];
   self->enablesReturnKeyOnNonWhiteSpaceContent = [v46 enablesReturnKeyOnNonWhiteSpaceContent];
-  v39 = [v46 autocorrectionContext];
-  [(UITextInputTraits *)self setAutocorrectionContext:v39];
+  autocorrectionContext = [v46 autocorrectionContext];
+  [(UITextInputTraits *)self setAutocorrectionContext:autocorrectionContext];
 
-  v40 = [v46 responseContext];
-  [(UITextInputTraits *)self setResponseContext:v40];
+  responseContext = [v46 responseContext];
+  [(UITextInputTraits *)self setResponseContext:responseContext];
 
-  v41 = [(UITextInputTraits *)self inputContextHistory];
+  inputContextHistory2 = [(UITextInputTraits *)self inputContextHistory];
 
-  if (!v41)
+  if (!inputContextHistory2)
   {
-    v42 = [v46 inputContextHistory];
-    [(UITextInputTraits *)self setInputContextHistory:v42];
+    inputContextHistory3 = [v46 inputContextHistory];
+    [(UITextInputTraits *)self setInputContextHistory:inputContextHistory3];
   }
 
   self->disablePrediction = [v46 disablePrediction];
@@ -1013,11 +1013,11 @@ LABEL_10:
   self->textScriptType = [v46 textScriptType];
   self->loadKeyboardsForSiriLanguage = [v46 loadKeyboardsForSiriLanguage];
   -[UITextInputTraits setPreferredKeyboardStyle:](self, "setPreferredKeyboardStyle:", [v46 preferredKeyboardStyle]);
-  v44 = [v46 supplementalLexicon];
-  [(UITextInputTraits *)self setSupplementalLexicon:v44];
+  supplementalLexicon = [v46 supplementalLexicon];
+  [(UITextInputTraits *)self setSupplementalLexicon:supplementalLexicon];
 
-  v45 = [v46 supplementalLexiconAmbiguousItemIcon];
-  [(UITextInputTraits *)self setSupplementalLexiconAmbiguousItemIcon:v45];
+  supplementalLexiconAmbiguousItemIcon = [v46 supplementalLexiconAmbiguousItemIcon];
+  [(UITextInputTraits *)self setSupplementalLexiconAmbiguousItemIcon:supplementalLexiconAmbiguousItemIcon];
 
   self->disableHandwritingKeyboard = [v46 disableHandwritingKeyboard];
   -[UITextInputTraits setMathExpressionCompletionType:](self, "setMathExpressionCompletionType:", [v46 mathExpressionCompletionType]);
@@ -1026,33 +1026,33 @@ LABEL_10:
   -[UITextInputTraits setAllowsNumberPadPopover:](self, "setAllowsNumberPadPopover:", [v46 allowsNumberPadPopover]);
 }
 
-- (void)extendedPathToObtainTraitsFrom:(id)a3 lightweight:(BOOL)a4
+- (void)extendedPathToObtainTraitsFrom:(id)from lightweight:(BOOL)lightweight
 {
-  v4 = a4;
-  v6 = a3;
+  lightweightCopy = lightweight;
+  fromCopy = from;
   [(UITextInputTraits *)self setToDefaultValues];
-  if (v4)
+  if (lightweightCopy)
   {
     if (objc_opt_respondsToSelector())
     {
-      self->autocorrectionType = [v6 autocorrectionType];
+      self->autocorrectionType = [fromCopy autocorrectionType];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      *(self + 32) = [v6 keyboardType];
+      *(self + 32) = [fromCopy keyboardType];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      self->secureTextEntry = [v6 isSecureTextEntry];
+      self->secureTextEntry = [fromCopy isSecureTextEntry];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v6 textContentType];
+      textContentType = [fromCopy textContentType];
       textContentType = self->textContentType;
-      self->textContentType = v7;
+      self->textContentType = textContentType;
 LABEL_52:
     }
   }
@@ -1061,102 +1061,102 @@ LABEL_52:
   {
     if (objc_opt_respondsToSelector())
     {
-      self->autocapitalizationType = [v6 autocapitalizationType];
+      self->autocapitalizationType = [fromCopy autocapitalizationType];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      self->autocorrectionType = [v6 autocorrectionType];
+      self->autocorrectionType = [fromCopy autocorrectionType];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      self->spellCheckingType = [v6 spellCheckingType];
+      self->spellCheckingType = [fromCopy spellCheckingType];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      *(self + 32) = [v6 keyboardType];
+      *(self + 32) = [fromCopy keyboardType];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      *(self + 33) = [v6 keyboardAppearance];
+      *(self + 33) = [fromCopy keyboardAppearance];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      self->returnKeyType = [v6 returnKeyType];
+      self->returnKeyType = [fromCopy returnKeyType];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      self->enablesReturnKeyAutomatically = [v6 enablesReturnKeyAutomatically];
+      self->enablesReturnKeyAutomatically = [fromCopy enablesReturnKeyAutomatically];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      self->secureTextEntry = [v6 isSecureTextEntry];
+      self->secureTextEntry = [fromCopy isSecureTextEntry];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v6 passwordRules];
+      passwordRules = [fromCopy passwordRules];
       passwordRules = self->passwordRules;
-      self->passwordRules = v9;
+      self->passwordRules = passwordRules;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v6 textContentType];
+      textContentType2 = [fromCopy textContentType];
       v12 = self->textContentType;
-      self->textContentType = v11;
+      self->textContentType = textContentType2;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      self->smartInsertDeleteType = [v6 smartInsertDeleteType];
+      self->smartInsertDeleteType = [fromCopy smartInsertDeleteType];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      self->smartQuotesType = [v6 smartQuotesType];
+      self->smartQuotesType = [fromCopy smartQuotesType];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      self->smartDashesType = [v6 smartDashesType];
+      self->smartDashesType = [fromCopy smartDashesType];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v6 recentInputIdentifier];
-      [(UITextInputTraits *)self setRecentInputIdentifier:v13];
+      recentInputIdentifier = [fromCopy recentInputIdentifier];
+      [(UITextInputTraits *)self setRecentInputIdentifier:recentInputIdentifier];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      -[UITextInputTraits setInlinePredictionType:](self, "setInlinePredictionType:", [v6 inlinePredictionType]);
+      -[UITextInputTraits setInlinePredictionType:](self, "setInlinePredictionType:", [fromCopy inlinePredictionType]);
     }
 
     if (objc_opt_respondsToSelector())
     {
-      -[UITextInputTraits setMathExpressionCompletionType:](self, "setMathExpressionCompletionType:", [v6 mathExpressionCompletionType]);
+      -[UITextInputTraits setMathExpressionCompletionType:](self, "setMathExpressionCompletionType:", [fromCopy mathExpressionCompletionType]);
     }
 
     if (objc_opt_respondsToSelector())
     {
-      -[UITextInputTraits setWritingToolsBehavior:](self, "setWritingToolsBehavior:", [v6 writingToolsBehavior]);
+      -[UITextInputTraits setWritingToolsBehavior:](self, "setWritingToolsBehavior:", [fromCopy writingToolsBehavior]);
     }
 
     if (objc_opt_respondsToSelector())
     {
-      -[UITextInputTraits setAllowedWritingToolsResultOptions:](self, "setAllowedWritingToolsResultOptions:", [v6 allowedWritingToolsResultOptions]);
+      -[UITextInputTraits setAllowedWritingToolsResultOptions:](self, "setAllowedWritingToolsResultOptions:", [fromCopy allowedWritingToolsResultOptions]);
     }
 
     if (objc_opt_respondsToSelector())
     {
-      -[UITextInputTraits setAllowsNumberPadPopover:](self, "setAllowsNumberPadPopover:", [v6 allowsNumberPadPopover]);
+      -[UITextInputTraits setAllowsNumberPadPopover:](self, "setAllowsNumberPadPopover:", [fromCopy allowsNumberPadPopover]);
     }
 
     if (_os_feature_enabled_impl())
@@ -1169,9 +1169,9 @@ LABEL_52:
           goto LABEL_53;
         }
 
-        textContentType = [v6 conversationContext];
-        v14 = [textContentType inputContextHistoryRepresentation];
-        [(UITextInputTraits *)self setInputContextHistory:v14];
+        textContentType = [fromCopy conversationContext];
+        inputContextHistoryRepresentation = [textContentType inputContextHistoryRepresentation];
+        [(UITextInputTraits *)self setInputContextHistory:inputContextHistoryRepresentation];
       }
 
       goto LABEL_52;
@@ -1179,7 +1179,7 @@ LABEL_52:
   }
 
 LABEL_53:
-  v53 = v6;
+  v53 = fromCopy;
   if (objc_opt_respondsToSelector())
   {
     self->isSingleLineDocument = [v53 isSingleLineDocument];
@@ -1187,9 +1187,9 @@ LABEL_53:
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v53 insertionPointColor];
-    insertionPointColor = v15;
-    if (!v15)
+    insertionPointColor = [v53 insertionPointColor];
+    insertionPointColor = insertionPointColor;
+    if (!insertionPointColor)
     {
       insertionPointColor = self->_insertionPointColor;
     }
@@ -1199,9 +1199,9 @@ LABEL_53:
 
   if (objc_opt_respondsToSelector())
   {
-    v17 = [v53 selectionHighlightColor];
-    selectionHighlightColor = v17;
-    if (!v17)
+    selectionHighlightColor = [v53 selectionHighlightColor];
+    selectionHighlightColor = selectionHighlightColor;
+    if (!selectionHighlightColor)
     {
       selectionHighlightColor = self->_selectionHighlightColor;
     }
@@ -1211,9 +1211,9 @@ LABEL_53:
 
   if (objc_opt_respondsToSelector())
   {
-    v19 = [v53 selectionHandleColor];
-    selectionBarColor = v19;
-    if (!v19)
+    selectionHandleColor = [v53 selectionHandleColor];
+    selectionBarColor = selectionHandleColor;
+    if (!selectionHandleColor)
     {
       selectionBarColor = self->_selectionBarColor;
     }
@@ -1241,13 +1241,13 @@ LABEL_53:
   if ([v53 conformsToProtocol:&unk_1EFE8DCA0])
   {
     v21 = v53;
-    if (v4)
+    if (lightweightCopy)
     {
       if (objc_opt_respondsToSelector())
       {
-        v22 = [v21 textSuggestionDelegate];
+        textSuggestionDelegate = [v21 textSuggestionDelegate];
         textSuggestionDelegate = self->textSuggestionDelegate;
-        self->textSuggestionDelegate = v22;
+        self->textSuggestionDelegate = textSuggestionDelegate;
       }
 
       if (objc_opt_respondsToSelector())
@@ -1277,14 +1277,14 @@ LABEL_215:
 
     if (objc_opt_respondsToSelector())
     {
-      v24 = [v21 validTextRange];
-      [(UITextInputTraits *)self setValidTextRange:v24, v25];
+      validTextRange = [v21 validTextRange];
+      [(UITextInputTraits *)self setValidTextRange:validTextRange, v25];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v26 = [v21 PINEntrySeparatorIndexes];
-      [(UITextInputTraits *)self setPINEntrySeparatorIndexes:v26];
+      pINEntrySeparatorIndexes = [v21 PINEntrySeparatorIndexes];
+      [(UITextInputTraits *)self setPINEntrySeparatorIndexes:pINEntrySeparatorIndexes];
     }
 
     if (objc_opt_respondsToSelector())
@@ -1294,23 +1294,23 @@ LABEL_215:
 
     if (objc_opt_respondsToSelector())
     {
-      v27 = [v21 selectionBarColor];
+      selectionBarColor = [v21 selectionBarColor];
       v28 = self->_selectionBarColor;
-      self->_selectionBarColor = v27;
+      self->_selectionBarColor = selectionBarColor;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v29 = [v21 matchHighlightColor];
+      matchHighlightColor = [v21 matchHighlightColor];
       matchHighlightColor = self->_matchHighlightColor;
-      self->_matchHighlightColor = v29;
+      self->_matchHighlightColor = matchHighlightColor;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v31 = [v21 selectionBorderColor];
+      selectionBorderColor = [v21 selectionBorderColor];
       selectionBorderColor = self->_selectionBorderColor;
-      self->_selectionBorderColor = v31;
+      self->_selectionBorderColor = selectionBorderColor;
     }
 
     if (objc_opt_respondsToSelector())
@@ -1336,8 +1336,8 @@ LABEL_215:
 
     if (objc_opt_respondsToSelector())
     {
-      v39 = [v21 selectionDragDotImage];
-      [(UITextInputTraits *)self setSelectionDragDotImage:v39];
+      selectionDragDotImage = [v21 selectionDragDotImage];
+      [(UITextInputTraits *)self setSelectionDragDotImage:selectionDragDotImage];
     }
 
     if (objc_opt_respondsToSelector())
@@ -1357,9 +1357,9 @@ LABEL_215:
 
     if (objc_opt_respondsToSelector())
     {
-      v40 = [v21 textSuggestionDelegate];
+      textSuggestionDelegate2 = [v21 textSuggestionDelegate];
       v41 = self->textSuggestionDelegate;
-      self->textSuggestionDelegate = v40;
+      self->textSuggestionDelegate = textSuggestionDelegate2;
     }
 
     if (objc_opt_respondsToSelector())
@@ -1513,24 +1513,24 @@ LABEL_215:
 
     if (objc_opt_respondsToSelector())
     {
-      v46 = [v21 autocorrectionContext];
-      [(UITextInputTraits *)self setAutocorrectionContext:v46];
+      autocorrectionContext = [v21 autocorrectionContext];
+      [(UITextInputTraits *)self setAutocorrectionContext:autocorrectionContext];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v47 = [v21 responseContext];
-      [(UITextInputTraits *)self setResponseContext:v47];
+      responseContext = [v21 responseContext];
+      [(UITextInputTraits *)self setResponseContext:responseContext];
     }
 
-    v48 = [(UITextInputTraits *)self inputContextHistory];
-    if (!v48)
+    inputContextHistory = [(UITextInputTraits *)self inputContextHistory];
+    if (!inputContextHistory)
     {
       if (objc_opt_respondsToSelector())
       {
-        v49 = [v21 inputContextHistory];
+        inputContextHistory2 = [v21 inputContextHistory];
 
-        if (!v49)
+        if (!inputContextHistory2)
         {
 LABEL_181:
           if (objc_opt_respondsToSelector())
@@ -1596,14 +1596,14 @@ LABEL_181:
 
           if (objc_opt_respondsToSelector())
           {
-            v51 = [v21 supplementalLexicon];
-            [(UITextInputTraits *)self setSupplementalLexicon:v51];
+            supplementalLexicon = [v21 supplementalLexicon];
+            [(UITextInputTraits *)self setSupplementalLexicon:supplementalLexicon];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v52 = [v21 supplementalLexiconAmbiguousItemIcon];
-            [(UITextInputTraits *)self setSupplementalLexiconAmbiguousItemIcon:v52];
+            supplementalLexiconAmbiguousItemIcon = [v21 supplementalLexiconAmbiguousItemIcon];
+            [(UITextInputTraits *)self setSupplementalLexiconAmbiguousItemIcon:supplementalLexiconAmbiguousItemIcon];
           }
 
           if (objc_opt_respondsToSelector())
@@ -1624,13 +1624,13 @@ LABEL_181:
           goto LABEL_215;
         }
 
-        v48 = [v21 inputContextHistory];
-        [(UITextInputTraits *)self setInputContextHistory:v48];
+        inputContextHistory = [v21 inputContextHistory];
+        [(UITextInputTraits *)self setInputContextHistory:inputContextHistory];
       }
 
       else
       {
-        v48 = 0;
+        inputContextHistory = 0;
       }
     }
 
@@ -1640,18 +1640,18 @@ LABEL_181:
 LABEL_216:
 }
 
-+ (id)traitEnvironmentFromTraits:(id)a3
++ (id)traitEnvironmentFromTraits:(id)traits
 {
-  v4 = a3;
+  traitsCopy = traits;
   if (objc_opt_respondsToSelector())
   {
-    v5 = v4;
+    v5 = traitsCopy;
   }
 
-  else if ([v4 __isKindOfUIResponder])
+  else if ([traitsCopy __isKindOfUIResponder])
   {
-    v6 = [v4 nextResponder];
-    v5 = [a1 traitEnvironmentFromTraits:v6];
+    nextResponder = [traitsCopy nextResponder];
+    v5 = [self traitEnvironmentFromTraits:nextResponder];
   }
 
   else
@@ -1662,24 +1662,24 @@ LABEL_216:
   return v5;
 }
 
-- (void)takeTraitsFrom:(id)a3 lightweight:(BOOL)a4
+- (void)takeTraitsFrom:(id)from lightweight:(BOOL)lightweight
 {
-  v22 = a3;
+  fromCopy = from;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [v22 conformsToProtocolCached:&unk_1F016C810])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [fromCopy conformsToProtocolCached:&unk_1F016C810])
   {
-    v5 = [v22 extendedTextInputTraits];
-    if (!v5)
+    extendedTextInputTraits = [fromCopy extendedTextInputTraits];
+    if (!extendedTextInputTraits)
     {
       goto LABEL_16;
     }
 
 LABEL_15:
-    v6 = v5;
+    v6 = extendedTextInputTraits;
 
     v7 = v6;
 LABEL_24:
-    v22 = v7;
+    fromCopy = v7;
     [UITextInputTraits extendedPathToObtainTraitsFrom:"extendedPathToObtainTraitsFrom:lightweight:" lightweight:?];
     v9 = 0;
     v10 = 1;
@@ -1687,10 +1687,10 @@ LABEL_24:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [v22 conformsToProtocolCached:&unk_1F016C7B0])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [fromCopy conformsToProtocolCached:&unk_1F016C7B0])
   {
-    v5 = [v22 extendedTraitsDelegate];
-    if (v5)
+    extendedTextInputTraits = [fromCopy extendedTraitsDelegate];
+    if (extendedTextInputTraits)
     {
       goto LABEL_15;
     }
@@ -1701,10 +1701,10 @@ LABEL_24:
     NSClassFromString(&cfstr_Wkcontentview.isa);
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      if ([v22 conformsToProtocolCached:&unk_1F016C7B0])
+      if ([fromCopy conformsToProtocolCached:&unk_1F016C7B0])
       {
-        v5 = [v22 textInputTraits];
-        if (v5)
+        extendedTextInputTraits = [fromCopy textInputTraits];
+        if (extendedTextInputTraits)
         {
           goto LABEL_15;
         }
@@ -1716,30 +1716,30 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v22;
+    textInputTraits = fromCopy;
   }
 
   else
   {
     NSClassFromString(&cfstr_Wkcontentview.isa);
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ![v22 conformsToProtocol:&unk_1EFE8E9A0])
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ![fromCopy conformsToProtocol:&unk_1EFE8E9A0])
     {
       goto LABEL_23;
     }
 
-    v8 = [v22 textInputTraits];
+    textInputTraits = [fromCopy textInputTraits];
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = textInputTraits;
+  if (!textInputTraits)
   {
 LABEL_23:
     v6 = 0;
-    v7 = v22;
+    v7 = fromCopy;
     goto LABEL_24;
   }
 
-  [(UITextInputTraits *)self fastPathToObtainTraitsFrom:v8];
+  [(UITextInputTraits *)self fastPathToObtainTraitsFrom:textInputTraits];
   v10 = 0;
   v6 = 0;
 LABEL_25:
@@ -1754,7 +1754,7 @@ LABEL_25:
     self->learnsCorrections = 0;
   }
 
-  v11 = [UITextInputTraits traitEnvironmentFromTraits:v22];
+  v11 = [UITextInputTraits traitEnvironmentFromTraits:fromCopy];
   if (!+[UIKeyboard isInputSystemUI])
   {
     if (*(self + 32) == 127)
@@ -1771,10 +1771,10 @@ LABEL_25:
     *(self + 33) = [UITextInputTraits configuredAppearanceForAppearance:v12 withTraitEnvironment:v11];
   }
 
-  v13 = [v11 traitCollection];
-  v14 = [v13 userInterfaceIdiom];
+  traitCollection = [v11 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v14 == 2)
+  if (userInterfaceIdiom == 2)
   {
     if (self->secureTextEntry)
     {
@@ -1789,11 +1789,11 @@ LABEL_25:
 
   else
   {
-    v17 = [v11 traitCollection];
-    v18 = [v17 userInterfaceIdiom];
+    traitCollection2 = [v11 traitCollection];
+    userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
     v16 = 1;
-    if (v18 != 3)
+    if (userInterfaceIdiom2 != 3)
     {
       goto LABEL_43;
     }
@@ -1864,8 +1864,8 @@ LABEL_59:
 
   if (([v9 acceptsEmoji] & 1) == 0)
   {
-    v21 = [v9 keyboardType];
-    if ((v21 > 0xB || ((1 << v21) & 0x930) == 0) && v21 != 127)
+    keyboardType = [v9 keyboardType];
+    if ((keyboardType > 0xB || ((1 << keyboardType) & 0x930) == 0) && keyboardType != 127)
     {
       *(self + 32) = 13;
     }
@@ -1883,31 +1883,31 @@ LABEL_67:
   }
 }
 
-+ (id)traitsByAdoptingTraits:(id)a3
++ (id)traitsByAdoptingTraits:(id)traits
 {
-  v3 = a3;
+  traitsCopy = traits;
   v4 = objc_alloc_init(UITextInputTraits);
-  [(UITextInputTraits *)v4 takeTraitsFrom:v3 lightweight:0];
+  [(UITextInputTraits *)v4 takeTraitsFrom:traitsCopy lightweight:0];
 
   return v4;
 }
 
-+ (id)traitsByAdoptingTraits:(id)a3 lightweight:(BOOL)a4
++ (id)traitsByAdoptingTraits:(id)traits lightweight:(BOOL)lightweight
 {
-  v4 = a4;
-  v5 = a3;
+  lightweightCopy = lightweight;
+  traitsCopy = traits;
   v6 = objc_alloc_init(UITextInputTraits);
-  [(UITextInputTraits *)v6 takeTraitsFrom:v5 lightweight:v4];
+  [(UITextInputTraits *)v6 takeTraitsFrom:traitsCopy lightweight:lightweightCopy];
 
   return v6;
 }
 
-+ (BOOL)keyboardTypeRequiresASCIICapable:(int64_t)a3
++ (BOOL)keyboardTypeRequiresASCIICapable:(int64_t)capable
 {
   result = 1;
-  if (a3 <= 0xD)
+  if (capable <= 0xD)
   {
-    if (((1 << a3) & 0x3575) == 0)
+    if (((1 << capable) & 0x3575) == 0)
     {
       return result;
     }
@@ -1915,12 +1915,12 @@ LABEL_67:
     return 0;
   }
 
-  if ((a3 - 120) > 7)
+  if ((capable - 120) > 7)
   {
     return 0;
   }
 
-  v4 = 1 << (a3 - 120);
+  v4 = 1 << (capable - 120);
   if ((v4 & 0x55) != 0 || (v4 & 0x88) == 0)
   {
     return 0;
@@ -1929,7 +1929,7 @@ LABEL_67:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(UITextInputTraits);
   [(UITextInputTraits *)v4 takeTraitsFrom:self lightweight:0];
@@ -1938,28 +1938,28 @@ LABEL_67:
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@ : %p>\n", objc_opt_class(), self];
-  [v3 appendString:v4];
+  [string appendString:v4];
 
-  [v3 appendString:@"public\n"];
+  [string appendString:@"public\n"];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   autocapitalization:                  %ld\n", self->autocapitalizationType];
-  [v3 appendString:v5];
+  [string appendString:v5];
 
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   autocorrection:                      %ld\n", self->autocorrectionType];
-  [v3 appendString:v6];
+  [string appendString:v6];
 
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   spellchecking:                       %ld\n", self->spellCheckingType];
-  [v3 appendString:v7];
+  [string appendString:v7];
 
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   keyboard type:                       %ld\n", *(self + 32)];
-  [v3 appendString:v8];
+  [string appendString:v8];
 
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   kb appearance:                       %ld\n", *(self + 33)];
-  [v3 appendString:v9];
+  [string appendString:v9];
 
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   return key type:                     %ld\n", self->returnKeyType];
-  [v3 appendString:v10];
+  [string appendString:v10];
 
   if (self->enablesReturnKeyAutomatically)
   {
@@ -1972,7 +1972,7 @@ LABEL_67:
   }
 
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   auto return key:                     %@\n", v11];
-  [v3 appendString:v12];
+  [string appendString:v12];
 
   if (self->secureTextEntry)
   {
@@ -1985,7 +1985,7 @@ LABEL_67:
   }
 
   v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   secure text entry:                   %@\n", v13];
-  [v3 appendString:v14];
+  [string appendString:v14];
 
   if (!self->secureTextEntry)
   {
@@ -2000,7 +2000,7 @@ LABEL_67:
     }
 
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   was ever secure text entry:          %@\n", v15];
-    [v3 appendString:v16];
+    [string appendString:v16];
   }
 
   if (self->devicePasscodeEntry)
@@ -2014,157 +2014,157 @@ LABEL_67:
   }
 
   v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   device passcode entry:               %@\n", v17];
-  [v3 appendString:v18];
+  [string appendString:v18];
 
-  v19 = [(UITextInputTraits *)self passwordRules];
+  passwordRules = [(UITextInputTraits *)self passwordRules];
 
-  if (v19)
+  if (passwordRules)
   {
     v20 = MEMORY[0x1E696AEC0];
-    v21 = [(UITextInputTraits *)self passwordRules];
-    v22 = [v20 stringWithFormat:@"   password rules:                      %@\n", v21];
-    [v3 appendString:v22];
+    passwordRules2 = [(UITextInputTraits *)self passwordRules];
+    v22 = [v20 stringWithFormat:@"   password rules:                      %@\n", passwordRules2];
+    [string appendString:v22];
   }
 
-  v23 = [(UITextInputTraits *)self textContentType];
+  textContentType = [(UITextInputTraits *)self textContentType];
 
-  if (v23)
+  if (textContentType)
   {
     v24 = MEMORY[0x1E696AEC0];
-    v25 = [(UITextInputTraits *)self textContentType];
-    v26 = [v24 stringWithFormat:@"   text content type:                   %@\n", v25];
-    [v3 appendString:v26];
+    textContentType2 = [(UITextInputTraits *)self textContentType];
+    v26 = [v24 stringWithFormat:@"   text content type:                   %@\n", textContentType2];
+    [string appendString:v26];
   }
 
   v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   smart insert/delete type:            %ld\n", self->smartInsertDeleteType];
-  [v3 appendString:v27];
+  [string appendString:v27];
 
   v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   smart quotes type:                   %ld\n", self->smartQuotesType];
-  [v3 appendString:v28];
+  [string appendString:v28];
 
   v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   smart dashes type:                   %ld\n", self->smartDashesType];
-  [v3 appendString:v29];
+  [string appendString:v29];
 
-  v30 = [(UITextInputTraits *)self recentInputIdentifier];
+  recentInputIdentifier = [(UITextInputTraits *)self recentInputIdentifier];
 
-  if (v30)
+  if (recentInputIdentifier)
   {
     v31 = MEMORY[0x1E696AEC0];
-    v32 = [(UITextInputTraits *)self recentInputIdentifier];
-    v33 = [v31 stringWithFormat:@"   recent input identifier:             %@\n", v32];
-    [v3 appendString:v33];
+    recentInputIdentifier2 = [(UITextInputTraits *)self recentInputIdentifier];
+    v33 = [v31 stringWithFormat:@"   recent input identifier:             %@\n", recentInputIdentifier2];
+    [string appendString:v33];
   }
 
   v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   writingToolsBehavior:            %ld\n", self->writingToolsBehavior];
-  [v3 appendString:v34];
+  [string appendString:v34];
 
   v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   allowedWritingToolsResultOptions:     %ld\n", self->allowedWritingToolsResultOptions];
-  [v3 appendString:v35];
+  [string appendString:v35];
 
-  [v3 appendString:@"private\n"];
+  [string appendString:@"private\n"];
   v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   text trimming set:                   %p\n", self->textTrimmingSet];
-  [v3 appendString:v36];
+  [string appendString:v36];
 
   v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   ins. pt. color:                      %@\n", self->insertionPointColor];
-  [v3 appendString:v37];
+  [string appendString:v37];
 
   v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   ins. pt. width:                      %lu\n", self->insertionPointWidth];
-  [v3 appendString:v38];
+  [string appendString:v38];
 
   v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   text loupe vis.:                     %d\n", self->textLoupeVisibility];
-  [v3 appendString:v39];
+  [string appendString:v39];
 
   v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   selection behavior:                  %d\n", self->textSelectionBehavior];
-  [v3 appendString:v40];
+  [string appendString:v40];
 
   v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   text suggest. del.:                  %@\n", self->textSuggestionDelegate];
-  [v3 appendString:v41];
+  [string appendString:v41];
 
   v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   single-line document:                %d\n", self->isSingleLineDocument];
-  [v3 appendString:v42];
+  [string appendString:v42];
 
   v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   single value:                        %d\n", self->contentsIsSingleValue];
-  [v3 appendString:v43];
+  [string appendString:v43];
 
   v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   has default contents:                %d\n", self->hasDefaultContents];
-  [v3 appendString:v44];
+  [string appendString:v44];
 
   v45 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   accepts payloads:                    %d\n", self->acceptsPayloads];
-  [v3 appendString:v45];
+  [string appendString:v45];
 
   v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   accepts emoji:                       %d\n", self->acceptsEmoji];
-  [v3 appendString:v46];
+  [string appendString:v46];
 
   v47 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   acceptsInitialEmojiKeyboard:         %d\n", self->acceptsInitialEmojiKeyboard];
-  [v3 appendString:v47];
+  [string appendString:v47];
 
   v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   accepts dictation search results:    %d\n", self->acceptsDictationSearchResults];
-  [v3 appendString:v48];
+  [string appendString:v48];
 
   v49 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   use automatic endpointing:           %d\n", self->useAutomaticEndpointing];
-  [v3 appendString:v49];
+  [string appendString:v49];
 
   v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   show dictation button:               %d\n", self->showDictationButton];
-  [v3 appendString:v50];
+  [string appendString:v50];
 
   v51 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   force-enable dictation:              %d\n", self->forceEnableDictation];
-  [v3 appendString:v51];
+  [string appendString:v51];
 
   v52 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   force-disable dictation:             %d\n", self->forceDisableDictation];
-  [v3 appendString:v52];
+  [string appendString:v52];
 
   v53 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   force-spelling dictation: %d\n", self->forceSpellingDictation];
-  [v3 appendString:v53];
+  [string appendString:v53];
 
   v54 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   force default dictation info         %d\n", self->forceDefaultDictationInfo];
-  [v3 appendString:v54];
+  [string appendString:v54];
 
   v55 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   force dictation keyboard type:       %ld\n", self->forceDictationKeyboardType];
-  [v3 appendString:v55];
+  [string appendString:v55];
 
   v56 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   prefer online dictation              %d\n", self->preferOnlineDictation];
-  [v3 appendString:v56];
+  [string appendString:v56];
 
   v57 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   disabled return key:                 %d\n", self->emptyContentReturnKeyType];
-  [v3 appendString:v57];
+  [string appendString:v57];
 
   v58 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   return key goes to next responder:   %d\n", self->returnKeyGoesToNextResponder];
-  [v3 appendString:v58];
+  [string appendString:v58];
 
   v59 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   accepts floating keyboard:           %d\n", self->acceptsFloatingKeyboard];
-  [v3 appendString:v59];
+  [string appendString:v59];
 
   v60 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   force floating keyboard:             %d\n", self->forceFloatingKeyboard];
-  [v3 appendString:v60];
+  [string appendString:v60];
 
   v61 = MEMORY[0x1E696AEC0];
   v62 = NSStringFromUIEdgeInsets(self->floatingKeyboardEdgeInsets);
   v63 = [v61 stringWithFormat:@"   floating keyboard edge insets:       %@\n", v62];
-  [v3 appendString:v63];
+  [string appendString:v63];
 
   v64 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   accepts split keyboard:              %d\n", self->acceptsSplitKeyboard];
-  [v3 appendString:v64];
+  [string appendString:v64];
 
   v65 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   displaySecureTextUsingPlainText:     %d\n", self->displaySecureTextUsingPlainText];
-  [v3 appendString:v65];
+  [string appendString:v65];
 
   v66 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   displaySecureEditsUsingPlainText:    %d\n", self->displaySecureEditsUsingPlainText];
-  [v3 appendString:v66];
+  [string appendString:v66];
 
   v67 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   learnsCorrections:        %d\n", self->learnsCorrections];
-  [v3 appendString:v67];
+  [string appendString:v67];
 
   v68 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   shortcut conversion:                 %d\n", self->shortcutConversionType];
-  [v3 appendString:v68];
+  [string appendString:v68];
 
   v69 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   suppress return key styling:         %d\n", self->suppressReturnKeyStyling];
-  [v3 appendString:v69];
+  [string appendString:v69];
 
   v70 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   localized with UI language:          %d\n", self->useInterfaceLanguageForLocalization];
-  [v3 appendString:v70];
+  [string appendString:v70];
 
   v71 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   defer becomeFirstResponder:          %d\n", self->deferBecomingResponder];
-  [v3 appendString:v71];
+  [string appendString:v71];
 
   if (self->enablesReturnKeyOnNonWhiteSpaceContent)
   {
@@ -2177,16 +2177,16 @@ LABEL_67:
   }
 
   v73 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   enables return key for NWS content:  %@\n", v72];
-  [v3 appendString:v73];
+  [string appendString:v73];
 
   v74 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   autocorrection context:              %@\n", self->autocorrectionContext];
-  [v3 appendString:v74];
+  [string appendString:v74];
 
   v75 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   response context:                    %@\n", self->responseContext];
-  [v3 appendString:v75];
+  [string appendString:v75];
 
   v76 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   input context history:               %@\n", self->inputContextHistory];
-  [v3 appendString:v76];
+  [string appendString:v76];
 
   if (self->disablePrediction)
   {
@@ -2199,7 +2199,7 @@ LABEL_67:
   }
 
   v78 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   disable prediction:                  %@\n", v77];
-  [v3 appendString:v78];
+  [string appendString:v78];
 
   if (self->hidePrediction)
   {
@@ -2212,10 +2212,10 @@ LABEL_67:
   }
 
   v80 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   hide prediction:                     %@\n", v79];
-  [v3 appendString:v80];
+  [string appendString:v80];
 
   v81 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   inline prediction type:              %ld\n", self->inlinePredictionType];
-  [v3 appendString:v81];
+  [string appendString:v81];
 
   if (self->disableInputBars)
   {
@@ -2228,7 +2228,7 @@ LABEL_67:
   }
 
   v83 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   disableInputBars:                    %@\n", v82];
-  [v3 appendString:v83];
+  [string appendString:v83];
 
   if (self->isCarPlayIdiom)
   {
@@ -2241,12 +2241,12 @@ LABEL_67:
   }
 
   v85 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   isCarPlayIdiom:                      %@\n", v84];
-  [v3 appendString:v85];
+  [string appendString:v85];
 
   if (self->preferredInputViewHeight > 0.0)
   {
     v86 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   preferredInputViewHeight:            %f\n", *&self->preferredInputViewHeight];
-    [v3 appendString:v86];
+    [string appendString:v86];
   }
 
   if (self->loadKeyboardsForSiriLanguage)
@@ -2260,28 +2260,28 @@ LABEL_67:
   }
 
   v88 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   loadKeyboardsForSiriLanguage:        %@\n", v87];
-  [v3 appendString:v88];
+  [string appendString:v88];
 
   v89 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   textScriptType:                      %ld\n", self->textScriptType];
-  [v3 appendString:v89];
+  [string appendString:v89];
 
   v90 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   supplemental lexicon:                %@\n", self->supplementalLexicon];
-  [v3 appendString:v90];
+  [string appendString:v90];
 
   v91 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   supplemental lexicon ambiguous item icon: %@\n", self->supplementalLexiconAmbiguousItemIcon];
-  [v3 appendString:v91];
+  [string appendString:v91];
 
   v92 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   disableHandwritingKeyboard:          %d\n", self->disableHandwritingKeyboard];
-  [v3 appendString:v92];
+  [string appendString:v92];
 
   v93 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   math expression completion:          %ld\n", self->mathExpressionCompletionType];
-  [v3 appendString:v93];
+  [string appendString:v93];
 
   v94 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   text animations allowed:             %ld\n", self->allowsTextAnimationsType];
-  [v3 appendString:v94];
+  [string appendString:v94];
 
   v95 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   keyboard suggestion options:         %ld\n", self->keyboardSuggestionOptions];
-  [v3 appendString:v95];
+  [string appendString:v95];
 
   if (self->allowsNumberPadPopover)
   {
@@ -2294,60 +2294,60 @@ LABEL_67:
   }
 
   v97 = [MEMORY[0x1E696AEC0] stringWithFormat:@"   enable numberpad popover display:   %@\n", v96];
-  [v3 appendString:v97];
+  [string appendString:v97];
 
-  return v3;
+  return string;
 }
 
-- (BOOL)publicTraitsMatchTraits:(id)a3
+- (BOOL)publicTraitsMatchTraits:(id)traits
 {
-  v5 = a3;
+  traitsCopy = traits;
   autocapitalizationType = self->autocapitalizationType;
-  if (autocapitalizationType == [v5 autocapitalizationType])
+  if (autocapitalizationType == [traitsCopy autocapitalizationType])
   {
     autocorrectionType = self->autocorrectionType;
-    if (autocorrectionType == [v5 autocorrectionType])
+    if (autocorrectionType == [traitsCopy autocorrectionType])
     {
       spellCheckingType = self->spellCheckingType;
-      if (spellCheckingType == [v5 spellCheckingType])
+      if (spellCheckingType == [traitsCopy spellCheckingType])
       {
         v9 = *(self + 32);
-        if ([v5 keyboardType] == v9)
+        if ([traitsCopy keyboardType] == v9)
         {
           v10 = *(self + 33);
-          if ([v5 keyboardAppearance] == v10)
+          if ([traitsCopy keyboardAppearance] == v10)
           {
             returnKeyType = self->returnKeyType;
-            if (returnKeyType == [v5 returnKeyType])
+            if (returnKeyType == [traitsCopy returnKeyType])
             {
               enablesReturnKeyAutomatically = self->enablesReturnKeyAutomatically;
-              if (enablesReturnKeyAutomatically == [v5 enablesReturnKeyAutomatically])
+              if (enablesReturnKeyAutomatically == [traitsCopy enablesReturnKeyAutomatically])
               {
                 secureTextEntry = self->secureTextEntry;
-                if (secureTextEntry == [v5 isSecureTextEntry])
+                if (secureTextEntry == [traitsCopy isSecureTextEntry])
                 {
                   smartInsertDeleteType = self->smartInsertDeleteType;
-                  if (smartInsertDeleteType == [v5 smartInsertDeleteType])
+                  if (smartInsertDeleteType == [traitsCopy smartInsertDeleteType])
                   {
                     smartQuotesType = self->smartQuotesType;
-                    if (smartQuotesType == [v5 smartQuotesType])
+                    if (smartQuotesType == [traitsCopy smartQuotesType])
                     {
                       smartDashesType = self->smartDashesType;
-                      if (smartDashesType == [v5 smartDashesType])
+                      if (smartDashesType == [traitsCopy smartDashesType])
                       {
                         textContentType = self->textContentType;
-                        v18 = [v5 textContentType];
-                        if (textContentType == v18 || (v19 = self->textContentType, [v5 textContentType], v3 = objc_claimAutoreleasedReturnValue(), -[NSString isEqualToString:](v19, "isEqualToString:", v3)))
+                        textContentType = [traitsCopy textContentType];
+                        if (textContentType == textContentType || (v19 = self->textContentType, [traitsCopy textContentType], v3 = objc_claimAutoreleasedReturnValue(), -[NSString isEqualToString:](v19, "isEqualToString:", v3)))
                         {
                           passwordRules = self->passwordRules;
-                          v23 = [v5 passwordRules];
-                          if (passwordRules == v23)
+                          passwordRules = [traitsCopy passwordRules];
+                          if (passwordRules == passwordRules)
                           {
                             writingToolsBehavior = self->writingToolsBehavior;
-                            if (writingToolsBehavior == [v5 writingToolsBehavior])
+                            if (writingToolsBehavior == [traitsCopy writingToolsBehavior])
                             {
                               allowedWritingToolsResultOptions = self->allowedWritingToolsResultOptions;
-                              v20 = allowedWritingToolsResultOptions == [v5 allowedWritingToolsResultOptions];
+                              v20 = allowedWritingToolsResultOptions == [traitsCopy allowedWritingToolsResultOptions];
                             }
 
                             else
@@ -2359,11 +2359,11 @@ LABEL_67:
                           else
                           {
                             v24 = self->passwordRules;
-                            v25 = [v5 passwordRules];
-                            if (-[UITextInputPasswordRules isEqual:](v24, "isEqual:", v25) && (v26 = self->writingToolsBehavior, v26 == [v5 writingToolsBehavior]))
+                            passwordRules2 = [traitsCopy passwordRules];
+                            if (-[UITextInputPasswordRules isEqual:](v24, "isEqual:", passwordRules2) && (v26 = self->writingToolsBehavior, v26 == [traitsCopy writingToolsBehavior]))
                             {
                               v27 = self->allowedWritingToolsResultOptions;
-                              v20 = v27 == [v5 allowedWritingToolsResultOptions];
+                              v20 = v27 == [traitsCopy allowedWritingToolsResultOptions];
                             }
 
                             else
@@ -2372,7 +2372,7 @@ LABEL_67:
                             }
                           }
 
-                          if (textContentType == v18)
+                          if (textContentType == textContentType)
                           {
                             goto LABEL_28;
                           }
@@ -2403,58 +2403,58 @@ LABEL_16:
   return v20;
 }
 
-- (int64_t)updateResultComparedToTraits:(id)a3
+- (int64_t)updateResultComparedToTraits:(id)traits
 {
-  v6 = a3;
+  traitsCopy = traits;
   v7 = *(self + 32);
-  if ([v6 keyboardType] != v7)
+  if ([traitsCopy keyboardType] != v7)
   {
     goto LABEL_8;
   }
 
   v8 = *(self + 33);
-  if ([v6 keyboardAppearance] != v8)
+  if ([traitsCopy keyboardAppearance] != v8)
   {
     goto LABEL_8;
   }
 
   secureTextEntry = self->secureTextEntry;
-  if (secureTextEntry != [v6 isSecureTextEntry])
+  if (secureTextEntry != [traitsCopy isSecureTextEntry])
   {
     goto LABEL_8;
   }
 
   acceptsEmoji = self->acceptsEmoji;
-  if (acceptsEmoji != [v6 acceptsEmoji])
+  if (acceptsEmoji != [traitsCopy acceptsEmoji])
   {
     goto LABEL_8;
   }
 
   acceptsInitialEmojiKeyboard = self->acceptsInitialEmojiKeyboard;
-  if (acceptsInitialEmojiKeyboard != [v6 acceptsInitialEmojiKeyboard])
+  if (acceptsInitialEmojiKeyboard != [traitsCopy acceptsInitialEmojiKeyboard])
   {
     goto LABEL_8;
   }
 
   isCarPlayIdiom = self->isCarPlayIdiom;
-  if (isCarPlayIdiom != [v6 isCarPlayIdiom])
+  if (isCarPlayIdiom != [traitsCopy isCarPlayIdiom])
   {
     goto LABEL_8;
   }
 
   preferredInputViewHeight = self->preferredInputViewHeight;
-  [v6 preferredInputViewHeight];
+  [traitsCopy preferredInputViewHeight];
   if (preferredInputViewHeight != v14)
   {
     goto LABEL_8;
   }
 
-  v17 = [(UITextInputTraits *)self recentInputIdentifier];
-  if (v17)
+  recentInputIdentifier = [(UITextInputTraits *)self recentInputIdentifier];
+  if (recentInputIdentifier)
   {
-    v3 = [(UITextInputTraits *)self recentInputIdentifier];
-    v4 = [v6 recentInputIdentifier];
-    if (([v3 isEqualToString:v4] & 1) == 0)
+    recentInputIdentifier2 = [(UITextInputTraits *)self recentInputIdentifier];
+    recentInputIdentifier3 = [traitsCopy recentInputIdentifier];
+    if (([recentInputIdentifier2 isEqualToString:recentInputIdentifier3] & 1) == 0)
     {
 
 LABEL_8:
@@ -2463,26 +2463,26 @@ LABEL_8:
     }
   }
 
-  v18 = [(UITextInputTraits *)self recentInputIdentifier];
-  if (v18)
+  recentInputIdentifier4 = [(UITextInputTraits *)self recentInputIdentifier];
+  if (recentInputIdentifier4)
   {
-    v19 = v18;
+    recentInputIdentifier5 = recentInputIdentifier4;
   }
 
   else
   {
-    v19 = [v6 recentInputIdentifier];
-    if (v19)
+    recentInputIdentifier5 = [traitsCopy recentInputIdentifier];
+    if (recentInputIdentifier5)
     {
       goto LABEL_18;
     }
   }
 
   smartQuotesType = self->smartQuotesType;
-  if (smartQuotesType == [v6 smartQuotesType])
+  if (smartQuotesType == [traitsCopy smartQuotesType])
   {
     smartDashesType = self->smartDashesType;
-    v22 = smartDashesType != [v6 smartDashesType];
+    v22 = smartDashesType != [traitsCopy smartDashesType];
     goto LABEL_19;
   }
 
@@ -2490,7 +2490,7 @@ LABEL_18:
   v22 = 1;
 LABEL_19:
 
-  if (v17)
+  if (recentInputIdentifier)
   {
   }
 
@@ -2500,10 +2500,10 @@ LABEL_19:
   }
 
   disableInputBars = self->disableInputBars;
-  if (disableInputBars == [v6 disableInputBars])
+  if (disableInputBars == [traitsCopy disableInputBars])
   {
     returnKeyType = self->returnKeyType;
-    v15 = returnKeyType != [v6 returnKeyType] || (enablesReturnKeyAutomatically = self->enablesReturnKeyAutomatically, enablesReturnKeyAutomatically != objc_msgSend(v6, "enablesReturnKeyAutomatically")) || (emptyContentReturnKeyType = self->emptyContentReturnKeyType, emptyContentReturnKeyType != objc_msgSend(v6, "emptyContentReturnKeyType")) || (enablesReturnKeyOnNonWhiteSpaceContent = self->enablesReturnKeyOnNonWhiteSpaceContent, enablesReturnKeyOnNonWhiteSpaceContent != objc_msgSend(v6, "enablesReturnKeyOnNonWhiteSpaceContent")) || (suppressReturnKeyStyling = self->suppressReturnKeyStyling, suppressReturnKeyStyling != objc_msgSend(v6, "suppressReturnKeyStyling")) || self->enablesReturnKeyAutomatically || self->enablesReturnKeyOnNonWhiteSpaceContent;
+    v15 = returnKeyType != [traitsCopy returnKeyType] || (enablesReturnKeyAutomatically = self->enablesReturnKeyAutomatically, enablesReturnKeyAutomatically != objc_msgSend(traitsCopy, "enablesReturnKeyAutomatically")) || (emptyContentReturnKeyType = self->emptyContentReturnKeyType, emptyContentReturnKeyType != objc_msgSend(traitsCopy, "emptyContentReturnKeyType")) || (enablesReturnKeyOnNonWhiteSpaceContent = self->enablesReturnKeyOnNonWhiteSpaceContent, enablesReturnKeyOnNonWhiteSpaceContent != objc_msgSend(traitsCopy, "enablesReturnKeyOnNonWhiteSpaceContent")) || (suppressReturnKeyStyling = self->suppressReturnKeyStyling, suppressReturnKeyStyling != objc_msgSend(traitsCopy, "suppressReturnKeyStyling")) || self->enablesReturnKeyAutomatically || self->enablesReturnKeyOnNonWhiteSpaceContent;
   }
 
   else
@@ -2516,71 +2516,71 @@ LABEL_9:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if ([(UITextInputTraits *)self publicTraitsMatchTraits:v6])
+  equalCopy = equal;
+  if ([(UITextInputTraits *)self publicTraitsMatchTraits:equalCopy])
   {
-    v7 = [(UITextInputTraits *)self recentInputIdentifier];
-    v8 = [v6 recentInputIdentifier];
-    if (v7 != v8)
+    recentInputIdentifier = [(UITextInputTraits *)self recentInputIdentifier];
+    recentInputIdentifier2 = [equalCopy recentInputIdentifier];
+    if (recentInputIdentifier != recentInputIdentifier2)
     {
-      v3 = [(UITextInputTraits *)self recentInputIdentifier];
-      v4 = [v6 recentInputIdentifier];
-      if (![v3 isEqualToString:v4])
+      recentInputIdentifier3 = [(UITextInputTraits *)self recentInputIdentifier];
+      recentInputIdentifier4 = [equalCopy recentInputIdentifier];
+      if (![recentInputIdentifier3 isEqualToString:recentInputIdentifier4])
       {
         v9 = 0;
         goto LABEL_28;
       }
     }
 
-    v10 = [(UITextInputTraits *)self manageRecentInputs];
-    if (v10 != [v6 manageRecentInputs])
+    manageRecentInputs = [(UITextInputTraits *)self manageRecentInputs];
+    if (manageRecentInputs != [equalCopy manageRecentInputs])
     {
       goto LABEL_26;
     }
 
-    v11 = [(UITextInputTraits *)self validTextRange];
+    validTextRange = [(UITextInputTraits *)self validTextRange];
     v13 = v12;
-    if (v11 != [v6 validTextRange] || v13 != v14)
+    if (validTextRange != [equalCopy validTextRange] || v13 != v14)
     {
       goto LABEL_26;
     }
 
-    v15 = [(UITextInputTraits *)self PINEntrySeparatorIndexes];
-    v16 = [v6 PINEntrySeparatorIndexes];
-    if (![v15 isEqualToIndexSet:v16])
+    pINEntrySeparatorIndexes = [(UITextInputTraits *)self PINEntrySeparatorIndexes];
+    pINEntrySeparatorIndexes2 = [equalCopy PINEntrySeparatorIndexes];
+    if (![pINEntrySeparatorIndexes isEqualToIndexSet:pINEntrySeparatorIndexes2])
     {
       goto LABEL_25;
     }
 
     if (!self->textTrimmingSet)
     {
-      if (![v6 textTrimmingSet])
+      if (![equalCopy textTrimmingSet])
       {
 LABEL_18:
         insertionPointColor = self->insertionPointColor;
-        v18 = [v6 insertionPointColor];
-        if ([(UIColor *)insertionPointColor isEqual:v18])
+        insertionPointColor = [equalCopy insertionPointColor];
+        if ([(UIColor *)insertionPointColor isEqual:insertionPointColor])
         {
           insertionPointWidth = self->insertionPointWidth;
-          if (insertionPointWidth == [v6 insertionPointWidth])
+          if (insertionPointWidth == [equalCopy insertionPointWidth])
           {
             textLoupeVisibility = self->textLoupeVisibility;
-            if (textLoupeVisibility == [v6 textLoupeVisibility])
+            if (textLoupeVisibility == [equalCopy textLoupeVisibility])
             {
               textSelectionBehavior = self->textSelectionBehavior;
-              if (textSelectionBehavior == [v6 textSelectionBehavior])
+              if (textSelectionBehavior == [equalCopy textSelectionBehavior])
               {
                 textSuggestionDelegate = self->textSuggestionDelegate;
-                v23 = [v6 textSuggestionDelegate];
-                if (textSuggestionDelegate != v23)
+                textSuggestionDelegate = [equalCopy textSuggestionDelegate];
+                if (textSuggestionDelegate != textSuggestionDelegate)
                 {
                   v9 = 0;
 LABEL_59:
 
 LABEL_27:
-                  if (v7 == v8)
+                  if (recentInputIdentifier == recentInputIdentifier2)
                   {
 LABEL_29:
 
@@ -2592,23 +2592,23 @@ LABEL_28:
                   goto LABEL_29;
                 }
 
-                v77 = v23;
+                v77 = textSuggestionDelegate;
                 isSingleLineDocument = self->isSingleLineDocument;
-                if (isSingleLineDocument != [v6 isSingleLineDocument] || (contentsIsSingleValue = self->contentsIsSingleValue, contentsIsSingleValue != objc_msgSend(v6, "contentsIsSingleValue")) || (hasDefaultContents = self->hasDefaultContents, hasDefaultContents != objc_msgSend(v6, "hasDefaultContents")) || (acceptsPayloads = self->acceptsPayloads, acceptsPayloads != objc_msgSend(v6, "acceptsPayloads")) || (acceptsEmoji = self->acceptsEmoji, acceptsEmoji != objc_msgSend(v6, "acceptsEmoji")) || (acceptsInitialEmojiKeyboard = self->acceptsInitialEmojiKeyboard, acceptsInitialEmojiKeyboard != objc_msgSend(v6, "acceptsInitialEmojiKeyboard")) || (acceptsDictationSearchResults = self->acceptsDictationSearchResults, acceptsDictationSearchResults != objc_msgSend(v6, "acceptsDictationSearchResults")) || (showDictationButton = self->showDictationButton, showDictationButton != objc_msgSend(v6, "showDictationButton")) || (useAutomaticEndpointing = self->useAutomaticEndpointing, useAutomaticEndpointing != objc_msgSend(v6, "useAutomaticEndpointing")) || (forceEnableDictation = self->forceEnableDictation, forceEnableDictation != objc_msgSend(v6, "forceEnableDictation")) || (forceDisableDictation = self->forceDisableDictation, forceDisableDictation != objc_msgSend(v6, "forceDisableDictation")) || (forceSpellingDictation = self->forceSpellingDictation, forceSpellingDictation != objc_msgSend(v6, "forceSpellingDictation")) || (forceDefaultDictationInfo = self->forceDefaultDictationInfo, forceDefaultDictationInfo != objc_msgSend(v6, "forceDefaultDictationInfo")) || (forceDictationKeyboardType = self->forceDictationKeyboardType, forceDictationKeyboardType != objc_msgSend(v6, "forceDictationKeyboardType")) || (preferOnlineDictation = self->preferOnlineDictation, preferOnlineDictation != objc_msgSend(v6, "preferOnlineDictation")) || (emptyContentReturnKeyType = self->emptyContentReturnKeyType, emptyContentReturnKeyType != objc_msgSend(v6, "emptyContentReturnKeyType")) || (returnKeyGoesToNextResponder = self->returnKeyGoesToNextResponder, returnKeyGoesToNextResponder != objc_msgSend(v6, "returnKeyGoesToNextResponder")) || (learnsCorrections = self->learnsCorrections, learnsCorrections != objc_msgSend(v6, "learnsCorrections")) || (shortcutConversionType = self->shortcutConversionType, shortcutConversionType != objc_msgSend(v6, "shortcutConversionType")) || (suppressReturnKeyStyling = self->suppressReturnKeyStyling, suppressReturnKeyStyling != objc_msgSend(v6, "suppressReturnKeyStyling")) || (useInterfaceLanguageForLocalization = self->useInterfaceLanguageForLocalization, useInterfaceLanguageForLocalization != objc_msgSend(v6, "useInterfaceLanguageForLocalization")) || (deferBecomingResponder = self->deferBecomingResponder, deferBecomingResponder != objc_msgSend(v6, "deferBecomingResponder")) || (enablesReturnKeyOnNonWhiteSpaceContent = self->enablesReturnKeyOnNonWhiteSpaceContent, enablesReturnKeyOnNonWhiteSpaceContent != objc_msgSend(v6, "enablesReturnKeyOnNonWhiteSpaceContent")))
+                if (isSingleLineDocument != [equalCopy isSingleLineDocument] || (contentsIsSingleValue = self->contentsIsSingleValue, contentsIsSingleValue != objc_msgSend(equalCopy, "contentsIsSingleValue")) || (hasDefaultContents = self->hasDefaultContents, hasDefaultContents != objc_msgSend(equalCopy, "hasDefaultContents")) || (acceptsPayloads = self->acceptsPayloads, acceptsPayloads != objc_msgSend(equalCopy, "acceptsPayloads")) || (acceptsEmoji = self->acceptsEmoji, acceptsEmoji != objc_msgSend(equalCopy, "acceptsEmoji")) || (acceptsInitialEmojiKeyboard = self->acceptsInitialEmojiKeyboard, acceptsInitialEmojiKeyboard != objc_msgSend(equalCopy, "acceptsInitialEmojiKeyboard")) || (acceptsDictationSearchResults = self->acceptsDictationSearchResults, acceptsDictationSearchResults != objc_msgSend(equalCopy, "acceptsDictationSearchResults")) || (showDictationButton = self->showDictationButton, showDictationButton != objc_msgSend(equalCopy, "showDictationButton")) || (useAutomaticEndpointing = self->useAutomaticEndpointing, useAutomaticEndpointing != objc_msgSend(equalCopy, "useAutomaticEndpointing")) || (forceEnableDictation = self->forceEnableDictation, forceEnableDictation != objc_msgSend(equalCopy, "forceEnableDictation")) || (forceDisableDictation = self->forceDisableDictation, forceDisableDictation != objc_msgSend(equalCopy, "forceDisableDictation")) || (forceSpellingDictation = self->forceSpellingDictation, forceSpellingDictation != objc_msgSend(equalCopy, "forceSpellingDictation")) || (forceDefaultDictationInfo = self->forceDefaultDictationInfo, forceDefaultDictationInfo != objc_msgSend(equalCopy, "forceDefaultDictationInfo")) || (forceDictationKeyboardType = self->forceDictationKeyboardType, forceDictationKeyboardType != objc_msgSend(equalCopy, "forceDictationKeyboardType")) || (preferOnlineDictation = self->preferOnlineDictation, preferOnlineDictation != objc_msgSend(equalCopy, "preferOnlineDictation")) || (emptyContentReturnKeyType = self->emptyContentReturnKeyType, emptyContentReturnKeyType != objc_msgSend(equalCopy, "emptyContentReturnKeyType")) || (returnKeyGoesToNextResponder = self->returnKeyGoesToNextResponder, returnKeyGoesToNextResponder != objc_msgSend(equalCopy, "returnKeyGoesToNextResponder")) || (learnsCorrections = self->learnsCorrections, learnsCorrections != objc_msgSend(equalCopy, "learnsCorrections")) || (shortcutConversionType = self->shortcutConversionType, shortcutConversionType != objc_msgSend(equalCopy, "shortcutConversionType")) || (suppressReturnKeyStyling = self->suppressReturnKeyStyling, suppressReturnKeyStyling != objc_msgSend(equalCopy, "suppressReturnKeyStyling")) || (useInterfaceLanguageForLocalization = self->useInterfaceLanguageForLocalization, useInterfaceLanguageForLocalization != objc_msgSend(equalCopy, "useInterfaceLanguageForLocalization")) || (deferBecomingResponder = self->deferBecomingResponder, deferBecomingResponder != objc_msgSend(equalCopy, "deferBecomingResponder")) || (enablesReturnKeyOnNonWhiteSpaceContent = self->enablesReturnKeyOnNonWhiteSpaceContent, enablesReturnKeyOnNonWhiteSpaceContent != objc_msgSend(equalCopy, "enablesReturnKeyOnNonWhiteSpaceContent")))
                 {
                   v9 = 0;
 LABEL_58:
-                  v23 = v77;
+                  textSuggestionDelegate = v77;
                   goto LABEL_59;
                 }
 
                 autocorrectionContext = self->autocorrectionContext;
-                v76 = [v6 autocorrectionContext];
+                autocorrectionContext = [equalCopy autocorrectionContext];
                 v74 = autocorrectionContext;
-                if (autocorrectionContext != v76)
+                if (autocorrectionContext != autocorrectionContext)
                 {
                   v49 = self->autocorrectionContext;
-                  v73 = [v6 autocorrectionContext];
+                  autocorrectionContext2 = [equalCopy autocorrectionContext];
                   if (![(NSString *)v49 isEqualToString:?])
                   {
                     v9 = 0;
@@ -2617,19 +2617,19 @@ LABEL_58:
                 }
 
                 responseContext = self->responseContext;
-                v75 = [v6 responseContext];
+                responseContext = [equalCopy responseContext];
                 v71 = responseContext;
-                if (responseContext != v75)
+                if (responseContext != responseContext)
                 {
                   v51 = self->responseContext;
-                  v70 = [v6 responseContext];
+                  responseContext2 = [equalCopy responseContext];
                   if (![(NSString *)v51 isEqualToString:?])
                   {
                     v9 = 0;
 LABEL_83:
 
 LABEL_84:
-                    if (v74 == v76)
+                    if (v74 == autocorrectionContext)
                     {
 LABEL_86:
 
@@ -2643,12 +2643,12 @@ LABEL_85:
                 }
 
                 inputContextHistory = self->inputContextHistory;
-                v72 = [v6 inputContextHistory];
+                inputContextHistory = [equalCopy inputContextHistory];
                 v69 = inputContextHistory;
-                if (inputContextHistory != v72)
+                if (inputContextHistory != inputContextHistory)
                 {
                   v53 = self->inputContextHistory;
-                  v68 = [v6 inputContextHistory];
+                  inputContextHistory2 = [equalCopy inputContextHistory];
                   if (![(UIInputContextHistory *)v53 isEqual:?])
                   {
                     v9 = 0;
@@ -2657,37 +2657,37 @@ LABEL_85:
                 }
 
                 isCarPlayIdiom = self->isCarPlayIdiom;
-                if (isCarPlayIdiom == [v6 isCarPlayIdiom])
+                if (isCarPlayIdiom == [equalCopy isCarPlayIdiom])
                 {
                   preferredInputViewHeight = self->preferredInputViewHeight;
-                  [v6 preferredInputViewHeight];
+                  [equalCopy preferredInputViewHeight];
                   if (preferredInputViewHeight == v56)
                   {
                     textScriptType = self->textScriptType;
-                    if (textScriptType == [v6 textScriptType])
+                    if (textScriptType == [equalCopy textScriptType])
                     {
                       supplementalLexicon = self->supplementalLexicon;
-                      v67 = [v6 supplementalLexicon];
-                      if (supplementalLexicon == v67)
+                      supplementalLexicon = [equalCopy supplementalLexicon];
+                      if (supplementalLexicon == supplementalLexicon)
                       {
                         supplementalLexiconAmbiguousItemIcon = self->supplementalLexiconAmbiguousItemIcon;
-                        v66 = [v6 supplementalLexiconAmbiguousItemIcon];
-                        if (supplementalLexiconAmbiguousItemIcon == v66)
+                        supplementalLexiconAmbiguousItemIcon = [equalCopy supplementalLexiconAmbiguousItemIcon];
+                        if (supplementalLexiconAmbiguousItemIcon == supplementalLexiconAmbiguousItemIcon)
                         {
                           disableHandwritingKeyboard = self->disableHandwritingKeyboard;
-                          if (disableHandwritingKeyboard == [v6 disableHandwritingKeyboard])
+                          if (disableHandwritingKeyboard == [equalCopy disableHandwritingKeyboard])
                           {
                             mathExpressionCompletionType = self->mathExpressionCompletionType;
-                            if (mathExpressionCompletionType == [v6 mathExpressionCompletionType])
+                            if (mathExpressionCompletionType == [equalCopy mathExpressionCompletionType])
                             {
                               allowsTextAnimationsType = self->allowsTextAnimationsType;
-                              if (allowsTextAnimationsType == [v6 allowsTextAnimationsType])
+                              if (allowsTextAnimationsType == [equalCopy allowsTextAnimationsType])
                               {
                                 keyboardSuggestionOptions = self->keyboardSuggestionOptions;
-                                if (keyboardSuggestionOptions == [v6 keyboardSuggestionOptions])
+                                if (keyboardSuggestionOptions == [equalCopy keyboardSuggestionOptions])
                                 {
                                   allowsNumberPadPopover = self->allowsNumberPadPopover;
-                                  v9 = allowsNumberPadPopover == [v6 allowsNumberPadPopover];
+                                  v9 = allowsNumberPadPopover == [equalCopy allowsNumberPadPopover];
 
                                   v65 = v9;
                                   goto LABEL_79;
@@ -2704,12 +2704,12 @@ LABEL_85:
                 v9 = 0;
                 v65 = 0;
 LABEL_79:
-                if (v69 == v72)
+                if (v69 == inputContextHistory)
                 {
 
                   v9 = v65;
 LABEL_82:
-                  if (v71 == v75)
+                  if (v71 == responseContext)
                   {
                     goto LABEL_84;
                   }
@@ -2737,7 +2737,7 @@ LABEL_26:
       }
     }
 
-    if (![v6 textTrimmingSet] || !CFCharacterSetIsSupersetOfSet(self->textTrimmingSet, objc_msgSend(v6, "textTrimmingSet")) || !CFCharacterSetIsSupersetOfSet(objc_msgSend(v6, "textTrimmingSet"), self->textTrimmingSet))
+    if (![equalCopy textTrimmingSet] || !CFCharacterSetIsSupersetOfSet(self->textTrimmingSet, objc_msgSend(equalCopy, "textTrimmingSet")) || !CFCharacterSetIsSupersetOfSet(objc_msgSend(equalCopy, "textTrimmingSet"), self->textTrimmingSet))
     {
       goto LABEL_25;
     }
@@ -2751,13 +2751,13 @@ LABEL_30:
   return v9;
 }
 
-- (void)_setColorsToMatchTintColor:(id)a3
+- (void)_setColorsToMatchTintColor:(id)color
 {
-  v13 = a3;
-  if (v13)
+  colorCopy = color;
+  if (colorCopy)
   {
     v4 = +[UIColor systemBlueColor];
-    if (v4 == v13)
+    if (v4 == colorCopy)
     {
       v6 = 0;
     }
@@ -2765,7 +2765,7 @@ LABEL_30:
     else
     {
       v5 = +[UIColor _alternateSystemInteractionTintColor];
-      v6 = v5 != v13;
+      v6 = v5 != colorCopy;
     }
   }
 
@@ -2779,7 +2779,7 @@ LABEL_30:
   v9 = +[UIColor selectionHighlightColor];
   if (v6)
   {
-    v10 = v13;
+    v10 = colorCopy;
 
     v7 = v10;
     v11 = [v7 colorWithAlphaComponent:0.2];

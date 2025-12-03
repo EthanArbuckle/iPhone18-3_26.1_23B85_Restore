@@ -1,17 +1,17 @@
 @interface HMFPreferences
-+ (Class)preferenceClassForPreferenceKey:(id)a3;
++ (Class)preferenceClassForPreferenceKey:(id)key;
 + (id)classRegistry;
-+ (id)defaultValueForPreferenceKey:(id)a3;
++ (id)defaultValueForPreferenceKey:(id)key;
 + (id)defaultValues;
 + (id)sharedPreferences;
-+ (void)setDefaultValue:(id)a3 forPreferenceKey:(id)a4;
-+ (void)setPreferenceClass:(Class)a3 forPreferenceKey:(id)a4;
-- (Class)preferenceClassForPreferenceKey:(id)a3;
++ (void)setDefaultValue:(id)value forPreferenceKey:(id)key;
++ (void)setPreferenceClass:(Class)class forPreferenceKey:(id)key;
+- (Class)preferenceClassForPreferenceKey:(id)key;
 - (HMFPreferences)init;
 - (NSArray)preferences;
 - (NSString)propertyDescription;
-- (id)preferenceForKey:(id)a3;
-- (void)setPreferenceClass:(Class)a3 forPreferenceKey:(id)a4;
+- (id)preferenceForKey:(id)key;
+- (void)setPreferenceClass:(Class)class forPreferenceKey:(id)key;
 @end
 
 @implementation HMFPreferences
@@ -58,20 +58,20 @@ uint64_t __31__HMFPreferences_classRegistry__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (Class)preferenceClassForPreferenceKey:(id)a3
++ (Class)preferenceClassForPreferenceKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 classRegistry];
-  v6 = [v5 classForKey:v4];
+  keyCopy = key;
+  classRegistry = [self classRegistry];
+  v6 = [classRegistry classForKey:keyCopy];
 
   return v6;
 }
 
-+ (void)setPreferenceClass:(Class)a3 forPreferenceKey:(id)a4
++ (void)setPreferenceClass:(Class)class forPreferenceKey:(id)key
 {
-  v6 = a4;
-  v7 = [a1 classRegistry];
-  [v7 setClass:a3 forKey:v6];
+  keyCopy = key;
+  classRegistry = [self classRegistry];
+  [classRegistry setClass:class forKey:keyCopy];
 }
 
 + (id)defaultValues
@@ -95,29 +95,29 @@ uint64_t __31__HMFPreferences_defaultValues__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)defaultValueForPreferenceKey:(id)a3
++ (id)defaultValueForPreferenceKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 defaultValues];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  defaultValues = [self defaultValues];
+  v6 = [defaultValues objectForKey:keyCopy];
 
   return v6;
 }
 
-+ (void)setDefaultValue:(id)a3 forPreferenceKey:(id)a4
++ (void)setDefaultValue:(id)value forPreferenceKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [a1 defaultValues];
-  v8 = v7;
-  if (v9)
+  valueCopy = value;
+  keyCopy = key;
+  defaultValues = [self defaultValues];
+  v8 = defaultValues;
+  if (valueCopy)
   {
-    [v7 setObject:v9 forKey:v6];
+    [defaultValues setObject:valueCopy forKey:keyCopy];
   }
 
   else
   {
-    [v7 removeObjectForKey:v6];
+    [defaultValues removeObjectForKey:keyCopy];
   }
 }
 
@@ -138,11 +138,11 @@ uint64_t __31__HMFPreferences_defaultValues__block_invoke()
 
   v43 = v2;
   v5 = [[HMFActivity alloc] initWithName:@"Load Default Preferences" parent:0 options:1];
-  v44 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v6 = objc_autoreleasePoolPush();
   [(HMFActivity *)v5 markWithReason:@"Determining preference location"];
-  v7 = [MEMORY[0x277CCA8D8] mainBundle];
-  v8 = [v7 URLForResource:@"Preferences" withExtension:@"plist"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v8 = [mainBundle URLForResource:@"Preferences" withExtension:@"plist"];
 
   if (v8)
   {
@@ -220,16 +220,16 @@ uint64_t __31__HMFPreferences_defaultValues__block_invoke()
             }
 
             v27 = +[HMFSystemInfo systemInfo];
-            v28 = [v27 productVariant];
+            productVariant = [v27 productVariant];
 
-            if (v28 == 3)
+            if (productVariant == 3)
             {
               v29 = v22;
               v30 = @"Internal";
               goto LABEL_24;
             }
 
-            if (v28 == 1)
+            if (productVariant == 1)
             {
               v29 = v22;
               v30 = @"Developer";
@@ -257,7 +257,7 @@ LABEL_24:
 
         if (v36)
         {
-          [(NSMutableDictionary *)v44 setObject:v36 forKeyedSubscript:v23];
+          [(NSMutableDictionary *)dictionary setObject:v36 forKeyedSubscript:v23];
         }
 
         v13 = v19;
@@ -297,7 +297,7 @@ LABEL_33:
   [(HMFActivity *)v5 invalidate];
 
   preferences = v9->_preferences;
-  v9->_preferences = v44;
+  v9->_preferences = dictionary;
 
 LABEL_34:
   v38 = *MEMORY[0x277D85DE8];
@@ -307,17 +307,17 @@ LABEL_34:
 - (NSString)propertyDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMFPreferences *)self preferences];
-  v4 = [v2 stringWithFormat:@", Preferences = \n%@", v3];
+  preferences = [(HMFPreferences *)self preferences];
+  v4 = [v2 stringWithFormat:@", Preferences = \n%@", preferences];
 
   return v4;
 }
 
-- (Class)preferenceClassForPreferenceKey:(id)a3
+- (Class)preferenceClassForPreferenceKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMFPreferences *)self classRegistry];
-  v6 = [v5 classForKey:v4];
+  keyCopy = key;
+  classRegistry = [(HMFPreferences *)self classRegistry];
+  v6 = [classRegistry classForKey:keyCopy];
 
   if (v6)
   {
@@ -326,7 +326,7 @@ LABEL_34:
 
   else
   {
-    v7 = [objc_opt_class() preferenceClassForPreferenceKey:v4];
+    v7 = [objc_opt_class() preferenceClassForPreferenceKey:keyCopy];
   }
 
   v8 = v7;
@@ -334,41 +334,41 @@ LABEL_34:
   return v8;
 }
 
-- (void)setPreferenceClass:(Class)a3 forPreferenceKey:(id)a4
+- (void)setPreferenceClass:(Class)class forPreferenceKey:(id)key
 {
-  v6 = a4;
-  v7 = [(HMFPreferences *)self classRegistry];
-  [v7 setClass:a3 forKey:v6];
+  keyCopy = key;
+  classRegistry = [(HMFPreferences *)self classRegistry];
+  [classRegistry setClass:class forKey:keyCopy];
 }
 
 - (NSArray)preferences
 {
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(NSMutableDictionary *)self->_preferences allValues];
+  allValues = [(NSMutableDictionary *)self->_preferences allValues];
   os_unfair_recursive_lock_unlock();
 
-  return v3;
+  return allValues;
 }
 
-- (id)preferenceForKey:(id)a3
+- (id)preferenceForKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   os_unfair_recursive_lock_lock_with_options();
-  v5 = [(NSMutableDictionary *)self->_preferences objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_preferences objectForKeyedSubscript:keyCopy];
   if (!v5)
   {
-    v6 = objc_alloc([(HMFPreferences *)self preferenceClassForPreferenceKey:v4]);
-    v7 = [HMFPreferences defaultValueForPreferenceKey:v4];
-    v5 = [v6 initWithKey:v4 options:0 defaultValue:v7];
+    v6 = objc_alloc([(HMFPreferences *)self preferenceClassForPreferenceKey:keyCopy]);
+    v7 = [HMFPreferences defaultValueForPreferenceKey:keyCopy];
+    v5 = [v6 initWithKey:keyCopy options:0 defaultValue:v7];
 
-    [(NSMutableDictionary *)self->_preferences setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_preferences setObject:v5 forKeyedSubscript:keyCopy];
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = HMFGetLogIdentifier(v9);
+      v11 = HMFGetLogIdentifier(selfCopy);
       v14 = 138543618;
       v15 = v11;
       v16 = 2112;

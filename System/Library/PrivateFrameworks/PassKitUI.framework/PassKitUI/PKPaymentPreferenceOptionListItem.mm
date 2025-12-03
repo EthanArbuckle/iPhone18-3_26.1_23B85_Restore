@@ -1,26 +1,26 @@
 @interface PKPaymentPreferenceOptionListItem
 - (BOOL)_supportsEditing;
-- (BOOL)supportsSwipeActionType:(int)a3;
-- (PKPaymentPreferenceOptionListItem)initWithPreference:(id)a3 inSectionPreference:(id)a4 hasErrorHandler:(id)a5;
+- (BOOL)supportsSwipeActionType:(int)type;
+- (PKPaymentPreferenceOptionListItem)initWithPreference:(id)preference inSectionPreference:(id)sectionPreference hasErrorHandler:(id)handler;
 - (id)_inlineEditingConfiguration;
 - (id)configuration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PKPaymentPreferenceOptionListItem
 
-- (PKPaymentPreferenceOptionListItem)initWithPreference:(id)a3 inSectionPreference:(id)a4 hasErrorHandler:(id)a5
+- (PKPaymentPreferenceOptionListItem)initWithPreference:(id)preference inSectionPreference:(id)sectionPreference hasErrorHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  preferenceCopy = preference;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = PKPaymentPreferenceOptionListItem;
-  v11 = [(PKPaymentPreferenceListItem *)&v16 initWithSectionPreference:a4];
+  v11 = [(PKPaymentPreferenceListItem *)&v16 initWithSectionPreference:sectionPreference];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_preference, a3);
-    v13 = _Block_copy(v10);
+    objc_storeStrong(&v11->_preference, preference);
+    v13 = _Block_copy(handlerCopy);
     hasErrorHandler = v12->_hasErrorHandler;
     v12->_hasErrorHandler = v13;
   }
@@ -28,11 +28,11 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = PKPaymentPreferenceOptionListItem;
-  v4 = [(PKPaymentPreferenceListItem *)&v8 copyWithZone:a3];
+  v4 = [(PKPaymentPreferenceListItem *)&v8 copyWithZone:zone];
   objc_storeStrong(v4 + 3, self->_preference);
   v5 = _Block_copy(self->_hasErrorHandler);
   v6 = v4[2];
@@ -44,14 +44,14 @@
 - (id)_inlineEditingConfiguration
 {
   v3 = +[PKListTextFieldContentConfiguration cellConfiguration];
-  v4 = [(PKPaymentPreferenceOptionListItem *)self _text];
-  [v3 setText:v4];
+  _text = [(PKPaymentPreferenceOptionListItem *)self _text];
+  [v3 setText:_text];
 
-  v5 = [(PKPaymentPreferenceOptionListItem *)self _placeholderText];
-  [v3 setPlaceholderText:v5];
+  _placeholderText = [(PKPaymentPreferenceOptionListItem *)self _placeholderText];
+  [v3 setPlaceholderText:_placeholderText];
 
-  v6 = [(PKPaymentPreferenceOptionListItem *)self _secondaryText];
-  [v3 setSecondaryText:v6];
+  _secondaryText = [(PKPaymentPreferenceOptionListItem *)self _secondaryText];
+  [v3 setSecondaryText:_secondaryText];
 
   [v3 setAutocorrectionType:1];
   [v3 setHasErrorHandler:self->_hasErrorHandler];
@@ -65,27 +65,27 @@
 {
   if ([(PKPaymentPreferenceListItem *)self supportsInlineEditing])
   {
-    v3 = [(PKPaymentPreferenceOptionListItem *)self _inlineEditingConfiguration];
+    _inlineEditingConfiguration = [(PKPaymentPreferenceOptionListItem *)self _inlineEditingConfiguration];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = PKPaymentPreferenceOptionListItem;
-    v3 = [(PKPaymentPreferenceListItem *)&v5 configuration];
+    _inlineEditingConfiguration = [(PKPaymentPreferenceListItem *)&v5 configuration];
   }
 
-  return v3;
+  return _inlineEditingConfiguration;
 }
 
-- (BOOL)supportsSwipeActionType:(int)a3
+- (BOOL)supportsSwipeActionType:(int)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return [(PKPaymentPreferenceOptionListItem *)self _supportsEditAction];
   }
 
-  if (a3)
+  if (type)
   {
     return 0;
   }
@@ -95,19 +95,19 @@
 
 - (BOOL)_supportsEditing
 {
-  v3 = [(PKPaymentPreferenceListItem *)self sectionPreference];
-  if ([v3 isReadOnly])
+  sectionPreference = [(PKPaymentPreferenceListItem *)self sectionPreference];
+  if ([sectionPreference isReadOnly])
   {
-    v4 = 0;
+    supportsDeletion = 0;
   }
 
   else
   {
-    v5 = [(PKPaymentPreferenceListItem *)self sectionPreference];
-    v4 = [v5 supportsDeletion];
+    sectionPreference2 = [(PKPaymentPreferenceListItem *)self sectionPreference];
+    supportsDeletion = [sectionPreference2 supportsDeletion];
   }
 
-  return v4;
+  return supportsDeletion;
 }
 
 @end

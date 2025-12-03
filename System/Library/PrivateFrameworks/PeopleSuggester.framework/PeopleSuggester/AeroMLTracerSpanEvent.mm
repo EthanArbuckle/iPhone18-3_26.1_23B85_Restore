@@ -1,30 +1,30 @@
 @interface AeroMLTracerSpanEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAttributes:(id)a3;
-- (void)addDebugEvents:(id)a3;
-- (void)addErrorEvents:(id)a3;
-- (void)addInfoEvents:(id)a3;
-- (void)addWarningEvents:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)setHasIntervalInMilliSeconds:(BOOL)a3;
-- (void)setHasMemoryLevelDeltaInKB:(BOOL)a3;
-- (void)setHasPrivatizedEndTime:(BOOL)a3;
-- (void)setHasPrivatizedStartTime:(BOOL)a3;
-- (void)setHasStartMemoryLevelInKB:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAttributes:(id)attributes;
+- (void)addDebugEvents:(id)events;
+- (void)addErrorEvents:(id)events;
+- (void)addInfoEvents:(id)events;
+- (void)addWarningEvents:(id)events;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)setHasIntervalInMilliSeconds:(BOOL)seconds;
+- (void)setHasMemoryLevelDeltaInKB:(BOOL)b;
+- (void)setHasPrivatizedEndTime:(BOOL)time;
+- (void)setHasPrivatizedStartTime:(BOOL)time;
+- (void)setHasStartMemoryLevelInKB:(BOOL)b;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AeroMLTracerSpanEvent
 
-- (void)setHasPrivatizedStartTime:(BOOL)a3
+- (void)setHasPrivatizedStartTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 32;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasPrivatizedEndTime:(BOOL)a3
+- (void)setHasPrivatizedEndTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 16;
   }
@@ -52,9 +52,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasIntervalInMilliSeconds:(BOOL)a3
+- (void)setHasIntervalInMilliSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 4;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -82,9 +82,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasStartMemoryLevelInKB:(BOOL)a3
+- (void)setHasStartMemoryLevelInKB:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 64;
   }
@@ -97,9 +97,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasMemoryLevelDeltaInKB:(BOOL)a3
+- (void)setHasMemoryLevelDeltaInKB:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 8;
   }
@@ -112,94 +112,94 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addAttributes:(id)a3
+- (void)addAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   attributes = self->_attributes;
-  v8 = v4;
+  v8 = attributesCopy;
   if (!attributes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_attributes;
     self->_attributes = v6;
 
-    v4 = v8;
+    attributesCopy = v8;
     attributes = self->_attributes;
   }
 
-  [(NSMutableArray *)attributes addObject:v4];
+  [(NSMutableArray *)attributes addObject:attributesCopy];
 }
 
-- (void)addInfoEvents:(id)a3
+- (void)addInfoEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   infoEvents = self->_infoEvents;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!infoEvents)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_infoEvents;
     self->_infoEvents = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     infoEvents = self->_infoEvents;
   }
 
-  [(NSMutableArray *)infoEvents addObject:v4];
+  [(NSMutableArray *)infoEvents addObject:eventsCopy];
 }
 
-- (void)addWarningEvents:(id)a3
+- (void)addWarningEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   warningEvents = self->_warningEvents;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!warningEvents)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_warningEvents;
     self->_warningEvents = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     warningEvents = self->_warningEvents;
   }
 
-  [(NSMutableArray *)warningEvents addObject:v4];
+  [(NSMutableArray *)warningEvents addObject:eventsCopy];
 }
 
-- (void)addDebugEvents:(id)a3
+- (void)addDebugEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   debugEvents = self->_debugEvents;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!debugEvents)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_debugEvents;
     self->_debugEvents = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     debugEvents = self->_debugEvents;
   }
 
-  [(NSMutableArray *)debugEvents addObject:v4];
+  [(NSMutableArray *)debugEvents addObject:eventsCopy];
 }
 
-- (void)addErrorEvents:(id)a3
+- (void)addErrorEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   errorEvents = self->_errorEvents;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!errorEvents)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_errorEvents;
     self->_errorEvents = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     errorEvents = self->_errorEvents;
   }
 
-  [(NSMutableArray *)errorEvents addObject:v4];
+  [(NSMutableArray *)errorEvents addObject:eventsCopy];
 }
 
 - (id)description
@@ -208,8 +208,8 @@
   v8.receiver = self;
   v8.super_class = AeroMLTracerSpanEvent;
   v4 = [(AeroMLTracerSpanEvent *)&v8 description];
-  v5 = [(AeroMLTracerSpanEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AeroMLTracerSpanEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -217,12 +217,12 @@
 - (id)dictionaryRepresentation
 {
   v93 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   deviceIdentifier = self->_deviceIdentifier;
   if (deviceIdentifier)
   {
-    [v3 setObject:deviceIdentifier forKey:@"deviceIdentifier"];
+    [dictionary setObject:deviceIdentifier forKey:@"deviceIdentifier"];
   }
 
   testKey = self->_testKey;
@@ -423,8 +423,8 @@ LABEL_32:
             objc_enumerationMutation(v26);
           }
 
-          v31 = [*(*(&v84 + 1) + 8 * i) dictionaryRepresentation];
-          [v25 addObject:v31];
+          dictionaryRepresentation = [*(*(&v84 + 1) + 8 * i) dictionaryRepresentation];
+          [v25 addObject:dictionaryRepresentation];
         }
 
         v28 = [(NSMutableArray *)v26 countByEnumeratingWithState:&v84 objects:v92 count:16];
@@ -458,8 +458,8 @@ LABEL_32:
             objc_enumerationMutation(v33);
           }
 
-          v38 = [*(*(&v80 + 1) + 8 * j) dictionaryRepresentation];
-          [v32 addObject:v38];
+          dictionaryRepresentation2 = [*(*(&v80 + 1) + 8 * j) dictionaryRepresentation];
+          [v32 addObject:dictionaryRepresentation2];
         }
 
         v35 = [(NSMutableArray *)v33 countByEnumeratingWithState:&v80 objects:v91 count:16];
@@ -493,8 +493,8 @@ LABEL_32:
             objc_enumerationMutation(v40);
           }
 
-          v45 = [*(*(&v76 + 1) + 8 * k) dictionaryRepresentation];
-          [v39 addObject:v45];
+          dictionaryRepresentation3 = [*(*(&v76 + 1) + 8 * k) dictionaryRepresentation];
+          [v39 addObject:dictionaryRepresentation3];
         }
 
         v42 = [(NSMutableArray *)v40 countByEnumeratingWithState:&v76 objects:v90 count:16];
@@ -528,8 +528,8 @@ LABEL_32:
             objc_enumerationMutation(v47);
           }
 
-          v52 = [*(*(&v72 + 1) + 8 * m) dictionaryRepresentation];
-          [v46 addObject:v52];
+          dictionaryRepresentation4 = [*(*(&v72 + 1) + 8 * m) dictionaryRepresentation];
+          [v46 addObject:dictionaryRepresentation4];
         }
 
         v49 = [(NSMutableArray *)v47 countByEnumeratingWithState:&v72 objects:v89 count:16];
@@ -563,8 +563,8 @@ LABEL_32:
             objc_enumerationMutation(v54);
           }
 
-          v59 = [*(*(&v68 + 1) + 8 * n) dictionaryRepresentation];
-          [v53 addObject:v59];
+          dictionaryRepresentation5 = [*(*(&v68 + 1) + 8 * n) dictionaryRepresentation];
+          [v53 addObject:dictionaryRepresentation5];
         }
 
         v56 = [(NSMutableArray *)v54 countByEnumeratingWithState:&v68 objects:v88 count:16];
@@ -582,10 +582,10 @@ LABEL_32:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v70 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_deviceIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -886,75 +886,75 @@ LABEL_35:
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v27 = v4;
+  toCopy = to;
+  v27 = toCopy;
   if (self->_deviceIdentifier)
   {
-    [v4 setDeviceIdentifier:?];
-    v4 = v27;
+    [toCopy setDeviceIdentifier:?];
+    toCopy = v27;
   }
 
   if (self->_testKey)
   {
     [v27 setTestKey:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_version)
   {
     [v27 setVersion:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_name)
   {
     [v27 setName:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_trialDeploymentId)
   {
     [v27 setTrialDeploymentId:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_trialExperimentId)
   {
     [v27 setTrialExperimentId:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_trialTreatmentId)
   {
     [v27 setTrialTreatmentId:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_traceId)
   {
     [v27 setTraceId:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_parentSpanId)
   {
     [v27 setParentSpanId:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_spanId)
   {
     [v27 setSpanId:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    *(v4 + 25) = self->_privatizedStartTime;
-    *(v4 + 208) |= 0x20u;
+    *(toCopy + 25) = self->_privatizedStartTime;
+    *(toCopy + 208) |= 0x20u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -973,39 +973,39 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  *(v4 + 24) = self->_privatizedEndTime;
-  *(v4 + 208) |= 0x10u;
+  *(toCopy + 24) = self->_privatizedEndTime;
+  *(toCopy + 208) |= 0x10u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_24:
-    *(v4 + 18) = self->_intervalInMilliSeconds;
-    *(v4 + 208) |= 4u;
+    *(toCopy + 18) = self->_intervalInMilliSeconds;
+    *(toCopy + 208) |= 4u;
   }
 
 LABEL_25:
   if (self->_errorString)
   {
     [v27 setErrorString:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 9) = self->_errorCode;
-    *(v4 + 208) |= 2u;
+    *(toCopy + 9) = self->_errorCode;
+    *(toCopy + 208) |= 2u;
   }
 
   if (self->_processName)
   {
     [v27 setProcessName:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   v6 = self->_has;
   if ((v6 & 0x40) != 0)
   {
-    *(v4 + 36) = self->_startMemoryLevelInKB;
-    *(v4 + 208) |= 0x40u;
+    *(toCopy + 36) = self->_startMemoryLevelInKB;
+    *(toCopy + 208) |= 0x40u;
     v6 = self->_has;
     if ((v6 & 1) == 0)
     {
@@ -1024,13 +1024,13 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  *(v4 + 8) = self->_endMemoryLevelInKB;
-  *(v4 + 208) |= 1u;
+  *(toCopy + 8) = self->_endMemoryLevelInKB;
+  *(toCopy + 208) |= 1u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_34:
-    *(v4 + 19) = self->_memoryLevelDeltaInKB;
-    *(v4 + 208) |= 8u;
+    *(toCopy + 19) = self->_memoryLevelDeltaInKB;
+    *(toCopy + 208) |= 8u;
   }
 
 LABEL_35:
@@ -1057,10 +1057,10 @@ LABEL_35:
   if ([(AeroMLTracerSpanEvent *)self attributesCount])
   {
     [v27 clearAttributes];
-    v7 = [(AeroMLTracerSpanEvent *)self attributesCount];
-    if (v7)
+    attributesCount = [(AeroMLTracerSpanEvent *)self attributesCount];
+    if (attributesCount)
     {
-      v8 = v7;
+      v8 = attributesCount;
       for (i = 0; i != v8; ++i)
       {
         v10 = [(AeroMLTracerSpanEvent *)self attributesAtIndex:i];
@@ -1072,10 +1072,10 @@ LABEL_35:
   if ([(AeroMLTracerSpanEvent *)self infoEventsCount])
   {
     [v27 clearInfoEvents];
-    v11 = [(AeroMLTracerSpanEvent *)self infoEventsCount];
-    if (v11)
+    infoEventsCount = [(AeroMLTracerSpanEvent *)self infoEventsCount];
+    if (infoEventsCount)
     {
-      v12 = v11;
+      v12 = infoEventsCount;
       for (j = 0; j != v12; ++j)
       {
         v14 = [(AeroMLTracerSpanEvent *)self infoEventsAtIndex:j];
@@ -1087,10 +1087,10 @@ LABEL_35:
   if ([(AeroMLTracerSpanEvent *)self warningEventsCount])
   {
     [v27 clearWarningEvents];
-    v15 = [(AeroMLTracerSpanEvent *)self warningEventsCount];
-    if (v15)
+    warningEventsCount = [(AeroMLTracerSpanEvent *)self warningEventsCount];
+    if (warningEventsCount)
     {
-      v16 = v15;
+      v16 = warningEventsCount;
       for (k = 0; k != v16; ++k)
       {
         v18 = [(AeroMLTracerSpanEvent *)self warningEventsAtIndex:k];
@@ -1102,10 +1102,10 @@ LABEL_35:
   if ([(AeroMLTracerSpanEvent *)self debugEventsCount])
   {
     [v27 clearDebugEvents];
-    v19 = [(AeroMLTracerSpanEvent *)self debugEventsCount];
-    if (v19)
+    debugEventsCount = [(AeroMLTracerSpanEvent *)self debugEventsCount];
+    if (debugEventsCount)
     {
-      v20 = v19;
+      v20 = debugEventsCount;
       for (m = 0; m != v20; ++m)
       {
         v22 = [(AeroMLTracerSpanEvent *)self debugEventsAtIndex:m];
@@ -1117,10 +1117,10 @@ LABEL_35:
   if ([(AeroMLTracerSpanEvent *)self errorEventsCount])
   {
     [v27 clearErrorEvents];
-    v23 = [(AeroMLTracerSpanEvent *)self errorEventsCount];
-    if (v23)
+    errorEventsCount = [(AeroMLTracerSpanEvent *)self errorEventsCount];
+    if (errorEventsCount)
     {
-      v24 = v23;
+      v24 = errorEventsCount;
       for (n = 0; n != v24; ++n)
       {
         v26 = [(AeroMLTracerSpanEvent *)self errorEventsAtIndex:n];
@@ -1130,47 +1130,47 @@ LABEL_35:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v97 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_deviceIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_deviceIdentifier copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_testKey copyWithZone:a3];
+  v8 = [(NSString *)self->_testKey copyWithZone:zone];
   v9 = *(v5 + 152);
   *(v5 + 152) = v8;
 
-  v10 = [(NSString *)self->_version copyWithZone:a3];
+  v10 = [(NSString *)self->_version copyWithZone:zone];
   v11 = *(v5 + 192);
   *(v5 + 192) = v10;
 
-  v12 = [(NSString *)self->_name copyWithZone:a3];
+  v12 = [(NSString *)self->_name copyWithZone:zone];
   v13 = *(v5 + 80);
   *(v5 + 80) = v12;
 
-  v14 = [(NSString *)self->_trialDeploymentId copyWithZone:a3];
+  v14 = [(NSString *)self->_trialDeploymentId copyWithZone:zone];
   v15 = *(v5 + 168);
   *(v5 + 168) = v14;
 
-  v16 = [(NSString *)self->_trialExperimentId copyWithZone:a3];
+  v16 = [(NSString *)self->_trialExperimentId copyWithZone:zone];
   v17 = *(v5 + 176);
   *(v5 + 176) = v16;
 
-  v18 = [(NSString *)self->_trialTreatmentId copyWithZone:a3];
+  v18 = [(NSString *)self->_trialTreatmentId copyWithZone:zone];
   v19 = *(v5 + 184);
   *(v5 + 184) = v18;
 
-  v20 = [(NSString *)self->_traceId copyWithZone:a3];
+  v20 = [(NSString *)self->_traceId copyWithZone:zone];
   v21 = *(v5 + 160);
   *(v5 + 160) = v20;
 
-  v22 = [(NSString *)self->_parentSpanId copyWithZone:a3];
+  v22 = [(NSString *)self->_parentSpanId copyWithZone:zone];
   v23 = *(v5 + 88);
   *(v5 + 88) = v22;
 
-  v24 = [(NSString *)self->_spanId copyWithZone:a3];
+  v24 = [(NSString *)self->_spanId copyWithZone:zone];
   v25 = *(v5 + 136);
   *(v5 + 136) = v24;
 
@@ -1207,7 +1207,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v27 = [(NSString *)self->_errorString copyWithZone:a3];
+  v27 = [(NSString *)self->_errorString copyWithZone:zone];
   v28 = *(v5 + 48);
   *(v5 + 48) = v27;
 
@@ -1217,7 +1217,7 @@ LABEL_5:
     *(v5 + 208) |= 2u;
   }
 
-  v29 = [(NSString *)self->_processName copyWithZone:a3];
+  v29 = [(NSString *)self->_processName copyWithZone:zone];
   v30 = *(v5 + 104);
   *(v5 + 104) = v29;
 
@@ -1254,19 +1254,19 @@ LABEL_10:
   }
 
 LABEL_11:
-  v32 = [(NSString *)self->_gcdQueueName copyWithZone:a3];
+  v32 = [(NSString *)self->_gcdQueueName copyWithZone:zone];
   v33 = *(v5 + 56);
   *(v5 + 56) = v32;
 
-  v34 = [(NSString *)self->_qosClassName copyWithZone:a3];
+  v34 = [(NSString *)self->_qosClassName copyWithZone:zone];
   v35 = *(v5 + 120);
   *(v5 + 120) = v34;
 
-  v36 = [(NSString *)self->_relativePriority copyWithZone:a3];
+  v36 = [(NSString *)self->_relativePriority copyWithZone:zone];
   v37 = *(v5 + 128);
   *(v5 + 128) = v36;
 
-  v38 = [(NSString *)self->_projectName copyWithZone:a3];
+  v38 = [(NSString *)self->_projectName copyWithZone:zone];
   v39 = *(v5 + 112);
   *(v5 + 112) = v38;
 
@@ -1289,7 +1289,7 @@ LABEL_11:
           objc_enumerationMutation(v40);
         }
 
-        v45 = [*(*(&v88 + 1) + 8 * i) copyWithZone:a3];
+        v45 = [*(*(&v88 + 1) + 8 * i) copyWithZone:zone];
         [v5 addAttributes:v45];
       }
 
@@ -1318,7 +1318,7 @@ LABEL_11:
           objc_enumerationMutation(v46);
         }
 
-        v51 = [*(*(&v84 + 1) + 8 * j) copyWithZone:a3];
+        v51 = [*(*(&v84 + 1) + 8 * j) copyWithZone:zone];
         [v5 addInfoEvents:v51];
       }
 
@@ -1347,7 +1347,7 @@ LABEL_11:
           objc_enumerationMutation(v52);
         }
 
-        v57 = [*(*(&v80 + 1) + 8 * k) copyWithZone:a3];
+        v57 = [*(*(&v80 + 1) + 8 * k) copyWithZone:zone];
         [v5 addWarningEvents:v57];
       }
 
@@ -1376,7 +1376,7 @@ LABEL_11:
           objc_enumerationMutation(v58);
         }
 
-        v63 = [*(*(&v76 + 1) + 8 * m) copyWithZone:a3];
+        v63 = [*(*(&v76 + 1) + 8 * m) copyWithZone:zone];
         [v5 addDebugEvents:v63];
       }
 
@@ -1405,7 +1405,7 @@ LABEL_11:
           objc_enumerationMutation(v64);
         }
 
-        v69 = [*(*(&v72 + 1) + 8 * n) copyWithZone:{a3, v72}];
+        v69 = [*(*(&v72 + 1) + 8 * n) copyWithZone:{zone, v72}];
         [v5 addErrorEvents:v69];
       }
 
@@ -1419,16 +1419,16 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_81;
   }
 
   deviceIdentifier = self->_deviceIdentifier;
-  if (deviceIdentifier | *(v4 + 3))
+  if (deviceIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)deviceIdentifier isEqual:?])
     {
@@ -1437,7 +1437,7 @@ LABEL_11:
   }
 
   testKey = self->_testKey;
-  if (testKey | *(v4 + 19))
+  if (testKey | *(equalCopy + 19))
   {
     if (![(NSString *)testKey isEqual:?])
     {
@@ -1446,7 +1446,7 @@ LABEL_11:
   }
 
   version = self->_version;
-  if (version | *(v4 + 24))
+  if (version | *(equalCopy + 24))
   {
     if (![(NSString *)version isEqual:?])
     {
@@ -1455,7 +1455,7 @@ LABEL_11:
   }
 
   name = self->_name;
-  if (name | *(v4 + 10))
+  if (name | *(equalCopy + 10))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -1464,7 +1464,7 @@ LABEL_11:
   }
 
   trialDeploymentId = self->_trialDeploymentId;
-  if (trialDeploymentId | *(v4 + 21))
+  if (trialDeploymentId | *(equalCopy + 21))
   {
     if (![(NSString *)trialDeploymentId isEqual:?])
     {
@@ -1473,7 +1473,7 @@ LABEL_11:
   }
 
   trialExperimentId = self->_trialExperimentId;
-  if (trialExperimentId | *(v4 + 22))
+  if (trialExperimentId | *(equalCopy + 22))
   {
     if (![(NSString *)trialExperimentId isEqual:?])
     {
@@ -1482,7 +1482,7 @@ LABEL_11:
   }
 
   trialTreatmentId = self->_trialTreatmentId;
-  if (trialTreatmentId | *(v4 + 23))
+  if (trialTreatmentId | *(equalCopy + 23))
   {
     if (![(NSString *)trialTreatmentId isEqual:?])
     {
@@ -1491,7 +1491,7 @@ LABEL_11:
   }
 
   traceId = self->_traceId;
-  if (traceId | *(v4 + 20))
+  if (traceId | *(equalCopy + 20))
   {
     if (![(NSString *)traceId isEqual:?])
     {
@@ -1500,7 +1500,7 @@ LABEL_11:
   }
 
   parentSpanId = self->_parentSpanId;
-  if (parentSpanId | *(v4 + 11))
+  if (parentSpanId | *(equalCopy + 11))
   {
     if (![(NSString *)parentSpanId isEqual:?])
     {
@@ -1509,7 +1509,7 @@ LABEL_11:
   }
 
   spanId = self->_spanId;
-  if (spanId | *(v4 + 17))
+  if (spanId | *(equalCopy + 17))
   {
     if (![(NSString *)spanId isEqual:?])
     {
@@ -1518,48 +1518,48 @@ LABEL_11:
   }
 
   has = self->_has;
-  v16 = *(v4 + 208);
+  v16 = *(equalCopy + 208);
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 208) & 0x20) == 0 || self->_privatizedStartTime != *(v4 + 25))
+    if ((*(equalCopy + 208) & 0x20) == 0 || self->_privatizedStartTime != *(equalCopy + 25))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 208) & 0x20) != 0)
+  else if ((*(equalCopy + 208) & 0x20) != 0)
   {
     goto LABEL_81;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 208) & 0x10) == 0 || self->_privatizedEndTime != *(v4 + 24))
+    if ((*(equalCopy + 208) & 0x10) == 0 || self->_privatizedEndTime != *(equalCopy + 24))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 208) & 0x10) != 0)
+  else if ((*(equalCopy + 208) & 0x10) != 0)
   {
     goto LABEL_81;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 208) & 4) == 0 || self->_intervalInMilliSeconds != *(v4 + 18))
+    if ((*(equalCopy + 208) & 4) == 0 || self->_intervalInMilliSeconds != *(equalCopy + 18))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 208) & 4) != 0)
+  else if ((*(equalCopy + 208) & 4) != 0)
   {
     goto LABEL_81;
   }
 
   errorString = self->_errorString;
-  if (errorString | *(v4 + 6))
+  if (errorString | *(equalCopy + 6))
   {
     if (![(NSString *)errorString isEqual:?])
     {
@@ -1569,22 +1569,22 @@ LABEL_11:
     has = self->_has;
   }
 
-  v18 = *(v4 + 208);
+  v18 = *(equalCopy + 208);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 208) & 2) == 0 || self->_errorCode != *(v4 + 9))
+    if ((*(equalCopy + 208) & 2) == 0 || self->_errorCode != *(equalCopy + 9))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 208) & 2) != 0)
+  else if ((*(equalCopy + 208) & 2) != 0)
   {
     goto LABEL_81;
   }
 
   processName = self->_processName;
-  if (processName | *(v4 + 13))
+  if (processName | *(equalCopy + 13))
   {
     if ([(NSString *)processName isEqual:?])
     {
@@ -1598,54 +1598,54 @@ LABEL_81:
   }
 
 LABEL_48:
-  v20 = *(v4 + 208);
+  v20 = *(equalCopy + 208);
   if ((has & 0x40) != 0)
   {
-    if ((*(v4 + 208) & 0x40) == 0 || self->_startMemoryLevelInKB != *(v4 + 36))
+    if ((*(equalCopy + 208) & 0x40) == 0 || self->_startMemoryLevelInKB != *(equalCopy + 36))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 208) & 0x40) != 0)
+  else if ((*(equalCopy + 208) & 0x40) != 0)
   {
     goto LABEL_81;
   }
 
   if (has)
   {
-    if ((*(v4 + 208) & 1) == 0 || self->_endMemoryLevelInKB != *(v4 + 8))
+    if ((*(equalCopy + 208) & 1) == 0 || self->_endMemoryLevelInKB != *(equalCopy + 8))
     {
       goto LABEL_81;
     }
   }
 
-  else if (*(v4 + 208))
+  else if (*(equalCopy + 208))
   {
     goto LABEL_81;
   }
 
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 208) & 8) == 0 || self->_memoryLevelDeltaInKB != *(v4 + 19))
+    if ((*(equalCopy + 208) & 8) == 0 || self->_memoryLevelDeltaInKB != *(equalCopy + 19))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 208) & 8) != 0)
+  else if ((*(equalCopy + 208) & 8) != 0)
   {
     goto LABEL_81;
   }
 
   gcdQueueName = self->_gcdQueueName;
-  if (gcdQueueName | *(v4 + 7) && ![(NSString *)gcdQueueName isEqual:?])
+  if (gcdQueueName | *(equalCopy + 7) && ![(NSString *)gcdQueueName isEqual:?])
   {
     goto LABEL_81;
   }
 
   qosClassName = self->_qosClassName;
-  if (qosClassName | *(v4 + 15))
+  if (qosClassName | *(equalCopy + 15))
   {
     if (![(NSString *)qosClassName isEqual:?])
     {
@@ -1654,7 +1654,7 @@ LABEL_48:
   }
 
   relativePriority = self->_relativePriority;
-  if (relativePriority | *(v4 + 16))
+  if (relativePriority | *(equalCopy + 16))
   {
     if (![(NSString *)relativePriority isEqual:?])
     {
@@ -1663,7 +1663,7 @@ LABEL_48:
   }
 
   projectName = self->_projectName;
-  if (projectName | *(v4 + 14))
+  if (projectName | *(equalCopy + 14))
   {
     if (![(NSString *)projectName isEqual:?])
     {
@@ -1672,7 +1672,7 @@ LABEL_48:
   }
 
   attributes = self->_attributes;
-  if (attributes | *(v4 + 1))
+  if (attributes | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)attributes isEqual:?])
     {
@@ -1681,7 +1681,7 @@ LABEL_48:
   }
 
   infoEvents = self->_infoEvents;
-  if (infoEvents | *(v4 + 8))
+  if (infoEvents | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)infoEvents isEqual:?])
     {
@@ -1690,7 +1690,7 @@ LABEL_48:
   }
 
   warningEvents = self->_warningEvents;
-  if (warningEvents | *(v4 + 25))
+  if (warningEvents | *(equalCopy + 25))
   {
     if (![(NSMutableArray *)warningEvents isEqual:?])
     {
@@ -1699,7 +1699,7 @@ LABEL_48:
   }
 
   debugEvents = self->_debugEvents;
-  if (debugEvents | *(v4 + 2))
+  if (debugEvents | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)debugEvents isEqual:?])
     {
@@ -1708,7 +1708,7 @@ LABEL_48:
   }
 
   errorEvents = self->_errorEvents;
-  if (errorEvents | *(v4 + 5))
+  if (errorEvents | *(equalCopy + 5))
   {
     v30 = [(NSMutableArray *)errorEvents isEqual:?];
   }
@@ -1831,66 +1831,66 @@ LABEL_18:
   return v19 ^ v22 ^ [(NSMutableArray *)self->_errorEvents hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(AeroMLTracerSpanEvent *)self setDeviceIdentifier:?];
   }
 
-  if (*(v4 + 19))
+  if (*(fromCopy + 19))
   {
     [(AeroMLTracerSpanEvent *)self setTestKey:?];
   }
 
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
     [(AeroMLTracerSpanEvent *)self setVersion:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(AeroMLTracerSpanEvent *)self setName:?];
   }
 
-  if (*(v4 + 21))
+  if (*(fromCopy + 21))
   {
     [(AeroMLTracerSpanEvent *)self setTrialDeploymentId:?];
   }
 
-  if (*(v4 + 22))
+  if (*(fromCopy + 22))
   {
     [(AeroMLTracerSpanEvent *)self setTrialExperimentId:?];
   }
 
-  if (*(v4 + 23))
+  if (*(fromCopy + 23))
   {
     [(AeroMLTracerSpanEvent *)self setTrialTreatmentId:?];
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
     [(AeroMLTracerSpanEvent *)self setTraceId:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(AeroMLTracerSpanEvent *)self setParentSpanId:?];
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(AeroMLTracerSpanEvent *)self setSpanId:?];
   }
 
-  v5 = *(v4 + 208);
+  v5 = *(fromCopy + 208);
   if ((v5 & 0x20) != 0)
   {
-    self->_privatizedStartTime = *(v4 + 25);
+    self->_privatizedStartTime = *(fromCopy + 25);
     *&self->_has |= 0x20u;
-    v5 = *(v4 + 208);
+    v5 = *(fromCopy + 208);
     if ((v5 & 0x10) == 0)
     {
 LABEL_23:
@@ -1903,43 +1903,43 @@ LABEL_23:
     }
   }
 
-  else if ((*(v4 + 208) & 0x10) == 0)
+  else if ((*(fromCopy + 208) & 0x10) == 0)
   {
     goto LABEL_23;
   }
 
-  self->_privatizedEndTime = *(v4 + 24);
+  self->_privatizedEndTime = *(fromCopy + 24);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 208) & 4) != 0)
+  if ((*(fromCopy + 208) & 4) != 0)
   {
 LABEL_24:
-    self->_intervalInMilliSeconds = *(v4 + 18);
+    self->_intervalInMilliSeconds = *(fromCopy + 18);
     *&self->_has |= 4u;
   }
 
 LABEL_25:
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(AeroMLTracerSpanEvent *)self setErrorString:?];
   }
 
-  if ((*(v4 + 208) & 2) != 0)
+  if ((*(fromCopy + 208) & 2) != 0)
   {
-    self->_errorCode = *(v4 + 9);
+    self->_errorCode = *(fromCopy + 9);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(AeroMLTracerSpanEvent *)self setProcessName:?];
   }
 
-  v6 = *(v4 + 208);
+  v6 = *(fromCopy + 208);
   if ((v6 & 0x40) != 0)
   {
-    self->_startMemoryLevelInKB = *(v4 + 36);
+    self->_startMemoryLevelInKB = *(fromCopy + 36);
     *&self->_has |= 0x40u;
-    v6 = *(v4 + 208);
+    v6 = *(fromCopy + 208);
     if ((v6 & 1) == 0)
     {
 LABEL_33:
@@ -1952,37 +1952,37 @@ LABEL_33:
     }
   }
 
-  else if ((*(v4 + 208) & 1) == 0)
+  else if ((*(fromCopy + 208) & 1) == 0)
   {
     goto LABEL_33;
   }
 
-  self->_endMemoryLevelInKB = *(v4 + 8);
+  self->_endMemoryLevelInKB = *(fromCopy + 8);
   *&self->_has |= 1u;
-  if ((*(v4 + 208) & 8) != 0)
+  if ((*(fromCopy + 208) & 8) != 0)
   {
 LABEL_34:
-    self->_memoryLevelDeltaInKB = *(v4 + 19);
+    self->_memoryLevelDeltaInKB = *(fromCopy + 19);
     *&self->_has |= 8u;
   }
 
 LABEL_35:
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(AeroMLTracerSpanEvent *)self setGcdQueueName:?];
   }
 
-  if (*(v4 + 15))
+  if (*(fromCopy + 15))
   {
     [(AeroMLTracerSpanEvent *)self setQosClassName:?];
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(AeroMLTracerSpanEvent *)self setRelativePriority:?];
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(AeroMLTracerSpanEvent *)self setProjectName:?];
   }
@@ -1991,7 +1991,7 @@ LABEL_35:
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v49 objects:v57 count:16];
   if (v8)
   {
@@ -2019,7 +2019,7 @@ LABEL_35:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v12 = *(v4 + 8);
+  v12 = *(fromCopy + 8);
   v13 = [v12 countByEnumeratingWithState:&v45 objects:v56 count:16];
   if (v13)
   {
@@ -2047,7 +2047,7 @@ LABEL_35:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v17 = *(v4 + 25);
+  v17 = *(fromCopy + 25);
   v18 = [v17 countByEnumeratingWithState:&v41 objects:v55 count:16];
   if (v18)
   {
@@ -2075,7 +2075,7 @@ LABEL_35:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v22 = *(v4 + 2);
+  v22 = *(fromCopy + 2);
   v23 = [v22 countByEnumeratingWithState:&v37 objects:v54 count:16];
   if (v23)
   {
@@ -2103,7 +2103,7 @@ LABEL_35:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v27 = *(v4 + 5);
+  v27 = *(fromCopy + 5);
   v28 = [v27 countByEnumeratingWithState:&v33 objects:v53 count:16];
   if (v28)
   {

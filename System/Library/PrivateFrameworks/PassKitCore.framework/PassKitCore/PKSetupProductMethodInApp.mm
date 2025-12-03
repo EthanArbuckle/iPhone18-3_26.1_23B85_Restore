@@ -1,11 +1,11 @@
 @interface PKSetupProductMethodInApp
 - (PKSetupProductMethodInApp)init;
-- (PKSetupProductMethodInApp)initWithCoder:(id)a3;
-- (PKSetupProductMethodInApp)initWithDictionary:(id)a3 partnerIdentifier:(id)a4;
-- (PKSetupProductMethodInApp)initWithURL:(id)a3 identifiers:(id)a4 cardTypeSupport:(id)a5 identifier:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_decorateDescription:(id)a3;
-- (void)encodeWithCode:(id)a3;
+- (PKSetupProductMethodInApp)initWithCoder:(id)coder;
+- (PKSetupProductMethodInApp)initWithDictionary:(id)dictionary partnerIdentifier:(id)identifier;
+- (PKSetupProductMethodInApp)initWithURL:(id)l identifiers:(id)identifiers cardTypeSupport:(id)support identifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_decorateDescription:(id)description;
+- (void)encodeWithCode:(id)code;
 @end
 
 @implementation PKSetupProductMethodInApp
@@ -17,35 +17,35 @@
   return [(PKSetupProductMethod *)&v3 initWithType:5];
 }
 
-- (PKSetupProductMethodInApp)initWithURL:(id)a3 identifiers:(id)a4 cardTypeSupport:(id)a5 identifier:(id)a6
+- (PKSetupProductMethodInApp)initWithURL:(id)l identifiers:(id)identifiers cardTypeSupport:(id)support identifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (([v12 count] || objc_msgSend(v13, "count")) && ((v18.receiver = self, v18.super_class = PKSetupProductMethodInApp, v15 = -[PKSetupProductMethod initWithType:partnerIdentifier:](&v18, sel_initWithType_partnerIdentifier_, 5, v14), (self = v15) == 0) || (objc_storeStrong(&v15->_appLaunchURL, a3), objc_storeStrong(&self->_associatedStoreIdentifiers, a4), objc_storeStrong(&self->_cardTypeSupport, a5), -[NSArray count](self->_associatedStoreIdentifiers, "count")) || -[NSArray count](self->_cardTypeSupport, "count")))
+  lCopy = l;
+  identifiersCopy = identifiers;
+  supportCopy = support;
+  identifierCopy = identifier;
+  if (([identifiersCopy count] || objc_msgSend(supportCopy, "count")) && ((v18.receiver = self, v18.super_class = PKSetupProductMethodInApp, v15 = -[PKSetupProductMethod initWithType:partnerIdentifier:](&v18, sel_initWithType_partnerIdentifier_, 5, identifierCopy), (self = v15) == 0) || (objc_storeStrong(&v15->_appLaunchURL, l), objc_storeStrong(&self->_associatedStoreIdentifiers, identifiers), objc_storeStrong(&self->_cardTypeSupport, support), -[NSArray count](self->_associatedStoreIdentifiers, "count")) || -[NSArray count](self->_cardTypeSupport, "count")))
   {
     self = self;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (PKSetupProductMethodInApp)initWithDictionary:(id)a3 partnerIdentifier:(id)a4
+- (PKSetupProductMethodInApp)initWithDictionary:(id)dictionary partnerIdentifier:(id)identifier
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = PKSetupProductMethodInApp;
-  v7 = [(PKSetupProductMethod *)&v24 initWithDictionary:v6 partnerIdentifier:a4];
+  v7 = [(PKSetupProductMethod *)&v24 initWithDictionary:dictionaryCopy partnerIdentifier:identifier];
   if (v7)
   {
-    v8 = [v6 PKStringForKey:@"appLaunchURL"];
+    v8 = [dictionaryCopy PKStringForKey:@"appLaunchURL"];
     if (v8)
     {
       v9 = [MEMORY[0x1E695DFF8] URLWithString:v8];
@@ -55,18 +55,18 @@
 
     else
     {
-      appLaunchURL = [v6 PKStringForKey:@"appLaunchURLScheme"];
-      v11 = [v6 PKStringForKey:@"appLaunchURLPath"];
+      appLaunchURL = [dictionaryCopy PKStringForKey:@"appLaunchURLScheme"];
+      v11 = [dictionaryCopy PKStringForKey:@"appLaunchURLPath"];
       v12 = [(PKSetupProductMethod *)v7 _inAppProvisioningURLWthScheme:appLaunchURL path:v11];
       v13 = v7->_appLaunchURL;
       v7->_appLaunchURL = v12;
     }
 
-    v14 = [v6 PKArrayContaining:objc_opt_class() forKey:@"associatedStoreIdentifiers"];
+    v14 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"associatedStoreIdentifiers"];
     associatedStoreIdentifiers = v7->_associatedStoreIdentifiers;
     v7->_associatedStoreIdentifiers = v14;
 
-    v16 = [v6 PKArrayContaining:objc_opt_class() forKey:@"cardTypeSupport"];
+    v16 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"cardTypeSupport"];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __66__PKSetupProductMethodInApp_initWithDictionary_partnerIdentifier___block_invoke;
@@ -91,27 +91,27 @@ LABEL_9:
   return v20;
 }
 
-- (void)_decorateDescription:(id)a3
+- (void)_decorateDescription:(id)description
 {
   v5.receiver = self;
   v5.super_class = PKSetupProductMethodInApp;
-  v4 = a3;
-  [(PKSetupProductMethod *)&v5 _decorateDescription:v4];
-  [v4 appendFormat:@"appLaunchURL: '%@'; ", self->_appLaunchURL];
-  [v4 appendFormat:@"associatedStoreIdentifiers: '%@'; ", self->_associatedStoreIdentifiers];
-  [v4 appendFormat:@"cardTypeSupport: '%@'; ", self->_cardTypeSupport];
+  descriptionCopy = description;
+  [(PKSetupProductMethod *)&v5 _decorateDescription:descriptionCopy];
+  [descriptionCopy appendFormat:@"appLaunchURL: '%@'; ", self->_appLaunchURL];
+  [descriptionCopy appendFormat:@"associatedStoreIdentifiers: '%@'; ", self->_associatedStoreIdentifiers];
+  [descriptionCopy appendFormat:@"cardTypeSupport: '%@'; ", self->_cardTypeSupport];
 }
 
-- (PKSetupProductMethodInApp)initWithCoder:(id)a3
+- (PKSetupProductMethodInApp)initWithCoder:(id)coder
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKSetupProductMethodInApp;
-  v5 = [(PKSetupProductMethod *)&v19 initWithCoder:v4];
+  v5 = [(PKSetupProductMethod *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appLaunchURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appLaunchURL"];
     appLaunchURL = v5->_appLaunchURL;
     v5->_appLaunchURL = v6;
 
@@ -120,7 +120,7 @@ LABEL_9:
     v21[1] = objc_opt_class();
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
     v10 = [v8 initWithArray:v9];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"associatedStoreIdentifiers"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"associatedStoreIdentifiers"];
     associatedStoreIdentifiers = v5->_associatedStoreIdentifiers;
     v5->_associatedStoreIdentifiers = v11;
 
@@ -129,7 +129,7 @@ LABEL_9:
     v20[1] = objc_opt_class();
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v15 = [v13 initWithArray:v14];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"cardTypeSupport"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"cardTypeSupport"];
     cardTypeSupport = v5->_cardTypeSupport;
     v5->_cardTypeSupport = v16;
   }
@@ -137,30 +137,30 @@ LABEL_9:
   return v5;
 }
 
-- (void)encodeWithCode:(id)a3
+- (void)encodeWithCode:(id)code
 {
   v5.receiver = self;
   v5.super_class = PKSetupProductMethodInApp;
-  v4 = a3;
-  [(PKSetupProductMethod *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_appLaunchURL forKey:{@"appLaunchURL", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_associatedStoreIdentifiers forKey:@"associatedStoreIdentifiers"];
-  [v4 encodeObject:self->_cardTypeSupport forKey:@"cardTypeSupport"];
+  codeCopy = code;
+  [(PKSetupProductMethod *)&v5 encodeWithCoder:codeCopy];
+  [codeCopy encodeObject:self->_appLaunchURL forKey:{@"appLaunchURL", v5.receiver, v5.super_class}];
+  [codeCopy encodeObject:self->_associatedStoreIdentifiers forKey:@"associatedStoreIdentifiers"];
+  [codeCopy encodeObject:self->_cardTypeSupport forKey:@"cardTypeSupport"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(PKSetupProductMethodInApp);
   [(PKSetupProductMethod *)self _copyInto:v5];
-  v6 = [(NSURL *)self->_appLaunchURL copyWithZone:a3];
+  v6 = [(NSURL *)self->_appLaunchURL copyWithZone:zone];
   appLaunchURL = v5->_appLaunchURL;
   v5->_appLaunchURL = v6;
 
-  v8 = [(NSArray *)self->_associatedStoreIdentifiers copyWithZone:a3];
+  v8 = [(NSArray *)self->_associatedStoreIdentifiers copyWithZone:zone];
   associatedStoreIdentifiers = v5->_associatedStoreIdentifiers;
   v5->_associatedStoreIdentifiers = v8;
 
-  v10 = [(NSArray *)self->_cardTypeSupport copyWithZone:a3];
+  v10 = [(NSArray *)self->_cardTypeSupport copyWithZone:zone];
   cardTypeSupport = v5->_cardTypeSupport;
   v5->_cardTypeSupport = v10;
 

@@ -1,9 +1,9 @@
 @interface MCNotificationSettingsPayload
 + (id)typeStrings;
-- (MCNotificationSettingsPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCNotificationSettingsPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
-- (id)validatedNotificationSettings:(id)a3 outError:(id *)a4;
+- (id)validatedNotificationSettings:(id)settings outError:(id *)error;
 @end
 
 @implementation MCNotificationSettingsPayload
@@ -18,22 +18,22 @@
   return v2;
 }
 
-- (MCNotificationSettingsPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCNotificationSettingsPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v34.receiver = self;
   v34.super_class = MCNotificationSettingsPayload;
-  v10 = [(MCPayload *)&v34 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCPayload *)&v34 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (v10)
   {
-    v11 = [v9 isStub];
+    isStub = [profileCopy isStub];
     v12 = objc_opt_class();
-    if (v11)
+    if (isStub)
     {
       v33 = 0;
-      v13 = [v8 MCValidateAndRemoveArrayOfClass:v12 withKey:@"NotificationSettings" isRequired:0 outError:&v33];
+      v13 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:v12 withKey:@"NotificationSettings" isRequired:0 outError:&v33];
       v14 = v33;
       notificationSettings = v10->_notificationSettings;
       v10->_notificationSettings = v13;
@@ -42,7 +42,7 @@
     else
     {
       v32 = 0;
-      notificationSettings = [v8 MCValidateAndRemoveArrayOfClass:v12 withKey:@"NotificationSettings" isRequired:1 outError:&v32];
+      notificationSettings = [dictionaryCopy MCValidateAndRemoveArrayOfClass:v12 withKey:@"NotificationSettings" isRequired:1 outError:&v32];
       v16 = v32;
       if (v16)
       {
@@ -62,10 +62,10 @@
     {
       v18 = [(MCPayload *)v10 malformedPayloadErrorWithError:v14];
       v19 = v18;
-      if (a5)
+      if (error)
       {
         v20 = v18;
-        *a5 = v19;
+        *error = v19;
       }
 
       v21 = _MCLogObjects;
@@ -74,28 +74,28 @@
         v22 = v21;
         v23 = objc_opt_class();
         v24 = v23;
-        v25 = [v19 MCVerboseDescription];
+        mCVerboseDescription = [v19 MCVerboseDescription];
         *buf = 138543618;
         v36 = v23;
         v37 = 2114;
-        v38 = v25;
+        v38 = mCVerboseDescription;
         _os_log_impl(&dword_1A795B000, v22, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
       }
 
       v10 = 0;
     }
 
-    if ([v8 count])
+    if ([dictionaryCopy count])
     {
       v26 = _MCLogObjects;
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
       {
         v27 = v26;
-        v28 = [(MCPayload *)v10 friendlyName];
+        friendlyName = [(MCPayload *)v10 friendlyName];
         *buf = 138543618;
-        v36 = v28;
+        v36 = friendlyName;
         v37 = 2114;
-        v38 = v8;
+        v38 = dictionaryCopy;
         _os_log_impl(&dword_1A795B000, v27, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
       }
     }
@@ -105,38 +105,38 @@
   return v10;
 }
 
-- (id)validatedNotificationSettings:(id)a3 outError:(id *)a4
+- (id)validatedNotificationSettings:(id)settings outError:(id *)error
 {
   v96 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [MEMORY[0x1E695DF70] array];
+  settingsCopy = settings;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v8 = v5;
+  v8 = settingsCopy;
   v9 = [v8 countByEnumeratingWithState:&v89 objects:v95 count:16];
   if (!v9)
   {
 
 LABEL_68:
-    v59 = v6;
+    v59 = array;
     v11 = 0;
-    if (a4)
+    if (error)
     {
 LABEL_69:
       v60 = v11;
-      *a4 = v11;
+      *error = v11;
     }
 
     goto LABEL_70;
   }
 
   v10 = v9;
-  v74 = v6;
-  v75 = v7;
-  v73 = a4;
+  v74 = array;
+  v75 = array2;
+  errorCopy = error;
   v11 = 0;
   v77 = *v90;
   while (2)
@@ -171,10 +171,10 @@ LABEL_69:
 
         v59 = 0;
 LABEL_73:
-        a4 = v73;
-        v6 = v74;
-        v7 = v75;
-        if (v73)
+        error = errorCopy;
+        array = v74;
+        array2 = v75;
+        if (errorCopy)
         {
           goto LABEL_69;
         }
@@ -438,16 +438,16 @@ LABEL_73:
 
 LABEL_64:
 
-  a4 = v73;
-  v6 = v74;
-  v7 = v75;
+  error = errorCopy;
+  array = v74;
+  array2 = v75;
   if (!v11)
   {
     goto LABEL_68;
   }
 
   v59 = 0;
-  if (v73)
+  if (errorCopy)
   {
     goto LABEL_69;
   }
@@ -463,11 +463,11 @@ LABEL_70:
 {
   v6.receiver = self;
   v6.super_class = MCNotificationSettingsPayload;
-  v3 = [(MCPayload *)&v6 stubDictionary];
-  v4 = [(MCNotificationSettingsPayload *)self notificationSettings];
-  [v3 setObject:v4 forKeyedSubscript:@"NotificationSettings"];
+  stubDictionary = [(MCPayload *)&v6 stubDictionary];
+  notificationSettings = [(MCNotificationSettingsPayload *)self notificationSettings];
+  [stubDictionary setObject:notificationSettings forKeyedSubscript:@"NotificationSettings"];
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)payloadDescriptionKeyValueSections

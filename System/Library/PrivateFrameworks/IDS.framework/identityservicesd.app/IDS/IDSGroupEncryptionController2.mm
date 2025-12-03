@@ -8,7 +8,7 @@
 - (NSData)publicIdentityData;
 - (NSDictionary)publicKeys;
 - (_TtC17identityservicesd29IDSGroupEncryptionController2)init;
-- (_TtC17identityservicesd29IDSGroupEncryptionController2)initWithDelegate:(id)a3 config:(id)a4 sessionProvider:(id)a5 identityController:(id)a6 pushHandler:(id)a7;
+- (_TtC17identityservicesd29IDSGroupEncryptionController2)initWithDelegate:(id)delegate config:(id)config sessionProvider:(id)provider identityController:(id)controller pushHandler:(id)handler;
 - (_TtP17identityservicesd19IDSDSessionProvider_)sessionProvider;
 - (_TtP17identityservicesd27IDSGroupPushHandlerProtocol_)pushHandler;
 - (__SecKey)fullIdentityKey;
@@ -16,12 +16,12 @@
 - (__SecKey)previousPublicIdentityKey;
 - (__SecKey)publicIdentityKey;
 - (id)createP2PNegotiatorProvider;
-- (id)groupForID:(id)a3;
-- (id)objcPublicIdentityForPushToken:(id)a3;
+- (id)groupForID:(id)d;
+- (id)objcPublicIdentityForPushToken:(id)token;
 - (int64_t)publicIdentityWrapMode;
-- (void)cleanUpGroupForID:(id)a3 after:(double)a4;
-- (void)receivePublicIdentity:(id)a3;
-- (void)receivePublicKey:(id)a3 forPushToken:(id)a4 fromURI:(id)a5 groupID:(id)a6 sessionID:(id)a7 serverDate:(id)a8 wrapMode:(int64_t)a9;
+- (void)cleanUpGroupForID:(id)d after:(double)after;
+- (void)receivePublicIdentity:(id)identity;
+- (void)receivePublicKey:(id)key forPushToken:(id)token fromURI:(id)i groupID:(id)d sessionID:(id)iD serverDate:(id)date wrapMode:(int64_t)mode;
 @end
 
 @implementation IDSGroupEncryptionController2
@@ -42,7 +42,7 @@
 
 - (IDSPushToken)pushToken
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007D5FBC();
 
   return v3;
@@ -50,7 +50,7 @@
 
 - (int64_t)publicIdentityWrapMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007D61CC();
 
   return v3;
@@ -62,7 +62,7 @@
   __chkstk_darwin(v3 - 8);
   v5 = &v12 - v4;
   v6 = *((swift_isaMask & **(&self->super.isa + OBJC_IVAR____TtC17identityservicesd29IDSGroupEncryptionController2_identityController)) + 0x130);
-  v7 = self;
+  selfCopy = self;
   v6();
 
   v8 = type metadata accessor for IDSGroupEncryptionFullIdentity(0);
@@ -84,7 +84,7 @@
 
 - (__SecKey)publicIdentityKey
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007D66E0();
 
   return v3;
@@ -99,7 +99,7 @@
   __chkstk_darwin(v6 - 8);
   v8 = &v18 - v7;
   v9 = *((swift_isaMask & **(&self->super.isa + OBJC_IVAR____TtC17identityservicesd29IDSGroupEncryptionController2_identityController)) + 0x130);
-  v10 = self;
+  selfCopy = self;
   v9();
   v11 = type metadata accessor for IDSGroupEncryptionFullIdentity(0);
   if ((*(*(v11 - 8) + 48))(v8, 1, v11) == 1)
@@ -135,7 +135,7 @@
 
 - (__SecKey)previousFullIdentityKey
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007D6D3C();
 
   return v3;
@@ -143,7 +143,7 @@
 
 - (__SecKey)previousPublicIdentityKey
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007D6F60();
 
   return v3;
@@ -151,7 +151,7 @@
 
 - (NSData)previousPublicIdentityData
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007D7254();
   v5 = v4;
 
@@ -173,7 +173,7 @@
 - (NSDictionary)publicKeys
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC17identityservicesd29IDSGroupEncryptionController2_publicIdentitiesLock);
-  v3 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v2 + 24));
   sub_1007D75EC((v2 + 16), &v6);
@@ -186,14 +186,14 @@
   return v4.super.isa;
 }
 
-- (_TtC17identityservicesd29IDSGroupEncryptionController2)initWithDelegate:(id)a3 config:(id)a4 sessionProvider:(id)a5 identityController:(id)a6 pushHandler:(id)a7
+- (_TtC17identityservicesd29IDSGroupEncryptionController2)initWithDelegate:(id)delegate config:(id)config sessionProvider:(id)provider identityController:(id)controller pushHandler:(id)handler
 {
   swift_unknownObjectRetain();
-  v12 = a4;
+  configCopy = config;
   swift_unknownObjectRetain();
-  v13 = a6;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v14 = sub_1007DEA80(a3, v12, a5, v13, a7);
+  v14 = sub_1007DEA80(delegate, configCopy, provider, controllerCopy, handler);
   swift_unknownObjectRelease();
 
   swift_unknownObjectRelease();
@@ -201,11 +201,11 @@
   return v14;
 }
 
-- (id)groupForID:(id)a3
+- (id)groupForID:(id)d
 {
   sub_100936B38();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC17identityservicesd29IDSGroupEncryptionController2_groupsLock);
-  v5 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v4 + 32));
   sub_1007E0284((v4 + 16), &v8);
@@ -215,28 +215,28 @@
   return v6;
 }
 
-- (void)receivePublicIdentity:(id)a3
+- (void)receivePublicIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = self;
-  sub_1007D8C34(v4);
+  identityCopy = identity;
+  selfCopy = self;
+  sub_1007D8C34(identityCopy);
 }
 
-- (void)receivePublicKey:(id)a3 forPushToken:(id)a4 fromURI:(id)a5 groupID:(id)a6 sessionID:(id)a7 serverDate:(id)a8 wrapMode:(int64_t)a9
+- (void)receivePublicKey:(id)key forPushToken:(id)token fromURI:(id)i groupID:(id)d sessionID:(id)iD serverDate:(id)date wrapMode:(int64_t)mode
 {
-  v33 = a9;
+  modeCopy = mode;
   v16 = sub_100936038();
   v34 = *(v16 - 8);
   v35 = v16;
   __chkstk_darwin(v16);
-  v18 = &v32 - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v19 = a3;
-  v32 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = self;
+  v18 = &tokenCopy - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0);
+  keyCopy = key;
+  tokenCopy = token;
+  iCopy = i;
+  dCopy = d;
+  iDCopy = iD;
+  dateCopy = date;
+  selfCopy = self;
   v25 = sub_100935EA8();
   v27 = v26;
 
@@ -244,19 +244,19 @@
   v30 = v29;
 
   sub_100935FE8();
-  v31 = v32;
-  sub_1007DF088(v25, v27, v32, v20, v28, v30, v18, v33);
+  v31 = tokenCopy;
+  sub_1007DF088(v25, v27, tokenCopy, iCopy, v28, v30, v18, modeCopy);
 
   sub_1007156D8(v25, v27);
 
   (*(v34 + 8))(v18, v35);
 }
 
-- (id)objcPublicIdentityForPushToken:(id)a3
+- (id)objcPublicIdentityForPushToken:(id)token
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC17identityservicesd29IDSGroupEncryptionController2_publicIdentitiesLock);
-  v5 = a3;
-  v6 = self;
+  tokenCopy = token;
+  selfCopy = self;
 
   os_unfair_lock_lock((v4 + 24));
   sub_1007E026C((v4 + 16), &v9);
@@ -266,17 +266,17 @@
   return v7;
 }
 
-- (void)cleanUpGroupForID:(id)a3 after:(double)a4
+- (void)cleanUpGroupForID:(id)d after:(double)after
 {
   v6 = sub_100936B38();
   v8 = v7;
-  v9 = self;
-  sub_1007DA2A4(v6, v8, a4);
+  selfCopy = self;
+  sub_1007DA2A4(v6, v8, after);
 }
 
 - (IDSRealTimeEncryptionIdentity)objcPublicIdentity
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007DA9E4();
 
   return v3;
@@ -284,7 +284,7 @@
 
 - (IDSRealTimeEncryptionIdentity)objcPreviousPublicIdentity
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007DAC04();
 
   return v3;
@@ -296,7 +296,7 @@
   __chkstk_darwin(v3 - 8);
   v5 = &v12 - v4;
   v6 = *((swift_isaMask & **(&self->super.isa + OBJC_IVAR____TtC17identityservicesd29IDSGroupEncryptionController2_identityController)) + 0x130);
-  v7 = self;
+  selfCopy = self;
   v6();
   v8 = type metadata accessor for IDSGroupEncryptionFullIdentity(0);
   if ((*(*(v8 - 8) + 48))(v5, 1, v8) == 1)
@@ -319,7 +319,7 @@
 
 - (IDSRealTimeEncryptionIdentity)objcPreviousIdentity
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007DB184();
 
   return v3;
@@ -342,12 +342,12 @@
   v10 = type metadata accessor for IDSGroupEncryptionController2();
   v11 = &off_100BE8BB0;
   v8[4] = &off_100BE8BC0;
-  v9 = self;
+  selfCopy = self;
   v8[3] = v10;
   v8[0] = self;
-  v4 = self;
+  selfCopy2 = self;
   v5 = v3;
-  v6 = sub_1007B8E30(v12, &v9, v8);
+  v6 = sub_1007B8E30(v12, &selfCopy, v8);
 
   return v6;
 }

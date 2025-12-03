@@ -1,27 +1,27 @@
 @interface SBHApplicationDataSource
 - (NSArray)applicationPlaceholders;
 - (NSArray)applications;
-- (SBHApplicationDataSource)initWithOptions:(unint64_t)a3;
-- (id)allApplicationPlaceholdersForIconModel:(id)a3;
-- (id)applicationPlaceholderWithBundleIdentifier:(id)a3;
-- (id)applicationPlaceholdersForFrontBoardPlaceholders:(id)a3;
-- (id)applicationWithBundleIdentifier:(id)a3;
-- (id)applicationsForApplicationsInfo:(id)a3;
-- (void)_didAddApplicationsInfo:(id)a3;
-- (void)_didAddPlaceholders:(id)a3;
-- (void)_didRemoveApplicationsInfo:(id)a3;
-- (void)_didRemovePlaceholders:(id)a3;
-- (void)_didReplaceApplicationsInfo:(id)a3;
-- (void)addApplicationInfoProviderObserver:(id)a3;
-- (void)addIconModelApplicationDataSourceObserver:(id)a3;
+- (SBHApplicationDataSource)initWithOptions:(unint64_t)options;
+- (id)allApplicationPlaceholdersForIconModel:(id)model;
+- (id)applicationPlaceholderWithBundleIdentifier:(id)identifier;
+- (id)applicationPlaceholdersForFrontBoardPlaceholders:(id)placeholders;
+- (id)applicationWithBundleIdentifier:(id)identifier;
+- (id)applicationsForApplicationsInfo:(id)info;
+- (void)_didAddApplicationsInfo:(id)info;
+- (void)_didAddPlaceholders:(id)placeholders;
+- (void)_didRemoveApplicationsInfo:(id)info;
+- (void)_didRemovePlaceholders:(id)placeholders;
+- (void)_didReplaceApplicationsInfo:(id)info;
+- (void)addApplicationInfoProviderObserver:(id)observer;
+- (void)addIconModelApplicationDataSourceObserver:(id)observer;
 - (void)dealloc;
-- (void)uninstallApplicationWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)uninstallApplicationWithBundleIdentifier:(id)a3 options:(unint64_t)a4 completion:(id)a5;
+- (void)uninstallApplicationWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)uninstallApplicationWithBundleIdentifier:(id)identifier options:(unint64_t)options completion:(id)completion;
 @end
 
 @implementation SBHApplicationDataSource
 
-- (SBHApplicationDataSource)initWithOptions:(unint64_t)a3
+- (SBHApplicationDataSource)initWithOptions:(unint64_t)options
 {
   v51.receiver = self;
   v51.super_class = SBHApplicationDataSource;
@@ -37,7 +37,7 @@
     v50[1] = 3221225472;
     v50[2] = __44__SBHApplicationDataSource_initWithOptions___block_invoke;
     v50[3] = &__block_descriptor_40_e28_B16__0__LSApplicationProxy_8l;
-    v50[4] = a3;
+    v50[4] = options;
     [v5 setInstalledApplicationFilter:v50];
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
     applications = v4->_applications;
@@ -347,8 +347,8 @@ void __44__SBHApplicationDataSource_initWithOptions___block_invoke_15(uint64_t a
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(FBSApplicationLibrary *)self->_appLibrary allInstalledApplications];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allInstalledApplications = [(FBSApplicationLibrary *)self->_appLibrary allInstalledApplications];
+  v5 = [allInstalledApplications countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -359,18 +359,18 @@ void __44__SBHApplicationDataSource_initWithOptions___block_invoke_15(uint64_t a
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allInstalledApplications);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
-        v10 = [(SBHApplicationDataSource *)self applicationWithBundleIdentifier:v9];
+        bundleIdentifier = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
+        v10 = [(SBHApplicationDataSource *)self applicationWithBundleIdentifier:bundleIdentifier];
         if (v10)
         {
           [v3 addObject:v10];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allInstalledApplications countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -379,18 +379,18 @@ void __44__SBHApplicationDataSource_initWithOptions___block_invoke_15(uint64_t a
   return v3;
 }
 
-- (id)applicationWithBundleIdentifier:(id)a3
+- (id)applicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_applications objectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_applications objectForKey:identifierCopy];
   if (!v5)
   {
-    v6 = [(FBSApplicationLibrary *)self->_appLibrary applicationInfoForBundleIdentifier:v4];
+    v6 = [(FBSApplicationLibrary *)self->_appLibrary applicationInfoForBundleIdentifier:identifierCopy];
     if (v6)
     {
       v5 = [[SBHSimpleApplication alloc] initWithApplicationInfo:v6];
       [(SBHSimpleApplication *)v5 setIconModelApplicationDataSource:self];
-      [(NSMutableDictionary *)self->_applications setObject:v5 forKey:v4];
+      [(NSMutableDictionary *)self->_applications setObject:v5 forKey:identifierCopy];
     }
 
     else
@@ -410,8 +410,8 @@ void __44__SBHApplicationDataSource_initWithOptions___block_invoke_15(uint64_t a
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(FBSApplicationLibrary *)self->_appLibrary allPlaceholders];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allPlaceholders = [(FBSApplicationLibrary *)self->_appLibrary allPlaceholders];
+  v5 = [allPlaceholders countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -422,18 +422,18 @@ void __44__SBHApplicationDataSource_initWithOptions___block_invoke_15(uint64_t a
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allPlaceholders);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
-        v10 = [(SBHApplicationDataSource *)self applicationPlaceholderWithBundleIdentifier:v9];
+        bundleIdentifier = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
+        v10 = [(SBHApplicationDataSource *)self applicationPlaceholderWithBundleIdentifier:bundleIdentifier];
         if (v10)
         {
           [v3 addObject:v10];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allPlaceholders countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -442,17 +442,17 @@ void __44__SBHApplicationDataSource_initWithOptions___block_invoke_15(uint64_t a
   return v3;
 }
 
-- (id)applicationPlaceholderWithBundleIdentifier:(id)a3
+- (id)applicationPlaceholderWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_applicationPlaceholders objectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_applicationPlaceholders objectForKey:identifierCopy];
   if (!v5)
   {
-    v6 = [(FBSApplicationLibrary *)self->_appLibrary placeholderWithBundleIdentifier:v4];
+    v6 = [(FBSApplicationLibrary *)self->_appLibrary placeholderWithBundleIdentifier:identifierCopy];
     if (v6)
     {
       v5 = [[SBHProxiedApplicationPlaceholder alloc] initWithPlaceholderProxy:v6];
-      [(NSMutableDictionary *)self->_applicationPlaceholders setObject:v5 forKey:v4];
+      [(NSMutableDictionary *)self->_applicationPlaceholders setObject:v5 forKey:identifierCopy];
     }
 
     else
@@ -464,11 +464,11 @@ void __44__SBHApplicationDataSource_initWithOptions___block_invoke_15(uint64_t a
   return v5;
 }
 
-- (void)uninstallApplicationWithBundleIdentifier:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)uninstallApplicationWithBundleIdentifier:(id)identifier options:(unint64_t)options completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v8 = MEMORY[0x1E699FA98];
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(v8);
   [v10 setUserInitiated:1];
   appLibrary = self->_appLibrary;
@@ -476,9 +476,9 @@ void __44__SBHApplicationDataSource_initWithOptions___block_invoke_15(uint64_t a
   v13[1] = 3221225472;
   v13[2] = __88__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier_options_completion___block_invoke;
   v13[3] = &unk_1E808E828;
-  v14 = v7;
-  v12 = v7;
-  [(FBSApplicationLibrary *)appLibrary uninstallApplication:v9 withOptions:v10 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [(FBSApplicationLibrary *)appLibrary uninstallApplication:identifierCopy withOptions:v10 completion:v13];
 }
 
 void __88__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier_options_completion___block_invoke(uint64_t a1, void *a2)
@@ -505,16 +505,16 @@ uint64_t __88__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier
   return result;
 }
 
-- (id)applicationsForApplicationsInfo:(id)a3
+- (id)applicationsForApplicationsInfo:(id)info
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  infoCopy = info;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(infoCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = infoCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -529,8 +529,8 @@ uint64_t __88__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
-        v12 = [(SBHApplicationDataSource *)self applicationWithBundleIdentifier:v11];
+        bundleIdentifier = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
+        v12 = [(SBHApplicationDataSource *)self applicationWithBundleIdentifier:bundleIdentifier];
         if (v12)
         {
           [v5 addObject:v12];
@@ -546,16 +546,16 @@ uint64_t __88__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier
   return v5;
 }
 
-- (id)applicationPlaceholdersForFrontBoardPlaceholders:(id)a3
+- (id)applicationPlaceholdersForFrontBoardPlaceholders:(id)placeholders
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  placeholdersCopy = placeholders;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(placeholdersCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = placeholdersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -570,8 +570,8 @@ uint64_t __88__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
-        v12 = [(SBHApplicationDataSource *)self applicationPlaceholderWithBundleIdentifier:v11];
+        bundleIdentifier = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
+        v12 = [(SBHApplicationDataSource *)self applicationPlaceholderWithBundleIdentifier:bundleIdentifier];
         if (v12)
         {
           [v5 addObject:v12];
@@ -587,10 +587,10 @@ uint64_t __88__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier
   return v5;
 }
 
-- (void)_didAddApplicationsInfo:(id)a3
+- (void)_didAddApplicationsInfo:(id)info
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = [(SBHApplicationDataSource *)self applicationsForApplicationsInfo:a3];
+  v4 = [(SBHApplicationDataSource *)self applicationsForApplicationsInfo:info];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -664,16 +664,16 @@ uint64_t __88__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier
   }
 }
 
-- (void)_didReplaceApplicationsInfo:(id)a3
+- (void)_didReplaceApplicationsInfo:(id)info
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  infoCopy = info;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(infoCopy, "count")}];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = v4;
+  v6 = infoCopy;
   v7 = [v6 countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v7)
   {
@@ -689,8 +689,8 @@ uint64_t __88__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier
         }
 
         v11 = *(*(&v35 + 1) + 8 * i);
-        v12 = [v11 bundleIdentifier];
-        [(NSMutableDictionary *)self->_applications removeObjectForKey:v12];
+        bundleIdentifier = [v11 bundleIdentifier];
+        [(NSMutableDictionary *)self->_applications removeObjectForKey:bundleIdentifier];
         v13 = [v6 objectForKey:v11];
         if (v13)
         {
@@ -770,16 +770,16 @@ uint64_t __88__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier
   }
 }
 
-- (void)_didRemoveApplicationsInfo:(id)a3
+- (void)_didRemoveApplicationsInfo:(id)info
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHApplicationDataSource *)self applicationsForApplicationsInfo:v4];
+  infoCopy = info;
+  v5 = [(SBHApplicationDataSource *)self applicationsForApplicationsInfo:infoCopy];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v6 = v4;
+  v6 = infoCopy;
   v7 = [v6 countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v7)
   {
@@ -795,8 +795,8 @@ uint64_t __88__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v32 + 1) + 8 * v10) bundleIdentifier];
-        [(NSMutableDictionary *)self->_applications removeObjectForKey:v11];
+        bundleIdentifier = [*(*(&v32 + 1) + 8 * v10) bundleIdentifier];
+        [(NSMutableDictionary *)self->_applications removeObjectForKey:bundleIdentifier];
 
         ++v10;
       }
@@ -884,10 +884,10 @@ uint64_t __88__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier
   }
 }
 
-- (void)_didAddPlaceholders:(id)a3
+- (void)_didAddPlaceholders:(id)placeholders
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = [(SBHApplicationDataSource *)self applicationPlaceholdersForFrontBoardPlaceholders:a3];
+  v4 = [(SBHApplicationDataSource *)self applicationPlaceholdersForFrontBoardPlaceholders:placeholders];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -961,16 +961,16 @@ uint64_t __88__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier
   }
 }
 
-- (void)_didRemovePlaceholders:(id)a3
+- (void)_didRemovePlaceholders:(id)placeholders
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHApplicationDataSource *)self applicationPlaceholdersForFrontBoardPlaceholders:v4];
+  placeholdersCopy = placeholders;
+  v5 = [(SBHApplicationDataSource *)self applicationPlaceholdersForFrontBoardPlaceholders:placeholdersCopy];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v6 = v4;
+  v6 = placeholdersCopy;
   v7 = [v6 countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v7)
   {
@@ -986,8 +986,8 @@ uint64_t __88__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v32 + 1) + 8 * v10) bundleIdentifier];
-        [(NSMutableDictionary *)self->_applicationPlaceholders removeObjectForKey:v11];
+        bundleIdentifier = [*(*(&v32 + 1) + 8 * v10) bundleIdentifier];
+        [(NSMutableDictionary *)self->_applicationPlaceholders removeObjectForKey:bundleIdentifier];
 
         ++v10;
       }
@@ -1075,25 +1075,25 @@ uint64_t __88__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier
   }
 }
 
-- (void)addApplicationInfoProviderObserver:(id)a3
+- (void)addApplicationInfoProviderObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (id)allApplicationPlaceholdersForIconModel:(id)a3
+- (id)allApplicationPlaceholdersForIconModel:(id)model
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1101,8 +1101,8 @@ uint64_t __88__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(FBSApplicationLibrary *)self->_appLibrary allPlaceholders];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allPlaceholders = [(FBSApplicationLibrary *)self->_appLibrary allPlaceholders];
+  v6 = [allPlaceholders countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1113,18 +1113,18 @@ uint64_t __88__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allPlaceholders);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
-        v11 = [(SBHApplicationDataSource *)self applicationPlaceholderWithBundleIdentifier:v10];
+        bundleIdentifier = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
+        v11 = [(SBHApplicationDataSource *)self applicationPlaceholderWithBundleIdentifier:bundleIdentifier];
         if (v11)
         {
           [v4 addObject:v11];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allPlaceholders countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -1133,34 +1133,34 @@ uint64_t __88__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier
   return v4;
 }
 
-- (void)addIconModelApplicationDataSourceObserver:(id)a3
+- (void)addIconModelApplicationDataSourceObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   oldObservers = self->_oldObservers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!oldObservers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_oldObservers;
-    self->_oldObservers = v6;
+    self->_oldObservers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     oldObservers = self->_oldObservers;
   }
 
-  [(NSHashTable *)oldObservers addObject:v4];
+  [(NSHashTable *)oldObservers addObject:observerCopy];
 }
 
-- (void)uninstallApplicationWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)uninstallApplicationWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __80__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier_completion___block_invoke;
   v8[3] = &unk_1E8088EF0;
-  v9 = v6;
-  v7 = v6;
-  [(SBHApplicationDataSource *)self uninstallApplicationWithBundleIdentifier:a3 options:0 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(SBHApplicationDataSource *)self uninstallApplicationWithBundleIdentifier:identifier options:0 completion:v8];
 }
 
 uint64_t __80__SBHApplicationDataSource_uninstallApplicationWithBundleIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)

@@ -1,14 +1,14 @@
 @interface DBNetworkPathMonitor
 - (DBNetworkPathMonitor)init;
 - (id)description;
-- (void)_networkPathUpdated:(id)a3;
+- (void)_networkPathUpdated:(id)updated;
 - (void)_startNetworkPathMonitorNow;
 - (void)_stopNetworkPathMonitorNow;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
-- (void)startNetworkPathMonitorWithIdentifier:(id)a3;
-- (void)stopNetworkPathMonitorWithIdentifier:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)startNetworkPathMonitorWithIdentifier:(id)identifier;
+- (void)stopNetworkPathMonitorWithIdentifier:(id)identifier;
 @end
 
 @implementation DBNetworkPathMonitor
@@ -28,8 +28,8 @@ void __51__DBNetworkPathMonitor__startNetworkPathMonitorNow__block_invoke_76(uin
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(DBNetworkPathMonitor *)self activeAssertions];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  activeAssertions = [(DBNetworkPathMonitor *)self activeAssertions];
+  v5 = [activeAssertions countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -40,28 +40,28 @@ void __51__DBNetworkPathMonitor__startNetworkPathMonitorNow__block_invoke_76(uin
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activeAssertions);
         }
 
         v9 = [*(*(&v20 + 1) + 8 * i) description];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v6 = [activeAssertions countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v6);
   }
 
-  v10 = [(DBNetworkPathMonitor *)self networkPath];
-  if (v10 > 5)
+  networkPath = [(DBNetworkPathMonitor *)self networkPath];
+  if (networkPath > 5)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = off_278F039C0[v10];
+    v11 = off_278F039C0[networkPath];
   }
 
   v12 = MEMORY[0x277CCACA8];
@@ -135,11 +135,11 @@ void __51__DBNetworkPathMonitor__startNetworkPathMonitorNow__block_invoke_76(uin
   [(DBNetworkPathMonitor *)&v4 dealloc];
 }
 
-- (void)startNetworkPathMonitorWithIdentifier:(id)a3
+- (void)startNetworkPathMonitorWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DBNetworkPathMonitor *)self activeAssertions];
-  v6 = [v5 containsObject:v4];
+  identifierCopy = identifier;
+  activeAssertions = [(DBNetworkPathMonitor *)self activeAssertions];
+  v6 = [activeAssertions containsObject:identifierCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -149,8 +149,8 @@ void __51__DBNetworkPathMonitor__startNetworkPathMonitorNow__block_invoke_76(uin
       [DBNetworkPathMonitor startNetworkPathMonitorWithIdentifier:];
     }
 
-    v8 = [(DBNetworkPathMonitor *)self activeAssertions];
-    [v8 addObject:v4];
+    activeAssertions2 = [(DBNetworkPathMonitor *)self activeAssertions];
+    [activeAssertions2 addObject:identifierCopy];
 
     if (![(DBNetworkPathMonitor *)self networkPathMonitorActive])
     {
@@ -165,11 +165,11 @@ void __51__DBNetworkPathMonitor__startNetworkPathMonitorNow__block_invoke_76(uin
   }
 }
 
-- (void)stopNetworkPathMonitorWithIdentifier:(id)a3
+- (void)stopNetworkPathMonitorWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DBNetworkPathMonitor *)self activeAssertions];
-  v6 = [v5 containsObject:v4];
+  identifierCopy = identifier;
+  activeAssertions = [(DBNetworkPathMonitor *)self activeAssertions];
+  v6 = [activeAssertions containsObject:identifierCopy];
 
   if (v6)
   {
@@ -179,13 +179,13 @@ void __51__DBNetworkPathMonitor__startNetworkPathMonitorNow__block_invoke_76(uin
       [DBNetworkPathMonitor stopNetworkPathMonitorWithIdentifier:];
     }
 
-    v8 = [(DBNetworkPathMonitor *)self activeAssertions];
-    [v8 removeObject:v4];
+    activeAssertions2 = [(DBNetworkPathMonitor *)self activeAssertions];
+    [activeAssertions2 removeObject:identifierCopy];
 
     if ([(DBNetworkPathMonitor *)self networkPathMonitorActive])
     {
-      v9 = [(DBNetworkPathMonitor *)self activeAssertions];
-      v10 = [v9 count];
+      activeAssertions3 = [(DBNetworkPathMonitor *)self activeAssertions];
+      v10 = [activeAssertions3 count];
 
       if (!v10)
       {
@@ -201,29 +201,29 @@ void __51__DBNetworkPathMonitor__startNetworkPathMonitorNow__block_invoke_76(uin
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBNetworkPathMonitor *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(DBNetworkPathMonitor *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBNetworkPathMonitor *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(DBNetworkPathMonitor *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
 - (void)_startNetworkPathMonitorNow
 {
-  v3 = [(DBNetworkPathMonitor *)self workQueue];
+  workQueue = [(DBNetworkPathMonitor *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__DBNetworkPathMonitor__startNetworkPathMonitorNow__block_invoke;
   block[3] = &unk_278F01580;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __51__DBNetworkPathMonitor__startNetworkPathMonitorNow__block_invoke(uint64_t a1)
@@ -278,12 +278,12 @@ void __51__DBNetworkPathMonitor__startNetworkPathMonitorNow__block_invoke(uint64
 
 - (void)_stopNetworkPathMonitorNow
 {
-  v3 = [(DBNetworkPathMonitor *)self pathMonitor];
+  pathMonitor = [(DBNetworkPathMonitor *)self pathMonitor];
 
-  if (v3)
+  if (pathMonitor)
   {
-    v4 = [(DBNetworkPathMonitor *)self pathMonitor];
-    nw_path_monitor_cancel(v4);
+    pathMonitor2 = [(DBNetworkPathMonitor *)self pathMonitor];
+    nw_path_monitor_cancel(pathMonitor2);
 
     [(DBNetworkPathMonitor *)self setPathMonitor:0];
   }
@@ -291,35 +291,35 @@ void __51__DBNetworkPathMonitor__startNetworkPathMonitorNow__block_invoke(uint64
   [(DBNetworkPathMonitor *)self setNetworkPath:0];
 }
 
-- (void)_networkPathUpdated:(id)a3
+- (void)_networkPathUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v5 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [DBNetworkPathMonitor _networkPathUpdated:];
   }
 
-  v6 = [(DBNetworkPathMonitor *)self currentPath];
-  is_equal = nw_path_is_equal(v6, v4);
+  currentPath = [(DBNetworkPathMonitor *)self currentPath];
+  is_equal = nw_path_is_equal(currentPath, updatedCopy);
 
-  v8 = [(DBNetworkPathMonitor *)self isNetworkReachable];
-  [(DBNetworkPathMonitor *)self setNetworkReachable:(nw_path_get_status(v4) & 0xFFFFFFFD) == 1];
+  isNetworkReachable = [(DBNetworkPathMonitor *)self isNetworkReachable];
+  [(DBNetworkPathMonitor *)self setNetworkReachable:(nw_path_get_status(updatedCopy) & 0xFFFFFFFD) == 1];
   if (is_equal)
   {
-    if (v8 == [(DBNetworkPathMonitor *)self isNetworkReachable])
+    if (isNetworkReachable == [(DBNetworkPathMonitor *)self isNetworkReachable])
     {
       goto LABEL_14;
     }
 
-    v9 = [(DBNetworkPathMonitor *)self observers];
-    [v9 networkPathMonitor:self didChangeNetworkReachable:{-[DBNetworkPathMonitor isNetworkReachable](self, "isNetworkReachable")}];
+    observers = [(DBNetworkPathMonitor *)self observers];
+    [observers networkPathMonitor:self didChangeNetworkReachable:{-[DBNetworkPathMonitor isNetworkReachable](self, "isNetworkReachable")}];
   }
 
   else
   {
     v10 = 1;
-    while ((MEMORY[0x24C1CCCF0](v4, (v10 - 1)) & 1) == 0)
+    while ((MEMORY[0x24C1CCCF0](updatedCopy, (v10 - 1)) & 1) == 0)
     {
       if (++v10 == 6)
       {
@@ -329,15 +329,15 @@ void __51__DBNetworkPathMonitor__startNetworkPathMonitorNow__block_invoke(uint64
     }
 
     [(DBNetworkPathMonitor *)self setNetworkPath:v10];
-    [(DBNetworkPathMonitor *)self setCurrentPath:v4];
-    if (v8 != [(DBNetworkPathMonitor *)self isNetworkReachable])
+    [(DBNetworkPathMonitor *)self setCurrentPath:updatedCopy];
+    if (isNetworkReachable != [(DBNetworkPathMonitor *)self isNetworkReachable])
     {
-      v11 = [(DBNetworkPathMonitor *)self observers];
-      [v11 networkPathMonitor:self didChangeNetworkReachable:{-[DBNetworkPathMonitor isNetworkReachable](self, "isNetworkReachable")}];
+      observers2 = [(DBNetworkPathMonitor *)self observers];
+      [observers2 networkPathMonitor:self didChangeNetworkReachable:{-[DBNetworkPathMonitor isNetworkReachable](self, "isNetworkReachable")}];
     }
 
-    v9 = [(DBNetworkPathMonitor *)self observers];
-    [v9 networkPathMonitorDidChangeNetworkPath:self];
+    observers = [(DBNetworkPathMonitor *)self observers];
+    [observers networkPathMonitorDidChangeNetworkPath:self];
   }
 
 LABEL_14:

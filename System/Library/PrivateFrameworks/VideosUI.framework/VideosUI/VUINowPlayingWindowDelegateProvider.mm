@@ -27,19 +27,19 @@ void __53__VUINowPlayingWindowDelegateProvider_sharedInstance__block_invoke()
 
 - (BOOL)shouldNowPlayingWindowDismiss
 {
-  v2 = [(VUINowPlayingWindowDelegateProvider *)self delegate];
-  v3 = v2;
-  if (v2)
+  delegate = [(VUINowPlayingWindowDelegateProvider *)self delegate];
+  v3 = delegate;
+  if (delegate)
   {
-    v4 = [v2 shouldNowPlayingWindowDismiss];
+    shouldNowPlayingWindowDismiss = [delegate shouldNowPlayingWindowDismiss];
   }
 
   else
   {
-    v4 = 1;
+    shouldNowPlayingWindowDismiss = 1;
   }
 
-  return v4;
+  return shouldNowPlayingWindowDismiss;
 }
 
 - (VUINowPlayingWindowDelegate)delegate

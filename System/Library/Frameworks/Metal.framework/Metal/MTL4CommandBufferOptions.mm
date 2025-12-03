@@ -1,6 +1,6 @@
 @interface MTL4CommandBufferOptions
 - (MTL4CommandBufferOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -21,7 +21,7 @@
   [(MTL4CommandBufferOptions *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTL4CommandBufferOptions);
   v4->_logState = self->_logState;

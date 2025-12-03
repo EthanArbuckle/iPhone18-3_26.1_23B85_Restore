@@ -18,8 +18,8 @@
     return 0;
   }
 
-  v3 = [(ICAttachmentModel *)self attachment];
-  [v3 sizeWidth];
+  attachment = [(ICAttachmentModel *)self attachment];
+  [attachment sizeWidth];
   if (v4 <= 0.0)
   {
     v7 = 0;
@@ -27,8 +27,8 @@
 
   else
   {
-    v5 = [(ICAttachmentModel *)self attachment];
-    [v5 sizeHeight];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    [attachment2 sizeHeight];
     v7 = v6 > 0.0;
   }
 
@@ -42,15 +42,15 @@
   v12 = 0x3010000000;
   v13 = "";
   v14 = *MEMORY[0x277CBF3A8];
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 managedObjectContext];
+  attachment = [(ICAttachmentModel *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__ICAttachmentMovieModel_intrinsicContentSize__block_invoke;
   v9[3] = &unk_278194DE8;
   v9[4] = self;
   v9[5] = &v10;
-  [v4 performBlockAndWait:v9];
+  [managedObjectContext performBlockAndWait:v9];
 
   v5 = v11[4];
   v6 = v11[5];
@@ -76,17 +76,17 @@ void __46__ICAttachmentMovieModel_intrinsicContentSize__block_invoke(uint64_t a1
 
 - (void)updateAttachmentSize
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 media];
-  v5 = [v4 isValid];
+  attachment = [(ICAttachmentModel *)self attachment];
+  media = [attachment media];
+  isValid = [media isValid];
 
-  if (v5)
+  if (isValid)
   {
     v6 = MEMORY[0x277CE6650];
-    v7 = [(ICAttachmentModel *)self attachment];
-    v8 = [v7 media];
-    v9 = [v8 mediaURL];
-    v10 = [v6 ic_safeURLAssetWithURL:v9];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    media2 = [attachment2 media];
+    mediaURL = [media2 mediaURL];
+    v10 = [v6 ic_safeURLAssetWithURL:mediaURL];
 
     v11 = *MEMORY[0x277CE5EA8];
     v14[0] = MEMORY[0x277D85DD0];
@@ -220,17 +220,17 @@ void __46__ICAttachmentMovieModel_updateAttachmentSize__block_invoke_2(uint64_t 
 
 - (id)asset
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 media];
-  v5 = [v4 isValid];
+  attachment = [(ICAttachmentModel *)self attachment];
+  media = [attachment media];
+  isValid = [media isValid];
 
-  if (v5 && (-[ICAttachmentModel attachment](self, "attachment"), v6 = objc_claimAutoreleasedReturnValue(), [v6 typeUTI], v7 = objc_claimAutoreleasedReturnValue(), v8 = +[ICAttachment typeUTIIsPlayableMovie:](ICAttachment, "typeUTIIsPlayableMovie:", v7), v7, v6, v8))
+  if (isValid && (-[ICAttachmentModel attachment](self, "attachment"), v6 = objc_claimAutoreleasedReturnValue(), [v6 typeUTI], v7 = objc_claimAutoreleasedReturnValue(), v8 = +[ICAttachment typeUTIIsPlayableMovie:](ICAttachment, "typeUTIIsPlayableMovie:", v7), v7, v6, v8))
   {
     v9 = MEMORY[0x277CE6650];
-    v10 = [(ICAttachmentModel *)self attachment];
-    v11 = [v10 media];
-    v12 = [v11 mediaURL];
-    v13 = [v9 ic_safeURLAssetWithURL:v12];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    media2 = [attachment2 media];
+    mediaURL = [media2 mediaURL];
+    v13 = [v9 ic_safeURLAssetWithURL:mediaURL];
   }
 
   else
@@ -251,35 +251,35 @@ void __46__ICAttachmentMovieModel_updateAttachmentSize__block_invoke_2(uint64_t 
 
 - (void)addLocation
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 media];
-  v5 = [v4 isValid];
+  attachment = [(ICAttachmentModel *)self attachment];
+  media = [attachment media];
+  isValid = [media isValid];
 
-  if (v5)
+  if (isValid)
   {
     v6 = MEMORY[0x277CE6650];
-    v7 = [(ICAttachmentModel *)self attachment];
-    v8 = [v7 media];
-    v9 = [v8 mediaURL];
-    v10 = [v6 ic_safeURLAssetWithURL:v9];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    media2 = [attachment2 media];
+    mediaURL = [media2 mediaURL];
+    v10 = [v6 ic_safeURLAssetWithURL:mediaURL];
 
     v11 = MEMORY[0x277CE6520];
-    v12 = [v10 commonMetadata];
-    v13 = [v11 metadataItemsFromArray:v12 withKey:*MEMORY[0x277CE5FE8] keySpace:*MEMORY[0x277CE5FA8]];
-    v14 = [v13 firstObject];
+    commonMetadata = [v10 commonMetadata];
+    v13 = [v11 metadataItemsFromArray:commonMetadata withKey:*MEMORY[0x277CE5FE8] keySpace:*MEMORY[0x277CE5FA8]];
+    firstObject = [v13 firstObject];
 
-    if (v14)
+    if (firstObject)
     {
-      v15 = [v14 stringValue];
-      v16 = [MEMORY[0x277CCAC80] scannerWithString:v15];
+      stringValue = [firstObject stringValue];
+      v16 = [MEMORY[0x277CCAC80] scannerWithString:stringValue];
       v19 = 0.0;
       v20 = 0.0;
       if ([v16 scanDouble:&v20])
       {
         if ([v16 scanDouble:&v19])
         {
-          v17 = [(ICAttachmentModel *)self attachment];
-          v18 = [v17 addLocationWithLatitude:v20 longitude:v19];
+          attachment3 = [(ICAttachmentModel *)self attachment];
+          v18 = [attachment3 addLocationWithLatitude:v20 longitude:v19];
         }
       }
     }

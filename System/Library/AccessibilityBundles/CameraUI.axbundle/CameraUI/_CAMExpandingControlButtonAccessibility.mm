@@ -1,5 +1,5 @@
 @interface _CAMExpandingControlButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -7,16 +7,16 @@
 
 @implementation _CAMExpandingControlButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_CAMExpandingControlButton" hasInstanceMethod:@"titleText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_CAMExpandingControlButton" hasInstanceMethod:@"isSlashed" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CAMExpandingControl"];
-  [v3 validateClass:@"CAMExpandingControl" hasInstanceMethod:@"_titleView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMExpandingControl" hasInstanceMethod:@"_menuButtons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMExpandingControl" hasInstanceMethod:@"menu" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMExpandingControl" hasInstanceMethod:@"_selectedMenuItem" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_CAMExpandingControlButton" hasInstanceMethod:@"titleText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_CAMExpandingControlButton" hasInstanceMethod:@"isSlashed" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CAMExpandingControl"];
+  [validationsCopy validateClass:@"CAMExpandingControl" hasInstanceMethod:@"_titleView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMExpandingControl" hasInstanceMethod:@"_menuButtons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMExpandingControl" hasInstanceMethod:@"menu" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMExpandingControl" hasInstanceMethod:@"_selectedMenuItem" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -25,28 +25,28 @@
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    accessibilityLabel = v3;
   }
 
   else
   {
-    v6 = [(_CAMExpandingControlButtonAccessibility *)self _axCameraExpandingControl];
-    v5 = [v6 accessibilityLabel];
+    _axCameraExpandingControl = [(_CAMExpandingControlButtonAccessibility *)self _axCameraExpandingControl];
+    accessibilityLabel = [_axCameraExpandingControl accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(_CAMExpandingControlButtonAccessibility *)self _axCameraExpandingControl];
-  v4 = v3;
-  if (!v3)
+  _axCameraExpandingControl = [(_CAMExpandingControlButtonAccessibility *)self _axCameraExpandingControl];
+  v4 = _axCameraExpandingControl;
+  if (!_axCameraExpandingControl)
   {
     goto LABEL_4;
   }
 
-  v5 = [v3 safeValueForKey:@"_titleView"];
+  v5 = [_axCameraExpandingControl safeValueForKey:@"_titleView"];
   v6 = [(_CAMExpandingControlButtonAccessibility *)self safeStringForKey:@"titleText"];
   v7 = v6;
   if (v5 != self)
@@ -55,7 +55,7 @@
 LABEL_4:
     v12.receiver = self;
     v12.super_class = _CAMExpandingControlButtonAccessibility;
-    v8 = [(_CAMExpandingControlButtonAccessibility *)&v12 accessibilityValue];
+    accessibilityValue = [(_CAMExpandingControlButtonAccessibility *)&v12 accessibilityValue];
     goto LABEL_12;
   }
 
@@ -71,19 +71,19 @@ LABEL_4:
       v9 = @"EXPANDING_CONTROL_ON";
     }
 
-    v10 = accessibilityCameraUILocalizedString(v9);
+    accessibilityValue2 = accessibilityCameraUILocalizedString(v9);
   }
 
   else
   {
-    v10 = [v4 accessibilityValue];
+    accessibilityValue2 = [v4 accessibilityValue];
   }
 
-  v8 = v10;
+  accessibilityValue = accessibilityValue2;
 
 LABEL_12:
 
-  return v8;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
@@ -91,11 +91,11 @@ LABEL_12:
   v13.receiver = self;
   v13.super_class = _CAMExpandingControlButtonAccessibility;
   v3 = *MEMORY[0x29EDC7F70] | [(_CAMExpandingControlButtonAccessibility *)&v13 accessibilityTraits];
-  v4 = [(_CAMExpandingControlButtonAccessibility *)self _axCameraExpandingControl];
-  v5 = v4;
-  if (v4)
+  _axCameraExpandingControl = [(_CAMExpandingControlButtonAccessibility *)self _axCameraExpandingControl];
+  v5 = _axCameraExpandingControl;
+  if (_axCameraExpandingControl)
   {
-    v6 = [v4 safeArrayForKey:@"_menuButtons"];
+    v6 = [_axCameraExpandingControl safeArrayForKey:@"_menuButtons"];
     v7 = [v6 indexOfObject:self];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {

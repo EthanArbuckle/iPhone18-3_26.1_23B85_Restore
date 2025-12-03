@@ -1,10 +1,10 @@
 @interface ATXAppSessionModeLoggingPipeline
 - (ATXAppSessionModeLoggingPipeline)init;
-- (ATXAppSessionModeLoggingPipeline)initWithModeTransitionPublisher:(id)a3 appLaunchPublisher:(id)a4 notificationEventPublisher:(id)a5 lastEventTimestamp:(double)a6 lastActivityType:(unint64_t)a7;
+- (ATXAppSessionModeLoggingPipeline)initWithModeTransitionPublisher:(id)publisher appLaunchPublisher:(id)launchPublisher notificationEventPublisher:(id)eventPublisher lastEventTimestamp:(double)timestamp lastActivityType:(unint64_t)type;
 - (double)lastPipelineRunTimestampFromStore;
 - (unint64_t)lastKnownActivityFromStore;
 - (void)lastKnownActivityFromStore;
-- (void)logAppSessionMetricsWithXPCActivity:(id)a3;
+- (void)logAppSessionMetricsWithXPCActivity:(id)activity;
 - (void)persistState;
 @end
 
@@ -14,7 +14,7 @@
 {
   [(ATXAppSessionModeLoggingPipeline *)self lastPipelineRunTimestampFromStore];
   v4 = v3;
-  v5 = [(ATXAppSessionModeLoggingPipeline *)self lastKnownActivityFromStore];
+  lastKnownActivityFromStore = [(ATXAppSessionModeLoggingPipeline *)self lastKnownActivityFromStore];
   v6 = objc_opt_new();
   v7 = [v6 transitionPublisherFromStartTime:v4];
 
@@ -27,26 +27,26 @@
   v13 = [v12 publisherFromStartTime:v4];
   v14 = [v11 stripStoreEvent:v13];
 
-  v15 = [(ATXAppSessionModeLoggingPipeline *)self initWithModeTransitionPublisher:v7 appLaunchPublisher:v10 notificationEventPublisher:v14 lastEventTimestamp:v5 lastActivityType:v4];
+  v15 = [(ATXAppSessionModeLoggingPipeline *)self initWithModeTransitionPublisher:v7 appLaunchPublisher:v10 notificationEventPublisher:v14 lastEventTimestamp:lastKnownActivityFromStore lastActivityType:v4];
   return v15;
 }
 
-- (ATXAppSessionModeLoggingPipeline)initWithModeTransitionPublisher:(id)a3 appLaunchPublisher:(id)a4 notificationEventPublisher:(id)a5 lastEventTimestamp:(double)a6 lastActivityType:(unint64_t)a7
+- (ATXAppSessionModeLoggingPipeline)initWithModeTransitionPublisher:(id)publisher appLaunchPublisher:(id)launchPublisher notificationEventPublisher:(id)eventPublisher lastEventTimestamp:(double)timestamp lastActivityType:(unint64_t)type
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  publisherCopy = publisher;
+  launchPublisherCopy = launchPublisher;
+  eventPublisherCopy = eventPublisher;
   v19.receiver = self;
   v19.super_class = ATXAppSessionModeLoggingPipeline;
   v16 = [(ATXAppSessionModeLoggingPipeline *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_modeTransitionPublisher, a3);
-    objc_storeStrong(&v17->_appLaunchPublisher, a4);
-    objc_storeStrong(&v17->_notificationEventPublisher, a5);
-    v17->_lastEventTimestamp = a6;
-    v17->_lastActivityType = a7;
+    objc_storeStrong(&v16->_modeTransitionPublisher, publisher);
+    objc_storeStrong(&v17->_appLaunchPublisher, launchPublisher);
+    objc_storeStrong(&v17->_notificationEventPublisher, eventPublisher);
+    v17->_lastEventTimestamp = timestamp;
+    v17->_lastActivityType = type;
   }
 
   return v17;
@@ -70,7 +70,7 @@
   if (!v4)
   {
 LABEL_7:
-    v5 = 14;
+    unsignedIntegerValue = 14;
     goto LABEL_8;
   }
 
@@ -86,16 +86,16 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 LABEL_8:
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
-- (void)logAppSessionMetricsWithXPCActivity:(id)a3
+- (void)logAppSessionMetricsWithXPCActivity:(id)activity
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activityCopy = activity;
   notificationEventPublisher = self->_notificationEventPublisher;
   v30[0] = self->_appLaunchPublisher;
   v30[1] = notificationEventPublisher;
@@ -134,7 +134,7 @@ LABEL_8:
   v19 = v26;
   v11 = v22;
   v16 = v11;
-  v12 = v4;
+  v12 = activityCopy;
   v17 = v12;
   v20 = v28;
   v13 = [v10 sinkWithCompletion:v21 shouldContinue:v15];

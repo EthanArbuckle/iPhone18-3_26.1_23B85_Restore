@@ -1,15 +1,15 @@
 @interface ICDeviceListRequest
-+ (id)combineICloudDevices:(id)a3 withCloudKitDevices:(id)a4;
-+ (id)setOfDeviceNamesFromDevices:(id)a3;
++ (id)combineICloudDevices:(id)devices withCloudKitDevices:(id)kitDevices;
++ (id)setOfDeviceNamesFromDevices:(id)devices;
 - (BOOL)anyDeviceNeedsUpgrade;
 - (BOOL)anyDeviceNotUpgradable;
 - (BOOL)anyOSXDeviceNotUpgraded;
-- (BOOL)waitForFetchWithTimeout:(double)a3;
+- (BOOL)waitForFetchWithTimeout:(double)timeout;
 - (ICDeviceListRequest)init;
-- (ICDeviceListRequest)initWithAccount:(id)a3;
-- (void)fetchCloudKitDevicesWithCompletionBlock:(id)a3;
-- (void)fetchICloudDevicesWithCompletionBlock:(id)a3;
-- (void)fetchWithCompletionBlock:(id)a3;
+- (ICDeviceListRequest)initWithAccount:(id)account;
+- (void)fetchCloudKitDevicesWithCompletionBlock:(id)block;
+- (void)fetchICloudDevicesWithCompletionBlock:(id)block;
+- (void)fetchWithCompletionBlock:(id)block;
 @end
 
 @implementation ICDeviceListRequest
@@ -21,16 +21,16 @@
   return 0;
 }
 
-- (ICDeviceListRequest)initWithAccount:(id)a3
+- (ICDeviceListRequest)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v11.receiver = self;
   v11.super_class = ICDeviceListRequest;
   v6 = [(ICDeviceListRequest *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
     v8 = dispatch_semaphore_create(0);
     workSemaphore = v7->_workSemaphore;
     v7->_workSemaphore = v8;
@@ -41,24 +41,24 @@
 
 - (BOOL)anyDeviceNeedsUpgrade
 {
-  v2 = [(ICDeviceListRequest *)self devices];
-  v3 = [v2 ic_containsObjectPassingTest:&__block_literal_global_13];
+  devices = [(ICDeviceListRequest *)self devices];
+  v3 = [devices ic_containsObjectPassingTest:&__block_literal_global_13];
 
   return v3;
 }
 
 - (BOOL)anyDeviceNotUpgradable
 {
-  v2 = [(ICDeviceListRequest *)self devices];
-  v3 = [v2 ic_containsObjectPassingTest:&__block_literal_global_33];
+  devices = [(ICDeviceListRequest *)self devices];
+  v3 = [devices ic_containsObjectPassingTest:&__block_literal_global_33];
 
   return v3;
 }
 
 - (BOOL)anyOSXDeviceNotUpgraded
 {
-  v2 = [(ICDeviceListRequest *)self devices];
-  v3 = [v2 ic_containsObjectPassingTest:&__block_literal_global_35];
+  devices = [(ICDeviceListRequest *)self devices];
+  v3 = [devices ic_containsObjectPassingTest:&__block_literal_global_35];
 
   return v3;
 }
@@ -79,32 +79,32 @@ uint64_t __46__ICDeviceListRequest_anyOSXDeviceNotUpgraded__block_invoke(uint64_
   return v3;
 }
 
-- (BOOL)waitForFetchWithTimeout:(double)a3
+- (BOOL)waitForFetchWithTimeout:(double)timeout
 {
-  v4 = self;
-  v5 = [(ICDeviceListRequest *)self workSemaphore];
-  v6 = dispatch_time(0, (a3 * 1000000000.0));
-  dispatch_semaphore_wait(v5, v6);
+  selfCopy = self;
+  workSemaphore = [(ICDeviceListRequest *)self workSemaphore];
+  v6 = dispatch_time(0, (timeout * 1000000000.0));
+  dispatch_semaphore_wait(workSemaphore, v6);
 
-  v7 = [(ICDeviceListRequest *)v4 devices];
-  LOBYTE(v4) = v7 != 0;
+  devices = [(ICDeviceListRequest *)selfCopy devices];
+  LOBYTE(selfCopy) = devices != 0;
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)fetchCloudKitDevicesWithCompletionBlock:(id)a3
+- (void)fetchCloudKitDevicesWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc(MEMORY[0x277CEC778]);
-  v6 = [(ICDeviceListRequest *)self account];
-  v7 = [v5 initWithAccount:v6];
+  account = [(ICDeviceListRequest *)self account];
+  v7 = [v5 initWithAccount:account];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__ICDeviceListRequest_fetchCloudKitDevicesWithCompletionBlock___block_invoke;
   v9[3] = &unk_278195E38;
-  v10 = v4;
-  v8 = v4;
+  v10 = blockCopy;
+  v8 = blockCopy;
   [v7 performRequestWithHandler:v9];
 }
 
@@ -134,19 +134,19 @@ void __63__ICDeviceListRequest_fetchCloudKitDevicesWithCompletionBlock___block_i
   }
 }
 
-- (void)fetchICloudDevicesWithCompletionBlock:(id)a3
+- (void)fetchICloudDevicesWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 name];
+  blockCopy = block;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  name = [currentDevice name];
   v7 = MEMORY[0x277CCACA8];
-  v8 = [v5 systemName];
-  v9 = [v5 systemVersion];
-  v10 = [v7 stringWithFormat:@"%@%@", v8, v9];;
+  systemName = [currentDevice systemName];
+  systemVersion = [currentDevice systemVersion];
+  v10 = [v7 stringWithFormat:@"%@%@", systemName, systemVersion];;
 
   v11 = objc_alloc(MEMORY[0x277CEC7C8]);
-  v12 = [(ICDeviceListRequest *)self account];
-  v13 = [v11 initWithAccount:v12];
+  account = [(ICDeviceListRequest *)self account];
+  v13 = [v11 initWithAccount:account];
 
   objc_initWeak(&location, self);
   v17[0] = MEMORY[0x277D85DD0];
@@ -154,11 +154,11 @@ void __63__ICDeviceListRequest_fetchCloudKitDevicesWithCompletionBlock___block_i
   v17[2] = __61__ICDeviceListRequest_fetchICloudDevicesWithCompletionBlock___block_invoke;
   v17[3] = &unk_278195E60;
   objc_copyWeak(&v21, &location);
-  v14 = v6;
+  v14 = name;
   v18 = v14;
   v15 = v10;
   v19 = v15;
-  v16 = v4;
+  v16 = blockCopy;
   v20 = v16;
   [v13 performRequestWithHandler:v17];
 
@@ -263,9 +263,9 @@ LABEL_16:
   }
 }
 
-- (void)fetchWithCompletionBlock:(id)a3
+- (void)fetchWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = MEMORY[0x277D85DD0];
@@ -274,8 +274,8 @@ LABEL_16:
   v7[3] = &unk_278195F78;
   v7[4] = self;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(v5, v7);
 
   objc_destroyWeak(&v9);
@@ -561,16 +561,16 @@ void __48__ICDeviceListRequest_fetchWithCompletionBlock___block_invoke_3_56(uint
   }
 }
 
-+ (id)setOfDeviceNamesFromDevices:(id)a3
++ (id)setOfDeviceNamesFromDevices:(id)devices
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  devicesCopy = devices;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = devicesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -586,12 +586,12 @@ void __48__ICDeviceListRequest_fetchWithCompletionBlock___block_invoke_3_56(uint
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 name];
+        name = [v10 name];
 
-        if (v11)
+        if (name)
         {
-          v12 = [v10 name];
-          [v4 addObject:v12];
+          name2 = [v10 name];
+          [v4 addObject:name2];
         }
       }
 
@@ -604,18 +604,18 @@ void __48__ICDeviceListRequest_fetchWithCompletionBlock___block_invoke_3_56(uint
   return v4;
 }
 
-+ (id)combineICloudDevices:(id)a3 withCloudKitDevices:(id)a4
++ (id)combineICloudDevices:(id)devices withCloudKitDevices:(id)kitDevices
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 setOfDeviceNamesFromDevices:v6];
-  v9 = [MEMORY[0x277CBEB18] arrayWithArray:v6];
+  devicesCopy = devices;
+  kitDevicesCopy = kitDevices;
+  v8 = [self setOfDeviceNamesFromDevices:devicesCopy];
+  v9 = [MEMORY[0x277CBEB18] arrayWithArray:devicesCopy];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v7;
+  v10 = kitDevicesCopy;
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
@@ -631,12 +631,12 @@ void __48__ICDeviceListRequest_fetchWithCompletionBlock___block_invoke_3_56(uint
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 name];
+        name = [v15 name];
 
-        if (v16)
+        if (name)
         {
-          v17 = [v15 name];
-          v18 = [v8 containsObject:v17];
+          name2 = [v15 name];
+          v18 = [v8 containsObject:name2];
 
           if ((v18 & 1) == 0)
           {

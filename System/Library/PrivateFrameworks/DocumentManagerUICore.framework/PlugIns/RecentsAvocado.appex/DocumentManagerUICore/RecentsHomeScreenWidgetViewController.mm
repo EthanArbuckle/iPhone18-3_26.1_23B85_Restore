@@ -1,45 +1,45 @@
 @interface RecentsHomeScreenWidgetViewController
-- (_TtC14RecentsAvocado37RecentsHomeScreenWidgetViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)collection:(id)a3 didPerformBatchUpdateWithReplayBlock:(id)a4;
-- (void)dataForCollectionShouldBeReloaded:(id)a3;
-- (void)updateForBundleIdentifier:(id)a3;
-- (void)updateForWidgetConfiguration:(id)a3;
-- (void)updateLockedStateWithDeviceIsLocked:(BOOL)a3;
+- (_TtC14RecentsAvocado37RecentsHomeScreenWidgetViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)collection:(id)collection didPerformBatchUpdateWithReplayBlock:(id)block;
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded;
+- (void)updateForBundleIdentifier:(id)identifier;
+- (void)updateForWidgetConfiguration:(id)configuration;
+- (void)updateLockedStateWithDeviceIsLocked:(BOOL)locked;
 - (void)updateQueryFiltersForNewApps;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation RecentsHomeScreenWidgetViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000066C8();
 }
 
-- (void)updateLockedStateWithDeviceIsLocked:(BOOL)a3
+- (void)updateLockedStateWithDeviceIsLocked:(BOOL)locked
 {
-  v4 = self;
-  sub_100006D04(a3);
+  selfCopy = self;
+  sub_100006D04(locked);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100007310(a3);
+  selfCopy = self;
+  sub_100007310(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100007914(a3);
+  selfCopy = self;
+  sub_100007914(disappear);
 }
 
-- (_TtC14RecentsAvocado37RecentsHomeScreenWidgetViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14RecentsAvocado37RecentsHomeScreenWidgetViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_10001A1C0();
     v7 = v6;
@@ -51,29 +51,29 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100007EF4(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100007EF4(v5, v7, bundle);
 }
 
-- (void)dataForCollectionShouldBeReloaded:(id)a3
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded
 {
-  v4 = a3;
-  v5 = self;
-  sub_10000FCD8(v4, &unk_100025300, sub_100010378, &unk_100025318);
+  reloadedCopy = reloaded;
+  selfCopy = self;
+  sub_10000FCD8(reloadedCopy, &unk_100025300, sub_100010378, &unk_100025318);
 }
 
-- (void)collection:(id)a3 didPerformBatchUpdateWithReplayBlock:(id)a4
+- (void)collection:(id)collection didPerformBatchUpdateWithReplayBlock:(id)block
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v8 = self;
-  sub_10000FCD8(v7, &unk_1000252B0, sub_1000101F0, &unk_1000252C8);
+  v6 = _Block_copy(block);
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_10000FCD8(collectionCopy, &unk_1000252B0, sub_1000101F0, &unk_1000252C8);
   _Block_release(v6);
 }
 
-- (void)updateForBundleIdentifier:(id)a3
+- (void)updateForBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_10001A1C0();
     v6 = v5;
@@ -85,20 +85,20 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_10000FFD4(v4, v6);
 }
 
-- (void)updateForWidgetConfiguration:(id)a3
+- (void)updateForWidgetConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = self;
-  sub_10000E0C0(a3);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_10000E0C0(configuration);
 }
 
 - (void)updateQueryFiltersForNewApps
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000F1D0();
 }
 

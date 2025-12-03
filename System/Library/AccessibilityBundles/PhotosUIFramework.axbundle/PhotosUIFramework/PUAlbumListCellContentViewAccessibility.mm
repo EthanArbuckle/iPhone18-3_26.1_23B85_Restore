@@ -1,14 +1,14 @@
 @interface PUAlbumListCellContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axRenameAlbumAction;
 - (BOOL)_axShowsDeleteButton;
 - (BOOL)accessibilityElementsHidden;
 - (BOOL)accessibilityPerformEscape;
 - (BOOL)isAccessibilityElement;
 - (CGPoint)accessibilityActivationPoint;
-- (PUAlbumListCellContentViewAccessibility)initWithFrame:(CGRect)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)_axTypeStringWithCount:(int64_t)a3;
+- (PUAlbumListCellContentViewAccessibility)initWithFrame:(CGRect)frame;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
+- (id)_axTypeStringWithCount:(int64_t)count;
 - (id)_deleteButton;
 - (id)accessibilityCustomActions;
 - (id)accessibilityElements;
@@ -21,27 +21,27 @@
 
 @implementation PUAlbumListCellContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUAlbumListCellContentView" hasInstanceVariable:@"_enabled" withType:"B"];
-  [v3 validateClass:@"PUAlbumListCellContentView" hasInstanceVariable:@"_editing" withType:"B"];
-  [v3 validateClass:@"PUAlbumListCellContentView" hasInstanceVariable:@"_editCapabilities" withType:"Q"];
-  [v3 validateClass:@"PUAlbumListCellContentView" hasInstanceVariable:@"_showsDeleteButtonWhenEditing" withType:"B"];
-  [v3 validateClass:@"PUAlbumListCellContentView" hasInstanceMethod:@"setEditing: animated:" withFullSignature:{"v", "B", "B", 0}];
-  [v3 validateClass:@"PUAlbumListCellContentView" hasInstanceMethod:@"_deleteButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUAlbumListCellContentView" hasInstanceMethod:@"showsDeleteButtonWhenEditing" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PUAlbumListCellContentView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUAlbumListCellContentView" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUAlbumListCellContentView" hasInstanceMethod:@"setUsesLabelForTitle:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUAlbumListCellContentView" hasInstanceVariable:@"_enabled" withType:"B"];
+  [validationsCopy validateClass:@"PUAlbumListCellContentView" hasInstanceVariable:@"_editing" withType:"B"];
+  [validationsCopy validateClass:@"PUAlbumListCellContentView" hasInstanceVariable:@"_editCapabilities" withType:"Q"];
+  [validationsCopy validateClass:@"PUAlbumListCellContentView" hasInstanceVariable:@"_showsDeleteButtonWhenEditing" withType:"B"];
+  [validationsCopy validateClass:@"PUAlbumListCellContentView" hasInstanceMethod:@"setEditing: animated:" withFullSignature:{"v", "B", "B", 0}];
+  [validationsCopy validateClass:@"PUAlbumListCellContentView" hasInstanceMethod:@"_deleteButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUAlbumListCellContentView" hasInstanceMethod:@"showsDeleteButtonWhenEditing" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PUAlbumListCellContentView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUAlbumListCellContentView" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUAlbumListCellContentView" hasInstanceMethod:@"setUsesLabelForTitle:" withFullSignature:{"v", "B", 0}];
 }
 
 - (BOOL)_axShowsDeleteButton
 {
   v3 = [(PUAlbumListCellContentViewAccessibility *)self safeValueForKey:@"_editCapabilities"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  if ((v4 & 1) == 0)
+  if ((integerValue & 1) == 0)
   {
     return 0;
   }
@@ -68,13 +68,13 @@
 {
   v8.receiver = self;
   v8.super_class = PUAlbumListCellContentViewAccessibility;
-  v3 = [(PUAlbumListCellContentViewAccessibility *)&v8 _deleteButton];
+  _deleteButton = [(PUAlbumListCellContentViewAccessibility *)&v8 _deleteButton];
   v4 = accessibilityPULocalizedString(@"delete.button");
-  v5 = [(PUAlbumListCellContentViewAccessibility *)self accessibilityLabel];
+  accessibilityLabel = [(PUAlbumListCellContentViewAccessibility *)self accessibilityLabel];
   v6 = __UIAXStringForVariables();
-  [v3 setAccessibilityLabel:{v6, v5, @"__AXStringForVariablesSentinel"}];
+  [_deleteButton setAccessibilityLabel:{v6, accessibilityLabel, @"__AXStringForVariablesSentinel"}];
 
-  return v3;
+  return _deleteButton;
 }
 
 - (BOOL)accessibilityElementsHidden
@@ -118,24 +118,24 @@
     }
 
     v5 = [(PUAlbumListCellContentViewAccessibility *)self safeValueForKey:@"_titleTextField"];
-    v6 = [MEMORY[0x29EDB8DE8] array];
-    [v6 axSafelyAddObject:v4];
-    [v6 axSafelyAddObject:v5];
+    array = [MEMORY[0x29EDB8DE8] array];
+    [array axSafelyAddObject:v4];
+    [array axSafelyAddObject:v5];
   }
 
   else
   {
-    v6 = 0;
+    array = 0;
   }
 
-  return v6;
+  return array;
 }
 
-- (PUAlbumListCellContentViewAccessibility)initWithFrame:(CGRect)a3
+- (PUAlbumListCellContentViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = PUAlbumListCellContentViewAccessibility;
-  v3 = [(PUAlbumListCellContentViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUAlbumListCellContentViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(PUAlbumListCellContentViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;
@@ -146,8 +146,8 @@
   v3 = [(PUAlbumListCellContentViewAccessibility *)self safeValueForKey:@"subtitle"];
   if ([v3 length])
   {
-    v4 = [MEMORY[0x29EDB8DE0] currentLocale];
-    v5 = [v4 objectForKey:*MEMORY[0x29EDB8CE8]];
+    currentLocale = [MEMORY[0x29EDB8DE0] currentLocale];
+    v5 = [currentLocale objectForKey:*MEMORY[0x29EDB8CE8]];
 
     v6 = [v3 stringByReplacingOccurrencesOfString:v5 withString:&stru_2A228A390];
 
@@ -163,18 +163,18 @@
       v8 = v6;
     }
 
-    v9 = v8;
+    accessibilityValue = v8;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = PUAlbumListCellContentViewAccessibility;
-    v9 = [(PUAlbumListCellContentViewAccessibility *)&v11 accessibilityValue];
+    accessibilityValue = [(PUAlbumListCellContentViewAccessibility *)&v11 accessibilityValue];
     v6 = v3;
   }
 
-  return v9;
+  return accessibilityValue;
 }
 
 - (id)accessibilityCustomActions
@@ -202,8 +202,8 @@
 
 - (BOOL)accessibilityPerformEscape
 {
-  v3 = [(PUAlbumListCellContentViewAccessibility *)self _axShowsDeleteButton];
-  if (v3)
+  _axShowsDeleteButton = [(PUAlbumListCellContentViewAccessibility *)self _axShowsDeleteButton];
+  if (_axShowsDeleteButton)
   {
     objc_opt_class();
     v4 = [(PUAlbumListCellContentViewAccessibility *)self safeValueForKey:@"_titleTextField"];
@@ -214,7 +214,7 @@
     [v5 resignFirstResponder];
   }
 
-  return v3;
+  return _axShowsDeleteButton;
 }
 
 - (unint64_t)accessibilityTraits
@@ -235,9 +235,9 @@
   result = v5;
   if (v6)
   {
-    v8 = [(PUAlbumListCellContentViewAccessibility *)self _axShowsDeleteButton];
+    _axShowsDeleteButton = [(PUAlbumListCellContentViewAccessibility *)self _axShowsDeleteButton];
     result = v4;
-    if (v8)
+    if (_axShowsDeleteButton)
     {
       return *MEMORY[0x29EDC7528] | v5;
     }
@@ -274,31 +274,31 @@
 - (id)accessibilityLabel
 {
   v3 = [(PUAlbumListCellContentViewAccessibility *)self safeValueForKey:@"_titleTextField"];
-  v4 = [v3 accessibilityValue];
+  accessibilityValue = [v3 accessibilityValue];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 string];
+    string = [accessibilityValue string];
 
-    v4 = v5;
+    accessibilityValue = string;
   }
 
-  if (![v4 length])
+  if (![accessibilityValue length])
   {
     v6 = [(PUAlbumListCellContentViewAccessibility *)self safeValueForKey:@"title"];
 
-    v4 = v6;
+    accessibilityValue = v6;
   }
 
-  v7 = [(PUAlbumListCellContentViewAccessibility *)self _axCustomContentType];
-  if ([v7 isEqualToString:@"AXAlbumContentTypeFolder"])
+  _axCustomContentType = [(PUAlbumListCellContentViewAccessibility *)self _axCustomContentType];
+  if ([_axCustomContentType isEqualToString:@"AXAlbumContentTypeFolder"])
   {
     v13 = accessibilityPULocalizedString(@"folder");
     v14 = @"__AXStringForVariablesSentinel";
     v8 = __UIAXStringForVariables();
 
-    v4 = v8;
+    accessibilityValue = v8;
   }
 
   if ([(PUAlbumListCellContentViewAccessibility *)self _axShowsDeleteButton:v13])
@@ -310,11 +310,11 @@
       v10 = accessibilityPULocalizedString(@"delete.button");
       v11 = __UIAXStringForVariables();
 
-      v4 = v11;
+      accessibilityValue = v11;
     }
   }
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (id)automationElements
@@ -328,30 +328,30 @@
       _AXAssert();
     }
 
-    v5 = [MEMORY[0x29EDB8DE8] array];
-    [v5 axSafelyAddObject:v3];
-    [v5 axSafelyAddObject:v4];
+    array = [MEMORY[0x29EDB8DE8] array];
+    [array axSafelyAddObject:v3];
+    [array axSafelyAddObject:v4];
   }
 
   else
   {
-    v5 = 0;
+    array = 0;
   }
 
-  return v5;
+  return array;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v25 = *MEMORY[0x29EDCA608];
-  v7 = a4;
+  eventCopy = event;
   if (UIAccessibilityIsVoiceOverRunning())
   {
     v23.receiver = self;
     v23.super_class = PUAlbumListCellContentViewAccessibility;
-    v8 = [(PUAlbumListCellContentViewAccessibility *)&v23 _accessibilityHitTest:v7 withEvent:x, y];
+    selfCopy = [(PUAlbumListCellContentViewAccessibility *)&v23 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
   else
@@ -360,8 +360,8 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [(PUAlbumListCellContentViewAccessibility *)self automationElements];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    automationElements = [(PUAlbumListCellContentViewAccessibility *)self automationElements];
+    v10 = [automationElements countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -372,12 +372,12 @@
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(automationElements);
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
           [(PUAlbumListCellContentViewAccessibility *)self convertPoint:v14 toView:x, y];
-          v15 = [v14 _accessibilityHitTest:v7 withEvent:?];
+          v15 = [v14 _accessibilityHitTest:eventCopy withEvent:?];
           if (v15)
           {
             v16 = v15;
@@ -386,7 +386,7 @@
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v11 = [automationElements countByEnumeratingWithState:&v19 objects:v24 count:16];
         if (v11)
         {
           continue;
@@ -396,10 +396,10 @@
       }
     }
 
-    v8 = self;
+    selfCopy = self;
   }
 
-  v16 = v8;
+  v16 = selfCopy;
 LABEL_14:
 
   v17 = *MEMORY[0x29EDCA608];
@@ -407,13 +407,13 @@ LABEL_14:
   return v16;
 }
 
-- (id)_axTypeStringWithCount:(int64_t)a3
+- (id)_axTypeStringWithCount:(int64_t)count
 {
-  v4 = [(PUAlbumListCellContentViewAccessibility *)self _axCustomContentType];
-  v5 = v4;
-  if (v4)
+  _axCustomContentType = [(PUAlbumListCellContentViewAccessibility *)self _axCustomContentType];
+  v5 = _axCustomContentType;
+  if (_axCustomContentType)
   {
-    if ([v4 isEqualToString:@"AXAlbumContentTypePeople"])
+    if ([_axCustomContentType isEqualToString:@"AXAlbumContentTypePeople"])
     {
       v6 = @"album.contenttype.people";
     }
@@ -461,7 +461,7 @@ LABEL_14:
 
   v7 = MEMORY[0x29EDBA0F8];
   v8 = accessibilityPULocalizedString(v6);
-  v9 = [v7 localizedStringWithFormat:v8, a3];
+  v9 = [v7 localizedStringWithFormat:v8, count];
 
   return v9;
 }

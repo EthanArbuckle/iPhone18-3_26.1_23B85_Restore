@@ -1,21 +1,21 @@
 @interface _IDSRealTimeEncryptionProxy
-- (_IDSRealTimeEncryptionProxy)initWithAccount:(id)a3;
+- (_IDSRealTimeEncryptionProxy)initWithAccount:(id)account;
 - (void)dealloc;
-- (void)requestMasterKeyMaterialForGroup:(id)a3;
+- (void)requestMasterKeyMaterialForGroup:(id)group;
 - (void)requestPublicKeys;
-- (void)resetKeysForGroup:(id)a3;
-- (void)sendMKMRecoveryRequestToGroup:(id)a3;
-- (void)sendMasterKeyMaterialToGroup:(id)a3;
-- (void)sendPrekeyToGroup:(id)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
-- (void)xpcObject:(id)a3 objectContext:(id)a4;
+- (void)resetKeysForGroup:(id)group;
+- (void)sendMKMRecoveryRequestToGroup:(id)group;
+- (void)sendMasterKeyMaterialToGroup:(id)group;
+- (void)sendPrekeyToGroup:(id)group;
+- (void)setDelegate:(id)delegate queue:(id)queue;
+- (void)xpcObject:(id)object objectContext:(id)context;
 @end
 
 @implementation _IDSRealTimeEncryptionProxy
 
-- (_IDSRealTimeEncryptionProxy)initWithAccount:(id)a3
+- (_IDSRealTimeEncryptionProxy)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   if (_IDSRunningInDaemon())
   {
     v5 = +[IDSLogging IDSRealTimeEncryptionProxy];
@@ -24,18 +24,18 @@
       sub_195B26A7C();
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v7 = +[IDSInternalQueueController sharedInstance];
-    v8 = [v7 assertQueueIsCurrent];
+    assertQueueIsCurrent = [v7 assertQueueIsCurrent];
 
-    if (v8)
+    if (assertQueueIsCurrent)
     {
-      v9 = [MEMORY[0x1E69A5270] utilities];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      utilities = [MEMORY[0x1E69A5270] utilities];
+      if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
       {
         sub_195B291D0();
       }
@@ -46,53 +46,53 @@
     v10 = [(_IDSRealTimeEncryptionProxy *)&v20 init];
     if (v10)
     {
-      v11 = [MEMORY[0x1E696AEC0] stringGUID];
+      stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
       uniqueID = v10->_uniqueID;
-      v10->_uniqueID = v11;
+      v10->_uniqueID = stringGUID;
 
-      v13 = [v4 _internal];
-      v14 = [v13 uniqueID];
+      _internal = [accountCopy _internal];
+      uniqueID = [_internal uniqueID];
       accountID = v10->_accountID;
-      v10->_accountID = v14;
+      v10->_accountID = uniqueID;
 
       v16 = +[IDSDaemonController sharedInstance];
-      v17 = [v16 listener];
-      [v17 addHandler:v10];
+      listener = [v16 listener];
+      [listener addHandler:v10];
 
       v18 = +[IDSDaemonController sharedInstance];
       [v18 setupRealtimeEncryptionController:v10->_uniqueID forAccountWithID:v10->_accountID];
     }
 
     self = v10;
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
   v3 = +[IDSDaemonController sharedInstance];
-  v4 = [v3 listener];
-  [v4 removeHandler:self];
+  listener = [v3 listener];
+  [listener removeHandler:self];
 
   v5.receiver = self;
   v5.super_class = _IDSRealTimeEncryptionProxy;
   [(_IDSRealTimeEncryptionProxy *)&v5 dealloc];
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v8 assertQueueIsCurrent];
 
-  if (v9)
+  if (assertQueueIsCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B29270();
     }
@@ -102,34 +102,34 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 134217984;
-    v17 = v6;
+    v17 = delegateCopy;
     _os_log_impl(&dword_1959FF000, v11, OS_LOG_TYPE_DEFAULT, "Setting up delegate %p", &v16, 0xCu);
   }
 
-  if (self->_delegate != v6)
+  if (self->_delegate != delegateCopy)
   {
-    v12 = [MEMORY[0x1E6995700] weakRefWithObject:v6];
+    v12 = [MEMORY[0x1E6995700] weakRefWithObject:delegateCopy];
     delegate = self->_delegate;
     self->_delegate = v12;
   }
 
   queue = self->_queue;
-  self->_queue = v7;
+  self->_queue = queueCopy;
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendPrekeyToGroup:(id)a3
+- (void)sendPrekeyToGroup:(id)group
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupCopy = group;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B29310();
     }
@@ -139,12 +139,12 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = groupCopy;
     _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "Sending the real-time media prekey of this device to the group %@", &v11, 0xCu);
   }
 
   v9 = +[IDSDaemonController sharedInstance];
-  [v9 sendRealTimeMediaPrekey:self->_uniqueID toGroup:v4];
+  [v9 sendRealTimeMediaPrekey:self->_uniqueID toGroup:groupCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -152,12 +152,12 @@
 - (void)requestPublicKeys
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B293B0();
     }
@@ -167,98 +167,98 @@
   [v6 requestPublicKeysForRealTimeEncryption:self->_uniqueID forAccountWithID:self->_accountID];
 }
 
-- (void)sendMasterKeyMaterialToGroup:(id)a3
+- (void)sendMasterKeyMaterialToGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B29450();
     }
   }
 
   v8 = +[IDSDaemonController sharedInstance];
-  [v8 sendRealTimeEncryptionMasterKeyMaterial:self->_uniqueID toGroup:v4];
+  [v8 sendRealTimeEncryptionMasterKeyMaterial:self->_uniqueID toGroup:groupCopy];
 }
 
-- (void)requestMasterKeyMaterialForGroup:(id)a3
+- (void)requestMasterKeyMaterialForGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B294F0();
     }
   }
 
   v8 = +[IDSDaemonController sharedInstance];
-  [v8 requestRealTimeEncryptionMasterKeyMaterial:self->_uniqueID forGroup:v4];
+  [v8 requestRealTimeEncryptionMasterKeyMaterial:self->_uniqueID forGroup:groupCopy];
 }
 
-- (void)sendMKMRecoveryRequestToGroup:(id)a3
+- (void)sendMKMRecoveryRequestToGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B29590();
     }
   }
 
   v8 = +[IDSDaemonController sharedInstance];
-  [v8 sendRealTimeEncryptionMKMRecoveryRequest:self->_uniqueID toGroup:v4];
+  [v8 sendRealTimeEncryptionMKMRecoveryRequest:self->_uniqueID toGroup:groupCopy];
 }
 
-- (void)resetKeysForGroup:(id)a3
+- (void)resetKeysForGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B29630();
     }
   }
 
   v8 = +[IDSDaemonController sharedInstance];
-  [v8 resetRealTimeEncryptionKeys:self->_uniqueID forGroup:v4];
+  [v8 resetRealTimeEncryptionKeys:self->_uniqueID forGroup:groupCopy];
 }
 
-- (void)xpcObject:(id)a3 objectContext:(id)a4
+- (void)xpcObject:(id)object objectContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(CUTWeakReference *)self->_delegate object];
-  if (v5)
+  contextCopy = context;
+  object = [(CUTWeakReference *)self->_delegate object];
+  if (contextCopy)
   {
-    v7 = CFDictionaryGetValue(v5, @"object-type");
+    v7 = CFDictionaryGetValue(contextCopy, @"object-type");
     if ([v7 isEqualToIgnoringCase:@"public-keys"])
     {
-      Value = CFDictionaryGetValue(v5, @"public-keys");
+      Value = CFDictionaryGetValue(contextCopy, @"public-keys");
 LABEL_5:
       v10 = Value;
-      if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+      if (object && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [v6 didReceivePublickeys:v10];
+        [object didReceivePublickeys:v10];
         goto LABEL_22;
       }
 
@@ -279,7 +279,7 @@ LABEL_20:
 
     if ([v7 isEqualToIgnoringCase:@"master-key-materials"])
     {
-      v14 = CFDictionaryGetValue(v5, @"master-key-materials");
+      v14 = CFDictionaryGetValue(contextCopy, @"master-key-materials");
       goto LABEL_13;
     }
   }
@@ -301,9 +301,9 @@ LABEL_20:
     {
 LABEL_13:
       v10 = v14;
-      if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+      if (object && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [v6 didReceiveMasterKeyMaterials:v10];
+        [object didReceiveMasterKeyMaterials:v10];
         goto LABEL_22;
       }
 

@@ -9,40 +9,40 @@
 {
   v2 = objc_opt_new();
   [v2 setObject:@"http://schema.org/Place" forKeyedSubscript:@"@type"];
-  v3 = [a1 name];
+  name = [self name];
 
-  if (v3)
+  if (name)
   {
-    v4 = [a1 name];
-    [v2 setObject:v4 forKeyedSubscript:@"name"];
+    name2 = [self name];
+    [v2 setObject:name2 forKeyedSubscript:@"name"];
   }
 
-  v5 = [a1 postalAddress];
-  v6 = [v5 schema];
+  postalAddress = [self postalAddress];
+  schema = [postalAddress schema];
 
-  if ([v6 count] >= 2)
+  if ([schema count] >= 2)
   {
-    [v2 setObject:v6 forKeyedSubscript:@"address"];
+    [v2 setObject:schema forKeyedSubscript:@"address"];
   }
 
-  v7 = [a1 location];
-  [v7 coordinate];
+  location = [self location];
+  [location coordinate];
   if (v8 != 0.0)
   {
 
     goto LABEL_9;
   }
 
-  v9 = [a1 location];
-  [v9 coordinate];
+  location2 = [self location];
+  [location2 coordinate];
   v11 = v10;
 
   if (v11 != 0.0)
   {
 LABEL_9:
-    v12 = [a1 location];
-    v13 = [v12 schema];
-    [v2 setObject:v13 forKeyedSubscript:@"geo"];
+    location3 = [self location];
+    schema2 = [location3 schema];
+    [v2 setObject:schema2 forKeyedSubscript:@"geo"];
   }
 
   if ([v2 count] < 2)

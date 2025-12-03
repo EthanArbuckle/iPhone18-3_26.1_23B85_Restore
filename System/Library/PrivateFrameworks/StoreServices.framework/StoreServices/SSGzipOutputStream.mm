@@ -1,12 +1,12 @@
 @interface SSGzipOutputStream
 - (BOOL)_initializeOutputStream;
-- (id)initToFileAtPath:(id)a3 append:(BOOL)a4;
+- (id)initToFileAtPath:(id)path append:(BOOL)append;
 - (id)initToMemory;
 - (id)streamError;
-- (int64_t)_consumeStreamOutput:(BOOL)a3;
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4;
+- (int64_t)_consumeStreamOutput:(BOOL)output;
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length;
 - (unint64_t)streamStatus;
-- (void)_setStreamError:(int)a3 context:(id)a4;
+- (void)_setStreamError:(int)error context:(id)context;
 - (void)close;
 - (void)dealloc;
 @end
@@ -38,19 +38,19 @@
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v7 &= 2u;
   }
@@ -74,30 +74,30 @@
 
   if (v12)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithCString:v12 encoding:{4, &v22, v21}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v12 encoding:{4, &v22, v21}];
     free(v12);
-    SSFileLog(v5, @"%@", v13, v14, v15, v16, v17, v18, v8);
+    SSFileLog(v5, @"%@", v13, v14, v15, v16, v17, v18, oSLogObject);
 LABEL_12:
   }
 
   return v4 == 0;
 }
 
-- (id)initToFileAtPath:(id)a3 append:(BOOL)a4
+- (id)initToFileAtPath:(id)path append:(BOOL)append
 {
-  v4 = a4;
+  appendCopy = append;
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  pathCopy = path;
   v27.receiver = self;
   v27.super_class = SSGzipOutputStream;
-  v7 = [(SSGzipOutputStream *)&v27 initToMemory];
-  if (v7)
+  initToMemory = [(SSGzipOutputStream *)&v27 initToMemory];
+  if (initToMemory)
   {
-    v8 = [objc_alloc(MEMORY[0x1E695DFC0]) initToFileAtPath:v6 append:v4];
-    v9 = v7[17];
-    v7[17] = v8;
+    v8 = [objc_alloc(MEMORY[0x1E695DFC0]) initToFileAtPath:pathCopy append:appendCopy];
+    v9 = initToMemory[17];
+    initToMemory[17] = v8;
 
-    if (![v7 _initializeOutputStream] || !v7[17])
+    if (![initToMemory _initializeOutputStream] || !initToMemory[17])
     {
       v11 = +[SSLogConfig sharedStoreServicesConfig];
       if (!v11)
@@ -105,19 +105,19 @@ LABEL_12:
         v11 = +[SSLogConfig sharedConfig];
       }
 
-      v12 = [v11 shouldLog];
+      shouldLog = [v11 shouldLog];
       if ([v11 shouldLogToDisk])
       {
-        v13 = v12 | 2;
+        v13 = shouldLog | 2;
       }
 
       else
       {
-        v13 = v12;
+        v13 = shouldLog;
       }
 
-      v14 = [v11 OSLogObject];
-      if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v11 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v13 &= 2u;
       }
@@ -135,23 +135,23 @@ LABEL_12:
         {
 LABEL_16:
 
-          v24 = v7[17];
-          v7[17] = 0;
+          v24 = initToMemory[17];
+          initToMemory[17] = 0;
 
           v10 = 0;
           goto LABEL_17;
         }
 
-        v14 = [MEMORY[0x1E696AEC0] stringWithCString:v17 encoding:{4, &v28, v26}];
+        oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v17 encoding:{4, &v28, v26}];
         free(v17);
-        SSFileLog(v11, @"%@", v18, v19, v20, v21, v22, v23, v14);
+        SSFileLog(v11, @"%@", v18, v19, v20, v21, v22, v23, oSLogObject);
       }
 
       goto LABEL_16;
     }
   }
 
-  v10 = v7;
+  v10 = initToMemory;
 LABEL_17:
 
   return v10;
@@ -162,14 +162,14 @@ LABEL_17:
   v25 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = SSGzipOutputStream;
-  v2 = [(SSGzipOutputStream *)&v22 initToMemory];
-  if (v2)
+  initToMemory = [(SSGzipOutputStream *)&v22 initToMemory];
+  if (initToMemory)
   {
-    v3 = [objc_alloc(MEMORY[0x1E695DFC0]) initToMemory];
-    v4 = v2[17];
-    v2[17] = v3;
+    initToMemory2 = [objc_alloc(MEMORY[0x1E695DFC0]) initToMemory];
+    v4 = initToMemory[17];
+    initToMemory[17] = initToMemory2;
 
-    if (![v2 _initializeOutputStream] || !v2[17])
+    if (![initToMemory _initializeOutputStream] || !initToMemory[17])
     {
       v6 = +[SSLogConfig sharedStoreServicesConfig];
       if (!v6)
@@ -177,19 +177,19 @@ LABEL_17:
         v6 = +[SSLogConfig sharedConfig];
       }
 
-      v7 = [v6 shouldLog];
+      shouldLog = [v6 shouldLog];
       if ([v6 shouldLogToDisk])
       {
-        v8 = v7 | 2;
+        v8 = shouldLog | 2;
       }
 
       else
       {
-        v8 = v7;
+        v8 = shouldLog;
       }
 
-      v9 = [v6 OSLogObject];
-      if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v6 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v8 &= 2u;
       }
@@ -207,23 +207,23 @@ LABEL_17:
         {
 LABEL_16:
 
-          v19 = v2[17];
-          v2[17] = 0;
+          v19 = initToMemory[17];
+          initToMemory[17] = 0;
 
           v5 = 0;
           goto LABEL_17;
         }
 
-        v9 = [MEMORY[0x1E696AEC0] stringWithCString:v12 encoding:{4, &v23, v21}];
+        oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v12 encoding:{4, &v23, v21}];
         free(v12);
-        SSFileLog(v6, @"%@", v13, v14, v15, v16, v17, v18, v9);
+        SSFileLog(v6, @"%@", v13, v14, v15, v16, v17, v18, oSLogObject);
       }
 
       goto LABEL_16;
     }
   }
 
-  v5 = v2;
+  v5 = initToMemory;
 LABEL_17:
 
   return v5;
@@ -249,9 +249,9 @@ LABEL_17:
 - (void)close
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(SSGzipOutputStream *)self streamError];
+  streamError = [(SSGzipOutputStream *)self streamError];
 
-  if (!v3)
+  if (!streamError)
   {
     while (1)
     {
@@ -279,19 +279,19 @@ LABEL_7:
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v8 &= 2u;
     }
@@ -322,9 +322,9 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v9 = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, v23, v22, *v23, *&v23[16], v24}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, v23, v22, *v23, *&v23[16], v24}];
       free(v14);
-      SSFileLog(v6, @"%@", v15, v16, v17, v18, v19, v20, v9);
+      SSFileLog(v6, @"%@", v15, v16, v17, v18, v19, v20, oSLogObject);
     }
 
     goto LABEL_18;
@@ -352,23 +352,23 @@ LABEL_19:
   streamError = self->_streamError;
   if (streamError)
   {
-    v3 = streamError;
+    streamError = streamError;
   }
 
   else
   {
-    v3 = [(NSOutputStream *)self->_backingStream streamError];
+    streamError = [(NSOutputStream *)self->_backingStream streamError];
   }
 
-  return v3;
+  return streamError;
 }
 
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = [(SSGzipOutputStream *)self streamError];
+  streamError = [(SSGzipOutputStream *)self streamError];
 
-  if (v7)
+  if (streamError)
   {
     v8 = +[SSLogConfig sharedStoreServicesConfig];
     if (!v8)
@@ -376,19 +376,19 @@ LABEL_19:
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 &= 2u;
     }
@@ -409,17 +409,17 @@ LABEL_19:
         goto LABEL_13;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v25, v24}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v25, v24}];
       free(v14);
-      SSFileLog(v8, @"%@", v15, v16, v17, v18, v19, v20, v11);
+      SSFileLog(v8, @"%@", v15, v16, v17, v18, v19, v20, oSLogObject);
     }
 
 LABEL_13:
     return -1;
   }
 
-  self->_stream.next_in = a3;
-  self->_stream.avail_in = a4;
+  self->_stream.next_in = write;
+  self->_stream.avail_in = length;
   do
   {
     self->_stream.next_out = self->_streamOutBuffer;
@@ -440,20 +440,20 @@ LABEL_13:
   while (!self->_stream.avail_out);
   self->_stream.next_in = 0;
   self->_stream.avail_in = 0;
-  v23 = [(SSGzipOutputStream *)self streamError];
-  if (v23)
+  streamError2 = [(SSGzipOutputStream *)self streamError];
+  if (streamError2)
   {
-    a4 = -1;
+    length = -1;
   }
 
-  return a4;
+  return length;
 }
 
-- (int64_t)_consumeStreamOutput:(BOOL)a3
+- (int64_t)_consumeStreamOutput:(BOOL)output
 {
   p_stream = &self->_stream;
   avail_out = self->_stream.avail_out;
-  if (!a3)
+  if (!output)
   {
     if (avail_out)
     {
@@ -475,16 +475,16 @@ LABEL_13:
   return result;
 }
 
-- (void)_setStreamError:(int)a3 context:(id)a4
+- (void)_setStreamError:(int)error context:(id)context
 {
-  v4 = *&a3;
+  v4 = *&error;
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  contextCopy = context;
   if (v4 >= 2)
   {
-    v7 = [(SSGzipOutputStream *)self streamError];
+    streamError = [(SSGzipOutputStream *)self streamError];
 
-    if (!v7)
+    if (!streamError)
     {
       v8 = *__error();
       v9 = +[SSLogConfig sharedStoreServicesConfig];
@@ -493,19 +493,19 @@ LABEL_13:
         v9 = +[SSLogConfig sharedConfig];
       }
 
-      v10 = [v9 shouldLog];
+      shouldLog = [v9 shouldLog];
       if ([v9 shouldLogToDisk])
       {
-        v11 = v10 | 2;
+        v11 = shouldLog | 2;
       }
 
       else
       {
-        v11 = v10;
+        v11 = shouldLog;
       }
 
-      v12 = [v9 OSLogObject];
-      if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v9 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v11 &= 2u;
       }
@@ -522,7 +522,7 @@ LABEL_13:
         v37 = 1026;
         v38 = v15;
         v39 = 2114;
-        v40 = v6;
+        v40 = contextCopy;
         LODWORD(v30) = 34;
         v16 = _os_log_send_and_compose_impl();
 
@@ -543,7 +543,7 @@ LABEL_14:
           v26 = [MEMORY[0x1E696AD98] numberWithInt:v8];
           v31[4] = @"context";
           v32[3] = v26;
-          v32[4] = v6;
+          v32[4] = contextCopy;
           v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:5];
 
           v28 = [MEMORY[0x1E696ABC0] errorWithDomain:@"SSGzipOutputStream" code:v4 userInfo:v27];
@@ -554,9 +554,9 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v12 = [MEMORY[0x1E696AEC0] stringWithCString:v16 encoding:{4, &v33, v30}];
+        oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v16 encoding:{4, &v33, v30}];
         free(v16);
-        SSFileLog(v9, @"%@", v17, v18, v19, v20, v21, v22, v12);
+        SSFileLog(v9, @"%@", v17, v18, v19, v20, v21, v22, oSLogObject);
       }
 
       goto LABEL_14;

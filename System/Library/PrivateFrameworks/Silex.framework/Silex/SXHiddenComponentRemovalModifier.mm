@@ -1,27 +1,27 @@
 @interface SXHiddenComponentRemovalModifier
-- (void)modifyDOM:(id)a3 context:(id)a4;
+- (void)modifyDOM:(id)m context:(id)context;
 @end
 
 @implementation SXHiddenComponentRemovalModifier
 
-- (void)modifyDOM:(id)a3 context:(id)a4
+- (void)modifyDOM:(id)m context:(id)context
 {
-  v5 = a3;
-  v6 = [a4 specVersion];
+  mCopy = m;
+  specVersion = [context specVersion];
   v7 = [@"1.6" componentsSeparatedByString:@"."];
-  v8 = [v6 componentsSeparatedByString:@"."];
+  v8 = [specVersion componentsSeparatedByString:@"."];
   v9 = [v7 count];
   if (!([v8 count] | v9))
   {
 
 LABEL_15:
-    v17 = [v5 components];
+    components = [mCopy components];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __54__SXHiddenComponentRemovalModifier_modifyDOM_context___block_invoke;
     v18[3] = &unk_1E8502358;
-    v19 = v5;
-    [v17 enumerateComponentsWithBlock:v18];
+    v19 = mCopy;
+    [components enumerateComponentsWithBlock:v18];
 
     goto LABEL_16;
   }

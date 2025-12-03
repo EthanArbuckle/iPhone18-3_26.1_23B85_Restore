@@ -1,51 +1,51 @@
 @interface AccountTransformerGoogle
-- (BOOL)changesRequireRecreation:(id)a3 properties:(id)a4;
-- (void)accountPropertiesFromConfiguration:(id)a3 account:(id)a4 accountStore:(id)a5 completionHandler:(id)a6;
-- (void)applyProperties:(id)a3 toAccount:(id)a4 accountStore:(id)a5 completionHandler:(id)a6;
-- (void)configurationUIForConfiguration:(id)a3 completionHandler:(id)a4;
+- (BOOL)changesRequireRecreation:(id)recreation properties:(id)properties;
+- (void)accountPropertiesFromConfiguration:(id)configuration account:(id)account accountStore:(id)store completionHandler:(id)handler;
+- (void)applyProperties:(id)properties toAccount:(id)account accountStore:(id)store completionHandler:(id)handler;
+- (void)configurationUIForConfiguration:(id)configuration completionHandler:(id)handler;
 @end
 
 @implementation AccountTransformerGoogle
 
-- (void)accountPropertiesFromConfiguration:(id)a3 account:(id)a4 accountStore:(id)a5 completionHandler:(id)a6
+- (void)accountPropertiesFromConfiguration:(id)configuration account:(id)account accountStore:(id)store completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
+  configurationCopy = configuration;
+  accountCopy = account;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10000C87C;
   v17[3] = &unk_10001CCA0;
-  v21 = a5;
-  v22 = a6;
-  v18 = v10;
-  v19 = self;
-  v20 = v11;
+  storeCopy = store;
+  handlerCopy = handler;
+  v18 = configurationCopy;
+  selfCopy = self;
+  v20 = accountCopy;
   v16.receiver = self;
   v16.super_class = AccountTransformerGoogle;
-  v12 = v21;
-  v13 = v11;
-  v14 = v22;
-  v15 = v10;
+  v12 = storeCopy;
+  v13 = accountCopy;
+  v14 = handlerCopy;
+  v15 = configurationCopy;
   [(AccountTransformer *)&v16 accountPropertiesFromConfiguration:v15 account:v13 accountStore:v12 completionHandler:v17];
 }
 
-- (void)applyProperties:(id)a3 toAccount:(id)a4 accountStore:(id)a5 completionHandler:(id)a6
+- (void)applyProperties:(id)properties toAccount:(id)account accountStore:(id)store completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
+  propertiesCopy = properties;
+  accountCopy = account;
   v10 = ACAccountPropertyPersonaIdentifier;
-  v11 = a6;
-  v12 = [v8 objectForKeyedSubscript:v10];
-  [v9 setAuthenticated:1];
+  handlerCopy = handler;
+  v12 = [propertiesCopy objectForKeyedSubscript:v10];
+  [accountCopy setAuthenticated:1];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_10000CEF0;
   v25[3] = &unk_10001CCC8;
-  v13 = [[MailAccount alloc] initWithPersistentAccount:v9];
+  v13 = [[MailAccount alloc] initWithPersistentAccount:accountCopy];
   v26 = v13;
-  v14 = v9;
+  v14 = accountCopy;
   v27 = v14;
-  v15 = v8;
+  v15 = propertiesCopy;
   v28 = v15;
   [v15 enumerateKeysAndObjectsUsingBlock:v25];
   +[MailAccount reloadAccounts];
@@ -68,24 +68,24 @@
     sub_1000135D4(v19, v21);
   }
 
-  v11[2](v11, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (BOOL)changesRequireRecreation:(id)a3 properties:(id)a4
+- (BOOL)changesRequireRecreation:(id)recreation properties:(id)properties
 {
-  if (!a3)
+  if (!recreation)
   {
     return 0;
   }
 
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MailAccount alloc] initWithPersistentAccount:v6];
+  propertiesCopy = properties;
+  recreationCopy = recreation;
+  v7 = [[MailAccount alloc] initWithPersistentAccount:recreationCopy];
 
-  v8 = [v7 username];
-  v9 = [v5 objectForKeyedSubscript:@"_remotemanagement_username"];
+  username = [v7 username];
+  v9 = [propertiesCopy objectForKeyedSubscript:@"_remotemanagement_username"];
 
-  v10 = [v8 isEqualToString:v9];
+  v10 = [username isEqualToString:v9];
   if ((v10 & 1) == 0)
   {
     v11 = +[RMLog accountTransformerGoogle];
@@ -101,25 +101,25 @@
   return v12;
 }
 
-- (void)configurationUIForConfiguration:(id)a3 completionHandler:(id)a4
+- (void)configurationUIForConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v7 = +[RMLog accountTransformerGoogle];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v5 declaration];
-    v9 = [v8 declarationIdentifier];
+    declaration = [configurationCopy declaration];
+    declarationIdentifier = [declaration declarationIdentifier];
     *buf = 138543362;
-    v23 = v9;
+    v23 = declarationIdentifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Get configuration UI for: %{public}@", buf, 0xCu);
   }
 
-  v10 = [v5 declaration];
-  v11 = [v10 payloadVisibleName];
-  if (v11)
+  declaration2 = [configurationCopy declaration];
+  payloadVisibleName = [declaration2 payloadVisibleName];
+  if (payloadVisibleName)
   {
-    v12 = v11;
+    v12 = payloadVisibleName;
   }
 
   else
@@ -127,9 +127,9 @@
     v12 = @"UI.Description.Google";
   }
 
-  if (v11)
+  if (payloadVisibleName)
   {
-    v13 = v11;
+    v13 = payloadVisibleName;
   }
 
   else
@@ -147,7 +147,7 @@
   v18 = [NSArray arrayWithObjects:&v21 count:1];
   v19 = [RMConfigurationUIDetails configurationUIWithTitle:v14 description:v15 details:v18];
 
-  v6[2](v6, 1, v19, 0);
+  handlerCopy[2](handlerCopy, 1, v19, 0);
 }
 
 @end

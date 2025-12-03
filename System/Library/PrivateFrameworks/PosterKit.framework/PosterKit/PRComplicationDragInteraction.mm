@@ -1,19 +1,19 @@
 @interface PRComplicationDragInteraction
-- (PRComplicationDragInteraction)initWithDelegate:(id)a3 complicationDescriptor:(id)a4;
+- (PRComplicationDragInteraction)initWithDelegate:(id)delegate complicationDescriptor:(id)descriptor;
 @end
 
 @implementation PRComplicationDragInteraction
 
-- (PRComplicationDragInteraction)initWithDelegate:(id)a3 complicationDescriptor:(id)a4
+- (PRComplicationDragInteraction)initWithDelegate:(id)delegate complicationDescriptor:(id)descriptor
 {
-  v7 = a4;
+  descriptorCopy = descriptor;
   v11.receiver = self;
   v11.super_class = PRComplicationDragInteraction;
-  v8 = [(UIDragInteraction *)&v11 initWithDelegate:a3];
+  v8 = [(UIDragInteraction *)&v11 initWithDelegate:delegate];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_complicationDescriptor, a4);
+    objc_storeStrong(&v8->_complicationDescriptor, descriptor);
   }
 
   return v9;

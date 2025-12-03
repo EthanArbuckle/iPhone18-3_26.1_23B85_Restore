@@ -1,10 +1,10 @@
 @interface HKMedicationPregnancyLactationInteraction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKMedicationPregnancyLactationInteraction)init;
-- (HKMedicationPregnancyLactationInteraction)initWithCoder:(id)a3;
-- (HKMedicationPregnancyLactationInteraction)initWithMedication:(id)a3 interactionType:(int64_t)a4;
+- (HKMedicationPregnancyLactationInteraction)initWithCoder:(id)coder;
+- (HKMedicationPregnancyLactationInteraction)initWithMedication:(id)medication interactionType:(int64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicationPregnancyLactationInteraction
@@ -19,10 +19,10 @@
   return 0;
 }
 
-- (HKMedicationPregnancyLactationInteraction)initWithMedication:(id)a3 interactionType:(int64_t)a4
+- (HKMedicationPregnancyLactationInteraction)initWithMedication:(id)medication interactionType:(int64_t)type
 {
-  v8 = a3;
-  if (!v8)
+  medicationCopy = medication;
+  if (!medicationCopy)
   {
     [HKMedicationPregnancyLactationInteraction initWithMedication:a2 interactionType:self];
   }
@@ -33,8 +33,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_medication, a3);
-    v10->_interactionType = a4;
+    objc_storeStrong(&v9->_medication, medication);
+    v10->_interactionType = type;
   }
 
   return v10;
@@ -44,16 +44,16 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HKMedicationUserDomainConcept *)self->_medication firstConceptIdentifier];
-  v6 = [v3 stringWithFormat:@"<%@:%p (%ld, %ld)>", v4, self, objc_msgSend(v5, "rawIdentifier"), self->_interactionType];
+  firstConceptIdentifier = [(HKMedicationUserDomainConcept *)self->_medication firstConceptIdentifier];
+  v6 = [v3 stringWithFormat:@"<%@:%p (%ld, %ld)>", v4, self, objc_msgSend(firstConceptIdentifier, "rawIdentifier"), self->_interactionType];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -63,7 +63,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       medication = self->_medication;
       v7 = v5->_medication;
       v8 = (medication == v7 || v7 && [(HKMedicationUserDomainConcept *)medication isEqual:?]) && self->_interactionType == v5->_interactionType;
@@ -78,27 +78,27 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   medication = self->_medication;
-  v5 = a3;
-  [v5 encodeObject:medication forKey:@"Medication"];
-  [v5 encodeInteger:self->_interactionType forKey:@"InteractionType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:medication forKey:@"Medication"];
+  [coderCopy encodeInteger:self->_interactionType forKey:@"InteractionType"];
 }
 
-- (HKMedicationPregnancyLactationInteraction)initWithCoder:(id)a3
+- (HKMedicationPregnancyLactationInteraction)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = HKMedicationPregnancyLactationInteraction;
   v6 = [(HKMedicationPregnancyLactationInteraction *)&v10 init];
   if (v6)
   {
-    v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"Medication"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Medication"];
     medication = v6->_medication;
     v6->_medication = v7;
 
-    v6->_interactionType = [v5 decodeIntegerForKey:@"InteractionType"];
+    v6->_interactionType = [coderCopy decodeIntegerForKey:@"InteractionType"];
     if (!v6->_medication)
     {
       [(HKMedicationPregnancyLactationInteraction *)a2 initWithCoder:v6];

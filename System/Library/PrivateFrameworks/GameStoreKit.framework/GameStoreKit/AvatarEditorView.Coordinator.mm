@@ -1,29 +1,29 @@
 @interface AvatarEditorView.Coordinator
 - (_TtCV12GameStoreKit16AvatarEditorView11Coordinator)init;
-- (void)photoPicker:(id)a3 didUpdatePhotoForContact:(id)a4 withContactImage:(id)a5;
-- (void)photoPickerDidCancel:(id)a3;
+- (void)photoPicker:(id)picker didUpdatePhotoForContact:(id)contact withContactImage:(id)image;
+- (void)photoPickerDidCancel:(id)cancel;
 @end
 
 @implementation AvatarEditorView.Coordinator
 
-- (void)photoPickerDidCancel:(id)a3
+- (void)photoPickerDidCancel:(id)cancel
 {
-  v5 = a3;
-  v3 = [v5 presentingViewController];
-  if (v3)
+  cancelCopy = cancel;
+  presentingViewController = [cancelCopy presentingViewController];
+  if (presentingViewController)
   {
-    v4 = v3;
-    [v3 dismissViewControllerAnimated:1 completion:0];
+    v4 = presentingViewController;
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)photoPicker:(id)a3 didUpdatePhotoForContact:(id)a4 withContactImage:(id)a5
+- (void)photoPicker:(id)picker didUpdatePhotoForContact:(id)contact withContactImage:(id)image
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_24F59161C(v8, v9, v10);
+  pickerCopy = picker;
+  contactCopy = contact;
+  imageCopy = image;
+  selfCopy = self;
+  sub_24F59161C(pickerCopy, contactCopy, imageCopy);
 }
 
 - (_TtCV12GameStoreKit16AvatarEditorView11Coordinator)init

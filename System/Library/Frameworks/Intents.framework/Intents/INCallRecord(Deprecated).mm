@@ -6,13 +6,13 @@
 
 - (INPerson)caller
 {
-  v3 = [(INCallRecord *)self participants];
-  v4 = [v3 count];
+  participants = [(INCallRecord *)self participants];
+  v4 = [participants count];
 
   if (v4)
   {
-    v5 = [(INCallRecord *)self participants];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    participants2 = [(INCallRecord *)self participants];
+    v6 = [participants2 objectAtIndexedSubscript:0];
   }
 
   else

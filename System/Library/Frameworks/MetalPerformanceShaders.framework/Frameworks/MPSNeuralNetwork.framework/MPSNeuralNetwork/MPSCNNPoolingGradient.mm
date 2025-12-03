@@ -2,10 +2,10 @@
 - (MPSCNNPoolingGradient)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSCNNPoolingGradient)initWithDevice:(id)device;
 - (MPSCNNPoolingGradient)initWithDevice:(id)device kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight strideInPixelsX:(NSUInteger)strideInPixelsX strideInPixelsY:(NSUInteger)strideInPixelsY;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (unint64_t)maxBatchSize;
-- (void)encodeWithCoder:(id)a3;
-- (void)setKernelWidth:(unint64_t)a3 kernelHeight:(unint64_t)a4 strideInPixelsX:(unint64_t)a5 strideInPixelsY:(unint64_t)a6;
+- (void)encodeWithCoder:(id)coder;
+- (void)setKernelWidth:(unint64_t)width kernelHeight:(unint64_t)height strideInPixelsX:(unint64_t)x strideInPixelsY:(unint64_t)y;
 - (void)setSourceSize:(MTLSize *)sourceSize;
 @end
 
@@ -47,12 +47,12 @@
   return result;
 }
 
-- (void)setKernelWidth:(unint64_t)a3 kernelHeight:(unint64_t)a4 strideInPixelsX:(unint64_t)a5 strideInPixelsY:(unint64_t)a6
+- (void)setKernelWidth:(unint64_t)width kernelHeight:(unint64_t)height strideInPixelsX:(unint64_t)x strideInPixelsY:(unint64_t)y
 {
-  self->super.super._primaryKernelWidth = a3;
-  self->super.super._primaryKernelHeight = a4;
-  self->super.super._primaryStrideInPixelsX = a5;
-  self->super.super._primaryStrideInPixelsY = a6;
+  self->super.super._primaryKernelWidth = width;
+  self->super.super._primaryKernelHeight = height;
+  self->super.super._primaryStrideInPixelsX = x;
+  self->super.super._primaryStrideInPixelsY = y;
   self->super.super._secondaryStrideInPixelsX = self->super.super._primaryStrideInPixelsX;
   self->super.super._secondaryStrideInPixelsY = self->super.super._primaryStrideInPixelsY;
 }
@@ -106,24 +106,24 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   *(&self->super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v20.receiver = self;
   v20.super_class = MPSCNNPoolingGradient;
   [(MPSCNNGradientKernel *)&v20 encodeWithCoder:?];
-  v4 += 54;
-  objc_msgSend_encodeInt64_forKey_(a3, v5, *v4, @"MPSCNNPoolingGradient.sourceSize.width", v6, v7, v8, v9);
-  objc_msgSend_encodeInt64_forKey_(a3, v10, v4[1], @"MPSCNNPoolingGradient.sourceSize.height", v11, v12, v13, v14);
-  objc_msgSend_encodeInt64_forKey_(a3, v15, v4[2], @"MPSCNNPoolingGradient.sourceSize.depth", v16, v17, v18, v19);
+  selfCopy += 54;
+  objc_msgSend_encodeInt64_forKey_(coder, v5, *selfCopy, @"MPSCNNPoolingGradient.sourceSize.width", v6, v7, v8, v9);
+  objc_msgSend_encodeInt64_forKey_(coder, v10, selfCopy[1], @"MPSCNNPoolingGradient.sourceSize.height", v11, v12, v13, v14);
+  objc_msgSend_encodeInt64_forKey_(coder, v15, selfCopy[2], @"MPSCNNPoolingGradient.sourceSize.depth", v16, v17, v18, v19);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v7.receiver = self;
   v7.super_class = MPSCNNPoolingGradient;
-  result = [(MPSCNNGradientKernel *)&v7 copyWithZone:a3 device:a4];
+  result = [(MPSCNNGradientKernel *)&v7 copyWithZone:zone device:device];
   if (result)
   {
     depth = self->_sourceSize.depth;

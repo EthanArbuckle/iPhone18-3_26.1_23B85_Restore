@@ -37,8 +37,8 @@
     v12 = v9;
   }
 
-  [a1 deactivateConstraints:v11];
-  [a1 activateConstraints:v12];
+  [self deactivateConstraints:v11];
+  [self activateConstraints:v12];
 }
 
 @end

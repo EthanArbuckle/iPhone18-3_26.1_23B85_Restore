@@ -1,26 +1,26 @@
 @interface SGTextMessageItem
-- (BOOL)isEqualToConversationTurn:(id)a3;
-- (SGTextMessageItem)initWithCoder:(id)a3;
-- (SGTextMessageItem)initWithTextMessage:(id)a3 detectedData:(id)a4;
+- (BOOL)isEqualToConversationTurn:(id)turn;
+- (SGTextMessageItem)initWithCoder:(id)coder;
+- (SGTextMessageItem)initWithTextMessage:(id)message detectedData:(id)data;
 @end
 
 @implementation SGTextMessageItem
 
-- (BOOL)isEqualToConversationTurn:(id)a3
+- (BOOL)isEqualToConversationTurn:(id)turn
 {
-  v5 = a3;
+  turnCopy = turn;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"SGTextMessageConversationTracker.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"[otherItem isKindOfClass:[SGTextMessageItem class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGTextMessageConversationTracker.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"[otherItem isKindOfClass:[SGTextMessageItem class]]"}];
   }
 
   text = self->_text;
-  if ((text == v5[2] || [(NSString *)text isEqual:?]) && ((senderID = self->_senderID, senderID == v5[3]) || [(NSString *)senderID isEqual:?]))
+  if ((text == turnCopy[2] || [(NSString *)text isEqual:?]) && ((senderID = self->_senderID, senderID == turnCopy[3]) || [(NSString *)senderID isEqual:?]))
   {
     timestamp = self->_timestamp;
-    if (timestamp == v5[4])
+    if (timestamp == turnCopy[4])
     {
       v9 = 1;
     }
@@ -39,17 +39,17 @@
   return v9;
 }
 
-- (SGTextMessageItem)initWithCoder:(id)a3
+- (SGTextMessageItem)initWithCoder:(id)coder
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"message"];
-  v6 = [v5 textContent];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"message"];
+  textContent = [v5 textContent];
 
-  if (v6)
+  if (textContent)
   {
     self = [(SGTextMessageItem *)self initWithTextMessage:v5];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -58,7 +58,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = coderCopy;
       _os_log_fault_impl(&dword_231E60000, v8, OS_LOG_TYPE_FAULT, "Error decoding null message.textContent in %@:", &v11, 0xCu);
     }
 
@@ -67,47 +67,47 @@
       abort();
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v7;
+  return selfCopy;
 }
 
-- (SGTextMessageItem)initWithTextMessage:(id)a3 detectedData:(id)a4
+- (SGTextMessageItem)initWithTextMessage:(id)message detectedData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
+  messageCopy = message;
+  dataCopy = data;
   v24.receiver = self;
   v24.super_class = SGTextMessageItem;
   v10 = [(SGTextMessageItem *)&v24 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_message, a3);
-    v12 = [(SGMessage *)v11->_message textContent];
+    objc_storeStrong(&v10->_message, message);
+    textContent = [(SGMessage *)v11->_message textContent];
     text = v11->_text;
-    v11->_text = v12;
+    v11->_text = textContent;
 
     if (!v11->_text)
     {
-      v23 = [MEMORY[0x277CCA890] currentHandler];
-      [v23 handleFailureInMethod:a2 object:v11 file:@"SGTextMessageConversationTracker.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"_text"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v11 file:@"SGTextMessageConversationTracker.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"_text"}];
     }
 
-    v14 = [v8 conversationIdentifier];
+    conversationIdentifier = [messageCopy conversationIdentifier];
     senderID = v11->_senderID;
-    v11->_senderID = v14;
+    v11->_senderID = conversationIdentifier;
 
-    v16 = [v8 date];
+    date = [messageCopy date];
     timestamp = v11->_timestamp;
-    v11->_timestamp = v16;
+    v11->_timestamp = date;
 
     v18 = [MEMORY[0x277D3A248] detectLanguageFromText:v11->_text];
     language = v11->_language;
     v11->_language = v18;
 
-    v20 = [v9 copy];
+    v20 = [dataCopy copy];
     detectedData = v11->_detectedData;
     v11->_detectedData = v20;
   }

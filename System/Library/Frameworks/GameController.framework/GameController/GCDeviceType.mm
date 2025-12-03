@@ -1,17 +1,17 @@
 @interface GCDeviceType
-+ (id)allocWithZone:(_NSZone *)a3;
-+ (id)deviceTypeWithIdentifier:(id)a3;
-+ (id)deviceTypeWithUTType:(id)a3;
-- (BOOL)conformsToDeviceType:(id)a3;
-- (BOOL)conformsToType:(id)a3;
++ (id)allocWithZone:(_NSZone *)zone;
++ (id)deviceTypeWithIdentifier:(id)identifier;
++ (id)deviceTypeWithUTType:(id)type;
+- (BOOL)conformsToDeviceType:(id)type;
+- (BOOL)conformsToType:(id)type;
 - (NSString)localizedDescription;
 @end
 
 @implementation GCDeviceType
 
-+ (id)deviceTypeWithIdentifier:(id)a3
++ (id)deviceTypeWithIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     +[GCDeviceType deviceTypeWithIdentifier:];
   }
@@ -20,33 +20,33 @@
   if (v5)
   {
 
-    return [a1 deviceTypeWithUTType:v5];
+    return [self deviceTypeWithUTType:v5];
   }
 
   else
   {
-    [(GCDeviceType *)a3 deviceTypeWithIdentifier:?];
+    [(GCDeviceType *)identifier deviceTypeWithIdentifier:?];
     return v7;
   }
 }
 
-+ (id)deviceTypeWithUTType:(id)a3
++ (id)deviceTypeWithUTType:(id)type
 {
-  if (!a3)
+  if (!type)
   {
     +[GCDeviceType deviceTypeWithUTType:];
   }
 
-  if (([a3 isDynamic] & 1) != 0 || !objc_msgSend(a3, "conformsToType:", *MEMORY[0x1E6983120]))
+  if (([type isDynamic] & 1) != 0 || !objc_msgSend(type, "conformsToType:", *MEMORY[0x1E6983120]))
   {
     return 0;
   }
 
-  [(GCDeviceType *)a3 deviceTypeWithUTType:?];
+  [(GCDeviceType *)type deviceTypeWithUTType:?];
   return v5;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
@@ -57,55 +57,55 @@
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___GCDeviceType;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
 - (NSString)localizedDescription
 {
-  v2 = [(GCDeviceType *)self type];
+  type = [(GCDeviceType *)self type];
 
-  return [(UTType *)v2 localizedDescription];
+  return [(UTType *)type localizedDescription];
 }
 
-- (BOOL)conformsToType:(id)a3
+- (BOOL)conformsToType:(id)type
 {
-  v5 = [(GCDeviceType *)self type];
-  if (v5)
+  type = [(GCDeviceType *)self type];
+  if (type)
   {
 
-    return [(UTType *)v5 conformsToType:a3];
+    return [(UTType *)type conformsToType:type];
   }
 
   else
   {
-    v7 = [(GCDeviceType *)self identifier];
-    v8 = [a3 identifier];
+    identifier = [(GCDeviceType *)self identifier];
+    identifier2 = [type identifier];
 
-    return [(NSString *)v7 isEqualToString:v8];
+    return [(NSString *)identifier isEqualToString:identifier2];
   }
 }
 
-- (BOOL)conformsToDeviceType:(id)a3
+- (BOOL)conformsToDeviceType:(id)type
 {
-  v5 = [(GCDeviceType *)self type];
-  v6 = [a3 type];
-  if (v5 && (v7 = v6) != 0)
+  type = [(GCDeviceType *)self type];
+  type2 = [type type];
+  if (type && (v7 = type2) != 0)
   {
 
-    return [(UTType *)v5 conformsToType:v6];
+    return [(UTType *)type conformsToType:type2];
   }
 
   else
   {
-    v9 = [(GCDeviceType *)self identifier];
-    v10 = [a3 identifier];
-    if (v9 && v10)
+    identifier = [(GCDeviceType *)self identifier];
+    identifier2 = [type identifier];
+    if (identifier && identifier2)
     {
 
-      return [(NSString *)v9 isEqualToString:v10];
+      return [(NSString *)identifier isEqualToString:identifier2];
     }
 
     else

@@ -3,42 +3,42 @@
 - (uint64_t)changeTypeGroups;
 - (unsigned)replacementArchivedObjects;
 - (unsigned)replacementGroups;
-- (void)replaceArchivedObjects:(id)a3;
-- (void)replaceGroups:(id)a3;
+- (void)replaceArchivedObjects:(id)objects;
+- (void)replaceGroups:(id)groups;
 @end
 
 @implementation _CHSRelevanceCacheBufChanges
 
-- (void)replaceArchivedObjects:(id)a3
+- (void)replaceArchivedObjects:(id)objects
 {
-  v5 = a3;
+  objectsCopy = objects;
   self->_changeTypeArchivedObjects = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = objectsCopy;
+  if (!objectsCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:528 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:528 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    objectsCopy = 0;
   }
 
-  self->_replacementArchivedObjects = [v5 unsignedIntValue];
+  self->_replacementArchivedObjects = [objectsCopy unsignedIntValue];
 }
 
-- (void)replaceGroups:(id)a3
+- (void)replaceGroups:(id)groups
 {
-  v5 = a3;
+  groupsCopy = groups;
   self->_changeTypeGroups = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = groupsCopy;
+  if (!groupsCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:551 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:551 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    groupsCopy = 0;
   }
 
-  self->_replacementGroups = [v5 unsignedIntValue];
+  self->_replacementGroups = [groupsCopy unsignedIntValue];
 }
 
 - (uint64_t)changeTypeArchivedObjects
@@ -53,13 +53,13 @@
 
 - (unsigned)replacementArchivedObjects
 {
-  if (a1)
+  if (self)
   {
-    a1 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a1[3]];
+    self = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:self[3]];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)changeTypeGroups
@@ -74,13 +74,13 @@
 
 - (unsigned)replacementGroups
 {
-  if (a1)
+  if (self)
   {
-    a1 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a1[5]];
+    self = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:self[5]];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

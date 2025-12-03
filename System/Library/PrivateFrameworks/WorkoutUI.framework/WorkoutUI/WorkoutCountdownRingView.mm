@@ -1,26 +1,26 @@
 @interface WorkoutCountdownRingView
-- (_TtC9WorkoutUI24WorkoutCountdownRingView)initWithFrame:(CGRect)a3;
-- (void)countdownAnimator:(id)a3 performingAnimation:(id)a4 withDuration:(double)a5;
-- (void)countdownAnimatorDidFinishAnimating:(id)a3;
+- (_TtC9WorkoutUI24WorkoutCountdownRingView)initWithFrame:(CGRect)frame;
+- (void)countdownAnimator:(id)animator performingAnimation:(id)animation withDuration:(double)duration;
+- (void)countdownAnimatorDidFinishAnimating:(id)animating;
 @end
 
 @implementation WorkoutCountdownRingView
 
-- (_TtC9WorkoutUI24WorkoutCountdownRingView)initWithFrame:(CGRect)a3
+- (_TtC9WorkoutUI24WorkoutCountdownRingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)countdownAnimatorDidFinishAnimating:(id)a3
+- (void)countdownAnimatorDidFinishAnimating:(id)animating
 {
   v4 = (self + OBJC_IVAR____TtC9WorkoutUI24WorkoutCountdownRingView_onCountdownCompleted);
   swift_beginAccess();
   v5 = *v4;
   if (*v4)
   {
-    v6 = self;
+    selfCopy = self;
     v7 = sub_20C69A264(v5);
     v5(v7);
 
@@ -28,12 +28,12 @@
   }
 }
 
-- (void)countdownAnimator:(id)a3 performingAnimation:(id)a4 withDuration:(double)a5
+- (void)countdownAnimator:(id)animator performingAnimation:(id)animation withDuration:(double)duration
 {
-  v7 = a3;
+  animatorCopy = animator;
   swift_unknownObjectRetain();
-  v8 = self;
-  specialized WorkoutCountdownRingView.countdownAnimator(_:performing:withDuration:)(a4);
+  selfCopy = self;
+  specialized WorkoutCountdownRingView.countdownAnimator(_:performing:withDuration:)(animation);
 
   swift_unknownObjectRelease();
 }

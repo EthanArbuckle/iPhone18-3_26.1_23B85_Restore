@@ -1,6 +1,6 @@
 @interface SensitiveMessageIndicatorView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC11TelephonyUI29SensitiveMessageIndicatorView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC11TelephonyUI29SensitiveMessageIndicatorView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
@@ -8,15 +8,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B48DD45C();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_1B48DD5CC(width, height);
   v7 = v6;
   v9 = v8;
@@ -28,15 +28,15 @@
   return result;
 }
 
-- (_TtC11TelephonyUI29SensitiveMessageIndicatorView)initWithCoder:(id)a3
+- (_TtC11TelephonyUI29SensitiveMessageIndicatorView)initWithCoder:(id)coder
 {
   v5 = OBJC_IVAR____TtC11TelephonyUI29SensitiveMessageIndicatorView_sensitivityLabel;
   v6 = objc_allocWithZone(MEMORY[0x1E69DCC10]);
-  v7 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.super.isa + v5) = [v6 init];
   v10.receiver = self;
   v10.super_class = type metadata accessor for SensitiveMessageIndicatorView();
-  v8 = [(MessageIndicatorView *)&v10 initWithCoder:v7];
+  v8 = [(MessageIndicatorView *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

@@ -1,16 +1,16 @@
 @interface PKContinuityPaymentViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
 @end
 
 @implementation PKContinuityPaymentViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKContinuityPaymentViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PKContinuityPaymentViewController" hasInstanceVariable:@"_priceView" withType:"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKContinuityPaymentViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PKContinuityPaymentViewController" hasInstanceVariable:@"_priceView" withType:"UIView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

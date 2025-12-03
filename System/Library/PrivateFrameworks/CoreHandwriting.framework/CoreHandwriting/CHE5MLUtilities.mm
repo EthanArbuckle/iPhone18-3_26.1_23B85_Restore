@@ -1,21 +1,21 @@
 @interface CHE5MLUtilities
-+ (__IOSurface)createInputSurfaceForMultiArray:(id)a3;
-+ (id)createInputSurfacesForFeatureProvider:(id)a3;
-+ (id)featureProviderForE5RTOutputs:(id)a3 functionDescriptor:(id)a4 dataType:(int64_t)a5 error:(id *)a6;
-+ (id)multiArrayForOutput:(id)a3 inNamedObjects:(id)a4 functionDescriptor:(id)a5 dataType:(int64_t)a6 error:(id *)a7;
-+ (id)newE5RTExecutionOutputsForFunctionDescriptor:(id)a3 error:(id *)a4;
-+ (id)newInputsForFunctionDescriptor:(id)a3 surfaces:(id)a4 error:(id *)a5;
++ (__IOSurface)createInputSurfaceForMultiArray:(id)array;
++ (id)createInputSurfacesForFeatureProvider:(id)provider;
++ (id)featureProviderForE5RTOutputs:(id)outputs functionDescriptor:(id)descriptor dataType:(int64_t)type error:(id *)error;
++ (id)multiArrayForOutput:(id)output inNamedObjects:(id)objects functionDescriptor:(id)descriptor dataType:(int64_t)type error:(id *)error;
++ (id)newE5RTExecutionOutputsForFunctionDescriptor:(id)descriptor error:(id *)error;
++ (id)newInputsForFunctionDescriptor:(id)descriptor surfaces:(id)surfaces error:(id *)error;
 @end
 
 @implementation CHE5MLUtilities
 
-+ (__IOSurface)createInputSurfaceForMultiArray:(id)a3
++ (__IOSurface)createInputSurfaceForMultiArray:(id)array
 {
   v61 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (objc_msgSend_dataType(v3, v4, v5, v6, v7, v8) == 65568)
+  arrayCopy = array;
+  if (objc_msgSend_dataType(arrayCopy, v4, v5, v6, v7, v8) == 65568)
   {
-    v14 = objc_msgSend_count(v3, v9, v10, v11, v12, v13);
+    v14 = objc_msgSend_count(arrayCopy, v9, v10, v11, v12, v13);
     v17 = sub_18377EA64(v14, 1, 2, 2 * v14, v15, v16);
     v22 = IOSurfaceLock(v17, 0, 0);
     if (v22)
@@ -41,7 +41,7 @@
     v56[4] = 4 * v14;
     v56[5] = v17;
     v56[6] = v14;
-    objc_msgSend_getBytesWithHandler_(v3, v18, v56, v19, v20, v21);
+    objc_msgSend_getBytesWithHandler_(arrayCopy, v18, v56, v19, v20, v21);
     v42 = IOSurfaceUnlock(v17, 0, 0);
     if (v42)
     {
@@ -67,14 +67,14 @@
 
   else
   {
-    if (objc_msgSend_dataType(v3, v9, v10, v11, v12, v13) != 131104)
+    if (objc_msgSend_dataType(arrayCopy, v9, v10, v11, v12, v13) != 131104)
     {
 LABEL_24:
       v17 = 0;
       goto LABEL_25;
     }
 
-    v34 = objc_msgSend_count(v3, v29, v30, v31, v32, v33);
+    v34 = objc_msgSend_count(arrayCopy, v29, v30, v31, v32, v33);
     v35 = 4 * v34;
     v17 = sub_18377EA64(v34, 1, 4, 4 * v34, v36, v37);
     v22 = IOSurfaceLock(v17, 0, 0);
@@ -109,7 +109,7 @@ LABEL_23:
     v55[3] = &unk_1E6DE05C0;
     v55[4] = v35;
     v55[5] = v17;
-    objc_msgSend_getBytesWithHandler_(v3, v38, v55, v39, v40, v41);
+    objc_msgSend_getBytesWithHandler_(arrayCopy, v38, v55, v39, v40, v41);
     v48 = IOSurfaceUnlock(v17, 0, 0);
     if (v48)
     {
@@ -138,16 +138,16 @@ LABEL_25:
   return v17;
 }
 
-+ (id)createInputSurfacesForFeatureProvider:(id)a3
++ (id)createInputSurfacesForFeatureProvider:(id)provider
 {
   v58 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  providerCopy = provider;
   v9 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v4, v5, v6, v7, v8);
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = objc_msgSend_featureNames(v3, v10, v11, v12, v13, v14);
+  obj = objc_msgSend_featureNames(providerCopy, v10, v11, v12, v13, v14);
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v15, &v53, v57, 16, v16);
   if (v21)
   {
@@ -162,7 +162,7 @@ LABEL_25:
         }
 
         v24 = *(*(&v53 + 1) + 8 * i);
-        v25 = objc_msgSend_featureValueForName_(v3, v17, v24, v18, v19, v20);
+        v25 = objc_msgSend_featureValueForName_(providerCopy, v17, v24, v18, v19, v20);
         v31 = objc_msgSend_multiArrayValue(v25, v26, v27, v28, v29, v30);
 
         InputSurfaceForMultiArray = objc_msgSend_createInputSurfaceForMultiArray_(CHE5MLUtilities, v32, v31, v33, v34, v35);
@@ -193,18 +193,18 @@ LABEL_11:
   return v50;
 }
 
-+ (id)newInputsForFunctionDescriptor:(id)a3 surfaces:(id)a4 error:(id *)a5
++ (id)newInputsForFunctionDescriptor:(id)descriptor surfaces:(id)surfaces error:(id *)error
 {
   v147 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v133 = a4;
-  v128 = v6;
+  descriptorCopy = descriptor;
+  surfacesCopy = surfaces;
+  v128 = descriptorCopy;
   v132 = objc_alloc_init(MEMORY[0x1E69DF940]);
   v136 = 0u;
   v137 = 0u;
   v134 = 0u;
   v135 = 0u;
-  v12 = objc_msgSend_allInputs(v6, v7, v8, v9, v10, v11);
+  v12 = objc_msgSend_allInputs(descriptorCopy, v7, v8, v9, v10, v11);
   obj = v12;
   v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v134, v146, 16, v14);
   if (v20)
@@ -222,7 +222,7 @@ LABEL_11:
 
         v22 = *(*(&v134 + 1) + 8 * v21);
         v23 = objc_msgSend_name(v22, v15, v16, v17, v18, v19);
-        v28 = objc_msgSend_objectForKeyedSubscript_(v133, v24, v23, v25, v26, v27);
+        v28 = objc_msgSend_objectForKeyedSubscript_(surfacesCopy, v24, v23, v25, v26, v27);
         v34 = objc_msgSend_pointerValue(v28, v29, v30, v31, v32, v33);
 
         Height = IOSurfaceGetHeight(v34);
@@ -348,7 +348,7 @@ LABEL_11:
           }
         }
 
-        v124 = objc_msgSend_assignSurface_toName_error_(v132, v120, v34, v23, a5, v121);
+        v124 = objc_msgSend_assignSurface_toName_error_(v132, v120, v34, v23, error, v121);
 
         if (!v124)
         {
@@ -380,15 +380,15 @@ LABEL_38:
   return v126;
 }
 
-+ (id)multiArrayForOutput:(id)a3 inNamedObjects:(id)a4 functionDescriptor:(id)a5 dataType:(int64_t)a6 error:(id *)a7
++ (id)multiArrayForOutput:(id)output inNamedObjects:(id)objects functionDescriptor:(id)descriptor dataType:(int64_t)type error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v17 = v13;
-  if (a6 == 65568)
+  outputCopy = output;
+  objectsCopy = objects;
+  descriptorCopy = descriptor;
+  v17 = descriptorCopy;
+  if (type == 65568)
   {
-    v18 = objc_msgSend_outputNamed_error_(v13, v14, v11, a7, v15, v16);
+    v18 = objc_msgSend_outputNamed_error_(descriptorCopy, v14, outputCopy, error, v15, v16);
     v24 = v18;
     if (v18)
     {
@@ -413,7 +413,7 @@ LABEL_38:
       v55 = &v57;
       v39 = MEMORY[0x1865E6810](v52);
       v45 = objc_msgSend_name(v24, v40, v41, v42, v43, v44);
-      OnlyDataForName_usingBlock_error = objc_msgSend_accessReadOnlyDataForName_usingBlock_error_(v12, v46, v45, v39, a7, v47);
+      OnlyDataForName_usingBlock_error = objc_msgSend_accessReadOnlyDataForName_usingBlock_error_(objectsCopy, v46, v45, v39, error, v47);
 
       if (OnlyDataForName_usingBlock_error)
       {
@@ -442,17 +442,17 @@ LABEL_38:
   return v49;
 }
 
-+ (id)featureProviderForE5RTOutputs:(id)a3 functionDescriptor:(id)a4 dataType:(int64_t)a5 error:(id *)a6
++ (id)featureProviderForE5RTOutputs:(id)outputs functionDescriptor:(id)descriptor dataType:(int64_t)type error:(id *)error
 {
   v67 = *MEMORY[0x1E69E9840];
-  v61 = a3;
-  v9 = a4;
+  outputsCopy = outputs;
+  descriptorCopy = descriptor;
   v15 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v10, v11, v12, v13, v14);
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v21 = objc_msgSend_allOutputs(v9, v16, v17, v18, v19, v20);
+  v21 = objc_msgSend_allOutputs(descriptorCopy, v16, v17, v18, v19, v20);
   obj = v21;
   v29 = objc_msgSend_countByEnumeratingWithState_objects_count_(v21, v22, &v62, v66, 16, v23);
   if (v29)
@@ -470,7 +470,7 @@ LABEL_38:
         }
 
         v33 = objc_msgSend_name(*(*(&v62 + 1) + 8 * i), v24, v25, v26, v27, v28, v59);
-        v35 = objc_msgSend_multiArrayForOutput_inNamedObjects_functionDescriptor_dataType_error_(CHE5MLUtilities, v34, v33, v61, v9, a5, a6);
+        v35 = objc_msgSend_multiArrayForOutput_inNamedObjects_functionDescriptor_dataType_error_(CHE5MLUtilities, v34, v33, outputsCopy, descriptorCopy, type, error);
         objc_msgSend_setObject_forKeyedSubscript_(v15, v36, v35, v33, v37, v38);
         v39 = v35;
         v45 = objc_msgSend_dataPointer(v35, v40, v41, v42, v43, v44);
@@ -501,16 +501,16 @@ LABEL_38:
   return v57;
 }
 
-+ (id)newE5RTExecutionOutputsForFunctionDescriptor:(id)a3 error:(id *)a4
++ (id)newE5RTExecutionOutputsForFunctionDescriptor:(id)descriptor error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  descriptorCopy = descriptor;
   v6 = objc_alloc_init(MEMORY[0x1E69DF940]);
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = objc_msgSend_allOutputs(v5, v7, v8, v9, v10, v11, 0);
+  v12 = objc_msgSend_allOutputs(descriptorCopy, v7, v8, v9, v10, v11, 0);
   v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v23, v27, 16, v14);
   if (v18)
   {
@@ -525,7 +525,7 @@ LABEL_38:
           objc_enumerationMutation(v12);
         }
 
-        if ((objc_msgSend_E5RTExecutionContextAssignNewTensorInstanceToNamedObjects_error_(*(*(&v23 + 1) + 8 * v20), v15, v6, a4, v16, v17) & 1) == 0)
+        if ((objc_msgSend_E5RTExecutionContextAssignNewTensorInstanceToNamedObjects_error_(*(*(&v23 + 1) + 8 * v20), v15, v6, error, v16, v17) & 1) == 0)
         {
 
           v21 = 0;

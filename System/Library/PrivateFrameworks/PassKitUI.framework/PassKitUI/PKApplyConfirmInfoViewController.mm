@@ -1,22 +1,22 @@
 @interface PKApplyConfirmInfoViewController
-- (PKApplyConfirmInfoViewController)initWithController:(id)a3 setupDelegate:(id)a4 context:(int64_t)a5 applyPage:(id)a6;
+- (PKApplyConfirmInfoViewController)initWithController:(id)controller setupDelegate:(id)delegate context:(int64_t)context applyPage:(id)page;
 - (void)_continueAction;
-- (void)didSelectActionItem:(id)a3;
+- (void)didSelectActionItem:(id)item;
 - (void)viewDidLoad;
 @end
 
 @implementation PKApplyConfirmInfoViewController
 
-- (PKApplyConfirmInfoViewController)initWithController:(id)a3 setupDelegate:(id)a4 context:(int64_t)a5 applyPage:(id)a6
+- (PKApplyConfirmInfoViewController)initWithController:(id)controller setupDelegate:(id)delegate context:(int64_t)context applyPage:(id)page
 {
-  v10 = a3;
-  v11 = a6;
+  controllerCopy = controller;
+  pageCopy = page;
   v16.receiver = self;
   v16.super_class = PKApplyConfirmInfoViewController;
-  v12 = [(PKApplyCollectionViewController *)&v16 initWithController:v10 setupDelegate:a4 context:a5 applyPage:v11];
+  v12 = [(PKApplyCollectionViewController *)&v16 initWithController:controllerCopy setupDelegate:delegate context:context applyPage:pageCopy];
   if (v12)
   {
-    v13 = [[PKApplyConfirmInfoSectionController alloc] initWithController:v10 applyPage:v11 delegate:v12];
+    v13 = [[PKApplyConfirmInfoSectionController alloc] initWithController:controllerCopy applyPage:pageCopy delegate:v12];
     sectionController = v12->_sectionController;
     v12->_sectionController = v13;
   }
@@ -57,37 +57,37 @@ uint64_t __47__PKApplyConfirmInfoViewController_viewDidLoad__block_invoke(uint64
   return 0;
 }
 
-- (void)didSelectActionItem:(id)a3
+- (void)didSelectActionItem:(id)item
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 contextPrimaryActionIdentifier];
-  if (v5)
+  itemCopy = item;
+  contextPrimaryActionIdentifier = [itemCopy contextPrimaryActionIdentifier];
+  if (contextPrimaryActionIdentifier)
   {
-    v6 = [(PKApplyCollectionViewController *)self controller];
-    v7 = [(PKApplyCollectionViewController *)self page];
-    v8 = [(PKApplyCollectionViewController *)self pageTag];
+    controller = [(PKApplyCollectionViewController *)self controller];
+    page = [(PKApplyCollectionViewController *)self page];
+    pageTag = [(PKApplyCollectionViewController *)self pageTag];
     v9 = *MEMORY[0x1E69BA7C8];
     v10 = *MEMORY[0x1E69BB170];
     v19[0] = *MEMORY[0x1E69BA680];
     v19[1] = v10;
     v20[0] = v9;
-    v20[1] = v5;
+    v20[1] = contextPrimaryActionIdentifier;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
-    [v6 reportAnalyticsDictionaryForPage:v7 pageTag:v8 additionalValues:v11];
+    [controller reportAnalyticsDictionaryForPage:page pageTag:pageTag additionalValues:v11];
 
     [(PKPaymentSetupOptionsViewController *)self setShowNavigationBarSpinner:1];
     objc_initWeak(&location, self);
-    v12 = [(PKApplyCollectionViewController *)self controller];
-    v13 = [(PKApplyCollectionViewController *)self currentPage];
-    v14 = [v13 footerContent];
-    v15 = [v14 termsIdentifiers];
+    controller2 = [(PKApplyCollectionViewController *)self controller];
+    currentPage = [(PKApplyCollectionViewController *)self currentPage];
+    footerContent = [currentPage footerContent];
+    termsIdentifiers = [footerContent termsIdentifiers];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __56__PKApplyConfirmInfoViewController_didSelectActionItem___block_invoke;
     v16[3] = &unk_1E80162F0;
     objc_copyWeak(&v17, &location);
-    [v12 submitActionIdentifier:v5 termsIdentifiers:v15 odiAttributesDictionary:0 completion:v16];
+    [controller2 submitActionIdentifier:contextPrimaryActionIdentifier termsIdentifiers:termsIdentifiers odiAttributesDictionary:0 completion:v16];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -108,60 +108,60 @@ void __56__PKApplyConfirmInfoViewController_didSelectActionItem___block_invoke(u
 
 - (void)_continueAction
 {
-  v3 = [(PKApplyCollectionViewController *)self currentPage];
-  v4 = [v3 loadingPageContent];
-  if (!v4)
+  currentPage = [(PKApplyCollectionViewController *)self currentPage];
+  loadingPageContent = [currentPage loadingPageContent];
+  if (!loadingPageContent)
   {
-    v5 = [(PKApplyCollectionViewController *)self controller];
-    if (![v5 featureIdentifier])
+    controller = [(PKApplyCollectionViewController *)self controller];
+    if (![controller featureIdentifier])
     {
-      v6 = [(PKApplyCollectionViewController *)self controller];
-      v7 = [v6 featureApplication];
-      [v7 feature];
+      controller2 = [(PKApplyCollectionViewController *)self controller];
+      featureApplication = [controller2 featureApplication];
+      [featureApplication feature];
     }
 
-    v8 = [(PKApplyCollectionViewController *)self controller];
-    v9 = [v8 preferredLanguage];
+    controller3 = [(PKApplyCollectionViewController *)self controller];
+    preferredLanguage = [controller3 preferredLanguage];
 
-    v4 = objc_alloc_init(MEMORY[0x1E69B8818]);
+    loadingPageContent = objc_alloc_init(MEMORY[0x1E69B8818]);
     v10 = PKLocalizedApplyFeatureString();
-    [v4 setTitle:v10];
+    [loadingPageContent setTitle:v10];
 
     v11 = PKLocalizedApplyFeatureString();
-    [v4 setSubtitle:v11];
+    [loadingPageContent setSubtitle:v11];
   }
 
-  v12 = [v4 identifier];
+  identifier = [loadingPageContent identifier];
 
-  if (!v12)
+  if (!identifier)
   {
-    [v4 setIdentifier:@"ApplyConfirmInfoVerifying"];
+    [loadingPageContent setIdentifier:@"ApplyConfirmInfoVerifying"];
   }
 
   v27 = [PKApplyVerifyingViewController alloc];
-  v13 = [(PKApplyCollectionViewController *)self controller];
-  v14 = [(PKApplyCollectionViewController *)self setupDelegate];
-  v15 = v4;
-  v16 = [(PKPaymentSetupOptionsViewController *)self context];
-  v17 = [v3 primaryActionIdentifier];
-  v18 = [v3 footerContent];
-  v19 = [v18 termsIdentifiers];
-  v26 = v3;
-  v20 = [v3 actionContent];
-  v21 = [v20 odiAttributesDictionary];
-  v22 = v16;
+  controller4 = [(PKApplyCollectionViewController *)self controller];
+  setupDelegate = [(PKApplyCollectionViewController *)self setupDelegate];
+  v15 = loadingPageContent;
+  context = [(PKPaymentSetupOptionsViewController *)self context];
+  primaryActionIdentifier = [currentPage primaryActionIdentifier];
+  footerContent = [currentPage footerContent];
+  termsIdentifiers = [footerContent termsIdentifiers];
+  v26 = currentPage;
+  actionContent = [currentPage actionContent];
+  odiAttributesDictionary = [actionContent odiAttributesDictionary];
+  v22 = context;
   v23 = v15;
-  v24 = [(PKApplyVerifyingViewController *)v27 initWithController:v13 setupDelegate:v14 context:v22 applyPage:v15 actionIdentifierToSubmit:v17 termsIdentifiersToSubmit:v19 odiAttributesDictionaryToSubmit:v21];
+  v24 = [(PKApplyVerifyingViewController *)v27 initWithController:controller4 setupDelegate:setupDelegate context:v22 applyPage:v15 actionIdentifierToSubmit:primaryActionIdentifier termsIdentifiersToSubmit:termsIdentifiers odiAttributesDictionaryToSubmit:odiAttributesDictionary];
 
   [(PKPaymentSetupOptionsViewController *)self setShowNavigationBarSpinner:1];
   objc_initWeak(&location, self);
-  v25 = [(PKApplyConfirmInfoViewController *)self navigationController];
+  navigationController = [(PKApplyConfirmInfoViewController *)self navigationController];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __51__PKApplyConfirmInfoViewController__continueAction__block_invoke;
   v28[3] = &unk_1E8011180;
   objc_copyWeak(&v29, &location);
-  [v25 pk_presentPaymentSetupViewController:v24 animated:1 completion:v28];
+  [navigationController pk_presentPaymentSetupViewController:v24 animated:1 completion:v28];
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(&location);

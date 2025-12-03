@@ -1,29 +1,29 @@
 @interface RTUserCuration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToUserCuration:(id)a3;
-- (RTUserCuration)initWithCoder:(id)a3;
-- (RTUserCuration)initWithIdentifier:(id)a3 submissionDate:(id)a4 expirationDate:(id)a5 entryDate:(id)a6 exitDate:(id)a7 visitIdentifier:(id)a8 originalLabel:(id)a9 curatedLabel:(id)a10;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToUserCuration:(id)curation;
+- (RTUserCuration)initWithCoder:(id)coder;
+- (RTUserCuration)initWithIdentifier:(id)identifier submissionDate:(id)date expirationDate:(id)expirationDate entryDate:(id)entryDate exitDate:(id)exitDate visitIdentifier:(id)visitIdentifier originalLabel:(id)label curatedLabel:(id)self0;
 - (id)abbreviatedDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTUserCuration
 
-- (RTUserCuration)initWithIdentifier:(id)a3 submissionDate:(id)a4 expirationDate:(id)a5 entryDate:(id)a6 exitDate:(id)a7 visitIdentifier:(id)a8 originalLabel:(id)a9 curatedLabel:(id)a10
+- (RTUserCuration)initWithIdentifier:(id)identifier submissionDate:(id)date expirationDate:(id)expirationDate entryDate:(id)entryDate exitDate:(id)exitDate visitIdentifier:(id)visitIdentifier originalLabel:(id)label curatedLabel:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v32 = a5;
-  v31 = a6;
-  v30 = a7;
-  v28 = a8;
-  v26 = a9;
-  v25 = a10;
-  v29 = v17;
-  if (!v16)
+  identifierCopy = identifier;
+  dateCopy = date;
+  expirationDateCopy = expirationDate;
+  entryDateCopy = entryDate;
+  exitDateCopy = exitDate;
+  visitIdentifierCopy = visitIdentifier;
+  labelCopy = label;
+  curatedLabelCopy = curatedLabel;
+  v29 = dateCopy;
+  if (!identifierCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -38,7 +38,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v17)
+  if (!dateCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -51,7 +51,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v32)
+  if (!expirationDateCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -64,7 +64,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v31)
+  if (!entryDateCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -77,7 +77,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v30)
+  if (!exitDateCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -90,28 +90,28 @@ LABEL_19:
 LABEL_20:
 
     v21 = 0;
-    v20 = self;
+    selfCopy = self;
     goto LABEL_21;
   }
 
   v33.receiver = self;
   v33.super_class = RTUserCuration;
-  v18 = [(RTUserCuration *)&v33 init:v25];
+  v18 = [(RTUserCuration *)&v33 init:curatedLabelCopy];
   p_isa = &v18->super.isa;
   if (v18)
   {
-    objc_storeStrong(&v18->_identifier, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
-    objc_storeStrong(p_isa + 5, a7);
-    objc_storeStrong(p_isa + 7, a8);
-    objc_storeStrong(p_isa + 8, a9);
-    objc_storeStrong(p_isa + 6, a10);
+    objc_storeStrong(&v18->_identifier, identifier);
+    objc_storeStrong(p_isa + 2, date);
+    objc_storeStrong(p_isa + 3, expirationDate);
+    objc_storeStrong(p_isa + 4, entryDate);
+    objc_storeStrong(p_isa + 5, exitDate);
+    objc_storeStrong(p_isa + 7, visitIdentifier);
+    objc_storeStrong(p_isa + 8, label);
+    objc_storeStrong(p_isa + 6, curatedLabel);
   }
 
-  v20 = p_isa;
-  v21 = v20;
+  selfCopy = p_isa;
+  v21 = selfCopy;
 LABEL_21:
 
   return v21;
@@ -121,14 +121,14 @@ LABEL_21:
 {
   v3 = MEMORY[0x1E696AEC0];
   identifier = self->_identifier;
-  v5 = [(NSDate *)self->_submissionDate stringFromDate];
-  v6 = [(NSDate *)self->_expirationDate stringFromDate];
-  v7 = [(NSDate *)self->_visitEntryDate stringFromDate];
-  v8 = [(NSDate *)self->_visitExitDate stringFromDate];
+  stringFromDate = [(NSDate *)self->_submissionDate stringFromDate];
+  stringFromDate2 = [(NSDate *)self->_expirationDate stringFromDate];
+  stringFromDate3 = [(NSDate *)self->_visitEntryDate stringFromDate];
+  stringFromDate4 = [(NSDate *)self->_visitExitDate stringFromDate];
   visitIdentifier = self->_visitIdentifier;
-  v10 = [(RTMapItem *)self->_originalLabel name];
-  v11 = [(RTMapItem *)self->_curatedLabel name];
-  v12 = [v3 stringWithFormat:@"identifier, %@, submissionDate, %@, expirationDate, %@, visit entry date, %@, visit exit date, %@, visit identifier, %@, original label, %@, curated label, %@", identifier, v5, v6, v7, v8, visitIdentifier, v10, v11];
+  name = [(RTMapItem *)self->_originalLabel name];
+  name2 = [(RTMapItem *)self->_curatedLabel name];
+  v12 = [v3 stringWithFormat:@"identifier, %@, submissionDate, %@, expirationDate, %@, visit entry date, %@, visit exit date, %@, visit identifier, %@, original label, %@, curated label, %@", identifier, stringFromDate, stringFromDate2, stringFromDate3, stringFromDate4, visitIdentifier, name, name2];
 
   return v12;
 }
@@ -147,53 +147,53 @@ LABEL_21:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_submissionDate forKey:@"submissionDate"];
-  [v5 encodeObject:self->_expirationDate forKey:@"expirationDate"];
-  [v5 encodeObject:self->_visitEntryDate forKey:@"visitEntryDate"];
-  [v5 encodeObject:self->_visitExitDate forKey:@"visitExitDate"];
-  [v5 encodeObject:self->_visitIdentifier forKey:@"visitIdentifier"];
-  [v5 encodeObject:self->_originalLabel forKey:@"originalLabel"];
-  [v5 encodeObject:self->_curatedLabel forKey:@"curatedLabel"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_submissionDate forKey:@"submissionDate"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  [coderCopy encodeObject:self->_visitEntryDate forKey:@"visitEntryDate"];
+  [coderCopy encodeObject:self->_visitExitDate forKey:@"visitExitDate"];
+  [coderCopy encodeObject:self->_visitIdentifier forKey:@"visitIdentifier"];
+  [coderCopy encodeObject:self->_originalLabel forKey:@"originalLabel"];
+  [coderCopy encodeObject:self->_curatedLabel forKey:@"curatedLabel"];
 }
 
-- (RTUserCuration)initWithCoder:(id)a3
+- (RTUserCuration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"submissionDate"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"visitEntryDate"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"visitExitDate"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"visitIdentifier"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalLabel"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"curatedLabel"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"submissionDate"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visitEntryDate"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visitExitDate"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visitIdentifier"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalLabel"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"curatedLabel"];
 
   v13 = [(RTUserCuration *)self initWithIdentifier:v5 submissionDate:v6 expirationDate:v7 entryDate:v8 exitDate:v9 visitIdentifier:v10 originalLabel:v11 curatedLabel:v12];
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   originalLabel = self->_originalLabel;
   return [v4 initWithIdentifier:self->_identifier submissionDate:self->_submissionDate expirationDate:self->_expirationDate entryDate:self->_visitEntryDate exitDate:self->_visitExitDate visitIdentifier:self->_visitIdentifier originalLabel:originalLabel curatedLabel:self->_curatedLabel];
 }
 
-- (BOOL)isEqualToUserCuration:(id)a3
+- (BOOL)isEqualToUserCuration:(id)curation
 {
-  v7 = a3;
-  v8 = v7;
+  curationCopy = curation;
+  v8 = curationCopy;
   identifier = self->_identifier;
   v10 = identifier;
   if (!identifier)
   {
-    v3 = [v7 identifier];
-    if (!v3)
+    identifier = [curationCopy identifier];
+    if (!identifier)
     {
       v11 = 0;
       goto LABEL_8;
@@ -202,8 +202,8 @@ LABEL_21:
     v10 = self->_identifier;
   }
 
-  v4 = [v8 identifier];
-  if (([(NSUUID *)v10 isEqual:v4]& 1) == 0)
+  identifier2 = [v8 identifier];
+  if (([(NSUUID *)v10 isEqual:identifier2]& 1) == 0)
   {
 
     v12 = 0;
@@ -216,8 +216,8 @@ LABEL_8:
   v14 = submissionDate;
   if (!submissionDate)
   {
-    v15 = [v8 submissionDate];
-    if (!v15)
+    submissionDate = [v8 submissionDate];
+    if (!submissionDate)
     {
       v59 = v11;
       v57 = 0;
@@ -225,12 +225,12 @@ LABEL_8:
       goto LABEL_17;
     }
 
-    v57 = v15;
+    v57 = submissionDate;
     v14 = self->_submissionDate;
   }
 
-  v5 = [v8 submissionDate];
-  if (![(NSDate *)v14 isEqualToDate:v5])
+  submissionDate2 = [v8 submissionDate];
+  if (![(NSDate *)v14 isEqualToDate:submissionDate2])
   {
 
     v12 = 0;
@@ -249,19 +249,19 @@ LABEL_17:
   v18 = expirationDate;
   if (!expirationDate)
   {
-    v19 = [v8 expirationDate];
-    if (!v19)
+    expirationDate = [v8 expirationDate];
+    if (!expirationDate)
     {
       v54 = 0;
       v56 = 0;
       goto LABEL_24;
     }
 
-    v54 = v19;
+    v54 = expirationDate;
     v18 = self->_expirationDate;
   }
 
-  v58 = [v8 expirationDate];
+  expirationDate2 = [v8 expirationDate];
   if (![(NSDate *)v18 isEqualToDate:?])
   {
     v12 = 0;
@@ -274,8 +274,8 @@ LABEL_24:
   v55 = visitEntryDate;
   if (!visitEntryDate)
   {
-    v21 = [v8 visitEntryDate];
-    if (!v21)
+    visitEntryDate = [v8 visitEntryDate];
+    if (!visitEntryDate)
     {
       v52 = 0;
       v53 = v16;
@@ -283,14 +283,14 @@ LABEL_24:
       goto LABEL_31;
     }
 
-    v49 = v21;
+    v49 = visitEntryDate;
     visitEntryDate = self->_visitEntryDate;
   }
 
-  v22 = [v8 visitEntryDate];
+  visitEntryDate2 = [v8 visitEntryDate];
   v23 = visitEntryDate;
-  visitEntryDate = v22;
-  if (![(NSDate *)v23 isEqualToDate:v22])
+  visitEntryDate = visitEntryDate2;
+  if (![(NSDate *)v23 isEqualToDate:visitEntryDate2])
   {
     v12 = 0;
     goto LABEL_67;
@@ -303,19 +303,19 @@ LABEL_31:
   v51 = visitExitDate;
   if (!visitExitDate)
   {
-    v25 = [v8 visitExitDate];
-    if (!v25)
+    visitExitDate = [v8 visitExitDate];
+    if (!visitExitDate)
     {
       v45 = 0;
       v48 = 0;
       goto LABEL_38;
     }
 
-    v45 = v25;
+    v45 = visitExitDate;
     visitExitDate = self->_visitExitDate;
   }
 
-  v50 = [v8 visitExitDate];
+  visitExitDate2 = [v8 visitExitDate];
   if (![(NSDate *)visitExitDate isEqualToDate:?])
   {
     v12 = 0;
@@ -329,19 +329,19 @@ LABEL_38:
   v47 = visitIdentifier;
   if (!visitIdentifier)
   {
-    v27 = [v8 visitIdentifier];
-    if (!v27)
+    visitIdentifier = [v8 visitIdentifier];
+    if (!visitIdentifier)
     {
       v41 = 0;
       v44 = 0;
       goto LABEL_45;
     }
 
-    v41 = v27;
+    v41 = visitIdentifier;
     visitIdentifier = self->_visitIdentifier;
   }
 
-  v46 = [v8 visitIdentifier];
+  visitIdentifier2 = [v8 visitIdentifier];
   if (![(NSUUID *)visitIdentifier isEqual:?])
   {
     v12 = 0;
@@ -355,19 +355,19 @@ LABEL_45:
   v43 = originalLabel;
   if (!originalLabel)
   {
-    v29 = [v8 originalLabel];
-    if (!v29)
+    originalLabel = [v8 originalLabel];
+    if (!originalLabel)
     {
       v38 = 0;
       v40 = 0;
       goto LABEL_52;
     }
 
-    v38 = v29;
+    v38 = originalLabel;
     originalLabel = self->_originalLabel;
   }
 
-  v42 = [v8 originalLabel];
+  originalLabel2 = [v8 originalLabel];
   if (![(RTMapItem *)originalLabel isEqualToMapItem:?])
   {
     v12 = 0;
@@ -384,8 +384,8 @@ LABEL_52:
   v31 = curatedLabel;
   if (!curatedLabel)
   {
-    v32 = [v8 curatedLabel];
-    if (!v32)
+    curatedLabel = [v8 curatedLabel];
+    if (!curatedLabel)
     {
       v36 = 0;
       v12 = 1;
@@ -400,14 +400,14 @@ LABEL_93:
       goto LABEL_59;
     }
 
-    v37 = v32;
+    v37 = curatedLabel;
     v31 = self->_curatedLabel;
   }
 
   v39 = visitEntryDate;
   v33 = v31;
-  v34 = [v8 curatedLabel];
-  v12 = [(RTMapItem *)v33 isEqualToMapItem:v34];
+  curatedLabel2 = [v8 curatedLabel];
+  v12 = [(RTMapItem *)v33 isEqualToMapItem:curatedLabel2];
 
   if (!curatedLabel)
   {
@@ -531,18 +531,18 @@ LABEL_77:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTUserCuration *)self isEqualToUserCuration:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTUserCuration *)self isEqualToUserCuration:v5];
   }
 
   return v6;

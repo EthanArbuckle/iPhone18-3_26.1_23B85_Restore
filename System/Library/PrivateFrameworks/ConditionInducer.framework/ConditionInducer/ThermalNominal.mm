@@ -1,10 +1,10 @@
 @interface ThermalNominal
-+ (id)thermalStateEnumToCLTMStringKey:(int64_t)a3;
++ (id)thermalStateEnumToCLTMStringKey:(int64_t)key;
 - (BOOL)active;
 - (BOOL)isDestructive;
 - (BOOL)isInternalOnly;
 - (BOOL)setUp;
-- (ThermalNominal)initWithThermalLevel:(int64_t)a3;
+- (ThermalNominal)initWithThermalLevel:(int64_t)level;
 - (id)identifierName;
 - (id)userFriendlyName;
 - (void)setUp;
@@ -13,11 +13,11 @@
 
 @implementation ThermalNominal
 
-+ (id)thermalStateEnumToCLTMStringKey:(int64_t)a3
++ (id)thermalStateEnumToCLTMStringKey:(int64_t)key
 {
-  if (a3 < 4)
+  if (key < 4)
   {
-    return off_278DF80D8[a3];
+    return off_278DF80D8[key];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
@@ -97,17 +97,17 @@
   return 1;
 }
 
-- (ThermalNominal)initWithThermalLevel:(int64_t)a3
+- (ThermalNominal)initWithThermalLevel:(int64_t)level
 {
   v10.receiver = self;
   v10.super_class = ThermalNominal;
   v4 = [(COCondition *)&v10 init];
   v5 = v4;
-  if (v4 && (v4->_desiredState = a3, [ThermalNominal thermalStateEnumToCLTMStringKey:a3], v6 = objc_claimAutoreleasedReturnValue(), thermalLevelKey = v5->_thermalLevelKey, v5->_thermalLevelKey = v6, thermalLevelKey, !v5->_thermalLevelKey))
+  if (v4 && (v4->_desiredState = level, [ThermalNominal thermalStateEnumToCLTMStringKey:level], v6 = objc_claimAutoreleasedReturnValue(), thermalLevelKey = v5->_thermalLevelKey, v5->_thermalLevelKey = v6, thermalLevelKey, !v5->_thermalLevelKey))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [ThermalNominal initWithThermalLevel:a3];
+      [ThermalNominal initWithThermalLevel:level];
     }
 
     v8 = 0;
@@ -127,7 +127,7 @@
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v18 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Starting Setup - %@ Condition", buf, 0xCu);
   }
 
@@ -139,11 +139,11 @@
   v16 = v6;
   while (1)
   {
-    v7 = [MEMORY[0x277CCAC38] processInfo];
-    -[ThermalNominal setActualState:](self, "setActualState:", [v7 thermalState]);
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    -[ThermalNominal setActualState:](self, "setActualState:", [processInfo thermalState]);
 
-    v8 = [(ThermalNominal *)self actualState];
-    if (v8 >= [(ThermalNominal *)self desiredState])
+    actualState = [(ThermalNominal *)self actualState];
+    if (actualState >= [(ThermalNominal *)self desiredState])
     {
       break;
     }
@@ -151,12 +151,12 @@
     [MEMORY[0x277CCACC8] sleepForTimeInterval:0.5];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [(ThermalNominal *)self actualState];
-      v10 = [(ThermalNominal *)self desiredState];
+      actualState2 = [(ThermalNominal *)self actualState];
+      desiredState = [(ThermalNominal *)self desiredState];
       *buf = v16;
-      v18 = v9;
+      selfCopy2 = actualState2;
       v19 = 2048;
-      v20 = v10;
+      v20 = desiredState;
       _os_log_debug_impl(&dword_243E0F000, v5, OS_LOG_TYPE_DEBUG, "Thermal state is at currently at %lu, and the desired state is %lu", buf, 0x16u);
     }
 
@@ -168,18 +168,18 @@
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v11 = [(ThermalNominal *)self actualState];
-    v12 = [(ThermalNominal *)self desiredState];
+    actualState3 = [(ThermalNominal *)self actualState];
+    desiredState2 = [(ThermalNominal *)self desiredState];
     *buf = v16;
-    v18 = v11;
+    selfCopy2 = actualState3;
     v19 = 2048;
-    v20 = v12;
+    v20 = desiredState2;
     _os_log_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Thermal state is at %lu, which is at or above the desired state of %lu", buf, 0x16u);
   }
 
 LABEL_11:
-  v13 = [(ThermalNominal *)self actualState];
-  if (v13 < [(ThermalNominal *)self desiredState]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
+  actualState4 = [(ThermalNominal *)self actualState];
+  if (actualState4 < [(ThermalNominal *)self desiredState]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [(ThermalNominal *)self setUp];
   }
@@ -187,7 +187,7 @@ LABEL_11:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v18 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Finished Setup - %@ Condition", buf, 0xCu);
   }
 
@@ -224,9 +224,9 @@ LABEL_11:
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = 134218240;
-  v4 = [a1 desiredState];
+  desiredState = [self desiredState];
   v5 = 2048;
-  v6 = [a1 actualState];
+  actualState = [self actualState];
   _os_log_fault_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_FAULT, "Timed out waiting for thermal mitigation to reach %lu. Last known level was %lu, but we will assume that we actually reached it and move on", &v3, 0x16u);
   v2 = *MEMORY[0x277D85DE8];
 }

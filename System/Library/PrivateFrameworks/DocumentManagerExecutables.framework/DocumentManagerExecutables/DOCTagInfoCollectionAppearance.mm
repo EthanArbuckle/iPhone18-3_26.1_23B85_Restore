@@ -18,7 +18,7 @@
 
 - (double)horizontalTagSpacing
 {
-  v2 = [MEMORY[0x277D75520] defaultMetrics];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
   v3 = _UISolariumEnabled();
   v4 = 3.0;
   if (v3)
@@ -26,7 +26,7 @@
     v4 = 8.0;
   }
 
-  [v2 scaledValueForValue:v4];
+  [defaultMetrics scaledValueForValue:v4];
   v6 = v5;
 
   return v6;
@@ -46,7 +46,7 @@
 
 - (double)tagToLabelSpacing
 {
-  v2 = [MEMORY[0x277D75520] defaultMetrics];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
   v3 = _UISolariumEnabled();
   v4 = 4.0;
   if (v3)
@@ -54,7 +54,7 @@
     v4 = 6.0;
   }
 
-  [v2 scaledValueForValue:v4];
+  [defaultMetrics scaledValueForValue:v4];
   v6 = v5;
 
   return v6;
@@ -95,12 +95,12 @@
     v4 = 2.0;
   }
 
-  v5 = [MEMORY[0x277D75520] defaultMetrics];
-  [v5 scaledValueForValue:v3];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+  [defaultMetrics scaledValueForValue:v3];
   v7 = v6;
 
-  v8 = [MEMORY[0x277D75520] defaultMetrics];
-  [v8 scaledValueForValue:v3];
+  defaultMetrics2 = [MEMORY[0x277D75520] defaultMetrics];
+  [defaultMetrics2 scaledValueForValue:v3];
   v10 = v9;
 
   v11 = v4;

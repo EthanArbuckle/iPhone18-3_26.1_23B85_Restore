@@ -21,17 +21,17 @@
 - (void)start
 {
   v2 = *MEMORY[0x277CBECE8];
-  v3 = self;
+  selfCopy = self;
   v4 = sub_253CD0938();
   v5 = SCDynamicStoreCreate(v2, v4, 0, 0);
 
-  v6 = *(&v3->super.isa + OBJC_IVAR___HMDNetworkInfoController_store);
-  *(&v3->super.isa + OBJC_IVAR___HMDNetworkInfoController_store) = v5;
+  v6 = *(&selfCopy->super.isa + OBJC_IVAR___HMDNetworkInfoController_store);
+  *(&selfCopy->super.isa + OBJC_IVAR___HMDNetworkInfoController_store) = v5;
 }
 
 - (id)obtainNetworkInfoProto
 {
-  v2 = self;
+  selfCopy = self;
   NetworkInfoController.obtainNetworkInfoProto()();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27F5A3448, &qword_253D493F0);

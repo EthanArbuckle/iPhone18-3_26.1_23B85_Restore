@@ -1,11 +1,11 @@
 @interface AAQuotaDepletionAlert
-+ (BOOL)_isDisabledDataclass:(id)a3;
++ (BOOL)_isDisabledDataclass:(id)dataclass;
 - (AAQuotaDepletionAlert)init;
-- (BOOL)showIfNecessaryWithHandler:(id)a3;
-- (id)_deviceSpecificLocalizedString:(id)a3;
+- (BOOL)showIfNecessaryWithHandler:(id)handler;
+- (id)_deviceSpecificLocalizedString:(id)string;
 - (id)_primaryAccount;
-- (id)initForDataclass:(id)a3;
-- (void)showWithHandler:(id)a3;
+- (id)initForDataclass:(id)dataclass;
+- (void)showWithHandler:(id)handler;
 @end
 
 @implementation AAQuotaDepletionAlert
@@ -17,33 +17,33 @@
   return [(AAQuotaDepletionAlert *)&v3 init];
 }
 
-- (id)initForDataclass:(id)a3
+- (id)initForDataclass:(id)dataclass
 {
-  v5 = a3;
+  dataclassCopy = dataclass;
   v9.receiver = self;
   v9.super_class = AAQuotaDepletionAlert;
   v6 = [(AAQuotaDepletionAlert *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataclass, a3);
+    objc_storeStrong(&v6->_dataclass, dataclass);
   }
 
   return v7;
 }
 
-+ (BOOL)_isDisabledDataclass:(id)a3
++ (BOOL)_isDisabledDataclass:(id)dataclass
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataclassCopy = dataclass;
   v4 = *MEMORY[0x1E6959B28];
   v10[0] = *MEMORY[0x1E6959B58];
   v10[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
   v6 = v5;
-  if (v3)
+  if (dataclassCopy)
   {
-    v7 = [v5 containsObject:v3];
+    v7 = [v5 containsObject:dataclassCopy];
   }
 
   else
@@ -59,16 +59,16 @@
 {
   if (!self->_primaryAccount)
   {
-    v3 = [MEMORY[0x1E6959A48] defaultStore];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
     accountStore = self->_accountStore;
-    self->_accountStore = v3;
+    self->_accountStore = defaultStore;
 
     v5 = self->_accountStore;
     if (v5)
     {
-      v6 = [(ACAccountStore *)v5 aa_primaryAppleAccount];
+      aa_primaryAppleAccount = [(ACAccountStore *)v5 aa_primaryAppleAccount];
       primaryAccount = self->_primaryAccount;
-      self->_primaryAccount = v6;
+      self->_primaryAccount = aa_primaryAppleAccount;
     }
   }
 
@@ -77,10 +77,10 @@
   return v8;
 }
 
-- (void)showWithHandler:(id)a3
+- (void)showWithHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if ([AAQuotaDepletionAlert _isDisabledDataclass:self->_dataclass])
   {
     v5 = _AALogSystem();
@@ -92,19 +92,19 @@
       _os_log_impl(&dword_1B6F6A000, v5, OS_LOG_TYPE_DEFAULT, "Quota ran out for dataclass: %@. Skipping notifying user.", buf, 0xCu);
     }
 
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4, 3);
+      handlerCopy[2](handlerCopy, 3);
     }
   }
 
   else
   {
-    v7 = [(AAQuotaDepletionAlert *)self _primaryAccount];
-    if (v7)
+    _primaryAccount = [(AAQuotaDepletionAlert *)self _primaryAccount];
+    if (_primaryAccount)
     {
-      v8 = [(AAQuotaDepletionAlert *)self _primaryAccount];
-      v9 = [v8 aa_isManagedAppleID] ^ 1;
+      _primaryAccount2 = [(AAQuotaDepletionAlert *)self _primaryAccount];
+      v9 = [_primaryAccount2 aa_isManagedAppleID] ^ 1;
     }
 
     else
@@ -162,7 +162,7 @@
     v29 = __41__AAQuotaDepletionAlert_showWithHandler___block_invoke;
     v30 = &unk_1E7C9D710;
     v32 = v9;
-    v31 = v4;
+    v31 = handlerCopy;
     v23 = _Block_copy(&v27);
     v24 = [MEMORY[0x1E696AAE8] bundleForClass:{objc_opt_class(), v27, v28, v29, v30}];
     v25 = [v24 localizedStringForKey:@"ALERT_CLOSE" value:&stru_1F2EF6280 table:@"Localizable"];
@@ -212,10 +212,10 @@ void __41__AAQuotaDepletionAlert_showWithHandler___block_invoke_2(uint64_t a1)
   [v2 openSensitiveURL:*(a1 + 32) withOptions:0];
 }
 
-- (BOOL)showIfNecessaryWithHandler:(id)a3
+- (BOOL)showIfNecessaryWithHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [AAQuotaDepletionAlert _isDisabledDataclass:self->_dataclass];
   v6 = _AALogSystem();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -245,8 +245,8 @@ LABEL_9:
   v6 = CFPreferencesCopyAppValue(@"AANextCastleQuotaAlert", @"com.apple.appleaccount");
   if (v6)
   {
-    v10 = [MEMORY[0x1E695DF00] date];
-    v11 = [v10 compare:v6];
+    date = [MEMORY[0x1E695DF00] date];
+    v11 = [date compare:v6];
 
     if (v11 != 1)
     {
@@ -254,12 +254,12 @@ LABEL_9:
     }
   }
 
-  v12 = [MEMORY[0x1E695DF00] date];
-  v13 = [v12 dateByAddingTimeInterval:86400.0];
+  date2 = [MEMORY[0x1E695DF00] date];
+  v13 = [date2 dateByAddingTimeInterval:86400.0];
 
   CFPreferencesSetAppValue(@"AANextCastleQuotaAlert", v13, @"com.apple.appleaccount");
   CFPreferencesSynchronize(@"com.apple.appleaccount", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
-  [(AAQuotaDepletionAlert *)self showWithHandler:v4];
+  [(AAQuotaDepletionAlert *)self showWithHandler:handlerCopy];
 
   v14 = 1;
 LABEL_10:
@@ -268,9 +268,9 @@ LABEL_10:
   return v14;
 }
 
-- (id)_deviceSpecificLocalizedString:(id)a3
+- (id)_deviceSpecificLocalizedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = MGCopyAnswer();
   if (v4)
   {
@@ -282,10 +282,10 @@ LABEL_10:
     v5 = @"iPhone";
   }
 
-  v6 = [(__CFString *)v5 uppercaseString];
-  v7 = [v6 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+  uppercaseString = [(__CFString *)v5 uppercaseString];
+  v7 = [uppercaseString stringByReplacingOccurrencesOfString:@" " withString:@"_"];
 
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", v3, v7];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", stringCopy, v7];
 
   v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:v8 value:&stru_1F2EF6280 table:@"Localizable"];

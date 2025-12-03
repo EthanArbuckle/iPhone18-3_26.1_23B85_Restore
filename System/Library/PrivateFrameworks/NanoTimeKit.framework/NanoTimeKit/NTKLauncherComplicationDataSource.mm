@@ -1,9 +1,9 @@
 @interface NTKLauncherComplicationDataSource
-+ (BOOL)acceptsComplicationType:(unint64_t)a3 withFamily:(int64_t)a4 forDevice:(id)a5;
++ (BOOL)acceptsComplicationType:(unint64_t)type withFamily:(int64_t)family forDevice:(id)device;
 - (id)_appBackgroundColor;
 - (id)_appTintColor;
 - (id)_appTitle;
-- (id)_circularTemplateMedium:(BOOL)a3;
+- (id)_circularTemplateMedium:(BOOL)medium;
 - (id)_complicationApplicationIdentifier;
 - (id)_complicationLaunchURL;
 - (id)_currentTimelineEntry;
@@ -27,43 +27,43 @@
 - (id)_utilitarianLargeTemplate;
 - (id)_utilitarianSmallTemplate;
 - (id)currentSwitcherTemplate;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler;
 @end
 
 @implementation NTKLauncherComplicationDataSource
 
-+ (BOOL)acceptsComplicationType:(unint64_t)a3 withFamily:(int64_t)a4 forDevice:(id)a5
++ (BOOL)acceptsComplicationType:(unint64_t)type withFamily:(int64_t)family forDevice:(id)device
 {
-  v7 = a5;
-  if ([NTKWidgetComplicationMigrationDefines hasMigratedComplicationType:a3 forDevice:v7])
+  deviceCopy = device;
+  if ([NTKWidgetComplicationMigrationDefines hasMigratedComplicationType:type forDevice:deviceCopy])
   {
     goto LABEL_2;
   }
 
-  if (a3 > 0x2E)
+  if (type > 0x2E)
   {
     goto LABEL_12;
   }
 
-  if (((1 << a3) & 0x1B200000) != 0)
+  if (((1 << type) & 0x1B200000) != 0)
   {
-    if ((a4 - 8) <= 2)
+    if ((family - 8) <= 2)
     {
-      v8 = [v7 pdrDeviceVersion] > 0x50100;
+      isEcgPhoneComplicationEnabled = [deviceCopy pdrDeviceVersion] > 0x50100;
       goto LABEL_27;
     }
 
     goto LABEL_13;
   }
 
-  if (a3 != 33)
+  if (type != 33)
   {
-    if (a3 == 46)
+    if (type == 46)
     {
-      if (a4 <= 0xA && ((1 << a4) & 0x715) != 0 || (*MEMORY[0x277CBB668] != a4 ? (v14 = a4 == 12) : (v14 = 1), !v14 ? (v15 = a4 == 7) : (v15 = 1), v15))
+      if (family <= 0xA && ((1 << family) & 0x715) != 0 || (*MEMORY[0x277CBB668] != family ? (v14 = family == 12) : (v14 = 1), !v14 ? (v15 = family == 7) : (v15 = 1), v15))
       {
-        v8 = [v7 isEcgPhoneComplicationEnabled];
+        isEcgPhoneComplicationEnabled = [deviceCopy isEcgPhoneComplicationEnabled];
         goto LABEL_27;
       }
 
@@ -71,103 +71,103 @@
     }
 
 LABEL_12:
-    if (a3 != 20)
+    if (type != 20)
     {
 LABEL_2:
-      v8 = 0;
+      isEcgPhoneComplicationEnabled = 0;
       goto LABEL_27;
     }
 
 LABEL_13:
-    if (a4 > 4 || ((1 << a4) & 0x15) == 0)
+    if (family > 4 || ((1 << family) & 0x15) == 0)
     {
-      v8 = a4 == 7 || *MEMORY[0x277CBB668] == a4 || a4 == 12;
+      isEcgPhoneComplicationEnabled = family == 7 || *MEMORY[0x277CBB668] == family || family == 12;
       goto LABEL_27;
     }
 
 LABEL_26:
-    v8 = 1;
+    isEcgPhoneComplicationEnabled = 1;
     goto LABEL_27;
   }
 
-  if (a4 <= 4 && ((1 << a4) & 0x15) != 0)
+  if (family <= 4 && ((1 << family) & 0x15) != 0)
   {
     goto LABEL_26;
   }
 
-  v8 = *MEMORY[0x277CBB668] == a4 || a4 == 12 || (a4 - 7) < 4;
+  isEcgPhoneComplicationEnabled = *MEMORY[0x277CBB668] == family || family == 12 || (family - 7) < 4;
 LABEL_27:
 
-  return v8;
+  return isEcgPhoneComplicationEnabled;
 }
 
 - (id)currentSwitcherTemplate
 {
-  v2 = [(NTKLauncherComplicationDataSource *)self _currentTimelineEntry];
-  v3 = [v2 complicationTemplate];
+  _currentTimelineEntry = [(NTKLauncherComplicationDataSource *)self _currentTimelineEntry];
+  complicationTemplate = [_currentTimelineEntry complicationTemplate];
 
-  return v3;
+  return complicationTemplate;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(NTKLauncherComplicationDataSource *)self _currentTimelineEntry];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  _currentTimelineEntry = [(NTKLauncherComplicationDataSource *)self _currentTimelineEntry];
+  (*(handler + 2))(handlerCopy, _currentTimelineEntry);
 }
 
 - (id)_currentTimelineEntry
 {
   v3 = objc_alloc_init(MEMORY[0x277CBBAC8]);
-  v4 = [(CLKCComplicationDataSource *)self family];
-  if (v4 == 104)
+  family = [(CLKCComplicationDataSource *)self family];
+  if (family == 104)
   {
     goto LABEL_2;
   }
 
-  if (v4 == *MEMORY[0x277CBB668])
+  if (family == *MEMORY[0x277CBB668])
   {
-    v6 = self;
+    selfCopy2 = self;
     v7 = 1;
 LABEL_5:
-    v5 = [(NTKLauncherComplicationDataSource *)v6 _circularTemplateMedium:v7];
+    _modularSmallTemplate = [(NTKLauncherComplicationDataSource *)selfCopy2 _circularTemplateMedium:v7];
     goto LABEL_6;
   }
 
   v8 = 0;
-  if (v4 <= 5)
+  if (family <= 5)
   {
-    if (v4 <= 1)
+    if (family <= 1)
     {
-      if (!v4)
+      if (!family)
       {
-        v5 = [(NTKLauncherComplicationDataSource *)self _modularSmallTemplate];
+        _modularSmallTemplate = [(NTKLauncherComplicationDataSource *)self _modularSmallTemplate];
         goto LABEL_6;
       }
 
-      if (v4 == 1)
+      if (family == 1)
       {
-        v5 = [(NTKLauncherComplicationDataSource *)self _modularLargeTemplate];
+        _modularSmallTemplate = [(NTKLauncherComplicationDataSource *)self _modularLargeTemplate];
         goto LABEL_6;
       }
     }
 
     else
     {
-      switch(v4)
+      switch(family)
       {
         case 2:
 LABEL_30:
-          v5 = [(NTKLauncherComplicationDataSource *)self _utilitarianSmallTemplate];
+          _modularSmallTemplate = [(NTKLauncherComplicationDataSource *)self _utilitarianSmallTemplate];
           goto LABEL_6;
         case 3:
 LABEL_2:
-          v5 = [(NTKLauncherComplicationDataSource *)self _utilitarianLargeTemplate];
+          _modularSmallTemplate = [(NTKLauncherComplicationDataSource *)self _utilitarianLargeTemplate];
 LABEL_6:
-          v8 = v5;
+          v8 = _modularSmallTemplate;
           break;
         case 4:
-          v6 = self;
+          selfCopy2 = self;
           v7 = 0;
           goto LABEL_5;
       }
@@ -176,11 +176,11 @@ LABEL_6:
 
   else
   {
-    if (v4 <= 8)
+    if (family <= 8)
     {
-      if (v4 != 6)
+      if (family != 6)
       {
-        if (v4 == 7)
+        if (family == 7)
         {
           [(NTKLauncherComplicationDataSource *)self _extraLarge];
         }
@@ -189,64 +189,64 @@ LABEL_6:
         {
           [(NTKLauncherComplicationDataSource *)self _signatureCornerTemplate];
         }
-        v5 = ;
+        _modularSmallTemplate = ;
         goto LABEL_6;
       }
 
       goto LABEL_30;
     }
 
-    switch(v4)
+    switch(family)
     {
       case 9:
-        v5 = [(NTKLauncherComplicationDataSource *)self _signatureBezelTemplate];
+        _modularSmallTemplate = [(NTKLauncherComplicationDataSource *)self _signatureBezelTemplate];
         goto LABEL_6;
       case 10:
-        v5 = [(NTKLauncherComplicationDataSource *)self _signatureCircularTemplate];
+        _modularSmallTemplate = [(NTKLauncherComplicationDataSource *)self _signatureCircularTemplate];
         goto LABEL_6;
       case 12:
-        v5 = [(NTKLauncherComplicationDataSource *)self _graphicExtraLargeTemplate];
+        _modularSmallTemplate = [(NTKLauncherComplicationDataSource *)self _graphicExtraLargeTemplate];
         goto LABEL_6;
     }
   }
 
-  v9 = [(NTKLauncherComplicationDataSource *)self _appTintColor];
-  [v8 setTintColor:v9];
+  _appTintColor = [(NTKLauncherComplicationDataSource *)self _appTintColor];
+  [v8 setTintColor:_appTintColor];
 
   if (v8)
   {
     [v3 setComplicationTemplate:v8];
   }
 
-  v10 = [MEMORY[0x277CBEAA8] date];
-  [v3 setDate:v10];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v3 setDate:date];
 
   [v3 finalize];
 
   return v3;
 }
 
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler
 {
-  v7 = a5;
-  v8 = [(NTKLauncherComplicationDataSource *)self _complicationLaunchURL];
-  (*(a5 + 2))(v7, v8);
+  handlerCopy = handler;
+  _complicationLaunchURL = [(NTKLauncherComplicationDataSource *)self _complicationLaunchURL];
+  (*(handler + 2))(handlerCopy, _complicationLaunchURL);
 }
 
 - (id)_modularSmallTemplate
 {
-  v3 = [(NTKLauncherComplicationDataSource *)self _tintableAppImageProvider];
-  if (v3)
+  _tintableAppImageProvider = [(NTKLauncherComplicationDataSource *)self _tintableAppImageProvider];
+  if (_tintableAppImageProvider)
   {
-    v4 = [MEMORY[0x277CBBA50] templateWithImageProvider:v3];
+    v4 = [MEMORY[0x277CBBA50] templateWithImageProvider:_tintableAppImageProvider];
   }
 
   else
   {
     v5 = MEMORY[0x277CBBA60];
     v6 = MEMORY[0x277CBBB88];
-    v7 = [(NTKLauncherComplicationDataSource *)self _appTitle];
-    v8 = [v6 textProviderWithText:v7];
+    _appTitle = [(NTKLauncherComplicationDataSource *)self _appTitle];
+    v8 = [v6 textProviderWithText:_appTitle];
     v4 = [v5 templateWithTextProvider:v8];
   }
 
@@ -256,30 +256,30 @@ LABEL_6:
 - (id)_modularLargeTemplate
 {
   v3 = MEMORY[0x277CBBA08];
-  v4 = [(NTKLauncherComplicationDataSource *)self _tintableAppImageProvider];
+  _tintableAppImageProvider = [(NTKLauncherComplicationDataSource *)self _tintableAppImageProvider];
   v5 = MEMORY[0x277CBBB88];
-  v6 = [(NTKLauncherComplicationDataSource *)self _appTitle];
-  v7 = [v5 textProviderWithText:v6];
+  _appTitle = [(NTKLauncherComplicationDataSource *)self _appTitle];
+  v7 = [v5 textProviderWithText:_appTitle];
   v8 = [MEMORY[0x277CBBB88] textProviderWithText:&stru_284110E98];
-  v9 = [v3 templateWithHeaderImageProvider:v4 headerTextProvider:v7 body1TextProvider:v8];
+  v9 = [v3 templateWithHeaderImageProvider:_tintableAppImageProvider headerTextProvider:v7 body1TextProvider:v8];
 
   return v9;
 }
 
 - (id)_utilitarianSmallTemplate
 {
-  v3 = [(NTKLauncherComplicationDataSource *)self _tintableAppImageProvider];
-  if (v3)
+  _tintableAppImageProvider = [(NTKLauncherComplicationDataSource *)self _tintableAppImageProvider];
+  if (_tintableAppImageProvider)
   {
-    v4 = [MEMORY[0x277CBBAC0] templateWithImageProvider:v3];
+    v4 = [MEMORY[0x277CBBAC0] templateWithImageProvider:_tintableAppImageProvider];
   }
 
   else
   {
     v5 = MEMORY[0x277CBBA90];
     v6 = MEMORY[0x277CBBB88];
-    v7 = [(NTKLauncherComplicationDataSource *)self _appTitle];
-    v8 = [v6 textProviderWithText:v7];
+    _appTitle = [(NTKLauncherComplicationDataSource *)self _appTitle];
+    v8 = [v6 textProviderWithText:_appTitle];
     v4 = [v5 templateWithTextProvider:v8];
   }
 
@@ -290,21 +290,21 @@ LABEL_6:
 {
   v3 = MEMORY[0x277CBBA80];
   v4 = MEMORY[0x277CBBB88];
-  v5 = [(NTKLauncherComplicationDataSource *)self _appTitle];
-  v6 = [v4 textProviderWithText:v5];
-  v7 = [(NTKLauncherComplicationDataSource *)self _tintableAppImageProvider];
-  v8 = [v3 templateWithTextProvider:v6 imageProvider:v7];
+  _appTitle = [(NTKLauncherComplicationDataSource *)self _appTitle];
+  v6 = [v4 textProviderWithText:_appTitle];
+  _tintableAppImageProvider = [(NTKLauncherComplicationDataSource *)self _tintableAppImageProvider];
+  v8 = [v3 templateWithTextProvider:v6 imageProvider:_tintableAppImageProvider];
 
   return v8;
 }
 
-- (id)_circularTemplateMedium:(BOOL)a3
+- (id)_circularTemplateMedium:(BOOL)medium
 {
-  v3 = a3;
-  v5 = [(NTKLauncherComplicationDataSource *)self _tintableAppImageProvider];
-  if (v5)
+  mediumCopy = medium;
+  _tintableAppImageProvider = [(NTKLauncherComplicationDataSource *)self _tintableAppImageProvider];
+  if (_tintableAppImageProvider)
   {
-    if (v3)
+    if (mediumCopy)
     {
       v6 = MEMORY[0x277CBB748];
     }
@@ -314,17 +314,17 @@ LABEL_6:
       v6 = MEMORY[0x277CBB790];
     }
 
-    v11 = [v6 templateWithImageProvider:v5];
+    v11 = [v6 templateWithImageProvider:_tintableAppImageProvider];
   }
 
   else
   {
     v7 = MEMORY[0x277CBBB88];
-    v8 = [(NTKLauncherComplicationDataSource *)self _appTitle];
-    v9 = [v7 textProviderWithText:v8];
+    _appTitle = [(NTKLauncherComplicationDataSource *)self _appTitle];
+    v9 = [v7 textProviderWithText:_appTitle];
 
     v10 = 0x277CBB750;
-    if (!v3)
+    if (!mediumCopy)
     {
       v10 = 0x277CBB798;
     }
@@ -337,17 +337,17 @@ LABEL_6:
 
 - (id)_extraLarge
 {
-  v3 = [(NTKLauncherComplicationDataSource *)self _tintableAppImageProvider];
-  if (v3)
+  _tintableAppImageProvider = [(NTKLauncherComplicationDataSource *)self _tintableAppImageProvider];
+  if (_tintableAppImageProvider)
   {
-    v4 = [MEMORY[0x277CBB7F0] templateWithImageProvider:v3];
+    v4 = [MEMORY[0x277CBB7F0] templateWithImageProvider:_tintableAppImageProvider];
   }
 
   else
   {
     v5 = MEMORY[0x277CBBB88];
-    v6 = [(NTKLauncherComplicationDataSource *)self _appTitle];
-    v7 = [v5 textProviderWithText:v6];
+    _appTitle = [(NTKLauncherComplicationDataSource *)self _appTitle];
+    v7 = [v5 textProviderWithText:_appTitle];
 
     v4 = [MEMORY[0x277CBB7F8] templateWithTextProvider:v7];
   }
@@ -359,8 +359,8 @@ LABEL_6:
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CBB8B8];
-  v3 = [(NTKLauncherComplicationDataSource *)self _fullColorImageProvider];
-  v4 = [v2 templateWithImageProvider:v3];
+  _fullColorImageProvider = [(NTKLauncherComplicationDataSource *)self _fullColorImageProvider];
+  v4 = [v2 templateWithImageProvider:_fullColorImageProvider];
 
   v7 = *MEMORY[0x277CBB6E8];
   v8[0] = MEMORY[0x277CBEC38];
@@ -374,8 +374,8 @@ LABEL_6:
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CBB810];
-  v3 = [(NTKLauncherComplicationDataSource *)self _signatureCircularTemplate];
-  v4 = [v2 templateWithCircularTemplate:v3];
+  _signatureCircularTemplate = [(NTKLauncherComplicationDataSource *)self _signatureCircularTemplate];
+  v4 = [v2 templateWithCircularTemplate:_signatureCircularTemplate];
 
   v7 = *MEMORY[0x277CBB6E8];
   v8[0] = MEMORY[0x277CBEC38];
@@ -389,8 +389,8 @@ LABEL_6:
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CBB850];
-  v3 = [(NTKLauncherComplicationDataSource *)self _fullColorImageProvider];
-  v4 = [v2 templateWithImageProvider:v3];
+  _fullColorImageProvider = [(NTKLauncherComplicationDataSource *)self _fullColorImageProvider];
+  v4 = [v2 templateWithImageProvider:_fullColorImageProvider];
 
   v7 = *MEMORY[0x277CBB6E8];
   v8[0] = MEMORY[0x277CBEC38];
@@ -404,8 +404,8 @@ LABEL_6:
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CBB938];
-  v3 = [(NTKLauncherComplicationDataSource *)self _fullColorImageProvider];
-  v4 = [v2 templateWithImageProvider:v3];
+  _fullColorImageProvider = [(NTKLauncherComplicationDataSource *)self _fullColorImageProvider];
+  v4 = [v2 templateWithImageProvider:_fullColorImageProvider];
 
   v7 = *MEMORY[0x277CBB6E8];
   v8[0] = MEMORY[0x277CBEC38];
@@ -418,18 +418,18 @@ LABEL_6:
 - (id)_appTitle
 {
   v3 = objc_alloc(MEMORY[0x277CC1E70]);
-  v4 = [(NTKLauncherComplicationDataSource *)self _complicationApplicationIdentifier];
-  v5 = [v3 initWithBundleIdentifier:v4 allowPlaceholder:0 error:0];
+  _complicationApplicationIdentifier = [(NTKLauncherComplicationDataSource *)self _complicationApplicationIdentifier];
+  v5 = [v3 initWithBundleIdentifier:_complicationApplicationIdentifier allowPlaceholder:0 error:0];
 
-  v6 = [v5 localizedName];
+  localizedName = [v5 localizedName];
 
-  return v6;
+  return localizedName;
 }
 
 - (id)_symbolSizeforMapsApp
 {
-  v3 = [MEMORY[0x277CBBAE8] currentDevice];
-  v4 = __58__NTKLauncherComplicationDataSource__symbolSizeforMapsApp__block_invoke(v3, v3);
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  v4 = __58__NTKLauncherComplicationDataSource__symbolSizeforMapsApp__block_invoke(currentDevice, currentDevice);
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CLKCComplicationDataSource family](self, "family")}];
   v6 = [v4 objectForKey:v5];
@@ -478,8 +478,8 @@ id __58__NTKLauncherComplicationDataSource__symbolSizeforMapsApp__block_invoke_2
 
 - (id)_symbolSizeforMailApp
 {
-  v3 = [MEMORY[0x277CBBAE8] currentDevice];
-  v4 = __58__NTKLauncherComplicationDataSource__symbolSizeforMailApp__block_invoke(v3, v3);
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  v4 = __58__NTKLauncherComplicationDataSource__symbolSizeforMailApp__block_invoke(currentDevice, currentDevice);
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CLKCComplicationDataSource family](self, "family")}];
   v6 = [v4 objectForKey:v5];
@@ -537,8 +537,8 @@ id __58__NTKLauncherComplicationDataSource__symbolSizeforMailApp__block_invoke_2
 
 - (id)_symbolSizeforTinCanApp
 {
-  v3 = [MEMORY[0x277CBBAE8] currentDevice];
-  v4 = __60__NTKLauncherComplicationDataSource__symbolSizeforTinCanApp__block_invoke(v3, v3);
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  v4 = __60__NTKLauncherComplicationDataSource__symbolSizeforTinCanApp__block_invoke(currentDevice, currentDevice);
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CLKCComplicationDataSource family](self, "family")}];
   v6 = [v4 objectForKey:v5];
@@ -596,26 +596,26 @@ id __60__NTKLauncherComplicationDataSource__symbolSizeforTinCanApp__block_invoke
 
 - (id)_symbolSize
 {
-  v3 = [(CLKCComplicationDataSource *)self complication];
-  v4 = [v3 complicationType];
+  complication = [(CLKCComplicationDataSource *)self complication];
+  complicationType = [complication complicationType];
 
-  switch(v4)
+  switch(complicationType)
   {
     case 33:
-      v5 = [(NTKLauncherComplicationDataSource *)self _symbolSizeforTinCanApp];
+      _symbolSizeforTinCanApp = [(NTKLauncherComplicationDataSource *)self _symbolSizeforTinCanApp];
       break;
     case 27:
-      v5 = [(NTKLauncherComplicationDataSource *)self _symbolSizeforMailApp];
+      _symbolSizeforTinCanApp = [(NTKLauncherComplicationDataSource *)self _symbolSizeforMailApp];
       break;
     case 25:
-      v5 = [(NTKLauncherComplicationDataSource *)self _symbolSizeforMapsApp];
+      _symbolSizeforTinCanApp = [(NTKLauncherComplicationDataSource *)self _symbolSizeforMapsApp];
       break;
     default:
-      v5 = 0;
+      _symbolSizeforTinCanApp = 0;
       break;
   }
 
-  return v5;
+  return _symbolSizeforTinCanApp;
 }
 
 - (id)_symbolName
@@ -627,8 +627,8 @@ id __60__NTKLauncherComplicationDataSource__symbolSizeforTinCanApp__block_invoke
 
   v3 = _symbolName_typeToSymbolNameComponentMapping;
   v4 = MEMORY[0x277CCABB0];
-  v5 = [(CLKCComplicationDataSource *)self complication];
-  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(v5, "complicationType")}];
+  complication = [(CLKCComplicationDataSource *)self complication];
+  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(complication, "complicationType")}];
   v7 = [v3 objectForKeyedSubscript:v6];
 
   return v7;
@@ -654,14 +654,14 @@ void __48__NTKLauncherComplicationDataSource__symbolName__block_invoke()
 
 - (id)_symbolAppImageProviderIfSupported
 {
-  v3 = [(NTKLauncherComplicationDataSource *)self _symbolName];
-  if (v3)
+  _symbolName = [(NTKLauncherComplicationDataSource *)self _symbolName];
+  if (_symbolName)
   {
-    v4 = [MEMORY[0x277CBBB98] _symbolImageProviderWithSystemName:v3];
-    v5 = [(NTKLauncherComplicationDataSource *)self _symbolSize];
-    if (v5)
+    v4 = [MEMORY[0x277CBBB98] _symbolImageProviderWithSystemName:_symbolName];
+    _symbolSize = [(NTKLauncherComplicationDataSource *)self _symbolSize];
+    if (_symbolSize)
     {
-      [v4 setOverridePointSize:v5];
+      [v4 setOverridePointSize:_symbolSize];
     }
 
     [v4 setIgnoreHierarchicalLayers:1];
@@ -677,14 +677,14 @@ void __48__NTKLauncherComplicationDataSource__symbolName__block_invoke()
 
 - (id)_symbolAppFullColorImageProviderIfSupported
 {
-  v3 = [(NTKLauncherComplicationDataSource *)self _symbolName];
-  if (v3)
+  _symbolName = [(NTKLauncherComplicationDataSource *)self _symbolName];
+  if (_symbolName)
   {
-    v4 = [MEMORY[0x277CBBB20] _symbolImageProviderWithSystemName:v3];
-    v5 = [(NTKLauncherComplicationDataSource *)self _symbolSize];
-    if (v5)
+    v4 = [MEMORY[0x277CBBB20] _symbolImageProviderWithSystemName:_symbolName];
+    _symbolSize = [(NTKLauncherComplicationDataSource *)self _symbolSize];
+    if (_symbolSize)
     {
-      [v4 setOverridePointSize:v5];
+      [v4 setOverridePointSize:_symbolSize];
     }
 
     [v4 setIgnoreHierarchicalLayers:1];
@@ -705,28 +705,28 @@ void __48__NTKLauncherComplicationDataSource__symbolName__block_invoke()
     [NTKLauncherComplicationDataSource _tintableAppImageProvider];
   }
 
-  v3 = [(NTKLauncherComplicationDataSource *)self _symbolAppImageProviderIfSupported];
-  v4 = [MEMORY[0x277CBBAE8] currentDevice];
-  [v4 pdrDeviceVersion];
+  _symbolAppImageProviderIfSupported = [(NTKLauncherComplicationDataSource *)self _symbolAppImageProviderIfSupported];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  [currentDevice pdrDeviceVersion];
   IsGreaterThanOrEqual = PDRVersionIsGreaterThanOrEqual();
 
-  if (v3 && (IsGreaterThanOrEqual & 1) != 0)
+  if (_symbolAppImageProviderIfSupported && (IsGreaterThanOrEqual & 1) != 0)
   {
-    v3 = v3;
-    v15 = v3;
+    _symbolAppImageProviderIfSupported = _symbolAppImageProviderIfSupported;
+    v15 = _symbolAppImageProviderIfSupported;
   }
 
   else
   {
-    v6 = [(CLKCComplicationDataSource *)self complication];
-    v7 = [v6 complicationType];
+    complication = [(CLKCComplicationDataSource *)self complication];
+    complicationType = [complication complicationType];
 
     v8 = _tintableAppImageProvider_familyToImageNameComponentMapping;
     v9 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CLKCComplicationDataSource family](self, "family")}];
     v10 = [v8 objectForKeyedSubscript:v9];
 
     v11 = _tintableAppImageProvider_typeToImageNameComponentMapping;
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:complicationType];
     v13 = [v11 objectForKeyedSubscript:v12];
 
     if (v10 && v13)
@@ -797,28 +797,28 @@ void __62__NTKLauncherComplicationDataSource__tintableAppImageProvider__block_in
     [NTKLauncherComplicationDataSource _fullColorImageProvider];
   }
 
-  v3 = [(NTKLauncherComplicationDataSource *)self _symbolAppFullColorImageProviderIfSupported];
-  v4 = [(CLKCComplicationDataSource *)self complication];
-  v5 = [v4 complicationType];
+  _symbolAppFullColorImageProviderIfSupported = [(NTKLauncherComplicationDataSource *)self _symbolAppFullColorImageProviderIfSupported];
+  complication = [(CLKCComplicationDataSource *)self complication];
+  complicationType = [complication complicationType];
 
-  v6 = [MEMORY[0x277CBBAE8] currentDevice];
-  [v6 pdrDeviceVersion];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  [currentDevice pdrDeviceVersion];
   IsGreaterThanOrEqual = PDRVersionIsGreaterThanOrEqual();
 
-  if (v3 && (IsGreaterThanOrEqual & 1) != 0)
+  if (_symbolAppFullColorImageProviderIfSupported && (IsGreaterThanOrEqual & 1) != 0)
   {
     v16 = _fullColorImageProvider_useAppTintColorList;
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:complicationType];
     LODWORD(v16) = [v16 containsObject:v17];
 
     if (v16)
     {
-      v18 = [(NTKLauncherComplicationDataSource *)self _appTintColor];
-      [v3 setTintColor:v18];
+      _appTintColor = [(NTKLauncherComplicationDataSource *)self _appTintColor];
+      [_symbolAppFullColorImageProviderIfSupported setTintColor:_appTintColor];
     }
 
-    v3 = v3;
-    v15 = v3;
+    _symbolAppFullColorImageProviderIfSupported = _symbolAppFullColorImageProviderIfSupported;
+    v15 = _symbolAppFullColorImageProviderIfSupported;
   }
 
   else
@@ -828,7 +828,7 @@ void __62__NTKLauncherComplicationDataSource__tintableAppImageProvider__block_in
     v10 = [v8 objectForKeyedSubscript:v9];
 
     v11 = _fullColorImageProvider_typeToImageNameComponentMapping;
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:complicationType];
     v13 = [v11 objectForKeyedSubscript:v12];
 
     if (v10 && v13)
@@ -882,21 +882,21 @@ void __60__NTKLauncherComplicationDataSource__fullColorImageProvider__block_invo
 
 - (id)_appTintColor
 {
-  v3 = [(CLKCComplicationDataSource *)self complication];
-  v4 = [v3 complicationType];
+  complication = [(CLKCComplicationDataSource *)self complication];
+  complicationType = [complication complicationType];
 
-  v5 = 0;
-  if (v4 <= 26)
+  systemGreenColor = 0;
+  if (complicationType <= 26)
   {
-    if (v4 != 21)
+    if (complicationType != 21)
     {
-      if (v4 == 24)
+      if (complicationType == 24)
       {
-        v5 = [MEMORY[0x277D75348] systemGreenColor];
+        systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
         goto LABEL_15;
       }
 
-      if (v4 != 25)
+      if (complicationType != 25)
       {
         goto LABEL_15;
       }
@@ -905,70 +905,70 @@ void __60__NTKLauncherComplicationDataSource__fullColorImageProvider__block_invo
     goto LABEL_9;
   }
 
-  if (v4 <= 32)
+  if (complicationType <= 32)
   {
-    if (v4 != 27)
+    if (complicationType != 27)
     {
-      if (v4 == 28)
+      if (complicationType == 28)
       {
-        v5 = [MEMORY[0x277D75348] systemOrangeColor];
+        systemGreenColor = [MEMORY[0x277D75348] systemOrangeColor];
       }
 
       goto LABEL_15;
     }
 
 LABEL_9:
-    v5 = [MEMORY[0x277D75348] systemBlueColor];
+    systemGreenColor = [MEMORY[0x277D75348] systemBlueColor];
     goto LABEL_15;
   }
 
-  if (v4 == 33)
+  if (complicationType == 33)
   {
-    v5 = [(NTKLauncherComplicationDataSource *)self _tinCanAppTintColor];
+    systemGreenColor = [(NTKLauncherComplicationDataSource *)self _tinCanAppTintColor];
   }
 
-  else if (v4 == 46)
+  else if (complicationType == 46)
   {
-    v5 = [MEMORY[0x277D75348] systemPinkColor];
+    systemGreenColor = [MEMORY[0x277D75348] systemPinkColor];
   }
 
 LABEL_15:
 
-  return v5;
+  return systemGreenColor;
 }
 
 - (id)_appBackgroundColor
 {
-  v3 = [(CLKCComplicationDataSource *)self complication];
-  v4 = [v3 complicationType];
+  complication = [(CLKCComplicationDataSource *)self complication];
+  complicationType = [complication complicationType];
 
-  if (v4 > 26)
+  if (complicationType > 26)
   {
-    if (v4 > 32)
+    if (complicationType > 32)
     {
-      if (v4 == 33)
+      if (complicationType == 33)
       {
-        v5 = [(NTKLauncherComplicationDataSource *)self _appTintColor];
-        v6 = v5;
+        _appTintColor = [(NTKLauncherComplicationDataSource *)self _appTintColor];
+        v6 = _appTintColor;
         v7 = 0.14;
         goto LABEL_13;
       }
 
-      if (v4 != 46)
+      if (complicationType != 46)
       {
         goto LABEL_9;
       }
     }
 
-    else if (v4 != 27)
+    else if (complicationType != 27)
     {
-      if (v4 == 28)
+      if (complicationType == 28)
       {
-        v5 = [(NTKLauncherComplicationDataSource *)self _appTintColor];
-        v6 = v5;
+        _appTintColor = [(NTKLauncherComplicationDataSource *)self _appTintColor];
+        v6 = _appTintColor;
         v7 = 0.18;
 LABEL_13:
-        v8 = [v5 colorWithAlphaComponent:v7];
+        v8 = [_appTintColor colorWithAlphaComponent:v7];
 
         goto LABEL_16;
       }
@@ -978,20 +978,20 @@ LABEL_9:
     }
 
 LABEL_12:
-    v5 = [(NTKLauncherComplicationDataSource *)self _appTintColor];
-    v6 = v5;
+    _appTintColor = [(NTKLauncherComplicationDataSource *)self _appTintColor];
+    v6 = _appTintColor;
     v7 = 0.2;
     goto LABEL_13;
   }
 
-  if (v4 == 21)
+  if (complicationType == 21)
   {
     goto LABEL_12;
   }
 
-  if (v4 != 24)
+  if (complicationType != 24)
   {
-    if (v4 != 25)
+    if (complicationType != 25)
     {
       goto LABEL_9;
     }
@@ -1007,66 +1007,66 @@ LABEL_16:
 
 - (id)_complicationApplicationIdentifier
 {
-  v2 = [(CLKCComplicationDataSource *)self complication];
-  v3 = [v2 complicationType];
+  complication = [(CLKCComplicationDataSource *)self complication];
+  complicationType = [complication complicationType];
 
   v4 = @"com.apple.tincan";
   v5 = @"com.apple.NanoHeartRhythm";
-  if (v3 != 46)
+  if (complicationType != 46)
   {
     v5 = 0;
   }
 
-  if (v3 != 33)
+  if (complicationType != 33)
   {
     v4 = v5;
   }
 
   v6 = @"com.apple.NanoHome";
-  if (v3 != 28)
+  if (complicationType != 28)
   {
     v6 = 0;
   }
 
-  if (v3 == 27)
+  if (complicationType == 27)
   {
     v6 = @"com.apple.NanoMail";
   }
 
-  if (v3 <= 32)
+  if (complicationType <= 32)
   {
     v4 = v6;
   }
 
   v7 = @"com.apple.NanoPhone";
   v8 = @"com.apple.NanoMaps";
-  if (v3 != 25)
+  if (complicationType != 25)
   {
     v8 = 0;
   }
 
-  if (v3 != 24)
+  if (complicationType != 24)
   {
     v7 = v8;
   }
 
   v9 = @"com.apple.NanoRemote";
-  if (v3 != 21)
+  if (complicationType != 21)
   {
     v9 = 0;
   }
 
-  if (v3 == 20)
+  if (complicationType == 20)
   {
     v9 = @"com.apple.NanoReminders";
   }
 
-  if (v3 <= 23)
+  if (complicationType <= 23)
   {
     v7 = v9;
   }
 
-  if (v3 <= 26)
+  if (complicationType <= 26)
   {
     return v7;
   }
@@ -1079,10 +1079,10 @@ LABEL_16:
 
 - (id)_complicationLaunchURL
 {
-  v3 = [(CLKCComplicationDataSource *)self complication];
-  v4 = [v3 complicationType];
+  complication = [(CLKCComplicationDataSource *)self complication];
+  complicationType = [complication complicationType];
 
-  if (v4 == 46)
+  if (complicationType == 46)
   {
     v5 = @"NanoHeartRhythm://start?source=complication";
   }
@@ -1090,8 +1090,8 @@ LABEL_16:
   else
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(NTKLauncherComplicationDataSource *)self complicationApplicationIdentifier];
-    v5 = [v6 stringWithFormat:@"%@://", v7];
+    complicationApplicationIdentifier = [(NTKLauncherComplicationDataSource *)self complicationApplicationIdentifier];
+    v5 = [v6 stringWithFormat:@"%@://", complicationApplicationIdentifier];
   }
 
   v8 = [MEMORY[0x277CBEBC0] URLWithString:v5];

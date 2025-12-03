@@ -1,6 +1,6 @@
 @interface RCFolderBrowsingCollectionViewController
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (BOOL)isShowingRecentlyDeleted;
 - (RCCloudRecording)selectedRecording;
 - (RCFolderBrowsingDelegate)browsingDelegate;
@@ -9,34 +9,34 @@
 - (RCRecordingViewControllerDelegate)recordingViewControllerDelegate;
 - (RCRecordingsCollectionViewController)activeRecordingsCollectionViewController;
 - (id)_allRecordingsIndexPath;
-- (id)_currentFolder:(BOOL)a3;
-- (id)_uuidArrayFromItemArray:(id)a3;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
+- (id)_currentFolder:(BOOL)folder;
+- (id)_uuidArrayFromItemArray:(id)array;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
 - (id)undoManager;
 - (void)_classSpecificLoadView;
-- (void)_configureCell:(id)a3 withFolderDisplayModel:(id)a4;
-- (void)_dropLocalRecordingsWithUUIDArray:(id)a3 intoDestinationFolder:(id)a4 fromFolderType:(int64_t)a5 fromFolderUUID:(id)a6;
-- (void)_pushViewControllerForFolderAtIndexPath:(id)a3;
-- (void)_pushViewControllerForFolderOfType:(int64_t)a3 withName:(id)a4 folderUUID:(id)a5 animated:(BOOL)a6 completion:(id)a7;
+- (void)_configureCell:(id)cell withFolderDisplayModel:(id)model;
+- (void)_dropLocalRecordingsWithUUIDArray:(id)array intoDestinationFolder:(id)folder fromFolderType:(int64_t)type fromFolderUUID:(id)d;
+- (void)_pushViewControllerForFolderAtIndexPath:(id)path;
+- (void)_pushViewControllerForFolderOfType:(int64_t)type withName:(id)name folderUUID:(id)d animated:(BOOL)animated completion:(id)completion;
 - (void)_selectActiveFolderIfNeeded;
 - (void)_selectAllRecordingsFolderForActiveFolderDeletion;
 - (void)_updateCellSelectionForActiveFolder;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4;
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
-- (void)deleteFolderWithFolderName:(id)a3;
-- (void)goToBuiltInFolderOfType:(int64_t)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)goToUserFolderWithName:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end;
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
+- (void)deleteFolderWithFolderName:(id)name;
+- (void)goToBuiltInFolderOfType:(int64_t)type animated:(BOOL)animated completion:(id)completion;
+- (void)goToUserFolderWithName:(id)name animated:(BOOL)animated completion:(id)completion;
 - (void)restyle;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setLibraryActionHandler:(id)a3;
-- (void)setRecordingViewControllerDelegate:(id)a3;
-- (void)showRenamingControllerWithFolderName:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setLibraryActionHandler:(id)handler;
+- (void)setRecordingViewControllerDelegate:(id)delegate;
+- (void)showRenamingControllerWithFolderName:(id)name;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation RCFolderBrowsingCollectionViewController
@@ -66,23 +66,23 @@
 {
   if ([(RCFolderBrowsingCollectionViewController *)self isViewLoaded])
   {
-    v3 = [(RCFolderBrowsingCollectionViewController *)self splitViewController];
-    v4 = [v3 isCollapsed];
+    splitViewController = [(RCFolderBrowsingCollectionViewController *)self splitViewController];
+    isCollapsed = [splitViewController isCollapsed];
 
-    if ((v4 & 1) == 0)
+    if ((isCollapsed & 1) == 0)
     {
-      v5 = [(RCFolderBrowsingCollectionViewController *)self _currentActiveFolder];
-      if (v5)
+      _currentActiveFolder = [(RCFolderBrowsingCollectionViewController *)self _currentActiveFolder];
+      if (_currentActiveFolder)
       {
-        v12 = v5;
-        v6 = [(RCFoldersCollectionViewController *)self foldersController];
-        v7 = [v6 indexPathForFolder:v12];
+        v12 = _currentActiveFolder;
+        foldersController = [(RCFoldersCollectionViewController *)self foldersController];
+        v7 = [foldersController indexPathForFolder:v12];
 
-        v8 = [(RCFolderBrowsingCollectionViewController *)self collectionView];
-        v9 = [v8 indexPathsForSelectedItems];
-        v10 = [v9 firstObject];
+        collectionView = [(RCFolderBrowsingCollectionViewController *)self collectionView];
+        indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+        firstObject = [indexPathsForSelectedItems firstObject];
 
-        if (([v10 isEqual:v7] & 1) == 0)
+        if (([firstObject isEqual:v7] & 1) == 0)
         {
           if (([(RCFolderBrowsingCollectionViewController *)self isEditing]& 1) != 0)
           {
@@ -91,12 +91,12 @@
 
           else
           {
-            v11 = [(RCFolderBrowsingCollectionViewController *)self collectionView];
-            [v11 selectItemAtIndexPath:v7 animated:0 scrollPosition:0];
+            collectionView2 = [(RCFolderBrowsingCollectionViewController *)self collectionView];
+            [collectionView2 selectItemAtIndexPath:v7 animated:0 scrollPosition:0];
           }
         }
 
-        v5 = v12;
+        _currentActiveFolder = v12;
       }
     }
   }
@@ -104,53 +104,53 @@
 
 - (RCRecordingsCollectionViewController)activeRecordingsCollectionViewController
 {
-  v2 = [(RCFoldersCollectionViewController *)self currentActiveFolderViewController];
-  v3 = [v2 recordingsCollectionViewController];
+  currentActiveFolderViewController = [(RCFoldersCollectionViewController *)self currentActiveFolderViewController];
+  recordingsCollectionViewController = [currentActiveFolderViewController recordingsCollectionViewController];
 
-  return v3;
+  return recordingsCollectionViewController;
 }
 
 - (RCRecordingViewController)recordingViewController
 {
-  v2 = [(RCFoldersCollectionViewController *)self currentActiveFolderViewController];
-  v3 = [v2 recordingViewController];
+  currentActiveFolderViewController = [(RCFoldersCollectionViewController *)self currentActiveFolderViewController];
+  recordingViewController = [currentActiveFolderViewController recordingViewController];
 
-  return v3;
+  return recordingViewController;
 }
 
 - (RCCloudRecording)selectedRecording
 {
-  v2 = [(RCFolderBrowsingCollectionViewController *)self activeRecordingsCollectionViewController];
-  v3 = [v2 selectedRecording];
+  activeRecordingsCollectionViewController = [(RCFolderBrowsingCollectionViewController *)self activeRecordingsCollectionViewController];
+  selectedRecording = [activeRecordingsCollectionViewController selectedRecording];
 
-  return v3;
+  return selectedRecording;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v25 = [(RCFolderBrowsingCollectionViewController *)self isEditing];
-  if (!v25 && v5)
+  animatedCopy = animated;
+  editingCopy = editing;
+  isEditing = [(RCFolderBrowsingCollectionViewController *)self isEditing];
+  if (!isEditing && editingCopy)
   {
-    v7 = [(RCFolderBrowsingCollectionViewController *)self collectionView];
-    v8 = [v7 indexPathsForSelectedItems];
-    v9 = [v8 firstObject];
-    [(RCFoldersCollectionViewController *)self setIndexPathOfSelectionDuringEditing:v9];
+    collectionView = [(RCFolderBrowsingCollectionViewController *)self collectionView];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+    firstObject = [indexPathsForSelectedItems firstObject];
+    [(RCFoldersCollectionViewController *)self setIndexPathOfSelectionDuringEditing:firstObject];
   }
 
   v31.receiver = self;
   v31.super_class = RCFolderBrowsingCollectionViewController;
-  v26 = v5;
-  [(RCFolderBrowsingCollectionViewController *)&v31 setEditing:v5 animated:v4];
+  v26 = editingCopy;
+  [(RCFolderBrowsingCollectionViewController *)&v31 setEditing:editingCopy animated:animatedCopy];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = [(RCFolderBrowsingCollectionViewController *)self collectionView];
-  v11 = [v10 visibleCells];
+  collectionView2 = [(RCFolderBrowsingCollectionViewController *)self collectionView];
+  visibleCells = [collectionView2 visibleCells];
 
-  v12 = [v11 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  v12 = [visibleCells countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v12)
   {
     v13 = v12;
@@ -161,12 +161,12 @@
       {
         if (*v28 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(visibleCells);
         }
 
         v16 = *(*(&v27 + 1) + 8 * i);
-        v17 = [(RCFolderBrowsingCollectionViewController *)self collectionView];
-        v18 = [v17 indexPathForCell:v16];
+        collectionView3 = [(RCFolderBrowsingCollectionViewController *)self collectionView];
+        v18 = [collectionView3 indexPathForCell:v16];
 
         if ([(RCFolderBrowsingCollectionViewController *)self isEditing])
         {
@@ -192,42 +192,42 @@
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v13 = [visibleCells countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v13);
   }
 
-  if ((v25 & !v26) == 1)
+  if ((isEditing & !v26) == 1)
   {
-    v22 = [(RCFoldersCollectionViewController *)self indexPathOfSelectionDuringEditing];
+    indexPathOfSelectionDuringEditing = [(RCFoldersCollectionViewController *)self indexPathOfSelectionDuringEditing];
 
-    if (v22)
+    if (indexPathOfSelectionDuringEditing)
     {
-      v23 = [(RCFolderBrowsingCollectionViewController *)self collectionView];
-      v24 = [(RCFoldersCollectionViewController *)self indexPathOfSelectionDuringEditing];
-      [v23 selectItemAtIndexPath:v24 animated:0 scrollPosition:0];
+      collectionView4 = [(RCFolderBrowsingCollectionViewController *)self collectionView];
+      indexPathOfSelectionDuringEditing2 = [(RCFoldersCollectionViewController *)self indexPathOfSelectionDuringEditing];
+      [collectionView4 selectItemAtIndexPath:indexPathOfSelectionDuringEditing2 animated:0 scrollPosition:0];
 
       [(RCFoldersCollectionViewController *)self setIndexPathOfSelectionDuringEditing:0];
     }
   }
 }
 
-- (void)setRecordingViewControllerDelegate:(id)a3
+- (void)setRecordingViewControllerDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_recordingViewControllerDelegate, v4);
-  v5 = [(RCFoldersCollectionViewController *)self currentActiveFolderViewController];
-  [v5 setRecordingViewControllerDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_recordingViewControllerDelegate, delegateCopy);
+  currentActiveFolderViewController = [(RCFoldersCollectionViewController *)self currentActiveFolderViewController];
+  [currentActiveFolderViewController setRecordingViewControllerDelegate:delegateCopy];
 }
 
-- (void)setLibraryActionHandler:(id)a3
+- (void)setLibraryActionHandler:(id)handler
 {
-  v4 = a3;
-  objc_storeWeak(&self->_libraryActionHandler, v4);
-  v6 = [(RCFoldersCollectionViewController *)self currentActiveFolderViewController];
-  v5 = [v6 recordingsCollectionViewController];
-  [v5 setLibraryActionHandler:v4];
+  handlerCopy = handler;
+  objc_storeWeak(&self->_libraryActionHandler, handlerCopy);
+  currentActiveFolderViewController = [(RCFoldersCollectionViewController *)self currentActiveFolderViewController];
+  recordingsCollectionViewController = [currentActiveFolderViewController recordingsCollectionViewController];
+  [recordingsCollectionViewController setLibraryActionHandler:handlerCopy];
 }
 
 - (id)undoManager
@@ -239,8 +239,8 @@
 
 - (void)_classSpecificLoadView
 {
-  v2 = [(RCFoldersCollectionViewController *)self diffableDataSource];
-  [v2 setSupportsMove:1];
+  diffableDataSource = [(RCFoldersCollectionViewController *)self diffableDataSource];
+  [diffableDataSource setSupportsMove:1];
 }
 
 - (void)viewDidLoad
@@ -248,70 +248,70 @@
   v4.receiver = self;
   v4.super_class = RCFolderBrowsingCollectionViewController;
   [(RCFoldersCollectionViewController *)&v4 viewDidLoad];
-  v3 = [(RCFolderBrowsingCollectionViewController *)self collectionView];
-  [v3 setDropDelegate:self];
-  [v3 setDragDelegate:self];
+  collectionView = [(RCFolderBrowsingCollectionViewController *)self collectionView];
+  [collectionView setDropDelegate:self];
+  [collectionView setDragDelegate:self];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  [(RCFolderBrowsingCollectionViewController *)self _pushViewControllerForFolderAtIndexPath:a4];
-  v5 = [(RCFolderBrowsingCollectionViewController *)self splitViewController];
-  [v5 hidePrimaryColumnIfNeeded];
+  [(RCFolderBrowsingCollectionViewController *)self _pushViewControllerForFolderAtIndexPath:path];
+  splitViewController = [(RCFolderBrowsingCollectionViewController *)self splitViewController];
+  [splitViewController hidePrimaryColumnIfNeeded];
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(RCFolderBrowsingCollectionViewController *)self collectionView];
-  v7 = [v6 indexPathsForSelectedItems];
-  v8 = [v7 firstObject];
+  pathCopy = path;
+  collectionView = [(RCFolderBrowsingCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
 
-  v9 = !v8 || ([v8 isEqual:v5] & 1) == 0;
+  v9 = !firstObject || ([firstObject isEqual:pathCopy] & 1) == 0;
   return v9;
 }
 
-- (void)_pushViewControllerForFolderAtIndexPath:(id)a3
+- (void)_pushViewControllerForFolderAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(RCFoldersCollectionViewController *)self foldersController];
-  v10 = [v5 folderAtIndexPath:v4];
+  pathCopy = path;
+  foldersController = [(RCFoldersCollectionViewController *)self foldersController];
+  v10 = [foldersController folderAtIndexPath:pathCopy];
 
   v6 = [RCFolderDisplayModel folderDisplayModelWithFolderModel:v10];
-  v7 = [v10 folderType];
-  v8 = [v6 displayName];
-  v9 = [v6 UUID];
-  [(RCFolderBrowsingCollectionViewController *)self _pushViewControllerForFolderOfType:v7 withName:v8 folderUUID:v9 animated:1 completion:0];
+  folderType = [v10 folderType];
+  displayName = [v6 displayName];
+  uUID = [v6 UUID];
+  [(RCFolderBrowsingCollectionViewController *)self _pushViewControllerForFolderOfType:folderType withName:displayName folderUUID:uUID animated:1 completion:0];
 }
 
-- (void)_pushViewControllerForFolderOfType:(int64_t)a3 withName:(id)a4 folderUUID:(id)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)_pushViewControllerForFolderOfType:(int64_t)type withName:(id)name folderUUID:(id)d animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a6;
-  v34 = a4;
-  v12 = a5;
-  v35 = a7;
+  animatedCopy = animated;
+  nameCopy = name;
+  dCopy = d;
+  completionCopy = completion;
   v13 = +[UIApplication sharedApplication];
-  v14 = [v13 delegate];
+  delegate = [v13 delegate];
 
-  v15 = [v14 defaultSceneDelegate];
-  v16 = [v15 rootSplitViewController];
+  defaultSceneDelegate = [delegate defaultSceneDelegate];
+  rootSplitViewController = [defaultSceneDelegate rootSplitViewController];
 
-  if (v16)
+  if (rootSplitViewController)
   {
-    if (a3 >= 4)
+    if (type >= 4)
     {
-      if (a3 != 4)
+      if (type != 4)
       {
         p_super = 0;
 LABEL_10:
-        v19 = [(RCFoldersCollectionViewController *)self selectionDelegate];
-        v20 = [p_super recordingsCollectionViewController];
-        [v20 setFolderSelectionDelegate:v19];
+        selectionDelegate = [(RCFoldersCollectionViewController *)self selectionDelegate];
+        recordingsCollectionViewController = [p_super recordingsCollectionViewController];
+        [recordingsCollectionViewController setFolderSelectionDelegate:selectionDelegate];
 
         [(RCFoldersCollectionViewController *)self setCurrentFolderViewController:p_super];
-        v21 = [(RCFoldersCollectionViewController *)self currentActiveFolderViewController];
+        currentActiveFolderViewController = [(RCFoldersCollectionViewController *)self currentActiveFolderViewController];
 
-        if (v21)
+        if (currentActiveFolderViewController)
         {
           objc_initWeak(location, self);
           objc_initWeak(&from, p_super);
@@ -321,8 +321,8 @@ LABEL_10:
           v40[3] = &unk_10028BF48;
           objc_copyWeak(&v43, &from);
           objc_copyWeak(&v44, location);
-          v41 = v34;
-          v42 = self;
+          v41 = nameCopy;
+          selfCopy = self;
           [p_super setSetupBlock:v40];
           v38[0] = _NSConcreteStackBlock;
           v38[1] = 3221225472;
@@ -330,33 +330,33 @@ LABEL_10:
           v38[3] = &unk_10028A6A0;
           objc_copyWeak(&v39, &from);
           [p_super setTeardownBlock:v38];
-          v22 = [p_super setupBlock];
+          setupBlock = [p_super setupBlock];
 
-          if (v22)
+          if (setupBlock)
           {
-            v23 = [p_super setupBlock];
-            v23[2]();
+            setupBlock2 = [p_super setupBlock];
+            setupBlock2[2]();
           }
 
-          [v16 setViewController:p_super forColumn:1];
-          v24 = [p_super navigationController];
+          [rootSplitViewController setViewController:p_super forColumn:1];
+          navigationController = [p_super navigationController];
           v25 = +[RCRecorderStyleProvider sharedStyleProvider];
-          v26 = [v25 usesLargeTitles];
-          v27 = [v24 navigationBar];
-          [v27 setPrefersLargeTitles:v26];
+          usesLargeTitles = [v25 usesLargeTitles];
+          navigationBar = [navigationController navigationBar];
+          [navigationBar setPrefersLargeTitles:usesLargeTitles];
 
-          [v24 setToolbarHidden:1 animated:v8];
-          v28 = +[UIView areAnimationsEnabled]&& !v8;
+          [navigationController setToolbarHidden:1 animated:animatedCopy];
+          v28 = +[UIView areAnimationsEnabled]&& !animatedCopy;
           if (v28 == 1)
           {
             [UIView setAnimationsEnabled:0];
           }
 
-          [v16 showColumn:1];
-          if (v35)
+          [rootSplitViewController showColumn:1];
+          if (completionCopy)
           {
-            v29 = [v16 transitionCoordinator];
-            if (v29)
+            transitionCoordinator = [rootSplitViewController transitionCoordinator];
+            if (transitionCoordinator)
             {
               v30 = v28;
             }
@@ -368,18 +368,18 @@ LABEL_10:
 
             if (v30)
             {
-              v35[2]();
+              completionCopy[2]();
             }
 
             else
             {
-              v31 = [v16 transitionCoordinator];
+              transitionCoordinator2 = [rootSplitViewController transitionCoordinator];
               v36[0] = _NSConcreteStackBlock;
               v36[1] = 3221225472;
               v36[2] = sub_100098EAC;
               v36[3] = &unk_10028BF70;
-              v37 = v35;
-              [v31 animateAlongsideTransition:0 completion:v36];
+              v37 = completionCopy;
+              [transitionCoordinator2 animateAlongsideTransition:0 completion:v36];
             }
           }
 
@@ -388,8 +388,8 @@ LABEL_10:
             [UIView setAnimationsEnabled:1];
           }
 
-          v32 = [(RCFolderBrowsingCollectionViewController *)self browsingDelegate];
-          [v32 didSelectFolderOfType:a3];
+          browsingDelegate = [(RCFolderBrowsingCollectionViewController *)self browsingDelegate];
+          [browsingDelegate didSelectFolderOfType:type];
 
           objc_destroyWeak(&v39);
           objc_destroyWeak(&v44);
@@ -400,16 +400,16 @@ LABEL_10:
 
         [(RCFoldersCollectionViewController *)self setCurrentFolderViewController:p_super];
         [(RCFolderBrowsingCollectionViewController *)self _selectActiveFolderIfNeeded];
-        v12 = v33;
+        dCopy = v33;
         goto LABEL_27;
       }
 
-      v17 = [[RCFolderViewController alloc] initWithUserFolderNamed:v34 folderUUID:v12];
+      v17 = [[RCFolderViewController alloc] initWithUserFolderNamed:nameCopy folderUUID:dCopy];
     }
 
     else
     {
-      v17 = [[RCFolderViewController alloc] initWithBuiltInFolderType:a3 folderUUID:v12];
+      v17 = [[RCFolderViewController alloc] initWithBuiltInFolderType:type folderUUID:dCopy];
     }
 
     p_super = &v17->super.super.super;
@@ -430,78 +430,78 @@ LABEL_27:
   v5.receiver = self;
   v5.super_class = RCFolderBrowsingCollectionViewController;
   [(RCFoldersCollectionViewController *)&v5 restyle];
-  v3 = [(RCFoldersCollectionViewController *)self currentFolderViewController];
-  v4 = [v3 recordingViewController];
-  [v4 restyle];
+  currentFolderViewController = [(RCFoldersCollectionViewController *)self currentFolderViewController];
+  recordingViewController = [currentFolderViewController recordingViewController];
+  [recordingViewController restyle];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = RCFolderBrowsingCollectionViewController;
-  [(RCFolderBrowsingCollectionViewController *)&v8 viewDidAppear:a3];
+  [(RCFolderBrowsingCollectionViewController *)&v8 viewDidAppear:appear];
   [(RCFolderBrowsingCollectionViewController *)self _updateCellSelectionForActiveFolder];
-  v4 = [(RCFolderBrowsingCollectionViewController *)self _currentActiveFolder];
-  if (!v4)
+  _currentActiveFolder = [(RCFolderBrowsingCollectionViewController *)self _currentActiveFolder];
+  if (!_currentActiveFolder)
   {
-    v5 = [(RCFolderBrowsingCollectionViewController *)self browsingDelegate];
-    [v5 didReturnToFoldersList];
+    browsingDelegate = [(RCFolderBrowsingCollectionViewController *)self browsingDelegate];
+    [browsingDelegate didReturnToFoldersList];
   }
 
   v6 = UIAccessibilityLayoutChangedNotification;
-  v7 = [(RCFolderBrowsingCollectionViewController *)self collectionView];
-  UIAccessibilityPostNotification(v6, v7);
+  collectionView = [(RCFolderBrowsingCollectionViewController *)self collectionView];
+  UIAccessibilityPostNotification(v6, collectionView);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = RCFolderBrowsingCollectionViewController;
   [(RCFolderBrowsingCollectionViewController *)&v8 viewWillDisappear:?];
-  [(RCFolderBrowsingCollectionViewController *)self setEditing:0 animated:v3];
-  v5 = [(RCFolderBrowsingCollectionViewController *)self navigationController];
-  [v5 setToolbarHidden:1 animated:v3];
+  [(RCFolderBrowsingCollectionViewController *)self setEditing:0 animated:disappearCopy];
+  navigationController = [(RCFolderBrowsingCollectionViewController *)self navigationController];
+  [navigationController setToolbarHidden:1 animated:disappearCopy];
 
-  v6 = [(RCFolderBrowsingCollectionViewController *)self viewWillDisappearBlock];
+  viewWillDisappearBlock = [(RCFolderBrowsingCollectionViewController *)self viewWillDisappearBlock];
 
-  if (v6)
+  if (viewWillDisappearBlock)
   {
-    v7 = [(RCFolderBrowsingCollectionViewController *)self viewWillDisappearBlock];
-    v7[2]();
+    viewWillDisappearBlock2 = [(RCFolderBrowsingCollectionViewController *)self viewWillDisappearBlock];
+    viewWillDisappearBlock2[2]();
 
     [(RCFolderBrowsingCollectionViewController *)self setViewWillDisappearBlock:0];
   }
 }
 
-- (void)_configureCell:(id)a3 withFolderDisplayModel:(id)a4
+- (void)_configureCell:(id)cell withFolderDisplayModel:(id)model
 {
   v7.receiver = self;
   v7.super_class = RCFolderBrowsingCollectionViewController;
-  v6 = a3;
-  [(RCFoldersCollectionViewController *)&v7 _configureCell:v6 withFolderDisplayModel:a4];
-  [v6 setActionHandler:{self, v7.receiver, v7.super_class}];
+  cellCopy = cell;
+  [(RCFoldersCollectionViewController *)&v7 _configureCell:cellCopy withFolderDisplayModel:model];
+  [cellCopy setActionHandler:{self, v7.receiver, v7.super_class}];
 }
 
 - (void)_updateCellSelectionForActiveFolder
 {
-  v3 = [(RCFolderBrowsingCollectionViewController *)self _currentActiveFolder];
-  if (v3)
+  _currentActiveFolder = [(RCFolderBrowsingCollectionViewController *)self _currentActiveFolder];
+  if (_currentActiveFolder)
   {
-    v7 = v3;
-    v4 = [(RCFoldersCollectionViewController *)self foldersController];
-    v5 = [v4 indexPathForFolder:v7];
+    v7 = _currentActiveFolder;
+    foldersController = [(RCFoldersCollectionViewController *)self foldersController];
+    v5 = [foldersController indexPathForFolder:v7];
 
-    v6 = [(RCFolderBrowsingCollectionViewController *)self collectionView];
-    [v6 selectItemAtIndexPath:v5 animated:0 scrollPosition:0];
+    collectionView = [(RCFolderBrowsingCollectionViewController *)self collectionView];
+    [collectionView selectItemAtIndexPath:v5 animated:0 scrollPosition:0];
 
-    v3 = v7;
+    _currentActiveFolder = v7;
   }
 }
 
-- (id)_currentFolder:(BOOL)a3
+- (id)_currentFolder:(BOOL)folder
 {
-  if (a3)
+  if (folder)
   {
     [(RCFoldersCollectionViewController *)self currentFolderViewController];
   }
@@ -518,40 +518,40 @@ LABEL_27:
     goto LABEL_19;
   }
 
-  v5 = [v3 folderTitle];
-  v6 = [v4 folderType];
+  folderTitle = [v3 folderTitle];
+  folderType = [v4 folderType];
   v7 = +[RCApplicationModel sharedApplicationModel];
   v8 = v7;
   v9 = 0;
-  if (v6 <= 1)
+  if (folderType <= 1)
   {
-    if (!v6)
+    if (!folderType)
     {
-      v10 = [v7 voiceMemosRecordingsFolder];
+      voiceMemosRecordingsFolder = [v7 voiceMemosRecordingsFolder];
       goto LABEL_17;
     }
 
-    if (v6 == 1)
+    if (folderType == 1)
     {
-      v10 = [v7 favoriteRecordingsFolder];
+      voiceMemosRecordingsFolder = [v7 favoriteRecordingsFolder];
       goto LABEL_17;
     }
   }
 
   else
   {
-    switch(v6)
+    switch(folderType)
     {
       case 2:
-        v10 = [v7 capturedOnWatchRecordingsFolder];
+        voiceMemosRecordingsFolder = [v7 capturedOnWatchRecordingsFolder];
         goto LABEL_17;
       case 3:
-        v10 = [v7 recentlyDeletedRecordingsFolder];
+        voiceMemosRecordingsFolder = [v7 recentlyDeletedRecordingsFolder];
         goto LABEL_17;
       case 4:
-        v10 = [v7 existingFolderWithName:v5];
+        voiceMemosRecordingsFolder = [v7 existingFolderWithName:folderTitle];
 LABEL_17:
-        v9 = v10;
+        v9 = voiceMemosRecordingsFolder;
         break;
     }
   }
@@ -563,10 +563,10 @@ LABEL_19:
 
 - (void)_selectAllRecordingsFolderForActiveFolderDeletion
 {
-  v3 = [(RCFolderBrowsingCollectionViewController *)self splitViewController];
-  v4 = [v3 isCollapsed];
+  splitViewController = [(RCFolderBrowsingCollectionViewController *)self splitViewController];
+  isCollapsed = [splitViewController isCollapsed];
 
-  if (v4)
+  if (isCollapsed)
   {
 
     [(RCFolderBrowsingCollectionViewController *)self goToBuiltInFolderOfType:0 animated:0 completion:0];
@@ -574,13 +574,13 @@ LABEL_19:
 
   else
   {
-    v6 = [(RCFolderBrowsingCollectionViewController *)self _allRecordingsIndexPath];
+    _allRecordingsIndexPath = [(RCFolderBrowsingCollectionViewController *)self _allRecordingsIndexPath];
     [(RCFolderBrowsingCollectionViewController *)self _pushViewControllerForFolderAtIndexPath:?];
-    v5 = [(RCFoldersCollectionViewController *)self indexPathOfSelectionDuringEditing];
+    indexPathOfSelectionDuringEditing = [(RCFoldersCollectionViewController *)self indexPathOfSelectionDuringEditing];
 
-    if (v5)
+    if (indexPathOfSelectionDuringEditing)
     {
-      [(RCFoldersCollectionViewController *)self setIndexPathOfSelectionDuringEditing:v6];
+      [(RCFoldersCollectionViewController *)self setIndexPathOfSelectionDuringEditing:_allRecordingsIndexPath];
     }
   }
 }
@@ -588,79 +588,79 @@ LABEL_19:
 - (id)_allRecordingsIndexPath
 {
   v3 = +[RCApplicationModel sharedApplicationModel];
-  v4 = [v3 voiceMemosRecordingsFolder];
+  voiceMemosRecordingsFolder = [v3 voiceMemosRecordingsFolder];
 
-  v5 = [(RCFoldersCollectionViewController *)self foldersController];
-  v6 = [v5 indexPathForFolder:v4];
+  foldersController = [(RCFoldersCollectionViewController *)self foldersController];
+  v6 = [foldersController indexPathForFolder:voiceMemosRecordingsFolder];
 
   return v6;
 }
 
-- (void)showRenamingControllerWithFolderName:(id)a3
+- (void)showRenamingControllerWithFolderName:(id)name
 {
-  v4 = a3;
-  v5 = [(RCFoldersCollectionViewController *)self selectionDelegate];
-  [v5 showRenamingControllerWithFolderName:v4 controller:self];
+  nameCopy = name;
+  selectionDelegate = [(RCFoldersCollectionViewController *)self selectionDelegate];
+  [selectionDelegate showRenamingControllerWithFolderName:nameCopy controller:self];
 }
 
-- (void)deleteFolderWithFolderName:(id)a3
+- (void)deleteFolderWithFolderName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v7 = +[RCApplicationModel sharedApplicationModel];
-  v5 = [v7 folderWithName:v4];
+  v5 = [v7 folderWithName:nameCopy];
 
-  v6 = [(RCFoldersCollectionViewController *)self selectionDelegate];
-  [v6 deleteFolder:v5 controller:self completionBlock:0];
+  selectionDelegate = [(RCFoldersCollectionViewController *)self selectionDelegate];
+  [selectionDelegate deleteFolder:v5 controller:self completionBlock:0];
 }
 
-- (void)goToBuiltInFolderOfType:(int64_t)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)goToBuiltInFolderOfType:(int64_t)type animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  if (a3 > 1)
+  animatedCopy = animated;
+  completionCopy = completion;
+  if (type > 1)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       v9 = +[RCApplicationModel sharedApplicationModel];
-      v10 = [v9 recentlyDeletedRecordingsFolder];
+      recentlyDeletedRecordingsFolder = [v9 recentlyDeletedRecordingsFolder];
     }
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_12;
       }
 
       v9 = +[RCApplicationModel sharedApplicationModel];
-      v10 = [v9 capturedOnWatchRecordingsFolder];
+      recentlyDeletedRecordingsFolder = [v9 capturedOnWatchRecordingsFolder];
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_12;
     }
 
     v9 = +[RCApplicationModel sharedApplicationModel];
-    v10 = [v9 favoriteRecordingsFolder];
+    recentlyDeletedRecordingsFolder = [v9 favoriteRecordingsFolder];
   }
 
   else
   {
     v9 = +[RCApplicationModel sharedApplicationModel];
-    v10 = [v9 voiceMemosRecordingsFolder];
+    recentlyDeletedRecordingsFolder = [v9 voiceMemosRecordingsFolder];
   }
 
-  v11 = v10;
+  v11 = recentlyDeletedRecordingsFolder;
 
   if (v11)
   {
-    v12 = [v11 uuid];
-    v13 = [RCFolderDisplayModel folderNameForBuiltInFolderOfType:a3];
-    [(RCFolderBrowsingCollectionViewController *)self _pushViewControllerForFolderOfType:a3 withName:v13 folderUUID:v12 animated:v5 completion:v8];
+    uuid = [v11 uuid];
+    v13 = [RCFolderDisplayModel folderNameForBuiltInFolderOfType:type];
+    [(RCFolderBrowsingCollectionViewController *)self _pushViewControllerForFolderOfType:type withName:v13 folderUUID:uuid animated:animatedCopy completion:completionCopy];
 
     goto LABEL_14;
   }
@@ -669,50 +669,50 @@ LABEL_12:
   v11 = OSLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    sub_1001BA600(a3, v11);
+    sub_1001BA600(type, v11);
   }
 
 LABEL_14:
 }
 
-- (void)goToUserFolderWithName:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)goToUserFolderWithName:(id)name animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  animatedCopy = animated;
+  completionCopy = completion;
+  nameCopy = name;
   v14 = +[RCApplicationModel sharedApplicationModel];
-  v10 = [v14 folderWithName:v9];
+  v10 = [v14 folderWithName:nameCopy];
 
-  v11 = [v10 folderType];
-  v12 = [v10 name];
-  v13 = [v10 uuid];
-  [(RCFolderBrowsingCollectionViewController *)self _pushViewControllerForFolderOfType:v11 withName:v12 folderUUID:v13 animated:v5 completion:v8];
+  folderType = [v10 folderType];
+  name = [v10 name];
+  uuid = [v10 uuid];
+  [(RCFolderBrowsingCollectionViewController *)self _pushViewControllerForFolderOfType:folderType withName:name folderUUID:uuid animated:animatedCopy completion:completionCopy];
 }
 
 - (BOOL)isShowingRecentlyDeleted
 {
-  v2 = [(RCFoldersCollectionViewController *)self currentActiveFolderViewController];
-  v3 = [v2 recordingsCollectionViewController];
+  currentActiveFolderViewController = [(RCFoldersCollectionViewController *)self currentActiveFolderViewController];
+  recordingsCollectionViewController = [currentActiveFolderViewController recordingsCollectionViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
-  if ([v8 section])
+  sessionCopy = session;
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    v9 = [(RCFoldersCollectionViewController *)self foldersController];
-    v10 = [v9 folderAtIndexPath:v8];
+    foldersController = [(RCFoldersCollectionViewController *)self foldersController];
+    v10 = [foldersController folderAtIndexPath:pathCopy];
 
-    v11 = [v10 folderType];
-    v12 = [v10 uuid];
-    v13 = [RCLocalDropContext dropContextWithFolderType:v11 folderUUID:v12 folderIndexPath:v8 payloadType:1];
+    folderType = [v10 folderType];
+    uuid = [v10 uuid];
+    v13 = [RCLocalDropContext dropContextWithFolderType:folderType folderUUID:uuid folderIndexPath:pathCopy payloadType:1];
 
-    [v7 setLocalContext:v13];
+    [sessionCopy setLocalContext:v13];
     v14 = objc_opt_new();
     v15 = [[UIDragItem alloc] initWithItemProvider:v14];
     v18 = v15;
@@ -727,24 +727,24 @@ LABEL_14:
   return v16;
 }
 
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin
 {
-  v4 = [(RCFolderBrowsingCollectionViewController *)self libraryActionHandler:a3];
+  v4 = [(RCFolderBrowsingCollectionViewController *)self libraryActionHandler:view];
   [v4 willBeginDragSession];
 }
 
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end
 {
-  v4 = [(RCFolderBrowsingCollectionViewController *)self libraryActionHandler:a3];
+  v4 = [(RCFolderBrowsingCollectionViewController *)self libraryActionHandler:view];
   [v4 didEndDragSession];
 }
 
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session
 {
-  v4 = a4;
-  v5 = [v4 localDragSession];
+  sessionCopy = session;
+  localDragSession = [sessionCopy localDragSession];
 
-  if (v5)
+  if (localDragSession)
   {
     LOBYTE(v6) = 1;
   }
@@ -752,130 +752,130 @@ LABEL_14:
   else
   {
     v7 = +[RCCaptureFormat supportedFileTypeIdentifiers];
-    v6 = [v4 hasItemsConformingToTypeIdentifiers:v7];
+    v6 = [sessionCopy hasItemsConformingToTypeIdentifiers:v7];
   }
 
   return v6;
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
-  v24 = a3;
-  v6 = a4;
-  v7 = [v6 session];
-  v8 = [v7 localDragSession];
+  viewCopy = view;
+  coordinatorCopy = coordinator;
+  session = [coordinatorCopy session];
+  localDragSession = [session localDragSession];
 
-  v9 = [v6 destinationIndexPath];
-  v10 = [(RCFoldersCollectionViewController *)self foldersController];
-  v11 = [v10 folderAtIndexPath:v9];
+  destinationIndexPath = [coordinatorCopy destinationIndexPath];
+  foldersController = [(RCFoldersCollectionViewController *)self foldersController];
+  v11 = [foldersController folderAtIndexPath:destinationIndexPath];
 
-  if (v8)
+  if (localDragSession)
   {
-    v12 = [v6 session];
-    v13 = [v12 localDragSession];
-    v14 = [v13 localContext];
+    session2 = [coordinatorCopy session];
+    localDragSession2 = [session2 localDragSession];
+    localContext = [localDragSession2 localContext];
 
-    v15 = [v14 payloadType];
-    if (v15 == 1)
+    payloadType = [localContext payloadType];
+    if (payloadType == 1)
     {
-      v22 = [v14 folderIndexPath];
-      v23 = [v22 isEqual:v9];
+      folderIndexPath = [localContext folderIndexPath];
+      v23 = [folderIndexPath isEqual:destinationIndexPath];
 
       if (v23)
       {
         goto LABEL_9;
       }
 
-      v18 = [v24 dataSource];
-      v20 = [v14 folderIndexPath];
-      [v18 collectionView:v24 moveItemAtIndexPath:v20 toIndexPath:v9];
+      dataSource = [viewCopy dataSource];
+      folderIndexPath2 = [localContext folderIndexPath];
+      [dataSource collectionView:viewCopy moveItemAtIndexPath:folderIndexPath2 toIndexPath:destinationIndexPath];
     }
 
     else
     {
-      if (v15)
+      if (payloadType)
       {
         goto LABEL_9;
       }
 
-      v16 = [v6 session];
-      v17 = [v16 items];
-      v18 = [(RCFolderBrowsingCollectionViewController *)self _uuidArrayFromItemArray:v17];
+      session3 = [coordinatorCopy session];
+      items = [session3 items];
+      dataSource = [(RCFolderBrowsingCollectionViewController *)self _uuidArrayFromItemArray:items];
 
-      v19 = [v14 folderType];
-      v20 = [v14 folderUUID];
-      [(RCFolderBrowsingCollectionViewController *)self _dropLocalRecordingsWithUUIDArray:v18 intoDestinationFolder:v11 fromFolderType:v19 fromFolderUUID:v20];
+      folderType = [localContext folderType];
+      folderIndexPath2 = [localContext folderUUID];
+      [(RCFolderBrowsingCollectionViewController *)self _dropLocalRecordingsWithUUIDArray:dataSource intoDestinationFolder:v11 fromFolderType:folderType fromFolderUUID:folderIndexPath2];
     }
   }
 
   else
   {
-    v21 = [(RCFoldersCollectionViewController *)self foldersController];
-    v14 = [v21 folderAtIndexPath:v9];
+    foldersController2 = [(RCFoldersCollectionViewController *)self foldersController];
+    localContext = [foldersController2 folderAtIndexPath:destinationIndexPath];
 
-    [v24 selectItemAtIndexPath:v9 animated:0 scrollPosition:0];
-    [(RCFolderBrowsingCollectionViewController *)self collectionView:v24 didSelectItemAtIndexPath:v9];
-    v18 = [(RCFolderBrowsingCollectionViewController *)self activeRecordingsCollectionViewController];
-    v20 = [v6 session];
-    [v18 performDropWithSession:v20 folder:v14];
+    [viewCopy selectItemAtIndexPath:destinationIndexPath animated:0 scrollPosition:0];
+    [(RCFolderBrowsingCollectionViewController *)self collectionView:viewCopy didSelectItemAtIndexPath:destinationIndexPath];
+    dataSource = [(RCFolderBrowsingCollectionViewController *)self activeRecordingsCollectionViewController];
+    folderIndexPath2 = [coordinatorCopy session];
+    [dataSource performDropWithSession:folderIndexPath2 folder:localContext];
   }
 
 LABEL_9:
 }
 
-- (void)_dropLocalRecordingsWithUUIDArray:(id)a3 intoDestinationFolder:(id)a4 fromFolderType:(int64_t)a5 fromFolderUUID:(id)a6
+- (void)_dropLocalRecordingsWithUUIDArray:(id)array intoDestinationFolder:(id)folder fromFolderType:(int64_t)type fromFolderUUID:(id)d
 {
-  v20 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (v20 && [v20 count])
+  arrayCopy = array;
+  folderCopy = folder;
+  dCopy = d;
+  if (arrayCopy && [arrayCopy count])
   {
-    v12 = [RCFolderDisplayModel folderDisplayModelWithFolderModel:v10];
-    v13 = [v12 representsPossibleMoveDestination];
-    v14 = [(RCFolderBrowsingCollectionViewController *)self browsingDelegate];
-    v15 = [v10 uuid];
-    v16 = [v14 canMoveRecordingsWithUUIDs:v20 toFolderWithUUID:v15 toFolderType:objc_msgSend(v12 fromFolderUUID:{"folderType"), v11}];
+    v12 = [RCFolderDisplayModel folderDisplayModelWithFolderModel:folderCopy];
+    representsPossibleMoveDestination = [v12 representsPossibleMoveDestination];
+    browsingDelegate = [(RCFolderBrowsingCollectionViewController *)self browsingDelegate];
+    uuid = [folderCopy uuid];
+    v16 = [browsingDelegate canMoveRecordingsWithUUIDs:arrayCopy toFolderWithUUID:uuid toFolderType:objc_msgSend(v12 fromFolderUUID:{"folderType"), dCopy}];
 
-    if (v13 && v16)
+    if (representsPossibleMoveDestination && v16)
     {
-      v17 = [v12 folderType];
-      v18 = [(RCFolderBrowsingCollectionViewController *)self browsingDelegate];
-      if (v17 == 4)
+      folderType = [v12 folderType];
+      browsingDelegate2 = [(RCFolderBrowsingCollectionViewController *)self browsingDelegate];
+      if (folderType == 4)
       {
-        v19 = [v12 UUID];
-        [v18 moveRecordingsWithUUIDs:v20 toFolderWithUUID:v19];
+        uUID = [v12 UUID];
+        [browsingDelegate2 moveRecordingsWithUUIDs:arrayCopy toFolderWithUUID:uUID];
       }
 
       else
       {
-        [v18 moveRecordingsWithUUIDs:v20 fromFolderOfType:a5 toBuiltInFolderOfType:{objc_msgSend(v12, "folderType")}];
+        [browsingDelegate2 moveRecordingsWithUUIDs:arrayCopy fromFolderOfType:type toBuiltInFolderOfType:{objc_msgSend(v12, "folderType")}];
       }
     }
   }
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
+  updateCopy = update;
+  pathCopy = path;
   v9 = [[UICollectionViewDropProposal alloc] initWithDropOperation:1 intent:0];
   v10 = v9;
-  if (!v8)
+  if (!pathCopy)
   {
     v28 = v9;
     goto LABEL_25;
   }
 
-  v11 = [v7 localDragSession];
+  localDragSession = [updateCopy localDragSession];
 
-  v12 = [(RCFoldersCollectionViewController *)self foldersController];
-  v13 = [v12 folderAtIndexPath:v8];
+  foldersController = [(RCFoldersCollectionViewController *)self foldersController];
+  v13 = [foldersController folderAtIndexPath:pathCopy];
 
   if (v13)
   {
     v14 = [RCFolderDisplayModel folderDisplayModelWithFolderModel:v13];
     v15 = v14;
-    if (!v11)
+    if (!localDragSession)
     {
       v29 = [v14 folderType] & 0xFFFFFFFFFFFFFFFELL;
       v30 = [UICollectionViewDropProposal alloc];
@@ -891,32 +891,32 @@ LABEL_9:
         v32 = 2;
       }
 
-      v17 = v10;
+      localContext = v10;
       v10 = [v30 initWithDropOperation:v31 intent:v32];
       goto LABEL_23;
     }
 
-    v16 = [v7 localDragSession];
-    v17 = [v16 localContext];
+    localDragSession2 = [updateCopy localDragSession];
+    localContext = [localDragSession2 localContext];
 
-    v18 = [v17 payloadType];
-    if (v18 != 1)
+    payloadType = [localContext payloadType];
+    if (payloadType != 1)
     {
-      if (!v18)
+      if (!payloadType)
       {
-        v19 = [v7 items];
-        v41 = [(RCFolderBrowsingCollectionViewController *)self _uuidArrayFromItemArray:v19];
+        items = [updateCopy items];
+        v41 = [(RCFolderBrowsingCollectionViewController *)self _uuidArrayFromItemArray:items];
 
-        v39 = [v15 representsPossibleMoveDestination];
-        v20 = [(RCFolderBrowsingCollectionViewController *)self browsingDelegate];
-        v21 = [v15 UUID];
+        representsPossibleMoveDestination = [v15 representsPossibleMoveDestination];
+        browsingDelegate = [(RCFolderBrowsingCollectionViewController *)self browsingDelegate];
+        uUID = [v15 UUID];
         v40 = v15;
-        v22 = [v15 folderType];
-        v23 = [v17 folderUUID];
-        v24 = [v20 canMoveRecordingsWithUUIDs:v41 toFolderWithUUID:v21 toFolderType:v22 fromFolderUUID:v23];
+        folderType = [v15 folderType];
+        folderUUID = [localContext folderUUID];
+        v24 = [browsingDelegate canMoveRecordingsWithUUIDs:v41 toFolderWithUUID:uUID toFolderType:folderType fromFolderUUID:folderUUID];
 
         v25 = [UICollectionViewDropProposal alloc];
-        if (v39 && (v24 & 1) != 0)
+        if (representsPossibleMoveDestination && (v24 & 1) != 0)
         {
           v26 = 3;
           v27 = 2;
@@ -941,8 +941,8 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v33 = [v8 section];
-    if (v33 == 1)
+    section = [pathCopy section];
+    if (section == 1)
     {
       v34 = [UICollectionViewDropProposal alloc];
       v35 = 3;
@@ -951,7 +951,7 @@ LABEL_23:
 
     else
     {
-      if (v33)
+      if (section)
       {
         goto LABEL_23;
       }
@@ -976,15 +976,15 @@ LABEL_25:
   return v28;
 }
 
-- (id)_uuidArrayFromItemArray:(id)a3
+- (id)_uuidArrayFromItemArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -999,13 +999,13 @@ LABEL_25:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) localObject];
-        if (v10)
+        localObject = [*(*(&v13 + 1) + 8 * i) localObject];
+        if (localObject)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v4 addObject:v10];
+            [v4 addObject:localObject];
           }
         }
       }

@@ -21,24 +21,24 @@
 
 - (id)debugDescription
 {
-  v3 = [(ICMentionCheckResults *)self matchingParticipants];
-  v4 = [v3 allObjects];
-  v5 = [v4 ic_map:&__block_literal_global_22];
+  matchingParticipants = [(ICMentionCheckResults *)self matchingParticipants];
+  allObjects = [matchingParticipants allObjects];
+  v5 = [allObjects ic_map:&__block_literal_global_22];
 
   v6 = MEMORY[0x277CCACA8];
   v14.location = [(ICMentionCheckResults *)self rangeOfMention];
   v7 = NSStringFromRange(v14);
-  v8 = [(ICMentionCheckResults *)self isPartialMention];
-  v9 = [(ICMentionCheckResults *)self isExplicitMention];
+  isPartialMention = [(ICMentionCheckResults *)self isPartialMention];
+  isExplicitMention = [(ICMentionCheckResults *)self isExplicitMention];
   if ([(ICMentionCheckResults *)self isAllMention])
   {
-    v10 = [v6 stringWithFormat:@"Mention found at %@, partial: %d, explicit: %d, names: [%@]", v7, v8, v9, @"all"];
+    v10 = [v6 stringWithFormat:@"Mention found at %@, partial: %d, explicit: %d, names: [%@]", v7, isPartialMention, isExplicitMention, @"all"];
   }
 
   else
   {
     v11 = [v5 componentsJoinedByString:{@", "}];
-    v10 = [v6 stringWithFormat:@"Mention found at %@, partial: %d, explicit: %d, names: [%@]", v7, v8, v9, v11];
+    v10 = [v6 stringWithFormat:@"Mention found at %@, partial: %d, explicit: %d, names: [%@]", v7, isPartialMention, isExplicitMention, v11];
   }
 
   return v10;

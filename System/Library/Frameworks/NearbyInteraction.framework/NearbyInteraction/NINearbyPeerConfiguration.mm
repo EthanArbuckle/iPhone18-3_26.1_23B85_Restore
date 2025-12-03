@@ -1,12 +1,12 @@
 @interface NINearbyPeerConfiguration
-- (BOOL)isEqual:(id)a3;
-- (NINearbyPeerConfiguration)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NINearbyPeerConfiguration)initWithCoder:(id)coder;
 - (NINearbyPeerConfiguration)initWithPeerToken:(NIDiscoveryToken *)peerToken;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionInternal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NINearbyPeerConfiguration
@@ -16,17 +16,17 @@
   v6 = peerToken;
   if (!v6)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"NIConfiguration.mm" lineNumber:472 description:{@"Invalid parameter not satisfying: %@", @"peerToken"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NIConfiguration.mm" lineNumber:472 description:{@"Invalid parameter not satisfying: %@", @"peerToken"}];
   }
 
   v12.receiver = self;
   v12.super_class = NINearbyPeerConfiguration;
-  v7 = [(NIConfiguration *)&v12 initInternal];
-  v8 = v7;
-  if (v7)
+  initInternal = [(NIConfiguration *)&v12 initInternal];
+  v8 = initInternal;
+  if (initInternal)
   {
-    objc_storeStrong(v7 + 5, peerToken);
+    objc_storeStrong(initInternal + 5, peerToken);
     v8->_longRangeEnabled = 1;
     v8->_cameraAssistanceEnabled = 0;
     v8->_backgroundMode = 0;
@@ -41,7 +41,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = NINearbyPeerConfiguration;
@@ -49,13 +49,13 @@
   [v5 setLongRangeEnabled:self->_longRangeEnabled];
   [v5 setCameraAssistanceEnabled:self->_cameraAssistanceEnabled];
   [v5 setBackgroundMode:self->_backgroundMode];
-  v6 = [(NIDiscoveryToken *)self->_peerDiscoveryToken copyWithZone:a3];
+  v6 = [(NIDiscoveryToken *)self->_peerDiscoveryToken copyWithZone:zone];
   v7 = *(v5 + 5);
   *(v5 + 5) = v6;
 
   if (self->_debugParameters)
   {
-    v8 = [objc_msgSend(MEMORY[0x1E695DF20] allocWithZone:{a3), "initWithDictionary:copyItems:", self->_debugParameters, 1}];
+    v8 = [objc_msgSend(MEMORY[0x1E695DF20] allocWithZone:{zone), "initWithDictionary:copyItems:", self->_debugParameters, 1}];
     [v5 setDebugParameters:v8];
   }
 
@@ -65,31 +65,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = NINearbyPeerConfiguration;
-  [(NIConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_peerDiscoveryToken forKey:@"peerDiscoveryToken"];
-  [v4 encodeBool:self->_longRangeEnabled forKey:@"longRangeEnabled"];
-  [v4 encodeBool:self->_cameraAssistanceEnabled forKey:@"cameraAssistanceEnabled"];
-  [v4 encodeInteger:self->_backgroundMode forKey:@"backgroundMode"];
-  [v4 encodeObject:self->_debugParameters forKey:@"debugParameters"];
-  [v4 encodeBool:self->_extendedDistanceMeasurementEnabled forKey:@"extendedDistanceMeasurementEnabled"];
-  [v4 encodeInteger:self->_useCase forKey:@"useCase"];
-  [v4 encodeBool:self->_useCaseCameraAssistanceInClientProcess forKey:@"useCaseCameraAssistanceInClientProcess"];
+  [(NIConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_peerDiscoveryToken forKey:@"peerDiscoveryToken"];
+  [coderCopy encodeBool:self->_longRangeEnabled forKey:@"longRangeEnabled"];
+  [coderCopy encodeBool:self->_cameraAssistanceEnabled forKey:@"cameraAssistanceEnabled"];
+  [coderCopy encodeInteger:self->_backgroundMode forKey:@"backgroundMode"];
+  [coderCopy encodeObject:self->_debugParameters forKey:@"debugParameters"];
+  [coderCopy encodeBool:self->_extendedDistanceMeasurementEnabled forKey:@"extendedDistanceMeasurementEnabled"];
+  [coderCopy encodeInteger:self->_useCase forKey:@"useCase"];
+  [coderCopy encodeBool:self->_useCaseCameraAssistanceInClientProcess forKey:@"useCaseCameraAssistanceInClientProcess"];
 }
 
-- (NINearbyPeerConfiguration)initWithCoder:(id)a3
+- (NINearbyPeerConfiguration)initWithCoder:(id)coder
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v27 = self;
-  obj = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerDiscoveryToken"];
-  v5 = [v4 decodeBoolForKey:@"longRangeEnabled"];
-  v6 = [v4 decodeBoolForKey:@"cameraAssistanceEnabled"];
-  v7 = [v4 decodeIntegerForKey:@"backgroundMode"];
+  coderCopy = coder;
+  selfCopy = self;
+  obj = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerDiscoveryToken"];
+  v5 = [coderCopy decodeBoolForKey:@"longRangeEnabled"];
+  v6 = [coderCopy decodeBoolForKey:@"cameraAssistanceEnabled"];
+  v7 = [coderCopy decodeIntegerForKey:@"backgroundMode"];
   v8 = MEMORY[0x1E695DFD8];
   v30[0] = objc_opt_class();
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
@@ -103,13 +103,13 @@
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
   v14 = [v12 setWithArray:v13];
 
-  v15 = [v4 decodeDictionaryWithKeysOfClasses:v11 objectsOfClasses:v14 forKey:@"debugParameters"];
-  v16 = [v4 decodeBoolForKey:@"extendedDistanceMeasurementEnabled"];
-  v17 = [v4 decodeIntegerForKey:@"useCase"];
-  v18 = [v4 decodeBoolForKey:@"useCaseCameraAssistanceInClientProcess"];
-  v28.receiver = v27;
+  v15 = [coderCopy decodeDictionaryWithKeysOfClasses:v11 objectsOfClasses:v14 forKey:@"debugParameters"];
+  v16 = [coderCopy decodeBoolForKey:@"extendedDistanceMeasurementEnabled"];
+  v17 = [coderCopy decodeIntegerForKey:@"useCase"];
+  v18 = [coderCopy decodeBoolForKey:@"useCaseCameraAssistanceInClientProcess"];
+  v28.receiver = selfCopy;
   v28.super_class = NINearbyPeerConfiguration;
-  v19 = [(NIConfiguration *)&v28 initWithCoder:v4];
+  v19 = [(NIConfiguration *)&v28 initWithCoder:coderCopy];
   v20 = v19;
   if (v19)
   {
@@ -147,13 +147,13 @@
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {
@@ -164,22 +164,22 @@ LABEL_17:
     }
 
     peerDiscoveryToken = self->_peerDiscoveryToken;
-    v8 = [(NINearbyPeerConfiguration *)v5 peerDiscoveryToken];
-    v9 = [(NIDiscoveryToken *)peerDiscoveryToken isEqual:v8];
+    peerDiscoveryToken = [(NINearbyPeerConfiguration *)v5 peerDiscoveryToken];
+    v9 = [(NIDiscoveryToken *)peerDiscoveryToken isEqual:peerDiscoveryToken];
 
     longRangeEnabled = self->_longRangeEnabled;
-    v11 = [(NINearbyPeerConfiguration *)v6 isLongRangeEnabled];
-    LOBYTE(v8) = self->_cameraAssistanceEnabled;
-    v29 = [(NINearbyPeerConfiguration *)v6 isCameraAssistanceEnabled];
+    isLongRangeEnabled = [(NINearbyPeerConfiguration *)v6 isLongRangeEnabled];
+    LOBYTE(peerDiscoveryToken) = self->_cameraAssistanceEnabled;
+    isCameraAssistanceEnabled = [(NINearbyPeerConfiguration *)v6 isCameraAssistanceEnabled];
     backgroundMode = self->_backgroundMode;
-    v27 = [(NINearbyPeerConfiguration *)v6 backgroundMode];
+    backgroundMode = [(NINearbyPeerConfiguration *)v6 backgroundMode];
     debugParameters = self->_debugParameters;
-    v26 = v8;
+    v26 = peerDiscoveryToken;
     if (!debugParameters)
     {
-      v13 = [(NINearbyPeerConfiguration *)v6 debugParameters];
+      debugParameters = [(NINearbyPeerConfiguration *)v6 debugParameters];
 
-      if (!v13)
+      if (!debugParameters)
       {
         v16 = 0;
         goto LABEL_7;
@@ -188,21 +188,21 @@ LABEL_17:
       debugParameters = self->_debugParameters;
     }
 
-    v14 = [(NINearbyPeerConfiguration *)v6 debugParameters];
-    v15 = [(NSDictionary *)debugParameters isEqual:v14];
+    debugParameters2 = [(NINearbyPeerConfiguration *)v6 debugParameters];
+    v15 = [(NSDictionary *)debugParameters isEqual:debugParameters2];
 
     v16 = v15 ^ 1;
 LABEL_7:
     extendedDistanceMeasurementEnabled = self->_extendedDistanceMeasurementEnabled;
-    v18 = [(NINearbyPeerConfiguration *)v6 isExtendedDistanceMeasurementEnabled];
+    isExtendedDistanceMeasurementEnabled = [(NINearbyPeerConfiguration *)v6 isExtendedDistanceMeasurementEnabled];
     useCase = self->_useCase;
-    v24 = [(NINearbyPeerConfiguration *)v6 useCase];
+    useCase = [(NINearbyPeerConfiguration *)v6 useCase];
     useCaseCameraAssistanceInClientProcess = self->_useCaseCameraAssistanceInClientProcess;
-    v20 = [(NINearbyPeerConfiguration *)v6 useCaseCameraAssistanceInClientProcess];
+    useCaseCameraAssistanceInClientProcess = [(NINearbyPeerConfiguration *)v6 useCaseCameraAssistanceInClientProcess];
     v21 = 0;
-    if (!((longRangeEnabled != v11 || !v9 || v26 != v29 || backgroundMode != v27) | v16 & 1) && extendedDistanceMeasurementEnabled == v18)
+    if (!((longRangeEnabled != isLongRangeEnabled || !v9 || v26 != isCameraAssistanceEnabled || backgroundMode != backgroundMode) | v16 & 1) && extendedDistanceMeasurementEnabled == isExtendedDistanceMeasurementEnabled)
     {
-      v21 = useCase == v24 && v20 == useCaseCameraAssistanceInClientProcess;
+      v21 = useCase == useCase && useCaseCameraAssistanceInClientProcess == useCaseCameraAssistanceInClientProcess;
     }
 
     goto LABEL_17;
@@ -228,8 +228,8 @@ LABEL_18:
   v3 = objc_alloc(MEMORY[0x1E696AD60]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NINearbyPeerConfiguration *)self descriptionInternal];
-  v7 = [v3 initWithFormat:@"<%@: %@>", v5, v6];
+  descriptionInternal = [(NINearbyPeerConfiguration *)self descriptionInternal];
+  v7 = [v3 initWithFormat:@"<%@: %@>", v5, descriptionInternal];
 
   return v7;
 }
@@ -240,8 +240,8 @@ LABEL_18:
   peerDiscoveryToken = self->_peerDiscoveryToken;
   if (peerDiscoveryToken)
   {
-    v5 = [(NIDiscoveryToken *)peerDiscoveryToken descriptionInternal];
-    [v3 appendFormat:@"peerToken: %@", v5];
+    descriptionInternal = [(NIDiscoveryToken *)peerDiscoveryToken descriptionInternal];
+    [v3 appendFormat:@"peerToken: %@", descriptionInternal];
   }
 
   else

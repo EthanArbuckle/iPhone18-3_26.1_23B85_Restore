@@ -7,14 +7,14 @@
 - (id)fetchWrappedInfoWithError:()RBSWrappedLSInfoProvider
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [a1 findApplicationRecordWithError:?];
+  v5 = [self findApplicationRecordWithError:?];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 bundleIdentifier];
-    v8 = [a1 personaUniqueString];
-    v9 = [v6 jobLabel];
-    v10 = +[RBSWrappedLSInfo infoWithBundleID:personaString:persistentJobLabel:platform:bundleInode:execInode:](RBSWrappedLSInfo, "infoWithBundleID:personaString:persistentJobLabel:platform:bundleInode:execInode:", v7, v8, v9, [v6 platform], 0, 0);
+    bundleIdentifier = [v5 bundleIdentifier];
+    personaUniqueString = [self personaUniqueString];
+    jobLabel = [v6 jobLabel];
+    v10 = +[RBSWrappedLSInfo infoWithBundleID:personaString:persistentJobLabel:platform:bundleInode:execInode:](RBSWrappedLSInfo, "infoWithBundleID:personaString:persistentJobLabel:platform:bundleInode:execInode:", bundleIdentifier, personaUniqueString, jobLabel, [v6 platform], 0, 0);
   }
 
   else

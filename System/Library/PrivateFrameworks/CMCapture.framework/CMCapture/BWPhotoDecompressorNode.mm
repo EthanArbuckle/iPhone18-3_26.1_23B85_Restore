@@ -1,24 +1,24 @@
 @interface BWPhotoDecompressorNode
-- (BWPhotoDecompressorNode)initWithSynchronizedSlaveAttachedMediaDecompressionEnabled:(BOOL)a3;
+- (BWPhotoDecompressorNode)initWithSynchronizedSlaveAttachedMediaDecompressionEnabled:(BOOL)enabled;
 - (uint64_t)_ensureSemaphoresAreBalanced;
 - (void)_releaseResources;
 - (void)_setOverCaptureSynchronizedSlaveSemaphoreEnabled:(void *)result;
-- (void)addEmitSampleBufferSemaphore:(id)a3;
-- (void)addEmitSynchronizedSlaveSampleBufferSemaphore:(id)a3;
+- (void)addEmitSampleBufferSemaphore:(id)semaphore;
+- (void)addEmitSynchronizedSlaveSampleBufferSemaphore:(id)semaphore;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 - (void)suspendResources;
 @end
 
 @implementation BWPhotoDecompressorNode
 
-- (BWPhotoDecompressorNode)initWithSynchronizedSlaveAttachedMediaDecompressionEnabled:(BOOL)a3
+- (BWPhotoDecompressorNode)initWithSynchronizedSlaveAttachedMediaDecompressionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v12.receiver = self;
   v12.super_class = BWPhotoDecompressorNode;
   v4 = [(BWNode *)&v12 init];
@@ -30,8 +30,8 @@
     [(BWNodeInput *)v5 setFormatRequirements:v6];
 
     [(BWNode *)v4 addInput:v5];
-    v4->_synchronizedSlaveAttachedMediaDecompressionEnabled = v3;
-    if (v3)
+    v4->_synchronizedSlaveAttachedMediaDecompressionEnabled = enabledCopy;
+    if (enabledCopy)
     {
       v7 = objc_alloc_init(BWNodeInputMediaConfiguration);
       [(BWNodeInputMediaConfiguration *)v7 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
@@ -69,15 +69,15 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  v5 = a5;
+  keyCopy = key;
   if (self->_synchronizedSlaveAttachedMediaDecompressionEnabled)
   {
-    v8 = [a5 isEqualToString:{0x1F21AAA50, a4}];
+    v8 = [key isEqualToString:{0x1F21AAA50, input}];
     if (v8)
     {
-      v5 = @"SynchronizedSlaveFrame";
+      keyCopy = @"SynchronizedSlaveFrame";
     }
   }
 
@@ -86,19 +86,19 @@
     v8 = 0;
   }
 
-  v9 = [(BWNodeOutput *)self->super._output mediaPropertiesForAttachedMediaKey:v5];
+  v9 = [(BWNodeOutput *)self->super._output mediaPropertiesForAttachedMediaKey:keyCopy];
   if (!v9)
   {
     v9 = objc_alloc_init(BWNodeOutputMediaProperties);
-    [(BWNodeOutput *)self->super._output _setMediaProperties:v9 forAttachedMediaKey:v5];
+    [(BWNodeOutput *)self->super._output _setMediaProperties:v9 forAttachedMediaKey:keyCopy];
   }
 
-  if ((v8 | [(__CFString *)v5 isEqualToString:@"PrimaryFormat"]))
+  if ((v8 | [(__CFString *)keyCopy isEqualToString:@"PrimaryFormat"]))
   {
     v10 = objc_alloc_init(BWVideoFormatRequirements);
-    -[BWVideoFormatRequirements setWidth:](v10, "setWidth:", [a3 width]);
-    -[BWVideoFormatRequirements setHeight:](v10, "setHeight:", [a3 height]);
-    if (FigCapturePixelFormatIsFullRange([a3 pixelFormat]))
+    -[BWVideoFormatRequirements setWidth:](v10, "setWidth:", [format width]);
+    -[BWVideoFormatRequirements setHeight:](v10, "setHeight:", [format height]);
+    if (FigCapturePixelFormatIsFullRange([format pixelFormat]))
     {
       v11 = 875704422;
     }
@@ -110,13 +110,13 @@
 
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v11];
     -[BWVideoFormatRequirements setSupportedPixelFormats:](v10, "setSupportedPixelFormats:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1]);
-    if ([a3 colorSpaceProperties])
+    if ([format colorSpaceProperties])
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a3, "colorSpaceProperties")}];
+      v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(format, "colorSpaceProperties")}];
       -[BWVideoFormatRequirements setSupportedColorSpaceProperties:](v10, "setSupportedColorSpaceProperties:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1]);
     }
 
-    v12 = [(BWNodeOutput *)self->super._output mediaConfigurationForAttachedMediaKey:v5];
+    v12 = [(BWNodeOutput *)self->super._output mediaConfigurationForAttachedMediaKey:keyCopy];
     [v12 setFormatRequirements:v10];
     [v12 setProvidesPixelBufferPool:1];
   }
@@ -124,7 +124,7 @@
   else
   {
 
-    [(BWNodeOutputMediaProperties *)v9 setResolvedFormat:a3];
+    [(BWNodeOutputMediaProperties *)v9 setResolvedFormat:format];
   }
 }
 
@@ -144,9 +144,9 @@
   [(BWPhotoDecompressor *)self->_synchronizedSlavePhotoDecompressor flush];
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
-  if (a3)
+  if (d)
   {
     if (![(BWVideoFormat *)[(BWPixelBufferPool *)[(BWNodeOutput *)self->super._output livePixelBufferPool] videoFormat] isEqual:[(BWNodeOutput *)self->super._output videoFormat]])
     {
@@ -163,18 +163,18 @@
 
   v7.receiver = self;
   v7.super_class = BWPhotoDecompressorNode;
-  [(BWNode *)&v7 didReachEndOfDataForConfigurationID:a3 input:a4];
+  [(BWNode *)&v7 didReachEndOfDataForConfigurationID:d input:input];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v4 = a3;
+  bufferCopy = buffer;
   memset(&v58, 0, sizeof(v58));
-  CMSampleBufferGetPresentationTimeStamp(&v58, a3);
-  DataBuffer = CMSampleBufferGetDataBuffer(v4);
+  CMSampleBufferGetPresentationTimeStamp(&v58, buffer);
+  DataBuffer = CMSampleBufferGetDataBuffer(bufferCopy);
   if (DataBuffer)
   {
-    v7 = CMGetAttachment(v4, @"SampleDataToBeDropped", 0);
+    v7 = CMGetAttachment(bufferCopy, @"SampleDataToBeDropped", 0);
     if ([(NSMutableArray *)self->_emitSampleBufferSemaphores count])
     {
       ++self->_numberOfTimesWaited;
@@ -216,7 +216,7 @@
 
     else
     {
-      AttachedMedia = BWSampleBufferGetAttachedMedia(v4, 0x1F21AAA50);
+      AttachedMedia = BWSampleBufferGetAttachedMedia(bufferCopy, 0x1F21AAA50);
       v15 = AttachedMedia != 0;
     }
 
@@ -228,7 +228,7 @@
       self->_photoDecompressor = photoDecompressor;
     }
 
-    v20 = [(BWPhotoDecompressor *)photoDecompressor newUncompressedSampleBufferFromSampleBuffer:v4];
+    v20 = [(BWPhotoDecompressor *)photoDecompressor newUncompressedSampleBufferFromSampleBuffer:bufferCopy];
     FigCaptureMetadataUtilitiesAddSampleBufferMetadataUsedByVideoEncoderToPixelBuffer(v20);
     v19 = 0;
     if (v7 == v22 && v20)
@@ -259,7 +259,7 @@ LABEL_46:
     {
       v18 = 0;
       LOBYTE(v21) = 1;
-      v4 = v20;
+      bufferCopy = v20;
       goto LABEL_52;
     }
 
@@ -383,7 +383,7 @@ LABEL_27:
       v21 = 1;
     }
 
-    v4 = v20;
+    bufferCopy = v20;
     DataBuffer = v40;
     v18 = v39;
     if (!v21)
@@ -394,14 +394,14 @@ LABEL_27:
     goto LABEL_52;
   }
 
-  v16 = CMGetAttachment(v4, @"FileWriterAction", 0);
+  v16 = CMGetAttachment(bufferCopy, @"FileWriterAction", 0);
   if (v16)
   {
     if (self->_synchronizedSlaveAttachedMediaDecompressionEnabled)
     {
       if ([v16 isEqualToString:0x1F21A9C30])
       {
-        v17 = CMGetAttachment(v4, @"RecordingSettings", 0);
+        v17 = CMGetAttachment(bufferCopy, @"RecordingSettings", 0);
         if (v17)
         {
           -[BWPhotoDecompressorNode _setOverCaptureSynchronizedSlaveSemaphoreEnabled:](self, [v17 spatialOverCaptureMovieURL] != 0);
@@ -421,9 +421,9 @@ LABEL_52:
   }
 
 LABEL_58:
-  if (v4)
+  if (bufferCopy)
   {
-    [(BWNodeOutput *)self->super._output emitSampleBuffer:v4];
+    [(BWNodeOutput *)self->super._output emitSampleBuffer:bufferCopy];
     if (DataBuffer)
     {
       ++self->_numberOfBuffersEmitted;
@@ -442,9 +442,9 @@ LABEL_55:
   }
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
-  if ([(NSMutableArray *)self->_emitSampleBufferSemaphores count:a3])
+  if ([(NSMutableArray *)self->_emitSampleBufferSemaphores count:sample])
   {
     v6 = [MEMORY[0x1E695DF70] arrayWithArray:self->_emitSampleBufferSemaphores];
     if ([(NSMutableArray *)self->_emitSynchronizedSlaveSampleBufferSemaphores count])
@@ -452,19 +452,19 @@ LABEL_55:
       [v6 addObjectsFromArray:self->_emitSynchronizedSlaveSampleBufferSemaphores];
     }
 
-    v7 = [BWDroppedSample newDroppedSampleFromDroppedSample:a3 backPressureSemaphoresToIgnore:v6];
+    sampleCopy = [BWDroppedSample newDroppedSampleFromDroppedSample:sample backPressureSemaphoresToIgnore:v6];
   }
 
   else
   {
-    v7 = a3;
+    sampleCopy = sample;
   }
 
-  v8 = v7;
-  [(BWNodeOutput *)self->super._output emitDroppedSample:v7];
+  v8 = sampleCopy;
+  [(BWNodeOutput *)self->super._output emitDroppedSample:sampleCopy];
 }
 
-- (void)addEmitSampleBufferSemaphore:(id)a3
+- (void)addEmitSampleBufferSemaphore:(id)semaphore
 {
   emitSampleBufferSemaphores = self->_emitSampleBufferSemaphores;
   if (!emitSampleBufferSemaphores)
@@ -473,15 +473,15 @@ LABEL_55:
     self->_emitSampleBufferSemaphores = emitSampleBufferSemaphores;
   }
 
-  if (([(NSMutableArray *)emitSampleBufferSemaphores containsObject:a3]& 1) == 0)
+  if (([(NSMutableArray *)emitSampleBufferSemaphores containsObject:semaphore]& 1) == 0)
   {
     v6 = self->_emitSampleBufferSemaphores;
 
-    [(NSMutableArray *)v6 addObject:a3];
+    [(NSMutableArray *)v6 addObject:semaphore];
   }
 }
 
-- (void)addEmitSynchronizedSlaveSampleBufferSemaphore:(id)a3
+- (void)addEmitSynchronizedSlaveSampleBufferSemaphore:(id)semaphore
 {
   emitSynchronizedSlaveSampleBufferSemaphores = self->_emitSynchronizedSlaveSampleBufferSemaphores;
   if (!emitSynchronizedSlaveSampleBufferSemaphores)
@@ -490,17 +490,17 @@ LABEL_55:
     self->_emitSynchronizedSlaveSampleBufferSemaphores = emitSynchronizedSlaveSampleBufferSemaphores;
   }
 
-  [(NSMutableArray *)emitSynchronizedSlaveSampleBufferSemaphores addObject:a3];
+  [(NSMutableArray *)emitSynchronizedSlaveSampleBufferSemaphores addObject:semaphore];
 }
 
 - (void)_releaseResources
 {
-  if (a1)
+  if (self)
   {
-    [(BWPhotoDecompressorNode *)a1 _ensureSemaphoresAreBalanced];
+    [(BWPhotoDecompressorNode *)self _ensureSemaphoresAreBalanced];
 
-    *(a1 + 136) = 0;
-    *(a1 + 144) = 0;
+    *(self + 136) = 0;
+    *(self + 144) = 0;
   }
 }
 
@@ -512,7 +512,7 @@ LABEL_55:
     result = result[20];
     if (result)
     {
-      v4 = [result lastObject];
+      lastObject = [result lastObject];
       v5 = v2[21];
       if (!v5)
       {
@@ -523,13 +523,13 @@ LABEL_55:
       if (a2)
       {
 
-        return [v5 removeObject:v4];
+        return [v5 removeObject:lastObject];
       }
 
       else
       {
 
-        return [v5 addObject:v4];
+        return [v5 addObject:lastObject];
       }
     }
   }

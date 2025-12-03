@@ -1,13 +1,13 @@
 @interface AuthenticateExtras
 - (_TtC21ProximityAppleIDSetupP33_6B22B88DD3ECBED0D0354FC242B14C8118AuthenticateExtras)init;
-- (void)fetchExtrasWithCompletion:(id)a3;
+- (void)fetchExtrasWithCompletion:(id)completion;
 @end
 
 @implementation AuthenticateExtras
 
-- (void)fetchExtrasWithCompletion:(id)a3
+- (void)fetchExtrasWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = *(&self->super.isa + OBJC_IVAR____TtC21ProximityAppleIDSetupP33_6B22B88DD3ECBED0D0354FC242B14C8118AuthenticateExtras_anisetteDataProvider);
   v6 = v4[2];
   swift_unknownObjectRetain();

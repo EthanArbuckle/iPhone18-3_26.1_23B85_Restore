@@ -6,10 +6,10 @@
 
 - (id)_legacyCardSectionViewController
 {
-  v2 = [a1 card];
-  v3 = [v2 cardSections];
-  v4 = [v3 lastObject];
-  v5 = [a1 _cardSectionViewControllerForCardSection:v4];
+  card = [self card];
+  cardSections = [card cardSections];
+  lastObject = [cardSections lastObject];
+  v5 = [self _cardSectionViewControllerForCardSection:lastObject];
 
   return v5;
 }

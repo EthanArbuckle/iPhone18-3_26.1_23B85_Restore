@@ -8,7 +8,7 @@
 - (void)_turnOffCoreRoutineMonitoringOn3DTouchDevices;
 - (void)_updateNavdDirectoryProtectionClass;
 - (void)dealloc;
-- (void)protectedDataDidBecomeAvailable:(id)a3;
+- (void)protectedDataDidBecomeAvailable:(id)available;
 - (void)start;
 @end
 
@@ -30,13 +30,13 @@
   self->_navServer = v7;
 
   v9 = +[GEOPlatform sharedPlatform];
-  v10 = [v9 hardwareIdentifier];
+  hardwareIdentifier = [v9 hardwareIdentifier];
 
   v11 = +[GEOMapService sharedService];
-  [v11 setDefaultTraitsHardwareIdentifier:v10];
+  [v11 setDefaultTraitsHardwareIdentifier:hardwareIdentifier];
 
   v12 = +[GEOPlatform sharedPlatform];
-  [v12 setClientCapabilitiesHardwareIdentifier:v10];
+  [v12 setClientCapabilitiesHardwareIdentifier:hardwareIdentifier];
 
   [GEOUserSession setInitialShareSessionWithMaps:1];
   v13 = objc_alloc_init(NavdRecentLocationsServer);
@@ -72,9 +72,9 @@
 - (void)_turnOffCoreRoutineMonitoringOn3DTouchDevices
 {
   v3 = +[GEOPlatform sharedPlatform];
-  v4 = [v3 supportsForceTouch];
+  supportsForceTouch = [v3 supportsForceTouch];
 
-  if (v4)
+  if (supportsForceTouch)
   {
     v5 = [[RTRoutineManager alloc] initWithRestorationIdentifier:@"com.apple.navd.routine"];
     routineManager = self->_routineManager;
@@ -105,9 +105,9 @@
 - (void)_clearNavTracesDirectory
 {
   v2 = +[GEOPlatform sharedPlatform];
-  v3 = [v2 isInternalInstall];
+  isInternalInstall = [v2 isInternalInstall];
 
-  if ((v3 & 1) == 0)
+  if ((isInternalInstall & 1) == 0)
   {
     v4 = +[NSFileManager defaultManager];
     v5 = +[MNFilePaths navTracesDirectoryPath];
@@ -152,11 +152,11 @@
   }
 
   v7 = [v6 objectForKeyedSubscript:@"MigrationVersion"];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
 
-  if (v8 != 1)
+  if (integerValue != 1)
   {
-    if (v8)
+    if (integerValue)
     {
       goto LABEL_8;
     }
@@ -211,7 +211,7 @@ LABEL_8:
   }
 }
 
-- (void)protectedDataDidBecomeAvailable:(id)a3
+- (void)protectedDataDidBecomeAvailable:(id)available
 {
   v4 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))

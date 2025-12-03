@@ -1,7 +1,7 @@
 @interface NUChannelMetadataFormat
-- (BOOL)isEqualToChannelFormat:(id)a3;
+- (BOOL)isEqualToChannelFormat:(id)format;
 - (NUChannelMetadataFormat)init;
-- (NUChannelMetadataFormat)initWithMetadataType:(int64_t)a3;
+- (NUChannelMetadataFormat)initWithMetadataType:(int64_t)type;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -11,14 +11,14 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(NUChannelMetadataFormat *)self metadataType];
+  metadataType = [(NUChannelMetadataFormat *)self metadataType];
   v4 = @"???";
-  if (v3 == 2)
+  if (metadataType == 2)
   {
     v4 = @"video";
   }
 
-  if (v3 == 1)
+  if (metadataType == 1)
   {
     v4 = @"image";
   }
@@ -26,15 +26,15 @@
   return [v2 stringWithFormat:@"metadata:%@", v4];
 }
 
-- (BOOL)isEqualToChannelFormat:(id)a3
+- (BOOL)isEqualToChannelFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   v8.receiver = self;
   v8.super_class = NUChannelMetadataFormat;
-  if ([(NUChannelFormat *)&v8 isEqualToChannelFormat:v4])
+  if ([(NUChannelFormat *)&v8 isEqualToChannelFormat:formatCopy])
   {
-    v5 = [v4 metadataType];
-    v6 = v5 == [(NUChannelMetadataFormat *)self metadataType];
+    metadataType = [formatCopy metadataType];
+    v6 = metadataType == [(NUChannelMetadataFormat *)self metadataType];
   }
 
   else
@@ -52,12 +52,12 @@
   return (0x7F34415F73 * self->_metadataType) ^ [(NUChannelFormat *)&v3 hash];
 }
 
-- (NUChannelMetadataFormat)initWithMetadataType:(int64_t)a3
+- (NUChannelMetadataFormat)initWithMetadataType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = NUChannelMetadataFormat;
   result = [(NUChannelMetadataFormat *)&v5 init];
-  result->_metadataType = a3;
+  result->_metadataType = type;
   return result;
 }
 
@@ -107,8 +107,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -124,8 +124,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

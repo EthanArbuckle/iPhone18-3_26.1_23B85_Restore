@@ -1,20 +1,20 @@
 @interface STTTRDelegate
 - (STStorageOtherDetailController)controller;
-- (void)enableOptionForTip:(id)a3;
+- (void)enableOptionForTip:(id)tip;
 @end
 
 @implementation STTTRDelegate
 
-- (void)enableOptionForTip:(id)a3
+- (void)enableOptionForTip:(id)tip
 {
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  v5 = [WeakRetained otherSize];
-  [v5 longLongValue];
+  otherSize = [WeakRetained otherSize];
+  [otherSize longLongValue];
   v6 = STFormattedSize();
   v11 = [NSString stringWithFormat:@"[Large System Data]: %@ of System Data", v6];
 
   v7 = objc_loadWeakRetained(&self->_controller);
-  v8 = [v7 detailedText];
+  detailedText = [v7 detailedText];
   v9 = STTapToRadarURLWithTitleAndContent();
 
   v10 = +[LSApplicationWorkspace defaultWorkspace];

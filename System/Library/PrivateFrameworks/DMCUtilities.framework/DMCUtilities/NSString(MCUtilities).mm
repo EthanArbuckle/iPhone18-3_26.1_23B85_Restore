@@ -19,15 +19,15 @@
 {
   if (DMCIsGreenTea())
   {
-    v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_CH", a1];
+    selfCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_CH", self];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface IDSDeliveryControllerTimeMetric
-- (IDSDeliveryControllerTimeMetric)initWithStartDate:(id)a3 endDate:(id)a4 endpointCount:(int64_t)a5 usedPipeline:(BOOL)a6 usedMMCS:(BOOL)a7 responseCode:(int64_t)a8;
+- (IDSDeliveryControllerTimeMetric)initWithStartDate:(id)date endDate:(id)endDate endpointCount:(int64_t)count usedPipeline:(BOOL)pipeline usedMMCS:(BOOL)s responseCode:(int64_t)code;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -45,21 +45,21 @@
   return v3;
 }
 
-- (IDSDeliveryControllerTimeMetric)initWithStartDate:(id)a3 endDate:(id)a4 endpointCount:(int64_t)a5 usedPipeline:(BOOL)a6 usedMMCS:(BOOL)a7 responseCode:(int64_t)a8
+- (IDSDeliveryControllerTimeMetric)initWithStartDate:(id)date endDate:(id)endDate endpointCount:(int64_t)count usedPipeline:(BOOL)pipeline usedMMCS:(BOOL)s responseCode:(int64_t)code
 {
-  v14 = a3;
-  v15 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v19.receiver = self;
   v19.super_class = IDSDeliveryControllerTimeMetric;
   v16 = [(IDSDeliveryControllerTimeMetric *)&v19 init];
   if (v16)
   {
-    [v15 timeIntervalSinceDate:v14];
+    [endDateCopy timeIntervalSinceDate:dateCopy];
     v16->_timeToSend = v17;
-    v16->_endpointCount = a5;
-    v16->_usedPipeline = a6;
-    v16->_usedMMCS = a7;
-    v16->_responseCode = a8;
+    v16->_endpointCount = count;
+    v16->_usedPipeline = pipeline;
+    v16->_usedMMCS = s;
+    v16->_responseCode = code;
   }
 
   return v16;

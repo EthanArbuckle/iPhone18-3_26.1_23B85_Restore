@@ -1,24 +1,24 @@
 @interface PinnedConversationItem
-+ (id)pinnedItemWithID:(id)a3 dynamicOffset:(id)a4 indexPathProvider:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)pinnedItemWithID:(id)d dynamicOffset:(id)offset indexPathProvider:(id)provider;
+- (BOOL)isEqual:(id)equal;
 - (NSIndexPath)indexPath;
 - (NSString)ef_publicDescription;
 @end
 
 @implementation PinnedConversationItem
 
-+ (id)pinnedItemWithID:(id)a3 dynamicOffset:(id)a4 indexPathProvider:(id)a5
++ (id)pinnedItemWithID:(id)d dynamicOffset:(id)offset indexPathProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  dCopy = d;
+  offsetCopy = offset;
+  providerCopy = provider;
+  v10 = providerCopy;
   v11 = 0;
-  if (v7 && v9)
+  if (dCopy && providerCopy)
   {
     v11 = objc_alloc_init(PinnedConversationItem);
-    [(PinnedConversationItem *)v11 setItemID:v7];
-    [(PinnedConversationItem *)v11 setDynamicOffset:v8];
+    [(PinnedConversationItem *)v11 setItemID:dCopy];
+    [(PinnedConversationItem *)v11 setDynamicOffset:offsetCopy];
     [(PinnedConversationItem *)v11 setIndexPathProvider:v10];
   }
 
@@ -27,8 +27,8 @@
 
 - (NSIndexPath)indexPath
 {
-  v3 = [(PinnedConversationItem *)self indexPathProvider];
-  v4 = (v3)[2](v3, self);
+  indexPathProvider = [(PinnedConversationItem *)self indexPathProvider];
+  v4 = (indexPathProvider)[2](indexPathProvider, self);
 
   return v4;
 }
@@ -36,29 +36,29 @@
 - (NSString)ef_publicDescription
 {
   v3 = objc_opt_class();
-  v4 = [(PinnedConversationItem *)self itemID];
-  v5 = [(PinnedConversationItem *)self indexPath];
-  v6 = [(PinnedConversationItem *)self dynamicOffset];
-  v7 = [v6 ef_publicDescription];
-  v8 = [NSString stringWithFormat:@"<%@:%p> itemID=%@ indexPath=%@ dynamicOffset=%@", v3, self, v4, v5, v7];
+  itemID = [(PinnedConversationItem *)self itemID];
+  indexPath = [(PinnedConversationItem *)self indexPath];
+  dynamicOffset = [(PinnedConversationItem *)self dynamicOffset];
+  ef_publicDescription = [dynamicOffset ef_publicDescription];
+  v8 = [NSString stringWithFormat:@"<%@:%p> itemID=%@ indexPath=%@ dynamicOffset=%@", v3, self, itemID, indexPath, ef_publicDescription];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 dynamicOffset];
-    v7 = [(PinnedConversationItem *)self dynamicOffset];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    dynamicOffset = [v5 dynamicOffset];
+    dynamicOffset2 = [(PinnedConversationItem *)self dynamicOffset];
+    if ([dynamicOffset isEqual:dynamicOffset2])
     {
-      v8 = [v5 itemID];
-      v9 = [(PinnedConversationItem *)self itemID];
-      v10 = [v8 isEqual:v9];
+      itemID = [v5 itemID];
+      itemID2 = [(PinnedConversationItem *)self itemID];
+      v10 = [itemID isEqual:itemID2];
     }
 
     else

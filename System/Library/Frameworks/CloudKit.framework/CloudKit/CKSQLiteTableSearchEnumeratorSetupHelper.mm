@@ -1,14 +1,14 @@
 @interface CKSQLiteTableSearchEnumeratorSetupHelper
-- (void)orderAscendingByProperty:(id)a3;
-- (void)orderDescendingByProperty:(id)a3;
-- (void)setupStatement:(id)a3;
+- (void)orderAscendingByProperty:(id)property;
+- (void)orderDescendingByProperty:(id)property;
+- (void)setupStatement:(id)statement;
 @end
 
 @implementation CKSQLiteTableSearchEnumeratorSetupHelper
 
-- (void)orderAscendingByProperty:(id)a3
+- (void)orderAscendingByProperty:(id)property
 {
-  v9 = a3;
+  propertyCopy = property;
   orderByProperties = self->_orderByProperties;
   if (!orderByProperties)
   {
@@ -20,12 +20,12 @@
   }
 
   objc_msgSend_addObject_(orderByProperties, v4, MEMORY[0x1E695E118]);
-  objc_msgSend_addObject_(self->_orderByProperties, v8, v9);
+  objc_msgSend_addObject_(self->_orderByProperties, v8, propertyCopy);
 }
 
-- (void)orderDescendingByProperty:(id)a3
+- (void)orderDescendingByProperty:(id)property
 {
-  v9 = a3;
+  propertyCopy = property;
   orderByProperties = self->_orderByProperties;
   if (!orderByProperties)
   {
@@ -37,16 +37,16 @@
   }
 
   objc_msgSend_addObject_(orderByProperties, v4, MEMORY[0x1E695E110]);
-  objc_msgSend_addObject_(self->_orderByProperties, v8, v9);
+  objc_msgSend_addObject_(self->_orderByProperties, v8, propertyCopy);
 }
 
-- (void)setupStatement:(id)a3
+- (void)setupStatement:(id)statement
 {
-  v22 = a3;
+  statementCopy = statement;
   v8 = objc_msgSend_count(self->_orderByProperties, v4, v5);
   if (!v8)
   {
-    v9 = objc_msgSend_table(v22, v6, v7);
+    v9 = objc_msgSend_table(statementCopy, v6, v7);
     objc_msgSend_defaultSearchOrder_(v9, v10, self);
 
     v8 = objc_msgSend_count(self->_orderByProperties, v11, v12);
@@ -60,12 +60,12 @@
       v17 = objc_msgSend_BOOLValue(v14, v15, v16);
 
       v19 = objc_msgSend_objectAtIndex_(self->_orderByProperties, v18, i + 1);
-      objc_msgSend_orderByProperty_ascending_(v22, v20, v19, v17);
+      objc_msgSend_orderByProperty_ascending_(statementCopy, v20, v19, v17);
     }
   }
 
-  objc_msgSend_setLimit_(v22, v6, self->_limit);
-  objc_msgSend_setOffset_(v22, v21, self->_offset);
+  objc_msgSend_setLimit_(statementCopy, v6, self->_limit);
+  objc_msgSend_setOffset_(statementCopy, v21, self->_offset);
 }
 
 @end

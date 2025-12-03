@@ -1,13 +1,13 @@
 @interface NCSupplementaryViewPrototypeRecipeContentAuxiliaryOptionsViewController
 - (NCSupplementaryViewPrototypeRecipeContentAuxiliaryOptionsViewController)init;
-- (id)_alertActionForMaterialRecipe:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5;
+- (id)_alertActionForMaterialRecipe:(int64_t)recipe;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously;
 - (void)loadView;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
 @end
 
 @implementation NCSupplementaryViewPrototypeRecipeContentAuxiliaryOptionsViewController
@@ -53,20 +53,20 @@ void __79__NCSupplementaryViewPrototypeRecipeContentAuxiliaryOptionsViewControll
   [(NCSupplementaryViewPrototypeRecipeContentAuxiliaryOptionsViewController *)self setView:v5];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"cell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"cell"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"cell"];
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [v7 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v7 setBackgroundColor:clearColor];
 
     [v7 setSelectionStyle:0];
   }
 
-  if ([v6 row] > 2)
+  if ([pathCopy row] > 2)
   {
     v13 = @"2 Auxiliary Options Without Title";
   }
@@ -74,8 +74,8 @@ void __79__NCSupplementaryViewPrototypeRecipeContentAuxiliaryOptionsViewControll
   else
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [v6 row] + 1;
-    v11 = [v6 row];
+    v10 = [pathCopy row] + 1;
+    v11 = [pathCopy row];
     v12 = @"s";
     if (!v11)
     {
@@ -85,73 +85,73 @@ void __79__NCSupplementaryViewPrototypeRecipeContentAuxiliaryOptionsViewControll
     v13 = [v9 stringWithFormat:@"%lu Auxiliary Option%@", v10, v12];
   }
 
-  v14 = [v7 textLabel];
-  [v14 setText:v13];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v13];
 
-  v15 = [v7 textLabel];
-  v16 = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
-  v17 = [v16 textColor];
-  [v15 setTextColor:v17];
+  textLabel2 = [v7 textLabel];
+  configuration = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
+  textColor = [configuration textColor];
+  [textLabel2 setTextColor:textColor];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 cellForRowAtIndexPath:v5];
+  pathCopy = path;
+  viewCopy = view;
+  v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
   [v7 setSelected:0];
 
-  v8 = [v6 cellForRowAtIndexPath:v5];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   [v8 setAccessoryType:0];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v5 = [a3 dequeueReusableHeaderFooterViewWithIdentifier:{@"header", a4}];
+  v5 = [view dequeueReusableHeaderFooterViewWithIdentifier:{@"header", section}];
   if (!v5)
   {
     v5 = [objc_alloc(MEMORY[0x277D75B70]) initWithReuseIdentifier:@"header"];
   }
 
-  v6 = [v5 textLabel];
-  [v6 setText:@"Select Number of Auxiliary Option Buttons"];
+  textLabel = [v5 textLabel];
+  [textLabel setText:@"Select Number of Auxiliary Option Buttons"];
 
-  v7 = [v5 textLabel];
-  v8 = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
-  v9 = [v8 textColor];
-  [v7 setTextColor:v9];
+  textLabel2 = [v5 textLabel];
+  configuration = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
+  textColor = [configuration textColor];
+  [textLabel2 setTextColor:textColor];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
   v5 = MEMORY[0x277D75348];
-  v6 = a3;
-  v7 = [v5 clearColor];
-  [v6 setBackgroundColor:v7];
+  viewCopy = view;
+  clearColor = [v5 clearColor];
+  [viewCopy setBackgroundColor:clearColor];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
   [v8 setSelected:1];
 
-  v9 = [v7 cellForRowAtIndexPath:v6];
+  v9 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   [v9 setAccessoryType:3];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __109__NCSupplementaryViewPrototypeRecipeContentAuxiliaryOptionsViewController_tableView_didSelectRowAtIndexPath___block_invoke;
   v15 = &unk_278372BC0;
-  v16 = self;
-  v17 = v6;
-  v10 = v6;
+  selfCopy = self;
+  v17 = pathCopy;
+  v10 = pathCopy;
   [(NCSupplementaryViewPrototypeRecipeViewController *)self updateConfiguration:&v12];
   v11 = [(NCSupplementaryViewPrototypeRecipeViewController *)self delegate:v12];
   [v11 notificationListBaseComponentDidSignificantUserInteraction:self];
@@ -419,23 +419,23 @@ void __109__NCSupplementaryViewPrototypeRecipeContentAuxiliaryOptionsViewControl
   }
 }
 
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously
 {
-  v6 = a3;
-  v7 = [(NCSupplementaryViewPrototypeRecipeViewController *)self delegate];
-  [v7 notificationListBaseComponentDidSignificantUserInteraction:self];
+  controllerCopy = controller;
+  delegate = [(NCSupplementaryViewPrototypeRecipeViewController *)self delegate];
+  [delegate notificationListBaseComponentDidSignificantUserInteraction:self];
 
-  v8 = [v6 title];
-  v9 = [v8 isEqualToString:@"Configure Tint Color"];
+  title = [controllerCopy title];
+  v9 = [title isEqualToString:@"Configure Tint Color"];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __129__NCSupplementaryViewPrototypeRecipeContentAuxiliaryOptionsViewController_colorPickerViewController_didSelectColor_continuously___block_invoke;
   v11[3] = &unk_278372C38;
   v14 = v9;
-  v12 = v6;
-  v13 = self;
-  v10 = v6;
+  v12 = controllerCopy;
+  selfCopy = self;
+  v10 = controllerCopy;
   [(NCSupplementaryViewPrototypeRecipeViewController *)self updateConfiguration:v11];
 }
 
@@ -489,7 +489,7 @@ void __129__NCSupplementaryViewPrototypeRecipeContentAuxiliaryOptionsViewControl
   }
 }
 
-- (id)_alertActionForMaterialRecipe:(int64_t)a3
+- (id)_alertActionForMaterialRecipe:(int64_t)recipe
 {
   objc_initWeak(&location, self);
   v4 = MEMORY[0x277D750F8];
@@ -499,7 +499,7 @@ void __129__NCSupplementaryViewPrototypeRecipeContentAuxiliaryOptionsViewControl
   v8[2] = __105__NCSupplementaryViewPrototypeRecipeContentAuxiliaryOptionsViewController__alertActionForMaterialRecipe___block_invoke;
   v8[3] = &unk_278372C80;
   objc_copyWeak(v9, &location);
-  v9[1] = a3;
+  v9[1] = recipe;
   v6 = [v4 actionWithTitle:v5 style:0 handler:v8];
 
   objc_destroyWeak(v9);

@@ -1,11 +1,11 @@
 @interface SUItemCellContext
 - ($91CE74A43BC82DB31014AD40E653447B)stringSizeCacheKeyCallBacks;
-- (CGSize)sizeForString:(id)a3 font:(id)a4 constrainedToSize:(CGSize)a5;
+- (CGSize)sizeForString:(id)string font:(id)font constrainedToSize:(CGSize)size;
 - (SUItemCellContext)init;
-- (id)ratingImageForRating:(float)a3 style:(int64_t)a4;
+- (id)ratingImageForRating:(float)rating style:(int64_t)style;
 - (void)dealloc;
 - (void)resetLayoutCaches;
-- (void)setStringSizeCacheKeyCallBacks:(id *)a3;
+- (void)setStringSizeCacheKeyCallBacks:(id *)backs;
 @end
 
 @implementation SUItemCellContext
@@ -46,7 +46,7 @@
   [(SUArtworkCellContext *)&v5 dealloc];
 }
 
-- (id)ratingImageForRating:(float)a3 style:(int64_t)a4
+- (id)ratingImageForRating:(float)rating style:(int64_t)style
 {
   cachedRatingImages = self->_cachedRatingImages;
   if (!cachedRatingImages)
@@ -55,13 +55,13 @@
     self->_cachedRatingImages = cachedRatingImages;
   }
 
-  v8 = rintf(a3 * 10.0);
+  v8 = rintf(rating * 10.0);
   Value = CFDictionaryGetValue(cachedRatingImages, v8);
   if (!Value)
   {
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    *&v11 = a3;
-    Value = [SUUserRatingView copyImageForRating:v10 backgroundColor:a4 style:v11];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    *&v11 = rating;
+    Value = [SUUserRatingView copyImageForRating:clearColor backgroundColor:style style:v11];
     if (Value)
     {
       CFDictionarySetValue(self->_cachedRatingImages, v8, Value);
@@ -71,14 +71,14 @@
   return Value;
 }
 
-- (CGSize)sizeForString:(id)a3 font:(id)a4 constrainedToSize:(CGSize)a5
+- (CGSize)sizeForString:(id)string font:(id)font constrainedToSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   stringSizes = self->_stringSizes;
   if (stringSizes)
   {
-    if (a3)
+    if (string)
     {
       goto LABEL_3;
     }
@@ -91,13 +91,13 @@ LABEL_10:
 
   stringSizes = CFDictionaryCreateMutable(0, 0, &self->_stringSizeCacheKeyCallBacks, MEMORY[0x1E695E9E8]);
   self->_stringSizes = stringSizes;
-  if (!a3)
+  if (!string)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  Value = CFDictionaryGetValue(stringSizes, a3);
+  Value = CFDictionaryGetValue(stringSizes, string);
   if (Value)
   {
     [Value CGSizeValue];
@@ -114,10 +114,10 @@ LABEL_3:
 
   else
   {
-    [a3 _legacy_sizeWithFont:a4 constrainedToSize:4 lineBreakMode:{width, height}];
+    [string _legacy_sizeWithFont:font constrainedToSize:4 lineBreakMode:{width, height}];
     width = v14;
     height = v15;
-    CFDictionarySetValue(self->_stringSizes, a3, [MEMORY[0x1E696B098] valueWithCGSize:?]);
+    CFDictionarySetValue(self->_stringSizes, string, [MEMORY[0x1E696B098] valueWithCGSize:?]);
   }
 
 LABEL_12:
@@ -151,11 +151,11 @@ LABEL_12:
   return self;
 }
 
-- (void)setStringSizeCacheKeyCallBacks:(id *)a3
+- (void)setStringSizeCacheKeyCallBacks:(id *)backs
 {
-  v4 = *&a3->var2;
-  v3 = *&a3->var4;
-  *&self->_stringSizeCacheKeyCallBacks.version = *&a3->var0;
+  v4 = *&backs->var2;
+  v3 = *&backs->var4;
+  *&self->_stringSizeCacheKeyCallBacks.version = *&backs->var0;
   *&self->_stringSizeCacheKeyCallBacks.release = v4;
   *&self->_stringSizeCacheKeyCallBacks.equal = v3;
 }

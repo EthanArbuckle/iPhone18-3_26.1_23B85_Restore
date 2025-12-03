@@ -1,15 +1,15 @@
 @interface DAStrongDeviceIdentity
-- (id)SHA256ForData:(id)a3;
-- (id)SHA256ForFileHandle:(id)a3;
+- (id)SHA256ForData:(id)data;
+- (id)SHA256ForFileHandle:(id)handle;
 - (id)deviceIdentityPublicKeyDigest;
-- (id)requestAttestationBlobWithOptions:(id)a3 error:(id *)a4;
-- (id)signDigest:(id)a3 error:(id *)a4;
-- (id)signFile:(id)a3 error:(id *)a4;
-- (id)signPayload:(id)a3 error:(id *)a4;
+- (id)requestAttestationBlobWithOptions:(id)options error:(id *)error;
+- (id)signDigest:(id)digest error:(id *)error;
+- (id)signFile:(id)file error:(id *)error;
+- (id)signPayload:(id)payload error:(id *)error;
 - (void)dealloc;
-- (void)generateAuthInfoWithNonce:(id)a3 completion:(id)a4;
+- (void)generateAuthInfoWithNonce:(id)nonce completion:(id)completion;
 - (void)purgeSecurityKey;
-- (void)requestAttestationCertWithOptions:(id)a3 completion:(id)a4;
+- (void)requestAttestationCertWithOptions:(id)options completion:(id)completion;
 @end
 
 @implementation DAStrongDeviceIdentity
@@ -32,10 +32,10 @@
   [(DAStrongDeviceIdentity *)&v3 dealloc];
 }
 
-- (void)generateAuthInfoWithNonce:(id)a3 completion:(id)a4
+- (void)generateAuthInfoWithNonce:(id)nonce completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  nonceCopy = nonce;
+  completionCopy = completion;
   v43 = 0;
   v44[0] = &v43;
   v44[1] = 0x3032000000;
@@ -45,10 +45,10 @@
   v8 = [NSMutableDictionary dictionaryWithObject:&__kCFBooleanTrue forKey:kMAOptionsBAASCRTAttestation];
   v9 = [NSMutableArray arrayWithObjects:kMAOptionsBAAOIDDeviceIdentifiers, kMAOptionsBAAOIDHardwareProperties, kMAOptionsBAAOIDKeyUsageProperties, kMAOptionsBAAOIDDeviceOSInformation, kMAOptionsBAAOIDUCRTDeviceIdentifiers, 0];
   v10 = v9;
-  if (v6)
+  if (nonceCopy)
   {
     [v9 addObject:kMAOptionsBAAOIDNonce];
-    [v8 setObject:v6 forKeyedSubscript:kMAOptionsBAANonce];
+    [v8 setObject:nonceCopy forKeyedSubscript:kMAOptionsBAANonce];
   }
 
   [v8 setObject:v10 forKeyedSubscript:kMAOptionsBAAOIDSToInclude];
@@ -106,10 +106,10 @@ LABEL_22:
     v16 = 0;
   }
 
-  v24 = [v38[5] certifcateType];
-  if (v24)
+  certifcateType = [v38[5] certifcateType];
+  if (certifcateType)
   {
-    if (v24 == 1)
+    if (certifcateType == 1)
     {
       v25 = 0;
       v26 = 2;
@@ -154,21 +154,21 @@ LABEL_24:
   v25 = 3;
 LABEL_27:
   [(DAStrongDeviceIdentity *)self setCertData:v16];
-  v7[2](v7, v27, v16, v26, v25, *(v44[0] + 40));
+  completionCopy[2](completionCopy, v27, v16, v26, v25, *(v44[0] + 40));
 
   _Block_object_dispose(&v37, 8);
   _Block_object_dispose(&v43, 8);
 }
 
-- (id)signPayload:(id)a3 error:(id *)a4
+- (id)signPayload:(id)payload error:(id *)error
 {
-  v6 = a3;
+  payloadCopy = payload;
   if ([(DAStrongDeviceIdentity *)self deviceIdentityKey])
   {
-    v7 = [(DAStrongDeviceIdentity *)self SHA256ForData:v6];
+    v7 = [(DAStrongDeviceIdentity *)self SHA256ForData:payloadCopy];
     if (v7)
     {
-      v8 = [(DAStrongDeviceIdentity *)self signDigest:v7 error:a4];
+      v8 = [(DAStrongDeviceIdentity *)self signDigest:v7 error:error];
       v9 = 0;
     }
 
@@ -207,29 +207,29 @@ LABEL_12:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v12 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v8;
 }
 
-- (id)signFile:(id)a3 error:(id *)a4
+- (id)signFile:(id)file error:(id *)error
 {
-  v6 = a3;
+  fileCopy = file;
   if ([(DAStrongDeviceIdentity *)self deviceIdentityKey])
   {
-    v7 = [v6 path];
-    v8 = [NSFileHandle fileHandleForReadingAtPath:v7];
+    path = [fileCopy path];
+    v8 = [NSFileHandle fileHandleForReadingAtPath:path];
 
     if (v8)
     {
       v9 = [(DAStrongDeviceIdentity *)self SHA256ForFileHandle:v8];
       if (v9)
       {
-        v10 = [(DAStrongDeviceIdentity *)self signDigest:v9 error:a4];
+        v10 = [(DAStrongDeviceIdentity *)self signDigest:v9 error:error];
       }
 
       else
@@ -240,10 +240,10 @@ LABEL_12:
           sub_100159150();
         }
 
-        if (a4)
+        if (error)
         {
           [NSError errorWithDomain:@"com.apple.Diagnostics.StrongDeviceIdentityError" code:3 userInfo:0];
-          *a4 = v10 = 0;
+          *error = v10 = 0;
         }
 
         else
@@ -260,18 +260,18 @@ LABEL_12:
       v13 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        sub_100159184(v6, v13);
+        sub_100159184(fileCopy, v13);
       }
 
       v12 = [NSError errorWithDomain:@"com.apple.Diagnostics.StrongDeviceIdentityError" code:2 userInfo:0];
       v10 = 0;
     }
 
-    if (a4)
+    if (error)
     {
 LABEL_19:
       v15 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -285,7 +285,7 @@ LABEL_19:
 
     v12 = [NSError errorWithDomain:@"com.apple.Diagnostics.StrongDeviceIdentityError" code:0 userInfo:0];
     v10 = 0;
-    if (a4)
+    if (error)
     {
       goto LABEL_19;
     }
@@ -294,10 +294,10 @@ LABEL_19:
   return v10;
 }
 
-- (id)SHA256ForData:(id)a3
+- (id)SHA256ForData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 length];
+  dataCopy = data;
+  v4 = [dataCopy length];
   if ((v4 - 1) > 0xFFFFFFFD)
   {
     v5 = 0;
@@ -305,30 +305,30 @@ LABEL_19:
 
   else
   {
-    CC_SHA256([v3 bytes], v4, &v7);
+    CC_SHA256([dataCopy bytes], v4, &v7);
     v5 = [NSData dataWithBytes:&v7 length:32];
   }
 
   return v5;
 }
 
-- (id)SHA256ForFileHandle:(id)a3
+- (id)SHA256ForFileHandle:(id)handle
 {
-  v3 = a3;
-  v4 = [v3 offsetInFile];
-  [v3 seekToFileOffset:0];
+  handleCopy = handle;
+  offsetInFile = [handleCopy offsetInFile];
+  [handleCopy seekToFileOffset:0];
   memset(&c, 0, sizeof(c));
   CC_SHA256_Init(&c);
   do
   {
-    v5 = [v3 readDataOfLength:0x10000];
+    v5 = [handleCopy readDataOfLength:0x10000];
     v6 = [v5 length];
     v7 = v5;
     CC_SHA256_Update(&c, [v5 bytes], v6);
   }
 
   while (v6);
-  [v3 seekToFileOffset:v4];
+  [handleCopy seekToFileOffset:offsetInFile];
   memset(v10, 0, sizeof(v10));
   CC_SHA256_Final(v10, &c);
   v8 = [NSData dataWithBytes:v10 length:32];
@@ -336,32 +336,32 @@ LABEL_19:
   return v8;
 }
 
-- (id)signDigest:(id)a3 error:(id *)a4
+- (id)signDigest:(id)digest error:(id *)error
 {
   error = 0;
-  v6 = a3;
-  v7 = SecKeyCreateSignature([(DAStrongDeviceIdentity *)self deviceIdentityKey], kSecKeyAlgorithmECDSASignatureDigestX962SHA256, v6, &error);
+  digestCopy = digest;
+  v7 = SecKeyCreateSignature([(DAStrongDeviceIdentity *)self deviceIdentityKey], kSecKeyAlgorithmECDSASignatureDigestX962SHA256, digestCopy, &error);
 
   if (!v7)
   {
-    v8 = error;
-    v9 = error;
+    errorCopy = error;
+    errorCopy2 = error;
     v10 = DiagnosticLogHandleForCategory();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    if (errorCopy)
     {
       if (v11)
       {
-        v12 = [(__CFError *)v9 description];
+        v12 = [(__CFError *)errorCopy2 description];
         *buf = 138412290;
         v19 = v12;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Failed to create signature with underlying error = (%@).", buf, 0xCu);
       }
 
       v16 = NSUnderlyingErrorKey;
-      v17 = v9;
+      v17 = errorCopy2;
       v13 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-      if (!a4)
+      if (!error)
       {
         goto LABEL_7;
       }
@@ -376,22 +376,22 @@ LABEL_19:
       }
 
       v13 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_7;
       }
     }
 
-    *a4 = [NSError errorWithDomain:@"com.apple.Diagnostics.StrongDeviceIdentityError" code:4 userInfo:v13];
+    *error = [NSError errorWithDomain:@"com.apple.Diagnostics.StrongDeviceIdentityError" code:4 userInfo:v13];
 LABEL_7:
   }
 
   return v7;
 }
 
-- (id)requestAttestationBlobWithOptions:(id)a3 error:(id *)a4
+- (id)requestAttestationBlobWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   if ([(DAStrongDeviceIdentity *)self deviceIdentityKey])
   {
 LABEL_4:
@@ -423,18 +423,18 @@ LABEL_16:
 
     if (v10)
     {
-      if (a4)
+      if (error)
       {
         v30 = NSUnderlyingErrorKey;
         v31 = v10;
         v13 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-        *a4 = [NSError errorWithDomain:@"com.apple.Diagnostics.StrongDeviceIdentityError" code:5 userInfo:v13];
+        *error = [NSError errorWithDomain:@"com.apple.Diagnostics.StrongDeviceIdentityError" code:5 userInfo:v13];
       }
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = [NSError errorWithDomain:@"com.apple.Diagnostics.StrongDeviceIdentityError" code:5 userInfo:0];
+      *error = [NSError errorWithDomain:@"com.apple.Diagnostics.StrongDeviceIdentityError" code:5 userInfo:0];
     }
 
     v14 = DiagnosticLogHandleForCategory();
@@ -512,10 +512,10 @@ LABEL_17:
   return v12;
 }
 
-- (void)requestAttestationCertWithOptions:(id)a3 completion:(id)a4
+- (void)requestAttestationCertWithOptions:(id)options completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
@@ -534,12 +534,12 @@ LABEL_17:
   block[2] = sub_10001F778;
   block[3] = &unk_1001BD3E0;
   v12 = dispatch_group_create();
-  v13 = v5;
+  v13 = optionsCopy;
   v15 = v19;
   v16 = v17;
-  v14 = v6;
-  v8 = v6;
-  v9 = v5;
+  v14 = completionCopy;
+  v8 = completionCopy;
+  v9 = optionsCopy;
   v10 = v12;
   dispatch_group_async(v10, v7, block);
 

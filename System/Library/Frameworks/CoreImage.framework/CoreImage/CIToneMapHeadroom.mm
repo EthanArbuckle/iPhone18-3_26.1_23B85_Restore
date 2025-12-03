@@ -1,7 +1,7 @@
 @interface CIToneMapHeadroom
 + (id)customAttributes;
 - (id)outputImage;
-- (id)outputValue:(id)a3;
+- (id)outputValue:(id)value;
 @end
 
 @implementation CIToneMapHeadroom
@@ -51,7 +51,7 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:5];
 }
 
-- (id)outputValue:(id)a3
+- (id)outputValue:(id)value
 {
   v5 = objc_opt_new();
   [v5 setDefaults];
@@ -78,7 +78,7 @@
   }
 
   [v5 setInputTargetHeadroom:inputTargetHeadroom];
-  v8 = [v5 outputValue:a3];
+  v8 = [v5 outputValue:value];
 
   return v8;
 }
@@ -116,9 +116,9 @@
   }
 
   [v4 setInputTargetHeadroom:inputTargetHeadroom];
-  v7 = [v4 outputImage];
+  outputImage = [v4 outputImage];
 
-  return v7;
+  return outputImage;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface TUIPointerCursor
 + (id)defaultPointerCursor;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TUIPointerCursor)init;
-- (TUIPointerCursor)initWithOther:(id)a3;
-- (TUIPointerCursor)pointerCursorWithCornerRadius:(double)a3;
-- (TUIPointerCursor)pointerCursorWithInsets:(UIEdgeInsets)a3;
-- (TUIPointerCursor)pointerCursorWithScale:(double)a3;
-- (TUIPointerCursor)pointerCursorWithShape:(int64_t)a3;
+- (TUIPointerCursor)initWithOther:(id)other;
+- (TUIPointerCursor)pointerCursorWithCornerRadius:(double)radius;
+- (TUIPointerCursor)pointerCursorWithInsets:(UIEdgeInsets)insets;
+- (TUIPointerCursor)pointerCursorWithScale:(double)scale;
+- (TUIPointerCursor)pointerCursorWithShape:(int64_t)shape;
 - (UIEdgeInsets)insets;
-- (id)pointerShapeWithBounds:(CGRect)a3 preview:(id)a4;
+- (id)pointerShapeWithBounds:(CGRect)bounds preview:(id)preview;
 @end
 
 @implementation TUIPointerCursor
@@ -32,41 +32,41 @@
 
 + (id)defaultPointerCursor
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (TUIPointerCursor)initWithOther:(id)a3
+- (TUIPointerCursor)initWithOther:(id)other
 {
-  v4 = a3;
+  otherCopy = other;
   v13.receiver = self;
   v13.super_class = TUIPointerCursor;
   v5 = [(TUIPointerCursor *)&v13 init];
   if (v5)
   {
-    v5->_shape = [v4 shape];
-    [v4 insets];
+    v5->_shape = [otherCopy shape];
+    [otherCopy insets];
     v5->_insets.top = v6;
     v5->_insets.left = v7;
     v5->_insets.bottom = v8;
     v5->_insets.right = v9;
-    [v4 cornerRadius];
+    [otherCopy cornerRadius];
     v5->_cornerRadius = v10;
-    [v4 scale];
+    [otherCopy scale];
     v5->_scale = v11;
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = v4;
+    v6 = equalCopy;
   }
 
   else
@@ -94,77 +94,77 @@
   return v8;
 }
 
-- (TUIPointerCursor)pointerCursorWithShape:(int64_t)a3
+- (TUIPointerCursor)pointerCursorWithShape:(int64_t)shape
 {
-  v4 = self;
-  if (v4->_shape != a3)
+  selfCopy = self;
+  if (selfCopy->_shape != shape)
   {
-    v5 = [[TUIPointerCursor alloc] initWithOther:v4];
+    v5 = [[TUIPointerCursor alloc] initWithOther:selfCopy];
 
-    [(TUIPointerCursor *)v5 setShape:a3];
-    v4 = v5;
+    [(TUIPointerCursor *)v5 setShape:shape];
+    selfCopy = v5;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (TUIPointerCursor)pointerCursorWithInsets:(UIEdgeInsets)a3
+- (TUIPointerCursor)pointerCursorWithInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  left = a3.left;
-  bottom = a3.bottom;
-  top = a3.top;
-  v3 = self;
+  right = insets.right;
+  left = insets.left;
+  bottom = insets.bottom;
+  top = insets.top;
+  selfCopy = self;
   v4.f64[0] = top;
   v4.f64[1] = left;
   v5.f64[0] = bottom;
   v5.f64[1] = right;
-  if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&v3->_insets.top, v4), vceqq_f64(*&v3->_insets.bottom, v5)))) & 1) == 0)
+  if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&selfCopy->_insets.top, v4), vceqq_f64(*&selfCopy->_insets.bottom, v5)))) & 1) == 0)
   {
-    v6 = [[TUIPointerCursor alloc] initWithOther:v3];
+    v6 = [[TUIPointerCursor alloc] initWithOther:selfCopy];
 
     [(TUIPointerCursor *)v6 setInsets:top, left, bottom, right];
-    v3 = v6;
+    selfCopy = v6;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (TUIPointerCursor)pointerCursorWithCornerRadius:(double)a3
+- (TUIPointerCursor)pointerCursorWithCornerRadius:(double)radius
 {
-  v4 = self;
-  if (v4->_cornerRadius != a3)
+  selfCopy = self;
+  if (selfCopy->_cornerRadius != radius)
   {
-    v5 = [[TUIPointerCursor alloc] initWithOther:v4];
+    v5 = [[TUIPointerCursor alloc] initWithOther:selfCopy];
 
-    [(TUIPointerCursor *)v5 setCornerRadius:a3];
-    v4 = v5;
+    [(TUIPointerCursor *)v5 setCornerRadius:radius];
+    selfCopy = v5;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (TUIPointerCursor)pointerCursorWithScale:(double)a3
+- (TUIPointerCursor)pointerCursorWithScale:(double)scale
 {
-  v4 = self;
-  if (v4->_scale != a3)
+  selfCopy = self;
+  if (selfCopy->_scale != scale)
   {
-    v5 = [[TUIPointerCursor alloc] initWithOther:v4];
+    v5 = [[TUIPointerCursor alloc] initWithOther:selfCopy];
 
-    [(TUIPointerCursor *)v5 setScale:a3];
-    v4 = v5;
+    [(TUIPointerCursor *)v5 setScale:scale];
+    selfCopy = v5;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)pointerShapeWithBounds:(CGRect)a3 preview:(id)a4
+- (id)pointerShapeWithBounds:(CGRect)bounds preview:(id)preview
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  previewCopy = preview;
   left = self->_insets.left;
   top = self->_insets.top;
   v12 = x + left;

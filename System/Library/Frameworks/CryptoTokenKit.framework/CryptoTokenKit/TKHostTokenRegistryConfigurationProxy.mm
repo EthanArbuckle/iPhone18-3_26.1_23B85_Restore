@@ -1,39 +1,39 @@
 @interface TKHostTokenRegistryConfigurationProxy
-- (BOOL)_areKeychainItemsDifferent:(id)a3 comparedTo:(id)a4;
-- (BOOL)haveAccessForClassID:(id)a3 verbose:(BOOL)a4;
+- (BOOL)_areKeychainItemsDifferent:(id)different comparedTo:(id)to;
+- (BOOL)haveAccessForClassID:(id)d verbose:(BOOL)verbose;
 - (TKHostTokenRegistry)registry;
-- (TKHostTokenRegistryConfigurationProxy)initWithRegistry:(id)a3 callerBundleID:(id)a4 allowedForBundles:(id)a5;
-- (id)ensureTokenWithTokenID:(id)a3;
-- (void)_updateRegisteredToken:(id)a3 withNewKeychainItems:(id)a4 transaction:(id)a5 tokenID:(id)a6;
-- (void)beginTransactionWithReply:(id)a3;
-- (void)endTransactionWithReply:(id)a3;
-- (void)getClassIDsWithReply:(id)a3;
-- (void)getKeychainItemsForTokenID:(id)a3 reply:(id)a4;
-- (void)getTokenIDsForClassID:(id)a3 reply:(id)a4;
-- (void)readDataForTokenID:(id)a3 reply:(id)a4;
-- (void)removeTokenID:(id)a3 reply:(id)a4;
-- (void)updateKeychainItemsForTokenID:(id)a3 items:(id)a4 reply:(id)a5;
-- (void)updateTokenID:(id)a3 data:(id)a4 reply:(id)a5;
+- (TKHostTokenRegistryConfigurationProxy)initWithRegistry:(id)registry callerBundleID:(id)d allowedForBundles:(id)bundles;
+- (id)ensureTokenWithTokenID:(id)d;
+- (void)_updateRegisteredToken:(id)token withNewKeychainItems:(id)items transaction:(id)transaction tokenID:(id)d;
+- (void)beginTransactionWithReply:(id)reply;
+- (void)endTransactionWithReply:(id)reply;
+- (void)getClassIDsWithReply:(id)reply;
+- (void)getKeychainItemsForTokenID:(id)d reply:(id)reply;
+- (void)getTokenIDsForClassID:(id)d reply:(id)reply;
+- (void)readDataForTokenID:(id)d reply:(id)reply;
+- (void)removeTokenID:(id)d reply:(id)reply;
+- (void)updateKeychainItemsForTokenID:(id)d items:(id)items reply:(id)reply;
+- (void)updateTokenID:(id)d data:(id)data reply:(id)reply;
 @end
 
 @implementation TKHostTokenRegistryConfigurationProxy
 
-- (TKHostTokenRegistryConfigurationProxy)initWithRegistry:(id)a3 callerBundleID:(id)a4 allowedForBundles:(id)a5
+- (TKHostTokenRegistryConfigurationProxy)initWithRegistry:(id)registry callerBundleID:(id)d allowedForBundles:(id)bundles
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  registryCopy = registry;
+  dCopy = d;
+  bundlesCopy = bundles;
   v15.receiver = self;
   v15.super_class = TKHostTokenRegistryConfigurationProxy;
   v11 = [(TKHostTokenRegistryConfigurationProxy *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_registry, v8);
-    objc_storeStrong(&v12->_callerBundleID, a4);
-    if (v10)
+    objc_storeWeak(&v11->_registry, registryCopy);
+    objc_storeStrong(&v12->_callerBundleID, d);
+    if (bundlesCopy)
     {
-      v13 = v10;
+      v13 = bundlesCopy;
     }
 
     else
@@ -47,29 +47,29 @@
   return v12;
 }
 
-- (BOOL)haveAccessForClassID:(id)a3 verbose:(BOOL)a4
+- (BOOL)haveAccessForClassID:(id)d verbose:(BOOL)verbose
 {
-  v4 = a4;
-  v6 = a3;
-  v46 = self;
+  verboseCopy = verbose;
+  dCopy = d;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_registry);
   v8 = [WeakRetained beginTransaction:@"haveAccessForClassID"];
 
-  v9 = [v8 tokenExtensions];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  tokenExtensions = [v8 tokenExtensions];
+  v10 = [tokenExtensions objectForKeyedSubscript:dCopy];
 
   [v8 commit];
   if (v10)
   {
-    v11 = [v10 _plugIn];
-    v12 = [v11 url];
+    _plugIn = [v10 _plugIn];
+    v12 = [_plugIn url];
 
     if ((_os_feature_enabled_impl() & 1) == 0)
     {
       if (!-[NSObject isFileURL](v12, "isFileURL") || (-[NSObject path](v12, "path"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 hasPrefix:@"/System/"], v20, (v21 & 1) == 0))
       {
-        v47 = sub_1000049CC();
-        if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
+        identifier = sub_1000049CC();
+        if (os_log_type_enabled(identifier, OS_LOG_TYPE_ERROR))
         {
           sub_10001E4BC();
         }
@@ -82,17 +82,17 @@ LABEL_42:
       }
     }
 
-    v45 = v4;
-    v13 = [v10 _plugIn];
-    v47 = [v13 identifier];
+    v45 = verboseCopy;
+    _plugIn2 = [v10 _plugIn];
+    identifier = [_plugIn2 identifier];
 
-    v14 = [v10 _plugIn];
-    v15 = [v14 containingUrl];
-    if (v15)
+    _plugIn3 = [v10 _plugIn];
+    containingUrl = [_plugIn3 containingUrl];
+    if (containingUrl)
     {
-      v16 = [v10 _plugIn];
-      v17 = [v16 containingUrl];
-      v18 = [NSBundle bundleWithURL:v17];
+      _plugIn4 = [v10 _plugIn];
+      containingUrl2 = [_plugIn4 containingUrl];
+      v18 = [NSBundle bundleWithURL:containingUrl2];
     }
 
     else
@@ -100,13 +100,13 @@ LABEL_42:
       v18 = 0;
     }
 
-    v22 = [v18 bundleIdentifier];
-    callerBundleID = v46->_callerBundleID;
-    if (v22)
+    bundleIdentifier = [v18 bundleIdentifier];
+    callerBundleID = selfCopy->_callerBundleID;
+    if (bundleIdentifier)
     {
-      v24 = v22;
-      v25 = [v18 bundleIdentifier];
-      if ([(NSString *)callerBundleID hasPrefix:v25])
+      v24 = bundleIdentifier;
+      bundleIdentifier2 = [v18 bundleIdentifier];
+      if ([(NSString *)callerBundleID hasPrefix:bundleIdentifier2])
       {
 
 LABEL_20:
@@ -128,21 +128,21 @@ LABEL_37:
             }
 
             v38 = v12;
-            v39 = v46->_callerBundleID;
-            v40 = [v18 bundleIdentifier];
-            allowedForBundles = v46->_allowedForBundles;
+            v39 = selfCopy->_callerBundleID;
+            bundleIdentifier3 = [v18 bundleIdentifier];
+            allowedForBundles = selfCopy->_allowedForBundles;
             *buf = 138544642;
             v53 = v37;
             v54 = 2114;
             v55 = v39;
             v12 = v38;
             v56 = 2114;
-            v57 = v6;
+            v57 = dCopy;
             v58 = 2114;
-            v59 = v47;
+            v59 = identifier;
             v60 = 2114;
-            v61 = v40;
-            v42 = v40;
+            v61 = bundleIdentifier3;
+            v42 = bundleIdentifier3;
             v62 = 2114;
             v63 = allowedForBundles;
             _os_log_debug_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEBUG, "%{public}@ caller %{public}@, to access token classID=%{public}@ identifier=%{public}@ containing=%{public}@ entitled for=%{public}@", buf, 0x3Eu);
@@ -152,7 +152,7 @@ LABEL_37:
         goto LABEL_41;
       }
 
-      v26 = [v47 hasPrefix:v46->_callerBundleID];
+      v26 = [identifier hasPrefix:selfCopy->_callerBundleID];
 
       if (v26)
       {
@@ -160,7 +160,7 @@ LABEL_37:
       }
     }
 
-    else if (([v47 hasPrefix:v46->_callerBundleID]& 1) != 0)
+    else if (([identifier hasPrefix:selfCopy->_callerBundleID]& 1) != 0)
     {
       goto LABEL_20;
     }
@@ -169,12 +169,12 @@ LABEL_37:
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v27 = v46->_allowedForBundles;
+    v27 = selfCopy->_allowedForBundles;
     v19 = [(NSArray *)v27 countByEnumeratingWithState:&v48 objects:v64 count:16];
     if (v19)
     {
       v43 = v12;
-      v44 = v6;
+      v44 = dCopy;
       v28 = *v49;
       while (2)
       {
@@ -186,12 +186,12 @@ LABEL_37:
           }
 
           v30 = *(*(&v48 + 1) + 8 * i);
-          v31 = [v18 bundleIdentifier];
-          if (v31)
+          bundleIdentifier4 = [v18 bundleIdentifier];
+          if (bundleIdentifier4)
           {
-            v32 = v31;
-            v33 = [v18 bundleIdentifier];
-            v34 = [v30 hasPrefix:v33];
+            v32 = bundleIdentifier4;
+            bundleIdentifier5 = [v18 bundleIdentifier];
+            v34 = [v30 hasPrefix:bundleIdentifier5];
 
             if (v34)
             {
@@ -199,7 +199,7 @@ LABEL_37:
             }
           }
 
-          else if ([v30 isEqualToString:v47])
+          else if ([v30 isEqualToString:identifier])
           {
 LABEL_34:
             LODWORD(v19) = 1;
@@ -218,18 +218,18 @@ LABEL_34:
 
 LABEL_35:
       v12 = v43;
-      v6 = v44;
+      dCopy = v44;
     }
 
     goto LABEL_37;
   }
 
-  if (v4)
+  if (verboseCopy)
   {
     v12 = sub_1000049CC();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_10001E4F8(self, v6, v12);
+      sub_10001E4F8(self, dCopy, v12);
     }
 
     LOBYTE(v19) = 0;
@@ -242,9 +242,9 @@ LABEL_43:
   return v19;
 }
 
-- (void)getClassIDsWithReply:(id)a3
+- (void)getClassIDsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_registry);
   v6 = [WeakRetained beginTransaction:@"getClassIDsWithReply"];
 
@@ -252,20 +252,20 @@ LABEL_43:
   v8 = objc_loadWeakRetained(&self->_registry);
   objc_sync_enter(v8);
   v9 = objc_loadWeakRetained(&self->_registry);
-  v10 = [v9 reloadTokenClassesFromStore];
+  reloadTokenClassesFromStore = [v9 reloadTokenClassesFromStore];
 
   objc_sync_exit(v8);
   v11 = objc_loadWeakRetained(&self->_registry);
-  [v11 registerClassIDs:v10];
+  [v11 registerClassIDs:reloadTokenClassesFromStore];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = [v6 tokenExtensions];
-  v13 = [v12 allKeys];
+  tokenExtensions = [v6 tokenExtensions];
+  allKeys = [tokenExtensions allKeys];
 
-  v14 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v14 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v14)
   {
     v15 = *v19;
@@ -275,7 +275,7 @@ LABEL_43:
       {
         if (*v19 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allKeys);
         }
 
         v17 = *(*(&v18 + 1) + 8 * i);
@@ -285,53 +285,53 @@ LABEL_43:
         }
       }
 
-      v14 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v14 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v14);
   }
 
   [v6 commit];
-  v4[2](v4, v7);
+  replyCopy[2](replyCopy, v7);
 }
 
-- (void)beginTransactionWithReply:(id)a3
+- (void)beginTransactionWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(TKHostTokenRegistryConfigurationProxy *)self registry];
-  v8 = [v5 beginTransaction:@"beginTransactionWithReply"];
+  replyCopy = reply;
+  registry = [(TKHostTokenRegistryConfigurationProxy *)self registry];
+  v8 = [registry beginTransaction:@"beginTransactionWithReply"];
 
-  v6 = [(TKHostTokenRegistryConfigurationProxy *)self registry];
-  v7 = [v6 externalTransactions];
-  [v7 addObject:v8];
+  registry2 = [(TKHostTokenRegistryConfigurationProxy *)self registry];
+  externalTransactions = [registry2 externalTransactions];
+  [externalTransactions addObject:v8];
 
-  v4[2](v4);
+  replyCopy[2](replyCopy);
 }
 
-- (void)endTransactionWithReply:(id)a3
+- (void)endTransactionWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(TKHostTokenRegistryConfigurationProxy *)self registry];
-  v6 = [v5 externalTransactions];
-  v9 = [v6 lastObject];
+  replyCopy = reply;
+  registry = [(TKHostTokenRegistryConfigurationProxy *)self registry];
+  externalTransactions = [registry externalTransactions];
+  lastObject = [externalTransactions lastObject];
 
-  [v9 commit];
-  v7 = [(TKHostTokenRegistryConfigurationProxy *)self registry];
-  v8 = [v7 externalTransactions];
-  [v8 removeLastObject];
+  [lastObject commit];
+  registry2 = [(TKHostTokenRegistryConfigurationProxy *)self registry];
+  externalTransactions2 = [registry2 externalTransactions];
+  [externalTransactions2 removeLastObject];
 
-  v4[2](v4);
+  replyCopy[2](replyCopy);
 }
 
-- (void)getTokenIDsForClassID:(id)a3 reply:(id)a4
+- (void)getTokenIDsForClassID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v8 = [&__NSArray0__struct mutableCopy];
   WeakRetained = objc_loadWeakRetained(&self->_registry);
   v20 = [WeakRetained beginTransaction:@"getTokenIDsForClassID"];
 
-  if ([(TKHostTokenRegistryConfigurationProxy *)self ensureAccessForClassID:v6])
+  if ([(TKHostTokenRegistryConfigurationProxy *)self ensureAccessForClassID:dCopy])
   {
     obj = objc_loadWeakRetained(&self->_registry);
     objc_sync_enter(obj);
@@ -339,10 +339,10 @@ LABEL_43:
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = [(TKHostTokenRegistryConfigurationProxy *)self registry];
-    v11 = [v10 tokens];
+    registry = [(TKHostTokenRegistryConfigurationProxy *)self registry];
+    tokens = [registry tokens];
 
-    v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v12 = [tokens countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v12)
     {
       v13 = *v22;
@@ -352,12 +352,12 @@ LABEL_43:
         {
           if (*v22 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(tokens);
           }
 
           v15 = *(*(&v21 + 1) + 8 * i);
-          v16 = [v15 classID];
-          v17 = [v16 isEqualToString:v6];
+          classID = [v15 classID];
+          v17 = [classID isEqualToString:dCopy];
 
           if (v17)
           {
@@ -365,7 +365,7 @@ LABEL_43:
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v12 = [tokens countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v12);
@@ -376,18 +376,18 @@ LABEL_43:
 
   [v20 commit];
   v18 = [v8 copy];
-  v7[2](v7, v18);
+  replyCopy[2](replyCopy, v18);
 }
 
-- (id)ensureTokenWithTokenID:(id)a3
+- (id)ensureTokenWithTokenID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_registry);
   v6 = [WeakRetained beginTransaction:@"ensureTokenWithTokenID"];
 
-  v7 = [(TKHostTokenRegistryConfigurationProxy *)self registry];
-  v8 = [v7 tokensByTokenID];
-  v9 = [v8 objectForKeyedSubscript:v4];
+  registry = [(TKHostTokenRegistryConfigurationProxy *)self registry];
+  tokensByTokenID = [registry tokensByTokenID];
+  v9 = [tokensByTokenID objectForKeyedSubscript:dCopy];
   v10 = v9;
   if (v9)
   {
@@ -396,20 +396,20 @@ LABEL_43:
 
   else
   {
-    v12 = [(TKHostTokenRegistryConfigurationProxy *)self registry];
-    v13 = [v12 pendingCreationTokens];
-    v11 = [v13 objectForKey:v4];
+    registry2 = [(TKHostTokenRegistryConfigurationProxy *)self registry];
+    pendingCreationTokens = [registry2 pendingCreationTokens];
+    v11 = [pendingCreationTokens objectForKey:dCopy];
   }
 
   if (!v11)
   {
-    v11 = [[TKHostToken alloc] initWithTokenID:v4 persistent:0];
-    v14 = [(TKHostTokenRegistryConfigurationProxy *)self registry];
-    [(TKHostToken *)v11 setRegistry:v14];
+    v11 = [[TKHostToken alloc] initWithTokenID:dCopy persistent:0];
+    registry3 = [(TKHostTokenRegistryConfigurationProxy *)self registry];
+    [(TKHostToken *)v11 setRegistry:registry3];
 
-    v15 = [(TKHostTokenRegistryConfigurationProxy *)self registry];
-    v16 = [v15 pendingCreationTokens];
-    [v16 setObject:v11 forKeyedSubscript:v4];
+    registry4 = [(TKHostTokenRegistryConfigurationProxy *)self registry];
+    pendingCreationTokens2 = [registry4 pendingCreationTokens];
+    [pendingCreationTokens2 setObject:v11 forKeyedSubscript:dCopy];
 
     v17 = sub_1000049CC();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -423,30 +423,30 @@ LABEL_43:
   return v11;
 }
 
-- (void)getKeychainItemsForTokenID:(id)a3 reply:(id)a4
+- (void)getKeychainItemsForTokenID:(id)d reply:(id)reply
 {
-  v15 = a3;
-  v6 = a4;
+  dCopy = d;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_registry);
   v8 = [WeakRetained beginTransaction:@"getKeychainItemsForTokenID"];
 
-  v9 = [v15 classID];
-  v10 = [(TKHostTokenRegistryConfigurationProxy *)self ensureAccessForClassID:v9];
+  classID = [dCopy classID];
+  v10 = [(TKHostTokenRegistryConfigurationProxy *)self ensureAccessForClassID:classID];
 
   if (v10)
   {
     v11 = objc_loadWeakRetained(&self->_registry);
     objc_sync_enter(v11);
-    v12 = [(TKHostTokenRegistryConfigurationProxy *)self ensureTokenWithTokenID:v15];
+    v12 = [(TKHostTokenRegistryConfigurationProxy *)self ensureTokenWithTokenID:dCopy];
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 keychainItems];
+      keychainItems = [v12 keychainItems];
     }
 
     else
     {
-      v14 = &__NSArray0__struct;
+      keychainItems = &__NSArray0__struct;
     }
 
     objc_sync_exit(v11);
@@ -454,39 +454,39 @@ LABEL_43:
 
   else
   {
-    v14 = &__NSArray0__struct;
+    keychainItems = &__NSArray0__struct;
   }
 
   [v8 commit];
-  v6[2](v6, v14);
+  replyCopy[2](replyCopy, keychainItems);
 }
 
-- (void)updateKeychainItemsForTokenID:(id)a3 items:(id)a4 reply:(id)a5
+- (void)updateKeychainItemsForTokenID:(id)d items:(id)items reply:(id)reply
 {
-  v25 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  itemsCopy = items;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_registry);
   v11 = [WeakRetained beginTransaction:@"updateKeychainItemsForTokenID"];
 
-  v12 = [v25 classID];
-  v13 = [(TKHostTokenRegistryConfigurationProxy *)self ensureAccessForClassID:v12];
+  classID = [dCopy classID];
+  v13 = [(TKHostTokenRegistryConfigurationProxy *)self ensureAccessForClassID:classID];
 
   if (v13)
   {
     v14 = objc_loadWeakRetained(&self->_registry);
     objc_sync_enter(v14);
-    v15 = [(TKHostTokenRegistryConfigurationProxy *)self ensureTokenWithTokenID:v25];
+    v15 = [(TKHostTokenRegistryConfigurationProxy *)self ensureTokenWithTokenID:dCopy];
     v16 = v15;
     if (v15)
     {
-      v17 = [v15 persistent];
-      v18 = [v16 keychainItems];
+      persistent = [v15 persistent];
+      keychainItems = [v16 keychainItems];
       v19 = &MKBGetDeviceLockState_ptr;
-      if (v18)
+      if (keychainItems)
       {
-        v20 = [v16 keychainItems];
-        v21 = [NSKeyedArchiver archivedDataWithRootObject:v20 requiringSecureCoding:0 error:0];
+        keychainItems2 = [v16 keychainItems];
+        v21 = [NSKeyedArchiver archivedDataWithRootObject:keychainItems2 requiringSecureCoding:0 error:0];
 
         v19 = &MKBGetDeviceLockState_ptr;
       }
@@ -496,9 +496,9 @@ LABEL_43:
         v21 = 0;
       }
 
-      if (v8)
+      if (itemsCopy)
       {
-        v22 = [v19[141] archivedDataWithRootObject:v8 requiringSecureCoding:0 error:0];
+        v22 = [v19[141] archivedDataWithRootObject:itemsCopy requiringSecureCoding:0 error:0];
       }
 
       else
@@ -510,20 +510,20 @@ LABEL_43:
       {
         if ([v16 isRegistered])
         {
-          [(TKHostTokenRegistryConfigurationProxy *)self _updateRegisteredToken:v16 withNewKeychainItems:v8 transaction:v11 tokenID:v25];
+          [(TKHostTokenRegistryConfigurationProxy *)self _updateRegisteredToken:v16 withNewKeychainItems:itemsCopy transaction:v11 tokenID:dCopy];
         }
 
         else
         {
-          [v16 setKeychainItems:v8];
-          v23 = [v11 keychainItemsModified:v25];
+          [v16 setKeychainItems:itemsCopy];
+          v23 = [v11 keychainItemsModified:dCopy];
         }
       }
     }
 
     else
     {
-      v17 = 1;
+      persistent = 1;
     }
 
     objc_sync_exit(v14);
@@ -531,23 +531,23 @@ LABEL_43:
 
   else
   {
-    v17 = 1;
+    persistent = 1;
   }
 
   [v11 commit];
-  v24 = [(TKHostTokenRegistryConfigurationProxy *)self registry];
-  [v24 notifyTokenReinsertion:v25 persistent:v17];
+  registry = [(TKHostTokenRegistryConfigurationProxy *)self registry];
+  [registry notifyTokenReinsertion:dCopy persistent:persistent];
 
-  v9[2](v9);
+  replyCopy[2](replyCopy);
 }
 
-- (void)_updateRegisteredToken:(id)a3 withNewKeychainItems:(id)a4 transaction:(id)a5 tokenID:(id)a6
+- (void)_updateRegisteredToken:(id)token withNewKeychainItems:(id)items transaction:(id)transaction tokenID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (![v11 count] || (v14 = objc_msgSend(v11, "count"), objc_msgSend(v10, "keychainItems"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "count"), v15, v14 < v16))
+  tokenCopy = token;
+  itemsCopy = items;
+  transactionCopy = transaction;
+  dCopy = d;
+  if (![itemsCopy count] || (v14 = objc_msgSend(itemsCopy, "count"), objc_msgSend(tokenCopy, "keychainItems"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "count"), v15, v14 < v16))
   {
     v17 = sub_1000049CC();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -560,8 +560,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v18 = [v10 keychainItems];
-  v19 = [(TKHostTokenRegistryConfigurationProxy *)self _areKeychainItemsDifferent:v18 comparedTo:v11];
+  keychainItems = [tokenCopy keychainItems];
+  v19 = [(TKHostTokenRegistryConfigurationProxy *)self _areKeychainItemsDifferent:keychainItems comparedTo:itemsCopy];
 
   v17 = sub_1000049CC();
   v20 = os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG);
@@ -577,28 +577,28 @@ LABEL_5:
 
   if (v20)
   {
-    sub_10001E630(v11, v17);
+    sub_10001E630(itemsCopy, v17);
   }
 
-  [v10 setKeychainItems:v11];
-  v21 = [v12 keychainItemsModified:v13];
+  [tokenCopy setKeychainItems:itemsCopy];
+  v21 = [transactionCopy keychainItemsModified:dCopy];
 LABEL_6:
 }
 
-- (BOOL)_areKeychainItemsDifferent:(id)a3 comparedTo:(id)a4
+- (BOOL)_areKeychainItemsDifferent:(id)different comparedTo:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 count];
-  if (v7 <= [v5 count])
+  differentCopy = different;
+  toCopy = to;
+  v7 = [toCopy count];
+  if (v7 <= [differentCopy count])
   {
-    v9 = [v6 mutableCopy];
+    v9 = [toCopy mutableCopy];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v18 = v5;
-    v10 = v5;
+    v18 = differentCopy;
+    v10 = differentCopy;
     v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v11)
     {
@@ -643,7 +643,7 @@ LABEL_6:
     v8 = [v9 count] != 0;
 LABEL_13:
 
-    v5 = v18;
+    differentCopy = v18;
   }
 
   else
@@ -654,30 +654,30 @@ LABEL_13:
   return v8;
 }
 
-- (void)readDataForTokenID:(id)a3 reply:(id)a4
+- (void)readDataForTokenID:(id)d reply:(id)reply
 {
-  v15 = a3;
-  v6 = a4;
+  dCopy = d;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_registry);
   v8 = [WeakRetained beginTransaction:@"readDataForTokenID"];
 
-  v9 = [v15 classID];
-  v10 = [(TKHostTokenRegistryConfigurationProxy *)self ensureAccessForClassID:v9];
+  classID = [dCopy classID];
+  v10 = [(TKHostTokenRegistryConfigurationProxy *)self ensureAccessForClassID:classID];
 
   if (v10)
   {
     v11 = objc_loadWeakRetained(&self->_registry);
     objc_sync_enter(v11);
-    v12 = [(TKHostTokenRegistryConfigurationProxy *)self ensureTokenWithTokenID:v15];
+    v12 = [(TKHostTokenRegistryConfigurationProxy *)self ensureTokenWithTokenID:dCopy];
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 configurationData];
+      configurationData = [v12 configurationData];
     }
 
     else
     {
-      v14 = 0;
+      configurationData = 0;
     }
 
     objc_sync_exit(v11);
@@ -685,39 +685,39 @@ LABEL_13:
 
   else
   {
-    v14 = 0;
+    configurationData = 0;
   }
 
   [v8 commit];
-  v6[2](v6, v14);
+  replyCopy[2](replyCopy, configurationData);
 }
 
-- (void)updateTokenID:(id)a3 data:(id)a4 reply:(id)a5
+- (void)updateTokenID:(id)d data:(id)data reply:(id)reply
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  dataCopy = data;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_registry);
   v11 = [WeakRetained beginTransaction:@"updateTokenID"];
 
-  v12 = [v20 classID];
-  v13 = [(TKHostTokenRegistryConfigurationProxy *)self ensureAccessForClassID:v12];
+  classID = [dCopy classID];
+  v13 = [(TKHostTokenRegistryConfigurationProxy *)self ensureAccessForClassID:classID];
 
   if (v13)
   {
     v14 = objc_loadWeakRetained(&self->_registry);
     objc_sync_enter(v14);
-    v15 = [(TKHostTokenRegistryConfigurationProxy *)self ensureTokenWithTokenID:v20];
+    v15 = [(TKHostTokenRegistryConfigurationProxy *)self ensureTokenWithTokenID:dCopy];
     v16 = v15;
     if (v15)
     {
-      v17 = [v15 configurationData];
-      v18 = [v17 isEqualToData:v8];
+      configurationData = [v15 configurationData];
+      v18 = [configurationData isEqualToData:dataCopy];
 
       if ((v18 & 1) == 0)
       {
-        [v16 setConfigurationData:v8];
-        v19 = [v11 markModified];
+        [v16 setConfigurationData:dataCopy];
+        markModified = [v11 markModified];
       }
     }
 
@@ -725,27 +725,27 @@ LABEL_13:
   }
 
   [v11 commit];
-  v9[2](v9);
+  replyCopy[2](replyCopy);
 }
 
-- (void)removeTokenID:(id)a3 reply:(id)a4
+- (void)removeTokenID:(id)d reply:(id)reply
 {
-  v12 = a3;
-  v6 = a4;
+  dCopy = d;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_registry);
   v8 = [WeakRetained beginTransaction:@"removeTokenID"];
 
-  v9 = [v12 classID];
-  v10 = [(TKHostTokenRegistryConfigurationProxy *)self ensureAccessForClassID:v9];
+  classID = [dCopy classID];
+  v10 = [(TKHostTokenRegistryConfigurationProxy *)self ensureAccessForClassID:classID];
 
   if (v10)
   {
-    v11 = [(TKHostTokenRegistryConfigurationProxy *)self registry];
-    [v11 removeTokenWithTokenID:v12];
+    registry = [(TKHostTokenRegistryConfigurationProxy *)self registry];
+    [registry removeTokenWithTokenID:dCopy];
   }
 
   [v8 commit];
-  v6[2](v6);
+  replyCopy[2](replyCopy);
 }
 
 - (TKHostTokenRegistry)registry

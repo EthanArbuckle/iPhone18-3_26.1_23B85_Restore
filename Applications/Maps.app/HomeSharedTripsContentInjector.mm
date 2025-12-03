@@ -1,6 +1,6 @@
 @interface HomeSharedTripsContentInjector
 - (BaseModeController)baseModeController;
-- (HomeSharedTripsContentInjector)initWithSharedTrip:(id)a3;
+- (HomeSharedTripsContentInjector)initWithSharedTrip:(id)trip;
 - (void)addContentToMapView;
 - (void)removeContentFromMapView;
 @end
@@ -16,34 +16,34 @@
 
 - (void)removeContentFromMapView
 {
-  v3 = [(HomeSharedTripsContentInjector *)self baseModeController];
-  v4 = [(HomeSharedTripsContentInjector *)self sharedTrip];
-  v5 = [v3 isShowingSharedTrip:v4];
+  baseModeController = [(HomeSharedTripsContentInjector *)self baseModeController];
+  sharedTrip = [(HomeSharedTripsContentInjector *)self sharedTrip];
+  v5 = [baseModeController isShowingSharedTrip:sharedTrip];
 
   if (v5)
   {
-    v6 = [(HomeSharedTripsContentInjector *)self baseModeController];
-    [v6 showSharedTrip:0];
+    baseModeController2 = [(HomeSharedTripsContentInjector *)self baseModeController];
+    [baseModeController2 showSharedTrip:0];
   }
 }
 
 - (void)addContentToMapView
 {
-  v4 = [(HomeSharedTripsContentInjector *)self baseModeController];
-  v3 = [(HomeSharedTripsContentInjector *)self sharedTrip];
-  [v4 showSharedTrip:v3];
+  baseModeController = [(HomeSharedTripsContentInjector *)self baseModeController];
+  sharedTrip = [(HomeSharedTripsContentInjector *)self sharedTrip];
+  [baseModeController showSharedTrip:sharedTrip];
 }
 
-- (HomeSharedTripsContentInjector)initWithSharedTrip:(id)a3
+- (HomeSharedTripsContentInjector)initWithSharedTrip:(id)trip
 {
-  v5 = a3;
+  tripCopy = trip;
   v9.receiver = self;
   v9.super_class = HomeSharedTripsContentInjector;
   v6 = [(HomeSharedTripsContentInjector *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sharedTrip, a3);
+    objc_storeStrong(&v6->_sharedTrip, trip);
   }
 
   return v7;

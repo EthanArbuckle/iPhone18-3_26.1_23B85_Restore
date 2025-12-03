@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __53__NSBundle_SafariCoreExtras__safari_safariCoreBundle__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (safari_safariCoreBundle_onceToken != -1)
   {
     dispatch_once(&safari_safariCoreBundle_onceToken, block);
@@ -41,8 +41,8 @@
 
 - (uint64_t)safari_isPasswordsAppBundle
 {
-  v1 = [a1 bundleIdentifier];
-  v2 = [v1 isEqualToString:@"com.apple.Passwords"];
+  bundleIdentifier = [self bundleIdentifier];
+  v2 = [bundleIdentifier isEqualToString:@"com.apple.Passwords"];
 
   return v2;
 }
@@ -61,24 +61,24 @@
 
 - (id)safari_normalizedVersion
 {
-  v1 = [a1 safari_version];
-  v2 = [v1 safari_stringByNormalizingVersionString];
+  safari_version = [self safari_version];
+  safari_stringByNormalizingVersionString = [safari_version safari_stringByNormalizingVersionString];
 
-  return v2;
+  return safari_stringByNormalizingVersionString;
 }
 
 - (id)safari_version
 {
-  v1 = [a1 infoDictionary];
-  v2 = [v1 safari_stringForKey:*MEMORY[0x1E695E500]];
+  infoDictionary = [self infoDictionary];
+  v2 = [infoDictionary safari_stringForKey:*MEMORY[0x1E695E500]];
 
   return v2;
 }
 
 - (uint64_t)safari_isInSyncAgent
 {
-  v1 = [a1 bundleIdentifier];
-  v2 = [v1 isEqualToString:@"com.apple.SafariBookmarksSyncAgent"];
+  bundleIdentifier = [self bundleIdentifier];
+  v2 = [bundleIdentifier isEqualToString:@"com.apple.SafariBookmarksSyncAgent"];
 
   return v2;
 }
@@ -86,24 +86,24 @@
 - (uint64_t)safari_isSafariFamilyApplicationBundle
 {
   v1 = MEMORY[0x1E696AAE8];
-  v2 = [a1 bundleIdentifier];
-  v3 = [v1 safari_isSafariFamilyBundleIdentifier:v2];
+  bundleIdentifier = [self bundleIdentifier];
+  v3 = [v1 safari_isSafariFamilyBundleIdentifier:bundleIdentifier];
 
   return v3;
 }
 
 - (id)safari_shortVersion
 {
-  v1 = [a1 infoDictionary];
-  v2 = [v1 safari_stringForKey:*MEMORY[0x1E695E148]];
+  infoDictionary = [self infoDictionary];
+  v2 = [infoDictionary safari_stringForKey:*MEMORY[0x1E695E148]];
 
   return v2;
 }
 
 - (id)safari_displayName
 {
-  v1 = [a1 infoDictionary];
-  v2 = [v1 safari_stringForKey:*MEMORY[0x1E695E120]];
+  infoDictionary = [self infoDictionary];
+  v2 = [infoDictionary safari_stringForKey:*MEMORY[0x1E695E120]];
   v3 = v2;
   if (v2)
   {
@@ -112,7 +112,7 @@
 
   else
   {
-    v4 = [v1 safari_stringForKey:*MEMORY[0x1E695E4F8]];
+    v4 = [infoDictionary safari_stringForKey:*MEMORY[0x1E695E4F8]];
   }
 
   v5 = v4;
@@ -122,59 +122,59 @@
 
 - (id)safari_localizedDisplayName
 {
-  v2 = [a1 localizedInfoDictionary];
-  v3 = [v2 safari_stringForKey:*MEMORY[0x1E695E120]];
+  localizedInfoDictionary = [self localizedInfoDictionary];
+  v3 = [localizedInfoDictionary safari_stringForKey:*MEMORY[0x1E695E120]];
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    safari_displayName = v3;
   }
 
   else
   {
-    v5 = [a1 safari_displayName];
+    safari_displayName = [self safari_displayName];
   }
 
-  v6 = v5;
+  v6 = safari_displayName;
 
   return v6;
 }
 
 - (id)safari_localizedShortVersion
 {
-  v2 = [a1 localizedInfoDictionary];
-  v3 = [v2 safari_stringForKey:*MEMORY[0x1E695E148]];
+  localizedInfoDictionary = [self localizedInfoDictionary];
+  v3 = [localizedInfoDictionary safari_stringForKey:*MEMORY[0x1E695E148]];
 
   if (v3)
   {
-    v4 = v3;
+    safari_shortVersion = v3;
   }
 
   else
   {
-    v4 = [a1 safari_shortVersion];
+    safari_shortVersion = [self safari_shortVersion];
   }
 
-  v5 = v4;
+  v5 = safari_shortVersion;
 
   return v5;
 }
 
 + (uint64_t)safari_isMobileSafariInstalled
 {
-  v0 = [MEMORY[0x1E6963608] defaultWorkspace];
-  v1 = [MEMORY[0x1E696AAE8] safari_safariApplicationPlatformBundleIdentifier];
-  v2 = [v0 applicationIsInstalled:v1];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  safari_safariApplicationPlatformBundleIdentifier = [MEMORY[0x1E696AAE8] safari_safariApplicationPlatformBundleIdentifier];
+  v2 = [defaultWorkspace applicationIsInstalled:safari_safariApplicationPlatformBundleIdentifier];
 
   return v2;
 }
 
 - (uint64_t)safari_primaryLocalizationIsEnglish
 {
-  v1 = [a1 preferredLocalizations];
-  if ([v1 count])
+  preferredLocalizations = [self preferredLocalizations];
+  if ([preferredLocalizations count])
   {
-    v2 = [v1 objectAtIndexedSubscript:0];
+    v2 = [preferredLocalizations objectAtIndexedSubscript:0];
     v3 = [v2 isEqualToString:@"English"];
   }
 
@@ -188,8 +188,8 @@
 
 - (uint64_t)safari_isSafariWidgetExtensionBundle
 {
-  v1 = [a1 bundleIdentifier];
-  v2 = [v1 isEqualToString:@"com.apple.mobilesafari.SafariWidgetExtension"];
+  bundleIdentifier = [self bundleIdentifier];
+  v2 = [bundleIdentifier isEqualToString:@"com.apple.mobilesafari.SafariWidgetExtension"];
 
   return v2;
 }
@@ -197,11 +197,11 @@
 + (id)safari_safariServicesInjectedBundleURL
 {
   v0 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.JavaScriptCore"];
-  v1 = [v0 bundleURL];
-  v2 = [v1 URLByDeletingLastPathComponent];
+  bundleURL = [v0 bundleURL];
+  uRLByDeletingLastPathComponent = [bundleURL URLByDeletingLastPathComponent];
 
   v3 = MEMORY[0x1E696AAE8];
-  v4 = [v2 URLByAppendingPathComponent:@"SafariServices.framework" isDirectory:1];
+  v4 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"SafariServices.framework" isDirectory:1];
   v5 = [v3 bundleWithURL:v4];
 
   if (!v5)
@@ -209,11 +209,11 @@
     +[NSBundle(SafariCoreExtras) safari_safariServicesInjectedBundleURL];
   }
 
-  v6 = [v5 builtInPlugInsURL];
-  v7 = [v6 URLByAppendingPathComponent:@"SafariServices.wkbundle" isDirectory:1];
-  v8 = [v7 absoluteURL];
+  builtInPlugInsURL = [v5 builtInPlugInsURL];
+  v7 = [builtInPlugInsURL URLByAppendingPathComponent:@"SafariServices.wkbundle" isDirectory:1];
+  absoluteURL = [v7 absoluteURL];
 
-  return v8;
+  return absoluteURL;
 }
 
 + (uint64_t)safari_isICloudAppWithBundleIdentifier:()SafariCoreExtras
@@ -251,7 +251,7 @@
   v1 = safari_passwordsAppBundle_bundle;
   if (!safari_passwordsAppBundle_bundle)
   {
-    v2 = [a1 bundleWithIdentifier:@"com.apple.Passwords"];
+    v2 = [self bundleWithIdentifier:@"com.apple.Passwords"];
     v3 = safari_passwordsAppBundle_bundle;
     safari_passwordsAppBundle_bundle = v2;
 
@@ -266,20 +266,20 @@
   v0 = [MEMORY[0x1E696AEC0] stringWithFormat:&stru_1F3064D08];
   v1 = MEMORY[0x1E696AEC0];
   v2 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/SafariShared/SafariShared/SafariCore/FoundationExtras/WBSCoreNSBundleExtras.m"];
-  v3 = [v2 lastPathComponent];
+  lastPathComponent = [v2 lastPathComponent];
   if ([v0 length])
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@", %@", v0];
-    v4 = [v1 stringWithFormat:@"ASSERTION FAILURE: %s in %s, %@:%d%@", "containingBundle", "+[NSBundle(SafariCoreExtras) safari_safariServicesInjectedBundleURL]", v3, 385, v5];
+    v4 = [v1 stringWithFormat:@"ASSERTION FAILURE: %s in %s, %@:%d%@", "containingBundle", "+[NSBundle(SafariCoreExtras) safari_safariServicesInjectedBundleURL]", lastPathComponent, 385, v5];
   }
 
   else
   {
-    v4 = [v1 stringWithFormat:@"ASSERTION FAILURE: %s in %s, %@:%d%@", "containingBundle", "+[NSBundle(SafariCoreExtras) safari_safariServicesInjectedBundleURL]", v3, 385, &stru_1F3064D08];
+    v4 = [v1 stringWithFormat:@"ASSERTION FAILURE: %s in %s, %@:%d%@", "containingBundle", "+[NSBundle(SafariCoreExtras) safari_safariServicesInjectedBundleURL]", lastPathComponent, 385, &stru_1F3064D08];
   }
 
-  v6 = [MEMORY[0x1E696AF00] callStackSymbols];
-  NSLog(&stru_1F3069F08.isa, v4, v6);
+  callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+  NSLog(&stru_1F3069F08.isa, v4, callStackSymbols);
 
   abort();
 }

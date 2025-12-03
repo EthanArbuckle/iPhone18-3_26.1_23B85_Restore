@@ -1,74 +1,74 @@
 @interface CLVO2MaxCloudKitManager
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (BOOL)shouldKeepLocalDataOnAccountChange;
-- (BOOL)syncEngine:(id)a3 shouldFetchChangesForZoneID:(id)a4;
+- (BOOL)syncEngine:(id)engine shouldFetchChangesForZoneID:(id)d;
 - (CLVO2MaxCloudKitManager)init;
 - (VO2MaxCloudKitSyncEngineMetadata)getCKSyncEngineMetadata;
 - (id).cxx_construct;
-- (id)createCKRecordForInput:(id)a3;
-- (id)createCKRecordForOutput:(id)a3;
-- (id)createCKRecordForPrior:(id)a3;
-- (id)getSystemFieldsFromCKRecord:(id)a3;
+- (id)createCKRecordForInput:(id)input;
+- (id)createCKRecordForOutput:(id)output;
+- (id)createCKRecordForPrior:(id)prior;
+- (id)getSystemFieldsFromCKRecord:(id)record;
 - (id)getUserRecordIDName;
-- (id)syncEngine:(id)a3 recordToSaveForRecordID:(id)a4;
-- (void)addRecordIDsForSessionId:(id)a3 shouldUploadToOutputZone:(BOOL)a4 shouldUploadToInputZone:(BOOL)a5;
-- (void)addRecordIDsForStartTime:(id)a3;
+- (id)syncEngine:(id)engine recordToSaveForRecordID:(id)d;
+- (void)addRecordIDsForSessionId:(id)id shouldUploadToOutputZone:(BOOL)zone shouldUploadToInputZone:(BOOL)inputZone;
+- (void)addRecordIDsForStartTime:(id)time;
 - (void)beginService;
-- (void)bulkUploadRecordIDsShouldReupload:(BOOL)a3 shouldUploadToOutputZone:(BOOL)a4 shouldUploadToInputZone:(BOOL)a5 shouldUploadToPriorZone:(BOOL)a6 shouldThrottle:(BOOL)a7;
-- (void)checkForDeletionOfVO2MaxData:(int)a3;
-- (void)cloudKitAccountDidChange:(id)a3;
+- (void)bulkUploadRecordIDsShouldReupload:(BOOL)reupload shouldUploadToOutputZone:(BOOL)zone shouldUploadToInputZone:(BOOL)inputZone shouldUploadToPriorZone:(BOOL)priorZone shouldThrottle:(BOOL)throttle;
+- (void)checkForDeletionOfVO2MaxData:(int)data;
+- (void)cloudKitAccountDidChange:(id)change;
 - (void)createVO2MaxInputZone;
 - (void)createVO2MaxOutputZone;
 - (void)createVO2MaxPriorZone;
 - (void)deleteCloudKitRecords;
 - (void)deleteLocalVO2MaxData;
-- (void)deleteRecordIdForPrior:(id)a3;
-- (void)deleteZone:(id)a3;
+- (void)deleteRecordIdForPrior:(id)prior;
+- (void)deleteZone:(id)zone;
 - (void)endService;
-- (void)handleDeletedPriorRecordID:(id)a3;
-- (void)handleFetchedInputRecord:(id)a3;
-- (void)handleFetchedOutputRecord:(id)a3;
-- (void)handleFetchedPriorRecord:(id)a3;
-- (void)handleServerRecordChanged:(id)a3;
-- (void)handleSyncUpload:(id)a3;
-- (void)handleUnknownItem:(id)a3;
-- (void)handleWatchAppFitnessTrackingUpdate:(int)a3;
-- (void)handleZoneDeleted:(id)a3;
-- (void)handleZoneNotFound:(id)a3;
-- (void)handleZonePurge:(id)a3;
+- (void)handleDeletedPriorRecordID:(id)d;
+- (void)handleFetchedInputRecord:(id)record;
+- (void)handleFetchedOutputRecord:(id)record;
+- (void)handleFetchedPriorRecord:(id)record;
+- (void)handleServerRecordChanged:(id)changed;
+- (void)handleSyncUpload:(id)upload;
+- (void)handleUnknownItem:(id)item;
+- (void)handleWatchAppFitnessTrackingUpdate:(int)update;
+- (void)handleZoneDeleted:(id)deleted;
+- (void)handleZoneNotFound:(id)found;
+- (void)handleZonePurge:(id)purge;
 - (void)initializeSyncEngine;
-- (void)onDataProtectionNotification:(const int *)a3 data:(const NotificationData *)a4;
-- (void)onFitnessTrackingNotification:(const int *)a3 data:(const NotificationData *)a4;
-- (void)onSyncActivity:(id)a3;
-- (void)receiveVO2MaxCloudKitDailyStatsFromWatch:(id)a3;
+- (void)onDataProtectionNotification:(const int *)notification data:(const NotificationData *)data;
+- (void)onFitnessTrackingNotification:(const int *)notification data:(const NotificationData *)data;
+- (void)onSyncActivity:(id)activity;
+- (void)receiveVO2MaxCloudKitDailyStatsFromWatch:(id)watch;
 - (void)resetDailyStats;
-- (void)resetSyncActivity:(id)a3 withDelay:(int64_t)a4;
-- (void)saveInputsAndOutputsForSessionId:(id)a3;
+- (void)resetSyncActivity:(id)activity withDelay:(int64_t)delay;
+- (void)saveInputsAndOutputsForSessionId:(id)id;
 - (void)saveRetrocomputedOutputs;
-- (void)saveUpdatedPrior:(id)a3;
+- (void)saveUpdatedPrior:(id)prior;
 - (void)setUpSyncActivity;
-- (void)setUserRecordIDName:(id)a3;
-- (void)stopSyncing:(BOOL)a3;
-- (void)syncEngine:(id)a3 didDeleteRecordWithID:(id)a4;
-- (void)syncEngine:(id)a3 didDeleteRecordZoneWithID:(id)a4;
-- (void)syncEngine:(id)a3 didFetchRecord:(id)a4;
-- (void)syncEngine:(id)a3 didSaveRecord:(id)a4;
-- (void)syncEngine:(id)a3 didSaveRecordZone:(id)a4;
-- (void)syncEngine:(id)a3 didUpdateMetadata:(id)a4;
-- (void)syncEngine:(id)a3 failedToDeleteRecordWithID:(id)a4 error:(id)a5;
-- (void)syncEngine:(id)a3 failedToDeleteRecordZoneWithID:(id)a4 error:(id)a5;
-- (void)syncEngine:(id)a3 failedToSaveRecord:(id)a4 error:(id)a5;
-- (void)syncEngine:(id)a3 failedToSaveRecordZone:(id)a4 error:(id)a5;
-- (void)syncEngine:(id)a3 recordWithIDWasDeleted:(id)a4 recordType:(id)a5;
-- (void)syncEngine:(id)a3 zoneWithIDChanged:(id)a4;
-- (void)syncEngine:(id)a3 zoneWithIDWasDeleted:(id)a4;
-- (void)syncEngine:(id)a3 zoneWithIDWasPurged:(id)a4;
-- (void)updateDeviceUnlocked:(BOOL)a3;
-- (void)updateInputSystemFields:(id)a3 inputRecord:(id)a4;
-- (void)updateOutputSystemFields:(id)a3 outputRecord:(id)a4;
-- (void)updatePriorSystemFields:(id)a3 priorRecord:(id)a4;
+- (void)setUserRecordIDName:(id)name;
+- (void)stopSyncing:(BOOL)syncing;
+- (void)syncEngine:(id)engine didDeleteRecordWithID:(id)d;
+- (void)syncEngine:(id)engine didDeleteRecordZoneWithID:(id)d;
+- (void)syncEngine:(id)engine didFetchRecord:(id)record;
+- (void)syncEngine:(id)engine didSaveRecord:(id)record;
+- (void)syncEngine:(id)engine didSaveRecordZone:(id)zone;
+- (void)syncEngine:(id)engine didUpdateMetadata:(id)metadata;
+- (void)syncEngine:(id)engine failedToDeleteRecordWithID:(id)d error:(id)error;
+- (void)syncEngine:(id)engine failedToDeleteRecordZoneWithID:(id)d error:(id)error;
+- (void)syncEngine:(id)engine failedToSaveRecord:(id)record error:(id)error;
+- (void)syncEngine:(id)engine failedToSaveRecordZone:(id)zone error:(id)error;
+- (void)syncEngine:(id)engine recordWithIDWasDeleted:(id)deleted recordType:(id)type;
+- (void)syncEngine:(id)engine zoneWithIDChanged:(id)changed;
+- (void)syncEngine:(id)engine zoneWithIDWasDeleted:(id)deleted;
+- (void)syncEngine:(id)engine zoneWithIDWasPurged:(id)purged;
+- (void)updateDeviceUnlocked:(BOOL)unlocked;
+- (void)updateInputSystemFields:(id)fields inputRecord:(id)record;
+- (void)updateOutputSystemFields:(id)fields outputRecord:(id)record;
+- (void)updatePriorSystemFields:(id)fields priorRecord:(id)record;
 - (void)validateAccount;
 @end
 
@@ -265,12 +265,12 @@
   [(CKSyncEngine *)syncEngine addRecordZonesToSave:[NSArray recordZoneIDsToDelete:"arrayWithObjects:count:" arrayWithObjects:1 count:?], 0];
 }
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -301,10 +301,10 @@
   return byte_102656738;
 }
 
-- (void)saveInputsAndOutputsForSessionId:(id)a3
+- (void)saveInputsAndOutputsForSessionId:(id)id
 {
   v5 = objc_autoreleasePoolPush();
-  [(CLVO2MaxCloudKitManager *)self addRecordIDsForSessionId:a3 shouldUploadToOutputZone:1 shouldUploadToInputZone:1];
+  [(CLVO2MaxCloudKitManager *)self addRecordIDsForSessionId:id shouldUploadToOutputZone:1 shouldUploadToInputZone:1];
 
   objc_autoreleasePoolPop(v5);
 }
@@ -372,36 +372,36 @@
   }
 }
 
-- (void)saveUpdatedPrior:(id)a3
+- (void)saveUpdatedPrior:(id)prior
 {
   v5 = objc_autoreleasePoolPush();
-  [(CLVO2MaxCloudKitManager *)self addRecordIDsForStartTime:a3];
+  [(CLVO2MaxCloudKitManager *)self addRecordIDsForStartTime:prior];
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)onDataProtectionNotification:(const int *)a3 data:(const NotificationData *)a4
+- (void)onDataProtectionNotification:(const int *)notification data:(const NotificationData *)data
 {
   [-[CLVO2MaxCloudKitManager universe](self "universe")];
-  if (!*a3)
+  if (!*notification)
   {
-    v7 = *a4 == 1;
+    v7 = *data == 1;
 
     [(CLVO2MaxCloudKitManager *)self updateDeviceUnlocked:v7];
   }
 }
 
-- (void)onFitnessTrackingNotification:(const int *)a3 data:(const NotificationData *)a4
+- (void)onFitnessTrackingNotification:(const int *)notification data:(const NotificationData *)data
 {
   [-[CLVO2MaxCloudKitManager universe](self "universe")];
-  if (*a3 == 6)
+  if (*notification == 6)
   {
-    v8 = *a4;
+    v8 = *data;
 
     [(CLVO2MaxCloudKitManager *)self handleWatchAppFitnessTrackingUpdate:v8];
   }
 
-  else if (*a3)
+  else if (*notification)
   {
     if (qword_1025D4450 != -1)
     {
@@ -411,7 +411,7 @@
     v9 = qword_1025D4458;
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_FAULT))
     {
-      v10 = *a3;
+      v10 = *notification;
       v11[0] = 67109120;
       v11[1] = v10;
       _os_log_impl(dword_100000000, v9, OS_LOG_TYPE_FAULT, "[CKManager] #Warning: Unhandled FitnessTracking notification type, %d", v11, 8u);
@@ -419,21 +419,21 @@
 
     if (sub_10000A100(121, 0))
     {
-      sub_10189C65C(a3);
+      sub_10189C65C(notification);
     }
   }
 
   else
   {
-    v7 = *a4 & 1;
+    v7 = *data & 1;
 
     [(CLVO2MaxCloudKitManager *)self handleFitnessTrackingEnabled:v7];
   }
 }
 
-- (void)resetSyncActivity:(id)a3 withDelay:(int64_t)a4
+- (void)resetSyncActivity:(id)activity withDelay:(int64_t)delay
 {
-  v6 = CFAbsoluteTimeGetCurrent() + a4;
+  v6 = CFAbsoluteTimeGetCurrent() + delay;
   v11 = v6;
   if (qword_1025D4450 != -1)
   {
@@ -463,7 +463,7 @@
     sub_100008080(*&buf[8]);
   }
 
-  if (!xpc_activity_set_state(a3, 5))
+  if (!xpc_activity_set_state(activity, 5))
   {
     if (qword_1025D4450 != -1)
     {
@@ -473,7 +473,7 @@
     v9 = qword_1025D4458;
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_FAULT))
     {
-      state = xpc_activity_get_state(a3);
+      state = xpc_activity_get_state(activity);
       *buf = 134349056;
       *&buf[4] = state;
       _os_log_impl(dword_100000000, v9, OS_LOG_TYPE_FAULT, "Failed to mark activity as Done. Current state is %{public}ld", buf, 0xCu);
@@ -481,22 +481,22 @@
 
     if (sub_10000A100(121, 0))
     {
-      sub_10189CC08(a3);
+      sub_10189CC08(activity);
     }
   }
 
   [(CLVO2MaxCloudKitManager *)self setUpSyncActivity];
 }
 
-- (void)onSyncActivity:(id)a3
+- (void)onSyncActivity:(id)activity
 {
-  if (a3)
+  if (activity)
   {
-    state = xpc_activity_get_state(a3);
+    state = xpc_activity_get_state(activity);
     if (state == 4 || (v6 = state, state == 2))
     {
 
-      [(CLVO2MaxCloudKitManager *)self handleSyncUpload:a3];
+      [(CLVO2MaxCloudKitManager *)self handleSyncUpload:activity];
     }
 
     else
@@ -542,7 +542,7 @@
   }
 }
 
-- (void)handleSyncUpload:(id)a3
+- (void)handleSyncUpload:(id)upload
 {
   if (qword_1025D4450 != -1)
   {
@@ -726,10 +726,10 @@
     v21 = &XPC_ACTIVITY_INTERVAL_1_DAY;
   }
 
-  [(CLVO2MaxCloudKitManager *)self resetSyncActivity:a3 withDelay:*v21];
+  [(CLVO2MaxCloudKitManager *)self resetSyncActivity:upload withDelay:*v21];
 }
 
-- (void)cloudKitAccountDidChange:(id)a3
+- (void)cloudKitAccountDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -782,13 +782,13 @@
   if (self->_container && self->_syncEngine)
   {
     self->fCloudKitDeletionState = 2;
-    v3 = [(CKContainer *)self->_container privateCloudDatabase];
+    privateCloudDatabase = [(CKContainer *)self->_container privateCloudDatabase];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_1004D8FB0;
     v5[3] = &unk_102447440;
     v5[4] = self;
-    [(CKDatabase *)v3 fetchAllRecordZonesWithCompletionHandler:v5];
+    [(CKDatabase *)privateCloudDatabase fetchAllRecordZonesWithCompletionHandler:v5];
   }
 
   else
@@ -829,7 +829,7 @@
   return sub_100328630() & v6;
 }
 
-- (void)setUserRecordIDName:(id)a3
+- (void)setUserRecordIDName:(id)name
 {
   if (qword_1025D4450 != -1)
   {
@@ -840,7 +840,7 @@
   if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138477827;
-    v8 = a3;
+    nameCopy = name;
     _os_log_impl(dword_100000000, v4, OS_LOG_TYPE_DEFAULT, "Setting userRecordIDName to %{private}@", &v7, 0xCu);
   }
 
@@ -850,7 +850,7 @@
   }
 
   v5 = sub_1000206B4();
-  sub_1002DC480(v5, @"kCloudKitUserRecordId", [a3 UTF8String]);
+  sub_1002DC480(v5, @"kCloudKitUserRecordId", [name UTF8String]);
   v6 = *sub_1000206B4();
   (*(v6 + 944))();
 }
@@ -900,9 +900,9 @@ LABEL_8:
   return v6;
 }
 
-- (void)updateDeviceUnlocked:(BOOL)a3
+- (void)updateDeviceUnlocked:(BOOL)unlocked
 {
-  if (!self->_syncEngine && a3 && !self->fDeviceUnlocked)
+  if (!self->_syncEngine && unlocked && !self->fDeviceUnlocked)
   {
     if (qword_1025D4450 != -1)
     {
@@ -924,21 +924,21 @@ LABEL_8:
     [(CLVO2MaxCloudKitManager *)self initializeSyncEngine];
   }
 
-  self->fDeviceUnlocked = a3;
+  self->fDeviceUnlocked = unlocked;
 }
 
-- (void)handleWatchAppFitnessTrackingUpdate:(int)a3
+- (void)handleWatchAppFitnessTrackingUpdate:(int)update
 {
-  if (a3)
+  if (update)
   {
-    if (a3 == 2)
+    if (update == 2)
     {
       self->fCloudKitDeletionState = 1;
 
       [(CLVO2MaxCloudKitManager *)self checkForDeletionOfVO2MaxData:1];
     }
 
-    else if (a3 == 1)
+    else if (update == 1)
     {
       self->fCloudKitDeletionState = 0;
     }
@@ -965,9 +965,9 @@ LABEL_8:
   }
 }
 
-- (void)checkForDeletionOfVO2MaxData:(int)a3
+- (void)checkForDeletionOfVO2MaxData:(int)data
 {
-  v3 = *&a3;
+  v3 = *&data;
   if (qword_1025D4450 != -1)
   {
     sub_10189C184();
@@ -1152,7 +1152,7 @@ LABEL_8:
   [(CKSyncEngine *)syncEngine addRecordZonesToSave:[NSArray recordZoneIDsToDelete:"arrayWithObjects:count:" arrayWithObjects:1 count:?], 0];
 }
 
-- (void)deleteZone:(id)a3
+- (void)deleteZone:(id)zone
 {
   if (qword_1025D4450 != -1)
   {
@@ -1163,7 +1163,7 @@ LABEL_8:
   if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v9 = a3;
+    zoneCopy = zone;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "Deleting zone with zoneID = %{public}@", buf, 0xCu);
   }
 
@@ -1173,16 +1173,16 @@ LABEL_8:
   }
 
   syncEngine = self->_syncEngine;
-  v7 = a3;
-  [(CKSyncEngine *)syncEngine addRecordZonesToSave:0 recordZoneIDsToDelete:[NSArray arrayWithObjects:&v7 count:1]];
+  zoneCopy2 = zone;
+  [(CKSyncEngine *)syncEngine addRecordZonesToSave:0 recordZoneIDsToDelete:[NSArray arrayWithObjects:&zoneCopy2 count:1]];
 }
 
-- (void)addRecordIDsForSessionId:(id)a3 shouldUploadToOutputZone:(BOOL)a4 shouldUploadToInputZone:(BOOL)a5
+- (void)addRecordIDsForSessionId:(id)id shouldUploadToOutputZone:(BOOL)zone shouldUploadToInputZone:(BOOL)inputZone
 {
   if (self->_syncEngine)
   {
-    v6 = a5;
-    if (a4)
+    inputZoneCopy = inputZone;
+    if (zone)
     {
       if (qword_1025D4450 != -1)
       {
@@ -1193,7 +1193,7 @@ LABEL_8:
       if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v18 = a3;
+        idCopy3 = id;
         _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_DEFAULT, "Adding sessionId %{public}@ to RecordIDs for sync engine to save to VO2MaxOutputZone", buf, 0xCu);
       }
 
@@ -1202,14 +1202,14 @@ LABEL_8:
         sub_10189EBD0();
       }
 
-      v9 = [[CKRecordID alloc] initWithRecordName:a3 zoneID:self->fOutputZoneID];
+      v9 = [[CKRecordID alloc] initWithRecordName:id zoneID:self->fOutputZoneID];
       syncEngine = self->_syncEngine;
       v16 = v9;
       [(CKSyncEngine *)syncEngine addRecordIDsToSave:[NSArray recordIDsToDelete:"arrayWithObjects:count:" arrayWithObjects:1 count:?], 0];
       ++self->fDailyStats.outputSaveQueuedCount;
     }
 
-    if (v6)
+    if (inputZoneCopy)
     {
       if (qword_1025D4450 != -1)
       {
@@ -1220,7 +1220,7 @@ LABEL_8:
       if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v18 = a3;
+        idCopy3 = id;
         _os_log_impl(dword_100000000, v11, OS_LOG_TYPE_DEFAULT, "Adding sessionId %{public}@ to RecordIDs for sync engine to save to VO2MaxInputZone", buf, 0xCu);
       }
 
@@ -1229,7 +1229,7 @@ LABEL_8:
         sub_10189ECC0();
       }
 
-      v12 = [[CKRecordID alloc] initWithRecordName:a3 zoneID:self->fInputZoneID];
+      v12 = [[CKRecordID alloc] initWithRecordName:id zoneID:self->fInputZoneID];
       v13 = self->_syncEngine;
       v15 = v12;
       [(CKSyncEngine *)v13 addRecordIDsToSave:[NSArray recordIDsToDelete:"arrayWithObjects:count:" arrayWithObjects:1 count:?], 0];
@@ -1248,7 +1248,7 @@ LABEL_8:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v18 = a3;
+      idCopy3 = id;
       _os_log_impl(dword_100000000, v14, OS_LOG_TYPE_DEFAULT, "Sync engine uninitialized, so not adding sessionId %{public}@ to RecordIDs for sync engine to save", buf, 0xCu);
     }
 
@@ -1259,7 +1259,7 @@ LABEL_8:
   }
 }
 
-- (void)addRecordIDsForStartTime:(id)a3
+- (void)addRecordIDsForStartTime:(id)time
 {
   if (self->_syncEngine)
   {
@@ -1272,7 +1272,7 @@ LABEL_8:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v11 = a3;
+      timeCopy2 = time;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "Adding priorId %{public}@ to RecordIDs for sync engine to save to VO2MaxPriorZone", buf, 0xCu);
     }
 
@@ -1281,7 +1281,7 @@ LABEL_8:
       sub_10189EEA0();
     }
 
-    v6 = [[CKRecordID alloc] initWithRecordName:a3 zoneID:self->fPriorZoneID];
+    v6 = [[CKRecordID alloc] initWithRecordName:time zoneID:self->fPriorZoneID];
     syncEngine = self->_syncEngine;
     v9 = v6;
     [(CKSyncEngine *)syncEngine addRecordIDsToSave:[NSArray recordIDsToDelete:"arrayWithObjects:count:" arrayWithObjects:1 count:?], 0];
@@ -1299,7 +1299,7 @@ LABEL_8:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v11 = a3;
+      timeCopy2 = time;
       _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_DEFAULT, "Sync engine uninitialized, so not adding priorId %{public}@ to RecordIDs for sync engine to save", buf, 0xCu);
     }
 
@@ -1310,7 +1310,7 @@ LABEL_8:
   }
 }
 
-- (void)deleteRecordIdForPrior:(id)a3
+- (void)deleteRecordIdForPrior:(id)prior
 {
   if (self->_syncEngine)
   {
@@ -1323,7 +1323,7 @@ LABEL_8:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v11 = a3;
+      priorCopy2 = prior;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "Deleting priorId %{public}@ to RecordIDs for sync engine to save to VO2MaxPriorZone", buf, 0xCu);
     }
 
@@ -1332,7 +1332,7 @@ LABEL_8:
       sub_10189F080();
     }
 
-    v6 = [[CKRecordID alloc] initWithRecordName:a3 zoneID:self->fPriorZoneID];
+    v6 = [[CKRecordID alloc] initWithRecordName:prior zoneID:self->fPriorZoneID];
     syncEngine = self->_syncEngine;
     v9 = v6;
     [(CKSyncEngine *)syncEngine addRecordIDsToSave:0 recordIDsToDelete:[NSArray arrayWithObjects:&v9 count:1]];
@@ -1350,7 +1350,7 @@ LABEL_8:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v11 = a3;
+      priorCopy2 = prior;
       _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_DEFAULT, "Sync engine uninitialized, so not deleting priorId %{public}@ to RecordIDs for sync engine to save", buf, 0xCu);
     }
 
@@ -1361,12 +1361,12 @@ LABEL_8:
   }
 }
 
-- (void)bulkUploadRecordIDsShouldReupload:(BOOL)a3 shouldUploadToOutputZone:(BOOL)a4 shouldUploadToInputZone:(BOOL)a5 shouldUploadToPriorZone:(BOOL)a6 shouldThrottle:(BOOL)a7
+- (void)bulkUploadRecordIDsShouldReupload:(BOOL)reupload shouldUploadToOutputZone:(BOOL)zone shouldUploadToInputZone:(BOOL)inputZone shouldUploadToPriorZone:(BOOL)priorZone shouldThrottle:(BOOL)throttle
 {
-  v7 = a7;
-  v37 = a6;
-  v39 = a5;
-  v40 = a4;
+  throttleCopy = throttle;
+  priorZoneCopy = priorZone;
+  inputZoneCopy = inputZone;
+  zoneCopy = zone;
   __p = 0;
   v42 = 0;
   v43 = 0;
@@ -1394,7 +1394,7 @@ LABEL_8:
     v42 = v13;
   }
 
-  v38 = v7 && 0xCCCCCCCCCCCCCCCDLL * ((v14 - __p) >> 4) > self->fMaxSessionsForUploadThrottling;
+  v38 = throttleCopy && 0xCCCCCCCCCCCCCCCDLL * ((v14 - __p) >> 4) > self->fMaxSessionsForUploadThrottling;
   if (__p != v14)
   {
     v15 = 0;
@@ -1411,10 +1411,10 @@ LABEL_8:
       v48[1] = v18;
       v20 = objc_autoreleasePoolPush();
       v21 = [[NSUUID alloc] initWithUUIDBytes:v48];
-      if (v40)
+      if (zoneCopy)
       {
         v22 = 1;
-        if (!a3 && v49)
+        if (!reupload && v49)
         {
           v22 = [v49 length] == 0;
         }
@@ -1425,7 +1425,7 @@ LABEL_8:
         v22 = 0;
       }
 
-      v23 = v39 && (a3 || !*(&v49 + 1) || ![*(&v49 + 1) length]) && sub_10102F6A8(self->fInputStore.__ptr_, v48);
+      v23 = inputZoneCopy && (reupload || !*(&v49 + 1) || ![*(&v49 + 1) length]) && sub_10102F6A8(self->fInputStore.__ptr_, v48);
       if ((v22 || v23) && (-[CLVO2MaxCloudKitManager addRecordIDsForSessionId:shouldUploadToOutputZone:shouldUploadToInputZone:](self, "addRecordIDsForSessionId:shouldUploadToOutputZone:shouldUploadToInputZone:", [v21 UUIDString], v22, v23), v38) && (++v15, v15 >= self->fMaxSessionsForUploadThrottling))
       {
         if (qword_1025D4450 != -1)
@@ -1488,10 +1488,10 @@ LABEL_8:
   v31 = *(&v47 + 1);
   for (i = v47; i != v31; i += 48)
   {
-    if (v37)
+    if (priorZoneCopy)
     {
       v32 = *(i + 8);
-      if (a3 || (v33 = *(i + 40)) == 0 || ![v33 length])
+      if (reupload || (v33 = *(i + 40)) == 0 || ![v33 length])
       {
         [(CLVO2MaxCloudKitManager *)self addRecordIDsForStartTime:[NSString stringWithFormat:@"%f", v32, v36]];
       }
@@ -1535,20 +1535,20 @@ LABEL_8:
   }
 }
 
-- (id)getSystemFieldsFromCKRecord:(id)a3
+- (id)getSystemFieldsFromCKRecord:(id)record
 {
   v4 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-  [a3 encodeSystemFieldsWithCoder:v4];
+  [record encodeSystemFieldsWithCoder:v4];
   [v4 finishEncoding];
 
   return [v4 encodedData];
 }
 
-- (id)createCKRecordForOutput:(id)a3
+- (id)createCKRecordForOutput:(id)output
 {
   v24[0] = 0;
   v24[1] = 0;
-  [objc_msgSend([NSUUID alloc] initWithUUIDString:{objc_msgSend(a3, "recordName")), "getUUIDBytes:", v24}];
+  [objc_msgSend([NSUUID alloc] initWithUUIDString:{objc_msgSend(output, "recordName")), "getUUIDBytes:", v24}];
   v22 = 0;
   v23 = 0;
   v5 = sub_10104516C();
@@ -1563,7 +1563,7 @@ LABEL_8:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v20 = *&a3;
+      v20 = *&output;
       _os_log_impl(dword_100000000, v10, OS_LOG_TYPE_ERROR, "Failed to retrieve VO2MaxSessionAttributes for CKRecordID: %{public}@", buf, 0xCu);
     }
 
@@ -1609,7 +1609,7 @@ LABEL_8:
 
   else
   {
-    v8 = [[CKRecord alloc] initWithRecordType:@"VO2MaxOutput" recordID:a3];
+    v8 = [[CKRecord alloc] initWithRecordType:@"VO2MaxOutput" recordID:output];
   }
 
   v11 = objc_alloc_init(CLCKVO2MaxSessionOutput);
@@ -1668,11 +1668,11 @@ LABEL_8:
   return v8;
 }
 
-- (void)updateOutputSystemFields:(id)a3 outputRecord:(id)a4
+- (void)updateOutputSystemFields:(id)fields outputRecord:(id)record
 {
   v31[0] = 0;
   v31[1] = 0;
-  [objc_msgSend([NSUUID alloc] initWithUUIDString:{objc_msgSend(objc_msgSend(a4, "recordID"), "recordName")), "getUUIDBytes:", v31}];
+  [objc_msgSend([NSUUID alloc] initWithUUIDString:{objc_msgSend(objc_msgSend(record, "recordID"), "recordName")), "getUUIDBytes:", v31}];
   __p = 0;
   v21 = 0;
   v22 = 0;
@@ -1721,7 +1721,7 @@ LABEL_8:
           }
         }
 
-        *&v28 = a3;
+        *&v28 = fields;
         v13 = sub_10104516C();
         sub_101045DCC(v13, &v26);
         v7 += 5;
@@ -1743,18 +1743,18 @@ LABEL_8:
     v15 = qword_1025D4458;
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_ERROR))
     {
-      v16 = [a4 recordID];
+      recordID = [record recordID];
       *buf = 138543362;
-      v30 = v16;
+      v30 = recordID;
       _os_log_impl(dword_100000000, v15, OS_LOG_TYPE_ERROR, "Failed to retrieve VO2MaxSessionAttributes for CKRecord with ID: %{public}@", buf, 0xCu);
     }
 
     if (sub_10000A100(121, 0))
     {
       sub_10189C758(buf);
-      v17 = [a4 recordID];
+      recordID2 = [record recordID];
       LODWORD(v26) = 138543362;
-      *(&v26 + 4) = v17;
+      *(&v26 + 4) = recordID2;
       v18 = _os_log_send_and_compose_impl();
       sub_100152C7C("Generic", 1, 0, 0, "[CLVO2MaxCloudKitManager updateOutputSystemFields:outputRecord:]", "%s\n", v18);
       if (v18 != buf)
@@ -1771,12 +1771,12 @@ LABEL_8:
   }
 }
 
-- (void)handleFetchedOutputRecord:(id)a3
+- (void)handleFetchedOutputRecord:(id)record
 {
-  v5 = -[CLCKVO2MaxSessionOutput initWithData:]([CLCKVO2MaxSessionOutput alloc], "initWithData:", [objc_msgSend(a3 "encryptedValuesByKey")]);
+  v5 = -[CLCKVO2MaxSessionOutput initWithData:]([CLCKVO2MaxSessionOutput alloc], "initWithData:", [objc_msgSend(record "encryptedValuesByKey")]);
   Current = CFAbsoluteTimeGetCurrent();
   v7 = sub_10104516C();
-  if (sub_101046700(v7, v5, [(CLVO2MaxCloudKitManager *)self getSystemFieldsFromCKRecord:a3]))
+  if (sub_101046700(v7, v5, [(CLVO2MaxCloudKitManager *)self getSystemFieldsFromCKRecord:record]))
   {
     ++self->fDailyStats.outputFetchSuccessCount;
   }
@@ -1826,11 +1826,11 @@ LABEL_8:
   }
 }
 
-- (id)createCKRecordForInput:(id)a3
+- (id)createCKRecordForInput:(id)input
 {
   v23[0] = 0;
   v23[1] = 0;
-  [objc_msgSend([NSUUID alloc] initWithUUIDString:{objc_msgSend(a3, "recordName")), "getUUIDBytes:", v23}];
+  [objc_msgSend([NSUUID alloc] initWithUUIDString:{objc_msgSend(input, "recordName")), "getUUIDBytes:", v23}];
   v21 = 0;
   v22 = 0;
   v5 = sub_10104516C();
@@ -1845,7 +1845,7 @@ LABEL_8:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v19 = *&a3;
+      v19 = *&input;
       _os_log_impl(dword_100000000, v10, OS_LOG_TYPE_ERROR, "Failed to retrieve VO2MaxSessionAttributes for CKRecordID: %{public}@", buf, 0xCu);
     }
 
@@ -1891,7 +1891,7 @@ LABEL_8:
 
   else
   {
-    v8 = [[CKRecord alloc] initWithRecordType:@"VO2MaxInput" recordID:a3];
+    v8 = [[CKRecord alloc] initWithRecordType:@"VO2MaxInput" recordID:input];
   }
 
   v11 = objc_alloc_init(CLCKVO2MaxSessionInput);
@@ -1951,9 +1951,9 @@ LABEL_8:
   return v8;
 }
 
-- (id)createCKRecordForPrior:(id)a3
+- (id)createCKRecordForPrior:(id)prior
 {
-  [objc_msgSend(a3 "recordName")];
+  [objc_msgSend(prior "recordName")];
   v14[2] = 0;
   v15 = 0;
   if ((sub_1008FCEEC(self->fPriorDb.__ptr_) & 1) == 0)
@@ -1967,7 +1967,7 @@ LABEL_8:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v17 = *&a3;
+      v17 = *&prior;
       _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_ERROR, "Failed to retrieve prior for CKRecordID: %{public}@", buf, 0xCu);
     }
 
@@ -2013,7 +2013,7 @@ LABEL_8:
 
   else
   {
-    v6 = [[CKRecord alloc] initWithRecordType:@"VO2MaxPrior" recordID:a3];
+    v6 = [[CKRecord alloc] initWithRecordType:@"VO2MaxPrior" recordID:prior];
   }
 
   v14[0] = 0;
@@ -2071,11 +2071,11 @@ LABEL_8:
   return v6;
 }
 
-- (void)updateInputSystemFields:(id)a3 inputRecord:(id)a4
+- (void)updateInputSystemFields:(id)fields inputRecord:(id)record
 {
   v31[0] = 0;
   v31[1] = 0;
-  [objc_msgSend([NSUUID alloc] initWithUUIDString:{objc_msgSend(objc_msgSend(a4, "recordID"), "recordName")), "getUUIDBytes:", v31}];
+  [objc_msgSend([NSUUID alloc] initWithUUIDString:{objc_msgSend(objc_msgSend(record, "recordID"), "recordName")), "getUUIDBytes:", v31}];
   __p = 0;
   v21 = 0;
   v22 = 0;
@@ -2124,7 +2124,7 @@ LABEL_8:
           }
         }
 
-        *(&v28 + 1) = a3;
+        *(&v28 + 1) = fields;
         v13 = sub_10104516C();
         sub_101045DCC(v13, &v26);
         v7 += 5;
@@ -2146,18 +2146,18 @@ LABEL_8:
     v15 = qword_1025D4458;
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_ERROR))
     {
-      v16 = [a4 recordID];
+      recordID = [record recordID];
       *buf = 138543362;
-      v30 = v16;
+      v30 = recordID;
       _os_log_impl(dword_100000000, v15, OS_LOG_TYPE_ERROR, "Failed to retrieve VO2MaxSessionAttributes for CKRecord with ID: %{public}@", buf, 0xCu);
     }
 
     if (sub_10000A100(121, 0))
     {
       sub_10189C758(buf);
-      v17 = [a4 recordID];
+      recordID2 = [record recordID];
       LODWORD(v26) = 138543362;
-      *(&v26 + 4) = v17;
+      *(&v26 + 4) = recordID2;
       v18 = _os_log_send_and_compose_impl();
       sub_100152C7C("Generic", 1, 0, 0, "[CLVO2MaxCloudKitManager updateInputSystemFields:inputRecord:]", "%s\n", v18);
       if (v18 != buf)
@@ -2174,12 +2174,12 @@ LABEL_8:
   }
 }
 
-- (void)updatePriorSystemFields:(id)a3 priorRecord:(id)a4
+- (void)updatePriorSystemFields:(id)fields priorRecord:(id)record
 {
-  [objc_msgSend(objc_msgSend(a4 "recordID")];
+  [objc_msgSend(objc_msgSend(record "recordID")];
   v8 = v7;
   v12[1] = 0;
-  v13 = 0;
+  fieldsCopy = 0;
   if (qword_1025D4450 != -1)
   {
     sub_10189C184();
@@ -2200,7 +2200,7 @@ LABEL_8:
 
   if (sub_1008FCEEC(self->fPriorDb.__ptr_))
   {
-    v13 = a3;
+    fieldsCopy = fields;
     sub_1008FD7E0(self->fPriorDb.__ptr_, v12);
     ++self->fDailyStats.priorSaveSuccessCount;
   }
@@ -2215,9 +2215,9 @@ LABEL_8:
     v10 = qword_1025D4458;
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_ERROR))
     {
-      v11 = [a4 recordID];
+      recordID = [record recordID];
       *buf = 138543362;
-      v15 = *&v11;
+      v15 = *&recordID;
       _os_log_impl(dword_100000000, v10, OS_LOG_TYPE_ERROR, "Failed to retrieve prior for CKRecordID: %{public}@", buf, 0xCu);
     }
 
@@ -2228,14 +2228,14 @@ LABEL_8:
   }
 }
 
-- (void)handleFetchedInputRecord:(id)a3
+- (void)handleFetchedInputRecord:(id)record
 {
   if (self->fFetchChangesForInputZone)
   {
-    v5 = -[CLCKVO2MaxSessionInput initWithData:]([CLCKVO2MaxSessionInput alloc], "initWithData:", [objc_msgSend(a3 "encryptedValuesByKey")]);
+    v5 = -[CLCKVO2MaxSessionInput initWithData:]([CLCKVO2MaxSessionInput alloc], "initWithData:", [objc_msgSend(record "encryptedValuesByKey")]);
     Current = CFAbsoluteTimeGetCurrent();
     ptr = self->fInputStore.__ptr_;
-    [(CLVO2MaxCloudKitManager *)self getSystemFieldsFromCKRecord:a3];
+    [(CLVO2MaxCloudKitManager *)self getSystemFieldsFromCKRecord:record];
     if (sub_10102F8A8(ptr, v5))
     {
       ++self->fDailyStats.inputFetchSuccessCount;
@@ -2287,10 +2287,10 @@ LABEL_8:
   }
 }
 
-- (void)handleFetchedPriorRecord:(id)a3
+- (void)handleFetchedPriorRecord:(id)record
 {
-  v5 = -[CLCKVO2MaxPrior initWithData:]([CLCKVO2MaxPrior alloc], "initWithData:", [objc_msgSend(a3 "encryptedValuesByKey")]);
-  if (sub_1008FD468(self->fPriorDb.__ptr_, v5, [(CLVO2MaxCloudKitManager *)self getSystemFieldsFromCKRecord:a3]))
+  v5 = -[CLCKVO2MaxPrior initWithData:]([CLCKVO2MaxPrior alloc], "initWithData:", [objc_msgSend(record "encryptedValuesByKey")]);
+  if (sub_1008FD468(self->fPriorDb.__ptr_, v5, [(CLVO2MaxCloudKitManager *)self getSystemFieldsFromCKRecord:record]))
   {
     ++self->fDailyStats.priorFetchSuccessCount;
   }
@@ -2338,31 +2338,31 @@ LABEL_8:
   }
 }
 
-- (void)handleDeletedPriorRecordID:(id)a3
+- (void)handleDeletedPriorRecordID:(id)d
 {
-  [objc_msgSend(a3 "recordName")];
+  [objc_msgSend(d "recordName")];
   ptr = self->fPriorDb.__ptr_;
 
   sub_1008FDE2C(ptr);
 }
 
-- (void)handleServerRecordChanged:(id)a3
+- (void)handleServerRecordChanged:(id)changed
 {
-  if (a3)
+  if (changed)
   {
-    if ([objc_msgSend(a3 "recordType")])
+    if ([objc_msgSend(changed "recordType")])
     {
-      [(CLVO2MaxCloudKitManager *)self updateOutputSystemFields:[(CLVO2MaxCloudKitManager *)self getSystemFieldsFromCKRecord:a3] outputRecord:a3];
+      [(CLVO2MaxCloudKitManager *)self updateOutputSystemFields:[(CLVO2MaxCloudKitManager *)self getSystemFieldsFromCKRecord:changed] outputRecord:changed];
     }
 
-    else if ([objc_msgSend(a3 "recordType")])
+    else if ([objc_msgSend(changed "recordType")])
     {
-      [(CLVO2MaxCloudKitManager *)self updateInputSystemFields:[(CLVO2MaxCloudKitManager *)self getSystemFieldsFromCKRecord:a3] inputRecord:a3];
+      [(CLVO2MaxCloudKitManager *)self updateInputSystemFields:[(CLVO2MaxCloudKitManager *)self getSystemFieldsFromCKRecord:changed] inputRecord:changed];
     }
 
-    else if ([objc_msgSend(a3 "recordType")])
+    else if ([objc_msgSend(changed "recordType")])
     {
-      [(CLVO2MaxCloudKitManager *)self updatePriorSystemFields:[(CLVO2MaxCloudKitManager *)self getSystemFieldsFromCKRecord:a3] priorRecord:a3];
+      [(CLVO2MaxCloudKitManager *)self updatePriorSystemFields:[(CLVO2MaxCloudKitManager *)self getSystemFieldsFromCKRecord:changed] priorRecord:changed];
     }
 
     else
@@ -2376,7 +2376,7 @@ LABEL_8:
       if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v10 = [a3 recordType];
+        recordType = [changed recordType];
         _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_ERROR, "CloudKit provided server record of unexpected type: %{public}@", buf, 0xCu);
       }
 
@@ -2387,7 +2387,7 @@ LABEL_8:
     }
 
     syncEngine = self->_syncEngine;
-    v8 = [a3 recordID];
+    recordID = [changed recordID];
     [(CKSyncEngine *)syncEngine addRecordIDsToSave:[NSArray recordIDsToDelete:"arrayWithObjects:count:" arrayWithObjects:1 count:?], 0];
   }
 
@@ -2412,21 +2412,21 @@ LABEL_8:
   }
 }
 
-- (void)handleUnknownItem:(id)a3
+- (void)handleUnknownItem:(id)item
 {
-  if ([objc_msgSend(a3 "recordType")])
+  if ([objc_msgSend(item "recordType")])
   {
-    [(CLVO2MaxCloudKitManager *)self updateOutputSystemFields:0 outputRecord:a3];
+    [(CLVO2MaxCloudKitManager *)self updateOutputSystemFields:0 outputRecord:item];
   }
 
-  else if ([objc_msgSend(a3 "recordType")])
+  else if ([objc_msgSend(item "recordType")])
   {
-    [(CLVO2MaxCloudKitManager *)self updateInputSystemFields:0 inputRecord:a3];
+    [(CLVO2MaxCloudKitManager *)self updateInputSystemFields:0 inputRecord:item];
   }
 
-  else if ([objc_msgSend(a3 "recordType")])
+  else if ([objc_msgSend(item "recordType")])
   {
-    [(CLVO2MaxCloudKitManager *)self updatePriorSystemFields:0 priorRecord:a3];
+    [(CLVO2MaxCloudKitManager *)self updatePriorSystemFields:0 priorRecord:item];
   }
 
   else
@@ -2440,7 +2440,7 @@ LABEL_8:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v9 = [a3 recordType];
+      recordType = [item recordType];
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_ERROR, "CloudKit provided record of unexpected type: %{public}@", buf, 0xCu);
     }
 
@@ -2451,38 +2451,38 @@ LABEL_8:
   }
 
   syncEngine = self->_syncEngine;
-  v7 = [a3 recordID];
+  recordID = [item recordID];
   [(CKSyncEngine *)syncEngine addRecordIDsToSave:[NSArray recordIDsToDelete:"arrayWithObjects:count:" arrayWithObjects:1 count:?], 0];
 }
 
-- (void)handleZoneNotFound:(id)a3
+- (void)handleZoneNotFound:(id)found
 {
-  if ([objc_msgSend(objc_msgSend(objc_msgSend(a3 "recordID")])
+  if ([objc_msgSend(objc_msgSend(objc_msgSend(found "recordID")])
   {
     [(CLVO2MaxCloudKitManager *)self createVO2MaxOutputZone];
     syncEngine = self->_syncEngine;
-    v12 = [a3 recordID];
-    v6 = &v12;
+    recordID = [found recordID];
+    v6 = &recordID;
 LABEL_7:
     [(CKSyncEngine *)syncEngine addRecordIDsToSave:[NSArray recordIDsToDelete:"arrayWithObjects:count:" arrayWithObjects:v6 count:1], 0];
     return;
   }
 
-  if ([objc_msgSend(objc_msgSend(objc_msgSend(a3 "recordID")])
+  if ([objc_msgSend(objc_msgSend(objc_msgSend(found "recordID")])
   {
     [(CLVO2MaxCloudKitManager *)self createVO2MaxInputZone];
     syncEngine = self->_syncEngine;
-    v11 = [a3 recordID];
-    v6 = &v11;
+    recordID2 = [found recordID];
+    v6 = &recordID2;
     goto LABEL_7;
   }
 
-  if ([objc_msgSend(objc_msgSend(objc_msgSend(a3 "recordID")])
+  if ([objc_msgSend(objc_msgSend(objc_msgSend(found "recordID")])
   {
     [(CLVO2MaxCloudKitManager *)self createVO2MaxPriorZone];
     syncEngine = self->_syncEngine;
-    v10 = [a3 recordID];
-    v6 = &v10;
+    recordID3 = [found recordID];
+    v6 = &recordID3;
     goto LABEL_7;
   }
 
@@ -2495,7 +2495,7 @@ LABEL_7:
   if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_ERROR))
   {
     v8 = 138543362;
-    v9 = [objc_msgSend(objc_msgSend(a3 "recordID")];
+    v9 = [objc_msgSend(objc_msgSend(found "recordID")];
     _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_ERROR, "Will not attempt to save unexpected zone: %{public}@", &v8, 0xCu);
   }
 
@@ -2505,42 +2505,42 @@ LABEL_7:
   }
 }
 
-- (void)handleZoneDeleted:(id)a3
+- (void)handleZoneDeleted:(id)deleted
 {
-  if ([objc_msgSend(a3 "zoneName")])
+  if ([objc_msgSend(deleted "zoneName")])
   {
     [(CLVO2MaxCloudKitManager *)self createVO2MaxOutputZone];
-    v5 = self;
+    selfCopy3 = self;
     v6 = 1;
     v7 = 0;
 LABEL_5:
     v8 = 0;
 LABEL_6:
 
-    [(CLVO2MaxCloudKitManager *)v5 bulkUploadRecordIDsShouldReupload:1 shouldUploadToOutputZone:v6 shouldUploadToInputZone:v7 shouldUploadToPriorZone:v8 shouldThrottle:0];
+    [(CLVO2MaxCloudKitManager *)selfCopy3 bulkUploadRecordIDsShouldReupload:1 shouldUploadToOutputZone:v6 shouldUploadToInputZone:v7 shouldUploadToPriorZone:v8 shouldThrottle:0];
     return;
   }
 
-  if ([objc_msgSend(a3 "zoneName")])
+  if ([objc_msgSend(deleted "zoneName")])
   {
     [(CLVO2MaxCloudKitManager *)self createVO2MaxInputZone];
-    v5 = self;
+    selfCopy3 = self;
     v6 = 0;
     v7 = 1;
     goto LABEL_5;
   }
 
-  if ([objc_msgSend(a3 "zoneName")])
+  if ([objc_msgSend(deleted "zoneName")])
   {
     [(CLVO2MaxCloudKitManager *)self createVO2MaxPriorZone];
-    v5 = self;
+    selfCopy3 = self;
     v6 = 0;
     v7 = 0;
     v8 = 1;
     goto LABEL_6;
   }
 
-  if ([objc_msgSend(a3 "zoneName")])
+  if ([objc_msgSend(deleted "zoneName")])
   {
     if (qword_1025D4450 != -1)
     {
@@ -2551,7 +2551,7 @@ LABEL_6:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = [a3 zoneName];
+      zoneName = [deleted zoneName];
       _os_log_impl(dword_100000000, v9, OS_LOG_TYPE_INFO, "[CKManager] Delete reported for zone (%@)", &v11, 0xCu);
     }
 
@@ -2572,7 +2572,7 @@ LABEL_6:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_ERROR))
     {
       v11 = 138543362;
-      v12 = [a3 zoneName];
+      zoneName = [deleted zoneName];
       _os_log_impl(dword_100000000, v10, OS_LOG_TYPE_ERROR, "Delete reported for unexpected zone: %{public}@", &v11, 0xCu);
     }
 
@@ -2583,9 +2583,9 @@ LABEL_6:
   }
 }
 
-- (void)handleZonePurge:(id)a3
+- (void)handleZonePurge:(id)purge
 {
-  if ([objc_msgSend(a3 "zoneName")])
+  if ([objc_msgSend(purge "zoneName")])
   {
     v5 = sub_10104516C();
     sub_10104544C(v5);
@@ -2593,14 +2593,14 @@ LABEL_6:
     [(CLVO2MaxCloudKitManager *)self createVO2MaxOutputZone];
   }
 
-  else if ([objc_msgSend(a3 "zoneName")])
+  else if ([objc_msgSend(purge "zoneName")])
   {
     sub_10102F69C(self->fInputStore.__ptr_);
 
     [(CLVO2MaxCloudKitManager *)self createVO2MaxInputZone];
   }
 
-  else if ([objc_msgSend(a3 "zoneName")])
+  else if ([objc_msgSend(purge "zoneName")])
   {
     sub_10102F69C(self->fInputStore.__ptr_);
 
@@ -2618,7 +2618,7 @@ LABEL_6:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_ERROR))
     {
       v7 = 138543362;
-      v8 = [a3 zoneName];
+      zoneName = [purge zoneName];
       _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_ERROR, "Will not attempt to purge unexpected zone: %{public}@", &v7, 0xCu);
     }
 
@@ -2629,16 +2629,16 @@ LABEL_6:
   }
 }
 
-- (void)stopSyncing:(BOOL)a3
+- (void)stopSyncing:(BOOL)syncing
 {
-  v3 = a3;
+  syncingCopy = syncing;
   self->_syncEngine = 0;
   self->fDailyStats.syncEngineEnabled = 0;
   ptr = self->fDataProtectionClient.__ptr_;
   if (ptr)
   {
     [*(ptr + 2) unregister:*(ptr + 1) forNotification:0];
-    if (!v3)
+    if (!syncingCopy)
     {
       return;
     }
@@ -2661,13 +2661,13 @@ LABEL_6:
     if (sub_10000A100(121, 0))
     {
       sub_1018A0BF4();
-      if (!v3)
+      if (!syncingCopy)
       {
         return;
       }
     }
 
-    else if (!v3)
+    else if (!syncingCopy)
     {
       return;
     }
@@ -2690,7 +2690,7 @@ LABEL_6:
   *&self->fDailyStats.priorSaveFailureCount = 0;
 }
 
-- (void)receiveVO2MaxCloudKitDailyStatsFromWatch:(id)a3
+- (void)receiveVO2MaxCloudKitDailyStatsFromWatch:(id)watch
 {
   if (qword_1025D4450 != -1)
   {
@@ -2720,7 +2720,7 @@ LABEL_6:
     *&buf[52] = v6;
     *&buf[68] = v6;
     *&buf[88] = 0xBFF0000000000000;
-    [a3 getBytes:buf length:96];
+    [watch getBytes:buf length:96];
     self->fDailyStats.secondsOfDataCollection = CFAbsoluteTimeGetCurrent() - self->fDailyStatsStartTime;
     if (objc_opt_class() && +[PDRRegistry sharedInstance])
     {
@@ -2737,7 +2737,7 @@ LABEL_32:
         v16 = *buf;
         v13 = sub_1004DD988;
         v14 = &unk_102459C10;
-        v15 = self;
+        selfCopy = self;
         LODWORD(v22) = v7;
         v17 = *&buf[16];
         AnalyticsSendEventLazy();
@@ -2807,7 +2807,7 @@ LABEL_33:
   [(CLVO2MaxCloudKitManager *)self resetDailyStats:v11];
 }
 
-- (void)syncEngine:(id)a3 didSaveRecordZone:(id)a4
+- (void)syncEngine:(id)engine didSaveRecordZone:(id)zone
 {
   if (qword_1025D4450 != -1)
   {
@@ -2818,7 +2818,7 @@ LABEL_33:
   if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = a4;
+    zoneCopy = zone;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "Successfully saved CKRecordZone %{public}@", &v6, 0xCu);
   }
 
@@ -2828,9 +2828,9 @@ LABEL_33:
   }
 }
 
-- (void)syncEngine:(id)a3 didDeleteRecordZoneWithID:(id)a4
+- (void)syncEngine:(id)engine didDeleteRecordZoneWithID:(id)d
 {
-  if (self->_syncEngine == a3)
+  if (self->_syncEngine == engine)
   {
     if (qword_1025D4450 != -1)
     {
@@ -2841,7 +2841,7 @@ LABEL_33:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = a4;
+      dCopy = d;
       _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_DEFAULT, "Sync engine reports successful deletion of CKRecordZone with zoneID: %{public}@. Will recreate zone and reupload local data.", &v7, 0xCu);
     }
 
@@ -2850,11 +2850,11 @@ LABEL_33:
       sub_1018A1158();
     }
 
-    [(CLVO2MaxCloudKitManager *)self handleZoneDeleted:a4];
+    [(CLVO2MaxCloudKitManager *)self handleZoneDeleted:d];
   }
 }
 
-- (void)syncEngine:(id)a3 failedToSaveRecordZone:(id)a4 error:(id)a5
+- (void)syncEngine:(id)engine failedToSaveRecordZone:(id)zone error:(id)error
 {
   if (qword_1025D4450 != -1)
   {
@@ -2865,9 +2865,9 @@ LABEL_33:
   if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_ERROR))
   {
     v9 = 138543618;
-    v10 = a4;
+    zoneCopy = zone;
     v11 = 2114;
-    v12 = a5;
+    errorCopy = error;
     _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_ERROR, "Failed to save CKRecordZone: %{public}@, error = %{public}@", &v9, 0x16u);
   }
 
@@ -2876,16 +2876,16 @@ LABEL_33:
     sub_1018A1248();
   }
 
-  if ([objc_msgSend(a5 "domain")])
+  if ([objc_msgSend(error "domain")])
   {
-    if ([a5 code] == 112)
+    if ([error code] == 112)
     {
-      -[CLVO2MaxCloudKitManager deleteZone:](self, "deleteZone:", [a4 zoneID]);
+      -[CLVO2MaxCloudKitManager deleteZone:](self, "deleteZone:", [zone zoneID]);
     }
   }
 }
 
-- (void)syncEngine:(id)a3 failedToDeleteRecordZoneWithID:(id)a4 error:(id)a5
+- (void)syncEngine:(id)engine failedToDeleteRecordZoneWithID:(id)d error:(id)error
 {
   if (qword_1025D4450 != -1)
   {
@@ -2896,9 +2896,9 @@ LABEL_33:
   if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_FAULT))
   {
     v8 = 138543618;
-    v9 = a5;
+    errorCopy = error;
     v10 = 2114;
-    v11 = a4;
+    dCopy = d;
     _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_FAULT, "Sync engine reports failure to delete CKRecordZone: %{public}@, zoneID = %{public}@. This is unexpected, as we should not be deleting any zones", &v8, 0x16u);
   }
 
@@ -2908,7 +2908,7 @@ LABEL_33:
   }
 }
 
-- (void)syncEngine:(id)a3 zoneWithIDChanged:(id)a4
+- (void)syncEngine:(id)engine zoneWithIDChanged:(id)changed
 {
   if (qword_1025D4450 != -1)
   {
@@ -2919,7 +2919,7 @@ LABEL_33:
   if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = a4;
+    changedCopy = changed;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "Sync engine reports that CKRecordZone with identifier %{public}@ changed", &v6, 0xCu);
   }
 
@@ -2929,9 +2929,9 @@ LABEL_33:
   }
 }
 
-- (void)syncEngine:(id)a3 zoneWithIDWasDeleted:(id)a4
+- (void)syncEngine:(id)engine zoneWithIDWasDeleted:(id)deleted
 {
-  if (self->_syncEngine == a3)
+  if (self->_syncEngine == engine)
   {
     if (qword_1025D4450 != -1)
     {
@@ -2942,7 +2942,7 @@ LABEL_33:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = a4;
+      deletedCopy = deleted;
       _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_DEFAULT, "Sync engine reports that CKRecordZone with identifier %{public}@ was deleted", &v7, 0xCu);
     }
 
@@ -2951,13 +2951,13 @@ LABEL_33:
       sub_1018A1530();
     }
 
-    [(CLVO2MaxCloudKitManager *)self handleZoneDeleted:a4];
+    [(CLVO2MaxCloudKitManager *)self handleZoneDeleted:deleted];
   }
 }
 
-- (void)syncEngine:(id)a3 zoneWithIDWasPurged:(id)a4
+- (void)syncEngine:(id)engine zoneWithIDWasPurged:(id)purged
 {
-  if (self->_syncEngine == a3)
+  if (self->_syncEngine == engine)
   {
     if (qword_1025D4450 != -1)
     {
@@ -2968,7 +2968,7 @@ LABEL_33:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = a4;
+      purgedCopy = purged;
       _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_DEFAULT, "Sync engine reports that CKRecordZone with identifier %{public}@ was purged", &v7, 0xCu);
     }
 
@@ -2977,13 +2977,13 @@ LABEL_33:
       sub_1018A1620();
     }
 
-    [(CLVO2MaxCloudKitManager *)self handleZonePurge:a4];
+    [(CLVO2MaxCloudKitManager *)self handleZonePurge:purged];
   }
 }
 
-- (id)syncEngine:(id)a3 recordToSaveForRecordID:(id)a4
+- (id)syncEngine:(id)engine recordToSaveForRecordID:(id)d
 {
-  if (self->_syncEngine != a3)
+  if (self->_syncEngine != engine)
   {
     return 0;
   }
@@ -2997,7 +2997,7 @@ LABEL_33:
   if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543362;
-    v15 = a4;
+    dCopy = d;
     _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_DEFAULT, "Sync engine is asking for CKRecord with ID %{public}@", &v14, 0xCu);
   }
 
@@ -3006,9 +3006,9 @@ LABEL_33:
     sub_1018A1710();
   }
 
-  if ([objc_msgSend(objc_msgSend(a4 "zoneID")])
+  if ([objc_msgSend(objc_msgSend(d "zoneID")])
   {
-    v4 = [(CLVO2MaxCloudKitManager *)self createCKRecordForOutput:a4];
+    v4 = [(CLVO2MaxCloudKitManager *)self createCKRecordForOutput:d];
     if (qword_1025D4450 != -1)
     {
       sub_10015DAE4();
@@ -3018,7 +3018,7 @@ LABEL_33:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v4;
+      dCopy = v4;
       _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_DEFAULT, "Returning output CKRecord: %@", &v14, 0xCu);
     }
 
@@ -3028,9 +3028,9 @@ LABEL_33:
     }
   }
 
-  else if ([objc_msgSend(objc_msgSend(a4 "zoneID")])
+  else if ([objc_msgSend(objc_msgSend(d "zoneID")])
   {
-    v4 = [(CLVO2MaxCloudKitManager *)self createCKRecordForInput:a4];
+    v4 = [(CLVO2MaxCloudKitManager *)self createCKRecordForInput:d];
     if (qword_1025D4450 != -1)
     {
       sub_10015DAE4();
@@ -3040,7 +3040,7 @@ LABEL_33:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v4;
+      dCopy = v4;
       _os_log_impl(dword_100000000, v9, OS_LOG_TYPE_DEFAULT, "Returning input CKRecord: %@", &v14, 0xCu);
     }
 
@@ -3052,7 +3052,7 @@ LABEL_33:
 
   else
   {
-    if (![objc_msgSend(objc_msgSend(a4 "zoneID")])
+    if (![objc_msgSend(objc_msgSend(d "zoneID")])
     {
       if (qword_1025D4450 != -1)
       {
@@ -3062,9 +3062,9 @@ LABEL_33:
       v12 = qword_1025D4458;
       if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_ERROR))
       {
-        v13 = [objc_msgSend(a4 "zoneID")];
+        v13 = [objc_msgSend(d "zoneID")];
         v14 = 138543362;
-        v15 = v13;
+        dCopy = v13;
         _os_log_impl(dword_100000000, v12, OS_LOG_TYPE_ERROR, "RecordID associated with unexpected zone: %{public}@", &v14, 0xCu);
       }
 
@@ -3076,7 +3076,7 @@ LABEL_33:
       return 0;
     }
 
-    v4 = [(CLVO2MaxCloudKitManager *)self createCKRecordForPrior:a4];
+    v4 = [(CLVO2MaxCloudKitManager *)self createCKRecordForPrior:d];
     if (qword_1025D4450 != -1)
     {
       sub_10015DAE4();
@@ -3086,7 +3086,7 @@ LABEL_33:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v4;
+      dCopy = v4;
       _os_log_impl(dword_100000000, v10, OS_LOG_TYPE_DEFAULT, "Returning prior CKRecord: %@", &v14, 0xCu);
     }
 
@@ -3099,9 +3099,9 @@ LABEL_33:
   return v4;
 }
 
-- (void)syncEngine:(id)a3 didSaveRecord:(id)a4
+- (void)syncEngine:(id)engine didSaveRecord:(id)record
 {
-  if (self->_syncEngine == a3)
+  if (self->_syncEngine == engine)
   {
     if (qword_1025D4450 != -1)
     {
@@ -3112,9 +3112,9 @@ LABEL_33:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543619;
-      v10 = [a4 recordID];
+      recordID = [record recordID];
       v11 = 2113;
-      v12 = a4;
+      recordCopy = record;
       _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_DEFAULT, "Sync engine saved CKRecord with CKRecordID %{public}@, record = %{private}@", &v9, 0x16u);
     }
 
@@ -3123,19 +3123,19 @@ LABEL_33:
       sub_1018A1BCC();
     }
 
-    if ([objc_msgSend(a4 "recordType")])
+    if ([objc_msgSend(record "recordType")])
     {
-      [(CLVO2MaxCloudKitManager *)self updateOutputSystemFields:[(CLVO2MaxCloudKitManager *)self getSystemFieldsFromCKRecord:a4] outputRecord:a4];
+      [(CLVO2MaxCloudKitManager *)self updateOutputSystemFields:[(CLVO2MaxCloudKitManager *)self getSystemFieldsFromCKRecord:record] outputRecord:record];
     }
 
-    else if ([objc_msgSend(a4 "recordType")])
+    else if ([objc_msgSend(record "recordType")])
     {
-      [(CLVO2MaxCloudKitManager *)self updateInputSystemFields:[(CLVO2MaxCloudKitManager *)self getSystemFieldsFromCKRecord:a4] inputRecord:a4];
+      [(CLVO2MaxCloudKitManager *)self updateInputSystemFields:[(CLVO2MaxCloudKitManager *)self getSystemFieldsFromCKRecord:record] inputRecord:record];
     }
 
-    else if ([objc_msgSend(a4 "recordType")])
+    else if ([objc_msgSend(record "recordType")])
     {
-      [(CLVO2MaxCloudKitManager *)self updatePriorSystemFields:[(CLVO2MaxCloudKitManager *)self getSystemFieldsFromCKRecord:a4] priorRecord:a4];
+      [(CLVO2MaxCloudKitManager *)self updatePriorSystemFields:[(CLVO2MaxCloudKitManager *)self getSystemFieldsFromCKRecord:record] priorRecord:record];
     }
 
     else
@@ -3148,9 +3148,9 @@ LABEL_33:
       v7 = qword_1025D4458;
       if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_ERROR))
       {
-        v8 = [a4 recordType];
+        recordType = [record recordType];
         v9 = 138543362;
-        v10 = v8;
+        recordID = recordType;
         _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_ERROR, "CloudKit reporting saved record of unexpected type: %{public}@", &v9, 0xCu);
       }
 
@@ -3162,9 +3162,9 @@ LABEL_33:
   }
 }
 
-- (void)syncEngine:(id)a3 failedToSaveRecord:(id)a4 error:(id)a5
+- (void)syncEngine:(id)engine failedToSaveRecord:(id)record error:(id)error
 {
-  if (self->_syncEngine == a3)
+  if (self->_syncEngine == engine)
   {
     if (qword_1025D4450 != -1)
     {
@@ -3175,29 +3175,29 @@ LABEL_33:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_ERROR))
     {
       v10 = 138544131;
-      v11 = [a5 domain];
+      domain = [error domain];
       v12 = 2050;
-      v13 = [a5 code];
+      code = [error code];
       v14 = 2114;
-      v15 = a5;
+      errorCopy = error;
       v16 = 2113;
-      v17 = a4;
+      recordCopy = record;
       _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_ERROR, "Sync engine failed to save CKRecord: error domain = %{public}@, code = %{public}ld, error = %{public}@, record = %{private}@", &v10, 0x2Au);
     }
 
     if (sub_10000A100(121, 0))
     {
-      sub_1018A1DC8(a5, a4);
+      sub_1018A1DC8(error, record);
     }
 
-    if ([objc_msgSend(a4 "recordType")])
+    if ([objc_msgSend(record "recordType")])
     {
       v9 = 16;
     }
 
     else
     {
-      if (![objc_msgSend(a4 "recordType")])
+      if (![objc_msgSend(record "recordType")])
       {
         goto LABEL_13;
       }
@@ -3209,17 +3209,17 @@ LABEL_33:
 LABEL_13:
     if (CKErrorIsCode())
     {
-      -[CLVO2MaxCloudKitManager handleServerRecordChanged:](self, "handleServerRecordChanged:", [objc_msgSend(a5 "userInfo")]);
+      -[CLVO2MaxCloudKitManager handleServerRecordChanged:](self, "handleServerRecordChanged:", [objc_msgSend(error "userInfo")]);
     }
 
     else if (CKErrorIsCode())
     {
-      [(CLVO2MaxCloudKitManager *)self handleUnknownItem:a4];
+      [(CLVO2MaxCloudKitManager *)self handleUnknownItem:record];
     }
 
     else if (CKErrorIsCode())
     {
-      [(CLVO2MaxCloudKitManager *)self handleZoneNotFound:a4];
+      [(CLVO2MaxCloudKitManager *)self handleZoneNotFound:record];
     }
 
     else if (CKErrorIsCode())
@@ -3229,12 +3229,12 @@ LABEL_13:
 
     else if (CKErrorIsCode())
     {
-      -[CLVO2MaxCloudKitManager deleteZone:](self, "deleteZone:", [objc_msgSend(a4 "recordID")]);
+      -[CLVO2MaxCloudKitManager deleteZone:](self, "deleteZone:", [objc_msgSend(record "recordID")]);
     }
   }
 }
 
-- (void)syncEngine:(id)a3 didDeleteRecordWithID:(id)a4
+- (void)syncEngine:(id)engine didDeleteRecordWithID:(id)d
 {
   if (qword_1025D4450 != -1)
   {
@@ -3245,7 +3245,7 @@ LABEL_13:
   if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = a4;
+    dCopy = d;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "Sync engine deleted CKRecord with CKRecordID %{public}@", &v6, 0xCu);
   }
 
@@ -3255,7 +3255,7 @@ LABEL_13:
   }
 }
 
-- (void)syncEngine:(id)a3 failedToDeleteRecordWithID:(id)a4 error:(id)a5
+- (void)syncEngine:(id)engine failedToDeleteRecordWithID:(id)d error:(id)error
 {
   if (qword_1025D4450 != -1)
   {
@@ -3266,23 +3266,23 @@ LABEL_13:
   if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_ERROR))
   {
     v8 = 138544130;
-    v9 = [a5 domain];
+    domain = [error domain];
     v10 = 2050;
-    v11 = [a5 code];
+    code = [error code];
     v12 = 2114;
-    v13 = a5;
+    errorCopy = error;
     v14 = 2114;
-    v15 = a4;
+    dCopy = d;
     _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_ERROR, "Sync engine failed to delete CKRecord: error domain = %{public}@, code = %{public}ld, error = %{public}@, recordID = %{public}@", &v8, 0x2Au);
   }
 
   if (sub_10000A100(121, 0))
   {
-    sub_1018A1FD8(a5, a4);
+    sub_1018A1FD8(error, d);
   }
 }
 
-- (BOOL)syncEngine:(id)a3 shouldFetchChangesForZoneID:(id)a4
+- (BOOL)syncEngine:(id)engine shouldFetchChangesForZoneID:(id)d
 {
   if (qword_1025D4450 != -1)
   {
@@ -3293,7 +3293,7 @@ LABEL_13:
   if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEBUG))
   {
     v14 = 138543362;
-    v15[0] = [a4 zoneName];
+    v15[0] = [d zoneName];
     _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_DEBUG, "Sync engine asking if it should fetch changes for %{public}@", &v14, 0xCu);
   }
 
@@ -3302,7 +3302,7 @@ LABEL_13:
     sub_1018A20F4();
   }
 
-  if (self->_syncEngine != a3)
+  if (self->_syncEngine != engine)
   {
     goto LABEL_15;
   }
@@ -3321,7 +3321,7 @@ LABEL_13:
       v14 = 67240450;
       LODWORD(v15[0]) = fCloudKitDeletionState;
       WORD2(v15[0]) = 2114;
-      *(v15 + 6) = a4;
+      *(v15 + 6) = d;
       _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_INFO, "[CKManager] CloudKit deletion was requested (state=%{public}d). Not fetching changes for zone: %{public}@", &v14, 0x12u);
     }
 
@@ -3335,19 +3335,19 @@ LABEL_15:
     return fFetchChangesForInputZone & 1;
   }
 
-  if ([objc_msgSend(a4 "zoneName")])
+  if ([objc_msgSend(d "zoneName")])
   {
     fFetchChangesForInputZone = 1;
   }
 
-  else if ([objc_msgSend(a4 "zoneName")])
+  else if ([objc_msgSend(d "zoneName")])
   {
     fFetchChangesForInputZone = self->fFetchChangesForInputZone;
   }
 
   else
   {
-    fFetchChangesForInputZone = [objc_msgSend(a4 "zoneName")];
+    fFetchChangesForInputZone = [objc_msgSend(d "zoneName")];
   }
 
   if (qword_1025D4450 != -1)
@@ -3358,25 +3358,25 @@ LABEL_15:
   v12 = qword_1025D4458;
   if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [a4 zoneName];
+    zoneName = [d zoneName];
     v14 = 67240450;
     LODWORD(v15[0]) = fFetchChangesForInputZone & 1;
     WORD2(v15[0]) = 2114;
-    *(v15 + 6) = v13;
+    *(v15 + 6) = zoneName;
     _os_log_impl(dword_100000000, v12, OS_LOG_TYPE_DEFAULT, "Answering sync engine shouldFetchChangesForZone = %{public}d for zone: %{public}@", &v14, 0x12u);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_1018A22FC(fFetchChangesForInputZone & 1, a4);
+    sub_1018A22FC(fFetchChangesForInputZone & 1, d);
   }
 
   return fFetchChangesForInputZone & 1;
 }
 
-- (void)syncEngine:(id)a3 didFetchRecord:(id)a4
+- (void)syncEngine:(id)engine didFetchRecord:(id)record
 {
-  if (self->_syncEngine == a3)
+  if (self->_syncEngine == engine)
   {
     v6 = objc_autoreleasePoolPush();
     if (qword_1025D4450 != -1)
@@ -3388,9 +3388,9 @@ LABEL_15:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543619;
-      v11 = [a4 recordID];
+      recordID = [record recordID];
       v12 = 2113;
-      v13 = a4;
+      recordCopy = record;
       _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_DEFAULT, "Sync engine fetched CKRecord with CKRecordID %{public}@, record = %{private}@", &v10, 0x16u);
     }
 
@@ -3399,19 +3399,19 @@ LABEL_15:
       sub_1018A2424();
     }
 
-    if ([objc_msgSend(a4 "recordType")])
+    if ([objc_msgSend(record "recordType")])
     {
-      [(CLVO2MaxCloudKitManager *)self handleFetchedOutputRecord:a4];
+      [(CLVO2MaxCloudKitManager *)self handleFetchedOutputRecord:record];
     }
 
-    else if ([objc_msgSend(a4 "recordType")])
+    else if ([objc_msgSend(record "recordType")])
     {
-      [(CLVO2MaxCloudKitManager *)self handleFetchedInputRecord:a4];
+      [(CLVO2MaxCloudKitManager *)self handleFetchedInputRecord:record];
     }
 
-    else if ([objc_msgSend(a4 "recordType")])
+    else if ([objc_msgSend(record "recordType")])
     {
-      [(CLVO2MaxCloudKitManager *)self handleFetchedPriorRecord:a4];
+      [(CLVO2MaxCloudKitManager *)self handleFetchedPriorRecord:record];
     }
 
     else
@@ -3424,9 +3424,9 @@ LABEL_15:
       v8 = qword_1025D4458;
       if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_ERROR))
       {
-        v9 = [a4 recordType];
+        recordType = [record recordType];
         v10 = 138543362;
-        v11 = v9;
+        recordID = recordType;
         _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_ERROR, "Fetched record of unexpected type: %{public}@", &v10, 0xCu);
       }
 
@@ -3440,12 +3440,12 @@ LABEL_15:
   }
 }
 
-- (void)syncEngine:(id)a3 recordWithIDWasDeleted:(id)a4 recordType:(id)a5
+- (void)syncEngine:(id)engine recordWithIDWasDeleted:(id)deleted recordType:(id)type
 {
-  if (self->_syncEngine == a3)
+  if (self->_syncEngine == engine)
   {
     v8 = objc_autoreleasePoolPush();
-    if ([a5 isEqualToString:@"VO2MaxPrior"])
+    if ([type isEqualToString:@"VO2MaxPrior"])
     {
       if (qword_1025D4450 != -1)
       {
@@ -3456,9 +3456,9 @@ LABEL_15:
       if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138543618;
-        v12 = a4;
+        deletedCopy2 = deleted;
         v13 = 2114;
-        v14 = a5;
+        typeCopy2 = type;
         _os_log_impl(dword_100000000, v9, OS_LOG_TYPE_DEFAULT, "Sync engine deleted CKRecord with CKRecordID %{public}@ of type %{public}@", &v11, 0x16u);
       }
 
@@ -3467,7 +3467,7 @@ LABEL_15:
         sub_1018A271C();
       }
 
-      [(CLVO2MaxCloudKitManager *)self handleDeletedPriorRecordID:a4];
+      [(CLVO2MaxCloudKitManager *)self handleDeletedPriorRecordID:deleted];
     }
 
     else
@@ -3481,9 +3481,9 @@ LABEL_15:
       if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_ERROR))
       {
         v11 = 138543618;
-        v12 = a4;
+        deletedCopy2 = deleted;
         v13 = 2114;
-        v14 = a5;
+        typeCopy2 = type;
         _os_log_impl(dword_100000000, v10, OS_LOG_TYPE_ERROR, "Sync engine unexpectedly fetched deletion of CKRecord with CKRecordID %{public}@ of type %{public}@", &v11, 0x16u);
       }
 
@@ -3497,9 +3497,9 @@ LABEL_15:
   }
 }
 
-- (void)syncEngine:(id)a3 didUpdateMetadata:(id)a4
+- (void)syncEngine:(id)engine didUpdateMetadata:(id)metadata
 {
-  if (self->_syncEngine == a3)
+  if (self->_syncEngine == engine)
   {
     if (qword_1025D4450 != -1)
     {
@@ -3510,7 +3510,7 @@ LABEL_15:
     if (os_log_type_enabled(qword_1025D4458, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(v8) = 134349056;
-      *(&v8 + 4) = [a4 length];
+      *(&v8 + 4) = [metadata length];
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "Received updated metadata from sync engine, length = %{public}lu", &v8, 0xCu);
     }
 
@@ -3523,7 +3523,7 @@ LABEL_15:
     *&v8 = 0;
     *(&v8 + 1) = Current;
     v9 = Current;
-    v10 = a4;
+    metadataCopy = metadata;
     v7 = sub_10104516C();
     sub_1010460A8(v7, &v8);
   }

@@ -1,49 +1,49 @@
 @interface HKClinicalRecord
-+ (HKClinicalRecord)clinicalRecordWithType:(id)a3 startDate:(id)a4 endDate:(id)a5 device:(id)a6 metadata:(id)a7 displayName:(id)a8 FHIRResource:(id)a9;
-+ (id)_newClinicalRecordWithType:(id)a3 startDate:(id)a4 endDate:(id)a5 device:(id)a6 metadata:(id)a7 displayName:(id)a8 FHIRResource:(id)a9 config:(id)a10;
-- (BOOL)isEquivalent:(id)a3;
++ (HKClinicalRecord)clinicalRecordWithType:(id)type startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata displayName:(id)name FHIRResource:(id)resource;
++ (id)_newClinicalRecordWithType:(id)type startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata displayName:(id)name FHIRResource:(id)resource config:(id)self0;
+- (BOOL)isEquivalent:(id)equivalent;
 - (HKClinicalRecord)init;
-- (HKClinicalRecord)initWithCoder:(id)a3;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
+- (HKClinicalRecord)initWithCoder:(id)coder;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
 - (id)description;
-- (void)_setDisplayName:(id)a3;
-- (void)_setFHIRResource:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setDisplayName:(id)name;
+- (void)_setFHIRResource:(id)resource;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalRecord
 
-+ (HKClinicalRecord)clinicalRecordWithType:(id)a3 startDate:(id)a4 endDate:(id)a5 device:(id)a6 metadata:(id)a7 displayName:(id)a8 FHIRResource:(id)a9
++ (HKClinicalRecord)clinicalRecordWithType:(id)type startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata displayName:(id)name FHIRResource:(id)resource
 {
-  v9 = [a1 _newClinicalRecordWithType:a3 startDate:a4 endDate:a5 device:a6 metadata:a7 displayName:a8 FHIRResource:a9 config:0];
+  v9 = [self _newClinicalRecordWithType:type startDate:date endDate:endDate device:device metadata:metadata displayName:name FHIRResource:resource config:0];
 
   return v9;
 }
 
-+ (id)_newClinicalRecordWithType:(id)a3 startDate:(id)a4 endDate:(id)a5 device:(id)a6 metadata:(id)a7 displayName:(id)a8 FHIRResource:(id)a9 config:(id)a10
++ (id)_newClinicalRecordWithType:(id)type startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata displayName:(id)name FHIRResource:(id)resource config:(id)self0
 {
-  v16 = a8;
-  v17 = a9;
-  v18 = a10;
+  nameCopy = name;
+  resourceCopy = resource;
+  configCopy = config;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __113__HKClinicalRecord__newClinicalRecordWithType_startDate_endDate_device_metadata_displayName_FHIRResource_config___block_invoke;
   aBlock[3] = &unk_1E7379208;
-  v32 = v16;
-  v33 = v17;
-  v34 = v18;
-  v19 = v18;
-  v20 = v17;
-  v21 = v16;
-  v22 = a7;
-  v23 = a6;
-  v24 = a5;
-  v25 = a4;
-  v26 = a3;
+  v32 = nameCopy;
+  v33 = resourceCopy;
+  v34 = configCopy;
+  v19 = configCopy;
+  v20 = resourceCopy;
+  v21 = nameCopy;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  endDateCopy = endDate;
+  dateCopy = date;
+  typeCopy = type;
   v27 = _Block_copy(aBlock);
-  v30.receiver = a1;
+  v30.receiver = self;
   v30.super_class = &OBJC_METACLASS___HKClinicalRecord;
-  v28 = objc_msgSendSuper2(&v30, sel__newSampleFromDatesWithType_startDate_endDate_device_metadata_config_, v26, v25, v24, v23, v22, v27);
+  v28 = objc_msgSendSuper2(&v30, sel__newSampleFromDatesWithType_startDate_endDate_device_metadata_config_, typeCopy, dateCopy, endDateCopy, deviceCopy, metadataCopy, v27);
 
   return v28;
 }
@@ -89,29 +89,29 @@ void __113__HKClinicalRecord__newClinicalRecordWithType_startDate_endDate_device
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKClinicalRecord;
-  v4 = a3;
-  [(HKSample *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_displayName forKey:{@"DisplayName", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_FHIRResource forKey:@"FHIRResource"];
+  coderCopy = coder;
+  [(HKSample *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_displayName forKey:{@"DisplayName", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_FHIRResource forKey:@"FHIRResource"];
 }
 
-- (HKClinicalRecord)initWithCoder:(id)a3
+- (HKClinicalRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKClinicalRecord;
-  v5 = [(HKSample *)&v11 initWithCoder:v4];
+  v5 = [(HKSample *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DisplayName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DisplayName"];
     displayName = v5->_displayName;
     v5->_displayName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FHIRResource"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FHIRResource"];
     FHIRResource = v5->_FHIRResource;
     v5->_FHIRResource = v8;
   }
@@ -119,13 +119,13 @@ void __113__HKClinicalRecord__newClinicalRecordWithType_startDate_endDate_device
   return v5;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equivalentCopy;
     v22.receiver = self;
     v22.super_class = HKClinicalRecord;
     if (![(HKSample *)&v22 isEquivalent:v5])
@@ -133,25 +133,25 @@ void __113__HKClinicalRecord__newClinicalRecordWithType_startDate_endDate_device
       goto LABEL_14;
     }
 
-    v6 = [(HKClinicalRecord *)self displayName];
-    v7 = [v5 displayName];
-    v8 = v7;
-    if (v6 == v7)
+    displayName = [(HKClinicalRecord *)self displayName];
+    displayName2 = [v5 displayName];
+    v8 = displayName2;
+    if (displayName == displayName2)
     {
     }
 
     else
     {
-      v9 = [v5 displayName];
-      if (!v9)
+      displayName3 = [v5 displayName];
+      if (!displayName3)
       {
         goto LABEL_13;
       }
 
-      v10 = v9;
-      v11 = [(HKClinicalRecord *)self displayName];
-      v12 = [v5 displayName];
-      v13 = [v11 isEqualToString:v12];
+      v10 = displayName3;
+      displayName4 = [(HKClinicalRecord *)self displayName];
+      displayName5 = [v5 displayName];
+      v13 = [displayName4 isEqualToString:displayName5];
 
       if (!v13)
       {
@@ -159,10 +159,10 @@ void __113__HKClinicalRecord__newClinicalRecordWithType_startDate_endDate_device
       }
     }
 
-    v6 = [(HKClinicalRecord *)self FHIRResource];
-    v15 = [v5 FHIRResource];
-    v8 = v15;
-    if (v6 == v15)
+    displayName = [(HKClinicalRecord *)self FHIRResource];
+    fHIRResource = [v5 FHIRResource];
+    v8 = fHIRResource;
+    if (displayName == fHIRResource)
     {
 
 LABEL_18:
@@ -170,13 +170,13 @@ LABEL_18:
       goto LABEL_15;
     }
 
-    v16 = [v5 FHIRResource];
-    if (v16)
+    fHIRResource2 = [v5 FHIRResource];
+    if (fHIRResource2)
     {
-      v17 = v16;
-      v18 = [(HKClinicalRecord *)self FHIRResource];
-      v19 = [v5 FHIRResource];
-      v20 = [v18 isEqual:v19];
+      v17 = fHIRResource2;
+      fHIRResource3 = [(HKClinicalRecord *)self FHIRResource];
+      fHIRResource4 = [v5 FHIRResource];
+      v20 = [fHIRResource3 isEqual:fHIRResource4];
 
       if (v20)
       {
@@ -201,29 +201,29 @@ LABEL_16:
   return v14;
 }
 
-- (void)_setDisplayName:(id)a3
+- (void)_setDisplayName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   displayName = self->_displayName;
   self->_displayName = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setFHIRResource:(id)a3
+- (void)_setFHIRResource:(id)resource
 {
-  v4 = [a3 copy];
+  v4 = [resource copy];
   FHIRResource = self->_FHIRResource;
   self->_FHIRResource = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v10.receiver = self;
   v10.super_class = HKClinicalRecord;
-  v5 = [(HKSample *)&v10 _validateWithConfiguration:a3.var0, a3.var1];
+  v5 = [(HKSample *)&v10 _validateWithConfiguration:configuration.var0, configuration.var1];
   v6 = v5;
   if (v5)
   {

@@ -1,12 +1,12 @@
 @interface PGTextFeatureGenerator
 + (id)_knowledgeOptionsByDomain;
 + (id)_naturalLanguageOptionsByDomain;
-- (PGTextFeatureGenerator)initWithMomentNodes:(id)a3 graph:(id)a4;
-- (id)_sortedTextFeaturesUsingWeightAndTypeFromTextFeatures:(id)a3;
-- (id)_textFeaturesForNode:(id)a3 type:(unint64_t)a4 weight:(double)a5;
-- (id)_textFeaturesForNodes:(id)a3 type:(unint64_t)a4;
-- (id)_textFeaturesForPersonNodes:(id)a3;
-- (id)bestTextFeaturesFromTextFeatures:(id)a3;
+- (PGTextFeatureGenerator)initWithMomentNodes:(id)nodes graph:(id)graph;
+- (id)_sortedTextFeaturesUsingWeightAndTypeFromTextFeatures:(id)features;
+- (id)_textFeaturesForNode:(id)node type:(unint64_t)type weight:(double)weight;
+- (id)_textFeaturesForNodes:(id)nodes type:(unint64_t)type;
+- (id)_textFeaturesForPersonNodes:(id)nodes;
+- (id)bestTextFeaturesFromTextFeatures:(id)features;
 - (id)generateTextFeatures;
 - (id)knowledgeFeatures;
 - (id)naturalLanguageFeatures;
@@ -16,12 +16,12 @@
 
 @implementation PGTextFeatureGenerator
 
-- (id)_sortedTextFeaturesUsingWeightAndTypeFromTextFeatures:(id)a3
+- (id)_sortedTextFeaturesUsingWeightAndTypeFromTextFeatures:(id)features
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [MEMORY[0x277CBEB18] array];
+  featuresCopy = features;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v6 = MEMORY[0x277CBEB98];
   v7 = +[PGTextFeature vipTextFeatureTypes];
   v28 = [v6 setWithArray:v7];
@@ -30,7 +30,7 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = v3;
+  v8 = featuresCopy;
   v9 = [v8 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v9)
   {
@@ -46,9 +46,9 @@
         }
 
         v13 = *(*(&v29 + 1) + 8 * i);
-        if ([v13 origin] != 1 || (objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", objc_msgSend(v13, "type")), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v28, "containsObject:", v14), v14, v16 = v4, (v15 & 1) == 0))
+        if ([v13 origin] != 1 || (objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", objc_msgSend(v13, "type")), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v28, "containsObject:", v14), v14, v16 = array, (v15 & 1) == 0))
         {
-          v16 = v5;
+          v16 = array2;
         }
 
         [v16 addObject:v13];
@@ -65,14 +65,14 @@
   v18 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"string" ascending:1];
   v34[1] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
-  v20 = [v4 sortedArrayUsingDescriptors:v19];
+  v20 = [array sortedArrayUsingDescriptors:v19];
 
   v21 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"weight" ascending:0];
   v33[0] = v21;
   v22 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"string" ascending:1];
   v33[1] = v22;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:2];
-  v24 = [v5 sortedArrayUsingDescriptors:v23];
+  v24 = [array2 sortedArrayUsingDescriptors:v23];
 
   v25 = [v20 arrayByAddingObjectsFromArray:v24];
 
@@ -81,7 +81,7 @@
   return v25;
 }
 
-- (id)_textFeaturesForPersonNodes:(id)a3
+- (id)_textFeaturesForPersonNodes:(id)nodes
 {
   v22 = *MEMORY[0x277D85DE8];
   v4 = [MEMORY[0x277CBEB58] set];
@@ -108,10 +108,10 @@
         v11 = [(NSCountedSet *)self->_personNodes countForObject:v10, v17]/ self->_numberOfMoments;
         v12 = [(PGTextFeatureGenerator *)self _textFeaturesForNode:v10 type:3 weight:v11];
         [v4 unionSet:v12];
-        v13 = [v10 localIdentifier];
-        if ([v13 length])
+        localIdentifier = [v10 localIdentifier];
+        if ([localIdentifier length])
         {
-          v14 = [PGTextFeature textFeaturesFromString:v13 type:3 weight:0 options:v11];
+          v14 = [PGTextFeature textFeaturesFromString:localIdentifier type:3 weight:0 options:v11];
           [v4 unionSet:v14];
         }
       }
@@ -127,30 +127,30 @@
   return v4;
 }
 
-- (id)_textFeaturesForNode:(id)a3 type:(unint64_t)a4 weight:(double)a5
+- (id)_textFeaturesForNode:(id)node type:(unint64_t)type weight:(double)weight
 {
   optionsByDomain = self->_optionsByDomain;
   v9 = MEMORY[0x277CCABB0];
-  v10 = a3;
-  v11 = [v9 numberWithUnsignedInteger:a4];
+  nodeCopy = node;
+  v11 = [v9 numberWithUnsignedInteger:type];
   v12 = [(NSDictionary *)optionsByDomain objectForKeyedSubscript:v11];
-  v13 = [v12 unsignedIntegerValue];
+  unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-  v14 = [PGTextFeature textFeaturesFromNode:v10 type:a4 weight:v13 options:self->_locationHelper locationHelper:a5];
+  v14 = [PGTextFeature textFeaturesFromNode:nodeCopy type:type weight:unsignedIntegerValue options:self->_locationHelper locationHelper:weight];
 
   return v14;
 }
 
-- (id)_textFeaturesForNodes:(id)a3 type:(unint64_t)a4
+- (id)_textFeaturesForNodes:(id)nodes type:(unint64_t)type
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  nodesCopy = nodes;
   v7 = [MEMORY[0x277CBEB58] set];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v6;
+  v8 = nodesCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -165,7 +165,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = -[PGTextFeatureGenerator _textFeaturesForNode:type:weight:](self, "_textFeaturesForNode:type:weight:", *(*(&v16 + 1) + 8 * i), a4, ([v8 countForObject:{*(*(&v16 + 1) + 8 * i), v16}] / self->_numberOfMoments));
+        v13 = -[PGTextFeatureGenerator _textFeaturesForNode:type:weight:](self, "_textFeaturesForNode:type:weight:", *(*(&v16 + 1) + 8 * i), type, ([v8 countForObject:{*(*(&v16 + 1) + 8 * i), v16}] / self->_numberOfMoments));
         [v7 unionSet:v13];
       }
 
@@ -180,17 +180,17 @@
   return v7;
 }
 
-- (id)bestTextFeaturesFromTextFeatures:(id)a3
+- (id)bestTextFeaturesFromTextFeatures:(id)features
 {
   v56 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  featuresCopy = features;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = [MEMORY[0x277CBEB58] set];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v6 = v3;
+  v6 = featuresCopy;
   v7 = [v6 countByEnumeratingWithState:&v48 objects:v55 count:16];
   if (v7)
   {
@@ -206,19 +206,19 @@
         }
 
         v11 = *(*(&v48 + 1) + 8 * i);
-        v12 = [v11 string];
-        v13 = [v4 objectForKeyedSubscript:v12];
+        string = [v11 string];
+        v13 = [dictionary objectForKeyedSubscript:string];
         if (v13)
         {
           v14 = v13;
-          [v5 addObject:v12];
+          [v5 addObject:string];
           [v14 addObject:v11];
         }
 
         else
         {
           v14 = [MEMORY[0x277CBEB58] setWithObject:v11];
-          [v4 setObject:v14 forKeyedSubscript:v12];
+          [dictionary setObject:v14 forKeyedSubscript:string];
         }
       }
 
@@ -248,7 +248,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [v4 objectForKeyedSubscript:*(*(&v44 + 1) + 8 * j)];
+        v21 = [dictionary objectForKeyedSubscript:*(*(&v44 + 1) + 8 * j)];
         v22 = [PGTextFeature mergedTextFeatureFromTextFeatures:v21];
         [v15 minusSet:v21];
         if (v22)
@@ -264,10 +264,10 @@
   }
 
   v23 = [v15 count];
-  v24 = [(PGTextFeatureGenerator *)self maximumNumberOfTextFeaturesPerEvent];
-  v42 = [(PGTextFeatureGenerator *)self boundTextFeaturesPerEvent];
-  v43 = v24;
-  v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:v24];
+  maximumNumberOfTextFeaturesPerEvent = [(PGTextFeatureGenerator *)self maximumNumberOfTextFeaturesPerEvent];
+  boundTextFeaturesPerEvent = [(PGTextFeatureGenerator *)self boundTextFeaturesPerEvent];
+  v43 = maximumNumberOfTextFeaturesPerEvent;
+  v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:maximumNumberOfTextFeaturesPerEvent];
   v26 = [(PGTextFeatureGenerator *)self _sortedTextFeaturesUsingWeightAndTypeFromTextFeatures:v15];
   if (v23)
   {
@@ -285,7 +285,7 @@
         break;
       }
 
-      if (!v42)
+      if (!boundTextFeaturesPerEvent)
       {
         [v30 markAsStrippedOut];
         v32 = [MEMORY[0x277CD99F0] pg_textFeatureForFeature:v31];
@@ -300,9 +300,9 @@ LABEL_31:
         }
 
         v36 = +[PGLogging sharedLogging];
-        v34 = [v36 loggingConnection];
+        loggingConnection = [v36 loggingConnection];
 
-        if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+        if (!os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
         {
 LABEL_30:
 
@@ -314,7 +314,7 @@ LABEL_30:
 LABEL_34:
         *buf = v39;
         v53 = v31;
-        _os_log_error_impl(&dword_22F0FC000, v34, OS_LOG_TYPE_ERROR, "Failure generating PHTextFeature from PGTextFeature %@", buf, 0xCu);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Failure generating PHTextFeature from PGTextFeature %@", buf, 0xCu);
         goto LABEL_30;
       }
 
@@ -333,9 +333,9 @@ LABEL_32:
     }
 
     v33 = +[PGLogging sharedLogging];
-    v34 = [v33 loggingConnection];
+    loggingConnection = [v33 loggingConnection];
 
-    if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_30;
     }
@@ -409,8 +409,8 @@ LABEL_35:
           }
 
           v17 = *(*(&v68 + 1) + 8 * j);
-          v18 = [v17 label];
-          v19 = [v18 isEqualToString:@"Urban"];
+          label = [v17 label];
+          v19 = [label isEqualToString:@"Urban"];
 
           if ((v19 & 1) == 0)
           {
@@ -448,9 +448,9 @@ LABEL_35:
 
           v26 = *(*(&v64 + 1) + 8 * k);
           v27 = [(NSCountedSet *)self->_meaningNodes countForObject:v26];
-          v28 = [v26 isVeryMeaningful];
+          isVeryMeaningful = [v26 isVeryMeaningful];
           v29 = 1.0;
-          if ((v28 & 1) == 0)
+          if ((isVeryMeaningful & 1) == 0)
           {
             v29 = (v27 / self->_numberOfMoments);
           }
@@ -480,21 +480,21 @@ LABEL_35:
     if ([(NSCountedSet *)self->_businessCategoryNodes count]> 3)
     {
       v39 = +[PGLogging sharedLogging];
-      v36 = [v39 loggingConnection];
+      loggingConnection = [v39 loggingConnection];
 
-      if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
       {
         businessCategoryNodes = self->_businessCategoryNodes;
         *buf = 138412290;
         v77 = businessCategoryNodes;
-        _os_log_impl(&dword_22F0FC000, v36, OS_LOG_TYPE_INFO, "PHSuggestion text features generation: ignoring business categories (too many) : %@", buf, 0xCu);
+        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "PHSuggestion text features generation: ignoring business categories (too many) : %@", buf, 0xCu);
       }
     }
 
     else
     {
-      v36 = [(PGTextFeatureGenerator *)self _textFeaturesForNodes:self->_businessCategoryNodes type:24];
-      [v3 unionSet:v36];
+      loggingConnection = [(PGTextFeatureGenerator *)self _textFeaturesForNodes:self->_businessCategoryNodes type:24];
+      [v3 unionSet:loggingConnection];
     }
 
     v41 = [(PGTextFeatureGenerator *)self _textFeaturesForNodes:self->_holidayNodes type:15];
@@ -509,14 +509,14 @@ LABEL_35:
       v46 = v32;
       v47 = v31;
       v48 = +[PGLogging sharedLogging];
-      v43 = [v48 loggingConnection];
+      loggingConnection2 = [v48 loggingConnection];
 
-      if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
       {
         publicEventPerformerNodes = self->_publicEventPerformerNodes;
         *buf = 138412290;
         v77 = publicEventPerformerNodes;
-        _os_log_impl(&dword_22F0FC000, v43, OS_LOG_TYPE_INFO, "PHSuggestion text features generation: ignoring performers (too many) : %@", buf, 0xCu);
+        _os_log_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_INFO, "PHSuggestion text features generation: ignoring performers (too many) : %@", buf, 0xCu);
       }
 
       v31 = v47;
@@ -528,8 +528,8 @@ LABEL_35:
 
     else
     {
-      v43 = [(PGTextFeatureGenerator *)self _textFeaturesForNodes:self->_publicEventPerformerNodes type:26];
-      [v3 unionSet:v43];
+      loggingConnection2 = [(PGTextFeatureGenerator *)self _textFeaturesForNodes:self->_publicEventPerformerNodes type:26];
+      [v3 unionSet:loggingConnection2];
     }
 
     if ([(NSCountedSet *)self->_publicEventCategoryNodes count]> 3)
@@ -540,14 +540,14 @@ LABEL_35:
       v54 = v32;
       v55 = v31;
       v56 = +[PGLogging sharedLogging];
-      v50 = [v56 loggingConnection];
+      loggingConnection3 = [v56 loggingConnection];
 
-      if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(loggingConnection3, OS_LOG_TYPE_INFO))
       {
         publicEventCategoryNodes = self->_publicEventCategoryNodes;
         *buf = 138412290;
         v77 = publicEventCategoryNodes;
-        _os_log_impl(&dword_22F0FC000, v50, OS_LOG_TYPE_INFO, "PHSuggestion text features generation: ignoring public event categories (too many) : %@", buf, 0xCu);
+        _os_log_impl(&dword_22F0FC000, loggingConnection3, OS_LOG_TYPE_INFO, "PHSuggestion text features generation: ignoring public event categories (too many) : %@", buf, 0xCu);
       }
 
       v31 = v55;
@@ -560,22 +560,22 @@ LABEL_35:
 
     else
     {
-      v50 = [(PGTextFeatureGenerator *)self _textFeaturesForNodes:self->_publicEventCategoryNodes type:25];
-      [v3 unionSet:v50];
+      loggingConnection3 = [(PGTextFeatureGenerator *)self _textFeaturesForNodes:self->_publicEventCategoryNodes type:25];
+      [v3 unionSet:loggingConnection3];
     }
 
-    v38 = v63;
+    loggingConnection4 = v63;
   }
 
   else
   {
     v37 = +[PGLogging sharedLogging];
-    v38 = [v37 loggingConnection];
+    loggingConnection4 = [v37 loggingConnection];
 
-    if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection4, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_22F0FC000, v38, OS_LOG_TYPE_ERROR, "Can't generate text features from no assets", buf, 2u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection4, OS_LOG_TYPE_ERROR, "Can't generate text features from no assets", buf, 2u);
     }
   }
 
@@ -642,16 +642,16 @@ LABEL_35:
         v29 = v5;
         v30 = v6;
         [v4 enumerateReliableMeaningNodesUsingBlock:v40];
-        v7 = [(PGTextFeatureGenerator *)self meaningNodes];
-        [v7 unionSet:v29];
+        meaningNodes = [(PGTextFeatureGenerator *)self meaningNodes];
+        [meaningNodes unionSet:v29];
 
         v8 = [MEMORY[0x277CBEB58] set];
         v9 = [MEMORY[0x277CBEB58] set];
         v10 = [MEMORY[0x277CBEB58] set];
         v11 = [MEMORY[0x277CBEB58] set];
         v12 = [MEMORY[0x277CBEB58] set];
-        v13 = [v4 collection];
-        v14 = [v13 addressNodes];
+        collection = [v4 collection];
+        addressNodes = [collection addressNodes];
         v34[0] = MEMORY[0x277D85DD0];
         v34[1] = 3221225472;
         v34[2] = __44__PGTextFeatureGenerator_analyzeMomentNodes__block_invoke_6;
@@ -666,22 +666,22 @@ LABEL_35:
         v17 = v10;
         v18 = v9;
         v19 = v8;
-        [v14 enumerateIdentifiersAsCollectionsWithBlock:v34];
+        [addressNodes enumerateIdentifiersAsCollectionsWithBlock:v34];
 
-        v20 = [(PGTextFeatureGenerator *)self districtNodes];
-        [v20 unionSet:v19];
+        districtNodes = [(PGTextFeatureGenerator *)self districtNodes];
+        [districtNodes unionSet:v19];
 
-        v21 = [(PGTextFeatureGenerator *)self cityNodes];
-        [v21 unionSet:v18];
+        cityNodes = [(PGTextFeatureGenerator *)self cityNodes];
+        [cityNodes unionSet:v18];
 
-        v22 = [(PGTextFeatureGenerator *)self stateNodes];
-        [v22 unionSet:v17];
+        stateNodes = [(PGTextFeatureGenerator *)self stateNodes];
+        [stateNodes unionSet:v17];
 
-        v23 = [(PGTextFeatureGenerator *)self countryNodes];
-        [v23 unionSet:v16];
+        countryNodes = [(PGTextFeatureGenerator *)self countryNodes];
+        [countryNodes unionSet:v16];
 
-        v24 = [(PGTextFeatureGenerator *)self areaNodes];
-        [v24 unionSet:v15];
+        areaNodes = [(PGTextFeatureGenerator *)self areaNodes];
+        [areaNodes unionSet:v15];
 
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
@@ -925,37 +925,37 @@ void __44__PGTextFeatureGenerator_analyzeMomentNodes__block_invoke_8(uint64_t a1
 - (id)naturalLanguageFeatures
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() _naturalLanguageOptionsByDomain];
-  [(PGTextFeatureGenerator *)self setOptionsByDomain:v3];
+  _naturalLanguageOptionsByDomain = [objc_opt_class() _naturalLanguageOptionsByDomain];
+  [(PGTextFeatureGenerator *)self setOptionsByDomain:_naturalLanguageOptionsByDomain];
 
   if (!self->_numberOfMoments)
   {
     v12 = +[PGLogging sharedLogging];
-    v4 = [v12 loggingConnection];
+    loggingConnection = [v12 loggingConnection];
 
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v18) = 0;
-      _os_log_error_impl(&dword_22F0FC000, v4, OS_LOG_TYPE_ERROR, "Cannot generate natural language features with no moment nodes", &v18, 2u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Cannot generate natural language features with no moment nodes", &v18, 2u);
     }
 
     goto LABEL_11;
   }
 
   [(PGTextFeatureGenerator *)self analyzeMomentNodes];
-  v4 = [(PGTextFeatureGenerator *)self generateTextFeatures];
-  v5 = [v4 count];
+  loggingConnection = [(PGTextFeatureGenerator *)self generateTextFeatures];
+  v5 = [loggingConnection count];
   if (!v5)
   {
     v13 = +[PGLogging sharedLogging];
-    v14 = [v13 loggingConnection];
+    loggingConnection2 = [v13 loggingConnection];
 
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
     {
       momentNodes = self->_momentNodes;
       v18 = 138477827;
       v19 = momentNodes;
-      _os_log_impl(&dword_22F0FC000, v14, OS_LOG_TYPE_INFO, "No text features were generated from moments %{private}@", &v18, 0xCu);
+      _os_log_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_INFO, "No text features were generated from moments %{private}@", &v18, 0xCu);
     }
 
 LABEL_11:
@@ -964,11 +964,11 @@ LABEL_11:
   }
 
   v6 = v5;
-  v7 = [(PGTextFeatureGenerator *)self bestTextFeaturesFromTextFeatures:v4];
+  v7 = [(PGTextFeatureGenerator *)self bestTextFeaturesFromTextFeatures:loggingConnection];
   v8 = +[PGLogging sharedLogging];
-  v9 = [v8 loggingConnection];
+  loggingConnection3 = [v8 loggingConnection];
 
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(loggingConnection3, OS_LOG_TYPE_INFO))
   {
     v10 = [v7 count];
     v11 = self->_momentNodes;
@@ -978,7 +978,7 @@ LABEL_11:
     v21 = v6;
     v22 = 2112;
     v23 = v11;
-    _os_log_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_INFO, "%lu out of %lu text teatures are saved for moments %@", &v18, 0x20u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection3, OS_LOG_TYPE_INFO, "%lu out of %lu text teatures are saved for moments %@", &v18, 0x20u);
   }
 
   [(PGTextFeatureGenerator *)self _resetProperties];
@@ -992,36 +992,36 @@ LABEL_12:
 - (id)knowledgeFeatures
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() _knowledgeOptionsByDomain];
-  [(PGTextFeatureGenerator *)self setOptionsByDomain:v3];
+  _knowledgeOptionsByDomain = [objc_opt_class() _knowledgeOptionsByDomain];
+  [(PGTextFeatureGenerator *)self setOptionsByDomain:_knowledgeOptionsByDomain];
 
   if (!self->_numberOfMoments)
   {
     v11 = +[PGLogging sharedLogging];
-    v4 = [v11 loggingConnection];
+    loggingConnection = [v11 loggingConnection];
 
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_22F0FC000, v4, OS_LOG_TYPE_ERROR, "Cannot generate text features with no moment nodes", buf, 2u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Cannot generate text features with no moment nodes", buf, 2u);
     }
 
     goto LABEL_18;
   }
 
   [(PGTextFeatureGenerator *)self analyzeMomentNodes];
-  v4 = [(PGTextFeatureGenerator *)self generateTextFeatures];
-  if (![v4 count])
+  loggingConnection = [(PGTextFeatureGenerator *)self generateTextFeatures];
+  if (![loggingConnection count])
   {
     v12 = +[PGLogging sharedLogging];
-    v13 = [v12 loggingConnection];
+    loggingConnection2 = [v12 loggingConnection];
 
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
     {
       momentNodes = self->_momentNodes;
       *buf = 138477827;
       v23 = momentNodes;
-      _os_log_impl(&dword_22F0FC000, v13, OS_LOG_TYPE_INFO, "No text features were generated from moments %{private}@", buf, 0xCu);
+      _os_log_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_INFO, "No text features were generated from moments %{private}@", buf, 0xCu);
     }
 
 LABEL_18:
@@ -1034,8 +1034,8 @@ LABEL_18:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = v4;
-  v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  loggingConnection = loggingConnection;
+  v6 = [loggingConnection countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1046,7 +1046,7 @@ LABEL_18:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(loggingConnection);
         }
 
         v10 = [MEMORY[0x277CD99F0] pg_textFeatureForFeature:{*(*(&v17 + 1) + 8 * i), v17}];
@@ -1056,7 +1056,7 @@ LABEL_18:
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [loggingConnection countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -1141,23 +1141,23 @@ LABEL_19:
   self->_publicEventCategoryNodes = v35;
 }
 
-- (PGTextFeatureGenerator)initWithMomentNodes:(id)a3 graph:(id)a4
+- (PGTextFeatureGenerator)initWithMomentNodes:(id)nodes graph:(id)graph
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  nodesCopy = nodes;
+  graphCopy = graph;
   v30.receiver = self;
   v30.super_class = PGTextFeatureGenerator;
   v9 = [(PGTextFeatureGenerator *)&v30 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_momentNodes, a3);
-    v11 = [[PGGraphLocationHelper alloc] initWithGraph:v8];
+    objc_storeStrong(&v9->_momentNodes, nodes);
+    v11 = [[PGGraphLocationHelper alloc] initWithGraph:graphCopy];
     locationHelper = v10->_locationHelper;
     v10->_locationHelper = v11;
 
-    v13 = [v7 count];
+    v13 = [nodesCopy count];
     v10->_numberOfMoments = v13;
     v14 = [MEMORY[0x277CBEB58] setWithCapacity:v13];
     momentIdentifiers = v10->_momentIdentifiers;
@@ -1167,7 +1167,7 @@ LABEL_19:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v16 = v7;
+    v16 = nodesCopy;
     v17 = [v16 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v17)
     {
@@ -1185,8 +1185,8 @@ LABEL_19:
           v21 = *(*(&v26 + 1) + 8 * i);
           v10->_numberOfAssets += [v21 numberOfAssets];
           v22 = v10->_momentIdentifiers;
-          v23 = [v21 localIdentifier];
-          [(NSMutableSet *)v22 addObject:v23];
+          localIdentifier = [v21 localIdentifier];
+          [(NSMutableSet *)v22 addObject:localIdentifier];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v26 objects:v31 count:16];

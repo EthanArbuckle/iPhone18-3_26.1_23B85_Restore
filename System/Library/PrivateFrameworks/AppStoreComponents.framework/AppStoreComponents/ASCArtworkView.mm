@@ -1,35 +1,35 @@
 @interface ASCArtworkView
-- (ASCArtworkView)initWithCoder:(id)a3;
-- (ASCArtworkView)initWithFrame:(CGRect)a3;
+- (ASCArtworkView)initWithCoder:(id)coder;
+- (ASCArtworkView)initWithFrame:(CGRect)frame;
 - (BOOL)isHighlighted;
-- (CGRect)contentRectForBounds:(CGRect)a3;
+- (CGRect)contentRectForBounds:(CGRect)bounds;
 - (CGSize)intrinsicContentSize;
 - (CGSize)preferredSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIImage)image;
-- (double)cornerRadiusForContentRect:(CGRect)a3;
-- (id)cornerCurveForContentRect:(CGRect)a3;
+- (double)cornerRadiusForContentRect:(CGRect)rect;
+- (id)cornerCurveForContentRect:(CGRect)rect;
 - (id)description;
-- (unint64_t)cornerMaskForContentRect:(CGRect)a3;
+- (unint64_t)cornerMaskForContentRect:(CGRect)rect;
 - (void)invalidateIntrinsicContentSize;
 - (void)layoutSubviews;
 - (void)setDataChanged;
-- (void)setDecoration:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setPlaceholderColor:(id)a3;
-- (void)setPreferredSize:(CGSize)a3;
-- (void)setScreenshotDisplayConfiguration:(id)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
+- (void)setDecoration:(id)decoration;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image;
+- (void)setPlaceholderColor:(id)color;
+- (void)setPreferredSize:(CGSize)size;
+- (void)setScreenshotDisplayConfiguration:(id)configuration;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
 @end
 
 @implementation ASCArtworkView
 
-- (ASCArtworkView)initWithFrame:(CGRect)a3
+- (ASCArtworkView)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = ASCArtworkView;
-  v3 = [(ASCArtworkView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ASCArtworkView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     objc_opt_self();
@@ -76,27 +76,27 @@
   return v3;
 }
 
-- (ASCArtworkView)initWithCoder:(id)a3
+- (ASCArtworkView)initWithCoder:(id)coder
 {
   [(ASCArtworkView *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (void)setPreferredSize:(CGSize)a3
+- (void)setPreferredSize:(CGSize)size
 {
-  if (self->_preferredSize.width != a3.width || self->_preferredSize.height != a3.height)
+  if (self->_preferredSize.width != size.width || self->_preferredSize.height != size.height)
   {
     v13 = v3;
-    self->_preferredSize = a3;
-    if (a3.width >= a3.height)
+    self->_preferredSize = size;
+    if (size.width >= size.height)
     {
-      a3.width = a3.height;
+      size.width = size.height;
     }
 
-    v11 = [MEMORY[0x277D755D0] configurationWithPointSize:4 weight:-1 scale:{ceil(a3.width * 0.5), v6, v5, v4, v13, v7}];
-    v12 = [(ASCArtworkView *)self imageView];
-    [v12 setPreferredSymbolConfiguration:v11];
+    v11 = [MEMORY[0x277D755D0] configurationWithPointSize:4 weight:-1 scale:{ceil(size.width * 0.5), v6, v5, v4, v13, v7}];
+    imageView = [(ASCArtworkView *)self imageView];
+    [imageView setPreferredSymbolConfiguration:v11];
 
     [(ASCArtworkView *)self invalidateIntrinsicContentSize];
 
@@ -104,12 +104,12 @@
   }
 }
 
-- (void)setDecoration:(id)a3
+- (void)setDecoration:(id)decoration
 {
-  v6 = a3;
+  decorationCopy = decoration;
   if (![(NSString *)self->_decoration isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [decorationCopy copy];
     decoration = self->_decoration;
     self->_decoration = v4;
 
@@ -117,14 +117,14 @@
   }
 }
 
-- (void)setScreenshotDisplayConfiguration:(id)a3
+- (void)setScreenshotDisplayConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   screenshotDisplayConfiguration = self->_screenshotDisplayConfiguration;
-  v9 = v4;
-  if (!v4 || !screenshotDisplayConfiguration)
+  v9 = configurationCopy;
+  if (!configurationCopy || !screenshotDisplayConfiguration)
   {
-    if (screenshotDisplayConfiguration == v4)
+    if (screenshotDisplayConfiguration == configurationCopy)
     {
       goto LABEL_7;
     }
@@ -132,12 +132,12 @@
     goto LABEL_6;
   }
 
-  v6 = [(ASCScreenshotDisplayConfiguration *)screenshotDisplayConfiguration isEqual:v4];
-  v4 = v9;
+  v6 = [(ASCScreenshotDisplayConfiguration *)screenshotDisplayConfiguration isEqual:configurationCopy];
+  configurationCopy = v9;
   if (!v6)
   {
 LABEL_6:
-    v7 = [(ASCScreenshotDisplayConfiguration *)v4 copy];
+    v7 = [(ASCScreenshotDisplayConfiguration *)configurationCopy copy];
     v8 = self->_screenshotDisplayConfiguration;
     self->_screenshotDisplayConfiguration = v7;
 
@@ -151,16 +151,16 @@ LABEL_7:
 
 - (UIImage)image
 {
-  v2 = [(ASCArtworkView *)self imageView];
-  v3 = [v2 image];
+  imageView = [(ASCArtworkView *)self imageView];
+  image = [imageView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  if ([v4 _isSymbolImage])
+  imageCopy = image;
+  if ([imageCopy _isSymbolImage])
   {
     v5 = 4;
   }
@@ -170,23 +170,23 @@ LABEL_7:
     v5 = 1;
   }
 
-  v6 = [(ASCArtworkView *)self imageView];
-  [v6 setContentMode:v5];
+  imageView = [(ASCArtworkView *)self imageView];
+  [imageView setContentMode:v5];
 
-  v7 = [(ASCArtworkView *)self imageView];
-  [v7 setImage:v4];
+  imageView2 = [(ASCArtworkView *)self imageView];
+  [imageView2 setImage:imageCopy];
 
   [(ASCArtworkView *)self setDataChanged];
 }
 
-- (void)setPlaceholderColor:(id)a3
+- (void)setPlaceholderColor:(id)color
 {
-  v7 = a3;
+  colorCopy = color;
   v5 = self->_placeholderColor;
-  if (!v7 || !v5)
+  if (!colorCopy || !v5)
   {
 
-    if (v5 == v7)
+    if (v5 == colorCopy)
     {
       goto LABEL_7;
     }
@@ -194,12 +194,12 @@ LABEL_7:
     goto LABEL_6;
   }
 
-  v6 = [(UIColor *)v5 isEqual:v7];
+  v6 = [(UIColor *)v5 isEqual:colorCopy];
 
   if ((v6 & 1) == 0)
   {
 LABEL_6:
-    objc_storeStrong(&self->_placeholderColor, a3);
+    objc_storeStrong(&self->_placeholderColor, color);
     [(ASCArtworkView *)self setDataChanged];
   }
 
@@ -208,39 +208,39 @@ LABEL_7:
 
 - (BOOL)isHighlighted
 {
-  v2 = [(ASCArtworkView *)self imageView];
-  v3 = [v2 isHighlighted];
+  imageView = [(ASCArtworkView *)self imageView];
+  isHighlighted = [imageView isHighlighted];
 
-  return v3;
+  return isHighlighted;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v4 = [(ASCArtworkView *)self imageView];
-  [v4 setHighlighted:v3];
+  highlightedCopy = highlighted;
+  imageView = [(ASCArtworkView *)self imageView];
+  [imageView setHighlighted:highlightedCopy];
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v7.receiver = self;
   v7.super_class = ASCArtworkView;
   [(ASCArtworkView *)&v7 setSemanticContentAttribute:?];
-  v5 = [(ASCArtworkView *)self imageView];
-  [v5 setSemanticContentAttribute:a3];
+  imageView = [(ASCArtworkView *)self imageView];
+  [imageView setSemanticContentAttribute:attribute];
 
-  v6 = [(ASCArtworkView *)self borderView];
-  [v6 setSemanticContentAttribute:a3];
+  borderView = [(ASCArtworkView *)self borderView];
+  [borderView setSemanticContentAttribute:attribute];
 }
 
 - (void)setDataChanged
 {
   HasBorder = ASCArtworkDecorationHasBorder(self->_decoration);
-  v4 = [(ASCArtworkView *)self image];
-  if (v4)
+  image = [(ASCArtworkView *)self image];
+  if (image)
   {
-    v5 = [(ASCArtworkView *)self image];
-    v6 = [v5 _isSymbolImage] | HasBorder ^ 1;
+    image2 = [(ASCArtworkView *)self image];
+    v6 = [image2 _isSymbolImage] | HasBorder ^ 1;
   }
 
   else
@@ -248,19 +248,19 @@ LABEL_7:
     v6 = 1;
   }
 
-  v7 = [(ASCArtworkView *)self borderView];
-  [v7 setHidden:v6 & 1];
+  borderView = [(ASCArtworkView *)self borderView];
+  [borderView setHidden:v6 & 1];
 
-  v8 = [(ASCArtworkView *)self placeholderColor];
-  if (v8)
+  placeholderColor = [(ASCArtworkView *)self placeholderColor];
+  if (placeholderColor)
   {
-    v9 = [(ASCArtworkView *)self image];
-    if (v9)
+    image3 = [(ASCArtworkView *)self image];
+    if (image3)
     {
-      v10 = [(ASCArtworkView *)self image];
-      v11 = [v10 _isSymbolImage];
+      image4 = [(ASCArtworkView *)self image];
+      _isSymbolImage = [image4 _isSymbolImage];
 
-      v12 = v11 ^ 1;
+      v12 = _isSymbolImage ^ 1;
     }
 
     else
@@ -276,15 +276,15 @@ LABEL_7:
 
   if ((HasBorder | ASCArtworkDecorationIsPrerendered(self->_decoration)) & 1) == 0 || (v12)
   {
-    v13 = [(ASCArtworkView *)self imageView];
-    [v13 setBackgroundColor:0];
+    imageView = [(ASCArtworkView *)self imageView];
+    [imageView setBackgroundColor:0];
   }
 
   else
   {
-    v13 = [(ASCArtworkView *)self placeholderColor];
-    v14 = [(ASCArtworkView *)self imageView];
-    [v14 setBackgroundColor:v13];
+    imageView = [(ASCArtworkView *)self placeholderColor];
+    imageView2 = [(ASCArtworkView *)self imageView];
+    [imageView2 setBackgroundColor:imageView];
   }
 
   [(ASCArtworkView *)self setNeedsLayout];
@@ -305,24 +305,24 @@ LABEL_7:
   [(ASCArtworkView *)&v4 invalidateIntrinsicContentSize];
   if ([(ASCArtworkView *)self translatesAutoresizingMaskIntoConstraints])
   {
-    v3 = [(ASCArtworkView *)self superview];
-    [v3 invalidateIntrinsicContentSize];
+    superview = [(ASCArtworkView *)self superview];
+    [superview invalidateIntrinsicContentSize];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(ASCArtworkView *)self image];
-  if (v6)
+  height = fits.height;
+  width = fits.width;
+  image = [(ASCArtworkView *)self image];
+  if (image)
   {
 
     goto LABEL_3;
   }
 
-  v13 = [(ASCArtworkView *)self decoration];
-  if ([v13 isEqualToString:@"none"])
+  decoration = [(ASCArtworkView *)self decoration];
+  if ([decoration isEqualToString:@"none"])
   {
 
 LABEL_19:
@@ -331,9 +331,9 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  v14 = [(ASCArtworkView *)self placeholderColor];
+  placeholderColor = [(ASCArtworkView *)self placeholderColor];
 
-  if (!v14)
+  if (!placeholderColor)
   {
     goto LABEL_19;
   }
@@ -373,12 +373,12 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)contentRectForBounds:(CGRect)a3
+- (CGRect)contentRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(ASCArtworkView *)self layoutMargins];
   v9 = x + v8;
   v11 = y + v10;
@@ -390,12 +390,12 @@ LABEL_21:
   v35.size.height = v15;
   if (!CGRectIsEmpty(v35))
   {
-    v16 = [(ASCArtworkView *)self image];
+    image = [(ASCArtworkView *)self image];
 
-    if (v16)
+    if (image)
     {
-      v17 = [(ASCArtworkView *)self image];
-      [v17 size];
+      image2 = [(ASCArtworkView *)self image];
+      [image2 size];
       v19 = v18;
       v21 = v20;
 
@@ -471,23 +471,23 @@ LABEL_21:
   return result;
 }
 
-- (double)cornerRadiusForContentRect:(CGRect)a3
+- (double)cornerRadiusForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(ASCArtworkView *)self decoration];
-  if ([v8 isEqualToString:@"none"])
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  decoration = [(ASCArtworkView *)self decoration];
+  if ([decoration isEqualToString:@"none"])
   {
     goto LABEL_5;
   }
 
-  v9 = [(ASCArtworkView *)self decoration];
-  if ([v9 isEqualToString:@"circlePrerendered"])
+  decoration2 = [(ASCArtworkView *)self decoration];
+  if ([decoration2 isEqualToString:@"circlePrerendered"])
   {
-    v10 = [(ASCArtworkView *)self image];
-    if (v10)
+    image = [(ASCArtworkView *)self image];
+    if (image)
     {
 
 LABEL_5:
@@ -495,13 +495,13 @@ LABEL_5:
     }
   }
 
-  v12 = [(ASCArtworkView *)self decoration];
-  if ([v12 isEqualToString:@"roundedRectPrerendered"])
+  decoration3 = [(ASCArtworkView *)self decoration];
+  if ([decoration3 isEqualToString:@"roundedRectPrerendered"])
   {
-    v13 = [(ASCArtworkView *)self image];
+    image2 = [(ASCArtworkView *)self image];
 
     v11 = 0.0;
-    if (v13)
+    if (image2)
     {
       return v11;
     }
@@ -511,15 +511,15 @@ LABEL_5:
   {
   }
 
-  v14 = [(ASCArtworkView *)self decoration];
-  if ([v14 isEqualToString:@"maskToCircle"])
+  decoration4 = [(ASCArtworkView *)self decoration];
+  if ([decoration4 isEqualToString:@"maskToCircle"])
   {
 
     goto LABEL_13;
   }
 
-  v15 = [(ASCArtworkView *)self decoration];
-  v16 = [v15 isEqualToString:@"circlePrerendered"];
+  decoration5 = [(ASCArtworkView *)self decoration];
+  v16 = [decoration5 isEqualToString:@"circlePrerendered"];
 
   if (v16)
   {
@@ -542,14 +542,14 @@ LABEL_13:
     return v18 * 0.5;
   }
 
-  v19 = [(ASCArtworkView *)self decoration];
-  if ([v19 isEqualToString:@"roundedRect"])
+  decoration6 = [(ASCArtworkView *)self decoration];
+  if ([decoration6 isEqualToString:@"roundedRect"])
   {
     goto LABEL_19;
   }
 
-  v20 = [(ASCArtworkView *)self decoration];
-  if ([v20 isEqualToString:@"roundedRectPrerendered"])
+  decoration7 = [(ASCArtworkView *)self decoration];
+  if ([decoration7 isEqualToString:@"roundedRectPrerendered"])
   {
 
 LABEL_19:
@@ -592,16 +592,16 @@ LABEL_20:
     return v11;
   }
 
-  v31 = [(ASCArtworkView *)self decoration];
-  v32 = [v31 isEqualToString:@"iap"];
+  decoration8 = [(ASCArtworkView *)self decoration];
+  v32 = [decoration8 isEqualToString:@"iap"];
 
   if (v32)
   {
     goto LABEL_20;
   }
 
-  v33 = [(ASCArtworkView *)self decoration];
-  v34 = [v33 isEqualToString:@"pill"];
+  decoration9 = [(ASCArtworkView *)self decoration];
+  v34 = [decoration9 isEqualToString:@"pill"];
 
   if (v34)
   {
@@ -613,8 +613,8 @@ LABEL_20:
     return v18 * 0.5;
   }
 
-  v35 = [(ASCArtworkView *)self decoration];
-  v36 = [v35 isEqualToString:@"tvRect"];
+  decoration10 = [(ASCArtworkView *)self decoration];
+  v36 = [decoration10 isEqualToString:@"tvRect"];
 
   if (v36)
   {
@@ -622,25 +622,25 @@ LABEL_20:
     return v18 * 0.5;
   }
 
-  v37 = [(ASCArtworkView *)self decoration];
-  v38 = [v37 isEqualToString:@"screenshot"];
+  decoration11 = [(ASCArtworkView *)self decoration];
+  v38 = [decoration11 isEqualToString:@"screenshot"];
 
   if (!v38)
   {
-    v42 = [(ASCArtworkView *)self decoration];
-    ASCUnknownEnumCase(@"ASCArtworkDecoration", v42);
+    decoration12 = [(ASCArtworkView *)self decoration];
+    ASCUnknownEnumCase(@"ASCArtworkDecoration", decoration12);
   }
 
-  v39 = [(ASCArtworkView *)self screenshotDisplayConfiguration];
-  [v39 cornerRadiusForSize:{width, height}];
+  screenshotDisplayConfiguration = [(ASCArtworkView *)self screenshotDisplayConfiguration];
+  [screenshotDisplayConfiguration cornerRadiusForSize:{width, height}];
   v41 = v40;
 
   return v41;
 }
 
-- (id)cornerCurveForContentRect:(CGRect)a3
+- (id)cornerCurveForContentRect:(CGRect)rect
 {
-  v4 = [(ASCArtworkView *)self decoration:a3.origin.x];
+  v4 = [(ASCArtworkView *)self decoration:rect.origin.x];
   v5 = [v4 isEqualToString:@"maskToCircle"];
 
   if (v5)
@@ -650,13 +650,13 @@ LABEL_20:
 
   else
   {
-    v7 = [(ASCArtworkView *)self decoration];
-    v8 = [v7 isEqualToString:@"screenshot"];
+    decoration = [(ASCArtworkView *)self decoration];
+    v8 = [decoration isEqualToString:@"screenshot"];
 
     if (v8)
     {
-      v9 = [(ASCArtworkView *)self screenshotDisplayConfiguration];
-      v10 = [v9 cornerCurve];
+      screenshotDisplayConfiguration = [(ASCArtworkView *)self screenshotDisplayConfiguration];
+      cornerCurve = [screenshotDisplayConfiguration cornerCurve];
 
       goto LABEL_7;
     }
@@ -664,15 +664,15 @@ LABEL_20:
     v6 = MEMORY[0x277CDA138];
   }
 
-  v10 = *v6;
+  cornerCurve = *v6;
 LABEL_7:
 
-  return v10;
+  return cornerCurve;
 }
 
-- (unint64_t)cornerMaskForContentRect:(CGRect)a3
+- (unint64_t)cornerMaskForContentRect:(CGRect)rect
 {
-  v4 = [(ASCArtworkView *)self decoration:a3.origin.x];
+  v4 = [(ASCArtworkView *)self decoration:rect.origin.x];
   v5 = [v4 isEqualToString:@"iap"];
 
   if (v5)
@@ -680,18 +680,18 @@ LABEL_7:
     return 2;
   }
 
-  v7 = [(ASCArtworkView *)self decoration];
-  v8 = [v7 isEqualToString:@"screenshot"];
+  decoration = [(ASCArtworkView *)self decoration];
+  v8 = [decoration isEqualToString:@"screenshot"];
 
   if (!v8)
   {
     return 15;
   }
 
-  v9 = [(ASCArtworkView *)self screenshotDisplayConfiguration];
-  v10 = [v9 maskedCorners];
+  screenshotDisplayConfiguration = [(ASCArtworkView *)self screenshotDisplayConfiguration];
+  maskedCorners = [screenshotDisplayConfiguration maskedCorners];
 
-  return v10;
+  return maskedCorners;
 }
 
 - (void)layoutSubviews
@@ -709,32 +709,32 @@ LABEL_7:
   v12 = v11;
   v13 = [(ASCArtworkView *)self cornerCurveForContentRect:v4, v6, v8, v10];
   v14 = [(ASCArtworkView *)self cornerMaskForContentRect:v4, v6, v8, v10];
-  v15 = [(ASCArtworkView *)self imageView];
-  [v15 setFrame:{v4, v6, v8, v10}];
+  imageView = [(ASCArtworkView *)self imageView];
+  [imageView setFrame:{v4, v6, v8, v10}];
 
-  v16 = [(ASCArtworkView *)self imageView];
-  v17 = [v16 layer];
-  [v17 setCornerRadius:v12];
+  imageView2 = [(ASCArtworkView *)self imageView];
+  layer = [imageView2 layer];
+  [layer setCornerRadius:v12];
 
-  v18 = [(ASCArtworkView *)self imageView];
-  v19 = [v18 layer];
-  [v19 setCornerCurve:v13];
+  imageView3 = [(ASCArtworkView *)self imageView];
+  layer2 = [imageView3 layer];
+  [layer2 setCornerCurve:v13];
 
-  v20 = [(ASCArtworkView *)self imageView];
-  v21 = [v20 layer];
-  [v21 setMaskedCorners:v14];
+  imageView4 = [(ASCArtworkView *)self imageView];
+  layer3 = [imageView4 layer];
+  [layer3 setMaskedCorners:v14];
 
-  v22 = [(ASCArtworkView *)self borderView];
-  [v22 setFrame:{v4, v6, v8, v10}];
+  borderView = [(ASCArtworkView *)self borderView];
+  [borderView setFrame:{v4, v6, v8, v10}];
 
-  v23 = [(ASCArtworkView *)self borderView];
-  [v23 setCornerRadius:v12];
+  borderView2 = [(ASCArtworkView *)self borderView];
+  [borderView2 setCornerRadius:v12];
 
-  v24 = [(ASCArtworkView *)self borderView];
-  [v24 setCornerCurve:v13];
+  borderView3 = [(ASCArtworkView *)self borderView];
+  [borderView3 setCornerCurve:v13];
 
-  v25 = [(ASCArtworkView *)self borderView];
-  [v25 setCornerMask:v14];
+  borderView4 = [(ASCArtworkView *)self borderView];
+  [borderView4 setCornerMask:v14];
 }
 
 - (id)description
@@ -747,18 +747,18 @@ LABEL_7:
   v8 = [v4 stringWithFormat:@"{%f, %f}", v6, v7];
   [(ASCDescriber *)v3 addObject:v8 withName:@"preferredSize"];
 
-  v9 = [(ASCArtworkView *)self decoration];
-  [(ASCDescriber *)v3 addObject:v9 withName:@"decoration"];
+  decoration = [(ASCArtworkView *)self decoration];
+  [(ASCDescriber *)v3 addObject:decoration withName:@"decoration"];
 
-  v10 = [(ASCArtworkView *)self image];
-  [(ASCDescriber *)v3 addObject:v10 withName:@"image"];
+  image = [(ASCArtworkView *)self image];
+  [(ASCDescriber *)v3 addObject:image withName:@"image"];
 
-  v11 = [(ASCArtworkView *)self placeholderColor];
-  [(ASCDescriber *)v3 addObject:v11 withName:@"placeholderColor"];
+  placeholderColor = [(ASCArtworkView *)self placeholderColor];
+  [(ASCDescriber *)v3 addObject:placeholderColor withName:@"placeholderColor"];
 
-  v12 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v12;
+  return finalizeDescription;
 }
 
 - (CGSize)preferredSize

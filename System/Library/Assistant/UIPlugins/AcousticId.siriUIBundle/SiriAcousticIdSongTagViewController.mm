@@ -2,32 +2,32 @@
 - (BOOL)_displaysFooterView;
 - (BOOL)_isNowPlayingCurrentStoreID;
 - (Class)footerViewClass;
-- (SiriAcousticIdSongTagViewController)initWithSongTagSnippet:(id)a3;
+- (SiriAcousticIdSongTagViewController)initWithSongTagSnippet:(id)snippet;
 - (id)_playbackStoreID;
-- (void)_handleMusicPlayerControllerNowPlayingItemDidChange:(id)a3;
+- (void)_handleMusicPlayerControllerNowPlayingItemDidChange:(id)change;
 - (void)_updatePlaybackPosition;
 - (void)_updatePlaybackState;
-- (void)attributionFooterViewButtonWasTapped:(id)a3;
-- (void)configureReusableFooterView:(id)a3;
-- (void)configureReusableHeaderView:(id)a3;
+- (void)attributionFooterViewButtonWasTapped:(id)tapped;
+- (void)configureReusableFooterView:(id)view;
+- (void)configureReusableHeaderView:(id)view;
 - (void)dealloc;
-- (void)headerViewOpenButtonWasTapped:(id)a3;
-- (void)headerViewPlayButtonWasTapped:(id)a3;
-- (void)setSnippet:(id)a3;
+- (void)headerViewOpenButtonWasTapped:(id)tapped;
+- (void)headerViewPlayButtonWasTapped:(id)tapped;
+- (void)setSnippet:(id)snippet;
 @end
 
 @implementation SiriAcousticIdSongTagViewController
 
-- (SiriAcousticIdSongTagViewController)initWithSongTagSnippet:(id)a3
+- (SiriAcousticIdSongTagViewController)initWithSongTagSnippet:(id)snippet
 {
-  v4 = a3;
+  snippetCopy = snippet;
   v10.receiver = self;
   v10.super_class = SiriAcousticIdSongTagViewController;
   v5 = [(SiriAcousticIdSongTagViewController *)&v10 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(SiriAcousticIdSongTagViewController *)v5 setSnippet:v4];
+    [(SiriAcousticIdSongTagViewController *)v5 setSnippet:snippetCopy];
     [(SiriAcousticIdSongTagViewController *)v6 setDefaultViewInsets:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
     v7 = +[MPMusicPlayerController systemMusicPlayer];
     [v7 beginGeneratingPlaybackNotifications];
@@ -53,36 +53,36 @@
   [(SiriAcousticIdSongTagViewController *)&v5 dealloc];
 }
 
-- (void)configureReusableHeaderView:(id)a3
+- (void)configureReusableHeaderView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v19.receiver = self;
   v19.super_class = SiriAcousticIdSongTagViewController;
-  [(SiriAcousticIdSongTagViewController *)&v19 configureReusableHeaderView:v4];
-  v5 = v4;
+  [(SiriAcousticIdSongTagViewController *)&v19 configureReusableHeaderView:viewCopy];
+  v5 = viewCopy;
   v6 = 1;
   [(SiriAcousticIdHeaderView *)v5 setPlayButtonState:1];
   [(SiriAcousticIdHeaderView *)v5 setDelegate:self];
-  v7 = [(SAAISongTagSnippet *)self->_songTagSnippet songTag];
-  v8 = [v7 previewImage];
-  v9 = [v8 resourceUrl];
-  [(SiriAcousticIdHeaderView *)v5 setAlbumArt:v9];
+  songTag = [(SAAISongTagSnippet *)self->_songTagSnippet songTag];
+  previewImage = [songTag previewImage];
+  resourceUrl = [previewImage resourceUrl];
+  [(SiriAcousticIdHeaderView *)v5 setAlbumArt:resourceUrl];
 
-  v10 = [v7 title];
-  [(SiriAcousticIdHeaderView *)v5 setSongTitle:v10];
+  title = [songTag title];
+  [(SiriAcousticIdHeaderView *)v5 setSongTitle:title];
 
   v11 = [NSBundle bundleForClass:objc_opt_class()];
   v12 = [v11 siriUILocalizedStringForKey:@"ARTIST_FORMAT %@"];
-  v13 = [v7 artist];
-  v14 = [NSString stringWithFormat:v12, v13];
+  artist = [songTag artist];
+  v14 = [NSString stringWithFormat:v12, artist];
 
   [(SiriAcousticIdHeaderView *)v5 setArtistString:v14];
-  v15 = [(SAAISongTagSnippet *)self->_songTagSnippet purchaseSongPunchOut];
+  purchaseSongPunchOut = [(SAAISongTagSnippet *)self->_songTagSnippet purchaseSongPunchOut];
 
-  if (!v15)
+  if (!purchaseSongPunchOut)
   {
-    v16 = [(SAAISongTagSnippet *)self->_songTagSnippet playbackButton];
-    v17 = v16 != 0;
+    playbackButton = [(SAAISongTagSnippet *)self->_songTagSnippet playbackButton];
+    v17 = playbackButton != 0;
 
     v6 = 2 * v17;
   }
@@ -95,30 +95,30 @@
 
 - (BOOL)_displaysFooterView
 {
-  v2 = [(SAAISongTagSnippet *)self->_songTagSnippet attributionPunchOut];
-  v3 = v2 != 0;
+  attributionPunchOut = [(SAAISongTagSnippet *)self->_songTagSnippet attributionPunchOut];
+  v3 = attributionPunchOut != 0;
 
   return v3;
 }
 
 - (id)_playbackStoreID
 {
-  v2 = [(SAAISongTagSnippet *)self->_songTagSnippet songTag];
-  v3 = [v2 adamId];
+  songTag = [(SAAISongTagSnippet *)self->_songTagSnippet songTag];
+  adamId = [songTag adamId];
 
-  return v3;
+  return adamId;
 }
 
 - (BOOL)_isNowPlayingCurrentStoreID
 {
   v3 = +[MPMusicPlayerController systemMusicPlayer];
-  v4 = [v3 nowPlayingItem];
-  v5 = [v4 playbackStoreID];
+  nowPlayingItem = [v3 nowPlayingItem];
+  playbackStoreID = [nowPlayingItem playbackStoreID];
 
-  if (v5)
+  if (playbackStoreID)
   {
-    v6 = [(SiriAcousticIdSongTagViewController *)self _playbackStoreID];
-    v7 = [v5 isEqualToString:v6];
+    _playbackStoreID = [(SiriAcousticIdSongTagViewController *)self _playbackStoreID];
+    v7 = [playbackStoreID isEqualToString:_playbackStoreID];
   }
 
   else
@@ -144,26 +144,26 @@
   return v2;
 }
 
-- (void)configureReusableFooterView:(id)a3
+- (void)configureReusableFooterView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v7.receiver = self;
   v7.super_class = SiriAcousticIdSongTagViewController;
-  [(SiriAcousticIdSongTagViewController *)&v7 configureReusableHeaderView:v4];
-  v5 = v4;
+  [(SiriAcousticIdSongTagViewController *)&v7 configureReusableHeaderView:viewCopy];
+  v5 = viewCopy;
   [v5 setDelegate:self];
-  v6 = [(SAAISongTagSnippet *)self->_songTagSnippet attributionPunchOut];
-  [v5 setAttributionPunchOut:v6];
+  attributionPunchOut = [(SAAISongTagSnippet *)self->_songTagSnippet attributionPunchOut];
+  [v5 setAttributionPunchOut:attributionPunchOut];
 }
 
-- (void)setSnippet:(id)a3
+- (void)setSnippet:(id)snippet
 {
-  v8 = a3;
-  objc_storeStrong(&self->_songTagSnippet, a3);
-  v5 = [(SAAISongTagSnippet *)self->_songTagSnippet songDetailsPunchOut];
-  if (v5)
+  snippetCopy = snippet;
+  objc_storeStrong(&self->_songTagSnippet, snippet);
+  songDetailsPunchOut = [(SAAISongTagSnippet *)self->_songTagSnippet songDetailsPunchOut];
+  if (songDetailsPunchOut)
   {
-    [(SiriAcousticIdSongTagViewController *)self setHeaderPunchOut:v5];
+    [(SiriAcousticIdSongTagViewController *)self setHeaderPunchOut:songDetailsPunchOut];
   }
 
   [(SiriAcousticIdSongTagViewController *)self setShowHeaderChevron:0];
@@ -172,58 +172,58 @@
   self->_buttons = v6;
 }
 
-- (void)attributionFooterViewButtonWasTapped:(id)a3
+- (void)attributionFooterViewButtonWasTapped:(id)tapped
 {
-  v4 = [(SAAISongTagSnippet *)self->_songTagSnippet attributionPunchOut];
-  if (v4)
+  attributionPunchOut = [(SAAISongTagSnippet *)self->_songTagSnippet attributionPunchOut];
+  if (attributionPunchOut)
   {
-    v5 = [(SiriAcousticIdSongTagViewController *)self delegate];
-    v7 = v4;
+    delegate = [(SiriAcousticIdSongTagViewController *)self delegate];
+    v7 = attributionPunchOut;
     v6 = [NSArray arrayWithObjects:&v7 count:1];
-    [v5 siriViewController:self performAceCommands:v6];
+    [delegate siriViewController:self performAceCommands:v6];
   }
 }
 
-- (void)headerViewOpenButtonWasTapped:(id)a3
+- (void)headerViewOpenButtonWasTapped:(id)tapped
 {
-  v4 = [(SAAISongTagSnippet *)self->_songTagSnippet purchaseSongPunchOut];
-  if (v4)
+  purchaseSongPunchOut = [(SAAISongTagSnippet *)self->_songTagSnippet purchaseSongPunchOut];
+  if (purchaseSongPunchOut)
   {
-    v5 = [(SiriAcousticIdSongTagViewController *)self delegate];
-    v7 = v4;
+    delegate = [(SiriAcousticIdSongTagViewController *)self delegate];
+    v7 = purchaseSongPunchOut;
     v6 = [NSArray arrayWithObjects:&v7 count:1];
-    [v5 siriViewController:self performAceCommands:v6];
+    [delegate siriViewController:self performAceCommands:v6];
   }
 }
 
-- (void)headerViewPlayButtonWasTapped:(id)a3
+- (void)headerViewPlayButtonWasTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(SiriAcousticIdSongTagViewController *)self _playbackStoreID];
-  if (v5)
+  tappedCopy = tapped;
+  _playbackStoreID = [(SiriAcousticIdSongTagViewController *)self _playbackStoreID];
+  if (_playbackStoreID)
   {
     v6 = +[MPMusicPlayerController systemMusicPlayer];
-    v7 = [(SiriAcousticIdSongTagViewController *)self _isNowPlayingCurrentStoreID];
-    if ([v6 playbackState] != &dword_0 + 1 || v7 == 0)
+    _isNowPlayingCurrentStoreID = [(SiriAcousticIdSongTagViewController *)self _isNowPlayingCurrentStoreID];
+    if ([v6 playbackState] != &dword_0 + 1 || _isNowPlayingCurrentStoreID == 0)
     {
-      if ((([v6 playbackState] == &dword_0 + 2) & v7) == 1)
+      if ((([v6 playbackState] == &dword_0 + 2) & _isNowPlayingCurrentStoreID) == 1)
       {
         [v6 play];
       }
 
       else if ([(SiriAcousticIdHeaderView *)self->_acousticIdHeaderView playButtonState])
       {
-        v13 = v5;
+        v13 = _playbackStoreID;
         v10 = [NSArray arrayWithObjects:&v13 count:1];
         [v6 setQueueWithStoreIDs:v10];
 
-        [v4 setPlayButtonState:0];
+        [tappedCopy setPlayButtonState:0];
         v11[0] = _NSConcreteStackBlock;
         v11[1] = 3221225472;
         v11[2] = sub_35B8;
         v11[3] = &unk_82E8;
         v11[4] = v6;
-        v12 = v4;
+        v12 = tappedCopy;
         [v6 prepareToPlayWithCompletionHandler:v11];
       }
 
@@ -253,7 +253,7 @@
   }
 }
 
-- (void)_handleMusicPlayerControllerNowPlayingItemDidChange:(id)a3
+- (void)_handleMusicPlayerControllerNowPlayingItemDidChange:(id)change
 {
   if ([(SiriAcousticIdSongTagViewController *)self _isNowPlayingCurrentStoreID]|| [(SiriAcousticIdHeaderView *)self->_acousticIdHeaderView playButtonState]!= &dword_0 + 2)
   {
@@ -273,8 +273,8 @@
 - (void)_updatePlaybackState
 {
   v3 = +[MPMusicPlayerController systemMusicPlayer];
-  v4 = [(SiriAcousticIdSongTagViewController *)self _playbackStoreID];
-  if (v4)
+  _playbackStoreID = [(SiriAcousticIdSongTagViewController *)self _playbackStoreID];
+  if (_playbackStoreID)
   {
     if ([v3 playbackState] == &dword_0 + 1 && -[SiriAcousticIdSongTagViewController _isNowPlayingCurrentStoreID](self, "_isNowPlayingCurrentStoreID"))
     {
@@ -308,9 +308,9 @@
 - (void)_updatePlaybackPosition
 {
   v3 = +[MPMusicPlayerController systemMusicPlayer];
-  v4 = [(SiriAcousticIdSongTagViewController *)self _playbackStoreID];
-  v5 = [v3 nowPlayingItem];
-  if (v4)
+  _playbackStoreID = [(SiriAcousticIdSongTagViewController *)self _playbackStoreID];
+  nowPlayingItem = [v3 nowPlayingItem];
+  if (_playbackStoreID)
   {
     if ([v3 playbackState] == &dword_0 + 1)
     {
@@ -318,7 +318,7 @@
       {
         [v3 currentPlaybackTime];
         v7 = v6;
-        v8 = [v5 valueForProperty:MPMediaItemPropertyPlaybackDuration];
+        v8 = [nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration];
         [v8 doubleValue];
         v10 = v9;
 

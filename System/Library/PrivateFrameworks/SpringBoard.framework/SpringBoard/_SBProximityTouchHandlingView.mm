@@ -1,23 +1,23 @@
 @interface _SBProximityTouchHandlingView
 - (double)statusBarHeight;
 - (id)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)setDelegate:(id *)result;
 - (uint64_t)setStatusBarHeight:(uint64_t)result;
 @end
 
 @implementation _SBProximityTouchHandlingView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v24 = *MEMORY[0x277D85DE8];
   BSFloatLessThanOrEqualToFloat();
   if (BSFloatGreaterThanOrEqualToFloat() && BSFloatLessThanFloat() && (-[_SBProximityTouchHandlingView window](self, "window"), v7 = objc_claimAutoreleasedReturnValue(), [v7 screen], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "bounds"), v9 = BSFloatLessThanFloat(), v8, v7, v9))
   {
-    v15 = [(_SBProximityTouchHandlingView *)&self->super.super.super.isa delegate];
-    [v15 didHitAllowedRegion:{x, y}];
+    delegate = [(_SBProximityTouchHandlingView *)&self->super.super.super.isa delegate];
+    [delegate didHitAllowedRegion:{x, y}];
 
     v10 = 1;
   }
@@ -44,15 +44,15 @@
 
   if (v10)
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)delegate
@@ -78,9 +78,9 @@
 
 - (double)statusBarHeight
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 416);
+    return *(self + 416);
   }
 
   else

@@ -1,36 +1,36 @@
 @interface HDHealthRecordClinicalItem
-- (HDHealthRecordClinicalItem)initWithRepresentedResource:(id)a3 clinicalType:(id)a4 rulesVersion:(id)a5;
-- (id)_medicalRecordPropertyArrayFromKey:(id)a3 expectedClass:(Class)a4 error:(id *)a5;
-- (id)_medicalRecordPropertyFromKey:(id)a3 expectedClass:(Class)a4 error:(id *)a5;
-- (id)correspondingClinicalTypeWithError:(id *)a3;
-- (id)medicalRecordPropertyValueForKey:(id)a3 expectedClass:(Class)a4 isArray:(BOOL)a5 error:(id *)a6;
-- (void)assignExtractedMedicalRecord:(id)a3;
+- (HDHealthRecordClinicalItem)initWithRepresentedResource:(id)resource clinicalType:(id)type rulesVersion:(id)version;
+- (id)_medicalRecordPropertyArrayFromKey:(id)key expectedClass:(Class)class error:(id *)error;
+- (id)_medicalRecordPropertyFromKey:(id)key expectedClass:(Class)class error:(id *)error;
+- (id)correspondingClinicalTypeWithError:(id *)error;
+- (id)medicalRecordPropertyValueForKey:(id)key expectedClass:(Class)class isArray:(BOOL)array error:(id *)error;
+- (void)assignExtractedMedicalRecord:(id)record;
 @end
 
 @implementation HDHealthRecordClinicalItem
 
-- (HDHealthRecordClinicalItem)initWithRepresentedResource:(id)a3 clinicalType:(id)a4 rulesVersion:(id)a5
+- (HDHealthRecordClinicalItem)initWithRepresentedResource:(id)resource clinicalType:(id)type rulesVersion:(id)version
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  resourceCopy = resource;
+  typeCopy = type;
+  versionCopy = version;
   v27.receiver = self;
   v27.super_class = HDHealthRecordClinicalItem;
   v12 = [(HDHealthRecordClinicalItem *)&v27 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_representedResource, a3);
-    v14 = [v9 JSONObject];
-    v15 = [v14 copy];
+    objc_storeStrong(&v12->_representedResource, resource);
+    jSONObject = [resourceCopy JSONObject];
+    v15 = [jSONObject copy];
     originalAttributes = v13->_originalAttributes;
     v13->_originalAttributes = v15;
 
-    v17 = [v10 copy];
+    v17 = [typeCopy copy];
     clinicalType = v13->_clinicalType;
     v13->_clinicalType = v17;
 
-    v19 = [v11 copy];
+    v19 = [versionCopy copy];
     rulesVersion = v13->_rulesVersion;
     v13->_rulesVersion = v19;
 
@@ -38,8 +38,8 @@
     medicalRecordProperties = v13->_medicalRecordProperties;
     v13->_medicalRecordProperties = v21;
 
-    v23 = [v9 country];
-    v24 = [v23 copy];
+    country = [resourceCopy country];
+    v24 = [country copy];
     country = v13->_country;
     v13->_country = v24;
   }
@@ -47,45 +47,45 @@
   return v13;
 }
 
-- (id)correspondingClinicalTypeWithError:(id *)a3
+- (id)correspondingClinicalTypeWithError:(id *)error
 {
   if (!self->_extractedMedicalRecord)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 description:@"can only determine corresponding clinical types after medical record extraction has produced a medical record"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"can only determine corresponding clinical types after medical record extraction has produced a medical record"];
     v6 = 0;
     goto LABEL_21;
   }
 
-  v5 = [(HDHealthRecordClinicalType *)self->_clinicalType type];
+  type = [(HDHealthRecordClinicalType *)self->_clinicalType type];
   v6 = 0;
-  if (v5 <= 4)
+  if (type <= 4)
   {
-    if (v5 <= 1)
+    if (type <= 1)
     {
-      if (v5)
+      if (type)
       {
-        if (v5 != 1)
+        if (type != 1)
         {
           goto LABEL_21;
         }
 
-        v7 = [MEMORY[0x277CCD118] clinicalNoteRecordType];
+        clinicalNoteRecordType = [MEMORY[0x277CCD118] clinicalNoteRecordType];
       }
 
       else
       {
-        v7 = [MEMORY[0x277CCD118] allergyRecordType];
+        clinicalNoteRecordType = [MEMORY[0x277CCD118] allergyRecordType];
       }
     }
 
-    else if (v5 == 2)
+    else if (type == 2)
     {
-      v7 = [MEMORY[0x277CCD118] conditionRecordType];
+      clinicalNoteRecordType = [MEMORY[0x277CCD118] conditionRecordType];
     }
 
     else
     {
-      if (v5 == 3)
+      if (type == 3)
       {
         [MEMORY[0x277CCD118] coverageRecordType];
       }
@@ -94,28 +94,28 @@
       {
         [MEMORY[0x277CCD118] immunizationRecordType];
       }
-      v7 = ;
+      clinicalNoteRecordType = ;
     }
 
     goto LABEL_20;
   }
 
-  if ((v5 - 5) < 3)
+  if ((type - 5) < 3)
   {
-    v7 = [MEMORY[0x277CCD118] medicationRecordType];
+    clinicalNoteRecordType = [MEMORY[0x277CCD118] medicationRecordType];
 LABEL_20:
-    v6 = v7;
+    v6 = clinicalNoteRecordType;
     goto LABEL_21;
   }
 
-  if (v5 != 8)
+  if (type != 8)
   {
-    if (v5 != 11)
+    if (type != 11)
     {
       goto LABEL_21;
     }
 
-    v7 = [MEMORY[0x277CCD118] procedureRecordType];
+    clinicalNoteRecordType = [MEMORY[0x277CCD118] procedureRecordType];
     goto LABEL_20;
   }
 
@@ -129,11 +129,11 @@ LABEL_20:
     v14 = v11;
     if (v14)
     {
-      if (a3)
+      if (error)
       {
         v18 = v14;
         v6 = 0;
-        *a3 = v14;
+        *error = v14;
         goto LABEL_34;
       }
 
@@ -145,14 +145,14 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v13 = [v10 category];
+  category = [v10 category];
   v14 = HKDiagnosticTestResultCategoryFromNSString();
 
   if (!v14 || (HKClinicalTypeForDiagnosticTestResultCategory(), (v15 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v16 = MEMORY[0x277CCA9B8];
-    v17 = [v10 category];
-    [v16 hk_assignError:a3 code:3 format:{@"unsupported Observation category: %@", v17}];
+    category2 = [v10 category];
+    [v16 hk_assignError:error code:3 format:{@"unsupported Observation category: %@", category2}];
 
     goto LABEL_33;
   }
@@ -165,9 +165,9 @@ LABEL_21:
   return v6;
 }
 
-- (void)assignExtractedMedicalRecord:(id)a3
+- (void)assignExtractedMedicalRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   if (self->_extractedMedicalRecord)
   {
     _HKInitializeLogging();
@@ -178,14 +178,14 @@ LABEL_21:
     }
   }
 
-  [(HDHealthRecordClinicalItem *)self setExtractedMedicalRecord:v4];
+  [(HDHealthRecordClinicalItem *)self setExtractedMedicalRecord:recordCopy];
 }
 
-- (id)_medicalRecordPropertyFromKey:(id)a3 expectedClass:(Class)a4 error:(id *)a5
+- (id)_medicalRecordPropertyFromKey:(id)key expectedClass:(Class)class error:(id *)error
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(NSMutableDictionary *)self->_medicalRecordProperties objectForKeyedSubscript:v8];
+  keyCopy = key;
+  v9 = [(NSMutableDictionary *)self->_medicalRecordProperties objectForKeyedSubscript:keyCopy];
   if (v9)
   {
     if (objc_opt_isKindOfClass())
@@ -194,12 +194,12 @@ LABEL_21:
       goto LABEL_10;
     }
 
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"expected %@ but found %@", a4, objc_opt_class()];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"expected %@ but found %@", class, objc_opt_class()];
     v12 = MEMORY[0x277CCA9B8];
     v13 = *MEMORY[0x277CCA450];
     v20[0] = @"propertyName";
     v20[1] = v13;
-    v21[0] = v8;
+    v21[0] = keyCopy;
     v21[1] = v11;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
     v15 = [v12 errorWithDomain:@"HDHealthRecordsServiceErrorDomain" code:202 userInfo:v14];
@@ -207,10 +207,10 @@ LABEL_21:
     v16 = v15;
     if (v16)
     {
-      if (a5)
+      if (error)
       {
         v17 = v16;
-        *a5 = v16;
+        *error = v16;
       }
 
       else
@@ -228,11 +228,11 @@ LABEL_10:
   return v10;
 }
 
-- (id)_medicalRecordPropertyArrayFromKey:(id)a3 expectedClass:(Class)a4 error:(id *)a5
+- (id)_medicalRecordPropertyArrayFromKey:(id)key expectedClass:(Class)class error:(id *)error
 {
   v40[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(NSMutableDictionary *)self->_medicalRecordProperties objectForKeyedSubscript:v8];
+  keyCopy = key;
+  v9 = [(NSMutableDictionary *)self->_medicalRecordProperties objectForKeyedSubscript:keyCopy];
   if (v9)
   {
     objc_opt_class();
@@ -263,12 +263,12 @@ LABEL_10:
               v16 = *(*(&v32 + 1) + 8 * i);
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"array contents expected %@ but found %@", a4, objc_opt_class(), v32];
+                v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"array contents expected %@ but found %@", class, objc_opt_class(), v32];
                 v24 = MEMORY[0x277CCA9B8];
                 v25 = *MEMORY[0x277CCA450];
                 v36[0] = @"propertyName";
                 v36[1] = v25;
-                v37[0] = v8;
+                v37[0] = keyCopy;
                 v37[1] = v23;
                 v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
                 v27 = [v24 errorWithDomain:@"HDHealthRecordsServiceErrorDomain" code:203 userInfo:v26];
@@ -276,10 +276,10 @@ LABEL_10:
                 v28 = v27;
                 if (v28)
                 {
-                  if (a5)
+                  if (error)
                   {
                     v29 = v28;
-                    *a5 = v28;
+                    *error = v28;
                   }
 
                   else
@@ -318,7 +318,7 @@ LABEL_10:
       v19 = *MEMORY[0x277CCA450];
       v39[0] = @"propertyName";
       v39[1] = v19;
-      v40[0] = v8;
+      v40[0] = keyCopy;
       v40[1] = v10;
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:v39 count:2];
       v21 = [v18 errorWithDomain:@"HDHealthRecordsServiceErrorDomain" code:202 userInfo:v20];
@@ -326,10 +326,10 @@ LABEL_10:
       v11 = v21;
       if (v11)
       {
-        if (a5)
+        if (error)
         {
           v22 = v11;
-          *a5 = v11;
+          *error = v11;
         }
 
         else
@@ -353,16 +353,16 @@ LABEL_25:
   return v17;
 }
 
-- (id)medicalRecordPropertyValueForKey:(id)a3 expectedClass:(Class)a4 isArray:(BOOL)a5 error:(id *)a6
+- (id)medicalRecordPropertyValueForKey:(id)key expectedClass:(Class)class isArray:(BOOL)array error:(id *)error
 {
-  if (a5)
+  if (array)
   {
-    [(HDHealthRecordClinicalItem *)self _medicalRecordPropertyArrayFromKey:a3 expectedClass:a4 error:a6];
+    [(HDHealthRecordClinicalItem *)self _medicalRecordPropertyArrayFromKey:key expectedClass:class error:error];
   }
 
   else
   {
-    [(HDHealthRecordClinicalItem *)self _medicalRecordPropertyFromKey:a3 expectedClass:a4 error:a6];
+    [(HDHealthRecordClinicalItem *)self _medicalRecordPropertyFromKey:key expectedClass:class error:error];
   }
   v6 = ;
 

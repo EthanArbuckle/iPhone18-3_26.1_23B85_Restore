@@ -25,15 +25,15 @@
 
     v6 = [MEMORY[0x277D41DA0] freeValuedPropertyWithName:@"locale"];
     v7 = TIStatisticsCategoryToLegacyCategoryDictionary();
-    v83 = [v7 allKeys];
+    allKeys = [v7 allKeys];
 
     v8 = TIStatisticsDescriptionToLegacyDescriptionDictionary();
-    v82 = [v8 allKeys];
+    allKeys2 = [v8 allKeys];
 
     v9 = TIStatisticsEngagementDescriptionToLegacyDescriptionDictionary();
-    v81 = [v9 allKeys];
+    allKeys3 = [v9 allKeys];
 
-    v84 = [MEMORY[0x277D41DA0] propertyWithName:@"category" possibleValues:v83];
+    v84 = [MEMORY[0x277D41DA0] propertyWithName:@"category" possibleValues:allKeys];
     v85 = [MEMORY[0x277D41DA0] propertyWithName:@"count" possibleValues:&unk_28400B928];
     v10 = MEMORY[0x277D41DA0];
     v104[0] = &unk_28400BCA0;
@@ -45,8 +45,8 @@
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v105 forKeys:v104 count:3];
     v86 = [v10 propertyWithName:@"reason" enumMapping:v11];
 
-    v12 = [MEMORY[0x277D41DA0] propertyWithName:@"description" possibleValues:v82];
-    v88 = [MEMORY[0x277D41DA0] propertyWithName:@"description" possibleValues:v81];
+    v12 = [MEMORY[0x277D41DA0] propertyWithName:@"description" possibleValues:allKeys2];
+    v88 = [MEMORY[0x277D41DA0] propertyWithName:@"description" possibleValues:allKeys3];
     v87 = [MEMORY[0x277D41DA0] propertyWithName:@"position" possibleValues:&unk_28400B940];
     v80 = [MEMORY[0x277D41DA0] propertyWithName:@"position" possibleValues:&unk_28400B958];
     v13 = [MEMORY[0x277D41DA0] freeValuedPropertyWithName:@"fieldType"];

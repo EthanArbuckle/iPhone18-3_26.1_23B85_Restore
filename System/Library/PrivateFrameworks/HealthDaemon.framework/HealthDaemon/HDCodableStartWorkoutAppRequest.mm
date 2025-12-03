@@ -1,12 +1,12 @@
 @interface HDCodableStartWorkoutAppRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableStartWorkoutAppRequest
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableStartWorkoutAppRequest;
   v4 = [(HDCodableStartWorkoutAppRequest *)&v8 description];
-  v5 = [(HDCodableStartWorkoutAppRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableStartWorkoutAppRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   requestIdentifier = self->_requestIdentifier;
   if (requestIdentifier)
   {
-    [v3 setObject:requestIdentifier forKey:@"requestIdentifier"];
+    [dictionary setObject:requestIdentifier forKey:@"requestIdentifier"];
   }
 
   applicationIdentifier = self->_applicationIdentifier;
@@ -42,8 +42,8 @@
   workoutConfiguration = self->_workoutConfiguration;
   if (workoutConfiguration)
   {
-    v8 = [(HDCodableWorkoutConfiguration *)workoutConfiguration dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"workoutConfiguration"];
+    dictionaryRepresentation = [(HDCodableWorkoutConfiguration *)workoutConfiguration dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"workoutConfiguration"];
   }
 
   workoutPlanData = self->_workoutPlanData;
@@ -61,109 +61,109 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_requestIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_applicationIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_workoutConfiguration)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_workoutPlanData)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mirroredStartData)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_requestIdentifier)
   {
-    [v4 setRequestIdentifier:?];
-    v4 = v5;
+    [toCopy setRequestIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_applicationIdentifier)
   {
     [v5 setApplicationIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_workoutConfiguration)
   {
     [v5 setWorkoutConfiguration:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_workoutPlanData)
   {
     [v5 setWorkoutPlanData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mirroredStartData)
   {
     [v5 setMirroredStartData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_requestIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_requestIdentifier copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_applicationIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_applicationIdentifier copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(HDCodableWorkoutConfiguration *)self->_workoutConfiguration copyWithZone:a3];
+  v10 = [(HDCodableWorkoutConfiguration *)self->_workoutConfiguration copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
-  v12 = [(NSData *)self->_workoutPlanData copyWithZone:a3];
+  v12 = [(NSData *)self->_workoutPlanData copyWithZone:zone];
   v13 = v5[5];
   v5[5] = v12;
 
-  v14 = [(NSData *)self->_mirroredStartData copyWithZone:a3];
+  v14 = [(NSData *)self->_mirroredStartData copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((requestIdentifier = self->_requestIdentifier, !(requestIdentifier | v4[3])) || -[NSString isEqual:](requestIdentifier, "isEqual:")) && ((applicationIdentifier = self->_applicationIdentifier, !(applicationIdentifier | v4[1])) || -[NSString isEqual:](applicationIdentifier, "isEqual:")) && ((workoutConfiguration = self->_workoutConfiguration, !(workoutConfiguration | v4[4])) || -[HDCodableWorkoutConfiguration isEqual:](workoutConfiguration, "isEqual:")) && ((workoutPlanData = self->_workoutPlanData, !(workoutPlanData | v4[5])) || -[NSData isEqual:](workoutPlanData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((requestIdentifier = self->_requestIdentifier, !(requestIdentifier | equalCopy[3])) || -[NSString isEqual:](requestIdentifier, "isEqual:")) && ((applicationIdentifier = self->_applicationIdentifier, !(applicationIdentifier | equalCopy[1])) || -[NSString isEqual:](applicationIdentifier, "isEqual:")) && ((workoutConfiguration = self->_workoutConfiguration, !(workoutConfiguration | equalCopy[4])) || -[HDCodableWorkoutConfiguration isEqual:](workoutConfiguration, "isEqual:")) && ((workoutPlanData = self->_workoutPlanData, !(workoutPlanData | equalCopy[5])) || -[NSData isEqual:](workoutPlanData, "isEqual:")))
   {
     mirroredStartData = self->_mirroredStartData;
-    if (mirroredStartData | v4[2])
+    if (mirroredStartData | equalCopy[2])
     {
       v10 = [(NSData *)mirroredStartData isEqual:?];
     }
@@ -191,21 +191,21 @@
   return v6 ^ [(NSData *)self->_mirroredStartData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v6 = a3;
-  if (v6[3])
+  fromCopy = from;
+  if (fromCopy[3])
   {
     [(HDCodableStartWorkoutAppRequest *)self setRequestIdentifier:?];
   }
 
-  if (v6[1])
+  if (fromCopy[1])
   {
     [(HDCodableStartWorkoutAppRequest *)self setApplicationIdentifier:?];
   }
 
   workoutConfiguration = self->_workoutConfiguration;
-  v5 = v6[4];
+  v5 = fromCopy[4];
   if (workoutConfiguration)
   {
     if (v5)
@@ -219,12 +219,12 @@
     [(HDCodableStartWorkoutAppRequest *)self setWorkoutConfiguration:?];
   }
 
-  if (v6[5])
+  if (fromCopy[5])
   {
     [(HDCodableStartWorkoutAppRequest *)self setWorkoutPlanData:?];
   }
 
-  if (v6[2])
+  if (fromCopy[2])
   {
     [(HDCodableStartWorkoutAppRequest *)self setMirroredStartData:?];
   }

@@ -1,34 +1,34 @@
 @interface WFOnScreenContent
-- (WFOnScreenContent)initWithCoder:(id)a3;
-- (WFOnScreenContent)initWithURL:(id)a3 file:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (WFOnScreenContent)initWithCoder:(id)coder;
+- (WFOnScreenContent)initWithURL:(id)l file:(id)file;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFOnScreenContent
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(WFOnScreenContent *)self URL];
-  [v4 encodeObject:v5 forKey:@"URL"];
+  [coderCopy encodeObject:v5 forKey:@"URL"];
 
-  v6 = [(WFOnScreenContent *)self file];
-  [v4 encodeObject:v6 forKey:@"file"];
+  file = [(WFOnScreenContent *)self file];
+  [coderCopy encodeObject:file forKey:@"file"];
 }
 
-- (WFOnScreenContent)initWithCoder:(id)a3
+- (WFOnScreenContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = WFOnScreenContent;
   v5 = [(WFOnScreenContent *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
     URL = v5->_URL;
     v5->_URL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"file"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"file"];
     file = v5->_file;
     v5->_file = v8;
 
@@ -38,14 +38,14 @@
   return v5;
 }
 
-- (WFOnScreenContent)initWithURL:(id)a3 file:(id)a4
+- (WFOnScreenContent)initWithURL:(id)l file:(id)file
 {
-  v8 = a3;
-  v9 = a4;
-  if (!(v8 | v9))
+  lCopy = l;
+  fileCopy = file;
+  if (!(lCopy | fileCopy))
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFOnScreenContent.m" lineNumber:18 description:@"WFOnScreenContent must be initialized with a URL or a file"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFOnScreenContent.m" lineNumber:18 description:@"WFOnScreenContent must be initialized with a URL or a file"];
   }
 
   v15.receiver = self;
@@ -54,8 +54,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_URL, a3);
-    objc_storeStrong(&v11->_file, a4);
+    objc_storeStrong(&v10->_URL, l);
+    objc_storeStrong(&v11->_file, file);
     v12 = v11;
   }
 

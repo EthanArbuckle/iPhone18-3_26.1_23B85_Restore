@@ -1,51 +1,51 @@
 @interface CAMZoomSlider
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)isAutozooming;
 - (BOOL)shouldHideForExpiredVisibilityTimer;
-- (CAMZoomSlider)initWithCoder:(id)a3;
-- (CAMZoomSlider)initWithFrame:(CGRect)a3;
-- (CAMZoomSlider)initWithLayoutStyle:(int64_t)a3;
+- (CAMZoomSlider)initWithCoder:(id)coder;
+- (CAMZoomSlider)initWithFrame:(CGRect)frame;
+- (CAMZoomSlider)initWithLayoutStyle:(int64_t)style;
 - (CAMZoomSliderDelegate)delegate;
-- (CGRect)maximumValueImageRectForBounds:(CGRect)a3;
-- (CGRect)minimumValueImageRectForBounds:(CGRect)a3;
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (CGRect)trackRectForBounds:(CGRect)a3;
+- (CGRect)maximumValueImageRectForBounds:(CGRect)bounds;
+- (CGRect)minimumValueImageRectForBounds:(CGRect)bounds;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)alignmentRectInsets;
-- (double)_thumbCenterXForValue:(float)a3 trackRect:(CGRect)a4;
-- (float)_valueForThumbCenterX:(double)a3 trackRect:(CGRect)a4;
-- (int64_t)locationOfTouch:(id)a3;
+- (double)_thumbCenterXForValue:(float)value trackRect:(CGRect)rect;
+- (float)_valueForThumbCenterX:(double)x trackRect:(CGRect)rect;
+- (int64_t)locationOfTouch:(id)touch;
 - (void)_beginAutozooming;
-- (void)_commonCAMZoomSliderInitializationWithLayoutStyle:(int64_t)a3;
+- (void)_commonCAMZoomSliderInitializationWithLayoutStyle:(int64_t)style;
 - (void)_endAutozooming;
-- (void)_handleTouchUpInside:(id)a3;
-- (void)_hideZoomSlider:(id)a3;
-- (void)_makeInvisibleAnimationDuration:(double)a3;
-- (void)_setMaximumAutozooming:(BOOL)a3;
-- (void)_setMinimumAutozooming:(BOOL)a3;
+- (void)_handleTouchUpInside:(id)inside;
+- (void)_hideZoomSlider:(id)slider;
+- (void)_makeInvisibleAnimationDuration:(double)duration;
+- (void)_setMaximumAutozooming:(BOOL)autozooming;
+- (void)_setMinimumAutozooming:(BOOL)autozooming;
 - (void)_startVisibilityTimer;
 - (void)_stopVisibilityTimer;
 - (void)_updateAutozooming;
 - (void)_updateForLayoutStyle;
-- (void)cancelTrackingWithEvent:(id)a3;
+- (void)cancelTrackingWithEvent:(id)event;
 - (void)dealloc;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)makeInvisibleAnimated:(BOOL)a3;
-- (void)makeVisibleAnimated:(BOOL)a3;
-- (void)setLayoutStyle:(int64_t)a3;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setVisibilityTimerSuspended:(BOOL)a3;
+- (void)makeInvisibleAnimated:(BOOL)animated;
+- (void)makeVisibleAnimated:(BOOL)animated;
+- (void)setLayoutStyle:(int64_t)style;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setVisibilityTimerSuspended:(BOOL)suspended;
 @end
 
 @implementation CAMZoomSlider
 
-- (void)_commonCAMZoomSliderInitializationWithLayoutStyle:(int64_t)a3
+- (void)_commonCAMZoomSliderInitializationWithLayoutStyle:(int64_t)style
 {
-  self->_layoutStyle = a3;
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [(CAMZoomSlider *)self setBackgroundColor:v4];
+  self->_layoutStyle = style;
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(CAMZoomSlider *)self setBackgroundColor:clearColor];
 
   self->__autozooming = 0;
   self->_minimumAutozooming = 0;
@@ -55,8 +55,8 @@
   v9 = +[CAMCaptureCapabilities capabilities];
   if ([v9 allowHaptics])
   {
-    v5 = [MEMORY[0x1E69DD4B0] sliderConfiguration];
-    v6 = [v5 tweakedConfigurationForCaller:self usage:@"zoomSlider"];
+    sliderConfiguration = [MEMORY[0x1E69DD4B0] sliderConfiguration];
+    v6 = [sliderConfiguration tweakedConfigurationForCaller:self usage:@"zoomSlider"];
 
     v7 = [MEMORY[0x1E69DD470] feedbackWithDictionaryRepresentation:&unk_1F16C8FE8];
     [v6 setUserInteractingThresholdFeedback:v7];
@@ -87,7 +87,7 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
   [v6 setVolume:v5];
 }
 
-- (CAMZoomSlider)initWithLayoutStyle:(int64_t)a3
+- (CAMZoomSlider)initWithLayoutStyle:(int64_t)style
 {
   v8.receiver = self;
   v8.super_class = CAMZoomSlider;
@@ -95,27 +95,27 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
   v5 = v4;
   if (v4)
   {
-    [(CAMZoomSlider *)v4 _commonCAMZoomSliderInitializationWithLayoutStyle:a3];
+    [(CAMZoomSlider *)v4 _commonCAMZoomSliderInitializationWithLayoutStyle:style];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (CAMZoomSlider)initWithFrame:(CGRect)a3
+- (CAMZoomSlider)initWithFrame:(CGRect)frame
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-  return [(CAMZoomSlider *)self initWithLayoutStyle:v5];
+  return [(CAMZoomSlider *)self initWithLayoutStyle:cam_initialLayoutStyle];
 }
 
-- (CAMZoomSlider)initWithCoder:(id)a3
+- (CAMZoomSlider)initWithCoder:(id)coder
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-  return [(CAMZoomSlider *)self initWithLayoutStyle:v5];
+  return [(CAMZoomSlider *)self initWithLayoutStyle:cam_initialLayoutStyle];
 }
 
 - (void)dealloc
@@ -158,12 +158,12 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(CAMZoomSlider *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(CAMZoomSlider *)self _shouldReverseLayoutDirection];
   [(CAMZoomSlider *)self value];
   v20 = v19;
-  v21 = [(CAMZoomSlider *)self _minTrackView];
-  v22 = [(CAMZoomSlider *)self _maxTrackView];
-  if (v21)
+  _minTrackView = [(CAMZoomSlider *)self _minTrackView];
+  _maxTrackView = [(CAMZoomSlider *)self _maxTrackView];
+  if (_minTrackView)
   {
     minTrackMaskView = self->__minTrackMaskView;
     if (!minTrackMaskView)
@@ -173,18 +173,18 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
       v26 = self->__minTrackMaskView;
       self->__minTrackMaskView = v25;
 
-      v27 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UIView *)self->__minTrackMaskView setBackgroundColor:v27];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(UIView *)self->__minTrackMaskView setBackgroundColor:whiteColor];
 
       minTrackMaskView = self->__minTrackMaskView;
     }
 
-    v28 = [(UIView *)minTrackMaskView layer];
-    v29 = [v21 layer];
-    [v29 setMask:v28];
+    layer = [(UIView *)minTrackMaskView layer];
+    layer2 = [_minTrackView layer];
+    [layer2 setMask:layer];
   }
 
-  if (v22)
+  if (_maxTrackView)
   {
     maxTrackMaskView = self->__maxTrackMaskView;
     if (!maxTrackMaskView)
@@ -194,15 +194,15 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
       v33 = self->__maxTrackMaskView;
       self->__maxTrackMaskView = v32;
 
-      v34 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UIView *)self->__maxTrackMaskView setBackgroundColor:v34];
+      whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+      [(UIView *)self->__maxTrackMaskView setBackgroundColor:whiteColor2];
 
       maxTrackMaskView = self->__maxTrackMaskView;
     }
 
-    v35 = [(UIView *)maxTrackMaskView layer];
-    v36 = [v22 layer];
-    [v36 setMask:v35];
+    layer3 = [(UIView *)maxTrackMaskView layer];
+    layer4 = [_maxTrackView layer];
+    [layer4 setMask:layer3];
   }
 
   LODWORD(v88) = v20;
@@ -211,14 +211,14 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
   v40 = v39;
   v42 = v41;
   v44 = v43;
-  [v21 bounds];
-  [v21 convertRect:self toView:?];
+  [_minTrackView bounds];
+  [_minTrackView convertRect:self toView:?];
   v46 = v45;
   v91 = v47;
   v92 = v48;
   v50 = v49;
-  [v22 bounds];
-  [v22 convertRect:self toView:?];
+  [_maxTrackView bounds];
+  [_maxTrackView convertRect:self toView:?];
   v52 = v51;
   v90 = v53;
   v55 = v54;
@@ -234,7 +234,7 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
   v97.size.height = v44;
   v57 = CGRectGetMaxX(v97) + -1.0;
   v58 = v46;
-  if (v18)
+  if (_shouldReverseLayoutDirection)
   {
     v60 = v91;
     v59 = v92;
@@ -286,12 +286,12 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
     }
   }
 
-  [(CAMZoomSlider *)self convertRect:v21 toView:v46, v60, v50, v59];
+  [(CAMZoomSlider *)self convertRect:_minTrackView toView:v46, v60, v50, v59];
   v73 = v72;
   v75 = v74;
   v77 = v76;
   v79 = v78;
-  [(CAMZoomSlider *)self convertRect:v22 toView:v52, v65, v55, recta];
+  [(CAMZoomSlider *)self convertRect:_maxTrackView toView:v52, v65, v55, recta];
   v81 = v80;
   v83 = v82;
   v85 = v84;
@@ -300,14 +300,14 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
   [(UIView *)self->__maxTrackMaskView setFrame:v81, v83, v85, v87];
 }
 
-- (CGRect)minimumValueImageRectForBounds:(CGRect)a3
+- (CGRect)minimumValueImageRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CAMZoomSlider *)self minimumValueImage];
-  [v8 size];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  minimumValueImage = [(CAMZoomSlider *)self minimumValueImage];
+  [minimumValueImage size];
   v29 = v9;
   v11 = v10;
   [(CAMZoomSlider *)self trackRectForBounds:x, y, width, height];
@@ -317,12 +317,12 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
   [(CAMZoomSlider *)self alignmentRectInsets];
   v15 = v14;
   v17 = v16;
-  v18 = [(CAMZoomSlider *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(CAMZoomSlider *)self _shouldReverseLayoutDirection];
   v19 = x;
   v20 = y;
   v21 = width;
   v22 = height;
-  if (v18)
+  if (_shouldReverseLayoutDirection)
   {
     v23 = v29;
     v24 = CGRectGetMaxX(*&v19) - v29 - v17;
@@ -345,14 +345,14 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
   return result;
 }
 
-- (CGRect)maximumValueImageRectForBounds:(CGRect)a3
+- (CGRect)maximumValueImageRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CAMZoomSlider *)self maximumValueImage];
-  [v8 size];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  maximumValueImage = [(CAMZoomSlider *)self maximumValueImage];
+  [maximumValueImage size];
   v29 = v9;
   v11 = v10;
   [(CAMZoomSlider *)self trackRectForBounds:x, y, width, height];
@@ -362,12 +362,12 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
   [(CAMZoomSlider *)self alignmentRectInsets];
   v15 = v14;
   v17 = v16;
-  v18 = [(CAMZoomSlider *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(CAMZoomSlider *)self _shouldReverseLayoutDirection];
   v19 = x;
   v20 = y;
   v21 = width;
   v22 = height;
-  if (v18)
+  if (_shouldReverseLayoutDirection)
   {
     v23 = v15 + CGRectGetMinX(*&v19);
     v24 = v29;
@@ -390,25 +390,25 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
   return result;
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
-  width = a3.size.width;
-  height = a3.size.height;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  width = bounds.size.width;
+  height = bounds.size.height;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(CAMZoomSlider *)self alignmentRectInsets];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(CAMZoomSlider *)self minimumValueImage];
-  v15 = [(CAMZoomSlider *)self maximumValueImage];
-  [v14 size];
+  minimumValueImage = [(CAMZoomSlider *)self minimumValueImage];
+  maximumValueImage = [(CAMZoomSlider *)self maximumValueImage];
+  [minimumValueImage size];
   v17 = v16;
-  [v15 size];
+  [maximumValueImage size];
   v19 = v18;
-  v20 = [(CAMZoomSlider *)self _shouldReverseLayoutDirection];
-  if (v20)
+  _shouldReverseLayoutDirection = [(CAMZoomSlider *)self _shouldReverseLayoutDirection];
+  if (_shouldReverseLayoutDirection)
   {
     v21 = v19;
   }
@@ -418,7 +418,7 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
     v21 = v17;
   }
 
-  if (v20)
+  if (_shouldReverseLayoutDirection)
   {
     v22 = v17;
   }
@@ -455,17 +455,17 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
   return result;
 }
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = [(CAMZoomSlider *)self thumbImageForState:0, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = [(CAMZoomSlider *)self thumbImageForState:0, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [v10 size];
   v12 = v11;
   v14 = v13;
-  *&v11 = a5;
+  *&v11 = value;
   [(CAMZoomSlider *)self _thumbCenterXForValue:v11 trackRect:x, y, width, height];
   v16 = v15;
   v30.origin.x = x;
@@ -494,16 +494,16 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
   return result;
 }
 
-- (double)_thumbCenterXForValue:(float)a3 trackRect:(CGRect)a4
+- (double)_thumbCenterXForValue:(float)value trackRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(CAMZoomSlider *)self minimumValue];
   v11 = v10;
   [(CAMZoomSlider *)self maximumValue];
-  v13 = (a3 - v11) / (v12 - v11);
+  v13 = (value - v11) / (v12 - v11);
   if (v13 < 0.0)
   {
     v13 = 0.0;
@@ -530,16 +530,16 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
   return v16 + v14 * (v17 - v16);
 }
 
-- (float)_valueForThumbCenterX:(double)a3 trackRect:(CGRect)a4
+- (float)_valueForThumbCenterX:(double)x trackRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  [(CAMZoomSlider *)self _thumbCenterMinimumXForTrackRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [(CAMZoomSlider *)self _thumbCenterMinimumXForTrackRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v11 = v10;
   [(CAMZoomSlider *)self _thumbCenterMaximumXForTrackRect:x, y, width, height];
-  *&width = (a3 - v11) / (v12 - v11);
+  *&width = (x - v11) / (v12 - v11);
   [(CAMZoomSlider *)self minimumValue];
   v14 = v13;
   [(CAMZoomSlider *)self maximumValue];
@@ -557,9 +557,9 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
   return result;
 }
 
-- (int64_t)locationOfTouch:(id)a3
+- (int64_t)locationOfTouch:(id)touch
 {
-  [a3 locationInView:self];
+  [touch locationInView:self];
   v50 = v5;
   v51 = v4;
   [(CAMZoomSlider *)self bounds];
@@ -648,17 +648,17 @@ void __67__CAMZoomSlider__commonCAMZoomSliderInitializationWithLayoutStyle___blo
   }
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
+  touchCopy = touch;
   v10.receiver = self;
   v10.super_class = CAMZoomSlider;
-  if ([(CAMZoomSlider *)&v10 beginTrackingWithTouch:v6 withEvent:a4])
+  if ([(CAMZoomSlider *)&v10 beginTrackingWithTouch:touchCopy withEvent:event])
   {
     goto LABEL_2;
   }
 
-  v9 = [(CAMZoomSlider *)self locationOfTouch:v6];
+  v9 = [(CAMZoomSlider *)self locationOfTouch:touchCopy];
   switch(v9)
   {
     case 2:
@@ -685,16 +685,16 @@ LABEL_3:
   return v7;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   if ([(CAMZoomSlider *)self isAutozooming])
   {
-    [v6 previousLocationInView:self];
+    [touchCopy previousLocationInView:self];
     v9 = v8;
     v11 = v10;
-    [v6 locationInView:self];
+    [touchCopy locationInView:self];
     v13 = v12;
     v14 = vabdd_f64(v12, v9);
     if (v14 > vabdd_f64(v15, v11) && v14 > 20.0)
@@ -720,16 +720,16 @@ LABEL_3:
   {
     v19.receiver = self;
     v19.super_class = CAMZoomSlider;
-    v17 = [(CAMZoomSlider *)&v19 continueTrackingWithTouch:v6 withEvent:v7];
+    v17 = [(CAMZoomSlider *)&v19 continueTrackingWithTouch:touchCopy withEvent:eventCopy];
   }
 
   return v17;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   if ([(CAMZoomSlider *)self isAutozooming])
   {
     [(CAMZoomSlider *)self _setMinimumAutozooming:0];
@@ -740,35 +740,35 @@ LABEL_3:
   {
     v8.receiver = self;
     v8.super_class = CAMZoomSlider;
-    [(CAMZoomSlider *)&v8 endTrackingWithTouch:v6 withEvent:v7];
+    [(CAMZoomSlider *)&v8 endTrackingWithTouch:touchCopy withEvent:eventCopy];
   }
 
   [(CAMZoomSlider *)self setVisibilityTimerSuspended:0];
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(CAMZoomSlider *)self setVisibilityTimerSuspended:0];
   v5.receiver = self;
   v5.super_class = CAMZoomSlider;
-  [(CAMZoomSlider *)&v5 cancelTrackingWithEvent:v4];
+  [(CAMZoomSlider *)&v5 cancelTrackingWithEvent:eventCopy];
 }
 
-- (void)_setMinimumAutozooming:(BOOL)a3
+- (void)_setMinimumAutozooming:(BOOL)autozooming
 {
-  if (self->_minimumAutozooming != a3)
+  if (self->_minimumAutozooming != autozooming)
   {
-    self->_minimumAutozooming = a3;
+    self->_minimumAutozooming = autozooming;
     [(CAMZoomSlider *)self _updateAutozooming];
   }
 }
 
-- (void)_setMaximumAutozooming:(BOOL)a3
+- (void)_setMaximumAutozooming:(BOOL)autozooming
 {
-  if (self->_maximumAutozooming != a3)
+  if (self->_maximumAutozooming != autozooming)
   {
-    self->_maximumAutozooming = a3;
+    self->_maximumAutozooming = autozooming;
     [(CAMZoomSlider *)self _updateAutozooming];
   }
 }
@@ -843,16 +843,16 @@ LABEL_3:
 - (BOOL)shouldHideForExpiredVisibilityTimer
 {
   v3 = [objc_opt_class() shouldFadeOutZoomSliderForLayoutStyle:{-[CAMZoomSlider layoutStyle](self, "layoutStyle")}];
-  v4 = [(CAMZoomSlider *)self isVisibilityTimerSuspended];
-  return v3 & ((v4 | [(NSTimer *)self->__visibilityTimer isValid]) ^ 1);
+  isVisibilityTimerSuspended = [(CAMZoomSlider *)self isVisibilityTimerSuspended];
+  return v3 & ((isVisibilityTimerSuspended | [(NSTimer *)self->__visibilityTimer isValid]) ^ 1);
 }
 
-- (void)setVisibilityTimerSuspended:(BOOL)a3
+- (void)setVisibilityTimerSuspended:(BOOL)suspended
 {
-  if (self->_visibilityTimerSuspended != a3)
+  if (self->_visibilityTimerSuspended != suspended)
   {
-    self->_visibilityTimerSuspended = a3;
-    if (a3)
+    self->_visibilityTimerSuspended = suspended;
+    if (suspended)
     {
       [(CAMZoomSlider *)self _stopVisibilityTimer];
     }
@@ -875,8 +875,8 @@ LABEL_3:
     visibilityTimer = self->__visibilityTimer;
     self->__visibilityTimer = v5;
 
-    v7 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [v7 addTimer:self->__visibilityTimer forMode:*MEMORY[0x1E695E8E0]];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [currentRunLoop addTimer:self->__visibilityTimer forMode:*MEMORY[0x1E695E8E0]];
   }
 }
 
@@ -891,9 +891,9 @@ LABEL_3:
   }
 }
 
-- (void)makeVisibleAnimated:(BOOL)a3
+- (void)makeVisibleAnimated:(BOOL)animated
 {
-  if (a3)
+  if (animated)
   {
     v4 = 0.05;
   }
@@ -920,10 +920,10 @@ LABEL_3:
   }
 }
 
-- (void)makeInvisibleAnimated:(BOOL)a3
+- (void)makeInvisibleAnimated:(BOOL)animated
 {
   v3 = 0.1;
-  if (!a3)
+  if (!animated)
   {
     v3 = 0.0;
   }
@@ -931,7 +931,7 @@ LABEL_3:
   [(CAMZoomSlider *)self _makeInvisibleAnimationDuration:v3];
 }
 
-- (void)_makeInvisibleAnimationDuration:(double)a3
+- (void)_makeInvisibleAnimationDuration:(double)duration
 {
   [(CAMZoomSlider *)self _stopVisibilityTimer];
   if (([(CAMZoomSlider *)self isHidden]& 1) != 0)
@@ -950,7 +950,7 @@ LABEL_3:
   v10[2] = __49__CAMZoomSlider__makeInvisibleAnimationDuration___block_invoke;
   v10[3] = &unk_1E76F77B0;
   v10[4] = self;
-  [CAMView animateIfNeededWithDuration:v10 animations:a3];
+  [CAMView animateIfNeededWithDuration:v10 animations:duration];
   if (!v5)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -959,12 +959,12 @@ LABEL_3:
     if (v8)
     {
       v9 = objc_loadWeakRetained(&self->_delegate);
-      [v9 willHideZoomSlider:self withAnimationDuration:a3];
+      [v9 willHideZoomSlider:self withAnimationDuration:duration];
     }
   }
 }
 
-- (void)_hideZoomSlider:(id)a3
+- (void)_hideZoomSlider:(id)slider
 {
   if (([(CAMZoomSlider *)self isTracking]& 1) == 0)
   {
@@ -986,25 +986,25 @@ LABEL_3:
   }
 }
 
-- (void)_handleTouchUpInside:(id)a3
+- (void)_handleTouchUpInside:(id)inside
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained zoomSliderDidEndZooming:self];
 }
 
-- (void)setLayoutStyle:(int64_t)a3
+- (void)setLayoutStyle:(int64_t)style
 {
-  if (self->_layoutStyle != a3)
+  if (self->_layoutStyle != style)
   {
-    self->_layoutStyle = a3;
+    self->_layoutStyle = style;
     [(CAMZoomSlider *)self _updateForLayoutStyle];
   }
 }
 
 - (void)_updateForLayoutStyle
 {
-  v3 = [(CAMZoomSlider *)self layoutStyle];
-  if (v3 == 1)
+  layoutStyle = [(CAMZoomSlider *)self layoutStyle];
+  if (layoutStyle == 1)
   {
     v4 = 3;
   }
@@ -1018,8 +1018,8 @@ LABEL_3:
   v5 = MEMORY[0x1E69DCAB8];
   v6 = CAMCameraUIFrameworkBundle();
   v7 = [v5 imageNamed:@"CAMZoomSliderThumb" inBundle:v6];
-  v8 = [MEMORY[0x1E69DC888] systemYellowColor];
-  v28 = [v7 imageWithTintColor:v8];
+  systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+  v28 = [v7 imageWithTintColor:systemYellowColor];
 
   v9 = MEMORY[0x1E69DCAB8];
   v10 = CAMCameraUIFrameworkBundle();
@@ -1028,8 +1028,8 @@ LABEL_3:
   v12 = MEMORY[0x1E69DCAB8];
   v13 = CAMCameraUIFrameworkBundle();
   v14 = [v12 imageNamed:@"CAMZoomSliderPlus" inBundle:v13];
-  v15 = [MEMORY[0x1E69DC888] whiteColor];
-  v16 = [v14 imageWithTintColor:v15];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v16 = [v14 imageWithTintColor:whiteColor];
 
   v17 = MEMORY[0x1E69DCAB8];
   v18 = CAMCameraUIFrameworkBundle();
@@ -1037,18 +1037,18 @@ LABEL_3:
 
   [v11 size];
   v22 = [v11 resizableImageWithCapInsets:1 resizingMode:{v20 * 0.5, v21 * 0.5, v20 * 0.5, v21 * 0.5}];
-  if (v3 == 1)
+  if (layoutStyle == 1)
   {
     v23 = MEMORY[0x1E69DCAB8];
-    v24 = [v19 CGImage];
+    cGImage = [v19 CGImage];
     [v19 scale];
-    v25 = [v23 imageWithCGImage:v24 scale:2 orientation:?];
+    v25 = [v23 imageWithCGImage:cGImage scale:2 orientation:?];
 
     v19 = v25;
   }
 
-  v26 = [MEMORY[0x1E69DC888] whiteColor];
-  v27 = [v19 imageWithTintColor:v26];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  v27 = [v19 imageWithTintColor:whiteColor2];
 
   [(CAMZoomSlider *)self setThumbImage:v28 forState:0];
   [(CAMZoomSlider *)self setMinimumTrackImage:v22 forState:0];
@@ -1058,16 +1058,16 @@ LABEL_3:
   [(CAMZoomSlider *)self setNeedsLayout];
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
     v8[7] = v4;
     v8[8] = v5;
-    v6 = a4;
-    self->_orientation = a3;
+    animatedCopy = animated;
+    self->_orientation = orientation;
     [(CAMZoomSlider *)self setNeedsLayout];
-    if (v6)
+    if (animatedCopy)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;

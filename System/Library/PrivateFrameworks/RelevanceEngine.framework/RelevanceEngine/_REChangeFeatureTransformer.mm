@@ -1,14 +1,14 @@
 @interface _REChangeFeatureTransformer
-- (BOOL)_validateWithFeatures:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_validateWithFeatures:(id)features;
+- (BOOL)isEqual:(id)equal;
 - (_REChangeFeatureTransformer)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)_createTransformFromValues:(unint64_t *)a3 count:(unint64_t)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)_createTransformFromValues:(unint64_t *)values count:(unint64_t)count;
 - (unint64_t)hash;
-- (void)_updateConfigurationForInterval:(double)a3;
-- (void)configureWithInvocation:(id)a3;
+- (void)_updateConfigurationForInterval:(double)interval;
+- (void)configureWithInvocation:(id)invocation;
 - (void)dealloc;
-- (void)setValue:(unint64_t)a3;
+- (void)setValue:(unint64_t)value;
 @end
 
 @implementation _REChangeFeatureTransformer
@@ -35,30 +35,30 @@
   [(_REChangeFeatureTransformer *)&v3 dealloc];
 }
 
-- (void)setValue:(unint64_t)a3
+- (void)setValue:(unint64_t)value
 {
-  RERetainFeatureValueTaggedPointer(a3);
+  RERetainFeatureValueTaggedPointer(value);
   REReleaseFeatureValueTaggedPointer(self->_value);
-  self->_value = a3;
+  self->_value = value;
 }
 
-- (void)_updateConfigurationForInterval:(double)a3
+- (void)_updateConfigurationForInterval:(double)interval
 {
-  self->_interval = a3;
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Changed%f", *&a3];
+  self->_interval = interval;
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Changed%f", *&interval];
   [(REFeatureTransformer *)self setName:v4];
 }
 
-- (void)configureWithInvocation:(id)a3
+- (void)configureWithInvocation:(id)invocation
 {
-  v22 = a3;
-  if ([v22 numberOfArguments] != 1)
+  invocationCopy = invocation;
+  if ([invocationCopy numberOfArguments] != 1)
   {
     RERaiseInternalException(*MEMORY[0x277CBE660], @"Incorrect number of arguments. Expecting one or three arguments", v4, v5, v6, v7, v8, v9, v21);
     goto LABEL_9;
   }
 
-  v10 = [v22 getArgumentAtIndex:0];
+  v10 = [invocationCopy getArgumentAtIndex:0];
   if (REFeatureValueTypeForTaggedPointer(v10) == 1)
   {
     v11 = REIntegerValueForTaggedPointer(v10);
@@ -80,9 +80,9 @@ LABEL_7:
 LABEL_9:
 }
 
-- (unint64_t)_createTransformFromValues:(unint64_t *)a3 count:(unint64_t)a4
+- (unint64_t)_createTransformFromValues:(unint64_t *)values count:(unint64_t)count
 {
-  v5 = *a3;
+  v5 = *values;
   if (self->_value)
   {
     lastChangeDate = [MEMORY[0x277CBEAA8] date];
@@ -108,20 +108,20 @@ LABEL_9:
 
   else
   {
-    [(_REChangeFeatureTransformer *)self setValue:*a3, a4];
-    v16 = [MEMORY[0x277CBEAA8] distantPast];
+    [(_REChangeFeatureTransformer *)self setValue:*values, count];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     v15 = 0;
     lastChangeDate = self->_lastChangeDate;
-    self->_lastChangeDate = v16;
+    self->_lastChangeDate = distantPast;
   }
 
   return RECreateBooleanFeatureValueTaggedPointer(v15);
 }
 
-- (BOOL)_validateWithFeatures:(id)a3
+- (BOOL)_validateWithFeatures:(id)features
 {
-  v3 = [a3 firstObject];
-  v4 = v3 != 0;
+  firstObject = [features firstObject];
+  v4 = firstObject != 0;
 
   return v4;
 }
@@ -134,10 +134,10 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -145,13 +145,13 @@ LABEL_9:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_interval == v4->_interval;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_interval == equalCopy->_interval;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(_REChangeFeatureTransformer);
   [(_REChangeFeatureTransformer *)v4 _updateConfigurationForInterval:self->_interval];

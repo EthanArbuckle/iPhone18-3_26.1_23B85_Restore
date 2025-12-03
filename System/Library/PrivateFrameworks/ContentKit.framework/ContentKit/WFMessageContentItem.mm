@@ -1,33 +1,33 @@
 @interface WFMessageContentItem
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 - (WFMessage)message;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
-- (id)generateObjectRepresentationsForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
+- (id)generateObjectRepresentationsForClass:(Class)class options:(id)options error:(id *)error;
 @end
 
 @implementation WFMessageContentItem
 
-- (id)generateObjectRepresentationsForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationsForClass:(Class)class options:(id)options error:(id *)error
 {
-  v8 = a4;
-  if (objc_opt_class() != a3)
+  optionsCopy = options;
+  if (objc_opt_class() != class)
   {
-    if (objc_opt_class() != a3)
+    if (objc_opt_class() != class)
     {
       v18.receiver = self;
       v18.super_class = WFMessageContentItem;
-      v9 = [(WFContentItem *)&v18 generateObjectRepresentationsForClass:a3 options:v8 error:a5];
+      v9 = [(WFContentItem *)&v18 generateObjectRepresentationsForClass:class options:optionsCopy error:error];
       goto LABEL_11;
     }
 
-    v14 = [(WFMessageContentItem *)self message];
-    v15 = [v14 senderHandles];
-    v12 = [v15 if_compactMap:&__block_literal_global_29_19493];
+    message = [(WFMessageContentItem *)self message];
+    senderHandles = [message senderHandles];
+    v12 = [senderHandles if_compactMap:&__block_literal_global_29_19493];
 
     if ([v12 count])
     {
@@ -40,9 +40,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v10 = [(WFMessageContentItem *)self message];
-  v11 = [v10 senderHandles];
-  v12 = [v11 if_compactMap:&__block_literal_global_19489];
+  message2 = [(WFMessageContentItem *)self message];
+  senderHandles2 = [message2 senderHandles];
+  v12 = [senderHandles2 if_compactMap:&__block_literal_global_19489];
 
   if (![v12 count])
   {
@@ -92,13 +92,13 @@ id __76__WFMessageContentItem_generateObjectRepresentationsForClass_options_erro
   return v3;
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v7 = [(WFMessageContentItem *)self message];
-    v8 = [v7 content];
-    v6 = [WFObjectRepresentation object:v8];
+    message = [(WFMessageContentItem *)self message];
+    content = [message content];
+    v6 = [WFObjectRepresentation object:content];
   }
 
   else
@@ -116,20 +116,20 @@ id __76__WFMessageContentItem_generateObjectRepresentationsForClass_options_erro
   return [(WFContentItem *)self objectForClass:v3];
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Messages", @"Messages");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Message", @"Message");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

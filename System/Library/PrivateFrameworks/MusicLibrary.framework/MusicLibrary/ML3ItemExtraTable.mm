@@ -10,7 +10,7 @@
   columns = self->_columns;
   if (!columns)
   {
-    v32 = self;
+    selfCopy = self;
     v41 = [ML3DatabaseColumn columnWithName:@"item_pid" datatype:2 constraints:1 defaultValue:0];
     v42[0] = v41;
     v40 = [ML3DatabaseColumn columnWithName:@"title" datatype:4 constraints:16 defaultValue:&stru_28408B690];
@@ -80,10 +80,10 @@
     v12 = [ML3DatabaseColumn columnWithName:@"is_preorder" datatype:2 constraints:16 defaultValue:&unk_2840C8810];
     v42[33] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:34];
-    v14 = v32->_columns;
-    v32->_columns = v13;
+    v14 = selfCopy->_columns;
+    selfCopy->_columns = v13;
 
-    columns = v32->_columns;
+    columns = selfCopy->_columns;
   }
 
   return columns;

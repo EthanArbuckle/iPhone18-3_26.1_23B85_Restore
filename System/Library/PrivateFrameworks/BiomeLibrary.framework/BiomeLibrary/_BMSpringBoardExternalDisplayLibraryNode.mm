@@ -5,7 +5,7 @@
 + (id)configurationForMirroringMode;
 + (id)storeConfigurationForDisplayConnected;
 + (id)storeConfigurationForMirroringMode;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -14,7 +14,7 @@
 + (id)MirroringMode
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForMirroringMode];
+  configurationForMirroringMode = [self configurationForMirroringMode];
   v3 = +[BMSpringBoardMirroringMode columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -26,7 +26,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"SpringBoard.ExternalDisplay.MirroringMode" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SpringBoard.ExternalDisplay.MirroringMode" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SpringBoard.ExternalDisplay.MirroringMode" schema:v9 configuration:configurationForMirroringMode];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -35,13 +35,13 @@
 
 + (id)configurationForMirroringMode
 {
-  v3 = [a1 storeConfigurationForMirroringMode];
-  v4 = [a1 syncPolicyForMirroringMode];
+  storeConfigurationForMirroringMode = [self storeConfigurationForMirroringMode];
+  syncPolicyForMirroringMode = [self syncPolicyForMirroringMode];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"B6344D56-77F2-4384-B6B2-CD534A4B0E46"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SpringBoard.ExternalDisplay.MirroringMode" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SpringBoard.ExternalDisplay.MirroringMode" eventClass:objc_opt_class() storeConfig:storeConfigurationForMirroringMode syncPolicy:syncPolicyForMirroringMode legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -57,7 +57,7 @@
 + (id)DisplayConnected
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForDisplayConnected];
+  configurationForDisplayConnected = [self configurationForDisplayConnected];
   v3 = +[BMSpringBoardDisplayConnected columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -69,7 +69,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"SpringBoard.ExternalDisplay.DisplayConnected" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SpringBoard.ExternalDisplay.DisplayConnected" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SpringBoard.ExternalDisplay.DisplayConnected" schema:v9 configuration:configurationForDisplayConnected];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -78,13 +78,13 @@
 
 + (id)configurationForDisplayConnected
 {
-  v3 = [a1 storeConfigurationForDisplayConnected];
-  v4 = [a1 syncPolicyForDisplayConnected];
+  storeConfigurationForDisplayConnected = [self storeConfigurationForDisplayConnected];
+  syncPolicyForDisplayConnected = [self syncPolicyForDisplayConnected];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"17AF5400-1298-4C57-88CA-C551E9DAD12C"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SpringBoard.ExternalDisplay.DisplayConnected" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SpringBoard.ExternalDisplay.DisplayConnected" eventClass:objc_opt_class() storeConfig:storeConfigurationForDisplayConnected syncPolicy:syncPolicyForDisplayConnected legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -97,20 +97,20 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"DisplayConnected"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"DisplayConnected"])
   {
-    v5 = [a1 DisplayConnected];
+    displayConnected = [self DisplayConnected];
 LABEL_5:
-    v6 = v5;
+    v6 = displayConnected;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"MirroringMode"])
+  if ([nameCopy isEqualToString:@"MirroringMode"])
   {
-    v5 = [a1 MirroringMode];
+    displayConnected = [self MirroringMode];
     goto LABEL_5;
   }
 

@@ -1,19 +1,19 @@
 @interface VSImageScaleValueTransformer
 - (CGSize)preferredSize;
-- (id)transformedValue:(id)a3;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSImageScaleValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = *MEMORY[0x277CBF3A0];
   v6 = *(MEMORY[0x277CBF3A0] + 8);
   [(VSImageScaleValueTransformer *)self preferredSize];
   v8 = v7;
   v10 = v9;
-  [v4 size];
+  [valueCopy size];
   v13 = fmin(v8 / v11, v10 / v12);
   v14 = v11 * v13;
   v15 = v12 * v13;
@@ -34,12 +34,12 @@
   v23[1] = 3221225472;
   v23[2] = __49__VSImageScaleValueTransformer_transformedValue___block_invoke;
   v23[3] = &unk_279E191C8;
-  v24 = v4;
+  v24 = valueCopy;
   v25 = MidX + v14 * -0.5;
   v26 = v17;
   v27 = v14;
   v28 = v15;
-  v20 = v4;
+  v20 = valueCopy;
   v21 = [v19 imageWithActions:v23];
 
   return v21;

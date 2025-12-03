@@ -1,8 +1,8 @@
 @interface TTRIRemindersListSectionHeader_collectionView
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)didTap:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)didTap:(id)tap;
 - (void)prepareForReuse;
-- (void)setAccessibilityHint:(id)a3;
+- (void)setAccessibilityHint:(id)hint;
 @end
 
 @implementation TTRIRemindersListSectionHeader_collectionView
@@ -25,49 +25,49 @@
   }
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9[-((v6 + 15) & 0xFFFFFFFFFFFFFFF0)];
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = self;
+  selfCopy = self;
   v11 = v7;
-  v8 = self;
+  selfCopy2 = self;
   TTRObservationTrackingUpdateHelper.withUpdateSchedulingDisabled<A>(_:)();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)didTap:(id)a3
+- (void)didTap:(id)tap
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v4 = self;
-    sub_100521DE0(v4);
+    selfCopy = self;
+    sub_100521DE0(selfCopy);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)setAccessibilityHint:(id)a3
+- (void)setAccessibilityHint:(id)hint
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (hint)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = self;
-    a3 = String._bridgeToObjectiveC()();
+    selfCopy = self;
+    hint = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
   v8.super_class = ObjectType;
-  [(TTRIRemindersListSectionHeader_collectionView *)&v8 setAccessibilityHint:a3];
+  [(TTRIRemindersListSectionHeader_collectionView *)&v8 setAccessibilityHint:hint];
 }
 
 @end

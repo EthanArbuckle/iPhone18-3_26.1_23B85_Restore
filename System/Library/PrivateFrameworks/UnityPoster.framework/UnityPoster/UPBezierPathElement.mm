@@ -1,23 +1,23 @@
 @interface UPBezierPathElement
 - (CGPoint)endPoint;
 - (CGPoint)startPoint;
-- (UPBezierPathElement)initWithStartPoint:(CGPoint)a3 pathElement:(const CGPathElement *)a4;
-- (uint64_t)numberOfPointsForCGPathElementType:(uint64_t)a1;
+- (UPBezierPathElement)initWithStartPoint:(CGPoint)point pathElement:(const CGPathElement *)element;
+- (uint64_t)numberOfPointsForCGPathElementType:(uint64_t)type;
 - (void)dealloc;
 @end
 
 @implementation UPBezierPathElement
 
-- (UPBezierPathElement)initWithStartPoint:(CGPoint)a3 pathElement:(const CGPathElement *)a4
+- (UPBezierPathElement)initWithStartPoint:(CGPoint)point pathElement:(const CGPathElement *)element
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v18.receiver = self;
   v18.super_class = UPBezierPathElement;
   v7 = [(UPBezierPathElement *)&v18 init];
   if (v7)
   {
-    type = a4->type;
+    type = element->type;
     v9 = 3;
     v10 = 2;
     v11 = type != 2;
@@ -53,7 +53,7 @@
     v14[1] = y;
     if (!v12)
     {
-      memcpy(v14 + 2, a4->points, 16 * v13);
+      memcpy(v14 + 2, element->points, 16 * v13);
     }
 
     [(UPBezierPathElement *)v7 setPoints:v15];
@@ -65,10 +65,10 @@
   return v7;
 }
 
-- (uint64_t)numberOfPointsForCGPathElementType:(uint64_t)a1
+- (uint64_t)numberOfPointsForCGPathElementType:(uint64_t)type
 {
   result = 0;
-  if (a1)
+  if (type)
   {
     if (a2 <= 3)
     {
@@ -93,9 +93,9 @@
 
 - (CGPoint)startPoint
 {
-  v2 = [(UPBezierPathElement *)self points];
-  x = v2->x;
-  y = v2->y;
+  points = [(UPBezierPathElement *)self points];
+  x = points->x;
+  y = points->y;
   result.y = y;
   result.x = x;
   return result;
@@ -103,8 +103,8 @@
 
 - (CGPoint)endPoint
 {
-  v3 = [(UPBezierPathElement *)self points];
-  v4 = &v3[[(UPBezierPathElement *)self pointCount]];
+  points = [(UPBezierPathElement *)self points];
+  v4 = &points[[(UPBezierPathElement *)self pointCount]];
   x = v4[-1].x;
   y = v4[-1].y;
   result.y = y;

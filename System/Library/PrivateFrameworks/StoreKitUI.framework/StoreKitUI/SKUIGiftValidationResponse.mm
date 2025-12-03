@@ -1,12 +1,12 @@
 @interface SKUIGiftValidationResponse
-- (SKUIGiftValidationResponse)initWithValidationDictionary:(id)a3;
+- (SKUIGiftValidationResponse)initWithValidationDictionary:(id)dictionary;
 @end
 
 @implementation SKUIGiftValidationResponse
 
-- (SKUIGiftValidationResponse)initWithValidationDictionary:(id)a3
+- (SKUIGiftValidationResponse)initWithValidationDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIGiftValidationResponse initWithValidationDictionary:];
@@ -17,17 +17,17 @@
   v5 = [(SKUIGiftValidationResponse *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"status"];
+    v6 = [dictionaryCopy objectForKey:@"status"];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v6 integerValue];
-      v5->_valid = v7 == 0;
-      if (!v7)
+      integerValue = [v6 integerValue];
+      v5->_valid = integerValue == 0;
+      if (!integerValue)
       {
-        v8 = [v4 objectForKey:@"amountFormatted"];
+        v8 = [dictionaryCopy objectForKey:@"amountFormatted"];
         if (!v8)
         {
-          v8 = [v4 objectForKey:@"totalPriceFormatted"];
+          v8 = [dictionaryCopy objectForKey:@"totalPriceFormatted"];
         }
 
         objc_opt_class();
@@ -38,7 +38,7 @@
           v5->_totalGiftAmountString = v9;
         }
 
-        v11 = [v4 objectForKey:@"giftKey"];
+        v11 = [dictionaryCopy objectForKey:@"giftKey"];
 
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -61,7 +61,7 @@ LABEL_26:
       v5->_valid = 0;
     }
 
-    v11 = [v4 objectForKey:@"errorEntries"];
+    v11 = [dictionaryCopy objectForKey:@"errorEntries"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 count])
     {
@@ -85,7 +85,7 @@ LABEL_26:
       goto LABEL_26;
     }
 
-    giftKey = [v4 objectForKey:@"userPresentableErrorMessage"];
+    giftKey = [dictionaryCopy objectForKey:@"userPresentableErrorMessage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

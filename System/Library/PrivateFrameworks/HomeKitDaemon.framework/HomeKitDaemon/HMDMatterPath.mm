@@ -1,30 +1,30 @@
 @interface HMDMatterPath
-+ (HMDMatterPath)PathWithAttributeID:(id)a3 endpointID:(id)a4 clusterID:(id)a5 accessory:(id)a6;
-+ (HMDMatterPath)PathWithCommandID:(id)a3 endpointID:(id)a4 clusterID:(id)a5 accessory:(id)a6;
-+ (HMDMatterPath)PathWithEventID:(id)a3 endpointID:(id)a4 clusterID:(id)a5 accessory:(id)a6;
-+ (HMDMatterPath)PathWithMTRPath:(id)a3 accessory:(id)a4;
++ (HMDMatterPath)PathWithAttributeID:(id)d endpointID:(id)iD clusterID:(id)clusterID accessory:(id)accessory;
++ (HMDMatterPath)PathWithCommandID:(id)d endpointID:(id)iD clusterID:(id)clusterID accessory:(id)accessory;
++ (HMDMatterPath)PathWithEventID:(id)d endpointID:(id)iD clusterID:(id)clusterID accessory:(id)accessory;
++ (HMDMatterPath)PathWithMTRPath:(id)path accessory:(id)accessory;
 + (id)logCategory;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (HMDAccessory)accessory;
-- (HMDMatterPath)initWithCoder:(id)a3;
-- (HMDMatterPath)initWithMTRPath:(id)a3 accessory:(id)a4;
-- (HMDMatterPath)initWithPathModel:(id)a3 accessory:(id)a4;
-- (HMDMatterPath)initWithUUID:(id)a3 mtrPath:(id)a4 accessory:(id)a5;
+- (HMDMatterPath)initWithCoder:(id)coder;
+- (HMDMatterPath)initWithMTRPath:(id)path accessory:(id)accessory;
+- (HMDMatterPath)initWithPathModel:(id)model accessory:(id)accessory;
+- (HMDMatterPath)initWithUUID:(id)d mtrPath:(id)path accessory:(id)accessory;
 - (NSNumber)attributeID;
 - (NSNumber)clusterID;
 - (NSNumber)commandID;
 - (NSNumber)endpointID;
 - (NSNumber)eventID;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)modelObjectWithChangeType:(unint64_t)a3 uuid:(id)a4 parentUUID:(id)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)modelObjectWithChangeType:(unint64_t)type uuid:(id)uuid parentUUID:(id)d;
 - (id)mtrPath;
 - (id)path;
 - (id)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateModelObject:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateModelObject:(id)object;
 @end
 
 @implementation HMDMatterPath
@@ -36,23 +36,23 @@
   return WeakRetained;
 }
 
-- (id)modelObjectWithChangeType:(unint64_t)a3 uuid:(id)a4 parentUUID:(id)a5
+- (id)modelObjectWithChangeType:(unint64_t)type uuid:(id)uuid parentUUID:(id)d
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(HMDBackingStoreModelObject *)[HMDMatterPathModel alloc] initWithObjectChangeType:a3 uuid:v8 parentUUID:v7];
+  dCopy = d;
+  uuidCopy = uuid;
+  v9 = [(HMDBackingStoreModelObject *)[HMDMatterPathModel alloc] initWithObjectChangeType:type uuid:uuidCopy parentUUID:dCopy];
 
   return v9;
 }
 
 - (id)shortDescription
 {
-  v3 = [(HMDMatterPath *)self accessory];
+  accessory = [(HMDMatterPath *)self accessory];
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
-  v6 = [v3 identifier];
-  v7 = [(HMDMatterPath *)self path];
-  v8 = [v4 stringWithFormat:@"%@ %@ %@", v5, v6, v7];
+  identifier = [accessory identifier];
+  path = [(HMDMatterPath *)self path];
+  v8 = [v4 stringWithFormat:@"%@ %@ %@", v5, identifier, path];
 
   return v8;
 }
@@ -61,33 +61,33 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HMDMatterPath *)self uuid];
-  v6 = [(HMDMatterPath *)self accessory];
-  v7 = [v6 identifier];
-  v8 = [(HMDMatterPath *)self path];
-  v9 = [v3 stringWithFormat:@"%@ %@/%@ %@", v4, v5, v7, v8];
+  uuid = [(HMDMatterPath *)self uuid];
+  accessory = [(HMDMatterPath *)self accessory];
+  identifier = [accessory identifier];
+  path = [(HMDMatterPath *)self path];
+  v9 = [v3 stringWithFormat:@"%@ %@/%@ %@", v4, uuid, identifier, path];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(HMDMatterPath *)self uuid];
-  v6 = [(HMDMatterPath *)self mtrPath];
-  v7 = [(HMDMatterPath *)self accessory];
-  v8 = [v4 initWithUUID:v5 mtrPath:v6 accessory:v7];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  uuid = [(HMDMatterPath *)self uuid];
+  mtrPath = [(HMDMatterPath *)self mtrPath];
+  accessory = [(HMDMatterPath *)self accessory];
+  v8 = [v4 initWithUUID:uuid mtrPath:mtrPath accessory:accessory];
 
   return v8;
 }
 
-- (void)populateModelObject:(id)a3
+- (void)populateModelObject:(id)object
 {
-  v11 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v11;
+    v4 = objectCopy;
   }
 
   else
@@ -96,28 +96,28 @@
   }
 
   v5 = v4;
-  v6 = [(HMDMatterPath *)self endpointID];
-  [v5 setEndpointID:v6];
+  endpointID = [(HMDMatterPath *)self endpointID];
+  [v5 setEndpointID:endpointID];
 
-  v7 = [(HMDMatterPath *)self clusterID];
-  [v5 setClusterID:v7];
+  clusterID = [(HMDMatterPath *)self clusterID];
+  [v5 setClusterID:clusterID];
 
-  v8 = [(HMDMatterPath *)self attributeID];
-  [v5 setAttributeID:v8];
+  attributeID = [(HMDMatterPath *)self attributeID];
+  [v5 setAttributeID:attributeID];
 
-  v9 = [(HMDMatterPath *)self commandID];
-  [v5 setCommandID:v9];
+  commandID = [(HMDMatterPath *)self commandID];
+  [v5 setCommandID:commandID];
 
-  v10 = [(HMDMatterPath *)self eventID];
-  [v5 setEventID:v10];
+  eventID = [(HMDMatterPath *)self eventID];
+  [v5 setEventID:eventID];
 }
 
-- (HMDMatterPath)initWithCoder:(id)a3
+- (HMDMatterPath)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDMatterPathEndpointIDKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDMatterPathClusterIDKey"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDMatterPathAttributeIDKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDMatterPathEndpointIDKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDMatterPathClusterIDKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDMatterPathAttributeIDKey"];
   if (v7)
   {
     v8 = [MEMORY[0x277CD51C0] attributePathWithEndpointID:v5 clusterID:v6 attributeID:v7];
@@ -128,7 +128,7 @@
     v8 = 0;
   }
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDMatterPathCommandIDKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDMatterPathCommandIDKey"];
   if (v9)
   {
     v10 = [MEMORY[0x277CD52F0] commandPathWithEndpointID:v5 clusterID:v6 commandID:v9];
@@ -136,7 +136,7 @@
     v8 = v10;
   }
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDMatterPathEventIDKey"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDMatterPathEventIDKey"];
   if (v11)
   {
     v12 = [MEMORY[0x277CD5408] eventPathWithEndpointID:v5 clusterID:v6 eventID:v11];
@@ -149,84 +149,84 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDMatterPath *)self endpointID];
-  [v4 encodeObject:v5 forKey:@"HMDMatterPathEndpointIDKey"];
+  coderCopy = coder;
+  endpointID = [(HMDMatterPath *)self endpointID];
+  [coderCopy encodeObject:endpointID forKey:@"HMDMatterPathEndpointIDKey"];
 
-  v6 = [(HMDMatterPath *)self clusterID];
-  [v4 encodeObject:v6 forKey:@"HMDMatterPathClusterIDKey"];
+  clusterID = [(HMDMatterPath *)self clusterID];
+  [coderCopy encodeObject:clusterID forKey:@"HMDMatterPathClusterIDKey"];
 
-  v7 = [(HMDMatterPath *)self attributeID];
-  [v4 encodeObject:v7 forKey:@"HMDMatterPathAttributeIDKey"];
+  attributeID = [(HMDMatterPath *)self attributeID];
+  [coderCopy encodeObject:attributeID forKey:@"HMDMatterPathAttributeIDKey"];
 
-  v8 = [(HMDMatterPath *)self commandID];
-  [v4 encodeObject:v8 forKey:@"HMDMatterPathCommandIDKey"];
+  commandID = [(HMDMatterPath *)self commandID];
+  [coderCopy encodeObject:commandID forKey:@"HMDMatterPathCommandIDKey"];
 
-  v9 = [(HMDMatterPath *)self eventID];
-  [v4 encodeObject:v9 forKey:@"HMDMatterPathEventIDKey"];
+  eventID = [(HMDMatterPath *)self eventID];
+  [coderCopy encodeObject:eventID forKey:@"HMDMatterPathEventIDKey"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMDMatterPath *)self path];
-  v3 = [v2 hash];
+  path = [(HMDMatterPath *)self path];
+  v3 = [path hash];
 
   return v3;
 }
 
 - (id)path
 {
-  v3 = [(HMDMatterPath *)self attributeID];
+  attributeID = [(HMDMatterPath *)self attributeID];
 
-  if (v3)
+  if (attributeID)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(HMDMatterPath *)self endpointID];
-    v6 = [(HMDMatterPath *)self clusterID];
-    v7 = [(HMDMatterPath *)self attributeID];
-    [v4 stringWithFormat:@"EP/CL/ATTR: %@/%@/%@", v5, v6, v7];
+    endpointID = [(HMDMatterPath *)self endpointID];
+    clusterID = [(HMDMatterPath *)self clusterID];
+    attributeID2 = [(HMDMatterPath *)self attributeID];
+    [v4 stringWithFormat:@"EP/CL/ATTR: %@/%@/%@", endpointID, clusterID, attributeID2];
     v13 = LABEL_7:;
 
     goto LABEL_8;
   }
 
-  v8 = [(HMDMatterPath *)self commandID];
+  commandID = [(HMDMatterPath *)self commandID];
 
-  if (v8)
+  if (commandID)
   {
     v9 = MEMORY[0x277CCACA8];
-    v5 = [(HMDMatterPath *)self endpointID];
-    v6 = [(HMDMatterPath *)self clusterID];
-    v7 = [(HMDMatterPath *)self commandID];
-    [v9 stringWithFormat:@"EP/CL/CMD: %@/%@/%@", v5, v6, v7];
+    endpointID = [(HMDMatterPath *)self endpointID];
+    clusterID = [(HMDMatterPath *)self clusterID];
+    attributeID2 = [(HMDMatterPath *)self commandID];
+    [v9 stringWithFormat:@"EP/CL/CMD: %@/%@/%@", endpointID, clusterID, attributeID2];
     goto LABEL_7;
   }
 
-  v10 = [(HMDMatterPath *)self eventID];
+  eventID = [(HMDMatterPath *)self eventID];
 
   v11 = MEMORY[0x277CCACA8];
-  v5 = [(HMDMatterPath *)self endpointID];
-  v12 = [(HMDMatterPath *)self clusterID];
-  v6 = v12;
-  if (v10)
+  endpointID = [(HMDMatterPath *)self endpointID];
+  clusterID2 = [(HMDMatterPath *)self clusterID];
+  clusterID = clusterID2;
+  if (eventID)
   {
-    v7 = [(HMDMatterPath *)self eventID];
-    [v11 stringWithFormat:@"EP/CL/EVE: %@/%@/%@", v5, v6, v7];
+    attributeID2 = [(HMDMatterPath *)self eventID];
+    [v11 stringWithFormat:@"EP/CL/EVE: %@/%@/%@", endpointID, clusterID, attributeID2];
     goto LABEL_7;
   }
 
-  v13 = [v11 stringWithFormat:@"EP/CL: %@/%@", v5, v12];
+  v13 = [v11 stringWithFormat:@"EP/CL: %@/%@", endpointID, clusterID2];
 LABEL_8:
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v25 = 1;
   }
@@ -236,7 +236,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -251,8 +251,8 @@ LABEL_8:
       goto LABEL_12;
     }
 
-    v8 = [(HMDMatterPath *)v6 endpointID];
-    v9 = [(HMDMatterPath *)self endpointID];
+    endpointID = [(HMDMatterPath *)v6 endpointID];
+    endpointID2 = [(HMDMatterPath *)self endpointID];
     v10 = HMFEqualObjects();
 
     if (!v10)
@@ -260,8 +260,8 @@ LABEL_8:
       goto LABEL_12;
     }
 
-    v11 = [(HMDMatterPath *)v7 clusterID];
-    v12 = [(HMDMatterPath *)self clusterID];
+    clusterID = [(HMDMatterPath *)v7 clusterID];
+    clusterID2 = [(HMDMatterPath *)self clusterID];
     v13 = HMFEqualObjects();
 
     if (!v13)
@@ -269,8 +269,8 @@ LABEL_8:
       goto LABEL_12;
     }
 
-    v14 = [(HMDMatterPath *)v7 attributeID];
-    v15 = [(HMDMatterPath *)self attributeID];
+    attributeID = [(HMDMatterPath *)v7 attributeID];
+    attributeID2 = [(HMDMatterPath *)self attributeID];
     v16 = HMFEqualObjects();
 
     if (!v16)
@@ -278,8 +278,8 @@ LABEL_8:
       goto LABEL_12;
     }
 
-    v17 = [(HMDMatterPath *)v7 commandID];
-    v18 = [(HMDMatterPath *)self commandID];
+    commandID = [(HMDMatterPath *)v7 commandID];
+    commandID2 = [(HMDMatterPath *)self commandID];
     v19 = HMFEqualObjects();
 
     if (!v19)
@@ -287,14 +287,14 @@ LABEL_8:
       goto LABEL_12;
     }
 
-    v20 = [(HMDMatterPath *)v7 eventID];
-    v21 = [(HMDMatterPath *)self eventID];
+    eventID = [(HMDMatterPath *)v7 eventID];
+    eventID2 = [(HMDMatterPath *)self eventID];
     v22 = HMFEqualObjects();
 
     if (v22)
     {
-      v23 = [(HMDMatterPath *)v7 accessory];
-      v24 = [(HMDMatterPath *)self accessory];
+      accessory = [(HMDMatterPath *)v7 accessory];
+      accessory2 = [(HMDMatterPath *)self accessory];
       v25 = HMFEqualObjects();
     }
 
@@ -310,70 +310,70 @@ LABEL_12:
 
 - (NSNumber)eventID
 {
-  v2 = [(HMDMatterPath *)self eventPath];
-  v3 = [v2 event];
+  eventPath = [(HMDMatterPath *)self eventPath];
+  event = [eventPath event];
 
-  return v3;
+  return event;
 }
 
 - (NSNumber)commandID
 {
-  v2 = [(HMDMatterPath *)self commandPath];
-  v3 = [v2 command];
+  commandPath = [(HMDMatterPath *)self commandPath];
+  command = [commandPath command];
 
-  return v3;
+  return command;
 }
 
 - (NSNumber)attributeID
 {
-  v2 = [(HMDMatterPath *)self attributePath];
-  v3 = [v2 attribute];
+  attributePath = [(HMDMatterPath *)self attributePath];
+  attribute = [attributePath attribute];
 
-  return v3;
+  return attribute;
 }
 
 - (NSNumber)clusterID
 {
-  v2 = [(HMDMatterPath *)self mtrPath];
-  v3 = [v2 cluster];
+  mtrPath = [(HMDMatterPath *)self mtrPath];
+  cluster = [mtrPath cluster];
 
-  return v3;
+  return cluster;
 }
 
 - (NSNumber)endpointID
 {
-  v2 = [(HMDMatterPath *)self mtrPath];
-  v3 = [v2 endpoint];
+  mtrPath = [(HMDMatterPath *)self mtrPath];
+  endpoint = [mtrPath endpoint];
 
-  return v3;
+  return endpoint;
 }
 
 - (BOOL)isValid
 {
-  v3 = [(HMDMatterPath *)self endpointID];
-  if (v3)
+  endpointID = [(HMDMatterPath *)self endpointID];
+  if (endpointID)
   {
-    v4 = [(HMDMatterPath *)self clusterID];
-    if (v4)
+    clusterID = [(HMDMatterPath *)self clusterID];
+    if (clusterID)
     {
-      v5 = [(HMDMatterPath *)self attributeID];
-      if (v5)
+      attributeID = [(HMDMatterPath *)self attributeID];
+      if (attributeID)
       {
         v6 = 1;
       }
 
       else
       {
-        v7 = [(HMDMatterPath *)self commandID];
-        if (v7)
+        commandID = [(HMDMatterPath *)self commandID];
+        if (commandID)
         {
           v6 = 1;
         }
 
         else
         {
-          v8 = [(HMDMatterPath *)self eventID];
-          v6 = v8 != 0;
+          eventID = [(HMDMatterPath *)self eventID];
+          v6 = eventID != 0;
         }
       }
     }
@@ -394,109 +394,109 @@ LABEL_12:
 
 - (id)mtrPath
 {
-  v3 = [(HMDMatterPath *)self attributePath];
-  v4 = v3;
-  if (v3)
+  attributePath = [(HMDMatterPath *)self attributePath];
+  v4 = attributePath;
+  if (attributePath)
   {
-    v5 = v3;
+    v5 = attributePath;
   }
 
   else
   {
-    v6 = [(HMDMatterPath *)self commandPath];
-    v7 = v6;
-    if (v6)
+    commandPath = [(HMDMatterPath *)self commandPath];
+    v7 = commandPath;
+    if (commandPath)
     {
-      v8 = v6;
+      eventPath = commandPath;
     }
 
     else
     {
-      v8 = [(HMDMatterPath *)self eventPath];
+      eventPath = [(HMDMatterPath *)self eventPath];
     }
 
-    v5 = v8;
+    v5 = eventPath;
   }
 
   return v5;
 }
 
-- (HMDMatterPath)initWithPathModel:(id)a3 accessory:(id)a4
+- (HMDMatterPath)initWithPathModel:(id)model accessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 endpointID];
+  modelCopy = model;
+  accessoryCopy = accessory;
+  endpointID = [modelCopy endpointID];
 
-  if (!v8)
+  if (!endpointID)
   {
     _HMFPreconditionFailure();
     goto LABEL_15;
   }
 
-  v9 = [v6 clusterID];
+  clusterID = [modelCopy clusterID];
 
-  if (!v9)
+  if (!clusterID)
   {
 LABEL_15:
     _HMFPreconditionFailure();
     goto LABEL_16;
   }
 
-  v10 = v7;
+  v10 = accessoryCopy;
   v11 = [v10 conformsToProtocol:&unk_283F010C8];
 
   if (v10 && (v11 & 1) != 0)
   {
-    v12 = [v6 attributeID];
+    attributeID = [modelCopy attributeID];
 
-    if (v12)
+    if (attributeID)
     {
       v13 = MEMORY[0x277CD51C0];
-      v14 = [v6 endpointID];
-      v15 = [v6 clusterID];
-      v16 = [v6 attributeID];
-      v17 = [v13 attributePathWithEndpointID:v14 clusterID:v15 attributeID:v16];
+      endpointID2 = [modelCopy endpointID];
+      clusterID2 = [modelCopy clusterID];
+      attributeID2 = [modelCopy attributeID];
+      v17 = [v13 attributePathWithEndpointID:endpointID2 clusterID:clusterID2 attributeID:attributeID2];
     }
 
     else
     {
-      v18 = [v6 commandID];
+      commandID = [modelCopy commandID];
 
-      if (v18)
+      if (commandID)
       {
         v19 = MEMORY[0x277CD52F0];
-        v14 = [v6 endpointID];
-        v15 = [v6 clusterID];
-        v16 = [v6 commandID];
-        v17 = [v19 commandPathWithEndpointID:v14 clusterID:v15 commandID:v16];
+        endpointID2 = [modelCopy endpointID];
+        clusterID2 = [modelCopy clusterID];
+        attributeID2 = [modelCopy commandID];
+        v17 = [v19 commandPathWithEndpointID:endpointID2 clusterID:clusterID2 commandID:attributeID2];
       }
 
       else
       {
-        v20 = [v6 eventID];
+        eventID = [modelCopy eventID];
 
-        if (!v20)
+        if (!eventID)
         {
           v26 = MEMORY[0x277CD5290];
-          v14 = [v6 endpointID];
-          v15 = [v6 clusterID];
-          v22 = [v26 clusterPathWithEndpointID:v14 clusterID:v15];
+          endpointID2 = [modelCopy endpointID];
+          clusterID2 = [modelCopy clusterID];
+          v22 = [v26 clusterPathWithEndpointID:endpointID2 clusterID:clusterID2];
           goto LABEL_12;
         }
 
         v21 = MEMORY[0x277CD5408];
-        v14 = [v6 endpointID];
-        v15 = [v6 clusterID];
-        v16 = [v6 eventID];
-        v17 = [v21 eventPathWithEndpointID:v14 clusterID:v15 eventID:v16];
+        endpointID2 = [modelCopy endpointID];
+        clusterID2 = [modelCopy clusterID];
+        attributeID2 = [modelCopy eventID];
+        v17 = [v21 eventPathWithEndpointID:endpointID2 clusterID:clusterID2 eventID:attributeID2];
       }
     }
 
     v22 = v17;
 
 LABEL_12:
-    v23 = [v6 uuid];
-    v24 = [(HMDMatterPath *)self initWithUUID:v23 mtrPath:v22 accessory:v10];
+    uuid = [modelCopy uuid];
+    v24 = [(HMDMatterPath *)self initWithUUID:uuid mtrPath:v22 accessory:v10];
 
     return v24;
   }
@@ -506,17 +506,17 @@ LABEL_16:
   return [(HMDMatterPath *)v27 initWithMTRPath:v28 accessory:v29, v30];
 }
 
-- (HMDMatterPath)initWithMTRPath:(id)a3 accessory:(id)a4
+- (HMDMatterPath)initWithMTRPath:(id)path accessory:(id)accessory
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  pathCopy = path;
+  accessoryCopy = accessory;
+  if (accessoryCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
+      v8 = pathCopy;
     }
 
     else
@@ -526,7 +526,7 @@ LABEL_16:
 
     v9 = v8;
     v34 = v9;
-    v10 = v6;
+    v10 = pathCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -556,58 +556,58 @@ LABEL_16:
     v15 = v14;
 
     v16 = MEMORY[0x277CCACA8];
-    v17 = [v13 endpoint];
-    v18 = [v13 cluster];
-    v19 = [v9 attribute];
+    endpoint = [v13 endpoint];
+    cluster = [v13 cluster];
+    attribute = [v9 attribute];
     [v12 command];
     v20 = v32 = self;
-    v21 = [v15 event];
-    v22 = [v16 stringWithFormat:@"endpointID=%@ clusterID=%@ attributeID=%@ commandID=%@ eventID=%@", v17, v18, v19, v20, v21];
+    event = [v15 event];
+    v22 = [v16 stringWithFormat:@"endpointID=%@ clusterID=%@ attributeID=%@ commandID=%@ eventID=%@", endpoint, cluster, attribute, v20, event];
 
     v23 = MEMORY[0x277CCAD78];
-    v24 = [v7 uuid];
+    uuid = [accessoryCopy uuid];
     v35[0] = v22;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
-    v26 = [v23 hm_deriveUUIDFromBaseUUID:v24 withSalts:v25];
-    v27 = [(HMDMatterPath *)v32 initWithUUID:v26 mtrPath:v13 accessory:v7];
+    v26 = [v23 hm_deriveUUIDFromBaseUUID:uuid withSalts:v25];
+    v27 = [(HMDMatterPath *)v32 initWithUUID:v26 mtrPath:v13 accessory:accessoryCopy];
 
     v28 = v27;
   }
 
   else
   {
-    v29 = [MEMORY[0x277CCAD78] UUID];
-    v28 = [(HMDMatterPath *)self initWithUUID:v29 mtrPath:v6 accessory:0];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v28 = [(HMDMatterPath *)self initWithUUID:uUID mtrPath:pathCopy accessory:0];
   }
 
   v30 = *MEMORY[0x277D85DE8];
   return v28;
 }
 
-- (HMDMatterPath)initWithUUID:(id)a3 mtrPath:(id)a4 accessory:(id)a5
+- (HMDMatterPath)initWithUUID:(id)d mtrPath:(id)path accessory:(id)accessory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  dCopy = d;
+  pathCopy = path;
+  accessoryCopy = accessory;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_17;
   }
 
-  v12 = v11;
-  v13 = [v10 endpoint];
+  v12 = accessoryCopy;
+  endpoint = [pathCopy endpoint];
 
-  if (!v13)
+  if (!endpoint)
   {
 LABEL_17:
     _HMFPreconditionFailure();
     goto LABEL_18;
   }
 
-  v14 = [v10 cluster];
+  cluster = [pathCopy cluster];
 
-  if (!v14)
+  if (!cluster)
   {
 LABEL_18:
     v30 = _HMFPreconditionFailure();
@@ -620,9 +620,9 @@ LABEL_18:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_uuid, a3);
+    objc_storeStrong(&v15->_uuid, d);
     objc_storeWeak(&v16->_accessory, v12);
-    v17 = v10;
+    v17 = pathCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -697,41 +697,41 @@ void __28__HMDMatterPath_logCategory__block_invoke()
   logCategory__hmf_once_v10_160426 = v1;
 }
 
-+ (HMDMatterPath)PathWithEventID:(id)a3 endpointID:(id)a4 clusterID:(id)a5 accessory:(id)a6
++ (HMDMatterPath)PathWithEventID:(id)d endpointID:(id)iD clusterID:(id)clusterID accessory:(id)accessory
 {
   v9 = MEMORY[0x277CD5408];
-  v10 = a6;
-  v11 = [v9 eventPathWithEndpointID:a4 clusterID:a5 eventID:a3];
-  v12 = [HMDMatterPath PathWithMTRPath:v11 accessory:v10];
+  accessoryCopy = accessory;
+  v11 = [v9 eventPathWithEndpointID:iD clusterID:clusterID eventID:d];
+  v12 = [HMDMatterPath PathWithMTRPath:v11 accessory:accessoryCopy];
 
   return v12;
 }
 
-+ (HMDMatterPath)PathWithCommandID:(id)a3 endpointID:(id)a4 clusterID:(id)a5 accessory:(id)a6
++ (HMDMatterPath)PathWithCommandID:(id)d endpointID:(id)iD clusterID:(id)clusterID accessory:(id)accessory
 {
   v9 = MEMORY[0x277CD52F0];
-  v10 = a6;
-  v11 = [v9 commandPathWithEndpointID:a4 clusterID:a5 commandID:a3];
-  v12 = [HMDMatterPath PathWithMTRPath:v11 accessory:v10];
+  accessoryCopy = accessory;
+  v11 = [v9 commandPathWithEndpointID:iD clusterID:clusterID commandID:d];
+  v12 = [HMDMatterPath PathWithMTRPath:v11 accessory:accessoryCopy];
 
   return v12;
 }
 
-+ (HMDMatterPath)PathWithAttributeID:(id)a3 endpointID:(id)a4 clusterID:(id)a5 accessory:(id)a6
++ (HMDMatterPath)PathWithAttributeID:(id)d endpointID:(id)iD clusterID:(id)clusterID accessory:(id)accessory
 {
   v9 = MEMORY[0x277CD51C0];
-  v10 = a6;
-  v11 = [v9 attributePathWithEndpointID:a4 clusterID:a5 attributeID:a3];
-  v12 = [HMDMatterPath PathWithMTRPath:v11 accessory:v10];
+  accessoryCopy = accessory;
+  v11 = [v9 attributePathWithEndpointID:iD clusterID:clusterID attributeID:d];
+  v12 = [HMDMatterPath PathWithMTRPath:v11 accessory:accessoryCopy];
 
   return v12;
 }
 
-+ (HMDMatterPath)PathWithMTRPath:(id)a3 accessory:(id)a4
++ (HMDMatterPath)PathWithMTRPath:(id)path accessory:(id)accessory
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HMDMatterPath alloc] initWithMTRPath:v6 accessory:v5];
+  accessoryCopy = accessory;
+  pathCopy = path;
+  v7 = [[HMDMatterPath alloc] initWithMTRPath:pathCopy accessory:accessoryCopy];
 
   return v7;
 }

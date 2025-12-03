@@ -1,6 +1,6 @@
 @interface CUIKDateFormatterCacheKey
-- (BOOL)isEqual:(id)a3;
-- (CUIKDateFormatterCacheKey)initWithCalendar:(id)a3 is24HourFormat:(BOOL)a4 dropDesignator:(BOOL)a5 canDropMinutes:(BOOL)a6 designatorRequiresWhitespace:(BOOL)a7 addDate:(BOOL)a8;
+- (BOOL)isEqual:(id)equal;
+- (CUIKDateFormatterCacheKey)initWithCalendar:(id)calendar is24HourFormat:(BOOL)format dropDesignator:(BOOL)designator canDropMinutes:(BOOL)minutes designatorRequiresWhitespace:(BOOL)whitespace addDate:(BOOL)date;
 - (unint64_t)hash;
 @end
 
@@ -38,32 +38,32 @@
   return v8 ^ v9;
 }
 
-- (CUIKDateFormatterCacheKey)initWithCalendar:(id)a3 is24HourFormat:(BOOL)a4 dropDesignator:(BOOL)a5 canDropMinutes:(BOOL)a6 designatorRequiresWhitespace:(BOOL)a7 addDate:(BOOL)a8
+- (CUIKDateFormatterCacheKey)initWithCalendar:(id)calendar is24HourFormat:(BOOL)format dropDesignator:(BOOL)designator canDropMinutes:(BOOL)minutes designatorRequiresWhitespace:(BOOL)whitespace addDate:(BOOL)date
 {
-  v15 = a3;
+  calendarCopy = calendar;
   v19.receiver = self;
   v19.super_class = CUIKDateFormatterCacheKey;
   v16 = [(CUIKDateFormatterCacheKey *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_calendar, a3);
-    v17->_is24HourFormat = a4;
-    v17->_dropDesignator = a5;
-    v17->_canDropMinutes = a6;
-    v17->_designatorRequiresWhitespace = a7;
-    v17->_addDate = a8;
+    objc_storeStrong(&v16->_calendar, calendar);
+    v17->_is24HourFormat = format;
+    v17->_dropDesignator = designator;
+    v17->_canDropMinutes = minutes;
+    v17->_designatorRequiresWhitespace = whitespace;
+    v17->_addDate = date;
   }
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (v5 = objc_opt_class(), v5 == objc_opt_class()))
+  equalCopy = equal;
+  if (equalCopy && (v5 = objc_opt_class(), v5 == objc_opt_class()))
   {
-    v7 = v4;
+    v7 = equalCopy;
     v6 = [(NSCalendar *)self->_calendar isEqual:v7[2]]&& self->_is24HourFormat == *(v7 + 8) && self->_dropDesignator == *(v7 + 9) && self->_canDropMinutes == *(v7 + 10) && self->_designatorRequiresWhitespace == *(v7 + 11) && self->_addDate == *(v7 + 12);
   }
 

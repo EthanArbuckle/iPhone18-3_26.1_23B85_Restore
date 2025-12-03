@@ -1,27 +1,27 @@
 @interface SFScoreboardCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFScoreboardCardSection)initWithCoder:(id)a3;
-- (SFScoreboardCardSection)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFScoreboardCardSection)initWithCoder:(id)coder;
+- (SFScoreboardCardSection)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFScoreboardCardSection
 
-- (SFScoreboardCardSection)initWithProtobuf:(id)a3
+- (SFScoreboardCardSection)initWithProtobuf:(id)protobuf
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v47.receiver = self;
   v47.super_class = SFScoreboardCardSection;
   v5 = [(SFCardSection *)&v47 init];
   if (v5)
   {
-    v6 = [v4 punchoutOptions];
-    if (v6)
+    punchoutOptions = [protobufCopy punchoutOptions];
+    if (punchoutOptions)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -35,8 +35,8 @@
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v8 = [v4 punchoutOptions];
-    v9 = [v8 countByEnumeratingWithState:&v43 objects:v48 count:16];
+    punchoutOptions2 = [protobufCopy punchoutOptions];
+    v9 = [punchoutOptions2 countByEnumeratingWithState:&v43 objects:v48 count:16];
     if (v9)
     {
       v10 = v9;
@@ -47,7 +47,7 @@
         {
           if (*v44 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(punchoutOptions2);
           }
 
           v13 = [[SFPunchout alloc] initWithProtobuf:*(*(&v43 + 1) + 8 * i)];
@@ -57,117 +57,117 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v43 objects:v48 count:16];
+        v10 = [punchoutOptions2 countByEnumeratingWithState:&v43 objects:v48 count:16];
       }
 
       while (v10);
     }
 
     [(SFCardSection *)v5 setPunchoutOptions:v7];
-    v14 = [v4 punchoutPickerTitle];
+    punchoutPickerTitle = [protobufCopy punchoutPickerTitle];
 
-    if (v14)
+    if (punchoutPickerTitle)
     {
-      v15 = [v4 punchoutPickerTitle];
-      [(SFCardSection *)v5 setPunchoutPickerTitle:v15];
+      punchoutPickerTitle2 = [protobufCopy punchoutPickerTitle];
+      [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
     }
 
-    v16 = [v4 punchoutPickerDismissText];
+    punchoutPickerDismissText = [protobufCopy punchoutPickerDismissText];
 
-    if (v16)
+    if (punchoutPickerDismissText)
     {
-      v17 = [v4 punchoutPickerDismissText];
-      [(SFCardSection *)v5 setPunchoutPickerDismissText:v17];
+      punchoutPickerDismissText2 = [protobufCopy punchoutPickerDismissText];
+      [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
     }
 
-    if ([v4 canBeHidden])
+    if ([protobufCopy canBeHidden])
     {
-      -[SFCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v4 canBeHidden]);
+      -[SFCardSection setCanBeHidden:](v5, "setCanBeHidden:", [protobufCopy canBeHidden]);
     }
 
-    if ([v4 hasTopPadding])
+    if ([protobufCopy hasTopPadding])
     {
-      -[SFCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v4 hasTopPadding]);
+      -[SFCardSection setHasTopPadding:](v5, "setHasTopPadding:", [protobufCopy hasTopPadding]);
     }
 
-    if ([v4 hasBottomPadding])
+    if ([protobufCopy hasBottomPadding])
     {
-      -[SFCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v4 hasBottomPadding]);
+      -[SFCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [protobufCopy hasBottomPadding]);
     }
 
-    v18 = [v4 type];
+    type = [protobufCopy type];
 
-    if (v18)
+    if (type)
     {
-      v19 = [v4 type];
-      [(SFTitleCardSection *)v5 setType:v19];
+      type2 = [protobufCopy type];
+      [(SFTitleCardSection *)v5 setType:type2];
     }
 
-    if ([v4 separatorStyle])
+    if ([protobufCopy separatorStyle])
     {
-      -[SFCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v4 separatorStyle]);
+      -[SFCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [protobufCopy separatorStyle]);
     }
 
-    v20 = [v4 backgroundColor];
+    backgroundColor = [protobufCopy backgroundColor];
 
-    if (v20)
+    if (backgroundColor)
     {
       v21 = [SFColor alloc];
-      v22 = [v4 backgroundColor];
-      v23 = [(SFColor *)v21 initWithProtobuf:v22];
+      backgroundColor2 = [protobufCopy backgroundColor];
+      v23 = [(SFColor *)v21 initWithProtobuf:backgroundColor2];
       [(SFCardSection *)v5 setBackgroundColor:v23];
     }
 
-    v24 = [v4 title];
+    title = [protobufCopy title];
 
-    if (v24)
+    if (title)
     {
-      v25 = [v4 title];
-      [(SFTitleCardSection *)v5 setTitle:v25];
+      title2 = [protobufCopy title];
+      [(SFTitleCardSection *)v5 setTitle:title2];
     }
 
-    v26 = [v4 subtitle];
+    subtitle = [protobufCopy subtitle];
 
-    if (v26)
+    if (subtitle)
     {
-      v27 = [v4 subtitle];
-      [(SFTitleCardSection *)v5 setSubtitle:v27];
+      subtitle2 = [protobufCopy subtitle];
+      [(SFTitleCardSection *)v5 setSubtitle:subtitle2];
     }
 
-    v28 = [v4 team1];
+    team1 = [protobufCopy team1];
 
-    if (v28)
+    if (team1)
     {
       v29 = [SFSportsTeam alloc];
-      v30 = [v4 team1];
-      v31 = [(SFSportsTeam *)v29 initWithProtobuf:v30];
+      team12 = [protobufCopy team1];
+      v31 = [(SFSportsTeam *)v29 initWithProtobuf:team12];
       [(SFScoreboardCardSection *)v5 setTeam1:v31];
     }
 
-    v32 = [v4 team2];
+    team2 = [protobufCopy team2];
 
-    if (v32)
+    if (team2)
     {
       v33 = [SFSportsTeam alloc];
-      v34 = [v4 team2];
-      v35 = [(SFSportsTeam *)v33 initWithProtobuf:v34];
+      team22 = [protobufCopy team2];
+      v35 = [(SFSportsTeam *)v33 initWithProtobuf:team22];
       [(SFScoreboardCardSection *)v5 setTeam2:v35];
     }
 
-    v36 = [v4 accessibilityDescription];
+    accessibilityDescription = [protobufCopy accessibilityDescription];
 
-    if (v36)
+    if (accessibilityDescription)
     {
-      v37 = [v4 accessibilityDescription];
-      [(SFScoreboardCardSection *)v5 setAccessibilityDescription:v37];
+      accessibilityDescription2 = [protobufCopy accessibilityDescription];
+      [(SFScoreboardCardSection *)v5 setAccessibilityDescription:accessibilityDescription2];
     }
 
-    v38 = [v4 eventStatus];
+    eventStatus = [protobufCopy eventStatus];
 
-    if (v38)
+    if (eventStatus)
     {
-      v39 = [v4 eventStatus];
-      [(SFScoreboardCardSection *)v5 setEventStatus:v39];
+      eventStatus2 = [protobufCopy eventStatus];
+      [(SFScoreboardCardSection *)v5 setEventStatus:eventStatus2];
     }
 
     v40 = v5;
@@ -182,56 +182,56 @@
   v31.receiver = self;
   v31.super_class = SFScoreboardCardSection;
   v3 = [(SFTitleCardSection *)&v31 hash];
-  v30 = [(SFCardSection *)self punchoutOptions];
-  v4 = [v30 hash];
-  v29 = [(SFCardSection *)self punchoutPickerTitle];
-  v5 = v4 ^ [v29 hash];
-  v6 = [(SFCardSection *)self punchoutPickerDismissText];
-  v7 = v5 ^ [v6 hash];
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  v4 = [punchoutOptions hash];
+  punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+  v5 = v4 ^ [punchoutPickerTitle hash];
+  punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+  v7 = v5 ^ [punchoutPickerDismissText hash];
   v8 = v7 ^ [(SFCardSection *)self canBeHidden];
   v9 = v8 ^ [(SFCardSection *)self hasTopPadding]^ v3;
-  v10 = [(SFCardSection *)self hasBottomPadding];
-  v11 = [(SFTitleCardSection *)self type];
-  v12 = v10 ^ [v11 hash];
+  hasBottomPadding = [(SFCardSection *)self hasBottomPadding];
+  type = [(SFTitleCardSection *)self type];
+  v12 = hasBottomPadding ^ [type hash];
   v13 = v12 ^ [(SFCardSection *)self separatorStyle];
-  v14 = [(SFCardSection *)self backgroundColor];
-  v15 = v13 ^ [v14 hash];
-  v16 = [(SFTitleCardSection *)self title];
-  v28 = v9 ^ v15 ^ [v16 hash];
-  v17 = [(SFTitleCardSection *)self subtitle];
-  v18 = [v17 hash];
-  v19 = [(SFScoreboardCardSection *)self team1];
-  v20 = v18 ^ [v19 hash];
-  v21 = [(SFScoreboardCardSection *)self team2];
-  v22 = v20 ^ [v21 hash];
-  v23 = [(SFScoreboardCardSection *)self accessibilityDescription];
-  v24 = v22 ^ [v23 hash];
-  v25 = [(SFScoreboardCardSection *)self eventStatus];
-  v26 = v24 ^ [v25 hash];
+  backgroundColor = [(SFCardSection *)self backgroundColor];
+  v15 = v13 ^ [backgroundColor hash];
+  title = [(SFTitleCardSection *)self title];
+  v28 = v9 ^ v15 ^ [title hash];
+  subtitle = [(SFTitleCardSection *)self subtitle];
+  v18 = [subtitle hash];
+  team1 = [(SFScoreboardCardSection *)self team1];
+  v20 = v18 ^ [team1 hash];
+  team2 = [(SFScoreboardCardSection *)self team2];
+  v22 = v20 ^ [team2 hash];
+  accessibilityDescription = [(SFScoreboardCardSection *)self accessibilityDescription];
+  v24 = v22 ^ [accessibilityDescription hash];
+  eventStatus = [(SFScoreboardCardSection *)self eventStatus];
+  v26 = v24 ^ [eventStatus hash];
 
   return v28 ^ v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
     goto LABEL_79;
   }
 
-  if (![(SFScoreboardCardSection *)v4 isMemberOfClass:objc_opt_class()]|| (v121.receiver = self, v121.super_class = SFScoreboardCardSection, ![(SFTitleCardSection *)&v121 isEqual:v4]))
+  if (![(SFScoreboardCardSection *)equalCopy isMemberOfClass:objc_opt_class()]|| (v121.receiver = self, v121.super_class = SFScoreboardCardSection, ![(SFTitleCardSection *)&v121 isEqual:equalCopy]))
   {
     v19 = 0;
     goto LABEL_79;
   }
 
-  v5 = v4;
-  v116 = [(SFCardSection *)self punchoutOptions];
-  v115 = [(SFCardSection *)v5 punchoutOptions];
-  v113 = v115 == 0;
-  v114 = v116 != 0;
+  v5 = equalCopy;
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  punchoutOptions2 = [(SFCardSection *)v5 punchoutOptions];
+  v113 = punchoutOptions2 == 0;
+  v114 = punchoutOptions != 0;
   if (v114 == v113)
   {
     v112 = 0uLL;
@@ -252,15 +252,15 @@
     goto LABEL_16;
   }
 
-  v7 = [(SFCardSection *)self punchoutOptions];
-  v8 = v7 != 0;
-  v111 = v7;
-  if (v7)
+  punchoutOptions3 = [(SFCardSection *)self punchoutOptions];
+  v8 = punchoutOptions3 != 0;
+  v111 = punchoutOptions3;
+  if (punchoutOptions3)
   {
-    v9 = [(SFCardSection *)self punchoutOptions];
+    punchoutOptions4 = [(SFCardSection *)self punchoutOptions];
     [(SFCardSection *)v5 punchoutOptions];
-    v106 = v107 = v9;
-    if (![v9 isEqual:?])
+    v106 = v107 = punchoutOptions4;
+    if (![punchoutOptions4 isEqual:?])
     {
       *(&v112 + 4) = 0;
       v118 = 0;
@@ -283,10 +283,10 @@
     }
   }
 
-  v109 = [(SFCardSection *)self punchoutPickerTitle];
-  v108 = [(SFCardSection *)v5 punchoutPickerTitle];
+  punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+  punchoutPickerTitle2 = [(SFCardSection *)v5 punchoutPickerTitle];
   HIDWORD(v112) = v8;
-  if ((v109 != 0) == (v108 == 0))
+  if ((punchoutPickerTitle != 0) == (punchoutPickerTitle2 == 0))
   {
     *(&v112 + 4) = 0;
     v118 = 0;
@@ -308,15 +308,15 @@
     goto LABEL_16;
   }
 
-  v20 = [(SFCardSection *)self punchoutPickerTitle];
-  v21 = v20 != 0;
-  v105 = v20;
-  if (v20)
+  punchoutPickerTitle3 = [(SFCardSection *)self punchoutPickerTitle];
+  v21 = punchoutPickerTitle3 != 0;
+  v105 = punchoutPickerTitle3;
+  if (punchoutPickerTitle3)
   {
-    v22 = [(SFCardSection *)self punchoutPickerTitle];
-    v101 = [(SFCardSection *)v5 punchoutPickerTitle];
-    v102 = v22;
-    if (![v22 isEqual:?])
+    punchoutPickerTitle4 = [(SFCardSection *)self punchoutPickerTitle];
+    punchoutPickerTitle5 = [(SFCardSection *)v5 punchoutPickerTitle];
+    v102 = punchoutPickerTitle4;
+    if (![punchoutPickerTitle4 isEqual:?])
     {
       v119[0] = 0;
       v119[1] = 0;
@@ -347,9 +347,9 @@
     DWORD2(v112) = 0;
   }
 
-  v104 = [(SFCardSection *)self punchoutPickerDismissText];
-  v103 = [(SFCardSection *)v5 punchoutPickerDismissText];
-  if ((v104 != 0) == (v103 == 0))
+  punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+  punchoutPickerDismissText2 = [(SFCardSection *)v5 punchoutPickerDismissText];
+  if ((punchoutPickerDismissText != 0) == (punchoutPickerDismissText2 == 0))
   {
     v117 = 0uLL;
     *&v112 = 0;
@@ -373,18 +373,18 @@
 
   else
   {
-    v35 = [(SFCardSection *)self punchoutPickerDismissText];
-    v36 = v35 != 0;
-    v100 = v35;
-    if (!v35 || (-[SFCardSection punchoutPickerDismissText](self, "punchoutPickerDismissText"), v37 = objc_claimAutoreleasedReturnValue(), -[SFCardSection punchoutPickerDismissText](v5, "punchoutPickerDismissText"), v98 = objc_claimAutoreleasedReturnValue(), v99 = v37, [v37 isEqual:?]))
+    punchoutPickerDismissText3 = [(SFCardSection *)self punchoutPickerDismissText];
+    v36 = punchoutPickerDismissText3 != 0;
+    v100 = punchoutPickerDismissText3;
+    if (!punchoutPickerDismissText3 || (-[SFCardSection punchoutPickerDismissText](self, "punchoutPickerDismissText"), v37 = objc_claimAutoreleasedReturnValue(), -[SFCardSection punchoutPickerDismissText](v5, "punchoutPickerDismissText"), v98 = objc_claimAutoreleasedReturnValue(), v99 = v37, [v37 isEqual:?]))
     {
-      v38 = [(SFCardSection *)self canBeHidden];
+      canBeHidden = [(SFCardSection *)self canBeHidden];
       DWORD1(v112) = v36;
-      if (v38 == [(SFCardSection *)v5 canBeHidden]&& (v39 = [(SFCardSection *)self hasTopPadding], v39 == [(SFCardSection *)v5 hasTopPadding]) && (v40 = [(SFCardSection *)self hasBottomPadding], v40 == [(SFCardSection *)v5 hasBottomPadding]))
+      if (canBeHidden == [(SFCardSection *)v5 canBeHidden]&& (v39 = [(SFCardSection *)self hasTopPadding], v39 == [(SFCardSection *)v5 hasTopPadding]) && (v40 = [(SFCardSection *)self hasBottomPadding], v40 == [(SFCardSection *)v5 hasBottomPadding]))
       {
-        v97 = [(SFTitleCardSection *)self type];
-        v96 = [(SFTitleCardSection *)v5 type];
-        if ((v97 != 0) == (v96 == 0))
+        type = [(SFTitleCardSection *)self type];
+        type2 = [(SFTitleCardSection *)v5 type];
+        if ((type != 0) == (type2 == 0))
         {
           v119[1] = 0;
           LODWORD(v112) = 0;
@@ -407,18 +407,18 @@
 
         else
         {
-          v41 = [(SFTitleCardSection *)self type];
-          v42 = v41 != 0;
-          v95 = v41;
-          if (!v41 || (-[SFTitleCardSection type](self, "type"), v43 = objc_claimAutoreleasedReturnValue(), -[SFTitleCardSection type](v5, "type"), v93 = objc_claimAutoreleasedReturnValue(), v94 = v43, [v43 isEqual:?]))
+          type3 = [(SFTitleCardSection *)self type];
+          v42 = type3 != 0;
+          v95 = type3;
+          if (!type3 || (-[SFTitleCardSection type](self, "type"), v43 = objc_claimAutoreleasedReturnValue(), -[SFTitleCardSection type](v5, "type"), v93 = objc_claimAutoreleasedReturnValue(), v94 = v43, [v43 isEqual:?]))
           {
             LODWORD(v112) = v42;
-            v44 = [(SFCardSection *)self separatorStyle];
-            if (v44 == [(SFCardSection *)v5 separatorStyle])
+            separatorStyle = [(SFCardSection *)self separatorStyle];
+            if (separatorStyle == [(SFCardSection *)v5 separatorStyle])
             {
-              v92 = [(SFCardSection *)self backgroundColor];
-              v91 = [(SFCardSection *)v5 backgroundColor];
-              if ((v92 != 0) == (v91 == 0))
+              backgroundColor = [(SFCardSection *)self backgroundColor];
+              backgroundColor2 = [(SFCardSection *)v5 backgroundColor];
+              if ((backgroundColor != 0) == (backgroundColor2 == 0))
               {
                 v118 = 0;
                 v11 = 0;
@@ -440,14 +440,14 @@
 
               else
               {
-                v45 = [(SFCardSection *)self backgroundColor];
-                HIDWORD(v120[2]) = v45 != 0;
-                v90 = v45;
-                if (!v45 || (-[SFCardSection backgroundColor](self, "backgroundColor"), v46 = objc_claimAutoreleasedReturnValue(), -[SFCardSection backgroundColor](v5, "backgroundColor"), v86 = objc_claimAutoreleasedReturnValue(), v87 = v46, [v46 isEqual:?]))
+                backgroundColor3 = [(SFCardSection *)self backgroundColor];
+                HIDWORD(v120[2]) = backgroundColor3 != 0;
+                v90 = backgroundColor3;
+                if (!backgroundColor3 || (-[SFCardSection backgroundColor](self, "backgroundColor"), v46 = objc_claimAutoreleasedReturnValue(), -[SFCardSection backgroundColor](v5, "backgroundColor"), v86 = objc_claimAutoreleasedReturnValue(), v87 = v46, [v46 isEqual:?]))
                 {
-                  v89 = [(SFTitleCardSection *)self title];
-                  v88 = [(SFTitleCardSection *)v5 title];
-                  if ((v89 != 0) == (v88 == 0))
+                  title = [(SFTitleCardSection *)self title];
+                  title2 = [(SFTitleCardSection *)v5 title];
+                  if ((title != 0) == (title2 == 0))
                   {
                     v11 = 0;
                     v12 = 0;
@@ -469,14 +469,14 @@
 
                   else
                   {
-                    v47 = [(SFTitleCardSection *)self title];
-                    LODWORD(v120[2]) = v47 != 0;
-                    v85 = v47;
-                    if (!v47 || (-[SFTitleCardSection title](self, "title"), v48 = objc_claimAutoreleasedReturnValue(), -[SFTitleCardSection title](v5, "title"), v81 = objc_claimAutoreleasedReturnValue(), v82 = v48, [v48 isEqual:?]))
+                    title3 = [(SFTitleCardSection *)self title];
+                    LODWORD(v120[2]) = title3 != 0;
+                    v85 = title3;
+                    if (!title3 || (-[SFTitleCardSection title](self, "title"), v48 = objc_claimAutoreleasedReturnValue(), -[SFTitleCardSection title](v5, "title"), v81 = objc_claimAutoreleasedReturnValue(), v82 = v48, [v48 isEqual:?]))
                     {
-                      v84 = [(SFTitleCardSection *)self subtitle];
-                      v83 = [(SFTitleCardSection *)v5 subtitle];
-                      if ((v84 != 0) == (v83 == 0))
+                      subtitle = [(SFTitleCardSection *)self subtitle];
+                      subtitle2 = [(SFTitleCardSection *)v5 subtitle];
+                      if ((subtitle != 0) == (subtitle2 == 0))
                       {
                         v12 = 0;
                         v120[0] = 0;
@@ -501,14 +501,14 @@
 
                       else
                       {
-                        v49 = [(SFTitleCardSection *)self subtitle];
-                        HIDWORD(v120[1]) = v49 != 0;
-                        v80 = v49;
-                        if (!v49 || (-[SFTitleCardSection subtitle](self, "subtitle"), v50 = objc_claimAutoreleasedReturnValue(), -[SFTitleCardSection subtitle](v5, "subtitle"), v76 = objc_claimAutoreleasedReturnValue(), v77 = v50, [v50 isEqual:?]))
+                        subtitle3 = [(SFTitleCardSection *)self subtitle];
+                        HIDWORD(v120[1]) = subtitle3 != 0;
+                        v80 = subtitle3;
+                        if (!subtitle3 || (-[SFTitleCardSection subtitle](self, "subtitle"), v50 = objc_claimAutoreleasedReturnValue(), -[SFTitleCardSection subtitle](v5, "subtitle"), v76 = objc_claimAutoreleasedReturnValue(), v77 = v50, [v50 isEqual:?]))
                         {
-                          v79 = [(SFScoreboardCardSection *)self team1];
-                          v78 = [(SFScoreboardCardSection *)v5 team1];
-                          if ((v79 != 0) == (v78 == 0))
+                          team1 = [(SFScoreboardCardSection *)self team1];
+                          team12 = [(SFScoreboardCardSection *)v5 team1];
+                          if ((team1 != 0) == (team12 == 0))
                           {
                             v13 = 0;
                             *(v120 + 4) = 0;
@@ -532,14 +532,14 @@
 
                           else
                           {
-                            v51 = [(SFScoreboardCardSection *)self team1];
-                            LODWORD(v120[1]) = v51 != 0;
-                            v75 = v51;
-                            if (!v51 || (-[SFScoreboardCardSection team1](self, "team1"), v52 = objc_claimAutoreleasedReturnValue(), -[SFScoreboardCardSection team1](v5, "team1"), v71 = objc_claimAutoreleasedReturnValue(), v72 = v52, [v52 isEqual:?]))
+                            team13 = [(SFScoreboardCardSection *)self team1];
+                            LODWORD(v120[1]) = team13 != 0;
+                            v75 = team13;
+                            if (!team13 || (-[SFScoreboardCardSection team1](self, "team1"), v52 = objc_claimAutoreleasedReturnValue(), -[SFScoreboardCardSection team1](v5, "team1"), v71 = objc_claimAutoreleasedReturnValue(), v72 = v52, [v52 isEqual:?]))
                             {
-                              v74 = [(SFScoreboardCardSection *)self team2];
-                              v73 = [(SFScoreboardCardSection *)v5 team2];
-                              if ((v74 != 0) == (v73 == 0))
+                              team2 = [(SFScoreboardCardSection *)self team2];
+                              team22 = [(SFScoreboardCardSection *)v5 team2];
+                              if ((team2 != 0) == (team22 == 0))
                               {
                                 v14 = 0;
                                 v120[0] = 0;
@@ -563,14 +563,14 @@
 
                               else
                               {
-                                v53 = [(SFScoreboardCardSection *)self team2];
-                                HIDWORD(v120[0]) = v53 != 0;
-                                v70 = v53;
-                                if (!v53 || (-[SFScoreboardCardSection team2](self, "team2"), v54 = objc_claimAutoreleasedReturnValue(), -[SFScoreboardCardSection team2](v5, "team2"), v66 = objc_claimAutoreleasedReturnValue(), v67 = v54, [v54 isEqual:?]))
+                                team23 = [(SFScoreboardCardSection *)self team2];
+                                HIDWORD(v120[0]) = team23 != 0;
+                                v70 = team23;
+                                if (!team23 || (-[SFScoreboardCardSection team2](self, "team2"), v54 = objc_claimAutoreleasedReturnValue(), -[SFScoreboardCardSection team2](v5, "team2"), v66 = objc_claimAutoreleasedReturnValue(), v67 = v54, [v54 isEqual:?]))
                                 {
-                                  v69 = [(SFScoreboardCardSection *)self accessibilityDescription];
-                                  v68 = [(SFScoreboardCardSection *)v5 accessibilityDescription];
-                                  if ((v69 != 0) == (v68 == 0))
+                                  accessibilityDescription = [(SFScoreboardCardSection *)self accessibilityDescription];
+                                  accessibilityDescription2 = [(SFScoreboardCardSection *)v5 accessibilityDescription];
+                                  if ((accessibilityDescription != 0) == (accessibilityDescription2 == 0))
                                   {
                                     v15 = 0;
                                     v16 = 0;
@@ -593,14 +593,14 @@
 
                                   else
                                   {
-                                    v55 = [(SFScoreboardCardSection *)self accessibilityDescription];
-                                    LODWORD(v120[0]) = v55 != 0;
-                                    v65 = v55;
-                                    if (!v55 || (-[SFScoreboardCardSection accessibilityDescription](self, "accessibilityDescription"), v56 = objc_claimAutoreleasedReturnValue(), -[SFScoreboardCardSection accessibilityDescription](v5, "accessibilityDescription"), v61 = objc_claimAutoreleasedReturnValue(), v62 = v56, [v56 isEqual:?]))
+                                    accessibilityDescription3 = [(SFScoreboardCardSection *)self accessibilityDescription];
+                                    LODWORD(v120[0]) = accessibilityDescription3 != 0;
+                                    v65 = accessibilityDescription3;
+                                    if (!accessibilityDescription3 || (-[SFScoreboardCardSection accessibilityDescription](self, "accessibilityDescription"), v56 = objc_claimAutoreleasedReturnValue(), -[SFScoreboardCardSection accessibilityDescription](v5, "accessibilityDescription"), v61 = objc_claimAutoreleasedReturnValue(), v62 = v56, [v56 isEqual:?]))
                                     {
-                                      v64 = [(SFScoreboardCardSection *)self eventStatus];
-                                      v63 = [(SFScoreboardCardSection *)v5 eventStatus];
-                                      if ((v64 != 0) == (v63 == 0))
+                                      eventStatus = [(SFScoreboardCardSection *)self eventStatus];
+                                      eventStatus2 = [(SFScoreboardCardSection *)v5 eventStatus];
+                                      if ((eventStatus != 0) == (eventStatus2 == 0))
                                       {
                                         v17 = 0;
                                         v18 = 0;
@@ -622,14 +622,14 @@
 
                                       else
                                       {
-                                        v60 = [(SFScoreboardCardSection *)self eventStatus];
-                                        if (v60)
+                                        eventStatus3 = [(SFScoreboardCardSection *)self eventStatus];
+                                        if (eventStatus3)
                                         {
-                                          v57 = [(SFScoreboardCardSection *)self eventStatus];
-                                          v58 = [(SFScoreboardCardSection *)v5 eventStatus];
-                                          v59 = v57;
-                                          v19 = [v57 isEqual:v58];
-                                          v6 = v58;
+                                          eventStatus4 = [(SFScoreboardCardSection *)self eventStatus];
+                                          eventStatus5 = [(SFScoreboardCardSection *)v5 eventStatus];
+                                          v59 = eventStatus4;
+                                          v19 = [eventStatus4 isEqual:eventStatus5];
+                                          v6 = eventStatus5;
                                           v18 = 1;
                                           v119[2] = 0x100000001;
                                           v119[0] = 0x100000001;
@@ -649,7 +649,7 @@
 
                                         else
                                         {
-                                          v60 = 0;
+                                          eventStatus3 = 0;
                                           v18 = 0;
                                           v119[2] = 0x100000001;
                                           v119[0] = 0x100000001;
@@ -906,7 +906,7 @@
 LABEL_16:
   if (v18)
   {
-    v110 = v4;
+    v110 = equalCopy;
     v23 = v19;
     v24 = v13;
     v25 = v14;
@@ -928,7 +928,7 @@ LABEL_16:
     v14 = v25;
     v13 = v24;
     v19 = v23;
-    v4 = v110;
+    equalCopy = v110;
     if (!v33)
     {
       goto LABEL_18;
@@ -1076,57 +1076,57 @@ LABEL_79:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28.receiver = self;
   v28.super_class = SFScoreboardCardSection;
-  v4 = [(SFTitleCardSection *)&v28 copyWithZone:a3];
-  v5 = [(SFCardSection *)self punchoutOptions];
-  v6 = [v5 copy];
+  v4 = [(SFTitleCardSection *)&v28 copyWithZone:zone];
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  v6 = [punchoutOptions copy];
   [v4 setPunchoutOptions:v6];
 
-  v7 = [(SFCardSection *)self punchoutPickerTitle];
-  v8 = [v7 copy];
+  punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+  v8 = [punchoutPickerTitle copy];
   [v4 setPunchoutPickerTitle:v8];
 
-  v9 = [(SFCardSection *)self punchoutPickerDismissText];
-  v10 = [v9 copy];
+  punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+  v10 = [punchoutPickerDismissText copy];
   [v4 setPunchoutPickerDismissText:v10];
 
   [v4 setCanBeHidden:{-[SFCardSection canBeHidden](self, "canBeHidden")}];
   [v4 setHasTopPadding:{-[SFCardSection hasTopPadding](self, "hasTopPadding")}];
   [v4 setHasBottomPadding:{-[SFCardSection hasBottomPadding](self, "hasBottomPadding")}];
-  v11 = [(SFTitleCardSection *)self type];
-  v12 = [v11 copy];
+  type = [(SFTitleCardSection *)self type];
+  v12 = [type copy];
   [v4 setType:v12];
 
   [v4 setSeparatorStyle:{-[SFCardSection separatorStyle](self, "separatorStyle")}];
-  v13 = [(SFCardSection *)self backgroundColor];
-  v14 = [v13 copy];
+  backgroundColor = [(SFCardSection *)self backgroundColor];
+  v14 = [backgroundColor copy];
   [v4 setBackgroundColor:v14];
 
-  v15 = [(SFTitleCardSection *)self title];
-  v16 = [v15 copy];
+  title = [(SFTitleCardSection *)self title];
+  v16 = [title copy];
   [v4 setTitle:v16];
 
-  v17 = [(SFTitleCardSection *)self subtitle];
-  v18 = [v17 copy];
+  subtitle = [(SFTitleCardSection *)self subtitle];
+  v18 = [subtitle copy];
   [v4 setSubtitle:v18];
 
-  v19 = [(SFScoreboardCardSection *)self team1];
-  v20 = [v19 copy];
+  team1 = [(SFScoreboardCardSection *)self team1];
+  v20 = [team1 copy];
   [v4 setTeam1:v20];
 
-  v21 = [(SFScoreboardCardSection *)self team2];
-  v22 = [v21 copy];
+  team2 = [(SFScoreboardCardSection *)self team2];
+  v22 = [team2 copy];
   [v4 setTeam2:v22];
 
-  v23 = [(SFScoreboardCardSection *)self accessibilityDescription];
-  v24 = [v23 copy];
+  accessibilityDescription = [(SFScoreboardCardSection *)self accessibilityDescription];
+  v24 = [accessibilityDescription copy];
   [v4 setAccessibilityDescription:v24];
 
-  v25 = [(SFScoreboardCardSection *)self eventStatus];
-  v26 = [v25 copy];
+  eventStatus = [(SFScoreboardCardSection *)self eventStatus];
+  v26 = [eventStatus copy];
   [v4 setEventStatus:v26];
 
   return v4;
@@ -1135,183 +1135,183 @@ LABEL_79:
 - (NSData)jsonData
 {
   v2 = [[_SFPBScoreboardCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBScoreboardCardSection *)v2 jsonData];
+  jsonData = [(_SFPBScoreboardCardSection *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBScoreboardCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBScoreboardCardSection *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBScoreboardCardSection *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFScoreboardCardSection;
-  [(SFTitleCardSection *)&v3 encodeWithCoder:a3];
+  [(SFTitleCardSection *)&v3 encodeWithCoder:coder];
 }
 
-- (SFScoreboardCardSection)initWithCoder:(id)a3
+- (SFScoreboardCardSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFCardSection *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCardSection alloc] initWithData:v6];
   v8 = [[SFCardSection alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v9];
+    punchoutOptions = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions];
 
-    v10 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v10];
+    punchoutPickerTitle = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle];
 
-    v11 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v11];
-
-    [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
-    [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
-    [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
-    v12 = [(SFCardSection *)v8 type];
-    [(SFTitleCardSection *)v5 setType:v12];
-
-    [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v13 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v13];
-
-    v14 = [(SFCardSection *)v8 title];
-    [(SFTitleCardSection *)v5 setTitle:v14];
-
-    v15 = [(SFCardSection *)v8 subtitle];
-    [(SFTitleCardSection *)v5 setSubtitle:v15];
-
-    v16 = [(SFCardSection *)v8 team1];
-    [(SFScoreboardCardSection *)v5 setTeam1:v16];
-
-    v17 = [(SFCardSection *)v8 team2];
-    [(SFScoreboardCardSection *)v5 setTeam2:v17];
-
-    v18 = [(SFCardSection *)v8 accessibilityDescription];
-    [(SFScoreboardCardSection *)v5 setAccessibilityDescription:v18];
-
-    v19 = [(SFCardSection *)v8 eventStatus];
-    [(SFScoreboardCardSection *)v5 setEventStatus:v19];
-
-    v20 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v20];
-
-    v21 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v21];
-
-    v22 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v22];
+    punchoutPickerDismissText = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
-    v23 = [(SFCardSection *)v8 type];
-    [(SFTitleCardSection *)v5 setType:v23];
+    type = [(SFCardSection *)v8 type];
+    [(SFTitleCardSection *)v5 setType:type];
 
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v24 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v24];
+    backgroundColor = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor];
 
-    v25 = [(SFCardSection *)v8 title];
-    [(SFTitleCardSection *)v5 setTitle:v25];
+    title = [(SFCardSection *)v8 title];
+    [(SFTitleCardSection *)v5 setTitle:title];
 
-    v26 = [(SFCardSection *)v8 subtitle];
-    [(SFTitleCardSection *)v5 setSubtitle:v26];
+    subtitle = [(SFCardSection *)v8 subtitle];
+    [(SFTitleCardSection *)v5 setSubtitle:subtitle];
+
+    team1 = [(SFCardSection *)v8 team1];
+    [(SFScoreboardCardSection *)v5 setTeam1:team1];
+
+    team2 = [(SFCardSection *)v8 team2];
+    [(SFScoreboardCardSection *)v5 setTeam2:team2];
+
+    accessibilityDescription = [(SFCardSection *)v8 accessibilityDescription];
+    [(SFScoreboardCardSection *)v5 setAccessibilityDescription:accessibilityDescription];
+
+    eventStatus = [(SFCardSection *)v8 eventStatus];
+    [(SFScoreboardCardSection *)v5 setEventStatus:eventStatus];
+
+    punchoutOptions2 = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions2];
+
+    punchoutPickerTitle2 = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
+
+    punchoutPickerDismissText2 = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
+
+    [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
+    [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
+    [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
+    type2 = [(SFCardSection *)v8 type];
+    [(SFTitleCardSection *)v5 setType:type2];
+
+    [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
+    backgroundColor2 = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor2];
+
+    title2 = [(SFCardSection *)v8 title];
+    [(SFTitleCardSection *)v5 setTitle:title2];
+
+    subtitle2 = [(SFCardSection *)v8 subtitle];
+    [(SFTitleCardSection *)v5 setSubtitle:subtitle2];
 
     [(SFTitleCardSection *)v5 setIsCentered:[(SFCardSection *)v8 isCentered]];
-    v27 = [(SFCardSection *)v8 nextCard];
-    [(SFCardSection *)v5 setNextCard:v27];
+    nextCard = [(SFCardSection *)v8 nextCard];
+    [(SFCardSection *)v5 setNextCard:nextCard];
 
-    v28 = [(SFCardSection *)v8 commands];
-    [(SFCardSection *)v5 setCommands:v28];
+    commands = [(SFCardSection *)v8 commands];
+    [(SFCardSection *)v5 setCommands:commands];
 
-    v29 = [(SFCardSection *)v8 parameterKeyPaths];
-    [(SFCardSection *)v5 setParameterKeyPaths:v29];
+    parameterKeyPaths = [(SFCardSection *)v8 parameterKeyPaths];
+    [(SFCardSection *)v5 setParameterKeyPaths:parameterKeyPaths];
 
-    v30 = [(SFCardSection *)v8 cardSectionId];
-    [(SFCardSection *)v5 setCardSectionId:v30];
+    cardSectionId = [(SFCardSection *)v8 cardSectionId];
+    [(SFCardSection *)v5 setCardSectionId:cardSectionId];
 
-    v31 = [(SFCardSection *)v8 resultIdentifier];
-    [(SFCardSection *)v5 setResultIdentifier:v31];
+    resultIdentifier = [(SFCardSection *)v8 resultIdentifier];
+    [(SFCardSection *)v5 setResultIdentifier:resultIdentifier];
 
-    v32 = [(SFCardSection *)v8 userReportRequest];
-    [(SFCardSection *)v5 setUserReportRequest:v32];
+    userReportRequest = [(SFCardSection *)v8 userReportRequest];
+    [(SFCardSection *)v5 setUserReportRequest:userReportRequest];
 
-    v33 = [(SFCardSection *)v8 command];
-    [(SFCardSection *)v5 setCommand:v33];
+    command = [(SFCardSection *)v8 command];
+    [(SFCardSection *)v5 setCommand:command];
 
-    v34 = [(SFCardSection *)v8 previewCommand];
-    [(SFCardSection *)v5 setPreviewCommand:v34];
+    previewCommand = [(SFCardSection *)v8 previewCommand];
+    [(SFCardSection *)v5 setPreviewCommand:previewCommand];
 
-    v35 = [(SFCardSection *)v8 previewButtonItems];
-    [(SFCardSection *)v5 setPreviewButtonItems:v35];
+    previewButtonItems = [(SFCardSection *)v8 previewButtonItems];
+    [(SFCardSection *)v5 setPreviewButtonItems:previewButtonItems];
 
-    v36 = [(SFCardSection *)v8 cardSectionDetail];
-    [(SFCardSection *)v5 setCardSectionDetail:v36];
+    cardSectionDetail = [(SFCardSection *)v8 cardSectionDetail];
+    [(SFCardSection *)v5 setCardSectionDetail:cardSectionDetail];
 
-    v37 = [(SFCardSection *)v8 previewButtonItemsTitle];
-    [(SFCardSection *)v5 setPreviewButtonItemsTitle:v37];
+    previewButtonItemsTitle = [(SFCardSection *)v8 previewButtonItemsTitle];
+    [(SFCardSection *)v5 setPreviewButtonItemsTitle:previewButtonItemsTitle];
 
-    v38 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v38];
+    backgroundColor3 = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor3];
 
     [(SFCardSection *)v5 setShouldHideInAmbientMode:[(SFCardSection *)v8 shouldHideInAmbientMode]];
-    v39 = [(SFCardSection *)v8 leadingSwipeButtonItems];
-    [(SFCardSection *)v5 setLeadingSwipeButtonItems:v39];
+    leadingSwipeButtonItems = [(SFCardSection *)v8 leadingSwipeButtonItems];
+    [(SFCardSection *)v5 setLeadingSwipeButtonItems:leadingSwipeButtonItems];
 
-    v40 = [(SFCardSection *)v8 trailingSwipeButtonItems];
-    [(SFCardSection *)v5 setTrailingSwipeButtonItems:v40];
+    trailingSwipeButtonItems = [(SFCardSection *)v8 trailingSwipeButtonItems];
+    [(SFCardSection *)v5 setTrailingSwipeButtonItems:trailingSwipeButtonItems];
 
-    v41 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v41];
+    punchoutOptions3 = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions3];
 
-    v42 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v42];
+    punchoutPickerTitle3 = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle3];
 
-    v43 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v43];
+    punchoutPickerDismissText3 = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText3];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v44 = [(SFCardSection *)v8 referencedCommands];
-    [(SFCardSection *)v5 setReferencedCommands:v44];
+    referencedCommands = [(SFCardSection *)v8 referencedCommands];
+    [(SFCardSection *)v5 setReferencedCommands:referencedCommands];
 
     [(SFCardSection *)v5 setForceEnable3DTouch:[(SFCardSection *)v8 forceEnable3DTouch]];
     [(SFCardSection *)v5 setShouldShowInSmartDialog:[(SFCardSection *)v8 shouldShowInSmartDialog]];
-    v45 = [(SFCardSection *)v8 appEntityAnnotation];
-    [(SFCardSection *)v5 setAppEntityAnnotation:v45];
+    appEntityAnnotation = [(SFCardSection *)v8 appEntityAnnotation];
+    [(SFCardSection *)v5 setAppEntityAnnotation:appEntityAnnotation];
 
-    v46 = [(SFCardSection *)v8 emphasisSubjectId];
-    [(SFCardSection *)v5 setEmphasisSubjectId:v46];
+    emphasisSubjectId = [(SFCardSection *)v8 emphasisSubjectId];
+    [(SFCardSection *)v5 setEmphasisSubjectId:emphasisSubjectId];
 
     [(SFCardSection *)v5 setIncreasedContrastMode:[(SFCardSection *)v8 increasedContrastMode]];
-    v47 = [(SFCardSection *)v8 secondaryCommand];
-    [(SFCardSection *)v5 setSecondaryCommand:v47];
+    secondaryCommand = [(SFCardSection *)v8 secondaryCommand];
+    [(SFCardSection *)v5 setSecondaryCommand:secondaryCommand];
 
     [(SFCardSection *)v5 setRequiredLevelOfDetail:[(SFCardSection *)v8 requiredLevelOfDetail]];
-    v48 = [(SFCardSection *)v8 racFeedbackSubfeatureId];
-    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:v48];
+    racFeedbackSubfeatureId = [(SFCardSection *)v8 racFeedbackSubfeatureId];
+    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:racFeedbackSubfeatureId];
 
-    v49 = [(SFCardSection *)v8 racFeedbackLoggingContent];
-    [(SFCardSection *)v5 setRacFeedbackLoggingContent:v49];
+    racFeedbackLoggingContent = [(SFCardSection *)v8 racFeedbackLoggingContent];
+    [(SFCardSection *)v5 setRacFeedbackLoggingContent:racFeedbackLoggingContent];
 
-    v50 = [(SFCardSection *)v8 copyableItems];
-    [(SFCardSection *)v5 setCopyableItems:v50];
+    copyableItems = [(SFCardSection *)v8 copyableItems];
+    [(SFCardSection *)v5 setCopyableItems:copyableItems];
 
-    v51 = [(SFCardSection *)v8 applicationBundleIdentifier];
-    [(SFCardSection *)v5 setApplicationBundleIdentifier:v51];
+    applicationBundleIdentifier = [(SFCardSection *)v8 applicationBundleIdentifier];
+    [(SFCardSection *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier];
   }
 
   return v5;

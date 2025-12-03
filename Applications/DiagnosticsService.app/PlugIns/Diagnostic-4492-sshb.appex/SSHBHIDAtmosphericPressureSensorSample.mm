@@ -29,9 +29,9 @@
   v4 = v3;
   [(SSHBHIDAtmosphericPressureSensorSample *)self level];
   v6 = v5;
-  v7 = [(SSHBHIDAtmosphericPressureSensorSample *)self sequence];
+  sequence = [(SSHBHIDAtmosphericPressureSensorSample *)self sequence];
   [(SSHBHIDAtmosphericPressureSensorSample *)self temperature];
-  return [NSString stringWithFormat:@"%f, %f, %u, %f", v4, *&v6, v7, v8];
+  return [NSString stringWithFormat:@"%f, %f, %u, %f", v4, *&v6, sequence, v8];
 }
 
 @end

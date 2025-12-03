@@ -3,19 +3,19 @@
 - (DIVClient)init;
 - (id)context;
 - (id)createDaemonDisconnectedError;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
 - (id)serverConnection;
-- (void)concludeVerification:(id)a3;
-- (void)configure:(id)a3 completion:(id)a4;
-- (void)confirmVerificationCompletedWithFeedback:(id)a3;
+- (void)concludeVerification:(id)verification;
+- (void)configure:(id)configure completion:(id)completion;
+- (void)confirmVerificationCompletedWithFeedback:(id)feedback;
 - (void)dealloc;
-- (void)getVerificationResultWithOptions:(id)a3 completion:(id)a4;
+- (void)getVerificationResultWithOptions:(id)options completion:(id)completion;
 - (void)init;
 - (void)invalidate;
-- (void)performVerificationWithAttributes:(id)a3 completion:(id)a4;
-- (void)setContext:(id)a3;
-- (void)setIsDisconnected:(BOOL)a3;
-- (void)shareVerificationResultWithOptions:(id)a3 completion:(id)a4;
+- (void)performVerificationWithAttributes:(id)attributes completion:(id)completion;
+- (void)setContext:(id)context;
+- (void)setIsDisconnected:(BOOL)disconnected;
+- (void)shareVerificationResultWithOptions:(id)options completion:(id)completion;
 @end
 
 @implementation DIVClient
@@ -82,13 +82,13 @@
     v21 = objc_opt_class();
     v22 = objc_opt_class();
     v23 = [v36 setWithObjects:{v35, v34, v33, v32, v31, v30, v29, v28, v14, v15, v16, v17, v18, v19, v20, v21, v22, objc_opt_class(), 0}];
-    v24 = [(NSXPCConnection *)v3->_serverConnection remoteObjectInterface];
-    [v24 setClasses:v23 forSelector:sel_performVerificationWithAttributes_completion_ argumentIndex:0 ofReply:1];
+    remoteObjectInterface = [(NSXPCConnection *)v3->_serverConnection remoteObjectInterface];
+    [remoteObjectInterface setClasses:v23 forSelector:sel_performVerificationWithAttributes_completion_ argumentIndex:0 ofReply:1];
 
     v25 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
 
-    v26 = [(NSXPCConnection *)v3->_serverConnection remoteObjectInterface];
-    [v26 setClasses:v25 forSelector:sel_shareVerificationResultWithOptions_completion_ argumentIndex:0 ofReply:1];
+    remoteObjectInterface2 = [(NSXPCConnection *)v3->_serverConnection remoteObjectInterface];
+    [remoteObjectInterface2 setClasses:v25 forSelector:sel_shareVerificationResultWithOptions_completion_ argumentIndex:0 ofReply:1];
 
     objc_initWeak(&buf, v3);
     v37[0] = MEMORY[0x277D85DD0];
@@ -139,10 +139,10 @@ void __17__DIVClient_init__block_invoke(uint64_t a1)
   [(DIVClient *)&v6 dealloc];
 }
 
-- (void)configure:(id)a3 completion:(id)a4
+- (void)configure:(id)configure completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configureCopy = configure;
+  completionCopy = completion;
   v8 = DIV_LOG_SIGNPOST();
   v9 = DIV_LOG_SIGNPOST();
   v10 = os_signpost_id_make_with_pointer(v9, self);
@@ -153,9 +153,9 @@ void __17__DIVClient_init__block_invoke(uint64_t a1)
     _os_signpost_emit_with_name_impl(&dword_21CC90000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v10, "configure", "", buf, 2u);
   }
 
-  if (v6 && ([v6 serviceName], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+  if (configureCopy && ([configureCopy serviceName], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
-    [(DIVClient *)self setContext:v6];
+    [(DIVClient *)self setContext:configureCopy];
     v12 = DIV_LOG_CLIENT_1();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
@@ -169,7 +169,7 @@ void __17__DIVClient_init__block_invoke(uint64_t a1)
       aBlock[2] = __34__DIVClient_configure_completion___block_invoke;
       aBlock[3] = &unk_278320CB0;
       aBlock[4] = self;
-      v21 = v7;
+      v21 = completionCopy;
       v15 = _Block_copy(aBlock);
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
@@ -178,17 +178,17 @@ void __17__DIVClient_init__block_invoke(uint64_t a1)
       v19 = v15;
       v16 = v15;
       v17 = [(DIVClient *)self remoteObjectProxyWithErrorHandler:v18];
-      [v17 configure:v6 completion:v16];
+      [v17 configure:configureCopy completion:v16];
 
       goto LABEL_14;
     }
 
-    v13 = [(DIVClient *)self createDaemonDisconnectedError];
+    createDaemonDisconnectedError = [(DIVClient *)self createDaemonDisconnectedError];
   }
 
   else
   {
-    v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DIVError" code:-2 userInfo:0];
+    createDaemonDisconnectedError = [MEMORY[0x277CCA9B8] errorWithDomain:@"DIVError" code:-2 userInfo:0];
     v14 = DIV_LOG_CLIENT_1();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -196,7 +196,7 @@ void __17__DIVClient_init__block_invoke(uint64_t a1)
     }
   }
 
-  (*(v7 + 2))(v7, v13);
+  (*(completionCopy + 2))(completionCopy, createDaemonDisconnectedError);
 
 LABEL_14:
 }
@@ -217,10 +217,10 @@ void __34__DIVClient_configure_completion___block_invoke(uint64_t a1, void *a2)
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)performVerificationWithAttributes:(id)a3 completion:(id)a4
+- (void)performVerificationWithAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v8 = DIV_LOG_CLIENT_1();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -239,8 +239,8 @@ void __34__DIVClient_configure_completion___block_invoke(uint64_t a1, void *a2)
 
   if ([(DIVClient *)self isDisconnected])
   {
-    v12 = [(DIVClient *)self createDaemonDisconnectedError];
-    (*(v7 + 2))(v7, 0, 0, v12);
+    createDaemonDisconnectedError = [(DIVClient *)self createDaemonDisconnectedError];
+    (*(completionCopy + 2))(completionCopy, 0, 0, createDaemonDisconnectedError);
   }
 
   else
@@ -250,7 +250,7 @@ void __34__DIVClient_configure_completion___block_invoke(uint64_t a1, void *a2)
     aBlock[2] = __58__DIVClient_performVerificationWithAttributes_completion___block_invoke;
     aBlock[3] = &unk_278320CD8;
     aBlock[4] = self;
-    v19 = v7;
+    v19 = completionCopy;
     v13 = _Block_copy(aBlock);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -259,7 +259,7 @@ void __34__DIVClient_configure_completion___block_invoke(uint64_t a1, void *a2)
     v17 = v13;
     v14 = v13;
     v15 = [(DIVClient *)self remoteObjectProxyWithErrorHandler:v16];
-    [v15 performVerificationWithAttributes:v6 completion:v14];
+    [v15 performVerificationWithAttributes:attributesCopy completion:v14];
   }
 }
 
@@ -280,10 +280,10 @@ void __58__DIVClient_performVerificationWithAttributes_completion___block_invoke
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)shareVerificationResultWithOptions:(id)a3 completion:(id)a4
+- (void)shareVerificationResultWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v8 = DIV_LOG_CLIENT_1();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -302,8 +302,8 @@ void __58__DIVClient_performVerificationWithAttributes_completion___block_invoke
 
   if ([(DIVClient *)self isDisconnected])
   {
-    v12 = [(DIVClient *)self createDaemonDisconnectedError];
-    v7[2](v7, 0, v12);
+    createDaemonDisconnectedError = [(DIVClient *)self createDaemonDisconnectedError];
+    completionCopy[2](completionCopy, 0, createDaemonDisconnectedError);
   }
 
   else
@@ -313,7 +313,7 @@ void __58__DIVClient_performVerificationWithAttributes_completion___block_invoke
     aBlock[2] = __59__DIVClient_shareVerificationResultWithOptions_completion___block_invoke;
     aBlock[3] = &unk_278320D00;
     aBlock[4] = self;
-    v19 = v7;
+    v19 = completionCopy;
     v13 = _Block_copy(aBlock);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -322,7 +322,7 @@ void __58__DIVClient_performVerificationWithAttributes_completion___block_invoke
     v17 = v13;
     v14 = v13;
     v15 = [(DIVClient *)self remoteObjectProxyWithErrorHandler:v16];
-    [v15 shareVerificationResultWithOptions:v6 completion:v14];
+    [v15 shareVerificationResultWithOptions:optionsCopy completion:v14];
   }
 }
 
@@ -343,10 +343,10 @@ void __59__DIVClient_shareVerificationResultWithOptions_completion___block_invok
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getVerificationResultWithOptions:(id)a3 completion:(id)a4
+- (void)getVerificationResultWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v8 = DIV_LOG_CLIENT_1();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -365,8 +365,8 @@ void __59__DIVClient_shareVerificationResultWithOptions_completion___block_invok
 
   if ([(DIVClient *)self isDisconnected])
   {
-    v12 = [(DIVClient *)self createDaemonDisconnectedError];
-    v7[2](v7, 0, v12);
+    createDaemonDisconnectedError = [(DIVClient *)self createDaemonDisconnectedError];
+    completionCopy[2](completionCopy, 0, createDaemonDisconnectedError);
   }
 
   else
@@ -376,7 +376,7 @@ void __59__DIVClient_shareVerificationResultWithOptions_completion___block_invok
     aBlock[2] = __57__DIVClient_getVerificationResultWithOptions_completion___block_invoke;
     aBlock[3] = &unk_278320D28;
     aBlock[4] = self;
-    v19 = v7;
+    v19 = completionCopy;
     v13 = _Block_copy(aBlock);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -385,7 +385,7 @@ void __59__DIVClient_shareVerificationResultWithOptions_completion___block_invok
     v17 = v13;
     v14 = v13;
     v15 = [(DIVClient *)self remoteObjectProxyWithErrorHandler:v16];
-    [v15 getVerificationResultWithOptions:v6 completion:v14];
+    [v15 getVerificationResultWithOptions:optionsCopy completion:v14];
   }
 }
 
@@ -434,13 +434,13 @@ void __57__DIVClient_getVerificationResultWithOptions_completion___block_invoke(
     [DIVClient invalidate];
   }
 
-  v4 = [(DIVClient *)self serverConnection];
-  [v4 invalidate];
+  serverConnection = [(DIVClient *)self serverConnection];
+  [serverConnection invalidate];
 }
 
-- (void)concludeVerification:(id)a3
+- (void)concludeVerification:(id)verification
 {
-  v4 = a3;
+  verificationCopy = verification;
   if (![(DIVClient *)self isDisconnected])
   {
     v5 = DIV_LOG_CLIENT_1();
@@ -450,13 +450,13 @@ void __57__DIVClient_getVerificationResultWithOptions_completion___block_invoke(
     }
 
     v6 = [(DIVClient *)self remoteObjectProxyWithErrorHandler:0];
-    [v6 concludeVerification:v4];
+    [v6 concludeVerification:verificationCopy];
   }
 }
 
-- (void)confirmVerificationCompletedWithFeedback:(id)a3
+- (void)confirmVerificationCompletedWithFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   v5 = DIV_LOG_CLIENT_1();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -474,11 +474,11 @@ void __57__DIVClient_getVerificationResultWithOptions_completion___block_invoke(
 
   else
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
-    [v4 setFinishDate:v7];
+    date = [MEMORY[0x277CBEAA8] date];
+    [feedbackCopy setFinishDate:date];
 
     v6 = [(DIVClient *)self remoteObjectProxyWithErrorHandler:0];
-    [v6 confirmVerificationCompletedWithFeedback:v4];
+    [v6 confirmVerificationCompletedWithFeedback:feedbackCopy];
   }
 }
 
@@ -500,12 +500,12 @@ void __57__DIVClient_getVerificationResultWithOptions_completion___block_invoke(
   return v3;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_lock);
   context = self->_context;
-  self->_context = v4;
+  self->_context = contextCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -518,10 +518,10 @@ void __57__DIVClient_getVerificationResultWithOptions_completion___block_invoke(
   return isDisconnected;
 }
 
-- (void)setIsDisconnected:(BOOL)a3
+- (void)setIsDisconnected:(BOOL)disconnected
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_isDisconnected = a3;
+  self->_isDisconnected = disconnected;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -539,18 +539,18 @@ void __57__DIVClient_getVerificationResultWithOptions_completion___block_invoke(
   return v3;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DIVClient *)self serverConnection];
+  handlerCopy = handler;
+  serverConnection = [(DIVClient *)self serverConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__DIVClient_remoteObjectProxyWithErrorHandler___block_invoke;
   v9[3] = &unk_278320C60;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [serverConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }

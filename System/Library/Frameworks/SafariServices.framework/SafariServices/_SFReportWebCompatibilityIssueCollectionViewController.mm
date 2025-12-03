@@ -1,26 +1,26 @@
 @interface _SFReportWebCompatibilityIssueCollectionViewController
-- (_SFReportWebCompatibilityIssueCollectionViewController)initWithBrowserContentController:(id)a3;
-- (id)_issueStringForRowAtIndexPath:(id)a3;
-- (id)_subCategoryStringForRowAtIndexPath:(id)a3;
+- (_SFReportWebCompatibilityIssueCollectionViewController)initWithBrowserContentController:(id)controller;
+- (id)_issueStringForRowAtIndexPath:(id)path;
+- (id)_subCategoryStringForRowAtIndexPath:(id)path;
 - (int64_t)_numberOfIssueSubCategories;
-- (void)_issueSelectedAtIndexPath:(id)a3;
-- (void)_reportFeedbackForSelectedRowIndex:(int64_t)a3 selectedSubCategoryRowIndex:(int64_t)a4;
+- (void)_issueSelectedAtIndexPath:(id)path;
+- (void)_reportFeedbackForSelectedRowIndex:(int64_t)index selectedSubCategoryRowIndex:(int64_t)rowIndex;
 @end
 
 @implementation _SFReportWebCompatibilityIssueCollectionViewController
 
-- (_SFReportWebCompatibilityIssueCollectionViewController)initWithBrowserContentController:(id)a3
+- (_SFReportWebCompatibilityIssueCollectionViewController)initWithBrowserContentController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = _SFReportWebCompatibilityIssueCollectionViewController;
-  v5 = [(_SFReportFeedbackCollectionViewController *)&v12 initWithBrowserContentController:v4];
+  v5 = [(_SFReportFeedbackCollectionViewController *)&v12 initWithBrowserContentController:controllerCopy];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_browserContentController, v4);
-    v7 = [MEMORY[0x1E69C9048] issueCategories];
-    v8 = [v7 safari_mapObjectsUsingBlock:&__block_literal_global_49];
+    objc_storeWeak(&v5->_browserContentController, controllerCopy);
+    issueCategories = [MEMORY[0x1E69C9048] issueCategories];
+    v8 = [issueCategories safari_mapObjectsUsingBlock:&__block_literal_global_49];
     issueStrings = v6->_issueStrings;
     v6->_issueStrings = v8;
 
@@ -30,27 +30,27 @@
   return v6;
 }
 
-- (id)_issueStringForRowAtIndexPath:(id)a3
+- (id)_issueStringForRowAtIndexPath:(id)path
 {
   issueStrings = self->_issueStrings;
-  v4 = [a3 item];
+  item = [path item];
 
-  return [(NSArray *)issueStrings objectAtIndexedSubscript:v4];
+  return [(NSArray *)issueStrings objectAtIndexedSubscript:item];
 }
 
-- (void)_issueSelectedAtIndexPath:(id)a3
+- (void)_issueSelectedAtIndexPath:(id)path
 {
   v4 = MEMORY[0x1E69C9048];
-  v5 = a3;
-  v6 = [v4 issueCategories];
-  v7 = [v5 item];
+  pathCopy = path;
+  issueCategories = [v4 issueCategories];
+  item = [pathCopy item];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
+  v8 = [issueCategories objectAtIndexedSubscript:item];
   selectedIssueCategory = self->_selectedIssueCategory;
   self->_selectedIssueCategory = v8;
 
-  v10 = [(_SFReportWebCompatibilityIssueCollectionViewController *)self collectionView];
-  [v10 reloadData];
+  collectionView = [(_SFReportWebCompatibilityIssueCollectionViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
 - (int64_t)_numberOfIssueSubCategories
@@ -67,28 +67,28 @@
   return result;
 }
 
-- (id)_subCategoryStringForRowAtIndexPath:(id)a3
+- (id)_subCategoryStringForRowAtIndexPath:(id)path
 {
   v3 = MEMORY[0x1E69C9048];
   selectedIssueCategory = self->_selectedIssueCategory;
-  v5 = a3;
+  pathCopy = path;
   v6 = [v3 subCategoriesForIssueCategory:{-[NSNumber integerValue](selectedIssueCategory, "integerValue")}];
-  v7 = [v5 item];
+  item = [pathCopy item];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
+  v8 = [v6 objectAtIndexedSubscript:item];
   v9 = [v3 stringForSubCategory:{objc_msgSend(v8, "integerValue")}];
 
   return v9;
 }
 
-- (void)_reportFeedbackForSelectedRowIndex:(int64_t)a3 selectedSubCategoryRowIndex:(int64_t)a4
+- (void)_reportFeedbackForSelectedRowIndex:(int64_t)index selectedSubCategoryRowIndex:(int64_t)rowIndex
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [MEMORY[0x1E69C9048] subCategoriesForIssueCategory:a3];
-    v7 = [v6 objectAtIndexedSubscript:a4];
-    [WeakRetained reportWebCompatibilityFeedbackForActiveTabDocumentWithIssueCategory:a3 subCategory:{objc_msgSend(v7, "integerValue")}];
+    v6 = [MEMORY[0x1E69C9048] subCategoriesForIssueCategory:index];
+    v7 = [v6 objectAtIndexedSubscript:rowIndex];
+    [WeakRetained reportWebCompatibilityFeedbackForActiveTabDocumentWithIssueCategory:index subCategory:{objc_msgSend(v7, "integerValue")}];
   }
 }
 

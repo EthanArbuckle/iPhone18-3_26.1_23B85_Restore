@@ -1,26 +1,26 @@
 @interface XPCClientConnection
-- (XPCClientConnection)initWithServiceName:(id)a3 delegate:(id)a4;
+- (XPCClientConnection)initWithServiceName:(id)name delegate:(id)delegate;
 - (id)debugDescription;
-- (void)_handleConnectionEvent:(id)a3;
-- (void)_handleIncomingMessage:(id)a3;
-- (void)_reallySendMessage:(id)a3 handler:(id)a4 sequence:(unint64_t)a5 retryCount:(unint64_t)a6;
-- (void)sendMessage:(id)a3 withHandler:(id)a4;
-- (void)shutDownCompletionBlock:(id)a3;
+- (void)_handleConnectionEvent:(id)event;
+- (void)_handleIncomingMessage:(id)message;
+- (void)_reallySendMessage:(id)message handler:(id)handler sequence:(unint64_t)sequence retryCount:(unint64_t)count;
+- (void)sendMessage:(id)message withHandler:(id)handler;
+- (void)shutDownCompletionBlock:(id)block;
 @end
 
 @implementation XPCClientConnection
 
-- (void)shutDownCompletionBlock:(id)a3
+- (void)shutDownCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__XPCClientConnection_shutDownCompletionBlock___block_invoke;
   v7[3] = &unk_2798A5170;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(queue, v7);
 }
 
@@ -44,21 +44,21 @@ void __47__XPCClientConnection_shutDownCompletionBlock___block_invoke(uint64_t a
   }
 }
 
-- (XPCClientConnection)initWithServiceName:(id)a3 delegate:(id)a4
+- (XPCClientConnection)initWithServiceName:(id)name delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = XPCClientConnection;
   v8 = [(XPCClientConnection *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     serviceName = v8->_serviceName;
     v8->_serviceName = v9;
 
-    v8->_delegate = v7;
-    v11 = [v6 stringByAppendingString:@".queue"];
+    v8->_delegate = delegateCopy;
+    v11 = [nameCopy stringByAppendingString:@".queue"];
     v12 = dispatch_queue_create([v11 UTF8String], 0);
     queue = v8->_queue;
     v8->_queue = v12;
@@ -67,10 +67,10 @@ void __47__XPCClientConnection_shutDownCompletionBlock___block_invoke(uint64_t a
   return v8;
 }
 
-- (void)sendMessage:(id)a3 withHandler:(id)a4
+- (void)sendMessage:(id)message withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   if (_shouldLogBlock && (*(_shouldLogBlock + 16))())
   {
     _XPCLog(7, @"%@ Scheduling message for sending.", v8, v9, v10, v11, v12, v13, self);
@@ -82,26 +82,26 @@ void __47__XPCClientConnection_shutDownCompletionBlock___block_invoke(uint64_t a
   block[2] = __47__XPCClientConnection_sendMessage_withHandler___block_invoke;
   block[3] = &unk_2798A51E8;
   block[4] = self;
-  v18 = v6;
-  v19 = v7;
-  v15 = v7;
-  v16 = v6;
+  v18 = messageCopy;
+  v19 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = messageCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_reallySendMessage:(id)a3 handler:(id)a4 sequence:(unint64_t)a5 retryCount:(unint64_t)a6
+- (void)_reallySendMessage:(id)message handler:(id)handler sequence:(unint64_t)sequence retryCount:(unint64_t)count
 {
-  v10 = a3;
-  v11 = a4;
-  if (!v11)
+  messageCopy = message;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     __assert_rtn("[XPCClientConnection _reallySendMessage:handler:sequence:retryCount:]", "XPCKitBasic.m", 136, "handler");
   }
 
-  v12 = v11;
+  v12 = handlerCopy;
   if (self->_connection)
   {
-    if (a5)
+    if (sequence)
     {
 LABEL_4:
       if (_shouldLogBlock && (*(_shouldLogBlock + 16))(_shouldLogBlock, 6))
@@ -136,20 +136,20 @@ LABEL_4:
     xpc_connection_resume(self->_connection);
     objc_destroyWeak(&v58);
     objc_destroyWeak(&location);
-    if (a5)
+    if (sequence)
     {
       goto LABEL_4;
     }
   }
 
-  a5 = _reallySendMessage_handler_sequence_retryCount__currentMessageSequence++;
+  sequence = _reallySendMessage_handler_sequence_retryCount__currentMessageSequence++;
   if (_shouldLogBlock && (*(_shouldLogBlock + 16))(_shouldLogBlock, 7))
   {
     _XPCLog(7, @"%@: Setting sequence number to %llu", v28, v29, v30, v31, v32, v33, self);
   }
 
 LABEL_14:
-  xpc_dictionary_set_uint64(v10, "__xpcseq", a5);
+  xpc_dictionary_set_uint64(messageCopy, "__xpcseq", sequence);
   if (_shouldLogBlock)
   {
     if ((*(_shouldLogBlock + 16))(_shouldLogBlock, 6))
@@ -159,7 +159,7 @@ LABEL_14:
 
     if (_shouldLogBlock && (*(_shouldLogBlock + 16))(_shouldLogBlock, 7))
     {
-      v40 = MEMORY[0x259C89D80](v10);
+      v40 = MEMORY[0x259C89D80](messageCopy);
       if (_shouldLogBlock && (*(_shouldLogBlock + 16))(_shouldLogBlock, 7))
       {
         _XPCLog(7, @"Message: %s", v41, v42, v43, v44, v45, v46, v40);
@@ -176,11 +176,11 @@ LABEL_14:
   v52[2] = __70__XPCClientConnection__reallySendMessage_handler_sequence_retryCount___block_invoke_2;
   v52[3] = &unk_2798A5148;
   v54 = v12;
-  v55 = a5;
+  sequenceCopy = sequence;
   v52[4] = self;
-  v53 = v10;
-  v56 = a6;
-  v49 = v10;
+  v53 = messageCopy;
+  countCopy = count;
+  v49 = messageCopy;
   v50 = v12;
   xpc_connection_send_message_with_reply(v47, v49, queue, v52);
 }
@@ -342,31 +342,31 @@ LABEL_33:
   return MEMORY[0x2821F9730](v57);
 }
 
-- (void)_handleIncomingMessage:(id)a3
+- (void)_handleIncomingMessage:(id)message
 {
-  v4 = a3;
-  v5 = [[XPCRequest alloc] initWithMessage:v4 sequence:0 connection:self->_connection];
+  messageCopy = message;
+  v5 = [[XPCRequest alloc] initWithMessage:messageCopy sequence:0 connection:self->_connection];
 
   [(XPCClientConnectionDelegate *)self->_delegate XPCClientConnection:self didReceiveRequest:v5];
 }
 
-- (void)_handleConnectionEvent:(id)a3
+- (void)_handleConnectionEvent:(id)event
 {
-  v4 = a3;
-  xdict = v4;
+  eventCopy = event;
+  xdict = eventCopy;
   if (_shouldLogBlock)
   {
     v5 = (*(_shouldLogBlock + 16))();
-    v4 = xdict;
+    eventCopy = xdict;
     if (v5)
     {
       xpc_dictionary_get_string(xdict, *MEMORY[0x277D86430]);
       _XPCLog(7, @"%@: Connection event handler received event: %s", v6, v7, v8, v9, v10, v11, self);
-      v4 = xdict;
+      eventCopy = xdict;
     }
   }
 
-  v12 = MEMORY[0x259C89E20](v4);
+  v12 = MEMORY[0x259C89E20](eventCopy);
   if (v12 == MEMORY[0x277D86468])
   {
     [(XPCClientConnection *)self _handleIncomingMessage:xdict];

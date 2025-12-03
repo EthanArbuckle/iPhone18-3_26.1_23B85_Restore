@@ -1,12 +1,12 @@
 @interface CCUICAPackageDescription
-+ (id)packageDescriptionForActivity:(id)a3;
++ (id)packageDescriptionForActivity:(id)activity;
 @end
 
 @implementation CCUICAPackageDescription
 
-+ (id)packageDescriptionForActivity:(id)a3
++ (id)packageDescriptionForActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = FCUIPackageNameForActivity();
   if ([v4 length])
   {
@@ -17,7 +17,7 @@
     v12 = 3221225472;
     v13 = sub_3CF0;
     v14 = &unk_C500;
-    v15 = v3;
+    v15 = activityCopy;
     v7 = objc_retainBlock(&v11);
     v16 = kFCUIPackageViewStateOn;
     v8 = [v7 copy];

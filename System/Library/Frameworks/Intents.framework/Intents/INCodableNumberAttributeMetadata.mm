@@ -1,7 +1,7 @@
 @interface INCodableNumberAttributeMetadata
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
 - (BOOL)supportsNegativeNumbers;
-- (INCodableNumberAttributeMetadata)initWithCoder:(id)a3;
+- (INCodableNumberAttributeMetadata)initWithCoder:(id)coder;
 - (id)__INCodableDescriptionDefaultValueKey;
 - (id)__INCodableDescriptionMaximumValueKey;
 - (id)__INCodableDescriptionMinimumValueKey;
@@ -17,65 +17,65 @@
 - (id)__INTypeCodableDescriptionMinimumValueKey;
 - (id)__INTypeCodableDescriptionSupportsNegativeNumbersKey;
 - (id)__INTypeCodableDescriptionTypeKey;
-- (id)_localizedDialogTokensWithLocalizer:(id)a3;
-- (id)dictionaryRepresentationWithLocalizer:(id)a3;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (id)_localizedDialogTokensWithLocalizer:(id)localizer;
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation INCodableNumberAttributeMetadata
 
 - (id)__INCodableDescriptionTypeKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableNumberAttributeMetadataTypeKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableNumberAttributeMetadataTypeKey = [objc_opt_class() __INCodableNumberAttributeMetadataTypeKey];
 
-  return v3;
+  return __INCodableNumberAttributeMetadataTypeKey;
 }
 
 - (id)__INCodableDescriptionDefaultValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableNumberAttributeMetadataDefaultValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableNumberAttributeMetadataDefaultValueKey = [objc_opt_class() __INCodableNumberAttributeMetadataDefaultValueKey];
 
-  return v3;
+  return __INCodableNumberAttributeMetadataDefaultValueKey;
 }
 
 - (id)__INCodableDescriptionMinimumValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableNumberAttributeMetadataMinimumValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableNumberAttributeMetadataMinimumValueKey = [objc_opt_class() __INCodableNumberAttributeMetadataMinimumValueKey];
 
-  return v3;
+  return __INCodableNumberAttributeMetadataMinimumValueKey;
 }
 
 - (id)__INCodableDescriptionMaximumValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableNumberAttributeMetadataMaximumValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableNumberAttributeMetadataMaximumValueKey = [objc_opt_class() __INCodableNumberAttributeMetadataMaximumValueKey];
 
-  return v3;
+  return __INCodableNumberAttributeMetadataMaximumValueKey;
 }
 
-- (INCodableNumberAttributeMetadata)initWithCoder:(id)a3
+- (INCodableNumberAttributeMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = INCodableNumberAttributeMetadata;
-  v5 = [(INCodableAttributeMetadata *)&v13 initWithCoder:v4];
+  v5 = [(INCodableAttributeMetadata *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultValue"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultValue"];
     defaultValue = v5->_defaultValue;
     v5->_defaultValue = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minimumValue"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minimumValue"];
     minimumValue = v5->_minimumValue;
     v5->_minimumValue = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maximumValue"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maximumValue"];
     maximumValue = v5->_maximumValue;
     v5->_maximumValue = v10;
   }
@@ -83,33 +83,33 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INCodableNumberAttributeMetadata;
-  v4 = a3;
-  [(INCodableAttributeMetadata *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_type forKey:{@"type", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_defaultValue forKey:@"defaultValue"];
-  [v4 encodeObject:self->_minimumValue forKey:@"minimumValue"];
-  [v4 encodeObject:self->_maximumValue forKey:@"maximumValue"];
+  coderCopy = coder;
+  [(INCodableAttributeMetadata *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_type forKey:{@"type", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_defaultValue forKey:@"defaultValue"];
+  [coderCopy encodeObject:self->_minimumValue forKey:@"minimumValue"];
+  [coderCopy encodeObject:self->_maximumValue forKey:@"maximumValue"];
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = INCodableNumberAttributeMetadata;
   v13 = 0;
-  v6 = [(INCodableAttributeMetadata *)&v12 widgetPlistableRepresentationWithParameters:a3 error:&v13];
+  v6 = [(INCodableAttributeMetadata *)&v12 widgetPlistableRepresentationWithParameters:parameters error:&v13];
   v7 = v13;
   v8 = v7;
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       v9 = v7;
       v10 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -130,16 +130,16 @@
   return v10;
 }
 
-- (id)_localizedDialogTokensWithLocalizer:(id)a3
+- (id)_localizedDialogTokensWithLocalizer:(id)localizer
 {
   v16[2] = *MEMORY[0x1E69E9840];
   v15[0] = @"minimumValue";
-  v4 = [(INCodableNumberAttributeMetadata *)self minimumValue];
-  v5 = [v4 stringValue];
-  v6 = v5;
-  if (v5)
+  minimumValue = [(INCodableNumberAttributeMetadata *)self minimumValue];
+  stringValue = [minimumValue stringValue];
+  v6 = stringValue;
+  if (stringValue)
   {
-    v7 = v5;
+    v7 = stringValue;
   }
 
   else
@@ -149,12 +149,12 @@
 
   v15[1] = @"maximumValue";
   v16[0] = v7;
-  v8 = [(INCodableNumberAttributeMetadata *)self maximumValue];
-  v9 = [v8 stringValue];
-  v10 = v9;
-  if (v9)
+  maximumValue = [(INCodableNumberAttributeMetadata *)self maximumValue];
+  stringValue2 = [maximumValue stringValue];
+  v10 = stringValue2;
+  if (stringValue2)
   {
-    v11 = v9;
+    v11 = stringValue2;
   }
 
   else
@@ -182,77 +182,77 @@
   return v3 < 0.0;
 }
 
-- (id)dictionaryRepresentationWithLocalizer:(id)a3
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer
 {
   v30[5] = *MEMORY[0x1E69E9840];
   v28.receiver = self;
   v28.super_class = INCodableNumberAttributeMetadata;
-  v24 = [(INCodableAttributeMetadata *)&v28 dictionaryRepresentationWithLocalizer:a3];
-  v27 = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionTypeKey];
-  v29[0] = v27;
-  v4 = [(INCodableNumberAttributeMetadata *)self type];
+  v24 = [(INCodableAttributeMetadata *)&v28 dictionaryRepresentationWithLocalizer:localizer];
+  __INCodableDescriptionTypeKey = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionTypeKey];
+  v29[0] = __INCodableDescriptionTypeKey;
+  type = [(INCodableNumberAttributeMetadata *)self type];
   v5 = @"Field";
-  if (v4 == 1)
+  if (type == 1)
   {
     v5 = @"Stepper";
   }
 
-  if (v4 == 2)
+  if (type == 2)
   {
     v5 = @"Slider";
   }
 
   v26 = v5;
   v30[0] = v26;
-  v25 = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionSupportsNegativeNumbersKey];
-  v29[1] = v25;
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[INCodableNumberAttributeMetadata supportsNegativeNumbers](self, "supportsNegativeNumbers")}];
-  v7 = v6;
-  if (!v6)
+  __INCodableDescriptionSupportsNegativeNumbersKey = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionSupportsNegativeNumbersKey];
+  v29[1] = __INCodableDescriptionSupportsNegativeNumbersKey;
+  null = [MEMORY[0x1E696AD98] numberWithBool:{-[INCodableNumberAttributeMetadata supportsNegativeNumbers](self, "supportsNegativeNumbers")}];
+  v7 = null;
+  if (!null)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v6;
-  v30[1] = v6;
-  v23 = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
-  v29[2] = v23;
-  v8 = [(INCodableNumberAttributeMetadata *)self defaultValue];
-  v9 = v8;
-  if (!v8)
+  v21 = null;
+  v30[1] = null;
+  __INCodableDescriptionDefaultValueKey = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
+  v29[2] = __INCodableDescriptionDefaultValueKey;
+  defaultValue = [(INCodableNumberAttributeMetadata *)self defaultValue];
+  v9 = defaultValue;
+  if (!defaultValue)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    defaultValue = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[2] = v8;
-  v22 = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionMinimumValueKey];
-  v29[3] = v22;
-  v10 = [(INCodableNumberAttributeMetadata *)self minimumValue];
-  v11 = v10;
-  if (!v10)
+  v30[2] = defaultValue;
+  __INCodableDescriptionMinimumValueKey = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionMinimumValueKey];
+  v29[3] = __INCodableDescriptionMinimumValueKey;
+  minimumValue = [(INCodableNumberAttributeMetadata *)self minimumValue];
+  null2 = minimumValue;
+  if (!minimumValue)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[3] = v11;
-  v12 = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionMaximumValueKey];
-  v29[4] = v12;
-  v13 = [(INCodableNumberAttributeMetadata *)self maximumValue];
-  v14 = v13;
-  if (!v13)
+  v30[3] = null2;
+  __INCodableDescriptionMaximumValueKey = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionMaximumValueKey];
+  v29[4] = __INCodableDescriptionMaximumValueKey;
+  maximumValue = [(INCodableNumberAttributeMetadata *)self maximumValue];
+  null3 = maximumValue;
+  if (!maximumValue)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[4] = v14;
+  v30[4] = null3;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:5];
   v16 = [v24 if_dictionaryByAddingEntriesFromDictionary:v15];
 
-  if (!v13)
+  if (!maximumValue)
   {
   }
 
-  if (!v10)
+  if (!minimumValue)
   {
   }
 
@@ -264,21 +264,21 @@
   {
   }
 
-  v17 = [v16 if_dictionaryWithNonEmptyValues];
+  if_dictionaryWithNonEmptyValues = [v16 if_dictionaryWithNonEmptyValues];
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v17;
+  return if_dictionaryWithNonEmptyValues;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = INCodableNumberAttributeMetadata;
-  [(INCodableAttributeMetadata *)&v33 updateWithDictionary:v4];
-  v5 = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionTypeKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  [(INCodableAttributeMetadata *)&v33 updateWithDictionary:dictionaryCopy];
+  __INCodableDescriptionTypeKey = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionTypeKey];
+  v6 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionTypeKey];
 
   if (v6)
   {
@@ -303,8 +303,8 @@
 
   v9 = INCodableAttributeMetadataInputTypeWithString(v8);
   self->_type = v9;
-  v10 = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
-  v11 = [v4 objectForKeyedSubscript:v10];
+  __INCodableDescriptionDefaultValueKey = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
+  v11 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionDefaultValueKey];
 
   if (v11)
   {
@@ -330,8 +330,8 @@
   defaultValue = self->_defaultValue;
   self->_defaultValue = v13;
 
-  v15 = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionMinimumValueKey];
-  v16 = [v4 objectForKeyedSubscript:v15];
+  __INCodableDescriptionMinimumValueKey = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionMinimumValueKey];
+  v16 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionMinimumValueKey];
 
   if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -348,8 +348,8 @@
     v16 = 0;
   }
 
-  v18 = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionMinimumValueKey];
-  v19 = [v4 objectForKeyedSubscript:v18];
+  __INCodableDescriptionMinimumValueKey2 = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionMinimumValueKey];
+  v19 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionMinimumValueKey2];
 
   if (v19)
   {
@@ -388,8 +388,8 @@ LABEL_25:
   minimumValue = self->_minimumValue;
   self->_minimumValue = v17;
 
-  v24 = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionMaximumValueKey];
-  v25 = [v4 objectForKeyedSubscript:v24];
+  __INCodableDescriptionMaximumValueKey = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionMaximumValueKey];
+  v25 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionMaximumValueKey];
 
   if (v25 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -406,8 +406,8 @@ LABEL_25:
     v25 = 0;
   }
 
-  v27 = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionMaximumValueKey];
-  v28 = [v4 objectForKeyedSubscript:v27];
+  __INCodableDescriptionMaximumValueKey2 = [(INCodableNumberAttributeMetadata *)self __INCodableDescriptionMaximumValueKey];
+  v28 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionMaximumValueKey2];
 
   if (v28)
   {
@@ -447,22 +447,22 @@ LABEL_39:
   self->_maximumValue = v26;
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
-  v19.receiver = a1;
+  representationCopy = representation;
+  v19.receiver = self;
   v19.super_class = &OBJC_METACLASS___INCodableNumberAttributeMetadata;
   v20 = 0;
-  v7 = objc_msgSendSuper2(&v19, sel_makeFromWidgetPlistableRepresentation_error_, v6, &v20);
+  v7 = objc_msgSendSuper2(&v19, sel_makeFromWidgetPlistableRepresentation_error_, representationCopy, &v20);
   v8 = v20;
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -473,16 +473,16 @@ LABEL_39:
 
   else
   {
-    v7[5] = [v6 intents_intForKey:@"type"];
-    v12 = [v6 intents_numberForKey:@"defaultValue"];
+    v7[5] = [representationCopy intents_intForKey:@"type"];
+    v12 = [representationCopy intents_numberForKey:@"defaultValue"];
     v13 = v7[6];
     v7[6] = v12;
 
-    v14 = [v6 intents_numberForKey:@"minimumValue"];
+    v14 = [representationCopy intents_numberForKey:@"minimumValue"];
     v15 = v7[7];
     v7[7] = v14;
 
-    v16 = [v6 intents_numberForKey:@"maximumValue"];
+    v16 = [representationCopy intents_numberForKey:@"maximumValue"];
     v17 = v7[8];
     v7[8] = v16;
 
@@ -494,90 +494,90 @@ LABEL_39:
 
 - (id)__INTypeCodableDescriptionTypeKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableNumberAttributeMetadataTypeKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableNumberAttributeMetadataTypeKey = [objc_opt_class() __INCodableNumberAttributeMetadataTypeKey];
 
-  return v3;
+  return __INCodableNumberAttributeMetadataTypeKey;
 }
 
 - (id)__INTypeCodableDescriptionSupportsNegativeNumbersKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableNumberAttributeMetadataSupportsNegativeNumbersKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableNumberAttributeMetadataSupportsNegativeNumbersKey = [objc_opt_class() __INCodableNumberAttributeMetadataSupportsNegativeNumbersKey];
 
-  return v3;
+  return __INCodableNumberAttributeMetadataSupportsNegativeNumbersKey;
 }
 
 - (id)__INTypeCodableDescriptionMinimumValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableNumberAttributeMetadataMinimumValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableNumberAttributeMetadataMinimumValueKey = [objc_opt_class() __INCodableNumberAttributeMetadataMinimumValueKey];
 
-  return v3;
+  return __INCodableNumberAttributeMetadataMinimumValueKey;
 }
 
 - (id)__INTypeCodableDescriptionMaximumValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableNumberAttributeMetadataMaximumValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableNumberAttributeMetadataMaximumValueKey = [objc_opt_class() __INCodableNumberAttributeMetadataMaximumValueKey];
 
-  return v3;
+  return __INCodableNumberAttributeMetadataMaximumValueKey;
 }
 
 - (id)__INTypeCodableDescriptionDefaultValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableNumberAttributeMetadataDefaultValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableNumberAttributeMetadataDefaultValueKey = [objc_opt_class() __INCodableNumberAttributeMetadataDefaultValueKey];
 
-  return v3;
+  return __INCodableNumberAttributeMetadataDefaultValueKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionTypeKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableNumberAttributeMetadataTypeKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableNumberAttributeMetadataTypeKey = [objc_opt_class() __INCodableNumberAttributeMetadataTypeKey];
 
-  return v3;
+  return __INCodableNumberAttributeMetadataTypeKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionSupportsNegativeNumbersKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableNumberAttributeMetadataSupportsNegativeNumbersKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableNumberAttributeMetadataSupportsNegativeNumbersKey = [objc_opt_class() __INCodableNumberAttributeMetadataSupportsNegativeNumbersKey];
 
-  return v3;
+  return __INCodableNumberAttributeMetadataSupportsNegativeNumbersKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionMinimumValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableNumberAttributeMetadataMinimumValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableNumberAttributeMetadataMinimumValueKey = [objc_opt_class() __INCodableNumberAttributeMetadataMinimumValueKey];
 
-  return v3;
+  return __INCodableNumberAttributeMetadataMinimumValueKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionMaximumValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableNumberAttributeMetadataMaximumValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableNumberAttributeMetadataMaximumValueKey = [objc_opt_class() __INCodableNumberAttributeMetadataMaximumValueKey];
 
-  return v3;
+  return __INCodableNumberAttributeMetadataMaximumValueKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionDefaultValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableNumberAttributeMetadataDefaultValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableNumberAttributeMetadataDefaultValueKey = [objc_opt_class() __INCodableNumberAttributeMetadataDefaultValueKey];
 
-  return v3;
+  return __INCodableNumberAttributeMetadataDefaultValueKey;
 }
 
 - (id)__INCodableDescriptionSupportsNegativeNumbersKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableNumberAttributeMetadataSupportsNegativeNumbersKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableNumberAttributeMetadataSupportsNegativeNumbersKey = [objc_opt_class() __INCodableNumberAttributeMetadataSupportsNegativeNumbersKey];
 
-  return v3;
+  return __INCodableNumberAttributeMetadataSupportsNegativeNumbersKey;
 }
 
 @end

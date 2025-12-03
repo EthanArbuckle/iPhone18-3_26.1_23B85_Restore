@@ -1,15 +1,15 @@
 @interface MusicUsageTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation MusicUsageTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicUsageTableViewCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"MusicUsageTableViewCell" hasInstanceVariable:@"_subtitleLabel" withType:"MPUAbbreviatingLabel"];
-  [v3 validateClass:@"MusicUsageTableViewCell" hasInstanceVariable:@"_fileSizeLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicUsageTableViewCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"MusicUsageTableViewCell" hasInstanceVariable:@"_subtitleLabel" withType:"MPUAbbreviatingLabel"];
+  [validationsCopy validateClass:@"MusicUsageTableViewCell" hasInstanceVariable:@"_fileSizeLabel" withType:"UILabel"];
 }
 
 @end

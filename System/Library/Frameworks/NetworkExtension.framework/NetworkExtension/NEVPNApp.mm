@@ -1,22 +1,22 @@
 @interface NEVPNApp
-+ (BOOL)compareAppRules:(id)a3 newAppRules:(id)a4 noExistingDomain:(BOOL *)a5;
-+ (id)findRuleWithSameDomains:(id)a3 matchSigningIdentifier:(id)a4 startIndex:(int64_t *)a5;
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
-- (BOOL)installSigningIdentifiersWithFlowDivertControlSocket:(int)a3;
-- (BOOL)removeAppRuleByID:(id)a3;
++ (BOOL)compareAppRules:(id)rules newAppRules:(id)appRules noExistingDomain:(BOOL *)domain;
++ (id)findRuleWithSameDomains:(id)domains matchSigningIdentifier:(id)identifier startIndex:(int64_t *)index;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
+- (BOOL)installSigningIdentifiersWithFlowDivertControlSocket:(int)socket;
+- (BOOL)removeAppRuleByID:(id)d;
 - (NEVPNApp)init;
-- (NEVPNApp)initWithCoder:(id)a3;
-- (id)copyAppRuleByID:(id)a3;
+- (NEVPNApp)initWithCoder:(id)coder;
+- (id)copyAppRuleByID:(id)d;
 - (id)copyAppRuleIDs;
 - (id)copyLegacyDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromLegacyDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromLegacyDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEVPNApp
 
-- (BOOL)installSigningIdentifiersWithFlowDivertControlSocket:(int)a3
+- (BOOL)installSigningIdentifiersWithFlowDivertControlSocket:(int)socket
 {
   v64 = *MEMORY[0x1E69E9840];
   v54 = 0;
@@ -30,8 +30,8 @@
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v5 = [(NEVPNApp *)self appRules];
-    v6 = [v5 countByEnumeratingWithState:&v55 objects:buf count:16];
+    appRules = [(NEVPNApp *)self appRules];
+    v6 = [appRules countByEnumeratingWithState:&v55 objects:buf count:16];
     if (v6)
     {
       v7 = v6;
@@ -42,27 +42,27 @@
         {
           if (*v56 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(appRules);
           }
 
           v10 = *(*(&v55 + 1) + 8 * i);
-          v11 = [v10 matchSigningIdentifier];
-          if (v11)
+          matchSigningIdentifier = [v10 matchSigningIdentifier];
+          if (matchSigningIdentifier)
           {
-            v12 = v11;
-            v13 = [v10 matchSigningIdentifier];
-            v14 = [v4 objectForKeyedSubscript:v13];
+            v12 = matchSigningIdentifier;
+            matchSigningIdentifier2 = [v10 matchSigningIdentifier];
+            v14 = [v4 objectForKeyedSubscript:matchSigningIdentifier2];
 
             if (!v14)
             {
-              v15 = [v10 matchSigningIdentifier];
-              v16 = [v10 matchSigningIdentifier];
-              [v4 setObject:v15 forKeyedSubscript:v16];
+              matchSigningIdentifier3 = [v10 matchSigningIdentifier];
+              matchSigningIdentifier4 = [v10 matchSigningIdentifier];
+              [v4 setObject:matchSigningIdentifier3 forKeyedSubscript:matchSigningIdentifier4];
             }
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v55 objects:buf count:16];
+        v7 = [appRules countByEnumeratingWithState:&v55 objects:buf count:16];
       }
 
       while (v7);
@@ -82,7 +82,7 @@
     {
       v18 = NEFlowTLVMsgCreate();
       NEFlowTLVAdd();
-      v19 = send(a3, v18, v51 - v53, 0);
+      v19 = send(socket, v18, v51 - v53, 0);
       v20 = MEMORY[0x1E695E480];
       if (v19 < 0)
       {
@@ -104,15 +104,15 @@
       {
         CFAllocatorDeallocate(*MEMORY[0x1E695E480], v18);
         v21 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v22 = [v17 allKeys];
-        if ([v22 count])
+        allKeys = [v17 allKeys];
+        if ([allKeys count])
         {
           v23 = 0;
           v24 = 0;
           v25 = 0;
           do
           {
-            if ([v22 count])
+            if ([allKeys count])
             {
               v26 = 0;
               v27 = 0;
@@ -120,8 +120,8 @@
               {
                 if (v25 != v27)
                 {
-                  v28 = [v22 objectAtIndexedSubscript:v23];
-                  v29 = [v22 objectAtIndexedSubscript:v26];
+                  v28 = [allKeys objectAtIndexedSubscript:v23];
+                  v29 = [allKeys objectAtIndexedSubscript:v26];
                   v30 = [v28 commonPrefixWithString:v29 options:2];
 
                   if ([v30 length])
@@ -133,28 +133,28 @@
                 v26 = ++v27;
               }
 
-              while ([v22 count] > v27);
+              while ([allKeys count] > v27);
             }
 
-            v31 = [v22 objectAtIndexedSubscript:v23];
+            v31 = [allKeys objectAtIndexedSubscript:v23];
             v24 += strlen([v31 cStringUsingEncoding:1]);
 
             v23 = ++v25;
           }
 
-          while ([v22 count] > v25);
+          while ([allKeys count] > v25);
           v20 = MEMORY[0x1E695E480];
         }
 
         v54 = [v21 count];
-        [v22 count];
+        [allKeys count];
         v18 = NEFlowTLVMsgCreate();
         NEFlowTLVAdd();
         v49 = 0u;
         v50 = 0u;
         v47 = 0u;
         v48 = 0u;
-        v32 = v22;
+        v32 = allKeys;
         v35 = [v32 countByEnumeratingWithState:&v47 objects:v59 count:16];
         if (v35)
         {
@@ -179,7 +179,7 @@
           while (v36);
         }
 
-        if ((send(a3, v18, v51 - v53, 0) & 0x8000000000000000) == 0)
+        if ((send(socket, v18, v51 - v53, 0) & 0x8000000000000000) == 0)
         {
           v33 = 1;
           if (!v18)
@@ -257,8 +257,8 @@ LABEL_46:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * v8) matchSigningIdentifier];
-        [v3 addObject:v9];
+        matchSigningIdentifier = [*(*(&v13 + 1) + 8 * v8) matchSigningIdentifier];
+        [v3 addObject:matchSigningIdentifier];
 
         ++v8;
       }
@@ -275,9 +275,9 @@ LABEL_46:
   return v10;
 }
 
-- (BOOL)removeAppRuleByID:(id)a3
+- (BOOL)removeAppRuleByID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:self->_appRules];
   if ([v5 count])
   {
@@ -285,8 +285,8 @@ LABEL_46:
     while (1)
     {
       v7 = [v5 objectAtIndex:v6];
-      v8 = [v7 matchSigningIdentifier];
-      v9 = [v8 isEqualToString:v4];
+      matchSigningIdentifier = [v7 matchSigningIdentifier];
+      v9 = [matchSigningIdentifier isEqualToString:dCopy];
 
       if (v9)
       {
@@ -314,17 +314,17 @@ LABEL_5:
   return v10;
 }
 
-- (id)copyAppRuleByID:(id)a3
+- (id)copyAppRuleByID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v5->_appRules;
+  v6 = selfCopy->_appRules;
   v7 = [(NSArray *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -339,8 +339,8 @@ LABEL_5:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 matchSigningIdentifier];
-        v12 = [v11 isEqualToString:v4];
+        matchSigningIdentifier = [v10 matchSigningIdentifier];
+        v12 = [matchSigningIdentifier isEqualToString:dCopy];
 
         if (v12)
         {
@@ -361,7 +361,7 @@ LABEL_5:
 
 LABEL_11:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v13 = *MEMORY[0x1E69E9840];
   return v7;
 }
@@ -370,33 +370,33 @@ LABEL_11:
 {
   v6.receiver = self;
   v6.super_class = NEVPNApp;
-  v3 = [(NEVPN *)&v6 copyLegacyDictionary];
+  copyLegacyDictionary = [(NEVPN *)&v6 copyLegacyDictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[NEVPN isOnDemandEnabled](self, "isOnDemandEnabled")}];
-  [v3 setObject:v4 forKeyedSubscript:*MEMORY[0x1E69827C0]];
+  [copyLegacyDictionary setObject:v4 forKeyedSubscript:*MEMORY[0x1E69827C0]];
 
-  return v3;
+  return copyLegacyDictionary;
 }
 
-- (id)initFromLegacyDictionary:(id)a3
+- (id)initFromLegacyDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = NEVPNApp;
-  v5 = [(NEVPN *)&v28 initFromLegacyDictionary:v4];
+  v5 = [(NEVPN *)&v28 initFromLegacyDictionary:dictionaryCopy];
   if (v5)
   {
     v6 = *MEMORY[0x1E69827C0];
-    v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69827C0]];
+    v7 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69827C0]];
     v8 = isa_nsnumber(v7);
 
-    if ((v8 & 1) != 0 || (v6 = *MEMORY[0x1E69827B8], [v4 objectForKeyedSubscript:*MEMORY[0x1E69827B8]], v9 = objc_claimAutoreleasedReturnValue(), v10 = isa_nsnumber(v9), v9, v10))
+    if ((v8 & 1) != 0 || (v6 = *MEMORY[0x1E69827B8], [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69827B8]], v9 = objc_claimAutoreleasedReturnValue(), v10 = isa_nsnumber(v9), v9, v10))
     {
-      v11 = [v4 objectForKeyedSubscript:v6];
+      v11 = [dictionaryCopy objectForKeyedSubscript:v6];
       [v5 setOnDemandEnabled:{objc_msgSend(v11, "BOOLValue")}];
     }
 
-    v12 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982728]];
+    v12 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982728]];
     if (isa_nsarray(v12))
     {
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -448,24 +448,24 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
   v101 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorsCopy = errors;
   v95.receiver = self;
   v95.super_class = NEVPNApp;
-  v5 = [(NEVPN *)&v95 checkValidityAndCollectErrors:v4];
-  v6 = [(NEVPNApp *)self appRules];
+  v5 = [(NEVPN *)&v95 checkValidityAndCollectErrors:errorsCopy];
+  appRules = [(NEVPNApp *)self appRules];
 
-  if (v6)
+  if (appRules)
   {
     v93 = 0u;
     v94 = 0u;
     v91 = 0u;
     v92 = 0u;
-    v73 = self;
-    v7 = [(NEVPNApp *)self appRules];
-    v8 = [v7 countByEnumeratingWithState:&v91 objects:v100 count:16];
+    selfCopy = self;
+    appRules2 = [(NEVPNApp *)self appRules];
+    v8 = [appRules2 countByEnumeratingWithState:&v91 objects:v100 count:16];
     if (v8)
     {
       v9 = v8;
@@ -477,34 +477,34 @@ LABEL_11:
           v12 = v5;
           if (*v92 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(appRules2);
           }
 
           v13 = *(*(&v91 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v5 = [v13 checkValidityAndCollectErrors:v4] & v12;
+            v5 = [v13 checkValidityAndCollectErrors:errorsCopy] & v12;
           }
 
           else
           {
-            [NEConfiguration addError:v4 toList:?];
+            [NEConfiguration addError:errorsCopy toList:?];
             v5 = 0;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v91 objects:v100 count:16];
+        v9 = [appRules2 countByEnumeratingWithState:&v91 objects:v100 count:16];
       }
 
       while (v9);
     }
 
-    self = v73;
+    self = selfCopy;
   }
 
-  v14 = [(NEVPNApp *)self excludedDomains];
-  v15 = [v14 count];
+  excludedDomains = [(NEVPNApp *)self excludedDomains];
+  v15 = [excludedDomains count];
 
   if (v15)
   {
@@ -512,8 +512,8 @@ LABEL_11:
     v90 = 0u;
     v87 = 0u;
     v88 = 0u;
-    v16 = [(NEVPNApp *)self excludedDomains];
-    v17 = [v16 countByEnumeratingWithState:&v87 objects:v99 count:16];
+    excludedDomains2 = [(NEVPNApp *)self excludedDomains];
+    v17 = [excludedDomains2 countByEnumeratingWithState:&v87 objects:v99 count:16];
     if (v17)
     {
       v18 = v17;
@@ -525,7 +525,7 @@ LABEL_11:
         {
           if (*v88 != v20)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(excludedDomains2);
           }
 
           v22 = *(*(&v87 + 1) + 8 * j);
@@ -533,14 +533,14 @@ LABEL_11:
           if ((objc_opt_isKindOfClass() & 1) == 0 || ![v22 length])
           {
             v23 = NEResourcesCopyLocalizedNSString(@"APP_VPN_EMPTY_EXCLUDED_DOMAIN", @"APP_VPN_EMPTY_EXCLUDED_DOMAIN");
-            [NEConfiguration addError:v23 toList:v4];
+            [NEConfiguration addError:v23 toList:errorsCopy];
 
             LOBYTE(v5) = 0;
             goto LABEL_25;
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v87 objects:v99 count:16];
+        v18 = [excludedDomains2 countByEnumeratingWithState:&v87 objects:v99 count:16];
         if (v18)
         {
           continue;
@@ -557,16 +557,16 @@ LABEL_25:
 
   if ([(NEVPNApp *)self restrictDomains])
   {
-    v24 = [(NEVPN *)self protocol];
-    v25 = [v24 serverAddress];
+    protocol = [(NEVPN *)self protocol];
+    serverAddress = [protocol serverAddress];
 
-    if (v25)
+    if (serverAddress)
     {
-      v26 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v25];
+      v26 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:serverAddress];
       v27 = v26;
       if (!v26 || ([v26 host], (v28 = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        v28 = v25;
+        v28 = serverAddress;
       }
 
       v29 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"."];
@@ -577,9 +577,9 @@ LABEL_25:
       if ([v31 count] > 1)
       {
         v63 = v27;
-        v64 = v25;
+        v64 = serverAddress;
         v65 = v5;
-        v68 = v4;
+        v68 = errorsCopy;
         v62 = v31;
         v61 = [v31 subarrayWithRange:{objc_msgSend(v31, "count") - 2, 2}];
         [v61 componentsJoinedByString:@"."];
@@ -611,8 +611,8 @@ LABEL_25:
               v80 = 0u;
               v81 = 0u;
               v82 = 0u;
-              v40 = [v39 matchDomains];
-              v41 = [v40 countByEnumeratingWithState:&v79 objects:v97 count:16];
+              matchDomains = [v39 matchDomains];
+              v41 = [matchDomains countByEnumeratingWithState:&v79 objects:v97 count:16];
               if (v41)
               {
                 v42 = v41;
@@ -623,7 +623,7 @@ LABEL_25:
                   {
                     if (*v80 != v43)
                     {
-                      objc_enumerationMutation(v40);
+                      objc_enumerationMutation(matchDomains);
                     }
 
                     v45 = *(*(&v79 + 1) + 8 * k);
@@ -637,7 +637,7 @@ LABEL_25:
                     }
                   }
 
-                  v42 = [v40 countByEnumeratingWithState:&v79 objects:v97 count:16];
+                  v42 = [matchDomains countByEnumeratingWithState:&v79 objects:v97 count:16];
                 }
 
                 while (v42);
@@ -691,9 +691,9 @@ LABEL_25:
           LOBYTE(v5) = 0;
         }
 
-        v4 = v68;
+        errorsCopy = v68;
         v27 = v63;
-        v25 = v64;
+        serverAddress = v64;
         v33 = v61;
         v31 = v62;
       }
@@ -703,7 +703,7 @@ LABEL_25:
         v32 = objc_alloc(MEMORY[0x1E696AEC0]);
         v33 = NEResourcesCopyLocalizedNSString(@"APP_VPN_INVALID_DOMAIN", @"APP_VPN_INVALID_DOMAIN");
         v34 = [v32 initWithFormat:v33, objc_msgSend(v31, "count")];
-        [v4 addObject:v34];
+        [errorsCopy addObject:v34];
         LOBYTE(v5) = 0;
       }
 
@@ -713,7 +713,7 @@ LABEL_25:
     else
     {
       v35 = NEResourcesCopyLocalizedNSString(@"APP_VPN_NO_DOMAIN", @"APP_VPN_NO_DOMAIN");
-      [v4 addObject:v35];
+      [errorsCopy addObject:v35];
       LOBYTE(v5) = 0;
     }
   }
@@ -722,61 +722,61 @@ LABEL_25:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = NEVPNApp;
-  v4 = [(NEVPN *)&v13 copyWithZone:a3];
-  v5 = [(NEVPNApp *)self appRules];
+  v4 = [(NEVPN *)&v13 copyWithZone:zone];
+  appRules = [(NEVPNApp *)self appRules];
 
-  if (v5)
+  if (appRules)
   {
     v6 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v7 = [(NEVPNApp *)self appRules];
-    v8 = [v6 initWithArray:v7 copyItems:1];
+    appRules2 = [(NEVPNApp *)self appRules];
+    v8 = [v6 initWithArray:appRules2 copyItems:1];
     [v4 setAppRules:v8];
   }
 
   v9 = objc_alloc(MEMORY[0x1E695DEC8]);
-  v10 = [(NEVPNApp *)self excludedDomains];
-  v11 = [v9 initWithArray:v10 copyItems:1];
+  excludedDomains = [(NEVPNApp *)self excludedDomains];
+  v11 = [v9 initWithArray:excludedDomains copyItems:1];
   [v4 setExcludedDomains:v11];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = NEVPNApp;
-  v4 = a3;
-  [(NEVPN *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(NEVPN *)&v7 encodeWithCoder:coderCopy];
   v5 = [(NEVPNApp *)self appRules:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"Rules"];
+  [coderCopy encodeObject:v5 forKey:@"Rules"];
 
-  v6 = [(NEVPNApp *)self excludedDomains];
-  [v4 encodeObject:v6 forKey:@"ExcludedDomains"];
+  excludedDomains = [(NEVPNApp *)self excludedDomains];
+  [coderCopy encodeObject:excludedDomains forKey:@"ExcludedDomains"];
 }
 
-- (NEVPNApp)initWithCoder:(id)a3
+- (NEVPNApp)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = NEVPNApp;
-  v5 = [(NEVPN *)&v17 initWithCoder:v4];
+  v5 = [(NEVPN *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"Rules"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"Rules"];
     appRules = v5->_appRules;
     v5->_appRules = v9;
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"ExcludedDomains"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"ExcludedDomains"];
     excludedDomains = v5->_excludedDomains;
     v5->_excludedDomains = v14;
   }
@@ -800,26 +800,26 @@ LABEL_25:
   return v3;
 }
 
-+ (id)findRuleWithSameDomains:(id)a3 matchSigningIdentifier:(id)a4 startIndex:(int64_t *)a5
++ (id)findRuleWithSameDomains:(id)domains matchSigningIdentifier:(id)identifier startIndex:(int64_t *)index
 {
   v60 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v47 = a4;
-  if (!v7)
+  domainsCopy = domains;
+  identifierCopy = identifier;
+  if (!domainsCopy)
   {
     goto LABEL_14;
   }
 
-  v8 = [v7 count];
+  v8 = [domainsCopy count];
   v9 = 0;
-  if (!a5 || !v8)
+  if (!index || !v8)
   {
     goto LABEL_15;
   }
 
-  v10 = a5;
-  v11 = *a5;
-  if (v11 >= [v7 count])
+  indexCopy = index;
+  v11 = *index;
+  if (v11 >= [domainsCopy count])
   {
 LABEL_14:
     v9 = 0;
@@ -830,12 +830,12 @@ LABEL_14:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v12 = v7;
+  v12 = domainsCopy;
   v9 = [v12 countByEnumeratingWithState:&v54 objects:v59 count:16];
   if (v9)
   {
-    v48 = v10;
-    v44 = v7;
+    v48 = indexCopy;
+    v44 = domainsCopy;
     v13 = 0;
     v14 = *v55;
 LABEL_7:
@@ -850,8 +850,8 @@ LABEL_7:
 
       v13 = *(*(&v54 + 1) + 8 * v15);
 
-      v17 = [v13 matchSigningIdentifier];
-      v18 = [v17 isEqualToString:v47];
+      matchSigningIdentifier = [v13 matchSigningIdentifier];
+      v18 = [matchSigningIdentifier isEqualToString:identifierCopy];
 
       if (v18)
       {
@@ -869,7 +869,7 @@ LABEL_7:
         }
 
         v13 = v12;
-        v7 = v44;
+        domainsCopy = v44;
         goto LABEL_39;
       }
     }
@@ -877,7 +877,7 @@ LABEL_7:
     if (!v13)
     {
       v9 = 0;
-      v7 = v44;
+      domainsCopy = v44;
       goto LABEL_15;
     }
 
@@ -908,37 +908,37 @@ LABEL_7:
           if (v23 >= *v25)
           {
             v27 = *(*(&v50 + 1) + 8 * v26);
-            v28 = [v27 matchSigningIdentifier];
-            v29 = [v13 matchSigningIdentifier];
-            v30 = [v28 isEqualToString:v29];
+            matchSigningIdentifier2 = [v27 matchSigningIdentifier];
+            matchSigningIdentifier3 = [v13 matchSigningIdentifier];
+            v30 = [matchSigningIdentifier2 isEqualToString:matchSigningIdentifier3];
 
             if ((v30 & 1) == 0)
             {
-              v31 = [v27 matchDomains];
-              v32 = [v31 count];
+              matchDomains = [v27 matchDomains];
+              v32 = [matchDomains count];
 
               if (v32)
               {
-                v33 = [v27 matchDomains];
-                v34 = [v33 count];
-                v35 = [v13 matchDomains];
-                v36 = [v35 count];
+                matchDomains2 = [v27 matchDomains];
+                v34 = [matchDomains2 count];
+                matchDomains3 = [v13 matchDomains];
+                v36 = [matchDomains3 count];
 
                 if (v34 == v36)
                 {
                   v37 = MEMORY[0x1E695DFD8];
-                  v38 = [v27 matchDomains];
-                  v39 = [v37 setWithArray:v38];
+                  matchDomains4 = [v27 matchDomains];
+                  v39 = [v37 setWithArray:matchDomains4];
 
                   v40 = MEMORY[0x1E695DFD8];
-                  v41 = [v13 matchDomains];
-                  v42 = [v40 setWithArray:v41];
+                  matchDomains5 = [v13 matchDomains];
+                  v42 = [v40 setWithArray:matchDomains5];
 
                   if ([v39 isEqualToSet:v42])
                   {
-                    v43 = [v27 matchSigningIdentifier];
+                    matchSigningIdentifier4 = [v27 matchSigningIdentifier];
 
-                    v46 = v43;
+                    v46 = matchSigningIdentifier4;
                   }
 
                   v25 = v48;
@@ -972,7 +972,7 @@ LABEL_7:
     }
 
     *v25 = v23;
-    v7 = v44;
+    domainsCopy = v44;
     v9 = v46;
   }
 
@@ -989,18 +989,18 @@ LABEL_15:
   return v9;
 }
 
-+ (BOOL)compareAppRules:(id)a3 newAppRules:(id)a4 noExistingDomain:(BOOL *)a5
++ (BOOL)compareAppRules:(id)rules newAppRules:(id)appRules noExistingDomain:(BOOL *)domain
 {
   v89 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7 || ![v7 count])
+  rulesCopy = rules;
+  appRulesCopy = appRules;
+  if (!rulesCopy || ![rulesCopy count])
   {
 LABEL_53:
     v53 = 0;
-    if (a5)
+    if (domain)
     {
-      *a5 = 1;
+      *domain = 1;
     }
 
     goto LABEL_60;
@@ -1010,7 +1010,7 @@ LABEL_53:
   v83 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v9 = v7;
+  v9 = rulesCopy;
   v10 = [v9 countByEnumeratingWithState:&v80 objects:v88 count:16];
   if (!v10)
   {
@@ -1019,7 +1019,7 @@ LABEL_53:
   }
 
   v11 = v10;
-  v61 = v7;
+  v61 = rulesCopy;
   v12 = 0;
   v13 = *v81;
   do
@@ -1031,8 +1031,8 @@ LABEL_53:
         objc_enumerationMutation(v9);
       }
 
-      v15 = [*(*(&v80 + 1) + 8 * i) matchDomains];
-      v12 += [v15 count];
+      matchDomains = [*(*(&v80 + 1) + 8 * i) matchDomains];
+      v12 += [matchDomains count];
     }
 
     v11 = [v9 countByEnumeratingWithState:&v80 objects:v88 count:16];
@@ -1040,20 +1040,20 @@ LABEL_53:
 
   while (v11);
 
-  v7 = v61;
+  rulesCopy = v61;
   if (!v12)
   {
     goto LABEL_53;
   }
 
-  if (v8 && [v8 count])
+  if (appRulesCopy && [appRulesCopy count])
   {
     v78 = 0u;
     v79 = 0u;
     v76 = 0u;
     v77 = 0u;
     obj = v9;
-    v62 = v8;
+    v62 = appRulesCopy;
     v59 = [obj countByEnumeratingWithState:&v76 objects:v87 count:16];
     if (v59)
     {
@@ -1068,8 +1068,8 @@ LABEL_53:
           }
 
           v17 = *(*(&v76 + 1) + 8 * j);
-          v18 = [v17 matchDomains];
-          v19 = [v18 count];
+          matchDomains2 = [v17 matchDomains];
+          v19 = [matchDomains2 count];
 
           if (v19)
           {
@@ -1077,7 +1077,7 @@ LABEL_53:
             v75 = 0u;
             v72 = 0u;
             v73 = 0u;
-            v20 = v8;
+            v20 = appRulesCopy;
             v21 = [v20 countByEnumeratingWithState:&v72 objects:v86 count:16];
             if (v21)
             {
@@ -1093,9 +1093,9 @@ LABEL_21:
                 }
 
                 v25 = *(*(&v72 + 1) + 8 * v24);
-                v26 = [v17 matchSigningIdentifier];
-                v27 = [v25 matchSigningIdentifier];
-                v28 = [v26 isEqualToString:v27];
+                matchSigningIdentifier = [v17 matchSigningIdentifier];
+                matchSigningIdentifier2 = [v25 matchSigningIdentifier];
+                v28 = [matchSigningIdentifier isEqualToString:matchSigningIdentifier2];
 
                 if (v28)
                 {
@@ -1114,26 +1114,26 @@ LABEL_21:
                 }
               }
 
-              v29 = [v17 matchDomains];
-              v30 = [v29 count];
-              v31 = [v25 matchDomains];
-              v32 = [v31 count];
+              matchDomains3 = [v17 matchDomains];
+              v30 = [matchDomains3 count];
+              matchDomains4 = [v25 matchDomains];
+              v32 = [matchDomains4 count];
 
               if (v30 == v32)
               {
                 v33 = MEMORY[0x1E695DFD8];
-                v34 = [v17 matchDomains];
-                v35 = [v33 setWithArray:v34];
+                matchDomains5 = [v17 matchDomains];
+                v35 = [v33 setWithArray:matchDomains5];
 
                 v36 = MEMORY[0x1E695DFD8];
-                v37 = [v25 matchDomains];
-                v38 = [v36 setWithArray:v37];
+                matchDomains6 = [v25 matchDomains];
+                v38 = [v36 setWithArray:matchDomains6];
 
-                LOBYTE(v37) = [v35 isEqualToSet:v38];
-                if (v37)
+                LOBYTE(matchDomains6) = [v35 isEqualToSet:v38];
+                if (matchDomains6)
                 {
 
-                  v8 = v62;
+                  appRulesCopy = v62;
                   continue;
                 }
               }
@@ -1145,8 +1145,8 @@ LABEL_57:
 LABEL_59:
 
             v53 = 1;
-            v7 = v61;
-            v8 = v62;
+            rulesCopy = v61;
+            appRulesCopy = v62;
             goto LABEL_60;
           }
         }
@@ -1165,7 +1165,7 @@ LABEL_59:
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v58 = v8;
+    v58 = appRulesCopy;
     v39 = [v58 countByEnumeratingWithState:&v68 objects:v85 count:16];
     if (v39)
     {
@@ -1181,8 +1181,8 @@ LABEL_59:
           }
 
           v42 = *(*(&v68 + 1) + 8 * k);
-          v43 = [v42 matchDomains];
-          v44 = [v43 count];
+          matchDomains7 = [v42 matchDomains];
+          v44 = [matchDomains7 count];
 
           if (v44)
           {
@@ -1205,14 +1205,14 @@ LABEL_59:
                     objc_enumerationMutation(v45);
                   }
 
-                  v50 = [*(*(&v64 + 1) + 8 * m) matchSigningIdentifier];
-                  v51 = [v42 matchSigningIdentifier];
-                  v52 = [v50 isEqualToString:v51];
+                  matchSigningIdentifier3 = [*(*(&v64 + 1) + 8 * m) matchSigningIdentifier];
+                  matchSigningIdentifier4 = [v42 matchSigningIdentifier];
+                  v52 = [matchSigningIdentifier3 isEqualToString:matchSigningIdentifier4];
 
                   if (v52)
                   {
 
-                    v8 = v62;
+                    appRulesCopy = v62;
                     goto LABEL_49;
                   }
                 }
@@ -1246,7 +1246,7 @@ LABEL_49:
     }
 
     v53 = 0;
-    v7 = v61;
+    rulesCopy = v61;
   }
 
   else

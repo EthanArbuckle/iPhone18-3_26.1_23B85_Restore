@@ -1,14 +1,14 @@
 @interface AVTAvatarLibraryHeaderView
-- (AVTAvatarLibraryHeaderView)initWithFrame:(CGRect)a3;
+- (AVTAvatarLibraryHeaderView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AVTAvatarLibraryHeaderView
 
-- (AVTAvatarLibraryHeaderView)initWithFrame:(CGRect)a3
+- (AVTAvatarLibraryHeaderView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = AVTAvatarLibraryHeaderView;
-  v3 = [(AVTAvatarLibraryHeaderView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVTAvatarLibraryHeaderView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

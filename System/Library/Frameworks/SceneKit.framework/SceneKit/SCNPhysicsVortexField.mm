@@ -1,6 +1,6 @@
 @interface SCNPhysicsVortexField
 - (SCNPhysicsVortexField)init;
-- (void)setDirection:(SCNVector3)a3;
+- (void)setDirection:(SCNVector3)direction;
 @end
 
 @implementation SCNPhysicsVortexField
@@ -12,11 +12,11 @@
   return [(SCNPhysicsField *)&v3 init];
 }
 
-- (void)setDirection:(SCNVector3)a3
+- (void)setDirection:(SCNVector3)direction
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
+  z = direction.z;
+  y = direction.y;
+  x = direction.x;
   v12.receiver = self;
   v12.super_class = SCNPhysicsVortexField;
   [(SCNPhysicsField *)&v12 setDirection:?];

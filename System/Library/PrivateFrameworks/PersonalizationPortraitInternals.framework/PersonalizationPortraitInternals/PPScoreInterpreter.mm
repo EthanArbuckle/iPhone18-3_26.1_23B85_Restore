@@ -1,30 +1,30 @@
 @interface PPScoreInterpreter
-+ (id)scoreInterpreterFromAsset:(id)a3;
-+ (id)scoreInterpreterFromFactorName:(id)a3 namespaceName:(id)a4;
-- (PPScoreInterpreter)initWithBytecode:(id)a3 scoreInputSet:(id)a4;
-- (PPScoreInterpreter)initWithParseRoot:(id)a3 scalarSubscoreCount:(unint64_t)a4 arraySubscoreCount:(unint64_t)a5 objectSubscoreCount:(unint64_t)a6;
-- (id)evaluateWithScoreInputs:(id)a3;
-- (id)evaluateWithScoreInputs:(id)a3 previousSubscores:(id)a4;
-- (void)_runBytecode:(void *)a3 context:;
-- (void)_runOperator:(uint64_t)a1 arity:(unint64_t)a2 context:(void *)a3;
-- (void)evaluateScoresWithContext:(uint64_t)a1;
-- (void)evaluateWithPreviousStageSubscores:(id)a3 scoreInputInitializationBlock:(id)a4 scoreInputAssignmentBlock:(id)a5 outputBlock:(id)a6;
++ (id)scoreInterpreterFromAsset:(id)asset;
++ (id)scoreInterpreterFromFactorName:(id)name namespaceName:(id)namespaceName;
+- (PPScoreInterpreter)initWithBytecode:(id)bytecode scoreInputSet:(id)set;
+- (PPScoreInterpreter)initWithParseRoot:(id)root scalarSubscoreCount:(unint64_t)count arraySubscoreCount:(unint64_t)subscoreCount objectSubscoreCount:(unint64_t)objectSubscoreCount;
+- (id)evaluateWithScoreInputs:(id)inputs;
+- (id)evaluateWithScoreInputs:(id)inputs previousSubscores:(id)subscores;
+- (void)_runBytecode:(void *)bytecode context:;
+- (void)_runOperator:(uint64_t)operator arity:(unint64_t)arity context:(void *)context;
+- (void)evaluateScoresWithContext:(uint64_t)context;
+- (void)evaluateWithPreviousStageSubscores:(id)subscores scoreInputInitializationBlock:(id)block scoreInputAssignmentBlock:(id)assignmentBlock outputBlock:(id)outputBlock;
 @end
 
 @implementation PPScoreInterpreter
 
-- (id)evaluateWithScoreInputs:(id)a3
+- (id)evaluateWithScoreInputs:(id)inputs
 {
-  v3 = [(PPScoreInterpreter *)self evaluateWithScoreInputs:a3 previousSubscores:0];
+  v3 = [(PPScoreInterpreter *)self evaluateWithScoreInputs:inputs previousSubscores:0];
 
   return v3;
 }
 
-- (id)evaluateWithScoreInputs:(id)a3 previousSubscores:(id)a4
+- (id)evaluateWithScoreInputs:(id)inputs previousSubscores:(id)subscores
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  inputsCopy = inputs;
+  subscoresCopy = subscores;
   v8 = self->_bytecode->_bytecodeDataBySubscoreTypeAndIndex;
   v9 = [(NSArray *)v8 objectAtIndexedSubscript:0];
   v10 = [v9 count];
@@ -35,7 +35,7 @@
   v13 = [(NSArray *)v8 objectAtIndexedSubscript:2];
   v14 = [v13 count];
 
-  v15 = [[PPScoreInterpreterCtx alloc] initWithScoreInputs:v6 previousSubscores:v7 scalarSubscoreCount:v10 arraySubscoreCount:v12 objectSubscoreCount:v14];
+  v15 = [[PPScoreInterpreterCtx alloc] initWithScoreInputs:inputsCopy previousSubscores:subscoresCopy scalarSubscoreCount:v10 arraySubscoreCount:v12 objectSubscoreCount:v14];
   [(PPScoreInterpreter *)self evaluateScoresWithContext:v15];
   if (*(v15[1] + 1) != *v15[1])
   {
@@ -56,13 +56,13 @@
   return v17;
 }
 
-- (void)evaluateScoresWithContext:(uint64_t)a1
+- (void)evaluateScoresWithContext:(uint64_t)context
 {
   v39._subscores = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (context)
   {
-    v5 = *(*(a1 + 8) + 8);
+    v5 = *(*(context + 8) + 8);
     v7 = *v5;
     v6 = v5[1];
     if (*v5 != v6)
@@ -76,9 +76,9 @@
         if (v8 == 2)
         {
           v23 = v3;
-          v24 = [*(*(a1 + 8) + 16) objectAtIndexedSubscript:2];
+          v24 = [*(*(context + 8) + 16) objectAtIndexedSubscript:2];
           v25 = [v24 objectAtIndexedSubscript:v9];
-          [(PPScoreInterpreter *)a1 _runBytecode:v25 context:v23];
+          [(PPScoreInterpreter *)context _runBytecode:v25 context:v23];
 
           memset(&v39, 0, 24);
           pop(&v39, v23);
@@ -93,9 +93,9 @@
         else if (v8 == 1)
         {
           v17 = v3;
-          v18 = [*(*(a1 + 8) + 16) objectAtIndexedSubscript:1];
+          v18 = [*(*(context + 8) + 16) objectAtIndexedSubscript:1];
           v19 = [v18 objectAtIndexedSubscript:v9];
-          [(PPScoreInterpreter *)a1 _runBytecode:v19 context:v17];
+          [(PPScoreInterpreter *)context _runBytecode:v19 context:v17];
 
           memset(&v39, 0, 24);
           pop(&v39, v17);
@@ -156,9 +156,9 @@
           }
 
           v10 = v3;
-          v11 = [*(*(a1 + 8) + 16) objectAtIndexedSubscript:0];
+          v11 = [*(*(context + 8) + 16) objectAtIndexedSubscript:0];
           v12 = [v11 objectAtIndexedSubscript:v9];
-          [(PPScoreInterpreter *)a1 _runBytecode:v12 context:v10];
+          [(PPScoreInterpreter *)context _runBytecode:v12 context:v10];
 
           memset(&v39, 0, 24);
           pop(&v39, v10);
@@ -198,27 +198,27 @@ LABEL_25:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_runBytecode:(void *)a3 context:
+- (void)_runBytecode:(void *)bytecode context:
 {
   v83 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  v7 = [v5 bytes];
+  bytecodeCopy = bytecode;
+  bytes = [v5 bytes];
   v8 = [v5 length];
   __dst = 0;
   if (v8 >= 2)
   {
-    v10 = v7 + v8;
-    v11 = v7 + 1;
+    v10 = bytes + v8;
+    v11 = bytes + 1;
     v12 = 1;
     do
     {
-      v13 = *v7;
-      if (*v7 > 0x190u)
+      v13 = *bytes;
+      if (*bytes > 0x190u)
       {
-        if (*v7 <= 0xFFFAu)
+        if (*bytes <= 0xFFFAu)
         {
-          if (*v7 > 0x192u)
+          if (*bytes > 0x192u)
           {
             if (v13 != 403)
             {
@@ -238,9 +238,9 @@ LABEL_25:
             }
 
             memcpy(&__dst + 4, v11, v12 * 2);
-            v28 = [v6[3] objectForIndex:HIDWORD(__dst)];
+            v28 = [bytecodeCopy[3] objectForIndex:HIDWORD(__dst)];
             PPScoreInterpreterValue::PPScoreInterpreterValue(v49, v28);
-            push(v6, v49);
+            push(bytecodeCopy, v49);
             PPScoreInterpreterValue::~PPScoreInterpreterValue(v49);
           }
 
@@ -254,9 +254,9 @@ LABEL_25:
             }
 
             memcpy(&__dst + 4, v11, v12 * 2);
-            v27 = [v6[2] objectForIndex:HIDWORD(__dst)];
+            v27 = [bytecodeCopy[2] objectForIndex:HIDWORD(__dst)];
             PPScoreInterpreterValue::PPScoreInterpreterValue(v51, v27);
-            push(v6, v51);
+            push(bytecodeCopy, v51);
             PPScoreInterpreterValue::~PPScoreInterpreterValue(v51);
           }
 
@@ -275,16 +275,16 @@ LABEL_25:
             }
 
             memcpy(&__dst + 4, v11, v12 * 2);
-            v17 = [v6[4] objectForIndex:HIDWORD(__dst)];
+            v17 = [bytecodeCopy[4] objectForIndex:HIDWORD(__dst)];
             PPScoreInterpreterValue::PPScoreInterpreterValue(v50, v17);
-            push(v6, v50);
+            push(bytecodeCopy, v50);
             PPScoreInterpreterValue::~PPScoreInterpreterValue(v50);
           }
         }
 
         else
         {
-          if (*v7 > 0xFFFCu)
+          if (*bytes > 0xFFFCu)
           {
             if (v13 != 65533)
             {
@@ -293,7 +293,7 @@ LABEL_25:
                 goto LABEL_95;
               }
 
-              pop(&v79, v6);
+              pop(&v79, bytecodeCopy);
               Double = PPScoreInterpreterValue::getDouble(&v79);
               PPScoreInterpreterValue::~PPScoreInterpreterValue(&v79);
               v30 = Double != -31338.0;
@@ -316,7 +316,7 @@ LABEL_25:
               {
                 *v77 = v31;
                 v78 = 0;
-                push(v6, v77);
+                push(bytecodeCopy, v77);
                 v32 = v77;
                 goto LABEL_94;
               }
@@ -332,7 +332,7 @@ LABEL_101:
             }
 
             memset(&v79, 0, 24);
-            pop(&v79, v6);
+            pop(&v79, bytecodeCopy);
             if (LOBYTE(v79._scoreInputs))
             {
               if (LOBYTE(v79._scoreInputs) != 2)
@@ -435,18 +435,18 @@ LABEL_95:
           }
 
           memcpy(&__dst + 4, v11, v12 * 2);
-          v26 = [*(*(a1 + 8) + 24) objectAtIndexedSubscript:HIDWORD(__dst)];
+          v26 = [*(*(self + 8) + 24) objectAtIndexedSubscript:HIDWORD(__dst)];
           PPScoreInterpreterValue::PPScoreInterpreterValue(&v79._previousSubscores, v26);
-          push(v6, &v79._previousSubscores);
+          push(bytecodeCopy, &v79._previousSubscores);
           PPScoreInterpreterValue::~PPScoreInterpreterValue(&v79._previousSubscores);
         }
 
         goto LABEL_90;
       }
 
-      if (*v7 > 0x12Cu)
+      if (*bytes > 0x12Cu)
       {
-        if (*v7 > 0x12Eu)
+        if (*bytes > 0x12Eu)
         {
           if (v13 != 303)
           {
@@ -474,7 +474,7 @@ LABEL_76:
                 v41 = qword_232418600[v13 + 1];
               }
 
-              [PPScoreInterpreter _runOperator:v13 arity:v41 context:v6];
+              [PPScoreInterpreter _runOperator:v13 arity:v41 context:bytecodeCopy];
               goto LABEL_103;
             }
 
@@ -509,7 +509,7 @@ LABEL_36:
             }
 
             PPScoreInterpreterValue::PPScoreInterpreterValue(v52, v25);
-            push(v6, v52);
+            push(bytecodeCopy, v52);
             PPScoreInterpreterValue::~PPScoreInterpreterValue(v52);
 
 LABEL_102:
@@ -525,7 +525,7 @@ LABEL_102:
           }
 
           memcpy(&__dst + 4, v11, v12 * 2);
-          v37 = v6[3];
+          v37 = bytecodeCopy[3];
           if (!v37)
           {
             operator new();
@@ -540,7 +540,7 @@ LABEL_102:
           }
 
           v56 = 1;
-          push(v6, v55);
+          push(bytecodeCopy, v55);
           PPScoreInterpreterValue::~PPScoreInterpreterValue(v55);
           v38 = v54;
           if (!v54)
@@ -559,7 +559,7 @@ LABEL_102:
           }
 
           memcpy(&__dst + 4, v11, v12 * 2);
-          v34 = v6[2];
+          v34 = bytecodeCopy[2];
           if (v34)
           {
             [v34 arraySharedPtrForIndex:HIDWORD(__dst)];
@@ -580,7 +580,7 @@ LABEL_102:
           }
 
           v66 = 1;
-          push(v6, &v64);
+          push(bytecodeCopy, &v64);
           PPScoreInterpreterValue::~PPScoreInterpreterValue(&v64);
           v38 = v63;
           if (!v63)
@@ -599,7 +599,7 @@ LABEL_102:
           }
 
           memcpy(&__dst + 4, v11, v12 * 2);
-          v18 = v6[4];
+          v18 = bytecodeCopy[4];
           if (v18)
           {
             [v18 arraySharedPtrForIndex:HIDWORD(__dst)];
@@ -620,7 +620,7 @@ LABEL_102:
           }
 
           v61 = 1;
-          push(v6, &v59);
+          push(bytecodeCopy, &v59);
           PPScoreInterpreterValue::~PPScoreInterpreterValue(&v59);
           v38 = v58;
           if (!v58)
@@ -634,7 +634,7 @@ LABEL_102:
 
       else
       {
-        if (*v7 > 0xCAu)
+        if (*bytes > 0xCAu)
         {
           if (v13 != 203)
           {
@@ -643,15 +643,15 @@ LABEL_102:
               goto LABEL_76;
             }
 
-            v14 = v7 + 5;
-            if ((v7 + 5) > v10)
+            v14 = bytes + 5;
+            if ((bytes + 5) > v10)
             {
               break;
             }
 
             v73[0] = *v11;
             v74 = 0;
-            push(v6, v73);
+            push(bytecodeCopy, v73);
             PPScoreInterpreterValue::~PPScoreInterpreterValue(v73);
             goto LABEL_91;
           }
@@ -664,13 +664,13 @@ LABEL_102:
           }
 
           memcpy(&__dst + 4, v11, v12 * 2);
-          v35 = v6[3];
+          v35 = bytecodeCopy[3];
           if (v35)
           {
             [v35 scalarValueForIndex:HIDWORD(__dst)];
             v67[0] = v36;
             v68 = 0;
-            push(v6, v67);
+            push(bytecodeCopy, v67);
             v16 = v67;
           }
 
@@ -678,7 +678,7 @@ LABEL_102:
           {
             v69[0] = 0xC0DE9A8000000000;
             v70 = 0;
-            push(v6, v69);
+            push(bytecodeCopy, v69);
             v16 = v69;
           }
         }
@@ -693,10 +693,10 @@ LABEL_102:
           }
 
           memcpy(&__dst + 4, v11, v12 * 2);
-          [v6[2] scalarValueForIndex:HIDWORD(__dst)];
+          [bytecodeCopy[2] scalarValueForIndex:HIDWORD(__dst)];
           v75[0] = v33;
           v76 = 0;
-          push(v6, v75);
+          push(bytecodeCopy, v75);
           v16 = v75;
         }
 
@@ -715,10 +715,10 @@ LABEL_102:
           }
 
           memcpy(&__dst + 4, v11, v12 * 2);
-          [v6[4] scalarValueForIndex:HIDWORD(__dst)];
+          [bytecodeCopy[4] scalarValueForIndex:HIDWORD(__dst)];
           v71[0] = v15;
           v72 = 0;
-          push(v6, v71);
+          push(bytecodeCopy, v71);
           v16 = v71;
         }
 
@@ -730,7 +730,7 @@ LABEL_90:
 LABEL_91:
       v11 = v14;
 LABEL_103:
-      v7 = v11;
+      bytes = v11;
       __dst = 0;
       ++v11;
     }
@@ -741,19 +741,19 @@ LABEL_103:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_runOperator:(uint64_t)a1 arity:(unint64_t)a2 context:(void *)a3
+- (void)_runOperator:(uint64_t)operator arity:(unint64_t)arity context:(void *)context
 {
   v648 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  contextCopy = context;
+  v6 = contextCopy;
   v7 = 0;
   v8 = 1;
-  switch(a1)
+  switch(operator)
   {
     case 0:
-      if (shouldReturnUndefined(v5, a2))
+      if (shouldReturnUndefined(contextCopy, arity))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v640[0] = 0xC0DE9A4000000000;
         v641 = 0;
         push(v6, v640);
@@ -761,7 +761,7 @@ LABEL_103:
         goto LABEL_558;
       }
 
-      if (!a2)
+      if (!arity)
       {
         v243 = 0.0;
 LABEL_407:
@@ -815,7 +815,7 @@ LABEL_407:
 LABEL_345:
           v243 = v243 + v246;
           PPScoreInterpreterValue::~PPScoreInterpreterValue(buf);
-          if (++v242 == a2)
+          if (++v242 == arity)
           {
             goto LABEL_407;
           }
@@ -840,9 +840,9 @@ LABEL_345:
       v308 = v638;
       goto LABEL_546;
     case 1:
-      if (shouldReturnUndefined(v5, 2uLL))
+      if (shouldReturnUndefined(contextCopy, 2uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v634[0] = 0xC0DE9A4000000000;
         v635 = 0;
         push(v6, v634);
@@ -853,8 +853,8 @@ LABEL_345:
       {
         v186 = *v6->_stack.__ptr_;
         v187 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v186) >> 3);
-        v188 = v187 - a2;
-        if (v187 <= v187 - a2)
+        v188 = v187 - arity;
+        if (v187 <= v187 - arity)
         {
           std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
         }
@@ -868,7 +868,7 @@ LABEL_345:
 
         v191 = v189;
         v192 = PPScoreInterpreterValue::getDouble((v190 + 24 * (v188 + 1)));
-        drop(v6, a2);
+        drop(v6, arity);
         if (v191 == -31338.0)
         {
           v193 = 0.0;
@@ -897,9 +897,9 @@ LABEL_345:
 
       goto LABEL_558;
     case 2:
-      if (shouldReturnUndefined(v5, 1uLL))
+      if (shouldReturnUndefined(contextCopy, 1uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v630[0] = 0xC0DE9A4000000000;
         v631 = 0;
         push(v6, v630);
@@ -908,7 +908,7 @@ LABEL_345:
       }
 
       ptr = v6->_stack.__ptr_;
-      v222 = 0xAAAAAAAAAAAAAAABLL * ((ptr[1] - *ptr) >> 3) - a2;
+      v222 = 0xAAAAAAAAAAAAAAABLL * ((ptr[1] - *ptr) >> 3) - arity;
       memset(buf, 0, 24);
       v224 = ptr;
       v223 = *ptr;
@@ -918,7 +918,7 @@ LABEL_345:
       }
 
       PPScoreInterpreterValue::PPScoreInterpreterValue(buf, (v223 + 24 * v222));
-      drop(v6, a2);
+      drop(v6, arity);
       if (buf[16])
       {
         if (buf[16] == 1)
@@ -981,9 +981,9 @@ LABEL_345:
 
       goto LABEL_546;
     case 3:
-      if (shouldReturnUndefined(v5, a2))
+      if (shouldReturnUndefined(contextCopy, arity))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v624[0] = 0xC0DE9A4000000000;
         v625 = 0;
         push(v6, v624);
@@ -991,7 +991,7 @@ LABEL_345:
         goto LABEL_558;
       }
 
-      if (!a2)
+      if (!arity)
       {
         v153 = 1.0;
 LABEL_401:
@@ -1044,7 +1044,7 @@ LABEL_401:
 LABEL_214:
           v153 = v153 * v155;
           PPScoreInterpreterValue::~PPScoreInterpreterValue(buf);
-          if (++v152 == a2)
+          if (++v152 == arity)
           {
             goto LABEL_401;
           }
@@ -1072,9 +1072,9 @@ LABEL_546:
       v9 = buf;
       goto LABEL_558;
     case 4:
-      if (shouldReturnUndefined(v5, 2uLL))
+      if (shouldReturnUndefined(contextCopy, 2uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v618[0] = 0xC0DE9A4000000000;
         v619 = 0;
         push(v6, v618);
@@ -1085,8 +1085,8 @@ LABEL_546:
       {
         v210 = *v6->_stack.__ptr_;
         v211 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v210) >> 3);
-        v212 = v211 - a2;
-        if (v211 <= v211 - a2)
+        v212 = v211 - arity;
+        if (v211 <= v211 - arity)
         {
           std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
         }
@@ -1100,7 +1100,7 @@ LABEL_546:
 
         v215 = v213;
         v216 = PPScoreInterpreterValue::getDouble((v214 + 24 * (v212 + 1)));
-        drop(v6, a2);
+        drop(v6, arity);
         if (v215 == -31338.0)
         {
           v217 = 0.0;
@@ -1136,9 +1136,9 @@ LABEL_546:
 
       goto LABEL_558;
     case 5:
-      if (shouldReturnUndefined(v5, 2uLL))
+      if (shouldReturnUndefined(contextCopy, 2uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v614[0] = 0xC0DE9A4000000000;
         v615 = 0;
         push(v6, v614);
@@ -1148,8 +1148,8 @@ LABEL_546:
 
       v231 = *v6->_stack.__ptr_;
       v232 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v231) >> 3);
-      v233 = v232 - a2;
-      if (v232 <= v232 - a2)
+      v233 = v232 - arity;
+      if (v232 <= v232 - arity)
       {
         std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
       }
@@ -1163,19 +1163,19 @@ LABEL_546:
 
       v236 = v234;
       v237 = PPScoreInterpreterValue::getDouble((v235 + 24 * (v233 + 1)));
-      drop(v6, a2);
+      drop(v6, arity);
       if (v236 <= 0.0)
       {
-        v400 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v401 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PPScoreInterpreter _runOperator:arity:context:]"];
-        [v400 handleFailureInFunction:v401 file:@"PPScoreInterpreter.mm" lineNumber:1206 description:{@"Invalid parameter not satisfying: %@", @"value > 0"}];
+        [currentHandler handleFailureInFunction:v401 file:@"PPScoreInterpreter.mm" lineNumber:1206 description:{@"Invalid parameter not satisfying: %@", @"value > 0"}];
       }
 
       if (v237 <= 0.0)
       {
-        v402 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
         v403 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PPScoreInterpreter _runOperator:arity:context:]"];
-        [v402 handleFailureInFunction:v403 file:@"PPScoreInterpreter.mm" lineNumber:1207 description:{@"Invalid parameter not satisfying: %@", @"base > 0"}];
+        [currentHandler2 handleFailureInFunction:v403 file:@"PPScoreInterpreter.mm" lineNumber:1207 description:{@"Invalid parameter not satisfying: %@", @"base > 0"}];
       }
 
       if (v236 <= 0.0)
@@ -1223,9 +1223,9 @@ LABEL_397:
       v9 = v612;
       goto LABEL_558;
     case 6:
-      if (shouldReturnUndefined(v5, 2uLL))
+      if (shouldReturnUndefined(contextCopy, 2uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v610[0] = 0xC0DE9A4000000000;
         v611 = 0;
         push(v6, v610);
@@ -1236,8 +1236,8 @@ LABEL_397:
       {
         v119 = *v6->_stack.__ptr_;
         v120 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v119) >> 3);
-        v121 = v120 - a2;
-        if (v120 <= v120 - a2)
+        v121 = v120 - arity;
+        if (v120 <= v120 - arity)
         {
           std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
         }
@@ -1251,12 +1251,12 @@ LABEL_397:
 
         v124 = v122;
         v125 = PPScoreInterpreterValue::getDouble((v123 + 24 * (v121 + 1)));
-        drop(v6, a2);
+        drop(v6, arity);
         if (v125 == 0.0)
         {
-          v397 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
           v398 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PPScoreInterpreter _runOperator:arity:context:]"];
-          [v397 handleFailureInFunction:v398 file:@"PPScoreInterpreter.mm" lineNumber:1218 description:{@"Invalid parameter not satisfying: %@", @"denominator != 0"}];
+          [currentHandler3 handleFailureInFunction:v398 file:@"PPScoreInterpreter.mm" lineNumber:1218 description:{@"Invalid parameter not satisfying: %@", @"denominator != 0"}];
 
           v399 = pp_score_interpreter_log_handle();
           if (os_log_type_enabled(v399, OS_LOG_TYPE_ERROR))
@@ -1285,9 +1285,9 @@ LABEL_397:
 
       goto LABEL_558;
     case 7:
-      if (shouldReturnUndefined(v5, 1uLL))
+      if (shouldReturnUndefined(contextCopy, 1uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v604[0] = 0xC0DE9A4000000000;
         v605 = 0;
         push(v6, v604);
@@ -1298,18 +1298,18 @@ LABEL_397:
       {
         v227 = *v6->_stack.__ptr_;
         v228 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v227) >> 3);
-        if (v228 <= v228 - a2)
+        if (v228 <= v228 - arity)
         {
           std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
         }
 
-        v229 = PPScoreInterpreterValue::getDouble((v227 + 24 * (v228 - a2)));
-        drop(v6, a2);
+        v229 = PPScoreInterpreterValue::getDouble((v227 + 24 * (v228 - arity)));
+        drop(v6, arity);
         if (v229 <= 0.0)
         {
-          v393 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
           v394 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PPScoreInterpreter _runOperator:arity:context:]"];
-          [v393 handleFailureInFunction:v394 file:@"PPScoreInterpreter.mm" lineNumber:1228 description:{@"Invalid parameter not satisfying: %@", @"value > 0"}];
+          [currentHandler4 handleFailureInFunction:v394 file:@"PPScoreInterpreter.mm" lineNumber:1228 description:{@"Invalid parameter not satisfying: %@", @"value > 0"}];
 
           v230 = pp_score_interpreter_log_handle();
           if (os_log_type_enabled(v230, OS_LOG_TYPE_ERROR))
@@ -1328,9 +1328,9 @@ LABEL_397:
 
       goto LABEL_558;
     case 8:
-      if (shouldReturnUndefined(v5, 1uLL))
+      if (shouldReturnUndefined(contextCopy, 1uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v600[0] = 0xC0DE9A4000000000;
         v601 = 0;
         push(v6, v600);
@@ -1341,13 +1341,13 @@ LABEL_397:
       {
         v126 = *v6->_stack.__ptr_;
         v127 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v126) >> 3);
-        if (v127 <= v127 - a2)
+        if (v127 <= v127 - arity)
         {
           std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
         }
 
-        v128 = PPScoreInterpreterValue::getDouble((v126 + 24 * (v127 - a2)));
-        drop(v6, a2);
+        v128 = PPScoreInterpreterValue::getDouble((v126 + 24 * (v127 - arity)));
+        drop(v6, arity);
         v129 = 0.0;
         if (v128 != -31338.0)
         {
@@ -1362,9 +1362,9 @@ LABEL_397:
 
       goto LABEL_558;
     case 9:
-      if (shouldReturnUndefined(v5, 2uLL))
+      if (shouldReturnUndefined(contextCopy, 2uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v596[0] = 0xC0DE9A4000000000;
         v597 = 0;
         push(v6, v596);
@@ -1375,8 +1375,8 @@ LABEL_397:
       {
         v84 = *v6->_stack.__ptr_;
         v85 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v84) >> 3);
-        v86 = v85 - a2;
-        if (v85 <= v85 - a2)
+        v86 = v85 - arity;
+        if (v85 <= v85 - arity)
         {
           std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
         }
@@ -1390,7 +1390,7 @@ LABEL_397:
 
         v89 = v87;
         v90 = PPScoreInterpreterValue::getDouble((v88 + 24 * (v86 + 1)));
-        drop(v6, a2);
+        drop(v6, arity);
         if (v89 == -31338.0)
         {
           v89 = 0.0;
@@ -1403,9 +1403,9 @@ LABEL_397:
 
         if (v89 <= 0.0 && (v89 != 0.0 || v90 < 0.0) && v90 != v90)
         {
-          v404 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
           v405 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PPScoreInterpreter _runOperator:arity:context:]"];
-          [v404 handleFailureInFunction:v405 file:@"PPScoreInterpreter.mm" lineNumber:1247 description:{@"Attempted to compute pow(%f, %f)", *&v89, *&v90}];
+          [currentHandler5 handleFailureInFunction:v405 file:@"PPScoreInterpreter.mm" lineNumber:1247 description:{@"Attempted to compute pow(%f, %f)", *&v89, *&v90}];
 
           v406 = pp_score_interpreter_log_handle();
           if (os_log_type_enabled(v406, OS_LOG_TYPE_ERROR))
@@ -1426,9 +1426,9 @@ LABEL_397:
 
       goto LABEL_558;
     case 11:
-      if (shouldReturnUndefined(v5, 3uLL))
+      if (shouldReturnUndefined(contextCopy, 3uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v592[0] = 0xC0DE9A4000000000;
         v593 = 0;
         push(v6, v592);
@@ -1438,8 +1438,8 @@ LABEL_397:
 
       v108 = *v6->_stack.__ptr_;
       v109 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v108) >> 3);
-      v110 = v109 - a2;
-      if (v109 <= v109 - a2)
+      v110 = v109 - arity;
+      if (v109 <= v109 - arity)
       {
         std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
       }
@@ -1461,19 +1461,19 @@ LABEL_397:
 
       v116 = v114;
       v117 = PPScoreInterpreterValue::getDouble((v115 + 24 * (v110 + 2)));
-      drop(v6, a2);
+      drop(v6, arity);
       if (v113 < 0.0)
       {
-        v409 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
         v410 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PPScoreInterpreter _runOperator:arity:context:]"];
-        [v409 handleFailureInFunction:v410 file:@"PPScoreInterpreter.mm" lineNumber:1259 description:{@"Invalid parameter not satisfying: %@", @"age >= 0"}];
+        [currentHandler6 handleFailureInFunction:v410 file:@"PPScoreInterpreter.mm" lineNumber:1259 description:{@"Invalid parameter not satisfying: %@", @"age >= 0"}];
       }
 
       if (v116 <= 0.0)
       {
-        v413 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler7 = [MEMORY[0x277CCA890] currentHandler];
         v414 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PPScoreInterpreter _runOperator:arity:context:]"];
-        [v413 handleFailureInFunction:v414 file:@"PPScoreInterpreter.mm" lineNumber:1260 description:{@"Invalid parameter not satisfying: %@", @"halflife > 0"}];
+        [currentHandler7 handleFailureInFunction:v414 file:@"PPScoreInterpreter.mm" lineNumber:1260 description:{@"Invalid parameter not satisfying: %@", @"halflife > 0"}];
       }
 
       if (v113 < 0.0)
@@ -1513,9 +1513,9 @@ LABEL_399:
       v9 = v590;
       goto LABEL_558;
     case 12:
-      if (shouldReturnUndefined(v5, 3uLL))
+      if (shouldReturnUndefined(contextCopy, 3uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v586[0] = 0xC0DE9A4000000000;
         v587 = 0;
         push(v6, v586);
@@ -1526,8 +1526,8 @@ LABEL_399:
       {
         v61 = *v6->_stack.__ptr_;
         v62 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v61) >> 3);
-        v63 = v62 - a2;
-        if (v62 <= v62 - a2)
+        v63 = v62 - arity;
+        if (v62 <= v62 - arity)
         {
           std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
         }
@@ -1549,19 +1549,19 @@ LABEL_399:
 
         v69 = v67;
         v70 = PPScoreInterpreterValue::getDouble((v68 + 24 * (v63 + 2)));
-        drop(v6, a2);
+        drop(v6, arity);
         if (v70 == 1.0)
         {
-          v407 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler8 = [MEMORY[0x277CCA890] currentHandler];
           v408 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PPScoreInterpreter _runOperator:arity:context:]"];
-          [v407 handleFailureInFunction:v408 file:@"PPScoreInterpreter.mm" lineNumber:1272 description:{@"Invalid parameter not satisfying: %@", @"ratio != 1"}];
+          [currentHandler8 handleFailureInFunction:v408 file:@"PPScoreInterpreter.mm" lineNumber:1272 description:{@"Invalid parameter not satisfying: %@", @"ratio != 1"}];
         }
 
         if (v70 < 0.0)
         {
-          v411 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler9 = [MEMORY[0x277CCA890] currentHandler];
           v412 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PPScoreInterpreter _runOperator:arity:context:]"];
-          [v411 handleFailureInFunction:v412 file:@"PPScoreInterpreter.mm" lineNumber:1273 description:{@"Invalid parameter not satisfying: %@", @"ratio >= 0"}];
+          [currentHandler9 handleFailureInFunction:v412 file:@"PPScoreInterpreter.mm" lineNumber:1273 description:{@"Invalid parameter not satisfying: %@", @"ratio >= 0"}];
         }
 
         if (v70 == 1.0)
@@ -1603,9 +1603,9 @@ LABEL_399:
 
       goto LABEL_558;
     case 13:
-      if (shouldReturnUndefined(v5, 3uLL))
+      if (shouldReturnUndefined(contextCopy, 3uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v580[0] = 0xC0DE9A4000000000;
         v581 = 0;
         push(v6, v580);
@@ -1616,8 +1616,8 @@ LABEL_399:
       {
         v98 = *v6->_stack.__ptr_;
         v99 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v98) >> 3);
-        v100 = v99 - a2;
-        if (v99 <= v99 - a2)
+        v100 = v99 - arity;
+        if (v99 <= v99 - arity)
         {
           std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
         }
@@ -1639,7 +1639,7 @@ LABEL_399:
 
         v106 = v104;
         v107 = PPScoreInterpreterValue::getDouble((v105 + 24 * (v100 + 2)));
-        drop(v6, a2);
+        drop(v6, arity);
         v578[0] = v106 / (exp(-(v107 * v103)) + 1.0);
         v579 = 0;
         push(v6, v578);
@@ -1648,9 +1648,9 @@ LABEL_399:
 
       goto LABEL_558;
     case 15:
-      if (shouldReturnUndefined(v5, 4uLL))
+      if (shouldReturnUndefined(contextCopy, 4uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v576[0] = 0xC0DE9A4000000000;
         v577 = 0;
         push(v6, v576);
@@ -1661,8 +1661,8 @@ LABEL_399:
       {
         v130 = *v6->_stack.__ptr_;
         v131 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v130) >> 3);
-        v132 = v131 - a2;
-        if (v131 <= v131 - a2)
+        v132 = v131 - arity;
+        if (v131 <= v131 - arity)
         {
           std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
         }
@@ -1692,19 +1692,19 @@ LABEL_399:
 
         v141 = v139;
         v142 = PPScoreInterpreterValue::getDouble((v140 + 24 * (v132 + 3)));
-        drop(v6, a2);
+        drop(v6, arity);
         if (v138 > v142)
         {
-          v415 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler10 = [MEMORY[0x277CCA890] currentHandler];
           v416 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PPScoreInterpreter _runOperator:arity:context:]"];
-          [v415 handleFailureInFunction:v416 file:@"PPScoreInterpreter.mm" lineNumber:1294 description:{@"ClampToRange: minVal (%f) must be <= defaultVal (%f) ", *&v138, *&v142}];
+          [currentHandler10 handleFailureInFunction:v416 file:@"PPScoreInterpreter.mm" lineNumber:1294 description:{@"ClampToRange: minVal (%f) must be <= defaultVal (%f) ", *&v138, *&v142}];
         }
 
         if (v142 > v141)
         {
-          v417 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler11 = [MEMORY[0x277CCA890] currentHandler];
           v418 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PPScoreInterpreter _runOperator:arity:context:]"];
-          [v417 handleFailureInFunction:v418 file:@"PPScoreInterpreter.mm" lineNumber:1295 description:{@"ClampToRange: defaultVal (%f) must be <= maxVal (%f) ", *&v142, *&v141}];
+          [currentHandler11 handleFailureInFunction:v418 file:@"PPScoreInterpreter.mm" lineNumber:1295 description:{@"ClampToRange: defaultVal (%f) must be <= maxVal (%f) ", *&v142, *&v141}];
         }
 
         v143 = v135;
@@ -1750,7 +1750,7 @@ LABEL_399:
 
       goto LABEL_558;
     case 16:
-      pop(buf, v5);
+      pop(buf, contextCopy);
       v18 = PPScoreInterpreterValue::getDouble(buf);
       PPScoreInterpreterValue::~PPScoreInterpreterValue(buf);
       pop(buf, v6);
@@ -1779,9 +1779,9 @@ LABEL_399:
       v9 = v572;
       goto LABEL_558;
     case 17:
-      if (shouldReturnUndefined(v5, a2))
+      if (shouldReturnUndefined(contextCopy, arity))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v570[0] = 0xC0DE9A4000000000;
         v571 = 0;
         push(v6, v570);
@@ -1789,7 +1789,7 @@ LABEL_399:
         goto LABEL_558;
       }
 
-      if (!a2)
+      if (!arity)
       {
         v174 = -INFINITY;
 LABEL_405:
@@ -1922,7 +1922,7 @@ LABEL_405:
             v174 = fmax(v174, v185);
 LABEL_273:
             PPScoreInterpreterValue::~PPScoreInterpreterValue(buf);
-            if (++v173 == a2)
+            if (++v173 == arity)
             {
               if (v172)
               {
@@ -1961,9 +1961,9 @@ LABEL_273:
 
       goto LABEL_559;
     case 18:
-      if (shouldReturnUndefined(v5, a2))
+      if (shouldReturnUndefined(contextCopy, arity))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v559[0] = 0xC0DE9A4000000000;
         v560 = 0;
         push(v6, v559);
@@ -1971,7 +1971,7 @@ LABEL_273:
         goto LABEL_558;
       }
 
-      if (!a2)
+      if (!arity)
       {
         v160 = INFINITY;
 LABEL_403:
@@ -2104,7 +2104,7 @@ LABEL_403:
             v160 = fmin(v160, v171);
 LABEL_243:
             PPScoreInterpreterValue::~PPScoreInterpreterValue(buf);
-            if (++v159 == a2)
+            if (++v159 == arity)
             {
               if (v158)
               {
@@ -2143,7 +2143,7 @@ LABEL_243:
 
       goto LABEL_559;
     case 19:
-      drop(v5, a2);
+      drop(contextCopy, arity);
       v17 = pp_score_interpreter_log_handle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
@@ -2157,9 +2157,9 @@ LABEL_243:
       v9 = v548;
       goto LABEL_558;
     case 21:
-      if (shouldReturnUndefined(v5, 2uLL))
+      if (shouldReturnUndefined(contextCopy, 2uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v546[0] = 0xC0DE9A4000000000;
         v547 = 0;
         push(v6, v546);
@@ -2169,8 +2169,8 @@ LABEL_243:
 
       v256 = *v6->_stack.__ptr_;
       v257 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v256) >> 3);
-      v258 = v257 - a2;
-      if (v257 <= v257 - a2)
+      v258 = v257 - arity;
+      if (v257 <= v257 - arity)
       {
         std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
       }
@@ -2183,7 +2183,7 @@ LABEL_243:
       }
 
       v261 = PPScoreInterpreterValue::getObject((v260 + 24 * (v258 + 1)));
-      drop(v6, a2);
+      drop(v6, arity);
       v262 = v259;
       v263 = v261;
       [v262 length];
@@ -2194,9 +2194,9 @@ LABEL_243:
 
       goto LABEL_559;
     case 22:
-      if (shouldReturnUndefined(v5, 2uLL))
+      if (shouldReturnUndefined(contextCopy, 2uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v542[0] = 0xC0DE9A4000000000;
         v543 = 0;
         push(v6, v542);
@@ -2207,8 +2207,8 @@ LABEL_243:
       {
         v91 = *v6->_stack.__ptr_;
         v92 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v91) >> 3);
-        v93 = v92 - a2;
-        if (v92 <= v92 - a2)
+        v93 = v92 - arity;
+        if (v92 <= v92 - arity)
         {
           std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
         }
@@ -2222,12 +2222,12 @@ LABEL_243:
 
         v96 = v94;
         v97 = PPScoreInterpreterValue::getDouble((v95 + 24 * (v93 + 1)));
-        drop(v6, a2);
+        drop(v6, arity);
         if (v96 > v97)
         {
-          v395 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler12 = [MEMORY[0x277CCA890] currentHandler];
           v396 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PPScoreInterpreter _runOperator:arity:context:]"];
-          [v395 handleFailureInFunction:v396 file:@"PPScoreInterpreter.mm" lineNumber:1463 description:{@"RandomUniform: start (%f) must be <= end (%f) ", *&v96, *&v97}];
+          [currentHandler12 handleFailureInFunction:v396 file:@"PPScoreInterpreter.mm" lineNumber:1463 description:{@"RandomUniform: start (%f) must be <= end (%f) ", *&v96, *&v97}];
         }
 
         v540[0] = v96 + (v97 - v96) * (arc4random_uniform(0xFFFFFFFF) / 4294967300.0);
@@ -2238,9 +2238,9 @@ LABEL_243:
 
       goto LABEL_558;
     case 24:
-      if (shouldReturnUndefined(v5, 1uLL))
+      if (shouldReturnUndefined(contextCopy, 1uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v538[0] = 0xC0DE9A4000000000;
         v539 = 0;
         push(v6, v538);
@@ -2249,7 +2249,7 @@ LABEL_243:
       }
 
       v72 = v6->_stack.__ptr_;
-      v73 = 0xAAAAAAAAAAAAAAABLL * ((v72[1] - *v72) >> 3) - a2;
+      v73 = 0xAAAAAAAAAAAAAAABLL * ((v72[1] - *v72) >> 3) - arity;
       memset(buf, 0, 24);
       v75 = v72;
       v74 = *v72;
@@ -2259,7 +2259,7 @@ LABEL_243:
       }
 
       PPScoreInterpreterValue::PPScoreInterpreterValue(buf, (v74 + 24 * v73));
-      drop(v6, a2);
+      drop(v6, arity);
       if (buf[16])
       {
         if (buf[16] == 1)
@@ -2327,20 +2327,20 @@ LABEL_243:
 
       goto LABEL_546;
     case 25:
-      if (!shouldReturnUndefined(v5, 2uLL))
+      if (!shouldReturnUndefined(contextCopy, 2uLL))
       {
         v146 = *v6->_stack.__ptr_;
         v147 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v146) >> 3);
-        v148 = v147 - a2;
+        v148 = v147 - arity;
         v646 = 0uLL;
-        if (v147 > v147 - a2)
+        if (v147 > v147 - arity)
         {
           PPScoreInterpreterValue::getFloatVector((v146 + 24 * v148), &v646);
           v149 = *v6->_stack.__ptr_;
           if (0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v149) >> 3) > v148 + 1)
           {
             v150 = PPScoreInterpreterValue::getDouble((v149 + 24 * (v148 + 1)));
-            drop(v6, a2);
+            drop(v6, arity);
             memset(buf, 0, 24);
             std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(buf, *v646, *(v646 + 8), (*(v646 + 8) - *v646) >> 2);
             v151 = v150;
@@ -2355,16 +2355,16 @@ LABEL_243:
         std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
       }
 
-      drop(v6, a2);
+      drop(v6, arity);
       v532[0] = 0xC0DE9A4000000000;
       v533 = 0;
       push(v6, v532);
       v9 = v532;
       goto LABEL_558;
     case 26:
-      if (shouldReturnUndefined(v5, 1uLL))
+      if (shouldReturnUndefined(contextCopy, 1uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v530[0] = 0xC0DE9A4000000000;
         v531 = 0;
         push(v6, v530);
@@ -2376,13 +2376,13 @@ LABEL_243:
       v268 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v267) >> 3);
       *&buf[8] = 0;
       *buf = 0;
-      if (v268 <= v268 - a2)
+      if (v268 <= v268 - arity)
       {
         std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
       }
 
-      PPScoreInterpreterValue::getFloatVector((v267 + 24 * (v268 - a2)), buf);
-      drop(v6, a2);
+      PPScoreInterpreterValue::getFloatVector((v267 + 24 * (v268 - arity)), buf);
+      drop(v6, arity);
       v269 = **buf;
       v270 = *(*buf + 8);
       v271 = 0.0;
@@ -2405,9 +2405,9 @@ LABEL_243:
       v266 = v528;
       goto LABEL_410;
     case 27:
-      if (shouldReturnUndefined(v5, 1uLL))
+      if (shouldReturnUndefined(contextCopy, 1uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v526[0] = 0xC0DE9A4000000000;
         v527 = 0;
         push(v6, v526);
@@ -2420,13 +2420,13 @@ LABEL_558:
       v38 = *v6->_stack.__ptr_;
       v39 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v38) >> 3);
       v646 = 0uLL;
-      if (v39 <= v39 - a2)
+      if (v39 <= v39 - arity)
       {
         std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
       }
 
-      PPScoreInterpreterValue::getFloatVector((v38 + 24 * (v39 - a2)), &v646);
-      drop(v6, a2);
+      PPScoreInterpreterValue::getFloatVector((v38 + 24 * (v39 - arity)), &v646);
+      drop(v6, arity);
       memset(buf, 0, 24);
       std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(buf, *v646, *(v646 + 8), (*(v646 + 8) - *v646) >> 2);
       v40 = *buf;
@@ -2483,9 +2483,9 @@ LABEL_530:
 LABEL_643:
       std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
     case 28:
-      if (shouldReturnUndefined(v5, 1uLL))
+      if (shouldReturnUndefined(contextCopy, 1uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v520[0] = 0xC0DE9A4000000000;
         v521 = 0;
         push(v6, v520);
@@ -2497,22 +2497,22 @@ LABEL_643:
       v265 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v264) >> 3);
       *&buf[8] = 0;
       *buf = 0;
-      if (v265 <= v265 - a2)
+      if (v265 <= v265 - arity)
       {
         std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
       }
 
-      PPScoreInterpreterValue::getFloatVector((v264 + 24 * (v265 - a2)), buf);
-      drop(v6, a2);
+      PPScoreInterpreterValue::getFloatVector((v264 + 24 * (v265 - arity)), buf);
+      drop(v6, arity);
       v518[0] = ((*(*buf + 8) - **buf) >> 2);
       v519 = 0;
       push(v6, v518);
       v266 = v518;
       goto LABEL_410;
     case 29:
-      if (shouldReturnUndefined(v5, 1uLL))
+      if (shouldReturnUndefined(contextCopy, 1uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v516[0] = 0xC0DE9A4000000000;
         v517 = 0;
         push(v6, v516);
@@ -2524,13 +2524,13 @@ LABEL_643:
       v281 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v280) >> 3);
       *&buf[8] = 0;
       *buf = 0;
-      if (v281 <= v281 - a2)
+      if (v281 <= v281 - arity)
       {
         std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
       }
 
-      PPScoreInterpreterValue::getFloatVector((v280 + 24 * (v281 - a2)), buf);
-      drop(v6, a2);
+      PPScoreInterpreterValue::getFloatVector((v280 + 24 * (v281 - arity)), buf);
+      drop(v6, arity);
       v282 = **buf;
       v283 = *(*buf + 8);
       v284 = **buf;
@@ -2580,9 +2580,9 @@ LABEL_410:
 
       goto LABEL_533;
     case 30:
-      if (shouldReturnUndefined(v5, 2uLL))
+      if (shouldReturnUndefined(contextCopy, 2uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v510[0] = 0xC0DE9A4000000000;
         v511 = 0;
         push(v6, v510);
@@ -2592,8 +2592,8 @@ LABEL_410:
 
       v195 = *v6->_stack.__ptr_;
       v196 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v195) >> 3);
-      v197 = v196 - a2;
-      if (v196 <= v196 - a2)
+      v197 = v196 - arity;
+      if (v196 <= v196 - arity)
       {
         std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
       }
@@ -2607,7 +2607,7 @@ LABEL_410:
       }
 
       PPScoreInterpreterValue::PPScoreInterpreterValue(buf, (v199 + 24 * (v197 + 1)));
-      drop(v6, a2);
+      drop(v6, arity);
       if (!v198)
       {
         goto LABEL_449;
@@ -2701,9 +2701,9 @@ LABEL_510:
       PPScoreInterpreterValue::~PPScoreInterpreterValue(buf);
       goto LABEL_559;
     case 31:
-      if (shouldReturnUndefined(v5, 2uLL))
+      if (shouldReturnUndefined(contextCopy, 2uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v507[0] = 0xC0DE9A4000000000;
         v508 = 0;
         push(v6, v507);
@@ -2713,8 +2713,8 @@ LABEL_510:
 
       v274 = *v6->_stack.__ptr_;
       v275 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v274) >> 3);
-      v276 = v275 - a2;
-      if (v275 <= v275 - a2)
+      v276 = v275 - arity;
+      if (v275 <= v275 - arity)
       {
         std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
       }
@@ -2728,7 +2728,7 @@ LABEL_510:
       }
 
       PPScoreInterpreterValue::PPScoreInterpreterValue(buf, (v278 + 24 * (v276 + 1)));
-      drop(v6, a2);
+      drop(v6, arity);
       if (!v277)
       {
         goto LABEL_457;
@@ -2797,9 +2797,9 @@ LABEL_457:
       PPScoreInterpreterValue::~PPScoreInterpreterValue(buf);
       goto LABEL_559;
     case 32:
-      if (shouldReturnUndefined(v5, 2uLL))
+      if (shouldReturnUndefined(contextCopy, 2uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v504[0] = 0xC0DE9A4000000000;
         v505 = 0;
         push(v6, v504);
@@ -2809,8 +2809,8 @@ LABEL_457:
 
       v249 = *v6->_stack.__ptr_;
       v250 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v249) >> 3);
-      v251 = v250 - a2;
-      if (v250 <= v250 - a2)
+      v251 = v250 - arity;
+      if (v250 <= v250 - arity)
       {
         std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
       }
@@ -2824,7 +2824,7 @@ LABEL_457:
       }
 
       PPScoreInterpreterValue::PPScoreInterpreterValue(buf, (v253 + 24 * (v251 + 1)));
-      drop(v6, a2);
+      drop(v6, arity);
       if (buf[16])
       {
         if (buf[16] != 2)
@@ -2961,9 +2961,9 @@ LABEL_609:
     case 34:
       v8 = 0;
 LABEL_65:
-      if (shouldReturnUndefined(v5, 1uLL))
+      if (shouldReturnUndefined(contextCopy, 1uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v490[0] = 0xC0DE9A4000000000;
         v491 = 0;
         push(v6, v490);
@@ -2972,7 +2972,7 @@ LABEL_65:
       }
 
       v23 = v6->_stack.__ptr_;
-      v24 = 0xAAAAAAAAAAAAAAABLL * ((v23[1] - *v23) >> 3) - a2;
+      v24 = 0xAAAAAAAAAAAAAAABLL * ((v23[1] - *v23) >> 3) - arity;
       v647 = 0;
       v646 = 0uLL;
       v26 = v23;
@@ -2983,7 +2983,7 @@ LABEL_65:
       }
 
       PPScoreInterpreterValue::PPScoreInterpreterValue(&v646, (v25 + 24 * v24));
-      drop(v6, a2);
+      drop(v6, arity);
       if (v647)
       {
         if (v647 == 1)
@@ -3288,9 +3288,9 @@ LABEL_552:
       PPScoreInterpreterValue::~PPScoreInterpreterValue(v296);
       goto LABEL_557;
     case 35:
-      if (shouldReturnUndefined(v5, 2uLL))
+      if (shouldReturnUndefined(contextCopy, 2uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v439[0] = 0xC0DE9A4000000000;
         v440 = 0;
         push(v6, v439);
@@ -3300,8 +3300,8 @@ LABEL_552:
 
       v201 = *v6->_stack.__ptr_;
       v202 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v201) >> 3);
-      v203 = v202 - a2;
-      if (v202 <= v202 - a2)
+      v203 = v202 - arity;
+      if (v202 <= v202 - arity)
       {
         std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
       }
@@ -3326,7 +3326,7 @@ LABEL_552:
       }
 
       PPScoreInterpreterValue::PPScoreInterpreterValue(&v646, (v208 + 24 * v207));
-      drop(v6, a2);
+      drop(v6, arity);
       if (!v204)
       {
         goto LABEL_473;
@@ -3462,9 +3462,9 @@ LABEL_559:
     case 38:
       v7 = 2;
 LABEL_22:
-      if (shouldReturnUndefined(v5, 2uLL))
+      if (shouldReturnUndefined(contextCopy, 2uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v449[0] = 0xC0DE9A4000000000;
         v450 = 0;
         push(v6, v449);
@@ -3474,8 +3474,8 @@ LABEL_22:
 
       v10 = *v6->_stack.__ptr_;
       v11 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v10) >> 3);
-      v12 = v11 - a2;
-      if (v11 <= v11 - a2)
+      v12 = v11 - arity;
+      if (v11 <= v11 - arity)
       {
         std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
       }
@@ -3489,7 +3489,7 @@ LABEL_22:
       }
 
       PPScoreInterpreterValue::PPScoreInterpreterValue(buf, (v14 + 24 * (v12 + 1)));
-      drop(v6, a2);
+      drop(v6, arity);
       if (buf[16])
       {
         if (buf[16] != 2)
@@ -3638,9 +3638,9 @@ LABEL_481:
 
       goto LABEL_483;
     case 39:
-      if (shouldReturnUndefined(v5, 3uLL))
+      if (shouldReturnUndefined(contextCopy, 3uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v436[0] = 0xC0DE9A4000000000;
         v437 = 0;
         push(v6, v436);
@@ -3651,8 +3651,8 @@ LABEL_481:
       {
         v46 = *v6->_stack.__ptr_;
         v47 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v46) >> 3);
-        v48 = v47 - a2;
-        if (v47 <= v47 - a2)
+        v48 = v47 - arity;
+        if (v47 <= v47 - arity)
         {
           std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
         }
@@ -3674,7 +3674,7 @@ LABEL_481:
 
         v54 = v52;
         v55 = PPScoreInterpreterValue::getDouble((v53 + 24 * (v48 + 2)));
-        drop(v6, a2);
+        drop(v6, arity);
         v434[0] = v51 * exp(-fabs(v54 * v55));
         v435 = 0;
         push(v6, v434);
@@ -3683,9 +3683,9 @@ LABEL_481:
 
       goto LABEL_558;
     case 40:
-      if (shouldReturnUndefined(v5, 1uLL))
+      if (shouldReturnUndefined(contextCopy, 1uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v432[0] = 0xC0DE9A4000000000;
         v433 = 0;
         push(v6, v432);
@@ -3695,13 +3695,13 @@ LABEL_481:
 
       v56 = *v6->_stack.__ptr_;
       v57 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v56) >> 3);
-      if (v57 <= v57 - a2)
+      if (v57 <= v57 - arity)
       {
         std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
       }
 
-      v58 = PPScoreInterpreterValue::getObject((v56 + 24 * (v57 - a2)));
-      drop(v6, a2);
+      v58 = PPScoreInterpreterValue::getObject((v56 + 24 * (v57 - arity)));
+      drop(v6, arity);
       v59 = v58;
       [v59 timeIntervalSince1970];
       v430[0] = v60;
@@ -3711,9 +3711,9 @@ LABEL_481:
 
       goto LABEL_559;
     case 41:
-      if (shouldReturnUndefined(v5, 1uLL))
+      if (shouldReturnUndefined(contextCopy, 1uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v428[0] = 0xC0DE9A4000000000;
         v429 = 0;
         push(v6, v428);
@@ -3723,13 +3723,13 @@ LABEL_481:
 
       v79 = *v6->_stack.__ptr_;
       v80 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v79) >> 3);
-      if (v80 <= v80 - a2)
+      if (v80 <= v80 - arity)
       {
         std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
       }
 
-      v81 = PPScoreInterpreterValue::getObject((v79 + 24 * (v80 - a2)));
-      drop(v6, a2);
+      v81 = PPScoreInterpreterValue::getObject((v79 + 24 * (v80 - arity)));
+      drop(v6, arity);
       v82 = v81;
       memset(v643, 0, sizeof(v643));
       memset(buf, 0, sizeof(buf));
@@ -3746,9 +3746,9 @@ LABEL_481:
 
       goto LABEL_559;
     case 42:
-      if (shouldReturnUndefined(v5, 2uLL))
+      if (shouldReturnUndefined(contextCopy, 2uLL))
       {
-        drop(v6, a2);
+        drop(v6, arity);
         v424[0] = 0xC0DE9A4000000000;
         v425 = 0;
         push(v6, v424);
@@ -3758,8 +3758,8 @@ LABEL_481:
 
       v30 = *v6->_stack.__ptr_;
       v31 = 0xAAAAAAAAAAAAAAABLL * ((*(v6->_stack.__ptr_ + 1) - v30) >> 3);
-      v32 = v31 - a2;
-      if (v31 <= v31 - a2)
+      v32 = v31 - arity;
+      if (v31 <= v31 - arity)
       {
         std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
       }
@@ -3772,7 +3772,7 @@ LABEL_481:
       }
 
       v35 = PPScoreInterpreterValue::getDouble((v34 + 24 * (v32 + 1)));
-      drop(v6, a2);
+      drop(v6, arity);
       v36 = v33;
       memset(v643, 0, sizeof(v643));
       memset(buf, 0, sizeof(buf));
@@ -3793,7 +3793,7 @@ LABEL_481:
       if (os_log_type_enabled(v421, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        *&buf[4] = a1;
+        *&buf[4] = operator;
         _os_log_error_impl(&dword_23224A000, v421, OS_LOG_TYPE_ERROR, "Undefined operator of value %tu", buf, 0xCu);
       }
 
@@ -3808,12 +3808,12 @@ void __47__PPScoreInterpreter_cleanupReusableComponents__block_invoke(uint64_t a
   *(a2 + 8) = 0;
 }
 
-- (void)evaluateWithPreviousStageSubscores:(id)a3 scoreInputInitializationBlock:(id)a4 scoreInputAssignmentBlock:(id)a5 outputBlock:(id)a6
+- (void)evaluateWithPreviousStageSubscores:(id)subscores scoreInputInitializationBlock:(id)block scoreInputAssignmentBlock:(id)assignmentBlock outputBlock:(id)outputBlock
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  subscoresCopy = subscores;
+  blockCopy = block;
+  assignmentBlockCopy = assignmentBlock;
+  outputBlockCopy = outputBlock;
   v14 = objc_autoreleasePoolPush();
   reusableContext = self->_reusableContext;
   v20[0] = MEMORY[0x277D85DD0];
@@ -3821,13 +3821,13 @@ void __47__PPScoreInterpreter_cleanupReusableComponents__block_invoke(uint64_t a
   v20[2] = __125__PPScoreInterpreter_evaluateWithPreviousStageSubscores_scoreInputInitializationBlock_scoreInputAssignmentBlock_outputBlock___block_invoke;
   v20[3] = &unk_278972170;
   v20[4] = self;
-  v16 = v11;
+  v16 = blockCopy;
   v22 = v16;
-  v17 = v10;
+  v17 = subscoresCopy;
   v21 = v17;
-  v18 = v12;
+  v18 = assignmentBlockCopy;
   v23 = v18;
-  v19 = v13;
+  v19 = outputBlockCopy;
   v24 = v19;
   [(_PASLock *)reusableContext runWithLockAcquired:v20];
 
@@ -3888,18 +3888,18 @@ void __125__PPScoreInterpreter_evaluateWithPreviousStageSubscores_scoreInputInit
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (PPScoreInterpreter)initWithBytecode:(id)a3 scoreInputSet:(id)a4
+- (PPScoreInterpreter)initWithBytecode:(id)bytecode scoreInputSet:(id)set
 {
-  v7 = a3;
-  v8 = a4;
+  bytecodeCopy = bytecode;
+  setCopy = set;
   v16.receiver = self;
   v16.super_class = PPScoreInterpreter;
   v9 = [(PPScoreInterpreter *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bytecode, a3);
-    objc_storeStrong(&v10->_scoreInputSet, a4);
+    objc_storeStrong(&v9->_bytecode, bytecode);
+    objc_storeStrong(&v10->_scoreInputSet, set);
     v11 = objc_alloc(MEMORY[0x277D425F8]);
     v12 = objc_opt_new();
     v13 = [v11 initWithGuardedData:v12];
@@ -3910,31 +3910,31 @@ void __125__PPScoreInterpreter_evaluateWithPreviousStageSubscores_scoreInputInit
   return v10;
 }
 
-- (PPScoreInterpreter)initWithParseRoot:(id)a3 scalarSubscoreCount:(unint64_t)a4 arraySubscoreCount:(unint64_t)a5 objectSubscoreCount:(unint64_t)a6
+- (PPScoreInterpreter)initWithParseRoot:(id)root scalarSubscoreCount:(unint64_t)count arraySubscoreCount:(unint64_t)subscoreCount objectSubscoreCount:(unint64_t)objectSubscoreCount
 {
-  v10 = a3;
-  v11 = v10;
+  rootCopy = root;
+  v11 = rootCopy;
   if (self)
   {
-    if (!v10)
+    if (!rootCopy)
     {
-      v14 = [MEMORY[0x277CCA890] currentHandler];
-      [v14 handleFailureInMethod:sel_initWithParseRoot_scalarSubscoreCount_arraySubscoreCount_objectSubscoreCount_scoreInputSet_ object:self file:@"PPScoreInterpreter.mm" lineNumber:828 description:{@"Invalid parameter not satisfying: %@", @"root"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel_initWithParseRoot_scalarSubscoreCount_arraySubscoreCount_objectSubscoreCount_scoreInputSet_ object:self file:@"PPScoreInterpreter.mm" lineNumber:828 description:{@"Invalid parameter not satisfying: %@", @"root"}];
     }
 
-    v12 = [[PPScoreInterpreterBytecode alloc] initWithParseRoot:v11 scalarSubscoreCount:a4 arraySubscoreCount:a5 objectSubscoreCount:a6];
+    v12 = [[PPScoreInterpreterBytecode alloc] initWithParseRoot:v11 scalarSubscoreCount:count arraySubscoreCount:subscoreCount objectSubscoreCount:objectSubscoreCount];
     self = [(PPScoreInterpreter *)self initWithBytecode:v12 scoreInputSet:0];
   }
 
   return self;
 }
 
-+ (id)scoreInterpreterFromFactorName:(id)a3 namespaceName:(id)a4
++ (id)scoreInterpreterFromFactorName:(id)name namespaceName:(id)namespaceName
 {
-  v5 = [PPScoreInterpreterBytecode bytecodeFromFactorName:a3 namespaceName:a4];
+  v5 = [PPScoreInterpreterBytecode bytecodeFromFactorName:name namespaceName:namespaceName];
   if (v5)
   {
-    v6 = [[a1 alloc] initWithBytecode:v5];
+    v6 = [[self alloc] initWithBytecode:v5];
   }
 
   else
@@ -3945,11 +3945,11 @@ void __125__PPScoreInterpreter_evaluateWithPreviousStageSubscores_scoreInputInit
   return v6;
 }
 
-+ (id)scoreInterpreterFromAsset:(id)a3
++ (id)scoreInterpreterFromAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [PPScoreInterpreterBytecode bytecodeFromAsset:v4];
+  assetCopy = asset;
+  v5 = [self alloc];
+  v6 = [PPScoreInterpreterBytecode bytecodeFromAsset:assetCopy];
   v7 = [v5 initWithBytecode:v6];
 
   return v7;

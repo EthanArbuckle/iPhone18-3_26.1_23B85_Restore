@@ -4,27 +4,27 @@
 - (id)_currentLocale;
 - (id)_getFaceSupportNotificationEnabled;
 - (id)_getFastFaceSwitchingEnabled;
-- (id)_getNotificationsIndicatorActive:(id)a3;
+- (id)_getNotificationsIndicatorActive:(id)active;
 - (id)_getShowComplicationDataWhenPasscodeLockedEnabled;
-- (id)_getTimeTravelEnabled:(id)a3;
-- (id)_is24HourTime:(id)a3;
+- (id)_getTimeTravelEnabled:(id)enabled;
+- (id)_is24HourTime:(id)time;
 - (id)_tapToSpeakTimeEnabled;
 - (id)_tapticChimesCurrentSounds;
 - (id)_tapticChimesEnabled;
 - (void)_checkAndUpdateSettings;
 - (void)_loadSectionInfo;
-- (void)_set24HourTime:(id)a3 withSpecifier:(id)a4;
-- (void)_setAlertsActive:(id)a3 withSpecifier:(id)a4;
-- (void)_setFaceSupportNotificationEnabled:(id)a3;
-- (void)_setFastFaceSwitchingEnabled:(id)a3;
-- (void)_setNotificationsIndicatorActive:(id)a3 withSpecifier:(id)a4;
-- (void)_setShowComplicationDataWhenPasscodeLockedEnabled:(id)a3;
-- (void)_setTapToSpeakTimeEnabled:(id)a3;
-- (void)_setTapticChimesEnabled:(id)a3;
-- (void)_setTimeTravelEnabled:(id)a3 withSpecifier:(id)a4;
+- (void)_set24HourTime:(id)time withSpecifier:(id)specifier;
+- (void)_setAlertsActive:(id)active withSpecifier:(id)specifier;
+- (void)_setFaceSupportNotificationEnabled:(id)enabled;
+- (void)_setFastFaceSwitchingEnabled:(id)enabled;
+- (void)_setNotificationsIndicatorActive:(id)active withSpecifier:(id)specifier;
+- (void)_setShowComplicationDataWhenPasscodeLockedEnabled:(id)enabled;
+- (void)_setTapToSpeakTimeEnabled:(id)enabled;
+- (void)_setTapticChimesEnabled:(id)enabled;
+- (void)_setTimeTravelEnabled:(id)enabled withSpecifier:(id)specifier;
 - (void)_writeSectionState;
 - (void)dealloc;
-- (void)handleCustomMonogramChange:(id)a3;
+- (void)handleCustomMonogramChange:(id)change;
 - (void)loadSpecifiers;
 @end
 
@@ -82,10 +82,10 @@
   v5 = [NPSDomainAccessor alloc];
   v10 = [v5 initWithDomain:BPSBulletinBoardAppsSettingsDomain];
   v6 = self->_sectionInfo;
-  v7 = [(NCBSMainMenuDataSource *)self applicationBundleIdentifier];
-  [v10 setObject:v6 forKey:v7];
+  applicationBundleIdentifier = [(NCBSMainMenuDataSource *)self applicationBundleIdentifier];
+  [v10 setObject:v6 forKey:applicationBundleIdentifier];
 
-  v8 = [v10 synchronize];
+  synchronize = [v10 synchronize];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, BPSBulletinDistributorBBSectionsDidChangeNotification, 0, 0, 0);
 }
@@ -138,9 +138,9 @@ LABEL_11:
 {
   v3 = [NPSDomainAccessor alloc];
   v9 = [v3 initWithDomain:BPSBulletinBoardAppsSettingsDomain];
-  v4 = [v9 synchronize];
-  v5 = [(NCBSMainMenuDataSource *)self applicationBundleIdentifier];
-  v6 = [v9 dictionaryForKey:v5];
+  synchronize = [v9 synchronize];
+  applicationBundleIdentifier = [(NCBSMainMenuDataSource *)self applicationBundleIdentifier];
+  v6 = [v9 dictionaryForKey:applicationBundleIdentifier];
 
   if (v6)
   {
@@ -160,13 +160,13 @@ LABEL_11:
 
 - (void)loadSpecifiers
 {
-  v2 = self;
-  v116 = [(NCBSMainMenuDataSource *)self specifiers];
+  selfCopy = self;
+  specifiers = [(NCBSMainMenuDataSource *)self specifiers];
   v3 = +[NSMutableArray array];
-  [(NCBSMainMenuDataSource *)v2 _loadSectionInfo];
-  if ([(NCBSMainMenuDataSource *)v2 _currentLocale])
+  [(NCBSMainMenuDataSource *)selfCopy _loadSectionInfo];
+  if ([(NCBSMainMenuDataSource *)selfCopy _currentLocale])
   {
-    v2->_localeForces24HourTime = PSLocaleUses24HourClock();
+    selfCopy->_localeForces24HourTime = PSLocaleUses24HourClock();
   }
 
   v115 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:0 edit:0];
@@ -176,7 +176,7 @@ LABEL_11:
   v6 = [NSString localizedStringWithFormat:v5, 24];
 
   v114 = v6;
-  v113 = [PSSpecifier preferenceSpecifierNamed:v6 target:v2 set:"_set24HourTime:withSpecifier:" get:"_is24HourTime:" detail:0 cell:6 edit:0];
+  v113 = [PSSpecifier preferenceSpecifierNamed:v6 target:selfCopy set:"_set24HourTime:withSpecifier:" get:"_is24HourTime:" detail:0 cell:6 edit:0];
   [v3 addObject:?];
   v7 = +[PSSpecifier emptyGroupSpecifier];
   v8 = [NSBundle bundleForClass:objc_opt_class()];
@@ -188,7 +188,7 @@ LABEL_11:
   [v3 addObject:v7];
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"FAST_FACE_SWITCHING_CELL_TITLE" value:&stru_C6C0 table:@"NanoClockBridgeSettings"];
-  v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:v2 set:"_setFastFaceSwitchingEnabled:" get:"_getFastFaceSwitchingEnabled" detail:0 cell:6 edit:0];
+  v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:selfCopy set:"_setFastFaceSwitchingEnabled:" get:"_getFastFaceSwitchingEnabled" detail:0 cell:6 edit:0];
 
   v111 = v12;
   [v3 addObject:v12];
@@ -206,50 +206,50 @@ LABEL_11:
     [v3 addObject:v13];
     v18 = [NSBundle bundleForClass:objc_opt_class()];
     v19 = [v18 localizedStringForKey:@"SHOW_COMPLICATION_DATA_WHEN_LOCKED_CELL_TITLE" value:&stru_C6C0 table:@"NanoClockBridgeSettings"];
-    v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:v2 set:"_setShowComplicationDataWhenPasscodeLockedEnabled:" get:"_getShowComplicationDataWhenPasscodeLockedEnabled" detail:0 cell:6 edit:0];
+    v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:selfCopy set:"_setShowComplicationDataWhenPasscodeLockedEnabled:" get:"_getShowComplicationDataWhenPasscodeLockedEnabled" detail:0 cell:6 edit:0];
 
     [v3 addObject:v20];
   }
 
   v21 = +[NRPairedDeviceRegistry sharedInstance];
-  v22 = [v21 getActivePairedDevice];
+  getActivePairedDevice = [v21 getActivePairedDevice];
   v23 = [[NSUUID alloc] initWithUUIDString:@"78E1881C-F6E1-421F-BC90-A1EBF1784BB1"];
-  v24 = [v22 supportsCapability:v23];
+  v24 = [getActivePairedDevice supportsCapability:v23];
 
   v117 = v3;
-  v125 = v2;
+  v125 = selfCopy;
   if (v24)
   {
     v25 = +[NSMutableArray array];
     v26 = +[AXTimeOutputPreferences sharedInstance];
     v27 = +[PSSpecifier emptyGroupSpecifier];
-    v28 = [v26 tapticChimesLocalizedDescription];
+    tapticChimesLocalizedDescription = [v26 tapticChimesLocalizedDescription];
     v29 = v118;
-    [v27 setProperty:v28 forKey:v118];
+    [v27 setProperty:tapticChimesLocalizedDescription forKey:v118];
 
     v109 = v27;
     [v25 addObject:v27];
-    v30 = [v26 tapticChimesLocalizedTitle];
-    v31 = [PSSpecifier preferenceSpecifierNamed:v30 target:v2 set:"_setTapticChimesEnabled:" get:"_tapticChimesEnabled" detail:0 cell:6 edit:0];
+    tapticChimesLocalizedTitle = [v26 tapticChimesLocalizedTitle];
+    v31 = [PSSpecifier preferenceSpecifierNamed:tapticChimesLocalizedTitle target:selfCopy set:"_setTapticChimesEnabled:" get:"_tapticChimesEnabled" detail:0 cell:6 edit:0];
 
     v107 = v31;
     [v25 addObject:v31];
-    v32 = [v26 tapticChimesSoundsLocalizedTitle];
+    tapticChimesSoundsLocalizedTitle = [v26 tapticChimesSoundsLocalizedTitle];
     v33 = v26;
-    v34 = [PSSpecifier preferenceSpecifierNamed:v32 target:v2 set:0 get:"_tapticChimesCurrentSounds" detail:objc_opt_class() cell:2 edit:0];
+    v34 = [PSSpecifier preferenceSpecifierNamed:tapticChimesSoundsLocalizedTitle target:selfCopy set:0 get:"_tapticChimesCurrentSounds" detail:objc_opt_class() cell:2 edit:0];
 
     [v34 setIdentifier:@"CHIMES_SOUNDS_ID"];
     v105 = v34;
     [v25 addObject:v34];
     v35 = +[PSSpecifier emptyGroupSpecifier];
-    v36 = [v33 tapToSpeakTimeLocalizedDescription];
-    [v35 setProperty:v36 forKey:v118];
+    tapToSpeakTimeLocalizedDescription = [v33 tapToSpeakTimeLocalizedDescription];
+    [v35 setProperty:tapToSpeakTimeLocalizedDescription forKey:v118];
 
     [v35 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
     [v35 setIdentifier:@"TapToSpeakTimeSettingsGroupID"];
     [v25 addObject:v35];
-    v37 = [v33 tapToSpeakTimeLocalizedTitle];
-    v38 = [PSSpecifier preferenceSpecifierNamed:v37 target:v2 set:"_setTapToSpeakTimeEnabled:" get:"_tapToSpeakTimeEnabled" detail:0 cell:6 edit:0];
+    tapToSpeakTimeLocalizedTitle = [v33 tapToSpeakTimeLocalizedTitle];
+    v38 = [PSSpecifier preferenceSpecifierNamed:tapToSpeakTimeLocalizedTitle target:selfCopy set:"_setTapToSpeakTimeEnabled:" get:"_tapToSpeakTimeEnabled" detail:0 cell:6 edit:0];
 
     v123 = v25;
     v103 = v38;
@@ -278,15 +278,15 @@ LABEL_11:
               objc_enumerationMutation(obj);
             }
 
-            v45 = [*(*(&v126 + 1) + 8 * i) integerValue];
-            v46 = [v121 localizedStringForTapToSpeakTimeAvailability:v45];
+            integerValue = [*(*(&v126 + 1) + 8 * i) integerValue];
+            v46 = [v121 localizedStringForTapToSpeakTimeAvailability:integerValue];
             v47 = [PSSpecifier preferenceSpecifierNamed:v46 target:v125 set:0 get:0 detail:0 cell:3 edit:0];
 
-            v48 = [NSNumber numberWithInteger:v45];
+            v48 = [NSNumber numberWithInteger:integerValue];
             [v47 setProperty:v48 forKey:v43];
 
             [v123 addObject:v47];
-            if ([v121 tapToSpeakTimeAvailability] == v45)
+            if ([v121 tapToSpeakTimeAvailability] == integerValue)
             {
               v49 = v47;
 
@@ -308,17 +308,17 @@ LABEL_11:
       [v35 setProperty:v41 forKey:PSRadioGroupCheckedSpecifierKey];
       v3 = v117;
       v29 = v118;
-      v2 = v125;
+      selfCopy = v125;
       v33 = v121;
     }
 
     v50 = +[PSSpecifier emptyGroupSpecifier];
-    v51 = [v33 tapticTimeLocalizedDescription];
-    [v50 setProperty:v51 forKey:v29];
+    tapticTimeLocalizedDescription = [v33 tapticTimeLocalizedDescription];
+    [v50 setProperty:tapticTimeLocalizedDescription forKey:v29];
 
     [v123 addObject:v50];
-    v52 = [v33 tapticTimeLocalizedTitle];
-    v53 = [PSSpecifier preferenceSpecifierNamed:v52 target:v2 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+    tapticTimeLocalizedTitle = [v33 tapticTimeLocalizedTitle];
+    v53 = [PSSpecifier preferenceSpecifierNamed:tapticTimeLocalizedTitle target:selfCopy set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
     [v53 setIdentifier:@"TAPTIC_TIME_IDENTIFIER"];
     [v123 addObject:v53];
@@ -326,7 +326,7 @@ LABEL_11:
   }
 
   [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:0 edit:0];
-  v55 = v54 = v2;
+  v55 = v54 = selfCopy;
   [v3 addObject:v55];
   v56 = [NSBundle bundleForClass:objc_opt_class()];
   v57 = [v56 localizedStringForKey:@"MIRROR_ALERTS" value:&stru_C6C0 table:@"NanoClockBridgeSettings"];
@@ -355,9 +355,9 @@ LABEL_11:
   v110 = v66;
   [v3 addObject:v66];
   v69 = +[NRPairedDeviceRegistry sharedInstance];
-  v70 = [v69 getActivePairedDevice];
+  getActivePairedDevice2 = [v69 getActivePairedDevice];
   v71 = [[NSUUID alloc] initWithUUIDString:@"21FFC697-E29F-4C65-878E-2AC90BAF5B9E"];
-  LOBYTE(v64) = [v70 supportsCapability:v71];
+  LOBYTE(v64) = [getActivePairedDevice2 supportsCapability:v71];
 
   if ((v64 & 1) == 0)
   {
@@ -375,12 +375,12 @@ LABEL_11:
   }
 
   v78 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:0 edit:0];
-  v79 = [NTKCompanionMonogramEntryViewControllerClass() localizedTitle];
-  v80 = [PSSpecifier preferenceSpecifierNamed:v79 target:v125 set:0 get:"_getMonogram:" detail:NTKCompanionMonogramEntryViewControllerClass() cell:2 edit:0];
+  localizedTitle = [NTKCompanionMonogramEntryViewControllerClass() localizedTitle];
+  v80 = [PSSpecifier preferenceSpecifierNamed:localizedTitle target:v125 set:0 get:"_getMonogram:" detail:NTKCompanionMonogramEntryViewControllerClass() cell:2 edit:0];
 
   [v80 setIdentifier:@"MONOGRAM_ID"];
-  v81 = [NTKCompanionMonogramEntryViewControllerClass() localizedDescription];
-  [v78 setProperty:v81 forKey:v118];
+  localizedDescription = [NTKCompanionMonogramEntryViewControllerClass() localizedDescription];
+  [v78 setProperty:localizedDescription forKey:v118];
 
   v108 = v78;
   [v117 addObject:v78];
@@ -412,9 +412,9 @@ LABEL_11:
   [v117 addObject:v85];
   [v117 addObject:v88];
   v91 = +[NRPairedDeviceRegistry sharedInstance];
-  v92 = [v91 getActivePairedDevice];
+  getActivePairedDevice3 = [v91 getActivePairedDevice];
   v93 = [[NSUUID alloc] initWithUUIDString:@"DAB81146-4105-445B-94AD-14033A199AC4"];
-  LOBYTE(v86) = [v92 supportsCapability:v93];
+  LOBYTE(v86) = [getActivePairedDevice3 supportsCapability:v93];
 
   if ((v86 & 1) == 0)
   {
@@ -429,18 +429,18 @@ LABEL_11:
     [v117 addObjectsFromArray:v98];
   }
 
-  [v116 removeAllObjects];
-  [v116 addObjectsFromArray:v117];
+  [specifiers removeAllObjects];
+  [specifiers addObjectsFromArray:v117];
 }
 
-- (void)_set24HourTime:(id)a3 withSpecifier:(id)a4
+- (void)_set24HourTime:(id)time withSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  timeCopy = time;
+  specifierCopy = specifier;
   localeForces24HourTime = self->_localeForces24HourTime;
-  v9 = [v6 BOOLValue];
+  bOOLValue = [timeCopy BOOLValue];
   v10 = &__kCFBooleanTrue;
-  if (v9)
+  if (bOOLValue)
   {
     v11 = 0;
   }
@@ -450,7 +450,7 @@ LABEL_11:
     v11 = &__kCFBooleanTrue;
   }
 
-  if (!v9)
+  if (!bOOLValue)
   {
     v10 = 0;
   }
@@ -478,17 +478,17 @@ LABEL_11:
 
   [(NPSDomainAccessor *)self->_gizmoGlobalDomain setObject:v14 forKey:@"AppleICUForce12HourTime"];
   [(NPSDomainAccessor *)self->_gizmoGlobalDomain setObject:v13 forKey:@"AppleICUForce24HourTime"];
-  v15 = [(NPSDomainAccessor *)self->_gizmoGlobalDomain synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_gizmoGlobalDomain synchronize];
   v20[0] = @"AppleICUForce12HourTime";
   v20[1] = @"AppleICUForce24HourTime";
   v16 = [NSArray arrayWithObjects:v20 count:2];
   syncManager = self->_syncManager;
-  v18 = [(NPSDomainAccessor *)self->_gizmoGlobalDomain domain];
+  domain = [(NPSDomainAccessor *)self->_gizmoGlobalDomain domain];
   v19 = [NSSet setWithArray:v16];
-  [(NPSManager *)syncManager synchronizeNanoDomain:v18 keys:v19];
+  [(NPSManager *)syncManager synchronizeNanoDomain:domain keys:v19];
 }
 
-- (id)_is24HourTime:(id)a3
+- (id)_is24HourTime:(id)time
 {
   localeForces24HourTime = self->_localeForces24HourTime;
   gizmoGlobalDomain = self->_gizmoGlobalDomain;
@@ -507,7 +507,7 @@ LABEL_11:
 
 - (id)_currentLocale
 {
-  v3 = [(NPSDomainAccessor *)self->_gizmoGlobalDomain synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_gizmoGlobalDomain synchronize];
   v4 = [(NPSDomainAccessor *)self->_gizmoGlobalDomain objectForKey:@"AppleLocale"];
   if (v4)
   {
@@ -533,23 +533,23 @@ LABEL_11:
   return v6;
 }
 
-- (void)_setAlertsActive:(id)a3 withSpecifier:(id)a4
+- (void)_setAlertsActive:(id)active withSpecifier:(id)specifier
 {
-  [(NSMutableDictionary *)self->_sectionInfo setObject:a3 forKey:BPSNanoBulletinShowsAlerts];
+  [(NSMutableDictionary *)self->_sectionInfo setObject:active forKey:BPSNanoBulletinShowsAlerts];
 
   [(NCBSMainMenuDataSource *)self _writeSectionState];
 }
 
-- (void)_setNotificationsIndicatorActive:(id)a3 withSpecifier:(id)a4
+- (void)_setNotificationsIndicatorActive:(id)active withSpecifier:(id)specifier
 {
-  v4 = a3;
+  activeCopy = active;
   v6 = +[NTKClockStatusBarSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [activeCopy BOOLValue];
 
-  [v6 setNotificationsIndicatorEnabled:v5];
+  [v6 setNotificationsIndicatorEnabled:bOOLValue];
 }
 
-- (id)_getNotificationsIndicatorActive:(id)a3
+- (id)_getNotificationsIndicatorActive:(id)active
 {
   v3 = +[NTKClockStatusBarSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isNotificationsIndicatorEnabled]);
@@ -557,16 +557,16 @@ LABEL_11:
   return v4;
 }
 
-- (void)_setTimeTravelEnabled:(id)a3 withSpecifier:(id)a4
+- (void)_setTimeTravelEnabled:(id)enabled withSpecifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[NTKTimeTravelSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setTimeTravelEnabled:v5];
+  [v6 setTimeTravelEnabled:bOOLValue];
 }
 
-- (id)_getTimeTravelEnabled:(id)a3
+- (id)_getTimeTravelEnabled:(id)enabled
 {
   v3 = +[NTKTimeTravelSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isTimeTravelEnabled]);
@@ -574,7 +574,7 @@ LABEL_11:
   return v4;
 }
 
-- (void)handleCustomMonogramChange:(id)a3
+- (void)handleCustomMonogramChange:(id)change
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -586,7 +586,7 @@ LABEL_11:
 
 - (id)_getFastFaceSwitchingEnabled
 {
-  v3 = [(NPSDomainAccessor *)self->_faceSupportDomain synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_faceSupportDomain synchronize];
   v7 = 0;
   v4 = [(NPSDomainAccessor *)self->_faceSupportDomain BOOLForKey:@"FaceSupportFastSwitching" keyExistsAndHasValidFormat:&v7];
   if (v7 == 1)
@@ -602,10 +602,10 @@ LABEL_11:
   return v5;
 }
 
-- (void)_setFastFaceSwitchingEnabled:(id)a3
+- (void)_setFastFaceSwitchingEnabled:(id)enabled
 {
-  [(NPSDomainAccessor *)self->_faceSupportDomain setObject:a3 forKey:@"FaceSupportFastSwitching"];
-  v4 = [(NPSDomainAccessor *)self->_faceSupportDomain synchronize];
+  [(NPSDomainAccessor *)self->_faceSupportDomain setObject:enabled forKey:@"FaceSupportFastSwitching"];
+  synchronize = [(NPSDomainAccessor *)self->_faceSupportDomain synchronize];
   syncManager = self->_syncManager;
   v8 = @"FaceSupportFastSwitching";
   v6 = [NSArray arrayWithObjects:&v8 count:1];
@@ -615,7 +615,7 @@ LABEL_11:
 
 - (id)_getFaceSupportNotificationEnabled
 {
-  v3 = [(NPSDomainAccessor *)self->_faceSupportDomain synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_faceSupportDomain synchronize];
   v7 = 0;
   v4 = [(NPSDomainAccessor *)self->_faceSupportDomain BOOLForKey:@"FaceSupportNotifications" keyExistsAndHasValidFormat:&v7];
   if (v7 == 1)
@@ -631,23 +631,23 @@ LABEL_11:
   return v5;
 }
 
-- (void)_setFaceSupportNotificationEnabled:(id)a3
+- (void)_setFaceSupportNotificationEnabled:(id)enabled
 {
-  [(NPSDomainAccessor *)self->_faceSupportDomain setObject:a3 forKey:@"FaceSupportNotifications"];
-  v4 = [(NPSDomainAccessor *)self->_faceSupportDomain synchronize];
+  [(NPSDomainAccessor *)self->_faceSupportDomain setObject:enabled forKey:@"FaceSupportNotifications"];
+  synchronize = [(NPSDomainAccessor *)self->_faceSupportDomain synchronize];
   v9 = @"FaceSupportNotifications";
   v5 = [NSArray arrayWithObjects:&v9 count:1];
   syncManager = self->_syncManager;
-  v7 = [(NPSDomainAccessor *)self->_faceSupportDomain domain];
+  domain = [(NPSDomainAccessor *)self->_faceSupportDomain domain];
   v8 = [NSSet setWithArray:v5];
-  [(NPSManager *)syncManager synchronizeNanoDomain:v7 keys:v8];
+  [(NPSManager *)syncManager synchronizeNanoDomain:domain keys:v8];
 }
 
 - (id)_getShowComplicationDataWhenPasscodeLockedEnabled
 {
   if ([objc_opt_class() _supportsSettingShowComplicationDataWhenPasscodeLocked])
   {
-    v3 = [(NPSDomainAccessor *)self->_chronoSupportDomain synchronize];
+    synchronize = [(NPSDomainAccessor *)self->_chronoSupportDomain synchronize];
     v7 = 0;
     v4 = [(NPSDomainAccessor *)self->_chronoSupportDomain BOOLForKey:@"showComplicationDataWhenPasscodeLocked" keyExistsAndHasValidFormat:&v7];
     if (v7 == 1)
@@ -669,37 +669,37 @@ LABEL_11:
   return v5;
 }
 
-- (void)_setShowComplicationDataWhenPasscodeLockedEnabled:(id)a3
+- (void)_setShowComplicationDataWhenPasscodeLockedEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   if ([objc_opt_class() _supportsSettingShowComplicationDataWhenPasscodeLocked])
   {
-    [(NPSDomainAccessor *)self->_chronoSupportDomain setObject:v4 forKey:@"showComplicationDataWhenPasscodeLocked"];
-    v5 = [(NPSDomainAccessor *)self->_chronoSupportDomain synchronize];
-    v6 = [(NPSDomainAccessor *)self->_chronoSupportDomain domain];
+    [(NPSDomainAccessor *)self->_chronoSupportDomain setObject:enabledCopy forKey:@"showComplicationDataWhenPasscodeLocked"];
+    synchronize = [(NPSDomainAccessor *)self->_chronoSupportDomain synchronize];
+    domain = [(NPSDomainAccessor *)self->_chronoSupportDomain domain];
     v9 = @"showComplicationDataWhenPasscodeLocked";
     v7 = [NSArray arrayWithObjects:&v9 count:1];
     v8 = [NSSet setWithArray:v7];
-    [(NPSManager *)self->_syncManager synchronizeNanoDomain:v6 keys:v8];
+    [(NPSManager *)self->_syncManager synchronizeNanoDomain:domain keys:v8];
   }
 }
 
 + (BOOL)_supportsSettingShowComplicationDataWhenPasscodeLocked
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  getActivePairedDevice = [v2 getActivePairedDevice];
 
   v4 = [[NSUUID alloc] initWithUUIDString:@"D5834418-F4A0-4C74-AA38-8ED5F7765BD1"];
-  v5 = [v3 supportsCapability:v4];
+  v5 = [getActivePairedDevice supportsCapability:v4];
 
   return v5;
 }
 
-- (void)_setTapticChimesEnabled:(id)a3
+- (void)_setTapticChimesEnabled:(id)enabled
 {
-  v3 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v4 = +[AXTimeOutputPreferences sharedInstance];
-  [v4 setVoiceOverTapticChimesEnabled:v3];
+  [v4 setVoiceOverTapticChimesEnabled:bOOLValue];
 }
 
 - (id)_tapticChimesEnabled
@@ -713,16 +713,16 @@ LABEL_11:
 - (id)_tapticChimesCurrentSounds
 {
   v2 = +[AXTimeOutputPreferences sharedInstance];
-  v3 = [v2 tapticChimesLocalizedCurrentSounds];
+  tapticChimesLocalizedCurrentSounds = [v2 tapticChimesLocalizedCurrentSounds];
 
-  return v3;
+  return tapticChimesLocalizedCurrentSounds;
 }
 
-- (void)_setTapToSpeakTimeEnabled:(id)a3
+- (void)_setTapToSpeakTimeEnabled:(id)enabled
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXTimeOutputPreferences sharedInstance];
-  [v5 setTapToSpeakTimeEnabled:v4];
+  [v5 setTapToSpeakTimeEnabled:bOOLValue];
 
   [(NCBSMainMenuDataSource *)self reloadSpecifiers];
 }

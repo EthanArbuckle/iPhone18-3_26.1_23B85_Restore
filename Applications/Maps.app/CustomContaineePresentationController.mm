@@ -1,11 +1,11 @@
 @interface CustomContaineePresentationController
 - (ContaineeViewController)containeeViewController;
 - (ContainerViewController)containerViewController;
-- (CustomContaineePresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
-- (int64_t)adaptivePresentationStyleForTraitCollection:(id)a3;
+- (CustomContaineePresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
+- (int64_t)adaptivePresentationStyleForTraitCollection:(id)collection;
 - (void)containerViewWillLayoutSubviews;
 - (void)dismissContaineeViewController;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
 - (void)presentationTransitionWillBegin;
 @end
@@ -35,11 +35,11 @@
   }
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
   v5.receiver = self;
   v5.super_class = CustomContaineePresentationController;
-  [(CustomContaineePresentationController *)&v5 dismissalTransitionDidEnd:a3];
+  [(CustomContaineePresentationController *)&v5 dismissalTransitionDidEnd:end];
   if (!self->_containerContentShown)
   {
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
@@ -58,19 +58,19 @@
   v10[3] = &unk_101661B18;
   v10[4] = self;
   v3 = objc_retainBlock(v10);
-  v4 = [(CustomContaineePresentationController *)self presentedViewController];
-  v5 = [v4 transitionCoordinator];
+  presentedViewController = [(CustomContaineePresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
 
-  if (v5)
+  if (transitionCoordinator)
   {
-    v6 = [(CustomContaineePresentationController *)self presentedViewController];
-    v7 = [v6 transitionCoordinator];
+    presentedViewController2 = [(CustomContaineePresentationController *)self presentedViewController];
+    transitionCoordinator2 = [presentedViewController2 transitionCoordinator];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100C55ED8;
     v8[3] = &unk_101654700;
     v9 = v3;
-    [v7 animateAlongsideTransition:v8 completion:&stru_10164EDC8];
+    [transitionCoordinator2 animateAlongsideTransition:v8 completion:&stru_10164EDC8];
   }
 
   else
@@ -90,19 +90,19 @@
   v10[3] = &unk_101661B18;
   v10[4] = self;
   v3 = objc_retainBlock(v10);
-  v4 = [(CustomContaineePresentationController *)self presentedViewController];
-  v5 = [v4 transitionCoordinator];
+  presentedViewController = [(CustomContaineePresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
 
-  if (v5)
+  if (transitionCoordinator)
   {
-    v6 = [(CustomContaineePresentationController *)self presentedViewController];
-    v7 = [v6 transitionCoordinator];
+    presentedViewController2 = [(CustomContaineePresentationController *)self presentedViewController];
+    transitionCoordinator2 = [presentedViewController2 transitionCoordinator];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100C560BC;
     v8[3] = &unk_101654700;
     v9 = v3;
-    [v7 animateAlongsideTransition:v8 completion:0];
+    [transitionCoordinator2 animateAlongsideTransition:v8 completion:0];
   }
 
   else
@@ -123,21 +123,21 @@
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(CustomContaineePresentationController *)self presentedView];
-    [v11 setFrame:{v4, v6, v8, v10}];
+    presentedView = [(CustomContaineePresentationController *)self presentedView];
+    [presentedView setFrame:{v4, v6, v8, v10}];
   }
 }
 
-- (int64_t)adaptivePresentationStyleForTraitCollection:(id)a3
+- (int64_t)adaptivePresentationStyleForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v6 = [WeakRetained allowOnlyStandardStyle];
+  allowOnlyStandardStyle = [WeakRetained allowOnlyStandardStyle];
 
-  v7 = [v4 horizontalSizeClass];
-  if (v6)
+  horizontalSizeClass = [collectionCopy horizontalSizeClass];
+  if (allowOnlyStandardStyle)
   {
-    if (v7 == 2 && [v4 verticalSizeClass] == 1 || objc_msgSend(v4, "horizontalSizeClass") == 2 && objc_msgSend(v4, "verticalSizeClass") == 2)
+    if (horizontalSizeClass == 2 && [collectionCopy verticalSizeClass] == 1 || objc_msgSend(collectionCopy, "horizontalSizeClass") == 2 && objc_msgSend(collectionCopy, "verticalSizeClass") == 2)
     {
       v8 = 2;
       goto LABEL_13;
@@ -148,12 +148,12 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (v7 == 1 && [v4 verticalSizeClass] == 2)
+  if (horizontalSizeClass == 1 && [collectionCopy verticalSizeClass] == 2)
   {
     goto LABEL_9;
   }
 
-  if ([v4 verticalSizeClass] == 1)
+  if ([collectionCopy verticalSizeClass] == 1)
   {
     v8 = 5;
   }
@@ -169,20 +169,20 @@ LABEL_13:
   return v8;
 }
 
-- (CustomContaineePresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (CustomContaineePresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v19.receiver = self;
   v19.super_class = CustomContaineePresentationController;
-  v8 = [(CustomContaineePresentationController *)&v19 initWithPresentedViewController:v6 presentingViewController:v7];
+  v8 = [(CustomContaineePresentationController *)&v19 initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
   v9 = v8;
   if (v8)
   {
     [(CustomContaineePresentationController *)v8 setDelegate:v8];
-    objc_storeWeak(&v9->_containeeViewController, v6);
-    objc_storeWeak(&v9->_containerViewController, v7);
-    v9->_containeeViewControllerConformsToCustomPresentationContaineeViewController = [v6 conformsToProtocol:&OBJC_PROTOCOL___CustomPresentationContaineeViewController];
+    objc_storeWeak(&v9->_containeeViewController, controllerCopy);
+    objc_storeWeak(&v9->_containerViewController, viewControllerCopy);
+    v9->_containeeViewControllerConformsToCustomPresentationContaineeViewController = [controllerCopy conformsToProtocol:&OBJC_PROTOCOL___CustomPresentationContaineeViewController];
     v9->_containerViewControllerSupportsUpdateViewsForCustomPresentationTransition = objc_opt_respondsToSelector() & 1;
     v9->_containerViewControllerSupportsUpdateViewsForCustomDismissalTransition = objc_opt_respondsToSelector() & 1;
     objc_initWeak(&location, v9);

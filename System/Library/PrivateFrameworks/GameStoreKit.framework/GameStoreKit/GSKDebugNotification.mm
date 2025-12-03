@@ -1,25 +1,25 @@
 @interface GSKDebugNotification
-- (BOOL)isEqual:(id)a3;
-- (GSKDebugNotification)initWithText:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GSKDebugNotification)initWithText:(id)text;
 - (unint64_t)hash;
 @end
 
 @implementation GSKDebugNotification
 
-- (GSKDebugNotification)initWithText:(id)a3
+- (GSKDebugNotification)initWithText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v11.receiver = self;
   v11.super_class = GSKDebugNotification;
   v6 = [(GSKDebugNotification *)&v11 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAD78] UUID];
-    v8 = [v7 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v6->_identifier;
-    v6->_identifier = v8;
+    v6->_identifier = uUIDString;
 
-    objc_storeStrong(&v6->_text, a3);
+    objc_storeStrong(&v6->_text, text);
   }
 
   return v6;
@@ -27,28 +27,28 @@
 
 - (unint64_t)hash
 {
-  v3 = [(GSKDebugNotification *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(GSKDebugNotification *)self text];
-  v6 = [v5 hash];
+  identifier = [(GSKDebugNotification *)self identifier];
+  v4 = [identifier hash];
+  text = [(GSKDebugNotification *)self text];
+  v6 = [text hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GSKDebugNotification *)self identifier];
-    v7 = [v5 identifier];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    identifier = [(GSKDebugNotification *)self identifier];
+    identifier2 = [v5 identifier];
+    if ([identifier isEqualToString:identifier2])
     {
-      v8 = [(GSKDebugNotification *)self text];
-      v9 = [v5 text];
-      v10 = [v8 isEqualToString:v9];
+      text = [(GSKDebugNotification *)self text];
+      text2 = [v5 text];
+      v10 = [text isEqualToString:text2];
     }
 
     else

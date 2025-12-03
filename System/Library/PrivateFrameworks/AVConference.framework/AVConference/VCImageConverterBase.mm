@@ -1,14 +1,14 @@
 @interface VCImageConverterBase
-- (BOOL)setUpBufferPoolForOutputWidth:(unint64_t)a3 outputHeight:(unint64_t)a4;
-- (VCImageConverterBase)initWithFormatType:(unsigned int)a3;
+- (BOOL)setUpBufferPoolForOutputWidth:(unint64_t)width outputHeight:(unint64_t)height;
+- (VCImageConverterBase)initWithFormatType:(unsigned int)type;
 - (void)dealloc;
 @end
 
 @implementation VCImageConverterBase
 
-- (VCImageConverterBase)initWithFormatType:(unsigned int)a3
+- (VCImageConverterBase)initWithFormatType:(unsigned int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v11[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = VCImageConverterBase;
@@ -40,7 +40,7 @@
   [(VCImageConverterBase *)&v3 dealloc];
 }
 
-- (BOOL)setUpBufferPoolForOutputWidth:(unint64_t)a3 outputHeight:(unint64_t)a4
+- (BOOL)setUpBufferPoolForOutputWidth:(unint64_t)width outputHeight:(unint64_t)height
 {
   v33[2] = *MEMORY[0x1E69E9840];
   p_bufferPool = &self->_bufferPool;
@@ -59,7 +59,7 @@
         v24 = 1024;
         v25 = 53;
         v26 = 2048;
-        v27 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %p, Releasing _bufferPool to create a new one", &v20, 0x26u);
       }
     }
@@ -68,12 +68,12 @@
     *p_bufferPool = 0;
   }
 
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a3];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:width];
   [(NSMutableDictionary *)self->_bufferPoolDictionary setObject:v10 forKeyedSubscript:*MEMORY[0x1E6966208]];
-  self->_outputWidth = a3;
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a4];
+  self->_outputWidth = width;
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:height];
   [(NSMutableDictionary *)self->_bufferPoolDictionary setObject:v11 forKeyedSubscript:*MEMORY[0x1E69660B8]];
-  self->_outputHeight = a4;
+  self->_outputHeight = height;
   v12 = *MEMORY[0x1E696CF98];
   v32[0] = *MEMORY[0x1E696CF68];
   v32[1] = v12;
@@ -98,11 +98,11 @@
         v24 = 1024;
         v25 = 70;
         v26 = 2048;
-        v27 = self;
+        selfCopy2 = self;
         v28 = 1024;
-        v29 = a3;
+        widthCopy = width;
         v30 = 1024;
-        v31 = a4;
+        heightCopy = height;
         _os_log_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Frame Transform, %p, create %ux%u _bufferPool", &v20, 0x32u);
       }
     }

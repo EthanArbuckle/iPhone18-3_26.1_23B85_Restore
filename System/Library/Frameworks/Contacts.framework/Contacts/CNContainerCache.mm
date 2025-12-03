@@ -3,9 +3,9 @@
 - (ACAccountStore)accountStore;
 - (CNContactStore)contactStore;
 - (CNContainer)primaryiCloudContainer;
-- (CNContainerCache)initWithContactStore:(id)a3;
-- (id)accountForContainer:(id)a3;
-- (id)cnAccountForContainer:(id)a3;
+- (CNContainerCache)initWithContactStore:(id)store;
+- (id)accountForContainer:(id)container;
+- (id)cnAccountForContainer:(id)container;
 - (id)onWorkQueue_findPrimaryiCloudContainer;
 - (void)accountStoreDidChange;
 - (void)contactStoreDidChange;
@@ -36,16 +36,16 @@ uint64_t __26__CNContainerCache_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNContainerCache)initWithContactStore:(id)a3
+- (CNContainerCache)initWithContactStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v16.receiver = self;
   v16.super_class = CNContainerCache;
   v5 = [(CNContainerCache *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_contactStore, v4);
+    objc_storeWeak(&v5->_contactStore, storeCopy);
     accountStore = v6->_accountStore;
     v6->_accountStore = 0;
 
@@ -57,11 +57,11 @@ uint64_t __26__CNContainerCache_os_log__block_invoke()
     workQueue = v6->_workQueue;
     v6->_workQueue = v10;
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v6 selector:sel_accountStoreDidChange name:*MEMORY[0x1E6959968] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_accountStoreDidChange name:*MEMORY[0x1E6959968] object:0];
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v6 selector:sel_contactStoreDidChange name:@"CNContactStoreDidChangeNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel_contactStoreDidChange name:@"CNContactStoreDidChangeNotification" object:0];
 
     v14 = v6;
   }
@@ -71,30 +71,30 @@ uint64_t __26__CNContainerCache_os_log__block_invoke()
 
 - (void)accountStoreDidChange
 {
-  v3 = [(CNContainerCache *)self workQueue];
+  workQueue = [(CNContainerCache *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__CNContainerCache_accountStoreDidChange__block_invoke;
   block[3] = &unk_1E7412A88;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (void)contactStoreDidChange
 {
-  v3 = [(CNContainerCache *)self workQueue];
+  workQueue = [(CNContainerCache *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__CNContainerCache_contactStoreDidChange__block_invoke;
   block[3] = &unk_1E7412A88;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CNContainerCache;
@@ -106,9 +106,9 @@ uint64_t __26__CNContainerCache_os_log__block_invoke()
   accountStore = self->_accountStore;
   if (!accountStore)
   {
-    v4 = [MEMORY[0x1E6959A48] defaultStore];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
     v5 = self->_accountStore;
-    self->_accountStore = v4;
+    self->_accountStore = defaultStore;
 
     accountStore = self->_accountStore;
   }
@@ -124,14 +124,14 @@ uint64_t __26__CNContainerCache_os_log__block_invoke()
   v10 = __Block_byref_object_copy__34;
   v11 = __Block_byref_object_dispose__34;
   v12 = 0;
-  v3 = [(CNContainerCache *)self workQueue];
+  workQueue = [(CNContainerCache *)self workQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__CNContainerCache_primaryiCloudContainer__block_invoke;
   v6[3] = &unk_1E7416EB0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -161,15 +161,15 @@ void __42__CNContainerCache_primaryiCloudContainer__block_invoke(uint64_t a1)
 - (id)onWorkQueue_findPrimaryiCloudContainer
 {
   v3 = [CNContainer predicateForContainersIncludingDisabled:0];
-  v4 = [(CNContainerCache *)self contactStore];
+  contactStore = [(CNContainerCache *)self contactStore];
   v11 = 0;
-  v5 = [v4 containersMatchingPredicate:v3 error:&v11];
+  v5 = [contactStore containersMatchingPredicate:v3 error:&v11];
   v6 = v11;
 
   if (v6)
   {
-    v7 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [(CNContainerCache *)v6 onWorkQueue_findPrimaryiCloudContainer];
     }
@@ -179,13 +179,13 @@ void __42__CNContainerCache_primaryiCloudContainer__block_invoke(uint64_t a1)
 
   else
   {
-    v7 = [v5 _cn_filter:&__block_literal_global_15_0];
+    os_log = [v5 _cn_filter:&__block_literal_global_15_0];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __58__CNContainerCache_onWorkQueue_findPrimaryiCloudContainer__block_invoke_2;
     v10[3] = &unk_1E7417650;
     v10[4] = self;
-    v8 = [v7 _cn_firstObjectPassingTest:v10];
+    v8 = [os_log _cn_firstObjectPassingTest:v10];
   }
 
   return v8;
@@ -202,20 +202,20 @@ uint64_t __58__CNContainerCache_onWorkQueue_findPrimaryiCloudContainer__block_in
   return v3 & v6;
 }
 
-- (id)accountForContainer:(id)a3
+- (id)accountForContainer:(id)container
 {
-  v4 = a3;
-  if (v4)
+  containerCopy = container;
+  if (containerCopy)
   {
-    v5 = [(CNContainerCache *)self cachedAccounts];
-    v6 = [v4 identifier];
+    cachedAccounts = [(CNContainerCache *)self cachedAccounts];
+    identifier = [containerCopy identifier];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __40__CNContainerCache_accountForContainer___block_invoke;
     v13[3] = &unk_1E7417678;
     v13[4] = self;
-    v14 = v4;
-    v7 = [v5 objectForKey:v6 onCacheMiss:v13];
+    v14 = containerCopy;
+    v7 = [cachedAccounts objectForKey:identifier onCacheMiss:v13];
 
     v11 = (*(*MEMORY[0x1E6996590] + 16))(*MEMORY[0x1E6996590], v7, v8, v9, v10);
   }
@@ -256,33 +256,33 @@ id __40__CNContainerCache_accountForContainer___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)cnAccountForContainer:(id)a3
+- (id)cnAccountForContainer:(id)container
 {
-  v4 = [a3 identifier];
-  v5 = [CNAccount predicateForAccountForContainerWithIdentifier:v4];
+  identifier = [container identifier];
+  v5 = [CNAccount predicateForAccountForContainerWithIdentifier:identifier];
 
-  v6 = [(CNContainerCache *)self contactStore];
+  contactStore = [(CNContainerCache *)self contactStore];
   v12 = 0;
-  v7 = [v6 accountsMatchingPredicate:v5 error:&v12];
+  v7 = [contactStore accountsMatchingPredicate:v5 error:&v12];
   v8 = v12;
 
   if (v8)
   {
-    v9 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      [(CNContainerCache *)v8 cnAccountForContainer:v9];
+      [(CNContainerCache *)v8 cnAccountForContainer:os_log];
     }
 
-    v10 = 0;
+    firstObject = 0;
   }
 
   else
   {
-    v10 = [v7 firstObject];
+    firstObject = [v7 firstObject];
   }
 
-  return v10;
+  return firstObject;
 }
 
 - (CNContactStore)contactStore
@@ -296,7 +296,7 @@ id __40__CNContainerCache_accountForContainer___block_invoke(uint64_t a1)
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1954A0000, a2, OS_LOG_TYPE_ERROR, "Error when fetching CNContainers: %{public}@", &v2, 0xCu);
 }
 

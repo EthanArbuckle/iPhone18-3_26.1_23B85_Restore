@@ -1,25 +1,25 @@
 @interface CALNMutableNotificationSound
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAlertTopic:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAlertTopic:(id)topic;
 @end
 
 @implementation CALNMutableNotificationSound
 
-- (void)setAlertTopic:(id)a3
+- (void)setAlertTopic:(id)topic
 {
-  v4 = [a3 copy];
+  v4 = [topic copy];
   alertTopic = self->super._alertTopic;
   self->super._alertTopic = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CALNNotificationSound allocWithZone:a3];
-  v5 = [(CALNNotificationSound *)self alertType];
-  v6 = [(CALNNotificationSound *)self alertTopic];
-  v7 = [(CALNNotificationSound *)v4 _initWithAlertType:v5 alertTopic:v6];
+  v4 = [CALNNotificationSound allocWithZone:zone];
+  alertType = [(CALNNotificationSound *)self alertType];
+  alertTopic = [(CALNNotificationSound *)self alertTopic];
+  v7 = [(CALNNotificationSound *)v4 _initWithAlertType:alertType alertTopic:alertTopic];
 
   return v7;
 }

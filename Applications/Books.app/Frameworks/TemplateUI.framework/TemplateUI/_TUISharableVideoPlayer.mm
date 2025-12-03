@@ -1,16 +1,16 @@
 @interface _TUISharableVideoPlayer
 - (TUIVideoViewPlayerHosting)activeHost;
-- (_TUISharableVideoPlayer)initWithURL:(id)a3 videoId:(id)a4;
+- (_TUISharableVideoPlayer)initWithURL:(id)l videoId:(id)id;
 - (id)description;
 - (void)decrementHostCount;
 @end
 
 @implementation _TUISharableVideoPlayer
 
-- (_TUISharableVideoPlayer)initWithURL:(id)a3 videoId:(id)a4
+- (_TUISharableVideoPlayer)initWithURL:(id)l videoId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  idCopy = id;
   v13.receiver = self;
   v13.super_class = _TUISharableVideoPlayer;
   v8 = [(_TUISharableVideoPlayer *)&v13 init];
@@ -18,7 +18,7 @@
   if (v8)
   {
     v8->_hostCount = 1;
-    v10 = [[TUIVideoPlayer alloc] initWithUrl:v6 videoId:v7];
+    v10 = [[TUIVideoPlayer alloc] initWithUrl:lCopy videoId:idCopy];
     player = v9->_player;
     v9->_player = v10;
 
@@ -41,9 +41,9 @@
 
 - (id)description
 {
-  v3 = [(TUIVideoPlayer *)self->_player videoId];
+  videoId = [(TUIVideoPlayer *)self->_player videoId];
   [(TUIVideoPlayer *)self->_player rate];
-  v5 = [NSString stringWithFormat:@"<_TUISharableVideoPlayer: %p, videoId: %@, rate: %f, isPlaying: %i, triggerPlaybackEnabled: %i, isWithinVisibleBounds: %i>", self, v3, v4, [(TUIVideoPlayer *)self->_player isPlaying], self->_triggerPlaybackEnabled, self->_isWithinVisibleBounds];
+  v5 = [NSString stringWithFormat:@"<_TUISharableVideoPlayer: %p, videoId: %@, rate: %f, isPlaying: %i, triggerPlaybackEnabled: %i, isWithinVisibleBounds: %i>", self, videoId, v4, [(TUIVideoPlayer *)self->_player isPlaying], self->_triggerPlaybackEnabled, self->_isWithinVisibleBounds];
 
   return v5;
 }

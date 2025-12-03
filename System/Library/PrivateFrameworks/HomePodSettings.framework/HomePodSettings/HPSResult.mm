@@ -1,49 +1,49 @@
 @interface HPSResult
-- (HPSResult)initWithCoder:(id)a3;
-- (HPSResult)initWithSetting:(id)a3 accessoryIdentifier:(id)a4 error:(id)a5 result:(BOOL)a6;
+- (HPSResult)initWithCoder:(id)coder;
+- (HPSResult)initWithSetting:(id)setting accessoryIdentifier:(id)identifier error:(id)error result:(BOOL)result;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HPSResult
 
-- (HPSResult)initWithSetting:(id)a3 accessoryIdentifier:(id)a4 error:(id)a5 result:(BOOL)a6
+- (HPSResult)initWithSetting:(id)setting accessoryIdentifier:(id)identifier error:(id)error result:(BOOL)result
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  settingCopy = setting;
+  identifierCopy = identifier;
+  errorCopy = error;
   v17.receiver = self;
   v17.super_class = HPSResult;
   v14 = [(HPSResult *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_isSuccess = a6;
-    objc_storeStrong(&v14->_error, a5);
-    objc_storeStrong(&v15->_accessoryIdentifier, a4);
-    objc_storeStrong(&v15->_setting, a3);
+    v14->_isSuccess = result;
+    objc_storeStrong(&v14->_error, error);
+    objc_storeStrong(&v15->_accessoryIdentifier, identifier);
+    objc_storeStrong(&v15->_setting, setting);
   }
 
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HPSResult *)self accessoryIdentifier];
-  if (v5)
+  coderCopy = coder;
+  accessoryIdentifier = [(HPSResult *)self accessoryIdentifier];
+  if (accessoryIdentifier)
   {
-    [v4 encodeObject:v5 forKey:@"AccessoryIdentifier"];
+    [coderCopy encodeObject:accessoryIdentifier forKey:@"AccessoryIdentifier"];
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[HPSResult isSuccess](self, "isSuccess")}];
-  [v4 encodeObject:v6 forKey:@"Success"];
+  [coderCopy encodeObject:v6 forKey:@"Success"];
 
-  v7 = [(HPSResult *)self setting];
-  if (v7)
+  setting = [(HPSResult *)self setting];
+  if (setting)
   {
     v12 = 0;
-    v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v12];
+    v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:setting requiringSecureCoding:1 error:&v12];
     v9 = v12;
     if (v9)
     {
@@ -56,20 +56,20 @@
 
     else
     {
-      [v4 encodeObject:v8 forKey:@"Value"];
+      [coderCopy encodeObject:v8 forKey:@"Value"];
     }
   }
 
-  v11 = [(HPSResult *)self error];
-  if (v11)
+  error = [(HPSResult *)self error];
+  if (error)
   {
-    [v4 encodeObject:v11 forKey:@"Error"];
+    [coderCopy encodeObject:error forKey:@"Error"];
   }
 }
 
-- (HPSResult)initWithCoder:(id)a3
+- (HPSResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = HPSResult;
   v5 = [(HPSResult *)&v18 init];
@@ -80,14 +80,14 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v4 containsValueForKey:@"AccessoryIdentifier"])
+  if ([coderCopy containsValueForKey:@"AccessoryIdentifier"])
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AccessoryIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AccessoryIdentifier"];
     accessoryIdentifier = v5->_accessoryIdentifier;
     v5->_accessoryIdentifier = v6;
   }
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Success"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Success"];
   if (v8)
   {
     objc_opt_class();
@@ -97,12 +97,12 @@ LABEL_13:
     }
   }
 
-  if (![v4 containsValueForKey:@"Value"])
+  if (![coderCopy containsValueForKey:@"Value"])
   {
     goto LABEL_17;
   }
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
   v17 = 0;
   v10 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v9 error:&v17];
   v11 = v17;
@@ -112,9 +112,9 @@ LABEL_13:
   if (!v11)
   {
 LABEL_17:
-    if ([v4 containsValueForKey:@"Error"])
+    if ([coderCopy containsValueForKey:@"Error"])
     {
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Error"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Error"];
       error = v5->_error;
       v5->_error = v14;
     }
@@ -141,10 +141,10 @@ LABEL_14:
     v4 = @"NO";
   }
 
-  v5 = [(HPSResult *)self accessoryIdentifier];
-  v6 = [(HPSResult *)self setting];
-  v7 = [(HPSResult *)self error];
-  v8 = [v3 stringWithFormat:@"\n Success = %@, \n Accessory Identifier = %@, \n Setting = [%@], \n Error = %@", v4, v5, v6, v7];
+  accessoryIdentifier = [(HPSResult *)self accessoryIdentifier];
+  setting = [(HPSResult *)self setting];
+  error = [(HPSResult *)self error];
+  v8 = [v3 stringWithFormat:@"\n Success = %@, \n Accessory Identifier = %@, \n Setting = [%@], \n Error = %@", v4, accessoryIdentifier, setting, error];
 
   return v8;
 }

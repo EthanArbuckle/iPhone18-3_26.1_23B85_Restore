@@ -1,6 +1,6 @@
 @interface AMUIPosterExtensionSwitcherItem
-+ (id)itemWithProviderBundleIdentifier:(void *)a3 configurations:(void *)a4 posterCategoryViewControllerDelegate:(void *)a5 dateProvider:;
-- (AMUIPosterExtensionSwitcherItem)initWithProviderBundleIdentifier:(id)a3 configurations:(id)a4 posterCategoryViewControllerDelegate:(id)a5 dateProvider:(id)a6;
++ (id)itemWithProviderBundleIdentifier:(void *)identifier configurations:(void *)configurations posterCategoryViewControllerDelegate:(void *)delegate dateProvider:;
+- (AMUIPosterExtensionSwitcherItem)initWithProviderBundleIdentifier:(id)identifier configurations:(id)configurations posterCategoryViewControllerDelegate:(id)delegate dateProvider:(id)provider;
 - (NSObject)identifier;
 - (UIView)itemView;
 - (id)posterCategoryViewController;
@@ -9,47 +9,47 @@
 - (uint64_t)setConfigurations:(uint64_t)result;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setDateProvider:(uint64_t)a1;
-- (void)switcherItemDidAppear:(id)a3;
-- (void)switcherItemDidDisappear:(id)a3;
-- (void)switcherItemWillAppear:(id)a3;
-- (void)switcherItemWillDisappear:(id)a3;
+- (void)setDateProvider:(uint64_t)provider;
+- (void)switcherItemDidAppear:(id)appear;
+- (void)switcherItemDidDisappear:(id)disappear;
+- (void)switcherItemWillAppear:(id)appear;
+- (void)switcherItemWillDisappear:(id)disappear;
 @end
 
 @implementation AMUIPosterExtensionSwitcherItem
 
-+ (id)itemWithProviderBundleIdentifier:(void *)a3 configurations:(void *)a4 posterCategoryViewControllerDelegate:(void *)a5 dateProvider:
++ (id)itemWithProviderBundleIdentifier:(void *)identifier configurations:(void *)configurations posterCategoryViewControllerDelegate:(void *)delegate dateProvider:
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  delegateCopy = delegate;
+  configurationsCopy = configurations;
+  identifierCopy = identifier;
   v11 = a2;
-  v12 = [objc_alloc(objc_opt_self()) initWithProviderBundleIdentifier:v11 configurations:v10 posterCategoryViewControllerDelegate:v9 dateProvider:v8];
+  v12 = [objc_alloc(objc_opt_self()) initWithProviderBundleIdentifier:v11 configurations:identifierCopy posterCategoryViewControllerDelegate:configurationsCopy dateProvider:delegateCopy];
 
   return v12;
 }
 
-- (AMUIPosterExtensionSwitcherItem)initWithProviderBundleIdentifier:(id)a3 configurations:(id)a4 posterCategoryViewControllerDelegate:(id)a5 dateProvider:(id)a6
+- (AMUIPosterExtensionSwitcherItem)initWithProviderBundleIdentifier:(id)identifier configurations:(id)configurations posterCategoryViewControllerDelegate:(id)delegate dateProvider:(id)provider
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  configurationsCopy = configurations;
+  delegateCopy = delegate;
+  providerCopy = provider;
   v20.receiver = self;
   v20.super_class = AMUIPosterExtensionSwitcherItem;
   v14 = [(AMUIPosterExtensionSwitcherItem *)&v20 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     providerBundleIdentifier = v14->_providerBundleIdentifier;
     v14->_providerBundleIdentifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [configurationsCopy copy];
     configurations = v14->_configurations;
     v14->_configurations = v17;
 
-    objc_storeWeak(&v14->_posterCategoryViewControllerDelegate, v12);
-    objc_storeStrong(&v14->_dateProvider, a6);
+    objc_storeWeak(&v14->_posterCategoryViewControllerDelegate, delegateCopy);
+    objc_storeStrong(&v14->_dateProvider, provider);
   }
 
   return v14;
@@ -70,35 +70,35 @@
   self->_posterCategoryViewController = 0;
 }
 
-- (void)switcherItemWillAppear:(id)a3
+- (void)switcherItemWillAppear:(id)appear
 {
-  v4 = a3;
-  v7 = [(AMUIPosterExtensionSwitcherItem *)self itemView];
-  v5 = [v4 traitCollection];
+  appearCopy = appear;
+  itemView = [(AMUIPosterExtensionSwitcherItem *)self itemView];
+  traitCollection = [appearCopy traitCollection];
 
-  [v5 displayCornerRadius];
-  [v7 _setContinuousCornerRadius:?];
+  [traitCollection displayCornerRadius];
+  [itemView _setContinuousCornerRadius:?];
 
-  v6 = [(AMUIPosterExtensionSwitcherItem *)self itemView];
-  [v6 setClipsToBounds:1];
+  itemView2 = [(AMUIPosterExtensionSwitcherItem *)self itemView];
+  [itemView2 setClipsToBounds:1];
 }
 
-- (void)switcherItemDidAppear:(id)a3
+- (void)switcherItemDidAppear:(id)appear
 {
-  v3 = [(AMUIPosterExtensionSwitcherItem *)self itemView];
-  [v3 setClipsToBounds:0];
+  itemView = [(AMUIPosterExtensionSwitcherItem *)self itemView];
+  [itemView setClipsToBounds:0];
 }
 
-- (void)switcherItemWillDisappear:(id)a3
+- (void)switcherItemWillDisappear:(id)disappear
 {
-  v3 = [(AMUIPosterExtensionSwitcherItem *)self itemView];
-  [v3 setClipsToBounds:1];
+  itemView = [(AMUIPosterExtensionSwitcherItem *)self itemView];
+  [itemView setClipsToBounds:1];
 }
 
-- (void)switcherItemDidDisappear:(id)a3
+- (void)switcherItemDidDisappear:(id)disappear
 {
-  v3 = [(AMUIPosterExtensionSwitcherItem *)self itemView];
-  [v3 setClipsToBounds:0];
+  itemView = [(AMUIPosterExtensionSwitcherItem *)self itemView];
+  [itemView setClipsToBounds:0];
 }
 
 - (uint64_t)setConfigurations:(uint64_t)result
@@ -121,39 +121,39 @@
 
 - (id)posterCategoryViewController
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[1];
+    selfCopy = self;
+    v3 = self[1];
     if (!v3)
     {
       v4 = objc_alloc_init(AMUIPosterCategoryViewController);
-      v5 = v2[1];
-      v2[1] = v4;
+      v5 = selfCopy[1];
+      selfCopy[1] = v4;
 
-      [v2[1] setConfigurations:v2[2]];
-      v6 = v2[1];
-      WeakRetained = objc_loadWeakRetained(v2 + 5);
+      [selfCopy[1] setConfigurations:selfCopy[2]];
+      v6 = selfCopy[1];
+      WeakRetained = objc_loadWeakRetained(selfCopy + 5);
       [v6 setDelegate:WeakRetained];
 
-      [v2[1] setDateProvider:v2[3]];
-      v3 = v2[1];
+      [selfCopy[1] setDateProvider:selfCopy[3]];
+      v3 = selfCopy[1];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)setDateProvider:(uint64_t)a1
+- (void)setDateProvider:(uint64_t)provider
 {
   v4 = a2;
-  if (a1)
+  if (provider)
   {
-    objc_storeStrong((a1 + 24), a2);
-    [*(a1 + 8) setDateProvider:*(a1 + 24)];
+    objc_storeStrong((provider + 24), a2);
+    [*(provider + 8) setDateProvider:*(provider + 24)];
   }
 }
 
@@ -179,13 +179,13 @@
 
 - (UIView)itemView
 {
-  v2 = [(AMUIPosterExtensionSwitcherItem *)&self->super.isa posterCategoryViewController];
-  v3 = [v2 view];
+  posterCategoryViewController = [(AMUIPosterExtensionSwitcherItem *)&self->super.isa posterCategoryViewController];
+  view = [posterCategoryViewController view];
 
-  v4 = [v3 layer];
-  [v4 setAllowsGroupOpacity:1];
+  layer = [view layer];
+  [layer setAllowsGroupOpacity:1];
 
-  return v3;
+  return view;
 }
 
 - (uint64_t)dateProvider

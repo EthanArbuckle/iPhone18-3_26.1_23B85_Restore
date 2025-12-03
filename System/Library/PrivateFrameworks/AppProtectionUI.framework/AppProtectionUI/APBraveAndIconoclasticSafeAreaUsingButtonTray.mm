@@ -1,7 +1,7 @@
 @interface APBraveAndIconoclasticSafeAreaUsingButtonTray
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (void)layoutSubviews;
 @end
 
@@ -24,26 +24,26 @@
   [v12 setFrame_];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(APBraveAndIconoclasticSafeAreaUsingButtonTray *)self systemLayoutSizeFittingSize:a3.width, a3.height];
+  [(APBraveAndIconoclasticSafeAreaUsingButtonTray *)self systemLayoutSizeFittingSize:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  [(APBraveAndIconoclasticSafeAreaUsingButtonTray *)v9 layoutMargins];
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  [(APBraveAndIconoclasticSafeAreaUsingButtonTray *)selfCopy layoutMargins];
   UIEdgeInsetsInsetRect(0.0, 0.0, width, height, v10, v11);
   v13 = v12;
   v15 = v14;
-  *&v12 = a4;
-  *&v14 = a5;
-  [*(&v9->super.super.super.isa + OBJC_IVAR____TtC15AppProtectionUI45APBraveAndIconoclasticSafeAreaUsingButtonTray_stack) systemLayoutSizeFittingSize:v13 withHorizontalFittingPriority:v15 verticalFittingPriority:{v12, v14}];
+  *&v12 = priority;
+  *&v14 = fittingPriority;
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC15AppProtectionUI45APBraveAndIconoclasticSafeAreaUsingButtonTray_stack) systemLayoutSizeFittingSize:v13 withHorizontalFittingPriority:v15 verticalFittingPriority:{v12, v14}];
 
   v16 = CGPointMake(width);
   result.height = v17;
@@ -53,9 +53,9 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  [(APBraveAndIconoclasticSafeAreaUsingButtonTray *)v2 bounds];
-  [(APBraveAndIconoclasticSafeAreaUsingButtonTray *)v2 sizeThatFits:CGPointMake(v3)];
+  selfCopy = self;
+  [(APBraveAndIconoclasticSafeAreaUsingButtonTray *)selfCopy bounds];
+  [(APBraveAndIconoclasticSafeAreaUsingButtonTray *)selfCopy sizeThatFits:CGPointMake(v3)];
   v5 = v4;
   v7 = v6;
 

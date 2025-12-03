@@ -1,13 +1,13 @@
 @interface ATXTimelineRelevanceAdoption
 - (ATXTimelineRelevanceAdoption)init;
-- (ATXTimelineRelevanceAdoption)initWithGlobalAdoptionPlist:(id)a3 informationStore:(id)a4 abuseControlConfig:(id)a5;
-- (BOOL)_hasDiverseSchemaGlobally:(id)a3 kind:(id)a4;
-- (id)globalDiverseSchemaRawNumber:(id)a3 kind:(id)a4;
-- (unint64_t)adoptionTypeForWidgetBundleId:(id)a3 kind:(id)a4;
-- (void)_updateQuotasDictionary:(id)a3 forWidgetBundleId:(id)a4 widgetKind:(id)a5 parameterName:(id)a6 withValue:(int64_t)a7;
-- (void)_updateQuotasForWidgetBundleId:(id)a3 widgetKind:(id)a4 quotasDictionary:(id)a5;
-- (void)persistQuotasWithActivity:(id)a3;
-- (void)trainWidgetPredictionModelWithActivity:(id)a3;
+- (ATXTimelineRelevanceAdoption)initWithGlobalAdoptionPlist:(id)plist informationStore:(id)store abuseControlConfig:(id)config;
+- (BOOL)_hasDiverseSchemaGlobally:(id)globally kind:(id)kind;
+- (id)globalDiverseSchemaRawNumber:(id)number kind:(id)kind;
+- (unint64_t)adoptionTypeForWidgetBundleId:(id)id kind:(id)kind;
+- (void)_updateQuotasDictionary:(id)dictionary forWidgetBundleId:(id)id widgetKind:(id)kind parameterName:(id)name withValue:(int64_t)value;
+- (void)_updateQuotasForWidgetBundleId:(id)id widgetKind:(id)kind quotasDictionary:(id)dictionary;
+- (void)persistQuotasWithActivity:(id)activity;
+- (void)trainWidgetPredictionModelWithActivity:(id)activity;
 @end
 
 @implementation ATXTimelineRelevanceAdoption
@@ -15,56 +15,56 @@
 - (ATXTimelineRelevanceAdoption)init
 {
   v3 = [MEMORY[0x277CEB3C0] dictionaryFromLazyPlistForClass:objc_opt_class()];
-  v4 = [MEMORY[0x277CEB5C8] sharedInstance];
+  mEMORY[0x277CEB5C8] = [MEMORY[0x277CEB5C8] sharedInstance];
   v5 = objc_opt_new();
-  v6 = [(ATXTimelineRelevanceAdoption *)self initWithGlobalAdoptionPlist:v3 informationStore:v4 abuseControlConfig:v5];
+  v6 = [(ATXTimelineRelevanceAdoption *)self initWithGlobalAdoptionPlist:v3 informationStore:mEMORY[0x277CEB5C8] abuseControlConfig:v5];
 
   return v6;
 }
 
-- (ATXTimelineRelevanceAdoption)initWithGlobalAdoptionPlist:(id)a3 informationStore:(id)a4 abuseControlConfig:(id)a5
+- (ATXTimelineRelevanceAdoption)initWithGlobalAdoptionPlist:(id)plist informationStore:(id)store abuseControlConfig:(id)config
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  plistCopy = plist;
+  storeCopy = store;
+  configCopy = config;
   v19.receiver = self;
   v19.super_class = ATXTimelineRelevanceAdoption;
   v12 = [(ATXTimelineRelevanceAdoption *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_globalAdoptionPlist, a3);
-    if (v11)
+    objc_storeStrong(&v12->_globalAdoptionPlist, plist);
+    if (configCopy)
     {
-      objc_storeStrong(&v13->_abuseControlConfig, a5);
-      v14 = [[ATXAdoptionTypeToBudgetMapper alloc] initWithAbuseControlConfig:v11];
+      objc_storeStrong(&v13->_abuseControlConfig, config);
+      v14 = [[ATXAdoptionTypeToBudgetMapper alloc] initWithAbuseControlConfig:configCopy];
       budgetMapper = v13->_budgetMapper;
       v13->_budgetMapper = v14;
     }
 
-    objc_storeStrong(&v13->_informationStore, a4);
-    v16 = [(ATXInformationStore *)v13->_informationStore fetchDistinctScoreCountForWidgets];
+    objc_storeStrong(&v13->_informationStore, store);
+    fetchDistinctScoreCountForWidgets = [(ATXInformationStore *)v13->_informationStore fetchDistinctScoreCountForWidgets];
     distinctScoreCounts = v13->_distinctScoreCounts;
-    v13->_distinctScoreCounts = v16;
+    v13->_distinctScoreCounts = fetchDistinctScoreCountForWidgets;
   }
 
   return v13;
 }
 
-- (unint64_t)adoptionTypeForWidgetBundleId:(id)a3 kind:(id)a4
+- (unint64_t)adoptionTypeForWidgetBundleId:(id)id kind:(id)kind
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ATXTimelineRelevanceAdoption *)self _hasDiverseSchemaGlobally:v7 kind:v6];
-  v9 = [MEMORY[0x277D42648] tupleWithFirst:v7 second:v6];
+  kindCopy = kind;
+  idCopy = id;
+  v8 = [(ATXTimelineRelevanceAdoption *)self _hasDiverseSchemaGlobally:idCopy kind:kindCopy];
+  v9 = [MEMORY[0x277D42648] tupleWithFirst:idCopy second:kindCopy];
 
   v10 = [(NSDictionary *)self->_distinctScoreCounts objectForKeyedSubscript:v9];
   v11 = v10;
   if (v10 && [v10 integerValue])
   {
-    v12 = [v11 integerValue];
-    v13 = v12 > 1 || v8;
-    if (v12 <= 1)
+    integerValue = [v11 integerValue];
+    v13 = integerValue > 1 || v8;
+    if (integerValue <= 1)
     {
       v14 = 2;
     }
@@ -93,23 +93,23 @@
   return v14;
 }
 
-- (BOOL)_hasDiverseSchemaGlobally:(id)a3 kind:(id)a4
+- (BOOL)_hasDiverseSchemaGlobally:(id)globally kind:(id)kind
 {
-  v4 = [(ATXTimelineRelevanceAdoption *)self globalDiverseSchemaRawNumber:a3 kind:a4];
+  v4 = [(ATXTimelineRelevanceAdoption *)self globalDiverseSchemaRawNumber:globally kind:kind];
   v5 = [v4 integerValue] == 1;
 
   return v5;
 }
 
-- (id)globalDiverseSchemaRawNumber:(id)a3 kind:(id)a4
+- (id)globalDiverseSchemaRawNumber:(id)number kind:(id)kind
 {
   v4 = 0;
-  if (a3 && a4)
+  if (number && kind)
   {
     globalAdoptionPlist = self->_globalAdoptionPlist;
-    v7 = a4;
-    v8 = [(NSDictionary *)globalAdoptionPlist objectForKeyedSubscript:a3];
-    v9 = [v8 objectForKeyedSubscript:v7];
+    kindCopy = kind;
+    v8 = [(NSDictionary *)globalAdoptionPlist objectForKeyedSubscript:number];
+    v9 = [v8 objectForKeyedSubscript:kindCopy];
 
     if (v9)
     {
@@ -125,80 +125,80 @@
   return v4;
 }
 
-- (void)_updateQuotasForWidgetBundleId:(id)a3 widgetKind:(id)a4 quotasDictionary:(id)a5
+- (void)_updateQuotasForWidgetBundleId:(id)id widgetKind:(id)kind quotasDictionary:(id)dictionary
 {
-  v22 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ATXTimelineAbuseControlConfig *)self->_abuseControlConfig widgetsExcludedFromPersonalizedQuotaUpdate];
-  v11 = [v10 containsObject:v22];
+  idCopy = id;
+  kindCopy = kind;
+  dictionaryCopy = dictionary;
+  widgetsExcludedFromPersonalizedQuotaUpdate = [(ATXTimelineAbuseControlConfig *)self->_abuseControlConfig widgetsExcludedFromPersonalizedQuotaUpdate];
+  v11 = [widgetsExcludedFromPersonalizedQuotaUpdate containsObject:idCopy];
 
   if ((v11 & 1) == 0)
   {
-    v12 = [(ATXTimelineAbuseControlConfig *)self->_abuseControlConfig softRotationQuotaForWidgetWithIdentifier:v22 kind:v8];
-    v13 = [(ATXTimelineAbuseControlConfig *)self->_abuseControlConfig hardRotationQuotaForWidgetWithIdentifier:v22 kind:v8];
-    [(ATXTimelineAbuseControlConfig *)self->_abuseControlConfig durationLimitForWidgetWithIdentifier:v22 kind:v8];
+    v12 = [(ATXTimelineAbuseControlConfig *)self->_abuseControlConfig softRotationQuotaForWidgetWithIdentifier:idCopy kind:kindCopy];
+    v13 = [(ATXTimelineAbuseControlConfig *)self->_abuseControlConfig hardRotationQuotaForWidgetWithIdentifier:idCopy kind:kindCopy];
+    [(ATXTimelineAbuseControlConfig *)self->_abuseControlConfig durationLimitForWidgetWithIdentifier:idCopy kind:kindCopy];
     v15 = v14;
-    v16 = [(ATXTimelineRelevanceAdoption *)self adoptionTypeForWidgetBundleId:v22 kind:v8];
+    v16 = [(ATXTimelineRelevanceAdoption *)self adoptionTypeForWidgetBundleId:idCopy kind:kindCopy];
     v17 = [(ATXAdoptionTypeToBudgetMapper *)self->_budgetMapper softQuotaForAdoptionType:v16];
     v18 = [(ATXAdoptionTypeToBudgetMapper *)self->_budgetMapper hardQuotaForAdoptionType:v16];
     v19 = [(ATXAdoptionTypeToBudgetMapper *)self->_budgetMapper durationLimitForAdoptionType:v16];
     if (v12 != -1 && v12 < v17)
     {
-      [(ATXTimelineRelevanceAdoption *)self _updateQuotasDictionary:v9 forWidgetBundleId:v22 widgetKind:v8 parameterName:@"SoftRotationQuota" withValue:v17];
+      [(ATXTimelineRelevanceAdoption *)self _updateQuotasDictionary:dictionaryCopy forWidgetBundleId:idCopy widgetKind:kindCopy parameterName:@"SoftRotationQuota" withValue:v17];
     }
 
     v20 = v15;
     if (v13 != -1 && v13 < v18)
     {
-      [(ATXTimelineRelevanceAdoption *)self _updateQuotasDictionary:v9 forWidgetBundleId:v22 widgetKind:v8 parameterName:@"HardRotationQuota" withValue:v18];
+      [(ATXTimelineRelevanceAdoption *)self _updateQuotasDictionary:dictionaryCopy forWidgetBundleId:idCopy widgetKind:kindCopy parameterName:@"HardRotationQuota" withValue:v18];
     }
 
     if (v20 != -1 && v19 > v20)
     {
-      [(ATXTimelineRelevanceAdoption *)self _updateQuotasDictionary:v9 forWidgetBundleId:v22 widgetKind:v8 parameterName:@"Duration" withValue:v19];
+      [(ATXTimelineRelevanceAdoption *)self _updateQuotasDictionary:dictionaryCopy forWidgetBundleId:idCopy widgetKind:kindCopy parameterName:@"Duration" withValue:v19];
     }
   }
 }
 
-- (void)_updateQuotasDictionary:(id)a3 forWidgetBundleId:(id)a4 widgetKind:(id)a5 parameterName:(id)a6 withValue:(int64_t)a7
+- (void)_updateQuotasDictionary:(id)dictionary forWidgetBundleId:(id)id widgetKind:(id)kind parameterName:(id)name withValue:(int64_t)value
 {
-  v24 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (v11 && v12)
+  dictionaryCopy = dictionary;
+  idCopy = id;
+  kindCopy = kind;
+  v13 = kindCopy;
+  if (idCopy && kindCopy)
   {
-    v14 = a6;
-    v15 = [v24 objectForKeyedSubscript:v11];
+    nameCopy = name;
+    v15 = [dictionaryCopy objectForKeyedSubscript:idCopy];
 
     if (!v15)
     {
       v16 = objc_opt_new();
-      [v24 setObject:v16 forKeyedSubscript:v11];
+      [dictionaryCopy setObject:v16 forKeyedSubscript:idCopy];
     }
 
-    v17 = [v24 objectForKeyedSubscript:v11];
+    v17 = [dictionaryCopy objectForKeyedSubscript:idCopy];
     v18 = [v17 objectForKeyedSubscript:v13];
 
     if (!v18)
     {
       v19 = objc_opt_new();
-      v20 = [v24 objectForKeyedSubscript:v11];
+      v20 = [dictionaryCopy objectForKeyedSubscript:idCopy];
       [v20 setObject:v19 forKeyedSubscript:v13];
     }
 
-    v21 = [MEMORY[0x277CCABB0] numberWithInteger:a7];
-    v22 = [v24 objectForKeyedSubscript:v11];
+    v21 = [MEMORY[0x277CCABB0] numberWithInteger:value];
+    v22 = [dictionaryCopy objectForKeyedSubscript:idCopy];
     v23 = [v22 objectForKeyedSubscript:v13];
-    [v23 setObject:v21 forKeyedSubscript:v14];
+    [v23 setObject:v21 forKeyedSubscript:nameCopy];
   }
 }
 
-- (void)persistQuotasWithActivity:(id)a3
+- (void)persistQuotasWithActivity:(id)activity
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  activityCopy = activity;
   if (self->_distinctScoreCounts)
   {
     v6 = objc_opt_new();
@@ -222,9 +222,9 @@
           }
 
           v12 = *(*(&v30 + 1) + 8 * i);
-          v13 = [v12 first];
-          v14 = [v12 second];
-          [(ATXTimelineRelevanceAdoption *)self _updateQuotasForWidgetBundleId:v13 widgetKind:v14 quotasDictionary:v6];
+          first = [v12 first];
+          second = [v12 second];
+          [(ATXTimelineRelevanceAdoption *)self _updateQuotasForWidgetBundleId:first widgetKind:second quotasDictionary:v6];
         }
 
         v9 = [(NSDictionary *)v7 countByEnumeratingWithState:&v30 objects:v36 count:16];
@@ -233,7 +233,7 @@
       while (v9);
     }
 
-    if ([v5 didDefer])
+    if ([activityCopy didDefer])
     {
       v15 = __atxlog_handle_timeline();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -326,11 +326,11 @@ void __58__ATXTimelineRelevanceAdoption_persistQuotasWithActivity___block_invoke
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)trainWidgetPredictionModelWithActivity:(id)a3
+- (void)trainWidgetPredictionModelWithActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = [[ATXWidgetPredictionTrainer alloc] initWithInformationStore:self->_informationStore distinctScoreCounts:self->_distinctScoreCounts];
-  [(ATXWidgetPredictionTrainer *)v5 trainWidgetPredictionModelWithActivity:v4];
+  [(ATXWidgetPredictionTrainer *)v5 trainWidgetPredictionModelWithActivity:activityCopy];
 }
 
 - (void)persistQuotasWithActivity:(uint64_t)a3 .cold.1(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)

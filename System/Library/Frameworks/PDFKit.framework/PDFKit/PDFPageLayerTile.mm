@@ -1,16 +1,16 @@
 @interface PDFPageLayerTile
 - (CGRect)rootViewFrame;
-- (PDFPageLayerTile)initWithFrame:(CGRect)a3 forPageLayer:(id)a4 withRenderingTransform:(CGAffineTransform *)a5 tileContentsScale:(double)a6 generationID:(int)a7;
+- (PDFPageLayerTile)initWithFrame:(CGRect)frame forPageLayer:(id)layer withRenderingTransform:(CGAffineTransform *)transform tileContentsScale:(double)scale generationID:(int)d;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
-- (void)recievePDFTileSurface:(id)a3;
+- (void)drawInContext:(CGContext *)context;
+- (void)recievePDFTileSurface:(id)surface;
 @end
 
 @implementation PDFPageLayerTile
 
-- (PDFPageLayerTile)initWithFrame:(CGRect)a3 forPageLayer:(id)a4 withRenderingTransform:(CGAffineTransform *)a5 tileContentsScale:(double)a6 generationID:(int)a7
+- (PDFPageLayerTile)initWithFrame:(CGRect)frame forPageLayer:(id)layer withRenderingTransform:(CGAffineTransform *)transform tileContentsScale:(double)scale generationID:(int)d
 {
-  v11 = a4;
+  layerCopy = layer;
   v19.receiver = self;
   v19.super_class = PDFPageLayerTile;
   v12 = [(PDFPageLayerTile *)&v19 init];
@@ -23,17 +23,17 @@
     pageSurface = v13->pageSurface;
     v13->pageSurface = 0;
 
-    objc_storeWeak(&v13->pageLayer, v11);
-    v16 = *&a5->c;
-    v15 = *&a5->tx;
-    *&v13->renderingTransform.a = *&a5->a;
+    objc_storeWeak(&v13->pageLayer, layerCopy);
+    v16 = *&transform->c;
+    v15 = *&transform->tx;
+    *&v13->renderingTransform.a = *&transform->a;
     *&v13->renderingTransform.c = v16;
     *&v13->renderingTransform.tx = v15;
-    v13->generationID = a7;
+    v13->generationID = d;
     atomic_store(0, &v13->isWorking);
     atomic_store(0, &v13->hasContent);
-    v13->tileContentsScale = a6;
-    [(PDFPageLayerTile *)v13 setContentsScale:a6];
+    v13->tileContentsScale = scale;
+    [(PDFPageLayerTile *)v13 setContentsScale:scale];
     [(PDFPageLayerTile *)v13 setContentsGravity:*MEMORY[0x1E6979DC0]];
     [(PDFPageLayerTile *)v13 setEdgeAntialiasingMask:0];
     [(PDFPageLayerTile *)v13 setMinificationFilter:*MEMORY[0x1E6979CB8]];
@@ -63,23 +63,23 @@
   [(PDFPageLayerTile *)&v4 dealloc];
 }
 
-- (void)recievePDFTileSurface:(id)a3
+- (void)recievePDFTileSurface:(id)surface
 {
-  v10 = a3;
+  surfaceCopy = surface;
   WeakRetained = objc_loadWeakRetained(&self->pageLayer);
   if (WeakRetained)
   {
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    objc_storeStrong(&self->pageSurface, a3);
+    objc_storeStrong(&self->pageSurface, surface);
     type = self->pageSurface->type;
     if (type <= 2)
     {
-      [(PDFPageLayerTile *)self setContents:*(v10 + *off_1E8151460[type])];
+      [(PDFPageLayerTile *)self setContents:*(surfaceCopy + *off_1E8151460[type])];
     }
 
-    v7 = v10[4];
-    v8 = v10[5];
+    v7 = surfaceCopy[4];
+    v8 = surfaceCopy[5];
     [(PDFPageLayerTile *)self setContentsRect:v8 / (v7 + 2 * v8), v8 / (v7 + 2 * v8), v7 / (v7 + 2 * v8), v7 / (v7 + 2 * v8)];
     atomic_store(0, &self->isWorking);
     atomic_store(1u, &self->hasContent);
@@ -91,17 +91,17 @@
   else
   {
     v9 = +[PDFTilePool sharedPool];
-    [v9 releasePDFTileSurface:v10];
+    [v9 releasePDFTileSurface:surfaceCopy];
   }
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   [(PDFPageLayerTile *)self hasStartedWork];
-  CGContextSetRGBFillColor(a3, 1.0, 1.0, 1.0, 1.0);
-  ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+  CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0);
+  ClipBoundingBox = CGContextGetClipBoundingBox(context);
   v15 = CGRectIntegral(ClipBoundingBox);
-  CGContextFillRect(a3, v15);
+  CGContextFillRect(context, v15);
   renderingTransform = self->renderingTransform;
   CGContextSetCTM();
   v5 = [PDFPage isNativeRotationDrawingEnabledForThisThread:*&renderingTransform.a];
@@ -111,19 +111,19 @@
   v7 = +[PDFPage isExcludingAKAnnotationRenderingForThisThread];
   [PDFPage setExcludingAKAnnotationRenderingForThisThread:1];
   WeakRetained = objc_loadWeakRetained(&self->pageLayer);
-  v9 = [WeakRetained page];
-  v10 = [v9 copyDisplayList];
-  if (v10)
+  page = [WeakRetained page];
+  copyDisplayList = [page copyDisplayList];
+  if (copyDisplayList)
   {
-    v11 = v10;
+    v11 = copyDisplayList;
     CGDisplayListDrawInContext();
     CFRelease(v11);
   }
 
   else
   {
-    v12 = [(PDFPageLayerTile *)self renderingProperties];
-    [v9 drawWithBox:objc_msgSend(v12 toContext:{"displayBox"), a3}];
+    renderingProperties = [(PDFPageLayerTile *)self renderingProperties];
+    [page drawWithBox:objc_msgSend(renderingProperties toContext:{"displayBox"), context}];
   }
 
   [PDFPage setExcludingAKAnnotationRenderingForThisThread:v7];

@@ -4,31 +4,31 @@
 - (void)_teardown;
 - (void)_updateSystemInputActivityIfNeeded;
 - (void)dealloc;
-- (void)didMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
 @end
 
 @implementation _UISystemInputActivityInteraction
 
 - (void)_updateSystemInputActivityIfNeeded
 {
-  v9 = [(_UISystemInputActivityInteraction *)self _windowScene];
-  v3 = [(_UISystemInputActivityInteraction *)self view];
-  v4 = [v3 window];
+  _windowScene = [(_UISystemInputActivityInteraction *)self _windowScene];
+  view = [(_UISystemInputActivityInteraction *)self view];
+  window = [view window];
 
-  v5 = [v4 windowScene];
-  if (v5 != v9)
+  windowScene = [window windowScene];
+  if (windowScene != _windowScene)
   {
     [(_UISystemInputActivityInteraction *)self _teardown];
-    if (v5)
+    if (windowScene)
     {
-      v6 = [v5 _systemInputActivityManager];
-      v7 = [v6 beginTrackingSystemInputActivity];
-      [(_UISystemInputActivityInteraction *)self set_systemInputActivityToken:v7];
+      _systemInputActivityManager = [windowScene _systemInputActivityManager];
+      beginTrackingSystemInputActivity = [_systemInputActivityManager beginTrackingSystemInputActivity];
+      [(_UISystemInputActivityInteraction *)self set_systemInputActivityToken:beginTrackingSystemInputActivity];
 
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 addObserver:self selector:sel__updateSystemInputActivityIfNeeded name:@"_UIWindowDidMoveToSceneNotification" object:v4];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__updateSystemInputActivityIfNeeded name:@"_UIWindowDidMoveToSceneNotification" object:window];
 
-      [(_UISystemInputActivityInteraction *)self set_windowScene:v5];
+      [(_UISystemInputActivityInteraction *)self set_windowScene:windowScene];
     }
   }
 }
@@ -36,11 +36,11 @@
 - (void)_teardown
 {
   [(_UISystemInputActivityInteraction *)self set_windowScene:0];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(_UISystemInputActivityInteraction *)self _systemInputActivityToken];
-  [v4 invalidate];
+  _systemInputActivityToken = [(_UISystemInputActivityInteraction *)self _systemInputActivityToken];
+  [_systemInputActivityToken invalidate];
 
   [(_UISystemInputActivityInteraction *)self set_systemInputActivityToken:0];
 }
@@ -53,9 +53,9 @@
   [(_UISystemInputActivityInteraction *)&v3 dealloc];
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  objc_storeWeak(&self->_view, a3);
+  objc_storeWeak(&self->_view, view);
 
   [(_UISystemInputActivityInteraction *)self _updateSystemInputActivityIfNeeded];
 }

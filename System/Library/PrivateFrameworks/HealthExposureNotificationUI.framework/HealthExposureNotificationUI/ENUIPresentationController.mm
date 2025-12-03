@@ -1,32 +1,32 @@
 @interface ENUIPresentationController
 - (void)_dismissRemoteViewController;
-- (void)_mainQueue_presentWithPresentationRequest:(id)a3 completion:(id)a4;
-- (void)_makeRemoteViewControllerKeyAndVisible:(id)a3;
-- (void)_requestAndConfigureHostViewController:(id)a3 completion:(id)a4;
+- (void)_mainQueue_presentWithPresentationRequest:(id)request completion:(id)completion;
+- (void)_makeRemoteViewControllerKeyAndVisible:(id)visible;
+- (void)_requestAndConfigureHostViewController:(id)controller completion:(id)completion;
 - (void)cancelPresentation;
 - (void)dealloc;
-- (void)hostViewControllerDidFinishWithError:(id)a3;
-- (void)presentWithPresentationRequest:(id)a3 completion:(id)a4;
+- (void)hostViewControllerDidFinishWithError:(id)error;
+- (void)presentWithPresentationRequest:(id)request completion:(id)completion;
 @end
 
 @implementation ENUIPresentationController
 
 - (void)dealloc
 {
-  v3 = [(ENUIPresentationController *)self requestCancellationInvocation];
-  v4 = [v3 invoke];
+  requestCancellationInvocation = [(ENUIPresentationController *)self requestCancellationInvocation];
+  invoke = [requestCancellationInvocation invoke];
 
   v5.receiver = self;
   v5.super_class = ENUIPresentationController;
   [(ENUIPresentationController *)&v5 dealloc];
 }
 
-- (void)presentWithPresentationRequest:(id)a3 completion:(id)a4
+- (void)presentWithPresentationRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  requestCopy = request;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (!requestCopy)
   {
     [ENUIPresentationController presentWithPresentationRequest:a2 completion:self];
     if (v9)
@@ -39,7 +39,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -50,10 +50,10 @@ LABEL_3:
   block[2] = __72__ENUIPresentationController_presentWithPresentationRequest_completion___block_invoke;
   block[3] = &unk_2796C3060;
   block[4] = self;
-  v13 = v7;
+  v13 = requestCopy;
   v14 = v9;
   v10 = v9;
-  v11 = v7;
+  v11 = requestCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -77,13 +77,13 @@ uint64_t __48__ENUIPresentationController_cancelPresentation__block_invoke(uint6
   return [v4 _dismissRemoteViewController];
 }
 
-- (void)_requestAndConfigureHostViewController:(id)a3 completion:(id)a4
+- (void)_requestAndConfigureHostViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   if ([(ENUIPresentationController *)self didPresent])
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
@@ -93,8 +93,8 @@ uint64_t __48__ENUIPresentationController_cancelPresentation__block_invoke(uint6
     aBlock[2] = __80__ENUIPresentationController__requestAndConfigureHostViewController_completion___block_invoke;
     aBlock[3] = &unk_2796C30B0;
     aBlock[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = controllerCopy;
+    v12 = completionCopy;
     v8 = _Block_copy(aBlock);
     [(ENUIPresentationController *)self setDidPresent:1];
     v9 = [ENUIHostViewController requestRemoteViewControllerWithConnectionHandler:v8];
@@ -121,39 +121,39 @@ void __80__ENUIPresentationController__requestAndConfigureHostViewController_com
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_mainQueue_presentWithPresentationRequest:(id)a3 completion:(id)a4
+- (void)_mainQueue_presentWithPresentationRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __83__ENUIPresentationController__mainQueue_presentWithPresentationRequest_completion___block_invoke;
   v9[3] = &unk_2796C30D8;
-  v10 = v6;
-  v8 = v6;
-  [(ENUIPresentationController *)self _requestAndConfigureHostViewController:v9 completion:v7];
+  v10 = requestCopy;
+  v8 = requestCopy;
+  [(ENUIPresentationController *)self _requestAndConfigureHostViewController:v9 completion:completionCopy];
 }
 
-- (void)_makeRemoteViewControllerKeyAndVisible:(id)a3
+- (void)_makeRemoteViewControllerKeyAndVisible:(id)visible
 {
   v4 = MEMORY[0x277D75128];
-  v5 = a3;
-  v6 = [v4 sharedApplication];
-  v7 = [v6 keyWindow];
-  [(ENUIPresentationController *)self setSavedKeyWindow:v7];
+  visibleCopy = visible;
+  sharedApplication = [v4 sharedApplication];
+  keyWindow = [sharedApplication keyWindow];
+  [(ENUIPresentationController *)self setSavedKeyWindow:keyWindow];
 
   v8 = objc_alloc(MEMORY[0x277D75DA0]);
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v12 = [v8 initWithFrame:?];
 
   [v12 setWindowLevel:*MEMORY[0x277D772B8] + -1.0];
-  v10 = [(ENUIPresentationController *)self savedKeyWindow];
-  v11 = [v10 windowScene];
-  [v12 setWindowScene:v11];
+  savedKeyWindow = [(ENUIPresentationController *)self savedKeyWindow];
+  windowScene = [savedKeyWindow windowScene];
+  [v12 setWindowScene:windowScene];
 
-  [v12 setRootViewController:v5];
+  [v12 setRootViewController:visibleCopy];
   [v12 makeKeyAndVisible];
   [(ENUIPresentationController *)self setWindow:v12];
 }
@@ -162,31 +162,31 @@ void __80__ENUIPresentationController__requestAndConfigureHostViewController_com
 {
   if ([(ENUIPresentationController *)self didPresent])
   {
-    v3 = [(ENUIPresentationController *)self window];
-    [v3 setWindowScene:0];
+    window = [(ENUIPresentationController *)self window];
+    [window setWindowScene:0];
 
     [(ENUIPresentationController *)self setWindow:0];
-    v4 = [(ENUIPresentationController *)self savedKeyWindow];
-    [v4 makeKeyWindow];
+    savedKeyWindow = [(ENUIPresentationController *)self savedKeyWindow];
+    [savedKeyWindow makeKeyWindow];
 
     [(ENUIPresentationController *)self setSavedKeyWindow:0];
-    v5 = [(ENUIPresentationController *)self hostViewController];
-    [v5 setDelegate:0];
+    hostViewController = [(ENUIPresentationController *)self hostViewController];
+    [hostViewController setDelegate:0];
 
     [(ENUIPresentationController *)self setHostViewController:0];
     self->_didPresent = 0;
   }
 }
 
-- (void)hostViewControllerDidFinishWithError:(id)a3
+- (void)hostViewControllerDidFinishWithError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     v5 = ENUILogForCategory(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(ENUIPresentationController *)v4 hostViewControllerDidFinishWithError:v5];
+      [(ENUIPresentationController *)errorCopy hostViewControllerDidFinishWithError:v5];
     }
   }
 

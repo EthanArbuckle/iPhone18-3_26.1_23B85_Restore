@@ -1,32 +1,32 @@
 @interface PPXPCNamedEntityStore
-- (BOOL)clearWithError:(id *)a3 deletedCount:(unint64_t *)a4;
-- (BOOL)cloudSyncWithError:(id *)a3;
-- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5;
-- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 groupId:(id)a4 olderThan:(id)a5 deletedCount:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)donateLocationNamedEntities:(id)a3 bundleId:(id)a4 groupId:(id)a5 error:(id *)a6;
-- (BOOL)donateMapItem:(id)a3 forPlaceName:(id)a4 error:(id *)a5;
-- (BOOL)flushDonationsWithError:(id *)a3;
-- (BOOL)iterNamedEntityRecordsWithQuery:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)iterRankedNamedEntitiesWithQuery:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)loadNamedEntityRecordsAndMonitorChangesWithDelegate:(id)a3 error:(id *)a4;
-- (BOOL)loadNamedEntityRecordsAndMonitorChangesWithDelegate:(id)a3 query:(id)a4 error:(id *)a5;
-- (BOOL)removeMapItemForPlaceName:(id)a3 error:(id *)a4;
-- (BOOL)removeMapItemsBeforeCutoffDate:(id)a3 error:(id *)a4;
+- (BOOL)clearWithError:(id *)error deletedCount:(unint64_t *)count;
+- (BOOL)cloudSyncWithError:(id *)error;
+- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id documentIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id groupId:(id)groupId olderThan:(id)than deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id groupIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)donateLocationNamedEntities:(id)entities bundleId:(id)id groupId:(id)groupId error:(id *)error;
+- (BOOL)donateMapItem:(id)item forPlaceName:(id)name error:(id *)error;
+- (BOOL)flushDonationsWithError:(id *)error;
+- (BOOL)iterNamedEntityRecordsWithQuery:(id)query error:(id *)error block:(id)block;
+- (BOOL)iterRankedNamedEntitiesWithQuery:(id)query error:(id *)error block:(id)block;
+- (BOOL)loadNamedEntityRecordsAndMonitorChangesWithDelegate:(id)delegate error:(id *)error;
+- (BOOL)loadNamedEntityRecordsAndMonitorChangesWithDelegate:(id)delegate query:(id)query error:(id *)error;
+- (BOOL)removeMapItemForPlaceName:(id)name error:(id *)error;
+- (BOOL)removeMapItemsBeforeCutoffDate:(id)date error:(id *)error;
 - (id)_init;
-- (id)_lastCallDateForQuery:(id)a3;
-- (id)_monitoringHelperForQuery:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)_recordGeneratorForQuery:(id)a3;
-- (id)mapItemForPlaceName:(id)a3 error:(id *)a4;
-- (id)namedEntityRecordsWithQuery:(id)a3 error:(id *)a4;
-- (id)rankedNamedEntitiesWithQuery:(id)a3 error:(id *)a4;
-- (void)_loadNamedEntityRecordsForQuery:(id)a3 withDelegate:(id)a4;
-- (void)_sendChangesToDelegatesForQuery:(id)a3;
-- (void)_sendResetToAllDelegatesForQuery:(id)a3;
-- (void)_setLastCallDateForQuery:(id)a3;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
-- (void)unloadMonitoringDelegate:(id)a3;
+- (id)_lastCallDateForQuery:(id)query;
+- (id)_monitoringHelperForQuery:(id)query createIfNeeded:(BOOL)needed;
+- (id)_recordGeneratorForQuery:(id)query;
+- (id)mapItemForPlaceName:(id)name error:(id *)error;
+- (id)namedEntityRecordsWithQuery:(id)query error:(id *)error;
+- (id)rankedNamedEntitiesWithQuery:(id)query error:(id *)error;
+- (void)_loadNamedEntityRecordsForQuery:(id)query withDelegate:(id)delegate;
+- (void)_sendChangesToDelegatesForQuery:(id)query;
+- (void)_sendResetToAllDelegatesForQuery:(id)query;
+- (void)_setLastCallDateForQuery:(id)query;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
+- (void)unloadMonitoringDelegate:(id)delegate;
 @end
 
 @implementation PPXPCNamedEntityStore
@@ -35,44 +35,44 @@
 {
   v10.receiver = self;
   v10.super_class = PPXPCNamedEntityStore;
-  v2 = [(PPNamedEntityStore *)&v10 _initFromSubclass];
-  if (v2)
+  _initFromSubclass = [(PPNamedEntityStore *)&v10 _initFromSubclass];
+  if (_initFromSubclass)
   {
     v3 = objc_alloc(MEMORY[0x1E69C5D60]);
     v4 = objc_opt_new();
     v5 = [v3 initWithGuardedData:v4];
-    v6 = v2[2];
-    v2[2] = v5;
+    v6 = _initFromSubclass[2];
+    _initFromSubclass[2] = v5;
 
-    v7 = [[PPClientFeedbackHelper alloc] initWithParentObject:v2];
-    v8 = v2[1];
-    v2[1] = v7;
+    v7 = [[PPClientFeedbackHelper alloc] initWithParentObject:_initFromSubclass];
+    v8 = _initFromSubclass[1];
+    _initFromSubclass[1] = v7;
   }
 
-  return v2;
+  return _initFromSubclass;
 }
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
-  if ([v8 isMapped])
+  completionCopy = completion;
+  feedbackCopy = feedback;
+  if ([feedbackCopy isMapped])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PPXPCNamedEntityStore.m" lineNumber:435 description:@"You cannot send mapped feedback on named entities. Please use PPFeedback to create the feedback for named entities."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPXPCNamedEntityStore.m" lineNumber:435 description:@"You cannot send mapped feedback on named entities. Please use PPFeedback to create the feedback for named entities."];
   }
 
-  v9 = [(PPXPCNamedEntityStore *)self clientIdentifier];
-  v10 = [v9 length];
+  clientIdentifier = [(PPXPCNamedEntityStore *)self clientIdentifier];
+  v10 = [clientIdentifier length];
 
   if (!v10)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PPXPCNamedEntityStore.m" lineNumber:436 description:@"The clientIdentifier property must be set on the PPNamedEntityStore in order to send feedback."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PPXPCNamedEntityStore.m" lineNumber:436 description:@"The clientIdentifier property must be set on the PPNamedEntityStore in order to send feedback."];
   }
 
-  v11 = [(PPXPCNamedEntityStore *)self clientIdentifier];
-  [v8 setClientIdentifier:v11];
+  clientIdentifier2 = [(PPXPCNamedEntityStore *)self clientIdentifier];
+  [feedbackCopy setClientIdentifier:clientIdentifier2];
 
   v12 = +[PPNamedEntityReadOnlyClient sharedInstance];
   v16[0] = MEMORY[0x1E69E9820];
@@ -80,9 +80,9 @@
   v16[2] = __53__PPXPCNamedEntityStore_registerFeedback_completion___block_invoke;
   v16[3] = &unk_1E77F7D98;
   v16[4] = self;
-  v17 = v7;
-  v13 = v7;
-  [v12 registerFeedback:v8 completion:v16];
+  v17 = completionCopy;
+  v13 = completionCopy;
+  [v12 registerFeedback:feedbackCopy completion:v16];
 }
 
 uint64_t __53__PPXPCNamedEntityStore_registerFeedback_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -97,16 +97,16 @@ uint64_t __53__PPXPCNamedEntityStore_registerFeedback_completion___block_invoke(
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)unloadMonitoringDelegate:(id)a3
+- (void)unloadMonitoringDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   monitoringSessionsLock = self->_monitoringSessionsLock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__PPXPCNamedEntityStore_unloadMonitoringDelegate___block_invoke;
   v7[3] = &unk_1E77F67B8;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   [(_PASLock *)monitoringSessionsLock runWithLockAcquired:v7];
 }
 
@@ -149,30 +149,30 @@ void __50__PPXPCNamedEntityStore_unloadMonitoringDelegate___block_invoke(uint64_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)loadNamedEntityRecordsAndMonitorChangesWithDelegate:(id)a3 error:(id *)a4
+- (BOOL)loadNamedEntityRecordsAndMonitorChangesWithDelegate:(id)delegate error:(id *)error
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v7 = objc_opt_new();
-  LOBYTE(a4) = [(PPXPCNamedEntityStore *)self loadNamedEntityRecordsAndMonitorChangesWithDelegate:v6 query:v7 error:a4];
+  LOBYTE(error) = [(PPXPCNamedEntityStore *)self loadNamedEntityRecordsAndMonitorChangesWithDelegate:delegateCopy query:v7 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)loadNamedEntityRecordsAndMonitorChangesWithDelegate:(id)a3 query:(id)a4 error:(id *)a5
+- (BOOL)loadNamedEntityRecordsAndMonitorChangesWithDelegate:(id)delegate query:(id)query error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  delegateCopy = delegate;
+  queryCopy = query;
   objc_initWeak(&location, self);
-  v9 = [(PPXPCNamedEntityStore *)self _monitoringHelperForQuery:v8 createIfNeeded:1];
-  v10 = [(PPXPCNamedEntityStore *)self _recordGeneratorForQuery:v8];
+  v9 = [(PPXPCNamedEntityStore *)self _monitoringHelperForQuery:queryCopy createIfNeeded:1];
+  v10 = [(PPXPCNamedEntityStore *)self _recordGeneratorForQuery:queryCopy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __89__PPXPCNamedEntityStore_loadNamedEntityRecordsAndMonitorChangesWithDelegate_query_error___block_invoke;
   v14[3] = &unk_1E77F6518;
   objc_copyWeak(&v16, &location);
-  v11 = v8;
+  v11 = queryCopy;
   v15 = v11;
-  v12 = [v9 loadRecordsAndMonitorChangesWithDelegate:v7 recordGenerator:v10 notificationRegistrationBlock:v14];
+  v12 = [v9 loadRecordsAndMonitorChangesWithDelegate:delegateCopy recordGenerator:v10 notificationRegistrationBlock:v14];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -239,20 +239,20 @@ void __89__PPXPCNamedEntityStore_loadNamedEntityRecordsAndMonitorChangesWithDele
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_loadNamedEntityRecordsForQuery:(id)a3 withDelegate:(id)a4
+- (void)_loadNamedEntityRecordsForQuery:(id)query withDelegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(PPXPCNamedEntityStore *)self _monitoringHelperForQuery:v7 createIfNeeded:1];
-  v8 = [(PPXPCNamedEntityStore *)self _recordGeneratorForQuery:v7];
+  delegateCopy = delegate;
+  queryCopy = query;
+  v9 = [(PPXPCNamedEntityStore *)self _monitoringHelperForQuery:queryCopy createIfNeeded:1];
+  v8 = [(PPXPCNamedEntityStore *)self _recordGeneratorForQuery:queryCopy];
 
-  [v9 loadRecordsWithDelegate:v6 recordGenerator:v8];
+  [v9 loadRecordsWithDelegate:delegateCopy recordGenerator:v8];
 }
 
-- (void)_sendChangesToDelegatesForQuery:(id)a3
+- (void)_sendChangesToDelegatesForQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(PPXPCNamedEntityStore *)self _monitoringHelperForQuery:v4 createIfNeeded:0];
+  queryCopy = query;
+  v5 = [(PPXPCNamedEntityStore *)self _monitoringHelperForQuery:queryCopy createIfNeeded:0];
   if (v5)
   {
     objc_initWeak(&location, self);
@@ -261,7 +261,7 @@ void __89__PPXPCNamedEntityStore_loadNamedEntityRecordsAndMonitorChangesWithDele
     v7[2] = __57__PPXPCNamedEntityStore__sendChangesToDelegatesForQuery___block_invoke;
     v7[3] = &unk_1E77F64F0;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = queryCopy;
     v6 = [(PPXPCNamedEntityStore *)self _recordGeneratorForQuery:v8];
     [v5 sendChangesToDelegatesWithChangeGenerator:v7 recordGenerator:v6];
 
@@ -338,27 +338,27 @@ uint64_t __57__PPXPCNamedEntityStore__sendChangesToDelegatesForQuery___block_inv
   return result;
 }
 
-- (void)_sendResetToAllDelegatesForQuery:(id)a3
+- (void)_sendResetToAllDelegatesForQuery:(id)query
 {
-  v6 = a3;
+  queryCopy = query;
   v4 = [PPXPCNamedEntityStore _monitoringHelperForQuery:"_monitoringHelperForQuery:createIfNeeded:" createIfNeeded:?];
   if (v4)
   {
-    v5 = [(PPXPCNamedEntityStore *)self _recordGeneratorForQuery:v6];
+    v5 = [(PPXPCNamedEntityStore *)self _recordGeneratorForQuery:queryCopy];
     [v4 sendResetToAllDelegatesWithRecordGenerator:v5];
   }
 }
 
-- (id)_recordGeneratorForQuery:(id)a3
+- (id)_recordGeneratorForQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__PPXPCNamedEntityStore__recordGeneratorForQuery___block_invoke;
   v8[3] = &unk_1E77F64C8;
-  v9 = v4;
-  v5 = v4;
+  v9 = queryCopy;
+  v5 = queryCopy;
   objc_copyWeak(&v10, &location);
   v6 = MEMORY[0x1AC568040](v8);
   objc_destroyWeak(&v10);
@@ -472,9 +472,9 @@ void __50__PPXPCNamedEntityStore__recordGeneratorForQuery___block_invoke_47(uint
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_monitoringHelperForQuery:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_monitoringHelperForQuery:(id)query createIfNeeded:(BOOL)needed
 {
-  v6 = a3;
+  queryCopy = query;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -486,8 +486,8 @@ void __50__PPXPCNamedEntityStore__recordGeneratorForQuery___block_invoke_47(uint
   v11[1] = 3221225472;
   v11[2] = __66__PPXPCNamedEntityStore__monitoringHelperForQuery_createIfNeeded___block_invoke;
   v11[3] = &unk_1E77F64A0;
-  v8 = v6;
-  v14 = a4;
+  v8 = queryCopy;
+  neededCopy = needed;
   v12 = v8;
   v13 = &v15;
   [(_PASLock *)monitoringSessionsLock runWithLockAcquired:v11];
@@ -525,16 +525,16 @@ void __66__PPXPCNamedEntityStore__monitoringHelperForQuery_createIfNeeded___bloc
   }
 }
 
-- (void)_setLastCallDateForQuery:(id)a3
+- (void)_setLastCallDateForQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   monitoringSessionsLock = self->_monitoringSessionsLock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__PPXPCNamedEntityStore__setLastCallDateForQuery___block_invoke;
   v7[3] = &unk_1E77F67B8;
-  v8 = v4;
-  v6 = v4;
+  v8 = queryCopy;
+  v6 = queryCopy;
   [(_PASLock *)monitoringSessionsLock runWithLockAcquired:v7];
 }
 
@@ -544,9 +544,9 @@ void __50__PPXPCNamedEntityStore__setLastCallDateForQuery___block_invoke(uint64_
   [v2 setLastCallDate];
 }
 
-- (id)_lastCallDateForQuery:(id)a3
+- (id)_lastCallDateForQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -559,7 +559,7 @@ void __50__PPXPCNamedEntityStore__setLastCallDateForQuery___block_invoke(uint64_
   v9[2] = __47__PPXPCNamedEntityStore__lastCallDateForQuery___block_invoke;
   v9[3] = &unk_1E77F6478;
   v11 = &v12;
-  v6 = v4;
+  v6 = queryCopy;
   v10 = v6;
   [(_PASLock *)monitoringSessionsLock runWithLockAcquired:v9];
   v7 = v13[5];
@@ -578,122 +578,122 @@ void __47__PPXPCNamedEntityStore__lastCallDateForQuery___block_invoke(uint64_t a
   *(v4 + 40) = v3;
 }
 
-- (BOOL)donateLocationNamedEntities:(id)a3 bundleId:(id)a4 groupId:(id)a5 error:(id *)a6
+- (BOOL)donateLocationNamedEntities:(id)entities bundleId:(id)id groupId:(id)groupId error:(id *)error
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  groupIdCopy = groupId;
+  idCopy = id;
+  entitiesCopy = entities;
   v12 = +[PPNamedEntityReadWriteClient sharedInstance];
-  LOBYTE(a6) = [v12 donateLocationNamedEntities:v11 bundleId:v10 groupId:v9 error:a6];
+  LOBYTE(error) = [v12 donateLocationNamedEntities:entitiesCopy bundleId:idCopy groupId:groupIdCopy error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)clearWithError:(id *)a3 deletedCount:(unint64_t *)a4
+- (BOOL)clearWithError:(id *)error deletedCount:(unint64_t *)count
 {
   v6 = +[PPNamedEntityReadWriteClient sharedInstance];
-  LOBYTE(a4) = [v6 clearWithError:a3 deletedCount:a4];
+  LOBYTE(count) = [v6 clearWithError:error deletedCount:count];
 
-  return a4;
+  return count;
 }
 
-- (BOOL)cloudSyncWithError:(id *)a3
+- (BOOL)cloudSyncWithError:(id *)error
 {
   v4 = +[PPNamedEntityReadWriteClient sharedInstance];
-  LOBYTE(a3) = [v4 cloudSyncWithError:a3];
+  LOBYTE(error) = [v4 cloudSyncWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)removeMapItemsBeforeCutoffDate:(id)a3 error:(id *)a4
+- (BOOL)removeMapItemsBeforeCutoffDate:(id)date error:(id *)error
 {
-  v5 = a3;
+  dateCopy = date;
   v6 = +[PPNamedEntityReadWriteClient sharedInstance];
-  LOBYTE(a4) = [v6 removeMapItemsBeforeDate:v5 error:a4];
+  LOBYTE(error) = [v6 removeMapItemsBeforeDate:dateCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)removeMapItemForPlaceName:(id)a3 error:(id *)a4
+- (BOOL)removeMapItemForPlaceName:(id)name error:(id *)error
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = +[PPNamedEntityReadWriteClient sharedInstance];
-  LOBYTE(a4) = [v6 removeMapItemForPlaceName:v5 error:a4];
+  LOBYTE(error) = [v6 removeMapItemForPlaceName:nameCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)mapItemForPlaceName:(id)a3 error:(id *)a4
+- (id)mapItemForPlaceName:(id)name error:(id *)error
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = +[PPNamedEntityReadOnlyClient sharedInstance];
-  v7 = [v6 mapItemForPlaceName:v5 error:a4];
+  v7 = [v6 mapItemForPlaceName:nameCopy error:error];
 
   return v7;
 }
 
-- (BOOL)donateMapItem:(id)a3 forPlaceName:(id)a4 error:(id *)a5
+- (BOOL)donateMapItem:(id)item forPlaceName:(id)name error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
+  nameCopy = name;
+  itemCopy = item;
   v9 = +[PPNamedEntityReadWriteClient sharedInstance];
-  LOBYTE(a5) = [v9 donateMapItem:v8 forPlaceName:v7 error:a5];
+  LOBYTE(error) = [v9 donateMapItem:itemCopy forPlaceName:nameCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 groupId:(id)a4 olderThan:(id)a5 deletedCount:(unint64_t *)a6 error:(id *)a7
+- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id groupId:(id)groupId olderThan:(id)than deletedCount:(unint64_t *)count error:(id *)error
 {
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  thanCopy = than;
+  groupIdCopy = groupId;
+  idCopy = id;
   v14 = +[PPNamedEntityReadWriteClient sharedInstance];
-  LOBYTE(a7) = [v14 deleteAllNamedEntitiesFromSourcesWithBundleId:v13 groupId:v12 olderThanDate:v11 deletedCount:a6 error:a7];
+  LOBYTE(error) = [v14 deleteAllNamedEntitiesFromSourcesWithBundleId:idCopy groupId:groupIdCopy olderThanDate:thanCopy deletedCount:count error:error];
 
-  return a7;
+  return error;
 }
 
-- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id groupIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error
 {
-  v9 = a4;
-  v10 = a3;
+  idsCopy = ids;
+  idCopy = id;
   v11 = +[PPNamedEntityReadWriteClient sharedInstance];
-  LOBYTE(a6) = [v11 deleteAllNamedEntitiesFromSourcesWithBundleId:v10 groupIds:v9 deletedCount:a5 error:a6];
+  LOBYTE(error) = [v11 deleteAllNamedEntitiesFromSourcesWithBundleId:idCopy groupIds:idsCopy deletedCount:count error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id documentIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error
 {
-  v9 = a4;
-  v10 = a3;
+  idsCopy = ids;
+  idCopy = id;
   v11 = +[PPNamedEntityReadWriteClient sharedInstance];
-  LOBYTE(a6) = [v11 deleteAllNamedEntitiesFromSourcesWithBundleId:v10 documentIds:v9 deletedCount:a5 error:a6];
+  LOBYTE(error) = [v11 deleteAllNamedEntitiesFromSourcesWithBundleId:idCopy documentIds:idsCopy deletedCount:count error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5
+- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id deletedCount:(unint64_t *)count error:(id *)error
 {
-  v7 = a3;
+  idCopy = id;
   v8 = +[PPNamedEntityReadWriteClient sharedInstance];
-  LOBYTE(a5) = [v8 deleteAllNamedEntitiesFromSourcesWithBundleId:v7 deletedCount:a4 error:a5];
+  LOBYTE(error) = [v8 deleteAllNamedEntitiesFromSourcesWithBundleId:idCopy deletedCount:count error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)flushDonationsWithError:(id *)a3
+- (BOOL)flushDonationsWithError:(id *)error
 {
   v4 = +[PPNamedEntityReadWriteClient sharedInstance];
-  LOBYTE(a3) = [v4 flushDonationsWithError:a3];
+  LOBYTE(error) = [v4 flushDonationsWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (id)namedEntityRecordsWithQuery:(id)a3 error:(id *)a4
+- (id)namedEntityRecordsWithQuery:(id)query error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  queryCopy = query;
   v6 = objc_opt_new();
   v32 = 0;
   v33 = &v32;
@@ -718,7 +718,7 @@ void __47__PPXPCNamedEntityStore__lastCallDateForQuery___block_invoke(uint64_t a
   v12 = v6;
   v29 = v12;
   v30 = &v32;
-  v13 = [v11 namedEntityRecordsWithQuery:v5 error:a4 handleBatch:v28];
+  v13 = [v11 namedEntityRecordsWithQuery:queryCopy error:error handleBatch:v28];
 
   v14 = pp_entities_signpost_handle();
   v15 = v14;
@@ -781,10 +781,10 @@ void __59__PPXPCNamedEntityStore_namedEntityRecordsWithQuery_error___block_invok
   *(*(*(a1 + 40) + 8) + 24) += v5;
 }
 
-- (BOOL)iterNamedEntityRecordsWithQuery:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)iterNamedEntityRecordsWithQuery:(id)query error:(id *)error block:(id)block
 {
-  v7 = a5;
-  v8 = a3;
+  blockCopy = block;
+  queryCopy = query;
   v9 = pp_entities_signpost_handle();
   v10 = os_signpost_id_generate(v9);
 
@@ -801,9 +801,9 @@ void __59__PPXPCNamedEntityStore_namedEntityRecordsWithQuery_error___block_invok
   v19[1] = 3221225472;
   v19[2] = __69__PPXPCNamedEntityStore_iterNamedEntityRecordsWithQuery_error_block___block_invoke;
   v19[3] = &unk_1E77F7D70;
-  v20 = v7;
-  v14 = v7;
-  v15 = [v13 namedEntityRecordsWithQuery:v8 error:a4 handleBatch:v19];
+  v20 = blockCopy;
+  v14 = blockCopy;
+  v15 = [v13 namedEntityRecordsWithQuery:queryCopy error:error handleBatch:v19];
 
   v16 = pp_entities_signpost_handle();
   v17 = v16;
@@ -866,10 +866,10 @@ LABEL_4:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)rankedNamedEntitiesWithQuery:(id)a3 error:(id *)a4
+- (id)rankedNamedEntitiesWithQuery:(id)query error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  queryCopy = query;
   v6 = objc_opt_new();
   v32 = 0;
   v33 = &v32;
@@ -894,7 +894,7 @@ LABEL_4:
   v12 = v6;
   v29 = v12;
   v30 = &v32;
-  v13 = [v11 rankedNamedEntitiesWithQuery:v5 error:a4 handleBatch:v28];
+  v13 = [v11 rankedNamedEntitiesWithQuery:queryCopy error:error handleBatch:v28];
 
   v14 = pp_entities_signpost_handle();
   v15 = v14;
@@ -957,10 +957,10 @@ void __60__PPXPCNamedEntityStore_rankedNamedEntitiesWithQuery_error___block_invo
   *(*(*(a1 + 40) + 8) + 24) += v5;
 }
 
-- (BOOL)iterRankedNamedEntitiesWithQuery:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)iterRankedNamedEntitiesWithQuery:(id)query error:(id *)error block:(id)block
 {
-  v7 = a5;
-  v8 = a3;
+  blockCopy = block;
+  queryCopy = query;
   v9 = pp_entities_signpost_handle();
   v10 = os_signpost_id_generate(v9);
 
@@ -977,9 +977,9 @@ void __60__PPXPCNamedEntityStore_rankedNamedEntitiesWithQuery_error___block_invo
   v19[1] = 3221225472;
   v19[2] = __70__PPXPCNamedEntityStore_iterRankedNamedEntitiesWithQuery_error_block___block_invoke;
   v19[3] = &unk_1E77F7D70;
-  v20 = v7;
-  v14 = v7;
-  v15 = [v13 rankedNamedEntitiesWithQuery:v8 error:a4 handleBatch:v19];
+  v20 = blockCopy;
+  v14 = blockCopy;
+  v15 = [v13 rankedNamedEntitiesWithQuery:queryCopy error:error handleBatch:v19];
 
   v16 = pp_entities_signpost_handle();
   v17 = v16;

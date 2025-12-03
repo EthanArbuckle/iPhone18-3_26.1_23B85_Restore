@@ -8,50 +8,50 @@
 - (double)videoWillPlayToPhotoInterval;
 - (id)_createVitalityBehavior;
 - (int64_t)_coalescedPlaybackFilterState;
-- (void)_configurePlaybackFilter:(id)a3;
+- (void)_configurePlaybackFilter:(id)filter;
 - (void)_configurePlaybackFilters;
 - (void)_fadeInAudioIfNeeded;
 - (void)_handlePlaybackFilterDidChange;
-- (void)_handleVitalityFilterDidChange:(id)a3;
+- (void)_handleVitalityFilterDidChange:(id)change;
 - (void)_playIfNeeded;
 - (void)_prepareForVitalityIfNeeded;
 - (void)_resetPlaybackFilters;
-- (void)_setCurrentPlaybackStyle:(int64_t)a3;
-- (void)_setHinting:(BOOL)a3;
-- (void)_setPlayingVitality:(BOOL)a3;
+- (void)_setCurrentPlaybackStyle:(int64_t)style;
+- (void)_setHinting:(BOOL)hinting;
+- (void)_setPlayingVitality:(BOOL)vitality;
 - (void)_updateApertureModeIfNeeded;
 - (void)_updateHintingAndVitality;
 - (void)_updatePlayerItemLoadingTarget;
 - (void)_updateScaleIfNeeded;
 - (void)activeBehaviorDidChange;
-- (void)addPlaybackFilter:(id)a3;
+- (void)addPlaybackFilter:(id)filter;
 - (void)configurePlayerItem;
 - (void)didPerformChanges;
-- (void)livePhotoPlaybackBehaviorDidFinish:(id)a3;
-- (void)livePhotoSettleBehaviorDidFinish:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)livePhotoPlaybackBehaviorDidFinish:(id)finish;
+- (void)livePhotoSettleBehaviorDidFinish:(id)finish;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)playVitality;
 - (void)playerItemDidChange;
 - (void)prepareForVitality;
-- (void)removePlaybackFilter:(id)a3;
-- (void)setIsAttemptingToPlayback:(BOOL)a3;
-- (void)setPlaybackAllowed:(BOOL)a3;
-- (void)setSeekTime:(id *)a3 completion:(id)a4;
-- (void)setTargetReadiness:(int64_t)a3;
-- (void)setTrimTimeRange:(id *)a3;
-- (void)setVitalityFilter:(id)a3;
-- (void)startPlaybackWithStyle:(int64_t)a3 settleAutomatically:(BOOL)a4;
+- (void)removePlaybackFilter:(id)filter;
+- (void)setIsAttemptingToPlayback:(BOOL)playback;
+- (void)setPlaybackAllowed:(BOOL)allowed;
+- (void)setSeekTime:(id *)time completion:(id)completion;
+- (void)setTargetReadiness:(int64_t)readiness;
+- (void)setTrimTimeRange:(id *)range;
+- (void)setVitalityFilter:(id)filter;
+- (void)startPlaybackWithStyle:(int64_t)style settleAutomatically:(BOOL)automatically;
 - (void)statusDidChange;
-- (void)vitalityBehaviorDidEndPlaying:(id)a3;
+- (void)vitalityBehaviorDidEndPlaying:(id)playing;
 @end
 
 @implementation ISLivePhotoPlayer
 
-- (void)setTrimTimeRange:(id *)a3
+- (void)setTrimTimeRange:(id *)range
 {
-  v4 = *&a3->var0.var3;
-  v3 = *&a3->var1.var1;
-  *&self->_trimTimeRange.start.value = *&a3->var0.var0;
+  v4 = *&range->var0.var3;
+  v3 = *&range->var1.var1;
+  *&self->_trimTimeRange.start.value = *&range->var0.var0;
   *&self->_trimTimeRange.start.epoch = v4;
   *&self->_trimTimeRange.duration.timescale = v3;
 }
@@ -65,19 +65,19 @@
   return self;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __50__ISLivePhotoPlayer_observable_didChange_context___block_invoke;
   v10[3] = &unk_279A2A410;
   v10[4] = self;
-  v10[5] = a5;
-  v8 = a3;
+  v10[5] = context;
+  observableCopy = observable;
   is_dispatch_on_main_queue(v10);
   v9.receiver = self;
   v9.super_class = ISLivePhotoPlayer;
-  [(ISBasePlayer *)&v9 observable:v8 didChange:a4 context:a5];
+  [(ISBasePlayer *)&v9 observable:observableCopy didChange:change context:context];
 }
 
 uint64_t __50__ISLivePhotoPlayer_observable_didChange_context___block_invoke(uint64_t result)
@@ -94,19 +94,19 @@ uint64_t __50__ISLivePhotoPlayer_observable_didChange_context___block_invoke(uin
   return result;
 }
 
-- (void)vitalityBehaviorDidEndPlaying:(id)a3
+- (void)vitalityBehaviorDidEndPlaying:(id)playing
 {
   [(ISLivePhotoPlayer *)self _updateHintingAndVitality];
 
   [(ISLivePhotoPlayer *)self _setCurrentPlaybackStyle:0];
 }
 
-- (void)livePhotoSettleBehaviorDidFinish:(id)a3
+- (void)livePhotoSettleBehaviorDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [(ISBasePlayer *)self activeBehavior];
+  finishCopy = finish;
+  activeBehavior = [(ISBasePlayer *)self activeBehavior];
 
-  if (v5 == v4)
+  if (activeBehavior == finishCopy)
   {
     [(ISLivePhotoPlayer *)self _resetPlaybackFilters];
     [(ISBasePlayer *)self setActiveBehavior:0];
@@ -117,7 +117,7 @@ uint64_t __50__ISLivePhotoPlayer_observable_didChange_context___block_invoke(uin
   }
 }
 
-- (void)livePhotoPlaybackBehaviorDidFinish:(id)a3
+- (void)livePhotoPlaybackBehaviorDidFinish:(id)finish
 {
   [(ISLivePhotoPlayer *)self _resetPlaybackFilters];
   if ([(ISLivePhotoPlayer *)self _coalescedPlaybackFilterState]!= 2)
@@ -132,9 +132,9 @@ uint64_t __50__ISLivePhotoPlayer_observable_didChange_context___block_invoke(uin
   v5.receiver = self;
   v5.super_class = ISLivePhotoPlayer;
   [(ISBasePlayer *)&v5 didPerformChanges];
-  v3 = [(ISBasePlayer *)self videoPlayer];
+  videoPlayer = [(ISBasePlayer *)self videoPlayer];
   v4 = +[ISPlayerSettings sharedInstance];
-  [v3 setLoopingEnabled:{objc_msgSend(v4, "loopingEnabled")}];
+  [videoPlayer setLoopingEnabled:{objc_msgSend(v4, "loopingEnabled")}];
 
   [(ISLivePhotoPlayer *)self _updateScaleIfNeeded];
   [(ISLivePhotoPlayer *)self _updateApertureModeIfNeeded];
@@ -144,8 +144,8 @@ uint64_t __50__ISLivePhotoPlayer_observable_didChange_context___block_invoke(uin
 {
   if ([(ISLivePhotoPlayer *)self _wantsAudioForPlaybackStyle:[(ISLivePhotoPlayer *)self currentPlaybackStyle]])
   {
-    v3 = [(ISBasePlayer *)self videoPlayer];
-    [v3 volume];
+    videoPlayer = [(ISBasePlayer *)self videoPlayer];
+    [videoPlayer volume];
     v5 = v4;
     if (v4 < 1.0)
     {
@@ -192,18 +192,18 @@ void __41__ISLivePhotoPlayer__fadeInAudioIfNeeded__block_invoke_3(uint64_t a1)
 
 - (void)_updateHintingAndVitality
 {
-  v3 = [(ISBasePlayer *)self activeBehavior];
-  if ([v3 behaviorType] == 3)
+  activeBehavior = [(ISBasePlayer *)self activeBehavior];
+  if ([activeBehavior behaviorType] == 3)
   {
-    v4 = [v3 isPlaying];
+    isPlaying = [activeBehavior isPlaying];
     v5 = 0;
   }
 
   else
   {
-    v6 = [v3 behaviorType];
-    v4 = 0;
-    v5 = v6 == 1;
+    behaviorType = [activeBehavior behaviorType];
+    isPlaying = 0;
+    v5 = behaviorType == 1;
   }
 
   v7[0] = MEMORY[0x277D85DD0];
@@ -211,7 +211,7 @@ void __41__ISLivePhotoPlayer__fadeInAudioIfNeeded__block_invoke_3(uint64_t a1)
   v7[2] = __46__ISLivePhotoPlayer__updateHintingAndVitality__block_invoke;
   v7[3] = &unk_279A29B30;
   v7[4] = self;
-  v8 = v4;
+  v8 = isPlaying;
   v9 = v5;
   [(ISObservable *)self performChanges:v7];
 }
@@ -225,10 +225,10 @@ uint64_t __46__ISLivePhotoPlayer__updateHintingAndVitality__block_invoke(uint64_
   return [v2 _setHinting:v3];
 }
 
-- (void)_configurePlaybackFilter:(id)a3
+- (void)_configurePlaybackFilter:(id)filter
 {
-  v4 = a3;
-  [v4 setPlaybackDisabled:-[ISBasePlayer status](self forReason:{"status") < 2, @"PlayerNotReady"}];
+  filterCopy = filter;
+  [filterCopy setPlaybackDisabled:-[ISBasePlayer status](self forReason:{"status") < 2, @"PlayerNotReady"}];
 }
 
 - (double)_coalescedPlaybackFilterHintProgress
@@ -237,13 +237,13 @@ uint64_t __46__ISLivePhotoPlayer__updateHintingAndVitality__block_invoke(uint64_
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(ISLivePhotoPlayer *)self playbackFilters];
+  playbackFilters = [(ISLivePhotoPlayer *)self playbackFilters];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __57__ISLivePhotoPlayer__coalescedPlaybackFilterHintProgress__block_invoke;
   v5[3] = &unk_279A29B08;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [playbackFilters enumerateObjectsUsingBlock:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -269,13 +269,13 @@ uint64_t __57__ISLivePhotoPlayer__coalescedPlaybackFilterHintProgress__block_inv
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(ISLivePhotoPlayer *)self playbackFilters];
+  playbackFilters = [(ISLivePhotoPlayer *)self playbackFilters];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __50__ISLivePhotoPlayer__coalescedPlaybackFilterState__block_invoke;
   v5[3] = &unk_279A29B08;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [playbackFilters enumerateObjectsUsingBlock:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -298,24 +298,24 @@ uint64_t __50__ISLivePhotoPlayer__coalescedPlaybackFilterState__block_invoke(uin
 
 - (void)_resetPlaybackFilters
 {
-  v2 = [(ISLivePhotoPlayer *)self playbackFilters];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_992];
+  playbackFilters = [(ISLivePhotoPlayer *)self playbackFilters];
+  [playbackFilters enumerateObjectsUsingBlock:&__block_literal_global_992];
 }
 
 - (void)_configurePlaybackFilters
 {
-  v3 = [(ISLivePhotoPlayer *)self playbackFilters];
+  playbackFilters = [(ISLivePhotoPlayer *)self playbackFilters];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __46__ISLivePhotoPlayer__configurePlaybackFilters__block_invoke;
   v4[3] = &unk_279A29AC0;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [playbackFilters enumerateObjectsUsingBlock:v4];
 }
 
-- (void)setIsAttemptingToPlayback:(BOOL)a3
+- (void)setIsAttemptingToPlayback:(BOOL)playback
 {
-  if (self->_isAttemptingToPlayback != a3)
+  if (self->_isAttemptingToPlayback != playback)
   {
     v7 = v3;
     v8 = v4;
@@ -324,14 +324,14 @@ uint64_t __50__ISLivePhotoPlayer__coalescedPlaybackFilterState__block_invoke(uin
     v5[2] = __47__ISLivePhotoPlayer_setIsAttemptingToPlayback___block_invoke;
     v5[3] = &unk_279A29DB8;
     v5[4] = self;
-    v6 = a3;
+    playbackCopy = playback;
     [(ISObservable *)self performChanges:v5];
   }
 }
 
-- (void)_setCurrentPlaybackStyle:(int64_t)a3
+- (void)_setCurrentPlaybackStyle:(int64_t)style
 {
-  if (self->_currentPlaybackStyle != a3)
+  if (self->_currentPlaybackStyle != style)
   {
     v5[6] = v3;
     v5[7] = v4;
@@ -340,7 +340,7 @@ uint64_t __50__ISLivePhotoPlayer__coalescedPlaybackFilterState__block_invoke(uin
     v5[2] = __46__ISLivePhotoPlayer__setCurrentPlaybackStyle___block_invoke;
     v5[3] = &unk_279A2A438;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = style;
     [(ISObservable *)self performChanges:v5];
   }
 }
@@ -354,20 +354,20 @@ uint64_t __46__ISLivePhotoPlayer__setCurrentPlaybackStyle___block_invoke(uint64_
   return [v2 signalChange:8];
 }
 
-- (void)_setHinting:(BOOL)a3
+- (void)_setHinting:(BOOL)hinting
 {
-  if (self->_hinting != a3)
+  if (self->_hinting != hinting)
   {
-    self->_hinting = a3;
+    self->_hinting = hinting;
     [(ISObservable *)self signalChange:32];
   }
 }
 
-- (void)_setPlayingVitality:(BOOL)a3
+- (void)_setPlayingVitality:(BOOL)vitality
 {
-  if (self->_playingVitality != a3)
+  if (self->_playingVitality != vitality)
   {
-    self->_playingVitality = a3;
+    self->_playingVitality = vitality;
     [(ISObservable *)self signalChange:16];
   }
 }
@@ -381,29 +381,29 @@ uint64_t __46__ISLivePhotoPlayer__setCurrentPlaybackStyle___block_invoke(uint64_
     if ([(ISLivePhotoPlayer *)self currentPlaybackStyle])
     {
       v4 = +[ISPlayerSettings sharedInstance];
-      v5 = [v4 scaleDuringPlayback];
+      scaleDuringPlayback = [v4 scaleDuringPlayback];
 
-      if (v5)
+      if (scaleDuringPlayback)
       {
-        v6 = [(ISBasePlayer *)self activeBehavior];
-        if ([v6 behaviorType] == 2)
+        activeBehavior = [(ISBasePlayer *)self activeBehavior];
+        if ([activeBehavior behaviorType] == 2)
         {
-          v7 = [(ISBasePlayer *)self activeBehavior];
-          v8 = [v7 isTransitioningToPhoto];
+          activeBehavior2 = [(ISBasePlayer *)self activeBehavior];
+          isTransitioningToPhoto = [activeBehavior2 isTransitioningToPhoto];
 
-          if ((v8 & 1) == 0 && [(ISLivePhotoPlayer *)self currentPlaybackStyle]!= 4)
+          if ((isTransitioningToPhoto & 1) == 0 && [(ISLivePhotoPlayer *)self currentPlaybackStyle]!= 4)
           {
-            v9 = [(ISBasePlayer *)self playerItem];
-            v10 = [v9 playerContent];
-            v11 = [v10 supportsVitality];
+            playerItem = [(ISBasePlayer *)self playerItem];
+            playerContent = [playerItem playerContent];
+            supportsVitality = [playerContent supportsVitality];
 
-            if (v11)
+            if (supportsVitality)
             {
-              v12 = [(ISBasePlayer *)self playerItem];
-              v13 = [v12 asset];
-              v14 = [v13 options];
+              playerItem2 = [(ISBasePlayer *)self playerItem];
+              asset = [playerItem2 asset];
+              options = [asset options];
 
-              if ((v14 & 2) != 0)
+              if ((options & 2) != 0)
               {
                 v3 = 1.0;
               }
@@ -438,11 +438,11 @@ uint64_t __46__ISLivePhotoPlayer__setCurrentPlaybackStyle___block_invoke(uint64_
   if (!self->_isValid.apertureMode)
   {
     self->_isValid.apertureMode = 1;
-    v4 = [(ISBasePlayer *)self activeBehavior];
-    v5 = [v4 behaviorType];
+    activeBehavior = [(ISBasePlayer *)self activeBehavior];
+    behaviorType = [activeBehavior behaviorType];
 
     v6 = MEMORY[0x277CE62A0];
-    if (v5 != 5)
+    if (behaviorType != 5)
     {
       v6 = MEMORY[0x277CE62A8];
     }
@@ -455,11 +455,11 @@ uint64_t __46__ISLivePhotoPlayer__setCurrentPlaybackStyle___block_invoke(uint64_
 
 - (void)_handlePlaybackFilterDidChange
 {
-  v3 = [(ISLivePhotoPlayer *)self _coalescedPlaybackFilterState];
-  [(ISLivePhotoPlayer *)self setIsAttemptingToPlayback:v3 != 0];
-  if (v3)
+  _coalescedPlaybackFilterState = [(ISLivePhotoPlayer *)self _coalescedPlaybackFilterState];
+  [(ISLivePhotoPlayer *)self setIsAttemptingToPlayback:_coalescedPlaybackFilterState != 0];
+  if (_coalescedPlaybackFilterState)
   {
-    if (v3 == 2)
+    if (_coalescedPlaybackFilterState == 2)
     {
       if (![(ISLivePhotoPlayer *)self currentPlaybackStyle]&& ![(ISLivePhotoPlayer *)self isPlayingVitality])
       {
@@ -469,8 +469,8 @@ uint64_t __46__ISLivePhotoPlayer__setCurrentPlaybackStyle___block_invoke(uint64_
       if ([(ISLivePhotoPlayer *)self isPlayingVitality])
       {
         [(ISLivePhotoPlayer *)self _setCurrentPlaybackStyle:1];
-        v4 = [(ISBasePlayer *)self activeBehavior];
-        [v4 cancelSettleToPhoto];
+        activeBehavior = [(ISBasePlayer *)self activeBehavior];
+        [activeBehavior cancelSettleToPhoto];
       }
     }
   }
@@ -482,18 +482,18 @@ uint64_t __46__ISLivePhotoPlayer__setCurrentPlaybackStyle___block_invoke(uint64_
   }
 }
 
-- (void)_handleVitalityFilterDidChange:(id)a3
+- (void)_handleVitalityFilterDidChange:(id)change
 {
-  v4 = [a3 state];
-  if (v4)
+  state = [change state];
+  if (state)
   {
-    if (v4 == 2)
+    if (state == 2)
     {
 
       [(ISLivePhotoPlayer *)self playVitality];
     }
 
-    else if (v4 == 1)
+    else if (state == 1)
     {
 
       [(ISLivePhotoPlayer *)self prepareForVitality];
@@ -502,8 +502,8 @@ uint64_t __46__ISLivePhotoPlayer__setCurrentPlaybackStyle___block_invoke(uint64_
 
   else
   {
-    v5 = [(ISBasePlayer *)self activeBehavior];
-    if ([v5 behaviorType] == 3 && objc_msgSend(v5, "isPrepared"))
+    activeBehavior = [(ISBasePlayer *)self activeBehavior];
+    if ([activeBehavior behaviorType] == 3 && objc_msgSend(activeBehavior, "isPrepared"))
     {
       [(ISLivePhotoPlayer *)self playVitality];
     }
@@ -515,9 +515,9 @@ uint64_t __46__ISLivePhotoPlayer__setCurrentPlaybackStyle___block_invoke(uint64_
 
 - (double)_photoTransitionDuration
 {
-  v2 = [(ISBasePlayer *)self playerItem];
-  v3 = [v2 asset];
-  if ([v3 hasColorAdjustments])
+  playerItem = [(ISBasePlayer *)self playerItem];
+  asset = [playerItem asset];
+  if ([asset hasColorAdjustments])
   {
     v4 = 0.2;
   }
@@ -534,8 +534,8 @@ uint64_t __46__ISLivePhotoPlayer__setCurrentPlaybackStyle___block_invoke(uint64_
 {
   if (([(ISLivePhotoPlayer *)self _shouldPrepareForVitalityWhenReady]|| [(ISLivePhotoPlayer *)self _shouldPlayVitalityWhenReady]) && [(ISLivePhotoPlayer *)self _canPlayVitality]&& [(ISBasePlayer *)self status]>= 1)
   {
-    v3 = [(ISLivePhotoPlayer *)self _vitalityTimeoutDate];
-    [v3 timeIntervalSinceNow];
+    _vitalityTimeoutDate = [(ISLivePhotoPlayer *)self _vitalityTimeoutDate];
+    [_vitalityTimeoutDate timeIntervalSinceNow];
     v5 = v4;
 
     if (v5 >= 0.0)
@@ -566,26 +566,26 @@ uint64_t __46__ISLivePhotoPlayer__setCurrentPlaybackStyle___block_invoke(uint64_
 {
   if ([(ISLivePhotoPlayer *)self _styleToPlayWhenReady]&& [(ISBasePlayer *)self status]>= 2 && [(ISLivePhotoPlayer *)self isPlaybackAllowed]&& ![(ISLivePhotoPlayer *)self currentPlaybackStyle])
   {
-    v3 = [(ISLivePhotoPlayer *)self _styleToPlayWhenReady];
-    v4 = [(ISLivePhotoPlayer *)self _settleAutomaticallyWhenReady];
+    _styleToPlayWhenReady = [(ISLivePhotoPlayer *)self _styleToPlayWhenReady];
+    _settleAutomaticallyWhenReady = [(ISLivePhotoPlayer *)self _settleAutomaticallyWhenReady];
     [(ISLivePhotoPlayer *)self _setStyleToPlayWhenReady:0];
     [(ISLivePhotoPlayer *)self _setSettleAutomaticallyWhenReady:0];
 
-    [(ISLivePhotoPlayer *)self startPlaybackWithStyle:v3 settleAutomatically:v4];
+    [(ISLivePhotoPlayer *)self startPlaybackWithStyle:_styleToPlayWhenReady settleAutomatically:_settleAutomaticallyWhenReady];
   }
 }
 
 - (BOOL)_canPlayVitality
 {
-  v2 = [(ISBasePlayer *)self playerItem];
-  v3 = [v2 playerContent];
+  playerItem = [(ISBasePlayer *)self playerItem];
+  playerContent = [playerItem playerContent];
 
-  if (![v3 supportsVitality])
+  if (![playerContent supportsVitality])
   {
     goto LABEL_5;
   }
 
-  if (!v3)
+  if (!playerContent)
   {
     v4 = 0;
     v7 = 0;
@@ -594,10 +594,10 @@ uint64_t __46__ISLivePhotoPlayer__setCurrentPlaybackStyle___block_invoke(uint64_
     goto LABEL_7;
   }
 
-  [v3 photoTime];
+  [playerContent photoTime];
   if ((BYTE4(v8) & 0x1D) == 1)
   {
-    [v3 photoTime];
+    [playerContent photoTime];
     v4 = CMTimeGetSeconds(&v6) >= 0.1;
   }
 
@@ -612,36 +612,36 @@ LABEL_7:
   return v4;
 }
 
-- (void)setSeekTime:(id *)a3 completion:(id)a4
+- (void)setSeekTime:(id *)time completion:(id)completion
 {
-  v6 = a4;
-  time1 = *a3;
+  completionCopy = completion;
+  time1 = *time;
   seekTime = self->_seekTime;
   if (CMTimeCompare(&time1, &seekTime))
   {
-    v7 = *&a3->var0;
-    self->_seekTime.epoch = a3->var3;
+    v7 = *&time->var0;
+    self->_seekTime.epoch = time->var3;
     *&self->_seekTime.value = v7;
-    if (a3->var2)
+    if (time->var2)
     {
-      v9 = [(ISBasePlayer *)self activeBehavior];
-      if ([v9 behaviorType] == 5)
+      activeBehavior = [(ISBasePlayer *)self activeBehavior];
+      if ([activeBehavior behaviorType] == 5)
       {
-        [v9 setSeekCompletionHandler:v6];
-        time1 = *a3;
-        [v9 setSeekTime:&time1];
+        [activeBehavior setSeekCompletionHandler:completionCopy];
+        time1 = *time;
+        [activeBehavior setSeekTime:&time1];
       }
 
       else
       {
         v10 = [ISLivePhotoSeekBehavior alloc];
-        v11 = [(ISBasePlayer *)self lastAppliedLayoutInfo];
-        time1 = *a3;
-        v12 = [(ISLivePhotoSeekBehavior *)v10 initWithInitialLayoutInfo:v11 seekTime:&time1];
+        lastAppliedLayoutInfo = [(ISBasePlayer *)self lastAppliedLayoutInfo];
+        time1 = *time;
+        v12 = [(ISLivePhotoSeekBehavior *)v10 initWithInitialLayoutInfo:lastAppliedLayoutInfo seekTime:&time1];
 
-        [(ISLivePhotoSeekBehavior *)v12 setSeekCompletionHandler:v6];
+        [(ISLivePhotoSeekBehavior *)v12 setSeekCompletionHandler:completionCopy];
         [(ISBasePlayer *)self setActiveBehavior:v12];
-        v9 = v12;
+        activeBehavior = v12;
       }
 
       [(ISLivePhotoPlayer *)self _setCurrentPlaybackStyle:3];
@@ -656,24 +656,24 @@ LABEL_7:
     }
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
 - (id)_createVitalityBehavior
 {
   v3 = +[ISVitalitySettings sharedInstance];
-  v4 = [(ISBasePlayer *)self lastAppliedLayoutInfo];
-  v5 = [(ISBasePlayer *)self playerItem];
-  v6 = [v5 playerContent];
+  lastAppliedLayoutInfo = [(ISBasePlayer *)self lastAppliedLayoutInfo];
+  playerItem = [(ISBasePlayer *)self playerItem];
+  playerContent = [playerItem playerContent];
   memset(&v30, 0, sizeof(v30));
-  v7 = [v5 playerContent];
-  v8 = v7;
-  if (v7)
+  playerContent2 = [playerItem playerContent];
+  v8 = playerContent2;
+  if (playerContent2)
   {
-    [v7 videoDuration];
+    [playerContent2 videoDuration];
   }
 
   else
@@ -682,9 +682,9 @@ LABEL_7:
   }
 
   memset(&v29, 0, sizeof(v29));
-  if (v6)
+  if (playerContent)
   {
-    [v6 photoTime];
+    [playerContent photoTime];
   }
 
   [v3 postDuration];
@@ -705,8 +705,8 @@ LABEL_7:
   v25 = v30;
   CMTimeMinimum(&rhs, &lhs, &v25);
   v28 = rhs;
-  v13 = [v6 variationIdentifier];
-  if ([v13 integerValue] == 3)
+  variationIdentifier = [playerContent variationIdentifier];
+  if ([variationIdentifier integerValue] == 3)
   {
     v14 = +[ISPlayerSettings sharedInstance];
     v15 = [v14 longExposureVitality] ^ 1;
@@ -722,11 +722,11 @@ LABEL_7:
   *&v18 = v17;
   [(ISLivePhotoPlayer *)self videoWillPlayToPhotoInterval];
   v20 = v19;
-  v21 = [v5 asset];
-  v22 = [v21 options];
+  asset = [playerItem asset];
+  options = [asset options];
   rhs = v29;
   lhs = v28;
-  v23 = [(ISLivePhotoVitalityBehavior *)v16 initWithInitialLayoutInfo:v4 playbackEndTime:&rhs playDuration:&lhs playRate:v15 photoTransitionDuration:v22 pauseDuringTransition:COERCE_DOUBLE(__PAIR64__(HIDWORD(v28.value) assetOptions:v18)), v20];
+  v23 = [(ISLivePhotoVitalityBehavior *)v16 initWithInitialLayoutInfo:lastAppliedLayoutInfo playbackEndTime:&rhs playDuration:&lhs playRate:v15 photoTransitionDuration:options pauseDuringTransition:COERCE_DOUBLE(__PAIR64__(HIDWORD(v28.value) assetOptions:v18)), v20];
 
   return v23;
 }
@@ -738,15 +738,15 @@ LABEL_7:
     return;
   }
 
-  v9 = [(ISBasePlayer *)self activeBehavior];
-  if ([v9 behaviorType] == 5)
+  activeBehavior = [(ISBasePlayer *)self activeBehavior];
+  if ([activeBehavior behaviorType] == 5)
   {
     goto LABEL_14;
   }
 
-  v3 = [(ISLivePhotoPlayer *)self _canPlayVitality];
+  _canPlayVitality = [(ISLivePhotoPlayer *)self _canPlayVitality];
 
-  if (!v3)
+  if (!_canPlayVitality)
   {
     return;
   }
@@ -754,21 +754,21 @@ LABEL_7:
   if ([(ISBasePlayer *)self status]> 0)
   {
     [(ISLivePhotoPlayer *)self _setCurrentPlaybackStyle:0];
-    v10 = [(ISBasePlayer *)self activeBehavior];
-    if ([v10 behaviorType] == 3)
+    activeBehavior2 = [(ISBasePlayer *)self activeBehavior];
+    if ([activeBehavior2 behaviorType] == 3)
     {
-      v4 = v10;
+      v4 = activeBehavior2;
     }
 
     else
     {
-      v8 = [(ISLivePhotoPlayer *)self _createVitalityBehavior];
+      _createVitalityBehavior = [(ISLivePhotoPlayer *)self _createVitalityBehavior];
 
-      [(ISBasePlayer *)self setActiveBehavior:v8];
-      v4 = v8;
+      [(ISBasePlayer *)self setActiveBehavior:_createVitalityBehavior];
+      v4 = _createVitalityBehavior;
     }
 
-    v9 = v4;
+    activeBehavior = v4;
     [v4 playVitality];
     [(ISLivePhotoPlayer *)self _setShouldPrepareForVitalityWhenReady:0];
     [(ISLivePhotoPlayer *)self _setShouldPlayVitalityWhenReady:0];
@@ -805,18 +805,18 @@ LABEL_14:
     {
       [(ISLivePhotoPlayer *)self _resetPlaybackFilters];
       [(ISLivePhotoPlayer *)self _setCurrentPlaybackStyle:0];
-      v8 = [(ISBasePlayer *)self activeBehavior];
-      if ([v8 behaviorType] == 3 && (objc_msgSend(v8, "isPrepared") & 1) != 0)
+      activeBehavior = [(ISBasePlayer *)self activeBehavior];
+      if ([activeBehavior behaviorType] == 3 && (objc_msgSend(activeBehavior, "isPrepared") & 1) != 0)
       {
-        v3 = v8;
+        v3 = activeBehavior;
       }
 
       else
       {
-        v4 = [(ISLivePhotoPlayer *)self _createVitalityBehavior];
+        _createVitalityBehavior = [(ISLivePhotoPlayer *)self _createVitalityBehavior];
 
-        [(ISBasePlayer *)self setActiveBehavior:v4];
-        v3 = v4;
+        [(ISBasePlayer *)self setActiveBehavior:_createVitalityBehavior];
+        v3 = _createVitalityBehavior;
       }
 
       v9 = v3;
@@ -826,18 +826,18 @@ LABEL_14:
   }
 }
 
-- (void)startPlaybackWithStyle:(int64_t)a3 settleAutomatically:(BOOL)a4
+- (void)startPlaybackWithStyle:(int64_t)style settleAutomatically:(BOOL)automatically
 {
   [(ISLivePhotoPlayer *)self _setShouldPrepareForVitalityWhenReady:0];
   [(ISLivePhotoPlayer *)self _setShouldPlayVitalityWhenReady:0];
   [(ISLivePhotoPlayer *)self _setStyleToPlayWhenReady:0];
-  v7 = [(ISBasePlayer *)self playerItem];
+  playerItem = [(ISBasePlayer *)self playerItem];
   memset(&v25, 0, sizeof(v25));
-  v8 = [v7 playerContent];
-  v9 = v8;
-  if (v8)
+  playerContent = [playerItem playerContent];
+  v9 = playerContent;
+  if (playerContent)
   {
-    [v8 photoTime];
+    [playerContent photoTime];
   }
 
   else
@@ -845,8 +845,8 @@ LABEL_14:
     memset(&v25, 0, sizeof(v25));
   }
 
-  v10 = [(ISBasePlayer *)self lastAppliedLayoutInfo];
-  if (a3 == 1)
+  lastAppliedLayoutInfo = [(ISBasePlayer *)self lastAppliedLayoutInfo];
+  if (style == 1)
   {
     [(ISBasePlayer *)self setVideoVolume:0.0];
     memset(&v24, 0, sizeof(v24));
@@ -865,9 +865,9 @@ LABEL_14:
     [(ISBasePlayer *)self setVideoVolume:0.0];
     memset(&v24, 0, sizeof(v24));
     [(ISLivePhotoPlayer *)self trimTimeRange];
-    v12 = a3 == 2;
-    v11 = a3 == 4;
-    if (a3 == 4 || a3 == 2)
+    v12 = style == 2;
+    v11 = style == 4;
+    if (style == 4 || style == 2)
     {
       if (v24.start.flags)
       {
@@ -903,7 +903,7 @@ LABEL_14:
     }
   }
 
-  if (a4)
+  if (automatically)
   {
     v16 = 1;
   }
@@ -916,18 +916,18 @@ LABEL_14:
   v17 = [ISLivePhotoPlaybackBehavior alloc];
   v23 = v25;
   range = v24;
-  v18 = [(ISLivePhotoPlaybackBehavior *)v17 initWithInitialLayoutInfo:v10 keyTime:&v23 playbackTimeRange:&range photoTransitionDuration:v16 immediatelyShowsPhotoWhenPlaybackEnds:a3 != 4 hasBlurryTransition:v13];
+  v18 = [(ISLivePhotoPlaybackBehavior *)v17 initWithInitialLayoutInfo:lastAppliedLayoutInfo keyTime:&v23 playbackTimeRange:&range photoTransitionDuration:v16 immediatelyShowsPhotoWhenPlaybackEnds:style != 4 hasBlurryTransition:v13];
   [(ISBasePlayer *)self setActiveBehavior:v18];
   [(ISLivePhotoPlaybackBehavior *)v18 startPlayback];
-  [(ISLivePhotoPlayer *)self _setCurrentPlaybackStyle:a3];
+  [(ISLivePhotoPlayer *)self _setCurrentPlaybackStyle:style];
 }
 
-- (void)setPlaybackAllowed:(BOOL)a3
+- (void)setPlaybackAllowed:(BOOL)allowed
 {
-  if (self->_playbackAllowed != a3)
+  if (self->_playbackAllowed != allowed)
   {
-    self->_playbackAllowed = a3;
-    if (a3)
+    self->_playbackAllowed = allowed;
+    if (allowed)
     {
 
       [(ISLivePhotoPlayer *)self _playIfNeeded];
@@ -935,10 +935,10 @@ LABEL_14:
 
     else
     {
-      v4 = [(ISBasePlayer *)self activeBehavior];
-      v5 = [v4 behaviorType];
+      activeBehavior = [(ISBasePlayer *)self activeBehavior];
+      behaviorType = [activeBehavior behaviorType];
 
-      if (v5 == 3)
+      if (behaviorType == 3)
       {
         v6 = objc_alloc_init(ISDefaultBehavior);
         [(ISBasePlayer *)self setActiveBehavior:v6];
@@ -949,31 +949,31 @@ LABEL_14:
 
 - (void)_updatePlayerItemLoadingTarget
 {
-  v12 = [(ISBasePlayer *)self playerItem];
-  v3 = [(ISLivePhotoPlayer *)self targetReadiness];
-  v4 = [(ISLivePhotoPlayer *)self _coalescedPlaybackFilterState];
-  if (v4 | [(ISLivePhotoPlayer *)self currentPlaybackStyle])
+  playerItem = [(ISBasePlayer *)self playerItem];
+  targetReadiness = [(ISLivePhotoPlayer *)self targetReadiness];
+  _coalescedPlaybackFilterState = [(ISLivePhotoPlayer *)self _coalescedPlaybackFilterState];
+  if (_coalescedPlaybackFilterState | [(ISLivePhotoPlayer *)self currentPlaybackStyle])
   {
 LABEL_9:
     v10 = 2;
     goto LABEL_15;
   }
 
-  v5 = [(ISBasePlayer *)self activeBehavior];
-  if (v5)
+  activeBehavior = [(ISBasePlayer *)self activeBehavior];
+  if (activeBehavior)
   {
-    v6 = v5;
-    v7 = [(ISBasePlayer *)self activeBehavior];
+    v6 = activeBehavior;
+    activeBehavior2 = [(ISBasePlayer *)self activeBehavior];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     v9 = 1;
-    if (v3 != 1)
+    if (targetReadiness != 1)
     {
       v9 = 2;
     }
 
-    if (v3)
+    if (targetReadiness)
     {
       v10 = v9;
     }
@@ -992,12 +992,12 @@ LABEL_9:
   else
   {
     v11 = 1;
-    if (v3 != 1)
+    if (targetReadiness != 1)
     {
       v11 = 2;
     }
 
-    if (v3)
+    if (targetReadiness)
     {
       v10 = v11;
     }
@@ -1009,32 +1009,32 @@ LABEL_9:
   }
 
 LABEL_15:
-  [v12 setLoadingTarget:v10];
-  [v12 discardContentBelowLoadingTarget];
+  [playerItem setLoadingTarget:v10];
+  [playerItem discardContentBelowLoadingTarget];
 }
 
-- (void)setTargetReadiness:(int64_t)a3
+- (void)setTargetReadiness:(int64_t)readiness
 {
-  if (self->_targetReadiness != a3)
+  if (self->_targetReadiness != readiness)
   {
-    self->_targetReadiness = a3;
+    self->_targetReadiness = readiness;
     [(ISLivePhotoPlayer *)self _updatePlayerItemLoadingTarget];
   }
 }
 
-- (void)setVitalityFilter:(id)a3
+- (void)setVitalityFilter:(id)filter
 {
-  v5 = a3;
-  if (self->_vitalityFilter != v5)
+  filterCopy = filter;
+  if (self->_vitalityFilter != filterCopy)
   {
-    objc_storeStrong(&self->_vitalityFilter, a3);
+    objc_storeStrong(&self->_vitalityFilter, filter);
     objc_initWeak(&location, self);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __39__ISLivePhotoPlayer_setVitalityFilter___block_invoke;
     v6[3] = &unk_279A29A98;
     objc_copyWeak(&v7, &location);
-    [(ISLivePhotoVitalityFilter *)v5 setOutputChangeHandler:v6];
+    [(ISLivePhotoVitalityFilter *)filterCopy setOutputChangeHandler:v6];
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
   }
@@ -1054,26 +1054,26 @@ void __39__ISLivePhotoPlayer_setVitalityFilter___block_invoke(uint64_t a1, void 
   return v2;
 }
 
-- (void)removePlaybackFilter:(id)a3
+- (void)removePlaybackFilter:(id)filter
 {
-  if (a3)
+  if (filter)
   {
     playbackFilters = self->_playbackFilters;
-    v5 = a3;
-    [(NSMutableSet *)playbackFilters removeObject:v5];
-    [v5 unregisterChangeObserver:self context:ISLivePhotoPlaybackFilterObservationContext];
+    filterCopy = filter;
+    [(NSMutableSet *)playbackFilters removeObject:filterCopy];
+    [filterCopy unregisterChangeObserver:self context:ISLivePhotoPlaybackFilterObservationContext];
   }
 }
 
-- (void)addPlaybackFilter:(id)a3
+- (void)addPlaybackFilter:(id)filter
 {
-  if (a3)
+  if (filter)
   {
     playbackFilters = self->_playbackFilters;
-    v5 = a3;
-    [(NSMutableSet *)playbackFilters addObject:v5];
-    [(ISLivePhotoPlayer *)self _configurePlaybackFilter:v5];
-    [v5 registerChangeObserver:self context:ISLivePhotoPlaybackFilterObservationContext];
+    filterCopy = filter;
+    [(NSMutableSet *)playbackFilters addObject:filterCopy];
+    [(ISLivePhotoPlayer *)self _configurePlaybackFilter:filterCopy];
+    [filterCopy registerChangeObserver:self context:ISLivePhotoPlaybackFilterObservationContext];
   }
 }
 
@@ -1103,16 +1103,16 @@ uint64_t __44__ISLivePhotoPlayer_activeBehaviorDidChange__block_invoke(uint64_t 
 {
   [(ISLivePhotoPlayer *)self _photoTransitionDuration];
   v4 = v3;
-  v5 = [(ISBasePlayer *)self playerItem];
-  v6 = [v5 playerContent];
+  playerItem = [(ISBasePlayer *)self playerItem];
+  playerContent = [playerItem playerContent];
 
-  v7 = [v6 variationIdentifier];
-  if ([v7 integerValue] == 3)
+  variationIdentifier = [playerContent variationIdentifier];
+  if ([variationIdentifier integerValue] == 3)
   {
     v8 = +[ISPlayerSettings sharedInstance];
-    v9 = [v8 longExposureVitality];
+    longExposureVitality = [v8 longExposureVitality];
 
-    if (v9)
+    if (longExposureVitality)
     {
       v4 = 0.25;
     }
@@ -1140,34 +1140,34 @@ uint64_t __44__ISLivePhotoPlayer_activeBehaviorDidChange__block_invoke(uint64_t 
   v8.receiver = self;
   v8.super_class = ISLivePhotoPlayer;
   [(ISBasePlayer *)&v8 playerItemDidChange];
-  v3 = [(ISLivePhotoPlayer *)self vitalityFilter];
-  v4 = [v3 state];
+  vitalityFilter = [(ISLivePhotoPlayer *)self vitalityFilter];
+  state = [vitalityFilter state];
 
-  v5 = [(ISLivePhotoPlayer *)self _coalescedPlaybackFilterState];
+  _coalescedPlaybackFilterState = [(ISLivePhotoPlayer *)self _coalescedPlaybackFilterState];
   [(ISBasePlayer *)self setActiveBehavior:0];
   [(ISLivePhotoPlayer *)self _setCurrentPlaybackStyle:0];
-  v6 = [(ISBasePlayer *)self playerItem];
+  playerItem = [(ISBasePlayer *)self playerItem];
 
-  if (v6)
+  if (playerItem)
   {
-    if (v5 == 1)
+    if (_coalescedPlaybackFilterState == 1)
     {
       return;
     }
 
-    if (v5 == 2)
+    if (_coalescedPlaybackFilterState == 2)
     {
       [(ISLivePhotoPlayer *)self startPlaybackWithStyle:1];
       return;
     }
 
-    if (v4 == 2)
+    if (state == 2)
     {
       [(ISLivePhotoPlayer *)self playVitality];
       return;
     }
 
-    if (v4 == 1)
+    if (state == 1)
     {
       [(ISLivePhotoPlayer *)self prepareForVitality];
       return;

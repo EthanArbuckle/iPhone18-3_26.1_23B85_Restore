@@ -1,59 +1,59 @@
 @interface PXCreateSharedAlbumActionPerformer
-- (PXCreateSharedAlbumActionPerformer)initWithPhotoLibrary:(id)a3 presentationEnvironment:(id)a4;
+- (PXCreateSharedAlbumActionPerformer)initWithPhotoLibrary:(id)library presentationEnvironment:(id)environment;
 - (void)performLemonadeUserInteractionTask;
 - (void)performUserInteractionTask;
-- (void)photoStreamComposeService:(id)a3 didPostComment:(id)a4;
-- (void)photoStreamComposeServiceDidCancel:(id)a3;
+- (void)photoStreamComposeService:(id)service didPostComment:(id)comment;
+- (void)photoStreamComposeServiceDidCancel:(id)cancel;
 @end
 
 @implementation PXCreateSharedAlbumActionPerformer
 
 - (void)performLemonadeUserInteractionTask
 {
-  v2 = self;
+  selfCopy = self;
   PXCreateSharedAlbumActionPerformer.performLemonadeUserInteractionTask()();
 }
 
-- (void)photoStreamComposeServiceDidCancel:(id)a3
+- (void)photoStreamComposeServiceDidCancel:(id)cancel
 {
-  v7 = a3;
-  v5 = [(PXActionPerformer *)self presentationEnvironment];
-  if (!v5)
+  cancelCopy = cancel;
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
+  if (!presentationEnvironment)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXCreateSharedAlbumActionPerformer.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"presentationEnvironment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCreateSharedAlbumActionPerformer.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"presentationEnvironment"}];
   }
 
-  [v5 dismissViewController:v7 animated:1 completionHandler:0];
+  [presentationEnvironment dismissViewController:cancelCopy animated:1 completionHandler:0];
 }
 
-- (void)photoStreamComposeService:(id)a3 didPostComment:(id)a4
+- (void)photoStreamComposeService:(id)service didPostComment:(id)comment
 {
-  v8 = a3;
-  v6 = [(PXActionPerformer *)self presentationEnvironment];
-  if (!v6)
+  serviceCopy = service;
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
+  if (!presentationEnvironment)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXCreateSharedAlbumActionPerformer.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"presentationEnvironment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCreateSharedAlbumActionPerformer.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"presentationEnvironment"}];
   }
 
-  [v6 dismissViewController:v8 animated:1 completionHandler:0];
+  [presentationEnvironment dismissViewController:serviceCopy animated:1 completionHandler:0];
 }
 
 - (void)performUserInteractionTask
 {
-  v4 = [(PXCreateSharedAlbumActionPerformer *)self photoLibrary];
-  v5 = [(PXActionPerformer *)self presentationEnvironment];
-  if (!v5)
+  photoLibrary = [(PXCreateSharedAlbumActionPerformer *)self photoLibrary];
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
+  if (!presentationEnvironment)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXCreateSharedAlbumActionPerformer.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"presentationEnvironment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCreateSharedAlbumActionPerformer.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"presentationEnvironment"}];
   }
 
   v6 = MEMORY[0x1E69BE6A8];
-  v7 = [v4 photoLibrary];
+  v4PhotoLibrary = [photoLibrary photoLibrary];
   v19 = 0;
-  v8 = [v6 canCreateStreamInPhotoLibrary:v7 error:&v19];
+  v8 = [v6 canCreateStreamInPhotoLibrary:v4PhotoLibrary error:&v19];
   v9 = v19;
 
   if (v8)
@@ -63,9 +63,9 @@
 
   else
   {
-    v10 = [v9 localizedDescription];
-    v11 = [v9 localizedFailureReason];
-    v12 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v10 message:v11 preferredStyle:1];
+    localizedDescription = [v9 localizedDescription];
+    localizedFailureReason = [v9 localizedFailureReason];
+    v12 = [MEMORY[0x1E69DC650] alertControllerWithTitle:localizedDescription message:localizedFailureReason preferredStyle:1];
     v13 = MEMORY[0x1E69DC648];
     v14 = PXLocalizedStringFromTable(@"PXOK", @"PhotosUICore");
     v17[0] = MEMORY[0x1E69E9820];
@@ -77,18 +77,18 @@
     v15 = [v13 actionWithTitle:v14 style:1 handler:v17];
 
     [v12 addAction:v15];
-    [v5 presentViewController:v12 animated:1 completionHandler:0];
+    [presentationEnvironment presentViewController:v12 animated:1 completionHandler:0];
   }
 }
 
-- (PXCreateSharedAlbumActionPerformer)initWithPhotoLibrary:(id)a3 presentationEnvironment:(id)a4
+- (PXCreateSharedAlbumActionPerformer)initWithPhotoLibrary:(id)library presentationEnvironment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  libraryCopy = library;
+  environmentCopy = environment;
+  v9 = environmentCopy;
+  if (libraryCopy)
   {
-    if (v8)
+    if (environmentCopy)
     {
       goto LABEL_3;
     }
@@ -96,8 +96,8 @@
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXCreateSharedAlbumActionPerformer.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCreateSharedAlbumActionPerformer.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
     if (v9)
     {
@@ -105,8 +105,8 @@
     }
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v14 handleFailureInMethod:a2 object:self file:@"PXCreateSharedAlbumActionPerformer.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"presentationEnvironment"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCreateSharedAlbumActionPerformer.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"presentationEnvironment"}];
 
 LABEL_3:
   v15.receiver = self;
@@ -115,7 +115,7 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    [(PXCreateSharedAlbumActionPerformer *)v10 setPhotoLibrary:v7];
+    [(PXCreateSharedAlbumActionPerformer *)v10 setPhotoLibrary:libraryCopy];
     [(PXActionPerformer *)v11 setPresentationEnvironment:v9];
   }
 

@@ -1,61 +1,61 @@
 @interface HURecordingEventCellFamiliarFacesView
 + (id)faceCropImageView;
 + (id)placeholderImage;
-- (HURecordingEventCellFamiliarFacesView)initWithFrame:(CGRect)a3;
+- (HURecordingEventCellFamiliarFacesView)initWithFrame:(CGRect)frame;
 - (UILabel)titleLabel;
 - (UIView)pointerView;
 - (id)faceCropImageViews;
-- (void)manager:(id)a3 didFindFaceCrop:(id)a4 forClip:(id)a5 usingPersonName:(id)a6;
-- (void)manager:(id)a3 failedToFindFaceCropForPersonName:(id)a4;
-- (void)resizeWithMaxWidth:(double)a3;
+- (void)manager:(id)manager didFindFaceCrop:(id)crop forClip:(id)clip usingPersonName:(id)name;
+- (void)manager:(id)manager failedToFindFaceCropForPersonName:(id)name;
+- (void)resizeWithMaxWidth:(double)width;
 - (void)updateTitleLabel;
-- (void)updateWithPersonEvents:(id)a3 forCameraClip:(id)a4;
+- (void)updateWithPersonEvents:(id)events forCameraClip:(id)clip;
 @end
 
 @implementation HURecordingEventCellFamiliarFacesView
 
-- (HURecordingEventCellFamiliarFacesView)initWithFrame:(CGRect)a3
+- (HURecordingEventCellFamiliarFacesView)initWithFrame:(CGRect)frame
 {
   v25.receiver = self;
   v25.super_class = HURecordingEventCellFamiliarFacesView;
-  v3 = [(HURecordingEventCellFamiliarFacesView *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HURecordingEventCellFamiliarFacesView *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(HURecordingEventCellFamiliarFacesView *)v3 setBackgroundColor:v4];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(HURecordingEventCellFamiliarFacesView *)v3 setBackgroundColor:systemWhiteColor];
 
-    v5 = [(HURecordingEventCellFamiliarFacesView *)v3 layer];
-    [v5 setCornerRadius:20.0];
+    layer = [(HURecordingEventCellFamiliarFacesView *)v3 layer];
+    [layer setCornerRadius:20.0];
 
-    v6 = [(HURecordingEventCellFamiliarFacesView *)v3 titleLabel];
-    [(HURecordingEventCellFamiliarFacesView *)v3 addSubview:v6];
+    titleLabel = [(HURecordingEventCellFamiliarFacesView *)v3 titleLabel];
+    [(HURecordingEventCellFamiliarFacesView *)v3 addSubview:titleLabel];
 
-    v7 = [(HURecordingEventCellFamiliarFacesView *)v3 faceCropImageViews];
+    faceCropImageViews = [(HURecordingEventCellFamiliarFacesView *)v3 faceCropImageViews];
     imageViews = v3->_imageViews;
-    v3->_imageViews = v7;
+    v3->_imageViews = faceCropImageViews;
 
-    v9 = [(HURecordingEventCellFamiliarFacesView *)v3 pointerView];
-    [(HURecordingEventCellFamiliarFacesView *)v3 addSubview:v9];
+    pointerView = [(HURecordingEventCellFamiliarFacesView *)v3 pointerView];
+    [(HURecordingEventCellFamiliarFacesView *)v3 addSubview:pointerView];
 
-    v10 = [(HURecordingEventCellFamiliarFacesView *)v3 pointerView];
-    [(HURecordingEventCellFamiliarFacesView *)v3 sendSubviewToBack:v10];
+    pointerView2 = [(HURecordingEventCellFamiliarFacesView *)v3 pointerView];
+    [(HURecordingEventCellFamiliarFacesView *)v3 sendSubviewToBack:pointerView2];
 
-    v11 = [(HURecordingEventCellFamiliarFacesView *)v3 titleLabel];
-    v12 = [v11 rightAnchor];
-    v13 = [(HURecordingEventCellFamiliarFacesView *)v3 rightAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13 constant:-5.0];
+    titleLabel2 = [(HURecordingEventCellFamiliarFacesView *)v3 titleLabel];
+    rightAnchor = [titleLabel2 rightAnchor];
+    rightAnchor2 = [(HURecordingEventCellFamiliarFacesView *)v3 rightAnchor];
+    v14 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-5.0];
     [v14 setActive:1];
 
-    v15 = [(HURecordingEventCellFamiliarFacesView *)v3 titleLabel];
-    v16 = [v15 centerYAnchor];
-    v17 = [(HURecordingEventCellFamiliarFacesView *)v3 centerYAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    titleLabel3 = [(HURecordingEventCellFamiliarFacesView *)v3 titleLabel];
+    centerYAnchor = [titleLabel3 centerYAnchor];
+    centerYAnchor2 = [(HURecordingEventCellFamiliarFacesView *)v3 centerYAnchor];
+    v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v18 setActive:1];
 
-    v19 = [(HURecordingEventCellFamiliarFacesView *)v3 titleLabel];
-    v20 = [v19 leftAnchor];
-    v21 = [(HURecordingEventCellFamiliarFacesView *)v3 leftAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21 constant:40.0];
+    titleLabel4 = [(HURecordingEventCellFamiliarFacesView *)v3 titleLabel];
+    leftAnchor = [titleLabel4 leftAnchor];
+    leftAnchor2 = [(HURecordingEventCellFamiliarFacesView *)v3 leftAnchor];
+    v22 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:40.0];
     leftTitleConstraint = v3->_leftTitleConstraint;
     v3->_leftTitleConstraint = v22;
 
@@ -65,17 +65,17 @@
   return v3;
 }
 
-- (void)updateWithPersonEvents:(id)a3 forCameraClip:(id)a4
+- (void)updateWithPersonEvents:(id)events forCameraClip:(id)clip
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v47 = a4;
+  eventsCopy = events;
+  clipCopy = clip;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v7 = [(HURecordingEventCellFamiliarFacesView *)self imageViews];
-  v8 = [v7 countByEnumeratingWithState:&v55 objects:v60 count:16];
+  imageViews = [(HURecordingEventCellFamiliarFacesView *)self imageViews];
+  v8 = [imageViews countByEnumeratingWithState:&v55 objects:v60 count:16];
   if (v8)
   {
     v9 = v8;
@@ -86,47 +86,47 @@
       {
         if (*v56 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(imageViews);
         }
 
         [*(*(&v55 + 1) + 8 * i) setHidden:1];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v55 objects:v60 count:16];
+      v9 = [imageViews countByEnumeratingWithState:&v55 objects:v60 count:16];
     }
 
     while (v9);
   }
 
-  v48 = self;
+  selfCopy = self;
 
-  v12 = [MEMORY[0x277D14498] sharedManager];
-  v13 = [v6 count];
+  mEMORY[0x277D14498] = [MEMORY[0x277D14498] sharedManager];
+  v13 = [eventsCopy count];
   if (v13)
   {
     v14 = v13;
     for (j = 0; j != v14; ++j)
     {
-      v16 = [v6 objectAtIndexedSubscript:j];
-      v17 = [v16 faceClassification];
-      v18 = [v17 person];
-      v19 = [v18 name];
-      v20 = [v12 faceCropForPersonName:v19];
+      v16 = [eventsCopy objectAtIndexedSubscript:j];
+      faceClassification = [v16 faceClassification];
+      person = [faceClassification person];
+      name = [person name];
+      v20 = [mEMORY[0x277D14498] faceCropForPersonName:name];
 
       if (!v20)
       {
-        v21 = [v6 objectAtIndexedSubscript:j];
-        [v12 addFaceCropImageObserver:v48 forClip:v47 usingSignificantEvent:v21];
+        v21 = [eventsCopy objectAtIndexedSubscript:j];
+        [mEMORY[0x277D14498] addFaceCropImageObserver:selfCopy forClip:clipCopy usingSignificantEvent:v21];
       }
     }
   }
 
-  v22 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v23 = v6;
+  v23 = eventsCopy;
   v24 = [v23 countByEnumeratingWithState:&v51 objects:v59 count:16];
   if (v24)
   {
@@ -142,11 +142,11 @@
         }
 
         v28 = *(*(&v51 + 1) + 8 * k);
-        v29 = [v28 faceClassification];
-        v30 = [v29 person];
-        v31 = [v30 name];
+        faceClassification2 = [v28 faceClassification];
+        person2 = [faceClassification2 person];
+        name2 = [person2 name];
 
-        [v22 setObject:v28 forKey:v31];
+        [dictionary setObject:v28 forKey:name2];
       }
 
       v25 = [v23 countByEnumeratingWithState:&v51 objects:v59 count:16];
@@ -155,18 +155,18 @@
     while (v25);
   }
 
-  v32 = [v22 allValues];
+  allValues = [dictionary allValues];
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = 3221225472;
   v49[2] = __78__HURecordingEventCellFamiliarFacesView_updateWithPersonEvents_forCameraClip___block_invoke;
   v49[3] = &unk_277DB9280;
-  v33 = v12;
+  v33 = mEMORY[0x277D14498];
   v50 = v33;
-  v34 = [v32 sortedArrayUsingComparator:v49];
-  [(HURecordingEventCellFamiliarFacesView *)v48 setSortedPeople:v34];
+  v34 = [allValues sortedArrayUsingComparator:v49];
+  [(HURecordingEventCellFamiliarFacesView *)selfCopy setSortedPeople:v34];
 
-  v35 = [(HURecordingEventCellFamiliarFacesView *)v48 sortedPeople];
-  v36 = [v35 count];
+  sortedPeople = [(HURecordingEventCellFamiliarFacesView *)selfCopy sortedPeople];
+  v36 = [sortedPeople count];
 
   if (v36 >= 3)
   {
@@ -183,21 +183,21 @@
     v38 = 0;
     do
     {
-      v39 = [(HURecordingEventCellFamiliarFacesView *)v48 sortedPeople];
-      v40 = [v39 objectAtIndexedSubscript:v38];
-      v41 = [v40 faceClassification];
-      v42 = [v41 person];
+      sortedPeople2 = [(HURecordingEventCellFamiliarFacesView *)selfCopy sortedPeople];
+      v40 = [sortedPeople2 objectAtIndexedSubscript:v38];
+      faceClassification3 = [v40 faceClassification];
+      person3 = [faceClassification3 person];
 
-      v43 = [v42 name];
-      v44 = [v33 faceCropForPersonName:v43];
+      name3 = [person3 name];
+      v44 = [v33 faceCropForPersonName:name3];
 
       if (!v44)
       {
         v44 = +[HURecordingEventCellFamiliarFacesView placeholderImage];
       }
 
-      v45 = [(HURecordingEventCellFamiliarFacesView *)v48 imageViews];
-      v46 = [v45 objectAtIndexedSubscript:v38];
+      imageViews2 = [(HURecordingEventCellFamiliarFacesView *)selfCopy imageViews];
+      v46 = [imageViews2 objectAtIndexedSubscript:v38];
 
       [v46 setImage:v44];
       [v46 setHidden:0];
@@ -208,7 +208,7 @@
     while (v37 != v38);
   }
 
-  [(HURecordingEventCellFamiliarFacesView *)v48 resizeWithMaxWidth:118.0];
+  [(HURecordingEventCellFamiliarFacesView *)selfCopy resizeWithMaxWidth:118.0];
 }
 
 uint64_t __78__HURecordingEventCellFamiliarFacesView_updateWithPersonEvents_forCameraClip___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -248,35 +248,35 @@ uint64_t __78__HURecordingEventCellFamiliarFacesView_updateWithPersonEvents_forC
 
 - (void)updateTitleLabel
 {
-  v2 = self;
+  selfCopy = self;
   v112[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HURecordingEventCellFamiliarFacesView *)self titleLabel];
-  v4 = [v3 font];
+  titleLabel = [(HURecordingEventCellFamiliarFacesView *)self titleLabel];
+  font = [titleLabel font];
 
-  v5 = [(HURecordingEventCellFamiliarFacesView *)v2 sortedPeople];
-  v6 = [v5 count];
+  sortedPeople = [(HURecordingEventCellFamiliarFacesView *)selfCopy sortedPeople];
+  v6 = [sortedPeople count];
 
   v105 = _HULocalizedStringWithDefaultValue(@"HUFaceRecognitionTimelineSeparator", @"HUFaceRecognitionTimelineSeparator", 1);
   v106 = v6;
   if (v6)
   {
-    v108 = v4;
+    v108 = font;
     v7 = 0;
     v8 = 0;
     v9 = *MEMORY[0x277D740A8];
     do
     {
-      v10 = v2;
-      v11 = [(HURecordingEventCellFamiliarFacesView *)v2 sortedPeople];
-      v12 = [v11 objectAtIndexedSubscript:v8];
-      v13 = [v12 faceClassification];
-      v14 = [v13 person];
-      v15 = [v14 name];
+      v10 = selfCopy;
+      sortedPeople2 = [(HURecordingEventCellFamiliarFacesView *)selfCopy sortedPeople];
+      v12 = [sortedPeople2 objectAtIndexedSubscript:v8];
+      faceClassification = [v12 faceClassification];
+      person = [faceClassification person];
+      name = [person name];
 
       v111 = v9;
       v112[0] = v108;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v112 forKeys:&v111 count:1];
-      [v15 sizeWithAttributes:v16];
+      [name sizeWithAttributes:v16];
       v18 = ceil(v17);
 
       v19 = v18 + 0.0;
@@ -289,7 +289,7 @@ uint64_t __78__HURecordingEventCellFamiliarFacesView_updateWithPersonEvents_forC
         v19 = v19 + ceil(v21);
       }
 
-      v2 = v10;
+      selfCopy = v10;
       [(HURecordingEventCellFamiliarFacesView *)v10 maxWidthForNames];
       if (v19 < v22)
       {
@@ -300,35 +300,35 @@ uint64_t __78__HURecordingEventCellFamiliarFacesView_updateWithPersonEvents_forC
     }
 
     while (v6 != v8);
-    v23 = [(HURecordingEventCellFamiliarFacesView *)v10 leftTitleConstraint];
-    [v23 setConstant:40.0];
+    leftTitleConstraint = [(HURecordingEventCellFamiliarFacesView *)v10 leftTitleConstraint];
+    [leftTitleConstraint setConstant:40.0];
 
     if (v7 > 1)
     {
       if (v7 == 2)
       {
         v59 = MEMORY[0x277CCACA8];
-        v95 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
-        v104 = [v95 objectAtIndexedSubscript:0];
-        v101 = [v104 faceClassification];
-        v98 = [v101 person];
-        v60 = [v98 name];
-        v61 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
-        v62 = [v61 objectAtIndexedSubscript:1];
-        v63 = [v62 faceClassification];
-        v64 = [v63 person];
-        v65 = [v64 name];
+        sortedPeople3 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
+        v104 = [sortedPeople3 objectAtIndexedSubscript:0];
+        faceClassification2 = [v104 faceClassification];
+        person2 = [faceClassification2 person];
+        name2 = [person2 name];
+        sortedPeople4 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
+        v62 = [sortedPeople4 objectAtIndexedSubscript:1];
+        faceClassification3 = [v62 faceClassification];
+        person3 = [faceClassification3 person];
+        name3 = [person3 name];
         v42 = v10;
-        v66 = v65;
+        v66 = name3;
         if (v106 == 2)
         {
           v24 = v105;
-          v67 = [v59 stringWithFormat:@"%@%@%@", v60, v105, v65];
-          v68 = [(HURecordingEventCellFamiliarFacesView *)v42 titleLabel];
-          [v68 setText:v67];
+          v67 = [v59 stringWithFormat:@"%@%@%@", name2, v105, name3];
+          titleLabel2 = [(HURecordingEventCellFamiliarFacesView *)v42 titleLabel];
+          [titleLabel2 setText:v67];
 
-          v26 = [(HURecordingEventCellFamiliarFacesView *)v42 leftTitleConstraint];
-          [v26 constant];
+          leftTitleConstraint2 = [(HURecordingEventCellFamiliarFacesView *)v42 leftTitleConstraint];
+          [leftTitleConstraint2 constant];
           v70 = 15.0;
 LABEL_27:
           v81 = v69 + v70;
@@ -336,11 +336,11 @@ LABEL_27:
         }
 
         v24 = v105;
-        v82 = [v59 stringWithFormat:@"%@, %@%@+%lu", v60, v65, v105, v106 - 2];
-        v83 = [(HURecordingEventCellFamiliarFacesView *)v42 titleLabel];
-        [v83 setText:v82];
+        v82 = [v59 stringWithFormat:@"%@, %@%@+%lu", name2, name3, v105, v106 - 2];
+        titleLabel3 = [(HURecordingEventCellFamiliarFacesView *)v42 titleLabel];
+        [titleLabel3 setText:v82];
 
-        v48 = v95;
+        v48 = sortedPeople3;
       }
 
       else
@@ -349,64 +349,64 @@ LABEL_27:
         {
 LABEL_18:
           v49 = MEMORY[0x277CCACA8];
-          v94 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
-          v103 = [v94 objectAtIndexedSubscript:0];
-          v100 = [v103 faceClassification];
-          v97 = [v100 person];
-          v84 = [v97 name];
-          v92 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
-          v90 = [v92 objectAtIndexedSubscript:1];
-          v88 = [v90 faceClassification];
-          v86 = [v88 person];
-          v50 = [v86 name];
-          v51 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
-          v52 = [v51 objectAtIndexedSubscript:2];
-          v53 = [v52 faceClassification];
-          v54 = [v53 person];
-          v55 = [v54 name];
+          sortedPeople5 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
+          v103 = [sortedPeople5 objectAtIndexedSubscript:0];
+          faceClassification4 = [v103 faceClassification];
+          person4 = [faceClassification4 person];
+          name4 = [person4 name];
+          sortedPeople6 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
+          v90 = [sortedPeople6 objectAtIndexedSubscript:1];
+          faceClassification5 = [v90 faceClassification];
+          person5 = [faceClassification5 person];
+          name5 = [person5 name];
+          sortedPeople7 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
+          v52 = [sortedPeople7 objectAtIndexedSubscript:2];
+          faceClassification6 = [v52 faceClassification];
+          person6 = [faceClassification6 person];
+          name6 = [person6 name];
           v24 = v105;
-          v56 = [v49 stringWithFormat:@"%@, %@, %@%@+%lu", v84, v50, v55, v105, v106 - 3];
-          v57 = [(HURecordingEventCellFamiliarFacesView *)v2 titleLabel];
-          [v57 setText:v56];
+          v56 = [v49 stringWithFormat:@"%@, %@, %@%@+%lu", name4, name5, name6, v105, v106 - 3];
+          titleLabel4 = [(HURecordingEventCellFamiliarFacesView *)selfCopy titleLabel];
+          [titleLabel4 setText:v56];
 
-          v58 = v2;
+          v58 = selfCopy;
 LABEL_26:
-          v26 = [(HURecordingEventCellFamiliarFacesView *)v58 leftTitleConstraint];
-          [v26 constant];
+          leftTitleConstraint2 = [(HURecordingEventCellFamiliarFacesView *)v58 leftTitleConstraint];
+          [leftTitleConstraint2 constant];
           v70 = 30.0;
           goto LABEL_27;
         }
 
         v38 = MEMORY[0x277CCACA8];
-        v96 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
-        v107 = [v96 objectAtIndexedSubscript:0];
-        v102 = [v107 faceClassification];
-        v99 = [v102 person];
-        v85 = [v99 name];
-        v93 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
-        v91 = [v93 objectAtIndexedSubscript:1];
-        v89 = [v91 faceClassification];
-        v87 = [v89 person];
-        v39 = [v87 name];
-        v40 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
-        v41 = [v40 objectAtIndexedSubscript:2];
+        sortedPeople8 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
+        v107 = [sortedPeople8 objectAtIndexedSubscript:0];
+        faceClassification7 = [v107 faceClassification];
+        person7 = [faceClassification7 person];
+        name7 = [person7 name];
+        sortedPeople9 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
+        v91 = [sortedPeople9 objectAtIndexedSubscript:1];
+        faceClassification8 = [v91 faceClassification];
+        person8 = [faceClassification8 person];
+        name8 = [person8 name];
+        sortedPeople10 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
+        v41 = [sortedPeople10 objectAtIndexedSubscript:2];
         [v41 faceClassification];
         v43 = v42 = v10;
-        v44 = [v43 person];
-        v45 = [v44 name];
+        person9 = [v43 person];
+        name9 = [person9 name];
         v24 = v105;
-        v46 = [v38 stringWithFormat:@"%@, %@, %@%@", v85, v39, v105, v45];
-        v47 = [(HURecordingEventCellFamiliarFacesView *)v42 titleLabel];
-        [v47 setText:v46];
+        v46 = [v38 stringWithFormat:@"%@, %@, %@%@", name7, name8, v105, name9];
+        titleLabel5 = [(HURecordingEventCellFamiliarFacesView *)v42 titleLabel];
+        [titleLabel5 setText:v46];
 
-        v48 = v96;
+        v48 = sortedPeople8;
       }
 
       v58 = v42;
       goto LABEL_26;
     }
 
-    v4 = v108;
+    font = v108;
     if (v7)
     {
       if (v7 == 1)
@@ -415,40 +415,40 @@ LABEL_26:
         v25 = v6 - 1;
         if (v6 == 1)
         {
-          v26 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
-          v27 = [v26 objectAtIndexedSubscript:0];
-          v28 = [v27 faceClassification];
-          v29 = [v28 person];
-          v30 = [v29 name];
-          v31 = [(HURecordingEventCellFamiliarFacesView *)v2 titleLabel];
-          [v31 setText:v30];
+          leftTitleConstraint2 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
+          v27 = [leftTitleConstraint2 objectAtIndexedSubscript:0];
+          faceClassification9 = [v27 faceClassification];
+          person10 = [faceClassification9 person];
+          name10 = [person10 name];
+          titleLabel6 = [(HURecordingEventCellFamiliarFacesView *)selfCopy titleLabel];
+          [titleLabel6 setText:name10];
 
 LABEL_29:
-          v4 = v108;
+          font = v108;
           goto LABEL_30;
         }
 
         v71 = MEMORY[0x277CCACA8];
-        v72 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
-        v73 = [v72 objectAtIndexedSubscript:0];
-        v74 = [v73 faceClassification];
-        v75 = [v74 person];
-        [v75 name];
-        v77 = v76 = v2;
+        sortedPeople11 = [(HURecordingEventCellFamiliarFacesView *)v10 sortedPeople];
+        v73 = [sortedPeople11 objectAtIndexedSubscript:0];
+        faceClassification10 = [v73 faceClassification];
+        person11 = [faceClassification10 person];
+        [person11 name];
+        v77 = v76 = selfCopy;
         v78 = [v71 stringWithFormat:@"%@%@+%lu", v77, v105, v25];
-        v79 = [(HURecordingEventCellFamiliarFacesView *)v76 titleLabel];
-        [v79 setText:v78];
+        titleLabel7 = [(HURecordingEventCellFamiliarFacesView *)v76 titleLabel];
+        [titleLabel7 setText:v78];
 
         if (v25 >= 2)
         {
           v25 = 2;
         }
 
-        v26 = [(HURecordingEventCellFamiliarFacesView *)v76 leftTitleConstraint];
-        [v26 constant];
+        leftTitleConstraint2 = [(HURecordingEventCellFamiliarFacesView *)v76 leftTitleConstraint];
+        [leftTitleConstraint2 constant];
         v81 = v80 + v25 * 15.0;
 LABEL_28:
-        [v26 setConstant:v81];
+        [leftTitleConstraint2 setConstant:v81];
         goto LABEL_29;
       }
 
@@ -458,34 +458,34 @@ LABEL_28:
 
   else
   {
-    v32 = [(HURecordingEventCellFamiliarFacesView *)v2 leftTitleConstraint];
-    [v32 setConstant:40.0];
+    leftTitleConstraint3 = [(HURecordingEventCellFamiliarFacesView *)selfCopy leftTitleConstraint];
+    [leftTitleConstraint3 setConstant:40.0];
   }
 
-  v26 = [(HURecordingEventCellFamiliarFacesView *)v2 sortedPeople];
-  v33 = [v26 objectAtIndexedSubscript:0];
-  v34 = [v33 faceClassification];
-  v35 = [v34 person];
-  v36 = [v35 name];
-  v37 = [(HURecordingEventCellFamiliarFacesView *)v2 titleLabel];
-  [v37 setText:v36];
+  leftTitleConstraint2 = [(HURecordingEventCellFamiliarFacesView *)selfCopy sortedPeople];
+  v33 = [leftTitleConstraint2 objectAtIndexedSubscript:0];
+  faceClassification11 = [v33 faceClassification];
+  person12 = [faceClassification11 person];
+  name11 = [person12 name];
+  titleLabel8 = [(HURecordingEventCellFamiliarFacesView *)selfCopy titleLabel];
+  [titleLabel8 setText:name11];
 
   v24 = v105;
 LABEL_30:
 }
 
-- (void)resizeWithMaxWidth:(double)a3
+- (void)resizeWithMaxWidth:(double)width
 {
   v43[1] = *MEMORY[0x277D85DE8];
   [(HURecordingEventCellFamiliarFacesView *)self frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(HURecordingEventCellFamiliarFacesView *)self imageViews];
-  v12 = [v11 objectAtIndexedSubscript:1];
-  v13 = [v12 isHidden];
+  imageViews = [(HURecordingEventCellFamiliarFacesView *)self imageViews];
+  v12 = [imageViews objectAtIndexedSubscript:1];
+  isHidden = [v12 isHidden];
 
-  if (v13)
+  if (isHidden)
   {
     v14 = 40.0;
   }
@@ -495,50 +495,50 @@ LABEL_30:
     v14 = 55.0;
   }
 
-  v15 = [(HURecordingEventCellFamiliarFacesView *)self imageViews];
-  v16 = [v15 objectAtIndexedSubscript:2];
-  v17 = [v16 isHidden];
+  imageViews2 = [(HURecordingEventCellFamiliarFacesView *)self imageViews];
+  v16 = [imageViews2 objectAtIndexedSubscript:2];
+  isHidden2 = [v16 isHidden];
 
   v18 = v14 + 15.0;
-  if (v17)
+  if (isHidden2)
   {
     v18 = v14;
   }
 
   v19 = v18 + 10.0;
-  [(HURecordingEventCellFamiliarFacesView *)self setMaxWidthForNames:a3 - (v18 + 10.0)];
+  [(HURecordingEventCellFamiliarFacesView *)self setMaxWidthForNames:width - (v18 + 10.0)];
   [(HURecordingEventCellFamiliarFacesView *)self updateTitleLabel];
-  v20 = [(HURecordingEventCellFamiliarFacesView *)self titleLabel];
-  v21 = [v20 text];
+  titleLabel = [(HURecordingEventCellFamiliarFacesView *)self titleLabel];
+  text = [titleLabel text];
   v42 = *MEMORY[0x277D740A8];
-  v22 = [(HURecordingEventCellFamiliarFacesView *)self titleLabel];
-  v23 = [v22 font];
-  v43[0] = v23;
+  titleLabel2 = [(HURecordingEventCellFamiliarFacesView *)self titleLabel];
+  font = [titleLabel2 font];
+  v43[0] = font;
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:&v42 count:1];
-  [v21 sizeWithAttributes:v24];
+  [text sizeWithAttributes:v24];
   v26 = ceil(v25);
 
-  if (v19 + v26 <= a3)
+  if (v19 + v26 <= width)
   {
-    v27 = v19 + v26;
+    widthCopy = v19 + v26;
   }
 
   else
   {
-    v27 = a3;
+    widthCopy = width;
   }
 
-  [(HURecordingEventCellFamiliarFacesView *)self setFrame:v6, v8, v27, v10];
+  [(HURecordingEventCellFamiliarFacesView *)self setFrame:v6, v8, widthCopy, v10];
   v28 = HFLogForCategory();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
   {
-    v29 = [(HURecordingEventCellFamiliarFacesView *)self titleLabel];
-    v30 = [v29 text];
+    titleLabel3 = [(HURecordingEventCellFamiliarFacesView *)self titleLabel];
+    text2 = [titleLabel3 text];
     [(HURecordingEventCellFamiliarFacesView *)self maxWidthForNames];
     v32 = v31;
     [(HURecordingEventCellFamiliarFacesView *)self frame];
     v34 = 138413058;
-    v35 = v30;
+    v35 = text2;
     v36 = 2048;
     v37 = v32;
     v38 = 2048;
@@ -549,21 +549,21 @@ LABEL_30:
   }
 }
 
-- (void)manager:(id)a3 didFindFaceCrop:(id)a4 forClip:(id)a5 usingPersonName:(id)a6
+- (void)manager:(id)manager didFindFaceCrop:(id)crop forClip:(id)clip usingPersonName:(id)name
 {
-  v8 = a4;
-  v9 = a6;
-  v10 = [(HURecordingEventCellFamiliarFacesView *)self sortedPeople];
+  cropCopy = crop;
+  nameCopy = name;
+  sortedPeople = [(HURecordingEventCellFamiliarFacesView *)self sortedPeople];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __89__HURecordingEventCellFamiliarFacesView_manager_didFindFaceCrop_forClip_usingPersonName___block_invoke;
   v13[3] = &unk_277DB92A8;
-  v14 = v9;
-  v15 = self;
-  v16 = v8;
-  v11 = v8;
-  v12 = v9;
-  [v10 enumerateObjectsUsingBlock:v13];
+  v14 = nameCopy;
+  selfCopy = self;
+  v16 = cropCopy;
+  v11 = cropCopy;
+  v12 = nameCopy;
+  [sortedPeople enumerateObjectsUsingBlock:v13];
 }
 
 void __89__HURecordingEventCellFamiliarFacesView_manager_didFindFaceCrop_forClip_usingPersonName___block_invoke(uint64_t a1, void *a2, unint64_t a3, _BYTE *a4)
@@ -601,15 +601,15 @@ void __89__HURecordingEventCellFamiliarFacesView_manager_didFindFaceCrop_forClip
   }
 }
 
-- (void)manager:(id)a3 failedToFindFaceCropForPersonName:(id)a4
+- (void)manager:(id)manager failedToFindFaceCropForPersonName:(id)name
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  nameCopy = name;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = nameCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "Failed to find face crop for personName:%@", &v6, 0xCu);
   }
 }
@@ -647,8 +647,8 @@ void __89__HURecordingEventCellFamiliarFacesView_manager_didFindFaceCrop_forClip
     [(UILabel *)v4 setFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     [(UILabel *)v4 setLineBreakMode:5];
     [(UILabel *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [MEMORY[0x277D75348] systemBlackColor];
-    [(UILabel *)v4 setTextColor:v5];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    [(UILabel *)v4 setTextColor:systemBlackColor];
 
     v6 = [MEMORY[0x277D74300] boldSystemFontOfSize:16.0];
     [(UILabel *)v4 setFont:v6];
@@ -668,18 +668,18 @@ void __89__HURecordingEventCellFamiliarFacesView_manager_didFindFaceCrop_forClip
   if (!pointerView)
   {
     v4 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, 15.0, 15.0}];
-    v5 = [MEMORY[0x277D75348] systemWhiteColor];
-    [v4 setBackgroundColor:v5];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [v4 setBackgroundColor:systemWhiteColor];
 
     CGAffineTransformMakeRotation(&v12, 0.785398163);
     v11 = v12;
     [v4 setTransform:&v11];
     v6 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, 15.0, 15.0}];
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)v6 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)v6 setBackgroundColor:clearColor];
 
-    v8 = [(UIView *)v6 layer];
-    [v8 setCornerRadius:15.0];
+    layer = [(UIView *)v6 layer];
+    [layer setCornerRadius:15.0];
 
     [(UIView *)v6 setOpaque:0];
     [(UIView *)v6 addSubview:v4];
@@ -699,19 +699,19 @@ void __89__HURecordingEventCellFamiliarFacesView_manager_didFindFaceCrop_forClip
 + (id)faceCropImageView
 {
   v2 = objc_alloc_init(MEMORY[0x277D755E8]);
-  v3 = [MEMORY[0x277D75348] systemWhiteColor];
-  [v2 setBackgroundColor:v3];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [v2 setBackgroundColor:systemWhiteColor];
 
-  v4 = [v2 layer];
-  [v4 setCornerRadius:15.0];
+  layer = [v2 layer];
+  [layer setCornerRadius:15.0];
 
-  v5 = [MEMORY[0x277D75348] systemWhiteColor];
-  v6 = [v5 CGColor];
-  v7 = [v2 layer];
-  [v7 setBorderColor:v6];
+  systemWhiteColor2 = [MEMORY[0x277D75348] systemWhiteColor];
+  cGColor = [systemWhiteColor2 CGColor];
+  layer2 = [v2 layer];
+  [layer2 setBorderColor:cGColor];
 
-  v8 = [v2 layer];
-  [v8 setBorderWidth:2.0];
+  layer3 = [v2 layer];
+  [layer3 setBorderWidth:2.0];
 
   [v2 setClipsToBounds:1];
   [v2 setContentMode:2];

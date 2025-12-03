@@ -1,6 +1,6 @@
 @interface MOVStreamPreProcessorFactory
 + (id)defaultFactory;
-- (id)preProcessorForFormat:(opaqueCMFormatDescription *)a3 recordingConfiguration:(id)a4;
+- (id)preProcessorForFormat:(opaqueCMFormatDescription *)format recordingConfiguration:(id)configuration;
 @end
 
 @implementation MOVStreamPreProcessorFactory
@@ -24,22 +24,22 @@ uint64_t __46__MOVStreamPreProcessorFactory_defaultFactory__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)preProcessorForFormat:(opaqueCMFormatDescription *)a3 recordingConfiguration:(id)a4
+- (id)preProcessorForFormat:(opaqueCMFormatDescription *)format recordingConfiguration:(id)configuration
 {
-  v5 = a4;
-  v6 = [v5 objectForKey:@"StreamEncoderType"];
-  v7 = [v6 intValue];
+  configurationCopy = configuration;
+  v6 = [configurationCopy objectForKey:@"StreamEncoderType"];
+  intValue = [v6 intValue];
 
-  MediaSubType = CMFormatDescriptionGetMediaSubType(a3);
+  MediaSubType = CMFormatDescriptionGetMediaSubType(format);
   v9 = MediaSubType;
-  v10 = (v7 & 0xFFFFFFFE) != 6 || MediaSubType == 1278226488;
-  if (v10 || ([v5 objectForKey:@"StreamConvertNonPlanarBuffersTo8bitMonochrome"], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "BOOLValue"), v11, (v12 & 1) == 0))
+  v10 = (intValue & 0xFFFFFFFE) != 6 || MediaSubType == 1278226488;
+  if (v10 || ([configurationCopy objectForKey:@"StreamConvertNonPlanarBuffersTo8bitMonochrome"], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "BOOLValue"), v11, (v12 & 1) == 0))
   {
-    if (v9 != 1919365992 || ([v5 objectForKey:@"StreamConvertRGBPlanarHalfToRGBAHalf"], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "BOOLValue"), v13, !v14))
+    if (v9 != 1919365992 || ([configurationCopy objectForKey:@"StreamConvertRGBPlanarHalfToRGBAHalf"], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "BOOLValue"), v13, !v14))
     {
       if ([MIOPixelBufferUtility isPixelFormatRawBayer:v9])
       {
-        v15 = [v5 objectForKey:@"RawBayerRearrangeTypeKey"];
+        v15 = [configurationCopy objectForKey:@"RawBayerRearrangeTypeKey"];
         [v15 intValue];
       }
 

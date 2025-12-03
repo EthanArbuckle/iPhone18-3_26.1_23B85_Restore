@@ -43,7 +43,7 @@
 
 + (id)successfuliForgotCompletionResponse
 {
-  v7[2] = a1;
+  v7[2] = self;
   v7[1] = a2;
   v8[0] = @"X-Apple-AK-Action";
   v9[0] = @"complete";
@@ -52,8 +52,8 @@
   v8[2] = @"X-Apple-Alternate-Id";
   v9[2] = @"001589-08-b439a955-e1e2-4c34-bdd0-e07f91ea8662";
   v8[3] = @"X-Apple-DSID";
-  v3 = [NSString stringWithFormat:@"%llu", 0x1634561156027D1];
-  v9[3] = v3;
+  0x1634561156027D1 = [NSString stringWithFormat:@"%llu", 0x1634561156027D1];
+  v9[3] = 0x1634561156027D1;
   v8[4] = @"X-Apple-Session-Key";
   v9[4] = @"ORMD1JhHa4VAcrOF29SftzhK3AU15YEzcahubvLdgbA=";
   v8[5] = @"X-Apple-Encrypted-Session-Key";
@@ -77,7 +77,7 @@
 
 + (id)succssfuliCSCRecoveryInitiationResponse
 {
-  v7[2] = a1;
+  v7[2] = self;
   v7[1] = a2;
   v8[0] = @"X-Apple-AK-Action";
   v9[0] = @"continue";
@@ -86,8 +86,8 @@
   v8[2] = @"X-Apple-Alternate-Id";
   v9[2] = @"001589-08-b439a955-e1e2-4c34-bdd0-e07f91ea8662";
   v8[3] = @"X-Apple-DSID";
-  v3 = [NSString stringWithFormat:@"%llu", 0x1634561156027D1];
-  v9[3] = v3;
+  0x1634561156027D1 = [NSString stringWithFormat:@"%llu", 0x1634561156027D1];
+  v9[3] = 0x1634561156027D1;
   v8[4] = @"X-Apple-Session-Key";
   v9[4] = @"ORMD1JhHa4VAcrOF29SftzhK3AU15YEzcahubvLdgbA=";
   v8[5] = @"X-Apple-Encrypted-Session-Key";
@@ -111,7 +111,7 @@
 
 + (id)successfulAppleIDCreationResponse
 {
-  v7[2] = a1;
+  v7[2] = self;
   v7[1] = a2;
   v8[0] = @"X-Apple-AK-Action";
   v9[0] = @"complete";
@@ -120,8 +120,8 @@
   v8[2] = @"X-Apple-Alternate-Id";
   v9[2] = @"001589-08-b439a955-e1e2-4c34-bdd0-e07f91ea8662";
   v8[3] = @"X-Apple-DSID";
-  v3 = [NSString stringWithFormat:@"%llu", 0x1634561156027D1];
-  v9[3] = v3;
+  0x1634561156027D1 = [NSString stringWithFormat:@"%llu", 0x1634561156027D1];
+  v9[3] = 0x1634561156027D1;
   v8[4] = @"X-Apple-Session-Key";
   v9[4] = @"ORMD1JhHa4VAcrOF29SftzhK3AU15YEzcahubvLdgbA=";
   v8[5] = @"X-Apple-Encrypted-Session-Key";
@@ -147,11 +147,11 @@
 
 + (id)successfulChildAccountCreationResponse
 {
-  v9[2] = a1;
+  v9[2] = self;
   v9[1] = a2;
-  v9[0] = [a1 successfulAppleIDCreationResponse];
-  v4 = [v9[0] allHeaderFields];
-  v8 = [v4 mutableCopy];
+  v9[0] = [self successfulAppleIDCreationResponse];
+  allHeaderFields = [v9[0] allHeaderFields];
+  v8 = [allHeaderFields mutableCopy];
 
   [v8 setObject:@"hsa2" forKeyedSubscript:@"X-Apple-AK-Auth-Type"];
   [v8 setObject:@"Y29tLmFwcGxlLmdzLmlkbXMuaGI6QUFBQUJMd0lBQUFBQUdlU3FEVVJDbWR6TG1sa2JYTXVhR0tPQkFBQUFDaTlBQVgvcVlkVDZXZENoZGg5V0ZKblp3S1JFZzVXZlIyV2NIRVpmS3lXMmloZ1dTa01LTmN6QUhvV254cnl5ZCt2VTdqcDByQU9IVTZGR01WMk1hc1ByTjdlM2xJVTVzc0VwbDdsZjlPc0JFZDIwMVNxZTN3amxuZVRUVU04MmZXQ0V5eW41eEtwMWprbXZyZ3dpTEx6L3Y2YWVCdFNlYk9wN3duUGl0T3FaSy9mZnUrenlDbnFCQnVqc2NJWTdrTExheVorSnQwPTozMTUzNjAwMDoxNzM3NjY0NTY1NjQy" forKeyedSubscript:@"X-Apple-HB-Token"];
@@ -159,8 +159,8 @@
   [v8 setObject:@"TEST PRK" forKeyedSubscript:@"X-Apple-I-PRK"];
   v5 = [NSHTTPURLResponse alloc];
   v6 = [v9[0] URL];
-  v2 = [v9[0] statusCode];
-  v7 = [v5 initWithURL:v6 statusCode:v2 HTTPVersion:@"1.1" headerFields:v8];
+  statusCode = [v9[0] statusCode];
+  v7 = [v5 initWithURL:v6 statusCode:statusCode HTTPVersion:@"1.1" headerFields:v8];
 
   objc_storeStrong(&v8, 0);
   objc_storeStrong(v9, 0);
@@ -170,9 +170,9 @@
 
 + (id)successfulTeenAccountCreationResponse
 {
-  v4[2] = a1;
+  v4[2] = self;
   v4[1] = a2;
-  v4[0] = [a1 successfulChildAccountCreationResponse];
+  v4[0] = [self successfulChildAccountCreationResponse];
   v3 = v4[0];
   objc_storeStrong(v4, 0);
 
@@ -181,7 +181,7 @@
 
 + (id)successfulFederatedSingleUserResponse
 {
-  v6[2] = a1;
+  v6[2] = self;
   v6[1] = a2;
   v7[0] = @"X-Apple-Session-Key";
   v8[0] = @"ORMD1JhHa4VAcrOF29SftzhK3AU15YEzcahubvLdgbA=";
@@ -205,7 +205,7 @@
 
 + (id)successfulFederatedSingleUserResponseWithPDPInfo
 {
-  v6[2] = a1;
+  v6[2] = self;
   v6[1] = a2;
   v7[0] = @"X-Apple-Session-Key";
   v8[0] = @"ORMD1JhHa4VAcrOF29SftzhK3AU15YEzcahubvLdgbA=";
@@ -239,7 +239,7 @@
 
 + (id)successfulFederatedMultiUserResponse
 {
-  v6[2] = a1;
+  v6[2] = self;
   v6[1] = a2;
   v7[0] = @"X-Apple-SL-Token";
   v8[0] = @"Y29tLmFwcGxlLmdzLmlkbXMuc2x0OjAyNTgwMWM4LTU1ZWYtNDU3Yy1iYmI4LWI4ZmFmMmY4MDNlNldGbGEvbU4rVlBIak1oMm9CMG9Jei8wVXlYeFZaZlI2K0docmxGQlRLdVlCT2J6L21kUXUzQnNpd0ZzZlNocGJjU21RZWh5NDdpMk9tZ25BYnRYcXBrR2R3TzdBSS9adGc1cWNaRXNBSUdBRWxnNks1bEhCU3ZMQVJ4c1BPWms3VlNFTUhrNUU2NFZTRjBCMjM2d1lwTFREZnYxVXVDN1pPMWd2MDFVSFJmMEJ1TmdObncrK3ZPYmlvRWJvYmQwbVVyZmdhWHQxY3RxVjVlWG10SW5rSkZJSXNHNU5iTW1LRjJXV2hrdUR3Z0daemNrK1hXR1BTanhlYVM5L3dnZ0hjTHhPQlJGN1A0d0lJN25DREdFVVlVL0xPNlI0M01yM2tqajBOcHl0S1lzPQ==";
@@ -297,7 +297,7 @@
 
 + (id)successfulAppleIDContinuationResponse
 {
-  v6[2] = a1;
+  v6[2] = self;
   v6[1] = a2;
   v7[0] = @"Content-Type";
   v8[0] = @"text/xml;charset=UTF-8";
@@ -764,7 +764,7 @@
 
 + (id)successfulRepairCompletionResponse
 {
-  v7[2] = a1;
+  v7[2] = self;
   v7[1] = a2;
   v8[0] = @"X-Apple-AK-Action";
   v9[0] = @"complete";
@@ -773,8 +773,8 @@
   v8[2] = @"X-Apple-Alternate-Id";
   v9[2] = @"001589-08-b439a955-e1e2-4c34-bdd0-e07f91ea8662";
   v8[3] = @"X-Apple-DSID";
-  v3 = [NSString stringWithFormat:@"%llu", 0x1634561156027D1];
-  v9[3] = v3;
+  0x1634561156027D1 = [NSString stringWithFormat:@"%llu", 0x1634561156027D1];
+  v9[3] = 0x1634561156027D1;
   v8[4] = @"X-Apple-Session-Key";
   v9[4] = @"ORMD1JhHa4VAcrOF29SftzhK3AU15YEzcahubvLdgbA=";
   v8[5] = @"X-Apple-Encrypted-Session-Key";
@@ -850,7 +850,7 @@
 
 + (id)urlBag
 {
-  v5[2] = a1;
+  v5[2] = self;
   v5[1] = a2;
   v5[0] = @"<?xml version=1.0 encoding=UTF-8?>        <!DOCTYPE plist PUBLIC -//Apple//DTD PLIST 1.0//EN http://www.apple.com/DTDs/PropertyList-1.0.dtd>        <plist version=1.0>        <dict>            <key>env</key>            <dict>                <key>apsEnv</key>                <string>production</string>                <key>idmsEnv</key>                <string>IdMS</string>            </dict>            <key>urls</key>            <dict>                <key>gsService</key>                <dict>                    <key>url</key>                    <string>https://gsa.apple.com/grandslam/GsService2</string>                </dict>                <key>fetchAuthorizedApps</key>                <dict>                    <key>url</key>                    <string>https://gsa.apple.com/grandslam/GsService2/fetchAuthorizedApps</string>                </dict>                <key>fetchUserInfo</key>                <dict>                    <key>url</key>                    <string>https://gsa.apple.com/grandslam/GsService2/fetchUserInfo</string>                </dict>                <key>federatedIntro</key>                <dict>                    <key>url</key>                    <string>%@</string>                </dict>                <key>repair</key>                <dict>                    <key>url</key>                    <string>https://gsa.apple.com/grandslam/GsService2/repair</string>                </dict>                <key>securityUpgrade</key>                <dict>                    <key>url</key>                    <string>https://gsa.apple.com/appleid/account/security/upgrade</string>                </dict>                <key>createAccount</key>                <dict>                    <key>url</key>                    <string>https://gsa.apple.com/appleid/account</string>                </dict>                <key>createChildAccount</key>                <dict>                    <key>url</key>                    <string>https://gsa.apple.com/appleid/account/child</string>                </dict>                <key>createTeenAccount</key>                <dict>                    <key>url</key>                    <string>https://gsa.apple.com/appleid/account/teen</string>                </dict>                <key>signInAlert</key>                <dict>                    <key>url</key>                    <string>https://gsa.apple.com/appleid/settings/account/manage/security/key/notify/auth</string>                </dict>                <key>iForgot</key>                <dict>                    <key>url</key>                    <string>https://gsa.apple.com/iforgot</string>                </dict>                <key>fetchAuthMode</key>                <dict>                    <key>url</key>                    <string>https://gsa.apple.com/grandslam/GsService2/fetchAuthMode</string>                </dict>                <key>passwordChange</key>                <dict>                    <key>url</key>                    <string>https://gsa.apple.com/appleid/account/manage/security/password</string>                </dict>                <key>secondaryAuth</key>                <dict>                    <key>url</key>                    <string>https://gsa.apple.com/appleid/settings/authenticate</string>                </dict>                <key>device_list_self</key>                <dict>                    <key>url</key>                    <string>https://gsa.apple.com/device_list_self</string>                </dict>                <key>collabAccountUpgrade</key>                <dict>                    <key>url</key>                    <string>https://gsa.apple.com/collabAccountUpgrade</string>                </dict>            </dict>        </dict>    </plist>";
   v4 = [v5[0] dataUsingEncoding:4];
@@ -1042,7 +1042,7 @@
 
 + (id)backoffServerInfoConfig
 {
-  v4[2] = a1;
+  v4[2] = self;
   v4[1] = a2;
   v4[0] = &off_10001BFD8;
   v3 = v4[0];
@@ -1053,7 +1053,7 @@
 
 + (id)backoffServerInfoConfigOption1
 {
-  v4[2] = a1;
+  v4[2] = self;
   v4[1] = a2;
   v4[0] = &off_10001C028;
   v3 = v4[0];
@@ -1064,7 +1064,7 @@
 
 + (id)backoffServerInfoConfigOption2
 {
-  v4[2] = a1;
+  v4[2] = self;
   v4[1] = a2;
   v4[0] = &off_10001C0F0;
   v3 = v4[0];
@@ -1075,7 +1075,7 @@
 
 + (id)backoffServerInfoConfigOption3
 {
-  v4[2] = a1;
+  v4[2] = self;
   v4[1] = a2;
   v4[0] = &off_10001C1B8;
   v3 = v4[0];
@@ -1086,7 +1086,7 @@
 
 + (id)backoffServerInfoConfigOption4
 {
-  v4[2] = a1;
+  v4[2] = self;
   v4[1] = a2;
   v4[0] = &off_10001C280;
   v3 = v4[0];
@@ -1097,7 +1097,7 @@
 
 + (id)backoffServerInfoConfigOption5
 {
-  v4[2] = a1;
+  v4[2] = self;
   v4[1] = a2;
   v4[0] = &off_10001C348;
   v3 = v4[0];

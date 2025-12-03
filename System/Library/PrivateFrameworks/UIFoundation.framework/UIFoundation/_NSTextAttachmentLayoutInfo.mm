@@ -3,13 +3,13 @@
 - (CGRect)resolvedAttachmentFrame;
 - (NSTextAttachmentViewProvider)textAttachmentViewProvider;
 - (NSTextLocation)location;
-- (_NSTextAttachmentLayoutInfo)initWithContext:(id)a3 location:(id)a4 attributes:(id)a5;
+- (_NSTextAttachmentLayoutInfo)initWithContext:(id)context location:(id)location attributes:(id)attributes;
 - (__CTRunDelegate)runDelegate;
 - (void)_queryLayout;
-- (void)_queryLayoutWithHorizontalOffset:(double)a3;
+- (void)_queryLayoutWithHorizontalOffset:(double)offset;
 - (void)dealloc;
-- (void)setAttachmentFrameOrigin:(CGPoint)a3;
-- (void)setTextAttachmentViewProvider:(id)a3;
+- (void)setAttachmentFrameOrigin:(CGPoint)origin;
+- (void)setTextAttachmentViewProvider:(id)provider;
 @end
 
 @implementation _NSTextAttachmentLayoutInfo
@@ -46,39 +46,39 @@
 {
   if (self->_isLineFragmentLayout && !self->_isBoundsValid)
   {
-    v3 = [(_NSTextAttachmentLayoutInfo *)self location];
-    v4 = [(_NSTextAttachmentLayoutContext *)self->_layoutContext applicationFrameworkContext];
-    [(_NSTextAttachmentLayoutContext *)self->_layoutContext proposedLineFragmentRectForLocation:v3 attributes:self->_attributes baselineOffset:&self->_baselineOffset];
+    location = [(_NSTextAttachmentLayoutInfo *)self location];
+    applicationFrameworkContext = [(_NSTextAttachmentLayoutContext *)self->_layoutContext applicationFrameworkContext];
+    [(_NSTextAttachmentLayoutContext *)self->_layoutContext proposedLineFragmentRectForLocation:location attributes:self->_attributes baselineOffset:&self->_baselineOffset];
     self->_proposedLineFragment.origin.x = v5;
     self->_proposedLineFragment.origin.y = v6;
     self->_proposedLineFragment.size.width = v7;
     self->_proposedLineFragment.size.height = v8;
     baselineOffset = self->_baselineOffset;
     horizontalOffset = self->_horizontalOffset;
-    v11 = [(_NSTextAttachmentLayoutContext *)self->_layoutContext textContainerForLocation:v3];
-    [(NSTextAttachment *)self->_textAttachment attachmentBoundsForAttributes:self->_attributes location:v3 textContainer:v11 proposedLineFragment:self->_proposedLineFragment.origin.x position:self->_proposedLineFragment.origin.y, self->_proposedLineFragment.size.width, self->_proposedLineFragment.size.height, horizontalOffset, baselineOffset];
+    v11 = [(_NSTextAttachmentLayoutContext *)self->_layoutContext textContainerForLocation:location];
+    [(NSTextAttachment *)self->_textAttachment attachmentBoundsForAttributes:self->_attributes location:location textContainer:v11 proposedLineFragment:self->_proposedLineFragment.origin.x position:self->_proposedLineFragment.origin.y, self->_proposedLineFragment.size.width, self->_proposedLineFragment.size.height, horizontalOffset, baselineOffset];
     self->_bounds.origin.x = v12;
     self->_bounds.origin.y = v13;
     self->_bounds.size.width = v14;
     self->_bounds.size.height = v15;
-    if (v4 == 2)
+    if (applicationFrameworkContext == 2)
     {
       [(NSTextAttachment *)self->_textAttachment bounds];
       if (CGRectIsEmpty(v23))
       {
-        v16 = [(NSTextAttachment *)self->_textAttachment image];
-        if ([(UIImage *)v16 conformsToProtocol:&unk_1F01F0D38])
+        image = [(NSTextAttachment *)self->_textAttachment image];
+        if ([(UIImage *)image conformsToProtocol:&unk_1F01F0D38])
         {
-          [(UIImage *)v16 size];
+          [(UIImage *)image size];
           v24.size.width = v17;
           v24.size.height = v18;
           v24.origin.x = 0.0;
           v24.origin.y = 0.0;
           if (CGRectEqualToRect(self->_bounds, v24))
           {
-            if ([(UIImage *)v16 willProvideAdaptedImageForPresentation])
+            if ([(UIImage *)image willProvideAdaptedImageForPresentation])
             {
-              [(UIImage *)v16 attachmentBoundsForAttributes:self->_attributes location:v3 textContainer:v11 proposedLineFragment:self->_proposedLineFragment.origin.x position:self->_proposedLineFragment.origin.y, self->_proposedLineFragment.size.width, self->_proposedLineFragment.size.height, horizontalOffset, baselineOffset];
+              [(UIImage *)image attachmentBoundsForAttributes:self->_attributes location:location textContainer:v11 proposedLineFragment:self->_proposedLineFragment.origin.x position:self->_proposedLineFragment.origin.y, self->_proposedLineFragment.size.width, self->_proposedLineFragment.size.height, horizontalOffset, baselineOffset];
               self->_bounds.origin.x = v19;
               self->_bounds.origin.y = v20;
               self->_bounds.size.width = v21;
@@ -99,7 +99,7 @@
   location = self->_location;
   if (!location)
   {
-    v4 = [(_NSTextAttachmentLayoutContext *)self->_layoutContext baseLocation];
+    baseLocation = [(_NSTextAttachmentLayoutContext *)self->_layoutContext baseLocation];
     v5 = [-[_NSTextAttachmentLayoutInfo textLayoutFragment](self "textLayoutFragment")];
     if (v5)
     {
@@ -159,7 +159,7 @@ LABEL_6:
   return result;
 }
 
-- (_NSTextAttachmentLayoutInfo)initWithContext:(id)a3 location:(id)a4 attributes:(id)a5
+- (_NSTextAttachmentLayoutInfo)initWithContext:(id)context location:(id)location attributes:(id)attributes
 {
   v16.receiver = self;
   v16.super_class = _NSTextAttachmentLayoutInfo;
@@ -167,20 +167,20 @@ LABEL_6:
   v9 = v8;
   if (v8)
   {
-    v8->_layoutContext = a3;
-    v10 = [a5 objectForKeyedSubscript:@"NSAttachment"];
+    v8->_layoutContext = context;
+    v10 = [attributes objectForKeyedSubscript:@"NSAttachment"];
     v9->_textAttachment = v10;
     if (v10)
     {
-      v9->_location = a4;
-      v9->_attributes = a5;
+      v9->_location = location;
+      v9->_attributes = attributes;
       v9->_isLineFragmentLayout = 1;
-      v11 = [(_NSTextAttachmentLayoutContext *)v9->_layoutContext baseLocation];
-      if (v11)
+      baseLocation = [(_NSTextAttachmentLayoutContext *)v9->_layoutContext baseLocation];
+      if (baseLocation)
       {
-        v12 = v11;
+        v12 = baseLocation;
         v13 = [-[_NSTextAttachmentLayoutInfo textLayoutFragment](v9 "textLayoutFragment")];
-        if (!v13 || (v14 = [v13 rangeForLocation:a4 allowsTrailingEdge:0], v14 == 0x7FFFFFFFFFFFFFFFLL))
+        if (!v13 || (v14 = [v13 rangeForLocation:location allowsTrailingEdge:0], v14 == 0x7FFFFFFFFFFFFFFFLL))
         {
           v14 = [objc_msgSend(-[_NSTextAttachmentLayoutInfo textLayoutFragment](v9 "textLayoutFragment")];
         }
@@ -199,29 +199,29 @@ LABEL_6:
   return v9;
 }
 
-- (void)_queryLayoutWithHorizontalOffset:(double)a3
+- (void)_queryLayoutWithHorizontalOffset:(double)offset
 {
-  if (self->_horizontalOffset != a3)
+  if (self->_horizontalOffset != offset)
   {
-    self->_horizontalOffset = a3;
+    self->_horizontalOffset = offset;
     self->_isBoundsValid = 0;
   }
 
   [(_NSTextAttachmentLayoutInfo *)self _queryLayout];
 }
 
-- (void)setTextAttachmentViewProvider:(id)a3
+- (void)setTextAttachmentViewProvider:(id)provider
 {
   objc_sync_enter(self);
   textAttachmentViewProvider = self->_textAttachmentViewProvider;
-  if (textAttachmentViewProvider != a3)
+  if (textAttachmentViewProvider != provider)
   {
 
-    a3 = a3;
-    self->_textAttachmentViewProvider = a3;
+    provider = provider;
+    self->_textAttachmentViewProvider = provider;
   }
 
-  if (a3)
+  if (provider)
   {
     [(_NSTextAttachmentLayoutContext *)self->_layoutContext setHasViewProvider:1];
   }
@@ -231,10 +231,10 @@ LABEL_6:
 
 - (CGPoint)attachmentFrameOrigin
 {
-  v3 = [(_NSTextAttachmentLayoutContext *)self->_layoutContext hasResolvedAttachmentFrame];
+  hasResolvedAttachmentFrame = [(_NSTextAttachmentLayoutContext *)self->_layoutContext hasResolvedAttachmentFrame];
   p_resolvedAttachmentFrame = &self->_resolvedAttachmentFrame;
   p_y = &self->_resolvedAttachmentFrame.origin.y;
-  if (!v3)
+  if (!hasResolvedAttachmentFrame)
   {
     p_resolvedAttachmentFrame = MEMORY[0x1E695EFF8];
     p_y = (MEMORY[0x1E695EFF8] + 8);
@@ -247,9 +247,9 @@ LABEL_6:
   return result;
 }
 
-- (void)setAttachmentFrameOrigin:(CGPoint)a3
+- (void)setAttachmentFrameOrigin:(CGPoint)origin
 {
-  self->_resolvedAttachmentFrame.origin = a3;
+  self->_resolvedAttachmentFrame.origin = origin;
   self->_resolvedAttachmentFrame.size = self->_bounds.size;
   [(_NSTextAttachmentLayoutContext *)self->_layoutContext setHasResolvedAttachmentFrame:1];
 }

@@ -1,12 +1,12 @@
 @interface MFSearchScope
-+ (id)keyFromScopeIndex:(int64_t)a3;
++ (id)keyFromScopeIndex:(int64_t)index;
 @end
 
 @implementation MFSearchScope
 
-+ (id)keyFromScopeIndex:(int64_t)a3
++ (id)keyFromScopeIndex:(int64_t)index
 {
-  if (a3 == 1)
+  if (index == 1)
   {
     return @"currentMailbox";
   }

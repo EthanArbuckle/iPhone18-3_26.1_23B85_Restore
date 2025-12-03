@@ -7,7 +7,7 @@
 - (id)ef_uniquedObject:()EmailFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 member:v4];
+  v5 = [self member:v4];
   if (!v5)
   {
     if (objc_opt_respondsToSelector())
@@ -21,7 +21,7 @@
     }
 
     v5 = v6;
-    [a1 addObject:v6];
+    [self addObject:v6];
   }
 
   return v5;

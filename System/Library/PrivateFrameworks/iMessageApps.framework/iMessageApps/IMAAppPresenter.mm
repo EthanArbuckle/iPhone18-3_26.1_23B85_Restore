@@ -1,12 +1,12 @@
 @interface IMAAppPresenter
 + (id)logHandle;
-+ (void)loadAppWithIdentifierIfNeeded:(id)a3;
++ (void)loadAppWithIdentifierIfNeeded:(id)needed;
 - (BOOL)addSwitcher;
-- (BOOL)browserTransitionCoordinatorShouldDismissOnDragSuccess:(id)a3;
+- (BOOL)browserTransitionCoordinatorShouldDismissOnDragSuccess:(id)success;
 - (BOOL)isSwitcherOffscreen;
 - (BOOL)presentsStickerPickerInPopover;
 - (CGRect)alwaysExpandedAppViewControllerFrame;
-- (CGSize)browserTransitionCoordinator:(id)a3 preferredSizeForBrowser:(id)a4;
+- (CGSize)browserTransitionCoordinator:(id)coordinator preferredSizeForBrowser:(id)browser;
 - (CKAppCardPresentationOverseer)appCardPresentationOverseer;
 - (CKBrowserSwitcherViewController)switcherViewController;
 - (IMAAppPresenter)init;
@@ -14,40 +14,40 @@
 - (UIViewController)currentAppViewController;
 - (double)switcherHeight;
 - (id)appViewControllerPresenter;
-- (id)convertStickerToIMASticker:(id)a3;
+- (id)convertStickerToIMASticker:(id)sticker;
 - (id)currentStickerViewController;
 - (id)logHandle;
 - (id)transitionsPresentationViewController;
-- (int)dragManager:(id)a3 dropAreaForDragTarget:(id)a4;
-- (void)_hideCompactBrowserAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_presentAppCardWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)_presentAppCardWithBundleIdentifier:(id)a3 style:(unint64_t)a4 completion:(id)a5;
-- (void)animateSwitcherOffscreen:(BOOL)a3 completion:(id)a4;
+- (int)dragManager:(id)manager dropAreaForDragTarget:(id)target;
+- (void)_hideCompactBrowserAnimated:(BOOL)animated completion:(id)completion;
+- (void)_presentAppCardWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)_presentAppCardWithBundleIdentifier:(id)identifier style:(unint64_t)style completion:(id)completion;
+- (void)animateSwitcherOffscreen:(BOOL)offscreen completion:(id)completion;
 - (void)appCardOverseerDidDismissAppCard;
-- (void)appPresenterDidSelectAppWithIdentifier:(id)a3;
-- (void)appPresenterDidSelectAppWithIdentifier:(id)a3 type:(id)a4;
-- (void)commitSticker:(id)a3 stickerFrame:(CGRect)a4;
-- (void)commitSticker:(id)a3 withDragTarget:(id)a4 draggedSticker:(id)a5;
-- (void)convertIMSticker:(id)a3 bakeInEffect:(BOOL)a4 completion:(id)a5;
+- (void)appPresenterDidSelectAppWithIdentifier:(id)identifier;
+- (void)appPresenterDidSelectAppWithIdentifier:(id)identifier type:(id)type;
+- (void)commitSticker:(id)sticker stickerFrame:(CGRect)frame;
+- (void)commitSticker:(id)sticker withDragTarget:(id)target draggedSticker:(id)draggedSticker;
+- (void)convertIMSticker:(id)sticker bakeInEffect:(BOOL)effect completion:(id)completion;
 - (void)dealloc;
-- (void)dragManager:(id)a3 draggedItemWithTarget:(id)a4;
-- (void)dragManager:(id)a3 overrideDropPointForTarget:(id)a4 completion:(id)a5;
-- (void)dragManagerDidBeginDragging:(id)a3;
-- (void)dragManagerDidEndDragging:(id)a3;
-- (void)notifyDelegateOfSelectedPlugin:(id)a3 type:(id)a4;
-- (void)positionSwitcherOffscreen:(BOOL)a3;
-- (void)presentAppWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)presentFullScreenModalAppWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)presentPopoverAppWithBundleIdentifier:(id)a3 sourceRect:(CGRect)a4 inView:(id)a5 completion:(id)a6;
-- (void)requestPresentationStyleExpanded:(BOOL)a3;
-- (void)requestPresentationStyleFullScreenModalForPlugin:(id)a3 preferredContentSize:(CGSize)a4;
-- (void)showBrowserForPluginIdentifier:(id)a3 style:(unint64_t)a4 completion:(id)a5;
-- (void)startEditingPayload:(id)a3 dismiss:(BOOL)a4;
-- (void)stickerDruidDragEndedWithIMSticker:(id)a3;
+- (void)dragManager:(id)manager draggedItemWithTarget:(id)target;
+- (void)dragManager:(id)manager overrideDropPointForTarget:(id)target completion:(id)completion;
+- (void)dragManagerDidBeginDragging:(id)dragging;
+- (void)dragManagerDidEndDragging:(id)dragging;
+- (void)notifyDelegateOfSelectedPlugin:(id)plugin type:(id)type;
+- (void)positionSwitcherOffscreen:(BOOL)offscreen;
+- (void)presentAppWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)presentFullScreenModalAppWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)presentPopoverAppWithBundleIdentifier:(id)identifier sourceRect:(CGRect)rect inView:(id)view completion:(id)completion;
+- (void)requestPresentationStyleExpanded:(BOOL)expanded;
+- (void)requestPresentationStyleFullScreenModalForPlugin:(id)plugin preferredContentSize:(CGSize)size;
+- (void)showBrowserForPluginIdentifier:(id)identifier style:(unint64_t)style completion:(id)completion;
+- (void)startEditingPayload:(id)payload dismiss:(BOOL)dismiss;
+- (void)stickerDruidDragEndedWithIMSticker:(id)sticker;
 - (void)stickerDruidDragStarted;
-- (void)switcherViewControllerDidFinishSwitching:(id)a3 toViewController:(id)a4;
+- (void)switcherViewControllerDidFinishSwitching:(id)switching toViewController:(id)controller;
 - (void)updateAppFrameForRotation;
-- (void)updatePopoverWindowLocation:(CGRect)a3 inView:(id)a4 completion:(id)a5;
+- (void)updatePopoverWindowLocation:(CGRect)location inView:(id)view completion:(id)completion;
 - (void)updateSwitcherViewFrame;
 @end
 
@@ -86,14 +86,14 @@ uint64_t __28__IMAAppPresenter_logHandle__block_invoke()
   v2 = [(IMAAppPresenter *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CF9788] sharedInstance];
+    mEMORY[0x277CF9788] = [MEMORY[0x277CF9788] sharedInstance];
     v4 = MEMORY[0x277C8A910](@"CKPluginExtensionStateObserver", @"ChatKit");
     if (v4)
     {
       v5 = v4;
       if (objc_opt_respondsToSelector())
       {
-        v6 = [v5 sharedInstance];
+        sharedInstance = [v5 sharedInstance];
       }
     }
   }
@@ -103,92 +103,92 @@ uint64_t __28__IMAAppPresenter_logHandle__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CF9788] sharedInstance];
-  [v3 invalidateAllActivePlugins];
+  mEMORY[0x277CF9788] = [MEMORY[0x277CF9788] sharedInstance];
+  [mEMORY[0x277CF9788] invalidateAllActivePlugins];
 
-  v4 = [MEMORY[0x277CF9788] sharedInstance];
-  [v4 forceKillRemoteExtensionsWithDelay:0];
+  mEMORY[0x277CF9788]2 = [MEMORY[0x277CF9788] sharedInstance];
+  [mEMORY[0x277CF9788]2 forceKillRemoteExtensionsWithDelay:0];
 
   v5.receiver = self;
   v5.super_class = IMAAppPresenter;
   [(IMAAppPresenter *)&v5 dealloc];
 }
 
-- (void)appPresenterDidSelectAppWithIdentifier:(id)a3 type:(id)a4
+- (void)appPresenterDidSelectAppWithIdentifier:(id)identifier type:(id)type
 {
   v6 = MEMORY[0x277D18D38];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 sharedInstance];
-  v10 = [v9 balloonPluginForBundleID:v8];
+  typeCopy = type;
+  identifierCopy = identifier;
+  sharedInstance = [v6 sharedInstance];
+  v10 = [sharedInstance balloonPluginForBundleID:identifierCopy];
 
-  [(IMAAppPresenter *)self notifyDelegateOfSelectedPlugin:v10 type:v7];
+  [(IMAAppPresenter *)self notifyDelegateOfSelectedPlugin:v10 type:typeCopy];
 }
 
-- (void)appPresenterDidSelectAppWithIdentifier:(id)a3
+- (void)appPresenterDidSelectAppWithIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277D18D38];
-  v5 = a3;
-  v6 = [v4 sharedInstance];
-  v7 = [v6 balloonPluginForBundleID:v5];
+  identifierCopy = identifier;
+  sharedInstance = [v4 sharedInstance];
+  v7 = [sharedInstance balloonPluginForBundleID:identifierCopy];
 
   [(IMAAppPresenter *)self notifyDelegateOfSelectedPlugin:v7];
 }
 
-- (void)notifyDelegateOfSelectedPlugin:(id)a3 type:(id)a4
+- (void)notifyDelegateOfSelectedPlugin:(id)plugin type:(id)type
 {
-  v12 = a3;
-  v6 = a4;
+  pluginCopy = plugin;
+  typeCopy = type;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v12 extension];
-    if (v7)
+    extension = [pluginCopy extension];
+    if (extension)
     {
       if (_os_feature_enabled_impl())
       {
-        v8 = v12;
+        v8 = pluginCopy;
       }
 
       else
       {
-        v8 = v7;
+        v8 = extension;
       }
 
-      v9 = [v8 identifier];
+      identifier = [v8 identifier];
     }
 
     else
     {
-      v10 = [v12 appBundle];
-      v9 = [v10 bundleIdentifier];
+      appBundle = [pluginCopy appBundle];
+      identifier = [appBundle bundleIdentifier];
     }
   }
 
   else
   {
-    v9 = [v12 identifier];
+    identifier = [pluginCopy identifier];
   }
 
-  v11 = [(IMAAppPresenter *)self delegate];
+  delegate = [(IMAAppPresenter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v11 didSelectAppWithBundleIdentifier:v9 type:v6];
+    [delegate didSelectAppWithBundleIdentifier:identifier type:typeCopy];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v11 didSelectAppWithBundleIdentifier:v9];
+    [delegate didSelectAppWithBundleIdentifier:identifier];
   }
 }
 
-- (void)presentAppWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)presentAppWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(IMAAppPresenter *)self isAppCardsEnabled])
   {
-    [(IMAAppPresenter *)self _presentAppCardWithBundleIdentifier:v6 completion:v7];
+    [(IMAAppPresenter *)self _presentAppCardWithBundleIdentifier:identifierCopy completion:completionCopy];
   }
 
   else
@@ -201,25 +201,25 @@ uint64_t __28__IMAAppPresenter_logHandle__block_invoke()
   }
 }
 
-- (void)_presentAppCardWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)_presentAppCardWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(IMAAppPresenter *)self _presentAppCardWithBundleIdentifier:v7 style:[(IMAAppPresenter *)self alwaysPresentAppsExpanded] completion:v6];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  [(IMAAppPresenter *)self _presentAppCardWithBundleIdentifier:identifierCopy style:[(IMAAppPresenter *)self alwaysPresentAppsExpanded] completion:completionCopy];
 }
 
-- (void)_presentAppCardWithBundleIdentifier:(id)a3 style:(unint64_t)a4 completion:(id)a5
+- (void)_presentAppCardWithBundleIdentifier:(id)identifier style:(unint64_t)style completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(IMAAppPresenter *)self appCardPresentationOverseer];
-  v11 = [MEMORY[0x277D18D38] sharedInstance];
-  v12 = [v11 balloonPluginForBundleID:v9];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  appCardPresentationOverseer = [(IMAAppPresenter *)self appCardPresentationOverseer];
+  mEMORY[0x277D18D38] = [MEMORY[0x277D18D38] sharedInstance];
+  v12 = [mEMORY[0x277D18D38] balloonPluginForBundleID:identifierCopy];
 
-  v13 = [v10 updateCurrentBrowserForPlugin:v12 dataSource:0 pluginContext:0];
-  v14 = [v13 view];
-  [v14 setNeedsLayout];
-  [v14 layoutIfNeeded];
+  v13 = [appCardPresentationOverseer updateCurrentBrowserForPlugin:v12 dataSource:0 pluginContext:0];
+  view = [v13 view];
+  [view setNeedsLayout];
+  [view layoutIfNeeded];
   objc_storeStrong(&self->_currentBalloonPlugin, v12);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -227,10 +227,10 @@ uint64_t __28__IMAAppPresenter_logHandle__block_invoke()
   v17[3] = &unk_27A66DD38;
   v17[4] = self;
   v18 = v12;
-  v19 = v8;
-  v15 = v8;
+  v19 = completionCopy;
+  v15 = completionCopy;
   v16 = v12;
-  [v10 presentCardWithStyle:a4 animated:1 completion:v17];
+  [appCardPresentationOverseer presentCardWithStyle:style animated:1 completion:v17];
 }
 
 uint64_t __72__IMAAppPresenter__presentAppCardWithBundleIdentifier_style_completion___block_invoke(uint64_t a1)
@@ -247,13 +247,13 @@ uint64_t __72__IMAAppPresenter__presentAppCardWithBundleIdentifier_style_complet
   return result;
 }
 
-- (void)presentFullScreenModalAppWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)presentFullScreenModalAppWithBundleIdentifier:(id)identifier completion:(id)completion
 {
   v6 = MEMORY[0x277D18D38];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 sharedInstance];
-  v12 = [v9 balloonPluginForBundleID:v8];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  sharedInstance = [v6 sharedInstance];
+  v12 = [sharedInstance balloonPluginForBundleID:identifierCopy];
 
   v10 = objc_alloc_init(MEMORY[0x277CF97B0]);
   transitionCoordinator = self->_transitionCoordinator;
@@ -261,26 +261,26 @@ uint64_t __72__IMAAppPresenter__presentAppCardWithBundleIdentifier_style_complet
 
   [(CKBrowserTransitionCoordinator *)self->_transitionCoordinator setSendDelegate:self];
   [(CKBrowserTransitionCoordinator *)self->_transitionCoordinator setDelegate:self];
-  [(CKBrowserTransitionCoordinator *)self->_transitionCoordinator presentPluginFullScreenModal:v12 preferredContentSize:1 animated:v7 completion:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
+  [(CKBrowserTransitionCoordinator *)self->_transitionCoordinator presentPluginFullScreenModal:v12 preferredContentSize:1 animated:completionCopy completion:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
 }
 
-- (void)presentPopoverAppWithBundleIdentifier:(id)a3 sourceRect:(CGRect)a4 inView:(id)a5 completion:(id)a6
+- (void)presentPopoverAppWithBundleIdentifier:(id)identifier sourceRect:(CGRect)rect inView:(id)view completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = [(IMAAppPresenter *)self appCardPresentationOverseer];
-  v17 = [MEMORY[0x277D18D38] sharedInstance];
-  v18 = [v17 balloonPluginForBundleID:v15];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  completionCopy = completion;
+  viewCopy = view;
+  identifierCopy = identifier;
+  appCardPresentationOverseer = [(IMAAppPresenter *)self appCardPresentationOverseer];
+  mEMORY[0x277D18D38] = [MEMORY[0x277D18D38] sharedInstance];
+  v18 = [mEMORY[0x277D18D38] balloonPluginForBundleID:identifierCopy];
 
-  v19 = [v16 updateCurrentBrowserForPlugin:v18 dataSource:0 pluginContext:0];
-  v20 = [v19 view];
-  [v20 setNeedsLayout];
-  [v20 layoutIfNeeded];
+  v19 = [appCardPresentationOverseer updateCurrentBrowserForPlugin:v18 dataSource:0 pluginContext:0];
+  view = [v19 view];
+  [view setNeedsLayout];
+  [view layoutIfNeeded];
   objc_storeStrong(&self->_currentBalloonPlugin, v18);
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -288,10 +288,10 @@ uint64_t __72__IMAAppPresenter__presentAppCardWithBundleIdentifier_style_complet
   v23[3] = &unk_27A66DD38;
   v23[4] = self;
   v24 = v18;
-  v25 = v13;
-  v21 = v13;
+  v25 = completionCopy;
+  v21 = completionCopy;
   v22 = v18;
-  [v16 presentPopoverFromView:v14 sourceRect:v23 completion:{x, y, width, height}];
+  [appCardPresentationOverseer presentPopoverFromView:viewCopy sourceRect:v23 completion:{x, y, width, height}];
 }
 
 uint64_t __86__IMAAppPresenter_presentPopoverAppWithBundleIdentifier_sourceRect_inView_completion___block_invoke(uint64_t a1)
@@ -308,15 +308,15 @@ uint64_t __86__IMAAppPresenter_presentPopoverAppWithBundleIdentifier_sourceRect_
   return result;
 }
 
-- (void)updatePopoverWindowLocation:(CGRect)a3 inView:(id)a4 completion:(id)a5
+- (void)updatePopoverWindowLocation:(CGRect)location inView:(id)view completion:(id)completion
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a5;
-  v11 = [(IMAAppPresenter *)self appCardPresentationOverseer];
-  [v11 updatePopoverLocation:v10 completion:{x, y, width, height}];
+  height = location.size.height;
+  width = location.size.width;
+  y = location.origin.y;
+  x = location.origin.x;
+  completionCopy = completion;
+  appCardPresentationOverseer = [(IMAAppPresenter *)self appCardPresentationOverseer];
+  [appCardPresentationOverseer updatePopoverLocation:completionCopy completion:{x, y, width, height}];
 }
 
 - (UIViewController)currentAppViewController
@@ -324,27 +324,27 @@ uint64_t __86__IMAAppPresenter_presentPopoverAppWithBundleIdentifier_sourceRect_
   v2 = self->_currentBalloonPlugin;
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([(IMBalloonPlugin *)v2 extension], v3 = objc_claimAutoreleasedReturnValue(), v3, !v3))
   {
-    v6 = [MEMORY[0x277CF9788] sharedInstance];
-    v7 = [(IMBalloonPlugin *)v2 identifier];
-    v8 = [v6 existingViewControllerForPluginIdentifier:v7];
+    mEMORY[0x277CF9788] = [MEMORY[0x277CF9788] sharedInstance];
+    identifier = [(IMBalloonPlugin *)v2 identifier];
+    v8 = [mEMORY[0x277CF9788] existingViewControllerForPluginIdentifier:identifier];
 
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v8 remoteViewController];
+      remoteViewController = [v8 remoteViewController];
     }
 
     else
     {
-      v4 = 0;
+      remoteViewController = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    remoteViewController = 0;
   }
 
-  return v4;
+  return remoteViewController;
 }
 
 uint64_t __60__IMAAppPresenter_hideAppViewControllerAnimated_completion___block_invoke(uint64_t a1)
@@ -365,22 +365,22 @@ uint64_t __60__IMAAppPresenter_hideAppViewControllerAnimated_completion___block_
   return result;
 }
 
-- (void)_hideCompactBrowserAnimated:(BOOL)a3 completion:(id)a4
+- (void)_hideCompactBrowserAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(IMAAppPresenter *)self switcherViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  switcherViewController = [(IMAAppPresenter *)self switcherViewController];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __58__IMAAppPresenter__hideCompactBrowserAnimated_completion___block_invoke;
   v15 = &unk_27A66DD88;
-  v16 = v7;
-  v17 = v6;
-  v8 = v6;
-  v9 = v7;
+  v16 = switcherViewController;
+  v17 = completionCopy;
+  v8 = completionCopy;
+  v9 = switcherViewController;
   v10 = MEMORY[0x277C8AB80](&v12);
   v11 = v10;
-  if (v4)
+  if (animatedCopy)
   {
     [(IMAAppPresenter *)self animateSwitcherOffscreen:1 completion:v10, v12, v13, v14, v15, v16, v17];
   }
@@ -408,17 +408,17 @@ void __58__IMAAppPresenter__hideCompactBrowserAnimated_completion___block_invoke
 - (void)updateAppFrameForRotation
 {
   [(IMAAppPresenter *)self updateSwitcherViewFrame];
-  v4 = [(IMAAppPresenter *)self switcherViewController];
-  v3 = [v4 view];
-  [v3 layoutIfNeeded];
+  switcherViewController = [(IMAAppPresenter *)self switcherViewController];
+  view = [switcherViewController view];
+  [view layoutIfNeeded];
 }
 
 - (id)appViewControllerPresenter
 {
-  v2 = [(IMAAppPresenter *)self delegate];
-  v3 = [v2 dockPresentationViewController];
+  delegate = [(IMAAppPresenter *)self delegate];
+  dockPresentationViewController = [delegate dockPresentationViewController];
 
-  return v3;
+  return dockPresentationViewController;
 }
 
 - (double)switcherHeight
@@ -429,12 +429,12 @@ void __58__IMAAppPresenter__hideCompactBrowserAnimated_completion___block_invoke
     return v3;
   }
 
-  v4 = [MEMORY[0x277CF97E0] sharedBehaviors];
-  [v4 browserSwitcherExpandedGrabberHeaderHeight];
+  mEMORY[0x277CF97E0] = [MEMORY[0x277CF97E0] sharedBehaviors];
+  [mEMORY[0x277CF97E0] browserSwitcherExpandedGrabberHeaderHeight];
   v6 = v5 + 159.0;
 
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   v9 = v8;
   v11 = v10;
 
@@ -447,9 +447,9 @@ void __58__IMAAppPresenter__hideCompactBrowserAnimated_completion___block_invoke
   if ([(IMAAppPresenter *)self isAppCardsEnabled])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v14 = [WeakRetained dockPresentationViewController];
-    v15 = [v14 view];
-    [v15 safeAreaInsets];
+    dockPresentationViewController = [WeakRetained dockPresentationViewController];
+    view = [dockPresentationViewController view];
+    [view safeAreaInsets];
     v6 = v6 - v16;
   }
 
@@ -463,15 +463,15 @@ void __58__IMAAppPresenter__hideCompactBrowserAnimated_completion___block_invoke
   {
     v4 = objc_alloc(MEMORY[0x277CF97A8]);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v6 = [WeakRetained dockPresentationViewController];
-    v7 = [v4 initWithConversation:0 sendDelegate:self presentingViewController:v6];
+    dockPresentationViewController = [WeakRetained dockPresentationViewController];
+    v7 = [v4 initWithConversation:0 sendDelegate:self presentingViewController:dockPresentationViewController];
     v8 = self->_switcherViewController;
     self->_switcherViewController = v7;
 
     [(CKBrowserSwitcherViewController *)self->_switcherViewController setDelegate:self];
-    v9 = [(CKBrowserSwitcherViewController *)self->_switcherViewController transitionCoordinator];
+    transitionCoordinator = [(CKBrowserSwitcherViewController *)self->_switcherViewController transitionCoordinator];
     transitionCoordinator = self->_transitionCoordinator;
-    self->_transitionCoordinator = v9;
+    self->_transitionCoordinator = transitionCoordinator;
 
     switcherViewController = self->_switcherViewController;
   }
@@ -486,8 +486,8 @@ void __58__IMAAppPresenter__hideCompactBrowserAnimated_completion___block_invoke
   {
     v4 = objc_alloc(MEMORY[0x277CF9778]);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v6 = [WeakRetained dockPresentationViewController];
-    v7 = [v4 initWithPresentingViewController:v6 sendDelegate:self];
+    dockPresentationViewController = [WeakRetained dockPresentationViewController];
+    v7 = [v4 initWithPresentingViewController:dockPresentationViewController sendDelegate:self];
     v8 = self->_appCardPresentationOverseer;
     self->_appCardPresentationOverseer = v7;
 
@@ -500,40 +500,40 @@ void __58__IMAAppPresenter__hideCompactBrowserAnimated_completion___block_invoke
 
 - (BOOL)addSwitcher
 {
-  v3 = [(IMAAppPresenter *)self switcherViewController];
-  v4 = [v3 parentViewController];
+  switcherViewController = [(IMAAppPresenter *)self switcherViewController];
+  parentViewController = [switcherViewController parentViewController];
 
-  if (!v4)
+  if (!parentViewController)
   {
-    v5 = [(IMAAppPresenter *)self appViewControllerPresenter];
-    [v5 addChildViewController:v3];
+    appViewControllerPresenter = [(IMAAppPresenter *)self appViewControllerPresenter];
+    [appViewControllerPresenter addChildViewController:switcherViewController];
 
-    v6 = [v3 view];
-    [v6 setBackgroundColor:0];
+    view = [switcherViewController view];
+    [view setBackgroundColor:0];
 
-    v7 = [v3 contentView];
-    [v7 setBackgroundColor:0];
+    contentView = [switcherViewController contentView];
+    [contentView setBackgroundColor:0];
 
-    v8 = [v3 view];
-    v9 = [(IMAAppPresenter *)self appViewControllerPresenter];
-    v10 = [v9 view];
-    [v10 addSubview:v8];
+    view2 = [switcherViewController view];
+    appViewControllerPresenter2 = [(IMAAppPresenter *)self appViewControllerPresenter];
+    view3 = [appViewControllerPresenter2 view];
+    [view3 addSubview:view2];
 
     [(IMAAppPresenter *)self updateSwitcherViewFrame];
-    v11 = [(IMAAppPresenter *)self appViewControllerPresenter];
-    [v3 didMoveToParentViewController:v11];
+    appViewControllerPresenter3 = [(IMAAppPresenter *)self appViewControllerPresenter];
+    [switcherViewController didMoveToParentViewController:appViewControllerPresenter3];
   }
 
-  return v4 == 0;
+  return parentViewController == 0;
 }
 
 - (void)updateSwitcherViewFrame
 {
   if (![(IMAAppPresenter *)self isAppCardsEnabled])
   {
-    v3 = [(IMAAppPresenter *)self appViewControllerPresenter];
-    v4 = [v3 view];
-    [v4 bounds];
+    appViewControllerPresenter = [(IMAAppPresenter *)self appViewControllerPresenter];
+    view = [appViewControllerPresenter view];
+    [view bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -551,47 +551,47 @@ void __58__IMAAppPresenter__hideCompactBrowserAnimated_completion___block_invoke
     v21.size.width = v10;
     v21.size.height = v12;
     Width = CGRectGetWidth(v21);
-    v18 = [(IMAAppPresenter *)self switcherViewController];
-    v17 = [v18 view];
-    [v17 setFrame:{0.0, v15, Width, v14}];
+    switcherViewController = [(IMAAppPresenter *)self switcherViewController];
+    view2 = [switcherViewController view];
+    [view2 setFrame:{0.0, v15, Width, v14}];
   }
 }
 
-- (void)animateSwitcherOffscreen:(BOOL)a3 completion:(id)a4
+- (void)animateSwitcherOffscreen:(BOOL)offscreen completion:(id)completion
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __55__IMAAppPresenter_animateSwitcherOffscreen_completion___block_invoke;
   v4[3] = &unk_27A66DDB0;
   v4[4] = self;
-  v5 = a3;
-  [MEMORY[0x277D75D18] animateWithDuration:0 delay:v4 usingSpringWithDamping:a4 initialSpringVelocity:0.3 options:0.3 animations:1.0 completion:0.0];
+  offscreenCopy = offscreen;
+  [MEMORY[0x277D75D18] animateWithDuration:0 delay:v4 usingSpringWithDamping:completion initialSpringVelocity:0.3 options:0.3 animations:1.0 completion:0.0];
 }
 
-- (void)positionSwitcherOffscreen:(BOOL)a3
+- (void)positionSwitcherOffscreen:(BOOL)offscreen
 {
   v4 = 0.0;
-  if (!a3)
+  if (!offscreen)
   {
     [(IMAAppPresenter *)self switcherHeight];
     v4 = v5;
   }
 
-  v6 = [(IMAAppPresenter *)self switcherViewController];
-  v7 = [v6 view];
-  [v7 frame];
+  switcherViewController = [(IMAAppPresenter *)self switcherViewController];
+  view = [switcherViewController view];
+  [view frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(IMAAppPresenter *)self appViewControllerPresenter];
-  v15 = [v14 view];
-  [v15 bounds];
+  appViewControllerPresenter = [(IMAAppPresenter *)self appViewControllerPresenter];
+  view2 = [appViewControllerPresenter view];
+  [view2 bounds];
   v16 = CGRectGetMaxY(v20) - v4;
 
-  v18 = [(IMAAppPresenter *)self switcherViewController];
-  v17 = [v18 view];
-  [v17 setFrame:{v9, v16, v11, v13}];
+  switcherViewController2 = [(IMAAppPresenter *)self switcherViewController];
+  view3 = [switcherViewController2 view];
+  [view3 setFrame:{v9, v16, v11, v13}];
 }
 
 - (BOOL)isSwitcherOffscreen
@@ -601,29 +601,29 @@ void __58__IMAAppPresenter__hideCompactBrowserAnimated_completion___block_invoke
     return 0;
   }
 
-  v3 = [(IMAAppPresenter *)self switcherViewController];
-  v4 = [v3 view];
-  [v4 frame];
+  switcherViewController = [(IMAAppPresenter *)self switcherViewController];
+  view = [switcherViewController view];
+  [view frame];
   MinY = CGRectGetMinY(v10);
-  v6 = [(IMAAppPresenter *)self appViewControllerPresenter];
-  v7 = [v6 view];
-  [v7 bounds];
+  appViewControllerPresenter = [(IMAAppPresenter *)self appViewControllerPresenter];
+  view2 = [appViewControllerPresenter view];
+  [view2 bounds];
   v8 = MinY >= CGRectGetMaxY(v11);
 
   return v8;
 }
 
-- (void)startEditingPayload:(id)a3 dismiss:(BOOL)a4
+- (void)startEditingPayload:(id)payload dismiss:(BOOL)dismiss
 {
-  v5 = [a3 fileURL];
-  if (v5)
+  fileURL = [payload fileURL];
+  if (fileURL)
   {
-    v8 = v5;
-    v6 = [[IMASticker alloc] initWithFileURL:v5 stickerName:0 accessibilityLabel:0 representations:0];
-    v7 = [(IMAAppPresenter *)self delegate];
-    [v7 addSticker:v6];
+    v8 = fileURL;
+    v6 = [[IMASticker alloc] initWithFileURL:fileURL stickerName:0 accessibilityLabel:0 representations:0];
+    delegate = [(IMAAppPresenter *)self delegate];
+    [delegate addSticker:v6];
 
-    v5 = v8;
+    fileURL = v8;
   }
 }
 
@@ -653,21 +653,21 @@ void __56__IMAAppPresenter_dismissAndReloadInputViews_forPlugin___block_invoke_2
   *(v5 + 48) = 0;
 }
 
-- (void)requestPresentationStyleExpanded:(BOOL)a3
+- (void)requestPresentationStyleExpanded:(BOOL)expanded
 {
-  v3 = a3;
+  expandedCopy = expanded;
   if (![(IMAAppPresenter *)self alwaysPresentAppsExpanded])
   {
     if ([(IMAAppPresenter *)self isAppCardsEnabled])
     {
-      v6 = [(IMAAppPresenter *)self appCardPresentationOverseer];
-      [v6 requestPresentationStyle:v3];
+      appCardPresentationOverseer = [(IMAAppPresenter *)self appCardPresentationOverseer];
+      [appCardPresentationOverseer requestPresentationStyle:expandedCopy];
     }
 
     else
     {
-      v5 = [(IMAAppPresenter *)self logHandle];
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      logHandle = [(IMAAppPresenter *)self logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
         [IMAAppPresenter requestPresentationStyleExpanded:];
       }
@@ -675,25 +675,25 @@ void __56__IMAAppPresenter_dismissAndReloadInputViews_forPlugin___block_invoke_2
   }
 }
 
-- (void)requestPresentationStyleFullScreenModalForPlugin:(id)a3 preferredContentSize:(CGSize)a4
+- (void)requestPresentationStyleFullScreenModalForPlugin:(id)plugin preferredContentSize:(CGSize)size
 {
   v5 = MEMORY[0x277D18D38];
-  v6 = a3;
-  v7 = [v5 sharedInstance];
-  v9 = [v7 balloonPluginForBundleID:v6];
+  pluginCopy = plugin;
+  sharedInstance = [v5 sharedInstance];
+  v9 = [sharedInstance balloonPluginForBundleID:pluginCopy];
 
-  v8 = [(IMAAppPresenter *)self switcherViewController];
-  [v8 showBrowserFullscreenModalForPlugin:v9 datasource:0 preferredContentSize:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+  switcherViewController = [(IMAAppPresenter *)self switcherViewController];
+  [switcherViewController showBrowserFullscreenModalForPlugin:v9 datasource:0 preferredContentSize:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
 }
 
-- (void)commitSticker:(id)a3 stickerFrame:(CGRect)a4
+- (void)commitSticker:(id)sticker stickerFrame:(CGRect)frame
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __46__IMAAppPresenter_commitSticker_stickerFrame___block_invoke;
   v4[3] = &unk_27A66DDD8;
   v4[4] = self;
-  [(IMAAppPresenter *)self convertIMSticker:a3 bakeInEffect:1 completion:v4];
+  [(IMAAppPresenter *)self convertIMSticker:sticker bakeInEffect:1 completion:v4];
 }
 
 void __46__IMAAppPresenter_commitSticker_stickerFrame___block_invoke(uint64_t a1, void *a2)
@@ -704,17 +704,17 @@ void __46__IMAAppPresenter_commitSticker_stickerFrame___block_invoke(uint64_t a1
   [v4 addSticker:v3];
 }
 
-- (void)commitSticker:(id)a3 withDragTarget:(id)a4 draggedSticker:(id)a5
+- (void)commitSticker:(id)sticker withDragTarget:(id)target draggedSticker:(id)draggedSticker
 {
-  v7 = a4;
+  targetCopy = target;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__IMAAppPresenter_commitSticker_withDragTarget_draggedSticker___block_invoke;
   v9[3] = &unk_27A66DE00;
-  v10 = v7;
-  v11 = self;
-  v8 = v7;
-  [(IMAAppPresenter *)self convertIMSticker:a3 bakeInEffect:0 completion:v9];
+  v10 = targetCopy;
+  selfCopy = self;
+  v8 = targetCopy;
+  [(IMAAppPresenter *)self convertIMSticker:sticker bakeInEffect:0 completion:v9];
 }
 
 void __63__IMAAppPresenter_commitSticker_withDragTarget_draggedSticker___block_invoke(uint64_t a1, void *a2)
@@ -737,36 +737,36 @@ void __63__IMAAppPresenter_commitSticker_withDragTarget_draggedSticker___block_i
   [v18 addSticker:v3 atDropTarget:v19];
 }
 
-- (void)convertIMSticker:(id)a3 bakeInEffect:(BOOL)a4 completion:(id)a5
+- (void)convertIMSticker:(id)sticker bakeInEffect:(BOOL)effect completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 representations];
+  stickerCopy = sticker;
+  completionCopy = completion;
+  representations = [stickerCopy representations];
   v11 = dispatch_group_create();
   v12 = dispatch_get_global_queue(2, 0);
-  v13 = [v8 stickerEffectType];
-  if (v13)
+  stickerEffectType = [stickerCopy stickerEffectType];
+  if (stickerEffectType)
   {
-    v14 = [MEMORY[0x277D78530] effectWithType:v13];
+    v14 = [MEMORY[0x277D78530] effectWithType:stickerEffectType];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __60__IMAAppPresenter_convertIMSticker_bakeInEffect_completion___block_invoke;
     block[3] = &unk_27A66DE78;
-    v23 = a4;
-    v17 = v10;
+    effectCopy = effect;
+    v17 = representations;
     v18 = v11;
     v19 = v14;
-    v20 = self;
-    v21 = v8;
-    v22 = v9;
+    selfCopy = self;
+    v21 = stickerCopy;
+    v22 = completionCopy;
     v15 = v14;
     dispatch_async(v12, block);
   }
 
   else
   {
-    v15 = [(IMAAppPresenter *)self convertStickerToIMASticker:v8];
-    (*(v9 + 2))(v9, v15);
+    v15 = [(IMAAppPresenter *)self convertStickerToIMASticker:stickerCopy];
+    (*(completionCopy + 2))(completionCopy, v15);
   }
 }
 
@@ -850,35 +850,35 @@ void __60__IMAAppPresenter_convertIMSticker_bakeInEffect_completion___block_invo
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)convertStickerToIMASticker:(id)a3
+- (id)convertStickerToIMASticker:(id)sticker
 {
-  v3 = a3;
+  stickerCopy = sticker;
   v4 = [IMASticker alloc];
-  v19 = [v3 stickerGUID];
-  v18 = [v3 fileURL];
-  v17 = [v3 representations];
-  v15 = [v3 stickerEffectType];
-  if (v15 == -1)
+  stickerGUID = [stickerCopy stickerGUID];
+  fileURL = [stickerCopy fileURL];
+  representations = [stickerCopy representations];
+  stickerEffectType = [stickerCopy stickerEffectType];
+  if (stickerEffectType == -1)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v3, "stickerEffectType")}];
+    v16 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(stickerCopy, "stickerEffectType")}];
   }
 
-  v5 = [v3 externalURI];
-  v6 = [v3 stickerName];
-  v7 = [v3 accessibilityLabel];
-  v8 = [v3 accessibilityName];
-  v9 = [v3 searchText];
-  v10 = [v3 sanitizedPrompt];
-  v11 = [v3 metadata];
-  v12 = [v3 attributionInfo];
-  v13 = [(IMASticker *)v4 initWithStickerIdentifier:v19 fileURL:v18 representations:v17 effectType:v16 externalURI:v5 stickerName:v6 accessibilityLabel:v7 accessibilityName:v8 searchText:v9 sanitizedPrompt:v10 metadata:v11 ckAttributionInfo:v12];
+  externalURI = [stickerCopy externalURI];
+  stickerName = [stickerCopy stickerName];
+  accessibilityLabel = [stickerCopy accessibilityLabel];
+  accessibilityName = [stickerCopy accessibilityName];
+  searchText = [stickerCopy searchText];
+  sanitizedPrompt = [stickerCopy sanitizedPrompt];
+  metadata = [stickerCopy metadata];
+  attributionInfo = [stickerCopy attributionInfo];
+  v13 = [(IMASticker *)v4 initWithStickerIdentifier:stickerGUID fileURL:fileURL representations:representations effectType:v16 externalURI:externalURI stickerName:stickerName accessibilityLabel:accessibilityLabel accessibilityName:accessibilityName searchText:searchText sanitizedPrompt:sanitizedPrompt metadata:metadata ckAttributionInfo:attributionInfo];
 
-  if (v15 != -1)
+  if (stickerEffectType != -1)
   {
   }
 
@@ -887,7 +887,7 @@ void __60__IMAAppPresenter_convertIMSticker_bakeInEffect_completion___block_invo
 
 - (BOOL)presentsStickerPickerInPopover
 {
-  v3 = [(IMAAppPresenter *)self delegate];
+  delegate = [(IMAAppPresenter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     [(IMAAppPresenter *)self delegate];
@@ -898,12 +898,12 @@ void __60__IMAAppPresenter_convertIMSticker_bakeInEffect_completion___block_invo
     [MEMORY[0x277D759A0] mainScreen];
   }
   v4 = ;
-  v5 = [v4 traitCollection];
+  traitCollection = [v4 traitCollection];
 
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v8 = (v7 & 0xFFFFFFFFFFFFFFFBLL) == 1 && [v5 horizontalSizeClass] != 1;
+  v8 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && [traitCollection horizontalSizeClass] != 1;
   return v8;
 }
 
@@ -912,14 +912,14 @@ void __60__IMAAppPresenter_convertIMSticker_bakeInEffect_completion___block_invo
   v3 = *MEMORY[0x277C8A920]("CKPluginExtensionStateObserverStickerDragStarted", @"ChatKit");
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 postNotificationName:v3 object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:v3 object:self];
   }
 
   else
   {
-    v4 = [(IMAAppPresenter *)self logHandle];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    defaultCenter = [(IMAAppPresenter *)self logHandle];
+    if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_ERROR))
     {
       [IMAAppPresenter stickerDruidDragStarted];
     }
@@ -928,99 +928,99 @@ void __60__IMAAppPresenter_convertIMSticker_bakeInEffect_completion___block_invo
   v5 = objc_alloc_init(IMAStickerPickerPresentationContext);
   [(IMAAppPresenter *)self setSavedStickerPresentationContext:v5];
 
-  v6 = [(IMAAppPresenter *)self appCardPresentationOverseer];
-  v7 = [v6 containerViewController];
-  v8 = [(IMAAppPresenter *)self savedStickerPresentationContext];
-  [v8 setStickerPickerContainer:v7];
+  appCardPresentationOverseer = [(IMAAppPresenter *)self appCardPresentationOverseer];
+  containerViewController = [appCardPresentationOverseer containerViewController];
+  savedStickerPresentationContext = [(IMAAppPresenter *)self savedStickerPresentationContext];
+  [savedStickerPresentationContext setStickerPickerContainer:containerViewController];
 
   if ([(IMAAppPresenter *)self presentsStickerPickerInPopover])
   {
-    v9 = [(IMAAppPresenter *)self appCardPresentationOverseer];
-    v10 = [v9 containerViewController];
-    v11 = [v10 popoverPresentationController];
-    v12 = [v11 sourceView];
-    v13 = [(IMAAppPresenter *)self savedStickerPresentationContext];
-    [v13 setSourceView:v12];
+    appCardPresentationOverseer2 = [(IMAAppPresenter *)self appCardPresentationOverseer];
+    containerViewController2 = [appCardPresentationOverseer2 containerViewController];
+    popoverPresentationController = [containerViewController2 popoverPresentationController];
+    sourceView = [popoverPresentationController sourceView];
+    savedStickerPresentationContext2 = [(IMAAppPresenter *)self savedStickerPresentationContext];
+    [savedStickerPresentationContext2 setSourceView:sourceView];
 
-    v14 = [(IMAAppPresenter *)self appCardPresentationOverseer];
-    v15 = [v14 containerViewController];
-    v16 = [v15 popoverPresentationController];
-    [v16 sourceRect];
+    appCardPresentationOverseer3 = [(IMAAppPresenter *)self appCardPresentationOverseer];
+    containerViewController3 = [appCardPresentationOverseer3 containerViewController];
+    popoverPresentationController2 = [containerViewController3 popoverPresentationController];
+    [popoverPresentationController2 sourceRect];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v25 = [(IMAAppPresenter *)self savedStickerPresentationContext];
-    [v25 setSourceRect:{v18, v20, v22, v24}];
+    savedStickerPresentationContext3 = [(IMAAppPresenter *)self savedStickerPresentationContext];
+    [savedStickerPresentationContext3 setSourceRect:{v18, v20, v22, v24}];
 
-    v26 = [(IMAAppPresenter *)self savedStickerPresentationContext];
-    [v26 setStyle:1];
+    savedStickerPresentationContext4 = [(IMAAppPresenter *)self savedStickerPresentationContext];
+    [savedStickerPresentationContext4 setStyle:1];
     v27 = &__block_literal_global_289;
   }
 
   else
   {
-    v28 = [(IMAAppPresenter *)self savedStickerPresentationContext];
-    [v28 setSourceView:0];
+    savedStickerPresentationContext5 = [(IMAAppPresenter *)self savedStickerPresentationContext];
+    [savedStickerPresentationContext5 setSourceView:0];
 
     v29 = *MEMORY[0x277CBF3A0];
     v30 = *(MEMORY[0x277CBF3A0] + 8);
     v31 = *(MEMORY[0x277CBF3A0] + 16);
     v32 = *(MEMORY[0x277CBF3A0] + 24);
-    v33 = [(IMAAppPresenter *)self savedStickerPresentationContext];
-    [v33 setSourceRect:{v29, v30, v31, v32}];
+    savedStickerPresentationContext6 = [(IMAAppPresenter *)self savedStickerPresentationContext];
+    [savedStickerPresentationContext6 setSourceRect:{v29, v30, v31, v32}];
 
-    v26 = [(IMAAppPresenter *)self appCardPresentationOverseer];
-    v34 = [v26 isExpanded];
-    v35 = [(IMAAppPresenter *)self savedStickerPresentationContext];
-    [v35 setStyle:v34];
+    savedStickerPresentationContext4 = [(IMAAppPresenter *)self appCardPresentationOverseer];
+    isExpanded = [savedStickerPresentationContext4 isExpanded];
+    savedStickerPresentationContext7 = [(IMAAppPresenter *)self savedStickerPresentationContext];
+    [savedStickerPresentationContext7 setStyle:isExpanded];
 
     v27 = &__block_literal_global_291;
   }
 
-  v36 = [(IMAAppPresenter *)self appCardPresentationOverseer];
-  [v36 dismissCardAnimated:1 completion:v27];
+  appCardPresentationOverseer4 = [(IMAAppPresenter *)self appCardPresentationOverseer];
+  [appCardPresentationOverseer4 dismissCardAnimated:1 completion:v27];
 }
 
-- (void)stickerDruidDragEndedWithIMSticker:(id)a3
+- (void)stickerDruidDragEndedWithIMSticker:(id)sticker
 {
-  v4 = a3;
-  v5 = [(IMAAppPresenter *)self appCardPresentationOverseer];
-  if ([v5 isPresentingCard])
+  stickerCopy = sticker;
+  appCardPresentationOverseer = [(IMAAppPresenter *)self appCardPresentationOverseer];
+  if ([appCardPresentationOverseer isPresentingCard])
   {
-    v6 = [(IMAAppPresenter *)self savedStickerPresentationContext];
-    [v6 setStickerForDeferredRePresentation:v4];
+    savedStickerPresentationContext = [(IMAAppPresenter *)self savedStickerPresentationContext];
+    [savedStickerPresentationContext setStickerForDeferredRePresentation:stickerCopy];
 
-    v7 = [(IMAAppPresenter *)self savedStickerPresentationContext];
-    [v7 setDeferredPresentation:1];
+    savedStickerPresentationContext2 = [(IMAAppPresenter *)self savedStickerPresentationContext];
+    [savedStickerPresentationContext2 setDeferredPresentation:1];
 
     goto LABEL_15;
   }
 
-  [MEMORY[0x277CF97B8] donateStickerToRecents:v4];
+  [MEMORY[0x277CF97B8] donateStickerToRecents:stickerCopy];
   v8 = IMStickersExtensionIdentifier();
   v9 = IMBalloonExtensionIDWithSuffix();
 
-  v10 = [(IMAAppPresenter *)self savedStickerPresentationContext];
-  [v10 setStickerPickerContainer:0];
+  savedStickerPresentationContext3 = [(IMAAppPresenter *)self savedStickerPresentationContext];
+  [savedStickerPresentationContext3 setStickerPickerContainer:0];
 
-  v11 = [(IMAAppPresenter *)self presentsStickerPickerInPopover];
-  v12 = [(IMAAppPresenter *)self savedStickerPresentationContext];
-  v13 = v12;
-  if (!v11)
+  presentsStickerPickerInPopover = [(IMAAppPresenter *)self presentsStickerPickerInPopover];
+  savedStickerPresentationContext4 = [(IMAAppPresenter *)self savedStickerPresentationContext];
+  logHandle = savedStickerPresentationContext4;
+  if (!presentsStickerPickerInPopover)
   {
-    [(IMAAppPresenter *)self _presentAppCardWithBundleIdentifier:v9 style:[v12 style] completion:&__block_literal_global_296];
+    [(IMAAppPresenter *)self _presentAppCardWithBundleIdentifier:v9 style:[savedStickerPresentationContext4 style] completion:&__block_literal_global_296];
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v14 = [v12 sourceView];
+  sourceView = [savedStickerPresentationContext4 sourceView];
 
-  if (!v14)
+  if (!sourceView)
   {
-    v13 = [(IMAAppPresenter *)self logHandle];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    logHandle = [(IMAAppPresenter *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       [IMAAppPresenter stickerDruidDragEndedWithIMSticker:];
     }
@@ -1028,29 +1028,29 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v15 = [(IMAAppPresenter *)self savedStickerPresentationContext];
-  v16 = [v15 sourceView];
+  savedStickerPresentationContext5 = [(IMAAppPresenter *)self savedStickerPresentationContext];
+  sourceView2 = [savedStickerPresentationContext5 sourceView];
 
-  v17 = [(IMAAppPresenter *)self savedStickerPresentationContext];
-  [v17 sourceRect];
+  savedStickerPresentationContext6 = [(IMAAppPresenter *)self savedStickerPresentationContext];
+  [savedStickerPresentationContext6 sourceRect];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
-  [(IMAAppPresenter *)self presentPopoverAppWithBundleIdentifier:v9 sourceRect:v16 inView:&__block_literal_global_294 completion:v19, v21, v23, v25];
+  [(IMAAppPresenter *)self presentPopoverAppWithBundleIdentifier:v9 sourceRect:sourceView2 inView:&__block_literal_global_294 completion:v19, v21, v23, v25];
 LABEL_10:
   v26 = *MEMORY[0x277C8A920]("CKPluginExtensionStateObserverStickerDragEnded", @"ChatKit");
   if (v26)
   {
-    v27 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v27 postNotificationName:v26 object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:v26 object:self];
   }
 
   else
   {
-    v27 = [(IMAAppPresenter *)self logHandle];
-    if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+    defaultCenter = [(IMAAppPresenter *)self logHandle];
+    if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_ERROR))
     {
       [IMAAppPresenter stickerDruidDragEndedWithIMSticker:];
     }
@@ -1059,69 +1059,69 @@ LABEL_10:
 LABEL_15:
 }
 
-- (void)showBrowserForPluginIdentifier:(id)a3 style:(unint64_t)a4 completion:(id)a5
+- (void)showBrowserForPluginIdentifier:(id)identifier style:(unint64_t)style completion:(id)completion
 {
-  v9 = a5;
-  if ([a3 isEqualToString:*MEMORY[0x277D19718]])
+  completionCopy = completion;
+  if ([identifier isEqualToString:*MEMORY[0x277D19718]])
   {
     v6 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:@"itms-appss://apps.apple.com/genre/ios-stickers/id6025"];
-    v7 = [MEMORY[0x277D75128] sharedApplication];
-    [v7 openURL:v6];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] openURL:v6];
   }
 
-  v8 = v9;
-  if (v9)
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    (*(v9 + 2))(v9);
-    v8 = v9;
+    (*(completionCopy + 2))(completionCopy);
+    v8 = completionCopy;
   }
 }
 
-- (void)dragManagerDidBeginDragging:(id)a3
+- (void)dragManagerDidBeginDragging:(id)dragging
 {
-  v4 = [MEMORY[0x277CF97C0] sharedTimer];
-  [v4 setShouldStopWhenBackgrounded:0];
+  mEMORY[0x277CF97C0] = [MEMORY[0x277CF97C0] sharedTimer];
+  [mEMORY[0x277CF97C0] setShouldStopWhenBackgrounded:0];
 
   if ([(IMAAppPresenter *)self hidesCompactAppForStickerDrag]&& [(IMAAppPresenter *)self isAppCompact])
   {
     [(IMAAppPresenter *)self animateSwitcherOffscreen:1 completion:0];
   }
 
-  v5 = [(IMAAppPresenter *)self delegate];
+  delegate = [(IMAAppPresenter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 didBeginDraggingSticker];
+    [delegate didBeginDraggingSticker];
   }
 }
 
-- (void)dragManager:(id)a3 draggedItemWithTarget:(id)a4
+- (void)dragManager:(id)manager draggedItemWithTarget:(id)target
 {
-  v36 = a3;
-  v6 = a4;
-  v7 = [(IMAAppPresenter *)self delegate];
+  managerCopy = manager;
+  targetCopy = target;
+  delegate = [(IMAAppPresenter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v8 = [IMADropTarget alloc];
-    [v6 screenCoordinate];
+    [targetCopy screenCoordinate];
     v10 = v9;
     v12 = v11;
-    [v6 initialSize];
+    [targetCopy initialSize];
     v14 = v13;
     v16 = v15;
-    [v6 scale];
+    [targetCopy scale];
     v18 = v17;
-    [v6 meshScaleFactor];
+    [targetCopy meshScaleFactor];
     v20 = v19;
-    [v6 rotation];
+    [targetCopy rotation];
     v22 = [(IMADropTarget *)v8 initWithScreenCoordinate:v10 initialSize:v12 scale:v14 meshScaleFactor:v16 rotation:v18, v20, v21];
-    v23 = [(IMAAppPresenter *)self switcherViewController];
-    v24 = [v23 view];
-    [v24 frame];
+    switcherViewController = [(IMAAppPresenter *)self switcherViewController];
+    view = [switcherViewController view];
+    [view frame];
     v26 = v25;
     v28 = v27;
     v30 = v29;
     v32 = v31;
-    [v6 screenCoordinate];
+    [targetCopy screenCoordinate];
     v38.x = v33;
     v38.y = v34;
     v39.origin.x = v26;
@@ -1130,31 +1130,31 @@ LABEL_15:
     v39.size.height = v32;
     v35 = CGRectContainsPoint(v39, v38);
 
-    [v7 didDragStickerToTarget:v22 outsideSwitcher:v35 ^ 1];
-    [v36 setPlusButtonHidden:v35];
+    [delegate didDragStickerToTarget:v22 outsideSwitcher:v35 ^ 1];
+    [managerCopy setPlusButtonHidden:v35];
   }
 }
 
-- (void)dragManagerDidEndDragging:(id)a3
+- (void)dragManagerDidEndDragging:(id)dragging
 {
-  v4 = [MEMORY[0x277CF97C0] sharedTimer];
-  [v4 setShouldStopWhenBackgrounded:1];
+  mEMORY[0x277CF97C0] = [MEMORY[0x277CF97C0] sharedTimer];
+  [mEMORY[0x277CF97C0] setShouldStopWhenBackgrounded:1];
 
   if ([(IMAAppPresenter *)self hidesCompactAppForStickerDrag]&& [(IMAAppPresenter *)self isSwitcherOffscreen])
   {
     [(IMAAppPresenter *)self animateSwitcherOffscreen:0 completion:0];
   }
 
-  v5 = [(IMAAppPresenter *)self delegate];
+  delegate = [(IMAAppPresenter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 didEndDraggingSticker];
+    [delegate didEndDraggingSticker];
   }
 }
 
-- (int)dragManager:(id)a3 dropAreaForDragTarget:(id)a4
+- (int)dragManager:(id)manager dropAreaForDragTarget:(id)target
 {
-  v5 = a4;
+  targetCopy = target;
   if (![(IMAAppPresenter *)self isAppCompact])
   {
     goto LABEL_5;
@@ -1165,27 +1165,27 @@ LABEL_15:
     goto LABEL_5;
   }
 
-  v6 = [(IMAAppPresenter *)self switcherViewController];
-  v7 = [v6 view];
+  switcherViewController = [(IMAAppPresenter *)self switcherViewController];
+  view = [switcherViewController view];
 
-  v8 = [v7 superview];
-  [v7 frame];
-  [v8 convertRect:0 toView:?];
+  superview = [view superview];
+  [view frame];
+  [superview convertRect:0 toView:?];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  [v5 screenCoordinate];
+  [targetCopy screenCoordinate];
   v37.x = v17;
   v37.y = v18;
   v38.origin.x = v10;
   v38.origin.y = v12;
   v38.size.width = v14;
   v38.size.height = v16;
-  LOBYTE(v8) = CGRectContainsPoint(v38, v37);
+  LOBYTE(superview) = CGRectContainsPoint(v38, v37);
 
-  if (v8)
+  if (superview)
   {
     v19 = 3;
   }
@@ -1194,20 +1194,20 @@ LABEL_15:
   {
 LABEL_5:
     v20 = [IMADropTarget alloc];
-    [v5 screenCoordinate];
+    [targetCopy screenCoordinate];
     v22 = v21;
     v24 = v23;
-    [v5 initialSize];
+    [targetCopy initialSize];
     v26 = v25;
     v28 = v27;
-    [v5 scale];
+    [targetCopy scale];
     v30 = v29;
-    [v5 meshScaleFactor];
+    [targetCopy meshScaleFactor];
     v32 = v31;
-    [v5 rotation];
+    [targetCopy rotation];
     v34 = [(IMADropTarget *)v20 initWithScreenCoordinate:v22 initialSize:v24 scale:v26 meshScaleFactor:v28 rotation:v30, v32, v33];
-    v35 = [(IMAAppPresenter *)self delegate];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v35 isDropTargetValid:v34] & 1) == 0)
+    delegate = [(IMAAppPresenter *)self delegate];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([delegate isDropTargetValid:v34] & 1) == 0)
     {
       if ([(IMAAppPresenter *)self hidesCompactAppForStickerDrag]&& [(IMAAppPresenter *)self isAppCompact])
       {
@@ -1226,32 +1226,32 @@ LABEL_5:
   return v19;
 }
 
-- (void)dragManager:(id)a3 overrideDropPointForTarget:(id)a4 completion:(id)a5
+- (void)dragManager:(id)manager overrideDropPointForTarget:(id)target completion:(id)completion
 {
-  v9 = a4;
-  v7 = a5;
-  v8 = [(IMAAppPresenter *)self delegate];
+  targetCopy = target;
+  completionCopy = completion;
+  delegate = [(IMAAppPresenter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 overrideDropPointWithCompletion:v7];
+    [delegate overrideDropPointWithCompletion:completionCopy];
   }
 
   else
   {
-    [v9 screenCoordinate];
-    v7[2](v7);
+    [targetCopy screenCoordinate];
+    completionCopy[2](completionCopy);
   }
 }
 
-- (CGSize)browserTransitionCoordinator:(id)a3 preferredSizeForBrowser:(id)a4
+- (CGSize)browserTransitionCoordinator:(id)coordinator preferredSizeForBrowser:(id)browser
 {
-  if ([(IMAAppPresenter *)self alwaysPresentAppsExpanded:a3])
+  if ([(IMAAppPresenter *)self alwaysPresentAppsExpanded:coordinator])
   {
     [(IMAAppPresenter *)self alwaysExpandedAppViewControllerFrame];
     v6 = v5;
     v8 = v7;
-    v9 = [MEMORY[0x277CF97E0] sharedBehaviors];
-    [v9 browserSwitcherExpandedGrabberHeaderHeight];
+    mEMORY[0x277CF97E0] = [MEMORY[0x277CF97E0] sharedBehaviors];
+    [mEMORY[0x277CF97E0] browserSwitcherExpandedGrabberHeaderHeight];
     v11 = v8 - v10;
   }
 
@@ -1268,66 +1268,66 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)browserTransitionCoordinatorShouldDismissOnDragSuccess:(id)a3
+- (BOOL)browserTransitionCoordinatorShouldDismissOnDragSuccess:(id)success
 {
-  v3 = [(IMAAppPresenter *)self delegate];
+  delegate = [(IMAAppPresenter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 expandedAppShouldDismissOnDragSuccess];
+    expandedAppShouldDismissOnDragSuccess = [delegate expandedAppShouldDismissOnDragSuccess];
   }
 
   else
   {
-    v4 = 0;
+    expandedAppShouldDismissOnDragSuccess = 0;
   }
 
-  return v4;
+  return expandedAppShouldDismissOnDragSuccess;
 }
 
 - (id)transitionsPresentationViewController
 {
-  v2 = [(IMAAppPresenter *)self delegate];
+  delegate = [(IMAAppPresenter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 dockPresentationViewController];
+    dockPresentationViewController = [delegate dockPresentationViewController];
   }
 
   else
   {
-    v3 = 0;
+    dockPresentationViewController = 0;
   }
 
-  return v3;
+  return dockPresentationViewController;
 }
 
 - (void)appCardOverseerDidDismissAppCard
 {
-  v3 = [(IMAAppPresenter *)self delegate];
+  delegate = [(IMAAppPresenter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 appPresenterCardDidDismiss:self];
+    [delegate appPresenterCardDidDismiss:self];
   }
 
-  v4 = [(IMAAppPresenter *)self savedStickerPresentationContext];
-  v5 = [v4 stickerForDeferredRePresentation];
+  savedStickerPresentationContext = [(IMAAppPresenter *)self savedStickerPresentationContext];
+  stickerForDeferredRePresentation = [savedStickerPresentationContext stickerForDeferredRePresentation];
 
-  v6 = [(IMAAppPresenter *)self savedStickerPresentationContext];
-  v7 = [v6 deferredPresentation];
+  savedStickerPresentationContext2 = [(IMAAppPresenter *)self savedStickerPresentationContext];
+  deferredPresentation = [savedStickerPresentationContext2 deferredPresentation];
 
-  if (v7)
+  if (deferredPresentation)
   {
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __51__IMAAppPresenter_appCardOverseerDidDismissAppCard__block_invoke;
     v13 = &unk_27A66DEA0;
-    v14 = self;
-    v15 = v5;
+    selfCopy = self;
+    v15 = stickerForDeferredRePresentation;
     dispatch_async(MEMORY[0x277D85CD0], &v10);
     v8 = [(IMAAppPresenter *)self savedStickerPresentationContext:v10];
     [v8 setStickerForDeferredRePresentation:0];
 
-    v9 = [(IMAAppPresenter *)self savedStickerPresentationContext];
-    [v9 setDeferredPresentation:0];
+    savedStickerPresentationContext3 = [(IMAAppPresenter *)self savedStickerPresentationContext];
+    [savedStickerPresentationContext3 setDeferredPresentation:0];
   }
 }
 
@@ -1338,7 +1338,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v3 = [(IMAAppPresenter *)self delegate];
+  delegate = [(IMAAppPresenter *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
@@ -1350,7 +1350,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [v3 expandedAppViewControllerSize];
+  [delegate expandedAppViewControllerSize];
   v5 = v4;
   v7 = v6;
 
@@ -1366,9 +1366,9 @@ LABEL_6:
   return result;
 }
 
-- (void)switcherViewControllerDidFinishSwitching:(id)a3 toViewController:(id)a4
+- (void)switcherViewControllerDidFinishSwitching:(id)switching toViewController:(id)controller
 {
-  p_currentBalloonPlugin = [a4 balloonPlugin];
+  p_currentBalloonPlugin = [controller balloonPlugin];
   v6 = p_currentBalloonPlugin;
   if (!self->_isTransitioningPresentationStyles)
   {
@@ -1392,30 +1392,30 @@ LABEL_6:
   return WeakRetained;
 }
 
-+ (void)loadAppWithIdentifierIfNeeded:(id)a3
++ (void)loadAppWithIdentifierIfNeeded:(id)needed
 {
   v3 = MEMORY[0x277D18D38];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  [v5 loadExtensionWithIdentifierIfNeeded:v4];
+  neededCopy = needed;
+  sharedInstance = [v3 sharedInstance];
+  [sharedInstance loadExtensionWithIdentifierIfNeeded:neededCopy];
 }
 
 - (id)currentStickerViewController
 {
   if ([(IMAAppPresenter *)self isAppCardsEnabled])
   {
-    v3 = [(IMAAppPresenter *)self appCardPresentationOverseer];
-    v4 = [v3 browserViewController];
+    appCardPresentationOverseer = [(IMAAppPresenter *)self appCardPresentationOverseer];
+    browserViewController = [appCardPresentationOverseer browserViewController];
 LABEL_8:
-    v6 = v4;
+    v6 = browserViewController;
 
     goto LABEL_9;
   }
 
   if (![(IMAAppPresenter *)self alwaysPresentAppsExpanded])
   {
-    v3 = [(IMAAppPresenter *)self switcherViewController];
-    v4 = [v3 currentViewController];
+    appCardPresentationOverseer = [(IMAAppPresenter *)self switcherViewController];
+    browserViewController = [appCardPresentationOverseer currentViewController];
     goto LABEL_8;
   }
 

@@ -1,42 +1,42 @@
 @interface MPSGraphConstantOp
-- (MPSGraphConstantOp)initWithGraph:(id)a3 data:(id)a4 shape:(id)a5 dataType:(unsigned int)a6 isSplat:(BOOL)a7 name:(id)a8;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphConstantOp)initWithGraph:(id)graph data:(id)data shape:(id)shape dataType:(unsigned int)type isSplat:(BOOL)splat name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphConstantOp
 
-- (MPSGraphConstantOp)initWithGraph:(id)a3 data:(id)a4 shape:(id)a5 dataType:(unsigned int)a6 isSplat:(BOOL)a7 name:(id)a8
+- (MPSGraphConstantOp)initWithGraph:(id)graph data:(id)data shape:(id)shape dataType:(unsigned int)type isSplat:(BOOL)splat name:(id)name
 {
-  v14 = a4;
-  objc_storeStrong(&self->_shape, a5);
-  v15 = a5;
-  v16 = a8;
-  v17 = a3;
-  self->_dataType = a6;
+  dataCopy = data;
+  objc_storeStrong(&self->_shape, shape);
+  shapeCopy = shape;
+  nameCopy = name;
+  graphCopy = graph;
+  self->_dataType = type;
   data = self->_data;
-  self->_data = v14;
-  v19 = v14;
+  self->_data = dataCopy;
+  v19 = dataCopy;
 
-  self->_isSplat = a7;
+  self->_isSplat = splat;
   v22.receiver = self;
   v22.super_class = MPSGraphConstantOp;
-  v20 = [(MPSGraphOperation *)&v22 initWithGraph:v17 inputTensors:MEMORY[0x1E695E0F0] controlDependencies:MEMORY[0x1E695E0F0] name:v16];
+  v20 = [(MPSGraphOperation *)&v22 initWithGraph:graphCopy inputTensors:MEMORY[0x1E695E0F0] controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
   return v20;
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
-  v10 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphConstantOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphMemoryOps.mm", __p);
-  v11 = MPSSymbolTable::getLocationByInsertingOp<mlir::mps::ConstantOp>(a4, a3, __p, 0xA5u, v10);
+  v11 = MPSSymbolTable::getLocationByInsertingOp<mlir::mps::ConstantOp>(table, builder, __p, 0xA5u, nameCopy);
   if (v18 < 0)
   {
     operator delete(__p[0]);
   }
 
-  MLIRType = getMLIRType(a3, self->_shape, self->_dataType);
-  ConstantOp = createConstantOp(a3, v11, self->_data, MLIRType, self->_isSplat);
+  MLIRType = getMLIRType(builder, self->_shape, self->_dataType);
+  ConstantOp = createConstantOp(builder, v11, self->_data, MLIRType, self->_isSplat);
   data = self->_data;
   self->_data = 0;
 

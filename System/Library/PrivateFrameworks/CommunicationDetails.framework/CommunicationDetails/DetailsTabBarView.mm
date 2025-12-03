@@ -1,24 +1,24 @@
 @interface DetailsTabBarView
 - (CGPoint)autoscrollContentOffset;
-- (CGRect)contentFrameForView:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC20CommunicationDetails17DetailsTabBarView)initWithCoder:(id)a3;
-- (_TtC20CommunicationDetails17DetailsTabBarView)initWithFrame:(CGRect)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (CGRect)contentFrameForView:(id)view;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC20CommunicationDetails17DetailsTabBarView)initWithCoder:(id)coder;
+- (_TtC20CommunicationDetails17DetailsTabBarView)initWithFrame:(CGRect)frame;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)layoutSubviews;
-- (void)longPressWithRecognizer:(id)a3;
-- (void)setAutoscrollContentOffset:(CGPoint)a3;
+- (void)longPressWithRecognizer:(id)recognizer;
+- (void)setAutoscrollContentOffset:(CGPoint)offset;
 @end
 
 @implementation DetailsTabBarView
 
-- (_TtC20CommunicationDetails17DetailsTabBarView)initWithFrame:(CGRect)a3
+- (_TtC20CommunicationDetails17DetailsTabBarView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -32,7 +32,7 @@
   return v7;
 }
 
-- (void)longPressWithRecognizer:(id)a3
+- (void)longPressWithRecognizer:(id)recognizer
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -42,34 +42,34 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  v7 = [v5 state];
-  if (v7 <= 2)
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  state = [recognizerCopy state];
+  if (state <= 2)
   {
-    if (v7 == 1)
+    if (state == 1)
     {
-      DetailsTabBarView.longPressRecognizerBegin(_:)(v5);
+      DetailsTabBarView.longPressRecognizerBegin(_:)(recognizerCopy);
     }
 
-    else if (v7 == 2)
+    else if (state == 2)
     {
-      DetailsTabBarView.longPressRecognizerChanged(_:)(v5);
+      DetailsTabBarView.longPressRecognizerChanged(_:)(recognizerCopy);
     }
   }
 
-  else if (v7 == 3)
+  else if (state == 3)
   {
-    DetailsTabBarView.longPressRecognizerEnded(_:)(v5);
+    DetailsTabBarView.longPressRecognizerEnded(_:)(recognizerCopy);
   }
 
-  else if (v7 == 4 || v7 == 5)
+  else if (state == 4 || state == 5)
   {
     DetailsTabBarView.scrubEnded()();
   }
 }
 
-- (_TtC20CommunicationDetails17DetailsTabBarView)initWithCoder:(id)a3
+- (_TtC20CommunicationDetails17DetailsTabBarView)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -79,14 +79,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   specialized DetailsTabBarView.init(coder:)();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -115,7 +115,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   DetailsTabBarView.layoutSubviews()();
 }
 
@@ -140,10 +140,10 @@
   return result;
 }
 
-- (void)setAutoscrollContentOffset:(CGPoint)a3
+- (void)setAutoscrollContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -155,7 +155,7 @@
   [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC20CommunicationDetails17DetailsTabBarView_scrollView) setContentOffset_];
 }
 
-- (CGRect)contentFrameForView:(id)a3
+- (CGRect)contentFrameForView:(id)view
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -165,12 +165,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (view)
   {
-    v9 = self;
-    v10 = a3;
-    [v10 bounds];
-    [v10 convertRect:v9 toCoordinateSpace:?];
+    selfCopy = self;
+    viewCopy = view;
+    [viewCopy bounds];
+    [viewCopy convertRect:selfCopy toCoordinateSpace:?];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -194,7 +194,7 @@
   return result;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -204,16 +204,16 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
-  v13 = specialized DetailsTabBarView.pointerInteraction(_:regionFor:defaultRegion:)(v10);
+  interactionCopy = interaction;
+  requestCopy = request;
+  regionCopy = region;
+  selfCopy = self;
+  v13 = specialized DetailsTabBarView.pointerInteraction(_:regionFor:defaultRegion:)(requestCopy);
 
   return v13;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -223,9 +223,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
   v10 = specialized DetailsTabBarView.pointerInteraction(_:styleFor:)();
 
   return v10;

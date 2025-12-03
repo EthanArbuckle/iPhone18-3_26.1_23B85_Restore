@@ -1,98 +1,98 @@
 @interface MPCModelStorePlaybackItemsRequestOperation
-- (MPCModelStorePlaybackItemsRequestOperation)initWithRequest:(id)a3 responseHandler:(id)a4;
-- (void)_handleItemMetadataBatchRequestCompletedWithAccumulator:(id)a3 previousResponse:(id)a4 error:(id)a5 isFinalResponse:(BOOL)a6;
-- (void)_runPersonalizationWithSectionCollection:(id)a3 error:(id)a4 isFinalResponse:(BOOL)a5 isInvalidForPersonalization:(BOOL)a6 performanceMetrics:(id)a7;
-- (void)_runStorePlatformRequestToLoadMetadataWithAccumulator:(id)a3 previousResponse:(id)a4;
+- (MPCModelStorePlaybackItemsRequestOperation)initWithRequest:(id)request responseHandler:(id)handler;
+- (void)_handleItemMetadataBatchRequestCompletedWithAccumulator:(id)accumulator previousResponse:(id)response error:(id)error isFinalResponse:(BOOL)finalResponse;
+- (void)_runPersonalizationWithSectionCollection:(id)collection error:(id)error isFinalResponse:(BOOL)response isInvalidForPersonalization:(BOOL)personalization performanceMetrics:(id)metrics;
+- (void)_runStorePlatformRequestToLoadMetadataWithAccumulator:(id)accumulator previousResponse:(id)response;
 - (void)execute;
 @end
 
 @implementation MPCModelStorePlaybackItemsRequestOperation
 
-- (void)_handleItemMetadataBatchRequestCompletedWithAccumulator:(id)a3 previousResponse:(id)a4 error:(id)a5 isFinalResponse:(BOOL)a6
+- (void)_handleItemMetadataBatchRequestCompletedWithAccumulator:(id)accumulator previousResponse:(id)response error:(id)error isFinalResponse:(BOOL)finalResponse
 {
-  v6 = a6;
+  finalResponseCopy = finalResponse;
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  accumulatorCopy = accumulator;
+  responseCopy = response;
+  errorCopy = error;
   v13 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 134218754;
-    v27 = self;
+    selfCopy2 = self;
     v28 = 1024;
-    *v29 = v6;
+    *v29 = finalResponseCopy;
     *&v29[4] = 2048;
-    *&v29[6] = v11;
+    *&v29[6] = responseCopy;
     *&v29[14] = 2114;
-    *&v29[16] = v12;
+    *&v29[16] = errorCopy;
     _os_log_impl(&dword_1C5C61000, v13, OS_LOG_TYPE_DEFAULT, "SPIR: %p: _handleItemMetadataBatchRequestCompletedWithAccumulator [] isFinalResponse=%{BOOL}u previousResponse=%p error=%{public}@", &v26, 0x26u);
   }
 
-  v14 = [v10 accumulationError];
-  if (!v11 || !v6)
+  accumulationError = [accumulatorCopy accumulationError];
+  if (!responseCopy || !finalResponseCopy)
   {
     goto LABEL_11;
   }
 
-  v15 = [v11 _personalizationResponse];
-  v16 = [v15 request];
-  v17 = [v16 unpersonalizedContentDescriptors];
+  _personalizationResponse = [responseCopy _personalizationResponse];
+  request = [_personalizationResponse request];
+  unpersonalizedContentDescriptors = [request unpersonalizedContentDescriptors];
 
-  v18 = [0 totalItemCount];
-  v19 = [v17 totalItemCount];
-  if (v18 >= v19)
+  totalItemCount = [0 totalItemCount];
+  totalItemCount2 = [unpersonalizedContentDescriptors totalItemCount];
+  if (totalItemCount >= totalItemCount2)
   {
 
 LABEL_11:
-    v17 = [v10 unpersonalizedContentDescriptors];
+    unpersonalizedContentDescriptors = [accumulatorCopy unpersonalizedContentDescriptors];
     goto LABEL_12;
   }
 
-  v20 = v19;
+  v20 = totalItemCount2;
   v21 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
     errors = self->_errors;
     v26 = 134218754;
-    v27 = self;
+    selfCopy2 = self;
     v28 = 2114;
     *v29 = errors;
     *&v29[8] = 2048;
-    *&v29[10] = v18;
+    *&v29[10] = totalItemCount;
     *&v29[18] = 2048;
     *&v29[20] = v20;
     _os_log_impl(&dword_1C5C61000, v21, OS_LOG_TYPE_ERROR, "SPIR: %p - Falling back to existing previous response from errors: %{public}@, current item count: %li, previous item count: %li", &v26, 0x2Au);
   }
 
-  if (!v17)
+  if (!unpersonalizedContentDescriptors)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
-  if (v14)
+  if (accumulationError)
   {
-    v23 = v14;
+    v23 = accumulationError;
   }
 
   else
   {
-    v23 = v12;
+    v23 = errorCopy;
   }
 
   v24 = v23;
-  v25 = [v10 performanceMetrics];
-  [(MPCModelStorePlaybackItemsRequestOperation *)self _runPersonalizationWithSectionCollection:v17 error:v24 isFinalResponse:v6 isInvalidForPersonalization:0 performanceMetrics:v25];
+  performanceMetrics = [accumulatorCopy performanceMetrics];
+  [(MPCModelStorePlaybackItemsRequestOperation *)self _runPersonalizationWithSectionCollection:unpersonalizedContentDescriptors error:v24 isFinalResponse:finalResponseCopy isInvalidForPersonalization:0 performanceMetrics:performanceMetrics];
 }
 
-- (void)_runPersonalizationWithSectionCollection:(id)a3 error:(id)a4 isFinalResponse:(BOOL)a5 isInvalidForPersonalization:(BOOL)a6 performanceMetrics:(id)a7
+- (void)_runPersonalizationWithSectionCollection:(id)collection error:(id)error isFinalResponse:(BOOL)response isInvalidForPersonalization:(BOOL)personalization performanceMetrics:(id)metrics
 {
   v61 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (!a6)
+  collectionCopy = collection;
+  errorCopy = error;
+  metricsCopy = metrics;
+  if (!personalization)
   {
     hasCalledResponseHandler = self->_hasCalledResponseHandler;
     v16 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
@@ -125,8 +125,8 @@ LABEL_12:
   v57 = 0x3032000000;
   v58 = __Block_byref_object_copy__11709;
   v59 = __Block_byref_object_dispose__11710;
-  v60 = [(MPCModelStorePlaybackItemsRequestOperation *)self responseHandler];
-  if (v13)
+  responseHandler = [(MPCModelStorePlaybackItemsRequestOperation *)self responseHandler];
+  if (errorCopy)
   {
     v18 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -134,17 +134,17 @@ LABEL_12:
       *v53 = 134218242;
       *&v53[4] = self;
       *&v53[12] = 2114;
-      *&v53[14] = v13;
+      *&v53[14] = errorCopy;
       _os_log_impl(&dword_1C5C61000, v18, OS_LOG_TYPE_DEFAULT, "SPIR: %p: _runPersonalizationWithSectionCollection finishing with error [non-nil error passed in] error=%{public}@", v53, 0x16u);
     }
 
     v19 = *(*(&buf + 1) + 40);
     if (v19)
     {
-      (*(v19 + 16))(v19, 0, v13);
+      (*(v19 + 16))(v19, 0, errorCopy);
     }
 
-    [(MPAsyncOperation *)self finishWithError:v13];
+    [(MPAsyncOperation *)self finishWithError:errorCopy];
   }
 
   else
@@ -154,13 +154,13 @@ LABEL_12:
     *&v53[16] = 0x2810000000;
     v54 = &unk_1C60E49B1;
     v55 = 0;
-    v20 = [(MPCModelStorePlaybackItemsRequestOperation *)self request];
-    v21 = [MEMORY[0x1E6970920] sharedRestrictionsMonitor];
-    v31 = [v21 allowsExplicitContent];
+    request = [(MPCModelStorePlaybackItemsRequestOperation *)self request];
+    mEMORY[0x1E6970920] = [MEMORY[0x1E6970920] sharedRestrictionsMonitor];
+    allowsExplicitContent = [mEMORY[0x1E6970920] allowsExplicitContent];
 
-    v22 = [objc_alloc(MEMORY[0x1E69709E0]) initWithUnpersonalizedRequest:v20 unpersonalizedContentDescriptors:v12];
-    v23 = [(MPCPlaybackAccount *)self->_account userIdentity];
-    [v22 setUserIdentity:v23];
+    v22 = [objc_alloc(MEMORY[0x1E69709E0]) initWithUnpersonalizedRequest:request unpersonalizedContentDescriptors:collectionCopy];
+    userIdentity = [(MPCPlaybackAccount *)self->_account userIdentity];
+    [v22 setUserIdentity:userIdentity];
 
     [v22 setMatchAlbumArtistsOnNameAndStoreID:0];
     v24 = objc_alloc(MEMORY[0x1E69B13F0]);
@@ -173,13 +173,13 @@ LABEL_12:
     p_buf = &buf;
     v25 = v22;
     v45 = v25;
-    v46 = v12;
+    v46 = collectionCopy;
     v26 = [v24 initWithTimeout:v44 interruptionHandler:60.0];
     v27 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback_Oversize");
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *v49 = 134218242;
-      v50 = self;
+      selfCopy = self;
       v51 = 2114;
       v52 = v25;
       _os_log_impl(&dword_1C5C61000, v27, OS_LOG_TYPE_DEFAULT, "SPIR: %p: _runPersonalizationWithSectionCollection performing personalization request [] personalizationRequest=%{public}@", v49, 0x16u);
@@ -191,15 +191,15 @@ LABEL_12:
     v32[3] = &unk_1E8233CA8;
     v28 = v26;
     v33 = v28;
-    v34 = self;
+    selfCopy2 = self;
     v29 = v25;
     v35 = v29;
-    v30 = v20;
+    v30 = request;
     v36 = v30;
-    v41 = a5;
-    v42 = a6;
-    v43 = v31;
-    v37 = v14;
+    responseCopy = response;
+    personalizationCopy = personalization;
+    v43 = allowsExplicitContent;
+    v37 = metricsCopy;
     v38 = 0;
     v39 = &buf;
     v40 = v53;
@@ -446,44 +446,44 @@ void __156__MPCModelStorePlaybackItemsRequestOperation__runPersonalizationWithSe
   }
 }
 
-- (void)_runStorePlatformRequestToLoadMetadataWithAccumulator:(id)a3 previousResponse:(id)a4
+- (void)_runStorePlatformRequestToLoadMetadataWithAccumulator:(id)accumulator previousResponse:(id)response
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 newStoreItemMetadataRequest];
-  [v8 setShouldIgnoreExpiration:1];
+  accumulatorCopy = accumulator;
+  responseCopy = response;
+  newStoreItemMetadataRequest = [accumulatorCopy newStoreItemMetadataRequest];
+  [newStoreItemMetadataRequest setShouldIgnoreExpiration:1];
   v9 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 itemIdentifiers];
-    v11 = [v10 count];
-    v12 = [v8 itemIdentifiers];
-    v13 = [v12 msv_compactDescription];
+    itemIdentifiers = [newStoreItemMetadataRequest itemIdentifiers];
+    v11 = [itemIdentifiers count];
+    itemIdentifiers2 = [newStoreItemMetadataRequest itemIdentifiers];
+    msv_compactDescription = [itemIdentifiers2 msv_compactDescription];
     *buf = 134218498;
-    v26 = self;
+    selfCopy = self;
     v27 = 2048;
     v28 = v11;
     v29 = 2114;
-    v30 = v13;
+    v30 = msv_compactDescription;
     _os_log_impl(&dword_1C5C61000, v9, OS_LOG_TYPE_DEFAULT, "SPIR: %p: requesting store metadata for %ld items itemIDs=%{public}@", buf, 0x20u);
   }
 
-  v14 = [MEMORY[0x1E69709D0] sharedStoreItemMetadataRequestController];
-  [v14 beginTransaction];
+  mEMORY[0x1E69709D0] = [MEMORY[0x1E69709D0] sharedStoreItemMetadataRequestController];
+  [mEMORY[0x1E69709D0] beginTransaction];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __117__MPCModelStorePlaybackItemsRequestOperation__runStorePlatformRequestToLoadMetadataWithAccumulator_previousResponse___block_invoke;
   v20[3] = &unk_1E8238938;
   v20[4] = self;
-  v21 = v8;
-  v22 = v6;
-  v23 = v14;
-  v24 = v7;
-  v15 = v7;
-  v16 = v14;
-  v17 = v6;
-  v18 = v8;
+  v21 = newStoreItemMetadataRequest;
+  v22 = accumulatorCopy;
+  v23 = mEMORY[0x1E69709D0];
+  v24 = responseCopy;
+  v15 = responseCopy;
+  v16 = mEMORY[0x1E69709D0];
+  v17 = accumulatorCopy;
+  v18 = newStoreItemMetadataRequest;
   v19 = [v16 getStoreItemMetadataForRequest:v18 includeBatchResponseError:1 responseHandler:v20];
 }
 
@@ -575,10 +575,10 @@ LABEL_16:
 - (void)execute
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(MPCModelStorePlaybackItemsRequestOperation *)self responseHandler];
-  if (v3)
+  responseHandler = [(MPCModelStorePlaybackItemsRequestOperation *)self responseHandler];
+  if (responseHandler)
   {
-    v4 = v3;
+    v4 = responseHandler;
   }
 
   else
@@ -588,15 +588,15 @@ LABEL_16:
 
   if ([(MPAsyncOperation *)self isCancelled])
   {
-    v5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPCError" code:28 userInfo:0];
-    v4[2](v4, 0, v5);
-    [(MPAsyncOperation *)self finishWithError:v5];
+    request = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPCError" code:28 userInfo:0];
+    v4[2](v4, 0, request);
+    [(MPAsyncOperation *)self finishWithError:request];
   }
 
   else
   {
-    v5 = [(MPCModelStorePlaybackItemsRequestOperation *)self request];
-    if ([v5 isValid])
+    request = [(MPCModelStorePlaybackItemsRequestOperation *)self request];
+    if ([request isValid])
     {
       v6 = +[MPCPlaybackAccountManager sharedManager];
       v9[0] = MEMORY[0x1E69E9820];
@@ -606,7 +606,7 @@ LABEL_16:
       v9[4] = self;
       v10 = v6;
       v12 = v4;
-      v11 = v5;
+      v11 = request;
       v7 = v6;
       [v7 performAfterLoadingAccounts:v9];
     }
@@ -617,7 +617,7 @@ LABEL_16:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v14 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1C5C61000, v8, OS_LOG_TYPE_ERROR, "SPIR: %p: failing with error [request missing both storeIDs and sectionedModelObjects]", buf, 0xCu);
       }
 
@@ -845,24 +845,24 @@ LABEL_41:
 LABEL_42:
 }
 
-- (MPCModelStorePlaybackItemsRequestOperation)initWithRequest:(id)a3 responseHandler:(id)a4
+- (MPCModelStorePlaybackItemsRequestOperation)initWithRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = [(MPAsyncOperation *)self init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [requestCopy copy];
     request = v8->_request;
     v8->_request = v9;
 
-    v11 = [v7 copy];
+    v11 = [handlerCopy copy];
     responseHandler = v8->_responseHandler;
     v8->_responseHandler = v11;
 
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     errors = v8->_errors;
-    v8->_errors = v13;
+    v8->_errors = array;
   }
 
   return v8;

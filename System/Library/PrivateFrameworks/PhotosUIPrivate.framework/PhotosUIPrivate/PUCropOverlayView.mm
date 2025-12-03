@@ -3,20 +3,20 @@
 - (CGRect)cropRectInLocalCoordinateSpace;
 - (NSArray)oneNinthCropLines;
 - (NSArray)oneThirdCropLines;
-- (PUCropOverlayView)initWithFrame:(CGRect)a3;
+- (PUCropOverlayView)initWithFrame:(CGRect)frame;
 - (UIView)cropWindowView;
-- (id)_addLinesSpacedForCount:(unint64_t)a3 drawFirstAndLast:(BOOL)a4 visible:(BOOL)a5;
-- (id)_createConstraintsForLine:(id)a3 centerMultiplier:(double)a4 vertical:(BOOL)a5;
-- (id)_createLineViewForCount:(unint64_t)a3;
+- (id)_addLinesSpacedForCount:(unint64_t)count drawFirstAndLast:(BOOL)last visible:(BOOL)visible;
+- (id)_createConstraintsForLine:(id)line centerMultiplier:(double)multiplier vertical:(BOOL)vertical;
+- (id)_createLineViewForCount:(unint64_t)count;
 - (id)_createMaskView;
-- (unint64_t)_subviewIndexForLineForCount:(unint64_t)a3;
-- (void)_setGridViews:(id)a3 visible:(BOOL)a4 iVarVisibilePtr:(BOOL *)a5 animated:(BOOL)a6;
+- (unint64_t)_subviewIndexForLineForCount:(unint64_t)count;
+- (void)_setGridViews:(id)views visible:(BOOL)visible iVarVisibilePtr:(BOOL *)ptr animated:(BOOL)animated;
 - (void)_updateCropRectInLocalCoordinateSpace;
 - (void)layoutSubviews;
-- (void)setCropGridVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setCropRect:(CGRect)a3;
-- (void)setMaskedContentVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setStraightenGridVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)setCropGridVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setCropRect:(CGRect)rect;
+- (void)setMaskedContentVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setStraightenGridVisible:(BOOL)visible animated:(BOOL)animated;
 @end
 
 @implementation PUCropOverlayView
@@ -54,11 +54,11 @@
   return v2;
 }
 
-- (id)_createLineViewForCount:(unint64_t)a3
+- (id)_createLineViewForCount:(unint64_t)count
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
   v5 = 0.5;
-  if (a3 < 5)
+  if (count < 5)
   {
     v5 = 1.0;
   }
@@ -70,15 +70,15 @@
   return v4;
 }
 
-- (id)_createConstraintsForLine:(id)a3 centerMultiplier:(double)a4 vertical:(BOOL)a5
+- (id)_createConstraintsForLine:(id)line centerMultiplier:(double)multiplier vertical:(BOOL)vertical
 {
-  v5 = a5;
+  verticalCopy = vertical;
   v33[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = _NSDictionaryOfVariableBindings(&cfstr_Lineview.isa, v8, 0);
-  v10 = [MEMORY[0x1E695DF70] array];
+  lineCopy = line;
+  v9 = _NSDictionaryOfVariableBindings(&cfstr_Lineview.isa, lineCopy, 0);
+  array = [MEMORY[0x1E695DF70] array];
   [(PUCropOverlayView *)self px_screenScale];
-  if (v5)
+  if (verticalCopy)
   {
     v12 = @"V:|[lineView]|";
   }
@@ -88,7 +88,7 @@
     v12 = @"V:[lineView(lineSize)]";
   }
 
-  if (v5)
+  if (verticalCopy)
   {
     v13 = @"H:[lineView(lineSize)]";
   }
@@ -99,24 +99,24 @@
   }
 
   v14 = 9;
-  if (!v5)
+  if (!verticalCopy)
   {
     v14 = 10;
   }
 
   v15 = 4;
-  if (v5)
+  if (verticalCopy)
   {
     v15 = 2;
   }
 
   v16 = 3;
-  if (v5)
+  if (verticalCopy)
   {
     v16 = 1;
   }
 
-  if (a4 == 0.0)
+  if (multiplier == 0.0)
   {
     v14 = v16;
   }
@@ -126,7 +126,7 @@
     v16 = v15;
   }
 
-  if (a4 == 1.0)
+  if (multiplier == 1.0)
   {
     v17 = v15;
   }
@@ -136,7 +136,7 @@
     v17 = v14;
   }
 
-  if (a4 == 1.0)
+  if (multiplier == 1.0)
   {
     v18 = v15;
   }
@@ -147,7 +147,7 @@
   }
 
   v19 = 1.0 / v11;
-  v20 = a4 == 1.0 || a4 == 0.0;
+  v20 = multiplier == 1.0 || multiplier == 0.0;
   v31 = v18;
   v32 = @"lineSize";
   if (v20)
@@ -162,38 +162,38 @@
   v23 = MEMORY[0x1E696ACD8];
   v24 = v13;
   v25 = [v23 constraintsWithVisualFormat:v12 options:0 metrics:v22 views:v9];
-  [v10 addObjectsFromArray:v25];
+  [array addObjectsFromArray:v25];
 
   v26 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:v24 options:0x10000 metrics:v22 views:v9];
 
-  [v10 addObjectsFromArray:v26];
+  [array addObjectsFromArray:v26];
   v27 = MEMORY[0x1E696ACD8];
-  v28 = [(PUCropOverlayView *)self cropWindowView];
-  v29 = [v27 constraintWithItem:v8 attribute:v17 relatedBy:0 toItem:v28 attribute:v31 multiplier:a4 constant:0.0];
+  cropWindowView = [(PUCropOverlayView *)self cropWindowView];
+  v29 = [v27 constraintWithItem:lineCopy attribute:v17 relatedBy:0 toItem:cropWindowView attribute:v31 multiplier:multiplier constant:0.0];
 
-  [v10 addObject:v29];
+  [array addObject:v29];
 
-  return v10;
+  return array;
 }
 
-- (id)_addLinesSpacedForCount:(unint64_t)a3 drawFirstAndLast:(BOOL)a4 visible:(BOOL)a5
+- (id)_addLinesSpacedForCount:(unint64_t)count drawFirstAndLast:(BOOL)last visible:(BOOL)visible
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  visibleCopy = visible;
+  lastCopy = last;
+  countCopy = count;
   v33 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (last)
   {
-    v9 = a3 + 1;
+    v9 = count + 1;
   }
 
   else
   {
-    v9 = a3 - 1;
+    v9 = count - 1;
   }
 
   v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:2 * v9];
-  v27 = [(PUCropOverlayView *)self _subviewIndexForLineForCount:v7];
+  v27 = [(PUCropOverlayView *)self _subviewIndexForLineForCount:countCopy];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -201,10 +201,10 @@
   v25 = [&unk_1F2B7CE60 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v25)
   {
-    v11 = !v6;
-    v12 = v5;
+    v11 = !lastCopy;
+    v12 = visibleCopy;
     v24 = *v29;
-    v13 = v7;
+    v13 = countCopy;
     do
     {
       for (i = 0; i != v25; ++i)
@@ -220,19 +220,19 @@
           v15 = *(*(&v28 + 1) + 8 * i);
           do
           {
-            v16 = [(PUCropOverlayView *)self _createLineViewForCount:v7, v24];
+            v16 = [(PUCropOverlayView *)self _createLineViewForCount:countCopy, v24];
             [(PUCropOverlayView *)self cropWindowView];
             v17 = v9;
-            v19 = v18 = v7;
+            v19 = v18 = countCopy;
             [v19 insertSubview:v16 atIndex:v27];
 
             [v16 setAlpha:v12];
             v20 = -[PUCropOverlayView _createConstraintsForLine:centerMultiplier:vertical:](self, "_createConstraintsForLine:centerMultiplier:vertical:", v16, [v15 BOOLValue], (v11 + v14) / v13);
-            v21 = [(PUCropOverlayView *)self cropWindowView];
-            [v21 addConstraints:v20];
+            cropWindowView = [(PUCropOverlayView *)self cropWindowView];
+            [cropWindowView addConstraints:v20];
 
             [v10 addObject:v16];
-            v7 = v18;
+            countCopy = v18;
             v9 = v17;
 
             ++v14;
@@ -253,16 +253,16 @@
   return v22;
 }
 
-- (unint64_t)_subviewIndexForLineForCount:(unint64_t)a3
+- (unint64_t)_subviewIndexForLineForCount:(unint64_t)count
 {
-  if (a3 > 4)
+  if (count > 4)
   {
     return 0;
   }
 
-  v3 = [(PUCropOverlayView *)self cropWindowView];
-  v4 = [v3 subviews];
-  v5 = [v4 count];
+  cropWindowView = [(PUCropOverlayView *)self cropWindowView];
+  subviews = [cropWindowView subviews];
+  v5 = [subviews count];
 
   return v5;
 }
@@ -312,8 +312,8 @@
 
     [(UIView *)self->_cropWindowView setFrame:self->_cropRect.origin.x, self->_cropRect.origin.y, self->_cropRect.size.width, self->_cropRect.size.height];
     v6 = self->_cropWindowView;
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v6 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v6 setBackgroundColor:clearColor];
 
     cropWindowView = self->_cropWindowView;
   }
@@ -323,16 +323,16 @@
   return v8;
 }
 
-- (void)_setGridViews:(id)a3 visible:(BOOL)a4 iVarVisibilePtr:(BOOL *)a5 animated:(BOOL)a6
+- (void)_setGridViews:(id)views visible:(BOOL)visible iVarVisibilePtr:(BOOL *)ptr animated:(BOOL)animated
 {
-  v6 = a6;
-  v8 = a4;
-  v9 = a3;
-  v10 = v9;
-  if (*a5 != v8)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  viewsCopy = views;
+  v10 = viewsCopy;
+  if (*ptr != visibleCopy)
   {
-    *a5 = v8;
-    if (v8)
+    *ptr = visibleCopy;
+    if (visibleCopy)
     {
       v11 = 1.0;
     }
@@ -346,11 +346,11 @@
     v15 = 3221225472;
     v16 = __68__PUCropOverlayView__setGridViews_visible_iVarVisibilePtr_animated___block_invoke;
     v17 = &unk_1E7B7FF70;
-    v18 = v9;
+    v18 = viewsCopy;
     v19 = v11;
     v12 = _Block_copy(&v14);
     v13 = v12;
-    if (v6)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:0 animations:v12 completion:{0, v14, v15, v16, v17}];
     }
@@ -396,20 +396,20 @@ void __68__PUCropOverlayView__setGridViews_visible_iVarVisibilePtr_animated___bl
   }
 }
 
-- (void)setStraightenGridVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setStraightenGridVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(PUCropOverlayView *)self oneNinthCropLines];
-  [(PUCropOverlayView *)self _setGridViews:v7 visible:v5 iVarVisibilePtr:&self->_straightenGridVisible animated:v4];
+  animatedCopy = animated;
+  visibleCopy = visible;
+  oneNinthCropLines = [(PUCropOverlayView *)self oneNinthCropLines];
+  [(PUCropOverlayView *)self _setGridViews:oneNinthCropLines visible:visibleCopy iVarVisibilePtr:&self->_straightenGridVisible animated:animatedCopy];
 }
 
-- (void)setCropGridVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setCropGridVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(PUCropOverlayView *)self oneThirdCropLines];
-  [(PUCropOverlayView *)self _setGridViews:v7 visible:v5 iVarVisibilePtr:&self->_cropGridVisible animated:v4];
+  animatedCopy = animated;
+  visibleCopy = visible;
+  oneThirdCropLines = [(PUCropOverlayView *)self oneThirdCropLines];
+  [(PUCropOverlayView *)self _setGridViews:oneThirdCropLines visible:visibleCopy iVarVisibilePtr:&self->_cropGridVisible animated:animatedCopy];
 }
 
 - (void)layoutSubviews
@@ -422,17 +422,17 @@ void __68__PUCropOverlayView__setGridViews_visible_iVarVisibilePtr_animated___bl
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PUCropOverlayView *)self cropWindowView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  cropWindowView = [(PUCropOverlayView *)self cropWindowView];
+  [cropWindowView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(PUCropOverlayView *)self cropWindowView];
-  [v12 frame];
+  cropWindowView2 = [(PUCropOverlayView *)self cropWindowView];
+  [cropWindowView2 frame];
   MinX = CGRectGetMinX(v21);
-  [v12 frame];
+  [cropWindowView2 frame];
   MinY = CGRectGetMinY(v22);
-  [v12 frame];
+  [cropWindowView2 frame];
   MaxX = CGRectGetMaxX(v23);
-  [v12 frame];
+  [cropWindowView2 frame];
   MaxY = CGRectGetMaxY(v24);
   [(PUCropOverlayView *)self frame];
   [(PUCropMaskView *)self->_topMask setFrame:0.0, 0.0];
@@ -440,30 +440,30 @@ void __68__PUCropOverlayView__setGridViews_visible_iVarVisibilePtr_animated___bl
   v18 = v17;
   [(PUCropOverlayView *)self bounds];
   [(PUCropMaskView *)self->_bottomMask setFrame:0.0, MaxY, v18, CGRectGetMaxY(v25) - MaxY];
-  [v12 frame];
+  [cropWindowView2 frame];
   [(PUCropMaskView *)self->_leftMask setFrame:0.0, MinY, MinX];
   [(PUCropOverlayView *)self bounds];
   v19 = CGRectGetMaxX(v26) - MaxX;
-  [v12 frame];
+  [cropWindowView2 frame];
   [(PUCropMaskView *)self->_rightMask setFrame:MaxX, MinY, v19];
 }
 
 - (void)_updateCropRectInLocalCoordinateSpace
 {
-  v7 = [(PUCropOverlayView *)self superview];
+  superview = [(PUCropOverlayView *)self superview];
   [(PUCropOverlayView *)self cropRect];
-  [v7 convertRect:self toView:?];
+  [superview convertRect:self toView:?];
   [(PUCropOverlayView *)self setCropRectInLocalCoordinateSpace:PURoundRectToPixel(v3, v4, v5, v6)];
 }
 
-- (void)setCropRect:(CGRect)a3
+- (void)setCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_cropRect = &self->_cropRect;
-  if (!CGRectEqualToRect(a3, self->_cropRect))
+  if (!CGRectEqualToRect(rect, self->_cropRect))
   {
     p_cropRect->origin.x = x;
     p_cropRect->origin.y = y;
@@ -475,36 +475,36 @@ void __68__PUCropOverlayView__setGridViews_visible_iVarVisibilePtr_animated___bl
   }
 }
 
-- (void)setMaskedContentVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setMaskedContentVisible:(BOOL)visible animated:(BOOL)animated
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_maskedContentVisible != a3)
+  if (self->_maskedContentVisible != visible)
   {
-    v4 = a4;
-    v5 = a3;
-    self->_maskedContentVisible = a3;
+    animatedCopy = animated;
+    visibleCopy = visible;
+    self->_maskedContentVisible = visible;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [(PUCropOverlayView *)self maskViews];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    maskViews = [(PUCropOverlayView *)self maskViews];
+    v7 = [maskViews countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
       v9 = *v16;
-      v10 = !v5;
+      v10 = !visibleCopy;
       do
       {
         for (i = 0; i != v8; ++i)
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(maskViews);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          if (v4)
+          if (animatedCopy)
           {
             v14[0] = MEMORY[0x1E69E9820];
             v14[1] = 3221225472;
@@ -517,12 +517,12 @@ void __68__PUCropOverlayView__setGridViews_visible_iVarVisibilePtr_animated___bl
 
           else
           {
-            v13 = [v12 opaqueView];
-            [v13 setAlpha:v10];
+            opaqueView = [v12 opaqueView];
+            [opaqueView setAlpha:v10];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [maskViews countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -536,31 +536,31 @@ void __54__PUCropOverlayView_setMaskedContentVisible_animated___block_invoke(uin
   [v2 setAlpha:*(a1 + 40)];
 }
 
-- (PUCropOverlayView)initWithFrame:(CGRect)a3
+- (PUCropOverlayView)initWithFrame:(CGRect)frame
 {
   v27[4] = *MEMORY[0x1E69E9840];
   v25.receiver = self;
   v25.super_class = PUCropOverlayView;
-  v3 = [(PUCropOverlayView *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUCropOverlayView *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PUCropOverlayView *)v3 cropWindowView];
-    v6 = [(PUCropOverlayView *)v4 _createMaskView];
+    cropWindowView = [(PUCropOverlayView *)v3 cropWindowView];
+    _createMaskView = [(PUCropOverlayView *)v4 _createMaskView];
     topMask = v4->_topMask;
-    v4->_topMask = v6;
+    v4->_topMask = _createMaskView;
 
-    v8 = [(PUCropOverlayView *)v4 _createMaskView];
+    _createMaskView2 = [(PUCropOverlayView *)v4 _createMaskView];
     leftMask = v4->_leftMask;
-    v4->_leftMask = v8;
+    v4->_leftMask = _createMaskView2;
 
-    v10 = [(PUCropOverlayView *)v4 _createMaskView];
+    _createMaskView3 = [(PUCropOverlayView *)v4 _createMaskView];
     rightMask = v4->_rightMask;
-    v4->_rightMask = v10;
+    v4->_rightMask = _createMaskView3;
 
-    v12 = [(PUCropOverlayView *)v4 _createMaskView];
+    _createMaskView4 = [(PUCropOverlayView *)v4 _createMaskView];
     bottomMask = v4->_bottomMask;
-    v4->_bottomMask = v12;
+    v4->_bottomMask = _createMaskView4;
 
     v27[0] = v4->_topMask;
     v27[1] = v4->_leftMask;
@@ -569,13 +569,13 @@ void __54__PUCropOverlayView_setMaskedContentVisible_animated___block_invoke(uin
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:4];
     [(PUCropOverlayView *)v4 setMaskViews:v14];
 
-    [(PUCropOverlayView *)v4 addSubview:v5];
+    [(PUCropOverlayView *)v4 addSubview:cropWindowView];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v15 = [(PUCropOverlayView *)v4 maskViews];
-    v16 = [v15 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    maskViews = [(PUCropOverlayView *)v4 maskViews];
+    v16 = [maskViews countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v16)
     {
       v17 = v16;
@@ -587,14 +587,14 @@ void __54__PUCropOverlayView_setMaskedContentVisible_animated___block_invoke(uin
         {
           if (*v22 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(maskViews);
           }
 
           [(PUCropOverlayView *)v4 addSubview:*(*(&v21 + 1) + 8 * v19++)];
         }
 
         while (v17 != v19);
-        v17 = [v15 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v17 = [maskViews countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v17);
@@ -602,7 +602,7 @@ void __54__PUCropOverlayView_setMaskedContentVisible_animated___block_invoke(uin
 
     [(PUCropOverlayView *)v4 setOpaque:0];
     v4->_maskedContentVisible = 1;
-    [v5 setAccessibilityIdentifier:@"cropView"];
+    [cropWindowView setAccessibilityIdentifier:@"cropView"];
   }
 
   return v4;

@@ -1,13 +1,13 @@
 @interface LaunchWarningDB
 - (BOOL)setupSchema;
 - (_TtC3mis15LaunchWarningDB)init;
-- (_TtC3mis15LaunchWarningDB)initWithDatabaseURL:(id)a3;
+- (_TtC3mis15LaunchWarningDB)initWithDatabaseURL:(id)l;
 - (void)setupPermissions;
 @end
 
 @implementation LaunchWarningDB
 
-- (_TtC3mis15LaunchWarningDB)initWithDatabaseURL:(id)a3
+- (_TtC3mis15LaunchWarningDB)initWithDatabaseURL:(id)l
 {
   v4 = sub_1B9DD2728();
   v5 = *(v4 - 8);
@@ -27,7 +27,7 @@
 
 - (BOOL)setupSchema
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B9DA89E4();
 
   return v3 & 1;
@@ -40,8 +40,8 @@
   v5 = *(v4 + 64);
   MEMORY[0x1EEE9AC00](v3);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
-  v9 = [(SQLDB *)v8 dbURL];
+  selfCopy = self;
+  dbURL = [(SQLDB *)selfCopy dbURL];
   sub_1B9DD26E8();
 
   sub_1B9DD26F8();

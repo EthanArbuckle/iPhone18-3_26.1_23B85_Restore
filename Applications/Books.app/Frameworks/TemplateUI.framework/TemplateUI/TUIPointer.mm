@@ -1,36 +1,36 @@
 @interface TUIPointer
-+ (TUIPointer)pointerWithRefId:(id)a3 style:(id)a4;
-- (TUIPointer)initWithRefId:(id)a3 style:(id)a4;
++ (TUIPointer)pointerWithRefId:(id)id style:(id)style;
+- (TUIPointer)initWithRefId:(id)id style:(id)style;
 @end
 
 @implementation TUIPointer
 
-- (TUIPointer)initWithRefId:(id)a3 style:(id)a4
+- (TUIPointer)initWithRefId:(id)id style:(id)style
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  styleCopy = style;
   v12.receiver = self;
   v12.super_class = TUIPointer;
   v8 = [(TUIPointer *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [idCopy copy];
     refId = v8->_refId;
     v8->_refId = v9;
 
-    objc_storeStrong(&v8->_style, a4);
+    objc_storeStrong(&v8->_style, style);
   }
 
   return v8;
 }
 
-+ (TUIPointer)pointerWithRefId:(id)a3 style:(id)a4
++ (TUIPointer)pointerWithRefId:(id)id style:(id)style
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 length])
+  idCopy = id;
+  styleCopy = style;
+  if (idCopy && [idCopy length])
   {
-    v8 = [[a1 alloc] initWithRefId:v6 style:v7];
+    v8 = [[self alloc] initWithRefId:idCopy style:styleCopy];
   }
 
   else

@@ -1,10 +1,10 @@
 @interface ConfigurationController
-- (void)handleRefreshNotificationWithNotification:(id)a3;
+- (void)handleRefreshNotificationWithNotification:(id)notification;
 @end
 
 @implementation ConfigurationController
 
-- (void)handleRefreshNotificationWithNotification:(id)a3
+- (void)handleRefreshNotificationWithNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

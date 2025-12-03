@@ -1,10 +1,10 @@
 @interface SUConcernListDataSource
 - (SUConcernListDataSource)init;
 - (SUTextViewCell)textViewCell;
-- (double)cellHeightForIndexPath:(id)a3;
-- (id)_titleCellForIndexPath:(id)a3;
-- (id)cellForIndexPath:(id)a3;
-- (int64_t)numberOfRowsInSection:(int64_t)a3;
+- (double)cellHeightForIndexPath:(id)path;
+- (id)_titleCellForIndexPath:(id)path;
+- (id)cellForIndexPath:(id)path;
+- (int64_t)numberOfRowsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
 - (void)dealloc;
 @end
@@ -45,16 +45,16 @@
   return result;
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v5 = [a3 section];
-  if (v5 == 1)
+  section = [path section];
+  if (section == 1)
   {
 
     return [(SUConcernListDataSource *)self textViewCell];
   }
 
-  else if (v5)
+  else if (section)
   {
     return 0;
   }
@@ -62,20 +62,20 @@
   else
   {
 
-    return [(SUConcernListDataSource *)self _titleCellForIndexPath:a3];
+    return [(SUConcernListDataSource *)self _titleCellForIndexPath:path];
   }
 }
 
-- (double)cellHeightForIndexPath:(id)a3
+- (double)cellHeightForIndexPath:(id)path
 {
-  if ([a3 section] == 1)
+  if ([path section] == 1)
   {
     return 150.0;
   }
 
   v6.receiver = self;
   v6.super_class = SUConcernListDataSource;
-  [(SUTableDataSource *)&v6 cellHeightForIndexPath:a3];
+  [(SUTableDataSource *)&v6 cellHeightForIndexPath:path];
   return result;
 }
 
@@ -92,11 +92,11 @@
   }
 }
 
-- (int64_t)numberOfRowsInSection:(int64_t)a3
+- (int64_t)numberOfRowsInSection:(int64_t)section
 {
-  if (a3 != 1)
+  if (section != 1)
   {
-    if (!a3)
+    if (!section)
     {
       return [(NSArray *)self->_concerns count];
     }
@@ -104,35 +104,35 @@
     return 0;
   }
 
-  return a3;
+  return section;
 }
 
-- (id)_titleCellForIndexPath:(id)a3
+- (id)_titleCellForIndexPath:(id)path
 {
-  v4 = [a3 row];
+  v4 = [path row];
   v5 = [-[SUTableDataSource cellReuseSource](self "cellReuseSource")];
   if (!v5)
   {
     v5 = [[SUTableCell alloc] initWithStyle:0 reuseIdentifier:@"0"];
   }
 
-  v6 = [(SUTableCell *)v5 textLabel];
-  [v6 setAdjustsFontSizeToFitWidth:1];
-  [v6 setMinimumScaleFactor:0.75];
-  [v6 setText:{objc_msgSend(-[NSArray objectAtIndex:](self->_concerns, "objectAtIndex:", v4), "title")}];
+  textLabel = [(SUTableCell *)v5 textLabel];
+  [textLabel setAdjustsFontSizeToFitWidth:1];
+  [textLabel setMinimumScaleFactor:0.75];
+  [textLabel setText:{objc_msgSend(-[NSArray objectAtIndex:](self->_concerns, "objectAtIndex:", v4), "title")}];
   if (v4 == [(SUConcernListDataSource *)self selectedConcernIndex])
   {
     [(SUTableCell *)v5 setAccessoryType:3];
-    v7 = [MEMORY[0x1E69DC888] colorWithRed:0.196078431 green:0.309803922 blue:0.521568627 alpha:1.0];
+    blackColor = [MEMORY[0x1E69DC888] colorWithRed:0.196078431 green:0.309803922 blue:0.521568627 alpha:1.0];
   }
 
   else
   {
     [(SUTableCell *)v5 setAccessoryType:0];
-    v7 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
   }
 
-  [v6 setTextColor:v7];
+  [textLabel setTextColor:blackColor];
   return v5;
 }
 

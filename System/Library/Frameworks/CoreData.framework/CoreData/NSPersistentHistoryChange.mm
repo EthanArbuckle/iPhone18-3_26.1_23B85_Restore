@@ -2,8 +2,8 @@
 + (NSEntityDescription)entityDescription;
 + (NSEntityDescription)entityDescriptionWithContext:(NSManagedObjectContext *)context;
 + (NSFetchRequest)fetchRequest;
-+ (id)shortStringForChangeType:(int64_t)a3;
-+ (id)stringForChangeType:(int64_t)a3;
++ (id)shortStringForChangeType:(int64_t)type;
++ (id)stringForChangeType:(int64_t)type;
 - (NSDictionary)tombstone;
 - (NSManagedObjectID)changedObjectID;
 - (NSPersistentHistoryChangeType)changeType;
@@ -54,8 +54,8 @@
     return 0;
   }
 
-  v3 = [(NSManagedObjectContext *)context persistentStoreCoordinator];
-  v4 = v3 ? v3->_modelMap : 0;
+  persistentStoreCoordinator = [(NSManagedObjectContext *)context persistentStoreCoordinator];
+  v4 = persistentStoreCoordinator ? persistentStoreCoordinator->_modelMap : 0;
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", +[_PFPersistentHistoryFetchModel ancillaryModelNamespace](_PFPersistentHistoryFetchModel, "ancillaryModelNamespace"), @"Change"];
   if (!v4)
   {
@@ -119,21 +119,21 @@
   return 0;
 }
 
-+ (id)shortStringForChangeType:(int64_t)a3
++ (id)shortStringForChangeType:(int64_t)type
 {
-  v3 = [a1 stringForChangeType:a3];
+  v3 = [self stringForChangeType:type];
 
   return [v3 stringByReplacingOccurrencesOfString:@"NSPersistentHistoryChangeType" withString:&stru_1EF3F1768];
 }
 
-+ (id)stringForChangeType:(int64_t)a3
++ (id)stringForChangeType:(int64_t)type
 {
-  if (a3 >= 3)
+  if (type >= 3)
   {
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"'%ld' is an unknown NSPersistentHistoryChangeType value", a3), 0}]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"'%ld' is an unknown NSPersistentHistoryChangeType value", type), 0}]);
   }
 
-  return off_1E6EC1FC0[a3];
+  return off_1E6EC1FC0[type];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface CarouselItemCollectionLockupOverlay
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)handleSelection:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)handleSelection:(id)selection;
 - (void)layoutSubviews;
 @end
 
@@ -18,17 +18,17 @@
   sub_1005412E8(0, v5);
   sub_10002A400(v5, v5[3]);
   LayoutMarginsAware<>.layoutFrame.getter();
-  v4 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   dispatch thunk of Placeable.place(at:with:)();
 
   sub_100007000(v5);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_1005412E8(1, v11);
   v6 = sub_10067A3C8(v11, width, height);
   v8 = v7;
@@ -41,12 +41,12 @@
   return result;
 }
 
-- (void)handleSelection:(id)a3
+- (void)handleSelection:(id)selection
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore35CarouselItemCollectionLockupOverlay_selectionHandler);
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = sub_10000827C(v3);
     v3(v5);
 

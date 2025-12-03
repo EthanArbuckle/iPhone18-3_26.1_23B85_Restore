@@ -17,24 +17,24 @@
 
 - (id)searcherTimeSlots
 {
-  v2 = [(EKUIInviteesViewAlternativeTimeSection *)self availabilitySearcher];
-  v3 = [v2 timesWhenAllAttendeesCanAttend];
+  availabilitySearcher = [(EKUIInviteesViewAlternativeTimeSection *)self availabilitySearcher];
+  timesWhenAllAttendeesCanAttend = [availabilitySearcher timesWhenAllAttendeesCanAttend];
 
-  return v3;
+  return timesWhenAllAttendeesCanAttend;
 }
 
 - (BOOL)searchingForMoreTimes
 {
-  v2 = [(EKUIInviteesViewAlternativeTimeSection *)self availabilitySearcher];
-  v3 = [v2 searchingForMoreTimesWhenAllAttendeesCanAttend];
+  availabilitySearcher = [(EKUIInviteesViewAlternativeTimeSection *)self availabilitySearcher];
+  searchingForMoreTimesWhenAllAttendeesCanAttend = [availabilitySearcher searchingForMoreTimesWhenAllAttendeesCanAttend];
 
-  return v3;
+  return searchingForMoreTimesWhenAllAttendeesCanAttend;
 }
 
 - (void)searchForMoreTimes
 {
-  v2 = [(EKUIInviteesViewAlternativeTimeSection *)self availabilitySearcher];
-  [v2 searchForMoreTimesWhenAllAttendeesCanAttend];
+  availabilitySearcher = [(EKUIInviteesViewAlternativeTimeSection *)self availabilitySearcher];
+  [availabilitySearcher searchForMoreTimesWhenAllAttendeesCanAttend];
 }
 
 @end

@@ -9,10 +9,10 @@
   v171 = *MEMORY[0x277D85DE8];
   v4 = a3;
   v143 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(__CFString *)v4 representedResource];
-  v141 = [v5 identifier];
+  representedResource = [(__CFString *)v4 representedResource];
+  identifier = [representedResource identifier];
 
-  if (!v141)
+  if (!identifier)
   {
     _HKInitializeLogging();
     v6 = *MEMORY[0x277CCC2C0];
@@ -28,11 +28,11 @@
     [v143 addObject:v8];
   }
 
-  v112 = [objc_alloc(MEMORY[0x277CCD600]) initWithFHIRIdentifier:v141];
-  v9 = [(__CFString *)v4 rulesVersion];
-  v113 = [v9 integerValue];
+  v112 = [objc_alloc(MEMORY[0x277CCD600]) initWithFHIRIdentifier:identifier];
+  rulesVersion = [(__CFString *)v4 rulesVersion];
+  integerValue = [rulesVersion integerValue];
 
-  if (v113 <= 0)
+  if (integerValue <= 0)
   {
     _HKInitializeLogging();
     v10 = *MEMORY[0x277CCC2C0];
@@ -74,7 +74,7 @@
     [v143 addObject:v138];
   }
 
-  v111 = [(__CFString *)v4 country];
+  country = [(__CFString *)v4 country];
   v157 = 0;
   v125 = [(__CFString *)v4 medicalRecordPropertyValueForKey:@"note" expectedClass:objc_opt_class() isArray:0 error:&v157];
   v137 = v157;
@@ -121,8 +121,8 @@
     [v143 addObject:v136];
   }
 
-  v23 = [(__CFString *)v4 representedResource];
-  v109 = [v23 extractionHints];
+  representedResource2 = [(__CFString *)v4 representedResource];
+  extractionHints = [representedResource2 extractionHints];
 
   v155 = 0;
   v24 = [(__CFString *)v4 medicalRecordPropertyValueForKey:@"medicationCodingCollection" expectedClass:objc_opt_class() isArray:0 error:&v155];
@@ -191,7 +191,7 @@
     [v143 addObject:v135];
   }
 
-  v108 = [v140 integerValue];
+  integerValue2 = [v140 integerValue];
   v153 = 0;
   v38 = [(__CFString *)v4 medicalRecordPropertyValueForKey:@"asserter" expectedClass:objc_opt_class() isArray:0 error:&v153];
   v134 = v153;
@@ -379,7 +379,7 @@
     [v143 addObject:v129];
   }
 
-  v107 = [v139 BOOLValue];
+  bOOLValue = [v139 BOOLValue];
   v146 = 0;
   v72 = [(__CFString *)v4 medicalRecordPropertyValueForKey:@"reasonsNotTakenCodingCollections" expectedClass:objc_opt_class() isArray:1 error:&v146];
   v128 = v146;
@@ -455,30 +455,30 @@
   v87 = v81;
   if (![v143 count])
   {
-    v94 = [(__CFString *)v4 representedResource];
-    v95 = [v94 receivedDate];
-    v96 = v95;
-    if (v95)
+    representedResource3 = [(__CFString *)v4 representedResource];
+    receivedDate = [representedResource3 receivedDate];
+    v96 = receivedDate;
+    if (receivedDate)
     {
-      v97 = v95;
+      date = receivedDate;
     }
 
     else
     {
-      v97 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
-    v98 = v97;
+    v98 = date;
 
-    v99 = [v124 BOOLValue];
-    v92 = [MEMORY[0x277CCD2E8] localDevice];
-    v100 = [(__CFString *)v4 medicalRecordMetadata];
-    v101 = [MEMORY[0x277CCD688] medicationRecordType];
-    LOBYTE(v106) = v107;
-    v142 = [MEMORY[0x277CCD680] medicationRecordWithType:v101 note:v125 enteredInError:v99 modifiedDate:v98 originIdentifier:v112 locale:v126 extractionVersion:v113 device:v92 metadata:v100 country:v111 state:(v109 >> 2) & 1 medicationCodingCollection:v116 assertionType:v108 asserter:v117 assertionDate:v118 statusCoding:v119 dosages:v120 earliestDosageDate:v121 reasonForUseCodingCollections:v122 notTaken:v106 reasonsNotTakenCodingCollections:v123 effectiveStartDate:v80 effectiveEndDate:v87];
-    v102 = [(__CFString *)v4 representedResource];
-    v103 = [v102 firstSeenDate];
-    [v142 _setCreationDate:v103];
+    bOOLValue2 = [v124 BOOLValue];
+    localDevice = [MEMORY[0x277CCD2E8] localDevice];
+    medicalRecordMetadata = [(__CFString *)v4 medicalRecordMetadata];
+    medicationRecordType = [MEMORY[0x277CCD688] medicationRecordType];
+    LOBYTE(v106) = bOOLValue;
+    v142 = [MEMORY[0x277CCD680] medicationRecordWithType:medicationRecordType note:v125 enteredInError:bOOLValue2 modifiedDate:v98 originIdentifier:v112 locale:v126 extractionVersion:integerValue device:localDevice metadata:medicalRecordMetadata country:country state:(extractionHints >> 2) & 1 medicationCodingCollection:v116 assertionType:integerValue2 asserter:v117 assertionDate:v118 statusCoding:v119 dosages:v120 earliestDosageDate:v121 reasonForUseCodingCollections:v122 notTaken:v106 reasonsNotTakenCodingCollections:v123 effectiveStartDate:v80 effectiveEndDate:v87];
+    representedResource4 = [(__CFString *)v4 representedResource];
+    firstSeenDate = [representedResource4 firstSeenDate];
+    [v142 _setCreationDate:firstSeenDate];
 
     goto LABEL_99;
   }
@@ -490,7 +490,7 @@
   v90 = [v88 errorWithDomain:@"HDHealthRecordsServiceErrorDomain" code:201 userInfo:v89];
 
   v91 = v90;
-  v92 = v91;
+  localDevice = v91;
   if (!v91)
   {
     goto LABEL_95;
@@ -506,9 +506,9 @@ LABEL_95:
 
   v93 = v91;
   v142 = 0;
-  *a4 = v92;
+  *a4 = localDevice;
 LABEL_96:
-  v98 = v92;
+  v98 = localDevice;
 LABEL_99:
 
   v104 = *MEMORY[0x277D85DE8];

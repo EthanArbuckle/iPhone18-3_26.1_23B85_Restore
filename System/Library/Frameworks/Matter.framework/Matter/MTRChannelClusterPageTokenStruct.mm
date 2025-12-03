@@ -1,6 +1,6 @@
 @interface MTRChannelClusterPageTokenStruct
 - (MTRChannelClusterPageTokenStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRChannelClusterPageTokenStruct);
-  v5 = [(MTRChannelClusterPageTokenStruct *)self limit];
-  [(MTRChannelClusterPageTokenStruct *)v4 setLimit:v5];
+  limit = [(MTRChannelClusterPageTokenStruct *)self limit];
+  [(MTRChannelClusterPageTokenStruct *)v4 setLimit:limit];
 
-  v6 = [(MTRChannelClusterPageTokenStruct *)self after];
-  [(MTRChannelClusterPageTokenStruct *)v4 setAfter:v6];
+  after = [(MTRChannelClusterPageTokenStruct *)self after];
+  [(MTRChannelClusterPageTokenStruct *)v4 setAfter:after];
 
-  v7 = [(MTRChannelClusterPageTokenStruct *)self before];
-  [(MTRChannelClusterPageTokenStruct *)v4 setBefore:v7];
+  before = [(MTRChannelClusterPageTokenStruct *)self before];
+  [(MTRChannelClusterPageTokenStruct *)v4 setBefore:before];
 
   return v4;
 }

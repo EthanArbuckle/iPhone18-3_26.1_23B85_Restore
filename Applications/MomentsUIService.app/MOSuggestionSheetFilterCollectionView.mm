@@ -1,47 +1,47 @@
 @interface MOSuggestionSheetFilterCollectionView
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (_TtC16MomentsUIService37MOSuggestionSheetFilterCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (_TtC16MomentsUIService37MOSuggestionSheetFilterCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 @end
 
 @implementation MOSuggestionSheetFilterCollectionView
 
-- (_TtC16MomentsUIService37MOSuggestionSheetFilterCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtC16MomentsUIService37MOSuggestionSheetFilterCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   v4 = *((swift_isaMask & self->super.super.super.super.super.isa) + 0x68);
-  v5 = self;
+  selfCopy = self;
   v6 = v4();
   v7 = (*(*v6 + 112))(v6);
 
   return v7;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = MOSuggestionSheetFilterCollectionView.collectionView(_:cellForItemAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = MOSuggestionSheetFilterCollectionView.collectionView(_:cellForItemAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v5 = type metadata accessor for IndexPath();
   v6 = *(v5 - 8);
@@ -59,16 +59,16 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  MOSuggestionSheetFilterCollectionView.collectionView(_:didSelectItemAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  MOSuggestionSheetFilterCollectionView.collectionView(_:didSelectItemAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }

@@ -1,18 +1,18 @@
 @interface _PASLPReaderBinaryPlist
-- (_PASLPReaderBinaryPlist)initWithData:(id)a3 sourcedFromPath:(id)a4 needsValidation:(BOOL)a5 error:(id *)a6;
-- (char)_decodeOffset:(id *)a3 decodedObject:(void *)a4 ifEqualToReferenceObject:(int)a5 validationDepth:(void *)a6 unlazyCopyCache:;
-- (id)_unlazyCopyForArrayWithCount:(uint64_t)a3 storage:(void *)a4 unlazyCopyCache:;
-- (id)_unlazyCopyForDictionaryWithCount:(uint64_t)a3 storage:(void *)a4 unlazyCopyCache:;
-- (id)keyAtIndex:(unint64_t)a3 usingDictionaryContext:(id)a4;
-- (id)objectAtIndex:(unint64_t)a3 usingArrayContext:(id)a4;
-- (id)objectAtIndex:(unint64_t)a3 usingDictionaryContext:(id)a4;
-- (id)objectForKey:(id)a3 usingDictionaryContext:(id)a4;
-- (id)rootObjectWithErrMsg:(id *)a3;
-- (id)unlazyCopyForArrayWithContext:(id)a3;
-- (id)unlazyCopyForDictionaryWithContext:(id)a3;
-- (uint64_t)_decodeUnsignedIntegerValue:(void *)a3 usingCursor:;
+- (_PASLPReaderBinaryPlist)initWithData:(id)data sourcedFromPath:(id)path needsValidation:(BOOL)validation error:(id *)error;
+- (char)_decodeOffset:(id *)offset decodedObject:(void *)object ifEqualToReferenceObject:(int)referenceObject validationDepth:(void *)depth unlazyCopyCache:;
+- (id)_unlazyCopyForArrayWithCount:(uint64_t)count storage:(void *)storage unlazyCopyCache:;
+- (id)_unlazyCopyForDictionaryWithCount:(uint64_t)count storage:(void *)storage unlazyCopyCache:;
+- (id)keyAtIndex:(unint64_t)index usingDictionaryContext:(id)context;
+- (id)objectAtIndex:(unint64_t)index usingArrayContext:(id)context;
+- (id)objectAtIndex:(unint64_t)index usingDictionaryContext:(id)context;
+- (id)objectForKey:(id)key usingDictionaryContext:(id)context;
+- (id)rootObjectWithErrMsg:(id *)msg;
+- (id)unlazyCopyForArrayWithContext:(id)context;
+- (id)unlazyCopyForDictionaryWithContext:(id)context;
+- (uint64_t)_decodeUnsignedIntegerValue:(void *)value usingCursor:;
 - (uint64_t)_offsetForRecord:(uint64_t)result;
-- (uint64_t)_validateCollectionMembers:(int)a3 validationDepth:(uint64_t)a4 count:;
+- (uint64_t)_validateCollectionMembers:(int)members validationDepth:(uint64_t)depth count:;
 - (void)dealloc;
 @end
 
@@ -31,13 +31,13 @@
   [(_PASLPReaderBinaryPlist *)&v4 dealloc];
 }
 
-- (id)unlazyCopyForArrayWithContext:(id)a3
+- (id)unlazyCopyForArrayWithContext:(id)context
 {
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
-    v6 = v4[1];
-    v5 = v4[2];
+    v6 = contextCopy[1];
+    v5 = contextCopy[2];
   }
 
   else
@@ -49,21 +49,21 @@
   return [(_PASLPReaderBinaryPlist *)self _unlazyCopyForArrayWithCount:v5 storage:v6 unlazyCopyCache:0];
 }
 
-- (id)_unlazyCopyForArrayWithCount:(uint64_t)a3 storage:(void *)a4 unlazyCopyCache:
+- (id)_unlazyCopyForArrayWithCount:(uint64_t)count storage:(void *)storage unlazyCopyCache:
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
-  if (!a1)
+  storageCopy = storage;
+  v8 = storageCopy;
+  if (!self)
   {
     v22 = 0;
     goto LABEL_30;
   }
 
-  if (!v7)
+  if (!storageCopy)
   {
     v8 = [objc_alloc(MEMORY[0x1E696AE08]) initWithOptions:0];
-    v7 = [v8 setCount:*(a1 + 40)];
+    storageCopy = [v8 setCount:*(self + 40)];
   }
 
   v9 = (8 * a2) | 7;
@@ -88,8 +88,8 @@
     goto LABEL_6;
   }
 
-  MEMORY[0x1EEE9AC00](v7);
-  v10 = &v26 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
+  MEMORY[0x1EEE9AC00](storageCopy);
+  v10 = &currentHandler - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v10, (8 * a2) | 7);
   if (a2)
   {
@@ -97,11 +97,11 @@ LABEL_6:
     v11 = 0;
     do
     {
-      v12 = *(a1 + 49);
-      if (*(a1 + 49))
+      v12 = *(self + 49);
+      if (*(self + 49))
       {
         v13 = 0;
-        v14 = (a3 + v11 * v12);
+        v14 = (count + v11 * v12);
         do
         {
           v15 = *v14++;
@@ -121,16 +121,16 @@ LABEL_6:
       memptr = v16;
       if (!v16)
       {
-        if (*(a1 + 40) <= v13)
+        if (*(self + 40) <= v13)
         {
           goto LABEL_25;
         }
 
-        v17 = *(a1 + 48);
-        if (*(a1 + 48))
+        v17 = *(self + 48);
+        if (*(self + 48))
         {
           v18 = 0;
-          v19 = (*(a1 + 56) + v13 * v17);
+          v19 = (*(self + 56) + v13 * v17);
           do
           {
             v20 = *v19++;
@@ -146,20 +146,20 @@ LABEL_6:
           v18 = 0;
         }
 
-        if (v18 >= *(a1 + 24))
+        if (v18 >= *(self + 24))
         {
 LABEL_25:
-          v26 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v26 handleFailureInMethod:sel__unlazyCopyForArrayWithCount_storage_unlazyCopyCache_ object:a1 file:@"_PASLPReaderBinaryPlist.m" lineNumber:1067 description:{@"_unlazyCopyForArray error loading array member, this should have been caught during validation"}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:sel__unlazyCopyForArrayWithCount_storage_unlazyCopyCache_ object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:1067 description:{@"_unlazyCopyForArray error loading array member, this should have been caught during validation"}];
 
           v18 = -1;
         }
 
-        [(_PASLPReaderBinaryPlist *)a1 _decodeOffset:v18 decodedObject:&memptr ifEqualToReferenceObject:0 validationDepth:-1 unlazyCopyCache:v8];
+        [(_PASLPReaderBinaryPlist *)self _decodeOffset:v18 decodedObject:&memptr ifEqualToReferenceObject:0 validationDepth:-1 unlazyCopyCache:v8];
         if (!memptr)
         {
-          v26 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v26 handleFailureInMethod:sel__unlazyCopyForArrayWithCount_storage_unlazyCopyCache_ object:a1 file:@"_PASLPReaderBinaryPlist.m" lineNumber:1073 description:{@"Invalid parameter not satisfying: %@", @"member"}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:sel__unlazyCopyForArrayWithCount_storage_unlazyCopyCache_ object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:1073 description:{@"Invalid parameter not satisfying: %@", @"member"}];
         }
 
         [v8 replacePointerAtIndex:v13 withPointer:?];
@@ -188,18 +188,18 @@ LABEL_30:
   return v22;
 }
 
-- (char)_decodeOffset:(id *)a3 decodedObject:(void *)a4 ifEqualToReferenceObject:(int)a5 validationDepth:(void *)a6 unlazyCopyCache:
+- (char)_decodeOffset:(id *)offset decodedObject:(void *)object ifEqualToReferenceObject:(int)referenceObject validationDepth:(void *)depth unlazyCopyCache:
 {
   v101[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a6;
-  v13 = v12;
-  if (!a1)
+  objectCopy = object;
+  depthCopy = depth;
+  v13 = depthCopy;
+  if (!self)
   {
     goto LABEL_163;
   }
 
-  v14 = *(a1 + 16);
+  v14 = *(self + 16);
   v15 = (v14 + a2);
   if (__CFADD__(v14, a2))
   {
@@ -207,7 +207,7 @@ LABEL_30:
   }
 
   v93 = a2;
-  v16 = *(a1 + 24) + v14;
+  v16 = *(self + 24) + v14;
   if (v15 >= v16 || v14 == 0)
   {
     goto LABEL_163;
@@ -242,7 +242,7 @@ LABEL_30:
             valuePtr = v22;
             if ((v20 & 0xF) == 0xF)
             {
-              if (![(_PASLPReaderBinaryPlist *)a1 _decodeUnsignedIntegerValue:v101 usingCursor:?])
+              if (![(_PASLPReaderBinaryPlist *)self _decodeUnsignedIntegerValue:v101 usingCursor:?])
               {
                 goto LABEL_163;
               }
@@ -252,7 +252,7 @@ LABEL_30:
             }
 
             v19 = 0;
-            v23 = v22 * *(a1 + 49);
+            v23 = v22 * *(self + 49);
             v24 = v18 + v23;
             v25 = __CFADD__(v18, v23);
             if (v24 < v16 && !v25)
@@ -267,16 +267,16 @@ LABEL_30:
               v27 = __CFADD__(v24, v23);
               if (v26 < v16 && !v27 && v24)
               {
-                if (a5 < 0 || [(_PASLPReaderBinaryPlist *)a1 _validateCollectionMembers:v18 validationDepth:a5 count:2 * v22])
+                if (referenceObject < 0 || [(_PASLPReaderBinaryPlist *)self _validateCollectionMembers:v18 validationDepth:referenceObject count:2 * v22])
                 {
-                  if (!(a3 | v11))
+                  if (!(offset | objectCopy))
                   {
-                    v70 = *(a1 + 16) + v93;
+                    v70 = *(self + 16) + v93;
                     goto LABEL_153;
                   }
 
                   v28 = v93;
-                  if (!v11)
+                  if (!objectCopy)
                   {
                     if (!v22)
                     {
@@ -288,17 +288,17 @@ LABEL_30:
                     goto LABEL_184;
                   }
 
-                  v29 = CFGetTypeID(v11);
-                  if (v29 == CFDictionaryGetTypeID() && CFDictionaryGetCount(v11) == v22)
+                  v29 = CFGetTypeID(objectCopy);
+                  if (v29 == CFDictionaryGetTypeID() && CFDictionaryGetCount(objectCopy) == v22)
                   {
                     if (!v22)
                     {
-                      if (a3)
+                      if (offset)
                       {
-                        v30 = *a3;
+                        v30 = *offset;
                         v31 = MEMORY[0x1E695E0F8];
 LABEL_148:
-                        *a3 = v31;
+                        *offset = v31;
 
                         goto LABEL_149;
                       }
@@ -310,7 +310,7 @@ LABEL_184:
                     if (v13)
                     {
                       v75 = v13;
-                      v76 = [(_PASLPReaderBinaryPlist *)a1 _unlazyCopyForDictionaryWithCount:v22 storage:v18 unlazyCopyCache:v13];
+                      v76 = [(_PASLPReaderBinaryPlist *)self _unlazyCopyForDictionaryWithCount:v22 storage:v18 unlazyCopyCache:v13];
                       v28 = v93;
                     }
 
@@ -318,21 +318,21 @@ LABEL_184:
                     {
                       v75 = 0;
                       v81 = [[_PASLPDictionaryContext alloc] initWithStorage:v18 count:v22];
-                      v76 = [[_PASLPDictionary alloc] initWithLazyPlistReader:a1 context:v81];
+                      v76 = [[_PASLPDictionary alloc] initWithLazyPlistReader:self context:v81];
                     }
 
-                    if (!v11 || CFEqual(v76, v11))
+                    if (!objectCopy || CFEqual(v76, objectCopy))
                     {
 LABEL_207:
-                      if (a3)
+                      if (offset)
                       {
 LABEL_208:
-                        objc_storeStrong(a3, v76);
+                        objc_storeStrong(offset, v76);
                         v28 = v93;
                       }
 
 LABEL_209:
-                      v19 = &v26[-*(a1 + 16) - v28];
+                      v19 = &v26[-*(self + 16) - v28];
 LABEL_210:
 
                       v13 = v75;
@@ -359,7 +359,7 @@ LABEL_163:
         valuePtr = v66;
         if ((v20 & 0xF) == 0xF)
         {
-          if (![(_PASLPReaderBinaryPlist *)a1 _decodeUnsignedIntegerValue:v101 usingCursor:?])
+          if (![(_PASLPReaderBinaryPlist *)self _decodeUnsignedIntegerValue:v101 usingCursor:?])
           {
             goto LABEL_163;
           }
@@ -369,7 +369,7 @@ LABEL_163:
         }
 
         v19 = 0;
-        v67 = v66 * *(a1 + 49);
+        v67 = v66 * *(self + 49);
         v26 = v18 + v67;
         v68 = __CFADD__(v18, v67);
         if (v26 >= v16)
@@ -383,35 +383,35 @@ LABEL_163:
           goto LABEL_242;
         }
 
-        if (!v18 || (a5 & 0x80000000) == 0 && ![(_PASLPReaderBinaryPlist *)a1 _validateCollectionMembers:v18 validationDepth:a5 count:v66])
+        if (!v18 || (referenceObject & 0x80000000) == 0 && ![(_PASLPReaderBinaryPlist *)self _validateCollectionMembers:v18 validationDepth:referenceObject count:v66])
         {
           goto LABEL_163;
         }
 
-        if (!(a3 | v11))
+        if (!(offset | objectCopy))
         {
           goto LABEL_149;
         }
 
-        if (v11)
+        if (objectCopy)
         {
-          v69 = CFGetTypeID(v11);
-          if (v69 != CFArrayGetTypeID() || CFArrayGetCount(v11) != v66)
+          v69 = CFGetTypeID(objectCopy);
+          if (v69 != CFArrayGetTypeID() || CFArrayGetCount(objectCopy) != v66)
           {
             goto LABEL_163;
           }
 
           if (!v66)
           {
-            if (a3)
+            if (offset)
             {
-              v30 = *a3;
+              v30 = *offset;
               v31 = MEMORY[0x1E695E0F0];
               goto LABEL_148;
             }
 
 LABEL_149:
-            v70 = *(a1 + 16) + v28;
+            v70 = *(self + 16) + v28;
 LABEL_153:
             v19 = &v26[-v70];
             goto LABEL_242;
@@ -428,7 +428,7 @@ LABEL_153:
         if (v13)
         {
           v75 = v13;
-          v76 = [(_PASLPReaderBinaryPlist *)a1 _unlazyCopyForArrayWithCount:v66 storage:v18 unlazyCopyCache:v13];
+          v76 = [(_PASLPReaderBinaryPlist *)self _unlazyCopyForArrayWithCount:v66 storage:v18 unlazyCopyCache:v13];
           v28 = v93;
         }
 
@@ -436,16 +436,16 @@ LABEL_153:
         {
           v75 = 0;
           v80 = [[_PASLPArrayContext alloc] initWithStorage:v18 count:v66];
-          v76 = [[_PASLPArray alloc] initWithLazyPlistReader:a1 context:v80];
+          v76 = [[_PASLPArray alloc] initWithLazyPlistReader:self context:v80];
         }
 
-        if (v11 && ![(_PASLPDictionary *)v76 isEqualToArray:v11])
+        if (objectCopy && ![(_PASLPDictionary *)v76 isEqualToArray:objectCopy])
         {
           goto LABEL_211;
         }
 
 LABEL_202:
-        if (a3)
+        if (offset)
         {
           goto LABEL_208;
         }
@@ -457,10 +457,10 @@ LABEL_202:
 LABEL_91:
       v50 = v20 & 0xF;
       v100 = v50;
-      v92 = v12;
+      v92 = depthCopy;
       if ((v20 & 0xF) == 0xF)
       {
-        if (![(_PASLPReaderBinaryPlist *)a1 _decodeUnsignedIntegerValue:v101 usingCursor:?])
+        if (![(_PASLPReaderBinaryPlist *)self _decodeUnsignedIntegerValue:v101 usingCursor:?])
         {
           goto LABEL_151;
         }
@@ -487,16 +487,16 @@ LABEL_91:
 
       if (v18)
       {
-        if (a3 | v11)
+        if (offset | objectCopy)
         {
-          if (!v11)
+          if (!objectCopy)
           {
 LABEL_227:
-            if (!a3)
+            if (!offset)
             {
 LABEL_239:
-              v19 = &v91[-*(a1 + 16) - v54];
-              v56 = v11;
+              v19 = &v91[-*(self + 16) - v54];
+              v56 = objectCopy;
               goto LABEL_240;
             }
 
@@ -504,7 +504,7 @@ LABEL_239:
             {
               if (v50 > 0x1F)
               {
-                v85 = [[_PASBigEndianUTF16String alloc] initWithLength:v50 buffer:v18 backingObject:a1];
+                v85 = [[_PASBigEndianUTF16String alloc] initWithLength:v50 buffer:v18 backingObject:self];
               }
 
               else
@@ -518,19 +518,19 @@ LABEL_239:
 LABEL_229:
             if (v50 > 0x1E)
             {
-              CFRetain(*(a1 + 8));
-              v85 = CFStringCreateWithBytesNoCopy(0, v18, v50, 0x600u, 0, *(a1 + 64));
+              CFRetain(*(self + 8));
+              v85 = CFStringCreateWithBytesNoCopy(0, v18, v50, 0x600u, 0, *(self + 64));
               if (v85)
               {
 LABEL_238:
-                v86 = *a3;
-                *a3 = v85;
+                v86 = *offset;
+                *offset = v85;
 
                 v54 = v93;
                 goto LABEL_239;
               }
 
-              CFAllocatorDeallocate(*(a1 + 64), v18);
+              CFAllocatorDeallocate(*(self + 64), v18);
 LABEL_235:
               v85 = &stru_1F1B24B60;
               goto LABEL_238;
@@ -546,19 +546,19 @@ LABEL_237:
             goto LABEL_235;
           }
 
-          v55 = CFGetTypeID(v11);
+          v55 = CFGetTypeID(objectCopy);
           if (v55 == CFStringGetTypeID())
           {
-            v56 = v11;
+            v56 = objectCopy;
             Length = CFStringGetLength(v56);
             if (Length == v50)
             {
               if (!v50)
               {
-                if (a3)
+                if (offset)
                 {
-                  v78 = *a3;
-                  *a3 = &stru_1F1B24B60;
+                  v78 = *offset;
+                  *offset = &stru_1F1B24B60;
                 }
 
                 goto LABEL_195;
@@ -570,11 +570,11 @@ LABEL_237:
                 if (Length)
                 {
                   v58 = memcmp(Length, v18, v50);
-                  if (a3 || v58)
+                  if (offset || v58)
                   {
                     if (!v58)
                     {
-                      if (!a3)
+                      if (!offset)
                       {
                         goto LABEL_239;
                       }
@@ -586,7 +586,7 @@ LABEL_237:
                   }
 
 LABEL_195:
-                  v19 = &v91[-*(a1 + 16) - v54];
+                  v19 = &v91[-*(self + 16) - v54];
                   goto LABEL_240;
                 }
 
@@ -662,7 +662,7 @@ LABEL_151:
     v100 = v59;
     if ((v20 & 0xF) == 0xF)
     {
-      if (![(_PASLPReaderBinaryPlist *)a1 _decodeUnsignedIntegerValue:v101 usingCursor:?])
+      if (![(_PASLPReaderBinaryPlist *)self _decodeUnsignedIntegerValue:v101 usingCursor:?])
       {
         goto LABEL_163;
       }
@@ -685,17 +685,17 @@ LABEL_151:
       goto LABEL_163;
     }
 
-    if (a3 | v11)
+    if (offset | objectCopy)
     {
-      if (v11)
+      if (objectCopy)
       {
-        v61 = CFGetTypeID(v11);
+        v61 = CFGetTypeID(objectCopy);
         if (v61 != CFDataGetTypeID())
         {
           goto LABEL_163;
         }
 
-        v62 = v11;
+        v62 = objectCopy;
         if (CFDataGetLength(v62) == v59)
         {
           if (v59)
@@ -713,9 +713,9 @@ LABEL_151:
             v95[5] = v18;
             [v62 enumerateByteRangesUsingBlock:v95];
             v64 = *(p_valuePtr + 24);
-            if (!a3 && *(p_valuePtr + 24))
+            if (!offset && *(p_valuePtr + 24))
             {
-              v65 = *(a1 + 16);
+              v65 = *(self + 16);
               _Block_object_dispose(&valuePtr, 8);
 
 LABEL_191:
@@ -736,12 +736,12 @@ LABEL_192:
             goto LABEL_172;
           }
 
-          if (a3)
+          if (offset)
           {
-            objc_storeStrong(a3, &unk_1EE71B5D8);
+            objc_storeStrong(offset, &unk_1EE71B5D8);
           }
 
-          v19 = &v34[-*(a1 + 16) - v93];
+          v19 = &v34[-*(self + 16) - v93];
         }
 
         else
@@ -761,27 +761,27 @@ LABEL_192:
       }
 
 LABEL_172:
-      CFRetain(*(a1 + 8));
-      v74 = CFDataCreateWithBytesNoCopy(0, v18, v59, *(a1 + 64));
+      CFRetain(*(self + 8));
+      v74 = CFDataCreateWithBytesNoCopy(0, v18, v59, *(self + 64));
       if (!v74)
       {
-        CFAllocatorDeallocate(*(a1 + 64), v18);
-        if (a3)
+        CFAllocatorDeallocate(*(self + 64), v18);
+        if (offset)
         {
           __assert_rtn("[_PASLPReaderBinaryPlist _decodeOffset:decodedObject:ifEqualToReferenceObject:validationDepth:unlazyCopyCache:]", "_PASLPReaderBinaryPlist.m", 665, "decoded");
         }
 
         v74 = 0;
 LABEL_190:
-        v65 = *(a1 + 16);
+        v65 = *(self + 16);
 
         goto LABEL_191;
       }
 
 LABEL_188:
-      if (a3)
+      if (offset)
       {
-        objc_storeStrong(a3, v74);
+        objc_storeStrong(offset, v74);
       }
 
       goto LABEL_190;
@@ -813,7 +813,7 @@ LABEL_129:
         goto LABEL_242;
       }
 
-      if (a3 | v11)
+      if (offset | objectCopy)
       {
         v40 = CFDateCreate(0, COERCE_CFABSOLUTETIME(bswap64(*v18)));
         if (!v40)
@@ -823,20 +823,20 @@ LABEL_129:
 
         v41 = v40;
         v42 = v93;
-        if (v11 && !CFEqual(v40, v11))
+        if (objectCopy && !CFEqual(v40, objectCopy))
         {
           v19 = 0;
         }
 
         else
         {
-          if (a3)
+          if (offset)
           {
-            objc_storeStrong(a3, v41);
+            objc_storeStrong(offset, v41);
             v42 = v93;
           }
 
-          v19 = &v34[-*(a1 + 16) - v42];
+          v19 = &v34[-*(self + 16) - v42];
         }
 
         goto LABEL_242;
@@ -859,7 +859,7 @@ LABEL_129:
       goto LABEL_242;
     }
 
-    if (!(a3 | v11))
+    if (!(offset | objectCopy))
     {
       goto LABEL_129;
     }
@@ -884,19 +884,19 @@ LABEL_129:
       __assert_rtn("[_PASLPReaderBinaryPlist _decodeOffset:decodedObject:ifEqualToReferenceObject:validationDepth:unlazyCopyCache:]", "_PASLPReaderBinaryPlist.m", 572, "decoded != nil");
     }
 
-    if (v11 && !CFEqual(v49, v11))
+    if (objectCopy && !CFEqual(v49, objectCopy))
     {
       v19 = 0;
     }
 
     else
     {
-      if (a3)
+      if (offset)
       {
-        objc_storeStrong(a3, v39);
+        objc_storeStrong(offset, v39);
       }
 
-      v19 = &v34[-*(a1 + 16) - v93];
+      v19 = &v34[-*(self + 16) - v93];
     }
 
 LABEL_176:
@@ -923,20 +923,20 @@ LABEL_176:
         }
 
         v45 = *MEMORY[0x1E695E738];
-        if (v11)
+        if (objectCopy)
         {
-          if (v45 != v11)
+          if (v45 != objectCopy)
           {
             goto LABEL_163;
           }
         }
 
-        if (a3)
+        if (offset)
         {
-          v46 = *a3;
-          *a3 = v45;
+          v46 = *offset;
+          *offset = v45;
 
-          v15 = (*(a1 + 16) + v44);
+          v15 = (*(self + 16) + v44);
         }
 
         v19 = (v18 - v15);
@@ -947,18 +947,18 @@ LABEL_176:
     }
 
     v72 = *v71;
-    if (v11 && !CFEqual(*v71, v11))
+    if (objectCopy && !CFEqual(*v71, objectCopy))
     {
       goto LABEL_163;
     }
 
-    if (a3)
+    if (offset)
     {
-      v73 = *a3;
-      *a3 = v72;
+      v73 = *offset;
+      *offset = v72;
     }
 
-    v19 = v18 - *(a1 + 16) - v44;
+    v19 = v18 - *(self + 16) - v44;
     goto LABEL_242;
   }
 
@@ -976,7 +976,7 @@ LABEL_176:
     v35 = __CFADD__(v18, 1 << v32);
     if (v34 < v16 && !v35)
     {
-      if (!(a3 | v11))
+      if (!(offset | objectCopy))
       {
         goto LABEL_129;
       }
@@ -1003,24 +1003,24 @@ LABEL_176:
       }
 
       v39 = v38;
-      if (v11 && !CFEqual(v38, v11))
+      if (objectCopy && !CFEqual(v38, objectCopy))
       {
         v19 = 0;
       }
 
       else
       {
-        if (a3)
+        if (offset)
         {
           if (!v39)
           {
             __assert_rtn("[_PASLPReaderBinaryPlist _decodeOffset:decodedObject:ifEqualToReferenceObject:validationDepth:unlazyCopyCache:]", "_PASLPReaderBinaryPlist.m", 541, "decoded != nil");
           }
 
-          objc_storeStrong(a3, v39);
+          objc_storeStrong(offset, v39);
         }
 
-        v19 = &v34[-v93 - *(a1 + 16)];
+        v19 = &v34[-v93 - *(self + 16)];
       }
 
       goto LABEL_176;
@@ -1033,29 +1033,29 @@ LABEL_242:
   return v19;
 }
 
-- (uint64_t)_decodeUnsignedIntegerValue:(void *)a3 usingCursor:
+- (uint64_t)_decodeUnsignedIntegerValue:(void *)value usingCursor:
 {
-  v3 = *a3;
-  v4 = (*a3 + 1);
-  if ((**a3 & 0xF0) != 0x10)
+  v3 = *value;
+  v4 = (*value + 1);
+  if ((**value & 0xF0) != 0x10)
   {
     return 0;
   }
 
-  v5 = **a3 & 0xF;
+  v5 = **value & 0xF;
   if (v5 > 4)
   {
     return 0;
   }
 
   result = 0;
-  v8 = *(a1 + 24) + *(a1 + 16);
+  v8 = *(self + 24) + *(self + 16);
   v9 = 1 << v5;
   v10 = v4 + (1 << v5);
   v11 = __CFADD__(v4, 1 << v5);
   if (v10 < v8 && !v11)
   {
-    if (*a3 == -1)
+    if (*value == -1)
     {
       return 0;
     }
@@ -1085,21 +1085,21 @@ LABEL_242:
     }
 
     *a2 = v12;
-    *a3 = v10;
+    *value = v10;
     return v10 - v3;
   }
 
   return result;
 }
 
-- (uint64_t)_validateCollectionMembers:(int)a3 validationDepth:(uint64_t)a4 count:
+- (uint64_t)_validateCollectionMembers:(int)members validationDepth:(uint64_t)depth count:
 {
-  if (!a3)
+  if (!members)
   {
     return 0;
   }
 
-  if (!a4)
+  if (!depth)
   {
     return 1;
   }
@@ -1107,8 +1107,8 @@ LABEL_242:
   v7 = 0;
   while (1)
   {
-    v8 = *(a1 + 49);
-    if (*(a1 + 49))
+    v8 = *(self + 49);
+    if (*(self + 49))
     {
       v9 = 0;
       v10 = (a2 + v7 * v8);
@@ -1127,16 +1127,16 @@ LABEL_242:
       v9 = 0;
     }
 
-    if (*(a1 + 40) <= v9)
+    if (*(self + 40) <= v9)
     {
       break;
     }
 
-    v12 = *(a1 + 48);
-    if (*(a1 + 48))
+    v12 = *(self + 48);
+    if (*(self + 48))
     {
       v13 = 0;
-      v14 = (*(a1 + 56) + v9 * v12);
+      v14 = (*(self + 56) + v9 * v12);
       do
       {
         v15 = *v14++;
@@ -1152,18 +1152,18 @@ LABEL_242:
       v13 = 0;
     }
 
-    if (v13 >= *(a1 + 24))
+    if (v13 >= *(self + 24))
     {
       break;
     }
 
-    result = [_PASLPReaderBinaryPlist _decodeOffset:a1 decodedObject:? ifEqualToReferenceObject:? validationDepth:? unlazyCopyCache:?];
+    result = [_PASLPReaderBinaryPlist _decodeOffset:self decodedObject:? ifEqualToReferenceObject:? validationDepth:? unlazyCopyCache:?];
     if (!result)
     {
       return result;
     }
 
-    if (++v7 == a4)
+    if (++v7 == depth)
     {
       return 1;
     }
@@ -1172,17 +1172,17 @@ LABEL_242:
   return 0;
 }
 
-- (id)_unlazyCopyForDictionaryWithCount:(uint64_t)a3 storage:(void *)a4 unlazyCopyCache:
+- (id)_unlazyCopyForDictionaryWithCount:(uint64_t)count storage:(void *)storage unlazyCopyCache:
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
-  if (a1)
+  storageCopy = storage;
+  v8 = storageCopy;
+  if (self)
   {
-    if (!v7)
+    if (!storageCopy)
     {
       v8 = [objc_alloc(MEMORY[0x1E696AE08]) initWithOptions:0];
-      v7 = [v8 setCount:*(a1 + 40)];
+      storageCopy = [v8 setCount:*(self + 40)];
     }
 
     v9 = (16 * a2) | 7;
@@ -1203,8 +1203,8 @@ LABEL_242:
 
     else
     {
-      MEMORY[0x1EEE9AC00](v7);
-      v10 = &v27 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
+      MEMORY[0x1EEE9AC00](storageCopy);
+      v10 = &currentHandler - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
       bzero(v10, (16 * a2) | 7);
     }
 
@@ -1213,11 +1213,11 @@ LABEL_242:
       v11 = 0;
       do
       {
-        v12 = *(a1 + 49);
-        if (*(a1 + 49))
+        v12 = *(self + 49);
+        if (*(self + 49))
         {
           v13 = 0;
-          v14 = (a3 + v11 * v12);
+          v14 = (count + v11 * v12);
           do
           {
             v15 = *v14++;
@@ -1237,16 +1237,16 @@ LABEL_242:
         memptr = v16;
         if (!v16)
         {
-          if (*(a1 + 40) <= v13)
+          if (*(self + 40) <= v13)
           {
             goto LABEL_25;
           }
 
-          v17 = *(a1 + 48);
-          if (*(a1 + 48))
+          v17 = *(self + 48);
+          if (*(self + 48))
           {
             v18 = 0;
-            v19 = (*(a1 + 56) + v13 * v17);
+            v19 = (*(self + 56) + v13 * v17);
             do
             {
               v20 = *v19++;
@@ -1262,20 +1262,20 @@ LABEL_242:
             v18 = 0;
           }
 
-          if (v18 >= *(a1 + 24))
+          if (v18 >= *(self + 24))
           {
 LABEL_25:
-            v27 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v27 handleFailureInMethod:sel__unlazyCopyForDictionaryWithCount_storage_unlazyCopyCache_ object:a1 file:@"_PASLPReaderBinaryPlist.m" lineNumber:1009 description:{@"_unlazyCopyForDictionary error loading dictionary member, this should have been caught during validation"}];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:sel__unlazyCopyForDictionaryWithCount_storage_unlazyCopyCache_ object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:1009 description:{@"_unlazyCopyForDictionary error loading dictionary member, this should have been caught during validation"}];
           }
 
-          [_PASLPReaderBinaryPlist _decodeOffset:a1 decodedObject:? ifEqualToReferenceObject:? validationDepth:? unlazyCopyCache:?];
+          [_PASLPReaderBinaryPlist _decodeOffset:self decodedObject:? ifEqualToReferenceObject:? validationDepth:? unlazyCopyCache:?];
           [v8 replacePointerAtIndex:v13 withPointer:memptr];
           v16 = memptr;
           if (!memptr)
           {
-            v21 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v21 handleFailureInMethod:sel__unlazyCopyForDictionaryWithCount_storage_unlazyCopyCache_ object:a1 file:@"_PASLPReaderBinaryPlist.m" lineNumber:1017 description:{@"Invalid parameter not satisfying: %@", @"materializedDictionaryMember"}];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler2 handleFailureInMethod:sel__unlazyCopyForDictionaryWithCount_storage_unlazyCopyCache_ object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:1017 description:{@"Invalid parameter not satisfying: %@", @"materializedDictionaryMember"}];
 
             v16 = memptr;
           }
@@ -1306,12 +1306,12 @@ LABEL_25:
   return v22;
 }
 
-- (id)objectAtIndex:(unint64_t)a3 usingArrayContext:(id)a4
+- (id)objectAtIndex:(unint64_t)index usingArrayContext:(id)context
 {
-  if (self && (!a4 ? (v7 = 0) : (v7 = *(a4 + 1)), (objectRefSize = self->_objectRefSize) != 0))
+  if (self && (!context ? (v7 = 0) : (v7 = *(context + 1)), (objectRefSize = self->_objectRefSize) != 0))
   {
     v9 = 0;
-    v10 = (v7 + objectRefSize * a3);
+    v10 = (v7 + objectRefSize * index);
     do
     {
       v11 = *v10++;
@@ -1331,8 +1331,8 @@ LABEL_25:
   v13 = v12;
   if (v12 == -1)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:1042 description:{@"Invalid parameter not satisfying: %@", @"offset != UINT64_MAX"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:1042 description:{@"Invalid parameter not satisfying: %@", @"offset != UINT64_MAX"}];
 
     v14 = -1;
   }
@@ -1347,8 +1347,8 @@ LABEL_25:
   v15 = v20;
   if (!v20)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:1046 description:{@"Unexpected validation failure (index=%tu, offset=%llu)", a3, v13}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:1046 description:{@"Unexpected validation failure (index=%tu, offset=%llu)", index, v13}];
 
     v15 = v20;
   }
@@ -1404,13 +1404,13 @@ LABEL_25:
   return result;
 }
 
-- (id)unlazyCopyForDictionaryWithContext:(id)a3
+- (id)unlazyCopyForDictionaryWithContext:(id)context
 {
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
-    v6 = v4[1];
-    v5 = v4[2];
+    v6 = contextCopy[1];
+    v5 = contextCopy[2];
   }
 
   else
@@ -1422,14 +1422,14 @@ LABEL_25:
   return [(_PASLPReaderBinaryPlist *)self _unlazyCopyForDictionaryWithCount:v5 storage:v6 unlazyCopyCache:0];
 }
 
-- (id)objectAtIndex:(unint64_t)a3 usingDictionaryContext:(id)a4
+- (id)objectAtIndex:(unint64_t)index usingDictionaryContext:(id)context
 {
-  v7 = a4;
-  v8 = v7;
-  if (self && (!v7 ? (v9 = 0, v10 = 0) : (v10 = *(v7 + 1), v9 = *(v7 + 2)), (objectRefSize = self->_objectRefSize) != 0))
+  contextCopy = context;
+  v8 = contextCopy;
+  if (self && (!contextCopy ? (v9 = 0, v10 = 0) : (v10 = *(contextCopy + 1), v9 = *(contextCopy + 2)), (objectRefSize = self->_objectRefSize) != 0))
   {
     v12 = 0;
-    v13 = (v10 + (v9 + a3) * objectRefSize);
+    v13 = (v10 + (v9 + index) * objectRefSize);
     do
     {
       v14 = *v13++;
@@ -1449,8 +1449,8 @@ LABEL_25:
   v16 = v15;
   if (v15 == -1)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:983 description:{@"Invalid parameter not satisfying: %@", @"offset != UINT64_MAX"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:983 description:{@"Invalid parameter not satisfying: %@", @"offset != UINT64_MAX"}];
 
     v17 = -1;
   }
@@ -1465,8 +1465,8 @@ LABEL_25:
   v18 = v23;
   if (!v23)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:987 description:{@"Unexpected validation failure (index=%tu, offset=%llu)", a3, v16}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:987 description:{@"Unexpected validation failure (index=%tu, offset=%llu)", index, v16}];
 
     v18 = v23;
   }
@@ -1476,12 +1476,12 @@ LABEL_25:
   return v19;
 }
 
-- (id)keyAtIndex:(unint64_t)a3 usingDictionaryContext:(id)a4
+- (id)keyAtIndex:(unint64_t)index usingDictionaryContext:(id)context
 {
-  if (self && (!a4 ? (v7 = 0) : (v7 = *(a4 + 1)), (objectRefSize = self->_objectRefSize) != 0))
+  if (self && (!context ? (v7 = 0) : (v7 = *(context + 1)), (objectRefSize = self->_objectRefSize) != 0))
   {
     v9 = 0;
-    v10 = (v7 + objectRefSize * a3);
+    v10 = (v7 + objectRefSize * index);
     do
     {
       v11 = *v10++;
@@ -1501,8 +1501,8 @@ LABEL_25:
   v13 = v12;
   if (v12 == -1)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:970 description:{@"Invalid parameter not satisfying: %@", @"offset != UINT64_MAX"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:970 description:{@"Invalid parameter not satisfying: %@", @"offset != UINT64_MAX"}];
 
     v14 = -1;
   }
@@ -1517,8 +1517,8 @@ LABEL_25:
   v15 = v20;
   if (!v20)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:974 description:{@"Unexpected validation failure (index=%tu, offset=%llu)", a3, v13}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:974 description:{@"Unexpected validation failure (index=%tu, offset=%llu)", index, v13}];
 
     v15 = v20;
   }
@@ -1528,15 +1528,15 @@ LABEL_25:
   return v16;
 }
 
-- (id)objectForKey:(id)a3 usingDictionaryContext:(id)a4
+- (id)objectForKey:(id)key usingDictionaryContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8 && (v10 = *(v8 + 2)) != 0)
+  keyCopy = key;
+  contextCopy = context;
+  v9 = contextCopy;
+  if (contextCopy && (v10 = *(contextCopy + 2)) != 0)
   {
     v11 = 0;
-    v12 = *(v8 + 1);
+    v12 = *(contextCopy + 1);
     while (1)
     {
       if (self && (objectRefSize = self->_objectRefSize) != 0)
@@ -1561,13 +1561,13 @@ LABEL_25:
       v17 = [(_PASLPReaderBinaryPlist *)self _offsetForRecord:v14];
       if (v17 == -1)
       {
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v20 handleFailureInMethod:a2 object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:953 description:{@"objectForKey error loading key record, this should have been caught during validation"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:953 description:{@"objectForKey error loading key record, this should have been caught during validation"}];
 
         v17 = -1;
       }
 
-      if ([(_PASLPReaderBinaryPlist *)self _decodeOffset:v17 decodedObject:0 ifEqualToReferenceObject:v7 validationDepth:-1 unlazyCopyCache:0])
+      if ([(_PASLPReaderBinaryPlist *)self _decodeOffset:v17 decodedObject:0 ifEqualToReferenceObject:keyCopy validationDepth:-1 unlazyCopyCache:0])
       {
         break;
       }
@@ -1590,7 +1590,7 @@ LABEL_14:
   return v18;
 }
 
-- (id)rootObjectWithErrMsg:(id *)a3
+- (id)rootObjectWithErrMsg:(id *)msg
 {
   v4 = [(_PASLPReaderBinaryPlist *)self _offsetForRecord:?];
   if (v4 == -1)
@@ -1619,16 +1619,16 @@ LABEL_14:
   return v6;
 }
 
-- (_PASLPReaderBinaryPlist)initWithData:(id)a3 sourcedFromPath:(id)a4 needsValidation:(BOOL)a5 error:(id *)a6
+- (_PASLPReaderBinaryPlist)initWithData:(id)data sourcedFromPath:(id)path needsValidation:(BOOL)validation error:(id *)error
 {
-  v7 = a5;
+  validationCopy = validation;
   v61 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = v13;
-  if (v12)
+  dataCopy = data;
+  pathCopy = path;
+  v14 = pathCopy;
+  if (dataCopy)
   {
-    if (v13)
+    if (pathCopy)
     {
       goto LABEL_3;
     }
@@ -1636,8 +1636,8 @@ LABEL_14:
 
   else
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v55 handleFailureInMethod:a2 object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:182 description:{@"Invalid parameter not satisfying: %@", @"data"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:182 description:{@"Invalid parameter not satisfying: %@", @"data"}];
 
     if (v14)
     {
@@ -1645,8 +1645,8 @@ LABEL_14:
     }
   }
 
-  v56 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v56 handleFailureInMethod:a2 object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASLPReaderBinaryPlist.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"path"}];
 
 LABEL_3:
   v59.receiver = self;
@@ -1655,13 +1655,13 @@ LABEL_3:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_backingData, a3);
-    v17 = [*(v16 + 8) bytes];
+    objc_storeStrong(&v15->_backingData, data);
+    bytes = [*(v16 + 8) bytes];
     v18 = [*(v16 + 8) length];
-    *(v16 + 16) = v17;
+    *(v16 + 16) = bytes;
     *(v16 + 24) = v18;
     context.version = 0;
-    context.info = v12;
+    context.info = dataCopy;
     memset(&context.retain, 0, 24);
     context.allocate = cfAllocateAlwaysFailing;
     context.reallocate = 0;
@@ -1671,8 +1671,8 @@ LABEL_3:
     *(v16 + 64) = v19;
     if (!v19)
     {
-      v58 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v58 handleFailureInMethod:a2 object:v16 file:@"_PASLPReaderBinaryPlist.m" lineNumber:205 description:@"Failed to create _releaseReaderDeallocator"];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:v16 file:@"_PASLPReaderBinaryPlist.m" lineNumber:205 description:@"Failed to create _releaseReaderDeallocator"];
     }
 
     v20 = v14;
@@ -1782,7 +1782,7 @@ LABEL_29:
         *(v16 + 32) = v54;
         if (v54 <= v37)
         {
-          if (v7)
+          if (validationCopy)
           {
             v57 = [(_PASLPReaderBinaryPlist *)v16 _offsetForRecord:v54];
             if (v57 == -1)
@@ -1829,11 +1829,11 @@ LABEL_44:
     v24 = 0;
 LABEL_30:
 
-    if (a6)
+    if (error)
     {
       v49 = v25;
       v23 = 0;
-      *a6 = v25;
+      *error = v25;
     }
 
     else

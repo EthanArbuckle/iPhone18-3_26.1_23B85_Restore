@@ -1,35 +1,35 @@
 @interface _CLPlaceInference
-+ (unint64_t)_placeInferencePlaceTypeFromRTPlaceType:(unint64_t)a3;
-+ (unint64_t)_userSpecificPlaceTypeFromRTUserType:(unint64_t)a3;
-- (_CLPlaceInference)initWithCoder:(id)a3;
-- (_CLPlaceInference)initWithUserType:(unint64_t)a3 placeType:(unint64_t)a4 placemark:(id)a5 referenceLocation:(id)a6 confidence:(double)a7 preferredName:(id)a8 loiIdentifier:(id)a9;
-- (id)_initWithRTPlaceInference:(id)a3;
++ (unint64_t)_placeInferencePlaceTypeFromRTPlaceType:(unint64_t)type;
++ (unint64_t)_userSpecificPlaceTypeFromRTUserType:(unint64_t)type;
+- (_CLPlaceInference)initWithCoder:(id)coder;
+- (_CLPlaceInference)initWithUserType:(unint64_t)type placeType:(unint64_t)placeType placemark:(id)placemark referenceLocation:(id)location confidence:(double)confidence preferredName:(id)name loiIdentifier:(id)identifier;
+- (id)_initWithRTPlaceInference:(id)inference;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CLPlaceInference
 
-- (id)_initWithRTPlaceInference:(id)a3
+- (id)_initWithRTPlaceInference:(id)inference
 {
-  v5 = [objc_alloc(MEMORY[0x1E6985C40]) _initWithRTLocation:{objc_msgSend(objc_msgSend(a3, "mapItem"), "location")}];
-  v6 = [objc_alloc(MEMORY[0x1E6985C40]) _initWithRTLocation:{objc_msgSend(a3, "referenceLocation")}];
-  v7 = -[CLPlacemark _initWithRTMapItem:location:]([CLPlacemark alloc], "_initWithRTMapItem:location:", [a3 mapItem], v5);
-  v8 = +[_CLPlaceInference _userSpecificPlaceTypeFromRTUserType:](_CLPlaceInference, "_userSpecificPlaceTypeFromRTUserType:", [a3 userType]);
-  v9 = +[_CLPlaceInference _placeInferencePlaceTypeFromRTPlaceType:](_CLPlaceInference, "_placeInferencePlaceTypeFromRTPlaceType:", [a3 placeType]);
-  [a3 confidence];
+  v5 = [objc_alloc(MEMORY[0x1E6985C40]) _initWithRTLocation:{objc_msgSend(objc_msgSend(inference, "mapItem"), "location")}];
+  v6 = [objc_alloc(MEMORY[0x1E6985C40]) _initWithRTLocation:{objc_msgSend(inference, "referenceLocation")}];
+  v7 = -[CLPlacemark _initWithRTMapItem:location:]([CLPlacemark alloc], "_initWithRTMapItem:location:", [inference mapItem], v5);
+  v8 = +[_CLPlaceInference _userSpecificPlaceTypeFromRTUserType:](_CLPlaceInference, "_userSpecificPlaceTypeFromRTUserType:", [inference userType]);
+  v9 = +[_CLPlaceInference _placeInferencePlaceTypeFromRTPlaceType:](_CLPlaceInference, "_placeInferencePlaceTypeFromRTPlaceType:", [inference placeType]);
+  [inference confidence];
   v11 = v10;
-  v12 = [a3 preferredName];
-  v13 = [a3 loiIdentifier];
+  preferredName = [inference preferredName];
+  loiIdentifier = [inference loiIdentifier];
 
-  return [(_CLPlaceInference *)self initWithUserType:v8 placeType:v9 placemark:v7 referenceLocation:v6 confidence:v12 preferredName:v13 loiIdentifier:v11];
+  return [(_CLPlaceInference *)self initWithUserType:v8 placeType:v9 placemark:v7 referenceLocation:v6 confidence:preferredName preferredName:loiIdentifier loiIdentifier:v11];
 }
 
-+ (unint64_t)_userSpecificPlaceTypeFromRTUserType:(unint64_t)a3
++ (unint64_t)_userSpecificPlaceTypeFromRTUserType:(unint64_t)type
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3 >= 5)
+  if (type >= 5)
   {
     if (qword_1ED519088 != -1)
     {
@@ -60,17 +60,17 @@
       }
     }
 
-    a3 = 0;
+    type = 0;
   }
 
   v6 = *MEMORY[0x1E69E9840];
-  return a3;
+  return type;
 }
 
-+ (unint64_t)_placeInferencePlaceTypeFromRTPlaceType:(unint64_t)a3
++ (unint64_t)_placeInferencePlaceTypeFromRTPlaceType:(unint64_t)type
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3 >= 5)
+  if (type >= 5)
   {
     if (qword_1ED519088 != -1)
     {
@@ -106,14 +106,14 @@
 
   else
   {
-    result = qword_19BA89420[a3];
+    result = qword_19BA89420[type];
   }
 
   v7 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (_CLPlaceInference)initWithUserType:(unint64_t)a3 placeType:(unint64_t)a4 placemark:(id)a5 referenceLocation:(id)a6 confidence:(double)a7 preferredName:(id)a8 loiIdentifier:(id)a9
+- (_CLPlaceInference)initWithUserType:(unint64_t)type placeType:(unint64_t)placeType placemark:(id)placemark referenceLocation:(id)location confidence:(double)confidence preferredName:(id)name loiIdentifier:(id)identifier
 {
   v19.receiver = self;
   v19.super_class = _CLPlaceInference;
@@ -121,13 +121,13 @@
   v17 = v16;
   if (v16)
   {
-    v16->_userType = a3;
-    v16->_placeType = a4;
-    v16->_placemark = a5;
-    v17->_referenceLocation = a6;
-    v17->_confidence = a7;
-    v17->_preferredName = a8;
-    v17->__loiIdentifier = a9;
+    v16->_userType = type;
+    v16->_placeType = placeType;
+    v16->_placemark = placemark;
+    v17->_referenceLocation = location;
+    v17->_confidence = confidence;
+    v17->_preferredName = name;
+    v17->__loiIdentifier = identifier;
   }
 
   return v17;
@@ -140,41 +140,41 @@
   [(_CLPlaceInference *)&v3 dealloc];
 }
 
-- (_CLPlaceInference)initWithCoder:(id)a3
+- (_CLPlaceInference)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"kCLPlaceInferenceUserType", "unsignedIntegerValue"}];
-  v7 = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"kCLPlaceInferencePlaceType", "unsignedIntegerValue"}];
-  v8 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLPlaceInferencePlacemark"];
-  v9 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLPlaceInferenceReferenceLocation"];
-  [a3 decodeDoubleForKey:@"kCLPlaceInferenceConfidence"];
+  v6 = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"kCLPlaceInferenceUserType", "unsignedIntegerValue"}];
+  v7 = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"kCLPlaceInferencePlaceType", "unsignedIntegerValue"}];
+  v8 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLPlaceInferencePlacemark"];
+  v9 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLPlaceInferenceReferenceLocation"];
+  [coder decodeDoubleForKey:@"kCLPlaceInferenceConfidence"];
   v11 = v10;
-  v12 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLPlaceInferencePreferredName"];
-  v13 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLPlaceInferenceLoiIdentifier"];
+  v12 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLPlaceInferencePreferredName"];
+  v13 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLPlaceInferenceLoiIdentifier"];
 
   return [(_CLPlaceInference *)self initWithUserType:v6 placeType:v7 placemark:v8 referenceLocation:v9 confidence:v12 preferredName:v13 loiIdentifier:v11];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_userType), @"kCLPlaceInferenceUserType"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_placeType), @"kCLPlaceInferencePlaceType"}];
-  [a3 encodeObject:self->_placemark forKey:@"kCLPlaceInferencePlacemark"];
-  [a3 encodeObject:self->_referenceLocation forKey:@"kCLPlaceInferenceReferenceLocation"];
-  [a3 encodeDouble:@"kCLPlaceInferenceConfidence" forKey:self->_confidence];
-  [a3 encodeObject:self->_preferredName forKey:@"kCLPlaceInferencePreferredName"];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_userType), @"kCLPlaceInferenceUserType"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_placeType), @"kCLPlaceInferencePlaceType"}];
+  [coder encodeObject:self->_placemark forKey:@"kCLPlaceInferencePlacemark"];
+  [coder encodeObject:self->_referenceLocation forKey:@"kCLPlaceInferenceReferenceLocation"];
+  [coder encodeDouble:@"kCLPlaceInferenceConfidence" forKey:self->_confidence];
+  [coder encodeObject:self->_preferredName forKey:@"kCLPlaceInferencePreferredName"];
   loiIdentifier = self->__loiIdentifier;
 
-  [a3 encodeObject:loiIdentifier forKey:@"kCLPlaceInferenceLoiIdentifier"];
+  [coder encodeObject:loiIdentifier forKey:@"kCLPlaceInferenceLoiIdentifier"];
 }
 
 - (id)description
@@ -186,12 +186,12 @@
   v7 = v6;
   [(CLLocation *)[(_CLPlaceInference *)self referenceLocation] horizontalAccuracy];
   v9 = v8;
-  v10 = [(_CLPlaceInference *)self userType];
-  v11 = [(_CLPlaceInference *)self placeType];
-  v12 = [(_CLPlaceInference *)self placemark];
-  v13 = [(_CLPlaceInference *)self preferredName];
+  userType = [(_CLPlaceInference *)self userType];
+  placeType = [(_CLPlaceInference *)self placeType];
+  placemark = [(_CLPlaceInference *)self placemark];
+  preferredName = [(_CLPlaceInference *)self preferredName];
   [(_CLPlaceInference *)self confidence];
-  return [v3 stringWithFormat:@"CLPlaceInference, ref, <%f, %f> +/- %f, userType, %lu, placeType, %lu, placemark, %@, preferredName, %@, confidence, %f, related loi identifier, %@", v5, v7, v9, v10, v11, v12, v13, v14, -[_CLPlaceInference _loiIdentifier](self, "_loiIdentifier")];
+  return [v3 stringWithFormat:@"CLPlaceInference, ref, <%f, %f> +/- %f, userType, %lu, placeType, %lu, placemark, %@, preferredName, %@, confidence, %f, related loi identifier, %@", v5, v7, v9, userType, placeType, placemark, preferredName, v14, -[_CLPlaceInference _loiIdentifier](self, "_loiIdentifier")];
 }
 
 @end

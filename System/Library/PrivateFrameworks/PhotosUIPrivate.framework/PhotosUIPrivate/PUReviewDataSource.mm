@@ -2,18 +2,18 @@
 - (PUReviewDataSource)init;
 - (id)assetsByIdentifier;
 - (id)description;
-- (id)existingAssetForIdentifier:(id)a3;
-- (id)existingRepresentativeAssetForBurstIdentifier:(id)a3;
+- (id)existingAssetForIdentifier:(id)identifier;
+- (id)existingRepresentativeAssetForBurstIdentifier:(id)identifier;
 - (id)orderedIdentifiers;
-- (void)enqueuePendingBurstAsset:(id)a3;
-- (void)insertAsset:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertAssets:(id)a3;
-- (void)performChanges:(id)a3;
+- (void)enqueuePendingBurstAsset:(id)asset;
+- (void)insertAsset:(id)asset atIndex:(unint64_t)index;
+- (void)insertAssets:(id)assets;
+- (void)performChanges:(id)changes;
 - (void)processPendingBurstAssets;
 - (void)removeAllAssets;
-- (void)removeAssetWithIdentifier:(id)a3;
-- (void)removeRepresentativeAssetForBurstIdentifier:(id)a3;
-- (void)replaceAsset:(id)a3;
+- (void)removeAssetWithIdentifier:(id)identifier;
+- (void)removeRepresentativeAssetForBurstIdentifier:(id)identifier;
+- (void)replaceAsset:(id)asset;
 @end
 
 @implementation PUReviewDataSource
@@ -22,71 +22,71 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PUReviewDataSource *)self _assetIdentifiers];
-  v6 = [(PUReviewDataSource *)self _assetsByIdentifier];
-  v7 = [(PUReviewDataSource *)self _representativeAssetsByBurstIdentifier];
-  v8 = [(PUReviewDataSource *)self _enqueuedBurstAssetIdentifiersByBurstIdentifier];
-  v9 = [(PUReviewDataSource *)self _enqueuedBurstAssetsByAssetIdentifier];
-  v10 = [v3 stringWithFormat:@"<%@ assetIdentifiers:%@, assetsByIdentifier:%@, representativeAssetsByBurstIDs:%@, enquedBurstAssetIdentifierByBurstID:%@, enqueuedBurstConvertiblesByAssetIdentifier:%@>", v4, v5, v6, v7, v8, v9];
+  _assetIdentifiers = [(PUReviewDataSource *)self _assetIdentifiers];
+  _assetsByIdentifier = [(PUReviewDataSource *)self _assetsByIdentifier];
+  _representativeAssetsByBurstIdentifier = [(PUReviewDataSource *)self _representativeAssetsByBurstIdentifier];
+  _enqueuedBurstAssetIdentifiersByBurstIdentifier = [(PUReviewDataSource *)self _enqueuedBurstAssetIdentifiersByBurstIdentifier];
+  _enqueuedBurstAssetsByAssetIdentifier = [(PUReviewDataSource *)self _enqueuedBurstAssetsByAssetIdentifier];
+  v10 = [v3 stringWithFormat:@"<%@ assetIdentifiers:%@, assetsByIdentifier:%@, representativeAssetsByBurstIDs:%@, enquedBurstAssetIdentifierByBurstID:%@, enqueuedBurstConvertiblesByAssetIdentifier:%@>", v4, _assetIdentifiers, _assetsByIdentifier, _representativeAssetsByBurstIdentifier, _enqueuedBurstAssetIdentifiersByBurstIdentifier, _enqueuedBurstAssetsByAssetIdentifier];
 
   return v10;
 }
 
 - (id)orderedIdentifiers
 {
-  v2 = [(PUReviewDataSource *)self _assetIdentifiers];
-  v3 = [v2 copy];
+  _assetIdentifiers = [(PUReviewDataSource *)self _assetIdentifiers];
+  v3 = [_assetIdentifiers copy];
 
   return v3;
 }
 
 - (id)assetsByIdentifier
 {
-  v2 = [(PUReviewDataSource *)self _assetsByIdentifier];
-  v3 = [v2 copy];
+  _assetsByIdentifier = [(PUReviewDataSource *)self _assetsByIdentifier];
+  v3 = [_assetsByIdentifier copy];
 
   return v3;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PUReviewDataSource *)self _nestedPerformChanges];
-  if (v6)
+  changesCopy = changes;
+  _nestedPerformChanges = [(PUReviewDataSource *)self _nestedPerformChanges];
+  if (_nestedPerformChanges)
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [(PUReviewDataSource *)self _assetIdentifiers];
-    v7 = [v8 copy];
+    _assetIdentifiers = [(PUReviewDataSource *)self _assetIdentifiers];
+    v7 = [_assetIdentifiers copy];
 
-    v9 = [(PUReviewDataSource *)self _updatedAssetIdentifiers];
-    v10 = [v9 count];
+    _updatedAssetIdentifiers = [(PUReviewDataSource *)self _updatedAssetIdentifiers];
+    v10 = [_updatedAssetIdentifiers count];
 
     if (v10)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v25 handleFailureInMethod:a2 object:self file:@"PUReviewDataSource.m" lineNumber:312 description:{@"Invalid parameter not satisfying: %@", @"[[self _updatedAssetIdentifiers] count] == 0"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUReviewDataSource.m" lineNumber:312 description:{@"Invalid parameter not satisfying: %@", @"[[self _updatedAssetIdentifiers] count] == 0"}];
     }
   }
 
   [(PUReviewDataSource *)self _setNestedPerformChanges:[(PUReviewDataSource *)self _nestedPerformChanges]+ 1];
-  v5[2](v5);
+  changesCopy[2](changesCopy);
   [(PUReviewDataSource *)self _setNestedPerformChanges:[(PUReviewDataSource *)self _nestedPerformChanges]- 1];
-  if (!v6)
+  if (!_nestedPerformChanges)
   {
-    v11 = [(PUReviewDataSource *)self _updatedAssetIdentifiers];
-    if ([v11 count])
+    _updatedAssetIdentifiers2 = [(PUReviewDataSource *)self _updatedAssetIdentifiers];
+    if ([_updatedAssetIdentifiers2 count])
     {
     }
 
     else
     {
-      v12 = [(PUReviewDataSource *)self _assetIdentifiers];
-      v13 = [v7 isEqualToArray:v12];
+      _assetIdentifiers2 = [(PUReviewDataSource *)self _assetIdentifiers];
+      v13 = [v7 isEqualToArray:_assetIdentifiers2];
 
       if (v13)
       {
@@ -94,22 +94,22 @@
       }
     }
 
-    v14 = [(PUReviewDataSource *)self _assetIdentifiers];
-    v15 = [v14 copy];
+    _assetIdentifiers3 = [(PUReviewDataSource *)self _assetIdentifiers];
+    v15 = [_assetIdentifiers3 copy];
 
-    v16 = [(PUReviewDataSource *)self _updatedAssetIdentifiers];
-    v17 = [v16 allObjects];
+    _updatedAssetIdentifiers3 = [(PUReviewDataSource *)self _updatedAssetIdentifiers];
+    allObjects = [_updatedAssetIdentifiers3 allObjects];
 
-    v18 = [(PUReviewDataSource *)self _updatedAssetIdentifiers];
-    [v18 removeAllObjects];
+    _updatedAssetIdentifiers4 = [(PUReviewDataSource *)self _updatedAssetIdentifiers];
+    [_updatedAssetIdentifiers4 removeAllObjects];
 
-    v19 = [MEMORY[0x1E69C4478] changeDetailsFromArray:v7 toArray:v15 changedObjects:v17];
-    v20 = [(PUReviewDataSource *)self _observers];
+    v19 = [MEMORY[0x1E69C4478] changeDetailsFromArray:v7 toArray:v15 changedObjects:allObjects];
+    _observers = [(PUReviewDataSource *)self _observers];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v21 = [v20 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v21 = [_observers countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v21)
     {
       v22 = v21;
@@ -120,13 +120,13 @@
         {
           if (*v27 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(_observers);
           }
 
           [*(*(&v26 + 1) + 8 * i) reviewDataSourceDidChange:self changeDetails:v19];
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v22 = [_observers countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v22);
@@ -139,13 +139,13 @@ LABEL_17:
 - (void)processPendingBurstAssets
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [(PUReviewDataSource *)self _enqueuedBurstAssetIdentifiersByBurstIdentifier];
-  v22 = [(PUReviewDataSource *)self _enqueuedBurstAssetsByAssetIdentifier];
+  _enqueuedBurstAssetIdentifiersByBurstIdentifier = [(PUReviewDataSource *)self _enqueuedBurstAssetIdentifiersByBurstIdentifier];
+  _enqueuedBurstAssetsByAssetIdentifier = [(PUReviewDataSource *)self _enqueuedBurstAssetsByAssetIdentifier];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v4 = v3;
+  v4 = _enqueuedBurstAssetIdentifiersByBurstIdentifier;
   v5 = [v4 countByEnumeratingWithState:&v27 objects:v36 count:16];
   if (v5)
   {
@@ -164,7 +164,7 @@ LABEL_17:
 
         v9 = *(*(&v27 + 1) + 8 * i);
         v10 = [v4 objectForKey:{v9, v20}];
-        v11 = [v22 objectForKey:v10];
+        v11 = [_enqueuedBurstAssetsByAssetIdentifier objectForKey:v10];
         v12 = PLCameraGetLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
@@ -223,80 +223,80 @@ LABEL_17:
   }
 
   [v4 removeAllObjects];
-  [v22 removeAllObjects];
+  [_enqueuedBurstAssetsByAssetIdentifier removeAllObjects];
 }
 
-- (void)enqueuePendingBurstAsset:(id)a3
+- (void)enqueuePendingBurstAsset:(id)asset
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 burstIdentifier];
-  if (v6)
+  assetCopy = asset;
+  identifier = [assetCopy identifier];
+  burstIdentifier = [assetCopy burstIdentifier];
+  if (burstIdentifier)
   {
-    v7 = [(PUReviewDataSource *)self _enqueuedBurstAssetsByAssetIdentifier];
-    v8 = [(PUReviewDataSource *)self _enqueuedBurstAssetIdentifiersByBurstIdentifier];
-    v9 = [v8 objectForKey:v6];
+    _enqueuedBurstAssetsByAssetIdentifier = [(PUReviewDataSource *)self _enqueuedBurstAssetsByAssetIdentifier];
+    _enqueuedBurstAssetIdentifiersByBurstIdentifier = [(PUReviewDataSource *)self _enqueuedBurstAssetIdentifiersByBurstIdentifier];
+    v9 = [_enqueuedBurstAssetIdentifiersByBurstIdentifier objectForKey:burstIdentifier];
     v10 = v9;
     if (v9)
     {
-      if ([v9 isEqualToString:v5])
+      if ([v9 isEqualToString:identifier])
       {
 LABEL_11:
-        v12 = [v7 objectForKey:v5];
+        v12 = [_enqueuedBurstAssetsByAssetIdentifier objectForKey:identifier];
         if (!v12)
         {
           v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-          [v7 setObject:v12 forKey:v5];
+          [_enqueuedBurstAssetsByAssetIdentifier setObject:v12 forKey:identifier];
         }
 
-        [v12 addObject:v4];
+        [v12 addObject:assetCopy];
 
         goto LABEL_14;
       }
 
-      [v8 setObject:v5 forKey:v6];
-      [v7 removeObjectForKey:v10];
+      [_enqueuedBurstAssetIdentifiersByBurstIdentifier setObject:identifier forKey:burstIdentifier];
+      [_enqueuedBurstAssetsByAssetIdentifier removeObjectForKey:v10];
     }
 
     else
     {
-      [v8 setObject:v5 forKey:v6];
+      [_enqueuedBurstAssetIdentifiersByBurstIdentifier setObject:identifier forKey:burstIdentifier];
     }
 
     v11 = PLCameraGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v13 = 138543618;
-      v14 = v6;
+      v14 = burstIdentifier;
       v15 = 2114;
-      v16 = v5;
+      v16 = identifier;
       _os_log_impl(&dword_1B36F3000, v11, OS_LOG_TYPE_DEBUG, "Pending asset for %{public}@ is now %{public}@", &v13, 0x16u);
     }
 
     goto LABEL_11;
   }
 
-  v7 = PLCameraGetLog();
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  _enqueuedBurstAssetsByAssetIdentifier = PLCameraGetLog();
+  if (os_log_type_enabled(_enqueuedBurstAssetsByAssetIdentifier, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(v13) = 0;
-    _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_DEFAULT, "Unable to enqueue a pending burst asset because this asset does not have a burst identifier!", &v13, 2u);
+    _os_log_impl(&dword_1B36F3000, _enqueuedBurstAssetsByAssetIdentifier, OS_LOG_TYPE_DEFAULT, "Unable to enqueue a pending burst asset because this asset does not have a burst identifier!", &v13, 2u);
   }
 
 LABEL_14:
 }
 
-- (void)removeRepresentativeAssetForBurstIdentifier:(id)a3
+- (void)removeRepresentativeAssetForBurstIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__PUReviewDataSource_removeRepresentativeAssetForBurstIdentifier___block_invoke;
   v6[3] = &unk_1E7B80C38;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(PUReviewDataSource *)self performChanges:v6];
 }
 
@@ -404,16 +404,16 @@ void __37__PUReviewDataSource_removeAllAssets__block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeAssetWithIdentifier:(id)a3
+- (void)removeAssetWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__PUReviewDataSource_removeAssetWithIdentifier___block_invoke;
   v6[3] = &unk_1E7B80C38;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(PUReviewDataSource *)self performChanges:v6];
 }
 
@@ -473,14 +473,14 @@ void __48__PUReviewDataSource_removeAssetWithIdentifier___block_invoke(uint64_t 
 LABEL_8:
 }
 
-- (void)replaceAsset:(id)a3
+- (void)replaceAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 burstIdentifier];
-  v7 = [(PUReviewDataSource *)self existingAssetForIdentifier:v5];
-  v8 = [(PUReviewDataSource *)self existingRepresentativeAssetForBurstIdentifier:v6];
-  v9 = [v8 identifier];
+  assetCopy = asset;
+  identifier = [assetCopy identifier];
+  burstIdentifier = [assetCopy burstIdentifier];
+  v7 = [(PUReviewDataSource *)self existingAssetForIdentifier:identifier];
+  v8 = [(PUReviewDataSource *)self existingRepresentativeAssetForBurstIdentifier:burstIdentifier];
+  identifier2 = [v8 identifier];
   if (v7 | v8)
   {
     v11[0] = MEMORY[0x1E69E9820];
@@ -488,10 +488,10 @@ LABEL_8:
     v11[2] = __35__PUReviewDataSource_replaceAsset___block_invoke;
     v11[3] = &unk_1E7B7EA98;
     v12 = v8;
-    v13 = v9;
-    v14 = v5;
-    v15 = v4;
-    v16 = self;
+    v13 = identifier2;
+    v14 = identifier;
+    v15 = assetCopy;
+    selfCopy = self;
     [(PUReviewDataSource *)self performChanges:v11];
 
     v10 = v12;
@@ -571,16 +571,16 @@ void __35__PUReviewDataSource_replaceAsset___block_invoke(uint64_t a1)
   }
 }
 
-- (void)insertAssets:(id)a3
+- (void)insertAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__PUReviewDataSource_insertAssets___block_invoke;
   v6[3] = &unk_1E7B80C38;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = assetsCopy;
+  selfCopy = self;
+  v5 = assetsCopy;
   [(PUReviewDataSource *)self performChanges:v6];
 }
 
@@ -618,17 +618,17 @@ void __35__PUReviewDataSource_insertAssets___block_invoke(uint64_t a1)
   }
 }
 
-- (void)insertAsset:(id)a3 atIndex:(unint64_t)a4
+- (void)insertAsset:(id)asset atIndex:(unint64_t)index
 {
-  v6 = a3;
+  assetCopy = asset;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__PUReviewDataSource_insertAsset_atIndex___block_invoke;
   v8[3] = &unk_1E7B7F350;
-  v9 = v6;
-  v10 = self;
-  v11 = a4;
-  v7 = v6;
+  v9 = assetCopy;
+  selfCopy = self;
+  indexCopy = index;
+  v7 = assetCopy;
   [(PUReviewDataSource *)self performChanges:v8];
 }
 
@@ -684,20 +684,20 @@ void __42__PUReviewDataSource_insertAsset_atIndex___block_invoke(uint64_t a1)
   }
 }
 
-- (id)existingRepresentativeAssetForBurstIdentifier:(id)a3
+- (id)existingRepresentativeAssetForBurstIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PUReviewDataSource *)self _representativeAssetsByBurstIdentifier];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  _representativeAssetsByBurstIdentifier = [(PUReviewDataSource *)self _representativeAssetsByBurstIdentifier];
+  v6 = [_representativeAssetsByBurstIdentifier objectForKey:identifierCopy];
 
   return v6;
 }
 
-- (id)existingAssetForIdentifier:(id)a3
+- (id)existingAssetForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PUReviewDataSource *)self _assetsByIdentifier];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  _assetsByIdentifier = [(PUReviewDataSource *)self _assetsByIdentifier];
+  v6 = [_assetsByIdentifier objectForKey:identifierCopy];
 
   return v6;
 }
@@ -709,9 +709,9 @@ void __42__PUReviewDataSource_insertAsset_atIndex___block_invoke(uint64_t a1)
   v2 = [(PUReviewDataSource *)&v19 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->__observers;
-    v2->__observers = v3;
+    v2->__observers = weakObjectsHashTable;
 
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     assetIdentifiers = v2->__assetIdentifiers;

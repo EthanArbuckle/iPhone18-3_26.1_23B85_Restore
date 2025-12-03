@@ -1,14 +1,14 @@
 @interface TSPRXReconnectWaitingViewController
-- (TSPRXReconnectWaitingViewController)initWithTitle:(id)a3 subtitle:(id)a4;
+- (TSPRXReconnectWaitingViewController)initWithTitle:(id)title subtitle:(id)subtitle;
 @end
 
 @implementation TSPRXReconnectWaitingViewController
 
-- (TSPRXReconnectWaitingViewController)initWithTitle:(id)a3 subtitle:(id)a4
+- (TSPRXReconnectWaitingViewController)initWithTitle:(id)title subtitle:(id)subtitle
 {
   v8.receiver = self;
   v8.super_class = TSPRXReconnectWaitingViewController;
-  v4 = [(TSIDSSimTransferringViewController *)&v8 initWithTitle:a3 subtitle:a4];
+  v4 = [(TSIDSSimTransferringViewController *)&v8 initWithTitle:title subtitle:subtitle];
   v5 = v4;
   if (v4)
   {

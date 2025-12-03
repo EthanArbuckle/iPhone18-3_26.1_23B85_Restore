@@ -1,11 +1,11 @@
 @interface CKActionMenuGestureRecognizer
 + (id)actionMenuGestureRecognizer;
-- (CGPoint)_convertVelocitySample:(id)a3 fromScreenCoordinatesToView:(id)a4;
-- (CGPoint)velocityInView:(id)a3;
-- (CKActionMenuGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (CGPoint)_convertVelocitySample:(id)sample fromScreenCoordinatesToView:(id)view;
+- (CGPoint)velocityInView:(id)view;
+- (CKActionMenuGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation CKActionMenuGestureRecognizer
@@ -21,11 +21,11 @@
   return v4;
 }
 
-- (CKActionMenuGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (CKActionMenuGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v12.receiver = self;
   v12.super_class = CKActionMenuGestureRecognizer;
-  v4 = [(CKActionMenuGestureRecognizer *)&v12 initWithTarget:a3 action:a4];
+  v4 = [(CKActionMenuGestureRecognizer *)&v12 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -58,21 +58,21 @@
   self->_previousVelocitySample->dt = 0.0;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v16.receiver = self;
   v16.super_class = CKActionMenuGestureRecognizer;
-  v6 = a4;
-  v7 = a3;
-  [(CKActionMenuGestureRecognizer *)&v16 touchesBegan:v7 withEvent:v6];
-  [v6 timestamp];
+  eventCopy = event;
+  beganCopy = began;
+  [(CKActionMenuGestureRecognizer *)&v16 touchesBegan:beganCopy withEvent:eventCopy];
+  [eventCopy timestamp];
   v9 = v8;
 
-  v10 = [v7 anyObject];
+  anyObject = [beganCopy anyObject];
 
-  v11 = [v10 window];
-  [v10 locationInView:0];
-  [v11 convertPoint:0 toWindow:?];
+  window = [anyObject window];
+  [anyObject locationInView:0];
+  [window convertPoint:0 toWindow:?];
   v13 = v12;
   v15 = v14;
 
@@ -81,21 +81,21 @@
   self->_lastTouchTime = v9;
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v18.receiver = self;
   v18.super_class = CKActionMenuGestureRecognizer;
-  v6 = a4;
-  v7 = a3;
-  [(CKActionMenuGestureRecognizer *)&v18 touchesMoved:v7 withEvent:v6];
-  [v6 timestamp];
+  eventCopy = event;
+  movedCopy = moved;
+  [(CKActionMenuGestureRecognizer *)&v18 touchesMoved:movedCopy withEvent:eventCopy];
+  [eventCopy timestamp];
   v9 = v8;
 
-  v10 = [v7 anyObject];
+  anyObject = [movedCopy anyObject];
 
-  v11 = [v10 window];
-  [v10 locationInView:0];
-  [v11 convertPoint:0 toWindow:?];
+  window = [anyObject window];
+  [anyObject locationInView:0];
+  [window convertPoint:0 toWindow:?];
   v13 = v12;
   v15 = v14;
 
@@ -117,10 +117,10 @@
   self->_lastTouchTime = v9;
 }
 
-- (CGPoint)velocityInView:(id)a3
+- (CGPoint)velocityInView:(id)view
 {
-  v4 = a3;
-  [(CKActionMenuGestureRecognizer *)self _convertVelocitySample:self->_velocitySample fromScreenCoordinatesToView:v4];
+  viewCopy = view;
+  [(CKActionMenuGestureRecognizer *)self _convertVelocitySample:self->_velocitySample fromScreenCoordinatesToView:viewCopy];
   v6 = v5;
   v8 = v7;
   if (self->_previousVelocitySample->dt > 0.00000011920929)
@@ -137,29 +137,29 @@
   return result;
 }
 
-- (CGPoint)_convertVelocitySample:(id)a3 fromScreenCoordinatesToView:(id)a4
+- (CGPoint)_convertVelocitySample:(id)sample fromScreenCoordinatesToView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6[5] >= 0.001)
+  sampleCopy = sample;
+  viewCopy = view;
+  v8 = viewCopy;
+  if (sampleCopy[5] >= 0.001)
   {
-    if (v7)
+    if (viewCopy)
     {
-      v11 = v7;
+      window = viewCopy;
     }
 
     else
     {
-      v12 = [(CKActionMenuGestureRecognizer *)self view];
-      v11 = [v12 window];
+      view = [(CKActionMenuGestureRecognizer *)self view];
+      window = [view window];
     }
 
-    [MEMORY[0x1E69DCEB0] convertPoint:v11 toView:{v6[1], v6[2]}];
+    [MEMORY[0x1E69DCEB0] convertPoint:window toView:{sampleCopy[1], sampleCopy[2]}];
     v14 = v13;
     v16 = v15;
-    [MEMORY[0x1E69DCEB0] convertPoint:v11 toView:{v6[3], v6[4]}];
-    v18 = v6[5];
+    [MEMORY[0x1E69DCEB0] convertPoint:window toView:{sampleCopy[3], sampleCopy[4]}];
+    v18 = sampleCopy[5];
     v9 = (v17 - v14) / v18;
     v10 = (v19 - v16) / v18;
   }

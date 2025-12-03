@@ -1,45 +1,45 @@
 @interface MOEventBundleMetaDataUtility
-+ (id)activityPhotoTraitLabelMetadataForThematicSummary:(id)a3 AtHome:(BOOL)a4;
-+ (id)andStringFromArray:(id)a3 propertyPath:(id)a4 maxCount:(unint64_t)a5;
-+ (id)buildActivityMetaDataForEventBundle:(id)a3;
-+ (id)buildClusteringMetaDataForEventBundle:(id)a3;
-+ (id)buildEvergreenMetaDataForEventBundle:(id)a3;
-+ (id)buildMediaPlayMetaDataForEventBundle:(id)a3;
-+ (id)buildMetaDataForEventBundle:(id)a3;
-+ (id)buildOutingMetaDataForEventBundle:(id)a3;
-+ (id)buildPhotoMemoryMetaDataForEventBundle:(id)a3;
-+ (id)buildSharedContentMetaDataForEventBundle:(id)a3;
-+ (id)buildSignificantContactMetaDataForEventBundle:(id)a3;
-+ (id)buildStateOfMindMetaDataForEventBundle:(id)a3;
-+ (id)buildThematicSummaryMetaDataForEventBundle:(id)a3;
-+ (id)buildTimeAtHomeMetaDataForEventBundle:(id)a3;
-+ (id)buildTimeContextMetaDataForEventBundle:(id)a3;
-+ (id)buildTimeContextTransitMetaDataForEventBundle:(id)a3;
-+ (id)buildTrendMetaDataForEventBundle:(id)a3;
-+ (id)buildTripMetaDataForEventBundle:(id)a3;
-+ (id)combinedPlaceTypeLabelMetadataForThematicSummary:(id)a3;
-+ (id)mediaKeywordWithType:(unint64_t)a3;
-+ (id)placeTypePhotoTraitLabelMetadataForThematicSummary:(id)a3;
-+ (void)appendDefaultMetaData:(id)a3;
++ (id)activityPhotoTraitLabelMetadataForThematicSummary:(id)summary AtHome:(BOOL)home;
++ (id)andStringFromArray:(id)array propertyPath:(id)path maxCount:(unint64_t)count;
++ (id)buildActivityMetaDataForEventBundle:(id)bundle;
++ (id)buildClusteringMetaDataForEventBundle:(id)bundle;
++ (id)buildEvergreenMetaDataForEventBundle:(id)bundle;
++ (id)buildMediaPlayMetaDataForEventBundle:(id)bundle;
++ (id)buildMetaDataForEventBundle:(id)bundle;
++ (id)buildOutingMetaDataForEventBundle:(id)bundle;
++ (id)buildPhotoMemoryMetaDataForEventBundle:(id)bundle;
++ (id)buildSharedContentMetaDataForEventBundle:(id)bundle;
++ (id)buildSignificantContactMetaDataForEventBundle:(id)bundle;
++ (id)buildStateOfMindMetaDataForEventBundle:(id)bundle;
++ (id)buildThematicSummaryMetaDataForEventBundle:(id)bundle;
++ (id)buildTimeAtHomeMetaDataForEventBundle:(id)bundle;
++ (id)buildTimeContextMetaDataForEventBundle:(id)bundle;
++ (id)buildTimeContextTransitMetaDataForEventBundle:(id)bundle;
++ (id)buildTrendMetaDataForEventBundle:(id)bundle;
++ (id)buildTripMetaDataForEventBundle:(id)bundle;
++ (id)combinedPlaceTypeLabelMetadataForThematicSummary:(id)summary;
++ (id)mediaKeywordWithType:(unint64_t)type;
++ (id)placeTypePhotoTraitLabelMetadataForThematicSummary:(id)summary;
++ (void)appendDefaultMetaData:(id)data;
 + (void)defineClassCollections;
-+ (void)setActivityNameForThematicSummaryFromActionName:(id)a3 metaData:(id)a4 keyword:(id)a5 keywordType:(id)a6;
-+ (void)setActivityNameFromActionName:(id)a3 metaData:(id)a4 keyword:(id)a5 keywordType:(id)a6;
-+ (void)setMetaDataForAction:(id)a3 metaData:(id)a4;
-+ (void)setMetaDataForActions:(id)a3 metaData:(id)a4;
-+ (void)setMetaDataForActivityAction:(id)a3 metaData:(id)a4;
-+ (void)setMetaDataForActivityConcurrentMediaAction:(id)a3 metaData:(id)a4;
-+ (void)setMetaDataForActivityPlace:(id)a3 metaData:(id)a4;
-+ (void)setMetaDataForBirthday:(id)a3 metaData:(id)a4 eventBundle:(id)a5;
-+ (void)setMetaDataForDiningAction:(id)a3 metaData:(id)a4 startDate:(id)a5 endDate:(id)a6;
-+ (void)setMetaDataForHoliday:(id)a3 metaData:(id)a4 eventBundle:(id)a5;
-+ (void)setMetaDataForInvite:(id)a3 metaData:(id)a4;
-+ (void)setMetaDataForMediaAction:(id)a3 metaData:(id)a4;
-+ (void)setMetaDataForPersons:(id)a3 suggestionId:(id)a4 metaData:(id)a5 sortBycomparePersons:(BOOL)a6;
-+ (void)setMetaDataForPhotos:(id)a3 metaData:(id)a4;
-+ (void)setMetaDataForPlace:(id)a3 metaData:(id)a4;
-+ (void)setMetaDataForPlaces:(id)a3 metaData:(id)a4;
-+ (void)setMetaDataForTime:(id)a3 startDate:(id)a4 endDate:(id)a5 metaData:(id)a6;
-+ (void)setMetaDataWithKeyword:(id)a3 extendedKeyword:(id)a4 value:(id)a5 metaData:(id)a6;
++ (void)setActivityNameForThematicSummaryFromActionName:(id)name metaData:(id)data keyword:(id)keyword keywordType:(id)type;
++ (void)setActivityNameFromActionName:(id)name metaData:(id)data keyword:(id)keyword keywordType:(id)type;
++ (void)setMetaDataForAction:(id)action metaData:(id)data;
++ (void)setMetaDataForActions:(id)actions metaData:(id)data;
++ (void)setMetaDataForActivityAction:(id)action metaData:(id)data;
++ (void)setMetaDataForActivityConcurrentMediaAction:(id)action metaData:(id)data;
++ (void)setMetaDataForActivityPlace:(id)place metaData:(id)data;
++ (void)setMetaDataForBirthday:(id)birthday metaData:(id)data eventBundle:(id)bundle;
++ (void)setMetaDataForDiningAction:(id)action metaData:(id)data startDate:(id)date endDate:(id)endDate;
++ (void)setMetaDataForHoliday:(id)holiday metaData:(id)data eventBundle:(id)bundle;
++ (void)setMetaDataForInvite:(id)invite metaData:(id)data;
++ (void)setMetaDataForMediaAction:(id)action metaData:(id)data;
++ (void)setMetaDataForPersons:(id)persons suggestionId:(id)id metaData:(id)data sortBycomparePersons:(BOOL)bycomparePersons;
++ (void)setMetaDataForPhotos:(id)photos metaData:(id)data;
++ (void)setMetaDataForPlace:(id)place metaData:(id)data;
++ (void)setMetaDataForPlaces:(id)places metaData:(id)data;
++ (void)setMetaDataForTime:(id)time startDate:(id)date endDate:(id)endDate metaData:(id)data;
++ (void)setMetaDataWithKeyword:(id)keyword extendedKeyword:(id)extendedKeyword value:(id)value metaData:(id)data;
 @end
 
 @implementation MOEventBundleMetaDataUtility
@@ -61,62 +61,62 @@ void __54__MOEventBundleMetaDataUtility_defineClassCollections__block_invoke(id 
   noReappraisalPromptLabels = &off_10036D8F0;
 }
 
-+ (id)buildMetaDataForEventBundle:(id)a3
++ (id)buildMetaDataForEventBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = 0;
-  switch([v3 interfaceType])
+  switch([bundleCopy interfaceType])
   {
     case 1uLL:
-      v5 = [MOEventBundleMetaDataUtility buildActivityMetaDataForEventBundle:v3];
+      v5 = [MOEventBundleMetaDataUtility buildActivityMetaDataForEventBundle:bundleCopy];
       goto LABEL_18;
     case 2uLL:
-      v5 = [MOEventBundleMetaDataUtility buildOutingMetaDataForEventBundle:v3];
+      v5 = [MOEventBundleMetaDataUtility buildOutingMetaDataForEventBundle:bundleCopy];
       goto LABEL_18;
     case 4uLL:
-      v5 = [MOEventBundleMetaDataUtility buildSignificantContactMetaDataForEventBundle:v3];
+      v5 = [MOEventBundleMetaDataUtility buildSignificantContactMetaDataForEventBundle:bundleCopy];
       goto LABEL_18;
     case 5uLL:
-      v5 = [MOEventBundleMetaDataUtility buildMediaPlayMetaDataForEventBundle:v3];
+      v5 = [MOEventBundleMetaDataUtility buildMediaPlayMetaDataForEventBundle:bundleCopy];
       goto LABEL_18;
     case 6uLL:
-      v5 = [MOEventBundleMetaDataUtility buildSharedContentMetaDataForEventBundle:v3];
+      v5 = [MOEventBundleMetaDataUtility buildSharedContentMetaDataForEventBundle:bundleCopy];
       goto LABEL_18;
     case 7uLL:
-      v5 = [MOEventBundleMetaDataUtility buildTimeAtHomeMetaDataForEventBundle:v3];
+      v5 = [MOEventBundleMetaDataUtility buildTimeAtHomeMetaDataForEventBundle:bundleCopy];
       goto LABEL_18;
     case 9uLL:
-      v5 = [MOEventBundleMetaDataUtility buildTrendMetaDataForEventBundle:v3];
+      v5 = [MOEventBundleMetaDataUtility buildTrendMetaDataForEventBundle:bundleCopy];
       goto LABEL_18;
     case 0xAuLL:
-      v5 = [MOEventBundleMetaDataUtility buildPhotoMemoryMetaDataForEventBundle:v3];
+      v5 = [MOEventBundleMetaDataUtility buildPhotoMemoryMetaDataForEventBundle:bundleCopy];
       goto LABEL_18;
     case 0xBuLL:
-      v5 = [MOEventBundleMetaDataUtility buildEvergreenMetaDataForEventBundle:v3];
+      v5 = [MOEventBundleMetaDataUtility buildEvergreenMetaDataForEventBundle:bundleCopy];
       goto LABEL_18;
     case 0xCuLL:
-      if ([v3 bundleSubType] == 205 || objc_msgSend(v3, "bundleSubType") == 206)
+      if ([bundleCopy bundleSubType] == 205 || objc_msgSend(bundleCopy, "bundleSubType") == 206)
       {
-        v5 = [MOEventBundleMetaDataUtility buildTimeContextTransitMetaDataForEventBundle:v3];
+        v5 = [MOEventBundleMetaDataUtility buildTimeContextTransitMetaDataForEventBundle:bundleCopy];
       }
 
       else
       {
-        v5 = [MOEventBundleMetaDataUtility buildTimeContextMetaDataForEventBundle:v3];
+        v5 = [MOEventBundleMetaDataUtility buildTimeContextMetaDataForEventBundle:bundleCopy];
       }
 
       goto LABEL_18;
     case 0xDuLL:
-      v5 = [MOEventBundleMetaDataUtility buildTripMetaDataForEventBundle:v3];
+      v5 = [MOEventBundleMetaDataUtility buildTripMetaDataForEventBundle:bundleCopy];
       goto LABEL_18;
     case 0xEuLL:
-      v5 = [MOEventBundleMetaDataUtility buildStateOfMindMetaDataForEventBundle:v3];
+      v5 = [MOEventBundleMetaDataUtility buildStateOfMindMetaDataForEventBundle:bundleCopy];
       goto LABEL_18;
     case 0xFuLL:
-      v5 = [MOEventBundleMetaDataUtility buildClusteringMetaDataForEventBundle:v3];
+      v5 = [MOEventBundleMetaDataUtility buildClusteringMetaDataForEventBundle:bundleCopy];
       goto LABEL_18;
     case 0x10uLL:
-      v5 = [MOEventBundleMetaDataUtility buildThematicSummaryMetaDataForEventBundle:v3];
+      v5 = [MOEventBundleMetaDataUtility buildThematicSummaryMetaDataForEventBundle:bundleCopy];
 LABEL_18:
       v4 = v5;
       if (v5)
@@ -132,41 +132,41 @@ LABEL_18:
   return v4;
 }
 
-+ (void)appendDefaultMetaData:(id)a3
++ (void)appendDefaultMetaData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v3 = +[MOEventBundleLabelLocalizer preferredLocalization];
   if (v3)
   {
-    [v4 setObject:v3 forKeyedSubscript:@"language"];
+    [dataCopy setObject:v3 forKeyedSubscript:@"language"];
   }
 }
 
-+ (id)buildActivityMetaDataForEventBundle:(id)a3
++ (id)buildActivityMetaDataForEventBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = objc_opt_new();
-  v5 = [v3 action];
+  action = [bundleCopy action];
 
-  if (v5)
+  if (action)
   {
-    v6 = [v3 action];
-    [MOEventBundleMetaDataUtility setMetaDataForActivityAction:v6 metaData:v4];
+    action2 = [bundleCopy action];
+    [MOEventBundleMetaDataUtility setMetaDataForActivityAction:action2 metaData:v4];
   }
 
-  v7 = [v3 concurrentMediaAction];
+  concurrentMediaAction = [bundleCopy concurrentMediaAction];
 
-  if (v7)
+  if (concurrentMediaAction)
   {
-    v8 = [v3 concurrentMediaAction];
-    [MOEventBundleMetaDataUtility setMetaDataForActivityConcurrentMediaAction:v8 metaData:v4];
+    concurrentMediaAction2 = [bundleCopy concurrentMediaAction];
+    [MOEventBundleMetaDataUtility setMetaDataForActivityConcurrentMediaAction:concurrentMediaAction2 metaData:v4];
   }
 
-  v9 = [v3 places];
-  if (v9)
+  places = [bundleCopy places];
+  if (places)
   {
-    v10 = v9;
-    if ([v3 bundleSubType] == 204 || objc_msgSend(v3, "bundleSubType") == 207)
+    v10 = places;
+    if ([bundleCopy bundleSubType] == 204 || objc_msgSend(bundleCopy, "bundleSubType") == 207)
     {
 
 LABEL_9:
@@ -174,8 +174,8 @@ LABEL_9:
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v11 = [v3 places];
-      v12 = [v11 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      places2 = [bundleCopy places];
+      v12 = [places2 countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (v12)
       {
         v13 = v12;
@@ -186,19 +186,19 @@ LABEL_9:
           {
             if (*v31 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(places2);
             }
 
             v16 = *(*(&v30 + 1) + 8 * i);
-            v17 = [v16 placeName];
+            placeName = [v16 placeName];
 
-            if (v17)
+            if (placeName)
             {
               [MOEventBundleMetaDataUtility setMetaDataForActivityPlace:v16 metaData:v4];
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v30 objects:v34 count:16];
+          v13 = [places2 countByEnumeratingWithState:&v30 objects:v34 count:16];
         }
 
         while (v13);
@@ -207,190 +207,190 @@ LABEL_9:
       goto LABEL_22;
     }
 
-    v18 = [v3 bundleSubType];
+    bundleSubType = [bundleCopy bundleSubType];
 
-    if (v18 == 208)
+    if (bundleSubType == 208)
     {
       goto LABEL_9;
     }
   }
 
-  v19 = [v3 place];
+  place = [bundleCopy place];
 
-  if (v19)
+  if (place)
   {
-    v20 = [v3 place];
-    [MOEventBundleMetaDataUtility setMetaDataForActivityPlace:v20 metaData:v4];
+    place2 = [bundleCopy place];
+    [MOEventBundleMetaDataUtility setMetaDataForActivityPlace:place2 metaData:v4];
   }
 
 LABEL_22:
-  v21 = [v3 time];
+  time = [bundleCopy time];
 
-  if (v21)
+  if (time)
   {
-    v22 = [v3 time];
-    v23 = [v3 startDate];
-    v24 = [v3 endDate];
-    [MOEventBundleMetaDataUtility setMetaDataForTime:v22 startDate:v23 endDate:v24 metaData:v4];
+    time2 = [bundleCopy time];
+    startDate = [bundleCopy startDate];
+    endDate = [bundleCopy endDate];
+    [MOEventBundleMetaDataUtility setMetaDataForTime:time2 startDate:startDate endDate:endDate metaData:v4];
   }
 
-  v25 = [v3 persons];
+  persons = [bundleCopy persons];
 
-  if (v25)
+  if (persons)
   {
-    v26 = [v3 persons];
-    v27 = [v3 suggestionID];
-    [MOEventBundleMetaDataUtility setMetaDataForPersons:v26 suggestionId:v27 metaData:v4];
+    persons2 = [bundleCopy persons];
+    suggestionID = [bundleCopy suggestionID];
+    [MOEventBundleMetaDataUtility setMetaDataForPersons:persons2 suggestionId:suggestionID metaData:v4];
   }
 
-  v28 = [v3 photoTraits];
-  [MOEventBundleMetaDataUtility setMetaDataForHoliday:v28 metaData:v4 eventBundle:v3];
+  photoTraits = [bundleCopy photoTraits];
+  [MOEventBundleMetaDataUtility setMetaDataForHoliday:photoTraits metaData:v4 eventBundle:bundleCopy];
 
   return v4;
 }
 
-+ (id)buildOutingMetaDataForEventBundle:(id)a3
++ (id)buildOutingMetaDataForEventBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = objc_opt_new();
-  v5 = [v3 actions];
-  if (v5)
+  actions = [bundleCopy actions];
+  if (actions)
   {
-    v6 = [v3 actions];
-    v7 = [v6 count];
+    actions2 = [bundleCopy actions];
+    v7 = [actions2 count];
 
     if (v7)
     {
       v8 = [NSPredicate predicateWithFormat:@"%K = %lu", @"actionType", 2];
-      v9 = [v3 actions];
-      v10 = [v9 filteredArrayUsingPredicate:v8];
+      actions3 = [bundleCopy actions];
+      v10 = [actions3 filteredArrayUsingPredicate:v8];
 
       if ([v10 count])
       {
-        v11 = [v10 firstObject];
-        v5 = [v11 actionName];
+        firstObject = [v10 firstObject];
+        actions = [firstObject actionName];
       }
 
       else
       {
-        v5 = 0;
+        actions = 0;
       }
     }
 
     else
     {
-      v5 = 0;
+      actions = 0;
     }
   }
 
-  v12 = [v3 action];
-  if (v12)
+  action = [bundleCopy action];
+  if (action)
   {
-    v13 = v12;
-    v14 = [v3 action];
-    if ([v14 actionType] == 9)
+    v13 = action;
+    action2 = [bundleCopy action];
+    if ([action2 actionType] == 9)
     {
     }
 
     else
     {
-      v15 = [v3 action];
-      v16 = [v15 actionType];
+      action3 = [bundleCopy action];
+      actionType = [action3 actionType];
 
-      if (v16 != 10)
+      if (actionType != 10)
       {
         goto LABEL_13;
       }
     }
 
-    v17 = [v3 action];
-    v18 = [v17 actionName];
+    action4 = [bundleCopy action];
+    actionName = [action4 actionName];
 
-    v5 = v18;
+    actions = actionName;
   }
 
 LABEL_13:
-  if (v5)
+  if (actions)
   {
-    v19 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v5];
+    v19 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:actions];
     [v4 setObject:v19 forKeyedSubscript:@"action"];
 
-    v20 = [objc_opt_class() keywordFromString:v5];
+    v20 = [objc_opt_class() keywordFromString:actions];
     [v4 setObject:v20 forKeyedSubscript:@"action_type"];
   }
 
-  v21 = [v3 action];
-  if (v21)
+  action5 = [bundleCopy action];
+  if (action5)
   {
-    v22 = v21;
-    v23 = [v3 action];
-    v24 = [v23 actionType];
+    v22 = action5;
+    action6 = [bundleCopy action];
+    actionType2 = [action6 actionType];
 
-    if (v24 == 11)
+    if (actionType2 == 11)
     {
       [v4 setObject:@"flight" forKeyedSubscript:@"flight"];
     }
   }
 
-  if ([v3 isSensitive])
+  if ([bundleCopy isSensitive])
   {
     [v4 setObject:@"sensitive" forKeyedSubscript:@"sensitive"];
   }
 
-  v25 = [v3 action];
-  v26 = [v3 startDate];
-  v27 = [v3 endDate];
-  [MOEventBundleMetaDataUtility setMetaDataForDiningAction:v25 metaData:v4 startDate:v26 endDate:v27];
+  action7 = [bundleCopy action];
+  startDate = [bundleCopy startDate];
+  endDate = [bundleCopy endDate];
+  [MOEventBundleMetaDataUtility setMetaDataForDiningAction:action7 metaData:v4 startDate:startDate endDate:endDate];
 
-  v28 = [v3 place];
-  [MOEventBundleMetaDataUtility setMetaDataForPlace:v28 metaData:v4];
+  place = [bundleCopy place];
+  [MOEventBundleMetaDataUtility setMetaDataForPlace:place metaData:v4];
 
-  v29 = [v3 persons];
-  v30 = [v3 suggestionID];
-  [MOEventBundleMetaDataUtility setMetaDataForPersons:v29 suggestionId:v30 metaData:v4];
+  persons = [bundleCopy persons];
+  suggestionID = [bundleCopy suggestionID];
+  [MOEventBundleMetaDataUtility setMetaDataForPersons:persons suggestionId:suggestionID metaData:v4];
 
-  v31 = [v3 time];
-  v32 = [v3 startDate];
-  v33 = [v3 endDate];
-  [MOEventBundleMetaDataUtility setMetaDataForTime:v31 startDate:v32 endDate:v33 metaData:v4];
+  time = [bundleCopy time];
+  startDate2 = [bundleCopy startDate];
+  endDate2 = [bundleCopy endDate];
+  [MOEventBundleMetaDataUtility setMetaDataForTime:time startDate:startDate2 endDate:endDate2 metaData:v4];
 
-  v34 = [v3 photoTraits];
-  [MOEventBundleMetaDataUtility setMetaDataForHoliday:v34 metaData:v4 eventBundle:v3];
+  photoTraits = [bundleCopy photoTraits];
+  [MOEventBundleMetaDataUtility setMetaDataForHoliday:photoTraits metaData:v4 eventBundle:bundleCopy];
 
-  v35 = [v3 photoTraits];
-  [MOEventBundleMetaDataUtility setMetaDataForBirthday:v35 metaData:v4 eventBundle:v3];
+  photoTraits2 = [bundleCopy photoTraits];
+  [MOEventBundleMetaDataUtility setMetaDataForBirthday:photoTraits2 metaData:v4 eventBundle:bundleCopy];
 
-  [MOEventBundleMetaDataUtility setMetaDataForInvite:v3 metaData:v4];
+  [MOEventBundleMetaDataUtility setMetaDataForInvite:bundleCopy metaData:v4];
 
   return v4;
 }
 
-+ (id)buildSharedContentMetaDataForEventBundle:(id)a3
++ (id)buildSharedContentMetaDataForEventBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = [NSMutableDictionary alloc];
   v10 = @"default_label";
-  v5 = [v3 action];
+  action = [bundleCopy action];
 
-  v6 = [v5 actionName];
-  v11 = v6;
+  actionName = [action actionName];
+  v11 = actionName;
   v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v8 = [v4 initWithDictionary:v7];
 
   return v8;
 }
 
-+ (id)buildTimeAtHomeMetaDataForEventBundle:(id)a3
++ (id)buildTimeAtHomeMetaDataForEventBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = objc_opt_new();
-  v5 = [v3 action];
-  v6 = [v5 actionName];
-  [v4 setObject:v6 forKeyedSubscript:@"default_label"];
+  action = [bundleCopy action];
+  actionName = [action actionName];
+  [v4 setObject:actionName forKeyedSubscript:@"default_label"];
 
-  v7 = [v3 action];
-  v8 = [v7 actionName];
-  v9 = [v8 isEqualToString:@"Hosting at Home"];
+  action2 = [bundleCopy action];
+  actionName2 = [action2 actionName];
+  v9 = [actionName2 isEqualToString:@"Hosting at Home"];
 
   if (v9)
   {
@@ -403,87 +403,87 @@ LABEL_13:
   }
 
   [v4 setObject:v10 forKeyedSubscript:@"home_activity"];
-  v11 = [v3 persons];
+  persons = [bundleCopy persons];
 
-  if (v11)
+  if (persons)
   {
-    v12 = [v3 persons];
-    v13 = [v3 suggestionID];
-    [MOEventBundleMetaDataUtility setMetaDataForPersons:v12 suggestionId:v13 metaData:v4];
+    persons2 = [bundleCopy persons];
+    suggestionID = [bundleCopy suggestionID];
+    [MOEventBundleMetaDataUtility setMetaDataForPersons:persons2 suggestionId:suggestionID metaData:v4];
   }
 
-  v14 = [v3 resources];
-  [MOEventBundleMetaDataUtility setMetaDataForPhotos:v14 metaData:v4];
+  resources = [bundleCopy resources];
+  [MOEventBundleMetaDataUtility setMetaDataForPhotos:resources metaData:v4];
 
-  v15 = [v3 time];
-  v16 = [v3 startDate];
-  v17 = [v3 endDate];
-  [MOEventBundleMetaDataUtility setMetaDataForTime:v15 startDate:v16 endDate:v17 metaData:v4];
+  time = [bundleCopy time];
+  startDate = [bundleCopy startDate];
+  endDate = [bundleCopy endDate];
+  [MOEventBundleMetaDataUtility setMetaDataForTime:time startDate:startDate endDate:endDate metaData:v4];
 
-  v18 = [v3 photoTraits];
-  [MOEventBundleMetaDataUtility setMetaDataForHoliday:v18 metaData:v4 eventBundle:v3];
+  photoTraits = [bundleCopy photoTraits];
+  [MOEventBundleMetaDataUtility setMetaDataForHoliday:photoTraits metaData:v4 eventBundle:bundleCopy];
 
-  v19 = [v3 photoTraits];
-  [MOEventBundleMetaDataUtility setMetaDataForBirthday:v19 metaData:v4 eventBundle:v3];
+  photoTraits2 = [bundleCopy photoTraits];
+  [MOEventBundleMetaDataUtility setMetaDataForBirthday:photoTraits2 metaData:v4 eventBundle:bundleCopy];
 
-  [MOEventBundleMetaDataUtility setMetaDataForInvite:v3 metaData:v4];
+  [MOEventBundleMetaDataUtility setMetaDataForInvite:bundleCopy metaData:v4];
 
   return v4;
 }
 
-+ (id)buildSignificantContactMetaDataForEventBundle:(id)a3
++ (id)buildSignificantContactMetaDataForEventBundle:(id)bundle
 {
-  v3 = a3;
-  v4 = [v3 action];
-  if (v4)
+  bundleCopy = bundle;
+  action = [bundleCopy action];
+  if (action)
   {
-    v5 = v4;
-    v6 = [v3 persons];
-    if (v6)
+    v5 = action;
+    persons = [bundleCopy persons];
+    if (persons)
     {
-      v7 = v6;
-      v8 = [v3 summarizationGranularity];
+      v7 = persons;
+      summarizationGranularity = [bundleCopy summarizationGranularity];
 
-      if (v8 != 2)
+      if (summarizationGranularity != 2)
       {
         v9 = objc_opt_new();
-        v10 = [v3 action];
-        v11 = [v3 persons];
-        v12 = [v11 firstObject];
-        v13 = [v12 name];
+        action2 = [bundleCopy action];
+        persons2 = [bundleCopy persons];
+        firstObject = [persons2 firstObject];
+        name = [firstObject name];
 
-        v14 = [v10 actionName];
-        v15 = v14;
-        if (v13)
+        actionName = [action2 actionName];
+        endDate2 = actionName;
+        if (name)
         {
-          v16 = [v14 stringByAppendingString:v13];
+          v16 = [actionName stringByAppendingString:name];
 
-          v15 = v16;
+          endDate2 = v16;
         }
 
-        [v9 setObject:v15 forKeyedSubscript:@"default_label"];
-        v17 = [v10 actionName];
-        v18 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v17];
+        [v9 setObject:endDate2 forKeyedSubscript:@"default_label"];
+        actionName2 = [action2 actionName];
+        v18 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:actionName2];
         [v9 setObject:v18 forKeyedSubscript:@"header"];
 
-        [v9 setObject:v13 forKeyedSubscript:@"title"];
-        v19 = [v10 actionName];
-        v20 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v19];
+        [v9 setObject:name forKeyedSubscript:@"title"];
+        actionName3 = [action2 actionName];
+        v20 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:actionName3];
         [v9 setObject:v20 forKeyedSubscript:@"action"];
 
         v21 = objc_opt_class();
-        v22 = [v10 actionName];
-        v23 = [v21 keywordFromString:v22];
+        actionName4 = [action2 actionName];
+        v23 = [v21 keywordFromString:actionName4];
         [v9 setObject:v23 forKeyedSubscript:@"action_type"];
 
-        v24 = [v3 persons];
-        v25 = [v3 suggestionID];
-        [MOEventBundleMetaDataUtility setMetaDataForPersons:v24 suggestionId:v25 metaData:v9];
+        persons3 = [bundleCopy persons];
+        suggestionID = [bundleCopy suggestionID];
+        [MOEventBundleMetaDataUtility setMetaDataForPersons:persons3 suggestionId:suggestionID metaData:v9];
 
-        v26 = [v3 time];
-        v27 = [v3 startDate];
-        v28 = [v3 endDate];
-        [MOEventBundleMetaDataUtility setMetaDataForTime:v26 startDate:v27 endDate:v28 metaData:v9];
+        time = [bundleCopy time];
+        startDate = [bundleCopy startDate];
+        endDate = [bundleCopy endDate];
+        [MOEventBundleMetaDataUtility setMetaDataForTime:time startDate:startDate endDate:endDate metaData:v9];
 
         goto LABEL_12;
       }
@@ -494,7 +494,7 @@ LABEL_13:
     }
   }
 
-  if ([v3 summarizationGranularity] != 2 || (objc_msgSend(v3, "isAggregatedAndSuppressed") & 1) != 0)
+  if ([bundleCopy summarizationGranularity] != 2 || (objc_msgSend(bundleCopy, "isAggregatedAndSuppressed") & 1) != 0)
   {
     v9 = 0;
     goto LABEL_13;
@@ -502,14 +502,14 @@ LABEL_13:
 
   v9 = objc_opt_new();
   [v9 setObject:@"contact_summary" forKeyedSubscript:@"summary_type"];
-  v29 = [v3 persons];
-  v30 = [v3 suggestionID];
-  [MOEventBundleMetaDataUtility setMetaDataForPersons:v29 suggestionId:v30 metaData:v9];
+  persons4 = [bundleCopy persons];
+  suggestionID2 = [bundleCopy suggestionID];
+  [MOEventBundleMetaDataUtility setMetaDataForPersons:persons4 suggestionId:suggestionID2 metaData:v9];
 
-  v10 = [v3 time];
-  v13 = [v3 startDate];
-  v15 = [v3 endDate];
-  [MOEventBundleMetaDataUtility setMetaDataForTime:v10 startDate:v13 endDate:v15 metaData:v9];
+  action2 = [bundleCopy time];
+  name = [bundleCopy startDate];
+  endDate2 = [bundleCopy endDate];
+  [MOEventBundleMetaDataUtility setMetaDataForTime:action2 startDate:name endDate:endDate2 metaData:v9];
 LABEL_12:
 
 LABEL_13:
@@ -517,30 +517,30 @@ LABEL_13:
   return v9;
 }
 
-+ (id)buildMediaPlayMetaDataForEventBundle:(id)a3
++ (id)buildMediaPlayMetaDataForEventBundle:(id)bundle
 {
-  v3 = a3;
-  v4 = [v3 action];
-  if (!v4)
+  bundleCopy = bundle;
+  action = [bundleCopy action];
+  if (!action)
   {
     goto LABEL_19;
   }
 
-  v5 = v4;
-  v6 = [v3 resources];
-  if (!v6)
+  v5 = action;
+  resources = [bundleCopy resources];
+  if (!resources)
   {
 
     goto LABEL_19;
   }
 
-  v7 = v6;
-  v8 = [v3 summarizationGranularity];
+  v7 = resources;
+  summarizationGranularity = [bundleCopy summarizationGranularity];
 
-  if (v8 == 2)
+  if (summarizationGranularity == 2)
   {
 LABEL_19:
-    if ([v3 summarizationGranularity] != 2 || (objc_msgSend(v3, "isAggregatedAndSuppressed") & 1) != 0)
+    if ([bundleCopy summarizationGranularity] != 2 || (objc_msgSend(bundleCopy, "isAggregatedAndSuppressed") & 1) != 0)
     {
       v9 = 0;
       goto LABEL_35;
@@ -548,48 +548,48 @@ LABEL_19:
 
     v37 = objc_autoreleasePoolPush();
     v9 = objc_opt_new();
-    v49 = [v3 resources];
-    v10 = [v49 firstObject];
+    resources2 = [bundleCopy resources];
+    firstObject = [resources2 firstObject];
 
     [v9 setObject:@"media_summary" forKeyedSubscript:@"summary_type"];
-    v50 = [v3 resources];
-    v51 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v50 count]);
+    resources3 = [bundleCopy resources];
+    v51 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [resources3 count]);
     [v9 setObject:v51 forKeyedSubscript:@"media_event_count"];
 
-    v52 = [v3 resources];
-    v53 = [v52 firstObject];
-    v54 = [v53 getDictionary];
-    v12 = [v54 objectForKeyedSubscript:@"MOMediaPlayMetaDataKeyPlayerMediaTypeKey"];
+    resources4 = [bundleCopy resources];
+    firstObject2 = [resources4 firstObject];
+    getDictionary = [firstObject2 getDictionary];
+    firstObject4 = [getDictionary objectForKeyedSubscript:@"MOMediaPlayMetaDataKeyPlayerMediaTypeKey"];
 
-    if (([v12 isEqual:MOMediaPlayMetaDataKeyPlayerMediaTypeSongAlbum[0]] & 1) != 0 || (objc_msgSend(v12, "isEqual:", MOMediaPlayMetaDataKeyPlayerMediaTypePodcastArtist[0]) & 1) != 0 || objc_msgSend(v12, "isEqual:", MOMediaPlayMetaDataKeyPlayerMediaTypeThirdPartyMediaAlbum[0]))
+    if (([firstObject4 isEqual:MOMediaPlayMetaDataKeyPlayerMediaTypeSongAlbum[0]] & 1) != 0 || (objc_msgSend(firstObject4, "isEqual:", MOMediaPlayMetaDataKeyPlayerMediaTypePodcastArtist[0]) & 1) != 0 || objc_msgSend(firstObject4, "isEqual:", MOMediaPlayMetaDataKeyPlayerMediaTypeThirdPartyMediaAlbum[0]))
     {
-      v55 = [v3 events];
-      v56 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v55 count]);
+      events = [bundleCopy events];
+      v56 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [events count]);
       [v9 setObject:v56 forKeyedSubscript:@"media_event_count"];
     }
 
-    v57 = [v3 resources];
-    v58 = [v57 firstObject];
-    v59 = [v58 getDictionary];
-    v60 = [v59 objectForKeyedSubscript:@"media_type"];
+    resources5 = [bundleCopy resources];
+    firstObject3 = [resources5 firstObject];
+    getDictionary2 = [firstObject3 getDictionary];
+    v60 = [getDictionary2 objectForKeyedSubscript:@"media_type"];
     [v9 setObject:v60 forKeyedSubscript:@"media_type"];
 
-    v61 = [v3 action];
-    v62 = [v61 actionName];
-    if (([v62 isEqualToString:@"songs_on_repeat"] & 1) == 0)
+    action2 = [bundleCopy action];
+    actionName = [action2 actionName];
+    if (([actionName isEqualToString:@"songs_on_repeat"] & 1) == 0)
     {
-      v63 = [v3 action];
-      v64 = [v63 actionName];
-      if (([v64 isEqualToString:@"song_on_repeat"] & 1) == 0)
+      action3 = [bundleCopy action];
+      actionName2 = [action3 actionName];
+      if (([actionName2 isEqualToString:@"song_on_repeat"] & 1) == 0)
       {
-        v73 = [v3 action];
-        [v73 actionName];
-        v82 = v12;
+        action4 = [bundleCopy action];
+        [action4 actionName];
+        v82 = firstObject4;
         v75 = v74 = v37;
         v80 = [v75 isEqualToString:@"media_on_repeat"];
 
         v37 = v74;
-        v12 = v82;
+        firstObject4 = v82;
 
         if ((v80 & 1) == 0)
         {
@@ -601,83 +601,83 @@ LABEL_19:
     }
 
 LABEL_30:
-    v65 = [v3 action];
-    v66 = [v65 actionName];
-    [v9 setObject:v66 forKeyedSubscript:@"media_on_repeat"];
+    action5 = [bundleCopy action];
+    actionName3 = [action5 actionName];
+    [v9 setObject:actionName3 forKeyedSubscript:@"media_on_repeat"];
 
 LABEL_31:
-    v67 = [v3 action];
-    v68 = [v67 actionName];
-    v69 = [v68 isEqualToString:@"media_on_repeat_third_party"];
+    action6 = [bundleCopy action];
+    actionName4 = [action6 actionName];
+    v69 = [actionName4 isEqualToString:@"media_on_repeat_third_party"];
 
     if (v69)
     {
-      v70 = [v3 action];
-      v71 = [v70 actionName];
-      [v9 setObject:v71 forKeyedSubscript:@"media_on_repeat_third_party"];
+      action7 = [bundleCopy action];
+      actionName5 = [action7 actionName];
+      [v9 setObject:actionName5 forKeyedSubscript:@"media_on_repeat_third_party"];
     }
 
-    v48 = [v10 getDictionary];
-    v16 = [v48 objectForKeyedSubscript:@"third_party_dominate_value"];
+    getDictionary3 = [firstObject getDictionary];
+    v16 = [getDictionary3 objectForKeyedSubscript:@"third_party_dominate_value"];
     [v9 setObject:v16 forKeyedSubscript:@"third_party_dominate_value"];
     goto LABEL_34;
   }
 
   v78 = objc_autoreleasePoolPush();
   v9 = objc_opt_new();
-  v10 = [v3 action];
-  v11 = [v3 resources];
-  v12 = [v11 firstObject];
+  firstObject = [bundleCopy action];
+  resources6 = [bundleCopy resources];
+  firstObject4 = [resources6 firstObject];
 
-  v13 = [v12 getDictionary];
-  v81 = [v13 objectForKeyedSubscript:@"media_album"];
+  getDictionary4 = [firstObject4 getDictionary];
+  v81 = [getDictionary4 objectForKeyedSubscript:@"media_album"];
 
-  v14 = [v10 actionName];
-  v15 = [v12 name];
-  v16 = [NSString stringWithFormat:@"%@: %@", v14, v15];
+  actionName6 = [firstObject actionName];
+  name = [firstObject4 name];
+  v16 = [NSString stringWithFormat:@"%@: %@", actionName6, name];
 
   [v9 setObject:v16 forKeyedSubscript:@"default_label"];
-  v17 = [v10 actionName];
-  v18 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v17];
+  actionName7 = [firstObject actionName];
+  v18 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:actionName7];
   [v9 setObject:v18 forKeyedSubscript:@"header"];
 
-  v19 = [v12 name];
-  v20 = [NSString stringWithFormat:@"%@", v19];
+  name2 = [firstObject4 name];
+  v20 = [NSString stringWithFormat:@"%@", name2];
   [v9 setObject:v20 forKeyedSubscript:@"title"];
 
-  v21 = [v3 resources];
-  v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v21 count]);
+  resources7 = [bundleCopy resources];
+  v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [resources7 count]);
   [v9 setObject:v22 forKeyedSubscript:@"media_event_count"];
 
-  v23 = [v12 getDictionary];
-  v24 = [v23 objectForKeyedSubscript:@"MOMediaPlayMetaDataKeyPlayerMediaTypeKey"];
+  getDictionary5 = [firstObject4 getDictionary];
+  v24 = [getDictionary5 objectForKeyedSubscript:@"MOMediaPlayMetaDataKeyPlayerMediaTypeKey"];
 
   v79 = v24;
   if (([v24 isEqual:MOMediaPlayMetaDataKeyPlayerMediaTypeSongAlbum[0]] & 1) != 0 || (objc_msgSend(v24, "isEqual:", MOMediaPlayMetaDataKeyPlayerMediaTypePodcastArtist[0]) & 1) != 0 || objc_msgSend(v24, "isEqual:", MOMediaPlayMetaDataKeyPlayerMediaTypeThirdPartyMediaAlbum[0]))
   {
-    v25 = [v3 events];
-    v26 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v25 count]);
+    events2 = [bundleCopy events];
+    v26 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [events2 count]);
     [v9 setObject:v26 forKeyedSubscript:@"media_event_count"];
   }
 
-  v27 = [v12 getDictionary];
-  v28 = [v27 objectForKeyedSubscript:@"media_type"];
+  getDictionary6 = [firstObject4 getDictionary];
+  v28 = [getDictionary6 objectForKeyedSubscript:@"media_type"];
   [v9 setObject:v28 forKeyedSubscript:@"media_type"];
 
   [v9 setObject:v81 forKeyedSubscript:@"media_album"];
-  v29 = [v3 time];
-  v30 = [v3 startDate];
-  v31 = [v3 endDate];
-  [MOEventBundleMetaDataUtility setMetaDataForTime:v29 startDate:v30 endDate:v31 metaData:v9];
+  time = [bundleCopy time];
+  startDate = [bundleCopy startDate];
+  endDate = [bundleCopy endDate];
+  [MOEventBundleMetaDataUtility setMetaDataForTime:time startDate:startDate endDate:endDate metaData:v9];
 
-  v32 = [v10 actionName];
-  if (([v32 isEqualToString:@"songs_on_repeat"] & 1) == 0)
+  actionName8 = [firstObject actionName];
+  if (([actionName8 isEqualToString:@"songs_on_repeat"] & 1) == 0)
   {
-    v33 = [v10 actionName];
-    if (![v33 isEqualToString:@"song_on_repeat"])
+    actionName9 = [firstObject actionName];
+    if (![actionName9 isEqualToString:@"song_on_repeat"])
     {
-      v76 = [v10 actionName];
-      v77 = [v76 isEqualToString:@"media_on_repeat"];
+      actionName10 = [firstObject actionName];
+      v77 = [actionName10 isEqualToString:@"media_on_repeat"];
 
       if ((v77 & 1) == 0)
       {
@@ -689,42 +689,42 @@ LABEL_31:
   }
 
 LABEL_12:
-  v34 = [v10 actionName];
-  [v9 setObject:v34 forKeyedSubscript:@"media_on_repeat"];
+  actionName11 = [firstObject actionName];
+  [v9 setObject:actionName11 forKeyedSubscript:@"media_on_repeat"];
 
 LABEL_13:
-  v35 = [v10 actionName];
-  v36 = [v35 isEqualToString:@"media_on_repeat_third_party"];
+  actionName12 = [firstObject actionName];
+  v36 = [actionName12 isEqualToString:@"media_on_repeat_third_party"];
 
   v37 = v78;
   if (v36)
   {
-    v38 = [v10 actionName];
-    [v9 setObject:v38 forKeyedSubscript:@"media_on_repeat_third_party"];
+    actionName13 = [firstObject actionName];
+    [v9 setObject:actionName13 forKeyedSubscript:@"media_on_repeat_third_party"];
   }
 
-  v39 = [v10 actionName];
-  v40 = [v39 isEqualToString:@"played_media_sessions"];
+  actionName14 = [firstObject actionName];
+  v40 = [actionName14 isEqualToString:@"played_media_sessions"];
 
   if (v40)
   {
-    v41 = [v10 actionName];
-    [v9 setObject:v41 forKeyedSubscript:@"played_media_sessions"];
+    actionName15 = [firstObject actionName];
+    [v9 setObject:actionName15 forKeyedSubscript:@"played_media_sessions"];
   }
 
-  v42 = [v10 actionName];
-  [v9 setObject:v42 forKeyedSubscript:@"action"];
+  actionName16 = [firstObject actionName];
+  [v9 setObject:actionName16 forKeyedSubscript:@"action"];
 
   v43 = objc_opt_class();
-  v44 = [v10 actionName];
-  v45 = [v43 keywordFromString:v44];
+  actionName17 = [firstObject actionName];
+  v45 = [v43 keywordFromString:actionName17];
   [v9 setObject:v45 forKeyedSubscript:@"action_type"];
 
-  v46 = [v12 getDictionary];
-  v47 = [v46 objectForKeyedSubscript:@"third_party_dominate_value"];
+  getDictionary7 = [firstObject4 getDictionary];
+  v47 = [getDictionary7 objectForKeyedSubscript:@"third_party_dominate_value"];
   [v9 setObject:v47 forKeyedSubscript:@"third_party_dominate_value"];
 
-  v48 = v81;
+  getDictionary3 = v81;
 LABEL_34:
 
   objc_autoreleasePoolPop(v37);
@@ -733,88 +733,88 @@ LABEL_35:
   return v9;
 }
 
-+ (id)buildPhotoMemoryMetaDataForEventBundle:(id)a3
++ (id)buildPhotoMemoryMetaDataForEventBundle:(id)bundle
 {
-  v3 = a3;
-  v4 = [v3 action];
-  if (v4)
+  bundleCopy = bundle;
+  action = [bundleCopy action];
+  if (action)
   {
-    v5 = [v3 resources];
+    resources = [bundleCopy resources];
 
-    if (v5)
+    if (resources)
     {
-      v4 = objc_opt_new();
-      v6 = [v3 action];
+      action = objc_opt_new();
+      action2 = [bundleCopy action];
       v7 = [NSString stringWithFormat:@"%@", @"Memories from Photos"];
-      v8 = [v6 actionName];
-      v9 = [v8 length];
+      actionName = [action2 actionName];
+      v9 = [actionName length];
 
       if (v9 >= 2)
       {
-        [v4 setObject:v7 forKeyedSubscript:@"default_label"];
-        v10 = [v6 actionName];
-        [v4 setObject:v10 forKeyedSubscript:@"title"];
+        [action setObject:v7 forKeyedSubscript:@"default_label"];
+        actionName2 = [action2 actionName];
+        [action setObject:actionName2 forKeyedSubscript:@"title"];
       }
     }
 
     else
     {
-      v4 = 0;
+      action = 0;
     }
   }
 
-  return v4;
+  return action;
 }
 
-+ (id)buildTrendMetaDataForEventBundle:(id)a3
++ (id)buildTrendMetaDataForEventBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = objc_opt_new();
-  v5 = [v3 events];
-  v6 = [v5 firstObject];
-  v7 = [v6 category];
+  events = [bundleCopy events];
+  firstObject = [events firstObject];
+  category = [firstObject category];
 
-  if (v7 == 10)
+  if (category == 10)
   {
-    v8 = [v3 action];
-    v9 = [v3 persons];
-    v10 = [v9 firstObject];
-    v11 = [v10 name];
+    action = [bundleCopy action];
+    persons = [bundleCopy persons];
+    firstObject2 = [persons firstObject];
+    name = [firstObject2 name];
 
-    v12 = [v8 actionName];
-    v13 = [v12 stringByAppendingString:v11];
+    actionName = [action actionName];
+    v13 = [actionName stringByAppendingString:name];
 
     [v4 setObject:v13 forKeyedSubscript:@"default_label"];
-    v14 = [v8 actionName];
-    v15 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v14];
+    actionName2 = [action actionName];
+    v15 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:actionName2];
     [v4 setObject:v15 forKeyedSubscript:@"header"];
 
-    [v4 setObject:v11 forKeyedSubscript:@"title"];
-    v16 = [v8 actionName];
-    v17 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v16];
+    [v4 setObject:name forKeyedSubscript:@"title"];
+    actionName3 = [action actionName];
+    v17 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:actionName3];
     [v4 setObject:v17 forKeyedSubscript:@"action"];
 
     v18 = objc_opt_class();
-    v19 = [v8 actionName];
-    v20 = [v18 keywordFromString:v19];
+    actionName4 = [action actionName];
+    v20 = [v18 keywordFromString:actionName4];
     [v4 setObject:v20 forKeyedSubscript:@"action_type"];
 
-    v21 = [v3 persons];
-    v22 = [v3 suggestionID];
-    [MOEventBundleMetaDataUtility setMetaDataForPersons:v21 suggestionId:v22 metaData:v4];
+    persons2 = [bundleCopy persons];
+    suggestionID = [bundleCopy suggestionID];
+    [MOEventBundleMetaDataUtility setMetaDataForPersons:persons2 suggestionId:suggestionID metaData:v4];
   }
 
   return v4;
 }
 
-+ (id)buildEvergreenMetaDataForEventBundle:(id)a3
++ (id)buildEvergreenMetaDataForEventBundle:(id)bundle
 {
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v3 = [a3 resources];
-  v4 = [v3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  resources = [bundle resources];
+  v4 = [resources countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v4)
   {
     v5 = v4;
@@ -825,23 +825,23 @@ LABEL_35:
       {
         if (*v28 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(resources);
         }
 
         v8 = *(*(&v27 + 1) + 8 * i);
         if ([v8 type] == 9)
         {
-          v25 = v3;
+          v25 = resources;
           v9 = objc_opt_new();
           v10 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:@"EVERGREEN_LABEL"];
           [v9 setObject:v10 forKeyedSubscript:@"default_label"];
 
-          v11 = [v8 name];
-          v12 = [NSString stringWithFormat:@"%@_%@", @"evergreen_type", v11];
+          name = [v8 name];
+          v12 = [NSString stringWithFormat:@"%@_%@", @"evergreen_type", name];
 
-          v13 = [v8 name];
+          name2 = [v8 name];
           v26 = v9;
-          [MOEventBundleMetaDataUtility setMetaDataWithKeyword:@"evergreen_type" extendedKeyword:v12 value:v13 metaData:v9];
+          [MOEventBundleMetaDataUtility setMetaDataWithKeyword:@"evergreen_type" extendedKeyword:v12 value:name2 metaData:v9];
 
           v14 = _mo_log_facility_get_os_log(&MOLogFacilityFramework);
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -849,21 +849,21 @@ LABEL_35:
             [MOEventBundleMetaDataUtility buildEvergreenMetaDataForEventBundle:v8];
           }
 
-          v15 = [v8 promptCount];
-          if (v15)
+          promptCount = [v8 promptCount];
+          if (promptCount)
           {
-            for (j = 0; j != v15; ++j)
+            for (j = 0; j != promptCount; ++j)
             {
-              v17 = [v8 promptIndexes];
-              v18 = [v17 objectAtIndex:j];
+              promptIndexes = [v8 promptIndexes];
+              v18 = [promptIndexes objectAtIndex:j];
 
               if (v18)
               {
                 v19 = [NSString stringWithFormat:@"%@%d", @"evergreen_slot_", j];
                 [v26 setObject:v18 forKeyedSubscript:v19];
                 v20 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@_%d", @"evergreen_index", [v18 intValue]);
-                v21 = [v18 stringValue];
-                [MOEventBundleMetaDataUtility setMetaDataWithKeyword:v19 extendedKeyword:v20 value:v21 metaData:v26];
+                stringValue = [v18 stringValue];
+                [MOEventBundleMetaDataUtility setMetaDataWithKeyword:v19 extendedKeyword:v20 value:stringValue metaData:v26];
               }
             }
           }
@@ -881,12 +881,12 @@ LABEL_35:
             [MOEventBundleMetaDataUtility buildEvergreenMetaDataForEventBundle:v8];
           }
 
-          v3 = v25;
+          resources = v25;
           goto LABEL_22;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v5 = [resources countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v5)
       {
         continue;
@@ -902,83 +902,83 @@ LABEL_22:
   return v26;
 }
 
-+ (id)buildTimeContextMetaDataForEventBundle:(id)a3
++ (id)buildTimeContextMetaDataForEventBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = objc_opt_new();
-  v5 = [v3 action];
-  v6 = [v5 actionType];
+  action = [bundleCopy action];
+  actionType = [action actionType];
 
-  v7 = [v3 action];
-  if (v6 == 4)
+  action2 = [bundleCopy action];
+  if (actionType == 4)
   {
-    [MOEventBundleMetaDataUtility setMetaDataForActivityAction:v7 metaData:v4];
+    [MOEventBundleMetaDataUtility setMetaDataForActivityAction:action2 metaData:v4];
   }
 
   else
   {
-    [MOEventBundleMetaDataUtility setMetaDataForAction:v7 metaData:v4];
+    [MOEventBundleMetaDataUtility setMetaDataForAction:action2 metaData:v4];
   }
 
-  v8 = [v3 actions];
+  actions = [bundleCopy actions];
 
-  if (v8)
+  if (actions)
   {
-    v9 = [v3 actions];
-    [MOEventBundleMetaDataUtility setMetaDataForActions:v9 metaData:v4];
+    actions2 = [bundleCopy actions];
+    [MOEventBundleMetaDataUtility setMetaDataForActions:actions2 metaData:v4];
   }
 
-  v10 = [v3 place];
+  place = [bundleCopy place];
 
-  if (v10)
+  if (place)
   {
-    v11 = [v3 place];
-    [MOEventBundleMetaDataUtility setMetaDataForPlace:v11 metaData:v4];
+    place2 = [bundleCopy place];
+    [MOEventBundleMetaDataUtility setMetaDataForPlace:place2 metaData:v4];
   }
 
-  v12 = [v3 places];
+  places = [bundleCopy places];
 
-  if (v12)
+  if (places)
   {
-    v13 = [v3 places];
-    [MOEventBundleMetaDataUtility setMetaDataForPlaces:v13 metaData:v4];
+    places2 = [bundleCopy places];
+    [MOEventBundleMetaDataUtility setMetaDataForPlaces:places2 metaData:v4];
   }
 
-  v14 = [v3 time];
+  time = [bundleCopy time];
 
-  if (v14)
+  if (time)
   {
-    v15 = [v3 time];
-    v16 = [v3 startDate];
-    v17 = [v3 endDate];
-    [MOEventBundleMetaDataUtility setMetaDataForTime:v15 startDate:v16 endDate:v17 metaData:v4];
+    time2 = [bundleCopy time];
+    startDate = [bundleCopy startDate];
+    endDate = [bundleCopy endDate];
+    [MOEventBundleMetaDataUtility setMetaDataForTime:time2 startDate:startDate endDate:endDate metaData:v4];
   }
 
-  v18 = [v3 persons];
+  persons = [bundleCopy persons];
 
-  if (v18)
+  if (persons)
   {
-    v19 = [v3 persons];
-    v20 = [v3 suggestionID];
-    [MOEventBundleMetaDataUtility setMetaDataForPersons:v19 suggestionId:v20 metaData:v4];
+    persons2 = [bundleCopy persons];
+    suggestionID = [bundleCopy suggestionID];
+    [MOEventBundleMetaDataUtility setMetaDataForPersons:persons2 suggestionId:suggestionID metaData:v4];
   }
 
-  v21 = [v3 action];
-  if ([v21 actionType] != 4)
+  action3 = [bundleCopy action];
+  if ([action3 actionType] != 4)
   {
     goto LABEL_17;
   }
 
-  v22 = [v3 concurrentMediaAction];
+  concurrentMediaAction = [bundleCopy concurrentMediaAction];
 
-  if (v22)
+  if (concurrentMediaAction)
   {
-    v21 = [v3 concurrentMediaAction];
-    [MOEventBundleMetaDataUtility setMetaDataForActivityConcurrentMediaAction:v21 metaData:v4];
+    action3 = [bundleCopy concurrentMediaAction];
+    [MOEventBundleMetaDataUtility setMetaDataForActivityConcurrentMediaAction:action3 metaData:v4];
 LABEL_17:
   }
 
-  if ([v3 bundleSubType] == 202 && objc_msgSend(v3, "summarizationGranularity") == 2 && (objc_msgSend(v3, "isAggregatedAndSuppressed") & 1) == 0)
+  if ([bundleCopy bundleSubType] == 202 && objc_msgSend(bundleCopy, "summarizationGranularity") == 2 && (objc_msgSend(bundleCopy, "isAggregatedAndSuppressed") & 1) == 0)
   {
     [v4 setObject:@"workout_summary" forKeyedSubscript:@"summary_type"];
   }
@@ -986,53 +986,53 @@ LABEL_17:
   v23 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
-    v24 = [v3 startDate];
-    v25 = [v4 allKeys];
+    startDate2 = [bundleCopy startDate];
+    allKeys = [v4 allKeys];
     v27 = 138412546;
-    v28 = v24;
+    v28 = startDate2;
     v29 = 2112;
-    v30 = v25;
+    v30 = allKeys;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "build meta for time context bundle, bundle startDate, %@, metaData, %@", &v27, 0x16u);
   }
 
   return v4;
 }
 
-+ (id)buildTimeContextTransitMetaDataForEventBundle:(id)a3
++ (id)buildTimeContextTransitMetaDataForEventBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = objc_opt_new();
-  v5 = [v3 action];
+  action = [bundleCopy action];
 
-  if (v5)
+  if (action)
   {
-    v6 = [v3 action];
-    [MOEventBundleMetaDataUtility setMetaDataForActivityAction:v6 metaData:v4];
+    action2 = [bundleCopy action];
+    [MOEventBundleMetaDataUtility setMetaDataForActivityAction:action2 metaData:v4];
   }
 
-  v7 = [v3 places];
+  places = [bundleCopy places];
 
-  if (v7)
+  if (places)
   {
-    v8 = [v3 places];
-    [MOEventBundleMetaDataUtility setMetaDataForPlaces:v8 metaData:v4];
+    places2 = [bundleCopy places];
+    [MOEventBundleMetaDataUtility setMetaDataForPlaces:places2 metaData:v4];
   }
 
-  v9 = [v3 time];
+  time = [bundleCopy time];
 
-  if (v9)
+  if (time)
   {
-    v10 = [v3 time];
-    v11 = [v3 startDate];
-    v12 = [v3 endDate];
-    [MOEventBundleMetaDataUtility setMetaDataForTime:v10 startDate:v11 endDate:v12 metaData:v4];
+    time2 = [bundleCopy time];
+    startDate = [bundleCopy startDate];
+    endDate = [bundleCopy endDate];
+    [MOEventBundleMetaDataUtility setMetaDataForTime:time2 startDate:startDate endDate:endDate metaData:v4];
   }
 
   [v4 setObject:@"transit_summary" forKeyedSubscript:@"summary_type"];
-  v13 = [v3 places];
-  v14 = [v13 firstObject];
+  places3 = [bundleCopy places];
+  firstObject = [places3 firstObject];
 
-  if (([v14 placeType] == 2 || objc_msgSend(v14, "placeType") == 3) && objc_msgSend(v14, "placeType") != 4 && objc_msgSend(v14, "placeType") != 5 && objc_msgSend(v14, "proposition") != 4)
+  if (([firstObject placeType] == 2 || objc_msgSend(firstObject, "placeType") == 3) && objc_msgSend(firstObject, "placeType") != 4 && objc_msgSend(firstObject, "placeType") != 5 && objc_msgSend(firstObject, "proposition") != 4)
   {
     [v4 setObject:@"YES" forKeyedSubscript:@"destination_format"];
   }
@@ -1040,37 +1040,37 @@ LABEL_17:
   return v4;
 }
 
-+ (id)buildTripMetaDataForEventBundle:(id)a3
++ (id)buildTripMetaDataForEventBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = objc_opt_new();
-  v5 = [v3 action];
-  v6 = [v5 actionType];
+  action = [bundleCopy action];
+  actionType = [action actionType];
 
-  if (v6 == 2)
+  if (actionType == 2)
   {
-    v7 = [v3 action];
-    [MOEventBundleMetaDataUtility setMetaDataForAction:v7 metaData:v4];
+    action2 = [bundleCopy action];
+    [MOEventBundleMetaDataUtility setMetaDataForAction:action2 metaData:v4];
   }
 
-  if ([v3 isSensitive])
+  if ([bundleCopy isSensitive])
   {
     [v4 setObject:@"sensitive" forKeyedSubscript:@"sensitive"];
   }
 
-  v8 = [v3 place];
+  place = [bundleCopy place];
 
-  if (v8)
+  if (place)
   {
-    v9 = [v3 place];
-    [MOEventBundleMetaDataUtility setMetaDataForPlace:v9 metaData:v4];
+    place2 = [bundleCopy place];
+    [MOEventBundleMetaDataUtility setMetaDataForPlace:place2 metaData:v4];
 
     v10 = [NSPredicate predicateWithFormat:@"%K IN %@", @"placeType", &off_10036D908];
-    v11 = [v3 places];
-    v12 = [v11 filteredArrayUsingPredicate:v10];
+    places = [bundleCopy places];
+    v12 = [places filteredArrayUsingPredicate:v10];
 
-    v13 = [v3 place];
-    [v13 placeNameConfidence];
+    place3 = [bundleCopy place];
+    [place3 placeNameConfidence];
     v15 = v14;
 
     if ([v12 count] >= 2)
@@ -1101,92 +1101,92 @@ LABEL_17:
     }
   }
 
-  v23 = [v3 time];
+  time = [bundleCopy time];
 
-  if (v23)
+  if (time)
   {
-    v24 = [v3 time];
-    v25 = [v3 startDate];
-    v26 = [v3 endDate];
-    [MOEventBundleMetaDataUtility setMetaDataForTime:v24 startDate:v25 endDate:v26 metaData:v4];
+    time2 = [bundleCopy time];
+    startDate = [bundleCopy startDate];
+    endDate = [bundleCopy endDate];
+    [MOEventBundleMetaDataUtility setMetaDataForTime:time2 startDate:startDate endDate:endDate metaData:v4];
   }
 
-  v27 = [v3 persons];
+  persons = [bundleCopy persons];
 
-  if (v27)
+  if (persons)
   {
-    v28 = [v3 persons];
-    v29 = [v3 suggestionID];
-    [MOEventBundleMetaDataUtility setMetaDataForPersons:v28 suggestionId:v29 metaData:v4];
+    persons2 = [bundleCopy persons];
+    suggestionID = [bundleCopy suggestionID];
+    [MOEventBundleMetaDataUtility setMetaDataForPersons:persons2 suggestionId:suggestionID metaData:v4];
   }
 
   return v4;
 }
 
-+ (id)buildClusteringMetaDataForEventBundle:(id)a3
++ (id)buildClusteringMetaDataForEventBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = objc_opt_new();
-  v5 = [v3 getSubTypeString];
-  [v4 setObject:v5 forKeyedSubscript:@"cluster_subtype"];
+  getSubTypeString = [bundleCopy getSubTypeString];
+  [v4 setObject:getSubTypeString forKeyedSubscript:@"cluster_subtype"];
 
-  v6 = [v3 action];
-  v7 = [v6 actionType];
+  action = [bundleCopy action];
+  actionType = [action actionType];
 
-  v8 = [v3 action];
-  if (v7 == 4)
+  action2 = [bundleCopy action];
+  if (actionType == 4)
   {
-    [MOEventBundleMetaDataUtility setMetaDataForActivityAction:v8 metaData:v4];
+    [MOEventBundleMetaDataUtility setMetaDataForActivityAction:action2 metaData:v4];
   }
 
   else
   {
-    [MOEventBundleMetaDataUtility setMetaDataForAction:v8 metaData:v4];
+    [MOEventBundleMetaDataUtility setMetaDataForAction:action2 metaData:v4];
   }
 
-  v9 = [v3 place];
+  place = [bundleCopy place];
 
-  if (v9)
+  if (place)
   {
-    v10 = [v3 place];
-    [MOEventBundleMetaDataUtility setMetaDataForPlace:v10 metaData:v4];
+    place2 = [bundleCopy place];
+    [MOEventBundleMetaDataUtility setMetaDataForPlace:place2 metaData:v4];
   }
 
-  v11 = [v3 time];
+  time = [bundleCopy time];
 
-  if (v11)
+  if (time)
   {
-    v12 = [v3 time];
-    v13 = [v3 startDate];
-    v14 = [v3 endDate];
-    [MOEventBundleMetaDataUtility setMetaDataForTime:v12 startDate:v13 endDate:v14 metaData:v4];
+    time2 = [bundleCopy time];
+    startDate = [bundleCopy startDate];
+    endDate = [bundleCopy endDate];
+    [MOEventBundleMetaDataUtility setMetaDataForTime:time2 startDate:startDate endDate:endDate metaData:v4];
   }
 
   return v4;
 }
 
-+ (id)buildThematicSummaryMetaDataForEventBundle:(id)a3
++ (id)buildThematicSummaryMetaDataForEventBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v6 = objc_opt_new();
-  v7 = [v5 getSubTypeString];
-  [v6 setObject:v7 forKeyedSubscript:@"thematic_summary_subtype"];
+  getSubTypeString = [bundleCopy getSubTypeString];
+  [v6 setObject:getSubTypeString forKeyedSubscript:@"thematic_summary_subtype"];
 
-  v8 = [v5 subBundleIDs];
-  v247 = v5;
-  if ([v8 count] < 3)
+  subBundleIDs = [bundleCopy subBundleIDs];
+  v247 = bundleCopy;
+  if ([subBundleIDs count] < 3)
   {
     goto LABEL_10;
   }
 
-  v9 = [v5 clusterMetadata];
-  v10 = [v9 phenotype];
-  v11 = [v10 objectForKeyedSubscript:@"timeTag"];
+  clusterMetadata = [bundleCopy clusterMetadata];
+  phenotype = [clusterMetadata phenotype];
+  v11 = [phenotype objectForKeyedSubscript:@"timeTag"];
   if (!v11)
   {
-    v248 = [v5 clusterMetadata];
-    v3 = [v248 phenotype];
-    v4 = [v3 objectForKeyedSubscript:@"timeString"];
+    clusterMetadata2 = [bundleCopy clusterMetadata];
+    phenotype2 = [clusterMetadata2 phenotype];
+    v4 = [phenotype2 objectForKeyedSubscript:@"timeString"];
     if (!v4)
     {
       v14 = 0;
@@ -1196,11 +1196,11 @@ LABEL_7:
     }
   }
 
-  v12 = [v5 clusterMetadata];
-  v13 = [v12 weekOfYearHistogram];
-  v14 = [v13 count] > 2;
+  clusterMetadata3 = [bundleCopy clusterMetadata];
+  weekOfYearHistogram = [clusterMetadata3 weekOfYearHistogram];
+  v14 = [weekOfYearHistogram count] > 2;
 
-  v5 = v247;
+  bundleCopy = v247;
   if (!v11)
   {
     goto LABEL_7;
@@ -1213,95 +1213,95 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  v8 = [NSNumber numberWithBool:1];
-  [v6 setObject:v8 forKeyedSubscript:@"is_routine"];
+  subBundleIDs = [NSNumber numberWithBool:1];
+  [v6 setObject:subBundleIDs forKeyedSubscript:@"is_routine"];
 LABEL_10:
 
 LABEL_11:
-  v15 = [v5 clusterMetadata];
-  v16 = [v15 phenotype];
-  v17 = [v16 objectForKeyedSubscript:@"holiday"];
+  clusterMetadata4 = [bundleCopy clusterMetadata];
+  phenotype3 = [clusterMetadata4 phenotype];
+  v17 = [phenotype3 objectForKeyedSubscript:@"holiday"];
   if (v17)
   {
     v18 = v17;
-    v19 = [v5 clusterMetadata];
-    v20 = [v19 phenotype];
-    v21 = [v20 objectForKeyedSubscript:@"holiday"];
+    clusterMetadata5 = [bundleCopy clusterMetadata];
+    phenotype4 = [clusterMetadata5 phenotype];
+    v21 = [phenotype4 objectForKeyedSubscript:@"holiday"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v5 = v247;
+    bundleCopy = v247;
     if ((isKindOfClass & 1) == 0)
     {
       goto LABEL_15;
     }
 
-    v15 = [v247 clusterMetadata];
-    v16 = [v15 phenotype];
-    v23 = [v16 objectForKeyedSubscript:@"holiday"];
+    clusterMetadata4 = [v247 clusterMetadata];
+    phenotype3 = [clusterMetadata4 phenotype];
+    v23 = [phenotype3 objectForKeyedSubscript:@"holiday"];
     [v6 setObject:v23 forKeyedSubscript:@"holiday_name"];
   }
 
 LABEL_15:
-  v24 = [v5 clusterMetadata];
-  v25 = [v24 phenotype];
-  v26 = [v25 objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
+  clusterMetadata6 = [bundleCopy clusterMetadata];
+  phenotype5 = [clusterMetadata6 phenotype];
+  v26 = [phenotype5 objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
   v27 = &GEOPOICategoryGasStation_ptr;
   objc_opt_class();
   v28 = objc_opt_isKindOfClass();
 
   if (v28)
   {
-    v29 = [v5 clusterMetadata];
-    v30 = [v29 phenotype];
-    v31 = [v30 objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
+    clusterMetadata7 = [bundleCopy clusterMetadata];
+    phenotype6 = [clusterMetadata7 phenotype];
+    v31 = [phenotype6 objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
     [v6 setObject:v31 forKeyedSubscript:@"photo_trait_subject"];
   }
 
-  v32 = [v5 clusterMetadata];
-  v33 = [v32 phenotype];
-  v34 = [v33 objectForKeyedSubscript:@"withFamily"];
+  clusterMetadata8 = [bundleCopy clusterMetadata];
+  phenotype7 = [clusterMetadata8 phenotype];
+  v34 = [phenotype7 objectForKeyedSubscript:@"withFamily"];
 
   if (v34)
   {
     [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:@"with_family"];
   }
 
-  v35 = [v5 clusterMetadata];
-  v36 = [v35 phenotype];
-  v37 = [v36 objectForKeyedSubscript:@"withFriend"];
+  clusterMetadata9 = [bundleCopy clusterMetadata];
+  phenotype8 = [clusterMetadata9 phenotype];
+  v37 = [phenotype8 objectForKeyedSubscript:@"withFriend"];
 
   if (v37)
   {
     [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:@"with_friends"];
   }
 
-  v38 = [v5 clusterMetadata];
-  v39 = [v38 phenotype];
-  v40 = [v39 objectForKeyedSubscript:@"withMyPet"];
+  clusterMetadata10 = [bundleCopy clusterMetadata];
+  phenotype9 = [clusterMetadata10 phenotype];
+  v40 = [phenotype9 objectForKeyedSubscript:@"withMyPet"];
 
   if (v40)
   {
     [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:@"with_pets"];
   }
 
-  v41 = [v5 clusterMetadata];
-  v42 = [v41 phenotypePersonUUIDs];
-  v43 = [v42 count];
+  clusterMetadata11 = [bundleCopy clusterMetadata];
+  phenotypePersonUUIDs = [clusterMetadata11 phenotypePersonUUIDs];
+  v43 = [phenotypePersonUUIDs count];
 
   v242 = v6;
   if (v43)
   {
-    v44 = [v5 clusterMetadata];
-    v45 = [v44 phenotype];
-    v46 = [v45 objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
+    clusterMetadata12 = [bundleCopy clusterMetadata];
+    phenotype10 = [clusterMetadata12 phenotype];
+    v46 = [phenotype10 objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
 
     if (v46)
     {
       v47 = objc_opt_new();
-      v48 = [v5 clusterMetadata];
-      v49 = [v48 contactNamesHistogram];
-      v50 = [v49 keysSortedByValueUsingComparator:&__block_literal_global_600];
+      clusterMetadata13 = [bundleCopy clusterMetadata];
+      contactNamesHistogram = [clusterMetadata13 contactNamesHistogram];
+      v50 = [contactNamesHistogram keysSortedByValueUsingComparator:&__block_literal_global_600];
 
       v260 = 0u;
       v261 = 0u;
@@ -1326,8 +1326,8 @@ LABEL_15:
             v255 = 0u;
             v256 = 0u;
             v257 = 0u;
-            v53 = [v5 persons];
-            v54 = [v53 countByEnumeratingWithState:&v254 objects:v268 count:16];
+            persons = [bundleCopy persons];
+            v54 = [persons countByEnumeratingWithState:&v254 objects:v268 count:16];
             if (v54)
             {
               v55 = v54;
@@ -1338,12 +1338,12 @@ LABEL_15:
                 {
                   if (*v255 != v56)
                   {
-                    objc_enumerationMutation(v53);
+                    objc_enumerationMutation(persons);
                   }
 
                   v58 = *(*(&v254 + 1) + 8 * j);
-                  v59 = [v58 name];
-                  v60 = [v59 isEqualToString:v52];
+                  name = [v58 name];
+                  v60 = [name isEqualToString:v52];
 
                   if (v60)
                   {
@@ -1351,13 +1351,13 @@ LABEL_15:
                   }
                 }
 
-                v55 = [v53 countByEnumeratingWithState:&v254 objects:v268 count:16];
+                v55 = [persons countByEnumeratingWithState:&v254 objects:v268 count:16];
               }
 
               while (v55);
             }
 
-            v5 = v247;
+            bundleCopy = v247;
           }
 
           v249 = [obj countByEnumeratingWithState:&v258 objects:v269 count:16];
@@ -1367,44 +1367,44 @@ LABEL_15:
       }
 
       v61 = v47;
-      v62 = [v5 suggestionID];
+      suggestionID = [bundleCopy suggestionID];
       v6 = v242;
-      [MOEventBundleMetaDataUtility setMetaDataForPersons:v61 suggestionId:v62 metaData:v242 sortBycomparePersons:0];
+      [MOEventBundleMetaDataUtility setMetaDataForPersons:v61 suggestionId:suggestionID metaData:v242 sortBycomparePersons:0];
 
       v27 = &GEOPOICategoryGasStation_ptr;
     }
 
     else
     {
-      v63 = [v5 clusterMetadata];
-      v64 = [v63 phenotypePersonUUIDs];
-      v65 = [NSPredicate predicateWithFormat:@"contactIdentifier IN %@", v64];
+      clusterMetadata14 = [bundleCopy clusterMetadata];
+      phenotypePersonUUIDs2 = [clusterMetadata14 phenotypePersonUUIDs];
+      v65 = [NSPredicate predicateWithFormat:@"contactIdentifier IN %@", phenotypePersonUUIDs2];
 
-      v66 = [v5 persons];
-      v61 = [v66 filteredArrayUsingPredicate:v65];
+      persons2 = [bundleCopy persons];
+      v61 = [persons2 filteredArrayUsingPredicate:v65];
 
-      v67 = [v5 suggestionID];
-      [MOEventBundleMetaDataUtility setMetaDataForPersons:v61 suggestionId:v67 metaData:v6 sortBycomparePersons:1];
+      suggestionID2 = [bundleCopy suggestionID];
+      [MOEventBundleMetaDataUtility setMetaDataForPersons:v61 suggestionId:suggestionID2 metaData:v6 sortBycomparePersons:1];
     }
 
     [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:@"with_contact"];
   }
 
-  v68 = [v5 clusterMetadata];
-  v69 = [v68 phenotype];
-  v70 = [v69 objectForKeyedSubscript:@"placeName"];
+  clusterMetadata15 = [bundleCopy clusterMetadata];
+  phenotype11 = [clusterMetadata15 phenotype];
+  v70 = [phenotype11 objectForKeyedSubscript:@"placeName"];
 
-  v71 = [v5 clusterMetadata];
-  v72 = [v71 phenotype];
-  v73 = [v72 objectForKeyedSubscript:@"combinedPlaceType"];
+  clusterMetadata16 = [bundleCopy clusterMetadata];
+  phenotype12 = [clusterMetadata16 phenotype];
+  v73 = [phenotype12 objectForKeyedSubscript:@"combinedPlaceType"];
 
-  v74 = [v5 clusterMetadata];
-  v75 = [v74 phenotype];
-  v76 = [v75 objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
+  clusterMetadata17 = [bundleCopy clusterMetadata];
+  phenotype13 = [clusterMetadata17 phenotype];
+  v76 = [phenotype13 objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
 
-  v77 = [v5 clusterMetadata];
-  v78 = [v77 phenotype];
-  v246 = [v78 objectForKeyedSubscript:@"enclosingAreaName"];
+  clusterMetadata18 = [bundleCopy clusterMetadata];
+  phenotype14 = [clusterMetadata18 phenotype];
+  v246 = [phenotype14 objectForKeyedSubscript:@"enclosingAreaName"];
 
   if ([v70 length])
   {
@@ -1450,8 +1450,8 @@ LABEL_52:
   [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:@"not_home"];
   if ([v70 length])
   {
-    v84 = [v70 lowercaseString];
-    v85 = [v84 isEqualToString:@"home"];
+    lowercaseString = [v70 lowercaseString];
+    v85 = [lowercaseString isEqualToString:@"home"];
 
     if (v85)
     {
@@ -1462,8 +1462,8 @@ LABEL_52:
 
   if ([v73 length])
   {
-    v86 = [v73 lowercaseString];
-    v87 = [v86 isEqualToString:@"home"];
+    lowercaseString2 = [v73 lowercaseString];
+    v87 = [lowercaseString2 isEqualToString:@"home"];
 
     if (v87)
     {
@@ -1504,14 +1504,14 @@ LABEL_67:
   obja = v70;
   if (v92 || ([v6 objectForKeyedSubscript:@"enclosing_area"], (v92 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v93 = v92;
+    places2 = v92;
 LABEL_70:
 
     goto LABEL_71;
   }
 
-  v116 = [v5 places];
-  v117 = [v116 count];
+  places = [bundleCopy places];
+  v117 = [places count];
 
   if (v117 >= 2)
   {
@@ -1520,10 +1520,10 @@ LABEL_70:
 
     if (!v118)
     {
-      v93 = [v5 places];
-      v119 = [v93 firstObject];
-      v120 = [v119 placeName];
-      [v6 setObject:v120 forKeyedSubscript:@"place"];
+      places2 = [bundleCopy places];
+      firstObject = [places2 firstObject];
+      placeName = [firstObject placeName];
+      [v6 setObject:placeName forKeyedSubscript:@"place"];
 
       goto LABEL_70;
     }
@@ -1531,17 +1531,17 @@ LABEL_70:
 
 LABEL_71:
   v241 = v73;
-  v94 = [v5 clusterMetadata];
-  v95 = [v94 phenotype];
-  v96 = [v95 objectForKeyedSubscript:@"secondLevelActivityType"];
+  clusterMetadata19 = [bundleCopy clusterMetadata];
+  phenotype15 = [clusterMetadata19 phenotype];
+  v96 = [phenotype15 objectForKeyedSubscript:@"secondLevelActivityType"];
 
-  v97 = [v5 clusterMetadata];
-  v98 = [v97 phenotype];
-  v99 = v98;
+  clusterMetadata20 = [bundleCopy clusterMetadata];
+  phenotype16 = [clusterMetadata20 phenotype];
+  v99 = phenotype16;
   v240 = v76;
   if (v96)
   {
-    v100 = [v98 objectForKeyedSubscript:@"secondLevelActivityType"];
+    v100 = [phenotype16 objectForKeyedSubscript:@"secondLevelActivityType"];
 
     v101 = v247;
     if ([v100 isEqualToString:@"eating out"])
@@ -1550,13 +1550,13 @@ LABEL_71:
 
       if (v102)
       {
-        v103 = [@"dining" lowercaseString];
-        v104 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v103];
+        lowercaseString3 = [@"dining" lowercaseString];
+        v104 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:lowercaseString3];
         [v6 setObject:v104 forKeyedSubscript:@"action"];
 
         v105 = objc_opt_class();
-        v106 = [@"dining" lowercaseString];
-        v107 = [v105 keywordFromString:v106];
+        lowercaseString4 = [@"dining" lowercaseString];
+        v107 = [v105 keywordFromString:lowercaseString4];
         [v6 setObject:v107 forKeyedSubscript:@"action_type"];
 
         v108 = @"prompt_type";
@@ -1566,13 +1566,13 @@ LABEL_71:
 
       else
       {
-        v121 = [@"eating out" lowercaseString];
-        v122 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v121];
+        lowercaseString5 = [@"eating out" lowercaseString];
+        v122 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:lowercaseString5];
         [v6 setObject:v122 forKeyedSubscript:@"action"];
 
         v123 = objc_opt_class();
-        v124 = [@"eating out" lowercaseString];
-        v125 = [v123 keywordFromString:v124];
+        lowercaseString6 = [@"eating out" lowercaseString];
+        v125 = [v123 keywordFromString:lowercaseString6];
         [v6 setObject:v125 forKeyedSubscript:@"action_type"];
 
         [v6 setObject:@"dining" forKeyedSubscript:@"prompt_type"];
@@ -1586,13 +1586,13 @@ LABEL_71:
 
     if ([v100 isEqualToString:@"shopping"])
     {
-      v126 = [@"shopping" lowercaseString];
-      v127 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v126];
+      lowercaseString7 = [@"shopping" lowercaseString];
+      v127 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:lowercaseString7];
       [v6 setObject:v127 forKeyedSubscript:@"action"];
 
       v128 = objc_opt_class();
-      v129 = [@"shopping" lowercaseString];
-      v130 = [v128 keywordFromString:v129];
+      lowercaseString8 = [@"shopping" lowercaseString];
+      v130 = [v128 keywordFromString:lowercaseString8];
       [v6 setObject:v130 forKeyedSubscript:@"action_type"];
 
       v131 = v6;
@@ -1613,36 +1613,36 @@ LABEL_95:
       goto LABEL_91;
     }
 
-    v135 = [v247 action];
-    v136 = [v135 actionType];
+    action = [v247 action];
+    actionType = [action actionType];
 
-    if (v136 != 4)
+    if (actionType != 4)
     {
-      v216 = [v247 action];
-      v217 = [v216 actionName];
-      if ([v217 isEqualToString:@"Time at Home"])
+      action2 = [v247 action];
+      actionName = [action2 actionName];
+      if ([actionName isEqualToString:@"Time at Home"])
       {
       }
 
       else
       {
-        v224 = [v247 action];
-        v225 = [v224 actionName];
-        v226 = [v225 isEqualToString:@"visit"];
+        action3 = [v247 action];
+        actionName2 = [action3 actionName];
+        v226 = [actionName2 isEqualToString:@"visit"];
 
         if ((v226 & 1) == 0)
         {
-          v227 = [v247 action];
-          v228 = [v227 actionName];
-          v229 = [v228 lowercaseString];
-          v230 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v229];
+          action4 = [v247 action];
+          actionName3 = [action4 actionName];
+          lowercaseString9 = [actionName3 lowercaseString];
+          v230 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:lowercaseString9];
           [v6 setObject:v230 forKeyedSubscript:@"action"];
 
           v231 = objc_opt_class();
-          v232 = [v247 action];
-          v233 = [v232 actionName];
-          v234 = [v233 lowercaseString];
-          v235 = [v231 keywordFromString:v234];
+          action5 = [v247 action];
+          actionName4 = [action5 actionName];
+          lowercaseString10 = [actionName4 lowercaseString];
+          v235 = [v231 keywordFromString:lowercaseString10];
           [v6 setObject:v235 forKeyedSubscript:@"action_type"];
         }
       }
@@ -1651,9 +1651,9 @@ LABEL_95:
       goto LABEL_96;
     }
 
-    v137 = [v247 action];
-    v138 = [v137 actionName];
-    [MOEventBundleMetaDataUtility setActivityNameForThematicSummaryFromActionName:v138 metaData:v6 keyword:@"action" keywordType:@"action_type"];
+    action6 = [v247 action];
+    actionName5 = [action6 actionName];
+    [MOEventBundleMetaDataUtility setActivityNameForThematicSummaryFromActionName:actionName5 metaData:v6 keyword:@"action" keywordType:@"action_type"];
 
 LABEL_94:
     [v6 setObject:@"workouts" forKeyedSubscript:@"diversity_key"];
@@ -1662,7 +1662,7 @@ LABEL_94:
     goto LABEL_95;
   }
 
-  v111 = [v98 objectForKeyedSubscript:@"topLevelActivityType"];
+  v111 = [phenotype16 objectForKeyedSubscript:@"topLevelActivityType"];
 
   v101 = v247;
   if (!v111)
@@ -1670,9 +1670,9 @@ LABEL_94:
     goto LABEL_97;
   }
 
-  v112 = [v247 clusterMetadata];
-  v113 = [v112 phenotype];
-  v100 = [v113 objectForKeyedSubscript:@"topLevelActivityType"];
+  clusterMetadata21 = [v247 clusterMetadata];
+  phenotype17 = [clusterMetadata21 phenotype];
+  v100 = [phenotype17 objectForKeyedSubscript:@"topLevelActivityType"];
 
   if ([v100 isEqualToString:@"contact"])
   {
@@ -1697,33 +1697,33 @@ LABEL_94:
 LABEL_96:
 
 LABEL_97:
-  v139 = [v101 clusterMetadata];
-  v140 = [v139 phenotype];
-  v141 = [v140 objectForKeyedSubscript:@"activityTypeFromPhotoTraits"];
+  clusterMetadata22 = [v101 clusterMetadata];
+  phenotype18 = [clusterMetadata22 phenotype];
+  v141 = [phenotype18 objectForKeyedSubscript:@"activityTypeFromPhotoTraits"];
   v142 = v27[199];
   objc_opt_class();
   v143 = objc_opt_isKindOfClass();
 
   if (v143)
   {
-    v144 = [v101 clusterMetadata];
-    v145 = [v144 phenotype];
-    v146 = [v145 objectForKeyedSubscript:@"topLevelActivityType"];
+    clusterMetadata23 = [v101 clusterMetadata];
+    phenotype19 = [clusterMetadata23 phenotype];
+    v146 = [phenotype19 objectForKeyedSubscript:@"topLevelActivityType"];
 
     v147 = [v6 objectForKeyedSubscript:@"at_home"];
-    v148 = [v147 BOOLValue];
+    bOOLValue = [v147 BOOLValue];
 
-    v149 = [objc_opt_class() activityPhotoTraitLabelMetadataForThematicSummary:v146 AtHome:v148];
+    v149 = [objc_opt_class() activityPhotoTraitLabelMetadataForThematicSummary:v146 AtHome:bOOLValue];
 
     if ([v149 length])
     {
-      v150 = [v149 lowercaseString];
-      v151 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v150];
+      lowercaseString11 = [v149 lowercaseString];
+      v151 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:lowercaseString11];
       [v6 setObject:v151 forKeyedSubscript:@"action"];
 
       v152 = objc_opt_class();
-      v153 = [v149 lowercaseString];
-      v154 = [v152 keywordFromString:v153];
+      lowercaseString12 = [v149 lowercaseString];
+      v154 = [v152 keywordFromString:lowercaseString12];
       [v6 setObject:v154 forKeyedSubscript:@"action_type"];
     }
   }
@@ -1741,8 +1741,8 @@ LABEL_97:
       v253 = 0u;
       v250 = 0u;
       v251 = 0u;
-      v194 = [v101 actions];
-      v195 = [v194 countByEnumeratingWithState:&v250 objects:v267 count:16];
+      actions = [v101 actions];
+      v195 = [actions countByEnumeratingWithState:&v250 objects:v267 count:16];
       if (v195)
       {
         v196 = v195;
@@ -1754,7 +1754,7 @@ LABEL_97:
           {
             if (*v251 != v198)
             {
-              objc_enumerationMutation(v194);
+              objc_enumerationMutation(actions);
             }
 
             if ([*(*(&v250 + 1) + 8 * k) actionType] == 4)
@@ -1763,7 +1763,7 @@ LABEL_97:
             }
           }
 
-          v196 = [v194 countByEnumeratingWithState:&v250 objects:v267 count:16];
+          v196 = [actions countByEnumeratingWithState:&v250 objects:v267 count:16];
         }
 
         while (v196);
@@ -1781,18 +1781,18 @@ LABEL_97:
     }
   }
 
-  v158 = [v101 startDate];
-  if (v158)
+  startDate = [v101 startDate];
+  if (startDate)
   {
-    v159 = v158;
-    v160 = [v101 endDate];
+    v159 = startDate;
+    endDate = [v101 endDate];
 
-    if (v160)
+    if (endDate)
     {
       v161 = +[NSCalendar currentCalendar];
-      v162 = [v101 startDate];
-      v163 = [v101 endDate];
-      v164 = [v161 isDate:v162 inSameDayAsDate:v163];
+      startDate2 = [v101 startDate];
+      endDate2 = [v101 endDate];
+      v164 = [v161 isDate:startDate2 inSameDayAsDate:endDate2];
 
       if (v164)
       {
@@ -1803,40 +1803,40 @@ LABEL_97:
     }
   }
 
-  v165 = [v101 clusterMetadata];
-  v166 = [v165 phenotype];
-  v167 = [v166 objectForKeyedSubscript:@"timeTag"];
+  clusterMetadata24 = [v101 clusterMetadata];
+  phenotype20 = [clusterMetadata24 phenotype];
+  v167 = [phenotype20 objectForKeyedSubscript:@"timeTag"];
   v168 = v101;
   if (v167)
   {
     v169 = v167;
-    v170 = [v101 clusterMetadata];
-    v171 = [v170 phenotype];
-    v172 = [v171 objectForKeyedSubscript:@"timeString"];
+    clusterMetadata25 = [v101 clusterMetadata];
+    phenotype21 = [clusterMetadata25 phenotype];
+    v172 = [phenotype21 objectForKeyedSubscript:@"timeString"];
 
     if (v172)
     {
-      v173 = [v168 clusterMetadata];
-      v174 = [v173 phenotype];
-      v175 = [v174 objectForKeyedSubscript:@"timeString"];
+      clusterMetadata26 = [v168 clusterMetadata];
+      phenotype22 = [clusterMetadata26 phenotype];
+      v175 = [phenotype22 objectForKeyedSubscript:@"timeString"];
 
-      v176 = [v168 clusterMetadata];
-      v177 = [v176 phenotype];
-      v178 = [v177 objectForKeyedSubscript:@"timeTag"];
+      clusterMetadata27 = [v168 clusterMetadata];
+      phenotype23 = [clusterMetadata27 phenotype];
+      v178 = [phenotype23 objectForKeyedSubscript:@"timeTag"];
 
       v179 = [MOTime timeStringSingularToPluralForm:v178];
-      v180 = [v178 capitalizedString];
-      v181 = [NSString stringWithFormat:@"%@ %@", v175, v180];
+      capitalizedString = [v178 capitalizedString];
+      v180 = [NSString stringWithFormat:@"%@ %@", v175, capitalizedString];
 
-      v182 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v181];
+      v182 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v180];
       [v6 setObject:v182 forKeyedSubscript:@"time"];
 
       if (v179)
       {
-        v183 = [v179 capitalizedString];
-        v184 = [NSString stringWithFormat:@"%@ %@", v175, v183];
+        capitalizedString2 = [v179 capitalizedString];
+        v183 = [NSString stringWithFormat:@"%@ %@", v175, capitalizedString2];
 
-        v185 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v184];
+        v185 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v183];
         [v6 setObject:v185 forKeyedSubscript:@"times"];
       }
 
@@ -1849,16 +1849,16 @@ LABEL_97:
   {
   }
 
-  v187 = [v168 clusterMetadata];
-  v188 = [v187 phenotype];
-  v189 = [v188 objectForKeyedSubscript:@"timeTag"];
+  clusterMetadata28 = [v168 clusterMetadata];
+  phenotype24 = [clusterMetadata28 phenotype];
+  v189 = [phenotype24 objectForKeyedSubscript:@"timeTag"];
 
-  v190 = [v168 clusterMetadata];
-  v191 = [v190 phenotype];
-  v192 = v191;
+  clusterMetadata29 = [v168 clusterMetadata];
+  phenotype25 = [clusterMetadata29 phenotype];
+  v192 = phenotype25;
   if (v189)
   {
-    v175 = [v191 objectForKeyedSubscript:@"timeTag"];
+    v175 = [phenotype25 objectForKeyedSubscript:@"timeTag"];
 
     v178 = [MOTime timeStringSingularToPluralForm:v175];
     v193 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v175];
@@ -1877,7 +1877,7 @@ LABEL_97:
     goto LABEL_131;
   }
 
-  v200 = [v191 objectForKeyedSubscript:@"timeString"];
+  v200 = [phenotype25 objectForKeyedSubscript:@"timeString"];
 
   v168 = v247;
   v186 = obja;
@@ -1886,9 +1886,9 @@ LABEL_97:
     goto LABEL_133;
   }
 
-  v201 = [v247 clusterMetadata];
-  v202 = [v201 phenotype];
-  v175 = [v202 objectForKeyedSubscript:@"timeString"];
+  clusterMetadata30 = [v247 clusterMetadata];
+  phenotype26 = [clusterMetadata30 phenotype];
+  v175 = [phenotype26 objectForKeyedSubscript:@"timeString"];
 
   v178 = [MOTime timeStringSingularToPluralForm:v175];
   v203 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v175];
@@ -2037,10 +2037,10 @@ LABEL_159:
   v219 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
   if (os_log_type_enabled(v219, OS_LOG_TYPE_INFO))
   {
-    v220 = [v168 clusterMetadata];
-    v221 = [v220 phenotype];
+    clusterMetadata31 = [v168 clusterMetadata];
+    phenotype27 = [clusterMetadata31 phenotype];
     *buf = 138478083;
-    v263 = v221;
+    v263 = phenotype27;
     v264 = 2112;
     v265 = v242;
     v6 = v242;
@@ -2070,22 +2070,22 @@ int64_t __75__MOEventBundleMetaDataUtility_buildThematicSummaryMetaDataForEventB
   return v7;
 }
 
-+ (id)buildStateOfMindMetaDataForEventBundle:(id)a3
++ (id)buildStateOfMindMetaDataForEventBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   +[MOEventBundleMetaDataUtility defineClassCollections];
   v4 = objc_opt_new();
-  v5 = [v3 time];
+  time = [bundleCopy time];
 
-  if (v5)
+  if (time)
   {
-    v6 = [v3 time];
-    v7 = [v3 startDate];
-    v8 = [v3 endDate];
-    [MOEventBundleMetaDataUtility setMetaDataForTime:v6 startDate:v7 endDate:v8 metaData:v4];
+    time2 = [bundleCopy time];
+    startDate = [bundleCopy startDate];
+    endDate = [bundleCopy endDate];
+    [MOEventBundleMetaDataUtility setMetaDataForTime:time2 startDate:startDate endDate:endDate metaData:v4];
   }
 
-  if ([v3 bundleSubType] == 802)
+  if ([bundleCopy bundleSubType] == 802)
   {
     v9 = @"momentary_emotion";
   }
@@ -2096,31 +2096,31 @@ int64_t __75__MOEventBundleMetaDataUtility_buildThematicSummaryMetaDataForEventB
   }
 
   [v4 setObject:v9 forKeyedSubscript:@"reflective_interval"];
-  v10 = [v3 action];
-  v11 = [v10 actionSubtype];
+  action = [bundleCopy action];
+  actionSubtype = [action actionSubtype];
 
-  v12 = v11 - 1;
-  if ((v11 - 1) <= 6)
+  v12 = actionSubtype - 1;
+  if ((actionSubtype - 1) <= 6)
   {
     v13 = *(&off_100336098 + v12);
     [v4 setObject:*(&off_100336060 + v12) forKeyedSubscript:@"valence_classification_granular"];
     [v4 setObject:v13 forKeyedSubscript:@"valence_classification"];
   }
 
-  v14 = [v3 action];
-  v15 = [v14 actionMetaData];
-  v16 = [v15 objectForKeyedSubscript:@"MediaActionMetaDataAppName"];
+  action2 = [bundleCopy action];
+  actionMetaData = [action2 actionMetaData];
+  v16 = [actionMetaData objectForKeyedSubscript:@"MediaActionMetaDataAppName"];
 
   if (v16)
   {
-    v17 = [v3 action];
-    v18 = [v17 actionMetaData];
-    v19 = [v18 objectForKeyedSubscript:@"MediaActionMetaDataAppName"];
+    action3 = [bundleCopy action];
+    actionMetaData2 = [action3 actionMetaData];
+    v19 = [actionMetaData2 objectForKeyedSubscript:@"MediaActionMetaDataAppName"];
     [v4 setObject:v19 forKeyedSubscript:@"state_of_mind_app_name"];
   }
 
-  v20 = [v3 metaDataForRank];
-  v21 = [v20 objectForKey:@"StateOfMindLabels"];
+  metaDataForRank = [bundleCopy metaDataForRank];
+  v21 = [metaDataForRank objectForKey:@"StateOfMindLabels"];
 
   v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v21 count]);
   [v4 setObject:v22 forKeyedSubscript:@"state_of_mind_label_count"];
@@ -2131,8 +2131,8 @@ int64_t __75__MOEventBundleMetaDataUtility_buildThematicSummaryMetaDataForEventB
     [v23 intValue];
 
     v24 = HKUILocalizedStringForStateOfMindLabel();
-    v25 = [v24 lowercaseString];
-    v26 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v25];
+    lowercaseString = [v24 lowercaseString];
+    v26 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:lowercaseString];
     [v4 setObject:v26 forKeyedSubscript:@"state_of_mind_label_1"];
   }
 
@@ -2142,8 +2142,8 @@ int64_t __75__MOEventBundleMetaDataUtility_buildThematicSummaryMetaDataForEventB
     [v27 intValue];
 
     v28 = HKUILocalizedStringForStateOfMindLabel();
-    v29 = [v28 lowercaseString];
-    v30 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v29];
+    lowercaseString2 = [v28 lowercaseString];
+    v30 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:lowercaseString2];
     [v4 setObject:v30 forKeyedSubscript:@"state_of_mind_label_2"];
   }
 
@@ -2168,8 +2168,8 @@ int64_t __75__MOEventBundleMetaDataUtility_buildThematicSummaryMetaDataForEventB
         }
 
         v36 = *(*(&v51 + 1) + 8 * i);
-        v37 = [v3 action];
-        if ([v37 actionSubtype] == 2)
+        action4 = [bundleCopy action];
+        if ([action4 actionSubtype] == 2)
         {
           v38 = [noSavoringPromptLabels containsObject:v36];
 
@@ -2181,8 +2181,8 @@ int64_t __75__MOEventBundleMetaDataUtility_buildThematicSummaryMetaDataForEventB
 
         else
         {
-          v39 = [v3 action];
-          if ([v39 actionSubtype] == 3)
+          action5 = [bundleCopy action];
+          if ([action5 actionSubtype] == 3)
           {
             v40 = [noSavoringPromptLabels containsObject:v36];
 
@@ -2194,8 +2194,8 @@ int64_t __75__MOEventBundleMetaDataUtility_buildThematicSummaryMetaDataForEventB
 
           else
           {
-            v41 = [v3 action];
-            if ([v41 actionSubtype] == 4)
+            action6 = [bundleCopy action];
+            if ([action6 actionSubtype] == 4)
             {
               v42 = [noSavoringPromptLabels containsObject:v36];
 
@@ -2212,8 +2212,8 @@ LABEL_27:
         }
 
 LABEL_29:
-        v43 = [v3 action];
-        if ([v43 actionSubtype] == 5)
+        action7 = [bundleCopy action];
+        if ([action7 actionSubtype] == 5)
         {
           v44 = [noReappraisalPromptLabels containsObject:v36];
 
@@ -2225,8 +2225,8 @@ LABEL_29:
 
         else
         {
-          v45 = [v3 action];
-          if ([v45 actionSubtype] == 6)
+          action8 = [bundleCopy action];
+          if ([action8 actionSubtype] == 6)
           {
             v46 = [noReappraisalPromptLabels containsObject:v36];
 
@@ -2238,8 +2238,8 @@ LABEL_29:
 
           else
           {
-            v47 = [v3 action];
-            if ([v47 actionSubtype] == 7)
+            action9 = [bundleCopy action];
+            if ([action9 actionSubtype] == 7)
             {
               v48 = [noReappraisalPromptLabels containsObject:v36];
 
@@ -2265,44 +2265,44 @@ LABEL_37:
   return v31;
 }
 
-+ (void)setMetaDataForAction:(id)a3 metaData:(id)a4
++ (void)setMetaDataForAction:(id)action metaData:(id)data
 {
-  if (a3)
+  if (action)
   {
-    v5 = a4;
-    v6 = a3;
-    v7 = [v6 actionName];
-    v8 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v7];
-    [v5 setObject:v8 forKeyedSubscript:@"action"];
+    dataCopy = data;
+    actionCopy = action;
+    actionName = [actionCopy actionName];
+    v8 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:actionName];
+    [dataCopy setObject:v8 forKeyedSubscript:@"action"];
 
     v9 = objc_opt_class();
-    v11 = [v6 actionName];
+    actionName2 = [actionCopy actionName];
 
-    v10 = [v9 keywordFromString:v11];
-    [v5 setObject:v10 forKeyedSubscript:@"action_type"];
+    v10 = [v9 keywordFromString:actionName2];
+    [dataCopy setObject:v10 forKeyedSubscript:@"action_type"];
   }
 }
 
-+ (void)setMetaDataForDiningAction:(id)a3 metaData:(id)a4 startDate:(id)a5 endDate:(id)a6
++ (void)setMetaDataForDiningAction:(id)action metaData:(id)data startDate:(id)date endDate:(id)endDate
 {
-  v21 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (v21)
+  actionCopy = action;
+  dataCopy = data;
+  dateCopy = date;
+  endDateCopy = endDate;
+  if (actionCopy)
   {
-    v12 = [v21 actionName];
-    v13 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v12];
-    [v9 setObject:v13 forKeyedSubscript:@"action"];
+    actionName = [actionCopy actionName];
+    v13 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:actionName];
+    [dataCopy setObject:v13 forKeyedSubscript:@"action"];
 
     v14 = objc_opt_class();
-    v15 = [v21 actionName];
-    v16 = [v14 keywordFromString:v15];
-    [v9 setObject:v16 forKeyedSubscript:@"action_type"];
+    actionName2 = [actionCopy actionName];
+    v16 = [v14 keywordFromString:actionName2];
+    [dataCopy setObject:v16 forKeyedSubscript:@"action_type"];
 
-    if ([v21 actionType] == 10)
+    if ([actionCopy actionType] == 10)
     {
-      v17 = [MOTime mealtagFromStartDate:v10 endDate:v11];
+      v17 = [MOTime mealtagFromStartDate:dateCopy endDate:endDateCopy];
       if (v17 - 2000 <= 2)
       {
         v18 = [MOTime timeStringFromTimeTag:v17];
@@ -2310,18 +2310,18 @@ LABEL_37:
         {
           v19 = [NSString stringWithFormat:@"%@_%@", @"meal_type", v18];
           v20 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v18];
-          [MOEventBundleMetaDataUtility setMetaDataWithKeyword:@"meal_type" extendedKeyword:v19 value:v20 metaData:v9];
+          [MOEventBundleMetaDataUtility setMetaDataWithKeyword:@"meal_type" extendedKeyword:v19 value:v20 metaData:dataCopy];
         }
       }
     }
   }
 }
 
-+ (void)setMetaDataForActions:(id)a3 metaData:(id)a4
++ (void)setMetaDataForActions:(id)actions metaData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && [v5 count])
+  actionsCopy = actions;
+  dataCopy = data;
+  if (actionsCopy && [actionsCopy count])
   {
     v7 = objc_opt_new();
     v47 = objc_opt_new();
@@ -2329,8 +2329,8 @@ LABEL_37:
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v41 = v5;
-    obj = v5;
+    v41 = actionsCopy;
+    obj = actionsCopy;
     v48 = [obj countByEnumeratingWithState:&v50 objects:v54 count:16];
     if (v48)
     {
@@ -2355,20 +2355,20 @@ LABEL_37:
           v13 = [NSString stringWithFormat:@"%@_%d", @"action_type", v8];
           if ([v11 actionType] == 4)
           {
-            v14 = [v11 actionName];
-            [MOEventBundleMetaDataUtility setActivityNameFromActionName:v14 metaData:v6 keyword:v12 keywordType:v13];
+            actionName = [v11 actionName];
+            [MOEventBundleMetaDataUtility setActivityNameFromActionName:actionName metaData:dataCopy keyword:v12 keywordType:v13];
           }
 
           else
           {
-            v15 = [v11 actionName];
-            v16 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v15];
-            [v6 setObject:v16 forKeyedSubscript:v12];
+            actionName2 = [v11 actionName];
+            v16 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:actionName2];
+            [dataCopy setObject:v16 forKeyedSubscript:v12];
 
             v17 = objc_opt_class();
-            v14 = [v11 actionName];
-            v18 = [v17 keywordFromString:v14];
-            [v6 setObject:v18 forKeyedSubscript:v13];
+            actionName = [v11 actionName];
+            v18 = [v17 keywordFromString:actionName];
+            [dataCopy setObject:v18 forKeyedSubscript:v13];
           }
 
           if ([v11 actionType] == 4)
@@ -2393,37 +2393,37 @@ LABEL_37:
           }
 
           HIDWORD(v49) = v20;
-          v21 = [v11 actionName];
-          v22 = [v9 containsObject:v21];
+          actionName3 = [v11 actionName];
+          v22 = [v9 containsObject:actionName3];
 
           if ((v22 & 1) == 0)
           {
-            v23 = v6;
-            v24 = [v11 actionName];
-            [v9 addObject:v24];
+            v23 = dataCopy;
+            actionName4 = [v11 actionName];
+            [v9 addObject:actionName4];
 
             v25 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%d", @"unique_action_", [v9 count]);
             v26 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@_%d", @"unique_action_type", [v9 count]);
             if ([v11 actionType] == 4)
             {
-              v27 = [v11 actionName];
-              [MOEventBundleMetaDataUtility setActivityNameFromActionName:v27 metaData:v6 keyword:v25 keywordType:v26];
+              actionName5 = [v11 actionName];
+              [MOEventBundleMetaDataUtility setActivityNameFromActionName:actionName5 metaData:dataCopy keyword:v25 keywordType:v26];
 
               ++v43;
             }
 
             else
             {
-              v28 = [v11 actionName];
-              v29 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v28];
+              actionName6 = [v11 actionName];
+              v29 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:actionName6];
               [v23 setObject:v29 forKeyedSubscript:v25];
 
               v30 = objc_opt_class();
-              v31 = [v11 actionName];
-              v32 = [v30 keywordFromString:v31];
+              actionName7 = [v11 actionName];
+              v32 = [v30 keywordFromString:actionName7];
               [v23 setObject:v32 forKeyedSubscript:v26];
 
-              v6 = v23;
+              dataCopy = v23;
             }
 
             v7 = v42;
@@ -2459,32 +2459,32 @@ LABEL_37:
     }
 
     v36 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [obj count]);
-    [v6 setObject:v36 forKeyedSubscript:@"action_count"];
+    [dataCopy setObject:v36 forKeyedSubscript:@"action_count"];
 
     v37 = [NSNumber numberWithInt:v49];
-    [v6 setObject:v37 forKeyedSubscript:@"activity_count"];
+    [dataCopy setObject:v37 forKeyedSubscript:@"activity_count"];
 
     v38 = [NSNumber numberWithInt:v46];
-    [v6 setObject:v38 forKeyedSubscript:@"unique_action_type_count"];
+    [dataCopy setObject:v38 forKeyedSubscript:@"unique_action_type_count"];
 
     v39 = [NSNumber numberWithInt:v43];
-    [v6 setObject:v39 forKeyedSubscript:@"unique_activity_count"];
+    [dataCopy setObject:v39 forKeyedSubscript:@"unique_activity_count"];
 
     v40 = [NSNumber numberWithInt:HIDWORD(v49)];
-    [v6 setObject:v40 forKeyedSubscript:@"visit_count"];
+    [dataCopy setObject:v40 forKeyedSubscript:@"visit_count"];
 
-    v5 = v41;
+    actionsCopy = v41;
   }
 }
 
-+ (void)setActivityNameFromActionName:(id)a3 metaData:(id)a4 keyword:(id)a5 keywordType:(id)a6
++ (void)setActivityNameFromActionName:(id)name metaData:(id)data keyword:(id)keyword keywordType:(id)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [a5 lowercaseString];
-  v13 = [MOEventBundleLabelLocalizer _Moments_CapitalizedStringForKey:v12];
-  v27 = v9;
+  nameCopy = name;
+  dataCopy = data;
+  typeCopy = type;
+  lowercaseString = [keyword lowercaseString];
+  v13 = [MOEventBundleLabelLocalizer _Moments_CapitalizedStringForKey:lowercaseString];
+  v27 = nameCopy;
   v14 = [HKWorkout _workoutActivityTypeFromString:v27];
   IsValid = _HKWorkoutActivityTypeIsValid();
   v16 = v27;
@@ -2607,32 +2607,32 @@ LABEL_28:
 
   else if (IsValid)
   {
-    [v10 setObject:v17 forKeyedSubscript:{v12, v25}];
+    [dataCopy setObject:v17 forKeyedSubscript:{lowercaseString, v25}];
     goto LABEL_35;
   }
 
   v22 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v17, v25];
-  [v10 setObject:v22 forKeyedSubscript:v12];
+  [dataCopy setObject:v22 forKeyedSubscript:lowercaseString];
 
   if ((v18 & 1) == 0)
   {
     v23 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v26];
-    [v10 setObject:v23 forKeyedSubscript:v13];
+    [dataCopy setObject:v23 forKeyedSubscript:v13];
   }
 
 LABEL_35:
   v24 = [objc_opt_class() keywordFromString:v17];
-  [v10 setObject:v24 forKeyedSubscript:v11];
+  [dataCopy setObject:v24 forKeyedSubscript:typeCopy];
 }
 
-+ (void)setActivityNameForThematicSummaryFromActionName:(id)a3 metaData:(id)a4 keyword:(id)a5 keywordType:(id)a6
++ (void)setActivityNameForThematicSummaryFromActionName:(id)name metaData:(id)data keyword:(id)keyword keywordType:(id)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [a5 lowercaseString];
-  v13 = [MOEventBundleLabelLocalizer _Moments_CapitalizedStringForKey:v12];
-  v24 = v9;
+  nameCopy = name;
+  dataCopy = data;
+  typeCopy = type;
+  lowercaseString = [keyword lowercaseString];
+  v13 = [MOEventBundleLabelLocalizer _Moments_CapitalizedStringForKey:lowercaseString];
+  v24 = nameCopy;
   v14 = [HKWorkout _workoutActivityTypeFromString:v24];
   v15 = v24;
   if (v14 <= 0x4F)
@@ -2714,10 +2714,10 @@ LABEL_23:
 
       if (IsValid)
       {
-        [v10 setObject:v15 forKeyedSubscript:v12];
+        [dataCopy setObject:v15 forKeyedSubscript:lowercaseString];
 LABEL_26:
         v23 = [objc_opt_class() keywordFromString:v15];
-        [v10 setObject:v23 forKeyedSubscript:v11];
+        [dataCopy setObject:v23 forKeyedSubscript:typeCopy];
 
         goto LABEL_27;
       }
@@ -2726,12 +2726,12 @@ LABEL_26:
       v19 = 1;
 LABEL_24:
       v21 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v15];
-      [v10 setObject:v21 forKeyedSubscript:v12];
+      [dataCopy setObject:v21 forKeyedSubscript:lowercaseString];
 
       if ((v19 & 1) == 0)
       {
         v22 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v18];
-        [v10 setObject:v22 forKeyedSubscript:v13];
+        [dataCopy setObject:v22 forKeyedSubscript:v13];
       }
 
       goto LABEL_26;
@@ -2741,46 +2741,46 @@ LABEL_24:
 LABEL_27:
 }
 
-+ (void)setMetaDataForActivityAction:(id)a3 metaData:(id)a4
++ (void)setMetaDataForActivityAction:(id)action metaData:(id)data
 {
-  v12 = a3;
-  v5 = a4;
-  if (v12)
+  actionCopy = action;
+  dataCopy = data;
+  if (actionCopy)
   {
-    v6 = [v12 actionName];
-    [MOEventBundleMetaDataUtility setActivityNameFromActionName:v6 metaData:v5 keyword:@"action" keywordType:@"action_type"];
+    actionName = [actionCopy actionName];
+    [MOEventBundleMetaDataUtility setActivityNameFromActionName:actionName metaData:dataCopy keyword:@"action" keywordType:@"action_type"];
 
-    v7 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v12 actionSubtype]);
-    [v5 setObject:v7 forKeyedSubscript:@"workoutSubtype"];
+    v7 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [actionCopy actionSubtype]);
+    [dataCopy setObject:v7 forKeyedSubscript:@"workoutSubtype"];
 
-    v8 = [v12 actionMetaData];
-    v9 = [v8 objectForKeyedSubscript:@"MediaActionMetaDataAppName"];
+    actionMetaData = [actionCopy actionMetaData];
+    v9 = [actionMetaData objectForKeyedSubscript:@"MediaActionMetaDataAppName"];
 
     if (v9)
     {
-      v10 = [v12 actionMetaData];
-      v11 = [v10 objectForKeyedSubscript:@"MediaActionMetaDataAppName"];
-      [v5 setObject:v11 forKeyedSubscript:@"workout_app_name"];
+      actionMetaData2 = [actionCopy actionMetaData];
+      v11 = [actionMetaData2 objectForKeyedSubscript:@"MediaActionMetaDataAppName"];
+      [dataCopy setObject:v11 forKeyedSubscript:@"workout_app_name"];
     }
   }
 }
 
-+ (void)setMetaDataForMediaAction:(id)a3 metaData:(id)a4
++ (void)setMetaDataForMediaAction:(id)action metaData:(id)data
 {
-  v7 = a3;
-  v5 = a4;
-  if (v7 && [v7 actionType] == 6)
+  actionCopy = action;
+  dataCopy = data;
+  if (actionCopy && [actionCopy actionType] == 6)
   {
-    v6 = [v7 actionName];
-    [v5 setObject:v6 forKeyedSubscript:@"media"];
+    actionName = [actionCopy actionName];
+    [dataCopy setObject:actionName forKeyedSubscript:@"media"];
   }
 }
 
-+ (id)mediaKeywordWithType:(unint64_t)a3
++ (id)mediaKeywordWithType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 3uLL:
         [NSString stringWithFormat:@"%@_artist", @"media"];
@@ -2798,18 +2798,18 @@ LABEL_10:
     goto LABEL_15;
   }
 
-  if (!a3)
+  if (!type)
   {
     goto LABEL_10;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     [NSString stringWithFormat:@"%@_title", @"media"];
     goto LABEL_14;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     goto LABEL_10;
   }
@@ -2821,54 +2821,54 @@ LABEL_15:
   return v3;
 }
 
-+ (void)setMetaDataForActivityConcurrentMediaAction:(id)a3 metaData:(id)a4
++ (void)setMetaDataForActivityConcurrentMediaAction:(id)action metaData:(id)data
 {
-  v16 = a3;
-  v5 = a4;
-  if (v16)
+  actionCopy = action;
+  dataCopy = data;
+  if (actionCopy)
   {
-    if ([v16 actionType] == 6)
+    if ([actionCopy actionType] == 6)
     {
-      v6 = [v16 actionMetaData];
+      actionMetaData = [actionCopy actionMetaData];
 
-      if (v6)
+      if (actionMetaData)
       {
-        v7 = [v16 actionName];
-        [v5 setObject:v7 forKeyedSubscript:@"media"];
+        actionName = [actionCopy actionName];
+        [dataCopy setObject:actionName forKeyedSubscript:@"media"];
 
-        v8 = [v16 actionMetaData];
-        v9 = [v8 objectForKeyedSubscript:@"MediaActionMetaDataMediaType"];
-        [v5 setObject:v9 forKeyedSubscript:@"media_type"];
+        actionMetaData2 = [actionCopy actionMetaData];
+        v9 = [actionMetaData2 objectForKeyedSubscript:@"MediaActionMetaDataMediaType"];
+        [dataCopy setObject:v9 forKeyedSubscript:@"media_type"];
 
-        v10 = [v16 actionMetaData];
-        v11 = [v10 objectForKeyedSubscript:@"MediaActionMetaDataMediaInfoType"];
+        actionMetaData3 = [actionCopy actionMetaData];
+        v11 = [actionMetaData3 objectForKeyedSubscript:@"MediaActionMetaDataMediaInfoType"];
 
         if (v11)
         {
-          v12 = [v16 actionMetaData];
-          v13 = [v12 objectForKeyedSubscript:@"MediaActionMetaDataMediaInfoType"];
+          actionMetaData4 = [actionCopy actionMetaData];
+          v13 = [actionMetaData4 objectForKeyedSubscript:@"MediaActionMetaDataMediaInfoType"];
 
           v14 = [objc_opt_class() mediaKeywordWithType:{objc_msgSend(v13, "intValue")}];
-          v15 = [v16 actionName];
-          [MOEventBundleMetaDataUtility setMetaDataWithKeyword:@"media_name" extendedKeyword:v14 value:v15 metaData:v5];
+          actionName2 = [actionCopy actionName];
+          [MOEventBundleMetaDataUtility setMetaDataWithKeyword:@"media_name" extendedKeyword:v14 value:actionName2 metaData:dataCopy];
         }
       }
     }
   }
 }
 
-+ (void)setMetaDataWithKeyword:(id)a3 extendedKeyword:(id)a4 value:(id)a5 metaData:(id)a6
++ (void)setMetaDataWithKeyword:(id)keyword extendedKeyword:(id)extendedKeyword value:(id)value metaData:(id)data
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v9 && v10 && v11)
+  keywordCopy = keyword;
+  extendedKeywordCopy = extendedKeyword;
+  valueCopy = value;
+  dataCopy = data;
+  if (keywordCopy && extendedKeywordCopy && valueCopy)
   {
-    v13 = [NSString stringWithFormat:@"%@%@", v9, @"_string"];
-    [v12 setObject:v10 forKeyedSubscript:v9];
-    [v12 setObject:v11 forKeyedSubscript:v10];
-    [v12 setObject:v11 forKeyedSubscript:v13];
+    v13 = [NSString stringWithFormat:@"%@%@", keywordCopy, @"_string"];
+    [dataCopy setObject:extendedKeywordCopy forKeyedSubscript:keywordCopy];
+    [dataCopy setObject:valueCopy forKeyedSubscript:extendedKeywordCopy];
+    [dataCopy setObject:valueCopy forKeyedSubscript:v13];
   }
 
   else
@@ -2877,59 +2877,59 @@ LABEL_15:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v15 = v9;
+      v15 = keywordCopy;
       v16 = 2112;
-      v17 = v10;
+      v17 = extendedKeywordCopy;
       v18 = 2048;
-      v19 = [v11 length];
+      v19 = [valueCopy length];
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "build meta, keyword, %@, extendedKeyword, %@, value, %lu", buf, 0x20u);
     }
   }
 }
 
-+ (void)setMetaDataForTime:(id)a3 startDate:(id)a4 endDate:(id)a5 metaData:(id)a6
++ (void)setMetaDataForTime:(id)time startDate:(id)date endDate:(id)endDate metaData:(id)data
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 timeZoneObject];
+  timeCopy = time;
+  dateCopy = date;
+  endDateCopy = endDate;
+  dataCopy = data;
+  timeZoneObject = [timeCopy timeZoneObject];
   v14 = _mo_log_facility_get_os_log(&MOLogFacilityFramework);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138413058;
-    v61 = v13;
+    v61 = timeZoneObject;
     v62 = 2112;
-    v63 = v10;
+    v63 = dateCopy;
     v64 = 2112;
-    v65 = v11;
+    v65 = endDateCopy;
     v66 = 2112;
-    v67 = v9;
+    v67 = timeCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "build meta, time zone, %@, startDate, %@, endDate, %@, time, %@", buf, 0x2Au);
   }
 
-  if (v11)
+  if (endDateCopy)
   {
-    if ([v11 isBeforeDate:v10])
+    if ([endDateCopy isBeforeDate:dateCopy])
     {
-      v15 = v11;
+      snapToTheDay = endDateCopy;
     }
 
     else
     {
-      v15 = [v11 snapToTheDay];
-      if (![v15 isAfterDate:v10])
+      snapToTheDay = [endDateCopy snapToTheDay];
+      if (![snapToTheDay isAfterDate:dateCopy])
       {
         goto LABEL_14;
       }
 
-      v16 = v15;
+      v16 = snapToTheDay;
 
       if (v16)
       {
-        if (![v16 isBeforeDate:v10])
+        if (![v16 isBeforeDate:dateCopy])
         {
-          v11 = v16;
+          endDateCopy = v16;
           goto LABEL_14;
         }
 
@@ -2937,7 +2937,7 @@ LABEL_15:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v61 = v10;
+          v61 = dateCopy;
           v62 = 2112;
           v63 = v16;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "setMetaDataForTime, startDate, %@, endDate, %@, the timestamps are inverted after snapping.", buf, 0x16u);
@@ -2945,33 +2945,33 @@ LABEL_15:
       }
     }
 
-    v11 = 0;
+    endDateCopy = 0;
 LABEL_14:
   }
 
-  if (v9)
+  if (timeCopy)
   {
-    v18 = [v9 timeString];
+    timeString = [timeCopy timeString];
 
-    if (v18)
+    if (timeString)
     {
-      v19 = [v9 timeString];
-      v20 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v19];
-      [v12 setObject:v20 forKeyedSubscript:@"time"];
+      timeString2 = [timeCopy timeString];
+      v20 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:timeString2];
+      [dataCopy setObject:v20 forKeyedSubscript:@"time"];
     }
   }
 
-  if (!v10)
+  if (!dateCopy)
   {
-    v10 = [v9 date];
+    dateCopy = [timeCopy date];
 
-    v11 = 0;
+    endDateCopy = 0;
   }
 
-  if (!v13)
+  if (!timeZoneObject)
   {
-    v23 = v11;
-    v21 = v10;
+    v23 = endDateCopy;
+    v21 = dateCopy;
 LABEL_36:
     if (!v21)
     {
@@ -2987,22 +2987,22 @@ LABEL_36:
     goto LABEL_38;
   }
 
-  if (v10)
+  if (dateCopy)
   {
-    v21 = [MOTime localTimeOfDate:v10 timeZone:v13];
+    v21 = [MOTime localTimeOfDate:dateCopy timeZone:timeZoneObject];
     v22 = _mo_log_facility_get_os_log(&MOLogFacilityFramework);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v61 = v13;
+      v61 = timeZoneObject;
       v62 = 2112;
-      v63 = v10;
+      v63 = dateCopy;
       v64 = 2112;
       v65 = v21;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "build meta, time zone, %@, startDate, %@, localDate, %@", buf, 0x20u);
     }
 
-    if (!v11)
+    if (!endDateCopy)
     {
       v23 = 0;
       v24 = 0;
@@ -3020,20 +3020,20 @@ LABEL_36:
     v21 = 0;
     v24 = 0;
     v23 = 0;
-    if (!v11)
+    if (!endDateCopy)
     {
       goto LABEL_68;
     }
   }
 
-  v23 = [MOTime localTimeOfDate:v11 timeZone:v13];
+  v23 = [MOTime localTimeOfDate:endDateCopy timeZone:timeZoneObject];
   v25 = _mo_log_facility_get_os_log(&MOLogFacilityFramework);
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v61 = v13;
+    v61 = timeZoneObject;
     v62 = 2112;
-    v63 = v11;
+    v63 = endDateCopy;
     v64 = 2112;
     v65 = v23;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "build meta, time zone, %@, endDate, %@, localDate, %@", buf, 0x20u);
@@ -3079,7 +3079,7 @@ LABEL_42:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v61 = v13;
+    v61 = timeZoneObject;
     v62 = 2112;
     v63 = v21;
     v64 = 2112;
@@ -3088,15 +3088,15 @@ LABEL_42:
   }
 
   v28 = [MOTime dateReferenceTagFromStartDate:v21 endDate:v23];
-  if (v9)
+  if (timeCopy)
   {
-    [v9 setDateReferenceTag:v28];
+    [timeCopy setDateReferenceTag:v28];
   }
 
   if (v28 >= 2)
   {
     v29 = [MOTime timeStringFromTimeTag:v28];
-    [v12 setObject:v29 forKeyedSubscript:@"date_referece_time_tag"];
+    [dataCopy setObject:v29 forKeyedSubscript:@"date_referece_time_tag"];
   }
 
   if ((v28 & 0xFFFFFFFFFFFFFFFELL) == 0x64)
@@ -3104,7 +3104,7 @@ LABEL_42:
     v30 = [MOTime timeStringFromTimeTag:v28];
     v31 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v30];
     v32 = [NSString stringWithFormat:@"%@%@", @"date_reference_", v30];
-    [MOEventBundleMetaDataUtility setMetaDataWithKeyword:@"date_reference" extendedKeyword:v32 value:v31 metaData:v12];
+    [MOEventBundleMetaDataUtility setMetaDataWithKeyword:@"date_reference" extendedKeyword:v32 value:v31 metaData:dataCopy];
   }
 
   v33 = +[NSDate date];
@@ -3113,18 +3113,18 @@ LABEL_42:
   v57 = v34;
   if ([v21 isAfterDate:v34])
   {
-    [v12 setObject:&off_100368FB0 forKeyedSubscript:@"date_referece_recency"];
+    [dataCopy setObject:&off_100368FB0 forKeyedSubscript:@"date_referece_recency"];
   }
 
-  v59 = v9;
+  v59 = timeCopy;
   v55 = [MOTime typeOfDayTagFromStartDate:v21 endDate:v23 timeZone:0];
   if (v55 == 10001)
   {
     v35 = [MOTime timeStringFromTimeTag:10001];
-    [v12 setObject:v35 forKeyedSubscript:@"typeOfDay"];
+    [dataCopy setObject:v35 forKeyedSubscript:@"typeOfDay"];
   }
 
-  v58 = v13;
+  v58 = timeZoneObject;
   v36 = [MOTime dayOfWeekTagFromStartDate:v21 endDate:v23];
   v37 = v36 - 102;
   if (v36 - 102 <= 6)
@@ -3132,19 +3132,19 @@ LABEL_42:
     v38 = [MOTime timeStringFromTimeTag:v36];
     v39 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v38];
     v40 = [NSString stringWithFormat:@"%@%@", @"date_reference_", v38];
-    [MOEventBundleMetaDataUtility setMetaDataWithKeyword:@"date_reference_weekday" extendedKeyword:v40 value:v39 metaData:v12];
+    [MOEventBundleMetaDataUtility setMetaDataWithKeyword:@"date_reference_weekday" extendedKeyword:v40 value:v39 metaData:dataCopy];
   }
 
   v56 = v36;
-  v41 = v12;
+  v41 = dataCopy;
   v42 = [MOTime timetagFromStartDate:v21 endDate:v23];
   if (v42 - 2 <= 6)
   {
     v43 = [MOTime timeStringFromTimeTag:v42];
     v44 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v43];
-    [v12 setObject:v44 forKeyedSubscript:@"timeOfDay"];
+    [dataCopy setObject:v44 forKeyedSubscript:@"timeOfDay"];
 
-    v45 = [v12 objectForKey:@"time"];
+    v45 = [dataCopy objectForKey:@"time"];
 
     if (!v45)
     {
@@ -3193,101 +3193,101 @@ LABEL_42:
   }
 
   v24 = v21;
-  v12 = v41;
-  v13 = v58;
-  v9 = v59;
+  dataCopy = v41;
+  timeZoneObject = v58;
+  timeCopy = v59;
 LABEL_68:
 }
 
-+ (void)setMetaDataForPlace:(id)a3 metaData:(id)a4
++ (void)setMetaDataForPlace:(id)place metaData:(id)data
 {
-  v32 = a3;
-  v5 = a4;
-  v6 = [v32 placeName];
-  if (v6)
+  placeCopy = place;
+  dataCopy = data;
+  placeName = [placeCopy placeName];
+  if (placeName)
   {
-    v7 = v6;
-    v8 = [v32 placeType];
+    v7 = placeName;
+    placeType = [placeCopy placeType];
 
-    if (v8)
+    if (placeType)
     {
-      if ([v32 placeUserType] && (objc_msgSend(v32, "placeUserType") == 1 || objc_msgSend(v32, "placeUserType") == 2))
+      if ([placeCopy placeUserType] && (objc_msgSend(placeCopy, "placeUserType") == 1 || objc_msgSend(placeCopy, "placeUserType") == 2))
       {
-        v9 = [v32 placeName];
-        v10 = [v9 lowercaseString];
-        v11 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v10];
-        [v5 setObject:v11 forKeyedSubscript:@"place"];
+        placeName2 = [placeCopy placeName];
+        lowercaseString = [placeName2 lowercaseString];
+        v11 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:lowercaseString];
+        [dataCopy setObject:v11 forKeyedSubscript:@"place"];
 
-        v12 = [v32 placeName];
-        v13 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v12];
-        [v5 setObject:v13 forKeyedSubscript:@"Place"];
+        placeName3 = [placeCopy placeName];
+        v13 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:placeName3];
+        [dataCopy setObject:v13 forKeyedSubscript:@"Place"];
       }
 
       else
       {
-        v14 = [v32 placeName];
-        [v5 setObject:v14 forKeyedSubscript:@"place"];
+        placeName4 = [placeCopy placeName];
+        [dataCopy setObject:placeName4 forKeyedSubscript:@"place"];
 
-        v12 = [v32 placeName];
-        [v5 setObject:v12 forKeyedSubscript:@"Place"];
+        placeName3 = [placeCopy placeName];
+        [dataCopy setObject:placeName3 forKeyedSubscript:@"Place"];
       }
 
-      v15 = [v32 enclosingArea];
+      enclosingArea = [placeCopy enclosingArea];
 
-      if (v15)
+      if (enclosingArea)
       {
-        if ([v32 placeType] != 101 && objc_msgSend(v32, "placeType") != 102)
+        if ([placeCopy placeType] != 101 && objc_msgSend(placeCopy, "placeType") != 102)
         {
-          v16 = [v32 enclosingArea];
-          [v5 setObject:v16 forKeyedSubscript:@"city"];
+          enclosingArea2 = [placeCopy enclosingArea];
+          [dataCopy setObject:enclosingArea2 forKeyedSubscript:@"city"];
 
-          v17 = [v32 placeName];
-          v18 = [v32 enclosingArea];
-          v19 = [v17 containsString:v18];
+          placeName5 = [placeCopy placeName];
+          enclosingArea3 = [placeCopy enclosingArea];
+          v19 = [placeName5 containsString:enclosingArea3];
 
           if (v19)
           {
-            [v5 setObject:@"Yes" forKeyedSubscript:@"place_name_overlap_with_city"];
+            [dataCopy setObject:@"Yes" forKeyedSubscript:@"place_name_overlap_with_city"];
           }
         }
       }
 
-      v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v32 placeType]);
-      [v5 setObject:v20 forKeyedSubscript:@"place_type"];
+      v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [placeCopy placeType]);
+      [dataCopy setObject:v20 forKeyedSubscript:@"place_type"];
 
-      v21 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v32 placeUserType]);
-      [v5 setObject:v21 forKeyedSubscript:@"place_user_type"];
+      v21 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [placeCopy placeUserType]);
+      [dataCopy setObject:v21 forKeyedSubscript:@"place_user_type"];
 
-      v22 = +[MOEventRoutine stringOfPlaceUserType:](MOEventRoutine, "stringOfPlaceUserType:", [v32 placeUserType]);
+      v22 = +[MOEventRoutine stringOfPlaceUserType:](MOEventRoutine, "stringOfPlaceUserType:", [placeCopy placeUserType]);
       v23 = v22;
       if (v22)
       {
-        v24 = [v22 lowercaseString];
-        [v5 setObject:v24 forKeyedSubscript:@"place_user_type_tag"];
+        lowercaseString2 = [v22 lowercaseString];
+        [dataCopy setObject:lowercaseString2 forKeyedSubscript:@"place_user_type_tag"];
       }
 
-      if ([v32 proposition] == 4)
+      if ([placeCopy proposition] == 4)
       {
-        v25 = [v5 objectForKeyedSubscript:@"flight"];
+        v25 = [dataCopy objectForKeyedSubscript:@"flight"];
         v26 = [v25 isEqual:@"flight"];
 
         if ((v26 & 1) == 0)
         {
-          [v5 setObject:&off_100368FB0 forKeyedSubscript:@"vicinity"];
+          [dataCopy setObject:&off_100368FB0 forKeyedSubscript:@"vicinity"];
         }
       }
 
-      if ([v32 locationMode] == 2)
+      if ([placeCopy locationMode] == 2)
       {
-        [v5 setObject:&off_100368FB0 forKeyedSubscript:@"trip"];
+        [dataCopy setObject:&off_100368FB0 forKeyedSubscript:@"trip"];
       }
 
-      if ([v32 placeType] == 3 && (objc_msgSend(v32, "placeNameConfidence"), v27 >= 0.9) || objc_msgSend(v32, "placeType") == 2 && (objc_msgSend(v32, "placeNameConfidence"), v28 >= 0.9) || objc_msgSend(v32, "placeUserType") && objc_msgSend(v32, "placeUserType") < 0x64)
+      if ([placeCopy placeType] == 3 && (objc_msgSend(placeCopy, "placeNameConfidence"), v27 >= 0.9) || objc_msgSend(placeCopy, "placeType") == 2 && (objc_msgSend(placeCopy, "placeNameConfidence"), v28 >= 0.9) || objc_msgSend(placeCopy, "placeUserType") && objc_msgSend(placeCopy, "placeUserType") < 0x64)
       {
         v29 = @"high";
       }
 
-      else if ([v32 placeType] == 3 && (objc_msgSend(v32, "placeNameConfidence"), v30 >= 0.75) || objc_msgSend(v32, "placeType") == 2 && (objc_msgSend(v32, "placeNameConfidence"), v31 >= 0.5))
+      else if ([placeCopy placeType] == 3 && (objc_msgSend(placeCopy, "placeNameConfidence"), v30 >= 0.75) || objc_msgSend(placeCopy, "placeType") == 2 && (objc_msgSend(placeCopy, "placeNameConfidence"), v31 >= 0.5))
       {
         v29 = @"medium";
       }
@@ -3297,77 +3297,77 @@ LABEL_68:
         v29 = @"low";
       }
 
-      [v5 setObject:v29 forKeyedSubscript:@"confidence"];
+      [dataCopy setObject:v29 forKeyedSubscript:@"confidence"];
     }
   }
 }
 
-+ (void)setMetaDataForActivityPlace:(id)a3 metaData:(id)a4
++ (void)setMetaDataForActivityPlace:(id)place metaData:(id)data
 {
-  v23 = a3;
-  v5 = a4;
-  v6 = [v23 placeName];
-  if (v6 && [v23 placeType])
+  placeCopy = place;
+  dataCopy = data;
+  placeName = [placeCopy placeName];
+  if (placeName && [placeCopy placeType])
   {
-    v7 = [v23 placeUserType];
+    placeUserType = [placeCopy placeUserType];
 
-    if (v7 != 2)
+    if (placeUserType != 2)
     {
-      if ([v23 placeUserType] && objc_msgSend(v23, "placeUserType") == 1)
+      if ([placeCopy placeUserType] && objc_msgSend(placeCopy, "placeUserType") == 1)
       {
-        v8 = [v23 placeName];
-        v9 = [v8 lowercaseString];
-        v10 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v9];
-        [v5 setObject:v10 forKeyedSubscript:@"place"];
+        placeName2 = [placeCopy placeName];
+        lowercaseString = [placeName2 lowercaseString];
+        v10 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:lowercaseString];
+        [dataCopy setObject:v10 forKeyedSubscript:@"place"];
 
-        v11 = [v23 placeName];
-        v12 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v11];
-        [v5 setObject:v12 forKeyedSubscript:@"Place"];
+        placeName3 = [placeCopy placeName];
+        v12 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:placeName3];
+        [dataCopy setObject:v12 forKeyedSubscript:@"Place"];
       }
 
       else
       {
-        v13 = [v23 placeName];
-        [v5 setObject:v13 forKeyedSubscript:@"place"];
+        placeName4 = [placeCopy placeName];
+        [dataCopy setObject:placeName4 forKeyedSubscript:@"place"];
 
-        v11 = [v23 placeName];
-        [v5 setObject:v11 forKeyedSubscript:@"Place"];
+        placeName3 = [placeCopy placeName];
+        [dataCopy setObject:placeName3 forKeyedSubscript:@"Place"];
       }
 
-      v14 = [v23 enclosingArea];
+      enclosingArea = [placeCopy enclosingArea];
 
-      if (v14)
+      if (enclosingArea)
       {
-        if ([v23 placeType] != 101 && objc_msgSend(v23, "placeType") != 102)
+        if ([placeCopy placeType] != 101 && objc_msgSend(placeCopy, "placeType") != 102)
         {
-          v15 = [v23 enclosingArea];
-          [v5 setObject:v15 forKeyedSubscript:@"city"];
+          enclosingArea2 = [placeCopy enclosingArea];
+          [dataCopy setObject:enclosingArea2 forKeyedSubscript:@"city"];
 
-          v16 = [v23 placeName];
-          v17 = [v23 enclosingArea];
-          v18 = [v16 containsString:v17];
+          placeName5 = [placeCopy placeName];
+          enclosingArea3 = [placeCopy enclosingArea];
+          v18 = [placeName5 containsString:enclosingArea3];
 
           if (v18)
           {
-            [v5 setObject:@"Yes" forKeyedSubscript:@"place_name_overlap_with_city"];
+            [dataCopy setObject:@"Yes" forKeyedSubscript:@"place_name_overlap_with_city"];
           }
         }
       }
 
-      v19 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v23 placeType]);
-      [v5 setObject:v19 forKeyedSubscript:@"place_type"];
+      v19 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [placeCopy placeType]);
+      [dataCopy setObject:v19 forKeyedSubscript:@"place_type"];
 
-      v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v23 placeUserType]);
-      [v5 setObject:v20 forKeyedSubscript:@"place_user_type"];
+      v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [placeCopy placeUserType]);
+      [dataCopy setObject:v20 forKeyedSubscript:@"place_user_type"];
 
-      if ([v23 proposition] == 4)
+      if ([placeCopy proposition] == 4)
       {
-        v21 = [v5 objectForKeyedSubscript:@"flight"];
+        v21 = [dataCopy objectForKeyedSubscript:@"flight"];
         v22 = [v21 isEqual:@"flight"];
 
         if ((v22 & 1) == 0)
         {
-          [v5 setObject:&off_100368FB0 forKeyedSubscript:@"vicinity"];
+          [dataCopy setObject:&off_100368FB0 forKeyedSubscript:@"vicinity"];
         }
       }
     }
@@ -3378,21 +3378,21 @@ LABEL_68:
   }
 }
 
-+ (void)setMetaDataForPersons:(id)a3 suggestionId:(id)a4 metaData:(id)a5 sortBycomparePersons:(BOOL)a6
++ (void)setMetaDataForPersons:(id)persons suggestionId:(id)id metaData:(id)data sortBycomparePersons:(BOOL)bycomparePersons
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v61 = a5;
-  if (v9 && [v9 count])
+  bycomparePersonsCopy = bycomparePersons;
+  personsCopy = persons;
+  idCopy = id;
+  dataCopy = data;
+  if (personsCopy && [personsCopy count])
   {
-    v59 = v9;
-    v60 = v10;
-    if (v6)
+    v59 = personsCopy;
+    v60 = idCopy;
+    if (bycomparePersonsCopy)
     {
-      v58 = [NSSet setWithArray:v9];
-      v57 = [v58 allObjects];
-      v11 = [v57 sortedArrayUsingSelector:"comparePersons:"];
+      v58 = [NSSet setWithArray:personsCopy];
+      allObjects = [v58 allObjects];
+      v11 = [allObjects sortedArrayUsingSelector:"comparePersons:"];
       v12 = _mo_log_facility_get_os_log(&MOLogFacilityFramework);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -3441,16 +3441,16 @@ LABEL_68:
       v21 = [v13 filteredArrayUsingPredicate:?];
       if ([v21 count])
       {
-        v22 = [v21 firstObject];
-        v23 = [v22 name];
-        [v61 setObject:v23 forKeyedSubscript:@"me_person"];
+        firstObject = [v21 firstObject];
+        name = [firstObject name];
+        [dataCopy setObject:name forKeyedSubscript:@"me_person"];
 
-        v24 = [v21 firstObject];
-        LODWORD(v23) = [v24 mePersonIdentified];
+        firstObject2 = [v21 firstObject];
+        LODWORD(name) = [firstObject2 mePersonIdentified];
 
-        if (v23)
+        if (name)
         {
-          [v61 setObject:@"Yes" forKeyedSubscript:@"me_person_identified"];
+          [dataCopy setObject:@"Yes" forKeyedSubscript:@"me_person_identified"];
         }
 
         if ([v21 count] >= 2)
@@ -3476,7 +3476,7 @@ LABEL_68:
       [v31 shuffleWithSeed:v27];
       v32 = [v26 arrayByAddingObjectsFromArray:v31];
       v33 = _mo_log_facility_get_os_log(&MOLogFacilityFramework);
-      v34 = v57;
+      v34 = allObjects;
       if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
@@ -3489,7 +3489,7 @@ LABEL_68:
     else
     {
       v35 = [NSPredicate predicateWithFormat:@"isMePerson == NO"];
-      v32 = [v9 filteredArrayUsingPredicate:v35];
+      v32 = [personsCopy filteredArrayUsingPredicate:v35];
       v34 = _mo_log_facility_get_os_log(&MOLogFacilityFramework);
       if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
       {
@@ -3558,19 +3558,19 @@ LABEL_68:
 
           if (++v46 > 3)
           {
-            [v61 setObject:&__kCFBooleanTrue forKeyedSubscript:@"with_more_than_three_persons"];
+            [dataCopy setObject:&__kCFBooleanTrue forKeyedSubscript:@"with_more_than_three_persons"];
             goto LABEL_48;
           }
 
           v50 = *(*(&v63 + 1) + 8 * v48);
           if ([v50 mePersonIdentified])
           {
-            [v61 setObject:@"Yes" forKeyedSubscript:@"me_person_identified"];
+            [dataCopy setObject:@"Yes" forKeyedSubscript:@"me_person_identified"];
           }
 
           v51 = [NSString stringWithFormat:@"%@%d", @"person_", v49];
-          v52 = [v50 name];
-          [v61 setObject:v52 forKeyedSubscript:v51];
+          name2 = [v50 name];
+          [dataCopy setObject:name2 forKeyedSubscript:v51];
 
           v48 = v48 + 1;
           v49 = (v49 + 1);
@@ -3589,16 +3589,16 @@ LABEL_68:
 
 LABEL_48:
 
-    v9 = v59;
-    v10 = v60;
+    personsCopy = v59;
+    idCopy = v60;
   }
 }
 
-+ (void)setMetaDataForPlaces:(id)a3 metaData:(id)a4
++ (void)setMetaDataForPlaces:(id)places metaData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5 || ![v5 count])
+  placesCopy = places;
+  dataCopy = data;
+  if (!placesCopy || ![placesCopy count])
   {
     v53 = 0;
     v65 = 0;
@@ -3612,8 +3612,8 @@ LABEL_48:
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v60 = v5;
-  obj = v5;
+  v60 = placesCopy;
+  obj = placesCopy;
   v68 = [obj countByEnumeratingWithState:&v71 objects:v75 count:16];
   if (!v68)
   {
@@ -3641,54 +3641,54 @@ LABEL_48:
       v11 = *(*(&v71 + 1) + 8 * i);
       v70 = [NSString stringWithFormat:@"%@%d", @"place_", v9];
       v12 = [NSString stringWithFormat:@"%@%d", @"Place_", v9];
-      v13 = [v11 placeName];
+      placeName = [v11 placeName];
 
       v69 = v12;
-      if (v13)
+      if (placeName)
       {
         if ([v11 placeUserType] && objc_msgSend(v11, "placeUserType") == 1)
         {
-          v14 = [v11 placeName];
-          v15 = [v14 lowercaseString];
-          v16 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v15];
-          [v6 setObject:v16 forKeyedSubscript:v70];
+          placeName2 = [v11 placeName];
+          lowercaseString = [placeName2 lowercaseString];
+          v16 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:lowercaseString];
+          [dataCopy setObject:v16 forKeyedSubscript:v70];
 
           v7 = v63;
-          v17 = [v11 placeName];
-          v18 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v17];
-          [v6 setObject:v18 forKeyedSubscript:v12];
+          placeName3 = [v11 placeName];
+          v18 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:placeName3];
+          [dataCopy setObject:v18 forKeyedSubscript:v12];
         }
 
         else
         {
-          v19 = [v11 placeName];
-          [v6 setObject:v19 forKeyedSubscript:v70];
+          placeName4 = [v11 placeName];
+          [dataCopy setObject:placeName4 forKeyedSubscript:v70];
 
-          v17 = [v11 placeName];
-          [v6 setObject:v17 forKeyedSubscript:v12];
+          placeName3 = [v11 placeName];
+          [dataCopy setObject:placeName3 forKeyedSubscript:v12];
         }
       }
 
-      v20 = [v11 enclosingArea];
+      enclosingArea = [v11 enclosingArea];
 
-      if (v20 && [v11 placeType] != 101 && objc_msgSend(v11, "placeType") != 102)
+      if (enclosingArea && [v11 placeType] != 101 && objc_msgSend(v11, "placeType") != 102)
       {
         v21 = [NSString stringWithFormat:@"%@_%d", @"city", v9];
-        v22 = [v11 enclosingArea];
-        [v6 setObject:v22 forKeyedSubscript:v21];
+        enclosingArea2 = [v11 enclosingArea];
+        [dataCopy setObject:enclosingArea2 forKeyedSubscript:v21];
 
-        v23 = [v11 enclosingArea];
-        v24 = [v8 containsObject:v23];
+        enclosingArea3 = [v11 enclosingArea];
+        v24 = [v8 containsObject:enclosingArea3];
 
         if ((v24 & 1) == 0)
         {
           ++v62;
-          v25 = [v11 enclosingArea];
-          [v8 addObject:v25];
+          enclosingArea4 = [v11 enclosingArea];
+          [v8 addObject:enclosingArea4];
 
           v26 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%d", @"unique_city_", [v8 count]);
-          v27 = [v11 enclosingArea];
-          [v6 setObject:v27 forKeyedSubscript:v26];
+          enclosingArea5 = [v11 enclosingArea];
+          [dataCopy setObject:enclosingArea5 forKeyedSubscript:v26];
         }
 
         v7 = v63;
@@ -3696,26 +3696,26 @@ LABEL_48:
 
       if ([v11 proposition] == 4)
       {
-        v28 = [v6 objectForKeyedSubscript:@"flight"];
+        v28 = [dataCopy objectForKeyedSubscript:@"flight"];
         v29 = [v28 isEqual:@"flight"];
 
         if ((v29 & 1) == 0 && v9 == 1)
         {
-          [v6 setObject:&off_100368FB0 forKeyedSubscript:@"vicinity"];
+          [dataCopy setObject:&off_100368FB0 forKeyedSubscript:@"vicinity"];
         }
       }
 
-      v30 = [v11 placeName];
-      if (!v30)
+      placeName5 = [v11 placeName];
+      if (!placeName5)
       {
         goto LABEL_27;
       }
 
-      v31 = v30;
+      v31 = placeName5;
       v32 = v8;
-      v33 = [v11 placeName];
+      placeName6 = [v11 placeName];
       v34 = v7;
-      v35 = [v7 containsObject:v33];
+      v35 = [v7 containsObject:placeName6];
 
       if (v35)
       {
@@ -3726,42 +3726,42 @@ LABEL_27:
         goto LABEL_48;
       }
 
-      v37 = [v11 placeName];
-      [v34 addObject:v37];
+      placeName7 = [v11 placeName];
+      [v34 addObject:placeName7];
 
       v66 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%d", @"unique_place_", [v34 count]);
       v38 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%d", @"Unique_place_", [v34 count]);
       v7 = v34;
       if ([v11 placeUserType] && objc_msgSend(v11, "placeUserType") == 1)
       {
-        v39 = [v11 placeName];
-        [v39 lowercaseString];
-        v41 = v40 = v6;
+        placeName8 = [v11 placeName];
+        [placeName8 lowercaseString];
+        v41 = v40 = dataCopy;
         v42 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v41];
         [v40 setObject:v42 forKeyedSubscript:v66];
 
-        v6 = v40;
+        dataCopy = v40;
         v7 = v63;
 
-        v43 = [v11 placeName];
-        v44 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v43];
-        [v6 setObject:v44 forKeyedSubscript:v38];
+        placeName9 = [v11 placeName];
+        v44 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:placeName9];
+        [dataCopy setObject:v44 forKeyedSubscript:v38];
       }
 
       else
       {
-        v45 = [v11 placeName];
-        [v6 setObject:v45 forKeyedSubscript:v66];
+        placeName10 = [v11 placeName];
+        [dataCopy setObject:placeName10 forKeyedSubscript:v66];
 
-        v43 = [v11 placeName];
-        [v6 setObject:v43 forKeyedSubscript:v38];
+        placeName9 = [v11 placeName];
+        [dataCopy setObject:placeName9 forKeyedSubscript:v38];
       }
 
       v8 = v32;
       if ([v11 proposition] == 4)
       {
         v46 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%d", @"vicinity_", [v7 count]);
-        [v6 setObject:&off_100368FB0 forKeyedSubscript:v46];
+        [dataCopy setObject:&off_100368FB0 forKeyedSubscript:v46];
       }
 
       v47 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%d", @"confidence_", [v7 count]);
@@ -3783,7 +3783,7 @@ LABEL_27:
       }
 
       ++v65;
-      [v6 setObject:v50 forKeyedSubscript:v47];
+      [dataCopy setObject:v50 forKeyedSubscript:v47];
 
 LABEL_48:
       v9 = (v9 + 1);
@@ -3795,40 +3795,40 @@ LABEL_48:
   while (v68);
 LABEL_53:
 
-  v5 = v60;
+  placesCopy = v60;
   v53 = v62;
   v54 = v61;
 LABEL_54:
   v55 = [NSNumber numberWithBool:v54 & 1];
-  [v6 setObject:v55 forKeyedSubscript:@"include_low_confidence_place_name"];
+  [dataCopy setObject:v55 forKeyedSubscript:@"include_low_confidence_place_name"];
 
-  v56 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 count]);
-  [v6 setObject:v56 forKeyedSubscript:@"place_count"];
+  v56 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [placesCopy count]);
+  [dataCopy setObject:v56 forKeyedSubscript:@"place_count"];
 
   v57 = [NSNumber numberWithInt:v65];
-  [v6 setObject:v57 forKeyedSubscript:@"unique_place_count"];
+  [dataCopy setObject:v57 forKeyedSubscript:@"unique_place_count"];
 
   v58 = [NSNumber numberWithInt:v53];
-  [v6 setObject:v58 forKeyedSubscript:@"unique_city_count"];
+  [dataCopy setObject:v58 forKeyedSubscript:@"unique_city_count"];
 
-  if ([v5 count] >= 2)
+  if ([placesCopy count] >= 2)
   {
-    v59 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 count] - 1);
-    [v6 setObject:v59 forKeyedSubscript:@"place_count_minus_one"];
+    v59 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [placesCopy count] - 1);
+    [dataCopy setObject:v59 forKeyedSubscript:@"place_count_minus_one"];
   }
 }
 
-+ (void)setMetaDataForPhotos:(id)a3 metaData:(id)a4
++ (void)setMetaDataForPhotos:(id)photos metaData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && [v5 count])
+  photosCopy = photos;
+  dataCopy = data;
+  if (photosCopy && [photosCopy count])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = v5;
+    v7 = photosCopy;
     v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
@@ -3845,7 +3845,7 @@ LABEL_54:
 
           if ([*(*(&v12 + 1) + 8 * i) type] == 2)
           {
-            [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:@"photo_attached"];
+            [dataCopy setObject:&__kCFBooleanTrue forKeyedSubscript:@"photo_attached"];
             goto LABEL_13;
           }
         }
@@ -3864,11 +3864,11 @@ LABEL_13:
   }
 }
 
-+ (id)andStringFromArray:(id)a3 propertyPath:(id)a4 maxCount:(unint64_t)a5
++ (id)andStringFromArray:(id)array propertyPath:(id)path maxCount:(unint64_t)count
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 count];
+  arrayCopy = array;
+  pathCopy = path;
+  v9 = [arrayCopy count];
   if (!v9)
   {
     v11 = 0;
@@ -3880,8 +3880,8 @@ LABEL_13:
   v12 = 0;
   while (1)
   {
-    v13 = [v7 objectAtIndex:v12];
-    v14 = [v13 valueForKeyPath:v8];
+    v13 = [arrayCopy objectAtIndex:v12];
+    v14 = [v13 valueForKeyPath:pathCopy];
     v15 = v14;
     if (!v11)
     {
@@ -3904,7 +3904,7 @@ LABEL_9:
     }
   }
 
-  if (v12 < a5 - 1)
+  if (v12 < count - 1)
   {
     [v11 appendFormat:@", %@", v14];
     goto LABEL_9;
@@ -3918,168 +3918,168 @@ LABEL_13:
   return v16;
 }
 
-+ (void)setMetaDataForHoliday:(id)a3 metaData:(id)a4 eventBundle:(id)a5
++ (void)setMetaDataForHoliday:(id)holiday metaData:(id)data eventBundle:(id)bundle
 {
-  v24 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 rankingDictionary];
-  v10 = [v9 objectForKeyedSubscript:@"useHolidayLabel"];
-  v11 = [v10 BOOLValue];
+  holidayCopy = holiday;
+  dataCopy = data;
+  bundleCopy = bundle;
+  rankingDictionary = [bundleCopy rankingDictionary];
+  v10 = [rankingDictionary objectForKeyedSubscript:@"useHolidayLabel"];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
-    v12 = [v8 bundleSubType];
-    v13 = v12 == 204;
-    if ([v8 bundleSubType] == 201)
+    bundleSubType = [bundleCopy bundleSubType];
+    v13 = bundleSubType == 204;
+    if ([bundleCopy bundleSubType] == 201)
     {
-      v14 = [v8 action];
-      v15 = [v14 actionName];
-      v16 = [HKWorkout _workoutActivityTypeFromString:v15];
+      action = [bundleCopy action];
+      actionName = [action actionName];
+      v16 = [HKWorkout _workoutActivityTypeFromString:actionName];
 
-      v13 = v16 == 52 || v12 == 204;
+      v13 = v16 == 52 || bundleSubType == 204;
     }
 
-    v18 = [MOMetaDataCurationUtility selectHolidayFromPhotoTraits:v24];
+    v18 = [MOMetaDataCurationUtility selectHolidayFromPhotoTraits:holidayCopy];
     v19 = v18;
     if (v18 && !v13)
     {
-      v20 = [v18 name];
-      [v7 setObject:v20 forKeyedSubscript:@"holiday_name"];
+      name = [v18 name];
+      [dataCopy setObject:name forKeyedSubscript:@"holiday_name"];
     }
 
     if (v19)
     {
       if (v13)
       {
-        v21 = [v19 holidayIdentifier];
-        v22 = [v21 isEqualToString:@"Halloween"];
+        holidayIdentifier = [v19 holidayIdentifier];
+        v22 = [holidayIdentifier isEqualToString:@"Halloween"];
 
         if (v22)
         {
-          v23 = [v19 name];
-          [v7 setObject:v23 forKeyedSubscript:@"holiday_name"];
+          name2 = [v19 name];
+          [dataCopy setObject:name2 forKeyedSubscript:@"holiday_name"];
         }
       }
     }
   }
 }
 
-+ (void)setMetaDataForBirthday:(id)a3 metaData:(id)a4 eventBundle:(id)a5
++ (void)setMetaDataForBirthday:(id)birthday metaData:(id)data eventBundle:(id)bundle
 {
-  v17 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 rankingDictionary];
-  v10 = [v9 objectForKeyedSubscript:@"useBirthdayLabel"];
-  v11 = [v10 BOOLValue];
+  birthdayCopy = birthday;
+  dataCopy = data;
+  bundleCopy = bundle;
+  rankingDictionary = [bundleCopy rankingDictionary];
+  v10 = [rankingDictionary objectForKeyedSubscript:@"useBirthdayLabel"];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
-    v12 = [MOMetaDataCurationUtility selectBirthdayFromPhotoTraits:v17];
+    v12 = [MOMetaDataCurationUtility selectBirthdayFromPhotoTraits:birthdayCopy];
     if (v12)
     {
-      v13 = [MOMetaDataCurationUtility getPersonFromBirthdayPhotoTrait:v12 eventBundle:v8];
+      v13 = [MOMetaDataCurationUtility getPersonFromBirthdayPhotoTrait:v12 eventBundle:bundleCopy];
       v14 = v13;
       if (v13)
       {
-        v15 = [v13 name];
-        v16 = [v15 copy];
-        [v7 setObject:v16 forKeyedSubscript:@"birthday_person_name"];
+        name = [v13 name];
+        v16 = [name copy];
+        [dataCopy setObject:v16 forKeyedSubscript:@"birthday_person_name"];
       }
     }
   }
 }
 
-+ (id)combinedPlaceTypeLabelMetadataForThematicSummary:(id)a3
++ (id)combinedPlaceTypeLabelMetadataForThematicSummary:(id)summary
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Home"])
+  summaryCopy = summary;
+  if ([summaryCopy isEqualToString:@"Home"])
   {
     v4 = @"home";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:@"Work"])
+  if ([summaryCopy isEqualToString:@"Work"])
   {
     v4 = @"work";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:@"School"])
+  if ([summaryCopy isEqualToString:@"School"])
   {
     v4 = @"school";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:@"Gym"])
+  if ([summaryCopy isEqualToString:@"Gym"])
   {
     v4 = @"gym";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryAmusementPark])
+  if ([summaryCopy isEqualToString:GEOPOICategoryAmusementPark])
   {
     v4 = @"amusement parks";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryAquarium])
+  if ([summaryCopy isEqualToString:GEOPOICategoryAquarium])
   {
     v4 = @"aquariums";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryBakery])
+  if ([summaryCopy isEqualToString:GEOPOICategoryBakery])
   {
     v4 = @"bakeries";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryBaseball])
+  if ([summaryCopy isEqualToString:GEOPOICategoryBaseball])
   {
     v4 = @"baseball fields";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryBasketball])
+  if ([summaryCopy isEqualToString:GEOPOICategoryBasketball])
   {
     v4 = @"basketball courts";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryBeach])
+  if ([summaryCopy isEqualToString:GEOPOICategoryBeach])
   {
     v4 = @"beaches";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryBeauty])
+  if ([summaryCopy isEqualToString:GEOPOICategoryBeauty])
   {
     v4 = @"beauty stores";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryBowling])
+  if ([summaryCopy isEqualToString:GEOPOICategoryBowling])
   {
     v4 = @"bowling alleys";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryBrewery])
+  if ([summaryCopy isEqualToString:GEOPOICategoryBrewery])
   {
     v4 = @"breweries";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryCafe])
+  if ([summaryCopy isEqualToString:GEOPOICategoryCafe])
   {
     v4 = @"cafes";
     goto LABEL_85;
   }
 
   v5 = GEOPOICategoryCampground;
-  if ([v3 isEqualToString:GEOPOICategoryCampground])
+  if ([summaryCopy isEqualToString:GEOPOICategoryCampground])
   {
 LABEL_30:
     v4 = @"campgrounds";
@@ -4087,7 +4087,7 @@ LABEL_30:
   }
 
   v6 = GEOPOICategoryCastle;
-  if ([v3 isEqualToString:GEOPOICategoryCastle])
+  if ([summaryCopy isEqualToString:GEOPOICategoryCastle])
   {
 LABEL_32:
     v4 = @"castles";
@@ -4095,7 +4095,7 @@ LABEL_32:
   }
 
   v7 = GEOPOICategoryConventionCenter;
-  if ([v3 isEqualToString:GEOPOICategoryConventionCenter])
+  if ([summaryCopy isEqualToString:GEOPOICategoryConventionCenter])
   {
 LABEL_34:
     v4 = @"convention centers";
@@ -4103,258 +4103,258 @@ LABEL_34:
   }
 
   v8 = GEOPOICategoryFairground;
-  if ([v3 isEqualToString:GEOPOICategoryFairground])
+  if ([summaryCopy isEqualToString:GEOPOICategoryFairground])
   {
     goto LABEL_36;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryFitnessCenter])
+  if ([summaryCopy isEqualToString:GEOPOICategoryFitnessCenter])
   {
     v4 = @"fitness centers";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryFishing])
+  if ([summaryCopy isEqualToString:GEOPOICategoryFishing])
   {
     v4 = @"fishing spots";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryFoodMarket])
+  if ([summaryCopy isEqualToString:GEOPOICategoryFoodMarket])
   {
     v4 = @"food markets";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryGolf])
+  if ([summaryCopy isEqualToString:GEOPOICategoryGolf])
   {
     v4 = @"golf courses";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryGoKart])
+  if ([summaryCopy isEqualToString:GEOPOICategoryGoKart])
   {
     v4 = @"go kart";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryHiking])
+  if ([summaryCopy isEqualToString:GEOPOICategoryHiking])
   {
     v4 = @"hiking trails";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryHotel])
+  if ([summaryCopy isEqualToString:GEOPOICategoryHotel])
   {
     v4 = @"hotels";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryKayaking])
+  if ([summaryCopy isEqualToString:GEOPOICategoryKayaking])
   {
     v4 = @"kayaking";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryLibrary])
+  if ([summaryCopy isEqualToString:GEOPOICategoryLibrary])
   {
     v4 = @"libraries";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryMarina])
+  if ([summaryCopy isEqualToString:GEOPOICategoryMarina])
   {
     v4 = @"marinas";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryMiniGolf])
+  if ([summaryCopy isEqualToString:GEOPOICategoryMiniGolf])
   {
     v4 = @"mini golf";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryMovieTheater])
+  if ([summaryCopy isEqualToString:GEOPOICategoryMovieTheater])
   {
     v4 = @"movie theaters";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryMuseum])
+  if ([summaryCopy isEqualToString:GEOPOICategoryMuseum])
   {
     v4 = @"museums";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryMusicVenue])
+  if ([summaryCopy isEqualToString:GEOPOICategoryMusicVenue])
   {
     v4 = @"music venues";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryNationalPark])
+  if ([summaryCopy isEqualToString:GEOPOICategoryNationalPark])
   {
     v4 = @"national parks";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryNightlife])
+  if ([summaryCopy isEqualToString:GEOPOICategoryNightlife])
   {
     v4 = @"nightlife";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryPark])
+  if ([summaryCopy isEqualToString:GEOPOICategoryPark])
   {
     v4 = @"parks";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryPlayground])
+  if ([summaryCopy isEqualToString:GEOPOICategoryPlayground])
   {
     v4 = @"playgrounds";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryRestaurant])
+  if ([summaryCopy isEqualToString:GEOPOICategoryRestaurant])
   {
     v4 = @"restaurants";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryRockClimbing])
+  if ([summaryCopy isEqualToString:GEOPOICategoryRockClimbing])
   {
     v4 = @"rock climbing";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryStadium])
+  if ([summaryCopy isEqualToString:GEOPOICategoryStadium])
   {
     v4 = @"stadiums";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryTheater])
+  if ([summaryCopy isEqualToString:GEOPOICategoryTheater])
   {
     v4 = @"theaters";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryWinery])
+  if ([summaryCopy isEqualToString:GEOPOICategoryWinery])
   {
     v4 = @"wineries";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryZoo])
+  if ([summaryCopy isEqualToString:GEOPOICategoryZoo])
   {
     v4 = @"zoos";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:v5])
+  if ([summaryCopy isEqualToString:v5])
   {
     goto LABEL_30;
   }
 
-  if ([v3 isEqualToString:v6])
+  if ([summaryCopy isEqualToString:v6])
   {
     goto LABEL_32;
   }
 
-  if ([v3 isEqualToString:v7])
+  if ([summaryCopy isEqualToString:v7])
   {
     goto LABEL_34;
   }
 
-  if ([v3 isEqualToString:v8])
+  if ([summaryCopy isEqualToString:v8])
   {
 LABEL_36:
     v4 = @"fairgrounds";
     goto LABEL_85;
   }
 
-  if ([v3 isEqualToString:GEOPOICategoryFortress])
+  if ([summaryCopy isEqualToString:GEOPOICategoryFortress])
   {
     v4 = @"fortresses";
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryLandmark])
+  else if ([summaryCopy isEqualToString:GEOPOICategoryLandmark])
   {
     v4 = @"landmarks";
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryNationalMonument])
+  else if ([summaryCopy isEqualToString:GEOPOICategoryNationalMonument])
   {
     v4 = @"national monuments";
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryPlanetarium])
+  else if ([summaryCopy isEqualToString:GEOPOICategoryPlanetarium])
   {
     v4 = @"planetariums";
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryRVPark])
+  else if ([summaryCopy isEqualToString:GEOPOICategoryRVPark])
   {
     v4 = @"RV parks";
   }
 
-  else if ([v3 isEqualToString:GEOPOICategorySkatePark])
+  else if ([summaryCopy isEqualToString:GEOPOICategorySkatePark])
   {
     v4 = @"skate parks";
   }
 
-  else if ([v3 isEqualToString:GEOPOICategorySchool])
+  else if ([summaryCopy isEqualToString:GEOPOICategorySchool])
   {
     v4 = @"schools";
   }
 
-  else if ([v3 isEqualToString:GEOPOICategorySkating])
+  else if ([summaryCopy isEqualToString:GEOPOICategorySkating])
   {
     v4 = @"skating";
   }
 
-  else if ([v3 isEqualToString:GEOPOICategorySkiing])
+  else if ([summaryCopy isEqualToString:GEOPOICategorySkiing])
   {
     v4 = @"ski resorts";
   }
 
-  else if ([v3 isEqualToString:GEOPOICategorySoccer])
+  else if ([summaryCopy isEqualToString:GEOPOICategorySoccer])
   {
     v4 = @"soccer fields";
   }
 
-  else if ([v3 isEqualToString:GEOPOICategorySpa])
+  else if ([summaryCopy isEqualToString:GEOPOICategorySpa])
   {
     v4 = @"spas";
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryStore])
+  else if ([summaryCopy isEqualToString:GEOPOICategoryStore])
   {
     v4 = @"stores";
   }
 
-  else if ([v3 isEqualToString:GEOPOICategorySurfing])
+  else if ([summaryCopy isEqualToString:GEOPOICategorySurfing])
   {
     v4 = @"surfing spots";
   }
 
-  else if ([v3 isEqualToString:GEOPOICategorySwimming])
+  else if ([summaryCopy isEqualToString:GEOPOICategorySwimming])
   {
     v4 = @"swimming pools";
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryTennis])
+  else if ([summaryCopy isEqualToString:GEOPOICategoryTennis])
   {
     v4 = @"tennis courts";
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryUniversity])
+  else if ([summaryCopy isEqualToString:GEOPOICategoryUniversity])
   {
     v4 = @"universities";
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryVolleyball])
+  else if ([summaryCopy isEqualToString:GEOPOICategoryVolleyball])
   {
     v4 = @"volleyball courts";
   }
@@ -4369,29 +4369,29 @@ LABEL_85:
   return v4;
 }
 
-+ (id)placeTypePhotoTraitLabelMetadataForThematicSummary:(id)a3
++ (id)placeTypePhotoTraitLabelMetadataForThematicSummary:(id)summary
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"amusementpark"])
+  summaryCopy = summary;
+  if ([summaryCopy isEqualToString:@"amusementpark"])
   {
     v4 = @"amusement park";
   }
 
   else
   {
-    v4 = v3;
+    v4 = summaryCopy;
   }
 
   return v4;
 }
 
-+ (id)activityPhotoTraitLabelMetadataForThematicSummary:(id)a3 AtHome:(BOOL)a4
++ (id)activityPhotoTraitLabelMetadataForThematicSummary:(id)summary AtHome:(BOOL)home
 {
-  v4 = a4;
-  v5 = a3;
-  if ([v5 isEqualToString:@"eating"])
+  homeCopy = home;
+  summaryCopy = summary;
+  if ([summaryCopy isEqualToString:@"eating"])
   {
-    if (v4)
+    if (homeCopy)
     {
       v6 = @"dining";
     }
@@ -4404,32 +4404,32 @@ LABEL_85:
 
   else
   {
-    v6 = v5;
+    v6 = summaryCopy;
   }
 
   return v6;
 }
 
-+ (void)setMetaDataForInvite:(id)a3 metaData:(id)a4
++ (void)setMetaDataForInvite:(id)invite metaData:(id)data
 {
-  v14 = a4;
-  v5 = a3;
+  dataCopy = data;
+  inviteCopy = invite;
   v6 = [NSPredicate predicateWithFormat:@"type == %lu", 17];
-  v7 = [v5 resources];
+  resources = [inviteCopy resources];
 
-  v8 = [v7 filteredArrayUsingPredicate:v6];
+  v8 = [resources filteredArrayUsingPredicate:v6];
 
   if ([v8 count] == 1)
   {
-    v9 = [v8 firstObject];
-    v10 = [v9 name];
-    v11 = [v10 length];
+    firstObject = [v8 firstObject];
+    name = [firstObject name];
+    v11 = [name length];
 
     if (v11)
     {
-      v12 = [v9 name];
-      v13 = [v12 copy];
-      [v14 setObject:v13 forKeyedSubscript:@"invite_title"];
+      name2 = [firstObject name];
+      v13 = [name2 copy];
+      [dataCopy setObject:v13 forKeyedSubscript:@"invite_title"];
     }
   }
 }

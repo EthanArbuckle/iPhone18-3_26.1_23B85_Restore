@@ -1,57 +1,57 @@
 @interface _DASBARScheduler
-+ (id)barSchedulerWithScheduler:(id)a3;
-- (BOOL)appUsesBackgroundTaskScheduler:(id)a3;
-- (BOOL)applicationStateRequiresImmediateDelivery:(id)a3;
-- (BOOL)backgroundAppRefreshEnabledForApp:(id)a3;
-- (BOOL)backgroundLaunchAllowedForApp:(id)a3;
-- (BOOL)backgroundLaunchAllowedForBGTaskActivity:(id)a3;
++ (id)barSchedulerWithScheduler:(id)scheduler;
+- (BOOL)appUsesBackgroundTaskScheduler:(id)scheduler;
+- (BOOL)applicationStateRequiresImmediateDelivery:(id)delivery;
+- (BOOL)backgroundAppRefreshEnabledForApp:(id)app;
+- (BOOL)backgroundLaunchAllowedForApp:(id)app;
+- (BOOL)backgroundLaunchAllowedForBGTaskActivity:(id)activity;
 - (BOOL)isBAREnabledOnWiFiOnly;
-- (BOOL)isNewsstandApp:(id)a3;
-- (BOOL)pushLaunchAllowedForApp:(id)a3 immediately:(BOOL *)a4;
-- (_DASBARScheduler)initWithScheduler:(id)a3;
-- (double)minimumDelayBetweenLaunchesForApp:(id)a3;
-- (id)appsLaunchedInLastDays:(int)a3;
-- (id)queueAppsEligibleForBackgroundFetchInSet:(id)a3;
-- (id)queueAppsWithDelaySpecifiedInSet:(id)a3;
+- (BOOL)isNewsstandApp:(id)app;
+- (BOOL)pushLaunchAllowedForApp:(id)app immediately:(BOOL *)immediately;
+- (_DASBARScheduler)initWithScheduler:(id)scheduler;
+- (double)minimumDelayBetweenLaunchesForApp:(id)app;
+- (id)appsLaunchedInLastDays:(int)days;
+- (id)queueAppsEligibleForBackgroundFetchInSet:(id)set;
+- (id)queueAppsWithDelaySpecifiedInSet:(id)set;
 - (id)queueObtainAppsEligibleForBackgroundFetch;
 - (id)queuePendingRefreshes;
-- (id)topNAppsUserHasLaunchedInSet:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (id)topNAppsUserHasLaunchedInSet:(id)set;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)cancelActivitiesForAllApps;
 - (void)createBARApplicationGroup;
 - (void)dealloc;
 - (void)determineAppsWithBackgroundRunningModes;
-- (void)disableAppRefreshForApps:(id)a3;
-- (void)handleAppsForegrounded:(id)a3;
+- (void)disableAppRefreshForApps:(id)apps;
+- (void)handleAppsForegrounded:(id)foregrounded;
 - (void)queueCancelActivitiesForAllApps;
-- (void)queueCancelActivitiesForApps:(id)a3;
-- (void)queueHandleAppKilled:(id)a3;
-- (void)queueHandleAppsKilled:(id)a3;
-- (void)queueHandleAppsRevived:(id)a3;
-- (void)queueHandleAppsUninstalled:(id)a3;
-- (void)queueHandleBARSettingsChangedNotification:(BOOL)a3;
+- (void)queueCancelActivitiesForApps:(id)apps;
+- (void)queueHandleAppKilled:(id)killed;
+- (void)queueHandleAppsKilled:(id)killed;
+- (void)queueHandleAppsRevived:(id)revived;
+- (void)queueHandleAppsUninstalled:(id)uninstalled;
+- (void)queueHandleBARSettingsChangedNotification:(BOOL)notification;
 - (void)queueReloadRequestedDelays;
-- (void)queueScheduleActivitiesForEligibleApps:(id)a3 withDelay:(BOOL)a4;
-- (void)queueScheduleActivityForApp:(id)a3 startingAfter:(id)a4;
+- (void)queueScheduleActivitiesForEligibleApps:(id)apps withDelay:(BOOL)delay;
+- (void)queueScheduleActivityForApp:(id)app startingAfter:(id)after;
 - (void)queueStartIfBAREnabled;
-- (void)queueUpdateLastLaunchTimesToDate:(id)a3 forApps:(id)a4;
+- (void)queueUpdateLastLaunchTimesToDate:(id)date forApps:(id)apps;
 - (void)queue_cancelBackgroundTasksForUnusedApps;
-- (void)quitMonitor:(id)a3 userClosedLastSceneOfApplicationWithBundleID:(id)a4;
+- (void)quitMonitor:(id)monitor userClosedLastSceneOfApplicationWithBundleID:(id)d;
 - (void)recordBARState;
 - (void)registerForAppKilledNotifications;
 - (void)registerForBARNotifications;
 - (void)reloadRequestedDelays;
-- (void)setMinimumBackgroundFetchInterval:(double)a3 forApp:(id)a4;
+- (void)setMinimumBackgroundFetchInterval:(double)interval forApp:(id)app;
 - (void)start;
 - (void)startIfBAREnabled;
 @end
 
 @implementation _DASBARScheduler
 
-- (_DASBARScheduler)initWithScheduler:(id)a3
+- (_DASBARScheduler)initWithScheduler:(id)scheduler
 {
-  v5 = a3;
+  schedulerCopy = scheduler;
   v44.receiver = self;
   v44.super_class = _DASBARScheduler;
   v6 = [(_DASBARScheduler *)&v44 init];
@@ -73,7 +73,7 @@
 
     v15 = *(v6 + 5);
     dispatch_set_qos_class_fallback();
-    objc_storeStrong(v6 + 6, a3);
+    objc_storeStrong(v6 + 6, scheduler);
     v16 = +[NSMutableDictionary dictionary];
     v17 = *(v6 + 21);
     *(v6 + 21) = v16;
@@ -135,10 +135,10 @@
   return v6;
 }
 
-+ (id)barSchedulerWithScheduler:(id)a3
++ (id)barSchedulerWithScheduler:(id)scheduler
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithScheduler:v3];
+  schedulerCopy = scheduler;
+  v4 = [objc_alloc(objc_opt_class()) initWithScheduler:schedulerCopy];
 
   return v4;
 }
@@ -156,9 +156,9 @@
   [(_DASBARScheduler *)&v4 dealloc];
 }
 
-- (id)queueAppsEligibleForBackgroundFetchInSet:(id)a3
+- (id)queueAppsEligibleForBackgroundFetchInSet:(id)set
 {
-  v4 = [a3 mutableCopy];
+  v4 = [set mutableCopy];
   [v4 intersectSet:self->_fetchEnabledApps];
   [v4 minusSet:self->_killedApps];
   [v4 minusSet:self->_disallowedApps];
@@ -185,8 +185,8 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) dk_dedup];
-        [v7 addObject:v13];
+        dk_dedup = [*(*(&v15 + 1) + 8 * i) dk_dedup];
+        [v7 addObject:dk_dedup];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -219,20 +219,20 @@
   v25 = os_transaction_create();
   context = objc_autoreleasePoolPush();
   v3 = [LSApplicationRecord enumeratorWithOptions:0];
-  v4 = [v3 nextObject];
-  if (v4)
+  nextObject = [v3 nextObject];
+  if (nextObject)
   {
-    v5 = v4;
+    v5 = nextObject;
     v26 = v3;
     while (1)
     {
       v6 = objc_autoreleasePoolPush();
       if (([v5 isLaunchProhibited] & 1) == 0)
       {
-        v7 = [v5 applicationState];
-        v8 = [v7 isRestricted];
+        applicationState = [v5 applicationState];
+        isRestricted = [applicationState isRestricted];
 
-        if ((v8 & 1) == 0)
+        if ((isRestricted & 1) == 0)
         {
           break;
         }
@@ -240,22 +240,22 @@
 
 LABEL_23:
       objc_autoreleasePoolPop(v6);
-      v23 = [v3 nextObject];
+      nextObject2 = [v3 nextObject];
 
-      v5 = v23;
-      if (!v23)
+      v5 = nextObject2;
+      if (!nextObject2)
       {
         goto LABEL_24;
       }
     }
 
     v27 = v6;
-    v9 = [v5 UIBackgroundModes];
+    uIBackgroundModes = [v5 UIBackgroundModes];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v10 = [v9 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    v10 = [uIBackgroundModes countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (!v10)
     {
       goto LABEL_22;
@@ -269,7 +269,7 @@ LABEL_7:
     {
       if (*v31 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(uIBackgroundModes);
       }
 
       v14 = *(*(&v30 + 1) + 8 * v13);
@@ -279,19 +279,19 @@ LABEL_7:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
           log = v19;
-          v21 = [v5 localizedName];
-          v22 = [v5 bundleIdentifier];
+          localizedName = [v5 localizedName];
+          bundleIdentifier = [v5 bundleIdentifier];
           *buf = 138412546;
-          v35 = v21;
+          v35 = localizedName;
           v36 = 2112;
-          v37 = v22;
+          v37 = bundleIdentifier;
           _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "%@ (%@) eligible for BAR", buf, 0x16u);
         }
 
-        v20 = [v5 bundleIdentifier];
-        v16 = [v20 dk_dedup];
+        bundleIdentifier2 = [v5 bundleIdentifier];
+        dk_dedup = [bundleIdentifier2 dk_dedup];
 
-        [v29 addObject:v16];
+        [v29 addObject:dk_dedup];
         p_fetchEnabledApps = &self->_fetchEnabledApps;
         goto LABEL_19;
       }
@@ -303,8 +303,8 @@ LABEL_7:
 
       if ([v14 isEqualToString:@"newsstand"])
       {
-        v18 = [v5 bundleIdentifier];
-        v16 = [v18 dk_dedup];
+        bundleIdentifier3 = [v5 bundleIdentifier];
+        dk_dedup = [bundleIdentifier3 dk_dedup];
 
         p_fetchEnabledApps = &self->_newsstandApps;
         goto LABEL_19;
@@ -313,7 +313,7 @@ LABEL_7:
 LABEL_20:
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v11 = [uIBackgroundModes countByEnumeratingWithState:&v30 objects:v38 count:16];
         if (!v11)
         {
 LABEL_22:
@@ -327,12 +327,12 @@ LABEL_22:
       }
     }
 
-    v15 = [v5 bundleIdentifier];
-    v16 = [v15 dk_dedup];
+    bundleIdentifier4 = [v5 bundleIdentifier];
+    dk_dedup = [bundleIdentifier4 dk_dedup];
 
     p_fetchEnabledApps = &self->_pushEnabledApps;
 LABEL_19:
-    [(NSMutableSet *)*p_fetchEnabledApps addObject:v16];
+    [(NSMutableSet *)*p_fetchEnabledApps addObject:dk_dedup];
 
     goto LABEL_20;
   }
@@ -342,18 +342,18 @@ LABEL_24:
   objc_autoreleasePoolPop(context);
 }
 
-- (id)queueAppsWithDelaySpecifiedInSet:(id)a3
+- (id)queueAppsWithDelaySpecifiedInSet:(id)set
 {
-  v4 = a3;
-  if ([v4 count])
+  setCopy = set;
+  if ([setCopy count])
   {
-    v5 = [v4 mutableCopy];
+    v5 = [setCopy mutableCopy];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v15 = v4;
-    v6 = v4;
+    v15 = setCopy;
+    v6 = setCopy;
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
     if (v7)
     {
@@ -391,21 +391,21 @@ LABEL_24:
       while (v8);
     }
 
-    v4 = v15;
+    setCopy = v15;
   }
 
   else
   {
-    v5 = v4;
+    v5 = setCopy;
   }
 
   return v5;
 }
 
-- (id)topNAppsUserHasLaunchedInSet:(id)a3
+- (id)topNAppsUserHasLaunchedInSet:(id)set
 {
-  v4 = a3;
-  if ([v4 count])
+  setCopy = set;
+  if ([setCopy count])
   {
     v46 = os_transaction_create();
     context = objc_autoreleasePoolPush();
@@ -414,7 +414,7 @@ LABEL_24:
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v6 = v4;
+    v6 = setCopy;
     v7 = [v6 countByEnumeratingWithState:&v58 objects:v66 count:16];
     if (v7)
     {
@@ -445,12 +445,12 @@ LABEL_24:
     [v13 setMinimumSpanConfiguration:v14];
 
     v15 = objc_autoreleasePoolPush();
-    v16 = [v13 histogram];
-    v17 = [v16 countsDictionary];
+    histogram = [v13 histogram];
+    countsDictionary = [histogram countsDictionary];
 
-    if (v17)
+    if (countsDictionary)
     {
-      v18 = v17;
+      v18 = countsDictionary;
     }
 
     else
@@ -463,9 +463,9 @@ LABEL_24:
       v42 = v15;
       v43 = v13;
       v44 = v12;
-      v45 = v4;
-      v23 = [v18 allKeys];
-      v24 = [v23 mutableCopy];
+      v45 = setCopy;
+      allKeys = [v18 allKeys];
+      v24 = [allKeys mutableCopy];
 
       v56[0] = _NSConcreteStackBlock;
       v56[1] = 3221225472;
@@ -498,8 +498,8 @@ LABEL_17:
           v32 = *(*(&v52 + 1) + 8 * v31);
           if ([v6 containsObject:{v32, v41}])
           {
-            v33 = [v32 dk_dedup];
-            [v25 addObject:v33];
+            dk_dedup = [v32 dk_dedup];
+            [v25 addObject:dk_dedup];
 
             if (++v29 == 50)
             {
@@ -522,7 +522,7 @@ LABEL_17:
 
       v21 = [v25 mutableCopy];
       v12 = v44;
-      v4 = v45;
+      setCopy = v45;
       v15 = v42;
       v13 = v43;
       v20 = v41;
@@ -530,8 +530,8 @@ LABEL_17:
 
     else
     {
-      v19 = [v18 allKeys];
-      [NSMutableSet setWithArray:v19];
+      allKeys2 = [v18 allKeys];
+      [NSMutableSet setWithArray:allKeys2];
       v21 = v20 = v18;
 
       [v21 intersectSet:v6];
@@ -577,7 +577,7 @@ LABEL_17:
 
   else
   {
-    v22 = v4;
+    v22 = setCopy;
   }
 
   return v22;
@@ -593,23 +593,23 @@ LABEL_17:
   return self;
 }
 
-- (void)queueHandleBARSettingsChangedNotification:(BOOL)a3
+- (void)queueHandleBARSettingsChangedNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v5 = os_transaction_create();
   v6 = objc_autoreleasePoolPush();
-  v7 = [(_DASBARScheduler *)self isBAREnabledOnWiFiOnly];
-  v8 = v7;
+  isBAREnabledOnWiFiOnly = [(_DASBARScheduler *)self isBAREnabledOnWiFiOnly];
+  v8 = isBAREnabledOnWiFiOnly;
   barEnabled = self->_barEnabled;
-  if (!v3 || barEnabled)
+  if (!notificationCopy || barEnabled)
   {
     v11 = !barEnabled;
-    if ((v11 & 1) != 0 || v3)
+    if ((v11 & 1) != 0 || notificationCopy)
     {
-      if (((!v3 | v11) & 1) == 0)
+      if (((!notificationCopy | v11) & 1) == 0)
       {
         barWiFiOnly = self->_barWiFiOnly;
-        if (barWiFiOnly != v7)
+        if (barWiFiOnly != isBAREnabledOnWiFiOnly)
         {
           log = self->_log;
           if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -654,8 +654,8 @@ LABEL_17:
             sub_100126D9C();
           }
 
-          v21 = [(_DASBARScheduler *)self queuePendingRefreshes];
-          [v19 minusSet:v21];
+          queuePendingRefreshes = [(_DASBARScheduler *)self queuePendingRefreshes];
+          [v19 minusSet:queuePendingRefreshes];
           [(NSMutableSet *)self->_disallowedApps minusSet:v19];
           [(_DASBARScheduler *)self queueScheduleActivitiesForEligibleApps:v19 withDelay:1];
         }
@@ -666,12 +666,12 @@ LABEL_17:
           v47 = v19;
           v49 = v6;
           v50 = v5;
-          v22 = [(_DASBARScheduler *)self queuePendingRefreshes];
+          queuePendingRefreshes2 = [(_DASBARScheduler *)self queuePendingRefreshes];
           v55 = 0u;
           v56 = 0u;
           v57 = 0u;
           v58 = 0u;
-          v23 = [v22 countByEnumeratingWithState:&v55 objects:v67 count:16];
+          v23 = [queuePendingRefreshes2 countByEnumeratingWithState:&v55 objects:v67 count:16];
           if (v23)
           {
             v24 = v23;
@@ -683,7 +683,7 @@ LABEL_17:
               {
                 if (*v56 != v25)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(queuePendingRefreshes2);
                 }
 
                 v27 = *(*(&v55 + 1) + 8 * v26);
@@ -715,7 +715,7 @@ LABEL_17:
               }
 
               while (v24 != v26);
-              v36 = [v22 countByEnumeratingWithState:&v55 objects:v67 count:16];
+              v36 = [queuePendingRefreshes2 countByEnumeratingWithState:&v55 objects:v67 count:16];
               v24 = v36;
             }
 
@@ -723,12 +723,12 @@ LABEL_17:
           }
 
           v48 = v18;
-          v37 = [(_DASDaemon *)self->_scheduler allPendingPushLaunchTasks];
+          allPendingPushLaunchTasks = [(_DASDaemon *)self->_scheduler allPendingPushLaunchTasks];
           v51 = 0u;
           v52 = 0u;
           v53 = 0u;
           v54 = 0u;
-          v38 = [v37 countByEnumeratingWithState:&v51 objects:v62 count:16];
+          v38 = [allPendingPushLaunchTasks countByEnumeratingWithState:&v51 objects:v62 count:16];
           if (v38)
           {
             v39 = v38;
@@ -740,7 +740,7 @@ LABEL_17:
               {
                 if (*v52 != v40)
                 {
-                  objc_enumerationMutation(v37);
+                  objc_enumerationMutation(allPendingPushLaunchTasks);
                 }
 
                 v42 = *(*(&v51 + 1) + 8 * v41);
@@ -765,7 +765,7 @@ LABEL_17:
               }
 
               while (v39 != v41);
-              v45 = [v37 countByEnumeratingWithState:&v51 objects:v62 count:16];
+              v45 = [allPendingPushLaunchTasks countByEnumeratingWithState:&v51 objects:v62 count:16];
               v39 = v45;
             }
 
@@ -825,19 +825,19 @@ LABEL_17:
   block[2] = sub_1000A4628;
   block[3] = &unk_1001B56E0;
   v11 = v4;
-  v12 = self;
+  selfCopy = self;
   v6 = v4;
   dispatch_sync(queue, block);
 
   objc_autoreleasePoolPop(v3);
-  v7 = [@"kKeepAppsUpToDateEnabledChangedNotification" UTF8String];
+  uTF8String = [@"kKeepAppsUpToDateEnabledChangedNotification" UTF8String];
   v8 = self->_queue;
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_1000A474C;
   handler[3] = &unk_1001B5B78;
   handler[4] = self;
-  notify_register_dispatch(v7, &self->_barSettingsChangedToken, v8, handler);
+  notify_register_dispatch(uTF8String, &self->_barSettingsChangedToken, v8, handler);
   [(_DASBARScheduler *)self recordBARState];
 }
 
@@ -855,23 +855,23 @@ LABEL_17:
   self->_quitMonitor = v4;
 }
 
-- (void)queueHandleAppKilled:(id)a3
+- (void)queueHandleAppKilled:(id)killed
 {
-  v4 = a3;
+  killedCopy = killed;
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_100126EE0();
   }
 
-  if (([(NSMutableSet *)self->_killedApps containsObject:v4]& 1) == 0)
+  if (([(NSMutableSet *)self->_killedApps containsObject:killedCopy]& 1) == 0)
   {
-    v5 = [v4 dk_dedup];
-    v6 = [NSSet setWithObject:v5];
+    dk_dedup = [killedCopy dk_dedup];
+    v6 = [NSSet setWithObject:dk_dedup];
 
     [(NSMutableSet *)self->_killedApps unionSet:v6];
     killedAppPreferences = self->_killedAppPreferences;
-    v8 = [(NSMutableSet *)self->_killedApps allObjects];
-    [(NSUserDefaults *)killedAppPreferences setObject:v8 forKey:@"killed"];
+    allObjects = [(NSMutableSet *)self->_killedApps allObjects];
+    [(NSUserDefaults *)killedAppPreferences setObject:allObjects forKey:@"killed"];
 
     [(_DASBARScheduler *)self queueCancelActivitiesForApps:v6];
     schedulingQueue = self->_schedulingQueue;
@@ -886,14 +886,14 @@ LABEL_17:
   }
 }
 
-- (void)queueHandleAppsKilled:(id)a3
+- (void)queueHandleAppsKilled:(id)killed
 {
-  v4 = a3;
+  killedCopy = killed;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [killedCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -905,47 +905,47 @@ LABEL_17:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(killedCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
         if (([(NSMutableSet *)self->_killedApps containsObject:v10]& 1) == 0)
         {
           killedApps = self->_killedApps;
-          v12 = [v10 dk_dedup];
-          [(NSMutableSet *)killedApps addObject:v12];
+          dk_dedup = [v10 dk_dedup];
+          [(NSMutableSet *)killedApps addObject:dk_dedup];
 
           v8 = 0;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [killedCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
     if ((v8 & 1) == 0)
     {
       killedAppPreferences = self->_killedAppPreferences;
-      v14 = [(NSMutableSet *)self->_killedApps allObjects];
-      [(NSUserDefaults *)killedAppPreferences setObject:v14 forKey:@"killed"];
+      allObjects = [(NSMutableSet *)self->_killedApps allObjects];
+      [(NSUserDefaults *)killedAppPreferences setObject:allObjects forKey:@"killed"];
 
-      [(_DASBARScheduler *)self queueCancelActivitiesForApps:v4];
-      [(_DASDaemon *)self->_scheduler cancelAppRefreshTasksForApps:v4];
+      [(_DASBARScheduler *)self queueCancelActivitiesForApps:killedCopy];
+      [(_DASDaemon *)self->_scheduler cancelAppRefreshTasksForApps:killedCopy];
     }
   }
 }
 
-- (void)queueHandleAppsRevived:(id)a3
+- (void)queueHandleAppsRevived:(id)revived
 {
-  v4 = a3;
+  revivedCopy = revived;
   v5 = +[NSMutableSet set];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = revivedCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
-  v9 = v6;
+  allObjects = v6;
   if (!v7)
   {
     goto LABEL_14;
@@ -977,8 +977,8 @@ LABEL_17:
         }
 
         [(NSMutableSet *)self->_killedApps removeObject:v14];
-        v16 = [v14 dk_dedup];
-        [v5 addObject:v16];
+        dk_dedup = [v14 dk_dedup];
+        [v5 addObject:dk_dedup];
 
         v11 = 1;
       }
@@ -992,23 +992,23 @@ LABEL_17:
   if (v11)
   {
     killedAppPreferences = self->_killedAppPreferences;
-    v9 = [(NSMutableSet *)self->_killedApps allObjects];
-    [(NSUserDefaults *)killedAppPreferences setObject:v9 forKey:@"killed"];
+    allObjects = [(NSMutableSet *)self->_killedApps allObjects];
+    [(NSUserDefaults *)killedAppPreferences setObject:allObjects forKey:@"killed"];
 LABEL_14:
   }
 }
 
-- (void)queueHandleAppsUninstalled:(id)a3
+- (void)queueHandleAppsUninstalled:(id)uninstalled
 {
-  v4 = a3;
-  [(_DASBARScheduler *)self queueCancelActivitiesForApps:v4];
+  uninstalledCopy = uninstalled;
+  [(_DASBARScheduler *)self queueCancelActivitiesForApps:uninstalledCopy];
   schedulingQueue = self->_schedulingQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A5094;
   block[3] = &unk_1001B56E0;
   block[4] = self;
-  v6 = v4;
+  v6 = uninstalledCopy;
   v22 = v6;
   dispatch_async(schedulingQueue, block);
   [(NSMutableSet *)self->_fetchEnabledApps minusSet:v6];
@@ -1056,24 +1056,24 @@ LABEL_14:
   [(_DASBARScheduler *)self queueHandleAppsRevived:v9];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   v5 = os_transaction_create();
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000A5158;
   v8[3] = &unk_1001B56E0;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = uninstallCopy;
+  selfCopy = self;
+  v7 = uninstallCopy;
   dispatch_sync(queue, v8);
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = a3;
+  installCopy = install;
   v5 = os_transaction_create();
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1081,26 +1081,26 @@ LABEL_14:
   block[2] = sub_1000A5358;
   block[3] = &unk_1001B56B8;
   v10 = v5;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = installCopy;
+  selfCopy = self;
+  v7 = installCopy;
   v8 = v5;
   dispatch_sync(queue, block);
 }
 
-- (id)appsLaunchedInLastDays:(int)a3
+- (id)appsLaunchedInLastDays:(int)days
 {
   v20 = os_transaction_create();
   v5 = +[NSMutableDictionary dictionary];
   v6 = +[NSDate date];
   [v6 timeIntervalSinceReferenceDate];
   v8 = v7;
-  v9 = [NSDate dateWithTimeIntervalSinceNow:(-86400 * a3)];
+  v9 = [NSDate dateWithTimeIntervalSinceNow:(-86400 * days)];
   v10 = [BMPublisherOptions optionsWithStartDate:v9];
   v11 = BiomeLibrary();
   v12 = [v11 App];
-  v13 = [v12 InFocus];
-  v14 = [v13 publisherWithOptions:v10];
+  inFocus = [v12 InFocus];
+  v14 = [inFocus publisherWithOptions:v10];
   v15 = [v14 filterWithIsIncluded:&stru_1001B7AB0];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
@@ -1146,24 +1146,24 @@ LABEL_14:
 - (id)queuePendingRefreshes
 {
   v3 = +[NSMutableSet set];
-  v4 = [(NSMutableDictionary *)self->_appsToPendingTasks allKeys];
-  [v3 addObjectsFromArray:v4];
+  allKeys = [(NSMutableDictionary *)self->_appsToPendingTasks allKeys];
+  [v3 addObjectsFromArray:allKeys];
 
   return v3;
 }
 
 - (void)queueCancelActivitiesForAllApps
 {
-  v3 = [(NSMutableDictionary *)self->_appsToPendingTasks allValues];
+  allValues = [(NSMutableDictionary *)self->_appsToPendingTasks allValues];
   [(NSMutableDictionary *)self->_appsToPendingTasks removeAllObjects];
   schedulingQueue = self->_schedulingQueue;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000A5E1C;
   v6[3] = &unk_1001B56E0;
-  v7 = v3;
-  v8 = self;
-  v5 = v3;
+  v7 = allValues;
+  selfCopy = self;
+  v5 = allValues;
   dispatch_async(schedulingQueue, v6);
 }
 
@@ -1178,15 +1178,15 @@ LABEL_14:
   dispatch_sync(queue, block);
 }
 
-- (void)queueCancelActivitiesForApps:(id)a3
+- (void)queueCancelActivitiesForApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   v5 = +[NSMutableArray array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = appsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -1222,17 +1222,17 @@ LABEL_14:
   v15[2] = sub_1000A6154;
   v15[3] = &unk_1001B56E0;
   v16 = v5;
-  v17 = self;
+  selfCopy = self;
   v14 = v5;
   dispatch_async(schedulingQueue, v15);
 }
 
-- (void)queueScheduleActivitiesForEligibleApps:(id)a3 withDelay:(BOOL)a4
+- (void)queueScheduleActivitiesForEligibleApps:(id)apps withDelay:(BOOL)delay
 {
-  v6 = a3;
+  appsCopy = apps;
   v17 = os_transaction_create();
-  v18 = v6;
-  v7 = [(_DASBARScheduler *)self queueAppsEligibleForBackgroundFetchInSet:v6];
+  v18 = appsCopy;
+  v7 = [(_DASBARScheduler *)self queueAppsEligibleForBackgroundFetchInSet:appsCopy];
   v8 = +[NSDate date];
   v19 = 0u;
   v20 = 0u;
@@ -1255,7 +1255,7 @@ LABEL_14:
         }
 
         v14 = *(*(&v19 + 1) + 8 * v13);
-        if (a4)
+        if (delay)
         {
           v15 = [(NSMutableDictionary *)self->_appToMinimumLaunchDelay objectForKeyedSubscript:*(*(&v19 + 1) + 8 * v13)];
           [v15 doubleValue];
@@ -1279,19 +1279,19 @@ LABEL_14:
   }
 }
 
-- (void)queueScheduleActivityForApp:(id)a3 startingAfter:(id)a4
+- (void)queueScheduleActivityForApp:(id)app startingAfter:(id)after
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  afterCopy = after;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v25 = v6;
+    v25 = appCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Scheduling refresh for %@", buf, 0xCu);
   }
 
-  if ([v6 isEqualToString:@"com.apple.purplebuddy"])
+  if ([appCopy isEqualToString:@"com.apple.purplebuddy"])
   {
     v9 = self->_log;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1302,16 +1302,16 @@ LABEL_14:
 
   else
   {
-    v10 = [(NSMutableDictionary *)self->_appToMinimumLaunchDelay objectForKeyedSubscript:v6];
+    v10 = [(NSMutableDictionary *)self->_appToMinimumLaunchDelay objectForKeyedSubscript:appCopy];
 
     if (v10)
     {
-      v11 = [NSString stringWithFormat:@"%@%@", @"com.apple.fetch.", v6];
+      appCopy = [NSString stringWithFormat:@"%@%@", @"com.apple.fetch.", appCopy];
       v12 = _DASSchedulingPriorityBackground;
       v13 = _DASLaunchReasonBackgroundFetch;
       v14 = _DASActivityDurationVeryShort;
-      v15 = [v7 dateByAddingTimeInterval:86400.0];
-      v16 = [_DASActivity applicationLaunchActivityWithName:v11 priority:v12 forApplication:v6 withReason:v13 duration:v14 startingAfter:v7 startingBefore:v15];
+      v15 = [afterCopy dateByAddingTimeInterval:86400.0];
+      v16 = [_DASActivity applicationLaunchActivityWithName:appCopy priority:v12 forApplication:appCopy withReason:v13 duration:v14 startingAfter:afterCopy startingBefore:v15];
 
       [v16 setShouldBePersisted:0];
       [v16 setRequiresNetwork:1];
@@ -1322,7 +1322,7 @@ LABEL_14:
       v22[2] = sub_1000A66DC;
       v22[3] = &unk_1001B7B28;
       v22[4] = self;
-      v17 = v6;
+      v17 = appCopy;
       v23 = v17;
       [v16 setStartHandler:v22];
       [(NSMutableDictionary *)self->_appsToPendingTasks setObject:v16 forKeyedSubscript:v17];
@@ -1358,12 +1358,12 @@ LABEL_14:
 {
   [(_DASBARScheduler *)self queueReloadRequestedDelays];
   [(_DASBARScheduler *)self createBARApplicationGroup];
-  v3 = [(_DASBARScheduler *)self queueObtainAppsEligibleForBackgroundFetch];
+  queueObtainAppsEligibleForBackgroundFetch = [(_DASBARScheduler *)self queueObtainAppsEligibleForBackgroundFetch];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [queueObtainAppsEligibleForBackgroundFetch countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1375,7 +1375,7 @@ LABEL_14:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(queueObtainAppsEligibleForBackgroundFetch);
         }
 
         v8 = *(*(&v14 + 1) + 8 * v7);
@@ -1386,7 +1386,7 @@ LABEL_14:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [queueObtainAppsEligibleForBackgroundFetch countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -1444,10 +1444,10 @@ LABEL_14:
   v3 = objc_autoreleasePoolPush();
   [(_DASBARScheduler *)self registerForBARNotifications];
   v4 = +[MCProfileConnection sharedConnection];
-  v5 = [v4 isAutomaticAppUpdatesAllowed];
+  isAutomaticAppUpdatesAllowed = [v4 isAutomaticAppUpdatesAllowed];
   log = self->_log;
   v7 = os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (isAutomaticAppUpdatesAllowed)
   {
     if (v7)
     {
@@ -1469,10 +1469,10 @@ LABEL_14:
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)queueUpdateLastLaunchTimesToDate:(id)a3 forApps:(id)a4
+- (void)queueUpdateLastLaunchTimesToDate:(id)date forApps:(id)apps
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  appsCopy = apps;
   v8 = [(NSUserDefaults *)self->_lastLaunchPreferences dictionaryForKey:@"launches"];
   v19 = v8;
   if (v8)
@@ -1490,7 +1490,7 @@ LABEL_14:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = v7;
+  v11 = appsCopy;
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v12)
   {
@@ -1514,12 +1514,12 @@ LABEL_14:
             *buf = 138412546;
             v25 = v11;
             v26 = 2112;
-            v27 = v6;
+            v27 = dateCopy;
             _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "Updating last launch time for %@ to %@", buf, 0x16u);
           }
 
-          v18 = [v16 dk_dedup];
-          [v10 setObject:v6 forKeyedSubscript:v18];
+          dk_dedup = [v16 dk_dedup];
+          [v10 setObject:dateCopy forKeyedSubscript:dk_dedup];
         }
       }
 
@@ -1532,9 +1532,9 @@ LABEL_14:
   [(NSUserDefaults *)self->_lastLaunchPreferences setObject:v10 forKey:@"launches"];
 }
 
-- (void)handleAppsForegrounded:(id)a3
+- (void)handleAppsForegrounded:(id)foregrounded
 {
-  v4 = a3;
+  foregroundedCopy = foregrounded;
   v5 = os_transaction_create();
   v6 = objc_autoreleasePoolPush();
   v7 = +[NSDate date];
@@ -1546,8 +1546,8 @@ LABEL_14:
   block[3] = &unk_1001B5FF8;
   v10 = v5;
   v15 = v10;
-  v16 = self;
-  v11 = v4;
+  selfCopy = self;
+  v11 = foregroundedCopy;
   v17 = v11;
   v18 = v8;
   v19 = v7;
@@ -1558,9 +1558,9 @@ LABEL_14:
   objc_autoreleasePoolPop(v6);
 }
 
-- (BOOL)backgroundLaunchAllowedForApp:(id)a3
+- (BOOL)backgroundLaunchAllowedForApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1570,10 +1570,10 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = sub_1000A75D8;
   block[3] = &unk_1001B5D98;
-  v9 = v4;
+  v9 = appCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = appCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -1581,10 +1581,10 @@ LABEL_14:
   return queue;
 }
 
-- (BOOL)applicationStateRequiresImmediateDelivery:(id)a3
+- (BOOL)applicationStateRequiresImmediateDelivery:(id)delivery
 {
-  v4 = a3;
-  v5 = [RBSProcessPredicate predicateMatchingBundleIdentifier:v4];
+  deliveryCopy = delivery;
+  v5 = [RBSProcessPredicate predicateMatchingBundleIdentifier:deliveryCopy];
   v12 = 0;
   v6 = [RBSProcessHandle handleForPredicate:v5 error:&v12];
   v7 = v12;
@@ -1601,8 +1601,8 @@ LABEL_14:
 
   else
   {
-    v9 = [v6 currentState];
-    if ([v9 isDebugging])
+    currentState = [v6 currentState];
+    if ([currentState isDebugging])
     {
       if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
       {
@@ -1612,14 +1612,14 @@ LABEL_14:
       v8 = 1;
     }
 
-    else if ([v9 taskState] == 4)
+    else if ([currentState taskState] == 4)
     {
       log = self->_log;
       v8 = 1;
       if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v14 = v4;
+        v14 = deliveryCopy;
         _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Remote Notification: %@ - Running", buf, 0xCu);
       }
     }
@@ -1633,21 +1633,21 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)pushLaunchAllowedForApp:(id)a3 immediately:(BOOL *)a4
+- (BOOL)pushLaunchAllowedForApp:(id)app immediately:(BOOL *)immediately
 {
-  v6 = a3;
-  if (a4)
+  appCopy = app;
+  if (immediately)
   {
-    *a4 = 0;
-    if ([(_DASBARScheduler *)self applicationStateRequiresImmediateDelivery:v6])
+    *immediately = 0;
+    if ([(_DASBARScheduler *)self applicationStateRequiresImmediateDelivery:appCopy])
     {
       v7 = 1;
-      *a4 = 1;
+      *immediately = 1;
       goto LABEL_18;
     }
   }
 
-  else if ([(_DASBARScheduler *)self applicationStateRequiresImmediateDelivery:v6])
+  else if ([(_DASBARScheduler *)self applicationStateRequiresImmediateDelivery:appCopy])
   {
     v7 = 1;
     goto LABEL_18;
@@ -1665,12 +1665,12 @@ LABEL_14:
     v17 = sub_1000A7A48;
     v18 = &unk_1001B7B50;
     v21 = &v25;
-    v19 = self;
-    v9 = v6;
+    selfCopy = self;
+    v9 = appCopy;
     v20 = v9;
-    v22 = a4;
+    immediatelyCopy = immediately;
     dispatch_sync(queue, &v15);
-    if (a4 && *a4 || (+[_APRSPrewarmInterface sharedInstance](_APRSPrewarmInterface, "sharedInstance", v15, v16, v17, v18, v19), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 hasPrewarmAssertionForApplication:v9], v10, !v11))
+    if (immediately && *immediately || (+[_APRSPrewarmInterface sharedInstance](_APRSPrewarmInterface, "sharedInstance", v15, v16, v17, v18, selfCopy), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 hasPrewarmAssertionForApplication:v9], v10, !v11))
     {
       v7 = *(*(&v25 + 1) + 24);
     }
@@ -1697,7 +1697,7 @@ LABEL_14:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       LODWORD(v25) = 138412290;
-      *(&v25 + 4) = v6;
+      *(&v25 + 4) = appCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Remote Notification: %@ - BAR Disabled", &v25, 0xCu);
     }
 
@@ -1709,11 +1709,11 @@ LABEL_18:
   return v7 & 1;
 }
 
-- (BOOL)isNewsstandApp:(id)a3
+- (BOOL)isNewsstandApp:(id)app
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  appCopy = app;
+  v5 = appCopy;
+  if (appCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -1726,7 +1726,7 @@ LABEL_18:
     block[3] = &unk_1001B5D98;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = appCopy;
     dispatch_sync(queue, block);
     v7 = *(v13 + 24);
 
@@ -1741,11 +1741,11 @@ LABEL_18:
   return v7 & 1;
 }
 
-- (void)quitMonitor:(id)a3 userClosedLastSceneOfApplicationWithBundleID:(id)a4
+- (void)quitMonitor:(id)monitor userClosedLastSceneOfApplicationWithBundleID:(id)d
 {
-  v6 = a4;
-  v7 = v6;
-  if (self->_quitMonitor == a3)
+  dCopy = d;
+  v7 = dCopy;
+  if (self->_quitMonitor == monitor)
   {
     queue = self->_queue;
     v9[0] = _NSConcreteStackBlock;
@@ -1753,7 +1753,7 @@ LABEL_18:
     v9[2] = sub_1000A7E5C;
     v9[3] = &unk_1001B56E0;
     v9[4] = self;
-    v10 = v6;
+    v10 = dCopy;
     dispatch_sync(queue, v9);
   }
 }
@@ -1792,9 +1792,9 @@ LABEL_18:
   objc_autoreleasePoolPop(v3);
 }
 
-- (double)minimumDelayBetweenLaunchesForApp:(id)a3
+- (double)minimumDelayBetweenLaunchesForApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -1805,9 +1805,9 @@ LABEL_18:
   block[2] = sub_1000A8144;
   block[3] = &unk_1001B5AB8;
   block[4] = self;
-  v10 = v4;
+  v10 = appCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = appCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -1815,22 +1815,22 @@ LABEL_18:
   return v7;
 }
 
-- (void)setMinimumBackgroundFetchInterval:(double)a3 forApp:(id)a4
+- (void)setMinimumBackgroundFetchInterval:(double)interval forApp:(id)app
 {
-  v6 = a4;
+  appCopy = app;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A8250;
   block[3] = &unk_1001B5DC0;
-  v10 = v6;
-  v11 = self;
-  v12 = a3;
-  v8 = v6;
+  v10 = appCopy;
+  selfCopy = self;
+  intervalCopy = interval;
+  v8 = appCopy;
   dispatch_sync(queue, block);
 }
 
-- (BOOL)backgroundAppRefreshEnabledForApp:(id)a3
+- (BOOL)backgroundAppRefreshEnabledForApp:(id)app
 {
   if (!self->_barEnabled)
   {
@@ -1838,78 +1838,78 @@ LABEL_18:
   }
 
   barPreferences = self->_barPreferences;
-  v4 = a3;
+  appCopy = app;
   v5 = [(NSUserDefaults *)barPreferences dictionaryForKey:@"KeepAppsUpToDateAppList"];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:appCopy];
 
   if (v6)
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)disableAppRefreshForApps:(id)a3
+- (void)disableAppRefreshForApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = appsCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Disabling BAR for %@", &v6, 0xCu);
   }
 
-  [(_DASBARScheduler *)self queueHandleAppsKilled:v4];
+  [(_DASBARScheduler *)self queueHandleAppsKilled:appsCopy];
 }
 
-- (BOOL)appUsesBackgroundTaskScheduler:(id)a3
+- (BOOL)appUsesBackgroundTaskScheduler:(id)scheduler
 {
-  v3 = [a3 backgroundTaskSchedulerPermittedIdentifiers];
-  v4 = [v3 count] != 0;
+  backgroundTaskSchedulerPermittedIdentifiers = [scheduler backgroundTaskSchedulerPermittedIdentifiers];
+  v4 = [backgroundTaskSchedulerPermittedIdentifiers count] != 0;
 
   return v4;
 }
 
-- (BOOL)backgroundLaunchAllowedForBGTaskActivity:(id)a3
+- (BOOL)backgroundLaunchAllowedForBGTaskActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 launchReason];
+  activityCopy = activity;
+  launchReason = [activityCopy launchReason];
   v6 = _DASLaunchReasonBackgroundProcessing;
-  if ([v5 isEqualToString:_DASLaunchReasonBackgroundProcessing])
+  if ([launchReason isEqualToString:_DASLaunchReasonBackgroundProcessing])
   {
     goto LABEL_4;
   }
 
-  v7 = [v4 launchReason];
-  if ([v7 isEqualToString:_DASLaunchReasonHealthResearch])
+  launchReason2 = [activityCopy launchReason];
+  if ([launchReason2 isEqualToString:_DASLaunchReasonHealthResearch])
   {
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  v23 = [v4 launchReason];
-  v24 = [v23 isEqualToString:_DASLaunchReasonBackgroundRefresh];
+  launchReason3 = [activityCopy launchReason];
+  v24 = [launchReason3 isEqualToString:_DASLaunchReasonBackgroundRefresh];
 
   if (v24)
   {
 LABEL_5:
     v8 = os_transaction_create();
-    v9 = [v4 relatedApplications];
-    v10 = [v9 firstObject];
+    relatedApplications = [activityCopy relatedApplications];
+    firstObject = [relatedApplications firstObject];
 
-    v11 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v10 allowPlaceholder:0 error:0];
-    v12 = [v11 applicationState];
-    v13 = [v12 isValid];
+    v11 = [[LSApplicationRecord alloc] initWithBundleIdentifier:firstObject allowPlaceholder:0 error:0];
+    applicationState = [v11 applicationState];
+    isValid = [applicationState isValid];
 
-    if ((v13 & 1) == 0)
+    if ((isValid & 1) == 0)
     {
       if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
       {
@@ -1919,10 +1919,10 @@ LABEL_5:
       goto LABEL_33;
     }
 
-    v14 = [v11 applicationState];
-    v15 = [v14 isInstalled];
+    applicationState2 = [v11 applicationState];
+    isInstalled = [applicationState2 isInstalled];
 
-    if ((v15 & 1) == 0)
+    if ((isInstalled & 1) == 0)
     {
       if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
       {
@@ -1932,15 +1932,15 @@ LABEL_5:
       goto LABEL_33;
     }
 
-    v16 = [v4 launchReason];
+    launchReason4 = [activityCopy launchReason];
     v17 = _DASLaunchReasonHealthResearch;
-    if ([v16 isEqualToString:_DASLaunchReasonHealthResearch] & 1) != 0 || (objc_msgSend(v4, "isContactTracingBackgroundActivity"))
+    if ([launchReason4 isEqualToString:_DASLaunchReasonHealthResearch] & 1) != 0 || (objc_msgSend(activityCopy, "isContactTracingBackgroundActivity"))
     {
     }
 
     else
     {
-      v31 = [(_DASBARScheduler *)self backgroundLaunchAllowedForApp:v10];
+      v31 = [(_DASBARScheduler *)self backgroundLaunchAllowedForApp:firstObject];
 
       if ((v31 & 1) == 0)
       {
@@ -1953,27 +1953,27 @@ LABEL_5:
       }
     }
 
-    v18 = [v4 launchReason];
-    v19 = [v18 isEqualToString:_DASLaunchReasonBackgroundRefresh];
+    launchReason5 = [activityCopy launchReason];
+    v19 = [launchReason5 isEqualToString:_DASLaunchReasonBackgroundRefresh];
 
     if (v19)
     {
-      v20 = [v11 UIBackgroundModes];
-      v21 = v20;
+      uIBackgroundModes = [v11 UIBackgroundModes];
+      v21 = uIBackgroundModes;
       v22 = @"fetch";
     }
 
     else
     {
-      v30 = [v4 launchReason];
-      if ([v30 isEqualToString:v6])
+      launchReason6 = [activityCopy launchReason];
+      if ([launchReason6 isEqualToString:v6])
       {
       }
 
       else
       {
-        v32 = [v4 launchReason];
-        v33 = [v32 isEqualToString:v17];
+        launchReason7 = [activityCopy launchReason];
+        v33 = [launchReason7 isEqualToString:v17];
 
         if (!v33)
         {
@@ -1991,17 +1991,17 @@ LABEL_34:
         }
       }
 
-      v20 = [v11 UIBackgroundModes];
-      v21 = v20;
+      uIBackgroundModes = [v11 UIBackgroundModes];
+      v21 = uIBackgroundModes;
       v22 = @"processing";
     }
 
-    v34 = [v20 containsObject:v22];
+    v34 = [uIBackgroundModes containsObject:v22];
 
     if (v34)
     {
-      v35 = [v4 clientProvidedIdentifier];
-      if (v35 && ([v11 backgroundTaskSchedulerPermittedIdentifiers], v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "containsObject:", v35), v36, (v37 & 1) != 0))
+      clientProvidedIdentifier = [activityCopy clientProvidedIdentifier];
+      if (clientProvidedIdentifier && ([v11 backgroundTaskSchedulerPermittedIdentifiers], v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "containsObject:", clientProvidedIdentifier), v36, (v37 & 1) != 0))
       {
         v29 = 1;
       }
@@ -2026,12 +2026,12 @@ LABEL_34:
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v26 = log;
-    v27 = [v4 name];
-    v28 = [v4 launchReason];
+    name = [activityCopy name];
+    launchReason8 = [activityCopy launchReason];
     v39 = 138543618;
-    v40 = v27;
+    v40 = name;
     v41 = 2114;
-    v42 = v28;
+    v42 = launchReason8;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Activity %{public}@ launch reason %{public}@ is not a BGTask reason. Allowing background launch.", &v39, 0x16u);
   }
 

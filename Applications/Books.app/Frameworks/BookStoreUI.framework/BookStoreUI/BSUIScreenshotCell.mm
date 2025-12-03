@@ -1,23 +1,23 @@
 @interface BSUIScreenshotCell
-+ (CGSize)itemSizeForRegularPad:(BOOL)a3 maxSize:(CGSize)a4;
-+ (UIEdgeInsets)sectionInsetForRegularPad:(BOOL)a3 maxSize:(CGSize)a4 artworkSize:(CGSize)a5;
++ (CGSize)itemSizeForRegularPad:(BOOL)pad maxSize:(CGSize)size;
++ (UIEdgeInsets)sectionInsetForRegularPad:(BOOL)pad maxSize:(CGSize)size artworkSize:(CGSize)artworkSize;
 + (double)borderWidth;
-+ (double)bottomMarginWithRegularPad:(BOOL)a3;
-+ (double)minimumLineSpacingWithRegularPad:(BOOL)a3;
-- (BSUIScreenshotCell)initWithFrame:(CGRect)a3;
-- (CGRect)_imageRectWithScreenshot:(id)a3;
-- (void)configureWithScreenshot:(id)a3 image:(id)a4;
++ (double)bottomMarginWithRegularPad:(BOOL)pad;
++ (double)minimumLineSpacingWithRegularPad:(BOOL)pad;
+- (BSUIScreenshotCell)initWithFrame:(CGRect)frame;
+- (CGRect)_imageRectWithScreenshot:(id)screenshot;
+- (void)configureWithScreenshot:(id)screenshot image:(id)image;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation BSUIScreenshotCell
 
-- (BSUIScreenshotCell)initWithFrame:(CGRect)a3
+- (BSUIScreenshotCell)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = BSUIScreenshotCell;
-  v3 = [(BSUIScreenshotCell *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BSUIScreenshotCell *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UIImageView);
@@ -26,20 +26,20 @@
 
     [objc_opt_class() borderWidth];
     v7 = v6;
-    v8 = [(UIImageView *)v3->_imageView layer];
-    [v8 setBorderWidth:v7];
+    layer = [(UIImageView *)v3->_imageView layer];
+    [layer setBorderWidth:v7];
 
-    v9 = [(UIImageView *)v3->_imageView layer];
-    [v9 setCornerRadius:5.0];
+    layer2 = [(UIImageView *)v3->_imageView layer];
+    [layer2 setCornerRadius:5.0];
 
-    v10 = [(UIImageView *)v3->_imageView layer];
-    [v10 setMasksToBounds:1];
+    layer3 = [(UIImageView *)v3->_imageView layer];
+    [layer3 setMasksToBounds:1];
 
-    v11 = [(BSUIScreenshotCell *)v3 contentView];
-    [v11 setAutoresizingMask:18];
+    contentView = [(BSUIScreenshotCell *)v3 contentView];
+    [contentView setAutoresizingMask:18];
 
-    v12 = [(BSUIScreenshotCell *)v3 contentView];
-    [v12 addSubview:v3->_imageView];
+    contentView2 = [(BSUIScreenshotCell *)v3 contentView];
+    [contentView2 addSubview:v3->_imageView];
   }
 
   return v3;
@@ -55,8 +55,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BSUIScreenshotCell *)self imageView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  imageView = [(BSUIScreenshotCell *)self imageView];
+  [imageView setFrame:{v4, v6, v8, v10}];
 }
 
 - (void)prepareForReuse
@@ -64,51 +64,51 @@
   v4.receiver = self;
   v4.super_class = BSUIScreenshotCell;
   [(BSUIScreenshotCell *)&v4 prepareForReuse];
-  v3 = [(BSUIScreenshotCell *)self imageView];
-  [v3 setImage:0];
+  imageView = [(BSUIScreenshotCell *)self imageView];
+  [imageView setImage:0];
 }
 
-- (void)configureWithScreenshot:(id)a3 image:(id)a4
+- (void)configureWithScreenshot:(id)screenshot image:(id)image
 {
-  v6 = a4;
-  [(BSUIScreenshotCell *)self _imageRectWithScreenshot:a3];
+  imageCopy = image;
+  [(BSUIScreenshotCell *)self _imageRectWithScreenshot:screenshot];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(BSUIScreenshotCell *)self imageView];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  imageView = [(BSUIScreenshotCell *)self imageView];
+  [imageView setFrame:{v8, v10, v12, v14}];
 
-  v16 = [(BSUIScreenshotCell *)self imageView];
-  [v16 setImage:v6];
+  imageView2 = [(BSUIScreenshotCell *)self imageView];
+  [imageView2 setImage:imageCopy];
 }
 
-- (CGRect)_imageRectWithScreenshot:(id)a3
+- (CGRect)_imageRectWithScreenshot:(id)screenshot
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  screenshotCopy = screenshot;
+  v5 = screenshotCopy;
+  if (screenshotCopy)
   {
-    [v4 size];
+    [screenshotCopy size];
     v7 = v6;
     v9 = v8;
   }
 
   else
   {
-    v10 = [(BSUIScreenshotCell *)self imageView];
-    [v10 bounds];
+    imageView = [(BSUIScreenshotCell *)self imageView];
+    [imageView bounds];
     v7 = v11;
     v9 = v12;
   }
 
   v13 = v7 / v9;
-  v14 = [(BSUIScreenshotCell *)self contentView];
-  [v14 bounds];
+  contentView = [(BSUIScreenshotCell *)self contentView];
+  [contentView bounds];
   Height = CGRectGetHeight(v26);
 
-  v16 = [(BSUIScreenshotCell *)self contentView];
-  [v16 bounds];
+  contentView2 = [(BSUIScreenshotCell *)self contentView];
+  [contentView2 bounds];
   Width = CGRectGetWidth(v27);
 
   v18 = Width / Height <= v13;
@@ -144,10 +144,10 @@
   return result;
 }
 
-+ (double)minimumLineSpacingWithRegularPad:(BOOL)a3
++ (double)minimumLineSpacingWithRegularPad:(BOOL)pad
 {
   result = 15.0;
-  if (a3)
+  if (pad)
   {
     return 30.0;
   }
@@ -155,10 +155,10 @@
   return result;
 }
 
-+ (double)bottomMarginWithRegularPad:(BOOL)a3
++ (double)bottomMarginWithRegularPad:(BOOL)pad
 {
   result = 52.0;
-  if (!a3)
+  if (!pad)
   {
     return 30.0;
   }
@@ -166,21 +166,21 @@
   return result;
 }
 
-+ (UIEdgeInsets)sectionInsetForRegularPad:(BOOL)a3 maxSize:(CGSize)a4 artworkSize:(CGSize)a5
++ (UIEdgeInsets)sectionInsetForRegularPad:(BOOL)pad maxSize:(CGSize)size artworkSize:(CGSize)artworkSize
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  [a1 itemSizeForRegularPad:a4.width maxSize:{a4.height, a5.width, a5.height}];
+  height = size.height;
+  width = size.width;
+  padCopy = pad;
+  [self itemSizeForRegularPad:size.width maxSize:{size.height, artworkSize.width, artworkSize.height}];
   v10 = v9;
   v12 = v11;
-  [a1 topMargin];
+  [self topMargin];
   v14 = height - (v13 + v12);
   if (v14 > v13)
   {
-    [a1 topMargin];
+    [self topMargin];
     v16 = v15;
-    [a1 bottomMarginWithRegularPad:v7];
+    [self bottomMarginWithRegularPad:padCopy];
     v13 = (height - (v16 + v17) - v12) * 0.5;
     v14 = v13;
   }
@@ -194,16 +194,16 @@
   return result;
 }
 
-+ (CGSize)itemSizeForRegularPad:(BOOL)a3 maxSize:(CGSize)a4
++ (CGSize)itemSizeForRegularPad:(BOOL)pad maxSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
-  [a1 bottomMarginWithRegularPad:?];
+  height = size.height;
+  width = size.width;
+  padCopy = pad;
+  [self bottomMarginWithRegularPad:?];
   v9 = v8;
-  [a1 topMargin];
+  [self topMargin];
   v11 = height - (v9 + v10);
-  [a1 minimumLineSpacingWithRegularPad:v6];
+  [self minimumLineSpacingWithRegularPad:padCopy];
   v13 = width - v12;
   v14 = v11;
   result.height = v14;

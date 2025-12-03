@@ -1,32 +1,32 @@
 @interface _DASRateLimitEvaluationResults
-+ (id)evaluationResultsWithMaxedRateLimits:(id)a3 withNextEvaluationDate:(id)a4;
-- (_DASRateLimitEvaluationResults)initWithMaxedRateLimits:(id)a3 withNextEvaluationDate:(id)a4;
++ (id)evaluationResultsWithMaxedRateLimits:(id)limits withNextEvaluationDate:(id)date;
+- (_DASRateLimitEvaluationResults)initWithMaxedRateLimits:(id)limits withNextEvaluationDate:(id)date;
 @end
 
 @implementation _DASRateLimitEvaluationResults
 
-- (_DASRateLimitEvaluationResults)initWithMaxedRateLimits:(id)a3 withNextEvaluationDate:(id)a4
+- (_DASRateLimitEvaluationResults)initWithMaxedRateLimits:(id)limits withNextEvaluationDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  limitsCopy = limits;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = _DASRateLimitEvaluationResults;
   v9 = [(_DASRateLimitEvaluationResults *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_maxedRateLimits, a3);
-    objc_storeStrong(&v10->_nextEvaluationDate, a4);
+    objc_storeStrong(&v9->_maxedRateLimits, limits);
+    objc_storeStrong(&v10->_nextEvaluationDate, date);
   }
 
   return v10;
 }
 
-+ (id)evaluationResultsWithMaxedRateLimits:(id)a3 withNextEvaluationDate:(id)a4
++ (id)evaluationResultsWithMaxedRateLimits:(id)limits withNextEvaluationDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithMaxedRateLimits:v6 withNextEvaluationDate:v5];
+  dateCopy = date;
+  limitsCopy = limits;
+  v7 = [objc_alloc(objc_opt_class()) initWithMaxedRateLimits:limitsCopy withNextEvaluationDate:dateCopy];
 
   return v7;
 }

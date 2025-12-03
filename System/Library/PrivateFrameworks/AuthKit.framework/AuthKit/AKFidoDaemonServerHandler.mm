@@ -1,27 +1,27 @@
 @interface AKFidoDaemonServerHandler
-- (void)_handleFinishFidoResponse:(id)a3 data:(id)a4 context:(id)a5 recoveryToken:(id)a6 error:(id)a7 completion:(id)a8;
-- (void)_handleStartFidoResponse:(id)a3 data:(id)a4 context:(id)a5 recoveryToken:(id)a6 error:(id)a7 completion:(id)a8;
-- (void)finishFidoAuthWithResponse:(id)a3 client:(id)a4 context:(id)a5 recoveryToken:(id)a6 completion:(id)a7;
-- (void)startFidoAuthWithContext:(id)a3 recoveryToken:(id)a4 client:(id)a5 completion:(id)a6;
+- (void)_handleFinishFidoResponse:(id)response data:(id)data context:(id)context recoveryToken:(id)token error:(id)error completion:(id)completion;
+- (void)_handleStartFidoResponse:(id)response data:(id)data context:(id)context recoveryToken:(id)token error:(id)error completion:(id)completion;
+- (void)finishFidoAuthWithResponse:(id)response client:(id)client context:(id)context recoveryToken:(id)token completion:(id)completion;
+- (void)startFidoAuthWithContext:(id)context recoveryToken:(id)token client:(id)client completion:(id)completion;
 @end
 
 @implementation AKFidoDaemonServerHandler
 
-- (void)startFidoAuthWithContext:(id)a3 recoveryToken:(id)a4 client:(id)a5 completion:(id)a6
+- (void)startFidoAuthWithContext:(id)context recoveryToken:(id)token client:(id)client completion:(id)completion
 {
-  v50 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v48 = 0;
-  objc_storeStrong(&v48, a4);
+  objc_storeStrong(&v48, token);
   v47 = 0;
-  objc_storeStrong(&v47, a5);
+  objc_storeStrong(&v47, client);
   v46 = 0;
-  objc_storeStrong(&v46, a6);
-  v18 = [location[0] _identityToken];
-  _objc_release(v18);
-  if (!v18)
+  objc_storeStrong(&v46, completion);
+  _identityToken = [location[0] _identityToken];
+  _objc_release(_identityToken);
+  if (!_identityToken)
   {
     v45 = _AKLogSystem();
     v44 = OS_LOG_TYPE_DEFAULT;
@@ -35,16 +35,16 @@
 
     objc_storeStrong(&v45, 0);
     v42 = +[AKAccountManager sharedInstance];
-    v15 = [location[0] altDSID];
+    altDSID = [location[0] altDSID];
     v41 = [v42 authKitAccountWithAltDSID:? error:?];
-    _objc_release(v15);
+    _objc_release(altDSID);
     if (v41)
     {
       v12 = location[0];
       v14 = [v42 masterTokenForAccount:v41];
-      v13 = [v14 stringValue];
+      stringValue = [v14 stringValue];
       [v12 _setIdentityToken:?];
-      _objc_release(v13);
+      _objc_release(stringValue);
       _objc_release(v14);
     }
 
@@ -101,7 +101,7 @@
   }
 
   objc_storeStrong(&v34, 0);
-  objc_initWeak(&v31, v50);
+  objc_initWeak(&v31, selfCopy);
   v7 = v35;
   v22 = _NSConcreteStackBlock;
   v23 = -1073741824;
@@ -127,22 +127,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleStartFidoResponse:(id)a3 data:(id)a4 context:(id)a5 recoveryToken:(id)a6 error:(id)a7 completion:(id)a8
+- (void)_handleStartFidoResponse:(id)response data:(id)data context:(id)context recoveryToken:(id)token error:(id)error completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, data);
   v32 = 0;
-  objc_storeStrong(&v32, a5);
+  objc_storeStrong(&v32, context);
   v31 = 0;
-  objc_storeStrong(&v31, a6);
+  objc_storeStrong(&v31, token);
   v30 = 0;
-  objc_storeStrong(&v30, a7);
+  objc_storeStrong(&v30, error);
   v29 = 0;
-  objc_storeStrong(&v29, a8);
+  objc_storeStrong(&v29, completion);
   if (v30)
   {
     v28 = _AKLogFido();
@@ -213,20 +213,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)finishFidoAuthWithResponse:(id)a3 client:(id)a4 context:(id)a5 recoveryToken:(id)a6 completion:(id)a7
+- (void)finishFidoAuthWithResponse:(id)response client:(id)client context:(id)context recoveryToken:(id)token completion:(id)completion
 {
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
+  objc_storeStrong(&v40, client);
   v39 = 0;
-  objc_storeStrong(&v39, a5);
+  objc_storeStrong(&v39, context);
   v38 = 0;
-  objc_storeStrong(&v38, a6);
+  objc_storeStrong(&v38, token);
   v37 = 0;
-  objc_storeStrong(&v37, a7);
+  objc_storeStrong(&v37, completion);
   if (v38)
   {
     v7 = _objc_retain(AKURLBagKeyFidoFinishRecoveryAuthKey);
@@ -250,26 +250,26 @@
   }
 
   v43[0] = @"authenticatorData";
-  v15 = [location[0] authenticatorData];
-  v44[0] = v15;
+  authenticatorData = [location[0] authenticatorData];
+  v44[0] = authenticatorData;
   v43[1] = @"clientData";
-  v14 = [location[0] clientData];
-  v44[1] = v14;
+  clientData = [location[0] clientData];
+  v44[1] = clientData;
   v43[2] = @"signature";
-  v13 = [location[0] signature];
-  v44[2] = v13;
+  signature = [location[0] signature];
+  v44[2] = signature;
   v43[3] = @"credentialId";
-  v12 = [location[0] credentialID];
-  v44[3] = v12;
+  credentialID = [location[0] credentialID];
+  v44[3] = credentialID;
   v43[4] = @"userHandle";
-  v11 = [location[0] userIdentifier];
-  v44[4] = v11;
+  userIdentifier = [location[0] userIdentifier];
+  v44[4] = userIdentifier;
   v34 = [NSDictionary dictionaryWithObjects:v44 forKeys:v43 count:5];
-  _objc_release(v11);
-  _objc_release(v12);
-  _objc_release(v13);
-  _objc_release(v14);
-  _objc_release(v15);
+  _objc_release(userIdentifier);
+  _objc_release(credentialID);
+  _objc_release(signature);
+  _objc_release(clientData);
+  _objc_release(authenticatorData);
   [v35 setAuthKitBody:v34];
   v33 = [[AKServiceControllerImpl alloc] initWithRequestProvider:v35];
   v32 = _AKLogFido();
@@ -283,7 +283,7 @@
   }
 
   objc_storeStrong(&v32, 0);
-  objc_initWeak(&from, v42);
+  objc_initWeak(&from, selfCopy);
   v8 = v33;
   v20 = _NSConcreteStackBlock;
   v21 = -1073741824;
@@ -311,22 +311,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleFinishFidoResponse:(id)a3 data:(id)a4 context:(id)a5 recoveryToken:(id)a6 error:(id)a7 completion:(id)a8
+- (void)_handleFinishFidoResponse:(id)response data:(id)data context:(id)context recoveryToken:(id)token error:(id)error completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, data);
   v27 = 0;
-  objc_storeStrong(&v27, a5);
+  objc_storeStrong(&v27, context);
   v26 = 0;
-  objc_storeStrong(&v26, a6);
+  objc_storeStrong(&v26, token);
   v25 = 0;
-  objc_storeStrong(&v25, a7);
+  objc_storeStrong(&v25, error);
   v24 = 0;
-  objc_storeStrong(&v24, a8);
+  objc_storeStrong(&v24, completion);
   if (v25)
   {
     v23 = _AKLogFido();

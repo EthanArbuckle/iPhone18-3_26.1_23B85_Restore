@@ -1,21 +1,21 @@
 @interface MTLAttributeInternal
-- (MTLAttributeInternal)initWithName:(id)a3 attributeIndex:(unint64_t)a4 attributeType:(unint64_t)a5 flags:(MTLAttributeFlags)a6;
-- (id)formattedDescription:(unint64_t)a3;
+- (MTLAttributeInternal)initWithName:(id)name attributeIndex:(unint64_t)index attributeType:(unint64_t)type flags:(MTLAttributeFlags)flags;
+- (id)formattedDescription:(unint64_t)description;
 - (void)dealloc;
 @end
 
 @implementation MTLAttributeInternal
 
-- (MTLAttributeInternal)initWithName:(id)a3 attributeIndex:(unint64_t)a4 attributeType:(unint64_t)a5 flags:(MTLAttributeFlags)a6
+- (MTLAttributeInternal)initWithName:(id)name attributeIndex:(unint64_t)index attributeType:(unint64_t)type flags:(MTLAttributeFlags)flags
 {
-  var1 = a6.var0.var1;
+  var1 = flags.var0.var1;
   v13.receiver = self;
   v13.super_class = MTLAttributeInternal;
   v10 = [(MTLAttributeInternal *)&v13 init];
-  v10->_name = a3;
-  v11 = a3;
-  v10->_attributeIndex = a4;
-  v10->_attributeType = a5;
+  v10->_name = name;
+  nameCopy = name;
+  v10->_attributeIndex = index;
+  v10->_attributeType = type;
   v10->_flags = var1;
   return v10;
 }
@@ -27,10 +27,10 @@
   [(MTLAttributeInternal *)&v3 dealloc];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v11[18] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v5 = MEMORY[0x1E696AEC0];
   v10.receiver = self;
   v10.super_class = MTLAttributeInternal;

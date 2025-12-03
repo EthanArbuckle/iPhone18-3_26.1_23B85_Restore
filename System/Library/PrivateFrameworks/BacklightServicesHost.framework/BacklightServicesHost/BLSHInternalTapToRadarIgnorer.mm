@@ -1,9 +1,9 @@
 @interface BLSHInternalTapToRadarIgnorer
 + (BOOL)hasIgnoredDesignations;
-+ (BOOL)shouldIgnoreDesignation:(unint64_t)a3;
++ (BOOL)shouldIgnoreDesignation:(unint64_t)designation;
 + (id)_defaults;
 + (id)_ignoredDesignations;
-+ (void)ignoreRadarDesignation:(unint64_t)a3;
++ (void)ignoreRadarDesignation:(unint64_t)designation;
 + (void)resetIgnoredDesignations;
 @end
 
@@ -15,23 +15,23 @@
   v3 = v2;
   if (v2)
   {
-    v4 = v2;
+    standardUserDefaults = v2;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   }
 
-  v5 = v4;
+  v5 = standardUserDefaults;
 
   return v5;
 }
 
 + (id)_ignoredDesignations
 {
-  v2 = [a1 _defaults];
-  v3 = [v2 arrayForKey:@"IgnoredTapToRadarDesignations"];
+  _defaults = [self _defaults];
+  v3 = [_defaults arrayForKey:@"IgnoredTapToRadarDesignations"];
 
   if (v3)
   {
@@ -48,30 +48,30 @@
   return v4;
 }
 
-+ (void)ignoreRadarDesignation:(unint64_t)a3
++ (void)ignoreRadarDesignation:(unint64_t)designation
 {
-  v9 = [a1 _ignoredDesignations];
-  v5 = [MEMORY[0x277CBEB58] setWithArray:v9];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  _ignoredDesignations = [self _ignoredDesignations];
+  v5 = [MEMORY[0x277CBEB58] setWithArray:_ignoredDesignations];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:designation];
   [v5 addObject:v6];
 
-  v7 = [a1 _defaults];
-  v8 = [v5 allObjects];
-  [v7 setObject:v8 forKey:@"IgnoredTapToRadarDesignations"];
+  _defaults = [self _defaults];
+  allObjects = [v5 allObjects];
+  [_defaults setObject:allObjects forKey:@"IgnoredTapToRadarDesignations"];
 }
 
-+ (BOOL)shouldIgnoreDesignation:(unint64_t)a3
++ (BOOL)shouldIgnoreDesignation:(unint64_t)designation
 {
-  v4 = [a1 _ignoredDesignations];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  if ([v4 containsObject:v5])
+  _ignoredDesignations = [self _ignoredDesignations];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:designation];
+  if ([_ignoredDesignations containsObject:v5])
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v4 containsObject:&unk_28338DEA8];
+    v6 = [_ignoredDesignations containsObject:&unk_28338DEA8];
   }
 
   return v6;
@@ -79,16 +79,16 @@
 
 + (BOOL)hasIgnoredDesignations
 {
-  v2 = [a1 _ignoredDesignations];
-  v3 = [v2 count] != 0;
+  _ignoredDesignations = [self _ignoredDesignations];
+  v3 = [_ignoredDesignations count] != 0;
 
   return v3;
 }
 
 + (void)resetIgnoredDesignations
 {
-  v2 = [a1 _defaults];
-  [v2 removeObjectForKey:@"IgnoredTapToRadarDesignations"];
+  _defaults = [self _defaults];
+  [_defaults removeObjectForKey:@"IgnoredTapToRadarDesignations"];
 }
 
 @end

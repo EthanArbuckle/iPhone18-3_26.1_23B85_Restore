@@ -1,15 +1,15 @@
 @interface SBUIBackgroundViewInvertColorsAccessibility
-- (id)_backgroundColorForDarkenAlpha:(double)a3 andProgress:(double)a4;
-- (void)beginTransitionToBackgroundStyle:(int64_t)a3;
+- (id)_backgroundColorForDarkenAlpha:(double)alpha andProgress:(double)progress;
+- (void)beginTransitionToBackgroundStyle:(int64_t)style;
 @end
 
 @implementation SBUIBackgroundViewInvertColorsAccessibility
 
-- (id)_backgroundColorForDarkenAlpha:(double)a3 andProgress:(double)a4
+- (id)_backgroundColorForDarkenAlpha:(double)alpha andProgress:(double)progress
 {
   v7.receiver = self;
   v7.super_class = SBUIBackgroundViewInvertColorsAccessibility;
-  v4 = [(SBUIBackgroundViewInvertColorsAccessibility *)&v7 _backgroundColorForDarkenAlpha:a3 andProgress:a4];
+  v4 = [(SBUIBackgroundViewInvertColorsAccessibility *)&v7 _backgroundColorForDarkenAlpha:alpha andProgress:progress];
   if (_AXSInvertColorsEnabled())
   {
     v5 = AXInvertColorForColorPreservingAlpha();
@@ -20,24 +20,24 @@
   return v4;
 }
 
-- (void)beginTransitionToBackgroundStyle:(int64_t)a3
+- (void)beginTransitionToBackgroundStyle:(int64_t)style
 {
-  if (a3 == 8)
+  if (style == 8)
   {
     if (_AXSInvertColorsEnabled())
     {
-      a3 = 4;
+      style = 4;
     }
 
     else
     {
-      a3 = 8;
+      style = 8;
     }
   }
 
   v4.receiver = self;
   v4.super_class = SBUIBackgroundViewInvertColorsAccessibility;
-  [(SBUIBackgroundViewInvertColorsAccessibility *)&v4 beginTransitionToBackgroundStyle:a3];
+  [(SBUIBackgroundViewInvertColorsAccessibility *)&v4 beginTransitionToBackgroundStyle:style];
 }
 
 @end

@@ -60,8 +60,8 @@ LABEL_12:
 
 - (id)contextualViewController
 {
-  v2 = [(PXDebugDictionaryDiagnosticsService *)self _debugDictionary];
-  v3 = [[PXDebugDictionaryViewController alloc] initWithDebugDictionary:v2];
+  _debugDictionary = [(PXDebugDictionaryDiagnosticsService *)self _debugDictionary];
+  v3 = [[PXDebugDictionaryViewController alloc] initWithDebugDictionary:_debugDictionary];
 
   return v3;
 }
@@ -70,9 +70,9 @@ LABEL_12:
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = +[PXDiagnosticsSettings sharedInstance];
-  v4 = [v3 enableDebugDictionaryService];
+  enableDebugDictionaryService = [v3 enableDebugDictionaryService];
 
-  if (!v4)
+  if (!enableDebugDictionaryService)
   {
     return 0;
   }
@@ -121,8 +121,8 @@ LABEL_13:
 
 - (id)consoleDescription
 {
-  v2 = [(PXDebugDictionaryDiagnosticsService *)self _debugDictionary];
-  v3 = [v2 debugDescription];
+  _debugDictionary = [(PXDebugDictionaryDiagnosticsService *)self _debugDictionary];
+  v3 = [_debugDictionary debugDescription];
 
   return v3;
 }

@@ -9,8 +9,8 @@
 
 - (uint64_t)pruis_switcherLayoutMode
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:25612];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:25612];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -34,14 +34,14 @@
 
   v6 = v5;
 
-  v7 = [v6 unsignedIntegerValue];
-  return v7;
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)pruis_switcherContextID
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:25613];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:25613];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -65,14 +65,14 @@
 
   v6 = v5;
 
-  v7 = [v6 unsignedLongLongValue];
-  return v7;
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
+  return unsignedLongLongValue;
 }
 
 - (double)pruis_primaryPosterScale
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:25614];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:25614];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -104,8 +104,8 @@
 
 - (double)pruis_primaryPosterOffset
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:25615];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:25615];
 
   v3 = objc_opt_class();
   v4 = v2;

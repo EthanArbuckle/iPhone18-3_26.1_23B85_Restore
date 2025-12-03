@@ -1,20 +1,20 @@
 @interface PGGraphResolvedPlace
-- (PGGraphResolvedPlace)initWithPlaceOfInterestType:(id)a3 confidence:(double)a4;
+- (PGGraphResolvedPlace)initWithPlaceOfInterestType:(id)type confidence:(double)confidence;
 @end
 
 @implementation PGGraphResolvedPlace
 
-- (PGGraphResolvedPlace)initWithPlaceOfInterestType:(id)a3 confidence:(double)a4
+- (PGGraphResolvedPlace)initWithPlaceOfInterestType:(id)type confidence:(double)confidence
 {
-  v7 = a3;
+  typeCopy = type;
   v11.receiver = self;
   v11.super_class = PGGraphResolvedPlace;
   v8 = [(PGGraphResolvedPlace *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_placeInterestType, a3);
-    v9->_confidence = a4;
+    objc_storeStrong(&v8->_placeInterestType, type);
+    v9->_confidence = confidence;
   }
 
   return v9;

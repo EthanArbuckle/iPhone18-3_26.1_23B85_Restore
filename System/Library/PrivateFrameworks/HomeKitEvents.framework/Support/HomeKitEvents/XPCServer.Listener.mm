@@ -1,5 +1,5 @@
 @interface XPCServer.Listener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtCC11homeeventsd9XPCServer8Listener)init;
 @end
 
@@ -12,15 +12,15 @@
   return result;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v7 = Strong;
-    v8 = a4;
-    v9 = self;
-    v10 = sub_10004CCC0(v9, v8, v7);
+    connectionCopy = connection;
+    selfCopy = self;
+    v10 = sub_10004CCC0(selfCopy, connectionCopy, v7);
     swift_unknownObjectRelease();
   }
 

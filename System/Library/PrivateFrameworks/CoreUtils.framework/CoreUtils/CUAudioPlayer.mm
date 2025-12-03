@@ -1,31 +1,31 @@
 @interface CUAudioPlayer
-- (BOOL)setPortUID:(id)a3 channelName:(id)a4 error:(id *)a5;
+- (BOOL)setPortUID:(id)d channelName:(id)name error:(id *)error;
 - (CUAudioPlayer)init;
-- (void)_abortRequestsWithError:(id)a3;
+- (void)_abortRequestsWithError:(id)error;
 - (void)_activate;
-- (void)_applyChannelAssignments:(id)a3;
-- (void)_completeRequest:(id)a3 error:(id)a4;
-- (void)_invalidateWithFlags:(unsigned int)a3;
+- (void)_applyChannelAssignments:(id)assignments;
+- (void)_completeRequest:(id)request error:(id)error;
+- (void)_invalidateWithFlags:(unsigned int)flags;
 - (void)_invalidated;
-- (void)_playPreparedIdentifier:(id)a3 completion:(id)a4;
-- (void)_playURL:(id)a3 loop:(BOOL)a4 completion:(id)a5;
-- (void)_prepareURL:(id)a3 identifier:(id)a4 completion:(id)a5;
+- (void)_playPreparedIdentifier:(id)identifier completion:(id)completion;
+- (void)_playURL:(id)l loop:(BOOL)loop completion:(id)completion;
+- (void)_prepareURL:(id)l identifier:(id)identifier completion:(id)completion;
 - (void)_processRequests;
 - (void)activate;
-- (void)audioPlayerDecodeErrorDidOccur:(id)a3 error:(id)a4;
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4;
-- (void)audioSessionInterrupted:(id)a3;
+- (void)audioPlayerDecodeErrorDidOccur:(id)occur error:(id)error;
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully;
+- (void)audioSessionInterrupted:(id)interrupted;
 - (void)dealloc;
-- (void)invalidateWithFlags:(unsigned int)a3;
-- (void)playPreparedIdentifier:(id)a3 completion:(id)a4;
-- (void)playURL:(id)a3 loop:(BOOL)a4 completion:(id)a5;
-- (void)prepareURL:(id)a3 identifier:(id *)a4 completion:(id)a5;
-- (void)setLabel:(id)a3;
+- (void)invalidateWithFlags:(unsigned int)flags;
+- (void)playPreparedIdentifier:(id)identifier completion:(id)completion;
+- (void)playURL:(id)l loop:(BOOL)loop completion:(id)completion;
+- (void)prepareURL:(id)l identifier:(id *)identifier completion:(id)completion;
+- (void)setLabel:(id)label;
 @end
 
 @implementation CUAudioPlayer
 
-- (void)audioSessionInterrupted:(id)a3
+- (void)audioSessionInterrupted:(id)interrupted
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -64,18 +64,18 @@ LABEL_5:
   [v9 _abortRequestsWithError:v13];
 }
 
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully
 {
-  v6 = a3;
+  playingCopy = playing;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__CUAudioPlayer_audioPlayerDidFinishPlaying_successfully___block_invoke;
   block[3] = &unk_1E73A3CE8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = playingCopy;
+  successfullyCopy = successfully;
+  v8 = playingCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -124,20 +124,20 @@ LABEL_11:
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (void)audioPlayerDecodeErrorDidOccur:(id)a3 error:(id)a4
+- (void)audioPlayerDecodeErrorDidOccur:(id)occur error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  occurCopy = occur;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__CUAudioPlayer_audioPlayerDecodeErrorDidOccur_error___block_invoke;
   block[3] = &unk_1E73A37D8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = errorCopy;
+  v13 = occurCopy;
+  v9 = occurCopy;
+  v10 = errorCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -182,22 +182,22 @@ LABEL_5:
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_abortRequestsWithError:(id)a3
+- (void)_abortRequestsWithError:(id)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = self->_currentRequest;
   if (v5)
   {
     currentRequest = self->_currentRequest;
     self->_currentRequest = 0;
 
-    v7 = [(CUAudioRequest *)v5 completion];
+    completion = [(CUAudioRequest *)v5 completion];
 
-    if (v7)
+    if (completion)
     {
-      v8 = [(CUAudioRequest *)v5 completion];
-      (v8)[2](v8, v4);
+      completion2 = [(CUAudioRequest *)v5 completion];
+      (completion2)[2](completion2, errorCopy);
     }
   }
 
@@ -224,12 +224,12 @@ LABEL_5:
 
         v5 = *(*(&v21 + 1) + 8 * v13);
 
-        v15 = [(CUAudioRequest *)v5 completion];
+        completion3 = [(CUAudioRequest *)v5 completion];
 
-        if (v15)
+        if (completion3)
         {
-          v16 = [(CUAudioRequest *)v5 completion];
-          (v16)[2](v16, v4);
+          completion4 = [(CUAudioRequest *)v5 completion];
+          (completion4)[2](completion4, errorCopy);
         }
 
         ++v13;
@@ -249,8 +249,8 @@ LABEL_5:
   v19[1] = 3221225472;
   v19[2] = __41__CUAudioPlayer__abortRequestsWithError___block_invoke;
   v19[3] = &unk_1E73A2B28;
-  v20 = v4;
-  v18 = v4;
+  v20 = errorCopy;
+  v18 = errorCopy;
   [(NSMutableDictionary *)preparedRequests enumerateKeysAndObjectsUsingBlock:v19];
   [(NSMutableDictionary *)self->_preparedRequests removeAllObjects];
   [(CUAudioPlayer *)self _invalidated];
@@ -268,27 +268,27 @@ void __41__CUAudioPlayer__abortRequestsWithError___block_invoke(uint64_t a1, uin
   }
 }
 
-- (void)_completeRequest:(id)a3 error:(id)a4
+- (void)_completeRequest:(id)request error:(id)error
 {
-  v29 = a3;
-  v6 = a4;
-  v7 = v29;
-  v8 = v6;
+  requestCopy = request;
+  errorCopy = error;
+  v7 = requestCopy;
+  v8 = errorCopy;
   ucat = self->_ucat;
   if (ucat->var0 <= 30)
   {
     if (ucat->var0 != -1)
     {
 LABEL_3:
-      v10 = [(CUAudioRequest *)v29 label];
-      LogPrintF(ucat, "[CUAudioPlayer _completeRequest:error:]", 0x1Eu, "Play completed '%@', %{error}\n", v11, v12, v13, v14, v10);
+      label = [(CUAudioRequest *)requestCopy label];
+      LogPrintF(ucat, "[CUAudioPlayer _completeRequest:error:]", 0x1Eu, "Play completed '%@', %{error}\n", v11, v12, v13, v14, label);
 
-      v7 = v29;
+      v7 = requestCopy;
       goto LABEL_5;
     }
 
     v15 = _LogCategory_Initialize(self->_ucat, 0x1Eu);
-    v7 = v29;
+    v7 = requestCopy;
     if (v15)
     {
       ucat = self->_ucat;
@@ -303,15 +303,15 @@ LABEL_5:
   {
     self->_currentRequest = 0;
 
-    v17 = v29;
+    v17 = requestCopy;
   }
 
-  v18 = [(CUAudioRequest *)v17 completion];
+  completion = [(CUAudioRequest *)v17 completion];
 
-  if (v18)
+  if (completion)
   {
-    v25 = [(CUAudioRequest *)v29 completion];
-    (v25)[2](v25, v8);
+    completion2 = [(CUAudioRequest *)requestCopy completion];
+    (completion2)[2](completion2, v8);
   }
 
   invalidateFlags = self->_invalidateFlags;
@@ -334,9 +334,9 @@ LABEL_5:
     return;
   }
 
-  v3 = [(NSMutableArray *)self->_playRequests firstObject];
+  firstObject = [(NSMutableArray *)self->_playRequests firstObject];
   currentRequest = self->_currentRequest;
-  self->_currentRequest = v3;
+  self->_currentRequest = firstObject;
 
   if (!self->_currentRequest)
   {
@@ -357,22 +357,22 @@ LABEL_5:
       ucat = self->_ucat;
     }
 
-    v6 = [(CUAudioRequest *)self->_currentRequest label];
-    LogPrintF(ucat, "[CUAudioPlayer _processRequests]", 0x1Eu, "Play start '%@'\n", v7, v8, v9, v10, v6);
+    label = [(CUAudioRequest *)self->_currentRequest label];
+    LogPrintF(ucat, "[CUAudioPlayer _processRequests]", 0x1Eu, "Play start '%@'\n", v7, v8, v9, v10, label);
   }
 
 LABEL_8:
-  v11 = [(CUAudioRequest *)self->_currentRequest audioPlayer];
-  [v11 play];
+  audioPlayer = [(CUAudioRequest *)self->_currentRequest audioPlayer];
+  [audioPlayer play];
 }
 
-- (void)_prepareURL:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)_prepareURL:(id)l identifier:(id)identifier completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 absoluteString];
-  v12 = [v11 lastPathComponent];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  lastPathComponent = [absoluteString lastPathComponent];
 
   ucat = self->_ucat;
   if (ucat->var0 <= 30)
@@ -380,7 +380,7 @@ LABEL_8:
     if (ucat->var0 != -1)
     {
 LABEL_3:
-      LogPrintF(ucat, "[CUAudioPlayer _prepareURL:identifier:completion:]", 0x1Eu, "Prepare request '%@'\n", v13, v14, v15, v16, v12);
+      LogPrintF(ucat, "[CUAudioPlayer _prepareURL:identifier:completion:]", 0x1Eu, "Prepare request '%@'\n", v13, v14, v15, v16, lastPathComponent);
       goto LABEL_5;
     }
 
@@ -393,7 +393,7 @@ LABEL_3:
 
 LABEL_5:
   v30 = 0;
-  v18 = [objc_alloc(getAVAudioPlayerClass[0]()) initWithContentsOfURL:v10 error:&v30];
+  v18 = [objc_alloc(getAVAudioPlayerClass[0]()) initWithContentsOfURL:lCopy error:&v30];
 
   v25 = v30;
   if (v18)
@@ -403,8 +403,8 @@ LABEL_5:
     [v18 prepareToPlay];
     v26 = objc_alloc_init(CUAudioRequest);
     [(CUAudioRequest *)v26 setAudioPlayer:v18];
-    [(CUAudioRequest *)v26 setLabel:v12];
-    [(NSMutableDictionary *)self->_preparedRequests setObject:v26 forKeyedSubscript:v8];
+    [(CUAudioRequest *)v26 setLabel:lastPathComponent];
+    [(NSMutableDictionary *)self->_preparedRequests setObject:v26 forKeyedSubscript:identifierCopy];
 
     goto LABEL_7;
   }
@@ -415,7 +415,7 @@ LABEL_5:
     if (v27->var0 != -1)
     {
 LABEL_10:
-      LogPrintF(v27, "[CUAudioPlayer _prepareURL:identifier:completion:]", 0x5Au, "### Create AVAudioPlayer for '%@' failed: %{error}\n", v21, v22, v23, v24, v12);
+      LogPrintF(v27, "[CUAudioPlayer _prepareURL:identifier:completion:]", 0x5Au, "### Create AVAudioPlayer for '%@' failed: %{error}\n", v21, v22, v23, v24, lastPathComponent);
       goto LABEL_12;
     }
 
@@ -427,51 +427,51 @@ LABEL_10:
   }
 
 LABEL_12:
-  if (v9)
+  if (completionCopy)
   {
     if (v25)
     {
-      v9[2](v9, v25);
+      completionCopy[2](completionCopy, v25);
     }
 
     else
     {
       v28 = NSErrorWithOSStatusF(4294960596, "Create AVAudioPlayer", v19, v20, v21, v22, v23, v24, v29);
-      v9[2](v9, v28);
+      completionCopy[2](completionCopy, v28);
     }
   }
 
 LABEL_7:
 }
 
-- (void)prepareURL:(id)a3 identifier:(id *)a4 completion:(id)a5
+- (void)prepareURL:(id)l identifier:(id *)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  objc_storeStrong(a4, v10);
+  lCopy = l;
+  completionCopy = completion;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  objc_storeStrong(identifier, uUID);
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __50__CUAudioPlayer_prepareURL_identifier_completion___block_invoke;
   v15[3] = &unk_1E73A4108;
   v15[4] = self;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = lCopy;
+  v17 = uUID;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = uUID;
+  v14 = lCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
-- (void)_playURL:(id)a3 loop:(BOOL)a4 completion:(id)a5
+- (void)_playURL:(id)l loop:(BOOL)loop completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 absoluteString];
-  v11 = [v10 lastPathComponent];
+  loopCopy = loop;
+  completionCopy = completion;
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  lastPathComponent = [absoluteString lastPathComponent];
 
   ucat = self->_ucat;
   if (ucat->var0 <= 30)
@@ -479,7 +479,7 @@ LABEL_7:
     if (ucat->var0 != -1)
     {
 LABEL_3:
-      LogPrintF(ucat, "[CUAudioPlayer _playURL:loop:completion:]", 0x1Eu, "Play request '%@'\n", v12, v13, v14, v15, v11);
+      LogPrintF(ucat, "[CUAudioPlayer _playURL:loop:completion:]", 0x1Eu, "Play request '%@'\n", v12, v13, v14, v15, lastPathComponent);
       goto LABEL_5;
     }
 
@@ -492,13 +492,13 @@ LABEL_3:
 
 LABEL_5:
   v29 = 0;
-  v17 = [objc_alloc(getAVAudioPlayerClass[0]()) initWithContentsOfURL:v9 error:&v29];
+  v17 = [objc_alloc(getAVAudioPlayerClass[0]()) initWithContentsOfURL:lCopy error:&v29];
 
   v24 = v29;
   if (v17)
   {
     [v17 setDelegate:self];
-    if (v5)
+    if (loopCopy)
     {
       [v17 setNumberOfLoops:-1];
     }
@@ -507,8 +507,8 @@ LABEL_5:
     [v17 prepareToPlay];
     v25 = objc_alloc_init(CUAudioRequest);
     [(CUAudioRequest *)v25 setAudioPlayer:v17];
-    [(CUAudioRequest *)v25 setCompletion:v8];
-    [(CUAudioRequest *)v25 setLabel:v11];
+    [(CUAudioRequest *)v25 setCompletion:completionCopy];
+    [(CUAudioRequest *)v25 setLabel:lastPathComponent];
     [(NSMutableArray *)self->_playRequests addObject:v25];
     [(CUAudioPlayer *)self _processRequests];
 
@@ -521,7 +521,7 @@ LABEL_5:
     if (v26->var0 != -1)
     {
 LABEL_12:
-      LogPrintF(v26, "[CUAudioPlayer _playURL:loop:completion:]", 0x5Au, "### Create AVAudioPlayer for '%@' failed: %{error}\n", v20, v21, v22, v23, v11);
+      LogPrintF(v26, "[CUAudioPlayer _playURL:loop:completion:]", 0x5Au, "### Create AVAudioPlayer for '%@' failed: %{error}\n", v20, v21, v22, v23, lastPathComponent);
       goto LABEL_14;
     }
 
@@ -533,46 +533,46 @@ LABEL_12:
   }
 
 LABEL_14:
-  if (v8)
+  if (completionCopy)
   {
     if (v24)
     {
-      v8[2](v8, v24);
+      completionCopy[2](completionCopy, v24);
     }
 
     else
     {
       v27 = NSErrorWithOSStatusF(4294960596, "Create AVAudioPlayer", v18, v19, v20, v21, v22, v23, v28);
-      v8[2](v8, v27);
+      completionCopy[2](completionCopy, v27);
     }
   }
 
 LABEL_9:
 }
 
-- (void)playURL:(id)a3 loop:(BOOL)a4 completion:(id)a5
+- (void)playURL:(id)l loop:(BOOL)loop completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __41__CUAudioPlayer_playURL_loop_completion___block_invoke;
   v13[3] = &unk_1E73A2B00;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = lCopy;
+  loopCopy = loop;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = lCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)_playPreparedIdentifier:(id)a3 completion:(id)a4
+- (void)_playPreparedIdentifier:(id)identifier completion:(id)completion
 {
-  v23 = a3;
-  v6 = a4;
-  v13 = [(NSMutableDictionary *)self->_preparedRequests objectForKeyedSubscript:v23];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v13 = [(NSMutableDictionary *)self->_preparedRequests objectForKeyedSubscript:identifierCopy];
   ucat = self->_ucat;
   var0 = ucat->var0;
   if (v13)
@@ -589,13 +589,13 @@ LABEL_9:
         ucat = self->_ucat;
       }
 
-      v22 = [v13 label];
-      LogPrintF(ucat, "[CUAudioPlayer _playPreparedIdentifier:completion:]", 0x1Eu, "Play prepared ID %@ '%@'\n", v16, v17, v18, v19, v23);
+      label = [v13 label];
+      LogPrintF(ucat, "[CUAudioPlayer _playPreparedIdentifier:completion:]", 0x1Eu, "Play prepared ID %@ '%@'\n", v16, v17, v18, v19, identifierCopy);
     }
 
 LABEL_9:
-    [(NSMutableDictionary *)self->_preparedRequests setObject:0 forKeyedSubscript:v23];
-    [v13 setCompletion:v6];
+    [(NSMutableDictionary *)self->_preparedRequests setObject:0 forKeyedSubscript:identifierCopy];
+    [v13 setCompletion:completionCopy];
     [(NSMutableArray *)self->_playRequests addObject:v13];
     [(CUAudioPlayer *)self _processRequests];
     goto LABEL_13;
@@ -603,7 +603,7 @@ LABEL_9:
 
   if (var0 <= 90)
   {
-    v20 = v23;
+    v20 = identifierCopy;
     if (var0 != -1)
     {
 LABEL_7:
@@ -614,35 +614,35 @@ LABEL_7:
     if (_LogCategory_Initialize(self->_ucat, 0x5Au))
     {
       ucat = self->_ucat;
-      v20 = v23;
+      v20 = identifierCopy;
       goto LABEL_7;
     }
   }
 
 LABEL_11:
-  if (v6)
+  if (completionCopy)
   {
-    v21 = NSErrorWithOSStatusF(4294960569, "Prepared ID %@ not found", v7, v8, v9, v10, v11, v12, v23);
-    v6[2](v6, v21);
+    v21 = NSErrorWithOSStatusF(4294960569, "Prepared ID %@ not found", v7, v8, v9, v10, v11, v12, identifierCopy);
+    completionCopy[2](completionCopy, v21);
   }
 
 LABEL_13:
 }
 
-- (void)playPreparedIdentifier:(id)a3 completion:(id)a4
+- (void)playPreparedIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__CUAudioPlayer_playPreparedIdentifier_completion___block_invoke;
   block[3] = &unk_1E73A4BD8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -655,9 +655,9 @@ LABEL_13:
 
   if (self->_audioSession)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v4 = getAVAudioSessionInterruptionNotification();
-    [v3 removeObserver:self name:v4 object:self->_audioSession];
+    [defaultCenter removeObserver:self name:v4 object:self->_audioSession];
 
     audioSession = self->_audioSession;
     self->_audioSession = 0;
@@ -699,14 +699,14 @@ LABEL_16:
   self->_selfRef = 0;
 }
 
-- (void)_invalidateWithFlags:(unsigned int)a3
+- (void)_invalidateWithFlags:(unsigned int)flags
 {
   if (self->_invalidateCalled)
   {
     return;
   }
 
-  v9 = *&a3;
+  v9 = *&flags;
   ucat = self->_ucat;
   if (ucat->var0 <= 30)
   {
@@ -728,14 +728,14 @@ LABEL_6:
   self->_invalidateFlags = v9;
   if ((v9 & 3) == 0)
   {
-    v12 = NSErrorWithOSStatusF(4294960573, "Invalidated", *&a3, v3, v4, v5, v6, v7, v13);
+    v12 = NSErrorWithOSStatusF(4294960573, "Invalidated", *&flags, v3, v4, v5, v6, v7, v13);
     [(CUAudioPlayer *)self _abortRequestsWithError:v12];
   }
 
   [(CUAudioPlayer *)self _invalidated];
 }
 
-- (void)invalidateWithFlags:(unsigned int)a3
+- (void)invalidateWithFlags:(unsigned int)flags
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -743,7 +743,7 @@ LABEL_6:
   v4[2] = __37__CUAudioPlayer_invalidateWithFlags___block_invoke;
   v4[3] = &unk_1E73A42A0;
   v4[4] = self;
-  v5 = a3;
+  flagsCopy = flags;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -776,9 +776,9 @@ LABEL_5:
   self->_preparedRequests = v10;
 
   objc_storeStrong(&self->_selfRef, self);
-  v12 = [getAVAudioSessionClass[0]() sharedInstance];
+  sharedInstance = [getAVAudioSessionClass[0]() sharedInstance];
   audioSession = self->_audioSession;
-  self->_audioSession = v12;
+  self->_audioSession = sharedInstance;
 
   enableSmartRouting = self->_enableSmartRouting;
   if (enableSmartRouting)
@@ -823,9 +823,9 @@ LABEL_9:
 LABEL_15:
   }
 
-  v32 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v33 = getAVAudioSessionInterruptionNotification();
-  [v32 addObserver:self selector:sel_audioSessionInterrupted_ name:v33 object:self->_audioSession];
+  [defaultCenter addObserver:self selector:sel_audioSessionInterrupted_ name:v33 object:self->_audioSession];
 
   v34 = (self->_flags >> 2) & 1;
   v35 = self->_audioSession;
@@ -892,17 +892,17 @@ LABEL_26:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_applyChannelAssignments:(id)a3
+- (void)_applyChannelAssignments:(id)assignments
 {
-  v4 = a3;
-  v22 = v4;
+  assignmentsCopy = assignments;
+  v22 = assignmentsCopy;
   if (self->_channel)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6 = [v22 numberOfChannels];
-    if (v6)
+    numberOfChannels = [v22 numberOfChannels];
+    if (numberOfChannels)
     {
-      v7 = v6;
+      v7 = numberOfChannels;
       do
       {
         [v5 addObject:self->_channel];
@@ -928,9 +928,9 @@ LABEL_26:
       ucat = self->_ucat;
     }
 
-    v9 = [(AVAudioSessionChannelDescription *)self->_channel owningPortUID];
-    v21 = [(AVAudioSessionChannelDescription *)self->_channel channelName];
-    LogPrintF(ucat, "[CUAudioPlayer _applyChannelAssignments:]", 0x1Eu, "Applying channel: portUID=%@, channelName=%@", v10, v11, v12, v13, v9);
+    owningPortUID = [(AVAudioSessionChannelDescription *)self->_channel owningPortUID];
+    channelName = [(AVAudioSessionChannelDescription *)self->_channel channelName];
+    LogPrintF(ucat, "[CUAudioPlayer _applyChannelAssignments:]", 0x1Eu, "Applying channel: portUID=%@, channelName=%@", v10, v11, v12, v13, owningPortUID);
 
 LABEL_13:
     [v22 setChannelAssignments:v5];
@@ -938,9 +938,9 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  v14 = [v4 channelAssignments];
+  channelAssignments = [assignmentsCopy channelAssignments];
 
-  if (!v14)
+  if (!channelAssignments)
   {
     goto LABEL_16;
   }
@@ -966,41 +966,41 @@ LABEL_15:
 LABEL_16:
 }
 
-- (BOOL)setPortUID:(id)a3 channelName:(id)a4 error:(id *)a5
+- (BOOL)setPortUID:(id)d channelName:(id)name error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  nameCopy = name;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v10 = [getAVAudioSessionClass[0]() sharedInstance];
-  v11 = [v10 currentRoute];
-  v12 = [v11 outputs];
+  sharedInstance = [getAVAudioSessionClass[0]() sharedInstance];
+  currentRoute = [sharedInstance currentRoute];
+  outputs = [currentRoute outputs];
 
-  v13 = [v12 countByEnumeratingWithState:&v45 objects:v50 count:16];
+  v13 = [outputs countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v13)
   {
     v14 = v13;
     v15 = *v46;
-    v39 = v12;
-    v40 = v8;
-    v36 = a5;
+    v39 = outputs;
+    v40 = dCopy;
+    errorCopy = error;
     v37 = *v46;
-    v38 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v14; ++i)
       {
         if (*v46 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(outputs);
         }
 
         v17 = *(*(&v45 + 1) + 8 * i);
         v18 = [v17 UID];
-        v19 = [v18 isEqual:v8];
+        v19 = [v18 isEqual:dCopy];
 
         if (v19)
         {
@@ -1008,8 +1008,8 @@ LABEL_16:
           v44 = 0u;
           v41 = 0u;
           v42 = 0u;
-          v20 = [v17 channels];
-          v21 = [v20 countByEnumeratingWithState:&v41 objects:v49 count:16];
+          channels = [v17 channels];
+          v21 = [channels countByEnumeratingWithState:&v41 objects:v49 count:16];
           if (v21)
           {
             v22 = v21;
@@ -1020,24 +1020,24 @@ LABEL_16:
               {
                 if (*v42 != v23)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(channels);
                 }
 
                 v25 = *(*(&v41 + 1) + 8 * j);
-                v26 = [v25 channelName];
-                v27 = [v26 isEqual:v9];
+                channelName = [v25 channelName];
+                v27 = [channelName isEqual:nameCopy];
 
                 if (v27)
                 {
-                  objc_storeStrong(&v38->_channel, v25);
+                  objc_storeStrong(&selfCopy->_channel, v25);
 
                   v33 = 1;
-                  v8 = v40;
+                  dCopy = v40;
                   goto LABEL_21;
                 }
               }
 
-              v22 = [v20 countByEnumeratingWithState:&v41 objects:v49 count:16];
+              v22 = [channels countByEnumeratingWithState:&v41 objects:v49 count:16];
               if (v22)
               {
                 continue;
@@ -1047,23 +1047,23 @@ LABEL_16:
             }
           }
 
-          v12 = v39;
-          v8 = v40;
+          outputs = v39;
+          dCopy = v40;
           v15 = v37;
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v45 objects:v50 count:16];
-      a5 = v36;
+      v14 = [outputs countByEnumeratingWithState:&v45 objects:v50 count:16];
+      error = errorCopy;
     }
 
     while (v14);
   }
 
-  if (a5)
+  if (error)
   {
     NSErrorF_safe(*MEMORY[0x1E696A768], 4294960591, "Port/channel not found", v28, v29, v30, v31, v32, v35);
-    *a5 = v33 = 0;
+    *error = v33 = 0;
   }
 
   else
@@ -1076,13 +1076,13 @@ LABEL_21:
   return v33;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADE9078;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 

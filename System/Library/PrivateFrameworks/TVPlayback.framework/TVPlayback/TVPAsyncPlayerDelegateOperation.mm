@@ -1,5 +1,5 @@
 @interface TVPAsyncPlayerDelegateOperation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TVPAsyncPlayerDelegateOperation)init;
 - (unint64_t)hash;
 @end
@@ -22,15 +22,15 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 identifier];
-    v6 = [(TVPAsyncPlayerDelegateOperation *)self identifier];
-    v7 = [v5 isEqual:v6];
+    identifier = [equalCopy identifier];
+    identifier2 = [(TVPAsyncPlayerDelegateOperation *)self identifier];
+    v7 = [identifier isEqual:identifier2];
   }
 
   else
@@ -43,8 +43,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(TVPAsyncPlayerDelegateOperation *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(TVPAsyncPlayerDelegateOperation *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

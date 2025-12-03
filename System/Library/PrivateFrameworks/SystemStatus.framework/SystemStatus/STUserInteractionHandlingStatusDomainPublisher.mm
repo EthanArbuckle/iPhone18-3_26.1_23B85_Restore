@@ -1,17 +1,17 @@
 @interface STUserInteractionHandlingStatusDomainPublisher
-- (void)handleUserInteraction:(id)a3 forDomain:(unint64_t)a4;
-- (void)handleUserInteractionsWithBlock:(id)a3;
+- (void)handleUserInteraction:(id)interaction forDomain:(unint64_t)domain;
+- (void)handleUserInteractionsWithBlock:(id)block;
 @end
 
 @implementation STUserInteractionHandlingStatusDomainPublisher
 
-- (void)handleUserInteractionsWithBlock:(id)a3
+- (void)handleUserInteractionsWithBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   os_unfair_lock_lock([(STStatusDomainPublisher *)self internalStateLock]);
-  if (self->_lock_userInteractionHandlerBlock != v6)
+  if (self->_lock_userInteractionHandlerBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     lock_userInteractionHandlerBlock = self->_lock_userInteractionHandlerBlock;
     self->_lock_userInteractionHandlerBlock = v4;
   }
@@ -19,10 +19,10 @@
   os_unfair_lock_unlock([(STStatusDomainPublisher *)self internalStateLock]);
 }
 
-- (void)handleUserInteraction:(id)a3 forDomain:(unint64_t)a4
+- (void)handleUserInteraction:(id)interaction forDomain:(unint64_t)domain
 {
-  v7 = a3;
-  if ([objc_opt_class() statusDomainName] == a4)
+  interactionCopy = interaction;
+  if ([objc_opt_class() statusDomainName] == domain)
   {
     os_unfair_lock_lock([(STStatusDomainPublisher *)self internalStateLock]);
     if ([(STStatusDomainPublisher *)self _lock_isInvalidated])
@@ -38,7 +38,7 @@
     os_unfair_lock_unlock([(STStatusDomainPublisher *)self internalStateLock]);
     if (v6)
     {
-      (v6)[2](v6, v7);
+      (v6)[2](v6, interactionCopy);
     }
   }
 }

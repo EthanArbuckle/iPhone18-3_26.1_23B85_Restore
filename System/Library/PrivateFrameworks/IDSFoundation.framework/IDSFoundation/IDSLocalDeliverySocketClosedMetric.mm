@@ -1,5 +1,5 @@
 @interface IDSLocalDeliverySocketClosedMetric
-- (IDSLocalDeliverySocketClosedMetric)initWithService:(id)a3 isToDefaultPairedDevice:(BOOL)a4 closeError:(unint64_t)a5 socketError:(unint64_t)a6 bytesSent:(unint64_t)a7 packetsSent:(unint64_t)a8 bytesReceived:(unint64_t)a9 packetsReceived:(unint64_t)a10;
+- (IDSLocalDeliverySocketClosedMetric)initWithService:(id)service isToDefaultPairedDevice:(BOOL)device closeError:(unint64_t)error socketError:(unint64_t)socketError bytesSent:(unint64_t)sent packetsSent:(unint64_t)packetsSent bytesReceived:(unint64_t)received packetsReceived:(unint64_t)self0;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -8,10 +8,10 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSLocalDeliverySocketClosedMetric *)self service];
-  if (v4)
+  service = [(IDSLocalDeliverySocketClosedMetric *)self service];
+  if (service)
   {
-    CFDictionarySetValue(v3, @"service", v4);
+    CFDictionarySetValue(v3, @"service", service);
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[IDSLocalDeliverySocketClosedMetric isToDefaultPairedDevice](self, "isToDefaultPairedDevice")}];
@@ -59,23 +59,23 @@
   return v3;
 }
 
-- (IDSLocalDeliverySocketClosedMetric)initWithService:(id)a3 isToDefaultPairedDevice:(BOOL)a4 closeError:(unint64_t)a5 socketError:(unint64_t)a6 bytesSent:(unint64_t)a7 packetsSent:(unint64_t)a8 bytesReceived:(unint64_t)a9 packetsReceived:(unint64_t)a10
+- (IDSLocalDeliverySocketClosedMetric)initWithService:(id)service isToDefaultPairedDevice:(BOOL)device closeError:(unint64_t)error socketError:(unint64_t)socketError bytesSent:(unint64_t)sent packetsSent:(unint64_t)packetsSent bytesReceived:(unint64_t)received packetsReceived:(unint64_t)self0
 {
-  v17 = a3;
+  serviceCopy = service;
   v21.receiver = self;
   v21.super_class = IDSLocalDeliverySocketClosedMetric;
   v18 = [(IDSLocalDeliverySocketClosedMetric *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_service, a3);
-    v19->_isToDefaultPairedDevice = a4;
-    v19->_closeError = a5;
-    v19->_socketError = a6;
-    v19->_bytesSent = a7;
-    v19->_packetsSent = a8;
-    v19->_bytesReceived = a9;
-    v19->_packetsReceived = a10;
+    objc_storeStrong(&v18->_service, service);
+    v19->_isToDefaultPairedDevice = device;
+    v19->_closeError = error;
+    v19->_socketError = socketError;
+    v19->_bytesSent = sent;
+    v19->_packetsSent = packetsSent;
+    v19->_bytesReceived = received;
+    v19->_packetsReceived = packetsReceived;
   }
 
   return v19;

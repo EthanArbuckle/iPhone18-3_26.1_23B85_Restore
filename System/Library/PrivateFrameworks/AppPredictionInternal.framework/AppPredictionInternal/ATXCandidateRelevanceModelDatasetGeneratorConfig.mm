@@ -1,6 +1,6 @@
 @interface ATXCandidateRelevanceModelDatasetGeneratorConfig
 + (id)candidatePublisher;
-+ (id)candidatePublisherWithStartTime:(id)a3 endTime:(id)a4;
++ (id)candidatePublisherWithStartTime:(id)time endTime:(id)endTime;
 @end
 
 @implementation ATXCandidateRelevanceModelDatasetGeneratorConfig
@@ -15,10 +15,10 @@
   return v4;
 }
 
-+ (id)candidatePublisherWithStartTime:(id)a3 endTime:(id)a4
++ (id)candidatePublisherWithStartTime:(id)time endTime:(id)endTime
 {
-  v5 = a3;
-  result = a4;
+  timeCopy = time;
+  result = endTime;
   __break(1u);
   return result;
 }

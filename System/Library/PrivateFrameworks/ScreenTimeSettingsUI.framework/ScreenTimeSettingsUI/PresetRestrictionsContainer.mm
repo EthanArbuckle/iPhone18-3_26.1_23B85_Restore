@@ -1,7 +1,7 @@
 @interface PresetRestrictionsContainer
 - (NSDictionary)restrictions;
 - (_TtC20ScreenTimeSettingsUI27PresetRestrictionsContainer)init;
-- (_TtC20ScreenTimeSettingsUI27PresetRestrictionsContainer)initWithRestrictions:(id)a3 imageGenerationRestriction:(int64_t)a4;
+- (_TtC20ScreenTimeSettingsUI27PresetRestrictionsContainer)initWithRestrictions:(id)restrictions imageGenerationRestriction:(int64_t)restriction;
 @end
 
 @implementation PresetRestrictionsContainer
@@ -14,10 +14,10 @@
   return v2;
 }
 
-- (_TtC20ScreenTimeSettingsUI27PresetRestrictionsContainer)initWithRestrictions:(id)a3 imageGenerationRestriction:(int64_t)a4
+- (_TtC20ScreenTimeSettingsUI27PresetRestrictionsContainer)initWithRestrictions:(id)restrictions imageGenerationRestriction:(int64_t)restriction
 {
   *(self + OBJC_IVAR____TtC20ScreenTimeSettingsUI27PresetRestrictionsContainer_restrictions) = sub_264CC454C();
-  *(self + OBJC_IVAR____TtC20ScreenTimeSettingsUI27PresetRestrictionsContainer_imageGenerationRestriction) = a4;
+  *(self + OBJC_IVAR____TtC20ScreenTimeSettingsUI27PresetRestrictionsContainer_imageGenerationRestriction) = restriction;
   v7.receiver = self;
   v7.super_class = type metadata accessor for PresetRestrictionsContainer();
   return [(PresetRestrictionsContainer *)&v7 init];

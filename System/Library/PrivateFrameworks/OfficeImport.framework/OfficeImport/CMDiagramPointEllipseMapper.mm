@@ -1,17 +1,17 @@
 @interface CMDiagramPointEllipseMapper
-- (void)mapAt:(id)a3 withState:(id)a4;
+- (void)mapAt:(id)at withState:(id)state;
 @end
 
 @implementation CMDiagramPointEllipseMapper
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CMDiagramPointMapper *)self transformPresentationName];
-  if (v8)
+  atCopy = at;
+  stateCopy = state;
+  transformPresentationName = [(CMDiagramPointMapper *)self transformPresentationName];
+  if (transformPresentationName)
   {
-    v9 = [(CMDiagramPointMapper *)self transformForPresentationWithName:v8];
+    v9 = [(CMDiagramPointMapper *)self transformForPresentationWithName:transformPresentationName];
     v10 = [CMShapeUtils transformedBoundsWithBounds:self->super.mOrientedBounds transform:v9];
   }
 
@@ -21,31 +21,31 @@
   }
 
   [(CMDiagramPointMapper *)self applyDiagramStyleToShapeProperties];
-  v11 = [(CMDiagramPointMapper *)self fill];
-  v12 = [(CMDiagramPointMapper *)self stroke];
-  [CMShapeRenderer renderCanonicalShape:3 fill:v11 stroke:v12 adjustValues:0 orientedBounds:self->super.mOrientedBounds state:v7 drawingContext:self->super.mDrawingContext];
+  fill = [(CMDiagramPointMapper *)self fill];
+  stroke = [(CMDiagramPointMapper *)self stroke];
+  [CMShapeRenderer renderCanonicalShape:3 fill:fill stroke:stroke adjustValues:0 orientedBounds:self->super.mOrientedBounds state:stateCopy drawingContext:self->super.mDrawingContext];
 
-  v13 = [(CMDiagramPointMapper *)self plainText];
+  plainText = [(CMDiagramPointMapper *)self plainText];
 
-  if (v13)
+  if (plainText)
   {
     v14 = objc_alloc_init(CMDrawableStyle);
     v15 = [OIXMLElement elementWithType:3];
     [(OADOrientedBounds *)self->super.mOrientedBounds bounds];
     [(CMDrawableStyle *)v14 addPositionProperties:?];
-    [v6 addChild:v15];
+    [atCopy addChild:v15];
     v17.receiver = self;
     v17.super_class = CMDiagramPointEllipseMapper;
     [(CMMapper *)&v17 addStyleUsingGlobalCacheTo:v15 style:v14];
     v16 = v15;
 
-    [(CMDiagramPointMapper *)self mapTextAt:v16 withBounds:v10 isCentered:1 includeChildren:0 withState:v7];
-    [(CMDiagramPointMapper *)self mapChlidrenAt:v16 withState:v7];
+    [(CMDiagramPointMapper *)self mapTextAt:v16 withBounds:v10 isCentered:1 includeChildren:0 withState:stateCopy];
+    [(CMDiagramPointMapper *)self mapChlidrenAt:v16 withState:stateCopy];
   }
 
   else
   {
-    v16 = v6;
+    v16 = atCopy;
   }
 }
 

@@ -1,22 +1,22 @@
 @interface CKSyncEngineAccount
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CKAccountInfo)accountInfo;
 - (CKRecordID)userRecordID;
-- (CKSyncEngineAccount)initWithAccountInfo:(id)a3 userRecordID:(id)a4;
+- (CKSyncEngineAccount)initWithAccountInfo:(id)info userRecordID:(id)d;
 - (NSString)description;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setUserRecordID:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setUserRecordID:(id)d;
 @end
 
 @implementation CKSyncEngineAccount
 
-- (CKSyncEngineAccount)initWithAccountInfo:(id)a3 userRecordID:(id)a4
+- (CKSyncEngineAccount)initWithAccountInfo:(id)info userRecordID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  return sub_188505260(v5, a4);
+  infoCopy = info;
+  dCopy = d;
+  return sub_188505260(infoCopy, d);
 }
 
 - (CKAccountInfo)accountInfo
@@ -33,25 +33,25 @@
   return v2;
 }
 
-- (void)setUserRecordID:(id)a3
+- (void)setUserRecordID:(id)d
 {
-  v5 = a3;
-  v6 = self;
-  sub_18850545C(a3);
+  dCopy = d;
+  selfCopy = self;
+  sub_18850545C(d);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_188505490(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_188505490(coderCopy);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -60,7 +60,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CKSyncEngineAccount.isEqual(_:)(v8);
@@ -71,7 +71,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKSyncEngineAccount.hash.getter();
 
   return v3;
@@ -79,7 +79,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKSyncEngineAccount.description.getter();
   v5 = v4;
 
@@ -88,10 +88,10 @@
   return v6;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
-  CKSyncEngineAccount.copy(with:)(v3, v6);
+  selfCopy = self;
+  CKSyncEngineAccount.copy(with:)(selfCopy, v6);
 
   sub_188400B68(v6, v6[3]);
   v4 = _bridgeAnythingToObjectiveC<A>(_:)();

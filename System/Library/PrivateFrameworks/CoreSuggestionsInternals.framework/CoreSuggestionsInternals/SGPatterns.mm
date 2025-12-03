@@ -1,22 +1,22 @@
 @interface SGPatterns
-+ (id)calculateCurrentLanguagesFromPreferredLocaleCodes:(id)a3;
++ (id)calculateCurrentLanguagesFromPreferredLocaleCodes:(id)codes;
 + (id)calculateLangResolutionOrder;
-+ (id)countryCodeFromLanguageCode:(id)a3;
-+ (id)languagePartOfLanguageCode:(id)a3;
-+ (id)patternsForClass:(Class)a3;
-+ (id)patternsForIdentifier:(id)a3;
++ (id)countryCodeFromLanguageCode:(id)code;
++ (id)languagePartOfLanguageCode:(id)code;
++ (id)patternsForClass:(Class)class;
++ (id)patternsForIdentifier:(id)identifier;
 + (void)changeLanguageOrPatternData;
-+ (void)forceLanguagesTo:(id)a3;
++ (void)forceLanguagesTo:(id)to;
 + (void)initialize;
 + (void)pauseCacheEvictionTemporarily;
-+ (void)setPatternsDictForTesting:(id)a3;
-+ (void)useAllLanguagesAtOnce:(BOOL)a3;
++ (void)setPatternsDictForTesting:(id)testing;
++ (void)useAllLanguagesAtOnce:(BOOL)once;
 - (SGPatterns)init;
-- (id)rawValueForKey:(id)a3;
-- (id)rawValueOrDataForKey:(id)a3;
-- (id)rawValuesForKey:(id)a3;
-- (id)regex2ForKey:(id)a3;
-- (id)stringSetMatcherForKey:(id)a3;
+- (id)rawValueForKey:(id)key;
+- (id)rawValueOrDataForKey:(id)key;
+- (id)rawValuesForKey:(id)key;
+- (id)regex2ForKey:(id)key;
+- (id)stringSetMatcherForKey:(id)key;
 - (void)_becomeImmuneToDeath;
 - (void)_clearRegexCache;
 - (void)dealloc;
@@ -88,10 +88,10 @@ void __34__SGPatterns__becomeImmuneToDeath__block_invoke(uint64_t a1, void *a2)
   [globalPatternsData runWithLockAcquired:v2];
 }
 
-- (id)regex2ForKey:(id)a3
+- (id)regex2ForKey:(id)key
 {
   v78 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_new();
   v70 = 0;
   v71 = &v70;
@@ -110,10 +110,10 @@ void __34__SGPatterns__becomeImmuneToDeath__block_invoke(uint64_t a1, void *a2)
   v59[1] = 3221225472;
   v59[2] = __27__SGPatterns_regex2ForKey___block_invoke;
   v59[3] = &unk_27894D220;
-  v36 = self;
+  selfCopy = self;
   v59[4] = self;
   v62 = &v64;
-  v44 = v4;
+  v44 = keyCopy;
   v60 = v44;
   v63 = &v70;
   v37 = v5;
@@ -159,8 +159,8 @@ void __34__SGPatterns__becomeImmuneToDeath__block_invoke(uint64_t a1, void *a2)
               context = objc_autoreleasePoolPush();
               if (([v44 hasSuffix:@"/F"] & 1) == 0)
               {
-                v28 = [MEMORY[0x277CCA890] currentHandler];
-                [v28 handleFailureInMethod:a2 object:v36 file:@"SGPatterns.m" lineNumber:376 description:{@"Non-prefiltered regexp was array: %@", v44}];
+                currentHandler = [MEMORY[0x277CCA890] currentHandler];
+                [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"SGPatterns.m" lineNumber:376 description:{@"Non-prefiltered regexp was array: %@", v44}];
               }
 
               v12 = [v44 stringByAppendingString:@".filt"];
@@ -169,8 +169,8 @@ void __34__SGPatterns__becomeImmuneToDeath__block_invoke(uint64_t a1, void *a2)
 
               if (!v43)
               {
-                v29 = [MEMORY[0x277CCA890] currentHandler];
-                [v29 handleFailureInMethod:a2 object:v36 file:@"SGPatterns.m" lineNumber:378 description:{@"Data not found for prefiltered regexp: %@", v44}];
+                currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+                [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"SGPatterns.m" lineNumber:378 description:{@"Data not found for prefiltered regexp: %@", v44}];
               }
 
               v40 = [[SGRe2PrefilterTree alloc] initWithData:v43];
@@ -274,8 +274,8 @@ LABEL_41:
     if (![v71[5] count])
     {
 LABEL_42:
-      v34 = [MEMORY[0x277CCA890] currentHandler];
-      [v34 handleFailureInMethod:a2 object:v36 file:@"SGPatterns.m" lineNumber:409 description:{@"Could not find raw asset value for key %@", v44}];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:selfCopy file:@"SGPatterns.m" lineNumber:409 description:{@"Could not find raw asset value for key %@", v44}];
     }
 
     if ([v71[5] count] == 1)
@@ -295,7 +295,7 @@ LABEL_42:
     v48[1] = 3221225472;
     v48[2] = __27__SGPatterns_regex2ForKey___block_invoke_2;
     v48[3] = &unk_27894D1F8;
-    v48[4] = v36;
+    v48[4] = selfCopy;
     v50 = &v64;
     v49 = v44;
     [v31 runWithLockAcquired:v48];
@@ -370,11 +370,11 @@ void __27__SGPatterns_regex2ForKey___block_invoke(uint64_t a1, void *a2)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)stringSetMatcherForKey:(id)a3
+- (id)stringSetMatcherForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [SGAhoCorasick alloc];
-  v6 = [(SGPatterns *)self rawValueForKey:v4];
+  v6 = [(SGPatterns *)self rawValueForKey:keyCopy];
 
   v7 = dereferenceData(v6, 1);
   v8 = [(SGAhoCorasick *)v5 initWithBytecode:v7];
@@ -382,17 +382,17 @@ void __27__SGPatterns_regex2ForKey___block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-- (id)rawValueOrDataForKey:(id)a3
+- (id)rawValueOrDataForKey:(id)key
 {
-  v3 = [(SGPatterns *)self rawValueForKey:a3];
+  v3 = [(SGPatterns *)self rawValueForKey:key];
   v4 = dereferenceData(v3, 1);
 
   return v4;
 }
 
-- (id)rawValueForKey:(id)a3
+- (id)rawValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -407,7 +407,7 @@ void __27__SGPatterns_regex2ForKey___block_invoke(uint64_t a1, void *a2)
   v9[3] = &unk_27894D1F8;
   v9[4] = self;
   v11 = &v12;
-  v6 = v4;
+  v6 = keyCopy;
   v10 = v6;
   [v5 runWithLockAcquired:v9];
   v7 = v13[5];
@@ -473,9 +473,9 @@ LABEL_12:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)rawValuesForKey:(id)a3
+- (id)rawValuesForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -490,7 +490,7 @@ LABEL_12:
   v9[3] = &unk_27894D1F8;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   v10 = v6;
   [v5 runWithLockAcquired:v9];
   v7 = v13[5];
@@ -628,11 +628,11 @@ void __21__SGPatterns_dealloc__block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (id)countryCodeFromLanguageCode:(id)a3
++ (id)countryCodeFromLanguageCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v4 = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:v3];
+  v5 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:codeCopy];
   v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277CBE690]];
 
   objc_autoreleasePoolPop(v4);
@@ -640,11 +640,11 @@ void __21__SGPatterns_dealloc__block_invoke(uint64_t a1)
   return v6;
 }
 
-+ (id)languagePartOfLanguageCode:(id)a3
++ (id)languagePartOfLanguageCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v4 = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:v3];
+  v5 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:codeCopy];
   v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277CBE6C8]];
 
   objc_autoreleasePoolPop(v4);
@@ -659,7 +659,7 @@ void __21__SGPatterns_dealloc__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __43__SGPatterns_pauseCacheEvictionTemporarily__block_invoke_124;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -810,13 +810,13 @@ void __33__SGPatterns_clearAllRegexCaches__block_invoke(uint64_t a1, uint64_t a2
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)useAllLanguagesAtOnce:(BOOL)a3
++ (void)useAllLanguagesAtOnce:(BOOL)once
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __36__SGPatterns_useAllLanguagesAtOnce___block_invoke;
   v3[3] = &__block_descriptor_33_e29_v16__0__SGPatternGlobalData_8l;
-  v4 = a3;
+  onceCopy = once;
   [globalPatternsData runWithLockAcquired:v3];
 }
 
@@ -944,51 +944,51 @@ void __42__SGPatterns_calculateLangResolutionOrder__block_invoke_2(uint64_t a1, 
   }
 }
 
-+ (void)setPatternsDictForTesting:(id)a3
++ (void)setPatternsDictForTesting:(id)testing
 {
-  v3 = a3;
+  testingCopy = testing;
   v4 = globalPatternsData;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__SGPatterns_setPatternsDictForTesting___block_invoke;
   v6[3] = &unk_27894D160;
-  v7 = v3;
-  v5 = v3;
+  v7 = testingCopy;
+  v5 = testingCopy;
   [v4 runWithLockAcquired:v6];
 }
 
-+ (id)patternsForClass:(Class)a3
++ (id)patternsForClass:(Class)class
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:class_getName(a3)];
-  v5 = [a1 patternsForIdentifier:v4];
+  v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:class_getName(class)];
+  v5 = [self patternsForIdentifier:v4];
 
   return v5;
 }
 
-+ (id)patternsForIdentifier:(id)a3
++ (id)patternsForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
   v5 = v4[1];
-  v4[1] = v3;
+  v4[1] = identifierCopy;
 
   [v4 resetIfNeeded];
 
   return v4;
 }
 
-+ (void)forceLanguagesTo:(id)a3
++ (void)forceLanguagesTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   v6 = globalPatternsData;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __31__SGPatterns_forceLanguagesTo___block_invoke;
   v8[3] = &unk_27894D138;
   v10 = a2;
-  v11 = a1;
-  v9 = v5;
-  v7 = v5;
+  selfCopy = self;
+  v9 = toCopy;
+  v7 = toCopy;
   [v6 runWithLockAcquired:v8];
 }
 
@@ -1069,19 +1069,19 @@ void __31__SGPatterns_forceLanguagesTo___block_invoke(uint64_t a1, void *a2)
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)calculateCurrentLanguagesFromPreferredLocaleCodes:(id)a3
++ (id)calculateCurrentLanguagesFromPreferredLocaleCodes:(id)codes
 {
-  v3 = a3;
+  codesCopy = codes;
   v4 = objc_opt_new();
   v5 = globalPatternsData;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__SGPatterns_calculateCurrentLanguagesFromPreferredLocaleCodes___block_invoke;
   v11[3] = &unk_27894D110;
-  v12 = v3;
+  v12 = codesCopy;
   v6 = v4;
   v13 = v6;
-  v7 = v3;
+  v7 = codesCopy;
   [v5 runWithLockAcquired:v11];
   v8 = v13;
   v9 = v6;
@@ -1216,7 +1216,7 @@ LABEL_22:
   v2[2] = __41__SGPatterns_changeLanguageOrPatternData__block_invoke;
   v2[3] = &__block_descriptor_48_e29_v16__0__SGPatternGlobalData_8l;
   v2[4] = a2;
-  v2[5] = a1;
+  v2[5] = self;
   [globalPatternsData runWithLockAcquired:v2];
 }
 
@@ -1325,7 +1325,7 @@ LABEL_11:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = objc_opt_new();
     v4 = [objc_alloc(MEMORY[0x277D425F8]) initWithGuardedData:v3];
@@ -1337,10 +1337,10 @@ LABEL_11:
     v8[1] = 3221225472;
     v8[2] = __24__SGPatterns_initialize__block_invoke;
     v8[3] = &__block_descriptor_40_e20_v16__0___PASAsset2_8l;
-    v8[4] = a1;
+    v8[4] = self;
     v7 = [v6 registerUpdateHandler:v8];
 
-    [a1 changeLanguageOrPatternData];
+    [self changeLanguageOrPatternData];
     [globalPatternsData runWithLockAcquired:&__block_literal_global_11182];
   }
 }

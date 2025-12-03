@@ -1,27 +1,27 @@
 @interface MXBeginDictation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsInputOrigin:(id)a3;
-- (int)StringAsKeyboardReturnKey:(id)a3;
-- (int)StringAsKeyboardType:(id)a3;
+- (int)StringAsInputOrigin:(id)origin;
+- (int)StringAsKeyboardReturnKey:(id)key;
+- (int)StringAsKeyboardType:(id)type;
 - (int)inputOrigin;
 - (int)keyboardReturnKey;
 - (int)keyboardType;
 - (unint64_t)hash;
-- (void)addInlineLmeItems:(id)a3;
-- (void)addLanguages:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCensorSpeech:(BOOL)a3;
-- (void)setHasEnablePartialResults:(BOOL)a3;
-- (void)setHasIsAutoPunctuationEnabled:(BOOL)a3;
-- (void)setHasKeyboardReturnKey:(BOOL)a3;
-- (void)setHasKeyboardType:(BOOL)a3;
-- (void)setHasSaveRequestAudio:(BOOL)a3;
-- (void)setHasSpeakerIndependentRecognition:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addInlineLmeItems:(id)items;
+- (void)addLanguages:(id)languages;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCensorSpeech:(BOOL)speech;
+- (void)setHasEnablePartialResults:(BOOL)results;
+- (void)setHasIsAutoPunctuationEnabled:(BOOL)enabled;
+- (void)setHasKeyboardReturnKey:(BOOL)key;
+- (void)setHasKeyboardType:(BOOL)type;
+- (void)setHasSaveRequestAudio:(BOOL)audio;
+- (void)setHasSpeakerIndependentRecognition:(BOOL)recognition;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MXBeginDictation
@@ -39,9 +39,9 @@
   }
 }
 
-- (void)setHasKeyboardType:(BOOL)a3
+- (void)setHasKeyboardType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -54,85 +54,85 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsKeyboardType:(id)a3
+- (int)StringAsKeyboardType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"KeyboardTypeDefault"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"KeyboardTypeDefault"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ASCIICapable"])
+  else if ([typeCopy isEqualToString:@"ASCIICapable"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Alphabet"])
+  else if ([typeCopy isEqualToString:@"Alphabet"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NumbersAndPunctuation"])
+  else if ([typeCopy isEqualToString:@"NumbersAndPunctuation"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"NumberPad"])
+  else if ([typeCopy isEqualToString:@"NumberPad"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"DecimalPad"])
+  else if ([typeCopy isEqualToString:@"DecimalPad"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"URL"])
+  else if ([typeCopy isEqualToString:@"URL"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"EmailAddress"])
+  else if ([typeCopy isEqualToString:@"EmailAddress"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"PhonePad"])
+  else if ([typeCopy isEqualToString:@"PhonePad"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"NamePhonePad"])
+  else if ([typeCopy isEqualToString:@"NamePhonePad"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Twitter"])
+  else if ([typeCopy isEqualToString:@"Twitter"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"WebSearch"])
+  else if ([typeCopy isEqualToString:@"WebSearch"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"Assistant"])
+  else if ([typeCopy isEqualToString:@"Assistant"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"ASCIICapableNumberPad"])
+  else if ([typeCopy isEqualToString:@"ASCIICapableNumberPad"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"NonEmoji"])
+  else if ([typeCopy isEqualToString:@"NonEmoji"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"Messages"])
+  else if ([typeCopy isEqualToString:@"Messages"])
   {
     v4 = 15;
   }
@@ -158,9 +158,9 @@
   }
 }
 
-- (void)setHasKeyboardReturnKey:(BOOL)a3
+- (void)setHasKeyboardReturnKey:(BOOL)key
 {
-  if (a3)
+  if (key)
   {
     v3 = 2;
   }
@@ -173,65 +173,65 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsKeyboardReturnKey:(id)a3
+- (int)StringAsKeyboardReturnKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"KeyboardReturnKeyDefault"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"KeyboardReturnKeyDefault"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Go"])
+  else if ([keyCopy isEqualToString:@"Go"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Google"])
+  else if ([keyCopy isEqualToString:@"Google"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Join"])
+  else if ([keyCopy isEqualToString:@"Join"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Next"])
+  else if ([keyCopy isEqualToString:@"Next"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Route"])
+  else if ([keyCopy isEqualToString:@"Route"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Search"])
+  else if ([keyCopy isEqualToString:@"Search"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Send"])
+  else if ([keyCopy isEqualToString:@"Send"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Yahoo"])
+  else if ([keyCopy isEqualToString:@"Yahoo"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Done"])
+  else if ([keyCopy isEqualToString:@"Done"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"EmergencyCall"])
+  else if ([keyCopy isEqualToString:@"EmergencyCall"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"Continue"])
+  else if ([keyCopy isEqualToString:@"Continue"])
   {
     v4 = 11;
   }
@@ -244,45 +244,45 @@
   return v4;
 }
 
-- (void)addInlineLmeItems:(id)a3
+- (void)addInlineLmeItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   inlineLmeItems = self->_inlineLmeItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!inlineLmeItems)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_inlineLmeItems;
     self->_inlineLmeItems = v6;
 
-    v4 = v8;
+    itemsCopy = v8;
     inlineLmeItems = self->_inlineLmeItems;
   }
 
-  [(NSMutableArray *)inlineLmeItems addObject:v4];
+  [(NSMutableArray *)inlineLmeItems addObject:itemsCopy];
 }
 
-- (void)addLanguages:(id)a3
+- (void)addLanguages:(id)languages
 {
-  v4 = a3;
+  languagesCopy = languages;
   languages = self->_languages;
-  v8 = v4;
+  v8 = languagesCopy;
   if (!languages)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_languages;
     self->_languages = v6;
 
-    v4 = v8;
+    languagesCopy = v8;
     languages = self->_languages;
   }
 
-  [(NSMutableArray *)languages addObject:v4];
+  [(NSMutableArray *)languages addObject:languagesCopy];
 }
 
-- (void)setHasCensorSpeech:(BOOL)a3
+- (void)setHasCensorSpeech:(BOOL)speech
 {
-  if (a3)
+  if (speech)
   {
     v3 = 8;
   }
@@ -295,9 +295,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSpeakerIndependentRecognition:(BOOL)a3
+- (void)setHasSpeakerIndependentRecognition:(BOOL)recognition
 {
-  if (a3)
+  if (recognition)
   {
     v3 = 0x80;
   }
@@ -310,9 +310,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasSaveRequestAudio:(BOOL)a3
+- (void)setHasSaveRequestAudio:(BOOL)audio
 {
-  if (a3)
+  if (audio)
   {
     v3 = 64;
   }
@@ -325,9 +325,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasEnablePartialResults:(BOOL)a3
+- (void)setHasEnablePartialResults:(BOOL)results
 {
-  if (a3)
+  if (results)
   {
     v3 = 16;
   }
@@ -353,100 +353,100 @@
   }
 }
 
-- (int)StringAsInputOrigin:(id)a3
+- (int)StringAsInputOrigin:(id)origin
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UndefinedInputOrigin"])
+  originCopy = origin;
+  if ([originCopy isEqualToString:@"UndefinedInputOrigin"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"HomeButton"])
+  else if ([originCopy isEqualToString:@"HomeButton"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"RemoteButton"])
+  else if ([originCopy isEqualToString:@"RemoteButton"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RemoteAppButton"])
+  else if ([originCopy isEqualToString:@"RemoteAppButton"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"AssistantSpeechButton"])
+  else if ([originCopy isEqualToString:@"AssistantSpeechButton"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"AssistantTextInput"])
+  else if ([originCopy isEqualToString:@"AssistantTextInput"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PriorRequest"])
+  else if ([originCopy isEqualToString:@"PriorRequest"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"VoiceTrigger"])
+  else if ([originCopy isEqualToString:@"VoiceTrigger"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ServerGenerated"])
+  else if ([originCopy isEqualToString:@"ServerGenerated"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"MotionGesture"])
+  else if ([originCopy isEqualToString:@"MotionGesture"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"RaiseToSpeak"])
+  else if ([originCopy isEqualToString:@"RaiseToSpeak"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ClientGenerated"])
+  else if ([originCopy isEqualToString:@"ClientGenerated"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"TapToRefresh"])
+  else if ([originCopy isEqualToString:@"TapToRefresh"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"BackgroundRefresh"])
+  else if ([originCopy isEqualToString:@"BackgroundRefresh"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"BluetoothVoiceTrigger"])
+  else if ([originCopy isEqualToString:@"BluetoothVoiceTrigger"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"BluetoothDoubleTap"])
+  else if ([originCopy isEqualToString:@"BluetoothDoubleTap"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"TriggerlessFollowup"])
+  else if ([originCopy isEqualToString:@"TriggerlessFollowup"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"DialogButtonTap"])
+  else if ([originCopy isEqualToString:@"DialogButtonTap"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"MagusFollowup"])
+  else if ([originCopy isEqualToString:@"MagusFollowup"])
   {
     v4 = 18;
   }
@@ -459,9 +459,9 @@
   return v4;
 }
 
-- (void)setHasIsAutoPunctuationEnabled:(BOOL)a3
+- (void)setHasIsAutoPunctuationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 32;
   }
@@ -480,50 +480,50 @@
   v8.receiver = self;
   v8.super_class = MXBeginDictation;
   v4 = [(MXBeginDictation *)&v8 description];
-  v5 = [(MXBeginDictation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MXBeginDictation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   audioMetadata = self->_audioMetadata;
   if (audioMetadata)
   {
-    v5 = [(MXAudioMetadata *)audioMetadata dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"audio_metadata"];
+    dictionaryRepresentation = [(MXAudioMetadata *)audioMetadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"audio_metadata"];
   }
 
   requestId = self->_requestId;
   if (requestId)
   {
-    [v3 setObject:requestId forKey:@"request_id"];
+    [dictionary setObject:requestId forKey:@"request_id"];
   }
 
   fieldId = self->_fieldId;
   if (fieldId)
   {
-    [v3 setObject:fieldId forKey:@"field_id"];
+    [dictionary setObject:fieldId forKey:@"field_id"];
   }
 
   fieldLabel = self->_fieldLabel;
   if (fieldLabel)
   {
-    [v3 setObject:fieldLabel forKey:@"field_label"];
+    [dictionary setObject:fieldLabel forKey:@"field_label"];
   }
 
   applicationName = self->_applicationName;
   if (applicationName)
   {
-    [v3 setObject:applicationName forKey:@"application_name"];
+    [dictionary setObject:applicationName forKey:@"application_name"];
   }
 
   applicationVersion = self->_applicationVersion;
   if (applicationVersion)
   {
-    [v3 setObject:applicationVersion forKey:@"application_version"];
+    [dictionary setObject:applicationVersion forKey:@"application_version"];
   }
 
   has = self->_has;
@@ -540,7 +540,7 @@
       v13 = off_27991BAC8[keyboardType];
     }
 
-    [v3 setObject:v13 forKey:@"keyboard_type"];
+    [dictionary setObject:v13 forKey:@"keyboard_type"];
 
     has = self->_has;
   }
@@ -558,56 +558,56 @@
       v15 = off_27991BB48[keyboardReturnKey];
     }
 
-    [v3 setObject:v15 forKey:@"keyboard_return_key"];
+    [dictionary setObject:v15 forKey:@"keyboard_return_key"];
   }
 
   selectedText = self->_selectedText;
   if (selectedText)
   {
-    [v3 setObject:selectedText forKey:@"selected_text"];
+    [dictionary setObject:selectedText forKey:@"selected_text"];
   }
 
   prefixText = self->_prefixText;
   if (prefixText)
   {
-    [v3 setObject:prefixText forKey:@"prefix_text"];
+    [dictionary setObject:prefixText forKey:@"prefix_text"];
   }
 
   postfixText = self->_postfixText;
   if (postfixText)
   {
-    [v3 setObject:postfixText forKey:@"postfix_text"];
+    [dictionary setObject:postfixText forKey:@"postfix_text"];
   }
 
   inlineLmeItems = self->_inlineLmeItems;
   if (inlineLmeItems)
   {
-    [v3 setObject:inlineLmeItems forKey:@"inline_lme_items"];
+    [dictionary setObject:inlineLmeItems forKey:@"inline_lme_items"];
   }
 
   languages = self->_languages;
   if (languages)
   {
-    [v3 setObject:languages forKey:@"languages"];
+    [dictionary setObject:languages forKey:@"languages"];
   }
 
   region = self->_region;
   if (region)
   {
-    [v3 setObject:region forKey:@"region"];
+    [dictionary setObject:region forKey:@"region"];
   }
 
   activationToken = self->_activationToken;
   if (activationToken)
   {
-    [v3 setObject:activationToken forKey:@"activation_token"];
+    [dictionary setObject:activationToken forKey:@"activation_token"];
   }
 
   v23 = self->_has;
   if ((v23 & 8) != 0)
   {
     v29 = [MEMORY[0x277CCABB0] numberWithBool:self->_censorSpeech];
-    [v3 setObject:v29 forKey:@"censor_speech"];
+    [dictionary setObject:v29 forKey:@"censor_speech"];
 
     v23 = self->_has;
     if ((v23 & 0x80) == 0)
@@ -628,27 +628,27 @@ LABEL_39:
   }
 
   v30 = [MEMORY[0x277CCABB0] numberWithBool:self->_speakerIndependentRecognition];
-  [v3 setObject:v30 forKey:@"speaker_independent_recognition"];
+  [dictionary setObject:v30 forKey:@"speaker_independent_recognition"];
 
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_40:
     v24 = [MEMORY[0x277CCABB0] numberWithBool:self->_saveRequestAudio];
-    [v3 setObject:v24 forKey:@"save_request_audio"];
+    [dictionary setObject:v24 forKey:@"save_request_audio"];
   }
 
 LABEL_41:
   keyboardIdentifier = self->_keyboardIdentifier;
   if (keyboardIdentifier)
   {
-    [v3 setObject:keyboardIdentifier forKey:@"keyboard_identifier"];
+    [dictionary setObject:keyboardIdentifier forKey:@"keyboard_identifier"];
   }
 
   v26 = self->_has;
   if ((v26 & 0x10) != 0)
   {
     v31 = [MEMORY[0x277CCABB0] numberWithBool:self->_enablePartialResults];
-    [v3 setObject:v31 forKey:@"enable_partial_results"];
+    [dictionary setObject:v31 forKey:@"enable_partial_results"];
 
     v26 = self->_has;
     if ((v26 & 1) == 0)
@@ -679,7 +679,7 @@ LABEL_45:
     v33 = off_27991BBA8[inputOrigin];
   }
 
-  [v3 setObject:v33 forKey:@"input_origin"];
+  [dictionary setObject:v33 forKey:@"input_origin"];
 
   if ((*&self->_has & 0x20) == 0)
   {
@@ -688,17 +688,17 @@ LABEL_45:
 
 LABEL_46:
   v27 = [MEMORY[0x277CCABB0] numberWithBool:self->_isAutoPunctuationEnabled];
-  [v3 setObject:v27 forKey:@"is_auto_punctuation_enabled"];
+  [dictionary setObject:v27 forKey:@"is_auto_punctuation_enabled"];
 
 LABEL_47:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_audioMetadata)
   {
     PBDataWriterWriteSubmessage();
@@ -904,58 +904,58 @@ LABEL_51:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v17 = v4;
+  toCopy = to;
+  v17 = toCopy;
   if (self->_audioMetadata)
   {
-    [v4 setAudioMetadata:?];
-    v4 = v17;
+    [toCopy setAudioMetadata:?];
+    toCopy = v17;
   }
 
   if (self->_requestId)
   {
     [v17 setRequestId:?];
-    v4 = v17;
+    toCopy = v17;
   }
 
   if (self->_fieldId)
   {
     [v17 setFieldId:?];
-    v4 = v17;
+    toCopy = v17;
   }
 
   if (self->_fieldLabel)
   {
     [v17 setFieldLabel:?];
-    v4 = v17;
+    toCopy = v17;
   }
 
   if (self->_applicationName)
   {
     [v17 setApplicationName:?];
-    v4 = v17;
+    toCopy = v17;
   }
 
   if (self->_applicationVersion)
   {
     [v17 setApplicationVersion:?];
-    v4 = v17;
+    toCopy = v17;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 21) = self->_keyboardType;
-    *(v4 + 144) |= 4u;
+    *(toCopy + 21) = self->_keyboardType;
+    *(toCopy + 144) |= 4u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 20) = self->_keyboardReturnKey;
-    *(v4 + 144) |= 2u;
+    *(toCopy + 20) = self->_keyboardReturnKey;
+    *(toCopy + 144) |= 2u;
   }
 
   if (self->_selectedText)
@@ -976,10 +976,10 @@ LABEL_51:
   if ([(MXBeginDictation *)self inlineLmeItemsCount])
   {
     [v17 clearInlineLmeItems];
-    v6 = [(MXBeginDictation *)self inlineLmeItemsCount];
-    if (v6)
+    inlineLmeItemsCount = [(MXBeginDictation *)self inlineLmeItemsCount];
+    if (inlineLmeItemsCount)
     {
-      v7 = v6;
+      v7 = inlineLmeItemsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(MXBeginDictation *)self inlineLmeItemsAtIndex:i];
@@ -991,10 +991,10 @@ LABEL_51:
   if ([(MXBeginDictation *)self languagesCount])
   {
     [v17 clearLanguages];
-    v10 = [(MXBeginDictation *)self languagesCount];
-    if (v10)
+    languagesCount = [(MXBeginDictation *)self languagesCount];
+    if (languagesCount)
     {
-      v11 = v10;
+      v11 = languagesCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(MXBeginDictation *)self languagesAtIndex:j];
@@ -1089,31 +1089,31 @@ LABEL_44:
 LABEL_45:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v57 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MXAudioMetadata *)self->_audioMetadata copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(MXAudioMetadata *)self->_audioMetadata copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_requestId copyWithZone:a3];
+  v8 = [(NSString *)self->_requestId copyWithZone:zone];
   v9 = *(v5 + 120);
   *(v5 + 120) = v8;
 
-  v10 = [(NSString *)self->_fieldId copyWithZone:a3];
+  v10 = [(NSString *)self->_fieldId copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
-  v12 = [(NSString *)self->_fieldLabel copyWithZone:a3];
+  v12 = [(NSString *)self->_fieldLabel copyWithZone:zone];
   v13 = *(v5 + 48);
   *(v5 + 48) = v12;
 
-  v14 = [(NSString *)self->_applicationName copyWithZone:a3];
+  v14 = [(NSString *)self->_applicationName copyWithZone:zone];
   v15 = *(v5 + 16);
   *(v5 + 16) = v14;
 
-  v16 = [(NSString *)self->_applicationVersion copyWithZone:a3];
+  v16 = [(NSString *)self->_applicationVersion copyWithZone:zone];
   v17 = *(v5 + 24);
   *(v5 + 24) = v16;
 
@@ -1131,15 +1131,15 @@ LABEL_45:
     *(v5 + 144) |= 2u;
   }
 
-  v19 = [(NSString *)self->_selectedText copyWithZone:a3];
+  v19 = [(NSString *)self->_selectedText copyWithZone:zone];
   v20 = *(v5 + 128);
   *(v5 + 128) = v19;
 
-  v21 = [(NSString *)self->_prefixText copyWithZone:a3];
+  v21 = [(NSString *)self->_prefixText copyWithZone:zone];
   v22 = *(v5 + 104);
   *(v5 + 104) = v21;
 
-  v23 = [(NSString *)self->_postfixText copyWithZone:a3];
+  v23 = [(NSString *)self->_postfixText copyWithZone:zone];
   v24 = *(v5 + 96);
   *(v5 + 96) = v23;
 
@@ -1162,7 +1162,7 @@ LABEL_45:
           objc_enumerationMutation(v25);
         }
 
-        v30 = [*(*(&v51 + 1) + 8 * i) copyWithZone:a3];
+        v30 = [*(*(&v51 + 1) + 8 * i) copyWithZone:zone];
         [v5 addInlineLmeItems:v30];
       }
 
@@ -1191,7 +1191,7 @@ LABEL_45:
           objc_enumerationMutation(v31);
         }
 
-        v36 = [*(*(&v47 + 1) + 8 * j) copyWithZone:{a3, v47}];
+        v36 = [*(*(&v47 + 1) + 8 * j) copyWithZone:{zone, v47}];
         [v5 addLanguages:v36];
       }
 
@@ -1201,11 +1201,11 @@ LABEL_45:
     while (v33);
   }
 
-  v37 = [(NSString *)self->_region copyWithZone:a3];
+  v37 = [(NSString *)self->_region copyWithZone:zone];
   v38 = *(v5 + 112);
   *(v5 + 112) = v37;
 
-  v39 = [(NSData *)self->_activationToken copyWithZone:a3];
+  v39 = [(NSData *)self->_activationToken copyWithZone:zone];
   v40 = *(v5 + 8);
   *(v5 + 8) = v39;
 
@@ -1242,7 +1242,7 @@ LABEL_22:
   }
 
 LABEL_23:
-  v42 = [(NSString *)self->_keyboardIdentifier copyWithZone:a3, v47];
+  v42 = [(NSString *)self->_keyboardIdentifier copyWithZone:zone, v47];
   v43 = *(v5 + 72);
   *(v5 + 72) = v42;
 
@@ -1286,16 +1286,16 @@ LABEL_27:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_81;
   }
 
   audioMetadata = self->_audioMetadata;
-  if (audioMetadata | *(v4 + 4))
+  if (audioMetadata | *(equalCopy + 4))
   {
     if (![(MXAudioMetadata *)audioMetadata isEqual:?])
     {
@@ -1304,7 +1304,7 @@ LABEL_27:
   }
 
   requestId = self->_requestId;
-  if (requestId | *(v4 + 15))
+  if (requestId | *(equalCopy + 15))
   {
     if (![(NSString *)requestId isEqual:?])
     {
@@ -1313,7 +1313,7 @@ LABEL_27:
   }
 
   fieldId = self->_fieldId;
-  if (fieldId | *(v4 + 5))
+  if (fieldId | *(equalCopy + 5))
   {
     if (![(NSString *)fieldId isEqual:?])
     {
@@ -1322,7 +1322,7 @@ LABEL_27:
   }
 
   fieldLabel = self->_fieldLabel;
-  if (fieldLabel | *(v4 + 6))
+  if (fieldLabel | *(equalCopy + 6))
   {
     if (![(NSString *)fieldLabel isEqual:?])
     {
@@ -1331,7 +1331,7 @@ LABEL_27:
   }
 
   applicationName = self->_applicationName;
-  if (applicationName | *(v4 + 2))
+  if (applicationName | *(equalCopy + 2))
   {
     if (![(NSString *)applicationName isEqual:?])
     {
@@ -1340,7 +1340,7 @@ LABEL_27:
   }
 
   applicationVersion = self->_applicationVersion;
-  if (applicationVersion | *(v4 + 3))
+  if (applicationVersion | *(equalCopy + 3))
   {
     if (![(NSString *)applicationVersion isEqual:?])
     {
@@ -1348,41 +1348,41 @@ LABEL_27:
     }
   }
 
-  v11 = *(v4 + 144);
+  v11 = *(equalCopy + 144);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 144) & 4) == 0 || self->_keyboardType != *(v4 + 21))
+    if ((*(equalCopy + 144) & 4) == 0 || self->_keyboardType != *(equalCopy + 21))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 144) & 4) != 0)
+  else if ((*(equalCopy + 144) & 4) != 0)
   {
     goto LABEL_81;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 144) & 2) == 0 || self->_keyboardReturnKey != *(v4 + 20))
+    if ((*(equalCopy + 144) & 2) == 0 || self->_keyboardReturnKey != *(equalCopy + 20))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 144) & 2) != 0)
+  else if ((*(equalCopy + 144) & 2) != 0)
   {
     goto LABEL_81;
   }
 
   selectedText = self->_selectedText;
-  if (selectedText | *(v4 + 16) && ![(NSString *)selectedText isEqual:?])
+  if (selectedText | *(equalCopy + 16) && ![(NSString *)selectedText isEqual:?])
   {
     goto LABEL_81;
   }
 
   prefixText = self->_prefixText;
-  if (prefixText | *(v4 + 13))
+  if (prefixText | *(equalCopy + 13))
   {
     if (![(NSString *)prefixText isEqual:?])
     {
@@ -1391,7 +1391,7 @@ LABEL_27:
   }
 
   postfixText = self->_postfixText;
-  if (postfixText | *(v4 + 12))
+  if (postfixText | *(equalCopy + 12))
   {
     if (![(NSString *)postfixText isEqual:?])
     {
@@ -1400,7 +1400,7 @@ LABEL_27:
   }
 
   inlineLmeItems = self->_inlineLmeItems;
-  if (inlineLmeItems | *(v4 + 7))
+  if (inlineLmeItems | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)inlineLmeItems isEqual:?])
     {
@@ -1409,7 +1409,7 @@ LABEL_27:
   }
 
   languages = self->_languages;
-  if (languages | *(v4 + 11))
+  if (languages | *(equalCopy + 11))
   {
     if (![(NSMutableArray *)languages isEqual:?])
     {
@@ -1418,7 +1418,7 @@ LABEL_27:
   }
 
   region = self->_region;
-  if (region | *(v4 + 14))
+  if (region | *(equalCopy + 14))
   {
     if (![(NSString *)region isEqual:?])
     {
@@ -1427,7 +1427,7 @@ LABEL_27:
   }
 
   activationToken = self->_activationToken;
-  if (activationToken | *(v4 + 1))
+  if (activationToken | *(equalCopy + 1))
   {
     if (![(NSData *)activationToken isEqual:?])
     {
@@ -1436,90 +1436,90 @@ LABEL_27:
   }
 
   has = self->_has;
-  v20 = *(v4 + 144);
+  v20 = *(equalCopy + 144);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 144) & 8) == 0)
+    if ((*(equalCopy + 144) & 8) == 0)
     {
       goto LABEL_81;
     }
 
-    v22 = *(v4 + 136);
+    v22 = *(equalCopy + 136);
     if (self->_censorSpeech)
     {
-      if ((*(v4 + 136) & 1) == 0)
+      if ((*(equalCopy + 136) & 1) == 0)
       {
         goto LABEL_81;
       }
     }
 
-    else if (*(v4 + 136))
+    else if (*(equalCopy + 136))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 144) & 8) != 0)
+  else if ((*(equalCopy + 144) & 8) != 0)
   {
     goto LABEL_81;
   }
 
   if ((*&self->_has & 0x80) != 0)
   {
-    if ((*(v4 + 144) & 0x80) == 0)
+    if ((*(equalCopy + 144) & 0x80) == 0)
     {
       goto LABEL_81;
     }
 
-    v23 = *(v4 + 140);
+    v23 = *(equalCopy + 140);
     if (self->_speakerIndependentRecognition)
     {
-      if ((*(v4 + 140) & 1) == 0)
+      if ((*(equalCopy + 140) & 1) == 0)
       {
         goto LABEL_81;
       }
     }
 
-    else if (*(v4 + 140))
+    else if (*(equalCopy + 140))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 144) & 0x80) != 0)
+  else if ((*(equalCopy + 144) & 0x80) != 0)
   {
     goto LABEL_81;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 144) & 0x40) == 0)
+    if ((*(equalCopy + 144) & 0x40) == 0)
     {
       goto LABEL_81;
     }
 
-    v24 = *(v4 + 139);
+    v24 = *(equalCopy + 139);
     if (self->_saveRequestAudio)
     {
-      if ((*(v4 + 139) & 1) == 0)
+      if ((*(equalCopy + 139) & 1) == 0)
       {
         goto LABEL_81;
       }
     }
 
-    else if (*(v4 + 139))
+    else if (*(equalCopy + 139))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 144) & 0x40) != 0)
+  else if ((*(equalCopy + 144) & 0x40) != 0)
   {
     goto LABEL_81;
   }
 
   keyboardIdentifier = self->_keyboardIdentifier;
-  if (keyboardIdentifier | *(v4 + 9))
+  if (keyboardIdentifier | *(equalCopy + 9))
   {
     if (![(NSString *)keyboardIdentifier isEqual:?])
     {
@@ -1531,57 +1531,57 @@ LABEL_27:
 
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 144) & 0x10) == 0)
+    if ((*(equalCopy + 144) & 0x10) == 0)
     {
       goto LABEL_81;
     }
 
-    v25 = *(v4 + 137);
+    v25 = *(equalCopy + 137);
     if (self->_enablePartialResults)
     {
-      if ((*(v4 + 137) & 1) == 0)
+      if ((*(equalCopy + 137) & 1) == 0)
       {
         goto LABEL_81;
       }
     }
 
-    else if (*(v4 + 137))
+    else if (*(equalCopy + 137))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 144) & 0x10) != 0)
+  else if ((*(equalCopy + 144) & 0x10) != 0)
   {
     goto LABEL_81;
   }
 
   if (has)
   {
-    if ((*(v4 + 144) & 1) == 0 || self->_inputOrigin != *(v4 + 16))
+    if ((*(equalCopy + 144) & 1) == 0 || self->_inputOrigin != *(equalCopy + 16))
     {
       goto LABEL_81;
     }
   }
 
-  else if (*(v4 + 144))
+  else if (*(equalCopy + 144))
   {
     goto LABEL_81;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 144) & 0x20) != 0)
+    if ((*(equalCopy + 144) & 0x20) != 0)
     {
       if (self->_isAutoPunctuationEnabled)
       {
-        if ((*(v4 + 138) & 1) == 0)
+        if ((*(equalCopy + 138) & 1) == 0)
         {
           goto LABEL_81;
         }
       }
 
-      else if (*(v4 + 138))
+      else if (*(equalCopy + 138))
       {
         goto LABEL_81;
       }
@@ -1595,7 +1595,7 @@ LABEL_81:
     goto LABEL_82;
   }
 
-  v26 = (*(v4 + 144) & 0x20) == 0;
+  v26 = (*(equalCopy + 144) & 0x20) == 0;
 LABEL_82:
 
   return v26;
@@ -1713,12 +1713,12 @@ LABEL_16:
   return v24 ^ v25 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   audioMetadata = self->_audioMetadata;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (audioMetadata)
   {
     if (v6)
@@ -1732,56 +1732,56 @@ LABEL_16:
     [(MXBeginDictation *)self setAudioMetadata:?];
   }
 
-  if (*(v4 + 15))
+  if (*(fromCopy + 15))
   {
     [(MXBeginDictation *)self setRequestId:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(MXBeginDictation *)self setFieldId:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(MXBeginDictation *)self setFieldLabel:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(MXBeginDictation *)self setApplicationName:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(MXBeginDictation *)self setApplicationVersion:?];
   }
 
-  v7 = *(v4 + 144);
+  v7 = *(fromCopy + 144);
   if ((v7 & 4) != 0)
   {
-    self->_keyboardType = *(v4 + 21);
+    self->_keyboardType = *(fromCopy + 21);
     *&self->_has |= 4u;
-    v7 = *(v4 + 144);
+    v7 = *(fromCopy + 144);
   }
 
   if ((v7 & 2) != 0)
   {
-    self->_keyboardReturnKey = *(v4 + 20);
+    self->_keyboardReturnKey = *(fromCopy + 20);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(MXBeginDictation *)self setSelectedText:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(MXBeginDictation *)self setPrefixText:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(MXBeginDictation *)self setPostfixText:?];
   }
@@ -1790,7 +1790,7 @@ LABEL_16:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = *(v4 + 7);
+  v8 = *(fromCopy + 7);
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v9)
   {
@@ -1818,7 +1818,7 @@ LABEL_16:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = *(v4 + 11);
+  v13 = *(fromCopy + 11);
   v14 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v14)
   {
@@ -1842,22 +1842,22 @@ LABEL_16:
     while (v15);
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(MXBeginDictation *)self setRegion:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(MXBeginDictation *)self setActivationToken:?];
   }
 
-  v18 = *(v4 + 144);
+  v18 = *(fromCopy + 144);
   if ((v18 & 8) != 0)
   {
-    self->_censorSpeech = *(v4 + 136);
+    self->_censorSpeech = *(fromCopy + 136);
     *&self->_has |= 8u;
-    v18 = *(v4 + 144);
+    v18 = *(fromCopy + 144);
     if ((v18 & 0x80) == 0)
     {
 LABEL_46:
@@ -1870,38 +1870,38 @@ LABEL_46:
     }
   }
 
-  else if ((*(v4 + 144) & 0x80) == 0)
+  else if ((*(fromCopy + 144) & 0x80) == 0)
   {
     goto LABEL_46;
   }
 
-  self->_speakerIndependentRecognition = *(v4 + 140);
+  self->_speakerIndependentRecognition = *(fromCopy + 140);
   *&self->_has |= 0x80u;
-  if ((*(v4 + 144) & 0x40) != 0)
+  if ((*(fromCopy + 144) & 0x40) != 0)
   {
 LABEL_47:
-    self->_saveRequestAudio = *(v4 + 139);
+    self->_saveRequestAudio = *(fromCopy + 139);
     *&self->_has |= 0x40u;
   }
 
 LABEL_48:
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(MXBeginDictation *)self setKeyboardIdentifier:?];
   }
 
-  v19 = *(v4 + 144);
+  v19 = *(fromCopy + 144);
   if ((v19 & 0x10) == 0)
   {
-    if ((*(v4 + 144) & 1) == 0)
+    if ((*(fromCopy + 144) & 1) == 0)
     {
       goto LABEL_52;
     }
 
 LABEL_59:
-    self->_inputOrigin = *(v4 + 16);
+    self->_inputOrigin = *(fromCopy + 16);
     *&self->_has |= 1u;
-    if ((*(v4 + 144) & 0x20) == 0)
+    if ((*(fromCopy + 144) & 0x20) == 0)
     {
       goto LABEL_54;
     }
@@ -1909,9 +1909,9 @@ LABEL_59:
     goto LABEL_53;
   }
 
-  self->_enablePartialResults = *(v4 + 137);
+  self->_enablePartialResults = *(fromCopy + 137);
   *&self->_has |= 0x10u;
-  v19 = *(v4 + 144);
+  v19 = *(fromCopy + 144);
   if (v19)
   {
     goto LABEL_59;
@@ -1921,7 +1921,7 @@ LABEL_52:
   if ((v19 & 0x20) != 0)
   {
 LABEL_53:
-    self->_isAutoPunctuationEnabled = *(v4 + 138);
+    self->_isAutoPunctuationEnabled = *(fromCopy + 138);
     *&self->_has |= 0x20u;
   }
 

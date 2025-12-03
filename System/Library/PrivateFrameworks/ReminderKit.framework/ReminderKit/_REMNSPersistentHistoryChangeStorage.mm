@@ -1,41 +1,41 @@
 @interface _REMNSPersistentHistoryChangeStorage
-- (BOOL)isEqual:(id)a3;
-- (_REMNSPersistentHistoryChangeStorage)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_REMNSPersistentHistoryChangeStorage)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _REMNSPersistentHistoryChangeStorage
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[_REMNSPersistentHistoryChangeStorage changeID](self forKey:{"changeID"), @"changeID"}];
-  v5 = [(_REMNSPersistentHistoryChangeStorage *)self changedObjectIDStorage];
-  [v4 encodeObject:v5 forKey:@"changedObjectID"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[_REMNSPersistentHistoryChangeStorage changeID](self forKey:{"changeID"), @"changeID"}];
+  changedObjectIDStorage = [(_REMNSPersistentHistoryChangeStorage *)self changedObjectIDStorage];
+  [coderCopy encodeObject:changedObjectIDStorage forKey:@"changedObjectID"];
 
-  [v4 encodeInteger:-[_REMNSPersistentHistoryChangeStorage changeType](self forKey:{"changeType"), @"changeType"}];
-  v6 = [(_REMNSPersistentHistoryChangeStorage *)self tombstone];
-  [v4 encodeObject:v6 forKey:@"tombstone"];
+  [coderCopy encodeInteger:-[_REMNSPersistentHistoryChangeStorage changeType](self forKey:{"changeType"), @"changeType"}];
+  tombstone = [(_REMNSPersistentHistoryChangeStorage *)self tombstone];
+  [coderCopy encodeObject:tombstone forKey:@"tombstone"];
 
-  v7 = [(_REMNSPersistentHistoryChangeStorage *)self updatedProperties];
-  [v4 encodeObject:v7 forKey:@"updatedProperties"];
+  updatedProperties = [(_REMNSPersistentHistoryChangeStorage *)self updatedProperties];
+  [coderCopy encodeObject:updatedProperties forKey:@"updatedProperties"];
 }
 
-- (_REMNSPersistentHistoryChangeStorage)initWithCoder:(id)a3
+- (_REMNSPersistentHistoryChangeStorage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = _REMNSPersistentHistoryChangeStorage;
   v5 = [(_REMNSPersistentHistoryChangeStorage *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"changedObjectID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"changedObjectID"];
     changedObjectIDStorage = v5->_changedObjectIDStorage;
     v5->_changedObjectIDStorage = v6;
     v8 = v6;
 
-    v5->_changeID = [v4 decodeInt64ForKey:@"changeID"];
-    v9 = [v4 decodeIntegerForKey:@"changeType"];
+    v5->_changeID = [coderCopy decodeInt64ForKey:@"changeID"];
+    v9 = [coderCopy decodeIntegerForKey:@"changeType"];
     if (v9 >= 3)
     {
       v10 = os_log_create("com.apple.reminderkit", "default");
@@ -48,14 +48,14 @@
     }
 
     v5->_changeType = v9;
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tombstone"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tombstone"];
     tombstone = v5->_tombstone;
     v5->_tombstone = v11;
 
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"updatedProperties"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"updatedProperties"];
     updatedProperties = v5->_updatedProperties;
     v5->_updatedProperties = v16;
   }
@@ -63,37 +63,37 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       goto LABEL_12;
     }
 
-    v7 = [(_REMNSPersistentHistoryChangeStorage *)self changeID];
-    if (v7 != [(_REMNSPersistentHistoryChangeStorage *)v6 changeID])
+    changeID = [(_REMNSPersistentHistoryChangeStorage *)self changeID];
+    if (changeID != [(_REMNSPersistentHistoryChangeStorage *)v6 changeID])
     {
       goto LABEL_12;
     }
 
-    v8 = [(_REMNSPersistentHistoryChangeStorage *)self changedObjectIDStorage];
-    v9 = [(_REMNSPersistentHistoryChangeStorage *)v6 changedObjectIDStorage];
-    v10 = v9;
-    if (v8 == v9)
+    changedObjectIDStorage = [(_REMNSPersistentHistoryChangeStorage *)self changedObjectIDStorage];
+    changedObjectIDStorage2 = [(_REMNSPersistentHistoryChangeStorage *)v6 changedObjectIDStorage];
+    v10 = changedObjectIDStorage2;
+    if (changedObjectIDStorage == changedObjectIDStorage2)
     {
     }
 
     else
     {
-      v11 = [(_REMNSPersistentHistoryChangeStorage *)self changedObjectIDStorage];
-      v12 = [(_REMNSPersistentHistoryChangeStorage *)v6 changedObjectIDStorage];
-      v13 = [v11 isEqual:v12];
+      changedObjectIDStorage3 = [(_REMNSPersistentHistoryChangeStorage *)self changedObjectIDStorage];
+      changedObjectIDStorage4 = [(_REMNSPersistentHistoryChangeStorage *)v6 changedObjectIDStorage];
+      v13 = [changedObjectIDStorage3 isEqual:changedObjectIDStorage4];
 
       if (!v13)
       {
@@ -101,21 +101,21 @@
       }
     }
 
-    v15 = [(_REMNSPersistentHistoryChangeStorage *)self changeType];
-    if (v15 == [(_REMNSPersistentHistoryChangeStorage *)v6 changeType])
+    changeType = [(_REMNSPersistentHistoryChangeStorage *)self changeType];
+    if (changeType == [(_REMNSPersistentHistoryChangeStorage *)v6 changeType])
     {
-      v16 = [(_REMNSPersistentHistoryChangeStorage *)self tombstone];
-      v17 = [(_REMNSPersistentHistoryChangeStorage *)v6 tombstone];
-      v18 = v17;
-      if (v16 == v17)
+      tombstone = [(_REMNSPersistentHistoryChangeStorage *)self tombstone];
+      tombstone2 = [(_REMNSPersistentHistoryChangeStorage *)v6 tombstone];
+      v18 = tombstone2;
+      if (tombstone == tombstone2)
       {
       }
 
       else
       {
-        v19 = [(_REMNSPersistentHistoryChangeStorage *)self tombstone];
-        v20 = [(_REMNSPersistentHistoryChangeStorage *)v6 tombstone];
-        v21 = [v19 isEqual:v20];
+        tombstone3 = [(_REMNSPersistentHistoryChangeStorage *)self tombstone];
+        tombstone4 = [(_REMNSPersistentHistoryChangeStorage *)v6 tombstone];
+        v21 = [tombstone3 isEqual:tombstone4];
 
         if (!v21)
         {
@@ -123,18 +123,18 @@
         }
       }
 
-      v23 = [(_REMNSPersistentHistoryChangeStorage *)self updatedProperties];
-      v24 = [(_REMNSPersistentHistoryChangeStorage *)v6 updatedProperties];
-      if (v23 == v24)
+      updatedProperties = [(_REMNSPersistentHistoryChangeStorage *)self updatedProperties];
+      updatedProperties2 = [(_REMNSPersistentHistoryChangeStorage *)v6 updatedProperties];
+      if (updatedProperties == updatedProperties2)
       {
         v14 = 1;
       }
 
       else
       {
-        v25 = [(_REMNSPersistentHistoryChangeStorage *)self updatedProperties];
-        v26 = [(_REMNSPersistentHistoryChangeStorage *)v6 updatedProperties];
-        v14 = [v25 isEqual:v26];
+        updatedProperties3 = [(_REMNSPersistentHistoryChangeStorage *)self updatedProperties];
+        updatedProperties4 = [(_REMNSPersistentHistoryChangeStorage *)v6 updatedProperties];
+        v14 = [updatedProperties3 isEqual:updatedProperties4];
       }
 
       goto LABEL_13;

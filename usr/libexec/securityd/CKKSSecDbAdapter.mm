@@ -1,15 +1,15 @@
 @interface CKKSSecDbAdapter
-- (BOOL)dispatchSyncWithConnection:(__OpaqueSecDbConnection *)a3 readWriteTxion:(BOOL)a4 block:(id)a5;
-- (CKKSSecDbAdapter)initWithQueue:(id)a3;
-- (void)dispatchSyncWithReadOnlySQLTransaction:(id)a3;
-- (void)dispatchSyncWithSQLTransaction:(id)a3;
+- (BOOL)dispatchSyncWithConnection:(__OpaqueSecDbConnection *)connection readWriteTxion:(BOOL)txion block:(id)block;
+- (CKKSSecDbAdapter)initWithQueue:(id)queue;
+- (void)dispatchSyncWithReadOnlySQLTransaction:(id)transaction;
+- (void)dispatchSyncWithSQLTransaction:(id)transaction;
 @end
 
 @implementation CKKSSecDbAdapter
 
-- (void)dispatchSyncWithReadOnlySQLTransaction:(id)a3
+- (void)dispatchSyncWithReadOnlySQLTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = os_transaction_create();
   cf = 0;
   v9[0] = _NSConcreteStackBlock;
@@ -17,7 +17,7 @@
   v9[2] = sub_1001114E0;
   v9[3] = &unk_100337360;
   v9[4] = self;
-  v6 = v4;
+  v6 = transactionCopy;
   v10 = v6;
   sub_100008A70(0, 1, 0, &cf, v9);
   if (cf)
@@ -39,9 +39,9 @@
   }
 }
 
-- (void)dispatchSyncWithSQLTransaction:(id)a3
+- (void)dispatchSyncWithSQLTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = os_transaction_create();
   cf = 0;
   v9[0] = _NSConcreteStackBlock;
@@ -49,7 +49,7 @@
   v9[2] = sub_100111710;
   v9[3] = &unk_100337360;
   v9[4] = self;
-  v6 = v4;
+  v6 = transactionCopy;
   v10 = v6;
   sub_100008A70(1, 1, 0, &cf, v9);
   if (cf)
@@ -71,16 +71,16 @@
   }
 }
 
-- (BOOL)dispatchSyncWithConnection:(__OpaqueSecDbConnection *)a3 readWriteTxion:(BOOL)a4 block:(id)a5
+- (BOOL)dispatchSyncWithConnection:(__OpaqueSecDbConnection *)connection readWriteTxion:(BOOL)txion block:(id)block
 {
-  v5 = a4;
-  v8 = a5;
+  txionCopy = txion;
+  blockCopy = block;
   cf = 0;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100111898;
   v15[3] = &unk_100337338;
-  if (v5)
+  if (txionCopy)
   {
     v9 = 5;
   }
@@ -90,11 +90,11 @@
     v9 = 3;
   }
 
-  v17 = v5;
+  v17 = txionCopy;
   v15[4] = self;
-  v10 = v8;
+  v10 = blockCopy;
   v16 = v10;
-  v11 = sub_1000141DC(a3, v9, &cf, v15);
+  v11 = sub_1000141DC(connection, v9, &cf, v15);
   if (cf)
   {
     v12 = sub_100019104(@"ckks", 0);
@@ -116,16 +116,16 @@
   return v11;
 }
 
-- (CKKSSecDbAdapter)initWithQueue:(id)a3
+- (CKKSSecDbAdapter)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = CKKSSecDbAdapter;
   v6 = [(CKKSSecDbAdapter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

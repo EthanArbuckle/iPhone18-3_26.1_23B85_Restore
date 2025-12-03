@@ -1,15 +1,15 @@
 @interface ATXTimelineRelevancePBTimelineRelevanceAbuseControlOutcome
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsOutcomeType:(id)a3;
+- (int)StringAsOutcomeType:(id)type;
 - (int)outcomeType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOutcomeType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasOutcomeType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXTimelineRelevancePBTimelineRelevanceAbuseControlOutcome
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasOutcomeType:(BOOL)a3
+- (void)setHasOutcomeType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -42,125 +42,125 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsOutcomeType:(id)a3
+- (int)StringAsOutcomeType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"OutcomeTypeFailureScoreIsSameAsThresholdBadLuck"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"OutcomeTypeFailureScoreIsSameAsThresholdBadLuck"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypeFailureRecentDismissal"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypeFailureRecentDismissal"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypeFailureWidgetIsOnDenyList"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypeFailureWidgetIsOnDenyList"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypeFailureRotationExceededDurationLimit"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypeFailureRotationExceededDurationLimit"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypeFailureEarlierSuggestionCurrentlyBeingPredictedWasChosen"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypeFailureEarlierSuggestionCurrentlyBeingPredictedWasChosen"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypeFailureLaterSuggestionChosen"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypeFailureLaterSuggestionChosen"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypeFailureScoreIsSameAsThresholdButCountOfRecentRotationsExceedsSoftRotationQuota"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypeFailureScoreIsSameAsThresholdButCountOfRecentRotationsExceedsSoftRotationQuota"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypeFailureNilRelevance"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypeFailureNilRelevance"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypeFailureNonPositiveScore"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypeFailureNonPositiveScore"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypeFailureNumberOfRecentRotationsHaveReachedHardRotationQuota"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypeFailureNumberOfRecentRotationsHaveReachedHardRotationQuota"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypeFailureSuggestionInCoolDown"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypeFailureSuggestionInCoolDown"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypeFailureInsufficientHistory"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypeFailureInsufficientHistory"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypeFailureScoreIsSmallerThanThreshold"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypeFailureScoreIsSmallerThanThreshold"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypeUnknown"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypeUnknown"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypePassWidgetKitDeveloperModeEnabled"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypePassWidgetKitDeveloperModeEnabled"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypePassWidgetHasUnlimitedSoftRotationQuota"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypePassWidgetHasUnlimitedSoftRotationQuota"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypePassSoftRotationQuotaExceedsAverageCountOfDailyEntries"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypePassSoftRotationQuotaExceedsAverageCountOfDailyEntries"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypePassSuggestionPreviouslyPassedButWidgetHasNotBeenSurfaced"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypePassSuggestionPreviouslyPassedButWidgetHasNotBeenSurfaced"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypePassWidgetWasSurfacedAndHasNotExceededDurationLimit"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypePassWidgetWasSurfacedAndHasNotExceededDurationLimit"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypePassScoreIsGreaterThanThreshold"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypePassScoreIsGreaterThanThreshold"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypePassScoreIsSameAsThresholdGoodLuck"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypePassScoreIsSameAsThresholdGoodLuck"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypeSuggestionHasExpired"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypeSuggestionHasExpired"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypeFailureBlockedByScreenTime"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypeFailureBlockedByScreenTime"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"OutcomeTypeFailureScoreIsSameAsThresholdRandomizationDisabled"])
+  else if ([typeCopy isEqualToString:@"OutcomeTypeFailureScoreIsSameAsThresholdRandomizationDisabled"])
   {
     v4 = 23;
   }
@@ -179,20 +179,20 @@
   v8.receiver = self;
   v8.super_class = ATXTimelineRelevancePBTimelineRelevanceAbuseControlOutcome;
   v4 = [(ATXTimelineRelevancePBTimelineRelevanceAbuseControlOutcome *)&v8 description];
-  v5 = [(ATXTimelineRelevancePBTimelineRelevanceAbuseControlOutcome *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXTimelineRelevancePBTimelineRelevanceAbuseControlOutcome *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
 
     has = self->_has;
   }
@@ -210,22 +210,22 @@
       v7 = off_27859B068[outcomeType];
     }
 
-    [v3 setObject:v7 forKey:@"outcomeType"];
+    [dictionary setObject:v7 forKey:@"outcomeType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteInt64Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -233,31 +233,31 @@
   {
     outcomeType = self->_outcomeType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 20) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 20) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 4) = self->_outcomeType;
-    *(v4 + 20) |= 2u;
+    *(toCopy + 4) = self->_outcomeType;
+    *(toCopy + 20) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -275,33 +275,33 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_11:
     v5 = 0;
     goto LABEL_12;
   }
 
-  v5 = (*(v4 + 20) & 2) == 0;
+  v5 = (*(equalCopy + 20) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0 || self->_outcomeType != *(v4 + 4))
+    if ((*(equalCopy + 20) & 2) == 0 || self->_outcomeType != *(equalCopy + 4))
     {
       goto LABEL_11;
     }
@@ -340,20 +340,20 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 20);
+  fromCopy = from;
+  v5 = *(fromCopy + 20);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 20);
+    v5 = *(fromCopy + 20);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_outcomeType = *(v4 + 4);
+    self->_outcomeType = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 }

@@ -1,54 +1,54 @@
 @interface WDDocumentOverviewViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (UIFont)bodyFont;
-- (WDDocumentOverviewViewController)initWithDisplayTypes:(id)a3 profile:(id)a4 title:(id)a5 category:(id)a6 sidebarIdentifier:(id)a7;
-- (double)_reportSectionEstimatedRowHeight:(int64_t)a3;
-- (double)_reportSectionRowHeight:(int64_t)a3;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_descriptionSectionCellForTableView:(id)a3 row:(int64_t)a4;
-- (id)_reportAccessCellForTableView:(id)a3 forIndexPath:(id)a4;
-- (id)_reportItemCellForTableView:(id)a3 row:(int64_t)a4;
-- (id)_reportSectionCellForTableView:(id)a3 forIndexPath:(id)a4;
-- (id)_reportShowAllCellForTableView:(id)a3 forIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_contentSizeCategoryDidChange:(id)a3;
+- (WDDocumentOverviewViewController)initWithDisplayTypes:(id)types profile:(id)profile title:(id)title category:(id)category sidebarIdentifier:(id)identifier;
+- (double)_reportSectionEstimatedRowHeight:(int64_t)height;
+- (double)_reportSectionRowHeight:(int64_t)height;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_descriptionSectionCellForTableView:(id)view row:(int64_t)row;
+- (id)_reportAccessCellForTableView:(id)view forIndexPath:(id)path;
+- (id)_reportItemCellForTableView:(id)view row:(int64_t)row;
+- (id)_reportSectionCellForTableView:(id)view forIndexPath:(id)path;
+- (id)_reportShowAllCellForTableView:(id)view forIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_contentSizeCategoryDidChange:(id)change;
 - (void)_installSections;
 - (void)_pushAccessViewController;
-- (void)_pushReportDetailViewControllerForIndexPath:(id)a3;
+- (void)_pushReportDetailViewControllerForIndexPath:(id)path;
 - (void)_pushShowAllViewController;
 - (void)_recomputeTotalReportCount;
 - (void)_reloadAllData;
-- (void)_selectReportRowForIndexPath:(id)a3;
+- (void)_selectReportRowForIndexPath:(id)path;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)widthDesignationDidChangeWithTraitEnvironment:(id)a3 previousTraitCollection:(id)a4;
+- (void)widthDesignationDidChangeWithTraitEnvironment:(id)environment previousTraitCollection:(id)collection;
 @end
 
 @implementation WDDocumentOverviewViewController
 
-- (WDDocumentOverviewViewController)initWithDisplayTypes:(id)a3 profile:(id)a4 title:(id)a5 category:(id)a6 sidebarIdentifier:(id)a7
+- (WDDocumentOverviewViewController)initWithDisplayTypes:(id)types profile:(id)profile title:(id)title category:(id)category sidebarIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  typesCopy = types;
+  profileCopy = profile;
+  titleCopy = title;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = WDDocumentOverviewViewController;
   v15 = [(HKTableViewController *)&v22 initWithUsingInsetStyling:1];
   v16 = v15;
   if (v15)
   {
-    [(WDDocumentOverviewViewController *)v15 setTitle:v13];
-    v17 = [v11 objectAtIndexedSubscript:0];
+    [(WDDocumentOverviewViewController *)v15 setTitle:titleCopy];
+    v17 = [typesCopy objectAtIndexedSubscript:0];
     displayType = v16->_displayType;
     v16->_displayType = v17;
 
-    objc_storeStrong(&v16->_profile, a4);
-    objc_storeStrong(&v16->_sidebarSelectionIdentifier, a7);
+    objc_storeStrong(&v16->_profile, profile);
+    objc_storeStrong(&v16->_sidebarSelectionIdentifier, identifier);
     v19 = [(WDSampleListDataProvider *)[WDDocumentListDataProvider alloc] initWithDisplayType:v16->_displayType profile:v16->_profile];
     dataProvider = v16->_dataProvider;
     v16->_dataProvider = v19;
@@ -77,15 +77,15 @@
   [(WDSampleListDataProvider *)dataProvider startCollectingDataWithUpdateHandler:&v10];
   v4 = [(WDDocumentOverviewViewController *)self tableView:v10];
   [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"accessDataIdentifier"];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
 
   v17[0] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
   v7 = [(WDDocumentOverviewViewController *)self registerForTraitChanges:v6 withTarget:self action:sel_widthDesignationDidChangeWithTraitEnvironment_previousTraitCollection_];
 
-  v8 = [(WDDocumentOverviewViewController *)self navigationItem];
-  [v8 _setSupportsTwoLineLargeTitles:1];
+  navigationItem = [(WDDocumentOverviewViewController *)self navigationItem];
+  [navigationItem _setSupportsTwoLineLargeTitles:1];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -111,36 +111,36 @@ void __47__WDDocumentOverviewViewController_viewDidLoad__block_invoke_2(uint64_t
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76810] object:0];
 
   v4.receiver = self;
   v4.super_class = WDDocumentOverviewViewController;
   [(WDDocumentOverviewViewController *)&v4 dealloc];
 }
 
-- (void)widthDesignationDidChangeWithTraitEnvironment:(id)a3 previousTraitCollection:(id)a4
+- (void)widthDesignationDidChangeWithTraitEnvironment:(id)environment previousTraitCollection:(id)collection
 {
-  v5 = [a3 traitCollection];
-  [v5 valueForNSIntegerTrait:objc_opt_class()];
+  traitCollection = [environment traitCollection];
+  [traitCollection valueForNSIntegerTrait:objc_opt_class()];
 
   HKCollectionViewLayoutDefaultLayoutMarginsForWidthDesignation();
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(WDDocumentOverviewViewController *)self tableView];
-  [v14 _setSectionContentInset:{0.0, v9, 0.0, v13}];
+  tableView = [(WDDocumentOverviewViewController *)self tableView];
+  [tableView _setSectionContentInset:{0.0, v9, 0.0, v13}];
 
-  v15 = [(WDDocumentOverviewViewController *)self view];
-  [v15 hk_safeAreaAdjustedEdgeInsets:{v7, v9, v11, v13}];
+  view = [(WDDocumentOverviewViewController *)self view];
+  [view hk_safeAreaAdjustedEdgeInsets:{v7, v9, v11, v13}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
-  v24 = [(WDDocumentOverviewViewController *)self navigationItem];
-  [v24 largeTitleInsets];
+  navigationItem = [(WDDocumentOverviewViewController *)self navigationItem];
+  [navigationItem largeTitleInsets];
   if (v19 == v28 && v17 == v25 && v23 == v27)
   {
     v31 = v26;
@@ -155,12 +155,12 @@ void __47__WDDocumentOverviewViewController_viewDidLoad__block_invoke_2(uint64_t
   {
   }
 
-  v32 = [(WDDocumentOverviewViewController *)self navigationItem];
-  [v32 setLargeTitleInsets:{v17, v19, v21, v23}];
+  navigationItem2 = [(WDDocumentOverviewViewController *)self navigationItem];
+  [navigationItem2 setLargeTitleInsets:{v17, v19, v21, v23}];
 
-  v34 = [(WDDocumentOverviewViewController *)self navigationController];
-  v33 = [v34 navigationBar];
-  [v33 setNeedsLayout];
+  navigationController = [(WDDocumentOverviewViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setNeedsLayout];
 }
 
 - (void)_recomputeTotalReportCount
@@ -172,7 +172,7 @@ void __47__WDDocumentOverviewViewController_viewDidLoad__block_invoke_2(uint64_t
   v10 = 3221225472;
   v11 = __62__WDDocumentOverviewViewController__recomputeTotalReportCount__block_invoke;
   v12 = &unk_2796E6D68;
-  v13 = self;
+  selfCopy = self;
   v14 = v3;
   v6 = v3;
   v7 = [v4 initWithSampleTypes:v5 predicate:0 resultsHandler:&v9];
@@ -247,8 +247,8 @@ void __62__WDDocumentOverviewViewController__recomputeTotalReportCount__block_in
   self->_reportRowTypes = v3;
 
   [(WDDocumentOverviewViewController *)self _recomputeTotalReportCount];
-  v7 = [(WDDocumentOverviewViewController *)self tableView];
-  [v7 reloadData];
+  tableView = [(WDDocumentOverviewViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_installSections
@@ -278,93 +278,93 @@ void __62__WDDocumentOverviewViewController__recomputeTotalReportCount__block_in
   return bodyFont;
 }
 
-- (id)_reportShowAllCellForTableView:(id)a3 forIndexPath:(id)a4
+- (id)_reportShowAllCellForTableView:(id)view forIndexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:{@"showAllDataIdentifier", a4}];
+  v5 = [view dequeueReusableCellWithIdentifier:{@"showAllDataIdentifier", path}];
   if (!v5)
   {
     v5 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"showAllDataIdentifier"];
     [v5 setAccessoryType:1];
   }
 
-  v6 = [v5 textLabel];
+  textLabel = [v5 textLabel];
   v7 = WDBundle();
   v8 = [v7 localizedStringForKey:@"SHOW_ALL_RECORDS" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
-  [v6 setText:v8];
+  [textLabel setText:v8];
 
-  v9 = [v5 textLabel];
-  [v9 setAccessibilityIdentifier:@"UIA.Health.CDA.ShowAllRecords"];
+  textLabel2 = [v5 textLabel];
+  [textLabel2 setAccessibilityIdentifier:@"UIA.Health.CDA.ShowAllRecords"];
 
   if (self->_totalReportCount < 1)
   {
-    v11 = [v5 detailTextLabel];
-    [v11 setText:&stru_28641D9B8];
+    detailTextLabel = [v5 detailTextLabel];
+    [detailTextLabel setText:&stru_28641D9B8];
   }
 
   else
   {
     v10 = [MEMORY[0x277CCABB0] numberWithInteger:?];
-    v11 = HKLocalizedStringForNumberWithTemplate();
+    detailTextLabel = HKLocalizedStringForNumberWithTemplate();
 
-    v12 = [v5 detailTextLabel];
-    [v12 setText:v11];
+    detailTextLabel2 = [v5 detailTextLabel];
+    [detailTextLabel2 setText:detailTextLabel];
   }
 
-  v13 = [v5 textLabel];
-  v14 = [(WDDocumentOverviewViewController *)self bodyFont];
-  [v13 setFont:v14];
+  textLabel3 = [v5 textLabel];
+  bodyFont = [(WDDocumentOverviewViewController *)self bodyFont];
+  [textLabel3 setFont:bodyFont];
 
-  v15 = [v5 detailTextLabel];
-  v16 = [(WDDocumentOverviewViewController *)self bodyFont];
-  [v15 setFont:v16];
+  detailTextLabel3 = [v5 detailTextLabel];
+  bodyFont2 = [(WDDocumentOverviewViewController *)self bodyFont];
+  [detailTextLabel3 setFont:bodyFont2];
 
   return v5;
 }
 
-- (id)_reportAccessCellForTableView:(id)a3 forIndexPath:(id)a4
+- (id)_reportAccessCellForTableView:(id)view forIndexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:@"accessDataIdentifier" forIndexPath:a4];
+  v5 = [view dequeueReusableCellWithIdentifier:@"accessDataIdentifier" forIndexPath:path];
   [v5 setAccessoryType:1];
-  v6 = [v5 textLabel];
+  textLabel = [v5 textLabel];
   v7 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v8 = [v7 localizedStringForKey:@"SHARE_DATA_TITLE" value:&stru_28641D9B8 table:@"HealthUI-Localizable"];
-  [v6 setText:v8];
+  [textLabel setText:v8];
 
-  v9 = [v5 textLabel];
-  v10 = [(WDDocumentOverviewViewController *)self bodyFont];
-  [v9 setFont:v10];
+  textLabel2 = [v5 textLabel];
+  bodyFont = [(WDDocumentOverviewViewController *)self bodyFont];
+  [textLabel2 setFont:bodyFont];
 
   return v5;
 }
 
-- (id)_reportItemCellForTableView:(id)a3 row:(int64_t)a4
+- (id)_reportItemCellForTableView:(id)view row:(int64_t)row
 {
   dataProvider = self->_dataProvider;
-  v7 = a3;
-  v8 = [(WDSampleListDataProvider *)dataProvider objectAtIndex:a4 forSection:0];
-  v9 = [MEMORY[0x277CCAA70] indexPathForRow:a4 inSection:0];
-  v10 = [(WDDocumentListDataProvider *)self->_dataProvider customCellForObject:v8 indexPath:v9 tableView:v7];
+  viewCopy = view;
+  v8 = [(WDSampleListDataProvider *)dataProvider objectAtIndex:row forSection:0];
+  v9 = [MEMORY[0x277CCAA70] indexPathForRow:row inSection:0];
+  v10 = [(WDDocumentListDataProvider *)self->_dataProvider customCellForObject:v8 indexPath:v9 tableView:viewCopy];
 
   return v10;
 }
 
-- (id)_reportSectionCellForTableView:(id)a3 forIndexPath:(id)a4
+- (id)_reportSectionCellForTableView:(id)view forIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
   v9 = [(NSMutableArray *)self->_reportRowTypes objectAtIndexedSubscript:v8];
-  v10 = [v9 integerValue];
-  switch(v10)
+  integerValue = [v9 integerValue];
+  switch(integerValue)
   {
     case 2:
-      v11 = [(WDDocumentOverviewViewController *)self _reportAccessCellForTableView:v6 forIndexPath:v7];
+      v11 = [(WDDocumentOverviewViewController *)self _reportAccessCellForTableView:viewCopy forIndexPath:pathCopy];
       goto LABEL_7;
     case 1:
-      v11 = [(WDDocumentOverviewViewController *)self _reportShowAllCellForTableView:v6 forIndexPath:v7];
+      v11 = [(WDDocumentOverviewViewController *)self _reportShowAllCellForTableView:viewCopy forIndexPath:pathCopy];
       goto LABEL_7;
     case 0:
-      v11 = [(WDDocumentOverviewViewController *)self _reportItemCellForTableView:v6 row:v8];
+      v11 = [(WDDocumentOverviewViewController *)self _reportItemCellForTableView:viewCopy row:v8];
 LABEL_7:
       v12 = v11;
       goto LABEL_9;
@@ -376,18 +376,18 @@ LABEL_9:
   return v12;
 }
 
-- (id)_descriptionSectionCellForTableView:(id)a3 row:(int64_t)a4
+- (id)_descriptionSectionCellForTableView:(id)view row:(int64_t)row
 {
   v4 = [[WDDisplayTypeDescriptionTableViewCell alloc] initWithDisplayType:self->_displayType showAttributionText:1 reuseIdentifier:@"descriptionCellReuse"];
 
   return v4;
 }
 
-- (void)_pushReportDetailViewControllerForIndexPath:(id)a3
+- (void)_pushReportDetailViewControllerForIndexPath:(id)path
 {
-  v5 = [(WDSampleListDataProvider *)self->_dataProvider viewControllerForItemAtIndexPath:a3];
-  v4 = [v5 navigationItem];
-  [v4 setLargeTitleDisplayMode:2];
+  v5 = [(WDSampleListDataProvider *)self->_dataProvider viewControllerForItemAtIndexPath:path];
+  navigationItem = [v5 navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
   [(WDDocumentOverviewViewController *)self showAdaptively:v5 sender:self];
 }
@@ -396,12 +396,12 @@ LABEL_9:
 {
   displayType = self->_displayType;
   profile = self->_profile;
-  v5 = [(WDProfile *)profile unitController];
-  v8 = [(HKDisplayType *)displayType wd_listViewControllerDataProviderWithProfile:profile unitController:v5];
+  unitController = [(WDProfile *)profile unitController];
+  v8 = [(HKDisplayType *)displayType wd_listViewControllerDataProviderWithProfile:profile unitController:unitController];
 
   v6 = [[WDDataListViewController alloc] initWithDisplayType:self->_displayType profile:self->_profile dataProvider:v8 usingInsetStyling:1];
-  v7 = [(WDDataListViewController *)v6 navigationItem];
-  [v7 setLargeTitleDisplayMode:2];
+  navigationItem = [(WDDataListViewController *)v6 navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
   [(WDDocumentOverviewViewController *)self showAdaptively:v6 sender:self];
 }
@@ -411,21 +411,21 @@ LABEL_9:
   v8 = [MEMORY[0x277D12828] categoryWithID:{-[HKDisplayType categoryIdentifier](self->_displayType, "categoryIdentifier")}];
   v3 = [WDDisplayTypeDataSourcesTableViewController alloc];
   displayType = self->_displayType;
-  v5 = [(WDProfile *)self->_profile sourceOrderController];
-  v6 = [(WDDisplayTypeDataSourcesTableViewController *)v3 initWithDisplayType:displayType displayCategory:v8 sourceOrderController:v5 profile:self->_profile];
+  sourceOrderController = [(WDProfile *)self->_profile sourceOrderController];
+  v6 = [(WDDisplayTypeDataSourcesTableViewController *)v3 initWithDisplayType:displayType displayCategory:v8 sourceOrderController:sourceOrderController profile:self->_profile];
 
-  v7 = [(WDDisplayTypeDataSourcesTableViewController *)v6 navigationItem];
-  [v7 setLargeTitleDisplayMode:2];
+  navigationItem = [(WDDisplayTypeDataSourcesTableViewController *)v6 navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
   [(WDDocumentOverviewViewController *)self showAdaptively:v6 sender:self];
 }
 
-- (void)_selectReportRowForIndexPath:(id)a3
+- (void)_selectReportRowForIndexPath:(id)path
 {
-  v6 = a3;
-  v4 = -[NSMutableArray objectAtIndexedSubscript:](self->_reportRowTypes, "objectAtIndexedSubscript:", [v6 row]);
-  v5 = [v4 integerValue];
-  switch(v5)
+  pathCopy = path;
+  v4 = -[NSMutableArray objectAtIndexedSubscript:](self->_reportRowTypes, "objectAtIndexedSubscript:", [pathCopy row]);
+  integerValue = [v4 integerValue];
+  switch(integerValue)
   {
     case 2:
       [(WDDocumentOverviewViewController *)self _pushAccessViewController];
@@ -434,16 +434,16 @@ LABEL_9:
       [(WDDocumentOverviewViewController *)self _pushShowAllViewController];
       break;
     case 0:
-      [(WDDocumentOverviewViewController *)self _pushReportDetailViewControllerForIndexPath:v6];
+      [(WDDocumentOverviewViewController *)self _pushReportDetailViewControllerForIndexPath:pathCopy];
       break;
   }
 }
 
-- (double)_reportSectionRowHeight:(int64_t)a3
+- (double)_reportSectionRowHeight:(int64_t)height
 {
-  v4 = [(NSMutableArray *)self->_reportRowTypes objectAtIndexedSubscript:a3];
-  v5 = [v4 integerValue];
-  if (v5 == 2 || v5 == 1)
+  v4 = [(NSMutableArray *)self->_reportRowTypes objectAtIndexedSubscript:height];
+  integerValue = [v4 integerValue];
+  if (integerValue == 2 || integerValue == 1)
   {
     v6 = *MEMORY[0x277D76F30];
   }
@@ -451,7 +451,7 @@ LABEL_9:
   else
   {
     v6 = 0.0;
-    if (!v5)
+    if (!integerValue)
     {
       [(WDDocumentListDataProvider *)self->_dataProvider customCellHeight];
       v6 = v7;
@@ -461,11 +461,11 @@ LABEL_9:
   return v6;
 }
 
-- (double)_reportSectionEstimatedRowHeight:(int64_t)a3
+- (double)_reportSectionEstimatedRowHeight:(int64_t)height
 {
-  v4 = [(NSMutableArray *)self->_reportRowTypes objectAtIndexedSubscript:a3];
-  v5 = [v4 integerValue];
-  if (v5 == 2 || v5 == 1)
+  v4 = [(NSMutableArray *)self->_reportRowTypes objectAtIndexedSubscript:height];
+  integerValue = [v4 integerValue];
+  if (integerValue == 2 || integerValue == 1)
   {
     v6 = 44.0;
   }
@@ -473,7 +473,7 @@ LABEL_9:
   else
   {
     v6 = 0.0;
-    if (!v5)
+    if (!integerValue)
     {
       [(WDDocumentListDataProvider *)self->_dataProvider customEstimatedCellHeight];
       v6 = v7;
@@ -483,11 +483,11 @@ LABEL_9:
   return v6;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_sectionTypes objectAtIndexedSubscript:a4];
-  v5 = [v4 integerValue];
-  if (v5 == 1)
+  v4 = [(NSMutableArray *)self->_sectionTypes objectAtIndexedSubscript:section];
+  integerValue = [v4 integerValue];
+  if (integerValue == 1)
   {
     v6 = *MEMORY[0x277D76F30];
   }
@@ -495,7 +495,7 @@ LABEL_9:
   else
   {
     v6 = 0.0;
-    if (!v5)
+    if (!integerValue)
     {
       HKUIOnePixel();
       v6 = v7;
@@ -505,16 +505,16 @@ LABEL_9:
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(NSMutableArray *)self->_sectionTypes objectAtIndexedSubscript:a4];
-  v6 = [v5 integerValue];
-  if (v6 == 1)
+  v5 = [(NSMutableArray *)self->_sectionTypes objectAtIndexedSubscript:section];
+  integerValue = [v5 integerValue];
+  if (integerValue == 1)
   {
     v7 = 1;
   }
 
-  else if (v6)
+  else if (integerValue)
   {
     v7 = 0;
   }
@@ -527,23 +527,23 @@ LABEL_9:
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  v9 = [v7 row];
-  v10 = [(NSMutableArray *)self->_sectionTypes objectAtIndexedSubscript:v8];
-  v11 = [v10 integerValue];
-  if (v11 == 1)
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  v9 = [pathCopy row];
+  v10 = [(NSMutableArray *)self->_sectionTypes objectAtIndexedSubscript:section];
+  integerValue = [v10 integerValue];
+  if (integerValue == 1)
   {
-    v12 = [(WDDocumentOverviewViewController *)self _descriptionSectionCellForTableView:v6 row:v9];
+    v12 = [(WDDocumentOverviewViewController *)self _descriptionSectionCellForTableView:viewCopy row:v9];
     goto LABEL_5;
   }
 
-  if (!v11)
+  if (!integerValue)
   {
-    v12 = [(WDDocumentOverviewViewController *)self _reportSectionCellForTableView:v6 forIndexPath:v7];
+    v12 = [(WDDocumentOverviewViewController *)self _reportSectionCellForTableView:viewCopy forIndexPath:pathCopy];
 LABEL_5:
     v13 = v12;
     goto LABEL_7;
@@ -555,28 +555,28 @@ LABEL_7:
   return v13;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionTypes, "objectAtIndexedSubscript:", [v6 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v7 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionTypes, "objectAtIndexedSubscript:", [pathCopy section]);
   if (![v7 integerValue])
   {
-    [(WDDocumentOverviewViewController *)self _selectReportRowForIndexPath:v6];
+    [(WDDocumentOverviewViewController *)self _selectReportRowForIndexPath:pathCopy];
   }
 
-  [v8 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
-  v7 = [v5 row];
+  pathCopy = path;
+  section = [pathCopy section];
+  v7 = [pathCopy row];
 
-  v8 = [(NSMutableArray *)self->_sectionTypes objectAtIndexedSubscript:v6];
-  v9 = [v8 integerValue];
-  if (v9 == 1)
+  v8 = [(NSMutableArray *)self->_sectionTypes objectAtIndexedSubscript:section];
+  integerValue = [v8 integerValue];
+  if (integerValue == 1)
   {
     v10 = *MEMORY[0x277D76F30];
   }
@@ -584,7 +584,7 @@ LABEL_7:
   else
   {
     v10 = 0.0;
-    if (!v9)
+    if (!integerValue)
     {
       [(WDDocumentOverviewViewController *)self _reportSectionRowHeight:v7];
       v10 = v11;
@@ -594,22 +594,22 @@ LABEL_7:
   return v10;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
-  v7 = [v5 row];
+  pathCopy = path;
+  section = [pathCopy section];
+  v7 = [pathCopy row];
 
-  v8 = [(NSMutableArray *)self->_sectionTypes objectAtIndexedSubscript:v6];
-  v9 = [v8 integerValue];
-  if (v9 == 1)
+  v8 = [(NSMutableArray *)self->_sectionTypes objectAtIndexedSubscript:section];
+  integerValue = [v8 integerValue];
+  if (integerValue == 1)
   {
     +[WDDisplayTypeDescriptionTableViewCell minimumHeight];
     goto LABEL_5;
   }
 
   v10 = 0.0;
-  if (!v9)
+  if (!integerValue)
   {
     [(WDDocumentOverviewViewController *)self _reportSectionEstimatedRowHeight:v7];
 LABEL_5:
@@ -619,21 +619,21 @@ LABEL_5:
   return v10;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionTypes, "objectAtIndexedSubscript:", [a4 section]);
+  v4 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionTypes, "objectAtIndexedSubscript:", [path section]);
   v5 = [v4 integerValue] == 0;
 
   return v5;
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
   bodyFont = self->_bodyFont;
   self->_bodyFont = 0;
 
-  v5 = [(WDDocumentOverviewViewController *)self tableView];
-  [v5 reloadData];
+  tableView = [(WDDocumentOverviewViewController *)self tableView];
+  [tableView reloadData];
 }
 
 void __62__WDDocumentOverviewViewController__recomputeTotalReportCount__block_invoke_cold_1(uint64_t a1, uint64_t a2, NSObject *a3)

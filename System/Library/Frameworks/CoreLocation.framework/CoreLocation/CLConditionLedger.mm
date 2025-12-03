@@ -1,36 +1,36 @@
 @interface CLConditionLedger
-- (BOOL)addRecordForMonitoring:(id)a3 identifier:(id)a4 persist:(BOOL)a5;
-- (BOOL)directoryExists:(id)a3;
+- (BOOL)addRecordForMonitoring:(id)monitoring identifier:(id)identifier persist:(BOOL)persist;
+- (BOOL)directoryExists:(id)exists;
 - (BOOL)readConditionsFromFile;
-- (BOOL)removeRecordFromMonitoringWithIdentifier:(id)a3;
+- (BOOL)removeRecordFromMonitoringWithIdentifier:(id)identifier;
 - (BOOL)writeToFile;
-- (CLConditionLedger)initWithStoreType:(int64_t)a3 domain:(int64_t)a4 monitorConfiguration:(id)a5;
+- (CLConditionLedger)initWithStoreType:(int64_t)type domain:(int64_t)domain monitorConfiguration:(id)configuration;
 - (void)dealloc;
 - (void)deleteLedgerFile;
 - (void)performMigration;
-- (void)setLedgerForType:(int64_t)a3 domain:(int64_t)a4 monitor:(id)a5 client:(id)a6 path:(id)a7;
-- (void)updateEvent:(id)a3 forIdentifier:(id)a4;
+- (void)setLedgerForType:(int64_t)type domain:(int64_t)domain monitor:(id)monitor client:(id)client path:(id)path;
+- (void)updateEvent:(id)event forIdentifier:(id)identifier;
 @end
 
 @implementation CLConditionLedger
 
-- (CLConditionLedger)initWithStoreType:(int64_t)a3 domain:(int64_t)a4 monitorConfiguration:(id)a5
+- (CLConditionLedger)initWithStoreType:(int64_t)type domain:(int64_t)domain monitorConfiguration:(id)configuration
 {
   v15.receiver = self;
   v15.super_class = CLConditionLedger;
   v9 = [(CLConditionLedger *)&v15 init];
   if (v9)
   {
-    v10 = [a5 objectForKeyedSubscript:@"kCLMonitorLedgerPathKey"];
-    v11 = [a5 objectForKeyedSubscript:@"kCLMonitorLedgerNameKey"];
-    v12 = [a5 objectForKeyedSubscript:@"kCLMonitorLedgerAccessKey"];
-    v13 = [a5 objectForKeyedSubscript:@"kCLMonitorLedgerProcessNameKey"];
+    v10 = [configuration objectForKeyedSubscript:@"kCLMonitorLedgerPathKey"];
+    v11 = [configuration objectForKeyedSubscript:@"kCLMonitorLedgerNameKey"];
+    v12 = [configuration objectForKeyedSubscript:@"kCLMonitorLedgerAccessKey"];
+    v13 = [configuration objectForKeyedSubscript:@"kCLMonitorLedgerProcessNameKey"];
     if (v11)
     {
       if (v12)
       {
 LABEL_4:
-        [(CLConditionLedger *)v9 setLedgerForType:a3 domain:a4 monitor:v11 client:v13 path:v10];
+        [(CLConditionLedger *)v9 setLedgerForType:type domain:domain monitor:v11 client:v13 path:v10];
         v9->_recordTable = objc_alloc_init(MEMORY[0x1E695DF90]);
         v9->_encryptionKey = [v12 copy];
         v9->_ledgerName = [v11 copy];
@@ -82,7 +82,7 @@ LABEL_4:
   }
 }
 
-- (void)setLedgerForType:(int64_t)a3 domain:(int64_t)a4 monitor:(id)a5 client:(id)a6 path:(id)a7
+- (void)setLedgerForType:(int64_t)type domain:(int64_t)domain monitor:(id)monitor client:(id)client path:(id)path
 {
   v51 = *MEMORY[0x1E69E9840];
   if ([(CLConditionLedger *)self ledgerFile])
@@ -91,15 +91,15 @@ LABEL_4:
   }
 
   v14 = _sandbox_in_a_container();
-  v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.monitor", a5];
-  if (a3 == 1 && a4 == 1)
+  monitor = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.monitor", monitor];
+  if (type == 1 && domain == 1)
   {
-    if (!a7)
+    if (!path)
     {
       [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
     }
 
-    v16 = [MEMORY[0x1E695DFF8] fileURLWithPath:a7 isDirectory:1 relativeToURL:0];
+    firstObject = [MEMORY[0x1E695DFF8] fileURLWithPath:path isDirectory:1 relativeToURL:0];
     v17 = [MEMORY[0x1E696AD60] stringWithString:&stru_1F0E6F140];
     p_info = (CLLocationManagerInternal + 32);
     v19 = (CLLocationManagerInternal + 32);
@@ -107,7 +107,7 @@ LABEL_4:
   }
 
   v17 = [MEMORY[0x1E696AD60] stringWithString:@"CoreLocation/"];
-  if (a3)
+  if (type)
   {
     p_info = CLLocationManagerInternal.info;
     if (qword_1ED519088 != -1)
@@ -157,7 +157,7 @@ LABEL_4:
     p_info = CLLocationManagerInternal.info;
   }
 
-  if (a4)
+  if (domain)
   {
     v23 = 8;
   }
@@ -167,7 +167,7 @@ LABEL_4:
     v23 = 1;
   }
 
-  v16 = [(NSArray *)[(NSFileManager *)[(CLConditionLedger *)self defaultFileManager] URLsForDirectory:v22 inDomains:v23] firstObject];
+  firstObject = [(NSArray *)[(NSFileManager *)[(CLConditionLedger *)self defaultFileManager] URLsForDirectory:v22 inDomains:v23] firstObject];
   v19 = CLLocationManagerInternal.info;
   if (qword_1ED519088 != -1)
   {
@@ -181,11 +181,11 @@ LABEL_4:
     v43 = 2082;
     v44 = "";
     v45 = 2114;
-    v46 = a6;
+    clientCopy = client;
     _os_log_impl(&dword_19B873000, v24, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#monitor App is not sanboxed, client:%{public, location:escape_only}@}", buf, 0x1Cu);
   }
 
-  v25 = [v16 URLByAppendingPathComponent:v17];
+  v25 = [firstObject URLByAppendingPathComponent:v17];
   if (![(CLConditionLedger *)self directoryExists:v25])
   {
     if (qword_1ED519088 != -1)
@@ -200,7 +200,7 @@ LABEL_4:
       v43 = 2082;
       v44 = "";
       v45 = 2114;
-      v46 = v25;
+      clientCopy = v25;
       v47 = 2082;
       v48 = "assert";
       v49 = 2081;
@@ -220,7 +220,7 @@ LABEL_4:
       v43 = 2082;
       v44 = "";
       v45 = 2114;
-      v46 = v25;
+      clientCopy = v25;
       v47 = 2082;
       v48 = "assert";
       v49 = 2081;
@@ -240,7 +240,7 @@ LABEL_4:
       v43 = 2082;
       v44 = "";
       v45 = 2114;
-      v46 = v25;
+      clientCopy = v25;
       v47 = 2082;
       v48 = "assert";
       v49 = 2081;
@@ -260,8 +260,8 @@ LABEL_29:
   }
 
   v26 = 0x1E696A000uLL;
-  [v17 appendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@/", a6)}];
-  v27 = [v16 URLByAppendingPathComponent:v17];
+  [v17 appendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@/", client)}];
+  v27 = [firstObject URLByAppendingPathComponent:v17];
   if (qword_1ED519088 != -1)
   {
     dispatch_once(&qword_1ED519088, &unk_1F0E6DC08);
@@ -274,7 +274,7 @@ LABEL_29:
     v43 = 2082;
     v44 = "";
     v45 = 2114;
-    v46 = v27;
+    clientCopy = v27;
     _os_log_impl(&dword_19B873000, v28, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#monitor process is not containerized, path:%{public, location:escape_only}@}", buf, 0x1Cu);
   }
 
@@ -293,7 +293,7 @@ LABEL_29:
       v43 = 2082;
       v44 = "";
       v45 = 2114;
-      v46 = v27;
+      clientCopy = v27;
       v47 = 2082;
       v48 = "assert";
       v49 = 2081;
@@ -313,7 +313,7 @@ LABEL_29:
       v43 = 2082;
       v44 = "";
       v45 = 2114;
-      v46 = v27;
+      clientCopy = v27;
       v47 = 2082;
       v48 = "assert";
       v49 = 2081;
@@ -333,7 +333,7 @@ LABEL_29:
       v43 = 2082;
       v44 = "";
       v45 = 2114;
-      v46 = v27;
+      clientCopy = v27;
       v47 = 2082;
       v48 = "assert";
       v49 = 2081;
@@ -345,7 +345,7 @@ LABEL_29:
   }
 
 LABEL_35:
-  if (!v16)
+  if (!firstObject)
   {
     if (v19[17] != -1)
     {
@@ -360,7 +360,7 @@ LABEL_35:
       v43 = 2082;
       v44 = "";
       v45 = 2082;
-      v46 = "assert";
+      clientCopy = "assert";
       v47 = 2081;
       v48 = "basePath";
       _os_log_impl(&dword_19B873000, v33, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#monitor Unable to determine the path to store conditions, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
@@ -378,7 +378,7 @@ LABEL_35:
       v43 = 2082;
       v44 = "";
       v45 = 2082;
-      v46 = "assert";
+      clientCopy = "assert";
       v47 = 2081;
       v48 = "basePath";
       _os_signpost_emit_with_name_impl(&dword_19B873000, v34, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#monitor Unable to determine the path to store conditions", "{msg%{public}.0s:#monitor Unable to determine the path to store conditions, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
@@ -396,7 +396,7 @@ LABEL_35:
       v43 = 2082;
       v44 = "";
       v45 = 2082;
-      v46 = "assert";
+      clientCopy = "assert";
       v47 = 2081;
       v48 = "basePath";
       _os_log_impl(&dword_19B873000, v35, OS_LOG_TYPE_INFO, "{msg%{public}.0s:#monitor Unable to determine the path to store conditions, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
@@ -405,8 +405,8 @@ LABEL_35:
     goto LABEL_74;
   }
 
-  [v17 appendString:{objc_msgSend(*(v26 + 3776), "stringWithFormat:", @"%@", v15)}];
-  v29 = [v16 URLByAppendingPathComponent:v17];
+  [v17 appendString:{objc_msgSend(*(v26 + 3776), "stringWithFormat:", @"%@", monitor)}];
+  v29 = [firstObject URLByAppendingPathComponent:v17];
   if (v19[17] != -1)
   {
     dispatch_once(&qword_1ED519088, &unk_1F0E6DC08);
@@ -420,7 +420,7 @@ LABEL_35:
     v43 = 2082;
     v44 = "";
     v45 = 2082;
-    v46 = v31;
+    clientCopy = v31;
     _os_log_impl(&dword_19B873000, v30, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#monitor Conditions store, path:%{public, location:escape_only}s}", buf, 0x1Cu);
   }
 
@@ -429,17 +429,17 @@ LABEL_41:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)directoryExists:(id)a3
+- (BOOL)directoryExists:(id)exists
 {
   v18 = *MEMORY[0x1E69E9840];
   v9 = 0;
-  v4 = [(CLConditionLedger *)self defaultFileManager];
+  defaultFileManager = [(CLConditionLedger *)self defaultFileManager];
   if (qword_1ED5192E8 != -1)
   {
     dispatch_once(&qword_1ED5192E8, &unk_1F0E6DC28);
   }
 
-  if (-[NSFileManager createDirectoryAtURL:withIntermediateDirectories:attributes:error:](v4, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", a3, 0, qword_1ED5192E0, &v9) || [v9 code] == 516)
+  if (-[NSFileManager createDirectoryAtURL:withIntermediateDirectories:attributes:error:](defaultFileManager, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", exists, 0, qword_1ED5192E0, &v9) || [v9 code] == 516)
   {
     result = 1;
   }
@@ -463,7 +463,7 @@ LABEL_41:
       v14 = 2114;
       v15 = v9;
       v16 = 2114;
-      v17 = a3;
+      existsCopy = exists;
       _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#monitor #warning unable to check for directory, error:%{public, location:escape_only}@, pathURL:%{public, location:escape_only}@}", buf, 0x26u);
       result = 0;
     }
@@ -476,8 +476,8 @@ LABEL_41:
 - (BOOL)readConditionsFromFile
 {
   v58 = *MEMORY[0x1E69E9840];
-  v3 = [(CLConditionLedger *)self ledgerFile];
-  if (!v3)
+  ledgerFile = [(CLConditionLedger *)self ledgerFile];
+  if (!ledgerFile)
   {
     if (qword_1ED519088 != -1)
     {
@@ -518,9 +518,9 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  v4 = v3;
+  v4 = ledgerFile;
   v52 = 0;
-  v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v3 options:1 error:&v52];
+  v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:ledgerFile options:1 error:&v52];
   if (v52 && [v52 code] != 260)
   {
     if (qword_1ED519088 != -1)
@@ -531,13 +531,13 @@ LABEL_45:
     v19 = qword_1ED519090;
     if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_FAULT))
     {
-      v20 = [(NSString *)[(NSURL *)v4 path] UTF8String];
+      uTF8String = [(NSString *)[(NSURL *)v4 path] UTF8String];
       *buf = 68289538;
       *&buf[4] = 0;
       v54 = 2082;
       v55 = "";
       v56 = 2082;
-      *v57 = v20;
+      *v57 = uTF8String;
       *&v57[8] = 2114;
       *&v57[10] = v52;
       _os_log_impl(&dword_19B873000, v19, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#monitor #Warning Unable to read the contents of file, file:%{public, location:escape_only}s, error:%{public, location:escape_only}@}", buf, 0x26u);
@@ -554,13 +554,13 @@ LABEL_45:
       goto LABEL_54;
     }
 
-    v22 = [(NSString *)[(NSURL *)v4 path] UTF8String];
+    uTF8String2 = [(NSString *)[(NSURL *)v4 path] UTF8String];
     *buf = 68289538;
     *&buf[4] = 0;
     v54 = 2082;
     v55 = "";
     v56 = 2082;
-    *v57 = v22;
+    *v57 = uTF8String2;
     *&v57[8] = 2114;
     *&v57[10] = v52;
     v15 = "#monitor #Warning Unable to read the contents of file";
@@ -581,12 +581,12 @@ LABEL_44:
     v23 = qword_1ED519090;
     if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(NSString *)[(NSURL *)v4 path] UTF8String];
+      uTF8String3 = [(NSString *)[(NSURL *)v4 path] UTF8String];
       *buf = 68289282;
       v54 = 2082;
       v55 = "";
       v56 = 2082;
-      *v57 = v24;
+      *v57 = uTF8String3;
       _os_log_impl(&dword_19B873000, v23, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#monitor no conditions were saved, file:%{public, location:escape_only}s}", buf, 0x1Cu);
     }
 
@@ -595,13 +595,13 @@ LABEL_44:
 
   v6 = [v5 length] - 32;
   v7 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:v6];
-  v8 = [v5 bytes];
+  bytes = [v5 bytes];
   [(NSData *)self->_encryptionKey bytes];
   [(NSData *)self->_encryptionKey length];
-  v46 = v8 + 16 + v6;
+  v46 = bytes + 16 + v6;
   v47 = 16;
   v44 = v6;
-  v45 = [v7 mutableBytes];
+  mutableBytes = [v7 mutableBytes];
   v9 = CCCryptorGCMOneshotDecrypt();
   if (!v9)
   {
@@ -622,14 +622,14 @@ LABEL_44:
       __cxa_guard_release(&qword_1ED5192D8);
     }
 
-    v25 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:qword_1ED5192D0 fromData:v7 error:{&v52, v44, v45, v46, v47}];
+    v25 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:qword_1ED5192D0 fromData:v7 error:{&v52, v44, mutableBytes, v46, v47}];
     if (!v52)
     {
       v26 = v25;
       if (v25)
       {
-        v27 = [MEMORY[0x1E695DF90] dictionary];
-        [v27 addEntriesFromDictionary:v26];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        [dictionary addEntriesFromDictionary:v26];
         if ([v26 objectForKeyedSubscript:@"kCLLedgerVersionNumber"])
         {
           self->_ledgerVersionNumber = [v26 objectForKeyedSubscript:@"kCLLedgerVersionNumber"];
@@ -641,16 +641,16 @@ LABEL_44:
           v28 = qword_1ED519080;
           if (os_log_type_enabled(qword_1ED519080, OS_LOG_TYPE_DEFAULT))
           {
-            v29 = [(CLConditionLedger *)self ledgerVersionNumber];
+            ledgerVersionNumber = [(CLConditionLedger *)self ledgerVersionNumber];
             *buf = 68289282;
             v54 = 2082;
             v55 = "";
             v56 = 2114;
-            *v57 = v29;
+            *v57 = ledgerVersionNumber;
             _os_log_impl(&dword_19B873000, v28, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#monitor Found ledger version number, ledgerVersion:%{public, location:escape_only}@}", buf, 0x1Cu);
           }
 
-          [v27 removeObjectForKey:@"kCLLedgerVersionNumber"];
+          [dictionary removeObjectForKey:@"kCLLedgerVersionNumber"];
         }
 
         else
@@ -666,7 +666,7 @@ LABEL_44:
         v33 = qword_1ED519090;
         if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
         {
-          v34 = [v27 count];
+          v34 = [dictionary count];
           *buf = 68289282;
           v54 = 2082;
           v55 = "";
@@ -675,7 +675,7 @@ LABEL_44:
           _os_log_impl(&dword_19B873000, v33, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#monitor file has conditions saved, count:%{public}ld}", buf, 0x1Cu);
         }
 
-        [(NSMutableDictionary *)self->_recordTable addEntriesFromDictionary:v27];
+        [(NSMutableDictionary *)self->_recordTable addEntriesFromDictionary:dictionary];
 LABEL_53:
         LOBYTE(v11) = 1;
         goto LABEL_54;
@@ -690,13 +690,13 @@ LABEL_53:
     v30 = qword_1ED519090;
     if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_FAULT))
     {
-      v31 = [(NSString *)[(NSURL *)v4 path] UTF8String];
+      uTF8String4 = [(NSString *)[(NSURL *)v4 path] UTF8String];
       *buf = 68289539;
       *&buf[4] = 0;
       v54 = 2082;
       v55 = "";
       v56 = 2081;
-      *v57 = v31;
+      *v57 = uTF8String4;
       *&v57[8] = 2114;
       *&v57[10] = v52;
       _os_log_impl(&dword_19B873000, v30, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#monitor #Warning unable to read conditions from file, file:%{private, location:escape_only}s, error:%{public, location:escape_only}@}", buf, 0x26u);
@@ -713,13 +713,13 @@ LABEL_53:
       goto LABEL_54;
     }
 
-    v32 = [(NSString *)[(NSURL *)v4 path] UTF8String];
+    uTF8String5 = [(NSString *)[(NSURL *)v4 path] UTF8String];
     *buf = 68289539;
     *&buf[4] = 0;
     v54 = 2082;
     v55 = "";
     v56 = 2081;
-    *v57 = v32;
+    *v57 = uTF8String5;
     *&v57[8] = 2114;
     *&v57[10] = v52;
     v15 = "#monitor #Warning unable to read conditions from file";
@@ -758,8 +758,8 @@ LABEL_54:
 - (BOOL)writeToFile
 {
   v44 = *MEMORY[0x1E69E9840];
-  v3 = [(CLConditionLedger *)self ledgerFile];
-  if (!v3)
+  ledgerFile = [(CLConditionLedger *)self ledgerFile];
+  if (!ledgerFile)
   {
     goto LABEL_42;
   }
@@ -779,7 +779,7 @@ LABEL_54:
       v38 = 2082;
       v39 = "";
       v40 = 2114;
-      v41 = [(NSURL *)[(CLConditionLedger *)self ledgerFile] path];
+      path = [(NSURL *)[(CLConditionLedger *)self ledgerFile] path];
       _os_log_impl(&dword_19B873000, v24, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#monitor nothing to write; Removing existing file, file:%{public, location:escape_only}@}", buf, 0x1Cu);
     }
 
@@ -787,10 +787,10 @@ LABEL_54:
     goto LABEL_26;
   }
 
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  [v4 addEntriesFromDictionary:{-[CLConditionLedger allMonitoringRecordsByIdentifier](self, "allMonitoringRecordsByIdentifier")}];
-  [v4 setObject:-[CLConditionLedger ledgerVersionNumber](self forKey:{"ledgerVersionNumber"), @"kCLLedgerVersionNumber"}];
-  v5 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v4];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary addEntriesFromDictionary:{-[CLConditionLedger allMonitoringRecordsByIdentifier](self, "allMonitoringRecordsByIdentifier")}];
+  [dictionary setObject:-[CLConditionLedger ledgerVersionNumber](self forKey:{"ledgerVersionNumber"), @"kCLLedgerVersionNumber"}];
+  v5 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
   v35 = 0;
   v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v35];
   if (v35 || (v7 = v6) == 0)
@@ -801,21 +801,21 @@ LABEL_54:
     }
 
     v25 = qword_1ED519090;
-    LODWORD(v3) = os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    LODWORD(ledgerFile) = os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT);
+    if (ledgerFile)
     {
-      v26 = [(NSURL *)[(CLConditionLedger *)self ledgerFile] path];
+      path2 = [(NSURL *)[(CLConditionLedger *)self ledgerFile] path];
       *buf = 68289538;
       v37 = 0;
       v38 = 2082;
       v39 = "";
       v40 = 2114;
-      v41 = v26;
+      path = path2;
       v42 = 2114;
       v43 = v35;
       _os_log_impl(&dword_19B873000, v25, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#monitor Unable to store conditions, file:%{public, location:escape_only}@, error:%{public, location:escape_only}@}", buf, 0x26u);
 LABEL_41:
-      LOBYTE(v3) = 0;
+      LOBYTE(ledgerFile) = 0;
       goto LABEL_42;
     }
 
@@ -824,9 +824,9 @@ LABEL_41:
 
   v8 = [v6 length];
   v9 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:v8 + 32];
-  v10 = [v9 mutableBytes];
-  v11 = &v10[[v7 length] + 16];
-  v12 = SecRandomCopyBytes(*MEMORY[0x1E697B308], 0x10uLL, v10);
+  mutableBytes = [v9 mutableBytes];
+  v11 = &mutableBytes[[v7 length] + 16];
+  v12 = SecRandomCopyBytes(*MEMORY[0x1E697B308], 0x10uLL, mutableBytes);
   if (v12)
   {
     v13 = v12;
@@ -843,7 +843,7 @@ LABEL_41:
       v38 = 2082;
       v39 = "";
       v40 = 1026;
-      LODWORD(v41) = v13;
+      LODWORD(path) = v13;
       _os_log_impl(&dword_19B873000, v14, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#monitor unable to init random vector, error:%{public}d}", buf, 0x18u);
       if (qword_1ED519088 != -1)
       {
@@ -859,7 +859,7 @@ LABEL_41:
       v38 = 2082;
       v39 = "";
       v40 = 1026;
-      LODWORD(v41) = v13;
+      LODWORD(path) = v13;
       _os_signpost_emit_with_name_impl(&dword_19B873000, v15, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#monitor unable to init random vector", "{msg%{public}.0s:#monitor unable to init random vector, error:%{public}d}", buf, 0x18u);
     }
   }
@@ -885,7 +885,7 @@ LABEL_41:
       v38 = 2082;
       v39 = "";
       v40 = 1026;
-      LODWORD(v41) = v17;
+      LODWORD(path) = v17;
       _os_log_impl(&dword_19B873000, v18, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#monitor unable to encrypt the conditions, error:%{public}d}", buf, 0x18u);
       if (qword_1ED519088 != -1)
       {
@@ -894,15 +894,15 @@ LABEL_41:
     }
 
     v19 = qword_1ED519090;
-    LODWORD(v3) = os_signpost_enabled(qword_1ED519090);
-    if (v3)
+    LODWORD(ledgerFile) = os_signpost_enabled(qword_1ED519090);
+    if (ledgerFile)
     {
       *buf = 68289282;
       v37 = 0;
       v38 = 2082;
       v39 = "";
       v40 = 1026;
-      LODWORD(v41) = v17;
+      LODWORD(path) = v17;
       v20 = "#monitor unable to encrypt the conditions";
       v21 = "{msg%{public}.0s:#monitor unable to encrypt the conditions, error:%{public}d}";
       v22 = v19;
@@ -915,11 +915,11 @@ LABEL_40:
     goto LABEL_42;
   }
 
-  v27 = [v9 writeToURL:-[CLConditionLedger ledgerFile](self options:"ledgerFile" error:{v34, v10 + 16, v11, 16), 1073741825, &v35}];
+  v27 = [v9 writeToURL:-[CLConditionLedger ledgerFile](self options:"ledgerFile" error:{v34, mutableBytes + 16, v11, 16), 1073741825, &v35}];
   if (!v35 && (v27 & 1) != 0)
   {
 LABEL_26:
-    LOBYTE(v3) = 1;
+    LOBYTE(ledgerFile) = 1;
     goto LABEL_42;
   }
 
@@ -931,13 +931,13 @@ LABEL_26:
   v28 = qword_1ED519090;
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_ERROR))
   {
-    v29 = [(NSURL *)[(CLConditionLedger *)self ledgerFile] path];
+    path3 = [(NSURL *)[(CLConditionLedger *)self ledgerFile] path];
     *buf = 68289538;
     v37 = 0;
     v38 = 2082;
     v39 = "";
     v40 = 2114;
-    v41 = v29;
+    path = path3;
     v42 = 2114;
     v43 = v35;
     _os_log_impl(&dword_19B873000, v28, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#monitor #Warning unable to write to file, file:%{public, location:escape_only}@, error:%{public, location:escape_only}@}", buf, 0x26u);
@@ -948,16 +948,16 @@ LABEL_26:
   }
 
   v30 = qword_1ED519090;
-  LODWORD(v3) = os_signpost_enabled(qword_1ED519090);
-  if (v3)
+  LODWORD(ledgerFile) = os_signpost_enabled(qword_1ED519090);
+  if (ledgerFile)
   {
-    v31 = [(NSURL *)[(CLConditionLedger *)self ledgerFile] path];
+    path4 = [(NSURL *)[(CLConditionLedger *)self ledgerFile] path];
     *buf = 68289538;
     v37 = 0;
     v38 = 2082;
     v39 = "";
     v40 = 2114;
-    v41 = v31;
+    path = path4;
     v42 = 2114;
     v43 = v35;
     v20 = "#monitor #Warning unable to write to file";
@@ -969,7 +969,7 @@ LABEL_26:
 
 LABEL_42:
   v32 = *MEMORY[0x1E69E9840];
-  return v3;
+  return ledgerFile;
 }
 
 - (void)deleteLedgerFile
@@ -985,13 +985,13 @@ LABEL_42:
   v3 = qword_1ED519090;
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CLConditionLedger *)self ledgerFile];
+    ledgerFile = [(CLConditionLedger *)self ledgerFile];
     *buf = 68289538;
     v8 = 0;
     v9 = 2082;
     v10 = "";
     v11 = 2114;
-    v12 = v4;
+    v12 = ledgerFile;
     v13 = 2114;
     v14 = v6;
     _os_log_impl(&dword_19B873000, v3, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#monitor deleting, file:%{public, location:escape_only}@, error:%{public, location:escape_only}@}", buf, 0x26u);
@@ -1000,11 +1000,11 @@ LABEL_42:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)addRecordForMonitoring:(id)a3 identifier:(id)a4 persist:(BOOL)a5
+- (BOOL)addRecordForMonitoring:(id)monitoring identifier:(id)identifier persist:(BOOL)persist
 {
-  v5 = a5;
-  [(NSMutableDictionary *)self->_recordTable setObject:a3 forKeyedSubscript:a4];
-  if (!v5)
+  persistCopy = persist;
+  [(NSMutableDictionary *)self->_recordTable setObject:monitoring forKeyedSubscript:identifier];
+  if (!persistCopy)
   {
     return 1;
   }
@@ -1012,16 +1012,16 @@ LABEL_42:
   return MEMORY[0x1EEE66B58](self, sel_writeToFile);
 }
 
-- (BOOL)removeRecordFromMonitoringWithIdentifier:(id)a3
+- (BOOL)removeRecordFromMonitoringWithIdentifier:(id)identifier
 {
-  [(NSMutableDictionary *)self->_recordTable removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_recordTable removeObjectForKey:identifier];
 
   return MEMORY[0x1EEE66B58](self, sel_writeToFile);
 }
 
-- (void)updateEvent:(id)a3 forIdentifier:(id)a4
+- (void)updateEvent:(id)event forIdentifier:(id)identifier
 {
-  [-[NSMutableDictionary objectForKeyedSubscript:](self->_recordTable objectForKeyedSubscript:{a4), "updateEvent:", a3}];
+  [-[NSMutableDictionary objectForKeyedSubscript:](self->_recordTable objectForKeyedSubscript:{identifier), "updateEvent:", event}];
 
   MEMORY[0x1EEE66B58](self, sel_writeToFile);
 }

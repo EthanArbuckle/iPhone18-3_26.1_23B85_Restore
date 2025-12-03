@@ -1,8 +1,8 @@
 @interface CTSIMToolkitItem
-- (CTSIMToolkitItem)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTSIMToolkitItem)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTSIMToolkitItem
@@ -10,12 +10,12 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTSIMToolkitItem *)self text];
-  [v3 appendFormat:@", Text=%@", v4];
+  text = [(CTSIMToolkitItem *)self text];
+  [v3 appendFormat:@", Text=%@", text];
 
-  v5 = [(CTSIMToolkitItem *)self selected];
+  selected = [(CTSIMToolkitItem *)self selected];
   v6 = @"No";
-  if (v5)
+  if (selected)
   {
     v6 = @"Yes";
   }
@@ -26,38 +26,38 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(CTSIMToolkitItem *)self text];
-  v6 = [v5 copy];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  text = [(CTSIMToolkitItem *)self text];
+  v6 = [text copy];
   v7 = [v4 initWithText:v6 selected:{-[CTSIMToolkitItem selected](self, "selected")}];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CTSIMToolkitItem *)self text];
-  [v5 encodeObject:v4 forKey:@"kTextKey"];
+  coderCopy = coder;
+  text = [(CTSIMToolkitItem *)self text];
+  [coderCopy encodeObject:text forKey:@"kTextKey"];
 
-  [v5 encodeBool:-[CTSIMToolkitItem selected](self forKey:{"selected"), @"kSelectedKey"}];
+  [coderCopy encodeBool:-[CTSIMToolkitItem selected](self forKey:{"selected"), @"kSelectedKey"}];
 }
 
-- (CTSIMToolkitItem)initWithCoder:(id)a3
+- (CTSIMToolkitItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CTSIMToolkitItem;
   v5 = [(CTSIMToolkitItem *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kTextKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kTextKey"];
     text = v5->_text;
     v5->_text = v6;
 
-    v5->_selected = [v4 decodeBoolForKey:@"kSelectedKey"];
+    v5->_selected = [coderCopy decodeBoolForKey:@"kSelectedKey"];
   }
 
   return v5;

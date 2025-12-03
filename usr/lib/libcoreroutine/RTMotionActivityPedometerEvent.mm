@@ -1,21 +1,21 @@
 @interface RTMotionActivityPedometerEvent
-+ (id)convertRTMotionActivityPedometerEventTypeToString:(int64_t)a3;
-+ (int64_t)convertCMPedometerEventType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (RTMotionActivityPedometerEvent)initWithCMPedometerEvent:(id)a3;
-- (RTMotionActivityPedometerEvent)initWithCoder:(id)a3;
-- (RTMotionActivityPedometerEvent)initWithDate:(id)a3 eventType:(int64_t)a4;
++ (id)convertRTMotionActivityPedometerEventTypeToString:(int64_t)string;
++ (int64_t)convertCMPedometerEventType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (RTMotionActivityPedometerEvent)initWithCMPedometerEvent:(id)event;
+- (RTMotionActivityPedometerEvent)initWithCoder:(id)coder;
+- (RTMotionActivityPedometerEvent)initWithDate:(id)date eventType:(int64_t)type;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTMotionActivityPedometerEvent
 
-- (RTMotionActivityPedometerEvent)initWithDate:(id)a3 eventType:(int64_t)a4
+- (RTMotionActivityPedometerEvent)initWithDate:(id)date eventType:(int64_t)type
 {
-  v7 = a3;
-  if (v7)
+  dateCopy = date;
+  if (dateCopy)
   {
     v13.receiver = self;
     v13.super_class = RTMotionActivityPedometerEvent;
@@ -23,12 +23,12 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_date, a3);
-      v9->_eventType = a4;
+      objc_storeStrong(&v8->_date, date);
+      v9->_eventType = type;
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -40,28 +40,28 @@
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: date", buf, 2u);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (RTMotionActivityPedometerEvent)initWithCMPedometerEvent:(id)a3
+- (RTMotionActivityPedometerEvent)initWithCMPedometerEvent:(id)event
 {
-  v4 = a3;
-  if (v4)
+  eventCopy = event;
+  if (eventCopy)
   {
     v10.receiver = self;
     v10.super_class = RTMotionActivityPedometerEvent;
     v5 = [(RTMotionActivityPedometerEvent *)&v10 init];
     if (v5)
     {
-      v6 = [v4 date];
-      v5 = -[RTMotionActivityPedometerEvent initWithDate:eventType:](v5, "initWithDate:eventType:", v6, +[RTMotionActivityPedometerEvent convertCMPedometerEventType:](RTMotionActivityPedometerEvent, "convertCMPedometerEventType:", [v4 type]));
+      date = [eventCopy date];
+      v5 = -[RTMotionActivityPedometerEvent initWithDate:eventType:](v5, "initWithDate:eventType:", date, +[RTMotionActivityPedometerEvent convertCMPedometerEventType:](RTMotionActivityPedometerEvent, "convertCMPedometerEventType:", [eventCopy type]));
     }
 
     self = v5;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -73,54 +73,54 @@
       _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: cmPedometerEvent", buf, 2u);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTMotionActivityPedometerEvent *)self date];
+  date = [(RTMotionActivityPedometerEvent *)self date];
   v5 = [RTMotionActivityPedometerEvent convertRTMotionActivityPedometerEventTypeToString:[(RTMotionActivityPedometerEvent *)self eventType]];
-  v6 = [v3 stringWithFormat:@"date, %@, eventType, %@", v4, v5];
+  v6 = [v3 stringWithFormat:@"date, %@, eventType, %@", date, v5];
 
   return v6;
 }
 
-- (RTMotionActivityPedometerEvent)initWithCoder:(id)a3
+- (RTMotionActivityPedometerEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"Date"];
-  v6 = [v4 decodeIntegerForKey:@"EventType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"Date"];
+  v6 = [coderCopy decodeIntegerForKey:@"EventType"];
 
   v7 = [(RTMotionActivityPedometerEvent *)self initWithDate:v5 eventType:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   date = self->_date;
-  v5 = a3;
-  [v5 encodeObject:date forKey:@"Date"];
-  [v5 encodeInteger:self->_eventType forKey:@"EventType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:date forKey:@"Date"];
+  [coderCopy encodeInteger:self->_eventType forKey:@"EventType"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(RTMotionActivityPedometerEvent *)self date];
-  v4 = [v3 hash];
+  date = [(RTMotionActivityPedometerEvent *)self date];
+  v4 = [date hash];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[RTMotionActivityPedometerEvent eventType](self, "eventType")}];
   v6 = [v5 hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -130,13 +130,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTMotionActivityPedometerEvent *)self date];
-      v7 = [(RTMotionActivityPedometerEvent *)v5 date];
-      if ([v6 isEqualToDate:v7])
+      v5 = equalCopy;
+      date = [(RTMotionActivityPedometerEvent *)self date];
+      date2 = [(RTMotionActivityPedometerEvent *)v5 date];
+      if ([date isEqualToDate:date2])
       {
-        v8 = [(RTMotionActivityPedometerEvent *)self eventType];
-        v9 = v8 == [(RTMotionActivityPedometerEvent *)v5 eventType];
+        eventType = [(RTMotionActivityPedometerEvent *)self eventType];
+        v9 = eventType == [(RTMotionActivityPedometerEvent *)v5 eventType];
       }
 
       else
@@ -154,9 +154,9 @@
   return v9;
 }
 
-+ (int64_t)convertCMPedometerEventType:(int64_t)a3
++ (int64_t)convertCMPedometerEventType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = 1;
   }
@@ -166,7 +166,7 @@
     v3 = -1;
   }
 
-  if (a3)
+  if (type)
   {
     return v3;
   }
@@ -177,15 +177,15 @@
   }
 }
 
-+ (id)convertRTMotionActivityPedometerEventTypeToString:(int64_t)a3
++ (id)convertRTMotionActivityPedometerEventTypeToString:(int64_t)string
 {
   v3 = @"Pause";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"Resume";
   }
 
-  if (a3 == -1)
+  if (string == -1)
   {
     return @"Unknown";
   }

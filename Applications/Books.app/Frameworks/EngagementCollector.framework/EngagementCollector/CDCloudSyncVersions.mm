@@ -1,8 +1,8 @@
 @interface CDCloudSyncVersions
-- (CDCloudSyncVersions)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (CDCloudSyncVersions)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (NSPersistentHistoryToken)historyToken;
 - (id)mutableCopy;
-- (void)setHistoryToken:(id)a3;
+- (void)setHistoryToken:(id)token;
 @end
 
 @implementation CDCloudSyncVersions
@@ -10,31 +10,31 @@
 - (id)mutableCopy
 {
   v3 = objc_allocWithZone(type metadata accessor for CDMutableCloudSyncVersions());
-  v4 = self;
+  selfCopy = self;
 
-  return sub_1E788(v4, v3);
+  return sub_1E788(selfCopy, v3);
 }
 
 - (NSPersistentHistoryToken)historyToken
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CD10();
 
   return v3;
 }
 
-- (void)setHistoryToken:(id)a3
+- (void)setHistoryToken:(id)token
 {
-  v5 = a3;
-  v6 = self;
-  sub_1CFB8(a3);
+  tokenCopy = token;
+  selfCopy = self;
+  sub_1CFB8(token);
 }
 
-- (CDCloudSyncVersions)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (CDCloudSyncVersions)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CDCloudSyncVersions();
-  return [(CDCloudSyncVersions *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(CDCloudSyncVersions *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

@@ -6,7 +6,7 @@
 
 - (id)npkSanitizedAddress
 {
-  v1 = [a1 address];
+  address = [self address];
   v2 = PKIDSSanitizedAddress();
 
   return v2;

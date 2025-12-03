@@ -1,6 +1,6 @@
 @interface TVButtonImageContentView
 - (CGSize)intrinsicContentSize;
-- (_TtC9SeymourUI24TVButtonImageContentView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI24TVButtonImageContentView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TVButtonImageContentView
@@ -13,7 +13,7 @@
   return result;
 }
 
-- (_TtC9SeymourUI24TVButtonImageContentView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI24TVButtonImageContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

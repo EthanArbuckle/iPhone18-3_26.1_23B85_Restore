@@ -1,13 +1,13 @@
 @interface HMDMediaGroupsAggregateBackupMessageTimer
 + (id)logCategory;
-- (HMDMediaGroupsAggregateBackupMessageTimer)initWithParticipantAccessoryUUID:(id)a3 timerProvider:(id)a4;
+- (HMDMediaGroupsAggregateBackupMessageTimer)initWithParticipantAccessoryUUID:(id)d timerProvider:(id)provider;
 - (HMDMediaGroupsAggregateBackupMessageTimerDelegate)delegate;
 - (HMFTimerProvider)timerProvider;
 - (double)nextTimeInterval;
 - (id)logIdentifier;
-- (void)markAttemptWithMessageIdentifier:(id)a3;
+- (void)markAttemptWithMessageIdentifier:(id)identifier;
 - (void)startRetryTimer;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDMediaGroupsAggregateBackupMessageTimer
@@ -28,31 +28,31 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDMediaGroupsAggregateBackupMessageTimer *)self participantAccessoryUUID];
-  v3 = [v2 UUIDString];
+  participantAccessoryUUID = [(HMDMediaGroupsAggregateBackupMessageTimer *)self participantAccessoryUUID];
+  uUIDString = [participantAccessoryUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDMediaGroupsAggregateBackupMessageTimer *)self timer];
+  fireCopy = fire;
+  timer = [(HMDMediaGroupsAggregateBackupMessageTimer *)self timer];
 
-  if (v5 == v4)
+  if (timer == fireCopy)
   {
-    v6 = [(HMDMediaGroupsAggregateBackupMessageTimer *)self delegate];
-    v7 = v6;
-    if (v6)
+    delegate = [(HMDMediaGroupsAggregateBackupMessageTimer *)self delegate];
+    v7 = delegate;
+    if (delegate)
     {
-      [v6 didFireTimerForMediaGroupsAggregateBackupMessageTimer:self];
+      [delegate didFireTimerForMediaGroupsAggregateBackupMessageTimer:self];
     }
 
     else
     {
       v8 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy = self;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
@@ -72,25 +72,25 @@
 - (double)nextTimeInterval
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = [(HMDMediaGroupsAggregateBackupMessageTimer *)self attemptCount];
+  attemptCount = [(HMDMediaGroupsAggregateBackupMessageTimer *)self attemptCount];
   v6[0] = vdupq_n_s64(0x404E000000000000uLL);
   v6[1] = xmmword_22A587030;
   v7 = 0x409C200000000000;
-  if (v2 > 5)
+  if (attemptCount > 5)
   {
     result = 86400.0;
   }
 
   else
   {
-    if (v2 <= 1)
+    if (attemptCount <= 1)
     {
       v3 = 1;
     }
 
     else
     {
-      v3 = v2;
+      v3 = attemptCount;
     }
 
     result = *(v6 + v3 - 1);
@@ -104,12 +104,12 @@
 {
   v25 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDMediaGroupsAggregateBackupMessageTimer attemptCount](v4, "attemptCount")}];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDMediaGroupsAggregateBackupMessageTimer attemptCount](selfCopy, "attemptCount")}];
     v21 = 138543618;
     v22 = v6;
     v23 = 2112;
@@ -118,26 +118,26 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  if ([(HMDMediaGroupsAggregateBackupMessageTimer *)v4 attemptCount]< 0x24)
+  if ([(HMDMediaGroupsAggregateBackupMessageTimer *)selfCopy attemptCount]< 0x24)
   {
-    v12 = [(HMDMediaGroupsAggregateBackupMessageTimer *)v4 timerProvider];
-    if (v12)
+    timerProvider = [(HMDMediaGroupsAggregateBackupMessageTimer *)selfCopy timerProvider];
+    if (timerProvider)
     {
-      [(HMDMediaGroupsAggregateBackupMessageTimer *)v4 nextTimeInterval];
-      v13 = [v12 timerWithTimeInterval:2 options:?];
-      [(HMDMediaGroupsAggregateBackupMessageTimer *)v4 setTimer:v13];
+      [(HMDMediaGroupsAggregateBackupMessageTimer *)selfCopy nextTimeInterval];
+      v13 = [timerProvider timerWithTimeInterval:2 options:?];
+      [(HMDMediaGroupsAggregateBackupMessageTimer *)selfCopy setTimer:v13];
 
-      v14 = [(HMDMediaGroupsAggregateBackupMessageTimer *)v4 timer];
-      [v14 setDelegate:v4];
+      timer = [(HMDMediaGroupsAggregateBackupMessageTimer *)selfCopy timer];
+      [timer setDelegate:selfCopy];
 
-      v15 = [(HMDMediaGroupsAggregateBackupMessageTimer *)v4 timer];
-      [v15 resume];
+      timer2 = [(HMDMediaGroupsAggregateBackupMessageTimer *)selfCopy timer];
+      [timer2 resume];
     }
 
     else
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = v4;
+      v17 = selfCopy;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -154,7 +154,7 @@
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = v4;
+    v9 = selfCopy;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -172,29 +172,29 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markAttemptWithMessageIdentifier:(id)a3
+- (void)markAttemptWithMessageIdentifier:(id)identifier
 {
-  [(HMDMediaGroupsAggregateBackupMessageTimer *)self setCurrentMessageIdentifier:a3];
+  [(HMDMediaGroupsAggregateBackupMessageTimer *)self setCurrentMessageIdentifier:identifier];
   v4 = [(HMDMediaGroupsAggregateBackupMessageTimer *)self attemptCount]+ 1;
 
   [(HMDMediaGroupsAggregateBackupMessageTimer *)self setAttemptCount:v4];
 }
 
-- (HMDMediaGroupsAggregateBackupMessageTimer)initWithParticipantAccessoryUUID:(id)a3 timerProvider:(id)a4
+- (HMDMediaGroupsAggregateBackupMessageTimer)initWithParticipantAccessoryUUID:(id)d timerProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = HMDMediaGroupsAggregateBackupMessageTimer;
   v9 = [(HMDMediaGroupsAggregateBackupMessageTimer *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_timerProvider, v8);
-    objc_storeStrong(&v10->_participantAccessoryUUID, a3);
-    v11 = [MEMORY[0x277CCAD78] UUID];
+    objc_storeWeak(&v9->_timerProvider, providerCopy);
+    objc_storeStrong(&v10->_participantAccessoryUUID, d);
+    uUID = [MEMORY[0x277CCAD78] UUID];
     currentMessageIdentifier = v10->_currentMessageIdentifier;
-    v10->_currentMessageIdentifier = v11;
+    v10->_currentMessageIdentifier = uUID;
 
     v10->_attemptCount = 0;
   }

@@ -8,9 +8,9 @@
 - (void)logAcceptedEventToCoreAnalytics;
 - (void)logReceivedEventToCoreAnalytics;
 - (void)logRejectedEventToCoreAnalytics;
-- (void)logWallClockTimeToCoreAnalytics:(double)a3;
+- (void)logWallClockTimeToCoreAnalytics:(double)analytics;
 - (void)replenishWallClockTimeCredits;
-- (void)scheduleRequest:(id)a3;
+- (void)scheduleRequest:(id)request;
 @end
 
 @implementation ATXChinSuggestionThrottlingManager
@@ -65,17 +65,17 @@
   return v2;
 }
 
-- (void)scheduleRequest:(id)a3
+- (void)scheduleRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   requestManagementQueue = self->_requestManagementQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__ATXChinSuggestionThrottlingManager_scheduleRequest___block_invoke;
   v7[3] = &unk_278596C10;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
   dispatch_async(requestManagementQueue, v7);
 }
 
@@ -196,7 +196,7 @@ LABEL_7:
   v7[2] = __59__ATXChinSuggestionThrottlingManager__acceptPendingRequest__block_invoke;
   v7[3] = &unk_278596C10;
   v8 = v3;
-  v9 = self;
+  selfCopy = self;
   v6 = v3;
   dispatch_async(requestProcessingQueue, v7);
 }
@@ -282,8 +282,8 @@ uint64_t __59__ATXChinSuggestionThrottlingManager__acceptPendingRequest__block_i
   }
 
   [(ATXChinSuggestionThrottlingManager *)self logRejectedEventToCoreAnalytics];
-  v5 = [(ATXChinSuggestionRequest *)self->_pendingRequest rejectedBlock];
-  v5[2]();
+  rejectedBlock = [(ATXChinSuggestionRequest *)self->_pendingRequest rejectedBlock];
+  rejectedBlock[2]();
 
   v6 = self->_pendingRequest;
   self->_pendingRequest = 0;
@@ -324,11 +324,11 @@ uint64_t __59__ATXChinSuggestionThrottlingManager__acceptPendingRequest__block_i
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logWallClockTimeToCoreAnalytics:(double)a3
+- (void)logWallClockTimeToCoreAnalytics:(double)analytics
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"wallClockTime";
-  v3 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithDouble:analytics];
   v7[0] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   AnalyticsSendEvent();

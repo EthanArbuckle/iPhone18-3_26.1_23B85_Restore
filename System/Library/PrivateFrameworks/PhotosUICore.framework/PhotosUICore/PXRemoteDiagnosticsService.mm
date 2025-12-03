@@ -1,23 +1,23 @@
 @interface PXRemoteDiagnosticsService
-+ (void)startServerOnInternalDevicesWithAgentClass:(Class)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (void)startServerOnInternalDevicesWithAgentClass:(Class)class;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PXRemoteDiagnosticsService)init;
 - (void)_startListening;
 @end
 
 @implementation PXRemoteDiagnosticsService
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v5 = MEMORY[0x1E696B0D0];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = [v5 interfaceWithProtocol:&unk_1F1B45C80];
-  [v6 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
-  v8 = [(PXRemoteDiagnosticsService *)self agent];
-  [v6 setExportedObject:v8];
+  agent = [(PXRemoteDiagnosticsService *)self agent];
+  [connectionCopy setExportedObject:agent];
 
-  [v6 resume];
+  [connectionCopy resume];
   return 1;
 }
 
@@ -107,12 +107,12 @@ void __45__PXRemoteDiagnosticsService__startListening__block_invoke_2(uint64_t a
   return v2;
 }
 
-+ (void)startServerOnInternalDevicesWithAgentClass:(Class)a3
++ (void)startServerOnInternalDevicesWithAgentClass:(Class)class
 {
   if (!+[PXApplicationState isRunningInPhotosApp])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"PXRemoteDiagnosticsService.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"PXApplicationState.isRunningInPhotosApp"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXRemoteDiagnosticsService.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"PXApplicationState.isRunningInPhotosApp"}];
   }
 
   if (PFOSVariantHasInternalUI())
@@ -121,7 +121,7 @@ void __45__PXRemoteDiagnosticsService__startListening__block_invoke_2(uint64_t a
     block[1] = 3221225472;
     block[2] = __73__PXRemoteDiagnosticsService_startServerOnInternalDevicesWithAgentClass___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0lu32l8;
-    block[4] = a3;
+    block[4] = class;
     if (startServerOnInternalDevicesWithAgentClass__onceToken != -1)
     {
       dispatch_once(&startServerOnInternalDevicesWithAgentClass__onceToken, block);

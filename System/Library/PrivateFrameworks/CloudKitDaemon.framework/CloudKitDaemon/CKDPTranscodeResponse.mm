@@ -1,12 +1,12 @@
 @interface CKDPTranscodeResponse
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPTranscodeResponse
@@ -36,14 +36,14 @@
   return v6;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = objc_msgSend_position(a3, a2, a3);
-  if (v5 < objc_msgSend_length(a3, v6, v7))
+  v5 = objc_msgSend_position(from, a2, from);
+  if (v5 < objc_msgSend_length(from, v6, v7))
   {
     do
     {
-      if (objc_msgSend_hasError(a3, v8, v9))
+      if (objc_msgSend_hasError(from, v8, v9))
       {
         break;
       }
@@ -54,20 +54,20 @@
       while (1)
       {
         LOBYTE(v39[0]) = 0;
-        v13 = objc_msgSend_position(a3, v8, v9, v39[0]) + 1;
-        if (v13 >= objc_msgSend_position(a3, v14, v15) && (v18 = objc_msgSend_position(a3, v16, v17) + 1, v18 <= objc_msgSend_length(a3, v19, v20)))
+        v13 = objc_msgSend_position(from, v8, v9, v39[0]) + 1;
+        if (v13 >= objc_msgSend_position(from, v14, v15) && (v18 = objc_msgSend_position(from, v16, v17) + 1, v18 <= objc_msgSend_length(from, v19, v20)))
         {
-          v21 = objc_msgSend_data(a3, v16, v17);
-          v24 = objc_msgSend_position(a3, v22, v23);
+          v21 = objc_msgSend_data(from, v16, v17);
+          v24 = objc_msgSend_position(from, v22, v23);
           objc_msgSend_getBytes_range_(v21, v25, v39, v24, 1);
 
-          v28 = objc_msgSend_position(a3, v26, v27);
-          objc_msgSend_setPosition_(a3, v29, v28 + 1);
+          v28 = objc_msgSend_position(from, v26, v27);
+          objc_msgSend_setPosition_(from, v29, v28 + 1);
         }
 
         else
         {
-          objc_msgSend__setError(a3, v16, v17);
+          objc_msgSend__setError(from, v16, v17);
         }
 
         v12 |= (v39[0] & 0x7F) << v10;
@@ -84,9 +84,9 @@
         }
       }
 
-      v31 = objc_msgSend_hasError(a3, v8, v9) ? 0 : v12;
+      v31 = objc_msgSend_hasError(from, v8, v9) ? 0 : v12;
 LABEL_15:
-      if (objc_msgSend_hasError(a3, v8, v9))
+      if (objc_msgSend_hasError(from, v8, v9))
       {
         break;
       }
@@ -117,16 +117,16 @@ LABEL_15:
         return 0;
       }
 
-      v35 = objc_msgSend_position(a3, v33, v34);
+      v35 = objc_msgSend_position(from, v33, v34);
     }
 
-    while (v35 < objc_msgSend_length(a3, v36, v37));
+    while (v35 < objc_msgSend_length(from, v36, v37));
   }
 
-  return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+  return objc_msgSend_hasError(from, v8, v9) ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_record)
   {
@@ -134,35 +134,35 @@ LABEL_15:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   record = self->_record;
   if (record)
   {
-    objc_msgSend_setRecord_(a3, a2, record);
+    objc_msgSend_setRecord_(to, a2, record);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_record, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_record, v11, zone);
   v13 = v10[1];
   v10[1] = v12;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     record = self->_record;
-    v9 = v4[1];
+    v9 = equalCopy[1];
     if (record | v9)
     {
       isEqual = objc_msgSend_isEqual_(record, v7, v9);
@@ -182,22 +182,22 @@ LABEL_15:
   return isEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   record = self->_record;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (record)
   {
     if (v6)
     {
-      objc_msgSend_mergeFrom_(record, v4, v6);
+      objc_msgSend_mergeFrom_(record, fromCopy, v6);
     }
   }
 
   else if (v6)
   {
-    objc_msgSend_setRecord_(self, v4, v6);
+    objc_msgSend_setRecord_(self, fromCopy, v6);
   }
 
   MEMORY[0x2821F96F8]();

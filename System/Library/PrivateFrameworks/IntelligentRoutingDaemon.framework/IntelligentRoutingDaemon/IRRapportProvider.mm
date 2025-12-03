@@ -1,13 +1,13 @@
 @interface IRRapportProvider
 - (IRRapportProvider)init;
-- (IRRapportProvider)initWithQueue:(id)a3 companionLinkClient:(id)a4;
+- (IRRapportProvider)initWithQueue:(id)queue companionLinkClient:(id)client;
 - (void)_logActiveDevices;
 - (void)_stopDiscoveryAndResetKnownDevicesIfNeeded;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)didUpdateRapportDevices:(id)a3;
+- (void)didUpdateRapportDevices:(id)devices;
 - (void)logActiveDevices;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation IRRapportProvider
@@ -23,21 +23,21 @@
   return v6;
 }
 
-- (IRRapportProvider)initWithQueue:(id)a3 companionLinkClient:(id)a4
+- (IRRapportProvider)initWithQueue:(id)queue companionLinkClient:(id)client
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  clientCopy = client;
   v16.receiver = self;
   v16.super_class = IRRapportProvider;
   v9 = [(IRRapportProvider *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_internalQueue, a3);
-    objc_storeStrong(&v10->_companionLinkClient, a4);
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v9->_internalQueue, queue);
+    objc_storeStrong(&v10->_companionLinkClient, client);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v10->_observers;
-    v10->_observers = v11;
+    v10->_observers = weakObjectsHashTable;
 
     v13 = [MEMORY[0x277CBEB98] set];
     knownDevices = v10->_knownDevices;
@@ -57,16 +57,16 @@
   [(IRRapportProvider *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  if (![(NSHashTable *)self->_observers containsObject:v4])
+  if (![(NSHashTable *)self->_observers containsObject:observerCopy])
   {
-    [(NSHashTable *)self->_observers addObject:v4];
-    v5 = [(NSHashTable *)self->_observers allObjects];
-    v6 = [v5 count];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v6 = [allObjects count];
 
     if (v6 == 1)
     {
@@ -85,7 +85,7 @@
     }
 
     v9 = [(NSSet *)self->_knownDevices copy];
-    [v4 provider:self didUpdateRapportDevices:v9];
+    [observerCopy provider:self didUpdateRapportDevices:v9];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -93,28 +93,28 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   [(IRRapportProvider *)self _stopDiscoveryAndResetKnownDevicesIfNeeded];
-  if ([(NSHashTable *)self->_observers containsObject:v4])
+  if ([(NSHashTable *)self->_observers containsObject:observerCopy])
   {
-    [(NSHashTable *)self->_observers removeObject:v4];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
     [(IRRapportProvider *)self _stopDiscoveryAndResetKnownDevicesIfNeeded];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)didUpdateRapportDevices:(id)a3
+- (void)didUpdateRapportDevices:(id)devices
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  devicesCopy = devices;
   os_unfair_lock_lock(&self->_lock);
-  if (([(NSSet *)self->_knownDevices isEqual:v4]& 1) == 0)
+  if (([(NSSet *)self->_knownDevices isEqual:devicesCopy]& 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [devicesCopy copy];
     knownDevices = self->_knownDevices;
     self->_knownDevices = v5;
 
@@ -209,8 +209,8 @@ void __38__IRRapportProvider__logActiveDevices__block_invoke(uint64_t a1, void *
 - (void)_stopDiscoveryAndResetKnownDevicesIfNeeded
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(NSHashTable *)self->_observers allObjects];
-  v4 = [v3 count];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v4 = [allObjects count];
 
   if (!v4)
   {

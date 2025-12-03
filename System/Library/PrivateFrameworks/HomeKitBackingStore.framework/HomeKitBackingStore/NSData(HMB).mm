@@ -8,17 +8,17 @@
 
 - (id)hmbDescription
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = MEMORY[0x277CCACA8];
   if (v2 < 0x41)
   {
-    v5 = [a1 base64EncodedStringWithOptions:0];
+    v5 = [self base64EncodedStringWithOptions:0];
     v4 = [v3 stringWithFormat:@"[%@]", v5];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%lu bytes>", objc_msgSend(a1, "length")];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%lu bytes>", objc_msgSend(self, "length")];
   }
 
   return v4;
@@ -28,7 +28,7 @@
 {
   v24 = *MEMORY[0x277D85DE8];
   v2 = objc_autoreleasePoolPush();
-  v3 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:{2 * objc_msgSend(a1, "length", 0, 0, 0, 0, 0, 0, 0)}];
+  v3 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:{2 * objc_msgSend(self, "length", 0, 0, 0, 0, 0, 0, 0)}];
   bzero(v23, 0x2000uLL);
   memset(&v18.zalloc, 0, 24);
   v4 = inflateInit2_(&v18, 15, "1.2.12", 112);
@@ -36,7 +36,7 @@
   {
     v5 = v4;
     v6 = objc_autoreleasePoolPush();
-    v7 = a1;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -53,7 +53,7 @@
 
   else
   {
-    v18.avail_in = [a1 length];
+    v18.avail_in = [self length];
     while (1)
     {
       v18.avail_out = 0x2000;
@@ -74,7 +74,7 @@
     }
 
     v12 = objc_autoreleasePoolPush();
-    v13 = a1;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -110,7 +110,7 @@ LABEL_14:
   {
     v4 = v3;
     v5 = objc_autoreleasePoolPush();
-    v6 = a1;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -127,8 +127,8 @@ LABEL_14:
 
   else
   {
-    v9 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:{deflateBound(&v17, objc_msgSend(a1, "length", *&v17.next_in, *&v17.total_in, *&v17.avail_out, *&v17.msg))}];
-    v17.avail_in = [a1 length];
+    v9 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:{deflateBound(&v17, objc_msgSend(self, "length", *&v17.next_in, *&v17.total_in, *&v17.avail_out, *&v17.msg))}];
+    v17.avail_in = [self length];
     while (1)
     {
       v17.avail_out = 0x2000;
@@ -149,7 +149,7 @@ LABEL_14:
     }
 
     v11 = objc_autoreleasePoolPush();
-    v12 = a1;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {

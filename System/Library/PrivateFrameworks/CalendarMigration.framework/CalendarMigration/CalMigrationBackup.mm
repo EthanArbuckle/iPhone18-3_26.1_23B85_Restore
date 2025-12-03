@@ -1,25 +1,25 @@
 @interface CalMigrationBackup
-+ (BOOL)backupCalendarDirectory:(id)a3 intoArchiveNamed:(id)a4 error:(id *)a5;
-+ (BOOL)removeExistingBackupWithArchiveName:(id)a3 inCalendarDirectory:(id)a4 error:(id *)a5;
-+ (BOOL)shouldBackupCalendarDirectory:(id)a3 withPrivacySafePathProvider:(id)a4;
++ (BOOL)backupCalendarDirectory:(id)directory intoArchiveNamed:(id)named error:(id *)error;
++ (BOOL)removeExistingBackupWithArchiveName:(id)name inCalendarDirectory:(id)directory error:(id *)error;
++ (BOOL)shouldBackupCalendarDirectory:(id)directory withPrivacySafePathProvider:(id)provider;
 @end
 
 @implementation CalMigrationBackup
 
-+ (BOOL)backupCalendarDirectory:(id)a3 intoArchiveNamed:(id)a4 error:(id *)a5
++ (BOOL)backupCalendarDirectory:(id)directory intoArchiveNamed:(id)named error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [v7 URLByAppendingPathComponent:v8];
-  v11 = [v10 path];
-  v12 = [v9 fileExistsAtPath:v11];
+  directoryCopy = directory;
+  namedCopy = named;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v10 = [directoryCopy URLByAppendingPathComponent:namedCopy];
+  path = [v10 path];
+  v12 = [defaultManager fileExistsAtPath:path];
 
   if (v12)
   {
     v33 = 0;
-    v13 = [v9 removeItemAtURL:v10 error:&v33];
+    v13 = [defaultManager removeItemAtURL:v10 error:&v33];
     v14 = v33;
     if ((v13 & 1) == 0)
     {
@@ -31,23 +31,23 @@
     }
   }
 
-  v16 = [v9 temporaryDirectory];
-  v17 = [v16 URLByAppendingPathComponent:v8];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  v17 = [temporaryDirectory URLByAppendingPathComponent:namedCopy];
 
   v32 = 0;
-  LOBYTE(v16) = [v9 archiveURLToFile:v7 toFile:v17 createPKZipArchive:1 error:&v32];
+  LOBYTE(temporaryDirectory) = [defaultManager archiveURLToFile:directoryCopy toFile:v17 createPKZipArchive:1 error:&v32];
   v18 = v32;
   v19 = v18;
-  if (v16)
+  if (temporaryDirectory)
   {
     v31 = v18;
-    v20 = [v9 moveItemAtURL:v17 toURL:v10 error:&v31];
+    v20 = [defaultManager moveItemAtURL:v17 toURL:v10 error:&v31];
     v21 = v31;
 
     if (v20)
     {
       v22 = 1;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_18;
       }
@@ -58,12 +58,12 @@
     v23 = +[CalMigrationLog defaultCategory];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v29 = [v17 path];
-      v30 = [v10 path];
+      path2 = [v17 path];
+      path3 = [v10 path];
       *buf = 138412802;
-      v35 = v29;
+      v35 = path2;
       v36 = 2112;
-      v37 = v30;
+      v37 = path3;
       v38 = 2112;
       v39 = v21;
       _os_log_error_impl(&dword_2428EA000, v23, OS_LOG_TYPE_ERROR, "Failed to move backup archive %@ to %@. error = %@", buf, 0x20u);
@@ -77,12 +77,12 @@
     v23 = +[CalMigrationLog defaultCategory];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v17 path];
-      v25 = [v7 path];
+      path4 = [v17 path];
+      path5 = [directoryCopy path];
       *buf = 138412802;
-      v35 = v24;
+      v35 = path4;
       v36 = 2112;
-      v37 = v25;
+      v37 = path5;
       v38 = 2112;
       v39 = v19;
       _os_log_error_impl(&dword_2428EA000, v23, OS_LOG_TYPE_ERROR, "Failed to create backup archive %@ for calendar directory %@. error = %@", buf, 0x20u);
@@ -91,11 +91,11 @@
 
   v22 = 0;
   v21 = v19;
-  if (a5)
+  if (error)
   {
 LABEL_17:
     v26 = v21;
-    *a5 = v21;
+    *error = v21;
   }
 
 LABEL_18:
@@ -104,12 +104,12 @@ LABEL_18:
   return v22;
 }
 
-+ (BOOL)shouldBackupCalendarDirectory:(id)a3 withPrivacySafePathProvider:(id)a4
++ (BOOL)shouldBackupCalendarDirectory:(id)directory withPrivacySafePathProvider:(id)provider
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v5 = a4;
-  v26 = [MEMORY[0x277CCAA00] defaultManager];
+  directoryCopy = directory;
+  providerCopy = provider;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -121,10 +121,10 @@ LABEL_18:
   v35[1] = 3221225472;
   v35[2] = __80__CalMigrationBackup_shouldBackupCalendarDirectory_withPrivacySafePathProvider___block_invoke;
   v35[3] = &unk_278D6D6A8;
-  v24 = v5;
+  v24 = providerCopy;
   v36 = v24;
   v37 = &v38;
-  v7 = [v26 enumeratorAtURL:v25 includingPropertiesForKeys:v6 options:0 errorHandler:v35];
+  v7 = [defaultManager enumeratorAtURL:directoryCopy includingPropertiesForKeys:v6 options:0 errorHandler:v35];
 
   v33 = 0u;
   v34 = 0u;
@@ -259,21 +259,21 @@ uint64_t __80__CalMigrationBackup_shouldBackupCalendarDirectory_withPrivacySafeP
   return 0;
 }
 
-+ (BOOL)removeExistingBackupWithArchiveName:(id)a3 inCalendarDirectory:(id)a4 error:(id *)a5
++ (BOOL)removeExistingBackupWithArchiveName:(id)name inCalendarDirectory:(id)directory error:(id *)error
 {
   v7 = MEMORY[0x277CCAA00];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 defaultManager];
-  v11 = [v8 URLByAppendingPathComponent:v9];
+  directoryCopy = directory;
+  nameCopy = name;
+  defaultManager = [v7 defaultManager];
+  v11 = [directoryCopy URLByAppendingPathComponent:nameCopy];
 
-  v12 = [v11 path];
-  LODWORD(v9) = [v10 fileExistsAtPath:v12];
+  path = [v11 path];
+  LODWORD(nameCopy) = [defaultManager fileExistsAtPath:path];
 
-  if (v9)
+  if (nameCopy)
   {
     v18 = 0;
-    v13 = [v10 removeItemAtURL:v11 error:&v18];
+    v13 = [defaultManager removeItemAtURL:v11 error:&v18];
     v14 = v18;
     if ((v13 & 1) == 0)
     {
@@ -283,10 +283,10 @@ uint64_t __80__CalMigrationBackup_shouldBackupCalendarDirectory_withPrivacySafeP
         [CalMigrationBackup backupCalendarDirectory:v11 intoArchiveNamed:? error:?];
       }
 
-      if (a5)
+      if (error)
       {
         v16 = v14;
-        *a5 = v14;
+        *error = v14;
       }
     }
   }

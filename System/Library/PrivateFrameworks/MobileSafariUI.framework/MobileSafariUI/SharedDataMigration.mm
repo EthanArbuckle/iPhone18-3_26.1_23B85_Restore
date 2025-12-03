@@ -1,5 +1,5 @@
 @interface SharedDataMigration
-+ (BOOL)_migrateCacheFileFromSubpath:(id)a3 toSubpath:(id)a4 ensureIsDirectory:(BOOL)a5;
++ (BOOL)_migrateCacheFileFromSubpath:(id)subpath toSubpath:(id)toSubpath ensureIsDirectory:(BOOL)directory;
 + (BOOL)migrateRecentSearches;
 + (BOOL)migrateThumbnails;
 + (id)_userCachesDirectoryPath;
@@ -25,28 +25,28 @@
   return v3;
 }
 
-+ (BOOL)_migrateCacheFileFromSubpath:(id)a3 toSubpath:(id)a4 ensureIsDirectory:(BOOL)a5
++ (BOOL)_migrateCacheFileFromSubpath:(id)subpath toSubpath:(id)toSubpath ensureIsDirectory:(BOOL)directory
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [objc_opt_class() _userCachesDirectoryPath];
-  v11 = v10;
-  if (v10)
+  directoryCopy = directory;
+  subpathCopy = subpath;
+  toSubpathCopy = toSubpath;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _userCachesDirectoryPath = [objc_opt_class() _userCachesDirectoryPath];
+  v11 = _userCachesDirectoryPath;
+  if (_userCachesDirectoryPath)
   {
-    v12 = [v10 stringByAppendingPathComponent:v7];
-    if (v5)
+    v12 = [_userCachesDirectoryPath stringByAppendingPathComponent:subpathCopy];
+    if (directoryCopy)
     {
       v37 = 0;
       v13 = 1;
-      if (![v9 fileExistsAtPath:v12 isDirectory:&v37] || (v37 & 1) == 0)
+      if (![defaultManager fileExistsAtPath:v12 isDirectory:&v37] || (v37 & 1) == 0)
       {
         goto LABEL_23;
       }
     }
 
-    else if (![v9 fileExistsAtPath:v12])
+    else if (![defaultManager fileExistsAtPath:v12])
     {
       v13 = 1;
 LABEL_23:
@@ -54,19 +54,19 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v14 = [v11 stringByAppendingPathComponent:v8];
-    if ([v9 fileExistsAtPath:v14])
+    v14 = [v11 stringByAppendingPathComponent:toSubpathCopy];
+    if ([defaultManager fileExistsAtPath:v14])
     {
-      v15 = [v9 attributesOfItemAtPath:v12 error:0];
-      v16 = [v15 fileModificationDate];
+      v15 = [defaultManager attributesOfItemAtPath:v12 error:0];
+      fileModificationDate = [v15 fileModificationDate];
 
-      v17 = [v9 attributesOfItemAtPath:v14 error:0];
-      v18 = [v17 fileModificationDate];
+      v17 = [defaultManager attributesOfItemAtPath:v14 error:0];
+      fileModificationDate2 = [v17 fileModificationDate];
 
-      if ([v18 compare:v16] != -1)
+      if ([fileModificationDate2 compare:fileModificationDate] != -1)
       {
         v35 = 0;
-        v19 = [v9 removeItemAtPath:v12 error:&v35];
+        v19 = [defaultManager removeItemAtPath:v12 error:&v35];
         v20 = v35;
         v21 = v20;
         if ((v19 & 1) == 0)
@@ -80,7 +80,7 @@ LABEL_23:
       }
 
       v36 = 0;
-      v23 = [v9 removeItemAtPath:v14 error:&v36];
+      v23 = [defaultManager removeItemAtPath:v14 error:&v36];
       v24 = v36;
       v25 = v24;
       if ((v23 & 1) == 0)
@@ -90,11 +90,11 @@ LABEL_23:
       }
     }
 
-    v27 = [v12 lastPathComponent];
-    NSLog(@"Migrating %@ ...", v27);
+    lastPathComponent = [v12 lastPathComponent];
+    NSLog(@"Migrating %@ ...", lastPathComponent);
 
     v34 = 0;
-    v13 = [v9 moveItemAtPath:v12 toPath:v14 error:&v34];
+    v13 = [defaultManager moveItemAtPath:v12 toPath:v14 error:&v34];
     v28 = v34;
     v29 = v28;
     if (v13)
@@ -108,18 +108,18 @@ LABEL_22:
     NSLog(@"Failed to migrate %@ because %@", v12, v30);
 
     v33 = v29;
-    v31 = [v9 removeItemAtPath:v14 error:&v33];
-    v16 = v33;
+    v31 = [defaultManager removeItemAtPath:v14 error:&v33];
+    fileModificationDate = v33;
 
     if (v31)
     {
 LABEL_21:
-      v29 = v16;
+      v29 = fileModificationDate;
       goto LABEL_22;
     }
 
-    v18 = [v16 description];
-    NSLog(@"Failed to remove %@ because %@", v14, v18);
+    fileModificationDate2 = [fileModificationDate description];
+    NSLog(@"Failed to remove %@ because %@", v14, fileModificationDate2);
 LABEL_20:
 
     goto LABEL_21;
@@ -133,16 +133,16 @@ LABEL_24:
 
 + (void)migratePersistentStorageDefaults
 {
-  v6 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
   v2 = SafariLibraryPath();
-  v3 = [v2 stringByResolvingSymlinksInPath];
+  stringByResolvingSymlinksInPath = [v2 stringByResolvingSymlinksInPath];
 
-  v4 = [v3 stringByAppendingPathComponent:@"WebKit/WebsiteData/LocalStorage"];
-  v5 = [v3 stringByAppendingPathComponent:@"WebKit/WebsiteData/WebSQL"];
-  [v6 setBool:1 forKey:@"WebKitLocalStorageEnabledPreferenceKey"];
-  [v6 setObject:v4 forKey:*MEMORY[0x277D7B828]];
-  [v6 setObject:v5 forKey:*MEMORY[0x277D7B818]];
-  [v6 synchronize];
+  v4 = [stringByResolvingSymlinksInPath stringByAppendingPathComponent:@"WebKit/WebsiteData/LocalStorage"];
+  v5 = [stringByResolvingSymlinksInPath stringByAppendingPathComponent:@"WebKit/WebsiteData/WebSQL"];
+  [safari_browserDefaults setBool:1 forKey:@"WebKitLocalStorageEnabledPreferenceKey"];
+  [safari_browserDefaults setObject:v4 forKey:*MEMORY[0x277D7B828]];
+  [safari_browserDefaults setObject:v5 forKey:*MEMORY[0x277D7B818]];
+  [safari_browserDefaults synchronize];
 }
 
 + (BOOL)migrateRecentSearches
@@ -165,14 +165,14 @@ LABEL_24:
 {
   v50 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc(MEMORY[0x277D7B568]);
-  v3 = [MEMORY[0x277D7B520] safariTabCollectionConfiguration];
-  v4 = [v2 initWithConfiguration:v3 openDatabase:1];
+  safariTabCollectionConfiguration = [MEMORY[0x277D7B520] safariTabCollectionConfiguration];
+  v4 = [v2 initWithConfiguration:safariTabCollectionConfiguration openDatabase:1];
 
   if (([v4 hasCompletedMigration] & 1) == 0)
   {
     [v4 lockSync];
-    v37 = [MEMORY[0x277D28F00] sharedBrowserSavedState];
-    [v37 browserWindows];
+    mEMORY[0x277D28F00] = [MEMORY[0x277D28F00] sharedBrowserSavedState];
+    [mEMORY[0x277D28F00] browserWindows];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
@@ -199,12 +199,12 @@ LABEL_24:
 
           v6 = *(*(&v45 + 1) + 8 * v5);
           v7 = objc_alloc(MEMORY[0x277D7B598]);
-          v8 = [v6 UUIDString];
-          v9 = [v6 sceneID];
-          v10 = [v7 initWithUUID:v8 sceneID:v9];
+          uUIDString = [v6 UUIDString];
+          sceneID = [v6 sceneID];
+          v10 = [v7 initWithUUID:uUIDString sceneID:sceneID];
 
-          v11 = [v6 UUID];
-          v12 = [v37 savedTabsStateForBrowserControllerWithUUID:v11];
+          uUID = [v6 UUID];
+          v12 = [mEMORY[0x277D28F00] savedTabsStateForBrowserControllerWithUUID:uUID];
 
           if (v12)
           {
@@ -222,17 +222,17 @@ LABEL_24:
               v15 = _Block_copy(aBlock);
               v41 = v15[2](v15, v13);
               v39 = v15[2](v15, v14);
-              v42 = [v10 localTabGroup];
-              v16 = [v10 privateTabGroup];
+              localTabGroup = [v10 localTabGroup];
+              privateTabGroup = [v10 privateTabGroup];
               v17 = [v12 safari_numberForKey:v32];
-              v18 = [v17 unsignedIntegerValue];
+              unsignedIntegerValue = [v17 unsignedIntegerValue];
 
-              if (v18 < [v13 count])
+              if (unsignedIntegerValue < [v13 count])
               {
-                v19 = [v13 objectAtIndexedSubscript:v18];
+                v19 = [v13 objectAtIndexedSubscript:unsignedIntegerValue];
                 v20 = [v19 safari_stringForKey:v31];
-                [v42 setLastSelectedTabUUID:v20];
-                [v42 uuid];
+                [localTabGroup setLastSelectedTabUUID:v20];
+                [localTabGroup uuid];
                 v22 = v21 = v14;
                 [v10 setActiveTabUUID:v20 forTabGroupWithUUID:v22];
 
@@ -240,22 +240,22 @@ LABEL_24:
               }
 
               v23 = [v12 safari_numberForKey:v30];
-              v24 = [v23 unsignedIntegerValue];
+              unsignedIntegerValue2 = [v23 unsignedIntegerValue];
 
-              if (v24 < [v14 count])
+              if (unsignedIntegerValue2 < [v14 count])
               {
-                v25 = [v14 objectAtIndexedSubscript:v24];
+                v25 = [v14 objectAtIndexedSubscript:unsignedIntegerValue2];
                 v26 = [v25 safari_stringForKey:v31];
-                [v16 setLastSelectedTabUUID:v26];
-                [v16 uuid];
+                [privateTabGroup setLastSelectedTabUUID:v26];
+                [privateTabGroup uuid];
                 v28 = v27 = v14;
                 [v10 setActiveTabUUID:v26 forTabGroupWithUUID:v28];
 
                 v14 = v27;
               }
 
-              [v40 insertTabs:v41 inTabGroup:v42 afterTab:0];
-              [v40 insertTabs:v39 inTabGroup:v16 afterTab:0];
+              [v40 insertTabs:v41 inTabGroup:localTabGroup afterTab:0];
+              [v40 insertTabs:v39 inTabGroup:privateTabGroup afterTab:0];
 
               v4 = v33;
             }

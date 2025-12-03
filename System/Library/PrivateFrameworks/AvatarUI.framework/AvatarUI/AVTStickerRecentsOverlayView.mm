@@ -4,12 +4,12 @@
 + (id)standardOverlayView;
 + (id)stickerButtonImage;
 - (AVTStickerRecentsOverlayDelegate)delegate;
-- (AVTStickerRecentsOverlayView)initWithFrame:(CGRect)a3 title:(id)a4 subtitle:(id)a5 buttonTitle:(id)a6 image:(id)a7;
+- (AVTStickerRecentsOverlayView)initWithFrame:(CGRect)frame title:(id)title subtitle:(id)subtitle buttonTitle:(id)buttonTitle image:(id)image;
 - (id)appropriateLayout;
-- (void)didTapCloseButton:(id)a3;
-- (void)didTapContentView:(id)a3;
-- (void)didTapContinueButton:(id)a3;
-- (void)dismissAnimatedWithDuration:(double)a3;
+- (void)didTapCloseButton:(id)button;
+- (void)didTapContentView:(id)view;
+- (void)didTapContinueButton:(id)button;
+- (void)dismissAnimatedWithDuration:(double)duration;
 - (void)layoutSubviews;
 - (void)setupConstraints;
 - (void)updateConstraints;
@@ -28,51 +28,51 @@
 
 + (id)overlayViewForMemojiCreation
 {
-  v3 = [a1 alloc];
+  v3 = [self alloc];
   v4 = AVTAvatarUIBundle();
   v5 = [v4 localizedStringForKey:@"STICKER_RECENTS_SPLASH_TITLE" value:&stru_1F39618F0 table:@"Localized"];
   v6 = AVTAvatarUIBundle();
   v7 = [v6 localizedStringForKey:@"STICKER_RECENTS_SPLASH_MESSAGE" value:&stru_1F39618F0 table:@"Localized"];
   v8 = AVTAvatarUIBundle();
   v9 = [v8 localizedStringForKey:@"STICKER_RECENTS_SPLASH_CONTINUE_BUTTON_TITLE" value:&stru_1F39618F0 table:@"Localized"];
-  v10 = [a1 stickerButtonImage];
-  v11 = [v3 initWithFrame:v5 title:v7 subtitle:v9 buttonTitle:v10 image:{0.0, 0.0, 50.0, 50.0}];
+  stickerButtonImage = [self stickerButtonImage];
+  v11 = [v3 initWithFrame:v5 title:v7 subtitle:v9 buttonTitle:stickerButtonImage image:{0.0, 0.0, 50.0, 50.0}];
 
   return v11;
 }
 
 + (id)standardOverlayView
 {
-  v3 = [a1 alloc];
+  v3 = [self alloc];
   v4 = AVTAvatarUIBundle();
   v5 = [v4 localizedStringForKey:@"STICKER_RECENTS_SPLASH_TITLE" value:&stru_1F39618F0 table:@"Localized"];
   v6 = AVTAvatarUIBundle();
   v7 = [v6 localizedStringForKey:@"STICKER_RECENTS_SPLASH_MESSAGE" value:&stru_1F39618F0 table:@"Localized"];
-  v8 = [a1 stickerButtonImage];
-  v9 = [v3 initWithFrame:v5 title:v7 subtitle:0 buttonTitle:v8 image:{0.0, 0.0, 50.0, 50.0}];
+  stickerButtonImage = [self stickerButtonImage];
+  v9 = [v3 initWithFrame:v5 title:v7 subtitle:0 buttonTitle:stickerButtonImage image:{0.0, 0.0, 50.0, 50.0}];
 
   return v9;
 }
 
 + (id)disclosureOverlayView
 {
-  v3 = [a1 alloc];
-  v4 = [a1 stickerButtonImage];
-  v5 = [v3 initWithFrame:@"Warning" title:@"Only send to disclosed individuals" subtitle:0 buttonTitle:v4 image:{0.0, 0.0, 50.0, 50.0}];
+  v3 = [self alloc];
+  stickerButtonImage = [self stickerButtonImage];
+  v5 = [v3 initWithFrame:@"Warning" title:@"Only send to disclosed individuals" subtitle:0 buttonTitle:stickerButtonImage image:{0.0, 0.0, 50.0, 50.0}];
 
   return v5;
 }
 
-- (AVTStickerRecentsOverlayView)initWithFrame:(CGRect)a3 title:(id)a4 subtitle:(id)a5 buttonTitle:(id)a6 image:(id)a7
+- (AVTStickerRecentsOverlayView)initWithFrame:(CGRect)frame title:(id)title subtitle:(id)subtitle buttonTitle:(id)buttonTitle image:(id)image
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v74[1] = *MEMORY[0x1E69E9840];
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  imageCopy = image;
   v18 = [MEMORY[0x1E69DC730] effectWithBlurRadius:6.0];
   v73.receiver = self;
   v73.super_class = AVTStickerRecentsOverlayView;
@@ -81,15 +81,15 @@
   if (v19)
   {
     [(AVTStickerRecentsOverlayView *)v19 setFrame:x, y, width, height];
-    v21 = [v15 copy];
+    v21 = [titleCopy copy];
     title = v20->_title;
     v20->_title = v21;
 
-    v23 = [v16 copy];
+    v23 = [subtitleCopy copy];
     subtitle = v20->_subtitle;
     v20->_subtitle = v23;
 
-    objc_storeStrong(&v20->_image, a7);
+    objc_storeStrong(&v20->_image, image);
     v25 = objc_alloc(MEMORY[0x1E69DD250]);
     v26 = *MEMORY[0x1E695F058];
     v27 = *(MEMORY[0x1E695F058] + 8);
@@ -100,10 +100,10 @@
     v20->_centeredContainerView = v30;
 
     [(UIView *)v20->_centeredContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v32 = [(AVTStickerRecentsOverlayView *)v20 contentView];
-    [v32 addSubview:v20->_centeredContainerView];
+    contentView = [(AVTStickerRecentsOverlayView *)v20 contentView];
+    [contentView addSubview:v20->_centeredContainerView];
 
-    v33 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v17];
+    v33 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
     imageView = v20->_imageView;
     v20->_imageView = v33;
 
@@ -119,7 +119,7 @@
     [(UILabel *)v20->_titleLabel setFont:v37];
 
     [(UILabel *)v20->_titleLabel setTextAlignment:1];
-    v38 = [v15 copy];
+    v38 = [titleCopy copy];
     [(UILabel *)v20->_titleLabel setText:v38];
 
     [(UILabel *)v20->_titleLabel setMinimumScaleFactor:0.5];
@@ -134,7 +134,7 @@
     [(UILabel *)v20->_subtitleLabel setFont:v41];
 
     [(UILabel *)v20->_subtitleLabel setTextAlignment:1];
-    v42 = [v16 copy];
+    v42 = [subtitleCopy copy];
     [(UILabel *)v20->_subtitleLabel setText:v42];
 
     [(UILabel *)v20->_subtitleLabel setNumberOfLines:0];
@@ -146,15 +146,15 @@
     LODWORD(v44) = 1148846080;
     [(UILabel *)v20->_subtitleLabel setContentHuggingPriority:1 forAxis:v44];
     [(UIView *)v20->_centeredContainerView addSubview:v20->_subtitleLabel];
-    if (a6)
+    if (buttonTitle)
     {
       v45 = [MEMORY[0x1E69DC738] buttonWithType:1];
       continueButton = v20->_continueButton;
       v20->_continueButton = v45;
 
       v47 = +[AVTUIFontRepository keyboardRecentsSplashContinueButtonFont];
-      v48 = [(UIButton *)v20->_continueButton titleLabel];
-      [v48 setFont:v47];
+      titleLabel = [(UIButton *)v20->_continueButton titleLabel];
+      [titleLabel setFont:v47];
 
       [(UIButton *)v20->_continueButton setTranslatesAutoresizingMaskIntoConstraints:0];
       v49 = v20->_continueButton;
@@ -171,8 +171,8 @@
       [(UIButton *)v20->_closeButton setTranslatesAutoresizingMaskIntoConstraints:0];
       v54 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDDB8] scale:2];
       v55 = MEMORY[0x1E69DCAD8];
-      v56 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      v74[0] = v56;
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      v74[0] = secondaryLabelColor;
       v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:v74 count:1];
       v58 = [v55 _configurationWithHierarchicalColors:v57];
 
@@ -181,8 +181,8 @@
       [(UIButton *)v20->_closeButton setImage:v60 forState:0];
       [(UIButton *)v20->_closeButton setPreferredSymbolConfiguration:v59 forImageInState:0];
       [(UIButton *)v20->_closeButton addTarget:v20 action:sel_didTapCloseButton_ forControlEvents:64];
-      v61 = [(AVTStickerRecentsOverlayView *)v20 contentView];
-      [v61 addSubview:v20->_closeButton];
+      contentView2 = [(AVTStickerRecentsOverlayView *)v20 contentView];
+      [contentView2 addSubview:v20->_closeButton];
 
       v62 = +[AVTStickerRecentsOverlayViewLayout buttonsPortraitLayout];
       portraitLayout = v20->_portraitLayout;
@@ -199,8 +199,8 @@
       tapGestureRecognizer = v20->_tapGestureRecognizer;
       v20->_tapGestureRecognizer = v66;
 
-      v68 = [(AVTStickerRecentsOverlayView *)v20 contentView];
-      [v68 addGestureRecognizer:v20->_tapGestureRecognizer];
+      contentView3 = [(AVTStickerRecentsOverlayView *)v20 contentView];
+      [contentView3 addGestureRecognizer:v20->_tapGestureRecognizer];
 
       v69 = +[AVTStickerRecentsOverlayViewLayout standardPortraitLayout];
       v70 = v20->_portraitLayout;
@@ -217,22 +217,22 @@
   return v20;
 }
 
-- (void)didTapContentView:(id)a3
+- (void)didTapContentView:(id)view
 {
-  v4 = [(AVTStickerRecentsOverlayView *)self delegate];
-  [v4 overlayDidTapContentView:self];
+  delegate = [(AVTStickerRecentsOverlayView *)self delegate];
+  [delegate overlayDidTapContentView:self];
 }
 
-- (void)didTapContinueButton:(id)a3
+- (void)didTapContinueButton:(id)button
 {
-  v4 = [(AVTStickerRecentsOverlayView *)self delegate];
-  [v4 overlayDidTapContinueButton:self];
+  delegate = [(AVTStickerRecentsOverlayView *)self delegate];
+  [delegate overlayDidTapContinueButton:self];
 }
 
-- (void)didTapCloseButton:(id)a3
+- (void)didTapCloseButton:(id)button
 {
-  v4 = [(AVTStickerRecentsOverlayView *)self delegate];
-  [v4 overlayDidTapCloseButton:self];
+  delegate = [(AVTStickerRecentsOverlayView *)self delegate];
+  [delegate overlayDidTapCloseButton:self];
 }
 
 - (id)appropriateLayout
@@ -254,50 +254,50 @@
 - (void)setupConstraints
 {
   v114[16] = *MEMORY[0x1E69E9840];
-  v3 = [(AVTStickerRecentsOverlayView *)self appropriateLayout];
+  appropriateLayout = [(AVTStickerRecentsOverlayView *)self appropriateLayout];
   v4 = self->_centeredContainerView;
-  v5 = [(UIView *)v4 topAnchor];
-  v6 = [(AVTStickerRecentsOverlayView *)self contentView];
-  v7 = [v6 topAnchor];
-  [v3 imageToTopPadding];
-  v8 = [v5 constraintGreaterThanOrEqualToAnchor:v7 constant:?];
+  topAnchor = [(UIView *)v4 topAnchor];
+  contentView = [(AVTStickerRecentsOverlayView *)self contentView];
+  topAnchor2 = [contentView topAnchor];
+  [appropriateLayout imageToTopPadding];
+  v8 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:?];
   containerTopConstraint = self->_containerTopConstraint;
   self->_containerTopConstraint = v8;
 
-  v10 = [(UIView *)v4 leadingAnchor];
-  v11 = [(AVTStickerRecentsOverlayView *)self contentView];
-  v12 = [v11 leadingAnchor];
-  [v3 horizontalEdgePadding];
-  v13 = [v10 constraintEqualToAnchor:v12 constant:?];
+  leadingAnchor = [(UIView *)v4 leadingAnchor];
+  contentView2 = [(AVTStickerRecentsOverlayView *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  [appropriateLayout horizontalEdgePadding];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
   containerLeadingConstraint = self->_containerLeadingConstraint;
   self->_containerLeadingConstraint = v13;
 
-  v15 = [(UIView *)v4 trailingAnchor];
-  v16 = [(AVTStickerRecentsOverlayView *)self contentView];
-  v17 = [v16 trailingAnchor];
-  [v3 horizontalEdgePadding];
-  v19 = [v15 constraintEqualToAnchor:v17 constant:-v18];
+  trailingAnchor = [(UIView *)v4 trailingAnchor];
+  contentView3 = [(AVTStickerRecentsOverlayView *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  [appropriateLayout horizontalEdgePadding];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v18];
   containerTrailingConstraint = self->_containerTrailingConstraint;
   self->_containerTrailingConstraint = v19;
 
-  v21 = [(UIImageView *)self->_imageView heightAnchor];
-  [v3 imageHeight];
-  v22 = [v21 constraintEqualToConstant:?];
+  heightAnchor = [(UIImageView *)self->_imageView heightAnchor];
+  [appropriateLayout imageHeight];
+  v22 = [heightAnchor constraintEqualToConstant:?];
   imageHeightConstraint = self->_imageHeightConstraint;
   self->_imageHeightConstraint = v22;
 
-  v24 = [(UILabel *)self->_titleLabel topAnchor];
-  v25 = [(UIImageView *)self->_imageView bottomAnchor];
-  [v3 imageToTitlePadding];
-  v26 = [v24 constraintEqualToAnchor:v25 constant:?];
+  topAnchor3 = [(UILabel *)self->_titleLabel topAnchor];
+  bottomAnchor = [(UIImageView *)self->_imageView bottomAnchor];
+  [appropriateLayout imageToTitlePadding];
+  v26 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:?];
   imageToTitleConstraint = self->_imageToTitleConstraint;
   self->_imageToTitleConstraint = v26;
 
-  v28 = [(UILabel *)self->_subtitleLabel topAnchor];
-  v29 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v108 = v3;
-  [v3 titleToSubtitlePadding];
-  v30 = [v28 constraintEqualToAnchor:v29 constant:?];
+  topAnchor4 = [(UILabel *)self->_subtitleLabel topAnchor];
+  bottomAnchor2 = [(UILabel *)self->_titleLabel bottomAnchor];
+  v108 = appropriateLayout;
+  [appropriateLayout titleToSubtitlePadding];
+  v30 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:?];
   titleToSubtitleConstraint = self->_titleToSubtitleConstraint;
   self->_titleToSubtitleConstraint = v30;
 
@@ -306,53 +306,53 @@
   v114[0] = self->_containerTopConstraint;
   v114[1] = v32;
   v114[2] = self->_containerTrailingConstraint;
-  v104 = [(UIView *)v4 bottomAnchor];
-  v106 = [(AVTStickerRecentsOverlayView *)self contentView];
-  v102 = [v106 bottomAnchor];
-  v100 = [v104 constraintLessThanOrEqualToAnchor:v102];
+  bottomAnchor3 = [(UIView *)v4 bottomAnchor];
+  contentView4 = [(AVTStickerRecentsOverlayView *)self contentView];
+  bottomAnchor4 = [contentView4 bottomAnchor];
+  v100 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4];
   v114[3] = v100;
-  v96 = [(UIView *)v4 centerYAnchor];
-  v98 = [(AVTStickerRecentsOverlayView *)self contentView];
-  v94 = [v98 centerYAnchor];
-  v92 = [v96 constraintEqualToAnchor:v94];
+  centerYAnchor = [(UIView *)v4 centerYAnchor];
+  contentView5 = [(AVTStickerRecentsOverlayView *)self contentView];
+  centerYAnchor2 = [contentView5 centerYAnchor];
+  v92 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v33 = self->_imageHeightConstraint;
   v114[4] = v92;
   v114[5] = v33;
-  v90 = [(UIImageView *)self->_imageView topAnchor];
-  v88 = [(UIView *)v4 topAnchor];
-  v86 = [v90 constraintEqualToAnchor:v88];
+  topAnchor5 = [(UIImageView *)self->_imageView topAnchor];
+  topAnchor6 = [(UIView *)v4 topAnchor];
+  v86 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v114[6] = v86;
-  v84 = [(UIImageView *)self->_imageView centerXAnchor];
-  v82 = [(UIView *)v4 centerXAnchor];
-  v80 = [v84 constraintEqualToAnchor:v82];
+  centerXAnchor = [(UIImageView *)self->_imageView centerXAnchor];
+  centerXAnchor2 = [(UIView *)v4 centerXAnchor];
+  v80 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v114[7] = v80;
-  v78 = [(UIImageView *)self->_imageView widthAnchor];
-  v76 = [(UIView *)v4 widthAnchor];
-  v74 = [v78 constraintEqualToAnchor:v76];
+  widthAnchor = [(UIImageView *)self->_imageView widthAnchor];
+  widthAnchor2 = [(UIView *)v4 widthAnchor];
+  v74 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v34 = self->_imageToTitleConstraint;
   v114[8] = v74;
   v114[9] = v34;
-  v72 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v70 = [(UIView *)v4 leadingAnchor];
-  v69 = [v72 constraintEqualToAnchor:v70];
+  leadingAnchor3 = [(UILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor4 = [(UIView *)v4 leadingAnchor];
+  v69 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v114[10] = v69;
-  v68 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v67 = [(UIView *)v4 trailingAnchor];
-  v66 = [v68 constraintEqualToAnchor:v67];
+  trailingAnchor3 = [(UILabel *)self->_titleLabel trailingAnchor];
+  trailingAnchor4 = [(UIView *)v4 trailingAnchor];
+  v66 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v114[11] = v66;
-  v35 = [(UILabel *)self->_titleLabel heightAnchor];
-  v36 = [v35 constraintEqualToConstant:30.0];
+  heightAnchor2 = [(UILabel *)self->_titleLabel heightAnchor];
+  v36 = [heightAnchor2 constraintEqualToConstant:30.0];
   v37 = self->_titleToSubtitleConstraint;
   v114[12] = v36;
   v114[13] = v37;
-  v38 = [(UILabel *)self->_subtitleLabel leadingAnchor];
-  v39 = [(UIView *)v4 leadingAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  leadingAnchor5 = [(UILabel *)self->_subtitleLabel leadingAnchor];
+  leadingAnchor6 = [(UIView *)v4 leadingAnchor];
+  v40 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v114[14] = v40;
-  v41 = [(UILabel *)self->_subtitleLabel trailingAnchor];
+  trailingAnchor5 = [(UILabel *)self->_subtitleLabel trailingAnchor];
   v112 = v4;
-  v42 = [(UIView *)v4 trailingAnchor];
-  v43 = [v41 constraintEqualToAnchor:v42];
+  trailingAnchor6 = [(UIView *)v4 trailingAnchor];
+  v43 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v114[15] = v43;
   v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v114 count:16];
   v111 = [v110 arrayWithArray:v44];
@@ -360,56 +360,56 @@
   subtitleLabel = self->_subtitleLabel;
   if (self->_continueButton)
   {
-    v46 = [(UILabel *)subtitleLabel heightAnchor];
-    v47 = [v46 constraintEqualToConstant:0.0];
+    heightAnchor3 = [(UILabel *)subtitleLabel heightAnchor];
+    v47 = [heightAnchor3 constraintEqualToConstant:0.0];
     hideSubtitleConstraint = self->_hideSubtitleConstraint;
     self->_hideSubtitleConstraint = v47;
 
     [(NSLayoutConstraint *)self->_hideSubtitleConstraint setActive:0];
-    v49 = [(UIButton *)self->_continueButton topAnchor];
-    v50 = [(UILabel *)self->_subtitleLabel bottomAnchor];
+    topAnchor7 = [(UIButton *)self->_continueButton topAnchor];
+    bottomAnchor5 = [(UILabel *)self->_subtitleLabel bottomAnchor];
     [v108 subtitleToButtonPadding];
-    v51 = [v49 constraintEqualToAnchor:v50 constant:?];
+    v51 = [topAnchor7 constraintEqualToAnchor:bottomAnchor5 constant:?];
 
     LODWORD(v52) = 1144750080;
     v73 = v51;
     [v51 setPriority:v52];
-    v107 = [(UIButton *)self->_closeButton widthAnchor];
-    v105 = [v107 constraintEqualToConstant:30.0];
+    widthAnchor3 = [(UIButton *)self->_closeButton widthAnchor];
+    v105 = [widthAnchor3 constraintEqualToConstant:30.0];
     v113[0] = v105;
-    v103 = [(UIButton *)self->_closeButton heightAnchor];
-    v101 = [v103 constraintEqualToConstant:30.0];
+    heightAnchor4 = [(UIButton *)self->_closeButton heightAnchor];
+    v101 = [heightAnchor4 constraintEqualToConstant:30.0];
     v113[1] = v101;
-    v97 = [(UIButton *)self->_closeButton trailingAnchor];
-    v99 = [(AVTStickerRecentsOverlayView *)self contentView];
-    v95 = [v99 trailingAnchor];
-    v93 = [v97 constraintEqualToAnchor:v95];
+    trailingAnchor7 = [(UIButton *)self->_closeButton trailingAnchor];
+    contentView6 = [(AVTStickerRecentsOverlayView *)self contentView];
+    trailingAnchor8 = [contentView6 trailingAnchor];
+    v93 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     v113[2] = v93;
-    v89 = [(UIButton *)self->_closeButton topAnchor];
-    v91 = [(AVTStickerRecentsOverlayView *)self contentView];
-    v87 = [v91 topAnchor];
-    v85 = [v89 constraintEqualToAnchor:v87];
+    topAnchor8 = [(UIButton *)self->_closeButton topAnchor];
+    contentView7 = [(AVTStickerRecentsOverlayView *)self contentView];
+    topAnchor9 = [contentView7 topAnchor];
+    v85 = [topAnchor8 constraintEqualToAnchor:topAnchor9];
     v113[3] = v85;
     v113[4] = v51;
-    v83 = [(UIButton *)self->_continueButton topAnchor];
-    v109 = [(UILabel *)self->_subtitleLabel bottomAnchor];
-    v81 = [v83 constraintGreaterThanOrEqualToAnchor:v109];
+    topAnchor10 = [(UIButton *)self->_continueButton topAnchor];
+    bottomAnchor6 = [(UILabel *)self->_subtitleLabel bottomAnchor];
+    v81 = [topAnchor10 constraintGreaterThanOrEqualToAnchor:bottomAnchor6];
     v113[5] = v81;
-    v79 = [(UIButton *)self->_continueButton leadingAnchor];
-    v77 = [(UIView *)v112 leadingAnchor];
-    v75 = [v79 constraintEqualToAnchor:v77];
+    leadingAnchor7 = [(UIButton *)self->_continueButton leadingAnchor];
+    leadingAnchor8 = [(UIView *)v112 leadingAnchor];
+    v75 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v113[6] = v75;
-    v71 = [(UIButton *)self->_continueButton trailingAnchor];
-    v53 = [(UIView *)v112 trailingAnchor];
-    v54 = [v71 constraintEqualToAnchor:v53];
+    trailingAnchor9 = [(UIButton *)self->_continueButton trailingAnchor];
+    trailingAnchor10 = [(UIView *)v112 trailingAnchor];
+    v54 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
     v113[7] = v54;
-    v55 = [(UIButton *)self->_continueButton heightAnchor];
-    v56 = [(UIImageView *)self->_imageView heightAnchor];
-    v57 = [v55 constraintEqualToAnchor:v56];
+    heightAnchor5 = [(UIButton *)self->_continueButton heightAnchor];
+    heightAnchor6 = [(UIImageView *)self->_imageView heightAnchor];
+    v57 = [heightAnchor5 constraintEqualToAnchor:heightAnchor6];
     v113[8] = v57;
-    v58 = [(UIButton *)self->_continueButton bottomAnchor];
-    v59 = [(UIView *)v112 bottomAnchor];
-    v60 = [v58 constraintLessThanOrEqualToAnchor:v59];
+    bottomAnchor7 = [(UIButton *)self->_continueButton bottomAnchor];
+    bottomAnchor8 = [(UIView *)v112 bottomAnchor];
+    v60 = [bottomAnchor7 constraintLessThanOrEqualToAnchor:bottomAnchor8];
     v113[9] = v60;
     v61 = [MEMORY[0x1E695DEC8] arrayWithObjects:v113 count:10];
     [v111 addObjectsFromArray:v61];
@@ -419,9 +419,9 @@
 
   else
   {
-    v63 = [(UILabel *)subtitleLabel bottomAnchor];
-    v64 = [(UIView *)v112 bottomAnchor];
-    v62 = [v63 constraintLessThanOrEqualToAnchor:v64];
+    bottomAnchor9 = [(UILabel *)subtitleLabel bottomAnchor];
+    bottomAnchor10 = [(UIView *)v112 bottomAnchor];
+    v62 = [bottomAnchor9 constraintLessThanOrEqualToAnchor:bottomAnchor10];
 
     LODWORD(v65) = 1148846080;
     [v62 setPriority:v65];
@@ -437,23 +437,23 @@
   v7.receiver = self;
   v7.super_class = AVTStickerRecentsOverlayView;
   [(AVTStickerRecentsOverlayView *)&v7 updateConstraints];
-  v3 = [(AVTStickerRecentsOverlayView *)self currentLayout];
-  [v3 imageToTopPadding];
+  currentLayout = [(AVTStickerRecentsOverlayView *)self currentLayout];
+  [currentLayout imageToTopPadding];
   [(NSLayoutConstraint *)self->_containerTopConstraint setConstant:?];
-  [v3 horizontalEdgePadding];
+  [currentLayout horizontalEdgePadding];
   [(NSLayoutConstraint *)self->_containerLeadingConstraint setConstant:?];
-  [v3 horizontalEdgePadding];
+  [currentLayout horizontalEdgePadding];
   [(NSLayoutConstraint *)self->_containerTrailingConstraint setConstant:-v4];
-  [v3 imageHeight];
+  [currentLayout imageHeight];
   [(NSLayoutConstraint *)self->_imageHeightConstraint setConstant:?];
-  [v3 imageToTitlePadding];
+  [currentLayout imageToTitlePadding];
   [(NSLayoutConstraint *)self->_imageToTitleConstraint setConstant:?];
-  [v3 titleToSubtitlePadding];
+  [currentLayout titleToSubtitlePadding];
   [(NSLayoutConstraint *)self->_titleToSubtitleConstraint setConstant:?];
   if (self->_hideSubtitleConstraint)
   {
-    v5 = [(AVTStickerRecentsOverlayView *)self contentView];
-    [v5 bounds];
+    contentView = [(AVTStickerRecentsOverlayView *)self contentView];
+    [contentView bounds];
     [(NSLayoutConstraint *)self->_hideSubtitleConstraint setActive:v6 < 130.0];
   }
 }
@@ -463,28 +463,28 @@
   v6.receiver = self;
   v6.super_class = AVTStickerRecentsOverlayView;
   [(AVTStickerRecentsOverlayView *)&v6 layoutSubviews];
-  v3 = [(AVTStickerRecentsOverlayView *)self appropriateLayout];
+  appropriateLayout = [(AVTStickerRecentsOverlayView *)self appropriateLayout];
   [(AVTStickerRecentsOverlayView *)self bounds];
   if (v4 > 0.0)
   {
-    v5 = [(AVTStickerRecentsOverlayView *)self currentLayout];
+    currentLayout = [(AVTStickerRecentsOverlayView *)self currentLayout];
 
-    if (v3 != v5)
+    if (appropriateLayout != currentLayout)
     {
-      [(AVTStickerRecentsOverlayView *)self setCurrentLayout:v3];
+      [(AVTStickerRecentsOverlayView *)self setCurrentLayout:appropriateLayout];
       [(AVTStickerRecentsOverlayView *)self setNeedsUpdateConstraints];
     }
   }
 }
 
-- (void)dismissAnimatedWithDuration:(double)a3
+- (void)dismissAnimatedWithDuration:(double)duration
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __60__AVTStickerRecentsOverlayView_dismissAnimatedWithDuration___block_invoke;
   v3[3] = &unk_1E7F3A9B8;
   v3[4] = self;
-  [MEMORY[0x1E69DD250] animateWithDuration:v3 animations:0 completion:a3];
+  [MEMORY[0x1E69DD250] animateWithDuration:v3 animations:0 completion:duration];
 }
 
 - (AVTStickerRecentsOverlayDelegate)delegate

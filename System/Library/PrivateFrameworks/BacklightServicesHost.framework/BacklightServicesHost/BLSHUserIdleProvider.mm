@@ -5,7 +5,7 @@
 - (void)_pause;
 - (void)_reset;
 - (void)_resume;
-- (void)_setShouldNotifyOfUnidle:(BOOL)a3;
+- (void)_setShouldNotifyOfUnidle:(BOOL)unidle;
 @end
 
 @implementation BLSHUserIdleProvider
@@ -110,14 +110,14 @@ void __52__BLSHUserIdleProvider__setIdleTimeout_shouldReset___block_invoke(uint6
   }
 }
 
-- (void)_setShouldNotifyOfUnidle:(BOOL)a3
+- (void)_setShouldNotifyOfUnidle:(BOOL)unidle
 {
-  if (self->_shouldNotifyOfUnidle != a3)
+  if (self->_shouldNotifyOfUnidle != unidle)
   {
     self->_shouldNotifyOfUnidleChanged = 1;
-    self->_shouldNotifyOfUnidle = a3;
+    self->_shouldNotifyOfUnidle = unidle;
     attentionLostTimeoutDictionary = self->_attentionLostTimeoutDictionary;
-    if (a3)
+    if (unidle)
     {
 
       [(NSMutableDictionary *)attentionLostTimeoutDictionary setObject:@"zeroTimeout" forKey:&unk_28338DF18];

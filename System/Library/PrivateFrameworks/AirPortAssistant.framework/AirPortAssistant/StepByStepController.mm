@@ -3,10 +3,10 @@
 - (StepByStepController)init;
 - (int)cancelStepByStep;
 - (int)resume;
-- (int)setupFromAutoguessRecommendation:(id)a3 withOptions:(id)a4;
-- (int)subclassAssistantCallback:(AssistantCallbackContext *)a3;
+- (int)setupFromAutoguessRecommendation:(id)recommendation withOptions:(id)options;
+- (int)subclassAssistantCallback:(AssistantCallbackContext *)callback;
 - (void)dealloc;
-- (void)stepByStepNextStepResult:(int)a3 withOptions:(id)a4;
+- (void)stepByStepNextStepResult:(int)result withOptions:(id)options;
 @end
 
 @implementation StepByStepController
@@ -38,22 +38,22 @@
   [(AssistantCallbackController *)&v10 dealloc];
 }
 
-- (int)subclassAssistantCallback:(AssistantCallbackContext *)a3
+- (int)subclassAssistantCallback:(AssistantCallbackContext *)callback
 {
   v17 = 0;
   v18 = 0;
-  if (!a3)
+  if (!callback)
   {
     goto LABEL_17;
   }
 
-  sub_23EBEB494(a3, @"kBSAssistantCallbackKey_SBS_SBSStep", &v18, v3, v4, v5, v6, v7);
+  sub_23EBEB494(callback, @"kBSAssistantCallbackKey_SBS_SBSStep", &v18, v3, v4, v5, v6, v7);
   if (v10)
   {
 LABEL_3:
     v12 = v10;
 LABEL_18:
-    sub_23EBEB6CC(a3, v12, a3, v3, v4, v5, v6, v7);
+    sub_23EBEB6CC(callback, v12, callback, v3, v4, v5, v6, v7);
     return v12;
   }
 
@@ -64,13 +64,13 @@ LABEL_20:
     goto LABEL_18;
   }
 
-  v13 = objc_msgSend_integerValue(v18, v11, a3);
+  v13 = objc_msgSend_integerValue(v18, v11, callback);
   v14 = v13;
   if (v13 != 117)
   {
     if ((v13 - 1) <= 0xF)
     {
-      sub_23EBEB494(a3, @"kBSAssistantCallbackKey_SBS_SBSParamDict", &v17, v3, v4, v5, v6, v7);
+      sub_23EBEB494(callback, @"kBSAssistantCallbackKey_SBS_SBSParamDict", &v17, v3, v4, v5, v6, v7);
       if (v10)
       {
         goto LABEL_3;
@@ -92,7 +92,7 @@ LABEL_20:
         {
           if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            self->super._callbackContext = a3;
+            self->super._callbackContext = callback;
             objc_msgSend_stepByStepNextStep_paramDict_(self->_delegate, v16, v14, v17);
             return 0;
           }
@@ -176,27 +176,27 @@ LABEL_17:
   }
 }
 
-- (void)stepByStepNextStepResult:(int)a3 withOptions:(id)a4
+- (void)stepByStepNextStepResult:(int)result withOptions:(id)options
 {
   callbackContext = self->super._callbackContext;
   if (callbackContext)
   {
-    if (!a4 || (v11 = sub_23EBEB5E8(callbackContext, @"kBSAssistantCallbackKey_SBS_SBSOptionsDict", a4, a4, v4, v5, v6, v7)) == 0)
+    if (!options || (resultCopy = sub_23EBEB5E8(callbackContext, @"kBSAssistantCallbackKey_SBS_SBSOptionsDict", options, options, v4, v5, v6, v7)) == 0)
     {
-      v11 = a3;
+      resultCopy = result;
     }
 
     v12 = self->super._callbackContext;
     if (v12)
     {
-      sub_23EBEB6CC(v12, v11, *&a3, a4, v4, v5, v6, v7);
+      sub_23EBEB6CC(v12, resultCopy, *&result, options, v4, v5, v6, v7);
     }
   }
 
   self->super._callbackContext = 0;
 }
 
-- (int)setupFromAutoguessRecommendation:(id)a3 withOptions:(id)a4
+- (int)setupFromAutoguessRecommendation:(id)recommendation withOptions:(id)options
 {
   if (dword_27E381A10 <= 100 && (dword_27E381A10 != -1 || sub_23EB74AC8(&dword_27E381A10, 0x64u)))
   {
@@ -208,26 +208,26 @@ LABEL_17:
     return -6718;
   }
 
-  if (!a3)
+  if (!recommendation)
   {
     return -6705;
   }
 
-  v10 = objc_msgSend_objectForKey_(a3, a2, @"BSAutoGuess_UnconfiguredBase");
+  v10 = objc_msgSend_objectForKey_(recommendation, a2, @"BSAutoGuess_UnconfiguredBase");
   if (!v10)
   {
     return -6727;
   }
 
   v12 = v10;
-  v13 = objc_msgSend_objectForKey_(a3, v11, @"BSAutoGuess_UnconfiguredBaseSettings");
+  v13 = objc_msgSend_objectForKey_(recommendation, v11, @"BSAutoGuess_UnconfiguredBaseSettings");
   if (!v13)
   {
     return -6727;
   }
 
   v15 = v13;
-  v16 = objc_msgSend_objectForKey_(a3, v14, @"BSAutoGuess_Recommendation");
+  v16 = objc_msgSend_objectForKey_(recommendation, v14, @"BSAutoGuess_Recommendation");
   if (!v16)
   {
     return -6727;

@@ -1,11 +1,11 @@
 @interface SBApplicationShortcutService
 + (id)sharedInstance;
 - (SBApplicationShortcutService)init;
-- (id)_sanitizeApplicationShortcutItems:(id)a3 withEntitlements:(unint64_t)a4;
-- (void)_authenticateClient:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5;
-- (void)_checkEntitlementsForClient:(id)a3 withCompletionHandler:(id)a4;
-- (void)applicationServer:(id)a3 client:(id)a4 fetchApplicationShortcutItemsOfTypes:(unint64_t)a5 forBundleIdentifier:(id)a6 withCompletion:(id)a7;
-- (void)applicationServer:(id)a3 client:(id)a4 setDynamicApplicationShortcutItems:(id)a5 forBundleIdentifier:(id)a6;
+- (id)_sanitizeApplicationShortcutItems:(id)items withEntitlements:(unint64_t)entitlements;
+- (void)_authenticateClient:(id)client forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)_checkEntitlementsForClient:(id)client withCompletionHandler:(id)handler;
+- (void)applicationServer:(id)server client:(id)client fetchApplicationShortcutItemsOfTypes:(unint64_t)types forBundleIdentifier:(id)identifier withCompletion:(id)completion;
+- (void)applicationServer:(id)server client:(id)client setDynamicApplicationShortcutItems:(id)items forBundleIdentifier:(id)identifier;
 @end
 
 @implementation SBApplicationShortcutService
@@ -53,45 +53,45 @@ void __46__SBApplicationShortcutService_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)_checkEntitlementsForClient:(id)a3 withCompletionHandler:(id)a4
+- (void)_checkEntitlementsForClient:(id)client withCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v6 = a4;
-  if (v6)
+  clientCopy = client;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v7)
+    if (clientCopy)
     {
-      [(FBServiceClientAuthenticator *)self->_serviceClientFullAccessEntitlementAuthenticator authenticateClient:v7];
-      [(FBServiceClientAuthenticator *)self->_serviceClientCustomImageEntitlementAuthenticator authenticateClient:v7];
+      [(FBServiceClientAuthenticator *)self->_serviceClientFullAccessEntitlementAuthenticator authenticateClient:clientCopy];
+      [(FBServiceClientAuthenticator *)self->_serviceClientCustomImageEntitlementAuthenticator authenticateClient:clientCopy];
     }
 
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)_authenticateClient:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)_authenticateClient:(id)client forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  clientCopy = client;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (handlerCopy)
   {
-    if (v8)
+    if (clientCopy)
     {
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __94__SBApplicationShortcutService__authenticateClient_forBundleIdentifier_withCompletionHandler___block_invoke;
       v12[3] = &unk_2783B3610;
-      v13 = v8;
-      v14 = v9;
+      v13 = clientCopy;
+      v14 = identifierCopy;
       v15 = v11;
       [(SBApplicationShortcutService *)self _checkEntitlementsForClient:v13 withCompletionHandler:v12];
     }
 
     else
     {
-      (*(v10 + 2))(v10, 0, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
     }
   }
 }
@@ -114,17 +114,17 @@ void __94__SBApplicationShortcutService__authenticateClient_forBundleIdentifier_
   v3();
 }
 
-- (id)_sanitizeApplicationShortcutItems:(id)a3 withEntitlements:(unint64_t)a4
+- (id)_sanitizeApplicationShortcutItems:(id)items withEntitlements:(unint64_t)entitlements
 {
-  v4 = a4;
+  entitlementsCopy = entitlements;
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB18] array];
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v5;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
@@ -142,11 +142,11 @@ void __94__SBApplicationShortcutService__authenticateClient_forBundleIdentifier_
 
         v12 = [*(*(&v21 + 1) + 8 * v11) copy];
         v13 = v12;
-        if ((v4 & 2) == 0)
+        if ((entitlementsCopy & 2) == 0)
         {
-          v14 = [v12 bundleIdentifierToLaunch];
+          bundleIdentifierToLaunch = [v12 bundleIdentifierToLaunch];
 
-          if (v14)
+          if (bundleIdentifierToLaunch)
           {
             v15 = SBLogCommon();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -158,8 +158,8 @@ void __94__SBApplicationShortcutService__authenticateClient_forBundleIdentifier_
           }
         }
 
-        v16 = [v13 icon];
-        if ((v4 & 3) == 0)
+        icon = [v13 icon];
+        if ((entitlementsCopy & 3) == 0)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -176,9 +176,9 @@ void __94__SBApplicationShortcutService__authenticateClient_forBundleIdentifier_
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v18 = [v16 imageData];
+            imageData = [icon imageData];
 
-            if (v18)
+            if (imageData)
             {
               v19 = SBLogCommon();
               if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -193,7 +193,7 @@ void __94__SBApplicationShortcutService__authenticateClient_forBundleIdentifier_
 
         if (v13)
         {
-          [v6 addObject:v13];
+          [array addObject:v13];
         }
 
         ++v11;
@@ -206,25 +206,25 @@ void __94__SBApplicationShortcutService__authenticateClient_forBundleIdentifier_
     while (v9);
   }
 
-  return v6;
+  return array;
 }
 
-- (void)applicationServer:(id)a3 client:(id)a4 fetchApplicationShortcutItemsOfTypes:(unint64_t)a5 forBundleIdentifier:(id)a6 withCompletion:(id)a7
+- (void)applicationServer:(id)server client:(id)client fetchApplicationShortcutItemsOfTypes:(unint64_t)types forBundleIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  if (v13)
+  clientCopy = client;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __129__SBApplicationShortcutService_applicationServer_client_fetchApplicationShortcutItemsOfTypes_forBundleIdentifier_withCompletion___block_invoke;
     v14[3] = &unk_2783B36A8;
-    v19 = a5;
-    v15 = v12;
-    v18 = v13;
-    v16 = self;
-    v17 = v11;
+    typesCopy = types;
+    v15 = identifierCopy;
+    v18 = completionCopy;
+    selfCopy = self;
+    v17 = clientCopy;
     [(SBApplicationShortcutService *)self _authenticateClient:v17 forBundleIdentifier:v15 withCompletionHandler:v14];
   }
 }
@@ -576,20 +576,20 @@ uint64_t __129__SBApplicationShortcutService_applicationServer_client_fetchAppli
   return v7;
 }
 
-- (void)applicationServer:(id)a3 client:(id)a4 setDynamicApplicationShortcutItems:(id)a5 forBundleIdentifier:(id)a6
+- (void)applicationServer:(id)server client:(id)client setDynamicApplicationShortcutItems:(id)items forBundleIdentifier:(id)identifier
 {
-  v9 = a4;
-  v10 = a5;
+  clientCopy = client;
+  itemsCopy = items;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __112__SBApplicationShortcutService_applicationServer_client_setDynamicApplicationShortcutItems_forBundleIdentifier___block_invoke;
   v13[3] = &unk_2783B36D0;
   v13[4] = self;
-  v14 = v10;
-  v15 = v9;
-  v11 = v9;
-  v12 = v10;
-  [(SBApplicationShortcutService *)self _authenticateClient:v11 forBundleIdentifier:a6 withCompletionHandler:v13];
+  v14 = itemsCopy;
+  v15 = clientCopy;
+  v11 = clientCopy;
+  v12 = itemsCopy;
+  [(SBApplicationShortcutService *)self _authenticateClient:v11 forBundleIdentifier:identifier withCompletionHandler:v13];
 }
 
 void __112__SBApplicationShortcutService_applicationServer_client_setDynamicApplicationShortcutItems_forBundleIdentifier___block_invoke(uint64_t a1, int a2, uint64_t a3, void *a4)

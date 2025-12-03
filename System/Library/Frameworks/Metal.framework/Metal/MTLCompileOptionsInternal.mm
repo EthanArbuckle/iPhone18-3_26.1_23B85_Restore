@@ -1,17 +1,17 @@
 @interface MTLCompileOptionsInternal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLCompileOptionsInternal)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)exportDictionary;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)formattedDescription:(unint64_t)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)importDictionary:(id)a3;
-- (void)setAdditionalCompilerArguments:(id)a3;
-- (void)setFastMathEnabled:(BOOL)a3;
-- (void)setLibraries:(id)a3;
-- (void)setPreprocessorMacros:(id)a3;
-- (void)setRequiredThreadsPerThreadgroup:(id *)a3;
+- (void)importDictionary:(id)dictionary;
+- (void)setAdditionalCompilerArguments:(id)arguments;
+- (void)setFastMathEnabled:(BOOL)enabled;
+- (void)setLibraries:(id)libraries;
+- (void)setPreprocessorMacros:(id)macros;
+- (void)setRequiredThreadsPerThreadgroup:(id *)threadgroup;
 @end
 
 @implementation MTLCompileOptionsInternal
@@ -65,9 +65,9 @@
   [(MTLCompileOptionsInternal *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -75,7 +75,7 @@
   else
   {
     Class = object_getClass(self);
-    if (Class != object_getClass(a3))
+    if (Class != object_getClass(equal))
     {
 LABEL_3:
       LOBYTE(v6) = 0;
@@ -83,33 +83,33 @@ LABEL_3:
     }
 
     preprocessorMacros = self->_preprocessorMacros;
-    if (preprocessorMacros == *(a3 + 2) || (v6 = [(NSDictionary *)preprocessorMacros isEqual:?]) != 0)
+    if (preprocessorMacros == *(equal + 2) || (v6 = [(NSDictionary *)preprocessorMacros isEqual:?]) != 0)
     {
-      if (self->_mathMode != *(a3 + 3) || self->_mathFloatingPointFunctions != *(a3 + 4) || self->_debuggingEnabled != *(a3 + 42) || self->_glBufferBindPoints != *(a3 + 40) || self->_tracingEnabled != *(a3 + 41) || self->_compileTimeStatisticsEnabled != *(a3 + 56))
+      if (self->_mathMode != *(equal + 3) || self->_mathFloatingPointFunctions != *(equal + 4) || self->_debuggingEnabled != *(equal + 42) || self->_glBufferBindPoints != *(equal + 40) || self->_tracingEnabled != *(equal + 41) || self->_compileTimeStatisticsEnabled != *(equal + 56))
       {
         goto LABEL_3;
       }
 
       additionalCompilerArguments = self->_additionalCompilerArguments;
-      if (additionalCompilerArguments == *(a3 + 8) || (v6 = [(NSString *)additionalCompilerArguments isEqualToString:?]) != 0)
+      if (additionalCompilerArguments == *(equal + 8) || (v6 = [(NSString *)additionalCompilerArguments isEqualToString:?]) != 0)
       {
-        if (self->_userSetLanguageVersion != *(a3 + 8) || self->_languageVersion != *(a3 + 6) || self->_optimizationLevel != *(a3 + 14) || self->_sourceLanguage != *(a3 + 72) || self->_libraryType != *(a3 + 10))
+        if (self->_userSetLanguageVersion != *(equal + 8) || self->_languageVersion != *(equal + 6) || self->_optimizationLevel != *(equal + 14) || self->_sourceLanguage != *(equal + 72) || self->_libraryType != *(equal + 10))
         {
           goto LABEL_3;
         }
 
-        v6 = MTLCompareArray(self->_libraries, *(a3 + 11), 1, 0);
+        v6 = MTLCompareArray(self->_libraries, *(equal + 11), 1, 0);
         if (v6)
         {
           installName = self->_installName;
-          if (installName == *(a3 + 12) || (v6 = [(NSString *)installName isEqualToString:?]) != 0)
+          if (installName == *(equal + 12) || (v6 = [(NSString *)installName isEqualToString:?]) != 0)
           {
-            if (self->_preserveInvariance != *(a3 + 104) || self->_compileSymbolVisibility != *(a3 + 15) || self->_allowReferencingUndefinedSymbols != *(a3 + 128) || self->_maxTotalThreadsPerThreadgroup != *(a3 + 17) || self->_enableLogging != *(a3 + 144) || self->_requiredThreadsPerThreadgroup.width != *(a3 + 19) || self->_requiredThreadsPerThreadgroup.height != *(a3 + 20))
+            if (self->_preserveInvariance != *(equal + 104) || self->_compileSymbolVisibility != *(equal + 15) || self->_allowReferencingUndefinedSymbols != *(equal + 128) || self->_maxTotalThreadsPerThreadgroup != *(equal + 17) || self->_enableLogging != *(equal + 144) || self->_requiredThreadsPerThreadgroup.width != *(equal + 19) || self->_requiredThreadsPerThreadgroup.height != *(equal + 20))
             {
               goto LABEL_3;
             }
 
-            LOBYTE(v6) = self->_requiredThreadsPerThreadgroup.depth == *(a3 + 21);
+            LOBYTE(v6) = self->_requiredThreadsPerThreadgroup.depth == *(equal + 21);
           }
         }
       }
@@ -152,12 +152,12 @@ LABEL_3:
   return _MTLHashState(v9, 0xA0uLL);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    *(v5 + 16) = [(NSDictionary *)self->_preprocessorMacros copyWithZone:a3];
+    *(v5 + 16) = [(NSDictionary *)self->_preprocessorMacros copyWithZone:zone];
     *(v5 + 24) = self->_mathMode;
     *(v5 + 32) = self->_mathFloatingPointFunctions;
     *(v5 + 42) = self->_debuggingEnabled;
@@ -185,41 +185,41 @@ LABEL_3:
   return v5;
 }
 
-- (void)setLibraries:(id)a3
+- (void)setLibraries:(id)libraries
 {
   libraries = self->_libraries;
-  if (libraries != a3)
+  if (libraries != libraries)
   {
 
-    self->_libraries = [a3 copy];
+    self->_libraries = [libraries copy];
   }
 }
 
-- (void)setPreprocessorMacros:(id)a3
+- (void)setPreprocessorMacros:(id)macros
 {
   preprocessorMacros = self->_preprocessorMacros;
-  if (preprocessorMacros != a3)
+  if (preprocessorMacros != macros)
   {
 
-    self->_preprocessorMacros = [a3 copy];
+    self->_preprocessorMacros = [macros copy];
   }
 }
 
-- (void)setAdditionalCompilerArguments:(id)a3
+- (void)setAdditionalCompilerArguments:(id)arguments
 {
   additionalCompilerArguments = self->_additionalCompilerArguments;
-  if (additionalCompilerArguments != a3)
+  if (additionalCompilerArguments != arguments)
   {
 
-    self->_additionalCompilerArguments = [a3 copy];
+    self->_additionalCompilerArguments = [arguments copy];
   }
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v40[4] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
-  v6 = [@"\n" stringByPaddingToLength:a3 + 8 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
+  v6 = [@"\n" stringByPaddingToLength:description + 8 withString:@" " startingAtIndex:0];
   languageVersion = self->_languageVersion;
   preprocessorMacros = self->_preprocessorMacros;
   if (preprocessorMacros && (v8 = [(NSDictionary *)preprocessorMacros allKeys], v9 = [(NSDictionary *)self->_preprocessorMacros allValues], [(NSDictionary *)self->_preprocessorMacros count]))
@@ -359,15 +359,15 @@ LABEL_3:
   v39[34] = @"languageVersion =";
   if (self->_userSetLanguageVersion)
   {
-    v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u:%u", HIWORD(languageVersion), languageVersion];
+    languageVersion = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u:%u", HIWORD(languageVersion), languageVersion];
   }
 
   else
   {
-    v31 = @"default";
+    languageVersion = @"default";
   }
 
-  v39[35] = v31;
+  v39[35] = languageVersion;
   v39[36] = v5;
   v39[37] = @"requiredThreadsPerThreadgroup = ";
   v39[38] = v38;
@@ -383,11 +383,11 @@ LABEL_3:
   requiredThreadsPerThreadgroup = self->_requiredThreadsPerThreadgroup;
   MTLSizeToNSArray(&requiredThreadsPerThreadgroup, &v15);
   v16[0] = @"preprocessorMacros";
-  v3 = [(MTLCompileOptionsInternal *)self preprocessorMacros];
+  preprocessorMacros = [(MTLCompileOptionsInternal *)self preprocessorMacros];
   v4 = MEMORY[0x1E695E0F8];
-  if (v3)
+  if (preprocessorMacros)
   {
-    v4 = v3;
+    v4 = preprocessorMacros;
   }
 
   v17[0] = v4;
@@ -408,10 +408,10 @@ LABEL_3:
   v16[8] = @"compileTimeStatisticsEnabled";
   v17[8] = [MEMORY[0x1E696AD98] numberWithBool:{-[MTLCompileOptionsInternal compileTimeStatisticsEnabled](self, "compileTimeStatisticsEnabled")}];
   v16[9] = @"additionalCompilerArguments";
-  v5 = [(MTLCompileOptionsInternal *)self additionalCompilerArguments];
-  if (v5)
+  additionalCompilerArguments = [(MTLCompileOptionsInternal *)self additionalCompilerArguments];
+  if (additionalCompilerArguments)
   {
-    v6 = v5;
+    v6 = additionalCompilerArguments;
   }
 
   else
@@ -425,19 +425,19 @@ LABEL_3:
   v16[11] = @"type";
   v17[11] = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MTLCompileOptionsInternal libraryType](self, "libraryType")}];
   v16[12] = @"libraries";
-  v7 = [(MTLCompileOptionsInternal *)self libraries];
+  libraries = [(MTLCompileOptionsInternal *)self libraries];
   v8 = MEMORY[0x1E695E0F0];
-  if (v7)
+  if (libraries)
   {
-    v8 = v7;
+    v8 = libraries;
   }
 
   v17[12] = v8;
   v16[13] = @"installName";
-  v9 = [(MTLCompileOptionsInternal *)self installName];
-  if (v9)
+  installName = [(MTLCompileOptionsInternal *)self installName];
+  if (installName)
   {
-    v10 = v9;
+    v10 = installName;
   }
 
   else
@@ -466,129 +466,129 @@ LABEL_3:
   return result;
 }
 
-- (void)importDictionary:(id)a3
+- (void)importDictionary:(id)dictionary
 {
-  v5 = [a3 objectForKeyedSubscript:@"preprocessorMacros"];
+  v5 = [dictionary objectForKeyedSubscript:@"preprocessorMacros"];
   if (v5)
   {
     [(MTLCompileOptionsInternal *)self setPreprocessorMacros:v5];
   }
 
-  v6 = [a3 objectForKeyedSubscript:@"fastMathEnabled"];
+  v6 = [dictionary objectForKeyedSubscript:@"fastMathEnabled"];
   if (v6)
   {
     -[MTLCompileOptionsInternal setFastMathEnabled:](self, "setFastMathEnabled:", [v6 BOOLValue]);
   }
 
-  v7 = [a3 objectForKeyedSubscript:@"mathMode"];
+  v7 = [dictionary objectForKeyedSubscript:@"mathMode"];
   if (v7)
   {
     -[MTLCompileOptionsInternal setMathMode:](self, "setMathMode:", [v7 unsignedLongValue]);
   }
 
-  v8 = [a3 objectForKeyedSubscript:@"mathFloatingPointFunctions"];
+  v8 = [dictionary objectForKeyedSubscript:@"mathFloatingPointFunctions"];
   if (v8)
   {
     -[MTLCompileOptionsInternal setMathFloatingPointFunctions:](self, "setMathFloatingPointFunctions:", [v8 unsignedLongValue]);
   }
 
-  v9 = [a3 objectForKeyedSubscript:@"languageVersion"];
+  v9 = [dictionary objectForKeyedSubscript:@"languageVersion"];
   if (v9)
   {
     -[MTLCompileOptionsInternal setLanguageVersion:](self, "setLanguageVersion:", [v9 unsignedLongValue]);
   }
 
-  v10 = [a3 objectForKeyedSubscript:@"tracingEnabled"];
+  v10 = [dictionary objectForKeyedSubscript:@"tracingEnabled"];
   if (v10)
   {
     -[MTLCompileOptionsInternal setTracingEnabled:](self, "setTracingEnabled:", [v10 BOOLValue]);
   }
 
-  v11 = [a3 objectForKeyedSubscript:@"glBufferBindPoints"];
+  v11 = [dictionary objectForKeyedSubscript:@"glBufferBindPoints"];
   if (v11)
   {
     -[MTLCompileOptionsInternal setGlBufferBindPoints:](self, "setGlBufferBindPoints:", [v11 BOOLValue]);
   }
 
-  v12 = [a3 objectForKeyedSubscript:@"debuggingEnabled"];
+  v12 = [dictionary objectForKeyedSubscript:@"debuggingEnabled"];
   if (v12)
   {
     -[MTLCompileOptionsInternal setDebuggingEnabled:](self, "setDebuggingEnabled:", [v12 BOOLValue]);
   }
 
-  v13 = [a3 objectForKeyedSubscript:@"compileTimeStatisticsEnabled"];
+  v13 = [dictionary objectForKeyedSubscript:@"compileTimeStatisticsEnabled"];
   if (v13)
   {
     -[MTLCompileOptionsInternal setCompileTimeStatisticsEnabled:](self, "setCompileTimeStatisticsEnabled:", [v13 BOOLValue]);
   }
 
-  v14 = [a3 objectForKeyedSubscript:@"additionalCompilerArguments"];
+  v14 = [dictionary objectForKeyedSubscript:@"additionalCompilerArguments"];
   if (v14)
   {
     [(MTLCompileOptionsInternal *)self setAdditionalCompilerArguments:v14];
   }
 
-  v15 = [a3 objectForKeyedSubscript:@"sourceLanguage"];
+  v15 = [dictionary objectForKeyedSubscript:@"sourceLanguage"];
   if (v15)
   {
     -[MTLCompileOptionsInternal setSourceLanguage:](self, "setSourceLanguage:", [v15 unsignedLongValue]);
   }
 
-  v16 = [a3 objectForKeyedSubscript:@"libraryType"];
+  v16 = [dictionary objectForKeyedSubscript:@"libraryType"];
   if (v16)
   {
     -[MTLCompileOptionsInternal setLibraryType:](self, "setLibraryType:", [v16 unsignedLongValue]);
   }
 
-  v17 = [a3 objectForKeyedSubscript:@"libraries"];
+  v17 = [dictionary objectForKeyedSubscript:@"libraries"];
   if (v17)
   {
     [(MTLCompileOptionsInternal *)self setLibraries:v17];
   }
 
-  v18 = [a3 objectForKeyedSubscript:@"installName"];
+  v18 = [dictionary objectForKeyedSubscript:@"installName"];
   if (v18)
   {
     [(MTLCompileOptionsInternal *)self setInstallName:v18];
   }
 
-  v19 = [a3 objectForKeyedSubscript:@"preserveInvariance"];
+  v19 = [dictionary objectForKeyedSubscript:@"preserveInvariance"];
   if (v19)
   {
     -[MTLCompileOptionsInternal setPreserveInvariance:](self, "setPreserveInvariance:", [v19 BOOLValue]);
   }
 
-  v20 = [a3 objectForKeyedSubscript:@"optimizationLevel"];
+  v20 = [dictionary objectForKeyedSubscript:@"optimizationLevel"];
   if (v20)
   {
     -[MTLCompileOptionsInternal setOptimizationLevel:](self, "setOptimizationLevel:", [v20 unsignedLongValue]);
   }
 
-  v21 = [a3 objectForKeyedSubscript:@"compileSymbolVisibility"];
+  v21 = [dictionary objectForKeyedSubscript:@"compileSymbolVisibility"];
   if (v21)
   {
     -[MTLCompileOptionsInternal setCompileSymbolVisibility:](self, "setCompileSymbolVisibility:", [v21 unsignedLongValue]);
   }
 
-  v22 = [a3 objectForKeyedSubscript:@"allowReferencingUndefinedSymbols"];
+  v22 = [dictionary objectForKeyedSubscript:@"allowReferencingUndefinedSymbols"];
   if (v22)
   {
     -[MTLCompileOptionsInternal setAllowReferencingUndefinedSymbols:](self, "setAllowReferencingUndefinedSymbols:", [v22 BOOLValue]);
   }
 
-  v23 = [a3 objectForKeyedSubscript:@"maxTotalThreadsPerThreadgroup"];
+  v23 = [dictionary objectForKeyedSubscript:@"maxTotalThreadsPerThreadgroup"];
   if (v23)
   {
     -[MTLCompileOptionsInternal setMaxTotalThreadsPerThreadgroup:](self, "setMaxTotalThreadsPerThreadgroup:", [v23 unsignedLongValue]);
   }
 
-  v24 = [a3 objectForKeyedSubscript:@"enableLogging"];
+  v24 = [dictionary objectForKeyedSubscript:@"enableLogging"];
   if (v24)
   {
     -[MTLCompileOptionsInternal setEnableLogging:](self, "setEnableLogging:", [v24 BOOLValue]);
   }
 
-  v25 = [a3 objectForKeyedSubscript:@"requiredThreadsPerThreadgroup"];
+  v25 = [dictionary objectForKeyedSubscript:@"requiredThreadsPerThreadgroup"];
   if (v25)
   {
     v26 = v25;
@@ -602,22 +602,22 @@ LABEL_3:
   }
 }
 
-- (void)setFastMathEnabled:(BOOL)a3
+- (void)setFastMathEnabled:(BOOL)enabled
 {
   v3 = 2;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
 
   self->_mathMode = v3;
-  self->_mathFloatingPointFunctions = !a3;
+  self->_mathFloatingPointFunctions = !enabled;
 }
 
-- (void)setRequiredThreadsPerThreadgroup:(id *)a3
+- (void)setRequiredThreadsPerThreadgroup:(id *)threadgroup
 {
-  var2 = a3->var2;
-  *&self->_requiredThreadsPerThreadgroup.width = *&a3->var0;
+  var2 = threadgroup->var2;
+  *&self->_requiredThreadsPerThreadgroup.width = *&threadgroup->var0;
   self->_requiredThreadsPerThreadgroup.depth = var2;
 }
 

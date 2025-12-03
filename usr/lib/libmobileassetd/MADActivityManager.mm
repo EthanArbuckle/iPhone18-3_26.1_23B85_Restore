@@ -1,30 +1,30 @@
 @interface MADActivityManager
-+ (BOOL)notifyStatusChange:(unint64_t)a3 forClient:(id)a4 withReason:(id)a5;
-+ (id)clientForConnection:(id)a3;
-+ (id)newTrackingCommandForEvent:(id)a3 forClient:(id)a4;
-+ (id)remoteProcessFullIdentifierForConnection:(id)a3;
-+ (id)remoteProcessIdentifierForConnection:(id)a3;
++ (BOOL)notifyStatusChange:(unint64_t)change forClient:(id)client withReason:(id)reason;
++ (id)clientForConnection:(id)connection;
++ (id)newTrackingCommandForEvent:(id)event forClient:(id)client;
++ (id)remoteProcessFullIdentifierForConnection:(id)connection;
++ (id)remoteProcessIdentifierForConnection:(id)connection;
 + (id)sharedActivityManager;
-+ (void)connectionInvalidForClient:(id)a3;
-+ (void)failureOfActivity:(id)a3 withResult:(int)a4 ofResultName:(id)a5 forReason:(id)a6;
-+ (void)noticeForActivity:(id)a3 reason:(id)a4;
-+ (void)progressForActivity:(id)a3 calledPrimitive:(id)a4 withBoolResult:(BOOL)a5;
-+ (void)progressForActivity:(id)a3 calledPrimitive:(id)a4 withErrorResult:(id)a5;
-+ (void)progressForActivity:(id)a3 calledPrimitive:(id)a4 withSuccessResult:(BOOL)a5;
-+ (void)progressForActivity:(id)a3 callingPrimitive:(id)a4;
-+ (void)sendReply:(id)a3 withCancelDownloadResult:(int64_t)a4;
-+ (void)sendReply:(id)a3 withDownloadResult:(int64_t)a4;
-+ (void)sendReply:(id)a3 withOperationResult:(int64_t)a4;
-+ (void)sendReply:(id)a3 withResult:(int)a4 ofResultName:(id)a5;
-+ (void)transferOwnership:(id)a3 toOwner:(unint64_t)a4 reason:(id)a5;
-+ (void)unknownXPCError:(id)a3 forClient:(id)a4;
-+ (void)unknownXPCType:(_xpc_type_s *)a3 forClient:(id)a4;
-+ (void)warningForActivity:(id)a3 fromMethod:(id)a4 leaderNote:(id)a5 warning:(id)a6;
++ (void)connectionInvalidForClient:(id)client;
++ (void)failureOfActivity:(id)activity withResult:(int)result ofResultName:(id)name forReason:(id)reason;
++ (void)noticeForActivity:(id)activity reason:(id)reason;
++ (void)progressForActivity:(id)activity calledPrimitive:(id)primitive withBoolResult:(BOOL)result;
++ (void)progressForActivity:(id)activity calledPrimitive:(id)primitive withErrorResult:(id)result;
++ (void)progressForActivity:(id)activity calledPrimitive:(id)primitive withSuccessResult:(BOOL)result;
++ (void)progressForActivity:(id)activity callingPrimitive:(id)primitive;
++ (void)sendReply:(id)reply withCancelDownloadResult:(int64_t)result;
++ (void)sendReply:(id)reply withDownloadResult:(int64_t)result;
++ (void)sendReply:(id)reply withOperationResult:(int64_t)result;
++ (void)sendReply:(id)reply withResult:(int)result ofResultName:(id)name;
++ (void)transferOwnership:(id)ownership toOwner:(unint64_t)owner reason:(id)reason;
++ (void)unknownXPCError:(id)error forClient:(id)client;
++ (void)unknownXPCType:(_xpc_type_s *)type forClient:(id)client;
++ (void)warningForActivity:(id)activity fromMethod:(id)method leaderNote:(id)note warning:(id)warning;
 - (MADActivityManager)init;
-- (id)_clientForConnection:(id)a3;
-- (id)_clientMADActivityTrackerForClient:(id)a3 withProcessID:(id)a4 withFullID:(id)a5;
-- (void)_finishClientCommandActivity:(id)a3 withResult:(int)a4 ofResultName:(id)a5 ableToReply:(BOOL)a6;
-- (void)_startClientCommandActivity:(id)a3;
+- (id)_clientForConnection:(id)connection;
+- (id)_clientMADActivityTrackerForClient:(id)client withProcessID:(id)d withFullID:(id)iD;
+- (void)_finishClientCommandActivity:(id)activity withResult:(int)result ofResultName:(id)name ableToReply:(BOOL)reply;
+- (void)_startClientCommandActivity:(id)activity;
 @end
 
 @implementation MADActivityManager
@@ -100,47 +100,47 @@ void __43__MADActivityManager_sharedActivityManager__block_invoke(id a1)
   return v2;
 }
 
-+ (id)remoteProcessIdentifierForConnection:(id)a3
++ (id)remoteProcessIdentifierForConnection:(id)connection
 {
-  v3 = [[NSString alloc] initWithFormat:@"%llu", xpc_connection_get_pid(a3)];
+  v3 = [[NSString alloc] initWithFormat:@"%llu", xpc_connection_get_pid(connection)];
 
   return v3;
 }
 
-+ (id)remoteProcessFullIdentifierForConnection:(id)a3
++ (id)remoteProcessFullIdentifierForConnection:(id)connection
 {
-  v3 = a3;
-  euid = xpc_connection_get_euid(v3);
-  egid = xpc_connection_get_egid(v3);
-  pid = xpc_connection_get_pid(v3);
-  asid = xpc_connection_get_asid(v3);
+  connectionCopy = connection;
+  euid = xpc_connection_get_euid(connectionCopy);
+  egid = xpc_connection_get_egid(connectionCopy);
+  pid = xpc_connection_get_pid(connectionCopy);
+  asid = xpc_connection_get_asid(connectionCopy);
 
-  v8 = [[NSString alloc] initWithFormat:@"EUID:%llu, EGID:%llu, PID:%llu, ASID:%llu", euid, egid, pid, asid];
+  asid = [[NSString alloc] initWithFormat:@"EUID:%llu, EGID:%llu, PID:%llu, ASID:%llu", euid, egid, pid, asid];
 
-  return v8;
+  return asid;
 }
 
-+ (id)clientForConnection:(id)a3
++ (id)clientForConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v4 = +[MADActivityManager sharedActivityManager];
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__4;
   v18 = __Block_byref_object_dispose__4;
-  v19 = [v4 unknownClient];
-  v5 = [v4 activityTrackingQueue];
+  unknownClient = [v4 unknownClient];
+  activityTrackingQueue = [v4 activityTrackingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __42__MADActivityManager_clientForConnection___block_invoke;
   block[3] = &unk_4B2E80;
-  v12 = v3;
+  v12 = connectionCopy;
   v13 = &v14;
   v11 = v4;
-  v6 = v3;
+  v6 = connectionCopy;
   v7 = v4;
-  dispatch_sync(v5, block);
+  dispatch_sync(activityTrackingQueue, block);
 
   v8 = v15[5];
   _Block_object_dispose(&v14, 8);
@@ -155,53 +155,53 @@ uint64_t __42__MADActivityManager_clientForConnection___block_invoke(uint64_t a1
   return _objc_release_x1();
 }
 
-- (id)_clientForConnection:(id)a3
+- (id)_clientForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(MADActivityManager *)self activityTrackingQueue];
-  dispatch_assert_queue_V2(v5);
+  connectionCopy = connection;
+  activityTrackingQueue = [(MADActivityManager *)self activityTrackingQueue];
+  dispatch_assert_queue_V2(activityTrackingQueue);
 
   v6 = +[MADActivityManager sharedActivityManager];
-  v7 = [v6 unknownClient];
-  if (v4)
+  unknownClient = [v6 unknownClient];
+  if (connectionCopy)
   {
-    v8 = [MADActivityManager remoteProcessIdentifierForConnection:v4];
-    v9 = [MADActivityManager remoteProcessFullIdentifierForConnection:v4];
+    v8 = [MADActivityManager remoteProcessIdentifierForConnection:connectionCopy];
+    v9 = [MADActivityManager remoteProcessFullIdentifierForConnection:connectionCopy];
     v10 = v9;
     if (v8 && v9)
     {
-      v11 = [v6 _clientMADActivityTrackerForClient:v4 withProcessID:v8 withFullID:v9];
+      v11 = [v6 _clientMADActivityTrackerForClient:connectionCopy withProcessID:v8 withFullID:v9];
 
-      v7 = v11;
+      unknownClient = v11;
     }
   }
 
-  return v7;
+  return unknownClient;
 }
 
-+ (void)connectionInvalidForClient:(id)a3
++ (void)connectionInvalidForClient:(id)client
 {
-  connection = a3;
+  connection = client;
   if (![MADActivityManager notifyStatusChange:"notifyStatusChange:forClient:withReason:" forClient:2 withReason:?])
   {
     xpc_connection_cancel(connection);
   }
 }
 
-+ (void)unknownXPCError:(id)a3 forClient:(id)a4
++ (void)unknownXPCError:(id)error forClient:(id)client
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = +[MADActivityManager sharedActivityManager];
-  v6 = [v5 activityTrackingQueue];
+  activityTrackingQueue = [v5 activityTrackingQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __48__MADActivityManager_unknownXPCError_forClient___block_invoke;
   v9[3] = &unk_4B2B18;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = errorCopy;
+  v7 = errorCopy;
   v8 = v5;
-  dispatch_sync(v6, v9);
+  dispatch_sync(activityTrackingQueue, v9);
 }
 
 void __48__MADActivityManager_unknownXPCError_forClient___block_invoke(uint64_t a1)
@@ -217,18 +217,18 @@ void __48__MADActivityManager_unknownXPCError_forClient___block_invoke(uint64_t 
   }
 }
 
-+ (void)unknownXPCType:(_xpc_type_s *)a3 forClient:(id)a4
++ (void)unknownXPCType:(_xpc_type_s *)type forClient:(id)client
 {
-  v5 = [MADActivityManager sharedActivityManager:a3];
-  v6 = [v5 activityTrackingQueue];
+  v5 = [MADActivityManager sharedActivityManager:type];
+  activityTrackingQueue = [v5 activityTrackingQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __47__MADActivityManager_unknownXPCType_forClient___block_invoke;
   v8[3] = &unk_4B36C0;
   v9 = v5;
-  v10 = a3;
+  typeCopy = type;
   v7 = v5;
-  dispatch_sync(v6, v8);
+  dispatch_sync(activityTrackingQueue, v8);
 }
 
 void __47__MADActivityManager_unknownXPCType_forClient___block_invoke(uint64_t a1)
@@ -244,43 +244,43 @@ void __47__MADActivityManager_unknownXPCType_forClient___block_invoke(uint64_t a
   }
 }
 
-+ (id)newTrackingCommandForEvent:(id)a3 forClient:(id)a4
++ (id)newTrackingCommandForEvent:(id)event forClient:(id)client
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  clientCopy = client;
   v7 = +[MADActivityManager sharedActivityManager];
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
   v39 = __Block_byref_object_copy__4;
   v40 = __Block_byref_object_dispose__4;
-  v41 = [v7 untrackedCommand];
-  if (v5 && v6)
+  untrackedCommand = [v7 untrackedCommand];
+  if (eventCopy && clientCopy)
   {
-    type = xpc_get_type(v5);
+    type = xpc_get_type(eventCopy);
     if (type == &_xpc_type_dictionary)
     {
-      uint64 = xpc_dictionary_get_uint64(v5, "messageAction");
+      uint64 = xpc_dictionary_get_uint64(eventCopy, "messageAction");
       v9 = stringForMAXpcCommand(uint64);
-      v16 = [MADActivityManager remoteProcessIdentifierForConnection:v6];
-      v17 = [MADActivityManager remoteProcessFullIdentifierForConnection:v6];
+      v16 = [MADActivityManager remoteProcessIdentifierForConnection:clientCopy];
+      v17 = [MADActivityManager remoteProcessFullIdentifierForConnection:clientCopy];
       v18 = v17;
       if (v16 && v17)
       {
-        v19 = [v7 activityTrackingQueue];
+        activityTrackingQueue = [v7 activityTrackingQueue];
         v27[0] = _NSConcreteStackBlock;
         v27[1] = 3221225472;
         v27[2] = __59__MADActivityManager_newTrackingCommandForEvent_forClient___block_invoke;
         v27[3] = &unk_4B36E8;
         v28 = v7;
-        v29 = v6;
+        v29 = clientCopy;
         v30 = v16;
         v31 = v18;
-        v32 = v5;
+        v32 = eventCopy;
         v35 = uint64;
         v33 = v9;
         v34 = &v36;
-        dispatch_sync(v19, v27);
+        dispatch_sync(activityTrackingQueue, v27);
 
         v20 = v28;
       }
@@ -300,12 +300,12 @@ void __47__MADActivityManager_unknownXPCType_forClient___block_invoke(uint64_t a
       v21 = v37[5];
       if (!v21 || ([v21 validTracker] & 1) == 0)
       {
-        reply = xpc_dictionary_create_reply(v5);
+        reply = xpc_dictionary_create_reply(eventCopy);
         v23 = reply;
         if (reply)
         {
           xpc_dictionary_set_int64(reply, "Result", 2);
-          xpc_connection_send_message(v6, v23);
+          xpc_connection_send_message(clientCopy, v23);
         }
 
         else
@@ -346,7 +346,7 @@ LABEL_13:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v13 = @"PROVIDED";
-      if (v5)
+      if (eventCopy)
       {
         v14 = @"PROVIDED";
       }
@@ -356,7 +356,7 @@ LABEL_13:
         v14 = @"MISSING";
       }
 
-      if (!v6)
+      if (!clientCopy)
       {
         v13 = @"MISSING";
       }
@@ -534,96 +534,96 @@ LABEL_29:
 LABEL_31:
 }
 
-+ (void)sendReply:(id)a3 withOperationResult:(int64_t)a4
++ (void)sendReply:(id)reply withOperationResult:(int64_t)result
 {
-  v5 = a3;
-  v6 = stringForMAOperationResult(a4);
-  [MADActivityManager sendReply:v5 withResult:a4 ofResultName:v6];
+  replyCopy = reply;
+  v6 = stringForMAOperationResult(result);
+  [MADActivityManager sendReply:replyCopy withResult:result ofResultName:v6];
 }
 
-+ (void)sendReply:(id)a3 withDownloadResult:(int64_t)a4
++ (void)sendReply:(id)reply withDownloadResult:(int64_t)result
 {
-  v5 = a3;
-  v6 = stringForMADownloadResult(a4);
-  [MADActivityManager sendReply:v5 withResult:a4 ofResultName:v6];
+  replyCopy = reply;
+  v6 = stringForMADownloadResult(result);
+  [MADActivityManager sendReply:replyCopy withResult:result ofResultName:v6];
 }
 
-+ (void)sendReply:(id)a3 withCancelDownloadResult:(int64_t)a4
++ (void)sendReply:(id)reply withCancelDownloadResult:(int64_t)result
 {
-  v5 = a3;
-  v6 = stringForMACancelDownloadResult(a4);
-  [MADActivityManager sendReply:v5 withResult:a4 ofResultName:v6];
+  replyCopy = reply;
+  v6 = stringForMACancelDownloadResult(result);
+  [MADActivityManager sendReply:replyCopy withResult:result ofResultName:v6];
 }
 
-+ (void)sendReply:(id)a3 withResult:(int)a4 ofResultName:(id)a5
++ (void)sendReply:(id)reply withResult:(int)result ofResultName:(id)name
 {
-  v7 = a3;
-  v8 = a5;
+  replyCopy = reply;
+  nameCopy = name;
   v9 = +[MADActivityManager sharedActivityManager];
-  v10 = [v7 reply];
+  reply = [replyCopy reply];
 
-  if (v10)
+  if (reply)
   {
-    v11 = [v7 reply];
-    xpc_dictionary_set_int64(v11, "Result", a4);
-    [v7 sendReply];
+    reply2 = [replyCopy reply];
+    xpc_dictionary_set_int64(reply2, "Result", result);
+    [replyCopy sendReply];
   }
 
-  v12 = v10 != 0;
-  v13 = [v9 activityTrackingQueue];
+  v12 = reply != 0;
+  activityTrackingQueue = [v9 activityTrackingQueue];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = __56__MADActivityManager_sendReply_withResult_ofResultName___block_invoke;
   v17[3] = &unk_4B3710;
   v18 = v9;
-  v19 = v7;
-  v21 = a4;
-  v20 = v8;
+  v19 = replyCopy;
+  resultCopy = result;
+  v20 = nameCopy;
   v22 = v12;
-  v14 = v8;
-  v15 = v7;
+  v14 = nameCopy;
+  v15 = replyCopy;
   v16 = v9;
-  dispatch_sync(v13, v17);
+  dispatch_sync(activityTrackingQueue, v17);
 }
 
-+ (void)progressForActivity:(id)a3 callingPrimitive:(id)a4
++ (void)progressForActivity:(id)activity callingPrimitive:(id)primitive
 {
-  v5 = a3;
-  v6 = a4;
+  activityCopy = activity;
+  primitiveCopy = primitive;
   v7 = _MADLog(@"Activity");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 activityName];
-    v9 = [v5 logLeader];
+    activityName = [activityCopy activityName];
+    logLeader = [activityCopy logLeader];
     v10 = 138543874;
-    v11 = v8;
+    v11 = activityName;
     v12 = 2114;
-    v13 = v9;
+    v13 = logLeader;
     v14 = 2114;
-    v15 = v6;
+    v15 = primitiveCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ %{public}@...", &v10, 0x20u);
   }
 }
 
-+ (void)progressForActivity:(id)a3 calledPrimitive:(id)a4 withSuccessResult:(BOOL)a5
++ (void)progressForActivity:(id)activity calledPrimitive:(id)primitive withSuccessResult:(BOOL)result
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  activityCopy = activity;
+  primitiveCopy = primitive;
   v9 = _MADLog(@"Activity");
   v10 = v9;
-  if (v5)
+  if (resultCopy)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v7 activityName];
-      v12 = [v7 logLeader];
+      activityName = [activityCopy activityName];
+      logLeader = [activityCopy logLeader];
       v16 = 138543874;
-      v17 = v11;
+      v17 = activityName;
       v18 = 2114;
-      v19 = v12;
+      v19 = logLeader;
       v20 = 2114;
-      v21 = v8;
+      v21 = primitiveCopy;
       v13 = "%{public}@ %{public}@ ...%{public}@(SUCCESS)";
       v14 = v10;
       v15 = OS_LOG_TYPE_DEFAULT;
@@ -634,14 +634,14 @@ LABEL_6:
 
   else if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v11 = [v7 activityName];
-    v12 = [v7 logLeader];
+    activityName = [activityCopy activityName];
+    logLeader = [activityCopy logLeader];
     v16 = 138543874;
-    v17 = v11;
+    v17 = activityName;
     v18 = 2114;
-    v19 = v12;
+    v19 = logLeader;
     v20 = 2114;
-    v21 = v8;
+    v21 = primitiveCopy;
     v13 = "%{public}@ %{public}@ ...%{public}@(FAILURE)";
     v14 = v10;
     v15 = OS_LOG_TYPE_ERROR;
@@ -649,56 +649,56 @@ LABEL_6:
   }
 }
 
-+ (void)progressForActivity:(id)a3 calledPrimitive:(id)a4 withBoolResult:(BOOL)a5
++ (void)progressForActivity:(id)activity calledPrimitive:(id)primitive withBoolResult:(BOOL)result
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  activityCopy = activity;
+  primitiveCopy = primitive;
   v9 = _MADLog(@"Activity");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 activityName];
-    v11 = [v7 logLeader];
-    v12 = v11;
+    activityName = [activityCopy activityName];
+    logLeader = [activityCopy logLeader];
+    v12 = logLeader;
     v13 = @"NO";
     v14 = 138544130;
-    v15 = v10;
+    v15 = activityName;
     v16 = 2114;
-    if (v5)
+    if (resultCopy)
     {
       v13 = @"YES";
     }
 
-    v17 = v11;
+    v17 = logLeader;
     v18 = 2114;
-    v19 = v8;
+    v19 = primitiveCopy;
     v20 = 2114;
     v21 = v13;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ ...%{public}@(%{public}@)", &v14, 0x2Au);
   }
 }
 
-+ (void)progressForActivity:(id)a3 calledPrimitive:(id)a4 withErrorResult:(id)a5
++ (void)progressForActivity:(id)activity calledPrimitive:(id)primitive withErrorResult:(id)result
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  activityCopy = activity;
+  primitiveCopy = primitive;
+  resultCopy = result;
+  if (resultCopy)
   {
-    v10 = [[NSString alloc] initWithFormat:@"error:%@", v9];
+    resultCopy = [[NSString alloc] initWithFormat:@"error:%@", resultCopy];
     v11 = _MADLog(@"Activity");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v7 activityName];
-      v13 = [v7 logLeader];
+      activityName = [activityCopy activityName];
+      logLeader = [activityCopy logLeader];
       *buf = 138544130;
-      v17 = v12;
+      v17 = activityName;
       v18 = 2114;
-      v19 = v13;
+      v19 = logLeader;
       v20 = 2114;
-      v21 = v8;
+      v21 = primitiveCopy;
       v22 = 2114;
-      v23 = v10;
+      v23 = resultCopy;
       v14 = v11;
       v15 = OS_LOG_TYPE_ERROR;
 LABEL_6:
@@ -709,17 +709,17 @@ LABEL_6:
   else
   {
     v11 = _MADLog(@"Activity");
-    v10 = @"SUCCESS";
+    resultCopy = @"SUCCESS";
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v7 activityName];
-      v13 = [v7 logLeader];
+      activityName = [activityCopy activityName];
+      logLeader = [activityCopy logLeader];
       *buf = 138544130;
-      v17 = v12;
+      v17 = activityName;
       v18 = 2114;
-      v19 = v13;
+      v19 = logLeader;
       v20 = 2114;
-      v21 = v8;
+      v21 = primitiveCopy;
       v22 = 2114;
       v23 = @"SUCCESS";
       v14 = v11;
@@ -729,212 +729,212 @@ LABEL_6:
   }
 }
 
-+ (void)transferOwnership:(id)a3 toOwner:(unint64_t)a4 reason:(id)a5
++ (void)transferOwnership:(id)ownership toOwner:(unint64_t)owner reason:(id)reason
 {
-  v7 = a3;
-  v8 = a5;
+  ownershipCopy = ownership;
+  reasonCopy = reason;
   v9 = _MADLog(@"Activity");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 activityName];
-    v11 = [v7 logLeader];
-    v12 = +[MADActivityTracker nameOfLayer:](MADActivityTracker, "nameOfLayer:", [v7 owner]);
-    v13 = +[MADActivityTracker nameOfLayer:](MADActivityTracker, "nameOfLayer:", [v7 owner]);
+    activityName = [ownershipCopy activityName];
+    logLeader = [ownershipCopy logLeader];
+    v12 = +[MADActivityTracker nameOfLayer:](MADActivityTracker, "nameOfLayer:", [ownershipCopy owner]);
+    v13 = +[MADActivityTracker nameOfLayer:](MADActivityTracker, "nameOfLayer:", [ownershipCopy owner]);
     v14 = 138544386;
-    v15 = v10;
+    v15 = activityName;
     v16 = 2114;
-    v17 = v11;
+    v17 = logLeader;
     v18 = 2114;
     v19 = v12;
     v20 = 2114;
     v21 = v13;
     v22 = 2114;
-    v23 = v8;
+    v23 = reasonCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ OWNER %{public}@=>%{public}@ | %{public}@", &v14, 0x34u);
   }
 
-  [v7 assignOwner:a4];
+  [ownershipCopy assignOwner:owner];
 }
 
-+ (void)warningForActivity:(id)a3 fromMethod:(id)a4 leaderNote:(id)a5 warning:(id)a6
++ (void)warningForActivity:(id)activity fromMethod:(id)method leaderNote:(id)note warning:(id)warning
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  [v9 warningNote:a5 fromMethod:v10 warning:v11];
+  activityCopy = activity;
+  methodCopy = method;
+  warningCopy = warning;
+  [activityCopy warningNote:note fromMethod:methodCopy warning:warningCopy];
   v12 = _MADLog(@"Activity");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    v13 = [v9 activityName];
-    v14 = [v9 logLeader];
+    activityName = [activityCopy activityName];
+    logLeader = [activityCopy logLeader];
     v15 = 138544130;
-    v16 = v13;
+    v16 = activityName;
     v17 = 2114;
-    v18 = v14;
+    v18 = logLeader;
     v19 = 2114;
-    v20 = v10;
+    v20 = methodCopy;
     v21 = 2114;
-    v22 = v11;
+    v22 = warningCopy;
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "%{public}@ %{public}@ {%{public}@} %{public}@", &v15, 0x2Au);
   }
 }
 
-+ (void)failureOfActivity:(id)a3 withResult:(int)a4 ofResultName:(id)a5 forReason:(id)a6
++ (void)failureOfActivity:(id)activity withResult:(int)result ofResultName:(id)name forReason:(id)reason
 {
-  v8 = *&a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  [v9 failureResult:v8 ofResultName:v10 forReason:v11];
+  v8 = *&result;
+  activityCopy = activity;
+  nameCopy = name;
+  reasonCopy = reason;
+  [activityCopy failureResult:v8 ofResultName:nameCopy forReason:reasonCopy];
   v12 = _MADLog(@"Activity");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    v13 = [v9 activityName];
-    v14 = [v9 logLeader];
+    activityName = [activityCopy activityName];
+    logLeader = [activityCopy logLeader];
     v15 = 138544642;
-    v16 = v13;
+    v16 = activityName;
     v17 = 2114;
-    v18 = v14;
+    v18 = logLeader;
     v19 = 2114;
     v20 = @"FAILURE";
     v21 = 1024;
     v22 = v8;
     v23 = 2114;
-    v24 = v10;
+    v24 = nameCopy;
     v25 = 2114;
-    v26 = v11;
+    v26 = reasonCopy;
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "%{public}@ %{public}@ [%{public}@] %d(%{public}@) | %{public}@", &v15, 0x3Au);
   }
 }
 
-+ (void)noticeForActivity:(id)a3 reason:(id)a4
++ (void)noticeForActivity:(id)activity reason:(id)reason
 {
-  v5 = a3;
-  v6 = a4;
+  activityCopy = activity;
+  reasonCopy = reason;
   v7 = _MADLog(@"Activity");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 activityName];
-    v9 = [v5 logLeader];
+    activityName = [activityCopy activityName];
+    logLeader = [activityCopy logLeader];
     v10 = 138543874;
-    v11 = v8;
+    v11 = activityName;
     v12 = 2114;
-    v13 = v9;
+    v13 = logLeader;
     v14 = 2114;
-    v15 = v6;
+    v15 = reasonCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ %{public}@", &v10, 0x20u);
   }
 }
 
-- (id)_clientMADActivityTrackerForClient:(id)a3 withProcessID:(id)a4 withFullID:(id)a5
+- (id)_clientMADActivityTrackerForClient:(id)client withProcessID:(id)d withFullID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MADActivityManager *)self activityTrackingQueue];
-  dispatch_assert_queue_V2(v11);
+  clientCopy = client;
+  dCopy = d;
+  iDCopy = iD;
+  activityTrackingQueue = [(MADActivityManager *)self activityTrackingQueue];
+  dispatch_assert_queue_V2(activityTrackingQueue);
 
-  v12 = [(MADActivityManager *)self unknownClient];
-  v13 = [(MADActivityManager *)self xpcConnectionByProcessId];
-  v14 = [v13 objectForKey:v9];
+  unknownClient = [(MADActivityManager *)self unknownClient];
+  xpcConnectionByProcessId = [(MADActivityManager *)self xpcConnectionByProcessId];
+  v14 = [xpcConnectionByProcessId objectForKey:dCopy];
 
   if (v14)
   {
-    v15 = [(MADActivityManager *)self xpcConnectionByFullId];
-    v16 = [v15 objectForKey:v10];
+    xpcConnectionByFullId = [(MADActivityManager *)self xpcConnectionByFullId];
+    v16 = [xpcConnectionByFullId objectForKey:iDCopy];
 
     if (v16)
     {
-      v17 = v14;
+      pidReusedClient = v14;
     }
 
     else
     {
-      v17 = [(MADActivityManager *)self pidReusedClient];
+      pidReusedClient = [(MADActivityManager *)self pidReusedClient];
     }
   }
 
   else
   {
-    v18 = [[MADActivityTracker alloc] init:2 fromInitiator:2 ofName:v9 withCategory:2 forAssetType:0 associatedWith:0];
+    v18 = [[MADActivityTracker alloc] init:2 fromInitiator:2 ofName:dCopy withCategory:2 forAssetType:0 associatedWith:0];
     v16 = v18;
     if (!v18)
     {
       goto LABEL_8;
     }
 
-    [v18 associateXPCConnection:v8];
+    [v18 associateXPCConnection:clientCopy];
     [v16 setInstanceCount:0];
     [v16 usesChildDict];
-    v19 = [(MADActivityManager *)self xpcConnectionByProcessId];
-    [v19 setObject:v16 forKey:v9];
+    xpcConnectionByProcessId2 = [(MADActivityManager *)self xpcConnectionByProcessId];
+    [xpcConnectionByProcessId2 setObject:v16 forKey:dCopy];
 
-    v20 = [(MADActivityManager *)self xpcConnectionByFullId];
-    [v20 setObject:v16 forKey:v10];
+    xpcConnectionByFullId2 = [(MADActivityManager *)self xpcConnectionByFullId];
+    [xpcConnectionByFullId2 setObject:v16 forKey:iDCopy];
 
-    v17 = v16;
-    v16 = v17;
+    pidReusedClient = v16;
+    v16 = pidReusedClient;
   }
 
-  v21 = v17;
+  v21 = pidReusedClient;
 
-  v12 = v21;
+  unknownClient = v21;
 LABEL_8:
 
-  return v12;
+  return unknownClient;
 }
 
-- (void)_startClientCommandActivity:(id)a3
+- (void)_startClientCommandActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(MADActivityManager *)self activityTrackingQueue];
-  dispatch_assert_queue_V2(v5);
+  activityCopy = activity;
+  activityTrackingQueue = [(MADActivityManager *)self activityTrackingQueue];
+  dispatch_assert_queue_V2(activityTrackingQueue);
 
-  [v4 perpareOSActivityScope];
-  [v4 enterOSActivityScope];
-  +[MADActivityTracker persistedCommand:](MADActivityTracker, "persistedCommand:", [v4 command]);
+  [activityCopy perpareOSActivityScope];
+  [activityCopy enterOSActivityScope];
+  +[MADActivityTracker persistedCommand:](MADActivityTracker, "persistedCommand:", [activityCopy command]);
   v6 = _MADLog(@"Activity");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 activityName];
+    activityName = [activityCopy activityName];
     v8 = 138543362;
-    v9 = v7;
+    v9 = activityName;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ | START", &v8, 0xCu);
   }
 }
 
-- (void)_finishClientCommandActivity:(id)a3 withResult:(int)a4 ofResultName:(id)a5 ableToReply:(BOOL)a6
+- (void)_finishClientCommandActivity:(id)activity withResult:(int)result ofResultName:(id)name ableToReply:(BOOL)reply
 {
-  v6 = a6;
-  v8 = *&a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = [(MADActivityManager *)self activityTrackingQueue];
-  dispatch_assert_queue_V2(v12);
+  replyCopy = reply;
+  v8 = *&result;
+  activityCopy = activity;
+  nameCopy = name;
+  activityTrackingQueue = [(MADActivityManager *)self activityTrackingQueue];
+  dispatch_assert_queue_V2(activityTrackingQueue);
 
   v13 = 1;
-  if (!v8 && v6)
+  if (!v8 && replyCopy)
   {
-    v14 = [v10 failureReason];
-    v13 = v14 != 0;
+    failureReason = [activityCopy failureReason];
+    v13 = failureReason != 0;
   }
 
-  +[MADActivityTracker persistedCommand:](MADActivityTracker, "persistedCommand:", [v10 command]);
-  v15 = [v10 failureReason];
-  if (v15)
+  +[MADActivityTracker persistedCommand:](MADActivityTracker, "persistedCommand:", [activityCopy command]);
+  failureReason2 = [activityCopy failureReason];
+  if (failureReason2)
   {
-    v16 = [v10 failureReason];
+    failureReason3 = [activityCopy failureReason];
   }
 
   else
   {
-    v16 = &stru_4BD3F0;
+    failureReason3 = &stru_4BD3F0;
   }
 
-  if (!v6)
+  if (!replyCopy)
   {
-    v17 = stringForMAXpcError(8uLL);
-    [v10 failureResult:8 ofResultName:v17 forReason:@"finishing command processing when unable to reply"];
+    stats = stringForMAXpcError(8uLL);
+    [activityCopy failureResult:8 ofResultName:stats forReason:@"finishing command processing when unable to reply"];
     goto LABEL_12;
   }
 
@@ -942,8 +942,8 @@ LABEL_8:
   {
     if (v13)
     {
-      [v10 successWithIssue:v16];
-      if (v11)
+      [activityCopy successWithIssue:failureReason3];
+      if (nameCopy)
       {
         goto LABEL_13;
       }
@@ -953,18 +953,18 @@ LABEL_17:
       {
         v18 = _MADLog(@"Activity");
         v23 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-        if (v6)
+        if (replyCopy)
         {
           if (!v23)
           {
             goto LABEL_21;
           }
 
-          v24 = [v10 activityName];
+          activityName = [activityCopy activityName];
           v26 = 138543618;
-          v27 = v24;
+          v27 = activityName;
           v28 = 2114;
-          v29 = v16;
+          v29 = failureReason3;
           v25 = "%{public}@ | FINISH | %{public}@ | SUCCESS";
         }
 
@@ -975,11 +975,11 @@ LABEL_17:
             goto LABEL_21;
           }
 
-          v24 = [v10 activityName];
+          activityName = [activityCopy activityName];
           v26 = 138543618;
-          v27 = v24;
+          v27 = activityName;
           v28 = 2114;
-          v29 = v16;
+          v29 = failureReason3;
           v25 = "%{public}@ | FINISH | %{public}@ | UNABLE TO REPLY";
         }
 
@@ -992,11 +992,11 @@ LABEL_18:
       v18 = _MADLog(@"Activity");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v10 activityName];
+        activityName2 = [activityCopy activityName];
         v26 = 138543874;
-        v27 = v19;
+        v27 = activityName2;
         v28 = 2114;
-        v29 = v16;
+        v29 = failureReason3;
         v30 = 1024;
         v31 = v8;
         v20 = "%{public}@ | FINISH | %{public}@ | %d";
@@ -1008,11 +1008,11 @@ LABEL_18:
       goto LABEL_21;
     }
 
-    v17 = [v10 stats];
-    [v17 setSuccessfulOperations:{objc_msgSend(v17, "successfulOperations") + 1}];
+    stats = [activityCopy stats];
+    [stats setSuccessfulOperations:{objc_msgSend(stats, "successfulOperations") + 1}];
 LABEL_12:
 
-    if (v11)
+    if (nameCopy)
     {
       goto LABEL_13;
     }
@@ -1020,8 +1020,8 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  [v10 failureResult:v8 ofResultName:v11 forReason:v16];
-  if (!v11)
+  [activityCopy failureResult:v8 ofResultName:nameCopy forReason:failureReason3];
+  if (!nameCopy)
   {
     goto LABEL_18;
   }
@@ -1030,15 +1030,15 @@ LABEL_13:
   v18 = _MADLog(@"Activity");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v10 activityName];
+    activityName2 = [activityCopy activityName];
     v26 = 138544130;
-    v27 = v19;
+    v27 = activityName2;
     v28 = 2114;
-    v29 = v16;
+    v29 = failureReason3;
     v30 = 1024;
     v31 = v8;
     v32 = 2114;
-    v33 = v11;
+    v33 = nameCopy;
     v20 = "%{public}@ | FINISH | %{public}@ | %d(%{public}@)";
     v21 = v18;
     v22 = 38;
@@ -1048,23 +1048,23 @@ LABEL_20:
 
 LABEL_21:
 
-  [v10 leaveOSActivityScope];
+  [activityCopy leaveOSActivityScope];
 }
 
-+ (BOOL)notifyStatusChange:(unint64_t)a3 forClient:(id)a4 withReason:(id)a5
++ (BOOL)notifyStatusChange:(unint64_t)change forClient:(id)client withReason:(id)reason
 {
-  v5 = a4;
+  clientCopy = client;
   v6 = +[MADActivityManager sharedActivityManager];
-  v7 = [v6 activityTrackingQueue];
+  activityTrackingQueue = [v6 activityTrackingQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __62__MADActivityManager_notifyStatusChange_forClient_withReason___block_invoke;
   v11[3] = &unk_4B2B18;
   v12 = v6;
-  v13 = v5;
-  v8 = v5;
+  v13 = clientCopy;
+  v8 = clientCopy;
   v9 = v6;
-  dispatch_sync(v7, v11);
+  dispatch_sync(activityTrackingQueue, v11);
 
   return 0;
 }

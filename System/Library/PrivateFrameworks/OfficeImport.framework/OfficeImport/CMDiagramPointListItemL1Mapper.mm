@@ -1,33 +1,33 @@
 @interface CMDiagramPointListItemL1Mapper
-- (CMDiagramPointListItemL1Mapper)initWithPoint:(id)a3 drawingContext:(id)a4 orientedBounds:(id)a5 listIndex:(unint64_t)a6 parent:(id)a7;
-- (void)mapAt:(id)a3 withState:(id)a4;
+- (CMDiagramPointListItemL1Mapper)initWithPoint:(id)point drawingContext:(id)context orientedBounds:(id)bounds listIndex:(unint64_t)index parent:(id)parent;
+- (void)mapAt:(id)at withState:(id)state;
 @end
 
 @implementation CMDiagramPointListItemL1Mapper
 
-- (CMDiagramPointListItemL1Mapper)initWithPoint:(id)a3 drawingContext:(id)a4 orientedBounds:(id)a5 listIndex:(unint64_t)a6 parent:(id)a7
+- (CMDiagramPointListItemL1Mapper)initWithPoint:(id)point drawingContext:(id)context orientedBounds:(id)bounds listIndex:(unint64_t)index parent:(id)parent
 {
   v9.receiver = self;
   v9.super_class = CMDiagramPointListItemL1Mapper;
-  result = [(CMDiagramPointMapper *)&v9 initWithPoint:a3 drawingContext:a4 orientedBounds:a5 parent:a7];
+  result = [(CMDiagramPointMapper *)&v9 initWithPoint:point drawingContext:context orientedBounds:bounds parent:parent];
   if (result)
   {
-    result->mListIndex = a6;
+    result->mListIndex = index;
   }
 
   return result;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v6 = a3;
-  v41 = a4;
+  atCopy = at;
+  stateCopy = state;
   v7 = objc_alloc_init(CMDrawableStyle);
   [(CMDiagramPointMapper *)self applyDiagramStyleToShapeProperties];
   v8 = [OIXMLElement elementWithType:3];
   [(OADOrientedBounds *)self->super.mOrientedBounds bounds];
   [(CMDrawableStyle *)v7 addPositionProperties:?];
-  [v6 addChild:v8];
+  [atCopy addChild:v8];
   v9 = v8;
 
   v43.receiver = self;
@@ -38,8 +38,8 @@
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v40 = [(CMDiagramPointMapper *)self stroke];
-  [v40 width];
+  stroke = [(CMDiagramPointMapper *)self stroke];
+  [stroke width];
   v19 = v18;
   v20 = v18 * 0.5;
   if (v19 <= 1.5)
@@ -65,21 +65,21 @@
   v27 = objc_alloc_init(CMDrawableStyle);
   [v25 bounds];
   [(CMDrawableStyle *)v27 addPositionProperties:?];
-  v28 = [(CMDiagramPointMapper *)self fill];
-  v29 = [CMColorProperty nsColorFromOADFill:v28 state:v41];
+  fill = [(CMDiagramPointMapper *)self fill];
+  v29 = [CMColorProperty nsColorFromOADFill:fill state:stateCopy];
 
   v39 = v29;
   [(CMStyle *)v27 appendPropertyForName:0x286F07DF0 color:v29];
   v30 = [CMBordersProperty alloc];
-  [(CMBordersProperty *)v30 setFromOadStroke:v40 atLocation:0 state:v41];
-  v31 = [(CMBordersProperty *)v30 cssString];
-  [(CMStyle *)v27 appendPropertyString:v31];
+  [(CMBordersProperty *)v30 setFromOadStroke:stroke atLocation:0 state:stateCopy];
+  cssString = [(CMBordersProperty *)v30 cssString];
+  [(CMStyle *)v27 appendPropertyString:cssString];
 
   [v9 addChild:v26];
   v42.receiver = self;
   v42.super_class = CMDiagramPointListItemL1Mapper;
   [(CMMapper *)&v42 addStyleUsingGlobalCacheTo:v26 style:v27];
-  [(CMDiagramPointMapper *)self mapTextAt:v26 withBounds:v25 isCentered:1 includeChildren:0 withState:v41];
+  [(CMDiagramPointMapper *)self mapTextAt:v26 withBounds:v25 isCentered:1 includeChildren:0 withState:stateCopy];
   v45.origin.x = v11;
   v45.origin.y = v13;
   v45.size.width = v15;
@@ -91,24 +91,24 @@
   v46.size.height = v17;
   v33 = CGRectGetHeight(v46) - v24;
   v34 = [OADOrientedBounds orientedBoundsWithBounds:0.0, v24, Width, v33];
-  v35 = [(ODDPoint *)self->super.mPoint children];
-  v36 = [v35 objectAtIndex:0];
+  children = [(ODDPoint *)self->super.mPoint children];
+  v36 = [children objectAtIndex:0];
 
   if (v36)
   {
-    v37 = [(CMDiagramPointMapper *)[CMDiagramPointListBaseMapper alloc] initWithPoint:v36 drawingContext:self->super.mDrawingContext orientedBounds:v34 parent:self];
-    [(CMDiagramPointListBaseMapper *)v37 mapAt:v9 withState:v41];
+    shapeProperties = [(CMDiagramPointMapper *)[CMDiagramPointListBaseMapper alloc] initWithPoint:v36 drawingContext:self->super.mDrawingContext orientedBounds:v34 parent:self];
+    [(CMDiagramPointListBaseMapper *)shapeProperties mapAt:v9 withState:stateCopy];
   }
 
   else
   {
-    v37 = [(ODDPoint *)self->super.mPoint shapeProperties];
-    [(CMDiagramPointListBaseMapper *)v37 setFill:0];
-    [(CMDiagramPointListBaseMapper *)v37 setStroke:0];
+    shapeProperties = [(ODDPoint *)self->super.mPoint shapeProperties];
+    [(CMDiagramPointListBaseMapper *)shapeProperties setFill:0];
+    [(CMDiagramPointListBaseMapper *)shapeProperties setStroke:0];
     [(CMDiagramPointMapper *)self setPresentationName:@"desTx"];
     [(CMDiagramPointMapper *)self applyDiagramStyleToShapeProperties];
     v38 = [OIXMLElement elementWithType:3];
-    [(CMDiagramPointMapper *)self mapStyledRectangle:v38 at:v41 withState:0.0, v24, Width, v33];
+    [(CMDiagramPointMapper *)self mapStyledRectangle:v38 at:stateCopy withState:0.0, v24, Width, v33];
     [v9 addChild:v38];
   }
 }

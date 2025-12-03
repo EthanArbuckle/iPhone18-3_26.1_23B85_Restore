@@ -15,13 +15,13 @@
 
 - (void)registerICloud
 {
-  v2 = self;
+  selfCopy = self;
   PushCoordinator.registerICloud()();
 }
 
 - (void)unregister
 {
-  v2 = self;
+  selfCopy = self;
   PushCoordinator.unregister()();
 }
 

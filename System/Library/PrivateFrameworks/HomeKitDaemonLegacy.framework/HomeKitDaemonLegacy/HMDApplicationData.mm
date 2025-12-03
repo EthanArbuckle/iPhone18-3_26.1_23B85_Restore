@@ -2,74 +2,74 @@
 + (id)logCategory;
 + (unint64_t)sizeLimit;
 - (BOOL)isEmpty;
-- (HMDApplicationData)initWithCoder:(id)a3;
-- (HMDApplicationData)initWithDictionary:(id)a3 parentUUID:(id)a4;
-- (HMDApplicationData)initWithParentUUID:(id)a3;
+- (HMDApplicationData)initWithCoder:(id)coder;
+- (HMDApplicationData)initWithDictionary:(id)dictionary parentUUID:(id)d;
+- (HMDApplicationData)initWithParentUUID:(id)d;
 - (NSUUID)uuid;
-- (id)applicationDataForIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)applicationDataForIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionary;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
 - (id)logIdentifier;
-- (id)modelObjectWithChangeType:(unint64_t)a3;
-- (void)encodeForXPCTransportWithCoder:(id)a3 key:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeApplicationDataForIdentifier:(id)a3;
-- (void)setApplicationData:(id)a3 forIdentifier:(id)a4;
-- (void)updateParentUUIDIfNil:(id)a3;
-- (void)updateWithModel:(id)a3;
+- (id)modelObjectWithChangeType:(unint64_t)type;
+- (void)encodeForXPCTransportWithCoder:(id)coder key:(id)key;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeApplicationDataForIdentifier:(id)identifier;
+- (void)setApplicationData:(id)data forIdentifier:(id)identifier;
+- (void)updateParentUUIDIfNil:(id)nil;
+- (void)updateWithModel:(id)model;
 @end
 
 @implementation HMDApplicationData
 
 - (id)logIdentifier
 {
-  v2 = [(HMDApplicationData *)self parentUUID];
-  v3 = [v2 UUIDString];
+  parentUUID = [(HMDApplicationData *)self parentUUID];
+  uUIDString = [parentUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (id)modelObjectWithChangeType:(unint64_t)a3
+- (id)modelObjectWithChangeType:(unint64_t)type
 {
-  v5 = [(HMDApplicationData *)self isEmpty];
+  isEmpty = [(HMDApplicationData *)self isEmpty];
   v6 = [HMDApplicationDataModel alloc];
-  v7 = [(HMDApplicationData *)self uuid];
-  v8 = [(HMDApplicationData *)self parentUUID];
-  if (v5)
+  uuid = [(HMDApplicationData *)self uuid];
+  parentUUID = [(HMDApplicationData *)self parentUUID];
+  if (isEmpty)
   {
-    v9 = [(HMDBackingStoreModelObject *)v6 initWithObjectChangeType:3 uuid:v7 parentUUID:v8];
+    v9 = [(HMDBackingStoreModelObject *)v6 initWithObjectChangeType:3 uuid:uuid parentUUID:parentUUID];
   }
 
   else
   {
-    v9 = [(HMDBackingStoreModelObject *)v6 initWithObjectChangeType:a3 uuid:v7 parentUUID:v8];
+    v9 = [(HMDBackingStoreModelObject *)v6 initWithObjectChangeType:type uuid:uuid parentUUID:parentUUID];
 
-    v7 = [(HMDApplicationData *)self appDataDictionary];
-    v8 = [v7 copy];
-    [(HMDApplicationDataModel *)v9 setAppDataDictionary:v8];
+    uuid = [(HMDApplicationData *)self appDataDictionary];
+    parentUUID = [uuid copy];
+    [(HMDApplicationDataModel *)v9 setAppDataDictionary:parentUUID];
   }
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(HMDApplicationData *)self parentUUID];
-  v6 = [v5 UUIDString];
-  [v8 encodeObject:v6 forKey:@"HM.appDataParentUUID"];
+  parentUUID = [(HMDApplicationData *)self parentUUID];
+  uUIDString = [parentUUID UUIDString];
+  [coderCopy encodeObject:uUIDString forKey:@"HM.appDataParentUUID"];
 
-  v7 = [(HMDApplicationData *)self appDataDictionary];
-  [v8 encodeObject:v7 forKey:@"HM.appData"];
+  appDataDictionary = [(HMDApplicationData *)self appDataDictionary];
+  [coderCopy encodeObject:appDataDictionary forKey:@"HM.appData"];
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (HMDApplicationData)initWithCoder:(id)a3
+- (HMDApplicationData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = HMDApplicationData;
   v5 = [(HMDApplicationData *)&v16 init];
@@ -77,22 +77,22 @@
   {
     v6 = objc_autoreleasePoolPush();
     v7 = objc_alloc(MEMORY[0x277CCAD78]);
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.appDataParentUUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.appDataParentUUID"];
     v9 = [v7 initWithUUIDString:v8];
     parentUUID = v5->_parentUUID;
     v5->_parentUUID = v9;
 
-    v11 = [MEMORY[0x277CD1818] allowedObjectClasses];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"HM.appData"];
+    allowedObjectClasses = [MEMORY[0x277CD1818] allowedObjectClasses];
+    v12 = [coderCopy decodeObjectOfClasses:allowedObjectClasses forKey:@"HM.appData"];
 
     v13 = [v12 mutableCopy];
-    v14 = v13;
+    dictionary = v13;
     if (!v13)
     {
-      v14 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
-    objc_storeStrong(&v5->_appDataDictionary, v14);
+    objc_storeStrong(&v5->_appDataDictionary, dictionary);
     if (!v13)
     {
     }
@@ -103,76 +103,76 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HMDApplicationData alloc];
-  v5 = [(HMDApplicationData *)self appDataDictionary];
-  v6 = [(HMDApplicationData *)self parentUUID];
-  v7 = [(HMDApplicationData *)v4 initWithDictionary:v5 parentUUID:v6];
+  appDataDictionary = [(HMDApplicationData *)self appDataDictionary];
+  parentUUID = [(HMDApplicationData *)self parentUUID];
+  v7 = [(HMDApplicationData *)v4 initWithDictionary:appDataDictionary parentUUID:parentUUID];
 
   return v7;
 }
 
-- (void)encodeForXPCTransportWithCoder:(id)a3 key:(id)a4
+- (void)encodeForXPCTransportWithCoder:(id)coder key:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v9 hmd_isForXPCTransportEntitledForSPIAccess])
+  coderCopy = coder;
+  keyCopy = key;
+  if ([coderCopy hmd_isForXPCTransportEntitledForSPIAccess])
   {
-    v7 = @"com.apple.homekit-entitledclient.identifer";
+    hmd_clientIdentifier = @"com.apple.homekit-entitledclient.identifer";
   }
 
   else
   {
-    v7 = [v9 hmd_clientIdentifier];
+    hmd_clientIdentifier = [coderCopy hmd_clientIdentifier];
   }
 
-  v8 = [(HMDApplicationData *)self applicationDataForIdentifier:v7];
+  v8 = [(HMDApplicationData *)self applicationDataForIdentifier:hmd_clientIdentifier];
   if (v8)
   {
-    [v9 encodeObject:v8 forKey:v6];
+    [coderCopy encodeObject:v8 forKey:keyCopy];
   }
 }
 
-- (void)updateParentUUIDIfNil:(id)a3
+- (void)updateParentUUIDIfNil:(id)nil
 {
-  v10 = a3;
+  nilCopy = nil;
   parentUUID = self->_parentUUID;
   if (!parentUUID || ([MEMORY[0x277CCAD78] zeroUUID], v6 = objc_claimAutoreleasedReturnValue(), v7 = -[NSUUID isEqual:](parentUUID, "isEqual:", v6), v6, v7))
   {
-    objc_storeStrong(&self->_parentUUID, a3);
+    objc_storeStrong(&self->_parentUUID, nil);
     v8 = [MEMORY[0x277CCAD78] hm_deriveUUIDFromBaseUUID:self->_parentUUID identifierSalt:0 withSalts:&unk_286626C80];
     uuid = self->_uuid;
     self->_uuid = v8;
   }
 }
 
-- (void)updateWithModel:(id)a3
+- (void)updateWithModel:(id)model
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 appDataDictionary];
+  modelCopy = model;
+  appDataDictionary = [modelCopy appDataDictionary];
 
-  if (v5)
+  if (appDataDictionary)
   {
-    v6 = [v4 appDataDictionary];
-    v7 = [v6 mutableCopy];
+    appDataDictionary2 = [modelCopy appDataDictionary];
+    v7 = [appDataDictionary2 mutableCopy];
     [(HMDApplicationData *)self setAppDataDictionary:v7];
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [(HMDApplicationData *)v9 appDataDictionary];
-      v13 = [(HMDApplicationData *)v9 parentUUID];
+      appDataDictionary3 = [(HMDApplicationData *)selfCopy appDataDictionary];
+      parentUUID = [(HMDApplicationData *)selfCopy parentUUID];
       v18 = 138543874;
       v19 = v11;
       v20 = 2112;
-      v21 = v12;
+      v21 = appDataDictionary3;
       v22 = 2112;
-      v23 = v13;
+      v23 = parentUUID;
       _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_DEBUG, "%{public}@Updating the application data from transaction: %@ / %@", &v18, 0x20u);
 
 LABEL_6:
@@ -181,20 +181,20 @@ LABEL_6:
 
   else
   {
-    v14 = [(HMDApplicationData *)self appDataDictionary];
-    [v14 removeAllObjects];
+    appDataDictionary4 = [(HMDApplicationData *)self appDataDictionary];
+    [appDataDictionary4 removeAllObjects];
 
     v8 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v16 = [(HMDApplicationData *)v15 parentUUID];
+      parentUUID2 = [(HMDApplicationData *)selfCopy2 parentUUID];
       v18 = 138543618;
       v19 = v11;
       v20 = 2112;
-      v21 = v16;
+      v21 = parentUUID2;
       _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Removing entire app data for container: %@", &v18, 0x16u);
 
       goto LABEL_6;
@@ -205,7 +205,7 @@ LABEL_6:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
   v36 = *MEMORY[0x277D85DE8];
   [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
@@ -231,11 +231,11 @@ LABEL_6:
 
         v25 = v4;
         v5 = *(*(&v30 + 1) + 8 * v4);
-        v6 = [(HMDApplicationData *)v21 appDataDictionary];
+        appDataDictionary = [(HMDApplicationData *)v21 appDataDictionary];
         v24 = v5;
-        v7 = [v6 hmf_dictionaryForKey:v5];
+        v7 = [appDataDictionary hmf_dictionaryForKey:v5];
 
-        v8 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
@@ -259,13 +259,13 @@ LABEL_6:
               v15 = [v9 objectForKeyedSubscript:v14];
               if (objc_opt_respondsToSelector())
               {
-                v16 = [v15 shortDescription];
-                [v8 setObject:v16 forKeyedSubscript:v14];
+                shortDescription = [v15 shortDescription];
+                [dictionary setObject:shortDescription forKeyedSubscript:v14];
               }
 
               else
               {
-                [v8 setObject:v15 forKeyedSubscript:v14];
+                [dictionary setObject:v15 forKeyedSubscript:v14];
               }
             }
 
@@ -275,7 +275,7 @@ LABEL_6:
           while (v11);
         }
 
-        [v22 setObject:v8 forKeyedSubscript:v24];
+        [v22 setObject:dictionary forKeyedSubscript:v24];
         v4 = v25 + 1;
       }
 
@@ -293,34 +293,34 @@ LABEL_6:
 
 - (id)dictionary
 {
-  v2 = [(HMDApplicationData *)self appDataDictionary];
-  v3 = [v2 copy];
+  appDataDictionary = [(HMDApplicationData *)self appDataDictionary];
+  v3 = [appDataDictionary copy];
 
   return v3;
 }
 
-- (id)applicationDataForIdentifier:(id)a3
+- (id)applicationDataForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HMDApplicationData *)self appDataDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  appDataDictionary = [(HMDApplicationData *)self appDataDictionary];
+  v6 = [appDataDictionary objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (void)removeApplicationDataForIdentifier:(id)a3
+- (void)removeApplicationDataForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HMDApplicationData *)self appDataDictionary];
-  [v5 setObject:0 forKeyedSubscript:v4];
+  identifierCopy = identifier;
+  appDataDictionary = [(HMDApplicationData *)self appDataDictionary];
+  [appDataDictionary setObject:0 forKeyedSubscript:identifierCopy];
 }
 
-- (void)setApplicationData:(id)a3 forIdentifier:(id)a4
+- (void)setApplicationData:(id)data forIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDApplicationData *)self appDataDictionary];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  identifierCopy = identifier;
+  dataCopy = data;
+  appDataDictionary = [(HMDApplicationData *)self appDataDictionary];
+  [appDataDictionary setObject:dataCopy forKeyedSubscript:identifierCopy];
 }
 
 - (NSUUID)uuid
@@ -332,16 +332,16 @@ LABEL_6:
     v7 = v6;
     if (v6)
     {
-      v8 = v6;
+      zeroUUID = v6;
     }
 
     else
     {
-      v8 = [MEMORY[0x277CCAD78] zeroUUID];
+      zeroUUID = [MEMORY[0x277CCAD78] zeroUUID];
     }
 
     v9 = self->_uuid;
-    self->_uuid = v8;
+    self->_uuid = zeroUUID;
   }
 
   v10 = self->_uuid;
@@ -351,38 +351,38 @@ LABEL_6:
 
 - (BOOL)isEmpty
 {
-  v2 = [(HMDApplicationData *)self appDataDictionary];
-  v3 = [v2 count] == 0;
+  appDataDictionary = [(HMDApplicationData *)self appDataDictionary];
+  v3 = [appDataDictionary count] == 0;
 
   return v3;
 }
 
-- (HMDApplicationData)initWithDictionary:(id)a3 parentUUID:(id)a4
+- (HMDApplicationData)initWithDictionary:(id)dictionary parentUUID:(id)d
 {
-  v6 = a3;
-  v7 = [(HMDApplicationData *)self initWithParentUUID:a4];
+  dictionaryCopy = dictionary;
+  v7 = [(HMDApplicationData *)self initWithParentUUID:d];
   v8 = v7;
-  if (v6 && v7)
+  if (dictionaryCopy && v7)
   {
-    [(NSMutableDictionary *)v7->_appDataDictionary setDictionary:v6];
+    [(NSMutableDictionary *)v7->_appDataDictionary setDictionary:dictionaryCopy];
   }
 
   return v8;
 }
 
-- (HMDApplicationData)initWithParentUUID:(id)a3
+- (HMDApplicationData)initWithParentUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = HMDApplicationData;
   v5 = [(HMDApplicationData *)&v11 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     appDataDictionary = v5->_appDataDictionary;
-    v5->_appDataDictionary = v6;
+    v5->_appDataDictionary = dictionary;
 
-    v8 = [v4 copy];
+    v8 = [dCopy copy];
     parentUUID = v5->_parentUUID;
     v5->_parentUUID = v8;
   }

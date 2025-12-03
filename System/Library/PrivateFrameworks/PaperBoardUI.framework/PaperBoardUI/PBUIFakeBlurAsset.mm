@@ -1,7 +1,7 @@
 @interface PBUIFakeBlurAsset
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)initWithActualStyle:(void *)a3 imageURL:(void *)a4 image:;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)initWithActualStyle:(void *)style imageURL:(void *)l image:;
 - (id)succinctDescription;
 - (uint64_t)actualStyle;
 - (uint64_t)image;
@@ -20,15 +20,15 @@
   return result;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PBUIFakeBlurAsset *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PBUIFakeBlurAsset *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v5 = PBUIWallpaperStyleDescription(self->_actualStyle);
@@ -42,10 +42,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(PBUIFakeBlurAsset *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PBUIFakeBlurAsset *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (uint64_t)actualStyle
@@ -68,28 +68,28 @@
   return result;
 }
 
-- (id)initWithActualStyle:(void *)a3 imageURL:(void *)a4 image:
+- (id)initWithActualStyle:(void *)style imageURL:(void *)l image:
 {
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  styleCopy = style;
+  lCopy = l;
+  if (self)
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = PBUIFakeBlurAsset;
     v9 = objc_msgSendSuper2(&v13, sel_init);
-    a1 = v9;
+    self = v9;
     if (v9)
     {
       v9[1] = a2;
-      v10 = [v7 copy];
-      v11 = a1[2];
-      a1[2] = v10;
+      v10 = [styleCopy copy];
+      v11 = self[2];
+      self[2] = v10;
 
-      objc_storeStrong(a1 + 3, a4);
+      objc_storeStrong(self + 3, l);
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

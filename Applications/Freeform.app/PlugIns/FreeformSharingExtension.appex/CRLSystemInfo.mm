@@ -83,17 +83,17 @@
 + (NSString)operatingSystemName
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 systemName];
+  systemName = [v2 systemName];
 
-  return v3;
+  return systemName;
 }
 
 + (NSString)systemVersion
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 systemVersion];
+  systemVersion = [v2 systemVersion];
 
-  return v3;
+  return systemVersion;
 }
 
 + (NSString)osVersion
@@ -123,15 +123,15 @@
 + (NSString)deviceName
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 name];
+  name = [v2 name];
 
-  if (v3 && ![v3 length])
+  if (name && ![name length])
   {
 
-    v3 = 0;
+    name = 0;
   }
 
-  return v3;
+  return name;
 }
 
 @end

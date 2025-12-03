@@ -1,24 +1,24 @@
 @interface SymbolCollectionViewCell
-- (SymbolCollectionViewCell)initWithFrame:(CGRect)a3;
+- (SymbolCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)_setSelectionRingBorderColor;
 - (void)_updateUIForSelectionState;
-- (void)setShowsSelection:(BOOL)a3;
-- (void)setSymbolName:(id)a3;
+- (void)setShowsSelection:(BOOL)selection;
+- (void)setSymbolName:(id)name;
 @end
 
 @implementation SymbolCollectionViewCell
 
-- (SymbolCollectionViewCell)initWithFrame:(CGRect)a3
+- (SymbolCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v45.receiver = self;
   v45.super_class = SymbolCollectionViewCell;
-  v3 = [(SymbolCollectionViewCell *)&v45 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SymbolCollectionViewCell *)&v45 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SymbolCollectionViewCell *)v3 contentView];
+    contentView = [(SymbolCollectionViewCell *)v3 contentView];
     v6 = +[UIColor secondarySystemGroupedBackgroundColor];
-    [v5 setBackgroundColor:v6];
+    [contentView setBackgroundColor:v6];
 
     v7 = +[UIColor systemBlueColor];
     [(SymbolCollectionViewCell *)v4 setTintColor:v7];
@@ -31,36 +31,36 @@
     [(UIImageView *)v4->_imageView setPreferredSymbolConfiguration:v10];
 
     [(UIImageView *)v4->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v5 addSubview:v4->_imageView];
-    v44 = [(UIImageView *)v4->_imageView centerXAnchor];
-    v43 = [v5 centerXAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43];
+    [contentView addSubview:v4->_imageView];
+    centerXAnchor = [(UIImageView *)v4->_imageView centerXAnchor];
+    centerXAnchor2 = [contentView centerXAnchor];
+    v42 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v46[0] = v42;
-    v41 = [(UIImageView *)v4->_imageView centerYAnchor];
-    v40 = [v5 centerYAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    centerYAnchor = [(UIImageView *)v4->_imageView centerYAnchor];
+    centerYAnchor2 = [contentView centerYAnchor];
+    v39 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v46[1] = v39;
-    v38 = [(UIImageView *)v4->_imageView widthAnchor];
-    v37 = [v38 constraintEqualToConstant:0.0];
+    widthAnchor = [(UIImageView *)v4->_imageView widthAnchor];
+    v37 = [widthAnchor constraintEqualToConstant:0.0];
     LODWORD(v11) = 1132003328;
     v36 = [v37 sf_withPriority:v11];
     v46[2] = v36;
-    v35 = [(UIImageView *)v4->_imageView heightAnchor];
-    v34 = [v35 constraintEqualToConstant:0.0];
+    heightAnchor = [(UIImageView *)v4->_imageView heightAnchor];
+    v34 = [heightAnchor constraintEqualToConstant:0.0];
     LODWORD(v12) = 1132003328;
     v33 = [v34 sf_withPriority:v12];
     v46[3] = v33;
-    v32 = [v5 widthAnchor];
-    v31 = [(UIImageView *)v4->_imageView widthAnchor];
-    v13 = [v32 constraintGreaterThanOrEqualToAnchor:v31 constant:4.0];
+    widthAnchor2 = [contentView widthAnchor];
+    widthAnchor3 = [(UIImageView *)v4->_imageView widthAnchor];
+    v13 = [widthAnchor2 constraintGreaterThanOrEqualToAnchor:widthAnchor3 constant:4.0];
     v46[4] = v13;
-    v14 = [v5 heightAnchor];
-    v15 = [(UIImageView *)v4->_imageView heightAnchor];
-    v16 = [v14 constraintGreaterThanOrEqualToAnchor:v15 constant:4.0];
+    heightAnchor2 = [contentView heightAnchor];
+    heightAnchor3 = [(UIImageView *)v4->_imageView heightAnchor];
+    v16 = [heightAnchor2 constraintGreaterThanOrEqualToAnchor:heightAnchor3 constant:4.0];
     v46[5] = v16;
-    v17 = [v5 widthAnchor];
-    v18 = [v5 heightAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    widthAnchor4 = [contentView widthAnchor];
+    heightAnchor4 = [contentView heightAnchor];
+    v19 = [widthAnchor4 constraintEqualToAnchor:heightAnchor4];
     v46[6] = v19;
     v20 = [NSArray arrayWithObjects:v46 count:7];
     [NSLayoutConstraint activateConstraints:v20];
@@ -71,17 +71,17 @@
     v4->_selectionRingView = v21;
 
     [(CircularCornerView *)v4->_selectionRingView setAlpha:0.0];
-    v23 = [(CircularCornerView *)v4->_selectionRingView layer];
-    [v23 setBorderWidth:3.0];
+    layer = [(CircularCornerView *)v4->_selectionRingView layer];
+    [layer setBorderWidth:3.0];
 
     [(CircularCornerView *)v4->_selectionRingView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v24 = [(SymbolCollectionViewCell *)v4 tintColor];
-    v25 = [v24 colorWithAlphaComponent:0.2];
+    tintColor = [(SymbolCollectionViewCell *)v4 tintColor];
+    v25 = [tintColor colorWithAlphaComponent:0.2];
     [(CircularCornerView *)v4->_selectionRingView setBackgroundColor:v25];
 
     [(SymbolCollectionViewCell *)v4 _setSelectionRingBorderColor];
-    [v5 addSubview:v4->_selectionRingView];
-    v26 = [NSLayoutConstraint safari_constraintsMatchingFrameOfView:v4->_selectionRingView withFrameOfView:v5];
+    [contentView addSubview:v4->_selectionRingView];
+    v26 = [NSLayoutConstraint safari_constraintsMatchingFrameOfView:v4->_selectionRingView withFrameOfView:contentView];
     [NSLayoutConstraint activateConstraints:v26];
 
     v27 = +[UITraitCollection systemTraitsAffectingColorAppearance];
@@ -93,11 +93,11 @@
   return v4;
 }
 
-- (void)setSymbolName:(id)a3
+- (void)setSymbolName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   symbolName = self->_symbolName;
-  v9 = v4;
+  v9 = nameCopy;
   if ((WBSIsEqual() & 1) == 0)
   {
     v6 = [v9 copy];
@@ -109,12 +109,12 @@
   }
 }
 
-- (void)setShowsSelection:(BOOL)a3
+- (void)setShowsSelection:(BOOL)selection
 {
-  if (self->_showsSelection != a3)
+  if (self->_showsSelection != selection)
   {
-    self->_showsSelection = a3;
-    if (a3)
+    self->_showsSelection = selection;
+    if (selection)
     {
       v5[5] = v3;
       v5[6] = v4;
@@ -153,10 +153,10 @@
 
 - (void)_setSelectionRingBorderColor
 {
-  v5 = [(SymbolCollectionViewCell *)self tintColor];
-  v3 = [v5 cgColor];
-  v4 = [(CircularCornerView *)self->_selectionRingView layer];
-  [v4 setBorderColor:v3];
+  tintColor = [(SymbolCollectionViewCell *)self tintColor];
+  cgColor = [tintColor cgColor];
+  layer = [(CircularCornerView *)self->_selectionRingView layer];
+  [layer setBorderColor:cgColor];
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface BMCommAppsHoldAssistFedStats
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMCommAppsHoldAssistFedStats)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMCommAppsHoldAssistFedStats)initWithProtoVersion:(id)a3 remotePhoneNumber:(id)a4 holdDuration:(id)a5 holdAssistMLClassification:(int)a6 holdAssistRecommendation:(int)a7 holdAssistObservation:(int)a8 remotePhoneNumberCountryCode:(id)a9;
-- (BOOL)isEqual:(id)a3;
+- (BMCommAppsHoldAssistFedStats)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMCommAppsHoldAssistFedStats)initWithProtoVersion:(id)version remotePhoneNumber:(id)number holdDuration:(id)duration holdAssistMLClassification:(int)classification holdAssistRecommendation:(int)recommendation holdAssistObservation:(int)observation remotePhoneNumberCountryCode:(id)code;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMCommAppsHoldAssistFedStats
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMCommAppsHoldAssistFedStats hasProtoVersion](self, "hasProtoVersion") || [v5 hasProtoVersion])
     {
       if (![(BMCommAppsHoldAssistFedStats *)self hasProtoVersion])
@@ -33,25 +33,25 @@
         goto LABEL_22;
       }
 
-      v6 = [(BMCommAppsHoldAssistFedStats *)self protoVersion];
-      if (v6 != [v5 protoVersion])
+      protoVersion = [(BMCommAppsHoldAssistFedStats *)self protoVersion];
+      if (protoVersion != [v5 protoVersion])
       {
         goto LABEL_22;
       }
     }
 
-    v7 = [(BMCommAppsHoldAssistFedStats *)self remotePhoneNumber];
-    v8 = [v5 remotePhoneNumber];
-    v9 = v8;
-    if (v7 == v8)
+    remotePhoneNumber = [(BMCommAppsHoldAssistFedStats *)self remotePhoneNumber];
+    remotePhoneNumber2 = [v5 remotePhoneNumber];
+    v9 = remotePhoneNumber2;
+    if (remotePhoneNumber == remotePhoneNumber2)
     {
     }
 
     else
     {
-      v10 = [(BMCommAppsHoldAssistFedStats *)self remotePhoneNumber];
-      v11 = [v5 remotePhoneNumber];
-      v12 = [v10 isEqual:v11];
+      remotePhoneNumber3 = [(BMCommAppsHoldAssistFedStats *)self remotePhoneNumber];
+      remotePhoneNumber4 = [v5 remotePhoneNumber];
+      v12 = [remotePhoneNumber3 isEqual:remotePhoneNumber4];
 
       if (!v12)
       {
@@ -61,27 +61,27 @@
 
     if (!-[BMCommAppsHoldAssistFedStats hasHoldDuration](self, "hasHoldDuration") && ![v5 hasHoldDuration] || -[BMCommAppsHoldAssistFedStats hasHoldDuration](self, "hasHoldDuration") && objc_msgSend(v5, "hasHoldDuration") && (v14 = -[BMCommAppsHoldAssistFedStats holdDuration](self, "holdDuration"), v14 == objc_msgSend(v5, "holdDuration")))
     {
-      v15 = [(BMCommAppsHoldAssistFedStats *)self holdAssistMLClassification];
-      if (v15 == [v5 holdAssistMLClassification])
+      holdAssistMLClassification = [(BMCommAppsHoldAssistFedStats *)self holdAssistMLClassification];
+      if (holdAssistMLClassification == [v5 holdAssistMLClassification])
       {
-        v16 = [(BMCommAppsHoldAssistFedStats *)self holdAssistRecommendation];
-        if (v16 == [v5 holdAssistRecommendation])
+        holdAssistRecommendation = [(BMCommAppsHoldAssistFedStats *)self holdAssistRecommendation];
+        if (holdAssistRecommendation == [v5 holdAssistRecommendation])
         {
-          v17 = [(BMCommAppsHoldAssistFedStats *)self holdAssistObservation];
-          if (v17 == [v5 holdAssistObservation])
+          holdAssistObservation = [(BMCommAppsHoldAssistFedStats *)self holdAssistObservation];
+          if (holdAssistObservation == [v5 holdAssistObservation])
           {
-            v18 = [(BMCommAppsHoldAssistFedStats *)self remotePhoneNumberCountryCode];
-            v19 = [v5 remotePhoneNumberCountryCode];
-            if (v18 == v19)
+            remotePhoneNumberCountryCode = [(BMCommAppsHoldAssistFedStats *)self remotePhoneNumberCountryCode];
+            remotePhoneNumberCountryCode2 = [v5 remotePhoneNumberCountryCode];
+            if (remotePhoneNumberCountryCode == remotePhoneNumberCountryCode2)
             {
               v13 = 1;
             }
 
             else
             {
-              v20 = [(BMCommAppsHoldAssistFedStats *)self remotePhoneNumberCountryCode];
-              v21 = [v5 remotePhoneNumberCountryCode];
-              v13 = [v20 isEqual:v21];
+              remotePhoneNumberCountryCode3 = [(BMCommAppsHoldAssistFedStats *)self remotePhoneNumberCountryCode];
+              remotePhoneNumberCountryCode4 = [v5 remotePhoneNumberCountryCode];
+              v13 = [remotePhoneNumberCountryCode3 isEqual:remotePhoneNumberCountryCode4];
             }
 
             goto LABEL_23;
@@ -116,7 +116,7 @@ LABEL_24:
     v3 = 0;
   }
 
-  v4 = [(BMCommAppsHoldAssistFedStats *)self remotePhoneNumber];
+  remotePhoneNumber = [(BMCommAppsHoldAssistFedStats *)self remotePhoneNumber];
   if ([(BMCommAppsHoldAssistFedStats *)self hasHoldDuration])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMCommAppsHoldAssistFedStats holdDuration](self, "holdDuration")}];
@@ -130,70 +130,70 @@ LABEL_24:
   v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMCommAppsHoldAssistFedStats holdAssistMLClassification](self, "holdAssistMLClassification")}];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMCommAppsHoldAssistFedStats holdAssistRecommendation](self, "holdAssistRecommendation")}];
   v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMCommAppsHoldAssistFedStats holdAssistObservation](self, "holdAssistObservation")}];
-  v9 = [(BMCommAppsHoldAssistFedStats *)self remotePhoneNumberCountryCode];
+  remotePhoneNumberCountryCode = [(BMCommAppsHoldAssistFedStats *)self remotePhoneNumberCountryCode];
   v25[0] = @"protoVersion";
-  v10 = v3;
+  null = v3;
   if (!v3)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v10;
-  v26[0] = v10;
+  v22 = null;
+  v26[0] = null;
   v25[1] = @"remotePhoneNumber";
-  v11 = v4;
-  if (!v4)
+  null2 = remotePhoneNumber;
+  if (!remotePhoneNumber)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v11;
-  v26[1] = v11;
+  v21 = null2;
+  v26[1] = null2;
   v25[2] = @"holdDuration";
-  v12 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v24 = v3;
-  v20 = v12;
-  v26[2] = v12;
+  v20 = null3;
+  v26[2] = null3;
   v25[3] = @"holdAssistMLClassification";
-  v13 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v4;
-  v26[3] = v13;
+  v23 = remotePhoneNumber;
+  v26[3] = null4;
   v25[4] = @"holdAssistRecommendation";
-  v14 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v14;
+  v26[4] = null5;
   v25[5] = @"holdAssistObservation";
-  v15 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[5] = v15;
+  v26[5] = null6;
   v25[6] = @"remotePhoneNumberCountryCode";
-  v16 = v9;
-  if (!v9)
+  null7 = remotePhoneNumberCountryCode;
+  if (!remotePhoneNumberCountryCode)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[6] = v16;
+  v26[6] = null7;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:7];
-  if (v9)
+  if (remotePhoneNumberCountryCode)
   {
     if (v8)
     {
@@ -264,22 +264,22 @@ LABEL_29:
   return v17;
 }
 
-- (BMCommAppsHoldAssistFedStats)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMCommAppsHoldAssistFedStats)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v83[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"protoVersion"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"protoVersion"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v68 = 0;
 LABEL_4:
-    v7 = [v5 objectForKeyedSubscript:@"remotePhoneNumber"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"remotePhoneNumber"];
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v8 = 0;
           v18 = 0;
@@ -287,7 +287,7 @@ LABEL_4:
         }
 
         v19 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v20 = a4;
+        errorCopy = error;
         v21 = *MEMORY[0x1E698F240];
         v80 = *MEMORY[0x1E696A578];
         v67 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"remotePhoneNumber"];
@@ -297,7 +297,7 @@ LABEL_4:
         v10 = v22;
         v8 = 0;
         v18 = 0;
-        *v20 = [v23 initWithDomain:v21 code:2 userInfo:v22];
+        *errorCopy = [v23 initWithDomain:v21 code:2 userInfo:v22];
         goto LABEL_56;
       }
 
@@ -309,14 +309,14 @@ LABEL_4:
       v8 = 0;
     }
 
-    v9 = [v5 objectForKeyedSubscript:@"holdDuration"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"holdDuration"];
     v63 = v9;
     if (v9 && (v10 = v9, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v67 = 0;
           v18 = 0;
@@ -324,7 +324,7 @@ LABEL_4:
         }
 
         v24 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v25 = a4;
+        errorCopy2 = error;
         v26 = *MEMORY[0x1E698F240];
         v78 = *MEMORY[0x1E696A578];
         v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"holdDuration"];
@@ -335,7 +335,7 @@ LABEL_4:
         v62 = v27;
         v67 = 0;
         v18 = 0;
-        *v25 = [v28 initWithDomain:v26 code:2 userInfo:?];
+        *errorCopy2 = [v28 initWithDomain:v26 code:2 userInfo:?];
 LABEL_55:
 
 LABEL_56:
@@ -350,7 +350,7 @@ LABEL_56:
       v67 = 0;
     }
 
-    v11 = [v5 objectForKeyedSubscript:@"holdAssistMLClassification"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"holdAssistMLClassification"];
     v62 = v11;
     if (v11 && (v12 = v11, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -365,7 +365,7 @@ LABEL_56:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v13 = 0;
             v18 = 0;
@@ -382,7 +382,7 @@ LABEL_56:
           v52 = [v50 initWithDomain:v51 code:2 userInfo:v44];
           v13 = 0;
           v18 = 0;
-          *a4 = v52;
+          *error = v52;
           goto LABEL_53;
         }
 
@@ -397,7 +397,7 @@ LABEL_56:
       v13 = 0;
     }
 
-    v29 = [v5 objectForKeyedSubscript:@"holdAssistRecommendation"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"holdAssistRecommendation"];
     v60 = v29;
     v61 = v6;
     v65 = v8;
@@ -414,7 +414,7 @@ LABEL_56:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v66 = 0;
             v18 = 0;
@@ -433,7 +433,7 @@ LABEL_56:
           v55 = [v53 initWithDomain:v54 code:2 userInfo:v32];
           v66 = 0;
           v18 = 0;
-          *a4 = v55;
+          *error = v55;
           goto LABEL_52;
         }
 
@@ -448,7 +448,7 @@ LABEL_56:
       v66 = 0;
     }
 
-    v32 = [v5 objectForKeyedSubscript:@"holdAssistObservation"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"holdAssistObservation"];
     if (v32 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -462,7 +462,7 @@ LABEL_56:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v64 = 0;
             v18 = 0;
@@ -479,7 +479,7 @@ LABEL_56:
           v58 = [v56 initWithDomain:v57 code:2 userInfo:v34];
           v64 = 0;
           v18 = 0;
-          *a4 = v58;
+          *error = v58;
           goto LABEL_50;
         }
 
@@ -494,14 +494,14 @@ LABEL_56:
       v64 = 0;
     }
 
-    v34 = [v5 objectForKeyedSubscript:@"remotePhoneNumberCountryCode"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"remotePhoneNumberCountryCode"];
     if (v34 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v44 = v60;
-        if (a4)
+        if (error)
         {
           v47 = objc_alloc(MEMORY[0x1E696ABC0]);
           v59 = *MEMORY[0x1E698F240];
@@ -509,7 +509,7 @@ LABEL_56:
           v48 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"remotePhoneNumberCountryCode"];
           v71 = v48;
           v49 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v71 forKeys:&v70 count:1];
-          *a4 = [v47 initWithDomain:v59 code:2 userInfo:v49];
+          *error = [v47 initWithDomain:v59 code:2 userInfo:v49];
         }
 
         v38 = 0;
@@ -519,7 +519,7 @@ LABEL_56:
 
       v35 = v7;
       v37 = v68;
-      v36 = self;
+      selfCopy2 = self;
       v38 = v34;
     }
 
@@ -527,18 +527,18 @@ LABEL_56:
     {
       v35 = v7;
       v37 = v68;
-      v36 = self;
+      selfCopy2 = self;
       v38 = 0;
     }
 
-    v39 = [v13 intValue];
+    intValue = [v13 intValue];
     v40 = v13;
-    v41 = [v66 intValue];
-    v42 = [v64 intValue];
+    intValue2 = [v66 intValue];
+    intValue3 = [v64 intValue];
     v68 = v37;
-    v43 = v41;
+    v43 = intValue2;
     v13 = v40;
-    v18 = [(BMCommAppsHoldAssistFedStats *)v36 initWithProtoVersion:v37 remotePhoneNumber:v65 holdDuration:v67 holdAssistMLClassification:v39 holdAssistRecommendation:v43 holdAssistObservation:v42 remotePhoneNumberCountryCode:v38];
+    v18 = [(BMCommAppsHoldAssistFedStats *)selfCopy2 initWithProtoVersion:v37 remotePhoneNumber:v65 holdDuration:v67 holdAssistMLClassification:intValue holdAssistRecommendation:v43 holdAssistObservation:intValue3 remotePhoneNumberCountryCode:v38];
     self = v18;
     v7 = v35;
 LABEL_50:
@@ -562,7 +562,7 @@ LABEL_54:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v68 = 0;
     v18 = 0;
@@ -570,7 +570,7 @@ LABEL_54:
   }
 
   v15 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v16 = a4;
+  errorCopy3 = error;
   v17 = *MEMORY[0x1E698F240];
   v82 = *MEMORY[0x1E696A578];
   v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"protoVersion"];
@@ -578,7 +578,7 @@ LABEL_54:
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v83 forKeys:&v82 count:1];
   v68 = 0;
   v18 = 0;
-  *v16 = [v15 initWithDomain:v17 code:2 userInfo:v7];
+  *errorCopy3 = [v15 initWithDomain:v17 code:2 userInfo:v7];
 LABEL_57:
 
 LABEL_58:
@@ -590,14 +590,14 @@ LABEL_58:
 {
   v3 = objc_opt_new();
   [(BMCommAppsHoldAssistFedStats *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_hasProtoVersion)
   {
     protoVersion = self->_protoVersion;
@@ -627,9 +627,9 @@ LABEL_58:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v54.receiver = self;
   v54.super_class = BMCommAppsHoldAssistFedStats;
   v5 = [(BMEventBase *)&v54 init];
@@ -638,12 +638,12 @@ LABEL_58:
     goto LABEL_102;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -654,18 +654,18 @@ LABEL_58:
       while (1)
       {
         v55 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v55 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v55 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v55 & 0x7F) << v7;
@@ -683,9 +683,9 @@ LABEL_58:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -702,18 +702,18 @@ LABEL_16:
           while (1)
           {
             v55 = 0;
-            v38 = [v4 position] + 1;
-            if (v38 >= [v4 position] && (v39 = objc_msgSend(v4, "position") + 1, v39 <= objc_msgSend(v4, "length")))
+            v38 = [fromCopy position] + 1;
+            if (v38 >= [fromCopy position] && (v39 = objc_msgSend(fromCopy, "position") + 1, v39 <= objc_msgSend(fromCopy, "length")))
             {
-              v40 = [v4 data];
-              [v40 getBytes:&v55 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v55 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v37 |= (v55 & 0x7F) << v35;
@@ -731,7 +731,7 @@ LABEL_16:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v29 = 0;
           }
@@ -762,18 +762,18 @@ LABEL_98:
           while (1)
           {
             v55 = 0;
-            v26 = [v4 position] + 1;
-            if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+            v26 = [fromCopy position] + 1;
+            if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
             {
-              v28 = [v4 data];
-              [v28 getBytes:&v55 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v55 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v25 |= (v55 & 0x7F) << v23;
@@ -791,7 +791,7 @@ LABEL_98:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v29 = 0;
           }
@@ -822,18 +822,18 @@ LABEL_97:
             while (1)
             {
               v55 = 0;
-              v43 = [v4 position] + 1;
-              if (v43 >= [v4 position] && (v44 = objc_msgSend(v4, "position") + 1, v44 <= objc_msgSend(v4, "length")))
+              v43 = [fromCopy position] + 1;
+              if (v43 >= [fromCopy position] && (v44 = objc_msgSend(fromCopy, "position") + 1, v44 <= objc_msgSend(fromCopy, "length")))
               {
-                v45 = [v4 data];
-                [v45 getBytes:&v55 range:{objc_msgSend(v4, "position"), 1}];
+                data4 = [fromCopy data];
+                [data4 getBytes:&v55 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v55 & 0x7F) << v41;
@@ -850,7 +850,7 @@ LABEL_97:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 5)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 5)
             {
 LABEL_83:
               LODWORD(v18) = 0;
@@ -872,18 +872,18 @@ LABEL_83:
             while (1)
             {
               v55 = 0;
-              v19 = [v4 position] + 1;
-              if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+              v19 = [fromCopy position] + 1;
+              if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
               {
-                v21 = [v4 data];
-                [v21 getBytes:&v55 range:{objc_msgSend(v4, "position"), 1}];
+                data5 = [fromCopy data];
+                [data5 getBytes:&v55 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v55 & 0x7F) << v16;
@@ -900,7 +900,7 @@ LABEL_83:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 3)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 3)
             {
 LABEL_87:
               LODWORD(v18) = 0;
@@ -933,18 +933,18 @@ LABEL_63:
           while (1)
           {
             v55 = 0;
-            v32 = [v4 position] + 1;
-            if (v32 >= [v4 position] && (v33 = objc_msgSend(v4, "position") + 1, v33 <= objc_msgSend(v4, "length")))
+            v32 = [fromCopy position] + 1;
+            if (v32 >= [fromCopy position] && (v33 = objc_msgSend(fromCopy, "position") + 1, v33 <= objc_msgSend(fromCopy, "length")))
             {
-              v34 = [v4 data];
-              [v34 getBytes:&v55 range:{objc_msgSend(v4, "position"), 1}];
+              data6 = [fromCopy data];
+              [data6 getBytes:&v55 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v55 & 0x7F) << v30;
@@ -961,7 +961,7 @@ LABEL_63:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 6)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 6)
           {
 LABEL_91:
             LODWORD(v18) = 0;
@@ -979,13 +979,13 @@ LABEL_91:
       *(&v5->super.super.isa + v47) = v46;
 
 LABEL_99:
-      v51 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v51 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_101:
     v52 = 0;
@@ -1004,60 +1004,60 @@ LABEL_102:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMCommAppsHoldAssistFedStats protoVersion](self, "protoVersion")}];
-  v5 = [(BMCommAppsHoldAssistFedStats *)self remotePhoneNumber];
+  remotePhoneNumber = [(BMCommAppsHoldAssistFedStats *)self remotePhoneNumber];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMCommAppsHoldAssistFedStats holdDuration](self, "holdDuration")}];
   v7 = BMCommAppsHoldAssistFedStatsMLClassificationAsString([(BMCommAppsHoldAssistFedStats *)self holdAssistMLClassification]);
   v8 = BMCommAppsHoldAssistFedStatsRecommendationAsString([(BMCommAppsHoldAssistFedStats *)self holdAssistRecommendation]);
   v9 = BMCommAppsHoldAssistFedStatsObservationAsString([(BMCommAppsHoldAssistFedStats *)self holdAssistObservation]);
-  v10 = [(BMCommAppsHoldAssistFedStats *)self remotePhoneNumberCountryCode];
-  v11 = [v3 initWithFormat:@"BMCommAppsHoldAssistFedStats with protoVersion: %@, remotePhoneNumber: %@, holdDuration: %@, holdAssistMLClassification: %@, holdAssistRecommendation: %@, holdAssistObservation: %@, remotePhoneNumberCountryCode: %@", v4, v5, v6, v7, v8, v9, v10];
+  remotePhoneNumberCountryCode = [(BMCommAppsHoldAssistFedStats *)self remotePhoneNumberCountryCode];
+  v11 = [v3 initWithFormat:@"BMCommAppsHoldAssistFedStats with protoVersion: %@, remotePhoneNumber: %@, holdDuration: %@, holdAssistMLClassification: %@, holdAssistRecommendation: %@, holdAssistObservation: %@, remotePhoneNumberCountryCode: %@", v4, remotePhoneNumber, v6, v7, v8, v9, remotePhoneNumberCountryCode];
 
   return v11;
 }
 
-- (BMCommAppsHoldAssistFedStats)initWithProtoVersion:(id)a3 remotePhoneNumber:(id)a4 holdDuration:(id)a5 holdAssistMLClassification:(int)a6 holdAssistRecommendation:(int)a7 holdAssistObservation:(int)a8 remotePhoneNumberCountryCode:(id)a9
+- (BMCommAppsHoldAssistFedStats)initWithProtoVersion:(id)version remotePhoneNumber:(id)number holdDuration:(id)duration holdAssistMLClassification:(int)classification holdAssistRecommendation:(int)recommendation holdAssistObservation:(int)observation remotePhoneNumberCountryCode:(id)code
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a9;
+  versionCopy = version;
+  numberCopy = number;
+  durationCopy = duration;
+  codeCopy = code;
   v23.receiver = self;
   v23.super_class = BMCommAppsHoldAssistFedStats;
   v19 = [(BMEventBase *)&v23 init];
   if (v19)
   {
     v19->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v15)
+    if (versionCopy)
     {
       v19->_hasProtoVersion = 1;
-      v20 = [v15 unsignedIntValue];
+      unsignedIntValue = [versionCopy unsignedIntValue];
     }
 
     else
     {
-      v20 = 0;
+      unsignedIntValue = 0;
       v19->_hasProtoVersion = 0;
     }
 
-    v19->_protoVersion = v20;
-    objc_storeStrong(&v19->_remotePhoneNumber, a4);
-    if (v17)
+    v19->_protoVersion = unsignedIntValue;
+    objc_storeStrong(&v19->_remotePhoneNumber, number);
+    if (durationCopy)
     {
       v19->_hasHoldDuration = 1;
-      v21 = [v17 unsignedIntValue];
+      unsignedIntValue2 = [durationCopy unsignedIntValue];
     }
 
     else
     {
-      v21 = 0;
+      unsignedIntValue2 = 0;
       v19->_hasHoldDuration = 0;
     }
 
-    v19->_holdDuration = v21;
-    v19->_holdAssistMLClassification = a6;
-    v19->_holdAssistRecommendation = a7;
-    v19->_holdAssistObservation = a8;
-    objc_storeStrong(&v19->_remotePhoneNumberCountryCode, a9);
+    v19->_holdDuration = unsignedIntValue2;
+    v19->_holdAssistMLClassification = classification;
+    v19->_holdAssistRecommendation = recommendation;
+    v19->_holdAssistObservation = observation;
+    objc_storeStrong(&v19->_remotePhoneNumberCountryCode, code);
   }
 
   return v19;
@@ -1110,9 +1110,9 @@ LABEL_102:
   return v9;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1120,8 +1120,8 @@ LABEL_102:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMCommAppsHoldAssistFedStats alloc] initByReadFrom:v7];
     v4 = v8;

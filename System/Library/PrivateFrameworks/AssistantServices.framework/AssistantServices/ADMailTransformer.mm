@@ -1,31 +1,31 @@
 @interface ADMailTransformer
-- (id)aceCommandForSiriResponse:(id)a3 responseError:(id)a4 forRequestCommand:(id)a5;
-- (void)getSiriRequestForClientBoundAceCommand:(id)a3 completionHandler:(id)a4;
+- (id)aceCommandForSiriResponse:(id)response responseError:(id)error forRequestCommand:(id)command;
+- (void)getSiriRequestForClientBoundAceCommand:(id)command completionHandler:(id)handler;
 @end
 
 @implementation ADMailTransformer
 
-- (id)aceCommandForSiriResponse:(id)a3 responseError:(id)a4 forRequestCommand:(id)a5
+- (id)aceCommandForSiriResponse:(id)response responseError:(id)error forRequestCommand:(id)command
 {
-  if (a4)
+  if (error)
   {
-    [a5 ad_aceResponseCommandGenericErrorRepresentation];
+    [command ad_aceResponseCommandGenericErrorRepresentation];
   }
 
   else
   {
-    [a5 _ad_transformedMailSuccessResponse];
+    [command _ad_transformedMailSuccessResponse];
   }
   v5 = ;
 
   return v5;
 }
 
-- (void)getSiriRequestForClientBoundAceCommand:(id)a3 completionHandler:(id)a4
+- (void)getSiriRequestForClientBoundAceCommand:(id)command completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 _ad_transformedSendEmailRequest];
-  (*(a4 + 2))(v6, v7);
+  handlerCopy = handler;
+  _ad_transformedSendEmailRequest = [command _ad_transformedSendEmailRequest];
+  (*(handler + 2))(handlerCopy, _ad_transformedSendEmailRequest);
 }
 
 @end

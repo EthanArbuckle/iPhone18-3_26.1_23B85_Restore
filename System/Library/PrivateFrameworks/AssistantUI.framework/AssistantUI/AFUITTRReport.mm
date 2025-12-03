@@ -45,10 +45,10 @@
 - (id)composeRadarOutput
 {
   v3 = [@"Siri Tap-To-Radar" stringByAppendingFormat:@"\n\n"];
-  v4 = [(AFUITTRReport *)self getTimestampFormatted];
-  if (([v4 isEqualToString:&stru_285322A30] & 1) == 0)
+  getTimestampFormatted = [(AFUITTRReport *)self getTimestampFormatted];
+  if (([getTimestampFormatted isEqualToString:&stru_285322A30] & 1) == 0)
   {
-    v5 = [v3 stringByAppendingFormat:@"%@: %@\n", @"Timestamp", v4];
+    v5 = [v3 stringByAppendingFormat:@"%@: %@\n", @"Timestamp", getTimestampFormatted];
 
     v3 = v5;
   }
@@ -73,8 +73,8 @@
   v8 = ;
   v9 = [v3 stringByAppendingString:v8];
 
-  v10 = [(AFUITTRReport *)self composeAdditionalDetails];
-  v11 = [v9 stringByAppendingString:v10];
+  composeAdditionalDetails = [(AFUITTRReport *)self composeAdditionalDetails];
+  v11 = [v9 stringByAppendingString:composeAdditionalDetails];
 
   return v11;
 }
@@ -176,15 +176,15 @@ LABEL_8:
   actualASRTranscript = self->_actualASRTranscript;
   if (actualASRTranscript)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"“%@”", actualASRTranscript];
+    actualASRTranscript = [MEMORY[0x277CCACA8] stringWithFormat:@"“%@”", actualASRTranscript];
   }
 
   else
   {
-    v4 = &stru_285322A30;
+    actualASRTranscript = &stru_285322A30;
   }
 
-  return v4;
+  return actualASRTranscript;
 }
 
 @end

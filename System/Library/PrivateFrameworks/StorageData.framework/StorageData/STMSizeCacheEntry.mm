@@ -1,24 +1,24 @@
 @interface STMSizeCacheEntry
-- (STMSizeCacheEntry)initWithContainer:(id)a3;
-- (STMSizeCacheEntry)initWithPath:(id)a3;
-- (STMSizeCacheEntry)initWithURL:(id)a3 usingFastSizingIfPossible:(BOOL)a4;
+- (STMSizeCacheEntry)initWithContainer:(id)container;
+- (STMSizeCacheEntry)initWithPath:(id)path;
+- (STMSizeCacheEntry)initWithURL:(id)l usingFastSizingIfPossible:(BOOL)possible;
 - (void)calculateSize;
 @end
 
 @implementation STMSizeCacheEntry
 
-- (STMSizeCacheEntry)initWithContainer:(id)a3
+- (STMSizeCacheEntry)initWithContainer:(id)container
 {
-  v4 = a3;
-  v5 = [v4 url];
-  v6 = [v5 path];
-  v7 = [(STMSizeCacheEntry *)self initWithPath:v6];
+  containerCopy = container;
+  v5 = [containerCopy url];
+  path = [v5 path];
+  v7 = [(STMSizeCacheEntry *)self initWithPath:path];
   if (v7)
   {
     v8 = STSharedContainerSizingQueue();
     [(STMSizeCacheEntry *)v7 setDispatchQueue:v8];
 
-    [(STMSizeCacheEntry *)v7 setItem:v4];
+    [(STMSizeCacheEntry *)v7 setItem:containerCopy];
     [(STMSizeCacheEntry *)v7 setSizingBlock:&__block_literal_global];
   }
 
@@ -46,24 +46,24 @@ id __50__STMSizeCacheEntry_Container__initWithContainer___block_invoke(uint64_t 
   return v8;
 }
 
-- (STMSizeCacheEntry)initWithURL:(id)a3 usingFastSizingIfPossible:(BOOL)a4
+- (STMSizeCacheEntry)initWithURL:(id)l usingFastSizingIfPossible:(BOOL)possible
 {
-  v6 = a3;
-  v7 = [v6 path];
-  v8 = [(STMSizeCacheEntry *)self initWithPath:v7];
+  lCopy = l;
+  path = [lCopy path];
+  v8 = [(STMSizeCacheEntry *)self initWithPath:path];
 
   if (v8)
   {
     v9 = STSharedPathSizingOpQueue();
     [(STMSizeCacheEntry *)v8 setQueue:v9];
 
-    [(STMSizeCacheEntry *)v8 setItem:v6];
+    [(STMSizeCacheEntry *)v8 setItem:lCopy];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __64__STMSizeCacheEntry_URL__initWithURL_usingFastSizingIfPossible___block_invoke;
     v11[3] = &unk_279D1D160;
-    v12 = v6;
-    v13 = a4;
+    v12 = lCopy;
+    possibleCopy = possible;
     [(STMSizeCacheEntry *)v8 setSizingBlock:v11];
   }
 
@@ -82,24 +82,24 @@ id __64__STMSizeCacheEntry_URL__initWithURL_usingFastSizingIfPossible___block_in
   return v3;
 }
 
-- (STMSizeCacheEntry)initWithPath:(id)a3
+- (STMSizeCacheEntry)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = STMSizeCacheEntry;
   v5 = [(STMSizeCacheEntry *)&v12 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v11 = 0;
-    if ([v6 fileExistsAtPath:v4 isDirectory:&v11] && v11 == 1)
+    if ([defaultManager fileExistsAtPath:pathCopy isDirectory:&v11] && v11 == 1)
     {
-      v7 = STMakeDirPath(v4);
+      v7 = STMakeDirPath(pathCopy);
 
-      v4 = v7;
+      pathCopy = v7;
     }
 
-    objc_storeStrong(&v5->_itemPath, v4);
+    objc_storeStrong(&v5->_itemPath, pathCopy);
     v8 = objc_opt_new();
     calculateLock = v5->_calculateLock;
     v5->_calculateLock = v8;
@@ -112,8 +112,8 @@ id __64__STMSizeCacheEntry_URL__initWithURL_usingFastSizingIfPossible___block_in
 {
   if ([(STMSizeCacheEntry *)self status]== 2)
   {
-    v23 = [(STMSizeCacheEntry *)self itemPath];
-    STLog(0, @"[STMSizeCacheEntry calculateSize]: Cache entry %@ will not be updated because it's valid", v3, v4, v5, v6, v7, v8, v23);
+    itemPath = [(STMSizeCacheEntry *)self itemPath];
+    STLog(0, @"[STMSizeCacheEntry calculateSize]: Cache entry %@ will not be updated because it's valid", v3, v4, v5, v6, v7, v8, itemPath);
   }
 
   else
@@ -146,16 +146,16 @@ id __64__STMSizeCacheEntry_URL__initWithURL_usingFastSizingIfPossible___block_in
 
       else
       {
-        v20 = [(STMSizeCacheEntry *)self itemSize];
+        itemSize = [(STMSizeCacheEntry *)self itemSize];
 
-        if (!v20)
+        if (!itemSize)
         {
           [(STMSizeCacheEntry *)self setItemSize:&unk_287C8E6C8];
         }
       }
 
-      v21 = [(STMSizeCacheEntry *)self itemSize];
-      if (v21)
+      itemSize2 = [(STMSizeCacheEntry *)self itemSize];
+      if (itemSize2)
       {
         v22 = 2;
       }

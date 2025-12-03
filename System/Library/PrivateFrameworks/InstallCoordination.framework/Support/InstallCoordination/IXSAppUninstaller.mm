@@ -2,22 +2,22 @@
 + (id)sharedUninstaller;
 - (BOOL)_screenTimeManagementEnabled;
 - (BOOL)_webContentFilterEnabled;
-- (id)_acquireTerminationAssertionForIdentity:(id)a3 withError:(id *)a4;
-- (id)_dextIDsForBundleID:(id)a3;
-- (unint64_t)_contentRestrictionIsEnabledForBundleID:(id)a3;
-- (void)_displayAuthenticationErrorForApp:(id)a3;
-- (void)_finalDeletionPromptWithRecord:(id)a3 identity:(id)a4 clientName:(id)a5 flags:(unint64_t)a6 removability:(unint64_t)a7 completion:(id)a8;
-- (void)_performUninstallOfAppWithIdentity:(id)a3 clientName:(id)a4 withFlags:(unint64_t)a5 record:(id)a6 completion:(id)a7;
-- (void)_postUninstallAlertsWithIdentity:(id)a3 flags:(unint64_t)a4 record:(id)a5;
-- (void)_promptForDeletionWithRecord:(id)a3 identity:(id)a4 clientName:(id)a5 flags:(unint64_t)a6 completion:(id)a7 removability:(unint64_t)a8;
-- (void)_promptForGatingDefaultAppDeletionWithRecord:(id)a3 identity:(id)a4 clientName:(id)a5 flags:(unint64_t)a6 removability:(unint64_t)a7 completion:(id)a8;
-- (void)_promptForMoveOrDeleteAppRecord:(id)a3 identity:(id)a4 clientName:(id)a5 flags:(unint64_t)a6 completion:(id)a7 removability:(unint64_t)a8;
-- (void)_promptForUnlockOfAppRecord:(id)a3 identity:(id)a4 clientName:(id)a5 flags:(unint64_t)a6 completion:(id)a7 removability:(unint64_t)a8;
-- (void)_promptToOverrideManagedSettingsOfAppWithRecord:(id)a3 identity:(id)a4 clientName:(id)a5 flags:(unint64_t)a6 completion:(id)a7;
-- (void)_promptViewHealthKitDataWithIdentity:(id)a3 record:(id)a4;
-- (void)_uninstallAppWithRecord:(id)a3 identity:(id)a4 clientName:(id)a5 flags:(unint64_t)a6 removability:(unint64_t)a7 completion:(id)a8;
-- (void)uninstallAppWithIdentity:(id)a3 clientName:(id)a4 options:(unint64_t)a5 completion:(id)a6;
-- (void)uninstallParallelPlaceholderForIdentity:(id)a3 reason:(id)a4;
+- (id)_acquireTerminationAssertionForIdentity:(id)identity withError:(id *)error;
+- (id)_dextIDsForBundleID:(id)d;
+- (unint64_t)_contentRestrictionIsEnabledForBundleID:(id)d;
+- (void)_displayAuthenticationErrorForApp:(id)app;
+- (void)_finalDeletionPromptWithRecord:(id)record identity:(id)identity clientName:(id)name flags:(unint64_t)flags removability:(unint64_t)removability completion:(id)completion;
+- (void)_performUninstallOfAppWithIdentity:(id)identity clientName:(id)name withFlags:(unint64_t)flags record:(id)record completion:(id)completion;
+- (void)_postUninstallAlertsWithIdentity:(id)identity flags:(unint64_t)flags record:(id)record;
+- (void)_promptForDeletionWithRecord:(id)record identity:(id)identity clientName:(id)name flags:(unint64_t)flags completion:(id)completion removability:(unint64_t)removability;
+- (void)_promptForGatingDefaultAppDeletionWithRecord:(id)record identity:(id)identity clientName:(id)name flags:(unint64_t)flags removability:(unint64_t)removability completion:(id)completion;
+- (void)_promptForMoveOrDeleteAppRecord:(id)record identity:(id)identity clientName:(id)name flags:(unint64_t)flags completion:(id)completion removability:(unint64_t)removability;
+- (void)_promptForUnlockOfAppRecord:(id)record identity:(id)identity clientName:(id)name flags:(unint64_t)flags completion:(id)completion removability:(unint64_t)removability;
+- (void)_promptToOverrideManagedSettingsOfAppWithRecord:(id)record identity:(id)identity clientName:(id)name flags:(unint64_t)flags completion:(id)completion;
+- (void)_promptViewHealthKitDataWithIdentity:(id)identity record:(id)record;
+- (void)_uninstallAppWithRecord:(id)record identity:(id)identity clientName:(id)name flags:(unint64_t)flags removability:(unint64_t)removability completion:(id)completion;
+- (void)uninstallAppWithIdentity:(id)identity clientName:(id)name options:(unint64_t)options completion:(id)completion;
+- (void)uninstallParallelPlaceholderForIdentity:(id)identity reason:(id)reason;
 @end
 
 @implementation IXSAppUninstaller
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = sub_100018820;
   block[3] = &unk_100100D40;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100121CD0 != -1)
   {
     dispatch_once(&qword_100121CD0, block);
@@ -39,14 +39,14 @@
   return v2;
 }
 
-- (void)uninstallParallelPlaceholderForIdentity:(id)a3 reason:(id)a4
+- (void)uninstallParallelPlaceholderForIdentity:(id)identity reason:(id)reason
 {
-  v5 = a3;
+  identityCopy = identity;
   v17 = kMIUninstallParallelPlaceholderKey;
   v18 = &__kCFBooleanTrue;
-  v6 = a4;
+  reasonCopy = reason;
   v7 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-  v8 = sub_100013E64(v5, v7, v6);
+  v8 = sub_100013E64(identityCopy, v7, reasonCopy);
 
   v9 = 0;
   if ((v8 & 1) == 0)
@@ -57,7 +57,7 @@
       *buf = 136315650;
       v12 = "[IXSAppUninstaller uninstallParallelPlaceholderForIdentity:reason:]";
       v13 = 2112;
-      v14 = v5;
+      v14 = identityCopy;
       v15 = 2112;
       v16 = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Failed to uninstall parallel placeholder %@: %@", buf, 0x20u);
@@ -65,13 +65,13 @@
   }
 }
 
-- (void)_promptViewHealthKitDataWithIdentity:(id)a3 record:(id)a4
+- (void)_promptViewHealthKitDataWithIdentity:(id)identity record:(id)record
 {
-  v5 = a3;
-  v6 = a4;
+  identityCopy = identity;
+  recordCopy = record;
   v7 = [IXSHealthKitDataUninstallAlert alloc];
-  v8 = [v5 bundleID];
-  v9 = [(IXSHealthKitDataUninstallAlert *)v7 initWithAppRecord:v6 bundleIdentifier:v8];
+  bundleID = [identityCopy bundleID];
+  v9 = [(IXSHealthKitDataUninstallAlert *)v7 initWithAppRecord:recordCopy bundleIdentifier:bundleID];
 
   if (v9)
   {
@@ -80,7 +80,7 @@
     v11[2] = sub_100018B60;
     v11[3] = &unk_100101550;
     v12 = v9;
-    v13 = v5;
+    v13 = identityCopy;
     [v12 displayAlertWithCompletion:v11];
 
     v10 = v12;
@@ -94,38 +94,38 @@
       *buf = 136315394;
       v15 = "[IXSAppUninstaller _promptViewHealthKitDataWithIdentity:record:]";
       v16 = 2112;
-      v17 = v5;
+      v17 = identityCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Failed to create HealthKit data uninstall alert for app with identity %@", buf, 0x16u);
     }
   }
 }
 
-- (void)_postUninstallAlertsWithIdentity:(id)a3 flags:(unint64_t)a4 record:(id)a5
+- (void)_postUninstallAlertsWithIdentity:(id)identity flags:(unint64_t)flags record:(id)record
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if ((v6 & 8) != 0)
+  flagsCopy = flags;
+  identityCopy = identity;
+  recordCopy = record;
+  if ((flagsCopy & 8) != 0)
   {
-    v10 = [v8 bundleID];
+    bundleID = [identityCopy bundleID];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100018E18;
     v11[3] = &unk_100101578;
     v11[4] = self;
-    v12 = v8;
-    v13 = v9;
-    [IXSHealthKitDataUninstallAlert healthKitDataPresentForAppWithBundleID:v10 completion:v11];
+    v12 = identityCopy;
+    v13 = recordCopy;
+    [IXSHealthKitDataUninstallAlert healthKitDataPresentForAppWithBundleID:bundleID completion:v11];
   }
 }
 
-- (id)_dextIDsForBundleID:(id)a3
+- (id)_dextIDsForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_opt_new();
   v35 = 0;
-  v27 = v3;
-  v5 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v3 allowPlaceholder:0 error:&v35];
+  v27 = dCopy;
+  v5 = [[LSApplicationRecord alloc] initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v35];
   v6 = v35;
   if (v5)
   {
@@ -278,12 +278,12 @@ LABEL_29:
   return v23;
 }
 
-- (id)_acquireTerminationAssertionForIdentity:(id)a3 withError:(id *)a4
+- (id)_acquireTerminationAssertionForIdentity:(id)identity withError:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bundleID];
-  v8 = [NSMutableSet setWithObject:v7];
-  v9 = [v6 miAppIdentity];
+  identityCopy = identity;
+  bundleID = [identityCopy bundleID];
+  v8 = [NSMutableSet setWithObject:bundleID];
+  miAppIdentity = [identityCopy miAppIdentity];
   v37 = 0;
   v10 = MobileInstallationLinkedBundleIDsForIdentity();
   v11 = 0;
@@ -296,13 +296,13 @@ LABEL_29:
       sub_100099C54();
     }
 
-    v21 = sub_1000405FC("[IXSAppUninstaller _acquireTerminationAssertionForIdentity:withError:]", 295, @"IXErrorDomain", 1uLL, v11, 0, @"Failed to query linked children for app with identity: %@", v25, v6);
+    v21 = sub_1000405FC("[IXSAppUninstaller _acquireTerminationAssertionForIdentity:withError:]", 295, @"IXErrorDomain", 1uLL, v11, 0, @"Failed to query linked children for app with identity: %@", v25, identityCopy);
     v18 = 0;
     v20 = 0;
 LABEL_21:
 
     v11 = v21;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -310,8 +310,8 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v29 = a4;
-  v30 = v7;
+  errorCopy = error;
+  v30 = bundleID;
   [v8 unionSet:v10];
   v35 = 0u;
   v36 = 0u;
@@ -372,15 +372,15 @@ LABEL_21:
       v11 = v19;
     }
 
-    a4 = v29;
-    v7 = v30;
+    error = errorCopy;
+    bundleID = v30;
     goto LABEL_21;
   }
 
   v20 = 0;
-  a4 = v29;
-  v7 = v30;
-  if (!v29)
+  error = errorCopy;
+  bundleID = v30;
+  if (!errorCopy)
   {
     goto LABEL_24;
   }
@@ -389,7 +389,7 @@ LABEL_22:
   if (!v20)
   {
     v26 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_24:
@@ -398,43 +398,43 @@ LABEL_24:
   return v20;
 }
 
-- (void)_performUninstallOfAppWithIdentity:(id)a3 clientName:(id)a4 withFlags:(unint64_t)a5 record:(id)a6 completion:(id)a7
+- (void)_performUninstallOfAppWithIdentity:(id)identity clientName:(id)name withFlags:(unint64_t)flags record:(id)record completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  identityCopy = identity;
+  nameCopy = name;
+  recordCopy = record;
+  completionCopy = completion;
   v16 = +[IXSCoordinatorManager sharedInstance];
-  [v12 bundleID];
+  [identityCopy bundleID];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100019780;
   v23[3] = &unk_1001015C8;
   v24 = v16;
-  v25 = v12;
-  v27 = v26 = v13;
-  v28 = v14;
-  v29 = self;
-  v30 = v15;
-  v31 = a5;
-  v17 = v15;
-  v18 = v14;
+  v25 = identityCopy;
+  v27 = v26 = nameCopy;
+  v28 = recordCopy;
+  selfCopy = self;
+  v30 = completionCopy;
+  flagsCopy = flags;
+  v17 = completionCopy;
+  v18 = recordCopy;
   v19 = v27;
-  v20 = v13;
-  v21 = v12;
+  v20 = nameCopy;
+  v21 = identityCopy;
   v22 = v16;
   [v22 performCreationBlockingOperation:v23];
 }
 
-- (void)_promptForMoveOrDeleteAppRecord:(id)a3 identity:(id)a4 clientName:(id)a5 flags:(unint64_t)a6 completion:(id)a7 removability:(unint64_t)a8
+- (void)_promptForMoveOrDeleteAppRecord:(id)record identity:(id)identity clientName:(id)name flags:(unint64_t)flags completion:(id)completion removability:(unint64_t)removability
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  recordCopy = record;
+  identityCopy = identity;
+  nameCopy = name;
+  completionCopy = completion;
   v18 = [IXSMoveOrDeleteAlert alloc];
-  v19 = [v15 bundleID];
-  v20 = [(IXSMoveOrDeleteAlert *)v18 initWithAppRecord:v14 bundleIdentifier:v19 removability:a8 deletionIsRestricted:(a6 >> 10) & 1];
+  bundleID = [identityCopy bundleID];
+  v20 = [(IXSMoveOrDeleteAlert *)v18 initWithAppRecord:recordCopy bundleIdentifier:bundleID removability:removability deletionIsRestricted:(flags >> 10) & 1];
 
   if (v20)
   {
@@ -442,14 +442,14 @@ LABEL_24:
     v24[1] = 3221225472;
     v24[2] = sub_10001A2CC;
     v24[3] = &unk_1001015F0;
-    v30 = v17;
+    v30 = completionCopy;
     v25 = v20;
-    v26 = v15;
-    v27 = self;
-    v28 = v14;
-    v29 = v16;
-    v31 = a6;
-    v32 = a8;
+    v26 = identityCopy;
+    selfCopy = self;
+    v28 = recordCopy;
+    v29 = nameCopy;
+    flagsCopy = flags;
+    removabilityCopy = removability;
     [(IXSUninstallAlert *)v25 displayAlertWithCompletion:v24];
 
     v21 = v30;
@@ -463,41 +463,41 @@ LABEL_24:
       sub_100099F98();
     }
 
-    v21 = sub_1000405FC("[IXSAppUninstaller _promptForMoveOrDeleteAppRecord:identity:clientName:flags:completion:removability:]", 412, @"IXErrorDomain", 1uLL, 0, 0, @"Failed to create move or delete alert for app with identity %@", v23, v15);
-    if (v17)
+    v21 = sub_1000405FC("[IXSAppUninstaller _promptForMoveOrDeleteAppRecord:identity:clientName:flags:completion:removability:]", 412, @"IXErrorDomain", 1uLL, 0, 0, @"Failed to create move or delete alert for app with identity %@", v23, identityCopy);
+    if (completionCopy)
     {
-      (*(v17 + 2))(v17, 0, v21);
+      (*(completionCopy + 2))(completionCopy, 0, v21);
     }
   }
 }
 
-- (void)_promptForUnlockOfAppRecord:(id)a3 identity:(id)a4 clientName:(id)a5 flags:(unint64_t)a6 completion:(id)a7 removability:(unint64_t)a8
+- (void)_promptForUnlockOfAppRecord:(id)record identity:(id)identity clientName:(id)name flags:(unint64_t)flags completion:(id)completion removability:(unint64_t)removability
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  if (v14)
+  recordCopy = record;
+  identityCopy = identity;
+  nameCopy = name;
+  completionCopy = completion;
+  if (recordCopy)
   {
     sub_100032CFC();
-    v18 = v27 = a8;
+    v18 = v27 = removability;
     v19 = [v18 localizedStringForKey:@"AUTHENTICATE_TO_DELETE_APP_TITLE" value:&stru_100105BA0 table:@"IXUninstallAlert"];
-    [v14 localizedName];
-    v21 = v20 = v15;
+    [recordCopy localizedName];
+    v21 = v20 = identityCopy;
     v22 = [NSString localizedStringWithFormat:v19, v21];
 
-    v15 = v20;
+    identityCopy = v20;
     v23 = +[APGuard sharedGuard];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_10001A684;
     v28[3] = &unk_100101618;
     v28[4] = self;
-    v29 = v14;
+    v29 = recordCopy;
     v30 = v20;
-    v31 = v16;
-    v33 = a6;
-    v32 = v17;
+    v31 = nameCopy;
+    flagsCopy = flags;
+    v32 = completionCopy;
     v34 = v27;
     [v23 authenticateUnconditionallyWithReason:v22 completion:v28];
   }
@@ -511,9 +511,9 @@ LABEL_24:
     }
 
     v18 = sub_1000405FC("[IXSAppUninstaller _promptForUnlockOfAppRecord:identity:clientName:flags:completion:removability:]", 435, @"IXErrorDomain", 1uLL, 0, 0, @"No record specified with unlock prompt", v25, v26);
-    if (v17)
+    if (completionCopy)
     {
-      (*(v17 + 2))(v17, 0, v18);
+      (*(completionCopy + 2))(completionCopy, 0, v18);
     }
   }
 }
@@ -556,10 +556,10 @@ LABEL_24:
 
   if (qword_100121CE8)
   {
-    v2 = [qword_100121CE8 sharedWebFilterSettings];
-    v3 = [v2 isWebFilterEnabled];
+    sharedWebFilterSettings = [qword_100121CE8 sharedWebFilterSettings];
+    isWebFilterEnabled = [sharedWebFilterSettings isWebFilterEnabled];
 
-    if (v3)
+    if (isWebFilterEnabled)
     {
       return 1;
     }
@@ -577,58 +577,58 @@ LABEL_24:
   return 0;
 }
 
-- (unint64_t)_contentRestrictionIsEnabledForBundleID:(id)a3
+- (unint64_t)_contentRestrictionIsEnabledForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
-  v5 = sub_10003AF28(v4, 22, &v13);
+  v5 = sub_10003AF28(dCopy, 22, &v13);
   v6 = v13;
   v7 = v6;
   if (!v5 || !v6 || (([v6 objectForKeyedSubscript:@"TEST_MODE_CONTENT_RESTRICTION_MANAGEMENT_TYPE"], v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v9 = v8, (objc_opt_isKindOfClass() & 1) == 0) ? (v10 = 0) : (v10 = v9), v9, v9, !v10))
   {
-    if ([v4 isEqualToString:@"com.apple.mobilesafari"])
+    if ([dCopy isEqualToString:@"com.apple.mobilesafari"])
     {
       if ([(IXSAppUninstaller *)self _screenTimeManagementEnabled])
       {
-        v11 = 1;
+        unsignedIntegerValue = 1;
         goto LABEL_14;
       }
 
       if ([(IXSAppUninstaller *)self _webContentFilterEnabled])
       {
-        v11 = 2;
+        unsignedIntegerValue = 2;
         goto LABEL_14;
       }
     }
 
-    v11 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_14;
   }
 
-  v11 = [v10 unsignedIntegerValue];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
 LABEL_14:
-  return v11;
+  return unsignedIntegerValue;
 }
 
-- (void)_finalDeletionPromptWithRecord:(id)a3 identity:(id)a4 clientName:(id)a5 flags:(unint64_t)a6 removability:(unint64_t)a7 completion:(id)a8
+- (void)_finalDeletionPromptWithRecord:(id)record identity:(id)identity clientName:(id)name flags:(unint64_t)flags removability:(unint64_t)removability completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  v18 = [v15 bundleID];
-  v19 = [(IXSAppUninstaller *)self _contentRestrictionIsEnabledForBundleID:v18];
+  recordCopy = record;
+  identityCopy = identity;
+  nameCopy = name;
+  completionCopy = completion;
+  bundleID = [identityCopy bundleID];
+  v19 = [(IXSAppUninstaller *)self _contentRestrictionIsEnabledForBundleID:bundleID];
   if (v19)
   {
-    v20 = [[IXSContentRestrictedAppDeleteAlert alloc] initWithAppRecord:v14 removability:a7 appType:v19];
+    v20 = [[IXSContentRestrictedAppDeleteAlert alloc] initWithAppRecord:recordCopy removability:removability appType:v19];
     v40[0] = _NSConcreteStackBlock;
     v40[1] = 3221225472;
     v40[2] = sub_10001AE98;
     v40[3] = &unk_100101680;
-    v43 = v17;
+    v43 = completionCopy;
     v41 = v20;
-    v42 = v15;
+    v42 = identityCopy;
     v21 = v20;
     [(IXSContentRestrictedAppDeleteAlert *)v21 displayAlertWithCompletion:v40];
   }
@@ -638,27 +638,27 @@ LABEL_14:
     v22 = +[IXSRemoteDeletionPromptManager sharedInstance];
     v21 = v22;
     v39 = 0;
-    if (a7 == 1 && -[IXSContentRestrictedAppDeleteAlert isValidBundleIDForRemoteAlert:withAppType:numAppsInstalled:](v22, "isValidBundleIDForRemoteAlert:withAppType:numAppsInstalled:", v18, &v39, 0) && (v39 != 3 || (+[IXGlobalConfiguration sharedInstance](IXGlobalConfiguration, "sharedInstance"), v23 = objc_claimAutoreleasedReturnValue(), v30 = [v23 isiPad], v23, (v30 & 1) == 0)))
+    if (removability == 1 && -[IXSContentRestrictedAppDeleteAlert isValidBundleIDForRemoteAlert:withAppType:numAppsInstalled:](v22, "isValidBundleIDForRemoteAlert:withAppType:numAppsInstalled:", bundleID, &v39, 0) && (v39 != 3 || (+[IXGlobalConfiguration sharedInstance](IXGlobalConfiguration, "sharedInstance"), v23 = objc_claimAutoreleasedReturnValue(), v30 = [v23 isiPad], v23, (v30 & 1) == 0)))
     {
-      if ((a6 & 0x80) != 0)
+      if ((flags & 0x80) != 0)
       {
-        [(IXSAppUninstaller *)self _promptToOverrideManagedSettingsOfAppWithRecord:v14 identity:v15 clientName:v16 flags:a6 completion:v17];
+        [(IXSAppUninstaller *)self _promptToOverrideManagedSettingsOfAppWithRecord:recordCopy identity:identityCopy clientName:nameCopy flags:flags completion:completionCopy];
       }
 
       else
       {
-        [(IXSAppUninstaller *)self _promptForRelatedDataAndUninstallAppWithRecord:v14 identity:v15 clientName:v16 flags:a6 completion:v17];
+        [(IXSAppUninstaller *)self _promptForRelatedDataAndUninstallAppWithRecord:recordCopy identity:identityCopy clientName:nameCopy flags:flags completion:completionCopy];
       }
     }
 
     else
     {
-      v24 = (a6 >> 7) & 1;
-      v25 = [[IXSAppUninstallAlert alloc] initWithAppRecord:v14 bundleIdentifier:v18 removability:a7 isManagedByManagedSettings:v24 deletionIsRestricted:(a6 >> 10) & 1];
+      v24 = (flags >> 7) & 1;
+      v25 = [[IXSAppUninstallAlert alloc] initWithAppRecord:recordCopy bundleIdentifier:bundleID removability:removability isManagedByManagedSettings:v24 deletionIsRestricted:(flags >> 10) & 1];
       v26 = v25;
       if (v25)
       {
-        if ((a6 & 0x100) != 0)
+        if ((flags & 0x100) != 0)
         {
           [(IXSUninstallAlert *)v25 setNeedsDemoteOptionButton:1];
         }
@@ -669,11 +669,11 @@ LABEL_14:
         v31[3] = &unk_1001016A8;
         v38 = v24;
         v31[4] = self;
-        v32 = v14;
-        v33 = v15;
-        v34 = v16;
-        v37 = a6;
-        v36 = v17;
+        v32 = recordCopy;
+        v33 = identityCopy;
+        v34 = nameCopy;
+        flagsCopy = flags;
+        v36 = completionCopy;
         v35 = v26;
         [(IXSUninstallAlert *)v35 displayAlertWithCompletion:v31];
       }
@@ -686,30 +686,30 @@ LABEL_14:
           sub_10009A3AC();
         }
 
-        v29 = sub_1000405FC("[IXSAppUninstaller _finalDeletionPromptWithRecord:identity:clientName:flags:removability:completion:]", 588, @"IXErrorDomain", 1uLL, 0, 0, @"Failed to create app uninstall alert for app with bundle ID %@", v28, v18);
-        if (v17)
+        v29 = sub_1000405FC("[IXSAppUninstaller _finalDeletionPromptWithRecord:identity:clientName:flags:removability:completion:]", 588, @"IXErrorDomain", 1uLL, 0, 0, @"Failed to create app uninstall alert for app with bundle ID %@", v28, bundleID);
+        if (completionCopy)
         {
-          (*(v17 + 2))(v17, 0, v29);
+          (*(completionCopy + 2))(completionCopy, 0, v29);
         }
       }
     }
   }
 }
 
-- (void)_promptForGatingDefaultAppDeletionWithRecord:(id)a3 identity:(id)a4 clientName:(id)a5 flags:(unint64_t)a6 removability:(unint64_t)a7 completion:(id)a8
+- (void)_promptForGatingDefaultAppDeletionWithRecord:(id)record identity:(id)identity clientName:(id)name flags:(unint64_t)flags removability:(unint64_t)removability completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  if (a7 == 1)
+  recordCopy = record;
+  identityCopy = identity;
+  nameCopy = name;
+  completionCopy = completion;
+  if (removability == 1)
   {
     v18 = +[IXSDefaultAppDeletionManager sharedInstance];
     v52 = 0;
-    v19 = [v14 bundleIdentifier];
+    bundleIdentifier = [recordCopy bundleIdentifier];
     v51 = 0;
     v50 = 0;
-    v20 = [v18 getAppRecordNeedsDefaultAppDeletionAlert:&v51 + 1 forRecord:v14 defaultAppType:&v52 gateDeletionOfLastApp:&v51 error:&v50];
+    v20 = [v18 getAppRecordNeedsDefaultAppDeletionAlert:&v51 + 1 forRecord:recordCopy defaultAppType:&v52 gateDeletionOfLastApp:&v51 error:&v50];
     v21 = v50;
     v22 = v21;
     if (v20)
@@ -718,8 +718,8 @@ LABEL_14:
       {
         v49 = 0;
         v48 = v21;
-        v31 = v19;
-        v23 = [v18 getOtherAppsAreInstalled:&v49 forDefaultAppType:v52 exceptBundleID:v19 error:&v48];
+        v31 = bundleIdentifier;
+        v23 = [v18 getOtherAppsAreInstalled:&v49 forDefaultAppType:v52 exceptBundleID:bundleIdentifier error:&v48];
         v24 = v48;
 
         if (v23)
@@ -731,10 +731,10 @@ LABEL_14:
             v43[1] = 3221225472;
             v43[2] = sub_10001B55C;
             v43[3] = &unk_1001016D0;
-            v44 = [(IXSDefaultAppSelectAlert *)v25 initWithAppRecord:v14 removability:1 defaultAppType:v52];
+            v44 = [(IXSDefaultAppSelectAlert *)v25 initWithAppRecord:recordCopy removability:1 defaultAppType:v52];
             v45 = v31;
-            v47 = v17;
-            v46 = v15;
+            v47 = completionCopy;
+            v46 = identityCopy;
             v26 = v44;
             [(IXSDefaultAppSelectAlert *)v26 displayAlertWithCompletion:v43];
 
@@ -748,9 +748,9 @@ LABEL_14:
             v32[1] = 3221225472;
             v32[2] = sub_10001B810;
             v32[3] = &unk_100101720;
-            v33 = [(IXSDefaultAppDownloadAlert *)v28 initWithAppRecord:v14 removability:1 defaultAppType:v52];
-            v35 = v17;
-            v34 = v15;
+            v33 = [(IXSDefaultAppDownloadAlert *)v28 initWithAppRecord:recordCopy removability:1 defaultAppType:v52];
+            v35 = completionCopy;
+            v34 = identityCopy;
             v26 = v33;
             [(IXSDefaultAppSelectAlert *)v26 displayAlertWithCompletion:v32];
 
@@ -760,18 +760,18 @@ LABEL_14:
           else
           {
             v29 = [IXSDefaultAppDeleteAlert alloc];
-            v30 = [(IXSDefaultAppDeleteAlert *)v29 initWithAppRecord:v14 removability:1 defaultAppType:v52];
+            v30 = [(IXSDefaultAppDeleteAlert *)v29 initWithAppRecord:recordCopy removability:1 defaultAppType:v52];
             v36[0] = _NSConcreteStackBlock;
             v36[1] = 3221225472;
             v36[2] = sub_10001B6B0;
             v36[3] = &unk_1001016F8;
             v36[4] = self;
-            v37 = v14;
-            v38 = v15;
-            v39 = v16;
-            v42 = a6;
+            v37 = recordCopy;
+            v38 = identityCopy;
+            v39 = nameCopy;
+            flagsCopy = flags;
             v40 = v30;
-            v41 = v17;
+            v41 = completionCopy;
             v26 = v30;
             [(IXSDefaultAppSelectAlert *)v26 displayAlertWithCompletion:v36];
 
@@ -779,21 +779,21 @@ LABEL_14:
           }
         }
 
-        else if (v17)
+        else if (completionCopy)
         {
-          (*(v17 + 2))(v17, 0, v24);
+          (*(completionCopy + 2))(completionCopy, 0, v24);
         }
 
-        v19 = v31;
+        bundleIdentifier = v31;
         goto LABEL_19;
       }
 
-      [(IXSAppUninstaller *)self _finalDeletionPromptWithRecord:v14 identity:v15 clientName:v16 flags:a6 removability:1 completion:v17];
+      [(IXSAppUninstaller *)self _finalDeletionPromptWithRecord:recordCopy identity:identityCopy clientName:nameCopy flags:flags removability:1 completion:completionCopy];
     }
 
-    else if (v17)
+    else if (completionCopy)
     {
-      (*(v17 + 2))(v17, 0, v21);
+      (*(completionCopy + 2))(completionCopy, 0, v21);
     }
 
     v24 = v22;
@@ -802,44 +802,44 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  [(IXSAppUninstaller *)self _finalDeletionPromptWithRecord:v14 identity:v15 clientName:v16 flags:a6 removability:a7 completion:v17];
+  [(IXSAppUninstaller *)self _finalDeletionPromptWithRecord:recordCopy identity:identityCopy clientName:nameCopy flags:flags removability:removability completion:completionCopy];
 LABEL_20:
 }
 
-- (void)_promptForDeletionWithRecord:(id)a3 identity:(id)a4 clientName:(id)a5 flags:(unint64_t)a6 completion:(id)a7 removability:(unint64_t)a8
+- (void)_promptForDeletionWithRecord:(id)record identity:(id)identity clientName:(id)name flags:(unint64_t)flags completion:(id)completion removability:(unint64_t)removability
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  recordCopy = record;
+  identityCopy = identity;
+  nameCopy = name;
+  completionCopy = completion;
   v18 = +[LSApplicationWorkspace defaultWorkspace];
   v19 = [v18 applicationIsInstalled:@"com.apple.AppDeletionUIHost"];
 
   if (v19)
   {
     v20 = +[IXSRemoteDeletionPromptManager sharedInstance];
-    v21 = [v14 bundleIdentifier];
-    v22 = [v20 isValidBundleIDForRemoteAlert:v21 withAppType:0 numAppsInstalled:0];
+    bundleIdentifier = [recordCopy bundleIdentifier];
+    v22 = [v20 isValidBundleIDForRemoteAlert:bundleIdentifier withAppType:0 numAppsInstalled:0];
 
-    if (a8 == 1 && (v22 & 1) != 0)
+    if (removability == 1 && (v22 & 1) != 0)
     {
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_10001BC30;
       v24[3] = &unk_100101748;
       v24[4] = self;
-      v25 = v14;
-      v26 = v15;
-      v27 = v16;
-      v29 = a6;
+      v25 = recordCopy;
+      v26 = identityCopy;
+      v27 = nameCopy;
+      flagsCopy = flags;
       v30 = 1;
-      v28 = v17;
-      [v20 displayDeletionAlertForRecord:v25 showArchiveOption:(a6 >> 5) & 1 completion:v24];
+      v28 = completionCopy;
+      [v20 displayDeletionAlertForRecord:v25 showArchiveOption:(flags >> 5) & 1 completion:v24];
     }
 
     else
     {
-      [(IXSAppUninstaller *)self _promptForGatingDefaultAppDeletionWithRecord:v14 identity:v15 clientName:v16 flags:a6 removability:a8 completion:v17];
+      [(IXSAppUninstaller *)self _promptForGatingDefaultAppDeletionWithRecord:recordCopy identity:identityCopy clientName:nameCopy flags:flags removability:removability completion:completionCopy];
     }
   }
 
@@ -848,49 +848,49 @@ LABEL_20:
     v23 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      sub_10009A4A8(v14, v23);
+      sub_10009A4A8(recordCopy, v23);
     }
 
-    [(IXSAppUninstaller *)self _promptForGatingDefaultAppDeletionWithRecord:v14 identity:v15 clientName:v16 flags:a6 removability:a8 completion:v17];
+    [(IXSAppUninstaller *)self _promptForGatingDefaultAppDeletionWithRecord:recordCopy identity:identityCopy clientName:nameCopy flags:flags removability:removability completion:completionCopy];
   }
 }
 
-- (void)_displayAuthenticationErrorForApp:(id)a3
+- (void)_displayAuthenticationErrorForApp:(id)app
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001BDD0;
   v5[3] = &unk_100100ED8;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  appCopy = app;
+  selfCopy = self;
+  v4 = appCopy;
   sub_100071134(&_dispatch_main_q, v5);
 }
 
-- (void)_promptToOverrideManagedSettingsOfAppWithRecord:(id)a3 identity:(id)a4 clientName:(id)a5 flags:(unint64_t)a6 completion:(id)a7
+- (void)_promptToOverrideManagedSettingsOfAppWithRecord:(id)record identity:(id)identity clientName:(id)name flags:(unint64_t)flags completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  recordCopy = record;
+  identityCopy = identity;
+  nameCopy = name;
+  completionCopy = completion;
   if (objc_opt_class())
   {
-    v16 = [v13 bundleID];
-    v17 = [v12 teamIdentifier];
-    if (v17)
+    bundleID = [identityCopy bundleID];
+    teamIdentifier = [recordCopy teamIdentifier];
+    if (teamIdentifier)
     {
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_10001C2A8;
       v22[3] = &unk_100101770;
-      v23 = v16;
-      v28 = v15;
-      v24 = self;
-      v25 = v12;
-      v26 = v13;
-      v27 = v14;
-      v29 = a6;
-      [MOEffectiveApplicationSettings askToOverrideUnremovabilityOfApplication:v23 teamIdentifier:v17 completionHandler:v22];
+      v23 = bundleID;
+      v28 = completionCopy;
+      selfCopy = self;
+      v25 = recordCopy;
+      v26 = identityCopy;
+      v27 = nameCopy;
+      flagsCopy = flags;
+      [MOEffectiveApplicationSettings askToOverrideUnremovabilityOfApplication:v23 teamIdentifier:teamIdentifier completionHandler:v22];
     }
 
     else
@@ -901,11 +901,11 @@ LABEL_20:
         *buf = 136315394;
         v31 = "[IXSAppUninstaller _promptToOverrideManagedSettingsOfAppWithRecord:identity:clientName:flags:completion:]";
         v32 = 2112;
-        v33 = v16;
+        v33 = bundleID;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%s: Unable to retrieve team identifier for bundle ID %@", buf, 0x16u);
       }
 
-      [(IXSAppUninstaller *)self _promptForRelatedDataAndUninstallAppWithRecord:v12 identity:v13 clientName:v14 flags:a6 completion:v15];
+      [(IXSAppUninstaller *)self _promptForRelatedDataAndUninstallAppWithRecord:recordCopy identity:identityCopy clientName:nameCopy flags:flags completion:completionCopy];
     }
   }
 
@@ -917,53 +917,53 @@ LABEL_20:
       sub_10009A5D8();
     }
 
-    v16 = sub_1000405FC("[IXSAppUninstaller _promptToOverrideManagedSettingsOfAppWithRecord:identity:clientName:flags:completion:]", 815, @"IXErrorDomain", 1uLL, 0, 0, @"Unable to load ManagedSettingsObjC framework", v19, v21);
-    (*(v15 + 2))(v15, 0, v16);
+    bundleID = sub_1000405FC("[IXSAppUninstaller _promptToOverrideManagedSettingsOfAppWithRecord:identity:clientName:flags:completion:]", 815, @"IXErrorDomain", 1uLL, 0, 0, @"Unable to load ManagedSettingsObjC framework", v19, v21);
+    (*(completionCopy + 2))(completionCopy, 0, bundleID);
   }
 }
 
-- (void)_uninstallAppWithRecord:(id)a3 identity:(id)a4 clientName:(id)a5 flags:(unint64_t)a6 removability:(unint64_t)a7 completion:(id)a8
+- (void)_uninstallAppWithRecord:(id)record identity:(id)identity clientName:(id)name flags:(unint64_t)flags removability:(unint64_t)removability completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  if ((a6 & 4) != 0)
+  recordCopy = record;
+  identityCopy = identity;
+  nameCopy = name;
+  completionCopy = completion;
+  if ((flags & 4) != 0)
   {
     v18 = +[IXSAppInstallObserverManager sharedInstance];
-    [v18 mayUninstallAppWithIdentity:v15];
+    [v18 mayUninstallAppWithIdentity:identityCopy];
   }
 
-  if ((a6 & 3) == 2)
+  if ((flags & 3) == 2)
   {
-    [(IXSAppUninstaller *)self _promptForRelatedDataAndUninstallAppWithRecord:v14 identity:v15 clientName:v16 flags:a6 completion:v17];
+    [(IXSAppUninstaller *)self _promptForRelatedDataAndUninstallAppWithRecord:recordCopy identity:identityCopy clientName:nameCopy flags:flags completion:completionCopy];
 LABEL_23:
     v23 = 0;
     goto LABEL_24;
   }
 
-  if ((a6 & 3) != 0)
+  if ((flags & 3) != 0)
   {
-    if ((a6 & 0x20) != 0)
+    if ((flags & 0x20) != 0)
     {
-      if ((a6 & 0x200) == 0)
+      if ((flags & 0x200) == 0)
       {
-        [(IXSAppUninstaller *)self _promptForMoveOrDeleteAppRecord:v14 identity:v15 clientName:v16 flags:a6 completion:v17 removability:a7];
+        [(IXSAppUninstaller *)self _promptForMoveOrDeleteAppRecord:recordCopy identity:identityCopy clientName:nameCopy flags:flags completion:completionCopy removability:removability];
         goto LABEL_23;
       }
     }
 
-    else if ((a6 & 0x200) == 0)
+    else if ((flags & 0x200) == 0)
     {
-      [(IXSAppUninstaller *)self _promptForDeletionWithRecord:v14 identity:v15 clientName:v16 flags:a6 completion:v17 removability:a7];
+      [(IXSAppUninstaller *)self _promptForDeletionWithRecord:recordCopy identity:identityCopy clientName:nameCopy flags:flags completion:completionCopy removability:removability];
       goto LABEL_23;
     }
 
-    [(IXSAppUninstaller *)self _promptForUnlockOfAppRecord:v14 identity:v15 clientName:v16 flags:a6 completion:v17 removability:a7];
+    [(IXSAppUninstaller *)self _promptForUnlockOfAppRecord:recordCopy identity:identityCopy clientName:nameCopy flags:flags completion:completionCopy removability:removability];
     goto LABEL_23;
   }
 
-  if ((a6 & 0x200) != 0)
+  if ((flags & 0x200) != 0)
   {
     v21 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -971,13 +971,13 @@ LABEL_23:
       sub_10009A7DC();
     }
 
-    sub_1000405FC("[IXSAppUninstaller _uninstallAppWithRecord:identity:clientName:flags:removability:completion:]", 836, @"IXErrorDomain", 0x16uLL, 0, 0, @"App with identity %@ needs to be unlocked before it can be uninstalled", v22, v15);
+    sub_1000405FC("[IXSAppUninstaller _uninstallAppWithRecord:identity:clientName:flags:removability:completion:]", 836, @"IXErrorDomain", 0x16uLL, 0, 0, @"App with identity %@ needs to be unlocked before it can be uninstalled", v22, identityCopy);
     goto LABEL_17;
   }
 
-  if ((a6 & 4) != 0)
+  if ((flags & 4) != 0)
   {
-    [(IXSAppUninstaller *)self _performUninstallOfAppWithIdentity:v15 clientName:v16 withFlags:a6 record:v14 completion:v17];
+    [(IXSAppUninstaller *)self _performUninstallOfAppWithIdentity:identityCopy clientName:nameCopy withFlags:flags record:recordCopy completion:completionCopy];
     goto LABEL_23;
   }
 
@@ -987,41 +987,41 @@ LABEL_23:
     sub_10009A85C();
   }
 
-  sub_1000405FC("[IXSAppUninstaller _uninstallAppWithRecord:identity:clientName:flags:removability:completion:]", 843, @"IXErrorDomain", 0x16uLL, 0, 0, @"App with identity %@ cannot be uninstalled", v20, v15);
+  sub_1000405FC("[IXSAppUninstaller _uninstallAppWithRecord:identity:clientName:flags:removability:completion:]", 843, @"IXErrorDomain", 0x16uLL, 0, 0, @"App with identity %@ cannot be uninstalled", v20, identityCopy);
   v23 = LABEL_17:;
-  if (v17)
+  if (completionCopy)
   {
-    v17[2](v17, 0, v23);
+    completionCopy[2](completionCopy, 0, v23);
   }
 
 LABEL_24:
 }
 
-- (void)uninstallAppWithIdentity:(id)a3 clientName:(id)a4 options:(unint64_t)a5 completion:(id)a6
+- (void)uninstallAppWithIdentity:(id)identity clientName:(id)name options:(unint64_t)options completion:(id)completion
 {
-  v7 = a5;
-  v9 = a5 >> 5;
-  v10 = a5 >> 2;
-  v11 = a3;
-  v43 = a6;
-  v44 = a4;
-  v12 = [v11 bundleID];
-  v13 = v7 & 3 | (16 * (v10 & 7)) | ((v9 & 1) << 8);
-  if ((v7 & 0x100) == 0)
+  optionsCopy = options;
+  v9 = options >> 5;
+  v10 = options >> 2;
+  identityCopy = identity;
+  completionCopy = completion;
+  nameCopy = name;
+  bundleID = [identityCopy bundleID];
+  v13 = optionsCopy & 3 | (16 * (v10 & 7)) | ((v9 & 1) << 8);
+  if ((optionsCopy & 0x100) == 0)
   {
-    v14 = [v11 bundleID];
-    v15 = [APApplication applicationWithBundleIdentifier:v14];
-    v16 = [v15 isLocked];
+    bundleID2 = [identityCopy bundleID];
+    v15 = [APApplication applicationWithBundleIdentifier:bundleID2];
+    isLocked = [v15 isLocked];
 
-    if (v16)
+    if (isLocked)
     {
       v13 |= 0x200uLL;
     }
   }
 
-  if (sub_10003B2E0(v12, 20))
+  if (sub_10003B2E0(bundleID, 20))
   {
-    if ((v7 & 0x80) == 0)
+    if ((optionsCopy & 0x80) == 0)
     {
       v13 |= 0x400uLL;
     }
@@ -1033,7 +1033,7 @@ LABEL_24:
   v18 = [v17 effectiveBoolValueForSetting:MCFeatureAppRemovalAllowed];
 
   v19 = v13 | 0x400;
-  if ((v7 & 0x80) != 0)
+  if ((optionsCopy & 0x80) != 0)
   {
     v19 = v13;
   }
@@ -1049,22 +1049,22 @@ LABEL_12:
   v20 = 0;
 LABEL_14:
   v52 = 0;
-  v21 = [[LSApplicationRecord alloc] initForInstallMachineryWithBundleIdentifier:v12 error:&v52];
+  v21 = [[LSApplicationRecord alloc] initForInstallMachineryWithBundleIdentifier:bundleID error:&v52];
   v22 = v52;
   if (v21)
   {
-    v23 = [v21 isDeletable];
-    v24 = [v21 bundleContainerURL];
+    isDeletable = [v21 isDeletable];
+    bundleContainerURL = [v21 bundleContainerURL];
 
-    v26 = (v7 & 0x80) == 0 || v24 == 0;
-    if ((v20 | v23 ^ 1) == 1 && v26)
+    v26 = (optionsCopy & 0x80) == 0 || bundleContainerURL == 0;
+    if ((v20 | isDeletable ^ 1) == 1 && v26)
     {
       v27 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         v54 = "[IXSAppUninstaller uninstallAppWithIdentity:clientName:options:completion:]";
         v55 = 2112;
-        if (v23)
+        if (isDeletable)
         {
           v28 = 89;
         }
@@ -1075,7 +1075,7 @@ LABEL_14:
         }
 
         *buf = 136316418;
-        v56 = v11;
+        v56 = identityCopy;
         if (v20)
         {
           v29 = 89;
@@ -1087,7 +1087,7 @@ LABEL_14:
         }
 
         *v58 = v28;
-        if ((v7 & 0x80) != 0)
+        if ((optionsCopy & 0x80) != 0)
         {
           v30 = 89;
         }
@@ -1098,7 +1098,7 @@ LABEL_14:
         }
 
         v57 = 1024;
-        if (v24)
+        if (bundleContainerURL)
         {
           v31 = 89;
         }
@@ -1117,25 +1117,25 @@ LABEL_14:
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%s: %@ cannot be uninstalled: deletableAccordingToLS:%c deletionIsRestricted:%c ignoreRestrictions:%c hasBundleContainer:%c", buf, 0x2Eu);
       }
 
-      v32 = 0;
+      removability = 0;
     }
 
     else
     {
       v34 = +[IXSAppRemovabilityManager sharedInstance];
-      v35 = [v34 removabilityMetadataForAppWithIdentity:v11];
+      v35 = [v34 removabilityMetadataForAppWithIdentity:identityCopy];
 
-      v32 = [v35 removability];
+      removability = [v35 removability];
       if ([v35 removability] == 1)
       {
         v13 |= 4uLL;
       }
 
-      else if ((v7 & 0x40) != 0)
+      else if ((optionsCopy & 0x40) != 0)
       {
         v36 = +[IXSAppRemovabilityManager sharedInstance];
         v51 = v22;
-        v37 = [v36 clearRemovabilityStateForIdentity:v11 error:&v51];
+        v37 = [v36 clearRemovabilityStateForIdentity:identityCopy error:&v51];
         v38 = v51;
 
         if ((v37 & 1) == 0)
@@ -1146,7 +1146,7 @@ LABEL_14:
             *buf = 136315650;
             v54 = "[IXSAppUninstaller uninstallAppWithIdentity:clientName:options:completion:]";
             v55 = 2112;
-            v56 = v11;
+            v56 = identityCopy;
             v57 = 2112;
             *v58 = v38;
             _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "%s: Failed to clear removability state for %@ : %@", buf, 0x20u);
@@ -1172,7 +1172,7 @@ LABEL_14:
           *buf = 136315650;
           v54 = "[IXSAppUninstaller uninstallAppWithIdentity:clientName:options:completion:]";
           v55 = 2112;
-          v56 = v11;
+          v56 = identityCopy;
           v57 = 2112;
           *v58 = v35;
           _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "%s: %@ cannot be uninstalled because removability does not allow it: %@", buf, 0x20u);
@@ -1189,7 +1189,7 @@ LABEL_14:
       *buf = 136315650;
       v54 = "[IXSAppUninstaller uninstallAppWithIdentity:clientName:options:completion:]";
       v55 = 2112;
-      v56 = v12;
+      v56 = bundleID;
       v57 = 2112;
       *v58 = v22;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "%s: Failed to create LSApplicationRecord for bundle ID %@: %@", buf, 0x20u);
@@ -1197,20 +1197,20 @@ LABEL_14:
 
     v22 = 0;
     v13 = v13 & 0x7F8 | 4;
-    v32 = 1;
+    removability = 1;
   }
 
   v46[0] = _NSConcreteStackBlock;
   v46[1] = 3221225472;
   v46[2] = sub_10001CCF4;
   v46[3] = &unk_100101798;
-  v49 = v32;
+  v49 = removability;
   v50 = v13;
-  v47 = v11;
-  v48 = v43;
-  v41 = v43;
-  v42 = v11;
-  [(IXSAppUninstaller *)self _uninstallAppWithRecord:v21 identity:v42 clientName:v44 flags:v13 removability:v32 completion:v46];
+  v47 = identityCopy;
+  v48 = completionCopy;
+  v41 = completionCopy;
+  v42 = identityCopy;
+  [(IXSAppUninstaller *)self _uninstallAppWithRecord:v21 identity:v42 clientName:nameCopy flags:v13 removability:removability completion:v46];
 }
 
 @end

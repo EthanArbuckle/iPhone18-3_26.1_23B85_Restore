@@ -1,8 +1,8 @@
 @interface TSCH3DRayPickRenderProcessor
 - (TSCH3DRayPickRenderProcessor)init;
 - (id)matrix;
-- (void)geometry:(id)a3;
-- (void)submit:(id)a3;
+- (void)geometry:(id)geometry;
+- (void)submit:(id)submit;
 @end
 
 @implementation TSCH3DRayPickRenderProcessor
@@ -43,31 +43,31 @@
   return v8;
 }
 
-- (void)geometry:(id)a3
+- (void)geometry:(id)geometry
 {
-  v4 = a3;
-  v9 = objc_msgSend_buffer(v4, v5, v6, v7, v8);
+  geometryCopy = geometry;
+  v9 = objc_msgSend_buffer(geometryCopy, v5, v6, v7, v8);
   buffer = self->_buffer;
   self->_buffer = v9;
 
-  if (!v4 || !self->_buffer)
+  if (!geometryCopy || !self->_buffer)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v12, v13, v14, "[TSCH3DRayPickRenderProcessor geometry:]");
     v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, v18, v19, v20, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DRayPickPipeline.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v15, v22, v23, v24, v25, v16, v21, 191, 0, "geometry resource or buffer is nil %@", v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v15, v22, v23, v24, v25, v16, v21, 191, 0, "geometry resource or buffer is nil %@", geometryCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27, v28, v29);
   }
 
   v30.receiver = self;
   v30.super_class = TSCH3DRayPickRenderProcessor;
-  [(TSCH3DRenderProcessor *)&v30 geometry:v4];
+  [(TSCH3DRenderProcessor *)&v30 geometry:geometryCopy];
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
-  v5 = a3;
+  submitCopy = submit;
   buffer = self->_buffer;
   if (!buffer)
   {
@@ -100,7 +100,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v59, v60, v61, v62);
   }
 
-  if (objc_msgSend_type(v5, v44, v45, v46, v47) != 1)
+  if (objc_msgSend_type(submitCopy, v44, v45, v46, v47) != 1)
   {
     v67 = MEMORY[0x277D81150];
     v68 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v63, v64, v65, v66, "[TSCH3DRayPickRenderProcessor submit:]");
@@ -110,9 +110,9 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v78, v79, v80, v81);
   }
 
-  if (objc_msgSend_hasOffset(v5, v63, v64, v65, v66))
+  if (objc_msgSend_hasOffset(submitCopy, v63, v64, v65, v66))
   {
-    v86 = objc_msgSend_offset(v5, v82, v83, v84, v85);
+    v86 = objc_msgSend_offset(submitCopy, v82, v83, v84, v85);
   }
 
   else
@@ -120,9 +120,9 @@
     v86 = 0;
   }
 
-  if (objc_msgSend_hasCount(v5, v82, v83, v84, v85))
+  if (objc_msgSend_hasCount(submitCopy, v82, v83, v84, v85))
   {
-    v92 = objc_msgSend_count(v5, v87, v88, v89, v90);
+    v92 = objc_msgSend_count(submitCopy, v87, v88, v89, v90);
   }
 
   else

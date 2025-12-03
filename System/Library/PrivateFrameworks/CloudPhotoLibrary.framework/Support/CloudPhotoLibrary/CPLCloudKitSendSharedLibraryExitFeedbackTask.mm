@@ -1,65 +1,65 @@
 @interface CPLCloudKitSendSharedLibraryExitFeedbackTask
-- (CPLCloudKitSendSharedLibraryExitFeedbackTask)initWithController:(id)a3 sourceRecordIDs:(id)a4 destinationRecordIDs:(id)a5 moveError:(id)a6 operationID:(id)a7 moveBatchID:(id)a8 exitZoneID:(id)a9 scope:(id)a10 completionHandler:(id)a11;
-- (id)_itemErrorFromError:(id)a3 forID:(id)a4;
+- (CPLCloudKitSendSharedLibraryExitFeedbackTask)initWithController:(id)controller sourceRecordIDs:(id)ds destinationRecordIDs:(id)iDs moveError:(id)error operationID:(id)d moveBatchID:(id)iD exitZoneID:(id)zoneID scope:(id)self0 completionHandler:(id)self1;
+- (id)_itemErrorFromError:(id)error forID:(id)d;
 - (void)runOperations;
 @end
 
 @implementation CPLCloudKitSendSharedLibraryExitFeedbackTask
 
-- (CPLCloudKitSendSharedLibraryExitFeedbackTask)initWithController:(id)a3 sourceRecordIDs:(id)a4 destinationRecordIDs:(id)a5 moveError:(id)a6 operationID:(id)a7 moveBatchID:(id)a8 exitZoneID:(id)a9 scope:(id)a10 completionHandler:(id)a11
+- (CPLCloudKitSendSharedLibraryExitFeedbackTask)initWithController:(id)controller sourceRecordIDs:(id)ds destinationRecordIDs:(id)iDs moveError:(id)error operationID:(id)d moveBatchID:(id)iD exitZoneID:(id)zoneID scope:(id)self0 completionHandler:(id)self1
 {
-  v29 = a4;
-  v28 = a5;
-  v27 = a6;
-  v26 = a7;
-  v25 = a8;
-  v24 = a9;
-  v23 = a10;
-  v18 = a11;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  errorCopy = error;
+  dCopy = d;
+  iDCopy = iD;
+  zoneIDCopy = zoneID;
+  scopeCopy = scope;
+  handlerCopy = handler;
   v30.receiver = self;
   v30.super_class = CPLCloudKitSendSharedLibraryExitFeedbackTask;
-  v19 = [(CPLCloudKitTransportTask *)&v30 initWithController:a3];
+  v19 = [(CPLCloudKitTransportTask *)&v30 initWithController:controller];
   if (v19)
   {
-    v20 = [v18 copy];
+    v20 = [handlerCopy copy];
     completionHandler = v19->_completionHandler;
     v19->_completionHandler = v20;
 
-    objc_storeStrong(&v19->_sourceRecordIDs, a4);
-    objc_storeStrong(&v19->_destinationRecordIDs, a5);
-    objc_storeStrong(&v19->_moveError, a6);
-    objc_storeStrong(&v19->_operationID, a7);
-    objc_storeStrong(&v19->_moveBatchID, a8);
-    objc_storeStrong(&v19->_scope, a10);
-    objc_storeStrong(&v19->_exitZoneID, a9);
+    objc_storeStrong(&v19->_sourceRecordIDs, ds);
+    objc_storeStrong(&v19->_destinationRecordIDs, iDs);
+    objc_storeStrong(&v19->_moveError, error);
+    objc_storeStrong(&v19->_operationID, d);
+    objc_storeStrong(&v19->_moveBatchID, iD);
+    objc_storeStrong(&v19->_scope, scope);
+    objc_storeStrong(&v19->_exitZoneID, zoneID);
   }
 
   return v19;
 }
 
-- (id)_itemErrorFromError:(id)a3 forID:(id)a4
+- (id)_itemErrorFromError:(id)error forID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  errorCopy = error;
+  dCopy = d;
+  if (dCopy)
   {
-    v7 = [v5 domain];
-    v8 = [v7 isEqualToString:CKErrorDomain];
+    domain = [errorCopy domain];
+    v8 = [domain isEqualToString:CKErrorDomain];
 
-    if ((v8 & 1) == 0 || [v5 code] != 2)
+    if ((v8 & 1) == 0 || [errorCopy code] != 2)
     {
-      v13 = v5;
+      v13 = errorCopy;
       goto LABEL_8;
     }
 
-    v9 = [v5 userInfo];
-    v10 = [v9 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+    userInfo = [errorCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
 
     if (v10)
     {
-      v11 = [v5 userInfo];
-      v12 = [v11 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
-      v13 = [v12 objectForKeyedSubscript:v6];
+      userInfo2 = [errorCopy userInfo];
+      v12 = [userInfo2 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+      v13 = [v12 objectForKeyedSubscript:dCopy];
 
       goto LABEL_8;
     }

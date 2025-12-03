@@ -7,21 +7,21 @@
 
 - (id)EKUI_viewHierarchy
 {
-  v2 = [a1 view];
-  v3 = [v2 window];
+  view = [self view];
+  window = [view window];
 
-  if (v3)
+  if (window)
   {
-    v4 = v3;
+    v4 = window;
   }
 
   else
   {
-    v5 = [a1 parentViewController];
-    v6 = v5;
-    if (v5)
+    parentViewController = [self parentViewController];
+    v6 = parentViewController;
+    if (parentViewController)
     {
-      [v5 EKUI_viewHierarchy];
+      [parentViewController EKUI_viewHierarchy];
     }
 
     else
@@ -40,41 +40,41 @@
 
 - (uint64_t)isPresentedInsidePopover
 {
-  v1 = a1;
-  if (!v1)
+  selfCopy = self;
+  if (!selfCopy)
   {
     return 0;
   }
 
-  v2 = v1;
+  v2 = selfCopy;
   while (1)
   {
-    v3 = [v2 popoverPresentationController];
-    if (v3)
+    popoverPresentationController = [v2 popoverPresentationController];
+    if (popoverPresentationController)
     {
-      v4 = v3;
-      v5 = [v2 popoverPresentationController];
-      v6 = [v5 _isAdapted];
+      v4 = popoverPresentationController;
+      popoverPresentationController2 = [v2 popoverPresentationController];
+      _isAdapted = [popoverPresentationController2 _isAdapted];
 
-      if (!v6)
+      if (!_isAdapted)
       {
         break;
       }
     }
 
-    v7 = [v2 presentingViewController];
+    presentingViewController = [v2 presentingViewController];
 
-    v2 = v7;
-    if (!v7)
+    v2 = presentingViewController;
+    if (!presentingViewController)
     {
       goto LABEL_9;
     }
   }
 
-  v7 = 1;
+  presentingViewController = 1;
 LABEL_9:
 
-  return v7;
+  return presentingViewController;
 }
 
 @end

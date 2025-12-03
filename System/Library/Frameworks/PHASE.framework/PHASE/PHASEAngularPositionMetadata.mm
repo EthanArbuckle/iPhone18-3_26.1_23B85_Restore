@@ -1,12 +1,12 @@
 @interface PHASEAngularPositionMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PHASEAngularPositionMetadata)init;
-- (PHASEAngularPositionMetadata)initWithAzimuth:(float)a3 elevation:(float)a4;
+- (PHASEAngularPositionMetadata)initWithAzimuth:(float)azimuth elevation:(float)elevation;
 - (float)azimuth;
 - (float)elevation;
 - (unint64_t)hash;
-- (void)setAzimuth:(float)a3;
-- (void)setElevation:(float)a3;
+- (void)setAzimuth:(float)azimuth;
+- (void)setElevation:(float)elevation;
 @end
 
 @implementation PHASEAngularPositionMetadata
@@ -21,7 +21,7 @@
   return [(PHASEAngularPositionMetadata *)self initWithAzimuth:v7 elevation:v6];
 }
 
-- (PHASEAngularPositionMetadata)initWithAzimuth:(float)a3 elevation:(float)a4
+- (PHASEAngularPositionMetadata)initWithAzimuth:(float)azimuth elevation:(float)elevation
 {
   v14.receiver = self;
   v14.super_class = PHASEAngularPositionMetadata;
@@ -36,23 +36,23 @@
     internalElevationLock = v6->_internalElevationLock;
     v6->_internalElevationLock = v9;
 
-    *&v11 = a3;
+    *&v11 = azimuth;
     [(PHASEAngularPositionMetadata *)v6 setAzimuth:v11];
-    *&v12 = a4;
+    *&v12 = elevation;
     [(PHASEAngularPositionMetadata *)v6 setElevation:v12];
   }
 
   return v6;
 }
 
-- (void)setAzimuth:(float)a3
+- (void)setAzimuth:(float)azimuth
 {
   +[PHASEAngularPositionMetadata minimumAzimuth];
-  if (v5 <= a3 && (+[PHASEAngularPositionMetadata maximumAzimuth], v6 >= a3))
+  if (v5 <= azimuth && (+[PHASEAngularPositionMetadata maximumAzimuth], v6 >= azimuth))
   {
     obj = self->_internalAzimuthLock;
     objc_sync_enter(obj);
-    self->_internalAzimuth = a3;
+    self->_internalAzimuth = azimuth;
     objc_sync_exit(obj);
   }
 
@@ -63,7 +63,7 @@
     +[PHASEAngularPositionMetadata minimumAzimuth];
     v10 = v9;
     +[PHASEAngularPositionMetadata maximumAzimuth];
-    [v7 raise:v8 format:{@"The azimuth: %f is out of range [%f, %f].", a3, *&v10, v11}];
+    [v7 raise:v8 format:{@"The azimuth: %f is out of range [%f, %f].", azimuth, *&v10, v11}];
   }
 }
 
@@ -77,14 +77,14 @@
   return internalAzimuth;
 }
 
-- (void)setElevation:(float)a3
+- (void)setElevation:(float)elevation
 {
   +[PHASEAngularPositionMetadata minimumElevation];
-  if (v5 <= a3 && (+[PHASEAngularPositionMetadata maximumElevation], v6 >= a3))
+  if (v5 <= elevation && (+[PHASEAngularPositionMetadata maximumElevation], v6 >= elevation))
   {
     obj = self->_internalElevationLock;
     objc_sync_enter(obj);
-    self->_internalElevation = a3;
+    self->_internalElevation = elevation;
     objc_sync_exit(obj);
   }
 
@@ -95,7 +95,7 @@
     +[PHASEAngularPositionMetadata minimumElevation];
     v10 = v9;
     +[PHASEAngularPositionMetadata maximumElevation];
-    [v7 raise:v8 format:{@"The elevation: %f is out of range [%f, %f].", a3, *&v10, v11}];
+    [v7 raise:v8 format:{@"The elevation: %f is out of range [%f, %f].", elevation, *&v10, v11}];
   }
 }
 
@@ -109,10 +109,10 @@
   return internalElevation;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v22 = 1;
   }
@@ -122,7 +122,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(PHASEAngularPositionMetadata *)self azimuth];
       v7 = v6;
       [(PHASEAngularPositionMetadata *)v5 azimuth];

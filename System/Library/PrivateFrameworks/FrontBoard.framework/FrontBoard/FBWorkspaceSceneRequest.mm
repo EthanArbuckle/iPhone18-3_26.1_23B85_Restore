@@ -1,22 +1,22 @@
 @interface FBWorkspaceSceneRequest
-- (FBWorkspaceSceneRequest)initWithClientIdentity:(id)a3 targetIdentifier:(id)a4 options:(id)a5 completion:(id)a6;
-- (FBWorkspaceSceneRequest)initWithTargetIdentifier:(id)a3;
-- (FBWorkspaceSceneRequest)initWithTargetIdentifier:(id)a3 actions:(id)a4 completion:(id)a5;
-- (void)_respondWithScene:(id)a3 error:(id)a4;
+- (FBWorkspaceSceneRequest)initWithClientIdentity:(id)identity targetIdentifier:(id)identifier options:(id)options completion:(id)completion;
+- (FBWorkspaceSceneRequest)initWithTargetIdentifier:(id)identifier;
+- (FBWorkspaceSceneRequest)initWithTargetIdentifier:(id)identifier actions:(id)actions completion:(id)completion;
+- (void)_respondWithScene:(id)scene error:(id)error;
 - (void)dealloc;
-- (void)invalidateWithError:(id)a3;
-- (void)observeScene:(id)a3;
-- (void)respondWithScene:(id)a3;
-- (void)sceneDidActivate:(id)a3;
-- (void)sceneDidInvalidate:(id)a3;
+- (void)invalidateWithError:(id)error;
+- (void)observeScene:(id)scene;
+- (void)respondWithScene:(id)scene;
+- (void)sceneDidActivate:(id)activate;
+- (void)sceneDidInvalidate:(id)invalidate;
 @end
 
 @implementation FBWorkspaceSceneRequest
 
-- (FBWorkspaceSceneRequest)initWithTargetIdentifier:(id)a3
+- (FBWorkspaceSceneRequest)initWithTargetIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     NSClassFromString(&cfstr_Nsstring.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -30,7 +30,7 @@
   v6 = [(FBWorkspaceSceneRequest *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [identifierCopy copy];
     targetIdentifier = v6->_targetIdentifier;
     v6->_targetIdentifier = v7;
 
@@ -40,13 +40,13 @@
   return v6;
 }
 
-- (FBWorkspaceSceneRequest)initWithClientIdentity:(id)a3 targetIdentifier:(id)a4 options:(id)a5 completion:(id)a6
+- (FBWorkspaceSceneRequest)initWithClientIdentity:(id)identity targetIdentifier:(id)identifier options:(id)options completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v11;
+  identityCopy = identity;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  completionCopy = completion;
+  v15 = identityCopy;
   if (!v15)
   {
     [FBWorkspaceSceneRequest initWithClientIdentity:a2 targetIdentifier:? options:? completion:?];
@@ -59,7 +59,7 @@
     [FBWorkspaceSceneRequest initWithClientIdentity:v16 targetIdentifier:a2 options:? completion:?];
   }
 
-  v17 = v12;
+  v17 = identifierCopy;
   if (v17)
   {
     objc_opt_class();
@@ -69,7 +69,7 @@
     }
   }
 
-  v18 = v13;
+  v18 = optionsCopy;
   if (v18)
   {
     objc_opt_class();
@@ -79,7 +79,7 @@
     }
   }
 
-  if (!v14)
+  if (!completionCopy)
   {
     [FBWorkspaceSceneRequest initWithClientIdentity:a2 targetIdentifier:? options:? completion:?];
   }
@@ -91,8 +91,8 @@
     clientIdentity = v19->_clientIdentity;
     v19->_clientIdentity = v20;
 
-    objc_storeStrong(&v19->_options, a5);
-    v22 = [v14 copy];
+    objc_storeStrong(&v19->_options, options);
+    v22 = [completionCopy copy];
     lock_completion = v19->_lock_completion;
     v19->_lock_completion = v22;
   }
@@ -100,18 +100,18 @@
   return v19;
 }
 
-- (FBWorkspaceSceneRequest)initWithTargetIdentifier:(id)a3 actions:(id)a4 completion:(id)a5
+- (FBWorkspaceSceneRequest)initWithTargetIdentifier:(id)identifier actions:(id)actions completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(FBWorkspaceSceneRequest *)self initWithTargetIdentifier:a3];
+  actionsCopy = actions;
+  completionCopy = completion;
+  v10 = [(FBWorkspaceSceneRequest *)self initWithTargetIdentifier:identifier];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [actionsCopy copy];
     actions = v10->_actions;
     v10->_actions = v11;
 
-    v13 = [v9 copy];
+    v13 = [completionCopy copy];
     lock_completion = v10->_lock_completion;
     v10->_lock_completion = v13;
   }
@@ -124,12 +124,12 @@
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FBWorkspaceSceneRequest deallocated without firing its completion"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
     v7 = 138544642;
-    v8 = a1;
+    selfCopy = self;
     OUTLINED_FUNCTION_0_0();
     v9 = @"FBWorkspaceSceneRequest.m";
     v10 = 1024;
@@ -144,9 +144,9 @@
   __break(0);
 }
 
-- (void)observeScene:(id)a3
+- (void)observeScene:(id)scene
 {
-  object = a3;
+  object = scene;
   if ([object isValid] && (objc_msgSend(object, "isActive") & 1) == 0)
   {
     [object addObserver:self];
@@ -166,11 +166,11 @@
   }
 }
 
-- (void)respondWithScene:(id)a3
+- (void)respondWithScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   actions = self->_actions;
-  v7 = v5;
+  v7 = sceneCopy;
   if (v7 || !actions)
   {
     NSClassFromString(&cfstr_Fbscene.isa);
@@ -188,11 +188,11 @@
   [(FBWorkspaceSceneRequest *)self _respondWithScene:v7 error:0];
 }
 
-- (void)invalidateWithError:(id)a3
+- (void)invalidateWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   NSClassFromString(&cfstr_Nserror.isa);
-  if (!v5)
+  if (!errorCopy)
   {
     [FBWorkspaceSceneRequest invalidateWithError:a2];
   }
@@ -202,13 +202,13 @@
     [FBWorkspaceSceneRequest invalidateWithError:a2];
   }
 
-  [(FBWorkspaceSceneRequest *)self _respondWithScene:0 error:v5];
+  [(FBWorkspaceSceneRequest *)self _respondWithScene:0 error:errorCopy];
 }
 
-- (void)_respondWithScene:(id)a3 error:(id)a4
+- (void)_respondWithScene:(id)scene error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  sceneCopy = scene;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   lock_responded = self->_lock_responded;
   v10 = MEMORY[0x1AC572E40](self->_lock_completion);
@@ -219,47 +219,47 @@
   os_unfair_lock_unlock(&self->_lock);
   if (lock_responded)
   {
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"attempt to respond to previously invalidated request with scene=%@ error=%@", v7, v8];
+    errorCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"attempt to respond to previously invalidated request with scene=%@ error=%@", sceneCopy, errorCopy];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      [(FBWorkspaceSceneRequest *)a2 _respondWithScene:v13 error:?];
+      [(FBWorkspaceSceneRequest *)a2 _respondWithScene:errorCopy error:?];
     }
 
-    [v13 UTF8String];
+    [errorCopy UTF8String];
     _bs_set_crash_log_message();
     __break(0);
   }
 
   else
   {
-    if (v8)
+    if (errorCopy)
     {
       v12 = FBLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [(FBWorkspaceSceneRequest *)self _respondWithScene:v8 error:v12];
+        [(FBWorkspaceSceneRequest *)self _respondWithScene:errorCopy error:v12];
       }
     }
 
     if (v10)
     {
-      (v10)[2](v10, v7, v8);
+      (v10)[2](v10, sceneCopy, errorCopy);
     }
   }
 }
 
-- (void)sceneDidActivate:(id)a3
+- (void)sceneDidActivate:(id)activate
 {
-  object = a3;
+  object = activate;
   [(FBWorkspaceSceneRequest *)self respondWithScene:object];
   [object removeObserver:self];
   v4 = objc_opt_class();
   objc_setAssociatedObject(object, v4, 0, 1);
 }
 
-- (void)sceneDidInvalidate:(id)a3
+- (void)sceneDidInvalidate:(id)invalidate
 {
-  object = a3;
+  object = invalidate;
   v4 = FBSceneErrorCreate(2uLL, @"scene explicitly invalidated", 0);
   [(FBWorkspaceSceneRequest *)self invalidateWithError:v4];
 

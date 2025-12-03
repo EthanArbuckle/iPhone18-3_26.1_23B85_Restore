@@ -1,41 +1,41 @@
 @interface UIKBRenderFactoryiPadFudge
-- (BOOL)supportsInputTraits:(id)a3 forKeyplane:(id)a4;
-- (CGPoint)deleteKeyOffset:(unint64_t)a3;
+- (BOOL)supportsInputTraits:(id)traits forKeyplane:(id)keyplane;
+- (CGPoint)deleteKeyOffset:(unint64_t)offset;
 - (CGPoint)dictationKeyOffset;
 - (CGPoint)dismissKeyOffset;
-- (CGPoint)dualStringKeyBottomTextOffset:(id)a3 keyplane:(id)a4;
-- (CGPoint)dualStringKeyBottomTextOffset:(unint64_t)a3;
-- (CGPoint)dualStringKeyTopTextOffset:(id)a3 keyplane:(id)a4;
-- (CGPoint)dualStringKeyTopTextOffset:(unint64_t)a3;
+- (CGPoint)dualStringKeyBottomTextOffset:(id)offset keyplane:(id)keyplane;
+- (CGPoint)dualStringKeyBottomTextOffset:(unint64_t)offset;
+- (CGPoint)dualStringKeyTopTextOffset:(id)offset keyplane:(id)keyplane;
+- (CGPoint)dualStringKeyTopTextOffset:(unint64_t)offset;
 - (CGPoint)iPadFudgeControlKeyOffset;
 - (CGPoint)internationalKeyOffset;
 - (CGPoint)moreKeyOffset;
-- (CGPoint)stringKeyOffset:(unint64_t)a3;
+- (CGPoint)stringKeyOffset:(unint64_t)offset;
 - (CGPoint)symbolImageControlKeyOffset;
 - (CGSize)defaultVariantGeometrySize;
 - (double)_row4ControlSegmentWidthRight;
-- (double)dualStringKeyBottomFontSize:(unint64_t)a3;
-- (double)dualStringKeyTopFontSize:(unint64_t)a3;
-- (double)stringKeyFontSize:(unint64_t)a3;
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4;
-- (id)displayContentsForKey:(id)a3;
+- (double)dualStringKeyBottomFontSize:(unint64_t)size;
+- (double)dualStringKeyTopFontSize:(unint64_t)size;
+- (double)stringKeyFontSize:(unint64_t)size;
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane;
+- (id)displayContentsForKey:(id)key;
 - (id)lightKeycapsFontFallbackName;
 - (id)lightKeycapsFontName;
-- (unint64_t)_isFullHeightKeyFor:(id)a3 onKeyplane:(id)a4;
-- (void)_customizeGeometry:(id)a3 forKey:(id)a4 contents:(id)a5;
+- (unint64_t)_isFullHeightKeyFor:(id)for onKeyplane:(id)keyplane;
+- (void)_customizeGeometry:(id)geometry forKey:(id)key contents:(id)contents;
 @end
 
 @implementation UIKBRenderFactoryiPadFudge
 
-- (double)stringKeyFontSize:(unint64_t)a3
+- (double)stringKeyFontSize:(unint64_t)size
 {
   result = 18.5;
-  if (a3 != 1)
+  if (size != 1)
   {
     result = 19.0;
   }
 
-  if (a3 == 4)
+  if (size == 4)
   {
     return 22.0;
   }
@@ -43,10 +43,10 @@
   return result;
 }
 
-- (CGPoint)stringKeyOffset:(unint64_t)a3
+- (CGPoint)stringKeyOffset:(unint64_t)offset
 {
   v3 = 2.0;
-  if (a3 != 1)
+  if (offset != 1)
   {
     v3 = 1.0;
   }
@@ -68,9 +68,9 @@
 
 - (CGPoint)iPadFudgeControlKeyOffset
 {
-  v2 = [(UIKBRenderFactory *)self preferStringKeycapOverImage];
+  preferStringKeycapOverImage = [(UIKBRenderFactory *)self preferStringKeycapOverImage];
   v3 = 17.0;
-  if (v2)
+  if (preferStringKeycapOverImage)
   {
     v3 = 16.0;
   }
@@ -81,10 +81,10 @@
   return result;
 }
 
-- (CGPoint)deleteKeyOffset:(unint64_t)a3
+- (CGPoint)deleteKeyOffset:(unint64_t)offset
 {
   v3 = 13.5;
-  if (a3 != 1)
+  if (offset != 1)
   {
     v3 = 14.5;
   }
@@ -131,15 +131,15 @@
   return result;
 }
 
-- (double)dualStringKeyBottomFontSize:(unint64_t)a3
+- (double)dualStringKeyBottomFontSize:(unint64_t)size
 {
   result = 18.0;
-  if (a3 == 1)
+  if (size == 1)
   {
     result = 15.0;
   }
 
-  if (a3 == 4)
+  if (size == 4)
   {
     return 20.0;
   }
@@ -147,15 +147,15 @@
   return result;
 }
 
-- (CGPoint)dualStringKeyBottomTextOffset:(unint64_t)a3
+- (CGPoint)dualStringKeyBottomTextOffset:(unint64_t)offset
 {
   v3 = 12.0;
-  if (a3 == 1)
+  if (offset == 1)
   {
     v3 = 9.0;
   }
 
-  if (a3 == 4)
+  if (offset == 4)
   {
     v3 = 13.0;
   }
@@ -166,15 +166,15 @@
   return result;
 }
 
-- (double)dualStringKeyTopFontSize:(unint64_t)a3
+- (double)dualStringKeyTopFontSize:(unint64_t)size
 {
   result = 17.0;
-  if (a3 == 1)
+  if (size == 1)
   {
     result = 16.0;
   }
 
-  if (a3 == 4)
+  if (size == 4)
   {
     return 20.0;
   }
@@ -182,10 +182,10 @@
   return result;
 }
 
-- (CGPoint)dualStringKeyTopTextOffset:(unint64_t)a3
+- (CGPoint)dualStringKeyTopTextOffset:(unint64_t)offset
 {
   v3 = -9.0;
-  if (a3 != 1)
+  if (offset != 1)
   {
     v3 = -13.0;
   }
@@ -205,9 +205,9 @@
   return result;
 }
 
-- (CGPoint)dualStringKeyTopTextOffset:(id)a3 keyplane:(id)a4
+- (CGPoint)dualStringKeyTopTextOffset:(id)offset keyplane:(id)keyplane
 {
-  v5 = [(UIKBRenderFactoryiPadFudge *)self _isFullHeightKeyFor:a3 onKeyplane:a4];
+  v5 = [(UIKBRenderFactoryiPadFudge *)self _isFullHeightKeyFor:offset onKeyplane:keyplane];
 
   [(UIKBRenderFactoryiPadFudge *)self dualStringKeyTopTextOffset:v5];
   result.y = v7;
@@ -215,9 +215,9 @@
   return result;
 }
 
-- (CGPoint)dualStringKeyBottomTextOffset:(id)a3 keyplane:(id)a4
+- (CGPoint)dualStringKeyBottomTextOffset:(id)offset keyplane:(id)keyplane
 {
-  v5 = [(UIKBRenderFactoryiPadFudge *)self _isFullHeightKeyFor:a3 onKeyplane:a4];
+  v5 = [(UIKBRenderFactoryiPadFudge *)self _isFullHeightKeyFor:offset onKeyplane:keyplane];
 
   [(UIKBRenderFactoryiPadFudge *)self dualStringKeyBottomTextOffset:v5];
   result.y = v7;
@@ -225,39 +225,39 @@
   return result;
 }
 
-- (BOOL)supportsInputTraits:(id)a3 forKeyplane:(id)a4
+- (BOOL)supportsInputTraits:(id)traits forKeyplane:(id)keyplane
 {
-  if ([a3 keyboardType] == 12)
+  if ([traits keyboardType] == 12)
   {
     return 0;
   }
 
   v5 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v6 = [v5 preferencesActions];
-  v7 = [v6 BOOLForPreferenceKey:@"GesturesEnabled"];
+  preferencesActions = [v5 preferencesActions];
+  v7 = [preferencesActions BOOLForPreferenceKey:@"GesturesEnabled"];
 
   return v7 ^ 1;
 }
 
 - (id)lightKeycapsFontName
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 usesCompactKeycapsFont];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
 
-  v5 = [(UIKBRenderFactory *)self boldTextEnabled];
+  boldTextEnabled = [(UIKBRenderFactory *)self boldTextEnabled];
   v6 = @".KeycapsPadA-Keys";
-  if (v5)
+  if (boldTextEnabled)
   {
     v6 = @".PhoneKeyCaps";
   }
 
   v7 = @"UIKBRenderFactorySystemCompactFontName";
-  if (v5)
+  if (boldTextEnabled)
   {
     v7 = @".SFCompact-Bold";
   }
 
-  if (v4)
+  if (usesCompactKeycapsFont)
   {
     v8 = v7;
   }
@@ -285,32 +285,32 @@
   return v2;
 }
 
-- (unint64_t)_isFullHeightKeyFor:(id)a3 onKeyplane:(id)a4
+- (unint64_t)_isFullHeightKeyFor:(id)for onKeyplane:(id)keyplane
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 dynamicLayout])
+  forCopy = for;
+  keyplaneCopy = keyplane;
+  if ([forCopy dynamicLayout])
   {
-    v7 = [v6 subtreeWithType:3];
+    v7 = [keyplaneCopy subtreeWithType:3];
 
-    v8 = [v7 rowSet];
-    v9 = [v8 subtrees];
-    v10 = [v9 count];
-    v11 = [v5 displayRowHint];
+    rowSet = [v7 rowSet];
+    subtrees = [rowSet subtrees];
+    v10 = [subtrees count];
+    displayRowHint = [forCopy displayRowHint];
 
-    if (v10 <= v11)
+    if (v10 <= displayRowHint)
     {
       v19 = 4;
     }
 
     else
     {
-      v12 = [v7 rowSet];
-      v13 = [v12 subtrees];
-      v14 = [v13 objectAtIndex:{objc_msgSend(v5, "displayRowHint")}];
+      rowSet2 = [v7 rowSet];
+      subtrees2 = [rowSet2 subtrees];
+      v14 = [subtrees2 objectAtIndex:{objc_msgSend(forCopy, "displayRowHint")}];
 
-      v15 = [v14 properties];
-      v16 = [v15 objectForKey:@"Height"];
+      properties = [v14 properties];
+      v16 = [properties objectForKey:@"Height"];
 
       if (v16 && ([v16 doubleValue], v17 > 0.0) && (objc_msgSend(v16, "doubleValue"), v18 < 1.0))
       {
@@ -326,11 +326,11 @@
 
   else
   {
-    [v6 frame];
+    [keyplaneCopy frame];
     v21 = v20;
 
     v22 = v21 / 5.0;
-    [v5 frame];
+    [forCopy frame];
     v24 = 2;
     if (v23 > v22)
     {
@@ -351,46 +351,46 @@
   return v19;
 }
 
-- (id)displayContentsForKey:(id)a3
+- (id)displayContentsForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v16.receiver = self;
   v16.super_class = UIKBRenderFactoryiPadFudge;
-  v5 = [(UIKBRenderFactoryiPad *)&v16 displayContentsForKey:v4];
-  if ([v4 displayType] == 23 || objc_msgSend(v4, "interactionType") == 14)
+  v5 = [(UIKBRenderFactoryiPad *)&v16 displayContentsForKey:keyCopy];
+  if ([keyCopy displayType] == 23 || objc_msgSend(keyCopy, "interactionType") == 14)
   {
-    v6 = [v4 overrideDisplayString];
-    if (v6)
+    overrideDisplayString = [keyCopy overrideDisplayString];
+    if (overrideDisplayString)
     {
-      [v5 setDisplayString:v6];
+      [v5 setDisplayString:overrideDisplayString];
     }
 
     else
     {
-      v7 = [v4 displayString];
-      [v5 setDisplayString:v7];
+      displayString = [keyCopy displayString];
+      [v5 setDisplayString:displayString];
     }
 
-    if (-[UIKBRenderFactory preferStringKeycapOverImage](self, "preferStringKeycapOverImage") && [v4 state] == 8)
+    if (-[UIKBRenderFactory preferStringKeycapOverImage](self, "preferStringKeycapOverImage") && [keyCopy state] == 8)
     {
       [v5 setDisplayString:@"caps lock"];
     }
   }
 
-  else if ([v4 displayType] == 7)
+  else if ([keyCopy displayType] == 7)
   {
-    v8 = [(UIKBRenderFactory *)self renderingContext];
-    if ([v8 shiftState] == 1)
+    renderingContext = [(UIKBRenderFactory *)self renderingContext];
+    if ([renderingContext shiftState] == 1)
     {
-      v9 = [v4 secondaryRepresentedStrings];
-      v10 = [v9 firstObject];
-      v11 = [v4 representedString];
-      v12 = [v10 isEqualToString:v11];
+      secondaryRepresentedStrings = [keyCopy secondaryRepresentedStrings];
+      firstObject = [secondaryRepresentedStrings firstObject];
+      representedString = [keyCopy representedString];
+      v12 = [firstObject isEqualToString:representedString];
 
       if ((v12 & 1) == 0)
       {
-        v13 = [v5 secondaryDisplayStrings];
-        v14 = [v13 objectAtIndex:0];
+        secondaryDisplayStrings = [v5 secondaryDisplayStrings];
+        v14 = [secondaryDisplayStrings objectAtIndex:0];
         [v5 setDisplayString:v14];
 
         [v5 setSecondaryDisplayStrings:0];
@@ -402,7 +402,7 @@
     }
   }
 
-  [(UIKBRenderFactory *)self applyBoldTextForContent:v5 withKey:v4];
+  [(UIKBRenderFactory *)self applyBoldTextForContent:v5 withKey:keyCopy];
   if ([(UIKBRenderFactory *)self preferStringKeycapOverImage])
   {
     [v5 setStringKeycapOverImage:{objc_msgSend(v5, "forceImageKeycap") ^ 1}];
@@ -411,45 +411,45 @@
   return v5;
 }
 
-- (void)_customizeGeometry:(id)a3 forKey:(id)a4 contents:(id)a5
+- (void)_customizeGeometry:(id)geometry forKey:(id)key contents:(id)contents
 {
-  v8 = a3;
-  v9 = a4;
+  geometryCopy = geometry;
+  keyCopy = key;
   v10.receiver = self;
   v10.super_class = UIKBRenderFactoryiPadFudge;
-  [(UIKBRenderFactoryiPad *)&v10 _customizeGeometry:v8 forKey:v9 contents:a5];
-  if ([v9 displayType] == 23 || objc_msgSend(v9, "displayType") == 3 || objc_msgSend(v9, "displayType") == 21 || objc_msgSend(v9, "displayType") == 18 || objc_msgSend(v9, "displayType") == 5)
+  [(UIKBRenderFactoryiPad *)&v10 _customizeGeometry:geometryCopy forKey:keyCopy contents:contents];
+  if ([keyCopy displayType] == 23 || objc_msgSend(keyCopy, "displayType") == 3 || objc_msgSend(keyCopy, "displayType") == 21 || objc_msgSend(keyCopy, "displayType") == 18 || objc_msgSend(keyCopy, "displayType") == 5)
   {
-    [v9 paddedFrame];
-    [v8 setSymbolFrame:?];
+    [keyCopy paddedFrame];
+    [geometryCopy setSymbolFrame:?];
   }
 }
 
 - (double)_row4ControlSegmentWidthRight
 {
-  v2 = [(UIKBRenderFactory *)self renderingContext];
-  v3 = dbl_18A67EF90[[v2 keyboardType] == 126];
+  renderingContext = [(UIKBRenderFactory *)self renderingContext];
+  v3 = dbl_18A67EF90[[renderingContext keyboardType] == 126];
 
   return v3;
 }
 
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane
 {
   v118[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  keyplaneCopy = keyplane;
   v117.receiver = self;
   v117.super_class = UIKBRenderFactoryiPadFudge;
-  v8 = [(UIKBRenderFactoryiPad *)&v117 _traitsForKey:v6 onKeyplane:v7];
-  v9 = [(UIKBRenderFactoryiPadFudge *)self _isFullHeightKeyFor:v6 onKeyplane:v7];
-  v10 = [v6 interactionType];
-  if ((![v6 displayType] || objc_msgSend(v6, "displayType") == 8) && v10 != 9)
+  v8 = [(UIKBRenderFactoryiPad *)&v117 _traitsForKey:keyCopy onKeyplane:keyplaneCopy];
+  v9 = [(UIKBRenderFactoryiPadFudge *)self _isFullHeightKeyFor:keyCopy onKeyplane:keyplaneCopy];
+  interactionType = [keyCopy interactionType];
+  if ((![keyCopy displayType] || objc_msgSend(keyCopy, "displayType") == 8) && interactionType != 9)
   {
     [(UIKBRenderFactoryiPadFudge *)self stringKeyFontSize:v9];
     [(UIKBRenderFactory *)self RivenFactor:?];
     v12 = v11;
-    v13 = [v8 symbolStyle];
-    [v13 setFontSize:v12];
+    symbolStyle = [v8 symbolStyle];
+    [symbolStyle setFontSize:v12];
 
     [(UIKBRenderFactory *)self scale];
     if (v14 == 2.0)
@@ -475,33 +475,33 @@
     goto LABEL_46;
   }
 
-  if ([v6 displayType] == 7)
+  if ([keyCopy displayType] == 7)
   {
-    v17 = [v8 symbolStyle];
-    v18 = [v17 copy];
+    symbolStyle2 = [v8 symbolStyle];
+    symbolStyle13 = [symbolStyle2 copy];
 
     [(UIKBRenderFactoryiPadFudge *)self dualStringKeyBottomFontSize:v9];
     [(UIKBRenderFactory *)self RivenFactor:?];
     v20 = v19;
-    v21 = [v8 symbolStyle];
-    [v21 setFontSize:v20];
+    symbolStyle3 = [v8 symbolStyle];
+    [symbolStyle3 setFontSize:v20];
 
     [(UIKBRenderFactoryiPadFudge *)self dualStringKeyBottomTextOffset:v9];
     [(UIKBRenderFactory *)self RivenPointFactor:?];
     v23 = v22;
     v25 = v24;
-    v26 = [v8 symbolStyle];
-    [v26 setTextOffset:{v23, v25}];
+    symbolStyle4 = [v8 symbolStyle];
+    [symbolStyle4 setTextOffset:{v23, v25}];
 
     [(UIKBRenderFactoryiPadFudge *)self dualStringKeyTopFontSize:v9];
     [(UIKBRenderFactory *)self RivenFactor:?];
-    [v18 setFontSize:?];
+    [symbolStyle13 setFontSize:?];
     [(UIKBRenderFactoryiPadFudge *)self dualStringKeyTopTextOffset:v9];
     [(UIKBRenderFactory *)self RivenPointFactor:?];
-    [v18 setTextOffset:?];
-    if (v18)
+    [symbolStyle13 setTextOffset:?];
+    if (symbolStyle13)
     {
-      v118[0] = v18;
+      v118[0] = symbolStyle13;
       v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v118 count:1];
       [v8 setSecondarySymbolStyles:v27];
     }
@@ -511,29 +511,29 @@
       [v8 setSecondarySymbolStyles:0];
     }
 
-    if ([v6 displayTypeHint] == 10 && objc_msgSend(v6, "state") == 4)
+    if ([keyCopy displayTypeHint] == 10 && objc_msgSend(keyCopy, "state") == 4)
     {
-      v56 = [v8 symbolStyle];
-      [v56 textOffset];
+      symbolStyle5 = [v8 symbolStyle];
+      [symbolStyle5 textOffset];
       v58 = v57;
-      v59 = [v8 symbolStyle];
-      [v59 setTextOffset:{v58, 0.0}];
+      symbolStyle6 = [v8 symbolStyle];
+      [symbolStyle6 setTextOffset:{v58, 0.0}];
 
-      [v18 textOffset];
-      [v18 setTextOffset:?];
+      [symbolStyle13 textOffset];
+      [symbolStyle13 setTextOffset:?];
     }
 
-    v60 = [(UIKBRenderFactory *)self renderingContext];
-    v61 = [v60 shiftState];
+    renderingContext = [(UIKBRenderFactory *)self renderingContext];
+    shiftState = [renderingContext shiftState];
 
-    if (v61 != 4)
+    if (shiftState != 4)
     {
-      v62 = [(UIKBRenderFactory *)self renderingContext];
-      v63 = [v62 shiftState];
+      renderingContext2 = [(UIKBRenderFactory *)self renderingContext];
+      shiftState2 = [renderingContext2 shiftState];
 
-      if (v63 == 1)
+      if (shiftState2 == 1)
       {
-        if ([v6 displayRowHint] == 1)
+        if ([keyCopy displayRowHint] == 1)
         {
           v64 = 1;
         }
@@ -550,11 +550,11 @@
         [(UIKBRenderFactory *)self RivenPointFactor:?];
         v68 = v67;
         v70 = v69;
-        v71 = [v8 symbolStyle];
-        [v71 setFontSize:v66];
+        symbolStyle7 = [v8 symbolStyle];
+        [symbolStyle7 setFontSize:v66];
 
-        v72 = [v8 symbolStyle];
-        [v72 setTextOffset:{v68, v70}];
+        symbolStyle8 = [v8 symbolStyle];
+        [symbolStyle8 setTextOffset:{v68, v70}];
 
         [v8 setSecondarySymbolStyles:0];
       }
@@ -563,60 +563,60 @@
     goto LABEL_47;
   }
 
-  if ([v6 displayType] == 3)
+  if ([keyCopy displayType] == 3)
   {
-    v28 = [v8 symbolStyle];
-    [v28 setUsesSymbolImage:1];
+    symbolStyle9 = [v8 symbolStyle];
+    [symbolStyle9 setUsesSymbolImage:1];
 
     [(UIKBRenderFactoryiPadFudge *)self symbolImageControlKeyFontSize];
     [(UIKBRenderFactory *)self RivenFactor:?];
     v30 = v29;
-    v31 = [v8 symbolStyle];
-    [v31 setFontSizeForSymbolImage:v30];
+    symbolStyle10 = [v8 symbolStyle];
+    [symbolStyle10 setFontSizeForSymbolImage:v30];
 
     [(UIKBRenderFactoryiPadFudge *)self deleteKeyFontSize];
     [(UIKBRenderFactory *)self RivenFactor:?];
     v33 = v32;
-    v34 = [v8 symbolStyle];
-    [v34 setFontSize:v33];
+    symbolStyle11 = [v8 symbolStyle];
+    [symbolStyle11 setFontSize:v33];
 
-    v35 = [v8 symbolStyle];
-    [v35 setAnchorCorner:8];
+    symbolStyle12 = [v8 symbolStyle];
+    [symbolStyle12 setAnchorCorner:8];
 
     [(UIKBRenderFactoryiPadFudge *)self deleteKeyOffset:v9];
 LABEL_44:
-    v55 = self;
+    selfCopy2 = self;
 LABEL_45:
-    [(UIKBRenderFactory *)v55 RivenPointFactor:v36, v37];
+    [(UIKBRenderFactory *)selfCopy2 RivenPointFactor:v36, v37];
     v15 = v94;
     v16 = v95;
 LABEL_46:
-    v18 = [v8 symbolStyle];
-    [v18 setTextOffset:{v15, v16}];
+    symbolStyle13 = [v8 symbolStyle];
+    [symbolStyle13 setTextOffset:{v15, v16}];
 LABEL_47:
 
     goto LABEL_48;
   }
 
-  if ([v6 displayType] == 21)
+  if ([keyCopy displayType] == 21)
   {
     [(UIKBRenderFactoryiPadFudge *)self controlKeyFontSize];
     v39 = v38;
-    v40 = [v8 symbolStyle];
-    [v40 setAnchorCorner:8];
+    symbolStyle14 = [v8 symbolStyle];
+    [symbolStyle14 setAnchorCorner:8];
 
     [(UIKBRenderFactoryiPadFudge *)self iPadFudgeControlKeyOffset];
     v42 = v41;
     v44 = v43;
-    v45 = [v8 symbolStyle];
-    v46 = [v45 usesSymbolImage];
+    symbolStyle15 = [v8 symbolStyle];
+    usesSymbolImage = [symbolStyle15 usesSymbolImage];
 
-    if (v46)
+    if (usesSymbolImage)
     {
       [(UIKBRenderFactoryiPadFudge *)self symbolImageControlKeyFontSize];
       v48 = v47;
-      v49 = [v8 symbolStyle];
-      [v49 setFontSizeForSymbolImage:v48];
+      symbolStyle16 = [v8 symbolStyle];
+      [symbolStyle16 setFontSizeForSymbolImage:v48];
 
       [(UIKBRenderFactoryiPadFudge *)self symbolImageControlKeyOffset];
       v42 = v50;
@@ -625,27 +625,27 @@ LABEL_47:
 
     [(UIKBRenderFactory *)self RivenFactor:v39];
     v53 = v52;
-    v54 = [v8 symbolStyle];
-    [v54 setFontSize:v53];
+    symbolStyle17 = [v8 symbolStyle];
+    [symbolStyle17 setFontSize:v53];
 
-    v55 = self;
+    selfCopy2 = self;
     v36 = v42;
     v37 = v44;
     goto LABEL_45;
   }
 
-  if ([v6 displayType] == 23)
+  if ([keyCopy displayType] == 23)
   {
-    v73 = [v8 symbolStyle];
-    [v73 setUsesSymbolImage:1];
+    symbolStyle18 = [v8 symbolStyle];
+    [symbolStyle18 setUsesSymbolImage:1];
 
     [(UIKBRenderFactoryiPadFudge *)self symbolImageControlKeyFontSize];
     [(UIKBRenderFactory *)self RivenFactor:?];
     v75 = v74;
-    v76 = [v8 symbolStyle];
-    [v76 setFontSizeForSymbolImage:v75];
+    symbolStyle19 = [v8 symbolStyle];
+    [symbolStyle19 setFontSizeForSymbolImage:v75];
 
-    if ([(UIKBRenderFactoryiPad *)self _onLeftSide:v6 onKeyplane:v7])
+    if ([(UIKBRenderFactoryiPad *)self _onLeftSide:keyCopy onKeyplane:keyplaneCopy])
     {
       v77 = 4;
     }
@@ -655,57 +655,57 @@ LABEL_47:
       v77 = 8;
     }
 
-    v78 = [v8 symbolStyle];
-    [v78 setAnchorCorner:v77];
+    symbolStyle20 = [v8 symbolStyle];
+    [symbolStyle20 setAnchorCorner:v77];
 
     goto LABEL_34;
   }
 
-  if (v10 == 9)
+  if (interactionType == 9)
   {
-    v79 = [v8 symbolStyle];
-    [v79 setUsesSymbolImage:1];
+    symbolStyle21 = [v8 symbolStyle];
+    [symbolStyle21 setUsesSymbolImage:1];
 
     [(UIKBRenderFactoryiPadFudge *)self symbolImageControlKeyFontSize];
     [(UIKBRenderFactory *)self RivenFactor:?];
     v81 = v80;
-    v82 = [v8 symbolStyle];
-    [v82 setFontSizeForSymbolImage:v81];
+    symbolStyle22 = [v8 symbolStyle];
+    [symbolStyle22 setFontSizeForSymbolImage:v81];
 
-    v83 = [v8 symbolStyle];
-    [v83 setAnchorCorner:4];
+    symbolStyle23 = [v8 symbolStyle];
+    [symbolStyle23 setAnchorCorner:4];
 
     [(UIKBRenderFactoryiPadFudge *)self internationalKeyOffset];
     goto LABEL_44;
   }
 
-  if ([v6 displayType] == 4)
+  if ([keyCopy displayType] == 4)
   {
-    v84 = [v8 symbolStyle];
-    [v84 setUsesSymbolImage:1];
+    symbolStyle24 = [v8 symbolStyle];
+    [symbolStyle24 setUsesSymbolImage:1];
 
     [(UIKBRenderFactoryiPadFudge *)self symbolImageControlKeyFontSize];
     [(UIKBRenderFactory *)self RivenFactor:?];
     v86 = v85;
-    v87 = [v8 symbolStyle];
-    [v87 setFontSizeForSymbolImage:v86];
+    symbolStyle25 = [v8 symbolStyle];
+    [symbolStyle25 setFontSizeForSymbolImage:v86];
 
-    v88 = [v8 symbolStyle];
-    [v88 setAnchorCorner:4];
+    symbolStyle26 = [v8 symbolStyle];
+    [symbolStyle26 setAnchorCorner:4];
 
     [(UIKBRenderFactoryiPadFudge *)self dictationKeyOffset];
     goto LABEL_44;
   }
 
-  if ([v6 displayType] == 18)
+  if ([keyCopy displayType] == 18)
   {
     [(UIKBRenderFactoryiPadFudge *)self controlKeyFontSize];
     [(UIKBRenderFactory *)self RivenFactor:?];
     v90 = v89;
-    v91 = [v8 symbolStyle];
-    [v91 setFontSize:v90];
+    symbolStyle27 = [v8 symbolStyle];
+    [symbolStyle27 setFontSize:v90];
 
-    if ([(UIKBRenderFactoryiPad *)self _onLeftSide:v6 onKeyplane:v7])
+    if ([(UIKBRenderFactoryiPad *)self _onLeftSide:keyCopy onKeyplane:keyplaneCopy])
     {
       v92 = 4;
     }
@@ -715,78 +715,78 @@ LABEL_47:
       v92 = 8;
     }
 
-    v93 = [v8 symbolStyle];
-    [v93 setAnchorCorner:v92];
+    symbolStyle28 = [v8 symbolStyle];
+    [symbolStyle28 setAnchorCorner:v92];
 
     [(UIKBRenderFactoryiPadFudge *)self moreKeyOffset];
     goto LABEL_44;
   }
 
-  if ([v6 displayType] == 26 || objc_msgSend(v6, "displayType") == 51 || objc_msgSend(v6, "interactionType") == 17 || objc_msgSend(v6, "interactionType") == 12)
+  if ([keyCopy displayType] == 26 || objc_msgSend(keyCopy, "displayType") == 51 || objc_msgSend(keyCopy, "interactionType") == 17 || objc_msgSend(keyCopy, "interactionType") == 12)
   {
-    v101 = [v8 symbolStyle];
-    [v101 setUsesSymbolImage:1];
+    symbolStyle29 = [v8 symbolStyle];
+    [symbolStyle29 setUsesSymbolImage:1];
 
     [(UIKBRenderFactoryiPadFudge *)self symbolImageControlKeyFontSize];
     [(UIKBRenderFactory *)self RivenFactor:?];
     v103 = v102;
-    v104 = [v8 symbolStyle];
-    [v104 setFontSizeForSymbolImage:v103];
+    symbolStyle30 = [v8 symbolStyle];
+    [symbolStyle30 setFontSizeForSymbolImage:v103];
 
     [(UIKBRenderFactoryiPadFudge *)self controlKeyFontSize];
     [(UIKBRenderFactory *)self RivenFactor:?];
     v106 = v105;
-    v107 = [v8 symbolStyle];
-    [v107 setFontSize:v106];
+    symbolStyle31 = [v8 symbolStyle];
+    [symbolStyle31 setFontSize:v106];
 
-    v108 = [v8 symbolStyle];
-    [v108 setAnchorCorner:4];
+    symbolStyle32 = [v8 symbolStyle];
+    [symbolStyle32 setAnchorCorner:4];
 
 LABEL_34:
     [(UIKBRenderFactoryiPadFudge *)self iPadFudgeControlKeyOffset];
     goto LABEL_44;
   }
 
-  if ([v6 displayType] == 5 || objc_msgSend(v6, "displayType") == 53)
+  if ([keyCopy displayType] == 5 || objc_msgSend(keyCopy, "displayType") == 53)
   {
-    v109 = [v6 displayType] == 5;
-    v110 = [v8 symbolStyle];
-    [v110 setUsesSymbolImage:v109];
+    v109 = [keyCopy displayType] == 5;
+    symbolStyle33 = [v8 symbolStyle];
+    [symbolStyle33 setUsesSymbolImage:v109];
 
     [(UIKBRenderFactoryiPadFudge *)self symbolImageControlKeyFontSize];
     [(UIKBRenderFactory *)self RivenFactor:?];
     v112 = v111;
-    v113 = [v8 symbolStyle];
-    [v113 setFontSizeForSymbolImage:v112];
+    symbolStyle34 = [v8 symbolStyle];
+    [symbolStyle34 setFontSizeForSymbolImage:v112];
 
-    v114 = [v8 symbolStyle];
-    [v114 setAnchorCorner:8];
+    symbolStyle35 = [v8 symbolStyle];
+    [symbolStyle35 setAnchorCorner:8];
 
     [(UIKBRenderFactoryiPadFudge *)self dismissKeyOffset];
     goto LABEL_44;
   }
 
-  if ([v6 displayType] == 27)
+  if ([keyCopy displayType] == 27)
   {
     [(UIKBRenderFactoryiPadFudge *)self deleteKeyFontSize];
     [(UIKBRenderFactory *)self RivenFactor:?];
     v116 = v115;
-    v18 = [v8 symbolStyle];
-    [v18 setFontSize:v116];
+    symbolStyle13 = [v8 symbolStyle];
+    [symbolStyle13 setFontSize:v116];
     goto LABEL_47;
   }
 
 LABEL_48:
-  v96 = [v8 symbolStyle];
+  symbolStyle36 = [v8 symbolStyle];
   v97 = 1.0;
-  if (([v96 usesSymbolImage] & 1) == 0)
+  if (([symbolStyle36 usesSymbolImage] & 1) == 0)
   {
     [(UIKBRenderFactory *)self RivenFactor:100.0];
     v97 = v98 / 100.0;
   }
 
-  v99 = [v8 symbolStyle];
-  [v99 setImageScale:v97];
+  symbolStyle37 = [v8 symbolStyle];
+  [symbolStyle37 setImageScale:v97];
 
   return v8;
 }

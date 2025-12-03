@@ -1,15 +1,15 @@
 @interface RepairInputs
-- (BOOL)validateAndInitializeParameters:(id)a3;
-- (BOOL)validateUpdateProperties:(id)a3;
+- (BOOL)validateAndInitializeParameters:(id)parameters;
+- (BOOL)validateUpdateProperties:(id)properties;
 @end
 
 @implementation RepairInputs
 
-- (BOOL)validateAndInitializeParameters:(id)a3
+- (BOOL)validateAndInitializeParameters:(id)parameters
 {
-  v5 = a3;
+  parametersCopy = parameters;
   v110 = 0;
-  v6 = [v5 NSStringFromKey:@"CAURL" defaultValue:@"https://gg.apple.com" failed:&v110];
+  v6 = [parametersCopy NSStringFromKey:@"CAURL" defaultValue:@"https://gg.apple.com" failed:&v110];
   FDRCAURL = self->FDRCAURL;
   self->FDRCAURL = v6;
 
@@ -26,17 +26,17 @@
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 scheme];
-    v13 = [v12 caseInsensitiveCompare:@"http"];
+    scheme = [v10 scheme];
+    v13 = [scheme caseInsensitiveCompare:@"http"];
     if (v13 || ([v11 scheme], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "caseInsensitiveCompare:", @"https")))
     {
-      v14 = [v11 host];
+      host = [v11 host];
 
       if (!v13)
       {
       }
 
-      if (v14)
+      if (host)
       {
         goto LABEL_14;
       }
@@ -55,7 +55,7 @@
 
   v110 = 1;
 LABEL_14:
-  v16 = [v5 NSStringFromKey:@"TrustObjectURL" defaultValue:@"http://gg.apple.com/fdrtrustobject" failed:&v110];
+  v16 = [parametersCopy NSStringFromKey:@"TrustObjectURL" defaultValue:@"http://gg.apple.com/fdrtrustobject" failed:&v110];
   trustObjectURL = self->trustObjectURL;
   self->trustObjectURL = v16;
 
@@ -75,15 +75,15 @@ LABEL_14:
     goto LABEL_20;
   }
 
-  v21 = [v20 scheme];
-  if ([v21 caseInsensitiveCompare:@"http"])
+  scheme2 = [v20 scheme];
+  if ([scheme2 caseInsensitiveCompare:@"http"])
   {
 
     goto LABEL_23;
   }
 
-  v22 = [v20 scheme];
-  v23 = [v22 caseInsensitiveCompare:@"https"];
+  scheme3 = [v20 scheme];
+  v23 = [scheme3 caseInsensitiveCompare:@"https"];
 
   if (!v23)
   {
@@ -98,7 +98,7 @@ LABEL_20:
   }
 
 LABEL_23:
-  v25 = [v5 NSStringFromKey:@"DSURL" defaultValue:@"https://skl.apple.com" failed:&v110];
+  v25 = [parametersCopy NSStringFromKey:@"DSURL" defaultValue:@"https://skl.apple.com" failed:&v110];
   FDRDSURL = self->FDRDSURL;
   self->FDRDSURL = v25;
 
@@ -118,11 +118,11 @@ LABEL_23:
     goto LABEL_29;
   }
 
-  v30 = [v29 scheme];
-  if (![v30 caseInsensitiveCompare:@"http"])
+  scheme4 = [v29 scheme];
+  if (![scheme4 caseInsensitiveCompare:@"http"])
   {
-    v31 = [v29 scheme];
-    v32 = [v31 caseInsensitiveCompare:@"https"];
+    scheme5 = [v29 scheme];
+    v32 = [scheme5 caseInsensitiveCompare:@"https"];
 
     if (v32)
     {
@@ -141,7 +141,7 @@ LABEL_29:
   }
 
 LABEL_32:
-  v34 = [v5 NSStringFromKey:@"SealingURL" defaultValue:@"https://ig.apple.com" failed:&v110];
+  v34 = [parametersCopy NSStringFromKey:@"SealingURL" defaultValue:@"https://ig.apple.com" failed:&v110];
   FDRSealingURL = self->FDRSealingURL;
   self->FDRSealingURL = v34;
 
@@ -161,15 +161,15 @@ LABEL_32:
     goto LABEL_38;
   }
 
-  v39 = [v38 scheme];
-  if ([v39 caseInsensitiveCompare:@"http"])
+  scheme6 = [v38 scheme];
+  if ([scheme6 caseInsensitiveCompare:@"http"])
   {
 
     goto LABEL_41;
   }
 
-  v40 = [v38 scheme];
-  v41 = [v40 caseInsensitiveCompare:@"https"];
+  scheme7 = [v38 scheme];
+  v41 = [scheme7 caseInsensitiveCompare:@"https"];
 
   if (!v41)
   {
@@ -184,7 +184,7 @@ LABEL_38:
   }
 
 LABEL_41:
-  v43 = [v5 NSStringFromRequiredKey:@"partSPC" maxLength:128 failed:&v110];
+  v43 = [parametersCopy NSStringFromRequiredKey:@"partSPC" maxLength:128 failed:&v110];
   v44 = handleForCategory();
   if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
   {
@@ -222,7 +222,7 @@ LABEL_41:
     v110 = 1;
   }
 
-  self->doSeal = [v5 BOOLFromKey:@"doSeal" defaultValue:1 failed:&v110];
+  self->doSeal = [parametersCopy BOOLFromKey:@"doSeal" defaultValue:1 failed:&v110];
   v52 = handleForCategory();
   if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
   {
@@ -241,7 +241,7 @@ LABEL_41:
     _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "Do seal: %@", buf, 0xCu);
   }
 
-  self->enableProxy = [v5 BOOLFromKey:@"enableProxy" defaultValue:0 failed:&v110];
+  self->enableProxy = [parametersCopy BOOLFromKey:@"enableProxy" defaultValue:0 failed:&v110];
   v54 = handleForCategory();
   if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
   {
@@ -260,7 +260,7 @@ LABEL_41:
     _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEFAULT, "Enable Proxy : %@", buf, 0xCu);
   }
 
-  v56 = [v5 NSNumberFromKey:@"timeoutPeriod" lowerBound:&off_1000089B8 upperBound:&off_1000089D0 defaultValue:&off_1000089E8 failed:&v110];
+  v56 = [parametersCopy NSNumberFromKey:@"timeoutPeriod" lowerBound:&off_1000089B8 upperBound:&off_1000089D0 defaultValue:&off_1000089E8 failed:&v110];
   timeoutPeriod = self->timeoutPeriod;
   self->timeoutPeriod = v56;
 
@@ -274,7 +274,7 @@ LABEL_41:
   }
 
   v60 = objc_opt_new();
-  v61 = [v5 NSDictionaryFromKey:@"updateProperties" defaultValue:v60 failed:&v110];
+  v61 = [parametersCopy NSDictionaryFromKey:@"updateProperties" defaultValue:v60 failed:&v110];
   updateProperties = self->updateProperties;
   self->updateProperties = v61;
 
@@ -298,7 +298,7 @@ LABEL_41:
     v110 = 1;
   }
 
-  v66 = [v5 NSStringFromKey:@"KBBSerialNumber" defaultValue:0 failed:0];
+  v66 = [parametersCopy NSStringFromKey:@"KBBSerialNumber" defaultValue:0 failed:0];
   KBBSerialNumber = self->KBBSerialNumber;
   self->KBBSerialNumber = v66;
 
@@ -311,7 +311,7 @@ LABEL_41:
     _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_DEFAULT, "KBBSerialNumber is %@", buf, 0xCu);
   }
 
-  v70 = [v5 NSStringFromKey:@"KGBSerialNumber" defaultValue:0 failed:0];
+  v70 = [parametersCopy NSStringFromKey:@"KGBSerialNumber" defaultValue:0 failed:0];
   KGBSerialNumber = self->KGBSerialNumber;
   self->KGBSerialNumber = v70;
 
@@ -324,7 +324,7 @@ LABEL_41:
     _os_log_impl(&_mh_execute_header, v72, OS_LOG_TYPE_DEFAULT, "KGBSerialNumber is %@", buf, 0xCu);
   }
 
-  v74 = [v5 NSStringFromKey:@"MountPath" defaultValue:0 failed:0];
+  v74 = [parametersCopy NSStringFromKey:@"MountPath" defaultValue:0 failed:0];
   mountPath = self->mountPath;
   self->mountPath = v74;
 
@@ -337,7 +337,7 @@ LABEL_41:
     _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_DEFAULT, "PDI mountPath is %@", buf, 0xCu);
   }
 
-  v78 = [v5 NSNumberFromKey:@"displayMaxDuration" lowerBound:&off_100008A00 upperBound:&off_100008A18 defaultValue:&off_100008A30 failed:&v110];
+  v78 = [parametersCopy NSNumberFromKey:@"displayMaxDuration" lowerBound:&off_100008A00 upperBound:&off_100008A18 defaultValue:&off_100008A30 failed:&v110];
   displayMaxDuration = self->displayMaxDuration;
   self->displayMaxDuration = v78;
 
@@ -351,7 +351,7 @@ LABEL_41:
   }
 
   v82 = [NSSet setWithObject:objc_opt_class()];
-  v83 = [v5 NSArrayFromKey:@"patchItems" types:v82 maxLength:32 defaultValue:0 failed:&v110];
+  v83 = [parametersCopy NSArrayFromKey:@"patchItems" types:v82 maxLength:32 defaultValue:0 failed:&v110];
   patchItems = self->patchItems;
   self->patchItems = v83;
 
@@ -364,11 +364,11 @@ LABEL_41:
     _os_log_impl(&_mh_execute_header, v85, OS_LOG_TYPE_DEFAULT, "patchItems is %@", buf, 0xCu);
   }
 
-  v87 = [v5 NSStringFromKey:@"SOCKSHost" defaultValue:0 failed:&v110];
+  v87 = [parametersCopy NSStringFromKey:@"SOCKSHost" defaultValue:0 failed:&v110];
   SOCKSHost = self->SOCKSHost;
   self->SOCKSHost = v87;
 
-  v89 = [v5 NSNumberFromKey:@"SOCKSPort" lowerBound:&off_100008A48 upperBound:&off_100008A60 defaultValue:0 failed:&v110];
+  v89 = [parametersCopy NSNumberFromKey:@"SOCKSPort" lowerBound:&off_100008A48 upperBound:&off_100008A60 defaultValue:0 failed:&v110];
   SOCKSPort = self->SOCKSPort;
   self->SOCKSPort = v89;
 
@@ -384,7 +384,7 @@ LABEL_41:
     _os_log_impl(&_mh_execute_header, v91, OS_LOG_TYPE_DEFAULT, "SOCKS Host: %@, SOCKS Port: %@", buf, 0x16u);
   }
 
-  self->enableStagedSeal = [v5 BOOLFromKey:@"enableStagedSeal" defaultValue:0 failed:0];
+  self->enableStagedSeal = [parametersCopy BOOLFromKey:@"enableStagedSeal" defaultValue:0 failed:0];
   v94 = handleForCategory();
   if (os_log_type_enabled(v94, OS_LOG_TYPE_DEFAULT))
   {
@@ -403,7 +403,7 @@ LABEL_41:
     _os_log_impl(&_mh_execute_header, v94, OS_LOG_TYPE_DEFAULT, "enableStagedSeal is %@", buf, 0xCu);
   }
 
-  self->ignoreStagedData = [v5 BOOLFromKey:@"ignoreStagedData" defaultValue:0 failed:0];
+  self->ignoreStagedData = [parametersCopy BOOLFromKey:@"ignoreStagedData" defaultValue:0 failed:0];
   v96 = handleForCategory();
   if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
   {
@@ -422,7 +422,7 @@ LABEL_41:
     _os_log_impl(&_mh_execute_header, v96, OS_LOG_TYPE_DEFAULT, "ignoreStagedData is %@", buf, 0xCu);
   }
 
-  self->skipStageEAN = [v5 BOOLFromKey:@"skipStageEAN" defaultValue:0 failed:0];
+  self->skipStageEAN = [parametersCopy BOOLFromKey:@"skipStageEAN" defaultValue:0 failed:0];
   v98 = handleForCategory();
   if (os_log_type_enabled(v98, OS_LOG_TYPE_DEFAULT))
   {
@@ -441,7 +441,7 @@ LABEL_41:
     _os_log_impl(&_mh_execute_header, v98, OS_LOG_TYPE_DEFAULT, "skipStageEAN is %@", buf, 0xCu);
   }
 
-  v100 = [v5 NSStringFromKey:@"keyBlob" defaultValue:0 failed:0];
+  v100 = [parametersCopy NSStringFromKey:@"keyBlob" defaultValue:0 failed:0];
   keyBlob = self->keyBlob;
   self->keyBlob = v100;
 
@@ -463,7 +463,7 @@ LABEL_41:
     _os_log_impl(&_mh_execute_header, v102, OS_LOG_TYPE_DEFAULT, "Use keyBlob: %@", buf, 0xCu);
   }
 
-  self->allowSelfService = [v5 BOOLFromKey:@"allowSelfService" defaultValue:0 failed:0];
+  self->allowSelfService = [parametersCopy BOOLFromKey:@"allowSelfService" defaultValue:0 failed:0];
   v104 = handleForCategory();
   if (os_log_type_enabled(v104, OS_LOG_TYPE_DEFAULT))
   {
@@ -482,7 +482,7 @@ LABEL_41:
     _os_log_impl(&_mh_execute_header, v104, OS_LOG_TYPE_DEFAULT, "allowSelfService: %@", buf, 0xCu);
   }
 
-  self->allowUsedPart = [v5 BOOLFromKey:@"allowUsedPart" defaultValue:0 failed:0];
+  self->allowUsedPart = [parametersCopy BOOLFromKey:@"allowUsedPart" defaultValue:0 failed:0];
   v106 = handleForCategory();
   if (os_log_type_enabled(v106, OS_LOG_TYPE_DEFAULT))
   {
@@ -505,13 +505,13 @@ LABEL_41:
   return (v108 & 1) == 0;
 }
 
-- (BOOL)validateUpdateProperties:(id)a3
+- (BOOL)validateUpdateProperties:(id)properties
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  propertiesCopy = properties;
+  v4 = propertiesCopy;
+  if (propertiesCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"PrCL"];
+    v5 = [propertiesCopy objectForKeyedSubscript:@"PrCL"];
 
     if (v5)
     {

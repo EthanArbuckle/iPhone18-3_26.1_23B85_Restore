@@ -1,13 +1,13 @@
 @interface HMCameraObjectFetchServer
 + (id)logCategory;
 - (BOOL)canHandleMoreFetchedObjects;
-- (HMCameraObjectFetchServer)initWithClientUUID:(id)a3 transport:(id)a4 workQueue:(id)a5;
-- (HMCameraObjectFetchServer)initWithFetchMessage:(id)a3 workQueue:(id)a4;
+- (HMCameraObjectFetchServer)initWithClientUUID:(id)d transport:(id)transport workQueue:(id)queue;
+- (HMCameraObjectFetchServer)initWithFetchMessage:(id)message workQueue:(id)queue;
 - (HMFMessageTransport)transport;
 - (id)logIdentifier;
-- (void)_notifyTransport:(id)a3 ofFetchedObjects:(id)a4 forClientUUID:(id)a5 responseHandler:(id)a6;
-- (void)handleFetchedObject:(id)a3;
-- (void)sendCurrentlyBatchedFetchedObjectsWithCompletion:(id)a3;
+- (void)_notifyTransport:(id)transport ofFetchedObjects:(id)objects forClientUUID:(id)d responseHandler:(id)handler;
+- (void)handleFetchedObject:(id)object;
+- (void)sendCurrentlyBatchedFetchedObjectsWithCompletion:(id)completion;
 @end
 
 @implementation HMCameraObjectFetchServer
@@ -21,61 +21,61 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMCameraObjectFetchServer *)self clientUUID];
-  v3 = [v2 UUIDString];
+  clientUUID = [(HMCameraObjectFetchServer *)self clientUUID];
+  uUIDString = [clientUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)_notifyTransport:(id)a3 ofFetchedObjects:(id)a4 forClientUUID:(id)a5 responseHandler:(id)a6
+- (void)_notifyTransport:(id)transport ofFetchedObjects:(id)objects forClientUUID:(id)d responseHandler:(id)handler
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v18 = @"HMCOFC.mk.fo";
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
-  v12 = encodeRootObject(a4);
+  handlerCopy = handler;
+  dCopy = d;
+  transportCopy = transport;
+  v12 = encodeRootObject(objects);
   v19[0] = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
 
   v14 = objc_alloc(MEMORY[0x1E69A2A10]);
-  v15 = [objc_alloc(MEMORY[0x1E69A2A00]) initWithTarget:v10];
+  v15 = [objc_alloc(MEMORY[0x1E69A2A00]) initWithTarget:dCopy];
 
   v16 = [v14 initWithName:@"HMCOFC.m.dfo" destination:v15 payload:v13];
-  [v16 setTransport:v11];
-  [v16 setResponseHandler:v9];
+  [v16 setTransport:transportCopy];
+  [v16 setResponseHandler:handlerCopy];
 
-  [v11 sendMessage:v16 completionHandler:0];
+  [transportCopy sendMessage:v16 completionHandler:0];
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendCurrentlyBatchedFetchedObjectsWithCompletion:(id)a3
+- (void)sendCurrentlyBatchedFetchedObjectsWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMCameraObjectFetchServer *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  workQueue = [(HMCameraObjectFetchServer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMCameraObjectFetchServer *)self transport];
-  if (v6)
+  transport = [(HMCameraObjectFetchServer *)self transport];
+  if (transport)
   {
-    v7 = [(HMCameraObjectFetchServer *)self currentlyBatchedFetchedObjects];
-    v8 = [(HMCameraObjectFetchServer *)self clientUUID];
+    currentlyBatchedFetchedObjects = [(HMCameraObjectFetchServer *)self currentlyBatchedFetchedObjects];
+    clientUUID = [(HMCameraObjectFetchServer *)self clientUUID];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __78__HMCameraObjectFetchServer_sendCurrentlyBatchedFetchedObjectsWithCompletion___block_invoke;
     v15[3] = &unk_1E754C0F0;
-    v16 = v4;
-    [(HMCameraObjectFetchServer *)self _notifyTransport:v6 ofFetchedObjects:v7 forClientUUID:v8 responseHandler:v15];
+    v16 = completionCopy;
+    [(HMCameraObjectFetchServer *)self _notifyTransport:transport ofFetchedObjects:currentlyBatchedFetchedObjects forClientUUID:clientUUID responseHandler:v15];
 
-    v9 = [(HMCameraObjectFetchServer *)self currentlyBatchedFetchedObjects];
-    [v9 removeAllObjects];
+    currentlyBatchedFetchedObjects2 = [(HMCameraObjectFetchServer *)self currentlyBatchedFetchedObjects];
+    [currentlyBatchedFetchedObjects2 removeAllObjects];
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -86,24 +86,24 @@
     }
 
     objc_autoreleasePoolPop(v10);
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleFetchedObject:(id)a3
+- (void)handleFetchedObject:(id)object
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMCameraObjectFetchServer *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  objectCopy = object;
+  workQueue = [(HMCameraObjectFetchServer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMCameraObjectFetchServer *)self transport];
-  if (!v6)
+  transport = [(HMCameraObjectFetchServer *)self transport];
+  if (!transport)
   {
     v15 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -124,7 +124,7 @@ LABEL_13:
   if (![(HMCameraObjectFetchServer *)self canHandleMoreFetchedObjects])
   {
     v15 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -138,29 +138,29 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v7 = [(HMCameraObjectFetchServer *)self currentlyBatchedFetchedObjects];
-  [v7 addObject:v4];
+  currentlyBatchedFetchedObjects = [(HMCameraObjectFetchServer *)self currentlyBatchedFetchedObjects];
+  [currentlyBatchedFetchedObjects addObject:objectCopy];
 
-  v8 = [(HMCameraObjectFetchServer *)self currentlyBatchedFetchedObjects];
-  v9 = [v8 count];
-  v10 = [(HMCameraObjectFetchServer *)self fetchedObjectsBatchLimit];
+  currentlyBatchedFetchedObjects2 = [(HMCameraObjectFetchServer *)self currentlyBatchedFetchedObjects];
+  v9 = [currentlyBatchedFetchedObjects2 count];
+  fetchedObjectsBatchLimit = [(HMCameraObjectFetchServer *)self fetchedObjectsBatchLimit];
 
-  if (v9 >= v10)
+  if (v9 >= fetchedObjectsBatchLimit)
   {
-    v11 = [(HMCameraObjectFetchServer *)self currentlyBatchedFetchedObjects];
-    v12 = [(HMCameraObjectFetchServer *)self clientUUID];
-    [(HMCameraObjectFetchServer *)self _notifyTransport:v6 ofFetchedObjects:v11 forClientUUID:v12 responseHandler:0];
+    currentlyBatchedFetchedObjects3 = [(HMCameraObjectFetchServer *)self currentlyBatchedFetchedObjects];
+    clientUUID = [(HMCameraObjectFetchServer *)self clientUUID];
+    [(HMCameraObjectFetchServer *)self _notifyTransport:transport ofFetchedObjects:currentlyBatchedFetchedObjects3 forClientUUID:clientUUID responseHandler:0];
 
-    v13 = [(HMCameraObjectFetchServer *)self currentlyBatchedFetchedObjects];
-    [v13 removeAllObjects];
+    currentlyBatchedFetchedObjects4 = [(HMCameraObjectFetchServer *)self currentlyBatchedFetchedObjects];
+    [currentlyBatchedFetchedObjects4 removeAllObjects];
   }
 
   [(HMCameraObjectFetchServer *)self setTotalFetchedObjectsCount:[(HMCameraObjectFetchServer *)self totalFetchedObjectsCount]+ 1];
-  v14 = [(HMCameraObjectFetchServer *)self totalFetchedObjectsCount];
-  if (v14 >= [(HMCameraObjectFetchServer *)self totalFetchedObjectsLimit])
+  totalFetchedObjectsCount = [(HMCameraObjectFetchServer *)self totalFetchedObjectsCount];
+  if (totalFetchedObjectsCount >= [(HMCameraObjectFetchServer *)self totalFetchedObjectsLimit])
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy3 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -168,7 +168,7 @@ LABEL_13:
       v24 = 138543618;
       v25 = v18;
       v26 = 2048;
-      v27 = [(HMCameraObjectFetchServer *)v16 totalFetchedObjectsLimit];
+      totalFetchedObjectsLimit = [(HMCameraObjectFetchServer *)selfCopy3 totalFetchedObjectsLimit];
       _os_log_impl(&dword_19BB39000, v17, OS_LOG_TYPE_INFO, "%{public}@Reached limit of %lu fetched objects", &v24, 0x16u);
     }
 
@@ -182,14 +182,14 @@ LABEL_14:
 
 - (BOOL)canHandleMoreFetchedObjects
 {
-  v3 = [(HMCameraObjectFetchServer *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMCameraObjectFetchServer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMCameraObjectFetchServer *)self transport];
-  if (v4)
+  transport = [(HMCameraObjectFetchServer *)self transport];
+  if (transport)
   {
-    v5 = [(HMCameraObjectFetchServer *)self totalFetchedObjectsCount];
-    v6 = v5 < [(HMCameraObjectFetchServer *)self totalFetchedObjectsLimit];
+    totalFetchedObjectsCount = [(HMCameraObjectFetchServer *)self totalFetchedObjectsCount];
+    v6 = totalFetchedObjectsCount < [(HMCameraObjectFetchServer *)self totalFetchedObjectsLimit];
   }
 
   else
@@ -200,23 +200,23 @@ LABEL_14:
   return v6;
 }
 
-- (HMCameraObjectFetchServer)initWithClientUUID:(id)a3 transport:(id)a4 workQueue:(id)a5
+- (HMCameraObjectFetchServer)initWithClientUUID:(id)d transport:(id)transport workQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  transportCopy = transport;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = HMCameraObjectFetchServer;
   v11 = [(HMCameraObjectFetchServer *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_workQueue, a5);
-    v13 = [v8 copy];
+    objc_storeStrong(&v11->_workQueue, queue);
+    v13 = [dCopy copy];
     clientUUID = v12->_clientUUID;
     v12->_clientUUID = v13;
 
-    objc_storeWeak(&v12->_transport, v9);
+    objc_storeWeak(&v12->_transport, transportCopy);
     v12->_fetchedObjectsBatchLimit = 100;
     v12->_totalFetchedObjectsLimit = -1;
     v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:v12->_fetchedObjectsBatchLimit];
@@ -227,25 +227,25 @@ LABEL_14:
   return v12;
 }
 
-- (HMCameraObjectFetchServer)initWithFetchMessage:(id)a3 workQueue:(id)a4
+- (HMCameraObjectFetchServer)initWithFetchMessage:(id)message workQueue:(id)queue
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uuidForKey:@"HMCOFC.mk.u"];
+  messageCopy = message;
+  queueCopy = queue;
+  v8 = [messageCopy uuidForKey:@"HMCOFC.mk.u"];
   if (v8)
   {
-    v9 = [v6 transport];
-    if (v9)
+    transport = [messageCopy transport];
+    if (transport)
     {
-      v10 = [(HMCameraObjectFetchServer *)self initWithClientUUID:v8 transport:v9 workQueue:v7];
-      v11 = v10;
+      selfCopy2 = [(HMCameraObjectFetchServer *)self initWithClientUUID:v8 transport:transport workQueue:queueCopy];
+      v11 = selfCopy2;
     }
 
     else
     {
       v16 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy2 = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
@@ -253,7 +253,7 @@ LABEL_14:
         v21 = 138543618;
         v22 = v18;
         v23 = 2112;
-        v24 = v6;
+        v24 = messageCopy;
         _os_log_impl(&dword_19BB39000, v17, OS_LOG_TYPE_ERROR, "%{public}@Could not find transport on message: %@", &v21, 0x16u);
       }
 
@@ -265,16 +265,16 @@ LABEL_14:
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [v6 messagePayload];
+      messagePayload = [messageCopy messagePayload];
       v21 = 138543618;
       v22 = v14;
       v23 = 2112;
-      v24 = v15;
+      v24 = messagePayload;
       _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_ERROR, "%{public}@Could not find client UUID in message payload: %@", &v21, 0x16u);
     }
 

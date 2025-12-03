@@ -1,23 +1,23 @@
 @interface SUUIStorePage
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setPageComponents:(id)a3;
-- (void)setValue:(id)a3 forPageKey:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setPageComponents:(id)components;
+- (void)setValue:(id)value forPageKey:(id)key;
 @end
 
 @implementation SUUIStorePage
 
-- (void)setPageComponents:(id)a3
+- (void)setPageComponents:(id)components
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (self->_pageComponents != v4)
+  componentsCopy = components;
+  if (self->_pageComponents != componentsCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x277CCA940]);
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v4;
+    v6 = componentsCopy;
     v7 = [(NSArray *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
@@ -33,11 +33,11 @@
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
-          v12 = [v11 metricsElementName];
-          if (v12)
+          metricsElementName = [v11 metricsElementName];
+          if (metricsElementName)
           {
-            [v11 _setMetricsLocationPosition:{objc_msgSend(v5, "countForObject:", v12)}];
-            [v5 addObject:v12];
+            [v11 _setMetricsLocationPosition:{objc_msgSend(v5, "countForObject:", metricsElementName)}];
+            [v5 addObject:metricsElementName];
           }
         }
 
@@ -53,14 +53,14 @@
   }
 }
 
-- (void)setValue:(id)a3 forPageKey:(id)a4
+- (void)setValue:(id)value forPageKey:(id)key
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = v12;
-  v8 = v6;
+  valueCopy = value;
+  keyCopy = key;
+  v7 = valueCopy;
+  v8 = keyCopy;
   values = self->_values;
-  if (v12)
+  if (valueCopy)
   {
     if (!values)
     {
@@ -68,7 +68,7 @@
       v11 = self->_values;
       self->_values = v10;
 
-      v7 = v12;
+      v7 = valueCopy;
       values = self->_values;
     }
 
@@ -81,15 +81,15 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setBackgroundArtwork:self->_backgroundArtwork];
   [v5 setITMLData:self->_itmlData];
   [v5 setITMLResponse:self->_itmlResponse];
   [v5 setMetricsConfiguration:self->_metricsConfiguration];
   [v5 setMetricsPageDescription:self->_metricsPageDescription];
-  v6 = [(NSArray *)self->_pageComponents copyWithZone:a3];
+  v6 = [(NSArray *)self->_pageComponents copyWithZone:zone];
   v7 = v5[6];
   v5[6] = v6;
 
@@ -98,7 +98,7 @@
   [v5 setProductPage:self->_productPage];
   [v5 setTitle:self->_title];
   [v5 setUber:self->_uber];
-  v8 = [(NSMutableDictionary *)self->_values mutableCopyWithZone:a3];
+  v8 = [(NSMutableDictionary *)self->_values mutableCopyWithZone:zone];
   v9 = v5[12];
   v5[12] = v8;
 

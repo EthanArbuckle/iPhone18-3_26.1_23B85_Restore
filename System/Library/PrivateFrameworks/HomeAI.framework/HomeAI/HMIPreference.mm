@@ -3,8 +3,8 @@
 + (HMIPreference)sharedInstance;
 + (NSDictionary)qosMap;
 + (int)productType;
-- (BOOL)BOOLPreferenceForKey:(id)a3 defaultValue:(BOOL)a4;
-- (BOOL)hasPreferenceForKey:(id)a3;
+- (BOOL)BOOLPreferenceForKey:(id)key defaultValue:(BOOL)value;
+- (BOOL)hasPreferenceForKey:(id)key;
 - (BOOL)shouldEnableTorsoRecognition;
 - (BOOL)shouldUseCPUOnlyForVisionFaceDetection;
 - (BOOL)usesCPUOnly;
@@ -12,24 +12,24 @@
 - (NSDictionary)preferenceOverrides;
 - (double)maxAnalysisFPSForCurrentPeakPowerPressureLevel;
 - (double)maxAnalysisFPSForCurrentThermalLevel;
-- (double)maxAnalysisFPSForSystemResourceUsageLevel:(int64_t)a3;
-- (id)numberPreferenceForKey:(id)a3;
-- (id)numberPreferenceForKey:(id)a3 defaultValue:(id)a4;
-- (id)numberPreferenceForKey:(id)a3 defaultValue:(id)a4 withMap:(id)a5;
-- (id)numberPreferenceForKey:(id)a3 defaultValue:(id)a4 withParser:(id)a5;
-- (id)stringPreferenceForKey:(id)a3 defaultValue:(id)a4;
-- (id)systemPreferenceValueForKey:(id)a3;
-- (id)valuePreferenceForKey:(id)a3 defaultValue:(id)a4 withMap:(id)a5;
-- (id)valuePreferenceForKey:(id)a3 defaultValue:(id)a4 withParser:(id)a5;
+- (double)maxAnalysisFPSForSystemResourceUsageLevel:(int64_t)level;
+- (id)numberPreferenceForKey:(id)key;
+- (id)numberPreferenceForKey:(id)key defaultValue:(id)value;
+- (id)numberPreferenceForKey:(id)key defaultValue:(id)value withMap:(id)map;
+- (id)numberPreferenceForKey:(id)key defaultValue:(id)value withParser:(id)parser;
+- (id)stringPreferenceForKey:(id)key defaultValue:(id)value;
+- (id)systemPreferenceValueForKey:(id)key;
+- (id)valuePreferenceForKey:(id)key defaultValue:(id)value withMap:(id)map;
+- (id)valuePreferenceForKey:(id)key defaultValue:(id)value withParser:(id)parser;
 - (unint64_t)maxConcurrentAnalyzersForCurrentPeakPowerPressureLevel;
 - (unint64_t)maxConcurrentAnalyzersForCurrentThermalLevel;
-- (unint64_t)maxConcurrentAnalyzersForSystemResourceUsageLevel:(int64_t)a3;
+- (unint64_t)maxConcurrentAnalyzersForSystemResourceUsageLevel:(int64_t)level;
 - (unsigned)analysisQOS;
-- (void)addPreferenceOverrideFromDictionary:(id)a3;
-- (void)logPreferenceForKey:(id)a3 value:(id)a4;
+- (void)addPreferenceOverrideFromDictionary:(id)dictionary;
+- (void)logPreferenceForKey:(id)key value:(id)value;
 - (void)removeAllPreferenceOverrides;
-- (void)setPreferenceOverrideFromDictionary:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)setPreferenceOverrideFromDictionary:(id)dictionary;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMIPreference
@@ -40,7 +40,7 @@
   block[1] = 3221225472;
   block[2] = __31__HMIPreference_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_3 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_3, block);
@@ -80,14 +80,14 @@ void __23__HMIPreference_qosMap__block_invoke()
 
 + (int)productType
 {
-  v3 = [a1 pretendProductType];
+  pretendProductType = [self pretendProductType];
 
-  if (v3)
+  if (pretendProductType)
   {
-    v4 = [a1 pretendProductType];
-    v5 = [v4 longLongValue];
+    pretendProductType2 = [self pretendProductType];
+    longLongValue = [pretendProductType2 longLongValue];
 
-    return v5;
+    return longLongValue;
   }
 
   else
@@ -112,9 +112,9 @@ void __23__HMIPreference_qosMap__block_invoke()
   v3 = +[HMIPreference isProductTypeJ105];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:v3];
   v5 = [(HMIPreference *)self numberPreferenceForKey:@"processingDevice" defaultValue:v4 withMap:&unk_284075AE0];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 - (BOOL)shouldUseCPUOnlyForVisionFaceDetection
@@ -131,7 +131,7 @@ void __23__HMIPreference_qosMap__block_invoke()
 {
   v8 = *MEMORY[0x277D85DE8];
   v2 = +[HMIThermalMonitor sharedInstance];
-  v3 = [v2 thermalLevel];
+  thermalLevel = [v2 thermalLevel];
 
   if (+[HMIPreference isProductTypeJ105])
   {
@@ -141,7 +141,7 @@ void __23__HMIPreference_qosMap__block_invoke()
     v7 = 0x3FF0000000000000;
     do
     {
-      if (*(&v5 + result) <= v3)
+      if (*(&v5 + result) <= thermalLevel)
       {
         break;
       }
@@ -155,7 +155,7 @@ void __23__HMIPreference_qosMap__block_invoke()
   else if (+[HMIPreference isProductTypeB238])
   {
     result = 0;
-    while (dbl_22D298450[result] > v3)
+    while (dbl_22D298450[result] > thermalLevel)
     {
       if (++result == 3)
       {
@@ -166,12 +166,12 @@ void __23__HMIPreference_qosMap__block_invoke()
 
   else if (+[HMIPreference isProductTypeB520])
   {
-    return 2 * (v3 < 10);
+    return 2 * (thermalLevel < 10);
   }
 
   else if (+[HMIPreference isProductTypeB620])
   {
-    if (v3 <= 9)
+    if (thermalLevel <= 9)
     {
       return 3;
     }
@@ -190,7 +190,7 @@ void __23__HMIPreference_qosMap__block_invoke()
     v7 = 0x4010000000000000;
     do
     {
-      if (*(&v5 + result) <= v3)
+      if (*(&v5 + result) <= thermalLevel)
       {
         break;
       }
@@ -212,11 +212,11 @@ void __23__HMIPreference_qosMap__block_invoke()
 - (unint64_t)maxConcurrentAnalyzersForCurrentPeakPowerPressureLevel
 {
   v2 = +[HMIPeakPowerPressureMonitor sharedInstance];
-  v3 = [v2 peakPowerPressureLevel];
+  peakPowerPressureLevel = [v2 peakPowerPressureLevel];
 
-  if (+[HMIPreference isProductTypeJ255]&& (v3 - 1) <= 3)
+  if (+[HMIPreference isProductTypeJ255]&& (peakPowerPressureLevel - 1) <= 3)
   {
-    return qword_22D298468[v3 - 1];
+    return qword_22D298468[peakPowerPressureLevel - 1];
   }
 
   else
@@ -225,18 +225,18 @@ void __23__HMIPreference_qosMap__block_invoke()
   }
 }
 
-- (unint64_t)maxConcurrentAnalyzersForSystemResourceUsageLevel:(int64_t)a3
+- (unint64_t)maxConcurrentAnalyzersForSystemResourceUsageLevel:(int64_t)level
 {
-  v5 = [(HMIPreference *)self maxConcurrentAnalyzersForCurrentThermalLevel];
-  v6 = [(HMIPreference *)self maxConcurrentAnalyzersForCurrentPeakPowerPressureLevel];
-  if (v5 >= v6)
+  maxConcurrentAnalyzersForCurrentThermalLevel = [(HMIPreference *)self maxConcurrentAnalyzersForCurrentThermalLevel];
+  maxConcurrentAnalyzersForCurrentPeakPowerPressureLevel = [(HMIPreference *)self maxConcurrentAnalyzersForCurrentPeakPowerPressureLevel];
+  if (maxConcurrentAnalyzersForCurrentThermalLevel >= maxConcurrentAnalyzersForCurrentPeakPowerPressureLevel)
   {
-    v7 = v6;
+    v7 = maxConcurrentAnalyzersForCurrentPeakPowerPressureLevel;
   }
 
   else
   {
-    v7 = v5;
+    v7 = maxConcurrentAnalyzersForCurrentThermalLevel;
   }
 
   v8 = +[HMIPreference isProductTypeJ105];
@@ -246,7 +246,7 @@ void __23__HMIPreference_qosMap__block_invoke()
     v9 = v7;
   }
 
-  if (a3 > 1 && v8)
+  if (level > 1 && v8)
   {
     v10 = v9;
   }
@@ -257,9 +257,9 @@ void __23__HMIPreference_qosMap__block_invoke()
   }
 
   v11 = +[HMIPreference isAudioAccessory];
-  v12 = a3 > 2;
-  v13 = [MEMORY[0x277D0F8E8] productInfo];
-  v14 = [v13 productClass] == 3;
+  v12 = level > 2;
+  productInfo = [MEMORY[0x277D0F8E8] productInfo];
+  v14 = [productInfo productClass] == 3;
 
   if (v12 && (v14 || v11))
   {
@@ -274,9 +274,9 @@ void __23__HMIPreference_qosMap__block_invoke()
   v16 = +[HMIPreference sharedInstance];
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v15];
   v18 = [v16 numberPreferenceForKey:@"maxConcurrentAnalyzers" defaultValue:v17];
-  v19 = [v18 intValue];
+  intValue = [v18 intValue];
 
-  return v19;
+  return intValue;
 }
 
 - (BOOL)shouldEnableTorsoRecognition
@@ -295,15 +295,15 @@ void __23__HMIPreference_qosMap__block_invoke()
 - (double)maxAnalysisFPSForCurrentThermalLevel
 {
   v2 = +[HMIThermalMonitor sharedInstance];
-  v3 = [v2 thermalLevel];
+  thermalLevel = [v2 thermalLevel];
 
-  if (!+[HMIPreference isProductTypeB238]|| (result = 0.125, v3 <= 3) && (result = 0.25, v3 != 3) && (result = 0.5, v3 <= 1))
+  if (!+[HMIPreference isProductTypeB238]|| (result = 0.125, thermalLevel <= 3) && (result = 0.25, thermalLevel != 3) && (result = 0.5, thermalLevel <= 1))
   {
-    if (!+[HMIPreference isProductTypeJ105]|| (result = 0.125, v3 <= 3) && (result = 0.25, v3 != 3) && (result = 0.5, v3 <= 1))
+    if (!+[HMIPreference isProductTypeJ105]|| (result = 0.125, thermalLevel <= 3) && (result = 0.25, thermalLevel != 3) && (result = 0.5, thermalLevel <= 1))
     {
-      if (!+[HMIPreference isProductTypeB520]|| (result = 0.125, v3 <= 7) && (result = 0.25, v3 != 7) && (result = 0.5, v3 <= 5))
+      if (!+[HMIPreference isProductTypeB520]|| (result = 0.125, thermalLevel <= 7) && (result = 0.25, thermalLevel != 7) && (result = 0.5, thermalLevel <= 5))
       {
-        if (!+[HMIPreference isProductTypeB620]|| (result = 0.125, v3 <= 7) && (result = 0.25, v3 != 7) && (result = 0.5, v3 <= 5))
+        if (!+[HMIPreference isProductTypeB620]|| (result = 0.125, thermalLevel <= 7) && (result = 0.25, thermalLevel != 7) && (result = 0.5, thermalLevel <= 5))
         {
           if (!+[HMIPreference isProductTypeJ255])
           {
@@ -311,13 +311,13 @@ void __23__HMIPreference_qosMap__block_invoke()
           }
 
           result = 0.125;
-          if (v3 <= 3)
+          if (thermalLevel <= 3)
           {
             result = 0.25;
-            if (v3 != 3)
+            if (thermalLevel != 3)
             {
               result = 0.5;
-              if (v3 <= 1)
+              if (thermalLevel <= 1)
               {
                 return 1.0;
               }
@@ -334,19 +334,19 @@ void __23__HMIPreference_qosMap__block_invoke()
 - (double)maxAnalysisFPSForCurrentPeakPowerPressureLevel
 {
   v2 = +[HMIPeakPowerPressureMonitor sharedInstance];
-  v3 = [v2 peakPowerPressureLevel];
+  peakPowerPressureLevel = [v2 peakPowerPressureLevel];
 
   v4 = +[HMIPreference isProductTypeJ255];
   result = 1.0;
-  if (v4 && (v3 - 2) <= 2)
+  if (v4 && (peakPowerPressureLevel - 2) <= 2)
   {
-    return dbl_22D298488[v3 - 2];
+    return dbl_22D298488[peakPowerPressureLevel - 2];
   }
 
   return result;
 }
 
-- (double)maxAnalysisFPSForSystemResourceUsageLevel:(int64_t)a3
+- (double)maxAnalysisFPSForSystemResourceUsageLevel:(int64_t)level
 {
   [(HMIPreference *)self maxAnalysisFPSForCurrentThermalLevel];
   v6 = v5;
@@ -358,7 +358,7 @@ void __23__HMIPreference_qosMap__block_invoke()
 
   v8 = +[HMIPreference isProductTypeJ105];
   v9 = fmin(v6, 0.5);
-  if (a3 > 1 && v8)
+  if (level > 1 && v8)
   {
     v6 = v9;
   }
@@ -377,9 +377,9 @@ void __23__HMIPreference_qosMap__block_invoke()
   v2 = +[HMIPreference sharedInstance];
   v3 = +[HMIPreference qosMap];
   v4 = [v2 numberPreferenceForKey:@"analysisQOS" defaultValue:&unk_2840752E8 withMap:v3];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
-  return v5;
+  return intValue;
 }
 
 - (HMIPreference)init
@@ -397,29 +397,29 @@ void __23__HMIPreference_qosMap__block_invoke()
 
     [(HMFTimer *)v3->_preferenceCacheFlushTimer setDelegate:v3];
     [(HMFTimer *)v3->_preferenceCacheFlushTimer resume];
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     preferenceCache = v3->_preferenceCache;
-    v3->_preferenceCache = v6;
+    v3->_preferenceCache = dictionary;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     preferenceLoggedValues = v3->_preferenceLoggedValues;
-    v3->_preferenceLoggedValues = v8;
+    v3->_preferenceLoggedValues = dictionary2;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     preferenceOverridesInternal = v3->_preferenceOverridesInternal;
-    v3->_preferenceOverridesInternal = v10;
+    v3->_preferenceOverridesInternal = dictionary3;
   }
 
   return v3;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v6 = a3;
+  fireCopy = fire;
   v4 = objc_autoreleasePoolPush();
   os_unfair_lock_lock_with_options();
-  v5 = [(HMIPreference *)self preferenceCache];
-  [v5 removeAllObjects];
+  preferenceCache = [(HMIPreference *)self preferenceCache];
+  [preferenceCache removeAllObjects];
 
   os_unfair_lock_unlock(&self->_lock);
   objc_autoreleasePoolPop(v4);
@@ -428,33 +428,33 @@ void __23__HMIPreference_qosMap__block_invoke()
 - (NSDictionary)preferenceOverrides
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMIPreference *)self preferenceOverridesInternal];
-  v4 = [v3 copy];
+  preferenceOverridesInternal = [(HMIPreference *)self preferenceOverridesInternal];
+  v4 = [preferenceOverridesInternal copy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v4;
 }
 
-- (void)addPreferenceOverrideFromDictionary:(id)a3
+- (void)addPreferenceOverrideFromDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMIPreference *)self preferenceOverridesInternal];
-  [v4 addEntriesFromDictionary:v5];
+  preferenceOverridesInternal = [(HMIPreference *)self preferenceOverridesInternal];
+  [preferenceOverridesInternal addEntriesFromDictionary:dictionaryCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setPreferenceOverrideFromDictionary:(id)a3
+- (void)setPreferenceOverrideFromDictionary:(id)dictionary
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMIPreference *)self preferenceOverridesInternal];
-  [v4 removeAllObjects];
+  preferenceOverridesInternal = [(HMIPreference *)self preferenceOverridesInternal];
+  [preferenceOverridesInternal removeAllObjects];
 
-  v5 = [(HMIPreference *)self preferenceOverridesInternal];
-  [v5 addEntriesFromDictionary:v6];
+  preferenceOverridesInternal2 = [(HMIPreference *)self preferenceOverridesInternal];
+  [preferenceOverridesInternal2 addEntriesFromDictionary:dictionaryCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -462,25 +462,25 @@ void __23__HMIPreference_qosMap__block_invoke()
 - (void)removeAllPreferenceOverrides
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMIPreference *)self preferenceOverridesInternal];
-  [v3 removeAllObjects];
+  preferenceOverridesInternal = [(HMIPreference *)self preferenceOverridesInternal];
+  [preferenceOverridesInternal removeAllObjects];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)logPreferenceForKey:(id)a3 value:(id)a4
+- (void)logPreferenceForKey:(id)key value:(id)value
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   os_unfair_lock_lock_with_options();
-  v8 = [(HMIPreference *)self preferenceLoggedValues];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  preferenceLoggedValues = [(HMIPreference *)self preferenceLoggedValues];
+  v9 = [preferenceLoggedValues objectForKeyedSubscript:keyCopy];
 
-  if (v9 != v7 && ([v9 isEqual:v7] & 1) == 0)
+  if (v9 != valueCopy && ([v9 isEqual:valueCopy] & 1) == 0)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -488,53 +488,53 @@ void __23__HMIPreference_qosMap__block_invoke()
       v15 = 138544130;
       v16 = v13;
       v17 = 2112;
-      v18 = v6;
+      v18 = keyCopy;
       v19 = 2112;
-      v20 = v7;
+      v20 = valueCopy;
       v21 = 2112;
       v22 = v9;
       _os_log_impl(&dword_22D12F000, v12, OS_LOG_TYPE_INFO, "%{public}@Preference %@ is now %@, previously was %@", &v15, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v10);
-    v14 = [(HMIPreference *)v11 preferenceLoggedValues];
-    if (v7)
+    preferenceLoggedValues2 = [(HMIPreference *)selfCopy preferenceLoggedValues];
+    if (valueCopy)
     {
-      [v14 setObject:v7 forKeyedSubscript:v6];
+      [preferenceLoggedValues2 setObject:valueCopy forKeyedSubscript:keyCopy];
     }
 
     else
     {
-      [v14 removeObjectForKey:v6];
+      [preferenceLoggedValues2 removeObjectForKey:keyCopy];
     }
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)systemPreferenceValueForKey:(id)a3
+- (id)systemPreferenceValueForKey:(id)key
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMIPreference *)self preferenceOverridesInternal];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  preferenceOverridesInternal = [(HMIPreference *)self preferenceOverridesInternal];
+  value = [preferenceOverridesInternal objectForKeyedSubscript:keyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v6)
+  if (value)
   {
     goto LABEL_2;
   }
 
   os_unfair_lock_lock_with_options();
-  v9 = [(HMIPreference *)self preferenceCache];
-  v6 = [v9 objectForKeyedSubscript:v4];
+  preferenceCache = [(HMIPreference *)self preferenceCache];
+  value = [preferenceCache objectForKeyedSubscript:keyCopy];
 
-  if (v6)
+  if (value)
   {
-    v10 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
 
-    if (v6 == v10)
+    if (value == null)
     {
       goto LABEL_16;
     }
@@ -542,23 +542,23 @@ void __23__HMIPreference_qosMap__block_invoke()
 
   else
   {
-    v11 = [objc_alloc(MEMORY[0x277D0F918]) initWithKey:v4 options:0 domain:@"com.apple.homed" defaultValue:0];
-    v6 = [v11 value];
+    v11 = [objc_alloc(MEMORY[0x277D0F918]) initWithKey:keyCopy options:0 domain:@"com.apple.homed" defaultValue:0];
+    value = [v11 value];
 
-    if (!v6)
+    if (!value)
     {
-      v6 = [MEMORY[0x277CBEB68] null];
-      v18 = [(HMIPreference *)self preferenceCache];
-      [v18 setObject:v6 forKeyedSubscript:v4];
+      value = [MEMORY[0x277CBEB68] null];
+      preferenceCache2 = [(HMIPreference *)self preferenceCache];
+      [preferenceCache2 setObject:value forKeyedSubscript:keyCopy];
 
 LABEL_16:
       os_unfair_lock_unlock(&self->_lock);
-      v6 = 0;
+      value = 0;
       goto LABEL_2;
     }
 
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -566,15 +566,15 @@ LABEL_16:
       v19 = 138543874;
       v20 = v15;
       v21 = 2112;
-      v22 = v4;
+      v22 = keyCopy;
       v23 = 2112;
-      v24 = v6;
+      v24 = value;
       _os_log_impl(&dword_22D12F000, v14, OS_LOG_TYPE_INFO, "%{public}@Override set for preference: %@ value: %@", &v19, 0x20u);
     }
 
     objc_autoreleasePoolPop(v12);
-    v16 = [(HMIPreference *)v13 preferenceCache];
-    [v16 setObject:v6 forKeyedSubscript:v4];
+    preferenceCache3 = [(HMIPreference *)selfCopy preferenceCache];
+    [preferenceCache3 setObject:value forKeyedSubscript:keyCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -590,22 +590,22 @@ LABEL_16:
   }
 
 LABEL_2:
-  v7 = v6;
+  v7 = value;
 
   return v7;
 }
 
-- (id)numberPreferenceForKey:(id)a3 defaultValue:(id)a4 withParser:(id)a5
+- (id)numberPreferenceForKey:(id)key defaultValue:(id)value withParser:(id)parser
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
-  v12 = [(HMIPreference *)self systemPreferenceValueForKey:v8];
+  keyCopy = key;
+  valueCopy = value;
+  parserCopy = parser;
+  v11 = valueCopy;
+  v12 = [(HMIPreference *)self systemPreferenceValueForKey:keyCopy];
   v13 = v11;
   if (v12)
   {
-    v14 = v10[2](v10, v12);
+    v14 = parserCopy[2](parserCopy, v12);
     v15 = v14;
     v13 = v11;
     if (v14)
@@ -614,19 +614,19 @@ LABEL_2:
     }
   }
 
-  [(HMIPreference *)self logPreferenceForKey:v8 value:v13];
+  [(HMIPreference *)self logPreferenceForKey:keyCopy value:v13];
 
   return v13;
 }
 
-- (id)numberPreferenceForKey:(id)a3 defaultValue:(id)a4 withMap:(id)a5
+- (id)numberPreferenceForKey:(id)key defaultValue:(id)value withMap:(id)map
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
-  v12 = [(HMIPreference *)self systemPreferenceValueForKey:v8];
+  keyCopy = key;
+  valueCopy = value;
+  mapCopy = map;
+  v11 = valueCopy;
+  v12 = [(HMIPreference *)self systemPreferenceValueForKey:keyCopy];
   v13 = objectAsString(v12);
 
   v14 = v11;
@@ -636,8 +636,8 @@ LABEL_2:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v23 = v10;
-    v15 = v10;
+    v23 = mapCopy;
+    v15 = mapCopy;
     v16 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
     v14 = v11;
     if (v16)
@@ -669,25 +669,25 @@ LABEL_2:
       while (v17);
     }
 
-    v10 = v23;
+    mapCopy = v23;
   }
 
-  [(HMIPreference *)self logPreferenceForKey:v8 value:v14];
+  [(HMIPreference *)self logPreferenceForKey:keyCopy value:v14];
 
   return v14;
 }
 
-- (id)valuePreferenceForKey:(id)a3 defaultValue:(id)a4 withParser:(id)a5
+- (id)valuePreferenceForKey:(id)key defaultValue:(id)value withParser:(id)parser
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
-  v12 = [(HMIPreference *)self systemPreferenceValueForKey:v8];
+  keyCopy = key;
+  valueCopy = value;
+  parserCopy = parser;
+  v11 = valueCopy;
+  v12 = [(HMIPreference *)self systemPreferenceValueForKey:keyCopy];
   v13 = v11;
   if (v12)
   {
-    v14 = v10[2](v10, v12);
+    v14 = parserCopy[2](parserCopy, v12);
     v15 = v14;
     v13 = v11;
     if (v14)
@@ -696,19 +696,19 @@ LABEL_2:
     }
   }
 
-  [(HMIPreference *)self logPreferenceForKey:v8 value:v13];
+  [(HMIPreference *)self logPreferenceForKey:keyCopy value:v13];
 
   return v13;
 }
 
-- (id)valuePreferenceForKey:(id)a3 defaultValue:(id)a4 withMap:(id)a5
+- (id)valuePreferenceForKey:(id)key defaultValue:(id)value withMap:(id)map
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
-  v12 = [(HMIPreference *)self systemPreferenceValueForKey:v8];
+  keyCopy = key;
+  valueCopy = value;
+  mapCopy = map;
+  v11 = valueCopy;
+  v12 = [(HMIPreference *)self systemPreferenceValueForKey:keyCopy];
   v13 = objectAsString(v12);
 
   v14 = v11;
@@ -718,8 +718,8 @@ LABEL_2:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v23 = v10;
-    v15 = v10;
+    v23 = mapCopy;
+    v15 = mapCopy;
     v16 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
     v14 = v11;
     if (v16)
@@ -751,74 +751,74 @@ LABEL_2:
       while (v17);
     }
 
-    v10 = v23;
+    mapCopy = v23;
   }
 
-  [(HMIPreference *)self logPreferenceForKey:v8 value:v14];
+  [(HMIPreference *)self logPreferenceForKey:keyCopy value:v14];
 
   return v14;
 }
 
-- (id)numberPreferenceForKey:(id)a3 defaultValue:(id)a4
+- (id)numberPreferenceForKey:(id)key defaultValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMIPreference *)self systemPreferenceValueForKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  v8 = [(HMIPreference *)self systemPreferenceValueForKey:keyCopy];
   v9 = objectAsNumber(v8);
 
-  v10 = v7;
+  v10 = valueCopy;
   if (v9)
   {
     v10 = v9;
   }
 
-  [(HMIPreference *)self logPreferenceForKey:v6 value:v10];
+  [(HMIPreference *)self logPreferenceForKey:keyCopy value:v10];
 
   return v10;
 }
 
-- (id)numberPreferenceForKey:(id)a3
+- (id)numberPreferenceForKey:(id)key
 {
-  v3 = [(HMIPreference *)self systemPreferenceValueForKey:a3];
+  v3 = [(HMIPreference *)self systemPreferenceValueForKey:key];
   v4 = objectAsNumber(v3);
 
   return v4;
 }
 
-- (BOOL)hasPreferenceForKey:(id)a3
+- (BOOL)hasPreferenceForKey:(id)key
 {
-  v3 = [(HMIPreference *)self systemPreferenceValueForKey:a3];
+  v3 = [(HMIPreference *)self systemPreferenceValueForKey:key];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)BOOLPreferenceForKey:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)BOOLPreferenceForKey:(id)key defaultValue:(BOOL)value
 {
-  v4 = a4;
+  valueCopy = value;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithBool:v4];
-  v9 = [(HMIPreference *)self numberPreferenceForKey:v7 defaultValue:v8];
+  keyCopy = key;
+  v8 = [v6 numberWithBool:valueCopy];
+  v9 = [(HMIPreference *)self numberPreferenceForKey:keyCopy defaultValue:v8];
 
   LOBYTE(v6) = [v9 BOOLValue];
   return v6;
 }
 
-- (id)stringPreferenceForKey:(id)a3 defaultValue:(id)a4
+- (id)stringPreferenceForKey:(id)key defaultValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMIPreference *)self systemPreferenceValueForKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  v8 = [(HMIPreference *)self systemPreferenceValueForKey:keyCopy];
   v9 = objectAsString(v8);
 
-  v10 = v7;
+  v10 = valueCopy;
   if (v9)
   {
     v10 = v9;
   }
 
-  [(HMIPreference *)self logPreferenceForKey:v6 value:v10];
+  [(HMIPreference *)self logPreferenceForKey:keyCopy value:v10];
 
   return v10;
 }

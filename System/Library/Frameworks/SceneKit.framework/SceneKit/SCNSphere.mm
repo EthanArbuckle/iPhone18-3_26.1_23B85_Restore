@@ -1,27 +1,27 @@
 @interface SCNSphere
 + (SCNSphere)sphereWithRadius:(CGFloat)radius;
-- (BOOL)getBoundingBoxMin:(SCNVector3 *)a3 max:(SCNVector3 *)a4;
-- (BOOL)getBoundingSphereCenter:(SCNVector3 *)a3 radius:(double *)a4;
+- (BOOL)getBoundingBoxMin:(SCNVector3 *)min max:(SCNVector3 *)max;
+- (BOOL)getBoundingSphereCenter:(SCNVector3 *)center radius:(double *)radius;
 - (BOOL)isGeodesic;
 - (BOOL)isHemispheric;
 - (CGFloat)radius;
 - (NSInteger)segmentCount;
 - (SCNSphere)init;
-- (SCNSphere)initWithCoder:(id)a3;
-- (SCNSphere)initWithParametricGeometryRef:(__C3DParametricGeometry *)a3;
+- (SCNSphere)initWithCoder:(id)coder;
+- (SCNSphere)initWithParametricGeometryRef:(__C3DParametricGeometry *)ref;
 - (double)radialSpan;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)a3;
+- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)ref;
 - (id)presentationSphere;
 - (int64_t)primitiveType;
-- (void)_setupObjCModelFrom:(id)a3;
-- (void)_syncObjCModel:(__C3DParametricGeometry *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setupObjCModelFrom:(id)from;
+- (void)_syncObjCModel:(__C3DParametricGeometry *)model;
+- (void)encodeWithCoder:(id)coder;
 - (void)setGeodesic:(BOOL)geodesic;
-- (void)setHemispheric:(BOOL)a3;
-- (void)setPrimitiveType:(int64_t)a3;
-- (void)setRadialSpan:(double)a3;
+- (void)setHemispheric:(BOOL)hemispheric;
+- (void)setPrimitiveType:(int64_t)type;
+- (void)setRadialSpan:(double)span;
 - (void)setRadius:(CGFloat)radius;
 - (void)setSegmentCount:(NSInteger)segmentCount;
 @end
@@ -47,11 +47,11 @@
   return v5;
 }
 
-- (SCNSphere)initWithParametricGeometryRef:(__C3DParametricGeometry *)a3
+- (SCNSphere)initWithParametricGeometryRef:(__C3DParametricGeometry *)ref
 {
   v7.receiver = self;
   v7.super_class = SCNSphere;
-  v3 = [(SCNGeometry *)&v7 initWithGeometryRef:a3];
+  v3 = [(SCNGeometry *)&v7 initWithGeometryRef:ref];
   v4 = v3;
   if (v3)
   {
@@ -64,11 +64,11 @@
   return v4;
 }
 
-- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)a3
+- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)ref
 {
   v4.receiver = self;
   v4.super_class = SCNSphere;
-  return [(SCNGeometry *)&v4 initPresentationGeometryWithGeometryRef:a3];
+  return [(SCNGeometry *)&v4 initPresentationGeometryWithGeometryRef:ref];
 }
 
 - (id)presentationSphere
@@ -78,13 +78,13 @@
   return v2;
 }
 
-- (void)_syncObjCModel:(__C3DParametricGeometry *)a3
+- (void)_syncObjCModel:(__C3DParametricGeometry *)model
 {
-  self->_sphereradius = C3DParametricGeometryGetFloatValue(a3, 4);
-  self->_sphereradialSpan = C3DParametricGeometryGetFloatValue(a3, 21);
-  self->_spheresegmentCount = C3DParametricGeometryGetIntValue(a3, 23);
-  self->_sphereprimitiveType = C3DParametricGeometryGetIntValue(a3, 20);
-  IntValue = C3DParametricGeometryGetIntValue(a3, 22);
+  self->_sphereradius = C3DParametricGeometryGetFloatValue(model, 4);
+  self->_sphereradialSpan = C3DParametricGeometryGetFloatValue(model, 21);
+  self->_spheresegmentCount = C3DParametricGeometryGetIntValue(model, 23);
+  self->_sphereprimitiveType = C3DParametricGeometryGetIntValue(model, 20);
+  IntValue = C3DParametricGeometryGetIntValue(model, 22);
   self->_spheregeodesic = IntValue == 1;
   self->_spherehemispheric = IntValue == 2;
 }
@@ -93,11 +93,11 @@
 {
   if ([(SCNGeometry *)self isPresentationInstance])
   {
-    v3 = [(SCNGeometry *)self sceneRef];
-    v4 = v3;
-    if (v3)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v4 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v3);
+      C3DSceneLock(sceneRef);
     }
 
     IsGeodesic = C3DParametricGeometryIsGeodesic([(SCNGeometry *)self geometryRef]);
@@ -130,14 +130,14 @@
   else if (self->_spheregeodesic != v3)
   {
     self->_spheregeodesic = v3;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __25__SCNSphere_setGeodesic___block_invoke;
     v7[3] = &unk_2782FB7F8;
     v7[4] = self;
     v8 = v3;
-    [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -153,11 +153,11 @@ void __25__SCNSphere_setGeodesic___block_invoke(uint64_t a1)
 {
   if ([(SCNGeometry *)self isPresentationInstance])
   {
-    v3 = [(SCNGeometry *)self sceneRef];
-    v4 = v3;
-    if (v3)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v4 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v3);
+      C3DSceneLock(sceneRef);
     }
 
     IsHemispheric = C3DParametricGeometryIsHemispheric([(SCNGeometry *)self geometryRef]);
@@ -175,9 +175,9 @@ void __25__SCNSphere_setGeodesic___block_invoke(uint64_t a1)
   return IsHemispheric;
 }
 
-- (void)setHemispheric:(BOOL)a3
+- (void)setHemispheric:(BOOL)hemispheric
 {
-  v3 = a3;
+  hemisphericCopy = hemispheric;
   if ([(SCNGeometry *)self isPresentationInstance])
   {
     v5 = scn_default_log();
@@ -187,17 +187,17 @@ void __25__SCNSphere_setGeodesic___block_invoke(uint64_t a1)
     }
   }
 
-  else if (self->_spherehemispheric != v3)
+  else if (self->_spherehemispheric != hemisphericCopy)
   {
-    self->_spherehemispheric = v3;
-    v6 = [(SCNGeometry *)self sceneRef];
+    self->_spherehemispheric = hemisphericCopy;
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __28__SCNSphere_setHemispheric___block_invoke;
     v7[3] = &unk_2782FB7F8;
     v7[4] = self;
-    v8 = v3;
-    [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v7];
+    v8 = hemisphericCopy;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -215,11 +215,11 @@ void __28__SCNSphere_setHemispheric___block_invoke(uint64_t a1)
     return self->_sphereprimitiveType;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   PrimitiveType = C3DParametricGeometryGetPrimitiveType([(SCNGeometry *)self geometryRef]);
@@ -231,7 +231,7 @@ void __28__SCNSphere_setHemispheric___block_invoke(uint64_t a1)
   return PrimitiveType;
 }
 
-- (void)setPrimitiveType:(int64_t)a3
+- (void)setPrimitiveType:(int64_t)type
 {
   if ([(SCNGeometry *)self isPresentationInstance])
   {
@@ -242,17 +242,17 @@ void __28__SCNSphere_setHemispheric___block_invoke(uint64_t a1)
     }
   }
 
-  else if (a3 <= 4 && self->_sphereprimitiveType != a3)
+  else if (type <= 4 && self->_sphereprimitiveType != type)
   {
-    self->_sphereprimitiveType = a3;
-    v6 = [(SCNGeometry *)self sceneRef];
+    self->_sphereprimitiveType = type;
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __30__SCNSphere_setPrimitiveType___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
-    v7[5] = a3;
-    [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v7];
+    v7[5] = type;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -271,11 +271,11 @@ void __30__SCNSphere_setPrimitiveType___block_invoke(uint64_t a1)
     return self->_sphereradialSpan;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   RadialSpan = C3DParametricGeometryGetRadialSpan([(SCNGeometry *)self geometryRef]);
@@ -287,7 +287,7 @@ void __30__SCNSphere_setPrimitiveType___block_invoke(uint64_t a1)
   return RadialSpan;
 }
 
-- (void)setRadialSpan:(double)a3
+- (void)setRadialSpan:(double)span
 {
   if ([(SCNGeometry *)self isPresentationInstance])
   {
@@ -298,17 +298,17 @@ void __30__SCNSphere_setPrimitiveType___block_invoke(uint64_t a1)
     }
   }
 
-  else if (self->_sphereradialSpan != a3)
+  else if (self->_sphereradialSpan != span)
   {
-    self->_sphereradialSpan = a3;
-    v6 = [(SCNGeometry *)self sceneRef];
+    self->_sphereradialSpan = span;
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __27__SCNSphere_setRadialSpan___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
-    *&v7[5] = a3;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"radialSpan" applyBlock:v7];
+    *&v7[5] = span;
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"radialSpan" applyBlock:v7];
   }
 }
 
@@ -327,11 +327,11 @@ void __27__SCNSphere_setRadialSpan___block_invoke(uint64_t a1)
     return self->_sphereradius;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   Radius = C3DParametricGeometryGetRadius([(SCNGeometry *)self geometryRef]);
@@ -357,14 +357,14 @@ void __27__SCNSphere_setRadialSpan___block_invoke(uint64_t a1)
   else if (self->_sphereradius != radius)
   {
     self->_sphereradius = radius;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __23__SCNSphere_setRadius___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = radius;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"radius" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"radius" applyBlock:v7];
   }
 }
 
@@ -383,11 +383,11 @@ void __23__SCNSphere_setRadius___block_invoke(uint64_t a1)
     return self->_spheresegmentCount;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   SegmentCount = C3DParametricGeometryGetSegmentCount([(SCNGeometry *)self geometryRef]);
@@ -413,14 +413,14 @@ void __23__SCNSphere_setRadius___block_invoke(uint64_t a1)
   else if (self->_spheresegmentCount != segmentCount)
   {
     self->_spheresegmentCount = segmentCount;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __29__SCNSphere_setSegmentCount___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = segmentCount;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"segmentCount" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"segmentCount" applyBlock:v7];
   }
 }
 
@@ -432,7 +432,7 @@ void __29__SCNSphere_setSegmentCount___block_invoke(uint64_t a1)
   C3DParametricGeometrySetSegmentCount(v2, v3);
 }
 
-- (BOOL)getBoundingBoxMin:(SCNVector3 *)a3 max:(SCNVector3 *)a4
+- (BOOL)getBoundingBoxMin:(SCNVector3 *)min max:(SCNVector3 *)max
 {
   v24 = 0.0;
   v23 = 0;
@@ -440,17 +440,17 @@ void __29__SCNSphere_setSegmentCount___block_invoke(uint64_t a1)
   v21 = 0;
   if ([(SCNGeometry *)self isPresentationInstance])
   {
-    v7 = [(SCNGeometry *)self sceneRef];
-    v8 = v7;
-    if (v7)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v8 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v7);
+      C3DSceneLock(sceneRef);
     }
 
     if ([(SCNGeometry *)self geometryRef])
     {
-      v9 = [(SCNGeometry *)self geometryRef];
-      C3DSphereGetBoundingBox(v9, &v23, &v21, v10, v11);
+      geometryRef = [(SCNGeometry *)self geometryRef];
+      C3DSphereGetBoundingBox(geometryRef, &v23, &v21, v10, v11);
       v13 = v12;
       if (!v8)
       {
@@ -474,7 +474,7 @@ LABEL_11:
     {
       v20.receiver = self;
       v20.super_class = SCNSphere;
-      return [(SCNGeometry *)&v20 getBoundingBoxMin:a3 max:a4];
+      return [(SCNGeometry *)&v20 getBoundingBoxMin:min max:max];
     }
 
     [(SCNSphere *)self radius];
@@ -483,47 +483,47 @@ LABEL_11:
   }
 
 LABEL_12:
-  if (a3)
+  if (min)
   {
     v17 = v24;
-    *&a3->x = v23;
-    a3->z = v17;
+    *&min->x = v23;
+    min->z = v17;
   }
 
-  if (a4)
+  if (max)
   {
     v18 = v22;
-    *&a4->x = v21;
-    a4->z = v18;
+    *&max->x = v21;
+    max->z = v18;
   }
 
   return v13;
 }
 
-- (BOOL)getBoundingSphereCenter:(SCNVector3 *)a3 radius:(double *)a4
+- (BOOL)getBoundingSphereCenter:(SCNVector3 *)center radius:(double *)radius
 {
   v14 = 0uLL;
   if ([(SCNGeometry *)self isPresentationInstance])
   {
-    v7 = [(SCNGeometry *)self sceneRef];
-    v8 = v7;
-    if (v7)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v8 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v7);
+      C3DSceneLock(sceneRef);
     }
 
     if ([(SCNGeometry *)self geometryRef]&& C3DSphereGetBoundingSphere([(SCNGeometry *)self geometryRef], &v14))
     {
-      if (a3)
+      if (center)
       {
         v9 = *(&v14 + 2);
-        *&a3->x = v14;
-        a3->z = v9;
+        *&center->x = v14;
+        center->z = v9;
       }
 
-      if (a4)
+      if (radius)
       {
-        *a4 = *(&v14 + 3);
+        *radius = *(&v14 + 3);
       }
 
       v10 = 1;
@@ -552,16 +552,16 @@ LABEL_12:
     return 0;
   }
 
-  if (a3)
+  if (center)
   {
     v12 = *(&v14 + 2);
-    *&a3->x = v14;
-    a3->z = v12;
+    *&center->x = v14;
+    center->z = v12;
   }
 
-  if (a4)
+  if (radius)
   {
-    *a4 = *(&v14 + 3);
+    *radius = *(&v14 + 3);
   }
 
   return 1;
@@ -569,7 +569,7 @@ LABEL_12:
 
 + (SCNSphere)sphereWithRadius:(CGFloat)radius
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   [v4 setRadius:radius];
 
   return v4;
@@ -578,30 +578,30 @@ LABEL_12:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SCNGeometry *)self geometryDescription];
+  geometryDescription = [(SCNGeometry *)self geometryDescription];
   [(SCNSphere *)self radius];
-  return [v3 stringWithFormat:@"<%@ | radius=%.3f>", v4, v5];
+  return [v3 stringWithFormat:@"<%@ | radius=%.3f>", geometryDescription, v5];
 }
 
-- (void)_setupObjCModelFrom:(id)a3
+- (void)_setupObjCModelFrom:(id)from
 {
   v5.receiver = self;
   v5.super_class = SCNSphere;
   [(SCNGeometry *)&v5 _setupObjCModelFrom:?];
   +[SCNTransaction begin];
   [SCNTransaction setImmediateMode:1];
-  [a3 radius];
+  [from radius];
   [(SCNSphere *)self setRadius:?];
-  [a3 radialSpan];
+  [from radialSpan];
   [(SCNSphere *)self setRadialSpan:?];
-  -[SCNSphere setSegmentCount:](self, "setSegmentCount:", [a3 segmentCount]);
-  -[SCNSphere setGeodesic:](self, "setGeodesic:", [a3 isGeodesic]);
-  -[SCNSphere setHemispheric:](self, "setHemispheric:", [a3 isHemispheric]);
-  -[SCNSphere setPrimitiveType:](self, "setPrimitiveType:", [a3 primitiveType]);
+  -[SCNSphere setSegmentCount:](self, "setSegmentCount:", [from segmentCount]);
+  -[SCNSphere setGeodesic:](self, "setGeodesic:", [from isGeodesic]);
+  -[SCNSphere setHemispheric:](self, "setHemispheric:", [from isHemispheric]);
+  -[SCNSphere setPrimitiveType:](self, "setPrimitiveType:", [from primitiveType]);
   +[SCNTransaction commitImmediate];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 _setupObjCModelFrom:self];
@@ -609,7 +609,7 @@ LABEL_12:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SCNSphere;
@@ -619,15 +619,15 @@ LABEL_12:
     [(SCNSphere *)self _syncObjCModel:[(SCNGeometry *)self geometryRef]];
   }
 
-  [a3 encodeDouble:@"sphereradius" forKey:self->_sphereradius];
-  [a3 encodeDouble:@"sphereradialSpan" forKey:self->_sphereradialSpan];
-  [a3 encodeInteger:self->_spheresegmentCount forKey:@"spheresegmentCount"];
-  [a3 encodeInteger:self->_sphereprimitiveType forKey:@"sphereprimitiveType"];
-  [a3 encodeBool:self->_spheregeodesic forKey:@"spheregeodesic"];
-  [a3 encodeBool:self->_spherehemispheric forKey:@"spherehemispheric"];
+  [coder encodeDouble:@"sphereradius" forKey:self->_sphereradius];
+  [coder encodeDouble:@"sphereradialSpan" forKey:self->_sphereradialSpan];
+  [coder encodeInteger:self->_spheresegmentCount forKey:@"spheresegmentCount"];
+  [coder encodeInteger:self->_sphereprimitiveType forKey:@"sphereprimitiveType"];
+  [coder encodeBool:self->_spheregeodesic forKey:@"spheregeodesic"];
+  [coder encodeBool:self->_spherehemispheric forKey:@"spherehemispheric"];
 }
 
-- (SCNSphere)initWithCoder:(id)a3
+- (SCNSphere)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNSphere;
@@ -636,14 +636,14 @@ LABEL_12:
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    [a3 decodeDoubleForKey:@"sphereradius"];
+    [coder decodeDoubleForKey:@"sphereradius"];
     [(SCNSphere *)v4 setRadius:?];
-    [a3 decodeDoubleForKey:@"sphereradialSpan"];
+    [coder decodeDoubleForKey:@"sphereradialSpan"];
     [(SCNSphere *)v4 setRadialSpan:?];
-    -[SCNSphere setSegmentCount:](v4, "setSegmentCount:", [a3 decodeIntegerForKey:@"spheresegmentCount"]);
-    -[SCNSphere setPrimitiveType:](v4, "setPrimitiveType:", [a3 decodeIntegerForKey:@"sphereprimitiveType"]);
-    -[SCNSphere setGeodesic:](v4, "setGeodesic:", [a3 decodeBoolForKey:@"spheregeodesic"]);
-    -[SCNSphere setHemispheric:](v4, "setHemispheric:", [a3 decodeBoolForKey:@"spherehemispheric"]);
+    -[SCNSphere setSegmentCount:](v4, "setSegmentCount:", [coder decodeIntegerForKey:@"spheresegmentCount"]);
+    -[SCNSphere setPrimitiveType:](v4, "setPrimitiveType:", [coder decodeIntegerForKey:@"sphereprimitiveType"]);
+    -[SCNSphere setGeodesic:](v4, "setGeodesic:", [coder decodeBoolForKey:@"spheregeodesic"]);
+    -[SCNSphere setHemispheric:](v4, "setHemispheric:", [coder decodeBoolForKey:@"spherehemispheric"]);
     [SCNTransaction setImmediateMode:v5];
   }
 

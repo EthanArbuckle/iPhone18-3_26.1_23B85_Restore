@@ -7,41 +7,41 @@
 
 - (BOOL)hk_isHearingSevenDayDoseNotification
 {
-  v2 = [a1 categoryType];
-  v3 = [v2 code] == 199 && objc_msgSend(a1, "value") == 1;
+  categoryType = [self categoryType];
+  v3 = [categoryType code] == 199 && objc_msgSend(self, "value") == 1;
 
   return v3;
 }
 
 - (id)hk_hearingSevenDayDosePercentageWithError:()HeadphoneSevenDayDose
 {
-  v5 = [a1 categoryType];
-  v6 = [v5 code];
+  categoryType = [self categoryType];
+  code = [categoryType code];
 
-  if (v6 != 199)
+  if (code != 199)
   {
     v12 = MEMORY[0x277CCA9B8];
-    v13 = [a1 categoryType];
-    [v12 hk_assignError:a3 code:3 format:{@"Unexpected data type code: %ld", objc_msgSend(v13, "code")}];
+    categoryType2 = [self categoryType];
+    [v12 hk_assignError:a3 code:3 format:{@"Unexpected data type code: %ld", objc_msgSend(categoryType2, "code")}];
 
 LABEL_8:
     v11 = 0;
     goto LABEL_13;
   }
 
-  if ([a1 value] != 1)
+  if ([self value] != 1)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 format:{@"Unexpected value: %ld", objc_msgSend(a1, "value")}];
+    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 format:{@"Unexpected value: %ld", objc_msgSend(self, "value")}];
     goto LABEL_8;
   }
 
-  v7 = [a1 metadata];
-  v8 = [v7 hk_safeValueForKeyPath:*MEMORY[0x277CCC458] class:objc_opt_class() error:a3];
+  metadata = [self metadata];
+  v8 = [metadata hk_safeValueForKeyPath:*MEMORY[0x277CCC458] class:objc_opt_class() error:a3];
 
   if (v8)
   {
-    v9 = [a1 metadata];
-    v10 = [v9 hk_safeValueForKeyPath:*MEMORY[0x277CCC450] class:objc_opt_class() error:a3];
+    metadata2 = [self metadata];
+    v10 = [metadata2 hk_safeValueForKeyPath:*MEMORY[0x277CCC450] class:objc_opt_class() error:a3];
 
     if (v10)
     {

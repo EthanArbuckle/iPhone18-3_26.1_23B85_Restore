@@ -1,22 +1,22 @@
 @interface CUIKGroupInfo
 - (BOOL)showAddCalendarButton;
 - (CUIKGroupInfo)init;
-- (CUIKGroupInfo)initWithCustomGroupType:(unint64_t)a3;
-- (CUIKGroupInfo)initWithSource:(id)a3;
+- (CUIKGroupInfo)initWithCustomGroupType:(unint64_t)type;
+- (CUIKGroupInfo)initWithSource:(id)source;
 - (NSSet)calendarSet;
 - (NSSet)selectedCalendarSet;
-- (id)calendarAtIndex:(unint64_t)a3;
+- (id)calendarAtIndex:(unint64_t)index;
 - (id)copyCalendars;
 - (id)description;
-- (id)titleForBeginningOfSentence:(BOOL)a3;
+- (id)titleForBeginningOfSentence:(BOOL)sentence;
 - (int)sortOrder;
 - (unint64_t)numSelectableCalendars;
 - (unint64_t)numSelectedCalendars;
-- (void)insertCalendarInfo:(id)a3;
-- (void)removeCalendar:(id)a3;
+- (void)insertCalendarInfo:(id)info;
+- (void)removeCalendar:(id)calendar;
 - (void)selectAll;
 - (void)selectNone;
-- (void)setCustomTitle:(id)a3 forBeginningOfSentence:(id)a4;
+- (void)setCustomTitle:(id)title forBeginningOfSentence:(id)sentence;
 @end
 
 @implementation CUIKGroupInfo
@@ -38,14 +38,14 @@
   return v2;
 }
 
-- (CUIKGroupInfo)initWithSource:(id)a3
+- (CUIKGroupInfo)initWithSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v6 = [(CUIKGroupInfo *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_source, a3);
+    objc_storeStrong(&v6->_source, source);
     v8 = CUIKDisplayedStoreTypeTitleForSource(v7->_source);
     typeTitle = v7->_typeTitle;
     v7->_typeTitle = v8;
@@ -62,14 +62,14 @@
   return v7;
 }
 
-- (CUIKGroupInfo)initWithCustomGroupType:(unint64_t)a3
+- (CUIKGroupInfo)initWithCustomGroupType:(unint64_t)type
 {
   v4 = [(CUIKGroupInfo *)self init];
   v5 = v4;
   if (v4)
   {
-    v4->_customGroupType = a3;
-    if (a3 == 1)
+    v4->_customGroupType = type;
+    if (type == 1)
     {
       v6 = CUIKBundle();
       v7 = [v6 localizedStringForKey:@"'Other' group mid sentence title" value:@"Other" table:0];
@@ -84,23 +84,23 @@
   return v5;
 }
 
-- (void)insertCalendarInfo:(id)a3
+- (void)insertCalendarInfo:(id)info
 {
-  v10 = a3;
-  v4 = [v10 group];
+  infoCopy = info;
+  group = [infoCopy group];
 
-  if (v4 != self)
+  if (group != self)
   {
-    v5 = [v10 group];
+    group2 = [infoCopy group];
 
-    if (v5)
+    if (group2)
     {
-      v6 = [v10 group];
-      [v6 removeCalendar:v10];
+      group3 = [infoCopy group];
+      [group3 removeCalendar:infoCopy];
     }
 
     v7 = [(NSMutableArray *)self->_calendars count];
-    v8 = [(NSMutableArray *)self->_calendars indexOfObject:v10 inSortedRange:0 options:v7 usingComparator:1024, &__block_literal_global_30];
+    v8 = [(NSMutableArray *)self->_calendars indexOfObject:infoCopy inSortedRange:0 options:v7 usingComparator:1024, &__block_literal_global_30];
     if (v7 >= v8)
     {
       v9 = v8;
@@ -111,10 +111,10 @@
       v9 = v7;
     }
 
-    [(NSMutableArray *)self->_calendars insertObject:v10 atIndex:v9];
+    [(NSMutableArray *)self->_calendars insertObject:infoCopy atIndex:v9];
   }
 
-  [v10 setGroup:self];
+  [infoCopy setGroup:self];
 }
 
 uint64_t __36__CUIKGroupInfo_insertCalendarInfo___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -165,24 +165,24 @@ LABEL_9:
   return v7;
 }
 
-- (void)removeCalendar:(id)a3
+- (void)removeCalendar:(id)calendar
 {
-  v5 = a3;
-  v4 = [v5 group];
+  calendarCopy = calendar;
+  group = [calendarCopy group];
 
-  if (v4 == self)
+  if (group == self)
   {
-    [(NSMutableArray *)self->_calendars removeObject:v5];
-    [v5 setGroup:0];
+    [(NSMutableArray *)self->_calendars removeObject:calendarCopy];
+    [calendarCopy setGroup:0];
   }
 }
 
-- (id)titleForBeginningOfSentence:(BOOL)a3
+- (id)titleForBeginningOfSentence:(BOOL)sentence
 {
   customTitle = self->_customTitle;
   if (customTitle && self->_customTitleAtBeginningOfSentence)
   {
-    if (a3)
+    if (sentence)
     {
       customTitle = self->_customTitleAtBeginningOfSentence;
     }
@@ -191,7 +191,7 @@ LABEL_9:
   else
   {
     v5 = 48;
-    if (a3)
+    if (sentence)
     {
       v5 = 56;
     }
@@ -204,28 +204,28 @@ LABEL_9:
   return v6;
 }
 
-- (void)setCustomTitle:(id)a3 forBeginningOfSentence:(id)a4
+- (void)setCustomTitle:(id)title forBeginningOfSentence:(id)sentence
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  sentenceCopy = sentence;
   customTitle = self->_customTitle;
-  self->_customTitle = v6;
-  v10 = v6;
+  self->_customTitle = titleCopy;
+  v10 = titleCopy;
 
   customTitleAtBeginningOfSentence = self->_customTitleAtBeginningOfSentence;
-  self->_customTitleAtBeginningOfSentence = v7;
+  self->_customTitleAtBeginningOfSentence = sentenceCopy;
 }
 
 - (unint64_t)numSelectableCalendars
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(CUIKGroupInfo *)self numCalendars];
+  numCalendars = [(CUIKGroupInfo *)self numCalendars];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(CUIKGroupInfo *)self calendarInfos];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  calendarInfos = [(CUIKGroupInfo *)self calendarInfos];
+  v5 = [calendarInfos countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -237,20 +237,20 @@ LABEL_9:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(calendarInfos);
         }
 
-        v3 -= [*(*(&v10 + 1) + 8 * v8++) filteredByFocus];
+        numCalendars -= [*(*(&v10 + 1) + 8 * v8++) filteredByFocus];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [calendarInfos countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return numCalendars;
 }
 
 - (unint64_t)numSelectedCalendars
@@ -290,12 +290,12 @@ LABEL_9:
   return v3;
 }
 
-- (id)calendarAtIndex:(unint64_t)a3
+- (id)calendarAtIndex:(unint64_t)index
 {
-  v3 = [(NSMutableArray *)self->_calendars objectAtIndex:a3];
-  v4 = [v3 calendar];
+  v3 = [(NSMutableArray *)self->_calendars objectAtIndex:index];
+  calendar = [v3 calendar];
 
-  return v4;
+  return calendar;
 }
 
 - (id)copyCalendars
@@ -322,12 +322,12 @@ LABEL_9:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 calendar];
+        calendar = [v9 calendar];
 
-        if (v10)
+        if (calendar)
         {
-          v11 = [v9 calendar];
-          [v3 addObject:v11];
+          calendar2 = [v9 calendar];
+          [v3 addObject:calendar2];
         }
       }
 
@@ -364,12 +364,12 @@ LABEL_9:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 calendar];
+        calendar = [v9 calendar];
 
-        if (v10)
+        if (calendar)
         {
-          v11 = [v9 calendar];
-          [v3 addObject:v11];
+          calendar2 = [v9 calendar];
+          [v3 addObject:calendar2];
         }
       }
 
@@ -408,12 +408,12 @@ LABEL_9:
         v9 = *(*(&v13 + 1) + 8 * i);
         if ([v9 selected])
         {
-          v10 = [v9 calendar];
+          calendar = [v9 calendar];
 
-          if (v10)
+          if (calendar)
           {
-            v11 = [v9 calendar];
-            [v3 addObject:v11];
+            calendar2 = [v9 calendar];
+            [v3 addObject:calendar2];
           }
         }
       }
@@ -506,10 +506,10 @@ LABEL_9:
     return 0;
   }
 
-  v4 = [(EKSource *)self->_source constraints];
-  v5 = [v4 allowsCalendarAddDeleteModify];
+  constraints = [(EKSource *)self->_source constraints];
+  allowsCalendarAddDeleteModify = [constraints allowsCalendarAddDeleteModify];
 
-  return v5;
+  return allowsCalendarAddDeleteModify;
 }
 
 - (int)sortOrder

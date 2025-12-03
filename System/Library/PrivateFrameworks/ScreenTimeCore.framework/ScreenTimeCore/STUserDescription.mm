@@ -1,35 +1,35 @@
 @interface STUserDescription
 + (id)currentUser;
-+ (void)currentUserWithCompletion:(id)a3;
-- (STUserDescription)initWithGivenName:(id)a3 familyName:(id)a4 userDSID:(id)a5 userAltDSID:(id)a6;
++ (void)currentUserWithCompletion:(id)completion;
+- (STUserDescription)initWithGivenName:(id)name familyName:(id)familyName userDSID:(id)d userAltDSID:(id)iD;
 @end
 
 @implementation STUserDescription
 
-- (STUserDescription)initWithGivenName:(id)a3 familyName:(id)a4 userDSID:(id)a5 userAltDSID:(id)a6
+- (STUserDescription)initWithGivenName:(id)name familyName:(id)familyName userDSID:(id)d userAltDSID:(id)iD
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  familyNameCopy = familyName;
+  dCopy = d;
+  iDCopy = iD;
   v24.receiver = self;
   v24.super_class = STUserDescription;
   v14 = [(STUserDescription *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [nameCopy copy];
     givenName = v14->_givenName;
     v14->_givenName = v15;
 
-    v17 = [v11 copy];
+    v17 = [familyNameCopy copy];
     familyName = v14->_familyName;
     v14->_familyName = v17;
 
-    v19 = [v12 copy];
+    v19 = [dCopy copy];
     userDSID = v14->_userDSID;
     v14->_userDSID = v19;
 
-    v21 = [v13 copy];
+    v21 = [iDCopy copy];
     userAltDSID = v14->_userAltDSID;
     v14->_userAltDSID = v21;
   }
@@ -41,9 +41,9 @@
 {
   v22 = *MEMORY[0x1E69E9840];
   v2 = objc_opt_new();
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = v3;
-  if (!v3)
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  v4 = aa_primaryAppleAccount;
+  if (!aa_primaryAppleAccount)
   {
     v12 = +[STLog utility];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -52,28 +52,28 @@
       _os_log_impl(&dword_1B831F000, v12, OS_LOG_TYPE_INFO, "No Apple Account", &v16, 2u);
     }
 
-    v5 = 0;
-    v6 = 0;
-    v10 = 0;
+    aa_firstName = 0;
+    aa_lastName = 0;
+    aa_altDSID = 0;
     goto LABEL_9;
   }
 
-  v5 = [v3 aa_firstName];
-  v6 = [v4 aa_lastName];
+  aa_firstName = [aa_primaryAppleAccount aa_firstName];
+  aa_lastName = [v4 aa_lastName];
   v7 = MEMORY[0x1E696AD98];
-  v8 = [v4 aa_personID];
-  v9 = [v7 numberWithLongLong:{objc_msgSend(v8, "longLongValue")}];
+  aa_personID = [v4 aa_personID];
+  v9 = [v7 numberWithLongLong:{objc_msgSend(aa_personID, "longLongValue")}];
 
-  v10 = [v4 aa_altDSID];
+  aa_altDSID = [v4 aa_altDSID];
   v11 = +[STLog utility];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v16 = 138412802;
     v17 = v9;
     v18 = 2112;
-    v19 = v5;
+    v19 = aa_firstName;
     v20 = 2112;
-    v21 = v6;
+    v21 = aa_lastName;
     _os_log_impl(&dword_1B831F000, v11, OS_LOG_TYPE_INFO, "Account DSID %@: %@ %@", &v16, 0x20u);
   }
 
@@ -83,23 +83,23 @@ LABEL_9:
     v9 = &unk_1F3059BA0;
   }
 
-  v13 = [[STUserDescription alloc] initWithGivenName:v5 familyName:v6 userDSID:v9 userAltDSID:v10];
+  v13 = [[STUserDescription alloc] initWithGivenName:aa_firstName familyName:aa_lastName userDSID:v9 userAltDSID:aa_altDSID];
 
   v14 = *MEMORY[0x1E69E9840];
 
   return v13;
 }
 
-+ (void)currentUserWithCompletion:(id)a3
++ (void)currentUserWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_opt_new();
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__STUserDescription_currentUserWithCompletion___block_invoke;
   v6[3] = &unk_1E7CE7F48;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 aa_primaryAppleAccountWithCompletion:v6];
 }
 

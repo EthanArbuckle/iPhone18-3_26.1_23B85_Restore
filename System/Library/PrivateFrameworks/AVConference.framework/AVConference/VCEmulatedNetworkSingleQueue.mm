@@ -1,12 +1,12 @@
 @interface VCEmulatedNetworkSingleQueue
-- (VCEmulatedNetworkSingleQueue)initWithPolicies:(id)a3;
+- (VCEmulatedNetworkSingleQueue)initWithPolicies:(id)policies;
 - (void)dealloc;
-- (void)push:(id)a3;
+- (void)push:(id)push;
 @end
 
 @implementation VCEmulatedNetworkSingleQueue
 
-- (VCEmulatedNetworkSingleQueue)initWithPolicies:(id)a3
+- (VCEmulatedNetworkSingleQueue)initWithPolicies:(id)policies
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -14,7 +14,7 @@
   v4 = [(VCEmulatedNetwork *)&v8 initWithPolicies:?];
   if (v4)
   {
-    v5 = -[VCEmulatedNetworkQueue initWithPolicies:]([VCEmulatedNetworkQueue alloc], "initWithPolicies:", [a3 objectForKeyedSubscript:@"SingleQueueImpairments"]);
+    v5 = -[VCEmulatedNetworkQueue initWithPolicies:]([VCEmulatedNetworkQueue alloc], "initWithPolicies:", [policies objectForKeyedSubscript:@"SingleQueueImpairments"]);
     v4->_networkQueue = v5;
     if (v5)
     {
@@ -48,7 +48,7 @@
   [(VCEmulatedNetwork *)&v3 dealloc];
 }
 
-- (void)push:(id)a3
+- (void)push:(id)push
 {
   if ([(VCEmulatedNetworkQueue *)self->_networkQueue write:?])
   {

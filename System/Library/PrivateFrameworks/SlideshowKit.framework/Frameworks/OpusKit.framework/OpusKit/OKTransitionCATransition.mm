@@ -1,7 +1,7 @@
 @interface OKTransitionCATransition
-- (void)_transitionInView:(id)a3 fromSubview:(id)a4 toSubview:(id)a5 wasInteractive:(BOOL)a6 duration:(double)a7 doEaseIn:(BOOL)a8 doEaseOut:(BOOL)a9 isCompleting:(BOOL)a10 wasCancelled:(BOOL)a11 fromProgress:(double)a12 completionHandler:(id)a13;
+- (void)_transitionInView:(id)view fromSubview:(id)subview toSubview:(id)toSubview wasInteractive:(BOOL)interactive duration:(double)duration doEaseIn:(BOOL)in doEaseOut:(BOOL)out isCompleting:(BOOL)self0 wasCancelled:(BOOL)self1 fromProgress:(double)self2 completionHandler:(id)self3;
 - (void)dealloc;
-- (void)prepareInView:(id)a3;
+- (void)prepareInView:(id)view;
 @end
 
 @implementation OKTransitionCATransition
@@ -20,18 +20,18 @@
   [(OKTransition *)&v4 dealloc];
 }
 
-- (void)_transitionInView:(id)a3 fromSubview:(id)a4 toSubview:(id)a5 wasInteractive:(BOOL)a6 duration:(double)a7 doEaseIn:(BOOL)a8 doEaseOut:(BOOL)a9 isCompleting:(BOOL)a10 wasCancelled:(BOOL)a11 fromProgress:(double)a12 completionHandler:(id)a13
+- (void)_transitionInView:(id)view fromSubview:(id)subview toSubview:(id)toSubview wasInteractive:(BOOL)interactive duration:(double)duration doEaseIn:(BOOL)in doEaseOut:(BOOL)out isCompleting:(BOOL)self0 wasCancelled:(BOOL)self1 fromProgress:(double)self2 completionHandler:(id)self3
 {
-  if (a6)
+  if (interactive)
   {
     v19.receiver = self;
     v19.super_class = OKTransitionCATransition;
-    [(OKTransitionParallaxPush *)&v19 _transitionInView:a3 fromSubview:a4 toSubview:a5 wasInteractive:1 duration:a8 doEaseIn:a9 doEaseOut:a7 isCompleting:a12 wasCancelled:__PAIR16__(a11 fromProgress:a10) completionHandler:a13];
+    [(OKTransitionParallaxPush *)&v19 _transitionInView:view fromSubview:subview toSubview:toSubview wasInteractive:1 duration:in doEaseIn:out doEaseOut:duration isCompleting:progress wasCancelled:__PAIR16__(cancelled fromProgress:completing) completionHandler:handler];
   }
 
   else
   {
-    [(OKTransitionCATransition *)self prepareInView:a3, a4, a5, a6, a8, a9, a7, a12];
+    [(OKTransitionCATransition *)self prepareInView:view, subview, toSubview, interactive, in, out, duration, progress];
     [MEMORY[0x277CD9FF0] begin];
     [(OKTransition *)self duration];
     [MEMORY[0x277CD9FF0] setAnimationDuration:?];
@@ -41,11 +41,11 @@
     v18[1] = 3221225472;
     v18[2] = __168__OKTransitionCATransition__transitionInView_fromSubview_toSubview_wasInteractive_duration_doEaseIn_doEaseOut_isCompleting_wasCancelled_fromProgress_completionHandler___block_invoke;
     v18[3] = &unk_279C90700;
-    v18[4] = a13;
+    v18[4] = handler;
     [MEMORY[0x277CD9FF0] setCompletionBlock:v18];
-    v17 = [a3 layer];
-    [v17 addAnimation:self->_transition forKey:*MEMORY[0x277CDA920]];
-    [a3 addSubview:a5];
+    layer = [view layer];
+    [layer addAnimation:self->_transition forKey:*MEMORY[0x277CDA920]];
+    [view addSubview:toSubview];
     [MEMORY[0x277CD9FF0] commit];
   }
 }
@@ -61,7 +61,7 @@ uint64_t __168__OKTransitionCATransition__transitionInView_fromSubview_toSubview
   return result;
 }
 
-- (void)prepareInView:(id)a3
+- (void)prepareInView:(id)view
 {
   transition = self->_transition;
   if (transition)
@@ -70,10 +70,10 @@ uint64_t __168__OKTransitionCATransition__transitionInView_fromSubview_toSubview
     self->_transition = 0;
   }
 
-  v5 = [MEMORY[0x277CDA000] animation];
-  self->_transition = v5;
+  animation = [MEMORY[0x277CDA000] animation];
+  self->_transition = animation;
 
-  [(CATransition *)v5 setRemovedOnCompletion:1];
+  [(CATransition *)animation setRemovedOnCompletion:1];
 }
 
 @end

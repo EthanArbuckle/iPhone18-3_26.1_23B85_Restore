@@ -1,7 +1,7 @@
 @interface UARPMetaDataTLVStringBackDeploy
 - (UARPMetaDataTLVStringBackDeploy)init;
-- (id)generateTLV:(unsigned int)a3 tlvValue:(id)a4;
-- (id)tlvValue:(id)a3;
+- (id)generateTLV:(unsigned int)v tlvValue:(id)value;
+- (id)tlvValue:(id)value;
 @end
 
 @implementation UARPMetaDataTLVStringBackDeploy
@@ -13,15 +13,15 @@
   return [(UARPMetaDataTLVBackDeploy *)&v3 init];
 }
 
-- (id)generateTLV:(unsigned int)a3 tlvValue:(id)a4
+- (id)generateTLV:(unsigned int)v tlvValue:(id)value
 {
-  v6 = a4;
+  valueCopy = value;
   v7 = objc_alloc_init(NSMutableData);
-  v12 = uarpHtonl(a3);
+  v12 = uarpHtonl(v);
   [v7 appendBytes:&v12 length:4];
-  v11 = uarpHtonl([v6 length]);
+  v11 = uarpHtonl([valueCopy length]);
   [v7 appendBytes:&v11 length:4];
-  v8 = [(UARPMetaDataTLVStringBackDeploy *)self tlvValue:v6];
+  v8 = [(UARPMetaDataTLVStringBackDeploy *)self tlvValue:valueCopy];
 
   [v7 appendData:v8];
   v9 = [NSData dataWithData:v7];
@@ -29,14 +29,14 @@
   return v9;
 }
 
-- (id)tlvValue:(id)a3
+- (id)tlvValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = [NSData alloc];
-  v5 = [v3 UTF8String];
-  v6 = [v3 length];
+  uTF8String = [valueCopy UTF8String];
+  v6 = [valueCopy length];
 
-  v7 = [v4 initWithBytes:v5 length:v6];
+  v7 = [v4 initWithBytes:uTF8String length:v6];
 
   return v7;
 }

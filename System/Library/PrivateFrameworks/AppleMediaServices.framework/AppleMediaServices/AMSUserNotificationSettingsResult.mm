@@ -1,22 +1,22 @@
 @interface AMSUserNotificationSettingsResult
-+ (id)_itemsMapForServiceIdentifier:(id)a3 dictionaryRepresentation:(id)a4;
-- (AMSUserNotificationSettingsResult)initWithServiceIdentifier:(id)a3 dictionaryRepresentation:(id)a4;
++ (id)_itemsMapForServiceIdentifier:(id)identifier dictionaryRepresentation:(id)representation;
+- (AMSUserNotificationSettingsResult)initWithServiceIdentifier:(id)identifier dictionaryRepresentation:(id)representation;
 @end
 
 @implementation AMSUserNotificationSettingsResult
 
-- (AMSUserNotificationSettingsResult)initWithServiceIdentifier:(id)a3 dictionaryRepresentation:(id)a4
+- (AMSUserNotificationSettingsResult)initWithServiceIdentifier:(id)identifier dictionaryRepresentation:(id)representation
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  representationCopy = representation;
   v14.receiver = self;
   v14.super_class = AMSUserNotificationSettingsResult;
   v9 = [(AMSUserNotificationSettingsResult *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_serviceIdentifier, a3);
-    v11 = [objc_opt_class() _itemsMapForServiceIdentifier:v7 dictionaryRepresentation:v8];
+    objc_storeStrong(&v9->_serviceIdentifier, identifier);
+    v11 = [objc_opt_class() _itemsMapForServiceIdentifier:identifierCopy dictionaryRepresentation:representationCopy];
     itemsMap = v10->_itemsMap;
     v10->_itemsMap = v11;
   }
@@ -24,12 +24,12 @@
   return v10;
 }
 
-+ (id)_itemsMapForServiceIdentifier:(id)a3 dictionaryRepresentation:(id)a4
++ (id)_itemsMapForServiceIdentifier:(id)identifier dictionaryRepresentation:(id)representation
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v7 = [v5 stringWithFormat:@"results.notification-preferences.payload.%@", a3];
-  v8 = [v6 valueForKeyPath:v7];
+  representationCopy = representation;
+  identifier = [v5 stringWithFormat:@"results.notification-preferences.payload.%@", identifier];
+  v8 = [representationCopy valueForKeyPath:identifier];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

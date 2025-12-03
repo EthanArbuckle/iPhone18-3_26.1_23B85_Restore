@@ -1,13 +1,13 @@
 @interface CNContactPosterDataXPCAccess
 + (id)log;
-- (BOOL)executeCreateRequest:(id)a3 error:(id *)a4;
-- (BOOL)executeDeleteRequest:(id)a3 error:(id *)a4;
-- (BOOL)executeUpdateRequest:(id)a3 error:(id *)a4;
+- (BOOL)executeCreateRequest:(id)request error:(id *)error;
+- (BOOL)executeDeleteRequest:(id)request error:(id *)error;
+- (BOOL)executeUpdateRequest:(id)request error:(id *)error;
 - (CNContactPosterDataXPCAccess)init;
-- (CNContactPosterDataXPCAccess)initWithConnectionFactory:(id)a3;
-- (id)executeFetchRequest:(id)a3 error:(id *)a4;
-- (int64_t)countForFetchRequest:(id)a3 error:(id *)a4;
-- (void)performWithService:(id)a3;
+- (CNContactPosterDataXPCAccess)initWithConnectionFactory:(id)factory;
+- (id)executeFetchRequest:(id)request error:(id *)error;
+- (int64_t)countForFetchRequest:(id)request error:(id *)error;
+- (void)performWithService:(id)service;
 @end
 
 @implementation CNContactPosterDataXPCAccess
@@ -41,25 +41,25 @@ uint64_t __35__CNContactPosterDataXPCAccess_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNContactPosterDataXPCAccess)initWithConnectionFactory:(id)a3
+- (CNContactPosterDataXPCAccess)initWithConnectionFactory:(id)factory
 {
-  v5 = a3;
+  factoryCopy = factory;
   v10.receiver = self;
   v10.super_class = CNContactPosterDataXPCAccess;
   v6 = [(CNContactPosterDataXPCAccess *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connectionFactory, a3);
+    objc_storeStrong(&v6->_connectionFactory, factory);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)executeFetchRequest:(id)a3 error:(id *)a4
+- (id)executeFetchRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -76,7 +76,7 @@ uint64_t __35__CNContactPosterDataXPCAccess_log__block_invoke()
   v13[1] = 3221225472;
   v13[2] = __58__CNContactPosterDataXPCAccess_executeFetchRequest_error___block_invoke;
   v13[3] = &unk_1E7417D00;
-  v7 = v6;
+  v7 = requestCopy;
   v14 = v7;
   v15 = &v23;
   v16 = &v17;
@@ -84,10 +84,10 @@ uint64_t __35__CNContactPosterDataXPCAccess_log__block_invoke()
   v8 = v18[5];
   v9 = v24[5];
   v10 = v9;
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v11 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   _Block_object_dispose(&v17, 8);
@@ -121,9 +121,9 @@ void __58__CNContactPosterDataXPCAccess_executeFetchRequest_error___block_invoke
   *(v9 + 40) = v6;
 }
 
-- (int64_t)countForFetchRequest:(id)a3 error:(id *)a4
+- (int64_t)countForFetchRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -138,17 +138,17 @@ void __58__CNContactPosterDataXPCAccess_executeFetchRequest_error___block_invoke
   v11[1] = 3221225472;
   v11[2] = __59__CNContactPosterDataXPCAccess_countForFetchRequest_error___block_invoke;
   v11[3] = &unk_1E7417D00;
-  v7 = v6;
+  v7 = requestCopy;
   v12 = v7;
   v13 = &v21;
   v14 = &v15;
   [(CNContactPosterDataXPCAccess *)self performWithService:v11];
-  if (a4)
+  if (error)
   {
     v8 = v16[5];
     if (v8)
     {
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -171,9 +171,9 @@ uint64_t __59__CNContactPosterDataXPCAccess_countForFetchRequest_error___block_i
   return [a2 countForFetchRequest:v2 reply:v4];
 }
 
-- (BOOL)executeCreateRequest:(id)a3 error:(id *)a4
+- (BOOL)executeCreateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -195,14 +195,14 @@ uint64_t __59__CNContactPosterDataXPCAccess_countForFetchRequest_error___block_i
   v13[1] = 3221225472;
   v13[2] = __59__CNContactPosterDataXPCAccess_executeCreateRequest_error___block_invoke;
   v13[3] = &unk_1E7417D00;
-  v8 = v6;
+  v8 = requestCopy;
   v14 = v8;
   v15 = &v21;
   v16 = &v18;
   [(CNContactPosterDataXPCAccess *)self performWithService:v13];
-  if (a4 && (v9 = *(v19[0] + 40)) != 0)
+  if (error && (v9 = *(v19[0] + 40)) != 0)
   {
-    *a4 = v9;
+    *error = v9;
     v10 = [objc_opt_class() log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -238,9 +238,9 @@ uint64_t __59__CNContactPosterDataXPCAccess_executeCreateRequest_error___block_i
   return [a2 executeCreateRequest:v2 reply:v4];
 }
 
-- (BOOL)executeDeleteRequest:(id)a3 error:(id *)a4
+- (BOOL)executeDeleteRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -255,17 +255,17 @@ uint64_t __59__CNContactPosterDataXPCAccess_executeCreateRequest_error___block_i
   v11[1] = 3221225472;
   v11[2] = __59__CNContactPosterDataXPCAccess_executeDeleteRequest_error___block_invoke;
   v11[3] = &unk_1E7417D00;
-  v7 = v6;
+  v7 = requestCopy;
   v12 = v7;
   v13 = &v21;
   v14 = &v15;
   [(CNContactPosterDataXPCAccess *)self performWithService:v11];
-  if (a4)
+  if (error)
   {
     v8 = v16[5];
     if (v8)
     {
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -288,9 +288,9 @@ uint64_t __59__CNContactPosterDataXPCAccess_executeDeleteRequest_error___block_i
   return [a2 executeDeleteRequest:v2 reply:v4];
 }
 
-- (BOOL)executeUpdateRequest:(id)a3 error:(id *)a4
+- (BOOL)executeUpdateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -305,17 +305,17 @@ uint64_t __59__CNContactPosterDataXPCAccess_executeDeleteRequest_error___block_i
   v11[1] = 3221225472;
   v11[2] = __59__CNContactPosterDataXPCAccess_executeUpdateRequest_error___block_invoke;
   v11[3] = &unk_1E7417D00;
-  v7 = v6;
+  v7 = requestCopy;
   v12 = v7;
   v13 = &v21;
   v14 = &v15;
   [(CNContactPosterDataXPCAccess *)self performWithService:v11];
-  if (a4)
+  if (error)
   {
     v8 = v16[5];
     if (v8)
     {
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -338,37 +338,37 @@ uint64_t __59__CNContactPosterDataXPCAccess_executeUpdateRequest_error___block_i
   return [a2 executeUpdateRequest:v2 reply:v4];
 }
 
-- (void)performWithService:(id)a3
+- (void)performWithService:(id)service
 {
-  v4 = a3;
-  v5 = [(CNContactPosterDataXPCAccess *)self connectionFactory];
-  v6 = [v5 makeConnection];
+  serviceCopy = service;
+  connectionFactory = [(CNContactPosterDataXPCAccess *)self connectionFactory];
+  makeConnection = [connectionFactory makeConnection];
 
   v7 = +[CNContactPosterDataXPCService interface];
-  [v6 setRemoteObjectInterface:v7];
+  [makeConnection setRemoteObjectInterface:v7];
 
-  [v6 activate];
+  [makeConnection activate];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __51__CNContactPosterDataXPCAccess_performWithService___block_invoke;
   v20[3] = &unk_1E7412FA0;
   v20[4] = self;
-  v8 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v20];
+  v8 = [makeConnection synchronousRemoteObjectProxyWithErrorHandler:v20];
   v9 = +[CNContactPosterDataStore log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     [CNContactPosterDataXPCAccess performWithService:v9];
   }
 
-  v10 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v11 = [v10 timeProvider];
-  [v11 timestamp];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  timeProvider = [currentEnvironment timeProvider];
+  [timeProvider timestamp];
   v13 = v12;
 
-  v4[2](v4, v8);
-  v14 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v15 = [v14 timeProvider];
-  [v15 timestamp];
+  serviceCopy[2](serviceCopy, v8);
+  currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+  timeProvider2 = [currentEnvironment2 timeProvider];
+  [timeProvider2 timestamp];
   v17 = v16;
 
   v18 = [MEMORY[0x1E6996858] stringForTimeInterval:v17 - v13];
@@ -378,7 +378,7 @@ uint64_t __59__CNContactPosterDataXPCAccess_executeUpdateRequest_error___block_i
     [(CNContactPosterDataXPCAccess *)v18 performWithService:v19];
   }
 
-  [v6 invalidate];
+  [makeConnection invalidate];
 }
 
 void __51__CNContactPosterDataXPCAccess_performWithService___block_invoke(uint64_t a1, void *a2)

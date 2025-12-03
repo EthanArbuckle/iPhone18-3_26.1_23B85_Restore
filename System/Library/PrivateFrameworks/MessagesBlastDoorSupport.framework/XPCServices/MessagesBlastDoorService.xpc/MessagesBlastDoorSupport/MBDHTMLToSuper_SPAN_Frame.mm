@@ -1,18 +1,18 @@
 @interface MBDHTMLToSuper_SPAN_Frame
-- (void)parser:(id)a3 context:(id)a4 didEndElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7;
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8;
+- (void)parser:(id)parser context:(id)context didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation MBDHTMLToSuper_SPAN_Frame
 
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v14 = a4;
+  contextCopy = context;
   v23.receiver = self;
   v23.super_class = MBDHTMLToSuper_SPAN_Frame;
-  v15 = a8;
-  [(MBDToSuperParserFrame *)&v23 parser:a3 context:v14 didStartElement:a5 namespaceURI:a6 qualifiedName:a7 attributes:v15];
-  v16 = MBDIMCopyNormalizedAttributes(v15, 1, 0);
+  attributesCopy = attributes;
+  [(MBDToSuperParserFrame *)&v23 parser:parser context:contextCopy didStartElement:element namespaceURI:i qualifiedName:name attributes:attributesCopy];
+  v16 = MBDIMCopyNormalizedAttributes(attributesCopy, 1, 0);
 
   v17 = [v16 objectForKey:@"style"];
   v18 = MBDIMCreateDictionaryFromCSSString(v17, 1);
@@ -22,19 +22,19 @@
   v22 = [v18 objectForKey:@"text-decoration"];
   if (v19)
   {
-    [v14 pushFontFamily:v19];
+    [contextCopy pushFontFamily:v19];
     *(&self->super.super._didPushMessagePartNumber + 1) = 1;
   }
 
   if (v21 && ([v21 rangeOfString:@"bold" options:1] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v21, "integerValue") >= 700))
   {
-    [v14 incrementBoldCount];
+    [contextCopy incrementBoldCount];
     *(&self->super.super._didPushMessagePartNumber + 2) = 1;
   }
 
   if (v20 && ([v20 rangeOfString:@"italic" options:1] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v20, "rangeOfString:options:", @"oblique", 1) != 0x7FFFFFFFFFFFFFFFLL))
   {
-    [v14 incrementItalicCount];
+    [contextCopy incrementItalicCount];
     *(&self->super.super._didPushMessagePartNumber + 3) = 1;
   }
 
@@ -42,47 +42,47 @@
   {
     if ([v22 rangeOfString:@"under" options:1] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v14 incrementUnderlineCount];
+      [contextCopy incrementUnderlineCount];
       *(&self->super.super._didPushMessagePartNumber + 4) = 1;
     }
 
     if ([v22 rangeOfString:@"line-through" options:1] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v14 incrementStrikethroughCount];
+      [contextCopy incrementStrikethroughCount];
       *(&self->super.super._didPushMessagePartNumber + 5) = 1;
     }
   }
 }
 
-- (void)parser:(id)a3 context:(id)a4 didEndElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7
+- (void)parser:(id)parser context:(id)context didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v12 = a4;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = MBDHTMLToSuper_SPAN_Frame;
-  [(MBDToSuperParserFrame *)&v13 parser:a3 context:v12 didEndElement:a5 namespaceURI:a6 qualifiedName:a7];
+  [(MBDToSuperParserFrame *)&v13 parser:parser context:contextCopy didEndElement:element namespaceURI:i qualifiedName:name];
   if (*(&self->super.super._didPushMessagePartNumber + 1))
   {
-    [v12 popFontFamily];
+    [contextCopy popFontFamily];
   }
 
   if (*(&self->super.super._didPushMessagePartNumber + 2))
   {
-    [v12 decrementBoldCount];
+    [contextCopy decrementBoldCount];
   }
 
   if (*(&self->super.super._didPushMessagePartNumber + 3))
   {
-    [v12 decrementItalicCount];
+    [contextCopy decrementItalicCount];
   }
 
   if (*(&self->super.super._didPushMessagePartNumber + 4))
   {
-    [v12 decrementUnderlineCount];
+    [contextCopy decrementUnderlineCount];
   }
 
   if (*(&self->super.super._didPushMessagePartNumber + 5))
   {
-    [v12 decrementStrikethroughCount];
+    [contextCopy decrementStrikethroughCount];
   }
 }
 

@@ -1,43 +1,43 @@
 @interface NTKParameciumCompositeQuad
 + (id)confettiFontDescriptor;
-+ (id)renderNumbersWithColors:(id)a3 size:(double)a4 weight:(double)a5 inBounds:(CGRect)a6 baselineRadius:(double)a7;
-+ (id)renderPipelineStateWithVertexShader:(id)a3 fragmentShader:(id)a4 library:(id)a5 device:(id)a6 pixelFormat:(unint64_t)a7;
-- (NTKParameciumCompositeQuad)initWithDevice:(id)a3;
-- (double)createMatrixForTextureWithSize:(float32x2_t)a1 translation:(double)a2 scale:(int32x2_t)a3 rotate:(float)a4 offset:(__n128)a5;
-- (id)_confettiHiddenBehindTicksBuffer:(id)a3 capsuleSize:(CGSize)a4;
-- (id)_generateNoiseTextureInRect:(CGRect)a3 device:(id)a4;
-- (id)confettiOriginsBuffer:(id)a3 capsuleSize:(CGSize)a4;
++ (id)renderNumbersWithColors:(id)colors size:(double)size weight:(double)weight inBounds:(CGRect)bounds baselineRadius:(double)radius;
++ (id)renderPipelineStateWithVertexShader:(id)shader fragmentShader:(id)fragmentShader library:(id)library device:(id)device pixelFormat:(unint64_t)format;
+- (NTKParameciumCompositeQuad)initWithDevice:(id)device;
+- (double)createMatrixForTextureWithSize:(float32x2_t)size translation:(double)translation scale:(int32x2_t)scale rotate:(float)rotate offset:(__n128)offset;
+- (id)_confettiHiddenBehindTicksBuffer:(id)buffer capsuleSize:(CGSize)size;
+- (id)_generateNoiseTextureInRect:(CGRect)rect device:(id)device;
+- (id)confettiOriginsBuffer:(id)buffer capsuleSize:(CGSize)size;
 - (void)_initializeColors;
 - (void)_updateHandAngles;
-- (void)handleTouchAt:(CGPoint)a3 at:(double)a4;
-- (void)performOffscreenPassesWithCommandBuffer:(id)a3;
-- (void)renderWithCommandBuffer:(id)a3 passDescriptor:(id)a4;
-- (void)setConfettiRotation:(double)a3;
-- (void)setFromDate:(id)a3;
-- (void)setToDate:(id)a3;
-- (void)setupForQuadView:(id)a3;
-- (void)updateConfettiColors:(id)a3;
+- (void)handleTouchAt:(CGPoint)at at:(double)a4;
+- (void)performOffscreenPassesWithCommandBuffer:(id)buffer;
+- (void)renderWithCommandBuffer:(id)buffer passDescriptor:(id)descriptor;
+- (void)setConfettiRotation:(double)rotation;
+- (void)setFromDate:(id)date;
+- (void)setToDate:(id)date;
+- (void)setupForQuadView:(id)view;
+- (void)updateConfettiColors:(id)colors;
 @end
 
 @implementation NTKParameciumCompositeQuad
 
-- (NTKParameciumCompositeQuad)initWithDevice:(id)a3
+- (NTKParameciumCompositeQuad)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v22.receiver = self;
   v22.super_class = NTKParameciumCompositeQuad;
   v6 = [(NTKParameciumCompositeQuad *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
-    [v5 screenBounds];
+    objc_storeStrong(&v6->_device, device);
+    [deviceCopy screenBounds];
     v21 = v8;
-    [v5 screenScale];
+    [deviceCopy screenScale];
     v20 = v9;
-    [v5 screenBounds];
+    [deviceCopy screenBounds];
     v19 = v10;
-    [v5 screenScale];
+    [deviceCopy screenScale];
     v11.f64[0] = v20;
     v11.f64[1] = v12;
     v13.f64[0] = v21;
@@ -61,10 +61,10 @@
   return v7;
 }
 
-- (void)setFromDate:(id)a3
+- (void)setFromDate:(id)date
 {
-  objc_storeStrong(&self->_fromDate, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_fromDate, date);
+  dateCopy = date;
   calendar = self->_calendar;
   NTKHourMinuteSecondAnglesForTime();
 
@@ -74,10 +74,10 @@
   [(NTKParameciumCompositeQuad *)self _updateHandAngles];
 }
 
-- (void)setToDate:(id)a3
+- (void)setToDate:(id)date
 {
-  objc_storeStrong(&self->_toDate, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_toDate, date);
+  dateCopy = date;
   calendar = self->_calendar;
   NTKHourMinuteSecondAnglesForTime();
 
@@ -106,38 +106,38 @@
   self->_secondAngle = v14;
 }
 
-- (void)setConfettiRotation:(double)a3
+- (void)setConfettiRotation:(double)rotation
 {
-  v5 = self->_confettiRotation - a3;
+  v5 = self->_confettiRotation - rotation;
   *&v5 = v5;
   *&v5 = -*&v5;
   [(NTKParameciumTouchHandler *)self->_touchHandler rotateTouchesByAngle:v5];
-  self->_confettiRotation = a3;
+  self->_confettiRotation = rotation;
 }
 
-+ (id)renderPipelineStateWithVertexShader:(id)a3 fragmentShader:(id)a4 library:(id)a5 device:(id)a6 pixelFormat:(unint64_t)a7
++ (id)renderPipelineStateWithVertexShader:(id)shader fragmentShader:(id)fragmentShader library:(id)library device:(id)device pixelFormat:(unint64_t)format
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a5;
-  v15 = [v14 newFunctionWithName:v11];
-  v16 = [v14 newFunctionWithName:v12];
+  shaderCopy = shader;
+  fragmentShaderCopy = fragmentShader;
+  deviceCopy = device;
+  libraryCopy = library;
+  v15 = [libraryCopy newFunctionWithName:shaderCopy];
+  v16 = [libraryCopy newFunctionWithName:fragmentShaderCopy];
 
   v17 = objc_alloc_init(MTLRenderPipelineDescriptor);
   [v17 setLabel:@"ParameciumPipeline"];
   [v17 setVertexFunction:v15];
   [v17 setFragmentFunction:v16];
-  v18 = [v17 colorAttachments];
-  v19 = [v18 objectAtIndexedSubscript:0];
-  [v19 setPixelFormat:a7];
+  colorAttachments = [v17 colorAttachments];
+  v19 = [colorAttachments objectAtIndexedSubscript:0];
+  [v19 setPixelFormat:format];
 
-  v20 = [v17 colorAttachments];
-  v21 = [v20 objectAtIndexedSubscript:0];
+  colorAttachments2 = [v17 colorAttachments];
+  v21 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v21 setBlendingEnabled:0];
 
   v26 = 0;
-  v22 = [v13 newRenderPipelineStateWithDescriptor:v17 error:&v26];
+  v22 = [deviceCopy newRenderPipelineStateWithDescriptor:v17 error:&v26];
 
   v23 = v26;
   if (v23)
@@ -145,17 +145,17 @@
     v24 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      sub_8EC4(v12, v23, v24);
+      sub_8EC4(fragmentShaderCopy, v23, v24);
     }
   }
 
   return v22;
 }
 
-- (void)setupForQuadView:(id)a3
+- (void)setupForQuadView:(id)view
 {
-  v151 = a3;
-  [v151 setOpaque:0];
+  viewCopy = view;
+  [viewCopy setOpaque:0];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = +[CLKUIMetalResourceManager sharedDevice];
   objc_storeStrong(&self->_mtlDevice, v5);
@@ -165,33 +165,33 @@
   computeConfettiPipelineState = self->_computeConfettiPipelineState;
   self->_computeConfettiPipelineState = v7;
 
-  v9 = +[NTKParameciumCompositeQuad renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:](NTKParameciumCompositeQuad, "renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:", @"paramecium_sprite_vertex_shader", @"paramecium_sprite_fragment_shader", v6, v5, [v151 colorPixelFormat]);
+  v9 = +[NTKParameciumCompositeQuad renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:](NTKParameciumCompositeQuad, "renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:", @"paramecium_sprite_vertex_shader", @"paramecium_sprite_fragment_shader", v6, v5, [viewCopy colorPixelFormat]);
   spritePipelineState = self->_spritePipelineState;
   self->_spritePipelineState = v9;
 
-  v11 = +[NTKParameciumCompositeQuad renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:](NTKParameciumCompositeQuad, "renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:", @"paramecium_sprite_vertex_shader", @"paramecium_sprite_multiply_fragment_shader", v6, v5, [v151 colorPixelFormat]);
+  v11 = +[NTKParameciumCompositeQuad renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:](NTKParameciumCompositeQuad, "renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:", @"paramecium_sprite_vertex_shader", @"paramecium_sprite_multiply_fragment_shader", v6, v5, [viewCopy colorPixelFormat]);
   spriteMultiplyPipelineState = self->_spriteMultiplyPipelineState;
   self->_spriteMultiplyPipelineState = v11;
 
-  v13 = +[NTKParameciumCompositeQuad renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:](NTKParameciumCompositeQuad, "renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:", @"paramecium_sprite_vertex_shader", @"paramecium_tinted_sprite_fragment_shader", v6, v5, [v151 colorPixelFormat]);
+  v13 = +[NTKParameciumCompositeQuad renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:](NTKParameciumCompositeQuad, "renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:", @"paramecium_sprite_vertex_shader", @"paramecium_tinted_sprite_fragment_shader", v6, v5, [viewCopy colorPixelFormat]);
   tintedSpritePipelineState = self->_tintedSpritePipelineState;
   self->_tintedSpritePipelineState = v13;
 
-  v15 = +[NTKParameciumCompositeQuad renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:](NTKParameciumCompositeQuad, "renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:", @"paramecium_sprite_vertex_shader", @"paramecium_hour_minute_fragment_shader", v6, v5, [v151 colorPixelFormat]);
+  v15 = +[NTKParameciumCompositeQuad renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:](NTKParameciumCompositeQuad, "renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:", @"paramecium_sprite_vertex_shader", @"paramecium_hour_minute_fragment_shader", v6, v5, [viewCopy colorPixelFormat]);
   handPipelineState = self->_handPipelineState;
   self->_handPipelineState = v15;
 
-  v17 = +[NTKParameciumCompositeQuad renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:](NTKParameciumCompositeQuad, "renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:", @"paramecium_sprite_vertex_shader", @"paramecium_hour_minute_inlay_fragment_shader", v6, v5, [v151 colorPixelFormat]);
+  v17 = +[NTKParameciumCompositeQuad renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:](NTKParameciumCompositeQuad, "renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:", @"paramecium_sprite_vertex_shader", @"paramecium_hour_minute_inlay_fragment_shader", v6, v5, [viewCopy colorPixelFormat]);
   inlayPipelineState = self->_inlayPipelineState;
   self->_inlayPipelineState = v17;
 
-  v19 = +[NTKParameciumCompositeQuad renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:](NTKParameciumCompositeQuad, "renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:", @"paramecium_capsule_vertex_shader", @"paramecium_capsule_fragment_shader", v6, v5, [v151 colorPixelFormat]);
+  v19 = +[NTKParameciumCompositeQuad renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:](NTKParameciumCompositeQuad, "renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:", @"paramecium_capsule_vertex_shader", @"paramecium_capsule_fragment_shader", v6, v5, [viewCopy colorPixelFormat]);
   capsulePipelineState = self->_capsulePipelineState;
   self->_capsulePipelineState = v19;
 
   v145 = v6;
   v133 = v5;
-  v21 = +[NTKParameciumCompositeQuad renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:](NTKParameciumCompositeQuad, "renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:", @"paramecium_blur_vertex_shader", @"paramecium_blur_fragment_shader", v6, v5, [v151 colorPixelFormat]);
+  v21 = +[NTKParameciumCompositeQuad renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:](NTKParameciumCompositeQuad, "renderPipelineStateWithVertexShader:fragmentShader:library:device:pixelFormat:", @"paramecium_blur_vertex_shader", @"paramecium_blur_fragment_shader", v6, v5, [viewCopy colorPixelFormat]);
   blurPipelineState = self->_blurPipelineState;
   self->_blurPipelineState = v21;
 
@@ -199,8 +199,8 @@
   compositePassDescriptor = self->_compositePassDescriptor;
   self->_compositePassDescriptor = v23;
 
-  v25 = [(MTLRenderPassDescriptor *)self->_compositePassDescriptor colorAttachments];
-  v26 = [v25 objectAtIndexedSubscript:0];
+  colorAttachments = [(MTLRenderPassDescriptor *)self->_compositePassDescriptor colorAttachments];
+  v26 = [colorAttachments objectAtIndexedSubscript:0];
 
   [v26 setLoadAction:1];
   v143 = v26;
@@ -209,8 +209,8 @@
   blurPassDescriptor = self->_blurPassDescriptor;
   self->_blurPassDescriptor = v27;
 
-  v29 = [(MTLRenderPassDescriptor *)self->_blurPassDescriptor colorAttachments];
-  v30 = [v29 objectAtIndexedSubscript:0];
+  colorAttachments2 = [(MTLRenderPassDescriptor *)self->_blurPassDescriptor colorAttachments];
+  v30 = [colorAttachments2 objectAtIndexedSubscript:0];
 
   [v30 setLoadAction:2];
   [v30 setClearColor:{0.0, 0.0, 0.0, 0.0}];
@@ -348,8 +348,8 @@
   confettiHiddenBuffer = self->_confettiHiddenBuffer;
   self->_confettiHiddenBuffer = v91;
 
-  v93 = [v151 metalLayer];
-  v94 = [v93 pixelFormat];
+  metalLayer = [viewCopy metalLayer];
+  pixelFormat = [metalLayer pixelFormat];
   [v125 size];
   v96 = v95;
   [v125 scale];
@@ -357,7 +357,7 @@
   [v125 size];
   v100 = v99;
   [v125 scale];
-  v102 = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:v94 width:v98 height:(v100 * v101) mipmapped:0];
+  v102 = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:pixelFormat width:v98 height:(v100 * v101) mipmapped:0];
 
   [v102 setUsage:7];
   [v102 setStorageMode:2];
@@ -413,13 +413,13 @@
   self->_confettiIndexBuffer = v120;
 }
 
-- (id)_generateNoiseTextureInRect:(CGRect)a3 device:(id)a4
+- (id)_generateNoiseTextureInRect:(CGRect)rect device:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  deviceCopy = device;
   v9 = objc_opt_new();
   [v9 setPixelFormat:70];
   [v9 setWidth:128];
@@ -428,8 +428,8 @@
   [v9 setTextureType:2];
   [v9 setUsage:1];
   [v9 setStorageMode:2];
-  v10 = [v8 newTextureWithDescriptor:v9];
-  v11 = [v8 newBufferWithLength:0x10000 options:0];
+  v10 = [deviceCopy newTextureWithDescriptor:v9];
+  v11 = [deviceCopy newBufferWithLength:0x10000 options:0];
 
   v23 = _NSConcreteStackBlock;
   v24 = 3221225472;
@@ -441,7 +441,7 @@
   v30 = height;
   v32 = width;
   v33 = height;
-  v31 = [v11 contents];
+  contents = [v11 contents];
   NTKHighPriorityApply();
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
@@ -469,13 +469,13 @@
   return v3;
 }
 
-+ (id)renderNumbersWithColors:(id)a3 size:(double)a4 weight:(double)a5 inBounds:(CGRect)a6 baselineRadius:(double)a7
++ (id)renderNumbersWithColors:(id)colors size:(double)size weight:(double)weight inBounds:(CGRect)bounds baselineRadius:(double)radius
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  v10 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  colorsCopy = colors;
   v11 = +[NTKParameciumCompositeQuad confettiFontDescriptor];
-  v38 = [UIFont fontWithDescriptor:v11 size:a4];
+  v38 = [UIFont fontWithDescriptor:v11 size:size];
 
   v12 = 16 * width;
   v13 = malloc_type_malloc(v12 * height, 0x1000040451B5BE8uLL);
@@ -494,7 +494,7 @@
     v39[1] = NSForegroundColorAttributeName;
     v40[0] = v38;
     v39[0] = NSFontAttributeName;
-    v20 = [v10 objectAtIndexedSubscript:{i % objc_msgSend(v10, "count")}];
+    v20 = [colorsCopy objectAtIndexedSubscript:{i % objc_msgSend(colorsCopy, "count")}];
     v40[1] = v20;
     v21 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:2];
 
@@ -510,7 +510,7 @@
     v27 = ImageBounds.size.height;
     CGContextTranslateCTM(v15, v16, v17);
     CGContextRotateCTM(v15, (v18 + 1) * 0.523598776);
-    CGContextTranslateCTM(v15, 37.0 - v27 + a7, 0.0);
+    CGContextTranslateCTM(v15, 37.0 - v27 + radius, 0.0);
     CGContextRotateCTM(v15, 1.57079633);
     CGContextScaleCTM(v15, 1.0, -1.0);
     if (v18 <= 4)
@@ -549,7 +549,7 @@
   v3 = CGColorSpaceCreateWithName(kCGColorSpaceExtendedSRGB);
   obj = objc_opt_new();
   v4 = 0;
-  v5 = self;
+  selfCopy = self;
   do
   {
     v6 = [UIColor colorWithDisplayP3Red:COERCE_FLOAT(xmmword_CB60[v4]) green:COERCE_FLOAT(HIDWORD(*&xmmword_CB60[v4])) blue:COERCE_FLOAT(*(&xmmword_CB60[v4] + 1)) alpha:COERCE_FLOAT(HIDWORD(xmmword_CB60[v4]))];
@@ -558,11 +558,11 @@
     *&v9 = vcvt_f32_f64(*Components);
     *&v10 = Components[1].f64[0];
     *(&v9 + 1) = __PAIR64__(1.0, v10);
-    *v5->_confettiColors = v9;
+    *selfCopy->_confettiColors = v9;
     [obj addObject:v6];
     CGColorRelease(CopyByMatchingToColorSpace);
 
-    v5 = (v5 + 16);
+    selfCopy = (selfCopy + 16);
     ++v4;
   }
 
@@ -570,7 +570,7 @@
   objc_storeStrong(&self->_numberColors, obj);
   v11 = objc_opt_new();
   v12 = 0;
-  v13 = self;
+  selfCopy2 = self;
   do
   {
     v14 = [UIColor colorWithDisplayP3Red:COERCE_FLOAT(xmmword_CC20[v12]) green:COERCE_FLOAT(HIDWORD(*&xmmword_CC20[v12])) blue:COERCE_FLOAT(*(&xmmword_CC20[v12] + 1)) alpha:COERCE_FLOAT(HIDWORD(xmmword_CC20[v12]))];
@@ -579,11 +579,11 @@
     *&v17 = vcvt_f32_f64(*v16);
     *&v18 = v16[1].f64[0];
     *(&v17 + 1) = __PAIR64__(1.0, v18);
-    *v13->_tritiumColors = v17;
+    *selfCopy2->_tritiumColors = v17;
     [(NSArray *)v11 addObject:v14];
     CGColorRelease(v15);
 
-    v13 = (v13 + 16);
+    selfCopy2 = (selfCopy2 + 16);
     ++v12;
   }
 
@@ -594,18 +594,18 @@
   CGColorSpaceRelease(v3);
 }
 
-- (void)updateConfettiColors:(id)a3
+- (void)updateConfettiColors:(id)colors
 {
-  v5 = a3;
-  v6 = [a3 contents];
-  if (v6)
+  colorsCopy = colors;
+  contents = [colors contents];
+  if (contents)
   {
     v7 = 0;
     v8 = 1.0 - self->_backgroundOn;
     *&v8 = fmin(self->_tritiumProgress, v8);
     v9 = vdupq_lane_s32(*&v8, 0);
     v10 = 1.0 - *&v8;
-    v11 = v6 + 1;
+    v11 = contents + 1;
     do
     {
       v12 = (12 * (v7 / 0xCu) - v7 + 11);
@@ -618,12 +618,12 @@
   }
 }
 
-- (id)confettiOriginsBuffer:(id)a3 capsuleSize:(CGSize)a4
+- (id)confettiOriginsBuffer:(id)buffer capsuleSize:(CGSize)size
 {
-  width = a4.width;
-  height = a4.height;
+  width = size.width;
+  height = size.height;
   v29 = [(MTLDevice *)self->_mtlDevice newBufferWithLength:6720 options:0];
-  v5 = [v29 contents];
+  contents = [v29 contents];
   v6.f64[0] = width;
   v6.f64[1] = height;
   v30 = vcvt_f32_f64(v6);
@@ -633,15 +633,15 @@
   v9 = 0;
   *&v8 = v11;
   v12 = vdup_lane_s32(*&v8, 0);
-  v13 = v5 + 32;
+  v13 = contents + 32;
   do
   {
     v14 = v9 / 0xCu;
     confettiColors = self->_confettiColors;
     v15 = [UIColor colorWithDisplayP3Red:COERCE_FLOAT(*&confettiColors[16 * (11 - (v9 - 12 * v14))]) green:COERCE_FLOAT(HIDWORD(*&confettiColors[16 * (11 - (v9 - 12 * v14))])) blue:COERCE_FLOAT(*&confettiColors[16 * (11 - (v9 - 12 * v14)) + 8]) alpha:COERCE_FLOAT(HIDWORD(*&confettiColors[16 * (11 - (v9 - 12 * v14))]))];
-    v16 = [v15 CGColor];
+    cGColor = [v15 CGColor];
 
-    CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v7, kCGRenderingIntentDefault, v16, 0);
+    CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v7, kCGRenderingIntentDefault, cGColor, 0);
     Components = CGColorGetComponents(CopyByMatchingToColorSpace);
     *&v19 = vcvt_f32_f64(*Components);
     *&v20 = Components[1].f64[0];
@@ -676,12 +676,12 @@
   return v29;
 }
 
-- (id)_confettiHiddenBehindTicksBuffer:(id)a3 capsuleSize:(CGSize)a4
+- (id)_confettiHiddenBehindTicksBuffer:(id)buffer capsuleSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v29 = [(MTLDevice *)self->_mtlDevice newBufferWithLength:6720 options:0];
-  v5 = [v29 contents];
+  contents = [v29 contents];
   v6 = *self->_targetSize;
   v7.f64[0] = width;
   v7.f64[1] = height;
@@ -691,14 +691,14 @@
   v11 = 0;
   *&v10 = v10;
   v13 = vdup_lane_s32(*&v10, 0);
-  v14 = v5 + 32;
+  v14 = contents + 32;
   do
   {
     confettiColors = self->_confettiColors;
     v15 = [UIColor colorWithDisplayP3Red:COERCE_FLOAT(*&confettiColors[16 * (11 - v11 % 0xCu)]) green:COERCE_FLOAT(HIDWORD(*&confettiColors[16 * (11 - v11 % 0xCu)])) blue:COERCE_FLOAT(*&confettiColors[16 * (11 - v11 % 0xCu) + 8]) alpha:COERCE_FLOAT(HIDWORD(*&confettiColors[16 * (11 - v11 % 0xCu)]))];
-    v16 = [v15 CGColor];
+    cGColor = [v15 CGColor];
 
-    CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v9, kCGRenderingIntentDefault, v16, 0);
+    CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v9, kCGRenderingIntentDefault, cGColor, 0);
     Components = CGColorGetComponents(CopyByMatchingToColorSpace);
     *&v19 = vcvt_f32_f64(*Components);
     *&v20 = Components[1].f64[0];
@@ -732,21 +732,21 @@
   return v29;
 }
 
-- (void)handleTouchAt:(CGPoint)a3 at:(double)a4
+- (void)handleTouchAt:(CGPoint)at at:(double)a4
 {
-  *&a3.x = a3.x;
-  *&a3.y = a3.y;
-  [(NTKParameciumTouchHandler *)self->_touchHandler startWaveAtX:a3.x y:a3.y atTime:a4 + 0.25];
+  *&at.x = at.x;
+  *&at.y = at.y;
+  [(NTKParameciumTouchHandler *)self->_touchHandler startWaveAtX:at.x y:at.y atTime:a4 + 0.25];
 }
 
-- (double)createMatrixForTextureWithSize:(float32x2_t)a1 translation:(double)a2 scale:(int32x2_t)a3 rotate:(float)a4 offset:(__n128)a5
+- (double)createMatrixForTextureWithSize:(float32x2_t)size translation:(double)translation scale:(int32x2_t)scale rotate:(float)rotate offset:(__n128)offset
 {
   __asm { FMOV            V0.4S, #1.0 }
 
   v29 = _Q0;
-  *_Q0.i64 = a2;
+  *_Q0.i64 = translation;
   v27 = _Q0;
-  v13 = __sincosf_stret(a4);
+  v13 = __sincosf_stret(rotate);
   *v12.i32 = v13.__cosval;
   *v11.i32 = v13.__sinval;
   v14 = 0;
@@ -770,9 +770,9 @@
   v17 = v34;
   v18 = v35;
   v19 = v36;
-  v31 = a3.u32[0];
-  v32 = vzip2q_s32(a3.u32[0], vdupq_lane_s32(a3, 1));
-  v33 = vzip1q_s32(vzip2q_s32(a3.u32[0], v29), 0);
+  v31 = scale.u32[0];
+  v32 = vzip2q_s32(scale.u32[0], vdupq_lane_s32(scale, 1));
+  v33 = vzip1q_s32(vzip2q_s32(scale.u32[0], v29), 0);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -786,9 +786,9 @@
   v20 = 0;
   v21 = v34;
   v22 = v35;
-  v23.i64[1] = a5.n128_i64[1];
+  v23.i64[1] = offset.n128_i64[1];
   v24.i64[0] = 1065353216;
-  v24.u64[1] = vmla_f32(a5.n128_u64[0], 0xBF000000BF000000, a1);
+  v24.u64[1] = vmla_f32(offset.n128_u64[0], 0xBF000000BF000000, size);
   v25 = v36;
   *v23.i8 = vdup_lane_s32(v24.u64[1], 1);
   v31 = COERCE_UNSIGNED_INT(1.0);
@@ -807,22 +807,22 @@
   return *v34.i64;
 }
 
-- (void)performOffscreenPassesWithCommandBuffer:(id)a3
+- (void)performOffscreenPassesWithCommandBuffer:(id)buffer
 {
-  v4 = a3;
-  [(NTKParameciumSprite *)self->_gradientSprite blitIfNecessaryWithCommandBuffer:v4];
-  [(NTKParameciumSprite *)self->_shadowGradientSprite blitIfNecessaryWithCommandBuffer:v4];
-  [(NTKParameciumSprite *)self->_hourSprite blitIfNecessaryWithCommandBuffer:v4];
-  [(NTKParameciumSprite *)self->_hourInlaySprite blitIfNecessaryWithCommandBuffer:v4];
-  [(NTKParameciumSprite *)self->_hourShadowSprite blitIfNecessaryWithCommandBuffer:v4];
-  [(NTKParameciumSprite *)self->_secondSprite blitIfNecessaryWithCommandBuffer:v4];
-  [(NTKParameciumSprite *)self->_secondShadowSprite blitIfNecessaryWithCommandBuffer:v4];
-  [(NTKParameciumSprite *)self->_minuteSprite blitIfNecessaryWithCommandBuffer:v4];
-  [(NTKParameciumSprite *)self->_minuteInlaySprite blitIfNecessaryWithCommandBuffer:v4];
-  [(NTKParameciumSprite *)self->_minuteShadowSprite blitIfNecessaryWithCommandBuffer:v4];
-  [(NTKParameciumSprite *)self->_noiseSprite blitIfNecessaryWithCommandBuffer:v4];
-  [(NTKParameciumSprite *)self->_backgroundWhiteNumbersSprite blitIfNecessaryWithCommandBuffer:v4];
-  [(NTKParameciumSprite *)self->_backgroundBlackNumbersSprite blitIfNecessaryWithCommandBuffer:v4];
+  bufferCopy = buffer;
+  [(NTKParameciumSprite *)self->_gradientSprite blitIfNecessaryWithCommandBuffer:bufferCopy];
+  [(NTKParameciumSprite *)self->_shadowGradientSprite blitIfNecessaryWithCommandBuffer:bufferCopy];
+  [(NTKParameciumSprite *)self->_hourSprite blitIfNecessaryWithCommandBuffer:bufferCopy];
+  [(NTKParameciumSprite *)self->_hourInlaySprite blitIfNecessaryWithCommandBuffer:bufferCopy];
+  [(NTKParameciumSprite *)self->_hourShadowSprite blitIfNecessaryWithCommandBuffer:bufferCopy];
+  [(NTKParameciumSprite *)self->_secondSprite blitIfNecessaryWithCommandBuffer:bufferCopy];
+  [(NTKParameciumSprite *)self->_secondShadowSprite blitIfNecessaryWithCommandBuffer:bufferCopy];
+  [(NTKParameciumSprite *)self->_minuteSprite blitIfNecessaryWithCommandBuffer:bufferCopy];
+  [(NTKParameciumSprite *)self->_minuteInlaySprite blitIfNecessaryWithCommandBuffer:bufferCopy];
+  [(NTKParameciumSprite *)self->_minuteShadowSprite blitIfNecessaryWithCommandBuffer:bufferCopy];
+  [(NTKParameciumSprite *)self->_noiseSprite blitIfNecessaryWithCommandBuffer:bufferCopy];
+  [(NTKParameciumSprite *)self->_backgroundWhiteNumbersSprite blitIfNecessaryWithCommandBuffer:bufferCopy];
+  [(NTKParameciumSprite *)self->_backgroundBlackNumbersSprite blitIfNecessaryWithCommandBuffer:bufferCopy];
   v5 = self->_confettiRotation + -1.57079633 + -0.261799388;
   *v27 = v5;
   v6 = fmod(self->_currentTime, 86400.0);
@@ -835,7 +835,7 @@
   *&showsConfetti = self->_confettiEntropy * self->_tritiumProgress;
   v27[3] = LODWORD(v6);
   v27[4] = LODWORD(showsConfetti);
-  v9 = [(CLKUIMetalResourcePool *)self->_confettiDefinitionsPool dequeueReusableResourceForUseOnCommandBuffer:v4];
+  v9 = [(CLKUIMetalResourcePool *)self->_confettiDefinitionsPool dequeueReusableResourceForUseOnCommandBuffer:bufferCopy];
   currentFrameConfettiPositions = self->_currentFrameConfettiPositions;
   self->_currentFrameConfettiPositions = v9;
 
@@ -857,41 +857,41 @@
     v14 = v12;
     v15 = v11;
     [(NTKParameciumTouchHandler *)touchHandler iterateTouchesWithBlock:v24];
-    v16 = [v4 computeCommandEncoder];
-    [v16 setComputePipelineState:self->_computeConfettiPipelineState];
-    [v16 setBuffer:self->_confettiOriginsBuffer offset:0 atIndex:0];
-    v17 = [(NTKParameciumSprite *)self->_noiseSprite texture];
-    [v16 setTexture:v17 atIndex:0];
+    computeCommandEncoder = [bufferCopy computeCommandEncoder];
+    [computeCommandEncoder setComputePipelineState:self->_computeConfettiPipelineState];
+    [computeCommandEncoder setBuffer:self->_confettiOriginsBuffer offset:0 atIndex:0];
+    texture = [(NTKParameciumSprite *)self->_noiseSprite texture];
+    [computeCommandEncoder setTexture:texture atIndex:0];
 
-    [v16 setBuffer:self->_currentFrameConfettiPositions offset:0 atIndex:1];
-    [v16 setBytes:v27 length:20 atIndex:2];
-    [v16 setBuffer:self->_confettiHiddenBuffer offset:0 atIndex:3];
-    [v16 setBuffer:v14 offset:0 atIndex:4];
-    [v16 setBuffer:v15 offset:0 atIndex:5];
-    v18 = [(MTLComputePipelineState *)self->_computeConfettiPipelineState threadExecutionWidth];
-    v19 = [(MTLComputePipelineState *)self->_computeConfettiPipelineState maxTotalThreadsPerThreadgroup];
+    [computeCommandEncoder setBuffer:self->_currentFrameConfettiPositions offset:0 atIndex:1];
+    [computeCommandEncoder setBytes:v27 length:20 atIndex:2];
+    [computeCommandEncoder setBuffer:self->_confettiHiddenBuffer offset:0 atIndex:3];
+    [computeCommandEncoder setBuffer:v14 offset:0 atIndex:4];
+    [computeCommandEncoder setBuffer:v15 offset:0 atIndex:5];
+    threadExecutionWidth = [(MTLComputePipelineState *)self->_computeConfettiPipelineState threadExecutionWidth];
+    maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)self->_computeConfettiPipelineState maxTotalThreadsPerThreadgroup];
     v23 = 1;
-    v20 = v19 / v18 * v18;
+    v20 = maxTotalThreadsPerThreadgroup / threadExecutionWidth * threadExecutionWidth;
     v21 = vdupq_n_s64(1uLL);
     v22 = xmmword_BF10;
-    [v16 dispatchThreads:&v22 threadsPerThreadgroup:&v20];
-    [v16 endEncoding];
+    [computeCommandEncoder dispatchThreads:&v22 threadsPerThreadgroup:&v20];
+    [computeCommandEncoder endEncoding];
   }
 }
 
-- (void)renderWithCommandBuffer:(id)a3 passDescriptor:(id)a4
+- (void)renderWithCommandBuffer:(id)buffer passDescriptor:(id)descriptor
 {
-  v160 = a3;
-  v161 = a4;
-  v6 = [v160 renderCommandEncoderWithDescriptor:?];
-  v163 = [(NTKParameciumSprite *)self->_gradientSprite texture];
-  v7 = [(NTKParameciumSprite *)self->_shadowGradientSprite texture];
-  v162 = v7;
+  bufferCopy = buffer;
+  descriptorCopy = descriptor;
+  v6 = [bufferCopy renderCommandEncoderWithDescriptor:?];
+  texture = [(NTKParameciumSprite *)self->_gradientSprite texture];
+  texture2 = [(NTKParameciumSprite *)self->_shadowGradientSprite texture];
+  v162 = texture2;
   if (self->_showsConfetti > 0.0)
   {
     [v6 setRenderPipelineState:self->_capsulePipelineState];
     [v6 setVertexBuffer:self->_currentFrameConfettiPositions offset:0 atIndex:0];
-    v7 = [v6 drawIndexedPrimitives:3 indexCount:588 indexType:0 indexBuffer:self->_confettiIndexBuffer indexBufferOffset:0 instanceCount:60];
+    texture2 = [v6 drawIndexedPrimitives:3 indexCount:588 indexType:0 indexBuffer:self->_confettiIndexBuffer indexBufferOffset:0 instanceCount:60];
   }
 
   v175 = 0u;
@@ -904,14 +904,14 @@
   LODWORD(v176) = 1065353216;
   if (self->_showsNumbers > 0.0)
   {
-    v8 = [(NTKParameciumSprite *)self->_backgroundWhiteNumbersSprite texture];
-    v9 = [(NTKParameciumSprite *)self->_backgroundBlackNumbersSprite texture];
+    texture3 = [(NTKParameciumSprite *)self->_backgroundWhiteNumbersSprite texture];
+    texture4 = [(NTKParameciumSprite *)self->_backgroundBlackNumbersSprite texture];
     v10 = fmin(self->_tritiumProgress, 1.0 - self->_backgroundOn);
     [v6 setRenderPipelineState:self->_spriteMultiplyPipelineState];
-    v165 = [v8 width];
-    v11 = [v8 height];
-    *&v12 = v165;
-    *(&v12 + 1) = v11;
+    width = [texture3 width];
+    height = [texture3 height];
+    *&v12 = width;
+    *(&v12 + 1) = height;
     *(&v171 + 1) = v12;
     v172 = *&v12;
     __asm { FMOV            V2.2S, #1.0 }
@@ -928,19 +928,19 @@
     v24 = fmin(self->_showsNumbers + self->_showsNumbers, 1.0) * v10;
     *&v176 = v24;
     [v6 setVertexBytes:&v171 length:96 atIndex:0];
-    [v6 setFragmentTexture:v8 atIndex:0];
+    [v6 setFragmentTexture:texture3 atIndex:0];
     [v6 drawPrimitives:4 vertexStart:0 vertexCount:4];
     v25 = fmin(self->_showsNumbers + self->_showsNumbers, 1.0) * (1.0 - v10);
     *&v176 = v25;
     [v6 setVertexBytes:&v171 length:96 atIndex:0];
-    [v6 setFragmentTexture:v9 atIndex:0];
+    [v6 setFragmentTexture:texture4 atIndex:0];
     [v6 drawPrimitives:4 vertexStart:0 vertexCount:4];
   }
 
   if (self->_showsTicks > 0.0)
   {
     v26 = *self->_targetSize;
-    v27 = sub_8034(v7, self->_device);
+    v27 = sub_8034(texture2, self->_device);
     v29 = 0;
     v30 = 0;
     *&v27 = v27 + v27;
@@ -1010,14 +1010,14 @@
   }
 
   LODWORD(v176) = 1065353216;
-  v50 = [(NTKParameciumSprite *)self->_minuteShadowSprite texture];
+  texture5 = [(NTKParameciumSprite *)self->_minuteShadowSprite texture];
   v51 = -self->_confettiRotation - self->_minuteAngle;
   v177[0] = v51;
   [v6 setRenderPipelineState:self->_tintedSpritePipelineState];
-  v167 = [v50 width];
-  v52 = [v50 height];
-  v53.f32[0] = v167;
-  v53.f32[1] = v52;
+  width2 = [texture5 width];
+  height2 = [texture5 height];
+  v53.f32[0] = width2;
+  v53.f32[1] = height2;
   v168 = v53;
   *(&v171 + 1) = v53;
   v172 = v53;
@@ -1039,24 +1039,24 @@
   *&v175 = v64;
   [v6 setVertexBytes:v177 length:4 atIndex:1];
   [v6 setVertexBytes:&v171 length:96 atIndex:0];
-  [v6 setFragmentTexture:v50 atIndex:0];
+  [v6 setFragmentTexture:texture5 atIndex:0];
   [v6 setFragmentTexture:v162 atIndex:1];
   [v6 drawPrimitives:4 vertexStart:0 vertexCount:4];
 
-  v65 = [(NTKParameciumSprite *)self->_minuteSprite texture];
-  v66 = [(NTKParameciumSprite *)self->_minuteInlaySprite texture];
+  texture6 = [(NTKParameciumSprite *)self->_minuteSprite texture];
+  texture7 = [(NTKParameciumSprite *)self->_minuteInlaySprite texture];
   v67 = -self->_confettiRotation - self->_minuteAngle;
   v177[0] = v67;
   [v6 setRenderPipelineState:self->_handPipelineState];
-  v168.f32[0] = [v65 width];
-  v68 = [v65 height];
+  v168.f32[0] = [texture6 width];
+  height3 = [texture6 height];
   LODWORD(v69) = v168.i32[0];
-  *(&v69 + 1) = v68;
+  *(&v69 + 1) = height3;
   *(&v171 + 1) = v69;
   v172 = v69;
   v70 = vmul_f32(*self->_targetSize, 0x3F0000003F000000);
   v71 = self->_minuteAngle;
-  v72 = -(v68 * (0.5 - *&self->_minuteAnchor[4]));
+  v72 = -(height3 * (0.5 - *&self->_minuteAnchor[4]));
   [NTKParameciumCompositeQuad createMatrixForTextureWithSize:"createMatrixForTextureWithSize:translation:scale:rotate:offset:" translation:? scale:? rotate:? offset:?];
   DWORD2(v173) = v73;
   DWORD2(v174) = v74;
@@ -1066,21 +1066,21 @@
   *&v175 = v78;
   [v6 setVertexBytes:v177 length:4 atIndex:1];
   [v6 setVertexBytes:&v171 length:96 atIndex:0];
-  [v6 setFragmentTexture:v65 atIndex:0];
-  [v6 setFragmentTexture:v163 atIndex:1];
+  [v6 setFragmentTexture:texture6 atIndex:0];
+  [v6 setFragmentTexture:texture atIndex:1];
   [v6 drawPrimitives:4 vertexStart:0 vertexCount:4];
   [v6 setRenderPipelineState:self->_inlayPipelineState];
-  [v6 setFragmentTexture:v66 atIndex:0];
+  [v6 setFragmentTexture:texture7 atIndex:0];
   [v6 drawPrimitives:4 vertexStart:0 vertexCount:4];
 
   v79 = -self->_confettiRotation - self->_hourAngle;
   v177[0] = v79;
-  v80 = [(NTKParameciumSprite *)self->_hourShadowSprite texture];
+  texture8 = [(NTKParameciumSprite *)self->_hourShadowSprite texture];
   [v6 setRenderPipelineState:self->_tintedSpritePipelineState];
-  v168.f32[0] = [v80 width];
-  v81 = [v80 height];
+  v168.f32[0] = [texture8 width];
+  height4 = [texture8 height];
   v82.i32[0] = v168.i32[0];
-  v82.f32[1] = v81;
+  v82.f32[1] = height4;
   v169 = v82;
   *(&v171 + 1) = v82;
   v172 = v82;
@@ -1100,24 +1100,24 @@
   *&v175 = v92;
   [v6 setVertexBytes:v177 length:4 atIndex:1];
   [v6 setVertexBytes:&v171 length:96 atIndex:0];
-  [v6 setFragmentTexture:v80 atIndex:0];
+  [v6 setFragmentTexture:texture8 atIndex:0];
   [v6 setFragmentTexture:v162 atIndex:1];
   [v6 drawPrimitives:4 vertexStart:0 vertexCount:4];
 
   v93 = -self->_confettiRotation - self->_hourAngle;
   v177[0] = v93;
-  v94 = [(NTKParameciumSprite *)self->_hourSprite texture];
-  v95 = [(NTKParameciumSprite *)self->_hourInlaySprite texture];
+  texture9 = [(NTKParameciumSprite *)self->_hourSprite texture];
+  texture10 = [(NTKParameciumSprite *)self->_hourInlaySprite texture];
   [v6 setRenderPipelineState:self->_handPipelineState];
-  v169.f32[0] = [v94 width];
-  v96 = [v94 height];
+  v169.f32[0] = [texture9 width];
+  height5 = [texture9 height];
   LODWORD(v97) = v169.i32[0];
-  *(&v97 + 1) = v96;
+  *(&v97 + 1) = height5;
   *(&v171 + 1) = v97;
   v172 = v97;
   v98 = vmul_f32(*self->_targetSize, 0x3F0000003F000000);
   v99 = self->_hourAngle;
-  v100 = -(v96 * (0.5 - *&self->_hourAnchor[4]));
+  v100 = -(height5 * (0.5 - *&self->_hourAnchor[4]));
   [NTKParameciumCompositeQuad createMatrixForTextureWithSize:"createMatrixForTextureWithSize:translation:scale:rotate:offset:" translation:? scale:? rotate:? offset:?];
   DWORD2(v173) = v101;
   DWORD2(v174) = v102;
@@ -1127,21 +1127,21 @@
   *&v175 = v106;
   [v6 setVertexBytes:v177 length:4 atIndex:1];
   [v6 setVertexBytes:&v171 length:96 atIndex:0];
-  [v6 setFragmentTexture:v94 atIndex:0];
-  [v6 setFragmentTexture:v163 atIndex:1];
+  [v6 setFragmentTexture:texture9 atIndex:0];
+  [v6 setFragmentTexture:texture atIndex:1];
   [v6 drawPrimitives:4 vertexStart:0 vertexCount:4];
   [v6 setRenderPipelineState:self->_inlayPipelineState];
-  [v6 setFragmentTexture:v95 atIndex:0];
+  [v6 setFragmentTexture:texture10 atIndex:0];
   [v6 drawPrimitives:4 vertexStart:0 vertexCount:4];
 
   confettiRotation = self->_confettiRotation;
   v177[0] = -confettiRotation;
-  v108 = [(NTKParameciumSprite *)self->_secondShadowSprite texture];
+  texture11 = [(NTKParameciumSprite *)self->_secondShadowSprite texture];
   [v6 setRenderPipelineState:self->_spritePipelineState];
-  v169.f32[0] = [v108 width];
-  v109 = [v108 height];
+  v169.f32[0] = [texture11 width];
+  height6 = [texture11 height];
   v110.i32[0] = v169.i32[0];
-  v110.f32[1] = v109;
+  v110.f32[1] = height6;
   v170 = v110;
   *(&v171 + 1) = v110;
   v172 = v110;
@@ -1161,27 +1161,27 @@
   *&v175 = v120;
   [v6 setVertexBytes:v177 length:4 atIndex:1];
   [v6 setVertexBytes:&v171 length:96 atIndex:0];
-  [v6 setFragmentTexture:v108 atIndex:0];
+  [v6 setFragmentTexture:texture11 atIndex:0];
   [v6 drawPrimitives:4 vertexStart:0 vertexCount:4];
 
   [v6 endEncoding];
-  v121 = [(CLKUIMetalResourcePool *)self->_secondHandBlurTexturePool dequeueReusableResourceForUseOnCommandBuffer:v160];
-  v122 = [(MTLRenderPassDescriptor *)self->_blurPassDescriptor colorAttachments];
-  v123 = [v122 objectAtIndexedSubscript:0];
+  v121 = [(CLKUIMetalResourcePool *)self->_secondHandBlurTexturePool dequeueReusableResourceForUseOnCommandBuffer:bufferCopy];
+  colorAttachments = [(MTLRenderPassDescriptor *)self->_blurPassDescriptor colorAttachments];
+  v123 = [colorAttachments objectAtIndexedSubscript:0];
   [v123 setTexture:v121];
 
-  v124 = [v160 renderCommandEncoderWithDescriptor:self->_blurPassDescriptor];
-  v125 = [(NTKParameciumSprite *)self->_secondSprite texture];
+  v124 = [bufferCopy renderCommandEncoderWithDescriptor:self->_blurPassDescriptor];
+  texture12 = [(NTKParameciumSprite *)self->_secondSprite texture];
   [v124 setRenderPipelineState:self->_blurPipelineState];
-  v158 = [v121 width];
-  v126 = [v121 height];
-  *&v127 = v158;
-  *(&v127 + 1) = v126;
+  width3 = [v121 width];
+  height7 = [v121 height];
+  *&v127 = width3;
+  *(&v127 + 1) = height7;
   *(&v171 + 1) = v127;
   v172 = v127;
   v128 = vmul_f32(*self->_targetSize, 0x3F0000003F000000);
   v129 = self->_secondAngle;
-  v130 = -(v126 * (0.5 - *&self->_secondAnchor[4]));
+  v130 = -(height7 * (0.5 - *&self->_secondAnchor[4]));
   [NTKParameciumCompositeQuad createMatrixForTextureWithSize:"createMatrixForTextureWithSize:translation:scale:rotate:offset:" translation:? scale:? rotate:? offset:?];
   DWORD2(v173) = v131;
   DWORD2(v174) = v132;
@@ -1190,37 +1190,37 @@
   DWORD2(v175) = v135;
   *&v175 = v136;
   [v124 setVertexBytes:&v171 length:96 atIndex:0];
-  v137 = [v161 colorAttachments];
-  v138 = [v137 objectAtIndexedSubscript:0];
-  v139 = [v138 texture];
-  [v124 setFragmentTexture:v139 atIndex:0];
+  colorAttachments2 = [descriptorCopy colorAttachments];
+  v138 = [colorAttachments2 objectAtIndexedSubscript:0];
+  texture13 = [v138 texture];
+  [v124 setFragmentTexture:texture13 atIndex:0];
 
-  [v124 setFragmentTexture:v125 atIndex:1];
+  [v124 setFragmentTexture:texture12 atIndex:1];
   v140 = fmin(self->_tritiumProgress, 1.0 - self->_backgroundOn);
   v177[0] = v140;
   [v124 setFragmentBytes:v177 length:4 atIndex:0];
   [v124 drawPrimitives:4 vertexStart:0 vertexCount:4];
 
   [v124 endEncoding];
-  v141 = [v161 colorAttachments];
-  v142 = [v141 objectAtIndexedSubscript:0];
-  v143 = [v142 texture];
-  v144 = [(MTLRenderPassDescriptor *)self->_compositePassDescriptor colorAttachments];
-  v145 = [v144 objectAtIndexedSubscript:0];
-  [v145 setTexture:v143];
+  colorAttachments3 = [descriptorCopy colorAttachments];
+  v142 = [colorAttachments3 objectAtIndexedSubscript:0];
+  texture14 = [v142 texture];
+  colorAttachments4 = [(MTLRenderPassDescriptor *)self->_compositePassDescriptor colorAttachments];
+  v145 = [colorAttachments4 objectAtIndexedSubscript:0];
+  [v145 setTexture:texture14];
 
-  v146 = [v160 renderCommandEncoderWithDescriptor:self->_compositePassDescriptor];
+  v146 = [bufferCopy renderCommandEncoderWithDescriptor:self->_compositePassDescriptor];
 
   [v146 setRenderPipelineState:self->_spritePipelineState];
-  v159 = [v121 width];
-  v147 = [v121 height];
-  *&v148 = v159;
-  *(&v148 + 1) = v147;
+  width4 = [v121 width];
+  height8 = [v121 height];
+  *&v148 = width4;
+  *(&v148 + 1) = height8;
   *(&v171 + 1) = v148;
   v172 = v148;
   v149 = vmul_f32(*self->_targetSize, 0x3F0000003F000000);
   v150 = self->_secondAngle;
-  v151 = -(v147 * (0.5 - *&self->_secondAnchor[4]));
+  v151 = -(height8 * (0.5 - *&self->_secondAnchor[4]));
   [NTKParameciumCompositeQuad createMatrixForTextureWithSize:"createMatrixForTextureWithSize:translation:scale:rotate:offset:" translation:? scale:? rotate:? offset:?];
   DWORD2(v173) = v152;
   DWORD2(v174) = v153;

@@ -1,6 +1,6 @@
 @interface AVTCoreEnvironment
 + (id)defaultEnvironment;
-+ (id)imageCacheStoreLocationWithError:(id *)a3;
++ (id)imageCacheStoreLocationWithError:(id *)error;
 + (id)imageStoreLocation;
 + (id)serialQueueProvider;
 + (id)stickerImageStoreLocation;
@@ -41,19 +41,19 @@
     scheduler = v2->_scheduler;
     v2->_scheduler = v5;
 
-    v7 = [objc_opt_class() serialQueueProvider];
-    v8 = [v7 copy];
+    serialQueueProvider = [objc_opt_class() serialQueueProvider];
+    v8 = [serialQueueProvider copy];
     serialQueueProvider = v2->_serialQueueProvider;
     v2->_serialQueueProvider = v8;
 
-    v10 = [objc_opt_class() serialQueueProvider];
-    v11 = [v10 copy];
+    serialQueueProvider2 = [objc_opt_class() serialQueueProvider];
+    v11 = [serialQueueProvider2 copy];
     lockProvider = v2->_lockProvider;
     v2->_lockProvider = v11;
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     notificationCenter = v2->_notificationCenter;
-    v2->_notificationCenter = v13;
+    v2->_notificationCenter = defaultCenter;
 
     [objc_opt_class() resetFlushCacheValuesIfNeeded];
   }
@@ -97,13 +97,13 @@ dispatch_queue_t __41__AVTCoreEnvironment_serialQueueProvider__block_invoke(uint
 
 + (id)imageStoreLocation
 {
-  v2 = [a1 storeLocation];
-  v3 = [v2 URLByAppendingPathComponent:@"Images"];
+  storeLocation = [self storeLocation];
+  v3 = [storeLocation URLByAppendingPathComponent:@"Images"];
 
   return v3;
 }
 
-+ (id)imageCacheStoreLocationWithError:(id *)a3
++ (id)imageCacheStoreLocationWithError:(id *)error
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAA00]);
   v8 = 0;
@@ -124,101 +124,101 @@ dispatch_queue_t __41__AVTCoreEnvironment_serialQueueProvider__block_invoke(uint
 
 + (id)stickerImageStoreLocation
 {
-  v2 = [a1 storeLocation];
-  v3 = [v2 URLByAppendingPathComponent:@"Stickers"];
+  storeLocation = [self storeLocation];
+  v3 = [storeLocation URLByAppendingPathComponent:@"Stickers"];
 
   return v3;
 }
 
 - (NSURL)storeLocation
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  storeLocation = v2->_storeLocation;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  storeLocation = selfCopy->_storeLocation;
   if (!storeLocation)
   {
-    v4 = [objc_opt_class() storeLocation];
-    v5 = [v4 copy];
-    v6 = v2->_storeLocation;
-    v2->_storeLocation = v5;
+    storeLocation = [objc_opt_class() storeLocation];
+    v5 = [storeLocation copy];
+    v6 = selfCopy->_storeLocation;
+    selfCopy->_storeLocation = v5;
 
-    storeLocation = v2->_storeLocation;
+    storeLocation = selfCopy->_storeLocation;
   }
 
   v7 = storeLocation;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (NSURL)imageStoreLocation
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  imageStoreLocation = v2->_imageStoreLocation;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  imageStoreLocation = selfCopy->_imageStoreLocation;
   if (!imageStoreLocation)
   {
-    v4 = [objc_opt_class() imageStoreLocation];
-    v5 = [v4 copy];
-    v6 = v2->_imageStoreLocation;
-    v2->_imageStoreLocation = v5;
+    imageStoreLocation = [objc_opt_class() imageStoreLocation];
+    v5 = [imageStoreLocation copy];
+    v6 = selfCopy->_imageStoreLocation;
+    selfCopy->_imageStoreLocation = v5;
 
-    imageStoreLocation = v2->_imageStoreLocation;
+    imageStoreLocation = selfCopy->_imageStoreLocation;
   }
 
   v7 = imageStoreLocation;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (NSURL)imageCacheStoreLocation
 {
-  v3 = [(AVTCoreEnvironment *)self logger];
-  v4 = self;
-  objc_sync_enter(v4);
-  imageCacheStoreLocation = v4->_imageCacheStoreLocation;
+  logger = [(AVTCoreEnvironment *)self logger];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  imageCacheStoreLocation = selfCopy->_imageCacheStoreLocation;
   if (!imageCacheStoreLocation)
   {
     v13 = 0;
     v6 = [objc_opt_class() imageCacheStoreLocationWithError:&v13];
     v7 = v13;
     v8 = [v6 copy];
-    v9 = v4->_imageCacheStoreLocation;
-    v4->_imageCacheStoreLocation = v8;
+    v9 = selfCopy->_imageCacheStoreLocation;
+    selfCopy->_imageCacheStoreLocation = v8;
 
-    if (!v4->_imageCacheStoreLocation)
+    if (!selfCopy->_imageCacheStoreLocation)
     {
       v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Can't get image cache location %@", v7];
-      [v3 logFileSystemError:v10];
+      [logger logFileSystemError:v10];
     }
 
-    imageCacheStoreLocation = v4->_imageCacheStoreLocation;
+    imageCacheStoreLocation = selfCopy->_imageCacheStoreLocation;
   }
 
   v11 = imageCacheStoreLocation;
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v11;
 }
 
 - (NSURL)stickerImageStoreLocation
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  stickerImageStoreLocation = v2->_stickerImageStoreLocation;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  stickerImageStoreLocation = selfCopy->_stickerImageStoreLocation;
   if (!stickerImageStoreLocation)
   {
-    v4 = [objc_opt_class() stickerImageStoreLocation];
-    v5 = [v4 copy];
-    v6 = v2->_stickerImageStoreLocation;
-    v2->_stickerImageStoreLocation = v5;
+    stickerImageStoreLocation = [objc_opt_class() stickerImageStoreLocation];
+    v5 = [stickerImageStoreLocation copy];
+    v6 = selfCopy->_stickerImageStoreLocation;
+    selfCopy->_stickerImageStoreLocation = v5;
 
-    stickerImageStoreLocation = v2->_stickerImageStoreLocation;
+    stickerImageStoreLocation = selfCopy->_stickerImageStoreLocation;
   }
 
   v7 = stickerImageStoreLocation;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }

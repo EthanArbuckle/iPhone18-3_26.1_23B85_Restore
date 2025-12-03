@@ -1,5 +1,5 @@
 @interface SRFaceMetricsPacketV5
-+ (id)packetWithHAFacialMetricsPacket:(id *)a3;
++ (id)packetWithHAFacialMetricsPacket:(id *)packet;
 - (NSArray)gaze;
 - (NSArray)geometryLeftEye;
 - (NSArray)geometryRightEye;
@@ -13,9 +13,9 @@
 
 @implementation SRFaceMetricsPacketV5
 
-+ (id)packetWithHAFacialMetricsPacket:(id *)a3
++ (id)packetWithHAFacialMetricsPacket:(id *)packet
 {
-  if (a3->var0 != 5)
+  if (packet->var0 != 5)
   {
     v12 = _MergedGlobals_4;
     if (!os_log_type_enabled(_MergedGlobals_4, OS_LOG_TYPE_FAULT))
@@ -31,7 +31,7 @@ LABEL_26:
     return 0;
   }
 
-  v4 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:a3->var1];
+  v4 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:packet->var1];
   if (!v4)
   {
     v12 = _MergedGlobals_4;
@@ -64,7 +64,7 @@ LABEL_26:
     return 0;
   }
 
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", a3->var3];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", packet->var3];
   if (!v6)
   {
     v12 = _MergedGlobals_4;
@@ -79,7 +79,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (!a3->var4)
+  if (!packet->var4)
   {
     v12 = _MergedGlobals_4;
     if (os_log_type_enabled(_MergedGlobals_4, OS_LOG_TYPE_FAULT))
@@ -98,10 +98,10 @@ LABEL_26:
   v9 = v8;
   if (v8)
   {
-    v8->_packet = a3;
+    v8->_packet = packet;
     v8->_faceIdentifier = v5;
     v9->_sessionIdentifier = v7;
-    var4 = a3->var4;
+    var4 = packet->var4;
     if (var4)
     {
       v9->_context |= 1uLL;

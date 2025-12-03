@@ -1,31 +1,31 @@
 @interface DetailsSearchControllerRepresentable.SearchControllerCoordinator
 - (_TtCV7ChatKit36DetailsSearchControllerRepresentable27SearchControllerCoordinator)init;
-- (void)batchDownloadNotificationFired:(id)a3;
-- (void)detailsSearchController:(id)a3 requestsPushOfSearchController:(id)a4;
-- (void)detailsSearchControllerContentDidChange:(id)a3;
+- (void)batchDownloadNotificationFired:(id)fired;
+- (void)detailsSearchController:(id)controller requestsPushOfSearchController:(id)searchController;
+- (void)detailsSearchControllerContentDidChange:(id)change;
 @end
 
 @implementation DetailsSearchControllerRepresentable.SearchControllerCoordinator
 
-- (void)detailsSearchControllerContentDidChange:(id)a3
+- (void)detailsSearchControllerContentDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_19091BF88(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_19091BF88(changeCopy);
 }
 
-- (void)detailsSearchController:(id)a3 requestsPushOfSearchController:(id)a4
+- (void)detailsSearchController:(id)controller requestsPushOfSearchController:(id)searchController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_19091CFF8(v7);
+  controllerCopy = controller;
+  searchControllerCopy = searchController;
+  selfCopy = self;
+  sub_19091CFF8(searchControllerCopy);
 }
 
-- (void)batchDownloadNotificationFired:(id)a3
+- (void)batchDownloadNotificationFired:(id)fired
 {
-  v4 = a3;
-  v5 = self;
+  firedCopy = fired;
+  selfCopy = self;
   sub_19091D21C();
 }
 

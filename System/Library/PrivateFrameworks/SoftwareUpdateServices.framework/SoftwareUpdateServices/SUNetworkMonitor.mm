@@ -1,6 +1,6 @@
 @interface SUNetworkMonitor
 + (SUNetworkMonitor)sharedInstance;
-+ (void)setHoldsWiFiAssertion:(BOOL)a3;
++ (void)setHoldsWiFiAssertion:(BOOL)assertion;
 - (BOOL)_overriddenByPreferences;
 - (BOOL)isBootstrap;
 - (BOOL)isCellularDataRoamingEnabled;
@@ -16,28 +16,28 @@
 - (id)telephonyClient;
 - (int)currentCellularType;
 - (int)currentNetworkType;
-- (void)_addObserver:(id)a3;
+- (void)_addObserver:(id)observer;
 - (void)_carrierBundleChanged;
-- (void)_handleNWPath:(id)a3;
+- (void)_handleNWPath:(id)path;
 - (void)_initNetworkObservation;
 - (void)_init_currentlyRoaming;
 - (void)_init_dataRoamingEnabled;
 - (void)_init_internetDataStatus;
 - (void)_operatorBundleChanged;
-- (void)_removeObserver:(id)a3;
+- (void)_removeObserver:(id)observer;
 - (void)_resetCtClient;
-- (void)_runOnAllObservers:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)carrierBundleChange:(id)a3;
-- (void)dataRoamingSettingsChanged:(id)a3 status:(BOOL)a4;
+- (void)_runOnAllObservers:(id)observers;
+- (void)addObserver:(id)observer;
+- (void)carrierBundleChange:(id)change;
+- (void)dataRoamingSettingsChanged:(id)changed status:(BOOL)status;
 - (void)dealloc;
 - (void)detectOverriddenNetwork;
-- (void)displayStatusChanged:(id)a3 status:(id)a4;
-- (void)internetDataStatus:(id)a3;
-- (void)operatorBundleChange:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setCurrentCellularType:(int)a3;
-- (void)setCurrentNetworkType:(int)a3;
+- (void)displayStatusChanged:(id)changed status:(id)status;
+- (void)internetDataStatus:(id)status;
+- (void)operatorBundleChange:(id)change;
+- (void)removeObserver:(id)observer;
+- (void)setCurrentCellularType:(int)type;
+- (void)setCurrentNetworkType:(int)type;
 @end
 
 @implementation SUNetworkMonitor
@@ -219,9 +219,9 @@ uint64_t __34__SUNetworkMonitor_sharedInstance__block_invoke()
 
 - (BOOL)isCurrentNetworkTypeCellular
 {
-  v3 = [(SUNetworkMonitor *)self currentNetworkType];
+  currentNetworkType = [(SUNetworkMonitor *)self currentNetworkType];
 
-  return [(SUNetworkMonitor *)self isNetworkTypeCellular:v3];
+  return [(SUNetworkMonitor *)self isNetworkTypeCellular:currentNetworkType];
 }
 
 - (BOOL)isCurrentNetworkTypeExpensive
@@ -355,30 +355,30 @@ void *__49__SUNetworkMonitor_isCurrentNetworkTypeExpensive__block_invoke(void *r
   return overriddenRoaming & 1;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  observerCopy = observer;
+  v6 = observerCopy;
+  if (!observerCopy)
   {
     [(SUNetworkMonitor *)a2 addObserver:?];
-    v5 = 0;
+    observerCopy = 0;
   }
 
-  [(SUNetworkMonitor *)self _addObserver:v5];
+  [(SUNetworkMonitor *)self _addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  observerCopy = observer;
+  v6 = observerCopy;
+  if (!observerCopy)
   {
     [(SUNetworkMonitor *)a2 removeObserver:?];
-    v5 = 0;
+    observerCopy = 0;
   }
 
-  [(SUNetworkMonitor *)self _removeObserver:v5];
+  [(SUNetworkMonitor *)self _removeObserver:observerCopy];
 }
 
 - (BOOL)isPathSatisfied
@@ -468,23 +468,23 @@ void __31__SUNetworkMonitor_isBootstrap__block_invoke(uint64_t a1)
 
 - (BOOL)isCellularPossible
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
   dispatch_assert_queue_not_V2(self->_ctQueue);
-  ctQueue = v2->_ctQueue;
+  ctQueue = selfCopy->_ctQueue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __38__SUNetworkMonitor_isCellularPossible__block_invoke;
   v5[3] = &unk_279CAA858;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(ctQueue, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (id)operatorName
@@ -635,46 +635,46 @@ void __31__SUNetworkMonitor_servingPlmn__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_addObserver:(id)a3
+- (void)_addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock(&self->_observersLock);
-    [(NSHashTable *)self->_observers addObject:v4];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
 
     os_unfair_lock_unlock(&self->_observersLock);
   }
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock(&self->_observersLock);
-    [(NSHashTable *)self->_observers removeObject:v4];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
 
     os_unfair_lock_unlock(&self->_observersLock);
   }
 }
 
-- (void)_runOnAllObservers:(id)a3
+- (void)_runOnAllObservers:(id)observers
 {
-  v4 = a3;
-  if (v4)
+  observersCopy = observers;
+  if (observersCopy)
   {
     os_unfair_lock_lock(&self->_observersLock);
-    v5 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     os_unfair_lock_unlock(&self->_observersLock);
     callbackQueue = self->_callbackQueue;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __39__SUNetworkMonitor__runOnAllObservers___block_invoke;
     v8[3] = &unk_279CAA8D0;
-    v9 = v5;
-    v10 = v4;
-    v7 = v5;
+    v9 = allObjects;
+    v10 = observersCopy;
+    v7 = allObjects;
     dispatch_async(callbackQueue, v8);
   }
 }
@@ -726,9 +726,9 @@ void __39__SUNetworkMonitor__runOnAllObservers___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_handleNWPath:(id)a3
+- (void)_handleNWPath:(id)path
 {
-  path = a3;
+  path = path;
   dispatch_assert_queue_V2(self->_ctQueue);
   if (path)
   {
@@ -746,23 +746,23 @@ void __39__SUNetworkMonitor__runOnAllObservers___block_invoke(uint64_t a1)
     [(SUNetworkMonitor *)self setPathConstrained:v9];
     if ((v6 & 1) != 0 || v7)
     {
-      v18 = self;
+      selfCopy3 = self;
       currentCellularType = 1;
     }
 
     else if (v8)
     {
       currentCellularType = self->_currentCellularType;
-      v18 = self;
+      selfCopy3 = self;
     }
 
     else
     {
-      v18 = self;
+      selfCopy3 = self;
       currentCellularType = 0;
     }
 
-    [(SUNetworkMonitor *)v18 setCurrentNetworkType:currentCellularType];
+    [(SUNetworkMonitor *)selfCopy3 setCurrentNetworkType:currentCellularType];
   }
 
   else
@@ -780,16 +780,16 @@ void __39__SUNetworkMonitor__runOnAllObservers___block_invoke(uint64_t a1)
   }
 
   v3 = +[SUPreferences sharedInstance];
-  v4 = [v3 networkMonitorOverride];
+  networkMonitorOverride = [v3 networkMonitorOverride];
 
-  if (v4 && ([v4 intValue] & 0x80000000) == 0 && objc_msgSend(v4, "intValue") <= 9999)
+  if (networkMonitorOverride && ([networkMonitorOverride intValue] & 0x80000000) == 0 && objc_msgSend(networkMonitorOverride, "intValue") <= 9999)
   {
-    self->_overriddenCurrentNetworkType = [v4 intValue] / 1000 % 10;
-    self->_overriddenCurrentCellularType = [v4 intValue] / 100 % 10;
-    HIDWORD(v7) = -858993459 * ([v4 intValue] / 10) + 429496728;
+    self->_overriddenCurrentNetworkType = [networkMonitorOverride intValue] / 1000 % 10;
+    self->_overriddenCurrentCellularType = [networkMonitorOverride intValue] / 100 % 10;
+    HIDWORD(v7) = -858993459 * ([networkMonitorOverride intValue] / 10) + 429496728;
     LODWORD(v7) = HIDWORD(v7);
     self->_overriddenRoaming = (v7 >> 1) > 0x19999998;
-    HIDWORD(v7) = 429496728 - 858993459 * [v4 intValue];
+    HIDWORD(v7) = 429496728 - 858993459 * [networkMonitorOverride intValue];
     LODWORD(v7) = HIDWORD(v7);
     v8 = (v7 >> 1) > 0x19999998;
     self->_overriddenExpensive = v8;
@@ -897,9 +897,9 @@ void __43__SUNetworkMonitor__initNetworkObservation__block_invoke(uint64_t a1)
 - (void)_init_dataRoamingEnabled
 {
   dispatch_assert_queue_V2(self->_ctQueue);
-  v3 = [(SUNetworkMonitor *)self telephonyClient];
+  telephonyClient = [(SUNetworkMonitor *)self telephonyClient];
   v17 = 0;
-  v4 = [v3 getCurrentDataServiceDescriptorSync:&v17];
+  v4 = [telephonyClient getCurrentDataServiceDescriptorSync:&v17];
   v5 = v17;
 
   if (!v4 || v5)
@@ -909,9 +909,9 @@ void __43__SUNetworkMonitor__initNetworkObservation__block_invoke(uint64_t a1)
 
   else
   {
-    v6 = [(SUNetworkMonitor *)self telephonyClient];
+    telephonyClient2 = [(SUNetworkMonitor *)self telephonyClient];
     v16 = 0;
-    v7 = [v6 getInternationalDataAccessSync:v4 error:&v16];
+    v7 = [telephonyClient2 getInternationalDataAccessSync:v4 error:&v16];
     v5 = v16;
 
     if (!v5)
@@ -931,9 +931,9 @@ LABEL_7:
 - (void)_init_currentlyRoaming
 {
   dispatch_assert_queue_V2(self->_ctQueue);
-  v3 = [(SUNetworkMonitor *)self telephonyClient];
+  telephonyClient = [(SUNetworkMonitor *)self telephonyClient];
   v34 = 0;
-  v4 = [v3 getCurrentDataSubscriptionContextSync:&v34];
+  v4 = [telephonyClient getCurrentDataSubscriptionContextSync:&v34];
   v5 = v34;
 
   if (!v4 || v5)
@@ -944,9 +944,9 @@ LABEL_7:
 
   else
   {
-    v6 = [(SUNetworkMonitor *)self telephonyClient];
+    telephonyClient2 = [(SUNetworkMonitor *)self telephonyClient];
     v33 = 0;
-    v7 = [v6 copyRegistrationDisplayStatus:v4 error:&v33];
+    v7 = [telephonyClient2 copyRegistrationDisplayStatus:v4 error:&v33];
     v5 = v33;
 
     if (!v7 || v5)
@@ -957,8 +957,8 @@ LABEL_7:
 
     else
     {
-      v8 = [v7 registrationDisplayStatus];
-      v9 = [v8 isEqualToString:*MEMORY[0x277CC3E70]];
+      registrationDisplayStatus = [v7 registrationDisplayStatus];
+      v9 = [registrationDisplayStatus isEqualToString:*MEMORY[0x277CC3E70]];
 
       v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"isRoaming = %d", v9];
       SULogInfo(@"[SUNetworkMonitor] %s: %@", v10, v11, v12, v13, v14, v15, v16, "[SUNetworkMonitor _init_currentlyRoaming]");
@@ -971,18 +971,18 @@ LABEL_7:
 - (void)_init_internetDataStatus
 {
   dispatch_assert_queue_V2(self->_ctQueue);
-  v3 = [(SUNetworkMonitor *)self telephonyClient];
+  telephonyClient = [(SUNetworkMonitor *)self telephonyClient];
   v19 = 0;
-  v4 = [v3 getInternetDataStatusSync:&v19];
+  v4 = [telephonyClient getInternetDataStatusSync:&v19];
   v5 = v19;
 
   if ((!v4 || v5) && ([v5 code] == 4097 || objc_msgSend(v5, "code") == 4099))
   {
     [(SUNetworkMonitor *)self _resetCtClient];
 
-    v6 = [(SUNetworkMonitor *)self telephonyClient];
+    telephonyClient2 = [(SUNetworkMonitor *)self telephonyClient];
     v18 = 0;
-    v7 = [v6 getInternetDataStatusSync:&v18];
+    v7 = [telephonyClient2 getInternetDataStatusSync:&v18];
     v5 = v18;
 
     v4 = v7;
@@ -997,9 +997,9 @@ LABEL_7:
   else
   {
     v8 = -[SUNetworkMonitor _networkTypeFromIndicator:](self, "_networkTypeFromIndicator:", [v4 indicator]);
-    v9 = [v4 cellularDataPossible];
+    cellularDataPossible = [v4 cellularDataPossible];
     [(SUNetworkMonitor *)self setCurrentCellularType:v8];
-    [(SUNetworkMonitor *)self setCellularDataPossible:v9];
+    [(SUNetworkMonitor *)self setCellularDataPossible:cellularDataPossible];
   }
 }
 
@@ -1064,20 +1064,20 @@ uint64_t __37__SUNetworkMonitor_setPathSatisfied___block_invoke(uint64_t a1, voi
   return MEMORY[0x2821F97C8]();
 }
 
-- (void)setCurrentNetworkType:(int)a3
+- (void)setCurrentNetworkType:(int)type
 {
   dispatch_assert_queue_V2(self->_ctQueue);
   currentNetworkType = self->_currentNetworkType;
-  if (currentNetworkType != a3)
+  if (currentNetworkType != type)
   {
     v6 = MEMORY[0x277CCACA8];
     v7 = SUStringFromNetworkType(currentNetworkType);
-    v8 = SUStringFromNetworkType(a3);
+    v8 = SUStringFromNetworkType(type);
     v17 = [v6 stringWithFormat:@"Network type changed from %@ to %@", v7, v8];
     SULogInfo(@"[SUNetworkMonitor] %s: %@", v9, v10, v11, v12, v13, v14, v15, "[SUNetworkMonitor setCurrentNetworkType:]");
 
     v16 = self->_currentNetworkType;
-    self->_currentNetworkType = a3;
+    self->_currentNetworkType = type;
     if (![(SUNetworkMonitor *)self _overriddenByPreferences])
     {
       v18[0] = MEMORY[0x277D85DD0];
@@ -1106,20 +1106,20 @@ uint64_t __42__SUNetworkMonitor_setCurrentNetworkType___block_invoke(uint64_t a1
   return MEMORY[0x2821F97D0]();
 }
 
-- (void)setCurrentCellularType:(int)a3
+- (void)setCurrentCellularType:(int)type
 {
   dispatch_assert_queue_V2(self->_ctQueue);
   currentCellularType = self->_currentCellularType;
-  if (currentCellularType != a3)
+  if (currentCellularType != type)
   {
     v6 = MEMORY[0x277CCACA8];
     v7 = SUStringFromNetworkType(currentCellularType);
-    v8 = SUStringFromNetworkType(a3);
+    v8 = SUStringFromNetworkType(type);
     v17 = [v6 stringWithFormat:@"Cellular type changed from %@ to %@", v7, v8];
     SULogInfo(@"[SUNetworkMonitor] %s: %@", v9, v10, v11, v12, v13, v14, v15, "[SUNetworkMonitor setCurrentCellularType:]");
 
     v16 = self->_currentCellularType;
-    self->_currentCellularType = a3;
+    self->_currentCellularType = type;
     if (![(SUNetworkMonitor *)self _overriddenByPreferences])
     {
       v18[0] = MEMORY[0x277D85DD0];
@@ -1198,7 +1198,7 @@ uint64_t __42__SUNetworkMonitor__operatorBundleChanged__block_invoke(uint64_t a1
   return MEMORY[0x2821F9730]();
 }
 
-+ (void)setHoldsWiFiAssertion:(BOOL)a3
++ (void)setHoldsWiFiAssertion:(BOOL)assertion
 {
   if (!+[SUUtility isWiFiCapable])
   {
@@ -1206,7 +1206,7 @@ uint64_t __42__SUNetworkMonitor__operatorBundleChanged__block_invoke(uint64_t a1
   }
 
   v4 = __assertionCount;
-  if (a3)
+  if (assertion)
   {
     v5 = 1;
   }
@@ -1245,20 +1245,20 @@ LABEL_7:
   }
 }
 
-- (void)displayStatusChanged:(id)a3 status:(id)a4
+- (void)displayStatusChanged:(id)changed status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  statusCopy = status;
   ctQueue = self->_ctQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__SUNetworkMonitor_displayStatusChanged_status___block_invoke;
   block[3] = &unk_279CAA798;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = changedCopy;
+  v13 = statusCopy;
+  v9 = statusCopy;
+  v10 = changedCopy;
   dispatch_async(ctQueue, block);
 }
 
@@ -1304,7 +1304,7 @@ void __48__SUNetworkMonitor_displayStatusChanged_status___block_invoke(id *a1)
 LABEL_10:
 }
 
-- (void)operatorBundleChange:(id)a3
+- (void)operatorBundleChange:(id)change
 {
   ctQueue = self->_ctQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1315,7 +1315,7 @@ LABEL_10:
   dispatch_async(ctQueue, block);
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
   ctQueue = self->_ctQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1326,17 +1326,17 @@ LABEL_10:
   dispatch_async(ctQueue, block);
 }
 
-- (void)internetDataStatus:(id)a3
+- (void)internetDataStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   ctQueue = self->_ctQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__SUNetworkMonitor_internetDataStatus___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = statusCopy;
+  v6 = statusCopy;
   dispatch_async(ctQueue, v7);
 }
 
@@ -1349,7 +1349,7 @@ uint64_t __39__SUNetworkMonitor_internetDataStatus___block_invoke(uint64_t a1)
   return [v2 setCellularDataPossible:v3];
 }
 
-- (void)dataRoamingSettingsChanged:(id)a3 status:(BOOL)a4
+- (void)dataRoamingSettingsChanged:(id)changed status:(BOOL)status
 {
   ctQueue = self->_ctQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -1357,7 +1357,7 @@ uint64_t __39__SUNetworkMonitor_internetDataStatus___block_invoke(uint64_t a1)
   v5[2] = __54__SUNetworkMonitor_dataRoamingSettingsChanged_status___block_invoke;
   v5[3] = &unk_279CAAD00;
   v5[4] = self;
-  v6 = a4;
+  statusCopy = status;
   dispatch_async(ctQueue, v5);
 }
 

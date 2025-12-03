@@ -1,9 +1,9 @@
 @interface UISwitchAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilitySupportsActivateAction;
 - (BOOL)isAccessibilityElement;
 - (CGPoint)accessibilityActivationPoint;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilityKeyCommands;
 - (id)_containerViewForLegacyFocusRing;
 - (id)accessibilityLabel;
@@ -13,17 +13,17 @@
 - (void)_fkaSwitchOff;
 - (void)_fkaSwitchOn;
 - (void)_keyboardActivate;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation UISwitchAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UISwitchVisualElement" isKindOfClass:@"UIView"];
   [location[0] validateClass:@"UISwitch" hasProperty:@"visualElement" withType:"@"];
   [location[0] validateClass:@"UISwitchModernVisualElement" hasInstanceVariable:@"_knobView" withType:"UIView"];
@@ -55,10 +55,10 @@ Method __61__UISwitchAccessibility__accessibilitySupportsActivateAction__block_i
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v37 = self;
+  selfCopy = self;
   v36[1] = a2;
   v36[0] = [(UISwitchAccessibility *)self safeUIViewForKey:@"visualElement"];
-  if ([(UISwitchAccessibility *)v37 _accessibilityIsMacVisualAppearance])
+  if ([(UISwitchAccessibility *)selfCopy _accessibilityIsMacVisualAppearance])
   {
     v34 = 0;
     v33 = __UIAccessibilitySafeClass();
@@ -137,7 +137,7 @@ Method __61__UISwitchAccessibility__accessibilitySupportsActivateAction__block_i
     if (!v36[0])
     {
 LABEL_16:
-      v17.receiver = v37;
+      v17.receiver = selfCopy;
       v17.super_class = UISwitchAccessibility;
       [(UISwitchAccessibility *)&v17 accessibilityActivationPoint];
       v38 = v9;
@@ -161,24 +161,24 @@ LABEL_17:
   return result;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  enabledCopy = enabled;
   v5 = [(UISwitchAccessibility *)self safeValueForKey:?];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
   *&v3 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-  v12 = v6;
-  v11.receiver = v15;
+  v12 = bOOLValue;
+  v11.receiver = selfCopy;
   v11.super_class = UISwitchAccessibility;
-  [(UISwitchAccessibility *)&v11 setEnabled:v13, v3];
-  v7 = [(UISwitchAccessibility *)v15 safeValueForKey:@"isEnabled"];
-  v8 = [v7 BOOLValue];
+  [(UISwitchAccessibility *)&v11 setEnabled:enabledCopy, v3];
+  v7 = [(UISwitchAccessibility *)selfCopy safeValueForKey:@"isEnabled"];
+  bOOLValue2 = [v7 BOOLValue];
   *&v4 = MEMORY[0x29EDC9740](v7).n128_u64[0];
-  v10 = v8;
-  location = [(UISwitchAccessibility *)v15 safeValueForKey:@"superview", v4];
-  if ((v12 & 1) != (v8 & 1))
+  v10 = bOOLValue2;
+  location = [(UISwitchAccessibility *)selfCopy safeValueForKey:@"superview", v4];
+  if ((v12 & 1) != (bOOLValue2 & 1))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -191,14 +191,14 @@ LABEL_17:
   objc_storeStrong(&location, 0);
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  v20 = a3;
-  v19 = self;
+  testCopy = test;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  v17 = [(UISwitchAccessibility *)v19 _accessibilityBoolValueForKey:@"AXInHitTestOverride"];
+  objc_storeStrong(location, event);
+  v17 = [(UISwitchAccessibility *)selfCopy _accessibilityBoolValueForKey:@"AXInHitTestOverride"];
   v9 = 0;
   v6 = 0;
   if ((v17 & 1) == 0)
@@ -208,7 +208,7 @@ LABEL_17:
     v13 = 0;
     v14 = __57__UISwitchAccessibility__accessibilityHitTest_withEvent___block_invoke;
     v15 = &unk_29F30CEB0;
-    v16 = MEMORY[0x29EDC9748](v19);
+    v16 = MEMORY[0x29EDC9748](selfCopy);
     v10 = &v16;
     v9 = 1;
     v6 = (__57__UISwitchAccessibility__accessibilityHitTest_withEvent___block_invoke)();
@@ -216,9 +216,9 @@ LABEL_17:
 
   if (v6)
   {
-    [(UISwitchAccessibility *)v19 _accessibilitySetBoolValue:1 forKey:?];
-    v8 = [(UISwitchAccessibility *)v19 accessibilityHitTest:location[0] withEvent:v20.x, v20.y];
-    [(UISwitchAccessibility *)v19 _accessibilitySetBoolValue:0 forKey:@"AXInHitTestOverride"];
+    [(UISwitchAccessibility *)selfCopy _accessibilitySetBoolValue:1 forKey:?];
+    v8 = [(UISwitchAccessibility *)selfCopy accessibilityHitTest:location[0] withEvent:testCopy.x, testCopy.y];
+    [(UISwitchAccessibility *)selfCopy _accessibilitySetBoolValue:0 forKey:@"AXInHitTestOverride"];
     v21 = MEMORY[0x29EDC9748](v8);
     v7 = 1;
     objc_storeStrong(&v8, 0);
@@ -236,11 +236,11 @@ LABEL_17:
 
   if (!v7)
   {
-    if ([(UISwitchAccessibility *)v19 isAccessibilityElement]&& ([(UISwitchAccessibility *)v19 accessibilityElementsHidden]& 1) == 0)
+    if ([(UISwitchAccessibility *)selfCopy isAccessibilityElement]&& ([(UISwitchAccessibility *)selfCopy accessibilityElementsHidden]& 1) == 0)
     {
-      if (([(UISwitchAccessibility *)v19 _accessibilityPointInside:location[0] withEvent:v20.x, v20.y]& 1) != 0)
+      if (([(UISwitchAccessibility *)selfCopy _accessibilityPointInside:location[0] withEvent:testCopy.x, testCopy.y]& 1) != 0)
       {
-        v21 = MEMORY[0x29EDC9748](v19);
+        v21 = MEMORY[0x29EDC9748](selfCopy);
       }
 
       else
@@ -351,27 +351,27 @@ void __57__UISwitchAccessibility__accessibilityHitTest_withEvent___block_invoke_
 
 - (BOOL)isAccessibilityElement
 {
-  v5 = [(UISwitchAccessibility *)self isAccessibilityUserDefinedElement];
-  *&v2 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-  if (!v5)
+  isAccessibilityUserDefinedElement = [(UISwitchAccessibility *)self isAccessibilityUserDefinedElement];
+  *&v2 = MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement).n128_u64[0];
+  if (!isAccessibilityUserDefinedElement)
   {
     return 1;
   }
 
-  v4 = [(UISwitchAccessibility *)self isAccessibilityUserDefinedElement];
-  v7 = [v4 BOOLValue] & 1;
-  MEMORY[0x29EDC9740](v4);
+  isAccessibilityUserDefinedElement2 = [(UISwitchAccessibility *)self isAccessibilityUserDefinedElement];
+  v7 = [isAccessibilityUserDefinedElement2 BOOLValue] & 1;
+  MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement2);
   return v7;
 }
 
 - (id)accessibilityLabel
 {
-  v17 = self;
+  selfCopy = self;
   v16[1] = a2;
   v16[0] = [(UISwitchAccessibility *)self accessibilityUserDefinedLabel];
   if (v16[0])
   {
-    v18 = MEMORY[0x29EDC9748](v16[0]);
+    title2 = MEMORY[0x29EDC9748](v16[0]);
     v15 = 1;
   }
 
@@ -383,34 +383,34 @@ void __57__UISwitchAccessibility__accessibilityHitTest_withEvent___block_invoke_
     v11 = MEMORY[0x29EDC9748](v12);
     objc_storeStrong(&v12, 0);
     v14 = v11;
-    v5 = [v11 title];
-    v6 = [v5 length] != 0;
-    *&v2 = MEMORY[0x29EDC9740](v5).n128_u64[0];
+    title = [v11 title];
+    v6 = [title length] != 0;
+    *&v2 = MEMORY[0x29EDC9740](title).n128_u64[0];
     v10 = v6;
     v9 = [v14 preferredStyle] == 1;
     if (v6 && v9)
     {
-      v18 = [v14 title];
+      title2 = [v14 title];
       v15 = 1;
     }
 
     else
     {
-      v8 = [(UISwitchAccessibility *)v17 _accessibilityBoolValueForKey:@"AXIsInRetrieval"];
+      v8 = [(UISwitchAccessibility *)selfCopy _accessibilityBoolValueForKey:@"AXIsInRetrieval"];
       if (v8)
       {
-        v18 = MEMORY[0x29EDC9748](@"--");
+        title2 = MEMORY[0x29EDC9748](@"--");
         v15 = 1;
       }
 
       else
       {
-        [(UISwitchAccessibility *)v17 _accessibilitySetBoolValue:1 forKey:?];
-        v7 = [(UIViewAccessibility *)v17 _accessibilityRetrieveLabelFromTableViewCell];
-        [(UISwitchAccessibility *)v17 _accessibilitySetBoolValue:0 forKey:@"AXIsInRetrieval"];
-        v18 = MEMORY[0x29EDC9748](v7);
+        [(UISwitchAccessibility *)selfCopy _accessibilitySetBoolValue:1 forKey:?];
+        _accessibilityRetrieveLabelFromTableViewCell = [(UIViewAccessibility *)selfCopy _accessibilityRetrieveLabelFromTableViewCell];
+        [(UISwitchAccessibility *)selfCopy _accessibilitySetBoolValue:0 forKey:@"AXIsInRetrieval"];
+        title2 = MEMORY[0x29EDC9748](_accessibilityRetrieveLabelFromTableViewCell);
         v15 = 1;
-        objc_storeStrong(&v7, 0);
+        objc_storeStrong(&_accessibilityRetrieveLabelFromTableViewCell, 0);
       }
     }
 
@@ -418,7 +418,7 @@ void __57__UISwitchAccessibility__accessibilityHitTest_withEvent___block_invoke_
   }
 
   objc_storeStrong(v16, 0);
-  v3 = v18;
+  v3 = title2;
 
   return v3;
 }
@@ -440,36 +440,36 @@ void __57__UISwitchAccessibility__accessibilityHitTest_withEvent___block_invoke_
 
 - (unint64_t)accessibilityTraits
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UISwitchAccessibility *)self accessibilityUserDefinedTraits];
   if (location[0])
   {
-    v10 = [location[0] unsignedLongLongValue];
+    unsignedLongLongValue = [location[0] unsignedLongLongValue];
   }
 
   else
   {
     v6 = *MEMORY[0x29EDC7F70];
-    v4 = [(UISwitchAccessibility *)v9 safeValueForKey:@"isEnabled"];
-    v5 = [v4 BOOLValue];
+    v4 = [(UISwitchAccessibility *)selfCopy safeValueForKey:@"isEnabled"];
+    bOOLValue = [v4 BOOLValue];
     *&v2 = MEMORY[0x29EDC9740](v4).n128_u64[0];
-    if ((v5 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v6 |= *MEMORY[0x29EDC7FA8];
     }
 
     v7 = v6 | *MEMORY[0x29EDC7FE8];
-    if ([(UISwitchAccessibility *)v9 _accessibilityIsAccessibleViaTableViewCell])
+    if ([(UISwitchAccessibility *)selfCopy _accessibilityIsAccessibleViaTableViewCell])
     {
       v7 |= *MEMORY[0x29EDC7578];
     }
 
-    v10 = v7;
+    unsignedLongLongValue = v7;
   }
 
   objc_storeStrong(location, 0);
-  return v10;
+  return unsignedLongLongValue;
 }
 
 - (id)_accessibilityKeyCommands
@@ -553,7 +553,7 @@ id __42__UISwitchAccessibility__keyboardActivate__block_invoke(uint64_t a1)
 
 - (id)accessibilityPath
 {
-  v39 = self;
+  selfCopy = self;
   v38 = a2;
   v37 = AXRequestingClient();
   if (v37 == 3 || v37 == 4)
@@ -563,7 +563,7 @@ id __42__UISwitchAccessibility__keyboardActivate__block_invoke(uint64_t a1)
 
   else if (_UIAccessibilityFullKeyboardAccessEnabled())
   {
-    v20 = [(UIView *)v39 safeUIViewForKey:@"visualElement"];
+    v20 = [(UIView *)selfCopy safeUIViewForKey:@"visualElement"];
     v36 = [v20 safeUIViewForKey:@"_knobView"];
     MEMORY[0x29EDC9740](v20);
     v21 = v36;
@@ -572,7 +572,7 @@ id __42__UISwitchAccessibility__keyboardActivate__block_invoke(uint64_t a1)
     v29 = v3;
     v30 = v4;
     v31 = v5;
-    [v21 convertRect:v39 toView:{v2, v3, v4, v5}];
+    [v21 convertRect:selfCopy toView:{v2, v3, v4, v5}];
     v32 = v6;
     v34 = v7;
     v35 = v8;
@@ -592,7 +592,7 @@ id __42__UISwitchAccessibility__keyboardActivate__block_invoke(uint64_t a1)
     v22 = MEMORY[0x29EDC7948];
     AX_CGRectGetCenter();
     path[0] = [v22 bezierPathWithArcCenter:1 radius:v16 startAngle:v17 endAngle:*&v25 / 2.0 + 3.0 clockwise:{0.0, 6.28318531}];
-    v40 = UIAccessibilityConvertPathToScreenCoordinates(path[0], v39);
+    v40 = UIAccessibilityConvertPathToScreenCoordinates(path[0], selfCopy);
     objc_storeStrong(path, 0);
     objc_storeStrong(&v36, 0);
   }

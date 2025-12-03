@@ -1,11 +1,11 @@
 @interface HMDMediaDestinationControllerModel
 + (id)logCategory;
 + (id)properties;
-- (HMDMediaDestinationControllerModel)initWithData:(id)a3 changeType:(unint64_t)a4;
+- (HMDMediaDestinationControllerModel)initWithData:(id)data changeType:(unint64_t)type;
 - (NSArray)availableDestinationModelIdentifiers;
 - (id)attributeDescriptions;
 - (id)logIdentifier;
-- (void)setAvailableDestinationModelIdentifiers:(id)a3;
+- (void)setAvailableDestinationModelIdentifiers:(id)identifiers;
 @end
 
 @implementation HMDMediaDestinationControllerModel
@@ -67,58 +67,58 @@ void __48__HMDMediaDestinationControllerModel_properties__block_invoke()
 - (id)attributeDescriptions
 {
   v27[5] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDBackingStoreModelObject *)self setProperties];
-  v4 = [v3 containsObject:@"destinationModelIdentifier"];
-  v5 = [v3 containsObject:@"availableDestinationModelIdentifierStrings"];
-  v6 = [v3 containsObject:@"supportedOptions"];
+  setProperties = [(HMDBackingStoreModelObject *)self setProperties];
+  v4 = [setProperties containsObject:@"destinationModelIdentifier"];
+  v5 = [setProperties containsObject:@"availableDestinationModelIdentifierStrings"];
+  v6 = [setProperties containsObject:@"supportedOptions"];
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v25 = [(HMDBackingStoreModelObject *)self uuid];
+  uuid = [(HMDBackingStoreModelObject *)self uuid];
   v24 = [v7 initWithName:@"uuid" value:?];
   v27[0] = v24;
   v8 = objc_alloc(MEMORY[0x277D0F778]);
-  v23 = [(HMDBackingStoreModelObject *)self parentUUID];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
   v9 = [v8 initWithName:@"parentUUID" value:?];
   v27[1] = v9;
   v10 = objc_alloc(MEMORY[0x277D0F778]);
   v26 = v4;
   if (v4)
   {
-    v11 = [(HMDMediaDestinationControllerModel *)self destinationModelIdentifier];
+    destinationModelIdentifier = [(HMDMediaDestinationControllerModel *)self destinationModelIdentifier];
   }
 
   else
   {
-    v11 = @"not set";
+    destinationModelIdentifier = @"not set";
   }
 
-  v22 = v11;
-  v12 = [v10 initWithName:@"destinationModelIdentifier" value:v11];
+  v22 = destinationModelIdentifier;
+  v12 = [v10 initWithName:@"destinationModelIdentifier" value:destinationModelIdentifier];
   v27[2] = v12;
   v13 = objc_alloc(MEMORY[0x277D0F778]);
   if (v6)
   {
-    v14 = [(HMDMediaDestinationControllerModel *)self supportedOptions];
+    supportedOptions = [(HMDMediaDestinationControllerModel *)self supportedOptions];
   }
 
   else
   {
-    v14 = @"not set";
+    supportedOptions = @"not set";
   }
 
-  v15 = [v13 initWithName:@"supportedOptions" value:v14];
+  v15 = [v13 initWithName:@"supportedOptions" value:supportedOptions];
   v27[3] = v15;
   v16 = objc_alloc(MEMORY[0x277D0F778]);
   if (v5)
   {
-    v17 = [(HMDMediaDestinationControllerModel *)self availableDestinationModelIdentifiers];
+    availableDestinationModelIdentifiers = [(HMDMediaDestinationControllerModel *)self availableDestinationModelIdentifiers];
   }
 
   else
   {
-    v17 = @"not set";
+    availableDestinationModelIdentifiers = @"not set";
   }
 
-  v18 = [v16 initWithName:@"availableDestinationModelIdentifierStrings" value:v17];
+  v18 = [v16 initWithName:@"availableDestinationModelIdentifierStrings" value:availableDestinationModelIdentifiers];
   v27[4] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:5];
 
@@ -141,22 +141,22 @@ void __48__HMDMediaDestinationControllerModel_properties__block_invoke()
 
 - (id)logIdentifier
 {
-  v2 = [(HMDBackingStoreModelObject *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(HMDBackingStoreModelObject *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)setAvailableDestinationModelIdentifiers:(id)a3
+- (void)setAvailableDestinationModelIdentifiers:(id)identifiers
 {
-  v4 = [a3 na_map:&__block_literal_global_13_226223];
+  v4 = [identifiers na_map:&__block_literal_global_13_226223];
   [(HMDMediaDestinationControllerModel *)self setAvailableDestinationModelIdentifierStrings:v4];
 }
 
 - (NSArray)availableDestinationModelIdentifiers
 {
-  v2 = [(HMDMediaDestinationControllerModel *)self availableDestinationModelIdentifierStrings];
-  v3 = [v2 na_map:&__block_literal_global_226225];
+  availableDestinationModelIdentifierStrings = [(HMDMediaDestinationControllerModel *)self availableDestinationModelIdentifierStrings];
+  v3 = [availableDestinationModelIdentifierStrings na_map:&__block_literal_global_226225];
 
   return v3;
 }
@@ -170,13 +170,13 @@ id __74__HMDMediaDestinationControllerModel_availableDestinationModelIdentifiers
   return v4;
 }
 
-- (HMDMediaDestinationControllerModel)initWithData:(id)a3 changeType:(unint64_t)a4
+- (HMDMediaDestinationControllerModel)initWithData:(id)data changeType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [v6 identifier];
-  v8 = [v6 parentIdentifier];
+  dataCopy = data;
+  identifier = [dataCopy identifier];
+  parentIdentifier = [dataCopy parentIdentifier];
 
-  v9 = [(HMDBackingStoreModelObject *)self initWithVersion:0 changeType:a4 uuid:v7 parentUUID:v8];
+  v9 = [(HMDBackingStoreModelObject *)self initWithVersion:0 changeType:type uuid:identifier parentUUID:parentIdentifier];
   return v9;
 }
 

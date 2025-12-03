@@ -1,11 +1,11 @@
 @interface __NSSingleObjectArrayI
-- (BOOL)isEqualToArray:(id)a3;
-- (id)objectAtIndex:(unint64_t)a3;
+- (BOOL)isEqualToArray:(id)array;
+- (id)objectAtIndex:(unint64_t)index;
 - (id)objectEnumerator;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)dealloc;
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)getObjects:(id *)a3 range:(_NSRange)a4;
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)getObjects:(id *)objects range:(_NSRange)range;
 @end
 
 @implementation __NSSingleObjectArrayI
@@ -31,15 +31,15 @@
   return v2;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (index)
   {
     v6 = _os_log_pack_size();
     v7 = _os_log_pack_fill();
-    v8 = __os_log_helper_1_2_3_8_32_8_0_8_0(v7, "[__NSSingleObjectArrayI objectAtIndex:]", a3, 0);
-    v9 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v8, "[__NSSingleObjectArrayI objectAtIndex:]", a3, 0);
+    v8 = __os_log_helper_1_2_3_8_32_8_0_8_0(v7, "[__NSSingleObjectArrayI objectAtIndex:]", index, 0);
+    v9 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v8, "[__NSSingleObjectArrayI objectAtIndex:]", index, 0);
     v10 = [NSException exceptionWithName:@"NSRangeException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v9) osLogPack:0 size:v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0), v6];
     objc_exception_throw(v10);
   }
@@ -49,13 +49,13 @@
   return result;
 }
 
-- (void)getObjects:(id *)a3 range:(_NSRange)a4
+- (void)getObjects:(id *)objects range:(_NSRange)range
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  if ((a4.location & 0x8000000000000000) != 0 || (a4.length & 0x8000000000000000) != 0 || a4.location + a4.length >= 2)
+  if ((range.location & 0x8000000000000000) != 0 || (range.length & 0x8000000000000000) != 0 || range.location + range.length >= 2)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     v12 = _os_log_pack_size();
     v13 = _os_log_pack_fill();
     v14 = __os_log_helper_1_2_4_8_32_8_0_8_0_8_0(v13, "[__NSSingleObjectArrayI getObjects:range:]", location, length, 0);
@@ -64,9 +64,9 @@
     objc_exception_throw(v16);
   }
 
-  if (!a3 && a4.length)
+  if (!objects && range.length)
   {
-    v5 = a4.length;
+    v5 = range.length;
     v6 = _os_log_pack_size();
     v7 = _os_log_pack_fill();
     *v7 = 136315394;
@@ -78,18 +78,18 @@
     objc_exception_throw(v9);
   }
 
-  if (a4.length)
+  if (range.length)
   {
-    *a3 = self->_object;
+    *objects = self->_object;
   }
 
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  if (!a4 && a5)
+  if (!objects && count)
   {
     v8 = _os_log_pack_size();
     v9 = v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -97,12 +97,12 @@
     *v10 = 136315394;
     *(v10 + 4) = "[__NSSingleObjectArrayI countByEnumeratingWithState:objects:count:]";
     *(v10 + 12) = 2048;
-    *(v10 + 14) = a5;
-    v11 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[__NSSingleObjectArrayI countByEnumeratingWithState:objects:count:]", a5);
+    *(v10 + 14) = count;
+    v11 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[__NSSingleObjectArrayI countByEnumeratingWithState:objects:count:]", count);
     goto LABEL_10;
   }
 
-  if (a5 >> 61)
+  if (count >> 61)
   {
     v8 = _os_log_pack_size();
     v9 = v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -110,23 +110,23 @@
     *v13 = 136315394;
     *(v13 + 4) = "[__NSSingleObjectArrayI countByEnumeratingWithState:objects:count:]";
     *(v13 + 12) = 2048;
-    *(v13 + 14) = a5;
-    v11 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[__NSSingleObjectArrayI countByEnumeratingWithState:objects:count:]", a5);
+    *(v13 + 14) = count;
+    v11 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[__NSSingleObjectArrayI countByEnumeratingWithState:objects:count:]", count);
 LABEL_10:
     v14 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v11) osLogPack:0 size:v9, v8];
     objc_exception_throw(v14);
   }
 
-  if (a3->var0)
+  if (state->var0)
   {
     result = 0;
   }
 
   else
   {
-    a3->var1 = &self->_object;
-    a3->var2 = &countByEnumeratingWithState_objects_count__const_mu_7;
-    a3->var0 = -1;
+    state->var1 = &self->_object;
+    state->var2 = &countByEnumeratingWithState_objects_count__const_mu_7;
+    state->var0 = -1;
     result = 1;
   }
 
@@ -134,10 +134,10 @@ LABEL_10:
   return result;
 }
 
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!block)
   {
     v9 = _os_log_pack_size();
     v10 = _os_log_pack_fill();
@@ -151,18 +151,18 @@ LABEL_10:
   v13[7] = 0;
   v6 = _CFAutoreleasePoolPush();
   object = self->_object;
-  __NSARRAY_IS_CALLING_OUT_TO_A_BLOCK__(a4);
+  __NSARRAY_IS_CALLING_OUT_TO_A_BLOCK__(block);
   _CFAutoreleasePoolPop(v6);
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqualToArray:(id)a3
+- (BOOL)isEqualToArray:(id)array
 {
-  v3 = self;
+  selfCopy = self;
   v13[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (array)
   {
-    if ((_NSIsNSArray(a3) & 1) == 0)
+    if ((_NSIsNSArray(array) & 1) == 0)
     {
       v8 = _os_log_pack_size();
       v9 = _os_log_pack_fill();
@@ -173,19 +173,19 @@ LABEL_10:
       objc_exception_throw(v11);
     }
 
-    if (a3 == v3)
+    if (array == selfCopy)
     {
       goto LABEL_7;
     }
 
-    if ([a3 count] != 1)
+    if ([array count] != 1)
     {
       LOBYTE(self) = 0;
       goto LABEL_10;
     }
 
-    v5 = [a3 objectAtIndexedSubscript:0];
-    object = v3->_object;
+    v5 = [array objectAtIndexedSubscript:0];
+    object = selfCopy->_object;
     if (object == v5 || (LODWORD(self) = [object isEqual:?], self))
     {
 LABEL_7:

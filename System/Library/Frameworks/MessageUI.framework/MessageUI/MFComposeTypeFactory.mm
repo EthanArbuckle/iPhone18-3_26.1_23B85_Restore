@@ -1,32 +1,32 @@
 @interface MFComposeTypeFactory
 + (BOOL)alwaysBCCSelf;
-+ (id)_markupForInlineAttachment:(id)a3 willBeIncluded:(BOOL)a4 prependBlankLine:(BOOL)a5 delegate:(id)a6;
-+ (id)_markupStringForExcludedInlineAttachmentWithFilename:(id)a3;
-+ (id)bccSelfAddressForDelegate:(id)a3;
-+ (id)headersFromDelegate:(id)a3;
-+ (id)headersFromDelegate:(id)a3 originatingBundleID:(id)a4 sourceAccountManagement:(int)a5;
-+ (id)messageFromDelegate:(id)a3 originatingBundleID:(id)a4 sourceAccountManagement:(int)a5;
-+ (id)messageFromDelegate:(id)a3 withSubstituteDOMDocument:(id)a4 compositionSpecification:(id)a5 originatingBundleID:(id)a6 sourceAccountManagement:(int)a7 writeAttachmentPlaceholders:(BOOL)a8;
-+ (id)senderAddressForHME:(id)a3 originalSenderAddress:(id)a4;
++ (id)_markupForInlineAttachment:(id)attachment willBeIncluded:(BOOL)included prependBlankLine:(BOOL)line delegate:(id)delegate;
++ (id)_markupStringForExcludedInlineAttachmentWithFilename:(id)filename;
++ (id)bccSelfAddressForDelegate:(id)delegate;
++ (id)headersFromDelegate:(id)delegate;
++ (id)headersFromDelegate:(id)delegate originatingBundleID:(id)d sourceAccountManagement:(int)management;
++ (id)messageFromDelegate:(id)delegate originatingBundleID:(id)d sourceAccountManagement:(int)management;
++ (id)messageFromDelegate:(id)delegate withSubstituteDOMDocument:(id)document compositionSpecification:(id)specification originatingBundleID:(id)d sourceAccountManagement:(int)management writeAttachmentPlaceholders:(BOOL)placeholders;
++ (id)senderAddressForHME:(id)e originalSenderAddress:(id)address;
 + (id)signpostLog;
-+ (id)subjectFromSubject:(id)a3 withComposeType:(int64_t)a4;
++ (id)subjectFromSubject:(id)subject withComposeType:(int64_t)type;
 + (unint64_t)imageScaleFromUserDefaults;
-+ (void)_mergeModel:(id)a3 withDelegate:(id)a4;
-+ (void)_prependQuotedMarkup:(id)a3 shouldIndent:(BOOL)a4 toBodyField:(id)a5;
-+ (void)_quoteFromModel:(id)a3 delegate:(id)a4;
-+ (void)_sanitizeRecipientsForComposeType:(unint64_t)a3 sendingAddress:(id)a4 delegate:(id)a5;
-+ (void)_setContent:(id)a3 includeAttachments:(BOOL)a4 shouldQuote:(BOOL)a5 prependBlankLine:(BOOL)a6 delegate:(id)a7 storeOriginalAttachments:(BOOL)a8 signpostID:(unint64_t)a9;
-+ (void)_setupForForwardWithModel:(id)a3 delegate:(id)a4;
-+ (void)_setupForNewMessageWithModel:(id)a3 delegate:(id)a4;
-+ (void)_setupForReplyAllWithModel:(id)a3 delegate:(id)a4;
-+ (void)_setupForReplyWithModel:(id)a3 delegate:(id)a4;
-+ (void)_updateDelegate:(id)a3 toRecipients:(id)a4 ccRecipients:(id)a5 bccRecipients:(id)a6;
-+ (void)addAttachment:(id)a3 prepend:(BOOL)a4 withCompositionModel:(id)a5 delegate:(id)a6;
-+ (void)hijackThreadFromDelegate:(id)a3;
-+ (void)setupSwitchToReplyAllWithModel:(id)a3 delegate:(id)a4;
-+ (void)setupSwitchToReplyWithModel:(id)a3 delegate:(id)a4;
-+ (void)setupWithCompositionModel:(id)a3 delegate:(id)a4;
-+ (void)setupWithContent:(id)a3 delegate:(id)a4 signpostID:(unint64_t)a5;
++ (void)_mergeModel:(id)model withDelegate:(id)delegate;
++ (void)_prependQuotedMarkup:(id)markup shouldIndent:(BOOL)indent toBodyField:(id)field;
++ (void)_quoteFromModel:(id)model delegate:(id)delegate;
++ (void)_sanitizeRecipientsForComposeType:(unint64_t)type sendingAddress:(id)address delegate:(id)delegate;
++ (void)_setContent:(id)content includeAttachments:(BOOL)attachments shouldQuote:(BOOL)quote prependBlankLine:(BOOL)line delegate:(id)delegate storeOriginalAttachments:(BOOL)originalAttachments signpostID:(unint64_t)d;
++ (void)_setupForForwardWithModel:(id)model delegate:(id)delegate;
++ (void)_setupForNewMessageWithModel:(id)model delegate:(id)delegate;
++ (void)_setupForReplyAllWithModel:(id)model delegate:(id)delegate;
++ (void)_setupForReplyWithModel:(id)model delegate:(id)delegate;
++ (void)_updateDelegate:(id)delegate toRecipients:(id)recipients ccRecipients:(id)ccRecipients bccRecipients:(id)bccRecipients;
++ (void)addAttachment:(id)attachment prepend:(BOOL)prepend withCompositionModel:(id)model delegate:(id)delegate;
++ (void)hijackThreadFromDelegate:(id)delegate;
++ (void)setupSwitchToReplyAllWithModel:(id)model delegate:(id)delegate;
++ (void)setupSwitchToReplyWithModel:(id)model delegate:(id)delegate;
++ (void)setupWithCompositionModel:(id)model delegate:(id)delegate;
++ (void)setupWithContent:(id)content delegate:(id)delegate signpostID:(unint64_t)d;
 - (unint64_t)signpostID;
 @end
 
@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = __35__MFComposeTypeFactory_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken != -1)
   {
     dispatch_once(&signpostLog_onceToken, block);
@@ -59,71 +59,71 @@ void __35__MFComposeTypeFactory_signpostLog__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
 
-+ (void)_prependQuotedMarkup:(id)a3 shouldIndent:(BOOL)a4 toBodyField:(id)a5
++ (void)_prependQuotedMarkup:(id)markup shouldIndent:(BOOL)indent toBodyField:(id)field
 {
-  v5 = a4;
-  v8 = a5;
-  v7 = [a3 stringByAppendingString:@"<BR>"];
-  [v8 prependMarkupString:v7 quote:v5];
+  indentCopy = indent;
+  fieldCopy = field;
+  v7 = [markup stringByAppendingString:@"<BR>"];
+  [fieldCopy prependMarkupString:v7 quote:indentCopy];
 }
 
-+ (id)_markupStringForExcludedInlineAttachmentWithFilename:(id)a3
++ (id)_markupStringForExcludedInlineAttachmentWithFilename:(id)filename
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@>", a3];
-  v5 = [v4 ef_stringByEscapingForXML];
-  v6 = [v3 stringWithFormat:@"<DIV>%@</DIV>", v5];
+  filename = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@>", filename];
+  ef_stringByEscapingForXML = [filename ef_stringByEscapingForXML];
+  v6 = [v3 stringWithFormat:@"<DIV>%@</DIV>", ef_stringByEscapingForXML];
 
   return v6;
 }
 
-+ (id)_markupForInlineAttachment:(id)a3 willBeIncluded:(BOOL)a4 prependBlankLine:(BOOL)a5 delegate:(id)a6
++ (id)_markupForInlineAttachment:(id)attachment willBeIncluded:(BOOL)included prependBlankLine:(BOOL)line delegate:(id)delegate
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  if (v8)
+  lineCopy = line;
+  includedCopy = included;
+  attachmentCopy = attachment;
+  delegateCopy = delegate;
+  if (includedCopy)
   {
-    v12 = [a1 imageScaleFromUserDefaults];
-    v13 = [v11 composeWebView];
-    [v10 markupStringForCompositionWithPrependedBlankLine:v7 imageScale:v12 useAttachmentElement:{objc_msgSend(v13, "allowsAttachmentElements")}];
+    imageScaleFromUserDefaults = [self imageScaleFromUserDefaults];
+    composeWebView = [delegateCopy composeWebView];
+    [attachmentCopy markupStringForCompositionWithPrependedBlankLine:lineCopy imageScale:imageScaleFromUserDefaults useAttachmentElement:{objc_msgSend(composeWebView, "allowsAttachmentElements")}];
   }
 
   else
   {
-    v13 = [v10 fileName];
-    [a1 _markupStringForExcludedInlineAttachmentWithFilename:v13];
+    composeWebView = [attachmentCopy fileName];
+    [self _markupStringForExcludedInlineAttachmentWithFilename:composeWebView];
   }
   v14 = ;
 
   return v14;
 }
 
-+ (void)_setContent:(id)a3 includeAttachments:(BOOL)a4 shouldQuote:(BOOL)a5 prependBlankLine:(BOOL)a6 delegate:(id)a7 storeOriginalAttachments:(BOOL)a8 signpostID:(unint64_t)a9
++ (void)_setContent:(id)content includeAttachments:(BOOL)attachments shouldQuote:(BOOL)quote prependBlankLine:(BOOL)line delegate:(id)delegate storeOriginalAttachments:(BOOL)originalAttachments signpostID:(unint64_t)d
 {
-  v83 = a8;
-  v69 = a6;
-  v70 = a4;
-  v73 = a5;
+  originalAttachmentsCopy = originalAttachments;
+  lineCopy = line;
+  attachmentsCopy = attachments;
+  quoteCopy = quote;
   v119 = *MEMORY[0x1E69E9840];
-  v68 = a3;
-  v85 = a7;
+  contentCopy = content;
+  delegateCopy = delegate;
   v10 = MFMessageComposeLoadingSignpostLog();
   v11 = v10;
-  if (a9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
+  if (d - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_1BE819000, v11, OS_SIGNPOST_INTERVAL_BEGIN, a9, "LOAD COMPOSE WEB CONTENT", "Start loading web content enableTelemetry=YES ", buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1BE819000, v11, OS_SIGNPOST_INTERVAL_BEGIN, d, "LOAD COMPOSE WEB CONTENT", "Start loading web content enableTelemetry=YES ", buf, 2u);
   }
 
-  v77 = [v85 composeWebView];
+  composeWebView = [delegateCopy composeWebView];
   v89 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v82 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v81 = objc_opt_new();
@@ -131,12 +131,12 @@ void __35__MFComposeTypeFactory_signpostLog__block_invoke(uint64_t a1)
   v108 = 0u;
   v105 = 0u;
   v106 = 0u;
-  obj = v68;
+  obj = contentCopy;
   v76 = [obj countByEnumeratingWithState:&v105 objects:v118 count:16];
   if (v76)
   {
     v79 = 0;
-    v88 = v70 || v83;
+    v88 = attachmentsCopy || originalAttachmentsCopy;
     v75 = *v106;
     while (1)
     {
@@ -152,10 +152,10 @@ void __35__MFComposeTypeFactory_signpostLog__block_invoke(uint64_t a1)
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v80 htmlData];
-          if (v12)
+          htmlData = [v80 htmlData];
+          if (htmlData)
           {
-            v13 = [v80 preferredCharacterSet];
+            preferredCharacterSet = [v80 preferredCharacterSet];
             MFEncodingForCharset();
             v79 = MFCreateStringWithData();
           }
@@ -165,9 +165,9 @@ void __35__MFComposeTypeFactory_signpostLog__block_invoke(uint64_t a1)
             v79 = 0;
           }
 
-          v24 = [v80 attachmentsInDocument];
-          v74 = v12;
-          v25 = [v24 count] == 0;
+          attachmentsInDocument = [v80 attachmentsInDocument];
+          v74 = htmlData;
+          v25 = [attachmentsInDocument count] == 0;
 
           if (!v25)
           {
@@ -175,8 +175,8 @@ void __35__MFComposeTypeFactory_signpostLog__block_invoke(uint64_t a1)
             v104 = 0u;
             v101 = 0u;
             v102 = 0u;
-            v86 = [v80 attachmentsInDocument];
-            v26 = [v86 countByEnumeratingWithState:&v101 objects:v117 count:16];
+            attachmentsInDocument2 = [v80 attachmentsInDocument];
+            v26 = [attachmentsInDocument2 countByEnumeratingWithState:&v101 objects:v117 count:16];
             if (!v26)
             {
               goto LABEL_36;
@@ -189,55 +189,55 @@ void __35__MFComposeTypeFactory_signpostLog__block_invoke(uint64_t a1)
               {
                 if (*v102 != v90)
                 {
-                  objc_enumerationMutation(v86);
+                  objc_enumerationMutation(attachmentsInDocument2);
                 }
 
                 v28 = *(*(&v101 + 1) + 8 * j);
                 v29 = [v28 fileWrapperForcingDownload:0];
-                v30 = [v29 preferredFilename];
-                v31 = [v28 mimePart];
-                v32 = [v31 contentID];
+                preferredFilename = [v29 preferredFilename];
+                mimePart = [v28 mimePart];
+                contentID = [mimePart contentID];
 
-                if (v32)
+                if (contentID)
                 {
-                  [v89 setObject:v30 forKeyedSubscript:v32];
+                  [v89 setObject:preferredFilename forKeyedSubscript:contentID];
                   if (!v88)
                   {
                     goto LABEL_34;
                   }
 
-                  v33 = [v29 contentID];
-                  v34 = [v29 mimeType];
-                  v35 = [v85 composeWebView];
-                  v36 = [v35 compositionContextID];
+                  contentID2 = [v29 contentID];
+                  mimeType = [v29 mimeType];
+                  composeWebView2 = [delegateCopy composeWebView];
+                  compositionContextID = [composeWebView2 compositionContextID];
 
-                  v37 = [v29 regularFileContents];
-                  if (v83)
+                  regularFileContents = [v29 regularFileContents];
+                  if (originalAttachmentsCopy)
                   {
                     [v82 addObject:v29];
                   }
 
                   else
                   {
-                    v39 = [MFAttachmentMarkup attachmentMarkupWithProperties:v37 contentID:v33 mimeType:v34 filename:v30 contextID:v36];
+                    v39 = [MFAttachmentMarkup attachmentMarkupWithProperties:regularFileContents contentID:contentID2 mimeType:mimeType filename:preferredFilename contextID:compositionContextID];
                     [v81 addObject:v39];
                   }
                 }
 
                 else
                 {
-                  v33 = MFComposeLog();
-                  if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+                  contentID2 = MFComposeLog();
+                  if (os_log_type_enabled(contentID2, OS_LOG_TYPE_ERROR))
                   {
-                    v38 = [MEMORY[0x1E699B858] partiallyRedactedStringForString:v30];
-                    [MFComposeTypeFactory _setContent:v38 includeAttachments:v115 shouldQuote:&v116 prependBlankLine:v33 delegate:? storeOriginalAttachments:? signpostID:?];
+                    v38 = [MEMORY[0x1E699B858] partiallyRedactedStringForString:preferredFilename];
+                    [MFComposeTypeFactory _setContent:v38 includeAttachments:v115 shouldQuote:&v116 prependBlankLine:contentID2 delegate:? storeOriginalAttachments:? signpostID:?];
                   }
                 }
 
 LABEL_34:
               }
 
-              v26 = [v86 countByEnumeratingWithState:&v101 objects:v117 count:16];
+              v26 = [attachmentsInDocument2 countByEnumeratingWithState:&v101 objects:v117 count:16];
               if (!v26)
               {
 LABEL_36:
@@ -255,33 +255,33 @@ LABEL_36:
           {
             v14 = v80;
             v15 = [v14 fileWrapperForcingDownload:0];
-            v16 = [v15 contentID];
-            v17 = [v15 preferredFilename];
-            v18 = [v15 mimeType];
-            v19 = [v85 composeWebView];
-            v20 = [v19 compositionContextID];
+            contentID3 = [v15 contentID];
+            preferredFilename2 = [v15 preferredFilename];
+            mimeType2 = [v15 mimeType];
+            composeWebView3 = [delegateCopy composeWebView];
+            compositionContextID2 = [composeWebView3 compositionContextID];
 
-            v21 = [v15 regularFileContents];
+            regularFileContents2 = [v15 regularFileContents];
             if (v88)
             {
-              if (v83)
+              if (originalAttachmentsCopy)
               {
                 [v82 addObject:v15];
-                v22 = a1;
+                selfCopy = self;
                 goto LABEL_42;
               }
 
-              v40 = [MEMORY[0x1E69B15D0] defaultManager];
-              v41 = [v40 attachmentForData:v21 mimeType:v18 fileName:v17 contentID:v16 context:v20];
+              defaultManager = [MEMORY[0x1E69B15D0] defaultManager];
+              v41 = [defaultManager attachmentForData:regularFileContents2 mimeType:mimeType2 fileName:preferredFilename2 contentID:contentID3 context:compositionContextID2];
 
-              v79 = [a1 _markupForInlineAttachment:v41 willBeIncluded:v70 prependBlankLine:v69 delegate:v85];
+              v79 = [self _markupForInlineAttachment:v41 willBeIncluded:attachmentsCopy prependBlankLine:lineCopy delegate:delegateCopy];
             }
 
             else
             {
-              v22 = objc_opt_class();
+              selfCopy = objc_opt_class();
 LABEL_42:
-              v79 = [v22 _markupStringForExcludedInlineAttachmentWithFilename:v17];
+              v79 = [selfCopy _markupStringForExcludedInlineAttachmentWithFilename:preferredFilename2];
             }
 
             goto LABEL_45;
@@ -290,7 +290,7 @@ LABEL_42:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v23 = [a1 _markupForInlineAttachment:v80 willBeIncluded:v70 prependBlankLine:v69 delegate:v85];
+            v23 = [self _markupForInlineAttachment:v80 willBeIncluded:attachmentsCopy prependBlankLine:lineCopy delegate:delegateCopy];
           }
 
           else
@@ -315,18 +315,18 @@ LABEL_45:
           v100[1] = 3221225472;
           v100[2] = __129__MFComposeTypeFactory__setContent_includeAttachments_shouldQuote_prependBlankLine_delegate_storeOriginalAttachments_signpostID___block_invoke;
           v100[3] = &__block_descriptor_40_e5_v8__0l;
-          v100[4] = a9;
-          [v77 appendOrReplace:v42 withMarkupString:v79 quote:v73 completion:v100];
+          v100[4] = d;
+          [composeWebView appendOrReplace:v42 withMarkupString:v79 quote:quoteCopy completion:v100];
           goto LABEL_53;
         }
 
 LABEL_47:
         v43 = MFMessageComposeLoadingSignpostLog();
         v44 = v43;
-        if (a9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v43))
+        if (d - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v43))
         {
           *buf = 0;
-          _os_signpost_emit_with_name_impl(&dword_1BE819000, v44, OS_SIGNPOST_INTERVAL_END, a9, "LOAD COMPOSE WEB CONTENT", "Unable to create markup string enableTelemetry=YES ", buf, 2u);
+          _os_signpost_emit_with_name_impl(&dword_1BE819000, v44, OS_SIGNPOST_INTERVAL_END, d, "LOAD COMPOSE WEB CONTENT", "Unable to create markup string enableTelemetry=YES ", buf, 2u);
         }
 
         v42 = EMLogCompose();
@@ -376,24 +376,24 @@ LABEL_57:
         }
 
         v49 = *(*(&v96 + 1) + 8 * k);
-        v50 = [MEMORY[0x1E69B15D0] defaultManager];
-        v51 = [v49 attachmentData];
-        v52 = [v49 mimeType];
-        v53 = [v49 filename];
-        v54 = [v49 contentID];
-        v55 = [v49 contextID];
-        v56 = [v50 attachmentForData:v51 mimeType:v52 fileName:v53 contentID:v54 context:v55];
+        defaultManager2 = [MEMORY[0x1E69B15D0] defaultManager];
+        attachmentData = [v49 attachmentData];
+        mimeType3 = [v49 mimeType];
+        filename = [v49 filename];
+        contentID4 = [v49 contentID];
+        contextID = [v49 contextID];
+        v56 = [defaultManager2 attachmentForData:attachmentData mimeType:mimeType3 fileName:filename contentID:contentID4 context:contextID];
 
-        v57 = [v56 className];
-        if (([v57 isEqualToString:0x1F3CF38B8] & 1) != 0 || objc_msgSend(v57, "isEqualToString:", 0x1F3CF38F8))
+        className = [v56 className];
+        if (([className isEqualToString:0x1F3CF38B8] & 1) != 0 || objc_msgSend(className, "isEqualToString:", 0x1F3CF38F8))
         {
           [v87 addObject:v49];
         }
 
         else
         {
-          v58 = [v49 contentID];
-          [v89 removeObjectForKey:v58];
+          contentID5 = [v49 contentID];
+          [v89 removeObjectForKey:contentID5];
         }
       }
 
@@ -403,9 +403,9 @@ LABEL_57:
     while (v47);
   }
 
-  [v77 setOriginalAttachmentInfo:v82];
-  [v77 setReplacementFilenamesByContentID:v89];
-  [v77 replaceImagesIfNecessary];
+  [composeWebView setOriginalAttachmentInfo:v82];
+  [composeWebView setReplacementFilenamesByContentID:v89];
+  [composeWebView replaceImagesIfNecessary];
   v94 = 0u;
   v95 = 0u;
   v92 = 0u;
@@ -425,11 +425,11 @@ LABEL_57:
         }
 
         v63 = *(*(&v92 + 1) + 8 * m);
-        v64 = [v63 attachmentData];
-        v65 = [v63 filename];
-        v66 = [v63 mimeType];
-        v67 = [v63 contentID];
-        [v77 replaceFilenamePlaceholderWithAttachment:v64 fileName:v65 mimeType:v66 contentID:v67];
+        attachmentData2 = [v63 attachmentData];
+        filename2 = [v63 filename];
+        mimeType4 = [v63 mimeType];
+        contentID6 = [v63 contentID];
+        [composeWebView replaceFilenamePlaceholderWithAttachment:attachmentData2 fileName:filename2 mimeType:mimeType4 contentID:contentID6];
       }
 
       v60 = [v59 countByEnumeratingWithState:&v92 objects:v109 count:16];
@@ -451,16 +451,16 @@ void __129__MFComposeTypeFactory__setContent_includeAttachments_shouldQuote_prep
   }
 }
 
-+ (id)senderAddressForHME:(id)a3 originalSenderAddress:(id)a4
++ (id)senderAddressForHME:(id)e originalSenderAddress:(id)address
 {
-  v5 = a4;
-  v6 = [MEMORY[0x1E699B340] tagValueListFromString:a3 error:0];
+  addressCopy = address;
+  v6 = [MEMORY[0x1E699B340] tagValueListFromString:e error:0];
   v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E699A760]];
   v8 = [v6 objectForKeyedSubscript:*MEMORY[0x1E699A758]];
-  v9 = [v5 emailAddressValue];
-  v10 = [v9 simpleAddress];
+  emailAddressValue = [addressCopy emailAddressValue];
+  simpleAddress = [emailAddressValue simpleAddress];
 
-  if ([v10 ef_caseInsensitiveIsEqualToString:v8])
+  if ([simpleAddress ef_caseInsensitiveIsEqualToString:v8])
   {
     v11 = [v6 objectForKeyedSubscript:*MEMORY[0x1E699A750]];
 
@@ -469,38 +469,38 @@ void __129__MFComposeTypeFactory__setContent_includeAttachments_shouldQuote_prep
 
   if (v7)
   {
-    v12 = [objc_alloc(MEMORY[0x1E699B248]) initWithString:v5];
-    v13 = [v12 displayName];
+    v12 = [objc_alloc(MEMORY[0x1E699B248]) initWithString:addressCopy];
+    displayName = [v12 displayName];
     v14 = [objc_alloc(MEMORY[0x1E699B248]) initWithString:v7];
 
-    if (v13)
+    if (displayName)
     {
-      [v14 setDisplayName:v13];
+      [v14 setDisplayName:displayName];
     }
 
-    v15 = [v14 stringValue];
+    stringValue = [v14 stringValue];
   }
 
   else
   {
-    v15 = 0;
+    stringValue = 0;
   }
 
-  return v15;
+  return stringValue;
 }
 
-+ (void)_quoteFromModel:(id)a3 delegate:(id)a4
++ (void)_quoteFromModel:(id)model delegate:(id)delegate
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v43 = [v5 legacyMessage];
-  v7 = [v5 composeType];
-  v8 = [v5 composeType] == 4 || objc_msgSend(v5, "composeType") == 5;
-  v40 = v7;
-  v9 = [v6 savedHeaders];
+  modelCopy = model;
+  delegateCopy = delegate;
+  legacyMessage = [modelCopy legacyMessage];
+  composeType = [modelCopy composeType];
+  v8 = [modelCopy composeType] == 4 || objc_msgSend(modelCopy, "composeType") == 5;
+  v40 = composeType;
+  savedHeaders = [delegateCopy savedHeaders];
   v10 = *MEMORY[0x1E699B0E8];
-  v11 = [v9 headersForKey:*MEMORY[0x1E699B0E8]];
+  v11 = [savedHeaders headersForKey:*MEMORY[0x1E699B0E8]];
 
   if (v11)
   {
@@ -509,96 +509,96 @@ void __129__MFComposeTypeFactory__setContent_includeAttachments_shouldQuote_prep
 
   else
   {
-    v13 = [MEMORY[0x1E69B1698] sharedInstance];
-    v14 = [v6 sendingEmailAddress];
-    v15 = [v13 signatureMarkupForSendingEmailAddress:v14];
+    mEMORY[0x1E69B1698] = [MEMORY[0x1E69B1698] sharedInstance];
+    sendingEmailAddress = [delegateCopy sendingEmailAddress];
+    v15 = [mEMORY[0x1E69B1698] signatureMarkupForSendingEmailAddress:sendingEmailAddress];
     v12 = [v15 length] == 0;
   }
 
-  v44 = [v5 originalContent];
-  v42 = [v43 messageBodyIfAvailable];
-  v38 = [v42 isEncrypted];
-  if (!v44)
+  originalContent = [modelCopy originalContent];
+  messageBodyIfAvailable = [legacyMessage messageBodyIfAvailable];
+  isEncrypted = [messageBodyIfAvailable isEncrypted];
+  if (!originalContent)
   {
-    v44 = [v42 htmlContent];
+    originalContent = [messageBodyIfAvailable htmlContent];
   }
 
   v16 = MFComposeLog();
   v39 = v12;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v43 ef_publicDescription];
+    ef_publicDescription = [legacyMessage ef_publicDescription];
     *buf = 138543362;
-    v47 = v17;
+    v47 = ef_publicDescription;
     _os_log_impl(&dword_1BE819000, v16, OS_LOG_TYPE_DEFAULT, "Quoting content from message: %{public}@", buf, 0xCu);
   }
 
-  v18 = [v6 composeWebView];
-  if (v44)
+  composeWebView = [delegateCopy composeWebView];
+  if (originalContent)
   {
-    v19 = [v5 includeAttachments];
-    v20 = [MEMORY[0x1E695E000] em_userDefaults];
-    v21 = [v20 objectForKey:@"DisableQuoteIncrease"];
-    v22 = [v21 BOOLValue];
+    includeAttachments = [modelCopy includeAttachments];
+    em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+    v21 = [em_userDefaults objectForKey:@"DisableQuoteIncrease"];
+    bOOLValue = [v21 BOOLValue];
 
     if (v8)
     {
-      v23 = [v5 includeAttachmentsWhenAdding];
+      includeAttachmentsWhenAdding = [modelCopy includeAttachmentsWhenAdding];
     }
 
     else
     {
-      v23 = 0;
+      includeAttachmentsWhenAdding = 0;
     }
 
-    [a1 _setContent:v44 includeAttachments:v19 shouldQuote:v22 ^ 1u prependBlankLine:0 delegate:v6 storeOriginalAttachments:v23 signpostID:{objc_msgSend(v5, "signpostID")}];
-    [v18 addMailAttributesBeforeDisplayHidingTrailingEmptyQuotes:0 shouldQuote:v22 ^ 1u];
+    [self _setContent:originalContent includeAttachments:includeAttachments shouldQuote:bOOLValue ^ 1u prependBlankLine:0 delegate:delegateCopy storeOriginalAttachments:includeAttachmentsWhenAdding signpostID:{objc_msgSend(modelCopy, "signpostID")}];
+    [composeWebView addMailAttributesBeforeDisplayHidingTrailingEmptyQuotes:0 shouldQuote:bOOLValue ^ 1u];
     if (v40 == 6)
     {
-      v24 = [v43 headersIfAvailable];
-      v25 = [v24 markupString];
-      [a1 _prependQuotedMarkup:v25 shouldIndent:v22 ^ 1u toBodyField:v18];
+      headersIfAvailable = [legacyMessage headersIfAvailable];
+      markupString = [headersIfAvailable markupString];
+      [self _prependQuotedMarkup:markupString shouldIndent:bOOLValue ^ 1u toBodyField:composeWebView];
 
       v26 = [MEMORY[0x1E69B1628] forwardedMessagePrefixWithSpacer:v39];
-      [v18 prependPreamble:v26 quote:0];
+      [composeWebView prependPreamble:v26 quote:0];
     }
 
     else
     {
-      v27 = [v43 senders];
-      v24 = [v27 ef_map:&__block_literal_global_12];
+      senders = [legacyMessage senders];
+      headersIfAvailable = [senders ef_map:&__block_literal_global_12];
 
-      if ([v24 count])
+      if ([headersIfAvailable count])
       {
-        if ([v24 count] == 1)
+        if ([headersIfAvailable count] == 1)
         {
-          v28 = [v43 headers];
-          v29 = [v28 headersForKey:v10];
-          v30 = [v29 firstObject];
+          headers = [legacyMessage headers];
+          v29 = [headers headersForKey:v10];
+          firstObject = [v29 firstObject];
 
-          if (v30)
+          if (firstObject)
           {
-            v31 = [v24 firstObject];
-            v32 = [a1 senderAddressForHME:v30 originalSenderAddress:v31];
+            firstObject2 = [headersIfAvailable firstObject];
+            v32 = [self senderAddressForHME:firstObject originalSenderAddress:firstObject2];
 
             if (v32)
             {
               v45 = v32;
               v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
 
-              v24 = v33;
+              headersIfAvailable = v33;
             }
           }
         }
 
-        v34 = [v43 dateSent];
-        v35 = [v24 objectAtIndex:0];
-        v36 = [v34 mf_replyPrefixForSender:v35];
-        [v18 prependPreamble:v36 quote:v22 ^ 1u];
+        dateSent = [legacyMessage dateSent];
+        v35 = [headersIfAvailable objectAtIndex:0];
+        v36 = [dateSent mf_replyPrefixForSender:v35];
+        [composeWebView prependPreamble:v36 quote:bOOLValue ^ 1u];
 
         if (v39)
         {
-          [v18 prependString:@"\n"];
+          [composeWebView prependString:@"\n"];
         }
       }
     }
@@ -606,23 +606,23 @@ void __129__MFComposeTypeFactory__setContent_includeAttachments_shouldQuote_prep
 
   if (!v11 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v6 addSignature:1];
+    [delegateCopy addSignature:1];
   }
 
-  v37 = [v5 messageBody];
-  if ([v37 length])
+  messageBody = [modelCopy messageBody];
+  if ([messageBody length])
   {
-    [v18 prependMarkupString:v37 quote:0];
-  }
-
-  if (objc_opt_respondsToSelector())
-  {
-    [v6 contentDidChange];
+    [composeWebView prependMarkupString:messageBody quote:0];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 setOriginalMessageWasEncrypted:v38];
+    [delegateCopy contentDidChange];
+  }
+
+  if (objc_opt_respondsToSelector())
+  {
+    [delegateCopy setOriginalMessageWasEncrypted:isEncrypted];
   }
 }
 
@@ -657,31 +657,31 @@ id __49__MFComposeTypeFactory__quoteFromModel_delegate___block_invoke(uint64_t a
   return v11;
 }
 
-+ (id)headersFromDelegate:(id)a3
++ (id)headersFromDelegate:(id)delegate
 {
-  v3 = [a1 headersFromDelegate:a3 originatingBundleID:0 sourceAccountManagement:0];
+  v3 = [self headersFromDelegate:delegate originatingBundleID:0 sourceAccountManagement:0];
 
   return v3;
 }
 
-+ (id)headersFromDelegate:(id)a3 originatingBundleID:(id)a4 sourceAccountManagement:(int)a5
++ (id)headersFromDelegate:(id)delegate originatingBundleID:(id)d sourceAccountManagement:(int)management
 {
-  v5 = *&a5;
+  v5 = *&management;
   v84 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v72 = a4;
-  v73 = v7;
+  delegateCopy = delegate;
+  dCopy = d;
+  v73 = delegateCopy;
   v8 = objc_alloc_init(MEMORY[0x1E69AD740]);
-  v9 = [v7 savedHeaders];
-  v10 = v9;
-  if (v9)
+  savedHeaders = [delegateCopy savedHeaders];
+  v10 = savedHeaders;
+  if (savedHeaders)
   {
     v80 = 0u;
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v11 = [v9 allHeaderKeys];
-    v12 = [v11 countByEnumeratingWithState:&v78 objects:v83 count:16];
+    allHeaderKeys = [savedHeaders allHeaderKeys];
+    v12 = [allHeaderKeys countByEnumeratingWithState:&v78 objects:v83 count:16];
     if (v12)
     {
       v13 = *v79;
@@ -691,7 +691,7 @@ id __49__MFComposeTypeFactory__quoteFromModel_delegate___block_invoke(uint64_t a
         {
           if (*v79 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allHeaderKeys);
           }
 
           v15 = *(*(&v78 + 1) + 8 * i);
@@ -702,92 +702,92 @@ id __49__MFComposeTypeFactory__quoteFromModel_delegate___block_invoke(uint64_t a
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v78 objects:v83 count:16];
+        v12 = [allHeaderKeys countByEnumeratingWithState:&v78 objects:v83 count:16];
       }
 
       while (v12);
     }
   }
 
-  v17 = [v73 subject];
-  v18 = [v17 length];
+  subject = [v73 subject];
+  v18 = [subject length];
 
   if (v18)
   {
-    v19 = [v73 subject];
-    [v8 setHeader:v19 forKey:*MEMORY[0x1E699B178]];
+    subject2 = [v73 subject];
+    [v8 setHeader:subject2 forKey:*MEMORY[0x1E699B178]];
   }
 
-  v20 = [v73 toRecipients];
-  v21 = [v20 count] == 0;
+  toRecipients = [v73 toRecipients];
+  v21 = [toRecipients count] == 0;
 
   if (!v21)
   {
-    v22 = [v73 toRecipients];
-    [v8 setAddressListForTo:v22];
+    toRecipients2 = [v73 toRecipients];
+    [v8 setAddressListForTo:toRecipients2];
   }
 
-  v23 = [v73 ccRecipients];
-  v24 = [v23 count] == 0;
+  ccRecipients = [v73 ccRecipients];
+  v24 = [ccRecipients count] == 0;
 
   if (!v24)
   {
-    v25 = [v73 ccRecipients];
-    [v8 setAddressListForCc:v25];
+    ccRecipients2 = [v73 ccRecipients];
+    [v8 setAddressListForCc:ccRecipients2];
   }
 
-  v26 = [v73 bccRecipients];
-  v27 = [v26 count] == 0;
+  bccRecipients = [v73 bccRecipients];
+  v27 = [bccRecipients count] == 0;
 
   if (!v27)
   {
-    v28 = [v73 bccRecipients];
-    [v8 setAddressListForBcc:v28];
+    bccRecipients2 = [v73 bccRecipients];
+    [v8 setAddressListForBcc:bccRecipients2];
   }
 
-  v71 = [v73 accountProxyGenerator];
-  v29 = [v73 sendingEmailAddress];
-  if (!v29)
+  accountProxyGenerator = [v73 accountProxyGenerator];
+  sendingEmailAddress = [v73 sendingEmailAddress];
+  if (!sendingEmailAddress)
   {
-    v30 = [v71 defaultMailAccountProxyForDeliveryOriginatingBundleID:v72 sourceAccountManagement:v5];
+    v30 = [accountProxyGenerator defaultMailAccountProxyForDeliveryOriginatingBundleID:dCopy sourceAccountManagement:v5];
     v31 = v30;
     if (v30)
     {
-      v32 = [v30 firstEmailAddress];
-      v33 = [v31 fullUserName];
-      v34 = [MEMORY[0x1E699B248] componentsWithString:v32];
-      [v34 setDisplayName:v33];
-      v29 = [v34 stringValue];
+      firstEmailAddress = [v30 firstEmailAddress];
+      fullUserName = [v31 fullUserName];
+      v34 = [MEMORY[0x1E699B248] componentsWithString:firstEmailAddress];
+      [v34 setDisplayName:fullUserName];
+      sendingEmailAddress = [v34 stringValue];
     }
 
     else
     {
-      v29 = 0;
+      sendingEmailAddress = 0;
     }
   }
 
-  v35 = v29;
-  v36 = [v35 emailAddressValue];
-  v37 = [v36 displayName];
-  v38 = v37;
-  if (v37)
+  v35 = sendingEmailAddress;
+  emailAddressValue = [v35 emailAddressValue];
+  displayName = [emailAddressValue displayName];
+  v38 = displayName;
+  if (displayName)
   {
-    v39 = v37;
+    stringValue = displayName;
   }
 
   else
   {
-    v39 = [v35 stringValue];
+    stringValue = [v35 stringValue];
   }
 
-  v40 = v39;
+  v40 = stringValue;
 
   v41 = [v40 length];
   v42 = v41 == [v35 length];
 
   if (v42)
   {
-    v43 = [v71 accountProxyContainingEmailAddress:v35 includingInactive:0 originatingBundleID:v72 sourceAccountManagement:v5];
+    v43 = [accountProxyGenerator accountProxyContainingEmailAddress:v35 includingInactive:0 originatingBundleID:dCopy sourceAccountManagement:v5];
     v44 = v43;
     v69 = v43;
     if (!v43)
@@ -797,15 +797,15 @@ LABEL_50:
       goto LABEL_51;
     }
 
-    v68 = [v43 fullUserName];
-    v67 = [v44 fromEmailAddresses];
-    if ([v67 count])
+    fullUserName2 = [v43 fullUserName];
+    fromEmailAddresses = [v44 fromEmailAddresses];
+    if ([fromEmailAddresses count])
     {
       v76 = 0u;
       v77 = 0u;
       v74 = 0u;
       v75 = 0u;
-      obj = v67;
+      obj = fromEmailAddresses;
       v45 = [obj countByEnumeratingWithState:&v74 objects:v82 count:16];
       if (v45)
       {
@@ -820,9 +820,9 @@ LABEL_50:
             }
 
             v48 = *(*(&v74 + 1) + 8 * j);
-            v49 = [v48 emailAddressValue];
-            v50 = [v35 emailAddressValue];
-            v51 = [v49 compare:v50] == 0;
+            emailAddressValue2 = [v48 emailAddressValue];
+            emailAddressValue3 = [v35 emailAddressValue];
+            v51 = [emailAddressValue2 compare:emailAddressValue3] == 0;
 
             if (v51)
             {
@@ -847,25 +847,25 @@ LABEL_41:
     }
 
     v35 = v35;
-    v53 = [v35 emailAddressValue];
-    v54 = [v53 displayName];
-    v55 = v54;
-    if (v54)
+    emailAddressValue4 = [v35 emailAddressValue];
+    displayName2 = [emailAddressValue4 displayName];
+    v55 = displayName2;
+    if (displayName2)
     {
-      v56 = v54;
+      stringValue2 = displayName2;
     }
 
     else
     {
-      v56 = [v35 stringValue];
+      stringValue2 = [v35 stringValue];
     }
 
-    v57 = v56;
+    v57 = stringValue2;
 
     v58 = [v57 length];
     if (v58 == [v35 length])
     {
-      v59 = [v68 length] == 0;
+      v59 = [fullUserName2 length] == 0;
 
       if (v59)
       {
@@ -875,13 +875,13 @@ LABEL_49:
       }
 
       v60 = MEMORY[0x1E699B248];
-      v61 = [v35 emailAddressValue];
-      v57 = [v60 componentsWithEmailAddress:v61];
+      emailAddressValue5 = [v35 emailAddressValue];
+      v57 = [v60 componentsWithEmailAddress:emailAddressValue5];
 
-      [v57 setDisplayName:v68];
-      v62 = [v57 stringValue];
+      [v57 setDisplayName:fullUserName2];
+      stringValue3 = [v57 stringValue];
 
-      v35 = v62;
+      v35 = stringValue3;
     }
 
     goto LABEL_49;
@@ -894,54 +894,54 @@ LABEL_51:
     [v8 setAddressListForSender:v63];
   }
 
-  v64 = [MEMORY[0x1E695DF00] date];
-  v65 = [v64 ec_descriptionForMimeHeaders];
-  [v8 setHeader:v65 forKey:*MEMORY[0x1E699B0D8]];
+  date = [MEMORY[0x1E695DF00] date];
+  ec_descriptionForMimeHeaders = [date ec_descriptionForMimeHeaders];
+  [v8 setHeader:ec_descriptionForMimeHeaders forKey:*MEMORY[0x1E699B0D8]];
 
   return v8;
 }
 
-+ (void)_sanitizeRecipientsForComposeType:(unint64_t)a3 sendingAddress:(id)a4 delegate:(id)a5
++ (void)_sanitizeRecipientsForComposeType:(unint64_t)type sendingAddress:(id)address delegate:(id)delegate
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 toRecipients];
-  v10 = [v8 ccRecipients];
-  v11 = [v8 bccRecipients];
-  v12 = [[MFMailRecipients alloc] initWithToRecipients:v9 ccRecipients:v10 bccRecipients:v11];
+  addressCopy = address;
+  delegateCopy = delegate;
+  toRecipients = [delegateCopy toRecipients];
+  ccRecipients = [delegateCopy ccRecipients];
+  bccRecipients = [delegateCopy bccRecipients];
+  v12 = [[MFMailRecipients alloc] initWithToRecipients:toRecipients ccRecipients:ccRecipients bccRecipients:bccRecipients];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __82__MFComposeTypeFactory__sanitizeRecipientsForComposeType_sendingAddress_delegate___block_invoke;
   v23[3] = &unk_1E806D570;
-  v13 = v8;
+  v13 = delegateCopy;
   v24 = v13;
-  if ([(MFMailRecipients *)v12 sanitizeForComposeType:a3 sendingEmailAddress:v7 hideMyEmailAddressProvider:v23])
+  if ([(MFMailRecipients *)v12 sanitizeForComposeType:type sendingEmailAddress:addressCopy hideMyEmailAddressProvider:v23])
   {
-    v14 = [(MFMailRecipients *)v12 toRecipients];
-    v15 = [v14 isEqualToArray:v9];
+    toRecipients2 = [(MFMailRecipients *)v12 toRecipients];
+    v15 = [toRecipients2 isEqualToArray:toRecipients];
 
     if ((v15 & 1) == 0)
     {
-      v16 = [(MFMailRecipients *)v12 toRecipients];
-      [v13 setToRecipients:v16];
+      toRecipients3 = [(MFMailRecipients *)v12 toRecipients];
+      [v13 setToRecipients:toRecipients3];
     }
 
-    v17 = [(MFMailRecipients *)v12 ccRecipients];
-    v18 = [v17 isEqualToArray:v10];
+    ccRecipients2 = [(MFMailRecipients *)v12 ccRecipients];
+    v18 = [ccRecipients2 isEqualToArray:ccRecipients];
 
     if ((v18 & 1) == 0)
     {
-      v19 = [(MFMailRecipients *)v12 ccRecipients];
-      [v13 setCcRecipients:v19];
+      ccRecipients3 = [(MFMailRecipients *)v12 ccRecipients];
+      [v13 setCcRecipients:ccRecipients3];
     }
 
-    v20 = [(MFMailRecipients *)v12 bccRecipients];
-    v21 = [v20 isEqualToArray:v11];
+    bccRecipients2 = [(MFMailRecipients *)v12 bccRecipients];
+    v21 = [bccRecipients2 isEqualToArray:bccRecipients];
 
     if ((v21 & 1) == 0)
     {
-      v22 = [(MFMailRecipients *)v12 bccRecipients];
-      [v13 setBccRecipients:v22];
+      bccRecipients3 = [(MFMailRecipients *)v12 bccRecipients];
+      [v13 setBccRecipients:bccRecipients3];
     }
   }
 }
@@ -956,155 +956,155 @@ id __82__MFComposeTypeFactory__sanitizeRecipientsForComposeType_sendingAddress_d
 
 + (BOOL)alwaysBCCSelf
 {
-  v2 = [MEMORY[0x1E695E000] em_userDefaults];
-  v3 = [v2 BOOLForKey:*MEMORY[0x1E699AB48]];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v3 = [em_userDefaults BOOLForKey:*MEMORY[0x1E699AB48]];
 
   return v3;
 }
 
-+ (id)bccSelfAddressForDelegate:(id)a3
++ (id)bccSelfAddressForDelegate:(id)delegate
 {
   v3 = MEMORY[0x1E69B16A8];
-  v4 = [a3 sendingEmailAddress];
-  v5 = [v3 accountContainingEmailAddress:v4 includingInactive:1];
+  sendingEmailAddress = [delegate sendingEmailAddress];
+  v5 = [v3 accountContainingEmailAddress:sendingEmailAddress includingInactive:1];
 
   v6 = v5;
   if (v5 || ([MEMORY[0x1E69B16A8] defaultMailAccountForDelivery], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [v6 emailAddressStrings];
-    v8 = [v7 firstObject];
+    emailAddressStrings = [v6 emailAddressStrings];
+    firstObject = [emailAddressStrings firstObject];
 
-    v9 = [v6 fullUserName];
+    fullUserName = [v6 fullUserName];
     v10 = MEMORY[0x1E699B248];
-    v11 = [v8 emailAddressValue];
-    v12 = [v10 componentsWithEmailAddress:v11];
+    emailAddressValue = [firstObject emailAddressValue];
+    v12 = [v10 componentsWithEmailAddress:emailAddressValue];
 
-    [v12 setDisplayName:v9];
-    v13 = [v12 stringValue];
+    [v12 setDisplayName:fullUserName];
+    stringValue = [v12 stringValue];
   }
 
   else
   {
-    v13 = 0;
+    stringValue = 0;
   }
 
-  return v13;
+  return stringValue;
 }
 
-+ (void)_mergeModel:(id)a3 withDelegate:(id)a4
++ (void)_mergeModel:(id)model withDelegate:(id)delegate
 {
-  v30 = a3;
-  v5 = a4;
-  v6 = [v30 toRecipients];
-  v7 = [v6 count];
+  modelCopy = model;
+  delegateCopy = delegate;
+  toRecipients = [modelCopy toRecipients];
+  v7 = [toRecipients count];
 
   if (v7)
   {
-    v8 = [v5 toRecipients];
-    v9 = [v8 count];
+    toRecipients2 = [delegateCopy toRecipients];
+    v9 = [toRecipients2 count];
 
     if (v9)
     {
-      v10 = [v5 toRecipients];
-      v11 = [v10 mutableCopy];
+      toRecipients3 = [delegateCopy toRecipients];
+      toRecipients5 = [toRecipients3 mutableCopy];
 
-      v12 = [v30 toRecipients];
-      [v11 addObjectsFromArray:v12];
+      toRecipients4 = [modelCopy toRecipients];
+      [toRecipients5 addObjectsFromArray:toRecipients4];
     }
 
     else
     {
-      v11 = [v30 toRecipients];
+      toRecipients5 = [modelCopy toRecipients];
     }
 
-    [v5 setToRecipients:v11];
+    [delegateCopy setToRecipients:toRecipients5];
   }
 
-  v13 = [v30 ccRecipients];
-  v14 = [v13 count];
+  ccRecipients = [modelCopy ccRecipients];
+  v14 = [ccRecipients count];
 
   if (v14)
   {
-    v15 = [v5 ccRecipients];
-    v16 = [v15 count];
+    ccRecipients2 = [delegateCopy ccRecipients];
+    v16 = [ccRecipients2 count];
 
     if (v16)
     {
-      v17 = [v5 ccRecipients];
-      v18 = [v17 mutableCopy];
+      ccRecipients3 = [delegateCopy ccRecipients];
+      ccRecipients5 = [ccRecipients3 mutableCopy];
 
-      v19 = [v30 ccRecipients];
-      [v18 addObjectsFromArray:v19];
+      ccRecipients4 = [modelCopy ccRecipients];
+      [ccRecipients5 addObjectsFromArray:ccRecipients4];
     }
 
     else
     {
-      v18 = [v30 ccRecipients];
+      ccRecipients5 = [modelCopy ccRecipients];
     }
 
-    [v5 setCcRecipients:v18];
+    [delegateCopy setCcRecipients:ccRecipients5];
   }
 
-  v20 = [v30 bccRecipients];
-  v21 = [v20 count];
+  bccRecipients = [modelCopy bccRecipients];
+  v21 = [bccRecipients count];
 
   if (v21)
   {
-    v22 = [v5 bccRecipients];
-    v23 = [v22 count];
+    bccRecipients2 = [delegateCopy bccRecipients];
+    v23 = [bccRecipients2 count];
 
     if (v23)
     {
-      v24 = [v5 bccRecipients];
-      v25 = [v24 mutableCopy];
+      bccRecipients3 = [delegateCopy bccRecipients];
+      bccRecipients5 = [bccRecipients3 mutableCopy];
 
-      v26 = [v30 bccRecipients];
-      [v25 addObjectsFromArray:v26];
+      bccRecipients4 = [modelCopy bccRecipients];
+      [bccRecipients5 addObjectsFromArray:bccRecipients4];
     }
 
     else
     {
-      v25 = [v30 bccRecipients];
+      bccRecipients5 = [modelCopy bccRecipients];
     }
 
-    [v5 setBccRecipients:v25];
+    [delegateCopy setBccRecipients:bccRecipients5];
   }
 
-  v27 = [v30 subject];
-  v28 = [v27 length];
+  subject = [modelCopy subject];
+  v28 = [subject length];
 
   if (v28)
   {
-    v29 = [v30 subject];
-    [v5 setSubject:v29];
+    subject2 = [modelCopy subject];
+    [delegateCopy setSubject:subject2];
   }
 }
 
-+ (void)_updateDelegate:(id)a3 toRecipients:(id)a4 ccRecipients:(id)a5 bccRecipients:(id)a6
++ (void)_updateDelegate:(id)delegate toRecipients:(id)recipients ccRecipients:(id)ccRecipients bccRecipients:(id)bccRecipients
 {
-  v18 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if ([v9 count])
+  delegateCopy = delegate;
+  recipientsCopy = recipients;
+  ccRecipientsCopy = ccRecipients;
+  bccRecipientsCopy = bccRecipients;
+  if ([recipientsCopy count])
   {
-    v12 = [v18 toRecipients];
-    v13 = __80__MFComposeTypeFactory__updateDelegate_toRecipients_ccRecipients_bccRecipients___block_invoke(v12, v12, v9);
-    [v18 setToRecipients:v13];
+    toRecipients = [delegateCopy toRecipients];
+    v13 = __80__MFComposeTypeFactory__updateDelegate_toRecipients_ccRecipients_bccRecipients___block_invoke(toRecipients, toRecipients, recipientsCopy);
+    [delegateCopy setToRecipients:v13];
   }
 
-  if ([v10 count])
+  if ([ccRecipientsCopy count])
   {
-    v14 = [v18 ccRecipients];
-    v15 = __80__MFComposeTypeFactory__updateDelegate_toRecipients_ccRecipients_bccRecipients___block_invoke(v14, v14, v10);
-    [v18 setCcRecipients:v15];
+    ccRecipients = [delegateCopy ccRecipients];
+    v15 = __80__MFComposeTypeFactory__updateDelegate_toRecipients_ccRecipients_bccRecipients___block_invoke(ccRecipients, ccRecipients, ccRecipientsCopy);
+    [delegateCopy setCcRecipients:v15];
   }
 
-  if ([v11 count])
+  if ([bccRecipientsCopy count])
   {
-    v16 = [v18 bccRecipients];
-    v17 = __80__MFComposeTypeFactory__updateDelegate_toRecipients_ccRecipients_bccRecipients___block_invoke(v16, v16, v11);
-    [v18 setBccRecipients:v17];
+    bccRecipients = [delegateCopy bccRecipients];
+    v17 = __80__MFComposeTypeFactory__updateDelegate_toRecipients_ccRecipients_bccRecipients___block_invoke(bccRecipients, bccRecipients, bccRecipientsCopy);
+    [delegateCopy setBccRecipients:v17];
   }
 }
 
@@ -1237,77 +1237,77 @@ id __80__MFComposeTypeFactory__updateDelegate_toRecipients_ccRecipients_bccRecip
   return v7;
 }
 
-+ (void)_setupForReplyWithModel:(id)a3 delegate:(id)a4
++ (void)_setupForReplyWithModel:(id)model delegate:(id)delegate
 {
   v105[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v83 = a1;
-  [a1 _mergeModel:v6 withDelegate:v7];
-  v86 = [v6 legacyMessage];
-  v87 = [v86 headersIfAvailable];
-  v8 = [v86 mailbox];
-  v9 = [v8 account];
-  v84 = [v9 emailAddressStrings];
+  modelCopy = model;
+  delegateCopy = delegate;
+  selfCopy = self;
+  [self _mergeModel:modelCopy withDelegate:delegateCopy];
+  legacyMessage = [modelCopy legacyMessage];
+  headersIfAvailable = [legacyMessage headersIfAvailable];
+  mailbox = [legacyMessage mailbox];
+  account = [mailbox account];
+  emailAddressStrings = [account emailAddressStrings];
 
-  v10 = [v86 firstSender];
-  v11 = [v10 emailAddressValue];
-  v12 = [v11 simpleAddress];
-  v13 = v12;
-  if (v12)
+  firstSender = [legacyMessage firstSender];
+  emailAddressValue = [firstSender emailAddressValue];
+  simpleAddress = [emailAddressValue simpleAddress];
+  v13 = simpleAddress;
+  if (simpleAddress)
   {
-    v14 = v12;
+    stringValue = simpleAddress;
   }
 
   else
   {
-    v14 = [v10 stringValue];
+    stringValue = [firstSender stringValue];
   }
 
-  v15 = v14;
+  v15 = stringValue;
 
-  v16 = [v84 containsObject:v15];
+  v16 = [emailAddressStrings containsObject:v15];
   if (v16)
   {
-    v17 = [v87 copyAddressListForReplyTo];
-    v18 = [v17 ef_map:&__block_literal_global_94];
+    copyAddressListForReplyTo = [headersIfAvailable copyAddressListForReplyTo];
+    v18 = [copyAddressListForReplyTo ef_map:&__block_literal_global_94];
     v19 = [v18 copy];
 
-    v20 = [v86 to];
+    v20 = [legacyMessage to];
     v21 = [v20 ef_map:&__block_literal_global_96];
     v22 = [v21 copy];
 
-    v23 = [v86 firstSender];
-    v24 = [v86 firstSender];
-    [v7 setSendingEmailAddress:v24];
+    firstSender2 = [legacyMessage firstSender];
+    firstSender3 = [legacyMessage firstSender];
+    [delegateCopy setSendingEmailAddress:firstSender3];
 
     v25 = [v19 count];
     v26 = v19;
-    if (v25 || (([v22 ef_map:&__block_literal_global_98], v27 = objc_claimAutoreleasedReturnValue(), v28 = v23, objc_msgSend(v28, "emailAddressValue"), v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "simpleAddress"), v30 = objc_claimAutoreleasedReturnValue(), (v31 = v30) == 0) ? (objc_msgSend(v28, "stringValue"), v32 = objc_claimAutoreleasedReturnValue()) : (v32 = v30), v38 = v32, v31, v29, v28, v39 = objc_msgSend(v27, "containsObject:", v38), v38, v27, v26 = v22, !v39))
+    if (v25 || (([v22 ef_map:&__block_literal_global_98], v27 = objc_claimAutoreleasedReturnValue(), v28 = firstSender2, objc_msgSend(v28, "emailAddressValue"), v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "simpleAddress"), v30 = objc_claimAutoreleasedReturnValue(), (v31 = v30) == 0) ? (objc_msgSend(v28, "stringValue"), v32 = objc_claimAutoreleasedReturnValue()) : (v32 = v30), v38 = v32, v31, v29, v28, v39 = objc_msgSend(v27, "containsObject:", v38), v38, v27, v26 = v22, !v39))
     {
-      [v7 setToRecipients:v26];
+      [delegateCopy setToRecipients:v26];
     }
 
     else
     {
       v105[0] = v28;
       v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v105 count:1];
-      [v7 setToRecipients:v40];
+      [delegateCopy setToRecipients:v40];
     }
   }
 
   else
   {
-    v33 = [v87 copyAddressListForReplyTo];
-    if ([v33 count])
+    copyAddressListForReplyTo2 = [headersIfAvailable copyAddressListForReplyTo];
+    if ([copyAddressListForReplyTo2 count])
     {
-      v34 = v33;
+      v34 = copyAddressListForReplyTo2;
     }
 
     else
     {
-      v35 = [v7 toRecipients];
-      v36 = [v35 count];
+      toRecipients = [delegateCopy toRecipients];
+      v36 = [toRecipients count];
 
       if (v36)
       {
@@ -1316,48 +1316,48 @@ id __80__MFComposeTypeFactory__updateDelegate_toRecipients_ccRecipients_bccRecip
 
       else
       {
-        v37 = [v87 copyAddressListForReplyTo];
-        if ([v37 count])
+        copyAddressListForReplyTo3 = [headersIfAvailable copyAddressListForReplyTo];
+        if ([copyAddressListForReplyTo3 count])
         {
-          v34 = v37;
+          v34 = copyAddressListForReplyTo3;
         }
 
         else
         {
-          v41 = [v86 senders];
+          senders = [legacyMessage senders];
 
-          v34 = v41;
+          v34 = senders;
         }
       }
     }
 
-    [v83 _updateDelegate:v7 toRecipients:v34 ccRecipients:0 bccRecipients:0];
+    [selfCopy _updateDelegate:delegateCopy toRecipients:v34 ccRecipients:0 bccRecipients:0];
   }
 
-  v42 = [v7 subject];
-  if ([v42 length])
+  subject = [delegateCopy subject];
+  if ([subject length])
   {
     v43 = 1;
   }
 
   else
   {
-    v43 = v86 == 0;
+    v43 = legacyMessage == 0;
   }
 
   v44 = !v43;
 
   if (v44)
   {
-    v45 = [v86 subject];
-    v46 = [v45 subjectWithoutPrefix];
-    v47 = [MEMORY[0x1E699B330] nonLocalizedReplyPrefix];
-    v48 = _subjectWithPrefix(v46, v47);
+    subject2 = [legacyMessage subject];
+    subjectWithoutPrefix = [subject2 subjectWithoutPrefix];
+    nonLocalizedReplyPrefix = [MEMORY[0x1E699B330] nonLocalizedReplyPrefix];
+    v48 = _subjectWithPrefix(subjectWithoutPrefix, nonLocalizedReplyPrefix);
 
-    [v7 setSubject:v48];
+    [delegateCopy setSubject:v48];
   }
 
-  v49 = [v87 firstHeaderForKey:*MEMORY[0x1E699B130]];
+  v49 = [headersIfAvailable firstHeaderForKey:*MEMORY[0x1E699B130]];
   v50 = v49;
   if (v49)
   {
@@ -1366,22 +1366,22 @@ id __80__MFComposeTypeFactory__updateDelegate_toRecipients_ccRecipients_bccRecip
 
   else
   {
-    v85 = [v87 firstHeaderForKey:*MEMORY[0x1E699B108]];
+    v85 = [headersIfAvailable firstHeaderForKey:*MEMORY[0x1E699B108]];
   }
 
   v51 = *MEMORY[0x1E699B0E8];
-  v52 = [v87 firstHeaderForKey:*MEMORY[0x1E699B0E8]];
-  v81 = [v6 originalMessage];
-  v53 = [v81 objectID];
-  v82 = [v53 serializedRepresentation];
+  v52 = [headersIfAvailable firstHeaderForKey:*MEMORY[0x1E699B0E8]];
+  originalMessage = [modelCopy originalMessage];
+  objectID = [originalMessage objectID];
+  serializedRepresentation = [objectID serializedRepresentation];
 
-  v54 = [v87 references];
-  v55 = v54;
+  references = [headersIfAvailable references];
+  v55 = references;
   if (v50)
   {
-    if (v54)
+    if (references)
     {
-      v56 = [v54 arrayByAddingObject:v50];
+      v56 = [references arrayByAddingObject:v50];
 
       v55 = v56;
     }
@@ -1401,9 +1401,9 @@ id __80__MFComposeTypeFactory__updateDelegate_toRecipients_ccRecipients_bccRecip
       [v57 setHeader:v85 forKey:*MEMORY[0x1E699B108]];
     }
 
-    if (v82)
+    if (serializedRepresentation)
     {
-      v59 = [v82 base64EncodedDataWithOptions:0];
+      v59 = [serializedRepresentation base64EncodedDataWithOptions:0];
       [v58 setHeader:v59 forKey:*MEMORY[0x1E69AD628]];
     }
 
@@ -1417,7 +1417,7 @@ id __80__MFComposeTypeFactory__updateDelegate_toRecipients_ccRecipients_bccRecip
       [v58 setReferences:v55];
     }
 
-    [v7 setSavedHeaders:v58];
+    [delegateCopy setSavedHeaders:v58];
   }
 
   v99 = 0;
@@ -1426,8 +1426,8 @@ id __80__MFComposeTypeFactory__updateDelegate_toRecipients_ccRecipients_bccRecip
   v102 = __Block_byref_object_copy__2;
   v103 = __Block_byref_object_dispose__2;
   v104 = 0;
-  v60 = [v87 copyAddressListForTo];
-  v61 = v60;
+  copyAddressListForTo = [headersIfAvailable copyAddressListForTo];
+  v61 = copyAddressListForTo;
   if (v52)
   {
     v62 = 0;
@@ -1444,16 +1444,16 @@ LABEL_50:
     v97 = __Block_byref_object_dispose__2;
     if (v62)
     {
-      v66 = [v62 simpleAddress];
+      simpleAddress2 = [v62 simpleAddress];
     }
 
     else
     {
-      v66 = 0;
+      simpleAddress2 = 0;
     }
 
-    v98 = v66;
-    v69 = [MEMORY[0x1E699ACD8] sharedInstance];
+    v98 = simpleAddress2;
+    mEMORY[0x1E699ACD8] = [MEMORY[0x1E699ACD8] sharedInstance];
     v70 = v94[5];
     v88[0] = MEMORY[0x1E69E9820];
     v88[1] = 3221225472;
@@ -1461,19 +1461,19 @@ LABEL_50:
     v88[3] = &unk_1E806D5B8;
     v89 = v52;
     v91 = &v93;
-    v90 = v7;
+    v90 = delegateCopy;
     v92 = &v99;
-    [v69 isHideMyEmailAddressValid:v70 completion:v88];
+    [mEMORY[0x1E699ACD8] isHideMyEmailAddressValid:v70 completion:v88];
 
     _Block_object_dispose(&v93, 8);
     goto LABEL_64;
   }
 
-  if ([v60 count])
+  if ([copyAddressListForTo count])
   {
     v67 = MEMORY[0x1E699B240];
-    v68 = [v61 firstObject];
-    v62 = [v67 emailAddressWithString:v68];
+    firstObject = [v61 firstObject];
+    v62 = [v67 emailAddressWithString:firstObject];
   }
 
   else
@@ -1481,11 +1481,11 @@ LABEL_50:
     v62 = 0;
   }
 
-  v71 = [v62 displayName];
-  if ([v71 isEqualToString:@"Hide My Email"])
+  displayName = [v62 displayName];
+  if ([displayName isEqualToString:@"Hide My Email"])
   {
-    v72 = [v62 domain];
-    v73 = [v72 isEqualToString:@"icloud.com"];
+    domain = [v62 domain];
+    v73 = [domain isEqualToString:@"icloud.com"];
 
     if (v73)
     {
@@ -1497,37 +1497,37 @@ LABEL_50:
   {
   }
 
-  v74 = [v86 preferredEmailAddressToReplyWith];
+  preferredEmailAddressToReplyWith = [legacyMessage preferredEmailAddressToReplyWith];
   v75 = v100[5];
-  v100[5] = v74;
+  v100[5] = preferredEmailAddressToReplyWith;
 
   v76 = v100[5];
   if (!v76)
   {
-    v77 = [v6 preferredSendingEmailAddress];
+    preferredSendingEmailAddress = [modelCopy preferredSendingEmailAddress];
     v78 = v100[5];
-    v100[5] = v77;
+    v100[5] = preferredSendingEmailAddress;
 
     v76 = v100[5];
   }
 
-  [v7 setSendingEmailAddress:v76];
+  [delegateCopy setSendingEmailAddress:v76];
 LABEL_64:
-  if ([v6 isQuickReply])
+  if ([modelCopy isQuickReply])
   {
-    [v7 setIsQuickReply:1];
+    [delegateCopy setIsQuickReply:1];
   }
 
-  v79 = [v7 composeWebView];
-  if (v79)
+  composeWebView = [delegateCopy composeWebView];
+  if (composeWebView)
   {
-    [v83 _quoteFromModel:v6 delegate:v7];
+    [selfCopy _quoteFromModel:modelCopy delegate:delegateCopy];
   }
 
-  if ([v6 composeType] == 4 || objc_msgSend(v6, "composeType") == 5)
+  if ([modelCopy composeType] == 4 || objc_msgSend(modelCopy, "composeType") == 5)
   {
-    v80 = [v6 composeType];
-    [v83 _sanitizeRecipientsForComposeType:v80 sendingAddress:v100[5] delegate:v7];
+    composeType = [modelCopy composeType];
+    [selfCopy _sanitizeRecipientsForComposeType:composeType sendingAddress:v100[5] delegate:delegateCopy];
   }
 
   _Block_object_dispose(&v99, 8);
@@ -1650,111 +1650,111 @@ void __57__MFComposeTypeFactory__setupForReplyWithModel_delegate___block_invoke_
   }
 }
 
-+ (void)_setupForForwardWithModel:(id)a3 delegate:(id)a4
++ (void)_setupForForwardWithModel:(id)model delegate:(id)delegate
 {
-  v24 = a3;
-  v6 = a4;
-  [a1 _mergeModel:v24 withDelegate:v6];
-  v7 = [v24 legacyMessage];
-  v8 = [v6 subject];
-  v9 = [v8 length];
+  modelCopy = model;
+  delegateCopy = delegate;
+  [self _mergeModel:modelCopy withDelegate:delegateCopy];
+  legacyMessage = [modelCopy legacyMessage];
+  subject = [delegateCopy subject];
+  v9 = [subject length];
 
-  if (!v9 && v7)
+  if (!v9 && legacyMessage)
   {
-    v10 = [v7 subject];
-    v11 = [v10 subjectWithoutPrefix];
-    v12 = [MEMORY[0x1E699B330] nonLocalizedForwardPrefix];
-    v13 = _subjectWithPrefix(v11, v12);
+    subject2 = [legacyMessage subject];
+    subjectWithoutPrefix = [subject2 subjectWithoutPrefix];
+    nonLocalizedForwardPrefix = [MEMORY[0x1E699B330] nonLocalizedForwardPrefix];
+    v13 = _subjectWithPrefix(subjectWithoutPrefix, nonLocalizedForwardPrefix);
 
-    [v6 setSubject:v13];
+    [delegateCopy setSubject:v13];
   }
 
-  v14 = [v24 originalMessage];
-  v15 = [v14 objectID];
-  v16 = [v15 serializedRepresentation];
+  originalMessage = [modelCopy originalMessage];
+  objectID = [originalMessage objectID];
+  serializedRepresentation = [objectID serializedRepresentation];
 
-  v17 = [v7 headersIfAvailable];
-  v18 = [v17 firstHeaderForKey:*MEMORY[0x1E699B130]];
+  headersIfAvailable = [legacyMessage headersIfAvailable];
+  v18 = [headersIfAvailable firstHeaderForKey:*MEMORY[0x1E699B130]];
   if (v18)
   {
     v19 = objc_alloc_init(MEMORY[0x1E69AD740]);
     v20 = [MEMORY[0x1E695DEC8] arrayWithObject:v18];
     [v19 setReferences:v20];
 
-    if (v16)
+    if (serializedRepresentation)
     {
-      v21 = [v16 base64EncodedDataWithOptions:0];
+      v21 = [serializedRepresentation base64EncodedDataWithOptions:0];
       [v19 setHeader:v21 forKey:*MEMORY[0x1E69AD610]];
     }
 
-    [v6 setSavedHeaders:v19];
+    [delegateCopy setSavedHeaders:v19];
   }
 
-  v22 = [v7 preferredEmailAddressToReplyWith];
-  if (!v22)
+  preferredEmailAddressToReplyWith = [legacyMessage preferredEmailAddressToReplyWith];
+  if (!preferredEmailAddressToReplyWith)
   {
-    v22 = [v24 preferredSendingEmailAddress];
+    preferredEmailAddressToReplyWith = [modelCopy preferredSendingEmailAddress];
   }
 
-  [v6 setSendingEmailAddress:v22];
-  v23 = [v6 composeWebView];
-  if (v23)
+  [delegateCopy setSendingEmailAddress:preferredEmailAddressToReplyWith];
+  composeWebView = [delegateCopy composeWebView];
+  if (composeWebView)
   {
-    [a1 _quoteFromModel:v24 delegate:v6];
+    [self _quoteFromModel:modelCopy delegate:delegateCopy];
   }
 
-  [a1 _sanitizeRecipientsForComposeType:objc_msgSend(v24 sendingAddress:"composeType") delegate:{v22, v6}];
+  [self _sanitizeRecipientsForComposeType:objc_msgSend(modelCopy sendingAddress:"composeType") delegate:{preferredEmailAddressToReplyWith, delegateCopy}];
 }
 
-+ (void)_setupForReplyAllWithModel:(id)a3 delegate:(id)a4
++ (void)_setupForReplyAllWithModel:(id)model delegate:(id)delegate
 {
-  v7 = a3;
-  v6 = a4;
-  [a1 _setupForReplyWithModel:v7 delegate:v6];
-  [a1 setupSwitchToReplyAllWithModel:v7 delegate:v6];
+  modelCopy = model;
+  delegateCopy = delegate;
+  [self _setupForReplyWithModel:modelCopy delegate:delegateCopy];
+  [self setupSwitchToReplyAllWithModel:modelCopy delegate:delegateCopy];
 }
 
-+ (void)setupSwitchToReplyAllWithModel:(id)a3 delegate:(id)a4
++ (void)setupSwitchToReplyAllWithModel:(id)model delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
-  v45 = v6;
-  v8 = [v6 legacyMessage];
+  modelCopy = model;
+  delegateCopy = delegate;
+  v45 = modelCopy;
+  legacyMessage = [modelCopy legacyMessage];
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v46 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v10 = [v8 to];
-  v11 = [v8 cc];
+  v10 = [legacyMessage to];
+  v11 = [legacyMessage cc];
   v12 = [MEMORY[0x1E695DFA8] ec_emailAddressConvertiblesSetFromArray:v10 includeInvalid:1];
   v13 = MEMORY[0x1E695DFA8];
   v43 = v12;
-  v14 = [v7 toRecipients];
-  v42 = [v13 ec_emailAddressConvertiblesSetFromArray:v14 includeInvalid:1];
+  toRecipients = [delegateCopy toRecipients];
+  v42 = [v13 ec_emailAddressConvertiblesSetFromArray:toRecipients includeInvalid:1];
 
-  v15 = [v8 mailbox];
-  v16 = [v15 account];
-  v44 = [v16 emailAddressStrings];
-  v41 = a1;
+  mailbox = [legacyMessage mailbox];
+  account = [mailbox account];
+  emailAddressStrings = [account emailAddressStrings];
+  selfCopy = self;
 
-  v17 = [v8 firstSender];
-  v18 = [v17 emailAddressValue];
-  v19 = [v18 simpleAddress];
-  v20 = v19;
-  if (v19)
+  firstSender = [legacyMessage firstSender];
+  emailAddressValue = [firstSender emailAddressValue];
+  simpleAddress = [emailAddressValue simpleAddress];
+  v20 = simpleAddress;
+  if (simpleAddress)
   {
-    v21 = v19;
+    stringValue = simpleAddress;
   }
 
   else
   {
-    v21 = [v17 stringValue];
+    stringValue = [firstSender stringValue];
   }
 
-  v22 = v21;
+  v22 = stringValue;
 
-  v23 = [v7 savedHeaders];
-  v24 = [v23 headersForKey:*MEMORY[0x1E699B0F8]];
+  savedHeaders = [delegateCopy savedHeaders];
+  v24 = [savedHeaders headersForKey:*MEMORY[0x1E699B0F8]];
 
-  if (![v44 containsObject:v22])
+  if (![emailAddressStrings containsObject:v22])
   {
     if (v10 && !v24)
     {
@@ -1768,38 +1768,38 @@ void __57__MFComposeTypeFactory__setupForReplyWithModel_delegate___block_invoke_
 
     if (v24)
     {
-      v27 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      [v27 localizedStringForKey:@"HIDE_MY_EMAIL_TITLE" value:&stru_1F3CF3758 table:@"Main"];
+      allObjects = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
+      [allObjects localizedStringForKey:@"HIDE_MY_EMAIL_TITLE" value:&stru_1F3CF3758 table:@"Main"];
       v22 = v28 = v22;
     }
 
     else
     {
-      v29 = [v8 preferredEmailAddressToReplyWith];
+      preferredEmailAddressToReplyWith = [legacyMessage preferredEmailAddressToReplyWith];
 
-      if (!v29)
+      if (!preferredEmailAddressToReplyWith)
       {
-        v29 = [v45 preferredSendingEmailAddress];
+        preferredEmailAddressToReplyWith = [v45 preferredSendingEmailAddress];
       }
 
-      v30 = v29;
-      v31 = [v30 emailAddressValue];
-      v32 = [v31 simpleAddress];
-      v33 = v32;
-      if (v32)
+      v30 = preferredEmailAddressToReplyWith;
+      emailAddressValue2 = [v30 emailAddressValue];
+      simpleAddress2 = [emailAddressValue2 simpleAddress];
+      v33 = simpleAddress2;
+      if (simpleAddress2)
       {
-        v34 = v32;
+        stringValue2 = simpleAddress2;
       }
 
       else
       {
-        v34 = [v30 stringValue];
+        stringValue2 = [v30 stringValue];
       }
 
-      v35 = v34;
+      v35 = stringValue2;
 
       v28 = v30;
-      v27 = v30;
+      allObjects = v30;
       v22 = v35;
     }
 
@@ -1814,28 +1814,28 @@ void __57__MFComposeTypeFactory__setupForReplyWithModel_delegate___block_invoke_
   [v43 unionSet:v42];
   if (v10 && ([v43 isEqual:v42] & 1) == 0)
   {
-    v25 = [v7 toRecipients];
-    v26 = [v25 ef_map:&__block_literal_global_123];
+    toRecipients2 = [delegateCopy toRecipients];
+    v26 = [toRecipients2 ef_map:&__block_literal_global_123];
     [v43 addObjectsFromArray:v26];
 
-    v27 = [v43 allObjects];
-    v28 = [v27 ef_map:&__block_literal_global_125];
+    allObjects = [v43 allObjects];
+    v28 = [allObjects ef_map:&__block_literal_global_125];
     [v46 addObjectsFromArray:v28];
 LABEL_23:
   }
 
   v36 = [[MFMailRecipients alloc] initWithToRecipients:v46 ccRecipients:v9 bccRecipients:0];
-  v37 = [v45 composeType];
+  composeType = [v45 composeType];
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
   v47[2] = __64__MFComposeTypeFactory_setupSwitchToReplyAllWithModel_delegate___block_invoke_3;
   v47[3] = &unk_1E806D570;
-  v38 = v7;
+  v38 = delegateCopy;
   v48 = v38;
-  [(MFMailRecipients *)v36 sanitizeForComposeType:v37 sendingEmailAddress:v22 hideMyEmailAddressProvider:v47];
-  v39 = [(MFMailRecipients *)v36 toRecipients];
-  v40 = [(MFMailRecipients *)v36 ccRecipients];
-  [v41 _updateDelegate:v38 toRecipients:v39 ccRecipients:v40 bccRecipients:0];
+  [(MFMailRecipients *)v36 sanitizeForComposeType:composeType sendingEmailAddress:v22 hideMyEmailAddressProvider:v47];
+  toRecipients3 = [(MFMailRecipients *)v36 toRecipients];
+  ccRecipients = [(MFMailRecipients *)v36 ccRecipients];
+  [selfCopy _updateDelegate:v38 toRecipients:toRecipients3 ccRecipients:ccRecipients bccRecipients:0];
 }
 
 void *__64__MFComposeTypeFactory_setupSwitchToReplyAllWithModel_delegate___block_invoke(uint64_t a1, void *a2)
@@ -1887,50 +1887,50 @@ id __64__MFComposeTypeFactory_setupSwitchToReplyAllWithModel_delegate___block_in
   return v2;
 }
 
-+ (void)setupSwitchToReplyWithModel:(id)a3 delegate:(id)a4
++ (void)setupSwitchToReplyWithModel:(id)model delegate:(id)delegate
 {
-  v4 = a4;
-  [v4 setCcRecipients:0];
-  [v4 setBccRecipients:0];
+  delegateCopy = delegate;
+  [delegateCopy setCcRecipients:0];
+  [delegateCopy setBccRecipients:0];
 }
 
-+ (void)_setupForNewMessageWithModel:(id)a3 delegate:(id)a4
++ (void)_setupForNewMessageWithModel:(id)model delegate:(id)delegate
 {
   v45 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v37 = a1;
-  [a1 _mergeModel:v7 withDelegate:v8];
-  v38 = [v7 preferredSendingEmailAddress];
-  v9 = [v7 hideMyEmailFrom];
-  v10 = [v9 length];
+  modelCopy = model;
+  delegateCopy = delegate;
+  selfCopy = self;
+  [self _mergeModel:modelCopy withDelegate:delegateCopy];
+  preferredSendingEmailAddress = [modelCopy preferredSendingEmailAddress];
+  hideMyEmailFrom = [modelCopy hideMyEmailFrom];
+  v10 = [hideMyEmailFrom length];
 
   if (v10)
   {
-    v11 = [v7 hideMyEmailFrom];
-    [v8 setHideMyEmailAddressForMailToURLAddressString:v11];
+    hideMyEmailFrom2 = [modelCopy hideMyEmailFrom];
+    [delegateCopy setHideMyEmailAddressForMailToURLAddressString:hideMyEmailFrom2];
 
-    v12 = [v7 hideMyEmailFrom];
+    hideMyEmailFrom3 = [modelCopy hideMyEmailFrom];
 
-    v13 = v12;
+    v13 = hideMyEmailFrom3;
   }
 
   else
   {
-    v13 = v38;
+    v13 = preferredSendingEmailAddress;
   }
 
   v39 = v13;
-  [v8 setSendingEmailAddress:?];
+  [delegateCopy setSendingEmailAddress:?];
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ((objc_opt_respondsToSelector() & 1) != 0 && (v15 = [v8 contentVariationIndex], v15 != 0x7FFFFFFFFFFFFFFFLL))
+  if ((objc_opt_respondsToSelector() & 1) != 0 && (v15 = [delegateCopy contentVariationIndex], v15 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v20 = [v7 contentVariations];
-    v21 = [v20 objectAtIndexedSubscript:v15];
+    contentVariations = [modelCopy contentVariations];
+    v21 = [contentVariations objectAtIndexedSubscript:v15];
 
     v36 = v21;
-    v22 = [v21 body];
-    v23 = +[_MFMailCompositionContext processMessageBody:asHTML:](_MFMailCompositionContext, "processMessageBody:asHTML:", v22, [v21 bodyIsHTML]);
+    body = [v21 body];
+    v23 = +[_MFMailCompositionContext processMessageBody:asHTML:](_MFMailCompositionContext, "processMessageBody:asHTML:", body, [v21 bodyIsHTML]);
 
     v35 = v23;
     if (v23)
@@ -1938,14 +1938,14 @@ id __64__MFComposeTypeFactory_setupSwitchToReplyAllWithModel_delegate___block_in
       [v14 addObject:v23];
     }
 
-    v24 = [v7 attachmentContext];
+    attachmentContext = [modelCopy attachmentContext];
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v25 = [v36 attachmentIdentifiers];
+    attachmentIdentifiers = [v36 attachmentIdentifiers];
     v34 = a2;
-    v26 = [v25 countByEnumeratingWithState:&v40 objects:v44 count:16];
+    v26 = [attachmentIdentifiers countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v26)
     {
       v27 = *v41;
@@ -1956,10 +1956,10 @@ id __64__MFComposeTypeFactory_setupSwitchToReplyAllWithModel_delegate___block_in
         {
           if (*v41 != v27)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(attachmentIdentifiers);
           }
 
-          v29 = [v24 attachmentForHostIdentifier:*(*(&v40 + 1) + 8 * v28)];
+          v29 = [attachmentContext attachmentForHostIdentifier:*(*(&v40 + 1) + 8 * v28)];
           if (v29)
           {
             [v14 addObject:v29];
@@ -1967,15 +1967,15 @@ id __64__MFComposeTypeFactory_setupSwitchToReplyAllWithModel_delegate___block_in
 
           else
           {
-            v30 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v30 handleFailureInMethod:v34 object:v37 file:@"MFComposeTypeFactory.m" lineNumber:886 description:@"Unexpected found nil attachment for host identifier."];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:v34 object:selfCopy file:@"MFComposeTypeFactory.m" lineNumber:886 description:@"Unexpected found nil attachment for host identifier."];
           }
 
           ++v28;
         }
 
         while (v26 != v28);
-        v31 = [v25 countByEnumeratingWithState:&v40 objects:v44 count:16];
+        v31 = [attachmentIdentifiers countByEnumeratingWithState:&v40 objects:v44 count:16];
         v26 = v31;
       }
 
@@ -1985,55 +1985,55 @@ id __64__MFComposeTypeFactory_setupSwitchToReplyAllWithModel_delegate___block_in
 
   else
   {
-    v16 = [v7 messageBody];
-    if (v16)
+    messageBody = [modelCopy messageBody];
+    if (messageBody)
     {
-      [v14 addObject:v16];
+      [v14 addObject:messageBody];
     }
 
-    v17 = [v7 deferredAttachments];
-    v18 = [v17 count];
+    deferredAttachments = [modelCopy deferredAttachments];
+    v18 = [deferredAttachments count];
 
     if (!v18)
     {
-      v19 = [v7 attachments];
-      [v14 addObjectsFromArray:v19];
+      attachments = [modelCopy attachments];
+      [v14 addObjectsFromArray:attachments];
     }
   }
 
-  [v37 _setContent:v14 includeAttachments:1 shouldQuote:0 prependBlankLine:1 delegate:v8 signpostID:{objc_msgSend(v7, "signpostID")}];
+  [selfCopy _setContent:v14 includeAttachments:1 shouldQuote:0 prependBlankLine:1 delegate:delegateCopy signpostID:{objc_msgSend(modelCopy, "signpostID")}];
   if (objc_opt_respondsToSelector())
   {
-    [v8 addSignature:0];
+    [delegateCopy addSignature:0];
   }
 
-  if ([v7 originatingFromAttachmentMarkup])
+  if ([modelCopy originatingFromAttachmentMarkup])
   {
-    v32 = [v7 legacyMessage];
-    v33 = [v32 preferredEmailAddressToReplyWith];
-    if (!v33)
+    legacyMessage = [modelCopy legacyMessage];
+    preferredEmailAddressToReplyWith = [legacyMessage preferredEmailAddressToReplyWith];
+    if (!preferredEmailAddressToReplyWith)
     {
-      v33 = [v7 preferredSendingEmailAddress];
+      preferredEmailAddressToReplyWith = [modelCopy preferredSendingEmailAddress];
     }
 
-    [v8 setSendingEmailAddress:v33];
+    [delegateCopy setSendingEmailAddress:preferredEmailAddressToReplyWith];
   }
 
-  [v37 _sanitizeRecipientsForComposeType:objc_msgSend(v7 sendingAddress:"composeType") delegate:{v39, v8}];
+  [selfCopy _sanitizeRecipientsForComposeType:objc_msgSend(modelCopy sendingAddress:"composeType") delegate:{v39, delegateCopy}];
 }
 
-+ (void)addAttachment:(id)a3 prepend:(BOOL)a4 withCompositionModel:(id)a5 delegate:(id)a6
++ (void)addAttachment:(id)attachment prepend:(BOOL)prepend withCompositionModel:(id)model delegate:(id)delegate
 {
-  v8 = a4;
-  v15 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = v8 && [v10 composeType] == 0;
-  v13 = [a1 _markupForInlineAttachment:v15 willBeIncluded:1 prependBlankLine:v12 delegate:v11];
+  prependCopy = prepend;
+  attachmentCopy = attachment;
+  modelCopy = model;
+  delegateCopy = delegate;
+  v12 = prependCopy && [modelCopy composeType] == 0;
+  v13 = [self _markupForInlineAttachment:attachmentCopy willBeIncluded:1 prependBlankLine:v12 delegate:delegateCopy];
   if ([v13 length])
   {
-    [v11 composeWebView];
-    if (v8)
+    [delegateCopy composeWebView];
+    if (prependCopy)
       v14 = {;
       [v14 prependMarkupString:v13 quote:0];
     }
@@ -2053,43 +2053,43 @@ id __64__MFComposeTypeFactory_setupSwitchToReplyAllWithModel_delegate___block_in
   }
 
   v2 = [MEMORY[0x1E695E000] mf_copyCompositionServicesPreferenceValueForKey:*MEMORY[0x1E69B17D0]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
-+ (void)setupWithCompositionModel:(id)a3 delegate:(id)a4
++ (void)setupWithCompositionModel:(id)model delegate:(id)delegate
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 composeType];
-  if (v8 > 4)
+  modelCopy = model;
+  delegateCopy = delegate;
+  composeType = [modelCopy composeType];
+  if (composeType > 4)
   {
-    if (v8 == 5)
+    if (composeType == 5)
     {
-      [a1 _setupForReplyAllWithModel:v6 delegate:v7];
+      [self _setupForReplyAllWithModel:modelCopy delegate:delegateCopy];
       goto LABEL_13;
     }
 
-    if (v8 == 6)
+    if (composeType == 6)
     {
-      [a1 _setupForForwardWithModel:v6 delegate:v7];
+      [self _setupForForwardWithModel:modelCopy delegate:delegateCopy];
       goto LABEL_13;
     }
   }
 
   else
   {
-    if (!v8)
+    if (!composeType)
     {
-      [a1 _setupForNewMessageWithModel:v6 delegate:v7];
+      [self _setupForNewMessageWithModel:modelCopy delegate:delegateCopy];
       goto LABEL_13;
     }
 
-    if (v8 == 4)
+    if (composeType == 4)
     {
-      [a1 _setupForReplyWithModel:v6 delegate:v7];
+      [self _setupForReplyWithModel:modelCopy delegate:delegateCopy];
       goto LABEL_13;
     }
   }
@@ -2098,63 +2098,63 @@ id __64__MFComposeTypeFactory_setupSwitchToReplyAllWithModel_delegate___block_in
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134217984;
-    v11 = [v6 composeType];
+    composeType2 = [modelCopy composeType];
     _os_log_impl(&dword_1BE819000, v9, OS_LOG_TYPE_DEFAULT, "#Warning Unhandled composition case: %ld", &v10, 0xCu);
   }
 
 LABEL_13:
 }
 
-+ (void)setupWithContent:(id)a3 delegate:(id)a4 signpostID:(unint64_t)a5
++ (void)setupWithContent:(id)content delegate:(id)delegate signpostID:(unint64_t)d
 {
-  v12 = a3;
-  v8 = a4;
+  contentCopy = content;
+  delegateCopy = delegate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v12;
+    v9 = contentCopy;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695DEC8] arrayWithObject:v12];
+    v9 = [MEMORY[0x1E695DEC8] arrayWithObject:contentCopy];
   }
 
   v10 = v9;
-  [a1 _setContent:v9 includeAttachments:1 shouldQuote:0 prependBlankLine:0 delegate:v8 signpostID:a5];
-  v11 = [v8 composeWebView];
-  [v11 addMailAttributesBeforeDisplayHidingTrailingEmptyQuotes:1 shouldQuote:0];
+  [self _setContent:v9 includeAttachments:1 shouldQuote:0 prependBlankLine:0 delegate:delegateCopy signpostID:d];
+  composeWebView = [delegateCopy composeWebView];
+  [composeWebView addMailAttributesBeforeDisplayHidingTrailingEmptyQuotes:1 shouldQuote:0];
 }
 
-+ (id)messageFromDelegate:(id)a3 withSubstituteDOMDocument:(id)a4 compositionSpecification:(id)a5 originatingBundleID:(id)a6 sourceAccountManagement:(int)a7 writeAttachmentPlaceholders:(BOOL)a8
++ (id)messageFromDelegate:(id)delegate withSubstituteDOMDocument:(id)document compositionSpecification:(id)specification originatingBundleID:(id)d sourceAccountManagement:(int)management writeAttachmentPlaceholders:(BOOL)placeholders
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
+  delegateCopy = delegate;
+  specificationCopy = specification;
+  dCopy = d;
   if (pthread_main_np() != 1)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"MFComposeTypeFactory.m" lineNumber:976 description:@"Current thread must be main"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFComposeTypeFactory.m" lineNumber:976 description:@"Current thread must be main"];
   }
 
-  v17 = [v14 composeWebView];
-  v18 = [v14 shouldCreateRichTextRepresentation];
+  composeWebView = [delegateCopy composeWebView];
+  shouldCreateRichTextRepresentation = [delegateCopy shouldCreateRichTextRepresentation];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __167__MFComposeTypeFactory_messageFromDelegate_withSubstituteDOMDocument_compositionSpecification_originatingBundleID_sourceAccountManagement_writeAttachmentPlaceholders___block_invoke;
   v26[3] = &unk_1E806D650;
-  v31 = a1;
-  v19 = v14;
+  selfCopy = self;
+  v19 = delegateCopy;
   v27 = v19;
-  v20 = v16;
+  v20 = dCopy;
   v28 = v20;
-  v32 = a7;
-  v21 = v15;
+  managementCopy = management;
+  v21 = specificationCopy;
   v29 = v21;
-  v33 = a8;
-  v22 = v17;
+  placeholdersCopy = placeholders;
+  v22 = composeWebView;
   v30 = v22;
-  v23 = [v18 then:v26];
+  v23 = [shouldCreateRichTextRepresentation then:v26];
 
   return v23;
 }
@@ -2462,44 +2462,44 @@ id __167__MFComposeTypeFactory_messageFromDelegate_withSubstituteDOMDocument_com
   return v4;
 }
 
-+ (id)messageFromDelegate:(id)a3 originatingBundleID:(id)a4 sourceAccountManagement:(int)a5
++ (id)messageFromDelegate:(id)delegate originatingBundleID:(id)d sourceAccountManagement:(int)management
 {
-  v5 = [a1 messageFromDelegate:a3 withSubstituteDOMDocument:0 compositionSpecification:0 originatingBundleID:a4 sourceAccountManagement:*&a5 writeAttachmentPlaceholders:0];
+  v5 = [self messageFromDelegate:delegate withSubstituteDOMDocument:0 compositionSpecification:0 originatingBundleID:d sourceAccountManagement:*&management writeAttachmentPlaceholders:0];
 
   return v5;
 }
 
-+ (void)hijackThreadFromDelegate:(id)a3
++ (void)hijackThreadFromDelegate:(id)delegate
 {
-  v4 = a3;
-  v3 = [v4 savedHeaders];
-  [v3 removeHeaderForKey:*MEMORY[0x1E699B108]];
-  [v3 setReferences:0];
-  [v4 setSavedHeaders:v3];
+  delegateCopy = delegate;
+  savedHeaders = [delegateCopy savedHeaders];
+  [savedHeaders removeHeaderForKey:*MEMORY[0x1E699B108]];
+  [savedHeaders setReferences:0];
+  [delegateCopy setSavedHeaders:savedHeaders];
 }
 
-+ (id)subjectFromSubject:(id)a3 withComposeType:(int64_t)a4
++ (id)subjectFromSubject:(id)subject withComposeType:(int64_t)type
 {
-  v5 = a3;
-  v6 = v5;
-  if ((a4 - 4) < 2)
+  subjectCopy = subject;
+  v6 = subjectCopy;
+  if ((type - 4) < 2)
   {
-    v7 = [MEMORY[0x1E699B330] nonLocalizedReplyPrefix];
-    v8 = _subjectWithPrefix(v6, v7);
+    nonLocalizedReplyPrefix = [MEMORY[0x1E699B330] nonLocalizedReplyPrefix];
+    v8 = _subjectWithPrefix(v6, nonLocalizedReplyPrefix);
 LABEL_5:
     v9 = v8;
 
     goto LABEL_7;
   }
 
-  if (a4 == 6)
+  if (type == 6)
   {
-    v7 = [MEMORY[0x1E699B330] nonLocalizedForwardPrefix];
-    v8 = _subjectWithPrefix(v6, v7);
+    nonLocalizedReplyPrefix = [MEMORY[0x1E699B330] nonLocalizedForwardPrefix];
+    v8 = _subjectWithPrefix(v6, nonLocalizedReplyPrefix);
     goto LABEL_5;
   }
 
-  v9 = v5;
+  v9 = subjectCopy;
 LABEL_7:
 
   return v9;

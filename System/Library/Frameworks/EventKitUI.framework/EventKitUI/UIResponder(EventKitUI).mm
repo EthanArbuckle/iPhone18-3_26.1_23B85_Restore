@@ -7,10 +7,10 @@
 
 - (uint64_t)EKUI_setDataOwnersFromEvent:()EventKitUI
 {
-  v4 = [a3 calendar];
-  v5 = [v4 isManaged];
+  calendar = [a3 calendar];
+  isManaged = [calendar isManaged];
 
-  if (v5)
+  if (isManaged)
   {
     v6 = 2;
   }
@@ -20,18 +20,18 @@
     v6 = 1;
   }
 
-  [a1 _setDragDataOwner:v6];
-  [a1 _setDropDataOwner:v6];
-  [a1 _setDataOwnerForCopy:v6];
+  [self _setDragDataOwner:v6];
+  [self _setDropDataOwner:v6];
+  [self _setDataOwnerForCopy:v6];
 
-  return [a1 _setDataOwnerForPaste:v6];
+  return [self _setDataOwnerForPaste:v6];
 }
 
 - (id)EKUI_editor
 {
-  v1 = [a1 undoManager];
+  undoManager = [self undoManager];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v1 undoableEditor], (v2 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([undoManager undoableEditor], (v2 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     if (EKUI_editor_onceToken != -1)
     {

@@ -1,6 +1,6 @@
 @interface CollectionViewTableLayout
 - (_TtC8AppStore25CollectionViewTableLayout)init;
-- (_TtC8AppStore25CollectionViewTableLayout)initWithCoder:(id)a3;
+- (_TtC8AppStore25CollectionViewTableLayout)initWithCoder:(id)coder;
 @end
 
 @implementation CollectionViewTableLayout
@@ -12,13 +12,13 @@
   v2 = [(CollectionViewTableLayout *)&v7 init];
   v3 = objc_opt_self();
   v4 = v2;
-  v5 = [v3 separatorColor];
-  [(CollectionViewTableLayout *)v4 setSeparatorColor:v5];
+  separatorColor = [v3 separatorColor];
+  [(CollectionViewTableLayout *)v4 setSeparatorColor:separatorColor];
 
   return v4;
 }
 
-- (_TtC8AppStore25CollectionViewTableLayout)initWithCoder:(id)a3
+- (_TtC8AppStore25CollectionViewTableLayout)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);

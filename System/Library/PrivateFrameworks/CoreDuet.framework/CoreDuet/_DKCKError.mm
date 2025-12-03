@@ -1,19 +1,19 @@
 @interface _DKCKError
-+ (id)_allPartialErrorsFromError:(uint64_t)a1;
-+ (id)errorMinusUnrecoverableDecryptionErrorsFromPartialError:(uint64_t)a1;
-+ (id)zoneIDsWithUnrecoverableDecryptionError:(uint64_t)a1;
-+ (uint64_t)isChangeTokenExpiredError:(uint64_t)a1;
-+ (uint64_t)isIgnorableError:(uint64_t)a1;
-+ (uint64_t)isOperationCancelledError:(uint64_t)a1;
-+ (uint64_t)isPartialError:(uint64_t)a1;
-+ (uint64_t)isShouldDeferError:(uint64_t)a1;
-+ (uint64_t)isUnrecoverableDecryptionError:(uint64_t)a1;
-+ (void)_populateZoneIDs:(void *)a3 fromUnrecoverableDecryptionError:(void *)a4 itemID:;
++ (id)_allPartialErrorsFromError:(uint64_t)error;
++ (id)errorMinusUnrecoverableDecryptionErrorsFromPartialError:(uint64_t)error;
++ (id)zoneIDsWithUnrecoverableDecryptionError:(uint64_t)error;
++ (uint64_t)isChangeTokenExpiredError:(uint64_t)error;
++ (uint64_t)isIgnorableError:(uint64_t)error;
++ (uint64_t)isOperationCancelledError:(uint64_t)error;
++ (uint64_t)isPartialError:(uint64_t)error;
++ (uint64_t)isShouldDeferError:(uint64_t)error;
++ (uint64_t)isUnrecoverableDecryptionError:(uint64_t)error;
++ (void)_populateZoneIDs:(void *)ds fromUnrecoverableDecryptionError:(void *)error itemID:;
 @end
 
 @implementation _DKCKError
 
-+ (uint64_t)isIgnorableError:(uint64_t)a1
++ (uint64_t)isIgnorableError:(uint64_t)error
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -22,15 +22,15 @@
     goto LABEL_9;
   }
 
-  v4 = [v2 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  userInfo = [v2 userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
-  v6 = [v5 domain];
-  if ([v6 isEqualToString:*MEMORY[0x1E695B740]])
+  domain = [v5 domain];
+  if ([domain isEqualToString:*MEMORY[0x1E695B740]])
   {
-    v7 = [v5 code];
+    code = [v5 code];
 
-    if (v7 == 130 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
+    if (code == 130 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
       +[_DKCKError isIgnorableError:];
     }
@@ -56,14 +56,14 @@ LABEL_9:
   return v9;
 }
 
-+ (uint64_t)isOperationCancelledError:(uint64_t)a1
++ (uint64_t)isOperationCancelledError:(uint64_t)error
 {
   v2 = a2;
   objc_opt_self();
   if ([v2 code] == 20)
   {
-    v3 = [v2 domain];
-    v4 = [v3 isEqualToString:*MEMORY[0x1E695B740]];
+    domain = [v2 domain];
+    v4 = [domain isEqualToString:*MEMORY[0x1E695B740]];
   }
 
   else
@@ -74,20 +74,20 @@ LABEL_9:
   return v4;
 }
 
-+ (uint64_t)isShouldDeferError:(uint64_t)a1
++ (uint64_t)isShouldDeferError:(uint64_t)error
 {
   v2 = a2;
   v3 = objc_opt_self();
-  v4 = [v2 code];
+  code = [v2 code];
   if ([(_DKCKError *)v3 isOperationCancelledError:v2])
   {
-    v5 = [v2 userInfo];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    userInfo = [v2 userInfo];
+    domain2 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
-    if ([v6 code] == 131)
+    if ([domain2 code] == 131)
     {
-      v7 = [v6 domain];
-      v8 = [v7 isEqualToString:*MEMORY[0x1E695B740]];
+      domain = [domain2 domain];
+      v8 = [domain isEqualToString:*MEMORY[0x1E695B740]];
     }
 
     else
@@ -98,21 +98,21 @@ LABEL_9:
 
   else
   {
-    if (v4 != 131)
+    if (code != 131)
     {
       v8 = 0;
       goto LABEL_9;
     }
 
-    v6 = [v2 domain];
-    v8 = [v6 isEqualToString:*MEMORY[0x1E695B740]];
+    domain2 = [v2 domain];
+    v8 = [domain2 isEqualToString:*MEMORY[0x1E695B740]];
   }
 
 LABEL_9:
   return v8;
 }
 
-+ (uint64_t)isChangeTokenExpiredError:(uint64_t)a1
++ (uint64_t)isChangeTokenExpiredError:(uint64_t)error
 {
   v17 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -123,8 +123,8 @@ LABEL_9:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(_DKCKError *)v3 _allPartialErrorsFromError:v2];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    domain = [(_DKCKError *)v3 _allPartialErrorsFromError:v2];
+    v5 = [domain countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -136,7 +136,7 @@ LABEL_9:
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(domain);
           }
 
           if (([(_DKCKError *)v3 isChangeTokenExpiredError:?]& 1) != 0)
@@ -149,7 +149,7 @@ LABEL_9:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [domain countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v6)
         {
           continue;
@@ -162,8 +162,8 @@ LABEL_9:
 
   if ([v2 code] == 21)
   {
-    v4 = [v2 domain];
-    v9 = [v4 isEqualToString:*MEMORY[0x1E695B740]];
+    domain = [v2 domain];
+    v9 = [domain isEqualToString:*MEMORY[0x1E695B740]];
 LABEL_15:
   }
 
@@ -176,14 +176,14 @@ LABEL_15:
   return v9;
 }
 
-+ (uint64_t)isPartialError:(uint64_t)a1
++ (uint64_t)isPartialError:(uint64_t)error
 {
   v2 = a2;
   objc_opt_self();
   if ([v2 code] == 2)
   {
-    v3 = [v2 domain];
-    v4 = [v3 isEqualToString:*MEMORY[0x1E695B740]];
+    domain = [v2 domain];
+    v4 = [domain isEqualToString:*MEMORY[0x1E695B740]];
   }
 
   else
@@ -194,24 +194,24 @@ LABEL_15:
   return v4;
 }
 
-+ (id)_allPartialErrorsFromError:(uint64_t)a1
++ (id)_allPartialErrorsFromError:(uint64_t)error
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 userInfo];
+  userInfo = [v2 userInfo];
 
-  v4 = [v3 objectForKey:*MEMORY[0x1E695B798]];
-  v5 = [v4 allValues];
+  v4 = [userInfo objectForKey:*MEMORY[0x1E695B798]];
+  allValues = [v4 allValues];
 
-  return v5;
+  return allValues;
 }
 
-+ (uint64_t)isUnrecoverableDecryptionError:(uint64_t)a1
++ (uint64_t)isUnrecoverableDecryptionError:(uint64_t)error
 {
   v20 = *MEMORY[0x1E69E9840];
   v2 = a2;
   v3 = objc_opt_self();
-  v4 = [v2 code];
+  code = [v2 code];
   if ([(_DKCKError *)v3 isPartialError:v2])
   {
     v17 = 0u;
@@ -255,10 +255,10 @@ LABEL_15:
     }
   }
 
-  else if (v4 == 112)
+  else if (code == 112)
   {
-    v10 = [v2 domain];
-    v11 = [v10 isEqualToString:*MEMORY[0x1E695B740]];
+    domain = [v2 domain];
+    v11 = [domain isEqualToString:*MEMORY[0x1E695B740]];
 
     if (v11)
     {
@@ -275,7 +275,7 @@ LABEL_16:
   return v12;
 }
 
-+ (id)zoneIDsWithUnrecoverableDecryptionError:(uint64_t)a1
++ (id)zoneIDsWithUnrecoverableDecryptionError:(uint64_t)error
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -285,18 +285,18 @@ LABEL_16:
   return v4;
 }
 
-+ (void)_populateZoneIDs:(void *)a3 fromUnrecoverableDecryptionError:(void *)a4 itemID:
++ (void)_populateZoneIDs:(void *)ds fromUnrecoverableDecryptionError:(void *)error itemID:
 {
   v39 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  errorCopy = error;
   v9 = objc_opt_self();
-  if ([(_DKCKError *)v9 isPartialError:v7])
+  if ([(_DKCKError *)v9 isPartialError:dsCopy])
   {
-    v25 = v8;
-    v10 = [v7 userInfo];
-    v11 = [v10 objectForKey:*MEMORY[0x1E695B798]];
+    v25 = errorCopy;
+    userInfo = [dsCopy userInfo];
+    v11 = [userInfo objectForKey:*MEMORY[0x1E695B798]];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -326,23 +326,23 @@ LABEL_16:
       while (v13);
     }
 
-    v8 = v25;
+    errorCopy = v25;
   }
 
-  else if ([v7 code] == 112)
+  else if ([dsCopy code] == 112)
   {
-    v18 = [v7 domain];
-    v19 = [v18 isEqualToString:*MEMORY[0x1E695B740]];
+    domain = [dsCopy domain];
+    v19 = [domain isEqualToString:*MEMORY[0x1E695B740]];
 
     if (v19)
     {
-      if (v8)
+      if (errorCopy)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v20 = [v8 zoneID];
-          [v6 addObject:v20];
+          zoneID = [errorCopy zoneID];
+          [v6 addObject:zoneID];
 
           goto LABEL_22;
         }
@@ -350,14 +350,14 @@ LABEL_16:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v6 addObject:v8];
+          [v6 addObject:errorCopy];
           goto LABEL_22;
         }
 
         v21 = +[_CDLogging syncChannel];
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          [_DKCKError _populateZoneIDs:v9 fromUnrecoverableDecryptionError:v7 itemID:v21];
+          [_DKCKError _populateZoneIDs:v9 fromUnrecoverableDecryptionError:dsCopy itemID:v21];
         }
       }
 
@@ -367,15 +367,15 @@ LABEL_16:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
           v22 = [objc_opt_class() description];
-          v23 = [v7 domain];
+          domain2 = [dsCopy domain];
           *buf = 138544130;
           v31 = v22;
           v32 = 2114;
-          v33 = v23;
+          v33 = domain2;
           v34 = 2048;
-          v35 = [v7 code];
+          code = [dsCopy code];
           v36 = 2112;
-          v37 = v7;
+          v37 = dsCopy;
           _os_log_impl(&dword_191750000, v21, OS_LOG_TYPE_INFO, "%{public}@: Missing zone id for Manatee identity failure: %{public}@:%lld (%@)", buf, 0x2Au);
         }
       }
@@ -387,16 +387,16 @@ LABEL_22:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)errorMinusUnrecoverableDecryptionErrorsFromPartialError:(uint64_t)a1
++ (id)errorMinusUnrecoverableDecryptionErrorsFromPartialError:(uint64_t)error
 {
   v27 = *MEMORY[0x1E69E9840];
   v2 = a2;
   v3 = objc_opt_self();
   if ([(_DKCKError *)v3 isPartialError:v2])
   {
-    v4 = [v2 userInfo];
+    userInfo = [v2 userInfo];
     v21 = *MEMORY[0x1E695B798];
-    v5 = [v4 objectForKeyedSubscript:?];
+    v5 = [userInfo objectForKeyedSubscript:?];
     v6 = objc_opt_new();
     v22 = 0u;
     v23 = 0u;
@@ -433,13 +433,13 @@ LABEL_22:
 
     if ([v6 count])
     {
-      v14 = [v4 mutableCopy];
+      v14 = [userInfo mutableCopy];
       v15 = [v6 copy];
       [v14 setObject:v15 forKeyedSubscript:v21];
 
       v16 = MEMORY[0x1E696ABC0];
-      v17 = [v2 domain];
-      v18 = [v16 errorWithDomain:v17 code:objc_msgSend(v2 userInfo:{"code"), v14}];
+      domain = [v2 domain];
+      v18 = [v16 errorWithDomain:domain code:objc_msgSend(v2 userInfo:{"code"), v14}];
     }
 
     else

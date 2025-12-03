@@ -9,8 +9,8 @@
 {
   v6 = *MEMORY[0x1E69E9840];
   v1 = MEMORY[0x1E696ACB0];
-  v2 = [a1 data];
-  v3 = [v1 JSONObjectWithData:v2 options:0 error:0];
+  data = [self data];
+  v3 = [v1 JSONObjectWithData:data options:0 error:0];
 
   v4 = *MEMORY[0x1E69E9840];
 

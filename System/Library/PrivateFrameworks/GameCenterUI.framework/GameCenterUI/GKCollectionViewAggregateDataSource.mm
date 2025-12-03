@@ -1,37 +1,37 @@
 @interface GKCollectionViewAggregateDataSource
-- (BOOL)containsDataSource:(id)a3;
-- (BOOL)item:(id)a3 matchesSearchTerms:(id)a4 inSection:(int64_t)a5;
+- (BOOL)containsDataSource:(id)source;
+- (BOOL)item:(id)item matchesSearchTerms:(id)terms inSection:(int64_t)section;
 - (GKCollectionViewAggregateDataSource)init;
 - (id)_gkDescription;
-- (id)_gkDescriptionWithChildren:(int64_t)a3;
+- (id)_gkDescriptionWithChildren:(int64_t)children;
 - (id)allDataSources;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 evaluateFactoryForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5 isRecursive:(BOOL)a6;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)createMetricsTreeWithGridLayout:(id)a3;
-- (id)dataSourceForSection:(unint64_t)a3;
-- (id)globalIndexPathsForLocal:(id)a3 dataSource:(id)a4;
-- (id)globalSectionsForLocal:(id)a3 dataSource:(id)a4;
-- (id)indexPathsForItem:(id)a3;
-- (id)itemAtIndexPath:(id)a3;
-- (id)mappingForGlobalSection:(int64_t)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (unint64_t)sectionForDataSource:(id)a3;
-- (void)addDataSource:(id)a3 withTag:(id)a4;
-- (void)collectionViewDidBecomeInactive:(id)a3;
-- (void)collectionViewWillBecomeActive:(id)a3;
-- (void)configureCollectionView:(id)a3;
-- (void)dataSource:(id)a3 didInsertItemsAtIndexPaths:(id)a4;
-- (void)dataSource:(id)a3 didInsertSections:(id)a4;
-- (void)dataSource:(id)a3 didMoveItemAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)dataSource:(id)a3 didMoveSection:(int64_t)a4 toSection:(int64_t)a5;
-- (void)dataSource:(id)a3 didRefreshItemsAtIndexPaths:(id)a4;
-- (void)dataSource:(id)a3 didRefreshSections:(id)a4;
-- (void)dataSource:(id)a3 didRemoveItemsAtIndexPaths:(id)a4;
-- (void)dataSource:(id)a3 didRemoveSections:(id)a4;
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4 updateNotifier:(id)a5;
-- (void)removeDataSource:(id)a3;
-- (void)removeItemAtIndexPath:(id)a3 completionHandler:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view evaluateFactoryForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path isRecursive:(BOOL)recursive;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)createMetricsTreeWithGridLayout:(id)layout;
+- (id)dataSourceForSection:(unint64_t)section;
+- (id)globalIndexPathsForLocal:(id)local dataSource:(id)source;
+- (id)globalSectionsForLocal:(id)local dataSource:(id)source;
+- (id)indexPathsForItem:(id)item;
+- (id)itemAtIndexPath:(id)path;
+- (id)mappingForGlobalSection:(int64_t)section;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (unint64_t)sectionForDataSource:(id)source;
+- (void)addDataSource:(id)source withTag:(id)tag;
+- (void)collectionViewDidBecomeInactive:(id)inactive;
+- (void)collectionViewWillBecomeActive:(id)active;
+- (void)configureCollectionView:(id)view;
+- (void)dataSource:(id)source didInsertItemsAtIndexPaths:(id)paths;
+- (void)dataSource:(id)source didInsertSections:(id)sections;
+- (void)dataSource:(id)source didMoveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)dataSource:(id)source didMoveSection:(int64_t)section toSection:(int64_t)toSection;
+- (void)dataSource:(id)source didRefreshItemsAtIndexPaths:(id)paths;
+- (void)dataSource:(id)source didRefreshSections:(id)sections;
+- (void)dataSource:(id)source didRemoveItemsAtIndexPaths:(id)paths;
+- (void)dataSource:(id)source didRemoveSections:(id)sections;
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info updateNotifier:(id)notifier;
+- (void)removeDataSource:(id)source;
+- (void)removeItemAtIndexPath:(id)path completionHandler:(id)handler;
 - (void)updateMappings;
 @end
 
@@ -60,22 +60,22 @@
   return v2;
 }
 
-- (id)_gkDescriptionWithChildren:(int64_t)a3
+- (id)_gkDescriptionWithChildren:(int64_t)children
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v6 = _gkTabStringForTabLevel();
   v32.receiver = self;
   v32.super_class = GKCollectionViewAggregateDataSource;
-  v27 = a3;
-  v7 = [(GKCollectionViewDataSource *)&v32 _gkDescriptionWithChildren:a3];
-  v8 = [MEMORY[0x277CCA900] newlineCharacterSet];
-  v9 = [v7 stringByTrimmingCharactersInSet:v8];
+  childrenCopy = children;
+  v7 = [(GKCollectionViewDataSource *)&v32 _gkDescriptionWithChildren:children];
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+  v9 = [v7 stringByTrimmingCharactersInSet:newlineCharacterSet];
 
   v25 = v9;
-  [v5 appendFormat:@"%@\n", v9];
+  [string appendFormat:@"%@\n", v9];
   v10 = v6;
-  [v5 appendFormat:@"%@    sections: {\n", v6];
+  [string appendFormat:@"%@    sections: {\n", v6];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
@@ -90,22 +90,22 @@
     {
       for (i = 0; i != v12; ++i)
       {
-        v15 = v5;
+        v15 = string;
         if (*v29 != v13)
         {
           objc_enumerationMutation(obj);
         }
 
         v16 = *(*(&v28 + 1) + 8 * i);
-        v17 = [v16 dataSource];
-        v18 = [v17 _gkDescriptionWithChildren:v27 + 2];
-        v19 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-        v20 = [v18 stringByTrimmingCharactersInSet:v19];
+        dataSource = [v16 dataSource];
+        v18 = [dataSource _gkDescriptionWithChildren:childrenCopy + 2];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+        v20 = [v18 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
         v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v16, "globalSectionForLocalSection:", 0)}];
-        v22 = [v16 dynamicTag];
-        v5 = v15;
-        [v15 appendFormat:@"%@        %@ - %@ - %@\n", v10, v21, v22, v20];
+        dynamicTag = [v16 dynamicTag];
+        string = v15;
+        [v15 appendFormat:@"%@        %@ - %@ - %@\n", v10, v21, dynamicTag, v20];
       }
 
       v12 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -114,11 +114,11 @@
     while (v12);
   }
 
-  [v5 appendFormat:@"    %@}\n", v10];
-  [v5 appendFormat:@"%@}\n", v10];
+  [string appendFormat:@"    %@}\n", v10];
+  [string appendFormat:@"%@}\n", v10];
   v23 = _gkUnicodifyDescription();
 
-  return v5;
+  return string;
 }
 
 - (id)_gkDescription
@@ -130,59 +130,59 @@
   return v2;
 }
 
-- (void)addDataSource:(id)a3 withTag:(id)a4
+- (void)addDataSource:(id)source withTag:(id)tag
 {
-  v21 = a3;
-  v6 = a4;
-  if (!v6)
+  sourceCopy = source;
+  tagCopy = tag;
+  if (!tagCopy)
   {
     v7 = MEMORY[0x277CCACA8];
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewAggregateDataSource.m"];
-    v10 = [v9 lastPathComponent];
-    v11 = [v7 stringWithFormat:@"%@ (tag != ((void*)0))\n[%s (%s:%d)]", v8, "-[GKCollectionViewAggregateDataSource addDataSource:withTag:]", objc_msgSend(v10, "UTF8String"), 77];
+    lastPathComponent = [v9 lastPathComponent];
+    v11 = [v7 stringWithFormat:@"%@ (tag != ((void*)0))\n[%s (%s:%d)]", v8, "-[GKCollectionViewAggregateDataSource addDataSource:withTag:]", objc_msgSend(lastPathComponent, "UTF8String"), 77];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v11}];
   }
 
-  v12 = [(NSMapTable *)self->_dataSourceToMappings objectForKeyedSubscript:v21];
+  v12 = [(NSMapTable *)self->_dataSourceToMappings objectForKeyedSubscript:sourceCopy];
   if (v12)
   {
     v13 = MEMORY[0x277CCACA8];
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"tried to add data source '%@' more than once: %@", v6, v21];
+    sourceCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"tried to add data source '%@' more than once: %@", tagCopy, sourceCopy];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewAggregateDataSource.m"];
-    v16 = [v15 lastPathComponent];
-    v17 = [v13 stringWithFormat:@"%@ (mappingForDataSource == nil)\n[%s (%s:%d)]", v14, "-[GKCollectionViewAggregateDataSource addDataSource:withTag:]", objc_msgSend(v16, "UTF8String"), 80];
+    lastPathComponent2 = [v15 lastPathComponent];
+    v17 = [v13 stringWithFormat:@"%@ (mappingForDataSource == nil)\n[%s (%s:%d)]", sourceCopy, "-[GKCollectionViewAggregateDataSource addDataSource:withTag:]", objc_msgSend(lastPathComponent2, "UTF8String"), 80];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v17}];
   }
 
   v18 = objc_alloc_init(GKAggregateMapping);
 
-  [(GKAggregateMapping *)v18 setDataSource:v21];
-  [(GKAggregateMapping *)v18 setDynamicTag:v6];
+  [(GKAggregateMapping *)v18 setDataSource:sourceCopy];
+  [(GKAggregateMapping *)v18 setDynamicTag:tagCopy];
   [(NSMutableArray *)self->_mappings addObject:v18];
-  [(NSMapTable *)self->_dataSourceToMappings setObject:v18 forKeyedSubscript:v21];
-  [v21 setDelegate:self];
+  [(NSMapTable *)self->_dataSourceToMappings setObject:v18 forKeyedSubscript:sourceCopy];
+  [sourceCopy setDelegate:self];
   [(GKCollectionViewAggregateDataSource *)self updateMappings];
-  v19 = [MEMORY[0x277CCAB58] indexSet];
-  if ([v21 numberOfSectionsInCollectionView:0])
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  if ([sourceCopy numberOfSectionsInCollectionView:0])
   {
     v20 = 0;
     do
     {
-      [v19 addIndex:{-[GKAggregateMapping globalSectionForLocalSection:](v18, "globalSectionForLocalSection:", v20++)}];
+      [indexSet addIndex:{-[GKAggregateMapping globalSectionForLocalSection:](v18, "globalSectionForLocalSection:", v20++)}];
     }
 
-    while (v20 < [v21 numberOfSectionsInCollectionView:0]);
+    while (v20 < [sourceCopy numberOfSectionsInCollectionView:0]);
   }
 
-  [(GKCollectionViewDataSource *)self notifySectionsInserted:v19];
+  [(GKCollectionViewDataSource *)self notifySectionsInserted:indexSet];
 }
 
-- (void)removeDataSource:(id)a3
+- (void)removeDataSource:(id)source
 {
-  v13 = a3;
+  sourceCopy = source;
   v4 = [(NSMapTable *)self->_dataSourceToMappings objectForKey:?];
 
   if (!v4)
@@ -190,29 +190,29 @@
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewAggregateDataSource.m"];
-    v8 = [v7 lastPathComponent];
-    v9 = [v5 stringWithFormat:@"%@ ([_dataSourceToMappings objectForKey:dataSource] != ((void*)0))\n[%s (%s:%d)]", v6, "-[GKCollectionViewAggregateDataSource removeDataSource:]", objc_msgSend(v8, "UTF8String"), 99];
+    lastPathComponent = [v7 lastPathComponent];
+    v9 = [v5 stringWithFormat:@"%@ ([_dataSourceToMappings objectForKey:dataSource] != ((void*)0))\n[%s (%s:%d)]", v6, "-[GKCollectionViewAggregateDataSource removeDataSource:]", objc_msgSend(lastPathComponent, "UTF8String"), 99];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v9}];
   }
 
-  [v13 setDelegate:0];
-  v10 = [(NSMapTable *)self->_dataSourceToMappings objectForKeyedSubscript:v13];
-  v11 = [MEMORY[0x277CCAB58] indexSet];
-  if ([v13 numberOfSectionsInCollectionView:0])
+  [sourceCopy setDelegate:0];
+  v10 = [(NSMapTable *)self->_dataSourceToMappings objectForKeyedSubscript:sourceCopy];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  if ([sourceCopy numberOfSectionsInCollectionView:0])
   {
     v12 = 0;
     do
     {
-      [v11 addIndex:{objc_msgSend(v10, "globalSectionForLocalSection:", v12++)}];
+      [indexSet addIndex:{objc_msgSend(v10, "globalSectionForLocalSection:", v12++)}];
     }
 
-    while (v12 < [v13 numberOfSectionsInCollectionView:0]);
+    while (v12 < [sourceCopy numberOfSectionsInCollectionView:0]);
   }
 
-  [(NSMapTable *)self->_dataSourceToMappings removeObjectForKey:v13];
+  [(NSMapTable *)self->_dataSourceToMappings removeObjectForKey:sourceCopy];
   [(NSMutableArray *)self->_mappings removeObject:v10];
-  [(GKCollectionViewDataSource *)self notifySectionsRemoved:v11];
+  [(GKCollectionViewDataSource *)self notifySectionsRemoved:indexSet];
   [(GKCollectionViewAggregateDataSource *)self updateMappings];
 }
 
@@ -268,52 +268,52 @@
   }
 }
 
-- (unint64_t)sectionForDataSource:(id)a3
+- (unint64_t)sectionForDataSource:(id)source
 {
-  v3 = [(GKCollectionViewAggregateDataSource *)self mappingForDataSource:a3];
+  v3 = [(GKCollectionViewAggregateDataSource *)self mappingForDataSource:source];
   v4 = [v3 globalSectionForLocalSection:0];
 
   return v4;
 }
 
-- (id)dataSourceForSection:(unint64_t)a3
+- (id)dataSourceForSection:(unint64_t)section
 {
   globalSectionToMappings = self->_globalSectionToMappings;
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
   v6 = [(NSMutableDictionary *)globalSectionToMappings objectForKeyedSubscript:v5];
 
-  v7 = [v6 dataSource];
-  v8 = [v7 dataSourceForSection:{objc_msgSend(v6, "localSectionForGlobalSection:", a3)}];
+  dataSource = [v6 dataSource];
+  v8 = [dataSource dataSourceForSection:{objc_msgSend(v6, "localSectionForGlobalSection:", section)}];
 
   return v8;
 }
 
-- (id)mappingForGlobalSection:(int64_t)a3
+- (id)mappingForGlobalSection:(int64_t)section
 {
   globalSectionToMappings = self->_globalSectionToMappings;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:section];
   v5 = [(NSMutableDictionary *)globalSectionToMappings objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (id)globalSectionsForLocal:(id)a3 dataSource:(id)a4
+- (id)globalSectionsForLocal:(id)local dataSource:(id)source
 {
   v6 = MEMORY[0x277CCAB58];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 indexSet];
-  v10 = [(GKCollectionViewAggregateDataSource *)self mappingForDataSource:v7];
+  sourceCopy = source;
+  localCopy = local;
+  indexSet = [v6 indexSet];
+  v10 = [(GKCollectionViewAggregateDataSource *)self mappingForDataSource:sourceCopy];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __73__GKCollectionViewAggregateDataSource_globalSectionsForLocal_dataSource___block_invoke;
   v16[3] = &unk_279669F60;
-  v11 = v9;
+  v11 = indexSet;
   v17 = v11;
   v18 = v10;
   v12 = v10;
-  [v8 enumerateIndexesUsingBlock:v16];
+  [localCopy enumerateIndexesUsingBlock:v16];
 
   v13 = v18;
   v14 = v11;
@@ -329,18 +329,18 @@ uint64_t __73__GKCollectionViewAggregateDataSource_globalSectionsForLocal_dataSo
   return [v2 addIndex:v3];
 }
 
-- (id)globalIndexPathsForLocal:(id)a3 dataSource:(id)a4
+- (id)globalIndexPathsForLocal:(id)local dataSource:(id)source
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
-  v9 = [(GKCollectionViewAggregateDataSource *)self mappingForDataSource:v7];
+  localCopy = local;
+  sourceCopy = source;
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(localCopy, "count")}];
+  v9 = [(GKCollectionViewAggregateDataSource *)self mappingForDataSource:sourceCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v6;
+  v10 = localCopy;
   v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
@@ -368,68 +368,68 @@ uint64_t __73__GKCollectionViewAggregateDataSource_globalSectionsForLocal_dataSo
   return v8;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   [(GKCollectionViewAggregateDataSource *)self updateMappings];
-  v7 = [(GKCollectionViewAggregateDataSource *)self mappingForGlobalSection:a4];
-  v8 = [v7 localSectionForGlobalSection:a4];
-  v9 = [(GKCollectionViewAggregateDataSource *)self wrapperForView:v6 mapping:v7];
+  v7 = [(GKCollectionViewAggregateDataSource *)self mappingForGlobalSection:section];
+  v8 = [v7 localSectionForGlobalSection:section];
+  v9 = [(GKCollectionViewAggregateDataSource *)self wrapperForView:viewCopy mapping:v7];
 
-  v10 = [v7 dataSource];
-  v11 = [v10 numberOfSectionsInCollectionView:v9];
+  dataSource = [v7 dataSource];
+  v11 = [dataSource numberOfSectionsInCollectionView:v9];
 
   if (v8 >= v11)
   {
     v12 = MEMORY[0x277CCACA8];
-    v13 = [v7 tagForGlobalSection:a4];
+    v13 = [v7 tagForGlobalSection:section];
     v14 = [v12 stringWithFormat:@"Internal consistency check failed: localSection index (%ld) in dataSource %@ not less than numberOfSections (%ld)", v8, v13, v11];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewAggregateDataSource.m"];
-    v16 = [v15 lastPathComponent];
-    v17 = [v12 stringWithFormat:@"%@ (localSection < numberOfSections)\n[%s (%s:%d)]", v14, "-[GKCollectionViewAggregateDataSource collectionView:numberOfItemsInSection:]", objc_msgSend(v16, "UTF8String"), 187];
+    lastPathComponent = [v15 lastPathComponent];
+    v17 = [v12 stringWithFormat:@"%@ (localSection < numberOfSections)\n[%s (%s:%d)]", v14, "-[GKCollectionViewAggregateDataSource collectionView:numberOfItemsInSection:]", objc_msgSend(lastPathComponent, "UTF8String"), 187];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v17}];
   }
 
-  v18 = [v7 dataSource];
-  v19 = [v18 collectionView:v9 numberOfItemsInSection:v8];
+  dataSource2 = [v7 dataSource];
+  v19 = [dataSource2 collectionView:v9 numberOfItemsInSection:v8];
 
   return v19;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[GKCollectionViewAggregateDataSource mappingForGlobalSection:](self, "mappingForGlobalSection:", [v6 section]);
-  v9 = [v8 localIndexPathForGlobalIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[GKCollectionViewAggregateDataSource mappingForGlobalSection:](self, "mappingForGlobalSection:", [pathCopy section]);
+  v9 = [v8 localIndexPathForGlobalIndexPath:pathCopy];
 
-  v10 = [v8 dataSource];
-  v11 = [(GKCollectionViewAggregateDataSource *)self wrapperForView:v7 mapping:v8];
+  dataSource = [v8 dataSource];
+  v11 = [(GKCollectionViewAggregateDataSource *)self wrapperForView:viewCopy mapping:v8];
 
-  v12 = [v10 collectionView:v11 cellForItemAtIndexPath:v9];
+  v12 = [dataSource collectionView:v11 cellForItemAtIndexPath:v9];
 
   return v12;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(GKCollectionViewAggregateDataSource *)self collectionView:v8 evaluateFactoryForSupplementaryElementOfKind:v9 atIndexPath:v10 isRecursive:1];
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  v11 = [(GKCollectionViewAggregateDataSource *)self collectionView:viewCopy evaluateFactoryForSupplementaryElementOfKind:kindCopy atIndexPath:pathCopy isRecursive:1];
   if (!v11)
   {
-    v12 = -[GKCollectionViewAggregateDataSource mappingForGlobalSection:](self, "mappingForGlobalSection:", [v10 section]);
-    v13 = [v12 dataSource];
+    v12 = -[GKCollectionViewAggregateDataSource mappingForGlobalSection:](self, "mappingForGlobalSection:", [pathCopy section]);
+    dataSource = [v12 dataSource];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [v12 localIndexPathForGlobalIndexPath:v10];
-      v16 = [(GKCollectionViewAggregateDataSource *)self wrapperForView:v8 mapping:v12];
-      v17 = [v12 dataSource];
-      v18 = [v17 collectionView:v16 viewForSupplementaryElementOfKind:v9 atIndexPath:v15];
+      v15 = [v12 localIndexPathForGlobalIndexPath:pathCopy];
+      v16 = [(GKCollectionViewAggregateDataSource *)self wrapperForView:viewCopy mapping:v12];
+      dataSource2 = [v12 dataSource];
+      v18 = [dataSource2 collectionView:v16 viewForSupplementaryElementOfKind:kindCopy atIndexPath:v15];
 
       if (v18)
       {
@@ -441,7 +441,7 @@ uint64_t __73__GKCollectionViewAggregateDataSource_globalSectionsForLocal_dataSo
     {
     }
 
-    v11 = [(GKCollectionViewDataSource *)self collectionView:v8 defaultViewForSupplementaryElementOfKind:v9 atIndexPath:v10];
+    v11 = [(GKCollectionViewDataSource *)self collectionView:viewCopy defaultViewForSupplementaryElementOfKind:kindCopy atIndexPath:pathCopy];
   }
 
   v18 = v11;
@@ -450,25 +450,25 @@ LABEL_8:
   return v18;
 }
 
-- (id)collectionView:(id)a3 evaluateFactoryForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5 isRecursive:(BOOL)a6
+- (id)collectionView:(id)view evaluateFactoryForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path isRecursive:(BOOL)recursive
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (v6)
+  recursiveCopy = recursive;
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  v13 = pathCopy;
+  if (recursiveCopy)
   {
-    v14 = -[GKCollectionViewAggregateDataSource mappingForGlobalSection:](self, "mappingForGlobalSection:", [v12 section]);
-    v15 = [v14 dataSource];
+    v14 = -[GKCollectionViewAggregateDataSource mappingForGlobalSection:](self, "mappingForGlobalSection:", [pathCopy section]);
+    dataSource = [v14 dataSource];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
       v17 = [v14 localIndexPathForGlobalIndexPath:v13];
-      v18 = [(GKCollectionViewAggregateDataSource *)self wrapperForView:v10 mapping:v14];
-      v19 = [v14 dataSource];
-      v20 = [v19 collectionView:v18 evaluateFactoryForSupplementaryElementOfKind:v11 atIndexPath:v17 isRecursive:1];
+      v18 = [(GKCollectionViewAggregateDataSource *)self wrapperForView:viewCopy mapping:v14];
+      dataSource2 = [v14 dataSource];
+      v20 = [dataSource2 collectionView:v18 evaluateFactoryForSupplementaryElementOfKind:kindCopy atIndexPath:v17 isRecursive:1];
 
       if (v20)
       {
@@ -483,21 +483,21 @@ LABEL_8:
 
   v22.receiver = self;
   v22.super_class = GKCollectionViewAggregateDataSource;
-  v20 = [(GKCollectionViewDataSource *)&v22 collectionView:v10 evaluateFactoryForSupplementaryElementOfKind:v11 atIndexPath:v13 isRecursive:0];
+  v20 = [(GKCollectionViewDataSource *)&v22 collectionView:viewCopy evaluateFactoryForSupplementaryElementOfKind:kindCopy atIndexPath:v13 isRecursive:0];
 LABEL_7:
 
   return v20;
 }
 
-- (id)createMetricsTreeWithGridLayout:(id)a3
+- (id)createMetricsTreeWithGridLayout:(id)layout
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layoutCopy = layout;
   v21.receiver = self;
   v21.super_class = GKCollectionViewAggregateDataSource;
-  v5 = [(GKCollectionViewDataSource *)&v21 createMetricsTreeWithGridLayout:v4];
-  v6 = [v4 collectionView];
-  v7 = [(GKCollectionViewAggregateDataSource *)self numberOfSectionsInCollectionView:v6];
+  v5 = [(GKCollectionViewDataSource *)&v21 createMetricsTreeWithGridLayout:layoutCopy];
+  collectionView = [layoutCopy collectionView];
+  v7 = [(GKCollectionViewAggregateDataSource *)self numberOfSectionsInCollectionView:collectionView];
 
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSMutableArray count](self->_mappings, "count")}];
   v17 = 0u;
@@ -519,8 +519,8 @@ LABEL_7:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * i) dataSource];
-        v15 = [v14 createMetricsTreeWithGridLayout:v4];
+        dataSource = [*(*(&v17 + 1) + 8 * i) dataSource];
+        v15 = [dataSource createMetricsTreeWithGridLayout:layoutCopy];
 
         [v8 addObject:v15];
       }
@@ -537,19 +537,19 @@ LABEL_7:
   return v5;
 }
 
-- (void)collectionViewWillBecomeActive:(id)a3
+- (void)collectionViewWillBecomeActive:(id)active
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activeCopy = active;
   v15.receiver = self;
   v15.super_class = GKCollectionViewAggregateDataSource;
-  [(GKCollectionViewDataSource *)&v15 collectionViewWillBecomeActive:v4];
+  [(GKCollectionViewDataSource *)&v15 collectionViewWillBecomeActive:activeCopy];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(GKCollectionViewAggregateDataSource *)self allDataSources];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  allDataSources = [(GKCollectionViewAggregateDataSource *)self allDataSources];
+  v6 = [allDataSources countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -561,40 +561,40 @@ LABEL_7:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allDataSources);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v10 collectionViewWillBecomeActive:v4];
+          [v10 collectionViewWillBecomeActive:activeCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v7 = [allDataSources countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)collectionViewDidBecomeInactive:(id)a3
+- (void)collectionViewDidBecomeInactive:(id)inactive
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inactiveCopy = inactive;
   v15.receiver = self;
   v15.super_class = GKCollectionViewAggregateDataSource;
-  [(GKCollectionViewDataSource *)&v15 collectionViewDidBecomeInactive:v4];
+  [(GKCollectionViewDataSource *)&v15 collectionViewDidBecomeInactive:inactiveCopy];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(GKCollectionViewAggregateDataSource *)self allDataSources];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  allDataSources = [(GKCollectionViewAggregateDataSource *)self allDataSources];
+  v6 = [allDataSources countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -606,21 +606,21 @@ LABEL_7:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allDataSources);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v10 collectionViewDidBecomeInactive:v4];
+          [v10 collectionViewDidBecomeInactive:inactiveCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v7 = [allDataSources countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v7);
@@ -651,8 +651,8 @@ LABEL_7:
         }
 
         v9 = [(NSMapTable *)self->_dataSourceToMappings objectForKeyedSubscript:*(*(&v12 + 1) + 8 * i), v12];
-        v10 = [v9 dataSource];
-        [v3 addObject:v10];
+        dataSource = [v9 dataSource];
+        [v3 addObject:dataSource];
       }
 
       v6 = [(NSMapTable *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -664,23 +664,23 @@ LABEL_7:
   return v3;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[GKCollectionViewAggregateDataSource mappingForGlobalSection:](self, "mappingForGlobalSection:", [v4 section]);
-  v6 = [v5 localIndexPathForGlobalIndexPath:v4];
+  pathCopy = path;
+  v5 = -[GKCollectionViewAggregateDataSource mappingForGlobalSection:](self, "mappingForGlobalSection:", [pathCopy section]);
+  v6 = [v5 localIndexPathForGlobalIndexPath:pathCopy];
 
-  v7 = [v5 dataSource];
-  v8 = [v7 itemAtIndexPath:v6];
+  dataSource = [v5 dataSource];
+  v8 = [dataSource itemAtIndexPath:v6];
 
   return v8;
 }
 
-- (id)indexPathsForItem:(id)a3
+- (id)indexPathsForItem:(id)item
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v16 = [MEMORY[0x277CBEB18] array];
+  itemCopy = item;
+  array = [MEMORY[0x277CBEB18] array];
   [(GKCollectionViewAggregateDataSource *)self allDataSources];
   v19 = 0u;
   v20 = 0u;
@@ -702,7 +702,7 @@ LABEL_7:
 
         v10 = *(*(&v19 + 1) + 8 * i);
         v11 = [(GKCollectionViewAggregateDataSource *)self mappingForDataSource:v10];
-        v12 = [v10 indexPathsForItem:v4];
+        v12 = [v10 indexPathsForItem:itemCopy];
         if (v12)
         {
           v13 = v12;
@@ -713,7 +713,7 @@ LABEL_7:
           v18 = v11;
           v14 = [v13 _gkMapWithBlock:v17];
 
-          [v16 addObjectsFromArray:v14];
+          [array addObjectsFromArray:v14];
         }
       }
 
@@ -723,38 +723,38 @@ LABEL_7:
     while (v7);
   }
 
-  return v16;
+  return array;
 }
 
-- (BOOL)item:(id)a3 matchesSearchTerms:(id)a4 inSection:(int64_t)a5
+- (BOOL)item:(id)item matchesSearchTerms:(id)terms inSection:(int64_t)section
 {
   globalSectionToMappings = self->_globalSectionToMappings;
   v8 = MEMORY[0x277CCABB0];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 numberWithInteger:a5];
+  termsCopy = terms;
+  itemCopy = item;
+  v11 = [v8 numberWithInteger:section];
   v12 = [(NSMutableDictionary *)globalSectionToMappings objectForKeyedSubscript:v11];
 
-  v13 = [v12 dataSource];
-  LOBYTE(a5) = [v13 item:v10 matchesSearchTerms:v9 inSection:{objc_msgSend(v12, "localSectionForGlobalSection:", a5)}];
+  dataSource = [v12 dataSource];
+  LOBYTE(section) = [dataSource item:itemCopy matchesSearchTerms:termsCopy inSection:{objc_msgSend(v12, "localSectionForGlobalSection:", section)}];
 
-  return a5;
+  return section;
 }
 
-- (void)configureCollectionView:(id)a3
+- (void)configureCollectionView:(id)view
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   [(GKCollectionViewAggregateDataSource *)self updateMappings];
-  v5 = [(GKCollectionViewAggregateDataSource *)self allDataSources];
+  allDataSources = [(GKCollectionViewAggregateDataSource *)self allDataSources];
   v18.receiver = self;
   v18.super_class = GKCollectionViewAggregateDataSource;
-  [(GKCollectionViewDataSource *)&v18 configureCollectionView:v4];
+  [(GKCollectionViewDataSource *)&v18 configureCollectionView:viewCopy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v5;
+  v6 = allDataSources;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v7)
   {
@@ -771,7 +771,7 @@ LABEL_7:
 
         v11 = *(*(&v14 + 1) + 8 * i);
         v12 = [(GKCollectionViewAggregateDataSource *)self mappingForDataSource:v11, v14];
-        v13 = [(GKCollectionViewAggregateDataSource *)self wrapperForView:v4 mapping:v12];
+        v13 = [(GKCollectionViewAggregateDataSource *)self wrapperForView:viewCopy mapping:v12];
         [v11 configureCollectionView:v13];
       }
 
@@ -782,31 +782,31 @@ LABEL_7:
   }
 }
 
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4 updateNotifier:(id)a5
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info updateNotifier:(id)notifier
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277D0C250] updateGroup];
-  v11 = [(GKCollectionViewAggregateDataSource *)self allDataSources];
+  infoCopy = info;
+  notifierCopy = notifier;
+  updateGroup = [MEMORY[0x277D0C250] updateGroup];
+  allDataSources = [(GKCollectionViewAggregateDataSource *)self allDataSources];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __90__GKCollectionViewAggregateDataSource_refreshContentsForDataType_userInfo_updateNotifier___block_invoke;
   v19[3] = &unk_27966DB48;
-  v12 = v10;
-  v22 = a3;
+  v12 = updateGroup;
+  typeCopy = type;
   v20 = v12;
-  v21 = v8;
-  v13 = v8;
-  [v11 enumerateObjectsUsingBlock:v19];
+  v21 = infoCopy;
+  v13 = infoCopy;
+  [allDataSources enumerateObjectsUsingBlock:v19];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __90__GKCollectionViewAggregateDataSource_refreshContentsForDataType_userInfo_updateNotifier___block_invoke_3;
   v16[3] = &unk_279669E48;
-  v17 = v9;
+  v17 = notifierCopy;
   v18 = v12;
   v14 = v12;
-  v15 = v9;
+  v15 = notifierCopy;
   [v14 join:v16];
 }
 
@@ -825,91 +825,91 @@ void __90__GKCollectionViewAggregateDataSource_refreshContentsForDataType_userIn
   [v4 performOnQueue:MEMORY[0x277D85CD0] block:v6];
 }
 
-- (void)removeItemAtIndexPath:(id)a3 completionHandler:(id)a4
+- (void)removeItemAtIndexPath:(id)path completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = -[GKCollectionViewAggregateDataSource mappingForGlobalSection:](self, "mappingForGlobalSection:", [v7 section]);
-  v8 = [v10 localIndexPathForGlobalIndexPath:v7];
+  handlerCopy = handler;
+  pathCopy = path;
+  v10 = -[GKCollectionViewAggregateDataSource mappingForGlobalSection:](self, "mappingForGlobalSection:", [pathCopy section]);
+  v8 = [v10 localIndexPathForGlobalIndexPath:pathCopy];
 
-  v9 = [v10 dataSource];
-  [v9 removeItemAtIndexPath:v8 completionHandler:v6];
+  dataSource = [v10 dataSource];
+  [dataSource removeItemAtIndexPath:v8 completionHandler:handlerCopy];
 }
 
-- (void)dataSource:(id)a3 didInsertItemsAtIndexPaths:(id)a4
+- (void)dataSource:(id)source didInsertItemsAtIndexPaths:(id)paths
 {
-  v5 = [(GKCollectionViewAggregateDataSource *)self globalIndexPathsForLocal:a4 dataSource:a3];
+  v5 = [(GKCollectionViewAggregateDataSource *)self globalIndexPathsForLocal:paths dataSource:source];
   [(GKCollectionViewDataSource *)self notifyItemsInsertedAtIndexPaths:v5];
 }
 
-- (void)dataSource:(id)a3 didRemoveItemsAtIndexPaths:(id)a4
+- (void)dataSource:(id)source didRemoveItemsAtIndexPaths:(id)paths
 {
-  v5 = [(GKCollectionViewAggregateDataSource *)self globalIndexPathsForLocal:a4 dataSource:a3];
+  v5 = [(GKCollectionViewAggregateDataSource *)self globalIndexPathsForLocal:paths dataSource:source];
   [(GKCollectionViewDataSource *)self notifyItemsRemovedAtIndexPaths:v5];
 }
 
-- (void)dataSource:(id)a3 didRefreshItemsAtIndexPaths:(id)a4
+- (void)dataSource:(id)source didRefreshItemsAtIndexPaths:(id)paths
 {
-  v5 = [(GKCollectionViewAggregateDataSource *)self globalIndexPathsForLocal:a4 dataSource:a3];
+  v5 = [(GKCollectionViewAggregateDataSource *)self globalIndexPathsForLocal:paths dataSource:source];
   [(GKCollectionViewDataSource *)self notifyItemsRefreshedAtIndexPaths:v5];
 }
 
-- (void)dataSource:(id)a3 didMoveItemAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)dataSource:(id)source didMoveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v8 = a5;
-  v9 = a4;
-  v12 = [(GKCollectionViewAggregateDataSource *)self mappingForDataSource:a3];
-  v10 = [v12 globalIndexPathForLocalIndexPath:v9];
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  v12 = [(GKCollectionViewAggregateDataSource *)self mappingForDataSource:source];
+  v10 = [v12 globalIndexPathForLocalIndexPath:pathCopy];
 
-  v11 = [v12 globalIndexPathForLocalIndexPath:v8];
+  v11 = [v12 globalIndexPathForLocalIndexPath:indexPathCopy];
 
   [(GKCollectionViewDataSource *)self notifyItemMovedFromIndexPath:v10 toIndexPaths:v11];
 }
 
-- (void)dataSource:(id)a3 didInsertSections:(id)a4
+- (void)dataSource:(id)source didInsertSections:(id)sections
 {
-  if (a4)
+  if (sections)
   {
-    v6 = a4;
-    v7 = a3;
+    sectionsCopy = sections;
+    sourceCopy = source;
     [(GKCollectionViewAggregateDataSource *)self updateMappings];
-    v8 = [(GKCollectionViewAggregateDataSource *)self globalSectionsForLocal:v6 dataSource:v7];
+    v8 = [(GKCollectionViewAggregateDataSource *)self globalSectionsForLocal:sectionsCopy dataSource:sourceCopy];
 
     [(GKCollectionViewDataSource *)self notifySectionsInserted:v8];
   }
 }
 
-- (void)dataSource:(id)a3 didRemoveSections:(id)a4
+- (void)dataSource:(id)source didRemoveSections:(id)sections
 {
-  if (a4)
+  if (sections)
   {
-    v5 = [(GKCollectionViewAggregateDataSource *)self globalSectionsForLocal:a4 dataSource:a3];
+    v5 = [(GKCollectionViewAggregateDataSource *)self globalSectionsForLocal:sections dataSource:source];
     [(GKCollectionViewDataSource *)self notifySectionsRemoved:v5];
     [(GKCollectionViewAggregateDataSource *)self updateMappings];
   }
 }
 
-- (void)dataSource:(id)a3 didRefreshSections:(id)a4
+- (void)dataSource:(id)source didRefreshSections:(id)sections
 {
-  if (a4)
+  if (sections)
   {
-    v5 = [(GKCollectionViewAggregateDataSource *)self globalSectionsForLocal:a4 dataSource:a3];
+    v5 = [(GKCollectionViewAggregateDataSource *)self globalSectionsForLocal:sections dataSource:source];
     [(GKCollectionViewDataSource *)self notifySectionsRefreshed:v5];
     [(GKCollectionViewAggregateDataSource *)self updateMappings];
   }
 }
 
-- (void)dataSource:(id)a3 didMoveSection:(int64_t)a4 toSection:(int64_t)a5
+- (void)dataSource:(id)source didMoveSection:(int64_t)section toSection:(int64_t)toSection
 {
-  v8 = [(GKCollectionViewAggregateDataSource *)self mappingForDataSource:a3];
-  -[GKCollectionViewDataSource notifySectionMovedFrom:to:](self, "notifySectionMovedFrom:to:", [v8 globalSectionForLocalSection:a4], objc_msgSend(v8, "globalSectionForLocalSection:", a5));
+  v8 = [(GKCollectionViewAggregateDataSource *)self mappingForDataSource:source];
+  -[GKCollectionViewDataSource notifySectionMovedFrom:to:](self, "notifySectionMovedFrom:to:", [v8 globalSectionForLocalSection:section], objc_msgSend(v8, "globalSectionForLocalSection:", toSection));
   [(GKCollectionViewAggregateDataSource *)self updateMappings];
 }
 
-- (BOOL)containsDataSource:(id)a3
+- (BOOL)containsDataSource:(id)source
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sourceCopy = source;
   [(GKCollectionViewAggregateDataSource *)self allDataSources];
   v10 = 0u;
   v11 = 0u;
@@ -928,7 +928,7 @@ void __90__GKCollectionViewAggregateDataSource_refreshContentsForDataType_userIn
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) containsDataSource:{v4, v10}])
+        if ([*(*(&v10 + 1) + 8 * i) containsDataSource:{sourceCopy, v10}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;

@@ -7,23 +7,23 @@
 - (CSAudioRouteChangeMonitorImpl)init;
 - (int64_t)hearstRouteStatus;
 - (void)_fetchAndNotifyHearstRouteStatus;
-- (void)_fetchHearstRouteStatusWithCompletion:(id)a3;
-- (void)_notifyHearstRouteStatus:(int64_t)a3;
-- (void)_notifyJarvisConnectionState:(BOOL)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_fetchHearstRouteStatusWithCompletion:(id)completion;
+- (void)_notifyHearstRouteStatus:(int64_t)status;
+- (void)_notifyJarvisConnectionState:(BOOL)state;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_startObservingAudioRouteChange;
 - (void)_startObservingSystemControllerLifecycle;
 - (void)_stopMonitoring;
-- (void)_systemControllerDied:(id)a3;
+- (void)_systemControllerDied:(id)died;
 - (void)_updateMonitoringForHearstHijackability;
-- (void)carPlayAuxStreamSupportDidChange:(id)a3;
-- (void)carPlayIsConnectedDidChange:(id)a3;
-- (void)getHearstOwnershipStatus:(id)a3;
-- (void)getHearstRouteStatus:(id)a3;
-- (void)getJarvisConnected:(id)a3;
+- (void)carPlayAuxStreamSupportDidChange:(id)change;
+- (void)carPlayIsConnectedDidChange:(id)change;
+- (void)getHearstOwnershipStatus:(id)status;
+- (void)getHearstRouteStatus:(id)status;
+- (void)getJarvisConnected:(id)connected;
 - (void)hearstHijackEligibilityUpdated;
-- (void)pickableRoutesDidChange:(id)a3;
-- (void)preferredExternalRouteDidChange:(id)a3;
+- (void)pickableRoutesDidChange:(id)change;
+- (void)preferredExternalRouteDidChange:(id)change;
 @end
 
 @implementation CSAudioRouteChangeMonitorImpl
@@ -79,8 +79,8 @@
 - (BOOL)_fetchHearstConnectionState
 {
   v30 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  v3 = [v2 attributeForKey:*MEMORY[0x1E69AEAE0]];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  v3 = [mEMORY[0x1E69AED08] attributeForKey:*MEMORY[0x1E69AEAE0]];
 
   v27 = 0u;
   v28 = 0u;
@@ -126,19 +126,19 @@ LABEL_12:
       v15 = v8;
       v16 = v4;
       v18 = v17 = v9;
-      v24 = [v18 BOOLValue];
+      bOOLValue = [v18 BOOLValue];
 
       v9 = v17;
       v4 = v16;
       v8 = v15;
       v7 = v14;
 
-      if (v24)
+      if (bOOLValue)
       {
         v19 = [v11 objectForKey:*MEMORY[0x1E69AEC10]];
-        v20 = [v19 BOOLValue];
+        bOOLValue2 = [v19 BOOLValue];
 
-        if (v20)
+        if (bOOLValue2)
         {
           v21 = 1;
           goto LABEL_16;
@@ -173,21 +173,21 @@ uint64_t __65__CSAudioRouteChangeMonitorImpl__fetchAndNotifyHearstRouteStatus__b
 - (BOOL)carPlayConnected
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  v4 = [v3 attributeForKey:*MEMORY[0x1E69AEA60]];
-  v5 = [v4 BOOLValue];
+  date = [MEMORY[0x1E695DF00] date];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  v4 = [mEMORY[0x1E69AED08] attributeForKey:*MEMORY[0x1E69AEA60]];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = [MEMORY[0x1E695DF00] date];
+  date2 = [MEMORY[0x1E695DF00] date];
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    [v6 timeIntervalSinceDate:v2];
+    [date2 timeIntervalSinceDate:date];
     v10 = @"NO";
     v14 = "[CSAudioRouteChangeMonitorImpl carPlayConnected]";
     v13 = 136315650;
-    if (v5)
+    if (bOOLValue)
     {
       v10 = @"YES";
     }
@@ -200,36 +200,36 @@ uint64_t __65__CSAudioRouteChangeMonitorImpl__fetchAndNotifyHearstRouteStatus__b
   }
 
   v11 = *MEMORY[0x1E69E9840];
-  return v5;
+  return bOOLValue;
 }
 
 - (void)_startObservingSystemControllerLifecycle
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = MEMORY[0x1E69AECB0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69AECB0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AECB0] object:0];
 
   v9 = [MEMORY[0x1E695DEC8] arrayWithObject:*v4];
-  v5 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v5 setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [mEMORY[0x1E69AED08] setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v7 = *v4;
-  v8 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v6 addObserver:self selector:sel__systemControllerDied_ name:v7 object:v8];
+  mEMORY[0x1E69AED08]2 = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [defaultCenter2 addObserver:self selector:sel__systemControllerDied_ name:v7 object:mEMORY[0x1E69AED08]2];
 }
 
-- (void)_systemControllerDied:(id)a3
+- (void)_systemControllerDied:(id)died
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  diedCopy = died;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[CSAudioRouteChangeMonitorImpl _systemControllerDied:]";
     v9 = 2114;
-    v10 = v4;
+    v10 = diedCopy;
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s notification = %{public}@", &v7, 0x16u);
   }
 
@@ -243,9 +243,9 @@ uint64_t __65__CSAudioRouteChangeMonitorImpl__fetchAndNotifyHearstRouteStatus__b
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyJarvisConnectionState:(BOOL)a3
+- (void)_notifyJarvisConnectionState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v13 = *MEMORY[0x1E69E9840];
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -253,17 +253,17 @@ uint64_t __65__CSAudioRouteChangeMonitorImpl__fetchAndNotifyHearstRouteStatus__b
     *buf = 136315394;
     v10 = "[CSAudioRouteChangeMonitorImpl _notifyJarvisConnectionState:]";
     v11 = 1026;
-    v12 = v3;
+    v12 = stateCopy;
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s Notifying Jarvis Connection State : %{public}d", buf, 0x12u);
   }
 
-  self->_isJarvisConnected = v3;
+  self->_isJarvisConnected = stateCopy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__CSAudioRouteChangeMonitorImpl__notifyJarvisConnectionState___block_invoke;
   v7[3] = &unk_1E865CA18;
   v7[4] = self;
-  v8 = v3;
+  v8 = stateCopy;
   [(CSEventMonitor *)self enumerateObserversInQueue:v7];
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -278,21 +278,21 @@ void __62__CSAudioRouteChangeMonitorImpl__notifyJarvisConnectionState___block_in
   }
 }
 
-- (void)_notifyHearstRouteStatus:(int64_t)a3
+- (void)_notifyHearstRouteStatus:(int64_t)status
 {
   v15 = *MEMORY[0x1E69E9840];
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    if (a3 > 6)
+    if (status > 6)
     {
       v7 = @"(unknown)";
     }
 
     else
     {
-      v7 = off_1E865C1A8[a3];
+      v7 = off_1E865C1A8[status];
     }
 
     v8 = v7;
@@ -308,7 +308,7 @@ void __62__CSAudioRouteChangeMonitorImpl__notifyJarvisConnectionState___block_in
   v10[2] = __58__CSAudioRouteChangeMonitorImpl__notifyHearstRouteStatus___block_invoke;
   v10[3] = &unk_1E865CA68;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = status;
   [(CSEventMonitor *)self enumerateObserversInQueue:v10];
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -330,15 +330,15 @@ void __58__CSAudioRouteChangeMonitorImpl__notifyHearstRouteStatus___block_invoke
 - (BOOL)_fetchJarvisConnectionState
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  v3 = [v2 attributeForKey:*MEMORY[0x1E69AEA60]];
-  v4 = [v3 BOOLValue];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  v3 = [mEMORY[0x1E69AED08] attributeForKey:*MEMORY[0x1E69AEA60]];
+  bOOLValue = [v3 BOOLValue];
 
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v4)
+    if (bOOLValue)
     {
       v6 = @"YES";
     }
@@ -350,17 +350,17 @@ void __58__CSAudioRouteChangeMonitorImpl__notifyHearstRouteStatus___block_invoke
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s General CarPlay is connected ? %{public}@", &v13, 0x16u);
   }
 
-  if (v4)
+  if (bOOLValue)
   {
-    v7 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-    v8 = [v7 attributeForKey:*MEMORY[0x1E69AEA48]];
-    v4 = [v8 BOOLValue];
+    mEMORY[0x1E69AED08]2 = [MEMORY[0x1E69AED08] sharedAVSystemController];
+    v8 = [mEMORY[0x1E69AED08]2 attributeForKey:*MEMORY[0x1E69AEA48]];
+    bOOLValue = [v8 BOOLValue];
 
     v9 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v10 = @"NO";
-      if (v4)
+      if (bOOLValue)
       {
         v10 = @"YES";
       }
@@ -374,14 +374,14 @@ void __58__CSAudioRouteChangeMonitorImpl__notifyHearstRouteStatus___block_invoke
   }
 
   v11 = *MEMORY[0x1E69E9840];
-  return v4;
+  return bOOLValue;
 }
 
-- (void)_fetchHearstRouteStatusWithCompletion:(id)a3
+- (void)_fetchHearstRouteStatusWithCompletion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CSAudioRouteChangeMonitorImpl *)self _fetchHearstConnectionState];
+  completionCopy = completion;
+  _fetchHearstConnectionState = [(CSAudioRouteChangeMonitorImpl *)self _fetchHearstConnectionState];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -403,7 +403,7 @@ void __58__CSAudioRouteChangeMonitorImpl__notifyHearstRouteStatus___block_invoke
   else
   {
     v7 = v23;
-    if (v5)
+    if (_fetchHearstConnectionState)
     {
       v8 = 4;
     }
@@ -415,8 +415,8 @@ void __58__CSAudioRouteChangeMonitorImpl__notifyHearstRouteStatus___block_invoke
   }
 
   v7[3] = v8;
-  v9 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  v10 = [v9 attributeForKey:*MEMORY[0x1E69AEAF8]];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  v10 = [mEMORY[0x1E69AED08] attributeForKey:*MEMORY[0x1E69AEAF8]];
 
   v11 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -430,7 +430,7 @@ void __58__CSAudioRouteChangeMonitorImpl__notifyHearstRouteStatus___block_invoke
 
   if (!v10 || ([v10 objectForKey:*MEMORY[0x1E69AEC80]], v12 = objc_claimAutoreleasedReturnValue(), v13 = v12 == 0, v12, v13))
   {
-    if (v4)
+    if (completionCopy)
     {
       if ([(CSAudioRouteChangeMonitor *)self isHearstHijackable])
       {
@@ -450,7 +450,7 @@ void __58__CSAudioRouteChangeMonitorImpl__notifyHearstRouteStatus___block_invoke
         v16 = v23[3];
       }
 
-      v4[2](v4, v16);
+      completionCopy[2](completionCopy, v16);
     }
   }
 
@@ -463,7 +463,7 @@ void __58__CSAudioRouteChangeMonitorImpl__notifyHearstRouteStatus___block_invoke
     v18[3] = &unk_1E865ADB0;
     v19 = v10;
     v21 = &v22;
-    v20 = v4;
+    v20 = completionCopy;
     [(CSAudioRouteChangeMonitor *)self routeIsDoAPSupportedWithRouteUID:v14 withCompletion:v18];
   }
 
@@ -522,8 +522,8 @@ LABEL_7:
 - (BOOL)_isHearstConnectedButNotRouted
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  v3 = [v2 attributeForKey:*MEMORY[0x1E69AEAE0]];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  v3 = [mEMORY[0x1E69AED08] attributeForKey:*MEMORY[0x1E69AEAE0]];
 
   v19 = 0u;
   v20 = 0u;
@@ -561,9 +561,9 @@ LABEL_11:
         }
 
         v13 = [v10 objectForKey:*MEMORY[0x1E69AEBE8]];
-        v14 = [v13 BOOLValue];
+        bOOLValue = [v13 BOOLValue];
 
-        if (v14)
+        if (bOOLValue)
         {
           LOBYTE(v5) = 1;
           goto LABEL_14;
@@ -585,8 +585,8 @@ LABEL_14:
 - (void)_stopMonitoring
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   stateCapture = self->_stateCapture;
   if (stateCapture)
@@ -609,31 +609,31 @@ LABEL_14:
 
 - (void)_startObservingAudioRouteChange
 {
-  v13 = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
   v3 = MEMORY[0x1E69AEAE8];
   v4 = MEMORY[0x1E69AEB28];
   v5 = *MEMORY[0x1E69AEB28];
   v6 = MEMORY[0x1E69AEA58];
   v7 = MEMORY[0x1E69AEA68];
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:{*MEMORY[0x1E69AEAE8], *MEMORY[0x1E69AEB28], *MEMORY[0x1E69AEA58], *MEMORY[0x1E69AEA68], 0}];
-  [v13 setAttribute:v8 forKey:*MEMORY[0x1E69AECE0] error:0];
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 addObserver:self selector:sel_pickableRoutesDidChange_ name:*v3 object:v13];
+  [mEMORY[0x1E69AED08] setAttribute:v8 forKey:*MEMORY[0x1E69AECE0] error:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_pickableRoutesDidChange_ name:*v3 object:mEMORY[0x1E69AED08]];
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 addObserver:self selector:sel_preferredExternalRouteDidChange_ name:*v4 object:v13];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_preferredExternalRouteDidChange_ name:*v4 object:mEMORY[0x1E69AED08]];
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 addObserver:self selector:sel_carPlayAuxStreamSupportDidChange_ name:*v6 object:v13];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_carPlayAuxStreamSupportDidChange_ name:*v6 object:mEMORY[0x1E69AED08]];
 
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v12 addObserver:self selector:sel_carPlayIsConnectedDidChange_ name:*v7 object:v13];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel_carPlayIsConnectedDidChange_ name:*v7 object:mEMORY[0x1E69AED08]];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queueCopy = queue;
   [(CSAudioRouteChangeMonitorImpl *)self _startObservingSystemControllerLifecycle];
   [(CSAudioRouteChangeMonitorImpl *)self _startObservingAudioRouteChange];
   v5 = CSLogContextFacilityCoreSpeech;
@@ -724,10 +724,10 @@ void __59__CSAudioRouteChangeMonitorImpl__startMonitoringWithQueue___block_invok
   [v4 setStateDataTitle:@"CoreSpeech-AccessoryDeviceConnectionStateCapture"];
 }
 
-- (void)carPlayIsConnectedDidChange:(id)a3
+- (void)carPlayIsConnectedDidChange:(id)change
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -751,7 +751,7 @@ void __59__CSAudioRouteChangeMonitorImpl__startMonitoringWithQueue___block_invok
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)carPlayAuxStreamSupportDidChange:(id)a3
+- (void)carPlayAuxStreamSupportDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -799,7 +799,7 @@ unsigned __int8 *__66__CSAudioRouteChangeMonitorImpl_carPlayAuxStreamSupportDidC
   }
 }
 
-- (void)pickableRoutesDidChange:(id)a3
+- (void)pickableRoutesDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -827,7 +827,7 @@ uint64_t __57__CSAudioRouteChangeMonitorImpl_pickableRoutesDidChange___block_inv
   return result;
 }
 
-- (void)preferredExternalRouteDidChange:(id)a3
+- (void)preferredExternalRouteDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -854,18 +854,18 @@ uint64_t __65__CSAudioRouteChangeMonitorImpl_preferredExternalRouteDidChange___b
   return result;
 }
 
-- (void)getHearstOwnershipStatus:(id)a3
+- (void)getHearstOwnershipStatus:(id)status
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  statusCopy = status;
+  v5 = statusCopy;
+  if (statusCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __58__CSAudioRouteChangeMonitorImpl_getHearstOwnershipStatus___block_invoke;
     block[3] = &unk_1E865AD60;
-    v8 = v4;
+    v8 = statusCopy;
     dispatch_async(queue, block);
   }
 }
@@ -895,11 +895,11 @@ void __63__CSAudioRouteChangeMonitorImpl_hearstHijackEligibilityUpdated__block_i
   }
 }
 
-- (void)getJarvisConnected:(id)a3
+- (void)getJarvisConnected:(id)connected
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  connectedCopy = connected;
+  v5 = connectedCopy;
+  if (connectedCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -907,16 +907,16 @@ void __63__CSAudioRouteChangeMonitorImpl_hearstHijackEligibilityUpdated__block_i
     v7[2] = __52__CSAudioRouteChangeMonitorImpl_getJarvisConnected___block_invoke;
     v7[3] = &unk_1E865CB90;
     v7[4] = self;
-    v8 = v4;
+    v8 = connectedCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)getHearstRouteStatus:(id)a3
+- (void)getHearstRouteStatus:(id)status
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  statusCopy = status;
+  v5 = statusCopy;
+  if (statusCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -924,7 +924,7 @@ void __63__CSAudioRouteChangeMonitorImpl_hearstHijackEligibilityUpdated__block_i
     v7[2] = __54__CSAudioRouteChangeMonitorImpl_getHearstRouteStatus___block_invoke;
     v7[3] = &unk_1E865CB90;
     v7[4] = self;
-    v8 = v4;
+    v8 = statusCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -933,7 +933,7 @@ void __63__CSAudioRouteChangeMonitorImpl_hearstHijackEligibilityUpdated__block_i
 {
   if (+[CSUtils isDarwinOS])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -960,10 +960,10 @@ void __63__CSAudioRouteChangeMonitorImpl_hearstHijackEligibilityUpdated__block_i
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 void __37__CSAudioRouteChangeMonitorImpl_init__block_invoke(uint64_t a1)

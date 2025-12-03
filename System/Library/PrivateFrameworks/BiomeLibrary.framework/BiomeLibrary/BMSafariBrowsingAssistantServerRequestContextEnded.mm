@@ -1,38 +1,38 @@
 @interface BMSafariBrowsingAssistantServerRequestContextEnded
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSafariBrowsingAssistantServerRequestContextEnded)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSafariBrowsingAssistantServerRequestContextEnded)initWithServerReleaseVersion:(id)a3 responseData:(id)a4 isFreshTier:(id)a5 isBatchTier:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (BMSafariBrowsingAssistantServerRequestContextEnded)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSafariBrowsingAssistantServerRequestContextEnded)initWithServerReleaseVersion:(id)version responseData:(id)data isFreshTier:(id)tier isBatchTier:(id)batchTier;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSafariBrowsingAssistantServerRequestContextEnded
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSafariBrowsingAssistantServerRequestContextEnded *)self serverReleaseVersion];
-    v7 = [v5 serverReleaseVersion];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    serverReleaseVersion = [(BMSafariBrowsingAssistantServerRequestContextEnded *)self serverReleaseVersion];
+    serverReleaseVersion2 = [v5 serverReleaseVersion];
+    v8 = serverReleaseVersion2;
+    if (serverReleaseVersion == serverReleaseVersion2)
     {
     }
 
     else
     {
-      v9 = [(BMSafariBrowsingAssistantServerRequestContextEnded *)self serverReleaseVersion];
-      v10 = [v5 serverReleaseVersion];
-      v11 = [v9 isEqual:v10];
+      serverReleaseVersion3 = [(BMSafariBrowsingAssistantServerRequestContextEnded *)self serverReleaseVersion];
+      serverReleaseVersion4 = [v5 serverReleaseVersion];
+      v11 = [serverReleaseVersion3 isEqual:serverReleaseVersion4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMSafariBrowsingAssistantServerRequestContextEnded *)self responseData];
-    v14 = [v5 responseData];
-    v15 = v14;
-    if (v13 == v14)
+    responseData = [(BMSafariBrowsingAssistantServerRequestContextEnded *)self responseData];
+    responseData2 = [v5 responseData];
+    v15 = responseData2;
+    if (responseData == responseData2)
     {
     }
 
     else
     {
-      v16 = [(BMSafariBrowsingAssistantServerRequestContextEnded *)self responseData];
-      v17 = [v5 responseData];
-      v18 = [v16 isEqual:v17];
+      responseData3 = [(BMSafariBrowsingAssistantServerRequestContextEnded *)self responseData];
+      responseData4 = [v5 responseData];
+      v18 = [responseData3 isEqual:responseData4];
 
       if (!v18)
       {
@@ -69,8 +69,8 @@
 
       if (-[BMSafariBrowsingAssistantServerRequestContextEnded hasIsBatchTier](self, "hasIsBatchTier") && [v5 hasIsBatchTier])
       {
-        v20 = [(BMSafariBrowsingAssistantServerRequestContextEnded *)self isBatchTier];
-        v12 = v20 ^ [v5 isBatchTier] ^ 1;
+        isBatchTier = [(BMSafariBrowsingAssistantServerRequestContextEnded *)self isBatchTier];
+        v12 = isBatchTier ^ [v5 isBatchTier] ^ 1;
 LABEL_22:
 
         goto LABEL_23;
@@ -91,9 +91,9 @@ LABEL_23:
 - (id)jsonDictionary
 {
   v16[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSafariBrowsingAssistantServerRequestContextEnded *)self serverReleaseVersion];
-  v4 = [(BMSafariBrowsingAssistantServerRequestContextEnded *)self responseData];
-  v5 = [v4 jsonDictionary];
+  serverReleaseVersion = [(BMSafariBrowsingAssistantServerRequestContextEnded *)self serverReleaseVersion];
+  responseData = [(BMSafariBrowsingAssistantServerRequestContextEnded *)self responseData];
+  jsonDictionary = [responseData jsonDictionary];
 
   if ([(BMSafariBrowsingAssistantServerRequestContextEnded *)self hasIsFreshTier])
   {
@@ -116,37 +116,37 @@ LABEL_23:
   }
 
   v15[0] = @"serverReleaseVersion";
-  v8 = v3;
-  if (!v3)
+  null = serverReleaseVersion;
+  if (!serverReleaseVersion)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[0] = v8;
+  v16[0] = null;
   v15[1] = @"responseData";
-  v9 = v5;
-  if (!v5)
+  null2 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[1] = v9;
+  v16[1] = null2;
   v15[2] = @"isFreshTier";
-  v10 = v6;
+  null3 = v6;
   if (!v6)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[2] = v10;
+  v16[2] = null3;
   v15[3] = @"isBatchTier";
-  v11 = v7;
+  null4 = v7;
   if (!v7)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[3] = v11;
+  v16[3] = null4;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:4];
   if (v7)
   {
@@ -162,14 +162,14 @@ LABEL_23:
     if (v6)
     {
 LABEL_17:
-      if (v5)
+      if (jsonDictionary)
       {
         goto LABEL_18;
       }
 
 LABEL_24:
 
-      if (v3)
+      if (serverReleaseVersion)
       {
         goto LABEL_19;
       }
@@ -178,13 +178,13 @@ LABEL_24:
     }
   }
 
-  if (!v5)
+  if (!jsonDictionary)
   {
     goto LABEL_24;
   }
 
 LABEL_18:
-  if (v3)
+  if (serverReleaseVersion)
   {
     goto LABEL_19;
   }
@@ -197,17 +197,17 @@ LABEL_19:
   return v12;
 }
 
-- (BMSafariBrowsingAssistantServerRequestContextEnded)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSafariBrowsingAssistantServerRequestContextEnded)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"serverReleaseVersion"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"serverReleaseVersion"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v8 = 0;
         v15 = 0;
@@ -222,7 +222,7 @@ LABEL_19:
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v44 count:1];
       v8 = 0;
       v15 = 0;
-      *a4 = [v21 initWithDomain:v22 code:2 userInfo:v23];
+      *error = [v21 initWithDomain:v22 code:2 userInfo:v23];
       v14 = v23;
       goto LABEL_17;
     }
@@ -235,14 +235,14 @@ LABEL_19:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"responseData"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"responseData"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v19 = a4;
+    errorCopy = error;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v15 = 0;
         goto LABEL_18;
@@ -254,7 +254,7 @@ LABEL_19:
       v43 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"responseData"];
       v14 = v43;
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-      *v19 = [v35 initWithDomain:v24 code:2 userInfo:v25];
+      *errorCopy = [v35 initWithDomain:v24 code:2 userInfo:v25];
 
       v15 = 0;
       goto LABEL_16;
@@ -266,10 +266,10 @@ LABEL_19:
     v20 = v37;
     if (v20)
     {
-      if (v19)
+      if (errorCopy)
       {
         v20 = v20;
-        *v19 = v20;
+        *errorCopy = v20;
       }
 
       v15 = 0;
@@ -278,7 +278,7 @@ LABEL_19:
 
     v34 = v14;
 
-    a4 = v19;
+    error = errorCopy;
   }
 
   else
@@ -286,14 +286,14 @@ LABEL_19:
     v34 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"isFreshTier"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"isFreshTier"];
   v36 = v8;
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v11 = 0;
         v15 = 0;
@@ -302,7 +302,7 @@ LABEL_19:
       }
 
       v26 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v32 = a4;
+      errorCopy2 = error;
       v27 = *MEMORY[0x1E698F240];
       v40 = *MEMORY[0x1E696A578];
       v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"isFreshTier"];
@@ -312,7 +312,7 @@ LABEL_19:
       v11 = 0;
       v15 = 0;
       v14 = v34;
-      *v32 = v28;
+      *errorCopy2 = v28;
       goto LABEL_14;
     }
 
@@ -324,13 +324,13 @@ LABEL_19:
     v11 = 0;
   }
 
-  v12 = [v6 objectForKeyedSubscript:@"isBatchTier"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"isBatchTier"];
   if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v33 = objc_alloc(MEMORY[0x1E696ABC0]);
         v31 = *MEMORY[0x1E698F240];
@@ -338,7 +338,7 @@ LABEL_19:
         v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"isBatchTier"];
         v39 = v29;
         v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-        *a4 = [v33 initWithDomain:v31 code:2 userInfo:v30];
+        *error = [v33 initWithDomain:v31 code:2 userInfo:v30];
       }
 
       v13 = 0;
@@ -379,14 +379,14 @@ LABEL_19:
 {
   v3 = objc_opt_new();
   [(BMSafariBrowsingAssistantServerRequestContextEnded *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_serverReleaseVersion)
   {
     PBDataWriterWriteStringField();
@@ -395,7 +395,7 @@ LABEL_19:
   if (self->_responseData)
   {
     PBDataWriterPlaceMark();
-    [(BMSafariBrowsingAssistantResponseData *)self->_responseData writeTo:v4];
+    [(BMSafariBrowsingAssistantResponseData *)self->_responseData writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -412,9 +412,9 @@ LABEL_19:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v37.receiver = self;
   v37.super_class = BMSafariBrowsingAssistantServerRequestContextEnded;
   v5 = [(BMEventBase *)&v37 init];
@@ -423,12 +423,12 @@ LABEL_19:
     goto LABEL_55;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -439,18 +439,18 @@ LABEL_19:
       while (1)
       {
         LOBYTE(v38[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v38 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v38 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v38[0] & 0x7F) << v7;
@@ -468,9 +468,9 @@ LABEL_19:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -487,18 +487,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v38[0]) = 0;
-            v30 = [v4 position] + 1;
-            if (v30 >= [v4 position] && (v31 = objc_msgSend(v4, "position") + 1, v31 <= objc_msgSend(v4, "length")))
+            v30 = [fromCopy position] + 1;
+            if (v30 >= [fromCopy position] && (v31 = objc_msgSend(fromCopy, "position") + 1, v31 <= objc_msgSend(fromCopy, "length")))
             {
-              v32 = [v4 data];
-              [v32 getBytes:v38 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:v38 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v29 |= (v38[0] & 0x7F) << v27;
@@ -516,7 +516,7 @@ LABEL_16:
             }
           }
 
-          v24 = (v29 != 0) & ~[v4 hasError];
+          v24 = (v29 != 0) & ~[fromCopy hasError];
 LABEL_50:
           v33 = 16;
         }
@@ -541,18 +541,18 @@ LABEL_35:
           while (1)
           {
             LOBYTE(v38[0]) = 0;
-            v21 = [v4 position] + 1;
-            if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+            v21 = [fromCopy position] + 1;
+            if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
             {
-              v23 = [v4 data];
-              [v23 getBytes:v38 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:v38 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v20 |= (v38[0] & 0x7F) << v18;
@@ -570,7 +570,7 @@ LABEL_35:
             }
           }
 
-          v24 = (v20 != 0) & ~[v4 hasError];
+          v24 = (v20 != 0) & ~[fromCopy hasError];
 LABEL_48:
           v33 = 18;
         }
@@ -599,7 +599,7 @@ LABEL_48:
           goto LABEL_54;
         }
 
-        v16 = [[BMSafariBrowsingAssistantResponseData alloc] initByReadFrom:v4];
+        v16 = [[BMSafariBrowsingAssistantResponseData alloc] initByReadFrom:fromCopy];
         if (!v16)
         {
           goto LABEL_54;
@@ -612,13 +612,13 @@ LABEL_48:
       }
 
 LABEL_52:
-      v34 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v34 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_54:
     v35 = 0;
@@ -636,33 +636,33 @@ LABEL_55:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSafariBrowsingAssistantServerRequestContextEnded *)self serverReleaseVersion];
-  v5 = [(BMSafariBrowsingAssistantServerRequestContextEnded *)self responseData];
+  serverReleaseVersion = [(BMSafariBrowsingAssistantServerRequestContextEnded *)self serverReleaseVersion];
+  responseData = [(BMSafariBrowsingAssistantServerRequestContextEnded *)self responseData];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSafariBrowsingAssistantServerRequestContextEnded isFreshTier](self, "isFreshTier")}];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSafariBrowsingAssistantServerRequestContextEnded isBatchTier](self, "isBatchTier")}];
-  v8 = [v3 initWithFormat:@"BMSafariBrowsingAssistantServerRequestContextEnded with serverReleaseVersion: %@, responseData: %@, isFreshTier: %@, isBatchTier: %@", v4, v5, v6, v7];
+  v8 = [v3 initWithFormat:@"BMSafariBrowsingAssistantServerRequestContextEnded with serverReleaseVersion: %@, responseData: %@, isFreshTier: %@, isBatchTier: %@", serverReleaseVersion, responseData, v6, v7];
 
   return v8;
 }
 
-- (BMSafariBrowsingAssistantServerRequestContextEnded)initWithServerReleaseVersion:(id)a3 responseData:(id)a4 isFreshTier:(id)a5 isBatchTier:(id)a6
+- (BMSafariBrowsingAssistantServerRequestContextEnded)initWithServerReleaseVersion:(id)version responseData:(id)data isFreshTier:(id)tier isBatchTier:(id)batchTier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  versionCopy = version;
+  dataCopy = data;
+  tierCopy = tier;
+  batchTierCopy = batchTier;
   v17.receiver = self;
   v17.super_class = BMSafariBrowsingAssistantServerRequestContextEnded;
   v15 = [(BMEventBase *)&v17 init];
   if (v15)
   {
     v15->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v15->_serverReleaseVersion, a3);
-    objc_storeStrong(&v15->_responseData, a4);
-    if (v13)
+    objc_storeStrong(&v15->_serverReleaseVersion, version);
+    objc_storeStrong(&v15->_responseData, data);
+    if (tierCopy)
     {
       v15->_hasIsFreshTier = 1;
-      v15->_isFreshTier = [v13 BOOLValue];
+      v15->_isFreshTier = [tierCopy BOOLValue];
     }
 
     else
@@ -671,10 +671,10 @@ LABEL_55:
       v15->_isFreshTier = 0;
     }
 
-    if (v14)
+    if (batchTierCopy)
     {
       v15->_hasIsBatchTier = 1;
-      v15->_isBatchTier = [v14 BOOLValue];
+      v15->_isBatchTier = [batchTierCopy BOOLValue];
     }
 
     else
@@ -733,9 +733,9 @@ id __61__BMSafariBrowsingAssistantServerRequestContextEnded_columns__block_invok
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -743,8 +743,8 @@ id __61__BMSafariBrowsingAssistantServerRequestContextEnded_columns__block_invok
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSafariBrowsingAssistantServerRequestContextEnded alloc] initByReadFrom:v7];
     v4 = v8;

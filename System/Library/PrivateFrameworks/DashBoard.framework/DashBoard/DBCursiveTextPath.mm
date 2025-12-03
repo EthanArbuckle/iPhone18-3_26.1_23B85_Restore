@@ -1,15 +1,15 @@
 @interface DBCursiveTextPath
-- (CGAffineTransform)transformForRect:(SEL)a3 pointSize:(CGRect)a4 flipped:(double)a5;
-- (CGPath)pathForFraction:(double)a3 calculateLength:(BOOL)a4;
-- (DBCursiveTextPath)initWithURL:(id)a3 resolution:(int64_t)a4;
+- (CGAffineTransform)transformForRect:(SEL)rect pointSize:(CGRect)size flipped:(double)flipped;
+- (CGPath)pathForFraction:(double)fraction calculateLength:(BOOL)length;
+- (DBCursiveTextPath)initWithURL:(id)l resolution:(int64_t)resolution;
 @end
 
 @implementation DBCursiveTextPath
 
-- (DBCursiveTextPath)initWithURL:(id)a3 resolution:(int64_t)a4
+- (DBCursiveTextPath)initWithURL:(id)l resolution:(int64_t)resolution
 {
   v144 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  lCopy = l;
   v141.receiver = self;
   v141.super_class = DBCursiveTextPath;
   v7 = [(DBCursiveTextPath *)&v141 init];
@@ -18,7 +18,7 @@
   {
     *(v7 + 8) = xmmword_24839BCF0;
     *(v7 + 3) = 0x3FD0000000000000;
-    v9 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v6];
+    v9 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy];
     if (v9)
     {
       v10 = v9;
@@ -28,10 +28,10 @@
       v13 = v12;
       if (v11)
       {
-        v98 = a4;
+        resolutionCopy = resolution;
         v99 = v12;
         v100 = v10;
-        v101 = v6;
+        v101 = lCopy;
         v14 = [v11 objectForKeyedSubscript:@"unitsPerEm"];
         [v14 floatValue];
         *(v8 + 10) = v15;
@@ -252,19 +252,19 @@
           while (v106);
         }
 
-        v8[14] = v98;
+        v8[14] = resolutionCopy;
         *(v8 + 6) = CGPathGetPathBoundingBox([v8 pathForFraction:1 calculateLength:0.0]);
         v91 = *(v8 + 4) / 3000.0;
         *(v8 + 5) = ((powf((fminf(fmaxf(v91, 0.0), 10.0) / 10.0) + -1.0, 3.0) + 1.0) * 4.0);
 
-        v6 = v101;
+        lCopy = v101;
         goto LABEL_34;
       }
 
       v94 = DBLogForCategory(0);
       if (os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
       {
-        [(DBCursiveTextPath *)v6 initWithURL:v13 resolution:v94];
+        [(DBCursiveTextPath *)lCopy initWithURL:v13 resolution:v94];
       }
     }
 
@@ -273,7 +273,7 @@
       v93 = DBLogForCategory(0);
       if (os_log_type_enabled(v93, OS_LOG_TYPE_ERROR))
       {
-        [DBCursiveTextPath initWithURL:v6 resolution:v93];
+        [DBCursiveTextPath initWithURL:lCopy resolution:v93];
       }
     }
 
@@ -288,14 +288,14 @@ LABEL_42:
   return v92;
 }
 
-- (CGAffineTransform)transformForRect:(SEL)a3 pointSize:(CGRect)a4 flipped:(double)a5
+- (CGAffineTransform)transformForRect:(SEL)rect pointSize:(CGRect)size flipped:(double)flipped
 {
   v6 = a6;
   descender = self->_descender;
   v10 = self->_ascender - descender;
   v11 = -descender / v10;
-  v12 = v10 / self->_unitsPerM * a5;
-  v32 = (CGRectGetHeight(a4) - v12) * 0.5;
+  v12 = v10 / self->_unitsPerM * flipped;
+  v32 = (CGRectGetHeight(size) - v12) * 0.5;
   x = self->_boundingBoxOfPath.origin.x;
   y = self->_boundingBoxOfPath.origin.y;
   width = self->_boundingBoxOfPath.size.width;
@@ -325,11 +325,11 @@ LABEL_42:
   }
 
   v20 = v32 + v19 * v12;
-  v21 = a5 / self->_unitsPerM;
+  v21 = flipped / self->_unitsPerM;
   v22 = -v21;
   if (!v6)
   {
-    v22 = a5 / self->_unitsPerM;
+    v22 = flipped / self->_unitsPerM;
   }
 
   CGAffineTransformMakeScale(&t2, v21, v22);
@@ -342,10 +342,10 @@ LABEL_42:
   *&retstr->a = *&v37.a;
   *&retstr->c = v24;
   *&retstr->tx = *&v37.tx;
-  v25 = a4.origin.x;
-  *&v24 = a4.origin.y;
-  v26 = a4.size.width;
-  v27 = a4.size.height;
+  v25 = size.origin.x;
+  *&v24 = size.origin.y;
+  v26 = size.size.width;
+  v27 = size.size.height;
   v28 = CGRectGetWidth(*(&v24 - 8));
   CGAffineTransformMakeTranslation(&t2, v28 * 0.5, v20);
   v29 = *&retstr->c;
@@ -360,9 +360,9 @@ LABEL_42:
   return result;
 }
 
-- (CGPath)pathForFraction:(double)a3 calculateLength:(BOOL)a4
+- (CGPath)pathForFraction:(double)fraction calculateLength:(BOOL)length
 {
-  v4 = a4;
+  lengthCopy = length;
   v119 = *MEMORY[0x277D85DE8];
   rampTime = self->_rampTime;
   duration = self->_duration;
@@ -387,8 +387,8 @@ LABEL_42:
     v15 = rampTime / duration;
     v16 = 1.0;
     v17 = *v114;
-    v98 = v15 - (v15 - (v15 + 1.0) * a3);
-    v18 = -(v15 - (v15 + 1.0) * a3);
+    v98 = v15 - (v15 - (v15 + 1.0) * fraction);
+    v18 = -(v15 - (v15 + 1.0) * fraction);
     v19 = v15;
     v20 = 0.0;
     __asm
@@ -499,7 +499,7 @@ LABEL_12:
             }
 
             v57 = v20 / self->_length;
-            if (!v4 && v57 > v98)
+            if (!lengthCopy && v57 > v98)
             {
               break;
             }
@@ -566,7 +566,7 @@ LABEL_23:
 
 LABEL_28:
 
-  if (v4)
+  if (lengthCopy)
   {
     self->_length = v20;
   }

@@ -1,10 +1,10 @@
 @interface PXStoryViewControllerViewModelTransitionsCoordinator
-- (PXStoryViewControllerViewModelTransitionsCoordinator)initWithObservableModel:(id)a3;
-- (PXStoryViewControllerViewModelTransitionsCoordinator)initWithViewModel:(id)a3 viewController:(id)a4;
+- (PXStoryViewControllerViewModelTransitionsCoordinator)initWithObservableModel:(id)model;
+- (PXStoryViewControllerViewModelTransitionsCoordinator)initWithViewModel:(id)model viewController:(id)controller;
 - (PXStoryViewModel)viewModel;
 - (UIViewController)viewController;
-- (void)_dismissalTransition:(id)a3 didEnd:(BOOL)a4;
-- (void)_endDismissal:(BOOL)a3;
+- (void)_dismissalTransition:(id)transition didEnd:(BOOL)end;
+- (void)_endDismissal:(BOOL)dismissal;
 - (void)_forceDismissViewController;
 - (void)_handleViewModeTransitionStartDelay;
 - (void)_invalidateDesiredDismissalState;
@@ -26,15 +26,15 @@
 - (void)_updateSwipeDownTriggeringDismissal;
 - (void)_updateViewControllerDismissalTargetPlacement;
 - (void)_updateViewModeTransition;
-- (void)configureUpdater:(id)a3;
-- (void)handleModelChange:(unint64_t)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setDismissalTransition:(id)a3;
-- (void)setFullsizeContentBoundingBox:(id)a3;
-- (void)setIsDismisallTriggered:(BOOL)a3;
-- (void)setIsFinishingDismissal:(BOOL)a3;
-- (void)setIsPreparedForDismissal:(BOOL)a3;
-- (void)setViewModeTransition:(id)a3;
+- (void)configureUpdater:(id)updater;
+- (void)handleModelChange:(unint64_t)change;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setDismissalTransition:(id)transition;
+- (void)setFullsizeContentBoundingBox:(id)box;
+- (void)setIsDismisallTriggered:(BOOL)triggered;
+- (void)setIsFinishingDismissal:(BOOL)dismissal;
+- (void)setIsPreparedForDismissal:(BOOL)dismissal;
+- (void)setViewModeTransition:(id)transition;
 @end
 
 @implementation PXStoryViewControllerViewModelTransitionsCoordinator
@@ -53,12 +53,12 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v8 = a3;
-  if (DismissalTransitionObservationContext == a5)
+  observableCopy = observable;
+  if (DismissalTransitionObservationContext == context)
   {
-    if ((a4 & 1) == 0)
+    if ((change & 1) == 0)
     {
       goto LABEL_12;
     }
@@ -74,9 +74,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (ViewModeTransitionObservationContext_249554 == a5)
+  if (ViewModeTransitionObservationContext_249554 == context)
   {
-    if ((a4 & 1) == 0)
+    if ((change & 1) == 0)
     {
       goto LABEL_12;
     }
@@ -90,9 +90,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (DismissalPreviewFractionObservationContext == a5)
+  if (DismissalPreviewFractionObservationContext == context)
   {
-    if ((a4 & 2) == 0)
+    if ((change & 2) == 0)
     {
       goto LABEL_12;
     }
@@ -108,7 +108,7 @@ LABEL_11:
 
   v10.receiver = self;
   v10.super_class = PXStoryViewControllerViewModelTransitionsCoordinator;
-  [(PXStoryController *)&v10 observable:v8 didChange:a4 context:a5];
+  [(PXStoryController *)&v10 observable:observableCopy didChange:change context:context];
 LABEL_12:
 }
 
@@ -121,11 +121,11 @@ uint64_t __85__PXStoryViewControllerViewModelTransitionsCoordinator_observable_d
   return [v2 _invalidateShouldFinish];
 }
 
-- (void)handleModelChange:(unint64_t)a3
+- (void)handleModelChange:(unint64_t)change
 {
-  if ((a3 & 0x400000000) == 0)
+  if ((change & 0x400000000) == 0)
   {
-    if ((a3 & 0x800000000) == 0)
+    if ((change & 0x800000000) == 0)
     {
       goto LABEL_3;
     }
@@ -137,7 +137,7 @@ LABEL_7:
     v7[3] = &unk_1E774AFA8;
     v7[4] = self;
     [(PXStoryController *)self performChanges:v7];
-    if ((a3 & 0x10000000000) == 0)
+    if ((change & 0x10000000000) == 0)
     {
       goto LABEL_5;
     }
@@ -151,13 +151,13 @@ LABEL_7:
   v8[3] = &unk_1E774AFA8;
   v8[4] = self;
   [(PXStoryController *)self performChanges:v8];
-  if ((a3 & 0x800000000) != 0)
+  if ((change & 0x800000000) != 0)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
-  if ((a3 & 0x10000000000) != 0)
+  if ((change & 0x10000000000) != 0)
   {
 LABEL_4:
     v6[0] = MEMORY[0x1E69E9820];
@@ -171,18 +171,18 @@ LABEL_4:
 LABEL_5:
   v5.receiver = self;
   v5.super_class = PXStoryViewControllerViewModelTransitionsCoordinator;
-  [(PXStoryController *)&v5 handleModelChange:a3];
+  [(PXStoryController *)&v5 handleModelChange:change];
 }
 
 - (void)_updateSwipeDownDismissalPreview
 {
-  v3 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModel];
+  viewModel = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModel];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __88__PXStoryViewControllerViewModelTransitionsCoordinator__updateSwipeDownDismissalPreview__block_invoke;
   v4[3] = &unk_1E774B048;
   v4[4] = self;
-  [v3 performChanges:v4];
+  [viewModel performChanges:v4];
 }
 
 void __88__PXStoryViewControllerViewModelTransitionsCoordinator__updateSwipeDownDismissalPreview__block_invoke(uint64_t a1, void *a2)
@@ -207,25 +207,25 @@ void __88__PXStoryViewControllerViewModelTransitionsCoordinator__updateSwipeDown
 
 - (void)_invalidateSwipeDownDismissalPreview
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateSwipeDownDismissalPreview];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateSwipeDownDismissalPreview];
 }
 
 - (void)_updateSwipeDownTriggeringDismissal
 {
-  v3 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalTransition];
+  dismissalTransition = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalTransition];
 
-  v4 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self isDismisallTriggered];
-  v5 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModel];
+  isDismisallTriggered = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self isDismisallTriggered];
+  viewModel = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModel];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __91__PXStoryViewControllerViewModelTransitionsCoordinator__updateSwipeDownTriggeringDismissal__block_invoke;
   v12[3] = &__block_descriptor_34_e35_v16__0___PXStoryMutableViewModel__8l;
-  v13 = v4;
-  v14 = v3 != 0;
-  [v5 performChanges:v12];
+  v13 = isDismisallTriggered;
+  v14 = dismissalTransition != 0;
+  [viewModel performChanges:v12];
 
-  if (v3)
+  if (dismissalTransition)
   {
     v6 = +[PXStorySettings sharedInstance];
     [v6 swipeDownThresholdFadeDuration];
@@ -237,13 +237,13 @@ void __88__PXStoryViewControllerViewModelTransitionsCoordinator__updateSwipeDown
       v8 = 0.0;
     }
 
-    v9 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalPreviewFraction];
+    dismissalPreviewFraction = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalPreviewFraction];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __91__PXStoryViewControllerViewModelTransitionsCoordinator__updateSwipeDownTriggeringDismissal__block_invoke_2;
     v10[3] = &__block_descriptor_33_e35_v16__0___PXMutableNumberAnimator__8l;
-    v11 = v4;
-    [v9 performChangesWithDuration:1 curve:v10 changes:v8];
+    v11 = isDismisallTriggered;
+    [dismissalPreviewFraction performChangesWithDuration:1 curve:v10 changes:v8];
   }
 }
 
@@ -270,8 +270,8 @@ uint64_t __91__PXStoryViewControllerViewModelTransitionsCoordinator__updateSwipe
 
 - (void)_invalidateSwipeDownTriggeringDismissal
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateSwipeDownTriggeringDismissal];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateSwipeDownTriggeringDismissal];
 }
 
 - (void)_updateDesiredDismissalState
@@ -282,11 +282,11 @@ uint64_t __91__PXStoryViewControllerViewModelTransitionsCoordinator__updateSwipe
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModel];
-  v5 = v4;
-  if (v4)
+  viewModel = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModel];
+  v5 = viewModel;
+  if (viewModel)
   {
-    [v4 swipeDownInteractionState];
+    [viewModel swipeDownInteractionState];
   }
 
   else
@@ -306,13 +306,13 @@ uint64_t __91__PXStoryViewControllerViewModelTransitionsCoordinator__updateSwipe
   v6 = PXStorySwipeDownInteractionStateEqualsState(v22, &PXStorySwipeDownInteractionStateNull);
   if ((v6 & 1) == 0)
   {
-    v7 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModeTransition];
-    if (v7)
+    viewModeTransition = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModeTransition];
+    if (viewModeTransition)
     {
-      v8 = v7;
-      v9 = [v3 swipeDownBehavior];
+      v8 = viewModeTransition;
+      swipeDownBehavior = [v3 swipeDownBehavior];
 
-      if (v9 == 1)
+      if (swipeDownBehavior == 1)
       {
         v10 = *(&v25 + 1) - *(&v24 + 1);
         [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
@@ -340,9 +340,9 @@ uint64_t __91__PXStoryViewControllerViewModelTransitionsCoordinator__updateSwipe
   {
     if ((v6 & [(PXStoryViewControllerViewModelTransitionsCoordinator *)self isDismisallTriggered]) == 1)
     {
-      v18 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalTransition];
+      dismissalTransition = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalTransition];
 
-      if (!v18)
+      if (!dismissalTransition)
       {
         [(PXStoryViewControllerViewModelTransitionsCoordinator *)self _forceDismissViewController];
       }
@@ -351,19 +351,19 @@ uint64_t __91__PXStoryViewControllerViewModelTransitionsCoordinator__updateSwipe
 
   if ([(PXStoryViewControllerViewModelTransitionsCoordinator *)self isPreparedForDismissal])
   {
-    v19 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModeTransition];
+    viewModeTransition2 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModeTransition];
 
-    if (!v19)
+    if (!viewModeTransition2)
     {
       [(PXStoryViewControllerViewModelTransitionsCoordinator *)self setIsPreparedForDismissal:0];
-      v20 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self isDismisallTriggered];
-      v21 = 0;
-      if (v20)
+      isDismisallTriggered = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self isDismisallTriggered];
+      shouldFinish = 0;
+      if (isDismisallTriggered)
       {
-        v21 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self shouldFinish];
+        shouldFinish = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self shouldFinish];
       }
 
-      [(PXStoryViewControllerViewModelTransitionsCoordinator *)self _endDismissal:v21];
+      [(PXStoryViewControllerViewModelTransitionsCoordinator *)self _endDismissal:shouldFinish];
     }
   }
 
@@ -376,36 +376,36 @@ uint64_t __91__PXStoryViewControllerViewModelTransitionsCoordinator__updateSwipe
 
 - (void)_invalidateDesiredDismissalState
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDesiredDismissalState];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDesiredDismissalState];
 }
 
 - (void)_updateShouldFinish
 {
-  v3 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModeTransition];
-  if (v3)
+  viewModeTransition = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModeTransition];
+  if (viewModeTransition)
   {
-    v4 = v3;
-    -[PXStoryViewControllerViewModelTransitionsCoordinator setShouldFinish:](self, "setShouldFinish:", [v3 shouldFinish]);
-    v3 = v4;
+    v4 = viewModeTransition;
+    -[PXStoryViewControllerViewModelTransitionsCoordinator setShouldFinish:](self, "setShouldFinish:", [viewModeTransition shouldFinish]);
+    viewModeTransition = v4;
   }
 }
 
 - (void)_invalidateShouldFinish
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateShouldFinish];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateShouldFinish];
 }
 
 - (void)_updateFractionCompleted
 {
-  v3 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalTransition];
+  dismissalTransition = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalTransition];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __80__PXStoryViewControllerViewModelTransitionsCoordinator__updateFractionCompleted__block_invoke;
   v4[3] = &unk_1E774B020;
   v4[4] = self;
-  [v3 performChanges:v4];
+  [dismissalTransition performChanges:v4];
 }
 
 void __80__PXStoryViewControllerViewModelTransitionsCoordinator__updateFractionCompleted__block_invoke(uint64_t a1, void *a2)
@@ -422,19 +422,19 @@ void __80__PXStoryViewControllerViewModelTransitionsCoordinator__updateFractionC
 
 - (void)_invalidateFractionCompleted
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateFractionCompleted];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateFractionCompleted];
 }
 
 - (void)_updateViewControllerDismissalTargetPlacement
 {
-  v3 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModel];
+  viewModel = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModel];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __101__PXStoryViewControllerViewModelTransitionsCoordinator__updateViewControllerDismissalTargetPlacement__block_invoke;
   v4[3] = &unk_1E774B048;
   v4[4] = self;
-  [v3 performChanges:v4];
+  [viewModel performChanges:v4];
 }
 
 void __101__PXStoryViewControllerViewModelTransitionsCoordinator__updateViewControllerDismissalTargetPlacement__block_invoke(uint64_t a1, void *a2)
@@ -448,20 +448,20 @@ void __101__PXStoryViewControllerViewModelTransitionsCoordinator__updateViewCont
 
 - (void)_invalidateViewControllerDismissalTargetPlacement
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateViewControllerDismissalTargetPlacement];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateViewControllerDismissalTargetPlacement];
 }
 
 - (void)_updateSummaryItemPlacementOverride
 {
-  v3 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalTransition];
-  if (v3)
+  dismissalTransition = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalTransition];
+  if (dismissalTransition)
   {
-    v4 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self fullsizeContentBoundingBox];
-    if (v4)
+    fullsizeContentBoundingBox = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self fullsizeContentBoundingBox];
+    if (fullsizeContentBoundingBox)
     {
-      v5 = [v3 summaryItemOriginalPlacement];
-      v6 = [v5 copyWithRegionOfInterest:v4];
+      summaryItemOriginalPlacement = [dismissalTransition summaryItemOriginalPlacement];
+      v6 = [summaryItemOriginalPlacement copyWithRegionOfInterest:fullsizeContentBoundingBox];
     }
 
     else
@@ -475,31 +475,31 @@ void __101__PXStoryViewControllerViewModelTransitionsCoordinator__updateViewCont
     v8[3] = &unk_1E774B020;
     v9 = v6;
     v7 = v6;
-    [v3 performChanges:v8];
+    [dismissalTransition performChanges:v8];
   }
 }
 
 - (void)_invalidateSummaryItemPlacementOverride
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateSummaryItemPlacementOverride];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateSummaryItemPlacementOverride];
 }
 
 - (void)_updateFullsizeContentBoundingBox
 {
-  v4 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModeTransition];
-  v5 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModel];
-  v6 = [v5 viewModeTransition];
+  viewModeTransition = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModeTransition];
+  viewModel = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModel];
+  viewModeTransition2 = [viewModel viewModeTransition];
 
-  if (v4 != v6)
+  if (viewModeTransition != viewModeTransition2)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXStoryViewControllerViewModelTransitionsCoordinator.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"viewModeTransition == self.viewModel.viewModeTransition"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryViewControllerViewModelTransitionsCoordinator.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"viewModeTransition == self.viewModel.viewModeTransition"}];
   }
 
-  if ([v4 hasSourceOrDestinationViewMode:1])
+  if ([viewModeTransition hasSourceOrDestinationViewMode:1])
   {
-    v7 = [v4 presentedBoundingBoxForViewMode:1];
+    v7 = [viewModeTransition presentedBoundingBoxForViewMode:1];
   }
 
   else
@@ -513,30 +513,30 @@ void __101__PXStoryViewControllerViewModelTransitionsCoordinator__updateViewCont
 
 - (void)_invalidateFullsizeContentBoundingBox
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateFullsizeContentBoundingBox];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateFullsizeContentBoundingBox];
 }
 
 - (void)_updateViewModeTransition
 {
-  v4 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModel];
-  v3 = [v4 viewModeTransition];
-  [(PXStoryViewControllerViewModelTransitionsCoordinator *)self setViewModeTransition:v3];
+  viewModel = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewModel];
+  viewModeTransition = [viewModel viewModeTransition];
+  [(PXStoryViewControllerViewModelTransitionsCoordinator *)self setViewModeTransition:viewModeTransition];
 }
 
 - (void)_invalidateViewModeTransition
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateViewModeTransition];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateViewModeTransition];
 }
 
-- (void)_dismissalTransition:(id)a3 didEnd:(BOOL)a4
+- (void)_dismissalTransition:(id)transition didEnd:(BOOL)end
 {
   v8 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalTransition];
+  transitionCopy = transition;
+  dismissalTransition = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalTransition];
 
-  if (v6 != v5)
+  if (dismissalTransition != transitionCopy)
   {
     PXAssertGetLog();
   }
@@ -559,10 +559,10 @@ uint64_t __84__PXStoryViewControllerViewModelTransitionsCoordinator__dismissalTr
   return [v2 setIsFinishingDismissal:0];
 }
 
-- (void)_endDismissal:(BOOL)a3
+- (void)_endDismissal:(BOOL)dismissal
 {
-  v5 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalTransition];
-  if (v5)
+  dismissalTransition = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalTransition];
+  if (dismissalTransition)
   {
     [(PXStoryViewControllerViewModelTransitionsCoordinator *)self setIsFinishingDismissal:1];
     objc_initWeak(&location, self);
@@ -571,8 +571,8 @@ uint64_t __84__PXStoryViewControllerViewModelTransitionsCoordinator__dismissalTr
     v6[2] = __70__PXStoryViewControllerViewModelTransitionsCoordinator__endDismissal___block_invoke;
     v6[3] = &unk_1E774AFF8;
     objc_copyWeak(&v8, &location);
-    v7 = v5;
-    v9 = a3;
+    v7 = dismissalTransition;
+    dismissalCopy = dismissal;
     [v7 performChanges:v6];
 
     objc_destroyWeak(&v8);
@@ -611,18 +611,18 @@ void __70__PXStoryViewControllerViewModelTransitionsCoordinator__endDismissal___
 
 - (void)_forceDismissViewController
 {
-  v2 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  viewController = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewController];
+  [viewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)_tryDismissingViewController
 {
-  v3 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalTransition];
-  v4 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewController];
-  v5 = v4;
-  if (!v3 && v4)
+  dismissalTransition = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalTransition];
+  viewController = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self viewController];
+  v5 = viewController;
+  if (!dismissalTransition && viewController)
   {
-    v3 = [off_1E7721710 interactiveDismissalOfDetailViewController:v4];
+    dismissalTransition = [off_1E7721710 interactiveDismissalOfDetailViewController:viewController];
   }
 
   v7[0] = MEMORY[0x1E69E9820];
@@ -630,33 +630,33 @@ void __70__PXStoryViewControllerViewModelTransitionsCoordinator__endDismissal___
   v7[2] = __84__PXStoryViewControllerViewModelTransitionsCoordinator__tryDismissingViewController__block_invoke;
   v7[3] = &unk_1E774AFD0;
   v7[4] = self;
-  v8 = v3;
-  v6 = v3;
+  v8 = dismissalTransition;
+  v6 = dismissalTransition;
   [(PXStoryController *)self performChanges:v7];
 }
 
-- (void)setIsFinishingDismissal:(BOOL)a3
+- (void)setIsFinishingDismissal:(BOOL)dismissal
 {
-  if (self->_isFinishingDismissal != a3)
+  if (self->_isFinishingDismissal != dismissal)
   {
-    self->_isFinishingDismissal = a3;
+    self->_isFinishingDismissal = dismissal;
     [(PXStoryViewControllerViewModelTransitionsCoordinator *)self _invalidateSwipeDownDismissalPreview];
   }
 }
 
-- (void)setIsPreparedForDismissal:(BOOL)a3
+- (void)setIsPreparedForDismissal:(BOOL)dismissal
 {
-  if (self->_isPreparedForDismissal != a3)
+  if (self->_isPreparedForDismissal != dismissal)
   {
-    self->_isPreparedForDismissal = a3;
+    self->_isPreparedForDismissal = dismissal;
     [(PXStoryViewControllerViewModelTransitionsCoordinator *)self _invalidateSwipeDownDismissalPreview];
     if (self->_isPreparedForDismissal)
     {
       v4 = [objc_alloc(MEMORY[0x1E69DCAE8]) initWithStyle:0];
       [(PXStoryViewControllerViewModelTransitionsCoordinator *)self setDismissalFeedbackGenerator:v4];
 
-      v5 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalFeedbackGenerator];
-      [v5 prepare];
+      dismissalFeedbackGenerator = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalFeedbackGenerator];
+      [dismissalFeedbackGenerator prepare];
     }
 
     else
@@ -667,30 +667,30 @@ void __70__PXStoryViewControllerViewModelTransitionsCoordinator__endDismissal___
   }
 }
 
-- (void)setIsDismisallTriggered:(BOOL)a3
+- (void)setIsDismisallTriggered:(BOOL)triggered
 {
-  if (self->_isDismisallTriggered != a3)
+  if (self->_isDismisallTriggered != triggered)
   {
-    self->_isDismisallTriggered = a3;
+    self->_isDismisallTriggered = triggered;
     [(PXStoryViewControllerViewModelTransitionsCoordinator *)self _invalidateSwipeDownTriggeringDismissal];
-    v5 = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalFeedbackGenerator];
-    [v5 impactOccurred];
-    [v5 prepare];
+    dismissalFeedbackGenerator = [(PXStoryViewControllerViewModelTransitionsCoordinator *)self dismissalFeedbackGenerator];
+    [dismissalFeedbackGenerator impactOccurred];
+    [dismissalFeedbackGenerator prepare];
   }
 }
 
-- (void)setFullsizeContentBoundingBox:(id)a3
+- (void)setFullsizeContentBoundingBox:(id)box
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_fullsizeContentBoundingBox != v5)
+  boxCopy = box;
+  v6 = boxCopy;
+  if (self->_fullsizeContentBoundingBox != boxCopy)
   {
-    v8 = v5;
-    v7 = [(PXRegionOfInterest *)v5 isEqual:?];
+    v8 = boxCopy;
+    v7 = [(PXRegionOfInterest *)boxCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_fullsizeContentBoundingBox, a3);
+      objc_storeStrong(&self->_fullsizeContentBoundingBox, box);
       [(PXStoryViewControllerViewModelTransitionsCoordinator *)self _invalidateSummaryItemPlacementOverride];
       v6 = v8;
     }
@@ -707,14 +707,14 @@ void __70__PXStoryViewControllerViewModelTransitionsCoordinator__endDismissal___
   [(PXStoryController *)self performChanges:v2];
 }
 
-- (void)setViewModeTransition:(id)a3
+- (void)setViewModeTransition:(id)transition
 {
-  v5 = a3;
+  transitionCopy = transition;
   viewModeTransition = self->_viewModeTransition;
-  if (viewModeTransition != v5)
+  if (viewModeTransition != transitionCopy)
   {
     [(PXStoryViewModeTransition *)viewModeTransition unregisterChangeObserver:self context:ViewModeTransitionObservationContext_249554];
-    objc_storeStrong(&self->_viewModeTransition, a3);
+    objc_storeStrong(&self->_viewModeTransition, transition);
     [(PXStoryViewModeTransition *)self->_viewModeTransition registerChangeObserver:self context:ViewModeTransitionObservationContext_249554];
     [(PXStoryViewControllerViewModelTransitionsCoordinator *)self _invalidateFullsizeContentBoundingBox];
     [(PXStoryViewControllerViewModelTransitionsCoordinator *)self _updateDesiredDismissalState];
@@ -746,49 +746,49 @@ void __78__PXStoryViewControllerViewModelTransitionsCoordinator_setViewModeTrans
   [WeakRetained _handleViewModeTransitionStartDelay];
 }
 
-- (void)setDismissalTransition:(id)a3
+- (void)setDismissalTransition:(id)transition
 {
-  v5 = a3;
+  transitionCopy = transition;
   dismissalTransition = self->_dismissalTransition;
-  if (dismissalTransition != v5)
+  if (dismissalTransition != transitionCopy)
   {
-    v7 = v5;
+    v7 = transitionCopy;
     [(PXGViewControllerTransition *)dismissalTransition unregisterChangeObserver:self context:DismissalTransitionObservationContext];
-    objc_storeStrong(&self->_dismissalTransition, a3);
+    objc_storeStrong(&self->_dismissalTransition, transition);
     [(PXGViewControllerTransition *)self->_dismissalTransition registerChangeObserver:self context:DismissalTransitionObservationContext];
-    v5 = v7;
+    transitionCopy = v7;
   }
 }
 
-- (void)configureUpdater:(id)a3
+- (void)configureUpdater:(id)updater
 {
   v4.receiver = self;
   v4.super_class = PXStoryViewControllerViewModelTransitionsCoordinator;
-  v3 = a3;
-  [(PXStoryController *)&v4 configureUpdater:v3];
-  [v3 addUpdateSelector:{sel__updateViewModeTransition, v4.receiver, v4.super_class}];
-  [v3 addUpdateSelector:sel__updateDesiredDismissalState];
-  [v3 addUpdateSelector:sel__updateViewControllerDismissalTargetPlacement];
-  [v3 addUpdateSelector:sel__updateFullsizeContentBoundingBox];
-  [v3 addUpdateSelector:sel__updateSummaryItemPlacementOverride];
-  [v3 addUpdateSelector:sel__updateSwipeDownTriggeringDismissal];
-  [v3 addUpdateSelector:sel__updateSwipeDownDismissalPreview];
-  [v3 addUpdateSelector:sel__updateFractionCompleted];
-  [v3 addUpdateSelector:sel__updateShouldFinish];
+  updaterCopy = updater;
+  [(PXStoryController *)&v4 configureUpdater:updaterCopy];
+  [updaterCopy addUpdateSelector:{sel__updateViewModeTransition, v4.receiver, v4.super_class}];
+  [updaterCopy addUpdateSelector:sel__updateDesiredDismissalState];
+  [updaterCopy addUpdateSelector:sel__updateViewControllerDismissalTargetPlacement];
+  [updaterCopy addUpdateSelector:sel__updateFullsizeContentBoundingBox];
+  [updaterCopy addUpdateSelector:sel__updateSummaryItemPlacementOverride];
+  [updaterCopy addUpdateSelector:sel__updateSwipeDownTriggeringDismissal];
+  [updaterCopy addUpdateSelector:sel__updateSwipeDownDismissalPreview];
+  [updaterCopy addUpdateSelector:sel__updateFractionCompleted];
+  [updaterCopy addUpdateSelector:sel__updateShouldFinish];
 }
 
-- (PXStoryViewControllerViewModelTransitionsCoordinator)initWithViewModel:(id)a3 viewController:(id)a4
+- (PXStoryViewControllerViewModelTransitionsCoordinator)initWithViewModel:(id)model viewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = PXStoryViewControllerViewModelTransitionsCoordinator;
-  v8 = [(PXStoryController *)&v13 initWithObservableModel:v6];
+  v8 = [(PXStoryController *)&v13 initWithObservableModel:modelCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_viewModel, v6);
-    objc_storeWeak(&v9->_viewController, v7);
+    objc_storeWeak(&v8->_viewModel, modelCopy);
+    objc_storeWeak(&v9->_viewController, controllerCopy);
     v10 = [[off_1E77217D0 alloc] initWithValue:0.0];
     dismissalPreviewFraction = v9->_dismissalPreviewFraction;
     v9->_dismissalPreviewFraction = v10;
@@ -799,11 +799,11 @@ void __78__PXStoryViewControllerViewModelTransitionsCoordinator_setViewModeTrans
   return v9;
 }
 
-- (PXStoryViewControllerViewModelTransitionsCoordinator)initWithObservableModel:(id)a3
+- (PXStoryViewControllerViewModelTransitionsCoordinator)initWithObservableModel:(id)model
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXStoryViewControllerViewModelTransitionsCoordinator.m" lineNumber:45 description:{@"%s is not available as initializer", "-[PXStoryViewControllerViewModelTransitionsCoordinator initWithObservableModel:]"}];
+  modelCopy = model;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryViewControllerViewModelTransitionsCoordinator.m" lineNumber:45 description:{@"%s is not available as initializer", "-[PXStoryViewControllerViewModelTransitionsCoordinator initWithObservableModel:]"}];
 
   abort();
 }

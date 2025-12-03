@@ -1,31 +1,31 @@
 @interface PXWidgetTimeline
-+ (BOOL)_requestWidgetTimelineReloadForWidgetKind:(id)a3 withError:(id *)a4;
-+ (BOOL)requestAlbumWidgetTimelineReloadWithError:(id *)a3;
-+ (BOOL)requestForYouWidgetTimelineReloadWithError:(id *)a3;
-+ (id)timelineFromLibrary:(id)a3;
-+ (id)timelineFromLibrary:(id)a3 albumIdentifier:(id)a4 widgetIdentifier:(id)a5 widgetSize:(CGSize)a6;
-+ (id)timelineFromLibrary:(id)a3 albumIdentifier:(id)a4 widgetIdentifier:(id)a5 widgetSize:(CGSize)a6 withOptions:(id)a7;
-+ (id)timelineFromLibrary:(id)a3 assetLocalIdentifiers:(id)a4 widgetIdentifier:(id)a5 widgetSize:(CGSize)a6 withOptions:(id)a7;
-+ (id)timelineFromLibrary:(id)a3 forWidgetSize:(CGSize)a4 timelineSize:(unint64_t)a5;
-+ (id)timelineFromLibrary:(id)a3 timelineSize:(unint64_t)a4 withOptions:(id)a5;
++ (BOOL)_requestWidgetTimelineReloadForWidgetKind:(id)kind withError:(id *)error;
++ (BOOL)requestAlbumWidgetTimelineReloadWithError:(id *)error;
++ (BOOL)requestForYouWidgetTimelineReloadWithError:(id *)error;
++ (id)timelineFromLibrary:(id)library;
++ (id)timelineFromLibrary:(id)library albumIdentifier:(id)identifier widgetIdentifier:(id)widgetIdentifier widgetSize:(CGSize)size;
++ (id)timelineFromLibrary:(id)library albumIdentifier:(id)identifier widgetIdentifier:(id)widgetIdentifier widgetSize:(CGSize)size withOptions:(id)options;
++ (id)timelineFromLibrary:(id)library assetLocalIdentifiers:(id)identifiers widgetIdentifier:(id)identifier widgetSize:(CGSize)size withOptions:(id)options;
++ (id)timelineFromLibrary:(id)library forWidgetSize:(CGSize)size timelineSize:(unint64_t)timelineSize;
++ (id)timelineFromLibrary:(id)library timelineSize:(unint64_t)size withOptions:(id)options;
 + (void)requestReloadForAllWidgetTimelines;
 @end
 
 @implementation PXWidgetTimeline
 
-+ (BOOL)_requestWidgetTimelineReloadForWidgetKind:(id)a3 withError:(id *)a4
++ (BOOL)_requestWidgetTimelineReloadForWidgetKind:(id)kind withError:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  kindCopy = kind;
   v6 = PLMemoriesGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v5;
+    v14 = kindCopy;
     _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "Calling reloadTimeline on CHSTimelineController for widget kind %@", &v13, 0xCu);
   }
 
-  v7 = [objc_alloc(MEMORY[0x1E6994360]) initWithExtensionBundleIdentifier:@"com.apple.mobileslideshow.PhotosReliveWidget" kind:v5];
+  v7 = [objc_alloc(MEMORY[0x1E6994360]) initWithExtensionBundleIdentifier:@"com.apple.mobileslideshow.PhotosReliveWidget" kind:kindCopy];
   v8 = [v7 reloadTimelineWithReason:@"RequestedByPhotosUI"];
   v9 = PLMemoriesGetLog();
   v10 = v9;
@@ -36,14 +36,14 @@
       v13 = 138412546;
       v14 = v8;
       v15 = 2112;
-      v16 = v5;
+      v16 = kindCopy;
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_ERROR, "CHSTimelineController reloadTimeline error: %@ for widget kind %@", &v13, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v11 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -52,7 +52,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v5;
+      v14 = kindCopy;
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEFAULT, "CHSTimelineController reloadTimeline completed for widget kind %@", &v13, 0xCu);
     }
   }
@@ -62,15 +62,15 @@
 
 + (void)requestReloadForAllWidgetTimelines
 {
-  [a1 requestForYouWidgetTimelineReloadWithError:0];
+  [self requestForYouWidgetTimelineReloadWithError:0];
 
-  [a1 requestAlbumWidgetTimelineReloadWithError:0];
+  [self requestAlbumWidgetTimelineReloadWithError:0];
 }
 
-+ (BOOL)requestAlbumWidgetTimelineReloadWithError:(id *)a3
++ (BOOL)requestAlbumWidgetTimelineReloadWithError:(id *)error
 {
   v5 = PLTimelineGetLog();
-  v6 = os_signpost_id_make_with_pointer(v5, a1);
+  v6 = os_signpost_id_make_with_pointer(v5, self);
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v7 = v6;
@@ -81,13 +81,13 @@
     }
   }
 
-  return [a1 _requestWidgetTimelineReloadForWidgetKind:@"com.apple.mobileslideshow.PhotosReliveWidget.collections" withError:a3];
+  return [self _requestWidgetTimelineReloadForWidgetKind:@"com.apple.mobileslideshow.PhotosReliveWidget.collections" withError:error];
 }
 
-+ (BOOL)requestForYouWidgetTimelineReloadWithError:(id *)a3
++ (BOOL)requestForYouWidgetTimelineReloadWithError:(id *)error
 {
   v5 = PLTimelineGetLog();
-  v6 = os_signpost_id_make_with_pointer(v5, a1);
+  v6 = os_signpost_id_make_with_pointer(v5, self);
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v7 = v6;
@@ -98,31 +98,31 @@
     }
   }
 
-  return [a1 _requestWidgetTimelineReloadForWidgetKind:@"com.apple.mobileslideshow.PhotosReliveWidget" withError:a3];
+  return [self _requestWidgetTimelineReloadForWidgetKind:@"com.apple.mobileslideshow.PhotosReliveWidget" withError:error];
 }
 
-+ (id)timelineFromLibrary:(id)a3
++ (id)timelineFromLibrary:(id)library
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [[PXTimelineDataSourceOptions alloc] initWithMemoriesOnly];
-  v5 = [[PXTimelineDataSource alloc] initWithPhotoLibrary:v3 options:v4];
+  libraryCopy = library;
+  initWithMemoriesOnly = [[PXTimelineDataSourceOptions alloc] initWithMemoriesOnly];
+  v5 = [[PXTimelineDataSource alloc] initWithPhotoLibrary:libraryCopy options:initWithMemoriesOnly];
   v6 = [[PXTimelineScheduler alloc] initWithTimelineDataSource:v5];
   v7 = objc_alloc_init(PXTimelineSchedulerOptions);
-  v21 = v4;
-  v22 = v3;
+  v21 = initWithMemoriesOnly;
+  v22 = libraryCopy;
   if (PFOSVariantHasInternalUI())
   {
     v8 = +[PXMemoriesRelatedSettings sharedInstance];
-    v9 = [v8 timelineSchedulerMode];
+    timelineSchedulerMode = [v8 timelineSchedulerMode];
 
-    v10 = [PXMemoriesRelatedSettings schedulerOptionsFromTimelineSchedulerMode:v9];
+    v10 = [PXMemoriesRelatedSettings schedulerOptionsFromTimelineSchedulerMode:timelineSchedulerMode];
 
     v11 = PLMemoriesGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v29 = v9;
+      v29 = timelineSchedulerMode;
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEFAULT, "Timeline scheduler mode: %lu", buf, 0xCu);
     }
 
@@ -167,62 +167,62 @@
   return v12;
 }
 
-+ (id)timelineFromLibrary:(id)a3 assetLocalIdentifiers:(id)a4 widgetIdentifier:(id)a5 widgetSize:(CGSize)a6 withOptions:(id)a7
++ (id)timelineFromLibrary:(id)library assetLocalIdentifiers:(id)identifiers widgetIdentifier:(id)identifier widgetSize:(CGSize)size withOptions:(id)options
 {
-  height = a6.height;
-  width = a6.width;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[PXTimelineDataSource alloc] initWithAssetIdentifiers:v14 widgetIdentifier:v13 widgetSize:v15 photoLibrary:width, height];
+  height = size.height;
+  width = size.width;
+  optionsCopy = options;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  libraryCopy = library;
+  height = [[PXTimelineDataSource alloc] initWithAssetIdentifiers:identifiersCopy widgetIdentifier:identifierCopy widgetSize:libraryCopy photoLibrary:width, height];
 
-  v17 = [[PXTimelineScheduler alloc] initWithTimelineDataSource:v16];
-  v18 = [(PXTimelineScheduler *)v17 scheduledTimelineEntriesWithOptions:v12];
+  v17 = [[PXTimelineScheduler alloc] initWithTimelineDataSource:height];
+  v18 = [(PXTimelineScheduler *)v17 scheduledTimelineEntriesWithOptions:optionsCopy];
 
   return v18;
 }
 
-+ (id)timelineFromLibrary:(id)a3 albumIdentifier:(id)a4 widgetIdentifier:(id)a5 widgetSize:(CGSize)a6 withOptions:(id)a7
++ (id)timelineFromLibrary:(id)library albumIdentifier:(id)identifier widgetIdentifier:(id)widgetIdentifier widgetSize:(CGSize)size withOptions:(id)options
 {
-  height = a6.height;
-  width = a6.width;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[PXTimelineDataSource alloc] initWithAlbumLocalIdentifier:v14 widgetIdentifier:v13 widgetSize:v15 photoLibrary:width, height];
+  height = size.height;
+  width = size.width;
+  optionsCopy = options;
+  widgetIdentifierCopy = widgetIdentifier;
+  identifierCopy = identifier;
+  libraryCopy = library;
+  height = [[PXTimelineDataSource alloc] initWithAlbumLocalIdentifier:identifierCopy widgetIdentifier:widgetIdentifierCopy widgetSize:libraryCopy photoLibrary:width, height];
 
-  v17 = [[PXTimelineScheduler alloc] initWithTimelineDataSource:v16];
-  v18 = [(PXTimelineScheduler *)v17 scheduledTimelineEntriesWithOptions:v12];
+  v17 = [[PXTimelineScheduler alloc] initWithTimelineDataSource:height];
+  v18 = [(PXTimelineScheduler *)v17 scheduledTimelineEntriesWithOptions:optionsCopy];
 
   return v18;
 }
 
-+ (id)timelineFromLibrary:(id)a3 albumIdentifier:(id)a4 widgetIdentifier:(id)a5 widgetSize:(CGSize)a6
++ (id)timelineFromLibrary:(id)library albumIdentifier:(id)identifier widgetIdentifier:(id)widgetIdentifier widgetSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
+  height = size.height;
+  width = size.width;
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[PXTimelineDataSource alloc] initWithAlbumLocalIdentifier:v11 widgetIdentifier:v10 widgetSize:v12 photoLibrary:width, height];
+  widgetIdentifierCopy = widgetIdentifier;
+  identifierCopy = identifier;
+  libraryCopy = library;
+  height = [[PXTimelineDataSource alloc] initWithAlbumLocalIdentifier:identifierCopy widgetIdentifier:widgetIdentifierCopy widgetSize:libraryCopy photoLibrary:width, height];
 
-  v14 = [[PXTimelineScheduler alloc] initWithTimelineDataSource:v13];
+  v14 = [[PXTimelineScheduler alloc] initWithTimelineDataSource:height];
   v15 = objc_alloc_init(PXTimelineSchedulerOptions);
   if (PFOSVariantHasInternalUI())
   {
     v16 = +[PXMemoriesRelatedSettings sharedInstance];
-    v17 = [v16 timelineSchedulerMode];
+    timelineSchedulerMode = [v16 timelineSchedulerMode];
 
-    v18 = [PXMemoriesRelatedSettings schedulerOptionsFromTimelineSchedulerMode:v17];
+    v18 = [PXMemoriesRelatedSettings schedulerOptionsFromTimelineSchedulerMode:timelineSchedulerMode];
 
     v19 = PLMemoriesGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 134217984;
-      v23 = v17;
+      v23 = timelineSchedulerMode;
       _os_log_impl(&dword_1A3C1C000, v19, OS_LOG_TYPE_DEFAULT, "Timeline scheduler mode: %lu", &v22, 0xCu);
     }
 
@@ -234,13 +234,13 @@
   return v20;
 }
 
-+ (id)timelineFromLibrary:(id)a3 timelineSize:(unint64_t)a4 withOptions:(id)a5
++ (id)timelineFromLibrary:(id)library timelineSize:(unint64_t)size withOptions:(id)options
 {
   v71 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  libraryCopy = library;
+  optionsCopy = options;
   v11 = PLTimelineGetLog();
-  v12 = os_signpost_id_make_with_pointer(v11, a1);
+  v12 = os_signpost_id_make_with_pointer(v11, self);
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v13 = v12;
@@ -251,9 +251,9 @@
     }
   }
 
-  v14 = [PXTimelineSize sizeDescriptionForSizeClass:a4];
+  v14 = [PXTimelineSize sizeDescriptionForSizeClass:size];
   v15 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
   [v15 addObject:v16];
 
   v17 = dispatch_group_create();
@@ -268,31 +268,31 @@
   v19 = v15;
   v60 = v19;
   v62 = a2;
-  v63 = a1;
+  selfCopy = self;
   v20 = v17;
   v61 = v20;
   v49 = v18;
   [v18 allConfiguredWidgetsWithCompletion:v58];
-  v21 = v10;
-  v46 = [[PXTimelineDataSource alloc] initWithPhotoLibrary:v9 options:v10];
+  v21 = optionsCopy;
+  v46 = [[PXTimelineDataSource alloc] initWithPhotoLibrary:libraryCopy options:optionsCopy];
   v22 = [[PXTimelineScheduler alloc] initWithTimelineDataSource:v46];
   v23 = objc_alloc_init(PXTimelineSchedulerOptions);
-  v51 = v9;
+  v51 = libraryCopy;
   v52 = v22;
   if (PFOSVariantHasInternalUI())
   {
     v24 = v20;
     v25 = v19;
     v26 = +[PXMemoriesRelatedSettings sharedInstance];
-    v27 = [v26 timelineSchedulerMode];
+    timelineSchedulerMode = [v26 timelineSchedulerMode];
 
-    v28 = [PXMemoriesRelatedSettings schedulerOptionsFromTimelineSchedulerMode:v27];
+    v28 = [PXMemoriesRelatedSettings schedulerOptionsFromTimelineSchedulerMode:timelineSchedulerMode];
 
     v29 = PLMemoriesGetLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v66 = v27;
+      v66 = timelineSchedulerMode;
       _os_log_impl(&dword_1A3C1C000, v29, OS_LOG_TYPE_DEFAULT, "Timeline scheduler mode: %lu", buf, 0xCu);
     }
 
@@ -302,7 +302,7 @@
     v22 = v52;
   }
 
-  ptr = a1;
+  ptr = self;
   v30 = dispatch_time(0, 1000000000);
   v47 = v20;
   if (dispatch_group_wait(v20, v30))
@@ -317,18 +317,18 @@
   }
 
   v48 = v19;
-  [(PXTimelineSchedulerOptions *)v23 updateOptionsForTimelineSize:a4 withTimelineSizes:v19];
+  [(PXTimelineSchedulerOptions *)v23 updateOptionsForTimelineSize:size withTimelineSizes:v19];
   v32 = PLMemoriesGetLog();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
-    v33 = [(PXTimelineSchedulerOptions *)v23 timelineIndex];
-    v34 = [(PXTimelineSchedulerOptions *)v23 numberOfTimelines];
+    timelineIndex = [(PXTimelineSchedulerOptions *)v23 timelineIndex];
+    numberOfTimelines = [(PXTimelineSchedulerOptions *)v23 numberOfTimelines];
     *buf = 138412802;
     v66 = v53;
     v67 = 2048;
-    v68 = v33;
+    v68 = timelineIndex;
     v69 = 2048;
-    v70 = v34;
+    v70 = numberOfTimelines;
     _os_log_impl(&dword_1A3C1C000, v32, OS_LOG_TYPE_DEFAULT, "WidgetTimeline %@ - index: %zd, timelines: %zd", buf, 0x20u);
   }
 
@@ -367,7 +367,7 @@
     while (v37);
   }
 
-  [PXProactiveSuggester updateProactiveSuggestionsFromTimelineEntries:v35 forTimelineSize:a4];
+  [PXProactiveSuggester updateProactiveSuggestionsFromTimelineEntries:v35 forTimelineSize:size];
   v42 = PLTimelineGetLog();
   v43 = os_signpost_id_make_with_pointer(v42, ptr);
   if (v43 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -516,13 +516,13 @@ LABEL_24:
   dispatch_group_leave(*(a1 + 48));
 }
 
-+ (id)timelineFromLibrary:(id)a3 forWidgetSize:(CGSize)a4 timelineSize:(unint64_t)a5
++ (id)timelineFromLibrary:(id)library forWidgetSize:(CGSize)size timelineSize:(unint64_t)timelineSize
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = [[PXTimelineDataSourceOptions alloc] initForWidgetWithSize:width, height];
-  v11 = [a1 timelineFromLibrary:v9 timelineSize:a5 withOptions:v10];
+  height = size.height;
+  width = size.width;
+  libraryCopy = library;
+  height = [[PXTimelineDataSourceOptions alloc] initForWidgetWithSize:width, height];
+  v11 = [self timelineFromLibrary:libraryCopy timelineSize:timelineSize withOptions:height];
 
   return v11;
 }

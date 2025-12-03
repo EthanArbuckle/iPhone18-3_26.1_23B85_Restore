@@ -1,25 +1,25 @@
 @interface SBIdleTimerServiceClientRequestConfiguration
-- (SBIdleTimerServiceClientRequestConfiguration)initWithScenePID:(int)a3 process:(id)a4 configuration:(id)a5;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBIdleTimerServiceClientRequestConfiguration)initWithScenePID:(int)d process:(id)process configuration:(id)configuration;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation SBIdleTimerServiceClientRequestConfiguration
 
-- (SBIdleTimerServiceClientRequestConfiguration)initWithScenePID:(int)a3 process:(id)a4 configuration:(id)a5
+- (SBIdleTimerServiceClientRequestConfiguration)initWithScenePID:(int)d process:(id)process configuration:(id)configuration
 {
-  v9 = a4;
-  v10 = a5;
+  processCopy = process;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = SBIdleTimerServiceClientRequestConfiguration;
   v11 = [(SBIdleTimerServiceClientRequestConfiguration *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_scenePID = a3;
-    objc_storeStrong(&v11->_process, a4);
-    objc_storeStrong(&v12->_configuration, a5);
+    v11->_scenePID = d;
+    objc_storeStrong(&v11->_process, process);
+    objc_storeStrong(&v12->_configuration, configuration);
   }
 
   return v12;
@@ -27,10 +27,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBIdleTimerServiceClientRequestConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIdleTimerServiceClientRequestConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -45,12 +45,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIdleTimerServiceClientRequestConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIdleTimerServiceClientRequestConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

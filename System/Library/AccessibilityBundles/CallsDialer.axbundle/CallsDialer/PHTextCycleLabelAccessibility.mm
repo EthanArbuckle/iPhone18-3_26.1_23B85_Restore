@@ -14,8 +14,8 @@
     [(PHTextCycleLabelAccessibility *)self _accessibilitySetRetainedValue:v3 forKey:@"_accessibilityLanguageMap"];
   }
 
-  v4 = [(PHTextCycleLabelAccessibility *)self accessibilityLabel];
-  v5 = [v3 objectForKey:v4];
+  accessibilityLabel = [(PHTextCycleLabelAccessibility *)self accessibilityLabel];
+  v5 = [v3 objectForKey:accessibilityLabel];
 
   if (!v5)
   {

@@ -1,22 +1,22 @@
 @interface CloudSyncConfiguration
 - (_TtC8Settings22CloudSyncConfiguration)init;
-- (_TtC8Settings22CloudSyncConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC8Settings22CloudSyncConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CloudSyncConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_21CE0DB74(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_21CE0DB74(coderCopy);
 }
 
-- (_TtC8Settings22CloudSyncConfiguration)initWithCoder:(id)a3
+- (_TtC8Settings22CloudSyncConfiguration)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_21CE0E644(v3);
+  coderCopy = coder;
+  v4 = sub_21CE0E644(coderCopy);
 
   return v4;
 }

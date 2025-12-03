@@ -16,7 +16,7 @@
   v7 = self + OBJC_IVAR___BlastDoorCollaborationNotice_collaborationNotice;
   v8 = type metadata accessor for CollaborationNotice(0);
   sub_213FB568C(&v7[*(v8 + 24)], v6, type metadata accessor for CollaborationHighlightEvent);
-  v9 = self;
+  selfCopy = self;
   v10 = sub_214675854();
   v12 = v11;
   v13 = sub_2146D8A38();
@@ -29,7 +29,7 @@
 
 - (unint64_t)highlightEventType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_214557444();
 
   return v3;

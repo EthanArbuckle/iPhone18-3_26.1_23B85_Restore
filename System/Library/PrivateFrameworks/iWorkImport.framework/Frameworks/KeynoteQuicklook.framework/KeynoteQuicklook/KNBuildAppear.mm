@@ -1,17 +1,17 @@
 @interface KNBuildAppear
 + (NSDictionary)defaultAttributes;
-+ (id)localizedMenuString:(int64_t)a3;
-+ (id)thumbnailImageNameForType:(int64_t)a3;
-- (void)addAnimationsTo:(id)a3 context:(id)a4;
++ (id)localizedMenuString:(int64_t)string;
++ (id)thumbnailImageNameForType:(int64_t)type;
+- (void)addAnimationsTo:(id)to context:(id)context;
 @end
 
 @implementation KNBuildAppear
 
-+ (id)localizedMenuString:(int64_t)a3
++ (id)localizedMenuString:(int64_t)string
 {
   v4 = sub_275DC204C();
   v6 = v4;
-  if (a3 == 1)
+  if (string == 1)
   {
     objc_msgSend_localizedStringForKey_value_table_(v4, v5, @"Appear *AppearBuild*", @"Appear", @"Keynote");
   }
@@ -35,9 +35,9 @@
   return v2;
 }
 
-+ (id)thumbnailImageNameForType:(int64_t)a3
++ (id)thumbnailImageNameForType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"anim-icons-builds-appear";
   }
@@ -48,13 +48,13 @@
   }
 }
 
-- (void)addAnimationsTo:(id)a3 context:(id)a4
+- (void)addAnimationsTo:(id)to context:(id)context
 {
   v114 = *MEMORY[0x277D85DE8];
-  v107 = a3;
-  v5 = a4;
-  v8 = objc_msgSend_textures(v5, v6, v7);
-  v11 = objc_msgSend_animatedBuild(v5, v9, v10);
+  toCopy = to;
+  contextCopy = context;
+  v8 = objc_msgSend_textures(contextCopy, v6, v7);
+  v11 = objc_msgSend_animatedBuild(contextCopy, v9, v10);
   isBuildIn = objc_msgSend_isBuildIn(v11, v12, v13);
   objc_msgSend_duration(v11, v15, v16);
   v18 = v17;
@@ -62,16 +62,16 @@
   v22 = objc_msgSend_animationFilter(v19, v20, v21);
   isEqualToString = objc_msgSend_isEqualToString_(v22, v23, *MEMORY[0x277D80578]);
 
-  v101 = v5;
+  v101 = contextCopy;
   if (isEqualToString)
   {
-    v27 = objc_msgSend_attributes(v11, v25, v26, v5);
+    v27 = objc_msgSend_attributes(v11, v25, v26, contextCopy);
     v29 = objc_msgSend_valueForAttributeKey_(v27, v28, @"KNBuildCustomAttributesDeliveryOption");
 
     v32 = objc_msgSend_unsignedIntegerValue(v29, v30, v31);
     v34 = objc_msgSend_directionFromCustomAttributesDeliveryOption_(KNAnimationUtils, v33, v32);
     v37 = objc_msgSend_count(v8, v35, v36);
-    v40 = objc_msgSend_randomGenerator(v5, v38, v39);
+    v40 = objc_msgSend_randomGenerator(contextCopy, v38, v39);
     v42 = objc_msgSend_timingsArrayWithDirection_duration_count_chunkDuration_randomness_randomGenerator_(KNAnimationUtils, v41, v34, v37, v40, v18, 0.0001, 0.0);
   }
 
@@ -205,7 +205,7 @@
         objc_msgSend_setDuration_(v93, v94, v95, v18);
         objc_msgSend_setAnimations_(v93, v96, v63);
         v99 = objc_msgSend_layer(v52, v97, v98);
-        objc_msgSend_setObject_forKey_(v107, v100, v93, v99);
+        objc_msgSend_setObject_forKey_(toCopy, v100, v93, v99);
 
         v42 = v106;
       }

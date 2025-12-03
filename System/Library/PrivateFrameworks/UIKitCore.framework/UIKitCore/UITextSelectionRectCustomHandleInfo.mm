@@ -1,5 +1,5 @@
 @interface UITextSelectionRectCustomHandleInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)bottomLeft;
 - (CGPoint)bottomRight;
 - (CGPoint)topLeft;
@@ -67,10 +67,10 @@
   return [v3 stringWithFormat:@"topLeft    : %.2f %.2f \ntopRight   : %.2f %.2f \nbottomLeft : %.2f %.2f \nbottomRight: %.2f %.2f", v5, v7, v9, v11, v13, v15, v17, v18];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -80,7 +80,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(UITextSelectionRectCustomHandleInfo *)self bottomLeft];
       v7 = v6;
       v9 = v8;

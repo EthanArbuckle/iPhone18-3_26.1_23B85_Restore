@@ -1,29 +1,29 @@
 @interface HUWallpaperPickerInlineViewController
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
 - (CGSize)imageSize;
 - (CGSize)preferredContentSize;
 - (HFWallpaper)selectedWallpaper;
 - (HUWallpaperPickerInlineViewController)init;
 - (HUWallpaperPickerInlineViewControllerDelegate)delegate;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (id)thumbnailWallpaperForIndexPath:(id)a3;
-- (id)wallpaperForIndexPath:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (id)thumbnailWallpaperForIndexPath:(id)path;
+- (id)wallpaperForIndexPath:(id)path;
 - (unint64_t)numberOfWallpapers;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)configureCell:(id)a3 image:(id)a4 wallpaper:(id)a5;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)setCustomWallpaper:(id)a3 image:(id)a4;
-- (void)setImageSize:(CGSize)a3;
-- (void)setImageSizeToFitWidth:(double)a3 forNumberOfWallpapers:(unint64_t)a4;
-- (void)setNamedWallpaperThumbnails:(id)a3;
-- (void)setNamedWallpapers:(id)a3;
-- (void)setSelectedIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)setSelectedWallpaper:(id)a3 animated:(BOOL)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)configureCell:(id)cell image:(id)image wallpaper:(id)wallpaper;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)setCustomWallpaper:(id)wallpaper image:(id)image;
+- (void)setImageSize:(CGSize)size;
+- (void)setImageSizeToFitWidth:(double)width forNumberOfWallpapers:(unint64_t)wallpapers;
+- (void)setNamedWallpaperThumbnails:(id)thumbnails;
+- (void)setNamedWallpapers:(id)wallpapers;
+- (void)setSelectedIndexPath:(id)path animated:(BOOL)animated;
+- (void)setSelectedWallpaper:(id)wallpaper animated:(BOOL)animated;
 - (void)updateScrolling;
 - (void)viewDidLoad;
-- (void)wallpaperPhotoCellDidPressDeleteButton:(id)a3;
+- (void)wallpaperPhotoCellDidPressDeleteButton:(id)button;
 @end
 
 @implementation HUWallpaperPickerInlineViewController
@@ -70,44 +70,44 @@
   v12.receiver = self;
   v12.super_class = HUWallpaperPickerInlineViewController;
   [(HUWallpaperPickerInlineViewController *)&v12 viewDidLoad];
-  v3 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"HUWallpaperPhotoCell"];
+  collectionView = [(HUWallpaperPickerInlineViewController *)self collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"HUWallpaperPhotoCell"];
 
-  v4 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-  [v4 setDelegate:self];
+  collectionView2 = [(HUWallpaperPickerInlineViewController *)self collectionView];
+  [collectionView2 setDelegate:self];
 
-  v5 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-  [v5 setDataSource:self];
+  collectionView3 = [(HUWallpaperPickerInlineViewController *)self collectionView];
+  [collectionView3 setDataSource:self];
 
-  v6 = [MEMORY[0x277D75348] clearColor];
-  v7 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-  [v7 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  collectionView4 = [(HUWallpaperPickerInlineViewController *)self collectionView];
+  [collectionView4 setBackgroundColor:clearColor];
 
-  v8 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-  [v8 setAllowsMultipleSelection:0];
+  collectionView5 = [(HUWallpaperPickerInlineViewController *)self collectionView];
+  [collectionView5 setAllowsMultipleSelection:0];
 
-  v9 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-  [v9 setContentInset:{20.0, 20.0, 20.0, 20.0}];
+  collectionView6 = [(HUWallpaperPickerInlineViewController *)self collectionView];
+  [collectionView6 setContentInset:{20.0, 20.0, 20.0, 20.0}];
 
-  v10 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-  v11 = [(HUWallpaperPickerInlineViewController *)self dropInteraction];
-  [v10 addInteraction:v11];
+  collectionView7 = [(HUWallpaperPickerInlineViewController *)self collectionView];
+  dropInteraction = [(HUWallpaperPickerInlineViewController *)self dropInteraction];
+  [collectionView7 addInteraction:dropInteraction];
 
   [(HUWallpaperPickerInlineViewController *)self updateScrolling];
 }
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(HUWallpaperPickerInlineViewController *)self view];
-  [v3 frame];
+  view = [(HUWallpaperPickerInlineViewController *)self view];
+  [view frame];
   v5 = v4;
   [(HUWallpaperPickerInlineViewController *)self imageSize];
   v7 = v6;
-  v8 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-  [v8 contentInset];
+  collectionView = [(HUWallpaperPickerInlineViewController *)self collectionView];
+  [collectionView contentInset];
   v10 = v7 + v9;
-  v11 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-  [v11 contentInset];
+  collectionView2 = [(HUWallpaperPickerInlineViewController *)self collectionView];
+  [collectionView2 contentInset];
   v13 = v10 + v12;
 
   v14 = v5;
@@ -117,20 +117,20 @@
   return result;
 }
 
-- (void)setCustomWallpaper:(id)a3 image:(id)a4
+- (void)setCustomWallpaper:(id)wallpaper image:(id)image
 {
-  v13 = a3;
-  objc_storeStrong(&self->_customWallpaper, a3);
-  v7 = a4;
-  v8 = [(HUWallpaperPickerInlineViewController *)self imageCache];
-  v9 = [v13 assetIdentifier];
-  [v8 setValue:v7 forKey:v9];
+  wallpaperCopy = wallpaper;
+  objc_storeStrong(&self->_customWallpaper, wallpaper);
+  imageCopy = image;
+  imageCache = [(HUWallpaperPickerInlineViewController *)self imageCache];
+  assetIdentifier = [wallpaperCopy assetIdentifier];
+  [imageCache setValue:imageCopy forKey:assetIdentifier];
 
-  v10 = [(HUWallpaperPickerInlineViewController *)self customWallpaperCell];
-  [(HUWallpaperPickerInlineViewController *)self configureCell:v10 image:v7 wallpaper:v13];
+  customWallpaperCell = [(HUWallpaperPickerInlineViewController *)self customWallpaperCell];
+  [(HUWallpaperPickerInlineViewController *)self configureCell:customWallpaperCell image:imageCopy wallpaper:wallpaperCopy];
 
-  v11 = v13;
-  if (!v13)
+  v11 = wallpaperCopy;
+  if (!wallpaperCopy)
   {
     originalCustomImage = self->_originalCustomImage;
     self->_originalCustomImage = 0;
@@ -139,74 +139,74 @@
   }
 }
 
-- (void)setNamedWallpapers:(id)a3
+- (void)setNamedWallpapers:(id)wallpapers
 {
-  objc_storeStrong(&self->_namedWallpapers, a3);
+  objc_storeStrong(&self->_namedWallpapers, wallpapers);
   [(HUWallpaperPickerInlineViewController *)self updateScrolling];
-  v4 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-  [v4 reloadData];
+  collectionView = [(HUWallpaperPickerInlineViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
-- (void)setNamedWallpaperThumbnails:(id)a3
+- (void)setNamedWallpaperThumbnails:(id)thumbnails
 {
-  objc_storeStrong(&self->_namedWallpaperThumbnails, a3);
+  objc_storeStrong(&self->_namedWallpaperThumbnails, thumbnails);
   [(HUWallpaperPickerInlineViewController *)self updateScrolling];
-  v4 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-  [v4 reloadData];
+  collectionView = [(HUWallpaperPickerInlineViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  if (self->_imageSize.width != a3.width || self->_imageSize.height != a3.height)
+  if (self->_imageSize.width != size.width || self->_imageSize.height != size.height)
   {
-    self->_imageSize = a3;
-    v4 = [(HUWallpaperPickerInlineViewController *)self view];
-    [v4 layoutIfNeeded];
+    self->_imageSize = size;
+    view = [(HUWallpaperPickerInlineViewController *)self view];
+    [view layoutIfNeeded];
 
-    v5 = [(HUWallpaperPickerInlineViewController *)self collectionViewLayout];
-    [v5 invalidateLayout];
+    collectionViewLayout = [(HUWallpaperPickerInlineViewController *)self collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
   }
 }
 
-- (void)setImageSizeToFitWidth:(double)a3 forNumberOfWallpapers:(unint64_t)a4
+- (void)setImageSizeToFitWidth:(double)width forNumberOfWallpapers:(unint64_t)wallpapers
 {
-  v7 = [(HUWallpaperPickerInlineViewController *)self flowLayout];
-  [v7 minimumLineSpacing];
+  flowLayout = [(HUWallpaperPickerInlineViewController *)self flowLayout];
+  [flowLayout minimumLineSpacing];
   v9 = v8;
 
-  v10 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-  [v10 contentInset];
-  v12 = a3 - v11;
-  v13 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-  [v13 contentInset];
+  collectionView = [(HUWallpaperPickerInlineViewController *)self collectionView];
+  [collectionView contentInset];
+  v12 = width - v11;
+  collectionView2 = [(HUWallpaperPickerInlineViewController *)self collectionView];
+  [collectionView2 contentInset];
   v15 = v12 - v14;
 
-  v16 = [MEMORY[0x277D759A0] mainScreen];
-  [v16 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v18 = v17;
-  v19 = [MEMORY[0x277D759A0] mainScreen];
-  [v19 bounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   v21 = v18 / v20;
 
-  v22 = (v15 - v9 * ([(HUWallpaperPickerInlineViewController *)self numberOfWallpapers]- 1)) / a4;
+  v22 = (v15 - v9 * ([(HUWallpaperPickerInlineViewController *)self numberOfWallpapers]- 1)) / wallpapers;
   [(HUWallpaperPickerInlineViewController *)self setImageSize:v22, round(v21 * v22)];
-  [(HUWallpaperPickerInlineViewController *)self setNumberOfWallpapersFittingInWidth:a4];
+  [(HUWallpaperPickerInlineViewController *)self setNumberOfWallpapersFittingInWidth:wallpapers];
 
   [(HUWallpaperPickerInlineViewController *)self updateScrolling];
 }
 
-- (void)setSelectedWallpaper:(id)a3 animated:(BOOL)a4
+- (void)setSelectedWallpaper:(id)wallpaper animated:(BOOL)animated
 {
-  v4 = a4;
-  v21 = a3;
-  v6 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
-  v7 = v21;
-  if (!v6 || ([v21 assetIdentifier], v8 = objc_claimAutoreleasedReturnValue(), -[HUWallpaperPickerInlineViewController selectedWallpaper](self, "selectedWallpaper"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "assetIdentifier"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v8, "isEqualToString:", v10), v10, v9, v8, v6, v7 = v21, (v11 & 1) == 0))
+  animatedCopy = animated;
+  wallpaperCopy = wallpaper;
+  selectedWallpaper = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
+  v7 = wallpaperCopy;
+  if (!selectedWallpaper || ([wallpaperCopy assetIdentifier], v8 = objc_claimAutoreleasedReturnValue(), -[HUWallpaperPickerInlineViewController selectedWallpaper](self, "selectedWallpaper"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "assetIdentifier"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v8, "isEqualToString:", v10), v10, v9, v8, selectedWallpaper, v7 = wallpaperCopy, (v11 & 1) == 0))
   {
-    v12 = [v7 assetIdentifier];
-    v13 = [(HUWallpaperPickerInlineViewController *)self customWallpaper];
-    v14 = [v13 assetIdentifier];
-    v15 = [v12 isEqualToString:v14];
+    assetIdentifier = [v7 assetIdentifier];
+    customWallpaper = [(HUWallpaperPickerInlineViewController *)self customWallpaper];
+    assetIdentifier2 = [customWallpaper assetIdentifier];
+    v15 = [assetIdentifier isEqualToString:assetIdentifier2];
 
     if (v15)
     {
@@ -215,11 +215,11 @@
 
     else
     {
-      v17 = [(HUWallpaperPickerInlineViewController *)self namedWallpapers];
-      v18 = [v17 na_map:&__block_literal_global_25];
+      namedWallpapers = [(HUWallpaperPickerInlineViewController *)self namedWallpapers];
+      v18 = [namedWallpapers na_map:&__block_literal_global_25];
 
-      v19 = [v21 assetIdentifier];
-      v20 = [v18 indexOfObject:v19];
+      assetIdentifier3 = [wallpaperCopy assetIdentifier];
+      v20 = [v18 indexOfObject:assetIdentifier3];
 
       if (v20 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -232,97 +232,97 @@
       }
     }
 
-    v7 = v21;
+    v7 = wallpaperCopy;
     if (v16)
     {
-      [(HUWallpaperPickerInlineViewController *)self setSelectedIndexPath:v16 animated:v4];
+      [(HUWallpaperPickerInlineViewController *)self setSelectedIndexPath:v16 animated:animatedCopy];
 
-      v7 = v21;
+      v7 = wallpaperCopy;
     }
   }
 }
 
-- (void)setSelectedIndexPath:(id)a3 animated:(BOOL)a4
+- (void)setSelectedIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-  v8 = [v7 cellForItemAtIndexPath:v6];
-  [v8 showBorder:1 animated:v4];
+  animatedCopy = animated;
+  pathCopy = path;
+  collectionView = [(HUWallpaperPickerInlineViewController *)self collectionView];
+  v8 = [collectionView cellForItemAtIndexPath:pathCopy];
+  [v8 showBorder:1 animated:animatedCopy];
 
-  v9 = [(HUWallpaperPickerInlineViewController *)self selectedIndexPath];
+  selectedIndexPath = [(HUWallpaperPickerInlineViewController *)self selectedIndexPath];
 
-  if (v9)
+  if (selectedIndexPath)
   {
-    v10 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-    v11 = [(HUWallpaperPickerInlineViewController *)self selectedIndexPath];
-    v12 = [v10 cellForItemAtIndexPath:v11];
-    [v12 showBorder:0 animated:v4];
+    collectionView2 = [(HUWallpaperPickerInlineViewController *)self collectionView];
+    selectedIndexPath2 = [(HUWallpaperPickerInlineViewController *)self selectedIndexPath];
+    v12 = [collectionView2 cellForItemAtIndexPath:selectedIndexPath2];
+    [v12 showBorder:0 animated:animatedCopy];
   }
 
-  v13 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-  v14 = [v13 isScrollEnabled];
+  collectionView3 = [(HUWallpaperPickerInlineViewController *)self collectionView];
+  isScrollEnabled = [collectionView3 isScrollEnabled];
 
-  if (v14)
+  if (isScrollEnabled)
   {
-    v15 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-    [v15 scrollToItemAtIndexPath:v6 atScrollPosition:32 animated:v4];
+    collectionView4 = [(HUWallpaperPickerInlineViewController *)self collectionView];
+    [collectionView4 scrollToItemAtIndexPath:pathCopy atScrollPosition:32 animated:animatedCopy];
   }
 
   selectedIndexPath = self->_selectedIndexPath;
-  self->_selectedIndexPath = v6;
+  self->_selectedIndexPath = pathCopy;
 }
 
-- (void)configureCell:(id)a3 image:(id)a4 wallpaper:(id)a5
+- (void)configureCell:(id)cell image:(id)image wallpaper:(id)wallpaper
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = a5;
-  [v12 setEmpty:v7 == 0];
-  if (v7)
+  cellCopy = cell;
+  imageCopy = image;
+  wallpaperCopy = wallpaper;
+  [cellCopy setEmpty:imageCopy == 0];
+  if (imageCopy)
   {
-    [v12 setImage:v7];
-    v9 = [v8 isCustomType];
+    [cellCopy setImage:imageCopy];
+    isCustomType = [wallpaperCopy isCustomType];
   }
 
   else
   {
     v10 = [MEMORY[0x277D755B8] systemImageNamed:@"photo.on.rectangle"];
-    [v12 setImage:v10];
+    [cellCopy setImage:v10];
 
-    v9 = 0;
+    isCustomType = 0;
   }
 
-  [v12 setRemovable:v9];
-  if (v8)
+  [cellCopy setRemovable:isCustomType];
+  if (wallpaperCopy)
   {
-    v11 = [v8 assetIdentifier];
-    [v12 setAssetIdentifier:v11];
+    assetIdentifier = [wallpaperCopy assetIdentifier];
+    [cellCopy setAssetIdentifier:assetIdentifier];
   }
 
   else
   {
-    [v12 setAssetIdentifier:0];
+    [cellCopy setAssetIdentifier:0];
   }
 
-  [v12 setBusy:0];
-  [v12 setHighlighted:0];
-  [v12 setContentMode:{2 * (objc_msgSend(v8, "type") != 2)}];
+  [cellCopy setBusy:0];
+  [cellCopy setHighlighted:0];
+  [cellCopy setContentMode:{2 * (objc_msgSend(wallpaperCopy, "type") != 2)}];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"HUWallpaperPhotoCell" forIndexPath:v6];
-  v8 = [(HUWallpaperPickerInlineViewController *)self wallpaperForIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"HUWallpaperPhotoCell" forIndexPath:pathCopy];
+  v8 = [(HUWallpaperPickerInlineViewController *)self wallpaperForIndexPath:pathCopy];
   if (!v8)
   {
     goto LABEL_10;
   }
 
-  v9 = [(HUWallpaperPickerInlineViewController *)self imageCache];
-  v10 = [v8 assetIdentifier];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  imageCache = [(HUWallpaperPickerInlineViewController *)self imageCache];
+  assetIdentifier = [v8 assetIdentifier];
+  v11 = [imageCache objectForKeyedSubscript:assetIdentifier];
 
   if (v11)
   {
@@ -331,10 +331,10 @@
 
   if (![v8 type] || objc_msgSend(v8, "type") == 2 || objc_msgSend(v8, "type") == 3 || objc_msgSend(v8, "type") == 4 || objc_msgSend(v8, "type") == 5)
   {
-    v12 = [(HUWallpaperPickerInlineViewController *)self thumbnailWallpaperForIndexPath:v6];
-    v13 = [(HUWallpaperPickerInlineViewController *)self thumbnailCache];
-    v14 = [v12 assetIdentifier];
-    v15 = [v13 objectForKeyedSubscript:v14];
+    v12 = [(HUWallpaperPickerInlineViewController *)self thumbnailWallpaperForIndexPath:pathCopy];
+    thumbnailCache = [(HUWallpaperPickerInlineViewController *)self thumbnailCache];
+    assetIdentifier2 = [v12 assetIdentifier];
+    v15 = [thumbnailCache objectForKeyedSubscript:assetIdentifier2];
     v16 = v15;
     if (v15)
     {
@@ -343,13 +343,13 @@
 
     else
     {
-      v17 = [MEMORY[0x277D14D18] sharedInstance];
-      v11 = [v17 wallpaperImageForWallpaper:v12 variant:0];
+      mEMORY[0x277D14D18] = [MEMORY[0x277D14D18] sharedInstance];
+      v11 = [mEMORY[0x277D14D18] wallpaperImageForWallpaper:v12 variant:0];
     }
 
-    v18 = [(HUWallpaperPickerInlineViewController *)self thumbnailCache];
-    v19 = [v12 assetIdentifier];
-    [v18 setValue:v11 forKey:v19];
+    thumbnailCache2 = [(HUWallpaperPickerInlineViewController *)self thumbnailCache];
+    assetIdentifier3 = [v12 assetIdentifier];
+    [thumbnailCache2 setValue:v11 forKey:assetIdentifier3];
   }
 
   else
@@ -361,22 +361,22 @@ LABEL_10:
 LABEL_13:
   [v7 setDelegate:self];
   [v7 setCornerRadius:10.0];
-  v20 = [MEMORY[0x277D75348] clearColor];
-  [v7 setBackgroundColor:v20];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v7 setBackgroundColor:clearColor];
 
   [(HUWallpaperPickerInlineViewController *)self configureCell:v7 image:v11 wallpaper:v8];
-  v21 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
+  selectedWallpaper = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
 
-  if (v21)
+  if (selectedWallpaper)
   {
-    v22 = [v8 assetIdentifier];
-    v23 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
-    v24 = [v23 assetIdentifier];
-    [v7 showBorder:objc_msgSend(v22 animated:{"isEqualToString:", v24), 0}];
+    assetIdentifier4 = [v8 assetIdentifier];
+    selectedWallpaper2 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
+    assetIdentifier5 = [selectedWallpaper2 assetIdentifier];
+    [v7 showBorder:objc_msgSend(assetIdentifier4 animated:{"isEqualToString:", assetIdentifier5), 0}];
   }
 
-  v25 = [v6 item];
-  if (v25 == [(HUWallpaperPickerInlineViewController *)self numberOfWallpapers]- 1)
+  item = [pathCopy item];
+  if (item == [(HUWallpaperPickerInlineViewController *)self numberOfWallpapers]- 1)
   {
     [(HUWallpaperPickerInlineViewController *)self setCustomWallpaperCell:v7];
   }
@@ -384,40 +384,40 @@ LABEL_13:
   return v7;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v37 = a3;
-  v6 = a4;
-  v7 = [(HUWallpaperPickerInlineViewController *)self selectedIndexPath];
-  if (v7)
+  viewCopy = view;
+  pathCopy = path;
+  selectedIndexPath = [(HUWallpaperPickerInlineViewController *)self selectedIndexPath];
+  if (selectedIndexPath)
   {
-    v8 = v7;
-    v9 = [(HUWallpaperPickerInlineViewController *)self selectedIndexPath];
-    v10 = [v9 item];
-    v11 = [v6 item];
+    v8 = selectedIndexPath;
+    selectedIndexPath2 = [(HUWallpaperPickerInlineViewController *)self selectedIndexPath];
+    item = [selectedIndexPath2 item];
+    item2 = [pathCopy item];
 
-    if (v10 == v11)
+    if (item == item2)
     {
-      v12 = [(HUWallpaperPickerInlineViewController *)self delegate];
+      delegate = [(HUWallpaperPickerInlineViewController *)self delegate];
 
-      if (!v12)
+      if (!delegate)
       {
         goto LABEL_25;
       }
 
-      v13 = [(HUWallpaperPickerInlineViewController *)self delegate];
-      [v13 wallpaperPickerRequestOpenWallpaperEditor:self];
+      delegate2 = [(HUWallpaperPickerInlineViewController *)self delegate];
+      [delegate2 wallpaperPickerRequestOpenWallpaperEditor:self];
       goto LABEL_24;
     }
   }
 
-  v14 = [(HUWallpaperPickerInlineViewController *)self wallpaperForIndexPath:v6];
+  v14 = [(HUWallpaperPickerInlineViewController *)self wallpaperForIndexPath:pathCopy];
 
   if (!v14)
   {
-    v25 = [(HUWallpaperPickerInlineViewController *)self customWallpaper];
+    customWallpaper = [(HUWallpaperPickerInlineViewController *)self customWallpaper];
 
-    if (v25)
+    if (customWallpaper)
     {
       goto LABEL_25;
     }
@@ -425,49 +425,49 @@ LABEL_13:
     v26 = objc_alloc_init(MEMORY[0x277D755C8]);
     [(HUWallpaperPickerInlineViewController *)self setImagePicker:v26];
 
-    v27 = [(HUWallpaperPickerInlineViewController *)self imagePicker];
-    [v27 setDelegate:self];
+    imagePicker = [(HUWallpaperPickerInlineViewController *)self imagePicker];
+    [imagePicker setDelegate:self];
 
-    v28 = [(HUWallpaperPickerInlineViewController *)self imagePicker];
-    [v28 setSourceType:0];
+    imagePicker2 = [(HUWallpaperPickerInlineViewController *)self imagePicker];
+    [imagePicker2 setSourceType:0];
 
-    v29 = [(HUWallpaperPickerInlineViewController *)self imagePicker];
-    [v29 setModalPresentationStyle:2];
+    imagePicker3 = [(HUWallpaperPickerInlineViewController *)self imagePicker];
+    [imagePicker3 setModalPresentationStyle:2];
 
-    v13 = [(HUWallpaperPickerInlineViewController *)self popoverPresentationController];
-    v30 = [v37 cellForItemAtIndexPath:v6];
-    [v13 setSourceView:v30];
+    delegate2 = [(HUWallpaperPickerInlineViewController *)self popoverPresentationController];
+    v30 = [viewCopy cellForItemAtIndexPath:pathCopy];
+    [delegate2 setSourceView:v30];
 
-    v31 = [(HUWallpaperPickerInlineViewController *)self imagePicker];
-    [(HUWallpaperPickerInlineViewController *)self presentViewController:v31 animated:1 completion:0];
+    imagePicker4 = [(HUWallpaperPickerInlineViewController *)self imagePicker];
+    [(HUWallpaperPickerInlineViewController *)self presentViewController:imagePicker4 animated:1 completion:0];
     goto LABEL_23;
   }
 
-  [(HUWallpaperPickerInlineViewController *)self setSelectedIndexPath:v6 animated:1];
-  v15 = [(HUWallpaperPickerInlineViewController *)self delegate];
-  if (v15)
+  [(HUWallpaperPickerInlineViewController *)self setSelectedIndexPath:pathCopy animated:1];
+  delegate3 = [(HUWallpaperPickerInlineViewController *)self delegate];
+  if (delegate3)
   {
-    v16 = v15;
-    v17 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
+    v16 = delegate3;
+    selectedWallpaper = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
 
-    if (v17)
+    if (selectedWallpaper)
     {
-      v18 = [(HUWallpaperPickerInlineViewController *)self imageCache];
-      v19 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
-      v20 = [v19 assetIdentifier];
-      v13 = [v18 objectForKeyedSubscript:v20];
+      imageCache = [(HUWallpaperPickerInlineViewController *)self imageCache];
+      selectedWallpaper2 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
+      assetIdentifier = [selectedWallpaper2 assetIdentifier];
+      delegate2 = [imageCache objectForKeyedSubscript:assetIdentifier];
 
-      v21 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
-      v22 = v21;
-      if (v13)
+      selectedWallpaper3 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
+      v22 = selectedWallpaper3;
+      if (delegate2)
       {
-        if ([v21 isCustomType])
+        if ([selectedWallpaper3 isCustomType])
         {
-          v23 = [(HUWallpaperPickerInlineViewController *)self originalCustomImage];
+          originalCustomImage = [(HUWallpaperPickerInlineViewController *)self originalCustomImage];
 
-          if (v23)
+          if (originalCustomImage)
           {
-            v24 = [(HUWallpaperPickerInlineViewController *)self originalCustomImage];
+            originalCustomImage2 = [(HUWallpaperPickerInlineViewController *)self originalCustomImage];
             goto LABEL_19;
           }
         }
@@ -477,9 +477,9 @@ LABEL_13:
         }
 
 LABEL_22:
-        v31 = [(HUWallpaperPickerInlineViewController *)self delegate];
-        v34 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
-        [v31 wallpaperPicker:self didSelectWallpaper:v34 withImage:v13];
+        imagePicker4 = [(HUWallpaperPickerInlineViewController *)self delegate];
+        selectedWallpaper4 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
+        [imagePicker4 wallpaperPicker:self didSelectWallpaper:selectedWallpaper4 withImage:delegate2];
 
 LABEL_23:
 LABEL_24:
@@ -487,24 +487,24 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      if (![v21 type])
+      if (![selectedWallpaper3 type])
       {
         goto LABEL_17;
       }
 
-      v32 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
-      if ([v32 type] == 4)
+      selectedWallpaper5 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
+      if ([selectedWallpaper5 type] == 4)
       {
 
 LABEL_17:
 LABEL_18:
-        v13 = [MEMORY[0x277D14D18] sharedInstance];
-        v33 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
-        v24 = [v13 wallpaperImageForWallpaper:v33 variant:0];
+        delegate2 = [MEMORY[0x277D14D18] sharedInstance];
+        selectedWallpaper6 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
+        originalCustomImage2 = [delegate2 wallpaperImageForWallpaper:selectedWallpaper6 variant:0];
 
 LABEL_19:
-        v13 = v24;
-        if (!v24)
+        delegate2 = originalCustomImage2;
+        if (!originalCustomImage2)
         {
           goto LABEL_25;
         }
@@ -512,10 +512,10 @@ LABEL_19:
         goto LABEL_22;
       }
 
-      v35 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
-      v36 = [v35 type];
+      selectedWallpaper7 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
+      type = [selectedWallpaper7 type];
 
-      if (v36 == 5)
+      if (type == 5)
       {
         goto LABEL_18;
       }
@@ -525,95 +525,95 @@ LABEL_19:
 LABEL_25:
 }
 
-- (void)wallpaperPhotoCellDidPressDeleteButton:(id)a3
+- (void)wallpaperPhotoCellDidPressDeleteButton:(id)button
 {
-  v4 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
-  v5 = [v4 isCustomType];
+  selectedWallpaper = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
+  isCustomType = [selectedWallpaper isCustomType];
 
-  if (v5)
+  if (isCustomType)
   {
-    v6 = [(HUWallpaperPickerInlineViewController *)self namedWallpapers];
-    v7 = [v6 lastObject];
-    [(HUWallpaperPickerInlineViewController *)self setSelectedWallpaper:v7 animated:1];
+    namedWallpapers = [(HUWallpaperPickerInlineViewController *)self namedWallpapers];
+    lastObject = [namedWallpapers lastObject];
+    [(HUWallpaperPickerInlineViewController *)self setSelectedWallpaper:lastObject animated:1];
   }
 
-  v8 = [(HUWallpaperPickerInlineViewController *)self customWallpaper];
+  customWallpaper = [(HUWallpaperPickerInlineViewController *)self customWallpaper];
 
-  if (v8)
+  if (customWallpaper)
   {
-    v9 = [(HUWallpaperPickerInlineViewController *)self imageCache];
-    v10 = [(HUWallpaperPickerInlineViewController *)self customWallpaper];
-    v11 = [v10 assetIdentifier];
-    [v9 removeObjectForKey:v11];
+    imageCache = [(HUWallpaperPickerInlineViewController *)self imageCache];
+    customWallpaper2 = [(HUWallpaperPickerInlineViewController *)self customWallpaper];
+    assetIdentifier = [customWallpaper2 assetIdentifier];
+    [imageCache removeObjectForKey:assetIdentifier];
 
     [(HUWallpaperPickerInlineViewController *)self setCustomWallpaper:0];
   }
 
-  v12 = [(HUWallpaperPickerInlineViewController *)self customWallpaperCell];
-  [(HUWallpaperPickerInlineViewController *)self configureCell:v12 image:0 wallpaper:0];
+  customWallpaperCell = [(HUWallpaperPickerInlineViewController *)self customWallpaperCell];
+  [(HUWallpaperPickerInlineViewController *)self configureCell:customWallpaperCell image:0 wallpaper:0];
 
-  v13 = [(HUWallpaperPickerInlineViewController *)self delegate];
-  if (v13)
+  delegate = [(HUWallpaperPickerInlineViewController *)self delegate];
+  if (delegate)
   {
-    v14 = v13;
-    v15 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
+    v14 = delegate;
+    selectedWallpaper2 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
 
-    if (v15)
+    if (selectedWallpaper2)
     {
-      v16 = [(HUWallpaperPickerInlineViewController *)self imageCache];
-      v17 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
-      v18 = [v17 assetIdentifier];
-      v23 = [v16 objectForKeyedSubscript:v18];
+      imageCache2 = [(HUWallpaperPickerInlineViewController *)self imageCache];
+      selectedWallpaper3 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
+      assetIdentifier2 = [selectedWallpaper3 assetIdentifier];
+      v23 = [imageCache2 objectForKeyedSubscript:assetIdentifier2];
 
       if (!v23)
       {
-        v19 = [MEMORY[0x277D14D18] sharedInstance];
-        v20 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
-        v23 = [v19 wallpaperImageForWallpaper:v20 variant:0];
+        mEMORY[0x277D14D18] = [MEMORY[0x277D14D18] sharedInstance];
+        selectedWallpaper4 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
+        v23 = [mEMORY[0x277D14D18] wallpaperImageForWallpaper:selectedWallpaper4 variant:0];
       }
 
-      v21 = [(HUWallpaperPickerInlineViewController *)self delegate];
-      v22 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
-      [v21 wallpaperPicker:self didSelectWallpaper:v22 withImage:v23];
+      delegate2 = [(HUWallpaperPickerInlineViewController *)self delegate];
+      selectedWallpaper5 = [(HUWallpaperPickerInlineViewController *)self selectedWallpaper];
+      [delegate2 wallpaperPicker:self didSelectWallpaper:selectedWallpaper5 withImage:v23];
     }
   }
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
-  v4 = a4;
-  v5 = [v4 canLoadObjectsOfClass:objc_opt_class()];
+  sessionCopy = session;
+  v5 = [sessionCopy canLoadObjectsOfClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
-  v4 = [a4 items];
-  v5 = [v4 count] < 2;
+  items = [update items];
+  v5 = [items count] < 2;
 
   v6 = [objc_alloc(MEMORY[0x277D754A8]) initWithDropOperation:2 * v5];
 
   return v6;
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
-  v5 = a4;
-  v6 = [(HUWallpaperPickerInlineViewController *)self customWallpaperCell];
-  [v6 layoutIfNeeded];
+  dropCopy = drop;
+  customWallpaperCell = [(HUWallpaperPickerInlineViewController *)self customWallpaperCell];
+  [customWallpaperCell layoutIfNeeded];
 
-  v7 = [v5 items];
+  items = [dropCopy items];
 
-  v8 = [v7 firstObject];
-  v9 = [v8 itemProvider];
+  firstObject = [items firstObject];
+  itemProvider = [firstObject itemProvider];
   v10 = objc_opt_class();
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__HUWallpaperPickerInlineViewController_dropInteraction_performDrop___block_invoke;
   v12[3] = &unk_277DB8998;
   v12[4] = self;
-  v11 = [v9 loadObjectOfClass:v10 completionHandler:v12];
+  v11 = [itemProvider loadObjectOfClass:v10 completionHandler:v12];
 }
 
 void __69__HUWallpaperPickerInlineViewController_dropInteraction_performDrop___block_invoke(uint64_t a1, void *a2)
@@ -653,42 +653,42 @@ void __69__HUWallpaperPickerInlineViewController_dropInteraction_performDrop___b
   [v2 wallpaperPicker:*(a1 + 32) didReceiveDroppedImage:*(a1 + 40)];
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
-  v12 = a3;
-  v6 = [a4 objectForKey:*MEMORY[0x277D76A80]];
-  v7 = [(HUWallpaperPickerInlineViewController *)self delegate];
+  controllerCopy = controller;
+  v6 = [info objectForKey:*MEMORY[0x277D76A80]];
+  delegate = [(HUWallpaperPickerInlineViewController *)self delegate];
 
-  if (v7 && v6)
+  if (delegate && v6)
   {
-    v8 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-    v9 = [(HUWallpaperPickerInlineViewController *)self customWallpaperCell];
-    v10 = [v8 indexPathForCell:v9];
+    collectionView = [(HUWallpaperPickerInlineViewController *)self collectionView];
+    customWallpaperCell = [(HUWallpaperPickerInlineViewController *)self customWallpaperCell];
+    v10 = [collectionView indexPathForCell:customWallpaperCell];
 
     [(HUWallpaperPickerInlineViewController *)self setSelectedIndexPath:v10 animated:1];
-    v11 = [(HUWallpaperPickerInlineViewController *)self delegate];
-    [v11 wallpaperPicker:self didReceiveDroppedImage:v6];
+    delegate2 = [(HUWallpaperPickerInlineViewController *)self delegate];
+    [delegate2 wallpaperPicker:self didReceiveDroppedImage:v6];
   }
 
-  [v12 dismissViewControllerAnimated:1 completion:0];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
 }
 
 - (unint64_t)numberOfWallpapers
 {
-  v2 = [(HUWallpaperPickerInlineViewController *)self namedWallpaperThumbnails];
-  v3 = [v2 count];
+  namedWallpaperThumbnails = [(HUWallpaperPickerInlineViewController *)self namedWallpaperThumbnails];
+  v3 = [namedWallpaperThumbnails count];
 
   return v3 + 1;
 }
 
 - (HFWallpaper)selectedWallpaper
 {
-  v3 = [(HUWallpaperPickerInlineViewController *)self selectedIndexPath];
+  selectedIndexPath = [(HUWallpaperPickerInlineViewController *)self selectedIndexPath];
 
-  if (v3)
+  if (selectedIndexPath)
   {
-    v4 = [(HUWallpaperPickerInlineViewController *)self selectedIndexPath];
-    v5 = [(HUWallpaperPickerInlineViewController *)self wallpaperForIndexPath:v4];
+    selectedIndexPath2 = [(HUWallpaperPickerInlineViewController *)self selectedIndexPath];
+    v5 = [(HUWallpaperPickerInlineViewController *)self wallpaperForIndexPath:selectedIndexPath2];
   }
 
   else
@@ -699,43 +699,43 @@ void __69__HUWallpaperPickerInlineViewController_dropInteraction_performDrop___b
   return v5;
 }
 
-- (id)wallpaperForIndexPath:(id)a3
+- (id)wallpaperForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = [(HUWallpaperPickerInlineViewController *)self namedWallpapers];
-  v7 = [v6 count];
+  pathCopy = path;
+  item = [pathCopy item];
+  namedWallpapers = [(HUWallpaperPickerInlineViewController *)self namedWallpapers];
+  v7 = [namedWallpapers count];
 
-  if (v5 >= v7)
+  if (item >= v7)
   {
-    v9 = [(HUWallpaperPickerInlineViewController *)self customWallpaper];
+    customWallpaper = [(HUWallpaperPickerInlineViewController *)self customWallpaper];
   }
 
   else
   {
-    v8 = [(HUWallpaperPickerInlineViewController *)self namedWallpapers];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v4, "item")}];
+    namedWallpapers2 = [(HUWallpaperPickerInlineViewController *)self namedWallpapers];
+    customWallpaper = [namedWallpapers2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
   }
 
-  return v9;
+  return customWallpaper;
 }
 
-- (id)thumbnailWallpaperForIndexPath:(id)a3
+- (id)thumbnailWallpaperForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = [(HUWallpaperPickerInlineViewController *)self namedWallpaperThumbnails];
-  v7 = [v6 count];
+  pathCopy = path;
+  item = [pathCopy item];
+  namedWallpaperThumbnails = [(HUWallpaperPickerInlineViewController *)self namedWallpaperThumbnails];
+  v7 = [namedWallpaperThumbnails count];
 
-  if (v5 >= v7)
+  if (item >= v7)
   {
     v9 = 0;
   }
 
   else
   {
-    v8 = [(HUWallpaperPickerInlineViewController *)self namedWallpaperThumbnails];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v4, "item")}];
+    namedWallpaperThumbnails2 = [(HUWallpaperPickerInlineViewController *)self namedWallpaperThumbnails];
+    v9 = [namedWallpaperThumbnails2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
   }
 
   return v9;
@@ -743,8 +743,8 @@ void __69__HUWallpaperPickerInlineViewController_dropInteraction_performDrop___b
 
 - (void)updateScrolling
 {
-  v3 = [(HUWallpaperPickerInlineViewController *)self collectionView];
-  [v3 setScrollEnabled:{-[HUWallpaperPickerInlineViewController numberOfWallpapers](self, "numberOfWallpapers") > -[HUWallpaperPickerInlineViewController numberOfWallpapersFittingInWidth](self, "numberOfWallpapersFittingInWidth")}];
+  collectionView = [(HUWallpaperPickerInlineViewController *)self collectionView];
+  [collectionView setScrollEnabled:{-[HUWallpaperPickerInlineViewController numberOfWallpapers](self, "numberOfWallpapers") > -[HUWallpaperPickerInlineViewController numberOfWallpapersFittingInWidth](self, "numberOfWallpapersFittingInWidth")}];
 }
 
 - (CGSize)imageSize

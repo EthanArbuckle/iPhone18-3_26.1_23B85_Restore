@@ -1,21 +1,21 @@
 @interface SUUICommentHeaderViewController
-- (SUUICommentHeaderViewController)initWithTitle:(id)a3;
+- (SUUICommentHeaderViewController)initWithTitle:(id)title;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SUUICommentHeaderViewController
 
-- (SUUICommentHeaderViewController)initWithTitle:(id)a3
+- (SUUICommentHeaderViewController)initWithTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   v9.receiver = self;
   v9.super_class = SUUICommentHeaderViewController;
   v6 = [(SUUICommentHeaderViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_title, a3);
+    objc_storeStrong(&v6->_title, title);
   }
 
   return v7;
@@ -40,8 +40,8 @@
   v9 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
   [(UILabel *)v8 setFont:v9];
 
-  v10 = [(SUUICommentHeaderViewController *)self view];
-  [v10 addSubview:self->_titleLabel];
+  view = [(SUUICommentHeaderViewController *)self view];
+  [view addSubview:self->_titleLabel];
 }
 
 - (void)viewWillLayoutSubviews
@@ -49,8 +49,8 @@
   v15.receiver = self;
   v15.super_class = SUUICommentHeaderViewController;
   [(SUUICommentHeaderViewController *)&v15 viewWillLayoutSubviews];
-  v3 = [(SUUICommentHeaderViewController *)self view];
-  [v3 bounds];
+  view = [(SUUICommentHeaderViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;

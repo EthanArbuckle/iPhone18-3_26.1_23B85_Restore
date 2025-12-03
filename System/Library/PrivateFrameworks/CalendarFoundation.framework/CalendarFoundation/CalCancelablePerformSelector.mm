@@ -1,15 +1,15 @@
 @interface CalCancelablePerformSelector
-- (CalCancelablePerformSelector)initWithBlock:(id)a3;
+- (CalCancelablePerformSelector)initWithBlock:(id)block;
 - (void)cancel;
-- (void)performAfterDelay:(double)a3;
+- (void)performAfterDelay:(double)delay;
 @end
 
 @implementation CalCancelablePerformSelector
 
-- (CalCancelablePerformSelector)initWithBlock:(id)a3
+- (CalCancelablePerformSelector)initWithBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [(CalCancelablePerformSelector *)a2 initWithBlock:?];
   }
@@ -20,27 +20,27 @@
   v7 = v6;
   if (v6)
   {
-    [(CalCancelablePerformSelector *)v6 setBlock:v5];
+    [(CalCancelablePerformSelector *)v6 setBlock:blockCopy];
   }
 
   return v7;
 }
 
-- (void)performAfterDelay:(double)a3
+- (void)performAfterDelay:(double)delay
 {
-  v5 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  [(CalCancelablePerformSelector *)self setRunloop:v5];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  [(CalCancelablePerformSelector *)self setRunloop:currentRunLoop];
 
-  v7 = [(CalCancelablePerformSelector *)self block];
-  v6 = _Block_copy(v7);
-  [(CalCancelablePerformSelector *)self performSelector:sel__performBlock_ withObject:v6 afterDelay:a3];
+  block = [(CalCancelablePerformSelector *)self block];
+  v6 = _Block_copy(block);
+  [(CalCancelablePerformSelector *)self performSelector:sel__performBlock_ withObject:v6 afterDelay:delay];
 }
 
 - (void)cancel
 {
-  v3 = [(CalCancelablePerformSelector *)self runloop];
+  runloop = [(CalCancelablePerformSelector *)self runloop];
 
-  if (!v3)
+  if (!runloop)
   {
     v10 = +[CalFoundationLogSubsystem defaultCategory];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -51,17 +51,17 @@
     goto LABEL_12;
   }
 
-  v4 = [(CalCancelablePerformSelector *)self runloop];
-  v5 = [MEMORY[0x1E695DFD0] currentRunLoop];
+  runloop2 = [(CalCancelablePerformSelector *)self runloop];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
 
-  if (v4 != v5)
+  if (runloop2 != currentRunLoop)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"%@", @"CancelablePerformSelector canceled in a different runloop than it started in."}];
   }
 
-  v6 = [(CalCancelablePerformSelector *)self block];
+  block = [(CalCancelablePerformSelector *)self block];
 
-  if (!v6)
+  if (!block)
   {
     v10 = +[CalFoundationLogSubsystem defaultCategory];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -75,8 +75,8 @@ LABEL_12:
   }
 
   v7 = MEMORY[0x1E69E58C0];
-  v8 = [(CalCancelablePerformSelector *)self block];
-  v9 = _Block_copy(v8);
+  block2 = [(CalCancelablePerformSelector *)self block];
+  v9 = _Block_copy(block2);
   [v7 cancelPreviousPerformRequestsWithTarget:self selector:sel__performBlock_ object:v9];
 
   [(CalCancelablePerformSelector *)self setBlock:0];

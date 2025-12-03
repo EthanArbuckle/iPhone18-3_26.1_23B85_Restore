@@ -1,16 +1,16 @@
 @interface IDSTapToRadarContext
-- (IDSTapToRadarContext)initWithDictionary:(id)a3;
-- (IDSTapToRadarContext)initWithTitle:(id)a3 problemDescription:(id)a4;
+- (IDSTapToRadarContext)initWithDictionary:(id)dictionary;
+- (IDSTapToRadarContext)initWithTitle:(id)title problemDescription:(id)description;
 - (id)getTapToRadarURL;
 @end
 
 @implementation IDSTapToRadarContext
 
-- (IDSTapToRadarContext)initWithTitle:(id)a3 problemDescription:(id)a4
+- (IDSTapToRadarContext)initWithTitle:(id)title problemDescription:(id)description
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  descriptionCopy = description;
   v12.receiver = self;
   v12.super_class = IDSTapToRadarContext;
   v8 = [(IDSTapToRadarContext *)&v12 init];
@@ -18,8 +18,8 @@
   {
     v13[0] = @"Title";
     v13[1] = @"Description";
-    v14[0] = v6;
-    v14[1] = v7;
+    v14[0] = titleCopy;
+    v14[1] = descriptionCopy;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
     rawContext = v8->_rawContext;
     v8->_rawContext = v9;
@@ -28,16 +28,16 @@
   return v8;
 }
 
-- (IDSTapToRadarContext)initWithDictionary:(id)a3
+- (IDSTapToRadarContext)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = IDSTapToRadarContext;
   v6 = [(IDSTapToRadarContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rawContext, a3);
+    objc_storeStrong(&v6->_rawContext, dictionary);
   }
 
   return v7;
@@ -103,9 +103,9 @@ LABEL_9:
   else
   {
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [MEMORY[0x1E69A60B8] sharedInstance];
-    v19 = [v18 productBuildVersion];
-    v20 = [v17 stringWithFormat:@"[%@] Tap-to-Radar: Internal IDS error detected", v19];
+    mEMORY[0x1E69A60B8] = [MEMORY[0x1E69A60B8] sharedInstance];
+    productBuildVersion = [mEMORY[0x1E69A60B8] productBuildVersion];
+    v20 = [v17 stringWithFormat:@"[%@] Tap-to-Radar: Internal IDS error detected", productBuildVersion];
     [v7 setObject:v20 forKeyedSubscript:@"Title"];
   }
 
@@ -154,7 +154,7 @@ LABEL_9:
 
   [v7 setObject:v30 forKeyedSubscript:@"Keywords"];
 
-  v31 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
@@ -178,7 +178,7 @@ LABEL_9:
         v37 = MEMORY[0x1E696AF60];
         v38 = [v5 objectForKeyedSubscript:v36];
         v39 = [v37 queryItemWithName:v36 value:v38];
-        [v31 addObject:v39];
+        [array addObject:v39];
       }
 
       v33 = [v5 countByEnumeratingWithState:&v43 objects:v47 count:16];
@@ -188,7 +188,7 @@ LABEL_9:
   }
 
   v4 = v42;
-  [v42 setQueryItems:v31];
+  [v42 setQueryItems:array];
   v6 = [v42 URL];
 
 LABEL_32:

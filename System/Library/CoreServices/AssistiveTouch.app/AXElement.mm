@@ -6,7 +6,7 @@
 - (BOOL)scatIsMemberOfGroup;
 - (BOOL)scatIsOnScreen;
 - (BOOL)scatShouldActivateDirectly;
-- (BOOL)scatSupportsAction:(int)a3;
+- (BOOL)scatSupportsAction:(int)action;
 - (BOOL)scatUpdatesMenu;
 - (CGPoint)scatScreenPointForOperations;
 - (CGRect)scatTextCursorFrame;
@@ -16,17 +16,17 @@
 - (id)windowSceneIdentifier;
 - (int64_t)scatActivateBehavior;
 - (void)scatUpdateValue;
-- (void)setScatAutoscrollTarget:(id)a3;
+- (void)setScatAutoscrollTarget:(id)target;
 @end
 
 @implementation AXElement
 
 - (id)elemLog
 {
-  v3 = [(AXElement *)self label];
-  v4 = [(AXElement *)self uiElement];
-  v5 = [v4 stringWithAXAttribute:2072];
-  v6 = [NSString stringWithFormat:@"%@ %@", v3, v5];
+  label = [(AXElement *)self label];
+  uiElement = [(AXElement *)self uiElement];
+  v5 = [uiElement stringWithAXAttribute:2072];
+  v6 = [NSString stringWithFormat:@"%@ %@", label, v5];
 
   return v6;
 }
@@ -79,8 +79,8 @@
   {
     if ([(AXElement *)self scatIsAXElement])
     {
-      v9 = [(AXElement *)self uiElement];
-      v10 = [v9 BOOLWithAXAttribute:12006];
+      uiElement = [(AXElement *)self uiElement];
+      v10 = [uiElement BOOLWithAXAttribute:12006];
 
       v4 = v10 ^ 1;
     }
@@ -102,9 +102,9 @@
 - (int64_t)scatActivateBehavior
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 switchControlScanAfterTapLocation];
+  switchControlScanAfterTapLocation = [v3 switchControlScanAfterTapLocation];
 
-  if (v4 == 1)
+  if (switchControlScanAfterTapLocation == 1)
   {
     return 1;
   }
@@ -114,14 +114,14 @@
 
 - (NSString)scatSpeakableDescription
 {
-  v3 = [(AXElement *)self label];
-  v4 = [(AXElement *)self traits];
-  v5 = kAXToggleTrait & ~v4;
-  v6 = [(AXElement *)self value];
-  v7 = v6;
+  label = [(AXElement *)self label];
+  traits = [(AXElement *)self traits];
+  v5 = kAXToggleTrait & ~traits;
+  value = [(AXElement *)self value];
+  v7 = value;
   if (!v5)
   {
-    if ([v6 isEqualToString:@"1"])
+    if ([value isEqualToString:@"1"])
     {
       v8 = @"element.on.state";
     }
@@ -147,19 +147,19 @@ LABEL_10:
     v41 = v10;
     v9 = __AXStringForVariables();
 
-    v3 = v7;
+    label = v7;
     v7 = v10;
     goto LABEL_11;
   }
 
-  v41 = v6;
+  v41 = value;
   v9 = __AXStringForVariables();
 LABEL_11:
 
   if (![v9 length] && -[AXElement eligibleForIconVision](self, "eligibleForIconVision"))
   {
-    v11 = [(AXElement *)self uiElement];
-    v12 = [v11 arrayWithAXAttribute:2315];
+    uiElement = [(AXElement *)self uiElement];
+    v12 = [uiElement arrayWithAXAttribute:2315];
 
     v13 = +[AXMIconVisionEngine sharedInstance];
     v14 = [v13 classifyImages:v12 withTimeout:0.5];
@@ -172,12 +172,12 @@ LABEL_11:
     }
   }
 
-  v16 = [(AXElement *)self customContent];
+  customContent = [(AXElement *)self customContent];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v17 = [v16 countByEnumeratingWithState:&v57 objects:v61 count:16];
+  v17 = [customContent countByEnumeratingWithState:&v57 objects:v61 count:16];
   if (v17)
   {
     v18 = v17;
@@ -188,13 +188,13 @@ LABEL_11:
       {
         if (*v58 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(customContent);
         }
 
         v21 = *(*(&v57 + 1) + 8 * i);
         if ([v21 importance] == 1)
         {
-          v42 = [v21 value];
+          value2 = [v21 value];
           v50 = @"__AXStringForVariablesSentinel";
           v22 = __AXStringForVariables();
 
@@ -202,19 +202,19 @@ LABEL_11:
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v57 objects:v61 count:16];
+      v18 = [customContent countByEnumeratingWithState:&v57 objects:v61 count:16];
     }
 
     while (v18);
   }
 
-  v23 = [AXSettings sharedInstance:v42];
-  v24 = [v23 assistiveTouchScannerSpeechShouldSpeakTraits];
+  v23 = [AXSettings sharedInstance:value2];
+  assistiveTouchScannerSpeechShouldSpeakTraits = [v23 assistiveTouchScannerSpeechShouldSpeakTraits];
 
-  if (v24)
+  if (assistiveTouchScannerSpeechShouldSpeakTraits)
   {
-    v25 = [(AXElement *)self traits];
-    if ((kAXSelectedTrait & ~v25) == 0)
+    traits2 = [(AXElement *)self traits];
+    if ((kAXSelectedTrait & ~traits2) == 0)
     {
       v43 = sub_100042B24(@"element.selected");
       v51 = @"__AXStringForVariablesSentinel";
@@ -236,8 +236,8 @@ LABEL_11:
     v29 = [(AXElement *)self traits:v44];
     if ((kAXButtonTrait & ~v29) == 0)
     {
-      v30 = [(AXElement *)self traits];
-      if ((kAXKeyboardKeyTrait & ~v30) != 0)
+      traits3 = [(AXElement *)self traits];
+      if ((kAXKeyboardKeyTrait & ~traits3) != 0)
       {
         v45 = sub_100042B24(@"element.button");
         v53 = @"__AXStringForVariablesSentinel";
@@ -292,35 +292,35 @@ LABEL_11:
 
 - (BOOL)scatCanStartContinuousPathGesture
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 BOOLWithAXAttribute:2241];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement BOOLWithAXAttribute:2241];
 
   return v3;
 }
 
-- (BOOL)scatSupportsAction:(int)a3
+- (BOOL)scatSupportsAction:(int)action
 {
   result = [(AXElement *)self supportsAction:?];
-  if (a3 == 2010 && !result)
+  if (action == 2010 && !result)
   {
-    v6 = [(AXElement *)self traits];
+    traits = [(AXElement *)self traits];
     v7 = kAXAdjustableTrait;
-    v8 = kAXAdjustableTrait & v6;
-    if ((kAXIsEditingTrait & ~v6) != 0)
+    v8 = kAXAdjustableTrait & traits;
+    if ((kAXIsEditingTrait & ~traits) != 0)
     {
       v12 = 1;
     }
 
-    else if ((kAXWebContentTrait & ~v6) != 0)
+    else if ((kAXWebContentTrait & ~traits) != 0)
     {
       v12 = 0;
     }
 
     else
     {
-      v9 = [(AXElement *)self application];
-      v10 = [v9 uiElement];
-      v11 = [v10 BOOLWithAXAttribute:3005];
+      application = [(AXElement *)self application];
+      uiElement = [application uiElement];
+      v11 = [uiElement BOOLWithAXAttribute:3005];
 
       v12 = v11 ^ 1;
     }
@@ -333,8 +333,8 @@ LABEL_11:
 
 - (NSArray)scatCustomHardwareActions
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 objectWithAXAttribute:95259 parameter:@"HardwareGestureActions"];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement objectWithAXAttribute:95259 parameter:@"HardwareGestureActions"];
 
   v8 = 0;
   v4 = [NSKeyedUnarchiver unarchivedArrayOfObjectsOfClass:objc_opt_class() fromData:v3 error:&v8];
@@ -354,16 +354,16 @@ LABEL_11:
 
 - (BOOL)scatIsMemberOfGroup
 {
-  v2 = [(AXElement *)self parentGroup];
-  v3 = v2 != 0;
+  parentGroup = [(AXElement *)self parentGroup];
+  v3 = parentGroup != 0;
 
   return v3;
 }
 
 - (BOOL)scatIsAuxiliaryElement
 {
-  v2 = [(AXElement *)self scatAuxiliaryElementManager];
-  v3 = v2 != 0;
+  scatAuxiliaryElementManager = [(AXElement *)self scatAuxiliaryElementManager];
+  v3 = scatAuxiliaryElementManager != 0;
 
   return v3;
 }
@@ -393,45 +393,45 @@ LABEL_11:
 
 - (BOOL)scatUpdatesMenu
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 BOOLWithAXAttribute:2189];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement BOOLWithAXAttribute:2189];
 
   return v3;
 }
 
 - (id)windowSceneIdentifier
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 stringWithAXAttribute:3056];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement stringWithAXAttribute:3056];
 
   return v3;
 }
 
 - (BOOL)isHandUI
 {
-  v2 = [(AXElement *)self windowSceneIdentifier];
-  v3 = [v2 hasPrefix:@"com.apple.RealityHUD.HandScene"];
+  windowSceneIdentifier = [(AXElement *)self windowSceneIdentifier];
+  v3 = [windowSceneIdentifier hasPrefix:@"com.apple.RealityHUD.HandScene"];
 
   return v3;
 }
 
 - (BOOL)isVisible
 {
-  v3 = [(AXElement *)self uiElement];
-  [v3 updateCache:2025];
+  uiElement = [(AXElement *)self uiElement];
+  [uiElement updateCache:2025];
 
-  v4 = [(AXElement *)self uiElement];
-  LOBYTE(v3) = [v4 BOOLWithAXAttribute:2025];
+  uiElement2 = [(AXElement *)self uiElement];
+  LOBYTE(uiElement) = [uiElement2 BOOLWithAXAttribute:2025];
 
-  return v3;
+  return uiElement;
 }
 
-- (void)setScatAutoscrollTarget:(id)a3
+- (void)setScatAutoscrollTarget:(id)target
 {
-  v4 = a3;
-  if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  targetCopy = target;
+  if (!targetCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    [(AXElement *)self setAutoscrollTarget:v4];
+    [(AXElement *)self setAutoscrollTarget:targetCopy];
   }
 }
 

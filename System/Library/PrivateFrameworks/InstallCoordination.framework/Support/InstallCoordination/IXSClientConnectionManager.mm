@@ -1,6 +1,6 @@
 @interface IXSClientConnectionManager
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (IXSClientConnectionManager)init;
 @end
 
@@ -38,22 +38,22 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = sub_10000D71C(v7, @"com.apple.private.InstallCoordination.allowed");
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = sub_10000D71C(connectionCopy, @"com.apple.private.InstallCoordination.allowed");
   if (v8)
   {
     v9 = +[IXClientProtocolInterface interface];
-    [v7 setExportedInterface:v9];
+    [connectionCopy setExportedInterface:v9];
 
-    v10 = [[IXSClientConnection alloc] initWithConnection:v7];
-    [v7 setExportedObject:v10];
+    v10 = [[IXSClientConnection alloc] initWithConnection:connectionCopy];
+    [connectionCopy setExportedObject:v10];
     v11 = +[IXClientDelegateProtocolInterface interface];
-    [v7 setRemoteObjectInterface:v11];
+    [connectionCopy setRemoteObjectInterface:v11];
 
-    [v7 setInterruptionHandler:&stru_100101F90];
+    [connectionCopy setInterruptionHandler:&stru_100101F90];
     objc_initWeak(location, v10);
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
@@ -61,25 +61,25 @@
     v23[3] = &unk_100101FB8;
     objc_copyWeak(&v24, location);
     v23[4] = self;
-    [v7 setInvalidationHandler:v23];
-    v12 = [(IXSClientConnectionManager *)self allConnectionsQueue];
+    [connectionCopy setInvalidationHandler:v23];
+    allConnectionsQueue = [(IXSClientConnectionManager *)self allConnectionsQueue];
     v17 = _NSConcreteStackBlock;
     v18 = 3221225472;
     v19 = sub_1000365E0;
     v20 = &unk_100100ED8;
-    v21 = self;
+    selfCopy = self;
     v13 = v10;
     v22 = v13;
-    dispatch_sync(v12, &v17);
+    dispatch_sync(allConnectionsQueue, &v17);
 
-    [v7 resume];
+    [connectionCopy resume];
     objc_destroyWeak(&v24);
     objc_destroyWeak(location);
   }
 
   else
   {
-    v14 = [v7 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v13 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -89,7 +89,7 @@
       v26 = 2112;
       v27 = v15;
       v28 = 1024;
-      v29 = v14;
+      v29 = processIdentifier;
       v30 = 2112;
       v31 = @"com.apple.private.InstallCoordination.allowed";
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s: Process %@ (pid %d) is missing %@ entitlement so rejecting connection attempt.", location, 0x26u);

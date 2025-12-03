@@ -1,11 +1,11 @@
 @interface ScheduleDurationCell
-- (_TtC19HealthMedicationsUI20ScheduleDurationCell)initWithCoder:(id)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (_TtC19HealthMedicationsUI20ScheduleDurationCell)initWithCoder:(id)coder;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 @end
 
 @implementation ScheduleDurationCell
 
-- (_TtC19HealthMedicationsUI20ScheduleDurationCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI20ScheduleDurationCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20ScheduleDurationCell____lazy_storage___mainStackView) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20ScheduleDurationCell____lazy_storage___startDateStackView) = 0;
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_228391350();
   v5 = *(v4 - 8);
@@ -27,7 +27,7 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_228391340();
-  v9 = self;
+  selfCopy = self;
   sub_228244784();
 
   (*(v5 + 8))(v8, v4);

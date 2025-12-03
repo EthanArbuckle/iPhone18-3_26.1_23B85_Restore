@@ -1,10 +1,10 @@
 @interface CHSMutableEntitlementCollection
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CHSMutableEntitlementCollection
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CHSEntitlementCollection alloc];
 

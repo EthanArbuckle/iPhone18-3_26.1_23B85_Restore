@@ -1,41 +1,41 @@
 @interface PHAssetBundleExportSession
-- (PHAssetBundleExportSession)initWithAsset:(id)a3 withAssetExportRequestFileURLs:(id)a4;
-- (id)_createAssetBundleFromAsset:(id)a3 withFileURLs:(id)a4 atURL:(id)a5 withError:(id *)a6;
-- (id)_filenameBaseForAsset:(id)a3;
-- (void)writeToDirectoryURL:(id)a3 completionHandler:(id)a4;
+- (PHAssetBundleExportSession)initWithAsset:(id)asset withAssetExportRequestFileURLs:(id)ls;
+- (id)_createAssetBundleFromAsset:(id)asset withFileURLs:(id)ls atURL:(id)l withError:(id *)error;
+- (id)_filenameBaseForAsset:(id)asset;
+- (void)writeToDirectoryURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation PHAssetBundleExportSession
 
-- (id)_createAssetBundleFromAsset:(id)a3 withFileURLs:(id)a4 atURL:(id)a5 withError:(id *)a6
+- (id)_createAssetBundleFromAsset:(id)asset withFileURLs:(id)ls atURL:(id)l withError:(id *)error
 {
   v132[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v106 = a5;
-  v100 = self;
-  v104 = [(PHAssetBundleExportSession *)self _filenameBaseForAsset:v10];
-  [v10 fetchPropertySetsIfNeeded];
+  assetCopy = asset;
+  lsCopy = ls;
+  lCopy = l;
+  selfCopy = self;
+  v104 = [(PHAssetBundleExportSession *)self _filenameBaseForAsset:assetCopy];
+  [assetCopy fetchPropertySetsIfNeeded];
   v103 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v104, *MEMORY[0x1E69C09A8]];
-  v12 = [v106 URLByAppendingPathComponent:v103];
-  v105 = [MEMORY[0x1E696AC08] defaultManager];
+  v12 = [lCopy URLByAppendingPathComponent:v103];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v118 = 0;
-  v13 = [v106 path];
-  v14 = [v105 fileExistsAtPath:v13 isDirectory:&v118];
+  path = [lCopy path];
+  v14 = [defaultManager fileExistsAtPath:path isDirectory:&v118];
 
   if (!v14 || (v118 & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The output directory URL (%@) is missing or is not a directory.", v106];
+    lCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"The output directory URL (%@) is missing or is not a directory.", lCopy];
     v16 = MEMORY[0x1E696ABC0];
     v131 = *MEMORY[0x1E696A578];
-    v132[0] = v15;
+    v132[0] = lCopy;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v132 forKeys:&v131 count:1];
     v18 = [v16 errorWithDomain:@"com.apple.mobileslideshow.sharing" code:1 userInfo:v17];
 
-    if (a6)
+    if (error)
     {
       v19 = v18;
-      *a6 = v18;
+      *error = v18;
 
       v20 = 0;
       goto LABEL_64;
@@ -44,49 +44,49 @@
 
   if (!v12)
   {
-    v88 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v88 handleFailureInMethod:a2 object:v100 file:@"PHAssetBundleExportSession.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"bundleURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PHAssetBundleExportSession.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"bundleURL"}];
   }
 
   v117 = 0;
-  v21 = [v12 path];
-  v22 = [v105 fileExistsAtPath:v21 isDirectory:&v117];
+  path2 = [v12 path];
+  v22 = [defaultManager fileExistsAtPath:path2 isDirectory:&v117];
 
   if ((v22 & 1) != 0 || v117 == 1)
   {
-    [v105 removeItemAtURL:v12 error:0];
+    [defaultManager removeItemAtURL:v12 error:0];
   }
 
-  v23 = [v10 photoIrisProperties];
-  v24 = [v23 photoIrisVisibilityState];
+  photoIrisProperties = [assetCopy photoIrisProperties];
+  photoIrisVisibilityState = [photoIrisProperties photoIrisVisibilityState];
 
-  v25 = [v10 mediaType];
-  if (v25 >= 4)
+  mediaType = [assetCopy mediaType];
+  if (mediaType >= 4)
   {
     v26 = 1;
   }
 
   else
   {
-    v26 = v25;
+    v26 = mediaType;
   }
 
-  v27 = [v10 playbackStyle];
-  if ((v27 - 1) >= 5)
+  playbackStyle = [assetCopy playbackStyle];
+  if ((playbackStyle - 1) >= 5)
   {
     v28 = 0;
   }
 
   else
   {
-    v28 = v27;
+    v28 = playbackStyle;
   }
 
   v98 = v28;
-  v29 = [v10 playbackVariation];
-  if ((v29 - 1) < 3)
+  playbackVariation = [assetCopy playbackVariation];
+  if ((playbackVariation - 1) < 3)
   {
-    v30 = (v29 - 1) + 1;
+    v30 = (playbackVariation - 1) + 1;
   }
 
   else
@@ -95,8 +95,8 @@
   }
 
   v97 = v30;
-  v31 = [v10 mediaSubtypes];
-  v32 = (v31 >> 1) & 0x20 | v31 & 0x3F031F | (((v31 >> 10) & 1) << 22);
+  mediaSubtypes = [assetCopy mediaSubtypes];
+  v32 = (mediaSubtypes >> 1) & 0x20 | mediaSubtypes & 0x3F031F | (((mediaSubtypes >> 10) & 1) << 22);
   if (v26 != 2)
   {
     if (v26 != 1)
@@ -104,23 +104,23 @@
       goto LABEL_63;
     }
 
-    v101 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestPhotoFileURLKey"];
+    v101 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestPhotoFileURLKey"];
     if (v101)
     {
       v90 = objc_alloc(MEMORY[0x1E69C0668]);
-      v99 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestAlternatePhotoURLKey"];
-      v95 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestFullSizePhotoURLKey"];
-      v94 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestAdjustmentBaseFullSizePhotoURLKey"];
-      v92 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestSpatialOvercapturePhotoURLKey"];
-      v93 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestVideoFileURLKey"];
-      v91 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestFullSizeVideoURLKey"];
-      v33 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestAdjustmentBasePairedVideoURLKey"];
-      v34 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestSpatialOvercapturePairedVideoURLKey"];
-      v35 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestAdjustmentDataFileURLKey"];
-      v36 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestOriginalAdjustmentDataFileURLKey"];
-      v37 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestAdjustmentSecondaryDataFileURLKey"];
-      LOWORD(v89) = v24 & 0xF;
-      v38 = [v90 initWithOriginalPhotoURL:v101 alternatePhotoURL:v99 fullSizePhotoURL:v95 adjustmentBaseFullSizePhotoURL:v94 spatialOvercapturePhotoURL:v92 originalPairedVideoURL:v93 fullSizePairedVideoURL:v91 adjustmentBaseFullSizePairedVideoURL:v33 spatialOvercapturePairedVideoURL:v34 fullSizeVideoURL:0 adjustmentsURL:v35 originalAdjustmentsURL:v36 adjustmentsSecondaryDataURL:v37 mediaSubtypes:v32 playbackStyle:v98 playbackVariation:v97 videoComplementVisibilityState:v89];
+      defaultManager2 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestAlternatePhotoURLKey"];
+      v95 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestFullSizePhotoURLKey"];
+      v94 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestAdjustmentBaseFullSizePhotoURLKey"];
+      v92 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestSpatialOvercapturePhotoURLKey"];
+      v93 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestVideoFileURLKey"];
+      v91 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestFullSizeVideoURLKey"];
+      v33 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestAdjustmentBasePairedVideoURLKey"];
+      v34 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestSpatialOvercapturePairedVideoURLKey"];
+      v35 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestAdjustmentDataFileURLKey"];
+      v36 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestOriginalAdjustmentDataFileURLKey"];
+      v37 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestAdjustmentSecondaryDataFileURLKey"];
+      LOWORD(v89) = photoIrisVisibilityState & 0xF;
+      v38 = [v90 initWithOriginalPhotoURL:v101 alternatePhotoURL:defaultManager2 fullSizePhotoURL:v95 adjustmentBaseFullSizePhotoURL:v94 spatialOvercapturePhotoURL:v92 originalPairedVideoURL:v93 fullSizePairedVideoURL:v91 adjustmentBaseFullSizePairedVideoURL:v33 spatialOvercapturePairedVideoURL:v34 fullSizeVideoURL:0 adjustmentsURL:v35 originalAdjustmentsURL:v36 adjustmentsSecondaryDataURL:v37 mediaSubtypes:v32 playbackStyle:v98 playbackVariation:v97 videoComplementVisibilityState:v89];
 
       goto LABEL_33;
     }
@@ -128,7 +128,7 @@
     v47 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
     {
-      sessionUUID = v100->_sessionUUID;
+      sessionUUID = selfCopy->_sessionUUID;
       *buf = 138543618;
       *&buf[4] = sessionUUID;
       *&buf[12] = 2114;
@@ -136,18 +136,18 @@
       _os_log_impl(&dword_19C86F000, v47, OS_LOG_TYPE_DEFAULT, "[AssetBundleExport: %{public}@] Unable to initialize asset bundle. Original Photo URL is: '%{public}@'. Need original photo URL to be non-nil to properly create an asset bundle.", buf, 0x16u);
     }
 
-    if (a6)
+    if (error)
     {
-      v99 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The photo URL (%@) was empty.", 0];
+      defaultManager2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The photo URL (%@) was empty.", 0];
       v49 = MEMORY[0x1E696ABC0];
       v129 = *MEMORY[0x1E696A578];
-      v130 = v99;
+      v130 = defaultManager2;
       v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v130 forKeys:&v129 count:1];
       v96 = [v49 errorWithDomain:@"com.apple.mobileslideshow.sharing" code:2 userInfo:v50];
 
       v51 = v96;
       v38 = 0;
-      *a6 = v96;
+      *error = v96;
 
       goto LABEL_33;
     }
@@ -157,13 +157,13 @@ LABEL_67:
     goto LABEL_62;
   }
 
-  v101 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestVideoFileURLKey"];
+  v101 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestVideoFileURLKey"];
   if (!v101)
   {
     v73 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
     {
-      v74 = v100->_sessionUUID;
+      v74 = selfCopy->_sessionUUID;
       *buf = 138543618;
       *&buf[4] = v74;
       *&buf[12] = 2114;
@@ -171,7 +171,7 @@ LABEL_67:
       _os_log_impl(&dword_19C86F000, v73, OS_LOG_TYPE_DEFAULT, "[AssetBundleExport: %{public}@] Unable to initialize asset bundle. Original Video URL is: '%{public}@'. Need original video URL to be non-nil to properly create an asset bundle.", buf, 0x16u);
     }
 
-    if (a6)
+    if (error)
     {
       v66 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The video URL (%@) was empty.", 0];
       v75 = MEMORY[0x1E696ABC0];
@@ -182,7 +182,7 @@ LABEL_67:
 
       v78 = v77;
       v38 = 0;
-      *a6 = v77;
+      *error = v77;
 LABEL_61:
 
 LABEL_62:
@@ -192,53 +192,53 @@ LABEL_62:
     goto LABEL_67;
   }
 
-  v99 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   buf[0] = 0;
-  v39 = [v12 path];
-  v40 = [v99 fileExistsAtPath:v39 isDirectory:buf];
+  path3 = [v12 path];
+  v40 = [defaultManager2 fileExistsAtPath:path3 isDirectory:buf];
 
   if ((v40 & 1) != 0 || buf[0] == 1)
   {
-    [v99 removeItemAtURL:v12 error:0];
+    [defaultManager2 removeItemAtURL:v12 error:0];
   }
 
   v41 = objc_alloc(MEMORY[0x1E69C0668]);
-  v42 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestFullSizeVideoURLKey"];
-  v43 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestAdjustmentBaseVideoURLKey"];
-  v44 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestSpatialOvercaptureVideoURLKey"];
-  v45 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestAdjustmentDataFileURLKey"];
-  v46 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestOriginalAdjustmentDataFileURLKey"];
+  v42 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestFullSizeVideoURLKey"];
+  v43 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestAdjustmentBaseVideoURLKey"];
+  v44 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestSpatialOvercaptureVideoURLKey"];
+  v45 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestAdjustmentDataFileURLKey"];
+  v46 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestOriginalAdjustmentDataFileURLKey"];
   v38 = [v41 initWithOriginalVideoURL:v101 fullSizeRenderedVideoURL:v42 adjustmentBaseVideoURL:v43 spatialOvercaptureVideoURL:v44 adjustmentsURL:v45 originalAdjustmentsURL:v46 mediaSubtypes:v32 playbackStyle:v98 playbackVariation:v97];
 
 LABEL_33:
   if (v38)
   {
-    v52 = [v10 keywordProperties];
-    v53 = [v52 keywordTitles];
-    [v38 setKeywordTitles:v53];
+    keywordProperties = [assetCopy keywordProperties];
+    keywordTitles = [keywordProperties keywordTitles];
+    [v38 setKeywordTitles:keywordTitles];
 
-    v54 = [v10 descriptionProperties];
-    v55 = [v54 assetDescription];
-    [v38 setAssetDescription:v55];
+    descriptionProperties = [assetCopy descriptionProperties];
+    assetDescription = [descriptionProperties assetDescription];
+    [v38 setAssetDescription:assetDescription];
 
-    v56 = [v10 descriptionProperties];
-    v57 = [v56 accessibilityDescription];
-    [v38 setAccessibilityDescription:v57];
+    descriptionProperties2 = [assetCopy descriptionProperties];
+    accessibilityDescription = [descriptionProperties2 accessibilityDescription];
+    [v38 setAccessibilityDescription:accessibilityDescription];
 
-    v58 = [v10 title];
-    [v38 setAssetTitle:v58];
+    title = [assetCopy title];
+    [v38 setAssetTitle:title];
 
-    v59 = [v10 originalMetadataProperties];
-    v60 = [v59 originalFilename];
-    [v38 setOriginalFilename:v60];
+    originalMetadataProperties = [assetCopy originalMetadataProperties];
+    originalFilename = [originalMetadataProperties originalFilename];
+    [v38 setOriginalFilename:originalFilename];
 
-    v61 = [v10 creationDate];
-    v62 = [v10 originalMetadataProperties];
-    v63 = [v62 timeZone];
-    [v38 setLibraryCreationDate:v61 inTimeZone:v63];
+    creationDate = [assetCopy creationDate];
+    originalMetadataProperties2 = [assetCopy originalMetadataProperties];
+    timeZone = [originalMetadataProperties2 timeZone];
+    [v38 setLibraryCreationDate:creationDate inTimeZone:timeZone];
 
-    v64 = [v10 location];
-    [v38 setLibraryLocation:v64];
+    location = [assetCopy location];
+    [v38 setLibraryLocation:location];
 
     v126[0] = @"PHAssetExportRequestSpatialOvercapturePhotoURLKey";
     v126[1] = @"PHAssetExportRequestSpatialOvercapturePairedVideoURLKey";
@@ -262,7 +262,7 @@ LABEL_33:
             objc_enumerationMutation(v66);
           }
 
-          v70 = [v11 objectForKeyedSubscript:*(*(&v113 + 1) + 8 * i)];
+          v70 = [lsCopy objectForKeyedSubscript:*(*(&v113 + 1) + 8 * i)];
           v71 = v70 == 0;
 
           if (!v71)
@@ -276,7 +276,7 @@ LABEL_33:
             aBlock[1] = 3221225472;
             aBlock[2] = __87__PHAssetBundleExportSession__createAssetBundleFromAsset_withFileURLs_atURL_withError___block_invoke;
             aBlock[3] = &unk_1E75AADC0;
-            v111 = v10;
+            v111 = assetCopy;
             v112 = buf;
             v72 = _Block_copy(aBlock);
             if ([MEMORY[0x1E696AF00] isMainThread])
@@ -299,7 +299,7 @@ LABEL_33:
               v79 = PLPhotoKitGetLog();
               if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
               {
-                v80 = v100->_sessionUUID;
+                v80 = selfCopy->_sessionUUID;
                 *v121 = 138543362;
                 v122 = v80;
                 _os_log_impl(&dword_19C86F000, v79, OS_LOG_TYPE_DEFAULT, "[AssetBundleExport: %{public}@] Marking SOC resource(s) as purgeable in asset bundle.", v121, 0xCu);
@@ -332,7 +332,7 @@ LABEL_55:
       v81 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
       {
-        v82 = v100->_sessionUUID;
+        v82 = selfCopy->_sessionUUID;
         *buf = 138543874;
         *&buf[4] = v82;
         *&buf[12] = 2112;
@@ -348,10 +348,10 @@ LABEL_55:
       v84 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v120 forKeys:&v119 count:1];
       v85 = [v83 errorWithDomain:@"com.apple.mobileslideshow.sharing" code:4 userInfo:v84];
 
-      if (a6)
+      if (error)
       {
         v86 = v85;
-        *a6 = v85;
+        *error = v85;
       }
 
       v12 = 0;
@@ -377,33 +377,33 @@ void __87__PHAssetBundleExportSession__createAssetBundleFromAsset_withFileURLs_a
   *(*(*(a1 + 40) + 8) + 24) = [v4 count] != 0;
 }
 
-- (id)_filenameBaseForAsset:(id)a3
+- (id)_filenameBaseForAsset:(id)asset
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHAssetBundleExportSession *)self customFilenameBase];
-  v6 = [v5 length];
+  assetCopy = asset;
+  customFilenameBase = [(PHAssetBundleExportSession *)self customFilenameBase];
+  v6 = [customFilenameBase length];
 
   if (v6)
   {
-    v7 = [(PHAssetBundleExportSession *)self customFilenameBase];
+    customFilenameBase2 = [(PHAssetBundleExportSession *)self customFilenameBase];
   }
 
   else
   {
-    [v4 fetchPropertySetsIfNeeded];
-    v8 = [v4 originalMetadataProperties];
-    v9 = [v8 originalFilename];
+    [assetCopy fetchPropertySetsIfNeeded];
+    originalMetadataProperties = [assetCopy originalMetadataProperties];
+    originalFilename = [originalMetadataProperties originalFilename];
 
-    if ([v9 length])
+    if ([originalFilename length])
     {
-      v10 = [v9 stringByDeletingPathExtension];
+      stringByDeletingPathExtension = [originalFilename stringByDeletingPathExtension];
     }
 
     else
     {
-      v11 = [v4 filename];
-      v12 = [v11 length];
+      filename = [assetCopy filename];
+      v12 = [filename length];
 
       v13 = PLPhotoKitGetLog();
       v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
@@ -412,15 +412,15 @@ void __87__PHAssetBundleExportSession__createAssetBundleFromAsset_withFileURLs_a
         if (v14)
         {
           sessionUUID = self->_sessionUUID;
-          v16 = [v4 filename];
+          filename2 = [assetCopy filename];
           v20 = 138543618;
           v21 = sessionUUID;
           v22 = 2114;
-          v23 = v16;
+          v23 = filename2;
           _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_DEFAULT, "[AssetBundleExport: %{public}@] Asset does not have valid originalFilename, going with library filename: %{public}@", &v20, 0x16u);
         }
 
-        v10 = [v4 filename];
+        stringByDeletingPathExtension = [assetCopy filename];
       }
 
       else
@@ -428,56 +428,56 @@ void __87__PHAssetBundleExportSession__createAssetBundleFromAsset_withFileURLs_a
         if (v14)
         {
           v17 = self->_sessionUUID;
-          v18 = [v4 uuid];
+          uuid = [assetCopy uuid];
           v20 = 138543618;
           v21 = v17;
           v22 = 2114;
-          v23 = v18;
+          v23 = uuid;
           _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_DEFAULT, "[AssetBundleExport: %{public}@] Asset does not have valid originalFilename, going with UUID: %{public}@", &v20, 0x16u);
         }
 
-        v10 = [v4 uuid];
+        stringByDeletingPathExtension = [assetCopy uuid];
       }
     }
 
-    v7 = v10;
+    customFilenameBase2 = stringByDeletingPathExtension;
   }
 
-  return v7;
+  return customFilenameBase2;
 }
 
-- (void)writeToDirectoryURL:(id)a3 completionHandler:(id)a4
+- (void)writeToDirectoryURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PHAssetBundleExportSession *)self asset];
-  v9 = [(PHAssetBundleExportSession *)self fileURLs];
+  handlerCopy = handler;
+  lCopy = l;
+  asset = [(PHAssetBundleExportSession *)self asset];
+  fileURLs = [(PHAssetBundleExportSession *)self fileURLs];
   v12 = 0;
-  v10 = [(PHAssetBundleExportSession *)self _createAssetBundleFromAsset:v8 withFileURLs:v9 atURL:v7 withError:&v12];
+  v10 = [(PHAssetBundleExportSession *)self _createAssetBundleFromAsset:asset withFileURLs:fileURLs atURL:lCopy withError:&v12];
 
   v11 = v12;
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6, v10, v11);
+    handlerCopy[2](handlerCopy, v10, v11);
   }
 }
 
-- (PHAssetBundleExportSession)initWithAsset:(id)a3 withAssetExportRequestFileURLs:(id)a4
+- (PHAssetBundleExportSession)initWithAsset:(id)asset withAssetExportRequestFileURLs:(id)ls
 {
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  lsCopy = ls;
   v14.receiver = self;
   v14.super_class = PHAssetBundleExportSession;
   v9 = [(PHAssetBundleExportSession *)&v14 init];
   if (v9)
   {
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v11 = [v10 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     sessionUUID = v9->_sessionUUID;
-    v9->_sessionUUID = v11;
+    v9->_sessionUUID = uUIDString;
 
-    objc_storeStrong(&v9->_asset, a3);
-    objc_storeStrong(&v9->_fileURLs, a4);
+    objc_storeStrong(&v9->_asset, asset);
+    objc_storeStrong(&v9->_fileURLs, ls);
   }
 
   return v9;

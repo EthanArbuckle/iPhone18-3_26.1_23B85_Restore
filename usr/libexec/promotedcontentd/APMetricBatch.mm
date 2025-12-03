@@ -1,36 +1,36 @@
 @interface APMetricBatch
-+ (BOOL)removeBatchByFileSystemToken:(id)a3;
-- (APMetricBatch)initWithDestination:(id)a3 purpose:(int64_t)a4;
-- (APMetricBatch)initWithPath:(id)a3;
++ (BOOL)removeBatchByFileSystemToken:(id)token;
+- (APMetricBatch)initWithDestination:(id)destination purpose:(int64_t)purpose;
+- (APMetricBatch)initWithPath:(id)path;
 - (BOOL)shouldRotate;
 - (NSArray)metrics;
 - (id)_closedFileDirectory;
 - (id)_closedFilePath;
-- (id)_destinationHashFromPath:(id)a3;
+- (id)_destinationHashFromPath:(id)path;
 - (id)_openFileDirectory;
 - (id)_openFilePath;
-- (id)_purposeFromPath:(id)a3;
-- (id)eCServerDictionaryRepresentationWithBlock:(id)a3;
+- (id)_purposeFromPath:(id)path;
+- (id)eCServerDictionaryRepresentationWithBlock:(id)block;
 - (id)fileSystemToken;
 - (id)nextMetric;
-- (void)_appendMetricToFile:(id)a3;
-- (void)_deleteByFilePath:(id)a3;
+- (void)_appendMetricToFile:(id)file;
+- (void)_deleteByFilePath:(id)path;
 - (void)close;
 - (void)delete;
-- (void)receivedMetric:(id)a3;
+- (void)receivedMetric:(id)metric;
 @end
 
 @implementation APMetricBatch
 
 - (BOOL)shouldRotate
 {
-  v3 = [(APMetricBatch *)self journeyBatchSettings];
-  v4 = [v3 batchSizeUInteger];
-  if (v4)
+  journeyBatchSettings = [(APMetricBatch *)self journeyBatchSettings];
+  batchSizeUInteger = [journeyBatchSettings batchSizeUInteger];
+  if (batchSizeUInteger)
   {
-    v5 = v4;
-    v6 = [(APMetricBatch *)self storage];
-    v7 = [v6 count] >= v5 + 2;
+    v5 = batchSizeUInteger;
+    storage = [(APMetricBatch *)self storage];
+    v7 = [storage count] >= v5 + 2;
   }
 
   else
@@ -43,35 +43,35 @@
 
 - (id)_openFilePath
 {
-  v3 = [(APMetricBatch *)self _openFileDirectory];
-  v4 = [(APMetricBatch *)self identifier];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  _openFileDirectory = [(APMetricBatch *)self _openFileDirectory];
+  identifier = [(APMetricBatch *)self identifier];
+  v5 = [_openFileDirectory stringByAppendingPathComponent:identifier];
 
   return v5;
 }
 
 - (id)_openFileDirectory
 {
-  v3 = [(objc_class *)+[MetricsModuleClasses storageClass](MetricsModuleClasses openStoragePathPrefix];
-  v4 = [(APMetricBatch *)self destinationHash];
+  openStoragePathPrefix = [(objc_class *)+[MetricsModuleClasses storageClass](MetricsModuleClasses openStoragePathPrefix];
+  destinationHash = [(APMetricBatch *)self destinationHash];
   v5 = [NSNumber numberWithInteger:[(APMetricBatch *)self purpose]];
-  v6 = [v5 stringValue];
+  stringValue = [v5 stringValue];
 
-  v7 = [v3 stringByAppendingPathComponent:v4];
-  v8 = [v7 stringByAppendingPathComponent:v6];
+  v7 = [openStoragePathPrefix stringByAppendingPathComponent:destinationHash];
+  v8 = [v7 stringByAppendingPathComponent:stringValue];
 
   return v8;
 }
 
-- (id)_purposeFromPath:(id)a3
+- (id)_purposeFromPath:(id)path
 {
-  v3 = a3;
-  v4 = [(objc_class *)+[MetricsModuleClasses storageClass](MetricsModuleClasses closedStoragePathPrefix];
-  v5 = [(objc_class *)+[MetricsModuleClasses storageClass](MetricsModuleClasses openStoragePathPrefix];
-  v6 = v4;
-  if ([v3 hasPrefix:v4] & 1) != 0 || (v6 = v5, (objc_msgSend(v3, "hasPrefix:", v5)) || (v6 = @"s", objc_msgSend(v3, "hasPrefix:", @"s")))
+  pathCopy = path;
+  closedStoragePathPrefix = [(objc_class *)+[MetricsModuleClasses storageClass](MetricsModuleClasses closedStoragePathPrefix];
+  openStoragePathPrefix = [(objc_class *)+[MetricsModuleClasses storageClass](MetricsModuleClasses openStoragePathPrefix];
+  v6 = closedStoragePathPrefix;
+  if ([pathCopy hasPrefix:closedStoragePathPrefix] & 1) != 0 || (v6 = openStoragePathPrefix, (objc_msgSend(pathCopy, "hasPrefix:", openStoragePathPrefix)) || (v6 = @"s", objc_msgSend(pathCopy, "hasPrefix:", @"s")))
   {
-    v7 = [v3 substringFromIndex:{-[__CFString length](v6, "length") + 1}];
+    v7 = [pathCopy substringFromIndex:{-[__CFString length](v6, "length") + 1}];
   }
 
   else
@@ -79,15 +79,15 @@
     v7 = 0;
   }
 
-  v8 = [v7 pathComponents];
-  if ([v8 count] < 2)
+  pathComponents = [v7 pathComponents];
+  if ([pathComponents count] < 2)
   {
-    v10 = [NSString stringWithFormat:@"The path (%@) resulted in zero path components somehow!", v3];
+    pathCopy = [NSString stringWithFormat:@"The path (%@) resulted in zero path components somehow!", pathCopy];
     v11 = APLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138739971;
-      v14 = v3;
+      v14 = pathCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "The path (%{sensitive}@) resulted in zero path components somehow!", buf, 0xCu);
     }
 
@@ -97,21 +97,21 @@
 
   else
   {
-    v9 = [v8 objectAtIndexedSubscript:1];
+    v9 = [pathComponents objectAtIndexedSubscript:1];
   }
 
   return v9;
 }
 
-- (id)_destinationHashFromPath:(id)a3
+- (id)_destinationHashFromPath:(id)path
 {
-  v3 = a3;
-  v4 = [(objc_class *)+[MetricsModuleClasses storageClass](MetricsModuleClasses closedStoragePathPrefix];
-  v5 = [(objc_class *)+[MetricsModuleClasses storageClass](MetricsModuleClasses openStoragePathPrefix];
-  v6 = v4;
-  if ([v3 hasPrefix:v4] & 1) != 0 || (v6 = v5, (objc_msgSend(v3, "hasPrefix:", v5)) || (v6 = @"s", objc_msgSend(v3, "hasPrefix:", @"s")))
+  pathCopy = path;
+  closedStoragePathPrefix = [(objc_class *)+[MetricsModuleClasses storageClass](MetricsModuleClasses closedStoragePathPrefix];
+  openStoragePathPrefix = [(objc_class *)+[MetricsModuleClasses storageClass](MetricsModuleClasses openStoragePathPrefix];
+  v6 = closedStoragePathPrefix;
+  if ([pathCopy hasPrefix:closedStoragePathPrefix] & 1) != 0 || (v6 = openStoragePathPrefix, (objc_msgSend(pathCopy, "hasPrefix:", openStoragePathPrefix)) || (v6 = @"s", objc_msgSend(pathCopy, "hasPrefix:", @"s")))
   {
-    v7 = [v3 substringFromIndex:{-[__CFString length](v6, "length") + 1}];
+    v7 = [pathCopy substringFromIndex:{-[__CFString length](v6, "length") + 1}];
   }
 
   else
@@ -119,34 +119,34 @@
     v7 = 0;
   }
 
-  v8 = [v7 pathComponents];
-  if ([v8 count])
+  pathComponents = [v7 pathComponents];
+  if ([pathComponents count])
   {
-    v9 = [v8 firstObject];
+    firstObject = [pathComponents firstObject];
   }
 
   else
   {
-    v10 = [NSString stringWithFormat:@"The path (%@) resulted in zero path components somehow!", v3];
+    pathCopy = [NSString stringWithFormat:@"The path (%@) resulted in zero path components somehow!", pathCopy];
     v11 = APLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138739971;
-      v14 = v3;
+      v14 = pathCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "The path (%{sensitive}@) resulted in zero path components somehow!", buf, 0xCu);
     }
 
     APSimulateCrash();
-    v9 = 0;
+    firstObject = 0;
   }
 
-  return v9;
+  return firstObject;
 }
 
-- (APMetricBatch)initWithPath:(id)a3
+- (APMetricBatch)initWithPath:(id)path
 {
-  v5 = a3;
-  if (v5)
+  pathCopy = path;
+  if (pathCopy)
   {
     if (qword_1004E6D70 != -1)
     {
@@ -155,25 +155,25 @@
 
     v6 = [[APStorageManager alloc] initWithPathPrefix:@"m"];
     v36 = 0;
-    v7 = [v6 fileForReadingAtKeyPath:v5 error:&v36];
+    v7 = [v6 fileForReadingAtKeyPath:pathCopy error:&v36];
     v8 = v36;
     if (v8)
     {
-      v9 = [NSString stringWithFormat:@"Error unarchiving the contents of the file (%@)! %@", v5, v8];
+      pathCopy = [NSString stringWithFormat:@"Error unarchiving the contents of the file (%@)! %@", pathCopy, v8];
       v10 = APLogForCategory();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
 LABEL_8:
 
         APSimulateCrash();
-        v14 = 0;
+        selfCopy = 0;
 LABEL_34:
 
         goto LABEL_35;
       }
 
       *buf = 138740227;
-      *v38 = v5;
+      *v38 = pathCopy;
       *&v38[8] = 2114;
       *v39 = v8;
       v11 = "Error unarchiving the contents of the file (%{sensitive}@)! %{public}@";
@@ -186,7 +186,7 @@ LABEL_7:
 
     if (!v7)
     {
-      v9 = [NSString stringWithFormat:@"We didn't get a file (%@) back from the secure file manager!", v5];
+      pathCopy = [NSString stringWithFormat:@"We didn't get a file (%@) back from the secure file manager!", pathCopy];
       v10 = APLogForCategory();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
@@ -194,26 +194,26 @@ LABEL_7:
       }
 
       *buf = 138739971;
-      *v38 = v5;
+      *v38 = pathCopy;
       v11 = "We didn't get a file (%{sensitive}@) back from the secure file manager!";
       v12 = v10;
       v13 = 12;
       goto LABEL_7;
     }
 
-    v9 = [v7 nextObject];
-    v15 = [v7 nextObject];
+    pathCopy = [v7 nextObject];
+    nextObject = [v7 nextObject];
     v35.receiver = self;
     v35.super_class = APMetricBatch;
     v16 = [(APMetricBatch *)&v35 init];
     self = v16;
     if (v16)
     {
-      v17 = [(APMetricBatch *)v16 _destinationHashFromPath:v5];
+      v17 = [(APMetricBatch *)v16 _destinationHashFromPath:pathCopy];
       destinationHash = self->_destinationHash;
       self->_destinationHash = v17;
 
-      v19 = [(APMetricBatch *)self _purposeFromPath:v5];
+      v19 = [(APMetricBatch *)self _purposeFromPath:pathCopy];
       self->_purpose = [v19 intValue];
 
       self->_writable = 0;
@@ -222,12 +222,12 @@ LABEL_7:
       self->_journeyBatchSettings = v20;
 
       objc_storeStrong(&self->_secureFile, v7);
-      objc_storeStrong(&self->_path, a3);
+      objc_storeStrong(&self->_path, path);
     }
 
-    if (v9)
+    if (pathCopy)
     {
-      v22 = v15 == 0;
+      v22 = nextObject == 0;
     }
 
     else
@@ -241,16 +241,16 @@ LABEL_7:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109635;
-        *v38 = v9 != 0;
+        *v38 = pathCopy != 0;
         *&v38[4] = 1024;
-        *&v38[6] = v15 != 0;
+        *&v38[6] = nextObject != 0;
         *v39 = 2117;
-        *&v39[2] = v5;
+        *&v39[2] = pathCopy;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "File did not contain at least 2 elements! yyyyDDDHHmm: %d, identifierUUID: %d. %{sensitive}@", buf, 0x18u);
       }
 
       CreateDiagnosticReport();
-      [(APMetricBatch *)self _deleteByFilePath:v5];
+      [(APMetricBatch *)self _deleteByFilePath:pathCopy];
     }
 
     else
@@ -261,8 +261,8 @@ LABEL_7:
       {
         if (self)
         {
-          v25 = [v15 UUIDString];
-          v26 = [NSString stringWithFormat:@"%@.%@", v9, v25];
+          uUIDString = [nextObject UUIDString];
+          v26 = [NSString stringWithFormat:@"%@.%@", pathCopy, uUIDString];
           identifier = self->_identifier;
           self->_identifier = v26;
         }
@@ -270,13 +270,13 @@ LABEL_7:
         v28 = APLogForCategory();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
-          v29 = [(APMetricBatch *)self identifier];
+          identifier = [(APMetricBatch *)self identifier];
           *buf = 138543362;
-          *v38 = v29;
+          *v38 = identifier;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "created closed batch %{public}@", buf, 0xCu);
         }
 
-        v14 = self;
+        selfCopy = self;
         goto LABEL_33;
       }
 
@@ -285,30 +285,30 @@ LABEL_7:
       {
         v31 = objc_opt_class();
         v34 = v31;
-        v32 = [v5 lastPathComponent];
+        lastPathComponent = [pathCopy lastPathComponent];
         *buf = 138478083;
         *v38 = v31;
         *&v38[8] = 2114;
-        *v39 = v32;
+        *v39 = lastPathComponent;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "Expected UUID class type but decrypted type %{private}@ in batch %{public}@, please file a radar", buf, 0x16u);
       }
     }
 
-    v14 = 0;
+    selfCopy = 0;
 LABEL_33:
 
     goto LABEL_34;
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_35:
 
-  return v14;
+  return selfCopy;
 }
 
-- (APMetricBatch)initWithDestination:(id)a3 purpose:(int64_t)a4
+- (APMetricBatch)initWithDestination:(id)destination purpose:(int64_t)purpose
 {
-  v6 = a3;
+  destinationCopy = destination;
   v36.receiver = self;
   v36.super_class = APMetricBatch;
   v7 = [(APMetricBatch *)&v36 init];
@@ -317,21 +317,21 @@ LABEL_35:
     goto LABEL_13;
   }
 
-  v32 = v6;
-  v8 = [v6 value];
+  v32 = destinationCopy;
+  value = [destinationCopy value];
   v9 = +[NSDate date];
-  v10 = [v9 yearDayOfYearHourMinute];
+  yearDayOfYearHourMinute = [v9 yearDayOfYearHourMinute];
 
   v11 = +[NSUUID UUID];
-  v31 = v8;
-  objc_storeStrong(&v7->_destinationHash, v8);
-  v7->_purpose = a4;
-  v12 = [v11 UUIDString];
-  v13 = [NSString stringWithFormat:@"%@.%@", v10, v12];
+  v31 = value;
+  objc_storeStrong(&v7->_destinationHash, value);
+  v7->_purpose = purpose;
+  uUIDString = [v11 UUIDString];
+  v13 = [NSString stringWithFormat:@"%@.%@", yearDayOfYearHourMinute, uUIDString];
   identifier = v7->_identifier;
   v7->_identifier = v13;
 
-  v15 = [NSMutableArray arrayWithObjects:v10, v11, 0];
+  v15 = [NSMutableArray arrayWithObjects:yearDayOfYearHourMinute, v11, 0];
   storage = v7->_storage;
   v7->_storage = v15;
 
@@ -341,18 +341,18 @@ LABEL_35:
   v7->_journeyBatchSettings = v17;
 
   v19 = [[APStorageManager alloc] initWithPathPrefix:@"m"];
-  v20 = [(APMetricBatch *)v7 _openFilePath];
+  _openFilePath = [(APMetricBatch *)v7 _openFilePath];
   v35 = 0;
-  v21 = [v19 fileForWritingAtKeyPath:v20 error:&v35];
+  v21 = [v19 fileForWritingAtKeyPath:_openFilePath error:&v35];
   v22 = v35;
   v23 = sub_100007F08();
-  v24 = [v20 lastPathComponent];
-  sub_1003947DC(v23, v24, a4);
+  lastPathComponent = [_openFilePath lastPathComponent];
+  sub_1003947DC(v23, lastPathComponent, purpose);
 
   if (!v22)
   {
     v34 = 0;
-    [v21 addObject:v10 error:&v34];
+    [v21 addObject:yearDayOfYearHourMinute error:&v34];
     v27 = v34;
     v33 = v27;
     [v21 addObject:v11 error:&v33];
@@ -362,11 +362,11 @@ LABEL_35:
     v25 = v28;
     if (v22)
     {
-      v6 = v32;
+      destinationCopy = v32;
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         *buf = 138740227;
-        v38 = v20;
+        v38 = _openFilePath;
         v39 = 2114;
         v40 = v22;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "Could not write to file (%{sensitive}@)! Error: %{public}@", buf, 0x16u);
@@ -377,13 +377,13 @@ LABEL_35:
 
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
-      v29 = [(APMetricBatch *)v7 identifier];
+      identifier = [(APMetricBatch *)v7 identifier];
       *buf = 138543362;
-      v38 = v29;
+      v38 = identifier;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "created open batch %{public}@", buf, 0xCu);
     }
 
-    v6 = v32;
+    destinationCopy = v32;
 LABEL_13:
     v26 = v7;
     goto LABEL_14;
@@ -393,13 +393,13 @@ LABEL_13:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
     *buf = 138740227;
-    v38 = v20;
+    v38 = _openFilePath;
     v39 = 2114;
     v40 = v22;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "Could not open file (%{sensitive}@)! Error: %{public}@", buf, 0x16u);
   }
 
-  v6 = v32;
+  destinationCopy = v32;
 LABEL_6:
 
   v26 = 0;
@@ -410,11 +410,11 @@ LABEL_14:
 
 - (NSArray)metrics
 {
-  v2 = [(APMetricBatch *)self storage];
-  v3 = v2;
-  if (v2)
+  storage = [(APMetricBatch *)self storage];
+  v3 = storage;
+  if (storage)
   {
-    v4 = [v2 subarrayWithRange:{2, objc_msgSend(v2, "count") - 2}];
+    v4 = [storage subarrayWithRange:{2, objc_msgSend(storage, "count") - 2}];
   }
 
   else
@@ -434,15 +434,15 @@ LABEL_14:
 
 - (id)nextMetric
 {
-  v2 = [(APMetricBatch *)self secureFile];
-  v3 = [v2 nextObject];
+  secureFile = [(APMetricBatch *)self secureFile];
+  nextObject = [secureFile nextObject];
 
-  return v3;
+  return nextObject;
 }
 
-- (id)eCServerDictionaryRepresentationWithBlock:(id)a3
+- (id)eCServerDictionaryRepresentationWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(APMetricBatch *)self writable])
   {
     v5 = APLogForCategory();
@@ -460,32 +460,32 @@ LABEL_14:
   {
     v7 = [[NSMutableDictionary alloc] initWithCapacity:4];
     v8 = objc_autoreleasePoolPush();
-    v9 = [(APMetricBatch *)self nextMetric];
-    if (v9)
+    nextMetric = [(APMetricBatch *)self nextMetric];
+    if (nextMetric)
     {
-      v10 = v9;
-      v36 = self;
+      nextMetric2 = nextMetric;
+      selfCopy = self;
       v11 = -9999;
       while (1)
       {
-        if (v4)
+        if (blockCopy)
         {
-          v4[2](v4, v10);
+          blockCopy[2](blockCopy, nextMetric2);
         }
 
-        v12 = [v10 purpose];
-        v13 = v12;
+        purpose = [nextMetric2 purpose];
+        v13 = purpose;
         if (v11 != -9999)
         {
           v13 = v11;
-          if (v11 != v12)
+          if (v11 != purpose)
           {
             break;
           }
         }
 
         v11 = v13;
-        v14 = [NSString stringWithFormat:@"%ld", v12];
+        v14 = [NSString stringWithFormat:@"%ld", purpose];
         v15 = [v7 objectForKey:v14];
         if (!v15)
         {
@@ -495,28 +495,28 @@ LABEL_14:
 
         if (objc_opt_respondsToSelector())
         {
-          v16 = [v10 ecServerDictionaryRepresentation];
-          if (v16)
+          ecServerDictionaryRepresentation = [nextMetric2 ecServerDictionaryRepresentation];
+          if (ecServerDictionaryRepresentation)
           {
-            v17 = v16;
-            [v15 addObject:v16];
+            v17 = ecServerDictionaryRepresentation;
+            [v15 addObject:ecServerDictionaryRepresentation];
           }
         }
 
         objc_autoreleasePoolPop(v8);
         v8 = objc_autoreleasePoolPush();
-        v10 = [(APMetricBatch *)v36 nextMetric];
-        if (!v10)
+        nextMetric2 = [(APMetricBatch *)selfCopy nextMetric];
+        if (!nextMetric2)
         {
-          v35 = v4;
+          v35 = blockCopy;
           objc_autoreleasePoolPop(v8);
           v18 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
-          v19 = [v7 allKeys];
+          allKeys = [v7 allKeys];
           v37 = 0u;
           v38 = 0u;
           v39 = 0u;
           v40 = 0u;
-          v20 = [v19 countByEnumeratingWithState:&v37 objects:v44 count:16];
+          v20 = [allKeys countByEnumeratingWithState:&v37 objects:v44 count:16];
           if (v20)
           {
             v21 = v20;
@@ -527,7 +527,7 @@ LABEL_14:
               {
                 if (*v38 != v22)
                 {
-                  objc_enumerationMutation(v19);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v24 = *(*(&v37 + 1) + 8 * i);
@@ -536,7 +536,7 @@ LABEL_14:
                 [v18 setObject:v26 forKey:v24];
               }
 
-              v21 = [v19 countByEnumeratingWithState:&v37 objects:v44 count:16];
+              v21 = [allKeys countByEnumeratingWithState:&v37 objects:v44 count:16];
             }
 
             while (v21);
@@ -544,18 +544,18 @@ LABEL_14:
 
           v27 = [NSDictionary dictionaryWithDictionary:v18];
           v42[0] = @"batch";
-          v28 = [(APMetricBatch *)v36 identifier];
-          v43[0] = v28;
+          identifier = [(APMetricBatch *)selfCopy identifier];
+          v43[0] = identifier;
           v42[1] = @"events";
-          v29 = [NSString stringWithFormat:@"%ld", [(APMetricBatch *)v36 purpose]];
+          v29 = [NSString stringWithFormat:@"%ld", [(APMetricBatch *)selfCopy purpose]];
           v30 = [v27 objectForKeyedSubscript:v29];
           v43[1] = v30;
           v42[2] = @"purpose";
-          v31 = [NSNumber numberWithInteger:[(APMetricBatch *)v36 purpose]];
+          v31 = [NSNumber numberWithInteger:[(APMetricBatch *)selfCopy purpose]];
           v43[2] = v31;
           v6 = [NSDictionary dictionaryWithObjects:v43 forKeys:v42 count:3];
 
-          v4 = v35;
+          blockCopy = v35;
           goto LABEL_32;
         }
       }
@@ -588,24 +588,24 @@ LABEL_32:
   return v6;
 }
 
-- (void)receivedMetric:(id)a3
+- (void)receivedMetric:(id)metric
 {
-  v4 = a3;
+  metricCopy = metric;
   v5 = APLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(APMetricBatch *)self identifier];
+    identifier = [(APMetricBatch *)self identifier];
     v11 = 138543362;
-    v12 = v6;
+    v12 = identifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "received metric on batch %{public}@", &v11, 0xCu);
   }
 
   if ([(APMetricBatch *)self writable])
   {
-    v7 = [(APMetricBatch *)self storage];
-    [v7 addObject:v4];
+    storage = [(APMetricBatch *)self storage];
+    [storage addObject:metricCopy];
     v8 = objc_autoreleasePoolPush();
-    [(APMetricBatch *)self _appendMetricToFile:v4];
+    [(APMetricBatch *)self _appendMetricToFile:metricCopy];
     objc_autoreleasePoolPop(v8);
   }
 
@@ -614,9 +614,9 @@ LABEL_32:
     v9 = APLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(APMetricBatch *)self identifier];
+      identifier2 = [(APMetricBatch *)self identifier];
       v11 = 138543362;
-      v12 = v10;
+      v12 = identifier2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Attempt to write to a closed batch for %{public}@", &v11, 0xCu);
     }
 
@@ -626,33 +626,33 @@ LABEL_32:
 
 - (id)_closedFileDirectory
 {
-  v3 = [(objc_class *)+[MetricsModuleClasses storageClass](MetricsModuleClasses closedStoragePathPrefix];
-  v4 = [(APMetricBatch *)self destinationHash];
+  closedStoragePathPrefix = [(objc_class *)+[MetricsModuleClasses storageClass](MetricsModuleClasses closedStoragePathPrefix];
+  destinationHash = [(APMetricBatch *)self destinationHash];
   v5 = [NSNumber numberWithInteger:[(APMetricBatch *)self purpose]];
-  v6 = [v5 stringValue];
+  stringValue = [v5 stringValue];
 
-  v7 = [v3 stringByAppendingPathComponent:v4];
-  v8 = [v7 stringByAppendingPathComponent:v6];
+  v7 = [closedStoragePathPrefix stringByAppendingPathComponent:destinationHash];
+  v8 = [v7 stringByAppendingPathComponent:stringValue];
 
   return v8;
 }
 
 - (id)_closedFilePath
 {
-  v3 = [(APMetricBatch *)self _closedFileDirectory];
-  v4 = [(APMetricBatch *)self identifier];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  _closedFileDirectory = [(APMetricBatch *)self _closedFileDirectory];
+  identifier = [(APMetricBatch *)self identifier];
+  v5 = [_closedFileDirectory stringByAppendingPathComponent:identifier];
 
   return v5;
 }
 
-- (void)_appendMetricToFile:(id)a3
+- (void)_appendMetricToFile:(id)file
 {
-  v4 = a3;
-  v5 = [(APMetricBatch *)self storage];
-  v6 = [(APMetricBatch *)self _openFilePath];
+  fileCopy = file;
+  storage = [(APMetricBatch *)self storage];
+  _openFilePath = [(APMetricBatch *)self _openFilePath];
   v24 = 0;
-  v7 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v24];
+  v7 = [NSKeyedArchiver archivedDataWithRootObject:fileCopy requiringSecureCoding:1 error:&v24];
   v8 = v24;
   if (v7)
   {
@@ -667,20 +667,20 @@ LABEL_32:
   if (v9)
   {
     v11 = [[APStorageManager alloc] initWithPathPrefix:@"m"];
-    if (([v11 fileExistsAtPath:v6 error:0]& 1) == 0)
+    if (([v11 fileExistsAtPath:_openFilePath error:0]& 1) == 0)
     {
       v13 = APLogForCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v14 = [(APMetricBatch *)self identifier];
+        identifier = [(APMetricBatch *)self identifier];
         *buf = 138543362;
-        v26 = v14;
+        v26 = identifier;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Trying to append metric to nonexistent file %{public}@", buf, 0xCu);
       }
     }
 
     v23 = 0;
-    v15 = [v11 fileForAppendingAtKeyPath:v6 error:&v23];
+    v15 = [v11 fileForAppendingAtKeyPath:_openFilePath error:&v23];
     v16 = v23;
     if (v16)
     {
@@ -689,7 +689,7 @@ LABEL_32:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         *buf = 138739971;
-        v26 = v6;
+        v26 = _openFilePath;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Could not open file (%{sensitive}@)!", buf, 0xCu);
       }
     }
@@ -697,7 +697,7 @@ LABEL_32:
     else
     {
       v22 = 0;
-      [v15 addObject:v4 error:&v22];
+      [v15 addObject:fileCopy error:&v22];
       v10 = v22;
       v17 = +[NSDate date];
       if (v10)
@@ -706,21 +706,21 @@ LABEL_32:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543619;
-          v26 = v4;
+          v26 = fileCopy;
           v27 = 2117;
-          v28 = v6;
+          v28 = _openFilePath;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Could not add metric (%{public}@) to file (%{sensitive}@)!", buf, 0x16u);
         }
       }
 
       else
       {
-        v19 = [v4 timestamp];
-        [v17 timeIntervalSinceDate:v19];
+        timestamp = [fileCopy timestamp];
+        [v17 timeIntervalSinceDate:timestamp];
         v21 = v20;
 
         v18 = sub_100007F08();
-        sub_1003949C8(v18, [v4 purpose], v21);
+        sub_1003949C8(v18, [fileCopy purpose], v21);
       }
     }
   }
@@ -731,11 +731,11 @@ LABEL_32:
     v11 = APLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v5 count];
+      v12 = [storage count];
       *buf = 134218243;
       v26 = v12;
       v27 = 2117;
-      v28 = v6;
+      v28 = _openFilePath;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Could not archive metrics (%lu) to path (%{sensitive}@)!", buf, 0x16u);
     }
   }
@@ -744,24 +744,24 @@ LABEL_32:
 - (void)close
 {
   self->_writable = 0;
-  v3 = [(APMetricBatch *)self storage];
-  v4 = [v3 count];
+  storage = [(APMetricBatch *)self storage];
+  v4 = [storage count];
 
   v5 = [[APStorageManager alloc] initWithPathPrefix:@"m"];
-  v6 = [(APMetricBatch *)self _openFilePath];
-  v7 = [(APMetricBatch *)self _closedFilePath];
-  v8 = sub_10032CDB8(APMetricsObservability, v6, v5);
+  _openFilePath = [(APMetricBatch *)self _openFilePath];
+  _closedFilePath = [(APMetricBatch *)self _closedFilePath];
+  v8 = sub_10032CDB8(APMetricsObservability, _openFilePath, v5);
   v9 = APLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [(APMetricBatch *)self identifier];
+    identifier = [(APMetricBatch *)self identifier];
     *buf = 138543362;
-    v23 = v10;
+    v23 = identifier;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "close batch %{public}@", buf, 0xCu);
   }
 
   v21 = 0;
-  v11 = [v5 moveItemAtPath:v6 toPath:v7 error:&v21];
+  v11 = [v5 moveItemAtPath:_openFilePath toPath:_closedFilePath error:&v21];
   v12 = v21;
   v13 = v12;
   if (v11)
@@ -778,22 +778,22 @@ LABEL_32:
   {
     v17 = v4 - 2;
     v15 = sub_100007F08();
-    v18 = [v6 lastPathComponent];
-    v19 = [(APMetricBatch *)self purpose];
-    v20 = [(objc_class *)+[MetricsModuleClasses storageClass](MetricsModuleClasses closedStoragePathPrefix];
-    sub_100394B50(v15, v8, v18, v19, v17, v5, v20);
+    lastPathComponent = [_openFilePath lastPathComponent];
+    purpose = [(APMetricBatch *)self purpose];
+    closedStoragePathPrefix = [(objc_class *)+[MetricsModuleClasses storageClass](MetricsModuleClasses closedStoragePathPrefix];
+    sub_100394B50(v15, v8, lastPathComponent, purpose, v17, v5, closedStoragePathPrefix);
   }
 
   else
   {
-    v15 = [NSString stringWithFormat:@"Error closing batch! Could not move file from (%@) to (%@)! %@", v6, v7, v12];
+    v15 = [NSString stringWithFormat:@"Error closing batch! Could not move file from (%@) to (%@)! %@", _openFilePath, _closedFilePath, v12];
     v16 = APLogForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138740483;
-      v23 = v6;
+      v23 = _openFilePath;
       v24 = 2117;
-      v25 = v7;
+      v25 = _closedFilePath;
       v26 = 2114;
       v27 = v13;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Error closing batch! Could not move file from (%{sensitive}@) to (%{sensitive}@)! %{public}@", buf, 0x20u);
@@ -803,9 +803,9 @@ LABEL_32:
   }
 }
 
-- (void)_deleteByFilePath:(id)a3
+- (void)_deleteByFilePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(APMetricBatch *)self writable])
   {
     v5 = APLogForCategory();
@@ -820,17 +820,17 @@ LABEL_32:
 
   else
   {
-    [objc_opt_class() removeBatchByFileSystemToken:v4];
+    [objc_opt_class() removeBatchByFileSystemToken:pathCopy];
   }
 }
 
 - (void)delete
 {
-  v3 = [(APMetricBatch *)self secureFile];
-  [v3 close];
+  secureFile = [(APMetricBatch *)self secureFile];
+  [secureFile close];
 
-  v4 = [(APMetricBatch *)self _closedFilePath];
-  [(APMetricBatch *)self _deleteByFilePath:v4];
+  _closedFilePath = [(APMetricBatch *)self _closedFilePath];
+  [(APMetricBatch *)self _deleteByFilePath:_closedFilePath];
 }
 
 - (id)fileSystemToken
@@ -850,8 +850,8 @@ LABEL_32:
 
   else
   {
-    v5 = [(APMetricBatch *)self path];
-    v6 = [v5 length];
+    path = [(APMetricBatch *)self path];
+    v6 = [path length];
 
     if (v6)
     {
@@ -868,24 +868,24 @@ LABEL_32:
   return v4;
 }
 
-+ (BOOL)removeBatchByFileSystemToken:(id)a3
++ (BOOL)removeBatchByFileSystemToken:(id)token
 {
-  v3 = a3;
-  if ([v3 length])
+  tokenCopy = token;
+  if ([tokenCopy length])
   {
     v4 = [[APStorageManager alloc] initWithPathPrefix:@"m"];
-    v5 = sub_10032CE6C(APMetricsObservability, v3, v4);
+    v5 = sub_10032CE6C(APMetricsObservability, tokenCopy, v4);
     v14 = 0;
-    v6 = [v4 removeObjectAtPath:v3 error:&v14];
+    v6 = [v4 removeObjectAtPath:tokenCopy error:&v14];
     v7 = v14;
     v8 = (v7 == 0) & v6;
     if (v8)
     {
       v9 = sub_100007F08();
-      v10 = [v3 lastPathComponent];
-      v11 = [APMetricStorage_private batchPathToPurpose:v3];
-      v12 = [(objc_class *)+[MetricsModuleClasses storageClass](MetricsModuleClasses closedStoragePathPrefix];
-      sub_100394D3C(v9, v5, v10, v11, v4, v12);
+      lastPathComponent = [tokenCopy lastPathComponent];
+      v11 = [APMetricStorage_private batchPathToPurpose:tokenCopy];
+      closedStoragePathPrefix = [(objc_class *)+[MetricsModuleClasses storageClass](MetricsModuleClasses closedStoragePathPrefix];
+      sub_100394D3C(v9, v5, lastPathComponent, v11, v4, closedStoragePathPrefix);
     }
 
     else

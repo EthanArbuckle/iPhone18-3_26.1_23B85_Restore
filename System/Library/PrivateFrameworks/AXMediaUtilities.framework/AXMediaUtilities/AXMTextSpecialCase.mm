@@ -1,6 +1,6 @@
 @interface AXMTextSpecialCase
-- (BOOL)detectNutritionLabel:(id)a3;
-- (id)detectSpecialCase:(id)a3 preferredLocales:(id)a4;
+- (BOOL)detectNutritionLabel:(id)label;
+- (id)detectSpecialCase:(id)case preferredLocales:(id)locales;
 - (id)nutritionLabelKeywords;
 @end
 
@@ -32,9 +32,9 @@
   return v19;
 }
 
-- (id)detectSpecialCase:(id)a3 preferredLocales:(id)a4
+- (id)detectSpecialCase:(id)case preferredLocales:(id)locales
 {
-  if ([(AXMTextSpecialCase *)self detectNutritionLabel:a3, a4])
+  if ([(AXMTextSpecialCase *)self detectNutritionLabel:case, locales])
   {
     return @"NutritionLabel";
   }
@@ -45,22 +45,22 @@
   }
 }
 
-- (BOOL)detectNutritionLabel:(id)a3
+- (BOOL)detectNutritionLabel:(id)label
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  labelCopy = label;
+  if ([labelCopy count])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [v4 componentsJoinedByString:@" "];
-    v7 = [v6 lowercaseString];
+    v6 = [labelCopy componentsJoinedByString:@" "];
+    lowercaseString = [v6 lowercaseString];
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [(AXMTextSpecialCase *)self nutritionLabelKeywords];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    nutritionLabelKeywords = [(AXMTextSpecialCase *)self nutritionLabelKeywords];
+    v9 = [nutritionLabelKeywords countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -72,13 +72,13 @@
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(nutritionLabelKeywords);
           }
 
-          v11 += [v7 containsString:*(*(&v16 + 1) + 8 * i)];
+          v11 += [lowercaseString containsString:*(*(&v16 + 1) + 8 * i)];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [nutritionLabelKeywords countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v10);

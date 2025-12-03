@@ -1,11 +1,11 @@
 @interface NPTPingResult
 - (NPTPingResult)init;
-- (NPTPingResult)initWithCoder:(id)a3;
-- (NPTPingResult)initWithPings:(id)a3 usingAddress:(id)a4;
+- (NPTPingResult)initWithCoder:(id)coder;
+- (NPTPingResult)initWithPings:(id)pings usingAddress:(id)address;
 - (NSDictionary)asDictionary;
 - (double)calculateStandardDeviation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 - (void)populateFields;
 @end
 
@@ -27,18 +27,18 @@
   return v2;
 }
 
-- (NPTPingResult)initWithPings:(id)a3 usingAddress:(id)a4
+- (NPTPingResult)initWithPings:(id)pings usingAddress:(id)address
 {
-  v6 = a3;
-  v7 = a4;
+  pingsCopy = pings;
+  addressCopy = address;
   v11.receiver = self;
   v11.super_class = NPTPingResult;
   v8 = [(NPTPingResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(NPTPingResult *)v8 setPings:v6];
-    [(NPTPingResult *)v9 setAddress:v7];
+    [(NPTPingResult *)v8 setPings:pingsCopy];
+    [(NPTPingResult *)v9 setAddress:addressCopy];
     [(NPTPingResult *)v9 populateFields];
   }
 
@@ -53,8 +53,8 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v3 = [(NPTPingResult *)self pings];
-  v4 = [v3 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  pings = [(NPTPingResult *)self pings];
+  v4 = [pings countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v4)
   {
     v5 = v4;
@@ -67,7 +67,7 @@
       {
         if (*v27 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pings);
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
@@ -105,7 +105,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v5 = [pings countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v5);
@@ -123,8 +123,8 @@
     [(NPTPingResult *)self setMinLatency:0.0];
   }
 
-  v20 = [(NPTPingResult *)self pings];
-  v21 = [v20 count];
+  pings2 = [(NPTPingResult *)self pings];
+  v21 = [pings2 count];
 
   if (v21 == v6)
   {
@@ -133,15 +133,15 @@
 
   else
   {
-    v22 = [(NPTPingResult *)self pings];
-    -[NPTPingResult setMeanLatency:](self, "setMeanLatency:", v8 / ([v22 count] - v6));
+    pings3 = [(NPTPingResult *)self pings];
+    -[NPTPingResult setMeanLatency:](self, "setMeanLatency:", v8 / ([pings3 count] - v6));
   }
 
-  v23 = [(NPTPingResult *)self pings];
-  if ([v23 count])
+  pings4 = [(NPTPingResult *)self pings];
+  if ([pings4 count])
   {
-    v24 = [(NPTPingResult *)self pings];
-    -[NPTPingResult setPercentLost:](self, "setPercentLost:", v6 / [v24 count] * 100.0);
+    pings5 = [(NPTPingResult *)self pings];
+    -[NPTPingResult setPercentLost:](self, "setPercentLost:", v6 / [pings5 count] * 100.0);
   }
 
   else
@@ -161,8 +161,8 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [(NPTPingResult *)self pings];
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  pings = [(NPTPingResult *)self pings];
+  v4 = [pings countByEnumeratingWithState:&v21 objects:v25 count:16];
   v5 = 0.0;
   if (v4)
   {
@@ -176,7 +176,7 @@
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pings);
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
@@ -194,7 +194,7 @@
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v6 = [pings countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v6);
@@ -207,13 +207,13 @@
     v9 = 0.0;
   }
 
-  v16 = [(NPTPingResult *)self pings];
-  v17 = [v16 count];
+  pings2 = [(NPTPingResult *)self pings];
+  v17 = [pings2 count];
 
   if (v17 != v15)
   {
-    v18 = [(NPTPingResult *)self pings];
-    v5 = sqrt(v9 / ([v18 count] - v15));
+    pings3 = [(NPTPingResult *)self pings];
+    v5 = sqrt(v9 / ([pings3 count] - v15));
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -229,8 +229,8 @@
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = [(NPTPingResult *)self pings];
-  v6 = [v5 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  pings = [(NPTPingResult *)self pings];
+  v6 = [pings countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v6)
   {
     v7 = v6;
@@ -241,22 +241,22 @@
       {
         if (*v34 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pings);
         }
 
-        v10 = [*(*(&v33 + 1) + 8 * i) dictionary];
-        [v4 addObject:v10];
+        dictionary = [*(*(&v33 + 1) + 8 * i) dictionary];
+        [v4 addObject:dictionary];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v7 = [pings countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v7);
   }
 
   [v3 setValue:v4 forKey:@"pings"];
-  v11 = [(NPTPingResult *)self address];
-  [v3 setValue:v11 forKey:@"address"];
+  address = [(NPTPingResult *)self address];
+  [v3 setValue:address forKey:@"address"];
 
   v12 = MEMORY[0x277CCABB0];
   [(NPTPingResult *)self minLatency];
@@ -283,21 +283,21 @@
   v21 = [v20 numberWithDouble:?];
   [v3 setValue:v21 forKey:@"loss_percent"];
 
-  v22 = [(NPTPingResult *)self error];
+  error = [(NPTPingResult *)self error];
 
-  if (v22)
+  if (error)
   {
-    v23 = [(NPTPingResult *)self error];
-    v24 = [v23 localizedDescription];
-    [v3 setValue:v24 forKey:@"error"];
+    error2 = [(NPTPingResult *)self error];
+    localizedDescription = [error2 localizedDescription];
+    [v3 setValue:localizedDescription forKey:@"error"];
 
-    v25 = [(NPTPingResult *)self error];
-    v26 = [v25 domain];
-    [v3 setValue:v26 forKey:@"error_domain"];
+    error3 = [(NPTPingResult *)self error];
+    domain = [error3 domain];
+    [v3 setValue:domain forKey:@"error_domain"];
 
     v27 = MEMORY[0x277CCABB0];
-    v28 = [(NPTPingResult *)self error];
-    v29 = [v27 numberWithInteger:{objc_msgSend(v28, "code")}];
+    error4 = [(NPTPingResult *)self error];
+    v29 = [v27 numberWithInteger:{objc_msgSend(error4, "code")}];
     [v3 setValue:v29 forKey:@"error_code"];
   }
 
@@ -308,65 +308,65 @@
   return v30;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NPTPingResult *)self address];
-  [v4 encodeObject:v5 forKey:@"address"];
+  coderCopy = coder;
+  address = [(NPTPingResult *)self address];
+  [coderCopy encodeObject:address forKey:@"address"];
 
   [(NPTPingResult *)self minLatency];
-  [v4 encodeDouble:@"minLatency" forKey:?];
+  [coderCopy encodeDouble:@"minLatency" forKey:?];
   [(NPTPingResult *)self maxLatency];
-  [v4 encodeDouble:@"maxLatency" forKey:?];
+  [coderCopy encodeDouble:@"maxLatency" forKey:?];
   [(NPTPingResult *)self meanLatency];
-  [v4 encodeDouble:@"meanLatency" forKey:?];
+  [coderCopy encodeDouble:@"meanLatency" forKey:?];
   [(NPTPingResult *)self standardDeviation];
-  [v4 encodeDouble:@"standardDeviation" forKey:?];
+  [coderCopy encodeDouble:@"standardDeviation" forKey:?];
   [(NPTPingResult *)self percentLost];
-  [v4 encodeDouble:@"percentLost" forKey:?];
-  v6 = [(NPTPingResult *)self pings];
-  [v4 encodeObject:v6 forKey:@"pings"];
+  [coderCopy encodeDouble:@"percentLost" forKey:?];
+  pings = [(NPTPingResult *)self pings];
+  [coderCopy encodeObject:pings forKey:@"pings"];
 
-  v7 = [(NPTPingResult *)self error];
-  [v4 encodeObject:v7 forKey:@"error"];
+  error = [(NPTPingResult *)self error];
+  [coderCopy encodeObject:error forKey:@"error"];
 }
 
-- (NPTPingResult)initWithCoder:(id)a3
+- (NPTPingResult)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = NPTPingResult;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(NPTPingResult *)&v12 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"address"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"address"];
   [(NPTPingResult *)v4 setAddress:v5];
 
-  [v3 decodeDoubleForKey:@"minLatency"];
+  [coderCopy decodeDoubleForKey:@"minLatency"];
   [(NPTPingResult *)v4 setMinLatency:?];
-  [v3 decodeDoubleForKey:@"maxLatency"];
+  [coderCopy decodeDoubleForKey:@"maxLatency"];
   [(NPTPingResult *)v4 setMaxLatency:?];
-  [v3 decodeDoubleForKey:@"meanLatency"];
+  [coderCopy decodeDoubleForKey:@"meanLatency"];
   [(NPTPingResult *)v4 setMeanLatency:?];
-  [v3 decodeDoubleForKey:@"standardDeviation"];
+  [coderCopy decodeDoubleForKey:@"standardDeviation"];
   [(NPTPingResult *)v4 setStandardDeviation:?];
-  [v3 decodeDoubleForKey:@"percentLost"];
+  [coderCopy decodeDoubleForKey:@"percentLost"];
   [(NPTPingResult *)v4 setPercentLost:?];
   v6 = MEMORY[0x277CBEB98];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0, v12.receiver, v12.super_class}];
-  v9 = [v3 decodeObjectOfClasses:v8 forKey:@"pings"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"pings"];
   [(NPTPingResult *)v4 setPings:v9];
 
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
 
   [(NPTPingResult *)v4 setError:v10];
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NPTPingResult allocWithZone:?]];
-  v5 = [(NPTPingResult *)self address];
-  [(NPTPingResult *)v4 setAddress:v5];
+  address = [(NPTPingResult *)self address];
+  [(NPTPingResult *)v4 setAddress:address];
 
   [(NPTPingResult *)self minLatency];
   [(NPTPingResult *)v4 setMinLatency:?];
@@ -378,11 +378,11 @@
   [(NPTPingResult *)v4 setStandardDeviation:?];
   [(NPTPingResult *)self percentLost];
   [(NPTPingResult *)v4 setPercentLost:?];
-  v6 = [(NPTPingResult *)self pings];
-  [(NPTPingResult *)v4 setPings:v6];
+  pings = [(NPTPingResult *)self pings];
+  [(NPTPingResult *)v4 setPings:pings];
 
-  v7 = [(NPTPingResult *)self error];
-  [(NPTPingResult *)v4 setError:v7];
+  error = [(NPTPingResult *)self error];
+  [(NPTPingResult *)v4 setError:error];
 
   return v4;
 }

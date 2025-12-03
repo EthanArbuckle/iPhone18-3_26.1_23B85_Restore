@@ -1,5 +1,5 @@
 @interface CAMHDRButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -7,11 +7,11 @@
 
 @implementation CAMHDRButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMHDRButton" hasInstanceMethod:@"HDRMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMHDRButton" hasInstanceMethod:@"setHDRMode:" withFullSignature:{"v", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMHDRButton" hasInstanceMethod:@"HDRMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMHDRButton" hasInstanceMethod:@"setHDRMode:" withFullSignature:{"v", "q", 0}];
 }
 
 - (BOOL)accessibilityActivate
@@ -33,16 +33,16 @@ void __50__CAMHDRButtonAccessibility_accessibilityActivate__block_invoke(uint64_
 - (id)accessibilityValue
 {
   v2 = [(CAMHDRButtonAccessibility *)self safeValueForKey:@"HDRMode"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  if (v3 > 2)
+  if (intValue > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = accessibilityCameraKitLocalizedString(off_29F2AD430[v3]);
+    v4 = accessibilityCameraKitLocalizedString(off_29F2AD430[intValue]);
   }
 
   return v4;

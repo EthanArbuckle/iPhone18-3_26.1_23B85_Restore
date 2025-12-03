@@ -1,18 +1,18 @@
 @interface NTKWhistlerAnalogColorEditOption
-+ (id)__orderedValuesForDevice:(id)a3;
-+ (id)_orderedValuesForDevice:(id)a3;
++ (id)__orderedValuesForDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
 @end
 
 @implementation NTKWhistlerAnalogColorEditOption
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __60__NTKWhistlerAnalogColorEditOption__orderedValuesForDevice___block_invoke;
   v5[3] = &__block_descriptor_40_e28___NSArray_16__0__CLKDevice_8l;
-  v5[4] = a1;
-  v3 = __60__NTKWhistlerAnalogColorEditOption__orderedValuesForDevice___block_invoke(v5, a3);
+  v5[4] = self;
+  v3 = __60__NTKWhistlerAnalogColorEditOption__orderedValuesForDevice___block_invoke(v5, device);
 
   return v3;
 }
@@ -46,11 +46,11 @@ id __60__NTKWhistlerAnalogColorEditOption__orderedValuesForDevice___block_invoke
   return v8;
 }
 
-+ (id)__orderedValuesForDevice:(id)a3
++ (id)__orderedValuesForDevice:(id)device
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___NTKWhistlerAnalogColorEditOption;
-  v3 = objc_msgSendSuper2(&v7, sel___orderedValuesForDevice_, a3);
+  v3 = objc_msgSendSuper2(&v7, sel___orderedValuesForDevice_, device);
   v4 = [v3 mutableCopy];
 
   [v4 removeObject:&unk_284184FF0];

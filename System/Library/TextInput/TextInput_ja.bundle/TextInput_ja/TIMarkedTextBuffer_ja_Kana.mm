@@ -1,43 +1,43 @@
 @interface TIMarkedTextBuffer_ja_Kana
-- (TIMarkedTextBuffer_ja_Kana)initWithInternalString:(id)a3;
+- (TIMarkedTextBuffer_ja_Kana)initWithInternalString:(id)string;
 - (void)clear;
-- (void)deleteFromInput:(int64_t *)a3 newInput:(id *)a4 inputIndex:(int64_t *)a5;
-- (void)setInternalString:(id)a3 withInputIndex:(int64_t)a4;
+- (void)deleteFromInput:(int64_t *)input newInput:(id *)newInput inputIndex:(int64_t *)index;
+- (void)setInternalString:(id)string withInputIndex:(int64_t)index;
 @end
 
 @implementation TIMarkedTextBuffer_ja_Kana
 
-- (TIMarkedTextBuffer_ja_Kana)initWithInternalString:(id)a3
+- (TIMarkedTextBuffer_ja_Kana)initWithInternalString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v7.receiver = self;
   v7.super_class = TIMarkedTextBuffer_ja_Kana;
   v5 = [(TIMarkedTextBuffer_ja_Kana *)&v7 init];
   if (v5)
   {
-    -[TIMarkedTextBuffer_ja_Kana setInternalString:withInputIndex:](v5, "setInternalString:withInputIndex:", v4, [v4 length]);
+    -[TIMarkedTextBuffer_ja_Kana setInternalString:withInputIndex:](v5, "setInternalString:withInputIndex:", stringCopy, [stringCopy length]);
     [(TIMarkedTextBuffer_ja_Kana *)v5 setHardwareKeyboard:1];
   }
 
   return v5;
 }
 
-- (void)setInternalString:(id)a3 withInputIndex:(int64_t)a4
+- (void)setInternalString:(id)string withInputIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 < 2)
+  stringCopy = string;
+  v7 = stringCopy;
+  if (index < 2)
   {
     goto LABEL_25;
   }
 
-  v8 = a4 - 1;
-  if (a4 - 1 >= [v6 length])
+  indexCopy = index - 1;
+  if (index - 1 >= [stringCopy length])
   {
     goto LABEL_25;
   }
 
-  v9 = [v7 characterAtIndex:a4 - 1];
+  v9 = [v7 characterAtIndex:index - 1];
   if (v9 == 12444)
   {
     if (![(TIMarkedTextBuffer_ja_Kana *)self hardwareKeyboard])
@@ -45,7 +45,7 @@
       goto LABEL_25;
     }
 
-    v20 = [v7 substringWithRange:{a4 - 2, 1}];
+    v20 = [v7 substringWithRange:{index - 2, 1}];
     v16 = [@"はひふへほ" rangeOfString:v20];
     v18 = v21;
 
@@ -64,7 +64,7 @@ LABEL_19:
   {
     if ([(TIMarkedTextBuffer_ja_Kana *)self hardwareKeyboard])
     {
-      v15 = [v7 substringWithRange:{a4 - 2, 1}];
+      v15 = [v7 substringWithRange:{index - 2, 1}];
       v16 = [@"うかきくけこさしすせそたちつてとはひふへほ" rangeOfString:v15];
       v18 = v17;
 
@@ -81,7 +81,7 @@ LABEL_18:
 
     else
     {
-      v23 = [v7 characterAtIndex:a4 - 2] - 12353;
+      v23 = [v7 characterAtIndex:index - 2] - 12353;
       if (v23 > 0x53)
       {
         goto LABEL_25;
@@ -102,25 +102,25 @@ LABEL_18:
   if (v9 != 8616)
   {
 LABEL_25:
-    v8 = a4;
+    indexCopy = index;
     goto LABEL_26;
   }
 
-  v10 = [v7 characterAtIndex:a4 - 2];
+  v10 = [v7 characterAtIndex:index - 2];
   v32 = v10;
-  v11 = [MEMORY[0x29EDB9F50] uppercaseLetterCharacterSet];
-  v12 = [v11 characterIsMember:v10];
+  uppercaseLetterCharacterSet = [MEMORY[0x29EDB9F50] uppercaseLetterCharacterSet];
+  v12 = [uppercaseLetterCharacterSet characterIsMember:v10];
 
   if (v12)
   {
     v13 = [MEMORY[0x29EDBA0F8] stringWithCharacters:&v32 length:1];
-    v14 = [v13 lowercaseString];
+    lowercaseString = [v13 lowercaseString];
   }
 
   else
   {
-    v25 = [MEMORY[0x29EDB9F50] lowercaseLetterCharacterSet];
-    v26 = [v25 characterIsMember:v10];
+    lowercaseLetterCharacterSet = [MEMORY[0x29EDB9F50] lowercaseLetterCharacterSet];
+    v26 = [lowercaseLetterCharacterSet characterIsMember:v10];
 
     v27 = [MEMORY[0x29EDBA0F8] stringWithCharacters:&v32 length:1];
     v13 = v27;
@@ -129,10 +129,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v14 = [v27 uppercaseString];
+    lowercaseString = [v27 uppercaseString];
   }
 
-  v28 = v14;
+  v28 = lowercaseString;
 
   v13 = v28;
 LABEL_23:
@@ -141,36 +141,36 @@ LABEL_23:
     goto LABEL_25;
   }
 
-  v29 = [v7 stringByReplacingCharactersInRange:a4 - 2 withString:{2, v13}];
+  v29 = [v7 stringByReplacingCharactersInRange:index - 2 withString:{2, v13}];
 
   v7 = v29;
 LABEL_26:
   externalString = self->_externalString;
-  self->_externalIndex = v8;
+  self->_externalIndex = indexCopy;
   self->_externalString = v7;
 }
 
-- (void)deleteFromInput:(int64_t *)a3 newInput:(id *)a4 inputIndex:(int64_t *)a5
+- (void)deleteFromInput:(int64_t *)input newInput:(id *)newInput inputIndex:(int64_t *)index
 {
-  if (a3)
+  if (input)
   {
-    *a3 = 1;
+    *input = 1;
   }
 
-  if (a5)
+  if (index)
   {
-    v6 = [(TIMarkedTextBuffer_ja_Kana *)self internalIndex];
-    if (v6 <= 1)
+    internalIndex = [(TIMarkedTextBuffer_ja_Kana *)self internalIndex];
+    if (internalIndex <= 1)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = v6;
+      v7 = internalIndex;
     }
 
-    *a5 = v7 - 1;
+    *index = v7 - 1;
   }
 }
 

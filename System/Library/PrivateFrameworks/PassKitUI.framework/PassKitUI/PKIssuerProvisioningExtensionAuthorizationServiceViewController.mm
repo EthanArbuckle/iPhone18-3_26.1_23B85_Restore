@@ -1,21 +1,21 @@
 @interface PKIssuerProvisioningExtensionAuthorizationServiceViewController
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)beginRequestWithExtensionContext:(id)context;
 - (void)loadView;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKIssuerProvisioningExtensionAuthorizationServiceViewController
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = PKIssuerProvisioningExtensionAuthorizationServiceViewController;
-  [(PKIssuerProvisioningExtensionAuthorizationServiceViewController *)&v10 beginRequestWithExtensionContext:v4];
-  v5 = [(PKIssuerProvisioningExtensionAuthorizationServiceViewController *)self childViewControllers];
-  v6 = [v5 lastObject];
+  [(PKIssuerProvisioningExtensionAuthorizationServiceViewController *)&v10 beginRequestWithExtensionContext:contextCopy];
+  childViewControllers = [(PKIssuerProvisioningExtensionAuthorizationServiceViewController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  if (!v6 || ([v6 conformsToProtocol:&unk_1F3E3D5A8] & 1) == 0)
+  if (!lastObject || ([lastObject conformsToProtocol:&unk_1F3E3D5A8] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSExtensionPrincipalClass does not conform to PKIssuerProvisioningExtensionAuthorizationProviding"];
   }
@@ -26,7 +26,7 @@
   v7[2] = __100__PKIssuerProvisioningExtensionAuthorizationServiceViewController_beginRequestWithExtensionContext___block_invoke;
   v7[3] = &unk_1E801A1E8;
   objc_copyWeak(&v8, &location);
-  [v6 setCompletionHandler:v7];
+  [lastObject setCompletionHandler:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
@@ -63,14 +63,14 @@ void __100__PKIssuerProvisioningExtensionAuthorizationServiceViewController_begi
   v14.receiver = self;
   v14.super_class = PKIssuerProvisioningExtensionAuthorizationServiceViewController;
   [(PKIssuerProvisioningExtensionAuthorizationServiceViewController *)&v14 loadView];
-  v3 = [(PKIssuerProvisioningExtensionAuthorizationServiceViewController *)self view];
-  [v3 setAutoresizesSubviews:0];
+  view = [(PKIssuerProvisioningExtensionAuthorizationServiceViewController *)self view];
+  [view setAutoresizesSubviews:0];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(PKIssuerProvisioningExtensionAuthorizationServiceViewController *)self childViewControllers];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  childViewControllers = [(PKIssuerProvisioningExtensionAuthorizationServiceViewController *)self childViewControllers];
+  v5 = [childViewControllers countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -82,17 +82,17 @@ void __100__PKIssuerProvisioningExtensionAuthorizationServiceViewController_begi
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childViewControllers);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) view];
-        [v3 addSubview:v9];
+        view2 = [*(*(&v10 + 1) + 8 * v8) view];
+        [view addSubview:view2];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v6 = [childViewControllers countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v6);
@@ -105,8 +105,8 @@ void __100__PKIssuerProvisioningExtensionAuthorizationServiceViewController_begi
   v22.receiver = self;
   v22.super_class = PKIssuerProvisioningExtensionAuthorizationServiceViewController;
   [(PKIssuerProvisioningExtensionAuthorizationServiceViewController *)&v22 viewWillLayoutSubviews];
-  v3 = [(PKIssuerProvisioningExtensionAuthorizationServiceViewController *)self view];
-  [v3 bounds];
+  view = [(PKIssuerProvisioningExtensionAuthorizationServiceViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -116,8 +116,8 @@ void __100__PKIssuerProvisioningExtensionAuthorizationServiceViewController_begi
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = [(PKIssuerProvisioningExtensionAuthorizationServiceViewController *)self childViewControllers];
-  v13 = [v12 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  childViewControllers = [(PKIssuerProvisioningExtensionAuthorizationServiceViewController *)self childViewControllers];
+  v13 = [childViewControllers countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v13)
   {
     v14 = v13;
@@ -129,17 +129,17 @@ void __100__PKIssuerProvisioningExtensionAuthorizationServiceViewController_begi
       {
         if (*v19 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(childViewControllers);
         }
 
-        v17 = [*(*(&v18 + 1) + 8 * v16) view];
-        [v17 setFrame:{v5, v7, v9, v11}];
+        view2 = [*(*(&v18 + 1) + 8 * v16) view];
+        [view2 setFrame:{v5, v7, v9, v11}];
 
         ++v16;
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v14 = [childViewControllers countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v14);

@@ -3,13 +3,13 @@
 - (id)controlToViewValueTransformer;
 - (id)createInteractionCoordinator;
 - (id)createViewProfile;
-- (void)_getHeaterCoolerThresholdControlItemStateString:(id *)a3 temperatureString:(id *)a4 withRangeControlItemValue:(id)a5;
-- (void)_getTemperatureThresholdControlItemStateString:(id *)a3 temperatureString:(id *)a4 withRangeControlItemValue:(id)a5;
-- (void)interactionCoordinator:(id)a3 viewValueDidChange:(id)a4;
+- (void)_getHeaterCoolerThresholdControlItemStateString:(id *)string temperatureString:(id *)temperatureString withRangeControlItemValue:(id)value;
+- (void)_getTemperatureThresholdControlItemStateString:(id *)string temperatureString:(id *)temperatureString withRangeControlItemValue:(id)value;
+- (void)interactionCoordinator:(id)coordinator viewValueDidChange:(id)change;
 - (void)invalidateViewProfile;
 - (void)modelValueDidChange;
-- (void)quickControlItemUpdater:(id)a3 didUpdateResultsForControlItems:(id)a4;
-- (void)updateMainStatusStringWithValue:(id)a3;
+- (void)quickControlItemUpdater:(id)updater didUpdateResultsForControlItems:(id)items;
+- (void)updateMainStatusStringWithValue:(id)value;
 - (void)updateSupplementaryValue;
 @end
 
@@ -55,16 +55,16 @@ uint64_t __67__HUQuickControlRingSliderRangeViewController_controlItemPredicate_
 - (id)createInteractionCoordinator
 {
   v3 = [HUQuickControlRingSliderView alloc];
-  v4 = [(HUQuickControlSingleControlViewController *)self viewProfile];
-  v5 = [(HUQuickControlRingSliderView *)v3 initWithProfile:v4];
+  viewProfile = [(HUQuickControlSingleControlViewController *)self viewProfile];
+  v5 = [(HUQuickControlRingSliderView *)v3 initWithProfile:viewProfile];
   [(HUQuickControlRingSliderRangeViewController *)self setRingSliderView:v5];
 
   v6 = [HUQuickControlRingSliderInteractionCoordinator alloc];
-  v7 = [(HUQuickControlRingSliderRangeViewController *)self ringSliderView];
-  v8 = [(HUQuickControlRingSliderInteractionCoordinator *)v6 initWithControlView:v7 delegate:self];
+  ringSliderView = [(HUQuickControlRingSliderRangeViewController *)self ringSliderView];
+  v8 = [(HUQuickControlRingSliderInteractionCoordinator *)v6 initWithControlView:ringSliderView delegate:self];
 
-  v9 = [(HUQuickControlRingSliderRangeViewController *)self ringSliderView];
-  [v9 setInteractionDelegate:v8];
+  ringSliderView2 = [(HUQuickControlRingSliderRangeViewController *)self ringSliderView];
+  [ringSliderView2 setInteractionDelegate:v8];
 
   return v8;
 }
@@ -75,54 +75,54 @@ uint64_t __67__HUQuickControlRingSliderRangeViewController_controlItemPredicate_
   [(HUQuickControlRingSliderViewProfile *)v3 setIsHandleViewVisible:0];
   [(HUQuickControlRingSliderViewProfile *)v3 setHasOffState:0];
   [(HUQuickControlRingSliderViewProfile *)v3 setHandleViewStyle:2];
-  v4 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13818]];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults = [controlItem latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13818]];
 
-  v7 = [v6 mode];
-  if (v7 == 2)
+  mode = [v6 mode];
+  if (mode == 2)
   {
     v104 = v6;
     [(HUQuickControlRingSliderViewProfile *)v3 setHasSecondaryValue:1];
     v28 = MEMORY[0x277D14BE0];
-    v29 = [(HUQuickControlSingleControlViewController *)self controlItem];
-    v30 = [v29 minimumValueConstraints];
-    v31 = [v30 validRange];
-    v32 = [MEMORY[0x277D14BF8] sharedCoordinator];
-    v13 = [v28 integerTemperatureRangeWithinNumberRange:v31 representsCelsius:{objc_msgSend(v32, "isCelsius")}];
+    controlItem2 = [(HUQuickControlSingleControlViewController *)self controlItem];
+    minimumValueConstraints = [controlItem2 minimumValueConstraints];
+    validRange = [minimumValueConstraints validRange];
+    mEMORY[0x277D14BF8] = [MEMORY[0x277D14BF8] sharedCoordinator];
+    v13 = [v28 integerTemperatureRangeWithinNumberRange:validRange representsCelsius:{objc_msgSend(mEMORY[0x277D14BF8], "isCelsius")}];
 
     v33 = objc_alloc(MEMORY[0x277D148E0]);
-    v34 = [v13 minValue];
-    v35 = [v13 maxValue];
-    v36 = [(HUQuickControlSingleControlViewController *)self controlItem];
-    [v36 minimumValueConstraints];
+    minValue = [v13 minValue];
+    maxValue = [v13 maxValue];
+    controlItem3 = [(HUQuickControlSingleControlViewController *)self controlItem];
+    [controlItem3 minimumValueConstraints];
     v38 = v37 = self;
-    v39 = [v38 stepValue];
-    v20 = [v33 initWithMinValue:v34 maxValue:v35 stepValue:v39];
+    stepValue = [v38 stepValue];
+    v20 = [v33 initWithMinValue:minValue maxValue:maxValue stepValue:stepValue];
 
     v40 = MEMORY[0x277D14BE0];
-    v41 = [(HUQuickControlSingleControlViewController *)v37 controlItem];
-    v42 = [v41 maximumValueConstraints];
-    v43 = [v42 validRange];
-    v44 = [MEMORY[0x277D14BF8] sharedCoordinator];
-    v25 = [v40 integerTemperatureRangeWithinNumberRange:v43 representsCelsius:{objc_msgSend(v44, "isCelsius")}];
+    controlItem4 = [(HUQuickControlSingleControlViewController *)v37 controlItem];
+    maximumValueConstraints = [controlItem4 maximumValueConstraints];
+    validRange2 = [maximumValueConstraints validRange];
+    mEMORY[0x277D14BF8]2 = [MEMORY[0x277D14BF8] sharedCoordinator];
+    maxValue5 = [v40 integerTemperatureRangeWithinNumberRange:validRange2 representsCelsius:{objc_msgSend(mEMORY[0x277D14BF8]2, "isCelsius")}];
 
     v45 = objc_alloc(MEMORY[0x277D148E0]);
-    v46 = [v25 minValue];
-    v47 = [v25 maxValue];
-    v105 = v37;
-    v48 = [(HUQuickControlSingleControlViewController *)v37 controlItem];
-    v49 = [v48 maximumValueConstraints];
-    v50 = [v49 stepValue];
-    v51 = [v45 initWithMinValue:v46 maxValue:v47 stepValue:v50];
+    minValue2 = [maxValue5 minValue];
+    maxValue2 = [maxValue5 maxValue];
+    selfCopy = v37;
+    controlItem5 = [(HUQuickControlSingleControlViewController *)v37 controlItem];
+    maximumValueConstraints2 = [controlItem5 maximumValueConstraints];
+    stepValue2 = [maximumValueConstraints2 stepValue];
+    v51 = [v45 initWithMinValue:minValue2 maxValue:maxValue2 stepValue:stepValue2];
 
-    v52 = [v13 unionRange:v25];
-    v53 = [v52 minValue];
-    [v53 floatValue];
+    v52 = [v13 unionRange:maxValue5];
+    minValue3 = [v52 minValue];
+    [minValue3 floatValue];
     v24 = v54;
 
-    v55 = [v52 maxValue];
-    [v55 floatValue];
+    maxValue3 = [v52 maxValue];
+    [maxValue3 floatValue];
     v27 = v56;
 
     v57 = [v51 percentageConstraintsWithinRange:v52];
@@ -134,50 +134,50 @@ uint64_t __67__HUQuickControlRingSliderRangeViewController_controlItemPredicate_
 
   else
   {
-    if (v7 != 1)
+    if (mode != 1)
     {
       goto LABEL_47;
     }
 
     v104 = v6;
     v8 = MEMORY[0x277D14BE0];
-    v9 = [(HUQuickControlSingleControlViewController *)self controlItem];
-    v10 = [v9 targetValueConstraints];
-    v11 = [v10 validRange];
-    v12 = [MEMORY[0x277D14BF8] sharedCoordinator];
-    v13 = [v8 integerTemperatureRangeWithinNumberRange:v11 representsCelsius:{objc_msgSend(v12, "isCelsius")}];
+    controlItem6 = [(HUQuickControlSingleControlViewController *)self controlItem];
+    targetValueConstraints = [controlItem6 targetValueConstraints];
+    validRange3 = [targetValueConstraints validRange];
+    mEMORY[0x277D14BF8]3 = [MEMORY[0x277D14BF8] sharedCoordinator];
+    v13 = [v8 integerTemperatureRangeWithinNumberRange:validRange3 representsCelsius:{objc_msgSend(mEMORY[0x277D14BF8]3, "isCelsius")}];
 
     v14 = objc_alloc(MEMORY[0x277D148E0]);
-    v15 = [v13 minValue];
-    v16 = [v13 maxValue];
-    v105 = self;
-    v17 = [(HUQuickControlSingleControlViewController *)self controlItem];
-    v18 = [v17 targetValueConstraints];
-    v19 = [v18 stepValue];
-    v20 = [v14 initWithMinValue:v15 maxValue:v16 stepValue:v19];
+    minValue4 = [v13 minValue];
+    maxValue4 = [v13 maxValue];
+    selfCopy = self;
+    controlItem7 = [(HUQuickControlSingleControlViewController *)self controlItem];
+    targetValueConstraints2 = [controlItem7 targetValueConstraints];
+    stepValue3 = [targetValueConstraints2 stepValue];
+    v20 = [v14 initWithMinValue:minValue4 maxValue:maxValue4 stepValue:stepValue3];
 
     v21 = [v20 percentageConstraintsWithinRange:v13];
     [(HUQuickControlRingSliderViewProfile *)v3 setPrimaryValueConstraints:v21];
 
-    v22 = [v13 minValue];
-    [v22 floatValue];
+    minValue5 = [v13 minValue];
+    [minValue5 floatValue];
     v24 = v23;
 
-    v25 = [v13 maxValue];
-    [v25 floatValue];
+    maxValue5 = [v13 maxValue];
+    [maxValue5 floatValue];
     v27 = v26;
   }
 
   v6 = v104;
-  self = v105;
+  self = selfCopy;
   if (v24 != v27)
   {
     v59 = v24;
     v60 = v27;
-    v61 = [MEMORY[0x277D14BF8] sharedCoordinator];
-    v62 = [v61 isCelsius];
+    mEMORY[0x277D14BF8]4 = [MEMORY[0x277D14BF8] sharedCoordinator];
+    isCelsius = [mEMORY[0x277D14BF8]4 isCelsius];
 
-    if (!v62)
+    if (!isCelsius)
     {
       v75 = v59 * 9.0 / 5.0 + 32.0;
       v76 = v60 * 9.0 / 5.0 + 32.0;
@@ -190,8 +190,8 @@ uint64_t __67__HUQuickControlRingSliderRangeViewController_controlItemPredicate_
           v79 = ((v75 + -32.0) * 5.0 / 9.0 - v59) / v78;
           *&v79 = v79;
           v80 = [MEMORY[0x277CCABB0] numberWithFloat:v79];
-          v81 = [(HUQuickControlRingSliderViewProfile *)v3 gradationMarkingValues];
-          v82 = [v81 arrayByAddingObject:v80];
+          gradationMarkingValues = [(HUQuickControlRingSliderViewProfile *)v3 gradationMarkingValues];
+          v82 = [gradationMarkingValues arrayByAddingObject:v80];
           [(HUQuickControlRingSliderViewProfile *)v3 setGradationMarkingValues:v82];
 
           v75 = v75 + 1.0;
@@ -211,10 +211,10 @@ LABEL_46:
     }
 
     objc_opt_class();
-    v63 = [(HUQuickControlSingleControlViewController *)v105 controlItem];
+    controlItem8 = [(HUQuickControlSingleControlViewController *)selfCopy controlItem];
     if (objc_opt_isKindOfClass())
     {
-      v64 = v63;
+      v64 = controlItem8;
     }
 
     else
@@ -225,10 +225,10 @@ LABEL_46:
     v65 = v64;
 
     objc_opt_class();
-    v66 = [(HUQuickControlSingleControlViewController *)v105 controlItem];
+    controlItem9 = [(HUQuickControlSingleControlViewController *)selfCopy controlItem];
     if (objc_opt_isKindOfClass())
     {
-      v67 = v66;
+      v67 = controlItem9;
     }
 
     else
@@ -238,26 +238,26 @@ LABEL_46:
 
     v68 = v67;
 
-    v69 = [v104 mode];
-    if (v69 != 2)
+    mode2 = [v104 mode];
+    if (mode2 != 2)
     {
-      if (v69 != 1)
+      if (mode2 != 1)
       {
         goto LABEL_41;
       }
 
-      v70 = [v65 targetValueConstraints];
-      v71 = [v70 stepValue];
+      targetValueConstraints3 = [v65 targetValueConstraints];
+      stepValue4 = [targetValueConstraints3 stepValue];
 
       if (v68)
       {
-        v72 = [v68 targetValueConstraints];
-        v73 = [v72 stepValue];
+        targetValueConstraints4 = [v68 targetValueConstraints];
+        stepValue5 = [targetValueConstraints4 stepValue];
 
-        v71 = v73;
+        stepValue4 = stepValue5;
       }
 
-      v74 = [v71 isEqualToNumber:&unk_282491088];
+      v74 = [stepValue4 isEqualToNumber:&unk_282491088];
 
       if ((v74 & 1) == 0)
       {
@@ -276,8 +276,8 @@ LABEL_42:
           v97 = (v96 - v59) / (v60 - v59);
           *&v97 = v97;
           v98 = [MEMORY[0x277CCABB0] numberWithFloat:v97];
-          v99 = [(HUQuickControlRingSliderViewProfile *)v3 gradationMarkingValues];
-          v100 = [v99 arrayByAddingObject:v98];
+          gradationMarkingValues2 = [(HUQuickControlRingSliderViewProfile *)v3 gradationMarkingValues];
+          v100 = [gradationMarkingValues2 arrayByAddingObject:v98];
           [(HUQuickControlRingSliderViewProfile *)v3 setGradationMarkingValues:v100];
 
           v96 = v95 + v96;
@@ -289,36 +289,36 @@ LABEL_42:
       goto LABEL_46;
     }
 
-    v83 = [v65 minimumValueConstraints];
-    v84 = [v83 stepValue];
+    minimumValueConstraints2 = [v65 minimumValueConstraints];
+    stepValue6 = [minimumValueConstraints2 stepValue];
 
-    v85 = [v65 maximumValueConstraints];
-    v86 = [v85 stepValue];
+    maximumValueConstraints3 = [v65 maximumValueConstraints];
+    stepValue7 = [maximumValueConstraints3 stepValue];
 
     if (v68)
     {
-      v87 = [v68 minimumValueConstraints];
-      v88 = [v87 stepValue];
+      minimumValueConstraints3 = [v68 minimumValueConstraints];
+      stepValue8 = [minimumValueConstraints3 stepValue];
 
-      v89 = [v68 maximumValueConstraints];
-      v90 = [v89 stepValue];
+      maximumValueConstraints4 = [v68 maximumValueConstraints];
+      stepValue9 = [maximumValueConstraints4 stepValue];
 
-      v86 = v90;
-      v84 = v88;
+      stepValue7 = stepValue9;
+      stepValue6 = stepValue8;
     }
 
-    if (v84 && v86)
+    if (stepValue6 && stepValue7)
     {
-      v91 = [v84 intValue];
-      v92 = [v86 intValue];
-      if (v91 <= v92)
+      intValue = [stepValue6 intValue];
+      intValue2 = [stepValue7 intValue];
+      if (intValue <= intValue2)
       {
-        v93 = v92;
+        v93 = intValue2;
       }
 
       else
       {
-        v93 = v91;
+        v93 = intValue;
       }
 
       if (v93 != 1)
@@ -329,7 +329,7 @@ LABEL_42:
 
     else
     {
-      if (!(v84 | v86))
+      if (!(stepValue6 | stepValue7))
       {
 LABEL_40:
 
@@ -339,14 +339,14 @@ LABEL_41:
         goto LABEL_42;
       }
 
-      if (v84)
+      if (stepValue6)
       {
-        v94 = v84;
+        v94 = stepValue6;
       }
 
       else
       {
-        v94 = v86;
+        v94 = stepValue7;
       }
 
       [v94 isEqualToNumber:&unk_282491088];
@@ -357,7 +357,7 @@ LABEL_41:
 
 LABEL_47:
   [(HUQuickControlRingSliderViewProfile *)v3 setStyle:0];
-  v101 = [(HUQuickControlSingleControlViewController *)self controlItem];
+  controlItem10 = [(HUQuickControlSingleControlViewController *)self controlItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -366,7 +366,7 @@ LABEL_47:
 
   else
   {
-    v102 = [(HUQuickControlSingleControlViewController *)self controlItem];
+    controlItem11 = [(HUQuickControlSingleControlViewController *)self controlItem];
     objc_opt_class();
     [(HUQuickControlRingSliderViewProfile *)v3 setShouldShowSupplementaryValue:objc_opt_isKindOfClass() & 1];
   }
@@ -376,20 +376,20 @@ LABEL_47:
 
 - (id)controlToViewValueTransformer
 {
-  v3 = [(HUQuickControlSingleControlViewController *)self viewProfile];
-  v4 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v5 = [MEMORY[0x277D14CF0] transformerForRingSliderViewProfile:v3 rangeControlItem:v4];
+  viewProfile = [(HUQuickControlSingleControlViewController *)self viewProfile];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  v5 = [MEMORY[0x277D14CF0] transformerForRingSliderViewProfile:viewProfile rangeControlItem:controlItem];
 
   return v5;
 }
 
-- (void)interactionCoordinator:(id)a3 viewValueDidChange:(id)a4
+- (void)interactionCoordinator:(id)coordinator viewValueDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = HUQuickControlRingSliderRangeViewController;
-  v6 = a4;
-  [(HUQuickControlSingleControlViewController *)&v7 interactionCoordinator:a3 viewValueDidChange:v6];
-  [(HUQuickControlRingSliderRangeViewController *)self updateMainStatusStringWithValue:v6, v7.receiver, v7.super_class];
+  changeCopy = change;
+  [(HUQuickControlSingleControlViewController *)&v7 interactionCoordinator:coordinator viewValueDidChange:changeCopy];
+  [(HUQuickControlRingSliderRangeViewController *)self updateMainStatusStringWithValue:changeCopy, v7.receiver, v7.super_class];
 
   [(HUQuickControlRingSliderRangeViewController *)self updateSupplementaryValue];
 }
@@ -399,19 +399,19 @@ LABEL_47:
   v4.receiver = self;
   v4.super_class = HUQuickControlRingSliderRangeViewController;
   [(HUQuickControlSingleControlViewController *)&v4 invalidateViewProfile];
-  v3 = [(HUQuickControlSingleControlViewController *)self modelValue];
-  [(HUQuickControlRingSliderRangeViewController *)self updateMainStatusStringWithValue:v3];
+  modelValue = [(HUQuickControlSingleControlViewController *)self modelValue];
+  [(HUQuickControlRingSliderRangeViewController *)self updateMainStatusStringWithValue:modelValue];
 }
 
-- (void)updateMainStatusStringWithValue:(id)a3
+- (void)updateMainStatusStringWithValue:(id)value
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = 0x277D14000;
+  valueCopy = value;
+  ringSliderView3 = 0x277D14000;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = valueCopy;
     if (!v6)
     {
 LABEL_12:
@@ -421,7 +421,7 @@ LABEL_12:
         *buf = 138412546;
         v41 = objc_opt_class();
         v42 = 2112;
-        v43 = v4;
+        v43 = valueCopy;
         v21 = v41;
         _os_log_error_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_ERROR, "value is neither HFRangeCotrolItemValue, NSNumber, or HFNumberRange class. Value's class type is %@. value = %@", buf, 0x16u);
       }
@@ -443,13 +443,13 @@ LABEL_12:
     }
 
     v7 = MEMORY[0x277D14CF0];
-    v8 = [(HUQuickControlSingleControlViewController *)self viewProfile];
-    v9 = [(HUQuickControlSingleControlViewController *)self controlItem];
-    v10 = [v7 transformerForRingSliderViewProfile:v8 rangeControlItem:v9];
+    viewProfile = [(HUQuickControlSingleControlViewController *)self viewProfile];
+    controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+    v10 = [v7 transformerForRingSliderViewProfile:viewProfile rangeControlItem:controlItem];
 
-    v11 = [v10 valueForTransformedValue:v4];
-    v12 = [(HUQuickControlSingleControlViewController *)self controlItem];
-    v13 = [v12 normalizedValueForValue:v11];
+    v11 = [v10 valueForTransformedValue:valueCopy];
+    controlItem2 = [(HUQuickControlSingleControlViewController *)self controlItem];
+    v13 = [controlItem2 normalizedValueForValue:v11];
 
     objc_opt_class();
     v6 = (objc_opt_isKindOfClass() & 1) != 0 ? v13 : 0;
@@ -460,16 +460,16 @@ LABEL_12:
     }
   }
 
-  v14 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v15 = [v14 latestResults];
-  v16 = [v15 objectForKey:*MEMORY[0x277D137E0]];
+  controlItem3 = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults = [controlItem3 latestResults];
+  v16 = [latestResults objectForKey:*MEMORY[0x277D137E0]];
 
-  v17 = [(HUQuickControlSingleControlViewController *)self controlItem];
+  controlItem4 = [(HUQuickControlSingleControlViewController *)self controlItem];
   objc_opt_class();
-  LOBYTE(v15) = objc_opt_isKindOfClass();
+  LOBYTE(latestResults) = objc_opt_isKindOfClass();
 
   v35 = v16;
-  if (v15)
+  if (latestResults)
   {
     v38 = 0;
     v39 = 0;
@@ -481,7 +481,7 @@ LABEL_12:
 
   else
   {
-    v22 = [(HUQuickControlSingleControlViewController *)self controlItem];
+    controlItem5 = [(HUQuickControlSingleControlViewController *)self controlItem];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -514,8 +514,8 @@ LABEL_12:
   }
 
 LABEL_21:
-  v27 = [(HUQuickControlRingSliderRangeViewController *)self ringSliderView];
-  [v27 updateSupplementaryLabelWithString:v18];
+  ringSliderView = [(HUQuickControlRingSliderRangeViewController *)self ringSliderView];
+  [ringSliderView updateSupplementaryLabelWithString:v18];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -529,10 +529,10 @@ LABEL_21:
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
-      v5 = v4;
+      ringSliderView3 = valueCopy;
       if (objc_opt_isKindOfClass())
       {
-        v29 = v5;
+        v29 = ringSliderView3;
       }
 
       else
@@ -559,8 +559,8 @@ LABEL_21:
     }
   }
 
-  v31 = [(HUQuickControlRingSliderRangeViewController *)self ringSliderView];
-  [v31 updatePrimaryLabelWithString:v19 fontSize:v28];
+  ringSliderView2 = [(HUQuickControlRingSliderRangeViewController *)self ringSliderView];
+  [ringSliderView2 updatePrimaryLabelWithString:v19 fontSize:v28];
 
   if (v26)
   {
@@ -570,8 +570,8 @@ LABEL_21:
 
   else
   {
-    v31 = [(HUQuickControlRingSliderRangeViewController *)self ringSliderView];
-    if ([v31 reachabilityState] == 1)
+    ringSliderView2 = [(HUQuickControlRingSliderRangeViewController *)self ringSliderView];
+    if ([ringSliderView2 reachabilityState] == 1)
     {
       v32 = 0;
       v33 = 1;
@@ -579,14 +579,14 @@ LABEL_21:
 
     else
     {
-      v5 = [(HUQuickControlRingSliderRangeViewController *)self ringSliderView];
-      v33 = [v5 reachabilityState] == 0;
+      ringSliderView3 = [(HUQuickControlRingSliderRangeViewController *)self ringSliderView];
+      v33 = [ringSliderView3 reachabilityState] == 0;
       v32 = 1;
     }
   }
 
-  v34 = [(HUQuickControlRingSliderRangeViewController *)self ringSliderView];
-  [v34 setShowOffState:v33];
+  ringSliderView4 = [(HUQuickControlRingSliderRangeViewController *)self ringSliderView];
+  [ringSliderView4 setShowOffState:v33];
 
   if (v32)
   {
@@ -604,22 +604,22 @@ LABEL_42:
   v4.receiver = self;
   v4.super_class = HUQuickControlRingSliderRangeViewController;
   [(HUQuickControlSingleControlViewController *)&v4 modelValueDidChange];
-  v3 = [(HUQuickControlSingleControlViewController *)self modelValue];
-  [(HUQuickControlRingSliderRangeViewController *)self updateMainStatusStringWithValue:v3];
+  modelValue = [(HUQuickControlSingleControlViewController *)self modelValue];
+  [(HUQuickControlRingSliderRangeViewController *)self updateMainStatusStringWithValue:modelValue];
 
   [(HUQuickControlRingSliderRangeViewController *)self updateSupplementaryValue];
 }
 
-- (void)quickControlItemUpdater:(id)a3 didUpdateResultsForControlItems:(id)a4
+- (void)quickControlItemUpdater:(id)updater didUpdateResultsForControlItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
+  updaterCopy = updater;
+  itemsCopy = items;
   objc_opt_class();
-  v8 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-  v9 = [v8 controlView];
+  interactionCoordinator = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+  controlView = [interactionCoordinator controlView];
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = controlView;
   }
 
   else
@@ -629,12 +629,12 @@ LABEL_42:
 
   v11 = v10;
 
-  v12 = [v11 isUserInteractionActive];
-  if ((v12 & 1) == 0)
+  isUserInteractionActive = [v11 isUserInteractionActive];
+  if ((isUserInteractionActive & 1) == 0)
   {
     v13.receiver = self;
     v13.super_class = HUQuickControlRingSliderRangeViewController;
-    [(HUQuickControlSingleControlViewController *)&v13 quickControlItemUpdater:v6 didUpdateResultsForControlItems:v7];
+    [(HUQuickControlSingleControlViewController *)&v13 quickControlItemUpdater:updaterCopy didUpdateResultsForControlItems:itemsCopy];
   }
 
   [(HUQuickControlRingSliderRangeViewController *)self updateSupplementaryValue];
@@ -643,13 +643,13 @@ LABEL_42:
 - (void)updateSupplementaryValue
 {
   v47 = *MEMORY[0x277D85DE8];
-  v40 = [(HUQuickControlViewController *)self controlItems];
-  v3 = [v40 allObjects];
-  v4 = [v3 firstObject];
-  v5 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  if ([v4 isEqual:v5])
+  controlItems = [(HUQuickControlViewController *)self controlItems];
+  allObjects = [controlItems allObjects];
+  firstObject = [allObjects firstObject];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  if ([firstObject isEqual:controlItem])
   {
-    v6 = [(HUQuickControlSingleControlViewController *)self controlItem];
+    controlItem2 = [(HUQuickControlSingleControlViewController *)self controlItem];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -657,7 +657,7 @@ LABEL_42:
 
     else
     {
-      v7 = [(HUQuickControlSingleControlViewController *)self controlItem];
+      controlItem3 = [(HUQuickControlSingleControlViewController *)self controlItem];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -667,63 +667,63 @@ LABEL_42:
       }
     }
 
-    v9 = [(HUQuickControlSingleControlViewController *)self controlItem];
-    v10 = [v9 latestResults];
-    v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277D13818]];
+    controlItem4 = [(HUQuickControlSingleControlViewController *)self controlItem];
+    latestResults = [controlItem4 latestResults];
+    v11 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13818]];
 
-    v12 = [v11 mode];
-    if (v12 == 2)
+    mode = [v11 mode];
+    if (mode == 2)
     {
-      v17 = [(HUQuickControlSingleControlViewController *)self controlItem];
-      v14 = [v17 minimumValueConstraints];
+      controlItem5 = [(HUQuickControlSingleControlViewController *)self controlItem];
+      minimumValueConstraints = [controlItem5 minimumValueConstraints];
 
-      v15 = [(HUQuickControlSingleControlViewController *)self controlItem];
-      v16 = [v15 maximumValueConstraints];
+      controlItem6 = [(HUQuickControlSingleControlViewController *)self controlItem];
+      maximumValueConstraints = [controlItem6 maximumValueConstraints];
     }
 
     else
     {
-      if (v12 != 1)
+      if (mode != 1)
       {
-        v14 = 0;
+        minimumValueConstraints = 0;
         v18 = 0;
         goto LABEL_16;
       }
 
-      v13 = [(HUQuickControlSingleControlViewController *)self controlItem];
-      v14 = [v13 targetValueConstraints];
+      controlItem7 = [(HUQuickControlSingleControlViewController *)self controlItem];
+      minimumValueConstraints = [controlItem7 targetValueConstraints];
 
-      v15 = [(HUQuickControlSingleControlViewController *)self controlItem];
-      v16 = [v15 targetValueConstraints];
+      controlItem6 = [(HUQuickControlSingleControlViewController *)self controlItem];
+      maximumValueConstraints = [controlItem6 targetValueConstraints];
     }
 
-    v18 = v16;
+    v18 = maximumValueConstraints;
 
-    if (v14 && v18)
+    if (minimumValueConstraints && v18)
     {
-      v19 = [v14 validRange];
-      v20 = [v18 validRange];
-      v21 = [v19 unionRange:v20];
+      validRange = [minimumValueConstraints validRange];
+      validRange2 = [v18 validRange];
+      v21 = [validRange unionRange:validRange2];
 
-      v22 = [(HUQuickControlSingleControlViewController *)self controlItem];
-      v23 = [v22 latestResults];
-      v24 = [v23 objectForKey:*MEMORY[0x277D137E0]];
+      controlItem8 = [(HUQuickControlSingleControlViewController *)self controlItem];
+      latestResults2 = [controlItem8 latestResults];
+      v24 = [latestResults2 objectForKey:*MEMORY[0x277D137E0]];
 
       v25 = [v24 objectForKey:*MEMORY[0x277CCF868]];
       [v25 floatValue];
       v27 = v26;
-      v28 = [v21 minValue];
-      [v28 floatValue];
+      minValue = [v21 minValue];
+      [minValue floatValue];
       v30 = v27 - v29;
-      v31 = [v21 maxValue];
-      [v31 floatValue];
+      maxValue = [v21 maxValue];
+      [maxValue floatValue];
       v33 = v32;
-      v34 = [v21 minValue];
-      [v34 floatValue];
+      minValue2 = [v21 minValue];
+      [minValue2 floatValue];
       v36 = (v30 / (v33 - v35));
 
-      v37 = [(HUQuickControlRingSliderRangeViewController *)self ringSliderView];
-      [v37 setSupplementaryValue:v36];
+      ringSliderView = [(HUQuickControlRingSliderRangeViewController *)self ringSliderView];
+      [ringSliderView setSupplementaryValue:v36];
 
 LABEL_19:
       return;
@@ -736,22 +736,22 @@ LABEL_16:
       *buf = 136315650;
       v42 = "[HUQuickControlRingSliderRangeViewController updateSupplementaryValue]";
       v43 = 2112;
-      v44 = v14;
+      v44 = minimumValueConstraints;
       v45 = 2112;
       v46 = v18;
       _os_log_error_impl(&dword_20CEB6000, v38, OS_LOG_TYPE_ERROR, "%s. Either HFNumberValueConstraints for min and max are nil. (minConstraints = %@, maxConstraints = %@)", buf, 0x20u);
     }
 
-    v39 = [(HUQuickControlRingSliderRangeViewController *)self ringSliderView];
-    [v39 setSupplementaryValue:1.79769313e308];
+    ringSliderView2 = [(HUQuickControlRingSliderRangeViewController *)self ringSliderView];
+    [ringSliderView2 setSupplementaryValue:1.79769313e308];
 
     goto LABEL_19;
   }
 }
 
-- (void)_getTemperatureThresholdControlItemStateString:(id *)a3 temperatureString:(id *)a4 withRangeControlItemValue:(id)a5
+- (void)_getTemperatureThresholdControlItemStateString:(id *)string temperatureString:(id *)temperatureString withRangeControlItemValue:(id)value
 {
-  v8 = a5;
+  valueCopy = value;
   v53 = 0;
   v54 = &v53;
   v55 = 0x3032000000;
@@ -768,33 +768,33 @@ LABEL_16:
   aBlock[1] = 3221225472;
   aBlock[2] = __138__HUQuickControlRingSliderRangeViewController__getTemperatureThresholdControlItemStateString_temperatureString_withRangeControlItemValue___block_invoke;
   aBlock[3] = &unk_277DBACF0;
-  aBlock[6] = a3;
-  aBlock[7] = a4;
+  aBlock[6] = string;
+  aBlock[7] = temperatureString;
   aBlock[4] = &v53;
   aBlock[5] = &v47;
   v9 = _Block_copy(aBlock);
-  v10 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v11 = [v10 latestResults];
-  v12 = [v11 objectForKey:*MEMORY[0x277D137E0]];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults = [controlItem latestResults];
+  v12 = [latestResults objectForKey:*MEMORY[0x277D137E0]];
 
-  v13 = [MEMORY[0x277D146A0] sharedInstance];
-  v14 = [v13 temperatureFormatter];
+  mEMORY[0x277D146A0] = [MEMORY[0x277D146A0] sharedInstance];
+  temperatureFormatter = [mEMORY[0x277D146A0] temperatureFormatter];
 
-  [v14 setInputIsCelsius:1];
+  [temperatureFormatter setInputIsCelsius:1];
   v15 = [v12 objectForKey:*MEMORY[0x277CCF868]];
   v16 = [v12 objectForKey:*MEMORY[0x277CCFB20]];
-  v17 = [v16 integerValue];
-  if (v17 > 1)
+  integerValue = [v16 integerValue];
+  if (integerValue > 1)
   {
-    if (v17 == 2)
+    if (integerValue == 2)
     {
       v30 = _HULocalizedStringWithDefaultValue(@"HUQuickControlTemperatureCoolTo", @"HUQuickControlTemperatureCoolTo", 1);
-      v31 = [v30 localizedUppercaseString];
+      localizedUppercaseString = [v30 localizedUppercaseString];
       v32 = v54[5];
-      v54[5] = v31;
+      v54[5] = localizedUppercaseString;
 
-      v21 = [v8 targetValue];
-      v22 = [v14 stringForObjectValue:v21];
+      targetValue = [valueCopy targetValue];
+      v22 = [temperatureFormatter stringForObjectValue:targetValue];
 LABEL_17:
       v36 = v48[5];
       v48[5] = v22;
@@ -802,22 +802,22 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    if (v17 != 3)
+    if (integerValue != 3)
     {
       goto LABEL_19;
     }
 
     if ([v16 integerValue] == 3)
     {
-      v23 = [v8 minimumValue];
-      if (v23)
+      minimumValue = [valueCopy minimumValue];
+      if (minimumValue)
       {
-        v24 = [v8 maximumValue];
-        if (v24)
+        maximumValue = [valueCopy maximumValue];
+        if (maximumValue)
         {
-          v25 = [v8 targetValue];
+          targetValue2 = [valueCopy targetValue];
 
-          if (v25)
+          if (targetValue2)
           {
             goto LABEL_22;
           }
@@ -832,57 +832,57 @@ LABEL_17:
     if ([v16 integerValue] == 3)
     {
       v33 = _HULocalizedStringWithDefaultValue(@"HUQuickControlTemperatureSetTo", @"HUQuickControlTemperatureSetTo", 1);
-      v34 = [v33 localizedUppercaseString];
+      localizedUppercaseString2 = [v33 localizedUppercaseString];
       v35 = v54[5];
-      v54[5] = v34;
+      v54[5] = localizedUppercaseString2;
 
-      v21 = [v8 targetValue];
-      v22 = [v14 stringForObjectValue:v21];
+      targetValue = [valueCopy targetValue];
+      v22 = [temperatureFormatter stringForObjectValue:targetValue];
       goto LABEL_17;
     }
 
 LABEL_22:
     v37 = _HULocalizedStringWithDefaultValue(@"HUQuickControlTemperatureKeepBetween", @"HUQuickControlTemperatureKeepBetween", 1);
-    v38 = [v37 localizedUppercaseString];
+    localizedUppercaseString3 = [v37 localizedUppercaseString];
     v39 = v54[5];
-    v54[5] = v38;
+    v54[5] = localizedUppercaseString3;
 
-    v21 = [v8 maximumValue];
-    v45 = [v14 stringForObjectValue:v21];
-    v40 = [v8 minimumValue];
-    v41 = [v14 stringForObjectValue:v40];
+    targetValue = [valueCopy maximumValue];
+    v45 = [temperatureFormatter stringForObjectValue:targetValue];
+    minimumValue2 = [valueCopy minimumValue];
+    v41 = [temperatureFormatter stringForObjectValue:minimumValue2];
     v42 = HFLocalizedStringWithFormat();
-    v43 = [v42 localizedUppercaseString];
+    localizedUppercaseString4 = [v42 localizedUppercaseString];
     v44 = v48[5];
-    v48[5] = v43;
+    v48[5] = localizedUppercaseString4;
 
     goto LABEL_18;
   }
 
-  if (v17)
+  if (integerValue)
   {
-    if (v17 != 1)
+    if (integerValue != 1)
     {
       goto LABEL_19;
     }
 
     v18 = _HULocalizedStringWithDefaultValue(@"HUQuickControlTemperatureHeatTo", @"HUQuickControlTemperatureHeatTo", 1);
-    v19 = [v18 localizedUppercaseString];
+    localizedUppercaseString5 = [v18 localizedUppercaseString];
     v20 = v54[5];
-    v54[5] = v19;
+    v54[5] = localizedUppercaseString5;
 
-    v21 = [v8 targetValue];
-    v22 = [v14 stringForObjectValue:v21];
+    targetValue = [valueCopy targetValue];
+    v22 = [temperatureFormatter stringForObjectValue:targetValue];
     goto LABEL_17;
   }
 
   v26 = _HULocalizedStringWithDefaultValue(@"HUQuickControlTemperatureNow", @"HUQuickControlTemperatureNow", 1);
-  v27 = [v26 localizedUppercaseString];
+  localizedUppercaseString6 = [v26 localizedUppercaseString];
   v28 = v54[5];
-  v54[5] = v27;
+  v54[5] = localizedUppercaseString6;
 
-  v29 = [v14 stringForObjectValue:v15];
-  v21 = v48[5];
+  v29 = [temperatureFormatter stringForObjectValue:v15];
+  targetValue = v48[5];
   v48[5] = v29;
 LABEL_18:
 
@@ -914,9 +914,9 @@ void *__138__HUQuickControlRingSliderRangeViewController__getTemperatureThreshol
   return result;
 }
 
-- (void)_getHeaterCoolerThresholdControlItemStateString:(id *)a3 temperatureString:(id *)a4 withRangeControlItemValue:(id)a5
+- (void)_getHeaterCoolerThresholdControlItemStateString:(id *)string temperatureString:(id *)temperatureString withRangeControlItemValue:(id)value
 {
-  v8 = a5;
+  valueCopy = value;
   v49 = 0;
   v50 = &v49;
   v51 = 0x3032000000;
@@ -933,55 +933,55 @@ void *__138__HUQuickControlRingSliderRangeViewController__getTemperatureThreshol
   aBlock[1] = 3221225472;
   aBlock[2] = __139__HUQuickControlRingSliderRangeViewController__getHeaterCoolerThresholdControlItemStateString_temperatureString_withRangeControlItemValue___block_invoke;
   aBlock[3] = &unk_277DBACF0;
-  aBlock[6] = a3;
-  aBlock[7] = a4;
+  aBlock[6] = string;
+  aBlock[7] = temperatureString;
   aBlock[4] = &v49;
   aBlock[5] = &v43;
   v9 = _Block_copy(aBlock);
-  v10 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v11 = [v10 latestResults];
-  v12 = [v11 objectForKey:*MEMORY[0x277D137E0]];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults = [controlItem latestResults];
+  v12 = [latestResults objectForKey:*MEMORY[0x277D137E0]];
 
-  v13 = [MEMORY[0x277D146A0] sharedInstance];
-  v14 = [v13 temperatureFormatter];
+  mEMORY[0x277D146A0] = [MEMORY[0x277D146A0] sharedInstance];
+  temperatureFormatter = [mEMORY[0x277D146A0] temperatureFormatter];
 
-  [v14 setInputIsCelsius:1];
+  [temperatureFormatter setInputIsCelsius:1];
   v15 = [v12 objectForKey:*MEMORY[0x277CCF868]];
   v16 = [v12 objectForKey:*MEMORY[0x277CCFB18]];
   v17 = [v12 objectForKey:*MEMORY[0x277CCF748]];
   if (![v17 integerValue])
   {
     v27 = _HULocalizedStringWithDefaultValue(@"HUQuickControlTemperatureNow", @"HUQuickControlTemperatureNow", 1);
-    v28 = [v27 localizedUppercaseString];
+    localizedUppercaseString = [v27 localizedUppercaseString];
     v29 = v50[5];
-    v50[5] = v28;
+    v50[5] = localizedUppercaseString;
 
-    v30 = [v14 stringForObjectValue:v15];
-    v23 = v44[5];
+    v30 = [temperatureFormatter stringForObjectValue:v15];
+    targetValue = v44[5];
     v44[5] = v30;
     goto LABEL_13;
   }
 
-  v18 = [v16 integerValue];
-  if (v18 == 2)
+  integerValue = [v16 integerValue];
+  if (integerValue == 2)
   {
     v34 = _HULocalizedStringWithDefaultValue(@"HUQuickControlTemperatureCoolingTo", @"HUQuickControlTemperatureCoolingTo", 1);
     v35 = v50[5];
     v50[5] = v34;
 
-    v23 = [v8 targetValue];
-    v33 = [v14 stringForObjectValue:v23];
+    targetValue = [valueCopy targetValue];
+    v33 = [temperatureFormatter stringForObjectValue:targetValue];
     goto LABEL_12;
   }
 
-  if (v18 == 1)
+  if (integerValue == 1)
   {
     v31 = _HULocalizedStringWithDefaultValue(@"HUQuickControlTemperatureHeatingTo", @"HUQuickControlTemperatureHeatingTo", 1);
     v32 = v50[5];
     v50[5] = v31;
 
-    v23 = [v8 targetValue];
-    v33 = [v14 stringForObjectValue:v23];
+    targetValue = [valueCopy targetValue];
+    v33 = [temperatureFormatter stringForObjectValue:targetValue];
 LABEL_12:
     v39 = v44[5];
     v44[5] = v33;
@@ -989,21 +989,21 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v18)
+  if (integerValue)
   {
     goto LABEL_14;
   }
 
-  v19 = [v8 minimumValue];
-  if (!v19 || ([v8 maximumValue], v20 = objc_claimAutoreleasedReturnValue(), v20, v19, !v20))
+  minimumValue = [valueCopy minimumValue];
+  if (!minimumValue || ([valueCopy maximumValue], v20 = objc_claimAutoreleasedReturnValue(), v20, minimumValue, !v20))
   {
     v36 = _HULocalizedStringWithDefaultValue(@"HUQuickControlTemperatureSetTo", @"HUQuickControlTemperatureSetTo", 1);
-    v37 = [v36 localizedUppercaseString];
+    localizedUppercaseString2 = [v36 localizedUppercaseString];
     v38 = v50[5];
-    v50[5] = v37;
+    v50[5] = localizedUppercaseString2;
 
-    v23 = [v8 targetValue];
-    v33 = [v14 stringForObjectValue:v23];
+    targetValue = [valueCopy targetValue];
+    v33 = [temperatureFormatter stringForObjectValue:targetValue];
     goto LABEL_12;
   }
 
@@ -1011,10 +1011,10 @@ LABEL_12:
   v22 = v50[5];
   v50[5] = v21;
 
-  v23 = [v8 maximumValue];
-  v24 = [v14 stringForObjectValue:v23];
-  v41 = [v8 minimumValue];
-  v40 = [v14 stringForObjectValue:v41];
+  targetValue = [valueCopy maximumValue];
+  v24 = [temperatureFormatter stringForObjectValue:targetValue];
+  minimumValue2 = [valueCopy minimumValue];
+  v40 = [temperatureFormatter stringForObjectValue:minimumValue2];
   v25 = HFLocalizedStringWithFormat();
   v26 = v44[5];
   v44[5] = v25;

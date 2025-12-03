@@ -1,42 +1,42 @@
 @interface WBSUserDefinedContentBlockerManager
-- (WBSUserDefinedContentBlockerManager)initWithDataStore:(id)a3;
-- (id)_identifierStringForContentBlocker:(id)a3;
-- (id)_rulesJsonForContentBlocker:(id)a3;
+- (WBSUserDefinedContentBlockerManager)initWithDataStore:(id)store;
+- (id)_identifierStringForContentBlocker:(id)blocker;
+- (id)_rulesJsonForContentBlocker:(id)blocker;
 - (void)_notifyDidUpdateAllRules;
 - (void)_regenerateCachedGlobalContentBlockerActionsFromDatabase;
-- (void)_setCachedGlobalContentBlockerActions:(id)a3;
-- (void)addActions:(id)a3 forContentBlocker:(id)a4;
-- (void)contentBlockerForHost:(id)a3 createIfNeeded:(BOOL)a4 completionHandler:(id)a5;
-- (void)deleteActions:(id)a3;
-- (void)deleteActionsForContentBlocker:(id)a3;
-- (void)getAllContentBlockerActionsWithType:(id)a3 excludeHost:(id)a4 isGlobal:(BOOL)a5 completion:(id)a6;
-- (void)getAllContentBlockerHostsWithCompletionHandler:(id)a3;
-- (void)getGlobalContentBlockerWithCompletionHandler:(id)a3;
-- (void)getNumberOfContentBlockersThatContainActionsWithCompletionHandler:(id)a3;
-- (void)globalContentBlockerWithCompletionHandler:(id)a3;
-- (void)loadContentBlockerIfNeededForHost:(id)a3 loaderBlock:(id)a4;
-- (void)resetDatabaseWithCompletionHandler:(id)a3;
+- (void)_setCachedGlobalContentBlockerActions:(id)actions;
+- (void)addActions:(id)actions forContentBlocker:(id)blocker;
+- (void)contentBlockerForHost:(id)host createIfNeeded:(BOOL)needed completionHandler:(id)handler;
+- (void)deleteActions:(id)actions;
+- (void)deleteActionsForContentBlocker:(id)blocker;
+- (void)getAllContentBlockerActionsWithType:(id)type excludeHost:(id)host isGlobal:(BOOL)global completion:(id)completion;
+- (void)getAllContentBlockerHostsWithCompletionHandler:(id)handler;
+- (void)getGlobalContentBlockerWithCompletionHandler:(id)handler;
+- (void)getNumberOfContentBlockersThatContainActionsWithCompletionHandler:(id)handler;
+- (void)globalContentBlockerWithCompletionHandler:(id)handler;
+- (void)loadContentBlockerIfNeededForHost:(id)host loaderBlock:(id)block;
+- (void)resetDatabaseWithCompletionHandler:(id)handler;
 @end
 
 @implementation WBSUserDefinedContentBlockerManager
 
-- (WBSUserDefinedContentBlockerManager)initWithDataStore:(id)a3
+- (WBSUserDefinedContentBlockerManager)initWithDataStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v16.receiver = self;
   v16.super_class = WBSUserDefinedContentBlockerManager;
   v6 = [(WBSUserDefinedContentBlockerManager *)&v16 init];
   if (v6)
   {
     objc_initWeak(&location, v6);
-    objc_storeStrong(&v6->_dataStore, a3);
+    objc_storeStrong(&v6->_dataStore, store);
     v7 = [MEMORY[0x1E695DFA8] set];
     hostsWithLoadedPerSiteContentBlockers = v6->_hostsWithLoadedPerSiteContentBlockers;
     v6->_hostsWithLoadedPerSiteContentBlockers = v7;
 
-    v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v6->_observers;
-    v6->_observers = v9;
+    v6->_observers = weakObjectsHashTable;
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -67,18 +67,18 @@ void __57__WBSUserDefinedContentBlockerManager_initWithDataStore___block_invoke(
   }
 }
 
-- (id)_rulesJsonForContentBlocker:(id)a3
+- (id)_rulesJsonForContentBlocker:(id)blocker
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  blockerCopy = blocker;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v29 = v4;
-  v6 = [v4 actions];
-  v7 = [v6 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  v29 = blockerCopy;
+  actions = [blockerCopy actions];
+  v7 = [actions countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v7)
   {
     v8 = v7;
@@ -89,31 +89,31 @@ void __57__WBSUserDefinedContentBlockerManager_initWithDataStore___block_invoke(
       {
         if (*v35 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(actions);
         }
 
         v11 = *(*(&v34 + 1) + 8 * i);
-        v12 = [v11 typeString];
-        v13 = [v5 objectForKeyedSubscript:v12];
+        typeString = [v11 typeString];
+        string = [dictionary objectForKeyedSubscript:typeString];
 
-        if (v13)
+        if (string)
         {
-          [v13 appendString:{@", "}];
+          [string appendString:{@", "}];
         }
 
         else
         {
-          v13 = [MEMORY[0x1E696AD60] string];
+          string = [MEMORY[0x1E696AD60] string];
         }
 
-        v14 = [v11 selector];
-        [v13 appendString:v14];
+        selector = [v11 selector];
+        [string appendString:selector];
 
-        v15 = [v11 typeString];
-        [v5 setObject:v13 forKeyedSubscript:v15];
+        typeString2 = [v11 typeString];
+        [dictionary setObject:string forKeyedSubscript:typeString2];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      v8 = [actions countByEnumeratingWithState:&v34 objects:v39 count:16];
     }
 
     while (v8);
@@ -124,8 +124,8 @@ void __57__WBSUserDefinedContentBlockerManager_initWithDataStore___block_invoke(
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v17 = [v5 allKeys];
-  v18 = [v17 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  allKeys = [dictionary allKeys];
+  v18 = [allKeys countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v18)
   {
     v19 = v18;
@@ -137,7 +137,7 @@ void __57__WBSUserDefinedContentBlockerManager_initWithDataStore___block_invoke(
       {
         if (*v31 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(allKeys);
         }
 
         v23 = *(*(&v30 + 1) + 8 * j);
@@ -146,15 +146,15 @@ void __57__WBSUserDefinedContentBlockerManager_initWithDataStore___block_invoke(
           [v16 appendString:{@", "}];
         }
 
-        v24 = [v29 host];
-        v25 = [v5 objectForKeyedSubscript:v23];
-        v26 = [(WBSUserDefinedContentBlockerManager *)self _jsonStringForActionType:v23 urlFilter:v24 selectors:v25];
+        host = [v29 host];
+        v25 = [dictionary objectForKeyedSubscript:v23];
+        v26 = [(WBSUserDefinedContentBlockerManager *)self _jsonStringForActionType:v23 urlFilter:host selectors:v25];
         [v16 appendString:v26];
 
         v21 = 0;
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v19 = [allKeys countByEnumeratingWithState:&v30 objects:v38 count:16];
       v21 = 0;
     }
 
@@ -167,40 +167,40 @@ void __57__WBSUserDefinedContentBlockerManager_initWithDataStore___block_invoke(
   return v27;
 }
 
-- (id)_identifierStringForContentBlocker:(id)a3
+- (id)_identifierStringForContentBlocker:(id)blocker
 {
-  v3 = a3;
-  v4 = [v3 type];
+  blockerCopy = blocker;
+  type = [blockerCopy type];
   v5 = MEMORY[0x1E696AEC0];
-  if (v4 == 1)
+  if (type == 1)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.Safari.UserGeneratedContentBlockers.%@", @"Global"];
   }
 
   else
   {
-    v7 = [v3 host];
-    v6 = [v5 stringWithFormat:@"com.apple.Safari.UserGeneratedContentBlockers.%@", v7];
+    host = [blockerCopy host];
+    v6 = [v5 stringWithFormat:@"com.apple.Safari.UserGeneratedContentBlockers.%@", host];
   }
 
   return v6;
 }
 
-- (void)loadContentBlockerIfNeededForHost:(id)a3 loaderBlock:(id)a4
+- (void)loadContentBlockerIfNeededForHost:(id)host loaderBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_hasContentBlockerWithActions && [v6 length] && (-[NSMutableSet containsObject:](self->_hostsWithLoadedPerSiteContentBlockers, "containsObject:", v6) & 1) == 0)
+  hostCopy = host;
+  blockCopy = block;
+  if (self->_hasContentBlockerWithActions && [hostCopy length] && (-[NSMutableSet containsObject:](self->_hostsWithLoadedPerSiteContentBlockers, "containsObject:", hostCopy) & 1) == 0)
   {
-    [(NSMutableSet *)self->_hostsWithLoadedPerSiteContentBlockers addObject:v6];
+    [(NSMutableSet *)self->_hostsWithLoadedPerSiteContentBlockers addObject:hostCopy];
     objc_initWeak(&location, self);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __85__WBSUserDefinedContentBlockerManager_loadContentBlockerIfNeededForHost_loaderBlock___block_invoke;
     v8[3] = &unk_1E7FC8B60;
     objc_copyWeak(&v11, &location);
-    v10 = v7;
-    v9 = v6;
+    v10 = blockCopy;
+    v9 = hostCopy;
     [(WBSUserDefinedContentBlockerManager *)self contentBlockerForHost:v9 createIfNeeded:0 completionHandler:v8];
 
     objc_destroyWeak(&v11);
@@ -250,25 +250,25 @@ void __85__WBSUserDefinedContentBlockerManager_loadContentBlockerIfNeededForHost
   }
 }
 
-- (void)contentBlockerForHost:(id)a3 createIfNeeded:(BOOL)a4 completionHandler:(id)a5
+- (void)contentBlockerForHost:(id)host createIfNeeded:(BOOL)needed completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if ([v8 length])
+  neededCopy = needed;
+  hostCopy = host;
+  handlerCopy = handler;
+  if ([hostCopy length])
   {
     dataStore = self->_dataStore;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __94__WBSUserDefinedContentBlockerManager_contentBlockerForHost_createIfNeeded_completionHandler___block_invoke;
     v11[3] = &unk_1E7FC8B88;
-    v12 = v9;
-    [(WBSUserDefinedContentBlockerSQLiteStore *)dataStore getPerSiteContentBlockerForHost:v8 createIfNeeded:v6 completionHandler:v11];
+    v12 = handlerCopy;
+    [(WBSUserDefinedContentBlockerSQLiteStore *)dataStore getPerSiteContentBlockerForHost:hostCopy createIfNeeded:neededCopy completionHandler:v11];
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -286,16 +286,16 @@ void __94__WBSUserDefinedContentBlockerManager_contentBlockerForHost_createIfNee
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)globalContentBlockerWithCompletionHandler:(id)a3
+- (void)globalContentBlockerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dataStore = self->_dataStore;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __81__WBSUserDefinedContentBlockerManager_globalContentBlockerWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FC8B88;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(WBSUserDefinedContentBlockerSQLiteStore *)dataStore getGlobalContentBlockerWithCompletionHandler:v7];
 }
 
@@ -332,16 +332,16 @@ void __81__WBSUserDefinedContentBlockerManager_globalContentBlockerWithCompletio
   }
 }
 
-- (void)getAllContentBlockerHostsWithCompletionHandler:(id)a3
+- (void)getAllContentBlockerHostsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dataStore = self->_dataStore;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __86__WBSUserDefinedContentBlockerManager_getAllContentBlockerHostsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB71F8;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(WBSUserDefinedContentBlockerSQLiteStore *)dataStore getAllContentBlockerHostsWithCompletionHandler:v7];
 }
 
@@ -359,16 +359,16 @@ void __86__WBSUserDefinedContentBlockerManager_getAllContentBlockerHostsWithComp
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)getNumberOfContentBlockersThatContainActionsWithCompletionHandler:(id)a3
+- (void)getNumberOfContentBlockersThatContainActionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dataStore = self->_dataStore;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __105__WBSUserDefinedContentBlockerManager_getNumberOfContentBlockersThatContainActionsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FC8BD8;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(WBSUserDefinedContentBlockerSQLiteStore *)dataStore getNumberOfContentBlockersThatContainActionsWithCompletionHandler:v7];
 }
 
@@ -383,17 +383,17 @@ void __105__WBSUserDefinedContentBlockerManager_getNumberOfContentBlockersThatCo
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
-- (void)addActions:(id)a3 forContentBlocker:(id)a4
+- (void)addActions:(id)actions forContentBlocker:(id)blocker
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 databaseID])
+  actionsCopy = actions;
+  blockerCopy = blocker;
+  if ([blockerCopy databaseID])
   {
-    if ([v6 count])
+    if ([actionsCopy count])
     {
-      -[WBSUserDefinedContentBlockerSQLiteStore insertActions:forContentBlockerID:](self->_dataStore, "insertActions:forContentBlockerID:", v6, [v7 databaseID]);
+      -[WBSUserDefinedContentBlockerSQLiteStore insertActions:forContentBlockerID:](self->_dataStore, "insertActions:forContentBlockerID:", actionsCopy, [blockerCopy databaseID]);
       self->_hasContentBlockerWithActions = 1;
-      if ([v7 databaseID] == 1)
+      if ([blockerCopy databaseID] == 1)
       {
         [(WBSUserDefinedContentBlockerManager *)self _regenerateCachedGlobalContentBlockerActionsFromDatabase];
       }
@@ -410,12 +410,12 @@ void __105__WBSUserDefinedContentBlockerManager_getNumberOfContentBlockersThatCo
   }
 }
 
-- (void)deleteActionsForContentBlocker:(id)a3
+- (void)deleteActionsForContentBlocker:(id)blocker
 {
-  v4 = a3;
-  if ([v4 databaseID])
+  blockerCopy = blocker;
+  if ([blockerCopy databaseID])
   {
-    -[WBSUserDefinedContentBlockerSQLiteStore deleteActionsForContentBlockerID:](self->_dataStore, "deleteActionsForContentBlockerID:", [v4 databaseID]);
+    -[WBSUserDefinedContentBlockerSQLiteStore deleteActionsForContentBlockerID:](self->_dataStore, "deleteActionsForContentBlockerID:", [blockerCopy databaseID]);
   }
 
   else
@@ -428,18 +428,18 @@ void __105__WBSUserDefinedContentBlockerManager_getNumberOfContentBlockersThatCo
   }
 }
 
-- (void)getAllContentBlockerActionsWithType:(id)a3 excludeHost:(id)a4 isGlobal:(BOOL)a5 completion:(id)a6
+- (void)getAllContentBlockerActionsWithType:(id)type excludeHost:(id)host isGlobal:(BOOL)global completion:(id)completion
 {
-  v6 = a5;
-  v10 = a6;
+  globalCopy = global;
+  completionCopy = completion;
   dataStore = self->_dataStore;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __107__WBSUserDefinedContentBlockerManager_getAllContentBlockerActionsWithType_excludeHost_isGlobal_completion___block_invoke;
   v13[3] = &unk_1E7FB71F8;
-  v14 = v10;
-  v12 = v10;
-  [(WBSUserDefinedContentBlockerSQLiteStore *)dataStore getAllContentBlockerActionsWithType:a3 excludeHost:a4 isGlobal:v6 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [(WBSUserDefinedContentBlockerSQLiteStore *)dataStore getAllContentBlockerActionsWithType:type excludeHost:host isGlobal:globalCopy completion:v13];
 }
 
 void __107__WBSUserDefinedContentBlockerManager_getAllContentBlockerActionsWithType_excludeHost_isGlobal_completion___block_invoke(uint64_t a1, void *a2)
@@ -456,9 +456,9 @@ void __107__WBSUserDefinedContentBlockerManager_getAllContentBlockerActionsWithT
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)_setCachedGlobalContentBlockerActions:(id)a3
+- (void)_setCachedGlobalContentBlockerActions:(id)actions
 {
-  v4 = [a3 copy];
+  v4 = [actions copy];
   cachedGlobalContentBlockerActions = self->_cachedGlobalContentBlockerActions;
   self->_cachedGlobalContentBlockerActions = v4;
 
@@ -487,17 +487,17 @@ void __95__WBSUserDefinedContentBlockerManager__regenerateCachedGlobalContentBlo
   WeakRetained = objc_loadWeakRetained((a1 + 32));
 }
 
-- (void)getGlobalContentBlockerWithCompletionHandler:(id)a3
+- (void)getGlobalContentBlockerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dataStore = self->_dataStore;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __84__WBSUserDefinedContentBlockerManager_getGlobalContentBlockerWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FC8C28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(WBSUserDefinedContentBlockerSQLiteStore *)dataStore getGlobalContentBlockerWithCompletionHandler:v7];
 }
 
@@ -527,22 +527,22 @@ uint64_t __84__WBSUserDefinedContentBlockerManager_getGlobalContentBlockerWithCo
   return v4();
 }
 
-- (void)deleteActions:(id)a3
+- (void)deleteActions:(id)actions
 {
-  v4 = a3;
-  if ([v4 count])
+  actionsCopy = actions;
+  if ([actionsCopy count])
   {
-    [(WBSUserDefinedContentBlockerSQLiteStore *)self->_dataStore deleteActions:v4];
-    if ([v4 safari_containsObjectPassingTest:&__block_literal_global_82])
+    [(WBSUserDefinedContentBlockerSQLiteStore *)self->_dataStore deleteActions:actionsCopy];
+    if ([actionsCopy safari_containsObjectPassingTest:&__block_literal_global_82])
     {
       [(WBSUserDefinedContentBlockerManager *)self _regenerateCachedGlobalContentBlockerActionsFromDatabase];
     }
   }
 }
 
-- (void)resetDatabaseWithCompletionHandler:(id)a3
+- (void)resetDatabaseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   dataStore = self->_dataStore;
   v7[0] = MEMORY[0x1E69E9820];
@@ -550,7 +550,7 @@ uint64_t __84__WBSUserDefinedContentBlockerManager_getGlobalContentBlockerWithCo
   v7[2] = __74__WBSUserDefinedContentBlockerManager_resetDatabaseWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FC8C98;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
   [(WBSUserDefinedContentBlockerSQLiteStore *)dataStore resetDatabaseWithCompletionHandler:v7];
 

@@ -1,38 +1,38 @@
 @interface UISceneProposalActionResponse
-+ (id)responseWithPersistentIdentifier:(id)a3;
-+ (id)responseWithSceneID:(id)a3;
++ (id)responseWithPersistentIdentifier:(id)identifier;
++ (id)responseWithSceneID:(id)d;
 - (NSString)persistentIdentifier;
-- (UISceneProposalActionResponse)initWithInfo:(id)a3 error:(id)a4;
-- (id)_responseWithPersistentIdentifier:(id)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (UISceneProposalActionResponse)initWithInfo:(id)info error:(id)error;
+- (id)_responseWithPersistentIdentifier:(id)identifier;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 @end
 
 @implementation UISceneProposalActionResponse
 
-+ (id)responseWithPersistentIdentifier:(id)a3
++ (id)responseWithPersistentIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v5 _responseWithPersistentIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [self alloc];
+  v6 = [v5 _responseWithPersistentIdentifier:identifierCopy];
 
   return v6;
 }
 
-+ (id)responseWithSceneID:(id)a3
++ (id)responseWithSceneID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v5 _responseWithPersistentIdentifier:v4];
+  dCopy = d;
+  v5 = [self alloc];
+  v6 = [v5 _responseWithPersistentIdentifier:dCopy];
 
   return v6;
 }
 
-- (id)_responseWithPersistentIdentifier:(id)a3
+- (id)_responseWithPersistentIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E698E700];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(v4);
-  [v6 setObject:v5 forSetting:10];
+  [v6 setObject:identifierCopy forSetting:10];
 
   v9.receiver = self;
   v9.super_class = UISceneProposalActionResponse;
@@ -41,25 +41,25 @@
   return v7;
 }
 
-- (UISceneProposalActionResponse)initWithInfo:(id)a3 error:(id)a4
+- (UISceneProposalActionResponse)initWithInfo:(id)info error:(id)error
 {
-  v5 = [(UISceneProposalActionResponse *)self _responseWithPersistentIdentifier:0, a4];
+  error = [(UISceneProposalActionResponse *)self _responseWithPersistentIdentifier:0, error];
 
-  return v5;
+  return error;
 }
 
 - (NSString)persistentIdentifier
 {
-  v2 = [(UISceneProposalActionResponse *)self info];
-  v3 = [v2 objectForSetting:10];
+  info = [(UISceneProposalActionResponse *)self info];
+  v3 = [info objectForSetting:10];
   v4 = v3;
 
   return v3;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 10)
+  if (setting == 10)
   {
     return @"sceneID";
   }

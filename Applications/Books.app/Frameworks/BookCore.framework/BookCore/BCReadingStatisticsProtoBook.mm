@@ -1,52 +1,52 @@
 @interface BCReadingStatisticsProtoBook
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addReadCFI:(id)a3;
-- (void)addTocEntry:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addReadCFI:(id)i;
+- (void)addTocEntry:(id)entry;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BCReadingStatisticsProtoBook
 
-- (void)addTocEntry:(id)a3
+- (void)addTocEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   tocEntrys = self->_tocEntrys;
-  v8 = v4;
+  v8 = entryCopy;
   if (!tocEntrys)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_tocEntrys;
     self->_tocEntrys = v6;
 
-    v4 = v8;
+    entryCopy = v8;
     tocEntrys = self->_tocEntrys;
   }
 
-  [(NSMutableArray *)tocEntrys addObject:v4];
+  [(NSMutableArray *)tocEntrys addObject:entryCopy];
 }
 
-- (void)addReadCFI:(id)a3
+- (void)addReadCFI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   readCFIs = self->_readCFIs;
-  v8 = v4;
+  v8 = iCopy;
   if (!readCFIs)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_readCFIs;
     self->_readCFIs = v6;
 
-    v4 = v8;
+    iCopy = v8;
     readCFIs = self->_readCFIs;
   }
 
-  [(NSMutableArray *)readCFIs addObject:v4];
+  [(NSMutableArray *)readCFIs addObject:iCopy];
 }
 
 - (id)description
@@ -54,8 +54,8 @@
   v7.receiver = self;
   v7.super_class = BCReadingStatisticsProtoBook;
   v3 = [(BCReadingStatisticsProtoBook *)&v7 description];
-  v4 = [(BCReadingStatisticsProtoBook *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(BCReadingStatisticsProtoBook *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -104,8 +104,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -126,9 +126,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteStringField();
   PBDataWriterWriteStringField();
   if (self->_assetVersion)
@@ -199,59 +199,59 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
-  [v12 setAssetID:self->_assetID];
-  [v12 setAppVersion:self->_appVersion];
+  toCopy = to;
+  [toCopy setAssetID:self->_assetID];
+  [toCopy setAppVersion:self->_appVersion];
   if (self->_assetVersion)
   {
-    [v12 setAssetVersion:?];
+    [toCopy setAssetVersion:?];
   }
 
   if ([(BCReadingStatisticsProtoBook *)self tocEntrysCount])
   {
-    [v12 clearTocEntrys];
-    v4 = [(BCReadingStatisticsProtoBook *)self tocEntrysCount];
-    if (v4)
+    [toCopy clearTocEntrys];
+    tocEntrysCount = [(BCReadingStatisticsProtoBook *)self tocEntrysCount];
+    if (tocEntrysCount)
     {
-      v5 = v4;
+      v5 = tocEntrysCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(BCReadingStatisticsProtoBook *)self tocEntryAtIndex:i];
-        [v12 addTocEntry:v7];
+        [toCopy addTocEntry:v7];
       }
     }
   }
 
   if ([(BCReadingStatisticsProtoBook *)self readCFIsCount])
   {
-    [v12 clearReadCFIs];
-    v8 = [(BCReadingStatisticsProtoBook *)self readCFIsCount];
-    if (v8)
+    [toCopy clearReadCFIs];
+    readCFIsCount = [(BCReadingStatisticsProtoBook *)self readCFIsCount];
+    if (readCFIsCount)
     {
-      v9 = v8;
+      v9 = readCFIsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(BCReadingStatisticsProtoBook *)self readCFIAtIndex:j];
-        [v12 addReadCFI:v11];
+        [toCopy addReadCFI:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_assetID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_assetID copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_appVersion copyWithZone:a3];
+  v8 = [(NSString *)self->_appVersion copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSString *)self->_assetVersion copyWithZone:a3];
+  v10 = [(NSString *)self->_assetVersion copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
@@ -275,7 +275,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v29 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v29 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addTocEntry:v17];
 
         v16 = v16 + 1;
@@ -308,7 +308,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v25 + 1) + 8 * v22) copyWithZone:{a3, v25}];
+        v23 = [*(*(&v25 + 1) + 8 * v22) copyWithZone:{zone, v25}];
         [v5 addReadCFI:v23];
 
         v22 = v22 + 1;
@@ -324,13 +324,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((assetID = self->_assetID, !(assetID | v4[2])) || -[NSString isEqual:](assetID, "isEqual:")) && ((appVersion = self->_appVersion, !(appVersion | v4[1])) || -[NSString isEqual:](appVersion, "isEqual:")) && ((assetVersion = self->_assetVersion, !(assetVersion | v4[3])) || -[NSString isEqual:](assetVersion, "isEqual:")) && ((tocEntrys = self->_tocEntrys, !(tocEntrys | v4[5])) || -[NSMutableArray isEqual:](tocEntrys, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((assetID = self->_assetID, !(assetID | equalCopy[2])) || -[NSString isEqual:](assetID, "isEqual:")) && ((appVersion = self->_appVersion, !(appVersion | equalCopy[1])) || -[NSString isEqual:](appVersion, "isEqual:")) && ((assetVersion = self->_assetVersion, !(assetVersion | equalCopy[3])) || -[NSString isEqual:](assetVersion, "isEqual:")) && ((tocEntrys = self->_tocEntrys, !(tocEntrys | equalCopy[5])) || -[NSMutableArray isEqual:](tocEntrys, "isEqual:")))
   {
     readCFIs = self->_readCFIs;
-    if (readCFIs | v4[4])
+    if (readCFIs | equalCopy[4])
     {
       v10 = [(NSMutableArray *)readCFIs isEqual:?];
     }
@@ -358,20 +358,20 @@
   return v6 ^ [(NSMutableArray *)self->_readCFIs hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(BCReadingStatisticsProtoBook *)self setAssetID:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(BCReadingStatisticsProtoBook *)self setAppVersion:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BCReadingStatisticsProtoBook *)self setAssetVersion:?];
   }
@@ -380,7 +380,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = *(v4 + 5);
+  v5 = *(fromCopy + 5);
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
@@ -408,7 +408,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = *(v4 + 4);
+  v10 = *(fromCopy + 4);
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {

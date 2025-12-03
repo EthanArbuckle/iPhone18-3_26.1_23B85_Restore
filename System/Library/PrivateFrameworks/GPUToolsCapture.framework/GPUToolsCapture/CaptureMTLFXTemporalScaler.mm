@@ -1,40 +1,40 @@
 @interface CaptureMTLFXTemporalScaler
-- (BOOL)conformsToProtocol:(id)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
 - (CGPoint)previousJitterOffset;
-- (CaptureMTLFXTemporalScaler)initWithBaseObject:(id)a3 captureDevice:(id)a4;
+- (CaptureMTLFXTemporalScaler)initWithBaseObject:(id)object captureDevice:(id)device;
 - (NSString)description;
 - (unint64_t)streamReference;
 - (void)dealloc;
-- (void)encodeToCommandBuffer:(id)a3;
-- (void)encodeToCommandQueue:(id)a3;
-- (void)setColorTexture:(id)a3;
-- (void)setDebugTexture:(id)a3;
-- (void)setDepthTexture:(id)a3;
-- (void)setExposureTexture:(id)a3;
-- (void)setFence:(id)a3;
-- (void)setInputContentHeight:(unint64_t)a3;
-- (void)setInputContentWidth:(unint64_t)a3;
-- (void)setJitterOffsetX:(float)a3;
-- (void)setJitterOffsetY:(float)a3;
-- (void)setMotionTexture:(id)a3;
-- (void)setMotionVectorScaleX:(float)a3;
-- (void)setMotionVectorScaleY:(float)a3;
-- (void)setOutputTexture:(id)a3;
-- (void)setPreExposure:(float)a3;
-- (void)setReactiveMaskTexture:(id)a3;
+- (void)encodeToCommandBuffer:(id)buffer;
+- (void)encodeToCommandQueue:(id)queue;
+- (void)setColorTexture:(id)texture;
+- (void)setDebugTexture:(id)texture;
+- (void)setDepthTexture:(id)texture;
+- (void)setExposureTexture:(id)texture;
+- (void)setFence:(id)fence;
+- (void)setInputContentHeight:(unint64_t)height;
+- (void)setInputContentWidth:(unint64_t)width;
+- (void)setJitterOffsetX:(float)x;
+- (void)setJitterOffsetY:(float)y;
+- (void)setMotionTexture:(id)texture;
+- (void)setMotionVectorScaleX:(float)x;
+- (void)setMotionVectorScaleY:(float)y;
+- (void)setOutputTexture:(id)texture;
+- (void)setPreExposure:(float)exposure;
+- (void)setReactiveMaskTexture:(id)texture;
 - (void)touch;
 @end
 
 @implementation CaptureMTLFXTemporalScaler
 
-- (void)encodeToCommandQueue:(id)a3
+- (void)encodeToCommandQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLFXTemporalScaler_encodeToCommandQueue", "MetalFX SPI", 0, 0);
   baseObject = self->_baseObject;
-  v6 = [v4 baseObject];
+  baseObject = [queueCopy baseObject];
 
-  [(MTLFXTemporalScalerSPI *)baseObject encodeToCommandQueue:v6];
+  [(MTLFXTemporalScalerSPI *)baseObject encodeToCommandQueue:baseObject];
 }
 
 - (CGPoint)previousJitterOffset
@@ -45,14 +45,14 @@
   return result;
 }
 
-- (void)setPreExposure:(float)a3
+- (void)setPreExposure:(float)exposure
 {
   v17 = 0u;
   v18 = 0u;
   v16 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v16);
-  *&v6 = a3;
+  *&v6 = exposure;
   [(MTLFXTemporalScalerSPI *)self->_baseObject setPreExposure:v6];
   v7 = v17;
   *(v17 + 8) = -20460;
@@ -73,10 +73,10 @@
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLFXTemporalScaler *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLFXTemporalScaler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -85,7 +85,7 @@
   }
 
   *v9 = var0;
-  *(v9 + 2) = a3;
+  *(v9 + 2) = exposure;
   *(v9 + 3) = 0;
   s();
   *v14 = v15;
@@ -93,14 +93,14 @@
   *(v17 + 15) |= 8u;
 }
 
-- (void)setMotionVectorScaleY:(float)a3
+- (void)setMotionVectorScaleY:(float)y
 {
   v17 = 0u;
   v18 = 0u;
   v16 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v16);
-  *&v6 = a3;
+  *&v6 = y;
   [(MTLFXTemporalScalerSPI *)self->_baseObject setMotionVectorScaleY:v6];
   v7 = v17;
   *(v17 + 8) = -20462;
@@ -121,10 +121,10 @@
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLFXTemporalScaler *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLFXTemporalScaler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -133,7 +133,7 @@
   }
 
   *v9 = var0;
-  *(v9 + 2) = a3;
+  *(v9 + 2) = y;
   *(v9 + 3) = 0;
   s();
   *v14 = v15;
@@ -141,14 +141,14 @@
   *(v17 + 15) |= 8u;
 }
 
-- (void)setMotionVectorScaleX:(float)a3
+- (void)setMotionVectorScaleX:(float)x
 {
   v17 = 0u;
   v18 = 0u;
   v16 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v16);
-  *&v6 = a3;
+  *&v6 = x;
   [(MTLFXTemporalScalerSPI *)self->_baseObject setMotionVectorScaleX:v6];
   v7 = v17;
   *(v17 + 8) = -20463;
@@ -169,10 +169,10 @@
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLFXTemporalScaler *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLFXTemporalScaler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -181,7 +181,7 @@
   }
 
   *v9 = var0;
-  *(v9 + 2) = a3;
+  *(v9 + 2) = x;
   *(v9 + 3) = 0;
   s();
   *v14 = v15;
@@ -189,14 +189,14 @@
   *(v17 + 15) |= 8u;
 }
 
-- (void)setJitterOffsetY:(float)a3
+- (void)setJitterOffsetY:(float)y
 {
   v17 = 0u;
   v18 = 0u;
   v16 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v16);
-  *&v6 = a3;
+  *&v6 = y;
   [(MTLFXTemporalScalerSPI *)self->_baseObject setJitterOffsetY:v6];
   v7 = v17;
   *(v17 + 8) = -20465;
@@ -217,10 +217,10 @@
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLFXTemporalScaler *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLFXTemporalScaler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -229,7 +229,7 @@
   }
 
   *v9 = var0;
-  *(v9 + 2) = a3;
+  *(v9 + 2) = y;
   *(v9 + 3) = 0;
   s();
   *v14 = v15;
@@ -237,14 +237,14 @@
   *(v17 + 15) |= 8u;
 }
 
-- (void)setJitterOffsetX:(float)a3
+- (void)setJitterOffsetX:(float)x
 {
   v17 = 0u;
   v18 = 0u;
   v16 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v16);
-  *&v6 = a3;
+  *&v6 = x;
   [(MTLFXTemporalScalerSPI *)self->_baseObject setJitterOffsetX:v6];
   v7 = v17;
   *(v17 + 8) = -20466;
@@ -265,10 +265,10 @@
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLFXTemporalScaler *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLFXTemporalScaler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -277,7 +277,7 @@
   }
 
   *v9 = var0;
-  *(v9 + 2) = a3;
+  *(v9 + 2) = x;
   *(v9 + 3) = 0;
   s();
   *v14 = v15;
@@ -285,14 +285,14 @@
   *(v17 + 15) |= 8u;
 }
 
-- (void)setInputContentWidth:(unint64_t)a3
+- (void)setInputContentWidth:(unint64_t)width
 {
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  [(MTLFXTemporalScalerSPI *)self->_baseObject setInputContentWidth:a3];
+  [(MTLFXTemporalScalerSPI *)self->_baseObject setInputContentWidth:width];
   v6 = v16;
   *(v16 + 8) = -20467;
   v7 = BYTE9(v17);
@@ -312,10 +312,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLFXTemporalScaler *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLFXTemporalScaler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -324,21 +324,21 @@
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = width;
   s();
   *v13 = v14;
   *(v13 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
 }
 
-- (void)setInputContentHeight:(unint64_t)a3
+- (void)setInputContentHeight:(unint64_t)height
 {
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  [(MTLFXTemporalScalerSPI *)self->_baseObject setInputContentHeight:a3];
+  [(MTLFXTemporalScalerSPI *)self->_baseObject setInputContentHeight:height];
   v6 = v16;
   *(v16 + 8) = -20468;
   v7 = BYTE9(v17);
@@ -358,10 +358,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLFXTemporalScaler *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLFXTemporalScaler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -370,20 +370,20 @@
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = height;
   s();
   *v13 = v14;
   *(v13 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLFXTemporalScalerSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLFXTemporalScalerSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -467,10 +467,10 @@
   }
 
   *(v5 + 13) = v6;
-  v10 = [(CaptureMTLFXTemporalScaler *)self traceStream];
-  if (v10)
+  traceStream = [(CaptureMTLFXTemporalScaler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v10->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -489,20 +489,20 @@
   [(CaptureMTLFXTemporalScaler *)&v14 dealloc];
 }
 
-- (void)setReactiveMaskTexture:(id)a3
+- (void)setReactiveMaskTexture:(id)texture
 {
-  v4 = a3;
+  textureCopy = texture;
   v21 = 0u;
   v22 = 0u;
   v20 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
-  v6 = [(CaptureMTLTexture *)v4 baseObject];
-  [(MTLFXTemporalScalerSPI *)self->_baseObject setReactiveMaskTexture:v6];
+  baseObject = [(CaptureMTLTexture *)textureCopy baseObject];
+  [(MTLFXTemporalScalerSPI *)self->_baseObject setReactiveMaskTexture:baseObject];
 
   captureReactiveMaskTexture = self->_captureReactiveMaskTexture;
-  self->_captureReactiveMaskTexture = v4;
-  v8 = v4;
+  self->_captureReactiveMaskTexture = textureCopy;
+  v8 = textureCopy;
 
   v9 = v21;
   *(v21 + 8) = -20456;
@@ -523,10 +523,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLFXTemporalScaler *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLFXTemporalScaler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -534,10 +534,10 @@
     var0 = 0;
   }
 
-  v16 = [(CaptureMTLTexture *)v8 traceStream];
-  if (v16)
+  traceStream2 = [(CaptureMTLTexture *)v8 traceStream];
+  if (traceStream2)
   {
-    v17 = v16->var0;
+    v17 = traceStream2->var0;
   }
 
   else
@@ -553,12 +553,12 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)encodeToCommandBuffer:(id)a3
+- (void)encodeToCommandBuffer:(id)buffer
 {
-  v4 = a3;
-  v5 = [v4 isCapturing];
+  bufferCopy = buffer;
+  isCapturing = [bufferCopy isCapturing];
   baseObject = self->_baseObject;
-  if (v5)
+  if (isCapturing)
   {
     v7 = self->_baseObject;
     if (objc_opt_respondsToSelector())
@@ -568,7 +568,7 @@
       v34 = 0u;
       traceStream = self->_traceStream;
       GTTraceContext_pushEncoderWithStream(self->_traceContext, &v34);
-      v9 = [(MTLFXTemporalScalerSPI *)self->_baseObject executionMode];
+      executionMode = [(MTLFXTemporalScalerSPI *)self->_baseObject executionMode];
       v10 = v35;
       *(v35 + 8) = -18430;
       v11 = BYTE9(v36);
@@ -588,10 +588,10 @@
       }
 
       *(v10 + 13) = v11;
-      v16 = [(CaptureMTLFXTemporalScaler *)self traceStream];
-      if (v16)
+      traceStream = [(CaptureMTLFXTemporalScaler *)self traceStream];
+      if (traceStream)
       {
-        var0 = v16->var0;
+        var0 = traceStream->var0;
       }
 
       else
@@ -600,7 +600,7 @@
       }
 
       *v12 = var0;
-      *(v12 + 1) = v9;
+      *(v12 + 1) = executionMode;
       s();
       *v18 = v19;
       *(v18 + 8) = BYTE8(v36);
@@ -611,11 +611,11 @@
     v36 = 0u;
     v34 = 0u;
     traceContext = self->_traceContext;
-    [v4 traceStream];
+    [bufferCopy traceStream];
     GTTraceContext_pushEncoderWithStream(traceContext, &v34);
     v21 = self->_baseObject;
-    v22 = [v4 baseObject];
-    [(MTLFXTemporalScalerSPI *)v21 encodeToCommandBuffer:v22];
+    baseObject = [bufferCopy baseObject];
+    [(MTLFXTemporalScalerSPI *)v21 encodeToCommandBuffer:baseObject];
 
     v23 = v35;
     *(v35 + 8) = -20457;
@@ -636,10 +636,10 @@
     }
 
     *(v23 + 13) = v24;
-    v28 = [(CaptureMTLFXTemporalScaler *)self traceStream];
-    if (v28)
+    traceStream2 = [(CaptureMTLFXTemporalScaler *)self traceStream];
+    if (traceStream2)
     {
-      v29 = v28->var0;
+      v29 = traceStream2->var0;
     }
 
     else
@@ -647,10 +647,10 @@
       v29 = 0;
     }
 
-    v30 = [v4 traceStream];
-    if (v30)
+    traceStream3 = [bufferCopy traceStream];
+    if (traceStream3)
     {
-      v31 = *v30;
+      v31 = *traceStream3;
     }
 
     else
@@ -668,33 +668,33 @@
 
   else
   {
-    v13 = [v4 baseObject];
-    [(MTLFXTemporalScalerSPI *)baseObject encodeToCommandBuffer:v13];
+    baseObject2 = [bufferCopy baseObject];
+    [(MTLFXTemporalScalerSPI *)baseObject encodeToCommandBuffer:baseObject2];
   }
 }
 
-- (void)setDebugTexture:(id)a3
+- (void)setDebugTexture:(id)texture
 {
-  objc_storeStrong(&self->_captureDebugTexture, a3);
-  v5 = a3;
-  v6 = [v5 baseObject];
-  [(MTLFXTemporalScalerSPI *)self->_baseObject setDebugTexture:v6];
+  objc_storeStrong(&self->_captureDebugTexture, texture);
+  textureCopy = texture;
+  baseObject = [textureCopy baseObject];
+  [(MTLFXTemporalScalerSPI *)self->_baseObject setDebugTexture:baseObject];
 }
 
-- (void)setOutputTexture:(id)a3
+- (void)setOutputTexture:(id)texture
 {
-  v4 = a3;
+  textureCopy = texture;
   v21 = 0u;
   v22 = 0u;
   v20 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
-  v6 = [(CaptureMTLTexture *)v4 baseObject];
-  [(MTLFXTemporalScalerSPI *)self->_baseObject setOutputTexture:v6];
+  baseObject = [(CaptureMTLTexture *)textureCopy baseObject];
+  [(MTLFXTemporalScalerSPI *)self->_baseObject setOutputTexture:baseObject];
 
   captureOutputTexture = self->_captureOutputTexture;
-  self->_captureOutputTexture = v4;
-  v8 = v4;
+  self->_captureOutputTexture = textureCopy;
+  v8 = textureCopy;
 
   v9 = v21;
   *(v21 + 8) = -20461;
@@ -715,10 +715,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLFXTemporalScaler *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLFXTemporalScaler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -726,10 +726,10 @@
     var0 = 0;
   }
 
-  v16 = [(CaptureMTLTexture *)v8 traceStream];
-  if (v16)
+  traceStream2 = [(CaptureMTLTexture *)v8 traceStream];
+  if (traceStream2)
   {
-    v17 = v16->var0;
+    v17 = traceStream2->var0;
   }
 
   else
@@ -745,20 +745,20 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)setMotionTexture:(id)a3
+- (void)setMotionTexture:(id)texture
 {
-  v4 = a3;
+  textureCopy = texture;
   v21 = 0u;
   v22 = 0u;
   v20 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
-  v6 = [(CaptureMTLTexture *)v4 baseObject];
-  [(MTLFXTemporalScalerSPI *)self->_baseObject setMotionTexture:v6];
+  baseObject = [(CaptureMTLTexture *)textureCopy baseObject];
+  [(MTLFXTemporalScalerSPI *)self->_baseObject setMotionTexture:baseObject];
 
   captureMotionTexture = self->_captureMotionTexture;
-  self->_captureMotionTexture = v4;
-  v8 = v4;
+  self->_captureMotionTexture = textureCopy;
+  v8 = textureCopy;
 
   v9 = v21;
   *(v21 + 8) = -20464;
@@ -779,10 +779,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLFXTemporalScaler *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLFXTemporalScaler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -790,10 +790,10 @@
     var0 = 0;
   }
 
-  v16 = [(CaptureMTLTexture *)v8 traceStream];
-  if (v16)
+  traceStream2 = [(CaptureMTLTexture *)v8 traceStream];
+  if (traceStream2)
   {
-    v17 = v16->var0;
+    v17 = traceStream2->var0;
   }
 
   else
@@ -809,20 +809,20 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)setExposureTexture:(id)a3
+- (void)setExposureTexture:(id)texture
 {
-  v4 = a3;
+  textureCopy = texture;
   v21 = 0u;
   v22 = 0u;
   v20 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
-  v6 = [(CaptureMTLTexture *)v4 baseObject];
-  [(MTLFXTemporalScalerSPI *)self->_baseObject setExposureTexture:v6];
+  baseObject = [(CaptureMTLTexture *)textureCopy baseObject];
+  [(MTLFXTemporalScalerSPI *)self->_baseObject setExposureTexture:baseObject];
 
   captureExposureTexture = self->_captureExposureTexture;
-  self->_captureExposureTexture = v4;
-  v8 = v4;
+  self->_captureExposureTexture = textureCopy;
+  v8 = textureCopy;
 
   v9 = v21;
   *(v21 + 8) = -20470;
@@ -843,10 +843,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLFXTemporalScaler *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLFXTemporalScaler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -854,10 +854,10 @@
     var0 = 0;
   }
 
-  v16 = [(CaptureMTLTexture *)v8 traceStream];
-  if (v16)
+  traceStream2 = [(CaptureMTLTexture *)v8 traceStream];
+  if (traceStream2)
   {
-    v17 = v16->var0;
+    v17 = traceStream2->var0;
   }
 
   else
@@ -873,20 +873,20 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)setDepthTexture:(id)a3
+- (void)setDepthTexture:(id)texture
 {
-  v4 = a3;
+  textureCopy = texture;
   v21 = 0u;
   v22 = 0u;
   v20 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
-  v6 = [(CaptureMTLTexture *)v4 baseObject];
-  [(MTLFXTemporalScalerSPI *)self->_baseObject setDepthTexture:v6];
+  baseObject = [(CaptureMTLTexture *)textureCopy baseObject];
+  [(MTLFXTemporalScalerSPI *)self->_baseObject setDepthTexture:baseObject];
 
   captureDepthTexture = self->_captureDepthTexture;
-  self->_captureDepthTexture = v4;
-  v8 = v4;
+  self->_captureDepthTexture = textureCopy;
+  v8 = textureCopy;
 
   v9 = v21;
   *(v21 + 8) = -20471;
@@ -907,10 +907,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLFXTemporalScaler *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLFXTemporalScaler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -918,10 +918,10 @@
     var0 = 0;
   }
 
-  v16 = [(CaptureMTLTexture *)v8 traceStream];
-  if (v16)
+  traceStream2 = [(CaptureMTLTexture *)v8 traceStream];
+  if (traceStream2)
   {
-    v17 = v16->var0;
+    v17 = traceStream2->var0;
   }
 
   else
@@ -937,20 +937,20 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)setColorTexture:(id)a3
+- (void)setColorTexture:(id)texture
 {
-  v4 = a3;
+  textureCopy = texture;
   v21 = 0u;
   v22 = 0u;
   v20 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
-  v6 = [(CaptureMTLTexture *)v4 baseObject];
-  [(MTLFXTemporalScalerSPI *)self->_baseObject setColorTexture:v6];
+  baseObject = [(CaptureMTLTexture *)textureCopy baseObject];
+  [(MTLFXTemporalScalerSPI *)self->_baseObject setColorTexture:baseObject];
 
   captureColorTexture = self->_captureColorTexture;
-  self->_captureColorTexture = v4;
-  v8 = v4;
+  self->_captureColorTexture = textureCopy;
+  v8 = textureCopy;
 
   v9 = v21;
   *(v21 + 8) = -20473;
@@ -971,10 +971,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLFXTemporalScaler *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLFXTemporalScaler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -982,10 +982,10 @@
     var0 = 0;
   }
 
-  v16 = [(CaptureMTLTexture *)v8 traceStream];
-  if (v16)
+  traceStream2 = [(CaptureMTLTexture *)v8 traceStream];
+  if (traceStream2)
   {
-    v17 = v16->var0;
+    v17 = traceStream2->var0;
   }
 
   else
@@ -1001,20 +1001,20 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)setFence:(id)a3
+- (void)setFence:(id)fence
 {
-  v4 = a3;
+  fenceCopy = fence;
   v21 = 0u;
   v22 = 0u;
   v20 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
-  v6 = [(CaptureMTLFence *)v4 baseObject];
-  [(MTLFXTemporalScalerSPI *)self->_baseObject setFence:v6];
+  baseObject = [(CaptureMTLFence *)fenceCopy baseObject];
+  [(MTLFXTemporalScalerSPI *)self->_baseObject setFence:baseObject];
 
   captureFence = self->_captureFence;
-  self->_captureFence = v4;
-  v8 = v4;
+  self->_captureFence = fenceCopy;
+  v8 = fenceCopy;
 
   v9 = v21;
   *(v21 + 8) = -20469;
@@ -1035,10 +1035,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLFXTemporalScaler *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLFXTemporalScaler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1046,10 +1046,10 @@
     var0 = 0;
   }
 
-  v16 = [(CaptureMTLFence *)v8 traceStream];
-  if (v16)
+  traceStream2 = [(CaptureMTLFence *)v8 traceStream];
+  if (traceStream2)
   {
-    v17 = v16->var0;
+    v17 = traceStream2->var0;
   }
 
   else
@@ -1065,22 +1065,22 @@
   *(v21 + 15) |= 8u;
 }
 
-- (CaptureMTLFXTemporalScaler)initWithBaseObject:(id)a3 captureDevice:(id)a4
+- (CaptureMTLFXTemporalScaler)initWithBaseObject:(id)object captureDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = CaptureMTLFXTemporalScaler;
   v9 = [(CaptureMTLFXTemporalScaler *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    objc_storeStrong(&v10->_captureDevice, a4);
-    v11 = [v8 traceContext];
-    v10->_traceContext = v11;
-    v12 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v11, v12, v10);
+    objc_storeStrong(&v9->_baseObject, object);
+    objc_storeStrong(&v10->_captureDevice, device);
+    traceContext = [deviceCopy traceContext];
+    v10->_traceContext = traceContext;
+    v12 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v12, v10);
   }
 
   return v10;

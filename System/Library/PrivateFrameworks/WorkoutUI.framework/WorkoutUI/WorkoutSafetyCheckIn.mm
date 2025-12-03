@@ -7,13 +7,13 @@
 
 - (void)onMessagesAppInstalled
 {
-  v2 = self;
+  selfCopy = self;
   WorkoutSafetyCheckIn.onMessagesAppInstalled()();
 }
 
 - (void)onMessagesAppUninstalled
 {
-  v2 = self;
+  selfCopy = self;
   WorkoutSafetyCheckIn.onMessagesAppUninstalled()();
 }
 

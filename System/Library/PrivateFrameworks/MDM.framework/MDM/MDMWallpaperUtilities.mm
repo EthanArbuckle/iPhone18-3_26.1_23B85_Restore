@@ -1,36 +1,36 @@
 @interface MDMWallpaperUtilities
 - (PRSExternalSystemService)externalPosterService;
 - (PRSService)posterService;
-- (id)_storeImageToTempDirectory:(id)a3;
-- (void)_createNewConfigurationIfNeeedWithCompletionHandler:(id)a3;
-- (void)_createNewConfigurationWithCompletionHandler:(id)a3;
-- (void)_removeImageFromURL:(id)a3;
-- (void)_setWallpaper:(id)a3 forConfigurationWithUUID:(id)a4 setLockScreen:(BOOL)a5 setHomeScreen:(BOOL)a6 completionHandler:(id)a7;
-- (void)_updateWallpaperConfiguraitonWithUUID:(id)a3 updates:(id)a4 completionHandler:(id)a5;
-- (void)_updateWallpaperConfiguraitonWithUUID:(id)a3 updates:(id)a4 retryCount:(unint64_t)a5 completionHandler:(id)a6;
-- (void)_verifyWallpaperConfigExistsWithUUID:(id)a3 completionHandler:(id)a4;
-- (void)setWallpaper:(id)a3 forLockScreen:(BOOL)a4 homeScreen:(BOOL)a5 completionHandler:(id)a6;
+- (id)_storeImageToTempDirectory:(id)directory;
+- (void)_createNewConfigurationIfNeeedWithCompletionHandler:(id)handler;
+- (void)_createNewConfigurationWithCompletionHandler:(id)handler;
+- (void)_removeImageFromURL:(id)l;
+- (void)_setWallpaper:(id)wallpaper forConfigurationWithUUID:(id)d setLockScreen:(BOOL)screen setHomeScreen:(BOOL)homeScreen completionHandler:(id)handler;
+- (void)_updateWallpaperConfiguraitonWithUUID:(id)d updates:(id)updates completionHandler:(id)handler;
+- (void)_updateWallpaperConfiguraitonWithUUID:(id)d updates:(id)updates retryCount:(unint64_t)count completionHandler:(id)handler;
+- (void)_verifyWallpaperConfigExistsWithUUID:(id)d completionHandler:(id)handler;
+- (void)setWallpaper:(id)wallpaper forLockScreen:(BOOL)screen homeScreen:(BOOL)homeScreen completionHandler:(id)handler;
 @end
 
 @implementation MDMWallpaperUtilities
 
-- (void)setWallpaper:(id)a3 forLockScreen:(BOOL)a4 homeScreen:(BOOL)a5 completionHandler:(id)a6
+- (void)setWallpaper:(id)wallpaper forLockScreen:(BOOL)screen homeScreen:(BOOL)homeScreen completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(MDMWallpaperUtilities *)self _storeImageToTempDirectory:v10];
+  wallpaperCopy = wallpaper;
+  handlerCopy = handler;
+  v12 = [(MDMWallpaperUtilities *)self _storeImageToTempDirectory:wallpaperCopy];
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __81__MDMWallpaperUtilities_setWallpaper_forLockScreen_homeScreen_completionHandler___block_invoke;
   v15[3] = &unk_27982D5B8;
   objc_copyWeak(&v18, &location);
-  v13 = v11;
+  v13 = handlerCopy;
   v17 = v13;
   v14 = v12;
   v16 = v14;
-  v19 = a4;
-  v20 = a5;
+  screenCopy = screen;
+  homeScreenCopy = homeScreen;
   [(MDMWallpaperUtilities *)self _createNewConfigurationIfNeeedWithCompletionHandler:v15];
 
   objc_destroyWeak(&v18);
@@ -90,13 +90,13 @@ void __81__MDMWallpaperUtilities_setWallpaper_forLockScreen_homeScreen_completio
   }
 }
 
-- (void)_createNewConfigurationIfNeeedWithCompletionHandler:(id)a3
+- (void)_createNewConfigurationIfNeeedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D24648] sharedConfiguration];
-  v6 = [v5 wallpaperConfigurationUUID];
+  handlerCopy = handler;
+  mEMORY[0x277D24648] = [MEMORY[0x277D24648] sharedConfiguration];
+  wallpaperConfigurationUUID = [mEMORY[0x277D24648] wallpaperConfigurationUUID];
 
-  if (v6)
+  if (wallpaperConfigurationUUID)
   {
     v7 = *DMCLogObjects();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -109,15 +109,15 @@ void __81__MDMWallpaperUtilities_setWallpaper_forLockScreen_homeScreen_completio
     v8[1] = 3221225472;
     v8[2] = __77__MDMWallpaperUtilities__createNewConfigurationIfNeeedWithCompletionHandler___block_invoke;
     v8[3] = &unk_27982D5E0;
-    v11 = v4;
-    v9 = v6;
-    v10 = self;
+    v11 = handlerCopy;
+    v9 = wallpaperConfigurationUUID;
+    selfCopy = self;
     [(MDMWallpaperUtilities *)self _verifyWallpaperConfigExistsWithUUID:v9 completionHandler:v8];
   }
 
   else
   {
-    [(MDMWallpaperUtilities *)self _createNewConfigurationWithCompletionHandler:v4];
+    [(MDMWallpaperUtilities *)self _createNewConfigurationWithCompletionHandler:handlerCopy];
   }
 }
 
@@ -145,9 +145,9 @@ uint64_t __77__MDMWallpaperUtilities__createNewConfigurationIfNeeedWithCompletio
   }
 }
 
-- (void)_createNewConfigurationWithCompletionHandler:(id)a3
+- (void)_createNewConfigurationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = *DMCLogObjects();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -156,15 +156,15 @@ uint64_t __77__MDMWallpaperUtilities__createNewConfigurationIfNeeedWithCompletio
   }
 
   objc_initWeak(buf, self);
-  v6 = [(MDMWallpaperUtilities *)self posterService];
+  posterService = [(MDMWallpaperUtilities *)self posterService];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__MDMWallpaperUtilities__createNewConfigurationWithCompletionHandler___block_invoke;
   v8[3] = &unk_27982D608;
   objc_copyWeak(&v10, buf);
-  v7 = v4;
+  v7 = handlerCopy;
   v9 = v7;
-  [v6 createPosterConfigurationForProviderIdentifier:@"com.apple.PhotosUIPrivate.PhotosPosterProvider" posterDescriptorIdentifier:0 role:0 completion:v8];
+  [posterService createPosterConfigurationForProviderIdentifier:@"com.apple.PhotosUIPrivate.PhotosPosterProvider" posterDescriptorIdentifier:0 role:0 completion:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
@@ -220,22 +220,22 @@ void __70__MDMWallpaperUtilities__createNewConfigurationWithCompletionHandler___
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_verifyWallpaperConfigExistsWithUUID:(id)a3 completionHandler:(id)a4
+- (void)_verifyWallpaperConfigExistsWithUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v8 = [(MDMWallpaperUtilities *)self externalPosterService];
+  externalPosterService = [(MDMWallpaperUtilities *)self externalPosterService];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __80__MDMWallpaperUtilities__verifyWallpaperConfigExistsWithUUID_completionHandler___block_invoke;
   v11[3] = &unk_27982D630;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = dCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v13 = v10;
-  [v8 fetchEligibleConfigurationsWithCompletion:v11];
+  [externalPosterService fetchEligibleConfigurationsWithCompletion:v11];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -275,15 +275,15 @@ void __80__MDMWallpaperUtilities__verifyWallpaperConfigExistsWithUUID_completion
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setWallpaper:(id)a3 forConfigurationWithUUID:(id)a4 setLockScreen:(BOOL)a5 setHomeScreen:(BOOL)a6 completionHandler:(id)a7
+- (void)_setWallpaper:(id)wallpaper forConfigurationWithUUID:(id)d setLockScreen:(BOOL)screen setHomeScreen:(BOOL)homeScreen completionHandler:(id)handler
 {
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  homeScreenCopy = homeScreen;
+  screenCopy = screen;
+  wallpaperCopy = wallpaper;
+  dCopy = d;
+  handlerCopy = handler;
   v15 = objc_opt_new();
-  if (v9)
+  if (screenCopy)
   {
     v16 = *DMCLogObjects();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -292,11 +292,11 @@ void __80__MDMWallpaperUtilities__verifyWallpaperConfigExistsWithUUID_completion
       _os_log_impl(&dword_2561F5000, v16, OS_LOG_TYPE_DEFAULT, "Will update lock screen", buf, 2u);
     }
 
-    v17 = [MEMORY[0x277D3E9C8] posterUpdateLockScreenPosterWithImageAtURL:v12];
+    v17 = [MEMORY[0x277D3E9C8] posterUpdateLockScreenPosterWithImageAtURL:wallpaperCopy];
     [v15 addObject:v17];
   }
 
-  if (v8)
+  if (homeScreenCopy)
   {
     v18 = *DMCLogObjects();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -305,7 +305,7 @@ void __80__MDMWallpaperUtilities__verifyWallpaperConfigExistsWithUUID_completion
       _os_log_impl(&dword_2561F5000, v18, OS_LOG_TYPE_DEFAULT, "Will update home screen", buf, 2u);
     }
 
-    v19 = [MEMORY[0x277D3E9C8] posterUpdateHomeScreenPosterWithImageAtURL:v12];
+    v19 = [MEMORY[0x277D3E9C8] posterUpdateHomeScreenPosterWithImageAtURL:wallpaperCopy];
     v20 = [MEMORY[0x277D3E9C8] posterUpdateHomeScreenAppearance:4];
     [v15 addObject:v19];
     [v15 addObject:v20];
@@ -315,28 +315,28 @@ void __80__MDMWallpaperUtilities__verifyWallpaperConfigExistsWithUUID_completion
   v22[1] = 3221225472;
   v22[2] = __110__MDMWallpaperUtilities__setWallpaper_forConfigurationWithUUID_setLockScreen_setHomeScreen_completionHandler___block_invoke;
   v22[3] = &unk_27982BD00;
-  v23 = v14;
-  v21 = v14;
-  [(MDMWallpaperUtilities *)self _updateWallpaperConfiguraitonWithUUID:v13 updates:v15 retryCount:2 completionHandler:v22];
+  v23 = handlerCopy;
+  v21 = handlerCopy;
+  [(MDMWallpaperUtilities *)self _updateWallpaperConfiguraitonWithUUID:dCopy updates:v15 retryCount:2 completionHandler:v22];
 }
 
-- (void)_updateWallpaperConfiguraitonWithUUID:(id)a3 updates:(id)a4 retryCount:(unint64_t)a5 completionHandler:(id)a6
+- (void)_updateWallpaperConfiguraitonWithUUID:(id)d updates:(id)updates retryCount:(unint64_t)count completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  updatesCopy = updates;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __100__MDMWallpaperUtilities__updateWallpaperConfiguraitonWithUUID_updates_retryCount_completionHandler___block_invoke;
   v16[3] = &unk_27982D658;
-  v19 = v12;
-  v20 = a5;
+  v19 = handlerCopy;
+  countCopy = count;
   v16[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v17 = dCopy;
+  v18 = updatesCopy;
+  v13 = handlerCopy;
+  v14 = updatesCopy;
+  v15 = dCopy;
   [(MDMWallpaperUtilities *)self _updateWallpaperConfiguraitonWithUUID:v15 updates:v14 completionHandler:v16];
 }
 
@@ -400,22 +400,22 @@ uint64_t __100__MDMWallpaperUtilities__updateWallpaperConfiguraitonWithUUID_upda
   return [*(a1 + 32) _updateWallpaperConfiguraitonWithUUID:*(a1 + 40) updates:*(a1 + 48) retryCount:*(a1 + 64) - 1 completionHandler:*(a1 + 56)];
 }
 
-- (void)_updateWallpaperConfiguraitonWithUUID:(id)a3 updates:(id)a4 completionHandler:(id)a5
+- (void)_updateWallpaperConfiguraitonWithUUID:(id)d updates:(id)updates completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && [v9 count])
+  dCopy = d;
+  updatesCopy = updates;
+  handlerCopy = handler;
+  if (dCopy && [updatesCopy count])
   {
     objc_initWeak(&location, self);
-    v11 = [(MDMWallpaperUtilities *)self posterService];
+    posterService = [(MDMWallpaperUtilities *)self posterService];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __89__MDMWallpaperUtilities__updateWallpaperConfiguraitonWithUUID_updates_completionHandler___block_invoke;
     v12[3] = &unk_27982D680;
     objc_copyWeak(&v14, &location);
-    v13 = v10;
-    [v11 updatePosterConfigurationMatchingUUID:v8 updates:v9 completion:v12];
+    v13 = handlerCopy;
+    [posterService updatePosterConfigurationMatchingUUID:dCopy updates:updatesCopy completion:v12];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -423,7 +423,7 @@ uint64_t __100__MDMWallpaperUtilities__updateWallpaperConfiguraitonWithUUID_upda
 
   else
   {
-    (*(v10 + 2))(v10, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -548,15 +548,15 @@ LABEL_7:
   return externalPosterService;
 }
 
-- (id)_storeImageToTempDirectory:(id)a3
+- (id)_storeImageToTempDirectory:(id)directory
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  directoryCopy = directory;
   v4 = NSTemporaryDirectory();
   v5 = [v4 stringByAppendingPathComponent:@"MDMWallpaper.png"];
 
   v6 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v5];
-  v7 = UIImagePNGRepresentation(v3);
+  v7 = UIImagePNGRepresentation(directoryCopy);
 
   v17 = 0;
   v8 = [v7 writeToURL:v6 options:1 error:&v17];
@@ -603,13 +603,13 @@ LABEL_7:
   return v6;
 }
 
-- (void)_removeImageFromURL:(id)a3
+- (void)_removeImageFromURL:(id)l
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v8 = 0;
-  [v4 removeItemAtURL:v3 error:&v8];
+  [defaultManager removeItemAtURL:lCopy error:&v8];
   v5 = v8;
 
   if (v5)
@@ -618,7 +618,7 @@ LABEL_7:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v10 = v3;
+      v10 = lCopy;
       _os_log_impl(&dword_2561F5000, v6, OS_LOG_TYPE_ERROR, "Failed to remove image from URL with error: %{public}@", buf, 0xCu);
     }
   }

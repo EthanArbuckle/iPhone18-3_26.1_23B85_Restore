@@ -1,23 +1,23 @@
 @interface SHManagedSessionWrapperDelegate
 - (_TtC9ShazamKit31SHManagedSessionWrapperDelegate)init;
-- (void)didCalculateSpectralData:(id)a3;
-- (void)finishedManagedSession:(id)a3;
+- (void)didCalculateSpectralData:(id)data;
+- (void)finishedManagedSession:(id)session;
 @end
 
 @implementation SHManagedSessionWrapperDelegate
 
-- (void)finishedManagedSession:(id)a3
+- (void)finishedManagedSession:(id)session
 {
-  v4 = a3;
-  v5 = self;
+  sessionCopy = session;
+  selfCopy = self;
   sub_230F7FEF4();
 }
 
-- (void)didCalculateSpectralData:(id)a3
+- (void)didCalculateSpectralData:(id)data
 {
   sub_230F7FE60();
   v4 = sub_230FDB7FC();
-  v5 = self;
+  selfCopy = self;
   sub_230F7E6C4(v4);
 }
 

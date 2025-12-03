@@ -1,13 +1,13 @@
 @interface HRAccountsTableViewController
 - (HRAccountsTableViewController)init;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_hideLoadingIndicator;
 - (void)_reloadAccounts;
 - (void)_showLoadingIndicator;
-- (void)clinicalAccountStore:(id)a3 accountDidChange:(id)a4 changeType:(int64_t)a5;
-- (void)setAccounts:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)clinicalAccountStore:(id)store accountDidChange:(id)change changeType:(int64_t)type;
+- (void)setAccounts:(id)accounts;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -21,13 +21,13 @@
   if (v2)
   {
     v3 = +[HRProfileManager sharedInstance];
-    v4 = [v3 currentProfile];
+    currentProfile = [v3 currentProfile];
     profile = v2->_profile;
-    v2->_profile = v4;
+    v2->_profile = currentProfile;
 
     v6 = objc_alloc(MEMORY[0x1E69A3F10]);
-    v7 = [(HRProfile *)v2->_profile healthStore];
-    v8 = [v6 initWithHealthStore:v7];
+    healthStore = [(HRProfile *)v2->_profile healthStore];
+    v8 = [v6 initWithHealthStore:healthStore];
     clinicalAccountStore = v2->_clinicalAccountStore;
     v2->_clinicalAccountStore = v8;
 
@@ -47,38 +47,38 @@
   v3 = HRLocalizedString(@"HEALTH_RECORDS_TITLE");
   [(HRAccountsTableViewController *)self setTitle:v3];
 
-  v4 = [(HRAccountsTableViewController *)self tableView];
-  [v4 _setSectionCornerRadius:*MEMORY[0x1E69A40E0]];
+  tableView = [(HRAccountsTableViewController *)self tableView];
+  [tableView _setSectionCornerRadius:*MEMORY[0x1E69A40E0]];
 
   v5 = *MEMORY[0x1E69A40D0];
-  v6 = [(HRAccountsTableViewController *)self tableView];
-  [v6 setRowHeight:v5];
+  tableView2 = [(HRAccountsTableViewController *)self tableView];
+  [tableView2 setRowHeight:v5];
 
-  v7 = [(HRAccountsTableViewController *)self tableView];
+  tableView3 = [(HRAccountsTableViewController *)self tableView];
   v8 = objc_opt_class();
   v9 = +[HRAccountTableViewCell reuseIdentifier];
-  [v7 registerClass:v8 forCellReuseIdentifier:v9];
+  [tableView3 registerClass:v8 forCellReuseIdentifier:v9];
 
   v10 = objc_alloc_init(HRContentStatusView);
   [(HRAccountsTableViewController *)self setLoadingView:v10];
 
   [(HRAccountsTableViewController *)self _reloadAccounts];
-  v11 = [(HRAccountsTableViewController *)self clinicalAccountStore];
-  [v11 addAccountStateChangeListener:self];
+  clinicalAccountStore = [(HRAccountsTableViewController *)self clinicalAccountStore];
+  [clinicalAccountStore addAccountStateChangeListener:self];
 }
 
 - (void)_reloadAccounts
 {
   objc_initWeak(&location, self);
   [(HRAccountsTableViewController *)self _showLoadingIndicator];
-  v3 = [(HRAccountsTableViewController *)self profile];
-  v4 = [v3 clinicalSourcesDataProvider];
+  profile = [(HRAccountsTableViewController *)self profile];
+  clinicalSourcesDataProvider = [profile clinicalSourcesDataProvider];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__HRAccountsTableViewController__reloadAccounts__block_invoke;
   v6[3] = &unk_1E83DCD58;
   objc_copyWeak(&v7, &location);
-  v5 = [v4 fetchAccountsForDisplayWithCompletion:v6];
+  v5 = [clinicalSourcesDataProvider fetchAccountsForDisplayWithCompletion:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -91,85 +91,85 @@ void __48__HRAccountsTableViewController__reloadAccounts__block_invoke(uint64_t 
   [WeakRetained setAccounts:v3];
 }
 
-- (void)setAccounts:(id)a3
+- (void)setAccounts:(id)accounts
 {
-  objc_storeStrong(&self->_accounts, a3);
+  objc_storeStrong(&self->_accounts, accounts);
   [(HRAccountsTableViewController *)self _hideLoadingIndicator];
-  v4 = [(HRAccountsTableViewController *)self tableView];
-  [v4 reloadData];
+  tableView = [(HRAccountsTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_showLoadingIndicator
 {
-  v3 = [(HRAccountsTableViewController *)self loadingView];
-  [v3 startAnimating];
+  loadingView = [(HRAccountsTableViewController *)self loadingView];
+  [loadingView startAnimating];
 
-  v4 = [(HRAccountsTableViewController *)self loadingView];
-  v5 = [(HRAccountsTableViewController *)self tableView];
-  [v5 setBackgroundView:v4];
+  loadingView2 = [(HRAccountsTableViewController *)self loadingView];
+  tableView = [(HRAccountsTableViewController *)self tableView];
+  [tableView setBackgroundView:loadingView2];
 
-  v6 = [(HRAccountsTableViewController *)self tableView];
-  [v6 setScrollEnabled:0];
+  tableView2 = [(HRAccountsTableViewController *)self tableView];
+  [tableView2 setScrollEnabled:0];
 }
 
 - (void)_hideLoadingIndicator
 {
-  v3 = [(HRAccountsTableViewController *)self loadingView];
-  [v3 stopAnimating];
+  loadingView = [(HRAccountsTableViewController *)self loadingView];
+  [loadingView stopAnimating];
 
-  v4 = [(HRAccountsTableViewController *)self tableView];
-  [v4 setBackgroundView:0];
+  tableView = [(HRAccountsTableViewController *)self tableView];
+  [tableView setBackgroundView:0];
 
-  v5 = [(HRAccountsTableViewController *)self tableView];
-  [v5 setScrollEnabled:1];
+  tableView2 = [(HRAccountsTableViewController *)self tableView];
+  [tableView2 setScrollEnabled:1];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(HRAccountsTableViewController *)self accounts:a3];
+  v4 = [(HRAccountsTableViewController *)self accounts:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[HRAccountTableViewCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [(HRAccountsTableViewController *)self accounts];
-  v11 = [v6 row];
+  accounts = [(HRAccountsTableViewController *)self accounts];
+  v11 = [pathCopy row];
 
-  v12 = [v10 objectAtIndexedSubscript:v11];
+  v12 = [accounts objectAtIndexedSubscript:v11];
 
-  v13 = [(HRAccountsTableViewController *)self profile];
-  v14 = [v13 clinicalSourcesDataProvider];
-  [v9 configureWithAccount:v12 dataProvider:v14];
+  profile = [(HRAccountsTableViewController *)self profile];
+  clinicalSourcesDataProvider = [profile clinicalSourcesDataProvider];
+  [v9 configureWithAccount:v12 dataProvider:clinicalSourcesDataProvider];
 
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [(HRAccountsTableViewController *)self accounts];
-  v8 = [v6 row];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  accounts = [(HRAccountsTableViewController *)self accounts];
+  v8 = [pathCopy row];
 
-  v14 = [v7 objectAtIndexedSubscript:v8];
+  v14 = [accounts objectAtIndexedSubscript:v8];
 
   v9 = [HRMedicalRecordTimelineViewController alloc];
-  v10 = [(HRAccountsTableViewController *)self profile];
-  v11 = [v14 identifier];
-  v12 = [(HRMedicalRecordTimelineViewController *)v9 initWithProfile:v10 accountId:v11];
+  profile = [(HRAccountsTableViewController *)self profile];
+  identifier = [v14 identifier];
+  v12 = [(HRMedicalRecordTimelineViewController *)v9 initWithProfile:profile accountId:identifier];
 
-  v13 = [(HRAccountsTableViewController *)self navigationController];
-  [v13 hk_showViewController:v12 animated:1];
+  navigationController = [(HRAccountsTableViewController *)self navigationController];
+  [navigationController hk_showViewController:v12 animated:1];
 }
 
-- (void)clinicalAccountStore:(id)a3 accountDidChange:(id)a4 changeType:(int64_t)a5
+- (void)clinicalAccountStore:(id)store accountDidChange:(id)change changeType:(int64_t)type
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

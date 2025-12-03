@@ -1,25 +1,25 @@
 @interface CADSpotlightLogger
-+ (void)_logWithFormat:(id)a3 args:(char *)a4 prependErrorMarker:(BOOL)a5;
++ (void)_logWithFormat:(id)format args:(char *)args prependErrorMarker:(BOOL)marker;
 @end
 
 @implementation CADSpotlightLogger
 
-+ (void)_logWithFormat:(id)a3 args:(char *)a4 prependErrorMarker:(BOOL)a5
++ (void)_logWithFormat:(id)format args:(char *)args prependErrorMarker:(BOOL)marker
 {
-  v5 = a5;
-  v7 = a3;
+  markerCopy = marker;
+  formatCopy = format;
   if (_logWithFormat_args_prependErrorMarker__onceToken != -1)
   {
     +[CADSpotlightLogger _logWithFormat:args:prependErrorMarker:];
   }
 
-  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v7 arguments:a4];
+  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:formatCopy arguments:args];
   v9 = _logWithFormat_args_prependErrorMarker__dateFormatter;
   v10 = [MEMORY[0x277CBEAA8] now];
   v11 = [v9 stringFromDate:v10];
 
   v12 = objc_alloc(MEMORY[0x277CCACA8]);
-  if (v5)
+  if (markerCopy)
   {
     v13 = @"%@ SPOTLIGHT_ERROR %@\n";
   }

@@ -7,15 +7,15 @@
 
 - (void)resetScrollingState
 {
-  v2 = [objc_opt_self() defaultCenter];
-  v3 = v2;
+  defaultCenter = [objc_opt_self() defaultCenter];
+  v3 = defaultCenter;
   if (qword_27E2ECEA8 != -1)
   {
     swift_once();
-    v2 = v3;
+    defaultCenter = v3;
   }
 
-  [v2 postNotificationName:qword_27E2F3C60 object:0];
+  [defaultCenter postNotificationName:qword_27E2F3C60 object:0];
 }
 
 - (_TtC22AccessibilityReadingUI18ScrollTimerHandler)init

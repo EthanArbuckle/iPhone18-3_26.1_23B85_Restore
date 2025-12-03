@@ -2,7 +2,7 @@
 - (AMSUICommonTextViewDelegate)ams_delegate;
 - (void)_centerTextIfNeeded;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation AMSUICommonTextView
@@ -15,26 +15,26 @@
   [(AMSUICommonTextView *)self _centerTextIfNeeded];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = AMSUICommonTextView;
-  [(AMSUICommonTextView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(AMSUICommonTextView *)self ams_delegate];
+  [(AMSUICommonTextView *)&v9 traitCollectionDidChange:changeCopy];
+  ams_delegate = [(AMSUICommonTextView *)self ams_delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_4;
   }
 
-  v6 = [(AMSUICommonTextView *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  v8 = [v4 preferredContentSizeCategory];
+  traitCollection = [(AMSUICommonTextView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v7 != v8)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
-    v5 = [(AMSUICommonTextView *)self ams_delegate];
-    [v5 ams_textViewDidUpdatePreferredContentSizeCategory:self];
+    ams_delegate = [(AMSUICommonTextView *)self ams_delegate];
+    [ams_delegate ams_textViewDidUpdatePreferredContentSizeCategory:self];
 LABEL_4:
   }
 }

@@ -1,22 +1,22 @@
 @interface AXInvertColors_PhotosUI
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_PhotosUI
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PHLivePhotoView"];
-  [v3 validateClass:@"PHAssetCreationRequest" hasClassMethod:@"creationRequestForAssetFromScreenshotImage:" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PHLivePhotoView"];
+  [validationsCopy validateClass:@"PHAssetCreationRequest" hasClassMethod:@"creationRequestForAssetFromScreenshotImage:" withFullSignature:{"@", 0}];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"PHLivePhotoViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"PHAssetCreationRequestInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"PHLivePhotoViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"PHAssetCreationRequestInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

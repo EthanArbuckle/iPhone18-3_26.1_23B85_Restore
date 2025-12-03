@@ -1,8 +1,8 @@
 @interface FlyoverGlyphView
-- (FlyoverGlyphView)initWithCoder:(id)a3;
-- (FlyoverGlyphView)initWithFrame:(CGRect)a3;
+- (FlyoverGlyphView)initWithCoder:(id)coder;
+- (FlyoverGlyphView)initWithFrame:(CGRect)frame;
 - (double)stopAnimating;
-- (void)applicationWillEnterForeground:(id)a3;
+- (void)applicationWillEnterForeground:(id)foreground;
 - (void)gv_commonInit;
 - (void)layoutSubviews;
 - (void)startAnimating;
@@ -10,13 +10,13 @@
 
 @implementation FlyoverGlyphView
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   if ([(FlyoverGlyphView *)self isAnimating])
   {
     frameList = self->_frameList;
-    v5 = [(FlyoverGlyphFrameList *)frameList loopFrameRange];
-    v8 = sub_100C5662C(frameList, v5, v6);
+    loopFrameRange = [(FlyoverGlyphFrameList *)frameList loopFrameRange];
+    v8 = sub_100C5662C(frameList, loopFrameRange, v6);
     [v8 setBeginTime:self->_introDuration + self->_animationStartTime];
     LODWORD(v7) = 2139095040;
     [v8 setRepeatCount:v7];
@@ -33,8 +33,8 @@
     if (v4 >= 1.0)
     {
       frameList = self->_frameList;
-      v6 = [(FlyoverGlyphFrameList *)frameList loopFrameRange];
-      v8 = sub_100C5662C(frameList, v6, v7);
+      loopFrameRange = [(FlyoverGlyphFrameList *)frameList loopFrameRange];
+      v8 = sub_100C5662C(frameList, loopFrameRange, v7);
       [v8 setBeginTime:self->_introDuration + self->_animationStartTime];
       *&v9 = v4;
       [v8 setRepeatCount:v9];
@@ -47,8 +47,8 @@
     }
 
     v10 = self->_frameList;
-    v11 = [(FlyoverGlyphFrameList *)v10 outroFrameRange];
-    v13 = sub_100C5662C(v10, v11, v12);
+    outroFrameRange = [(FlyoverGlyphFrameList *)v10 outroFrameRange];
+    v13 = sub_100C5662C(v10, outroFrameRange, v12);
     [v13 setBeginTime:self->_introDuration + self->_animationStartTime + self->_loopDuration * v4];
     [(CALayer *)self->_imageLayer addAnimation:v13 forKey:@"outro"];
     [v13 beginTime];
@@ -75,15 +75,15 @@
     {
       self->_animationStartTime = v3;
       frameList = self->_frameList;
-      v7 = [(FlyoverGlyphFrameList *)frameList introFrameRange];
-      v9 = sub_100C5662C(frameList, v7, v8);
+      introFrameRange = [(FlyoverGlyphFrameList *)frameList introFrameRange];
+      v9 = sub_100C5662C(frameList, introFrameRange, v8);
       [v9 setBeginTime:self->_animationStartTime];
       [(CALayer *)self->_imageLayer addAnimation:v9 forKey:@"intro"];
     }
 
     v10 = self->_frameList;
-    v11 = [(FlyoverGlyphFrameList *)v10 loopFrameRange];
-    v14 = sub_100C5662C(v10, v11, v12);
+    loopFrameRange = [(FlyoverGlyphFrameList *)v10 loopFrameRange];
+    v14 = sub_100C5662C(v10, loopFrameRange, v12);
     [v14 setBeginTime:self->_introDuration + self->_animationStartTime];
     LODWORD(v13) = 2139095040;
     [v14 setRepeatCount:v13];
@@ -110,11 +110,11 @@
   [(CALayer *)wrapperLayer setPosition:MidX, MidY];
 }
 
-- (FlyoverGlyphView)initWithFrame:(CGRect)a3
+- (FlyoverGlyphView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = FlyoverGlyphView;
-  v3 = [(FlyoverGlyphView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FlyoverGlyphView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -125,11 +125,11 @@
   return v4;
 }
 
-- (FlyoverGlyphView)initWithCoder:(id)a3
+- (FlyoverGlyphView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = FlyoverGlyphView;
-  v3 = [(FlyoverGlyphView *)&v7 initWithCoder:a3];
+  v3 = [(FlyoverGlyphView *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -163,8 +163,8 @@
 
     [(CALayer *)self->_wrapperLayer setAllowsGroupBlending:0];
     [(CALayer *)self->_wrapperLayer setBounds:0.0, 0.0, 50.0, 50.0];
-    v12 = [(FlyoverGlyphView *)self layer];
-    [v12 addSublayer:self->_wrapperLayer];
+    layer = [(FlyoverGlyphView *)self layer];
+    [layer addSublayer:self->_wrapperLayer];
 
     v13 = +[CALayer layer];
     imageLayer = self->_imageLayer;

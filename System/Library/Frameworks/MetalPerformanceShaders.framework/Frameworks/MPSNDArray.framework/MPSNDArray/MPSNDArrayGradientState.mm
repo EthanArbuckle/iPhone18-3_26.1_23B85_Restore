@@ -1,16 +1,16 @@
 @interface MPSNDArrayGradientState
-- (MPSNDArrayGradientState)initWithSourceCount:(unint64_t)a3;
-- (id)destinationArrayDescriptorForSourceArrays:(id)a3 sourceGradientIndex:(unint64_t)a4;
+- (MPSNDArrayGradientState)initWithSourceCount:(unint64_t)count;
+- (id)destinationArrayDescriptorForSourceArrays:(id)arrays sourceGradientIndex:(unint64_t)index;
 - (void)dealloc;
 @end
 
 @implementation MPSNDArrayGradientState
 
-- (MPSNDArrayGradientState)initWithSourceCount:(unint64_t)a3
+- (MPSNDArrayGradientState)initWithSourceCount:(unint64_t)count
 {
-  if (a3)
+  if (count)
   {
-    is_mul_ok(a3, 0x50uLL);
+    is_mul_ok(count, 0x50uLL);
     operator new[]();
   }
 
@@ -25,9 +25,9 @@
   return 0;
 }
 
-- (id)destinationArrayDescriptorForSourceArrays:(id)a3 sourceGradientIndex:(unint64_t)a4
+- (id)destinationArrayDescriptorForSourceArrays:(id)arrays sourceGradientIndex:(unint64_t)index
 {
-  v4 = [a3 objectAtIndexedSubscript:a4];
+  v4 = [arrays objectAtIndexedSubscript:index];
 
   return [v4 descriptor];
 }

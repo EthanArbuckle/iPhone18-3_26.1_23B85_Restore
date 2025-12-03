@@ -1,34 +1,34 @@
 @interface CNAvatarPosterCarouselEditingContext
-+ (CNAvatarPosterCarouselEditingContext)contextWithExistingPoster:(id)a3 existingAvatar:(id)a4;
++ (CNAvatarPosterCarouselEditingContext)contextWithExistingPoster:(id)poster existingAvatar:(id)avatar;
 + (id)contextForCreateNew;
-- (CNAvatarPosterCarouselEditingContext)initWithExistingPoster:(id)a3 existingAvatar:(id)a4;
-- (void)setPendingPosterEdit:(id)a3;
+- (CNAvatarPosterCarouselEditingContext)initWithExistingPoster:(id)poster existingAvatar:(id)avatar;
+- (void)setPendingPosterEdit:(id)edit;
 @end
 
 @implementation CNAvatarPosterCarouselEditingContext
 
-- (void)setPendingPosterEdit:(id)a3
+- (void)setPendingPosterEdit:(id)edit
 {
-  v5 = a3;
+  editCopy = edit;
   p_pendingPosterEdit = &self->_pendingPosterEdit;
-  if (self->_pendingPosterEdit != v5)
+  if (self->_pendingPosterEdit != editCopy)
   {
-    v9 = v5;
-    objc_storeStrong(p_pendingPosterEdit, a3);
-    v7 = [(CNAvatarPosterCarouselPendingPosterEdit *)v9 pendingWallpaper];
+    v9 = editCopy;
+    objc_storeStrong(p_pendingPosterEdit, edit);
+    pendingWallpaper = [(CNAvatarPosterCarouselPendingPosterEdit *)v9 pendingWallpaper];
     pendingWallpaperFuture = self->_pendingWallpaperFuture;
-    self->_pendingWallpaperFuture = v7;
+    self->_pendingWallpaperFuture = pendingWallpaper;
 
-    v5 = v9;
+    editCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](p_pendingPosterEdit, v5);
+  MEMORY[0x1EEE66BB8](p_pendingPosterEdit, editCopy);
 }
 
-- (CNAvatarPosterCarouselEditingContext)initWithExistingPoster:(id)a3 existingAvatar:(id)a4
+- (CNAvatarPosterCarouselEditingContext)initWithExistingPoster:(id)poster existingAvatar:(id)avatar
 {
-  v7 = a3;
-  v8 = a4;
+  posterCopy = poster;
+  avatarCopy = avatar;
   v13.receiver = self;
   v13.super_class = CNAvatarPosterCarouselEditingContext;
   v9 = [(CNAvatarPosterCarouselEditingContext *)&v13 init];
@@ -36,8 +36,8 @@
   if (v9)
   {
     v9->_isEditingExisting = 1;
-    objc_storeStrong(&v9->_existingAvatar, a4);
-    objc_storeStrong(&v10->_existingPoster, a3);
+    objc_storeStrong(&v9->_existingAvatar, avatar);
+    objc_storeStrong(&v10->_existingPoster, poster);
     v11 = v10;
   }
 
@@ -46,16 +46,16 @@
 
 + (id)contextForCreateNew
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (CNAvatarPosterCarouselEditingContext)contextWithExistingPoster:(id)a3 existingAvatar:(id)a4
++ (CNAvatarPosterCarouselEditingContext)contextWithExistingPoster:(id)poster existingAvatar:(id)avatar
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithExistingPoster:v7 existingAvatar:v6];
+  avatarCopy = avatar;
+  posterCopy = poster;
+  v8 = [[self alloc] initWithExistingPoster:posterCopy existingAvatar:avatarCopy];
 
   return v8;
 }

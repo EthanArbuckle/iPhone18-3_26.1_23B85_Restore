@@ -1,36 +1,36 @@
 @interface PKAccountUserCollection
-- (BOOL)_isEqualToAccountUserCollection:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKAccountUserCollection)initWithAccountUsers:(id)a3;
-- (PKAccountUserCollection)initWithCoder:(id)a3;
-- (id)accountUserForTransaction:(id)a3;
-- (id)accountUserWithAltDSID:(id)a3;
+- (BOOL)_isEqualToAccountUserCollection:(id)collection;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountUserCollection)initWithAccountUsers:(id)users;
+- (PKAccountUserCollection)initWithCoder:(id)coder;
+- (id)accountUserForTransaction:(id)transaction;
+- (id)accountUserWithAltDSID:(id)d;
 - (id)description;
 - (id)transactionSourceIdentifiers;
 - (unint64_t)hash;
-- (void)_updateWithAccountUsers:(id)a3;
+- (void)_updateWithAccountUsers:(id)users;
 @end
 
 @implementation PKAccountUserCollection
 
-- (PKAccountUserCollection)initWithAccountUsers:(id)a3
+- (PKAccountUserCollection)initWithAccountUsers:(id)users
 {
-  v4 = a3;
+  usersCopy = users;
   v8.receiver = self;
   v8.super_class = PKAccountUserCollection;
   v5 = [(PKAccountUserCollection *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PKAccountUserCollection *)v5 _updateWithAccountUsers:v4];
+    [(PKAccountUserCollection *)v5 _updateWithAccountUsers:usersCopy];
   }
 
   return v6;
 }
 
-- (PKAccountUserCollection)initWithCoder:(id)a3
+- (PKAccountUserCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKAccountUserCollection;
   v5 = [(PKAccountUserCollection *)&v11 init];
@@ -39,7 +39,7 @@
     v6 = objc_alloc(MEMORY[0x1E695DFD8]);
     v7 = objc_opt_class();
     v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"accountUsers"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"accountUsers"];
 
     [(PKAccountUserCollection *)v5 _updateWithAccountUsers:v9];
   }
@@ -47,32 +47,32 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountUserCollection *)self _isEqualToAccountUserCollection:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountUserCollection *)self _isEqualToAccountUserCollection:v5];
   }
 
   return v6;
 }
 
-- (BOOL)_isEqualToAccountUserCollection:(id)a3
+- (BOOL)_isEqualToAccountUserCollection:(id)collection
 {
-  if (!a3)
+  if (!collection)
   {
     return 0;
   }
 
   accountUsers = self->_accountUsers;
-  v4 = *(a3 + 3);
+  v4 = *(collection + 3);
   if (accountUsers)
   {
     v5 = v4 == 0;
@@ -103,9 +103,9 @@
   return v4;
 }
 
-- (id)accountUserWithAltDSID:(id)a3
+- (id)accountUserWithAltDSID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = [(NSDictionary *)self->_accountUsersByAltDSID objectForKeyedSubscript:?];
   }
@@ -118,12 +118,12 @@
   return v4;
 }
 
-- (id)accountUserForTransaction:(id)a3
+- (id)accountUserForTransaction:(id)transaction
 {
-  v4 = [a3 altDSID];
-  if (v4)
+  altDSID = [transaction altDSID];
+  if (altDSID)
   {
-    [(PKAccountUserCollection *)self accountUserWithAltDSID:v4];
+    [(PKAccountUserCollection *)self accountUserWithAltDSID:altDSID];
   }
 
   else
@@ -183,10 +183,10 @@ uint64_t __72__PKAccountUserCollection_activeAccountUsersExcludingCurrentAccount
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) transactionSourceIdentifiers];
-        if (v9)
+        transactionSourceIdentifiers = [*(*(&v12 + 1) + 8 * i) transactionSourceIdentifiers];
+        if (transactionSourceIdentifiers)
         {
-          [v3 unionSet:v9];
+          [v3 unionSet:transactionSourceIdentifiers];
         }
       }
 
@@ -210,25 +210,25 @@ uint64_t __72__PKAccountUserCollection_activeAccountUsersExcludingCurrentAccount
   return v3;
 }
 
-- (void)_updateWithAccountUsers:(id)a3
+- (void)_updateWithAccountUsers:(id)users
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  usersCopy = users;
   accountUsers = self->_accountUsers;
-  if (v4 && accountUsers)
+  if (usersCopy && accountUsers)
   {
-    if (([(NSSet *)accountUsers isEqual:v4]& 1) != 0)
+    if (([(NSSet *)accountUsers isEqual:usersCopy]& 1) != 0)
     {
       goto LABEL_18;
     }
   }
 
-  else if (accountUsers == v4)
+  else if (accountUsers == usersCopy)
   {
     goto LABEL_18;
   }
 
-  v6 = [(NSSet *)v4 copy];
+  v6 = [(NSSet *)usersCopy copy];
   v7 = self->_accountUsers;
   self->_accountUsers = v6;
 
@@ -237,7 +237,7 @@ uint64_t __72__PKAccountUserCollection_activeAccountUsersExcludingCurrentAccount
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v4;
+  v9 = usersCopy;
   v10 = [(NSSet *)v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
@@ -253,10 +253,10 @@ uint64_t __72__PKAccountUserCollection_activeAccountUsersExcludingCurrentAccount
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 altDSID];
-        if (v15)
+        altDSID = [v14 altDSID];
+        if (altDSID)
         {
-          [v8 setObject:v14 forKeyedSubscript:v15];
+          [v8 setObject:v14 forKeyedSubscript:altDSID];
         }
       }
 

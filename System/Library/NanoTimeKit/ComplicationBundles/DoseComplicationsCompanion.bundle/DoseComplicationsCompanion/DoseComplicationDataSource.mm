@@ -1,12 +1,12 @@
 @interface DoseComplicationDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
 + (id)formatter;
 + (id)localizedAppName;
 + (id)localizedComplicationName;
 - (id)alwaysOnTemplate;
 - (id)currentSwitcherTemplate;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
-- (void)getSupportedTimeTravelDirectionsWithHandler:(id)a3;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
+- (void)getSupportedTimeTravelDirectionsWithHandler:(id)handler;
 @end
 
 @implementation DoseComplicationDataSource
@@ -43,19 +43,19 @@
   return v5;
 }
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
-  v6 = a4;
-  v7 = [v6 nrDevice];
-  if (v7 && (v8 = v7, v9 = [[NSUUID alloc] initWithUUIDString:@"F5C2DAD0-38FB-4B3B-86D3-B264F4F8CBDA"], v10 = objc_msgSend(v6, "supportsCapability:", v9), v9, v8, !v10))
+  deviceCopy = device;
+  nrDevice = [deviceCopy nrDevice];
+  if (nrDevice && (v8 = nrDevice, v9 = [[NSUUID alloc] initWithUUIDString:@"F5C2DAD0-38FB-4B3B-86D3-B264F4F8CBDA"], v10 = objc_msgSend(deviceCopy, "supportsCapability:", v9), v9, v8, !v10))
   {
     v12 = 0;
   }
 
   else
   {
-    v11 = [a1 formatter];
-    v12 = [v11 supportsFamily:a3 forDevice:v6];
+    formatter = [self formatter];
+    v12 = [formatter supportsFamily:family forDevice:deviceCopy];
   }
 
   return v12;
@@ -63,10 +63,10 @@
 
 - (id)currentSwitcherTemplate
 {
-  v3 = [objc_opt_class() formatter];
-  v4 = [(DoseComplicationDataSource *)self family];
-  v5 = [(DoseComplicationDataSource *)self device];
-  v6 = [v3 switcherTemplateWithFamily:v4 forDevice:v5];
+  formatter = [objc_opt_class() formatter];
+  family = [(DoseComplicationDataSource *)self family];
+  device = [(DoseComplicationDataSource *)self device];
+  v6 = [formatter switcherTemplateWithFamily:family forDevice:device];
 
   return v6;
 }
@@ -74,59 +74,59 @@
 - (id)alwaysOnTemplate
 {
   v3 = +[HUNoiseSettings sharedInstance];
-  v4 = [v3 onboardingCompleted];
+  onboardingCompleted = [v3 onboardingCompleted];
 
-  v5 = [objc_opt_class() formatter];
-  v6 = [(DoseComplicationDataSource *)self family];
-  v7 = [(DoseComplicationDataSource *)self device];
-  if (v4)
+  formatter = [objc_opt_class() formatter];
+  family = [(DoseComplicationDataSource *)self family];
+  device = [(DoseComplicationDataSource *)self device];
+  if (onboardingCompleted)
   {
-    [v5 alwaysOnTemplateWithFamily:v6 forDevice:v7];
+    [formatter alwaysOnTemplateWithFamily:family forDevice:device];
   }
 
   else
   {
-    [v5 setupNoiseTemplateWithFamily:v6 forDevice:v7];
+    [formatter setupNoiseTemplateWithFamily:family forDevice:device];
   }
   v8 = ;
 
   return v8;
 }
 
-- (void)getSupportedTimeTravelDirectionsWithHandler:(id)a3
+- (void)getSupportedTimeTravelDirectionsWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    v4 = a3;
+    handlerCopy = handler;
     v5 = +[HUNoiseSettings sharedInstance];
-    v6 = [v5 onboardingCompleted];
+    onboardingCompleted = [v5 onboardingCompleted];
 
-    v7 = [objc_opt_class() formatter];
-    v8 = [(DoseComplicationDataSource *)self family];
-    v9 = [(DoseComplicationDataSource *)self device];
-    if (v6)
+    formatter = [objc_opt_class() formatter];
+    family = [(DoseComplicationDataSource *)self family];
+    device = [(DoseComplicationDataSource *)self device];
+    if (onboardingCompleted)
     {
-      [v7 formattedTemplateWithFamily:v8 forDevice:v9];
+      [formatter formattedTemplateWithFamily:family forDevice:device];
     }
 
     else
     {
-      [v7 setupNoiseTemplateWithFamily:v8 forDevice:v9];
+      [formatter setupNoiseTemplateWithFamily:family forDevice:device];
     }
     v12 = ;
 
     v10 = +[NSDate date];
     v11 = [CLKComplicationTimelineEntry entryWithDate:v10 complicationTemplate:v12];
 
-    v4[2](v4, v11);
+    handlerCopy[2](handlerCopy, v11);
   }
 }
 

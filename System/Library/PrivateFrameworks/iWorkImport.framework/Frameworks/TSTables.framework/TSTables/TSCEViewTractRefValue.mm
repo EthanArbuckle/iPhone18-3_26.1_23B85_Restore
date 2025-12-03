@@ -1,26 +1,26 @@
 @interface TSCEViewTractRefValue
-+ (id)viewTractRefValue:(id)a3;
-- (BOOL)asBoolean:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (TSCERichTextStorage)asRichTextStorage:(SEL)a3 functionSpec:(id)a4 argumentIndex:(id)a5 outError:(int)a6;
++ (id)viewTractRefValue:(id)value;
+- (BOOL)asBoolean:(id)boolean functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (TSCERichTextStorage)asRichTextStorage:(SEL)storage functionSpec:(id)spec argumentIndex:(id)index outError:(int)error;
 - (TSCEViewTractRefValue)init;
-- (TSCEViewTractRefValue)initWithViewTractRef:(id)a3;
-- (TSCEViewTractRefValue)initWithViewTractRef:(id)a3 format:(const TSCEFormat *)a4;
-- (char)deepType:(id)a3 outError:(id *)a4;
-- (id)asDate:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)asGrid:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 applyPreferredFormat:(BOOL)a6 outError:(id *)a7;
-- (id)asNumber:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)asRawString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)asString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)referredToValue:(id)a3;
+- (TSCEViewTractRefValue)initWithViewTractRef:(id)ref;
+- (TSCEViewTractRefValue)initWithViewTractRef:(id)ref format:(const TSCEFormat *)format;
+- (char)deepType:(id)type outError:(id *)error;
+- (id)asDate:(id)date functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)asGrid:(id)grid functionSpec:(id)spec argumentIndex:(int)index applyPreferredFormat:(BOOL)format outError:(id *)error;
+- (id)asNumber:(id)number functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)asRawString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)asString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)referredToValue:(id)value;
 @end
 
 @implementation TSCEViewTractRefValue
 
-+ (id)viewTractRefValue:(id)a3
++ (id)viewTractRefValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = [TSCEViewTractRefValue alloc];
-  v8 = objc_msgSend_initWithViewTractRef_(v4, v5, v3, v6, v7);
+  v8 = objc_msgSend_initWithViewTractRef_(v4, v5, valueCopy, v6, v7);
 
   return v8;
 }
@@ -37,7 +37,7 @@
   return objc_msgSend_initWithViewTractRef_format_(self, a2, 0, &v4, v2);
 }
 
-- (TSCEViewTractRefValue)initWithViewTractRef:(id)a3
+- (TSCEViewTractRefValue)initWithViewTractRef:(id)ref
 {
   v5 = 0;
   v6 = 0;
@@ -46,37 +46,37 @@
   v9 = 1;
   v10 = -50266102;
   v11 = 253;
-  return objc_msgSend_initWithViewTractRef_format_(self, a2, a3, &v5, v3);
+  return objc_msgSend_initWithViewTractRef_format_(self, a2, ref, &v5, v3);
 }
 
-- (TSCEViewTractRefValue)initWithViewTractRef:(id)a3 format:(const TSCEFormat *)a4
+- (TSCEViewTractRefValue)initWithViewTractRef:(id)ref format:(const TSCEFormat *)format
 {
-  v7 = a3;
+  refCopy = ref;
   v11.receiver = self;
   v11.super_class = TSCEViewTractRefValue;
-  v8 = [(TSCEValue *)&v11 initWithTSCEFormat:a4];
+  v8 = [(TSCEValue *)&v11 initWithTSCEFormat:format];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_viewTractRef, a3);
+    objc_storeStrong(&v8->_viewTractRef, ref);
   }
 
   return v9;
 }
 
-- (char)deepType:(id)a3 outError:(id *)a4
+- (char)deepType:(id)type outError:(id *)error
 {
-  v7 = objc_msgSend_referredToValue_(self, a2, a3, a4, v4);
+  v7 = objc_msgSend_referredToValue_(self, a2, type, error, v4);
   v14 = 0;
-  v10 = objc_msgSend_deepType_outError_(v7, v8, a3, &v14, v9);
+  v10 = objc_msgSend_deepType_outError_(v7, v8, type, &v14, v9);
   v11 = v14;
 
   if (v11)
   {
-    if (a4)
+    if (error)
     {
       v12 = v11;
-      *a4 = v11;
+      *error = v11;
     }
 
     v10 = 9;
@@ -85,20 +85,20 @@
   return v10;
 }
 
-- (id)asNumber:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asNumber:(id)number functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEViewTractRefValue asNumber:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEViewTractRefValue asNumber:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEViewTractRefValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 75, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_referredToValue_(self, a2, a3, a4, *&a5);
+  v22 = objc_msgSend_referredToValue_(self, a2, number, spec, *&index);
   if (objc_msgSend_nativeType(v22, v23, v24, v25, v26) == 17)
   {
     objc_msgSend_zero(TSCENumberValue, v27, v28, v29, v30);
@@ -106,27 +106,27 @@
 
   else
   {
-    objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v22, v27, a3, a4, v7, a6);
+    objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v22, v27, number, spec, v7, error);
   }
   v31 = ;
 
   return v31;
 }
 
-- (id)asDate:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asDate:(id)date functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEViewTractRefValue asDate:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEViewTractRefValue asDate:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEViewTractRefValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 90, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_referredToValue_(self, a2, a3, a4, *&a5);
+  v22 = objc_msgSend_referredToValue_(self, a2, date, spec, *&index);
   if (objc_msgSend_nativeType(v22, v23, v24, v25, v26) == 17)
   {
     v28 = 0;
@@ -134,36 +134,36 @@
 
   else
   {
-    v28 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v22, v27, a3, a4, v7, a6);
+    v28 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v22, v27, date, spec, v7, error);
   }
 
   return v28;
 }
 
-- (id)asString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEViewTractRefValue asString:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEViewTractRefValue asString:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEViewTractRefValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 105, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_referredToValue_(self, a2, a3, a4, *&a5);
+  v22 = objc_msgSend_referredToValue_(self, a2, string, spec, *&index);
   if (objc_msgSend_nativeType(v22, v23, v24, v25, v26) == 17)
   {
     v31.receiver = self;
     v31.super_class = TSCEViewTractRefValue;
-    v28 = [(TSCEValue *)&v31 asString:a3 functionSpec:a4 argumentIndex:v7 outError:a6];
+    v28 = [(TSCEValue *)&v31 asString:string functionSpec:spec argumentIndex:v7 outError:error];
   }
 
   else
   {
-    v28 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v22, v27, a3, a4, v7, a6);
+    v28 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v22, v27, string, spec, v7, error);
   }
 
   v29 = v28;
@@ -171,30 +171,30 @@
   return v29;
 }
 
-- (id)asRawString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asRawString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEViewTractRefValue asRawString:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEViewTractRefValue asRawString:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEViewTractRefValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 121, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_referredToValue_(self, a2, a3, a4, *&a5);
+  v22 = objc_msgSend_referredToValue_(self, a2, string, spec, *&index);
   if (objc_msgSend_nativeType(v22, v23, v24, v25, v26) == 17)
   {
     v31.receiver = self;
     v31.super_class = TSCEViewTractRefValue;
-    v28 = [(TSCEValue *)&v31 asRawString:a3 functionSpec:a4 argumentIndex:v7 outError:a6];
+    v28 = [(TSCEValue *)&v31 asRawString:string functionSpec:spec argumentIndex:v7 outError:error];
   }
 
   else
   {
-    v28 = objc_msgSend_asRawString_functionSpec_argumentIndex_outError_(v22, v27, a3, a4, v7, a6);
+    v28 = objc_msgSend_asRawString_functionSpec_argumentIndex_outError_(v22, v27, string, spec, v7, error);
   }
 
   v29 = v28;
@@ -202,30 +202,30 @@
   return v29;
 }
 
-- (TSCERichTextStorage)asRichTextStorage:(SEL)a3 functionSpec:(id)a4 argumentIndex:(id)a5 outError:(int)a6
+- (TSCERichTextStorage)asRichTextStorage:(SEL)storage functionSpec:(id)spec argumentIndex:(id)index outError:(int)error
 {
-  v8 = *&a6;
+  v8 = *&error;
   if (!a7)
   {
     v13 = MEMORY[0x277D81150];
-    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a3, "[TSCEViewTractRefValue asRichTextStorage:functionSpec:argumentIndex:outError:]", a5, *&a6);
+    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], storage, "[TSCEViewTractRefValue asRichTextStorage:functionSpec:argumentIndex:outError:]", index, *&error);
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEViewTractRefValue.mm", v16, v17);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v19, v14, v18, 137, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  v24 = objc_msgSend_referredToValue_(self, a3, a4, a5, *&a6);
+  v24 = objc_msgSend_referredToValue_(self, storage, spec, index, *&error);
   if (objc_msgSend_nativeType(v24, v25, v26, v27, v28) == 17)
   {
     v31.receiver = self;
     v31.super_class = TSCEViewTractRefValue;
-    [(TSCERichTextStorage *)&v31 asRichTextStorage:a4 functionSpec:a5 argumentIndex:v8 outError:a7];
+    [(TSCERichTextStorage *)&v31 asRichTextStorage:spec functionSpec:index argumentIndex:v8 outError:a7];
   }
 
   else if (v24)
   {
-    objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v24, v29, a4, a5, v8, a7);
+    objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v24, v29, spec, index, v8, a7);
   }
 
   else
@@ -238,20 +238,20 @@
   return result;
 }
 
-- (BOOL)asBoolean:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (BOOL)asBoolean:(id)boolean functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEViewTractRefValue asBoolean:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEViewTractRefValue asBoolean:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEViewTractRefValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 153, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_referredToValue_(self, a2, a3, a4, *&a5);
+  v22 = objc_msgSend_referredToValue_(self, a2, boolean, spec, *&index);
   if (objc_msgSend_nativeType(v22, v23, v24, v25, v26) == 17)
   {
     v30 = MEMORY[0x277D81150];
@@ -265,27 +265,27 @@
 
   else
   {
-    v41 = objc_msgSend_asBoolean_functionSpec_argumentIndex_outError_(v22, v27, a3, a4, v7, a6);
+    v41 = objc_msgSend_asBoolean_functionSpec_argumentIndex_outError_(v22, v27, boolean, spec, v7, error);
   }
 
   return v41;
 }
 
-- (id)asGrid:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 applyPreferredFormat:(BOOL)a6 outError:(id *)a7
+- (id)asGrid:(id)grid functionSpec:(id)spec argumentIndex:(int)index applyPreferredFormat:(BOOL)format outError:(id *)error
 {
-  v8 = a6;
-  v9 = *&a5;
-  if (!a7)
+  formatCopy = format;
+  v9 = *&index;
+  if (!error)
   {
     v13 = MEMORY[0x277D81150];
-    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEViewTractRefValue asGrid:functionSpec:argumentIndex:applyPreferredFormat:outError:]", a4, *&a5);
+    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEViewTractRefValue asGrid:functionSpec:argumentIndex:applyPreferredFormat:outError:]", spec, *&index);
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEViewTractRefValue.mm", v16, v17);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v19, v14, v18, 171, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  v24 = objc_msgSend_referredToValue_(self, a2, a3, a4, *&a5);
+  v24 = objc_msgSend_referredToValue_(self, a2, grid, spec, *&index);
   if (objc_msgSend_nativeType(v24, v25, v26, v27, v28) == 17)
   {
     v32 = MEMORY[0x277D81150];
@@ -296,12 +296,12 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v39, v40, v41, v42);
     v46.receiver = self;
     v46.super_class = TSCEViewTractRefValue;
-    v43 = [(TSCEValue *)&v46 asGrid:a3 functionSpec:a4 argumentIndex:v9 applyPreferredFormat:v8 outError:a7];
+    v43 = [(TSCEValue *)&v46 asGrid:grid functionSpec:spec argumentIndex:v9 applyPreferredFormat:formatCopy outError:error];
   }
 
   else
   {
-    v43 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v24, v29, a3, a4, v9, v8, a7);
+    v43 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v24, v29, grid, spec, v9, formatCopy, error);
   }
 
   v44 = v43;
@@ -309,19 +309,19 @@
   return v44;
 }
 
-- (id)referredToValue:(id)a3
+- (id)referredToValue:(id)value
 {
-  v38 = objc_msgSend_tableUID(self->_viewTractRef, a2, a3, v3, v4);
+  v38 = objc_msgSend_tableUID(self->_viewTractRef, a2, value, v3, v4);
   v39 = v7;
-  v11 = objc_msgSend_calcEngine(a3, v7, v8, v9, v10);
+  v11 = objc_msgSend_calcEngine(value, v7, v8, v9, v10);
   v15 = objc_msgSend_tableResolverForTableUID_(v11, v12, &v38, v13, v14);
 
   if (v15)
   {
     viewTractRef = self->_viewTractRef;
-    v21 = objc_msgSend_hidingActionMask(a3, v16, v17, v18, v19);
+    v21 = objc_msgSend_hidingActionMask(value, v16, v17, v18, v19);
     v37 = 0;
-    v26 = objc_msgSend_isForChartFormulas(a3, v22, v23, v24, v25);
+    v26 = objc_msgSend_isForChartFormulas(value, v22, v23, v24, v25);
     v28 = objc_msgSend_valuesForViewTractRef_hidingActionMask_outError_outGeometricPrecedents_forceHidingOfPivotFiltered_(v15, v27, viewTractRef, v21, &v37, 0, v26 ^ 1u);
     v29 = v37;
     if (v29)

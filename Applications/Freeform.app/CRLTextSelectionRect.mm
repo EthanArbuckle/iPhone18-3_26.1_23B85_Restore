@@ -2,22 +2,22 @@
 - (CGRect)rect;
 - (_TtC8Freeform20CRLTextSelectionRect)init;
 - (id)description;
-- (void)setWritingDirection:(int64_t)a3;
+- (void)setWritingDirection:(int64_t)direction;
 @end
 
 @implementation CRLTextSelectionRect
 
 - (id)description
 {
-  v1 = [a1 debugDescription];
+  v1 = [self debugDescription];
 
   return v1;
 }
 
-- (void)setWritingDirection:(int64_t)a3
+- (void)setWritingDirection:(int64_t)direction
 {
-  v4 = self;
-  *(&v4->super.super.isa + OBJC_IVAR____TtC8Freeform20CRLTextSelectionRect__writingDirection) = sub_1007260E4(a3);
+  selfCopy = self;
+  *(&selfCopy->super.super.isa + OBJC_IVAR____TtC8Freeform20CRLTextSelectionRect__writingDirection) = sub_1007260E4(direction);
 }
 
 - (CGRect)rect

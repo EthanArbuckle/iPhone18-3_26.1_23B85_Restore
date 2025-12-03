@@ -1,10 +1,10 @@
 @interface ImageSR
-+ (void)downloadMobileAssetWithCompletionHandler:(id)a3;
-- (BOOL)upscaleFrame:(__CVBuffer *)a3 destinationHiResFrame:(__CVBuffer *)a4;
-- (ImageSR)initWithUsage:(int64_t)a3 inputWidth:(unint64_t)a4 inputHeight:(unint64_t)a5 scaleFactor:(unint64_t)a6 useMPS:(BOOL)a7 outputSize:(CGSize)a8;
++ (void)downloadMobileAssetWithCompletionHandler:(id)handler;
+- (BOOL)upscaleFrame:(__CVBuffer *)frame destinationHiResFrame:(__CVBuffer *)resFrame;
+- (ImageSR)initWithUsage:(int64_t)usage inputWidth:(unint64_t)width inputHeight:(unint64_t)height scaleFactor:(unint64_t)factor useMPS:(BOOL)s outputSize:(CGSize)size;
 - (int64_t)allocateTemporalBuffers;
-- (void)VSRGetInputFrameSizeForUsage:(int64_t)a3 width:(unint64_t *)a4 height:(unint64_t *)a5;
-- (void)convertToRGB:(__CVBuffer *)a3 to:(__CVBuffer *)a4 withRGBFormat:(unsigned int)a5 rotate:(BOOL)a6;
+- (void)VSRGetInputFrameSizeForUsage:(int64_t)usage width:(unint64_t *)width height:(unint64_t *)height;
+- (void)convertToRGB:(__CVBuffer *)b to:(__CVBuffer *)to withRGBFormat:(unsigned int)format rotate:(BOOL)rotate;
 - (void)dealloc;
 - (void)releaseTemporalBuffers;
 @end
@@ -45,23 +45,23 @@
   [(ImageSR *)&v5 dealloc];
 }
 
-+ (void)downloadMobileAssetWithCompletionHandler:(id)a3
++ (void)downloadMobileAssetWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __52__ImageSR_downloadMobileAssetWithCompletionHandler___block_invoke;
   v5[3] = &unk_278F53658;
-  v6 = v3;
-  v4 = v3;
+  v6 = handlerCopy;
+  v4 = handlerCopy;
   [VEMobileAsset downloadMobileAssetType:@"com.apple.MobileAsset.VideoEffect" assetSpecifier:@"com.apple.videoeffect.ISR" forClientName:@"ImageSR" completionHandler:v5];
 }
 
-- (void)convertToRGB:(__CVBuffer *)a3 to:(__CVBuffer *)a4 withRGBFormat:(unsigned int)a5 rotate:(BOOL)a6
+- (void)convertToRGB:(__CVBuffer *)b to:(__CVBuffer *)to withRGBFormat:(unsigned int)format rotate:(BOOL)rotate
 {
-  if (a5 == 846624121)
+  if (format == 846624121)
   {
-    if (VTPixelTransferSessionTransferImage(self->_vtTransferSession, a3, a4) && (global_logLevel & 0x10) != 0)
+    if (VTPixelTransferSessionTransferImage(self->_vtTransferSession, b, to) && (global_logLevel & 0x10) != 0)
     {
       v9 = global_logger;
       if (os_log_type_enabled(global_logger, OS_LOG_TYPE_ERROR))
@@ -73,11 +73,11 @@
 
   else
   {
-    v10 = a6;
-    v11 = CMCopyDictionaryOfAttachments(0, a3, 1u);
-    CMSetAttachments(a4, v11, 1u);
+    rotateCopy = rotate;
+    v11 = CMCopyDictionaryOfAttachments(0, b, 1u);
+    CMSetAttachments(to, v11, 1u);
     CFRelease(v11);
-    if (v10)
+    if (rotateCopy)
     {
       v12 = 2;
     }
@@ -89,23 +89,23 @@
 
     scaler = self->_scaler;
 
-    [(VEScaler *)scaler downScaleFrameSource:a3 destination:a4 rotate:v12 waitForCompletion:1];
+    [(VEScaler *)scaler downScaleFrameSource:b destination:to rotate:v12 waitForCompletion:1];
   }
 }
 
-- (void)VSRGetInputFrameSizeForUsage:(int64_t)a3 width:(unint64_t *)a4 height:(unint64_t *)a5
+- (void)VSRGetInputFrameSizeForUsage:(int64_t)usage width:(unint64_t *)width height:(unint64_t *)height
 {
-  getInputFrameSizeForUsage(a3, a4, a5);
-  *a4 = (*a4 + 15) & 0xFFFFFFFFFFFFFFF0;
-  *a5 = (*a5 + 15) & 0xFFFFFFFFFFFFFFF0;
+  getInputFrameSizeForUsage(usage, width, height);
+  *width = (*width + 15) & 0xFFFFFFFFFFFFFFF0;
+  *height = (*height + 15) & 0xFFFFFFFFFFFFFFF0;
 }
 
-- (ImageSR)initWithUsage:(int64_t)a3 inputWidth:(unint64_t)a4 inputHeight:(unint64_t)a5 scaleFactor:(unint64_t)a6 useMPS:(BOOL)a7 outputSize:(CGSize)a8
+- (ImageSR)initWithUsage:(int64_t)usage inputWidth:(unint64_t)width inputHeight:(unint64_t)height scaleFactor:(unint64_t)factor useMPS:(BOOL)s outputSize:(CGSize)size
 {
-  v8 = a7;
-  height = a8.height;
-  width = a8.width;
-  v14 = a3;
+  sCopy = s;
+  height = size.height;
+  width = size.width;
+  usageCopy = usage;
   v55 = *MEMORY[0x277D85DE8];
   v50.receiver = self;
   v50.super_class = ImageSR;
@@ -116,11 +116,11 @@
     goto LABEL_23;
   }
 
-  v15->_inputIsPortrait = (v14 & 0x1000) != 0;
-  v15->_usage = v14 & 0xFFF;
-  v15->_inputWidth = a4;
-  v15->_inputHeight = a5;
-  v15->_scaleFactor = a6;
+  v15->_inputIsPortrait = (usageCopy & 0x1000) != 0;
+  v15->_usage = usageCopy & 0xFFF;
+  v15->_inputWidth = width;
+  v15->_inputHeight = height;
+  v15->_scaleFactor = factor;
   [ImageSR VSRGetInputFrameSizeForUsage:v15 width:"VSRGetInputFrameSizeForUsage:width:height:" height:?];
   scaleFactor = v16->_scaleFactor;
   lowResPaddedHeight = v16->_lowResPaddedHeight;
@@ -144,13 +144,13 @@
     }
 
     v23 = v22;
-    v24 = [v22 absoluteString];
-    v25 = [v24 stringByAppendingPathComponent:@"isrnet_4x.mlmodelc/model.mil"];
+    absoluteString = [v22 absoluteString];
+    v25 = [absoluteString stringByAppendingPathComponent:@"isrnet_4x.mlmodelc/model.mil"];
     modelPath = v16->_modelPath;
     v16->_modelPath = v25;
 
-    v27 = [MEMORY[0x277CCAA00] defaultManager];
-    v28 = [v27 fileExistsAtPath:v16->_modelPath];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v28 = [defaultManager fileExistsAtPath:v16->_modelPath];
 
     if ((v28 & 1) == 0)
     {
@@ -167,7 +167,7 @@
       if (os_log_type_enabled(global_logger, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v52 = v29;
+        usageCopy2 = v29;
         _os_log_impl(&dword_24874B000, v30, OS_LOG_TYPE_INFO, "MobileAssetStatus is not ready! ISRSuperResolutionConfigurationMobileAssetStatus: %ld", buf, 0xCu);
       }
 
@@ -193,8 +193,8 @@
     v35 = v16->_modelPath;
     v16->_modelPath = v34;
 
-    v36 = [MEMORY[0x277CCAA00] defaultManager];
-    v37 = [v36 fileExistsAtPath:v16->_modelPath];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    v37 = [defaultManager2 fileExistsAtPath:v16->_modelPath];
 
     if (!v37)
     {
@@ -221,9 +221,9 @@ LABEL_23:
     {
       usage = v16->_usage;
       *buf = 134218240;
-      v52 = usage;
+      usageCopy2 = usage;
       v53 = 1024;
-      v54 = v8;
+      v54 = sCopy;
       _os_log_impl(&dword_24874B000, v46, OS_LOG_TYPE_INFO, "[ImageSR] usage: %ld, useMPS: %d", buf, 0x12u);
     }
   }
@@ -275,13 +275,13 @@ LABEL_24:
   }
 }
 
-- (BOOL)upscaleFrame:(__CVBuffer *)a3 destinationHiResFrame:(__CVBuffer *)a4
+- (BOOL)upscaleFrame:(__CVBuffer *)frame destinationHiResFrame:(__CVBuffer *)resFrame
 {
   OUTLINED_FUNCTION_0_0();
-  self->_attachmentDictOfInput = CMCopyDictionaryOfAttachments(0, a3, 1u);
-  self->_inputPixelFormat = CVPixelBufferGetPixelFormatType(a3);
-  self->_outputPixelFormat = CVPixelBufferGetPixelFormatType(a3);
-  [(ImageSR *)self convertToRGB:a3 to:self->_currentLRRGB withRGBFormat:self->_rgbaPixelFormat rotate:self->_inputIsPortrait];
+  self->_attachmentDictOfInput = CMCopyDictionaryOfAttachments(0, frame, 1u);
+  self->_inputPixelFormat = CVPixelBufferGetPixelFormatType(frame);
+  self->_outputPixelFormat = CVPixelBufferGetPixelFormatType(frame);
+  [(ImageSR *)self convertToRGB:frame to:self->_currentLRRGB withRGBFormat:self->_rgbaPixelFormat rotate:self->_inputIsPortrait];
   if (![(OFNormalization *)self->_normalization padRGB:self->_currentLRRGB to:self->_normalizedRGB])
   {
     return 0;
@@ -298,7 +298,7 @@ LABEL_24:
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_0_0();
   v7 = 1;
-  [(VEScaler *)self->_scaler upScaleAndCropFrameSource:self->_srNetHROutput destination:a4 upscale:0 rotate:self->_inputIsPortrait waitForCompletion:1];
+  [(VEScaler *)self->_scaler upScaleAndCropFrameSource:self->_srNetHROutput destination:resFrame upscale:0 rotate:self->_inputIsPortrait waitForCompletion:1];
   OUTLINED_FUNCTION_0_0();
   CFRelease(self->_attachmentDictOfInput);
   return v7;

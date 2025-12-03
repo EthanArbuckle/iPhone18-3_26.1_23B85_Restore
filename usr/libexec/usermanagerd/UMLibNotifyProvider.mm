@@ -1,18 +1,18 @@
 @interface UMLibNotifyProvider
-- (BOOL)notificationHasPostedForToken:(int)a3 error:(id *)a4;
-- (BOOL)post:(id)a3;
-- (BOOL)setState:(unint64_t)a3 forToken:(int)a4;
-- (int)registerCheck:(id)a3;
-- (int)registerPlain:(id)a3;
-- (unint64_t)stateForToken:(int)a3 error:(id *)a4;
+- (BOOL)notificationHasPostedForToken:(int)token error:(id *)error;
+- (BOOL)post:(id)post;
+- (BOOL)setState:(unint64_t)state forToken:(int)token;
+- (int)registerCheck:(id)check;
+- (int)registerPlain:(id)plain;
+- (unint64_t)stateForToken:(int)token error:(id *)error;
 @end
 
 @implementation UMLibNotifyProvider
 
-- (BOOL)post:(id)a3
+- (BOOL)post:(id)post
 {
-  v3 = a3;
-  v4 = notify_post([v3 UTF8String]);
+  postCopy = post;
+  v4 = notify_post([postCopy UTF8String]);
   if (v4)
   {
     if (qword_1000EB2B0 != -1)
@@ -87,10 +87,10 @@ LABEL_20:
   return v4 == 0;
 }
 
-- (int)registerPlain:(id)a3
+- (int)registerPlain:(id)plain
 {
-  v3 = a3;
-  [v3 UTF8String];
+  plainCopy = plain;
+  [plainCopy UTF8String];
   if (notify_register_plain())
   {
     if (qword_1000EB2B0 != -1)
@@ -174,11 +174,11 @@ LABEL_20:
   return -1;
 }
 
-- (int)registerCheck:(id)a3
+- (int)registerCheck:(id)check
 {
-  v3 = a3;
+  checkCopy = check;
   out_token = -1;
-  v4 = notify_register_check([v3 UTF8String], &out_token);
+  v4 = notify_register_check([checkCopy UTF8String], &out_token);
   if (v4)
   {
     v5 = v4;
@@ -204,7 +204,7 @@ LABEL_20:
       if (v8)
       {
         v19 = 138543618;
-        v20 = v3;
+        v20 = checkCopy;
         v21 = 1024;
         v22 = v5;
         v9 = _os_log_send_and_compose_impl();
@@ -250,7 +250,7 @@ LABEL_20:
       if (v13)
       {
         v19 = 138543618;
-        v20 = v3;
+        v20 = checkCopy;
         v21 = 1024;
         v22 = out_token;
         v14 = _os_log_send_and_compose_impl();
@@ -275,11 +275,11 @@ LABEL_20:
   return v16;
 }
 
-- (BOOL)notificationHasPostedForToken:(int)a3 error:(id *)a4
+- (BOOL)notificationHasPostedForToken:(int)token error:(id *)error
 {
-  *a4 = 0;
+  *error = 0;
   check = 0;
-  v6 = notify_check(a3, &check);
+  v6 = notify_check(token, &check);
   if (v6)
   {
     v7 = v6;
@@ -305,7 +305,7 @@ LABEL_20:
       if (v10)
       {
         v22 = 67109376;
-        v23 = a3;
+        tokenCopy2 = token;
         v24 = 1024;
         v25 = v7;
         v11 = _os_log_send_and_compose_impl();
@@ -327,7 +327,7 @@ LABEL_20:
     v18 = [NSError errorWithDomain:NSPOSIXErrorDomain code:5 userInfo:0];
     v19 = v18;
     result = 0;
-    *a4 = v18;
+    *error = v18;
   }
 
   else
@@ -354,7 +354,7 @@ LABEL_20:
       if (v15)
       {
         v22 = 67109376;
-        v23 = a3;
+        tokenCopy2 = token;
         v24 = 1024;
         v25 = check;
         v16 = _os_log_send_and_compose_impl();
@@ -379,9 +379,9 @@ LABEL_20:
   return result;
 }
 
-- (BOOL)setState:(unint64_t)a3 forToken:(int)a4
+- (BOOL)setState:(unint64_t)state forToken:(int)token
 {
-  v4 = notify_set_state(a4, a3);
+  v4 = notify_set_state(token, state);
   if (v4)
   {
     if (qword_1000EB2B0 != -1)
@@ -456,11 +456,11 @@ LABEL_20:
   return v4 == 0;
 }
 
-- (unint64_t)stateForToken:(int)a3 error:(id *)a4
+- (unint64_t)stateForToken:(int)token error:(id *)error
 {
-  *a4 = 0;
+  *error = 0;
   state64 = 0;
-  state = notify_get_state(a3, &state64);
+  state = notify_get_state(token, &state64);
   if (state)
   {
     v6 = state;
@@ -486,7 +486,7 @@ LABEL_20:
       if (v9)
       {
         v19 = 67109376;
-        v20 = a3;
+        tokenCopy2 = token;
         v21 = 1024;
         LODWORD(v22) = v6;
         v10 = _os_log_send_and_compose_impl();
@@ -532,7 +532,7 @@ LABEL_20:
       if (v14)
       {
         v19 = 67109376;
-        v20 = a3;
+        tokenCopy2 = token;
         v21 = 2048;
         v22 = state64;
         v15 = _os_log_send_and_compose_impl();

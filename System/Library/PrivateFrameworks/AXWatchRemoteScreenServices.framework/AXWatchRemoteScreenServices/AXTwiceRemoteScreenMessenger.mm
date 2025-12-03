@@ -2,12 +2,12 @@
 + (_TtC27AXWatchRemoteScreenServices28AXTwiceRemoteScreenMessenger)sharedInstance;
 - (AXTwiceRemoteScreenMessengerDelegateProtocolObjc)delegate;
 - (_TtC27AXWatchRemoteScreenServices28AXTwiceRemoteScreenMessenger)init;
-- (id)sendMessage:(id)a3;
+- (id)sendMessage:(id)message;
 - (void)cleanup;
-- (void)connectedDevicesDidChange:(id)a3;
+- (void)connectedDevicesDidChange:(id)change;
 - (void)dealloc;
-- (void)didReceiveIncomingData:(id)a3;
-- (void)receiveMessage:(id)a3;
+- (void)didReceiveIncomingData:(id)data;
+- (void)receiveMessage:(id)message;
 - (void)reconnectToAXUIServerIfNeeded;
 - (void)serverConnectionWasInterrupted;
 @end
@@ -64,14 +64,14 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 sharedInstance];
-  if (v6)
+  selfCopy = self;
+  sharedInstance = [v4 sharedInstance];
+  if (sharedInstance)
   {
-    v7 = v6;
-    [v6 deregisterForIncomingData_];
+    v7 = sharedInstance;
+    [sharedInstance deregisterForIncomingData_];
 
-    v8.receiver = v5;
+    v8.receiver = selfCopy;
     v8.super_class = ObjectType;
     [(AXTwiceRemoteScreenMessenger *)&v8 dealloc];
   }
@@ -84,14 +84,14 @@
 
 - (void)reconnectToAXUIServerIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   AXTwiceRemoteScreenMessenger.reconnectToAXUIServerIfNeeded()();
 }
 
-- (id)sendMessage:(id)a3
+- (id)sendMessage:(id)message
 {
   v4 = sub_23D6C6038();
-  v5 = self;
+  selfCopy = self;
   _s27AXWatchRemoteScreenServices07AXTwicebC9MessengerC11sendMessageySSSgSDys11AnyHashableVypGF_0(v4);
   v7 = v6;
 
@@ -108,22 +108,22 @@
   return v8;
 }
 
-- (void)receiveMessage:(id)a3
+- (void)receiveMessage:(id)message
 {
   v4 = sub_23D6C6038();
-  v5 = self;
+  selfCopy = self;
   AXTwiceRemoteScreenMessenger.receiveMessage(_:)(v4);
 }
 
 - (void)cleanup
 {
   v3 = objc_opt_self();
-  v6 = self;
-  v4 = [v3 sharedInstance];
-  if (v4)
+  selfCopy = self;
+  sharedInstance = [v3 sharedInstance];
+  if (sharedInstance)
   {
-    v5 = v4;
-    [v4 deregisterForIncomingData_];
+    v5 = sharedInstance;
+    [sharedInstance deregisterForIncomingData_];
   }
 
   else
@@ -132,12 +132,12 @@
   }
 }
 
-- (void)didReceiveIncomingData:(id)a3
+- (void)didReceiveIncomingData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v4 = sub_23D6C6038();
-    v5 = self;
+    selfCopy = self;
     AXTwiceRemoteScreenMessenger.receiveMessage(_:)(v4);
   }
 
@@ -147,9 +147,9 @@
   }
 }
 
-- (void)connectedDevicesDidChange:(id)a3
+- (void)connectedDevicesDidChange:(id)change
 {
-  if (a3)
+  if (change)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E2E1B50, &qword_23D6C74B0);
     v4 = sub_23D6C6118();
@@ -160,14 +160,14 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   v7.value._rawValue = v4;
   AXTwiceRemoteScreenMessenger.connectedDevicesDidChange(_:)(v7);
 }
 
 - (void)serverConnectionWasInterrupted
 {
-  v2 = self;
+  selfCopy = self;
   AXTwiceRemoteScreenMessenger.serverConnectionWasInterrupted()();
 }
 

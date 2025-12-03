@@ -2,15 +2,15 @@
 - (HKStoragePlugin)init;
 - (id)_assembleSpecifiersList;
 - (id)_buildConfiguration;
-- (id)_getSectionBy:(id)a3;
+- (id)_getSectionBy:(id)by;
 - (id)documentAppIdentifiers;
-- (void)_assembleBySourceSection:(id)a3;
-- (void)_buildDataSourceSection:(id)a3;
-- (void)_buildDataTypesSection:(id)a3;
-- (void)_callBuilderBlock:(id)a3;
-- (void)_callBuilderCompletionBlock:(id)a3;
-- (void)_hkTypeCountsQueryOperation:(id)a3;
-- (void)_updateDisplayCache:(id)a3 forSection:(id)a4;
+- (void)_assembleBySourceSection:(id)section;
+- (void)_buildDataSourceSection:(id)section;
+- (void)_buildDataTypesSection:(id)section;
+- (void)_callBuilderBlock:(id)block;
+- (void)_callBuilderCompletionBlock:(id)block;
+- (void)_hkTypeCountsQueryOperation:(id)operation;
+- (void)_updateDisplayCache:(id)cache forSection:(id)section;
 @end
 
 @implementation HKStoragePlugin
@@ -124,7 +124,7 @@
   v8[3] = &unk_83A0;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   [(NSArray *)configuration enumerateObjectsUsingBlock:v8];
   os_unfair_lock_unlock(&self->_lock);
   v6 = v5;
@@ -132,10 +132,10 @@
   return v5;
 }
 
-- (void)_callBuilderBlock:(id)a3
+- (void)_callBuilderBlock:(id)block
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"builder"];
+  blockCopy = block;
+  v5 = [blockCopy objectForKeyedSubscript:@"builder"];
   v6 = v5;
   if (v5)
   {
@@ -145,15 +145,15 @@
     v11 = sub_1A30;
     v12 = &unk_8378;
     v14 = v5;
-    v13 = v4;
+    v13 = blockCopy;
     v8 = [NSBlockOperation blockOperationWithBlock:&v9];
     [(NSOperationQueue *)opQueue addOperation:v8, v9, v10, v11, v12];
   }
 }
 
-- (void)_callBuilderCompletionBlock:(id)a3
+- (void)_callBuilderCompletionBlock:(id)block
 {
-  v4 = [a3 objectForKeyedSubscript:@"builderComp"];
+  v4 = [block objectForKeyedSubscript:@"builderComp"];
   v5 = v4;
   if (v4)
   {
@@ -168,21 +168,21 @@
   }
 }
 
-- (void)_updateDisplayCache:(id)a3 forSection:(id)a4
+- (void)_updateDisplayCache:(id)cache forSection:(id)section
 {
-  v6 = a4;
-  v7 = a3;
+  sectionCopy = section;
+  cacheCopy = cache;
   os_unfair_lock_lock(&self->_lock);
-  [v6 setObject:v7 forKeyedSubscript:@"itemSpecifiers"];
+  [sectionCopy setObject:cacheCopy forKeyedSubscript:@"itemSpecifiers"];
 
   os_unfair_lock_unlock(&self->_lock);
 
   [(HKStoragePlugin *)self reloadSpecifiers];
 }
 
-- (id)_getSectionBy:(id)a3
+- (id)_getSectionBy:(id)by
 {
-  v4 = a3;
+  byCopy = by;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -204,7 +204,7 @@
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:{@"sectionName", v14}];
-        if ([v11 isEqualToString:v4])
+        if ([v11 isEqualToString:byCopy])
         {
           v12 = v10;
 
@@ -228,25 +228,25 @@ LABEL_11:
   return v12;
 }
 
-- (void)_hkTypeCountsQueryOperation:(id)a3
+- (void)_hkTypeCountsQueryOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v5 = [HKSampleCountQuery alloc];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_1DE8;
   v11 = &unk_8458;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = operationCopy;
+  v6 = operationCopy;
   v7 = [v5 initWithResultsHandler:&v8];
-  [(HKHealthStore *)self->_hkStore executeQuery:v7, v8, v9, v10, v11, v12];
+  [(HKHealthStore *)self->_hkStore executeQuery:v7, v8, v9, v10, v11, selfCopy];
 }
 
-- (void)_buildDataTypesSection:(id)a3
+- (void)_buildDataTypesSection:(id)section
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"count"];
+  sectionCopy = section;
+  v5 = [sectionCopy objectForKeyedSubscript:@"count"];
   v6 = v5;
   v7 = &off_88D0;
   if (v5)
@@ -276,15 +276,15 @@ LABEL_11:
     [v11 addObject:v15];
   }
 
-  [(HKStoragePlugin *)self _updateDisplayCache:v11 forSection:v4];
+  [(HKStoragePlugin *)self _updateDisplayCache:v11 forSection:sectionCopy];
 }
 
-- (void)_assembleBySourceSection:(id)a3
+- (void)_assembleBySourceSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSMutableDictionary *)self->_sourceByteCounts keysSortedByValueUsingComparator:&stru_84A0];
-  v6 = [v4 objectForKeyedSubscript:@"count"];
+  v6 = [sectionCopy objectForKeyedSubscript:@"count"];
   v7 = v6;
   v8 = &off_88D0;
   if (v6)
@@ -304,15 +304,15 @@ LABEL_11:
   v10 = v14;
   v11 = v9;
   [v5 enumerateObjectsUsingBlock:v12];
-  [v4 setObject:v10 forKeyedSubscript:@"itemSpecifiers"];
+  [sectionCopy setObject:v10 forKeyedSubscript:@"itemSpecifiers"];
 
   os_unfair_lock_unlock(&self->_lock);
   [(HKStoragePlugin *)self reloadSpecifiers];
 }
 
-- (void)_buildDataSourceSection:(id)a3
+- (void)_buildDataSourceSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   if ([(NSArray *)self->_sortedTypeCounts count])
   {
     v13[0] = 0;
@@ -326,7 +326,7 @@ LABEL_11:
     v10[3] = &unk_85B8;
     v10[4] = self;
     v12 = v13;
-    v11 = v4;
+    v11 = sectionCopy;
     [(NSArray *)sortedTypeCounts enumerateObjectsUsingBlock:v10];
 
     _Block_object_dispose(v13, 8);
@@ -339,7 +339,7 @@ LABEL_11:
     v8 = [PSSpecifier _hkPreferenceNamed:v7];
     v14 = v8;
     v9 = [NSArray arrayWithObjects:&v14 count:1];
-    [(HKStoragePlugin *)self _updateDisplayCache:v9 forSection:v4];
+    [(HKStoragePlugin *)self _updateDisplayCache:v9 forSection:sectionCopy];
   }
 }
 
@@ -376,9 +376,9 @@ LABEL_11:
 
     [(NSOperationQueue *)v3->_opQueue setQualityOfService:25];
     [(NSOperationQueue *)v3->_opQueue setMaxConcurrentOperationCount:5];
-    v11 = [(HKStoragePlugin *)v3 _buildConfiguration];
+    _buildConfiguration = [(HKStoragePlugin *)v3 _buildConfiguration];
     configuration = v3->_configuration;
-    v3->_configuration = v11;
+    v3->_configuration = _buildConfiguration;
 
     sortedTypeCounts = v3->_sortedTypeCounts;
     v3->_sortedTypeCounts = &__NSArray0__struct;

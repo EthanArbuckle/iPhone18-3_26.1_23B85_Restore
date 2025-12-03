@@ -1,24 +1,24 @@
 @interface NFPeerPaymentEnrollmentResponse
-- (NFPeerPaymentEnrollmentResponse)initWithCoder:(id)a3;
-- (NFPeerPaymentEnrollmentResponse)initWithDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NFPeerPaymentEnrollmentResponse)initWithCoder:(id)coder;
+- (NFPeerPaymentEnrollmentResponse)initWithDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFPeerPaymentEnrollmentResponse
 
-- (NFPeerPaymentEnrollmentResponse)initWithDictionary:(id)a3
+- (NFPeerPaymentEnrollmentResponse)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = NFPeerPaymentEnrollmentResponse;
   v5 = [(NFPeerPaymentEnrollmentResponse *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"paymentCertificate"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"paymentCertificate"];
     prePeerPaymentCertificate = v5->_prePeerPaymentCertificate;
     v5->_prePeerPaymentCertificate = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"certificates"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"certificates"];
     certificate = v5->_certificate;
     v5->_certificate = v8;
   }
@@ -26,19 +26,19 @@
   return v5;
 }
 
-- (NFPeerPaymentEnrollmentResponse)initWithCoder:(id)a3
+- (NFPeerPaymentEnrollmentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = NFPeerPaymentEnrollmentResponse;
   v5 = [(NFPeerPaymentEnrollmentResponse *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentCertificate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentCertificate"];
     prePeerPaymentCertificate = v5->_prePeerPaymentCertificate;
     v5->_prePeerPaymentCertificate = v6;
 
-    v8 = [NFNSCheckedDecoder coder:v4 decodeDictOfClass:objc_opt_class() forKey:@"certificates"];
+    v8 = [NFNSCheckedDecoder coder:coderCopy decodeDictOfClass:objc_opt_class() forKey:@"certificates"];
     certificate = v5->_certificate;
     v5->_certificate = v8;
   }
@@ -46,12 +46,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   prePeerPaymentCertificate = self->_prePeerPaymentCertificate;
-  v5 = a3;
-  [v5 encodeObject:prePeerPaymentCertificate forKey:@"paymentCertificate"];
-  [v5 encodeObject:self->_certificate forKey:@"certificates"];
+  coderCopy = coder;
+  [coderCopy encodeObject:prePeerPaymentCertificate forKey:@"paymentCertificate"];
+  [coderCopy encodeObject:self->_certificate forKey:@"certificates"];
 }
 
 @end

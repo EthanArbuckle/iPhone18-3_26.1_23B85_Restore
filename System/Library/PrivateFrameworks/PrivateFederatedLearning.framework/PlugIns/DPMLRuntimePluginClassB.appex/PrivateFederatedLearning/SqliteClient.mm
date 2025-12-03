@@ -1,28 +1,28 @@
 @interface SqliteClient
-- (SqliteClient)initWithFile:(id)a3 error:(id *)a4;
-- (id)huffmanCode:(id)a3 error:(id *)a4;
-- (int)findWord:(id)a3 error:(id *)a4;
-- (int)getTotalCount:(id *)a3;
+- (SqliteClient)initWithFile:(id)file error:(id *)error;
+- (id)huffmanCode:(id)code error:(id *)error;
+- (int)findWord:(id)word error:(id *)error;
+- (int)getTotalCount:(id *)count;
 - (void)dealloc;
 @end
 
 @implementation SqliteClient
 
-- (SqliteClient)initWithFile:(id)a3 error:(id *)a4
+- (SqliteClient)initWithFile:(id)file error:(id *)error
 {
-  v6 = a3;
+  fileCopy = file;
   v7 = +[NSFileManager defaultManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  v8 = [v7 fileExistsAtPath:fileCopy];
 
   if (v8)
   {
-    if (!sqlite3_open([v6 UTF8String], &self->_sqlite))
+    if (!sqlite3_open([fileCopy UTF8String], &self->_sqlite))
     {
-      a4 = self;
+      error = self;
       goto LABEL_9;
     }
 
-    if (a4)
+    if (error)
     {
       v13 = NSLocalizedDescriptionKey;
       v14 = @"Failed to open sqlite database.";
@@ -30,13 +30,13 @@
       v10 = &v13;
 LABEL_7:
       v11 = [NSDictionary dictionaryWithObjects:v9 forKeys:v10 count:1];
-      *a4 = [NSError errorWithDomain:@"com.apple.MLRuntime" code:300 userInfo:v11];
+      *error = [NSError errorWithDomain:@"com.apple.MLRuntime" code:300 userInfo:v11];
 
-      a4 = 0;
+      error = 0;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v15 = NSLocalizedDescriptionKey;
     v16 = @"Database file does not exist.";
@@ -47,23 +47,23 @@ LABEL_7:
 
 LABEL_9:
 
-  return a4;
+  return error;
 }
 
-- (int)getTotalCount:(id *)a3
+- (int)getTotalCount:(id *)count
 {
   pStmt = 0;
   if (sqlite3_prepare_v2(self->_sqlite, [@"select Count(1) from Words" UTF8String], -1, &pStmt, 0))
   {
-    if (a3)
+    if (count)
     {
       v7 = NSLocalizedDescriptionKey;
       v8 = @"Failed to prepare sqlite for search.";
       v4 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
-      *a3 = [NSError errorWithDomain:@"com.apple.MLRuntime" code:300 userInfo:v4];
+      *count = [NSError errorWithDomain:@"com.apple.MLRuntime" code:300 userInfo:v4];
 
 LABEL_7:
-      LODWORD(a3) = 0;
+      LODWORD(count) = 0;
     }
   }
 
@@ -75,25 +75,25 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    LODWORD(a3) = sqlite3_column_int(pStmt, 0);
+    LODWORD(count) = sqlite3_column_int(pStmt, 0);
   }
 
   sqlite3_finalize(pStmt);
-  return a3;
+  return count;
 }
 
-- (int)findWord:(id)a3 error:(id *)a4
+- (int)findWord:(id)word error:(id *)error
 {
-  v6 = [NSString stringWithFormat:@"select mCode from Words where mWord=%@", a3];
+  word = [NSString stringWithFormat:@"select mCode from Words where mWord=%@", word];
   ppStmt = 0;
-  if (sqlite3_prepare_v2(self->_sqlite, [v6 UTF8String], -1, &ppStmt, 0))
+  if (sqlite3_prepare_v2(self->_sqlite, [word UTF8String], -1, &ppStmt, 0))
   {
-    if (a4)
+    if (error)
     {
       v11 = NSLocalizedDescriptionKey;
       v12 = @"Failed to prepare sqlite for search.";
       v7 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-      *a4 = [NSError errorWithDomain:@"com.apple.MLRuntime" code:300 userInfo:v7];
+      *error = [NSError errorWithDomain:@"com.apple.MLRuntime" code:300 userInfo:v7];
     }
 
     goto LABEL_7;
@@ -114,13 +114,13 @@ LABEL_8:
   return v8;
 }
 
-- (id)huffmanCode:(id)a3 error:(id *)a4
+- (id)huffmanCode:(id)code error:(id *)error
 {
-  v6 = [NSString stringWithFormat:@"select mCode from Words where mWord=%@", a3];
+  code = [NSString stringWithFormat:@"select mCode from Words where mWord=%@", code];
   ppStmt = 0;
-  if (sqlite3_prepare_v2(self->_sqlite, [v6 UTF8String], -1, &ppStmt, 0))
+  if (sqlite3_prepare_v2(self->_sqlite, [code UTF8String], -1, &ppStmt, 0))
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -128,25 +128,25 @@ LABEL_8:
     v10 = NSLocalizedDescriptionKey;
     v11 = @"Failed to prepare sqlite for search.";
     v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-    *a4 = [NSError errorWithDomain:@"com.apple.MLRuntime" code:300 userInfo:v7];
+    *error = [NSError errorWithDomain:@"com.apple.MLRuntime" code:300 userInfo:v7];
   }
 
   else
   {
     if (sqlite3_step(ppStmt) == 100)
     {
-      a4 = [NSString stringWithUTF8String:sqlite3_column_text(ppStmt, 0)];
+      error = [NSString stringWithUTF8String:sqlite3_column_text(ppStmt, 0)];
       goto LABEL_8;
     }
 
     NSLog(@"Not found in sqlite.");
   }
 
-  a4 = 0;
+  error = 0;
 LABEL_8:
   sqlite3_finalize(ppStmt);
 
-  return a4;
+  return error;
 }
 
 - (void)dealloc

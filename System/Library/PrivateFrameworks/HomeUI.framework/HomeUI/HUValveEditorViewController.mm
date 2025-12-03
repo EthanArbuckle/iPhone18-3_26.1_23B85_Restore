@@ -1,22 +1,22 @@
 @interface HUValveEditorViewController
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUValveEditorViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4;
-- (HUValveEditorViewController)initWithSourceItem:(id)a3 editorMode:(unint64_t)a4;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUValveEditorViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style;
+- (HUValveEditorViewController)initWithSourceItem:(id)item editorMode:(unint64_t)mode;
 - (id)itemModuleControllers;
-- (void)diffableDataItemManager:(id)a3 willUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6 isInitialLoad:(BOOL)a7;
-- (void)itemManager:(id)a3 performUpdateRequest:(id)a4;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textFieldDidEndEditing:(id)a3 item:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (void)diffableDataItemManager:(id)manager willUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems isInitialLoad:(BOOL)load;
+- (void)itemManager:(id)manager performUpdateRequest:(id)request;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textFieldDidEndEditing:(id)editing item:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 @end
 
 @implementation HUValveEditorViewController
 
-- (HUValveEditorViewController)initWithSourceItem:(id)a3 editorMode:(unint64_t)a4
+- (HUValveEditorViewController)initWithSourceItem:(id)item editorMode:(unint64_t)mode
 {
-  v6 = a3;
-  v7 = [[HUValveEditorItemManager alloc] initWithDelegate:self sourceItem:v6 editorMode:a4];
+  itemCopy = item;
+  v7 = [[HUValveEditorItemManager alloc] initWithDelegate:self sourceItem:itemCopy editorMode:mode];
 
   v13.receiver = self;
   v13.super_class = HUValveEditorViewController;
@@ -33,32 +33,32 @@
   return v9;
 }
 
-- (HUValveEditorViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4
+- (HUValveEditorViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithSourceItem_editorMode_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUValveEditorViewController.m" lineNumber:49 description:{@"%s is unavailable; use %@ instead", "-[HUValveEditorViewController initWithItemManager:tableViewStyle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUValveEditorViewController.m" lineNumber:49 description:{@"%s is unavailable; use %@ instead", "-[HUValveEditorViewController initWithItemManager:tableViewStyle:]", v7}];
 
   return 0;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v7 = [(HUValveEditorViewController *)self valveEditorItemManager];
-  v8 = v7;
+  valveEditorItemManager = [(HUValveEditorViewController *)self valveEditorItemManager];
+  v8 = valveEditorItemManager;
   if (isKindOfClass)
   {
-    v9 = [v7 controlPanelController];
-    v10 = [v9 cellClassForItem:v5];
+    controlPanelController = [valveEditorItemManager controlPanelController];
+    v10 = [controlPanelController cellClassForItem:itemCopy];
   }
 
   else
   {
-    v11 = [v7 identifyItem];
-    [v5 isEqual:v11];
+    identifyItem = [valveEditorItemManager identifyItem];
+    [itemCopy isEqual:identifyItem];
 
     v10 = objc_opt_class();
   }
@@ -66,58 +66,58 @@
   return v10;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v10 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(HUValveEditorViewController *)self valveEditorItemManager];
-    v9 = [v8 controlPanelController];
-    [v9 setupCell:v10 forItem:v7];
+    valveEditorItemManager = [(HUValveEditorViewController *)self valveEditorItemManager];
+    controlPanelController = [valveEditorItemManager controlPanelController];
+    [controlPanelController setupCell:cellCopy forItem:itemCopy];
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v14.receiver = self;
   v14.super_class = HUValveEditorViewController;
-  [(HUItemTableViewController *)&v14 updateCell:v10 forItem:v11 indexPath:a5 animated:v6];
+  [(HUItemTableViewController *)&v14 updateCell:cellCopy forItem:itemCopy indexPath:path animated:animatedCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [(HUValveEditorViewController *)self valveEditorItemManager];
-    v13 = [v12 controlPanelController];
-    [v13 updateCell:v10 forItem:v11 animated:1];
+    valveEditorItemManager = [(HUValveEditorViewController *)self valveEditorItemManager];
+    controlPanelController = [valveEditorItemManager controlPanelController];
+    [controlPanelController updateCell:cellCopy forItem:itemCopy animated:1];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v21.receiver = self;
   v21.super_class = HUValveEditorViewController;
-  [(HUItemTableViewController *)&v21 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
+  [(HUItemTableViewController *)&v21 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
-  v10 = [(HUValveEditorViewController *)self valveEditorItemManager];
-  v11 = [v10 identifyItem];
-  v12 = [v9 isEqual:v11];
+  valveEditorItemManager = [(HUValveEditorViewController *)self valveEditorItemManager];
+  identifyItem = [valveEditorItemManager identifyItem];
+  v12 = [v9 isEqual:identifyItem];
 
   if (v12)
   {
     objc_opt_class();
-    v13 = [(HUValveEditorViewController *)self valveEditorItemManager];
-    v14 = [v13 sourceItem];
+    valveEditorItemManager2 = [(HUValveEditorViewController *)self valveEditorItemManager];
+    sourceItem = [valveEditorItemManager2 sourceItem];
     if (objc_opt_isKindOfClass())
     {
-      v15 = v14;
+      v15 = sourceItem;
     }
 
     else
@@ -128,11 +128,11 @@
     v16 = v15;
 
     objc_opt_class();
-    v17 = [v16 service];
+    service = [v16 service];
 
     if (objc_opt_isKindOfClass())
     {
-      v18 = v17;
+      v18 = service;
     }
 
     else
@@ -142,10 +142,10 @@
 
     v19 = v18;
 
-    v20 = [v19 accessory];
+    accessory = [v19 accessory];
 
-    [v20 identifyWithCompletionHandler:&__block_literal_global_154];
-    [v6 deselectRowAtIndexPath:v7 animated:1];
+    [accessory identifyWithCompletionHandler:&__block_literal_global_154];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 }
 
@@ -162,42 +162,42 @@ void __65__HUValveEditorViewController_tableView_didSelectRowAtIndexPath___block
 
 - (id)itemModuleControllers
 {
-  v3 = [(HUValveEditorViewController *)self nameModuleController];
-  if (!v3 || (v4 = v3, -[HUValveEditorViewController valveEditorItemManager](self, "valveEditorItemManager"), v5 = objc_claimAutoreleasedReturnValue(), [v5 nameModule], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v4, !v6))
+  nameModuleController = [(HUValveEditorViewController *)self nameModuleController];
+  if (!nameModuleController || (v4 = nameModuleController, -[HUValveEditorViewController valveEditorItemManager](self, "valveEditorItemManager"), v5 = objc_claimAutoreleasedReturnValue(), [v5 nameModule], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v4, !v6))
   {
     v7 = [HUNameItemModuleController alloc];
-    v8 = [(HUValveEditorViewController *)self valveEditorItemManager];
-    v9 = [v8 nameModule];
-    v10 = [(HUNameItemModuleController *)v7 initWithModule:v9 host:self];
+    valveEditorItemManager = [(HUValveEditorViewController *)self valveEditorItemManager];
+    nameModule = [valveEditorItemManager nameModule];
+    v10 = [(HUNameItemModuleController *)v7 initWithModule:nameModule host:self];
     [(HUValveEditorViewController *)self setNameModuleController:v10];
 
-    v11 = [(HUValveEditorViewController *)self nameModuleController];
-    [v11 setNameFieldHasClearButton:1];
+    nameModuleController2 = [(HUValveEditorViewController *)self nameModuleController];
+    [nameModuleController2 setNameFieldHasClearButton:1];
 
-    v12 = [(HUValveEditorViewController *)self nameModuleController];
-    [v12 setShowIcon:0];
+    nameModuleController3 = [(HUValveEditorViewController *)self nameModuleController];
+    [nameModuleController3 setShowIcon:0];
 
-    v13 = [(HUValveEditorViewController *)self moduleControllers];
-    v14 = [(HUValveEditorViewController *)self nameModuleController];
-    [v13 addObject:v14];
+    moduleControllers = [(HUValveEditorViewController *)self moduleControllers];
+    nameModuleController4 = [(HUValveEditorViewController *)self nameModuleController];
+    [moduleControllers addObject:nameModuleController4];
   }
 
   return [(HUValveEditorViewController *)self moduleControllers];
 }
 
-- (void)textFieldDidEndEditing:(id)a3 item:(id)a4
+- (void)textFieldDidEndEditing:(id)editing item:(id)item
 {
-  v5 = [a3 text];
-  v6 = [(HUValveEditorViewController *)self nameModuleController];
-  v7 = [v6 prepareForCommit];
+  text = [editing text];
+  nameModuleController = [(HUValveEditorViewController *)self nameModuleController];
+  prepareForCommit = [nameModuleController prepareForCommit];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__HUValveEditorViewController_textFieldDidEndEditing_item___block_invoke;
   v10[3] = &unk_277DB7E68;
   v10[4] = self;
-  v11 = v5;
-  v8 = v5;
-  v9 = [v7 addSuccessBlock:v10];
+  v11 = text;
+  v8 = text;
+  v9 = [prepareForCommit addSuccessBlock:v10];
 }
 
 void __59__HUValveEditorViewController_textFieldDidEndEditing_item___block_invoke(uint64_t a1)
@@ -228,19 +228,19 @@ void __59__HUValveEditorViewController_textFieldDidEndEditing_item___block_invok
   [v5 handleError:v4 operationType:v6 options:v8 retryBlock:0 cancelBlock:0];
 }
 
-- (void)itemManager:(id)a3 performUpdateRequest:(id)a4
+- (void)itemManager:(id)manager performUpdateRequest:(id)request
 {
   v26 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  requestCopy = request;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v6 changes];
-  v8 = [v7 itemOperations];
+  changes = [requestCopy changes];
+  itemOperations = [changes itemOperations];
 
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v9 = [itemOperations countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -252,15 +252,15 @@ void __59__HUValveEditorViewController_textFieldDidEndEditing_item___block_invok
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(itemOperations);
         }
 
         v13 = *(*(&v21 + 1) + 8 * v12);
         objc_opt_class();
-        v14 = [v13 item];
+        item = [v13 item];
         if (objc_opt_isKindOfClass())
         {
-          v15 = v14;
+          v15 = item;
         }
 
         else
@@ -274,9 +274,9 @@ void __59__HUValveEditorViewController_textFieldDidEndEditing_item___block_invok
         {
           if ([v13 type] == 1)
           {
-            v17 = [(HUValveEditorViewController *)self valveEditorItemManager];
-            v18 = [v17 controlPanelController];
-            [v18 addItem:v16];
+            valveEditorItemManager = [(HUValveEditorViewController *)self valveEditorItemManager];
+            controlPanelController = [valveEditorItemManager controlPanelController];
+            [controlPanelController addItem:v16];
           }
 
           else
@@ -286,9 +286,9 @@ void __59__HUValveEditorViewController_textFieldDidEndEditing_item___block_invok
               goto LABEL_15;
             }
 
-            v17 = [(HUValveEditorViewController *)self valveEditorItemManager];
-            v18 = [v17 controlPanelController];
-            [v18 removeItem:v16];
+            valveEditorItemManager = [(HUValveEditorViewController *)self valveEditorItemManager];
+            controlPanelController = [valveEditorItemManager controlPanelController];
+            [controlPanelController removeItem:v16];
           }
         }
 
@@ -298,7 +298,7 @@ LABEL_15:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [itemOperations countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);
@@ -306,30 +306,30 @@ LABEL_15:
 
   v20.receiver = self;
   v20.super_class = HUValveEditorViewController;
-  [(HUItemTableViewController *)&v20 itemManager:v19 performUpdateRequest:v6];
+  [(HUItemTableViewController *)&v20 itemManager:managerCopy performUpdateRequest:requestCopy];
 }
 
-- (void)diffableDataItemManager:(id)a3 willUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6 isInitialLoad:(BOOL)a7
+- (void)diffableDataItemManager:(id)manager willUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems isInitialLoad:(BOOL)load
 {
-  v7 = a7;
+  loadCopy = load;
   v16.receiver = self;
   v16.super_class = HUValveEditorViewController;
-  v12 = a6;
-  v13 = a5;
-  [(HUItemTableViewController *)&v16 diffableDataItemManager:a3 willUpdateItems:a4 addItems:v13 removeItems:v12 isInitialLoad:v7];
+  removeItemsCopy = removeItems;
+  addItemsCopy = addItems;
+  [(HUItemTableViewController *)&v16 diffableDataItemManager:manager willUpdateItems:items addItems:addItemsCopy removeItems:removeItemsCopy isInitialLoad:loadCopy];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __106__HUValveEditorViewController_diffableDataItemManager_willUpdateItems_addItems_removeItems_isInitialLoad___block_invoke;
   v15[3] = &unk_277DBAF68;
   v15[4] = self;
-  [v13 na_each:v15];
+  [addItemsCopy na_each:v15];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __106__HUValveEditorViewController_diffableDataItemManager_willUpdateItems_addItems_removeItems_isInitialLoad___block_invoke_2;
   v14[3] = &unk_277DBAF68;
   v14[4] = self;
-  [v12 na_each:v14];
+  [removeItemsCopy na_each:v14];
 }
 
 void __106__HUValveEditorViewController_diffableDataItemManager_willUpdateItems_addItems_removeItems_isInitialLoad___block_invoke(uint64_t a1, void *a2)

@@ -1,20 +1,20 @@
 @interface HMDHAPAccessoryRemoteOperationWithLocalFallbackTask
-- (BOOL)_shouldFallbackLocallyWithError:(id)a3 accessory:(id)a4;
-- (HMDHAPAccessoryRemoteOperationWithLocalFallbackTask)initWithContext:(id)a3 requests:(id)a4 delegateDevice:(id)a5 completion:(id)a6;
-- (id)_makeLocalTaskWithRequests:(id)a3 completion:(id)a4;
-- (id)_makeRemoteTaskWithRequests:(id)a3 delegateDevice:(id)a4 completion:(id)a5;
+- (BOOL)_shouldFallbackLocallyWithError:(id)error accessory:(id)accessory;
+- (HMDHAPAccessoryRemoteOperationWithLocalFallbackTask)initWithContext:(id)context requests:(id)requests delegateDevice:(id)device completion:(id)completion;
+- (id)_makeLocalTaskWithRequests:(id)requests completion:(id)completion;
+- (id)_makeRemoteTaskWithRequests:(id)requests delegateDevice:(id)device completion:(id)completion;
 - (id)_remoteTaskCompletionHandler;
 - (id)completion;
-- (void)_startScanningForSuspendedAccessoriesWithRequests:(id)a3;
+- (void)_startScanningForSuspendedAccessoriesWithRequests:(id)requests;
 - (void)execute;
 @end
 
 @implementation HMDHAPAccessoryRemoteOperationWithLocalFallbackTask
 
-- (id)_makeLocalTaskWithRequests:(id)a3 completion:(id)a4
+- (id)_makeLocalTaskWithRequests:(id)requests completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  completionCopy = completion;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -26,11 +26,11 @@
   objc_exception_throw(v13);
 }
 
-- (id)_makeRemoteTaskWithRequests:(id)a3 delegateDevice:(id)a4 completion:(id)a5
+- (id)_makeRemoteTaskWithRequests:(id)requests delegateDevice:(id)device completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestsCopy = requests;
+  deviceCopy = device;
+  completionCopy = completion;
   v11 = MEMORY[0x277CBEAD8];
   v12 = *MEMORY[0x277CBE658];
   v13 = MEMORY[0x277CCACA8];
@@ -379,14 +379,14 @@ void __83__HMDHAPAccessoryRemoteOperationWithLocalFallbackTask__remoteTaskComple
   objc_initWeak(&location, self);
   v10.receiver = self;
   v10.super_class = HMDHAPAccessoryRemoteOperationWithLocalFallbackTask;
-  v3 = [(HMDHAPAccessoryTask *)&v10 completion];
+  completion = [(HMDHAPAccessoryTask *)&v10 completion];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __65__HMDHAPAccessoryRemoteOperationWithLocalFallbackTask_completion__block_invoke;
   aBlock[3] = &unk_278689410;
   objc_copyWeak(&v9, &location);
-  v8 = v3;
-  v4 = v3;
+  v8 = completion;
+  v4 = completion;
   v5 = _Block_copy(aBlock);
 
   objc_destroyWeak(&v9);
@@ -435,37 +435,37 @@ void __65__HMDHAPAccessoryRemoteOperationWithLocalFallbackTask_completion__block
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldFallbackLocallyWithError:(id)a3 accessory:(id)a4
+- (BOOL)_shouldFallbackLocallyWithError:(id)error accessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  errorCopy = error;
+  accessoryCopy = accessory;
+  if (!errorCopy)
   {
     goto LABEL_35;
   }
 
-  v8 = [(HMDHAPAccessoryTask *)self context];
-  v9 = [v8 user];
-  v10 = [v9 isLocalAccessoryCommunicationAllowed];
+  context = [(HMDHAPAccessoryTask *)self context];
+  user = [context user];
+  isLocalAccessoryCommunicationAllowed = [user isLocalAccessoryCommunicationAllowed];
 
-  if (!v10)
+  if (!isLocalAccessoryCommunicationAllowed)
   {
     goto LABEL_35;
   }
 
-  if ([v6 isHMError])
+  if ([errorCopy isHMError])
   {
-    v11 = [v6 code];
+    code = [errorCopy code];
   }
 
   else
   {
-    if (![v6 isHAPError])
+    if (![errorCopy isHAPError])
     {
-      if (([v7 supportsCHIP] & 1) == 0)
+      if (([accessoryCopy supportsCHIP] & 1) == 0)
       {
-        v14 = [v6 domain];
-        v15 = [v14 isEqual:*MEMORY[0x277CD5120]];
+        domain = [errorCopy domain];
+        v15 = [domain isEqual:*MEMORY[0x277CD5120]];
 
         v12 = v15 ^ 1;
         goto LABEL_36;
@@ -476,45 +476,45 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    v13 = [v6 code];
-    if (v13 > 0x20)
+    code2 = [errorCopy code];
+    if (code2 > 0x20)
     {
-      v11 = 52;
+      code = 52;
     }
 
     else
     {
-      v11 = qword_22A587D08[v13];
+      code = qword_22A587D08[code2];
     }
   }
 
-  if ([v7 supportsCHIP])
+  if ([accessoryCopy supportsCHIP])
   {
     goto LABEL_35;
   }
 
   v12 = 1;
-  if (v11 > 9)
+  if (code > 9)
   {
-    if (v11 == 3201)
+    if (code == 3201)
     {
       goto LABEL_36;
     }
 
-    if (v11 == 54)
+    if (code == 54)
     {
-      v16 = [v6 underlyingErrors];
-      v17 = [v16 firstObject];
+      underlyingErrors = [errorCopy underlyingErrors];
+      firstObject = [underlyingErrors firstObject];
 
-      if ([v17 isHMError] && objc_msgSend(v17, "code") == 3203)
+      if ([firstObject isHMError] && objc_msgSend(firstObject, "code") == 3203)
       {
       }
 
       else
       {
-        v18 = [v7 canWakeViaCustomWoBLE];
+        canWakeViaCustomWoBLE = [accessoryCopy canWakeViaCustomWoBLE];
 
-        if ((v18 & 1) == 0)
+        if ((canWakeViaCustomWoBLE & 1) == 0)
         {
           goto LABEL_31;
         }
@@ -524,7 +524,7 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    if (v11 == 10 && isWatch())
+    if (code == 10 && isWatch())
     {
       goto LABEL_36;
     }
@@ -532,73 +532,73 @@ LABEL_35:
 
   else
   {
-    if ((v11 - 2) < 2)
+    if ((code - 2) < 2)
     {
       goto LABEL_36;
     }
 
-    if (v11 == 4)
+    if (code == 4)
     {
-      if ([v7 hasBTLELink] && ((objc_msgSend(v7, "isReachable") & 1) != 0 || (objc_msgSend(v7, "isBLELinkConnected") & 1) != 0))
+      if ([accessoryCopy hasBTLELink] && ((objc_msgSend(accessoryCopy, "isReachable") & 1) != 0 || (objc_msgSend(accessoryCopy, "isBLELinkConnected") & 1) != 0))
       {
         goto LABEL_36;
       }
     }
 
-    else if (v11 == 8)
+    else if (code == 8)
     {
       goto LABEL_36;
     }
   }
 
 LABEL_31:
-  if (![v7 canWakeViaCustomWoBLE])
+  if (![accessoryCopy canWakeViaCustomWoBLE])
   {
     goto LABEL_35;
   }
 
-  v19 = [v6 underlyingErrors];
-  v20 = [v19 firstObject];
+  underlyingErrors2 = [errorCopy underlyingErrors];
+  firstObject2 = [underlyingErrors2 firstObject];
 
-  v21 = [v20 isHMError];
-  if (v21)
+  isHMError = [firstObject2 isHMError];
+  if (isHMError)
   {
-    [v20 code];
+    [firstObject2 code];
   }
 
-  v12 = v21 ^ 1;
+  v12 = isHMError ^ 1;
 
 LABEL_36:
   return v12;
 }
 
-- (void)_startScanningForSuspendedAccessoriesWithRequests:(id)a3
+- (void)_startScanningForSuspendedAccessoriesWithRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   isWatch();
-  v5 = [(HMDHAPAccessoryTask *)self context];
-  v6 = [v5 home];
-  v7 = [v6 homeLocation];
+  context = [(HMDHAPAccessoryTask *)self context];
+  home = [context home];
+  homeLocation = [home homeLocation];
 
-  if (v7 == 1)
+  if (homeLocation == 1)
   {
-    v8 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __105__HMDHAPAccessoryRemoteOperationWithLocalFallbackTask__startScanningForSuspendedAccessoriesWithRequests___block_invoke;
     v15[3] = &unk_278689528;
-    v9 = v8;
+    v9 = strongToStrongObjectsMapTable;
     v16 = v9;
-    [v4 na_each:v15];
-    v10 = [v9 keyEnumerator];
+    [requestsCopy na_each:v15];
+    keyEnumerator = [v9 keyEnumerator];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __105__HMDHAPAccessoryRemoteOperationWithLocalFallbackTask__startScanningForSuspendedAccessoriesWithRequests___block_invoke_2;
     v12[3] = &unk_2786895A0;
     v13 = v9;
-    v14 = self;
+    selfCopy = self;
     v11 = v9;
-    [v10 na_each:v12];
+    [keyEnumerator na_each:v12];
   }
 }
 
@@ -750,40 +750,40 @@ void __105__HMDHAPAccessoryRemoteOperationWithLocalFallbackTask__startScanningFo
 - (void)execute
 {
   v55 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(HMDHAPAccessoryTask *)self setExecutionTime:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(HMDHAPAccessoryTask *)self setExecutionTime:date];
 
   v4 = MEMORY[0x277CBEB58];
-  v5 = [(HMDHAPAccessoryTask *)self requests];
-  v6 = [v4 setWithArray:v5];
+  requests = [(HMDHAPAccessoryTask *)self requests];
+  v6 = [v4 setWithArray:requests];
 
-  v7 = [(HMDHAPAccessoryTask *)self context];
-  v8 = [v7 home];
-  [v8 homeLocation];
+  context = [(HMDHAPAccessoryTask *)self context];
+  home = [context home];
+  [home homeLocation];
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     HMFGetLogIdentifier();
     v41 = v39 = v6;
-    v38 = [(HMDHAPAccessoryTask *)v10 requests];
-    v34 = [v38 count];
+    requests2 = [(HMDHAPAccessoryTask *)selfCopy requests];
+    v34 = [requests2 count];
     v33 = HMFBooleanToString();
-    v37 = [(HMDHAPAccessoryTask *)v10 context];
-    v36 = [v37 home];
-    [v36 remoteAccessIsEnabled];
+    context2 = [(HMDHAPAccessoryTask *)selfCopy context];
+    home2 = [context2 home];
+    [home2 remoteAccessIsEnabled];
     v12 = HMFBooleanToString();
-    [(HMDHAPAccessoryTask *)v10 context];
+    [(HMDHAPAccessoryTask *)selfCopy context];
     v35 = v40 = v9;
-    v13 = [v35 home];
-    v14 = [v13 primaryResident];
-    [v14 isReachable];
+    home3 = [v35 home];
+    primaryResident = [home3 primaryResident];
+    [primaryResident isReachable];
     v15 = HMFBooleanToString();
-    v16 = [(HMDHAPAccessoryTask *)v10 context];
-    v17 = [v16 home];
-    [v17 isCompanionReachable];
+    context3 = [(HMDHAPAccessoryTask *)selfCopy context];
+    home4 = [context3 home];
+    [home4 isCompanionReachable];
     v18 = HMFBooleanToString();
     *buf = 138544642;
     v44 = v41;
@@ -805,8 +805,8 @@ void __105__HMDHAPAccessoryRemoteOperationWithLocalFallbackTask__startScanningFo
   }
 
   objc_autoreleasePoolPop(v9);
-  v20 = [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)v10 remoteTaskDelegateDevice];
-  if (v20)
+  remoteTaskDelegateDevice = [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)selfCopy remoteTaskDelegateDevice];
+  if (remoteTaskDelegateDevice)
   {
     v21 = 0;
   }
@@ -817,36 +817,36 @@ void __105__HMDHAPAccessoryRemoteOperationWithLocalFallbackTask__startScanningFo
     v42[1] = 3221225472;
     v42[2] = __62__HMDHAPAccessoryRemoteOperationWithLocalFallbackTask_execute__block_invoke;
     v42[3] = &unk_278689500;
-    v42[4] = v10;
+    v42[4] = selfCopy;
     v21 = [v6 na_map:v42];
   }
 
   if ([v21 count])
   {
-    v22 = [v21 allObjects];
-    v23 = [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)v10 completion];
-    v24 = [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)v10 _makeLocalTaskWithRequests:v22 completion:v23];
-    [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)v10 setLocalTask:v24];
+    allObjects = [v21 allObjects];
+    completion = [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)selfCopy completion];
+    v24 = [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)selfCopy _makeLocalTaskWithRequests:allObjects completion:completion];
+    [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)selfCopy setLocalTask:v24];
 
-    v25 = [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)v10 localTask];
-    [v25 execute];
+    localTask = [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)selfCopy localTask];
+    [localTask execute];
 
     [v6 minusSet:v21];
   }
 
   if ([v6 count])
   {
-    v26 = [v6 allObjects];
-    [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)v10 _startScanningForSuspendedAccessoriesWithRequests:v26];
+    allObjects2 = [v6 allObjects];
+    [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)selfCopy _startScanningForSuspendedAccessoriesWithRequests:allObjects2];
 
-    v27 = [v6 allObjects];
-    v28 = [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)v10 remoteTaskDelegateDevice];
-    v29 = [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)v10 _remoteTaskCompletionHandler];
-    v30 = [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)v10 _makeRemoteTaskWithRequests:v27 delegateDevice:v28 completion:v29];
-    [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)v10 setRemoteTask:v30];
+    allObjects3 = [v6 allObjects];
+    remoteTaskDelegateDevice2 = [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)selfCopy remoteTaskDelegateDevice];
+    _remoteTaskCompletionHandler = [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)selfCopy _remoteTaskCompletionHandler];
+    v30 = [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)selfCopy _makeRemoteTaskWithRequests:allObjects3 delegateDevice:remoteTaskDelegateDevice2 completion:_remoteTaskCompletionHandler];
+    [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)selfCopy setRemoteTask:v30];
 
-    v31 = [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)v10 remoteTask];
-    [v31 execute];
+    remoteTask = [(HMDHAPAccessoryRemoteOperationWithLocalFallbackTask *)selfCopy remoteTask];
+    [remoteTask execute];
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -887,16 +887,16 @@ id __62__HMDHAPAccessoryRemoteOperationWithLocalFallbackTask_execute__block_invo
   return v6;
 }
 
-- (HMDHAPAccessoryRemoteOperationWithLocalFallbackTask)initWithContext:(id)a3 requests:(id)a4 delegateDevice:(id)a5 completion:(id)a6
+- (HMDHAPAccessoryRemoteOperationWithLocalFallbackTask)initWithContext:(id)context requests:(id)requests delegateDevice:(id)device completion:(id)completion
 {
-  v11 = a5;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = HMDHAPAccessoryRemoteOperationWithLocalFallbackTask;
-  v12 = [(HMDHAPAccessoryTask *)&v15 initWithContext:a3 requests:a4 completion:a6];
+  v12 = [(HMDHAPAccessoryTask *)&v15 initWithContext:context requests:requests completion:completion];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_remoteTaskDelegateDevice, a5);
+    objc_storeStrong(&v12->_remoteTaskDelegateDevice, device);
   }
 
   return v13;

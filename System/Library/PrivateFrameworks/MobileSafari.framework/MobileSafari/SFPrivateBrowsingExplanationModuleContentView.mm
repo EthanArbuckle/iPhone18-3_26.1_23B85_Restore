@@ -1,6 +1,6 @@
 @interface SFPrivateBrowsingExplanationModuleContentView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SFPrivateBrowsingExplanationModuleContentView)initWithBanner:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SFPrivateBrowsingExplanationModuleContentView)initWithBanner:(id)banner;
 - (double)_preferredHeight;
 - (id)_attributedMessage;
 - (id)_title;
@@ -12,23 +12,23 @@
 - (void)_setUpExplanationItemCollectionViewIfNeeded;
 - (void)_setUpMessageTextIfNecessary;
 - (void)_updateAllowsTitleNextToDismissButton;
-- (void)setBanner:(id)a3;
+- (void)setBanner:(id)banner;
 @end
 
 @implementation SFPrivateBrowsingExplanationModuleContentView
 
-- (SFPrivateBrowsingExplanationModuleContentView)initWithBanner:(id)a3
+- (SFPrivateBrowsingExplanationModuleContentView)initWithBanner:(id)banner
 {
   v110[8] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  bannerCopy = banner;
   v103.receiver = self;
   v103.super_class = SFPrivateBrowsingExplanationModuleContentView;
   v6 = [(SFPrivateBrowsingExplanationModuleContentView *)&v103 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    v101 = v5;
-    objc_storeStrong(&v6->_banner, a3);
+    v101 = bannerCopy;
+    objc_storeStrong(&v6->_banner, banner);
     [(SFPrivateBrowsingExplanationModuleContentView *)v7 setLayoutMargins:30.0, 30.0, 30.0, 30.0];
     v100 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDDB8] weight:*MEMORY[0x1E69DB980]];
     v8 = [MEMORY[0x1E69DCC10] sf_startPageBannerTitleLabelWithFont:?];
@@ -42,65 +42,65 @@
     [(SFPrivateBrowsingExplanationModuleContentView *)v7 _setUpDismissButtonIfNeeded];
     LODWORD(v10) = 1132068864;
     [(UILabel *)v7->_titleLabel setContentCompressionResistancePriority:0 forAxis:v10];
-    v11 = [(UICollectionView *)v7->_explanationItemCollectionView bottomAnchor];
-    v12 = v11;
-    if (v11)
+    bottomAnchor = [(UICollectionView *)v7->_explanationItemCollectionView bottomAnchor];
+    v12 = bottomAnchor;
+    if (bottomAnchor)
     {
-      v13 = v11;
+      v13 = bottomAnchor;
     }
 
     else
     {
-      v14 = [(UITextView *)v7->_messageTextView bottomAnchor];
-      v15 = v14;
-      if (v14)
+      bottomAnchor2 = [(UITextView *)v7->_messageTextView bottomAnchor];
+      v15 = bottomAnchor2;
+      if (bottomAnchor2)
       {
-        v16 = v14;
+        bottomAnchor3 = bottomAnchor2;
       }
 
       else
       {
-        v16 = [(UILabel *)v7->_titleLabel bottomAnchor];
+        bottomAnchor3 = [(UILabel *)v7->_titleLabel bottomAnchor];
       }
 
-      v13 = v16;
+      v13 = bottomAnchor3;
     }
 
-    v17 = [(SFPrivateBrowsingExplanationModuleContentView *)v7 readableContentGuide];
+    readableContentGuide = [(SFPrivateBrowsingExplanationModuleContentView *)v7 readableContentGuide];
     v78 = MEMORY[0x1E696ACD8];
-    v96 = [(UILabel *)v7->_titleLabel leadingAnchor];
-    v92 = [v17 leadingAnchor];
-    v89 = [v96 constraintGreaterThanOrEqualToAnchor:v92];
+    leadingAnchor = [(UILabel *)v7->_titleLabel leadingAnchor];
+    leadingAnchor2 = [readableContentGuide leadingAnchor];
+    v89 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
     v110[0] = v89;
-    v87 = [(UILabel *)v7->_titleLabel topAnchor];
-    v85 = [v17 topAnchor];
-    v83 = [v87 constraintGreaterThanOrEqualToAnchor:v85];
+    topAnchor = [(UILabel *)v7->_titleLabel topAnchor];
+    topAnchor2 = [readableContentGuide topAnchor];
+    v83 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     v110[1] = v83;
-    v82 = [(UILabel *)v7->_titleLabel topAnchor];
-    v81 = [v17 topAnchor];
-    v80 = [v82 constraintEqualToAnchor:v81];
+    topAnchor3 = [(UILabel *)v7->_titleLabel topAnchor];
+    topAnchor4 = [readableContentGuide topAnchor];
+    v80 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     LODWORD(v18) = 1132134400;
     v79 = [v80 sf_withPriority:v18];
     v110[2] = v79;
-    v77 = [v17 trailingAnchor];
-    v76 = [(UILabel *)v7->_titleLabel trailingAnchor];
-    v75 = [v77 constraintGreaterThanOrEqualToAnchor:v76];
+    trailingAnchor = [readableContentGuide trailingAnchor];
+    trailingAnchor2 = [(UILabel *)v7->_titleLabel trailingAnchor];
+    v75 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
     v110[3] = v75;
-    v74 = [(UILabel *)v7->_titleLabel centerXAnchor];
-    v73 = [(SFPrivateBrowsingExplanationModuleContentView *)v7 centerXAnchor];
-    v72 = [v74 constraintEqualToAnchor:v73];
+    centerXAnchor = [(UILabel *)v7->_titleLabel centerXAnchor];
+    centerXAnchor2 = [(SFPrivateBrowsingExplanationModuleContentView *)v7 centerXAnchor];
+    v72 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v110[4] = v72;
-    v19 = [(UILabel *)v7->_titleLabel widthAnchor];
-    v20 = [v17 widthAnchor];
-    v21 = [v19 constraintLessThanOrEqualToAnchor:v20];
+    widthAnchor = [(UILabel *)v7->_titleLabel widthAnchor];
+    widthAnchor2 = [readableContentGuide widthAnchor];
+    v21 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
     v110[5] = v21;
-    v22 = [v17 bottomAnchor];
-    v23 = [v22 constraintGreaterThanOrEqualToAnchor:v13];
+    bottomAnchor4 = [readableContentGuide bottomAnchor];
+    v23 = [bottomAnchor4 constraintGreaterThanOrEqualToAnchor:v13];
     v110[6] = v23;
-    v102 = v17;
-    v24 = [v17 bottomAnchor];
+    v102 = readableContentGuide;
+    bottomAnchor5 = [readableContentGuide bottomAnchor];
     v99 = v13;
-    v25 = [v24 constraintEqualToAnchor:v13];
+    v25 = [bottomAnchor5 constraintEqualToAnchor:v13];
     LODWORD(v26) = 1132068864;
     v27 = [v25 sf_withPriority:v26];
     v110[7] = v27;
@@ -111,21 +111,21 @@
     if (messageTextView)
     {
       v84 = MEMORY[0x1E696ACD8];
-      v97 = [(UITextView *)messageTextView firstBaselineAnchor];
-      v93 = [(UILabel *)v7->_titleLabel lastBaselineAnchor];
-      v90 = [v97 constraintEqualToSystemSpacingBelowAnchor:v93 multiplier:1.0];
+      firstBaselineAnchor = [(UITextView *)messageTextView firstBaselineAnchor];
+      lastBaselineAnchor = [(UILabel *)v7->_titleLabel lastBaselineAnchor];
+      v90 = [firstBaselineAnchor constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor multiplier:1.0];
       v109[0] = v90;
-      v88 = [(UITextView *)v7->_messageTextView leadingAnchor];
-      v86 = [v102 leadingAnchor];
-      v30 = [v88 constraintGreaterThanOrEqualToAnchor:v86];
+      leadingAnchor3 = [(UITextView *)v7->_messageTextView leadingAnchor];
+      leadingAnchor4 = [v102 leadingAnchor];
+      v30 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
       v109[1] = v30;
-      v31 = [v102 trailingAnchor];
-      v32 = [(UITextView *)v7->_messageTextView trailingAnchor];
-      v33 = [v31 constraintGreaterThanOrEqualToAnchor:v32];
+      trailingAnchor3 = [v102 trailingAnchor];
+      trailingAnchor4 = [(UITextView *)v7->_messageTextView trailingAnchor];
+      v33 = [trailingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor4];
       v109[2] = v33;
-      v34 = [(UITextView *)v7->_messageTextView centerXAnchor];
-      v35 = [(SFPrivateBrowsingExplanationModuleContentView *)v7 centerXAnchor];
-      v36 = [v34 constraintEqualToAnchor:v35];
+      centerXAnchor3 = [(UITextView *)v7->_messageTextView centerXAnchor];
+      centerXAnchor4 = [(SFPrivateBrowsingExplanationModuleContentView *)v7 centerXAnchor];
+      v36 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
       v109[3] = v36;
       v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v109 count:4];
       [v84 activateConstraints:v37];
@@ -135,28 +135,28 @@
     if (dismissButton)
     {
       v94 = MEMORY[0x1E696ACD8];
-      v39 = [(UIButton *)dismissButton leadingAnchor];
-      v40 = [(SFPrivateBrowsingExplanationModuleContentView *)v7 leadingAnchor];
-      v41 = [v39 constraintEqualToAnchor:v40 constant:10.0];
+      leadingAnchor5 = [(UIButton *)dismissButton leadingAnchor];
+      leadingAnchor6 = [(SFPrivateBrowsingExplanationModuleContentView *)v7 leadingAnchor];
+      v41 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:10.0];
       v108[0] = v41;
-      v42 = [(UIButton *)v7->_dismissButton topAnchor];
-      v43 = [(SFPrivateBrowsingExplanationModuleContentView *)v7 topAnchor];
-      v44 = [v42 constraintEqualToAnchor:v43 constant:10.0];
+      topAnchor5 = [(UIButton *)v7->_dismissButton topAnchor];
+      topAnchor6 = [(SFPrivateBrowsingExplanationModuleContentView *)v7 topAnchor];
+      v44 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:10.0];
       v108[1] = v44;
       v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:v108 count:2];
       [v94 activateConstraints:v45];
 
-      v46 = [(UILabel *)v7->_titleLabel topAnchor];
-      v47 = [(UIButton *)v7->_dismissButton bottomAnchor];
-      v48 = [v46 constraintEqualToAnchor:v47];
+      topAnchor7 = [(UILabel *)v7->_titleLabel topAnchor];
+      bottomAnchor6 = [(UIButton *)v7->_dismissButton bottomAnchor];
+      v48 = [topAnchor7 constraintEqualToAnchor:bottomAnchor6];
       v107 = v48;
       v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v107 count:1];
       constraintsForTitleBelowDismissButton = v7->_constraintsForTitleBelowDismissButton;
       v7->_constraintsForTitleBelowDismissButton = v49;
 
-      v51 = [(UILabel *)v7->_titleLabel leadingAnchor];
-      v52 = [(UIButton *)v7->_dismissButton trailingAnchor];
-      v53 = [v51 constraintGreaterThanOrEqualToAnchor:v52];
+      leadingAnchor7 = [(UILabel *)v7->_titleLabel leadingAnchor];
+      trailingAnchor5 = [(UIButton *)v7->_dismissButton trailingAnchor];
+      v53 = [leadingAnchor7 constraintGreaterThanOrEqualToAnchor:trailingAnchor5];
       v106 = v53;
       v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v106 count:1];
       constraintsForTitleNextToDismissButton = v7->_constraintsForTitleNextToDismissButton;
@@ -169,36 +169,36 @@
     if (explanationItemCollectionView)
     {
       v91 = MEMORY[0x1E696ACD8];
-      v57 = [(UICollectionView *)explanationItemCollectionView leadingAnchor];
-      v95 = [v102 leadingAnchor];
-      v98 = v57;
-      v58 = [v57 constraintEqualToAnchor:?];
+      leadingAnchor8 = [(UICollectionView *)explanationItemCollectionView leadingAnchor];
+      leadingAnchor9 = [v102 leadingAnchor];
+      v98 = leadingAnchor8;
+      v58 = [leadingAnchor8 constraintEqualToAnchor:?];
       v105[0] = v58;
-      v59 = [(UICollectionView *)v7->_explanationItemCollectionView topAnchor];
-      v60 = [(UITextView *)v7->_messageTextView lastBaselineAnchor];
-      v61 = v60;
-      if (!v60)
+      topAnchor8 = [(UICollectionView *)v7->_explanationItemCollectionView topAnchor];
+      lastBaselineAnchor2 = [(UITextView *)v7->_messageTextView lastBaselineAnchor];
+      lastBaselineAnchor3 = lastBaselineAnchor2;
+      if (!lastBaselineAnchor2)
       {
-        v61 = [(UILabel *)v7->_titleLabel lastBaselineAnchor];
+        lastBaselineAnchor3 = [(UILabel *)v7->_titleLabel lastBaselineAnchor];
       }
 
-      v62 = [v59 constraintEqualToAnchor:v61 constant:20.0];
+      v62 = [topAnchor8 constraintEqualToAnchor:lastBaselineAnchor3 constant:20.0];
       v105[1] = v62;
-      v63 = [v102 trailingAnchor];
-      v64 = [(UICollectionView *)v7->_explanationItemCollectionView trailingAnchor];
-      v65 = [v63 constraintEqualToAnchor:v64];
+      trailingAnchor6 = [v102 trailingAnchor];
+      trailingAnchor7 = [(UICollectionView *)v7->_explanationItemCollectionView trailingAnchor];
+      v65 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
       v105[2] = v65;
       v66 = [MEMORY[0x1E695DEC8] arrayWithObjects:v105 count:3];
       [v91 activateConstraints:v66];
 
-      if (!v60)
+      if (!lastBaselineAnchor2)
       {
       }
     }
 
     [(SFPrivateBrowsingExplanationModuleContentView *)v7 _bannerDidChange];
-    v67 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v67 addObserver:v7 selector:sel__applyMessageViewLinkTextAttributes name:*MEMORY[0x1E69DD8A8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__applyMessageViewLinkTextAttributes name:*MEMORY[0x1E69DD8A8] object:0];
 
     v104[0] = objc_opt_class();
     v104[1] = objc_opt_class();
@@ -206,15 +206,15 @@
     v69 = [(SFPrivateBrowsingExplanationModuleContentView *)v7 registerForTraitChanges:v68 withTarget:v7 action:sel__updateAllowsTitleNextToDismissButton];
 
     v70 = v7;
-    v5 = v101;
+    bannerCopy = v101;
   }
 
   return v7;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(SFPrivateBrowsingExplanationModuleContentView *)self bounds:a3.width];
+  [(SFPrivateBrowsingExplanationModuleContentView *)self bounds:fits.width];
   Width = CGRectGetWidth(v9);
   [(SFPrivateBrowsingExplanationModuleContentView *)self _preferredHeight];
   v6 = v5;
@@ -233,29 +233,29 @@
   return v4 + v5;
 }
 
-- (void)setBanner:(id)a3
+- (void)setBanner:(id)banner
 {
-  v8 = a3;
-  v5 = [(WBSStartPageBanner *)self->_banner privateBrowsingExplanationItems];
-  v6 = [v8 privateBrowsingExplanationItems];
-  v7 = [v5 isEqual:v6];
+  bannerCopy = banner;
+  privateBrowsingExplanationItems = [(WBSStartPageBanner *)self->_banner privateBrowsingExplanationItems];
+  privateBrowsingExplanationItems2 = [bannerCopy privateBrowsingExplanationItems];
+  v7 = [privateBrowsingExplanationItems isEqual:privateBrowsingExplanationItems2];
 
   if ((v7 & 1) == 0)
   {
-    objc_storeStrong(&self->_banner, a3);
+    objc_storeStrong(&self->_banner, banner);
     [(SFPrivateBrowsingExplanationModuleContentView *)self _bannerDidChange];
   }
 }
 
 - (void)_bannerDidChange
 {
-  v3 = [(SFPrivateBrowsingExplanationModuleContentView *)self _title];
-  [(UILabel *)self->_titleLabel setText:v3];
+  _title = [(SFPrivateBrowsingExplanationModuleContentView *)self _title];
+  [(UILabel *)self->_titleLabel setText:_title];
 
   if ([(SFPrivateBrowsingExplanationModuleContentView *)self _hasMessageText])
   {
-    v4 = [(SFPrivateBrowsingExplanationModuleContentView *)self _attributedMessage];
-    [(UITextView *)self->_messageTextView setAttributedText:v4];
+    _attributedMessage = [(SFPrivateBrowsingExplanationModuleContentView *)self _attributedMessage];
+    [(UITextView *)self->_messageTextView setAttributedText:_attributedMessage];
 
     [(SFPrivateBrowsingExplanationModuleContentView *)self _applyMessageTextViewStyle];
   }
@@ -264,11 +264,11 @@
   {
     v8 = objc_alloc_init(MEMORY[0x1E69955A0]);
     [v8 appendSectionsWithIdentifiers:&unk_1EFF744A8];
-    v5 = [(WBSStartPageBanner *)self->_banner privateBrowsingExplanationItems];
-    [v8 appendItemsWithIdentifiers:v5];
+    privateBrowsingExplanationItems = [(WBSStartPageBanner *)self->_banner privateBrowsingExplanationItems];
+    [v8 appendItemsWithIdentifiers:privateBrowsingExplanationItems];
 
-    v6 = [(UICollectionView *)self->_explanationItemCollectionView indexPathsForVisibleItems];
-    v7 = [v6 count] != 0;
+    indexPathsForVisibleItems = [(UICollectionView *)self->_explanationItemCollectionView indexPathsForVisibleItems];
+    v7 = [indexPathsForVisibleItems count] != 0;
 
     [(UICollectionViewDiffableDataSource *)self->_explanationItemCollectionViewDataSource applySnapshot:v8 animatingDifferences:v7];
   }
@@ -276,13 +276,13 @@
 
 - (id)_title
 {
-  v2 = [(WBSStartPageBanner *)self->_banner privateBrowsingExplanationState];
-  if (v2 <= 1)
+  privateBrowsingExplanationState = [(WBSStartPageBanner *)self->_banner privateBrowsingExplanationState];
+  if (privateBrowsingExplanationState <= 1)
   {
-    v2 = _WBSLocalizedString();
+    privateBrowsingExplanationState = _WBSLocalizedString();
   }
 
-  return v2;
+  return privateBrowsingExplanationState;
 }
 
 - (void)_setUpMessageTextIfNecessary
@@ -304,8 +304,8 @@
     [(UITextView *)self->_messageTextView setEditable:0];
     [(UITextView *)self->_messageTextView _setInteractiveTextSelectionDisabled:1];
     [(UITextView *)self->_messageTextView setScrollEnabled:0];
-    v5 = [(UITextView *)self->_messageTextView textContainer];
-    [v5 setLineFragmentPadding:0.0];
+    textContainer = [(UITextView *)self->_messageTextView textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
     [(UITextView *)self->_messageTextView setTextContainerInset:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
     [(UITextView *)self->_messageTextView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -346,8 +346,8 @@
   v8[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF90];
   v7 = *MEMORY[0x1E69DB650];
-  v4 = [MEMORY[0x1E69DC888] labelColor];
-  v8[0] = v4;
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v8[0] = labelColor;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   v6 = [v3 dictionaryWithDictionary:v5];
 
@@ -366,12 +366,12 @@
   [(UITextView *)self->_messageTextView setFont:v3];
 
   [(UITextView *)self->_messageTextView setTextAlignment:1];
-  v4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UITextView *)self->_messageTextView setTextColor:v4];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UITextView *)self->_messageTextView setTextColor:secondaryLabelColor];
 
   v7 = *MEMORY[0x1E69DB650];
-  v5 = [MEMORY[0x1E69DC888] linkColor];
-  v8[0] = v5;
+  linkColor = [MEMORY[0x1E69DC888] linkColor];
+  v8[0] = linkColor;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   [(UITextView *)self->_messageTextView setLinkTextAttributes:v6];
 }
@@ -381,14 +381,14 @@
   if (![(WBSStartPageBanner *)self->_banner privateBrowsingExplanationState])
   {
     objc_initWeak(&location, self);
-    v3 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-    [v3 setButtonSize:3];
-    [v3 setContentInsets:{10.0, 5.0, 10.0, 5.0}];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    [plainButtonConfiguration setButtonSize:3];
+    [plainButtonConfiguration setContentInsets:{10.0, 5.0, 10.0, 5.0}];
     v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"xmark.circle.fill"];
-    [v3 setImage:v4];
+    [plainButtonConfiguration setImage:v4];
 
     v5 = [MEMORY[0x1E69DCAD8] configurationWithWeight:9];
-    [v3 setPreferredSymbolConfigurationForImage:v5];
+    [plainButtonConfiguration setPreferredSymbolConfigurationForImage:v5];
 
     v6 = MEMORY[0x1E69DC628];
     v11 = MEMORY[0x1E69E9820];
@@ -397,14 +397,14 @@
     v14 = &unk_1E721C458;
     objc_copyWeak(&v15, &location);
     v7 = [v6 actionWithHandler:&v11];
-    v8 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v3 primaryAction:{v7, v11, v12, v13, v14}];
+    v8 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:{v7, v11, v12, v13, v14}];
     dismissButton = self->_dismissButton;
     self->_dismissButton = v8;
 
     [(UIButton *)self->_dismissButton setPointerStyleProvider:&__block_literal_global_10];
     [(UIButton *)self->_dismissButton setTintAdjustmentMode:1];
-    v10 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UIButton *)self->_dismissButton setTintColor:v10];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UIButton *)self->_dismissButton setTintColor:secondaryLabelColor];
 
     [(UIButton *)self->_dismissButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)self->_dismissButton _setTouchInsets:-10.0, -10.0, -10.0, -10.0];
@@ -454,13 +454,13 @@ id __76__SFPrivateBrowsingExplanationModuleContentView__setUpDismissButtonIfNeed
 {
   if (self->_dismissButton)
   {
-    v8 = [(SFPrivateBrowsingExplanationModuleContentView *)self traitCollection];
+    traitCollection = [(SFPrivateBrowsingExplanationModuleContentView *)self traitCollection];
     v3 = &OBJC_IVAR___SFPrivateBrowsingExplanationModuleContentView__constraintsForTitleNextToDismissButton;
     v4 = &OBJC_IVAR___SFPrivateBrowsingExplanationModuleContentView__constraintsForTitleBelowDismissButton;
-    if ([v8 horizontalSizeClass] == 1)
+    if ([traitCollection horizontalSizeClass] == 1)
     {
-      v5 = [v8 preferredContentSizeCategory];
-      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+      preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
       if (IsAccessibilityCategory)
       {
@@ -487,12 +487,12 @@ id __76__SFPrivateBrowsingExplanationModuleContentView__setUpDismissButtonIfNeed
 
 - (void)_dismissModule
 {
-  v2 = [(WBSStartPageBanner *)self->_banner privateBrowsingExplanationDismissHandler];
-  if (v2)
+  privateBrowsingExplanationDismissHandler = [(WBSStartPageBanner *)self->_banner privateBrowsingExplanationDismissHandler];
+  if (privateBrowsingExplanationDismissHandler)
   {
-    v3 = v2;
-    v2[2]();
-    v2 = v3;
+    v3 = privateBrowsingExplanationDismissHandler;
+    privateBrowsingExplanationDismissHandler[2]();
+    privateBrowsingExplanationDismissHandler = v3;
   }
 }
 

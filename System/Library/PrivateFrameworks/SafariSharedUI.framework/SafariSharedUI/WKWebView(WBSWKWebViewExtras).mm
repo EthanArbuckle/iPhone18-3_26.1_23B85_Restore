@@ -10,9 +10,9 @@
 
 - (double)safari_visibleBounds
 {
-  [a1 bounds];
+  [self bounds];
   v3 = v2;
-  [a1 _obscuredInsets];
+  [self _obscuredInsets];
   return v3 + v4;
 }
 
@@ -21,23 +21,23 @@
   v39 = *MEMORY[0x1E69E9840];
   v10 = a3;
   v11 = a6;
-  v12 = [a1 _committedURL];
+  _committedURL = [self _committedURL];
   v13 = WBS_LOG_CHANNEL_PREFIXDownloads();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 141558531;
     v34 = 1752392040;
     v35 = 2117;
-    v36 = v12;
+    v36 = _committedURL;
     v37 = 2048;
     v38 = a5;
     _os_log_impl(&dword_1C6968000, v13, OS_LOG_TYPE_DEFAULT, "Saving Page Complete for %{sensitive, mask.hash}@ with options %zu", buf, 0x20u);
   }
 
   v14 = v10;
-  v15 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v31 = 0;
-  v16 = [v15 createDirectoryAtURL:v14 withIntermediateDirectories:1 attributes:0 error:&v31];
+  v16 = [defaultManager createDirectoryAtURL:v14 withIntermediateDirectories:1 attributes:0 error:&v31];
   v17 = v31;
 
   if (v16)
@@ -64,12 +64,12 @@
     v24[3] = &unk_1E8282D78;
     v28 = v11;
     v29 = a5;
-    v24[4] = a1;
+    v24[4] = self;
     v25 = v14;
-    v26 = v12;
+    v26 = _committedURL;
     v27 = @"index.html";
     v30 = a4;
-    [a1 _archiveWithConfiguration:v18 completionHandler:v24];
+    [self _archiveWithConfiguration:v18 completionHandler:v24];
   }
 
   else
@@ -94,10 +94,10 @@
   v10[3] = &unk_1E8282DA0;
   v11 = v6;
   v12 = v7;
-  v10[4] = a1;
+  v10[4] = self;
   v8 = v6;
   v9 = v7;
-  [a1 _frames:v10];
+  [self _frames:v10];
 }
 
 - (void)safari_enumerateAllFramesAsynchronously:()WBSWKWebViewExtras completionHandler:
@@ -108,12 +108,12 @@
   v10[1] = 3221225472;
   v10[2] = __91__WKWebView_WBSWKWebViewExtras__safari_enumerateAllFramesAsynchronously_completionHandler___block_invoke;
   v10[3] = &unk_1E8282DC8;
-  v10[4] = a1;
+  v10[4] = self;
   v11 = v7;
   v12 = v6;
   v8 = v6;
   v9 = v7;
-  [a1 _frames:v10];
+  [self _frames:v10];
 }
 
 - (void)safari_getAllFrameInfos:()WBSWKWebViewExtras
@@ -123,10 +123,10 @@
   v6[1] = 3221225472;
   v6[2] = __57__WKWebView_WBSWKWebViewExtras__safari_getAllFrameInfos___block_invoke;
   v6[3] = &unk_1E8282DF0;
-  v6[4] = a1;
+  v6[4] = self;
   v7 = v4;
   v5 = v4;
-  [a1 _frames:v6];
+  [self _frames:v6];
 }
 
 - (void)safari_saveWebpageCompleteToURL:()WBSWKWebViewExtras withCollectionMethod:collectionOptions:completionHandler:.cold.1()

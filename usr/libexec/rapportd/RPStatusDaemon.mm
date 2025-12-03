@@ -1,12 +1,12 @@
 @interface RPStatusDaemon
 + (id)sharedStatusDaemon;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (RPStatusDaemon)init;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (void)_activate;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_xpcConnectionInvalidated:(id)a3;
+- (void)_xpcConnectionInvalidated:(id)invalidated;
 - (void)activate;
 - (void)invalidate;
 @end
@@ -40,9 +40,9 @@
   return v3;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if (a3 < 21)
+  if (level < 21)
   {
     v26 = 0;
     NSAppendPrintF();
@@ -51,7 +51,7 @@
     if (v5)
     {
       v25 = v4;
-      v19 = v5;
+      processIdentifier = v5;
       NSAppendPrintF();
       v6 = v4;
 
@@ -78,25 +78,25 @@
           }
 
           v11 = *(*(&v21 + 1) + 8 * i);
-          v12 = [v11 xpcCnx];
-          v19 = [v12 processIdentifier];
+          xpcCnx = [v11 xpcCnx];
+          processIdentifier = [xpcCnx processIdentifier];
           NSAppendPrintF();
           v13 = v4;
 
-          v14 = [v11 subscriber];
-          if (v14)
+          subscriber = [v11 subscriber];
+          if (subscriber)
           {
-            v19 = CUDescriptionWithLevel();
+            processIdentifier = CUDescriptionWithLevel();
             NSAppendPrintF();
             v15 = v13;
 
             v13 = v15;
           }
 
-          v16 = [v11 provider];
-          if (v16)
+          provider = [v11 provider];
+          if (provider)
           {
-            v19 = CUDescriptionWithLevel();
+            processIdentifier = CUDescriptionWithLevel();
             NSAppendPrintF();
             v17 = v13;
 
@@ -210,11 +210,11 @@
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v6 = [[RPStatusUpdatableXPCConnection alloc] initWithDaemon:self xpcCnx:v5];
+  v6 = [[RPStatusUpdatableXPCConnection alloc] initWithDaemon:self xpcCnx:connectionCopy];
   [(RPStatusUpdatableXPCConnection *)v6 setDispatchQueue:self->_dispatchQueue];
   xpcConnections = self->_xpcConnections;
   if (!xpcConnections)
@@ -269,33 +269,33 @@
     objc_storeStrong(&self->_xpcDaemonInterface, v18);
   }
 
-  [v5 setExportedInterface:v18];
-  [v5 setExportedObject:v6];
+  [connectionCopy setExportedInterface:v18];
+  [connectionCopy setExportedObject:v6];
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_1000BBC84;
   v34[3] = &unk_1001AB488;
   v34[4] = self;
   v34[5] = v6;
-  [v5 setInvalidationHandler:v34];
-  [v5 setRemoteObjectInterface:v10];
-  [v5 _setQueue:self->_dispatchQueue];
-  [v5 resume];
+  [connectionCopy setInvalidationHandler:v34];
+  [connectionCopy setRemoteObjectInterface:v10];
+  [connectionCopy _setQueue:self->_dispatchQueue];
+  [connectionCopy resume];
   if (dword_1001D4D10 <= 20 && (dword_1001D4D10 != -1 || _LogCategory_Initialize()))
   {
-    sub_10012B004(v5);
+    sub_10012B004(connectionCopy);
   }
 
   return 1;
 }
 
-- (void)_xpcConnectionInvalidated:(id)a3
+- (void)_xpcConnectionInvalidated:(id)invalidated
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  invalidatedCopy = invalidated;
   dispatch_assert_queue_V2(dispatchQueue);
-  [v5 connectionInvalidated];
-  [(NSMutableSet *)self->_xpcConnections removeObject:v5];
+  [invalidatedCopy connectionInvalidated];
+  [(NSMutableSet *)self->_xpcConnections removeObject:invalidatedCopy];
 
   [(RPStatusDaemon *)self _update];
 }

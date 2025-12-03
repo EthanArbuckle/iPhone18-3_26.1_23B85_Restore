@@ -1,5 +1,5 @@
 @interface TLToneStoreDownload
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRingtone;
 - (NSString)albumTitle;
 - (NSString)artistName;
@@ -12,15 +12,15 @@
 - (id)description;
 - (unint64_t)hash;
 - (unint64_t)storeItemIdentifier;
-- (void)_setAlbumTitle:(id)a3;
-- (void)_setArtistName:(id)a3;
-- (void)_setDownloadProgress:(float)a3;
-- (void)_setDuration:(double)a3;
-- (void)_setGenreName:(id)a3;
-- (void)_setName:(id)a3;
-- (void)_setRingtone:(BOOL)a3;
-- (void)_setStoreItemIdentifier:(unint64_t)a3;
-- (void)_setToneIdentifier:(id)a3;
+- (void)_setAlbumTitle:(id)title;
+- (void)_setArtistName:(id)name;
+- (void)_setDownloadProgress:(float)progress;
+- (void)_setDuration:(double)duration;
+- (void)_setGenreName:(id)name;
+- (void)_setName:(id)name;
+- (void)_setRingtone:(BOOL)ringtone;
+- (void)_setStoreItemIdentifier:(unint64_t)identifier;
+- (void)_setToneIdentifier:(id)identifier;
 - (void)dealloc;
 @end
 
@@ -36,11 +36,11 @@
     v3 = objc_opt_class();
     v4 = MEMORY[0x1E696AEC0];
     v5 = [MEMORY[0x1E696AAE8] bundleForClass:v3];
-    v6 = [v5 bundleIdentifier];
+    bundleIdentifier = [v5 bundleIdentifier];
     v7 = NSStringFromClass(v3);
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
-    v10 = [v4 stringWithFormat:@"%@.%@-%@-%@", v6, v7, @"AccessQueue", v9];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v10 = [v4 stringWithFormat:@"%@.%@-%@-%@", bundleIdentifier, v7, @"AccessQueue", uUIDString];
     accessQueueLabel = v2->_accessQueueLabel;
     v2->_accessQueueLabel = v10;
 
@@ -48,9 +48,9 @@
     accessQueue = v2->_accessQueue;
     v2->_accessQueue = v12;
 
-    v14 = [MEMORY[0x1E696AFB0] UUID];
-    v15 = [v14 UUIDString];
-    v16 = [@"toneStoreDownload:" stringByAppendingString:v15];
+    uUID2 = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString2 = [uUID2 UUIDString];
+    v16 = [@"toneStoreDownload:" stringByAppendingString:uUIDString2];
     identifier = v2->_identifier;
     v2->_identifier = v16;
   }
@@ -92,17 +92,17 @@
   return v3;
 }
 
-- (void)_setName:(id)a3
+- (void)_setName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__TLToneStoreDownload__setName___block_invoke;
   v7[3] = &unk_1E8578900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -175,17 +175,17 @@ LABEL_13:
   return v3;
 }
 
-- (void)_setAlbumTitle:(id)a3
+- (void)_setAlbumTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__TLToneStoreDownload__setAlbumTitle___block_invoke;
   v7[3] = &unk_1E8578900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = titleCopy;
+  v6 = titleCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -258,17 +258,17 @@ LABEL_13:
   return v3;
 }
 
-- (void)_setArtistName:(id)a3
+- (void)_setArtistName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__TLToneStoreDownload__setArtistName___block_invoke;
   v7[3] = &unk_1E8578900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -345,7 +345,7 @@ double __31__TLToneStoreDownload_duration__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_setDuration:(double)a3
+- (void)_setDuration:(double)duration
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -353,7 +353,7 @@ double __31__TLToneStoreDownload_duration__block_invoke(uint64_t a1)
   v4[2] = __36__TLToneStoreDownload__setDuration___block_invoke;
   v4[3] = &unk_1E8578CC0;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = duration;
   dispatch_sync(accessQueue, v4);
 }
 
@@ -391,17 +391,17 @@ uint64_t __36__TLToneStoreDownload__setDuration___block_invoke(uint64_t result)
   return v3;
 }
 
-- (void)_setGenreName:(id)a3
+- (void)_setGenreName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__TLToneStoreDownload__setGenreName___block_invoke;
   v7[3] = &unk_1E8578900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -471,7 +471,7 @@ LABEL_13:
   return v3;
 }
 
-- (void)_setRingtone:(BOOL)a3
+- (void)_setRingtone:(BOOL)ringtone
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -479,7 +479,7 @@ LABEL_13:
   v4[2] = __36__TLToneStoreDownload__setRingtone___block_invoke;
   v4[3] = &unk_1E8578D08;
   v4[4] = self;
-  v5 = a3;
+  ringtoneCopy = ringtone;
   dispatch_sync(accessQueue, v4);
 }
 
@@ -514,7 +514,7 @@ uint64_t __36__TLToneStoreDownload__setRingtone___block_invoke(uint64_t result)
   return v3;
 }
 
-- (void)_setStoreItemIdentifier:(unint64_t)a3
+- (void)_setStoreItemIdentifier:(unint64_t)identifier
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -522,7 +522,7 @@ uint64_t __36__TLToneStoreDownload__setRingtone___block_invoke(uint64_t result)
   v4[2] = __47__TLToneStoreDownload__setStoreItemIdentifier___block_invoke;
   v4[3] = &unk_1E8578CC0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = identifier;
   dispatch_sync(accessQueue, v4);
 }
 
@@ -564,7 +564,7 @@ float __39__TLToneStoreDownload_downloadProgress__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_setDownloadProgress:(float)a3
+- (void)_setDownloadProgress:(float)progress
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -572,7 +572,7 @@ float __39__TLToneStoreDownload_downloadProgress__block_invoke(uint64_t a1)
   v4[2] = __44__TLToneStoreDownload__setDownloadProgress___block_invoke;
   v4[3] = &unk_1E8579828;
   v4[4] = self;
-  v5 = a3;
+  progressCopy = progress;
   dispatch_sync(accessQueue, v4);
 }
 
@@ -610,17 +610,17 @@ uint64_t __44__TLToneStoreDownload__setDownloadProgress___block_invoke(uint64_t 
   return v3;
 }
 
-- (void)_setToneIdentifier:(id)a3
+- (void)_setToneIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__TLToneStoreDownload__setToneIdentifier___block_invoke;
   v7[3] = &unk_1E8578900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -685,7 +685,7 @@ LABEL_13:
   block[3] = &unk_1E8578900;
   v8 = v6;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   dispatch_sync(accessQueue, block);
   [v8 appendString:@">"];
   v9 = v8;
@@ -741,26 +741,26 @@ uint64_t __34__TLToneStoreDownload_description__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
-  v16 = self == v4;
-  if (self != v4)
+  v16 = self == equalCopy;
+  if (self != equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       *(v14 + 24) = 1;
       accessQueue = self->_accessQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __31__TLToneStoreDownload_isEqual___block_invoke;
       block[3] = &unk_1E8579588;
-      v11 = self;
+      selfCopy = self;
       v12 = &v13;
       v10 = v5;
       dispatch_sync(accessQueue, block);

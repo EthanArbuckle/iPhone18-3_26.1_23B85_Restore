@@ -1,67 +1,67 @@
 @interface CDRichComplicationProgressView
 - (CLKMonochromeFilterProvider)filterProvider;
-- (id)backgroundColorForView:(id)a3;
-- (id)filterForView:(id)a3 style:(int64_t)a4;
-- (id)filterForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
-- (id)filtersForView:(id)a3 style:(int64_t)a4;
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
-- (id)initForFamily:(int64_t)a3 device:(id)a4 backgroundShapeView:(id)a5 foregroundShapeView:(id)a6;
-- (id)interpolatedColorForView:(id)a3;
-- (void)_adjustBackgroundViewAlphaWithPercentage:(float)a3;
+- (id)backgroundColorForView:(id)view;
+- (id)filterForView:(id)view style:(int64_t)style;
+- (id)filterForView:(id)view style:(int64_t)style fraction:(double)fraction;
+- (id)filtersForView:(id)view style:(int64_t)style;
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction;
+- (id)initForFamily:(int64_t)family device:(id)device backgroundShapeView:(id)view foregroundShapeView:(id)shapeView;
+- (id)interpolatedColorForView:(id)view;
+- (void)_adjustBackgroundViewAlphaWithPercentage:(float)percentage;
 - (void)_applyStyle;
 - (void)_updateRingShape;
 - (void)_updateUIFromGaugeProvider;
-- (void)animateToProgress:(float)a3 duration:(double)a4;
+- (void)animateToProgress:(float)progress duration:(double)duration;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setGaugeProvider:(id)a3;
-- (void)setGradientColors:(id)a3;
-- (void)setGradientColors:(id)a3 locations:(id)a4;
-- (void)setProgress:(double)a3;
-- (void)setShowHolePunch:(BOOL)a3;
-- (void)setShowIndicatorView:(BOOL)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setGaugeProvider:(id)provider;
+- (void)setGradientColors:(id)colors;
+- (void)setGradientColors:(id)colors locations:(id)locations;
+- (void)setProgress:(double)progress;
+- (void)setShowHolePunch:(BOOL)punch;
+- (void)setShowIndicatorView:(BOOL)view;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation CDRichComplicationProgressView
 
-- (id)initForFamily:(int64_t)a3 device:(id)a4 backgroundShapeView:(id)a5 foregroundShapeView:(id)a6
+- (id)initForFamily:(int64_t)family device:(id)device backgroundShapeView:(id)view foregroundShapeView:(id)shapeView
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deviceCopy = device;
+  viewCopy = view;
+  shapeViewCopy = shapeView;
   v27.receiver = self;
   v27.super_class = CDRichComplicationProgressView;
   v14 = [(CDRichComplicationProgressView *)&v27 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v15 = v14;
   if (v14)
   {
-    v14->_family = a3;
-    objc_storeStrong(&v14->_device, a4);
+    v14->_family = family;
+    objc_storeStrong(&v14->_device, device);
     v15->_showAlternateIndicatorColor = CDShowGossamerUI(v15->_device);
-    objc_storeStrong(&v15->_backgroundView, a5);
+    objc_storeStrong(&v15->_backgroundView, view);
     [(CDRichComplicationShapeView *)v15->_backgroundView setFilterProvider:v15];
     [(CDRichComplicationProgressView *)v15 addSubview:v15->_backgroundView];
-    v16 = [MEMORY[0x277CD9F90] layer];
+    layer = [MEMORY[0x277CD9F90] layer];
     ringLayer = v15->_ringLayer;
-    v15->_ringLayer = v16;
+    v15->_ringLayer = layer;
 
     [(CAShapeLayer *)v15->_ringLayer setAnchorPoint:0.5, 0.5];
     [(CAShapeLayer *)v15->_ringLayer setFillRule:*MEMORY[0x277CDA248]];
     v18 = v15->_ringLayer;
-    v19 = [MEMORY[0x277D75348] whiteColor];
-    -[CAShapeLayer setFillColor:](v18, "setFillColor:", [v19 CGColor]);
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    -[CAShapeLayer setFillColor:](v18, "setFillColor:", [whiteColor CGColor]);
 
     v20 = v15->_ringLayer;
     v28 = @"position";
-    v21 = [MEMORY[0x277CBEB68] null];
-    v29[0] = v21;
+    null = [MEMORY[0x277CBEB68] null];
+    v29[0] = null;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
     [(CAShapeLayer *)v20 setActions:v22];
 
-    objc_storeStrong(&v15->_foregroundView, a6);
+    objc_storeStrong(&v15->_foregroundView, shapeView);
     [(CDRichComplicationShapeView *)v15->_foregroundView setFilterProvider:v15];
     [(CDRichComplicationProgressView *)v15 addSubview:v15->_foregroundView];
     v23 = objc_opt_new();
@@ -117,37 +117,37 @@
   [(CDRichComplicationShapeView *)self->_foregroundView _shapeLineWidth];
   v12 = v11 * 0.5;
   [(UIView *)self->_indicatorView setBounds:0.0, 0.0, v12 + v12, v12 + v12];
-  v13 = [(UIView *)self->_indicatorView layer];
-  [v13 setCornerRadius:v12];
+  layer = [(UIView *)self->_indicatorView layer];
+  [layer setCornerRadius:v12];
 
   [(UIView *)self->_indicatorView setCenter:v10, v8];
 }
 
-- (void)setGradientColors:(id)a3
+- (void)setGradientColors:(id)colors
 {
-  objc_storeStrong(&self->_gradientColors, a3);
-  v7 = a3;
+  objc_storeStrong(&self->_gradientColors, colors);
+  colorsCopy = colors;
   backgroundView = self->_backgroundView;
-  v6 = [(CDRichComplicationProgressView *)self overrideBackgroundGradientColorsForGradientColors:v7];
+  v6 = [(CDRichComplicationProgressView *)self overrideBackgroundGradientColorsForGradientColors:colorsCopy];
   [(CDRichComplicationShapeView *)backgroundView setGradientColors:v6];
 
-  [(CDRichComplicationShapeView *)self->_foregroundView setGradientColors:v7];
+  [(CDRichComplicationShapeView *)self->_foregroundView setGradientColors:colorsCopy];
 }
 
-- (void)setGradientColors:(id)a3 locations:(id)a4
+- (void)setGradientColors:(id)colors locations:(id)locations
 {
   backgroundView = self->_backgroundView;
-  v7 = a4;
-  v9 = a3;
-  v8 = [(CDRichComplicationProgressView *)self overrideBackgroundGradientColorsForGradientColors:v9 locations:v7];
-  [(CDRichComplicationShapeView *)backgroundView setGradientColors:v8 locations:v7];
+  locationsCopy = locations;
+  colorsCopy = colors;
+  v8 = [(CDRichComplicationProgressView *)self overrideBackgroundGradientColorsForGradientColors:colorsCopy locations:locationsCopy];
+  [(CDRichComplicationShapeView *)backgroundView setGradientColors:v8 locations:locationsCopy];
 
-  [(CDRichComplicationShapeView *)self->_foregroundView setGradientColors:v9 locations:v7];
+  [(CDRichComplicationShapeView *)self->_foregroundView setGradientColors:colorsCopy locations:locationsCopy];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  v4 = fmin(a3, 1.0);
+  v4 = fmin(progress, 1.0);
   if (v4 < 0.0)
   {
     v4 = 0.0;
@@ -159,18 +159,18 @@
   [(CDRichComplicationProgressView *)self setNeedsLayout];
 }
 
-- (void)animateToProgress:(float)a3 duration:(double)a4
+- (void)animateToProgress:(float)progress duration:(double)duration
 {
   objc_initWeak(&location, self);
   progress = self->_progress;
-  v7 = progress;
-  v8 = a3 - progress;
+  progressCopy = progress;
+  v8 = progress - progress;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __61__CDRichComplicationProgressView_animateToProgress_duration___block_invoke;
   aBlock[3] = &unk_278DF3508;
   objc_copyWeak(&v11, &location);
-  v12 = v7;
+  v12 = progressCopy;
   v13 = v8;
   v9 = _Block_copy(aBlock);
   v9[2](1.0);
@@ -210,13 +210,13 @@ uint64_t __61__CDRichComplicationProgressView_animateToProgress_duration___block
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setGaugeProvider:(id)a3
+- (void)setGaugeProvider:(id)provider
 {
-  v5 = a3;
-  if (v5)
+  providerCopy = provider;
+  if (providerCopy)
   {
     gaugeProvider = self->_gaugeProvider;
-    if (gaugeProvider != v5)
+    if (gaugeProvider != providerCopy)
     {
       if (self->_updateToken)
       {
@@ -225,7 +225,7 @@ uint64_t __61__CDRichComplicationProgressView_animateToProgress_duration___block
         self->_updateToken = 0;
       }
 
-      objc_storeStrong(&self->_gaugeProvider, a3);
+      objc_storeStrong(&self->_gaugeProvider, provider);
       [(CDRichComplicationProgressView *)self _updateUIFromGaugeProvider];
       if ([(CLKGaugeProvider *)self->_gaugeProvider needsTimerUpdates])
       {
@@ -261,20 +261,20 @@ void __51__CDRichComplicationProgressView_setGaugeProvider___block_invoke(uint64
   [WeakRetained animateToProgress:v8 duration:0.300000012];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   [(CDRichComplicationShapeView *)self->_foregroundView transitionToMonochromeWithFraction:?];
-  [(CDRichComplicationShapeView *)self->_backgroundView transitionToMonochromeWithFraction:a3];
-  *&v5 = a3;
+  [(CDRichComplicationShapeView *)self->_backgroundView transitionToMonochromeWithFraction:fraction];
+  *&v5 = fraction;
   [(CDRichComplicationProgressView *)self _adjustBackgroundViewAlphaWithPercentage:v5];
-  v6 = [(UIView *)self->_indicatorView isHidden];
-  v7 = a3 < 1.0 || v6;
+  isHidden = [(UIView *)self->_indicatorView isHidden];
+  v7 = fraction < 1.0 || isHidden;
   [(CDRichComplicationProgressView *)self setShowHolePunch:v7];
   WeakRetained = objc_loadWeakRetained(&self->_filterProvider);
   v9 = [WeakRetained colorForView:self accented:0];
 
   [(UIView *)self->_indicatorView setBackgroundColor:v9];
-  [(UIView *)self->_indicatorView setAlpha:a3];
+  [(UIView *)self->_indicatorView setAlpha:fraction];
 }
 
 - (void)updateMonochromeColor
@@ -294,43 +294,43 @@ void __51__CDRichComplicationProgressView_setGaugeProvider___block_invoke(uint64
 - (void)_updateUIFromGaugeProvider
 {
   gaugeProvider = self->_gaugeProvider;
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [(CLKGaugeProvider *)gaugeProvider progressFractionForNow:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(CLKGaugeProvider *)gaugeProvider progressFractionForNow:date];
   v6 = v5;
 
   [(CDRichComplicationProgressView *)self setProgress:v6];
   LODWORD(v7) = *MEMORY[0x277CBB6C8];
   [(CDRichComplicationProgressView *)self setEnabled:*MEMORY[0x277CBB6C8] != v6, v7];
-  v8 = [(CLKGaugeProvider *)self->_gaugeProvider gaugeColorLocations];
-  v9 = [v8 count];
+  gaugeColorLocations = [(CLKGaugeProvider *)self->_gaugeProvider gaugeColorLocations];
+  v9 = [gaugeColorLocations count];
 
-  v10 = [(CLKGaugeProvider *)self->_gaugeProvider gaugeColors];
+  gaugeColors = [(CLKGaugeProvider *)self->_gaugeProvider gaugeColors];
   if (v9)
   {
-    v11 = [(CLKGaugeProvider *)self->_gaugeProvider gaugeColorLocations];
-    [(CDRichComplicationProgressView *)self setGradientColors:v10 locations:v11];
+    gaugeColorLocations2 = [(CLKGaugeProvider *)self->_gaugeProvider gaugeColorLocations];
+    [(CDRichComplicationProgressView *)self setGradientColors:gaugeColors locations:gaugeColorLocations2];
   }
 
   else
   {
-    [(CDRichComplicationProgressView *)self setGradientColors:v10];
+    [(CDRichComplicationProgressView *)self setGradientColors:gaugeColors];
   }
 
-  v12 = [(CLKGaugeProvider *)self->_gaugeProvider style];
-  if (v12 == *MEMORY[0x277CBB698])
+  style = [(CLKGaugeProvider *)self->_gaugeProvider style];
+  if (style == *MEMORY[0x277CBB698])
   {
     [(CDRichComplicationProgressView *)self setStyle:2];
   }
 
-  v13 = [(CLKGaugeProvider *)self->_gaugeProvider style];
-  if (v13 <= CLKGaugeProviderStyleFill)
+  style2 = [(CLKGaugeProvider *)self->_gaugeProvider style];
+  if (style2 <= CLKGaugeProviderStyleFill)
   {
 
-    [(CDRichComplicationProgressView *)self setStyle:v13];
+    [(CDRichComplicationProgressView *)self setStyle:style2];
   }
 }
 
-- (void)_adjustBackgroundViewAlphaWithPercentage:(float)a3
+- (void)_adjustBackgroundViewAlphaWithPercentage:(float)percentage
 {
   style = self->_style;
   if (style != 1 && (style || self->_enabled))
@@ -345,7 +345,7 @@ void __51__CDRichComplicationProgressView_setGaugeProvider___block_invoke(uint64
     CLKInterpolateBetweenFloatsClipped();
     *&v7 = v7;
     [(CDRichComplicationShapeView *)self->_backgroundView setAlpha:*&v7];
-    self->_currentBackgroundViewAlphaPercentage = a3;
+    self->_currentBackgroundViewAlphaPercentage = percentage;
   }
 }
 
@@ -384,29 +384,29 @@ LABEL_7:
   v3 = 136315394;
   v4 = "const LayoutConstants _LayoutConstants(CLKDevice *__strong, CLKComplicationFamily)";
   v5 = 2048;
-  v6 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_243D74000, a2, OS_LOG_TYPE_ERROR, "Unhandled complication family in %s constants: %ld", &v3, 0x16u);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setShowHolePunch:(BOOL)a3
+- (void)setShowHolePunch:(BOOL)punch
 {
-  if (self->_showHolePunch != a3)
+  if (self->_showHolePunch != punch)
   {
-    self->_showHolePunch = a3;
+    self->_showHolePunch = punch;
     [(CDRichComplicationProgressView *)self _updateRingShape];
   }
 }
 
-- (void)setShowIndicatorView:(BOOL)a3
+- (void)setShowIndicatorView:(BOOL)view
 {
-  if (self->_showIndicatorView != a3)
+  if (self->_showIndicatorView != view)
   {
-    v4 = a3;
-    self->_showIndicatorView = a3;
-    v6 = [(CDRichComplicationShapeView *)self->_foregroundView layer];
-    v7 = v6;
-    if (v4)
+    viewCopy = view;
+    self->_showIndicatorView = view;
+    layer = [(CDRichComplicationShapeView *)self->_foregroundView layer];
+    v7 = layer;
+    if (viewCopy)
     {
       ringLayer = self->_ringLayer;
     }
@@ -416,10 +416,10 @@ LABEL_7:
       ringLayer = 0;
     }
 
-    [v6 setMask:ringLayer];
+    [layer setMask:ringLayer];
 
-    v9 = [(CDRichComplicationShapeView *)self->_backgroundView layer];
-    if (v4)
+    layer2 = [(CDRichComplicationShapeView *)self->_backgroundView layer];
+    if (viewCopy)
     {
       v10 = self->_ringLayer;
     }
@@ -429,57 +429,57 @@ LABEL_7:
       v10 = 0;
     }
 
-    v11 = v9;
-    [v9 setMask:v10];
+    v11 = layer2;
+    [layer2 setMask:v10];
   }
 }
 
-- (id)filtersForView:(id)a3 style:(int64_t)a4
+- (id)filtersForView:(id)view style:(int64_t)style
 {
-  v6 = [(CDRichComplicationProgressView *)self filterProvider];
-  v7 = [v6 filtersForView:self style:a4];
+  filterProvider = [(CDRichComplicationProgressView *)self filterProvider];
+  v7 = [filterProvider filtersForView:self style:style];
 
   return v7;
 }
 
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
-  v8 = [(CDRichComplicationProgressView *)self filterProvider];
-  v9 = [v8 filtersForView:self style:a4 fraction:a5];
+  filterProvider = [(CDRichComplicationProgressView *)self filterProvider];
+  v9 = [filterProvider filtersForView:self style:style fraction:fraction];
 
   return v9;
 }
 
-- (id)filterForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filterForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
-  v8 = [(CDRichComplicationProgressView *)self filterProvider];
-  v9 = [v8 filterForView:self style:a4 fraction:a5];
+  filterProvider = [(CDRichComplicationProgressView *)self filterProvider];
+  v9 = [filterProvider filterForView:self style:style fraction:fraction];
 
   return v9;
 }
 
-- (id)filterForView:(id)a3 style:(int64_t)a4
+- (id)filterForView:(id)view style:(int64_t)style
 {
-  v6 = [(CDRichComplicationProgressView *)self filterProvider];
-  v7 = [v6 filterForView:self style:a4];
+  filterProvider = [(CDRichComplicationProgressView *)self filterProvider];
+  v7 = [filterProvider filterForView:self style:style];
 
   return v7;
 }
 
-- (id)interpolatedColorForView:(id)a3
+- (id)interpolatedColorForView:(id)view
 {
-  v4 = a3;
-  v5 = [(CDRichComplicationProgressView *)self filterProvider];
-  v6 = [v5 interpolatedColorForView:v4];
+  viewCopy = view;
+  filterProvider = [(CDRichComplicationProgressView *)self filterProvider];
+  v6 = [filterProvider interpolatedColorForView:viewCopy];
 
   return v6;
 }
 
-- (id)backgroundColorForView:(id)a3
+- (id)backgroundColorForView:(id)view
 {
-  v4 = a3;
-  v5 = [(CDRichComplicationProgressView *)self filterProvider];
-  v6 = [v5 backgroundColorForView:v4];
+  viewCopy = view;
+  filterProvider = [(CDRichComplicationProgressView *)self filterProvider];
+  v6 = [filterProvider backgroundColorForView:viewCopy];
 
   return v6;
 }

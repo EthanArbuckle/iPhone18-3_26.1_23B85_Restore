@@ -1,20 +1,20 @@
 @interface WeakBatteryUIController
-- (WeakBatteryUIController)initWithController:(id)a3;
+- (WeakBatteryUIController)initWithController:(id)controller;
 - (id)buiViewController;
 @end
 
 @implementation WeakBatteryUIController
 
-- (WeakBatteryUIController)initWithController:(id)a3
+- (WeakBatteryUIController)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = WeakBatteryUIController;
   v5 = [(WeakBatteryUIController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_weakController, v4);
+    objc_storeWeak(&v5->_weakController, controllerCopy);
   }
 
   return v6;

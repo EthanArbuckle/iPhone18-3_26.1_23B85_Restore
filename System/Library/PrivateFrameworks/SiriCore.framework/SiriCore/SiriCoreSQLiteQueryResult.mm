@@ -1,5 +1,5 @@
 @interface SiriCoreSQLiteQueryResult
-- (SiriCoreSQLiteQueryResult)initWithQuery:(id)a3 beginMachTime:(unint64_t)a4 endMachTime:(unint64_t)a5 statement:(id)a6 columnNameTuple:(id)a7 columnValueTuples:(id)a8 columnValuesMap:(id)a9 rowValueTuples:(id)a10 rowValueMaps:(id)a11 records:(id)a12 error:(id)a13;
+- (SiriCoreSQLiteQueryResult)initWithQuery:(id)query beginMachTime:(unint64_t)time endMachTime:(unint64_t)machTime statement:(id)statement columnNameTuple:(id)tuple columnValueTuples:(id)tuples columnValuesMap:(id)map rowValueTuples:(id)self0 rowValueMaps:(id)self1 records:(id)self2 error:(id)self3;
 - (id)description;
 @end
 
@@ -53,53 +53,53 @@
   return v5;
 }
 
-- (SiriCoreSQLiteQueryResult)initWithQuery:(id)a3 beginMachTime:(unint64_t)a4 endMachTime:(unint64_t)a5 statement:(id)a6 columnNameTuple:(id)a7 columnValueTuples:(id)a8 columnValuesMap:(id)a9 rowValueTuples:(id)a10 rowValueMaps:(id)a11 records:(id)a12 error:(id)a13
+- (SiriCoreSQLiteQueryResult)initWithQuery:(id)query beginMachTime:(unint64_t)time endMachTime:(unint64_t)machTime statement:(id)statement columnNameTuple:(id)tuple columnValueTuples:(id)tuples columnValuesMap:(id)map rowValueTuples:(id)self0 rowValueMaps:(id)self1 records:(id)self2 error:(id)self3
 {
-  v46 = a3;
-  v45 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = v18;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
+  queryCopy = query;
+  statementCopy = statement;
+  tupleCopy = tuple;
+  tuplesCopy = tuples;
+  mapCopy = map;
+  v21 = tupleCopy;
+  valueTuplesCopy = valueTuples;
+  mapsCopy = maps;
+  recordsCopy = records;
+  errorCopy = error;
   v47.receiver = self;
   v47.super_class = SiriCoreSQLiteQueryResult;
   v26 = [(SiriCoreSQLiteQueryResult *)&v47 init];
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_query, a3);
-    v27->_beginMachTime = a4;
-    v27->_endMachTime = a5;
-    objc_storeStrong(&v27->_statement, a6);
+    objc_storeStrong(&v26->_query, query);
+    v27->_beginMachTime = time;
+    v27->_endMachTime = machTime;
+    objc_storeStrong(&v27->_statement, statement);
     v28 = [v21 copy];
     columnNameTuple = v27->_columnNameTuple;
     v27->_columnNameTuple = v28;
 
-    v30 = [v19 copy];
+    v30 = [tuplesCopy copy];
     columnValueTuples = v27->_columnValueTuples;
     v27->_columnValueTuples = v30;
 
-    v32 = [v20 copy];
+    v32 = [mapCopy copy];
     columnValuesMap = v27->_columnValuesMap;
     v27->_columnValuesMap = v32;
 
-    v34 = [v22 copy];
+    v34 = [valueTuplesCopy copy];
     rowValueTuples = v27->_rowValueTuples;
     v27->_rowValueTuples = v34;
 
-    v36 = [v23 copy];
+    v36 = [mapsCopy copy];
     rowValueMaps = v27->_rowValueMaps;
     v27->_rowValueMaps = v36;
 
-    v38 = [v24 copy];
+    v38 = [recordsCopy copy];
     records = v27->_records;
     v27->_records = v38;
 
-    v40 = [v25 copy];
+    v40 = [errorCopy copy];
     error = v27->_error;
     v27->_error = v40;
   }

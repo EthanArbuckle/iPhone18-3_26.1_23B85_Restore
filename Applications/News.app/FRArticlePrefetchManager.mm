@@ -1,14 +1,14 @@
 @interface FRArticlePrefetchManager
-- (FRArticlePrefetchManager)initWithCloudContext:(id)a3 articleContentPool:(id)a4;
-- (id)keyedOperationQueue:(id)a3 performAsyncOperationForKey:(id)a4 completion:(id)a5;
+- (FRArticlePrefetchManager)initWithCloudContext:(id)context articleContentPool:(id)pool;
+- (id)keyedOperationQueue:(id)queue performAsyncOperationForKey:(id)key completion:(id)completion;
 - (void)_prefetchRequestsChanged;
 - (void)_revisitSuspendedState;
-- (void)addPrefetchInterestInHeadline:(id)a3 priority:(unint64_t)a4 options:(unint64_t)a5;
+- (void)addPrefetchInterestInHeadline:(id)headline priority:(unint64_t)priority options:(unint64_t)options;
 - (void)dealloc;
 - (void)popPrefetchSuspended;
 - (void)pushPrefetchSuspended;
-- (void)removePrefetchInterestInHeadline:(id)a3;
-- (void)resetPrefetchStateForArticleID:(id)a3 withHeadline:(id)a4;
+- (void)removePrefetchInterestInHeadline:(id)headline;
+- (void)resetPrefetchStateForArticleID:(id)d withHeadline:(id)headline;
 @end
 
 @implementation FRArticlePrefetchManager
@@ -17,9 +17,9 @@
 {
   if ([(FRArticlePrefetchManager *)self suspendedDepth]< 1)
   {
-    v5 = [(FRArticlePrefetchManager *)self context];
-    v4 = [v5 networkReachability];
-    [(FCKeyedOperationQueue *)self->_prefetchQueue setSuspended:FRShouldPrefetchIgnoringNetworkInterface(v4) ^ 1];
+    context = [(FRArticlePrefetchManager *)self context];
+    networkReachability = [context networkReachability];
+    [(FCKeyedOperationQueue *)self->_prefetchQueue setSuspended:FRShouldPrefetchIgnoringNetworkInterface(networkReachability) ^ 1];
   }
 
   else
@@ -30,18 +30,18 @@
   }
 }
 
-- (FRArticlePrefetchManager)initWithCloudContext:(id)a3 articleContentPool:(id)a4
+- (FRArticlePrefetchManager)initWithCloudContext:(id)context articleContentPool:(id)pool
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  poolCopy = pool;
   v20.receiver = self;
   v20.super_class = FRArticlePrefetchManager;
   v9 = [(FRArticlePrefetchManager *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_articleContentPool, a4);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_articleContentPool, pool);
     v11 = [[FCKeyedOperationQueue alloc] initWithDelegate:v10 maxConcurrentOperationCount:1];
     prefetchQueue = v10->_prefetchQueue;
     v10->_prefetchQueue = v11;
@@ -56,9 +56,9 @@
     v16 = +[NSNotificationCenter defaultCenter];
     [v16 addObserver:v10 selector:"_prefetchRequestsChanged" name:@"FRArticlePrefetchRequestsDidChangeNotification" object:v10];
 
-    v17 = [(FRArticlePrefetchManager *)v10 context];
-    v18 = [v17 networkReachability];
-    [v18 addObserver:v10];
+    context = [(FRArticlePrefetchManager *)v10 context];
+    networkReachability = [context networkReachability];
+    [networkReachability addObserver:v10];
 
     [(FRArticlePrefetchManager *)v10 _revisitSuspendedState];
   }
@@ -76,18 +76,18 @@
   [(FRArticlePrefetchManager *)&v4 dealloc];
 }
 
-- (void)addPrefetchInterestInHeadline:(id)a3 priority:(unint64_t)a4 options:(unint64_t)a5
+- (void)addPrefetchInterestInHeadline:(id)headline priority:(unint64_t)priority options:(unint64_t)options
 {
-  v8 = a3;
+  headlineCopy = headline;
   +[NSThread isMainThread];
-  if (!v8 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!headlineCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10007422C();
   }
 
-  v9 = [(FRArticlePrefetchManager *)self prefetchRequestsByID];
-  v10 = [v8 articleID];
-  v11 = [v9 objectForKey:v10];
+  prefetchRequestsByID = [(FRArticlePrefetchManager *)self prefetchRequestsByID];
+  articleID = [headlineCopy articleID];
+  v11 = [prefetchRequestsByID objectForKey:articleID];
 
   if (!v11)
   {
@@ -95,26 +95,26 @@
     if (os_log_type_enabled(FRArticlePrefetchLog, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [v8 articleID];
-      v15 = [v8 title];
+      articleID2 = [headlineCopy articleID];
+      title = [headlineCopy title];
       v23 = 138412546;
-      v24 = v14;
+      v24 = articleID2;
       v25 = 2114;
-      v26 = v15;
+      v26 = title;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "prefetch interest added to article %@, '%{public}@'", &v23, 0x16u);
     }
 
-    v16 = [(FRArticlePrefetchManager *)self articleContentPool];
-    v17 = [v8 articleID];
-    [v16 addInterestInArticleWithID:v17];
+    articleContentPool = [(FRArticlePrefetchManager *)self articleContentPool];
+    articleID3 = [headlineCopy articleID];
+    [articleContentPool addInterestInArticleWithID:articleID3];
 
     v18 = objc_alloc_init(FRArticlePrefetchRequest);
-    [(FRArticlePrefetchRequest *)v18 setHeadline:v8];
-    [(FRArticlePrefetchRequest *)v18 setPriority:a4];
-    [(FRArticlePrefetchRequest *)v18 setOptions:a5];
-    v19 = [(FRArticlePrefetchManager *)self prefetchRequestsByID];
-    v20 = [v8 articleID];
-    [v19 setObject:v18 forKey:v20];
+    [(FRArticlePrefetchRequest *)v18 setHeadline:headlineCopy];
+    [(FRArticlePrefetchRequest *)v18 setPriority:priority];
+    [(FRArticlePrefetchRequest *)v18 setOptions:options];
+    prefetchRequestsByID2 = [(FRArticlePrefetchManager *)self prefetchRequestsByID];
+    articleID4 = [headlineCopy articleID];
+    [prefetchRequestsByID2 setObject:v18 forKey:articleID4];
 
     v21 = [NSNotification notificationWithName:@"FRArticlePrefetchRequestsDidChangeNotification" object:self];
     v22 = +[NSNotificationQueue defaultQueue];
@@ -122,18 +122,18 @@
   }
 }
 
-- (void)removePrefetchInterestInHeadline:(id)a3
+- (void)removePrefetchInterestInHeadline:(id)headline
 {
-  v4 = a3;
+  headlineCopy = headline;
   +[NSThread isMainThread];
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!headlineCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000742F0();
   }
 
-  v5 = [(FRArticlePrefetchManager *)self prefetchRequestsByID];
-  v6 = [v4 articleID];
-  v7 = [v5 objectForKey:v6];
+  prefetchRequestsByID = [(FRArticlePrefetchManager *)self prefetchRequestsByID];
+  articleID = [headlineCopy articleID];
+  v7 = [prefetchRequestsByID objectForKey:articleID];
 
   if (v7)
   {
@@ -141,22 +141,22 @@
     if (os_log_type_enabled(FRArticlePrefetchLog, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [v4 articleID];
-      v11 = [v4 title];
+      articleID2 = [headlineCopy articleID];
+      title = [headlineCopy title];
       v18 = 138412546;
-      v19 = v10;
+      v19 = articleID2;
       v20 = 2114;
-      v21 = v11;
+      v21 = title;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "prefetch interest removed from article %@, '%{public}@'", &v18, 0x16u);
     }
 
-    v12 = [(FRArticlePrefetchManager *)self articleContentPool];
-    v13 = [v4 articleID];
-    [v12 removeInterestInArticleWithID:v13];
+    articleContentPool = [(FRArticlePrefetchManager *)self articleContentPool];
+    articleID3 = [headlineCopy articleID];
+    [articleContentPool removeInterestInArticleWithID:articleID3];
 
-    v14 = [(FRArticlePrefetchManager *)self prefetchRequestsByID];
-    v15 = [v4 articleID];
-    [v14 removeObjectForKey:v15];
+    prefetchRequestsByID2 = [(FRArticlePrefetchManager *)self prefetchRequestsByID];
+    articleID4 = [headlineCopy articleID];
+    [prefetchRequestsByID2 removeObjectForKey:articleID4];
 
     v16 = [NSNotification notificationWithName:@"FRArticlePrefetchRequestsDidChangeNotification" object:self];
     v17 = +[NSNotificationQueue defaultQueue];
@@ -164,30 +164,30 @@
   }
 }
 
-- (void)resetPrefetchStateForArticleID:(id)a3 withHeadline:(id)a4
+- (void)resetPrefetchStateForArticleID:(id)d withHeadline:(id)headline
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  headlineCopy = headline;
   +[NSThread isMainThread];
-  if (v6)
+  if (dCopy)
   {
-    if (v7)
+    if (headlineCopy)
     {
-      v8 = [(FRArticlePrefetchManager *)self articleContentPool];
-      [v8 flushContentWithArticleID:v6];
+      articleContentPool = [(FRArticlePrefetchManager *)self articleContentPool];
+      [articleContentPool flushContentWithArticleID:dCopy];
 
-      v9 = [(FRArticlePrefetchManager *)self prefetchRequestsByID];
-      v10 = [v9 objectForKey:v6];
+      prefetchRequestsByID = [(FRArticlePrefetchManager *)self prefetchRequestsByID];
+      v10 = [prefetchRequestsByID objectForKey:dCopy];
 
       if (v10)
       {
-        v11 = [(FRArticlePrefetchManager *)self prefetchQueue];
-        [v11 setKeyQueue:0];
+        prefetchQueue = [(FRArticlePrefetchManager *)self prefetchQueue];
+        [prefetchQueue setKeyQueue:0];
 
-        v12 = [v10 headline];
-        [(FRArticlePrefetchManager *)self removePrefetchInterestInHeadline:v12];
+        headline = [v10 headline];
+        [(FRArticlePrefetchManager *)self removePrefetchInterestInHeadline:headline];
 
-        -[FRArticlePrefetchManager addPrefetchInterestInHeadline:priority:options:](self, "addPrefetchInterestInHeadline:priority:options:", v7, [v10 priority], objc_msgSend(v10, "options"));
+        -[FRArticlePrefetchManager addPrefetchInterestInHeadline:priority:options:](self, "addPrefetchInterestInHeadline:priority:options:", headlineCopy, [v10 priority], objc_msgSend(v10, "options"));
       }
 
       goto LABEL_11;
@@ -201,7 +201,7 @@
     sub_1000743B4();
   }
 
-  if (!v7)
+  if (!headlineCopy)
   {
 LABEL_9:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -233,24 +233,24 @@ LABEL_11:
   [(FRArticlePrefetchManager *)self _revisitSuspendedState];
 }
 
-- (id)keyedOperationQueue:(id)a3 performAsyncOperationForKey:(id)a4 completion:(id)a5
+- (id)keyedOperationQueue:(id)queue performAsyncOperationForKey:(id)key completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  keyCopy = key;
   objc_opt_class();
   v9 = FCCheckedDynamicCast();
 
   v10 = objc_alloc_init(FCOnce);
-  v11 = [(FRArticlePrefetchManager *)self articleContentPool];
+  articleContentPool = [(FRArticlePrefetchManager *)self articleContentPool];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_10005CDAC;
   v24[3] = &unk_1000C1BD8;
   v12 = v10;
   v25 = v12;
-  v13 = v7;
+  v13 = completionCopy;
   v26 = v13;
-  v14 = [v9 executeWithArticleContentPool:v11 completionHandler:v24];
+  v14 = [v9 executeWithArticleContentPool:articleContentPool completionHandler:v24];
 
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
@@ -275,8 +275,8 @@ LABEL_11:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(FRArticlePrefetchManager *)self prefetchRequestsByID];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  prefetchRequestsByID = [(FRArticlePrefetchManager *)self prefetchRequestsByID];
+  v5 = [prefetchRequestsByID countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -288,17 +288,17 @@ LABEL_11:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(prefetchRequestsByID);
         }
 
         v9 = *(*(&v15 + 1) + 8 * v8);
-        v10 = [(FRArticlePrefetchManager *)self prefetchRequestsByID];
-        v11 = [v10 objectForKey:v9];
+        prefetchRequestsByID2 = [(FRArticlePrefetchManager *)self prefetchRequestsByID];
+        v11 = [prefetchRequestsByID2 objectForKey:v9];
 
-        v12 = [v11 headline];
-        v13 = [v12 isDeleted];
+        headline = [v11 headline];
+        isDeleted = [headline isDeleted];
 
-        if ((v13 & 1) == 0)
+        if ((isDeleted & 1) == 0)
         {
           [v11 addPrefetchOperationsToOrderedSet:v3];
         }
@@ -307,15 +307,15 @@ LABEL_11:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [prefetchRequestsByID countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
   }
 
   [v3 sortUsingComparator:&stru_1000C5CC8];
-  v14 = [(FRArticlePrefetchManager *)self prefetchQueue];
-  [v14 setKeyQueue:v3];
+  prefetchQueue = [(FRArticlePrefetchManager *)self prefetchQueue];
+  [prefetchQueue setKeyQueue:v3];
 }
 
 @end

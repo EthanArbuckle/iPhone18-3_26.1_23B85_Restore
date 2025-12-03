@@ -2,7 +2,7 @@
 + (id)copyParseRules;
 - (NSSet)responses;
 - (id)description;
-- (void)addResponse:(id)a3;
+- (void)addResponse:(id)response;
 @end
 
 @implementation CoreDAVMultiStatusItem
@@ -15,11 +15,11 @@
   v4 = [(CoreDAVItem *)&v8 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVMultiStatusItem *)self orderedResponses];
-  [v3 appendFormat:@"\n  Number of responses: [%lu]", objc_msgSend(v5, "count")];
+  orderedResponses = [(CoreDAVMultiStatusItem *)self orderedResponses];
+  [v3 appendFormat:@"\n  Number of responses: [%lu]", objc_msgSend(orderedResponses, "count")];
 
-  v6 = [(CoreDAVMultiStatusItem *)self responseDescription];
-  [v3 appendFormat:@"\n  Response description: [%@]", v6];
+  responseDescription = [(CoreDAVMultiStatusItem *)self responseDescription];
+  [v3 appendFormat:@"\n  Response description: [%@]", responseDescription];
 
   return v3;
 }
@@ -27,7 +27,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -40,33 +40,33 @@
     v5 = [v6 initWithObjectsAndKeys:{v7, v8, v9, v10, 0}];
 
     v11 = +[CoreDAVItem parseRuleCache];
-    v12 = NSStringFromClass(a1);
+    v12 = NSStringFromClass(self);
     [v11 setObject:v5 forKey:v12];
   }
 
   return v5;
 }
 
-- (void)addResponse:(id)a3
+- (void)addResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(CoreDAVMultiStatusItem *)self orderedResponses];
+  responseCopy = response;
+  orderedResponses = [(CoreDAVMultiStatusItem *)self orderedResponses];
 
-  if (!v5)
+  if (!orderedResponses)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     [(CoreDAVMultiStatusItem *)self setOrderedResponses:v6];
   }
 
-  v7 = [(CoreDAVMultiStatusItem *)self orderedResponses];
-  [v7 addObject:v4];
+  orderedResponses2 = [(CoreDAVMultiStatusItem *)self orderedResponses];
+  [orderedResponses2 addObject:responseCopy];
 }
 
 - (NSSet)responses
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(CoreDAVMultiStatusItem *)self orderedResponses];
-  v4 = [v2 setWithArray:v3];
+  orderedResponses = [(CoreDAVMultiStatusItem *)self orderedResponses];
+  v4 = [v2 setWithArray:orderedResponses];
 
   return v4;
 }

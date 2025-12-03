@@ -1,31 +1,31 @@
 @interface RemoteHandleObserverDelegate
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation RemoteHandleObserverDelegate
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
-  sub_26BCBBFAC(v4);
+  activateCopy = activate;
+  selfCopy = self;
+  sub_26BCBBFAC(activateCopy);
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
-  v5 = self;
-  sub_26BCBC410(v4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  sub_26BCBC410(deactivateCopy);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_26BCBC87C(v6, a4);
+  handleCopy = handle;
+  selfCopy = self;
+  errorCopy = error;
+  sub_26BCBC87C(handleCopy, error);
 }
 
 @end

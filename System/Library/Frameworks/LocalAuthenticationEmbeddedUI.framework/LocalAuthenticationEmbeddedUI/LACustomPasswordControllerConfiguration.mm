@@ -1,35 +1,35 @@
 @interface LACustomPasswordControllerConfiguration
 + (LACustomPasswordControllerConfiguration)enterCustomPasswordConfiguration;
 + (LACustomPasswordControllerConfiguration)registerCustomPasswordConfiguration;
-+ (id)enterCustomPasswordConfigurationWithPrompt:(id)a3;
-+ (id)registerCustomPasswordControllerConfigurationWithPrompt:(id)a3 verifyPrompt:(id)a4;
-- (id)initWithPrompt:(void *)a3 verifyPromptPrompt:(void *)a4 mode:;
++ (id)enterCustomPasswordConfigurationWithPrompt:(id)prompt;
++ (id)registerCustomPasswordControllerConfigurationWithPrompt:(id)prompt verifyPrompt:(id)verifyPrompt;
+- (id)initWithPrompt:(void *)prompt verifyPromptPrompt:(void *)promptPrompt mode:;
 @end
 
 @implementation LACustomPasswordControllerConfiguration
 
-- (id)initWithPrompt:(void *)a3 verifyPromptPrompt:(void *)a4 mode:
+- (id)initWithPrompt:(void *)prompt verifyPromptPrompt:(void *)promptPrompt mode:
 {
   v8 = a2;
-  v9 = a3;
-  if (a1)
+  promptCopy = prompt;
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = LACustomPasswordControllerConfiguration;
     v10 = objc_msgSendSuper2(&v14, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       objc_storeStrong(v10 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      a1[3] = a4;
+      objc_storeStrong(self + 2, prompt);
+      self[3] = promptPrompt;
       v11 = +[LACustomPasswordControllerStyle sheetStyle];
-      v12 = a1[6];
-      a1[6] = v11;
+      v12 = self[6];
+      self[6] = v11;
     }
   }
 
-  return a1;
+  return self;
 }
 
 + (LACustomPasswordControllerConfiguration)registerCustomPasswordConfiguration
@@ -46,19 +46,19 @@
   return v2;
 }
 
-+ (id)registerCustomPasswordControllerConfigurationWithPrompt:(id)a3 verifyPrompt:(id)a4
++ (id)registerCustomPasswordControllerConfigurationWithPrompt:(id)prompt verifyPrompt:(id)verifyPrompt
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[LACustomPasswordControllerConfiguration alloc] initWithPrompt:v6 verifyPromptPrompt:v5 mode:1];
+  verifyPromptCopy = verifyPrompt;
+  promptCopy = prompt;
+  v7 = [[LACustomPasswordControllerConfiguration alloc] initWithPrompt:promptCopy verifyPromptPrompt:verifyPromptCopy mode:1];
 
   return v7;
 }
 
-+ (id)enterCustomPasswordConfigurationWithPrompt:(id)a3
++ (id)enterCustomPasswordConfigurationWithPrompt:(id)prompt
 {
-  v3 = a3;
-  v4 = [[LACustomPasswordControllerConfiguration alloc] initWithPrompt:v3 verifyPromptPrompt:0 mode:0];
+  promptCopy = prompt;
+  v4 = [[LACustomPasswordControllerConfiguration alloc] initWithPrompt:promptCopy verifyPromptPrompt:0 mode:0];
 
   return v4;
 }

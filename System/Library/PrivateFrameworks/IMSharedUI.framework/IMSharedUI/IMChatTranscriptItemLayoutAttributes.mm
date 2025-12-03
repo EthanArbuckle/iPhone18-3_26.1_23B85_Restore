@@ -1,14 +1,14 @@
 @interface IMChatTranscriptItemLayoutAttributes
 - (CGRect)frame;
 - (CGSize)size;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setSize:(CGSize)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setFrame:(CGRect)frame;
+- (void)setSize:(CGSize)size;
 @end
 
 @implementation IMChatTranscriptItemLayoutAttributes
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v7 = objc_msgSend_copy(self->_indexPath, v5, v6);
@@ -22,13 +22,13 @@
   return v4;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->_frame))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (!CGRectEqualToRect(frame, self->_frame))
   {
     self->_frame.origin.x = x;
     self->_frame.origin.y = y;
@@ -39,12 +39,12 @@
   }
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  if (a3.width != self->_size.width || a3.height != self->_size.height)
+  if (size.width != self->_size.width || size.height != self->_size.height)
   {
-    self->_size = a3;
-    self->_frame.size = a3;
+    self->_size = size;
+    self->_frame.size = size;
   }
 }
 

@@ -1,15 +1,15 @@
 @interface CHWorkoutDetailEffortTableViewCell
-- (CHWorkoutDetailEffortTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)configureWithWorkout:(id)a3 workoutActivity:(id)a4 dataCalculator:(id)a5 parent:(id)a6;
+- (CHWorkoutDetailEffortTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)configureWithWorkout:(id)workout workoutActivity:(id)activity dataCalculator:(id)calculator parent:(id)parent;
 @end
 
 @implementation CHWorkoutDetailEffortTableViewCell
 
-- (CHWorkoutDetailEffortTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHWorkoutDetailEffortTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -18,17 +18,17 @@
     v6 = 0;
   }
 
-  return sub_10033D184(a3, a4, v6);
+  return sub_10033D184(style, identifier, v6);
 }
 
-- (void)configureWithWorkout:(id)a3 workoutActivity:(id)a4 dataCalculator:(id)a5 parent:(id)a6
+- (void)configureWithWorkout:(id)workout workoutActivity:(id)activity dataCalculator:(id)calculator parent:(id)parent
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  sub_10033DA00(v10, a4, v12, v13);
+  workoutCopy = workout;
+  activityCopy = activity;
+  calculatorCopy = calculator;
+  parentCopy = parent;
+  selfCopy = self;
+  sub_10033DA00(workoutCopy, activity, calculatorCopy, parentCopy);
 }
 
 @end

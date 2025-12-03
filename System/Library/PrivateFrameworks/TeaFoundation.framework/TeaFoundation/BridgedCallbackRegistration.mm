@@ -1,27 +1,27 @@
 @interface BridgedCallbackRegistration
-- (void)whenResolvingClass:(Class)a3 scope:(id)a4 callbackBlock:(id)a5;
-- (void)whenResolvingProtocol:(id)a3 scope:(id)a4 callbackBlock:(id)a5;
+- (void)whenResolvingClass:(Class)class scope:(id)scope callbackBlock:(id)block;
+- (void)whenResolvingProtocol:(id)protocol scope:(id)scope callbackBlock:(id)block;
 @end
 
 @implementation BridgedCallbackRegistration
 
-- (void)whenResolvingClass:(Class)a3 scope:(id)a4 callbackBlock:(id)a5
+- (void)whenResolvingClass:(Class)class scope:(id)scope callbackBlock:(id)block
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(block);
   swift_getObjCClassMetadata();
   *(swift_allocObject() + 16) = v7;
-  v8 = a4;
-  v9 = self;
+  scopeCopy = scope;
+  selfCopy = self;
   sub_1BEFF2F90();
 }
 
-- (void)whenResolvingProtocol:(id)a3 scope:(id)a4 callbackBlock:(id)a5
+- (void)whenResolvingProtocol:(id)protocol scope:(id)scope callbackBlock:(id)block
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(block);
   *(swift_allocObject() + 16) = v8;
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
+  protocolCopy = protocol;
+  scopeCopy = scope;
+  selfCopy = self;
   sub_1BEFF38BC();
 }
 

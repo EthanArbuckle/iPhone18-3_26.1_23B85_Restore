@@ -1,38 +1,38 @@
 @interface SHLLibraryTrackCompoundIdentifier
-+ (id)compoundIdentifierFromTrackIdentifier:(id)a3;
-+ (id)identifierWithRecognitionIdentifier:(id)a3 shazamKey:(id)a4;
-+ (id)recognitionIdentifierFromTrackIdentifier:(id)a3;
-+ (id)shazamKeyFromTrackIdentifier:(id)a3;
++ (id)compoundIdentifierFromTrackIdentifier:(id)identifier;
++ (id)identifierWithRecognitionIdentifier:(id)identifier shazamKey:(id)key;
++ (id)recognitionIdentifierFromTrackIdentifier:(id)identifier;
++ (id)shazamKeyFromTrackIdentifier:(id)identifier;
 - (BOOL)hasValidRecognitionIdentifier;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)libraryItemIdentifier;
-- (SHLLibraryTrackCompoundIdentifier)initWithCoder:(id)a3;
-- (SHLLibraryTrackCompoundIdentifier)initWithRecognitionIdentifier:(id)a3 shazamKey:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SHLLibraryTrackCompoundIdentifier)initWithCoder:(id)coder;
+- (SHLLibraryTrackCompoundIdentifier)initWithRecognitionIdentifier:(id)identifier shazamKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SHLLibraryTrackCompoundIdentifier
 
-+ (id)identifierWithRecognitionIdentifier:(id)a3 shazamKey:(id)a4
++ (id)identifierWithRecognitionIdentifier:(id)identifier shazamKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithRecognitionIdentifier:v7 shazamKey:v6];
+  keyCopy = key;
+  identifierCopy = identifier;
+  v8 = [[self alloc] initWithRecognitionIdentifier:identifierCopy shazamKey:keyCopy];
 
   return v8;
 }
 
-- (SHLLibraryTrackCompoundIdentifier)initWithRecognitionIdentifier:(id)a3 shazamKey:(id)a4
+- (SHLLibraryTrackCompoundIdentifier)initWithRecognitionIdentifier:(id)identifier shazamKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7 || !v8)
+  identifierCopy = identifier;
+  keyCopy = key;
+  v9 = keyCopy;
+  if (!identifierCopy || !keyCopy)
   {
-    v13 = [NSString stringWithFormat:@"%@ %@ is not a valid recognition identifier and key", v7, v8];
-    v14 = [NSException shl_exceptionWithName:NSInvalidArgumentException reason:v13];
+    keyCopy = [NSString stringWithFormat:@"%@ %@ is not a valid recognition identifier and key", identifierCopy, keyCopy];
+    v14 = [NSException shl_exceptionWithName:NSInvalidArgumentException reason:keyCopy];
     v15 = v14;
 
     objc_exception_throw(v14);
@@ -44,20 +44,20 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_recognitionIdentifier, a3);
-    objc_storeStrong(&v11->_shazamKey, a4);
+    objc_storeStrong(&v10->_recognitionIdentifier, identifier);
+    objc_storeStrong(&v11->_shazamKey, key);
   }
 
   return v11;
 }
 
-+ (id)compoundIdentifierFromTrackIdentifier:(id)a3
++ (id)compoundIdentifierFromTrackIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([SHLLibraryTrackCompoundIdentifier isTrackIdentifier:v4])
+  identifierCopy = identifier;
+  if ([SHLLibraryTrackCompoundIdentifier isTrackIdentifier:identifierCopy])
   {
-    v5 = [SHLLibraryTrackCompoundIdentifier recognitionIdentifierFromTrackIdentifier:v4];
-    v6 = [SHLLibraryTrackCompoundIdentifier shazamKeyFromTrackIdentifier:v4];
+    v5 = [SHLLibraryTrackCompoundIdentifier recognitionIdentifierFromTrackIdentifier:identifierCopy];
+    v6 = [SHLLibraryTrackCompoundIdentifier shazamKeyFromTrackIdentifier:identifierCopy];
     v7 = v6;
     if (v5)
     {
@@ -76,7 +76,7 @@
 
     else
     {
-      v9 = [a1 identifierWithRecognitionIdentifier:v5 shazamKey:v6];
+      v9 = [self identifierWithRecognitionIdentifier:v5 shazamKey:v6];
     }
   }
 
@@ -88,10 +88,10 @@
   return v9;
 }
 
-+ (id)shazamKeyFromTrackIdentifier:(id)a3
++ (id)shazamKeyFromTrackIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"_[T]_" options:4];
+  identifierCopy = identifier;
+  v4 = [identifierCopy rangeOfString:@"_[T]_" options:4];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -99,17 +99,17 @@
 
   else
   {
-    v6 = [v3 substringFromIndex:{&v4[objc_msgSend(@"_[T]_", "length")]}];
+    v6 = [identifierCopy substringFromIndex:{&v4[objc_msgSend(@"_[T]_", "length")]}];
     v5 = [SHLShazamKey keyWithValue:v6];
   }
 
   return v5;
 }
 
-+ (id)recognitionIdentifierFromTrackIdentifier:(id)a3
++ (id)recognitionIdentifierFromTrackIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"_[T]_" options:4];
+  identifierCopy = identifier;
+  v4 = [identifierCopy rangeOfString:@"_[T]_" options:4];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -117,7 +117,7 @@
 
   else
   {
-    v6 = [v3 substringToIndex:v4];
+    v6 = [identifierCopy substringToIndex:v4];
     if ([v6 length] >= 2)
     {
       v5 = v6;
@@ -134,73 +134,73 @@
 
 - (NSString)libraryItemIdentifier
 {
-  v3 = [(SHLLibraryTrackCompoundIdentifier *)self recognitionIdentifier];
-  v4 = [v3 precomposedStringWithCanonicalMapping];
-  v5 = [(SHLLibraryTrackCompoundIdentifier *)self shazamKey];
-  v6 = [v5 validatedKey];
-  v7 = [NSString stringWithFormat:@"%@%@%@", v4, @"_[T]_", v6];
+  recognitionIdentifier = [(SHLLibraryTrackCompoundIdentifier *)self recognitionIdentifier];
+  precomposedStringWithCanonicalMapping = [recognitionIdentifier precomposedStringWithCanonicalMapping];
+  shazamKey = [(SHLLibraryTrackCompoundIdentifier *)self shazamKey];
+  validatedKey = [shazamKey validatedKey];
+  v7 = [NSString stringWithFormat:@"%@%@%@", precomposedStringWithCanonicalMapping, @"_[T]_", validatedKey];
 
   return v7;
 }
 
 - (BOOL)hasValidRecognitionIdentifier
 {
-  v2 = [(SHLLibraryTrackCompoundIdentifier *)self recognitionIdentifier];
-  v3 = [v2 length] != 0;
+  recognitionIdentifier = [(SHLLibraryTrackCompoundIdentifier *)self recognitionIdentifier];
+  v3 = [recognitionIdentifier length] != 0;
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   recognitionIdentifier = self->_recognitionIdentifier;
-  v5 = a3;
-  [v5 encodeObject:recognitionIdentifier forKey:@"SHLLibraryTrackRecognitionIdentifierKey"];
-  v6 = [(SHLShazamKey *)self->_shazamKey validatedKey];
-  [v5 encodeObject:v6 forKey:@"SHLLibraryTrackShazamKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:recognitionIdentifier forKey:@"SHLLibraryTrackRecognitionIdentifierKey"];
+  validatedKey = [(SHLShazamKey *)self->_shazamKey validatedKey];
+  [coderCopy encodeObject:validatedKey forKey:@"SHLLibraryTrackShazamKey"];
 }
 
-- (SHLLibraryTrackCompoundIdentifier)initWithCoder:(id)a3
+- (SHLLibraryTrackCompoundIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLLibraryTrackShazamKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLLibraryTrackShazamKey"];
   v6 = [[SHLShazamKey alloc] initWithKey:v5];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLLibraryTrackRecognitionIdentifierKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLLibraryTrackRecognitionIdentifierKey"];
 
   v8 = [(SHLLibraryTrackCompoundIdentifier *)self initWithRecognitionIdentifier:v7 shazamKey:v6];
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(SHLLibraryTrackCompoundIdentifier *)self recognitionIdentifier];
-  v5 = [v4 copy];
+  recognitionIdentifier = [(SHLLibraryTrackCompoundIdentifier *)self recognitionIdentifier];
+  v5 = [recognitionIdentifier copy];
 
-  v6 = [(SHLLibraryTrackCompoundIdentifier *)self shazamKey];
-  v7 = [v6 validatedKey];
-  v8 = [SHLShazamKey keyWithValue:v7];
+  shazamKey = [(SHLLibraryTrackCompoundIdentifier *)self shazamKey];
+  validatedKey = [shazamKey validatedKey];
+  v8 = [SHLShazamKey keyWithValue:validatedKey];
 
   v9 = [SHLLibraryTrackCompoundIdentifier identifierWithRecognitionIdentifier:v5 shazamKey:v8];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SHLLibraryTrackCompoundIdentifier *)self recognitionIdentifier];
-    v7 = [v5 recognitionIdentifier];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    recognitionIdentifier = [(SHLLibraryTrackCompoundIdentifier *)self recognitionIdentifier];
+    recognitionIdentifier2 = [v5 recognitionIdentifier];
+    if ([recognitionIdentifier isEqualToString:recognitionIdentifier2])
     {
-      v8 = [(SHLLibraryTrackCompoundIdentifier *)self shazamKey];
-      v9 = [v8 validatedKey];
-      v10 = [v5 shazamKey];
-      v11 = [v10 validatedKey];
-      v12 = [v9 isEqualToString:v11];
+      shazamKey = [(SHLLibraryTrackCompoundIdentifier *)self shazamKey];
+      validatedKey = [shazamKey validatedKey];
+      shazamKey2 = [v5 shazamKey];
+      validatedKey2 = [shazamKey2 validatedKey];
+      v12 = [validatedKey isEqualToString:validatedKey2];
     }
 
     else
@@ -219,11 +219,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SHLLibraryTrackCompoundIdentifier *)self recognitionIdentifier];
-  v4 = [v3 hash];
-  v5 = [(SHLLibraryTrackCompoundIdentifier *)self shazamKey];
-  v6 = [v5 validatedKey];
-  v7 = [v6 hash];
+  recognitionIdentifier = [(SHLLibraryTrackCompoundIdentifier *)self recognitionIdentifier];
+  v4 = [recognitionIdentifier hash];
+  shazamKey = [(SHLLibraryTrackCompoundIdentifier *)self shazamKey];
+  validatedKey = [shazamKey validatedKey];
+  v7 = [validatedKey hash];
 
   return v7 ^ v4;
 }

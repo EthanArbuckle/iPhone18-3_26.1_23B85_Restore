@@ -1,12 +1,12 @@
 @interface BLTPBWillSendLightsAndSirensRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BLTPBWillSendLightsAndSirensRequest
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = BLTPBWillSendLightsAndSirensRequest;
   v4 = [(BLTPBWillSendLightsAndSirensRequest *)&v8 description];
-  v5 = [(BLTPBWillSendLightsAndSirensRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BLTPBWillSendLightsAndSirensRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   publisherBulletinID = self->_publisherBulletinID;
   if (publisherBulletinID)
   {
-    [v3 setObject:publisherBulletinID forKey:@"publisherBulletinID"];
+    [dictionary setObject:publisherBulletinID forKey:@"publisherBulletinID"];
   }
 
   recordID = self->_recordID;
@@ -54,77 +54,77 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_publisherBulletinID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_recordID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sectionID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     systemApp = self->_systemApp;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_publisherBulletinID)
   {
-    [v4 setPublisherBulletinID:?];
-    v4 = v5;
+    [toCopy setPublisherBulletinID:?];
+    toCopy = v5;
   }
 
   if (self->_recordID)
   {
     [v5 setRecordID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sectionID)
   {
     [v5 setSectionID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[32] = self->_systemApp;
-    v4[36] |= 1u;
+    toCopy[32] = self->_systemApp;
+    toCopy[36] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_publisherBulletinID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_publisherBulletinID copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSString *)self->_recordID copyWithZone:a3];
+  v8 = [(NSString *)self->_recordID copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSString *)self->_sectionID copyWithZone:a3];
+  v10 = [(NSString *)self->_sectionID copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
@@ -137,16 +137,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   publisherBulletinID = self->_publisherBulletinID;
-  if (publisherBulletinID | *(v4 + 1))
+  if (publisherBulletinID | *(equalCopy + 1))
   {
     if (![(NSString *)publisherBulletinID isEqual:?])
     {
@@ -155,7 +155,7 @@
   }
 
   recordID = self->_recordID;
-  if (recordID | *(v4 + 2))
+  if (recordID | *(equalCopy + 2))
   {
     if (![(NSString *)recordID isEqual:?])
     {
@@ -164,7 +164,7 @@
   }
 
   sectionID = self->_sectionID;
-  if (sectionID | *(v4 + 3))
+  if (sectionID | *(equalCopy + 3))
   {
     if (![(NSString *)sectionID isEqual:?])
     {
@@ -172,10 +172,10 @@
     }
   }
 
-  v8 = (*(v4 + 36) & 1) == 0;
+  v8 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0)
+    if ((*(equalCopy + 36) & 1) == 0)
     {
 LABEL_10:
       v8 = 0;
@@ -184,13 +184,13 @@ LABEL_10:
 
     if (self->_systemApp)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_10;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_10;
     }
@@ -221,31 +221,31 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(BLTPBWillSendLightsAndSirensRequest *)self setPublisherBulletinID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BLTPBWillSendLightsAndSirensRequest *)self setRecordID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BLTPBWillSendLightsAndSirensRequest *)self setSectionID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[36])
+  if (fromCopy[36])
   {
-    self->_systemApp = v4[32];
+    self->_systemApp = fromCopy[32];
     *&self->_has |= 1u;
   }
 }

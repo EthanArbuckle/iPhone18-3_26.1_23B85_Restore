@@ -1,16 +1,16 @@
 @interface CPLDropAllRecordsExtractionStep
-- (BOOL)extractToBatch:(id)a3 maximumCount:(unint64_t)a4 maximumResourceSize:(unint64_t)a5 error:(id *)a6;
+- (BOOL)extractToBatch:(id)batch maximumCount:(unint64_t)count maximumResourceSize:(unint64_t)size error:(id *)error;
 @end
 
 @implementation CPLDropAllRecordsExtractionStep
 
-- (BOOL)extractToBatch:(id)a3 maximumCount:(unint64_t)a4 maximumResourceSize:(unint64_t)a5 error:(id *)a6
+- (BOOL)extractToBatch:(id)batch maximumCount:(unint64_t)count maximumResourceSize:(unint64_t)size error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = [(CPLBatchExtractionStep *)self storage:a3];
-  v9 = [(CPLBatchExtractionStep *)self storage];
-  v10 = [(CPLBatchExtractionStep *)self scopeIdentifier];
-  v11 = [v9 allChangesWithScopeIdentifier:v10];
+  v8 = [(CPLBatchExtractionStep *)self storage:batch];
+  storage = [(CPLBatchExtractionStep *)self storage];
+  scopeIdentifier = [(CPLBatchExtractionStep *)self scopeIdentifier];
+  v11 = [storage allChangesWithScopeIdentifier:scopeIdentifier];
 
   v28 = 0u;
   v29 = 0u;
@@ -42,11 +42,11 @@
         if (!v20)
         {
 
-          if (a6)
+          if (error)
           {
             v21 = v15;
             v22 = 0;
-            *a6 = v15;
+            *error = v15;
           }
 
           else

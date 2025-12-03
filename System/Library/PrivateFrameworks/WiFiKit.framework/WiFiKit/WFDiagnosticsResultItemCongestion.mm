@@ -1,25 +1,25 @@
 @interface WFDiagnosticsResultItemCongestion
-- (WFDiagnosticsResultItemCongestion)initWithResults:(id)a3;
+- (WFDiagnosticsResultItemCongestion)initWithResults:(id)results;
 @end
 
 @implementation WFDiagnosticsResultItemCongestion
 
-- (WFDiagnosticsResultItemCongestion)initWithResults:(id)a3
+- (WFDiagnosticsResultItemCongestion)initWithResults:(id)results
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v31.receiver = self;
   v31.super_class = WFDiagnosticsResultItemCongestion;
   v5 = [(WFDiagnosticsResultItemCongestion *)&v31 init];
-  v6 = [v4 congestionDiagnosticsResults];
-  [(WFDiagnosticsResultItemCongestion *)v5 setResults:v6];
+  congestionDiagnosticsResults = [resultsCopy congestionDiagnosticsResults];
+  [(WFDiagnosticsResultItemCongestion *)v5 setResults:congestionDiagnosticsResults];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = [(WFDiagnosticsResultItemCongestion *)v5 results];
-  v8 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  results = [(WFDiagnosticsResultItemCongestion *)v5 results];
+  v8 = [results countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v8)
   {
     v9 = 0;
@@ -30,7 +30,7 @@
       {
         if (*v28 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(results);
         }
 
         v12 = *(*(&v27 + 1) + 8 * i);
@@ -53,7 +53,7 @@
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v8 = [results countByEnumeratingWithState:&v27 objects:v32 count:16];
       if (v8)
       {
         continue;
@@ -105,7 +105,7 @@ LABEL_18:
 
   else
   {
-    v9 = v7;
+    v9 = results;
   }
 
 LABEL_26:

@@ -1,66 +1,66 @@
 @interface EKUIConfirmMultiPasteViewController
-- (EKUIConfirmMultiPasteViewController)initWithSearchResult:(id)a3 pasteboardManager:(id)a4 eventStore:(id)a5 dateForPaste:(id)a6;
+- (EKUIConfirmMultiPasteViewController)initWithSearchResult:(id)result pasteboardManager:(id)manager eventStore:(id)store dateForPaste:(id)paste;
 - (EKUIConfirmMultiPasteViewControllerDelegate)delegate;
-- (id)popupMenu:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_cancel:(id)a3;
-- (void)_done:(id)a3;
-- (void)pasteboardManager:(id)a3 didFinishPasteWithResult:(unint64_t)a4 willOpenEditor:(BOOL)a5;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (id)popupMenu:(id)menu;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_cancel:(id)_cancel;
+- (void)_done:(id)_done;
+- (void)pasteboardManager:(id)manager didFinishPasteWithResult:(unint64_t)result willOpenEditor:(BOOL)editor;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation EKUIConfirmMultiPasteViewController
 
-- (EKUIConfirmMultiPasteViewController)initWithSearchResult:(id)a3 pasteboardManager:(id)a4 eventStore:(id)a5 dateForPaste:(id)a6
+- (EKUIConfirmMultiPasteViewController)initWithSearchResult:(id)result pasteboardManager:(id)manager eventStore:(id)store dateForPaste:(id)paste
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  resultCopy = result;
+  managerCopy = manager;
+  storeCopy = store;
+  pasteCopy = paste;
   v30.receiver = self;
   v30.super_class = EKUIConfirmMultiPasteViewController;
   v15 = [(EKUIConfirmMultiPasteViewController *)&v30 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_searchResult, a3);
-    objc_storeStrong(&v16->_pasteboardManager, a4);
-    objc_storeStrong(&v16->_eventStore, a5);
-    v17 = [v12 calendarToPasteTo];
+    objc_storeStrong(&v15->_searchResult, result);
+    objc_storeStrong(&v16->_pasteboardManager, manager);
+    objc_storeStrong(&v16->_eventStore, store);
+    calendarToPasteTo = [managerCopy calendarToPasteTo];
     selectedCalendar = v16->_selectedCalendar;
-    v16->_selectedCalendar = v17;
+    v16->_selectedCalendar = calendarToPasteTo;
 
-    objc_storeStrong(&v16->_dateForPaste, a6);
+    objc_storeStrong(&v16->_dateForPaste, paste);
     v19 = EventKitUIBundle();
     v20 = [v19 localizedStringForKey:@"Paste Multiple Events" value:&stru_1F4EF6790 table:0];
-    v21 = [(EKUIConfirmMultiPasteViewController *)v16 navigationItem];
-    [v21 setTitle:v20];
+    navigationItem = [(EKUIConfirmMultiPasteViewController *)v16 navigationItem];
+    [navigationItem setTitle:v20];
 
     v22 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v16 action:sel__cancel_];
-    v23 = [(EKUIConfirmMultiPasteViewController *)v16 navigationItem];
-    [v23 setLeftBarButtonItem:v22];
+    navigationItem2 = [(EKUIConfirmMultiPasteViewController *)v16 navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v22];
 
     v24 = objc_alloc(MEMORY[0x1E69DC708]);
     v25 = EventKitUIBundle();
     v26 = [v25 localizedStringForKey:@"Paste - confirmation nav bar button" value:@"Paste" table:0];
     v27 = [v24 initWithTitle:v26 style:2 target:v16 action:sel__done_];
-    v28 = [(EKUIConfirmMultiPasteViewController *)v16 navigationItem];
-    [v28 setRightBarButtonItem:v27];
+    navigationItem3 = [(EKUIConfirmMultiPasteViewController *)v16 navigationItem];
+    [navigationItem3 setRightBarButtonItem:v27];
   }
 
   return v16;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = EKUIConfirmMultiPasteViewController;
-  [(EKUIConfirmMultiPasteViewController *)&v6 viewWillAppear:a3];
-  v4 = [(EKUIConfirmMultiPasteViewController *)self navigationController];
-  v5 = [v4 presentationController];
-  [v5 setDelegate:self];
+  [(EKUIConfirmMultiPasteViewController *)&v6 viewWillAppear:appear];
+  navigationController = [(EKUIConfirmMultiPasteViewController *)self navigationController];
+  presentationController = [navigationController presentationController];
+  [presentationController setDelegate:self];
 }
 
 - (void)viewDidLoad
@@ -69,9 +69,9 @@
   v51.receiver = self;
   v51.super_class = EKUIConfirmMultiPasteViewController;
   [(EKUIConfirmMultiPasteViewController *)&v51 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v4 = [(EKUIConfirmMultiPasteViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  view = [(EKUIConfirmMultiPasteViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
   v5 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   descriptionLabel = self->_descriptionLabel;
@@ -80,14 +80,14 @@
   v7 = MEMORY[0x1E696AEC0];
   v8 = EventKitUIBundle();
   v9 = [v8 localizedStringForKey:@"paste_x_events_calendar_selection" value:&stru_1F4EF6790 table:0];
-  v10 = [(EKAutocompleteSearchResult *)self->_searchResult pasteboardResults];
-  v11 = [v7 localizedStringWithFormat:v9, objc_msgSend(v10, "count")];
+  pasteboardResults = [(EKAutocompleteSearchResult *)self->_searchResult pasteboardResults];
+  v11 = [v7 localizedStringWithFormat:v9, objc_msgSend(pasteboardResults, "count")];
   [(UILabel *)self->_descriptionLabel setText:v11];
 
   [(UILabel *)self->_descriptionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_descriptionLabel setNumberOfLines:0];
-  v12 = [(EKUIConfirmMultiPasteViewController *)self view];
-  [v12 addSubview:self->_descriptionLabel];
+  view2 = [(EKUIConfirmMultiPasteViewController *)self view];
+  [view2 addSubview:self->_descriptionLabel];
 
   v13 = objc_alloc_init(MEMORY[0x1E69DD020]);
   tableView = self->_tableView;
@@ -96,62 +96,62 @@
   [(UITableView *)self->_tableView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UITableView *)self->_tableView setDelegate:self];
   [(UITableView *)self->_tableView setDataSource:self];
-  v15 = [(EKUIConfirmMultiPasteViewController *)self view];
-  [v15 addSubview:self->_tableView];
+  view3 = [(EKUIConfirmMultiPasteViewController *)self view];
+  [view3 addSubview:self->_tableView];
 
   v36 = MEMORY[0x1E696ACD8];
-  v49 = [(UILabel *)self->_descriptionLabel leadingAnchor];
-  v50 = [(EKUIConfirmMultiPasteViewController *)self view];
-  v48 = [v50 layoutMarginsGuide];
-  v47 = [v48 leadingAnchor];
-  v46 = [v49 constraintEqualToAnchor:v47];
+  leadingAnchor = [(UILabel *)self->_descriptionLabel leadingAnchor];
+  view4 = [(EKUIConfirmMultiPasteViewController *)self view];
+  layoutMarginsGuide = [view4 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v46 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v52[0] = v46;
-  v44 = [(UILabel *)self->_descriptionLabel trailingAnchor];
-  v45 = [(EKUIConfirmMultiPasteViewController *)self view];
-  v43 = [v45 layoutMarginsGuide];
-  v42 = [v43 trailingAnchor];
-  v41 = [v44 constraintEqualToAnchor:v42];
+  trailingAnchor = [(UILabel *)self->_descriptionLabel trailingAnchor];
+  view5 = [(EKUIConfirmMultiPasteViewController *)self view];
+  layoutMarginsGuide2 = [view5 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v41 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v52[1] = v41;
-  v39 = [(UILabel *)self->_descriptionLabel topAnchor];
-  v40 = [(EKUIConfirmMultiPasteViewController *)self view];
-  v38 = [v40 layoutMarginsGuide];
-  v37 = [v38 topAnchor];
-  v35 = [v39 constraintEqualToAnchor:v37];
+  topAnchor = [(UILabel *)self->_descriptionLabel topAnchor];
+  view6 = [(EKUIConfirmMultiPasteViewController *)self view];
+  layoutMarginsGuide3 = [view6 layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide3 topAnchor];
+  v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v52[2] = v35;
-  v33 = [(UITableView *)self->_tableView leadingAnchor];
-  v34 = [(EKUIConfirmMultiPasteViewController *)self view];
-  v32 = [v34 layoutMarginsGuide];
-  v31 = [v32 leadingAnchor];
-  v30 = [v33 constraintEqualToAnchor:v31];
+  leadingAnchor3 = [(UITableView *)self->_tableView leadingAnchor];
+  view7 = [(EKUIConfirmMultiPasteViewController *)self view];
+  layoutMarginsGuide4 = [view7 layoutMarginsGuide];
+  leadingAnchor4 = [layoutMarginsGuide4 leadingAnchor];
+  v30 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v52[3] = v30;
-  v28 = [(UITableView *)self->_tableView trailingAnchor];
-  v29 = [(EKUIConfirmMultiPasteViewController *)self view];
-  v27 = [v29 layoutMarginsGuide];
-  v26 = [v27 trailingAnchor];
-  v16 = [v28 constraintEqualToAnchor:v26];
+  trailingAnchor3 = [(UITableView *)self->_tableView trailingAnchor];
+  view8 = [(EKUIConfirmMultiPasteViewController *)self view];
+  layoutMarginsGuide5 = [view8 layoutMarginsGuide];
+  trailingAnchor4 = [layoutMarginsGuide5 trailingAnchor];
+  v16 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v52[4] = v16;
-  v17 = [(UITableView *)self->_tableView topAnchor];
-  v18 = [(UILabel *)self->_descriptionLabel bottomAnchor];
-  v19 = [v17 constraintEqualToSystemSpacingBelowAnchor:v18 multiplier:1.0];
+  topAnchor3 = [(UITableView *)self->_tableView topAnchor];
+  bottomAnchor = [(UILabel *)self->_descriptionLabel bottomAnchor];
+  v19 = [topAnchor3 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor multiplier:1.0];
   v52[5] = v19;
-  v20 = [(UITableView *)self->_tableView bottomAnchor];
-  v21 = [(EKUIConfirmMultiPasteViewController *)self view];
-  v22 = [v21 layoutMarginsGuide];
-  v23 = [v22 bottomAnchor];
-  v24 = [v20 constraintEqualToAnchor:v23];
+  bottomAnchor2 = [(UITableView *)self->_tableView bottomAnchor];
+  view9 = [(EKUIConfirmMultiPasteViewController *)self view];
+  layoutMarginsGuide6 = [view9 layoutMarginsGuide];
+  bottomAnchor3 = [layoutMarginsGuide6 bottomAnchor];
+  v24 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v52[6] = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:7];
   [v36 activateConstraints:v25];
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
   [(EKUIConfirmMultiPasteViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v4 = [(EKUIConfirmMultiPasteViewController *)self delegate];
-  [v4 confirmMultiPasteViewController:self finishedWithCancel:1];
+  delegate = [(EKUIConfirmMultiPasteViewController *)self delegate];
+  [delegate confirmMultiPasteViewController:self finishedWithCancel:1];
 }
 
-- (void)_done:(id)a3
+- (void)_done:(id)_done
 {
   [(CUIKPasteboardManager *)self->_pasteboardManager setCalendarForPaste:self->_selectedCalendar];
   [(CUIKPasteboardManager *)self->_pasteboardManager setDateForPaste:self->_dateForPaste];
@@ -160,21 +160,21 @@
   [(CUIKPasteboardManager *)pasteboardManager pasteEventsWithDateMode:0 delegate:self];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = [[EKUIPopupTableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
-  v9 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
   if (EKUICatalyst())
   {
-    v10 = [(EKUIConfirmMultiPasteViewController *)self popupMenu:v9];
+    v10 = [(EKUIConfirmMultiPasteViewController *)self popupMenu:systemBackgroundColor];
     [(EKUIPopupTableViewCell *)v8 setPopupMenu:v10];
   }
 
   else
   {
-    v11 = [EKUICalendarMenu placeholderMenuForCalendar:self->_selectedCalendar backgroundColor:v9];
+    v11 = [EKUICalendarMenu placeholderMenuForCalendar:self->_selectedCalendar backgroundColor:systemBackgroundColor];
     [(EKUIPopupTableViewCell *)v8 setPopupMenu:v11];
 
     v23[0] = 0;
@@ -190,7 +190,7 @@
     v18[3] = &unk_1E84401A8;
     objc_copyWeak(&v21, &location);
     v20 = v23;
-    v19 = v9;
+    v19 = systemBackgroundColor;
     [(EKUIPopupTableViewCell *)v8 setPopupMenuProvider:v18];
 
     objc_destroyWeak(&v21);
@@ -200,12 +200,12 @@
 
   v12 = EventKitUIBundle();
   v13 = [v12 localizedStringForKey:@"Calendar" value:&stru_1F4EF6790 table:0];
-  v14 = [(EKUIPopupTableViewCell *)v8 textLabel];
-  [v14 setText:v13];
+  textLabel = [(EKUIPopupTableViewCell *)v8 textLabel];
+  [textLabel setText:v13];
 
-  v15 = [MEMORY[0x1E69DC888] labelColor];
-  v16 = [(EKUIPopupTableViewCell *)v8 textLabel];
-  [v16 setTextColor:v15];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  textLabel2 = [(EKUIPopupTableViewCell *)v8 textLabel];
+  [textLabel2 setTextColor:labelColor];
 
   return v8;
 }
@@ -228,9 +228,9 @@ void *__71__EKUIConfirmMultiPasteViewController_tableView_cellForRowAtIndexPath_
   return v7;
 }
 
-- (id)popupMenu:(id)a3
+- (id)popupMenu:(id)menu
 {
-  v4 = a3;
+  menuCopy = menu;
   v5 = [MEMORY[0x1E69933B0] calendarsLimitedToSource:0 writability:2 onlyUnmanagedAccounts:0 forEvent:0 entityType:0 inEventStore:self->_eventStore];
   objc_initWeak(&location, self);
   eventStore = self->_eventStore;
@@ -244,7 +244,7 @@ void *__71__EKUIConfirmMultiPasteViewController_tableView_cellForRowAtIndexPath_
   v9[2] = __49__EKUIConfirmMultiPasteViewController_popupMenu___block_invoke_2;
   v9[3] = &unk_1E84401F8;
   objc_copyWeak(&v10, &location);
-  v7 = [EKUICalendarMenu calendarMenuWithCalendars:v5 eventStore:eventStore backgroundColor:v4 setupActionHandler:v11 selectionHandler:v9];
+  v7 = [EKUICalendarMenu calendarMenuWithCalendars:v5 eventStore:eventStore backgroundColor:menuCopy setupActionHandler:v11 selectionHandler:v9];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -276,9 +276,9 @@ void __49__EKUIConfirmMultiPasteViewController_popupMenu___block_invoke_2(uint64
   }
 }
 
-- (void)pasteboardManager:(id)a3 didFinishPasteWithResult:(unint64_t)a4 willOpenEditor:(BOOL)a5
+- (void)pasteboardManager:(id)manager didFinishPasteWithResult:(unint64_t)result willOpenEditor:(BOOL)editor
 {
-  if (!a4)
+  if (!result)
   {
     v11 = v5;
     v12 = v6;
@@ -286,11 +286,11 @@ void __49__EKUIConfirmMultiPasteViewController_popupMenu___block_invoke_2(uint64
     v9[1] = 3221225472;
     v9[2] = __97__EKUIConfirmMultiPasteViewController_pasteboardManager_didFinishPasteWithResult_willOpenEditor___block_invoke;
     v9[3] = &unk_1E84407B0;
-    v10 = a5;
+    editorCopy = editor;
     v9[4] = self;
     [(EKUIConfirmMultiPasteViewController *)self dismissViewControllerAnimated:1 completion:v9];
-    v8 = [(EKUIConfirmMultiPasteViewController *)self delegate];
-    [v8 confirmMultiPasteViewController:self finishedWithCancel:0];
+    delegate = [(EKUIConfirmMultiPasteViewController *)self delegate];
+    [delegate confirmMultiPasteViewController:self finishedWithCancel:0];
   }
 }
 
@@ -309,10 +309,10 @@ void __97__EKUIConfirmMultiPasteViewController_pasteboardManager_didFinishPasteW
   }
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [(EKUIConfirmMultiPasteViewController *)self delegate];
-  [v4 confirmMultiPasteViewController:self finishedWithCancel:1];
+  delegate = [(EKUIConfirmMultiPasteViewController *)self delegate];
+  [delegate confirmMultiPasteViewController:self finishedWithCancel:1];
 }
 
 - (EKUIConfirmMultiPasteViewControllerDelegate)delegate

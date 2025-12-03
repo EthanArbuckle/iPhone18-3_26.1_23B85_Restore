@@ -1,27 +1,27 @@
 @interface CCAppCustomNotebookItemTitleContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCAppCustomNotebookItemTitleContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCAppCustomNotebookItemTitleContent)initWithVocabularyString:(id)a3 vocabularyIdentifier:(id)a4 error:(id *)a5;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCAppCustomNotebookItemTitleContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCAppCustomNotebookItemTitleContent)initWithVocabularyString:(id)string vocabularyIdentifier:(id)identifier error:(id *)error;
 - (NSString)vocabularyIdentifier;
 - (NSString)vocabularyString;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCAppCustomNotebookItemTitleContent
 
-- (CCAppCustomNotebookItemTitleContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCAppCustomNotebookItemTitleContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"vocabularyString"];
-    v10 = [v6 objectForKeyedSubscript:@"vocabularyIdentifier"];
-    v11 = [[CCAppCustomNotebookItemTitleContent alloc] initWithVocabularyString:v9 vocabularyIdentifier:v10 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"vocabularyString"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"vocabularyIdentifier"];
+    v11 = [[CCAppCustomNotebookItemTitleContent alloc] initWithVocabularyString:v9 vocabularyIdentifier:v10 error:error];
   }
 
   else
@@ -38,14 +38,14 @@
   v3 = objc_opt_new();
   if (self->_vocabularyString)
   {
-    v4 = [(CCAppCustomNotebookItemTitleContent *)self vocabularyString];
-    [v3 setObject:v4 forKeyedSubscript:@"vocabularyString"];
+    vocabularyString = [(CCAppCustomNotebookItemTitleContent *)self vocabularyString];
+    [v3 setObject:vocabularyString forKeyedSubscript:@"vocabularyString"];
   }
 
   if (self->_vocabularyIdentifier)
   {
-    v5 = [(CCAppCustomNotebookItemTitleContent *)self vocabularyIdentifier];
-    [v3 setObject:v5 forKeyedSubscript:@"vocabularyIdentifier"];
+    vocabularyIdentifier = [(CCAppCustomNotebookItemTitleContent *)self vocabularyIdentifier];
+    [v3 setObject:vocabularyIdentifier forKeyedSubscript:@"vocabularyIdentifier"];
   }
 
   v6 = [v3 copy];
@@ -53,19 +53,19 @@
   return v6;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v7 = a3;
+  blockCopy = block;
   if (self->_vocabularyString)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:26515 stringValue:self->_vocabularyString];
-    v7[2](v7, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_vocabularyIdentifier)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:26516 stringValue:self->_vocabularyIdentifier];
-    v7[2](v7, v6);
+    blockCopy[2](blockCopy, v6);
   }
 }
 
@@ -83,10 +83,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -235,15 +235,15 @@ LABEL_38:
   return v30;
 }
 
-- (CCAppCustomNotebookItemTitleContent)initWithVocabularyString:(id)a3 vocabularyIdentifier:(id)a4 error:(id *)a5
+- (CCAppCustomNotebookItemTitleContent)initWithVocabularyString:(id)string vocabularyIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  stringCopy = string;
+  identifierCopy = identifier;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!stringCopy)
   {
     v12 = 0;
-    if (!v9)
+    if (!identifierCopy)
     {
       goto LABEL_8;
     }
@@ -257,7 +257,7 @@ LABEL_6:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v16 = 0;
+      selfCopy = 0;
       v12 = v14;
       goto LABEL_11;
     }
@@ -273,36 +273,36 @@ LABEL_6:
   if (!v11)
   {
     CCSetError();
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
   CCPBDataWriterWriteStringField();
-  if (v9)
+  if (identifierCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  v15 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v15 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v16 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v16;
+  return selfCopy;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
-  if ((a3 - 26512) > 4)
+  if ((identifier - 26512) > 4)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1E73E68E0 + (a3 - 26512));
+    return *(&off_1E73E68E0 + (identifier - 26512));
   }
 }
 

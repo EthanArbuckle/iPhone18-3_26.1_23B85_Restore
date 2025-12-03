@@ -1,49 +1,49 @@
 @interface POMMESSchemaPOMMESPegasusSearchQueryAmpUserState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POMMESSchemaPOMMESPegasusSearchQueryAmpUserState)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESPegasusSearchQueryAmpUserState)initWithJSON:(id)a3;
+- (POMMESSchemaPOMMESPegasusSearchQueryAmpUserState)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESPegasusSearchQueryAmpUserState)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasHasItunesSubscriptionStatus:(BOOL)a3;
-- (void)setHasHasSharedUserId:(BOOL)a3;
-- (void)setHasHasUserToken:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasHasItunesSubscriptionStatus:(BOOL)status;
+- (void)setHasHasSharedUserId:(BOOL)id;
+- (void)setHasHasUserToken:(BOOL)token;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESPegasusSearchQueryAmpUserState
 
-- (POMMESSchemaPOMMESPegasusSearchQueryAmpUserState)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESPegasusSearchQueryAmpUserState)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = POMMESSchemaPOMMESPegasusSearchQueryAmpUserState;
   v5 = [(POMMESSchemaPOMMESPegasusSearchQueryAmpUserState *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"hasAmpSubscriptionStatus"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"hasAmpSubscriptionStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusSearchQueryAmpUserState setHasAmpSubscriptionStatus:](v5, "setHasAmpSubscriptionStatus:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"hasItunesSubscriptionStatus"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"hasItunesSubscriptionStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusSearchQueryAmpUserState setHasItunesSubscriptionStatus:](v5, "setHasItunesSubscriptionStatus:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"hasUserToken"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"hasUserToken"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusSearchQueryAmpUserState setHasUserToken:](v5, "setHasUserToken:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"hasSharedUserId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"hasSharedUserId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESPegasusSearchQueryAmpUserState)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESPegasusSearchQueryAmpUserState)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESPegasusSearchQueryAmpUserState *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESPegasusSearchQueryAmpUserState *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESPegasusSearchQueryAmpUserState *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,12 +92,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESPegasusSearchQueryAmpUserState hasAmpSubscriptionStatus](self, "hasAmpSubscriptionStatus")}];
-    [v3 setObject:v7 forKeyedSubscript:@"hasAmpSubscriptionStatus"];
+    [dictionary setObject:v7 forKeyedSubscript:@"hasAmpSubscriptionStatus"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -118,7 +118,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESPegasusSearchQueryAmpUserState hasItunesSubscriptionStatus](self, "hasItunesSubscriptionStatus")}];
-  [v3 setObject:v8 forKeyedSubscript:@"hasItunesSubscriptionStatus"];
+  [dictionary setObject:v8 forKeyedSubscript:@"hasItunesSubscriptionStatus"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -134,19 +134,19 @@ LABEL_4:
 
 LABEL_11:
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESPegasusSearchQueryAmpUserState hasSharedUserId](self, "hasSharedUserId")}];
-  [v3 setObject:v9 forKeyedSubscript:@"hasSharedUserId"];
+  [dictionary setObject:v9 forKeyedSubscript:@"hasSharedUserId"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESPegasusSearchQueryAmpUserState hasUserToken](self, "hasUserToken")}];
-    [v3 setObject:v5 forKeyedSubscript:@"hasUserToken"];
+    [dictionary setObject:v5 forKeyedSubscript:@"hasUserToken"];
   }
 
 LABEL_6:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -203,16 +203,16 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[12];
+  v6 = equalCopy[12];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -221,13 +221,13 @@ LABEL_5:
   if (*&has)
   {
     hasAmpSubscriptionStatus = self->_hasAmpSubscriptionStatus;
-    if (hasAmpSubscriptionStatus != [v4 hasAmpSubscriptionStatus])
+    if (hasAmpSubscriptionStatus != [equalCopy hasAmpSubscriptionStatus])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[12];
+    v6 = equalCopy[12];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -239,13 +239,13 @@ LABEL_5:
   if (v8)
   {
     hasItunesSubscriptionStatus = self->_hasItunesSubscriptionStatus;
-    if (hasItunesSubscriptionStatus != [v4 hasItunesSubscriptionStatus])
+    if (hasItunesSubscriptionStatus != [equalCopy hasItunesSubscriptionStatus])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[12];
+    v6 = equalCopy[12];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -257,10 +257,10 @@ LABEL_5:
   if (v10)
   {
     hasUserToken = self->_hasUserToken;
-    if (hasUserToken == [v4 hasUserToken])
+    if (hasUserToken == [equalCopy hasUserToken])
     {
       has = self->_has;
-      v6 = v4[12];
+      v6 = equalCopy[12];
       goto LABEL_14;
     }
 
@@ -279,7 +279,7 @@ LABEL_14:
   if (v12)
   {
     hasSharedUserId = self->_hasSharedUserId;
-    if (hasSharedUserId != [v4 hasSharedUserId])
+    if (hasSharedUserId != [equalCopy hasSharedUserId])
     {
       goto LABEL_18;
     }
@@ -291,9 +291,9 @@ LABEL_19:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -340,9 +340,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasHasSharedUserId:(BOOL)a3
+- (void)setHasHasSharedUserId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 8;
   }
@@ -355,9 +355,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasHasUserToken:(BOOL)a3
+- (void)setHasHasUserToken:(BOOL)token
 {
-  if (a3)
+  if (token)
   {
     v3 = 4;
   }
@@ -370,9 +370,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasHasItunesSubscriptionStatus:(BOOL)a3
+- (void)setHasHasItunesSubscriptionStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }

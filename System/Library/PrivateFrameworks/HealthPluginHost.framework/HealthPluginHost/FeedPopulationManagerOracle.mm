@@ -1,11 +1,11 @@
 @interface FeedPopulationManagerOracle
-- (void)debuggingInfoRequestedWithNote:(id)a3;
-- (void)storeDidUpdateWithNote:(id)a3;
+- (void)debuggingInfoRequestedWithNote:(id)note;
+- (void)storeDidUpdateWithNote:(id)note;
 @end
 
 @implementation FeedPopulationManagerOracle
 
-- (void)storeDidUpdateWithNote:(id)a3
+- (void)storeDidUpdateWithNote:(id)note
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);
@@ -19,7 +19,7 @@
   (*(v4 + 8))(v7, v3);
 }
 
-- (void)debuggingInfoRequestedWithNote:(id)a3
+- (void)debuggingInfoRequestedWithNote:(id)note
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

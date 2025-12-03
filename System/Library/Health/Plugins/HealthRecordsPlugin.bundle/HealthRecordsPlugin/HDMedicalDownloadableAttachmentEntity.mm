@@ -1,46 +1,46 @@
 @interface HDMedicalDownloadableAttachmentEntity
-+ (BOOL)_attachmentMatchesDownloadableAttachment:(id)a3 hdAttachment:(id)a4;
-+ (BOOL)_checkForObsoleteDownloadableAttachmentsForMedicalRecord:(id)a3 extractedDownloadableAttachments:(id)a4 medicalObjectIdentifier:(id)a5 clinicalObjectIdentifier:(id)a6 profile:(id)a7 error:(id *)a8;
-+ (BOOL)_deleteAttachmentWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (BOOL)_deleteAttachmentsWithMedicalRecordIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (BOOL)_markAvailableAndClearInlineDataForAttachmentWithIdentifier:(id)a3 attachmentIdentifier:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)_processClinicalNotesType:(id)a3 medicalRecord:(id)a4 clinicalRecord:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (BOOL)_reconcileExistingAttachmentsIfFoundForDownloadableAttachment:(id)a3 medicalRecord:(id)a4 clinicalRecord:(id)a5 attachment:(id *)a6 profile:(id)a7 error:(id *)a8;
-+ (BOOL)_updateHKAttachmentIdentifierForAttachmentWithIdentifier:(id)a3 attachmentIdentifier:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)_updateWithExistingAttachmentIfFoundForDownloadableAttachment:(id)a3 medicalRecord:(id)a4 clinicalRecord:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (BOOL)deleteAttachmentWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (BOOL)enumerateAttachmentsWithPredicate:(id)a3 profile:(id)a4 error:(id *)a5 enumerationHandler:(id)a6;
-+ (BOOL)updateAttachmentWithIdentifier:(id)a3 properties:(id)a4 profile:(id)a5 error:(id *)a6 bindingHandler:(id)a7;
-+ (id)_attachmentEntityForIdentifier:(id)a3 databaseTransaction:(id)a4 error:(id *)a5;
-+ (id)_attachmentRefsForDownloadableAttachment:(id)a3 attachmentObjectIdentifier:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)_attachmentsAfterRelinkingFromClinicalRecord:(id)a3 toClinicalRecord:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)_attachmentsAfterRelinkingFromMedicalRecord:(id)a3 toMedicalRecord:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)_attachmentsForDownloadableAttachment:(id)a3 attachmentObjectIdentifier:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)_checkForExistingDownloadableAttachment:(id)a3 profile:(id)a4 error:(id *)a5;
++ (BOOL)_attachmentMatchesDownloadableAttachment:(id)attachment hdAttachment:(id)hdAttachment;
++ (BOOL)_checkForObsoleteDownloadableAttachmentsForMedicalRecord:(id)record extractedDownloadableAttachments:(id)attachments medicalObjectIdentifier:(id)identifier clinicalObjectIdentifier:(id)objectIdentifier profile:(id)profile error:(id *)error;
++ (BOOL)_deleteAttachmentWithIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (BOOL)_deleteAttachmentsWithMedicalRecordIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (BOOL)_markAvailableAndClearInlineDataForAttachmentWithIdentifier:(id)identifier attachmentIdentifier:(id)attachmentIdentifier profile:(id)profile error:(id *)error;
++ (BOOL)_processClinicalNotesType:(id)type medicalRecord:(id)record clinicalRecord:(id)clinicalRecord profile:(id)profile error:(id *)error;
++ (BOOL)_reconcileExistingAttachmentsIfFoundForDownloadableAttachment:(id)attachment medicalRecord:(id)record clinicalRecord:(id)clinicalRecord attachment:(id *)a6 profile:(id)profile error:(id *)error;
++ (BOOL)_updateHKAttachmentIdentifierForAttachmentWithIdentifier:(id)identifier attachmentIdentifier:(id)attachmentIdentifier profile:(id)profile error:(id *)error;
++ (BOOL)_updateWithExistingAttachmentIfFoundForDownloadableAttachment:(id)attachment medicalRecord:(id)record clinicalRecord:(id)clinicalRecord profile:(id)profile error:(id *)error;
++ (BOOL)deleteAttachmentWithIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (BOOL)enumerateAttachmentsWithPredicate:(id)predicate profile:(id)profile error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)updateAttachmentWithIdentifier:(id)identifier properties:(id)properties profile:(id)profile error:(id *)error bindingHandler:(id)handler;
++ (id)_attachmentEntityForIdentifier:(id)identifier databaseTransaction:(id)transaction error:(id *)error;
++ (id)_attachmentRefsForDownloadableAttachment:(id)attachment attachmentObjectIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (id)_attachmentsAfterRelinkingFromClinicalRecord:(id)record toClinicalRecord:(id)clinicalRecord profile:(id)profile error:(id *)error;
++ (id)_attachmentsAfterRelinkingFromMedicalRecord:(id)record toMedicalRecord:(id)medicalRecord profile:(id)profile error:(id *)error;
++ (id)_attachmentsForDownloadableAttachment:(id)attachment attachmentObjectIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (id)_checkForExistingDownloadableAttachment:(id)attachment profile:(id)profile error:(id *)error;
 + (id)_propertiesForEntity;
-+ (id)attachmentForRow:(HDSQLiteRow *)a3;
-+ (id)attachmentWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)processMedicalDownloadableAttachmentsInExtractionResult:(id)a3 accountIdentifier:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (void)_removeDuplicateAttachments:(id)a3 profile:(id)a4;
++ (id)attachmentForRow:(HDSQLiteRow *)row;
++ (id)attachmentWithIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (id)processMedicalDownloadableAttachmentsInExtractionResult:(id)result accountIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (void)_removeDuplicateAttachments:(id)attachments profile:(id)profile;
 @end
 
 @implementation HDMedicalDownloadableAttachmentEntity
 
-+ (id)processMedicalDownloadableAttachmentsInExtractionResult:(id)a3 accountIdentifier:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)processMedicalDownloadableAttachmentsInExtractionResult:(id)result accountIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  resultCopy = result;
+  identifierCopy = identifier;
+  profileCopy = profile;
   _HKInitializeLogging();
   v13 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = NSStringFromClass(a1);
+    v15 = NSStringFromClass(self);
     *buf = 138543618;
     *&buf[4] = v15;
     *&buf[12] = 2114;
-    *&buf[14] = v10;
+    *&buf[14] = resultCopy;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ processing extraction result %{public}@", buf, 0x16u);
   }
 
@@ -48,15 +48,15 @@
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v37 = 0;
-  v16 = [v12 database];
+  database = [profileCopy database];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_72714;
   v30[3] = &unk_106390;
-  v31 = v10;
-  v35 = a1;
-  v32 = v12;
-  v33 = v11;
+  v31 = resultCopy;
+  selfCopy = self;
+  v32 = profileCopy;
+  v33 = identifierCopy;
   v34 = buf;
   v23 = _NSConcreteStackBlock;
   v24 = 3221225472;
@@ -68,7 +68,7 @@
   v28 = v18;
   v19 = v32;
   v29 = v19;
-  v20 = [a1 performWriteTransactionWithHealthDatabase:v16 error:a6 block:v30 inaccessibilityHandler:&v23];
+  v20 = [self performWriteTransactionWithHealthDatabase:database error:error block:v30 inaccessibilityHandler:&v23];
 
   if (v20)
   {
@@ -85,20 +85,20 @@
   return v21;
 }
 
-+ (BOOL)_processClinicalNotesType:(id)a3 medicalRecord:(id)a4 clinicalRecord:(id)a5 profile:(id)a6 error:(id *)a7
++ (BOOL)_processClinicalNotesType:(id)type medicalRecord:(id)record clinicalRecord:(id)clinicalRecord profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  typeCopy = type;
+  recordCopy = record;
+  clinicalRecordCopy = clinicalRecord;
+  profileCopy = profile;
   v29 = 0;
-  v16 = [a1 _checkForExistingDownloadableAttachment:v12 profile:v15 error:&v29];
+  v16 = [self _checkForExistingDownloadableAttachment:typeCopy profile:profileCopy error:&v29];
   v17 = v29;
   if (!v17)
   {
     if (v16)
     {
-      if (v13)
+      if (recordCopy)
       {
         goto LABEL_6;
       }
@@ -107,7 +107,7 @@
     else
     {
       v28 = 0;
-      v20 = [a1 insertAttachment:v12 profile:v15 error:&v28];
+      v20 = [self insertAttachment:typeCopy profile:profileCopy error:&v28];
       v21 = v28;
       if ((v20 & 1) == 0)
       {
@@ -116,11 +116,11 @@
         if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
         {
           v26 = v22;
-          v27 = [a1 debugDescription];
+          v27 = [self debugDescription];
           *buf = 138543874;
           v31 = v27;
           v32 = 2114;
-          v33 = v12;
+          v33 = typeCopy;
           v34 = 2114;
           v35 = v21;
           _os_log_error_impl(&dword_0, v26, OS_LOG_TYPE_ERROR, "%{public}@ failed to store downloadable attachment %{public}@, will discard. Error: %{public}@", buf, 0x20u);
@@ -129,10 +129,10 @@
         v23 = v21;
         if (v23)
         {
-          if (a7)
+          if (error)
           {
             v24 = v23;
-            *a7 = v23;
+            *error = v23;
           }
 
           else
@@ -145,12 +145,12 @@
         goto LABEL_18;
       }
 
-      v16 = v12;
+      v16 = typeCopy;
 
-      if (v13)
+      if (recordCopy)
       {
 LABEL_6:
-        v19 = [a1 _updateWithExistingAttachmentIfFoundForDownloadableAttachment:v16 medicalRecord:v13 clinicalRecord:v14 profile:v15 error:a7];
+        v19 = [self _updateWithExistingAttachmentIfFoundForDownloadableAttachment:v16 medicalRecord:recordCopy clinicalRecord:clinicalRecordCopy profile:profileCopy error:error];
         goto LABEL_19;
       }
     }
@@ -159,7 +159,7 @@ LABEL_6:
     goto LABEL_19;
   }
 
-  if (!a7)
+  if (!error)
   {
     _HKLogDroppedError();
 LABEL_18:
@@ -169,43 +169,43 @@ LABEL_18:
 
   v18 = v17;
   v19 = 0;
-  *a7 = v17;
+  *error = v17;
 LABEL_19:
 
   return v19;
 }
 
-+ (id)_checkForExistingDownloadableAttachment:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)_checkForExistingDownloadableAttachment:(id)attachment profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 accountIdentifier];
+  attachmentCopy = attachment;
+  profileCopy = profile;
+  accountIdentifier = [attachmentCopy accountIdentifier];
 
-  if (v10)
+  if (accountIdentifier)
   {
-    v11 = [v8 medicalRecordIdentifier];
-    v12 = [a1 _predicateForDownloadableAttachmentsWithMedicalRecordIdentifier:v11];
+    medicalRecordIdentifier = [attachmentCopy medicalRecordIdentifier];
+    v12 = [self _predicateForDownloadableAttachmentsWithMedicalRecordIdentifier:medicalRecordIdentifier];
 
-    v13 = [v8 webURL];
+    webURL = [attachmentCopy webURL];
 
-    if (v13)
+    if (webURL)
     {
-      v14 = [v8 webURL];
-      v15 = [v14 absoluteString];
-      v16 = [HDSQLiteComparisonPredicate predicateWithProperty:HDMedicalDownloadableAttachmentEntityPropertyWebURL equalToValue:v15];
+      webURL2 = [attachmentCopy webURL];
+      absoluteString = [webURL2 absoluteString];
+      v16 = [HDSQLiteComparisonPredicate predicateWithProperty:HDMedicalDownloadableAttachmentEntityPropertyWebURL equalToValue:absoluteString];
     }
 
     else
     {
-      v19 = [v8 inlineDataChecksum];
+      inlineDataChecksum = [attachmentCopy inlineDataChecksum];
 
-      if (!v19)
+      if (!inlineDataChecksum)
       {
         goto LABEL_13;
       }
 
-      v14 = [v8 inlineDataChecksum];
-      v16 = [HDSQLiteComparisonPredicate predicateWithProperty:HDMedicalDownloadableAttachmentEntityPropertyInlineDataChecksum equalToValue:v14];
+      webURL2 = [attachmentCopy inlineDataChecksum];
+      v16 = [HDSQLiteComparisonPredicate predicateWithProperty:HDMedicalDownloadableAttachmentEntityPropertyInlineDataChecksum equalToValue:webURL2];
     }
 
     if (v16)
@@ -223,17 +223,17 @@ LABEL_19:
       v36[1] = 3221225472;
       v36[2] = sub_73770;
       v36[3] = &unk_108398;
-      [HDMedicalDownloadableAttachmentEntity enumerateAttachmentsWithPredicate:v20 profile:v9 error:&v37 enumerationHandler:v36];
+      [HDMedicalDownloadableAttachmentEntity enumerateAttachmentsWithPredicate:v20 profile:profileCopy error:&v37 enumerationHandler:v36];
       v21 = v37;
       v22 = v21;
       if (v21)
       {
         v23 = v21;
         v24 = v23;
-        if (a5)
+        if (error)
         {
           v25 = v23;
-          *a5 = v24;
+          *error = v24;
         }
 
         else
@@ -241,20 +241,20 @@ LABEL_19:
           _HKLogDroppedError();
         }
 
-        v18 = 0;
+        firstObject = 0;
       }
 
       else
       {
         if ([v39[5] count] >= 2)
         {
-          v27 = [v8 webURL];
-          v28 = v27 == 0;
+          webURL3 = [attachmentCopy webURL];
+          v28 = webURL3 == 0;
 
           if (v28)
           {
-            v33 = [v8 inlineDataChecksum];
-            v34 = v33 == 0;
+            inlineDataChecksum2 = [attachmentCopy inlineDataChecksum];
+            v34 = inlineDataChecksum2 == 0;
 
             if (!v34)
             {
@@ -273,14 +273,14 @@ LABEL_19:
             v29 = HKLogHealthRecords;
             if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
             {
-              v30 = [v8 webURL];
-              v31 = [v30 absoluteString];
-              sub_A664C(v31, buf, v29, v30);
+              webURL4 = [attachmentCopy webURL];
+              absoluteString2 = [webURL4 absoluteString];
+              sub_A664C(absoluteString2, buf, v29, webURL4);
             }
           }
         }
 
-        v18 = [v39[5] firstObject];
+        firstObject = [v39[5] firstObject];
       }
 
       _Block_object_dispose(&v38, 8);
@@ -294,11 +294,11 @@ LABEL_13:
     v26 = HKLogHealthRecords;
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_FAULT))
     {
-      sub_A66F0(v26, a1);
+      sub_A66F0(v26, self);
     }
 
-    [NSError hk_assignError:a5 code:3 format:@"HKMedicalDownloadableAttachment has neither a webURL nor an inlineDataChecksum"];
-    v18 = 0;
+    [NSError hk_assignError:error code:3 format:@"HKMedicalDownloadableAttachment has neither a webURL nor an inlineDataChecksum"];
+    firstObject = 0;
     goto LABEL_25;
   }
 
@@ -306,25 +306,25 @@ LABEL_13:
   v17 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_FAULT))
   {
-    sub_A6794(v17, a1);
+    sub_A6794(v17, self);
   }
 
-  [NSError hk_assignError:a5 code:3 format:@"HKMedicalDownloadableAttachment has no accountIdentifier"];
-  v18 = 0;
+  [NSError hk_assignError:error code:3 format:@"HKMedicalDownloadableAttachment has no accountIdentifier"];
+  firstObject = 0;
 LABEL_26:
 
-  return v18;
+  return firstObject;
 }
 
-+ (BOOL)_updateWithExistingAttachmentIfFoundForDownloadableAttachment:(id)a3 medicalRecord:(id)a4 clinicalRecord:(id)a5 profile:(id)a6 error:(id *)a7
++ (BOOL)_updateWithExistingAttachmentIfFoundForDownloadableAttachment:(id)attachment medicalRecord:(id)record clinicalRecord:(id)clinicalRecord profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a6;
+  attachmentCopy = attachment;
+  profileCopy = profile;
   v26 = 0;
-  LODWORD(a4) = [a1 _reconcileExistingAttachmentsIfFoundForDownloadableAttachment:v12 medicalRecord:a4 clinicalRecord:a5 attachment:&v26 profile:v13 error:a7];
+  LODWORD(record) = [self _reconcileExistingAttachmentsIfFoundForDownloadableAttachment:attachmentCopy medicalRecord:record clinicalRecord:clinicalRecord attachment:&v26 profile:profileCopy error:error];
   v14 = v26;
   v15 = v14;
-  if (a4)
+  if (record)
   {
     if (!v14)
     {
@@ -333,30 +333,30 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v16 = [v12 metadata];
-    v17 = [v16 objectForKeyedSubscript:HKMedicalDownloadableAttachmentMetadataNeedsReIndexingKey];
+    metadata = [attachmentCopy metadata];
+    v17 = [metadata objectForKeyedSubscript:HKMedicalDownloadableAttachmentMetadataNeedsReIndexingKey];
 
-    if (!v17 && ([v12 status] == &dword_4 + 2 || objc_msgSend(v12, "status") == &dword_4 + 1 || objc_msgSend(v12, "status") == &dword_8 + 1))
+    if (!v17 && ([attachmentCopy status] == &dword_4 + 2 || objc_msgSend(attachmentCopy, "status") == &dword_4 + 1 || objc_msgSend(attachmentCopy, "status") == &dword_8 + 1))
     {
-      v22 = [v15 identifier];
-      v23 = [v12 attachmentIdentifier];
-      v24 = [v22 isEqual:v23];
+      identifier = [v15 identifier];
+      attachmentIdentifier = [attachmentCopy attachmentIdentifier];
+      v24 = [identifier isEqual:attachmentIdentifier];
 
       if (v24)
       {
         goto LABEL_11;
       }
 
-      v18 = [v12 identifier];
-      v19 = [v15 identifier];
-      v20 = [a1 _updateHKAttachmentIdentifierForAttachmentWithIdentifier:v18 attachmentIdentifier:v19 profile:v13 error:a7];
+      identifier2 = [attachmentCopy identifier];
+      identifier3 = [v15 identifier];
+      v20 = [self _updateHKAttachmentIdentifierForAttachmentWithIdentifier:identifier2 attachmentIdentifier:identifier3 profile:profileCopy error:error];
     }
 
     else
     {
-      v18 = [v12 identifier];
-      v19 = [v15 identifier];
-      v20 = [a1 _markAvailableAndClearInlineDataForAttachmentWithIdentifier:v18 attachmentIdentifier:v19 profile:v13 error:a7];
+      identifier2 = [attachmentCopy identifier];
+      identifier3 = [v15 identifier];
+      v20 = [self _markAvailableAndClearInlineDataForAttachmentWithIdentifier:identifier2 attachmentIdentifier:identifier3 profile:profileCopy error:error];
     }
 
     v21 = v20;
@@ -372,15 +372,15 @@ LABEL_12:
   return v21;
 }
 
-+ (BOOL)_reconcileExistingAttachmentsIfFoundForDownloadableAttachment:(id)a3 medicalRecord:(id)a4 clinicalRecord:(id)a5 attachment:(id *)a6 profile:(id)a7 error:(id *)a8
++ (BOOL)_reconcileExistingAttachmentsIfFoundForDownloadableAttachment:(id)attachment medicalRecord:(id)record clinicalRecord:(id)clinicalRecord attachment:(id *)a6 profile:(id)profile error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  attachmentCopy = attachment;
+  recordCopy = record;
+  clinicalRecordCopy = clinicalRecord;
+  profileCopy = profile;
   v18 = objc_alloc_init(NSMutableSet);
-  v19 = [v15 attachmentObjectIdentifier];
-  v20 = [a1 _attachmentsForDownloadableAttachment:v14 attachmentObjectIdentifier:v19 profile:v17 error:a8];
+  attachmentObjectIdentifier = [recordCopy attachmentObjectIdentifier];
+  v20 = [self _attachmentsForDownloadableAttachment:attachmentCopy attachmentObjectIdentifier:attachmentObjectIdentifier profile:profileCopy error:error];
 
   if (!v20)
   {
@@ -389,56 +389,56 @@ LABEL_12:
   }
 
   [v18 addObjectsFromArray:v20];
-  v40 = v15;
-  if (v16)
+  v40 = recordCopy;
+  if (clinicalRecordCopy)
   {
-    v21 = [v16 attachmentObjectIdentifier];
-    v22 = [a1 _attachmentsForDownloadableAttachment:v14 attachmentObjectIdentifier:v21 profile:v17 error:a8];
+    attachmentObjectIdentifier2 = [clinicalRecordCopy attachmentObjectIdentifier];
+    v22 = [self _attachmentsForDownloadableAttachment:attachmentCopy attachmentObjectIdentifier:attachmentObjectIdentifier2 profile:profileCopy error:error];
 
     if (!v22)
     {
       LOBYTE(a6) = 0;
-      v15 = v40;
+      recordCopy = v40;
       goto LABEL_33;
     }
 
     [v18 addObjectsFromArray:v22];
 
-    v15 = v40;
+    recordCopy = v40;
   }
 
   if ([v18 count] > 1)
   {
-    v23 = [v18 hk_firstSortedObjectWithComparison:&stru_1083D8];
-    [v18 removeObject:v23];
+    allObjects2 = [v18 hk_firstSortedObjectWithComparison:&stru_1083D8];
+    [v18 removeObject:allObjects2];
     if (a6)
     {
-      v24 = v23;
-      *a6 = v23;
+      v24 = allObjects2;
+      *a6 = allObjects2;
     }
 
     if ([v18 count])
     {
-      v25 = [v18 allObjects];
-      [a1 _removeDuplicateAttachments:v25 profile:v17];
+      allObjects = [v18 allObjects];
+      [self _removeDuplicateAttachments:allObjects profile:profileCopy];
 
-      v15 = v40;
+      recordCopy = v40;
     }
 
-    v26 = [v15 attachmentObjectIdentifier];
-    a6 = [a1 _attachmentRefsForDownloadableAttachment:v14 attachmentObjectIdentifier:v26 profile:v17 error:a8];
+    attachmentObjectIdentifier3 = [recordCopy attachmentObjectIdentifier];
+    a6 = [self _attachmentRefsForDownloadableAttachment:attachmentCopy attachmentObjectIdentifier:attachmentObjectIdentifier3 profile:profileCopy error:error];
 
     v39 = a6;
     if (!a6)
     {
-      v15 = v40;
+      recordCopy = v40;
       goto LABEL_31;
     }
 
     if ([a6 count])
     {
-      v15 = v40;
-      if (!v16)
+      recordCopy = v40;
+      if (!clinicalRecordCopy)
       {
         LOBYTE(a6) = 1;
         goto LABEL_31;
@@ -447,24 +447,24 @@ LABEL_12:
 
     else
     {
-      [v17 attachmentManager];
-      v37 = v36 = v23;
-      v27 = [v23 hkAttachment];
+      [profileCopy attachmentManager];
+      v37 = v36 = allObjects2;
+      hkAttachment = [allObjects2 hkAttachment];
       a6 = [v40 attachmentObjectIdentifier];
-      v28 = [v37 addReferenceWithAttachment:v27 toObjectWithIdentifier:? schemaIdentifier:? metadata:? error:?];
+      v28 = [v37 addReferenceWithAttachment:hkAttachment toObjectWithIdentifier:? schemaIdentifier:? metadata:? error:?];
 
       LOBYTE(a6) = v28 != 0;
       v35 = v28;
 
-      if (!v16)
+      if (!clinicalRecordCopy)
       {
-        v15 = v40;
-        v23 = v36;
+        recordCopy = v40;
+        allObjects2 = v36;
         goto LABEL_31;
       }
 
-      v15 = v40;
-      v23 = v36;
+      recordCopy = v40;
+      allObjects2 = v36;
       if (!v35)
       {
 LABEL_31:
@@ -473,15 +473,15 @@ LABEL_31:
       }
     }
 
-    v29 = [v16 attachmentObjectIdentifier];
-    v30 = [a1 _attachmentRefsForDownloadableAttachment:v14 attachmentObjectIdentifier:v29 profile:v17 error:a8];
+    attachmentObjectIdentifier4 = [clinicalRecordCopy attachmentObjectIdentifier];
+    v30 = [self _attachmentRefsForDownloadableAttachment:attachmentCopy attachmentObjectIdentifier:attachmentObjectIdentifier4 profile:profileCopy error:error];
 
     if (!v30)
     {
       goto LABEL_28;
     }
 
-    v15 = v40;
+    recordCopy = v40;
     if ([v30 count])
     {
       LOBYTE(a6) = 1;
@@ -490,10 +490,10 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v38 = [v17 attachmentManager];
-    v31 = [v23 hkAttachment];
-    v32 = [v16 attachmentObjectIdentifier];
-    v33 = [v38 addReferenceWithAttachment:v31 toObjectWithIdentifier:? schemaIdentifier:? metadata:? error:?];
+    attachmentManager = [profileCopy attachmentManager];
+    hkAttachment2 = [allObjects2 hkAttachment];
+    attachmentObjectIdentifier5 = [clinicalRecordCopy attachmentObjectIdentifier];
+    v33 = [attachmentManager addReferenceWithAttachment:hkAttachment2 toObjectWithIdentifier:? schemaIdentifier:? metadata:? error:?];
 
     if (v33)
     {
@@ -506,14 +506,14 @@ LABEL_28:
       LOBYTE(a6) = 0;
     }
 
-    v15 = v40;
+    recordCopy = v40;
     goto LABEL_30;
   }
 
   if (a6 && [v18 count] == &dword_0 + 1)
   {
-    v23 = [v18 allObjects];
-    *a6 = [v23 firstObject];
+    allObjects2 = [v18 allObjects];
+    *a6 = [allObjects2 firstObject];
     LOBYTE(a6) = 1;
 LABEL_32:
 
@@ -526,27 +526,27 @@ LABEL_33:
   return a6;
 }
 
-+ (id)_attachmentsForDownloadableAttachment:(id)a3 attachmentObjectIdentifier:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)_attachmentsForDownloadableAttachment:(id)attachment attachmentObjectIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
+  attachmentCopy = attachment;
+  profileCopy = profile;
+  identifierCopy = identifier;
   v13 = objc_alloc_init(NSMutableArray);
-  v14 = [v11 attachmentManager];
+  attachmentManager = [profileCopy attachmentManager];
 
   v15 = HKAttachmentClinicalRecordSchemaIdentifier;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_73F38;
   v20[3] = &unk_108400;
-  v23 = a1;
-  v21 = v10;
+  selfCopy = self;
+  v21 = attachmentCopy;
   v16 = v13;
   v22 = v16;
-  v17 = v10;
-  LODWORD(a6) = [v14 attachmentReferencesForObjectIdentifier:v12 schemaIdentifier:v15 error:a6 enumerationHandler:v20];
+  v17 = attachmentCopy;
+  LODWORD(error) = [attachmentManager attachmentReferencesForObjectIdentifier:identifierCopy schemaIdentifier:v15 error:error enumerationHandler:v20];
 
-  if (a6)
+  if (error)
   {
     v18 = v16;
   }
@@ -559,27 +559,27 @@ LABEL_33:
   return v18;
 }
 
-+ (id)_attachmentRefsForDownloadableAttachment:(id)a3 attachmentObjectIdentifier:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)_attachmentRefsForDownloadableAttachment:(id)attachment attachmentObjectIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
+  attachmentCopy = attachment;
+  profileCopy = profile;
+  identifierCopy = identifier;
   v13 = objc_alloc_init(NSMutableArray);
-  v14 = [v11 attachmentManager];
+  attachmentManager = [profileCopy attachmentManager];
 
   v15 = HKAttachmentClinicalRecordSchemaIdentifier;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_740E4;
   v20[3] = &unk_108400;
-  v23 = a1;
-  v21 = v10;
+  selfCopy = self;
+  v21 = attachmentCopy;
   v16 = v13;
   v22 = v16;
-  v17 = v10;
-  LODWORD(a6) = [v14 attachmentReferencesForObjectIdentifier:v12 schemaIdentifier:v15 error:a6 enumerationHandler:v20];
+  v17 = attachmentCopy;
+  LODWORD(error) = [attachmentManager attachmentReferencesForObjectIdentifier:identifierCopy schemaIdentifier:v15 error:error enumerationHandler:v20];
 
-  if (a6)
+  if (error)
   {
     v18 = v16;
   }
@@ -592,20 +592,20 @@ LABEL_33:
   return v18;
 }
 
-+ (BOOL)_attachmentMatchesDownloadableAttachment:(id)a3 hdAttachment:(id)a4
++ (BOOL)_attachmentMatchesDownloadableAttachment:(id)attachment hdAttachment:(id)hdAttachment
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 metadata];
-  v8 = [v7 objectForKeyedSubscript:HKMedicalDownloadableAttachmentMetadataWebURLKey];
+  attachmentCopy = attachment;
+  hdAttachmentCopy = hdAttachment;
+  metadata = [hdAttachmentCopy metadata];
+  v8 = [metadata objectForKeyedSubscript:HKMedicalDownloadableAttachmentMetadataWebURLKey];
 
-  v9 = [v5 webURL];
-  v10 = v9;
-  if (v9 && v8)
+  webURL = [attachmentCopy webURL];
+  v10 = webURL;
+  if (webURL && v8)
   {
-    v11 = [v5 webURL];
-    v12 = [v11 absoluteString];
-    v13 = [v12 isEqualToString:v8];
+    webURL2 = [attachmentCopy webURL];
+    absoluteString = [webURL2 absoluteString];
+    v13 = [absoluteString isEqualToString:v8];
 
     if (v13)
     {
@@ -618,31 +618,31 @@ LABEL_33:
   {
   }
 
-  v15 = [v6 metadata];
-  v16 = [v15 objectForKeyedSubscript:HKMedicalDownloadableAttachmentMetadataInlineDataChecksumKey];
+  metadata2 = [hdAttachmentCopy metadata];
+  v16 = [metadata2 objectForKeyedSubscript:HKMedicalDownloadableAttachmentMetadataInlineDataChecksumKey];
 
-  v17 = [v5 inlineDataChecksum];
+  inlineDataChecksum = [attachmentCopy inlineDataChecksum];
   v14 = 0;
-  if (v17 && v16)
+  if (inlineDataChecksum && v16)
   {
-    v18 = [v5 inlineDataChecksum];
-    v14 = [v18 isEqual:v16];
+    inlineDataChecksum2 = [attachmentCopy inlineDataChecksum];
+    v14 = [inlineDataChecksum2 isEqual:v16];
   }
 
 LABEL_10:
   return v14;
 }
 
-+ (void)_removeDuplicateAttachments:(id)a3 profile:(id)a4
++ (void)_removeDuplicateAttachments:(id)attachments profile:(id)profile
 {
-  v5 = a3;
-  v16 = a4;
-  v6 = [v16 attachmentManager];
+  attachmentsCopy = attachments;
+  profileCopy = profile;
+  attachmentManager = [profileCopy attachmentManager];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = v5;
+  v7 = attachmentsCopy;
   v8 = [v7 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v8)
   {
@@ -670,10 +670,10 @@ LABEL_10:
         v21[2] = sub_74584;
         v21[3] = &unk_108428;
         v21[4] = &v22;
-        [v6 attachmentReferencesForAttachment:v11 error:0 enumerationHandler:v21];
+        [attachmentManager attachmentReferencesForAttachment:v11 error:0 enumerationHandler:v21];
         v12 = v23[5];
         v20 = 0;
-        LOBYTE(v11) = [v6 removeAttachmentReferences:v12 error:&v20];
+        LOBYTE(v11) = [attachmentManager removeAttachmentReferences:v12 error:&v20];
         v13 = v20;
         if ((v11 & 1) == 0)
         {
@@ -681,12 +681,12 @@ LABEL_10:
           v14 = HKLogHealthRecords;
           if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
           {
-            v19 = [a1 debugDescription];
-            v15 = [v13 localizedDescription];
+            v19 = [self debugDescription];
+            localizedDescription = [v13 localizedDescription];
             *buf = 138543619;
             v33 = v19;
             v34 = 2113;
-            v35 = v15;
+            v35 = localizedDescription;
             _os_log_fault_impl(&dword_0, v14, OS_LOG_TYPE_FAULT, "%{public}@ HDAttachmentManager.removeAttachmentReferences failed removing duplicate HKAttachment with error %{private}@", buf, 0x16u);
 
             v7 = v17;
@@ -705,15 +705,15 @@ LABEL_10:
   }
 }
 
-+ (BOOL)_checkForObsoleteDownloadableAttachmentsForMedicalRecord:(id)a3 extractedDownloadableAttachments:(id)a4 medicalObjectIdentifier:(id)a5 clinicalObjectIdentifier:(id)a6 profile:(id)a7 error:(id *)a8
++ (BOOL)_checkForObsoleteDownloadableAttachmentsForMedicalRecord:(id)record extractedDownloadableAttachments:(id)attachments medicalObjectIdentifier:(id)identifier clinicalObjectIdentifier:(id)objectIdentifier profile:(id)profile error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v56 = a5;
-  v55 = a6;
-  v15 = a7;
-  v50 = v13;
-  v52 = [a1 _predicateForDownloadableAttachmentsWithMedicalRecordIdentifier:v13];
+  recordCopy = record;
+  attachmentsCopy = attachments;
+  identifierCopy = identifier;
+  objectIdentifierCopy = objectIdentifier;
+  profileCopy = profile;
+  v50 = recordCopy;
+  v52 = [self _predicateForDownloadableAttachmentsWithMedicalRecordIdentifier:recordCopy];
   v68 = 0;
   v69 = &v68;
   v70 = 0x3032000000;
@@ -725,21 +725,21 @@ LABEL_10:
   v64[1] = 3221225472;
   v64[2] = sub_74B70;
   v64[3] = &unk_108450;
-  v16 = v14;
+  v16 = attachmentsCopy;
   v65 = v16;
   v66 = &v68;
-  [HDMedicalDownloadableAttachmentEntity enumerateAttachmentsWithPredicate:v52 profile:v15 error:&v67 enumerationHandler:v64];
+  [HDMedicalDownloadableAttachmentEntity enumerateAttachmentsWithPredicate:v52 profile:profileCopy error:&v67 enumerationHandler:v64];
   v17 = v67;
   v49 = v16;
   if (v17)
   {
     v18 = v17;
     v19 = v18;
-    if (a8)
+    if (error)
     {
       v20 = v18;
       v21 = 0;
-      *a8 = v19;
+      *error = v19;
     }
 
     else
@@ -774,17 +774,17 @@ LABEL_10:
           }
 
           v26 = *(*(&v60 + 1) + 8 * i);
-          v27 = [v26 attachmentIdentifier];
-          v28 = v27 == 0;
+          attachmentIdentifier = [v26 attachmentIdentifier];
+          v28 = attachmentIdentifier == 0;
 
           if (!v28)
           {
-            v29 = [v15 attachmentManager];
-            if (v56)
+            attachmentManager = [profileCopy attachmentManager];
+            if (identifierCopy)
             {
-              v30 = [v26 attachmentIdentifier];
+              attachmentIdentifier2 = [v26 attachmentIdentifier];
               v59 = 0;
-              v31 = [v29 removeAllReferencesWithAttachmentIdentifier:v30 objectIdentifier:v56 schemaIdentifier:v54 error:&v59];
+              v31 = [attachmentManager removeAllReferencesWithAttachmentIdentifier:attachmentIdentifier2 objectIdentifier:identifierCopy schemaIdentifier:v54 error:&v59];
               v32 = v59;
 
               if ((v31 & 1) == 0)
@@ -793,25 +793,25 @@ LABEL_10:
                 v33 = HKLogHealthRecords;
                 if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
                 {
-                  v40 = [a1 debugDescription];
-                  v41 = [v26 attachmentIdentifier];
+                  v40 = [self debugDescription];
+                  attachmentIdentifier3 = [v26 attachmentIdentifier];
                   *buf = 138543875;
                   v75 = v40;
                   v76 = 2114;
-                  v77 = v41;
+                  v77 = attachmentIdentifier3;
                   v78 = 2113;
                   v79 = v32;
-                  v47 = v41;
+                  v47 = attachmentIdentifier3;
                   _os_log_error_impl(&dword_0, v33, OS_LOG_TYPE_ERROR, "%{public}@ failed to remove HKAttachmentReferences for medicalRecord from HKAttachment with identifier %{public}@. Error: %{private}@", buf, 0x20u);
                 }
               }
             }
 
-            if (v55)
+            if (objectIdentifierCopy)
             {
-              v34 = [v26 attachmentIdentifier];
+              attachmentIdentifier4 = [v26 attachmentIdentifier];
               v58 = 0;
-              v35 = [v29 removeAllReferencesWithAttachmentIdentifier:v34 objectIdentifier:v55 schemaIdentifier:v54 error:&v58];
+              v35 = [attachmentManager removeAllReferencesWithAttachmentIdentifier:attachmentIdentifier4 objectIdentifier:objectIdentifierCopy schemaIdentifier:v54 error:&v58];
               v36 = v58;
 
               if ((v35 & 1) == 0)
@@ -820,34 +820,34 @@ LABEL_10:
                 v37 = HKLogHealthRecords;
                 if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
                 {
-                  v42 = [a1 debugDescription];
-                  v43 = [v26 attachmentIdentifier];
+                  v42 = [self debugDescription];
+                  attachmentIdentifier5 = [v26 attachmentIdentifier];
                   *buf = 138543875;
                   v75 = v42;
                   v76 = 2114;
-                  v77 = v43;
+                  v77 = attachmentIdentifier5;
                   v78 = 2113;
                   v79 = v36;
-                  v48 = v43;
+                  v48 = attachmentIdentifier5;
                   _os_log_error_impl(&dword_0, v37, OS_LOG_TYPE_ERROR, "%{public}@ failed to remove HKAttachmentReferencesfor clinicalRecord from HKAttachment with identifier %{public}@. Error: %{private}@", buf, 0x20u);
                 }
               }
             }
           }
 
-          v38 = [v26 identifier];
+          identifier = [v26 identifier];
           v57 = 0;
-          [a1 deleteAttachmentWithIdentifier:v38 profile:v15 error:&v57];
+          [self deleteAttachmentWithIdentifier:identifier profile:profileCopy error:&v57];
           v39 = v57;
 
           if (v39)
           {
             v44 = v39;
             v22 = v44;
-            if (a8)
+            if (error)
             {
               v45 = v44;
-              *a8 = v22;
+              *error = v22;
             }
 
             else
@@ -886,9 +886,9 @@ LABEL_34:
   return v21;
 }
 
-+ (BOOL)_markAvailableAndClearInlineDataForAttachmentWithIdentifier:(id)a3 attachmentIdentifier:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)_markAvailableAndClearInlineDataForAttachmentWithIdentifier:(id)identifier attachmentIdentifier:(id)attachmentIdentifier profile:(id)profile error:(id *)error
 {
-  v9 = a4;
+  attachmentIdentifierCopy = attachmentIdentifier;
   v17[0] = HDMedicalDownloadableAttachmentEntityPropertyAttachmentUUID;
   v17[1] = HDMedicalDownloadableAttachmentEntityPropertyStatus;
   v17[2] = HDMedicalDownloadableAttachmentEntityPropertyErrorStatus;
@@ -896,43 +896,43 @@ LABEL_34:
   v17[4] = HDMedicalDownloadableAttachmentEntityPropertyInlineData;
   v17[5] = HDMedicalDownloadableAttachmentEntityPropertyRetryCount;
   v17[6] = HDMedicalDownloadableAttachmentEntityPropertyNextRetryDate;
-  v10 = a5;
-  v11 = a3;
+  profileCopy = profile;
+  identifierCopy = identifier;
   v12 = [NSArray arrayWithObjects:v17 count:7];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_74F3C;
   v15[3] = &unk_105B80;
-  v16 = v9;
-  v13 = v9;
-  LOBYTE(a6) = [HDMedicalDownloadableAttachmentEntity updateAttachmentWithIdentifier:v11 properties:v12 profile:v10 error:a6 bindingHandler:v15];
+  v16 = attachmentIdentifierCopy;
+  v13 = attachmentIdentifierCopy;
+  LOBYTE(error) = [HDMedicalDownloadableAttachmentEntity updateAttachmentWithIdentifier:identifierCopy properties:v12 profile:profileCopy error:error bindingHandler:v15];
 
-  return a6;
+  return error;
 }
 
-+ (BOOL)_updateHKAttachmentIdentifierForAttachmentWithIdentifier:(id)a3 attachmentIdentifier:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)_updateHKAttachmentIdentifierForAttachmentWithIdentifier:(id)identifier attachmentIdentifier:(id)attachmentIdentifier profile:(id)profile error:(id *)error
 {
-  v9 = a4;
+  attachmentIdentifierCopy = attachmentIdentifier;
   v17 = HDMedicalDownloadableAttachmentEntityPropertyAttachmentUUID;
-  v10 = a5;
-  v11 = a3;
+  profileCopy = profile;
+  identifierCopy = identifier;
   v12 = [NSArray arrayWithObjects:&v17 count:1];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_7514C;
   v15[3] = &unk_105B80;
-  v16 = v9;
-  v13 = v9;
-  LOBYTE(a6) = [HDMedicalDownloadableAttachmentEntity updateAttachmentWithIdentifier:v11 properties:v12 profile:v10 error:a6 bindingHandler:v15];
+  v16 = attachmentIdentifierCopy;
+  v13 = attachmentIdentifierCopy;
+  LOBYTE(error) = [HDMedicalDownloadableAttachmentEntity updateAttachmentWithIdentifier:identifierCopy properties:v12 profile:profileCopy error:error bindingHandler:v15];
 
-  return a6;
+  return error;
 }
 
-+ (BOOL)_deleteAttachmentsWithMedicalRecordIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)_deleteAttachmentsWithMedicalRecordIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 _predicateForDownloadableAttachmentsWithMedicalRecordIdentifier:v8];
+  identifierCopy = identifier;
+  profileCopy = profile;
+  v10 = [self _predicateForDownloadableAttachmentsWithMedicalRecordIdentifier:identifierCopy];
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -945,7 +945,7 @@ LABEL_34:
   v21[1] = 3221225472;
   v21[2] = sub_753B4;
   v21[3] = &unk_108398;
-  [HDMedicalDownloadableAttachmentEntity enumerateAttachmentsWithPredicate:v10 profile:v9 error:&v22 enumerationHandler:v21];
+  [HDMedicalDownloadableAttachmentEntity enumerateAttachmentsWithPredicate:v10 profile:profileCopy error:&v22 enumerationHandler:v21];
   v11 = v22;
   v19 = 0u;
   v20 = 0u;
@@ -966,7 +966,7 @@ LABEL_34:
           objc_enumerationMutation(v12);
         }
 
-        [a1 deleteAttachmentWithIdentifier:*(*(&v17 + 1) + 8 * v15) profile:v9 error:{a5, v17}];
+        [self deleteAttachmentWithIdentifier:*(*(&v17 + 1) + 8 * v15) profile:profileCopy error:{error, v17}];
         v15 = v15 + 1;
       }
 
@@ -981,15 +981,15 @@ LABEL_34:
   return 1;
 }
 
-+ (id)_attachmentsAfterRelinkingFromMedicalRecord:(id)a3 toMedicalRecord:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)_attachmentsAfterRelinkingFromMedicalRecord:(id)record toMedicalRecord:(id)medicalRecord profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v57 = a4;
-  v11 = a5;
+  recordCopy = record;
+  medicalRecordCopy = medicalRecord;
+  profileCopy = profile;
   v12 = objc_alloc_init(NSMutableArray);
-  v58 = v11;
-  v13 = [v11 attachmentManager];
-  v14 = [v10 attachmentObjectIdentifier];
+  v58 = profileCopy;
+  attachmentManager = [profileCopy attachmentManager];
+  attachmentObjectIdentifier = [recordCopy attachmentObjectIdentifier];
   v15 = HKAttachmentClinicalRecordSchemaIdentifier;
   v68[0] = _NSConcreteStackBlock;
   v68[1] = 3221225472;
@@ -997,7 +997,7 @@ LABEL_34:
   v68[3] = &unk_108478;
   v16 = v12;
   v69 = v16;
-  LOBYTE(v12) = [v13 attachmentReferencesForObjectIdentifier:v14 schemaIdentifier:v15 error:a6 enumerationHandler:v68];
+  LOBYTE(v12) = [attachmentManager attachmentReferencesForObjectIdentifier:attachmentObjectIdentifier schemaIdentifier:v15 error:error enumerationHandler:v68];
 
   if ((v12 & 1) == 0)
   {
@@ -1006,21 +1006,21 @@ LABEL_34:
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
     {
       v39 = v17;
-      v40 = [a1 debugDescription];
-      v41 = [v10 UUID];
-      v42 = *a6;
+      v40 = [self debugDescription];
+      uUID = [recordCopy UUID];
+      v42 = *error;
       *buf = 138543875;
       v73 = v40;
       v74 = 2114;
-      v75 = v41;
+      v75 = uUID;
       v76 = 2113;
       v77 = v42;
       _os_log_error_impl(&dword_0, v39, OS_LOG_TYPE_ERROR, "%{public}@ failed to retrieve HDAttachments for existing medicalRecord with UUID %{public}@. Error: %{private}@", buf, 0x20u);
     }
   }
 
-  v18 = [v10 UUID];
-  v19 = [a1 _predicateForDownloadableAttachmentsWithMedicalRecordIdentifier:v18];
+  uUID2 = [recordCopy UUID];
+  v19 = [self _predicateForDownloadableAttachmentsWithMedicalRecordIdentifier:uUID2];
 
   v66[0] = _NSConcreteStackBlock;
   v66[1] = 3221225472;
@@ -1028,14 +1028,14 @@ LABEL_34:
   v66[3] = &unk_1084A0;
   v20 = objc_alloc_init(NSMutableArray);
   v67 = v20;
-  if ([HDMedicalDownloadableAttachmentEntity enumerateAttachmentsWithPredicate:v19 profile:v58 error:a6 enumerationHandler:v66])
+  if ([HDMedicalDownloadableAttachmentEntity enumerateAttachmentsWithPredicate:v19 profile:v58 error:error enumerationHandler:v66])
   {
     v49 = v16;
-    v47 = a1;
+    selfCopy = self;
     v48 = v20;
-    v56 = a6;
-    v50 = v13;
-    v51 = v10;
+    errorCopy = error;
+    v50 = attachmentManager;
+    v51 = recordCopy;
     v64 = 0u;
     v65 = 0u;
     v62 = 0u;
@@ -1060,47 +1060,47 @@ LABEL_34:
           }
 
           v26 = *(*(&v62 + 1) + 8 * i);
-          v27 = [v26 metadata];
-          v28 = v27;
-          if (!v27)
+          metadata = [v26 metadata];
+          v28 = metadata;
+          if (!metadata)
           {
-            v27 = &__NSDictionary0__struct;
+            metadata = &__NSDictionary0__struct;
           }
 
-          v29 = [v27 mutableCopy];
+          v29 = [metadata mutableCopy];
 
           [v29 setObject:&__kCFBooleanTrue forKeyedSubscript:v54];
-          v30 = [v26 identifier];
-          v31 = [HDSQLiteComparisonPredicate predicateWithProperty:v53 equalToValue:v30];
+          identifier = [v26 identifier];
+          v31 = [HDSQLiteComparisonPredicate predicateWithProperty:v53 equalToValue:identifier];
 
           v70[0] = v23;
           v70[1] = v24;
           v32 = [NSArray arrayWithObjects:v70 count:2];
-          v33 = [v58 database];
+          database = [v58 database];
           v59[0] = _NSConcreteStackBlock;
           v59[1] = 3221225472;
           v59[2] = sub_75A40;
           v59[3] = &unk_1065E0;
-          v60 = v57;
+          v60 = medicalRecordCopy;
           v34 = v29;
           v61 = v34;
-          v35 = [HDMedicalDownloadableAttachmentEntity updateProperties:v32 predicate:v31 healthDatabase:v33 error:v56 bindingHandler:v59];
+          v35 = [HDMedicalDownloadableAttachmentEntity updateProperties:v32 predicate:v31 healthDatabase:database error:errorCopy bindingHandler:v59];
 
           if ((v35 & 1) == 0)
           {
             _HKInitializeLogging();
             v37 = HKLogHealthRecords;
-            v10 = v51;
+            recordCopy = v51;
             if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
             {
               v43 = v37;
-              v44 = [v47 debugDescription];
-              v45 = [v51 UUID];
-              v46 = *v56;
+              v44 = [selfCopy debugDescription];
+              uUID3 = [v51 UUID];
+              v46 = *errorCopy;
               *buf = 138543875;
               v73 = v44;
               v74 = 2114;
-              v75 = v45;
+              v75 = uUID3;
               v76 = 2113;
               v77 = v46;
               _os_log_error_impl(&dword_0, v43, OS_LOG_TYPE_ERROR, "%{public}@ failed to update MedicalDownloadableAttachment for existing medicalRecord with UUID %{public}@. Error: %{private}@", buf, 0x20u);
@@ -1108,7 +1108,7 @@ LABEL_34:
 
             v36 = 0;
             v16 = v49;
-            v13 = v50;
+            attachmentManager = v50;
             goto LABEL_20;
           }
         }
@@ -1125,8 +1125,8 @@ LABEL_34:
 
     v16 = v49;
     v36 = v49;
-    v13 = v50;
-    v10 = v51;
+    attachmentManager = v50;
+    recordCopy = v51;
 LABEL_20:
     v20 = v48;
   }
@@ -1139,14 +1139,14 @@ LABEL_20:
   return v36;
 }
 
-+ (id)_attachmentsAfterRelinkingFromClinicalRecord:(id)a3 toClinicalRecord:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)_attachmentsAfterRelinkingFromClinicalRecord:(id)record toClinicalRecord:(id)clinicalRecord profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  recordCopy = record;
+  clinicalRecordCopy = clinicalRecord;
+  profileCopy = profile;
   v13 = objc_alloc_init(NSMutableArray);
-  v14 = [v12 attachmentManager];
-  v15 = [v10 attachmentObjectIdentifier];
+  attachmentManager = [profileCopy attachmentManager];
+  attachmentObjectIdentifier = [recordCopy attachmentObjectIdentifier];
   v16 = HKAttachmentClinicalRecordSchemaIdentifier;
   v41[0] = _NSConcreteStackBlock;
   v41[1] = 3221225472;
@@ -1154,8 +1154,8 @@ LABEL_20:
   v41[3] = &unk_108478;
   v17 = v13;
   v42 = v17;
-  v38 = v14;
-  LOBYTE(v16) = [v14 attachmentReferencesForObjectIdentifier:v15 schemaIdentifier:v16 error:a6 enumerationHandler:v41];
+  v38 = attachmentManager;
+  LOBYTE(v16) = [attachmentManager attachmentReferencesForObjectIdentifier:attachmentObjectIdentifier schemaIdentifier:v16 error:error enumerationHandler:v41];
 
   if ((v16 & 1) == 0)
   {
@@ -1164,33 +1164,33 @@ LABEL_20:
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
     {
       v29 = v18;
-      v30 = [a1 debugDescription];
-      v31 = [v10 UUID];
-      v32 = *a6;
+      v30 = [self debugDescription];
+      uUID = [recordCopy UUID];
+      v32 = *error;
       *buf = 138543875;
       v45 = v30;
       v46 = 2114;
-      v47 = v31;
+      v47 = uUID;
       v48 = 2113;
       v49 = v32;
       _os_log_error_impl(&dword_0, v29, OS_LOG_TYPE_ERROR, "%{public}@ failed to retrieve HDAttachments for existing clinicalRecord with UUID %{public}@. Error: %{private}@", buf, 0x20u);
     }
   }
 
-  v37 = a1;
+  selfCopy = self;
   v19 = HDMedicalDownloadableAttachmentEntityPropertyClinicalRecordUUID;
   v43 = HDMedicalDownloadableAttachmentEntityPropertyClinicalRecordUUID;
   v20 = [NSArray arrayWithObjects:&v43 count:1];
-  v21 = [v10 UUID];
-  v22 = [HDSQLiteComparisonPredicate predicateWithProperty:v19 equalToValue:v21];
-  v23 = [v12 database];
+  uUID2 = [recordCopy UUID];
+  v22 = [HDSQLiteComparisonPredicate predicateWithProperty:v19 equalToValue:uUID2];
+  database = [profileCopy database];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_75EC4;
   v39[3] = &unk_105B80;
-  v24 = v11;
+  v24 = clinicalRecordCopy;
   v40 = v24;
-  v25 = [HDMedicalDownloadableAttachmentEntity updateProperties:v20 predicate:v22 healthDatabase:v23 error:a6 bindingHandler:v39];
+  v25 = [HDMedicalDownloadableAttachmentEntity updateProperties:v20 predicate:v22 healthDatabase:database error:error bindingHandler:v39];
 
   if (v25)
   {
@@ -1204,13 +1204,13 @@ LABEL_20:
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
     {
       v33 = v27;
-      v34 = [v37 debugDescription];
-      v35 = [v10 UUID];
-      v36 = *a6;
+      v34 = [selfCopy debugDescription];
+      uUID3 = [recordCopy UUID];
+      v36 = *error;
       *buf = 138543875;
       v45 = v34;
       v46 = 2114;
-      v47 = v35;
+      v47 = uUID3;
       v48 = 2113;
       v49 = v36;
       _os_log_error_impl(&dword_0, v33, OS_LOG_TYPE_ERROR, "%{public}@ failed to update MedicalDownloadableAttachment for existing clinicalRecord with UUID %{public}@. Error: %{private}@", buf, 0x20u);
@@ -1222,26 +1222,26 @@ LABEL_20:
   return v26;
 }
 
-+ (id)attachmentWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)attachmentWithIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  profileCopy = profile;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = sub_73758;
   v22 = sub_73768;
   v23 = 0;
-  v10 = [v9 database];
+  database = [profileCopy database];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_760AC;
   v14[3] = &unk_1078F0;
-  v17 = a1;
-  v11 = v8;
+  selfCopy = self;
+  v11 = identifierCopy;
   v15 = v11;
   v16 = &v18;
-  [a1 performReadTransactionWithHealthDatabase:v10 error:a5 block:v14];
+  [self performReadTransactionWithHealthDatabase:database error:error block:v14];
 
   v12 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -1249,56 +1249,56 @@ LABEL_20:
   return v12;
 }
 
-+ (BOOL)enumerateAttachmentsWithPredicate:(id)a3 profile:(id)a4 error:(id *)a5 enumerationHandler:(id)a6
++ (BOOL)enumerateAttachmentsWithPredicate:(id)predicate profile:(id)profile error:(id *)error enumerationHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [a1 _propertiesForEntity];
-  v14 = [v11 database];
+  handlerCopy = handler;
+  profileCopy = profile;
+  predicateCopy = predicate;
+  _propertiesForEntity = [self _propertiesForEntity];
+  database = [profileCopy database];
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_76314;
   v17[3] = &unk_1084F0;
-  v18 = v10;
-  v19 = a1;
-  v15 = v10;
-  LOBYTE(a5) = [a1 enumerateProperties:v13 withPredicate:v12 healthDatabase:v14 error:a5 enumerationHandler:v17];
+  v18 = handlerCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  LOBYTE(error) = [self enumerateProperties:_propertiesForEntity withPredicate:predicateCopy healthDatabase:database error:error enumerationHandler:v17];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)updateAttachmentWithIdentifier:(id)a3 properties:(id)a4 profile:(id)a5 error:(id *)a6 bindingHandler:(id)a7
++ (BOOL)updateAttachmentWithIdentifier:(id)identifier properties:(id)properties profile:(id)profile error:(id *)error bindingHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a3;
-  v15 = [a4 mutableCopy];
+  handlerCopy = handler;
+  profileCopy = profile;
+  identifierCopy = identifier;
+  v15 = [properties mutableCopy];
   [v15 addObject:HDMedicalDownloadableAttachmentEntityPropertyLastUpdatedDate];
-  v16 = [HDSQLiteComparisonPredicate predicateWithProperty:HDMedicalDownloadableAttachmentEntityPropertyIdentifier equalToValue:v14];
+  v16 = [HDSQLiteComparisonPredicate predicateWithProperty:HDMedicalDownloadableAttachmentEntityPropertyIdentifier equalToValue:identifierCopy];
 
-  v17 = [v13 database];
+  database = [profileCopy database];
 
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_76518;
   v20[3] = &unk_108518;
-  v21 = v12;
-  v18 = v12;
-  LOBYTE(a6) = [a1 updateProperties:v15 predicate:v16 healthDatabase:v17 error:a6 bindingHandler:v20];
+  v21 = handlerCopy;
+  v18 = handlerCopy;
+  LOBYTE(error) = [self updateProperties:v15 predicate:v16 healthDatabase:database error:error bindingHandler:v20];
 
-  return a6;
+  return error;
 }
 
-+ (BOOL)deleteAttachmentWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)deleteAttachmentWithIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[HDDeleteMedicalDownloadableAttachmentOperation alloc] initWithAttachmentIdentifier:v8];
+  profileCopy = profile;
+  identifierCopy = identifier;
+  v9 = [[HDDeleteMedicalDownloadableAttachmentOperation alloc] initWithAttachmentIdentifier:identifierCopy];
 
-  LOBYTE(a5) = [(HDDeleteMedicalDownloadableAttachmentOperation *)v9 performOrJournalWithProfile:v7 error:a5];
-  return a5;
+  LOBYTE(error) = [(HDDeleteMedicalDownloadableAttachmentOperation *)v9 performOrJournalWithProfile:profileCopy error:error];
+  return error;
 }
 
 + (id)_propertiesForEntity
@@ -1332,7 +1332,7 @@ LABEL_20:
   return v2;
 }
 
-+ (id)attachmentForRow:(HDSQLiteRow *)a3
++ (id)attachmentForRow:(HDSQLiteRow *)row
 {
   v32 = HDSQLiteColumnWithNameAsUUID();
   v31 = HDSQLiteColumnWithNameAsUUID();
@@ -1376,27 +1376,27 @@ LABEL_20:
   return v23;
 }
 
-+ (id)_attachmentEntityForIdentifier:(id)a3 databaseTransaction:(id)a4 error:(id *)a5
++ (id)_attachmentEntityForIdentifier:(id)identifier databaseTransaction:(id)transaction error:(id *)error
 {
   v8 = HDMedicalDownloadableAttachmentEntityPropertyIdentifier;
-  v9 = a4;
-  v10 = [HDSQLiteComparisonPredicate predicateWithProperty:v8 equalToValue:a3];
-  v11 = [v9 databaseForEntityClass:a1];
+  transactionCopy = transaction;
+  v10 = [HDSQLiteComparisonPredicate predicateWithProperty:v8 equalToValue:identifier];
+  v11 = [transactionCopy databaseForEntityClass:self];
 
-  v12 = [a1 anyInDatabase:v11 predicate:v10 error:a5];
+  v12 = [self anyInDatabase:v11 predicate:v10 error:error];
 
   return v12;
 }
 
-+ (BOOL)_deleteAttachmentWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)_deleteAttachmentWithIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
   v8 = HDMedicalDownloadableAttachmentEntityPropertyIdentifier;
-  v9 = a4;
-  v10 = [HDSQLiteComparisonPredicate predicateWithProperty:v8 equalToValue:a3];
-  v11 = [v9 database];
+  profileCopy = profile;
+  v10 = [HDSQLiteComparisonPredicate predicateWithProperty:v8 equalToValue:identifier];
+  database = [profileCopy database];
 
-  LOBYTE(a5) = [a1 deleteEntitiesWithPredicate:v10 healthDatabase:v11 error:a5];
-  return a5;
+  LOBYTE(error) = [self deleteEntitiesWithPredicate:v10 healthDatabase:database error:error];
+  return error;
 }
 
 @end

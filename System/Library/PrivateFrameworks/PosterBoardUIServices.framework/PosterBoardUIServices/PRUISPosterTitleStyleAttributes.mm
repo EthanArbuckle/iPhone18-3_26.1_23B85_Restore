@@ -1,30 +1,30 @@
 @interface PRUISPosterTitleStyleAttributes
-- (PRUISPosterTitleStyleAttributes)initWithPRPosterTitleStyleConfiguration:(id)a3 extensionBundleURL:(id)a4 role:(id)a5;
-- (PRUISPosterTitleStyleAttributes)initWithTitleColor:(id)a3 titleFont:(id)a4 preferredTitleAlignment:(unint64_t)a5 preferredTitleLayout:(unint64_t)a6 vibrancyConfiguration:(id)a7;
+- (PRUISPosterTitleStyleAttributes)initWithPRPosterTitleStyleConfiguration:(id)configuration extensionBundleURL:(id)l role:(id)role;
+- (PRUISPosterTitleStyleAttributes)initWithTitleColor:(id)color titleFont:(id)font preferredTitleAlignment:(unint64_t)alignment preferredTitleLayout:(unint64_t)layout vibrancyConfiguration:(id)configuration;
 @end
 
 @implementation PRUISPosterTitleStyleAttributes
 
-- (PRUISPosterTitleStyleAttributes)initWithPRPosterTitleStyleConfiguration:(id)a3 extensionBundleURL:(id)a4 role:(id)a5
+- (PRUISPosterTitleStyleAttributes)initWithPRPosterTitleStyleConfiguration:(id)configuration extensionBundleURL:(id)l role:(id)role
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 effectiveTitleColor];
-  v12 = [v11 color];
-  v13 = v12;
-  if (v12)
+  configurationCopy = configuration;
+  lCopy = l;
+  roleCopy = role;
+  effectiveTitleColor = [configurationCopy effectiveTitleColor];
+  color = [effectiveTitleColor color];
+  v13 = color;
+  if (color)
   {
-    v14 = v12;
+    color2 = color;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E69C5340] defaultTitleColor];
-    v14 = [v15 color];
+    defaultTitleColor = [MEMORY[0x1E69C5340] defaultTitleColor];
+    color2 = [defaultTitleColor color];
   }
 
-  v16 = [v8 effectiveTimeFontWithExtensionBundleURL:v9 forRole:v10];
+  v16 = [configurationCopy effectiveTimeFontWithExtensionBundleURL:lCopy forRole:roleCopy];
   v17 = v16;
   if (v16)
   {
@@ -33,33 +33,33 @@
 
   else
   {
-    v18 = [MEMORY[0x1E69C5340] defaultTitleFontForRole:v10];
+    v18 = [MEMORY[0x1E69C5340] defaultTitleFontForRole:roleCopy];
   }
 
   v19 = v18;
 
-  v20 = [v8 vibrancyConfigurationWithExtensionBundleURL:v9];
-  v21 = -[PRUISPosterTitleStyleAttributes initWithTitleColor:titleFont:preferredTitleAlignment:preferredTitleLayout:vibrancyConfiguration:](self, "initWithTitleColor:titleFont:preferredTitleAlignment:preferredTitleLayout:vibrancyConfiguration:", v14, v19, [v8 preferredTitleAlignment], objc_msgSend(v8, "preferredTitleLayout"), v20);
+  v20 = [configurationCopy vibrancyConfigurationWithExtensionBundleURL:lCopy];
+  v21 = -[PRUISPosterTitleStyleAttributes initWithTitleColor:titleFont:preferredTitleAlignment:preferredTitleLayout:vibrancyConfiguration:](self, "initWithTitleColor:titleFont:preferredTitleAlignment:preferredTitleLayout:vibrancyConfiguration:", color2, v19, [configurationCopy preferredTitleAlignment], objc_msgSend(configurationCopy, "preferredTitleLayout"), v20);
 
   return v21;
 }
 
-- (PRUISPosterTitleStyleAttributes)initWithTitleColor:(id)a3 titleFont:(id)a4 preferredTitleAlignment:(unint64_t)a5 preferredTitleLayout:(unint64_t)a6 vibrancyConfiguration:(id)a7
+- (PRUISPosterTitleStyleAttributes)initWithTitleColor:(id)color titleFont:(id)font preferredTitleAlignment:(unint64_t)alignment preferredTitleLayout:(unint64_t)layout vibrancyConfiguration:(id)configuration
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  colorCopy = color;
+  fontCopy = font;
+  configurationCopy = configuration;
   v19.receiver = self;
   v19.super_class = PRUISPosterTitleStyleAttributes;
   v16 = [(PRUISPosterTitleStyleAttributes *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_titleColor, a3);
-    objc_storeStrong(&v17->_titleFont, a4);
-    v17->_preferredTitleAlignment = a5;
-    v17->_preferredTitleLayout = a6;
-    objc_storeStrong(&v17->_vibrancyConfiguration, a7);
+    objc_storeStrong(&v16->_titleColor, color);
+    objc_storeStrong(&v17->_titleFont, font);
+    v17->_preferredTitleAlignment = alignment;
+    v17->_preferredTitleLayout = layout;
+    objc_storeStrong(&v17->_vibrancyConfiguration, configuration);
   }
 
   return v17;

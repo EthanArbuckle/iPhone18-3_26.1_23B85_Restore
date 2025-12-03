@@ -1,12 +1,12 @@
 @interface PLDuetServiceSimple
 - (PLDuetServiceSimple)init;
-- (double)capUtilizationInSeconds:(double)a3 withUpperBoundInError:(double)a4 withCapInError:(double)a5 withCappedUpperBound:(double)a6;
-- (double)numCPUSecondsForBundleID:(id)a3;
-- (double)numCPUSecondsForPid:(int)a3;
-- (id)didReceiveStopEventWithPayload:(id)a3;
+- (double)capUtilizationInSeconds:(double)seconds withUpperBoundInError:(double)error withCapInError:(double)inError withCappedUpperBound:(double)bound;
+- (double)numCPUSecondsForBundleID:(id)d;
+- (double)numCPUSecondsForPid:(int)pid;
+- (id)didReceiveStopEventWithPayload:(id)payload;
 - (void)didReceiveReset;
-- (void)didReceiveStartEventWithPayload:(id)a3;
-- (void)initOperatorDependancies:(id)a3;
+- (void)didReceiveStartEventWithPayload:(id)payload;
+- (void)initOperatorDependancies:(id)dependancies;
 @end
 
 @implementation PLDuetServiceSimple
@@ -20,20 +20,20 @@
   return v2;
 }
 
-- (void)initOperatorDependancies:(id)a3
+- (void)initOperatorDependancies:(id)dependancies
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dependanciesCopy = dependancies;
+  if (dependanciesCopy)
   {
-    [(PLDuetServiceImpl *)self setDuetService:v4];
+    [(PLDuetServiceImpl *)self setDuetService:dependanciesCopy];
     v5 = objc_alloc(MEMORY[0x277D3F270]);
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __48__PLDuetServiceSimple_initOperatorDependancies___block_invoke;
     v46[3] = &unk_27825A1D8;
     v46[4] = self;
-    v6 = [v5 initWithOperator:v4 withRegistration:&unk_282C19CF0 withBlock:v46];
+    v6 = [v5 initWithOperator:dependanciesCopy withRegistration:&unk_282C19CF0 withBlock:v46];
     [(PLDuetServiceImpl *)self setEventListener:v6];
 
     v7 = objc_alloc(MEMORY[0x277D3F278]);
@@ -42,7 +42,7 @@
     v45[2] = __48__PLDuetServiceSimple_initOperatorDependancies___block_invoke_2;
     v45[3] = &unk_278259810;
     v45[4] = self;
-    v8 = [v7 initWithOperator:v4 withRegistration:&unk_282C19D18 withBlock:v45];
+    v8 = [v7 initWithOperator:dependanciesCopy withRegistration:&unk_282C19D18 withBlock:v45];
     [(PLDuetServiceImpl *)self setEnergyResponder:v8];
 
     v9 = objc_alloc(MEMORY[0x277D3F270]);
@@ -51,7 +51,7 @@
     v44[2] = __48__PLDuetServiceSimple_initOperatorDependancies___block_invoke_3;
     v44[3] = &unk_27825A1D8;
     v44[4] = self;
-    v10 = [v9 initWithOperator:v4 withRegistration:&unk_282C19D40 withBlock:v44];
+    v10 = [v9 initWithOperator:dependanciesCopy withRegistration:&unk_282C19D40 withBlock:v44];
     [(PLDuetServiceSimple *)self setResetListener:v10];
 
     [(PLDuetServiceSimple *)self setIsCharging:0];
@@ -62,22 +62,22 @@
     v43[2] = __48__PLDuetServiceSimple_initOperatorDependancies___block_invoke_4;
     v43[3] = &unk_2782597E8;
     v43[4] = self;
-    v13 = [v11 initWithOperator:v4 forEntryKey:v12 withBlock:v43];
+    v13 = [v11 initWithOperator:dependanciesCopy forEntryKey:v12 withBlock:v43];
     [(PLDuetServiceSimple *)self setChargingListener:v13];
 
-    v14 = [(PLDuetServiceImpl *)self duetService];
-    LODWORD(v12) = [v14 isDebugEnabled];
+    duetService = [(PLDuetServiceImpl *)self duetService];
+    LODWORD(v12) = [duetService isDebugEnabled];
 
     if (v12)
     {
-      v37 = self;
+      selfCopy = self;
       v15 = [(PLOperator *)PLDuetService entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"ComplicationEvents"];
       v16 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"timestampEnd" withValue:&unk_282C13080 withComparisonOperation:6];
-      v17 = [v4 storage];
+      storage = [dependanciesCopy storage];
       v48[0] = v16;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:1];
       v36 = v15;
-      v19 = [v17 entriesForKey:v15 withComparisons:v18];
+      v19 = [storage entriesForKey:v15 withComparisons:v18];
 
       v41 = 0u;
       v42 = 0u;
@@ -99,13 +99,13 @@
             }
 
             v25 = *(*(&v39 + 1) + 8 * i);
-            v26 = [v4 storage];
+            storage2 = [dependanciesCopy storage];
             v38[0] = MEMORY[0x277D85DD0];
             v38[1] = 3221225472;
             v38[2] = __48__PLDuetServiceSimple_initOperatorDependancies___block_invoke_348;
             v38[3] = &unk_2782591D0;
             v38[4] = v25;
-            [v26 updateEntry:v25 withBlock:v38];
+            [storage2 updateEntry:v25 withBlock:v38];
           }
 
           v22 = [v20 countByEnumeratingWithState:&v39 objects:v47 count:16];
@@ -114,13 +114,13 @@
         while (v22);
       }
 
-      self = v37;
+      self = selfCopy;
     }
 
-    v27 = [(PLDuetServiceImpl *)self duetService];
-    v28 = [v27 isDebugEnabled];
+    duetService2 = [(PLDuetServiceImpl *)self duetService];
+    isDebugEnabled = [duetService2 isDebugEnabled];
 
-    if (v28)
+    if (isDebugEnabled)
     {
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
       CFNotificationCenterAddObserver(DarwinNotifyCenter, self, testStartEvent, @"com.apple.powerlogd.PLDuetService.testStartEvent", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -153,11 +153,11 @@ void __48__PLDuetServiceSimple_initOperatorDependancies___block_invoke_348(uint6
   [*(a1 + 32) setObject:v2 forKeyedSubscript:@"timestampEnd"];
 }
 
-- (void)didReceiveStartEventWithPayload:(id)a3
+- (void)didReceiveStartEventWithPayload:(id)payload
 {
   v88 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v74 = v4;
+  payloadCopy = payload;
+  v74 = payloadCopy;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -173,37 +173,37 @@ void __48__PLDuetServiceSimple_initOperatorDependancies___block_invoke_348(uint6
 
     if (byte_2811F695B == 1)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"payload=%@", v4];
+      payloadCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"payload=%@", payloadCopy];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple didReceiveStartEventWithPayload:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:813];
+      [v7 logMessage:payloadCopy fromFile:lastPathComponent fromFunction:v10 fromLineNumber:813];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v87 = v6;
+        v87 = payloadCopy;
         _os_log_debug_impl(&dword_21A4C6000, v11, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v4 = v74;
+      payloadCopy = v74;
     }
   }
 
-  v12 = [v4 objectForKeyedSubscript:@"bundleID"];
-  v13 = [v4 objectForKeyedSubscript:@"info"];
+  v12 = [payloadCopy objectForKeyedSubscript:@"bundleID"];
+  v13 = [payloadCopy objectForKeyedSubscript:@"info"];
   v14 = [v13 objectForKeyedSubscript:@"pid"];
-  v15 = [v14 intValue];
+  intValue = [v14 intValue];
 
-  v16 = [(PLDuetServiceSimple *)self bundleIDToState];
-  v17 = [v16 objectForKeyedSubscript:v12];
+  bundleIDToState = [(PLDuetServiceSimple *)self bundleIDToState];
+  v17 = [bundleIDToState objectForKeyedSubscript:v12];
 
   v73 = v12;
   if (v17)
   {
-    v18 = [(PLDuetServiceSimple *)self didReceiveStopEventWithPayload:v4];
+    v18 = [(PLDuetServiceSimple *)self didReceiveStopEventWithPayload:payloadCopy];
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
       v19 = objc_opt_class();
@@ -222,9 +222,9 @@ void __48__PLDuetServiceSimple_initOperatorDependancies___block_invoke_348(uint6
         v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Second start arrived. Dropping energy on floor %@", v18];
         v21 = MEMORY[0x277D3F178];
         v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-        v23 = [v22 lastPathComponent];
+        lastPathComponent2 = [v22 lastPathComponent];
         v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple didReceiveStartEventWithPayload:]"];
-        [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:822];
+        [v21 logMessage:v20 fromFile:lastPathComponent2 fromFunction:v24 fromLineNumber:822];
 
         v25 = PLLogCommon();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -235,46 +235,46 @@ void __48__PLDuetServiceSimple_initOperatorDependancies___block_invoke_348(uint6
         }
 
         v12 = v73;
-        v4 = v74;
+        payloadCopy = v74;
       }
     }
   }
 
   v26 = objc_opt_new();
-  v27 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [v26 setStartDate:v27];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [v26 setStartDate:monotonicDate];
 
-  if (v15 < 1)
+  if (intValue < 1)
   {
     [(PLDuetServiceSimple *)self numCPUSecondsForBundleID:v12];
   }
 
   else
   {
-    [(PLDuetServiceSimple *)self numCPUSecondsForPid:v15];
+    [(PLDuetServiceSimple *)self numCPUSecondsForPid:intValue];
   }
 
   [v26 setCpuSeconds:?];
-  v28 = [v4 objectForKeyedSubscript:@"info"];
+  v28 = [payloadCopy objectForKeyedSubscript:@"info"];
   [v26 setInfo:v28];
 
-  v29 = [(PLDuetServiceImpl *)self duetService];
-  if (v29)
+  duetService = [(PLDuetServiceImpl *)self duetService];
+  if (duetService)
   {
-    v30 = v29;
-    v31 = [(PLDuetServiceImpl *)self duetService];
-    v32 = [v31 isDebugEnabled];
+    v30 = duetService;
+    duetService2 = [(PLDuetServiceImpl *)self duetService];
+    isDebugEnabled = [duetService2 isDebugEnabled];
 
-    if (v32)
+    if (isDebugEnabled)
     {
       v33 = [(PLOperator *)PLDuetService entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"ComplicationEvents"];
       v34 = objc_alloc(MEMORY[0x277D3F190]);
-      v35 = [MEMORY[0x277CBEAA8] monotonicDate];
-      v36 = [v34 initWithEntryKey:v33 withDate:v35];
+      monotonicDate2 = [MEMORY[0x277CBEAA8] monotonicDate];
+      v36 = [v34 initWithEntryKey:v33 withDate:monotonicDate2];
 
       [v36 setObject:v12 forKeyedSubscript:@"BundleID"];
-      v37 = [v26 info];
-      v38 = [v37 description];
+      info = [v26 info];
+      v38 = [info description];
       [v36 setObject:v38 forKeyedSubscript:@"Info"];
 
       v39 = MEMORY[0x277CCABB0];
@@ -282,12 +282,12 @@ void __48__PLDuetServiceSimple_initOperatorDependancies___block_invoke_348(uint6
       v40 = [v39 numberWithDouble:?];
       [v36 setObject:v40 forKeyedSubscript:@"CPUSecondsStart"];
 
-      v41 = [(PLDuetServiceImpl *)self duetService];
+      duetService3 = [(PLDuetServiceImpl *)self duetService];
 
-      if (v41)
+      if (duetService3)
       {
-        v42 = [(PLDuetServiceImpl *)self duetService];
-        [v42 logEntry:v36];
+        duetService4 = [(PLDuetServiceImpl *)self duetService];
+        [duetService4 logEntry:v36];
       }
     }
   }
@@ -296,16 +296,16 @@ void __48__PLDuetServiceSimple_initOperatorDependancies___block_invoke_348(uint6
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v43 = [(PLDuetServiceSimple *)self bundleIDToState];
-  v44 = [v43 allValues];
+  bundleIDToState2 = [(PLDuetServiceSimple *)self bundleIDToState];
+  allValues = [bundleIDToState2 allValues];
 
-  v45 = [v44 countByEnumeratingWithState:&v79 objects:v85 count:16];
+  v45 = [allValues countByEnumeratingWithState:&v79 objects:v85 count:16];
   if (v45)
   {
     v46 = v45;
     v47 = *v80;
     v75 = v26;
-    v76 = self;
+    selfCopy = self;
     do
     {
       v48 = 0;
@@ -313,13 +313,13 @@ void __48__PLDuetServiceSimple_initOperatorDependancies___block_invoke_348(uint6
       {
         if (*v80 != v47)
         {
-          objc_enumerationMutation(v44);
+          objc_enumerationMutation(allValues);
         }
 
         v49 = *(*(&v79 + 1) + 8 * v48);
-        v50 = [v49 endDate];
+        endDate = [v49 endDate];
 
-        if (!v50)
+        if (!endDate)
         {
           if ([MEMORY[0x277D3F180] debugEnabled])
           {
@@ -339,9 +339,9 @@ void __48__PLDuetServiceSimple_initOperatorDependancies___block_invoke_348(uint6
               v52 = [MEMORY[0x277CCACA8] stringWithFormat:@"state=%@", v49];
               v53 = MEMORY[0x277D3F178];
               v54 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-              v55 = [v54 lastPathComponent];
+              lastPathComponent3 = [v54 lastPathComponent];
               v56 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple didReceiveStartEventWithPayload:]"];
-              [v53 logMessage:v52 fromFile:v55 fromFunction:v56 fromLineNumber:846];
+              [v53 logMessage:v52 fromFile:lastPathComponent3 fromFunction:v56 fromLineNumber:846];
 
               v57 = PLLogCommon();
               if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
@@ -352,30 +352,30 @@ void __48__PLDuetServiceSimple_initOperatorDependancies___block_invoke_348(uint6
               }
 
               v26 = v75;
-              self = v76;
+              self = selfCopy;
             }
           }
 
-          v58 = [v49 overlappingStates];
-          [v58 addObject:v26];
+          overlappingStates = [v49 overlappingStates];
+          [overlappingStates addObject:v26];
 
-          v59 = [v26 overlappingStates];
-          [v59 addObject:v49];
+          overlappingStates2 = [v26 overlappingStates];
+          [overlappingStates2 addObject:v49];
         }
 
         ++v48;
       }
 
       while (v46 != v48);
-      v46 = [v44 countByEnumeratingWithState:&v79 objects:v85 count:16];
+      v46 = [allValues countByEnumeratingWithState:&v79 objects:v85 count:16];
     }
 
     while (v46);
   }
 
-  v60 = [(PLDuetServiceSimple *)self bundleIDToState];
+  bundleIDToState3 = [(PLDuetServiceSimple *)self bundleIDToState];
   v61 = v73;
-  [v60 setObject:v26 forKeyedSubscript:v73];
+  [bundleIDToState3 setObject:v26 forKeyedSubscript:v73];
 
   v62 = v74;
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -394,14 +394,14 @@ void __48__PLDuetServiceSimple_initOperatorDependancies___block_invoke_348(uint6
     if (byte_2811F695E == 1)
     {
       v64 = MEMORY[0x277CCACA8];
-      v65 = [(PLDuetServiceSimple *)self bundleIDToState];
-      v66 = [v64 stringWithFormat:@"bundleIDToState=%@", v65];
+      bundleIDToState4 = [(PLDuetServiceSimple *)self bundleIDToState];
+      v66 = [v64 stringWithFormat:@"bundleIDToState=%@", bundleIDToState4];
 
       v67 = MEMORY[0x277D3F178];
       v68 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-      v69 = [v68 lastPathComponent];
+      lastPathComponent4 = [v68 lastPathComponent];
       v70 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple didReceiveStartEventWithPayload:]"];
-      [v67 logMessage:v66 fromFile:v69 fromFunction:v70 fromLineNumber:854];
+      [v67 logMessage:v66 fromFile:lastPathComponent4 fromFunction:v70 fromLineNumber:854];
 
       v71 = PLLogCommon();
       if (os_log_type_enabled(v71, OS_LOG_TYPE_DEBUG))
@@ -447,10 +447,10 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
   return result;
 }
 
-- (id)didReceiveStopEventWithPayload:(id)a3
+- (id)didReceiveStopEventWithPayload:(id)payload
 {
   v221 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  payloadCopy = payload;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -467,28 +467,28 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
 
     if (byte_2811F695F == 1)
     {
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"payload=%@", v4];
+      payloadCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"payload=%@", payloadCopy];
       v8 = MEMORY[0x277D3F178];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-      v10 = [v9 lastPathComponent];
+      lastPathComponent = [v9 lastPathComponent];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple didReceiveStopEventWithPayload:]"];
-      [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:876];
+      [v8 logMessage:payloadCopy fromFile:lastPathComponent fromFunction:v11 fromLineNumber:876];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v220 = v7;
+        v220 = payloadCopy;
         _os_log_debug_impl(&dword_21A4C6000, v12, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
   }
 
-  v13 = [v4 objectForKeyedSubscript:@"bundleID"];
-  v184 = [v4 objectForKeyedSubscript:@"info"];
-  v14 = [(PLDuetServiceSimple *)self bundleIDToState];
+  v13 = [payloadCopy objectForKeyedSubscript:@"bundleID"];
+  v184 = [payloadCopy objectForKeyedSubscript:@"info"];
+  bundleIDToState = [(PLDuetServiceSimple *)self bundleIDToState];
   v185 = v13;
-  v15 = [v14 objectForKeyedSubscript:v13];
+  v15 = [bundleIDToState objectForKeyedSubscript:v13];
 
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -509,9 +509,9 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
       v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"state=%@", v15];
       v19 = MEMORY[0x277D3F178];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-      v21 = [v20 lastPathComponent];
+      lastPathComponent2 = [v20 lastPathComponent];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple didReceiveStopEventWithPayload:]"];
-      [v19 logMessage:v18 fromFile:v21 fromFunction:v22 fromLineNumber:881];
+      [v19 logMessage:v18 fromFile:lastPathComponent2 fromFunction:v22 fromLineNumber:881];
 
       v23 = PLLogCommon();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -525,21 +525,21 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
 
   if (v15)
   {
-    v24 = [v15 info];
-    v25 = [v24 objectForKeyedSubscript:@"pid"];
-    v26 = [v25 intValue];
+    info = [v15 info];
+    v25 = [info objectForKeyedSubscript:@"pid"];
+    intValue = [v25 intValue];
 
-    v27 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [v15 setEndDate:v27];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [v15 setEndDate:monotonicDate];
 
-    if (v26 < 1)
+    if (intValue < 1)
     {
       [(PLDuetServiceSimple *)self numCPUSecondsForBundleID:v185];
     }
 
     else
     {
-      [(PLDuetServiceSimple *)self numCPUSecondsForPid:v26];
+      [(PLDuetServiceSimple *)self numCPUSecondsForPid:intValue];
     }
 
     v30 = v28;
@@ -574,9 +574,9 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
         v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"CPU duration=%f", *&v33];
         v37 = MEMORY[0x277D3F178];
         v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-        v39 = [v38 lastPathComponent];
+        lastPathComponent3 = [v38 lastPathComponent];
         v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple didReceiveStopEventWithPayload:]"];
-        [v37 logMessage:v36 fromFile:v39 fromFunction:v40 fromLineNumber:892];
+        [v37 logMessage:v36 fromFile:lastPathComponent3 fromFunction:v40 fromLineNumber:892];
 
         v41 = PLLogCommon();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
@@ -609,9 +609,9 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
         v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"Capped CPU duration=%f", *&v43];
         v47 = MEMORY[0x277D3F178];
         v48 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-        v49 = [v48 lastPathComponent];
+        lastPathComponent4 = [v48 lastPathComponent];
         v50 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple didReceiveStopEventWithPayload:]"];
-        [v47 logMessage:v46 fromFile:v49 fromFunction:v50 fromLineNumber:897];
+        [v47 logMessage:v46 fromFile:lastPathComponent4 fromFunction:v50 fromLineNumber:897];
 
         v51 = PLLogCommon();
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
@@ -643,9 +643,9 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
         v55 = [MEMORY[0x277CCACA8] stringWithFormat:@"cpuSecondsEnd=%f, cpuEnergy=%f", *&v30, v43 * 0.0277777778];
         v56 = MEMORY[0x277D3F178];
         v57 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-        v58 = [v57 lastPathComponent];
+        lastPathComponent5 = [v57 lastPathComponent];
         v59 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple didReceiveStopEventWithPayload:]"];
-        [v56 logMessage:v55 fromFile:v58 fromFunction:v59 fromLineNumber:900];
+        [v56 logMessage:v55 fromFile:lastPathComponent5 fromFunction:v59 fromLineNumber:900];
 
         v60 = PLLogCommon();
         if (os_log_type_enabled(v60, OS_LOG_TYPE_DEBUG))
@@ -657,7 +657,7 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
       }
     }
 
-    v183 = v4;
+    v183 = payloadCopy;
     v208 = 0u;
     v209 = 0u;
     v206 = 0u;
@@ -699,9 +699,9 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
               v67 = [MEMORY[0x277CCACA8] stringWithFormat:@"overlappingState=%@", v64];
               v68 = MEMORY[0x277D3F178];
               v69 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-              v70 = [v69 lastPathComponent];
+              lastPathComponent6 = [v69 lastPathComponent];
               v71 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple didReceiveStopEventWithPayload:]"];
-              [v68 logMessage:v67 fromFile:v70 fromFunction:v71 fromLineNumber:906];
+              [v68 logMessage:v67 fromFile:lastPathComponent6 fromFunction:v71 fromLineNumber:906];
 
               v72 = PLLogCommon();
               if (os_log_type_enabled(v72, OS_LOG_TYPE_DEBUG))
@@ -715,24 +715,24 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
             }
           }
 
-          v73 = [v64 startDate];
-          v74 = [v15 startDate];
-          v75 = [v73 laterDate:v74];
+          startDate = [v64 startDate];
+          startDate2 = [v15 startDate];
+          v75 = [startDate laterDate:startDate2];
 
-          v76 = [v64 endDate];
-          if (v76)
+          endDate = [v64 endDate];
+          if (endDate)
           {
-            v77 = [v64 endDate];
-            v78 = [v15 endDate];
-            v79 = [v77 earlierDate:v78];
+            endDate2 = [v64 endDate];
+            endDate3 = [v15 endDate];
+            v79 = [endDate2 earlierDate:endDate3];
 
             v15 = v62;
           }
 
           else
           {
-            v77 = [v15 endDate];
-            v79 = v77;
+            endDate2 = [v15 endDate];
+            v79 = endDate2;
           }
 
           [v79 timeIntervalSinceDate:v75];
@@ -753,13 +753,13 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
 
             if (byte_2811F6965 == 1)
             {
-              v84 = self;
+              selfCopy = self;
               v85 = [MEMORY[0x277CCACA8] stringWithFormat:@"overlappingState=%@", v64];
               v86 = MEMORY[0x277D3F178];
               v87 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-              v88 = [v87 lastPathComponent];
+              lastPathComponent7 = [v87 lastPathComponent];
               v89 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple didReceiveStopEventWithPayload:]"];
-              [v86 logMessage:v85 fromFile:v88 fromFunction:v89 fromLineNumber:911];
+              [v86 logMessage:v85 fromFile:lastPathComponent7 fromFunction:v89 fromLineNumber:911];
 
               v90 = PLLogCommon();
               if (os_log_type_enabled(v90, OS_LOG_TYPE_DEBUG))
@@ -769,7 +769,7 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
                 _os_log_debug_impl(&dword_21A4C6000, v90, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
               }
 
-              self = v84;
+              self = selfCopy;
               v15 = v62;
             }
           }
@@ -793,7 +793,7 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
 
     [v15 duration];
     v92 = v91;
-    v4 = v183;
+    payloadCopy = v183;
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
       v93 = objc_opt_class();
@@ -813,9 +813,9 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
         v95 = [MEMORY[0x277CCACA8] stringWithFormat:@"SOC duration=%f", *&v92];
         v96 = MEMORY[0x277D3F178];
         v97 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-        v98 = [v97 lastPathComponent];
+        lastPathComponent8 = [v97 lastPathComponent];
         v99 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple didReceiveStopEventWithPayload:]"];
-        [v96 logMessage:v95 fromFile:v98 fromFunction:v99 fromLineNumber:918];
+        [v96 logMessage:v95 fromFile:lastPathComponent8 fromFunction:v99 fromLineNumber:918];
 
         v100 = PLLogCommon();
         if (os_log_type_enabled(v100, OS_LOG_TYPE_DEBUG))
@@ -848,9 +848,9 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
         v105 = [MEMORY[0x277CCACA8] stringWithFormat:@"Capped SOC duration=%f", *&v102];
         v106 = MEMORY[0x277D3F178];
         v107 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-        v108 = [v107 lastPathComponent];
+        lastPathComponent9 = [v107 lastPathComponent];
         v109 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple didReceiveStopEventWithPayload:]"];
-        [v106 logMessage:v105 fromFile:v108 fromFunction:v109 fromLineNumber:923];
+        [v106 logMessage:v105 fromFile:lastPathComponent9 fromFunction:v109 fromLineNumber:923];
 
         v110 = PLLogCommon();
         if (os_log_type_enabled(v110, OS_LOG_TYPE_DEBUG))
@@ -882,9 +882,9 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
         v114 = [MEMORY[0x277CCACA8] stringWithFormat:@"socEnergy=%f", *&v111];
         v115 = MEMORY[0x277D3F178];
         v116 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-        v117 = [v116 lastPathComponent];
+        lastPathComponent10 = [v116 lastPathComponent];
         v118 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple didReceiveStopEventWithPayload:]"];
-        [v115 logMessage:v114 fromFile:v117 fromFunction:v118 fromLineNumber:927];
+        [v115 logMessage:v114 fromFile:lastPathComponent10 fromFunction:v118 fromLineNumber:927];
 
         v119 = PLLogCommon();
         if (os_log_type_enabled(v119, OS_LOG_TYPE_DEBUG))
@@ -896,8 +896,8 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
       }
     }
 
-    v120 = [v15 info];
-    v121 = [v120 objectForKeyedSubscript:@"pushType"];
+    info2 = [v15 info];
+    v121 = [info2 objectForKeyedSubscript:@"pushType"];
     if ([v121 isEqualToString:@"waking"])
     {
       v122 = 0.125;
@@ -927,9 +927,9 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
         v125 = [MEMORY[0x277CCACA8] stringWithFormat:@"wakingNonWakingEnergy=%f", *&v122];
         v126 = MEMORY[0x277D3F178];
         v127 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-        v128 = [v127 lastPathComponent];
+        lastPathComponent11 = [v127 lastPathComponent];
         v129 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple didReceiveStopEventWithPayload:]"];
-        [v126 logMessage:v125 fromFile:v128 fromFunction:v129 fromLineNumber:931];
+        [v126 logMessage:v125 fromFile:lastPathComponent11 fromFunction:v129 fromLineNumber:931];
 
         v130 = PLLogCommon();
         if (os_log_type_enabled(v130, OS_LOG_TYPE_DEBUG))
@@ -967,9 +967,9 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
         v139 = [MEMORY[0x277CCACA8] stringWithFormat:@"networkEnergy=%f", *&v136];
         v140 = MEMORY[0x277D3F178];
         v141 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-        v142 = [v141 lastPathComponent];
+        lastPathComponent12 = [v141 lastPathComponent];
         v143 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple didReceiveStopEventWithPayload:]"];
-        [v140 logMessage:v139 fromFile:v142 fromFunction:v143 fromLineNumber:938];
+        [v140 logMessage:v139 fromFile:lastPathComponent12 fromFunction:v143 fromLineNumber:938];
 
         v144 = PLLogCommon();
         if (os_log_type_enabled(v144, OS_LOG_TYPE_DEBUG))
@@ -981,8 +981,8 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
       }
     }
 
-    v145 = [(PLDuetServiceSimple *)self bundleIDToState];
-    [v145 removeObjectForKey:v185];
+    bundleIDToState2 = [(PLDuetServiceSimple *)self bundleIDToState];
+    [bundleIDToState2 removeObjectForKey:v185];
 
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -1001,20 +1001,20 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
       if (byte_2811F696B == 1)
       {
         v148 = MEMORY[0x277CCACA8];
-        v149 = [(PLDuetServiceSimple *)self bundleIDToState];
-        v150 = [v148 stringWithFormat:@"bundleIDToState=%@", v149];
+        bundleIDToState3 = [(PLDuetServiceSimple *)self bundleIDToState];
+        v149 = [v148 stringWithFormat:@"bundleIDToState=%@", bundleIDToState3];
 
         v151 = MEMORY[0x277D3F178];
         v152 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-        v153 = [v152 lastPathComponent];
+        lastPathComponent13 = [v152 lastPathComponent];
         v154 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple didReceiveStopEventWithPayload:]"];
-        [v151 logMessage:v150 fromFile:v153 fromFunction:v154 fromLineNumber:942];
+        [v151 logMessage:v149 fromFile:lastPathComponent13 fromFunction:v154 fromLineNumber:942];
 
         v155 = PLLogCommon();
         if (os_log_type_enabled(v155, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v220 = v150;
+          v220 = v149;
           _os_log_debug_impl(&dword_21A4C6000, v155, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
         }
       }
@@ -1040,27 +1040,27 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
       }
     }
 
-    v158 = [(PLDuetServiceImpl *)self duetService];
-    if (v158)
+    duetService = [(PLDuetServiceImpl *)self duetService];
+    if (duetService)
     {
-      v159 = v158;
-      v160 = [(PLDuetServiceImpl *)self duetService];
-      v161 = [v160 isDebugEnabled];
+      v159 = duetService;
+      duetService2 = [(PLDuetServiceImpl *)self duetService];
+      isDebugEnabled = [duetService2 isDebugEnabled];
 
-      if (v161)
+      if (isDebugEnabled)
       {
         v162 = [(PLOperator *)PLDuetService entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"ComplicationEvents"];
         v163 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"BundleID" withValue:v185 withComparisonOperation:0];
         v164 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"timestampEnd" withValue:&unk_282C13080 withComparisonOperation:6];
-        v165 = [(PLDuetServiceImpl *)self duetService];
-        v166 = [v165 storage];
+        duetService3 = [(PLDuetServiceImpl *)self duetService];
+        storage = [duetService3 storage];
         v217[0] = v163;
         v217[1] = v164;
         v167 = [MEMORY[0x277CBEA60] arrayWithObjects:v217 count:2];
-        v168 = [v166 lastEntryForKey:v162 withComparisons:v167 isSingleton:0];
+        v168 = [storage lastEntryForKey:v162 withComparisons:v167 isSingleton:0];
 
-        v169 = [(PLDuetServiceImpl *)self duetService];
-        v170 = [v169 storage];
+        duetService4 = [(PLDuetServiceImpl *)self duetService];
+        storage2 = [duetService4 storage];
         v190[0] = MEMORY[0x277D85DD0];
         v190[1] = 3221225472;
         v190[2] = __54__PLDuetServiceSimple_didReceiveStopEventWithPayload___block_invoke_476;
@@ -1073,9 +1073,9 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
         v195 = v122;
         v196 = v136;
         v197 = v156;
-        [v170 updateEntry:v171 withBlock:v190];
+        [storage2 updateEntry:v171 withBlock:v190];
 
-        v4 = v183;
+        payloadCopy = v183;
       }
     }
 
@@ -1098,9 +1098,9 @@ uint64_t __55__PLDuetServiceSimple_didReceiveStartEventWithPayload___block_invok
         v174 = [MEMORY[0x277CCACA8] stringWithFormat:@"Returning Sum: %f", *&v156];
         v175 = MEMORY[0x277D3F178];
         v176 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-        v177 = [v176 lastPathComponent];
+        lastPathComponent14 = [v176 lastPathComponent];
         v178 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple didReceiveStopEventWithPayload:]"];
-        [v175 logMessage:v174 fromFile:v177 fromFunction:v178 fromLineNumber:970];
+        [v175 logMessage:v174 fromFile:lastPathComponent14 fromFunction:v178 fromLineNumber:970];
 
         v179 = PLLogCommon();
         if (os_log_type_enabled(v179, OS_LOG_TYPE_DEBUG))
@@ -1250,22 +1250,22 @@ uint64_t __54__PLDuetServiceSimple_didReceiveStopEventWithPayload___block_invoke
   return result;
 }
 
-- (double)capUtilizationInSeconds:(double)a3 withUpperBoundInError:(double)a4 withCapInError:(double)a5 withCappedUpperBound:(double)a6
+- (double)capUtilizationInSeconds:(double)seconds withUpperBoundInError:(double)error withCapInError:(double)inError withCappedUpperBound:(double)bound
 {
-  if (a3 < a6)
+  if (seconds < bound)
   {
-    a6 = a3;
+    bound = seconds;
   }
 
-  if (a3 <= a4)
+  if (seconds <= error)
   {
-    a5 = a6;
+    inError = bound;
   }
 
-  return fmax(a5, 0.0);
+  return fmax(inError, 0.0);
 }
 
-- (double)numCPUSecondsForPid:(int)a3
+- (double)numCPUSecondsForPid:(int)pid
 {
   v12 = *MEMORY[0x277D85DE8];
   v10 = 0u;
@@ -1274,7 +1274,7 @@ uint64_t __54__PLDuetServiceSimple_didReceiveStopEventWithPayload___block_invoke
   v9 = 0u;
   v6 = 0u;
   v7 = 0u;
-  v3 = proc_pid_rusage(a3, 0, &v6);
+  v3 = proc_pid_rusage(pid, 0, &v6);
   result = 0.0;
   if (!v3)
   {
@@ -1285,7 +1285,7 @@ uint64_t __54__PLDuetServiceSimple_didReceiveStopEventWithPayload___block_invoke
   return result;
 }
 
-- (double)numCPUSecondsForBundleID:(id)a3
+- (double)numCPUSecondsForBundleID:(id)d
 {
   v3 = MEMORY[0x28223BE20](self, a2);
   v56 = *MEMORY[0x277D85DE8];
@@ -1309,9 +1309,9 @@ uint64_t __54__PLDuetServiceSimple_didReceiveStopEventWithPayload___block_invoke
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"bundleID=%@", v5];
       v8 = MEMORY[0x277D3F178];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-      v10 = [v9 lastPathComponent];
+      lastPathComponent = [v9 lastPathComponent];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple numCPUSecondsForBundleID:]"];
-      [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:985];
+      [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:985];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -1325,9 +1325,9 @@ uint64_t __54__PLDuetServiceSimple_didReceiveStopEventWithPayload___block_invoke
     }
   }
 
-  v13 = [v3 duetService];
+  duetService = [v3 duetService];
 
-  if (v13)
+  if (duetService)
   {
     memset(__b, 255, 0x1000uLL);
     v14 = proc_listpids(1u, 0, __b, 4096);
@@ -1362,9 +1362,9 @@ uint64_t __54__PLDuetServiceSimple_didReceiveStopEventWithPayload___block_invoke
             v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"pid=%i", v17];
             v21 = MEMORY[0x277D3F178];
             v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-            v23 = [v22 lastPathComponent];
+            lastPathComponent2 = [v22 lastPathComponent];
             v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple numCPUSecondsForBundleID:]"];
-            [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:998];
+            [v21 logMessage:v20 fromFile:lastPathComponent2 fromFunction:v24 fromLineNumber:998];
 
             v25 = PLLogCommon();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -1376,9 +1376,9 @@ uint64_t __54__PLDuetServiceSimple_didReceiveStopEventWithPayload___block_invoke
           }
         }
 
-        v26 = [v3 duetService];
-        v27 = [v26 storage];
-        v28 = [v27 processIDEntryForPid:v17];
+        duetService2 = [v3 duetService];
+        storage = [duetService2 storage];
+        v28 = [storage processIDEntryForPid:v17];
         v29 = [v28 objectForKeyedSubscript:@"BundleID"];
 
         if (!v29)
@@ -1417,9 +1417,9 @@ LABEL_24:
             v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"pidBundleID=%@", v29];
             v33 = MEMORY[0x277D3F178];
             v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-            v35 = [v34 lastPathComponent];
+            lastPathComponent3 = [v34 lastPathComponent];
             v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple numCPUSecondsForBundleID:]"];
-            [v33 logMessage:v32 fromFile:v35 fromFunction:v36 fromLineNumber:1013];
+            [v33 logMessage:v32 fromFile:lastPathComponent3 fromFunction:v36 fromLineNumber:1013];
 
             v37 = PLLogCommon();
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
@@ -1466,9 +1466,9 @@ LABEL_33:
         v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"could not find matching pid"];
         v40 = MEMORY[0x277D3F178];
         v41 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-        v42 = [v41 lastPathComponent];
+        lastPathComponent4 = [v41 lastPathComponent];
         v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceSimple numCPUSecondsForBundleID:]"];
-        [v40 logMessage:v29 fromFile:v42 fromFunction:v43 fromLineNumber:1020];
+        [v40 logMessage:v29 fromFile:lastPathComponent4 fromFunction:v43 fromLineNumber:1020];
 
         v44 = PLLogCommon();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
@@ -1523,8 +1523,8 @@ uint64_t __48__PLDuetServiceSimple_numCPUSecondsForBundleID___block_invoke_514(u
 
 - (void)didReceiveReset
 {
-  v2 = [(PLDuetServiceSimple *)self bundleIDToState];
-  [v2 removeAllObjects];
+  bundleIDToState = [(PLDuetServiceSimple *)self bundleIDToState];
+  [bundleIDToState removeAllObjects];
 }
 
 @end

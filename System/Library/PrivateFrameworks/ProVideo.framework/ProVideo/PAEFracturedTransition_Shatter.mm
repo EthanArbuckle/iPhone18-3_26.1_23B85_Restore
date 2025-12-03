@@ -1,14 +1,14 @@
 @interface PAEFracturedTransition_Shatter
-- (PAEFracturedTransition_Shatter)initWithAPIManager:(id)a3;
+- (PAEFracturedTransition_Shatter)initWithAPIManager:(id)manager;
 @end
 
 @implementation PAEFracturedTransition_Shatter
 
-- (PAEFracturedTransition_Shatter)initWithAPIManager:(id)a3
+- (PAEFracturedTransition_Shatter)initWithAPIManager:(id)manager
 {
   v11.receiver = self;
   v11.super_class = PAEFracturedTransition_Shatter;
-  result = [(PAEFracturedTransition *)&v11 initWithAPIManager:a3];
+  result = [(PAEFracturedTransition *)&v11 initWithAPIManager:manager];
   if (result)
   {
     fxParams = result->super._fxParams;

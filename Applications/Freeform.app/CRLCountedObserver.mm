@@ -1,5 +1,5 @@
 @interface CRLCountedObserver
-- (CRLCountedObserver)initWithObserver:(id)a3;
+- (CRLCountedObserver)initWithObserver:(id)observer;
 - (id)observer;
 - (id)observerIgnoringCount;
 - (unint64_t)decrementCount;
@@ -8,16 +8,16 @@
 
 @implementation CRLCountedObserver
 
-- (CRLCountedObserver)initWithObserver:(id)a3
+- (CRLCountedObserver)initWithObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v8.receiver = self;
   v8.super_class = CRLCountedObserver;
   v5 = [(CRLCountedObserver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_observer, v4);
+    objc_storeWeak(&v5->_observer, observerCopy);
     v6->_count = 1;
   }
 

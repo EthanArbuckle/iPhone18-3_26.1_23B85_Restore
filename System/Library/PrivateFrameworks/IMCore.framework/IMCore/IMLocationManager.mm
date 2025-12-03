@@ -3,20 +3,20 @@
 + (Class)__CLLocationManagerClass;
 + (id)locationShifter;
 + (id)sharedInstance;
-- (BOOL)_shouldSendLocation:(id)a3 timeIntervalSinceStart:(double)a4;
+- (BOOL)_shouldSendLocation:(id)location timeIntervalSinceStart:(double)start;
 - (BOOL)preciseLocationAuthorized;
 - (CLLocation)currentLocation;
 - (IMLocationManager)init;
-- (void)_errorHappend:(id)a3;
+- (void)_errorHappend:(id)happend;
 - (void)_fireCompletionHandlers;
 - (void)_locationManagerTimedOut;
-- (void)_locationUpdateTimerFired:(id)a3;
-- (void)_startLocationUpdateTimerWithAuthorizedHandler:(id)a3 updateHandler:(id)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)shiftedLocationWithLocation:(id)a3 completion:(id)a4;
-- (void)startUpdatingCurrentLocationWithForegroundAssertionForBundleIdentifier:(id)a3 withAuthorizedHandler:(id)a4 updateHandler:(id)a5;
+- (void)_locationUpdateTimerFired:(id)fired;
+- (void)_startLocationUpdateTimerWithAuthorizedHandler:(id)handler updateHandler:(id)updateHandler;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)shiftedLocationWithLocation:(id)location completion:(id)completion;
+- (void)startUpdatingCurrentLocationWithForegroundAssertionForBundleIdentifier:(id)identifier withAuthorizedHandler:(id)handler updateHandler:(id)updateHandler;
 @end
 
 @implementation IMLocationManager
@@ -61,19 +61,19 @@
   return v3;
 }
 
-- (void)startUpdatingCurrentLocationWithForegroundAssertionForBundleIdentifier:(id)a3 withAuthorizedHandler:(id)a4 updateHandler:(id)a5
+- (void)startUpdatingCurrentLocationWithForegroundAssertionForBundleIdentifier:(id)identifier withAuthorizedHandler:(id)handler updateHandler:(id)updateHandler
 {
   v109 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v13 = v10;
-  if (!v9 || !v10)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  updateHandlerCopy = updateHandler;
+  v13 = updateHandlerCopy;
+  if (!handlerCopy || !updateHandlerCopy)
   {
     goto LABEL_40;
   }
 
-  if (objc_msgSend_length(v8, v11, v12))
+  if (objc_msgSend_length(identifierCopy, v11, v12))
   {
     if (IMOSLoggingEnabled())
     {
@@ -81,15 +81,15 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v108 = v8;
+        v108 = identifierCopy;
         _os_log_impl(&dword_1A823F000, v16, OS_LOG_TYPE_INFO, "IMLocationManager taking CLInUseAssertion for %@", buf, 0xCu);
       }
     }
 
     v17 = objc_opt_class();
     v20 = objc_msgSend___CLInUseAssertionClass(v17, v18, v19);
-    v22 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v21, @"Treating %@ as a foreground process for location sending.", v8);
-    v24 = objc_msgSend_newAssertionForBundleIdentifier_withReason_level_(v20, v23, v8, v22, 1);
+    v22 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v21, @"Treating %@ as a foreground process for location sending.", identifierCopy);
+    v24 = objc_msgSend_newAssertionForBundleIdentifier_withReason_level_(v20, v23, identifierCopy, v22, 1);
 
     objc_msgSend_setInUseAssertion_(self, v25, v24);
   }
@@ -133,7 +133,7 @@
 
       if (!objc_msgSend_firstAuthorizationCallbackArrived(self, v41, v42))
       {
-        v62 = objc_msgSend_copy(v9, v47, v48);
+        v62 = objc_msgSend_copy(handlerCopy, v47, v48);
 
         v61 = objc_msgSend_copy(v13, v89, v90);
         v93 = objc_msgSend_handlers(self, v91, v92);
@@ -174,7 +174,7 @@
           objc_copyWeak(&v104, buf);
           v61 = v13;
           v102 = v61;
-          v62 = v9;
+          v62 = handlerCopy;
           v103 = v62;
           objc_msgSend_requestTemporaryFullAccuracyAuthorizationWithPurposeKey_completion_(v60, v63, @"SendLocationDescription", v101);
 
@@ -189,7 +189,7 @@
       }
 
       objc_msgSend_setInRequestPreciseLocation_(self, v55, 0);
-      objc_msgSend__startLocationUpdateTimerWithAuthorizedHandler_updateHandler_(self, v99, v9, v13);
+      objc_msgSend__startLocationUpdateTimerWithAuthorizedHandler_updateHandler_(self, v99, handlerCopy, v13);
     }
 
     else
@@ -213,7 +213,7 @@
 
 LABEL_40:
     v61 = v13;
-    v62 = v9;
+    v62 = handlerCopy;
     goto LABEL_41;
   }
 
@@ -230,7 +230,7 @@ LABEL_40:
   v67 = objc_msgSend_locationManager(self, v64, v65);
   objc_msgSend_requestWhenInUseAuthorization(v67, v68, v69);
 
-  v62 = objc_msgSend_copy(v9, v70, v71);
+  v62 = objc_msgSend_copy(handlerCopy, v70, v71);
   v61 = objc_msgSend_copy(v13, v72, v73);
 
   v76 = objc_msgSend_handlers(self, v74, v75);
@@ -245,16 +245,16 @@ LABEL_41:
   v100 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startLocationUpdateTimerWithAuthorizedHandler:(id)a3 updateHandler:(id)a4
+- (void)_startLocationUpdateTimerWithAuthorizedHandler:(id)handler updateHandler:(id)updateHandler
 {
   v45[2] = *MEMORY[0x1E69E9840];
-  v6 = *(a3 + 2);
-  v7 = a4;
-  v8 = a3;
+  v6 = *(handler + 2);
+  updateHandlerCopy = updateHandler;
+  handlerCopy = handler;
   v6();
-  v11 = objc_msgSend_copy(v8, v9, v10);
+  v11 = objc_msgSend_copy(handlerCopy, v9, v10);
 
-  v14 = objc_msgSend_copy(v7, v12, v13);
+  v14 = objc_msgSend_copy(updateHandlerCopy, v12, v13);
   v17 = objc_msgSend_handlers(self, v15, v16);
   v18 = _Block_copy(v11);
   v45[0] = v18;
@@ -311,11 +311,11 @@ LABEL_41:
   return v6;
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_lastObject(v7, v8, v9);
+  managerCopy = manager;
+  locationsCopy = locations;
+  v10 = objc_msgSend_lastObject(locationsCopy, v8, v9);
   if (v10)
   {
     if (IMOSLoggingEnabled())
@@ -333,12 +333,12 @@ LABEL_41:
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_code(v7, v8, v9))
+  managerCopy = manager;
+  errorCopy = error;
+  if (objc_msgSend_code(errorCopy, v8, v9))
   {
     if (IMOSLoggingEnabled())
     {
@@ -346,39 +346,39 @@ LABEL_41:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v13 = 138412290;
-        v14 = v7;
+        v14 = errorCopy;
         _os_log_impl(&dword_1A823F000, v11, OS_LOG_TYPE_INFO, "Location manager failed with error %@", &v13, 0xCu);
       }
     }
 
-    objc_msgSend__errorHappend_(self, v10, v7);
+    objc_msgSend__errorHappend_(self, v10, errorCopy);
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_errorHappend:(id)a3
+- (void)_errorHappend:(id)happend
 {
-  v4 = a3;
+  happendCopy = happend;
   objc_msgSend_setLocation_(self, v5, 0);
-  objc_msgSend_setError_(self, v6, v4);
+  objc_msgSend_setError_(self, v6, happendCopy);
 
   objc_msgSend__fireCompletionHandlers(self, v7, v8);
   v13 = objc_msgSend_locationManager(self, v9, v10);
   objc_msgSend_stopUpdatingLocation(v13, v11, v12);
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v7 = objc_msgSend_authorizationStatus(v4, v5, v6);
+  authorizationCopy = authorization;
+  v7 = objc_msgSend_authorizationStatus(authorizationCopy, v5, v6);
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v12 = objc_msgSend__limitsPrecision(v4, v10, v11);
+      v12 = objc_msgSend__limitsPrecision(authorizationCopy, v10, v11);
       v13 = @"NO";
       if (v12)
       {
@@ -451,30 +451,30 @@ LABEL_41:
   v43 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_shouldSendLocation:(id)a3 timeIntervalSinceStart:(double)a4
+- (BOOL)_shouldSendLocation:(id)location timeIntervalSinceStart:(double)start
 {
-  v5 = a3;
-  objc_msgSend_horizontalAccuracy(v5, v6, v7);
-  if (a4 <= 0.0)
+  locationCopy = location;
+  objc_msgSend_horizontalAccuracy(locationCopy, v6, v7);
+  if (start <= 0.0)
   {
-    v11 = 15.0;
+    startCopy = 15.0;
   }
 
   else
   {
-    v11 = a4;
+    startCopy = start;
   }
 
-  if (v5)
+  if (locationCopy)
   {
-    v12 = v10 < 25.0 || v10 < 200.0 && v10 < v11 / 15.0 * 175.0 + 25.0;
-    v13 = objc_msgSend_timestamp(v5, v8, v9);
+    v12 = v10 < 25.0 || v10 < 200.0 && v10 < startCopy / 15.0 * 175.0 + 25.0;
+    v13 = objc_msgSend_timestamp(locationCopy, v8, v9);
     objc_msgSend_timeIntervalSinceNow(v13, v14, v15);
     v17 = v16;
 
     if (v17 < 0.0)
     {
-      v12 &= -v17 - v11 <= 300.0;
+      v12 &= -v17 - startCopy <= 300.0;
     }
   }
 
@@ -486,9 +486,9 @@ LABEL_41:
   return v12;
 }
 
-- (void)_locationUpdateTimerFired:(id)a3
+- (void)_locationUpdateTimerFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   v7 = objc_msgSend_locationManager(self, v5, v6);
   v10 = objc_msgSend_location(self, v8, v9);
   objc_msgSend_timeIntervalSinceReferenceDate(MEMORY[0x1E695DF00], v11, v12);
@@ -696,10 +696,10 @@ LABEL_22:
   return v3;
 }
 
-- (void)shiftedLocationWithLocation:(id)a3 completion:(id)a4
+- (void)shiftedLocationWithLocation:(id)location completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  completionCopy = completion;
   v8 = objc_opt_class();
   v11 = objc_msgSend_locationShifter(v8, v9, v10);
   if (!v11)
@@ -711,7 +711,7 @@ LABEL_22:
   v13 = objc_opt_class();
   v16 = objc_msgSend_locationShifter(v13, v14, v15);
   v17 = objc_opt_class();
-  isLocationShiftRequiredForLocation = objc_msgSend_isLocationShiftRequiredForLocation_(v17, v18, v6);
+  isLocationShiftRequiredForLocation = objc_msgSend_isLocationShiftRequiredForLocation_(v17, v18, locationCopy);
 
   if (isLocationShiftRequiredForLocation)
   {
@@ -721,15 +721,15 @@ LABEL_22:
     block[2] = sub_1A83AC0B0;
     block[3] = &unk_1E7810190;
     block[4] = self;
-    v22 = v6;
-    v23 = v7;
+    v22 = locationCopy;
+    v23 = completionCopy;
     dispatch_async(v20, block);
   }
 
   else
   {
 LABEL_4:
-    (*(v7 + 2))(v7, v6);
+    (*(completionCopy + 2))(completionCopy, locationCopy);
   }
 }
 

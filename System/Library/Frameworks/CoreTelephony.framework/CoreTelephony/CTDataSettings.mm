@@ -1,8 +1,8 @@
 @interface CTDataSettings
-- (CTDataSettings)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTDataSettings)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTDataSettings
@@ -18,34 +18,34 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setCellularDataEnabled:{-[CTDataSettings isCellularDataEnabled](self, "isCellularDataEnabled")}];
   [v4 setAirplaneModeEnabled:{-[CTDataSettings isAirplaneModeEnabled](self, "isAirplaneModeEnabled")}];
   [v4 setCellularDataCapable:{-[CTDataSettings isCellularDataCapable](self, "isCellularDataCapable")}];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[CTDataSettings isCellularDataEnabled](self forKey:{"isCellularDataEnabled"), @"cellularDataEnabled"}];
-  [v4 encodeBool:-[CTDataSettings isAirplaneModeEnabled](self forKey:{"isAirplaneModeEnabled"), @"airplaneModeEnabled"}];
-  [v4 encodeBool:-[CTDataSettings isCellularDataCapable](self forKey:{"isCellularDataCapable"), @"cellularDataCapable"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[CTDataSettings isCellularDataEnabled](self forKey:{"isCellularDataEnabled"), @"cellularDataEnabled"}];
+  [coderCopy encodeBool:-[CTDataSettings isAirplaneModeEnabled](self forKey:{"isAirplaneModeEnabled"), @"airplaneModeEnabled"}];
+  [coderCopy encodeBool:-[CTDataSettings isCellularDataCapable](self forKey:{"isCellularDataCapable"), @"cellularDataCapable"}];
 }
 
-- (CTDataSettings)initWithCoder:(id)a3
+- (CTDataSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CTDataSettings;
   v5 = [(CTDataSettings *)&v7 init];
   if (v5)
   {
-    -[CTDataSettings setCellularDataEnabled:](v5, "setCellularDataEnabled:", [v4 decodeBoolForKey:@"cellularDataEnabled"]);
-    -[CTDataSettings setAirplaneModeEnabled:](v5, "setAirplaneModeEnabled:", [v4 decodeBoolForKey:@"airplaneModeEnabled"]);
-    -[CTDataSettings setCellularDataCapable:](v5, "setCellularDataCapable:", [v4 decodeBoolForKey:@"cellularDataCapable"]);
+    -[CTDataSettings setCellularDataEnabled:](v5, "setCellularDataEnabled:", [coderCopy decodeBoolForKey:@"cellularDataEnabled"]);
+    -[CTDataSettings setAirplaneModeEnabled:](v5, "setAirplaneModeEnabled:", [coderCopy decodeBoolForKey:@"airplaneModeEnabled"]);
+    -[CTDataSettings setCellularDataCapable:](v5, "setCellularDataCapable:", [coderCopy decodeBoolForKey:@"cellularDataCapable"]);
   }
 
   return v5;

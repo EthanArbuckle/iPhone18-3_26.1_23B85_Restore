@@ -1,9 +1,9 @@
 @interface PXSharedLibrarySharingSuggestionsDataSource
-- (PXSharedLibrarySharingSuggestionsDataSource)initWithSharingSuggestions:(id)a3 aggregateBeforeDate:(id)a4;
+- (PXSharedLibrarySharingSuggestionsDataSource)initWithSharingSuggestions:(id)suggestions aggregateBeforeDate:(id)date;
 - (PXSharedLibrarySharingSuggestionsDataSourceDelegate)delegate;
-- (id)_promiseForContainer:(id)a3;
-- (id)itemIndexesForSharingSuggestions:(id)a3;
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3;
+- (id)_promiseForContainer:(id)container;
+- (id)itemIndexesForSharingSuggestions:(id)suggestions;
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path;
 @end
 
 @implementation PXSharedLibrarySharingSuggestionsDataSource
@@ -15,10 +15,10 @@
   return WeakRetained;
 }
 
-- (id)itemIndexesForSharingSuggestions:(id)a3
+- (id)itemIndexesForSharingSuggestions:(id)suggestions
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = [a3 valueForKeyPath:@"objectID"];
+  v5 = [suggestions valueForKeyPath:@"objectID"];
   v6 = [v4 setWithArray:v5];
 
   containers = self->_containers;
@@ -41,16 +41,16 @@ uint64_t __80__PXSharedLibrarySharingSuggestionsDataSource_itemIndexesForSharing
   return v4;
 }
 
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path
 {
-  dataSourceIdentifier = a3->dataSourceIdentifier;
+  dataSourceIdentifier = path->dataSourceIdentifier;
   if (dataSourceIdentifier != [(PXSharedLibrarySharingSuggestionsDataSource *)self identifier])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySharingSuggestionsDataSourceManager.m" lineNumber:597 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySharingSuggestionsDataSourceManager.m" lineNumber:597 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
   }
 
-  if (a3->dataSourceIdentifier == *off_1E7721F68)
+  if (path->dataSourceIdentifier == *off_1E7721F68)
   {
 LABEL_14:
     [MEMORY[0x1E696AAA8] currentHandler];
@@ -58,8 +58,8 @@ LABEL_14:
     PXSimpleIndexPathDescription();
   }
 
-  item = a3->item;
-  if (a3->section == 0x7FFFFFFFFFFFFFFFLL)
+  item = path->item;
+  if (path->section == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (item == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -73,7 +73,7 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  if (a3->subitem != 0x7FFFFFFFFFFFFFFFLL)
+  if (path->subitem != 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_14;
   }
@@ -86,49 +86,49 @@ LABEL_11:
   return v8;
 }
 
-- (id)_promiseForContainer:(id)a3
+- (id)_promiseForContainer:(id)container
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_promiseByContainer objectForKeyedSubscript:v4];
+  containerCopy = container;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_promiseByContainer objectForKeyedSubscript:containerCopy];
   if (!v6)
   {
-    v7 = [(PXSharedLibrarySharingSuggestionsDataSource *)v5 delegate];
-    v6 = [v7 dataSource:v5 promiseForContainer:v4];
+    delegate = [(PXSharedLibrarySharingSuggestionsDataSource *)selfCopy delegate];
+    v6 = [delegate dataSource:selfCopy promiseForContainer:containerCopy];
 
     if (!v6)
     {
       v8 = [PXSharedLibrarySharingSuggestionPromise alloc];
-      v9 = [MEMORY[0x1E695DF00] distantFuture];
-      v6 = [(PXSharedLibrarySharingSuggestionPromise *)v8 initWithContainer:v4 considerNewAfterDate:v9 lightweightPlaceholder:1];
+      distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+      v6 = [(PXSharedLibrarySharingSuggestionPromise *)v8 initWithContainer:containerCopy considerNewAfterDate:distantFuture lightweightPlaceholder:1];
     }
 
-    [(NSMutableDictionary *)v5->_promiseByContainer setObject:v6 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)selfCopy->_promiseByContainer setObject:v6 forKeyedSubscript:containerCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (PXSharedLibrarySharingSuggestionsDataSource)initWithSharingSuggestions:(id)a3 aggregateBeforeDate:(id)a4
+- (PXSharedLibrarySharingSuggestionsDataSource)initWithSharingSuggestions:(id)suggestions aggregateBeforeDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  suggestionsCopy = suggestions;
+  dateCopy = date;
   v22.receiver = self;
   v22.super_class = PXSharedLibrarySharingSuggestionsDataSource;
   v9 = [(PXSharedLibrarySharingSuggestionsDataSource *)&v22 init];
   if (v9)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v11 = [[PXSharedLibraryAggregateSharingSuggestionContainer alloc] initWithSharingSuggestions:v7 aggregateBeforeDate:v8];
+    v11 = [[PXSharedLibraryAggregateSharingSuggestionContainer alloc] initWithSharingSuggestions:suggestionsCopy aggregateBeforeDate:dateCopy];
     v12 = v11;
     if (v11)
     {
-      v13 = [(PXSharedLibraryAggregateSharingSuggestionContainer *)v11 aggregationRange];
-      v14 = [v7 fetchedObjects];
-      v15 = [v14 subarrayWithRange:{0, v13}];
+      aggregationRange = [(PXSharedLibraryAggregateSharingSuggestionContainer *)v11 aggregationRange];
+      fetchedObjects = [suggestionsCopy fetchedObjects];
+      v15 = [fetchedObjects subarrayWithRange:{0, aggregationRange}];
       [v10 addObjectsFromArray:v15];
 
       [v10 addObject:v12];
@@ -136,16 +136,16 @@ LABEL_11:
 
     else
     {
-      v16 = [v7 fetchedObjects];
-      [v10 addObjectsFromArray:v16];
+      fetchedObjects2 = [suggestionsCopy fetchedObjects];
+      [v10 addObjectsFromArray:fetchedObjects2];
     }
 
     v17 = [v10 copy];
     containers = v9->_containers;
     v9->_containers = v17;
 
-    objc_storeStrong(&v9->_sharingSuggestions, a3);
-    objc_storeStrong(&v9->_aggregateBeforeDate, a4);
+    objc_storeStrong(&v9->_sharingSuggestions, suggestions);
+    objc_storeStrong(&v9->_aggregateBeforeDate, date);
     v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
     promiseByContainer = v9->_promiseByContainer;
     v9->_promiseByContainer = v19;

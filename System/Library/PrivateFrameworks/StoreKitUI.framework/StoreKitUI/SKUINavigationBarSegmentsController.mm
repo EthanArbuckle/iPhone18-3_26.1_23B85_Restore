@@ -1,14 +1,14 @@
 @interface SKUINavigationBarSegmentsController
-- (SKUINavigationBarSegmentsController)initWithViewElement:(id)a3;
-- (void)reloadAfterDocumentUpdateWithNavigationItem:(id)a3;
+- (SKUINavigationBarSegmentsController)initWithViewElement:(id)element;
+- (void)reloadAfterDocumentUpdateWithNavigationItem:(id)item;
 - (void)willAppearInNavigationBar;
 @end
 
 @implementation SKUINavigationBarSegmentsController
 
-- (SKUINavigationBarSegmentsController)initWithViewElement:(id)a3
+- (SKUINavigationBarSegmentsController)initWithViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUINavigationBarSegmentsController initWithViewElement:];
@@ -19,7 +19,7 @@
   v5 = [(SKUINavigationBarSegmentsController *)&v9 init];
   if (v5)
   {
-    v6 = [[SKUISegmentedControlViewElementController alloc] initWithViewElement:v4];
+    v6 = [[SKUISegmentedControlViewElementController alloc] initWithViewElement:elementCopy];
     underlyingController = v5->_underlyingController;
     v5->_underlyingController = v6;
 
@@ -29,26 +29,26 @@
   return v5;
 }
 
-- (void)reloadAfterDocumentUpdateWithNavigationItem:(id)a3
+- (void)reloadAfterDocumentUpdateWithNavigationItem:(id)item
 {
   underlyingController = self->_underlyingController;
-  v5 = a3;
+  itemCopy = item;
   [(SKUISegmentedControlViewElementController *)underlyingController reloadAfterDocumentUpdate];
   v6.receiver = self;
   v6.super_class = SKUINavigationBarSegmentsController;
-  [(SKUINavigationBarSectionController *)&v6 reloadAfterDocumentUpdateWithNavigationItem:v5];
+  [(SKUINavigationBarSectionController *)&v6 reloadAfterDocumentUpdateWithNavigationItem:itemCopy];
 }
 
 - (void)willAppearInNavigationBar
 {
-  v3 = [(SKUINavigationBarSectionController *)self context];
-  [v3 maximumNavigationBarWidth];
+  context = [(SKUINavigationBarSectionController *)self context];
+  [context maximumNavigationBarWidth];
   v5 = v4;
-  v6 = [v3 parentViewController];
-  if ([v6 isViewLoaded])
+  parentViewController = [context parentViewController];
+  if ([parentViewController isViewLoaded])
   {
-    v7 = [v6 view];
-    [v7 bounds];
+    view = [parentViewController view];
+    [view bounds];
     v5 = v8;
   }
 

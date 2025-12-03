@@ -1,23 +1,23 @@
 @interface CRLPdfTaggerTextStorageChunkContext
-- (CRLPdfTaggerTextStorageChunkContext)initWithStateOfTagger:(id)a3 textStorageChunk:(id)a4 limitSelection:(id)a5;
+- (CRLPdfTaggerTextStorageChunkContext)initWithStateOfTagger:(id)tagger textStorageChunk:(id)chunk limitSelection:(id)selection;
 @end
 
 @implementation CRLPdfTaggerTextStorageChunkContext
 
-- (CRLPdfTaggerTextStorageChunkContext)initWithStateOfTagger:(id)a3 textStorageChunk:(id)a4 limitSelection:(id)a5
+- (CRLPdfTaggerTextStorageChunkContext)initWithStateOfTagger:(id)tagger textStorageChunk:(id)chunk limitSelection:(id)selection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 columns];
-  v12 = [v9 storage];
+  taggerCopy = tagger;
+  chunkCopy = chunk;
+  selectionCopy = selection;
+  columns = [chunkCopy columns];
+  storage = [chunkCopy storage];
   v15.receiver = self;
   v15.super_class = CRLPdfTaggerTextStorageChunkContext;
-  v13 = [(CRLPdfTaggerTextColumnOwnerContext *)&v15 initWithStateOfTagger:v8 columns:v11 storage:v12 limitSelection:v10];
+  v13 = [(CRLPdfTaggerTextColumnOwnerContext *)&v15 initWithStateOfTagger:taggerCopy columns:columns storage:storage limitSelection:selectionCopy];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_textStorageChunk, a4);
+    objc_storeStrong(&v13->_textStorageChunk, chunk);
   }
 
   return v13;

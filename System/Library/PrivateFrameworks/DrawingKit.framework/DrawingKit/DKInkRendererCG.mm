@@ -1,26 +1,26 @@
 @interface DKInkRendererCG
 - (CGRect)invalidRect;
-- (DKInkRendererCG)initWithCoder:(id)a3;
-- (DKInkRendererCG)initWithFrame:(CGRect)a3;
+- (DKInkRendererCG)initWithCoder:(id)coder;
+- (DKInkRendererCG)initWithFrame:(CGRect)frame;
 - (DKInkRendererDelegate)delegate;
 - (id)snapshotImage;
 - (void)_commonInit;
-- (void)addPoint:(id *)a3;
+- (void)addPoint:(id *)point;
 - (void)beginStroke;
 - (void)clear;
 - (void)dealloc;
 - (void)display;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)endStroke;
 @end
 
 @implementation DKInkRendererCG
 
-- (DKInkRendererCG)initWithFrame:(CGRect)a3
+- (DKInkRendererCG)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = DKInkRendererCG;
-  v3 = [(DKInkRendererCG *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DKInkRendererCG *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,11 +30,11 @@
   return v4;
 }
 
-- (DKInkRendererCG)initWithCoder:(id)a3
+- (DKInkRendererCG)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DKInkRendererCG;
-  v3 = [(DKInkRendererCG *)&v6 initWithCoder:a3];
+  v3 = [(DKInkRendererCG *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -49,8 +49,8 @@
   [(DKInkRendererCG *)self setClearsContextBeforeDrawing:0];
   [(DKInkRendererCG *)self setOpaque:1];
   [(DKInkRendererCG *)self setExclusiveTouch:1];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [(DKInkRendererCG *)self setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [(DKInkRendererCG *)self setBackgroundColor:systemBackgroundColor];
 }
 
 - (void)dealloc
@@ -77,17 +77,17 @@
   self->_currentInterpolatedBrushStroke = v6;
 }
 
-- (void)addPoint:(id *)a3
+- (void)addPoint:(id *)point
 {
-  v5 = *&a3->var1;
-  v15[0] = a3->var0;
+  v5 = *&point->var1;
+  v15[0] = point->var0;
   v15[1] = v5;
-  var3 = a3->var3;
+  var3 = point->var3;
   v6 = [MEMORY[0x277CCAE60] dk_valueWithRenderPoint:v15];
   [(NSMutableArray *)self->_currentInterpolatedBrushStroke addObject:v6];
-  v7 = ClampToMinWidthCG(a3->var1, 1.0);
-  v8 = a3->var0.x - v7 * 0.5;
-  v9 = a3->var0.y - v7 * 0.5;
+  v7 = ClampToMinWidthCG(point->var1, 1.0);
+  v8 = point->var0.x - v7 * 0.5;
+  v9 = point->var0.y - v7 * 0.5;
   p_invalidRect = &self->_invalidRect;
   if (CGRectIsNull(self->_invalidRect))
   {
@@ -174,25 +174,25 @@
     v4 = *(MEMORY[0x277CBF398] + 16);
     p_invalidRect->origin = *MEMORY[0x277CBF398];
     p_invalidRect->size = v4;
-    v5 = [(DKInkRendererCG *)self delegate];
+    delegate = [(DKInkRendererCG *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 performSelector:sel_inkDidRender_ withObject:self];
+      [delegate performSelector:sel_inkDidRender_ withObject:self];
     }
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v59 = *MEMORY[0x277D85DE8];
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
-  v9 = [(DKInkRendererCG *)self inkColor];
-  CGContextSetFillColorWithColor(CurrentContext, [v9 CGColor]);
+  inkColor = [(DKInkRendererCG *)self inkColor];
+  CGContextSetFillColorWithColor(CurrentContext, [inkColor CGColor]);
 
   v54 = 0u;
   v55 = 0u;

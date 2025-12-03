@@ -1,42 +1,42 @@
 @interface PLBatteryUIBatteryGroupHeader
-+ (id)headerViewWithRange:(id)a3 Cycles:(id)a4;
-- (PLBatteryUIBatteryGroupHeader)initWithFrame:(CGRect)a3;
-- (PLBatteryUIBatteryGroupHeader)initWithFrame:(CGRect)a3 range:(id)a4 cycles:(id)a5;
-- (PLBatteryUIBatteryGroupHeader)initWithSpecifier:(id)a3;
++ (id)headerViewWithRange:(id)range Cycles:(id)cycles;
+- (PLBatteryUIBatteryGroupHeader)initWithFrame:(CGRect)frame;
+- (PLBatteryUIBatteryGroupHeader)initWithFrame:(CGRect)frame range:(id)range cycles:(id)cycles;
+- (PLBatteryUIBatteryGroupHeader)initWithSpecifier:(id)specifier;
 - (PLBatteryUIBatteryGroupHeaderDelegate)delegate;
 - (void)layoutSubviews;
-- (void)refresh1:(id)a3;
+- (void)refresh1:(id)refresh1;
 @end
 
 @implementation PLBatteryUIBatteryGroupHeader
 
-+ (id)headerViewWithRange:(id)a3 Cycles:(id)a4
++ (id)headerViewWithRange:(id)range Cycles:(id)cycles
 {
-  v5 = a4;
-  v6 = a3;
+  cyclesCopy = cycles;
+  rangeCopy = range;
   v7 = objc_alloc_init(PLBatteryUIBatteryGroupHeader);
-  [(PLBatteryUIBatteryGroupHeader *)v7 setRange:v6];
+  [(PLBatteryUIBatteryGroupHeader *)v7 setRange:rangeCopy];
 
-  [(PLBatteryUIBatteryGroupHeader *)v7 setCycle:v5];
+  [(PLBatteryUIBatteryGroupHeader *)v7 setCycle:cyclesCopy];
 
   return v7;
 }
 
-- (PLBatteryUIBatteryGroupHeader)initWithSpecifier:(id)a3
+- (PLBatteryUIBatteryGroupHeader)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"PLBatteryUIDurationValueKey"];
+  specifierCopy = specifier;
+  v5 = [specifierCopy objectForKeyedSubscript:@"PLBatteryUIDurationValueKey"];
   usageDuration = self->_usageDuration;
   self->_usageDuration = v5;
 
-  v7 = [v4 objectForKeyedSubscript:@"PLBatteryUITitleLabelString"];
+  v7 = [specifierCopy objectForKeyedSubscript:@"PLBatteryUITitleLabelString"];
   titleLabelString = self->_titleLabelString;
   self->_titleLabelString = v7;
 
-  v9 = [v4 objectForKeyedSubscript:@"PLIconDisplayTypeKey"];
+  v9 = [specifierCopy objectForKeyedSubscript:@"PLIconDisplayTypeKey"];
   self->_iconDisplayType = [v9 intValue];
 
-  v10 = [v4 propertyForKey:@"PLBatteryUIBatteryGroupHeaderDelegateKey"];
+  v10 = [specifierCopy propertyForKey:@"PLBatteryUIBatteryGroupHeaderDelegateKey"];
 
   [(PLBatteryUIBatteryGroupHeader *)self setDelegate:v10];
   y = CGRectZero.origin.y;
@@ -46,11 +46,11 @@
   return [(PLBatteryUIBatteryGroupHeader *)self initWithFrame:CGRectZero.origin.x, y, width, height];
 }
 
-- (PLBatteryUIBatteryGroupHeader)initWithFrame:(CGRect)a3
+- (PLBatteryUIBatteryGroupHeader)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = PLBatteryUIBatteryGroupHeader;
-  v3 = [(PLBatteryUIBatteryGroupHeader *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLBatteryUIBatteryGroupHeader *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UILabel alloc];
@@ -92,20 +92,20 @@
   return v3;
 }
 
-- (PLBatteryUIBatteryGroupHeader)initWithFrame:(CGRect)a3 range:(id)a4 cycles:(id)a5
+- (PLBatteryUIBatteryGroupHeader)initWithFrame:(CGRect)frame range:(id)range cycles:(id)cycles
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
-  v13 = a5;
-  v14 = [(PLBatteryUIBatteryGroupHeader *)self initWithFrame:x, y, width, height];
-  v15 = v14;
-  if (v14)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  rangeCopy = range;
+  cyclesCopy = cycles;
+  height = [(PLBatteryUIBatteryGroupHeader *)self initWithFrame:x, y, width, height];
+  v15 = height;
+  if (height)
   {
-    objc_storeStrong(&v14->_rangeString, a4);
-    objc_storeStrong(&v15->_cycles, a5);
+    objc_storeStrong(&height->_rangeString, range);
+    objc_storeStrong(&v15->_cycles, cycles);
   }
 
   return v15;
@@ -115,14 +115,14 @@
 {
   [(PLBatteryUIBatteryGroupHeader *)self bounds];
   v4 = v3;
-  v5 = [(PLBatteryUIBatteryGroupHeader *)self superview];
+  superview = [(PLBatteryUIBatteryGroupHeader *)self superview];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(PLBatteryUIBatteryGroupHeader *)self superview];
-    [v7 _backgroundInset];
+    superview2 = [(PLBatteryUIBatteryGroupHeader *)self superview];
+    [superview2 _backgroundInset];
     v9 = v8;
 
     v10 = v9 + 15.0;
@@ -150,9 +150,9 @@
     [(UILabel *)self->_titleLabel frame];
     v21 = v20;
     v23 = v22;
-    v24 = [UIApp userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [UIApp userInterfaceLayoutDirection];
     v25 = v16 - v21;
-    if (!v24)
+    if (!userInterfaceLayoutDirection)
     {
       v25 = v10;
     }
@@ -172,19 +172,19 @@
   }
 }
 
-- (void)refresh1:(id)a3
+- (void)refresh1:(id)refresh1
 {
-  v4 = [(PLBatteryUIBatteryGroupHeader *)self delegate];
+  delegate = [(PLBatteryUIBatteryGroupHeader *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(PLBatteryUIBatteryGroupHeader *)self delegate];
+    delegate2 = [(PLBatteryUIBatteryGroupHeader *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(PLBatteryUIBatteryGroupHeader *)self delegate];
-      [v7 didPushBatteryButton:self];
+      delegate3 = [(PLBatteryUIBatteryGroupHeader *)self delegate];
+      [delegate3 didPushBatteryButton:self];
     }
   }
 }

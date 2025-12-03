@@ -1,73 +1,73 @@
 @interface SGQuickResponsesPersonalization
-+ (id)augmentRecords:(id)a3 semanticClass:(unint64_t)a4 config:(id)a5;
-+ (id)deduplicatedReplyTextsForReplyPositions:(id)a3 semanticClass:(unint64_t)a4 responseCount:(unint64_t)a5 config:(id)a6;
-- (SGQuickResponsesPersonalization)initWithStore:(id)a3 withRng:(id)a4;
-- (id)replyPositionsForSemanticClass:(unint64_t)a3 responseCount:(unint64_t)a4 config:(id)a5;
-- (id)sortedReplyPositionsForSemanticClass:(unint64_t)a3 config:(id)a4;
-- (void)registerDisplayedResponses:(id)a3 config:(id)a4;
-- (void)registerSelectedResponse:(id)a3 config:(id)a4;
-- (void)registerWrittenResponse:(id)a3 config:(id)a4;
++ (id)augmentRecords:(id)records semanticClass:(unint64_t)class config:(id)config;
++ (id)deduplicatedReplyTextsForReplyPositions:(id)positions semanticClass:(unint64_t)class responseCount:(unint64_t)count config:(id)config;
+- (SGQuickResponsesPersonalization)initWithStore:(id)store withRng:(id)rng;
+- (id)replyPositionsForSemanticClass:(unint64_t)class responseCount:(unint64_t)count config:(id)config;
+- (id)sortedReplyPositionsForSemanticClass:(unint64_t)class config:(id)config;
+- (void)registerDisplayedResponses:(id)responses config:(id)config;
+- (void)registerSelectedResponse:(id)response config:(id)config;
+- (void)registerWrittenResponse:(id)response config:(id)config;
 @end
 
 @implementation SGQuickResponsesPersonalization
 
-- (void)registerWrittenResponse:(id)a3 config:(id)a4
+- (void)registerWrittenResponse:(id)response config:(id)config
 {
   v6 = MEMORY[0x277CCA900];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 whitespaceAndNewlineCharacterSet];
-  v16 = [v8 stringByTrimmingCharactersInSet:v9];
+  configCopy = config;
+  responseCopy = response;
+  whitespaceAndNewlineCharacterSet = [v6 whitespaceAndNewlineCharacterSet];
+  v16 = [responseCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v10 = [SGQuickResponsesReplies normalizeReplyText:v16];
-  v11 = [v7 replies];
-  v12 = [v11 normalizedReplyTextsSet];
-  v13 = [v12 containsObject:v10];
+  replies = [configCopy replies];
+  normalizedReplyTextsSet = [replies normalizedReplyTextsSet];
+  v13 = [normalizedReplyTextsSet containsObject:v10];
 
   store = self->_store;
-  v15 = [v7 language];
+  language = [configCopy language];
 
-  [(SGQuickResponsesStore *)store addWrittenToResponse:v10 language:v15 isMatch:v13];
+  [(SGQuickResponsesStore *)store addWrittenToResponse:v10 language:language isMatch:v13];
 }
 
-- (void)registerSelectedResponse:(id)a3 config:(id)a4
+- (void)registerSelectedResponse:(id)response config:(id)config
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [SGQuickResponsesReplies normalizeReplyText:v6];
-  v9 = [v7 replies];
-  v10 = [v9 normalizedReplyTextsSet];
-  v11 = [v10 containsObject:v8];
+  responseCopy = response;
+  configCopy = config;
+  v8 = [SGQuickResponsesReplies normalizeReplyText:responseCopy];
+  replies = [configCopy replies];
+  normalizedReplyTextsSet = [replies normalizedReplyTextsSet];
+  v11 = [normalizedReplyTextsSet containsObject:v8];
 
   if (v11)
   {
     store = self->_store;
-    v13 = [v7 language];
-    [(SGQuickResponsesStore *)store addSelectedToResponse:v8 language:v13];
+    language = [configCopy language];
+    [(SGQuickResponsesStore *)store addSelectedToResponse:v8 language:language];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v15 = 138412290;
-    v16 = v6;
+    v16 = responseCopy;
     _os_log_error_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "No reply text string exists in config for selected response: %@", &v15, 0xCu);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerDisplayedResponses:(id)a3 config:(id)a4
+- (void)registerDisplayedResponses:(id)responses config:(id)config
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  responsesCopy = responses;
+  configCopy = config;
   v20 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v5;
+  obj = responsesCopy;
   v7 = [obj countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v7)
   {
@@ -84,9 +84,9 @@
 
         v11 = *(*(&v22 + 1) + 8 * i);
         v12 = [SGQuickResponsesReplies normalizeReplyText:v11];
-        v13 = [v6 replies];
-        v14 = [v13 normalizedReplyTextsSet];
-        v15 = [v14 containsObject:v12];
+        replies = [configCopy replies];
+        normalizedReplyTextsSet = [replies normalizedReplyTextsSet];
+        v15 = [normalizedReplyTextsSet containsObject:v12];
 
         if (v15)
         {
@@ -108,32 +108,32 @@
   }
 
   store = self->_store;
-  v17 = [v6 language];
-  [(SGQuickResponsesStore *)store addDisplayedToResponses:v20 language:v17];
+  language = [configCopy language];
+  [(SGQuickResponsesStore *)store addDisplayedToResponses:v20 language:language];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sortedReplyPositionsForSemanticClass:(unint64_t)a3 config:(id)a4
+- (id)sortedReplyPositionsForSemanticClass:(unint64_t)class config:(id)config
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 replies];
-  v8 = [v7 replyTextsForIndex:a3];
+  configCopy = config;
+  replies = [configCopy replies];
+  v8 = [replies replyTextsForIndex:class];
 
   store = self->_store;
-  v10 = [v6 language];
-  v11 = [(SGQuickResponsesStore *)store recordsForResponsesInternal:v8 language:v10];
+  language = [configCopy language];
+  v11 = [(SGQuickResponsesStore *)store recordsForResponsesInternal:v8 language:language];
 
   if (v11)
   {
-    v12 = [SGQuickResponsesPersonalization augmentRecords:v11 semanticClass:a3 config:v6];
+    v12 = [SGQuickResponsesPersonalization augmentRecords:v11 semanticClass:class config:configCopy];
 
-    v13 = [SGQuickResponsesReplyOption sortedReplyOptionsForRecords:v12 config:v6];
-    v14 = [v6 predictionParams];
-    v15 = [v14 isReplyTextRandomized];
+    v13 = [SGQuickResponsesReplyOption sortedReplyOptionsForRecords:v12 config:configCopy];
+    predictionParams = [configCopy predictionParams];
+    isReplyTextRandomized = [predictionParams isReplyTextRandomized];
 
-    if (v15)
+    if (isReplyTextRandomized)
     {
       [SGRandomization shuffleMutableArray:v13 inApproxEqualEpsilon:&__block_literal_global_110 withValueBlock:self->_rng withRng:0.000001];
     }
@@ -158,8 +158,8 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v25 + 1) + 8 * i) position];
-          [v16 addObject:v22];
+          position = [*(*(&v25 + 1) + 8 * i) position];
+          [v16 addObject:position];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -188,35 +188,35 @@ double __79__SGQuickResponsesPersonalization_sortedReplyPositionsForSemanticClas
   return v4;
 }
 
-- (id)replyPositionsForSemanticClass:(unint64_t)a3 responseCount:(unint64_t)a4 config:(id)a5
+- (id)replyPositionsForSemanticClass:(unint64_t)class responseCount:(unint64_t)count config:(id)config
 {
-  v8 = a5;
-  v9 = [(SGQuickResponsesPersonalization *)self sortedReplyPositionsForSemanticClass:a3 config:v8];
+  configCopy = config;
+  v9 = [(SGQuickResponsesPersonalization *)self sortedReplyPositionsForSemanticClass:class config:configCopy];
   if (!v9)
   {
-    v10 = [v8 replies];
-    v11 = [v10 replyCountForIndex:a3];
+    replies = [configCopy replies];
+    v11 = [replies replyCountForIndex:class];
 
     v9 = [SGRandomization shuffledSamplingWithoutReplacementForK:v11 fromN:v11 withRng:self->_rng];
   }
 
-  v12 = [SGQuickResponsesPersonalization deduplicatedReplyTextsForReplyPositions:v9 semanticClass:a3 responseCount:a4 config:v8];
+  v12 = [SGQuickResponsesPersonalization deduplicatedReplyTextsForReplyPositions:v9 semanticClass:class responseCount:count config:configCopy];
 
   return v12;
 }
 
-- (SGQuickResponsesPersonalization)initWithStore:(id)a3 withRng:(id)a4
+- (SGQuickResponsesPersonalization)initWithStore:(id)store withRng:(id)rng
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  rngCopy = rng;
   v12.receiver = self;
   v12.super_class = SGQuickResponsesPersonalization;
   v8 = [(SGQuickResponsesPersonalization *)&v12 init];
   if (v8)
   {
-    if (v6)
+    if (storeCopy)
     {
-      v9 = v6;
+      v9 = storeCopy;
     }
 
     else
@@ -227,25 +227,25 @@ double __79__SGQuickResponsesPersonalization_sortedReplyPositionsForSemanticClas
     store = v8->_store;
     v8->_store = v9;
 
-    objc_storeStrong(&v8->_rng, a4);
+    objc_storeStrong(&v8->_rng, rng);
   }
 
   return v8;
 }
 
-+ (id)augmentRecords:(id)a3 semanticClass:(unint64_t)a4 config:(id)a5
++ (id)augmentRecords:(id)records semanticClass:(unint64_t)class config:(id)config
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v8 replies];
+  recordsCopy = records;
+  configCopy = config;
+  replies = [configCopy replies];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v11 = [v8 replies];
-    v12 = [v11 semanticClassSelectedPseudocounts];
-    v13 = [v12 objectAtIndexedSubscript:a4];
+    replies2 = [configCopy replies];
+    semanticClassSelectedPseudocounts = [replies2 semanticClassSelectedPseudocounts];
+    v13 = [semanticClassSelectedPseudocounts objectAtIndexedSubscript:class];
   }
 
   else
@@ -254,24 +254,24 @@ double __79__SGQuickResponsesPersonalization_sortedReplyPositionsForSemanticClas
   }
 
   v14 = objc_opt_new();
-  v15 = [v8 predictionParams];
-  [v15 personalizationDisplayedPseudocount];
+  predictionParams = [configCopy predictionParams];
+  [predictionParams personalizationDisplayedPseudocount];
   v17 = v16;
 
-  v18 = [v8 predictionParams];
-  [v18 personalizationSelectedPseudocountPerSemanticClass];
+  predictionParams2 = [configCopy predictionParams];
+  [predictionParams2 personalizationSelectedPseudocountPerSemanticClass];
   v20 = v19;
 
-  v21 = [v7 replyRecords];
-  v22 = [v21 count];
+  replyRecords = [recordsCopy replyRecords];
+  v22 = [replyRecords count];
 
   if (v22)
   {
     v23 = 0;
     do
     {
-      v24 = [v7 replyRecords];
-      v25 = [v24 objectAtIndexedSubscript:v23];
+      replyRecords2 = [recordsCopy replyRecords];
+      v25 = [replyRecords2 objectAtIndexedSubscript:v23];
 
       v26 = v20;
       if (v13)
@@ -291,64 +291,64 @@ double __79__SGQuickResponsesPersonalization_sortedReplyPositionsForSemanticClas
       [v14 addObject:v35];
 
       ++v23;
-      v36 = [v7 replyRecords];
-      v37 = [v36 count];
+      replyRecords3 = [recordsCopy replyRecords];
+      v37 = [replyRecords3 count];
     }
 
     while (v23 < v37);
   }
 
-  v38 = [v8 replies];
-  v39 = [v38 replyTextCount];
+  replies3 = [configCopy replies];
+  replyTextCount = [replies3 replyTextCount];
 
-  v40 = [v8 replies];
-  v41 = [v40 replyClassCount];
+  replies4 = [configCopy replies];
+  replyClassCount = [replies4 replyClassCount];
 
   v42 = [SGQuickResponsesRecords alloc];
-  [v7 totalOpportunities];
-  v44 = v43 + v17 * v41;
-  [v7 totalDisplayed];
-  v46 = v45 + v17 * v39;
-  [v7 totalSelected];
-  v48 = v47 + v20 * v41;
-  [v7 totalMatched];
-  v50 = v49 + v20 * v41;
-  [v7 totalUnmatched];
-  v52 = [(SGQuickResponsesRecords *)v42 initWithReplyRecords:v14 totalOpportunities:v44 totalDisplayed:v46 totalSelected:v48 totalMatched:v50 totalUnmatched:v51 + v17 * v39 - v20 * v41];
+  [recordsCopy totalOpportunities];
+  v44 = v43 + v17 * replyClassCount;
+  [recordsCopy totalDisplayed];
+  v46 = v45 + v17 * replyTextCount;
+  [recordsCopy totalSelected];
+  v48 = v47 + v20 * replyClassCount;
+  [recordsCopy totalMatched];
+  v50 = v49 + v20 * replyClassCount;
+  [recordsCopy totalUnmatched];
+  v52 = [(SGQuickResponsesRecords *)v42 initWithReplyRecords:v14 totalOpportunities:v44 totalDisplayed:v46 totalSelected:v48 totalMatched:v50 totalUnmatched:v51 + v17 * replyTextCount - v20 * replyClassCount];
 
   return v52;
 }
 
-+ (id)deduplicatedReplyTextsForReplyPositions:(id)a3 semanticClass:(unint64_t)a4 responseCount:(unint64_t)a5 config:(id)a6
++ (id)deduplicatedReplyTextsForReplyPositions:(id)positions semanticClass:(unint64_t)class responseCount:(unint64_t)count config:(id)config
 {
   v64 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
+  positionsCopy = positions;
+  configCopy = config;
   v56 = objc_opt_new();
-  v55 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  v11 = [v10 replies];
+  v55 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:class];
+  replies = [configCopy replies];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v51 = v10;
-    v13 = [v10 replies];
-    v14 = [v13 semanticClassStyleGroups];
-    v15 = [v14 objectAtIndexedSubscript:a4];
+    v51 = configCopy;
+    replies2 = [configCopy replies];
+    semanticClassStyleGroups = [replies2 semanticClassStyleGroups];
+    v15 = [semanticClassStyleGroups objectAtIndexedSubscript:class];
 
-    v16 = [v13 semanticClassReplyTexts];
-    v17 = [v16 objectAtIndexedSubscript:a4];
+    semanticClassReplyTexts = [replies2 semanticClassReplyTexts];
+    v17 = [semanticClassReplyTexts objectAtIndexedSubscript:class];
 
-    v50 = v13;
-    v58 = [v13 replyTextParent];
-    v18 = [v15 firstObject];
-    v57 = [v18 unsignedIntegerValue];
+    v50 = replies2;
+    replyTextParent = [replies2 replyTextParent];
+    firstObject = [v15 firstObject];
+    unsignedIntegerValue = [firstObject unsignedIntegerValue];
 
     v49 = v15;
     v19 = [v15 count];
-    v20 = [v17 firstObject];
-    v21 = [v20 unsignedIntegerValue];
+    firstObject2 = [v17 firstObject];
+    unsignedIntegerValue2 = [firstObject2 unsignedIntegerValue];
 
     v48 = v17;
     v22 = [v17 count];
@@ -358,23 +358,23 @@ double __79__SGQuickResponsesPersonalization_sortedReplyPositionsForSemanticClas
       [i addObject:v24];
     }
 
-    if (v22 >= a5)
+    if (v22 >= count)
     {
-      v25 = a5;
+      countCopy = count;
     }
 
     else
     {
-      v25 = v22;
+      countCopy = v22;
     }
 
-    v52 = v9;
-    v53 = v25;
+    v52 = positionsCopy;
+    v53 = countCopy;
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    obj = v9;
+    obj = positionsCopy;
     v26 = [obj countByEnumeratingWithState:&v59 objects:v63 count:16];
     if (v26)
     {
@@ -391,14 +391,14 @@ LABEL_9:
         }
 
         v31 = *(*(&v59 + 1) + 8 * v30);
-        v32 = [v58 objectAtIndexedSubscript:{objc_msgSend(v31, "unsignedIntegerValue") + v21}];
-        v33 = [v32 unsignedIntegerValue];
+        v32 = [replyTextParent objectAtIndexedSubscript:{objc_msgSend(v31, "unsignedIntegerValue") + unsignedIntegerValue2}];
+        unsignedIntegerValue3 = [v32 unsignedIntegerValue];
 
-        v34 = v33 - v57;
-        v35 = [i objectAtIndexedSubscript:v33 - v57];
-        v36 = [v35 unsignedIntegerValue];
+        v34 = unsignedIntegerValue3 - unsignedIntegerValue;
+        v35 = [i objectAtIndexedSubscript:unsignedIntegerValue3 - unsignedIntegerValue];
+        unsignedIntegerValue4 = [v35 unsignedIntegerValue];
 
-        if (!v36)
+        if (!unsignedIntegerValue4)
         {
           v37 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:1];
           [i setObject:v37 atIndexedSubscript:v34];
@@ -426,25 +426,25 @@ LABEL_9:
       }
     }
 
-    v10 = v51;
-    v9 = v52;
+    configCopy = v51;
+    positionsCopy = v52;
   }
 
   else
   {
-    v41 = [v9 count];
-    if (a5 && v41)
+    v41 = [positionsCopy count];
+    if (count && v41)
     {
       v42 = 1;
       do
       {
         v43 = objc_alloc(MEMORY[0x277D42648]);
-        v44 = [v9 objectAtIndexedSubscript:v42 - 1];
+        v44 = [positionsCopy objectAtIndexedSubscript:v42 - 1];
         v45 = [v43 initWithFirst:v55 second:v44];
 
         [v56 addObject:v45];
-        v46 = [v9 count];
-        if (v42 >= a5)
+        v46 = [positionsCopy count];
+        if (v42 >= count)
         {
           break;
         }

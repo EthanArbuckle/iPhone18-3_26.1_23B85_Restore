@@ -23,9 +23,9 @@
   v3 = [BSDescriptionBuilder builderWithObject:self];
   v4 = [v3 appendObject:self->_service withName:@"service"];
   v5 = [v3 appendQueue:self->_queue withName:@"queue"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

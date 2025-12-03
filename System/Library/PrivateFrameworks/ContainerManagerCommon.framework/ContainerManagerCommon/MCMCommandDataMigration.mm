@@ -1,8 +1,8 @@
 @interface MCMCommandDataMigration
 + (Class)incomingMessageClass;
 + (unint64_t)command;
-- (BOOL)_performBundleContainerOwnershipMigrationWithError:(id *)a3;
-- (BOOL)_performInternalACLMigrationWithError:(id *)a3;
+- (BOOL)_performBundleContainerOwnershipMigrationWithError:(id *)error;
+- (BOOL)_performInternalACLMigrationWithError:(id *)error;
 - (BOOL)preflightClientAllowed;
 - (void)execute;
 @end
@@ -24,30 +24,30 @@
   return 24;
 }
 
-- (BOOL)_performInternalACLMigrationWithError:(id *)a3
+- (BOOL)_performInternalACLMigrationWithError:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
-  v6 = [(MCMCommand *)self context];
-  v7 = [v6 userIdentityCache];
-  v8 = [v7 defaultUserIdentity];
+  context = [(MCMCommand *)self context];
+  userIdentityCache = [context userIdentityCache];
+  defaultUserIdentity = [userIdentityCache defaultUserIdentity];
 
   v9 = containermanager_copy_global_configuration();
-  v10 = [v9 staticConfig];
-  v11 = [v10 configForContainerClass:12];
+  staticConfig = [v9 staticConfig];
+  v11 = [staticConfig configForContainerClass:12];
 
   v12 = containermanager_copy_global_configuration();
-  v13 = [v12 staticConfig];
-  v14 = [v13 configForContainerClass:13];
+  staticConfig2 = [v12 staticConfig];
+  v14 = [staticConfig2 configForContainerClass:13];
 
   v15 = containermanager_copy_global_configuration();
-  LODWORD(v13) = [v15 systemContainerMode];
+  LODWORD(staticConfig2) = [v15 systemContainerMode];
 
-  if (v13 != 1 || ([v5 hasMigrationOccurredForType:@"ACLMigration"] & 1) != 0)
+  if (staticConfig2 != 1 || ([v5 hasMigrationOccurredForType:@"ACLMigration"] & 1) != 0)
   {
     v16 = 0;
-    v17 = 0;
-    v18 = 0;
+    classURL = 0;
+    classURL2 = 0;
     v19 = 0;
 LABEL_4:
     v20 = 1;
@@ -55,15 +55,15 @@ LABEL_4:
   }
 
   v23 = containermanager_copy_global_configuration();
-  v24 = [v23 classPathCache];
-  v25 = [v24 containerClassPathForUserIdentity:v8 containerConfig:v11 typeClass:objc_opt_class()];
-  v17 = [v25 classURL];
+  classPathCache = [v23 classPathCache];
+  v25 = [classPathCache containerClassPathForUserIdentity:defaultUserIdentity containerConfig:v11 typeClass:objc_opt_class()];
+  classURL = [v25 classURL];
 
   v26 = +[MCMFileManager defaultManager];
-  LODWORD(v24) = [v26 itemExistsAtURL:v17];
+  LODWORD(classPathCache) = [v26 itemExistsAtURL:classURL];
 
-  v41 = a3;
-  if (!v24)
+  errorCopy = error;
+  if (!classPathCache)
   {
     v42 = 0;
     goto LABEL_12;
@@ -71,7 +71,7 @@ LABEL_4:
 
   v27 = +[MCMFileManager defaultManager];
   v44 = 0;
-  v28 = [v27 standardizeAllSystemContainerACLsAtURL:v17 error:&v44];
+  v28 = [v27 standardizeAllSystemContainerACLsAtURL:classURL error:&v44];
   v42 = v44;
 
   if (v28)
@@ -90,22 +90,22 @@ LABEL_12:
     _os_log_error_impl(&dword_1DF2C3000, v29, OS_LOG_TYPE_ERROR, "Failed to set ACLs on system containers : %@", buf, 0xCu);
   }
 
-  v16 = [[MCMError alloc] initWithNSError:v42 url:v17 defaultErrorType:63];
+  v16 = [[MCMError alloc] initWithNSError:v42 url:classURL defaultErrorType:63];
   v40 = 0;
 LABEL_13:
   v30 = containermanager_copy_global_configuration();
-  v31 = [v30 classPathCache];
-  v32 = [v31 containerClassPathForUserIdentity:v8 containerConfig:v14 typeClass:objc_opt_class()];
-  v18 = [v32 classURL];
+  classPathCache2 = [v30 classPathCache];
+  v32 = [classPathCache2 containerClassPathForUserIdentity:defaultUserIdentity containerConfig:v14 typeClass:objc_opt_class()];
+  classURL2 = [v32 classURL];
 
   v33 = +[MCMFileManager defaultManager];
-  LODWORD(v32) = [v33 itemExistsAtURL:v18];
+  LODWORD(v32) = [v33 itemExistsAtURL:classURL2];
 
   if (v32)
   {
     v34 = +[MCMFileManager defaultManager];
     v43 = v42;
-    v35 = [v34 standardizeAllSystemContainerACLsAtURL:v18 error:&v43];
+    v35 = [v34 standardizeAllSystemContainerACLsAtURL:classURL2 error:&v43];
     v19 = v43;
 
     if ((v35 & 1) == 0)
@@ -118,9 +118,9 @@ LABEL_13:
         _os_log_error_impl(&dword_1DF2C3000, v36, OS_LOG_TYPE_ERROR, "Failed to set ACLs on system group containers : %@", buf, 0xCu);
       }
 
-      v37 = [[MCMError alloc] initWithNSError:v19 url:v18 defaultErrorType:63];
+      v37 = [[MCMError alloc] initWithNSError:v19 url:classURL2 defaultErrorType:63];
       v16 = v37;
-      v38 = v41;
+      v38 = errorCopy;
       goto LABEL_21;
     }
   }
@@ -130,7 +130,7 @@ LABEL_13:
     v19 = v42;
   }
 
-  v38 = v41;
+  v38 = errorCopy;
   if (v40)
   {
     [v5 setMigrationCompleteForType:@"ACLMigration"];
@@ -156,21 +156,21 @@ LABEL_5:
   return v20;
 }
 
-- (BOOL)_performBundleContainerOwnershipMigrationWithError:(id *)a3
+- (BOOL)_performBundleContainerOwnershipMigrationWithError:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = [(MCMCommand *)self context];
-  v5 = [v4 userIdentityCache];
-  v6 = [v5 defaultUserIdentity];
+  context = [(MCMCommand *)self context];
+  userIdentityCache = [context userIdentityCache];
+  defaultUserIdentity = [userIdentityCache defaultUserIdentity];
 
   v7 = containermanager_copy_global_configuration();
-  v8 = [v7 staticConfig];
+  staticConfig = [v7 staticConfig];
   v9 = 1;
-  v10 = [v8 configForContainerClass:1];
+  v10 = [staticConfig configForContainerClass:1];
 
   v11 = containermanager_copy_global_configuration();
-  v12 = [v11 classPathCache];
-  v13 = [v12 containerClassPathForUserIdentity:v6 containerConfig:v10 typeClass:objc_opt_class()];
+  classPathCache = [v11 classPathCache];
+  v13 = [classPathCache containerClassPathForUserIdentity:defaultUserIdentity containerConfig:v10 typeClass:objc_opt_class()];
 
   v14 = objc_opt_new();
   v15 = v14;
@@ -185,7 +185,7 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v34 = a3;
+    errorCopy = error;
     v18 = container_log_handle_for_category();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
@@ -194,27 +194,27 @@ LABEL_9:
     }
 
     v19 = +[MCMFileManager defaultManager];
-    v20 = [v13 categoryURL];
+    categoryURL = [v13 categoryURL];
     v21 = containermanager_copy_global_configuration();
-    v22 = [v21 bundleContainerOwner];
+    bundleContainerOwner = [v21 bundleContainerOwner];
     v35 = 0;
-    v23 = [v19 standardizeOwnershipAtURL:v20 toPOSIXUser:v22 error:&v35];
+    v23 = [v19 standardizeOwnershipAtURL:categoryURL toPOSIXUser:bundleContainerOwner error:&v35];
     v17 = v35;
 
     if (v23)
     {
 LABEL_8:
-      [v15 setMigrationCompleteForType:{@"BundleMigration", v34}];
+      [v15 setMigrationCompleteForType:{@"BundleMigration", errorCopy}];
       v16 = 0;
       goto LABEL_9;
     }
 
-    v26 = [v17 domain];
-    if ([v26 isEqualToString:*MEMORY[0x1E696A798]])
+    domain = [v17 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A798]])
     {
-      v27 = [v17 code];
+      code = [v17 code];
 
-      if (v27 == 2)
+      if (code == 2)
       {
         goto LABEL_8;
       }
@@ -225,26 +225,26 @@ LABEL_8:
     }
 
     v28 = [MCMError alloc];
-    v29 = [v13 categoryURL];
-    v16 = [(MCMError *)v28 initWithNSError:v17 url:v29 defaultErrorType:127];
+    categoryURL2 = [v13 categoryURL];
+    v16 = [(MCMError *)v28 initWithNSError:v17 url:categoryURL2 defaultErrorType:127];
 
     v30 = container_log_handle_for_category();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      v32 = [v13 categoryURL];
-      v33 = [v32 path];
+      categoryURL3 = [v13 categoryURL];
+      path = [categoryURL3 path];
       *buf = 138412546;
-      v37 = v33;
+      v37 = path;
       v38 = 2112;
       v39 = v17;
       _os_log_error_impl(&dword_1DF2C3000, v30, OS_LOG_TYPE_ERROR, "Failed to change owner of %@: %@", buf, 0x16u);
     }
 
-    if (v34)
+    if (errorCopy)
     {
       v31 = v16;
       v9 = 0;
-      *v34 = v16;
+      *errorCopy = v16;
     }
 
     else
@@ -356,8 +356,8 @@ LABEL_18:
   }
 
   v18 = v17;
-  v19 = [(MCMCommand *)self resultPromise];
-  [v19 completeWithResult:v18];
+  resultPromise = [(MCMCommand *)self resultPromise];
+  [resultPromise completeWithResult:v18];
 
   objc_autoreleasePoolPop(v3);
   v20 = *MEMORY[0x1E69E9840];
@@ -366,12 +366,12 @@ LABEL_18:
 - (BOOL)preflightClientAllowed
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMCommand *)self context];
-  v3 = [v2 clientIdentity];
-  v4 = [v3 isAllowedToStartDataMigration];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  isAllowedToStartDataMigration = [clientIdentity isAllowedToStartDataMigration];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToStartDataMigration;
 }
 
 @end

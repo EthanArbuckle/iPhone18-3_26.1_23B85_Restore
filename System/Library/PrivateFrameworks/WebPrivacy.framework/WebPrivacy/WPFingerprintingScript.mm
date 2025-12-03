@@ -1,23 +1,23 @@
 @interface WPFingerprintingScript
-- (WPFingerprintingScript)initWithHost:(id)a3 isFirstParty:(BOOL)a4 isTopDomain:(BOOL)a5 allowedCategories:(unint64_t)a6;
+- (WPFingerprintingScript)initWithHost:(id)host isFirstParty:(BOOL)party isTopDomain:(BOOL)domain allowedCategories:(unint64_t)categories;
 - (id)description;
 @end
 
 @implementation WPFingerprintingScript
 
-- (WPFingerprintingScript)initWithHost:(id)a3 isFirstParty:(BOOL)a4 isTopDomain:(BOOL)a5 allowedCategories:(unint64_t)a6
+- (WPFingerprintingScript)initWithHost:(id)host isFirstParty:(BOOL)party isTopDomain:(BOOL)domain allowedCategories:(unint64_t)categories
 {
-  v11 = a3;
+  hostCopy = host;
   v16.receiver = self;
   v16.super_class = WPFingerprintingScript;
   v12 = [(WPFingerprintingScript *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_host, a3);
-    v13->_firstParty = a4;
-    v13->_topDomain = a5;
-    v13->_allowedCategories = a6;
+    objc_storeStrong(&v12->_host, host);
+    v13->_firstParty = party;
+    v13->_topDomain = domain;
+    v13->_allowedCategories = categories;
     v14 = v13;
   }
 

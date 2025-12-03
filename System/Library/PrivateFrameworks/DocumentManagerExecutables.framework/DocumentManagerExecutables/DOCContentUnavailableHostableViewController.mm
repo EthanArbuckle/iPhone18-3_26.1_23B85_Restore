@@ -3,76 +3,76 @@
 - (DOCContentUnavailableConfigurationState)docContentUnavailableConfigurationState;
 - (id)_contentUnavailableConfiguration;
 - (id)_contentUnavailableConfigurationState;
-- (void)_setContentUnavailableConfiguration:(id)a3;
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3;
-- (void)docUpdateContentUnavailableConfigurationUsingState:(id)a3;
-- (void)doc_setContentUnavailableConfiguration:(id)a3;
+- (void)_setContentUnavailableConfiguration:(id)configuration;
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state;
+- (void)docUpdateContentUnavailableConfigurationUsingState:(id)state;
+- (void)doc_setContentUnavailableConfiguration:(id)configuration;
 @end
 
 @implementation DOCContentUnavailableHostableViewController
 
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state
 {
-  v4 = [a3 asDOC];
-  [(DOCContentUnavailableHostableViewController *)self docUpdateContentUnavailableConfigurationUsingState:v4];
+  asDOC = [state asDOC];
+  [(DOCContentUnavailableHostableViewController *)self docUpdateContentUnavailableConfigurationUsingState:asDOC];
 }
 
-- (void)docUpdateContentUnavailableConfigurationUsingState:(id)a3
+- (void)docUpdateContentUnavailableConfigurationUsingState:(id)state
 {
-  v4 = [a3 asUIKit];
+  asUIKit = [state asUIKit];
   v5.receiver = self;
   v5.super_class = DOCContentUnavailableHostableViewController;
-  [(DOCContentUnavailableHostableViewController *)&v5 _updateContentUnavailableConfigurationUsingState:v4];
+  [(DOCContentUnavailableHostableViewController *)&v5 _updateContentUnavailableConfigurationUsingState:asUIKit];
 }
 
 - (id)_contentUnavailableConfigurationState
 {
-  v2 = [(DOCContentUnavailableHostableViewController *)self docContentUnavailableConfigurationState];
-  v3 = [v2 asUIKit];
+  docContentUnavailableConfigurationState = [(DOCContentUnavailableHostableViewController *)self docContentUnavailableConfigurationState];
+  asUIKit = [docContentUnavailableConfigurationState asUIKit];
 
-  return v3;
+  return asUIKit;
 }
 
 - (DOCContentUnavailableConfigurationState)docContentUnavailableConfigurationState
 {
   v5.receiver = self;
   v5.super_class = DOCContentUnavailableHostableViewController;
-  v2 = [(DOCContentUnavailableHostableViewController *)&v5 _contentUnavailableConfigurationState];
-  v3 = [v2 asDOC];
+  _contentUnavailableConfigurationState = [(DOCContentUnavailableHostableViewController *)&v5 _contentUnavailableConfigurationState];
+  asDOC = [_contentUnavailableConfigurationState asDOC];
 
-  return v3;
+  return asDOC;
 }
 
-- (void)_setContentUnavailableConfiguration:(id)a3
+- (void)_setContentUnavailableConfiguration:(id)configuration
 {
-  v4 = [a3 asDOC];
-  [(DOCContentUnavailableHostableViewController *)self doc_setContentUnavailableConfiguration:v4];
+  asDOC = [configuration asDOC];
+  [(DOCContentUnavailableHostableViewController *)self doc_setContentUnavailableConfiguration:asDOC];
 }
 
-- (void)doc_setContentUnavailableConfiguration:(id)a3
+- (void)doc_setContentUnavailableConfiguration:(id)configuration
 {
-  v4 = [a3 asUIKit];
+  asUIKit = [configuration asUIKit];
   v5.receiver = self;
   v5.super_class = DOCContentUnavailableHostableViewController;
-  [(DOCContentUnavailableHostableViewController *)&v5 _setContentUnavailableConfiguration:v4];
+  [(DOCContentUnavailableHostableViewController *)&v5 _setContentUnavailableConfiguration:asUIKit];
 }
 
 - (id)_contentUnavailableConfiguration
 {
-  v2 = [(DOCContentUnavailableHostableViewController *)self docContentUnavailableConfiguration];
-  v3 = [v2 asUIKit];
+  docContentUnavailableConfiguration = [(DOCContentUnavailableHostableViewController *)self docContentUnavailableConfiguration];
+  asUIKit = [docContentUnavailableConfiguration asUIKit];
 
-  return v3;
+  return asUIKit;
 }
 
 - (DOCContentUnavailableConfiguration)docContentUnavailableConfiguration
 {
   v5.receiver = self;
   v5.super_class = DOCContentUnavailableHostableViewController;
-  v2 = [(DOCContentUnavailableHostableViewController *)&v5 _contentUnavailableConfiguration];
-  v3 = [v2 asDOC];
+  _contentUnavailableConfiguration = [(DOCContentUnavailableHostableViewController *)&v5 _contentUnavailableConfiguration];
+  asDOC = [_contentUnavailableConfiguration asDOC];
 
-  return v3;
+  return asDOC;
 }
 
 @end

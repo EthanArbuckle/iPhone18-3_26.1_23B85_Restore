@@ -1,22 +1,22 @@
 @interface JavaLangInteger
-+ (int)compareWithInt:(int)a3 withInt:(int)a4;
-+ (int)lowestOneBitWithInt:(int)a3;
-+ (int)reverseBytesWithInt:(int)a3;
-+ (int)reverseWithInt:(int)a3;
-+ (int)rotateLeftWithInt:(int)a3 withInt:(int)a4;
-+ (int)rotateRightWithInt:(int)a3 withInt:(int)a4;
-+ (int)signumWithInt:(int)a3;
++ (int)compareWithInt:(int)int withInt:(int)withInt;
++ (int)lowestOneBitWithInt:(int)int;
++ (int)reverseBytesWithInt:(int)int;
++ (int)reverseWithInt:(int)int;
++ (int)rotateLeftWithInt:(int)int withInt:(int)withInt;
++ (int)rotateRightWithInt:(int)int withInt:(int)withInt;
++ (int)signumWithInt:(int)int;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (int)compareToWithId:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (int)compareToWithId:(id)id;
 @end
 
 @implementation JavaLangInteger
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -27,7 +27,7 @@
   }
 
   value = self->value_;
-  v6 = *(a3 + 2);
+  v6 = *(id + 2);
   if ((atomic_load_explicit(JavaLangInteger__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001B7348();
@@ -44,25 +44,25 @@
   }
 }
 
-+ (int)compareWithInt:(int)a3 withInt:(int)a4
++ (int)compareWithInt:(int)int withInt:(int)withInt
 {
   if ((atomic_load_explicit(JavaLangInteger__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001B7348();
   }
 
-  if (a3 < a4)
+  if (int < withInt)
   {
     return -1;
   }
 
   else
   {
-    return a3 != a4;
+    return int != withInt;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -71,7 +71,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -81,74 +81,74 @@
     JreThrowClassCastException();
   }
 
-  return *(a3 + 2) == self->value_;
+  return *(equal + 2) == self->value_;
 }
 
-+ (int)lowestOneBitWithInt:(int)a3
++ (int)lowestOneBitWithInt:(int)int
 {
   if ((atomic_load_explicit(JavaLangInteger__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001B7348();
   }
 
-  return -a3 & a3;
+  return -int & int;
 }
 
-+ (int)rotateLeftWithInt:(int)a3 withInt:(int)a4
++ (int)rotateLeftWithInt:(int)int withInt:(int)withInt
 {
-  v4 = a4;
+  withIntCopy = withInt;
   if ((atomic_load_explicit(JavaLangInteger__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001B7348();
   }
 
-  return __ROR4__(a3, -v4);
+  return __ROR4__(int, -withIntCopy);
 }
 
-+ (int)rotateRightWithInt:(int)a3 withInt:(int)a4
++ (int)rotateRightWithInt:(int)int withInt:(int)withInt
 {
-  v4 = a4;
+  withIntCopy = withInt;
   if ((atomic_load_explicit(JavaLangInteger__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001B7348();
   }
 
-  return __ROR4__(a3, v4);
+  return __ROR4__(int, withIntCopy);
 }
 
-+ (int)reverseBytesWithInt:(int)a3
-{
-  if ((atomic_load_explicit(JavaLangInteger__initialized, memory_order_acquire) & 1) == 0)
-  {
-    sub_1001B7348();
-  }
-
-  return bswap32(a3);
-}
-
-+ (int)reverseWithInt:(int)a3
++ (int)reverseBytesWithInt:(int)int
 {
   if ((atomic_load_explicit(JavaLangInteger__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001B7348();
   }
 
-  return __rbit32(a3);
+  return bswap32(int);
 }
 
-+ (int)signumWithInt:(int)a3
++ (int)reverseWithInt:(int)int
 {
   if ((atomic_load_explicit(JavaLangInteger__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001B7348();
   }
 
-  return (a3 >> 31) | (a3 > 0);
+  return __rbit32(int);
+}
+
++ (int)signumWithInt:(int)int
+{
+  if ((atomic_load_explicit(JavaLangInteger__initialized, memory_order_acquire) & 1) == 0)
+  {
+    sub_1001B7348();
+  }
+
+  return (int >> 31) | (int > 0);
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v7[0] = xmmword_100315623;
     v7[1] = unk_100315633;

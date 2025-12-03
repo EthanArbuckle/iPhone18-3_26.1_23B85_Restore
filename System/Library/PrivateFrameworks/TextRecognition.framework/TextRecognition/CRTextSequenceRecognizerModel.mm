@@ -1,6 +1,6 @@
 @interface CRTextSequenceRecognizerModel
 + (id)defaultURLOfModelInThisBundle;
-- (CRTextSequenceRecognizerModel)initWithConfiguration:(id)a3 owner:(id)a4 error:(id *)a5;
+- (CRTextSequenceRecognizerModel)initWithConfiguration:(id)configuration owner:(id)owner error:(id *)error;
 - (NSDictionary)outputShape;
 - (NSNumber)outputFormatVersion;
 - (NSNumber)outputWidthDownscale;
@@ -11,17 +11,17 @@
 - (int)codemapArray;
 - (unint64_t)codemapSize;
 - (void)dealloc;
-- (void)preheatWithCompletionHandler:(id)a3;
+- (void)preheatWithCompletionHandler:(id)handler;
 @end
 
 @implementation CRTextSequenceRecognizerModel
 
-- (void)preheatWithCompletionHandler:(id)a3
+- (void)preheatWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB884C70);
   MEMORY[0x1EEE9AC00](v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -37,7 +37,7 @@
   v13[3] = 0;
   v13[4] = &unk_1B42ACF58;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1B4105608(0, 0, v8, &unk_1B42ACF60, v13);
 }
 
@@ -47,8 +47,8 @@
   if (!outputShape)
   {
     v4 = MEMORY[0x1E696AAE8];
-    v5 = [(CRTextSequenceRecognizerModel *)self modelURL];
-    v6 = [v4 bundleWithURL:v5];
+    modelURL = [(CRTextSequenceRecognizerModel *)self modelURL];
+    v6 = [v4 bundleWithURL:modelURL];
 
     v7 = MEMORY[0x1E695DEF0];
     v8 = [v6 pathForResource:@"model.output" ofType:@"shape"];
@@ -72,76 +72,76 @@
 
 - (NSNumber)outputWidthDownscale
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_outputWidthDownscale)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_outputWidthDownscale)
   {
-    v3 = [(CRTextSequenceRecognizerModel *)v2 outputShape];
-    v4 = [v3 objectForKeyedSubscript:@"w_output_shape"];
+    outputShape = [(CRTextSequenceRecognizerModel *)selfCopy outputShape];
+    v4 = [outputShape objectForKeyedSubscript:@"w_output_shape"];
     v5 = [v4 objectForKeyedSubscript:@"down_scale"];
-    outputWidthDownscale = v2->_outputWidthDownscale;
-    v2->_outputWidthDownscale = v5;
+    outputWidthDownscale = selfCopy->_outputWidthDownscale;
+    selfCopy->_outputWidthDownscale = v5;
 
-    if (!v2->_outputWidthDownscale)
+    if (!selfCopy->_outputWidthDownscale)
     {
       v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"No w_output_shape down_scale in model.output.shape" userInfo:0];
       objc_exception_throw(v9);
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v7 = v2->_outputWidthDownscale;
+  v7 = selfCopy->_outputWidthDownscale;
 
   return v7;
 }
 
 - (NSNumber)outputWidthOffset
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_outputWidthOffset)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_outputWidthOffset)
   {
-    v3 = [(CRTextSequenceRecognizerModel *)v2 outputShape];
-    v4 = [v3 objectForKeyedSubscript:@"w_output_shape"];
+    outputShape = [(CRTextSequenceRecognizerModel *)selfCopy outputShape];
+    v4 = [outputShape objectForKeyedSubscript:@"w_output_shape"];
     v5 = [v4 objectForKeyedSubscript:@"offset"];
-    outputWidthOffset = v2->_outputWidthOffset;
-    v2->_outputWidthOffset = v5;
+    outputWidthOffset = selfCopy->_outputWidthOffset;
+    selfCopy->_outputWidthOffset = v5;
 
-    if (!v2->_outputWidthOffset)
+    if (!selfCopy->_outputWidthOffset)
     {
       v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"No w_output_shape offset in model.output.shape" userInfo:0];
       objc_exception_throw(v9);
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v7 = v2->_outputWidthOffset;
+  v7 = selfCopy->_outputWidthOffset;
 
   return v7;
 }
 
 - (NSNumber)outputFormatVersion
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_outputFormatVersion)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_outputFormatVersion)
   {
-    v3 = [(CRTextSequenceRecognizerModel *)v2 outputShape];
-    v4 = [v3 objectForKeyedSubscript:@"output_format_version"];
-    outputFormatVersion = v2->_outputFormatVersion;
-    v2->_outputFormatVersion = v4;
+    outputShape = [(CRTextSequenceRecognizerModel *)selfCopy outputShape];
+    v4 = [outputShape objectForKeyedSubscript:@"output_format_version"];
+    outputFormatVersion = selfCopy->_outputFormatVersion;
+    selfCopy->_outputFormatVersion = v4;
 
-    if (!v2->_outputFormatVersion)
+    if (!selfCopy->_outputFormatVersion)
     {
-      v2->_outputFormatVersion = &unk_1F2BF86C8;
+      selfCopy->_outputFormatVersion = &unk_1F2BF86C8;
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v6 = v2->_outputFormatVersion;
+  v6 = selfCopy->_outputFormatVersion;
 
   return v6;
 }
@@ -149,19 +149,19 @@
 - (int)codemapArray
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_codemapArray)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_codemapArray)
   {
 LABEL_8:
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
-    return v2->_codemapArray;
+    return selfCopy->_codemapArray;
   }
 
   v3 = MEMORY[0x1E696AAE8];
-  v4 = [(CRTextSequenceRecognizerModel *)v2 modelURL];
-  v5 = [v3 bundleWithURL:v4];
+  modelURL = [(CRTextSequenceRecognizerModel *)selfCopy modelURL];
+  v5 = [v3 bundleWithURL:modelURL];
 
   v6 = [v5 pathForResource:@"codemap" ofType:@"bin"];
   if (v6)
@@ -169,22 +169,22 @@ LABEL_8:
     v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v6];
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v7 encoding:4];
     v9 = [v8 componentsSeparatedByString:@"\n"];
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", 65534];
-    v2->_ctcBlankLabelIndex = [v9 indexOfObject:v10];
+    65534 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", 65534];
+    selfCopy->_ctcBlankLabelIndex = [v9 indexOfObject:65534];
 
-    if (v2->_ctcBlankLabelIndex == 0x7FFFFFFFFFFFFFFFLL)
+    if (selfCopy->_ctcBlankLabelIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       v17 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"No blank label in codemap" userInfo:0];
       objc_exception_throw(v17);
     }
 
-    v2->_codemapArray = malloc_type_calloc([v9 count], 4uLL, 0x100004052888210uLL);
+    selfCopy->_codemapArray = malloc_type_calloc([v9 count], 4uLL, 0x100004052888210uLL);
     v11 = 0;
-    v2->_codemapSize = [v9 count];
+    selfCopy->_codemapSize = [v9 count];
     while ([v9 count] > v11)
     {
       v12 = [v9 objectAtIndexedSubscript:v11];
-      v2->_codemapArray[v11] = [v12 intValue];
+      selfCopy->_codemapArray[v11] = [v12 intValue];
 
       ++v11;
     }
@@ -195,9 +195,9 @@ LABEL_8:
   v14 = CROSLogForCategory(3);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    v15 = [(CRTextSequenceRecognizerModel *)v2 modelURL];
+    modelURL2 = [(CRTextSequenceRecognizerModel *)selfCopy modelURL];
     *buf = 138412290;
-    v19 = v15;
+    v19 = modelURL2;
     _os_log_impl(&dword_1B40D2000, v14, OS_LOG_TYPE_ERROR, "No codemap in model: %@", buf, 0xCu);
   }
 
@@ -208,7 +208,7 @@ LABEL_8:
     _os_log_impl(&dword_1B40D2000, v16, OS_LOG_TYPE_FAULT, "Could not read codemap!", buf, 2u);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return 0;
 }
 
@@ -256,21 +256,21 @@ LABEL_8:
 
 - (NSURL)modelURL
 {
-  v3 = [(CRTextSequenceRecognizerModel *)self configuration];
-  v4 = [v3 customModelURL];
+  configuration = [(CRTextSequenceRecognizerModel *)self configuration];
+  customModelURL = [configuration customModelURL];
 
-  if (v4)
+  if (customModelURL)
   {
-    v5 = [(CRTextSequenceRecognizerModel *)self configuration];
-    v6 = [v5 customModelURL];
+    configuration2 = [(CRTextSequenceRecognizerModel *)self configuration];
+    customModelURL2 = [configuration2 customModelURL];
   }
 
   else
   {
-    v6 = [objc_opt_class() defaultURLOfModelInThisBundle];
+    customModelURL2 = [objc_opt_class() defaultURLOfModelInThisBundle];
   }
 
-  return v6;
+  return customModelURL2;
 }
 
 - (TextBoxesOffsets)characterBoxesOffsets
@@ -299,11 +299,11 @@ LABEL_8:
   return result;
 }
 
-- (CRTextSequenceRecognizerModel)initWithConfiguration:(id)a3 owner:(id)a4 error:(id *)a5
+- (CRTextSequenceRecognizerModel)initWithConfiguration:(id)configuration owner:(id)owner error:(id *)error
 {
   v6.receiver = self;
   v6.super_class = CRTextSequenceRecognizerModel;
-  return [(CRTextSequenceRecognizerModel *)&v6 init:a3];
+  return [(CRTextSequenceRecognizerModel *)&v6 init:configuration];
 }
 
 @end

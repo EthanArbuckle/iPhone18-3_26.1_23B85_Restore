@@ -2,11 +2,11 @@
 - (BOOL)hasEnclosingPlace;
 - (BOOL)hasInitialData;
 - (BOOL)supportsContactAddressDescription;
-- (MUPlaceItemHeaderViewModel)initWithPlaceItem:(id)a3;
+- (MUPlaceItemHeaderViewModel)initWithPlaceItem:(id)item;
 - (id)_formattedDistanceString;
 - (id)_userSpecificPlaceSecondaryName;
 - (id)addressDescriptionForContact;
-- (id)enclosingPlaceAttributedStringWithFont:(id)a3 labelColor:(id)a4 tokenColor:(id)a5 showContainmentPercent:(double)a6;
+- (id)enclosingPlaceAttributedStringWithFont:(id)font labelColor:(id)color tokenColor:(id)tokenColor showContainmentPercent:(double)percent;
 - (id)placeSecondaryName;
 - (id)transitLabelItems;
 @end
@@ -30,49 +30,49 @@
 {
   if ([(MUPlaceItemHeaderViewModel *)self isUserSpecificPlaceItem])
   {
-    v3 = 0;
+    transitLabelItems = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = MUPlaceItemHeaderViewModel;
-    v3 = [(MUPlaceHeaderViewModel *)&v5 transitLabelItems];
+    transitLabelItems = [(MUPlaceHeaderViewModel *)&v5 transitLabelItems];
   }
 
-  return v3;
+  return transitLabelItems;
 }
 
 - (id)_formattedDistanceString
 {
-  v3 = [MEMORY[0x1E696F268] sharedLocationManager];
-  v4 = [v3 lastLocation];
+  mEMORY[0x1E696F268] = [MEMORY[0x1E696F268] sharedLocationManager];
+  lastLocation = [mEMORY[0x1E696F268] lastLocation];
 
-  if (!v4)
+  if (!lastLocation)
   {
     goto LABEL_9;
   }
 
-  [v4 coordinate];
+  [lastLocation coordinate];
   v6 = 0;
   if (fabs(v7) > 180.0 || v5 < -90.0 || v5 > 90.0)
   {
     goto LABEL_10;
   }
 
-  v8 = [MEMORY[0x1E696F268] sharedLocationManager];
-  v9 = [v8 isAuthorizedForPreciseLocation];
+  mEMORY[0x1E696F268]2 = [MEMORY[0x1E696F268] sharedLocationManager];
+  isAuthorizedForPreciseLocation = [mEMORY[0x1E696F268]2 isAuthorizedForPreciseLocation];
 
-  if (!v9)
+  if (!isAuthorizedForPreciseLocation)
   {
 LABEL_9:
     v6 = 0;
     goto LABEL_10;
   }
 
-  [v4 coordinate];
-  v10 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  [v10 _coordinate];
+  [lastLocation coordinate];
+  mapItem = [(_MKPlaceItem *)self->_placeItem mapItem];
+  [mapItem _coordinate];
   GEOCalculateDistance();
   v12 = v11;
 
@@ -94,11 +94,11 @@ LABEL_10:
   return v6;
 }
 
-- (id)enclosingPlaceAttributedStringWithFont:(id)a3 labelColor:(id)a4 tokenColor:(id)a5 showContainmentPercent:(double)a6
+- (id)enclosingPlaceAttributedStringWithFont:(id)font labelColor:(id)color tokenColor:(id)tokenColor showContainmentPercent:(double)percent
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  fontCopy = font;
+  colorCopy = color;
+  tokenColorCopy = tokenColor;
   if ([(MUPlaceItemHeaderViewModel *)self isUserSpecificPlaceItem])
   {
     v13 = 0;
@@ -108,7 +108,7 @@ LABEL_10:
   {
     v15.receiver = self;
     v15.super_class = MUPlaceItemHeaderViewModel;
-    v13 = [(MUPlaceHeaderViewModel *)&v15 enclosingPlaceAttributedStringWithFont:v10 labelColor:v11 tokenColor:v12 showContainmentPercent:a6];
+    v13 = [(MUPlaceHeaderViewModel *)&v15 enclosingPlaceAttributedStringWithFont:fontCopy labelColor:colorCopy tokenColor:tokenColorCopy showContainmentPercent:percent];
   }
 
   return v13;
@@ -130,21 +130,21 @@ LABEL_10:
 {
   if (([(_MKPlaceItem *)self->_placeItem options]& 1) != 0)
   {
-    v5 = _MULocalizedStringFromThisBundle(@"NEAR_BY_PLACE_HEADER_STRING");
-    v12 = [MEMORY[0x1E696F268] sharedLocationManager];
-    v13 = [v12 isAuthorizedForPreciseLocation];
+    _formattedDistanceString2 = _MULocalizedStringFromThisBundle(@"NEAR_BY_PLACE_HEADER_STRING");
+    mEMORY[0x1E696F268] = [MEMORY[0x1E696F268] sharedLocationManager];
+    isAuthorizedForPreciseLocation = [mEMORY[0x1E696F268] isAuthorizedForPreciseLocation];
 
-    v14 = [(_MKPlaceItem *)self->_placeItem mapItem];
-    v15 = [v14 _geoAddress];
-    v16 = [v15 structuredAddress];
-    v17 = v16;
-    if (v13)
+    mapItem = [(_MKPlaceItem *)self->_placeItem mapItem];
+    _geoAddress = [mapItem _geoAddress];
+    structuredAddress = [_geoAddress structuredAddress];
+    v17 = structuredAddress;
+    if (isAuthorizedForPreciseLocation)
     {
-      v18 = [v16 fullThoroughfare];
+      fullThoroughfare = [structuredAddress fullThoroughfare];
 
-      if ([v18 length])
+      if ([fullThoroughfare length])
       {
-        v11 = [MEMORY[0x1E696AEC0] stringWithFormat:v5, v18];
+        _formattedDistanceString = [MEMORY[0x1E696AEC0] stringWithFormat:_formattedDistanceString2, fullThoroughfare];
 LABEL_16:
 
         goto LABEL_17;
@@ -153,69 +153,69 @@ LABEL_16:
 
     else
     {
-      v18 = [v16 locality];
+      fullThoroughfare = [structuredAddress locality];
 
-      if ([v18 length])
+      if ([fullThoroughfare length])
       {
-        v11 = [MEMORY[0x1E696AEC0] stringWithFormat:v5, v18];
-        v19 = [(_MKPlaceItem *)self->_placeItem mapItem];
-        v20 = [v19 _geoAddress];
-        v21 = [v20 structuredAddress];
-        v22 = [v21 administrativeAreaCode];
+        _formattedDistanceString = [MEMORY[0x1E696AEC0] stringWithFormat:_formattedDistanceString2, fullThoroughfare];
+        mapItem2 = [(_MKPlaceItem *)self->_placeItem mapItem];
+        _geoAddress2 = [mapItem2 _geoAddress];
+        structuredAddress2 = [_geoAddress2 structuredAddress];
+        administrativeAreaCode = [structuredAddress2 administrativeAreaCode];
 
-        if ([v22 length])
+        if ([administrativeAreaCode length])
         {
-          v23 = [(__CFString *)v11 stringByAppendingFormat:@", %@", v22];
+          v23 = [(__CFString *)_formattedDistanceString stringByAppendingFormat:@", %@", administrativeAreaCode];
 
-          v11 = v23;
+          _formattedDistanceString = v23;
         }
 
         goto LABEL_16;
       }
     }
 
-    v11 = &stru_1F44CA030;
+    _formattedDistanceString = &stru_1F44CA030;
     goto LABEL_16;
   }
 
   if ((-[_MKPlaceItem options](self->_placeItem, "options") & 2) == 0 || (-[_MKPlaceItem secondaryName](self->_placeItem, "secondaryName"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 length], v3, !v4))
   {
-    v11 = [(MUPlaceItemHeaderViewModel *)self _formattedDistanceString];
+    _formattedDistanceString = [(MUPlaceItemHeaderViewModel *)self _formattedDistanceString];
     goto LABEL_18;
   }
 
-  v5 = [(MUPlaceItemHeaderViewModel *)self _formattedDistanceString];
-  if ([v5 length])
+  _formattedDistanceString2 = [(MUPlaceItemHeaderViewModel *)self _formattedDistanceString];
+  if ([_formattedDistanceString2 length])
   {
-    v6 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-    v7 = [v6 layoutDirection];
+    currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+    layoutDirection = [currentTraitCollection layoutDirection];
 
     v8 = MEMORY[0x1E696AEC0];
-    if (v7 == 1)
+    if (layoutDirection == 1)
     {
       v9 = _MULocalizedStringFromThisBundle(@"Delimiter");
-      v10 = [(_MKPlaceItem *)self->_placeItem secondaryName];
-      v11 = [v8 localizedStringWithFormat:@"%@%@%@", v5, v9, v10];
+      secondaryName = [(_MKPlaceItem *)self->_placeItem secondaryName];
+      _formattedDistanceString = [v8 localizedStringWithFormat:@"%@%@%@", _formattedDistanceString2, v9, secondaryName];
     }
 
     else
     {
-      v25 = [(_MKPlaceItem *)self->_placeItem secondaryName];
+      secondaryName2 = [(_MKPlaceItem *)self->_placeItem secondaryName];
       v26 = _MULocalizedStringFromThisBundle(@"Delimiter");
-      v11 = [v8 localizedStringWithFormat:@"%@%@%@", v25, v26, v5];
+      _formattedDistanceString = [v8 localizedStringWithFormat:@"%@%@%@", secondaryName2, v26, _formattedDistanceString2];
     }
   }
 
   else
   {
-    v11 = v5;
+    _formattedDistanceString = _formattedDistanceString2;
   }
 
 LABEL_17:
 
 LABEL_18:
 
-  return v11;
+  return _formattedDistanceString;
 }
 
 - (id)addressDescriptionForContact
@@ -227,11 +227,11 @@ LABEL_18:
   }
 
   v4 = self->_placeItem;
-  v5 = [(_MKPlaceItem *)v4 contact];
-  v6 = [v5 postalAddresses];
-  v7 = [v6 firstObject];
+  contact = [(_MKPlaceItem *)v4 contact];
+  postalAddresses = [contact postalAddresses];
+  firstObject = [postalAddresses firstObject];
 
-  if ([v5 _mapkit_isSharedLocationContact])
+  if ([contact _mapkit_isSharedLocationContact])
   {
 
 LABEL_15:
@@ -239,8 +239,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v8 = [v7 label];
-  v9 = [v8 isEqual:*MEMORY[0x1E695CB60]];
+  label = [firstObject label];
+  v9 = [label isEqual:*MEMORY[0x1E695CB60]];
 
   if (v9)
   {
@@ -249,8 +249,8 @@ LABEL_15:
 
   else
   {
-    v11 = [v7 label];
-    v12 = [v11 isEqual:*MEMORY[0x1E695CBD8]];
+    label2 = [firstObject label];
+    v12 = [label2 isEqual:*MEMORY[0x1E695CBD8]];
 
     if (v12)
     {
@@ -259,8 +259,8 @@ LABEL_15:
 
     else
     {
-      v13 = [v7 label];
-      v14 = [v13 isEqual:*MEMORY[0x1E695CBC8]];
+      label3 = [firstObject label];
+      v14 = [label3 isEqual:*MEMORY[0x1E695CBC8]];
 
       if (v14)
       {
@@ -309,34 +309,34 @@ LABEL_16:
     {
       v15.receiver = self;
       v15.super_class = MUPlaceItemHeaderViewModel;
-      v3 = [(MUPlaceHeaderViewModel *)&v15 placeSecondaryName];
+      placeSecondaryName = [(MUPlaceHeaderViewModel *)&v15 placeSecondaryName];
       goto LABEL_15;
     }
 
     if (!MapsFeature_IsEnabled_MapsWally() || ![(_MKPlaceItem *)self->_placeItem representsPerson])
     {
 LABEL_14:
-      v3 = [(MUPlaceItemHeaderViewModel *)self _formattedDistanceString];
+      placeSecondaryName = [(MUPlaceItemHeaderViewModel *)self _formattedDistanceString];
       goto LABEL_15;
     }
 
-    v4 = [(_MKPlaceItem *)self->_placeItem contact];
-    v5 = [v4 postalAddresses];
-    v6 = [v5 firstObject];
+    contact = [(_MKPlaceItem *)self->_placeItem contact];
+    postalAddresses = [contact postalAddresses];
+    firstObject = [postalAddresses firstObject];
 
-    v7 = [v4 _mapkit_isSharedLocationContact];
-    v8 = [(MUPlaceItemHeaderViewModel *)self _formattedDistanceString];
-    v9 = [v6 value];
-    v10 = [v9 street];
+    _mapkit_isSharedLocationContact = [contact _mapkit_isSharedLocationContact];
+    _formattedDistanceString = [(MUPlaceItemHeaderViewModel *)self _formattedDistanceString];
+    value = [firstObject value];
+    street = [value street];
 
-    if (v7)
+    if (_mapkit_isSharedLocationContact)
     {
       v11 = _MULocalizedStringFromThisBundle(@"Contact Shared Address [Placecard]");
-      if (![v10 length])
+      if (![street length])
       {
-        v12 = v8;
+        v12 = _formattedDistanceString;
 LABEL_12:
-        v9 = v12;
+        value = v12;
         v13 = 0;
         goto LABEL_13;
       }
@@ -345,7 +345,7 @@ LABEL_12:
     else
     {
       v11 = _MULocalizedStringFromThisBundle(@"Contact Address [Placecard]");
-      if (![v10 length])
+      if (![street length])
       {
         v13 = 1;
 LABEL_13:
@@ -359,16 +359,16 @@ LABEL_13:
       }
     }
 
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:v11, v10, v8];
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:v11, street, _formattedDistanceString];
     goto LABEL_12;
   }
 
-  v3 = [(MUPlaceItemHeaderViewModel *)self _userSpecificPlaceSecondaryName];
+  placeSecondaryName = [(MUPlaceItemHeaderViewModel *)self _userSpecificPlaceSecondaryName];
 LABEL_15:
-  v9 = v3;
+  value = placeSecondaryName;
 LABEL_16:
 
-  return v9;
+  return value;
 }
 
 - (BOOL)hasInitialData
@@ -388,12 +388,12 @@ LABEL_16:
   return [(MUPlaceHeaderViewModel *)&v4 hasInitialData];
 }
 
-- (MUPlaceItemHeaderViewModel)initWithPlaceItem:(id)a3
+- (MUPlaceItemHeaderViewModel)initWithPlaceItem:(id)item
 {
   v4 = MEMORY[0x1E696F190];
-  v5 = a3;
-  v6 = [v4 sharedImageManager];
-  v7 = [(MUPlaceItemHeaderViewModel *)self initWithPlaceItem:v5 imageManager:v6 isDeveloperPlaceCard:0 developerPlaceCardAuditToken:0];
+  itemCopy = item;
+  sharedImageManager = [v4 sharedImageManager];
+  v7 = [(MUPlaceItemHeaderViewModel *)self initWithPlaceItem:itemCopy imageManager:sharedImageManager isDeveloperPlaceCard:0 developerPlaceCardAuditToken:0];
 
   return v7;
 }

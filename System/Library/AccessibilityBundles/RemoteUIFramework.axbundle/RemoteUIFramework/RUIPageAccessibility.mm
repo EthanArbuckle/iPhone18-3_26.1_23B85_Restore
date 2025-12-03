@@ -1,16 +1,16 @@
 @interface RUIPageAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 @end
 
 @implementation RUIPageAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
+  validationsCopy = validations;
   if (AXProcessIsSetup())
   {
-    [v3 validateClass:@"BuddyAppleIDSpinnerPage"];
+    [validationsCopy validateClass:@"BuddyAppleIDSpinnerPage"];
   }
 }
 
@@ -23,29 +23,29 @@
     goto LABEL_8;
   }
 
-  v3 = [v2 navigationController];
+  navigationController = [v2 navigationController];
 
-  if (!v3)
+  if (!navigationController)
   {
     goto LABEL_8;
   }
 
-  v4 = [v2 navigationController];
-  v5 = [v4 presentingViewController];
-  v6 = [v5 childViewControllers];
+  navigationController2 = [v2 navigationController];
+  presentingViewController = [navigationController2 presentingViewController];
+  childViewControllers = [presentingViewController childViewControllers];
 
-  if (![v6 count])
+  if (![childViewControllers count])
   {
 LABEL_7:
 
 LABEL_8:
     v11 = v2;
     AXPerformSafeBlock();
-    v6 = v11;
+    childViewControllers = v11;
     goto LABEL_9;
   }
 
-  v7 = [v6 lastObject];
+  lastObject = [childViewControllers lastObject];
   MEMORY[0x29C2EA9F0](@"BuddyAppleIDSpinnerPage");
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -53,8 +53,8 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v8 = [v2 navigationController];
-  v9 = [v8 popViewControllerAnimated:1];
+  navigationController3 = [v2 navigationController];
+  v9 = [navigationController3 popViewControllerAnimated:1];
 
 LABEL_9:
   return 1;

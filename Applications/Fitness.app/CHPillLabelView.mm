@@ -1,16 +1,16 @@
 @interface CHPillLabelView
-+ (id)cacheKeyForColor:(id)a3 size:(CGSize)a4;
-+ (id)imageForCacheKey:(id)a3;
-+ (id)pillImageForColor:(id)a3 size:(CGSize)a4;
++ (id)cacheKeyForColor:(id)color size:(CGSize)size;
++ (id)imageForCacheKey:(id)key;
++ (id)pillImageForColor:(id)color size:(CGSize)size;
 + (id)pillImages;
-+ (void)setImage:(id)a3 forCacheKey:(id)a4;
++ (void)setImage:(id)image forCacheKey:(id)key;
 - (CGSize)intrinsicContentSize;
-- (CHPillLabelView)initWithFrame:(CGRect)a3;
+- (CHPillLabelView)initWithFrame:(CGRect)frame;
 - (id)firstBaselineAnchor;
 - (id)lastBaselineAnchor;
 - (void)applyConstraints;
-- (void)setIntegerValue:(int64_t)a3;
-- (void)setPillBackgroundColor:(id)a3;
+- (void)setIntegerValue:(int64_t)value;
+- (void)setPillBackgroundColor:(id)color;
 @end
 
 @implementation CHPillLabelView
@@ -27,15 +27,15 @@
   return v3;
 }
 
-+ (id)cacheKeyForColor:(id)a3 size:(CGSize)a4
++ (id)cacheKeyForColor:(id)color size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v16 = 0.0;
   v17 = 0.0;
   v14 = 0.0;
   v15 = 0.0;
-  [a3 getRed:&v17 green:&v16 blue:&v15 alpha:&v14];
+  [color getRed:&v17 green:&v16 blue:&v15 alpha:&v14];
   v6 = [NSNumber numberWithDouble:v17];
   v7 = [NSNumber numberWithDouble:v16];
   v8 = [NSNumber numberWithDouble:v15];
@@ -47,37 +47,37 @@
   return v12;
 }
 
-+ (id)imageForCacheKey:(id)a3
++ (id)imageForCacheKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 pillImages];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  pillImages = [self pillImages];
+  v6 = [pillImages objectForKey:keyCopy];
 
   return v6;
 }
 
-+ (void)setImage:(id)a3 forCacheKey:(id)a4
++ (void)setImage:(id)image forCacheKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 pillImages];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  imageCopy = image;
+  pillImages = [self pillImages];
+  [pillImages setObject:imageCopy forKey:keyCopy];
 }
 
-+ (id)pillImageForColor:(id)a3 size:(CGSize)a4
++ (id)pillImageForColor:(id)color size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [a1 cacheKeyForColor:v7 size:{width, height}];
-  v9 = [a1 imageForCacheKey:v8];
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
+  v8 = [self cacheKeyForColor:colorCopy size:{width, height}];
+  v9 = [self imageForCacheKey:v8];
   if (!v9)
   {
     v15.width = width;
     v15.height = height;
     UIGraphicsBeginImageContextWithOptions(v15, 0, 0.0);
     CurrentContext = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(CurrentContext, [v7 CGColor]);
+    CGContextSetFillColorWithColor(CurrentContext, [colorCopy CGColor]);
     v16.origin.x = 0.0;
     v16.origin.y = 0.0;
     v16.size.width = width;
@@ -89,7 +89,7 @@
 
     if (v9)
     {
-      [a1 setImage:v9 forCacheKey:v8];
+      [self setImage:v9 forCacheKey:v8];
     }
   }
 
@@ -98,11 +98,11 @@
   return v12;
 }
 
-- (CHPillLabelView)initWithFrame:(CGRect)a3
+- (CHPillLabelView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = CHPillLabelView;
-  v3 = [(CHPillLabelView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CHPillLabelView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -139,18 +139,18 @@
   return v3;
 }
 
-- (void)setPillBackgroundColor:(id)a3
+- (void)setPillBackgroundColor:(id)color
 {
-  objc_storeStrong(&self->_pillBackgroundColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_pillBackgroundColor, color);
+  colorCopy = color;
   v6 = [objc_opt_class() pillImageForColor:self->_pillBackgroundColor size:{14.0, 14.0}];
   [(UIImageView *)self->_imageView setImage:v6];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(CHPillLabelView *)self label];
-  [v2 intrinsicContentSize];
+  label = [(CHPillLabelView *)self label];
+  [label intrinsicContentSize];
   v4 = v3 + 6.0;
 
   v5 = 14.0;
@@ -167,63 +167,63 @@
 
 - (void)applyConstraints
 {
-  v3 = [(CHPillLabelView *)self label];
+  label = [(CHPillLabelView *)self label];
   LODWORD(v4) = 1148846080;
-  [v3 setContentCompressionResistancePriority:0 forAxis:v4];
+  [label setContentCompressionResistancePriority:0 forAxis:v4];
 
-  v5 = [(CHPillLabelView *)self label];
+  label2 = [(CHPillLabelView *)self label];
   LODWORD(v6) = 1148846080;
-  [v5 setContentCompressionResistancePriority:1 forAxis:v6];
+  [label2 setContentCompressionResistancePriority:1 forAxis:v6];
 
-  v7 = [(CHPillLabelView *)self label];
+  label3 = [(CHPillLabelView *)self label];
   LODWORD(v8) = 1148846080;
-  [v7 setContentHuggingPriority:0 forAxis:v8];
+  [label3 setContentHuggingPriority:0 forAxis:v8];
 
-  v9 = [(CHPillLabelView *)self label];
+  label4 = [(CHPillLabelView *)self label];
   LODWORD(v10) = 1148846080;
-  [v9 setContentHuggingPriority:1 forAxis:v10];
+  [label4 setContentHuggingPriority:1 forAxis:v10];
 
-  v11 = [(CHPillLabelView *)self label];
-  v12 = [v11 centerXAnchor];
-  v13 = [(CHPillLabelView *)self centerXAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  label5 = [(CHPillLabelView *)self label];
+  centerXAnchor = [label5 centerXAnchor];
+  centerXAnchor2 = [(CHPillLabelView *)self centerXAnchor];
+  v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v14 setActive:1];
 
-  v15 = [(CHPillLabelView *)self label];
-  v16 = [v15 centerYAnchor];
-  v17 = [(CHPillLabelView *)self centerYAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  label6 = [(CHPillLabelView *)self label];
+  centerYAnchor = [label6 centerYAnchor];
+  centerYAnchor2 = [(CHPillLabelView *)self centerYAnchor];
+  v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v18 setActive:1];
 
-  v19 = [(CHPillLabelView *)self imageView];
-  v20 = [v19 centerXAnchor];
-  v21 = [(CHPillLabelView *)self centerXAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21 constant:0.0];
+  imageView = [(CHPillLabelView *)self imageView];
+  centerXAnchor3 = [imageView centerXAnchor];
+  centerXAnchor4 = [(CHPillLabelView *)self centerXAnchor];
+  v22 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4 constant:0.0];
   [v22 setActive:1];
 
-  v23 = [(CHPillLabelView *)self imageView];
-  v24 = [v23 centerYAnchor];
-  v25 = [(CHPillLabelView *)self label];
-  v26 = [v25 centerYAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26 constant:0.0];
+  imageView2 = [(CHPillLabelView *)self imageView];
+  centerYAnchor3 = [imageView2 centerYAnchor];
+  label7 = [(CHPillLabelView *)self label];
+  centerYAnchor4 = [label7 centerYAnchor];
+  v27 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4 constant:0.0];
   [v27 setActive:1];
 
-  v28 = [(CHPillLabelView *)self imageView];
-  v29 = [v28 heightAnchor];
-  v30 = [v29 constraintEqualToConstant:14.0];
+  imageView3 = [(CHPillLabelView *)self imageView];
+  heightAnchor = [imageView3 heightAnchor];
+  v30 = [heightAnchor constraintEqualToConstant:14.0];
   [v30 setActive:1];
 
-  v31 = [(CHPillLabelView *)self imageView];
-  v32 = [v31 widthAnchor];
-  v33 = [(CHPillLabelView *)self label];
-  v34 = [v33 widthAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34 multiplier:1.0 constant:6.0];
+  imageView4 = [(CHPillLabelView *)self imageView];
+  widthAnchor = [imageView4 widthAnchor];
+  label8 = [(CHPillLabelView *)self label];
+  widthAnchor2 = [label8 widthAnchor];
+  v35 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.0 constant:6.0];
 
   LODWORD(v36) = 1144750080;
   [v35 setPriority:v36];
-  v37 = [(CHPillLabelView *)self imageView];
-  v38 = [v37 widthAnchor];
-  v39 = [v38 constraintGreaterThanOrEqualToConstant:14.0];
+  imageView5 = [(CHPillLabelView *)self imageView];
+  widthAnchor3 = [imageView5 widthAnchor];
+  v39 = [widthAnchor3 constraintGreaterThanOrEqualToConstant:14.0];
 
   LODWORD(v40) = 1148846080;
   [v39 setPriority:v40];
@@ -233,29 +233,29 @@
   [NSLayoutConstraint activateConstraints:v41];
 }
 
-- (void)setIntegerValue:(int64_t)a3
+- (void)setIntegerValue:(int64_t)value
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:value];
   v6 = [NSNumberFormatter localizedStringFromNumber:v4 numberStyle:0];
 
-  v5 = [(CHPillLabelView *)self label];
-  [v5 setText:v6];
+  label = [(CHPillLabelView *)self label];
+  [label setText:v6];
 }
 
 - (id)firstBaselineAnchor
 {
-  v2 = [(CHPillLabelView *)self label];
-  v3 = [v2 firstBaselineAnchor];
+  label = [(CHPillLabelView *)self label];
+  firstBaselineAnchor = [label firstBaselineAnchor];
 
-  return v3;
+  return firstBaselineAnchor;
 }
 
 - (id)lastBaselineAnchor
 {
-  v2 = [(CHPillLabelView *)self label];
-  v3 = [v2 lastBaselineAnchor];
+  label = [(CHPillLabelView *)self label];
+  lastBaselineAnchor = [label lastBaselineAnchor];
 
-  return v3;
+  return lastBaselineAnchor;
 }
 
 @end

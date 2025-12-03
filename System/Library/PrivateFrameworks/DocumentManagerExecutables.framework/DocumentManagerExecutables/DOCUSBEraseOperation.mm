@@ -2,7 +2,7 @@
 - (NSString)description;
 - (_TtC26DocumentManagerExecutables20DOCUSBEraseOperation)init;
 - (int64_t)operationState;
-- (void)setOperationState:(int64_t)a3;
+- (void)setOperationState:(int64_t)state;
 @end
 
 @implementation DOCUSBEraseOperation
@@ -14,16 +14,16 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setOperationState:(int64_t)a3
+- (void)setOperationState:(int64_t)state
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables20DOCUSBEraseOperation_operationState;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = state;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCUSBEraseOperation.description.getter();
   v5 = v4;
 

@@ -1,7 +1,7 @@
 @interface ATXDefaultWidgetSuggesterClient
 - (ATXDefaultWidgetSuggesterClient)init;
-- (void)defaultWidgetSuggestionOfType:(int64_t)a3 completionHandler:(id)a4;
-- (void)logEventForDefaultWidgetSuggestionType:(int64_t)a3 event:(int64_t)a4;
+- (void)defaultWidgetSuggestionOfType:(int64_t)type completionHandler:(id)handler;
+- (void)logEventForDefaultWidgetSuggestionType:(int64_t)type event:(int64_t)event;
 @end
 
 @implementation ATXDefaultWidgetSuggesterClient
@@ -36,11 +36,11 @@ void __39__ATXDefaultWidgetSuggesterClient_init__block_invoke()
   }
 }
 
-- (void)defaultWidgetSuggestionOfType:(int64_t)a3 completionHandler:(id)a4
+- (void)defaultWidgetSuggestionOfType:(int64_t)type completionHandler:(id)handler
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3 == 1)
+  handlerCopy = handler;
+  if (type == 1)
   {
     v7 = objc_alloc(MEMORY[0x1E695E000]);
     v8 = [v7 initWithSuiteName:*MEMORY[0x1E698B030]];
@@ -75,7 +75,7 @@ void __39__ATXDefaultWidgetSuggesterClient_init__block_invoke()
         v42[2] = __83__ATXDefaultWidgetSuggesterClient_defaultWidgetSuggestionOfType_completionHandler___block_invoke;
         v42[3] = &unk_1E80C4548;
         v43 = v8;
-        v20 = v6;
+        v20 = handlerCopy;
         v44 = v20;
         v45 = 1;
         v21 = MEMORY[0x1BFB5BA40](v42);
@@ -124,12 +124,12 @@ void __39__ATXDefaultWidgetSuggesterClient_init__block_invoke()
         if (v32)
         {
           v35 = [[ATXDefaultWidgetSuggestion alloc] initWithType:1];
-          (*(v6 + 2))(v6, v35);
+          (*(handlerCopy + 2))(handlerCopy, v35);
         }
 
         else
         {
-          (*(v6 + 2))(v6, 0);
+          (*(handlerCopy + 2))(handlerCopy, 0);
         }
       }
     }
@@ -145,7 +145,7 @@ void __39__ATXDefaultWidgetSuggesterClient_init__block_invoke()
         _os_log_impl(&dword_1BF549000, v11, OS_LOG_TYPE_DEFAULT, "ATXDefaultWidgetSuggesterClient: not making a TV suggestion that we have feedback for: %ld", buf, 0xCu);
       }
 
-      (*(v6 + 2))(v6, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
@@ -157,7 +157,7 @@ void __39__ATXDefaultWidgetSuggesterClient_init__block_invoke()
       [ATXDefaultWidgetSuggesterClient defaultWidgetSuggestionOfType:completionHandler:];
     }
 
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -272,14 +272,14 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)logEventForDefaultWidgetSuggestionType:(int64_t)a3 event:(int64_t)a4
+- (void)logEventForDefaultWidgetSuggestionType:(int64_t)type event:(int64_t)event
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v5 = objc_alloc(MEMORY[0x1E695E000]);
     v11 = [v5 initWithSuiteName:*MEMORY[0x1E698B030]];
-    [v11 setInteger:a4 forKey:*MEMORY[0x1E698AFB8]];
-    if (a4 == 3)
+    [v11 setInteger:event forKey:*MEMORY[0x1E698AFB8]];
+    if (event == 3)
     {
       v7 = MEMORY[0x1E698AFB0];
     }
@@ -287,7 +287,7 @@ LABEL_10:
     else
     {
       v6 = v11;
-      if (a4 != 1)
+      if (event != 1)
       {
 LABEL_11:
 

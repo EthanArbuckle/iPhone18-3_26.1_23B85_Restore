@@ -1,38 +1,38 @@
 @interface SUUIProductPageHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (CGRect)accessibilityFrame:(id)a3;
-- (SUUIProductPageHeaderViewAccessibility)initWithClientContext:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (CGRect)accessibilityFrame:(id)frame;
+- (SUUIProductPageHeaderViewAccessibility)initWithClientContext:(id)context;
 - (id)accessibilityElements;
-- (id)accessibilityLabel:(id)a3;
-- (void)setIconImage:(id)a3;
-- (void)setNumberOfUserRatings:(int64_t)a3;
-- (void)setUserRating:(double)a3;
+- (id)accessibilityLabel:(id)label;
+- (void)setIconImage:(id)image;
+- (void)setNumberOfUserRatings:(int64_t)ratings;
+- (void)setUserRating:(double)rating;
 @end
 
 @implementation SUUIProductPageHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIProductPageHeaderView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIProductPageHeaderView" hasInstanceMethod:@"initWithClientContext:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SUUIProductPageHeaderView" hasInstanceMethod:@"setUserRating:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"SUUIProductPageHeaderView" hasInstanceMethod:@"setIconImage:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SUUIProductPageHeaderView" hasInstanceMethod:@"setNumberOfUserRatings:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"SUUIProductPageHeaderView" hasInstanceVariable:@"_ageBandLabel" withType:"UILabel"];
-  [v3 validateClass:@"SUUIProductPageHeaderView" hasInstanceVariable:@"_iconImageView" withType:"UIImageView"];
-  [v3 validateClass:@"SUUIProductPageHeaderView" hasInstanceVariable:@"_userRatingLabel" withType:"UILabel"];
-  [v3 validateClass:@"SUUIProductPageHeaderView" hasInstanceVariable:@"_titleLabel" withType:"SUUIProductPageHeaderLabel"];
-  [v3 validateClass:@"SUUIProductPageHeaderView" hasInstanceVariable:@"_artistButton" withType:"UIButton"];
-  [v3 validateClass:@"SUUIProductPageHeaderView" hasInstanceVariable:@"_itemOfferButton" withType:"SUUIItemOfferButton"];
-  [v3 validateClass:@"SUUIProductPageHeaderView" hasInstanceMethod:@"inAppPurchasesString" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIProductPageHeaderView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIProductPageHeaderView" hasInstanceMethod:@"initWithClientContext:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SUUIProductPageHeaderView" hasInstanceMethod:@"setUserRating:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"SUUIProductPageHeaderView" hasInstanceMethod:@"setIconImage:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SUUIProductPageHeaderView" hasInstanceMethod:@"setNumberOfUserRatings:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"SUUIProductPageHeaderView" hasInstanceVariable:@"_ageBandLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SUUIProductPageHeaderView" hasInstanceVariable:@"_iconImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"SUUIProductPageHeaderView" hasInstanceVariable:@"_userRatingLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SUUIProductPageHeaderView" hasInstanceVariable:@"_titleLabel" withType:"SUUIProductPageHeaderLabel"];
+  [validationsCopy validateClass:@"SUUIProductPageHeaderView" hasInstanceVariable:@"_artistButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"SUUIProductPageHeaderView" hasInstanceVariable:@"_itemOfferButton" withType:"SUUIItemOfferButton"];
+  [validationsCopy validateClass:@"SUUIProductPageHeaderView" hasInstanceMethod:@"inAppPurchasesString" withFullSignature:{"@", 0}];
 }
 
-- (SUUIProductPageHeaderViewAccessibility)initWithClientContext:(id)a3
+- (SUUIProductPageHeaderViewAccessibility)initWithClientContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = SUUIProductPageHeaderViewAccessibility;
-  v3 = [(SUUIProductPageHeaderViewAccessibility *)&v7 initWithClientContext:a3];
+  v3 = [(SUUIProductPageHeaderViewAccessibility *)&v7 initWithClientContext:context];
   v4 = [(SUUIProductPageHeaderViewAccessibility *)v3 safeValueForKey:@"_shareButton"];
   v5 = accessibilityLocalizedString(@"share.button");
   [v4 setAccessibilityLabel:v5];
@@ -40,11 +40,11 @@
   return v3;
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
   v10.receiver = self;
   v10.super_class = SUUIProductPageHeaderViewAccessibility;
-  [(SUUIProductPageHeaderViewAccessibility *)&v10 setIconImage:a3];
+  [(SUUIProductPageHeaderViewAccessibility *)&v10 setIconImage:image];
   v4 = [(SUUIProductPageHeaderViewAccessibility *)self safeValueForKey:@"_iconImageView"];
   [v4 setIsAccessibilityElement:1];
 
@@ -56,31 +56,31 @@
   [v5 setAccessibilityLabel:v9];
 }
 
-- (void)setNumberOfUserRatings:(int64_t)a3
+- (void)setNumberOfUserRatings:(int64_t)ratings
 {
   v9.receiver = self;
   v9.super_class = SUUIProductPageHeaderViewAccessibility;
   [(SUUIProductPageHeaderViewAccessibility *)&v9 setNumberOfUserRatings:?];
-  if (a3 >= 1)
+  if (ratings >= 1)
   {
     v5 = [(SUUIProductPageHeaderViewAccessibility *)self safeValueForKey:@"_userRatingLabel"];
     v6 = MEMORY[0x29EDBA0F8];
     v7 = accessibilityLocalizedString(@"USER_RATING_COUNT");
-    v8 = [v6 localizedStringWithFormat:v7, a3];
-    [v5 setAccessibilityLabel:v8];
+    ratings = [v6 localizedStringWithFormat:v7, ratings];
+    [v5 setAccessibilityLabel:ratings];
   }
 }
 
-- (void)setUserRating:(double)a3
+- (void)setUserRating:(double)rating
 {
   v5.receiver = self;
   v5.super_class = SUUIProductPageHeaderViewAccessibility;
-  [(SUUIProductPageHeaderViewAccessibility *)&v5 setUserRating:a3];
+  [(SUUIProductPageHeaderViewAccessibility *)&v5 setUserRating:rating];
   v4 = [(SUUIProductPageHeaderViewAccessibility *)self safeValueForKey:@"_userRatingStarsView"];
   [v4 setIsAccessibilityElement:1];
 }
 
-- (CGRect)accessibilityFrame:(id)a3
+- (CGRect)accessibilityFrame:(id)frame
 {
   v4 = [(SUUIProductPageHeaderViewAccessibility *)self safeValueForKey:@"_titleLabel"];
   v5 = [(SUUIProductPageHeaderViewAccessibility *)self safeValueForKey:@"_userRatingLabel"];
@@ -115,7 +115,7 @@
   return result;
 }
 
-- (id)accessibilityLabel:(id)a3
+- (id)accessibilityLabel:(id)label
 {
   v4 = [(SUUIProductPageHeaderViewAccessibility *)self safeValueForKey:@"_titleLabel"];
   v5 = [(SUUIProductPageHeaderViewAccessibility *)self safeValueForKey:@"_userRatingStarsView"];
@@ -123,9 +123,9 @@
   v7 = [(SUUIProductPageHeaderViewAccessibility *)self safeValueForKey:@"inAppPurchasesString"];
   v8 = [(SUUIProductPageHeaderViewAccessibility *)self safeValueForKey:@"_ageBandLabel"];
   v9 = [(SUUIProductPageHeaderViewAccessibility *)self _accessibilityValueForKey:@"facebookCount"];
-  v10 = [v9 integerValue];
+  integerValue = [v9 integerValue];
 
-  if (v10 < 1)
+  if (integerValue < 1)
   {
     v13 = 0;
   }
@@ -134,13 +134,13 @@
   {
     v11 = MEMORY[0x29EDBA0F8];
     v12 = accessibilityLocalizedString(@"FACEBOOK_FRIEND_LIKE_COUNT");
-    v13 = [v11 localizedStringWithFormat:v12, v10];
+    v13 = [v11 localizedStringWithFormat:v12, integerValue];
   }
 
-  v14 = [v4 accessibilityLabel];
-  v15 = [v8 accessibilityLabel];
-  v16 = [v5 accessibilityLabel];
-  v18 = [v6 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
+  accessibilityLabel2 = [v8 accessibilityLabel];
+  accessibilityLabel3 = [v5 accessibilityLabel];
+  accessibilityLabel4 = [v6 accessibilityLabel];
   v19 = __UIAXStringForVariables();
 
   return v19;
@@ -149,17 +149,17 @@
 - (id)accessibilityElements
 {
   v3 = MEMORY[0x29EDC7620];
-  v4 = [(SUUIProductPageHeaderViewAccessibility *)self _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
-  if (!v4)
+  array = [(SUUIProductPageHeaderViewAccessibility *)self _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
+  if (!array)
   {
-    v4 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v5 = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:self];
     [v5 setAccessibilityDelegate:self];
-    [v4 addObject:v5];
-    [(SUUIProductPageHeaderViewAccessibility *)self _accessibilitySetRetainedValue:v4 forKey:*v3];
+    [array addObject:v5];
+    [(SUUIProductPageHeaderViewAccessibility *)self _accessibilitySetRetainedValue:array forKey:*v3];
   }
 
-  v6 = [v4 mutableCopy];
+  v6 = [array mutableCopy];
   v7 = [(SUUIProductPageHeaderViewAccessibility *)self safeValueForKey:@"_artistButton"];
   v8 = v7;
   if (v7 && [v7 _accessibilityViewIsVisible])

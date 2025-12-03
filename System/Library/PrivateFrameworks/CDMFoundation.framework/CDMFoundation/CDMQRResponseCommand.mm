@@ -1,26 +1,26 @@
 @interface CDMQRResponseCommand
-+ (id)convertRewriteHypo2RewriteMsgForInfoDomains:(id)a3;
-- (CDMQRResponseCommand)initWithResponse:(id)a3;
++ (id)convertRewriteHypo2RewriteMsgForInfoDomains:(id)domains;
+- (CDMQRResponseCommand)initWithResponse:(id)response;
 @end
 
 @implementation CDMQRResponseCommand
 
-- (CDMQRResponseCommand)initWithResponse:(id)a3
+- (CDMQRResponseCommand)initWithResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v13.receiver = self;
   v13.super_class = CDMQRResponseCommand;
   v5 = [(CDMBaseCommand *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [responseCopy copy];
     qrResponse = v5->_qrResponse;
     v5->_qrResponse = v6;
 
-    v8 = [(SIRINLUINTERNALQUERYREWRITEQRResponse *)v5->_qrResponse rewriteHypotheses];
-    v9 = [v8 firstObject];
+    rewriteHypotheses = [(SIRINLUINTERNALQUERYREWRITEQRResponse *)v5->_qrResponse rewriteHypotheses];
+    firstObject = [rewriteHypotheses firstObject];
 
-    v10 = [CDMQRResponseCommand convertRewriteHypo2RewriteMsgForInfoDomains:v9];
+    v10 = [CDMQRResponseCommand convertRewriteHypo2RewriteMsgForInfoDomains:firstObject];
     rewriteMsg = v5->_rewriteMsg;
     v5->_rewriteMsg = v10;
   }
@@ -28,20 +28,20 @@
   return v5;
 }
 
-+ (id)convertRewriteHypo2RewriteMsgForInfoDomains:(id)a3
++ (id)convertRewriteHypo2RewriteMsgForInfoDomains:(id)domains
 {
-  v3 = a3;
-  if (!v3)
+  domainsCopy = domains;
+  if (!domainsCopy)
   {
     v6 = 0;
     goto LABEL_11;
   }
 
   v4 = objc_opt_new();
-  if (![v3 rewriteType])
+  if (![domainsCopy rewriteType])
   {
-    v7 = [v3 utterance];
-    v8 = [v7 length];
+    utterance = [domainsCopy utterance];
+    v8 = [utterance length];
 
     if (v8)
     {
@@ -50,13 +50,13 @@
     }
   }
 
-  if ([v3 rewriteType] == 1)
+  if ([domainsCopy rewriteType] == 1)
   {
     v5 = 1;
 LABEL_9:
     [v4 setRewriteType:v5];
-    v9 = [v3 utterance];
-    [v4 setRewrittenUtterance:v9];
+    utterance2 = [domainsCopy utterance];
+    [v4 setRewrittenUtterance:utterance2];
 
     v6 = v4;
     goto LABEL_10;

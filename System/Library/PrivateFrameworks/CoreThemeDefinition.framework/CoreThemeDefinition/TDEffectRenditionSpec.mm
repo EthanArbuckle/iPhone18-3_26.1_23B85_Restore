@@ -1,24 +1,24 @@
 @interface TDEffectRenditionSpec
 - (TDEffectComponent)CUIShapeEffectOutputOpacity;
 - (TDEffectComponent)CUIShapeEffectShapeOpacity;
-- (id)componentOfType:(unsigned int)a3;
+- (id)componentOfType:(unsigned int)type;
 - (id)effectPreset;
-- (void)replaceComponentsWithComponentsFromEffectRendition:(id)a3 withDocument:(id)a4;
-- (void)setComponentsFromEffectPreset:(id)a3 withDocument:(id)a4;
+- (void)replaceComponentsWithComponentsFromEffectRendition:(id)rendition withDocument:(id)document;
+- (void)setComponentsFromEffectPreset:(id)preset withDocument:(id)document;
 @end
 
 @implementation TDEffectRenditionSpec
 
-- (void)setComponentsFromEffectPreset:(id)a3 withDocument:(id)a4
+- (void)setComponentsFromEffectPreset:(id)preset withDocument:(id)document
 {
-  v7 = [a3 effectCount];
+  effectCount = [preset effectCount];
   v10 = [objc_alloc(MEMORY[0x277CBEB40]) initWithCapacity:6];
-  if (v7)
+  if (effectCount)
   {
-    for (i = 0; i != v7; ++i)
+    for (i = 0; i != effectCount; ++i)
     {
-      v9 = [a4 newObjectForEntity:@"EffectComponent"];
-      [v9 setEffectParametersFromPreset:a3 atIndex:i withDocument:a4];
+      v9 = [document newObjectForEntity:@"EffectComponent"];
+      [v9 setEffectParametersFromPreset:preset atIndex:i withDocument:document];
       [v10 addObject:v9];
     }
   }
@@ -35,8 +35,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(TDEffectRenditionSpec *)self components];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  components = [(TDEffectRenditionSpec *)self components];
+  v6 = [components countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -48,19 +48,19 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(components);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 isEnabled];
+        isEnabled = [v11 isEnabled];
         v13 = [objc_msgSend(v11 "effectType")];
-        if (v13 == 1180787813 || v13 == 1397715043 || v12 != 0)
+        if (v13 == 1180787813 || v13 == 1397715043 || isEnabled != 0)
         {
           [v11 updatePresetParameters:v4 atIndex:v8++];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [components countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
@@ -71,20 +71,20 @@
   return result;
 }
 
-- (void)replaceComponentsWithComponentsFromEffectRendition:(id)a3 withDocument:(id)a4
+- (void)replaceComponentsWithComponentsFromEffectRendition:(id)rendition withDocument:(id)document
 {
   v44 = *MEMORY[0x277D85DE8];
-  obj = [a3 components];
+  obj = [rendition components];
   if ([obj count])
   {
-    v6 = [(TDEffectRenditionSpec *)self components];
-    v26 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(v6, "count")}];
-    v7 = [MEMORY[0x277CBEB18] array];
+    components = [(TDEffectRenditionSpec *)self components];
+    v26 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(components, "count")}];
+    array = [MEMORY[0x277CBEB18] array];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v8 = [v6 countByEnumeratingWithState:&v37 objects:v43 count:16];
+    v8 = [components countByEnumeratingWithState:&v37 objects:v43 count:16];
     if (v8)
     {
       v9 = v8;
@@ -96,22 +96,22 @@
         {
           if (*v38 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(components);
           }
 
-          [v7 addObject:*(*(&v37 + 1) + 8 * v11++)];
+          [array addObject:*(*(&v37 + 1) + 8 * v11++)];
         }
 
         while (v9 != v11);
-        v9 = [v6 countByEnumeratingWithState:&v37 objects:v43 count:16];
+        v9 = [components countByEnumeratingWithState:&v37 objects:v43 count:16];
       }
 
       while (v9);
     }
 
-    [(TDEffectRenditionSpec *)self removeComponents:v6];
-    [a4 deleteObjects:v7];
-    [objc_msgSend(a4 "managedObjectContext")];
+    [(TDEffectRenditionSpec *)self removeComponents:components];
+    [document deleteObjects:array];
+    [objc_msgSend(document "managedObjectContext")];
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
@@ -120,7 +120,7 @@
     if (v27)
     {
       v24 = *v34;
-      v25 = self;
+      selfCopy = self;
       do
       {
         v12 = 0;
@@ -132,14 +132,14 @@
           }
 
           v13 = *(*(&v33 + 1) + 8 * v12);
-          v14 = [a4 newObjectForEntity:@"EffectComponent"];
+          v14 = [document newObjectForEntity:@"EffectComponent"];
           v28 = v13;
-          v15 = [v13 parameters];
+          parameters = [v13 parameters];
           v29 = 0u;
           v30 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v16 = [v15 countByEnumeratingWithState:&v29 objects:v41 count:16];
+          v16 = [parameters countByEnumeratingWithState:&v29 objects:v41 count:16];
           if (v16)
           {
             v17 = v16;
@@ -151,11 +151,11 @@
               {
                 if (*v30 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(parameters);
                 }
 
                 v20 = *(*(&v29 + 1) + 8 * v19);
-                v21 = [a4 newObjectForEntity:@"EffectParameterValue"];
+                v21 = [document newObjectForEntity:@"EffectParameterValue"];
                 [v21 setIntValue:{objc_msgSend(v20, "intValue")}];
                 [v21 setFloatValue:{objc_msgSend(v20, "floatValue")}];
                 [v21 setColorValue:{objc_msgSend(v20, "colorValue")}];
@@ -167,7 +167,7 @@
               }
 
               while (v17 != v19);
-              v17 = [v15 countByEnumeratingWithState:&v29 objects:v41 count:16];
+              v17 = [parameters countByEnumeratingWithState:&v29 objects:v41 count:16];
             }
 
             while (v17);
@@ -175,8 +175,8 @@
 
           [v14 setEffectType:{objc_msgSend(v28, "effectType")}];
           [v14 setIsEnabled:{objc_msgSend(v28, "isEnabled")}];
-          self = v25;
-          [v14 setRendition:v25];
+          self = selfCopy;
+          [v14 setRendition:selfCopy];
           [v26 addObject:v14];
 
           ++v12;
@@ -195,10 +195,10 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)componentOfType:(unsigned int)a3
+- (id)componentOfType:(unsigned int)type
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3 == 1397715043 || a3 == 1180787813;
+  v3 = type == 1397715043 || type == 1180787813;
   if (v3 && (v5 = -[TDEffectRenditionSpec components](self, "components"), v13 = 0u, v14 = 0u, v15 = 0u, v16 = 0u, (v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16]) != 0))
   {
     v7 = v6;
@@ -213,7 +213,7 @@ LABEL_8:
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
-      if ([objc_msgSend(v10 "effectType")] == a3)
+      if ([objc_msgSend(v10 "effectType")] == type)
       {
         break;
       }

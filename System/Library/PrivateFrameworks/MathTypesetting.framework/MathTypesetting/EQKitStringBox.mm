@@ -1,36 +1,36 @@
 @interface EQKitStringBox
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)p_appendEntryToSpec:(void *)a3 run:(__CTRun *)a4 glyphRange:(id)a5 offset:(CGPoint)a6;
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)p_appendEntryToSpec:(void *)spec run:(__CTRun *)run glyphRange:(id)range offset:(CGPoint)offset;
 - (CGRect)erasableBounds;
-- (EQKitStringBox)initWithAttributedString:(id)a3 cgColor:(CGColor *)a4;
+- (EQKitStringBox)initWithAttributedString:(id)string cgColor:(CGColor *)color;
 - (__CTLine)line;
-- (double)positionOfCharacterAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)positionOfCharacterAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 - (void)p_cacheDimensions;
 - (void)p_ensureDimensionsAreValid;
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4;
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitStringBox
 
-- (EQKitStringBox)initWithAttributedString:(id)a3 cgColor:(CGColor *)a4
+- (EQKitStringBox)initWithAttributedString:(id)string cgColor:(CGColor *)color
 {
-  v6 = a3;
+  stringCopy = string;
   v12.receiver = self;
   v12.super_class = EQKitStringBox;
   v7 = [(EQKitStringBox *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [stringCopy copy];
     attributedString = v7->_attributedString;
     v7->_attributedString = v8;
 
-    if (a4)
+    if (color)
     {
-      v10 = CFRetain(a4);
+      v10 = CFRetain(color);
     }
 
     else
@@ -58,43 +58,43 @@
   [(EQKitStringBox *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(EQKitStringBox *)self attributedString];
-  v6 = [v4 initWithAttributedString:v5 cgColor:self->_cgColor];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  attributedString = [(EQKitStringBox *)self attributedString];
+  v6 = [v4 initWithAttributedString:attributedString cgColor:self->_cgColor];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if ([(EQKitStringBox *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(EQKitStringBox *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
-      v6 = [(EQKitStringBox *)self attributedString];
-      v7 = [(EQKitStringBox *)v5 attributedString];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      attributedString = [(EQKitStringBox *)self attributedString];
+      attributedString2 = [(EQKitStringBox *)v5 attributedString];
+      v8 = attributedString2;
+      if (attributedString == attributedString2)
       {
         goto LABEL_7;
       }
 
       v9 = 0;
-      if (!v6 || !v7)
+      if (!attributedString || !attributedString2)
       {
         goto LABEL_11;
       }
 
-      if ([v6 isEqualToAttributedString:v7])
+      if ([attributedString isEqualToAttributedString:attributedString2])
       {
 LABEL_7:
         v9 = CGColorEqualToColor([(EQKitStringBox *)self color], [(EQKitStringBox *)v5 color]);
@@ -146,8 +146,8 @@ LABEL_12:
   result = self->_line;
   if (!result)
   {
-    v4 = [(EQKitStringBox *)self attributedString];
-    self->_line = CTLineCreateWithAttributedString(v4);
+    attributedString = [(EQKitStringBox *)self attributedString];
+    self->_line = CTLineCreateWithAttributedString(attributedString);
 
     return self->_line;
   }
@@ -155,90 +155,90 @@ LABEL_12:
   return result;
 }
 
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = offset.y;
+  x = offset.x;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = EQKitStringBox;
-  [(EQKitBox *)&v12 renderIntoContext:v7 offset:x, y];
-  v8 = [v7 cgContext];
-  if (v8)
+  [(EQKitBox *)&v12 renderIntoContext:contextCopy offset:x, y];
+  cgContext = [contextCopy cgContext];
+  if (cgContext)
   {
-    v9 = [(EQKitStringBox *)self line];
-    if (v9)
+    line = [(EQKitStringBox *)self line];
+    if (line)
     {
       if (self->_cgColor)
       {
-        CGContextSaveGState(v8);
-        CGContextSetFillColorWithColor(v8, self->_cgColor);
+        CGContextSaveGState(cgContext);
+        CGContextSetFillColorWithColor(cgContext, self->_cgColor);
       }
 
       memset(&v11, 0, sizeof(v11));
-      CGContextGetTextMatrix(&v11, v8);
+      CGContextGetTextMatrix(&v11, cgContext);
       CGAffineTransformMakeScale(&v10, 1.0, -1.0);
-      CGContextSetTextMatrix(v8, &v10);
-      CGContextSetTextPosition(v8, x, y);
-      CTLineDraw(v9, v8);
+      CGContextSetTextMatrix(cgContext, &v10);
+      CGContextSetTextPosition(cgContext, x, y);
+      CTLineDraw(line, cgContext);
       v10 = v11;
-      CGContextSetTextMatrix(v8, &v10);
+      CGContextSetTextMatrix(cgContext, &v10);
       if (self->_cgColor)
       {
-        CGContextRestoreGState(v8);
+        CGContextRestoreGState(cgContext);
       }
     }
   }
 }
 
-- (double)positionOfCharacterAtIndex:(unint64_t)a3
+- (double)positionOfCharacterAtIndex:(unint64_t)index
 {
-  v5 = [(EQKitStringBox *)self line];
-  if (!v5)
+  line = [(EQKitStringBox *)self line];
+  if (!line)
   {
     return 0.0;
   }
 
-  v6 = v5;
-  v7 = [(EQKitStringBox *)self attributedString];
-  v8 = [v7 length];
+  v6 = line;
+  attributedString = [(EQKitStringBox *)self attributedString];
+  v8 = [attributedString length];
 
-  if (v8 < a3)
+  if (v8 < index)
   {
     return 0.0;
   }
 
-  return CTLineGetOffsetForStringIndex(v6, a3, 0);
+  return CTLineGetOffsetForStringIndex(v6, index, 0);
 }
 
-- (BOOL)p_appendEntryToSpec:(void *)a3 run:(__CTRun *)a4 glyphRange:(id)a5 offset:(CGPoint)a6
+- (BOOL)p_appendEntryToSpec:(void *)spec run:(__CTRun *)run glyphRange:(id)range offset:(CGPoint)offset
 {
-  y = a6.y;
-  x = a6.x;
-  var1 = a5.var1;
-  var0 = a5.var0;
+  y = offset.y;
+  x = offset.x;
+  var1 = range.var1;
+  var0 = range.var0;
   buffer = 0;
-  CTRunGetGlyphs(a4, a5, &buffer);
-  Attributes = CTRunGetAttributes(a4);
+  CTRunGetGlyphs(run, range, &buffer);
+  Attributes = CTRunGetAttributes(run);
   v13 = Attributes;
   if (Attributes)
   {
     Value = CFDictionaryGetValue(Attributes, *MEMORY[0x277CC4838]);
     v18.location = var0;
     v18.length = var1;
-    CTRunGetPositions(a4, v18, &v16);
+    CTRunGetPositions(run, v18, &v16);
     v19.x = x + v16.x;
     v19.y = y + v16.y;
-    EQKit::OpticalKern::Spec::appendEntry(a3, v19, Value, buffer);
+    EQKit::OpticalKern::Spec::appendEntry(spec, v19, Value, buffer);
   }
 
   return v13 != 0;
 }
 
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   GlyphRuns = CTLineGetGlyphRuns([(EQKitStringBox *)self line]);
   Count = CFArrayGetCount(GlyphRuns);
   if (!Count)
@@ -246,7 +246,7 @@ LABEL_12:
     return 0;
   }
 
-  v10 = *(a3 + 6);
+  v10 = *(spec + 6);
   if (v10 == 2)
   {
     ValueAtIndex = CFArrayGetValueAtIndex(GlyphRuns, Count - 1);
@@ -254,8 +254,8 @@ LABEL_12:
     v15 = GlyphCount - 1;
     if (GlyphCount >= 1)
     {
-      v12 = self;
-      v13 = a3;
+      selfCopy2 = self;
+      specCopy2 = spec;
       v14 = ValueAtIndex;
       goto LABEL_8;
     }
@@ -274,13 +274,13 @@ LABEL_12:
     return 0;
   }
 
-  v12 = self;
-  v13 = a3;
+  selfCopy2 = self;
+  specCopy2 = spec;
   v14 = v11;
   v15 = 0;
 LABEL_8:
 
-  return [(EQKitStringBox *)v12 p_appendEntryToSpec:v13 run:v14 glyphRange:v15 offset:1, x, y];
+  return [(EQKitStringBox *)selfCopy2 p_appendEntryToSpec:specCopy2 run:v14 glyphRange:v15 offset:1, x, y];
 }
 
 - (id)description
@@ -293,8 +293,8 @@ LABEL_8:
   v8 = v7;
   [(EQKitStringBox *)self width];
   v10 = v9;
-  v11 = [(EQKitStringBox *)self attributedString];
-  v12 = [v3 stringWithFormat:@"<%@ %p>: height=%f depth=%f width=%f attributedString=%@", v4, self, v6, v8, v10, v11];
+  attributedString = [(EQKitStringBox *)self attributedString];
+  v12 = [v3 stringWithFormat:@"<%@ %p>: height=%f depth=%f width=%f attributedString=%@", v4, self, v6, v8, v10, attributedString];
 
   return v12;
 }
@@ -308,11 +308,11 @@ LABEL_8:
   v4 = *(MEMORY[0x277CBF3A0] + 16);
   self->_erasableBounds.origin = *MEMORY[0x277CBF3A0];
   self->_erasableBounds.size = v4;
-  v5 = [(EQKitStringBox *)self line];
-  if (v5)
+  line = [(EQKitStringBox *)self line];
+  if (line)
   {
-    v6 = v5;
-    ImageBounds = CTLineGetImageBounds(v5, 0);
+    v6 = line;
+    ImageBounds = CTLineGetImageBounds(line, 0);
     x = ImageBounds.origin.x;
     y = ImageBounds.origin.y;
     width = ImageBounds.size.width;

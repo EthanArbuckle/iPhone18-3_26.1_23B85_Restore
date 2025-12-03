@@ -1,33 +1,33 @@
 @interface ASRSchemaASRFinalAudioPacketContainingSpeechReceived
-- (ASRSchemaASRFinalAudioPacketContainingSpeechReceived)initWithDictionary:(id)a3;
-- (ASRSchemaASRFinalAudioPacketContainingSpeechReceived)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRFinalAudioPacketContainingSpeechReceived)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRFinalAudioPacketContainingSpeechReceived)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRFinalAudioPacketContainingSpeechReceived
 
-- (ASRSchemaASRFinalAudioPacketContainingSpeechReceived)initWithDictionary:(id)a3
+- (ASRSchemaASRFinalAudioPacketContainingSpeechReceived)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = ASRSchemaASRFinalAudioPacketContainingSpeechReceived;
   v5 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRFinalAudioPacketContainingSpeechReceived setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"loggableSharedUserId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"loggableSharedUserId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)v5 setLoggableSharedUserId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"resultCandidateId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"resultCandidateId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)v5 setResultCandidateId:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"loggableUserIdHash"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"loggableUserIdHash"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (ASRSchemaASRFinalAudioPacketContainingSpeechReceived)initWithJSON:(id)a3
+- (ASRSchemaASRFinalAudioPacketContainingSpeechReceived)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,37 +93,37 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRFinalAudioPacketContainingSpeechReceived exists](self, "exists")}];
-    [v3 setObject:v4 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v4 forKeyedSubscript:@"exists"];
   }
 
   if (self->_loggableSharedUserId)
   {
-    v5 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableSharedUserId];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"loggableSharedUserId"];
+    loggableSharedUserId = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableSharedUserId];
+    v6 = [loggableSharedUserId copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"loggableSharedUserId"];
   }
 
   if (self->_loggableUserIdHash)
   {
-    v7 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableUserIdHash];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"loggableUserIdHash"];
+    loggableUserIdHash = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableUserIdHash];
+    v8 = [loggableUserIdHash copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"loggableUserIdHash"];
   }
 
   if (self->_resultCandidateId)
   {
-    v9 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self resultCandidateId];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"resultCandidateId"];
+    resultCandidateId = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self resultCandidateId];
+    v10 = [resultCandidateId copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"resultCandidateId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -143,15 +143,15 @@
   return v4 ^ v5 ^ [(NSString *)self->_loggableUserIdHash hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  if ((*&self->_has & 1) != (v4[40] & 1))
+  if ((*&self->_has & 1) != (equalCopy[40] & 1))
   {
     goto LABEL_20;
   }
@@ -159,26 +159,26 @@
   if (*&self->_has)
   {
     exists = self->_exists;
-    if (exists != [v4 exists])
+    if (exists != [equalCopy exists])
     {
       goto LABEL_20;
     }
   }
 
-  v6 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableSharedUserId];
-  v7 = [v4 loggableSharedUserId];
-  if ((v6 != 0) == (v7 == 0))
+  loggableSharedUserId = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableSharedUserId];
+  loggableSharedUserId2 = [equalCopy loggableSharedUserId];
+  if ((loggableSharedUserId != 0) == (loggableSharedUserId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v8 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableSharedUserId];
-  if (v8)
+  loggableSharedUserId3 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableSharedUserId];
+  if (loggableSharedUserId3)
   {
-    v9 = v8;
-    v10 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableSharedUserId];
-    v11 = [v4 loggableSharedUserId];
-    v12 = [v10 isEqual:v11];
+    v9 = loggableSharedUserId3;
+    loggableSharedUserId4 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableSharedUserId];
+    loggableSharedUserId5 = [equalCopy loggableSharedUserId];
+    v12 = [loggableSharedUserId4 isEqual:loggableSharedUserId5];
 
     if (!v12)
     {
@@ -190,20 +190,20 @@
   {
   }
 
-  v6 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self resultCandidateId];
-  v7 = [v4 resultCandidateId];
-  if ((v6 != 0) == (v7 == 0))
+  loggableSharedUserId = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self resultCandidateId];
+  loggableSharedUserId2 = [equalCopy resultCandidateId];
+  if ((loggableSharedUserId != 0) == (loggableSharedUserId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v13 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self resultCandidateId];
-  if (v13)
+  resultCandidateId = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self resultCandidateId];
+  if (resultCandidateId)
   {
-    v14 = v13;
-    v15 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self resultCandidateId];
-    v16 = [v4 resultCandidateId];
-    v17 = [v15 isEqual:v16];
+    v14 = resultCandidateId;
+    resultCandidateId2 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self resultCandidateId];
+    resultCandidateId3 = [equalCopy resultCandidateId];
+    v17 = [resultCandidateId2 isEqual:resultCandidateId3];
 
     if (!v17)
     {
@@ -215,12 +215,12 @@
   {
   }
 
-  v6 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableUserIdHash];
-  v7 = [v4 loggableUserIdHash];
-  if ((v6 != 0) != (v7 == 0))
+  loggableSharedUserId = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableUserIdHash];
+  loggableSharedUserId2 = [equalCopy loggableUserIdHash];
+  if ((loggableSharedUserId != 0) != (loggableSharedUserId2 == 0))
   {
-    v18 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableUserIdHash];
-    if (!v18)
+    loggableUserIdHash = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableUserIdHash];
+    if (!loggableUserIdHash)
     {
 
 LABEL_23:
@@ -228,10 +228,10 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v19 = v18;
-    v20 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableUserIdHash];
-    v21 = [v4 loggableUserIdHash];
-    v22 = [v20 isEqual:v21];
+    v19 = loggableUserIdHash;
+    loggableUserIdHash2 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableUserIdHash];
+    loggableUserIdHash3 = [equalCopy loggableUserIdHash];
+    v22 = [loggableUserIdHash2 isEqual:loggableUserIdHash3];
 
     if (v22)
     {
@@ -251,45 +251,45 @@ LABEL_21:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v4 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableSharedUserId];
+  loggableSharedUserId = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableSharedUserId];
 
-  if (v4)
+  if (loggableSharedUserId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self resultCandidateId];
+  resultCandidateId = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self resultCandidateId];
 
-  if (v5)
+  if (resultCandidateId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableUserIdHash];
+  loggableUserIdHash = [(ASRSchemaASRFinalAudioPacketContainingSpeechReceived *)self loggableUserIdHash];
 
-  v7 = v8;
-  if (v6)
+  v7 = toCopy;
+  if (loggableUserIdHash)
   {
     PBDataWriterWriteStringField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v8.receiver = self;
   v8.super_class = ASRSchemaASRFinalAudioPacketContainingSpeechReceived;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:v4];
-  v6 = [v4 isConditionSet:{8, v8.receiver, v8.super_class}];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:policyCopy];
+  v6 = [policyCopy isConditionSet:{8, v8.receiver, v8.super_class}];
 
   if (v6)
   {

@@ -1,17 +1,17 @@
 @interface CAFGroupReadRequest
-- (id)groupRequestValueForRequests:(id)a3;
-- (id)requestForCharacteristic:(id)a3;
-- (void)completedRequests:(id)a3 withResponse:(id)a4;
+- (id)groupRequestValueForRequests:(id)requests;
+- (id)requestForCharacteristic:(id)characteristic;
+- (void)completedRequests:(id)requests withResponse:(id)response;
 @end
 
 @implementation CAFGroupReadRequest
 
-- (id)requestForCharacteristic:(id)a3
+- (id)requestForCharacteristic:(id)characteristic
 {
-  v3 = a3;
-  if ([v3 readable])
+  characteristicCopy = characteristic;
+  if ([characteristicCopy readable])
   {
-    v4 = [(CAFRequest *)CAFReadRequest requestWithCharacteristic:v3];
+    v4 = [(CAFRequest *)CAFReadRequest requestWithCharacteristic:characteristicCopy];
   }
 
   else
@@ -22,12 +22,12 @@
   return v4;
 }
 
-- (id)groupRequestValueForRequests:(id)a3
+- (id)groupRequestValueForRequests:(id)requests
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  requestsCopy = requests;
   objc_opt_class();
-  v4 = v3;
+  v4 = requestsCopy;
   if (!v4 || (v5 = v4, (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -60,9 +60,9 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) characteristic];
-        v14 = [v13 readInstanceIDs];
-        [v7 addObjectsFromArray:v14];
+        characteristic = [*(*(&v17 + 1) + 8 * i) characteristic];
+        readInstanceIDs = [characteristic readInstanceIDs];
+        [v7 addObjectsFromArray:readInstanceIDs];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -76,21 +76,21 @@
   return v7;
 }
 
-- (void)completedRequests:(id)a3 withResponse:(id)a4
+- (void)completedRequests:(id)requests withResponse:(id)response
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 values];
+  requestsCopy = requests;
+  responseCopy = response;
+  values = [responseCopy values];
 
-  if (v7)
+  if (values)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v22 = v5;
-    v8 = v5;
+    v22 = requestsCopy;
+    v8 = requestsCopy;
     v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v9)
     {
@@ -107,17 +107,17 @@
           }
 
           v13 = *(*(&v23 + 1) + 8 * v12);
-          v14 = [v6 values];
-          v15 = [v13 characteristic];
-          v16 = [v15 instanceID];
-          v17 = [v14 objectForKeyedSubscript:v16];
+          values2 = [responseCopy values];
+          characteristic = [v13 characteristic];
+          instanceID = [characteristic instanceID];
+          v17 = [values2 objectForKeyedSubscript:instanceID];
 
           if (v17)
           {
-            v18 = [v13 characteristic];
-            v19 = [v13 characteristic];
-            v20 = [v19 instanceID];
-            [v18 handleRead:v20 value:v17];
+            characteristic2 = [v13 characteristic];
+            characteristic3 = [v13 characteristic];
+            instanceID2 = [characteristic3 instanceID];
+            [characteristic2 handleRead:instanceID2 value:v17];
           }
 
           ++v12;
@@ -130,7 +130,7 @@
       while (v10);
     }
 
-    v5 = v22;
+    requestsCopy = v22;
   }
 
   v21 = *MEMORY[0x277D85DE8];

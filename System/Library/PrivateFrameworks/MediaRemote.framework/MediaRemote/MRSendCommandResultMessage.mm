@@ -1,30 +1,30 @@
 @interface MRSendCommandResultMessage
 - (MRCommandResult)commandResult;
-- (MRSendCommandResultMessage)initWithCommandID:(id)a3 commandResult:(id)a4;
+- (MRSendCommandResultMessage)initWithCommandID:(id)d commandResult:(id)result;
 - (unsigned)sendError;
 @end
 
 @implementation MRSendCommandResultMessage
 
-- (MRSendCommandResultMessage)initWithCommandID:(id)a3 commandResult:(id)a4
+- (MRSendCommandResultMessage)initWithCommandID:(id)d commandResult:(id)result
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  resultCopy = result;
   v22.receiver = self;
   v22.super_class = MRSendCommandResultMessage;
   v8 = [(MRProtocolMessage *)&v22 init];
   if (v8)
   {
     v9 = objc_alloc_init(_MRSendCommandResultMessageProtobuf);
-    [(_MRSendCommandResultMessageProtobuf *)v9 setCommandID:v6];
+    [(_MRSendCommandResultMessageProtobuf *)v9 setCommandID:dCopy];
     [(_MRSendCommandResultMessageProtobuf *)v9 setSendError:[(MRCommandResult *)v8->_commandResult sendError]];
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = [v7 handlerReturnStatuses];
-    v11 = [v10 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    handlerReturnStatuses = [resultCopy handlerReturnStatuses];
+    v11 = [handlerReturnStatuses countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v11)
     {
       v12 = v11;
@@ -36,21 +36,21 @@
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(handlerReturnStatuses);
           }
 
           -[_MRSendCommandResultMessageProtobuf addHandlerReturnStatus:](v9, "addHandlerReturnStatus:", [*(*(&v18 + 1) + 8 * v14++) unsignedIntValue]);
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v18 objects:v23 count:16];
+        v12 = [handlerReturnStatuses countByEnumeratingWithState:&v18 objects:v23 count:16];
       }
 
       while (v12);
     }
 
-    v15 = [v7 protobuf];
-    [(_MRSendCommandResultMessageProtobuf *)v9 setCommandResult:v15];
+    protobuf = [resultCopy protobuf];
+    [(_MRSendCommandResultMessageProtobuf *)v9 setCommandResult:protobuf];
 
     [(MRProtocolMessage *)v8 setUnderlyingCodableMessage:v9];
   }
@@ -61,62 +61,62 @@
 
 - (unsigned)sendError
 {
-  v2 = [(MRSendCommandResultMessage *)self commandResult];
-  v3 = [v2 sendError];
+  commandResult = [(MRSendCommandResultMessage *)self commandResult];
+  sendError = [commandResult sendError];
 
-  return v3;
+  return sendError;
 }
 
 - (MRCommandResult)commandResult
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_commandResult)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_commandResult)
   {
-    v3 = [(MRProtocolMessage *)v2 underlyingCodableMessage];
-    v4 = [v3 hasCommandResult];
+    underlyingCodableMessage = [(MRProtocolMessage *)selfCopy underlyingCodableMessage];
+    hasCommandResult = [underlyingCodableMessage hasCommandResult];
 
-    if (v4)
+    if (hasCommandResult)
     {
       v5 = [MRCommandResult alloc];
-      v6 = [(MRProtocolMessage *)v2 underlyingCodableMessage];
-      v7 = [v6 commandResult];
-      v8 = [(MRCommandResult *)v5 initWithProtobuf:v7];
+      underlyingCodableMessage2 = [(MRProtocolMessage *)selfCopy underlyingCodableMessage];
+      commandResult = [underlyingCodableMessage2 commandResult];
+      v8 = [(MRCommandResult *)v5 initWithProtobuf:commandResult];
     }
 
     else
     {
       v9 = objc_alloc(MEMORY[0x1E695DF70]);
-      v10 = [(MRProtocolMessage *)v2 underlyingCodableMessage];
-      v6 = [v9 initWithCapacity:{objc_msgSend(v10, "handlerReturnStatusCount")}];
+      underlyingCodableMessage3 = [(MRProtocolMessage *)selfCopy underlyingCodableMessage];
+      underlyingCodableMessage2 = [v9 initWithCapacity:{objc_msgSend(underlyingCodableMessage3, "handlerReturnStatusCount")}];
 
       for (i = 0; ; ++i)
       {
-        v12 = [(MRProtocolMessage *)v2 underlyingCodableMessage];
-        v13 = [v12 handlerReturnStatusCount];
+        underlyingCodableMessage4 = [(MRProtocolMessage *)selfCopy underlyingCodableMessage];
+        handlerReturnStatusCount = [underlyingCodableMessage4 handlerReturnStatusCount];
 
-        if (v13 <= i)
+        if (handlerReturnStatusCount <= i)
         {
           break;
         }
 
         v14 = MEMORY[0x1E696AD98];
-        v15 = [(MRProtocolMessage *)v2 underlyingCodableMessage];
-        v16 = [v14 numberWithInt:{objc_msgSend(v15, "handlerReturnStatusAtIndex:", i)}];
-        [v6 addObject:v16];
+        underlyingCodableMessage5 = [(MRProtocolMessage *)selfCopy underlyingCodableMessage];
+        v16 = [v14 numberWithInt:{objc_msgSend(underlyingCodableMessage5, "handlerReturnStatusAtIndex:", i)}];
+        [underlyingCodableMessage2 addObject:v16];
       }
 
       v17 = [MRCommandResult alloc];
-      v7 = [(MRProtocolMessage *)v2 underlyingCodableMessage];
-      v8 = -[MRCommandResult initWithHandlerStatuses:sendError:](v17, "initWithHandlerStatuses:sendError:", v6, [v7 sendError]);
+      commandResult = [(MRProtocolMessage *)selfCopy underlyingCodableMessage];
+      v8 = -[MRCommandResult initWithHandlerStatuses:sendError:](v17, "initWithHandlerStatuses:sendError:", underlyingCodableMessage2, [commandResult sendError]);
     }
 
-    commandResult = v2->_commandResult;
-    v2->_commandResult = v8;
+    commandResult = selfCopy->_commandResult;
+    selfCopy->_commandResult = v8;
   }
 
-  v19 = v2->_commandResult;
-  objc_sync_exit(v2);
+  v19 = selfCopy->_commandResult;
+  objc_sync_exit(selfCopy);
 
   return v19;
 }

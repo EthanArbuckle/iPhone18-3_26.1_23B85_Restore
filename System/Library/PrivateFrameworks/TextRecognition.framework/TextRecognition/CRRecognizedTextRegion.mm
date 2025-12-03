@@ -1,39 +1,39 @@
 @interface CRRecognizedTextRegion
-- (CRRecognizedTextRegion)initWithType:(unint64_t)a3 detectedLineRegion:(id)a4;
+- (CRRecognizedTextRegion)initWithType:(unint64_t)type detectedLineRegion:(id)region;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)createCharacterSubFeaturesTopWhiteSpacePoints:(id)a3 bottomWhiteSpacePoints:(id)a4 falsePositiveFiltering:(BOOL)a5;
-- (id)createSubregionsForString:(id)a3 topWhiteSpacePoints:(id)a4 bottomWhiteSpacePoints:(id)a5 hasBoundarySpacePoints:(BOOL)a6 hasCharacterAndWordBoundaries:(BOOL)a7 tokenPermutation:(id)a8;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_copyContentsToObject:(void *)a1;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)createCharacterSubFeaturesTopWhiteSpacePoints:(id)points bottomWhiteSpacePoints:(id)spacePoints falsePositiveFiltering:(BOOL)filtering;
+- (id)createSubregionsForString:(id)string topWhiteSpacePoints:(id)points bottomWhiteSpacePoints:(id)spacePoints hasBoundarySpacePoints:(BOOL)boundarySpacePoints hasCharacterAndWordBoundaries:(BOOL)boundaries tokenPermutation:(id)permutation;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_copyContentsToObject:(void *)object;
 @end
 
 @implementation CRRecognizedTextRegion
 
-- (CRRecognizedTextRegion)initWithType:(unint64_t)a3 detectedLineRegion:(id)a4
+- (CRRecognizedTextRegion)initWithType:(unint64_t)type detectedLineRegion:(id)region
 {
-  v7 = a4;
+  regionCopy = region;
   v8 = [(CRRecognizedTextRegion *)self init];
   if (v8)
   {
-    v9 = [v7 boundingQuad];
+    boundingQuad = [regionCopy boundingQuad];
     boundingQuad = v8->_boundingQuad;
-    v8->_boundingQuad = v9;
+    v8->_boundingQuad = boundingQuad;
 
-    v8->_isCurved = [v7 isCurved];
-    v8->_layoutDirection = [v7 layoutDirection];
-    v11 = [v7 polygon];
+    v8->_isCurved = [regionCopy isCurved];
+    v8->_layoutDirection = [regionCopy layoutDirection];
+    polygon = [regionCopy polygon];
     polygon = v8->_polygon;
-    v8->_polygon = v11;
+    v8->_polygon = polygon;
 
-    v8->_textRegionType = a3;
-    objc_storeStrong(&v8->_detectedLineRegion, a4);
+    v8->_textRegionType = type;
+    objc_storeStrong(&v8->_detectedLineRegion, region);
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CRRecognizedTextRegion);
   if (v4)
@@ -44,43 +44,43 @@
   return v4;
 }
 
-- (void)_copyContentsToObject:(void *)a1
+- (void)_copyContentsToObject:(void *)object
 {
-  if (a1)
+  if (object)
   {
     v3 = a2;
-    v4 = [a1 boundingQuad];
-    [v3 setBoundingQuad:v4];
+    boundingQuad = [object boundingQuad];
+    [v3 setBoundingQuad:boundingQuad];
 
-    v5 = [a1 polygon];
-    [v3 setPolygon:v5];
+    polygon = [object polygon];
+    [v3 setPolygon:polygon];
 
-    [v3 setLayoutDirection:{objc_msgSend(a1, "layoutDirection")}];
-    [v3 setTextRegionType:{objc_msgSend(a1, "textRegionType")}];
-    v6 = [a1 text];
-    [v3 setText:v6];
+    [v3 setLayoutDirection:{objc_msgSend(object, "layoutDirection")}];
+    [v3 setTextRegionType:{objc_msgSend(object, "textRegionType")}];
+    text = [object text];
+    [v3 setText:text];
 
-    v7 = [a1 subregions];
-    [v3 setSubregions:v7];
+    subregions = [object subregions];
+    [v3 setSubregions:subregions];
 
-    v8 = [a1 candidates];
-    [v3 setCandidates:v8];
+    candidates = [object candidates];
+    [v3 setCandidates:candidates];
 
-    [v3 setIsCurved:{objc_msgSend(a1, "isCurved")}];
-    [a1 activationProbability];
+    [v3 setIsCurved:{objc_msgSend(object, "isCurved")}];
+    [object activationProbability];
     [v3 setActivationProbability:?];
-    [a1 confidence];
+    [object confidence];
     [v3 setConfidence:?];
-    v9 = [a1 locale];
-    [v3 setLocale:v9];
+    locale = [object locale];
+    [v3 setLocale:locale];
 
-    [v3 setWhitespaceInjected:{objc_msgSend(a1, "whitespaceInjected")}];
-    v10 = [a1 detectedLineRegion];
-    [v3 setDetectedLineRegion:v10];
+    [v3 setWhitespaceInjected:{objc_msgSend(object, "whitespaceInjected")}];
+    detectedLineRegion = [object detectedLineRegion];
+    [v3 setDetectedLineRegion:detectedLineRegion];
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CRMutableRecognizedTextRegion);
   if (v4)
@@ -91,29 +91,29 @@
   return v4;
 }
 
-- (id)createSubregionsForString:(id)a3 topWhiteSpacePoints:(id)a4 bottomWhiteSpacePoints:(id)a5 hasBoundarySpacePoints:(BOOL)a6 hasCharacterAndWordBoundaries:(BOOL)a7 tokenPermutation:(id)a8
+- (id)createSubregionsForString:(id)string topWhiteSpacePoints:(id)points bottomWhiteSpacePoints:(id)spacePoints hasBoundarySpacePoints:(BOOL)boundarySpacePoints hasCharacterAndWordBoundaries:(BOOL)boundaries tokenPermutation:(id)permutation
 {
-  v9 = a7;
-  v10 = a6;
+  boundariesCopy = boundaries;
+  boundarySpacePointsCopy = boundarySpacePoints;
   v160[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  v145 = v9;
-  v147 = !v9;
-  v139 = v16;
-  if (v10)
+  stringCopy = string;
+  pointsCopy = points;
+  spacePointsCopy = spacePoints;
+  permutationCopy = permutation;
+  v145 = boundariesCopy;
+  v147 = !boundariesCopy;
+  v139 = spacePointsCopy;
+  if (boundarySpacePointsCopy)
   {
-    v18 = [v15 objectAtIndexedSubscript:0];
+    v18 = [pointsCopy objectAtIndexedSubscript:0];
     [v18 pointValue];
     v20 = v19;
     v22 = v21;
-    v23 = [v15 objectAtIndexedSubscript:1];
+    v23 = [pointsCopy objectAtIndexedSubscript:1];
     [v23 pointValue];
     if (v20 == v25 && v22 == v24)
     {
-      v30 = [v16 objectAtIndexedSubscript:0];
+      v30 = [spacePointsCopy objectAtIndexedSubscript:0];
       [v30 pointValue];
       v32 = v31;
       v34 = v33;
@@ -127,7 +127,7 @@
 
       v146 = v37;
 
-      v16 = v139;
+      spacePointsCopy = v139;
     }
 
     else
@@ -135,17 +135,17 @@
       v146 = 0;
     }
 
-    v39 = [v15 lastObject];
-    [v39 pointValue];
+    lastObject = [pointsCopy lastObject];
+    [lastObject pointValue];
     v41 = v40;
     v43 = v42;
-    v44 = [v15 objectAtIndexedSubscript:{objc_msgSend(v15, "count") - 2}];
+    v44 = [pointsCopy objectAtIndexedSubscript:{objc_msgSend(pointsCopy, "count") - 2}];
     [v44 pointValue];
     v137 = 0;
     if (v41 == v46 && v43 == v45)
     {
-      v47 = [v16 lastObject];
-      [v47 pointValue];
+      lastObject2 = [spacePointsCopy lastObject];
+      [lastObject2 pointValue];
       v49 = v48;
       v51 = v50;
       v52 = [v139 objectAtIndexedSubscript:{objc_msgSend(v139, "count") - 2}];
@@ -158,10 +158,10 @@
 
       v137 = v54;
 
-      v16 = v139;
+      spacePointsCopy = v139;
     }
 
-    if ([v15 count] == 4)
+    if ([pointsCopy count] == 4)
     {
       if (!v146 || !v137)
       {
@@ -169,17 +169,17 @@
       }
     }
 
-    else if ([v16 count] != 4 || !v146 || !v137)
+    else if ([spacePointsCopy count] != 4 || !v146 || !v137)
     {
       goto LABEL_21;
     }
 
-    v27 = [(CRRecognizedTextRegion *)self mutableCopy];
-    [v27 setText:v14];
-    [v27 setSubregions:0];
-    [v27 setCandidates:0];
-    [v27 setTextRegionType:v147];
-    v159 = v27;
+    array = [(CRRecognizedTextRegion *)self mutableCopy];
+    [array setText:stringCopy];
+    [array setSubregions:0];
+    [array setCandidates:0];
+    [array setTextRegionType:v147];
+    v159 = array;
     v28 = MEMORY[0x1E695DEC8];
     v29 = &v159;
 LABEL_32:
@@ -187,14 +187,14 @@ LABEL_32:
     goto LABEL_59;
   }
 
-  if (![v15 count] || !objc_msgSend(v16, "count"))
+  if (![pointsCopy count] || !objc_msgSend(spacePointsCopy, "count"))
   {
-    v27 = [(CRRecognizedTextRegion *)self mutableCopy];
-    [v27 setText:v14];
-    [v27 setCandidates:0];
-    [v27 setSubregions:0];
-    [v27 setTextRegionType:v147];
-    v160[0] = v27;
+    array = [(CRRecognizedTextRegion *)self mutableCopy];
+    [array setText:stringCopy];
+    [array setCandidates:0];
+    [array setSubregions:0];
+    [array setTextRegionType:v147];
+    v160[0] = array;
     v28 = MEMORY[0x1E695DEC8];
     v29 = v160;
     goto LABEL_32;
@@ -203,24 +203,24 @@ LABEL_32:
   LOBYTE(v137) = 1;
   LOBYTE(v146) = 1;
 LABEL_21:
-  v141 = v10;
-  v27 = [MEMORY[0x1E695DF70] array];
-  v56 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v57 = [v14 componentsSeparatedByCharactersInSet:v56];
+  v141 = boundarySpacePointsCopy;
+  array = [MEMORY[0x1E695DF70] array];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v57 = [stringCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
   v58 = [v57 mutableCopy];
   v59 = v58;
-  v132 = v17;
-  if (v17)
+  v132 = permutationCopy;
+  if (permutationCopy)
   {
     v130 = v57;
-    v143 = v27;
+    v143 = array;
     v60 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v58, "count")}];
     v152 = 0u;
     v153 = 0u;
     v154 = 0u;
     v155 = 0u;
-    v61 = v17;
+    v61 = permutationCopy;
     v62 = [v61 countByEnumeratingWithState:&v152 objects:v158 count:16];
     if (v62)
     {
@@ -245,8 +245,8 @@ LABEL_21:
       while (v63);
     }
 
-    v16 = v139;
-    v27 = v143;
+    spacePointsCopy = v139;
+    array = v143;
     v57 = v130;
   }
 
@@ -264,12 +264,12 @@ LABEL_21:
   }
 
   v70 = v69 + 2 * v68;
-  if ([v15 count] == v70 && objc_msgSend(v16, "count") == v70)
+  if ([pointsCopy count] == v70 && objc_msgSend(spacePointsCopy, "count") == v70)
   {
-    v129 = v14;
+    v129 = stringCopy;
     v131 = v57;
-    v142 = v15;
-    v144 = v27;
+    v142 = pointsCopy;
+    v144 = array;
     v71 = [v60 count];
     v148 = 0u;
     v149 = 0u;
@@ -309,13 +309,13 @@ LABEL_21:
         v78 = *(*(&v148 + 1) + 8 * v76);
         if (v141 == v74 && v146)
         {
-          v79 = [(CRRecognizedTextRegion *)self boundingQuad];
-          [v79 topLeft];
+          boundingQuad = [(CRRecognizedTextRegion *)self boundingQuad];
+          [boundingQuad topLeft];
           v81 = v80;
           v83 = v82;
 
-          v84 = [(CRRecognizedTextRegion *)self boundingQuad];
-          [v84 bottomLeft];
+          boundingQuad2 = [(CRRecognizedTextRegion *)self boundingQuad];
+          [boundingQuad2 bottomLeft];
           v86 = v85;
           v88 = v87;
 
@@ -324,7 +324,7 @@ LABEL_21:
           v91 = v90;
           v93 = v92;
 
-          v94 = v16;
+          v94 = spacePointsCopy;
           v95 = v135;
         }
 
@@ -337,18 +337,18 @@ LABEL_21:
             v81 = v97;
             v83 = v98;
 
-            v99 = [v16 objectAtIndexedSubscript:v134];
+            v99 = [spacePointsCopy objectAtIndexedSubscript:v134];
             [v99 pointValue];
             v86 = v100;
             v88 = v101;
 
-            v102 = [(CRRecognizedTextRegion *)self boundingQuad];
-            [v102 topRight];
+            boundingQuad3 = [(CRRecognizedTextRegion *)self boundingQuad];
+            [boundingQuad3 topRight];
             v91 = v103;
             v93 = v104;
 
-            v105 = [(CRRecognizedTextRegion *)self boundingQuad];
-            [v105 bottomRight];
+            boundingQuad4 = [(CRRecognizedTextRegion *)self boundingQuad];
+            [boundingQuad4 bottomRight];
             goto LABEL_51;
           }
 
@@ -362,7 +362,7 @@ LABEL_21:
           v86 = v112;
           v88 = v113;
 
-          v16 = v139;
+          spacePointsCopy = v139;
           v114 = [v142 objectAtIndexedSubscript:v77];
           [v114 pointValue];
           v91 = v115;
@@ -372,8 +372,8 @@ LABEL_21:
           v95 = v77;
         }
 
-        v105 = [v94 objectAtIndexedSubscript:v95];
-        [v105 pointValue];
+        boundingQuad4 = [v94 objectAtIndexedSubscript:v95];
+        [boundingQuad4 pointValue];
 LABEL_51:
         v117 = v106;
         v118 = v107;
@@ -382,8 +382,8 @@ LABEL_51:
         v120 = v119;
         if (v145)
         {
-          v121 = [v78 combinedTokenSequenceString];
-          [v120 setText:v121];
+          combinedTokenSequenceString = [v78 combinedTokenSequenceString];
+          [v120 setText:combinedTokenSequenceString];
         }
 
         else
@@ -394,10 +394,10 @@ LABEL_51:
         [v120 setTextRegionType:v147];
         [v120 setSubregions:0];
         v122 = [CRNormalizedQuad alloc];
-        v123 = [(CRRecognizedTextRegion *)self boundingQuad];
-        [v123 normalizationSize];
-        v126 = [(CRNormalizedQuad *)v122 initWithNormalizedTopLeft:v81 topRight:v83 bottomRight:v91 bottomLeft:v93 size:v117, v118, v86, v88, v124, v125];
-        [v120 setBoundingQuad:v126];
+        boundingQuad5 = [(CRRecognizedTextRegion *)self boundingQuad];
+        [boundingQuad5 normalizationSize];
+        v125 = [(CRNormalizedQuad *)v122 initWithNormalizedTopLeft:v81 topRight:v83 bottomRight:v91 bottomLeft:v93 size:v117, v118, v86, v88, v124, v125];
+        [v120 setBoundingQuad:v125];
 
         [v120 setPolygon:0];
         [v144 addObject:v120];
@@ -414,18 +414,18 @@ LABEL_51:
       {
 LABEL_56:
 
-        v27 = v144;
+        array = v144;
         v67 = [MEMORY[0x1E695DEC8] arrayWithArray:v144];
-        v14 = v129;
+        stringCopy = v129;
         v57 = v131;
-        v15 = v142;
+        pointsCopy = v142;
         goto LABEL_58;
       }
     }
   }
 
   v127 = [(CRRecognizedTextRegion *)self mutableCopy];
-  [v127 setText:v14];
+  [v127 setText:stringCopy];
   [v127 setSubregions:0];
   [v127 setCandidates:0];
   [v127 setTextRegionType:v147];
@@ -433,43 +433,43 @@ LABEL_56:
   v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v156 count:1];
 
 LABEL_58:
-  v17 = v132;
+  permutationCopy = v132;
 LABEL_59:
 
   return v67;
 }
 
-- (id)createCharacterSubFeaturesTopWhiteSpacePoints:(id)a3 bottomWhiteSpacePoints:(id)a4 falsePositiveFiltering:(BOOL)a5
+- (id)createCharacterSubFeaturesTopWhiteSpacePoints:(id)points bottomWhiteSpacePoints:(id)spacePoints falsePositiveFiltering:(BOOL)filtering
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E695DF70] array];
-  v11 = [(CRRecognizedTextRegion *)self text];
-  v12 = characterCount(v11);
+  pointsCopy = points;
+  spacePointsCopy = spacePoints;
+  array = [MEMORY[0x1E695DF70] array];
+  text = [(CRRecognizedTextRegion *)self text];
+  v12 = characterCount(text);
 
-  if (v8 && v9 && [v8 count] && objc_msgSend(v9, "count"))
+  if (pointsCopy && spacePointsCopy && [pointsCopy count] && objc_msgSend(spacePointsCopy, "count"))
   {
     v32[0] = 0;
     v32[1] = v32;
     v32[2] = 0x2020000000;
     v32[3] = 0;
-    v13 = [(CRRecognizedTextRegion *)self text];
-    v14 = [(CRRecognizedTextRegion *)self text];
-    v15 = [v14 length];
+    text2 = [(CRRecognizedTextRegion *)self text];
+    text3 = [(CRRecognizedTextRegion *)self text];
+    v15 = [text3 length];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __118__CRRecognizedTextRegion_createCharacterSubFeaturesTopWhiteSpacePoints_bottomWhiteSpacePoints_falsePositiveFiltering___block_invoke_2;
     v23[3] = &unk_1E7BC30B8;
-    v24 = v8;
+    v24 = pointsCopy;
     v29 = 2 * v12 - 2;
-    v31 = a5;
-    v25 = v9;
-    v26 = self;
+    filteringCopy = filtering;
+    v25 = spacePointsCopy;
+    selfCopy = self;
     v28 = v32;
     v30 = v12;
-    v16 = v10;
+    v16 = array;
     v27 = v16;
-    [v13 enumerateSubstringsInRange:0 options:v15 usingBlock:{2, v23}];
+    [text2 enumerateSubstringsInRange:0 options:v15 usingBlock:{2, v23}];
 
     v17 = [MEMORY[0x1E695DEC8] arrayWithArray:v16];
 
@@ -478,17 +478,17 @@ LABEL_59:
 
   else
   {
-    v18 = [(CRRecognizedTextRegion *)self text];
-    v19 = [(CRRecognizedTextRegion *)self text];
-    v20 = [v19 length];
+    text4 = [(CRRecognizedTextRegion *)self text];
+    text5 = [(CRRecognizedTextRegion *)self text];
+    v20 = [text5 length];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __118__CRRecognizedTextRegion_createCharacterSubFeaturesTopWhiteSpacePoints_bottomWhiteSpacePoints_falsePositiveFiltering___block_invoke;
     v33[3] = &unk_1E7BC3090;
     v33[4] = self;
-    v21 = v10;
+    v21 = array;
     v34 = v21;
-    [v18 enumerateSubstringsInRange:0 options:v20 usingBlock:{2, v33}];
+    [text4 enumerateSubstringsInRange:0 options:v20 usingBlock:{2, v33}];
 
     v17 = [MEMORY[0x1E695DEC8] arrayWithArray:v21];
   }
@@ -608,16 +608,16 @@ LABEL_10:
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CRRecognizedTextRegion *)self text];
-  v5 = [(CRRecognizedTextRegion *)self boundingQuad];
-  v6 = [v3 stringWithFormat:@"%@\t%@", v4, v5];
+  text = [(CRRecognizedTextRegion *)self text];
+  boundingQuad = [(CRRecognizedTextRegion *)self boundingQuad];
+  v6 = [v3 stringWithFormat:@"%@\t%@", text, boundingQuad];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(CRRecognizedTextRegion *)self subregions];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  subregions = [(CRRecognizedTextRegion *)self subregions];
+  v8 = [subregions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -630,7 +630,7 @@ LABEL_10:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subregions);
         }
 
         v6 = [v12 stringByAppendingFormat:@"\n\t%@", *(*(&v14 + 1) + 8 * v11)];
@@ -640,7 +640,7 @@ LABEL_10:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [subregions countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);

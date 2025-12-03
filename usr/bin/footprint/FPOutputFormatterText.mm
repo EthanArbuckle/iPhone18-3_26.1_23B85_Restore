@@ -1,35 +1,35 @@
 @interface FPOutputFormatterText
-- (void)endAtTime:(id)a3;
-- (void)printGlobalAuxData:(id)a3;
+- (void)endAtTime:(id)time;
+- (void)printGlobalAuxData:(id)data;
 - (void)printHeader;
-- (void)printProcessAuxData:(id)a3 forProcess:(id)a4;
-- (void)printProcessCategories:(id)a3 total:(id *)a4 forProcess:(id)a5;
-- (void)printProcessHeader:(id)a3;
-- (void)printProcessTotal:(id)a3 forProcess:(id)a4;
-- (void)printProcessesWithWarnings:(id)a3 processesWithErrors:(id)a4 globalErrors:(id)a5;
-- (void)printSharedCache:(id)a3 categories:(id)a4 sharedWith:(id)a5 total:(id *)a6;
-- (void)printSharedCategories:(id)a3 sharedWith:(id)a4 forProcess:(id)a5 hasProcessView:(BOOL)a6 total:(id *)a7;
-- (void)printSummaryCategories:(id)a3 total:(id *)a4 hadErrors:(BOOL)a5;
-- (void)printVmmapLikeOutputForProcess:(id)a3 regions:(id)a4;
-- (void)startAtTime:(id)a3;
+- (void)printProcessAuxData:(id)data forProcess:(id)process;
+- (void)printProcessCategories:(id)categories total:(id *)total forProcess:(id)process;
+- (void)printProcessHeader:(id)header;
+- (void)printProcessTotal:(id)total forProcess:(id)process;
+- (void)printProcessesWithWarnings:(id)warnings processesWithErrors:(id)errors globalErrors:(id)globalErrors;
+- (void)printSharedCache:(id)cache categories:(id)categories sharedWith:(id)with total:(id *)total;
+- (void)printSharedCategories:(id)categories sharedWith:(id)with forProcess:(id)process hasProcessView:(BOOL)view total:(id *)total;
+- (void)printSummaryCategories:(id)categories total:(id *)total hadErrors:(BOOL)errors;
+- (void)printVmmapLikeOutputForProcess:(id)process regions:(id)regions;
+- (void)startAtTime:(id)time;
 @end
 
 @implementation FPOutputFormatterText
 
-- (void)startAtTime:(id)a3
+- (void)startAtTime:(id)time
 {
   self->_processCount = 0;
   if (self->_multipleOutputs)
   {
     dateFormatter = self->_dateFormatter;
-    v12 = sub_100017000(a3);
+    v12 = sub_100017000(time);
     v6 = [(NSISO8601DateFormatter *)dateFormatter stringFromDate:v12];
-    v7 = [v6 UTF8String];
-    sub_1000182F4(self, 0, 0, "Time: %s\n", v8, v9, v10, v11, v7);
+    uTF8String = [v6 UTF8String];
+    sub_1000182F4(self, 0, 0, "Time: %s\n", v8, v9, v10, v11, uTF8String);
   }
 }
 
-- (void)printVmmapLikeOutputForProcess:(id)a3 regions:(id)a4
+- (void)printVmmapLikeOutputForProcess:(id)process regions:(id)regions
 {
   self->_verbose = 1;
   if ((~LODWORD(self->_options) & 7) != 0)
@@ -43,10 +43,10 @@
   }
 
   output = self->_output;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 displayString];
-  fprintf(output, "%s\n\n", [v10 UTF8String]);
+  regionsCopy = regions;
+  processCopy = process;
+  displayString = [processCopy displayString];
+  fprintf(output, "%s\n\n", [displayString UTF8String]);
 
   options = self->_options;
   v12 = 4 * (options & 2);
@@ -102,7 +102,7 @@
   }
 
   fprintf(self->_output, "      ----------         ---------- %*s   -----   -----%*s   -----   -----%*s   ------------\n", v20, "------------", v17, v19, 8 * (self->_options & 1), v18);
-  v21 = [v9 pageSize];
+  pageSize = [processCopy pageSize];
 
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
@@ -110,8 +110,8 @@
   v22[3] = &unk_100029EB8;
   v22[4] = self;
   v22[5] = v6;
-  v22[6] = v21;
-  [v8 fp_enumerateObjectsWithBatchSize:128 usingBlock:v22];
+  v22[6] = pageSize;
+  [regionsCopy fp_enumerateObjectsWithBatchSize:128 usingBlock:v22];
 
   fputc(10, self->_output);
 }
@@ -125,10 +125,10 @@
   }
 }
 
-- (void)printProcessHeader:(id)a3
+- (void)printProcessHeader:(id)header
 {
-  v4 = a3;
-  v5 = v4;
+  headerCopy = header;
+  v5 = headerCopy;
   processCount = self->_processCount;
   if (processCount != 2)
   {
@@ -136,28 +136,28 @@
   }
 
   orderedProcesses = self->_orderedProcesses;
-  v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 pid]);
+  v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [headerCopy pid]);
   [(NSMutableArray *)orderedProcesses addObject:v8];
 
   self->_pageSize = [v5 pageSize];
   options = self->_options;
   sub_1000182F4(self, v5, 1, "%s%s%s%*s%s%s%*s%s%s\n", v10, v11, v12, v13, "==========");
-  v14 = [v5 displayString];
-  LOBYTE(v8) = [v14 UTF8String];
+  displayString = [v5 displayString];
+  LOBYTE(v8) = [displayString UTF8String];
   [v5 is64bit];
   [v5 isTranslated];
   sub_1000182F4(self, v5, 1, "%s: %s-bit%s", v15, v16, v17, v18, v8);
 
-  v19 = [v5 warnings];
-  v20 = [v5 errors];
-  if ([v19 count])
+  warnings = [v5 warnings];
+  errors = [v5 errors];
+  if ([warnings count])
   {
     sub_1000182F4(self, v5, 1, "\nWarnings were encountered while examining the process.\n", v21, v22, v23, v24, v47);
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v25 = v19;
+    v25 = warnings;
     v26 = [v25 countByEnumeratingWithState:&v52 objects:v57 count:16];
     if (v26)
     {
@@ -183,14 +183,14 @@
     }
   }
 
-  if ([v20 count])
+  if ([errors count])
   {
     sub_1000182F4(self, v5, 1, "\nErrors were encountered while examining the process. Results may be incomplete or incorrect.\n", v34, v35, v36, v37, v47);
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v38 = v20;
+    v38 = errors;
     v39 = [v38 countByEnumeratingWithState:&v48 objects:v56 count:16];
     if (v39)
     {
@@ -217,21 +217,21 @@
   }
 }
 
-- (void)printProcessTotal:(id)a3 forProcess:(id)a4
+- (void)printProcessTotal:(id)total forProcess:(id)process
 {
-  v6 = a4;
-  v12 = sub_100018EC4(self, [a3 longLongValue]);
+  processCopy = process;
+  v12 = sub_100018EC4(self, [total longLongValue]);
   v7 = v12;
   [v12 UTF8String];
-  [v6 pageSize];
-  sub_1000182F4(self, v6, 1, "%sFootprint: %s (%lu bytes per page)\n", v8, v9, v10, v11, "    ");
+  [processCopy pageSize];
+  sub_1000182F4(self, processCopy, 1, "%sFootprint: %s (%lu bytes per page)\n", v8, v9, v10, v11, "    ");
 }
 
-- (void)printProcessCategories:(id)a3 total:(id *)a4 forProcess:(id)a5
+- (void)printProcessCategories:(id)categories total:(id *)total forProcess:(id)process
 {
   summaryFormat = self->_summaryFormat;
-  v28 = a5;
-  v25 = a3;
+  processCopy = process;
+  categoriesCopy = categories;
   [@"Dirty" UTF8String];
   if ((self->_options & 2) != 0)
   {
@@ -261,7 +261,7 @@
     v13 = 11;
   }
 
-  sub_1000182F4(self, v28, 1, "%*s%*s%*s%*s%*s %10s    %s\n", v9, v10, v11, v12, v13);
+  sub_1000182F4(self, processCopy, 1, "%*s%*s%*s%*s%*s %10s    %s\n", v9, v10, v11, v12, v13);
   options = self->_options;
   if (self->_summaryFormat == 1)
   {
@@ -273,34 +273,34 @@
     v19 = 11;
   }
 
-  sub_1000182F4(self, v28, 1, "%*s%*s%*s%*s%*s %10s    %s\n", v14, v15, v16, v17, v19);
-  sub_100019290(self, v25, v28);
+  sub_1000182F4(self, processCopy, 1, "%*s%*s%*s%*s%*s %10s    %s\n", v14, v15, v16, v17, v19);
+  sub_100019290(self, categoriesCopy, processCopy);
 
-  sub_1000194D4(self, a4, v28);
-  sub_1000182F4(self, v28, 1, "\n", v20, v21, v22, v23, v24);
+  sub_1000194D4(self, total, processCopy);
+  sub_1000182F4(self, processCopy, 1, "\n", v20, v21, v22, v23, v24);
 }
 
-- (void)printSharedCategories:(id)a3 sharedWith:(id)a4 forProcess:(id)a5 hasProcessView:(BOOL)a6 total:(id *)a7
+- (void)printSharedCategories:(id)categories sharedWith:(id)with forProcess:(id)process hasProcessView:(BOOL)view total:(id *)total
 {
-  v63 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 processes];
-  v13 = [v12 count] - (v11 != 0);
+  categoriesCopy = categories;
+  withCopy = with;
+  processCopy = process;
+  processes = [withCopy processes];
+  v13 = [processes count] - (processCopy != 0);
 
-  v14 = [v10 processes];
-  v15 = [v14 count];
+  processes2 = [withCopy processes];
+  v15 = [processes2 count];
 
-  v62 = v10;
+  v62 = withCopy;
   if (v15 < 0x15)
   {
-    sub_1000182F4(self, v11, 1, "Shared with", v16, v17, v18, v19, v57);
+    sub_1000182F4(self, processCopy, 1, "Shared with", v16, v17, v18, v19, v57);
     v66 = 0u;
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v20 = [v10 processes];
-    v21 = [v20 countByEnumeratingWithState:&v64 objects:v68 count:16];
+    processes3 = [withCopy processes];
+    v21 = [processes3 countByEnumeratingWithState:&v64 objects:v68 count:16];
     if (v21)
     {
       v22 = v21;
@@ -311,35 +311,35 @@
         {
           if (*v65 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(processes3);
           }
 
           v25 = *(*(&v64 + 1) + 8 * i);
-          if (v25 != v11)
+          if (v25 != processCopy)
           {
-            v26 = [v25 displayString];
-            v27 = [v26 UTF8String];
-            sub_1000182F4(self, v11, 1, " %s", v28, v29, v30, v31, v27);
+            displayString = [v25 displayString];
+            uTF8String = [displayString UTF8String];
+            sub_1000182F4(self, processCopy, 1, " %s", v28, v29, v30, v31, uTF8String);
 
             if (--v13)
             {
-              sub_1000182F4(self, v11, 1, ",", v32, v33, v34, v35, v58);
+              sub_1000182F4(self, processCopy, 1, ",", v32, v33, v34, v35, v58);
             }
           }
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v64 objects:v68 count:16];
+        v22 = [processes3 countByEnumeratingWithState:&v64 objects:v68 count:16];
       }
 
       while (v22);
     }
 
-    sub_1000182F4(self, v11, 1, ":\n", v36, v37, v38, v39, v58);
+    sub_1000182F4(self, processCopy, 1, ":\n", v36, v37, v38, v39, v58);
   }
 
   else
   {
-    sub_1000182F4(self, v11, 1, "Shared with %lu processes:\n", v16, v17, v18, v19, v13);
+    sub_1000182F4(self, processCopy, 1, "Shared with %lu processes:\n", v16, v17, v18, v19, v13);
   }
 
   summaryFormat = self->_summaryFormat;
@@ -372,7 +372,7 @@
     v46 = 11;
   }
 
-  sub_1000182F4(self, v11, 1, "%*s%*s%*s%*s%*s %10s    %s\n", v42, v43, v44, v45, v46);
+  sub_1000182F4(self, processCopy, 1, "%*s%*s%*s%*s%*s %10s    %s\n", v42, v43, v44, v45, v46);
   options = self->_options;
   if (self->_summaryFormat == 1)
   {
@@ -384,22 +384,22 @@
     v52 = 11;
   }
 
-  sub_1000182F4(self, v11, 1, "%*s%*s%*s%*s%*s %10s    %s\n", v47, v48, v49, v50, v52);
-  sub_100019290(self, v63, v11);
-  sub_1000194D4(self, a7, v11);
-  sub_1000182F4(self, v11, 1, "\n", v53, v54, v55, v56, v59);
+  sub_1000182F4(self, processCopy, 1, "%*s%*s%*s%*s%*s %10s    %s\n", v47, v48, v49, v50, v52);
+  sub_100019290(self, categoriesCopy, processCopy);
+  sub_1000194D4(self, total, processCopy);
+  sub_1000182F4(self, processCopy, 1, "\n", v53, v54, v55, v56, v59);
 }
 
-- (void)printSharedCache:(id)a3 categories:(id)a4 sharedWith:(id)a5 total:(id *)a6
+- (void)printSharedCache:(id)cache categories:(id)categories sharedWith:(id)with total:(id *)total
 {
   options = self->_options;
-  v10 = a5;
-  v36 = a4;
-  v11 = a3;
+  withCopy = with;
+  categoriesCopy = categories;
+  cacheCopy = cache;
   sub_100019D50(self, "%s%s%s%*s%s%s%*s%s%s\n", v12, v13, v14, v15, v16, v17, "==========");
-  if (v11)
+  if (cacheCopy)
   {
-    v18 = v11[2];
+    v18 = cacheCopy[2];
   }
 
   else
@@ -409,50 +409,50 @@
 
   v19 = v18;
 
-  v20 = [v19 UUIDString];
-  v21 = [v20 UTF8String];
-  sub_100019D50(self, "Shared Cache %s\n", v22, v23, v24, v25, v26, v27, v21);
+  uUIDString = [v19 UUIDString];
+  uTF8String = [uUIDString UTF8String];
+  sub_100019D50(self, "Shared Cache %s\n", v22, v23, v24, v25, v26, v27, uTF8String);
 
   v28 = self->_options;
   sub_100019D50(self, "%s%s%s%*s%s%s%*s%s%s\n\n", v29, v30, v31, v32, v33, v34, "==========");
-  [(FPOutputFormatterText *)self printSharedCategories:v36 sharedWith:v10 forProcess:0 hasProcessView:0 total:a6];
+  [(FPOutputFormatterText *)self printSharedCategories:categoriesCopy sharedWith:withCopy forProcess:0 hasProcessView:0 total:total];
 }
 
-- (void)printProcessAuxData:(id)a3 forProcess:(id)a4
+- (void)printProcessAuxData:(id)data forProcess:(id)process
 {
-  if (a3)
+  if (data)
   {
-    v6 = a4;
-    v18 = v6;
+    processCopy = process;
+    v18 = processCopy;
     if (self)
     {
-      v11 = v6;
-      v12 = a3;
+      v11 = processCopy;
+      dataCopy = data;
       sub_1000182F4(self, v11, 1, "Auxiliary data:\n", v13, v14, v15, v16, v17);
-      sub_10001A8FC(self, v12, 1, v11);
+      sub_10001A8FC(self, dataCopy, 1, v11);
 
-      v6 = v18;
+      processCopy = v18;
     }
 
-    sub_1000182F4(self, v6, 1, "\n", v7, v8, v9, v10, v17);
+    sub_1000182F4(self, processCopy, 1, "\n", v7, v8, v9, v10, v17);
   }
 }
 
-- (void)printProcessesWithWarnings:(id)a3 processesWithErrors:(id)a4 globalErrors:(id)a5
+- (void)printProcessesWithWarnings:(id)warnings processesWithErrors:(id)errors globalErrors:(id)globalErrors
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v69 = v10;
-  v70 = v8;
-  if ([v8 count])
+  warningsCopy = warnings;
+  errorsCopy = errors;
+  globalErrorsCopy = globalErrors;
+  v69 = globalErrorsCopy;
+  v70 = warningsCopy;
+  if ([warningsCopy count])
   {
     sub_100019D50(self, "\nWarnings were encountered while examining the following processes:\n", v11, v12, v13, v14, v15, v16, v68);
     v81 = 0u;
     v82 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v17 = v8;
+    v17 = warningsCopy;
     v18 = [v17 countByEnumeratingWithState:&v79 objects:v85 count:16];
     if (v18)
     {
@@ -468,8 +468,8 @@
           }
 
           v22 = *(*(&v79 + 1) + 8 * i);
-          v23 = [v22 name];
-          [v23 UTF8String];
+          name = [v22 name];
+          [name UTF8String];
           sub_1000182F4(self, v22, 1, "%s%s\n", v24, v25, v26, v27, "    ");
         }
 
@@ -479,18 +479,18 @@
       while (v19);
     }
 
-    v10 = v69;
-    v8 = v70;
+    globalErrorsCopy = v69;
+    warningsCopy = v70;
   }
 
-  if ([v9 count])
+  if ([errorsCopy count])
   {
     sub_100019D50(self, "\nErrors were encountered while examining the following processes:\n", v28, v29, v30, v31, v32, v33, v68);
     v77 = 0u;
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v34 = v9;
+    v34 = errorsCopy;
     v35 = [v34 countByEnumeratingWithState:&v75 objects:v84 count:16];
     if (v35)
     {
@@ -506,8 +506,8 @@
           }
 
           v39 = *(*(&v75 + 1) + 8 * j);
-          v40 = [v39 name];
-          [v40 UTF8String];
+          name2 = [v39 name];
+          [name2 UTF8String];
           sub_1000182F4(self, v39, 1, "%s%s\n", v41, v42, v43, v44, "    ");
         }
 
@@ -517,18 +517,18 @@
       while (v36);
     }
 
-    v10 = v69;
-    v8 = v70;
+    globalErrorsCopy = v69;
+    warningsCopy = v70;
   }
 
-  if ([v10 count])
+  if ([globalErrorsCopy count])
   {
     sub_100019D50(self, "\nErrors were encountered:\n", v45, v46, v47, v48, v49, v50, v68);
     v73 = 0u;
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v51 = v10;
+    v51 = globalErrorsCopy;
     v52 = [v51 countByEnumeratingWithState:&v71 objects:v83 count:16];
     if (v52)
     {
@@ -554,27 +554,27 @@
     }
   }
 
-  if ([v9 count] || objc_msgSend(v10, "count"))
+  if ([errorsCopy count] || objc_msgSend(globalErrorsCopy, "count"))
   {
     sub_100019D50(self, "\nDue to errors, summary results may be incomplete or incorrect\n", v62, v63, v64, v65, v66, v67, v68);
   }
 }
 
-- (void)printSummaryCategories:(id)a3 total:(id *)a4 hadErrors:(BOOL)a5
+- (void)printSummaryCategories:(id)categories total:(id *)total hadErrors:(BOOL)errors
 {
-  v7 = a3;
+  categoriesCopy = categories;
   if (self->_processCount != 1)
   {
     options = self->_options;
-    v46 = v7;
+    v46 = categoriesCopy;
     sub_100019D50(self, "%s%s%s%*s%s%s%*s%s%s\n", v8, v9, v10, v11, v12, v13, "==========");
-    v15 = sub_100018EC4(self, a4->var1 + a4->var0);
-    v16 = [v15 UTF8String];
-    sub_100019D50(self, "Summary Footprint: %s%s\n", v17, v18, v19, v20, v21, v22, v16);
+    v15 = sub_100018EC4(self, total->var1 + total->var0);
+    uTF8String = [v15 UTF8String];
+    sub_100019D50(self, "Summary Footprint: %s%s\n", v17, v18, v19, v20, v21, v22, uTF8String);
 
     v23 = self->_options;
     sub_100019D50(self, "%s%s%s%*s%s%s%*s%s%s\n\n", v24, v25, v26, v27, v28, v29, "==========");
-    v7 = v46;
+    categoriesCopy = v46;
     if (v46)
     {
       if (self->_summaryFormat == 1)
@@ -619,18 +619,18 @@
       self->_summaryFormat;
       sub_100019D50(self, "%*s%*s%*s%*s%*s %10s    %s\n", v37, v38, v39, v40, v41, v42, v44);
       sub_100019290(self, v46, 0);
-      sub_1000194D4(self, a4, 0);
-      v7 = v46;
+      sub_1000194D4(self, total, 0);
+      categoriesCopy = v46;
     }
   }
 }
 
-- (void)printGlobalAuxData:(id)a3
+- (void)printGlobalAuxData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (self->_processCount != 1)
   {
-    v50 = v4;
+    v50 = dataCopy;
     sub_100019D50(self, "\n", v5, v6, v7, v8, v9, v10, v48);
     if (v50)
     {
@@ -664,8 +664,8 @@
             {
               if ([v24 fp_isContainer])
               {
-                v26 = [v23 UTF8String];
-                sub_1000182F4(self, 0, 1, "%s:\n", v27, v28, v29, v30, v26);
+                uTF8String = [v23 UTF8String];
+                sub_1000182F4(self, 0, 1, "%s:\n", v27, v28, v29, v30, uTF8String);
               }
 
               else
@@ -685,9 +685,9 @@
 
                 else
                 {
-                  v42 = [v31 value];
+                  value = [v31 value];
                   [v23 UTF8String];
-                  v43 = sub_100018EC4(self, v42);
+                  v43 = sub_100018EC4(self, value);
                   [v43 UTF8String];
                   sub_1000182F4(self, 0, 1, "%s%s:%*s\n", v44, v45, v46, v47, "    ");
                 }
@@ -703,11 +703,11 @@
     }
 
     sub_100019D50(self, "\n", v11, v12, v13, v14, v15, v16, v49);
-    v4 = v50;
+    dataCopy = v50;
   }
 }
 
-- (void)endAtTime:(id)a3
+- (void)endAtTime:(id)time
 {
   if (self->_layoutStyle == 1)
   {

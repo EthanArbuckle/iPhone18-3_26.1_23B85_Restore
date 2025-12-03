@@ -1,18 +1,18 @@
 @interface BFFLinkLabelFooterView
 + (void)initialize;
-- (BFFLinkLabelFooterView)initWithFrame:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 shouldSetSize:(BOOL)a4;
+- (BFFLinkLabelFooterView)initWithFrame:(CGRect)frame;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits shouldSetSize:(BOOL)size;
 - (UIEdgeInsets)margins;
-- (void)addFooterLinkWithAttributedTitle:(id)a3 handler:(id)a4;
-- (void)addLinkWithTitle:(id)a3 textStyle:(id)a4 handler:(id)a5;
+- (void)addFooterLinkWithAttributedTitle:(id)title handler:(id)handler;
+- (void)addLinkWithTitle:(id)title textStyle:(id)style handler:(id)handler;
 - (void)layoutSubviews;
 - (void)removeAllLinks;
-- (void)removeLinkAtIndex:(unint64_t)a3;
-- (void)setAttributedSubtitleText:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setLabelText:(id)a3;
-- (void)setTopLineColor:(id)a3;
+- (void)removeLinkAtIndex:(unint64_t)index;
+- (void)setAttributedSubtitleText:(id)text;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setLabelText:(id)text;
+- (void)setTopLineColor:(id)color;
 @end
 
 @implementation BFFLinkLabelFooterView
@@ -50,11 +50,11 @@
   MinimumVerticalMarginAfterBottomLink = 0x4018000000000000;
 }
 
-- (BFFLinkLabelFooterView)initWithFrame:(CGRect)a3
+- (BFFLinkLabelFooterView)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = BFFLinkLabelFooterView;
-  v3 = [(BFFLinkLabelFooterView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BFFLinkLabelFooterView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = objc_alloc_init(MEMORY[0x277D4DA70]);
   featureFlags = v3->_featureFlags;
   v3->_featureFlags = v4;
@@ -95,8 +95,8 @@
   v17 = +[BFFStyle sharedStyle];
   [v17 applyThemeToLabel:v3->_subtitleLabel];
 
-  v18 = [(BuddyFeatureFlags *)v3->_featureFlags isSolariumEnabled];
-  if (v18)
+  isSolariumEnabled = [(BuddyFeatureFlags *)v3->_featureFlags isSolariumEnabled];
+  if (isSolariumEnabled)
   {
     v19 = 408;
   }
@@ -106,7 +106,7 @@
     v19 = 416;
   }
 
-  if (v18)
+  if (isSolariumEnabled)
   {
     v20 = 4;
   }
@@ -124,17 +124,17 @@
   return v3;
 }
 
-- (void)setLabelText:(id)a3
+- (void)setLabelText:(id)text
 {
-  v6 = a3;
-  v4 = [(BFFLinkLabelFooterView *)self labelText];
-  v5 = [v6 isEqualToString:v4];
+  textCopy = text;
+  labelText = [(BFFLinkLabelFooterView *)self labelText];
+  v5 = [textCopy isEqualToString:labelText];
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_label setText:v6];
+    [(UILabel *)self->_label setText:textCopy];
     [(UILabel *)self->_label removeFromSuperview];
-    if ([v6 length])
+    if ([textCopy length])
     {
       [(BFFLinkLabelFooterView *)self addSubview:self->_label];
     }
@@ -145,15 +145,15 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setAttributedSubtitleText:(id)a3
+- (void)setAttributedSubtitleText:(id)text
 {
-  v5 = a3;
-  if (([v5 isEqualToAttributedString:self->_attributedSubtitleText] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToAttributedString:self->_attributedSubtitleText] & 1) == 0)
   {
-    objc_storeStrong(&self->_attributedSubtitleText, a3);
-    [(UILabel *)self->_subtitleLabel setAttributedText:v5];
+    objc_storeStrong(&self->_attributedSubtitleText, text);
+    [(UILabel *)self->_subtitleLabel setAttributedText:textCopy];
     [(UILabel *)self->_subtitleLabel removeFromSuperview];
-    if ([v5 length])
+    if ([textCopy length])
     {
       [(BFFLinkLabelFooterView *)self addSubview:self->_subtitleLabel];
     }
@@ -162,59 +162,59 @@
   }
 }
 
-- (void)addLinkWithTitle:(id)a3 textStyle:(id)a4 handler:(id)a5
+- (void)addLinkWithTitle:(id)title textStyle:(id)style handler:(id)handler
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
+  titleCopy = title;
+  styleCopy = style;
+  handlerCopy = handler;
   if ([(BFFLinkLabelFooterView *)self numberOfLinks]<= 1)
   {
     v10 = objc_opt_new();
-    [v10 setHandler:v9];
-    v11 = [v10 button];
-    [v11 setTitle:v16 forState:0];
+    [v10 setHandler:handlerCopy];
+    button = [v10 button];
+    [button setTitle:titleCopy forState:0];
 
-    v12 = [v10 button];
-    v13 = [v12 titleLabel];
-    v14 = [MEMORY[0x277D74300] preferredFontForTextStyle:v8];
-    [v13 setFont:v14];
+    button2 = [v10 button];
+    titleLabel = [button2 titleLabel];
+    v14 = [MEMORY[0x277D74300] preferredFontForTextStyle:styleCopy];
+    [titleLabel setFont:v14];
 
     [(NSMutableArray *)self->_linkHandlers addObject:v10];
-    if ([v16 length])
+    if ([titleCopy length])
     {
-      v15 = [v10 button];
-      [(BFFLinkLabelFooterView *)self addSubview:v15];
+      button3 = [v10 button];
+      [(BFFLinkLabelFooterView *)self addSubview:button3];
     }
   }
 }
 
-- (void)addFooterLinkWithAttributedTitle:(id)a3 handler:(id)a4
+- (void)addFooterLinkWithAttributedTitle:(id)title handler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
+  titleCopy = title;
+  handlerCopy = handler;
   if ([(BFFLinkLabelFooterView *)self numberOfLinks]<= 1)
   {
     v7 = objc_opt_new();
-    [v7 setHandler:v6];
-    v8 = [v7 button];
-    [v8 setAttributedTitle:v10 forState:0];
+    [v7 setHandler:handlerCopy];
+    button = [v7 button];
+    [button setAttributedTitle:titleCopy forState:0];
 
     [(NSMutableArray *)self->_linkHandlers addObject:v7];
-    if ([v10 length])
+    if ([titleCopy length])
     {
-      v9 = [v7 button];
-      [(BFFLinkLabelFooterView *)self addSubview:v9];
+      button2 = [v7 button];
+      [(BFFLinkLabelFooterView *)self addSubview:button2];
     }
   }
 }
 
-- (void)removeLinkAtIndex:(unint64_t)a3
+- (void)removeLinkAtIndex:(unint64_t)index
 {
   v6 = [(NSMutableArray *)self->_linkHandlers objectAtIndexedSubscript:?];
-  v5 = [v6 button];
-  [v5 removeFromSuperview];
+  button = [v6 button];
+  [button removeFromSuperview];
 
-  [(NSMutableArray *)self->_linkHandlers removeObjectAtIndex:a3];
+  [(NSMutableArray *)self->_linkHandlers removeObjectAtIndex:index];
 }
 
 - (void)removeAllLinks
@@ -225,9 +225,9 @@
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
@@ -249,8 +249,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) button];
-        [v9 setEnabled:v3];
+        button = [*(*(&v10 + 1) + 8 * v8) button];
+        [button setEnabled:enabledCopy];
 
         ++v8;
       }
@@ -263,16 +263,16 @@
   }
 }
 
-- (void)setTopLineColor:(id)a3
+- (void)setTopLineColor:(id)color
 {
-  v10 = a3;
-  v4 = [(UIView *)self->_topLine backgroundColor];
+  colorCopy = color;
+  backgroundColor = [(UIView *)self->_topLine backgroundColor];
 
-  v5 = v10;
-  if (v4 != v10)
+  v5 = colorCopy;
+  if (backgroundColor != colorCopy)
   {
     [(UIView *)self->_topLine removeFromSuperview];
-    if (v10)
+    if (colorCopy)
     {
       topLine = self->_topLine;
       if (!topLine)
@@ -288,18 +288,18 @@
       [(BFFLinkLabelFooterView *)self addSubview:topLine];
     }
 
-    [(UIView *)self->_topLine setBackgroundColor:v10];
+    [(UIView *)self->_topLine setBackgroundColor:colorCopy];
     [(BFFLinkLabelFooterView *)self setNeedsLayout];
-    v5 = v10;
+    v5 = colorCopy;
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 shouldSetSize:(BOOL)a4
+- (CGSize)sizeThatFits:(CGSize)fits shouldSetSize:(BOOL)size
 {
-  v148 = a4;
-  width = a3.width;
+  sizeCopy = size;
+  width = fits.width;
   v154 = *MEMORY[0x277D85DE8];
-  [(BFFLinkLabelFooterView *)self margins:a3.width];
+  [(BFFLinkLabelFooterView *)self margins:fits.width];
   v7 = v6;
   [(BFFLinkLabelFooterView *)self margins];
   if (v7 < *&MinimumHorizontalMargin)
@@ -328,23 +328,23 @@
     v10 = width - v7 - v9;
   }
 
-  v11 = [(BFFLinkLabelFooterView *)self wantsSideBySideLayout];
+  wantsSideBySideLayout = [(BFFLinkLabelFooterView *)self wantsSideBySideLayout];
   v12 = MEMORY[0x277CBF3A0];
   v147 = v10;
-  if (v11 && [(BFFLinkLabelFooterView *)self numberOfLinks]== 2)
+  if (wantsSideBySideLayout && [(BFFLinkLabelFooterView *)self numberOfLinks]== 2)
   {
     v13 = *v12;
     v14 = v12[1];
     v15 = [(NSMutableArray *)self->_linkHandlers objectAtIndexedSubscript:0];
     v16 = [(NSMutableArray *)self->_linkHandlers objectAtIndexedSubscript:1];
-    v17 = [v15 button];
-    v18 = [v17 titleLabel];
-    [v18 textRectForBounds:0 limitedToNumberOfLines:{v13, v14, v10, 1.79769313e308}];
+    button = [v15 button];
+    titleLabel = [button titleLabel];
+    [titleLabel textRectForBounds:0 limitedToNumberOfLines:{v13, v14, v10, 1.79769313e308}];
     v20 = v19;
 
-    v21 = [v16 button];
-    v22 = [v21 titleLabel];
-    [v22 textRectForBounds:0 limitedToNumberOfLines:{v13, v14, v10, 1.79769313e308}];
+    button2 = [v16 button];
+    titleLabel2 = [button2 titleLabel];
+    [titleLabel2 textRectForBounds:0 limitedToNumberOfLines:{v13, v14, v10, 1.79769313e308}];
     v24 = v23;
 
     if (v20 > 0.0 && v24 > 0.0 && v20 + v24 + *&MinimumHorizontalMargin < v10)
@@ -364,19 +364,19 @@
       [(BFFLinkLabelFooterView *)self margins];
       v29 = BFFRoundRectToPixel(v26, v27 + v28);
       v33 = v32;
-      if (v148)
+      if (sizeCopy)
       {
         v34 = v29;
         v35 = v30;
         v36 = v31;
-        v37 = [v15 button];
-        [v37 setFrame:{v34, v35, v36, v33}];
+        button3 = [v15 button];
+        [button3 setFrame:{v34, v35, v36, v33}];
       }
 
-      v38 = [(BuddyFeatureFlags *)self->_featureFlags isSolariumEnabled];
+      isSolariumEnabled = [(BuddyFeatureFlags *)self->_featureFlags isSolariumEnabled];
       width = v25;
       v39 = v25 - v9;
-      if (v38)
+      if (isSolariumEnabled)
       {
         v39 = v25;
       }
@@ -385,14 +385,14 @@
       v41 = *&MinimumVerticalMarginBeforeSoloLink;
       [(BFFLinkLabelFooterView *)self margins];
       v43 = BFFRoundRectToPixel(v40, v41 + v42);
-      if (v148)
+      if (sizeCopy)
       {
         v47 = v43;
         v48 = v44;
         v49 = v45;
         v50 = v46;
-        v51 = [v16 button];
-        [v51 setFrame:{v47, v48, v49, v50}];
+        button4 = [v16 button];
+        [button4 setFrame:{v47, v48, v49, v50}];
       }
 
       v52 = v33 + *&MinimumVerticalMarginAfterBottomLink;
@@ -406,14 +406,14 @@
   }
 
   v57 = 408;
-  v58 = [(UILabel *)self->_label text];
-  v59 = [v58 length];
+  text = [(UILabel *)self->_label text];
+  v59 = [text length];
 
   if (v59)
   {
-    v60 = [(UILabel *)self->_label text];
-    v61 = [(UILabel *)self->_label font];
-    [v60 _legacy_sizeWithFont:v61 constrainedToSize:-[UILabel lineBreakMode](self->_label lineBreakMode:{"lineBreakMode"), v10, 1.79769313e308}];
+    text2 = [(UILabel *)self->_label text];
+    font = [(UILabel *)self->_label font];
+    [text2 _legacy_sizeWithFont:font constrainedToSize:-[UILabel lineBreakMode](self->_label lineBreakMode:{"lineBreakMode"), v10, 1.79769313e308}];
 
     if ([(BuddyFeatureFlags *)self->_featureFlags isSolariumEnabled])
     {
@@ -430,7 +430,7 @@
     v65 = BFFRoundRectToPixel(v62, v63 + v64);
     v67 = v66;
     v69 = v68;
-    if (v148)
+    if (sizeCopy)
     {
       [(UILabel *)self->_label setFrame:v65, v66];
     }
@@ -450,8 +450,8 @@
     v56 = 0.0;
   }
 
-  v76 = [(UILabel *)self->_subtitleLabel attributedText];
-  v77 = [v76 length];
+  attributedText = [(UILabel *)self->_subtitleLabel attributedText];
+  v77 = [attributedText length];
 
   if (v77)
   {
@@ -478,7 +478,7 @@
     v85 = BFFRoundRectToPixel(v80, v83 + v84);
     v87 = v86;
     v89 = v88;
-    if (v148)
+    if (sizeCopy)
     {
       [(UILabel *)self->_subtitleLabel setFrame:v85, v86];
     }
@@ -520,10 +520,10 @@
           }
 
           v103 = *(*(&v149 + 1) + 8 * v102);
-          v104 = [v103 button];
-          v105 = [v104 titleLabel];
+          button5 = [v103 button];
+          titleLabel3 = [button5 titleLabel];
 
-          [v105 textRectForBounds:0 limitedToNumberOfLines:{v100, v101, v10, 1.79769313e308}];
+          [titleLabel3 textRectForBounds:0 limitedToNumberOfLines:{v100, v101, v10, 1.79769313e308}];
           v107 = v106;
           v109 = v108;
           if (([(BuddyFeatureFlags *)self->_featureFlags isSolariumEnabled]& 1) == 0)
@@ -535,15 +535,15 @@
             }
           }
 
-          v110 = [*(&self->super.super.super.isa + v96) firstObject];
-          v111 = v110;
-          if (v103 == v110)
+          firstObject = [*(&self->super.super.super.isa + v96) firstObject];
+          v111 = firstObject;
+          if (v103 == firstObject)
           {
             v113 = v99;
             v114 = v96;
             v115 = v57;
-            v116 = [*(&self->super.super.super.isa + v57) text];
-            if ([v116 length])
+            text3 = [*(&self->super.super.super.isa + v57) text];
+            if ([text3 length])
             {
 
               v112 = v56;
@@ -555,8 +555,8 @@
 
             else
             {
-              v117 = [(UILabel *)self->_subtitleLabel attributedText];
-              v143 = [v117 length];
+              attributedText2 = [(UILabel *)self->_subtitleLabel attributedText];
+              v143 = [attributedText2 length];
 
               v112 = v56;
               v57 = v115;
@@ -571,9 +571,9 @@
                   MaxY = CGRectGetMaxY(v156);
                   [(BFFLinkLabelFooterView *)self margins];
                   v120 = MaxY - v119;
-                  [v105 _lastLineBaseline];
+                  [titleLabel3 _lastLineBaseline];
                   v122 = v120 - v121;
-                  [v105 bounds];
+                  [titleLabel3 bounds];
                   v112 = v122 - v123;
                 }
 
@@ -603,17 +603,17 @@
           v128 = BFFRoundRectToPixel(v107, v112);
           v131 = v130;
           v133 = v132;
-          if (v148)
+          if (sizeCopy)
           {
             v134 = v128;
             v135 = v129;
-            v136 = [v103 button];
-            [v136 setFrame:{v134, v131, v135, v133}];
+            button6 = [v103 button];
+            [button6 setFrame:{v134, v131, v135, v133}];
           }
 
-          v137 = [*(&self->super.super.super.isa + v96) firstObject];
+          firstObject2 = [*(&self->super.super.super.isa + v96) firstObject];
 
-          if (v103 == v137)
+          if (v103 == firstObject2)
           {
             v10 = v147;
             if ([(BFFLinkLabelFooterView *)self wantsFromBottomLayout])
@@ -648,11 +648,11 @@
   }
 
 LABEL_70:
-  if (v148)
+  if (sizeCopy)
   {
-    v140 = [(BFFLinkLabelFooterView *)self topLineColor];
+    topLineColor = [(BFFLinkLabelFooterView *)self topLineColor];
 
-    if (v140)
+    if (topLineColor)
     {
       UICeilToViewScale();
       [(BFFLinkLabelFooterView *)self bounds];
@@ -667,9 +667,9 @@ LABEL_70:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(BFFLinkLabelFooterView *)self sizeThatFits:0 shouldSetSize:a3.width, a3.height];
+  [(BFFLinkLabelFooterView *)self sizeThatFits:0 shouldSetSize:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

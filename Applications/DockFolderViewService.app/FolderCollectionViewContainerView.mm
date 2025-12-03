@@ -1,17 +1,17 @@
 @interface FolderCollectionViewContainerView
-- (_TtC21DockFolderViewService33FolderCollectionViewContainerView)initWithCoder:(id)a3;
-- (_TtC21DockFolderViewService33FolderCollectionViewContainerView)initWithFrame:(CGRect)a3;
+- (_TtC21DockFolderViewService33FolderCollectionViewContainerView)initWithCoder:(id)coder;
+- (_TtC21DockFolderViewService33FolderCollectionViewContainerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation FolderCollectionViewContainerView
 
-- (_TtC21DockFolderViewService33FolderCollectionViewContainerView)initWithFrame:(CGRect)a3
+- (_TtC21DockFolderViewService33FolderCollectionViewContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC21DockFolderViewService33FolderCollectionViewContainerView_roundCorners) = 1;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC21DockFolderViewService33FolderCollectionViewContainerView_usesMaterialBackgroundView) = 0;
@@ -23,7 +23,7 @@
   return [(FolderCollectionViewContainerView *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtC21DockFolderViewService33FolderCollectionViewContainerView)initWithCoder:(id)a3
+- (_TtC21DockFolderViewService33FolderCollectionViewContainerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC21DockFolderViewService33FolderCollectionViewContainerView_roundCorners) = 1;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC21DockFolderViewService33FolderCollectionViewContainerView_usesMaterialBackgroundView) = 0;
@@ -37,7 +37,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100062FF4();
 }
 

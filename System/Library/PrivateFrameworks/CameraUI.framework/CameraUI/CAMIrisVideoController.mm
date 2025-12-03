@@ -1,28 +1,28 @@
 @interface CAMIrisVideoController
-- (BOOL)isWaitingOnNebuladForRequest:(id)a3;
-- (CAMIrisVideoController)initWithNebulaDaemonProxyManager:(id)a3 delegate:(id)a4;
+- (BOOL)isWaitingOnNebuladForRequest:(id)request;
+- (CAMIrisVideoController)initWithNebulaDaemonProxyManager:(id)manager delegate:(id)delegate;
 - (CAMIrisVideoControllerDelegate)delegate;
-- (void)_notifyDelegateOfVideoLocalPersistenceResult:(id)a3 forVideoPersistenceUUID:(id)a4;
-- (void)_submitJob:(id)a3;
-- (void)nebulaDaemonDidCompleteLocalVideoPersistenceWithResult:(id)a3;
-- (void)stillImageRequest:(id)a3 didCompleteVideoCaptureWithResult:(id)a4;
-- (void)stillImageRequestDidCompleteCapture:(id)a3 error:(id)a4;
+- (void)_notifyDelegateOfVideoLocalPersistenceResult:(id)result forVideoPersistenceUUID:(id)d;
+- (void)_submitJob:(id)job;
+- (void)nebulaDaemonDidCompleteLocalVideoPersistenceWithResult:(id)result;
+- (void)stillImageRequest:(id)request didCompleteVideoCaptureWithResult:(id)result;
+- (void)stillImageRequestDidCompleteCapture:(id)capture error:(id)error;
 @end
 
 @implementation CAMIrisVideoController
 
-- (CAMIrisVideoController)initWithNebulaDaemonProxyManager:(id)a3 delegate:(id)a4
+- (CAMIrisVideoController)initWithNebulaDaemonProxyManager:(id)manager delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = CAMIrisVideoController;
   v9 = [(CAMIrisVideoController *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
-    objc_storeStrong(&v10->__nebulaDaemonProxyManager, a3);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    objc_storeStrong(&v10->__nebulaDaemonProxyManager, manager);
     [(CAMNebulaDaemonProxyManager *)v10->__nebulaDaemonProxyManager setIrisClientDelegate:v10];
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     jobsToBeSent = v10->__jobsToBeSent;
@@ -43,13 +43,13 @@
   return v10;
 }
 
-- (void)stillImageRequest:(id)a3 didCompleteVideoCaptureWithResult:(id)a4
+- (void)stillImageRequest:(id)request didCompleteVideoCaptureWithResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CAMIrisVideoControllerJob alloc] initWithRequest:v7 videoCaptureResult:v6];
+  resultCopy = result;
+  requestCopy = request;
+  v8 = [[CAMIrisVideoControllerJob alloc] initWithRequest:requestCopy videoCaptureResult:resultCopy];
 
-  v9 = [(CAMIrisVideoController *)self _mutexQueue];
+  _mutexQueue = [(CAMIrisVideoController *)self _mutexQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __78__CAMIrisVideoController_stillImageRequest_didCompleteVideoCaptureWithResult___block_invoke;
@@ -57,7 +57,7 @@
   v11[4] = self;
   v12 = v8;
   v10 = v8;
-  dispatch_sync(v9, v11);
+  dispatch_sync(_mutexQueue, v11);
 }
 
 void __78__CAMIrisVideoController_stillImageRequest_didCompleteVideoCaptureWithResult___block_invoke(uint64_t a1)
@@ -66,24 +66,24 @@ void __78__CAMIrisVideoController_stillImageRequest_didCompleteVideoCaptureWithR
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)stillImageRequestDidCompleteCapture:(id)a3 error:(id)a4
+- (void)stillImageRequestDidCompleteCapture:(id)capture error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  captureCopy = capture;
+  errorCopy = error;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__11;
   v16 = __Block_byref_object_dispose__11;
   v17 = 0;
-  v8 = [(CAMIrisVideoController *)self _mutexQueue];
+  _mutexQueue = [(CAMIrisVideoController *)self _mutexQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__CAMIrisVideoController_stillImageRequestDidCompleteCapture_error___block_invoke;
   block[3] = &unk_1E76FAFF0;
   block[4] = self;
   block[5] = &v12;
-  dispatch_sync(v8, block);
+  dispatch_sync(_mutexQueue, block);
 
   v9 = v13[5];
   v10[0] = MEMORY[0x1E69E9820];
@@ -140,36 +140,36 @@ uint64_t __68__CAMIrisVideoController_stillImageRequestDidCompleteCapture_error_
   }
 }
 
-- (void)_submitJob:(id)a3
+- (void)_submitJob:(id)job
 {
-  v4 = a3;
-  v5 = [v4 request];
-  v6 = [v4 videoCaptureResult];
-  v33 = [v6 localDestinationURL];
-  v7 = [v5 isEV0LocalVideoDestinationURL:?];
-  v32 = [v5 irisStillImagePersistenceUUIDForEV0:v7];
-  if ([v5 isCTMVideo])
+  jobCopy = job;
+  request = [jobCopy request];
+  videoCaptureResult = [jobCopy videoCaptureResult];
+  localDestinationURL = [videoCaptureResult localDestinationURL];
+  v7 = [request isEV0LocalVideoDestinationURL:?];
+  v32 = [request irisStillImagePersistenceUUIDForEV0:v7];
+  if ([request isCTMVideo])
   {
-    [v5 persistenceUUID];
+    [request persistenceUUID];
   }
 
   else
   {
-    [v5 irisVideoPersistenceUUIDForEV0:v7];
+    [request irisVideoPersistenceUUIDForEV0:v7];
   }
   v8 = ;
-  v31 = [v5 irisIdentifierForEV0:v7];
-  v28 = [v5 captureDevice];
-  v9 = [v5 captureOrientation];
-  v30 = +[CAMEffectFilterManager ciFilterNameForFilterType:](CAMEffectFilterManager, "ciFilterNameForFilterType:", [v5 effectFilterType]);
+  v31 = [request irisIdentifierForEV0:v7];
+  captureDevice = [request captureDevice];
+  captureOrientation = [request captureOrientation];
+  v30 = +[CAMEffectFilterManager ciFilterNameForFilterType:](CAMEffectFilterManager, "ciFilterNameForFilterType:", [request effectFilterType]);
   v50 = 0uLL;
   v51 = 0;
-  if (v6)
+  if (videoCaptureResult)
   {
-    [v6 duration];
+    [videoCaptureResult duration];
     v48 = 0uLL;
     v49 = 0;
-    [v6 stillDisplayTime];
+    [videoCaptureResult stillDisplayTime];
   }
 
   else
@@ -178,27 +178,27 @@ uint64_t __68__CAMIrisVideoController_stillImageRequestDidCompleteCapture_error_
     v49 = 0;
   }
 
-  v29 = [v6 captureDate];
-  [v29 timeIntervalSinceReferenceDate];
+  captureDate = [videoCaptureResult captureDate];
+  [captureDate timeIntervalSinceReferenceDate];
   v11 = v10;
-  v12 = [v6 error];
-  v13 = [MEMORY[0x1E696AAE8] mainBundle];
-  v14 = [v13 bundleIdentifier];
+  error = [videoCaptureResult error];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
   v15 = [CAMIrisVideoJob alloc];
-  v16 = [v5 persistenceOptions];
-  v17 = [v5 temporaryPersistenceOptions];
+  persistenceOptions = [request persistenceOptions];
+  temporaryPersistenceOptions = [request temporaryPersistenceOptions];
   v46 = v50;
   v47 = v51;
   v44 = v48;
   v45 = v49;
-  v18 = [(CAMIrisVideoJob *)v15 initWithVideoURL:v33 stillImagePersistenceUUID:v32 videoPersistenceUUID:v8 irisIdentifier:v31 captureDevice:v28 captureOrientation:v9 duration:v11 stillImageDisplayTime:&v46 captureTime:&v44 captureError:v12 filterName:v30 filteredVideoURL:0 persistenceOptions:v16 temporaryPersistenceOptions:v17 bundleIdentifier:v14];
-  v19 = [(CAMIrisVideoController *)self delegate];
+  v18 = [(CAMIrisVideoJob *)v15 initWithVideoURL:localDestinationURL stillImagePersistenceUUID:v32 videoPersistenceUUID:v8 irisIdentifier:v31 captureDevice:captureDevice captureOrientation:captureOrientation duration:v11 stillImageDisplayTime:&v46 captureTime:&v44 captureError:error filterName:v30 filteredVideoURL:0 persistenceOptions:persistenceOptions temporaryPersistenceOptions:temporaryPersistenceOptions bundleIdentifier:bundleIdentifier];
+  delegate = [(CAMIrisVideoController *)self delegate];
 
-  if (v19)
+  if (delegate)
   {
-    v20 = [(CAMIrisVideoController *)self delegate];
-    [v20 irisVideoController:self willPersistVideoCaptureResult:v6 forRequest:v5];
+    delegate2 = [(CAMIrisVideoController *)self delegate];
+    [delegate2 irisVideoController:self willPersistVideoCaptureResult:videoCaptureResult forRequest:request];
     v22 = v21;
 
     if (v22 > 0.0)
@@ -209,25 +209,25 @@ uint64_t __68__CAMIrisVideoController_stillImageRequestDidCompleteCapture_error_
       v39 = 3221225472;
       v40 = __37__CAMIrisVideoController__submitJob___block_invoke;
       v41 = &unk_1E76F7960;
-      v42 = self;
+      selfCopy = self;
       v43 = v8;
       pl_dispatch_after();
     }
   }
 
-  v24 = [(CAMIrisVideoController *)self _mutexQueue];
+  _mutexQueue = [(CAMIrisVideoController *)self _mutexQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __37__CAMIrisVideoController__submitJob___block_invoke_2;
   block[3] = &unk_1E76F8230;
   block[4] = self;
   v35 = v8;
-  v36 = v4;
+  v36 = jobCopy;
   v37 = v18;
   v25 = v18;
-  v26 = v4;
+  v26 = jobCopy;
   v27 = v8;
-  dispatch_sync(v24, block);
+  dispatch_sync(_mutexQueue, block);
 }
 
 void __37__CAMIrisVideoController__submitJob___block_invoke_2(uint64_t a1)
@@ -249,14 +249,14 @@ void __37__CAMIrisVideoController__submitJob___block_invoke_2(uint64_t a1)
   [*(*(a1 + 32) + 24) enqueueIrisVideoJobs:v5];
 }
 
-- (void)_notifyDelegateOfVideoLocalPersistenceResult:(id)a3 forVideoPersistenceUUID:(id)a4
+- (void)_notifyDelegateOfVideoLocalPersistenceResult:(id)result forVideoPersistenceUUID:(id)d
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAMIrisVideoController *)self delegate];
+  resultCopy = result;
+  dCopy = d;
+  delegate = [(CAMIrisVideoController *)self delegate];
 
-  if (v8)
+  if (delegate)
   {
     v19 = 0;
     v20 = &v19;
@@ -264,50 +264,50 @@ void __37__CAMIrisVideoController__submitJob___block_invoke_2(uint64_t a1)
     v22 = __Block_byref_object_copy__11;
     v23 = __Block_byref_object_dispose__11;
     v24 = 0;
-    v9 = [(CAMIrisVideoController *)self _mutexQueue];
+    _mutexQueue = [(CAMIrisVideoController *)self _mutexQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __95__CAMIrisVideoController__notifyDelegateOfVideoLocalPersistenceResult_forVideoPersistenceUUID___block_invoke;
     block[3] = &unk_1E76FB338;
     v18 = &v19;
     block[4] = self;
-    v17 = v7;
-    dispatch_sync(v9, block);
+    v17 = dCopy;
+    dispatch_sync(_mutexQueue, block);
 
     if (v20[5])
     {
-      if (!v6)
+      if (!resultCopy)
       {
         v10 = os_log_create("com.apple.camera", "Camera");
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [v20[5] request];
+          request = [v20[5] request];
           *buf = 138543362;
-          v26 = v11;
+          v26 = request;
           _os_log_impl(&dword_1A3640000, v10, OS_LOG_TYPE_DEFAULT, "Timed out while waiting for persistence result from nebulad for request %{public}@", buf, 0xCu);
         }
       }
 
-      v12 = [(CAMIrisVideoController *)self delegate];
-      v13 = [v20[5] videoCaptureResult];
-      v14 = [v20[5] request];
-      [v12 irisVideoController:self didPersistVideoCaptureResult:v6 forCaptureResult:v13 request:v14];
+      delegate2 = [(CAMIrisVideoController *)self delegate];
+      videoCaptureResult = [v20[5] videoCaptureResult];
+      request2 = [v20[5] request];
+      [delegate2 irisVideoController:self didPersistVideoCaptureResult:resultCopy forCaptureResult:videoCaptureResult request:request2];
     }
 
     else
     {
-      if (!v6)
+      if (!resultCopy)
       {
         goto LABEL_9;
       }
 
-      v12 = os_log_create("com.apple.camera", "Camera");
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      delegate2 = os_log_create("com.apple.camera", "Camera");
+      if (os_log_type_enabled(delegate2, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v20[5] request];
+        request3 = [v20[5] request];
         *buf = 138543362;
-        v26 = v15;
-        _os_log_impl(&dword_1A3640000, v12, OS_LOG_TYPE_DEFAULT, "Received persistence result from nebulad but ignoring since we already timed out for %{public}@", buf, 0xCu);
+        v26 = request3;
+        _os_log_impl(&dword_1A3640000, delegate2, OS_LOG_TYPE_DEFAULT, "Received persistence result from nebulad but ignoring since we already timed out for %{public}@", buf, 0xCu);
       }
     }
 
@@ -335,12 +335,12 @@ void __95__CAMIrisVideoController__notifyDelegateOfVideoLocalPersistenceResult_f
   }
 }
 
-- (BOOL)isWaitingOnNebuladForRequest:(id)a3
+- (BOOL)isWaitingOnNebuladForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(CAMIrisVideoController *)self delegate];
+  requestCopy = request;
+  delegate = [(CAMIrisVideoController *)self delegate];
 
-  if (!v5)
+  if (!delegate)
   {
     v8 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -351,7 +351,7 @@ void __95__CAMIrisVideoController__notifyDelegateOfVideoLocalPersistenceResult_f
     goto LABEL_8;
   }
 
-  if (!v4)
+  if (!requestCopy)
   {
     v8 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -369,15 +369,15 @@ LABEL_8:
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v6 = [(CAMIrisVideoController *)self _mutexQueue];
+  _mutexQueue = [(CAMIrisVideoController *)self _mutexQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__CAMIrisVideoController_isWaitingOnNebuladForRequest___block_invoke;
   block[3] = &unk_1E76FB338;
   v12 = &v13;
   block[4] = self;
-  v11 = v4;
-  dispatch_sync(v6, block);
+  v11 = requestCopy;
+  dispatch_sync(_mutexQueue, block);
 
   v7 = *(v14 + 24);
   _Block_object_dispose(&v13, 8);
@@ -405,11 +405,11 @@ void __55__CAMIrisVideoController_isWaitingOnNebuladForRequest___block_invoke(ui
   }
 }
 
-- (void)nebulaDaemonDidCompleteLocalVideoPersistenceWithResult:(id)a3
+- (void)nebulaDaemonDidCompleteLocalVideoPersistenceWithResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 localPersistenceUUID];
-  [(CAMIrisVideoController *)self _notifyDelegateOfVideoLocalPersistenceResult:v4 forVideoPersistenceUUID:v5];
+  resultCopy = result;
+  localPersistenceUUID = [resultCopy localPersistenceUUID];
+  [(CAMIrisVideoController *)self _notifyDelegateOfVideoLocalPersistenceResult:resultCopy forVideoPersistenceUUID:localPersistenceUUID];
 }
 
 - (CAMIrisVideoControllerDelegate)delegate

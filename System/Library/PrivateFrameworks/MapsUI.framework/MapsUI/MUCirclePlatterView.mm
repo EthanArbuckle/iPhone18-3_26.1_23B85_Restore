@@ -1,49 +1,49 @@
 @interface MUCirclePlatterView
 + (id)defaultPlatterView;
-- (MUCirclePlatterView)initWithFrame:(CGRect)a3;
+- (MUCirclePlatterView)initWithFrame:(CGRect)frame;
 - (void)infoCardThemeChanged;
 - (void)layoutSubviews;
-- (void)setGlyph:(id)a3;
-- (void)setGlyphColor:(id)a3;
-- (void)setGlyphFont:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setGlyph:(id)glyph;
+- (void)setGlyphColor:(id)color;
+- (void)setGlyphFont:(id)font;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 - (void)updateGlyph;
 @end
 
 @implementation MUCirclePlatterView
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MUCirclePlatterView;
-  [(MUCirclePlatterView *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(MUCirclePlatterView *)&v5 touchesCancelled:cancelled withEvent:event];
   [(MUCirclePlatterView *)self setHighlighted:0];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MUCirclePlatterView;
-  [(MUCirclePlatterView *)&v5 touchesEnded:a3 withEvent:a4];
+  [(MUCirclePlatterView *)&v5 touchesEnded:ended withEvent:event];
   [(MUCirclePlatterView *)self setHighlighted:0];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MUCirclePlatterView;
-  [(MUCirclePlatterView *)&v5 touchesBegan:a3 withEvent:a4];
+  [(MUCirclePlatterView *)&v5 touchesBegan:began withEvent:event];
   [(MUCirclePlatterView *)self setHighlighted:1];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(MUCirclePlatterView *)self infoCardThemeChanged];
   }
 }
@@ -55,41 +55,41 @@
   [(MUCirclePlatterView *)&v8 infoCardThemeChanged];
   [(MUCirclePlatterView *)self updateGlyph];
   highlighted = self->_highlighted;
-  v4 = [(MUCirclePlatterView *)self mk_theme];
-  v5 = v4;
+  mk_theme = [(MUCirclePlatterView *)self mk_theme];
+  v5 = mk_theme;
   if (highlighted)
   {
-    [v4 buttonHighlightedColor];
+    [mk_theme buttonHighlightedColor];
   }
 
   else
   {
-    [v4 buttonNormalColor];
+    [mk_theme buttonNormalColor];
   }
   v6 = ;
 
-  v7 = [(MKVibrantView *)self->_platterView contentView];
-  [v7 setBackgroundColor:v6];
+  contentView = [(MKVibrantView *)self->_platterView contentView];
+  [contentView setBackgroundColor:v6];
 }
 
-- (void)setGlyphColor:(id)a3
+- (void)setGlyphColor:(id)color
 {
-  v5 = a3;
-  if (self->_glyphColor != v5)
+  colorCopy = color;
+  if (self->_glyphColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_glyphColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_glyphColor, color);
     [(MUCirclePlatterView *)self updateGlyph];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setGlyph:(id)a3
+- (void)setGlyph:(id)glyph
 {
-  v7 = a3;
+  glyphCopy = glyph;
   if (([(NSString *)self->_glyph isEqual:?]& 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [glyphCopy copy];
     glyph = self->_glyph;
     self->_glyph = v4;
 
@@ -103,10 +103,10 @@
   v3 = self->_glyphColor;
   if (!v3)
   {
-    v4 = [(MUCirclePlatterView *)self mk_theme];
-    v5 = [v4 tintColor];
+    mk_theme = [(MUCirclePlatterView *)self mk_theme];
+    tintColor = [mk_theme tintColor];
 
-    v3 = v5;
+    v3 = tintColor;
   }
 
   v6 = v3;
@@ -128,25 +128,25 @@
   [(MUCirclePlatterView *)self _setCornerRadius:v3];
 }
 
-- (void)setGlyphFont:(id)a3
+- (void)setGlyphFont:(id)font
 {
-  v5 = a3;
-  if (self->_glyphFont != v5)
+  fontCopy = font;
+  if (self->_glyphFont != fontCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_glyphFont, a3);
+    v7 = fontCopy;
+    objc_storeStrong(&self->_glyphFont, font);
     v6 = [MEMORY[0x1E69DCAD8] configurationWithFont:v7];
     [(UIImageView *)self->_glyphImageView setPreferredSymbolConfiguration:v6];
 
-    v5 = v7;
+    fontCopy = v7;
   }
 }
 
-- (MUCirclePlatterView)initWithFrame:(CGRect)a3
+- (MUCirclePlatterView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = MUCirclePlatterView;
-  v3 = [(MUCirclePlatterView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUCirclePlatterView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E696F430]);

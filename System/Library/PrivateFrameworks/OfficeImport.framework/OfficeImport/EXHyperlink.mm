@@ -1,17 +1,17 @@
 @interface EXHyperlink
-+ (id)edHyperlinkFromXmlHyperlinkElement:(_xmlNode *)a3 state:(id)a4;
++ (id)edHyperlinkFromXmlHyperlinkElement:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation EXHyperlink
 
-+ (id)edHyperlinkFromXmlHyperlinkElement:(_xmlNode *)a3 state:(id)a4
++ (id)edHyperlinkFromXmlHyperlinkElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
-  if (a3)
+  stateCopy = state;
+  if (element)
   {
     v6 = +[EDHyperlink hyperlink];
-    v7 = [v5 currentPart];
-    v8 = [v5 OCXReadRelationshipForNode:a3 packagePart:v7];
+    currentPart = [stateCopy currentPart];
+    v8 = [stateCopy OCXReadRelationshipForNode:element packagePart:currentPart];
 
     if (!v8)
     {
@@ -19,32 +19,32 @@
       goto LABEL_11;
     }
 
-    v9 = [v8 targetLocation];
-    v10 = v9;
-    if (!v9)
+    targetLocation = [v8 targetLocation];
+    v10 = targetLocation;
+    if (!targetLocation)
     {
-      a3 = 0;
+      element = 0;
 LABEL_21:
 
       goto LABEL_22;
     }
 
-    v11 = [v9 absoluteURL];
-    v12 = [v11 absoluteString];
-    v13 = [EDString edStringWithString:v12];
+    absoluteURL = [targetLocation absoluteURL];
+    absoluteString = [absoluteURL absoluteString];
+    v13 = [EDString edStringWithString:absoluteString];
     [v6 setPath:v13];
 
-    v14 = [v6 path];
-    v15 = [v14 string];
-    if (([v15 hasPrefix:@"mailto:"] & 1) == 0)
+    path = [v6 path];
+    string = [path string];
+    if (([string hasPrefix:@"mailto:"] & 1) == 0)
     {
-      v16 = [v6 path];
-      v17 = [v16 string];
-      if (([v17 hasPrefix:@"http://"] & 1) == 0)
+      path2 = [v6 path];
+      string2 = [path2 string];
+      if (([string2 hasPrefix:@"http://"] & 1) == 0)
       {
-        v34 = [v6 path];
-        v32 = [v34 string];
-        v33 = [v32 hasPrefix:@"https://"];
+        path3 = [v6 path];
+        string3 = [path3 string];
+        v33 = [string3 hasPrefix:@"https://"];
 
         if ((v33 & 1) == 0)
         {
@@ -59,7 +59,7 @@ LABEL_9:
 
 LABEL_11:
         v38 = 0;
-        v19 = CXOptionalStringAttribute(a3, CXNoNamespace, "ref", &v38);
+        v19 = CXOptionalStringAttribute(element, CXNoNamespace, "ref", &v38);
         v20 = v38;
         if (v19)
         {
@@ -68,7 +68,7 @@ LABEL_11:
         }
 
         v37 = v20;
-        v22 = CXOptionalStringAttribute(a3, CXNoNamespace, "location", &v37);
+        v22 = CXOptionalStringAttribute(element, CXNoNamespace, "location", &v37);
         v23 = v37;
 
         if (v22)
@@ -78,7 +78,7 @@ LABEL_11:
         }
 
         v36 = v23;
-        v25 = CXOptionalStringAttribute(a3, CXNoNamespace, "tooltip", &v36);
+        v25 = CXOptionalStringAttribute(element, CXNoNamespace, "tooltip", &v36);
         v26 = v36;
 
         if (v25)
@@ -88,7 +88,7 @@ LABEL_11:
         }
 
         v35 = v26;
-        v28 = CXOptionalStringAttribute(a3, CXNoNamespace, "display", &v35);
+        v28 = CXOptionalStringAttribute(element, CXNoNamespace, "display", &v35);
         v29 = v35;
 
         if (v28)
@@ -97,7 +97,7 @@ LABEL_11:
           [v6 setDescriptionText:v30];
         }
 
-        a3 = v6;
+        element = v6;
 
         goto LABEL_21;
       }
@@ -108,7 +108,7 @@ LABEL_11:
 
 LABEL_22:
 
-  return a3;
+  return element;
 }
 
 @end

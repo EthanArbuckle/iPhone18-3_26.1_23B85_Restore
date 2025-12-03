@@ -1,15 +1,15 @@
 @interface EFCoalescer
-- (EFCoalescer)initWithCoalescingAction:(id)a3;
+- (EFCoalescer)initWithCoalescingAction:(id)action;
 - (void)_handleCoalesceEvent;
-- (void)coalesceValue:(id)a3;
+- (void)coalesceValue:(id)value;
 - (void)dealloc;
 @end
 
 @implementation EFCoalescer
 
-- (EFCoalescer)initWithCoalescingAction:(id)a3
+- (EFCoalescer)initWithCoalescingAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v21.receiver = self;
   v21.super_class = EFCoalescer;
   v5 = [(EFCoalescer *)&v21 init];
@@ -17,14 +17,14 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 copy];
+    v7 = [actionCopy copy];
     coalescerAction = v6->_coalescerAction;
     v6->_coalescerAction = v7;
 
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%p", objc_opt_class(), v6];
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v11 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, -15);
-    v12 = dispatch_queue_create(v10, v11);
+    v12 = dispatch_queue_create(uTF8String, v11);
     queue = v6->_queue;
     v6->_queue = v12;
 
@@ -67,13 +67,13 @@ void __40__EFCoalescer_initWithCoalescingAction___block_invoke(uint64_t a1)
   [(EFCoalescer *)&v4 dealloc];
 }
 
-- (void)coalesceValue:(id)a3
+- (void)coalesceValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeStrong(&self->_coalescedValue, a3);
+  objc_storeStrong(&self->_coalescedValue, value);
   os_unfair_lock_unlock(&self->_lock);
-  if (v5)
+  if (valueCopy)
   {
     dispatch_source_merge_data(self->_coalescer, 1uLL);
   }

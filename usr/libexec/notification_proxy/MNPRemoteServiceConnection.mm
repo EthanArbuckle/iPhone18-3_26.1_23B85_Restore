@@ -1,8 +1,8 @@
 @interface MNPRemoteServiceConnection
-- (MNPRemoteServiceConnection)initWithConnection:(id)a3;
+- (MNPRemoteServiceConnection)initWithConnection:(id)connection;
 - (void)dealloc;
 - (void)listen;
-- (void)sendMessage:(id)a3;
+- (void)sendMessage:(id)message;
 - (void)shutdown;
 @end
 
@@ -15,9 +15,9 @@
   [(MNPRemoteServiceConnection *)&v2 dealloc];
 }
 
-- (MNPRemoteServiceConnection)initWithConnection:(id)a3
+- (MNPRemoteServiceConnection)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = MNPRemoteServiceConnection;
   v6 = [(MNPRemoteServiceConnection *)&v15 init];
@@ -27,7 +27,7 @@
     transaction = v6->_transaction;
     v6->_transaction = v7;
 
-    objc_storeStrong(&v6->_conn, a3);
+    objc_storeStrong(&v6->_conn, connection);
     v9 = dispatch_queue_create("com.apple.mobile.notification_proxy_io_queue", 0);
     queue = v6->_queue;
     v6->_queue = v9;
@@ -41,7 +41,7 @@
   return v6;
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
   v4 = _CFXPCCreateXPCObjectFromCFObject();
   v5 = v4;

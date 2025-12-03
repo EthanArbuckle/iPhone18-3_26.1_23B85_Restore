@@ -1,15 +1,15 @@
 @interface PKHeroCardExplanationHeaderView
 + (CGSize)recommendedCardImageSize;
 - (CGSize)sizeThatFits:(CGSize)result;
-- (PKHeroCardExplanationHeaderView)initWithImage:(id)a3;
+- (PKHeroCardExplanationHeaderView)initWithImage:(id)image;
 - (void)hideLoadingContent;
 - (void)layoutSubviews;
-- (void)setCardImage:(id)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setHideBackground:(BOOL)a3;
-- (void)setHideShadow:(BOOL)a3;
-- (void)setPadding:(unint64_t)a3;
-- (void)setSize:(unint64_t)a3;
+- (void)setCardImage:(id)image;
+- (void)setCornerRadius:(double)radius;
+- (void)setHideBackground:(BOOL)background;
+- (void)setHideShadow:(BOOL)shadow;
+- (void)setPadding:(unint64_t)padding;
+- (void)setSize:(unint64_t)size;
 - (void)showLoadingContent;
 - (void)updateCardSizeValues;
 @end
@@ -25,9 +25,9 @@
   return result;
 }
 
-- (PKHeroCardExplanationHeaderView)initWithImage:(id)a3
+- (PKHeroCardExplanationHeaderView)initWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = [(PKHeroCardExplanationHeaderView *)self init];
   v6 = v5;
   if (v5)
@@ -57,9 +57,9 @@
     v6->_size = v8;
     v6->_padding = v7;
     [(PKHeroCardExplanationHeaderView *)v6 updateCardSizeValues];
-    if (v4)
+    if (imageCopy)
     {
-      [v4 size];
+      [imageCopy size];
     }
 
     else
@@ -75,14 +75,14 @@
     v6->_cardImageShadowView = v15;
 
     [(PKHeroCardExplanationHeaderView *)v6 addSubview:v6->_cardImageShadowView];
-    v17 = [(UIView *)v6->_cardImageShadowView layer];
-    [v17 setShouldRasterize:1];
-    [v17 setRasterizationScale:PKUIScreenScale()];
+    layer = [(UIView *)v6->_cardImageShadowView layer];
+    [layer setShouldRasterize:1];
+    [layer setRasterizationScale:PKUIScreenScale()];
     LODWORD(v18) = 1041865114;
-    [v17 setShadowOpacity:v18];
-    [v17 setShadowOffset:{0.0, 10.0}];
-    [v17 setShadowRadius:15.0];
-    v19 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v4];
+    [layer setShadowOpacity:v18];
+    [layer setShadowOffset:{0.0, 10.0}];
+    [layer setShadowRadius:15.0];
+    v19 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
     cardImageView = v6->_cardImageView;
     v6->_cardImageView = v19;
 
@@ -98,9 +98,9 @@
   return v6;
 }
 
-- (void)setCardImage:(id)a3
+- (void)setCardImage:(id)image
 {
-  [(UIImageView *)self->_cardImageView setImage:a3];
+  [(UIImageView *)self->_cardImageView setImage:image];
   [(UIImageView *)self->_cardImageView sizeToFit];
 
   [(PKHeroCardExplanationHeaderView *)self setNeedsLayout];
@@ -111,15 +111,15 @@
   v20.receiver = self;
   v20.super_class = PKHeroCardExplanationHeaderView;
   [(PKHeroCardExplanationHeaderView *)&v20 layoutSubviews];
-  v3 = [(UIImageView *)self->_cardImageView image];
+  image = [(UIImageView *)self->_cardImageView image];
 
-  if (v3)
+  if (image)
   {
     [(PKHeroCardExplanationHeaderView *)self bounds];
     v4 = *MEMORY[0x1E695EFF8];
     v5 = *(MEMORY[0x1E695EFF8] + 8);
-    v6 = [(UIImageView *)self->_cardImageView image];
-    [v6 size];
+    image2 = [(UIImageView *)self->_cardImageView image];
+    [image2 size];
 
     PKSizeScaleAspectFit();
     UIRectCenteredXInRect();
@@ -135,7 +135,7 @@
       [(UIView *)self->_cardImageShadowView frame];
       if (v16 != v12 || v15 != v14)
       {
-        v18 = [(UIImageView *)self->_cardImageView layer];
+        layer = [(UIImageView *)self->_cardImageView layer];
         [(UIImageView *)self->_cardImageView frame];
         +[PKTransactionDataOverlayCardFaceView borderWidth];
         v19 = +[PKTransactionDataOverlayCardFaceView borderColor];
@@ -158,36 +158,36 @@
   return result;
 }
 
-- (void)setSize:(unint64_t)a3
+- (void)setSize:(unint64_t)size
 {
-  if (self->_size != a3)
+  if (self->_size != size)
   {
-    self->_size = a3;
+    self->_size = size;
     [(PKHeroCardExplanationHeaderView *)self updateCardSizeValues];
 
     [(PKHeroCardExplanationHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setPadding:(unint64_t)a3
+- (void)setPadding:(unint64_t)padding
 {
-  if (self->_padding != a3)
+  if (self->_padding != padding)
   {
-    self->_padding = a3;
+    self->_padding = padding;
     [(PKHeroCardExplanationHeaderView *)self updateCardSizeValues];
 
     [(PKHeroCardExplanationHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
-    v4 = [(UIImageView *)self->_cardImageView layer];
-    [v4 setCornerRadius:a3];
-    [v4 setMasksToBounds:a3 > 0.0];
+    self->_cornerRadius = radius;
+    layer = [(UIImageView *)self->_cardImageView layer];
+    [layer setCornerRadius:radius];
+    [layer setMasksToBounds:radius > 0.0];
   }
 }
 
@@ -255,8 +255,8 @@ LABEL_17:
 
 - (void)showLoadingContent
 {
-  v3 = [(UIImageView *)self->_cardImageView layer];
-  [v3 setOpacity:0.0];
+  layer = [(UIImageView *)self->_cardImageView layer];
+  [layer setOpacity:0.0];
 
   [(UIActivityIndicatorView *)self->_spinner startAnimating];
   spinner = self->_spinner;
@@ -266,8 +266,8 @@ LABEL_17:
 
 - (void)hideLoadingContent
 {
-  v3 = [(UIImageView *)self->_cardImageView layer];
-  [v3 pkui_animateToOpacity:0 withCompletion:1.0];
+  layer = [(UIImageView *)self->_cardImageView layer];
+  [layer pkui_animateToOpacity:0 withCompletion:1.0];
 
   [(UIActivityIndicatorView *)self->_spinner stopAnimating];
   spinner = self->_spinner;
@@ -275,10 +275,10 @@ LABEL_17:
   [(UIActivityIndicatorView *)spinner removeFromSuperview];
 }
 
-- (void)setHideBackground:(BOOL)a3
+- (void)setHideBackground:(BOOL)background
 {
-  self->_hideBackground = a3;
-  if (a3)
+  self->_hideBackground = background;
+  if (background)
   {
     v4 = 0;
   }
@@ -292,20 +292,20 @@ LABEL_17:
   [(PKHeroCardExplanationHeaderView *)self setBackgroundColor:v4];
 }
 
-- (void)setHideShadow:(BOOL)a3
+- (void)setHideShadow:(BOOL)shadow
 {
-  if (self->_hideShadow == !a3)
+  if (self->_hideShadow == !shadow)
   {
-    v4 = a3;
-    v5 = [(UIView *)self->_cardImageShadowView layer];
-    v7 = v5;
+    shadowCopy = shadow;
+    layer = [(UIView *)self->_cardImageShadowView layer];
+    v7 = layer;
     LODWORD(v6) = 1041865114;
-    if (v4)
+    if (shadowCopy)
     {
       *&v6 = 0.0;
     }
 
-    [v5 setShadowOpacity:v6];
+    [layer setShadowOpacity:v6];
   }
 }
 

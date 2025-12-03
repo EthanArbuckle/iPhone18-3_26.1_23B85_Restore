@@ -1,37 +1,37 @@
 @interface VUIActionTypeGDPR
-- (VUIActionTypeGDPR)initWithContextData:(id)a3 appContext:(id)a4;
+- (VUIActionTypeGDPR)initWithContextData:(id)data appContext:(id)context;
 - (VUIAppContext)appContext;
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4;
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler;
 @end
 
 @implementation VUIActionTypeGDPR
 
-- (VUIActionTypeGDPR)initWithContextData:(id)a3 appContext:(id)a4
+- (VUIActionTypeGDPR)initWithContextData:(id)data appContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = VUIActionTypeGDPR;
   v9 = [(VUIActionTypeGDPR *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contextData, a3);
-    objc_storeWeak(&v10->_appContext, v8);
+    objc_storeStrong(&v9->_contextData, data);
+    objc_storeWeak(&v10->_appContext, contextCopy);
   }
 
   return v10;
 }
 
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler
 {
   v24[5] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  responderCopy = responder;
+  handlerCopy = handler;
   v8 = +[VUITVAppLauncher sharedInstance];
-  v9 = [v8 appController];
+  appController = [v8 appController];
 
-  v10 = [v9 navigationController];
+  navigationController = [appController navigationController];
   objc_initWeak(&location, self);
   v11 = +[VUIMetricsController sharedInstance];
   v23[0] = @"targetId";
@@ -50,18 +50,18 @@
   v13 = +[VUIMetricsController sharedInstance];
   [v13 forceGDPRConsentStatus:1];
 
-  v14 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v14 vui_postNotificationName:@"VUIGDPRUserDidConsentNotification" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter vui_postNotificationName:@"VUIGDPRUserDidConsentNotification" object:0 userInfo:0];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __66__VUIActionTypeGDPR_performWithTargetResponder_completionHandler___block_invoke;
   v17[3] = &unk_1E87302E0;
-  v15 = v10;
+  v15 = navigationController;
   v18 = v15;
   objc_copyWeak(&v21, &location);
-  v16 = v7;
-  v19 = self;
+  v16 = handlerCopy;
+  selfCopy = self;
   v20 = v16;
   [VUIGDPRPresentationManager acceptGDPRAndSyncWithServers:v17];
 

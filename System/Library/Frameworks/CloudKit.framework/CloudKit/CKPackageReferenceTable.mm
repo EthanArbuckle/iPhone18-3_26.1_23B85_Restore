@@ -1,11 +1,11 @@
 @interface CKPackageReferenceTable
 + (id)dbProperties;
-- (BOOL)refcountIsZeroForPackageID:(id)a3 error:(id *)a4;
-- (id)deleteReference:(id)a3;
-- (id)existingAnchorWithID:(id)a3 error:(id *)a4;
-- (id)newProcessReferenceForPackage:(id)a3 error:(id *)a4;
+- (BOOL)refcountIsZeroForPackageID:(id)d error:(id *)error;
+- (id)deleteReference:(id)reference;
+- (id)existingAnchorWithID:(id)d error:(id *)error;
+- (id)newProcessReferenceForPackage:(id)package error:(id *)error;
 - (id)removeInvalidReferences;
-- (unint64_t)referenceCountForPackageID:(id)a3 error:(id *)a4;
+- (unint64_t)referenceCountForPackageID:(id)d error:(id *)error;
 @end
 
 @implementation CKPackageReferenceTable
@@ -41,37 +41,37 @@
   return v2;
 }
 
-- (unint64_t)referenceCountForPackageID:(id)a3 error:(id *)a4
+- (unint64_t)referenceCountForPackageID:(id)d error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v14 = @"PACKAGEID";
-  v15[0] = a3;
+  v15[0] = d;
   v6 = MEMORY[0x1E695DF20];
-  v7 = a3;
+  dCopy = d;
   v9 = objc_msgSend_dictionaryWithObjects_forKeys_count_(v6, v8, v15, &v14, 1);
 
-  v11 = objc_msgSend_countOfEntriesMatching_label_error_predicate_(self, v10, v9, off_1EA90EB98, a4, &unk_1EFA2E568);
+  v11 = objc_msgSend_countOfEntriesMatching_label_error_predicate_(self, v10, v9, off_1EA90EB98, error, &unk_1EFA2E568);
   v12 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (BOOL)refcountIsZeroForPackageID:(id)a3 error:(id *)a4
+- (BOOL)refcountIsZeroForPackageID:(id)d error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v13 = @"PACKAGEID";
-  v14[0] = a3;
+  v14[0] = d;
   v6 = MEMORY[0x1E695DF20];
-  v7 = a3;
+  dCopy = d;
   v9 = objc_msgSend_dictionaryWithObjects_forKeys_count_(v6, v8, v14, &v13, 1);
 
-  LOBYTE(a4) = objc_msgSend_hasEntriesMatching_label_error_predicate_(self, v10, v9, off_1EA90EBB0, a4, &unk_1EFA2E588);
+  LOBYTE(error) = objc_msgSend_hasEntriesMatching_label_error_predicate_(self, v10, v9, off_1EA90EBB0, error, &unk_1EFA2E588);
   v11 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
-- (id)newProcessReferenceForPackage:(id)a3 error:(id *)a4
+- (id)newProcessReferenceForPackage:(id)package error:(id *)error
 {
-  v8 = a3;
+  packageCopy = package;
   if (byte_1EA90C538)
   {
     v9 = 2;
@@ -83,14 +83,14 @@
   }
 
   v10 = objc_msgSend_dateWithTimeIntervalSinceNow_(MEMORY[0x1E695DF00], v6, v7, 2592000.0);
-  v12 = objc_msgSend_newReferenceForPackage_referenceType_expirationDate_error_(self, v11, v8, v9, v10, a4);
+  v12 = objc_msgSend_newReferenceForPackage_referenceType_expirationDate_error_(self, v11, packageCopy, v9, v10, error);
 
   return v12;
 }
 
-- (id)existingAnchorWithID:(id)a3 error:(id *)a4
+- (id)existingAnchorWithID:(id)d error:(id *)error
 {
-  v7 = objc_msgSend_entryWithPrimaryKey_error_(self, a2, a3, a4);
+  v7 = objc_msgSend_entryWithPrimaryKey_error_(self, a2, d, error);
   if (v7)
   {
     v8 = objc_msgSend_tableGroup(self, v5, v6);
@@ -100,16 +100,16 @@
   return v7;
 }
 
-- (id)deleteReference:(id)a3
+- (id)deleteReference:(id)reference
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  referenceCopy = reference;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_188523CA4;
   v11[3] = &unk_1E70BC178;
   v11[4] = self;
-  v5 = v4;
+  v5 = referenceCopy;
   v12 = v5;
   v7 = objc_msgSend_performInTransaction_(self, v6, v11);
   if (v7)

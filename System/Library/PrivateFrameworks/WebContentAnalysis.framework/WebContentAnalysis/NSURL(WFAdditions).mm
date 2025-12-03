@@ -7,11 +7,11 @@
 
 - (uint64_t)WF_hostnameIsIPAddress
 {
-  v2 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:{objc_msgSend(a1, "host")}];
+  v2 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:{objc_msgSend(self, "host")}];
   v5 = 0;
   if ([v2 scanCharactersFromSet:objc_msgSend(MEMORY[0x277CCA900] intoString:{"characterSetWithCharactersInString:", @".0123456789", &v5}])
   {
-    v3 = [v5 isEqualToString:{objc_msgSend(a1, "host")}];
+    v3 = [v5 isEqualToString:{objc_msgSend(self, "host")}];
   }
 
   else
@@ -24,25 +24,25 @@
 
 - (__CFString)WF_normalizedRelativePath
 {
-  v1 = [a1 relativePath];
-  if (!v1)
+  relativePath = [self relativePath];
+  if (!relativePath)
   {
     return &stru_28826CB10;
   }
 
-  v2 = [v1 lowercaseString];
-  for (i = [v2 length]; i; i = objc_msgSend(v2, "length"))
+  lowercaseString = [relativePath lowercaseString];
+  for (i = [lowercaseString length]; i; i = objc_msgSend(lowercaseString, "length"))
   {
     v4 = i - 1;
-    if (![objc_msgSend(v2 substringFromIndex:{i - 1), "isEqualToString:", @"/"}])
+    if (![objc_msgSend(lowercaseString substringFromIndex:{i - 1), "isEqualToString:", @"/"}])
     {
       break;
     }
 
-    v2 = [v2 substringToIndex:v4];
+    lowercaseString = [lowercaseString substringToIndex:v4];
   }
 
-  return v2;
+  return lowercaseString;
 }
 
 @end

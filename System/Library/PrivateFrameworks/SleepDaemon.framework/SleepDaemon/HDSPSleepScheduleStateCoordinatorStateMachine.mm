@@ -1,15 +1,15 @@
 @interface HDSPSleepScheduleStateCoordinatorStateMachine
 - (BOOL)isAppleWatch;
 - (BOOL)sleepFeaturesEnabled;
-- (HDSPSleepScheduleStateCoordinatorStateMachine)initWithIdentifier:(id)a3 persistence:(id)a4 delegate:(id)a5 infoProvider:(id)a6 currentDateProvider:(id)a7;
+- (HDSPSleepScheduleStateCoordinatorStateMachine)initWithIdentifier:(id)identifier persistence:(id)persistence delegate:(id)delegate infoProvider:(id)provider currentDateProvider:(id)dateProvider;
 - (HKSPSleepScheduleModel)sleepScheduleModel;
 - (HKSPSleepScheduleOccurrence)previousOccurrence;
 - (NSDate)currentDate;
 - (void)alarmDismissed;
 - (void)bedtimeReached;
-- (void)scheduleModelChanged:(id)a3;
+- (void)scheduleModelChanged:(id)changed;
 - (void)significantTimeChange;
-- (void)sleepScheduleStateDidChange:(unint64_t)a3 previousState:(unint64_t)a4 context:(id)a5;
+- (void)sleepScheduleStateDidChange:(unint64_t)change previousState:(unint64_t)state context:(id)context;
 - (void)timeZoneChange;
 - (void)wakeTimeReached;
 - (void)windDownReached;
@@ -17,15 +17,15 @@
 
 @implementation HDSPSleepScheduleStateCoordinatorStateMachine
 
-- (HDSPSleepScheduleStateCoordinatorStateMachine)initWithIdentifier:(id)a3 persistence:(id)a4 delegate:(id)a5 infoProvider:(id)a6 currentDateProvider:(id)a7
+- (HDSPSleepScheduleStateCoordinatorStateMachine)initWithIdentifier:(id)identifier persistence:(id)persistence delegate:(id)delegate infoProvider:(id)provider currentDateProvider:(id)dateProvider
 {
   v39[6] = *MEMORY[0x277D85DE8];
   v12 = MEMORY[0x277CBEB98];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  dateProviderCopy = dateProvider;
+  providerCopy = provider;
+  delegateCopy = delegate;
+  persistenceCopy = persistence;
+  identifierCopy = identifier;
   v39[0] = objc_opt_class();
   v39[1] = objc_opt_class();
   v39[2] = objc_opt_class();
@@ -37,7 +37,7 @@
 
   v38.receiver = self;
   v38.super_class = HDSPSleepScheduleStateCoordinatorStateMachine;
-  v20 = [(HKSPPersistentStateMachine *)&v38 initWithIdentifier:v17 allowedStates:v19 persistence:v16 delegate:v15 infoProvider:v14 currentDateProvider:v13];
+  v20 = [(HKSPPersistentStateMachine *)&v38 initWithIdentifier:identifierCopy allowedStates:v19 persistence:persistenceCopy delegate:delegateCopy infoProvider:providerCopy currentDateProvider:dateProviderCopy];
 
   if (v20)
   {
@@ -65,9 +65,9 @@
     initialState = v20->_initialState;
     v20->_initialState = v31;
 
-    v33 = [(HKSPPersistentStateMachine *)v20 persistedState];
-    v34 = v33;
-    if (!v33)
+    persistedState = [(HKSPPersistentStateMachine *)v20 persistedState];
+    v34 = persistedState;
+    if (!persistedState)
     {
       v34 = v20->_initialState;
     }
@@ -83,99 +83,99 @@
 
 - (void)windDownReached
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 windDownReached];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState windDownReached];
 }
 
 - (void)bedtimeReached
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 bedtimeReached];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState bedtimeReached];
 }
 
 - (void)wakeTimeReached
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 wakeTimeReached];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState wakeTimeReached];
 }
 
 - (void)alarmDismissed
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 alarmDismissed];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState alarmDismissed];
 }
 
 - (void)significantTimeChange
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 significantTimeChange];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState significantTimeChange];
 }
 
 - (void)timeZoneChange
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 timeZoneChange];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState timeZoneChange];
 }
 
-- (void)scheduleModelChanged:(id)a3
+- (void)scheduleModelChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(HKSPStateMachine *)self currentState];
-  [v5 scheduleModelChanged:v4];
+  changedCopy = changed;
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState scheduleModelChanged:changedCopy];
 }
 
-- (void)sleepScheduleStateDidChange:(unint64_t)a3 previousState:(unint64_t)a4 context:(id)a5
+- (void)sleepScheduleStateDidChange:(unint64_t)change previousState:(unint64_t)state context:(id)context
 {
-  v8 = a5;
+  contextCopy = context;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __99__HDSPSleepScheduleStateCoordinatorStateMachine_sleepScheduleStateDidChange_previousState_context___block_invoke;
   v10[3] = &unk_279C7CEC8;
-  v12 = a3;
-  v13 = a4;
-  v11 = v8;
-  v9 = v8;
+  changeCopy = change;
+  stateCopy = state;
+  v11 = contextCopy;
+  v9 = contextCopy;
   [(HKSPStateMachine *)self notifyDelegateWithBlock:v10];
 }
 
 - (BOOL)isAppleWatch
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 isAppleWatch];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  isAppleWatch = [infoProvider isAppleWatch];
 
-  return v3;
+  return isAppleWatch;
 }
 
 - (BOOL)sleepFeaturesEnabled
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 sleepFeaturesEnabled];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  sleepFeaturesEnabled = [infoProvider sleepFeaturesEnabled];
 
-  return v3;
+  return sleepFeaturesEnabled;
 }
 
 - (HKSPSleepScheduleModel)sleepScheduleModel
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 sleepScheduleModel];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
 
-  return v3;
+  return sleepScheduleModel;
 }
 
 - (HKSPSleepScheduleOccurrence)previousOccurrence
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 previousOccurrence];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  previousOccurrence = [infoProvider previousOccurrence];
 
-  return v3;
+  return previousOccurrence;
 }
 
 - (NSDate)currentDate
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 currentDate];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  currentDate = [infoProvider currentDate];
 
-  return v3;
+  return currentDate;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface NURenderPipelineState
 - ($0AC6E346AE4835514AAA8AC86D8F4844)scale;
-- (BOOL)applyPipelineSettings:(id)a3 error:(id *)a4;
-- (BOOL)endGroupWithName:(id)a3 error:(id *)a4;
-- (BOOL)updatePipelineStateForWindowedSampleIndex:(unint64_t)a3;
+- (BOOL)applyPipelineSettings:(id)settings error:(id *)error;
+- (BOOL)endGroupWithName:(id)name error:(id *)error;
+- (BOOL)updatePipelineStateForWindowedSampleIndex:(unint64_t)index;
 - (NURenderPipelineState)init;
-- (id)beginGroupWithName:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)beginGroupWithName:(id)name error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)initForCopy;
-- (id)pipelineSettingsFromSourceSettings:(id)a3;
+- (id)pipelineSettingsFromSourceSettings:(id)settings;
 - (void)resetRenderTagGroups;
 @end
 
@@ -24,10 +24,10 @@
   return result;
 }
 
-- (BOOL)updatePipelineStateForWindowedSampleIndex:(unint64_t)a3
+- (BOOL)updatePipelineStateForWindowedSampleIndex:(unint64_t)index
 {
   v30 = *MEMORY[0x1E69E9840];
-  if ([(NSArray *)self->_videoSampleSlices count]<= a3)
+  if ([(NSArray *)self->_videoSampleSlices count]<= index)
   {
     v10 = NUAssertLogger_1288();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -48,8 +48,8 @@
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v17;
         *&buf[12] = 2114;
@@ -60,8 +60,8 @@
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -70,7 +70,7 @@
     _NUAssertFailHandler("[NURenderPipelineState updatePipelineStateForWindowedSampleIndex:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderPipelineState.m", 276, @"Out of bounds index for windowed samples", v22, v23, v24, v25, v26);
   }
 
-  v5 = [(NSArray *)self->_videoSampleSlices objectAtIndexedSubscript:a3];
+  v5 = [(NSArray *)self->_videoSampleSlices objectAtIndexedSubscript:index];
   v6 = v5;
   if (v5)
   {
@@ -86,47 +86,47 @@
   *buf = v27;
   *&buf[16] = v28;
   [(NURenderPipelineState *)self setTime:buf];
-  v7 = [v6 videoFrames];
-  [(NURenderPipelineState *)self setVideoFrames:v7];
+  videoFrames = [v6 videoFrames];
+  [(NURenderPipelineState *)self setVideoFrames:videoFrames];
 
-  v8 = [v6 metadataSamples];
-  [(NURenderPipelineState *)self setVideoMetadataSamples:v8];
+  metadataSamples = [v6 metadataSamples];
+  [(NURenderPipelineState *)self setVideoMetadataSamples:metadataSamples];
 
   return 1;
 }
 
-- (id)pipelineSettingsFromSourceSettings:(id)a3
+- (id)pipelineSettingsFromSourceSettings:(id)settings
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 objectForKeyedSubscript:@"scale"];
+  v6 = [settingsCopy objectForKeyedSubscript:@"scale"];
   [v5 setObject:v6 forKeyedSubscript:@"scale"];
 
-  v7 = [v4 objectForKeyedSubscript:@"frameTime"];
+  v7 = [settingsCopy objectForKeyedSubscript:@"frameTime"];
   [v5 setObject:v7 forKeyedSubscript:@"frameTime"];
 
-  v8 = [v4 objectForKeyedSubscript:@"defaultFrameTime"];
+  v8 = [settingsCopy objectForKeyedSubscript:@"defaultFrameTime"];
   [v5 setObject:v8 forKeyedSubscript:@"defaultFrameTime"];
 
-  v9 = [v4 objectForKeyedSubscript:@"auxiliaryImageType"];
+  v9 = [settingsCopy objectForKeyedSubscript:@"auxiliaryImageType"];
   [v5 setObject:v9 forKeyedSubscript:@"auxiliaryImageType"];
 
-  v10 = [v4 objectForKeyedSubscript:@"mediaComponentType"];
+  v10 = [settingsCopy objectForKeyedSubscript:@"mediaComponentType"];
   [v5 setObject:v10 forKeyedSubscript:@"mediaComponentType"];
 
-  v11 = [v4 objectForKeyedSubscript:@"sampleMode"];
+  v11 = [settingsCopy objectForKeyedSubscript:@"sampleMode"];
 
   [v5 setObject:v11 forKeyedSubscript:@"sampleMode"];
 
   return v5;
 }
 
-- (BOOL)applyPipelineSettings:(id)a3 error:(id *)a4
+- (BOOL)applyPipelineSettings:(id)settings error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!a4)
+  settingsCopy = settings;
+  if (!error)
   {
     v14 = NUAssertLogger_1288();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -147,8 +147,8 @@
         v21 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v21;
         *&buf[12] = 2114;
@@ -159,8 +159,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -169,7 +169,7 @@
     _NUAssertFailHandler("[NURenderPipelineState applyPipelineSettings:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderPipelineState.m", 188, @"Invalid parameter not satisfying: %s", v26, v27, v28, v29, "error != nil");
   }
 
-  v7 = v6;
+  v7 = settingsCopy;
   if ([(NURenderPipelineState *)self doNotOverride])
   {
     goto LABEL_3;
@@ -184,7 +184,7 @@
       v12 = [NUError invalidError:@"invalid scale in settings" object:v9];
 LABEL_14:
       v8 = 0;
-      *a4 = v12;
+      *error = v12;
 LABEL_36:
 
       goto LABEL_37;
@@ -278,7 +278,7 @@ LABEL_35:
     v11 = [NUError invalidError:@"invalid sampleMode in source settings" object:v10];
 LABEL_34:
     v8 = 0;
-    *a4 = v11;
+    *error = v11;
     goto LABEL_35;
   }
 
@@ -289,11 +289,11 @@ LABEL_37:
   return v8;
 }
 
-- (BOOL)endGroupWithName:(id)a3 error:(id *)a4
+- (BOOL)endGroupWithName:(id)name error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v17 = NUAssertLogger_1288();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -314,8 +314,8 @@ LABEL_37:
         v31 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v34 = [v32 callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v32 callStackSymbols];
+        v35 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v31;
         v51 = 2114;
@@ -326,8 +326,8 @@ LABEL_37:
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v50 = v23;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -336,7 +336,7 @@ LABEL_37:
     _NUAssertFailHandler("[NURenderPipelineState endGroupWithName:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderPipelineState.m", 166, @"Invalid parameter not satisfying: %s", v36, v37, v38, v39, "name != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v24 = NUAssertLogger_1288();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -357,8 +357,8 @@ LABEL_37:
         v40 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v41 = MEMORY[0x1E696AF00];
         v42 = v40;
-        v43 = [v41 callStackSymbols];
-        v44 = [v43 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v41 callStackSymbols];
+        v44 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v40;
         v51 = 2114;
@@ -369,8 +369,8 @@ LABEL_37:
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v50 = v30;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -379,36 +379,36 @@ LABEL_37:
     _NUAssertFailHandler("[NURenderPipelineState endGroupWithName:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderPipelineState.m", 167, @"Invalid parameter not satisfying: %s", v45, v46, v47, v48, "error != nil");
   }
 
-  v7 = v6;
-  v8 = [(NURenderPipelineState *)self currentGroup];
-  v9 = [v8 path];
-  v10 = [v9 lastPathComponent];
+  v7 = nameCopy;
+  currentGroup = [(NURenderPipelineState *)self currentGroup];
+  path = [currentGroup path];
+  lastPathComponent = [path lastPathComponent];
 
-  v11 = [v7 isEqualToString:v10];
+  v11 = [v7 isEqualToString:lastPathComponent];
   if (v11)
   {
-    v12 = [(NURenderPipelineState *)self currentGroup];
-    v13 = [v12 parent];
+    currentGroup2 = [(NURenderPipelineState *)self currentGroup];
+    parent = [currentGroup2 parent];
     currentGroup = self->_currentGroup;
-    self->_currentGroup = v13;
+    self->_currentGroup = parent;
 
     --self->_groupCount;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"end scoping (%@) does not match the start namespace (%@)", v7, v10];
-    *a4 = [NUError errorWithCode:5 reason:v15 object:v7];
+    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"end scoping (%@) does not match the start namespace (%@)", v7, lastPathComponent];
+    *error = [NUError errorWithCode:5 reason:v15 object:v7];
   }
 
   return v11;
 }
 
-- (id)beginGroupWithName:(id)a3 error:(id *)a4
+- (id)beginGroupWithName:(id)name error:(id *)error
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v16 = NUAssertLogger_1288();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -429,8 +429,8 @@ LABEL_37:
         v30 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v31 = MEMORY[0x1E696AF00];
         v32 = v30;
-        v33 = [v31 callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v31 callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v49 = v30;
         v50 = 2114;
@@ -441,8 +441,8 @@ LABEL_37:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v49 = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -451,7 +451,7 @@ LABEL_37:
     _NUAssertFailHandler("[NURenderPipelineState beginGroupWithName:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderPipelineState.m", 137, @"Invalid parameter not satisfying: %s", v35, v36, v37, v38, "name != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v23 = NUAssertLogger_1288();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -472,8 +472,8 @@ LABEL_37:
         v39 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v40 = MEMORY[0x1E696AF00];
         v41 = v39;
-        v42 = [v40 callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v40 callStackSymbols];
+        v43 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v49 = v39;
         v50 = 2114;
@@ -484,8 +484,8 @@ LABEL_37:
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v49 = v29;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -494,19 +494,19 @@ LABEL_37:
     _NUAssertFailHandler("[NURenderPipelineState beginGroupWithName:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderPipelineState.m", 138, @"Invalid parameter not satisfying: %s", v44, v45, v46, v47, "error != nil");
   }
 
-  v7 = v6;
-  if ([NURenderTagNode validateName:v6 error:a4])
+  v7 = nameCopy;
+  if ([NURenderTagNode validateName:nameCopy error:error])
   {
-    v8 = [(NURenderPipelineState *)self currentGroup];
-    v9 = [v8 childWithName:v7];
+    currentGroup = [(NURenderPipelineState *)self currentGroup];
+    v9 = [currentGroup childWithName:v7];
 
     if (v9)
     {
       v10 = MEMORY[0x1E696AEC0];
-      v11 = [v8 path];
-      v12 = [v10 stringWithFormat:@"A group with name '%@' already exists on parent : '%@'", v7, v11];
+      path = [currentGroup path];
+      v12 = [v10 stringWithFormat:@"A group with name '%@' already exists on parent : '%@'", v7, path];
 
-      *a4 = [NUError errorWithCode:5 reason:v12 object:v7];
+      *error = [NUError errorWithCode:5 reason:v12 object:v7];
 
       v13 = 0;
     }
@@ -514,8 +514,8 @@ LABEL_37:
     else
     {
       v13 = objc_opt_new();
-      v14 = [(NURenderPipelineState *)self currentGroup];
-      [v14 addChild:v13 withName:v7];
+      currentGroup2 = [(NURenderPipelineState *)self currentGroup];
+      [currentGroup2 addChild:v13 withName:v7];
 
       objc_storeStrong(&self->_currentGroup, v13);
       ++self->_groupCount;
@@ -545,7 +545,7 @@ LABEL_37:
     v6 = off_1E8109570[v5];
   }
 
-  v7 = [(NURenderPipelineState *)self currentGroup];
+  currentGroup = [(NURenderPipelineState *)self currentGroup];
   mediaComponentType = self->_mediaComponentType;
   if (mediaComponentType > 2)
   {
@@ -573,50 +573,50 @@ LABEL_37:
   v14 = v13;
   time = self->_time;
   v15 = CMTimeCopyDescription(*MEMORY[0x1E695E480], &time);
-  v16 = [v3 stringWithFormat:@"<%@:%p> evaluationMode=%@ group=%@ componentType=%@ scale=%@ auxType=%@ time=%@", v4, self, v6, v7, v10, v11, v14, v15];
+  v16 = [v3 stringWithFormat:@"<%@:%p> evaluationMode=%@ group=%@ componentType=%@ scale=%@ auxType=%@ time=%@", v4, self, v6, currentGroup, v10, v11, v14, v15];
 
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_alloc(objc_opt_class()) initForCopy];
-  *(v4 + 24) = [(NURenderPipelineState *)self serialNumber];
-  [v4 setEvaluationMode:{-[NURenderPipelineState evaluationMode](self, "evaluationMode")}];
-  [v4 setMediaComponentType:{-[NURenderPipelineState mediaComponentType](self, "mediaComponentType")}];
-  [v4 setAuxiliaryImageType:{-[NURenderPipelineState auxiliaryImageType](self, "auxiliaryImageType")}];
+  initForCopy = [objc_alloc(objc_opt_class()) initForCopy];
+  *(initForCopy + 24) = [(NURenderPipelineState *)self serialNumber];
+  [initForCopy setEvaluationMode:{-[NURenderPipelineState evaluationMode](self, "evaluationMode")}];
+  [initForCopy setMediaComponentType:{-[NURenderPipelineState mediaComponentType](self, "mediaComponentType")}];
+  [initForCopy setAuxiliaryImageType:{-[NURenderPipelineState auxiliaryImageType](self, "auxiliaryImageType")}];
   [(NURenderPipelineState *)self time];
   v12 = v14;
   v13 = v15;
-  [v4 setTime:&v12];
-  [v4 setPlaybackDirection:{-[NURenderPipelineState playbackDirection](self, "playbackDirection")}];
-  [v4 setSampleMode:{-[NURenderPipelineState sampleMode](self, "sampleMode")}];
-  v5 = [(NURenderPipelineState *)self scale];
-  [v4 setScale:{v5, v6}];
-  [v4 setRoundingPolicy:{-[NURenderPipelineState roundingPolicy](self, "roundingPolicy")}];
-  [v4 setDisableIntermediateCaching:{-[NURenderPipelineState disableIntermediateCaching](self, "disableIntermediateCaching")}];
-  [v4 setEnableTransparency:{-[NURenderPipelineState enableTransparency](self, "enableTransparency")}];
-  [v4 setEnforceEvenDimensions:{-[NURenderPipelineState enforceEvenDimensions](self, "enforceEvenDimensions")}];
-  [v4 setDoNotOverride:{-[NURenderPipelineState doNotOverride](self, "doNotOverride")}];
-  [v4 setLowMemoryMode:{-[NURenderPipelineState lowMemoryMode](self, "lowMemoryMode")}];
-  v7 = [(NURenderPipelineState *)self pipelineFilters];
-  [v4 setPipelineFilters:v7];
+  [initForCopy setTime:&v12];
+  [initForCopy setPlaybackDirection:{-[NURenderPipelineState playbackDirection](self, "playbackDirection")}];
+  [initForCopy setSampleMode:{-[NURenderPipelineState sampleMode](self, "sampleMode")}];
+  scale = [(NURenderPipelineState *)self scale];
+  [initForCopy setScale:{scale, v6}];
+  [initForCopy setRoundingPolicy:{-[NURenderPipelineState roundingPolicy](self, "roundingPolicy")}];
+  [initForCopy setDisableIntermediateCaching:{-[NURenderPipelineState disableIntermediateCaching](self, "disableIntermediateCaching")}];
+  [initForCopy setEnableTransparency:{-[NURenderPipelineState enableTransparency](self, "enableTransparency")}];
+  [initForCopy setEnforceEvenDimensions:{-[NURenderPipelineState enforceEvenDimensions](self, "enforceEvenDimensions")}];
+  [initForCopy setDoNotOverride:{-[NURenderPipelineState doNotOverride](self, "doNotOverride")}];
+  [initForCopy setLowMemoryMode:{-[NURenderPipelineState lowMemoryMode](self, "lowMemoryMode")}];
+  pipelineFilters = [(NURenderPipelineState *)self pipelineFilters];
+  [initForCopy setPipelineFilters:pipelineFilters];
 
-  v8 = [(NURenderPipelineState *)self videoFrames];
-  [v4 setVideoFrames:v8];
+  videoFrames = [(NURenderPipelineState *)self videoFrames];
+  [initForCopy setVideoFrames:videoFrames];
 
-  v9 = [(NURenderPipelineState *)self videoMetadataSamples];
-  [v4 setVideoMetadataSamples:v9];
+  videoMetadataSamples = [(NURenderPipelineState *)self videoMetadataSamples];
+  [initForCopy setVideoMetadataSamples:videoMetadataSamples];
 
-  v10 = [(NURenderPipelineState *)self videoSampleSlices];
-  [v4 setVideoSampleSlices:v10];
+  videoSampleSlices = [(NURenderPipelineState *)self videoSampleSlices];
+  [initForCopy setVideoSampleSlices:videoSampleSlices];
 
-  objc_storeStrong((v4 + 120), self->_rootGroup);
-  *(v4 + 136) = self->_groupCount;
-  objc_storeStrong((v4 + 128), self->_currentGroup);
-  objc_storeStrong((v4 + 8), self->_groupStack);
-  objc_storeStrong((v4 + 80), self->_device);
-  return v4;
+  objc_storeStrong((initForCopy + 120), self->_rootGroup);
+  *(initForCopy + 136) = self->_groupCount;
+  objc_storeStrong((initForCopy + 128), self->_currentGroup);
+  objc_storeStrong((initForCopy + 8), self->_groupStack);
+  objc_storeStrong((initForCopy + 80), self->_device);
+  return initForCopy;
 }
 
 - (id)initForCopy
@@ -657,9 +657,9 @@ LABEL_37:
   *&v2->_time.value = v6;
   v2->_time.epoch = *(v5 + 16);
   v7 = +[NUPlatform currentPlatform];
-  v8 = [v7 mainDevice];
+  mainDevice = [v7 mainDevice];
   device = v2->_device;
-  v2->_device = v8;
+  v2->_device = mainDevice;
 
   [(NURenderPipelineState *)v2 resetRenderTagGroups];
   return v2;

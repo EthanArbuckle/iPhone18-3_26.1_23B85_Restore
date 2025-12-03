@@ -1,12 +1,12 @@
 @interface ICEditSmartFolderActivity
 - (ICEditSmartFolderActivity)init;
-- (ICEditSmartFolderActivity)initWithPerformActivity:(id)a3;
-- (ICEditSmartFolderActivity)initWithSmartFolder:(id)a3 presentingViewController:(id)a4;
+- (ICEditSmartFolderActivity)initWithPerformActivity:(id)activity;
+- (ICEditSmartFolderActivity)initWithSmartFolder:(id)folder presentingViewController:(id)controller;
 - (NSString)activityTitle;
 - (NSString)activityType;
 - (UIImage)activityImage;
 - (UIViewController)presentingViewController;
-- (void)performActivityWithCompletion:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICEditSmartFolderActivity
@@ -18,15 +18,15 @@
   return Strong;
 }
 
-- (ICEditSmartFolderActivity)initWithSmartFolder:(id)a3 presentingViewController:(id)a4
+- (ICEditSmartFolderActivity)initWithSmartFolder:(id)folder presentingViewController:(id)controller
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();
-  *(self + OBJC_IVAR___ICEditSmartFolderActivity_smartFolder) = a3;
+  *(self + OBJC_IVAR___ICEditSmartFolderActivity_smartFolder) = folder;
   swift_unknownObjectWeakAssign();
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v7 = a3;
+  folderCopy = folder;
   return [(ICEditSmartFolderActivity *)&v9 init];
 }
 
@@ -61,9 +61,9 @@
   return v2;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     *(swift_allocObject() + 16) = v4;
@@ -75,12 +75,12 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1004A52D0();
   sub_10000C840(v5);
 }
 
-- (ICEditSmartFolderActivity)initWithPerformActivity:(id)a3
+- (ICEditSmartFolderActivity)initWithPerformActivity:(id)activity
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

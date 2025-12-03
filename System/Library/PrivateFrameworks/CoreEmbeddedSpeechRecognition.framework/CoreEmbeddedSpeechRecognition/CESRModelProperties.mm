@@ -1,40 +1,40 @@
 @interface CESRModelProperties
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CESRModelProperties)initWithCoder:(id)a3;
-- (CESRModelProperties)initWithModelVersion:(id)a3 modelType:(id)a4 modelRoot:(id)a5;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (CESRModelProperties)initWithCoder:(id)coder;
+- (CESRModelProperties)initWithModelVersion:(id)version modelType:(id)type modelRoot:(id)root;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CESRModelProperties
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   modelVersion = self->_modelVersion;
-  v5 = a3;
-  [v5 encodeObject:modelVersion forKey:@"CESRModelProperties::modelVersion"];
-  [v5 encodeObject:self->_modelType forKey:@"CESRModelProperties::modelType"];
-  [v5 encodeObject:self->_modelRoot forKey:@"CESRModelProperties::modelRoot"];
+  coderCopy = coder;
+  [coderCopy encodeObject:modelVersion forKey:@"CESRModelProperties::modelVersion"];
+  [coderCopy encodeObject:self->_modelType forKey:@"CESRModelProperties::modelType"];
+  [coderCopy encodeObject:self->_modelRoot forKey:@"CESRModelProperties::modelRoot"];
 }
 
-- (CESRModelProperties)initWithCoder:(id)a3
+- (CESRModelProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CESRModelProperties::modelVersion"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CESRModelProperties::modelType"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CESRModelProperties::modelRoot"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRModelProperties::modelVersion"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRModelProperties::modelType"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRModelProperties::modelRoot"];
 
   v8 = [(CESRModelProperties *)self initWithModelVersion:v5 modelType:v6 modelRoot:v7];
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -44,18 +44,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(CESRModelProperties *)v5 modelVersion];
+      v5 = equalCopy;
+      modelVersion = [(CESRModelProperties *)v5 modelVersion];
       modelVersion = self->_modelVersion;
-      if (modelVersion == v6 || [(NSString *)modelVersion isEqual:v6])
+      if (modelVersion == modelVersion || [(NSString *)modelVersion isEqual:modelVersion])
       {
-        v8 = [(CESRModelProperties *)v5 modelType];
+        modelType = [(CESRModelProperties *)v5 modelType];
         modelType = self->_modelType;
-        if (modelType == v8 || [(NSString *)modelType isEqual:v8])
+        if (modelType == modelType || [(NSString *)modelType isEqual:modelType])
         {
-          v10 = [(CESRModelProperties *)v5 modelRoot];
+          modelRoot = [(CESRModelProperties *)v5 modelRoot];
           modelRoot = self->_modelRoot;
-          v12 = modelRoot == v10 || [(NSString *)modelRoot isEqual:v10];
+          v12 = modelRoot == modelRoot || [(NSString *)modelRoot isEqual:modelRoot];
         }
 
         else
@@ -86,7 +86,7 @@
   return v4 ^ [(NSString *)self->_modelRoot hash];
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v21[3] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -114,25 +114,25 @@
   return v17;
 }
 
-- (CESRModelProperties)initWithModelVersion:(id)a3 modelType:(id)a4 modelRoot:(id)a5
+- (CESRModelProperties)initWithModelVersion:(id)version modelType:(id)type modelRoot:(id)root
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  versionCopy = version;
+  typeCopy = type;
+  rootCopy = root;
   v19.receiver = self;
   v19.super_class = CESRModelProperties;
   v11 = [(CESRModelProperties *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [versionCopy copy];
     modelVersion = v11->_modelVersion;
     v11->_modelVersion = v12;
 
-    v14 = [v9 copy];
+    v14 = [typeCopy copy];
     modelType = v11->_modelType;
     v11->_modelType = v14;
 
-    v16 = [v10 copy];
+    v16 = [rootCopy copy];
     modelRoot = v11->_modelRoot;
     v11->_modelRoot = v16;
   }
@@ -140,36 +140,36 @@
   return v11;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_CESRModelPropertiesMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_CESRModelPropertiesMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_CESRModelPropertiesMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(CESRModelProperties *)self copy];
+    generate = [(CESRModelProperties *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_CESRModelPropertiesMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_CESRModelPropertiesMutation *)v4 generate];
+  generate = [(_CESRModelPropertiesMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

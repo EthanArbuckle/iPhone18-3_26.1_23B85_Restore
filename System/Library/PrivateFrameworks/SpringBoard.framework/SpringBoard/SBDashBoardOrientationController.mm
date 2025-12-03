@@ -1,19 +1,19 @@
 @interface SBDashBoardOrientationController
 - (void)cancelOrientationUpdateDeferral;
-- (void)deferOrientationUpdatesWithReason:(id)a3;
-- (void)noteInterfaceOrientationChanged:(int64_t)a3 duration:(double)a4 logMessage:(id)a5;
+- (void)deferOrientationUpdatesWithReason:(id)reason;
+- (void)noteInterfaceOrientationChanged:(int64_t)changed duration:(double)duration logMessage:(id)message;
 @end
 
 @implementation SBDashBoardOrientationController
 
-- (void)deferOrientationUpdatesWithReason:(id)a3
+- (void)deferOrientationUpdatesWithReason:(id)reason
 {
-  v8 = a3;
+  reasonCopy = reason;
   if ((SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRolePipelineManager") & 1) == 0)
   {
     v4 = SBApp;
     v5 = self->_deferOrientationUpdatesAssertion;
-    v6 = [v4 deviceOrientationUpdateDeferralAssertionWithReason:v8];
+    v6 = [v4 deviceOrientationUpdateDeferralAssertionWithReason:reasonCopy];
     deferOrientationUpdatesAssertion = self->_deferOrientationUpdatesAssertion;
     self->_deferOrientationUpdatesAssertion = v6;
 
@@ -31,12 +31,12 @@
   }
 }
 
-- (void)noteInterfaceOrientationChanged:(int64_t)a3 duration:(double)a4 logMessage:(id)a5
+- (void)noteInterfaceOrientationChanged:(int64_t)changed duration:(double)duration logMessage:(id)message
 {
-  v7 = a5;
+  messageCopy = message;
   if ((SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRolePipelineManager") & 1) == 0)
   {
-    [SBApp noteInterfaceOrientationChanged:a3 duration:v7 logMessage:a4];
+    [SBApp noteInterfaceOrientationChanged:changed duration:messageCopy logMessage:duration];
   }
 }
 

@@ -1,28 +1,28 @@
 @interface CRLBasicShapeLibraryShape
-+ (id)baseNameForShapeType:(int64_t)a3;
-+ (id)p_baseStringForKey:(id)a3;
-+ (id)p_nameForShapeType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (CRLBasicShapeLibraryShape)initWithShapeType:(int64_t)a3 position:(unint64_t)a4;
++ (id)baseNameForShapeType:(int64_t)type;
++ (id)p_baseStringForKey:(id)key;
++ (id)p_nameForShapeType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (CRLBasicShapeLibraryShape)initWithShapeType:(int64_t)type position:(unint64_t)position;
 - (NSArray)baseKeywords;
 - (NSArray)keywords;
 - (NSString)accessibilityName;
 - (NSString)baseName;
 - (NSString)description;
-- (id)pathSourceWithSize:(CGSize)a3;
+- (id)pathSourceWithSize:(CGSize)size;
 - (unint64_t)hash;
 @end
 
 @implementation CRLBasicShapeLibraryShape
 
-- (CRLBasicShapeLibraryShape)initWithShapeType:(int64_t)a3 position:(unint64_t)a4
+- (CRLBasicShapeLibraryShape)initWithShapeType:(int64_t)type position:(unint64_t)position
 {
   v13.receiver = self;
   v13.super_class = CRLBasicShapeLibraryShape;
   v6 = [(CRLBasicShapeLibraryShape *)&v13 init];
   if (v6)
   {
-    if (a3 == 21)
+    if (type == 21)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -51,27 +51,27 @@
       [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:32 isFatal:0 description:"Basic shapes do not know about the custom shape type."];
     }
 
-    v6->_shapeType = a3;
-    v10 = [CRLBasicShapeLibraryShape p_nameForShapeType:a3];
+    v6->_shapeType = type;
+    v10 = [CRLBasicShapeLibraryShape p_nameForShapeType:type];
     name = v6->_name;
     v6->_name = v10;
 
-    v6->_position = a4;
+    v6->_position = position;
   }
 
   return v6;
 }
 
-+ (id)baseNameForShapeType:(int64_t)a3
++ (id)baseNameForShapeType:(int64_t)type
 {
-  if (a3 > 0x14)
+  if (type > 0x14)
   {
     v3 = @"Shape";
   }
 
   else
   {
-    v3 = off_10186A8D8[a3];
+    v3 = off_10186A8D8[type];
   }
 
   v4 = objc_opt_class();
@@ -82,25 +82,25 @@
 - (NSString)baseName
 {
   v3 = objc_opt_class();
-  v4 = [(CRLBasicShapeLibraryShape *)self shapeType];
+  shapeType = [(CRLBasicShapeLibraryShape *)self shapeType];
 
-  return [v3 baseNameForShapeType:v4];
+  return [v3 baseNameForShapeType:shapeType];
 }
 
 - (NSArray)baseKeywords
 {
   v3 = [objc_opt_class() p_baseStringForKey:@"shape"];
-  v4 = [(CRLBasicShapeLibraryShape *)self shapeType];
-  if (v4 <= 0xE)
+  shapeType = [(CRLBasicShapeLibraryShape *)self shapeType];
+  if (shapeType <= 0xE)
   {
-    if (((1 << v4) & 0x44A0) != 0)
+    if (((1 << shapeType) & 0x44A0) != 0)
     {
       v10 = v3;
       v5 = [NSArray arrayWithObjects:&v10 count:1];
       goto LABEL_15;
     }
 
-    if (v4 == 6)
+    if (shapeType == 6)
     {
       v6 = [objc_opt_class() p_baseStringForKey:@"equilateral triangle"];
       v11[0] = v6;
@@ -109,7 +109,7 @@
       goto LABEL_13;
     }
 
-    if (v4 == 13)
+    if (shapeType == 13)
     {
       v6 = [objc_opt_class() p_baseStringForKey:@"polygon"];
       v14[0] = v6;
@@ -121,7 +121,7 @@ LABEL_13:
     }
   }
 
-  if (v4 == 3)
+  if (shapeType == 3)
   {
     v6 = [objc_opt_class() p_baseStringForKey:@"rectangle"];
     v13[0] = v6;
@@ -130,7 +130,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (v4 != 4)
+  if (shapeType != 4)
   {
     v5 = &__NSArray0__struct;
     goto LABEL_15;
@@ -153,17 +153,17 @@ LABEL_15:
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"shape" value:0 table:0];
 
-  v5 = [(CRLBasicShapeLibraryShape *)self shapeType];
-  if (v5 <= 0xE)
+  shapeType = [(CRLBasicShapeLibraryShape *)self shapeType];
+  if (shapeType <= 0xE)
   {
-    if (((1 << v5) & 0x44A0) != 0)
+    if (((1 << shapeType) & 0x44A0) != 0)
     {
       v12 = v4;
       v6 = [NSArray arrayWithObjects:&v12 count:1];
       goto LABEL_15;
     }
 
-    if (v5 == 6)
+    if (shapeType == 6)
     {
       v7 = +[NSBundle mainBundle];
       v8 = [v7 localizedStringForKey:@"equilateral triangle" value:0 table:0];
@@ -173,7 +173,7 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    if (v5 == 13)
+    if (shapeType == 13)
     {
       v7 = +[NSBundle mainBundle];
       v8 = [v7 localizedStringForKey:@"polygon" value:0 table:0];
@@ -186,7 +186,7 @@ LABEL_13:
     }
   }
 
-  if (v5 == 3)
+  if (shapeType == 3)
   {
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"rectangle" value:0 table:0];
@@ -196,7 +196,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (v5 != 4)
+  if (shapeType != 4)
   {
     v6 = &__NSArray0__struct;
     goto LABEL_15;
@@ -215,18 +215,18 @@ LABEL_15:
   return v6;
 }
 
-- (id)pathSourceWithSize:(CGSize)a3
+- (id)pathSourceWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CRLBasicShapeLibraryShape *)self shapeType];
+  height = size.height;
+  width = size.width;
+  shapeType = [(CRLBasicShapeLibraryShape *)self shapeType];
 
-  return [CRLPathSource pathSourceForShapeType:v5 naturalSize:width, height];
+  return [CRLPathSource pathSourceForShapeType:shapeType naturalSize:width, height];
 }
 
 - (NSString)accessibilityName
 {
-  v3 = [(CRLBasicShapeLibraryShape *)self name];
+  name = [(CRLBasicShapeLibraryShape *)self name];
   if ([(CRLBasicShapeLibraryShape *)self shapeType]== 9)
   {
     v4 = @"Double arrow";
@@ -250,17 +250,17 @@ LABEL_15:
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:v4 value:0 table:0];
 
-  v3 = v6;
+  name = v6;
 LABEL_8:
 
-  return v3;
+  return name;
 }
 
-+ (id)p_baseStringForKey:(id)a3
++ (id)p_baseStringForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[NSBundle mainBundle];
-  v5 = [v4 localizedStringForKey:v3 value:0 table:0 localization:@"en"];
+  v5 = [v4 localizedStringForKey:keyCopy value:0 table:0 localization:@"en"];
 
   v6 = v5;
   if (!v5)
@@ -291,7 +291,7 @@ LABEL_8:
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLBasicShapeLibraryShape.m"];
     [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:174 isFatal:0 description:"invalid nil value for '%{public}s'", "englishString"];
 
-    v6 = v3;
+    v6 = keyCopy;
   }
 
   v10 = v6;
@@ -299,16 +299,16 @@ LABEL_8:
   return v6;
 }
 
-+ (id)p_nameForShapeType:(int64_t)a3
++ (id)p_nameForShapeType:(int64_t)type
 {
-  if (a3 > 0x14)
+  if (type > 0x14)
   {
     v3 = @"Shape";
   }
 
   else
   {
-    v3 = off_10186A8D8[a3];
+    v3 = off_10186A8D8[type];
   }
 
   v4 = +[NSBundle mainBundle];
@@ -317,16 +317,16 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
 
   if (v6)
   {
-    v7 = [(CRLBasicShapeLibraryShape *)self shapeType];
-    v8 = v7 == [v6 shapeType];
+    shapeType = [(CRLBasicShapeLibraryShape *)self shapeType];
+    v8 = shapeType == [v6 shapeType];
   }
 
   else
@@ -349,8 +349,8 @@ LABEL_8:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CRLBasicShapeLibraryShape *)self name];
-  v6 = [NSString stringWithFormat:@"<%@ %p name=%@>", v4, self, v5];
+  name = [(CRLBasicShapeLibraryShape *)self name];
+  v6 = [NSString stringWithFormat:@"<%@ %p name=%@>", v4, self, name];
 
   return v6;
 }

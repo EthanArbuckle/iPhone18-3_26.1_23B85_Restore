@@ -1,21 +1,21 @@
 @interface VSRProcessor
-+ (int64_t)getMobileAssetStatusForInputType:(int64_t)a3 percentCompleted:(int64_t *)a4;
-+ (void)downloadMobileAssetWithInputType:(int64_t)a3 withCompletionHandler:(id)a4;
++ (int64_t)getMobileAssetStatusForInputType:(int64_t)type percentCompleted:(int64_t *)completed;
++ (void)downloadMobileAssetWithInputType:(int64_t)type withCompletionHandler:(id)handler;
 - (BOOL)finishProcessing;
-- (BOOL)processWithSuperResolutionParams:(id)a3 error:(id *)a4;
-- (BOOL)startSessionWithSuperResolutionConfig:(id)a3 error:(id *)a4;
-- (VSRProcessor)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 inputType:(int64_t)a5 usePrecomputedFlow:(BOOL)a6;
+- (BOOL)processWithSuperResolutionParams:(id)params error:(id *)error;
+- (BOOL)startSessionWithSuperResolutionConfig:(id)config error:(id *)error;
+- (VSRProcessor)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height inputType:(int64_t)type usePrecomputedFlow:(BOOL)flow;
 @end
 
 @implementation VSRProcessor
 
-- (BOOL)processWithSuperResolutionParams:(id)a3 error:(id *)a4
+- (BOOL)processWithSuperResolutionParams:(id)params error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  paramsCopy = params;
+  v7 = paramsCopy;
+  if (!paramsCopy)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_47;
     }
@@ -28,8 +28,8 @@
   {
     if (self->_imageSREngine)
     {
-      v18 = [v6 sourceFrame];
-      PixelFormatType = CVPixelBufferGetPixelFormatType([v18 buffer]);
+      sourceFrame = [paramsCopy sourceFrame];
+      PixelFormatType = CVPixelBufferGetPixelFormatType([sourceFrame buffer]);
       v20 = isPixelFormatSupported(PixelFormatType);
 
       if ((v20 & 1) == 0)
@@ -37,16 +37,16 @@
         goto LABEL_30;
       }
 
-      v21 = [v7 sourceFrame];
-      v22 = [(BaseProcessor *)self matchPixelFormat:v21];
+      sourceFrame2 = [v7 sourceFrame];
+      v22 = [(BaseProcessor *)self matchPixelFormat:sourceFrame2];
 
       if (!v22)
       {
         goto LABEL_32;
       }
 
-      v23 = [v7 sourceFrame];
-      v24 = [(BaseProcessor *)self matchBufferResolution:v23];
+      sourceFrame3 = [v7 sourceFrame];
+      v24 = [(BaseProcessor *)self matchBufferResolution:sourceFrame3];
 
       if (!v24)
       {
@@ -55,17 +55,17 @@
 
       kdebug_trace();
       imageSREngine = self->_imageSREngine;
-      v26 = [v7 sourceFrame];
-      v27 = [v26 buffer];
-      v28 = [v7 destinationFrame];
-      LOBYTE(imageSREngine) = -[ImageSR upscaleFrame:destinationHiResFrame:](imageSREngine, "upscaleFrame:destinationHiResFrame:", v27, [v28 buffer]);
+      sourceFrame4 = [v7 sourceFrame];
+      buffer = [sourceFrame4 buffer];
+      destinationFrame = [v7 destinationFrame];
+      LOBYTE(imageSREngine) = -[ImageSR upscaleFrame:destinationHiResFrame:](imageSREngine, "upscaleFrame:destinationHiResFrame:", buffer, [destinationFrame buffer]);
 
       if (imageSREngine)
       {
         goto LABEL_24;
       }
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_47;
       }
@@ -74,12 +74,12 @@
       v52 = 5;
 LABEL_37:
       errorMessage(v52, v17);
-      *a4 = v50 = 0;
+      *error = v50 = 0;
       goto LABEL_25;
     }
 
 LABEL_28:
-    if (!a4)
+    if (!error)
     {
       goto LABEL_47;
     }
@@ -94,14 +94,14 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v8 = [v6 sourceFrame];
-  v9 = CVPixelBufferGetPixelFormatType([v8 buffer]);
+  sourceFrame5 = [paramsCopy sourceFrame];
+  v9 = CVPixelBufferGetPixelFormatType([sourceFrame5 buffer]);
   v10 = isPixelFormatSupported(v9);
 
   if ((v10 & 1) == 0)
   {
 LABEL_30:
-    if (!a4)
+    if (!error)
     {
       goto LABEL_47;
     }
@@ -110,13 +110,13 @@ LABEL_30:
     goto LABEL_36;
   }
 
-  v11 = [v7 sourceFrame];
-  v12 = [(BaseProcessor *)self matchPixelFormat:v11];
+  sourceFrame6 = [v7 sourceFrame];
+  v12 = [(BaseProcessor *)self matchPixelFormat:sourceFrame6];
 
   if (!v12)
   {
 LABEL_32:
-    if (!a4)
+    if (!error)
     {
       goto LABEL_47;
     }
@@ -125,13 +125,13 @@ LABEL_32:
     goto LABEL_36;
   }
 
-  v13 = [v7 sourceFrame];
-  v14 = [(BaseProcessor *)self matchBufferResolution:v13];
+  sourceFrame7 = [v7 sourceFrame];
+  v14 = [(BaseProcessor *)self matchBufferResolution:sourceFrame7];
 
   if (!v14)
   {
 LABEL_34:
-    if (!a4)
+    if (!error)
     {
       goto LABEL_47;
     }
@@ -145,12 +145,12 @@ LABEL_36:
   kdebug_trace();
   if (self->_usePrecomputedFlow)
   {
-    v15 = [v7 opticalFlow];
-    self->_forwardFlow = [v15 forwardFlow];
+    opticalFlow = [v7 opticalFlow];
+    self->_forwardFlow = [opticalFlow forwardFlow];
 
     if (!self->_forwardFlow)
     {
-      if (a4)
+      if (error)
       {
         v17 = @"Error allocating _forwardFlow";
         goto LABEL_44;
@@ -161,12 +161,12 @@ LABEL_47:
       goto LABEL_25;
     }
 
-    v16 = [v7 opticalFlow];
-    self->_backwardFlow = [v16 backwardFlow];
+    opticalFlow2 = [v7 opticalFlow];
+    self->_backwardFlow = [opticalFlow2 backwardFlow];
 
     if (!self->_backwardFlow)
     {
-      if (a4)
+      if (error)
       {
         v17 = @"Error allocating _backwardFlow";
 LABEL_44:
@@ -184,28 +184,28 @@ LABEL_44:
     opticalFlowBuffers = self->_opticalFlowBuffers;
     self->_opticalFlowBuffers = v29;
 
-    v31 = [v7 previousFrame];
-    if (v31 && (v32 = v31, [v7 previousFrame], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "buffer"), v33, v32, v34))
+    previousFrame = [v7 previousFrame];
+    if (previousFrame && (v32 = previousFrame, [v7 previousFrame], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "buffer"), v33, v32, v34))
     {
       v35 = [DVPOpticalFlowParameters alloc];
-      v36 = [v7 previousFrame];
+      previousFrame2 = [v7 previousFrame];
     }
 
     else
     {
       v35 = [DVPOpticalFlowParameters alloc];
-      v36 = [v7 sourceFrame];
+      previousFrame2 = [v7 sourceFrame];
     }
 
-    v37 = v36;
-    v38 = [v7 sourceFrame];
-    v39 = -[DVPOpticalFlowParameters initWithSourceFrame:nextFrame:submissionMode:opticalFlow:](v35, "initWithSourceFrame:nextFrame:submissionMode:opticalFlow:", v37, v38, [v7 submissionMode], self->_opticalFlowBuffers);
+    v37 = previousFrame2;
+    sourceFrame8 = [v7 sourceFrame];
+    v39 = -[DVPOpticalFlowParameters initWithSourceFrame:nextFrame:submissionMode:opticalFlow:](v35, "initWithSourceFrame:nextFrame:submissionMode:opticalFlow:", v37, sourceFrame8, [v7 submissionMode], self->_opticalFlowBuffers);
     opticalFlowParams = self->_opticalFlowParams;
     self->_opticalFlowParams = v39;
 
-    if (![(OpticalFlowProcessor *)self->_opticalFlowProcessor processWithOpticalFlowParams:self->_opticalFlowParams error:a4])
+    if (![(OpticalFlowProcessor *)self->_opticalFlowProcessor processWithOpticalFlowParams:self->_opticalFlowParams error:error])
     {
-      if (a4)
+      if (error)
       {
         v17 = @"processWithOpticalFlowParams fail";
         v52 = 11;
@@ -216,24 +216,24 @@ LABEL_44:
     }
   }
 
-  v53 = a4;
+  errorCopy = error;
   frNetEngine = self->_frNetEngine;
-  v42 = [v7 sourceFrame];
-  v43 = [v42 buffer];
-  v44 = [v7 previousFrame];
-  v45 = [v44 buffer];
-  v46 = [v7 previousOutputFrame];
-  v47 = [v46 buffer];
+  sourceFrame9 = [v7 sourceFrame];
+  buffer2 = [sourceFrame9 buffer];
+  previousFrame3 = [v7 previousFrame];
+  buffer3 = [previousFrame3 buffer];
+  previousOutputFrame = [v7 previousOutputFrame];
+  buffer4 = [previousOutputFrame buffer];
   backwardFlow = self->_backwardFlow;
-  v49 = [v7 destinationFrame];
-  LOBYTE(backwardFlow) = -[FRNet upscaleFrame:previousLowResFrame:previousHiResFrame:opticalFlow:destinationHiResFrame:](frNetEngine, "upscaleFrame:previousLowResFrame:previousHiResFrame:opticalFlow:destinationHiResFrame:", v43, v45, v47, backwardFlow, [v49 buffer]);
+  destinationFrame2 = [v7 destinationFrame];
+  LOBYTE(backwardFlow) = -[FRNet upscaleFrame:previousLowResFrame:previousHiResFrame:opticalFlow:destinationHiResFrame:](frNetEngine, "upscaleFrame:previousLowResFrame:previousHiResFrame:opticalFlow:destinationHiResFrame:", buffer2, buffer3, buffer4, backwardFlow, [destinationFrame2 buffer]);
 
   if ((backwardFlow & 1) == 0)
   {
-    if (v53)
+    if (errorCopy)
     {
       errorMessage(5, @"upscaleFrame fail");
-      *v53 = v50 = 0;
+      *errorCopy = v50 = 0;
       goto LABEL_25;
     }
 
@@ -281,11 +281,11 @@ LABEL_25:
   return 1;
 }
 
-+ (void)downloadMobileAssetWithInputType:(int64_t)a3 withCompletionHandler:(id)a4
++ (void)downloadMobileAssetWithInputType:(int64_t)type withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 == 1)
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  if (type == 1)
   {
     v7 = FRNet;
     v15 = MEMORY[0x277D85DD0];
@@ -293,7 +293,7 @@ LABEL_25:
     v17 = __71__VSRProcessor_downloadMobileAssetWithInputType_withCompletionHandler___block_invoke;
     v18 = &unk_278F53658;
     v8 = &v19;
-    v19 = v5;
+    v19 = handlerCopy;
     v9 = &v15;
   }
 
@@ -305,7 +305,7 @@ LABEL_25:
     v12 = __71__VSRProcessor_downloadMobileAssetWithInputType_withCompletionHandler___block_invoke_2;
     v13 = &unk_278F53658;
     v8 = &v14;
-    v14 = v5;
+    v14 = handlerCopy;
     v9 = &v10;
   }
 
@@ -334,18 +334,18 @@ uint64_t __71__VSRProcessor_downloadMobileAssetWithInputType_withCompletionHandl
   return result;
 }
 
-+ (int64_t)getMobileAssetStatusForInputType:(int64_t)a3 percentCompleted:(int64_t *)a4
++ (int64_t)getMobileAssetStatusForInputType:(int64_t)type percentCompleted:(int64_t *)completed
 {
   v4 = off_278F53300;
-  if (a3 != 1)
+  if (type != 1)
   {
     v4 = off_278F53308;
   }
 
-  return [(__objc2_class *)*v4 getMobileAssetStatusWithPercentCompleted:a4];
+  return [(__objc2_class *)*v4 getMobileAssetStatusWithPercentCompleted:completed];
 }
 
-- (VSRProcessor)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 inputType:(int64_t)a5 usePrecomputedFlow:(BOOL)a6
+- (VSRProcessor)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height inputType:(int64_t)type usePrecomputedFlow:(BOOL)flow
 {
   v13.receiver = self;
   v13.super_class = VSRProcessor;
@@ -358,11 +358,11 @@ uint64_t __71__VSRProcessor_downloadMobileAssetWithInputType_withCompletionHandl
     OUTLINED_FUNCTION_2_0(56);
     OUTLINED_FUNCTION_2_0(64);
     OUTLINED_FUNCTION_2_0(72);
-    v10->_frameWidth = a3;
-    v10->_frameHeight = a4;
-    v10->_useMPS = a5 != 1;
-    v10->_inputType = a5;
-    v10->_usePrecomputedFlow = a6;
+    v10->_frameWidth = width;
+    v10->_frameHeight = height;
+    v10->_useMPS = type != 1;
+    v10->_inputType = type;
+    v10->_usePrecomputedFlow = flow;
     VELoggerInit(16, 0);
     v11 = v10;
   }
@@ -370,20 +370,20 @@ uint64_t __71__VSRProcessor_downloadMobileAssetWithInputType_withCompletionHandl
   return v10;
 }
 
-- (BOOL)startSessionWithSuperResolutionConfig:(id)a3 error:(id *)a4
+- (BOOL)startSessionWithSuperResolutionConfig:(id)config error:(id *)error
 {
-  v6 = a3;
+  configCopy = config;
   if (self->_inputType != 1)
   {
     if (!self->_imageSREngine)
     {
       v9 = +[DVPSuperResolutionConfiguration supportedRevisions];
-      v10 = [v9 containsIndex:{objc_msgSend(v6, "revision")}];
+      v10 = [v9 containsIndex:{objc_msgSend(configCopy, "revision")}];
 
       if (v10)
       {
-        [v6 scaleFactor];
-        [v6 scaleFactor];
+        [configCopy scaleFactor];
+        [configCopy scaleFactor];
         OUTLINED_FUNCTION_0_0();
         if ((getUsageFromSize(self->_frameWidth, self->_frameHeight) & 0x1000) != 0)
         {
@@ -400,7 +400,7 @@ uint64_t __71__VSRProcessor_downloadMobileAssetWithInputType_withCompletionHandl
 
         if (!self->_imageSREngine)
         {
-          if (!a4)
+          if (!error)
           {
             goto LABEL_38;
           }
@@ -414,16 +414,16 @@ uint64_t __71__VSRProcessor_downloadMobileAssetWithInputType_withCompletionHandl
       }
 
 LABEL_21:
-      if (a4)
+      if (error)
       {
-        v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: Invalid superResolutionConfig revision %d", objc_msgSend(v6, "revision")];
-        *a4 = errorMessage(10, v28);
+        v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: Invalid superResolutionConfig revision %d", objc_msgSend(configCopy, "revision")];
+        *error = errorMessage(10, v28);
       }
 
       goto LABEL_38;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_38;
     }
@@ -433,13 +433,13 @@ LABEL_27:
     v30 = 4;
 LABEL_37:
     errorMessage(v30, v29);
-    *a4 = v22 = 0;
+    *error = v22 = 0;
     goto LABEL_20;
   }
 
   if (self->_frNetEngine)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_38;
     }
@@ -449,7 +449,7 @@ LABEL_37:
   }
 
   v7 = +[DVPSuperResolutionConfiguration supportedRevisions];
-  v8 = [v7 containsIndex:{objc_msgSend(v6, "revision")}];
+  v8 = [v7 containsIndex:{objc_msgSend(configCopy, "revision")}];
 
   if ((v8 & 1) == 0)
   {
@@ -471,7 +471,7 @@ LABEL_37:
 
   if (!self->_opticalFlowProcessor)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_38;
     }
@@ -499,8 +499,8 @@ LABEL_19:
     self->_nextIndex = 0;
     self->_prevIndex = 1;
 LABEL_16:
-    [v6 scaleFactor];
-    [v6 scaleFactor];
+    [configCopy scaleFactor];
+    [configCopy scaleFactor];
     OUTLINED_FUNCTION_0_0();
     getUsageFromSize(self->_frameWidth, self->_frameHeight);
     v23 = [FRNet alloc];
@@ -518,12 +518,12 @@ LABEL_16:
       }
 
       [(OpticalFlowProcessor *)self->_opticalFlowProcessor setFlowOnlyMode:0];
-      if ([(OpticalFlowProcessor *)self->_opticalFlowProcessor startSessionWithOpticalFlowConfig:self->_opticalFlowConfig error:a4])
+      if ([(OpticalFlowProcessor *)self->_opticalFlowProcessor startSessionWithOpticalFlowConfig:self->_opticalFlowConfig error:error])
       {
         goto LABEL_19;
       }
 
-      if (a4)
+      if (error)
       {
         v29 = @"Could not start the _opticalFlowProcessor session";
         goto LABEL_36;
@@ -534,7 +534,7 @@ LABEL_38:
       goto LABEL_20;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_38;
     }

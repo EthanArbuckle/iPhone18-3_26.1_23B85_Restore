@@ -1,25 +1,25 @@
 @interface PLIOReportMetricsAgent
 + (void)load;
-- (BOOL)allowlistedChannel:(id)a3;
-- (BOOL)isDynamicTable:(id)a3;
-- (BOOL)skipCurrentIteration:(id)a3 forChannel:(id)a4;
+- (BOOL)allowlistedChannel:(id)channel;
+- (BOOL)isDynamicTable:(id)table;
+- (BOOL)skipCurrentIteration:(id)iteration forChannel:(id)channel;
 - (IOReportGroupChecks)initGroupChecks;
 - (PLIOReportMetricsAgent)init;
-- (id)buildBaseSet:(IOReportGroupChecks *)a3;
-- (id)buildCustomSet:(IOReportGroupChecks *)a3;
-- (id)buildScreenStateSet:(IOReportGroupChecks *)a3;
-- (id)buildSnapshotSet:(IOReportGroupChecks *)a3;
-- (id)channelDictionaryWithChannelSet:(id)a3;
-- (id)createCategoryString:(id)a3 forSubgroup:(id)a4;
-- (id)sampleDeltaForChannelGroup:(id)a3;
-- (id)sampleSnapshotForChannelGroup:(id)a3;
+- (id)buildBaseSet:(IOReportGroupChecks *)set;
+- (id)buildCustomSet:(IOReportGroupChecks *)set;
+- (id)buildScreenStateSet:(IOReportGroupChecks *)set;
+- (id)buildSnapshotSet:(IOReportGroupChecks *)set;
+- (id)channelDictionaryWithChannelSet:(id)set;
+- (id)createCategoryString:(id)string forSubgroup:(id)subgroup;
+- (id)sampleDeltaForChannelGroup:(id)group;
+- (id)sampleSnapshotForChannelGroup:(id)group;
 - (void)initOperatorDependancies;
 - (void)log;
 - (void)logDisplayOffAPWake;
 - (void)logDisplayOffAPWakeStats;
-- (void)logIOReportEntry:(id)a3 forCategory:(id)a4 withEntryDate:(id)a5 withAPWakeTime:(double)a6 isInterval:(BOOL)a7;
-- (void)logIOReportIntervals:(id)a3 forChannelGroup:(id)a4;
-- (void)logIOReportSnapshots:(id)a3;
+- (void)logIOReportEntry:(id)entry forCategory:(id)category withEntryDate:(id)date withAPWakeTime:(double)time isInterval:(BOOL)interval;
+- (void)logIOReportIntervals:(id)intervals forChannelGroup:(id)group;
+- (void)logIOReportSnapshots:(id)snapshots;
 - (void)logInit;
 - (void)logSBC;
 - (void)logScreenStateChange;
@@ -33,22 +33,22 @@
 
 - (void)logSBC
 {
-  v3 = [(PLIOReportMetricsAgent *)self sampleChannelsSignificantBattery];
-  v4 = [(PLIOReportMetricsAgent *)self sampleDeltaForChannelGroup:v3];
-  v5 = [(PLIOReportMetricsAgent *)self sampleChannelsSignificantBattery];
-  [(PLIOReportMetricsAgent *)self logIOReportIntervals:v4 forChannelGroup:v5];
+  sampleChannelsSignificantBattery = [(PLIOReportMetricsAgent *)self sampleChannelsSignificantBattery];
+  v4 = [(PLIOReportMetricsAgent *)self sampleDeltaForChannelGroup:sampleChannelsSignificantBattery];
+  sampleChannelsSignificantBattery2 = [(PLIOReportMetricsAgent *)self sampleChannelsSignificantBattery];
+  [(PLIOReportMetricsAgent *)self logIOReportIntervals:v4 forChannelGroup:sampleChannelsSignificantBattery2];
 
   if (([MEMORY[0x277D3F180] fullMode] & 1) != 0 || objc_msgSend(MEMORY[0x277D3F180], "liteMode"))
   {
-    v7 = [(PLIOReportMetricsAgent *)self sampleChannelsCustom];
-    v6 = [(PLIOReportMetricsAgent *)self sampleSnapshotForChannelGroup:v7];
+    sampleChannelsCustom = [(PLIOReportMetricsAgent *)self sampleChannelsCustom];
+    v6 = [(PLIOReportMetricsAgent *)self sampleSnapshotForChannelGroup:sampleChannelsCustom];
     [(PLIOReportMetricsAgent *)self logIOReportSnapshots:v6];
   }
 }
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLIOReportMetricsAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -60,7 +60,7 @@
     v6.receiver = self;
     v6.super_class = PLIOReportMetricsAgent;
     self = [(PLAgent *)&v6 init];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
@@ -72,18 +72,18 @@
       _os_log_debug_impl(&dword_21A4C6000, v4, OS_LOG_TYPE_DEBUG, "IOReport Metrics: Dynamic telemetry disabled", buf, 2u);
     }
 
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
 {
   [(PLIOReportMetricsAgent *)self subscribeToChannelSets];
   [(PLIOReportMetricsAgent *)self sampleDeltaForChannelSets];
-  v3 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [(PLIOReportMetricsAgent *)self setLastEntryDate:v3];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [(PLIOReportMetricsAgent *)self setLastEntryDate:monotonicDate];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -116,11 +116,11 @@
 
   if ([MEMORY[0x277D3F180] taskMode])
   {
-    v9 = [MEMORY[0x277D3F220] sharedInstance];
-    [(PLIOReportMetricsAgent *)self setStateTracker:v9];
+    mEMORY[0x277D3F220] = [MEMORY[0x277D3F220] sharedInstance];
+    [(PLIOReportMetricsAgent *)self setStateTracker:mEMORY[0x277D3F220]];
 
-    v10 = [(PLIOReportMetricsAgent *)self stateTracker];
-    [v10 registerForStates:8 withOperator:self withBlock:&__block_literal_global_27];
+    stateTracker = [(PLIOReportMetricsAgent *)self stateTracker];
+    [stateTracker registerForStates:8 withOperator:self withBlock:&__block_literal_global_27];
 
     if ([MEMORY[0x277D3F208] hasAOD])
     {
@@ -237,134 +237,134 @@ uint64_t __50__PLIOReportMetricsAgent_initOperatorDependancies__block_invoke_30(
 
 - (IOReportGroupChecks)initGroupChecks
 {
-  v2 = [MEMORY[0x277D3F180] liteMode];
-  v3 = [MEMORY[0x277D3F180] taskMode];
-  v4 = [MEMORY[0x277D3F180] fullMode];
-  v5 = [MEMORY[0x277D3F208] isWatch];
-  v6 = [MEMORY[0x277D3F208] isiPhone];
-  v7 = [MEMORY[0x277D3F208] internalBuild];
+  liteMode = [MEMORY[0x277D3F180] liteMode];
+  taskMode = [MEMORY[0x277D3F180] taskMode];
+  fullMode = [MEMORY[0x277D3F180] fullMode];
+  isWatch = [MEMORY[0x277D3F208] isWatch];
+  isiPhone = [MEMORY[0x277D3F208] isiPhone];
+  internalBuild = [MEMORY[0x277D3F208] internalBuild];
   v8 = 0x10000000000;
-  if (!v7)
+  if (!internalBuild)
   {
     v8 = 0;
   }
 
   v9 = 0x100000000;
-  if (!v6)
+  if (!isiPhone)
   {
     v9 = 0;
   }
 
   v10 = 0x1000000;
-  if (!v5)
+  if (!isWatch)
   {
     v10 = 0;
   }
 
   v11 = 0x10000;
-  if (!v4)
+  if (!fullMode)
   {
     v11 = 0;
   }
 
   v12 = 256;
-  if (!v3)
+  if (!taskMode)
   {
     v12 = 0;
   }
 
-  return (v12 | v2 | v11 | v10 | v9 | v8);
+  return (v12 | liteMode | v11 | v10 | v9 | v8);
 }
 
-- (id)buildBaseSet:(IOReportGroupChecks *)a3
+- (id)buildBaseSet:(IOReportGroupChecks *)set
 {
   v39[18] = *MEMORY[0x277D85DE8];
   v38[0] = @"AMC Stats,Perf Counters";
-  if (a3->var2)
+  if (set->var2)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = a3->var1 && a3->var3;
+    v4 = set->var1 && set->var3;
   }
 
   v35 = [MEMORY[0x277CCABB0] numberWithInt:v4];
   v39[0] = v35;
   v38[1] = @"DCP,scanout stats";
-  v5 = a3->var2 && a3->var4;
+  v5 = set->var2 && set->var4;
   v34 = [MEMORY[0x277CCABB0] numberWithInt:v5];
   v39[1] = v34;
   v38[2] = @"SoC Stats,Events";
-  if (a3->var2)
+  if (set->var2)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = a3->var1 && a3->var3;
+    v6 = set->var1 && set->var3;
   }
 
   v33 = [MEMORY[0x277CCABB0] numberWithInt:v6];
   v39[2] = v33;
   v38[3] = @"SoC Stats,PMGR Counters";
-  if (a3->var2)
+  if (set->var2)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = a3->var1 && a3->var3;
+    v7 = set->var1 && set->var3;
   }
 
   v32 = [MEMORY[0x277CCABB0] numberWithInt:v7];
   v39[3] = v32;
   v38[4] = @"SoC Stats,Device States";
-  v31 = [MEMORY[0x277CCABB0] numberWithBool:a3->var2];
+  v31 = [MEMORY[0x277CCABB0] numberWithBool:set->var2];
   v39[4] = v31;
   v38[5] = @"AOP-EXCLAVE,Power";
-  v8 = a3->var1 || a3->var2;
+  v8 = set->var1 || set->var2;
   v30 = [MEMORY[0x277CCABB0] numberWithInt:v8];
   v39[5] = v30;
   v38[6] = @"ISP,IOP State";
-  v29 = [MEMORY[0x277CCABB0] numberWithBool:a3->var2];
+  v29 = [MEMORY[0x277CCABB0] numberWithBool:set->var2];
   v39[6] = v29;
   v38[7] = @"AOP2,Performance";
-  v28 = [MEMORY[0x277CCABB0] numberWithBool:a3->var2];
+  v28 = [MEMORY[0x277CCABB0] numberWithBool:set->var2];
   v39[7] = v28;
   v38[8] = @"AOP2,Power";
-  v26 = [MEMORY[0x277CCABB0] numberWithBool:a3->var2];
+  v26 = [MEMORY[0x277CCABB0] numberWithBool:set->var2];
   v39[8] = v26;
   v38[9] = @"GPU Stats,GPU Power Controller States";
-  v9 = (a3->var2 || a3->var0) && a3->var5;
+  v9 = (set->var2 || set->var0) && set->var5;
   v10 = [MEMORY[0x277CCABB0] numberWithInt:{v9, v26}];
   v39[9] = v10;
   v38[10] = @"PMP,DCS Ceiling";
-  v11 = [MEMORY[0x277CCABB0] numberWithBool:a3->var2];
+  v11 = [MEMORY[0x277CCABB0] numberWithBool:set->var2];
   v39[10] = v11;
   v38[11] = @"PMP,DCS Floor";
-  v12 = [MEMORY[0x277CCABB0] numberWithBool:a3->var2];
+  v12 = [MEMORY[0x277CCABB0] numberWithBool:set->var2];
   v39[11] = v12;
   v38[12] = @"PMP,SOC Floor";
-  v13 = [MEMORY[0x277CCABB0] numberWithBool:a3->var2];
+  v13 = [MEMORY[0x277CCABB0] numberWithBool:set->var2];
   v39[12] = v13;
   v38[13] = @"PMP,PMC AVE Floor";
-  v14 = [MEMORY[0x277CCABB0] numberWithBool:a3->var2];
+  v14 = [MEMORY[0x277CCABB0] numberWithBool:set->var2];
   v39[13] = v14;
   v38[14] = @"PMP,PMC DCS Floor";
-  v15 = [MEMORY[0x277CCABB0] numberWithBool:a3->var2];
+  v15 = [MEMORY[0x277CCABB0] numberWithBool:set->var2];
   v39[14] = v15;
   v38[15] = @"PMP,PMC DISP Floor";
-  v16 = [MEMORY[0x277CCABB0] numberWithBool:a3->var2];
+  v16 = [MEMORY[0x277CCABB0] numberWithBool:set->var2];
   v39[15] = v16;
   v38[16] = @"PMP,PMC SOC Floor";
-  v17 = [MEMORY[0x277CCABB0] numberWithBool:a3->var2];
+  v17 = [MEMORY[0x277CCABB0] numberWithBool:set->var2];
   v39[16] = v17;
   v38[17] = @"PMP,PMC RMBS";
-  v18 = [MEMORY[0x277CCABB0] numberWithBool:a3->var2];
+  v18 = [MEMORY[0x277CCABB0] numberWithBool:set->var2];
   v39[17] = v18;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:18];
 
@@ -411,61 +411,61 @@ void __39__PLIOReportMetricsAgent_buildBaseSet___block_invoke(uint64_t a1, void 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)buildScreenStateSet:(IOReportGroupChecks *)a3
+- (id)buildScreenStateSet:(IOReportGroupChecks *)set
 {
   v33[17] = *MEMORY[0x277D85DE8];
   v32[0] = @"AMC Stats,Perf Counters";
-  v29 = [MEMORY[0x277CCABB0] numberWithBool:a3->var1];
+  v29 = [MEMORY[0x277CCABB0] numberWithBool:set->var1];
   v33[0] = v29;
   v32[1] = @"DCP,scanout stats";
-  v4 = a3->var1 && a3->var4;
+  v4 = set->var1 && set->var4;
   v28 = [MEMORY[0x277CCABB0] numberWithInt:v4];
   v33[1] = v28;
   v32[2] = @"AOP2,Performance";
-  v27 = [MEMORY[0x277CCABB0] numberWithBool:a3->var1];
+  v27 = [MEMORY[0x277CCABB0] numberWithBool:set->var1];
   v33[2] = v27;
   v32[3] = @"AOP2,Power";
-  v26 = [MEMORY[0x277CCABB0] numberWithBool:a3->var1];
+  v26 = [MEMORY[0x277CCABB0] numberWithBool:set->var1];
   v33[3] = v26;
   v32[4] = @"GPU Stats,GPU Power Controller States";
-  v5 = a3->var1 && a3->var5;
+  v5 = set->var1 && set->var5;
   v25 = [MEMORY[0x277CCABB0] numberWithInt:v5];
   v33[4] = v25;
   v32[5] = @"PMP,DCS Ceiling";
-  v24 = [MEMORY[0x277CCABB0] numberWithBool:a3->var1];
+  v24 = [MEMORY[0x277CCABB0] numberWithBool:set->var1];
   v33[5] = v24;
   v32[6] = @"PMP,DCS Floor";
-  v23 = [MEMORY[0x277CCABB0] numberWithBool:a3->var1];
+  v23 = [MEMORY[0x277CCABB0] numberWithBool:set->var1];
   v33[6] = v23;
   v32[7] = @"PMP,SOC Floor";
-  v22 = [MEMORY[0x277CCABB0] numberWithBool:a3->var1];
+  v22 = [MEMORY[0x277CCABB0] numberWithBool:set->var1];
   v33[7] = v22;
   v32[8] = @"PMP,PMC AVE Floor";
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:a3->var1];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:set->var1];
   v33[8] = v6;
   v32[9] = @"PMP,PMC DCS Floor";
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:a3->var1];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:set->var1];
   v33[9] = v7;
   v32[10] = @"PMP,PMC DISP Floor";
-  v8 = [MEMORY[0x277CCABB0] numberWithBool:a3->var1];
+  v8 = [MEMORY[0x277CCABB0] numberWithBool:set->var1];
   v33[10] = v8;
   v32[11] = @"PMP,PMC SOC Floor";
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:a3->var1];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:set->var1];
   v33[11] = v9;
   v32[12] = @"PMP,PMC RMBS";
-  v10 = [MEMORY[0x277CCABB0] numberWithBool:a3->var1];
+  v10 = [MEMORY[0x277CCABB0] numberWithBool:set->var1];
   v33[12] = v10;
   v32[13] = @"SoC Stats,Events";
-  v11 = [MEMORY[0x277CCABB0] numberWithBool:a3->var1];
+  v11 = [MEMORY[0x277CCABB0] numberWithBool:set->var1];
   v33[13] = v11;
   v32[14] = @"SoC Stats,PMGR Counters";
-  v12 = [MEMORY[0x277CCABB0] numberWithBool:a3->var1];
+  v12 = [MEMORY[0x277CCABB0] numberWithBool:set->var1];
   v33[14] = v12;
   v32[15] = @"SoC Stats,Device States";
-  v13 = [MEMORY[0x277CCABB0] numberWithBool:a3->var1];
+  v13 = [MEMORY[0x277CCABB0] numberWithBool:set->var1];
   v33[15] = v13;
   v32[16] = @"ISP,IOP State";
-  v14 = [MEMORY[0x277CCABB0] numberWithBool:a3->var1];
+  v14 = [MEMORY[0x277CCABB0] numberWithBool:set->var1];
   v33[16] = v14;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:17];
 
@@ -512,11 +512,11 @@ void __46__PLIOReportMetricsAgent_buildScreenStateSet___block_invoke(uint64_t a1
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)buildSnapshotSet:(IOReportGroupChecks *)a3
+- (id)buildSnapshotSet:(IOReportGroupChecks *)set
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v17 = @"SoC Stats,AON Fuse";
-  v3 = a3->var1 || a3->var2;
+  v3 = set->var1 || set->var2;
   v4 = [MEMORY[0x277CCABB0] numberWithInt:v3];
   v18[0] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
@@ -564,11 +564,11 @@ void __43__PLIOReportMetricsAgent_buildSnapshotSet___block_invoke(uint64_t a1, v
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)buildCustomSet:(IOReportGroupChecks *)a3
+- (id)buildCustomSet:(IOReportGroupChecks *)set
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v17[0] = @"ISP,ISP Events";
-  v3 = a3->var1 || a3->var2;
+  v3 = set->var1 || set->var2;
   v4 = [MEMORY[0x277CCABB0] numberWithInt:v3];
   v17[1] = @"ANS2,MSP0";
   v18[0] = v4;
@@ -618,10 +618,10 @@ void __41__PLIOReportMetricsAgent_buildCustomSet___block_invoke(uint64_t a1, voi
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)channelDictionaryWithChannelSet:(id)a3
+- (id)channelDictionaryWithChannelSet:(id)set
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  setCopy = set;
   v4 = IOReportCopyFilteredChannels();
   if (IOReportGetChannelCount())
   {
@@ -715,9 +715,9 @@ uint64_t __58__PLIOReportMetricsAgent_channelDictionaryWithChannelSet___block_in
 
 - (void)subscribeToChannelSets
 {
-  v3 = [(PLIOReportMetricsAgent *)self initGroupChecks];
-  v16 = v3;
-  v17 = WORD2(v3);
+  initGroupChecks = [(PLIOReportMetricsAgent *)self initGroupChecks];
+  v16 = initGroupChecks;
+  v17 = WORD2(initGroupChecks);
   v4 = [(PLIOReportMetricsAgent *)self buildBaseSet:&v16];
   if (v4)
   {
@@ -764,71 +764,71 @@ uint64_t __58__PLIOReportMetricsAgent_channelDictionaryWithChannelSet___block_in
   }
 }
 
-- (id)sampleDeltaForChannelGroup:(id)a3
+- (id)sampleDeltaForChannelGroup:(id)group
 {
-  v3 = a3;
+  groupCopy = group;
   v4 = objc_autoreleasePoolPush();
-  if (v3)
+  if (groupCopy)
   {
-    v5 = [v3 objectForKey:@"currentSample"];
-    [v3 setObject:v5 forKeyedSubscript:@"lastSample"];
+    v5 = [groupCopy objectForKey:@"currentSample"];
+    [groupCopy setObject:v5 forKeyedSubscript:@"lastSample"];
 
-    v6 = [v3 objectForKey:@"currentSampleAPWakeTime"];
-    [v3 setObject:v6 forKeyedSubscript:@"lastSampleAPWakeTime"];
+    v6 = [groupCopy objectForKey:@"currentSampleAPWakeTime"];
+    [groupCopy setObject:v6 forKeyedSubscript:@"lastSampleAPWakeTime"];
 
-    [v3 objectForKey:@"subscription"];
-    [v3 objectForKey:@"subscribedChannels"];
+    [groupCopy objectForKey:@"subscription"];
+    [groupCopy objectForKey:@"subscribedChannels"];
     Samples = IOReportCreateSamples();
-    [v3 setObject:Samples forKeyedSubscript:@"currentSample"];
+    [groupCopy setObject:Samples forKeyedSubscript:@"currentSample"];
 
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:mach_absolute_time()];
-    [v3 setObject:v8 forKeyedSubscript:@"currentSampleAPWakeTime"];
+    [groupCopy setObject:v8 forKeyedSubscript:@"currentSampleAPWakeTime"];
 
-    v9 = [v3 objectForKey:@"lastSample"];
+    v9 = [groupCopy objectForKey:@"lastSample"];
 
     if (v9)
     {
-      [v3 objectForKey:@"lastSample"];
-      [v3 objectForKey:@"currentSample"];
+      [groupCopy objectForKey:@"lastSample"];
+      [groupCopy objectForKey:@"currentSample"];
       SamplesDelta = IOReportCreateSamplesDelta();
-      [v3 removeObjectForKey:@"lastSample"];
+      [groupCopy removeObjectForKey:@"lastSample"];
       goto LABEL_7;
     }
 
-    v11 = [v3 objectForKey:@"currentSample"];
+    dictionary = [groupCopy objectForKey:@"currentSample"];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  SamplesDelta = v11;
+  SamplesDelta = dictionary;
 LABEL_7:
   objc_autoreleasePoolPop(v4);
 
   return SamplesDelta;
 }
 
-- (id)sampleSnapshotForChannelGroup:(id)a3
+- (id)sampleSnapshotForChannelGroup:(id)group
 {
-  v3 = a3;
+  groupCopy = group;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 objectForKeyedSubscript:@"subscription"];
+  v5 = [groupCopy objectForKeyedSubscript:@"subscription"];
 
-  v6 = [v3 objectForKeyedSubscript:@"subscribedChannels"];
+  v6 = [groupCopy objectForKeyedSubscript:@"subscribedChannels"];
   v7 = v6;
   Samples = 0;
-  if (v3 && v5 && v6)
+  if (groupCopy && v5 && v6)
   {
-    v9 = [v3 objectForKey:@"lastSample"];
+    v9 = [groupCopy objectForKey:@"lastSample"];
 
     if (v9)
     {
-      Samples = [v3 objectForKeyedSubscript:@"lastSample"];
+      Samples = [groupCopy objectForKeyedSubscript:@"lastSample"];
       if (!IOReportUpdateSamples())
       {
-        [v3 removeObjectForKey:@"lastSample"];
+        [groupCopy removeObjectForKey:@"lastSample"];
         goto LABEL_9;
       }
     }
@@ -842,7 +842,7 @@ LABEL_7:
       }
     }
 
-    [v3 setObject:Samples forKeyedSubscript:@"lastSample"];
+    [groupCopy setObject:Samples forKeyedSubscript:@"lastSample"];
   }
 
 LABEL_9:
@@ -862,48 +862,48 @@ LABEL_9:
 
 - (void)logInit
 {
-  v4 = [(PLIOReportMetricsAgent *)self sampleChannelsSnapshot];
-  v3 = [(PLIOReportMetricsAgent *)self sampleSnapshotForChannelGroup:v4];
+  sampleChannelsSnapshot = [(PLIOReportMetricsAgent *)self sampleChannelsSnapshot];
+  v3 = [(PLIOReportMetricsAgent *)self sampleSnapshotForChannelGroup:sampleChannelsSnapshot];
   [(PLIOReportMetricsAgent *)self logIOReportSnapshots:v3];
 }
 
 - (void)logScreenStateChange
 {
-  v3 = [(PLIOReportMetricsAgent *)self sampleChannelsScreenState];
-  v4 = [(PLIOReportMetricsAgent *)self sampleDeltaForChannelGroup:v3];
-  v5 = [(PLIOReportMetricsAgent *)self sampleChannelsScreenState];
-  [(PLIOReportMetricsAgent *)self logIOReportIntervals:v4 forChannelGroup:v5];
+  sampleChannelsScreenState = [(PLIOReportMetricsAgent *)self sampleChannelsScreenState];
+  v4 = [(PLIOReportMetricsAgent *)self sampleDeltaForChannelGroup:sampleChannelsScreenState];
+  sampleChannelsScreenState2 = [(PLIOReportMetricsAgent *)self sampleChannelsScreenState];
+  [(PLIOReportMetricsAgent *)self logIOReportIntervals:v4 forChannelGroup:sampleChannelsScreenState2];
 
   if ([MEMORY[0x277D3F180] taskMode])
   {
-    v7 = [(PLIOReportMetricsAgent *)self sampleChannelsCustom];
-    v6 = [(PLIOReportMetricsAgent *)self sampleSnapshotForChannelGroup:v7];
+    sampleChannelsCustom = [(PLIOReportMetricsAgent *)self sampleChannelsCustom];
+    v6 = [(PLIOReportMetricsAgent *)self sampleSnapshotForChannelGroup:sampleChannelsCustom];
     [(PLIOReportMetricsAgent *)self logIOReportSnapshots:v6];
   }
 }
 
 - (void)logDisplayOffAPWake
 {
-  v5 = [(PLIOReportMetricsAgent *)self sampleChannelsScreenState];
-  v3 = [(PLIOReportMetricsAgent *)self sampleDeltaForChannelGroup:v5];
-  v4 = [(PLIOReportMetricsAgent *)self sampleChannelsScreenState];
-  [(PLIOReportMetricsAgent *)self logIOReportIntervals:v3 forChannelGroup:v4];
+  sampleChannelsScreenState = [(PLIOReportMetricsAgent *)self sampleChannelsScreenState];
+  v3 = [(PLIOReportMetricsAgent *)self sampleDeltaForChannelGroup:sampleChannelsScreenState];
+  sampleChannelsScreenState2 = [(PLIOReportMetricsAgent *)self sampleChannelsScreenState];
+  [(PLIOReportMetricsAgent *)self logIOReportIntervals:v3 forChannelGroup:sampleChannelsScreenState2];
 }
 
-- (void)logIOReportSnapshots:(id)a3
+- (void)logIOReportSnapshots:(id)snapshots
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"IOReportChannelGroups"];
-  v6 = [v5 allKeys];
+  snapshotsCopy = snapshots;
+  v5 = [snapshotsCopy objectForKey:@"IOReportChannelGroups"];
+  allKeys = [v5 allKeys];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__PLIOReportMetricsAgent_logIOReportSnapshots___block_invoke;
   v8[3] = &unk_278259C90;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  [v6 enumerateObjectsUsingBlock:v8];
+  v9 = snapshotsCopy;
+  selfCopy = self;
+  v7 = snapshotsCopy;
+  [allKeys enumerateObjectsUsingBlock:v8];
 }
 
 void __47__PLIOReportMetricsAgent_logIOReportSnapshots___block_invoke(uint64_t a1, void *a2)
@@ -940,41 +940,41 @@ void __47__PLIOReportMetricsAgent_logIOReportSnapshots___block_invoke_2(uint64_t
   [*(a1 + 40) logIOReportEntry:v7 forCategory:v6 withEntryDate:0 withAPWakeTime:0 isInterval:0.0];
 }
 
-- (void)logIOReportIntervals:(id)a3 forChannelGroup:(id)a4
+- (void)logIOReportIntervals:(id)intervals forChannelGroup:(id)group
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  intervalsCopy = intervals;
+  groupCopy = group;
   v8 = objc_autoreleasePoolPush();
-  if (v6)
+  if (intervalsCopy)
   {
     v35 = v8;
-    v43 = [MEMORY[0x277CBEAA8] monotonicDate];
-    v9 = [v7 objectForKey:@"currentSampleAPWakeTime"];
-    v10 = [v9 unsignedLongLongValue];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    v9 = [groupCopy objectForKey:@"currentSampleAPWakeTime"];
+    unsignedLongLongValue = [v9 unsignedLongLongValue];
 
-    v36 = v7;
-    v11 = [v7 objectForKey:@"lastSampleAPWakeTime"];
-    v12 = [v11 unsignedLongLongValue];
+    v36 = groupCopy;
+    v11 = [groupCopy objectForKey:@"lastSampleAPWakeTime"];
+    unsignedLongLongValue2 = [v11 unsignedLongLongValue];
 
-    [MEMORY[0x277D3F258] secondsFromMachTime:v10];
+    [MEMORY[0x277D3F258] secondsFromMachTime:unsignedLongLongValue];
     v14 = v13;
-    [MEMORY[0x277D3F258] secondsFromMachTime:v12];
+    [MEMORY[0x277D3F258] secondsFromMachTime:unsignedLongLongValue2];
     v16 = v15;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v17 = [v6 objectForKey:@"IOReportChannelGroups"];
-    v18 = [v17 allKeys];
+    v17 = [intervalsCopy objectForKey:@"IOReportChannelGroups"];
+    allKeys = [v17 allKeys];
 
-    obj = v18;
-    v40 = [v18 countByEnumeratingWithState:&v48 objects:v53 count:16];
+    obj = allKeys;
+    v40 = [allKeys countByEnumeratingWithState:&v48 objects:v53 count:16];
     if (v40)
     {
       v19 = v14 - v16;
       v38 = *v49;
-      v39 = v6;
+      v39 = intervalsCopy;
       do
       {
         v20 = 0;
@@ -988,7 +988,7 @@ void __47__PLIOReportMetricsAgent_logIOReportSnapshots___block_invoke_2(uint64_t
           v42 = v20;
           v21 = *(*(&v48 + 1) + 8 * v20);
           context = objc_autoreleasePoolPush();
-          v22 = [v6 objectForKey:@"IOReportChannelGroups"];
+          v22 = [intervalsCopy objectForKey:@"IOReportChannelGroups"];
           v23 = [v22 objectForKey:v21];
 
           v46 = 0u;
@@ -996,9 +996,9 @@ void __47__PLIOReportMetricsAgent_logIOReportSnapshots___block_invoke_2(uint64_t
           v44 = 0u;
           v45 = 0u;
           v24 = [v23 objectForKey:@"IOReportChannelGroups"];
-          v25 = [v24 allKeys];
+          allKeys2 = [v24 allKeys];
 
-          v26 = [v25 countByEnumeratingWithState:&v44 objects:v52 count:16];
+          v26 = [allKeys2 countByEnumeratingWithState:&v44 objects:v52 count:16];
           if (v26)
           {
             v27 = v26;
@@ -1010,7 +1010,7 @@ void __47__PLIOReportMetricsAgent_logIOReportSnapshots___block_invoke_2(uint64_t
               {
                 if (*v45 != v28)
                 {
-                  objc_enumerationMutation(v25);
+                  objc_enumerationMutation(allKeys2);
                 }
 
                 v30 = *(*(&v44 + 1) + 8 * v29);
@@ -1018,13 +1018,13 @@ void __47__PLIOReportMetricsAgent_logIOReportSnapshots___block_invoke_2(uint64_t
                 v32 = [v31 objectForKey:v30];
 
                 v33 = [(PLIOReportMetricsAgent *)self createCategoryString:v21 forSubgroup:v30];
-                [(PLIOReportMetricsAgent *)self logIOReportEntry:v32 forCategory:v33 withEntryDate:v43 withAPWakeTime:1 isInterval:v19];
+                [(PLIOReportMetricsAgent *)self logIOReportEntry:v32 forCategory:v33 withEntryDate:monotonicDate withAPWakeTime:1 isInterval:v19];
 
                 ++v29;
               }
 
               while (v27 != v29);
-              v27 = [v25 countByEnumeratingWithState:&v44 objects:v52 count:16];
+              v27 = [allKeys2 countByEnumeratingWithState:&v44 objects:v52 count:16];
             }
 
             while (v27);
@@ -1032,7 +1032,7 @@ void __47__PLIOReportMetricsAgent_logIOReportSnapshots___block_invoke_2(uint64_t
 
           objc_autoreleasePoolPop(context);
           v20 = v42 + 1;
-          v6 = v39;
+          intervalsCopy = v39;
         }
 
         while (v42 + 1 != v40);
@@ -1042,9 +1042,9 @@ void __47__PLIOReportMetricsAgent_logIOReportSnapshots___block_invoke_2(uint64_t
       while (v40);
     }
 
-    [(PLIOReportMetricsAgent *)self setLastEntryDate:v43];
+    [(PLIOReportMetricsAgent *)self setLastEntryDate:monotonicDate];
     v8 = v35;
-    v7 = v36;
+    groupCopy = v36;
   }
 
   objc_autoreleasePoolPop(v8);
@@ -1052,28 +1052,28 @@ void __47__PLIOReportMetricsAgent_logIOReportSnapshots___block_invoke_2(uint64_t
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logIOReportEntry:(id)a3 forCategory:(id)a4 withEntryDate:(id)a5 withAPWakeTime:(double)a6 isInterval:(BOOL)a7
+- (void)logIOReportEntry:(id)entry forCategory:(id)category withEntryDate:(id)date withAPWakeTime:(double)time isInterval:(BOOL)interval
 {
-  v7 = a7;
+  intervalCopy = interval;
   v30 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  entryCopy = entry;
+  categoryCopy = category;
+  dateCopy = date;
   v15 = objc_autoreleasePoolPush();
-  v16 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v17 = objc_opt_new();
-  v18 = [(PLIOReportMetricsAgent *)self isDynamicTable:v13];
-  if (v7)
+  v18 = [(PLIOReportMetricsAgent *)self isDynamicTable:categoryCopy];
+  if (intervalCopy)
   {
-    v19 = [MEMORY[0x277CCABB0] numberWithDouble:a6];
-    [v16 setObject:v19 forKeyedSubscript:@"APWakeTime"];
+    v19 = [MEMORY[0x277CCABB0] numberWithDouble:time];
+    [dictionary setObject:v19 forKeyedSubscript:@"APWakeTime"];
 
-    [v16 setObject:v14 forKeyedSubscript:@"timestampEnd"];
+    [dictionary setObject:dateCopy forKeyedSubscript:@"timestampEnd"];
   }
 
-  v20 = v13;
+  v20 = categoryCopy;
   v21 = v17;
-  v22 = v16;
+  v22 = dictionary;
   IOReportIterate();
   if (v18)
   {
@@ -1090,8 +1090,8 @@ void __47__PLIOReportMetricsAgent_logIOReportSnapshots___block_invoke_2(uint64_t
     _os_log_debug_impl(&dword_21A4C6000, v23, OS_LOG_TYPE_DEBUG, "IOReportMetrics: category = %@, payload = %@", buf, 0x16u);
   }
 
-  v24 = [(PLIOReportMetricsAgent *)self lastEntryDate];
-  [(PLOperator *)self logForSubsystem:@"IOReportMetrics" category:v20 data:v22 date:v24];
+  lastEntryDate = [(PLIOReportMetricsAgent *)self lastEntryDate];
+  [(PLOperator *)self logForSubsystem:@"IOReportMetrics" category:v20 data:v22 date:lastEntryDate];
 
   objc_autoreleasePoolPop(v15);
   v25 = *MEMORY[0x277D85DE8];
@@ -1308,14 +1308,14 @@ LABEL_50:
   if (!self->_displayOffTimer)
   {
     v3 = MEMORY[0x277D3F1E0];
-    v4 = [MEMORY[0x277CBEAA8] monotonicDate];
-    v5 = [(PLOperator *)self workQueue];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    workQueue = [(PLOperator *)self workQueue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __54__PLIOReportMetricsAgent_startDisplayOffPeriodicTimer__block_invoke;
     v10[3] = &unk_27825B230;
     v10[4] = self;
-    v6 = [v3 scheduledTimerWithMonotonicFireDate:v4 withInterval:v5 withQueue:v10 withBlock:180.0];
+    v6 = [v3 scheduledTimerWithMonotonicFireDate:monotonicDate withInterval:workQueue withQueue:v10 withBlock:180.0];
     displayOffTimer = self->_displayOffTimer;
     self->_displayOffTimer = v6;
 
@@ -1352,16 +1352,16 @@ LABEL_50:
   if ([MEMORY[0x277D3F180] taskMode])
   {
     v3 = [(PLStateTrackingComposition *)self->_stateTracker getCurrState:8];
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
     v5 = PLLogIOReportMetrics();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v8[0] = 67109120;
-      v8[1] = v4;
+      v8[1] = bOOLValue;
       _os_log_debug_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_DEBUG, "logDisplayOffAPWakeStats: AP ON is %d", v8, 8u);
     }
 
-    if (v4)
+    if (bOOLValue)
     {
       v6 = PLLogIOReportMetrics();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -1377,18 +1377,18 @@ LABEL_50:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createCategoryString:(id)a3 forSubgroup:(id)a4
+- (id)createCategoryString:(id)string forSubgroup:(id)subgroup
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  stringCopy = string;
+  v6 = stringCopy;
+  if (subgroup)
   {
-    v7 = [v5 stringByAppendingString:a4];
+    v7 = [stringCopy stringByAppendingString:subgroup];
   }
 
   else
   {
-    v7 = v5;
+    v7 = stringCopy;
   }
 
   v8 = v7;
@@ -1398,9 +1398,9 @@ LABEL_50:
   return v9;
 }
 
-- (BOOL)allowlistedChannel:(id)a3
+- (BOOL)allowlistedChannel:(id)channel
 {
-  v3 = a3;
+  channelCopy = channel;
   if (qword_2811F4C90 != -1)
   {
     dispatch_once(&qword_2811F4C90, &__block_literal_global_179);
@@ -1408,7 +1408,7 @@ LABEL_50:
 
   if (qword_2811F4C88)
   {
-    v4 = [qword_2811F4C88 containsObject:v3];
+    v4 = [qword_2811F4C88 containsObject:channelCopy];
   }
 
   else
@@ -1436,19 +1436,19 @@ uint64_t __45__PLIOReportMetricsAgent_allowlistedChannel___block_invoke()
   return result;
 }
 
-- (BOOL)isDynamicTable:(id)a3
+- (BOOL)isDynamicTable:(id)table
 {
-  v3 = a3;
-  v4 = ([v3 isEqualToString:@"ANS2MSP0"] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"AOP2Power") & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"AOP-EXCLAVEPower") & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"DCPscanoutstats") & 1) == 0 && !objc_msgSend(v3, "isEqualToString:", @"ISPISPEvents");
+  tableCopy = table;
+  v4 = ([tableCopy isEqualToString:@"ANS2MSP0"] & 1) == 0 && (objc_msgSend(tableCopy, "isEqualToString:", @"AOP2Power") & 1) == 0 && (objc_msgSend(tableCopy, "isEqualToString:", @"AOP-EXCLAVEPower") & 1) == 0 && (objc_msgSend(tableCopy, "isEqualToString:", @"DCPscanoutstats") & 1) == 0 && !objc_msgSend(tableCopy, "isEqualToString:", @"ISPISPEvents");
 
   return v4;
 }
 
-- (BOOL)skipCurrentIteration:(id)a3 forChannel:(id)a4
+- (BOOL)skipCurrentIteration:(id)iteration forChannel:(id)channel
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 isEqualToString:@"ISPISPEvents"] && !objc_msgSend(v6, "hasPrefix:", @"DPE_") || objc_msgSend(v5, "isEqualToString:", @"AOP2Performance") && (objc_msgSend(v6, "hasPrefix:", @"Thread time") & 1) == 0;
+  iterationCopy = iteration;
+  channelCopy = channel;
+  v7 = [iterationCopy isEqualToString:@"ISPISPEvents"] && !objc_msgSend(channelCopy, "hasPrefix:", @"DPE_") || objc_msgSend(iterationCopy, "isEqualToString:", @"AOP2Performance") && (objc_msgSend(channelCopy, "hasPrefix:", @"Thread time") & 1) == 0;
 
   return v7;
 }

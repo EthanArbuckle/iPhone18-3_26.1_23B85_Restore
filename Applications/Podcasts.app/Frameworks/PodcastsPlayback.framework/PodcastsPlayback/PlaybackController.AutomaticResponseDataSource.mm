@@ -1,15 +1,15 @@
 @interface PlaybackController.AutomaticResponseDataSource
-- (BOOL)controller:(id)a3 shouldRetryFailedRequestWithError:(id)a4;
+- (BOOL)controller:(id)controller shouldRetryFailedRequestWithError:(id)error;
 @end
 
 @implementation PlaybackController.AutomaticResponseDataSource
 
-- (BOOL)controller:(id)a3 shouldRetryFailedRequestWithError:(id)a4
+- (BOOL)controller:(id)controller shouldRetryFailedRequestWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_4C2AC(v6, v7);
+  controllerCopy = controller;
+  errorCopy = error;
+  selfCopy = self;
+  sub_4C2AC(controllerCopy, errorCopy);
 
   return 1;
 }

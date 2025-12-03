@@ -1,6 +1,6 @@
 @interface AXSDKShotModelCreationManager
 - (AXSDKShotModelCreationManager)init;
-- (id)trainWithDetectorID:(id)a3 hallucinatorPath:(id)a4 pretrainedWeightsPath:(id)a5 error:(id *)a6;
+- (id)trainWithDetectorID:(id)d hallucinatorPath:(id)path pretrainedWeightsPath:(id)weightsPath error:(id *)error;
 @end
 
 @implementation AXSDKShotModelCreationManager
@@ -12,9 +12,9 @@
   return [(AXSDKShotModelCreationManager *)&v3 init];
 }
 
-- (id)trainWithDetectorID:(id)a3 hallucinatorPath:(id)a4 pretrainedWeightsPath:(id)a5 error:(id *)a6
+- (id)trainWithDetectorID:(id)d hallucinatorPath:(id)path pretrainedWeightsPath:(id)weightsPath error:(id *)error
 {
-  v25[0] = a6;
+  v25[0] = error;
   v7 = sub_251F6B1B0();
   v8 = *(v7 - 8);
   v9 = *(v8 + 64);
@@ -28,7 +28,7 @@
   v20 = v19;
   sub_251F6B1A0();
   sub_251F6B1A0();
-  v21 = self;
+  selfCopy = self;
   sub_251F68FA4(v18, v20, v15, v12, v17);
 
   v22 = *(v8 + 8);

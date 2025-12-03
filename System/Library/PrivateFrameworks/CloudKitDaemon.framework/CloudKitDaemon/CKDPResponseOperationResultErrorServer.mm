@@ -1,16 +1,16 @@
 @interface CKDPResponseOperationResultErrorServer
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_typeCKLogValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)typeAsString:(int)a3;
-- (int)StringAsType:(id)a3;
+- (id)typeAsString:(int)string;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPResponseOperationResultErrorServer
@@ -120,13 +120,13 @@ LABEL_31:
   }
 }
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
-  if (a3 <= 7)
+  if (string <= 7)
   {
-    if (a3 > 3)
+    if (string > 3)
     {
-      switch(a3)
+      switch(string)
       {
         case 4:
           v4 = @"containerUnavailable";
@@ -145,7 +145,7 @@ LABEL_31:
 
     else
     {
-      switch(a3)
+      switch(string)
       {
         case 1:
           v4 = @"unknown";
@@ -163,14 +163,14 @@ LABEL_31:
     }
 
 LABEL_56:
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
 
     return v4;
   }
 
-  if (a3 <= 200001)
+  if (string <= 200001)
   {
-    switch(a3)
+    switch(string)
     {
       case 8:
         v4 = @"zoneUnavailable";
@@ -189,9 +189,9 @@ LABEL_56:
     goto LABEL_56;
   }
 
-  if (a3 <= 200003)
+  if (string <= 200003)
   {
-    if (a3 == 200002)
+    if (string == 200002)
     {
       v4 = @"timeoutOnInternalBackends";
     }
@@ -204,9 +204,9 @@ LABEL_56:
     return v4;
   }
 
-  if (a3 != 200004)
+  if (string != 200004)
   {
-    if (a3 == 200005)
+    if (string == 200005)
     {
       v4 = @"quotaServiceUnavailable";
 
@@ -221,45 +221,45 @@ LABEL_56:
   return v4;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"unknown"))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"unknown"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"overloaded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v5, @"overloaded"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"notFound"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"notFound"))
   {
     v6 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"containerUnavailable"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v8, @"containerUnavailable"))
   {
     v6 = 4;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v9, @"mescalSignatureParseError"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v9, @"mescalSignatureParseError"))
   {
     v6 = 6;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v10, @"zoneBusy"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v10, @"zoneBusy"))
   {
     v6 = 7;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v11, @"zoneUnavailable"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v11, @"zoneUnavailable"))
   {
     v6 = 8;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v12, @"transactionTimeout"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v12, @"transactionTimeout"))
   {
     v6 = 9;
   }
@@ -267,24 +267,24 @@ LABEL_56:
   else
   {
     v6 = 200001;
-    if ((objc_msgSend_isEqualToString_(v3, v13, @"partitionLookupFailed") & 1) == 0)
+    if ((objc_msgSend_isEqualToString_(typeCopy, v13, @"partitionLookupFailed") & 1) == 0)
     {
-      if (objc_msgSend_isEqualToString_(v3, v14, @"timeoutOnInternalBackends"))
+      if (objc_msgSend_isEqualToString_(typeCopy, v14, @"timeoutOnInternalBackends"))
       {
         v6 = 200002;
       }
 
-      else if (objc_msgSend_isEqualToString_(v3, v15, @"solrError"))
+      else if (objc_msgSend_isEqualToString_(typeCopy, v15, @"solrError"))
       {
         v6 = 200003;
       }
 
-      else if (objc_msgSend_isEqualToString_(v3, v16, @"userAssignmentLocked"))
+      else if (objc_msgSend_isEqualToString_(typeCopy, v16, @"userAssignmentLocked"))
       {
         v6 = 200004;
       }
 
-      else if (objc_msgSend_isEqualToString_(v3, v17, @"quotaServiceUnavailable"))
+      else if (objc_msgSend_isEqualToString_(typeCopy, v17, @"quotaServiceUnavailable"))
       {
         v6 = 200005;
       }
@@ -440,7 +440,7 @@ LABEL_32:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -449,19 +449,19 @@ LABEL_32:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 2) = self->_type;
-    *(a3 + 12) |= 1u;
+    *(to + 2) = self->_type;
+    *(to + 12) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   result = objc_msgSend_init(v7, v8, v9);
   if (*&self->_has)
   {
@@ -472,19 +472,19 @@ LABEL_32:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_6;
   }
 
-  v7 = (*(v4 + 12) & 1) == 0;
+  v7 = (*(equalCopy + 12) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 12) & 1) != 0 && self->_type == *(v4 + 2))
+    if ((*(equalCopy + 12) & 1) != 0 && self->_type == *(equalCopy + 2))
     {
       v7 = 1;
       goto LABEL_7;
@@ -512,11 +512,11 @@ LABEL_7:
   }
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
-    self->_type = *(a3 + 2);
+    self->_type = *(from + 2);
     *&self->_has |= 1u;
   }
 }

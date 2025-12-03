@@ -1,17 +1,17 @@
 @interface StabilizeParamGenerator
-- (id)generatePassThruForAsset:(id)a3 trimStart:(id *)a4 trimLength:(id *)a5;
+- (id)generatePassThruForAsset:(id)asset trimStart:(id *)start trimLength:(id *)length;
 - (id)generateStabilizeParams;
-- (id)generateTrivialPassThruForFrameTimes:(void *)a3 totalDuration:(id *)a4;
-- (void)CopyCoordinateShiftedHomographies:(void *)a3 firstIndex:(unint64_t)a4 lastIndex:(unint64_t)a5 toStabilizeParams:(id)a6 withImageBounds:(CGSize)a7;
-- (void)ICGetIdentityHomographies:(void *)a3 toStabilizeParams:(id)a4 withImageBounds:(CGSize)a5 firstFrameIndex:(unint64_t)a6 lastFrameIndex:(unint64_t)a7;
+- (id)generateTrivialPassThruForFrameTimes:(void *)times totalDuration:(id *)duration;
+- (void)CopyCoordinateShiftedHomographies:(void *)homographies firstIndex:(unint64_t)index lastIndex:(unint64_t)lastIndex toStabilizeParams:(id)params withImageBounds:(CGSize)bounds;
+- (void)ICGetIdentityHomographies:(void *)homographies toStabilizeParams:(id)params withImageBounds:(CGSize)bounds firstFrameIndex:(unint64_t)index lastFrameIndex:(unint64_t)frameIndex;
 @end
 
 @implementation StabilizeParamGenerator
 
-- (void)ICGetIdentityHomographies:(void *)a3 toStabilizeParams:(id)a4 withImageBounds:(CGSize)a5 firstFrameIndex:(unint64_t)a6 lastFrameIndex:(unint64_t)a7
+- (void)ICGetIdentityHomographies:(void *)homographies toStabilizeParams:(id)params withImageBounds:(CGSize)bounds firstFrameIndex:(unint64_t)index lastFrameIndex:(unint64_t)frameIndex
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  paramsCopy = params;
   ICGetIdentityHomographies();
   v24 = 0u;
   v22 = 0u;
@@ -44,7 +44,7 @@
           v19[i] = v16;
         }
 
-        [v7 append:v19];
+        [paramsCopy append:v19];
 
         ++v10;
       }
@@ -57,10 +57,10 @@
   }
 }
 
-- (void)CopyCoordinateShiftedHomographies:(void *)a3 firstIndex:(unint64_t)a4 lastIndex:(unint64_t)a5 toStabilizeParams:(id)a6 withImageBounds:(CGSize)a7
+- (void)CopyCoordinateShiftedHomographies:(void *)homographies firstIndex:(unint64_t)index lastIndex:(unint64_t)lastIndex toStabilizeParams:(id)params withImageBounds:(CGSize)bounds
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a6;
+  paramsCopy = params;
   ICGetCoordinateShiftedHomographies();
   v24 = 0u;
   v22 = 0u;
@@ -93,7 +93,7 @@
           v19[i] = v16;
         }
 
-        [v7 append:v19];
+        [paramsCopy append:v19];
 
         ++v10;
       }
@@ -112,10 +112,10 @@
   [(AutoLoopStabilizer *)self->stabilizer inputMovieDimensions];
   v4 = v3;
   v6 = v5;
-  v7 = [(AutoLoopStabilizer *)self->stabilizer icCorrectionResultRef];
-  if (v7)
+  icCorrectionResultRef = [(AutoLoopStabilizer *)self->stabilizer icCorrectionResultRef];
+  if (icCorrectionResultRef)
   {
-    v8 = v7;
+    v8 = icCorrectionResultRef;
     v26 = +[StabilizeParams stabilizeParams];
     v40 = **&MEMORY[0x277CC0888];
     v39 = v40;
@@ -264,54 +264,54 @@
   return v26;
 }
 
-- (id)generatePassThruForAsset:(id)a3 trimStart:(id *)a4 trimLength:(id *)a5
+- (id)generatePassThruForAsset:(id)asset trimStart:(id *)start trimLength:(id *)length
 {
-  v8 = a3;
+  assetCopy = asset;
   v9 = objc_alloc_init(AutoLoopStabilizer);
   [(StabilizeParamGenerator *)self setStabilizer:v9];
 
-  v10 = [(StabilizeParamGenerator *)self stabilizer];
-  [v10 setMovieAssetIn:v8];
+  stabilizer = [(StabilizeParamGenerator *)self stabilizer];
+  [stabilizer setMovieAssetIn:assetCopy];
 
-  if ((a4->var2 & 0x1D) == 1)
+  if ((start->var2 & 0x1D) == 1)
   {
-    v11 = [(StabilizeParamGenerator *)self stabilizer];
-    v19 = *&a4->var0;
-    var3 = a4->var3;
-    [v11 setTrimStart:&v19];
+    stabilizer2 = [(StabilizeParamGenerator *)self stabilizer];
+    v19 = *&start->var0;
+    var3 = start->var3;
+    [stabilizer2 setTrimStart:&v19];
   }
 
-  if ((a5->var2 & 0x1D) == 1)
+  if ((length->var2 & 0x1D) == 1)
   {
-    v12 = [(StabilizeParamGenerator *)self stabilizer];
-    v19 = *&a5->var0;
-    var3 = a5->var3;
-    [v12 setTrimLength:&v19];
+    stabilizer3 = [(StabilizeParamGenerator *)self stabilizer];
+    v19 = *&length->var0;
+    var3 = length->var3;
+    [stabilizer3 setTrimLength:&v19];
   }
 
-  v13 = [(StabilizeParamGenerator *)self stabilizer];
-  v14 = [v13 analyzeForAutoloopWithDirect:0 toAnalysisOutput:&v19];
+  stabilizer4 = [(StabilizeParamGenerator *)self stabilizer];
+  v14 = [stabilizer4 analyzeForAutoloopWithDirect:0 toAnalysisOutput:&v19];
 
   if (v14 && (-[StabilizeParamGenerator stabilizer](self, "stabilizer"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 processStabilizationAnalysis:v19 forcePassThru:1 forceSmoothing:0 forceSequentialTripod:0], v15, v16 == 4))
   {
-    v17 = [(StabilizeParamGenerator *)self generateStabilizeParams];
+    generateStabilizeParams = [(StabilizeParamGenerator *)self generateStabilizeParams];
   }
 
   else
   {
-    v17 = 0;
+    generateStabilizeParams = 0;
   }
 
-  return v17;
+  return generateStabilizeParams;
 }
 
-- (id)generateTrivialPassThruForFrameTimes:(void *)a3 totalDuration:(id *)a4
+- (id)generateTrivialPassThruForFrameTimes:(void *)times totalDuration:(id *)duration
 {
   v6 = +[StabilizeParams stabilizeParams];
   [v6 setPassThrough:1];
   [v6 setCropRect:{0.0, 0.0, 1.0, 1.0}];
-  v7 = *a3;
-  if (*(a3 + 1) == *a3)
+  v7 = *times;
+  if (*(times + 1) == *times)
   {
     sub_2418DD5E8();
   }
@@ -320,8 +320,8 @@
   var3 = *(v7 + 2);
   v10 = v8;
   [v6 setRoiStart:&v10];
-  v10 = *&a4->var0;
-  var3 = a4->var3;
+  v10 = *&duration->var0;
+  var3 = duration->var3;
   [v6 setRoiLength:&v10];
 
   return v6;

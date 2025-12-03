@@ -1,51 +1,51 @@
 @interface AXMCameraFrameContext
-- (AXMCameraFrameContext)initWithCoder:(id)a3;
-- (AXMCameraFrameContext)initWithVideoFieldOfView:(float)a3 zoomFactor:(float)a4 sourceWidth:(int64_t)a5 sourceHeight:(int64_t)a6 presentationTimestamp:(double)a7 attitude:(id)a8;
-- (CGRect)motionCorrectedNormalizedFrame:(CGRect)a3 targetAttitude:(id)a4 targetZoomFactor:(float)a5 interfaceOrientation:(int64_t)a6 mirrored:(BOOL)a7;
-- (void)encodeWithCoder:(id)a3;
+- (AXMCameraFrameContext)initWithCoder:(id)coder;
+- (AXMCameraFrameContext)initWithVideoFieldOfView:(float)view zoomFactor:(float)factor sourceWidth:(int64_t)width sourceHeight:(int64_t)height presentationTimestamp:(double)timestamp attitude:(id)attitude;
+- (CGRect)motionCorrectedNormalizedFrame:(CGRect)frame targetAttitude:(id)attitude targetZoomFactor:(float)factor interfaceOrientation:(int64_t)orientation mirrored:(BOOL)mirrored;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXMCameraFrameContext
 
-- (AXMCameraFrameContext)initWithVideoFieldOfView:(float)a3 zoomFactor:(float)a4 sourceWidth:(int64_t)a5 sourceHeight:(int64_t)a6 presentationTimestamp:(double)a7 attitude:(id)a8
+- (AXMCameraFrameContext)initWithVideoFieldOfView:(float)view zoomFactor:(float)factor sourceWidth:(int64_t)width sourceHeight:(int64_t)height presentationTimestamp:(double)timestamp attitude:(id)attitude
 {
-  v15 = a8;
+  attitudeCopy = attitude;
   v19.receiver = self;
   v19.super_class = AXMCameraFrameContext;
   v16 = [(AXMCameraFrameContext *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    v16->_videoFieldOfView = a3;
-    v16->_videoZoomFactor = a4;
-    v16->_videoSourceWidth = a5;
-    v16->_videoSourceHeight = a6;
-    v16->_presentationTimestamp = a7;
-    objc_storeStrong(&v16->_deviceAttitude, a8);
+    v16->_videoFieldOfView = view;
+    v16->_videoZoomFactor = factor;
+    v16->_videoSourceWidth = width;
+    v16->_videoSourceHeight = height;
+    v16->_presentationTimestamp = timestamp;
+    objc_storeStrong(&v16->_deviceAttitude, attitude);
   }
 
   return v17;
 }
 
-- (AXMCameraFrameContext)initWithCoder:(id)a3
+- (AXMCameraFrameContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = AXMCameraFrameContext;
   v5 = [(AXMCameraFrameContext *)&v14 init];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"videoFieldOfView"];
+    [coderCopy decodeFloatForKey:@"videoFieldOfView"];
     v5->_videoFieldOfView = v6;
-    [v4 decodeFloatForKey:@"videoZoomFactor"];
+    [coderCopy decodeFloatForKey:@"videoZoomFactor"];
     v5->_videoZoomFactor = v7;
-    [v4 decodeFloatForKey:@"videoSourceWidth"];
+    [coderCopy decodeFloatForKey:@"videoSourceWidth"];
     v5->_videoSourceWidth = v8;
-    [v4 decodeFloatForKey:@"videoSourceHeight"];
+    [coderCopy decodeFloatForKey:@"videoSourceHeight"];
     v5->_videoSourceHeight = v9;
-    [v4 decodeDoubleForKey:@"presentationTimestamp"];
+    [coderCopy decodeDoubleForKey:@"presentationTimestamp"];
     v5->_presentationTimestamp = v10;
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceAttitude"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceAttitude"];
     deviceAttitude = v5->_deviceAttitude;
     v5->_deviceAttitude = v11;
   }
@@ -53,30 +53,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(AXMCameraFrameContext *)self videoFieldOfView];
-  [v4 encodeFloat:@"videoFieldOfView" forKey:?];
+  [coderCopy encodeFloat:@"videoFieldOfView" forKey:?];
   [(AXMCameraFrameContext *)self videoZoomFactor];
-  [v4 encodeFloat:@"videoZoomFactor" forKey:?];
-  [v4 encodeInteger:-[AXMCameraFrameContext videoSourceWidth](self forKey:{"videoSourceWidth"), @"videoSourceWidth"}];
-  [v4 encodeInteger:-[AXMCameraFrameContext videoSourceHeight](self forKey:{"videoSourceHeight"), @"videoSourceHeight"}];
+  [coderCopy encodeFloat:@"videoZoomFactor" forKey:?];
+  [coderCopy encodeInteger:-[AXMCameraFrameContext videoSourceWidth](self forKey:{"videoSourceWidth"), @"videoSourceWidth"}];
+  [coderCopy encodeInteger:-[AXMCameraFrameContext videoSourceHeight](self forKey:{"videoSourceHeight"), @"videoSourceHeight"}];
   [(AXMCameraFrameContext *)self presentationTimestamp];
-  [v4 encodeDouble:@"presentationTimestamp" forKey:?];
-  v5 = [(AXMCameraFrameContext *)self deviceAttitude];
-  [v4 encodeObject:v5 forKey:@"deviceAttitude"];
+  [coderCopy encodeDouble:@"presentationTimestamp" forKey:?];
+  deviceAttitude = [(AXMCameraFrameContext *)self deviceAttitude];
+  [coderCopy encodeObject:deviceAttitude forKey:@"deviceAttitude"];
 }
 
-- (CGRect)motionCorrectedNormalizedFrame:(CGRect)a3 targetAttitude:(id)a4 targetZoomFactor:(float)a5 interfaceOrientation:(int64_t)a6 mirrored:(BOOL)a7
+- (CGRect)motionCorrectedNormalizedFrame:(CGRect)frame targetAttitude:(id)attitude targetZoomFactor:(float)factor interfaceOrientation:(int64_t)orientation mirrored:(BOOL)mirrored
 {
-  v7 = a7;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a4;
-  if (v15 && a5 != 0.0 && ([(AXMCameraFrameContext *)self videoZoomFactor], v16 != 0.0) && [(AXMCameraFrameContext *)self videoSourceHeight]&& [(AXMCameraFrameContext *)self videoSourceWidth]&& ([(AXMCameraFrameContext *)self deviceAttitude], v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
+  mirroredCopy = mirrored;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  attitudeCopy = attitude;
+  if (attitudeCopy && factor != 0.0 && ([(AXMCameraFrameContext *)self videoZoomFactor], v16 != 0.0) && [(AXMCameraFrameContext *)self videoSourceHeight]&& [(AXMCameraFrameContext *)self videoSourceWidth]&& ([(AXMCameraFrameContext *)self deviceAttitude], v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
   {
     [(AXMCameraFrameContext *)self videoFieldOfView];
     v24 = v23;
@@ -85,15 +85,15 @@
     v27 = v26 * [(AXMCameraFrameContext *)self videoSourceHeight];
     v28 = v27 / [(AXMCameraFrameContext *)self videoSourceWidth];
     [(AXMCameraFrameContext *)self videoFieldOfView];
-    v30 = v29 / a5;
+    v30 = v29 / factor;
     v31 = v30 * [(AXMCameraFrameContext *)self videoSourceHeight];
     v32 = v31 / [(AXMCameraFrameContext *)self videoSourceWidth];
-    v33 = [(AXMCameraFrameContext *)self deviceAttitude];
+    deviceAttitude = [(AXMCameraFrameContext *)self deviceAttitude];
     *&v34 = v28;
     *&v35 = v26;
     *&v36 = v32;
     *&v37 = v30;
-    [AXMGeometryUtilities motionCorrectedNormalizedFrame:v33 fromAttitude:v15 fromFieldOfViewX:a6 fromFieldOfViewY:v7 toAttitude:x toFieldOfViewX:y toFieldOfViewY:width interfaceOrientation:height mirrored:v34, v35, v36, v37];
+    [AXMGeometryUtilities motionCorrectedNormalizedFrame:deviceAttitude fromAttitude:attitudeCopy fromFieldOfViewX:orientation fromFieldOfViewY:mirroredCopy toAttitude:x toFieldOfViewX:y toFieldOfViewY:width interfaceOrientation:height mirrored:v34, v35, v36, v37];
     x = v38;
     y = v39;
     width = v40;

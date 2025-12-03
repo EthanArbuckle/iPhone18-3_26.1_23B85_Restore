@@ -1,17 +1,17 @@
 @interface ASDTIOPAudioVTUInt32Property
-- (ASDTIOPAudioVTUInt32Property)initWithConfig:(id)a3;
-- (BOOL)storePropertyValue:(id)a3;
+- (ASDTIOPAudioVTUInt32Property)initWithConfig:(id)config;
+- (BOOL)storePropertyValue:(id)value;
 - (id)retrievePropertyValue;
-- (int)checkPropertyValue:(id)a3;
+- (int)checkPropertyValue:(id)value;
 @end
 
 @implementation ASDTIOPAudioVTUInt32Property
 
-- (ASDTIOPAudioVTUInt32Property)initWithConfig:(id)a3
+- (ASDTIOPAudioVTUInt32Property)initWithConfig:(id)config
 {
   v6.receiver = self;
   v6.super_class = ASDTIOPAudioVTUInt32Property;
-  v3 = [(ASDTIOPAudioVTProperty *)&v6 initWithConfig:a3 propertyDataType:1918990199 qualifierDataType:0];
+  v3 = [(ASDTIOPAudioVTProperty *)&v6 initWithConfig:config propertyDataType:1918990199 qualifierDataType:0];
   v4 = v3;
   if (v3)
   {
@@ -22,15 +22,15 @@
   return v4;
 }
 
-- (int)checkPropertyValue:(id)a3
+- (int)checkPropertyValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v8.receiver = self;
   v8.super_class = ASDTIOPAudioVTUInt32Property;
-  v5 = [(ASDTCustomProperty *)&v8 checkPropertyValue:v4];
+  v5 = [(ASDTCustomProperty *)&v8 checkPropertyValue:valueCopy];
   if (!v5)
   {
-    v6 = [v4 length];
+    v6 = [valueCopy length];
     if (v6 == [(ASDTCustomProperty *)self propertyValueSize])
     {
       v5 = 0;
@@ -45,10 +45,10 @@
   return v5;
 }
 
-- (BOOL)storePropertyValue:(id)a3
+- (BOOL)storePropertyValue:(id)value
 {
-  v5 = a3;
-  v6 = *[a3 bytes];
+  valueCopy = value;
+  v6 = *[value bytes];
 
   return [(ASDTIOPAudioVTUInt32Property *)self storeUInt32Value:v6];
 }

@@ -1,23 +1,23 @@
 @interface HMAudioAnalysisStereoPairDetectedEvent
-- (HMAudioAnalysisStereoPairDetectedEvent)initWithEventBulletin:(id)a3 accessory:(id)a4 notificationUUID:(id)a5;
+- (HMAudioAnalysisStereoPairDetectedEvent)initWithEventBulletin:(id)bulletin accessory:(id)accessory notificationUUID:(id)d;
 @end
 
 @implementation HMAudioAnalysisStereoPairDetectedEvent
 
-- (HMAudioAnalysisStereoPairDetectedEvent)initWithEventBulletin:(id)a3 accessory:(id)a4 notificationUUID:(id)a5
+- (HMAudioAnalysisStereoPairDetectedEvent)initWithEventBulletin:(id)bulletin accessory:(id)accessory notificationUUID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  bulletinCopy = bulletin;
+  accessoryCopy = accessory;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = HMAudioAnalysisStereoPairDetectedEvent;
   v12 = [(HMAudioAnalysisStereoPairDetectedEvent *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_event, a3);
-    objc_storeStrong(&v13->_accessory, a4);
-    objc_storeStrong(&v13->_notificationUUID, a5);
+    objc_storeStrong(&v12->_event, bulletin);
+    objc_storeStrong(&v13->_accessory, accessory);
+    objc_storeStrong(&v13->_notificationUUID, d);
   }
 
   return v13;

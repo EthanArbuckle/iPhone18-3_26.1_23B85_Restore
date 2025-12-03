@@ -1,19 +1,19 @@
 @interface RUIPrivacyLinkHeaderElement
-- (void)configureView:(id)a3;
+- (void)configureView:(id)view;
 @end
 
 @implementation RUIPrivacyLinkHeaderElement
 
-- (void)configureView:(id)a3
+- (void)configureView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v7;
-    v5 = [(RUIElement *)self pageElement];
-    v6 = [v5 page];
-    [v4 configureInPage:v6];
+    v4 = viewCopy;
+    pageElement = [(RUIElement *)self pageElement];
+    page = [pageElement page];
+    [v4 configureInPage:page];
   }
 }
 

@@ -1,27 +1,27 @@
 @interface CKDMMCSItem
 - (id)CKPropertiesDescription;
 - (id)_openInfo;
-- (id)clonedFileURLInDestinationDirectory:(id)a3;
-- (id)getFileMetadataWithContainer:(id)a3 fileHandle:(id)a4 error:(id *)a5;
-- (id)getFileMetadataWithFileHandle:(id)a3 error:(id *)a4;
-- (id)getFileSizeWithOperation:(id)a3 error:(id *)a4;
-- (id)init:(BOOL)a3;
-- (id)openWithOperation:(id)a3 error:(id *)a4;
-- (id)readBytesOfInMemoryAssetContentWithContainer:(id)a3 offset:(unint64_t)a4 length:(unint64_t)a5 error:(id *)a6;
+- (id)clonedFileURLInDestinationDirectory:(id)directory;
+- (id)getFileMetadataWithContainer:(id)container fileHandle:(id)handle error:(id *)error;
+- (id)getFileMetadataWithFileHandle:(id)handle error:(id *)error;
+- (id)getFileSizeWithOperation:(id)operation error:(id *)error;
+- (id)init:(BOOL)init;
+- (id)openWithOperation:(id)operation error:(id *)error;
+- (id)readBytesOfInMemoryAssetContentWithContainer:(id)container offset:(unint64_t)offset length:(unint64_t)length error:(id *)error;
 - (unint64_t)MMCSEncoding;
-- (void)setupForReReferenceWithAsset:(id)a3 destinationDatabaseScope:(int64_t)a4;
+- (void)setupForReReferenceWithAsset:(id)asset destinationDatabaseScope:(int64_t)scope;
 @end
 
 @implementation CKDMMCSItem
 
-- (id)init:(BOOL)a3
+- (id)init:(BOOL)init
 {
   v5.receiver = self;
   v5.super_class = CKDMMCSItem;
   result = [(CKDMMCSItem *)&v5 init];
   if (result)
   {
-    *(result + 13) = a3;
+    *(result + 13) = init;
     *(result + 15) = -1;
   }
 
@@ -45,29 +45,29 @@
   return v6;
 }
 
-- (void)setupForReReferenceWithAsset:(id)a3 destinationDatabaseScope:(int64_t)a4
+- (void)setupForReReferenceWithAsset:(id)asset destinationDatabaseScope:(int64_t)scope
 {
-  v6 = a3;
-  v9 = objc_msgSend_assetRereferenceInfo(v6, v7, v8);
+  assetCopy = asset;
+  v9 = objc_msgSend_assetRereferenceInfo(assetCopy, v7, v8);
   v12 = objc_msgSend_contentBaseURL(v9, v10, v11);
   contentBaseURL = self->_contentBaseURL;
   self->_contentBaseURL = v12;
 
-  v16 = objc_msgSend_assetRereferenceInfo(v6, v14, v15);
+  v16 = objc_msgSend_assetRereferenceInfo(assetCopy, v14, v15);
   v19 = objc_msgSend_requestor(v16, v17, v18);
   requestor = self->_requestor;
   self->_requestor = v19;
 
-  v23 = objc_msgSend_assetRereferenceInfo(v6, v21, v22);
+  v23 = objc_msgSend_assetRereferenceInfo(assetCopy, v21, v22);
   v26 = objc_msgSend_downloadToken(v23, v24, v25);
   authToken = self->_authToken;
   self->_authToken = v26;
 
-  v30 = objc_msgSend_assetRereferenceInfo(v6, v28, v29);
+  v30 = objc_msgSend_assetRereferenceInfo(assetCopy, v28, v29);
   self->_downloadTokenExpiration = objc_msgSend_downloadTokenExpiration(v30, v31, v32);
 
-  v35 = objc_msgSend_useMMCSEncryptionV2(v6, v33, v34);
-  v59 = objc_msgSend_assetReference(v6, v36, v37);
+  v35 = objc_msgSend_useMMCSEncryptionV2(assetCopy, v33, v34);
+  v59 = objc_msgSend_assetReference(assetCopy, v36, v37);
 
   v38 = [CKDAssetZoneKey alloc];
   v41 = objc_msgSend_zoneID(self->_recordID, v39, v40);
@@ -76,7 +76,7 @@
   v49 = objc_msgSend_zoneID(v46, v47, v48);
   v52 = objc_msgSend_databaseScope(v59, v50, v51);
   isPackageMember = objc_msgSend_isPackageMember(v59, v53, v54);
-  isPackageRereference = objc_msgSend_initWithDestinationZoneID_destinationDatabaseScope_usesMMCSEncryptionV2_sourceZoneID_sourceDatabaseScope_isPackageRereference_(v38, v56, v41, a4, v43, v49, v52, isPackageMember);
+  isPackageRereference = objc_msgSend_initWithDestinationZoneID_destinationDatabaseScope_usesMMCSEncryptionV2_sourceZoneID_sourceDatabaseScope_isPackageRereference_(v38, v56, v41, scope, v43, v49, v52, isPackageMember);
   assetZoneKey = self->_assetZoneKey;
   self->_assetZoneKey = isPackageRereference;
 }
@@ -370,9 +370,9 @@ LABEL_37:
   return RawEncryptedData_fileHandle_assetDownloadStagingInfo;
 }
 
-- (id)openWithOperation:(id)a3 error:(id *)a4
+- (id)openWithOperation:(id)operation error:(id *)error
 {
-  v6 = a3;
+  operationCopy = operation;
   v9 = objc_msgSend__openInfo(self, v7, v8);
   v10 = objc_autoreleasePoolPush();
   if (objc_msgSend_isTemporary(self, v11, v12))
@@ -387,19 +387,19 @@ LABEL_37:
     if (v19)
     {
       v22 = v19;
-      v23 = objc_msgSend_operationInfo(v6, v20, v21);
+      v23 = objc_msgSend_operationInfo(operationCopy, v20, v21);
       v26 = objc_msgSend_usesAssetDownloadStagingManager(v23, v24, v25);
 
       if (v26)
       {
         v40 = 0;
-        v29 = objc_msgSend_openFileWithOpenInfo_error_(v6, v27, v9, &v40);
+        v29 = objc_msgSend_openFileWithOpenInfo_error_(operationCopy, v27, v9, &v40);
         v15 = v40;
       }
 
       else
       {
-        v30 = objc_msgSend_container(v6, v27, v28);
+        v30 = objc_msgSend_container(operationCopy, v27, v28);
         v39 = 0;
         v29 = objc_msgSend_openFileWithOpenInfo_error_(v30, v31, v9, &v39);
         v15 = v39;
@@ -419,7 +419,7 @@ LABEL_37:
   }
 
   isTemporary = objc_msgSend_isTemporary(self, v13, v14);
-  if (!v6 || (isTemporary & 1) != 0 || objc_msgSend_isLongLived(v6, v33, v34))
+  if (!operationCopy || (isTemporary & 1) != 0 || objc_msgSend_isLongLived(operationCopy, v33, v34))
   {
     v38 = v15;
     v29 = objc_msgSend_openWithOpenInfo_error_(MEMORY[0x277CBC190], v33, v9, &v38);
@@ -434,10 +434,10 @@ LABEL_37:
   }
 
   objc_autoreleasePoolPop(v10);
-  if (a4 && !v29)
+  if (error && !v29)
   {
     v36 = v15;
-    *a4 = v15;
+    *error = v15;
   }
 
 LABEL_18:
@@ -445,9 +445,9 @@ LABEL_18:
   return v29;
 }
 
-- (id)getFileSizeWithOperation:(id)a3 error:(id *)a4
+- (id)getFileSizeWithOperation:(id)operation error:(id *)error
 {
-  v6 = a3;
+  operationCopy = operation;
   if (objc_msgSend_shouldReadAssetContentUsingClientProxy(self, v7, v8))
   {
     v11 = MEMORY[0x277CCABB0];
@@ -456,11 +456,11 @@ LABEL_18:
     v17 = objc_msgSend_numberWithUnsignedLongLong_(v11, v16, v15);
   }
 
-  else if ((objc_msgSend_isTemporary(self, v9, v10) & 1) != 0 || (objc_msgSend_openWithOperation_error_(self, v18, v6, a4), (v20 = objc_claimAutoreleasedReturnValue()) == 0))
+  else if ((objc_msgSend_isTemporary(self, v9, v10) & 1) != 0 || (objc_msgSend_openWithOperation_error_(self, v18, operationCopy, error), (v20 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v21 = MEMORY[0x277CBC190];
     v12 = objc_msgSend__openInfo(self, v18, v19);
-    v17 = objc_msgSend_getFileSizeWithOpenInfo_error_(v21, v22, v12, a4);
+    v17 = objc_msgSend_getFileSizeWithOpenInfo_error_(v21, v22, v12, error);
   }
 
   else
@@ -474,10 +474,10 @@ LABEL_18:
   return v23;
 }
 
-- (id)getFileMetadataWithContainer:(id)a3 fileHandle:(id)a4 error:(id *)a5
+- (id)getFileMetadataWithContainer:(id)container fileHandle:(id)handle error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  containerCopy = container;
+  handleCopy = handle;
   v10 = objc_autoreleasePoolPush();
   if (objc_msgSend_isTemporary(self, v11, v12))
   {
@@ -488,7 +488,7 @@ LABEL_18:
   {
     v16 = objc_msgSend__openInfo(self, v13, v14);
     v26 = 0;
-    v18 = objc_msgSend_getFileMetadataWithFileHandle_openInfo_error_(v8, v17, v9, v16, &v26);
+    v18 = objc_msgSend_getFileMetadataWithFileHandle_openInfo_error_(containerCopy, v17, handleCopy, v16, &v26);
     v15 = v26;
 
     if (v18)
@@ -502,14 +502,14 @@ LABEL_18:
   v20 = MEMORY[0x277CBC190];
   v21 = objc_msgSend__openInfo(self, v13, v14);
   v25 = v15;
-  v18 = objc_msgSend_getFileMetadataWithFileHandle_openInfo_error_(v20, v22, v9, v21, &v25);
+  v18 = objc_msgSend_getFileMetadataWithFileHandle_openInfo_error_(v20, v22, handleCopy, v21, &v25);
   v15 = v25;
 
   objc_autoreleasePoolPop(v10);
-  if (a5 && !v18)
+  if (error && !v18)
   {
     v23 = v15;
-    *a5 = v15;
+    *error = v15;
   }
 
 LABEL_8:
@@ -517,25 +517,25 @@ LABEL_8:
   return v18;
 }
 
-- (id)getFileMetadataWithFileHandle:(id)a3 error:(id *)a4
+- (id)getFileMetadataWithFileHandle:(id)handle error:(id *)error
 {
   v6 = MEMORY[0x277CBC190];
-  v7 = a3;
+  handleCopy = handle;
   v10 = objc_msgSend__openInfo(self, v8, v9);
-  v12 = objc_msgSend_getFileMetadataWithFileHandle_openInfo_error_(v6, v11, v7, v10, a4);
+  v12 = objc_msgSend_getFileMetadataWithFileHandle_openInfo_error_(v6, v11, handleCopy, v10, error);
 
   return v12;
 }
 
-- (id)readBytesOfInMemoryAssetContentWithContainer:(id)a3 offset:(unint64_t)a4 length:(unint64_t)a5 error:(id *)a6
+- (id)readBytesOfInMemoryAssetContentWithContainer:(id)container offset:(unint64_t)offset length:(unint64_t)length error:(id *)error
 {
-  v10 = a3;
+  containerCopy = container;
   v11 = objc_autoreleasePoolPush();
   if (objc_msgSend_shouldReadAssetContentUsingClientProxy(self, v12, v13))
   {
     v16 = objc_msgSend_trackingUUID(self, v14, v15);
     v22 = 0;
-    v18 = objc_msgSend_readBytesOfInMemoryAssetContentWithUUID_offset_length_error_(v10, v17, v16, a4, a5, &v22);
+    v18 = objc_msgSend_readBytesOfInMemoryAssetContentWithUUID_offset_length_error_(containerCopy, v17, v16, offset, length, &v22);
     v19 = v22;
   }
 
@@ -546,18 +546,18 @@ LABEL_8:
   }
 
   objc_autoreleasePoolPop(v11);
-  if (a6 && !v18)
+  if (error && !v18)
   {
     v20 = v19;
-    *a6 = v19;
+    *error = v19;
   }
 
   return v18;
 }
 
-- (id)clonedFileURLInDestinationDirectory:(id)a3
+- (id)clonedFileURLInDestinationDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v5 = objc_autoreleasePoolPush();
   v8 = objc_msgSend_fileHandle(self, v6, v7);
   if (v8)
@@ -575,7 +575,7 @@ LABEL_5:
     v31 = CKStringWithData();
     v33 = objc_msgSend_initWithFormat_(v21, v32, @"%@.%@", v27, v31);
 
-    v35 = objc_msgSend_stringByAppendingPathComponent_(v4, v34, v33);
+    v35 = objc_msgSend_stringByAppendingPathComponent_(directoryCopy, v34, v33);
     v38 = objc_msgSend_fileSystemRepresentation(v35, v36, v37);
     if (fclonefileat(v20, -1, v38, 0))
     {

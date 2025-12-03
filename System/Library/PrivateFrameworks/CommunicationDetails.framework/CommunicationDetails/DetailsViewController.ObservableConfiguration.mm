@@ -1,11 +1,11 @@
 @interface DetailsViewController.ObservableConfiguration
-- (void)updateContactsWithNotification:(id)a3;
-- (void)updateGroupIdentityWithNotification:(id)a3;
+- (void)updateContactsWithNotification:(id)notification;
+- (void)updateGroupIdentityWithNotification:(id)notification;
 @end
 
 @implementation DetailsViewController.ObservableConfiguration
 
-- (void)updateContactsWithNotification:(id)a3
+- (void)updateContactsWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
@@ -27,7 +27,7 @@
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)updateGroupIdentityWithNotification:(id)a3
+- (void)updateGroupIdentityWithNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

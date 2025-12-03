@@ -1,97 +1,97 @@
 @interface SFUnifiedTabBarItemTitleContainerView
 - (BOOL)_canUpdateLayoutDirectionImmediately;
 - (BOOL)_shouldShowAvailabilityLabel;
-- (BOOL)_showsView:(id)a3;
-- (BOOL)requiresTruncationToDisplayAvailabilityLabel:(id)a3;
+- (BOOL)_showsView:(id)view;
+- (BOOL)requiresTruncationToDisplayAvailabilityLabel:(id)label;
 - (CGRect)_searchFieldFrame;
 - (CGRect)contentFrame;
 - (CGRect)iconFrame;
 - (CGRect)titleRect;
-- (CGSize)_preferredSizeForView:(id)a3;
+- (CGSize)_preferredSizeForView:(id)view;
 - (CGSize)intrinsicContentSize;
 - (CGSize)urlSize;
 - (NSArray)_arrangedViews;
 - (NSArray)_arrangedViewsByContentCompressionResistancePriority;
 - (NSArray)squishedAccessoryViews;
 - (NSDirectionalEdgeInsets)_effectiveDirectionalLayoutMargins;
-- (SFUnifiedTabBarItemTitleContainerView)initWithAlignment:(int64_t)a3;
+- (SFUnifiedTabBarItemTitleContainerView)initWithAlignment:(int64_t)alignment;
 - (UIEdgeInsets)_effectiveLayoutMargins;
-- (double)_alphaForView:(id)a3;
-- (double)_collapsedWidthForView:(id)a3;
-- (double)_spacingBetweenView:(id)a3 nextView:(id)a4;
+- (double)_alphaForView:(id)view;
+- (double)_collapsedWidthForView:(id)view;
+- (double)_spacingBetweenView:(id)view nextView:(id)nextView;
 - (double)minimumWidthToShowTitle;
-- (double)urlBaselineToBottomBoundsDistanceForHeight:(double)a3;
-- (double)urlCapHeightToTopBoundsDistanceForHeight:(double)a3;
-- (id)_lastVisibleViewInViews:(id)a3;
+- (double)urlBaselineToBottomBoundsDistanceForHeight:(double)height;
+- (double)urlCapHeightToTopBoundsDistanceForHeight:(double)height;
+- (id)_lastVisibleViewInViews:(id)views;
 - (id)_placeholderText;
 - (id)_squishedAccessorySymbolConfiguration;
 - (id)_squishedIconView;
-- (id)_titleFontWithTraitCollection:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_titleFontWithTraitCollection:(id)collection;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)prepareForAvailabilityPresentation;
-- (void)_layOutFakeClearButtonUsingPresentationFrame:(BOOL)a3;
+- (void)_layOutFakeClearButtonUsingPresentationFrame:(BOOL)frame;
 - (void)_layOutSearchField;
 - (void)_layoutArrangedViews;
-- (void)_layoutSquishedAccessoryView:(id)a3 forView:(id)a4;
-- (void)_leadingAlignCenteredIconIfNeededAnimatingIcon:(BOOL)a3;
-- (void)_searchFieldDidChange:(id)a3;
-- (void)_setShowsFakeClearButton:(BOOL)a3;
-- (void)_slideArrangedViewsForSearchField:(double)a3;
-- (void)_updateAlignmentForAvailabilityLabel:(id)a3;
+- (void)_layoutSquishedAccessoryView:(id)view forView:(id)forView;
+- (void)_leadingAlignCenteredIconIfNeededAnimatingIcon:(BOOL)icon;
+- (void)_searchFieldDidChange:(id)change;
+- (void)_setShowsFakeClearButton:(BOOL)button;
+- (void)_slideArrangedViewsForSearchField:(double)field;
+- (void)_updateAlignmentForAvailabilityLabel:(id)label;
 - (void)_updateIcon;
 - (void)_updateIconSpacing;
-- (void)_updateKeyboardInputMode:(id)a3;
+- (void)_updateKeyboardInputMode:(id)mode;
 - (void)_updateLayoutDirectionIfNeeded;
 - (void)_updateOffsetOfTitleInSearchField;
 - (void)_updatePlaceholderText;
 - (void)_updateSearchFieldColor;
 - (void)_updateSecurityAnnotation;
-- (void)_updateSecurityAnnotationAnimated:(BOOL)a3;
+- (void)_updateSecurityAnnotationAnimated:(BOOL)animated;
 - (void)_updateSquishedAccessorySymbolConfigurations;
 - (void)_updateTitle;
 - (void)_updateTitleColor;
 - (void)_updateTitleFont;
 - (void)beginTitleTextStyleAnimation;
 - (void)beginTransitioningSearchField;
-- (void)dismissAvailabilityLabelAnimated:(BOOL)a3;
+- (void)dismissAvailabilityLabelAnimated:(BOOL)animated;
 - (void)endTitleTextStyleAnimation;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)presentAvailabilityLabelWithText:(id)a3;
-- (void)presentAvailabilityLabelWithView:(id)a3;
-- (void)setAlignment:(int64_t)a3;
-- (void)setCollapsed:(BOOL)a3;
-- (void)setDimsText:(BOOL)a3;
-- (void)setFollowsKeyboardLayoutDirection:(BOOL)a3;
-- (void)setHasFocusedSensitiveInputField:(BOOL)a3;
-- (void)setHidesIconForHover:(BOOL)a3;
-- (void)setIcon:(id)a3;
-- (void)setIconAlpha:(double)a3;
-- (void)setLeadingAlignsIcon:(BOOL)a3;
-- (void)setPlaceholderFont:(id)a3;
-- (void)setSearchField:(id)a3;
-- (void)setSecurityAnnotation:(int64_t)a3;
-- (void)setShowsIcon:(BOOL)a3;
-- (void)setShowsSearchField:(BOOL)a3;
-- (void)setShowsSearchIcon:(BOOL)a3;
-- (void)setShowsSquishedAccessoryViews:(BOOL)a3;
-- (void)setSuppressesText:(BOOL)a3;
-- (void)setTheme:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleTextStyle:(id)a3;
-- (void)setTitleToSearchIconSpacing:(double)a3;
-- (void)setTitleWeight:(double)a3;
-- (void)setTitleWhenCollapsed:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)presentAvailabilityLabelWithText:(id)text;
+- (void)presentAvailabilityLabelWithView:(id)view;
+- (void)setAlignment:(int64_t)alignment;
+- (void)setCollapsed:(BOOL)collapsed;
+- (void)setDimsText:(BOOL)text;
+- (void)setFollowsKeyboardLayoutDirection:(BOOL)direction;
+- (void)setHasFocusedSensitiveInputField:(BOOL)field;
+- (void)setHidesIconForHover:(BOOL)hover;
+- (void)setIcon:(id)icon;
+- (void)setIconAlpha:(double)alpha;
+- (void)setLeadingAlignsIcon:(BOOL)icon;
+- (void)setPlaceholderFont:(id)font;
+- (void)setSearchField:(id)field;
+- (void)setSecurityAnnotation:(int64_t)annotation;
+- (void)setShowsIcon:(BOOL)icon;
+- (void)setShowsSearchField:(BOOL)field;
+- (void)setShowsSearchIcon:(BOOL)icon;
+- (void)setShowsSquishedAccessoryViews:(BOOL)views;
+- (void)setSuppressesText:(BOOL)text;
+- (void)setTheme:(id)theme;
+- (void)setTitle:(id)title;
+- (void)setTitleTextStyle:(id)style;
+- (void)setTitleToSearchIconSpacing:(double)spacing;
+- (void)setTitleWeight:(double)weight;
+- (void)setTitleWhenCollapsed:(id)collapsed;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SFUnifiedTabBarItemTitleContainerView
 
 - (void)_updateTitleColor
 {
-  v3 = [(SFUnifiedTabBarItemTitleContainerView *)self _showsPlaceholder];
+  _showsPlaceholder = [(SFUnifiedTabBarItemTitleContainerView *)self _showsPlaceholder];
   theme = self->_theme;
-  if (v3)
+  if (_showsPlaceholder)
   {
     [(SFUnifiedTabBarItemTitleContainerViewTheme *)theme placeholderTextColor];
   }
@@ -107,12 +107,12 @@
 
 - (void)_updateSearchFieldColor
 {
-  v3 = [(SFUnifiedTabBarItemTitleContainerViewTheme *)self->_theme primaryTextColor];
-  [(UITextField *)self->_searchField setTextColor:v3];
+  primaryTextColor = [(SFUnifiedTabBarItemTitleContainerViewTheme *)self->_theme primaryTextColor];
+  [(UITextField *)self->_searchField setTextColor:primaryTextColor];
 
-  v5 = [(SFUnifiedTabBarItemTitleContainerViewTheme *)self->_theme placeholderTextColor];
-  v4 = [(UITextField *)self->_searchField _placeholderLabel];
-  [v4 setTextColor:v5];
+  placeholderTextColor = [(SFUnifiedTabBarItemTitleContainerViewTheme *)self->_theme placeholderTextColor];
+  _placeholderLabel = [(UITextField *)self->_searchField _placeholderLabel];
+  [_placeholderLabel setTextColor:placeholderTextColor];
 }
 
 - (void)_updateIconSpacing
@@ -197,31 +197,31 @@
   theme = self->_theme;
   if (theme)
   {
-    v5 = [(SFUnifiedTabBarItemTitleContainerViewTheme *)theme overrideTintColor];
-    v6 = v5;
-    if (v5)
+    overrideTintColor = [(SFUnifiedTabBarItemTitleContainerViewTheme *)theme overrideTintColor];
+    v6 = overrideTintColor;
+    if (overrideTintColor)
     {
-      v7 = v5;
+      systemRedColor = overrideTintColor;
     }
 
     else
     {
-      v7 = [MEMORY[0x1E69DC888] systemRedColor];
+      systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
     }
 
-    v8 = v7;
+    v8 = systemRedColor;
 
     if (self->_hasFocusedSensitiveInputField)
     {
-      v9 = v8;
+      secondaryTextColor = v8;
     }
 
     else
     {
-      v9 = [(SFUnifiedTabBarItemTitleContainerViewTheme *)self->_theme secondaryTextColor];
+      secondaryTextColor = [(SFUnifiedTabBarItemTitleContainerViewTheme *)self->_theme secondaryTextColor];
     }
 
-    v10 = v9;
+    v10 = secondaryTextColor;
     v11 = objc_alloc(MEMORY[0x1E696AD40]);
     v21 = *MEMORY[0x1E69DB650];
     v12 = v21;
@@ -231,8 +231,8 @@
 
     v15 = objc_alloc(MEMORY[0x1E696AAB0]);
     v19 = v12;
-    v16 = [(SFUnifiedTabBarItemTitleContainerViewTheme *)self->_theme secondaryTextColor];
-    v20 = v16;
+    secondaryTextColor2 = [(SFUnifiedTabBarItemTitleContainerViewTheme *)self->_theme secondaryTextColor];
+    v20 = secondaryTextColor2;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     v18 = [v15 initWithString:@" —" attributes:v17];
 
@@ -257,7 +257,7 @@
   {
     titleWhenCollapsed = self->_titleWhenCollapsed;
 LABEL_5:
-    v4 = titleWhenCollapsed;
+    _placeholderText = titleWhenCollapsed;
     goto LABEL_6;
   }
 
@@ -267,10 +267,10 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v4 = [(SFUnifiedTabBarItemTitleContainerView *)self _placeholderText];
+  _placeholderText = [(SFUnifiedTabBarItemTitleContainerView *)self _placeholderText];
 LABEL_6:
-  v8 = v4;
-  v5 = [(SFURLLabel *)self->_titleLabel text];
+  v8 = _placeholderText;
+  text = [(SFURLLabel *)self->_titleLabel text];
   v6 = WBSIsEqual();
 
   if ((v6 & 1) == 0)
@@ -424,19 +424,19 @@ LABEL_6:
   v25 = 0x3010000000;
   v26 = "";
   v27 = *MEMORY[0x1E695F060];
-  v3 = [(SFUnifiedTabBarItemTitleContainerView *)self _arrangedViews];
+  _arrangedViews = [(SFUnifiedTabBarItemTitleContainerView *)self _arrangedViews];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __61__SFUnifiedTabBarItemTitleContainerView_intrinsicContentSize__block_invoke;
   v22[3] = &unk_1E721DD70;
   v22[4] = self;
-  v4 = [v3 safari_filterObjectsUsingBlock:v22];
+  v4 = [_arrangedViews safari_filterObjectsUsingBlock:v22];
 
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __61__SFUnifiedTabBarItemTitleContainerView_intrinsicContentSize__block_invoke_2;
   v18 = &unk_1E721DD98;
-  v19 = self;
+  selfCopy = self;
   v21 = &v23;
   v5 = v4;
   v20 = v5;
@@ -526,12 +526,12 @@ LABEL_6:
   rect = height;
   v77.size.height = height;
   v39 = CGRectGetHeight(v77);
-  v38 = [(UIView *)self _sf_usesLeftToRightLayout];
+  _sf_usesLeftToRightLayout = [(UIView *)self _sf_usesLeftToRightLayout];
   [(SFUnifiedTabBarItemTitleContainerView *)self _effectiveDirectionalLayoutMargins];
   v40 = v10;
   v12 = v11;
-  v45 = [(SFUnifiedTabBarItemTitleContainerView *)self _arrangedViews];
-  v42 = [(SFUnifiedTabBarItemTitleContainerView *)self _lastVisibleViewInViews:v45];
+  _arrangedViews = [(SFUnifiedTabBarItemTitleContainerView *)self _arrangedViews];
+  v42 = [(SFUnifiedTabBarItemTitleContainerView *)self _lastVisibleViewInViews:_arrangedViews];
   if (v42)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -575,7 +575,7 @@ LABEL_6:
             v15 = v15 - v21;
             if (v18 != v42)
             {
-              v27 = v41[2](v41, [v45 indexOfObject:v18], v45);
+              v27 = v41[2](v41, [_arrangedViews indexOfObject:v18], _arrangedViews);
               [(SFUnifiedTabBarItemTitleContainerView *)self _spacingBetweenView:v18 nextView:v27];
               v29 = v28;
 
@@ -652,7 +652,7 @@ LABEL_6:
     v36 = v41;
     v48 = v36;
     v57 = v35;
-    v47 = v45;
+    v47 = _arrangedViews;
     v49 = &__block_literal_global_35;
     v50 = &v60;
     v58 = v13;
@@ -661,7 +661,7 @@ LABEL_6:
     v54 = v9;
     v55 = width;
     v56 = rect;
-    v59 = v38;
+    v59 = _sf_usesLeftToRightLayout;
     [v47 enumerateObjectsUsingBlock:v46];
     [(SFUnifiedTabBarItemTitleContainerView *)self _leadingAlignCenteredIconIfNeededAnimatingIcon:(v61[3] & 1) == 0];
 
@@ -720,8 +720,8 @@ uint64_t __61__SFUnifiedTabBarItemTitleContainerView__layoutArrangedViews__block
     [(SFUnifiedTabBarItemTitleContainerView *)self _updateLayoutDirectionIfNeeded];
     if (([MEMORY[0x1E69DD250] areAnimationsEnabled] & 1) == 0)
     {
-      v3 = [(UITextField *)self->_searchField layer];
-      [v3 removeAllAnimations];
+      layer = [(UITextField *)self->_searchField layer];
+      [layer removeAllAnimations];
     }
 
     [(SFUnifiedTabBarItemTitleContainerView *)self _updateOffsetOfTitleInSearchField];
@@ -779,8 +779,8 @@ uint64_t __61__SFUnifiedTabBarItemTitleContainerView__layoutArrangedViews__block
     [(UITextField *)self->_searchField setFrame:v8, v9, v10, v11];
     LOBYTE(v19) = self->_showsSearchField;
     [(UITextField *)self->_searchField setAlpha:v19];
-    v20 = [(SFUnifiedTabBarItemTitleContainerView *)self _placeholderText];
-    [(UITextField *)self->_searchField setPlaceholder:v20];
+    _placeholderText = [(SFUnifiedTabBarItemTitleContainerView *)self _placeholderText];
+    [(UITextField *)self->_searchField setPlaceholder:_placeholderText];
 
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
@@ -800,7 +800,7 @@ uint64_t __61__SFUnifiedTabBarItemTitleContainerView__layoutArrangedViews__block
   return result;
 }
 
-- (SFUnifiedTabBarItemTitleContainerView)initWithAlignment:(int64_t)a3
+- (SFUnifiedTabBarItemTitleContainerView)initWithAlignment:(int64_t)alignment
 {
   v28.receiver = self;
   v28.super_class = SFUnifiedTabBarItemTitleContainerView;
@@ -808,7 +808,7 @@ uint64_t __61__SFUnifiedTabBarItemTitleContainerView__layoutArrangedViews__block
   v5 = v4;
   if (v4)
   {
-    v4->_alignment = a3;
+    v4->_alignment = alignment;
     v4->_collapsed = 1;
     v6 = _WBSLocalizedString();
     placeholder = v5->_placeholder;
@@ -843,8 +843,8 @@ uint64_t __61__SFUnifiedTabBarItemTitleContainerView__layoutArrangedViews__block
     [(SFURLLabel *)v5->_leadingAnnotationLabel setFadeOutEdge:1];
     [(SFURLLabel *)v5->_leadingAnnotationLabel setAdjustsFontForContentSizeCategory:1];
     [(SFURLLabel *)v5->_leadingAnnotationLabel setClipsToBounds:1];
-    v17 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(SFURLLabel *)v5->_leadingAnnotationLabel setTextColor:v17];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(SFURLLabel *)v5->_leadingAnnotationLabel setTextColor:secondaryLabelColor];
 
     [(SFUnifiedTabBarItemTitleContainerView *)v5 addSubview:v5->_leadingAnnotationLabel];
     v18 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -855,8 +855,8 @@ uint64_t __61__SFUnifiedTabBarItemTitleContainerView__layoutArrangedViews__block
     v20 = _WBSLocalizedString();
     [(UILabel *)v5->_trailingAnnotationLabel setText:v20];
 
-    v21 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v5->_trailingAnnotationLabel setTextColor:v21];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v5->_trailingAnnotationLabel setTextColor:secondaryLabelColor2];
 
     [(SFUnifiedTabBarItemTitleContainerView *)v5 addSubview:v5->_trailingAnnotationLabel];
     [(SFUnifiedTabBarItemTitleContainerView *)v5 setAccessibilityIdentifier:@"TabBarItemTitleContainer"];
@@ -889,14 +889,14 @@ void __59__SFUnifiedTabBarItemTitleContainerView_initWithAlignment___block_invok
   }
 }
 
-- (void)_updateKeyboardInputMode:(id)a3
+- (void)_updateKeyboardInputMode:(id)mode
 {
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 safari_currentKeyboardInputIsRTL];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  safari_currentKeyboardInputIsRTL = [mEMORY[0x1E69DC668] safari_currentKeyboardInputIsRTL];
 
-  if (self->_keyboardInputModeIsRTL != v5)
+  if (self->_keyboardInputModeIsRTL != safari_currentKeyboardInputIsRTL)
   {
-    self->_keyboardInputModeIsRTL = v5;
+    self->_keyboardInputModeIsRTL = safari_currentKeyboardInputIsRTL;
     if ([(SFUnifiedTabBarItemTitleContainerView *)self _canUpdateLayoutDirectionImmediately])
     {
 
@@ -937,7 +937,7 @@ void __59__SFUnifiedTabBarItemTitleContainerView_initWithAlignment___block_invok
   }
 }
 
-- (void)_searchFieldDidChange:(id)a3
+- (void)_searchFieldDidChange:(id)change
 {
   if ([(SFUnifiedTabBarItemTitleContainerView *)self _canUpdateLayoutDirectionImmediately])
   {
@@ -948,58 +948,58 @@ void __59__SFUnifiedTabBarItemTitleContainerView_initWithAlignment___block_invok
 
 - (BOOL)_canUpdateLayoutDirectionImmediately
 {
-  v3 = [(UITextField *)self->_searchField text];
-  if ([v3 length])
+  text = [(UITextField *)self->_searchField text];
+  if ([text length])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v5 = [(UITextField *)self->_searchField _fieldEditor];
-    v4 = [v5 isHidden] ^ 1;
+    _fieldEditor = [(UITextField *)self->_searchField _fieldEditor];
+    v4 = [_fieldEditor isHidden] ^ 1;
   }
 
   return v4;
 }
 
-- (void)setFollowsKeyboardLayoutDirection:(BOOL)a3
+- (void)setFollowsKeyboardLayoutDirection:(BOOL)direction
 {
-  if (self->_followsKeyboardLayoutDirection != a3)
+  if (self->_followsKeyboardLayoutDirection != direction)
   {
-    v4 = a3;
-    self->_followsKeyboardLayoutDirection = a3;
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    if (v4)
+    directionCopy = direction;
+    self->_followsKeyboardLayoutDirection = direction;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    if (directionCopy)
     {
-      v6 = [MEMORY[0x1E69DC668] sharedApplication];
-      self->_keyboardInputModeIsRTL = [v6 safari_currentKeyboardInputIsRTL];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      self->_keyboardInputModeIsRTL = [mEMORY[0x1E69DC668] safari_currentKeyboardInputIsRTL];
 
-      [v7 addObserver:self selector:sel__updateKeyboardInputMode_ name:*MEMORY[0x1E69DE6B8] object:0];
-      [v7 addObserver:self selector:sel__updateLayoutDirectionIfNeeded name:@"UpdateSmartSearchFieldLayoutImmediately" object:0];
+      [defaultCenter addObserver:self selector:sel__updateKeyboardInputMode_ name:*MEMORY[0x1E69DE6B8] object:0];
+      [defaultCenter addObserver:self selector:sel__updateLayoutDirectionIfNeeded name:@"UpdateSmartSearchFieldLayoutImmediately" object:0];
     }
 
     else
     {
-      [v7 removeObserver:self name:*MEMORY[0x1E69DE6B8] object:0];
-      [v7 removeObserver:self name:@"UpdateSmartSearchFieldLayoutImmediately" object:0];
+      [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE6B8] object:0];
+      [defaultCenter removeObserver:self name:@"UpdateSmartSearchFieldLayoutImmediately" object:0];
     }
 
     [(SFUnifiedTabBarItemTitleContainerView *)self _updateLayoutDirectionIfNeeded];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = SFUnifiedTabBarItemTitleContainerView;
-  v4 = a3;
-  [(SFUnifiedTabBarItemTitleContainerView *)&v9 traitCollectionDidChange:v4];
-  v5 = [v4 preferredContentSizeCategory];
+  changeCopy = change;
+  [(SFUnifiedTabBarItemTitleContainerView *)&v9 traitCollectionDidChange:changeCopy];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v6 = [(SFUnifiedTabBarItemTitleContainerView *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  v8 = [v5 isEqual:v7];
+  traitCollection = [(SFUnifiedTabBarItemTitleContainerView *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+  v8 = [preferredContentSizeCategory isEqual:preferredContentSizeCategory2];
 
   if ((v8 & 1) == 0)
   {
@@ -1009,11 +1009,11 @@ void __59__SFUnifiedTabBarItemTitleContainerView_initWithAlignment___block_invok
   }
 }
 
-- (void)setAlignment:(int64_t)a3
+- (void)setAlignment:(int64_t)alignment
 {
-  if (self->_alignment != a3)
+  if (self->_alignment != alignment)
   {
-    self->_alignment = a3;
+    self->_alignment = alignment;
     [(SFUnifiedTabBarItemTitleContainerView *)self _updateAlignmentForAvailabilityLabel:self->_availabilityLabel];
     [(SFUnifiedTabBarItemTitleContainerView *)self _updateIconSpacing];
 
@@ -1021,44 +1021,44 @@ void __59__SFUnifiedTabBarItemTitleContainerView_initWithAlignment___block_invok
   }
 }
 
-- (void)setLeadingAlignsIcon:(BOOL)a3
+- (void)setLeadingAlignsIcon:(BOOL)icon
 {
-  if (self->_leadingAlignsIcon != a3)
+  if (self->_leadingAlignsIcon != icon)
   {
-    self->_leadingAlignsIcon = a3;
+    self->_leadingAlignsIcon = icon;
     [(SFUnifiedTabBarItemTitleContainerView *)self setNeedsLayout];
   }
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v5 = a3;
-  if (self->_icon != v5)
+  iconCopy = icon;
+  if (self->_icon != iconCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_icon, a3);
+    v6 = iconCopy;
+    objc_storeStrong(&self->_icon, icon);
     [(SFUnifiedTabBarItemTitleContainerView *)self _updateIcon];
     [(SFUnifiedTabBarItemTitleContainerView *)self setNeedsLayout];
     [(SFUnifiedTabBarItemTitleContainerView *)self invalidateIntrinsicContentSize];
-    v5 = v6;
+    iconCopy = v6;
   }
 }
 
-- (void)setTitleToSearchIconSpacing:(double)a3
+- (void)setTitleToSearchIconSpacing:(double)spacing
 {
-  if (self->_titleToSearchIconSpacing != a3)
+  if (self->_titleToSearchIconSpacing != spacing)
   {
-    self->_titleToSearchIconSpacing = a3;
+    self->_titleToSearchIconSpacing = spacing;
     [(SFUnifiedTabBarItemTitleContainerView *)self _updateIconSpacing];
   }
 }
 
-- (void)setTitleWhenCollapsed:(id)a3
+- (void)setTitleWhenCollapsed:(id)collapsed
 {
-  v6 = a3;
+  collapsedCopy = collapsed;
   if ((WBSIsEqual() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [collapsedCopy copy];
     titleWhenCollapsed = self->_titleWhenCollapsed;
     self->_titleWhenCollapsed = v4;
 
@@ -1066,16 +1066,16 @@ void __59__SFUnifiedTabBarItemTitleContainerView_initWithAlignment___block_invok
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   if ((WBSIsEqual() & 1) == 0)
   {
     if ([(SFUnifiedTabBarItemTitleContainerView *)self showsSearchIcon])
     {
       v5 = [(NSString *)self->_title length]== 0;
-      v6 = [v4 length] == 0;
-      v7 = [v4 copy];
+      v6 = [titleCopy length] == 0;
+      v7 = [titleCopy copy];
       title = self->_title;
       self->_title = v7;
 
@@ -1089,7 +1089,7 @@ void __59__SFUnifiedTabBarItemTitleContainerView_initWithAlignment___block_invok
 
     else
     {
-      v9 = [v4 copy];
+      v9 = [titleCopy copy];
       v10 = self->_title;
       self->_title = v9;
 
@@ -1098,9 +1098,9 @@ void __59__SFUnifiedTabBarItemTitleContainerView_initWithAlignment___block_invok
 
     if (!self->_collapsed && self->_alignment == 1)
     {
-      v11 = [(SFUnifiedTabBarItemTitleContainerView *)self window];
+      window = [(SFUnifiedTabBarItemTitleContainerView *)self window];
 
-      if (v11)
+      if (window)
       {
         v12[0] = MEMORY[0x1E69E9820];
         v12[1] = 3221225472;
@@ -1113,60 +1113,60 @@ void __59__SFUnifiedTabBarItemTitleContainerView_initWithAlignment___block_invok
   }
 }
 
-- (void)setTitleTextStyle:(id)a3
+- (void)setTitleTextStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_titleTextStyle, a3);
+    objc_storeStrong(&self->_titleTextStyle, style);
     [(SFUnifiedTabBarItemTitleContainerView *)self _updateTitle];
   }
 }
 
-- (void)setTitleWeight:(double)a3
+- (void)setTitleWeight:(double)weight
 {
-  if (self->_titleWeight != a3)
+  if (self->_titleWeight != weight)
   {
-    self->_titleWeight = a3;
+    self->_titleWeight = weight;
     [(SFUnifiedTabBarItemTitleContainerView *)self _updateTitle];
   }
 }
 
-- (void)setPlaceholderFont:(id)a3
+- (void)setPlaceholderFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_placeholderFont, a3);
+    objc_storeStrong(&self->_placeholderFont, font);
     [(SFUnifiedTabBarItemTitleContainerView *)self _updateTitleFont];
   }
 }
 
-- (void)setShowsIcon:(BOOL)a3
+- (void)setShowsIcon:(BOOL)icon
 {
-  if (self->_showsIcon != a3)
+  if (self->_showsIcon != icon)
   {
-    self->_showsIcon = a3;
+    self->_showsIcon = icon;
     [(SFUnifiedTabBarItemTitleContainerView *)self setNeedsLayout];
 
     [(SFUnifiedTabBarItemTitleContainerView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setIconAlpha:(double)a3
+- (void)setIconAlpha:(double)alpha
 {
-  if (self->_iconAlpha != a3)
+  if (self->_iconAlpha != alpha)
   {
-    self->_iconAlpha = a3;
+    self->_iconAlpha = alpha;
     [(SFUnifiedTabBarItemTitleContainerView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowsSearchIcon:(BOOL)a3
+- (void)setShowsSearchIcon:(BOOL)icon
 {
-  if (self->_showsSearchIcon != a3)
+  if (self->_showsSearchIcon != icon)
   {
-    self->_showsSearchIcon = a3;
+    self->_showsSearchIcon = icon;
     [(SFUnifiedTabBarItemTitleContainerView *)self _updateIcon];
     [(SFUnifiedTabBarItemTitleContainerView *)self _updateIconSpacing];
     [(SFUnifiedTabBarItemTitleContainerView *)self invalidateIntrinsicContentSize];
@@ -1175,13 +1175,13 @@ void __59__SFUnifiedTabBarItemTitleContainerView_initWithAlignment___block_invok
   }
 }
 
-- (void)setSecurityAnnotation:(int64_t)a3
+- (void)setSecurityAnnotation:(int64_t)annotation
 {
-  if (self->_securityAnnotation != a3)
+  if (self->_securityAnnotation != annotation)
   {
     [(SFUnifiedTabBarItemTitleContainerView *)self setNeedsLayout];
     [(SFUnifiedTabBarItemTitleContainerView *)self invalidateIntrinsicContentSize];
-    self->_securityAnnotation = a3;
+    self->_securityAnnotation = annotation;
     if (self->_collapsed)
     {
 
@@ -1190,28 +1190,28 @@ void __59__SFUnifiedTabBarItemTitleContainerView_initWithAlignment___block_invok
 
     else
     {
-      v5 = [(SFUnifiedTabBarItemTitleContainerView *)self window];
-      [(SFUnifiedTabBarItemTitleContainerView *)self _updateSecurityAnnotationAnimated:v5 != 0];
+      window = [(SFUnifiedTabBarItemTitleContainerView *)self window];
+      [(SFUnifiedTabBarItemTitleContainerView *)self _updateSecurityAnnotationAnimated:window != 0];
     }
   }
 }
 
-- (void)setHasFocusedSensitiveInputField:(BOOL)a3
+- (void)setHasFocusedSensitiveInputField:(BOOL)field
 {
-  if (self->_hasFocusedSensitiveInputField != a3)
+  if (self->_hasFocusedSensitiveInputField != field)
   {
-    self->_hasFocusedSensitiveInputField = a3;
+    self->_hasFocusedSensitiveInputField = field;
     [(SFUnifiedTabBarItemTitleContainerView *)self _updateSecurityAnnotation];
   }
 }
 
-- (void)_updateSecurityAnnotationAnimated:(BOOL)a3
+- (void)_updateSecurityAnnotationAnimated:(BOOL)animated
 {
   if (self->_securityAnnotation)
   {
-    v3 = a3;
+    animatedCopy = animated;
     [(SFUnifiedTabBarItemTitleContainerView *)self _updateSecurityAnnotation];
-    if (v3)
+    if (animatedCopy)
     {
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
@@ -1223,31 +1223,31 @@ void __59__SFUnifiedTabBarItemTitleContainerView_initWithAlignment___block_invok
   }
 }
 
-- (void)setSearchField:(id)a3
+- (void)setSearchField:(id)field
 {
-  v5 = a3;
+  fieldCopy = field;
   searchField = self->_searchField;
-  if (searchField != v5)
+  if (searchField != fieldCopy)
   {
     [(UITextField *)searchField removeTarget:self action:sel__searchFieldDidChange_ forControlEvents:0x20000];
-    [(UITextField *)v5 addTarget:self action:sel__searchFieldDidChange_ forControlEvents:0x20000];
-    v7 = [(UITextField *)self->_searchField superview];
+    [(UITextField *)fieldCopy addTarget:self action:sel__searchFieldDidChange_ forControlEvents:0x20000];
+    superview = [(UITextField *)self->_searchField superview];
 
-    if (v7 == self)
+    if (superview == self)
     {
       [(UITextField *)self->_searchField removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_searchField, a3);
-    if (v5)
+    objc_storeStrong(&self->_searchField, field);
+    if (fieldCopy)
     {
       v8 = MEMORY[0x1E69DD250];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __56__SFUnifiedTabBarItemTitleContainerView_setSearchField___block_invoke;
       v9[3] = &unk_1E721B400;
-      v10 = v5;
-      v11 = self;
+      v10 = fieldCopy;
+      selfCopy = self;
       [v8 performWithoutAnimation:v9];
     }
 
@@ -1283,29 +1283,29 @@ uint64_t __56__SFUnifiedTabBarItemTitleContainerView_setSearchField___block_invo
   return [v5 layoutIfNeeded];
 }
 
-- (void)setShowsSearchField:(BOOL)a3
+- (void)setShowsSearchField:(BOOL)field
 {
-  if (self->_showsSearchField != a3)
+  if (self->_showsSearchField != field)
   {
-    self->_showsSearchField = a3;
+    self->_showsSearchField = field;
     [(SFUnifiedTabBarItemTitleContainerView *)self setNeedsLayout];
   }
 }
 
-- (void)setSuppressesText:(BOOL)a3
+- (void)setSuppressesText:(BOOL)text
 {
-  if (self->_suppressesText != a3)
+  if (self->_suppressesText != text)
   {
-    self->_suppressesText = a3;
+    self->_suppressesText = text;
     [(SFUnifiedTabBarItemTitleContainerView *)self setNeedsLayout];
   }
 }
 
-- (void)setHidesIconForHover:(BOOL)a3
+- (void)setHidesIconForHover:(BOOL)hover
 {
-  if (self->_hidesIconForHover != a3)
+  if (self->_hidesIconForHover != hover)
   {
-    self->_hidesIconForHover = a3;
+    self->_hidesIconForHover = hover;
     [(SFUnifiedTabBarItemTitleContainerView *)self _layoutArrangedViews];
   }
 }
@@ -1320,13 +1320,13 @@ uint64_t __56__SFUnifiedTabBarItemTitleContainerView_setSearchField___block_invo
   return result;
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
-  if (self->_collapsed != a3)
+  if (self->_collapsed != collapsed)
   {
     v6[7] = v3;
     v6[8] = v4;
-    self->_collapsed = a3;
+    self->_collapsed = collapsed;
     [(SFUnifiedTabBarItemTitleContainerView *)self _updateIcon];
     [(SFUnifiedTabBarItemTitleContainerView *)self _updateTitle];
     [(SFUnifiedTabBarItemTitleContainerView *)self setNeedsLayout];
@@ -1339,39 +1339,39 @@ uint64_t __56__SFUnifiedTabBarItemTitleContainerView_setSearchField___block_invo
   }
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  v10 = a3;
-  objc_storeStrong(&self->_theme, a3);
-  v5 = [v10 secondaryTextColor];
-  [(SFURLLabel *)self->_leadingAnnotationLabel setTextColor:v5];
+  themeCopy = theme;
+  objc_storeStrong(&self->_theme, theme);
+  secondaryTextColor = [themeCopy secondaryTextColor];
+  [(SFURLLabel *)self->_leadingAnnotationLabel setTextColor:secondaryTextColor];
 
-  v6 = [v10 secondaryTextColor];
-  [(UILabel *)self->_trailingAnnotationLabel setTextColor:v6];
+  secondaryTextColor2 = [themeCopy secondaryTextColor];
+  [(UILabel *)self->_trailingAnnotationLabel setTextColor:secondaryTextColor2];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v10 primaryTextColor];
-    [(UIView *)self->_availabilityLabel setTextColor:v7];
+    primaryTextColor = [themeCopy primaryTextColor];
+    [(UIView *)self->_availabilityLabel setTextColor:primaryTextColor];
   }
 
-  v8 = [v10 primaryTextColor];
-  [(UIImageView *)self->_squishedIconView setTintColor:v8];
+  primaryTextColor2 = [themeCopy primaryTextColor];
+  [(UIImageView *)self->_squishedIconView setTintColor:primaryTextColor2];
 
-  v9 = [v10 themeColor];
-  [(SFFaviconView *)self->_iconView setThemeColor:v9];
+  themeColor = [themeCopy themeColor];
+  [(SFFaviconView *)self->_iconView setThemeColor:themeColor];
 
   [(SFUnifiedTabBarItemTitleContainerView *)self _updateTitleColor];
   [(SFUnifiedTabBarItemTitleContainerView *)self _updateSecurityAnnotation];
   [(SFUnifiedTabBarItemTitleContainerView *)self _updateSearchFieldColor];
 }
 
-- (void)setDimsText:(BOOL)a3
+- (void)setDimsText:(BOOL)text
 {
-  if (self->_dimsText != a3)
+  if (self->_dimsText != text)
   {
-    self->_dimsText = a3;
+    self->_dimsText = text;
     [(SFUnifiedTabBarItemTitleContainerView *)self setNeedsLayout];
   }
 }
@@ -1422,11 +1422,11 @@ uint64_t __56__SFUnifiedTabBarItemTitleContainerView_setSearchField___block_invo
   }
 }
 
-- (id)_titleFontWithTraitCollection:(id)a3
+- (id)_titleFontWithTraitCollection:(id)collection
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:self->_titleTextStyle compatibleWithTraitCollection:a3];
-  v5 = [v4 fontDescriptor];
+  v4 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:self->_titleTextStyle compatibleWithTraitCollection:collection];
+  fontDescriptor = [v4 fontDescriptor];
   v15 = *MEMORY[0x1E69DB8F0];
   v13 = *MEMORY[0x1E69DB990];
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_titleWeight];
@@ -1434,7 +1434,7 @@ uint64_t __56__SFUnifiedTabBarItemTitleContainerView_setSearchField___block_invo
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
   v16[0] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-  v9 = [v5 fontDescriptorByAddingAttributes:v8];
+  v9 = [fontDescriptor fontDescriptorByAddingAttributes:v8];
 
   v10 = MEMORY[0x1E69DB878];
   [v4 pointSize];
@@ -1598,11 +1598,11 @@ uint64_t __61__SFUnifiedTabBarItemTitleContainerView__layoutArrangedViews__block
   return [v4 setCenter:?];
 }
 
-- (BOOL)_showsView:(id)a3
+- (BOOL)_showsView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_narrow && self->_iconView != v4)
+  viewCopy = view;
+  v5 = viewCopy;
+  if (self->_narrow && self->_iconView != viewCopy)
   {
     goto LABEL_8;
   }
@@ -1653,9 +1653,9 @@ LABEL_21:
   return v8 & 1;
 }
 
-- (double)_alphaForView:(id)a3
+- (double)_alphaForView:(id)view
 {
-  if (self->_iconView == a3 && !self->_showsSearchIcon)
+  if (self->_iconView == view && !self->_showsSearchIcon)
   {
     return self->_iconAlpha;
   }
@@ -1669,15 +1669,15 @@ LABEL_21:
   return result;
 }
 
-- (id)_lastVisibleViewInViews:(id)a3
+- (id)_lastVisibleViewInViews:(id)views
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a3 reverseObjectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  reverseObjectEnumerator = [views reverseObjectEnumerator];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1688,7 +1688,7 @@ LABEL_21:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -1699,7 +1699,7 @@ LABEL_21:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -1715,10 +1715,10 @@ LABEL_11:
   return v10;
 }
 
-- (double)_collapsedWidthForView:(id)a3
+- (double)_collapsedWidthForView:(id)view
 {
   result = 0.0;
-  if (self->_titleLabel == a3)
+  if (self->_titleLabel == view)
   {
     return 15.0;
   }
@@ -1726,9 +1726,9 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)_preferredSizeForView:(id)a3
+- (CGSize)_preferredSizeForView:(id)view
 {
-  if (self->_iconView == a3)
+  if (self->_iconView == view)
   {
     [(SFUnifiedTabBarItemTitleContainerView *)self _iconSize];
     if (self->_showsSearchIcon && !self->_collapsed)
@@ -1749,7 +1749,7 @@ LABEL_11:
     v3 = *MEMORY[0x1E695F060];
     v4 = *(MEMORY[0x1E695F060] + 8);
 
-    [a3 sizeThatFits:{v3, v4}];
+    [view sizeThatFits:{v3, v4}];
   }
 
   result.height = v6;
@@ -1757,15 +1757,15 @@ LABEL_11:
   return result;
 }
 
-- (double)_spacingBetweenView:(id)a3 nextView:(id)a4
+- (double)_spacingBetweenView:(id)view nextView:(id)nextView
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  viewCopy = view;
+  nextViewCopy = nextView;
+  v8 = nextViewCopy;
   iconSpacing = 0.0;
-  if (v6 && v7)
+  if (viewCopy && nextViewCopy)
   {
-    if (self->_iconView == v6)
+    if (self->_iconView == viewCopy)
     {
       iconSpacing = self->_iconSpacing;
     }
@@ -1776,7 +1776,7 @@ LABEL_11:
       v12[1] = 3221225472;
       v12[2] = __70__SFUnifiedTabBarItemTitleContainerView__spacingBetweenView_nextView___block_invoke;
       v12[3] = &unk_1E721DD48;
-      v13 = v6;
+      v13 = viewCopy;
       v14 = v8;
       v10 = _Block_copy(v12);
       if (v10[2](v10, self->_iconView) && self->_showsSearchIcon)
@@ -1799,11 +1799,11 @@ LABEL_11:
   return iconSpacing;
 }
 
-- (void)_layOutFakeClearButtonUsingPresentationFrame:(BOOL)a3
+- (void)_layOutFakeClearButtonUsingPresentationFrame:(BOOL)frame
 {
   if (self->_fakeClearButton)
   {
-    v3 = a3;
+    frameCopy = frame;
     searchField = self->_searchField;
     [(SFUnifiedTabBarItemTitleContainerView *)self _searchFieldFrame];
     [(UITextField *)searchField clearButtonRectForBounds:?];
@@ -1811,11 +1811,11 @@ LABEL_11:
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    if (v3)
+    if (frameCopy)
     {
-      v14 = [(SFUnifiedTabBarItemTitleContainerView *)self layer];
-      v15 = [v14 presentationLayer];
-      [v15 frame];
+      layer = [(SFUnifiedTabBarItemTitleContainerView *)self layer];
+      presentationLayer = [layer presentationLayer];
+      [presentationLayer frame];
       MaxX = CGRectGetMaxX(v22);
       [(SFUnifiedTabBarItemTitleContainerView *)self frame];
       v7 = v7 + MaxX - CGRectGetMaxX(v23);
@@ -1882,15 +1882,15 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
   return result;
 }
 
-- (void)_slideArrangedViewsForSearchField:(double)a3
+- (void)_slideArrangedViewsForSearchField:(double)field
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(SFUnifiedTabBarItemTitleContainerView *)self _arrangedViews];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _arrangedViews = [(SFUnifiedTabBarItemTitleContainerView *)self _arrangedViews];
+  v6 = [_arrangedViews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1901,31 +1901,31 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_arrangedViews);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
         if ([(SFUnifiedTabBarItemTitleContainerView *)self _shouldSlideArrangedViewForSearchField:v10])
         {
           [v10 frame];
-          v18 = CGRectOffset(v17, a3, 0.0);
+          v18 = CGRectOffset(v17, field, 0.0);
           [v10 setFrame:{v18.origin.x, v18.origin.y, v18.size.width, v18.size.height}];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [_arrangedViews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_leadingAlignCenteredIconIfNeededAnimatingIcon:(BOOL)a3
+- (void)_leadingAlignCenteredIconIfNeededAnimatingIcon:(BOOL)icon
 {
   v41 = *MEMORY[0x1E69E9840];
   if (self->_alignment == 1 && self->_leadingAlignsIcon)
   {
-    v4 = a3;
+    iconCopy = icon;
     if ([(SFUnifiedTabBarItemTitleContainerView *)self _showsView:self->_iconView])
     {
       [(SFUnifiedTabBarItemTitleContainerView *)self bounds];
@@ -1935,7 +1935,7 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
       v12 = v11;
       [(SFUnifiedTabBarItemTitleContainerView *)self _iconSize];
       v14 = v13;
-      v15 = [(UIView *)self _sf_usesLeftToRightLayout];
+      _sf_usesLeftToRightLayout = [(UIView *)self _sf_usesLeftToRightLayout];
       [(SFUnifiedTabBarItemTitleContainerView *)self directionalLayoutMargins];
       v17 = v16;
       v42.origin.x = v6;
@@ -1943,7 +1943,7 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
       v42.size.width = v10;
       v42.size.height = v12;
       Height = CGRectGetHeight(v42);
-      v19 = _SFFlipRectInCoordinateSpace(!v15, v17, (Height - v14) * 0.5, v14, v14, v6, v8, v10, v12);
+      v19 = _SFFlipRectInCoordinateSpace(!_sf_usesLeftToRightLayout, v17, (Height - v14) * 0.5, v14, v14, v6, v8, v10, v12);
       v21 = v20;
       v23 = v22;
       v25 = v24;
@@ -1956,7 +1956,7 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
       v27 = fmin(vabdd_f64(MinX, CGRectGetMinX(v44)), (v14 + self->_iconSpacing) * 0.5);
       v36 = 0u;
       v37 = 0u;
-      if (v15)
+      if (_sf_usesLeftToRightLayout)
       {
         v28 = -v27;
       }
@@ -1968,8 +1968,8 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
 
       v38 = 0uLL;
       v39 = 0uLL;
-      v29 = [(SFUnifiedTabBarItemTitleContainerView *)self _arrangedViews];
-      v30 = [v29 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      _arrangedViews = [(SFUnifiedTabBarItemTitleContainerView *)self _arrangedViews];
+      v30 = [_arrangedViews countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v30)
       {
         v31 = v30;
@@ -1980,7 +1980,7 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
           {
             if (*v37 != v32)
             {
-              objc_enumerationMutation(v29);
+              objc_enumerationMutation(_arrangedViews);
             }
 
             v34 = *(*(&v36 + 1) + 8 * i);
@@ -1989,13 +1989,13 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
             [v34 setFrame:{v46.origin.x, v46.origin.y, v46.size.width, v46.size.height}];
           }
 
-          v31 = [v29 countByEnumeratingWithState:&v36 objects:v40 count:16];
+          v31 = [_arrangedViews countByEnumeratingWithState:&v36 objects:v40 count:16];
         }
 
         while (v31);
       }
 
-      if (v4)
+      if (iconCopy)
       {
         [(SFFaviconView *)self->_iconView setFrame:v19, v21, v23, v25];
       }
@@ -2035,18 +2035,18 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
   return result;
 }
 
-- (double)urlBaselineToBottomBoundsDistanceForHeight:(double)a3
+- (double)urlBaselineToBottomBoundsDistanceForHeight:(double)height
 {
   [(SFURLLabel *)self->_titleLabel urlSize];
-  v6 = (a3 - v5) * 0.5;
+  v6 = (height - v5) * 0.5;
   [(SFURLLabel *)self->_titleLabel baselineOffsetFromBottom];
   return v7 + v6;
 }
 
-- (double)urlCapHeightToTopBoundsDistanceForHeight:(double)a3
+- (double)urlCapHeightToTopBoundsDistanceForHeight:(double)height
 {
   [(SFURLLabel *)self->_titleLabel urlSize];
-  v6 = (a3 - v5) * 0.5;
+  v6 = (height - v5) * 0.5;
   [(SFURLLabel *)self->_titleLabel labelCapHeightInsetFromTop];
   return v7 + v6;
 }
@@ -2078,8 +2078,8 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [(SFUnifiedTabBarItemTitleContainerView *)self _arrangedViews];
-  v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  _arrangedViews = [(SFUnifiedTabBarItemTitleContainerView *)self _arrangedViews];
+  v8 = [_arrangedViews countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2090,7 +2090,7 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_arrangedViews);
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
@@ -2113,7 +2113,7 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v9 = [_arrangedViews countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v9);
@@ -2151,27 +2151,27 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
 
 - (void)beginTransitioningSearchField
 {
-  v3 = [(UITextField *)self->_searchField text];
-  -[SFUnifiedTabBarItemTitleContainerView _setShowsFakeClearButton:](self, "_setShowsFakeClearButton:", [v3 length] != 0);
+  text = [(UITextField *)self->_searchField text];
+  -[SFUnifiedTabBarItemTitleContainerView _setShowsFakeClearButton:](self, "_setShowsFakeClearButton:", [text length] != 0);
 }
 
-- (void)_setShowsFakeClearButton:(BOOL)a3
+- (void)_setShowsFakeClearButton:(BOOL)button
 {
-  v3 = a3;
-  if ([(SFUnifiedTabBarItemTitleContainerView *)self _showsFakeClearButton]!= a3)
+  buttonCopy = button;
+  if ([(SFUnifiedTabBarItemTitleContainerView *)self _showsFakeClearButton]!= button)
   {
-    v5 = [(UITextField *)self->_searchField _clearButton];
-    [v5 setHidden:v3];
+    _clearButton = [(UITextField *)self->_searchField _clearButton];
+    [_clearButton setHidden:buttonCopy];
 
-    if (v3)
+    if (buttonCopy)
     {
       v6 = objc_alloc_init(MEMORY[0x1E69DC738]);
       fakeClearButton = self->_fakeClearButton;
       self->_fakeClearButton = v6;
 
       v8 = self->_fakeClearButton;
-      v9 = [(UITextField *)self->_searchField _clearButton];
-      v10 = [v9 imageForState:0];
+      _clearButton2 = [(UITextField *)self->_searchField _clearButton];
+      v10 = [_clearButton2 imageForState:0];
       [(UIButton *)v8 setImage:v10 forState:0];
 
       [(SFUnifiedTabBarItemTitleContainerView *)self addSubview:self->_fakeClearButton];
@@ -2200,8 +2200,8 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
     v5 = objc_alloc(MEMORY[0x1E696AAB0]);
     textWhenExpanded = self->_textWhenExpanded;
     v13 = *MEMORY[0x1E69DB648];
-    v7 = [(SFUnifiedTabBarItemTitleContainerView *)self traitCollection];
-    v8 = [(SFUnifiedTabBarItemTitleContainerView *)self _titleFontWithTraitCollection:v7];
+    traitCollection = [(SFUnifiedTabBarItemTitleContainerView *)self traitCollection];
+    v8 = [(SFUnifiedTabBarItemTitleContainerView *)self _titleFontWithTraitCollection:traitCollection];
     v14[0] = v8;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     v10 = [v5 initWithString:textWhenExpanded attributes:v9];
@@ -2223,11 +2223,11 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SFUnifiedTabBarItemTitleContainerView;
-  v5 = [(SFUnifiedTabBarItemTitleContainerView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SFUnifiedTabBarItemTitleContainerView *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (self->_showsSearchField && [v5 isDescendantOfView:self->_searchField])
   {
@@ -2245,18 +2245,18 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
 - (NSArray)squishedAccessoryViews
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [(SFUnifiedTabBarItemTitleContainerView *)self _squishedIconView];
-  v5[0] = v2;
+  _squishedIconView = [(SFUnifiedTabBarItemTitleContainerView *)self _squishedIconView];
+  v5[0] = _squishedIconView;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 
   return v3;
 }
 
-- (void)setShowsSquishedAccessoryViews:(BOOL)a3
+- (void)setShowsSquishedAccessoryViews:(BOOL)views
 {
-  if (self->_showsSquishedAccessoryViews != a3)
+  if (self->_showsSquishedAccessoryViews != views)
   {
-    self->_showsSquishedAccessoryViews = a3;
+    self->_showsSquishedAccessoryViews = views;
     [(SFUnifiedTabBarItemTitleContainerView *)self setNeedsLayout];
   }
 }
@@ -2272,11 +2272,11 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
     v7 = self->_squishedIconView;
     self->_squishedIconView = v6;
 
-    v8 = [(SFUnifiedTabBarItemTitleContainerView *)self _squishedAccessorySymbolConfiguration];
-    [(UIImageView *)self->_squishedIconView setPreferredSymbolConfiguration:v8];
+    _squishedAccessorySymbolConfiguration = [(SFUnifiedTabBarItemTitleContainerView *)self _squishedAccessorySymbolConfiguration];
+    [(UIImageView *)self->_squishedIconView setPreferredSymbolConfiguration:_squishedAccessorySymbolConfiguration];
 
-    v9 = [(SFUnifiedTabBarItemTitleContainerViewTheme *)self->_theme primaryTextColor];
-    [(UIImageView *)self->_squishedIconView setTintColor:v9];
+    primaryTextColor = [(SFUnifiedTabBarItemTitleContainerViewTheme *)self->_theme primaryTextColor];
+    [(UIImageView *)self->_squishedIconView setTintColor:primaryTextColor];
 
     squishedIconView = self->_squishedIconView;
   }
@@ -2286,24 +2286,24 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
   return v10;
 }
 
-- (void)_layoutSquishedAccessoryView:(id)a3 forView:(id)a4
+- (void)_layoutSquishedAccessoryView:(id)view forView:(id)forView
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  viewCopy = view;
+  forViewCopy = forView;
+  v8 = forViewCopy;
+  if (viewCopy)
   {
-    [v7 setHidden:self->_showsSquishedAccessoryViews];
-    [v6 setHidden:{-[SFUnifiedTabBarItemTitleContainerView _showsView:](self, "_showsView:", v8) ^ 1}];
+    [forViewCopy setHidden:self->_showsSquishedAccessoryViews];
+    [viewCopy setHidden:{-[SFUnifiedTabBarItemTitleContainerView _showsView:](self, "_showsView:", v8) ^ 1}];
     if (self->_showsSquishedAccessoryViews)
     {
-      [v6 sizeToFit];
-      v9 = [v8 superview];
+      [viewCopy sizeToFit];
+      superview = [v8 superview];
       [v8 center];
       v11 = v10;
       v13 = v12;
-      v14 = [v6 superview];
-      [v9 convertPoint:v14 toView:{v11, v13}];
+      superview2 = [viewCopy superview];
+      [superview convertPoint:superview2 toView:{v11, v13}];
       v16 = v15;
       v18 = v17;
 
@@ -2312,17 +2312,17 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
         v19 = WBS_LOG_CHANNEL_PREFIXTabBar();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
         {
-          [(SFUnifiedTabBarItemTitleContainerView *)v19 _layoutSquishedAccessoryView:v6 forView:v8];
+          [(SFUnifiedTabBarItemTitleContainerView *)v19 _layoutSquishedAccessoryView:viewCopy forView:v8];
         }
       }
 
       else
       {
-        [v6 setCenter:{v16, v18}];
-        [v6 frame];
-        [v6 setFrame:_SFRoundRectToPixels(v20)];
+        [viewCopy setCenter:{v16, v18}];
+        [viewCopy frame];
+        [viewCopy setFrame:_SFRoundRectToPixels(v20)];
         [v8 alpha];
-        [v6 setAlpha:?];
+        [viewCopy setAlpha:?];
       }
     }
   }
@@ -2340,8 +2340,8 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
   [v6 pointSize];
   v10 = ceil(v8 * v9);
   v11 = [MEMORY[0x1E69DCA40] metricsForTextStyle:self->_titleTextStyle];
-  v12 = [(SFUnifiedTabBarItemTitleContainerView *)self traitCollection];
-  [v11 scaledValueForValue:v12 compatibleWithTraitCollection:v10];
+  traitCollection = [(SFUnifiedTabBarItemTitleContainerView *)self traitCollection];
+  [v11 scaledValueForValue:traitCollection compatibleWithTraitCollection:v10];
   v14 = v13;
 
   v15 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:5 weight:1 scale:v14];
@@ -2351,8 +2351,8 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
 
 - (void)_updateSquishedAccessorySymbolConfigurations
 {
-  v3 = [(SFUnifiedTabBarItemTitleContainerView *)self _squishedAccessorySymbolConfiguration];
-  [(UIImageView *)self->_squishedIconView setPreferredSymbolConfiguration:v3];
+  _squishedAccessorySymbolConfiguration = [(SFUnifiedTabBarItemTitleContainerView *)self _squishedAccessorySymbolConfiguration];
+  [(UIImageView *)self->_squishedIconView setPreferredSymbolConfiguration:_squishedAccessorySymbolConfiguration];
 }
 
 - (id)prepareForAvailabilityPresentation
@@ -2370,26 +2370,26 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
   return [(SFTransitionCoordinator *)availabilityTransitionCoordinator publicCoordinator];
 }
 
-- (void)presentAvailabilityLabelWithText:(id)a3
+- (void)presentAvailabilityLabelWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v7 = objc_alloc_init(SFURLLabel);
   [(SFURLLabel *)v7 setAdjustsFontForContentSizeCategory:1];
   [(SFURLLabel *)v7 setFadeOutEdge:1];
   v5 = [(SFUnifiedTabBarItemTitleContainerView *)self _titleFontWithTraitCollection:0];
   [(SFURLLabel *)v7 setFont:v5];
 
-  v6 = [(SFUnifiedTabBarItemTitleContainerViewTheme *)self->_theme primaryTextColor];
-  [(SFURLLabel *)v7 setTextColor:v6];
+  primaryTextColor = [(SFUnifiedTabBarItemTitleContainerViewTheme *)self->_theme primaryTextColor];
+  [(SFURLLabel *)v7 setTextColor:primaryTextColor];
 
-  [(SFURLLabel *)v7 setText:v4];
+  [(SFURLLabel *)v7 setText:textCopy];
   [(SFUnifiedTabBarItemTitleContainerView *)self presentAvailabilityLabelWithView:v7];
 }
 
-- (void)presentAvailabilityLabelWithView:(id)a3
+- (void)presentAvailabilityLabelWithView:(id)view
 {
   v37[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v29 = self->_availabilityLabel;
   if (v29)
   {
@@ -2397,35 +2397,35 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
     self->_availabilityLabelAlignmentConstraint = 0;
   }
 
-  [(UIView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(SFUnifiedTabBarItemTitleContainerView *)self addSubview:v4];
-  v6 = [(SFUnifiedTabBarItemTitleContainerView *)self layoutMarginsGuide];
+  [(UIView *)viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(SFUnifiedTabBarItemTitleContainerView *)self addSubview:viewCopy];
+  layoutMarginsGuide = [(SFUnifiedTabBarItemTitleContainerView *)self layoutMarginsGuide];
   v23 = MEMORY[0x1E696ACD8];
-  v28 = [(UIView *)v4 leadingAnchor];
-  v30 = v6;
-  v27 = [v6 leadingAnchor];
-  v26 = [v28 constraintGreaterThanOrEqualToAnchor:v27];
+  leadingAnchor = [(UIView *)viewCopy leadingAnchor];
+  v30 = layoutMarginsGuide;
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v26 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
   v37[0] = v26;
-  v25 = [(UIView *)v4 topAnchor];
-  v24 = [(SFUnifiedTabBarItemTitleContainerView *)self topAnchor];
-  v7 = [v25 constraintEqualToAnchor:v24];
+  topAnchor = [(UIView *)viewCopy topAnchor];
+  topAnchor2 = [(SFUnifiedTabBarItemTitleContainerView *)self topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v37[1] = v7;
-  v8 = [v6 trailingAnchor];
-  v9 = [(UIView *)v4 trailingAnchor];
-  v10 = [v8 constraintGreaterThanOrEqualToAnchor:v9];
+  trailingAnchor = [layoutMarginsGuide trailingAnchor];
+  trailingAnchor2 = [(UIView *)viewCopy trailingAnchor];
+  v10 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
   v37[2] = v10;
-  v11 = [(SFUnifiedTabBarItemTitleContainerView *)self bottomAnchor];
-  v12 = [(UIView *)v4 bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  bottomAnchor = [(SFUnifiedTabBarItemTitleContainerView *)self bottomAnchor];
+  bottomAnchor2 = [(UIView *)viewCopy bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v37[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:4];
   [v23 activateConstraints:v14];
 
-  [(SFUnifiedTabBarItemTitleContainerView *)self _updateAlignmentForAvailabilityLabel:v4];
+  [(SFUnifiedTabBarItemTitleContainerView *)self _updateAlignmentForAvailabilityLabel:viewCopy];
   [(SFUnifiedTabBarItemTitleContainerView *)self layoutIfNeeded];
   availabilityLabel = self->_availabilityLabel;
-  self->_availabilityLabel = v4;
-  v16 = v4;
+  self->_availabilityLabel = viewCopy;
+  v16 = viewCopy;
 
   v17 = MEMORY[0x1E69DD250];
   v34[0] = MEMORY[0x1E69E9820];
@@ -2433,7 +2433,7 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
   v34[2] = __74__SFUnifiedTabBarItemTitleContainerView_presentAvailabilityLabelWithView___block_invoke;
   v34[3] = &unk_1E721B400;
   v35 = v29;
-  v36 = self;
+  selfCopy = self;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __74__SFUnifiedTabBarItemTitleContainerView_presentAvailabilityLabelWithView___block_invoke_2;
@@ -2441,19 +2441,19 @@ uint64_t __86__SFUnifiedTabBarItemTitleContainerView__layOutFakeClearButtonUsing
   v33 = v35;
   v18 = v35;
   [v17 animateWithDuration:50331648 delay:v34 options:v32 animations:0.2 completion:0.0];
-  v19 = [(SFUnifiedTabBarItemTitleContainerView *)self prepareForAvailabilityPresentation];
+  prepareForAvailabilityPresentation = [(SFUnifiedTabBarItemTitleContainerView *)self prepareForAvailabilityPresentation];
   availabilityTransitionCoordinator = self->_availabilityTransitionCoordinator;
   self->_availabilityTransitionCoordinator = 0;
   v21 = availabilityTransitionCoordinator;
 
   [(UIView *)self->_availabilityLabel setAlpha:0.0];
-  v22 = [(SFTransitionCoordinator *)v21 publicCoordinator];
+  publicCoordinator = [(SFTransitionCoordinator *)v21 publicCoordinator];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __74__SFUnifiedTabBarItemTitleContainerView_presentAvailabilityLabelWithView___block_invoke_3;
   v31[3] = &unk_1E721BD58;
   v31[4] = self;
-  [v22 addAnimations:v31];
+  [publicCoordinator addAnimations:v31];
 
   [(SFTransitionCoordinator *)v21 performTransitionWithAnimation:1 inContextOfContainerView:self];
 }
@@ -2474,12 +2474,12 @@ uint64_t __74__SFUnifiedTabBarItemTitleContainerView_presentAvailabilityLabelWit
   return [v3 setAlpha:v2];
 }
 
-- (void)dismissAvailabilityLabelAnimated:(BOOL)a3
+- (void)dismissAvailabilityLabelAnimated:(BOOL)animated
 {
   availabilityLabel = self->_availabilityLabel;
   if (availabilityLabel)
   {
-    v4 = a3;
+    animatedCopy = animated;
     v6 = availabilityLabel;
     v7 = self->_availabilityLabel;
     self->_availabilityLabel = 0;
@@ -2487,7 +2487,7 @@ uint64_t __74__SFUnifiedTabBarItemTitleContainerView_presentAvailabilityLabelWit
     availabilityLabelAlignmentConstraint = self->_availabilityLabelAlignmentConstraint;
     self->_availabilityLabelAlignmentConstraint = 0;
 
-    v9 = [(SFUnifiedTabBarItemTitleContainerView *)self prepareForAvailabilityPresentation];
+    prepareForAvailabilityPresentation = [(SFUnifiedTabBarItemTitleContainerView *)self prepareForAvailabilityPresentation];
     v10 = self->_availabilityTransitionCoordinator;
     availabilityTransitionCoordinator = self->_availabilityTransitionCoordinator;
     self->_availabilityTransitionCoordinator = 0;
@@ -2498,12 +2498,12 @@ uint64_t __74__SFUnifiedTabBarItemTitleContainerView_presentAvailabilityLabelWit
     aBlock[3] = &unk_1E721B650;
     v17 = v6;
     v18 = v10;
-    v19 = self;
+    selfCopy = self;
     v12 = v10;
     v13 = v6;
     v14 = _Block_copy(aBlock);
     v15 = v14;
-    if (v4)
+    if (animatedCopy)
     {
       (*(v14 + 2))(v14);
     }
@@ -2548,19 +2548,19 @@ uint64_t __74__SFUnifiedTabBarItemTitleContainerView_dismissAvailabilityLabelAni
   return [v2 _layoutSquishedAccessoryViews];
 }
 
-- (void)_updateAlignmentForAvailabilityLabel:(id)a3
+- (void)_updateAlignmentForAvailabilityLabel:(id)label
 {
-  v4 = a3;
-  if (v4)
+  labelCopy = label;
+  if (labelCopy)
   {
-    v12 = v4;
+    v12 = labelCopy;
     [(NSLayoutConstraint *)self->_availabilityLabelAlignmentConstraint setActive:0];
     alignment = self->_alignment;
     if (alignment == 1)
     {
-      v6 = [v12 centerXAnchor];
-      v7 = [(SFUnifiedTabBarItemTitleContainerView *)self centerXAnchor];
-      v8 = [v6 constraintEqualToAnchor:v7];
+      centerXAnchor = [v12 centerXAnchor];
+      centerXAnchor2 = [(SFUnifiedTabBarItemTitleContainerView *)self centerXAnchor];
+      v8 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     }
 
     else
@@ -2569,28 +2569,28 @@ uint64_t __74__SFUnifiedTabBarItemTitleContainerView_dismissAvailabilityLabelAni
       {
 LABEL_10:
         [(NSLayoutConstraint *)self->_availabilityLabelAlignmentConstraint setActive:1];
-        v4 = v12;
+        labelCopy = v12;
         goto LABEL_11;
       }
 
       if (!self->_showsIcon && !self->_showsSearchIcon)
       {
-        v6 = [v12 leadingAnchor];
-        v7 = [(SFUnifiedTabBarItemTitleContainerView *)self layoutMarginsGuide];
-        v9 = [v7 leadingAnchor];
-        v10 = [v6 constraintEqualToAnchor:v9];
+        centerXAnchor = [v12 leadingAnchor];
+        centerXAnchor2 = [(SFUnifiedTabBarItemTitleContainerView *)self layoutMarginsGuide];
+        leadingAnchor = [centerXAnchor2 leadingAnchor];
+        v10 = [centerXAnchor constraintEqualToAnchor:leadingAnchor];
         availabilityLabelAlignmentConstraint = self->_availabilityLabelAlignmentConstraint;
         self->_availabilityLabelAlignmentConstraint = v10;
 
         goto LABEL_9;
       }
 
-      v6 = [v12 leadingAnchor];
-      v7 = [(SFFaviconView *)self->_iconView trailingAnchor];
-      v8 = [v6 constraintEqualToAnchor:v7 constant:self->_iconSpacing];
+      centerXAnchor = [v12 leadingAnchor];
+      centerXAnchor2 = [(SFFaviconView *)self->_iconView trailingAnchor];
+      v8 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:self->_iconSpacing];
     }
 
-    v9 = self->_availabilityLabelAlignmentConstraint;
+    leadingAnchor = self->_availabilityLabelAlignmentConstraint;
     self->_availabilityLabelAlignmentConstraint = v8;
 LABEL_9:
 
@@ -2600,17 +2600,17 @@ LABEL_9:
 LABEL_11:
 }
 
-- (BOOL)requiresTruncationToDisplayAvailabilityLabel:(id)a3
+- (BOOL)requiresTruncationToDisplayAvailabilityLabel:(id)label
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v17 = *MEMORY[0x1E69DB648];
-  v4 = a3;
-  v5 = [(SFUnifiedTabBarItemTitleContainerView *)self traitCollection];
-  v6 = [(SFUnifiedTabBarItemTitleContainerView *)self _titleFontWithTraitCollection:v5];
+  labelCopy = label;
+  traitCollection = [(SFUnifiedTabBarItemTitleContainerView *)self traitCollection];
+  v6 = [(SFUnifiedTabBarItemTitleContainerView *)self _titleFontWithTraitCollection:traitCollection];
   v18[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
 
-  v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v4 attributes:v7];
+  v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:labelCopy attributes:v7];
   v9 = CTLineCreateWithAttributedString(v8);
   BoundsWithOptions = CTLineGetBoundsWithOptions(v9, 0);
   x = BoundsWithOptions.origin.x;
@@ -2623,8 +2623,8 @@ LABEL_11:
   v20.size.width = width;
   v20.size.height = height;
   v14 = CGRectGetWidth(v20);
-  v15 = [(SFUnifiedTabBarItemTitleContainerView *)self layoutMarginsGuide];
-  [v15 layoutFrame];
+  layoutMarginsGuide = [(SFUnifiedTabBarItemTitleContainerView *)self layoutMarginsGuide];
+  [layoutMarginsGuide layoutFrame];
   LOBYTE(self) = v14 > CGRectGetWidth(v21);
 
   return self;

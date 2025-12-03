@@ -1,14 +1,14 @@
 @interface RemoteBrowsingDiscoveryViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event;
 - (NSArray)preferredFocusEnvironments;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (_TtC9SeymourUI37RemoteBrowsingDiscoveryViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (_TtC9SeymourUI37RemoteBrowsingDiscoveryViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)handleKohnahmiCodeSequence;
 - (void)handleMenuButtonTapped;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation RemoteBrowsingDiscoveryViewController
@@ -33,7 +33,7 @@
   v4 = *(v3 - 8);
   MEMORY[0x28223BE20](v3);
   v6 = &v8 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   sub_20C13B4A4();
   sub_20C13BB64();
   (*(v4 + 8))(v6, v3);
@@ -42,36 +42,36 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B7A4720();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_20B7A4E74(a3);
+  selfCopy = self;
+  sub_20B7A4E74(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_20B7A53CC(a3);
+  selfCopy = self;
+  sub_20B7A53CC(disappear);
 }
 
 - (void)handleMenuButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B7A5654();
 }
 
-- (_TtC9SeymourUI37RemoteBrowsingDiscoveryViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI37RemoteBrowsingDiscoveryViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event
 {
   v5 = type metadata accessor for RemoteBrowsingDiscoveryPresenter.State(0);
   MEMORY[0x28223BE20](v5);
@@ -95,25 +95,25 @@
   return EnumCaseMultiPayload == 0;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v5 = sub_20C133244();
   v6 = *(v5 - 8);
   MEMORY[0x28223BE20](v5);
   v8 = &v11 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20C1331E4();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_20C133224();
   sub_20BB03E68(v10);
   (*(v6 + 8))(v8, v5);
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_20B7A7F18(v7);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  sub_20B7A7F18(viewCopy);
   v11 = v10;
   v13 = v12;
   v15 = v14;

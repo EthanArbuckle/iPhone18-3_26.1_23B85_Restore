@@ -1,22 +1,22 @@
 @interface _UITextViewCanvasView
-- (_NSRange)_extendedGlyphRangeForRange:(_NSRange)a3 maxGlyphIndex:(unint64_t)a4;
-- (void)drawTextInRect:(CGRect)a3;
+- (_NSRange)_extendedGlyphRangeForRange:(_NSRange)range maxGlyphIndex:(unint64_t)index;
+- (void)drawTextInRect:(CGRect)rect;
 @end
 
 @implementation _UITextViewCanvasView
 
-- (_NSRange)_extendedGlyphRangeForRange:(_NSRange)a3 maxGlyphIndex:(unint64_t)a4
+- (_NSRange)_extendedGlyphRangeForRange:(_NSRange)range maxGlyphIndex:(unint64_t)index
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = [(_UITextCanvasView *)self context];
-  v8 = [v7 layoutManager];
-  v9 = [v7 textContainer];
+  length = range.length;
+  location = range.location;
+  context = [(_UITextCanvasView *)self context];
+  layoutManager = [context layoutManager];
+  textContainer = [context textContainer];
   if (location)
   {
     v20.location = 0;
     v20.length = 0;
-    [v8 lineFragmentRectForGlyphAtIndex:location effectiveRange:&v20];
+    [layoutManager lineFragmentRectForGlyphAtIndex:location effectiveRange:&v20];
     v21.location = location;
     v21.length = length;
     v10 = NSUnionRange(v21, v20);
@@ -24,10 +24,10 @@
     length = v10.length;
     if (v10.location)
     {
-      [v8 lineFragmentRectForGlyphAtIndex:v10.location - 1 effectiveRange:&v20];
-      v11 = [v8 textContainerForGlyphAtIndex:v20.location effectiveRange:0];
+      [layoutManager lineFragmentRectForGlyphAtIndex:v10.location - 1 effectiveRange:&v20];
+      v11 = [layoutManager textContainerForGlyphAtIndex:v20.location effectiveRange:0];
 
-      if (v11 == v9)
+      if (v11 == textContainer)
       {
         v12 = NSUnionRange(v10, v20);
         location = v12.location;
@@ -38,22 +38,22 @@
 
   if (length)
   {
-    if (location + length < a4)
+    if (location + length < index)
     {
       v20 = 0;
-      [v8 lineFragmentRectForGlyphAtIndex:location + length - 1 effectiveRange:&v20];
+      [layoutManager lineFragmentRectForGlyphAtIndex:location + length - 1 effectiveRange:&v20];
       v22.location = location;
       v22.length = length;
       v13 = NSUnionRange(v22, v20);
       location = v13.location;
       length = v13.length;
       v14 = v13.location + v13.length;
-      if (v13.location + v13.length < a4)
+      if (v13.location + v13.length < index)
       {
-        [v8 lineFragmentRectForGlyphAtIndex:v14 effectiveRange:&v20];
-        v15 = [v8 textContainerForGlyphAtIndex:v14 effectiveRange:0];
+        [layoutManager lineFragmentRectForGlyphAtIndex:v14 effectiveRange:&v20];
+        v15 = [layoutManager textContainerForGlyphAtIndex:v14 effectiveRange:0];
 
-        if (v15 == v9)
+        if (v15 == textContainer)
         {
           v16 = NSUnionRange(v13, v20);
           location = v16.location;
@@ -63,14 +63,14 @@
     }
   }
 
-  if (location + length <= a4)
+  if (location + length <= index)
   {
     v17 = length;
   }
 
   else
   {
-    v17 = a4 - location;
+    v17 = index - location;
   }
 
   v18 = location;
@@ -80,18 +80,18 @@
   return result;
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(_UITextCanvasView *)self context];
-  v9 = v8;
-  if (v8)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  context = [(_UITextCanvasView *)self context];
+  v9 = context;
+  if (context)
   {
-    v10 = [v8 layoutManager];
-    v11 = [v9 textContainer];
+    layoutManager = [context layoutManager];
+    textContainer = [v9 textContainer];
     [v9 _ensureLayoutCompleteForRect:{x, y, width, height}];
     v27[0] = 0;
     v27[1] = v27;
@@ -102,7 +102,7 @@
     [v9 textContainerOrigin];
     v28 = v12;
     v29 = v13;
-    v14 = [v10 textStorage];
+    textStorage = [layoutManager textStorage];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __40___UITextViewCanvasView_drawTextInRect___block_invoke;
@@ -112,13 +112,13 @@
     v25 = width;
     v26 = height;
     v22 = v27;
-    v15 = v10;
+    v15 = layoutManager;
     v18 = v15;
-    v16 = v11;
+    v16 = textContainer;
     v19 = v16;
     v20 = v9;
-    v21 = self;
-    [v14 coordinateReading:v17];
+    selfCopy = self;
+    [textStorage coordinateReading:v17];
 
     _Block_object_dispose(v27, 8);
   }

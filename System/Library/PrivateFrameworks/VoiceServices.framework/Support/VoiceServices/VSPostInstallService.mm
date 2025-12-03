@@ -14,12 +14,12 @@
 
 - (void)resetMobileAssetDefaults
 {
-  v2 = [MEMORY[0x277D79998] standardInstance];
-  v3 = [v2 disableMobileAssetURLReset];
+  standardInstance = [MEMORY[0x277D79998] standardInstance];
+  disableMobileAssetURLReset = [standardInstance disableMobileAssetURLReset];
 
   v4 = VSGetLogEvent();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (disableMobileAssetURLReset)
   {
     if (v5)
     {

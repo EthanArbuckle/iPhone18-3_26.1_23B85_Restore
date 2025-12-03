@@ -13,16 +13,16 @@
     v6 = v4;
     do
     {
-      v7 = v6 == a1;
-      v8 = [v6 nextResponder];
+      v7 = v6 == self;
+      nextResponder = [v6 nextResponder];
 
-      if (!v8)
+      if (!nextResponder)
       {
         break;
       }
 
-      v9 = v6 == a1;
-      v6 = v8;
+      v9 = v6 == self;
+      v6 = nextResponder;
     }
 
     while (!v9);

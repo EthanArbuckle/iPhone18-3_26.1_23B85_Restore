@@ -1,47 +1,47 @@
 @interface SafetyCacheMapView.Coordinator
 - (_TtCV15SafetyMonitorUI18SafetyCacheMapView11Coordinator)init;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
 - (uint64_t)mapView:didDeselectAnnotationView:;
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
 @end
 
 @implementation SafetyCacheMapView.Coordinator
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_2646ECD08(v6, a4);
+  selfCopy = self;
+  v8 = sub_2646ECD08(viewCopy, annotation);
 
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = self;
-  sub_2646F5B10(v5);
+  viewCopy = view;
+  selfCopy = self;
+  sub_2646F5B10(viewCopy);
 }
 
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2646F5DD4(v7);
+  viewCopy = view;
+  annotationViewCopy = annotationView;
+  selfCopy = self;
+  sub_2646F5DD4(annotationViewCopy);
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_2646F67C4(a4);
+  selfCopy = self;
+  v8 = sub_2646F67C4(overlay);
 
   swift_unknownObjectRelease();
 

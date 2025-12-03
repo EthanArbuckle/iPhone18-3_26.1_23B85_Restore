@@ -1,14 +1,14 @@
 @interface GamePolicyAppProxy
 - (uint64_t)ping;
 - (void)enableTransientStateUpdates;
-- (void)requestProcessInfoWithReply:(id)a3;
+- (void)requestProcessInfoWithReply:(id)reply;
 @end
 
 @implementation GamePolicyAppProxy
 
-- (void)requestProcessInfoWithReply:(id)a3
+- (void)requestProcessInfoWithReply:(id)reply
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(reply);
   v3[2](v3, 0);
 
   _Block_release(v3);

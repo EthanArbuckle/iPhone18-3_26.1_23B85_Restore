@@ -4,10 +4,10 @@
 - (id)greaterThan;
 - (id)lowerOrEqualTo;
 - (id)lowerThan;
-- (void)setGreaterOrEqualTo:(id)a3;
-- (void)setGreaterThan:(id)a3;
-- (void)setLowerOrEqualTo:(id)a3;
-- (void)setLowerThan:(id)a3;
+- (void)setGreaterOrEqualTo:(id)to;
+- (void)setGreaterThan:(id)than;
+- (void)setLowerOrEqualTo:(id)to;
+- (void)setLowerThan:(id)than;
 @end
 
 @implementation UsageHelperBinEdges
@@ -53,13 +53,13 @@
   return v2;
 }
 
-- (void)setGreaterOrEqualTo:(id)a3
+- (void)setGreaterOrEqualTo:(id)to
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  toCopy = to;
   if (self->_lowerEdgeIncluded)
   {
-    objc_storeStrong(&self->_lowerEdge, a3);
+    objc_storeStrong(&self->_lowerEdge, to);
   }
 
   else
@@ -106,13 +106,13 @@
   return v2;
 }
 
-- (void)setLowerThan:(id)a3
+- (void)setLowerThan:(id)than
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  thanCopy = than;
   if (self->_lowerEdgeIncluded)
   {
-    objc_storeStrong(&self->_upperEdge, a3);
+    objc_storeStrong(&self->_upperEdge, than);
   }
 
   else
@@ -159,10 +159,10 @@
   return v2;
 }
 
-- (void)setGreaterThan:(id)a3
+- (void)setGreaterThan:(id)than
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  thanCopy = than;
   if (self->_lowerEdgeIncluded)
   {
     v7 = WALogCategoryDeviceStoreHandle();
@@ -178,7 +178,7 @@
 
   else
   {
-    objc_storeStrong(&self->_lowerEdge, a3);
+    objc_storeStrong(&self->_lowerEdge, than);
   }
 
   v6 = *MEMORY[0x1E69E9840];
@@ -212,10 +212,10 @@
   return v2;
 }
 
-- (void)setLowerOrEqualTo:(id)a3
+- (void)setLowerOrEqualTo:(id)to
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  toCopy = to;
   if (self->_lowerEdgeIncluded)
   {
     v7 = WALogCategoryDeviceStoreHandle();
@@ -231,7 +231,7 @@
 
   else
   {
-    objc_storeStrong(&self->_upperEdge, a3);
+    objc_storeStrong(&self->_upperEdge, to);
   }
 
   v6 = *MEMORY[0x1E69E9840];

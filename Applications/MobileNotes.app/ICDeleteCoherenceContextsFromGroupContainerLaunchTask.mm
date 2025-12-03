@@ -105,8 +105,8 @@
                 v20 = [v16 URLByAppendingPathComponent:@"Paper" isDirectory:1];
                 v21 = [v20 URLByAppendingPathComponent:@"CoherenceContexts" isDirectory:1];
                 v22 = +[NSFileManager defaultManager];
-                v23 = [v21 path];
-                v24 = [v22 fileExistsAtPath:v23];
+                path = [v21 path];
+                v24 = [v22 fileExistsAtPath:path];
 
                 if (v24)
                 {

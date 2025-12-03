@@ -30,7 +30,7 @@
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
   v13 = [v5 initWithFontAttributes:v12];
 
-  v14 = [a1 fontWithDescriptor:v13 size:0.0];
+  v14 = [self fontWithDescriptor:v13 size:0.0];
 
   return v14;
 }
@@ -40,8 +40,8 @@
   v16[2] = *MEMORY[0x277D85DE8];
   v4 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:?];
   v5 = objc_alloc(MEMORY[0x277CBEB38]);
-  v6 = [v4 fontAttributes];
-  v7 = [v5 initWithDictionary:v6];
+  fontAttributes = [v4 fontAttributes];
+  v7 = [v5 initWithDictionary:fontAttributes];
 
   v8 = *MEMORY[0x277D743C8];
   v9 = *MEMORY[0x277D74430];
@@ -54,7 +54,7 @@
   [v7 setObject:v11 forKeyedSubscript:*MEMORY[0x277D74380]];
 
   v12 = [objc_alloc(MEMORY[0x277D74310]) initWithFontAttributes:v7];
-  v13 = [a1 fontWithDescriptor:v12 size:0.0];
+  v13 = [self fontWithDescriptor:v12 size:0.0];
 
   return v13;
 }
@@ -66,7 +66,7 @@
   v10 = [v9 fontDescriptorWithSymbolicTraits:a4];
   if (v10)
   {
-    v11 = a1;
+    selfCopy2 = self;
     v12 = v10;
   }
 
@@ -77,11 +77,11 @@
       +[UIFont(AppStoreComponents) asc_preferredFontForTextStyle:withTraits:compatibleWithTraitCollection:];
     }
 
-    v11 = a1;
+    selfCopy2 = self;
     v12 = v9;
   }
 
-  v13 = [v11 fontWithDescriptor:v12 size:0.0];
+  v13 = [selfCopy2 fontWithDescriptor:v12 size:0.0];
 
   return v13;
 }
@@ -93,7 +93,7 @@
   v8 = [v7 fontDescriptorWithSymbolicTraits:a4];
   if (v8)
   {
-    v9 = a1;
+    selfCopy2 = self;
     v10 = v8;
   }
 
@@ -104,11 +104,11 @@
       +[UIFont(AppStoreComponents) asc_preferredFontForTextStyle:withTraits:compatibleWithTraitCollection:];
     }
 
-    v9 = a1;
+    selfCopy2 = self;
     v10 = v7;
   }
 
-  v11 = [v9 fontWithDescriptor:v10 size:0.0];
+  v11 = [selfCopy2 fontWithDescriptor:v10 size:0.0];
 
   return v11;
 }

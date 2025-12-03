@@ -1,13 +1,13 @@
 @interface CollectionHeaderWithIconReusableView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC18HealthExperienceUI36CollectionHeaderWithIconReusableView)initWithCoder:(id)a3;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC18HealthExperienceUI36CollectionHeaderWithIconReusableView)initWithCoder:(id)coder;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
 @end
 
 @implementation CollectionHeaderWithIconReusableView
 
-- (_TtC18HealthExperienceUI36CollectionHeaderWithIconReusableView)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI36CollectionHeaderWithIconReusableView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC18HealthExperienceUI36CollectionHeaderWithIconReusableView_item;
   *v3 = 0u;
@@ -32,11 +32,11 @@
   [v3 setFrame_];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_1BA2E6E38();
   [v6 sizeThatFits_];
   v8 = v7;
@@ -49,15 +49,15 @@
   return result;
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  [v4 size];
-  [(CollectionHeaderWithIconReusableView *)v5 sizeThatFits:?];
-  [v4 setSize_];
+  attributesCopy = attributes;
+  selfCopy = self;
+  [attributesCopy size];
+  [(CollectionHeaderWithIconReusableView *)selfCopy sizeThatFits:?];
+  [attributesCopy setSize_];
 
-  return v4;
+  return attributesCopy;
 }
 
 @end

@@ -2,8 +2,8 @@
 + (id)sharedSnapshotter;
 + (void)_prepareForSnapshot;
 + (void)_purgeSnapshotCausedCachedData;
-- (void)provideSnapshotOfFaceInstanceDescriptor:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)requestSnapshotOfFaceInstanceDescriptor:(id)a3 options:(id)a4 completion:(id)a5;
+- (void)provideSnapshotOfFaceInstanceDescriptor:(id)descriptor options:(id)options completion:(id)completion;
+- (void)requestSnapshotOfFaceInstanceDescriptor:(id)descriptor options:(id)options completion:(id)completion;
 @end
 
 @implementation NTKFaceSnapshotService
@@ -25,18 +25,18 @@
   v2 = +[NSNotificationCenter defaultCenter];
   [v2 postNotificationName:UIApplicationDidBecomeActiveNotification object:0];
   v3 = +[CLKDevice currentDevice];
-  v4 = [v3 isLocked];
+  isLocked = [v3 isLocked];
 
   v5 = +[CLKDevice currentDevice];
-  v6 = [v5 unlockedSinceBoot];
+  unlockedSinceBoot = [v5 unlockedSinceBoot];
 
   v7 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218240;
-    v9 = v4;
+    v9 = isLocked;
     v10 = 2048;
-    v11 = v6;
+    v11 = unlockedSinceBoot;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Preparing Snapshot: Locked? %ld Ever Unlocked? %ld", &v8, 0x16u);
   }
 }
@@ -57,42 +57,42 @@
   }
 }
 
-- (void)provideSnapshotOfFaceInstanceDescriptor:(id)a3 options:(id)a4 completion:(id)a5
+- (void)provideSnapshotOfFaceInstanceDescriptor:(id)descriptor options:(id)options completion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100001574;
   v9[3] = &unk_100004360;
-  v10 = a5;
-  v8 = v10;
-  [(NTKFaceSnapshotService *)self requestSnapshotOfFaceInstanceDescriptor:a3 options:a4 completion:v9];
+  completionCopy = completion;
+  v8 = completionCopy;
+  [(NTKFaceSnapshotService *)self requestSnapshotOfFaceInstanceDescriptor:descriptor options:options completion:v9];
 }
 
-- (void)requestSnapshotOfFaceInstanceDescriptor:(id)a3 options:(id)a4 completion:(id)a5
+- (void)requestSnapshotOfFaceInstanceDescriptor:(id)descriptor options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [NTKFace faceWithInstanceDescriptor:v8];
+  descriptorCopy = descriptor;
+  optionsCopy = options;
+  completionCopy = completion;
+  v11 = [NTKFace faceWithInstanceDescriptor:descriptorCopy];
   v12 = [NTKJetsamInfoInterval alloc];
-  v13 = [v11 name];
-  v14 = [NSString stringWithFormat:@"NTKFaceSnapshotService - %@", v13];
+  name = [v11 name];
+  v14 = [NSString stringWithFormat:@"NTKFaceSnapshotService - %@", name];
   v15 = [v12 initWithLabel:v14];
 
   v16 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v11 name];
+    name2 = [v11 name];
     *buf = 138543362;
-    v34 = v17;
+    v34 = name2;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Starting snapshot request for %{public}@", buf, 0xCu);
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v18 = [v11 device];
+    device = [v11 device];
 
-    if (v18)
+    if (device)
     {
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
@@ -100,9 +100,9 @@
       v28[3] = &unk_1000043B0;
       v19 = v11;
       v29 = v19;
-      v30 = v9;
+      v30 = optionsCopy;
       v31 = v15;
-      v32 = v10;
+      v32 = completionCopy;
       v20 = objc_retainBlock(v28);
       [v19 device];
       block[0] = _NSConcreteStackBlock;
@@ -127,7 +127,7 @@
       }
 
       v23 = [NSError errorWithDomain:@"com.apple.nanotimekit.snapshots" code:31000 userInfo:0];
-      (*(v10 + 2))(v10, 0, v23);
+      (*(completionCopy + 2))(completionCopy, 0, v23);
     }
   }
 
@@ -136,7 +136,7 @@
     v23 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      sub_100002058(v8, v23);
+      sub_100002058(descriptorCopy, v23);
     }
   }
 }

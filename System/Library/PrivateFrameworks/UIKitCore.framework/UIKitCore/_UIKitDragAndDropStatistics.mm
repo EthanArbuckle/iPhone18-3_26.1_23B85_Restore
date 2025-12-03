@@ -1,44 +1,44 @@
 @interface _UIKitDragAndDropStatistics
-+ (void)incrementUIKitScalarValueBy:(int64_t)a3 forKey:(id)a4;
-+ (void)incrementUIKitScalarValueForKnownInternalAppsForKey:(id)a3 bundleID:(id)a4;
-+ (void)recordUIKitDragAndDropDistributionValue:(double)a3 forKey:(id)a4;
-+ (void)setUIKitScalarValue:(int64_t)a3 forKey:(id)a4;
++ (void)incrementUIKitScalarValueBy:(int64_t)by forKey:(id)key;
++ (void)incrementUIKitScalarValueForKnownInternalAppsForKey:(id)key bundleID:(id)d;
++ (void)recordUIKitDragAndDropDistributionValue:(double)value forKey:(id)key;
++ (void)setUIKitScalarValue:(int64_t)value forKey:(id)key;
 @end
 
 @implementation _UIKitDragAndDropStatistics
 
-+ (void)recordUIKitDragAndDropDistributionValue:(double)a3 forKey:(id)a4
++ (void)recordUIKitDragAndDropDistributionValue:(double)value forKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   v7 = +[_UIStatisticsIntegrator sharedInstance];
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", @"com.apple.UIKit.DragAndDrop", v5];
+  keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", @"com.apple.UIKit.DragAndDrop", keyCopy];
 
-  [v7 recordDistributionValue:v6 forKey:a3];
+  [v7 recordDistributionValue:keyCopy forKey:value];
 }
 
-+ (void)setUIKitScalarValue:(int64_t)a3 forKey:(id)a4
++ (void)setUIKitScalarValue:(int64_t)value forKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   v7 = +[_UIStatisticsIntegrator sharedInstance];
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", @"com.apple.UIKit.DragAndDrop", v5];
+  keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", @"com.apple.UIKit.DragAndDrop", keyCopy];
 
-  [v7 setValue:a3 forKey:v6];
+  [v7 setValue:value forKey:keyCopy];
 }
 
-+ (void)incrementUIKitScalarValueBy:(int64_t)a3 forKey:(id)a4
++ (void)incrementUIKitScalarValueBy:(int64_t)by forKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   v7 = +[_UIStatisticsIntegrator sharedInstance];
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", @"com.apple.UIKit.DragAndDrop", v5];
+  keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", @"com.apple.UIKit.DragAndDrop", keyCopy];
 
-  [v7 incrementValueBy:a3 forKey:v6];
+  [v7 incrementValueBy:by forKey:keyCopy];
 }
 
-+ (void)incrementUIKitScalarValueForKnownInternalAppsForKey:(id)a3 bundleID:(id)a4
++ (void)incrementUIKitScalarValueForKnownInternalAppsForKey:(id)key bundleID:(id)d
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = v6;
+  keyCopy = key;
+  dCopy = d;
+  v7 = dCopy;
   if (qword_1ED4A2890 != -1)
   {
     dispatch_once(&qword_1ED4A2890, &__block_literal_global_320_2);
@@ -57,7 +57,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!v6)
+  if (!dCopy)
   {
     goto LABEL_5;
   }
@@ -75,8 +75,8 @@ LABEL_6:
 LABEL_8:
   v9 = @"other";
 LABEL_9:
-  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v11, v9];
-  [a1 incrementUIKitScalarValueBy:1 forKey:v10];
+  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", keyCopy, v9];
+  [self incrementUIKitScalarValueBy:1 forKey:v10];
 }
 
 @end

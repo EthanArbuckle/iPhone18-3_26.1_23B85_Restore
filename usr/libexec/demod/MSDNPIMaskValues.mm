@@ -1,10 +1,10 @@
 @interface MSDNPIMaskValues
 + (id)sharedInstance;
-- (MSDNPIMaskValues)initWithPreferencesFile:(id)a3;
-- (id)getMaskValueForKey:(id)a3;
+- (MSDNPIMaskValues)initWithPreferencesFile:(id)file;
+- (id)getMaskValueForKey:(id)key;
 - (void)initMaskValuesLookUpTable;
-- (void)populateLookupTableUsingDeviceInfo:(id)a3;
-- (void)saveDeviceInfo:(id)a3;
+- (void)populateLookupTableUsingDeviceInfo:(id)info;
+- (void)saveDeviceInfo:(id)info;
 @end
 
 @implementation MSDNPIMaskValues
@@ -21,16 +21,16 @@
   return v3;
 }
 
-- (MSDNPIMaskValues)initWithPreferencesFile:(id)a3
+- (MSDNPIMaskValues)initWithPreferencesFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v9.receiver = self;
   v9.super_class = MSDNPIMaskValues;
   v5 = [(MSDNPIMaskValues *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(MSDNPIMaskValues *)v5 setPreferencesFile:v4];
+    [(MSDNPIMaskValues *)v5 setPreferencesFile:fileCopy];
     [(MSDNPIMaskValues *)v6 setIsNPIDevice:0];
     v7 = objc_alloc_init(NSMutableDictionary);
     [(MSDNPIMaskValues *)v6 setMaskValuesLookUpTable:v7];
@@ -41,25 +41,25 @@
   return v6;
 }
 
-- (void)saveDeviceInfo:(id)a3
+- (void)saveDeviceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[MSDNPIMaskValues saveDeviceInfo:]";
     v10 = 2114;
-    v11 = v4;
+    v11 = infoCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s - deviceInfo:  %{public}@", &v8, 0x16u);
   }
 
-  if (v4)
+  if (infoCopy)
   {
-    v6 = [(MSDNPIMaskValues *)self preferencesFile];
-    [v6 setObject:v4 forKey:@"device_info"];
+    preferencesFile = [(MSDNPIMaskValues *)self preferencesFile];
+    [preferencesFile setObject:infoCopy forKey:@"device_info"];
 
-    [(MSDNPIMaskValues *)self populateLookupTableUsingDeviceInfo:v4];
+    [(MSDNPIMaskValues *)self populateLookupTableUsingDeviceInfo:infoCopy];
   }
 
   else
@@ -74,13 +74,13 @@
   }
 }
 
-- (id)getMaskValueForKey:(id)a3
+- (id)getMaskValueForKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = [(MSDNPIMaskValues *)self maskValuesLookUpTable];
-    v6 = [v5 objectForKey:v4];
+    maskValuesLookUpTable = [(MSDNPIMaskValues *)self maskValuesLookUpTable];
+    v6 = [maskValuesLookUpTable objectForKey:keyCopy];
   }
 
   else
@@ -99,13 +99,13 @@
   return v6;
 }
 
-- (void)populateLookupTableUsingDeviceInfo:(id)a3
+- (void)populateLookupTableUsingDeviceInfo:(id)info
 {
-  v15 = a3;
-  if ([v15 count])
+  infoCopy = info;
+  if ([infoCopy count])
   {
     [(MSDNPIMaskValues *)self setIsNPIDevice:1];
-    v4 = [v15 objectForKey:@"product_type"];
+    v4 = [infoCopy objectForKey:@"product_type"];
     if (v4)
     {
       objc_opt_class();
@@ -113,13 +113,13 @@
       {
         if ([v4 length])
         {
-          v5 = [(MSDNPIMaskValues *)self maskValuesLookUpTable];
-          [v5 setObject:v4 forKey:@"ProductType"];
+          maskValuesLookUpTable = [(MSDNPIMaskValues *)self maskValuesLookUpTable];
+          [maskValuesLookUpTable setObject:v4 forKey:@"ProductType"];
         }
       }
     }
 
-    v6 = [v15 objectForKey:@"part_description"];
+    v6 = [infoCopy objectForKey:@"part_description"];
     if (v6)
     {
       objc_opt_class();
@@ -127,20 +127,20 @@
       {
         if ([v6 length])
         {
-          v7 = [(MSDNPIMaskValues *)self maskValuesLookUpTable];
-          [v7 setObject:v6 forKey:@"MSDDemoPartDescription"];
+          maskValuesLookUpTable2 = [(MSDNPIMaskValues *)self maskValuesLookUpTable];
+          [maskValuesLookUpTable2 setObject:v6 forKey:@"MSDDemoPartDescription"];
         }
       }
     }
 
-    v8 = [v15 objectForKey:@"product_description"];
+    v8 = [infoCopy objectForKey:@"product_description"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v9 = v8, [v8 length]) || v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v9 = v6, objc_msgSend(v6, "length")))
     {
-      v10 = [(MSDNPIMaskValues *)self maskValuesLookUpTable];
-      [v10 setObject:v9 forKey:@"MSDDemoProductDescription"];
+      maskValuesLookUpTable3 = [(MSDNPIMaskValues *)self maskValuesLookUpTable];
+      [maskValuesLookUpTable3 setObject:v9 forKey:@"MSDDemoProductDescription"];
     }
 
-    v11 = [v15 objectForKey:@"device_family"];
+    v11 = [infoCopy objectForKey:@"device_family"];
     if (v11)
     {
       objc_opt_class();
@@ -148,21 +148,21 @@
       {
         if ([v11 length])
         {
-          v12 = [(MSDNPIMaskValues *)self maskValuesLookUpTable];
-          [v12 setObject:v11 forKey:@"MSDDemoDeviceFamily"];
+          maskValuesLookUpTable4 = [(MSDNPIMaskValues *)self maskValuesLookUpTable];
+          [maskValuesLookUpTable4 setObject:v11 forKey:@"MSDDemoDeviceFamily"];
         }
       }
     }
 
-    v13 = [v15 objectForKey:@"part_number"];
+    v13 = [infoCopy objectForKey:@"part_number"];
     if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ![(__CFString *)v13 length])
     {
 
       v13 = @"A-123/A";
     }
 
-    v14 = [(MSDNPIMaskValues *)self maskValuesLookUpTable];
-    [v14 setObject:v13 forKey:@"PartNumber"];
+    maskValuesLookUpTable5 = [(MSDNPIMaskValues *)self maskValuesLookUpTable];
+    [maskValuesLookUpTable5 setObject:v13 forKey:@"PartNumber"];
   }
 
   else
@@ -173,8 +173,8 @@
 
 - (void)initMaskValuesLookUpTable
 {
-  v3 = [(MSDNPIMaskValues *)self preferencesFile];
-  v4 = [v3 objectForKey:@"device_info"];
+  preferencesFile = [(MSDNPIMaskValues *)self preferencesFile];
+  v4 = [preferencesFile objectForKey:@"device_info"];
 
   if (v4)
   {
@@ -185,10 +185,10 @@
     }
   }
 
-  v5 = [(MSDNPIMaskValues *)self maskValuesLookUpTable];
-  [v5 setObject:&off_10017B0B0 forKey:@"MSDDemoNANDSize"];
+  maskValuesLookUpTable = [(MSDNPIMaskValues *)self maskValuesLookUpTable];
+  [maskValuesLookUpTable setObject:&off_10017B0B0 forKey:@"MSDDemoNANDSize"];
 
-  v6 = [(MSDNPIMaskValues *)self maskValuesLookUpTable];
+  maskValuesLookUpTable2 = [(MSDNPIMaskValues *)self maskValuesLookUpTable];
   v8[0] = kMGQDiskUsageTotalSystemCapacity;
   v8[1] = kMGQDiskUsageTotalSystemAvailable;
   v9[0] = &off_10017B0C8;
@@ -206,7 +206,7 @@
   v9[6] = &off_10017B0C8;
   v9[7] = &off_10017B0C8;
   v7 = [NSDictionary dictionaryWithObjects:v9 forKeys:v8 count:8];
-  [v6 setObject:v7 forKey:@"DiskUsage"];
+  [maskValuesLookUpTable2 setObject:v7 forKey:@"DiskUsage"];
 }
 
 @end

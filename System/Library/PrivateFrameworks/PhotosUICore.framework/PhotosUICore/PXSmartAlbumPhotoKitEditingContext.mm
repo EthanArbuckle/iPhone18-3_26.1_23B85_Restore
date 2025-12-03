@@ -4,7 +4,7 @@
 - (NSArray)keywordValues;
 - (NSArray)personNames;
 - (PXSmartAlbumPhotoKitEditingContext)init;
-- (PXSmartAlbumPhotoKitEditingContext)initWithPhotoLibrary:(id)a3;
+- (PXSmartAlbumPhotoKitEditingContext)initWithPhotoLibrary:(id)library;
 @end
 
 @implementation PXSmartAlbumPhotoKitEditingContext
@@ -12,12 +12,12 @@
 - (NSArray)personNames
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v4 setPersonContext:1];
-  v5 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-  [v4 setIncludedDetectionTypes:v5];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setPersonContext:1];
+  px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:px_defaultDetectionTypes];
 
-  v6 = [MEMORY[0x1E6978980] fetchPersonsWithOptions:v4];
+  v6 = [MEMORY[0x1E6978980] fetchPersonsWithOptions:librarySpecificFetchOptions];
   if ([v6 count])
   {
     v12[0] = MEMORY[0x1E69E9820];
@@ -81,11 +81,11 @@ void __49__PXSmartAlbumPhotoKitEditingContext_personNames__block_invoke(uint64_t
 {
   v21[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PHPhotoLibrary *)self->_photoLibrary photoLibrary];
-  v5 = [v4 managedObjectContext];
+  photoLibrary = [(PHPhotoLibrary *)self->_photoLibrary photoLibrary];
+  managedObjectContext = [photoLibrary managedObjectContext];
   v6 = MEMORY[0x1E695D5E0];
-  v7 = [MEMORY[0x1E69BE560] entityName];
-  v8 = [v6 fetchRequestWithEntityName:v7];
+  entityName = [MEMORY[0x1E69BE560] entityName];
+  v8 = [v6 fetchRequestWithEntityName:entityName];
 
   v21[0] = @"assetAttributes";
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", @"assetAttributes", @"asset"];
@@ -97,12 +97,12 @@ void __49__PXSmartAlbumPhotoKitEditingContext_personNames__block_invoke(uint64_t
   v17[1] = 3221225472;
   v17[2] = __51__PXSmartAlbumPhotoKitEditingContext_keywordValues__block_invoke;
   v17[3] = &unk_1E774A1B8;
-  v18 = v5;
+  v18 = managedObjectContext;
   v19 = v8;
   v11 = v3;
   v20 = v11;
   v12 = v8;
-  v13 = v5;
+  v13 = managedObjectContext;
   [v13 performBlockAndWait:v17];
   v14 = v20;
   v15 = v11;
@@ -187,13 +187,13 @@ uint64_t __51__PXSmartAlbumPhotoKitEditingContext_keywordValues__block_invoke_2(
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"title" ascending:1];
   v13[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  [v4 setSortDescriptors:v6];
+  [librarySpecificFetchOptions setSortDescriptors:v6];
 
-  v7 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:1 subtype:2 options:v4];
+  v7 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:1 subtype:2 options:librarySpecificFetchOptions];
   if ([v7 count])
   {
     v11[0] = MEMORY[0x1E69E9820];
@@ -270,13 +270,13 @@ void __57__PXSmartAlbumPhotoKitEditingContext_conditionTypeValues__block_invoke(
   }
 }
 
-- (PXSmartAlbumPhotoKitEditingContext)initWithPhotoLibrary:(id)a3
+- (PXSmartAlbumPhotoKitEditingContext)initWithPhotoLibrary:(id)library
 {
-  v6 = a3;
-  if (!v6)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitEditingContext.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitEditingContext.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   v11.receiver = self;
@@ -285,7 +285,7 @@ void __57__PXSmartAlbumPhotoKitEditingContext_conditionTypeValues__block_invoke(
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_photoLibrary, a3);
+    objc_storeStrong(&v7->_photoLibrary, library);
   }
 
   return v8;
@@ -293,8 +293,8 @@ void __57__PXSmartAlbumPhotoKitEditingContext_conditionTypeValues__block_invoke(
 
 - (PXSmartAlbumPhotoKitEditingContext)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitEditingContext.m" lineNumber:37 description:{@"%s is not available as initializer", "-[PXSmartAlbumPhotoKitEditingContext init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitEditingContext.m" lineNumber:37 description:{@"%s is not available as initializer", "-[PXSmartAlbumPhotoKitEditingContext init]"}];
 
   abort();
 }

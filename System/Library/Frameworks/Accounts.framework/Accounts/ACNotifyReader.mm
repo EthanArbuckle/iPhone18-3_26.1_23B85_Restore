@@ -1,5 +1,5 @@
 @interface ACNotifyReader
-- (ACNotifyReader)initWithKey:(id)a3 updateQueue:(id)a4 updateBlock:(id)a5;
+- (ACNotifyReader)initWithKey:(id)key updateQueue:(id)queue updateBlock:(id)block;
 - (unint64_t)currentValue;
 - (void)currentValue;
 - (void)dealloc;
@@ -84,11 +84,11 @@ LABEL_15:
   [(ACNotifyReader *)&v5 dealloc];
 }
 
-- (ACNotifyReader)initWithKey:(id)a3 updateQueue:(id)a4 updateBlock:(id)a5
+- (ACNotifyReader)initWithKey:(id)key updateQueue:(id)queue updateBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  queueCopy = queue;
+  blockCopy = block;
   v18.receiver = self;
   v18.super_class = ACNotifyReader;
   v11 = [(ACNotifyReader *)&v18 init];
@@ -97,8 +97,8 @@ LABEL_15:
   {
     [(ACNotifyReader *)v11 setCachedValue:0];
     v12->_notifierToken = -1;
-    [(ACNotifyReader *)v12 setKey:v8];
-    if (notify_register_check([v8 UTF8String], &v12->_notifierToken))
+    [(ACNotifyReader *)v12 setKey:keyCopy];
+    if (notify_register_check([keyCopy UTF8String], &v12->_notifierToken))
     {
       v13 = _ACLogSystem();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -108,15 +108,15 @@ LABEL_15:
     }
 
     v12->_dispatchToken = -1;
-    if (v9 && v10)
+    if (queueCopy && blockCopy)
     {
-      v14 = [v8 UTF8String];
+      uTF8String = [keyCopy UTF8String];
       handler[0] = MEMORY[0x1E69E9820];
       handler[1] = 3221225472;
       handler[2] = __54__ACNotifyReader_initWithKey_updateQueue_updateBlock___block_invoke;
       handler[3] = &unk_1E79771A8;
-      v17 = v10;
-      notify_register_dispatch(v14, &v12->_dispatchToken, v9, handler);
+      v17 = blockCopy;
+      notify_register_dispatch(uTF8String, &v12->_dispatchToken, queueCopy, handler);
     }
   }
 
@@ -135,7 +135,7 @@ LABEL_15:
 - (void)currentValue
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [a1 key];
+  v3 = [self key];
   v5 = 138412290;
   v6 = v3;
   _os_log_error_impl(&dword_1AC3CD000, a2, OS_LOG_TYPE_ERROR, "Failed to get %@ number: libnotify registration failed", &v5, 0xCu);

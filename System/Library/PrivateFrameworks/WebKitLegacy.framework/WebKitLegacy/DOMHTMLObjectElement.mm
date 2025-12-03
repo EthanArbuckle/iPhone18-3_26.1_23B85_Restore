@@ -906,9 +906,9 @@ LABEL_5:
 
 - (WebFrame)contentFrame
 {
-  v2 = [(DOMHTMLObjectElement *)self contentDocument];
+  contentDocument = [(DOMHTMLObjectElement *)self contentDocument];
 
-  return [(DOMDocument *)v2 webFrame];
+  return [(DOMDocument *)contentDocument webFrame];
 }
 
 @end

@@ -2,20 +2,20 @@
 - (NSArray)accessibilityCustomActions;
 - (_TtC7SwiftUI18UIKitBarButtonItem)init;
 - (unint64_t)accessibilityTraits;
-- (void)performAction:(id)a3;
+- (void)performAction:(id)action;
 @end
 
 @implementation UIKitBarButtonItem
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   type metadata accessor for ToolbarStorage.Item?(0, &lazy cache variable for type metadata for PlatformItemList.Item?, type metadata accessor for PlatformItemList.Item, MEMORY[0x1E69E6720]);
   v6 = *(v5 - 8);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v14[-v7];
-  if (a3)
+  if (action)
   {
-    v9 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -24,7 +24,7 @@
   else
   {
     memset(v15, 0, sizeof(v15));
-    v10 = self;
+    selfCopy2 = self;
   }
 
   v14[31] = 17;
@@ -41,7 +41,7 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UIKitBarButtonItem.accessibilityTraits.getter();
 
   return v3;
@@ -49,7 +49,7 @@
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UIKitBarButtonItem.accessibilityCustomActions.getter();
 
   if (v3)

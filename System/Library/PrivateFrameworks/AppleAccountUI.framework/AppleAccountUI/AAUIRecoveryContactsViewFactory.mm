@@ -1,45 +1,45 @@
 @interface AAUIRecoveryContactsViewFactory
-+ (id)createViewModelWithAccountManager:(id)a3;
-+ (id)createViewModelWithAccountManager:(id)a3 telemetryFlowID:(id)a4;
-+ (id)createWithViewModel:(id)a3;
++ (id)createViewModelWithAccountManager:(id)manager;
++ (id)createViewModelWithAccountManager:(id)manager telemetryFlowID:(id)d;
++ (id)createWithViewModel:(id)model;
 @end
 
 @implementation AAUIRecoveryContactsViewFactory
 
-+ (id)createWithViewModel:(id)a3
++ (id)createWithViewModel:(id)model
 {
   swift_getObjCClassMetadata();
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](model);
   swift_getObjCClassMetadata();
-  v5 = sub_1C5418FC8(a3);
-  MEMORY[0x1E69E5920](a3);
+  v5 = sub_1C5418FC8(model);
+  MEMORY[0x1E69E5920](model);
 
   return v5;
 }
 
-+ (id)createViewModelWithAccountManager:(id)a3
++ (id)createViewModelWithAccountManager:(id)manager
 {
   swift_getObjCClassMetadata();
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](manager);
   swift_getObjCClassMetadata();
-  v5 = sub_1C54195EC(a3);
-  MEMORY[0x1E69E5920](a3);
+  v5 = sub_1C54195EC(manager);
+  MEMORY[0x1E69E5920](manager);
 
   return v5;
 }
 
-+ (id)createViewModelWithAccountManager:(id)a3 telemetryFlowID:(id)a4
++ (id)createViewModelWithAccountManager:(id)manager telemetryFlowID:(id)d
 {
   swift_getObjCClassMetadata();
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
+  MEMORY[0x1E69E5928](manager);
+  MEMORY[0x1E69E5928](d);
   v6 = sub_1C5596574();
   v7 = v4;
   swift_getObjCClassMetadata();
-  v10 = sub_1C5419708(a3, v6, v7);
+  v10 = sub_1C5419708(manager, v6, v7);
 
-  MEMORY[0x1E69E5920](a4);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](d);
+  MEMORY[0x1E69E5920](manager);
 
   return v10;
 }

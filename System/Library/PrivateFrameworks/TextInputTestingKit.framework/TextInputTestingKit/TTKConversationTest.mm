@@ -1,19 +1,19 @@
 @interface TTKConversationTest
-+ (id)fromJsonDict:(id)a3;
-+ (id)testWithConversation:(id)a3 sendersToTest:(id)a4 warmupMessages:(unint64_t)a5 adaptToSentMessages:(BOOL)a6 adaptToReceivedMessages:(BOOL)a7;
-- (id)overridingJsonKeys:(id)a3;
++ (id)fromJsonDict:(id)dict;
++ (id)testWithConversation:(id)conversation sendersToTest:(id)test warmupMessages:(unint64_t)messages adaptToSentMessages:(BOOL)sentMessages adaptToReceivedMessages:(BOOL)receivedMessages;
+- (id)overridingJsonKeys:(id)keys;
 - (id)toJsonDict;
 @end
 
 @implementation TTKConversationTest
 
-- (id)overridingJsonKeys:(id)a3
+- (id)overridingJsonKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(TTKConversationTest *)self toJsonDict];
-  v6 = [v5 mutableCopy];
+  keysCopy = keys;
+  toJsonDict = [(TTKConversationTest *)self toJsonDict];
+  v6 = [toJsonDict mutableCopy];
 
-  [v6 addEntriesFromDictionary:v4];
+  [v6 addEntriesFromDictionary:keysCopy];
   v7 = [TTKConversationTest fromJsonDict:v6];
 
   return v7;
@@ -44,8 +44,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v17 + 1) + 8 * i) toJsonDict];
-        [v4 addObject:v10];
+        toJsonDict = [*(*(&v17 + 1) + 8 * i) toJsonDict];
+        [v4 addObject:toJsonDict];
       }
 
       v7 = [(NSArray *)v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
@@ -56,8 +56,8 @@
 
   v22[0] = v4;
   v21[1] = @"sendersToTest";
-  v11 = [(NSSet *)self->_sendersToTest allObjects];
-  v22[1] = v11;
+  allObjects = [(NSSet *)self->_sendersToTest allObjects];
+  v22[1] = allObjects;
   v21[2] = @"warmupMessages";
   v12 = [MEMORY[0x277CCABB0] numberWithInt:LODWORD(self->_warmupMessages)];
   v22[2] = v12;
@@ -72,21 +72,21 @@
   return v15;
 }
 
-+ (id)fromJsonDict:(id)a3
++ (id)fromJsonDict:(id)dict
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"warmupMessages"];
+  dictCopy = dict;
+  v4 = [dictCopy objectForKeyedSubscript:@"warmupMessages"];
 
   if (v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"warmupMessages"];
-    v6 = [v5 intValue];
+    v5 = [dictCopy objectForKeyedSubscript:@"warmupMessages"];
+    intValue = [v5 intValue];
 
-    v4 = v6;
+    v4 = intValue;
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"conversation"];
+  v7 = [dictCopy objectForKeyedSubscript:@"conversation"];
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v21 = 0u;
   v22 = 0u;
@@ -117,31 +117,31 @@
     while (v11);
   }
 
-  v15 = [v3 objectForKeyedSubscript:@"sendersToTest"];
-  v16 = [v3 objectForKeyedSubscript:@"adaptToSentMessages"];
-  v17 = [v16 BOOLValue];
-  v18 = [v3 objectForKeyedSubscript:@"adaptToReceivedMessages"];
-  v19 = +[TTKConversationTest testWithConversation:sendersToTest:warmupMessages:adaptToSentMessages:adaptToReceivedMessages:](TTKConversationTest, "testWithConversation:sendersToTest:warmupMessages:adaptToSentMessages:adaptToReceivedMessages:", v8, v15, v4, v17, [v18 BOOLValue]);
+  v15 = [dictCopy objectForKeyedSubscript:@"sendersToTest"];
+  v16 = [dictCopy objectForKeyedSubscript:@"adaptToSentMessages"];
+  bOOLValue = [v16 BOOLValue];
+  v18 = [dictCopy objectForKeyedSubscript:@"adaptToReceivedMessages"];
+  v19 = +[TTKConversationTest testWithConversation:sendersToTest:warmupMessages:adaptToSentMessages:adaptToReceivedMessages:](TTKConversationTest, "testWithConversation:sendersToTest:warmupMessages:adaptToSentMessages:adaptToReceivedMessages:", v8, v15, v4, bOOLValue, [v18 BOOLValue]);
 
   return v19;
 }
 
-+ (id)testWithConversation:(id)a3 sendersToTest:(id)a4 warmupMessages:(unint64_t)a5 adaptToSentMessages:(BOOL)a6 adaptToReceivedMessages:(BOOL)a7
++ (id)testWithConversation:(id)conversation sendersToTest:(id)test warmupMessages:(unint64_t)messages adaptToSentMessages:(BOOL)sentMessages adaptToReceivedMessages:(BOOL)receivedMessages
 {
-  v12 = a3;
-  v13 = a4;
+  conversationCopy = conversation;
+  testCopy = test;
   v14 = objc_alloc_init(TTKConversationTest);
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_conversation, a3);
-    v16 = [MEMORY[0x277CBEB98] setWithArray:v13];
+    objc_storeStrong(&v14->_conversation, conversation);
+    v16 = [MEMORY[0x277CBEB98] setWithArray:testCopy];
     sendersToTest = v15->_sendersToTest;
     v15->_sendersToTest = v16;
 
-    v15->_warmupMessages = a5;
-    v15->_adaptToSentMessages = a6;
-    v15->_adaptToReceivedMessages = a7;
+    v15->_warmupMessages = messages;
+    v15->_adaptToSentMessages = sentMessages;
+    v15->_adaptToReceivedMessages = receivedMessages;
   }
 
   return v15;

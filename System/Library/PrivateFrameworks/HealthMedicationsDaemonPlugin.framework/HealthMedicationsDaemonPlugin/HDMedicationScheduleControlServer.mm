@@ -1,68 +1,68 @@
 @interface HDMedicationScheduleControlServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
-- (BOOL)insertMedicationScheduleItems:(id)a3 error:(id *)a4;
-- (HDMedicationScheduleControlServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
-- (id)medicationSchedulesForMedicationIdentifiers:(id)a3 error:(id *)a4;
-- (void)remote_deleteSchedule:(id)a3 completion:(id)a4;
-- (void)remote_fetchAllSchedulesWithCompletion:(id)a3;
-- (void)remote_fetchScheduleWithMedicationIdentifier:(id)a3 completion:(id)a4;
-- (void)remote_fetchSchedulesWithMedicationIdentifiers:(id)a3 completion:(id)a4;
-- (void)remote_logUnloggedMedicationsWithScheduledItemIdentifier:(id)a3 status:(int64_t)a4 logDate:(id)a5 completion:(id)a6;
-- (void)remote_observeMedicationScheduleChanges:(BOOL)a3 completion:(id)a4;
-- (void)remote_rescheduleMedicationsWithCompletion:(id)a3;
-- (void)remote_saveSchedule:(id)a3 completion:(id)a4;
-- (void)remote_saveScheduleItems:(id)a3 completion:(id)a4;
-- (void)remote_setTimeZoneTipAsDismissedWithCompletion:(id)a3;
-- (void)scheduleManager:(id)a3 didAddOrModifySchedules:(id)a4;
-- (void)scheduleManager:(id)a3 didPruneScheduleItems:(id)a4;
-- (void)scheduleManagerDidRescheduleMedications:(id)a3;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
+- (BOOL)insertMedicationScheduleItems:(id)items error:(id *)error;
+- (HDMedicationScheduleControlServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
+- (id)medicationSchedulesForMedicationIdentifiers:(id)identifiers error:(id *)error;
+- (void)remote_deleteSchedule:(id)schedule completion:(id)completion;
+- (void)remote_fetchAllSchedulesWithCompletion:(id)completion;
+- (void)remote_fetchScheduleWithMedicationIdentifier:(id)identifier completion:(id)completion;
+- (void)remote_fetchSchedulesWithMedicationIdentifiers:(id)identifiers completion:(id)completion;
+- (void)remote_logUnloggedMedicationsWithScheduledItemIdentifier:(id)identifier status:(int64_t)status logDate:(id)date completion:(id)completion;
+- (void)remote_observeMedicationScheduleChanges:(BOOL)changes completion:(id)completion;
+- (void)remote_rescheduleMedicationsWithCompletion:(id)completion;
+- (void)remote_saveSchedule:(id)schedule completion:(id)completion;
+- (void)remote_saveScheduleItems:(id)items completion:(id)completion;
+- (void)remote_setTimeZoneTipAsDismissedWithCompletion:(id)completion;
+- (void)scheduleManager:(id)manager didAddOrModifySchedules:(id)schedules;
+- (void)scheduleManager:(id)manager didPruneScheduleItems:(id)items;
+- (void)scheduleManagerDidRescheduleMedications:(id)medications;
 @end
 
 @implementation HDMedicationScheduleControlServer
 
-- (void)remote_saveSchedule:(id)a3 completion:(id)a4
+- (void)remote_saveSchedule:(id)schedule completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 healthMedicationsProfileExtension];
-  v10 = [v9 medicationScheduleManager];
+  completionCopy = completion;
+  scheduleCopy = schedule;
+  profile = [(HDStandardTaskServer *)self profile];
+  healthMedicationsProfileExtension = [profile healthMedicationsProfileExtension];
+  medicationScheduleManager = [healthMedicationsProfileExtension medicationScheduleManager];
 
   v13 = 0;
-  v11 = [v10 insertMedicationSchedule:v7 error:&v13];
+  v11 = [medicationScheduleManager insertMedicationSchedule:scheduleCopy error:&v13];
 
   v12 = v13;
-  v6[2](v6, v11, v12);
+  completionCopy[2](completionCopy, v11, v12);
 }
 
-- (void)remote_setTimeZoneTipAsDismissedWithCompletion:(id)a3
+- (void)remote_setTimeZoneTipAsDismissedWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 healthMedicationsProfileExtension];
-  v7 = [v6 medicationScheduleManager];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  healthMedicationsProfileExtension = [profile healthMedicationsProfileExtension];
+  medicationScheduleManager = [healthMedicationsProfileExtension medicationScheduleManager];
 
   v10 = 0;
-  v8 = [v7 updateTimeZoneExperienceAsDismissedWithError:&v10];
+  v8 = [medicationScheduleManager updateTimeZoneExperienceAsDismissedWithError:&v10];
   v9 = v10;
-  v4[2](v4, v8, v9);
+  completionCopy[2](completionCopy, v8, v9);
 }
 
-- (void)remote_fetchScheduleWithMedicationIdentifier:(id)a3 completion:(id)a4
+- (void)remote_fetchScheduleWithMedicationIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 healthMedicationsProfileExtension];
-  v10 = [v9 medicationScheduleManager];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  profile = [(HDStandardTaskServer *)self profile];
+  healthMedicationsProfileExtension = [profile healthMedicationsProfileExtension];
+  medicationScheduleManager = [healthMedicationsProfileExtension medicationScheduleManager];
 
   v14 = 0;
   v15 = 0;
-  LODWORD(v8) = [v10 medicationSchedule:&v15 medicationIdentifier:v7 error:&v14];
+  LODWORD(profile) = [medicationScheduleManager medicationSchedule:&v15 medicationIdentifier:identifierCopy error:&v14];
 
   v11 = v15;
   v12 = v14;
-  if (v8)
+  if (profile)
   {
     v13 = v11;
   }
@@ -72,112 +72,112 @@
     v13 = 0;
   }
 
-  (v6)[2](v6, v13, v12);
+  (completionCopy)[2](completionCopy, v13, v12);
 }
 
-- (void)remote_fetchSchedulesWithMedicationIdentifiers:(id)a3 completion:(id)a4
+- (void)remote_fetchSchedulesWithMedicationIdentifiers:(id)identifiers completion:(id)completion
 {
   v9 = 0;
-  v6 = a4;
-  v7 = [(HDMedicationScheduleControlServer *)self medicationSchedulesForMedicationIdentifiers:a3 error:&v9];
+  completionCopy = completion;
+  v7 = [(HDMedicationScheduleControlServer *)self medicationSchedulesForMedicationIdentifiers:identifiers error:&v9];
   v8 = v9;
-  v6[2](v6, v7, v8);
+  completionCopy[2](completionCopy, v7, v8);
 }
 
-- (void)remote_fetchAllSchedulesWithCompletion:(id)a3
+- (void)remote_fetchAllSchedulesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 healthMedicationsProfileExtension];
-  v7 = [v6 medicationScheduleManager];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  healthMedicationsProfileExtension = [profile healthMedicationsProfileExtension];
+  medicationScheduleManager = [healthMedicationsProfileExtension medicationScheduleManager];
 
   v10 = 0;
-  v8 = [v7 medicationSchedulesWithError:&v10];
+  v8 = [medicationScheduleManager medicationSchedulesWithError:&v10];
   v9 = v10;
-  v4[2](v4, v8, v9);
+  completionCopy[2](completionCopy, v8, v9);
 }
 
-- (void)remote_deleteSchedule:(id)a3 completion:(id)a4
+- (void)remote_deleteSchedule:(id)schedule completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 healthMedicationsProfileExtension];
-  v10 = [v9 medicationScheduleManager];
+  completionCopy = completion;
+  scheduleCopy = schedule;
+  profile = [(HDStandardTaskServer *)self profile];
+  healthMedicationsProfileExtension = [profile healthMedicationsProfileExtension];
+  medicationScheduleManager = [healthMedicationsProfileExtension medicationScheduleManager];
 
   v13 = 0;
-  v11 = [v10 deleteMedicationSchedule:v7 error:&v13];
+  v11 = [medicationScheduleManager deleteMedicationSchedule:scheduleCopy error:&v13];
 
   v12 = v13;
-  v6[2](v6, v11, v12);
+  completionCopy[2](completionCopy, v11, v12);
 }
 
-- (void)remote_rescheduleMedicationsWithCompletion:(id)a3
+- (void)remote_rescheduleMedicationsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 healthMedicationsProfileExtension];
-  v7 = [v6 medicationScheduleManager];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  healthMedicationsProfileExtension = [profile healthMedicationsProfileExtension];
+  medicationScheduleManager = [healthMedicationsProfileExtension medicationScheduleManager];
 
   v10 = 0;
-  v8 = [v7 rescheduleMedicationsWithError:&v10];
+  v8 = [medicationScheduleManager rescheduleMedicationsWithError:&v10];
   v9 = v10;
-  v4[2](v4, v8, v9);
+  completionCopy[2](completionCopy, v8, v9);
 }
 
-- (void)remote_observeMedicationScheduleChanges:(BOOL)a3 completion:(id)a4
+- (void)remote_observeMedicationScheduleChanges:(BOOL)changes completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
-  self->_shouldObserveChanges = a3;
-  v7 = [(HDStandardTaskServer *)self profile];
-  v8 = [v7 healthMedicationsProfileExtension];
-  v9 = [v8 medicationScheduleManager];
+  self->_shouldObserveChanges = changes;
+  profile = [(HDStandardTaskServer *)self profile];
+  healthMedicationsProfileExtension = [profile healthMedicationsProfileExtension];
+  medicationScheduleManager = [healthMedicationsProfileExtension medicationScheduleManager];
 
   if (self->_shouldObserveChanges)
   {
-    [v9 registerObserver:self queue:0];
+    [medicationScheduleManager registerObserver:self queue:0];
   }
 
   else
   {
-    [v9 unregisterObserver:self];
+    [medicationScheduleManager unregisterObserver:self];
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v6[2](v6, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
-- (id)medicationSchedulesForMedicationIdentifiers:(id)a3 error:(id *)a4
+- (id)medicationSchedulesForMedicationIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDStandardTaskServer *)self profile];
-  v8 = [v7 healthMedicationsProfileExtension];
-  v9 = [v8 medicationScheduleManager];
+  identifiersCopy = identifiers;
+  profile = [(HDStandardTaskServer *)self profile];
+  healthMedicationsProfileExtension = [profile healthMedicationsProfileExtension];
+  medicationScheduleManager = [healthMedicationsProfileExtension medicationScheduleManager];
 
-  v10 = HDMedicationSchedulePredicateForMedicationIdentifiers(v6);
+  v10 = HDMedicationSchedulePredicateForMedicationIdentifiers(identifiersCopy);
 
-  v11 = [v9 medicationSchedulesWithPredicate:v10 error:a4];
+  v11 = [medicationScheduleManager medicationSchedulesWithPredicate:v10 error:error];
 
   return v11;
 }
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[HDMedicationScheduleControlServer alloc] initWithUUID:v13 configuration:v12 client:v11 delegate:v10];
+  delegateCopy = delegate;
+  clientCopy = client;
+  configurationCopy = configuration;
+  dCopy = d;
+  v14 = [[HDMedicationScheduleControlServer alloc] initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy];
 
   return v14;
 }
 
-- (HDMedicationScheduleControlServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDMedicationScheduleControlServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = HDMedicationScheduleControlServer;
-  result = [(HDStandardTaskServer *)&v7 initWithUUID:a3 configuration:a4 client:a5 delegate:a6];
+  result = [(HDStandardTaskServer *)&v7 initWithUUID:d configuration:configuration client:client delegate:delegate];
   if (result)
   {
     result->_lock._os_unfair_lock_opaque = 0;
@@ -187,7 +187,7 @@
   return result;
 }
 
-- (void)scheduleManagerDidRescheduleMedications:(id)a3
+- (void)scheduleManagerDidRescheduleMedications:(id)medications
 {
   v13 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -211,7 +211,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v12 = self;
+        selfCopy = self;
         _os_log_impl(&dword_25181C000, v8, OS_LOG_TYPE_INFO, "%{public}@: Notify client for did reschedule medications", buf, 0xCu);
       }
     }
@@ -233,10 +233,10 @@ void __77__HDMedicationScheduleControlServer_scheduleManagerDidRescheduleMedicat
   }
 }
 
-- (void)scheduleManager:(id)a3 didPruneScheduleItems:(id)a4
+- (void)scheduleManager:(id)manager didPruneScheduleItems:(id)items
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  itemsCopy = items;
   os_unfair_lock_lock(&self->_lock);
   shouldObserveChanges = self->_shouldObserveChanges;
   os_unfair_lock_unlock(&self->_lock);
@@ -258,12 +258,12 @@ void __77__HDMedicationScheduleControlServer_scheduleManagerDidRescheduleMedicat
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v14 = self;
+        selfCopy = self;
         _os_log_impl(&dword_25181C000, v10, OS_LOG_TYPE_INFO, "%{public}@: Notify client for didPruneScheduleItems", buf, 0xCu);
       }
     }
 
-    [v7 client_notifyForDidPruneSchduleItems:v5];
+    [v7 client_notifyForDidPruneSchduleItems:itemsCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -280,10 +280,10 @@ void __75__HDMedicationScheduleControlServer_scheduleManager_didPruneScheduleIte
   }
 }
 
-- (void)scheduleManager:(id)a3 didAddOrModifySchedules:(id)a4
+- (void)scheduleManager:(id)manager didAddOrModifySchedules:(id)schedules
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  schedulesCopy = schedules;
   os_unfair_lock_lock(&self->_lock);
   shouldObserveChanges = self->_shouldObserveChanges;
   os_unfair_lock_unlock(&self->_lock);
@@ -304,16 +304,16 @@ void __75__HDMedicationScheduleControlServer_scheduleManager_didPruneScheduleIte
       v10 = HKLogMedication();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [v5 count];
+        v11 = [schedulesCopy count];
         *buf = 138543618;
-        v15 = self;
+        selfCopy = self;
         v16 = 2048;
         v17 = v11;
         _os_log_impl(&dword_25181C000, v10, OS_LOG_TYPE_INFO, "%{public}@: Notify client for didAddOrModifySchedules %ld", buf, 0x16u);
       }
     }
 
-    [v7 client_notifyForAddOrModifySchedules:v5];
+    [v7 client_notifyForAddOrModifySchedules:schedulesCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -330,29 +330,29 @@ void __77__HDMedicationScheduleControlServer_scheduleManager_didAddOrModifySched
   }
 }
 
-- (void)remote_saveScheduleItems:(id)a3 completion:(id)a4
+- (void)remote_saveScheduleItems:(id)items completion:(id)completion
 {
   v9 = 0;
-  v6 = a4;
-  v7 = [(HDMedicationScheduleControlServer *)self insertMedicationScheduleItems:a3 error:&v9];
+  completionCopy = completion;
+  v7 = [(HDMedicationScheduleControlServer *)self insertMedicationScheduleItems:items error:&v9];
   v8 = v9;
-  v6[2](v6, v7, v8);
+  completionCopy[2](completionCopy, v7, v8);
 }
 
-- (BOOL)insertMedicationScheduleItems:(id)a3 error:(id *)a4
+- (BOOL)insertMedicationScheduleItems:(id)items error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDStandardTaskServer *)self profile];
-  v8 = [v7 database];
+  itemsCopy = items;
+  profile = [(HDStandardTaskServer *)self profile];
+  database = [profile database];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __73__HDMedicationScheduleControlServer_insertMedicationScheduleItems_error___block_invoke;
   v11[3] = &unk_2796CD388;
-  v12 = v6;
-  v9 = v6;
-  LOBYTE(a4) = [(HDHealthEntity *)HDMedicationScheduleItemEntity performWriteTransactionWithHealthDatabase:v8 error:a4 block:v11];
+  v12 = itemsCopy;
+  v9 = itemsCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDMedicationScheduleItemEntity performWriteTransactionWithHealthDatabase:database error:error block:v11];
 
-  return a4;
+  return error;
 }
 
 uint64_t __73__HDMedicationScheduleControlServer_insertMedicationScheduleItems_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -408,20 +408,20 @@ LABEL_11:
   return v12;
 }
 
-- (void)remote_logUnloggedMedicationsWithScheduledItemIdentifier:(id)a3 status:(int64_t)a4 logDate:(id)a5 completion:(id)a6
+- (void)remote_logUnloggedMedicationsWithScheduledItemIdentifier:(id)identifier status:(int64_t)status logDate:(id)date completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(HDStandardTaskServer *)self profile];
-  v14 = [v13 healthMedicationsProfileExtension];
-  v15 = [v14 medicationScheduleManager];
+  completionCopy = completion;
+  dateCopy = date;
+  identifierCopy = identifier;
+  profile = [(HDStandardTaskServer *)self profile];
+  healthMedicationsProfileExtension = [profile healthMedicationsProfileExtension];
+  medicationScheduleManager = [healthMedicationsProfileExtension medicationScheduleManager];
 
   v18 = 0;
-  v16 = [v15 logUnloggedDoseEventsForScheduledItemIdentifier:v12 status:a4 logDate:v11 error:&v18];
+  v16 = [medicationScheduleManager logUnloggedDoseEventsForScheduledItemIdentifier:identifierCopy status:status logDate:dateCopy error:&v18];
 
   v17 = v18;
-  v10[2](v10, v16, v17);
+  completionCopy[2](completionCopy, v16, v17);
 }
 
 void __77__HDMedicationScheduleControlServer_scheduleManagerDidRescheduleMedications___block_invoke_cold_1(uint64_t a1)

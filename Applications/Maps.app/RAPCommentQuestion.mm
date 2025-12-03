@@ -2,25 +2,25 @@
 + (id)_localizedInformationTitle;
 + (id)_localizedMoreInformationTitle;
 + (id)_localizedOptionalInformationTitle;
-+ (id)validatedComment:(id)a3;
++ (id)validatedComment:(id)comment;
 - (BOOL)_isNowComplete;
-- (BOOL)removePhotoForIdentifier:(id)a3;
+- (BOOL)removePhotoForIdentifier:(id)identifier;
 - (NSString)localizedPhotosPickerExplanation;
 - (NSString)localizedPhotosPickerLabel;
-- (RAPCommentQuestion)initWithReport:(id)a3 parentQuestion:(id)a4;
-- (RAPCommentQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 title:(id)a5 placeholderText:(id)a6 emphasis:(int64_t)a7;
-- (RAPCommentQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 title:(id)a5 placeholderText:(id)a6 emphasis:(int64_t)a7 localizedPhotosPickerExplanation:(id)a8;
-- (id)photoAtIndex:(unint64_t)a3;
-- (void)_fillSubmissionParameters:(id)a3;
+- (RAPCommentQuestion)initWithReport:(id)report parentQuestion:(id)question;
+- (RAPCommentQuestion)initWithReport:(id)report parentQuestion:(id)question title:(id)title placeholderText:(id)text emphasis:(int64_t)emphasis;
+- (RAPCommentQuestion)initWithReport:(id)report parentQuestion:(id)question title:(id)title placeholderText:(id)text emphasis:(int64_t)emphasis localizedPhotosPickerExplanation:(id)explanation;
+- (id)photoAtIndex:(unint64_t)index;
+- (void)_fillSubmissionParameters:(id)parameters;
 - (void)_prepareForSubmission;
-- (void)_setCommentsTitle:(id)a3 placeholderText:(id)a4;
-- (void)_setLocalizedPhotosPickerExplanation:(id)a3;
-- (void)_setPlaceholderText:(id)a3;
-- (void)addPhoto:(id)a3;
+- (void)_setCommentsTitle:(id)title placeholderText:(id)text;
+- (void)_setLocalizedPhotosPickerExplanation:(id)explanation;
+- (void)_setPlaceholderText:(id)text;
+- (void)addPhoto:(id)photo;
 - (void)removeAllPhotos;
-- (void)removePhotoAtIndex:(unint64_t)a3;
-- (void)setComment:(id)a3;
-- (void)setPhotos:(id)a3;
+- (void)removePhotoAtIndex:(unint64_t)index;
+- (void)setComment:(id)comment;
+- (void)setPhotos:(id)photos;
 @end
 
 @implementation RAPCommentQuestion
@@ -36,8 +36,8 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [(RAPCommentQuestion *)self photos];
-    v4 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+    photos = [(RAPCommentQuestion *)self photos];
+    v4 = [photos countByEnumeratingWithState:&v10 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -49,18 +49,18 @@
         {
           if (*v11 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(photos);
           }
 
           v8 = [[RAPPhotoWithMetadata alloc] initWithRAPPhoto:*(*(&v10 + 1) + 8 * v7) photoType:self->_photoType];
-          v9 = [(RAPQuestion *)self report];
-          [v9 addPhotoWithMetadata:v8];
+          report = [(RAPQuestion *)self report];
+          [report addPhotoWithMetadata:v8];
 
           v7 = v7 + 1;
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+        v5 = [photos countByEnumeratingWithState:&v10 objects:v15 count:16];
       }
 
       while (v5);
@@ -68,74 +68,74 @@
   }
 }
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v13 = a3;
-  v4 = [v13 commonCorrections];
+  parametersCopy = parameters;
+  commonCorrections = [parametersCopy commonCorrections];
 
-  if (!v4)
+  if (!commonCorrections)
   {
     v5 = objc_alloc_init(GEORPFeedbackCommonCorrections);
-    [v13 setCommonCorrections:v5];
+    [parametersCopy setCommonCorrections:v5];
   }
 
-  v6 = [(RAPCommentQuestion *)self comment];
-  v7 = [v13 commonCorrections];
-  [v7 setComments:v6];
+  comment = [(RAPCommentQuestion *)self comment];
+  commonCorrections2 = [parametersCopy commonCorrections];
+  [commonCorrections2 setComments:comment];
 
-  v8 = [v13 commonContext];
+  commonContext = [parametersCopy commonContext];
 
-  if (!v8)
+  if (!commonContext)
   {
     v9 = objc_alloc_init(GEORPFeedbackCommonContext);
-    [v13 setCommonContext:v9];
+    [parametersCopy setCommonContext:v9];
   }
 
   if ([(RAPCommentQuestion *)self shouldShowEmail])
   {
-    v10 = [(RAPPlaceCorrectableString *)self->_correctableEmail value];
-    v11 = [(RAPQuestion *)self report];
-    [v11 setPreferredEmailAddress:v10];
+    value = [(RAPPlaceCorrectableString *)self->_correctableEmail value];
+    report = [(RAPQuestion *)self report];
+    [report setPreferredEmailAddress:value];
   }
 
-  v12 = [v13 commonContext];
-  [v12 addUserPath:10];
+  commonContext2 = [parametersCopy commonContext];
+  [commonContext2 addUserPath:10];
 }
 
 - (BOOL)_isNowComplete
 {
   if ([(RAPCommentQuestion *)self shouldShowEmail])
   {
-    v3 = [(RAPPlaceCorrectableString *)self->_correctableEmail value];
-    v4 = [v3 _maps_isEmailAddress];
+    value = [(RAPPlaceCorrectableString *)self->_correctableEmail value];
+    _maps_isEmailAddress = [value _maps_isEmailAddress];
 
-    if (!v4)
+    if (!_maps_isEmailAddress)
     {
       return 0;
     }
   }
 
-  v5 = [(RAPCommentQuestion *)self comment];
+  comment = [(RAPCommentQuestion *)self comment];
   v6 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  v7 = [comment stringByTrimmingCharactersInSet:v6];
   v8 = [v7 length];
   v9 = v8 != 0;
 
-  v10 = [(RAPCommentQuestion *)self photos];
-  v11 = [v10 count];
+  photos = [(RAPCommentQuestion *)self photos];
+  v11 = [photos count];
 
-  v12 = [(RAPCommentQuestion *)self emphasis];
-  if (v12 < 2)
+  emphasis = [(RAPCommentQuestion *)self emphasis];
+  if (emphasis < 2)
   {
     return (v8 | v11) != 0;
   }
 
-  if (v12 == 4)
+  if (emphasis == 4)
   {
     return v11 != 0;
   }
 
-  if (v12 == 5)
+  if (emphasis == 5)
   {
     return 1;
   }
@@ -143,30 +143,30 @@
   return v9;
 }
 
-- (void)setPhotos:(id)a3
+- (void)setPhotos:(id)photos
 {
-  if (self->_photos != a3)
+  if (self->_photos != photos)
   {
-    v4 = [a3 copy];
+    v4 = [photos copy];
     photos = self->_photos;
     self->_photos = v4;
 
-    v6 = [(RAPCommentQuestion *)self _isNowComplete];
+    _isNowComplete = [(RAPCommentQuestion *)self _isNowComplete];
 
-    [(RAPQuestion *)self _setComplete:v6];
+    [(RAPQuestion *)self _setComplete:_isNowComplete];
   }
 }
 
-- (id)photoAtIndex:(unint64_t)a3
+- (id)photoAtIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_photos count]<= a3)
+  if ([(NSArray *)self->_photos count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_photos objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_photos objectAtIndexedSubscript:index];
   }
 
   return v5;
@@ -178,14 +178,14 @@
   self->_photos = &__NSArray0__struct;
 }
 
-- (BOOL)removePhotoForIdentifier:(id)a3
+- (BOOL)removePhotoForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v16 = self;
+  selfCopy = self;
   v5 = self->_photos;
   v6 = [(NSArray *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
@@ -205,8 +205,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * v10) identifier];
-        v13 = [v12 isEqualToString:v4];
+        identifier = [*(*(&v17 + 1) + 8 * v10) identifier];
+        v13 = [identifier isEqualToString:identifierCopy];
 
         if (v13)
         {
@@ -236,22 +236,22 @@
 
 LABEL_12:
 
-  v14 = [(NSArray *)v16->_photos count];
+  v14 = [(NSArray *)selfCopy->_photos count];
   if (v8 < v14)
   {
-    [(RAPCommentQuestion *)v16 removePhotoAtIndex:v8];
+    [(RAPCommentQuestion *)selfCopy removePhotoAtIndex:v8];
   }
 
   return v8 < v14;
 }
 
-- (void)removePhotoAtIndex:(unint64_t)a3
+- (void)removePhotoAtIndex:(unint64_t)index
 {
   photos = self->_photos;
-  if (photos && [(NSArray *)photos count]> a3)
+  if (photos && [(NSArray *)photos count]> index)
   {
     v6 = [[NSMutableArray alloc] initWithArray:self->_photos];
-    [v6 removeObjectAtIndex:a3];
+    [v6 removeObjectAtIndex:index];
     v7 = [NSArray arrayWithArray:v6];
     v8 = self->_photos;
     self->_photos = v7;
@@ -262,13 +262,13 @@ LABEL_12:
   [(RAPQuestion *)self _didChange];
 }
 
-- (void)addPhoto:(id)a3
+- (void)addPhoto:(id)photo
 {
   if (self->_photos)
   {
-    v4 = a3;
+    photoCopy = photo;
     v5 = [[NSMutableArray alloc] initWithArray:self->_photos];
-    [v5 addObject:v4];
+    [v5 addObject:photoCopy];
     v6 = [NSArray arrayWithArray:v5];
     photos = self->_photos;
     self->_photos = v6;
@@ -276,9 +276,9 @@ LABEL_12:
 
   else
   {
-    v11 = a3;
-    v8 = a3;
-    v9 = [NSArray arrayWithObjects:&v11 count:1];
+    photoCopy2 = photo;
+    photoCopy3 = photo;
+    v9 = [NSArray arrayWithObjects:&photoCopy2 count:1];
     v10 = self->_photos;
     self->_photos = v9;
   }
@@ -287,79 +287,79 @@ LABEL_12:
   [(RAPQuestion *)self _didChange];
 }
 
-- (void)setComment:(id)a3
+- (void)setComment:(id)comment
 {
-  if (self->_comment != a3)
+  if (self->_comment != comment)
   {
     v9 = [RAPCommentQuestion validatedComment:?];
-    v4 = [(NSString *)self->_comment _rap_charactersCount];
-    v5 = [v9 _rap_charactersCount];
+    _rap_charactersCount = [(NSString *)self->_comment _rap_charactersCount];
+    _rap_charactersCount2 = [v9 _rap_charactersCount];
     v6 = [v9 copy];
     comment = self->_comment;
     self->_comment = v6;
 
-    v8 = [(RAPCommentQuestion *)self _isNowComplete];
-    if (v4 == v5)
+    _isNowComplete = [(RAPCommentQuestion *)self _isNowComplete];
+    if (_rap_charactersCount == _rap_charactersCount2)
     {
-      [(RAPQuestion *)self _setComplete:v8 allowInvokingDidChange:1];
+      [(RAPQuestion *)self _setComplete:_isNowComplete allowInvokingDidChange:1];
     }
 
     else
     {
-      [(RAPQuestion *)self _setComplete:v8 allowInvokingDidChange:0];
+      [(RAPQuestion *)self _setComplete:_isNowComplete allowInvokingDidChange:0];
       [(RAPQuestion *)self _didChange];
     }
   }
 }
 
-- (void)_setLocalizedPhotosPickerExplanation:(id)a3
+- (void)_setLocalizedPhotosPickerExplanation:(id)explanation
 {
-  v4 = [a3 copy];
+  v4 = [explanation copy];
   localizedPhotosPickerExplanation = self->_localizedPhotosPickerExplanation;
   self->_localizedPhotosPickerExplanation = v4;
 
   [(RAPQuestion *)self _didChange];
 }
 
-- (void)_setPlaceholderText:(id)a3
+- (void)_setPlaceholderText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   commentsPlaceholderText = self->_commentsPlaceholderText;
   self->_commentsPlaceholderText = v4;
 
   [(RAPQuestion *)self _didChange];
 }
 
-- (void)_setCommentsTitle:(id)a3 placeholderText:(id)a4
+- (void)_setCommentsTitle:(id)title placeholderText:(id)text
 {
-  v8 = a4;
-  v6 = [a3 copy];
+  textCopy = text;
+  v6 = [title copy];
   commentsTitle = self->_commentsTitle;
   self->_commentsTitle = v6;
 
-  [(RAPCommentQuestion *)self _setPlaceholderText:v8];
+  [(RAPCommentQuestion *)self _setPlaceholderText:textCopy];
 }
 
-- (RAPCommentQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 title:(id)a5 placeholderText:(id)a6 emphasis:(int64_t)a7
+- (RAPCommentQuestion)initWithReport:(id)report parentQuestion:(id)question title:(id)title placeholderText:(id)text emphasis:(int64_t)emphasis
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  reportCopy = report;
+  questionCopy = question;
+  titleCopy = title;
+  textCopy = text;
   v32.receiver = self;
   v32.super_class = RAPCommentQuestion;
-  v16 = [(RAPQuestion *)&v32 initWithReport:v12 parentQuestion:v13];
+  v16 = [(RAPQuestion *)&v32 initWithReport:reportCopy parentQuestion:questionCopy];
   if (v16)
   {
-    v17 = [v14 copy];
+    v17 = [titleCopy copy];
     commentsTitle = v16->_commentsTitle;
     v16->_commentsTitle = v17;
 
-    v19 = [v15 copy];
+    v19 = [textCopy copy];
     commentsPlaceholderText = v16->_commentsPlaceholderText;
     v16->_commentsPlaceholderText = v19;
 
-    v16->_emphasis = a7;
+    v16->_emphasis = emphasis;
     v16->_photoType = 1;
     v16->_shouldShowEmail = 0;
     v21 = [[RAPPlaceCorrectableString alloc] initWithKind:-1 originalValue:&stru_1016631F0];
@@ -389,13 +389,13 @@ LABEL_12:
   return v16;
 }
 
-- (RAPCommentQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 title:(id)a5 placeholderText:(id)a6 emphasis:(int64_t)a7 localizedPhotosPickerExplanation:(id)a8
+- (RAPCommentQuestion)initWithReport:(id)report parentQuestion:(id)question title:(id)title placeholderText:(id)text emphasis:(int64_t)emphasis localizedPhotosPickerExplanation:(id)explanation
 {
-  v14 = a8;
-  v15 = [(RAPCommentQuestion *)self initWithReport:a3 parentQuestion:a4 title:a5 placeholderText:a6 emphasis:a7];
+  explanationCopy = explanation;
+  v15 = [(RAPCommentQuestion *)self initWithReport:report parentQuestion:question title:title placeholderText:text emphasis:emphasis];
   if (v15)
   {
-    v16 = [v14 copy];
+    v16 = [explanationCopy copy];
     localizedPhotosPickerExplanation = v15->_localizedPhotosPickerExplanation;
     v15->_localizedPhotosPickerExplanation = v16;
   }
@@ -403,13 +403,13 @@ LABEL_12:
   return v15;
 }
 
-- (RAPCommentQuestion)initWithReport:(id)a3 parentQuestion:(id)a4
+- (RAPCommentQuestion)initWithReport:(id)report parentQuestion:(id)question
 {
-  v6 = a4;
-  v7 = a3;
+  questionCopy = question;
+  reportCopy = report;
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"Comments" value:@"localized string not found" table:0];
-  v10 = [(RAPCommentQuestion *)self initWithReport:v7 parentQuestion:v6 title:v9 placeholderText:0 emphasis:0];
+  v10 = [(RAPCommentQuestion *)self initWithReport:reportCopy parentQuestion:questionCopy title:v9 placeholderText:0 emphasis:0];
 
   return v10;
 }
@@ -438,18 +438,18 @@ LABEL_12:
   return v3;
 }
 
-+ (id)validatedComment:(id)a3
++ (id)validatedComment:(id)comment
 {
-  v3 = a3;
-  v4 = [v3 _rap_charactersCount];
-  if (v4 > +[RAPCommentQuestion maximumCommentLength])
+  commentCopy = comment;
+  _rap_charactersCount = [commentCopy _rap_charactersCount];
+  if (_rap_charactersCount > +[RAPCommentQuestion maximumCommentLength])
   {
-    v5 = [v3 _rap_substringWithNumberOfCharacters:{+[RAPCommentQuestion maximumCommentLength](RAPCommentQuestion, "maximumCommentLength")}];
+    v5 = [commentCopy _rap_substringWithNumberOfCharacters:{+[RAPCommentQuestion maximumCommentLength](RAPCommentQuestion, "maximumCommentLength")}];
 
-    v3 = v5;
+    commentCopy = v5;
   }
 
-  return v3;
+  return commentCopy;
 }
 
 + (id)_localizedOptionalInformationTitle

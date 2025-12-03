@@ -1,16 +1,16 @@
 @interface PKAccountWebServiceTransfersResponse
-- (PKAccountWebServiceTransfersResponse)initWithData:(id)a3 account:(id)a4 request:(id)a5;
+- (PKAccountWebServiceTransfersResponse)initWithData:(id)data account:(id)account request:(id)request;
 @end
 
 @implementation PKAccountWebServiceTransfersResponse
 
-- (PKAccountWebServiceTransfersResponse)initWithData:(id)a3 account:(id)a4 request:(id)a5
+- (PKAccountWebServiceTransfersResponse)initWithData:(id)data account:(id)account request:(id)request
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  accountCopy = account;
   v37.receiver = self;
   v37.super_class = PKAccountWebServiceTransfersResponse;
-  v8 = [(PKWebServiceResponse *)&v37 initWithData:a3];
+  v8 = [(PKWebServiceResponse *)&v37 initWithData:data];
   v9 = v8;
   if (!v8)
   {
@@ -19,23 +19,23 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v10 = [(PKWebServiceResponse *)v8 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v8 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v10 PKArrayForKey:@"transfers"];
-    v12 = [MEMORY[0x1E695DF70] array];
+    v11 = [jSONObject PKArrayForKey:@"transfers"];
+    array = [MEMORY[0x1E695DF70] array];
     v31 = v9;
-    v32 = v7;
-    if ([v7 type] == 4)
+    v32 = accountCopy;
+    if ([accountCopy type] == 4)
     {
-      v13 = [v7 savingsDetails];
-      v14 = [v13 productTimeZone];
+      savingsDetails = [accountCopy savingsDetails];
+      productTimeZone = [savingsDetails productTimeZone];
     }
 
     else
     {
-      v14 = 0;
+      productTimeZone = 0;
     }
 
     v35 = 0u;
@@ -62,8 +62,8 @@ LABEL_19:
           if (objc_opt_isKindOfClass())
           {
             v27 = v26;
-            v28 = [[PKAccountTransfer alloc] initWithDictionary:v27 productTimeZone:v14];
-            [(NSArray *)v12 safelyAddObject:v28];
+            v28 = [[PKAccountTransfer alloc] initWithDictionary:v27 productTimeZone:productTimeZone];
+            [(NSArray *)array safelyAddObject:v28];
           }
         }
 
@@ -75,9 +75,9 @@ LABEL_19:
 
     v9 = v31;
     transfers = v31->_transfers;
-    v31->_transfers = v12;
+    v31->_transfers = array;
 
-    v7 = v32;
+    accountCopy = v32;
     goto LABEL_19;
   }
 

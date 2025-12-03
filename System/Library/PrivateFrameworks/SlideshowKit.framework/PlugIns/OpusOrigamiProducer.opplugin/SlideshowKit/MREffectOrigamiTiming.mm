@@ -1,26 +1,26 @@
 @interface MREffectOrigamiTiming
-- (MREffectOrigamiTiming)initWithEffectID:(id)a3;
+- (MREffectOrigamiTiming)initWithEffectID:(id)d;
 - (void)dealloc;
-- (void)setPhaseInDuration:(double)a3 mainDuration:(double)a4 phaseOutDuration:(double)a5;
+- (void)setPhaseInDuration:(double)duration mainDuration:(double)mainDuration phaseOutDuration:(double)outDuration;
 @end
 
 @implementation MREffectOrigamiTiming
 
-- (MREffectOrigamiTiming)initWithEffectID:(id)a3
+- (MREffectOrigamiTiming)initWithEffectID:(id)d
 {
   v10.receiver = self;
   v10.super_class = MREffectOrigamiTiming;
   v4 = [(MREffectOrigamiTiming *)&v10 init];
   if (v4)
   {
-    v4->_effectID = [a3 copy];
-    v4->_description = [qword_1EF3C0 objectForKey:a3];
+    v4->_effectID = [d copy];
+    v4->_description = [qword_1EF3C0 objectForKey:d];
     v5 = +[MREffectManager sharedManager];
-    [v5 defaultPhaseInDurationForEffectID:a3];
+    [v5 defaultPhaseInDurationForEffectID:d];
     v4->_defaultPhaseInDuration = v6;
-    [v5 defaultMainDurationForEffectID:a3];
+    [v5 defaultMainDurationForEffectID:d];
     v4->_defaultMainDuration = v7;
-    [v5 defaultPhaseOutDurationForEffectID:a3];
+    [v5 defaultPhaseOutDurationForEffectID:d];
     v4->_defaultPhaseOutDuration = v8;
   }
 
@@ -38,11 +38,11 @@
   [(MREffectOrigamiTiming *)&v3 dealloc];
 }
 
-- (void)setPhaseInDuration:(double)a3 mainDuration:(double)a4 phaseOutDuration:(double)a5
+- (void)setPhaseInDuration:(double)duration mainDuration:(double)mainDuration phaseOutDuration:(double)outDuration
 {
-  self->_phaseInDuration = a3;
-  self->_mainDuration = a4;
-  self->_phaseOutDuration = a5;
+  self->_phaseInDuration = duration;
+  self->_mainDuration = mainDuration;
+  self->_phaseOutDuration = outDuration;
   v27 = 0.0;
   self->_animationTimeBounds = ComputeAnimationTimeBounds(self->_description, &v27);
   self->_durationStretchFactor = (self->_phaseInDuration + self->_mainDuration + self->_phaseOutDuration - v27) / (self->_defaultPhaseInDuration + self->_defaultMainDuration + self->_defaultPhaseOutDuration - v27);

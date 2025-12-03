@@ -1,45 +1,45 @@
 @interface RemoteEngagementViewController
 + (id)_exportedInterface;
 + (id)_remoteViewControllerInterface;
-- (_TtC26AMSEngagementViewExtension30RemoteEngagementViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)presentEngagementRequest:(id)a3 bagData:(id)a4 clientInfo:(id)a5 completion:(id)a6;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC26AMSEngagementViewExtension30RemoteEngagementViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)presentEngagementRequest:(id)request bagData:(id)data clientInfo:(id)info completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation RemoteEngagementViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000399C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100003CE4(a3, &selRef_viewWillAppear_, &ViewControllerPresenter.viewWillAppear());
+  selfCopy = self;
+  sub_100003CE4(appear, &selRef_viewWillAppear_, &ViewControllerPresenter.viewWillAppear());
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100003ABC(a3);
+  selfCopy = self;
+  sub_100003ABC(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100003B80(a3);
+  selfCopy = self;
+  sub_100003B80(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100003CE4(a3, &selRef_viewDidDisappear_, &ViewControllerPresenter.viewDidDisappear());
+  selfCopy = self;
+  sub_100003CE4(disappear, &selRef_viewDidDisappear_, &ViewControllerPresenter.viewDidDisappear());
 }
 
 + (id)_exportedInterface
@@ -56,9 +56,9 @@
   return v2;
 }
 
-- (_TtC26AMSEngagementViewExtension30RemoteEngagementViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26AMSEngagementViewExtension30RemoteEngagementViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_100005FDC();
     v7 = v6;
@@ -70,20 +70,20 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100005194(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100005194(v5, v7, bundle);
 }
 
-- (void)presentEngagementRequest:(id)a3 bagData:(id)a4 clientInfo:(id)a5 completion:(id)a6
+- (void)presentEngagementRequest:(id)request bagData:(id)data clientInfo:(id)info completion:(id)completion
 {
-  v9 = _Block_copy(a6);
-  v10 = a3;
-  v11 = a5;
-  v12 = self;
-  if (a4)
+  v9 = _Block_copy(completion);
+  requestCopy = request;
+  infoCopy = info;
+  selfCopy = self;
+  if (data)
   {
-    v13 = a4;
-    a4 = sub_100005E3C();
+    dataCopy = data;
+    data = sub_100005E3C();
     v15 = v14;
   }
 
@@ -93,9 +93,9 @@
   }
 
   _Block_copy(v9);
-  sub_1000053D0(a3, a4, v15, a5, self, v9);
+  sub_1000053D0(request, data, v15, info, self, v9);
   _Block_release(v9);
-  sub_10000583C(a4, v15);
+  sub_10000583C(data, v15);
 }
 
 @end

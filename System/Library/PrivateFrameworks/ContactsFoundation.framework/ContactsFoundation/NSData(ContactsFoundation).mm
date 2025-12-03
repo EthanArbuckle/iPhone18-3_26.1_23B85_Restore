@@ -17,18 +17,18 @@
 
 - (id)_cn_hexString
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = [MEMORY[0x1E696AD60] stringWithCapacity:2 * v2];
-  v4 = [a1 bytes];
-  if ([a1 length])
+  bytes = [self bytes];
+  if ([self length])
   {
     v5 = 0;
     do
     {
-      [v3 appendFormat:@"%02lX", *(v4 + v5++)];
+      [v3 appendFormat:@"%02lX", *(bytes + v5++)];
     }
 
-    while (v5 < [a1 length]);
+    while (v5 < [self length]);
   }
 
   v6 = [MEMORY[0x1E696AEC0] stringWithString:v3];
@@ -39,7 +39,7 @@
 - (id)_cn_md5Hash
 {
   v2 = [MEMORY[0x1E695DF88] dataWithLength:16];
-  CC_MD5([a1 bytes], objc_msgSend(a1, "length"), objc_msgSend(v2, "mutableBytes"));
+  CC_MD5([self bytes], objc_msgSend(self, "length"), objc_msgSend(v2, "mutableBytes"));
 
   return v2;
 }
@@ -47,27 +47,27 @@
 - (BOOL)_cn_containsData:()ContactsFoundation
 {
   v4 = a3;
-  v5 = [a1 rangeOfData:v4 options:0 range:{0, objc_msgSend(a1, "length")}];
+  v5 = [self rangeOfData:v4 options:0 range:{0, objc_msgSend(self, "length")}];
 
   return v5 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
 - (id)_cn_decodeBase64
 {
-  v2 = [MEMORY[0x1E695DF88] dataWithCapacity:{(3 * objc_msgSend(a1, "length")) >> 2}];
-  v3 = [a1 bytes];
-  v4 = [a1 length];
+  v2 = [MEMORY[0x1E695DF88] dataWithCapacity:{(3 * objc_msgSend(self, "length")) >> 2}];
+  bytes = [self bytes];
+  v4 = [self length];
   if (v4 < 1)
   {
     goto LABEL_58;
   }
 
-  v5 = v3 + v4;
+  v5 = bytes + v4;
   do
   {
     v6 = 0;
     v7 = 0;
-    v8 = (v3 + 1);
+    v8 = (bytes + 1);
     v9 = 1;
     while (1)
     {
@@ -149,9 +149,9 @@ LABEL_42:
           v23 = v5;
         }
 
-        v24 = v23 - v3;
+        v24 = v23 - bytes;
         v25 = v2;
-        v26 = v3;
+        v26 = bytes;
 LABEL_56:
         [v25 appendBytes:v26 length:v24];
         goto LABEL_57;
@@ -195,7 +195,7 @@ LABEL_36:
       v7 = v5;
     }
 
-    v20 = v6 + v3;
+    v20 = v6 + bytes;
     v21 = v7 - v20;
     if (v7 == v20)
     {
@@ -208,7 +208,7 @@ LABEL_36:
       v22 = 0;
       do
       {
-        v28 = Decode64Table[*(v3 + v27) & 0x7F];
+        v28 = Decode64Table[*(bytes + v27) & 0x7F];
         if ((v28 & 0x8000000000000000) == 0)
         {
           v22 = v28 + (v22 << 6);
@@ -252,7 +252,7 @@ LABEL_36:
     }
 
 LABEL_57:
-    v3 = v17;
+    bytes = v17;
   }
 
   while (v16);
@@ -263,9 +263,9 @@ LABEL_58:
 
 - (id)_cn_decodeBase64IgnoringWhitespace
 {
-  v2 = [MEMORY[0x1E695DF88] dataWithCapacity:{(3 * objc_msgSend(a1, "length")) >> 2}];
-  v3 = [a1 bytes];
-  v4 = [a1 length];
+  v2 = [MEMORY[0x1E695DF88] dataWithCapacity:{(3 * objc_msgSend(self, "length")) >> 2}];
+  bytes = [self bytes];
+  v4 = [self length];
   if (v4 < 1)
   {
     goto LABEL_28;
@@ -274,8 +274,8 @@ LABEL_58:
   v5 = 0;
   v6 = 0;
   v7 = 0;
-  v8 = v3 + v4;
-  v9 = v3 + 1;
+  v8 = bytes + v4;
+  v9 = bytes + 1;
   do
   {
     v10 = Decode64Table[*(v9 - 1) & 0x7F];
@@ -374,7 +374,7 @@ LABEL_28:
   v15 = *MEMORY[0x1E69E9840];
   v4 = [a3 dataUsingEncoding:4];
   v5 = [MEMORY[0x1E695DF88] dataWithData:v4];
-  [v5 appendData:a1];
+  [v5 appendData:self];
   CC_SHA256([v5 bytes], objc_msgSend(v5, "length"), md);
   v6 = 0;
   v7 = v13;
@@ -398,24 +398,24 @@ LABEL_28:
 - (id)_cn_SHA1String
 {
   v6 = *MEMORY[0x1E69E9840];
-  CC_SHA1([a1 bytes], objc_msgSend(a1, "length"), md);
-  v1 = [MEMORY[0x1E696AD60] string];
+  CC_SHA1([self bytes], objc_msgSend(self, "length"), md);
+  string = [MEMORY[0x1E696AD60] string];
   for (i = 0; i != 20; ++i)
   {
-    [v1 appendFormat:@"%x", md[i]];
+    [string appendFormat:@"%x", md[i]];
   }
 
   v3 = *MEMORY[0x1E69E9840];
 
-  return v1;
+  return string;
 }
 
 + (id)_cn_dataFromHexString:()ContactsFoundation
 {
-  v3 = [a3 lowercaseString];
-  v4 = [MEMORY[0x1E695DF88] data];
+  lowercaseString = [a3 lowercaseString];
+  data = [MEMORY[0x1E695DF88] data];
   v15 = 0;
-  v5 = [v3 length];
+  v5 = [lowercaseString length];
   v6 = v5 - 1;
   if (v5 != 1)
   {
@@ -423,7 +423,7 @@ LABEL_28:
     do
     {
       v8 = v7 + 1;
-      v9 = [v3 characterAtIndex:v7];
+      v9 = [lowercaseString characterAtIndex:v7];
       if (v9 >= 48)
       {
         v10 = v9 & 0x7F;
@@ -432,9 +432,9 @@ LABEL_28:
         if (v10 <= 0x66 && !v12)
         {
           __str[0] = v9;
-          __str[1] = [v3 characterAtIndex:v7 + 1];
+          __str[1] = [lowercaseString characterAtIndex:v7 + 1];
           HIBYTE(v15) = strtol(__str, 0, 16);
-          [v4 appendBytes:&v15 + 1 length:1];
+          [data appendBytes:&v15 + 1 length:1];
           v8 = v7 + 2;
         }
       }
@@ -445,7 +445,7 @@ LABEL_28:
     while (v8 < v6);
   }
 
-  return v4;
+  return data;
 }
 
 - (id)_cn_writeToURL:()ContactsFoundation options:
@@ -455,7 +455,7 @@ LABEL_28:
   v10[1] = 3221225472;
   v10[2] = __53__NSData_ContactsFoundation___cn_writeToURL_options___block_invoke;
   v10[3] = &unk_1E6ED7A18;
-  v10[4] = a1;
+  v10[4] = self;
   v11 = v6;
   v12 = a4;
   v7 = v6;
@@ -466,12 +466,12 @@ LABEL_28:
 
 - (id)_cn_trimTrailingZeros
 {
-  v2 = [a1 bytes];
-  v3 = [a1 length];
+  bytes = [self bytes];
+  v3 = [self length];
   if (v3)
   {
     v4 = v3;
-    while (!*(v2 - 1 + v4))
+    while (!*(bytes - 1 + v4))
     {
       if (!--v4)
       {
@@ -479,49 +479,49 @@ LABEL_28:
       }
     }
 
-    if (v4 >= [a1 length])
+    if (v4 >= [self length])
     {
-      v5 = a1;
+      selfCopy = self;
     }
 
     else
     {
-      v5 = [a1 subdataWithRange:{0, v4}];
+      selfCopy = [self subdataWithRange:{0, v4}];
     }
   }
 
   else
   {
 LABEL_5:
-    v5 = [MEMORY[0x1E695DEF0] data];
+    selfCopy = [MEMORY[0x1E695DEF0] data];
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)_cn_padDataToLength:()ContactsFoundation
 {
-  if ([a1 length] >= a3)
+  if ([self length] >= a3)
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = [a1 mutableCopy];
-    [v5 increaseLengthBy:{a3 - objc_msgSend(a1, "length")}];
+    selfCopy = [self mutableCopy];
+    [selfCopy increaseLengthBy:{a3 - objc_msgSend(self, "length")}];
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (uint64_t)_cn_distanceFromData:()ContactsFoundation
 {
   v4 = a3;
-  v5 = [a1 length];
+  v5 = [self length];
   if (v5 == [v4 length])
   {
-    if (([a1 isEqualToData:v4] & 1) != 0 || (v6 = objc_msgSend(a1, "bytes"), v7 = objc_msgSend(v4, "bytes"), (v8 = objc_msgSend(a1, "length")) == 0))
+    if (([self isEqualToData:v4] & 1) != 0 || (v6 = objc_msgSend(self, "bytes"), v7 = objc_msgSend(v4, "bytes"), (v8 = objc_msgSend(self, "length")) == 0))
     {
       v10 = 0;
     }

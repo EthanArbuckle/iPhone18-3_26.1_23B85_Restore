@@ -1,30 +1,30 @@
 @interface MapsThemeCollectionViewOutlineCell
 - (void)didMoveToWindow;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MapsThemeCollectionViewOutlineCell
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = MapsThemeCollectionViewOutlineCell;
-  [(MapsThemeCollectionViewOutlineCell *)&v9 traitCollectionDidChange:v5];
-  if (v5 && (v6 = [v5 userInterfaceStyle], -[MapsThemeCollectionViewOutlineCell traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
+  [(MapsThemeCollectionViewOutlineCell *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy && (v6 = [changeCopy userInterfaceStyle], -[MapsThemeCollectionViewOutlineCell traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
   {
   }
 
   else
   {
-    v7 = [(MapsThemeCollectionViewOutlineCell *)self traitCollection];
-    v8 = [v7 userInterfaceStyle];
+    traitCollection = [(MapsThemeCollectionViewOutlineCell *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5)
+    if (changeCopy)
     {
     }
 
-    if (v8)
+    if (userInterfaceStyle)
     {
       [(MapsThemeCollectionViewOutlineCell *)self updateTheme];
     }
@@ -36,9 +36,9 @@
   v4.receiver = self;
   v4.super_class = MapsThemeCollectionViewOutlineCell;
   [(MapsThemeCollectionViewOutlineCell *)&v4 didMoveToWindow];
-  v3 = [(MapsThemeCollectionViewOutlineCell *)self window];
+  window = [(MapsThemeCollectionViewOutlineCell *)self window];
 
-  if (v3)
+  if (window)
   {
     [(MapsThemeCollectionViewOutlineCell *)self updateTheme];
   }

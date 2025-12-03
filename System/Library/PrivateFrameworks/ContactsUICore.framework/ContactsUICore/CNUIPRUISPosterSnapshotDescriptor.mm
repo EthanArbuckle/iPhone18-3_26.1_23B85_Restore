@@ -1,13 +1,13 @@
 @interface CNUIPRUISPosterSnapshotDescriptor
 - (CGRect)canvasBounds;
-- (CNUIPRUISPosterSnapshotDescriptor)initWithUserInterfaceStyle:(int64_t)a3 interfaceOrientation:(int64_t)a4 snapshotDefinition:(id)a5;
+- (CNUIPRUISPosterSnapshotDescriptor)initWithUserInterfaceStyle:(int64_t)style interfaceOrientation:(int64_t)orientation snapshotDefinition:(id)definition;
 @end
 
 @implementation CNUIPRUISPosterSnapshotDescriptor
 
-- (CNUIPRUISPosterSnapshotDescriptor)initWithUserInterfaceStyle:(int64_t)a3 interfaceOrientation:(int64_t)a4 snapshotDefinition:(id)a5
+- (CNUIPRUISPosterSnapshotDescriptor)initWithUserInterfaceStyle:(int64_t)style interfaceOrientation:(int64_t)orientation snapshotDefinition:(id)definition
 {
-  v8 = a5;
+  definitionCopy = definition;
   v17.receiver = self;
   v17.super_class = CNUIPRUISPosterSnapshotDescriptor;
   v9 = [(CNUIPRUISPosterSnapshotDescriptor *)&v17 init];
@@ -32,8 +32,8 @@
     v11 = v10;
     _Block_object_dispose(&v19, 8);
     v12 = [v10 alloc];
-    v13 = [v8 wrappedDefinition];
-    v14 = [v12 initWithUserInterfaceStyle:a3 interfaceOrientation:a4 snapshotDefinition:v13];
+    wrappedDefinition = [definitionCopy wrappedDefinition];
+    v14 = [v12 initWithUserInterfaceStyle:style interfaceOrientation:orientation snapshotDefinition:wrappedDefinition];
     wrappedDescriptor = v9->_wrappedDescriptor;
     v9->_wrappedDescriptor = v14;
   }

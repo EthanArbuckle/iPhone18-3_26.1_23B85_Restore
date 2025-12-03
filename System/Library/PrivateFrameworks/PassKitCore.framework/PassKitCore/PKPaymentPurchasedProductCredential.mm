@@ -1,33 +1,33 @@
 @interface PKPaymentPurchasedProductCredential
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPaymentPurchasedProductCredential:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPaymentPurchasedProductCredential:(id)credential;
 - (NSString)statusDescription;
 - (NSString)summaryMetadataDescription;
-- (PKPaymentPurchasedProductCredential)initWithPaymentSetupProduct:(id)a3 purchase:(id)a4;
+- (PKPaymentPurchasedProductCredential)initWithPaymentSetupProduct:(id)product purchase:(id)purchase;
 - (id)metadata;
 - (unint64_t)hash;
 @end
 
 @implementation PKPaymentPurchasedProductCredential
 
-- (PKPaymentPurchasedProductCredential)initWithPaymentSetupProduct:(id)a3 purchase:(id)a4
+- (PKPaymentPurchasedProductCredential)initWithPaymentSetupProduct:(id)product purchase:(id)purchase
 {
-  v7 = a3;
-  v8 = a4;
+  productCopy = product;
+  purchaseCopy = purchase;
   v9 = [(PKPaymentCredential *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_product, a3);
-    v11 = [v7 configuration];
-    v12 = [v11 productIdentifier];
-    v13 = [v12 copy];
+    objc_storeStrong(&v9->_product, product);
+    configuration = [productCopy configuration];
+    productIdentifier = [configuration productIdentifier];
+    v13 = [productIdentifier copy];
     productIdentifier = v10->_productIdentifier;
     v10->_productIdentifier = v13;
 
-    objc_storeStrong(&v10->_purchase, a4);
-    v15 = [v7 displayName];
-    v16 = [v15 copy];
+    objc_storeStrong(&v10->_purchase, purchase);
+    displayName = [productCopy displayName];
+    v16 = [displayName copy];
     [(PKPaymentCredential *)v10 setLongDescription:v16];
   }
 
@@ -38,16 +38,16 @@
 {
   v20[3] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PKServiceProviderPurchase *)self->_purchase visibleTransactionIdentifier];
-  if (v4)
+  visibleTransactionIdentifier = [(PKServiceProviderPurchase *)self->_purchase visibleTransactionIdentifier];
+  if (visibleTransactionIdentifier)
   {
-    v5 = v4;
+    identifier = visibleTransactionIdentifier;
   }
 
   else
   {
-    v5 = [(PKServiceProviderPurchase *)self->_purchase identifier];
-    if (!v5)
+    identifier = [(PKServiceProviderPurchase *)self->_purchase identifier];
+    if (!identifier)
     {
       goto LABEL_5;
     }
@@ -56,7 +56,7 @@
   v19[0] = @"valueType";
   v19[1] = @"value";
   v20[0] = @"text";
-  v20[1] = v5;
+  v20[1] = identifier;
   v19[2] = @"localizedDisplayName";
   v6 = PKLocalizedPaymentString(&cfstr_SetupPurchaseT.isa, 0);
   v20[2] = v6;
@@ -66,12 +66,12 @@
   [v3 addObject:v8];
 
 LABEL_5:
-  v9 = [(PKServiceProviderPurchase *)self->_purchase purchaseDate];
-  if (v9)
+  purchaseDate = [(PKServiceProviderPurchase *)self->_purchase purchaseDate];
+  if (purchaseDate)
   {
     v10 = MEMORY[0x1E696AC80];
-    v11 = [MEMORY[0x1E695DFE8] localTimeZone];
-    v12 = [v10 stringFromDate:v9 timeZone:v11 formatOptions:1907];
+    localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+    v12 = [v10 stringFromDate:purchaseDate timeZone:localTimeZone formatOptions:1907];
 
     v17[0] = @"valueType";
     v17[1] = @"value";
@@ -93,35 +93,35 @@ LABEL_5:
 
 - (NSString)summaryMetadataDescription
 {
-  v3 = [(PKServiceProviderPurchase *)self->_purchase purchaseDate];
-  v4 = v3;
-  if (v3)
+  purchaseDate = [(PKServiceProviderPurchase *)self->_purchase purchaseDate];
+  v4 = purchaseDate;
+  if (purchaseDate)
   {
-    v5 = PKShortDateString(v3, 0);
-    v6 = PKLocalizedPaymentString(&cfstr_SetupPurchaseS.isa, &stru_1F2281668.isa, v5);
+    v5 = PKShortDateString(purchaseDate, 0);
+    statusDescription = PKLocalizedPaymentString(&cfstr_SetupPurchaseS.isa, &stru_1F2281668.isa, v5);
   }
 
   else
   {
-    v6 = [(PKPaymentPurchasedProductCredential *)self statusDescription];
+    statusDescription = [(PKPaymentPurchasedProductCredential *)self statusDescription];
   }
 
-  return v6;
+  return statusDescription;
 }
 
 - (NSString)statusDescription
 {
-  v2 = [(PKServiceProviderPurchase *)self->_purchase state];
-  if (v2 > 1)
+  state = [(PKServiceProviderPurchase *)self->_purchase state];
+  if (state > 1)
   {
-    if (v2 == 2)
+    if (state == 2)
     {
       v3 = @"SETUP_PURCHASE_STATE_METADATA_COMPLETE";
     }
 
     else
     {
-      if (v2 != 3)
+      if (state != 3)
       {
         goto LABEL_13;
       }
@@ -132,16 +132,16 @@ LABEL_5:
     goto LABEL_12;
   }
 
-  if (v2)
+  if (state)
   {
-    if (v2 != 1)
+    if (state != 1)
     {
       goto LABEL_13;
     }
 
     v3 = @"SETUP_PURCHASE_STATE_METADATA_PENDING";
 LABEL_12:
-    v2 = PKLocalizedPaymentString(&v3->isa, 0);
+    state = PKLocalizedPaymentString(&v3->isa, 0);
     goto LABEL_13;
   }
 
@@ -152,46 +152,46 @@ LABEL_12:
     _os_log_impl(&dword_1AD337000, v4, OS_LOG_TYPE_DEFAULT, "Invalid purchase state: Unknown", v6, 2u);
   }
 
-  v2 = &stru_1F227FD28;
+  state = &stru_1F227FD28;
 LABEL_13:
 
-  return v2;
+  return state;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(PKPaymentPurchasedProductCredential *)self statusDescription];
-  [v3 safelyAddObject:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  statusDescription = [(PKPaymentPurchasedProductCredential *)self statusDescription];
+  [array safelyAddObject:statusDescription];
 
-  v5 = [(PKPaymentPurchasedProductCredential *)self metadata];
-  [v3 safelyAddObject:v5];
+  metadata = [(PKPaymentPurchasedProductCredential *)self metadata];
+  [array safelyAddObject:metadata];
 
-  [v3 safelyAddObject:self->_productIdentifier];
-  [v3 safelyAddObject:self->_purchase];
+  [array safelyAddObject:self->_productIdentifier];
+  [array safelyAddObject:self->_purchase];
   v9.receiver = self;
   v9.super_class = PKPaymentPurchasedProductCredential;
   v6 = [(PKPaymentCredential *)&v9 hash];
-  v7 = PKCombinedHash(v6, v3);
+  v7 = PKCombinedHash(v6, array);
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentPurchasedProductCredential *)self isEqualToPaymentPurchasedProductCredential:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentPurchasedProductCredential *)self isEqualToPaymentPurchasedProductCredential:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToPaymentPurchasedProductCredential:(id)a3
+- (BOOL)isEqualToPaymentPurchasedProductCredential:(id)credential
 {
-  v4 = a3;
-  v5 = [(PKPaymentPurchasedProductCredential *)self statusDescription];
-  v6 = [v4 statusDescription];
-  v7 = v5;
-  v8 = v6;
+  credentialCopy = credential;
+  statusDescription = [(PKPaymentPurchasedProductCredential *)self statusDescription];
+  statusDescription2 = [credentialCopy statusDescription];
+  v7 = statusDescription;
+  v8 = statusDescription2;
   v9 = v8;
   if (v7 == v8)
   {
@@ -201,7 +201,7 @@ LABEL_13:
 
   v10 = 0;
   v11 = v8;
-  v12 = v7;
+  metadata = v7;
   if (!v7 || !v8)
   {
     goto LABEL_23;
@@ -212,23 +212,23 @@ LABEL_13:
   if (v13)
   {
 LABEL_7:
-    v12 = [(PKPaymentPurchasedProductCredential *)self metadata];
-    v14 = [v4 metadata];
-    v11 = v14;
-    if (v12 && v14)
+    metadata = [(PKPaymentPurchasedProductCredential *)self metadata];
+    metadata2 = [credentialCopy metadata];
+    v11 = metadata2;
+    if (metadata && metadata2)
     {
-      if (([v12 isEqual:v14] & 1) == 0)
+      if (([metadata isEqual:metadata2] & 1) == 0)
       {
         goto LABEL_22;
       }
     }
 
-    else if (v12 != v14)
+    else if (metadata != metadata2)
     {
       goto LABEL_22;
     }
 
-    v15 = v4[15];
+    v15 = credentialCopy[15];
     v16 = self->_productIdentifier;
     v17 = v15;
     v18 = v17;
@@ -249,7 +249,7 @@ LABEL_7:
 
 LABEL_18:
       purchase = self->_purchase;
-      v21 = v4[16];
+      v21 = credentialCopy[16];
       if (purchase && v21)
       {
         v10 = [(PKServiceProviderPurchase *)purchase isEqual:?];

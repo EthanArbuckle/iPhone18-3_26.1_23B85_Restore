@@ -6,25 +6,25 @@
 
 - (unint64_t)_controlState
 {
-  v3 = [(UIViewConfigurationState *)self isHighlighted];
+  isHighlighted = [(UIViewConfigurationState *)self isHighlighted];
   if ([(UIViewConfigurationState *)self isDisabled])
   {
-    v3 |= 2uLL;
+    isHighlighted |= 2uLL;
   }
 
   if ([(UIViewConfigurationState *)self isSelected])
   {
-    v3 |= 4uLL;
+    isHighlighted |= 4uLL;
   }
 
   if ([(UIViewConfigurationState *)self isFocused])
   {
-    return v3 | 8;
+    return isHighlighted | 8;
   }
 
   else
   {
-    return v3;
+    return isHighlighted;
   }
 }
 

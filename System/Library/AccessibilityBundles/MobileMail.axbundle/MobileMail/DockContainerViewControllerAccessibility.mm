@@ -1,45 +1,45 @@
 @interface DockContainerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsMailComposeSceneActive;
 - (CGRect)_axFrameForDismissDraftsElement;
-- (DockContainerViewControllerAccessibility)initWithPersistence:(id)a3 scene:(id)a4 rootViewController:(id)a5;
+- (DockContainerViewControllerAccessibility)initWithPersistence:(id)persistence scene:(id)scene rootViewController:(id)controller;
 - (id)_accessibilitySpeakThisViewController;
 - (id)_axDismissDraftElement;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityUpdateDraftElements;
-- (void)_axAddDraftsElementIfNecessaryUsingVC:(id)a3;
-- (void)_configureNewDockedView:(id)a3;
-- (void)setActiveTiltedTabViewController:(id)a3;
+- (void)_axAddDraftsElementIfNecessaryUsingVC:(id)c;
+- (void)_configureNewDockedView:(id)view;
+- (void)setActiveTiltedTabViewController:(id)controller;
 @end
 
 @implementation DockContainerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"_accessibilitySpeakThisViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DockContainerViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"DockContainerViewController" hasInstanceMethod:@"activeViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DockContainerViewController" hasInstanceMethod:@"dockedViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DockContainerViewController" hasInstanceMethod:@"isExposeModeActivated" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"DockContainerViewController" hasInstanceMethod:@"activateExposeModeAnimated:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"DockContainerViewController" hasInstanceMethod:@"setActiveTiltedTabViewController:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"DockContainerViewController" hasInstanceMethod:@"presentViewController:animated:completion:" withFullSignature:{"v", "@", "B", "@?", 0}];
-  [v3 validateClass:@"DockContainerViewController" hasInstanceMethod:@"_configureNewDockedView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"DockContainerViewController" hasInstanceMethod:@"initWithPersistence:scene:rootViewController:" withFullSignature:{"@", "@", "@", "@", 0}];
-  [v3 validateClass:@"DockContainerViewController" hasInstanceMethod:@"_minimizeKeyCommandPressed:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"DockContainerViewController" hasInstanceMethod:@"_setDockVisible:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"ComposeNavigationController"];
-  [v3 validateClass:@"MailComposeScene"];
-  [v3 validateClass:@"UIWindowScene" isKindOfClass:@"UIScene"];
-  [v3 validateClass:@"UIScene" hasClassMethod:@"_mostActiveScene" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"_accessibilitySpeakThisViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DockContainerViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"DockContainerViewController" hasInstanceMethod:@"activeViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DockContainerViewController" hasInstanceMethod:@"dockedViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DockContainerViewController" hasInstanceMethod:@"isExposeModeActivated" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"DockContainerViewController" hasInstanceMethod:@"activateExposeModeAnimated:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"DockContainerViewController" hasInstanceMethod:@"setActiveTiltedTabViewController:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"DockContainerViewController" hasInstanceMethod:@"presentViewController:animated:completion:" withFullSignature:{"v", "@", "B", "@?", 0}];
+  [validationsCopy validateClass:@"DockContainerViewController" hasInstanceMethod:@"_configureNewDockedView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"DockContainerViewController" hasInstanceMethod:@"initWithPersistence:scene:rootViewController:" withFullSignature:{"@", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"DockContainerViewController" hasInstanceMethod:@"_minimizeKeyCommandPressed:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"DockContainerViewController" hasInstanceMethod:@"_setDockVisible:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"ComposeNavigationController"];
+  [validationsCopy validateClass:@"MailComposeScene"];
+  [validationsCopy validateClass:@"UIWindowScene" isKindOfClass:@"UIScene"];
+  [validationsCopy validateClass:@"UIScene" hasClassMethod:@"_mostActiveScene" withFullSignature:{"@", 0}];
 }
 
-- (DockContainerViewControllerAccessibility)initWithPersistence:(id)a3 scene:(id)a4 rootViewController:(id)a5
+- (DockContainerViewControllerAccessibility)initWithPersistence:(id)persistence scene:(id)scene rootViewController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = DockContainerViewControllerAccessibility;
-  v5 = [(DockContainerViewControllerAccessibility *)&v7 initWithPersistence:a3 scene:a4 rootViewController:a5];
+  v5 = [(DockContainerViewControllerAccessibility *)&v7 initWithPersistence:persistence scene:scene rootViewController:controller];
   [(DockContainerViewControllerAccessibility *)v5 _accessibilityLoadAccessibilityInformation];
   return v5;
 }
@@ -85,9 +85,9 @@ uint64_t __86__DockContainerViewControllerAccessibility__accessibilityLoadAccess
 - (id)_accessibilitySpeakThisViewController
 {
   v2 = [(DockContainerViewControllerAccessibility *)self safeValueForKey:@"activeViewController"];
-  v3 = [v2 _accessibilitySpeakThisViewController];
+  _accessibilitySpeakThisViewController = [v2 _accessibilitySpeakThisViewController];
 
-  return v3;
+  return _accessibilitySpeakThisViewController;
 }
 
 - (BOOL)_accessibilityIsMailComposeSceneActive
@@ -99,45 +99,45 @@ uint64_t __86__DockContainerViewControllerAccessibility__accessibilityLoadAccess
   return isKindOfClass & 1;
 }
 
-- (void)_axAddDraftsElementIfNecessaryUsingVC:(id)a3
+- (void)_axAddDraftsElementIfNecessaryUsingVC:(id)c
 {
   v24[1] = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  cCopy = c;
   NSClassFromString(&cfstr_Composenavigat_0.isa);
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 view];
+    view = [cCopy view];
     v23[0] = MEMORY[0x29EDCA5F8];
     v23[1] = 3221225472;
     v23[2] = __82__DockContainerViewControllerAccessibility__axAddDraftsElementIfNecessaryUsingVC___block_invoke;
     v23[3] = &unk_29F2D4060;
     v23[4] = self;
-    v6 = [v5 _accessibilityFindAncestor:v23 startWithSelf:1];
+    v6 = [view _accessibilityFindAncestor:v23 startWithSelf:1];
 
-    v7 = [(DockContainerViewControllerAccessibility *)self _axDismissDraftElement];
-    [v7 setAccessibilityContainer:v6];
+    _axDismissDraftElement = [(DockContainerViewControllerAccessibility *)self _axDismissDraftElement];
+    [_axDismissDraftElement setAccessibilityContainer:v6];
 
-    v8 = [(DockContainerViewControllerAccessibility *)self _axDismissDraftElement];
-    v24[0] = v8;
+    _axDismissDraftElement2 = [(DockContainerViewControllerAccessibility *)self _axDismissDraftElement];
+    v24[0] = _axDismissDraftElement2;
     v9 = [MEMORY[0x29EDB8D80] arrayWithObjects:v24 count:1];
     [v6 _accessibilitySetAdditionalElements:v9];
 
     [(DockContainerViewControllerAccessibility *)self _axSetViewContainingDraftsElement:v6];
     objc_opt_class();
     v10 = __UIAccessibilityCastAsClass();
-    v11 = [v10 view];
+    view2 = [v10 view];
 
-    v12 = [v11 window];
-    v13 = [v12 windowScene];
-    v14 = [v13 statusBarManager];
-    [v14 statusBarFrame];
+    window = [view2 window];
+    windowScene = [window windowScene];
+    statusBarManager = [windowScene statusBarManager];
+    [statusBarManager statusBarFrame];
     MaxY = CGRectGetMaxY(v25);
 
-    v16 = [v4 view];
-    v17 = [v16 superview];
-    v18 = [v4 view];
-    [v18 frame];
-    [v17 convertRect:0 toView:?];
+    view3 = [cCopy view];
+    superview = [view3 superview];
+    view4 = [cCopy view];
+    [view4 frame];
+    [superview convertRect:0 toView:?];
     v20 = v19;
 
     [(DockContainerViewControllerAccessibility *)self _axSetDraftsElementHeight:v20 - MaxY];
@@ -145,8 +145,8 @@ uint64_t __86__DockContainerViewControllerAccessibility__accessibilityLoadAccess
 
   else
   {
-    v21 = [(DockContainerViewControllerAccessibility *)self _axViewContainingDraftsElement];
-    [v21 _accessibilitySetAdditionalElements:0];
+    _axViewContainingDraftsElement = [(DockContainerViewControllerAccessibility *)self _axViewContainingDraftsElement];
+    [_axViewContainingDraftsElement _accessibilitySetAdditionalElements:0];
 
     [(DockContainerViewControllerAccessibility *)self _axSetDraftsElementHeight:0.0];
   }
@@ -191,19 +191,19 @@ uint64_t __86__DockContainerViewControllerAccessibility_presentViewController_an
   return result;
 }
 
-- (void)_configureNewDockedView:(id)a3
+- (void)_configureNewDockedView:(id)view
 {
   v4.receiver = self;
   v4.super_class = DockContainerViewControllerAccessibility;
-  [(DockContainerViewControllerAccessibility *)&v4 _configureNewDockedView:a3];
+  [(DockContainerViewControllerAccessibility *)&v4 _configureNewDockedView:view];
   [(DockContainerViewControllerAccessibility *)self _accessibilityUpdateDraftElements];
 }
 
-- (void)setActiveTiltedTabViewController:(id)a3
+- (void)setActiveTiltedTabViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = DockContainerViewControllerAccessibility;
-  [(DockContainerViewControllerAccessibility *)&v4 setActiveTiltedTabViewController:a3];
+  [(DockContainerViewControllerAccessibility *)&v4 setActiveTiltedTabViewController:controller];
   [(DockContainerViewControllerAccessibility *)self _accessibilityUpdateDraftElements];
 }
 
@@ -211,44 +211,44 @@ uint64_t __86__DockContainerViewControllerAccessibility_presentViewController_an
 {
   v32 = *MEMORY[0x29EDCA608];
   v3 = [(DockContainerViewControllerAccessibility *)self safeDictionaryForKey:@"dockedViews"];
-  v4 = [v3 allValues];
+  allValues = [v3 allValues];
 
   v5 = [(DockContainerViewControllerAccessibility *)self safeBoolForKey:@"isExposeModeActivated"];
-  v6 = [v4 count];
+  v6 = [allValues count];
   objc_opt_class();
   v7 = __UIAccessibilityCastAsClass();
-  v8 = [v7 view];
+  view = [v7 view];
 
   v30 = 0;
   objc_opt_class();
-  v9 = [v4 firstObject];
+  firstObject = [allValues firstObject];
   v10 = __UIAccessibilityCastAsClass();
 
-  LODWORD(v9) = v6 != 0;
-  v11 = [v8 superview];
-  [v8 frame];
-  [v11 convertRect:0 toView:?];
+  LODWORD(firstObject) = v6 != 0;
+  superview = [view superview];
+  [view frame];
+  [superview convertRect:0 toView:?];
   v13 = v12;
 
-  v14 = [v10 superview];
+  superview2 = [v10 superview];
   [v10 frame];
-  [v14 convertRect:0 toView:?];
+  [superview2 convertRect:0 toView:?];
   v16 = v15;
 
-  v17 = [MEMORY[0x29EDBA070] numberWithInt:v9 & ~v5];
-  [v8 _accessibilitySetRetainedValue:v17 forKey:@"kAXShowDraftsKey"];
+  v17 = [MEMORY[0x29EDBA070] numberWithInt:firstObject & ~v5];
+  [view _accessibilitySetRetainedValue:v17 forKey:@"kAXShowDraftsKey"];
 
-  v18 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:{objc_msgSend(v4, "count")}];
-  [v8 _accessibilitySetRetainedValue:v18 forKey:@"kAXNumberOfDraftsKey"];
+  v18 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:{objc_msgSend(allValues, "count")}];
+  [view _accessibilitySetRetainedValue:v18 forKey:@"kAXNumberOfDraftsKey"];
 
   v19 = [MEMORY[0x29EDBA070] numberWithDouble:v13 - v16];
-  [v8 _accessibilitySetRetainedValue:v19 forKey:@"kAXDraftHeightKey"];
+  [view _accessibilitySetRetainedValue:v19 forKey:@"kAXDraftHeightKey"];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v20 = v4;
+  v20 = allValues;
   v21 = [v20 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v21)
   {
@@ -279,15 +279,15 @@ uint64_t __86__DockContainerViewControllerAccessibility_presentViewController_an
 {
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 view];
+  view = [v3 view];
 
-  [v4 bounds];
+  [view bounds];
   v6 = v5;
   v8 = v7;
-  v9 = [v4 window];
-  v10 = [v9 windowScene];
-  v11 = [v10 statusBarManager];
-  [v11 statusBarFrame];
+  window = [view window];
+  windowScene = [window windowScene];
+  statusBarManager = [windowScene statusBarManager];
+  [statusBarManager statusBarFrame];
   v13 = v12;
 
   [(DockContainerViewControllerAccessibility *)self _axGetDraftsElementHeight];

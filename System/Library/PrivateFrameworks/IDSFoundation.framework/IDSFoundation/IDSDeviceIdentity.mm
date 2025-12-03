@@ -1,27 +1,27 @@
 @interface IDSDeviceIdentity
 - (ENDevicePublicKey)devicePublicKey;
-- (IDSDeviceIdentity)initWithCoder:(id)a3;
-- (IDSDeviceIdentity)initWithLegacyIdentity:(id)a3 modernIdentity:(id)a4 accountIdentity:(id)a5;
+- (IDSDeviceIdentity)initWithCoder:(id)coder;
+- (IDSDeviceIdentity)initWithLegacyIdentity:(id)identity modernIdentity:(id)modernIdentity accountIdentity:(id)accountIdentity;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSDeviceIdentity
 
-- (IDSDeviceIdentity)initWithLegacyIdentity:(id)a3 modernIdentity:(id)a4 accountIdentity:(id)a5
+- (IDSDeviceIdentity)initWithLegacyIdentity:(id)identity modernIdentity:(id)modernIdentity accountIdentity:(id)accountIdentity
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identityCopy = identity;
+  modernIdentityCopy = modernIdentity;
+  accountIdentityCopy = accountIdentity;
   v15.receiver = self;
   v15.super_class = IDSDeviceIdentity;
   v12 = [(IDSDeviceIdentity *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_legacyIdentity, a3);
-    objc_storeStrong(&v13->_modernIdentity, a4);
-    objc_storeStrong(&v13->_accountIdentity, a5);
+    objc_storeStrong(&v12->_legacyIdentity, identity);
+    objc_storeStrong(&v13->_modernIdentity, modernIdentity);
+    objc_storeStrong(&v13->_accountIdentity, accountIdentity);
   }
 
   return v13;
@@ -30,36 +30,36 @@
 - (ENDevicePublicKey)devicePublicKey
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(IDSDeviceIdentity *)self legacyIdentity];
+  legacyIdentity = [(IDSDeviceIdentity *)self legacyIdentity];
   v14 = 0;
-  v4 = [v3 publicIdentityWithError:&v14];
+  v4 = [legacyIdentity publicIdentityWithError:&v14];
   v5 = v14;
 
   if (v4)
   {
-    v6 = [(IDSDeviceIdentity *)self modernIdentity];
+    modernIdentity = [(IDSDeviceIdentity *)self modernIdentity];
     v13 = v5;
-    v7 = [v6 publicDeviceIdentityWithError:&v13];
+    registration = [modernIdentity publicDeviceIdentityWithError:&v13];
     v8 = v13;
 
-    if (v7)
+    if (registration)
     {
-      v9 = [(IDSDeviceIdentity *)self accountIdentity];
-      v10 = [v9 accountPublicKey];
+      accountIdentity = [(IDSDeviceIdentity *)self accountIdentity];
+      accountPublicKey = [accountIdentity accountPublicKey];
 
-      v11 = [[IDSPublicDeviceIdentity alloc] initWithPublicLegacyIdentity:v4 modernIdentity:v7 accountIdentity:v10];
+      v11 = [[IDSPublicDeviceIdentity alloc] initWithPublicLegacyIdentity:v4 modernIdentity:registration accountIdentity:accountPublicKey];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      accountPublicKey = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(accountPublicKey, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 2114;
         v18 = v8;
-        _os_log_impl(&dword_1A7AD9000, v10, OS_LOG_TYPE_DEFAULT, "Failed to create modernPublicKey {deviceIdentity: %{public}@, error: %{public}@}", buf, 0x16u);
+        _os_log_impl(&dword_1A7AD9000, accountPublicKey, OS_LOG_TYPE_DEFAULT, "Failed to create modernPublicKey {deviceIdentity: %{public}@, error: %{public}@}", buf, 0x16u);
       }
 
       v11 = 0;
@@ -68,14 +68,14 @@
 
   else
   {
-    v7 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2114;
       v18 = v5;
-      _os_log_impl(&dword_1A7AD9000, v7, OS_LOG_TYPE_DEFAULT, "Failed to create legacyPublicKey {deviceIdentity: %{public}@, error: %{public}@}", buf, 0x16u);
+      _os_log_impl(&dword_1A7AD9000, registration, OS_LOG_TYPE_DEFAULT, "Failed to create legacyPublicKey {deviceIdentity: %{public}@, error: %{public}@}", buf, 0x16u);
     }
 
     v11 = 0;
@@ -89,32 +89,32 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IDSDeviceIdentity *)self legacyIdentity];
-  v6 = [(IDSDeviceIdentity *)self modernIdentity];
-  v7 = [(IDSDeviceIdentity *)self accountIdentity];
-  v8 = [v3 stringWithFormat:@"<%@ %p legacyIdentity: %@, modernIdentity: %@, accountIdentity: %@>", v4, self, v5, v6, v7];
+  legacyIdentity = [(IDSDeviceIdentity *)self legacyIdentity];
+  modernIdentity = [(IDSDeviceIdentity *)self modernIdentity];
+  accountIdentity = [(IDSDeviceIdentity *)self accountIdentity];
+  v8 = [v3 stringWithFormat:@"<%@ %p legacyIdentity: %@, modernIdentity: %@, accountIdentity: %@>", v4, self, legacyIdentity, modernIdentity, accountIdentity];
 
   return v8;
 }
 
-- (IDSDeviceIdentity)initWithCoder:(id)a3
+- (IDSDeviceIdentity)initWithCoder:(id)coder
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kIDSDeviceIdentityLegacy"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kIDSDeviceIdentityLegacy"];
   v22 = 0;
   v6 = [IDSMPFullLegacyIdentity identityWithData:v5 error:&v22];
   v7 = v22;
   if (v6)
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kIDSDeviceIdentityAccount"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kIDSDeviceIdentityModern"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kIDSDeviceIdentityAccount"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kIDSDeviceIdentityModern"];
     v10 = v9;
     if (v8 && v9)
     {
-      v11 = [v8 adminIdentity];
+      adminIdentity = [v8 adminIdentity];
       v21 = v7;
-      v12 = [v11 publicServiceIdentityAdminWithError:&v21];
+      v12 = [adminIdentity publicServiceIdentityAdminWithError:&v21];
       v13 = v21;
 
       if (v12)
@@ -126,13 +126,13 @@
         if (v14)
         {
           self = [(IDSDeviceIdentity *)self initWithLegacyIdentity:v6 modernIdentity:v14 accountIdentity:v8];
-          v16 = self;
+          selfCopy2 = self;
         }
 
         else
         {
-          [v4 failWithError:v15];
-          v16 = 0;
+          [coderCopy failWithError:v15];
+          selfCopy2 = 0;
         }
 
         v13 = v15;
@@ -140,18 +140,18 @@
 
       else
       {
-        v17 = [MEMORY[0x1E69A6138] registration];
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+        registration = [MEMORY[0x1E69A6138] registration];
+        if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
           v24 = v8;
           v25 = 2114;
           v26 = v13;
-          _os_log_impl(&dword_1A7AD9000, v17, OS_LOG_TYPE_DEFAULT, "Failed to initWithCoder missing publicAdminKey from account {account: %{public}@, error: %{public}@", buf, 0x16u);
+          _os_log_impl(&dword_1A7AD9000, registration, OS_LOG_TYPE_DEFAULT, "Failed to initWithCoder missing publicAdminKey from account {account: %{public}@, error: %{public}@", buf, 0x16u);
         }
 
-        [v4 failWithError:v13];
-        v16 = 0;
+        [coderCopy failWithError:v13];
+        selfCopy2 = 0;
       }
 
       v7 = v13;
@@ -160,65 +160,65 @@
     else
     {
       self = [(IDSDeviceIdentity *)self initWithLegacyIdentity:v6 modernIdentity:0 accountIdentity:0];
-      v16 = self;
+      selfCopy2 = self;
     }
   }
 
   else
   {
-    [v4 failWithError:v7];
-    v16 = 0;
+    [coderCopy failWithError:v7];
+    selfCopy2 = 0;
   }
 
-  return v16;
+  return selfCopy2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IDSDeviceIdentity *)self legacyIdentity];
+  coderCopy = coder;
+  legacyIdentity = [(IDSDeviceIdentity *)self legacyIdentity];
   v16 = 0;
-  v6 = [v5 dataRepresentationWithError:&v16];
+  v6 = [legacyIdentity dataRepresentationWithError:&v16];
   v7 = v16;
 
   if (!v6)
   {
-    [v4 failWithError:v7];
+    [coderCopy failWithError:v7];
 LABEL_7:
     v13 = v7;
     goto LABEL_10;
   }
 
-  [v4 encodeObject:v6 forKey:@"kIDSDeviceIdentityLegacy"];
-  v8 = [(IDSDeviceIdentity *)self modernIdentity];
-  if (!v8)
+  [coderCopy encodeObject:v6 forKey:@"kIDSDeviceIdentityLegacy"];
+  modernIdentity = [(IDSDeviceIdentity *)self modernIdentity];
+  if (!modernIdentity)
   {
     goto LABEL_7;
   }
 
-  v9 = v8;
-  v10 = [(IDSDeviceIdentity *)self accountIdentity];
+  v9 = modernIdentity;
+  accountIdentity = [(IDSDeviceIdentity *)self accountIdentity];
 
-  if (!v10)
+  if (!accountIdentity)
   {
     goto LABEL_7;
   }
 
-  v11 = [(IDSDeviceIdentity *)self modernIdentity];
+  modernIdentity2 = [(IDSDeviceIdentity *)self modernIdentity];
   v15 = v7;
-  v12 = [v11 dataRepresentationWithError:&v15];
+  v12 = [modernIdentity2 dataRepresentationWithError:&v15];
   v13 = v15;
 
   if (v12)
   {
-    [v4 encodeObject:v12 forKey:@"kIDSDeviceIdentityModern"];
-    v14 = [(IDSDeviceIdentity *)self accountIdentity];
-    [v4 encodeObject:v14 forKey:@"kIDSDeviceIdentityAccount"];
+    [coderCopy encodeObject:v12 forKey:@"kIDSDeviceIdentityModern"];
+    accountIdentity2 = [(IDSDeviceIdentity *)self accountIdentity];
+    [coderCopy encodeObject:accountIdentity2 forKey:@"kIDSDeviceIdentityAccount"];
   }
 
   else
   {
-    [v4 failWithError:v13];
+    [coderCopy failWithError:v13];
   }
 
 LABEL_10:

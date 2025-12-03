@@ -1,17 +1,17 @@
 @interface BKSeriesCoverManager
 + (id)sharedInstance;
 - (BKSeriesCoverManager)init;
-- (id)seriesIDContainingBook:(id)a3;
-- (void)_notifyWithChanges:(id)a3;
+- (id)seriesIDContainingBook:(id)book;
+- (void)_notifyWithChanges:(id)changes;
 - (void)_rebuild;
-- (void)addSeriesCoverObserver:(id)a3;
-- (void)assetIDsAndOptionsForBooksInSeries:(id)a3 completion:(id)a4;
+- (void)addSeriesCoverObserver:(id)observer;
+- (void)assetIDsAndOptionsForBooksInSeries:(id)series completion:(id)completion;
 - (void)dealloc;
-- (void)invalidateCacheForSeriesId:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeSeriesCoverObserver:(id)a3;
-- (void)restrictionsForExplicitContentAllowedChanged:(BOOL)a3;
-- (void)withBooksInSeries:(id)a3 performBlockAsync:(id)a4;
+- (void)invalidateCacheForSeriesId:(id)id;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeSeriesCoverObserver:(id)observer;
+- (void)restrictionsForExplicitContentAllowedChanged:(BOOL)changed;
+- (void)withBooksInSeries:(id)series performBlockAsync:(id)async;
 @end
 
 @implementation BKSeriesCoverManager
@@ -63,9 +63,9 @@
 
     v16 = [BCManagedObjectIDMonitor alloc];
     v17 = +[BKLibraryManager defaultManager];
-    v18 = [v17 persistentStoreCoordinator];
+    persistentStoreCoordinator = [v17 persistentStoreCoordinator];
     v19 = +[BKLibraryManager predicateForContainerLibraryAssets];
-    v20 = [v16 initWithContext:0 coordinator:v18 entityName:@"BKLibraryAsset" predicate:v19 mapProperty:@"assetID" propertiesOfInterest:0 observer:v3];
+    v20 = [v16 initWithContext:0 coordinator:persistentStoreCoordinator entityName:@"BKLibraryAsset" predicate:v19 mapProperty:@"assetID" propertiesOfInterest:0 observer:v3];
     seriesMonitor = v3->_seriesMonitor;
     v3->_seriesMonitor = v20;
 
@@ -79,9 +79,9 @@
   return v3;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_100ACD858 == a6)
+  if (off_100ACD858 == context)
   {
     sync = self->_sync;
     block[0] = _NSConcreteStackBlock;
@@ -96,7 +96,7 @@
   {
     v7.receiver = self;
     v7.super_class = BKSeriesCoverManager;
-    [(BKSeriesCoverManager *)&v7 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(BKSeriesCoverManager *)&v7 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -123,11 +123,11 @@
   [(BKSeriesCoverManager *)&v8 dealloc];
 }
 
-- (void)invalidateCacheForSeriesId:(id)a3
+- (void)invalidateCacheForSeriesId:(id)id
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  idCopy = id;
+  v5 = idCopy;
+  if (idCopy)
   {
     sync = self->_sync;
     v7[0] = _NSConcreteStackBlock;
@@ -135,22 +135,22 @@
     v7[2] = sub_1000BDDA4;
     v7[3] = &unk_100A03440;
     v7[4] = self;
-    v8 = v4;
+    v8 = idCopy;
     dispatch_async(sync, v7);
   }
 }
 
-- (void)_notifyWithChanges:(id)a3
+- (void)_notifyWithChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   sync = self->_sync;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000BDE7C;
   v7[3] = &unk_100A03440;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changesCopy;
+  selfCopy = self;
+  v6 = changesCopy;
   dispatch_async(sync, v7);
 }
 
@@ -179,15 +179,15 @@
     v8[3] = &unk_100A06628;
     v9 = v6;
     v10 = v5;
-    v11 = self;
+    selfCopy = self;
     [v7 performBackgroundReadOnlyBlock:v8];
   }
 }
 
-- (void)assetIDsAndOptionsForBooksInSeries:(id)a3 completion:(id)a4
+- (void)assetIDsAndOptionsForBooksInSeries:(id)series completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  seriesCopy = series;
+  completionCopy = completion;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -198,9 +198,9 @@
   v17[1] = 3221225472;
   v18 = sub_1000BE784;
   v19 = &unk_100A05B18;
-  v20 = self;
+  selfCopy = self;
   v22 = &v23;
-  v8 = v6;
+  v8 = seriesCopy;
   v21 = v8;
   v9 = v17;
   os_unfair_lock_lock(&self->_accessLock);
@@ -209,7 +209,7 @@
 
   if ([v24[5] count])
   {
-    v10 = objc_retainBlock(v7);
+    v10 = objc_retainBlock(completionCopy);
     v11 = v10;
     if (v10)
     {
@@ -225,8 +225,8 @@
     v13[2] = sub_1000BE7FC;
     v13[3] = &unk_100A04C28;
     v14 = v8;
-    v15 = self;
-    v16 = v7;
+    selfCopy2 = self;
+    v16 = completionCopy;
     [v12 performBlockOnWorkerQueue:v13];
 
     v11 = v14;
@@ -235,9 +235,9 @@
   _Block_object_dispose(&v23, 8);
 }
 
-- (id)seriesIDContainingBook:(id)a3
+- (id)seriesIDContainingBook:(id)book
 {
-  v3 = a3;
+  bookCopy = book;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -249,7 +249,7 @@
   v8[1] = 3221225472;
   v8[2] = sub_1000BEE7C;
   v8[3] = &unk_100A06650;
-  v5 = v3;
+  v5 = bookCopy;
   v9 = v5;
   v10 = &v11;
   [v4 performNamed:@"seriesIDContainingBook" workerQueueBlockAndWait:v8];
@@ -260,52 +260,52 @@
   return v6;
 }
 
-- (void)withBooksInSeries:(id)a3 performBlockAsync:(id)a4
+- (void)withBooksInSeries:(id)series performBlockAsync:(id)async
 {
-  v6 = a3;
-  v7 = a4;
+  seriesCopy = series;
+  asyncCopy = async;
   sync = self->_sync;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000BF0D8;
   block[3] = &unk_100A049A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = seriesCopy;
+  v13 = asyncCopy;
+  v9 = asyncCopy;
+  v10 = seriesCopy;
   dispatch_async(sync, block);
 }
 
-- (void)addSeriesCoverObserver:(id)a3
+- (void)addSeriesCoverObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notify = self->_notify;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000BF404;
   v7[3] = &unk_100A03440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(notify, v7);
 }
 
-- (void)removeSeriesCoverObserver:(id)a3
+- (void)removeSeriesCoverObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notify = self->_notify;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000BF504;
   v7[3] = &unk_100A03440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(notify, v7);
 }
 
-- (void)restrictionsForExplicitContentAllowedChanged:(BOOL)a3
+- (void)restrictionsForExplicitContentAllowedChanged:(BOOL)changed
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;

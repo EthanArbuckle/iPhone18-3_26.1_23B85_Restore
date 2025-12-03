@@ -1,34 +1,34 @@
 @interface BDSDistributedPriceTrackingConfig
 + (BDSDistributedPriceTrackingConfig)disabledConfig;
-- (BDSDistributedPriceTrackingConfig)initWithCoder:(id)a3;
-- (BDSDistributedPriceTrackingConfig)initWithItemIDs:(id)a3 updateScheduleSteps:(id)a4 dealAbsoluteThreshold:(id)a5 dealRelativeThreshold:(id)a6 notification:(id)a7 cardLimit:(id)a8;
-- (void)encodeWithCoder:(id)a3;
+- (BDSDistributedPriceTrackingConfig)initWithCoder:(id)coder;
+- (BDSDistributedPriceTrackingConfig)initWithItemIDs:(id)ds updateScheduleSteps:(id)steps dealAbsoluteThreshold:(id)threshold dealRelativeThreshold:(id)relativeThreshold notification:(id)notification cardLimit:(id)limit;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSDistributedPriceTrackingConfig
 
 + (BDSDistributedPriceTrackingConfig)disabledConfig
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [v2 initWithItemIDs:MEMORY[0x1E695E0F0] updateScheduleSteps:MEMORY[0x1E695E0F0] dealAbsoluteThreshold:&unk_1F5E78F80 dealRelativeThreshold:&unk_1F5E78F80 notification:0 cardLimit:&unk_1F5E78F80];
 
   return v3;
 }
 
-- (BDSDistributedPriceTrackingConfig)initWithItemIDs:(id)a3 updateScheduleSteps:(id)a4 dealAbsoluteThreshold:(id)a5 dealRelativeThreshold:(id)a6 notification:(id)a7 cardLimit:(id)a8
+- (BDSDistributedPriceTrackingConfig)initWithItemIDs:(id)ds updateScheduleSteps:(id)steps dealAbsoluteThreshold:(id)threshold dealRelativeThreshold:(id)relativeThreshold notification:(id)notification cardLimit:(id)limit
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  dsCopy = ds;
+  stepsCopy = steps;
+  thresholdCopy = threshold;
+  relativeThresholdCopy = relativeThreshold;
+  notificationCopy = notification;
+  limitCopy = limit;
   v38.receiver = self;
   v38.super_class = BDSDistributedPriceTrackingConfig;
   v20 = [(BDSDistributedPriceTrackingConfig *)&v38 init];
   if (v20)
   {
-    v21 = [v14 copy];
+    v21 = [dsCopy copy];
     v22 = v21;
     v23 = MEMORY[0x1E695E0F0];
     if (v21)
@@ -43,7 +43,7 @@
 
     objc_storeStrong(&v20->_itemIDs, v24);
 
-    v25 = [v15 copy];
+    v25 = [stepsCopy copy];
     v26 = v25;
     if (v25)
     {
@@ -57,7 +57,7 @@
 
     objc_storeStrong(&v20->_updateScheduleSteps, v27);
 
-    v28 = [v16 copy];
+    v28 = [thresholdCopy copy];
     v29 = v28;
     if (v28)
     {
@@ -71,7 +71,7 @@
 
     objc_storeStrong(&v20->_dealAbsoluteThreshold, v30);
 
-    v31 = [v17 copy];
+    v31 = [relativeThresholdCopy copy];
     v32 = v31;
     if (v31)
     {
@@ -85,8 +85,8 @@
 
     objc_storeStrong(&v20->_dealRelativeThreshold, v33);
 
-    objc_storeStrong(&v20->_notification, a7);
-    v34 = [v19 copy];
+    objc_storeStrong(&v20->_notification, notification);
+    v34 = [limitCopy copy];
     v35 = v34;
     if (v34)
     {
@@ -104,37 +104,37 @@
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BDSDistributedPriceTrackingConfig *)self itemIDs];
-  [v4 encodeObject:v5 forKey:@"itemIDs"];
+  coderCopy = coder;
+  itemIDs = [(BDSDistributedPriceTrackingConfig *)self itemIDs];
+  [coderCopy encodeObject:itemIDs forKey:@"itemIDs"];
 
-  v6 = [(BDSDistributedPriceTrackingConfig *)self updateScheduleSteps];
-  [v4 encodeObject:v6 forKey:@"updateScheduleSteps"];
+  updateScheduleSteps = [(BDSDistributedPriceTrackingConfig *)self updateScheduleSteps];
+  [coderCopy encodeObject:updateScheduleSteps forKey:@"updateScheduleSteps"];
 
-  v7 = [(BDSDistributedPriceTrackingConfig *)self dealAbsoluteThreshold];
-  [v4 encodeObject:v7 forKey:@"dealAbsoluteThreshold"];
+  dealAbsoluteThreshold = [(BDSDistributedPriceTrackingConfig *)self dealAbsoluteThreshold];
+  [coderCopy encodeObject:dealAbsoluteThreshold forKey:@"dealAbsoluteThreshold"];
 
-  v8 = [(BDSDistributedPriceTrackingConfig *)self dealRelativeThreshold];
-  [v4 encodeObject:v8 forKey:@"dealRelativeThreshold"];
+  dealRelativeThreshold = [(BDSDistributedPriceTrackingConfig *)self dealRelativeThreshold];
+  [coderCopy encodeObject:dealRelativeThreshold forKey:@"dealRelativeThreshold"];
 
-  v9 = [(BDSDistributedPriceTrackingConfig *)self notification];
-  [v4 encodeObject:v9 forKey:@"notification"];
+  notification = [(BDSDistributedPriceTrackingConfig *)self notification];
+  [coderCopy encodeObject:notification forKey:@"notification"];
 
-  v10 = [(BDSDistributedPriceTrackingConfig *)self cardLimit];
-  [v4 encodeObject:v10 forKey:@"cardLimit"];
+  cardLimit = [(BDSDistributedPriceTrackingConfig *)self cardLimit];
+  [coderCopy encodeObject:cardLimit forKey:@"cardLimit"];
 }
 
-- (BDSDistributedPriceTrackingConfig)initWithCoder:(id)a3
+- (BDSDistributedPriceTrackingConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 bds_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"itemIDs"];
-  v6 = [v4 bds_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"updateScheduleSteps"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dealAbsoluteThreshold"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dealRelativeThreshold"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"notification"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cardLimit"];
+  coderCopy = coder;
+  v5 = [coderCopy bds_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"itemIDs"];
+  v6 = [coderCopy bds_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"updateScheduleSteps"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dealAbsoluteThreshold"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dealRelativeThreshold"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"notification"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cardLimit"];
 
   v11 = [(BDSDistributedPriceTrackingConfig *)self initWithItemIDs:v5 updateScheduleSteps:v6 dealAbsoluteThreshold:v7 dealRelativeThreshold:v8 notification:v9 cardLimit:v10];
   return v11;

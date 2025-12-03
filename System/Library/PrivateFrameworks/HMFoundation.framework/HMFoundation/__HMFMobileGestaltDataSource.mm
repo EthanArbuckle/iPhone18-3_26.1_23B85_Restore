@@ -1,5 +1,5 @@
 @interface __HMFMobileGestaltDataSource
-- (BOOL)shouldFetchProtectedKey:(id)a3;
+- (BOOL)shouldFetchProtectedKey:(id)key;
 - (BOOL)shouldFetchUserAssignedDeviceName;
 - (HMFSystemInfoNameDataSourceDelegate)delegate;
 - (NSString)name;
@@ -28,7 +28,7 @@
     v109 = @"UserAssignedDeviceName";
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v109 count:1];
     objc_initWeak(&location, v8);
-    v10 = [(__HMFMobileGestaltDataSource *)v8 queue];
+    queue = [(__HMFMobileGestaltDataSource *)v8 queue];
     v112 = MEMORY[0x277D85DD0];
     v113 = 3221225472;
     v114 = ____registerForUpdates_block_invoke;
@@ -53,8 +53,8 @@
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v112 count:9];
     v14 = [v12 arrayWithArray:v13];
 
-    v15 = [(__HMFMobileGestaltDataSource *)v11 shouldFetchUserAssignedDeviceName];
-    if (v15)
+    shouldFetchUserAssignedDeviceName = [(__HMFMobileGestaltDataSource *)v11 shouldFetchUserAssignedDeviceName];
+    if (shouldFetchUserAssignedDeviceName)
     {
       [v14 addObject:@"UserAssignedDeviceName"];
     }
@@ -78,7 +78,7 @@
       goto LABEL_115;
     }
 
-    if (v15)
+    if (shouldFetchUserAssignedDeviceName)
     {
       Value = CFDictionaryGetValue(v18, @"UserAssignedDeviceName");
       v21 = Value;
@@ -239,9 +239,9 @@
       v47 = 0;
     }
 
-    v48 = [v47 lowercaseString];
-    v49 = [@"iPhone" lowercaseString];
-    v50 = [v48 containsString:v49];
+    lowercaseString = [v47 lowercaseString];
+    lowercaseString2 = [@"iPhone" lowercaseString];
+    v50 = [lowercaseString containsString:lowercaseString2];
 
     if (v50)
     {
@@ -250,8 +250,8 @@
 
     else
     {
-      v52 = [@"iPod" lowercaseString];
-      v53 = [v48 containsString:v52];
+      lowercaseString3 = [@"iPod" lowercaseString];
+      v53 = [lowercaseString containsString:lowercaseString3];
 
       if (v53)
       {
@@ -260,8 +260,8 @@
 
       else
       {
-        v54 = [@"iPad" lowercaseString];
-        v55 = [v48 containsString:v54];
+        lowercaseString4 = [@"iPad" lowercaseString];
+        v55 = [lowercaseString containsString:lowercaseString4];
 
         if (v55)
         {
@@ -270,8 +270,8 @@
 
         else
         {
-          v56 = [@"AppleTV" lowercaseString];
-          v57 = [v48 containsString:v56];
+          lowercaseString5 = [@"AppleTV" lowercaseString];
+          v57 = [lowercaseString containsString:lowercaseString5];
 
           if (v57)
           {
@@ -280,8 +280,8 @@
 
           else
           {
-            v58 = [@"Watch" lowercaseString];
-            v59 = [v48 containsString:v58];
+            lowercaseString6 = [@"Watch" lowercaseString];
+            v59 = [lowercaseString containsString:lowercaseString6];
 
             if (v59)
             {
@@ -290,8 +290,8 @@
 
             else
             {
-              v60 = [@"AudioAccessory" lowercaseString];
-              v61 = [v48 containsString:v60];
+              lowercaseString7 = [@"AudioAccessory" lowercaseString];
+              v61 = [lowercaseString containsString:lowercaseString7];
 
               if (v61)
               {
@@ -300,8 +300,8 @@
 
               else
               {
-                v62 = [@"RealityDevice" lowercaseString];
-                v63 = [v48 containsString:v62];
+                lowercaseString8 = [@"RealityDevice" lowercaseString];
+                v63 = [lowercaseString containsString:lowercaseString8];
 
                 if (v63)
                 {
@@ -341,9 +341,9 @@
       v67 = 0;
     }
 
-    v68 = [v67 lowercaseString];
-    v69 = [@"Beta" lowercaseString];
-    v70 = [v68 containsString:v69];
+    lowercaseString9 = [v67 lowercaseString];
+    lowercaseString10 = [@"Beta" lowercaseString];
+    v70 = [lowercaseString9 containsString:lowercaseString10];
 
     if (v70)
     {
@@ -352,8 +352,8 @@
 
     else
     {
-      v72 = [@"Carrier" lowercaseString];
-      v73 = [v68 containsString:v72];
+      lowercaseString11 = [@"Carrier" lowercaseString];
+      v73 = [lowercaseString9 containsString:lowercaseString11];
 
       if (v73)
       {
@@ -362,8 +362,8 @@
 
       else
       {
-        v74 = [@"Internal" lowercaseString];
-        v75 = [v68 containsString:v74];
+        lowercaseString12 = [@"Internal" lowercaseString];
+        v75 = [lowercaseString9 containsString:lowercaseString12];
 
         if (v75)
         {
@@ -404,11 +404,11 @@
     v111 = 0;
     v80 = MEMORY[0x277CCAC38];
     v81 = v79;
-    v82 = [v80 processInfo];
-    v83 = v82;
-    if (v82)
+    processInfo = [v80 processInfo];
+    v83 = processInfo;
+    if (processInfo)
     {
-      [v82 operatingSystemVersion];
+      [processInfo operatingSystemVersion];
     }
 
     else
@@ -568,8 +568,8 @@ LABEL_116:
 
   v5 = v4;
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 - (void)dealloc
@@ -584,9 +584,9 @@ LABEL_116:
   [(__HMFMobileGestaltDataSource *)&v3 dealloc];
 }
 
-- (BOOL)shouldFetchProtectedKey:(id)a3
+- (BOOL)shouldFetchProtectedKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[HMFProcessInfo processInfo];
   v5 = [v4 valueForEntitlement:@"com.apple.private.MobileGestalt.AllowedProtectedKeys"];
 
@@ -603,7 +603,7 @@ LABEL_116:
 
   v7 = v6;
 
-  v8 = [v7 containsObject:v3];
+  v8 = [v7 containsObject:keyCopy];
   return v8;
 }
 

@@ -1,24 +1,24 @@
 @interface EPSagaTransactionUpdateDeviceForStartUnpairing
 - (EPTransactionDelegate)delegate;
-- (void)_updateRegistryForUnpairing:(id)a3 pairingReport:(id)a4;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)_updateRegistryForUnpairing:(id)unpairing pairingReport:(id)report;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionUpdateDeviceForStartUnpairing
 
-- (void)_updateRegistryForUnpairing:(id)a3 pairingReport:(id)a4
+- (void)_updateRegistryForUnpairing:(id)unpairing pairingReport:(id)report
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  unpairingCopy = unpairing;
+  reportCopy = report;
+  if (reportCopy)
   {
     v8 = [NRDevicePropertyDiffType alloc];
-    v9 = [v7 isErrorSet];
-    if (v9)
+    isErrorSet = [reportCopy isErrorSet];
+    if (isErrorSet)
     {
       v10 = [NRDevicePropertyDiff alloc];
-      v4 = [v7 detailedError];
-      v11 = [v10 initWithValue:v4];
+      detailedError = [reportCopy detailedError];
+      v11 = [v10 initWithValue:detailedError];
     }
 
     else
@@ -26,7 +26,7 @@
       v11 = 0;
     }
 
-    if ([v7 isErrorSet])
+    if ([reportCopy isErrorSet])
     {
       v13 = 0;
     }
@@ -37,7 +37,7 @@
     }
 
     v12 = [v8 initWithDiff:v11 andChangeType:v13];
-    if (v9)
+    if (isErrorSet)
     {
     }
   }
@@ -80,26 +80,26 @@
   v22 = [NSDictionary dictionaryWithObjects:v19 forKeys:v20 count:v21];
   v23 = [v18 initWithDiffPropertyDiffs:v22];
 
-  v24 = [v6 applyDiff:v23];
+  v24 = [unpairingCopy applyDiff:v23];
 }
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 serviceFromClass:objc_opt_class()];
-  v9 = [v7 objectForKeyedSubscript:@"nrDeviceIdentifier"];
-  v10 = [v7 objectForKeyedSubscript:@"pairingReport"];
+  registryCopy = registry;
+  entryCopy = entry;
+  v8 = [registryCopy serviceFromClass:objc_opt_class()];
+  v9 = [entryCopy objectForKeyedSubscript:@"nrDeviceIdentifier"];
+  v10 = [entryCopy objectForKeyedSubscript:@"pairingReport"];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000A6CE8;
   v14[3] = &unk_1001788A8;
   v15 = v9;
-  v16 = self;
+  selfCopy = self;
   v17 = v10;
-  v18 = v6;
-  v11 = v6;
+  v18 = registryCopy;
+  v11 = registryCopy;
   v12 = v10;
   v13 = v9;
   [v8 grabRegistryWithWriteBlockAsync:v14];

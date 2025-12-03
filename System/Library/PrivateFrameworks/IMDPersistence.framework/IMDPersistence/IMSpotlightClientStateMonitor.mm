@@ -1,6 +1,6 @@
 @interface IMSpotlightClientStateMonitor
 - (IMSpotlightClientState)clientState;
-- (IMSpotlightClientStateMonitor)initWithChangeHandler:(id)a3;
+- (IMSpotlightClientStateMonitor)initWithChangeHandler:(id)handler;
 - (void)_updateClientState;
 - (void)cancel;
 - (void)dealloc;
@@ -8,9 +8,9 @@
 
 @implementation IMSpotlightClientStateMonitor
 
-- (IMSpotlightClientStateMonitor)initWithChangeHandler:(id)a3
+- (IMSpotlightClientStateMonitor)initWithChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v24.receiver = self;
   v24.super_class = IMSpotlightClientStateMonitor;
   v5 = [(IMSpotlightClientStateMonitor *)&v24 init];
@@ -25,7 +25,7 @@
     queue = v5->_queue;
     v5->_queue = v9;
 
-    v11 = _Block_copy(v4);
+    v11 = _Block_copy(handlerCopy);
     changeHandler = v5->_changeHandler;
     v5->_changeHandler = v11;
 

@@ -2,17 +2,17 @@
 - (_TtC23ProximityAppleIDSetupUI26PASUICDPEnrollmentObserver)init;
 - (uint64_t)uiController:didPresentRootViewController:;
 - (void)dealloc;
-- (void)uiController:(id)a3 prepareAlertContext:(id)a4;
-- (void)uiController:(id)a3 preparePresentationContext:(id)a4;
+- (void)uiController:(id)controller prepareAlertContext:(id)context;
+- (void)uiController:(id)controller preparePresentationContext:(id)context;
 @end
 
 @implementation PASUICDPEnrollmentObserver
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_261155CD4();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for PASUICDPEnrollmentObserver();
   [(PASUICDPEnrollmentObserver *)&v3 dealloc];
 }
@@ -24,24 +24,24 @@
   return result;
 }
 
-- (void)uiController:(id)a3 prepareAlertContext:(id)a4
+- (void)uiController:(id)controller prepareAlertContext:(id)context
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(context);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_26115626C(v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)uiController:(id)a3 preparePresentationContext:(id)a4
+- (void)uiController:(id)controller preparePresentationContext:(id)context
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(context);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_2611563BC(v8, v6);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_2611563BC(selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

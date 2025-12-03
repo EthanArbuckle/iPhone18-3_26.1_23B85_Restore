@@ -1,22 +1,22 @@
 @interface ICASImportItemData
-- (ICASImportItemData)initWithImportFileType:(id)a3 importItemCount:(id)a4;
+- (ICASImportItemData)initWithImportFileType:(id)type importItemCount:(id)count;
 - (id)toDict;
 @end
 
 @implementation ICASImportItemData
 
-- (ICASImportItemData)initWithImportFileType:(id)a3 importItemCount:(id)a4
+- (ICASImportItemData)initWithImportFileType:(id)type importItemCount:(id)count
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  countCopy = count;
   v12.receiver = self;
   v12.super_class = ICASImportItemData;
   v9 = [(ICASImportItemData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_importFileType, a3);
-    objc_storeStrong(&v10->_importItemCount, a4);
+    objc_storeStrong(&v9->_importFileType, type);
+    objc_storeStrong(&v10->_importItemCount, count);
   }
 
   return v10;
@@ -26,33 +26,33 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"importFileType";
-  v3 = [(ICASImportItemData *)self importFileType];
-  if (v3)
+  importFileType = [(ICASImportItemData *)self importFileType];
+  if (importFileType)
   {
-    v4 = [(ICASImportItemData *)self importFileType];
+    importFileType2 = [(ICASImportItemData *)self importFileType];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    importFileType2 = objc_opt_new();
   }
 
-  v5 = v4;
+  v5 = importFileType2;
   v12[1] = @"importItemCount";
-  v13[0] = v4;
-  v6 = [(ICASImportItemData *)self importItemCount];
-  if (v6)
+  v13[0] = importFileType2;
+  importItemCount = [(ICASImportItemData *)self importItemCount];
+  if (importItemCount)
   {
-    v7 = [(ICASImportItemData *)self importItemCount];
+    importItemCount2 = [(ICASImportItemData *)self importItemCount];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    importItemCount2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v13[1] = v7;
+  v8 = importItemCount2;
+  v13[1] = importItemCount2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x277D85DE8];

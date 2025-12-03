@@ -1,6 +1,6 @@
 @interface ATXModeGlobals
 + (id)sharedInstance;
-- (ATXModeGlobals)initWithAssetClass:(Class)a3;
+- (ATXModeGlobals)initWithAssetClass:(Class)class;
 - (BOOL)isAutomationTriggerSuggestionsForFocusEnabled;
 - (BOOL)isSetupSuggestionsForFocusEnabled;
 - (int)currentLocationUpdateInterval;
@@ -22,18 +22,18 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 7200;
+    intValue = 7200;
   }
 
-  return v4;
+  return intValue;
 }
 
-- (ATXModeGlobals)initWithAssetClass:(Class)a3
+- (ATXModeGlobals)initWithAssetClass:(Class)class
 {
   v12.receiver = self;
   v12.super_class = ATXModeGlobals;
@@ -41,9 +41,9 @@
   if (v4)
   {
     v5 = [ATXAssetsABHelper alloc];
-    if (a3)
+    if (class)
     {
-      v6 = NSStringFromClass(a3);
+      v6 = NSStringFromClass(class);
     }
 
     else
@@ -54,13 +54,13 @@
     v7 = +[ATXABHelper abGroupOverride];
     v8 = [(ATXAssetsABHelper *)v5 initWithAssetsForResource:v6 ofType:@"plplist" specifiedABGroup:v7];
 
-    if (a3)
+    if (class)
     {
     }
 
-    v9 = [(ATXAssetsABHelper *)v8 abGroupContents];
+    abGroupContents = [(ATXAssetsABHelper *)v8 abGroupContents];
     parameters = v4->_parameters;
-    v4->_parameters = v9;
+    v4->_parameters = abGroupContents;
   }
 
   return v4;
@@ -94,15 +94,15 @@ void __32__ATXModeGlobals_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 400;
+    intValue = 400;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)homeLOISearchRadius
@@ -111,15 +111,15 @@ void __32__ATXModeGlobals_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 400;
+    intValue = 400;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)workLOISearchRadius
@@ -128,15 +128,15 @@ void __32__ATXModeGlobals_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 800;
+    intValue = 800;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)frequentLOIMinimumVisits
@@ -145,15 +145,15 @@ void __32__ATXModeGlobals_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 25;
+    intValue = 25;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)currentLocationUpdateInterval
@@ -162,15 +162,15 @@ void __32__ATXModeGlobals_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 900;
+    intValue = 900;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)locationOfInterestUpdateInterval
@@ -179,15 +179,15 @@ void __32__ATXModeGlobals_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 30;
+    intValue = 30;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)predictedLocationsOfInterestUpdateInterval
@@ -196,15 +196,15 @@ void __32__ATXModeGlobals_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 300;
+    intValue = 300;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)predictedExitTimesUpdateInterval
@@ -213,15 +213,15 @@ void __32__ATXModeGlobals_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 300;
+    intValue = 300;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (BOOL)isAutomationTriggerSuggestionsForFocusEnabled
@@ -230,15 +230,15 @@ void __32__ATXModeGlobals_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isSetupSuggestionsForFocusEnabled
@@ -247,15 +247,15 @@ void __32__ATXModeGlobals_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface SBSServiceFacilityClient
-+ (id)checkOutClientWithClass:(Class)a3;
++ (id)checkOutClientWithClass:(Class)class;
 + (id)serviceFacilityIdentifier;
-+ (void)checkInClient:(id)a3;
++ (void)checkInClient:(id)client;
 - (BOOL)_decrementCheckout;
-- (SBSServiceFacilityClient)initWithCalloutQueue:(id)a3;
-- (SBSServiceFacilityClient)initWithIdentifier:(id)a3 calloutQueue:(id)a4;
+- (SBSServiceFacilityClient)initWithCalloutQueue:(id)queue;
+- (SBSServiceFacilityClient)initWithIdentifier:(id)identifier calloutQueue:(id)queue;
 - (void)_incrementCheckout;
 @end
 
@@ -20,19 +20,19 @@
 
 - (BOOL)_decrementCheckout
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_numberOfCheckOuts-- == 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_numberOfCheckOuts-- == 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-+ (id)checkOutClientWithClass:(Class)a3
++ (id)checkOutClientWithClass:(Class)class
 {
-  if (!a3)
+  if (!class)
   {
-    [(SBSServiceFacilityClient *)a2 checkOutClientWithClass:a1];
+    [(SBSServiceFacilityClient *)a2 checkOutClientWithClass:self];
   }
 
   if (checkOutClientWithClass____once != -1)
@@ -42,35 +42,35 @@
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"SBSServiceFacilityClient.m" lineNumber:34 description:{@"Class must have a serviceFacilityIdentifier: %@", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBSServiceFacilityClient.m" lineNumber:34 description:{@"Class must have a serviceFacilityIdentifier: %@", class}];
   }
 
-  v7 = [(objc_class *)a3 serviceFacilityIdentifier];
-  v8 = a1;
-  objc_sync_enter(v8);
-  v9 = [__sharedServiceClients objectForKeyedSubscript:v7];
+  serviceFacilityIdentifier = [(objc_class *)class serviceFacilityIdentifier];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [__sharedServiceClients objectForKeyedSubscript:serviceFacilityIdentifier];
   if (!v9)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.springboardservices.service.%@.callback", v7];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.springboardservices.service.%@.callback", serviceFacilityIdentifier];
     Serial = BSDispatchQueueCreateSerial();
 
-    v12 = [a3 alloc];
+    v12 = [class alloc];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __52__SBSServiceFacilityClient_checkOutClientWithClass___block_invoke_2;
     v17[3] = &unk_1E735F058;
-    v18 = v7;
+    v18 = serviceFacilityIdentifier;
     v13 = Serial;
     v19 = v13;
     v9 = [v12 initWithConfigurator:v17];
     v14 = __sharedServiceClients;
-    v15 = [v9 identifier];
-    [v14 setObject:v9 forKey:v15];
+    identifier = [v9 identifier];
+    [v14 setObject:v9 forKey:identifier];
   }
 
   [v9 _incrementCheckout];
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
@@ -96,48 +96,48 @@ void __52__SBSServiceFacilityClient_checkOutClientWithClass___block_invoke_2(uin
   [v6 setCalloutQueue:*(a1 + 40)];
 }
 
-+ (void)checkInClient:(id)a3
++ (void)checkInClient:(id)client
 {
-  v8 = a3;
-  if (!v8)
+  clientCopy = client;
+  if (!clientCopy)
   {
-    [(SBSServiceFacilityClient *)a2 checkInClient:a1];
+    [(SBSServiceFacilityClient *)a2 checkInClient:self];
   }
 
-  v5 = a1;
-  objc_sync_enter(v5);
-  if ([v8 _decrementCheckout])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([clientCopy _decrementCheckout])
   {
     v6 = __sharedServiceClients;
-    v7 = [v8 identifier];
-    [v6 removeObjectForKey:v7];
+    identifier = [clientCopy identifier];
+    [v6 removeObjectForKey:identifier];
 
-    [v8 invalidate];
-    v8 = 0;
+    [clientCopy invalidate];
+    clientCopy = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (SBSServiceFacilityClient)initWithCalloutQueue:(id)a3
+- (SBSServiceFacilityClient)initWithCalloutQueue:(id)queue
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBSServiceFacilityClient.m" lineNumber:70 description:@"Unavailable initializer."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSServiceFacilityClient.m" lineNumber:70 description:@"Unavailable initializer."];
 
   return 0;
 }
 
-- (SBSServiceFacilityClient)initWithIdentifier:(id)a3 calloutQueue:(id)a4
+- (SBSServiceFacilityClient)initWithIdentifier:(id)identifier calloutQueue:(id)queue
 {
   v5.receiver = self;
   v5.super_class = SBSServiceFacilityClient;
-  return [(FBSServiceFacilityClient *)&v5 initWithIdentifier:a3 calloutQueue:a4];
+  return [(FBSServiceFacilityClient *)&v5 initWithIdentifier:identifier calloutQueue:queue];
 }
 
 + (id)serviceFacilityIdentifier
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"SBSServiceFacilityClient.m" lineNumber:82 description:@"Cannot have a nil service facility identifier"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSServiceFacilityClient.m" lineNumber:82 description:@"Cannot have a nil service facility identifier"];
 
   return 0;
 }

@@ -1,49 +1,49 @@
 @interface STMutableSizeDict
-- (BOOL)hasKey:(id)a3;
+- (BOOL)hasKey:(id)key;
 - (STMutableSizeDict)init;
-- (STMutableSizeDict)initWithDictionary:(id)a3;
-- (void)addSize:(id)a3 toKey:(id)a4;
-- (void)plusEquals:(id)a3;
-- (void)removeSmallerThan:(int64_t)a3;
-- (void)setSize:(id)a3 forKey:(id)a4;
+- (STMutableSizeDict)initWithDictionary:(id)dictionary;
+- (void)addSize:(id)size toKey:(id)key;
+- (void)plusEquals:(id)equals;
+- (void)removeSmallerThan:(int64_t)than;
+- (void)setSize:(id)size forKey:(id)key;
 @end
 
 @implementation STMutableSizeDict
 
 - (STMutableSizeDict)init
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(STMutableSizeDict *)self initWithDictionary:v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = [(STMutableSizeDict *)self initWithDictionary:dictionary];
 
   return v4;
 }
 
-- (STMutableSizeDict)initWithDictionary:(id)a3
+- (STMutableSizeDict)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = STMutableSizeDict;
-  v6 = [(STSizeDict *)&v9 initWithDictionary:v5];
+  v6 = [(STSizeDict *)&v9 initWithDictionary:dictionaryCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mutableDictionary, a3);
+    objc_storeStrong(&v6->_mutableDictionary, dictionary);
   }
 
   return v7;
 }
 
-- (void)plusEquals:(id)a3
+- (void)plusEquals:(id)equals
 {
-  if (a3)
+  if (equals)
   {
-    v4 = [a3 dictionary];
+    dictionary = [equals dictionary];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __32__STMutableSizeDict_plusEquals___block_invoke;
     v5[3] = &unk_279D1D210;
     v5[4] = self;
-    [v4 enumerateKeysAndObjectsUsingBlock:v5];
+    [dictionary enumerateKeysAndObjectsUsingBlock:v5];
   }
 }
 
@@ -58,50 +58,50 @@ void __32__STMutableSizeDict_plusEquals___block_invoke(uint64_t a1, void *a2, vo
   [*(*(a1 + 32) + 16) setObject:v8 forKeyedSubscript:v7];
 }
 
-- (void)addSize:(id)a3 toKey:(id)a4
+- (void)addSize:(id)size toKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
-  if (([v10 isZero] & 1) == 0)
+  sizeCopy = size;
+  keyCopy = key;
+  if (([sizeCopy isZero] & 1) == 0)
   {
-    v7 = [(NSMutableDictionary *)self->_mutableDictionary objectForKeyedSubscript:v6];
+    v7 = [(NSMutableDictionary *)self->_mutableDictionary objectForKeyedSubscript:keyCopy];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 plus:v10];
-      [(NSMutableDictionary *)self->_mutableDictionary setObject:v9 forKeyedSubscript:v6];
+      v9 = [v7 plus:sizeCopy];
+      [(NSMutableDictionary *)self->_mutableDictionary setObject:v9 forKeyedSubscript:keyCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)self->_mutableDictionary setObject:v10 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_mutableDictionary setObject:sizeCopy forKeyedSubscript:keyCopy];
     }
   }
 }
 
-- (void)setSize:(id)a3 forKey:(id)a4
+- (void)setSize:(id)size forKey:(id)key
 {
   mutableDictionary = self->_mutableDictionary;
-  if (a3)
+  if (size)
   {
-    [(NSMutableDictionary *)mutableDictionary setObject:a3 forKeyedSubscript:a4];
+    [(NSMutableDictionary *)mutableDictionary setObject:size forKeyedSubscript:key];
   }
 
   else
   {
-    [(NSMutableDictionary *)mutableDictionary removeObjectForKey:a4];
+    [(NSMutableDictionary *)mutableDictionary removeObjectForKey:key];
   }
 }
 
-- (void)removeSmallerThan:(int64_t)a3
+- (void)removeSmallerThan:(int64_t)than
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMutableDictionary *)self->_mutableDictionary allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [(NSMutableDictionary *)self->_mutableDictionary allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -112,18 +112,18 @@ void __32__STMutableSizeDict_plusEquals___block_invoke(uint64_t a1, void *a2, vo
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_mutableDictionary objectForKeyedSubscript:v10];
-        if ([v11 userTotal] < a3)
+        if ([v11 userTotal] < than)
         {
           [(NSMutableDictionary *)self->_mutableDictionary removeObjectForKey:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -132,9 +132,9 @@ void __32__STMutableSizeDict_plusEquals___block_invoke(uint64_t a1, void *a2, vo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasKey:(id)a3
+- (BOOL)hasKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_mutableDictionary objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_mutableDictionary objectForKey:key];
   v4 = v3 != 0;
 
   return v4;

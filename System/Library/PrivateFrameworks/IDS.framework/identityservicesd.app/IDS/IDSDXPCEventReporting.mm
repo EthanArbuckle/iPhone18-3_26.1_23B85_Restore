@@ -1,15 +1,15 @@
 @interface IDSDXPCEventReporting
-- (IDSDXPCEventReporting)initWithQueue:(id)a3 connection:(id)a4;
-- (void)reportClientEvent:(id)a3 withCompletion:(id)a4;
+- (IDSDXPCEventReporting)initWithQueue:(id)queue connection:(id)connection;
+- (void)reportClientEvent:(id)event withCompletion:(id)completion;
 @end
 
 @implementation IDSDXPCEventReporting
 
-- (IDSDXPCEventReporting)initWithQueue:(id)a3 connection:(id)a4
+- (IDSDXPCEventReporting)initWithQueue:(id)queue connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 hasEntitlement:kIDSEventReportingEntitlement])
+  queueCopy = queue;
+  connectionCopy = connection;
+  if ([connectionCopy hasEntitlement:kIDSEventReportingEntitlement])
   {
     v14.receiver = self;
     v14.super_class = IDSDXPCEventReporting;
@@ -17,11 +17,11 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_queue, a3);
+      objc_storeStrong(&v9->_queue, queue);
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -30,26 +30,26 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v8;
+      v16 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Missing Event Reporting entitlement -- failing creation of IDSDXPCRegistration collaborator {connection: %@}", buf, 0xCu);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)reportClientEvent:(id)a3 withCompletion:(id)a4
+- (void)reportClientEvent:(id)event withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   v7 = +[IMRGLog registration];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 reportType];
+    reportType = [eventCopy reportType];
     *buf = 138412290;
-    v26 = v8;
+    v26 = reportType;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Reporting client event with type %@", buf, 0xCu);
   }
 
@@ -68,7 +68,7 @@
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Found account! %@", buf, 0xCu);
     }
 
-    [v12 reportClientEvent:v5 completionBlock:v6];
+    [v12 reportClientEvent:eventCopy completionBlock:completionCopy];
   }
 
   else
@@ -86,7 +86,7 @@
     v22 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v12 = [NSError errorWithDomain:v21 code:100 userInfo:v22];
 
-    v6[2](v6, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 }
 

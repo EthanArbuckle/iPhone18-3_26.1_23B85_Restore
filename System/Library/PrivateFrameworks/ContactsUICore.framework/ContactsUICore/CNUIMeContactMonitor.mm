@@ -5,15 +5,15 @@
 + (id)makeUnifiedMeContactMonitor;
 + (id)meContactMonitor;
 + (id)unifiedMeContactMonitor;
-- (BOOL)isMeContact:(id)a3;
+- (BOOL)isMeContact:(id)contact;
 - (CNUIMeContactMonitor)init;
-- (CNUIMeContactMonitor)initWithComparisonStrategy:(id)a3;
-- (CNUIMeContactMonitor)initWithComparisonStrategy:(id)a3 contactStore:(id)a4;
-- (CNUIMeContactMonitor)initWithComparisonStrategy:(id)a3 contactStore:(id)a4 notificationCenter:(id)a5 schedulerProvider:(id)a6;
-- (CNUIMeContactMonitor)initWithContactStore:(id)a3;
+- (CNUIMeContactMonitor)initWithComparisonStrategy:(id)strategy;
+- (CNUIMeContactMonitor)initWithComparisonStrategy:(id)strategy contactStore:(id)store;
+- (CNUIMeContactMonitor)initWithComparisonStrategy:(id)strategy contactStore:(id)store notificationCenter:(id)center schedulerProvider:(id)provider;
+- (CNUIMeContactMonitor)initWithContactStore:(id)store;
 - (NSArray)meContactIdentifiers;
 - (void)dealloc;
-- (void)meChanged:(id)a3;
+- (void)meChanged:(id)changed;
 - (void)startMonitoring;
 @end
 
@@ -44,7 +44,7 @@ uint64_t __27__CNUIMeContactMonitor_log__block_invoke()
   block[1] = 3221225472;
   block[2] = __40__CNUIMeContactMonitor_meContactMonitor__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (meContactMonitor_cn_once_token_2 != -1)
   {
     dispatch_once(&meContactMonitor_cn_once_token_2, block);
@@ -65,7 +65,7 @@ uint64_t __40__CNUIMeContactMonitor_meContactMonitor__block_invoke(uint64_t a1)
 + (id)makeMeContactMonitor
 {
   v3 = objc_alloc_init(CNUIMeContactComparisonStrategyIdentifier);
-  v4 = [[a1 alloc] initWithComparisonStrategy:v3];
+  v4 = [[self alloc] initWithComparisonStrategy:v3];
   [v4 startMonitoring];
 
   return v4;
@@ -77,7 +77,7 @@ uint64_t __40__CNUIMeContactMonitor_meContactMonitor__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __47__CNUIMeContactMonitor_unifiedMeContactMonitor__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (unifiedMeContactMonitor_cn_once_token_3 != -1)
   {
     dispatch_once(&unifiedMeContactMonitor_cn_once_token_3, block);
@@ -102,7 +102,7 @@ uint64_t __47__CNUIMeContactMonitor_unifiedMeContactMonitor__block_invoke(uint64
   [v4 setIncludeLocalContacts:1];
   [v4 setIncludeDonatedContacts:1];
   v5 = [objc_alloc(MEMORY[0x1E695CE18]) initWithConfiguration:v4];
-  v6 = [[a1 alloc] initWithComparisonStrategy:v3 contactStore:v5];
+  v6 = [[self alloc] initWithComparisonStrategy:v3 contactStore:v5];
   [v6 startMonitoring];
 
   return v6;
@@ -116,46 +116,46 @@ uint64_t __47__CNUIMeContactMonitor_unifiedMeContactMonitor__block_invoke(uint64
   return v4;
 }
 
-- (CNUIMeContactMonitor)initWithContactStore:(id)a3
+- (CNUIMeContactMonitor)initWithContactStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_alloc_init(CNUIMeContactComparisonStrategyIdentifier);
-  v6 = [(CNUIMeContactMonitor *)self initWithComparisonStrategy:v5 contactStore:v4];
+  v6 = [(CNUIMeContactMonitor *)self initWithComparisonStrategy:v5 contactStore:storeCopy];
 
   return v6;
 }
 
-- (CNUIMeContactMonitor)initWithComparisonStrategy:(id)a3
+- (CNUIMeContactMonitor)initWithComparisonStrategy:(id)strategy
 {
   v4 = MEMORY[0x1E695CE28];
-  v5 = a3;
+  strategyCopy = strategy;
   v6 = objc_alloc_init(v4);
   [v6 setIncludeLocalContacts:1];
   v7 = [objc_alloc(MEMORY[0x1E695CE18]) initWithConfiguration:v6];
-  v8 = [(CNUIMeContactMonitor *)self initWithComparisonStrategy:v5 contactStore:v7];
+  v8 = [(CNUIMeContactMonitor *)self initWithComparisonStrategy:strategyCopy contactStore:v7];
 
   return v8;
 }
 
-- (CNUIMeContactMonitor)initWithComparisonStrategy:(id)a3 contactStore:(id)a4
+- (CNUIMeContactMonitor)initWithComparisonStrategy:(id)strategy contactStore:(id)store
 {
   v6 = MEMORY[0x1E696AD88];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultCenter];
-  v10 = [MEMORY[0x1E6996820] defaultProvider];
-  v11 = [(CNUIMeContactMonitor *)self initWithComparisonStrategy:v8 contactStore:v7 notificationCenter:v9 schedulerProvider:v10];
+  storeCopy = store;
+  strategyCopy = strategy;
+  defaultCenter = [v6 defaultCenter];
+  defaultProvider = [MEMORY[0x1E6996820] defaultProvider];
+  v11 = [(CNUIMeContactMonitor *)self initWithComparisonStrategy:strategyCopy contactStore:storeCopy notificationCenter:defaultCenter schedulerProvider:defaultProvider];
 
   return v11;
 }
 
-- (CNUIMeContactMonitor)initWithComparisonStrategy:(id)a3 contactStore:(id)a4 notificationCenter:(id)a5 schedulerProvider:(id)a6
+- (CNUIMeContactMonitor)initWithComparisonStrategy:(id)strategy contactStore:(id)store notificationCenter:(id)center schedulerProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  strategyCopy = strategy;
+  storeCopy = store;
+  centerCopy = center;
+  providerCopy = provider;
+  if (strategyCopy)
   {
     goto LABEL_5;
   }
@@ -169,7 +169,7 @@ uint64_t __47__CNUIMeContactMonitor_unifiedMeContactMonitor__block_invoke(uint64
   if (os_log_type_enabled(CNGuardOSLog_cn_once_object_0_5, OS_LOG_TYPE_FAULT))
   {
     [CNUIMeContactMonitor initWithComparisonStrategy:v15 contactStore:? notificationCenter:? schedulerProvider:?];
-    if (v12)
+    if (storeCopy)
     {
       goto LABEL_10;
     }
@@ -178,7 +178,7 @@ uint64_t __47__CNUIMeContactMonitor_unifiedMeContactMonitor__block_invoke(uint64
   else
   {
 LABEL_5:
-    if (v12)
+    if (storeCopy)
     {
       goto LABEL_10;
     }
@@ -202,14 +202,14 @@ LABEL_10:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_strategy, a3);
-    objc_storeStrong(&v18->_contactStore, a4);
-    objc_storeStrong(&v18->_notificationCenter, a5);
-    v19 = [objc_opt_class() makeQueue];
+    objc_storeStrong(&v17->_strategy, strategy);
+    objc_storeStrong(&v18->_contactStore, store);
+    objc_storeStrong(&v18->_notificationCenter, center);
+    makeQueue = [objc_opt_class() makeQueue];
     queue = v18->_queue;
-    v18->_queue = v19;
+    v18->_queue = makeQueue;
 
-    v21 = [MEMORY[0x1E6996798] observableOnNotificationCenter:v13 withName:*MEMORY[0x1E695C3E0] object:0];
+    v21 = [MEMORY[0x1E6996798] observableOnNotificationCenter:centerCopy withName:*MEMORY[0x1E695C3E0] object:0];
     v22 = [MEMORY[0x1E69967A0] observerWithWeakTarget:v18 resultSelector:sel_meChanged_];
     v23 = [v21 subscribe:v22];
     meNotificationToken = v18->_meNotificationToken;
@@ -249,30 +249,30 @@ LABEL_10:
   [(CNUIMeContactMonitor *)self meChanged:0];
 }
 
-- (BOOL)isMeContact:(id)a3
+- (BOOL)isMeContact:(id)contact
 {
-  v4 = a3;
-  if (v4)
+  contactCopy = contact;
+  if (contactCopy)
   {
     v5 = +[CNUIMeContactMonitor log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [(CNUIMeContactMonitor *)v4 isMeContact:v5];
+      [(CNUIMeContactMonitor *)contactCopy isMeContact:v5];
     }
 
     v13 = 0;
     v14[0] = &v13;
     v14[1] = 0x2020000000;
     v15 = 0;
-    v6 = [(CNUIMeContactMonitor *)self queue];
+    queue = [(CNUIMeContactMonitor *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __36__CNUIMeContactMonitor_isMeContact___block_invoke;
     block[3] = &unk_1E76E8910;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
-    dispatch_sync(v6, block);
+    v11 = contactCopy;
+    dispatch_sync(queue, block);
 
     v7 = +[CNUIMeContactMonitor log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -306,14 +306,14 @@ void __36__CNUIMeContactMonitor_isMeContact___block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v3 = [(CNUIMeContactMonitor *)self queue];
+  queue = [(CNUIMeContactMonitor *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__CNUIMeContactMonitor_meContactIdentifiers__block_invoke;
   v6[3] = &unk_1E76E8938;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -338,15 +338,15 @@ void __44__CNUIMeContactMonitor_meContactIdentifiers__block_invoke(uint64_t a1)
   }
 }
 
-- (void)meChanged:(id)a3
+- (void)meChanged:(id)changed
 {
-  v4 = [(CNUIMeContactMonitor *)self queue];
+  queue = [(CNUIMeContactMonitor *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __34__CNUIMeContactMonitor_meChanged___block_invoke;
   block[3] = &unk_1E76E7D10;
   block[4] = self;
-  dispatch_barrier_async(v4, block);
+  dispatch_barrier_async(queue, block);
 }
 
 void __34__CNUIMeContactMonitor_meChanged___block_invoke(uint64_t a1)

@@ -1,7 +1,7 @@
 @interface SSURLRequestProperties
 - (BOOL)allowsBootstrapCellularData;
 - (BOOL)canBeResolved;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isITunesStoreRequest;
 - (BOOL)isLargeDownload;
 - (BOOL)requiresCellularDataNetwork;
@@ -32,16 +32,16 @@
 - (NSString)clientIdentifier;
 - (NSString)description;
 - (NSURL)URL;
-- (SSURLRequestProperties)initWithCoder:(id)a3;
-- (SSURLRequestProperties)initWithURL:(id)a3;
-- (SSURLRequestProperties)initWithURLRequest:(id)a3;
-- (SSURLRequestProperties)initWithXPCEncoding:(id)a3;
+- (SSURLRequestProperties)initWithCoder:(id)coder;
+- (SSURLRequestProperties)initWithURL:(id)l;
+- (SSURLRequestProperties)initWithURLRequest:(id)request;
+- (SSURLRequestProperties)initWithXPCEncoding:(id)encoding;
 - (double)timeoutInterval;
 - (id)URLBagURLBlock;
 - (id)_initCommon;
 - (id)copyURLRequest;
 - (id)copyXPCEncoding;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int64_t)KBSyncType;
 - (int64_t)URLBagType;
 - (int64_t)allowedRetryCount;
@@ -49,7 +49,7 @@
 - (int64_t)machineDataStyle;
 - (unint64_t)cachePolicy;
 - (unint64_t)networkServiceType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SSURLRequestProperties
@@ -110,20 +110,20 @@ void __40__SSURLRequestProperties_copyURLRequest__block_invoke(uint64_t a1)
   v8[3] = &unk_1E84AC028;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   dispatch_sync(dispatchQueue, v8);
   v6 = v5;
 
   return v6;
 }
 
-- (SSURLRequestProperties)initWithURL:(id)a3
+- (SSURLRequestProperties)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(SSURLRequestProperties *)self initWithURLRequest:0];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v4, 0}];
+    v6 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{lCopy, 0}];
     urls = v5->_urls;
     v5->_urls = v6;
   }
@@ -131,40 +131,40 @@ void __40__SSURLRequestProperties_copyURLRequest__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (SSURLRequestProperties)initWithURLRequest:(id)a3
+- (SSURLRequestProperties)initWithURLRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SSURLRequestProperties *)self _initCommon];
-  v6 = v5;
-  if (v5)
+  requestCopy = request;
+  _initCommon = [(SSURLRequestProperties *)self _initCommon];
+  v6 = _initCommon;
+  if (_initCommon)
   {
-    v5->_allowedRetryCount = -1;
-    v5->_requiresExtendedValidationCertificates = -1;
-    v5->_shouldDecodeResponse = 1;
-    v5->_shouldSetCookies = 1;
-    if (v4)
+    _initCommon->_allowedRetryCount = -1;
+    _initCommon->_requiresExtendedValidationCertificates = -1;
+    _initCommon->_shouldDecodeResponse = 1;
+    _initCommon->_shouldSetCookies = 1;
+    if (requestCopy)
     {
-      v5->_cachePolicy = [v4 cachePolicy];
-      v7 = [v4 HTTPBody];
+      _initCommon->_cachePolicy = [requestCopy cachePolicy];
+      hTTPBody = [requestCopy HTTPBody];
       httpBody = v6->_httpBody;
-      v6->_httpBody = v7;
+      v6->_httpBody = hTTPBody;
 
-      v9 = [v4 HTTPBodyStream];
+      hTTPBodyStream = [requestCopy HTTPBodyStream];
       httpBodyStream = v6->_httpBodyStream;
-      v6->_httpBodyStream = v9;
+      v6->_httpBodyStream = hTTPBodyStream;
 
-      v11 = [v4 allHTTPHeaderFields];
+      allHTTPHeaderFields = [requestCopy allHTTPHeaderFields];
       httpHeaders = v6->_httpHeaders;
-      v6->_httpHeaders = v11;
+      v6->_httpHeaders = allHTTPHeaderFields;
 
-      v13 = [v4 HTTPMethod];
+      hTTPMethod = [requestCopy HTTPMethod];
       httpMethod = v6->_httpMethod;
-      v6->_httpMethod = v13;
+      v6->_httpMethod = hTTPMethod;
 
-      [v4 timeoutInterval];
+      [requestCopy timeoutInterval];
       v6->_timeoutInterval = v15;
       v16 = objc_alloc(MEMORY[0x1E695DEC8]);
-      v17 = [v4 URL];
+      v17 = [requestCopy URL];
       v18 = [v16 initWithObjects:{v17, 0}];
       urls = v6->_urls;
       v6->_urls = v18;
@@ -172,9 +172,9 @@ void __40__SSURLRequestProperties_copyURLRequest__block_invoke(uint64_t a1)
 
     else
     {
-      v5->_cachePolicy = 0;
-      v20 = v5->_httpMethod;
-      v5->_httpMethod = @"GET";
+      _initCommon->_cachePolicy = 0;
+      v20 = _initCommon->_httpMethod;
+      _initCommon->_httpMethod = @"GET";
 
       v6->_timeoutInterval = 60.0;
     }
@@ -183,10 +183,10 @@ void __40__SSURLRequestProperties_copyURLRequest__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  if (([v5 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [(SSURLRequestProperties *)a2 encodeWithCoder:?];
   }
@@ -196,9 +196,9 @@ void __40__SSURLRequestProperties_copyURLRequest__block_invoke(uint64_t a1)
   v8[1] = 3221225472;
   v8[2] = __42__SSURLRequestProperties_encodeWithCoder___block_invoke;
   v8[3] = &unk_1E84AC028;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = coderCopy;
+  selfCopy = self;
+  v7 = coderCopy;
   dispatch_sync(dispatchQueue, v8);
 }
 
@@ -243,22 +243,22 @@ uint64_t __42__SSURLRequestProperties_encodeWithCoder___block_invoke(uint64_t a1
   return [v2 encodeObject:v3 forKey:@"uacomps"];
 }
 
-- (SSURLRequestProperties)initWithCoder:(id)a3
+- (SSURLRequestProperties)initWithCoder:(id)coder
 {
   v53[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([v5 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [(SSURLRequestProperties *)a2 initWithCoder:?];
   }
 
-  v6 = [(SSURLRequestProperties *)self _initCommon];
-  if (!v6)
+  _initCommon = [(SSURLRequestProperties *)self _initCommon];
+  if (!_initCommon)
   {
     goto LABEL_28;
   }
 
-  if (![v5 containsValueForKey:@"properties"])
+  if (![coderCopy containsValueForKey:@"properties"])
   {
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
@@ -267,68 +267,68 @@ uint64_t __42__SSURLRequestProperties_encodeWithCoder___block_invoke(uint64_t a1
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v7 = [v10 setWithObjects:{v11, v12, v13, v14, v15, objc_opt_class(), 0}];
-    v16 = [v5 decodeObjectOfClasses:v7 forKey:@"additionalMetrics"];
-    v17 = *(v6 + 1);
-    *(v6 + 1) = v16;
+    v16 = [coderCopy decodeObjectOfClasses:v7 forKey:@"additionalMetrics"];
+    v17 = *(_initCommon + 1);
+    *(_initCommon + 1) = v16;
 
-    *(v6 + 24) = [v5 decodeBoolForKey:@"btstrpcll"];
-    v18 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"srcappid"];
-    v19 = *(v6 + 5);
-    *(v6 + 5) = v18;
+    *(_initCommon + 24) = [coderCopy decodeBoolForKey:@"btstrpcll"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"srcappid"];
+    v19 = *(_initCommon + 5);
+    *(_initCommon + 5) = v18;
 
-    v20 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"srcapp"];
-    v21 = *(v6 + 6);
-    *(v6 + 6) = v20;
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"srcapp"];
+    v21 = *(_initCommon + 6);
+    *(_initCommon + 6) = v20;
 
-    v22 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"client"];
-    v23 = *(v6 + 7);
-    *(v6 + 7) = v22;
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"client"];
+    v23 = *(_initCommon + 7);
+    *(_initCommon + 7) = v22;
 
-    v24 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"body"];
-    v25 = *(v6 + 10);
-    *(v6 + 10) = v24;
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"body"];
+    v25 = *(_initCommon + 10);
+    *(_initCommon + 10) = v24;
 
     v26 = MEMORY[0x1E695DFD8];
     v53[0] = objc_opt_class();
     v53[1] = objc_opt_class();
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:2];
     v28 = [v26 setWithArray:v27];
-    v29 = [v5 decodeObjectOfClasses:v28 forKey:@"headers"];
-    v30 = *(v6 + 12);
-    *(v6 + 12) = v29;
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"headers"];
+    v30 = *(_initCommon + 12);
+    *(_initCommon + 12) = v29;
 
-    v31 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"method"];
-    v32 = *(v6 + 13);
-    *(v6 + 13) = v31;
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"method"];
+    v32 = *(_initCommon + 13);
+    *(_initCommon + 13) = v31;
 
-    *(v6 + 112) = [v5 decodeBoolForKey:@"itunes"];
-    *(v6 + 128) = [v5 decodeBoolForKey:@"large"];
-    *(v6 + 17) = [v5 decodeIntegerForKey:@"mds"];
-    *(v6 + 18) = [v5 decodeIntegerForKey:@"srvtype"];
-    *(v6 + 160) = [v5 decodeBoolForKey:@"reqcell"];
-    *(v6 + 161) = [v5 decodeBoolForKey:@"requireev"];
-    *(v6 + 162) = [v5 decodeBoolForKey:@"requireext"];
-    *(v6 + 163) = [v5 decodeBoolForKey:@"requireHTTPS"];
-    *(v6 + 164) = [v5 decodeBoolForKey:@"decode"];
-    *(v6 + 166) = [v5 decodeBoolForKey:@"nocell"];
-    *(v6 + 165) = [v5 decodeBoolForKey:@"disablecell"];
-    *(v6 + 167) = [v5 decodeBoolForKey:@"disableReversePush"];
-    *(v6 + 168) = [v5 decodeBoolForKey:@"disableReversePushSampling"];
-    *(v6 + 169) = [v5 decodeBoolForKey:@"procptcl"];
-    *(v6 + 170) = [v5 decodeBoolForKey:@"sectok"];
-    *(v6 + 171) = [v5 decodeBoolForKey:@"cookies"];
-    [v5 decodeDoubleForKey:@"timeout"];
-    *(v6 + 22) = v33;
-    v34 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"bagkey"];
-    v35 = *(v6 + 23);
-    *(v6 + 23) = v34;
+    *(_initCommon + 112) = [coderCopy decodeBoolForKey:@"itunes"];
+    *(_initCommon + 128) = [coderCopy decodeBoolForKey:@"large"];
+    *(_initCommon + 17) = [coderCopy decodeIntegerForKey:@"mds"];
+    *(_initCommon + 18) = [coderCopy decodeIntegerForKey:@"srvtype"];
+    *(_initCommon + 160) = [coderCopy decodeBoolForKey:@"reqcell"];
+    *(_initCommon + 161) = [coderCopy decodeBoolForKey:@"requireev"];
+    *(_initCommon + 162) = [coderCopy decodeBoolForKey:@"requireext"];
+    *(_initCommon + 163) = [coderCopy decodeBoolForKey:@"requireHTTPS"];
+    *(_initCommon + 164) = [coderCopy decodeBoolForKey:@"decode"];
+    *(_initCommon + 166) = [coderCopy decodeBoolForKey:@"nocell"];
+    *(_initCommon + 165) = [coderCopy decodeBoolForKey:@"disablecell"];
+    *(_initCommon + 167) = [coderCopy decodeBoolForKey:@"disableReversePush"];
+    *(_initCommon + 168) = [coderCopy decodeBoolForKey:@"disableReversePushSampling"];
+    *(_initCommon + 169) = [coderCopy decodeBoolForKey:@"procptcl"];
+    *(_initCommon + 170) = [coderCopy decodeBoolForKey:@"sectok"];
+    *(_initCommon + 171) = [coderCopy decodeBoolForKey:@"cookies"];
+    [coderCopy decodeDoubleForKey:@"timeout"];
+    *(_initCommon + 22) = v33;
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bagkey"];
+    v35 = *(_initCommon + 23);
+    *(_initCommon + 23) = v34;
 
-    *(v6 + 24) = [v5 decodeIntegerForKey:@"bagtype"];
-    v36 = [v5 decodeObjectOfClasses:v7 forKey:@"uacomps"];
-    v37 = *(v6 + 27);
-    *(v6 + 27) = v36;
+    *(_initCommon + 24) = [coderCopy decodeIntegerForKey:@"bagtype"];
+    v36 = [coderCopy decodeObjectOfClasses:v7 forKey:@"uacomps"];
+    v37 = *(_initCommon + 27);
+    *(_initCommon + 27) = v36;
 
-    if ([v5 containsValueForKey:@"retryCount"])
+    if ([coderCopy containsValueForKey:@"retryCount"])
     {
       v38 = @"retryCount";
     }
@@ -338,8 +338,8 @@ uint64_t __42__SSURLRequestProperties_encodeWithCoder___block_invoke(uint64_t a1
       v38 = @"retry";
     }
 
-    *(v6 + 2) = [v5 decodeIntegerForKey:v38];
-    if ([v5 containsValueForKey:@"cachePolicy"])
+    *(_initCommon + 2) = [coderCopy decodeIntegerForKey:v38];
+    if ([coderCopy containsValueForKey:@"cachePolicy"])
     {
       v39 = @"cachePolicy";
     }
@@ -349,30 +349,30 @@ uint64_t __42__SSURLRequestProperties_encodeWithCoder___block_invoke(uint64_t a1
       v39 = @"cache";
     }
 
-    *(v6 + 4) = [v5 decodeIntegerForKey:v39];
-    if ([v5 containsValueForKey:@"expectedlength"])
+    *(_initCommon + 4) = [coderCopy decodeIntegerForKey:v39];
+    if ([coderCopy containsValueForKey:@"expectedlength"])
     {
-      v40 = [v5 decodeIntegerForKey:@"expectedlength"];
+      v40 = [coderCopy decodeIntegerForKey:@"expectedlength"];
     }
 
     else
     {
-      v40 = [v5 decodeInt64ForKey:@"exclen"];
+      v40 = [coderCopy decodeInt64ForKey:@"exclen"];
     }
 
-    *(v6 + 9) = v40;
-    if ([v5 containsValueForKey:@"kbsync"])
+    *(_initCommon + 9) = v40;
+    if ([coderCopy containsValueForKey:@"kbsync"])
     {
-      v42 = [v5 decodeBoolForKey:@"kbsync"];
+      v42 = [coderCopy decodeBoolForKey:@"kbsync"];
     }
 
     else
     {
-      v42 = [v5 decodeInt64ForKey:@"kbsynctype"];
+      v42 = [coderCopy decodeInt64ForKey:@"kbsynctype"];
     }
 
-    *(v6 + 15) = v42;
-    if ([v5 containsValueForKey:@"query"])
+    *(_initCommon + 15) = v42;
+    if ([coderCopy containsValueForKey:@"query"])
     {
       v43 = @"query";
     }
@@ -382,78 +382,78 @@ uint64_t __42__SSURLRequestProperties_encodeWithCoder___block_invoke(uint64_t a1
       v43 = @"params";
     }
 
-    v44 = [v5 decodeObjectOfClasses:v7 forKey:v43];
-    v45 = *(v6 + 19);
-    *(v6 + 19) = v44;
+    v44 = [coderCopy decodeObjectOfClasses:v7 forKey:v43];
+    v45 = *(_initCommon + 19);
+    *(_initCommon + 19) = v44;
 
-    if ([v5 containsValueForKey:@"urls"])
+    if ([coderCopy containsValueForKey:@"urls"])
     {
       v46 = MEMORY[0x1E695DFD8];
       v47 = objc_opt_class();
       v48 = objc_opt_class();
       v49 = [v46 setWithObjects:{v47, v48, objc_opt_class(), 0}];
-      v50 = [v5 decodeObjectOfClasses:v49 forKey:@"urls"];
+      v50 = [coderCopy decodeObjectOfClasses:v49 forKey:@"urls"];
     }
 
     else
     {
-      v49 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+      v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
       v50 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v49, 0}];
     }
 
-    v51 = *(v6 + 26);
-    *(v6 + 26) = v50;
+    v51 = *(_initCommon + 26);
+    *(_initCommon + 26) = v50;
 
     goto LABEL_27;
   }
 
-  v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"properties"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"properties"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(v6 + 1, *(v7 + 8));
-    *(v6 + 2) = *(v7 + 16);
-    *(v6 + 24) = *(v7 + 24);
-    *(v6 + 4) = *(v7 + 32);
-    objc_storeStrong(v6 + 5, *(v7 + 40));
-    objc_storeStrong(v6 + 6, *(v7 + 48));
-    objc_storeStrong(v6 + 7, *(v7 + 56));
-    *(v6 + 9) = *(v7 + 72);
-    objc_storeStrong(v6 + 10, *(v7 + 80));
-    objc_storeStrong(v6 + 11, *(v7 + 88));
-    objc_storeStrong(v6 + 12, *(v7 + 96));
-    objc_storeStrong(v6 + 13, *(v7 + 104));
-    *(v6 + 112) = *(v7 + 112);
-    *(v6 + 15) = *(v7 + 120);
-    *(v6 + 128) = *(v7 + 128);
-    *(v6 + 17) = *(v7 + 136);
-    *(v6 + 18) = *(v7 + 144);
-    objc_storeStrong(v6 + 19, *(v7 + 152));
-    *(v6 + 160) = *(v7 + 160);
-    *(v6 + 161) = *(v7 + 161);
-    *(v6 + 162) = *(v7 + 162);
-    *(v6 + 163) = *(v7 + 163);
-    *(v6 + 164) = *(v7 + 164);
-    *(v6 + 165) = *(v7 + 165);
-    *(v6 + 166) = *(v7 + 166);
-    *(v6 + 167) = *(v7 + 167);
-    *(v6 + 168) = *(v7 + 168);
-    *(v6 + 169) = *(v7 + 169);
-    *(v6 + 170) = *(v7 + 170);
-    *(v6 + 171) = *(v7 + 171);
-    *(v6 + 22) = *(v7 + 176);
-    objc_storeStrong(v6 + 23, *(v7 + 184));
-    *(v6 + 24) = *(v7 + 192);
+    objc_storeStrong(_initCommon + 1, *(v7 + 8));
+    *(_initCommon + 2) = *(v7 + 16);
+    *(_initCommon + 24) = *(v7 + 24);
+    *(_initCommon + 4) = *(v7 + 32);
+    objc_storeStrong(_initCommon + 5, *(v7 + 40));
+    objc_storeStrong(_initCommon + 6, *(v7 + 48));
+    objc_storeStrong(_initCommon + 7, *(v7 + 56));
+    *(_initCommon + 9) = *(v7 + 72);
+    objc_storeStrong(_initCommon + 10, *(v7 + 80));
+    objc_storeStrong(_initCommon + 11, *(v7 + 88));
+    objc_storeStrong(_initCommon + 12, *(v7 + 96));
+    objc_storeStrong(_initCommon + 13, *(v7 + 104));
+    *(_initCommon + 112) = *(v7 + 112);
+    *(_initCommon + 15) = *(v7 + 120);
+    *(_initCommon + 128) = *(v7 + 128);
+    *(_initCommon + 17) = *(v7 + 136);
+    *(_initCommon + 18) = *(v7 + 144);
+    objc_storeStrong(_initCommon + 19, *(v7 + 152));
+    *(_initCommon + 160) = *(v7 + 160);
+    *(_initCommon + 161) = *(v7 + 161);
+    *(_initCommon + 162) = *(v7 + 162);
+    *(_initCommon + 163) = *(v7 + 163);
+    *(_initCommon + 164) = *(v7 + 164);
+    *(_initCommon + 165) = *(v7 + 165);
+    *(_initCommon + 166) = *(v7 + 166);
+    *(_initCommon + 167) = *(v7 + 167);
+    *(_initCommon + 168) = *(v7 + 168);
+    *(_initCommon + 169) = *(v7 + 169);
+    *(_initCommon + 170) = *(v7 + 170);
+    *(_initCommon + 171) = *(v7 + 171);
+    *(_initCommon + 22) = *(v7 + 176);
+    objc_storeStrong(_initCommon + 23, *(v7 + 184));
+    *(_initCommon + 24) = *(v7 + 192);
     v8 = MEMORY[0x1DA6DFBB0](*(v7 + 200));
-    v9 = *(v6 + 25);
-    *(v6 + 25) = v8;
+    v9 = *(_initCommon + 25);
+    *(_initCommon + 25) = v8;
 
-    objc_storeStrong(v6 + 26, *(v7 + 208));
-    objc_storeStrong(v6 + 27, *(v7 + 216));
+    objc_storeStrong(_initCommon + 26, *(v7 + 208));
+    objc_storeStrong(_initCommon + 27, *(v7 + 216));
 LABEL_27:
 
 LABEL_28:
-    v41 = v6;
+    v41 = _initCommon;
     goto LABEL_29;
   }
 
@@ -463,14 +463,14 @@ LABEL_29:
   return v41;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy__24;
   v13 = __Block_byref_object_dispose__24;
-  v14 = [(SSURLRequestProperties *)+[SSMutableURLRequestProperties allocWithZone:](SSMutableURLRequestProperties _initCommon];
+  _initCommon = [(SSURLRequestProperties *)+[SSMutableURLRequestProperties allocWithZone:](SSMutableURLRequestProperties _initCommon];
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -478,7 +478,7 @@ LABEL_29:
   block[3] = &unk_1E84AFA78;
   block[4] = self;
   block[5] = &v9;
-  block[6] = a3;
+  block[6] = zone;
   dispatch_sync(dispatchQueue, block);
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -579,7 +579,7 @@ void __46__SSURLRequestProperties_mutableCopyWithZone___block_invoke(void *a1)
   v8[3] = &unk_1E84AC028;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   dispatch_sync(dispatchQueue, v8);
   v6 = v5;
 
@@ -627,105 +627,105 @@ uint64_t __41__SSURLRequestProperties_copyXPCEncoding__block_invoke(uint64_t a1)
   return SSXPCDictionarySetObject(v2, "21", v3);
 }
 
-- (SSURLRequestProperties)initWithXPCEncoding:(id)a3
+- (SSURLRequestProperties)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
-    v6 = [(SSURLRequestProperties *)self _initCommon];
-    if (!v6)
+    _initCommon = [(SSURLRequestProperties *)self _initCommon];
+    if (!_initCommon)
     {
       goto LABEL_5;
     }
 
     v8 = objc_opt_class();
     v9 = SSXPCDictionaryCopyObjectWithClass(v5, "33", v8);
-    additionalMetrics = v6->_additionalMetrics;
-    v6->_additionalMetrics = v9;
+    additionalMetrics = _initCommon->_additionalMetrics;
+    _initCommon->_additionalMetrics = v9;
 
-    v6->_allowedRetryCount = xpc_dictionary_get_int64(v5, "0");
-    v6->_allowsBootstrapCellularData = xpc_dictionary_get_BOOL(v5, "27");
-    v6->_cachePolicy = xpc_dictionary_get_int64(v5, "1");
+    _initCommon->_allowedRetryCount = xpc_dictionary_get_int64(v5, "0");
+    _initCommon->_allowsBootstrapCellularData = xpc_dictionary_get_BOOL(v5, "27");
+    _initCommon->_cachePolicy = xpc_dictionary_get_int64(v5, "1");
     v11 = objc_opt_class();
     v12 = SSXPCDictionaryCopyObjectWithClass(v5, "25", v11);
-    clientAuditBundleIdentifier = v6->_clientAuditBundleIdentifier;
-    v6->_clientAuditBundleIdentifier = v12;
+    clientAuditBundleIdentifier = _initCommon->_clientAuditBundleIdentifier;
+    _initCommon->_clientAuditBundleIdentifier = v12;
 
     v14 = objc_opt_class();
     v15 = SSXPCDictionaryCopyObjectWithClass(v5, "2", v14);
-    clientAuditTokenData = v6->_clientAuditTokenData;
-    v6->_clientAuditTokenData = v15;
+    clientAuditTokenData = _initCommon->_clientAuditTokenData;
+    _initCommon->_clientAuditTokenData = v15;
 
     v17 = objc_opt_class();
     v18 = SSXPCDictionaryCopyObjectWithClass(v5, "3", v17);
-    clientIdentifier = v6->_clientIdentifier;
-    v6->_clientIdentifier = v18;
+    clientIdentifier = _initCommon->_clientIdentifier;
+    _initCommon->_clientIdentifier = v18;
 
-    v6->_expectedContentLength = xpc_dictionary_get_int64(v5, "5");
+    _initCommon->_expectedContentLength = xpc_dictionary_get_int64(v5, "5");
     v20 = objc_opt_class();
     v21 = SSXPCDictionaryCopyObjectWithClass(v5, "6", v20);
-    httpBody = v6->_httpBody;
-    v6->_httpBody = v21;
+    httpBody = _initCommon->_httpBody;
+    _initCommon->_httpBody = v21;
 
     v23 = objc_opt_class();
     v24 = SSXPCDictionaryCopyObjectWithClass(v5, "7", v23);
-    httpHeaders = v6->_httpHeaders;
-    v6->_httpHeaders = v24;
+    httpHeaders = _initCommon->_httpHeaders;
+    _initCommon->_httpHeaders = v24;
 
     v26 = objc_opt_class();
     v27 = SSXPCDictionaryCopyObjectWithClass(v5, "8", v26);
-    httpMethod = v6->_httpMethod;
-    v6->_httpMethod = v27;
+    httpMethod = _initCommon->_httpMethod;
+    _initCommon->_httpMethod = v27;
 
-    v6->_isITunesStoreRequest = xpc_dictionary_get_BOOL(v5, "9");
-    v6->_kbsyncType = xpc_dictionary_get_int64(v5, "28");
-    v6->_largeDownload = xpc_dictionary_get_BOOL(v5, "24");
-    v6->_machineDataStyle = xpc_dictionary_get_int64(v5, "30");
-    v6->_networkServiceType = xpc_dictionary_get_int64(v5, "12");
+    _initCommon->_isITunesStoreRequest = xpc_dictionary_get_BOOL(v5, "9");
+    _initCommon->_kbsyncType = xpc_dictionary_get_int64(v5, "28");
+    _initCommon->_largeDownload = xpc_dictionary_get_BOOL(v5, "24");
+    _initCommon->_machineDataStyle = xpc_dictionary_get_int64(v5, "30");
+    _initCommon->_networkServiceType = xpc_dictionary_get_int64(v5, "12");
     v29 = objc_opt_class();
     v30 = SSXPCDictionaryCopyObjectWithClass(v5, "13", v29);
-    requestParameters = v6->_requestParameters;
-    v6->_requestParameters = v30;
+    requestParameters = _initCommon->_requestParameters;
+    _initCommon->_requestParameters = v30;
 
-    v6->_requiresCellularDataNetwork = xpc_dictionary_get_BOOL(v5, "29");
-    v6->_requiresExtendedValidationCertificates = xpc_dictionary_get_BOOL(v5, "15");
-    v6->_requiresExternal = xpc_dictionary_get_BOOL(v5, "31");
-    v6->_requiresHTTPS = xpc_dictionary_get_BOOL(v5, "26");
-    v6->_shouldDecodeResponse = xpc_dictionary_get_BOOL(v5, "4");
-    v6->_shouldDisableCellular = xpc_dictionary_get_BOOL(v5, "11");
-    v6->_shouldDisableCellularFallback = xpc_dictionary_get_BOOL(v5, "10");
-    v6->_shouldDisableReversePush = xpc_dictionary_get_BOOL(v5, "32");
-    v6->_shouldDisableReversePushSampling = xpc_dictionary_get_BOOL(v5, "34");
-    v6->_shouldProcessProtocol = xpc_dictionary_get_BOOL(v5, "14");
-    v6->_shouldSendSecureToken = xpc_dictionary_get_BOOL(v5, "23");
-    v6->_shouldSetCookies = xpc_dictionary_get_BOOL(v5, "17");
-    v6->_timeoutInterval = xpc_dictionary_get_double(v5, "18");
+    _initCommon->_requiresCellularDataNetwork = xpc_dictionary_get_BOOL(v5, "29");
+    _initCommon->_requiresExtendedValidationCertificates = xpc_dictionary_get_BOOL(v5, "15");
+    _initCommon->_requiresExternal = xpc_dictionary_get_BOOL(v5, "31");
+    _initCommon->_requiresHTTPS = xpc_dictionary_get_BOOL(v5, "26");
+    _initCommon->_shouldDecodeResponse = xpc_dictionary_get_BOOL(v5, "4");
+    _initCommon->_shouldDisableCellular = xpc_dictionary_get_BOOL(v5, "11");
+    _initCommon->_shouldDisableCellularFallback = xpc_dictionary_get_BOOL(v5, "10");
+    _initCommon->_shouldDisableReversePush = xpc_dictionary_get_BOOL(v5, "32");
+    _initCommon->_shouldDisableReversePushSampling = xpc_dictionary_get_BOOL(v5, "34");
+    _initCommon->_shouldProcessProtocol = xpc_dictionary_get_BOOL(v5, "14");
+    _initCommon->_shouldSendSecureToken = xpc_dictionary_get_BOOL(v5, "23");
+    _initCommon->_shouldSetCookies = xpc_dictionary_get_BOOL(v5, "17");
+    _initCommon->_timeoutInterval = xpc_dictionary_get_double(v5, "18");
     v32 = objc_opt_class();
     v33 = SSXPCDictionaryCopyObjectWithClass(v5, "19", v32);
-    urlBagKey = v6->_urlBagKey;
-    v6->_urlBagKey = v33;
+    urlBagKey = _initCommon->_urlBagKey;
+    _initCommon->_urlBagKey = v33;
 
-    v6->_urlBagType = xpc_dictionary_get_int64(v5, "20");
+    _initCommon->_urlBagType = xpc_dictionary_get_int64(v5, "20");
     v35 = objc_opt_class();
     v36 = SSXPCDictionaryCopyObjectWithClass(v5, "22", v35);
-    userAgentComponents = v6->_userAgentComponents;
-    v6->_userAgentComponents = v36;
+    userAgentComponents = _initCommon->_userAgentComponents;
+    _initCommon->_userAgentComponents = v36;
 
     self = xpc_dictionary_get_value(v5, "21");
     v38 = objc_opt_class();
     v39 = SSXPCCreateNSArrayFromXPCEncodedArray(self, v38);
-    urls = v6->_urls;
-    v6->_urls = v39;
+    urls = _initCommon->_urls;
+    _initCommon->_urls = v39;
   }
 
   else
   {
-    v6 = 0;
+    _initCommon = 0;
   }
 
 LABEL_5:
-  return v6;
+  return _initCommon;
 }
 
 - (NSDictionary)additionalMetrics
@@ -1113,23 +1113,23 @@ uint64_t __46__SSURLRequestProperties_isITunesStoreRequest__block_invoke(uint64_
 
 - (NSString)clientBundleIdentifier
 {
-  v3 = [(SSURLRequestProperties *)self clientAuditBundleIdentifier];
-  if (![v3 length])
+  clientAuditBundleIdentifier = [(SSURLRequestProperties *)self clientAuditBundleIdentifier];
+  if (![clientAuditBundleIdentifier length])
   {
     v4 = [(SSURLRequestProperties *)self clientAuditTokenData:0];
     v5 = [v4 length];
 
     if (v5 == 32)
     {
-      v6 = [(SSURLRequestProperties *)self clientAuditTokenData];
-      [v6 getBytes:&v9 length:32];
+      clientAuditTokenData = [(SSURLRequestProperties *)self clientAuditTokenData];
+      [clientAuditTokenData getBytes:&v9 length:32];
 
       v7 = CPCopyBundleIdentifierFromAuditToken();
-      v3 = v7;
+      clientAuditBundleIdentifier = v7;
     }
   }
 
-  return v3;
+  return clientAuditBundleIdentifier;
 }
 
 - (double)timeoutInterval
@@ -1243,22 +1243,22 @@ void __29__SSURLRequestProperties_URL__block_invoke(uint64_t a1)
   v10.receiver = self;
   v10.super_class = SSURLRequestProperties;
   v4 = [(SSURLRequestProperties *)&v10 description];
-  v5 = [(SSURLRequestProperties *)self URLs];
-  v6 = [(SSURLRequestProperties *)self requestParameters];
-  v7 = [(SSURLRequestProperties *)self HTTPHeaders];
-  v8 = [v3 stringWithFormat:@"%@: URLs: %@ Parameters: %@; Headers: %@", v4, v5, v6, v7];;
+  uRLs = [(SSURLRequestProperties *)self URLs];
+  requestParameters = [(SSURLRequestProperties *)self requestParameters];
+  hTTPHeaders = [(SSURLRequestProperties *)self HTTPHeaders];
+  v8 = [v3 stringWithFormat:@"%@: URLs: %@ Parameters: %@; Headers: %@", v4, uRLs, requestParameters, hTTPHeaders];;
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[SSURLRequestProperties allowedRetryCount](self, "allowedRetryCount"), v5 == [v4 allowedRetryCount]) && (v6 = -[SSURLRequestProperties cachePolicy](self, "cachePolicy"), v6 == objc_msgSend(v4, "cachePolicy")) && (v7 = -[SSURLRequestProperties networkServiceType](self, "networkServiceType"), v7 == objc_msgSend(v4, "networkServiceType")) && (-[SSURLRequestProperties timeoutInterval](self, "timeoutInterval"), v9 = v8, objc_msgSend(v4, "timeoutInterval"), v9 == v10))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[SSURLRequestProperties allowedRetryCount](self, "allowedRetryCount"), v5 == [equalCopy allowedRetryCount]) && (v6 = -[SSURLRequestProperties cachePolicy](self, "cachePolicy"), v6 == objc_msgSend(equalCopy, "cachePolicy")) && (v7 = -[SSURLRequestProperties networkServiceType](self, "networkServiceType"), v7 == objc_msgSend(equalCopy, "networkServiceType")) && (-[SSURLRequestProperties timeoutInterval](self, "timeoutInterval"), v9 = v8, objc_msgSend(equalCopy, "timeoutInterval"), v9 == v10))
   {
-    v11 = [(SSURLRequestProperties *)self URLBagType];
-    v12 = v11 == [v4 URLBagType];
+    uRLBagType = [(SSURLRequestProperties *)self URLBagType];
+    v12 = uRLBagType == [equalCopy URLBagType];
   }
 
   else
@@ -1266,19 +1266,19 @@ void __29__SSURLRequestProperties_URL__block_invoke(uint64_t a1)
     v12 = 0;
   }
 
-  v13 = [(SSURLRequestProperties *)self HTTPMethod];
-  v14 = [v4 HTTPMethod];
-  v15 = v14;
+  hTTPMethod = [(SSURLRequestProperties *)self HTTPMethod];
+  hTTPMethod2 = [equalCopy HTTPMethod];
+  v15 = hTTPMethod2;
   if (v12)
   {
-    if (v13 == v14)
+    if (hTTPMethod == hTTPMethod2)
     {
       v16 = 1;
     }
 
     else
     {
-      v16 = [v13 isEqualToString:v14];
+      v16 = [hTTPMethod isEqualToString:hTTPMethod2];
     }
   }
 
@@ -1287,16 +1287,16 @@ void __29__SSURLRequestProperties_URL__block_invoke(uint64_t a1)
     v16 = 0;
   }
 
-  v17 = [(SSURLRequestProperties *)self URLs];
+  uRLs = [(SSURLRequestProperties *)self URLs];
 
-  v18 = [v4 URLs];
+  uRLs2 = [equalCopy URLs];
 
-  v19 = [v17 count];
+  v19 = [uRLs count];
   if (v16)
   {
     v20 = v19;
-    v21 = [v18 count];
-    v22 = [v17 count];
+    v21 = [uRLs2 count];
+    v22 = [uRLs count];
     v23 = v20 == v21;
     v24 = v20 == v21;
     if (v23)
@@ -1307,8 +1307,8 @@ void __29__SSURLRequestProperties_URL__block_invoke(uint64_t a1)
         v26 = 1;
         do
         {
-          v27 = [v17 objectAtIndex:v26 - 1];
-          v28 = [v18 objectAtIndex:v26 - 1];
+          v27 = [uRLs objectAtIndex:v26 - 1];
+          v28 = [uRLs2 objectAtIndex:v26 - 1];
           v24 = [v27 isEqual:v28];
 
           if (!v24)
@@ -1327,20 +1327,20 @@ void __29__SSURLRequestProperties_URL__block_invoke(uint64_t a1)
     v24 = 0;
   }
 
-  v30 = [(SSURLRequestProperties *)self userAgentComponents];
+  userAgentComponents = [(SSURLRequestProperties *)self userAgentComponents];
 
-  v31 = [v4 userAgentComponents];
+  userAgentComponents2 = [equalCopy userAgentComponents];
 
   if (v24)
   {
-    if (v30 == v31)
+    if (userAgentComponents == userAgentComponents2)
     {
       v32 = 1;
     }
 
     else
     {
-      v32 = [v30 isEqualToArray:v31];
+      v32 = [userAgentComponents isEqualToArray:userAgentComponents2];
     }
   }
 

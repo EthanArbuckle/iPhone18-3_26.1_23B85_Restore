@@ -1,9 +1,9 @@
 @interface MPCVocalAttenuationModelProviderImplementation
-- (BOOL)isValidEspressoFile:(id)a3;
-- (BOOL)isValidModelFile:(id)a3;
-- (BOOL)isValidPlistModelFile:(id)a3;
-- (BOOL)moveModelFromURL:(id)a3 toURL:(id)a4;
-- (BOOL)validateModelAtURL:(id)a3;
+- (BOOL)isValidEspressoFile:(id)file;
+- (BOOL)isValidModelFile:(id)file;
+- (BOOL)isValidPlistModelFile:(id)file;
+- (BOOL)moveModelFromURL:(id)l toURL:(id)rL;
+- (BOOL)validateModelAtURL:(id)l;
 - (MPCVocalAttenuationModelProviderImplementation)init;
 - (NSString)basePath;
 - (NSString)modelName;
@@ -12,12 +12,12 @@
 - (id)baseDirectoryURL;
 - (id)baseModelDirectoryURL;
 - (id)bundleModelDirectoryURL;
-- (id)directoriesAtURL:(id)a3;
-- (id)latestModelDirectoryAtURL:(id)a3;
+- (id)directoriesAtURL:(id)l;
+- (id)latestModelDirectoryAtURL:(id)l;
 - (id)remoteModelDirectoryURL;
-- (void)prepareWithCompletion:(id)a3;
-- (void)purgeModelAtURL:(id)a3;
-- (void)purgeSideLoadedModelDirectoriesAtURL:(id)a3;
+- (void)prepareWithCompletion:(id)completion;
+- (void)purgeModelAtURL:(id)l;
+- (void)purgeSideLoadedModelDirectoriesAtURL:(id)l;
 @end
 
 @implementation MPCVocalAttenuationModelProviderImplementation
@@ -32,16 +32,16 @@
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
   v6 = [v3 fileURLWithPathComponents:v5];
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v6 path];
-  v9 = [v7 fileExistsAtPath:v8 isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v6 path];
+  v9 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = [v6 path];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    path2 = [v6 path];
     v16 = 0;
-    v12 = [v10 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v16];
+    v12 = [defaultManager2 createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:0 error:&v16];
     v13 = v16;
 
     if ((v12 & 1) == 0)
@@ -50,7 +50,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
       {
         *buf = 138543874;
-        v18 = self;
+        selfCopy = self;
         v19 = 2114;
         v20 = v6;
         v21 = 2114;
@@ -67,35 +67,35 @@
 {
   v108 = *MEMORY[0x1E69E9840];
   v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
-  v4 = [(MPCVocalAttenuationModelProviderImplementation *)self baseDirectoryURL];
-  [(MPCVocalAttenuationModelProviderImplementation *)self purgeModelAtURL:v4];
-  v5 = [(MPCVocalAttenuationModelProviderImplementation *)self baseModelDirectoryURL];
-  v6 = [(MPCVocalAttenuationModelProviderImplementation *)self latestModelDirectoryAtURL:v5];
-  v7 = [(MPCVocalAttenuationModelProviderImplementation *)self remoteModelDirectoryURL];
-  v97 = self;
-  v8 = [(MPCVocalAttenuationModelProviderImplementation *)self bundleModelDirectoryURL];
-  v9 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  v10 = [v9 shouldUseSideLoadedVocalAttenuationModel];
+  baseDirectoryURL = [(MPCVocalAttenuationModelProviderImplementation *)self baseDirectoryURL];
+  [(MPCVocalAttenuationModelProviderImplementation *)self purgeModelAtURL:baseDirectoryURL];
+  baseModelDirectoryURL = [(MPCVocalAttenuationModelProviderImplementation *)self baseModelDirectoryURL];
+  v6 = [(MPCVocalAttenuationModelProviderImplementation *)self latestModelDirectoryAtURL:baseModelDirectoryURL];
+  remoteModelDirectoryURL = [(MPCVocalAttenuationModelProviderImplementation *)self remoteModelDirectoryURL];
+  selfCopy = self;
+  bundleModelDirectoryURL = [(MPCVocalAttenuationModelProviderImplementation *)self bundleModelDirectoryURL];
+  standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+  shouldUseSideLoadedVocalAttenuationModel = [standardUserDefaults shouldUseSideLoadedVocalAttenuationModel];
 
-  v11 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  v12 = [v11 shouldUseRemoteVocalAttenuationModel];
+  standardUserDefaults2 = [MEMORY[0x1E69708A8] standardUserDefaults];
+  shouldUseRemoteVocalAttenuationModel = [standardUserDefaults2 shouldUseRemoteVocalAttenuationModel];
 
-  if (v10 && v6)
+  if (shouldUseSideLoadedVocalAttenuationModel && v6)
   {
     [v3 addObject:v6];
     v13 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [v6 path];
+      path = [v6 path];
       *buf = 138543362;
-      v105 = v14;
+      v105 = path;
       _os_log_impl(&dword_1C5C61000, v13, OS_LOG_TYPE_DEBUG, "[AP] - MPCModelProvider - sideLoadedModelDirectory: %{public}@", buf, 0xCu);
     }
   }
 
-  if (v7)
+  if (remoteModelDirectoryURL)
   {
-    v15 = v12;
+    v15 = shouldUseRemoteVocalAttenuationModel;
   }
 
   else
@@ -105,20 +105,20 @@
 
   if (v15 == 1)
   {
-    [v3 addObject:v7];
+    [v3 addObject:remoteModelDirectoryURL];
     v16 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [v7 path];
+      path2 = [remoteModelDirectoryURL path];
       *buf = 138543362;
-      v105 = v17;
+      v105 = path2;
       _os_log_impl(&dword_1C5C61000, v16, OS_LOG_TYPE_DEBUG, "[AP] - MPCModelProvider - remoteModelDirectoryURL: %{public}@", buf, 0xCu);
     }
   }
 
-  if (v12)
+  if (shouldUseRemoteVocalAttenuationModel)
   {
-    if (!v5)
+    if (!baseModelDirectoryURL)
     {
       goto LABEL_23;
     }
@@ -126,9 +126,9 @@
 
   else
   {
-    if (v5)
+    if (baseModelDirectoryURL)
     {
-      v18 = v10;
+      v18 = shouldUseSideLoadedVocalAttenuationModel;
     }
 
     else
@@ -142,36 +142,36 @@
     }
   }
 
-  [v3 addObject:v5];
+  [v3 addObject:baseModelDirectoryURL];
   v19 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
-    v20 = [v5 path];
+    path3 = [baseModelDirectoryURL path];
     *buf = 138543362;
-    v105 = v20;
+    v105 = path3;
     _os_log_impl(&dword_1C5C61000, v19, OS_LOG_TYPE_DEBUG, "[AP] - MPCModelProvider - baseModelDirectoryURL: %{public}@", buf, 0xCu);
   }
 
 LABEL_23:
-  if (v8)
+  if (bundleModelDirectoryURL)
   {
-    [v3 addObject:v8];
+    [v3 addObject:bundleModelDirectoryURL];
     v21 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [v8 path];
+      path4 = [bundleModelDirectoryURL path];
       *buf = 138543362;
-      v105 = v22;
+      v105 = path4;
       _os_log_impl(&dword_1C5C61000, v21, OS_LOG_TYPE_DEBUG, "[AP] - MPCModelProvider - bundleModelDirectoryURL: %{public}@", buf, 0xCu);
     }
   }
 
   if ([v3 count])
   {
-    v95 = v5;
-    v96 = v8;
-    v93 = v4;
-    v94 = v7;
+    v95 = baseModelDirectoryURL;
+    v96 = bundleModelDirectoryURL;
+    v93 = baseDirectoryURL;
+    v94 = remoteModelDirectoryURL;
     v91 = v3;
     v92 = v6;
     v100 = 0u;
@@ -197,13 +197,13 @@ LABEL_30:
         v29 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
-          v30 = [v28 path];
+          path5 = [v28 path];
           *buf = 138543362;
-          v105 = v30;
+          v105 = path5;
           _os_log_impl(&dword_1C5C61000, v29, OS_LOG_TYPE_DEFAULT, "[AP] - MPCModelProvider - Validating model in: %{public}@", buf, 0xCu);
         }
 
-        v31 = [(MPCVocalAttenuationModelProviderImplementation *)v97 validateModelAtURL:v28];
+        v31 = [(MPCVocalAttenuationModelProviderImplementation *)selfCopy validateModelAtURL:v28];
         v32 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
         v33 = v32;
         if (v31)
@@ -213,9 +213,9 @@ LABEL_30:
 
         if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
         {
-          v34 = [v28 path];
+          path6 = [v28 path];
           *buf = 138543362;
-          v105 = v34;
+          v105 = path6;
           _os_log_impl(&dword_1C5C61000, v33, OS_LOG_TYPE_INFO, "[AP] - MPCModelProvider - Invalid model in: %{public}@:", buf, 0xCu);
         }
 
@@ -233,16 +233,16 @@ LABEL_30:
 
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [v28 path];
+        path7 = [v28 path];
         *buf = 138543362;
-        v105 = v35;
+        v105 = path7;
         _os_log_impl(&dword_1C5C61000, v33, OS_LOG_TYPE_DEFAULT, "[AP] - MPCModelProvider - Valid model found in: %{public}@:", buf, 0xCu);
       }
 
       v36 = v28;
-      v4 = v93;
-      v5 = v95;
-      v8 = v96;
+      baseDirectoryURL = v93;
+      baseModelDirectoryURL = v95;
+      bundleModelDirectoryURL = v96;
       if (v36)
       {
         if ([v36 isEqual:v96] & 1) != 0 || (objc_msgSend(v36, "isEqual:", v95))
@@ -256,47 +256,47 @@ LABEL_30:
           v3 = v91;
           if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
           {
-            v56 = [v95 path];
+            path8 = [v95 path];
             *buf = 138543362;
-            v105 = v56;
+            v105 = path8;
             _os_log_impl(&dword_1C5C61000, v55, OS_LOG_TYPE_DEFAULT, "[AP] - MPCModelProvider - Purging models in %{public}@", buf, 0xCu);
           }
 
-          [(MPCVocalAttenuationModelProviderImplementation *)v97 purgeModelAtURL:v95];
+          [(MPCVocalAttenuationModelProviderImplementation *)selfCopy purgeModelAtURL:v95];
           v57 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
           if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
           {
-            v58 = [v36 path];
-            v59 = [v95 path];
+            path9 = [v36 path];
+            path10 = [v95 path];
             *buf = 138543618;
-            v105 = v58;
+            v105 = path9;
             v106 = 2114;
-            v107 = v59;
+            v107 = path10;
             _os_log_impl(&dword_1C5C61000, v57, OS_LOG_TYPE_DEFAULT, "[AP] - MPCModelProvider - Moving new model: %{public}@ -> %{public}@", buf, 0x16u);
           }
 
-          if ([(MPCVocalAttenuationModelProviderImplementation *)v97 moveModelFromURL:v36 toURL:v95])
+          if ([(MPCVocalAttenuationModelProviderImplementation *)selfCopy moveModelFromURL:v36 toURL:v95])
           {
             v60 = v95;
 
             v36 = v60;
           }
 
-          v61 = [MEMORY[0x1E69708A8] standardUserDefaults];
-          v62 = [v61 shouldPurgeSideLoadedVocalAttenuationModels];
+          standardUserDefaults3 = [MEMORY[0x1E69708A8] standardUserDefaults];
+          shouldPurgeSideLoadedVocalAttenuationModels = [standardUserDefaults3 shouldPurgeSideLoadedVocalAttenuationModels];
 
-          if (v62)
+          if (shouldPurgeSideLoadedVocalAttenuationModels)
           {
             v63 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
             if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
             {
-              v64 = [v95 path];
+              path11 = [v95 path];
               *buf = 138543362;
-              v105 = v64;
+              v105 = path11;
               _os_log_impl(&dword_1C5C61000, v63, OS_LOG_TYPE_DEFAULT, "[AP] - MPCModelProvider - Purging side-loaded directories in %{public}@", buf, 0xCu);
             }
 
-            [(MPCVocalAttenuationModelProviderImplementation *)v97 purgeSideLoadedModelDirectoriesAtURL:v95];
+            [(MPCVocalAttenuationModelProviderImplementation *)selfCopy purgeSideLoadedModelDirectoriesAtURL:v95];
           }
         }
 
@@ -318,11 +318,11 @@ LABEL_30:
           }
 
           v43 = [v38 msv_filter:&__block_literal_global_900];
-          v44 = [v43 firstObject];
+          firstObject = [v43 firstObject];
 
-          v45 = [objc_alloc(MEMORY[0x1E695DF90]) initWithContentsOfURL:v44];
-          v46 = [(MPCVocalAttenuationModel *)v44 path];
-          v47 = [v46 containsString:@"/System/Library/PrivateFrameworks/MediaPlaybackCore.framework/"];
+          v45 = [objc_alloc(MEMORY[0x1E695DF90]) initWithContentsOfURL:firstObject];
+          path12 = [(MPCVocalAttenuationModel *)firstObject path];
+          v47 = [path12 containsString:@"/System/Library/PrivateFrameworks/MediaPlaybackCore.framework/"];
 
           if (v47)
           {
@@ -331,15 +331,15 @@ LABEL_30:
 
           else
           {
-            v65 = [(MPCVocalAttenuationModel *)v37 path];
-            [v45 setObject:v65 forKeyedSubscript:@"ModelNetPathBase"];
+            path13 = [(MPCVocalAttenuationModel *)v37 path];
+            [v45 setObject:path13 forKeyedSubscript:@"ModelNetPathBase"];
 
             v66 = [v45 objectForKeyedSubscript:@"ModelNetPath"];
-            v67 = [v66 lastPathComponent];
-            [v45 setObject:v67 forKeyedSubscript:@"ModelNetPath"];
+            lastPathComponent = [v66 lastPathComponent];
+            [v45 setObject:lastPathComponent forKeyedSubscript:@"ModelNetPath"];
 
             v102 = 0;
-            [v45 writeToURL:v44 error:&v102];
+            [v45 writeToURL:firstObject error:&v102];
             v41 = v102;
             if (v41)
             {
@@ -347,7 +347,7 @@ LABEL_30:
               if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138543618;
-                v105 = v44;
+                v105 = firstObject;
                 v106 = 2114;
                 v107 = v41;
                 _os_log_impl(&dword_1C5C61000, v68, OS_LOG_TYPE_ERROR, "[AP] - MPCVAModel - Error writing plist to url %{public}@: %{public}@", buf, 0x16u);
@@ -356,8 +356,8 @@ LABEL_30:
           }
 
           v54 = objc_alloc_init(MPCVocalAttenuationModel);
-          v69 = [(MPCVocalAttenuationModel *)v44 path];
-          [(MPCVocalAttenuationModel *)v54 setPlistPath:v69];
+          path14 = [(MPCVocalAttenuationModel *)firstObject path];
+          [(MPCVocalAttenuationModel *)v54 setPlistPath:path14];
 
           [(MPCVocalAttenuationModel *)v54 setFiles:v38];
           v70 = [v45 objectForKeyedSubscript:@"TaskID"];
@@ -438,8 +438,8 @@ LABEL_30:
 
           [(MPCVocalAttenuationModel *)v54 setProcessingDelay:v85];
 
-          v7 = v94;
-          v5 = v95;
+          remoteModelDirectoryURL = v94;
+          baseModelDirectoryURL = v95;
         }
 
         else
@@ -456,13 +456,13 @@ LABEL_30:
           v54 = 0;
         }
 
-        model = v97->_model;
-        v97->_model = v54;
+        model = selfCopy->_model;
+        selfCopy->_model = v54;
 
         v87 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
         if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
         {
-          v88 = v97->_model;
+          v88 = selfCopy->_model;
           *buf = 138543362;
           v105 = v88;
           _os_log_impl(&dword_1C5C61000, v87, OS_LOG_TYPE_DEFAULT, "[AP] - MPCModelProvider - Model %{public}@", buf, 0xCu);
@@ -470,13 +470,13 @@ LABEL_30:
 
         v53 = 0;
         v89 = 2;
-        if (!v97->_model)
+        if (!selfCopy->_model)
         {
           v89 = 3;
         }
 
-        v97->_state = v89;
-        v8 = v96;
+        selfCopy->_state = v89;
+        bundleModelDirectoryURL = v96;
         goto LABEL_100;
       }
     }
@@ -485,26 +485,26 @@ LABEL_30:
     {
 LABEL_40:
 
-      v4 = v93;
-      v5 = v95;
-      v8 = v96;
+      baseDirectoryURL = v93;
+      baseModelDirectoryURL = v95;
+      bundleModelDirectoryURL = v96;
     }
 
-    v97->_state = 3;
+    selfCopy->_state = 3;
     v48 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
     {
       v49 = [v23 valueForKey:@"path"];
-      v50 = [v49 msv_compactDescription];
+      msv_compactDescription = [v49 msv_compactDescription];
       *buf = 138412290;
-      v105 = v50;
+      v105 = msv_compactDescription;
       _os_log_impl(&dword_1C5C61000, v48, OS_LOG_TYPE_ERROR, "[AP] - MPCModelProvider - No valid models found in %@", buf, 0xCu);
     }
 
     v51 = MEMORY[0x1E696ABC0];
     v37 = [v23 valueForKey:@"path"];
-    v52 = [(MPCVocalAttenuationModel *)v37 msv_compactDescription];
-    v53 = [v51 msv_errorWithDomain:@"MPCSuntoryError" code:102 debugDescription:{@"No valid models found in %@", v52}];
+    msv_compactDescription2 = [(MPCVocalAttenuationModel *)v37 msv_compactDescription];
+    v53 = [v51 msv_errorWithDomain:@"MPCSuntoryError" code:102 debugDescription:{@"No valid models found in %@", msv_compactDescription2}];
 
     v3 = v91;
 LABEL_100:
@@ -514,7 +514,7 @@ LABEL_100:
 
   else
   {
-    v97->_state = 3;
+    selfCopy->_state = 3;
     v53 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCSuntoryError" code:101 debugDescription:@"No vocal attenuation model available"];
   }
 
@@ -531,16 +531,16 @@ LABEL_100:
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
   v6 = [v3 fileURLWithPathComponents:v5];
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v6 path];
-  v9 = [v7 fileExistsAtPath:v8 isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v6 path];
+  v9 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = [v6 path];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    path2 = [v6 path];
     v16 = 0;
-    v12 = [v10 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v16];
+    v12 = [defaultManager2 createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:0 error:&v16];
     v13 = v16;
 
     if ((v12 & 1) == 0)
@@ -549,7 +549,7 @@ LABEL_100:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
       {
         *buf = 138543874;
-        v18 = self;
+        selfCopy = self;
         v19 = 2114;
         v20 = v6;
         v21 = 2114;
@@ -579,8 +579,8 @@ LABEL_100:
 
 - (id)remoteModelDirectoryURL
 {
-  v2 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  [v2 shouldUseRemoteVocalAttenuationModel];
+  standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+  [standardUserDefaults shouldUseRemoteVocalAttenuationModel];
 
   return 0;
 }
@@ -607,33 +607,33 @@ LABEL_100:
   }
 }
 
-- (BOOL)isValidEspressoFile:(id)a3
+- (BOOL)isValidEspressoFile:(id)file
 {
-  v3 = a3;
-  v4 = [v3 lastPathComponent];
-  if ([v4 isEqualToString:@"vi-nnet.mil"])
+  fileCopy = file;
+  lastPathComponent = [fileCopy lastPathComponent];
+  if ([lastPathComponent isEqualToString:@"vi-nnet.mil"])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 lastPathComponent];
-    v5 = [v6 isEqualToString:@"vi-nnet.weight.bin"];
+    lastPathComponent2 = [fileCopy lastPathComponent];
+    v5 = [lastPathComponent2 isEqualToString:@"vi-nnet.weight.bin"];
   }
 
   return v5;
 }
 
-- (BOOL)isValidPlistModelFile:(id)a3
+- (BOOL)isValidPlistModelFile:(id)file
 {
-  v4 = a3;
-  v5 = [v4 lastPathComponent];
-  v6 = [v5 containsString:@"nnet"];
-  if ((v6 & 1) != 0 || ([v4 lastPathComponent], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "containsString:", @"auxf")))
+  fileCopy = file;
+  lastPathComponent = [fileCopy lastPathComponent];
+  v6 = [lastPathComponent containsString:@"nnet"];
+  if ((v6 & 1) != 0 || ([fileCopy lastPathComponent], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "containsString:", @"auxf")))
   {
-    v7 = [v4 pathExtension];
-    v8 = [v7 isEqualToString:@"plist"];
+    pathExtension = [fileCopy pathExtension];
+    v8 = [pathExtension isEqualToString:@"plist"];
 
     if (v6)
     {
@@ -650,22 +650,22 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)isValidModelFile:(id)a3
+- (BOOL)isValidModelFile:(id)file
 {
-  v4 = a3;
-  v5 = [(MPCVocalAttenuationModelProviderImplementation *)self isValidPlistModelFile:v4]|| [(MPCVocalAttenuationModelProviderImplementation *)self isValidEspressoFile:v4];
+  fileCopy = file;
+  v5 = [(MPCVocalAttenuationModelProviderImplementation *)self isValidPlistModelFile:fileCopy]|| [(MPCVocalAttenuationModelProviderImplementation *)self isValidEspressoFile:fileCopy];
 
   return v5;
 }
 
-- (BOOL)moveModelFromURL:(id)a3 toURL:(id)a4
+- (BOOL)moveModelFromURL:(id)l toURL:(id)rL
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v30 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  rLCopy = rL;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v36 = 0;
-  v8 = [v7 contentsOfDirectoryAtURL:v6 includingPropertiesForKeys:0 options:4 error:&v36];
+  v8 = [defaultManager contentsOfDirectoryAtURL:lCopy includingPropertiesForKeys:0 options:4 error:&v36];
   v9 = v36;
   if (v9)
   {
@@ -673,9 +673,9 @@ LABEL_7:
     v11 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v6 path];
+      path = [lCopy path];
       *buf = 138543618;
-      v38 = v12;
+      v38 = path;
       v39 = 2114;
       v40 = v10;
       _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_ERROR, "[AP] - MPCModelProvider - Error getting content of directory at URL %{public}@: %{public}@", buf, 0x16u);
@@ -696,7 +696,7 @@ LABEL_7:
     {
       v15 = v14;
       v28 = v8;
-      v29 = v6;
+      v29 = lCopy;
       v10 = 0;
       v16 = *v33;
       while (2)
@@ -713,24 +713,24 @@ LABEL_7:
           {
             v19 = v18;
             v20 = MEMORY[0x1E695DFF8];
-            v21 = [v19 lastPathComponent];
-            v22 = [v20 fileURLWithPath:v21 relativeToURL:v30];
+            lastPathComponent = [v19 lastPathComponent];
+            v22 = [v20 fileURLWithPath:lastPathComponent relativeToURL:rLCopy];
 
             v31 = 0;
-            LOBYTE(v21) = [v7 moveItemAtURL:v19 toURL:v22 error:&v31];
+            LOBYTE(lastPathComponent) = [defaultManager moveItemAtURL:v19 toURL:v22 error:&v31];
             v23 = v31;
             v10 = v23;
-            if ((v21 & 1) == 0 && v23)
+            if ((lastPathComponent & 1) == 0 && v23)
             {
               v24 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
               if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
               {
-                v25 = [v19 path];
-                v26 = [v22 path];
+                path2 = [v19 path];
+                path3 = [v22 path];
                 *buf = 138543874;
-                v38 = v25;
+                v38 = path2;
                 v39 = 2114;
-                v40 = v26;
+                v40 = path3;
                 v41 = 2114;
                 v42 = v10;
                 _os_log_impl(&dword_1C5C61000, v24, OS_LOG_TYPE_ERROR, "[AP] - MPCModelProvider - Error moving file %{public}@ -> %{public}@: %{public}@", buf, 0x20u);
@@ -754,7 +754,7 @@ LABEL_7:
 
 LABEL_20:
       v8 = v28;
-      v6 = v29;
+      lCopy = v29;
     }
 
     else
@@ -767,11 +767,11 @@ LABEL_20:
   return v13;
 }
 
-- (void)purgeSideLoadedModelDirectoriesAtURL:(id)a3
+- (void)purgeSideLoadedModelDirectoriesAtURL:(id)l
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [(MPCVocalAttenuationModelProviderImplementation *)self directoriesAtURL:a3];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  v3 = [(MPCVocalAttenuationModelProviderImplementation *)self directoriesAtURL:l];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -802,9 +802,9 @@ LABEL_20:
         v36[0] = @"mobile";
         v36[1] = @"mobile";
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:{2, v21}];
-        v12 = [v10 path];
+        path = [v10 path];
         v26 = 0;
-        v13 = [v4 setAttributes:v11 ofItemAtPath:v12 error:&v26];
+        v13 = [defaultManager setAttributes:v11 ofItemAtPath:path error:&v26];
         v14 = v26;
 
         if ((v13 & 1) == 0 && v14)
@@ -812,9 +812,9 @@ LABEL_20:
           v15 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
           {
-            v16 = [v10 path];
+            path2 = [v10 path];
             *buf = v21;
-            v32 = v16;
+            v32 = path2;
             v33 = 2114;
             v34 = v14;
             _os_log_impl(&dword_1C5C61000, v15, OS_LOG_TYPE_ERROR, "[AP] - MPCModelProvider - Error changing attributes for directory %{public}@: %{public}@", buf, 0x16u);
@@ -822,7 +822,7 @@ LABEL_20:
         }
 
         v25 = v14;
-        v17 = [v4 removeItemAtURL:v10 error:&v25];
+        v17 = [defaultManager removeItemAtURL:v10 error:&v25];
         v18 = v25;
 
         if ((v17 & 1) == 0 && v18)
@@ -830,9 +830,9 @@ LABEL_20:
           v19 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
-            v20 = [v10 path];
+            path3 = [v10 path];
             *buf = v21;
-            v32 = v20;
+            v32 = path3;
             v33 = 2114;
             v34 = v18;
             _os_log_impl(&dword_1C5C61000, v19, OS_LOG_TYPE_ERROR, "[AP] - MPCModelProvider - Error removing  directory %{public}@: %{public}@", buf, 0x16u);
@@ -850,13 +850,13 @@ LABEL_20:
   }
 }
 
-- (void)purgeModelAtURL:(id)a3
+- (void)purgeModelAtURL:(id)l
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v30 = 0;
-  v5 = [v4 contentsOfDirectoryAtURL:v3 includingPropertiesForKeys:0 options:4 error:&v30];
+  v5 = [defaultManager contentsOfDirectoryAtURL:lCopy includingPropertiesForKeys:0 options:4 error:&v30];
   v6 = v30;
   if (v6)
   {
@@ -864,9 +864,9 @@ LABEL_20:
     v8 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v3 path];
+      path = [lCopy path];
       *buf = 138543618;
-      v33 = v9;
+      v33 = path;
       v34 = 2114;
       v35 = v7;
       _os_log_impl(&dword_1C5C61000, v8, OS_LOG_TYPE_ERROR, "[AP] - MPCModelProvider - Error getting content of directory at URL %{public}@: %{public}@", buf, 0x16u);
@@ -885,7 +885,7 @@ LABEL_20:
     {
       v11 = v10;
       v22 = v5;
-      v23 = v3;
+      v23 = lCopy;
       v7 = 0;
       v12 = *v27;
       do
@@ -899,8 +899,8 @@ LABEL_20:
 
           v14 = *(*(&v26 + 1) + 8 * i);
           v25 = 0;
-          v15 = [v14 path];
-          v16 = [v4 fileExistsAtPath:v15 isDirectory:&v25];
+          path2 = [v14 path];
+          v16 = [defaultManager fileExistsAtPath:path2 isDirectory:&v25];
           v17 = v25;
 
           if (v16)
@@ -909,7 +909,7 @@ LABEL_20:
             {
 
               v24 = 0;
-              v18 = [v4 removeItemAtURL:v14 error:&v24];
+              v18 = [defaultManager removeItemAtURL:v14 error:&v24];
               v19 = v24;
               v7 = v19;
               if ((v18 & 1) == 0)
@@ -919,9 +919,9 @@ LABEL_20:
                   v20 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
                   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
                   {
-                    v21 = [v14 path];
+                    path3 = [v14 path];
                     *buf = 138543618;
-                    v33 = v21;
+                    v33 = path3;
                     v34 = 2114;
                     v35 = v7;
                     _os_log_impl(&dword_1C5C61000, v20, OS_LOG_TYPE_ERROR, "[AP] - MPCModelProvider - Error removing  file %{public}@: %{public}@", buf, 0x16u);
@@ -937,7 +937,7 @@ LABEL_20:
 
       while (v11);
       v5 = v22;
-      v3 = v23;
+      lCopy = v23;
     }
 
     else
@@ -947,21 +947,21 @@ LABEL_20:
   }
 }
 
-- (BOOL)validateModelAtURL:(id)a3
+- (BOOL)validateModelAtURL:(id)l
 {
   v63[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v5 = *MEMORY[0x1E695DC30];
   v6 = *MEMORY[0x1E695DB78];
   v63[0] = *MEMORY[0x1E695DC30];
   v63[1] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:2];
-  v36 = v4;
-  v37 = v3;
-  v8 = [v4 enumeratorAtURL:v3 includingPropertiesForKeys:v7 options:4 errorHandler:0];
+  v36 = defaultManager;
+  v37 = lCopy;
+  v8 = [defaultManager enumeratorAtURL:lCopy includingPropertiesForKeys:v7 options:4 errorHandler:0];
 
-  v41 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
@@ -997,7 +997,7 @@ LABEL_20:
 
           else
           {
-            [v41 addObject:v14];
+            [array addObject:v14];
           }
         }
       }
@@ -1008,14 +1008,14 @@ LABEL_20:
     while (v11);
   }
 
-  if ([v41 count])
+  if ([array count])
   {
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v17 = [(MPCVocalAttenuationModelProviderImplementation *)self modelFileExtensions];
-    v18 = [v17 countByEnumeratingWithState:&v46 objects:v61 count:16];
+    modelFileExtensions = [(MPCVocalAttenuationModelProviderImplementation *)self modelFileExtensions];
+    v18 = [modelFileExtensions countByEnumeratingWithState:&v46 objects:v61 count:16];
     if (!v18)
     {
       v30 = 1;
@@ -1023,7 +1023,7 @@ LABEL_20:
     }
 
     v19 = v18;
-    obj = v17;
+    obj = modelFileExtensions;
     v39 = *v47;
 LABEL_16:
     v20 = 0;
@@ -1038,7 +1038,7 @@ LABEL_17:
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v22 = v41;
+    v22 = array;
     v23 = [v22 countByEnumeratingWithState:&v42 objects:v60 count:16];
     if (v23)
     {
@@ -1054,8 +1054,8 @@ LABEL_21:
         }
 
         v27 = *(*(&v42 + 1) + 8 * v26);
-        v28 = [v27 pathExtension];
-        if ([v21 isEqualToString:v28])
+        pathExtension = [v27 pathExtension];
+        if ([v21 isEqualToString:pathExtension])
         {
           v29 = [(MPCVocalAttenuationModelProviderImplementation *)self isValidModelFile:v27];
 
@@ -1067,7 +1067,7 @@ LABEL_21:
               goto LABEL_17;
             }
 
-            v17 = obj;
+            modelFileExtensions = obj;
             v19 = [obj countByEnumeratingWithState:&v46 objects:v61 count:16];
             v30 = 1;
             if (v19)
@@ -1111,23 +1111,23 @@ LABEL_41:
     v30 = 0;
     v32 = v36;
     v33 = v37;
-    v17 = obj;
+    modelFileExtensions = obj;
   }
 
   else
   {
-    v17 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    modelFileExtensions = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+    if (!os_log_type_enabled(modelFileExtensions, OS_LOG_TYPE_ERROR))
     {
       v30 = 0;
       goto LABEL_41;
     }
 
     v33 = v37;
-    v34 = [v37 path];
+    path = [v37 path];
     *buf = 138543362;
-    v57 = v34;
-    _os_log_impl(&dword_1C5C61000, v17, OS_LOG_TYPE_ERROR, "[AP] - MPCModelProvider - No model files in %{public}@", buf, 0xCu);
+    v57 = path;
+    _os_log_impl(&dword_1C5C61000, modelFileExtensions, OS_LOG_TYPE_ERROR, "[AP] - MPCModelProvider - No model files in %{public}@", buf, 0xCu);
 
     v30 = 0;
 LABEL_42:
@@ -1137,13 +1137,13 @@ LABEL_42:
   return v30;
 }
 
-- (id)directoriesAtURL:(id)a3
+- (id)directoriesAtURL:(id)l
 {
   v3 = MEMORY[0x1E696AC08];
-  v4 = a3;
-  v5 = [v3 defaultManager];
+  lCopy = l;
+  defaultManager = [v3 defaultManager];
   v9 = 0;
-  v6 = [v5 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:0 options:4 error:&v9];
+  v6 = [defaultManager contentsOfDirectoryAtURL:lCopy includingPropertiesForKeys:0 options:4 error:&v9];
 
   if (v9)
   {
@@ -1158,29 +1158,29 @@ LABEL_42:
   return v7;
 }
 
-- (id)latestModelDirectoryAtURL:(id)a3
+- (id)latestModelDirectoryAtURL:(id)l
 {
-  v3 = [(MPCVocalAttenuationModelProviderImplementation *)self directoriesAtURL:a3];
+  v3 = [(MPCVocalAttenuationModelProviderImplementation *)self directoriesAtURL:l];
   if ([v3 count])
   {
     if ([v3 count] < 2)
     {
-      v5 = [v3 firstObject];
+      firstObject = [v3 firstObject];
     }
 
     else
     {
       v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_1014];
-      v5 = [v4 lastObject];
+      firstObject = [v4 lastObject];
     }
   }
 
   else
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
-  return v5;
+  return firstObject;
 }
 
 uint64_t __76__MPCVocalAttenuationModelProviderImplementation_latestModelDirectoryAtURL___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1197,28 +1197,28 @@ uint64_t __76__MPCVocalAttenuationModelProviderImplementation_latestModelDirecto
   return v7;
 }
 
-- (void)prepareWithCompletion:(id)a3
+- (void)prepareWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MPCVocalAttenuationModelProviderImplementation *)self state];
-  if (v5 > 1)
+  completionCopy = completion;
+  state = [(MPCVocalAttenuationModelProviderImplementation *)self state];
+  if (state > 1)
   {
-    if (v5 == 2)
+    if (state == 2)
     {
-      v4[2](v4, [(MPCVocalAttenuationModelProviderImplementation *)self state], 0);
+      completionCopy[2](completionCopy, [(MPCVocalAttenuationModelProviderImplementation *)self state], 0);
     }
 
-    else if (v5 == 3)
+    else if (state == 3)
     {
-      v8 = [(MPCVocalAttenuationModelProviderImplementation *)self state];
-      v9 = [(MPCVocalAttenuationModelProviderImplementation *)self loadingError];
-      (v4)[2](v4, v8, v9);
+      state2 = [(MPCVocalAttenuationModelProviderImplementation *)self state];
+      loadingError = [(MPCVocalAttenuationModelProviderImplementation *)self loadingError];
+      (completionCopy)[2](completionCopy, state2, loadingError);
     }
   }
 
   else
   {
-    if (!v5)
+    if (!state)
     {
       [(MPCVocalAttenuationModelProviderImplementation *)self setLoadingError:0];
       [(MPCVocalAttenuationModelProviderImplementation *)self setModel:0];
@@ -1228,13 +1228,13 @@ uint64_t __76__MPCVocalAttenuationModelProviderImplementation_latestModelDirecto
       block[2] = __72__MPCVocalAttenuationModelProviderImplementation_prepareWithCompletion___block_invoke;
       block[3] = &unk_1E8239170;
       block[4] = self;
-      v14 = v4;
+      v14 = completionCopy;
       dispatch_async(creationQueue, block);
       v7 = v14;
       goto LABEL_9;
     }
 
-    if (v5 == 1)
+    if (state == 1)
     {
       v6 = self->_creationQueue;
       v11[0] = MEMORY[0x1E69E9820];
@@ -1242,7 +1242,7 @@ uint64_t __76__MPCVocalAttenuationModelProviderImplementation_latestModelDirecto
       v11[2] = __72__MPCVocalAttenuationModelProviderImplementation_prepareWithCompletion___block_invoke_3;
       v11[3] = &unk_1E8239170;
       v11[4] = self;
-      v12 = v4;
+      v12 = completionCopy;
       dispatch_async(v6, v11);
       v7 = v12;
 LABEL_9:

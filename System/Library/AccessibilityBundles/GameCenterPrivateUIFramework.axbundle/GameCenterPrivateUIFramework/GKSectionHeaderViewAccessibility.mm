@@ -1,22 +1,22 @@
 @interface GKSectionHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (GKSectionHeaderViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (GKSectionHeaderViewAccessibility)initWithFrame:(CGRect)frame;
 @end
 
 @implementation GKSectionHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GKSectionHeaderView" hasInstanceVariable:@"_leftLabel" withType:"GKLabel"];
-  [v3 validateClass:@"GKSectionHeaderView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GKSectionHeaderView" hasInstanceVariable:@"_leftLabel" withType:"GKLabel"];
+  [validationsCopy validateClass:@"GKSectionHeaderView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
 }
 
-- (GKSectionHeaderViewAccessibility)initWithFrame:(CGRect)a3
+- (GKSectionHeaderViewAccessibility)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = GKSectionHeaderViewAccessibility;
-  v3 = [(GKSectionHeaderViewAccessibility *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKSectionHeaderViewAccessibility *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = [(GKSectionHeaderViewAccessibility *)v3 safeValueForKey:@"_leftLabel"];
   [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
 

@@ -5,7 +5,7 @@
 - (BOOL)isApplePersonalHotspot;
 - (BOOL)isHotspot;
 - (WiFiShim)init;
-- (id)_associationInfoForNetworkProfile:(id)a3;
+- (id)_associationInfoForNetworkProfile:(id)profile;
 - (id)bssid;
 - (id)getAWDLPeerList;
 - (id)refreshAssociationInfo;
@@ -16,24 +16,24 @@
 - (void)_checkForLQMCallbackRegistration;
 - (void)_delayedRegisterForLQMCallbacks;
 - (void)_handleBSSIDChangedEvent;
-- (void)_handleKnownNetworkProfileChangedEventWithInfo:(id)a3;
-- (void)_handleLinkChangedEventWithInfo:(id)a3;
-- (void)_handleLinkQualityEventWithInfo:(id)a3;
-- (void)_handleWiFiEvent:(id)a3;
-- (void)_monitorAssociationStatus:(BOOL)a3;
+- (void)_handleKnownNetworkProfileChangedEventWithInfo:(id)info;
+- (void)_handleLinkChangedEventWithInfo:(id)info;
+- (void)_handleLinkQualityEventWithInfo:(id)info;
+- (void)_handleWiFiEvent:(id)event;
+- (void)_monitorAssociationStatus:(BOOL)status;
 - (void)_processAsystoleDeclaration;
 - (void)_registerForCallbacks;
 - (void)_registerForLQMCallbacks;
 - (void)_resumeLQMCallbackMonitoring;
 - (void)_suspendLQMCallbackMonitoring;
-- (void)_triggerDisconnectEdge:(id)a3;
+- (void)_triggerDisconnectEdge:(id)edge;
 - (void)_unregisterFromCallbacks;
 - (void)_unregisterFromLQMCallbacks;
-- (void)addDelegate:(id)a3;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeDelegate:(id)a3;
-- (void)setMonitorLQMBradycardia:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeDelegate:(id)delegate;
+- (void)setMonitorLQMBradycardia:(BOOL)bradycardia;
 @end
 
 @implementation WiFiShim
@@ -128,8 +128,8 @@ void __16__WiFiShim_init__block_invoke(uint64_t a1)
   *&v14[5] = *MEMORY[0x277D85DE8];
   if (self->_lqmCallbacks < self->_lqmCallbackThreshold)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    [v3 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v5 = v4;
 
     v6 = v5 - self->_lqmBradycardiaLastCalled;
@@ -174,8 +174,8 @@ void __16__WiFiShim_init__block_invoke(uint64_t a1)
 - (void)_checkForLQMAsystole
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v5 = v4;
 
   lqmCallbackLastTimestamp = self->_lqmCallbackLastTimestamp;
@@ -259,8 +259,8 @@ LABEL_8:
     objc_copyWeak(&v19, &location);
     [*(v2 + 1) setInterruptionHandler:v18];
     [*(v2 + 1) activate];
-    v14 = [*(v2 + 1) currentKnownNetworkProfile];
-    *(v2 + 17) = v14 != 0;
+    currentKnownNetworkProfile = [*(v2 + 1) currentKnownNetworkProfile];
+    *(v2 + 17) = currentKnownNetworkProfile != 0;
 
     v15 = netepochsLogHandle;
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -368,7 +368,7 @@ uint64_t __16__WiFiShim_init__block_invoke_23(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __26__WiFiShim_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_47 != -1)
   {
     dispatch_once(&sharedInstance_pred_47, block);
@@ -388,14 +388,14 @@ uint64_t __26__WiFiShim_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v4 = self->_delegates;
   objc_sync_enter(v4);
-  if (v5)
+  if (delegateCopy)
   {
-    [(NSMutableSet *)self->_delegates addObject:v5];
+    [(NSMutableSet *)self->_delegates addObject:delegateCopy];
     if (!self->_registeredForCallbacks)
     {
       [(WiFiShim *)self _registerForCallbacks];
@@ -405,14 +405,14 @@ uint64_t __26__WiFiShim_sharedInstance__block_invoke(uint64_t a1)
   objc_sync_exit(v4);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v4 = self->_delegates;
   objc_sync_enter(v4);
-  if (v5)
+  if (delegateCopy)
   {
-    [(NSMutableSet *)self->_delegates removeObject:v5];
+    [(NSMutableSet *)self->_delegates removeObject:delegateCopy];
   }
 
   if (![(NSMutableSet *)self->_delegates count]&& self->_registeredForCallbacks)
@@ -488,13 +488,13 @@ LABEL_17:
             _os_log_impl(&dword_23255B000, v16, OS_LOG_TYPE_DEFAULT, "WiFiShim: Successfully started monitoring for CWFEventTypeLinkChanged event", buf, 2u);
           }
 
-          v17 = [(WiFiShim *)self queue];
+          queue = [(WiFiShim *)self queue];
           v25[0] = MEMORY[0x277D85DD0];
           v25[1] = 3221225472;
           v25[2] = __33__WiFiShim__registerForCallbacks__block_invoke_28;
           v25[3] = &unk_27898A0C8;
           v25[4] = self;
-          dispatch_async(v17, v25);
+          dispatch_async(queue, v25);
 
           v18 = +[SystemSettingsRelay defaultRelay];
           [v18 addObserver:self forKeyPath:@"rnfEnabled" options:5 context:0];
@@ -627,63 +627,63 @@ LABEL_8:
 
 - (id)ssid
 {
-  v3 = [(CWFInterface *)self->_interface networkName];
-  if (v3)
+  networkName = [(CWFInterface *)self->_interface networkName];
+  if (networkName)
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    [(WiFiShim *)v4 setLastSsid:v3];
-    objc_sync_exit(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(WiFiShim *)selfCopy setLastSsid:networkName];
+    objc_sync_exit(selfCopy);
   }
 
-  return v3;
+  return networkName;
 }
 
 - (id)bssid
 {
-  v3 = [(CWFInterface *)self->_interface BSSID];
-  if (v3)
+  bSSID = [(CWFInterface *)self->_interface BSSID];
+  if (bSSID)
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    [(WiFiShim *)v4 setLastBssid:v3];
-    objc_sync_exit(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(WiFiShim *)selfCopy setLastBssid:bSSID];
+    objc_sync_exit(selfCopy);
   }
 
-  return v3;
+  return bSSID;
 }
 
 - (BOOL)isHotspot
 {
-  v2 = [(CWFInterface *)self->_interface currentKnownNetworkProfile];
-  v3 = [v2 isHotspot];
+  currentKnownNetworkProfile = [(CWFInterface *)self->_interface currentKnownNetworkProfile];
+  isHotspot = [currentKnownNetworkProfile isHotspot];
 
-  return v3;
+  return isHotspot;
 }
 
 - (BOOL)isApplePersonalHotspot
 {
-  v2 = [(CWFInterface *)self->_interface currentKnownNetworkProfile];
-  v3 = [v2 isPersonalHotspot];
+  currentKnownNetworkProfile = [(CWFInterface *)self->_interface currentKnownNetworkProfile];
+  isPersonalHotspot = [currentKnownNetworkProfile isPersonalHotspot];
 
-  return v3;
+  return isPersonalHotspot;
 }
 
 - (id)refreshAssociationInfo
 {
-  v3 = [(CWFInterface *)self->_interface currentKnownNetworkProfile];
-  v4 = [(WiFiShim *)self _associationInfoForNetworkProfile:v3];
+  currentKnownNetworkProfile = [(CWFInterface *)self->_interface currentKnownNetworkProfile];
+  v4 = [(WiFiShim *)self _associationInfoForNetworkProfile:currentKnownNetworkProfile];
 
   return v4;
 }
 
 - (BOOL)fastLQMUpdates
 {
-  v2 = [(CWFInterface *)self->_interface linkQualityMetricConfiguration];
-  v3 = v2;
-  if (v2)
+  linkQualityMetricConfiguration = [(CWFInterface *)self->_interface linkQualityMetricConfiguration];
+  v3 = linkQualityMetricConfiguration;
+  if (linkQualityMetricConfiguration)
   {
-    v4 = [v2 objectForKeyedSubscript:@"LQM_UPDATE_INTERVAL"];
+    v4 = [linkQualityMetricConfiguration objectForKeyedSubscript:@"LQM_UPDATE_INTERVAL"];
     v5 = [v4 unsignedIntValue] == 1000;
   }
 
@@ -705,17 +705,17 @@ LABEL_8:
 - (id)getAWDLPeerList
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(CWFInterface *)self->_interface AWDLPeerDatabase];
-  v4 = [v3 bytes];
+  aWDLPeerDatabase = [(CWFInterface *)self->_interface AWDLPeerDatabase];
+  bytes = [aWDLPeerDatabase bytes];
 
-  if (v4)
+  if (bytes)
   {
     v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if (*(v4 + 4))
+    if (*(bytes + 4))
     {
-      for (i = 0; i < *(v4 + 4); ++i)
+      for (i = 0; i < *(bytes + 4); ++i)
       {
-        memcpy(__dst, (v4 + 8 + 2064 * i), sizeof(__dst));
+        memcpy(__dst, (bytes + 8 + 2064 * i), sizeof(__dst));
         v6 = [MEMORY[0x277CBEA90] dataWithBytes:&__dst[8] length:6];
         v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
         v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:__dst];
@@ -742,8 +742,8 @@ LABEL_8:
         v13 = v6;
         if (!v6)
         {
-          v2 = [MEMORY[0x277CBEB68] null];
-          v13 = v2;
+          null = [MEMORY[0x277CBEB68] null];
+          v13 = null;
         }
 
         v24[1] = v13;
@@ -751,8 +751,8 @@ LABEL_8:
         v14 = v8;
         if (!v8)
         {
-          v20 = [MEMORY[0x277CBEB68] null];
-          v14 = v20;
+          null2 = [MEMORY[0x277CBEB68] null];
+          v14 = null2;
         }
 
         v24[2] = v14;
@@ -760,8 +760,8 @@ LABEL_8:
         v15 = v7;
         if (!v7)
         {
-          v21 = [MEMORY[0x277CBEB68] null];
-          v15 = v21;
+          null3 = [MEMORY[0x277CBEB68] null];
+          v15 = null3;
         }
 
         v24[3] = v15;
@@ -818,17 +818,17 @@ LABEL_16:
   return v22;
 }
 
-- (id)_associationInfoForNetworkProfile:(id)a3
+- (id)_associationInfoForNetworkProfile:(id)profile
 {
   v23[7] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  profileCopy = profile;
+  if (profileCopy)
   {
-    v5 = [(CWFInterface *)self->_interface currentScanResult];
-    if ([v4 isWEP] & 1) != 0 || (objc_msgSend(v4, "isWPA") & 1) != 0 || (objc_msgSend(v4, "isWPA2") & 1) != 0 || (objc_msgSend(v4, "isWPA3"))
+    currentScanResult = [(CWFInterface *)self->_interface currentScanResult];
+    if ([profileCopy isWEP] & 1) != 0 || (objc_msgSend(profileCopy, "isWPA") & 1) != 0 || (objc_msgSend(profileCopy, "isWPA2") & 1) != 0 || (objc_msgSend(profileCopy, "isWPA3"))
     {
-      v6 = 1;
-      if (v5)
+      isEAP = 1;
+      if (currentScanResult)
       {
         goto LABEL_7;
       }
@@ -836,48 +836,48 @@ LABEL_16:
 
     else
     {
-      v6 = [v4 isEAP];
-      if (v5)
+      isEAP = [profileCopy isEAP];
+      if (currentScanResult)
       {
 LABEL_7:
-        v7 = [v5 accessNetworkType] == 2 || objc_msgSend(v5, "accessNetworkType") == 3;
+        v7 = [currentScanResult accessNetworkType] == 2 || objc_msgSend(currentScanResult, "accessNetworkType") == 3;
         goto LABEL_15;
       }
     }
 
     v7 = 0;
 LABEL_15:
-    v20 = v5;
+    v20 = currentScanResult;
     v22[0] = @"ssid";
-    v10 = [v4 networkName];
-    v11 = v10;
-    if (!v10)
+    networkName = [profileCopy networkName];
+    null = networkName;
+    if (!networkName)
     {
-      v11 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v23[0] = v11;
+    v23[0] = null;
     v22[1] = @"isSecured";
-    v12 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+    v12 = [MEMORY[0x277CCABB0] numberWithBool:isEAP];
     v23[1] = v12;
     v22[2] = @"isPublicHotspot";
     v13 = [MEMORY[0x277CCABB0] numberWithBool:v7];
     v23[2] = v13;
     v22[3] = @"isProfileBased";
-    v14 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "addReason") == 9}];
+    v14 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(profileCopy, "addReason") == 9}];
     v23[3] = v14;
     v22[4] = @"isCarrierBundle";
-    v15 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "addReason") == 10}];
+    v15 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(profileCopy, "addReason") == 10}];
     v23[4] = v15;
     v22[5] = @"isHotspot20";
-    v16 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "isPasspoint")}];
+    v16 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(profileCopy, "isPasspoint")}];
     v23[5] = v16;
     v22[6] = @"isManuallyJoined";
-    v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "wasMoreRecentlyJoinedByUser")}];
+    v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(profileCopy, "wasMoreRecentlyJoinedByUser")}];
     v23[6] = v17;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:7];
 
-    if (!v10)
+    if (!networkName)
     {
     }
 
@@ -899,10 +899,10 @@ LABEL_20:
   return v9;
 }
 
-- (void)_monitorAssociationStatus:(BOOL)a3
+- (void)_monitorAssociationStatus:(BOOL)status
 {
   hasAssociationDebounceTimer = self->_hasAssociationDebounceTimer;
-  if (a3)
+  if (status)
   {
     if (hasAssociationDebounceTimer)
     {
@@ -1046,16 +1046,16 @@ void __38__WiFiShim__monitorAssociationStatus___block_invoke(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMonitorLQMBradycardia:(BOOL)a3
+- (void)setMonitorLQMBradycardia:(BOOL)bradycardia
 {
-  v5 = [(WiFiShim *)self queue];
+  queue = [(WiFiShim *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__WiFiShim_setMonitorLQMBradycardia___block_invoke;
   v6[3] = &unk_27898A3A0;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  bradycardiaCopy = bradycardia;
+  dispatch_async(queue, v6);
 }
 
 void __37__WiFiShim_setMonitorLQMBradycardia___block_invoke(uint64_t a1)
@@ -1099,9 +1099,9 @@ void __37__WiFiShim_setMonitorLQMBradycardia___block_invoke(uint64_t a1)
 {
   if (self->_interface)
   {
-    v3 = [(WiFiShim *)self _shouldRegisterForLQMCallbacks];
+    _shouldRegisterForLQMCallbacks = [(WiFiShim *)self _shouldRegisterForLQMCallbacks];
     lqmCallbackLastRegistered = self->_lqmCallbackLastRegistered;
-    if (v3)
+    if (_shouldRegisterForLQMCallbacks)
     {
       if (lqmCallbackLastRegistered == 0.0)
       {
@@ -1143,8 +1143,8 @@ void __37__WiFiShim_setMonitorLQMBradycardia___block_invoke(uint64_t a1)
 - (BOOL)_shouldRegisterForLQMCallbacks
 {
   v2 = +[SystemSettingsRelay defaultRelay];
-  v3 = [v2 rnfEnabled];
-  v4 = v3 | [v2 noBackhaulEnabled];
+  rnfEnabled = [v2 rnfEnabled];
+  v4 = rnfEnabled | [v2 noBackhaulEnabled];
 
   return v4 & 1;
 }
@@ -1165,12 +1165,12 @@ void __37__WiFiShim_setMonitorLQMBradycardia___block_invoke(uint64_t a1)
   if ([v5 autoBugCaptureEnabled])
   {
     v6 = +[SystemProperties sharedInstance];
-    v7 = [v6 internalBuild];
+    internalBuild = [v6 internalBuild];
 
-    if (v7)
+    if (internalBuild)
     {
-      v8 = [MEMORY[0x277CBEAA8] date];
-      [v8 timeIntervalSince1970];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSince1970];
       v10 = v9;
 
       v11 = v10 - self->_lqmAsystoleLastCalled;
@@ -1324,12 +1324,12 @@ void __39__WiFiShim__processAsystoleDeclaration__block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)_triggerDisconnectEdge:(id)a3
+- (void)_triggerDisconnectEdge:(id)edge
 {
   v32 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v17 = [v14 userInfo];
-  [v17 keyEnumerator];
+  edgeCopy = edge;
+  userInfo = [edgeCopy userInfo];
+  [userInfo keyEnumerator];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
@@ -1351,7 +1351,7 @@ void __39__WiFiShim__processAsystoleDeclaration__block_invoke(uint64_t a1, void 
         }
 
         v19 = v4;
-        v21 = [v17 objectForKeyedSubscript:*(*(&v26 + 1) + 8 * v4)];
+        v21 = [userInfo objectForKeyedSubscript:*(*(&v26 + 1) + 8 * v4)];
         v6 = *([v21 eventData] + 24);
         v20 = self->_delegates;
         objc_sync_enter(v20);
@@ -1377,8 +1377,8 @@ void __39__WiFiShim__processAsystoleDeclaration__block_invoke(uint64_t a1, void 
               v11 = *(*(&v22 + 1) + 8 * v10);
               if (objc_opt_respondsToSelector())
               {
-                v12 = [(CWFInterface *)self->_interface interfaceName];
-                [v11 wifiShim_L2TriggerDisconnectEdge:v6 != 0 forInterface:v12];
+                interfaceName = [(CWFInterface *)self->_interface interfaceName];
+                [v11 wifiShim_L2TriggerDisconnectEdge:v6 != 0 forInterface:interfaceName];
               }
 
               ++v10;
@@ -1488,18 +1488,18 @@ LABEL_14:
 
   else
   {
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __36__WiFiShim__registerForLQMCallbacks__block_invoke;
     v22[3] = &unk_27898A690;
     v22[4] = self;
-    v15 = [v14 addObserverForName:@"kNotificationTriggerDisconnectThreshold" object:0 queue:0 usingBlock:v22];
+    v15 = [defaultCenter addObserverForName:@"kNotificationTriggerDisconnectThreshold" object:0 queue:0 usingBlock:v22];
     triggerDisconnectObserver = self->_triggerDisconnectObserver;
     self->_triggerDisconnectObserver = v15;
 
-    v17 = [MEMORY[0x277CBEAA8] date];
-    [v17 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     self->_lqmCallbackLastRegistered = v18;
 
     v19 = netepochsLogHandle;
@@ -1551,16 +1551,16 @@ LABEL_10:
   }
 
   [(CWFInterface *)interface stopMonitoringEventType:7];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self->_triggerDisconnectObserver];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_triggerDisconnectObserver];
   self->_lqmCallbackLastRegistered = 0.0;
   v5 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v6 = MEMORY[0x277CBEAA8];
     v7 = v5;
-    v8 = [v6 date];
-    [v8 timeIntervalSince1970];
+    date = [v6 date];
+    [date timeIntervalSince1970];
     v13 = 134217984;
     v14 = v9;
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEFAULT, "WiFiShim: LQM Callback unregistered at %f", &v13, 0xCu);
@@ -1607,11 +1607,11 @@ void __43__WiFiShim__delayedRegisterForLQMCallbacks__block_invoke(uint64_t a1)
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = [a5 objectForKey:*MEMORY[0x277CCA2F0]];
-  if (([v8 isEqual:@"rnfEnabled"] & 1) != 0 || objc_msgSend(v8, "isEqual:", @"noBackhaulEnabled"))
+  pathCopy = path;
+  v9 = [change objectForKey:*MEMORY[0x277CCA2F0]];
+  if (([pathCopy isEqual:@"rnfEnabled"] & 1) != 0 || objc_msgSend(pathCopy, "isEqual:", @"noBackhaulEnabled"))
   {
     v10 = netepochsLogHandle;
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -1630,7 +1630,7 @@ void __43__WiFiShim__delayedRegisterForLQMCallbacks__block_invoke(uint64_t a1)
     goto LABEL_6;
   }
 
-  if ([v8 isEqual:@"mostRecentAPWakeMachTime"])
+  if ([pathCopy isEqual:@"mostRecentAPWakeMachTime"])
   {
     if (v9)
     {
@@ -1653,7 +1653,7 @@ LABEL_6:
     }
   }
 
-  else if ([v8 isEqual:@"mostRecentAPSleepMachTime"])
+  else if ([pathCopy isEqual:@"mostRecentAPSleepMachTime"])
   {
     if (v9)
     {
@@ -1702,43 +1702,43 @@ uint64_t __59__WiFiShim_observeValueForKeyPath_ofObject_change_context___block_i
   return [*(a1 + 32) _changeLQMMonitoring];
 }
 
-- (void)_handleWiFiEvent:(id)a3
+- (void)_handleWiFiEvent:(id)event
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    v6 = [v4 type];
-    if (v6 > 6)
+    type = [eventCopy type];
+    if (type > 6)
     {
-      if (v6 == 7)
+      if (type == 7)
       {
-        v7 = [v5 info];
-        [(WiFiShim *)self _handleLinkQualityEventWithInfo:v7];
+        info = [v5 info];
+        [(WiFiShim *)self _handleLinkQualityEventWithInfo:info];
         goto LABEL_16;
       }
 
-      if (v6 == 30)
+      if (type == 30)
       {
-        v7 = [v5 info];
-        [(WiFiShim *)self _handleKnownNetworkProfileChangedEventWithInfo:v7];
+        info = [v5 info];
+        [(WiFiShim *)self _handleKnownNetworkProfileChangedEventWithInfo:info];
         goto LABEL_16;
       }
     }
 
     else
     {
-      if (v6 == 3)
+      if (type == 3)
       {
         [(WiFiShim *)self _handleBSSIDChangedEvent];
         goto LABEL_17;
       }
 
-      if (v6 == 6)
+      if (type == 6)
       {
-        v7 = [v5 info];
-        [(WiFiShim *)self _handleLinkChangedEventWithInfo:v7];
+        info = [v5 info];
+        [(WiFiShim *)self _handleLinkChangedEventWithInfo:info];
 LABEL_16:
 
         goto LABEL_17;
@@ -1776,10 +1776,10 @@ LABEL_17:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleKnownNetworkProfileChangedEventWithInfo:(id)a3
+- (void)_handleKnownNetworkProfileChangedEventWithInfo:(id)info
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
   {
@@ -1787,23 +1787,23 @@ LABEL_17:
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_INFO, "WiFiShim: handling event CWFEventTypeKnownNetworkProfileChanged", buf, 2u);
   }
 
-  if (v4)
+  if (infoCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D02A98]];
+    v6 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D02A98]];
     v7 = [v6 isEqual:&unk_2847EFD88];
 
     if (v7)
     {
-      v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277D02AA0]];
+      v8 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D02AA0]];
       v9 = netepochsLogHandle;
       if (v8)
       {
         if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
         {
           v10 = v9;
-          v11 = [v8 networkName];
+          networkName = [v8 networkName];
           *buf = 138477827;
-          v27 = v11;
+          v27 = networkName;
           _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEFAULT, "WiFiShim: Removed %{private}@ from known networks list", buf, 0xCu);
         }
 
@@ -1830,8 +1830,8 @@ LABEL_17:
               v16 = *(*(&v21 + 1) + 8 * i);
               if (objc_opt_respondsToSelector())
               {
-                v17 = [v8 networkName];
-                [v16 wifiShim_NetworkForgottenWithSSID:v17];
+                networkName2 = [v8 networkName];
+                [v16 wifiShim_NetworkForgottenWithSSID:networkName2];
               }
             }
 
@@ -1865,10 +1865,10 @@ LABEL_17:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleLinkChangedEventWithInfo:(id)a3
+- (void)_handleLinkChangedEventWithInfo:(id)info
 {
   v69 = *MEMORY[0x277D85DE8];
-  v44 = a3;
+  infoCopy = info;
   v3 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
   {
@@ -1876,9 +1876,9 @@ LABEL_17:
     _os_log_impl(&dword_23255B000, v3, OS_LOG_TYPE_INFO, "WiFiShim: handling event CWFEventTypeLinkChanged", buf, 2u);
   }
 
-  if (v44)
+  if (infoCopy)
   {
-    v4 = [v44 objectForKeyedSubscript:*MEMORY[0x277D02A88]];
+    v4 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D02A88]];
     v43 = v4;
     v5 = v4;
     if (!v4)
@@ -1896,41 +1896,41 @@ LABEL_17:
     if ([v4 isLinkDown])
     {
       [(WiFiShim *)self _monitorAssociationStatus:0];
-      v6 = [v43 reason];
-      if ((v6 - 1) > 8)
+      reason = [v43 reason];
+      if ((reason - 1) > 8)
       {
         v7 = @"Unknown";
       }
 
       else
       {
-        v7 = off_278990110[v6 - 1];
+        v7 = off_278990110[reason - 1];
       }
 
-      v25 = [v43 subreason];
+      subreason = [v43 subreason];
       v26 = netepochsLogHandle;
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         v27 = v26;
-        v28 = [v43 isInvoluntaryLinkDown];
+        isInvoluntaryLinkDown = [v43 isInvoluntaryLinkDown];
         v29 = "voluntary";
         *buf = 67109890;
         v63 = 2112;
-        v62 = v6;
-        if (v28)
+        v62 = reason;
+        if (isInvoluntaryLinkDown)
         {
           v29 = "involuntary";
         }
 
         v64 = v7;
         v65 = 2048;
-        v66 = v25;
+        v66 = subreason;
         v67 = 2080;
         v68 = v29;
         _os_log_impl(&dword_23255B000, v27, OS_LOG_TYPE_DEFAULT, "WiFiShim: Link is down (reason=%d [%@], subreason=%ld, %s)", buf, 0x26u);
       }
 
-      v30 = v6 == 5 || ([v43 isInvoluntaryLinkDown] & 1) == 0;
+      v30 = reason == 5 || ([v43 isInvoluntaryLinkDown] & 1) == 0;
       obja = self->_delegates;
       objc_sync_enter(obja);
       v55 = 0u;
@@ -1957,13 +1957,13 @@ LABEL_17:
               v35 = *(*(&v55 + 1) + 8 * i);
               if (objc_opt_respondsToSelector())
               {
-                v36 = self;
-                objc_sync_enter(v36);
-                v37 = [(WiFiShim *)v36 lastSsid];
-                v38 = [(WiFiShim *)v36 lastBssid];
-                [v34 wifiShim_InfraAdminDisable:v37 bssid:v38];
+                selfCopy = self;
+                objc_sync_enter(selfCopy);
+                lastSsid = [(WiFiShim *)selfCopy lastSsid];
+                lastBssid = [(WiFiShim *)selfCopy lastBssid];
+                [v34 wifiShim_InfraAdminDisable:lastSsid bssid:lastBssid];
 
-                objc_sync_exit(v36);
+                objc_sync_exit(selfCopy);
               }
             }
 
@@ -2004,7 +2004,7 @@ LABEL_17:
     else
     {
       [(WiFiShim *)self _monitorAssociationStatus:1];
-      v46 = [(CWFInterface *)self->_interface currentKnownNetworkProfile];
+      currentKnownNetworkProfile = [(CWFInterface *)self->_interface currentKnownNetworkProfile];
       v45 = [(WiFiShim *)self _associationInfoForNetworkProfile:?];
       v10 = netepochsLogHandle;
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -2036,9 +2036,9 @@ LABEL_17:
             v15 = *(*(&v51 + 1) + 8 * j);
             if (objc_opt_respondsToSelector())
             {
-              v16 = [(CWFInterface *)self->_interface wifiAssistOverrideReasons];
-              v17 = v16;
-              if (v16 && [v16 count])
+              wifiAssistOverrideReasons = [(CWFInterface *)self->_interface wifiAssistOverrideReasons];
+              v17 = wifiAssistOverrideReasons;
+              if (wifiAssistOverrideReasons && [wifiAssistOverrideReasons count])
               {
                 v18 = objc_alloc_init(MEMORY[0x277CBEB58]);
                 v19 = netepochsLogHandle;
@@ -2077,7 +2077,7 @@ LABEL_17:
 
             if (objc_opt_respondsToSelector())
             {
-              [v15 wifiShim_CurrentAssociationChanged:v46 != 0 associationInfo:v45];
+              [v15 wifiShim_CurrentAssociationChanged:currentKnownNetworkProfile != 0 associationInfo:v45];
             }
           }
 
@@ -2088,10 +2088,10 @@ LABEL_17:
       }
 
       objc_sync_exit(obj);
-      v23 = [(WiFiShim *)self hasAssociation];
+      hasAssociation = [(WiFiShim *)self hasAssociation];
       v5 = v43;
-      v24 = v46 != 0;
-      if ((v46 != 0) == v23)
+      v24 = currentKnownNetworkProfile != 0;
+      if ((currentKnownNetworkProfile != 0) == hasAssociation)
       {
         goto LABEL_63;
       }
@@ -2198,8 +2198,8 @@ void __44__WiFiShim__handleLinkChangedEventWithInfo___block_invoke(uint64_t a1, 
         v9 = *(*(&v12 + 1) + 8 * v8);
         if (objc_opt_respondsToSelector())
         {
-          v10 = [(CWFInterface *)self->_interface interfaceName];
-          [v9 wifiShim_BSSIDChangedForInterface:v10];
+          interfaceName = [(CWFInterface *)self->_interface interfaceName];
+          [v9 wifiShim_BSSIDChangedForInterface:interfaceName];
         }
 
         ++v8;
@@ -2216,10 +2216,10 @@ void __44__WiFiShim__handleLinkChangedEventWithInfo___block_invoke(uint64_t a1, 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleLinkQualityEventWithInfo:(id)a3
+- (void)_handleLinkQualityEventWithInfo:(id)info
 {
   v91[2] = *MEMORY[0x277D85DE8];
-  v50 = a3;
+  infoCopy = info;
   v4 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
   {
@@ -2227,10 +2227,10 @@ void __44__WiFiShim__handleLinkChangedEventWithInfo___block_invoke(uint64_t a1, 
     _os_log_impl(&dword_23255B000, v4, OS_LOG_TYPE_INFO, "WiFiShim: handling event CWFEventTypeLinkQuality", &buf, 2u);
   }
 
-  if (v50)
+  if (infoCopy)
   {
-    v69 = self;
-    v56 = [(CWFInterface *)self->_interface interfaceName];
+    selfCopy = self;
+    interfaceName = [(CWFInterface *)self->_interface interfaceName];
     if ([(WiFiShim *)self monitorLQMBradycardia])
     {
       v5 = netepochsLogHandle;
@@ -2238,27 +2238,27 @@ void __44__WiFiShim__handleLinkChangedEventWithInfo___block_invoke(uint64_t a1, 
       {
         v6 = v5;
         v7 = ([(WiFiShim *)self lqmCallbacks]+ 1);
-        [(WiFiShim *)v69 setLqmCallbacks:v7];
+        [(WiFiShim *)selfCopy setLqmCallbacks:v7];
         LODWORD(buf) = 67109120;
         DWORD1(buf) = v7;
         _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_INFO, "LQM callback count is %u\n", &buf, 8u);
       }
     }
 
-    v8 = [MEMORY[0x277CBEAA8] date];
-    [v8 timeIntervalSince1970];
-    [(WiFiShim *)v69 setLqmCallbackLastTimestamp:?];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
+    [(WiFiShim *)selfCopy setLqmCallbackLastTimestamp:?];
 
-    v67 = [v50 objectForKeyedSubscript:*MEMORY[0x277D02A90]];
+    v67 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D02A90]];
     if (v67)
     {
-      v49 = v69->_delegates;
+      v49 = selfCopy->_delegates;
       objc_sync_enter(v49);
       v74 = 0u;
       v75 = 0u;
       v76 = 0u;
       v77 = 0u;
-      obj = v69->_delegates;
+      obj = selfCopy->_delegates;
       v9 = [(NSMutableSet *)obj countByEnumeratingWithState:&v74 objects:v78 count:16];
       if (v9)
       {
@@ -2278,15 +2278,15 @@ void __44__WiFiShim__handleLinkChangedEventWithInfo___block_invoke(uint64_t a1, 
             if (objc_opt_respondsToSelector())
             {
               v70 = v67;
-              v11 = [v70 linkQualityMetricData];
-              v12 = v11;
-              v13 = [v11 bytes];
+              linkQualityMetricData = [v70 linkQualityMetricData];
+              v12 = linkQualityMetricData;
+              bytes = [linkQualityMetricData bytes];
 
-              if (v13)
+              if (bytes)
               {
-                if (*(v13 + 11))
+                if (*(bytes + 11))
                 {
-                  v63 = *(v13 + 12);
+                  v63 = *(bytes + 12);
                 }
 
                 else
@@ -2294,14 +2294,14 @@ void __44__WiFiShim__handleLinkChangedEventWithInfo___block_invoke(uint64_t a1, 
                   v63 = 0;
                 }
 
-                v18 = *(v13 + 20);
-                v17 = *(v13 + 24);
-                v19 = *(v13 + 28);
-                if (*(v13 + 8))
+                v18 = *(bytes + 20);
+                v17 = *(bytes + 24);
+                v19 = *(bytes + 28);
+                if (*(bytes + 8))
                 {
-                  v20 = [MEMORY[0x277CCABB0] numberWithChar:*(v13 + 9)];
+                  v20 = [MEMORY[0x277CCABB0] numberWithChar:*(bytes + 9)];
                   v91[0] = v20;
-                  v21 = [MEMORY[0x277CCABB0] numberWithChar:*(v13 + 10)];
+                  v21 = [MEMORY[0x277CCABB0] numberWithChar:*(bytes + 10)];
                   v91[1] = v21;
                   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v91 count:2];
                 }
@@ -2311,12 +2311,12 @@ void __44__WiFiShim__handleLinkChangedEventWithInfo___block_invoke(uint64_t a1, 
                   v22 = &unk_2847EEC58;
                 }
 
-                v23 = *(v13 + 312);
-                v53 = *(v13 + 314);
-                v24 = *(v13 + 324);
-                v25 = *(v13 + 325);
-                v54 = *(v13 + 326);
-                v55 = *(v13 + 313);
+                v23 = *(bytes + 312);
+                v53 = *(bytes + 314);
+                v24 = *(bytes + 324);
+                v25 = *(bytes + 325);
+                v54 = *(bytes + 326);
+                v55 = *(bytes + 313);
                 v81[0] = @"RSSI";
                 v65 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v70, "RSSI", v49)}];
                 *&buf = v65;
@@ -2346,14 +2346,14 @@ void __44__WiFiShim__handleLinkChangedEventWithInfo___block_invoke(uint64_t a1, 
                 v57 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v19];
                 v88 = v57;
                 v81[8] = @"PER_CORE_RSSI";
-                v28 = v22;
+                null = v22;
                 if (!v22)
                 {
-                  v28 = [MEMORY[0x277CBEB68] null];
+                  null = [MEMORY[0x277CBEB68] null];
                 }
 
-                v51 = v28;
-                v89 = v28;
+                v51 = null;
+                v89 = null;
                 v81[9] = @"CCA_STATS";
                 v79[0] = @"CCA_SELF_WAKE";
                 v29 = [MEMORY[0x277CCABB0] numberWithChar:v24];
@@ -2394,14 +2394,14 @@ void __44__WiFiShim__handleLinkChangedEventWithInfo___block_invoke(uint64_t a1, 
                 }
               }
 
-              [v71 wifiShim_L2NewMetrics:v16 forInterface:v56];
+              [v71 wifiShim_L2NewMetrics:v16 forInterface:interfaceName];
             }
 
             if (objc_opt_respondsToSelector())
             {
-              v36 = [(CWFInterface *)v69->_interface wifiAssistOverrideReasons];
-              v37 = v36;
-              if (v36 && [v36 count])
+              wifiAssistOverrideReasons = [(CWFInterface *)selfCopy->_interface wifiAssistOverrideReasons];
+              v37 = wifiAssistOverrideReasons;
+              if (wifiAssistOverrideReasons && [wifiAssistOverrideReasons count])
               {
                 v38 = objc_alloc_init(MEMORY[0x277CBEB58]);
                 v39 = netepochsLogHandle;
@@ -2440,24 +2440,24 @@ void __44__WiFiShim__handleLinkChangedEventWithInfo___block_invoke(uint64_t a1, 
 
             if (objc_opt_respondsToSelector())
             {
-              v43 = [v67 RSSI];
-              if (v43 == v69->_lastRSSI)
+              rSSI = [v67 RSSI];
+              if (rSSI == selfCopy->_lastRSSI)
               {
                 v44 = netepochsLogHandle;
                 if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
                 {
                   LODWORD(buf) = 134217984;
-                  *(&buf + 4) = v43;
+                  *(&buf + 4) = rSSI;
                   _os_log_impl(&dword_23255B000, v44, OS_LOG_TYPE_INFO, "WiFiShim: Skipped informing delegates of RSSI change because lastSeenRSSI == RSSI (%ld)", &buf, 0xCu);
                 }
               }
 
               else
               {
-                v45 = [(CWFInterface *)v69->_interface BSSID];
-                [v71 wifiShim_RSSIChangedTo:v43 forInterface:v56 bssid:v45];
+                bSSID = [(CWFInterface *)selfCopy->_interface BSSID];
+                [v71 wifiShim_RSSIChangedTo:rSSI forInterface:interfaceName bssid:bSSID];
 
-                v69->_lastRSSI = v43;
+                selfCopy->_lastRSSI = rSSI;
               }
             }
 

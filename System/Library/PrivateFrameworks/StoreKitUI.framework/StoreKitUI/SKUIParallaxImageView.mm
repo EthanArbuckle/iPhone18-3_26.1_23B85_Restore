@@ -1,22 +1,22 @@
 @interface SKUIParallaxImageView
 - (CGSize)imageSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIParallaxImageView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIParallaxImageView)initWithFrame:(CGRect)frame;
 - (void)_updateInnerImageView;
-- (void)setFrame:(CGRect)a3;
-- (void)setImagePadding:(UIEdgeInsets)a3;
-- (void)setImageSize:(CGSize)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setImagePadding:(UIEdgeInsets)padding;
+- (void)setImageSize:(CGSize)size;
 - (void)updateForChangedDistanceFromVanishingPoint;
 @end
 
 @implementation SKUIParallaxImageView
 
-- (SKUIParallaxImageView)initWithFrame:(CGRect)a3
+- (SKUIParallaxImageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIParallaxImageView initWithFrame:];
@@ -24,31 +24,31 @@
 
   v13.receiver = self;
   v13.super_class = SKUIParallaxImageView;
-  v8 = [(SKUIParallaxImageView *)&v13 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIParallaxImageView *)&v13 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = [SKUIImageView alloc];
-    [(SKUIParallaxImageView *)v8 bounds];
+    [(SKUIParallaxImageView *)height bounds];
     v10 = [(SKUIImageView *)v9 initWithFrame:?];
-    innerImageView = v8->_innerImageView;
-    v8->_innerImageView = v10;
+    innerImageView = height->_innerImageView;
+    height->_innerImageView = v10;
 
-    [(SKUIParallaxImageView *)v8 addSubview:v8->_innerImageView];
-    [(SKUIParallaxImageView *)v8 setClipsToBounds:1];
+    [(SKUIParallaxImageView *)height addSubview:height->_innerImageView];
+    [(SKUIParallaxImageView *)height setClipsToBounds:1];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)setImagePadding:(UIEdgeInsets)a3
+- (void)setImagePadding:(UIEdgeInsets)padding
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = padding.top;
+  v3.f64[1] = padding.left;
+  v4.f64[0] = padding.bottom;
+  v4.f64[1] = padding.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_imagePadding.top), vceqq_f64(v4, *&self->_imagePadding.bottom)))) & 1) == 0)
   {
-    self->_imagePadding = a3;
+    self->_imagePadding = padding;
     [(SKUIParallaxImageView *)self _updateInnerImageView];
 
     [(SKUIParallaxImageView *)self setNeedsLayout];
@@ -64,11 +64,11 @@
   return result;
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  if (a3.width != self->_imageSize.width || a3.height != self->_imageSize.height)
+  if (size.width != self->_imageSize.width || size.height != self->_imageSize.height)
   {
-    self->_imageSize = a3;
+    self->_imageSize = size;
     [(SKUIParallaxImageView *)self _updateInnerImageView];
 
     [(SKUIParallaxImageView *)self setNeedsLayout];
@@ -80,17 +80,17 @@
   [(SKUIParallaxImageView *)self frame];
   v4 = v3;
   v6 = v5;
-  v7 = [(SKUIParallaxImageView *)self window];
-  [(SKUIParallaxImageView *)self convertPoint:v7 toView:v4, v6];
+  window = [(SKUIParallaxImageView *)self window];
+  [(SKUIParallaxImageView *)self convertPoint:window toView:v4, v6];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(SKUIParallaxImageView *)self window];
-  [v12 frame];
+  window2 = [(SKUIParallaxImageView *)self window];
+  [window2 frame];
   v13 = v9 / CGRectGetWidth(v30);
 
-  v14 = [(SKUIParallaxImageView *)self window];
-  [v14 frame];
+  window3 = [(SKUIParallaxImageView *)self window];
+  [window3 frame];
   v15 = (v11 + -64.0) / (CGRectGetHeight(v31) + -128.0);
 
   v16 = 1.0;
@@ -149,12 +149,12 @@
   [(SKUIImageView *)v25 setTransform:v26];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SKUIParallaxImageView *)self frame];
   v14.origin.x = v8;
   v14.origin.y = v9;
@@ -174,7 +174,7 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   width = self->_imageSize.width;
   height = self->_imageSize.height;

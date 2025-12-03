@@ -1,22 +1,22 @@
 @interface AXLTSegmentUtilities
-+ (BOOL)isPuncuation:(id)a3;
-+ (id)mergeOldSegments:(id)a3 withNewSegments:(id)a4;
++ (BOOL)isPuncuation:(id)puncuation;
++ (id)mergeOldSegments:(id)segments withNewSegments:(id)newSegments;
 @end
 
 @implementation AXLTSegmentUtilities
 
-+ (id)mergeOldSegments:(id)a3 withNewSegments:(id)a4
++ (id)mergeOldSegments:(id)segments withNewSegments:(id)newSegments
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 count];
-  v8 = v5;
-  if (v7 && (v9 = [v5 count], v8 = v6, v9))
+  segmentsCopy = segments;
+  newSegmentsCopy = newSegments;
+  v7 = [newSegmentsCopy count];
+  v8 = segmentsCopy;
+  if (v7 && (v9 = [segmentsCopy count], v8 = newSegmentsCopy, v9))
   {
     v10 = objc_opt_new();
-    v26 = v5;
-    v11 = [v5 count];
-    v12 = [v6 count];
+    v26 = segmentsCopy;
+    v11 = [segmentsCopy count];
+    v12 = [newSegmentsCopy count];
     if (v11 >= v12)
     {
       v13 = v12;
@@ -31,15 +31,15 @@
     {
       v14 = 0;
       v15 = 0;
-      v5 = v26;
+      segmentsCopy = v26;
       v25 = v13;
       while (1)
       {
-        v16 = [v5 objectAtIndexedSubscript:v14];
-        v17 = [v6 objectAtIndexedSubscript:v15];
-        v18 = [v16 substring];
-        v19 = [v17 substring];
-        if ([v18 isEqualToString:v19])
+        v16 = [segmentsCopy objectAtIndexedSubscript:v14];
+        v17 = [newSegmentsCopy objectAtIndexedSubscript:v15];
+        substring = [v16 substring];
+        substring2 = [v17 substring];
+        if ([substring isEqualToString:substring2])
         {
           [v10 addObject:v16];
           ++v14;
@@ -48,8 +48,8 @@
 
         else
         {
-          v20 = [a1 isPuncuation:v18];
-          v21 = [a1 isPuncuation:v19];
+          v20 = [self isPuncuation:substring];
+          v21 = [self isPuncuation:substring2];
           v22 = v21 ^ 1;
           if ((v20 ^ 1) & 1) != 0 || (v22)
           {
@@ -65,7 +65,7 @@
                   ++v15;
                 }
 
-                v5 = v26;
+                segmentsCopy = v26;
                 goto LABEL_20;
               }
 
@@ -86,7 +86,7 @@
           }
 
           v13 = v25;
-          v5 = v26;
+          segmentsCopy = v26;
         }
 
 LABEL_20:
@@ -99,20 +99,20 @@ LABEL_20:
     }
 
     v15 = 0;
-    v5 = v26;
+    segmentsCopy = v26;
 LABEL_26:
-    if ([v6 count] > v15 && v15 < objc_msgSend(v6, "count"))
+    if ([newSegmentsCopy count] > v15 && v15 < objc_msgSend(newSegmentsCopy, "count"))
     {
       do
       {
-        v23 = [v6 objectAtIndexedSubscript:v15];
+        v23 = [newSegmentsCopy objectAtIndexedSubscript:v15];
         [v10 addObject:v23];
 
         ++v15;
       }
 
-      while (v15 < [v6 count]);
-      v5 = v26;
+      while (v15 < [newSegmentsCopy count]);
+      segmentsCopy = v26;
     }
   }
 
@@ -124,13 +124,13 @@ LABEL_26:
   return v10;
 }
 
-+ (BOOL)isPuncuation:(id)a3
++ (BOOL)isPuncuation:(id)puncuation
 {
-  v3 = a3;
-  if ([v3 length])
+  puncuationCopy = puncuation;
+  if ([puncuationCopy length])
   {
-    v4 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-    v5 = [v3 stringByTrimmingCharactersInSet:v4];
+    punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
+    v5 = [puncuationCopy stringByTrimmingCharactersInSet:punctuationCharacterSet];
     v6 = [v5 length] == 0;
   }
 

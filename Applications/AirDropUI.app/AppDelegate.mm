@@ -1,17 +1,17 @@
 @interface AppDelegate
 - (_TtC9AirDropUI11AppDelegate)init;
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4;
-- (void)applicationDidFinishLaunching:(id)a3;
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions;
+- (void)applicationDidFinishLaunching:(id)launching;
 - (void)willEnterForeground;
 @end
 
 @implementation AppDelegate
 
-- (void)applicationDidFinishLaunching:(id)a3
+- (void)applicationDidFinishLaunching:(id)launching
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000C9E80(v4);
+  launchingCopy = launching;
+  selfCopy = self;
+  sub_1000C9E80(launchingCopy);
 }
 
 - (void)willEnterForeground
@@ -21,13 +21,13 @@
   v2(v3);
 }
 
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions
 {
   sub_1000CA418();
   sub_1000CA464();
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  applicationCopy = application;
+  selfCopy = self;
   sub_1000CA4BC(v6);
 }
 

@@ -56,7 +56,7 @@
 {
   v3 = OBJC_IVAR____TtC15assistivetouchd19ApplicationDelegate_runtimeManager;
   v4 = *&self->AXUIDaemonApplicationDelegate_opaque[OBJC_IVAR____TtC15assistivetouchd19ApplicationDelegate_runtimeManager];
-  v5 = self;
+  selfCopy = self;
   [v4 setupRuntime];
   [*&self->AXUIDaemonApplicationDelegate_opaque[v3] initializeSystemSettings];
   [*&self->AXUIDaemonApplicationDelegate_opaque[v3] startRuntime];
@@ -66,7 +66,7 @@
 
 - (void)stop
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001262D0();
 }
 

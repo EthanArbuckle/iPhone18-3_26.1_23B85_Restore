@@ -2,14 +2,14 @@
 - (BOOL)isDragging;
 - (NSArray)accessibilityElements;
 - (double)_continuousCornerRadius;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
 - (void)applyContentSizeCategoryUpdates;
 - (void)handleMuteButtonTapped;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)setAccessibilityElements:(id)isa;
-- (void)setDragging:(BOOL)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setDragging:(BOOL)dragging;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation ListTodayCardCollectionViewCell
@@ -21,10 +21,10 @@
   return [(ListTodayCardCollectionViewCell *)&v3 isDragging];
 }
 
-- (void)setDragging:(BOOL)a3
+- (void)setDragging:(BOOL)dragging
 {
-  v4 = self;
-  sub_1C8024(a3);
+  selfCopy = self;
+  sub_1C8024(dragging);
 }
 
 - (double)_continuousCornerRadius
@@ -35,37 +35,37 @@
   return result;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
-  v4 = self;
-  sub_1C8180(a3);
+  selfCopy = self;
+  sub_1C8180(radius);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C8738();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA454();
 }
 
 - (void)applyContentSizeCategoryUpdates
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C75D0();
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  v5 = a3;
-  [(ListTodayCardCollectionViewCell *)&v8 willMoveToWindow:v5];
+  windowCopy = window;
+  [(ListTodayCardCollectionViewCell *)&v8 willMoveToWindow:windowCopy];
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
@@ -82,13 +82,13 @@
 
 - (void)handleMuteButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D1830();
 }
 
 - (NSArray)accessibilityElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D1B90();
 
   if (v3)
@@ -110,13 +110,13 @@
   if (isa)
   {
     sub_769460();
-    v6 = self;
+    selfCopy = self;
     isa = sub_769450().super.isa;
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;

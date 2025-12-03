@@ -1,17 +1,17 @@
 @interface WFFocusConfigurationContextualActionOptions
-- (WFFocusConfigurationContextualActionOptions)initWithContextualAction:(id)a3 footerButtons:(id)a4 showsEnablementButton:(BOOL)a5 isEnabled:(BOOL)a6 mastheadTintColor:(id)a7;
+- (WFFocusConfigurationContextualActionOptions)initWithContextualAction:(id)action footerButtons:(id)buttons showsEnablementButton:(BOOL)button isEnabled:(BOOL)enabled mastheadTintColor:(id)color;
 @end
 
 @implementation WFFocusConfigurationContextualActionOptions
 
-- (WFFocusConfigurationContextualActionOptions)initWithContextualAction:(id)a3 footerButtons:(id)a4 showsEnablementButton:(BOOL)a5 isEnabled:(BOOL)a6 mastheadTintColor:(id)a7
+- (WFFocusConfigurationContextualActionOptions)initWithContextualAction:(id)action footerButtons:(id)buttons showsEnablementButton:(BOOL)button isEnabled:(BOOL)enabled mastheadTintColor:(id)color
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  if (v14)
+  actionCopy = action;
+  buttonsCopy = buttons;
+  colorCopy = color;
+  if (actionCopy)
   {
-    if (v15)
+    if (buttonsCopy)
     {
       goto LABEL_3;
     }
@@ -19,17 +19,17 @@
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"WFFocusConfigurationOptions.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"contextualAction"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFFocusConfigurationOptions.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"contextualAction"}];
 
-    if (v15)
+    if (buttonsCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"WFFocusConfigurationOptions.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"footerButtons"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFFocusConfigurationOptions.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"footerButtons"}];
 
 LABEL_3:
   v23.receiver = self;
@@ -38,11 +38,11 @@ LABEL_3:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_contextualAction, a3);
-    objc_storeStrong(&v18->_footerButtons, a4);
-    v18->_showsEnablementButton = a5;
-    v18->_enabled = a6;
-    objc_storeStrong(&v18->_mastheadTintColor, a7);
+    objc_storeStrong(&v17->_contextualAction, action);
+    objc_storeStrong(&v18->_footerButtons, buttons);
+    v18->_showsEnablementButton = button;
+    v18->_enabled = enabled;
+    objc_storeStrong(&v18->_mastheadTintColor, color);
     v19 = v18;
   }
 

@@ -26,8 +26,8 @@
       CFNotificationCenterAddObserver(v7, 0, _toggleAXSetting_0, v8, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
     }
 
-    v9 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v9 addObserver:v2 selector:sel__updateGrayScaleSettings name:*v4 object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__updateGrayScaleSettings name:*v4 object:0];
 
     v12 = v2;
     AXPerformBlockOnMainThreadAfterDelay();
@@ -44,10 +44,10 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [MEMORY[0x29EDBBAE0] serverIfRunning];
-  v3 = [v2 displays];
+  serverIfRunning = [MEMORY[0x29EDBBAE0] serverIfRunning];
+  displays = [serverIfRunning displays];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [displays countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -59,14 +59,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(displays);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) setGrayscale:_AXSGrayscaleEnabled() != 0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [displays countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -77,8 +77,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AXBHardwareDisplayModifier;

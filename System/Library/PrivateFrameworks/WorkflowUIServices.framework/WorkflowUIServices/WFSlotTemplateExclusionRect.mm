@@ -1,7 +1,7 @@
 @interface WFSlotTemplateExclusionRect
 - (CGRect)rect;
-- (CGRect)resolvedRectWithViewBounds:(CGRect)a3 inRTL:(BOOL)a4;
-- (WFSlotTemplateExclusionRect)initWithRect:(CGRect)a3 fromEdge:(unint64_t)a4;
+- (CGRect)resolvedRectWithViewBounds:(CGRect)bounds inRTL:(BOOL)l;
+- (WFSlotTemplateExclusionRect)initWithRect:(CGRect)rect fromEdge:(unint64_t)edge;
 @end
 
 @implementation WFSlotTemplateExclusionRect
@@ -19,16 +19,16 @@
   return result;
 }
 
-- (CGRect)resolvedRectWithViewBounds:(CGRect)a3 inRTL:(BOOL)a4
+- (CGRect)resolvedRectWithViewBounds:(CGRect)bounds inRTL:(BOOL)l
 {
-  v4 = a4;
-  width = a3.size.width;
+  lCopy = l;
+  width = bounds.size.width;
   y = self->_rect.origin.y;
   v7 = self->_rect.size.width;
   height = self->_rect.size.height;
-  v9 = [(WFSlotTemplateExclusionRect *)self edge:a3.origin.x]== 0;
+  v9 = [(WFSlotTemplateExclusionRect *)self edge:bounds.origin.x]== 0;
   v10 = width - v7;
-  if (v9 != v4)
+  if (v9 != lCopy)
   {
     v10 = 0.0;
   }
@@ -43,12 +43,12 @@
   return result;
 }
 
-- (WFSlotTemplateExclusionRect)initWithRect:(CGRect)a3 fromEdge:(unint64_t)a4
+- (WFSlotTemplateExclusionRect)initWithRect:(CGRect)rect fromEdge:(unint64_t)edge
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v13.receiver = self;
   v13.super_class = WFSlotTemplateExclusionRect;
   v9 = [(WFSlotTemplateExclusionRect *)&v13 init];
@@ -59,7 +59,7 @@
     v9->_rect.origin.y = y;
     v9->_rect.size.width = width;
     v9->_rect.size.height = height;
-    v9->_edge = a4;
+    v9->_edge = edge;
     v11 = v9;
   }
 

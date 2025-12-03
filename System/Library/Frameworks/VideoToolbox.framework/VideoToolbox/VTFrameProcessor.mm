@@ -1,15 +1,15 @@
 @interface VTFrameProcessor
 - (BOOL)createSharedEventListener;
-- (BOOL)processWithParameters:(id)a3 error:(id *)a4;
-- (BOOL)startSessionWithConfiguration:(id)a3 error:(id *)a4;
+- (BOOL)processWithParameters:(id)parameters error:(id *)error;
+- (BOOL)startSessionWithConfiguration:(id)configuration error:(id *)error;
 - (VTFrameProcessor)init;
 - (void)dealloc;
 - (void)destroySharedEventListener;
 - (void)endSession;
 - (void)internalEndSession;
-- (void)processWithCommandBuffer:(id)a3 parameters:(id)a4;
-- (void)processWithParameters:(id)a3 completionHandler:(id)a4;
-- (void)processWithParameters:(id)a3 frameOutputHandler:(id)a4;
+- (void)processWithCommandBuffer:(id)buffer parameters:(id)parameters;
+- (void)processWithParameters:(id)parameters completionHandler:(id)handler;
+- (void)processWithParameters:(id)parameters frameOutputHandler:(id)handler;
 @end
 
 @implementation VTFrameProcessor
@@ -83,12 +83,12 @@
     os_unfair_lock_lock(&self->_sharedEventListLock);
     if ([(NSMutableArray *)self->_sharedEventList count]&& !self->_sharedEventListTearingDown)
     {
-      v3 = [(NSMutableArray *)self->_sharedEventList lastObject];
+      lastObject = [(NSMutableArray *)self->_sharedEventList lastObject];
       self->_sharedEventListTearingDown = 1;
       os_unfair_lock_unlock(&self->_sharedEventListLock);
-      if (v3)
+      if (lastObject)
       {
-        [v3 waitUntilSignaledValue:2 timeoutMS:10000];
+        [lastObject waitUntilSignaledValue:2 timeoutMS:10000];
       }
     }
 
@@ -118,11 +118,11 @@
   }
 }
 
-- (BOOL)startSessionWithConfiguration:(id)a3 error:(id *)a4
+- (BOOL)startSessionWithConfiguration:(id)configuration error:(id *)error
 {
   v12 = 0;
 
-  self->_configuration = a3;
+  self->_configuration = configuration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -136,7 +136,7 @@
   if (objc_opt_isKindOfClass())
   {
     self->_processorType = 3;
-    a3 = [a3 veConfiguration];
+    configuration = [configuration veConfiguration];
     if (loadVEFrameworkOnce_veLibraryLoaderOnce == -1)
     {
       goto LABEL_14;
@@ -149,7 +149,7 @@
   if (objc_opt_isKindOfClass())
   {
     self->_processorType = 2;
-    a3 = [a3 veConfiguration];
+    configuration = [configuration veConfiguration];
     if (loadVEFrameworkOnce_veLibraryLoaderOnce == -1)
     {
       goto LABEL_14;
@@ -162,7 +162,7 @@
   if (objc_opt_isKindOfClass())
   {
     self->_processorType = 4;
-    a3 = [a3 veConfiguration];
+    configuration = [configuration veConfiguration];
     if (loadVEFrameworkOnce_veLibraryLoaderOnce == -1)
     {
       goto LABEL_14;
@@ -175,15 +175,15 @@
   if (objc_opt_isKindOfClass())
   {
     self->_processorType = 8;
-    a3 = [a3 veConfiguration];
+    configuration = [configuration veConfiguration];
     if (loadVEFrameworkOnce_veLibraryLoaderOnce == -1)
     {
 LABEL_14:
       v7 = objc_alloc_init(NSClassFromString(&cfstr_Veframeprocess.isa));
       self->_veFrameProcessor = v7;
 LABEL_15:
-      v8 = [(VTTestProcessorImplementation *)v7 startSessionWithConfiguration:a3 error:&v12];
-      if (!a4)
+      v8 = [(VTTestProcessorImplementation *)v7 startSessionWithConfiguration:configuration error:&v12];
+      if (!error)
       {
         return v8;
       }
@@ -227,10 +227,10 @@ LABEL_28:
 
   v11 = objc_alloc_init(v10);
   self->_processor = v11;
-  [(VTFrameProcessorImplementationPrivate *)v11 startSessionWithConfiguration:a3 error:a4];
+  [(VTFrameProcessorImplementationPrivate *)v11 startSessionWithConfiguration:configuration error:error];
 LABEL_26:
   v8 = 1;
-  if (!a4)
+  if (!error)
   {
     return v8;
   }
@@ -238,13 +238,13 @@ LABEL_26:
 LABEL_16:
   if (v12)
   {
-    *a4 = translateNSErrorToVTFrameProcessorError(v12);
+    *error = translateNSErrorToVTFrameProcessorError(v12);
   }
 
   return v8;
 }
 
-- (BOOL)processWithParameters:(id)a3 error:(id *)a4
+- (BOOL)processWithParameters:(id)parameters error:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -262,10 +262,10 @@ LABEL_16:
     if (processorType == 4 || processorType == 8)
     {
 LABEL_9:
-      v8 = [a3 veParameters];
-      v9 = [(VEFrameProcessor *)self->_veFrameProcessor processWithParameters:v8 error:v15 + 5];
+      veParameters = [parameters veParameters];
+      v9 = [(VEFrameProcessor *)self->_veFrameProcessor processWithParameters:veParameters error:v15 + 5];
       *(v21 + 24) = v9;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_12;
       }
@@ -285,11 +285,11 @@ LABEL_9:
   v13[2] = __48__VTFrameProcessor_processWithParameters_error___block_invoke;
   v13[3] = &unk_1E72C5D90;
   v13[4] = self;
-  v13[5] = a3;
+  v13[5] = parameters;
   v13[6] = &v20;
   v13[7] = &v14;
   dispatch_sync(processFrameQueue, v13);
-  if (!a4)
+  if (!error)
   {
     goto LABEL_12;
   }
@@ -298,7 +298,7 @@ LABEL_10:
   v10 = v15[5];
   if (v10)
   {
-    *a4 = translateNSErrorToVTFrameProcessorError(v10);
+    *error = translateNSErrorToVTFrameProcessorError(v10);
   }
 
 LABEL_12:
@@ -406,14 +406,14 @@ uint64_t __61__VTFrameProcessor_processWithParameters_frameOutputHandler___block
   return v5(v3, v4, &v7);
 }
 
-- (void)processWithCommandBuffer:(id)a3 parameters:(id)a4
+- (void)processWithCommandBuffer:(id)buffer parameters:(id)parameters
 {
   processorType = self->_processorType;
   if (processorType > 3)
   {
     if (processorType == 4)
     {
-      v8 = [a4 veParameters];
+      veParameters = [parameters veParameters];
       veFrameProcessor = self->_veFrameProcessor;
       v10 = &__block_literal_global_36;
       goto LABEL_14;
@@ -421,7 +421,7 @@ uint64_t __61__VTFrameProcessor_processWithParameters_frameOutputHandler___block
 
     if (processorType == 8)
     {
-      v8 = [a4 veParameters];
+      veParameters = [parameters veParameters];
       veFrameProcessor = self->_veFrameProcessor;
       v10 = &__block_literal_global_38;
       goto LABEL_14;
@@ -432,7 +432,7 @@ uint64_t __61__VTFrameProcessor_processWithParameters_frameOutputHandler___block
   {
     if (processorType == 2)
     {
-      v8 = [a4 veParameters];
+      veParameters = [parameters veParameters];
       veFrameProcessor = self->_veFrameProcessor;
       v10 = &__block_literal_global_34;
       goto LABEL_14;
@@ -440,12 +440,12 @@ uint64_t __61__VTFrameProcessor_processWithParameters_frameOutputHandler___block
 
     if (processorType == 3)
     {
-      v8 = [a4 veParameters];
+      veParameters = [parameters veParameters];
       veFrameProcessor = self->_veFrameProcessor;
       v10 = &__block_literal_global_32;
 LABEL_14:
 
-      [(VEFrameProcessor *)veFrameProcessor processWithCommandBuffer:a3 parameters:v8 completionHandler:v10];
+      [(VEFrameProcessor *)veFrameProcessor processWithCommandBuffer:buffer parameters:veParameters completionHandler:v10];
       return;
     }
   }
@@ -453,10 +453,10 @@ LABEL_14:
   os_unfair_lock_lock(&self->_sharedEventListLock);
   if (!self->_sharedEventListTearingDown && (self->_sharedEventListener || [(VTFrameProcessor *)self createSharedEventListener]))
   {
-    v11 = [(MTLDevice *)self->_device newSharedEvent];
-    [(NSMutableArray *)self->_sharedEventList addObject:v11];
+    newSharedEvent = [(MTLDevice *)self->_device newSharedEvent];
+    [(NSMutableArray *)self->_sharedEventList addObject:newSharedEvent];
     os_unfair_lock_unlock(&self->_sharedEventListLock);
-    if (v11)
+    if (newSharedEvent)
     {
       sharedEventListener = self->_sharedEventListener;
       v13[0] = MEMORY[0x1E69E9820];
@@ -464,10 +464,10 @@ LABEL_14:
       v13[2] = __56__VTFrameProcessor_processWithCommandBuffer_parameters___block_invoke_5;
       v13[3] = &unk_1E72C5E28;
       v13[4] = self;
-      v13[5] = a4;
-      [v11 notifyListener:sharedEventListener atValue:1 block:v13];
-      [a3 encodeSignalEvent:v11 value:1];
-      [a3 encodeWaitForEvent:v11 value:2];
+      v13[5] = parameters;
+      [newSharedEvent notifyListener:sharedEventListener atValue:1 block:v13];
+      [buffer encodeSignalEvent:newSharedEvent value:1];
+      [buffer encodeWaitForEvent:newSharedEvent value:2];
     }
   }
 
@@ -524,41 +524,41 @@ void __56__VTFrameProcessor_processWithCommandBuffer_parameters___block_invoke_5
   return v2;
 }
 
-- (void)processWithParameters:(id)a3 completionHandler:(id)a4
+- (void)processWithParameters:(id)parameters completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
     switch(self->_processorType)
     {
       case 2:
-        [a3 veParameters];
+        [parameters veParameters];
         v7 = OUTLINED_FUNCTION_0_0();
         block[19] = MEMORY[0x1E69E9820];
         block[20] = 3221225472;
         block[21] = __60__VTFrameProcessor_processWithParameters_completionHandler___block_invoke_2;
         block[22] = &unk_1E72C5DB8;
-        block[23] = a3;
-        block[24] = a4;
+        block[23] = parameters;
+        block[24] = handler;
         goto LABEL_10;
       case 3:
-        [a3 veParameters];
+        [parameters veParameters];
         v7 = OUTLINED_FUNCTION_0_0();
         block[25] = MEMORY[0x1E69E9820];
         block[26] = 3221225472;
         block[27] = __60__VTFrameProcessor_processWithParameters_completionHandler___block_invoke;
         block[28] = &unk_1E72C5DB8;
-        block[29] = a3;
-        block[30] = a4;
+        block[29] = parameters;
+        block[30] = handler;
         goto LABEL_10;
       case 4:
-        [a3 veParameters];
+        [parameters veParameters];
         v7 = OUTLINED_FUNCTION_0_0();
         block[13] = MEMORY[0x1E69E9820];
         block[14] = 3221225472;
         block[15] = __60__VTFrameProcessor_processWithParameters_completionHandler___block_invoke_3;
         block[16] = &unk_1E72C5DB8;
-        block[17] = a3;
-        block[18] = a4;
+        block[17] = parameters;
+        block[18] = handler;
         goto LABEL_10;
       case 5:
         processFrameQueue = self->_processFrameQueue;
@@ -567,19 +567,19 @@ void __56__VTFrameProcessor_processWithCommandBuffer_parameters___block_invoke_5
         block[2] = __60__VTFrameProcessor_processWithParameters_completionHandler___block_invoke_5;
         block[3] = &unk_1E72C5DE0;
         block[4] = self;
-        block[5] = a3;
-        block[6] = a4;
+        block[5] = parameters;
+        block[6] = handler;
         v9 = block;
         goto LABEL_8;
       case 8:
-        [a3 veParameters];
+        [parameters veParameters];
         v7 = OUTLINED_FUNCTION_0_0();
         block[7] = MEMORY[0x1E69E9820];
         block[8] = 3221225472;
         block[9] = __60__VTFrameProcessor_processWithParameters_completionHandler___block_invoke_4;
         block[10] = &unk_1E72C5DB8;
-        block[11] = a3;
-        block[12] = a4;
+        block[11] = parameters;
+        block[12] = handler;
 LABEL_10:
         [v7 processWithParameters:? completionHandler:?];
         break;
@@ -590,8 +590,8 @@ LABEL_10:
         v10[2] = __60__VTFrameProcessor_processWithParameters_completionHandler___block_invoke_6;
         v10[3] = &unk_1E72C5DE0;
         v10[4] = self;
-        v10[5] = a3;
-        v10[6] = a4;
+        v10[5] = parameters;
+        v10[6] = handler;
         v9 = v10;
 LABEL_8:
         dispatch_async(processFrameQueue, v9);
@@ -600,14 +600,14 @@ LABEL_8:
   }
 }
 
-- (void)processWithParameters:(id)a3 frameOutputHandler:(id)a4
+- (void)processWithParameters:(id)parameters frameOutputHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
     processorType = self->_processorType;
     if (processorType == 4)
     {
-      v8 = [objc_msgSend(a3 "destinationFrames")];
+      v8 = [objc_msgSend(parameters "destinationFrames")];
       v15 = 0uLL;
       v16 = 0;
       if (v8)
@@ -616,10 +616,10 @@ LABEL_8:
       }
 
       v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VTFrameProcessorErrorDomain" code:-19740 userInfo:0];
-      v10 = *(a4 + 2);
+      v10 = *(handler + 2);
       v13 = v15;
       v14 = v16;
-      v10(a4, a3, &v13, 1, v9);
+      v10(handler, parameters, &v13, 1, v9);
     }
 
     else if (processorType == 7)
@@ -636,9 +636,9 @@ LABEL_8:
       block[1] = 3221225472;
       block[2] = __61__VTFrameProcessor_processWithParameters_frameOutputHandler___block_invoke;
       block[3] = &unk_1E72C5DE0;
-      block[4] = a3;
+      block[4] = parameters;
       block[5] = self;
-      block[6] = a4;
+      block[6] = handler;
       dispatch_async(processFrameQueue, block);
     }
   }

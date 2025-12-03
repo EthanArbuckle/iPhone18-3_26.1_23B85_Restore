@@ -1,29 +1,29 @@
 @interface PBUIFakeBlurConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)initWithVariant:(uint64_t)a3 style:(void *)a4 traitCollection:;
+- (void)initWithVariant:(uint64_t)variant style:(void *)style traitCollection:;
 @end
 
 @implementation PBUIFakeBlurConfiguration
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendInteger:self->_variant];
-  v5 = [v3 appendInteger:self->_requestedStyle];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendInteger:self->_variant];
+  v5 = [builder appendInteger:self->_requestedStyle];
+  v6 = [builder hash];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = v4;
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  v6 = equalCopy;
   variant = self->_variant;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -66,15 +66,15 @@ uint64_t __37__PBUIFakeBlurConfiguration_isEqual___block_invoke_3(uint64_t a1)
   return [v3 containsTraitsInCollection:v4];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PBUIFakeBlurConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PBUIFakeBlurConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v5 = PBUIStringForWallpaperVariant(self->_variant);
@@ -91,32 +91,32 @@ uint64_t __37__PBUIFakeBlurConfiguration_isEqual___block_invoke_3(uint64_t a1)
 
 - (id)succinctDescription
 {
-  v2 = [(PBUIFakeBlurConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PBUIFakeBlurConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (void)initWithVariant:(uint64_t)a3 style:(void *)a4 traitCollection:
+- (void)initWithVariant:(uint64_t)variant style:(void *)style traitCollection:
 {
-  v7 = a4;
-  if (a1)
+  styleCopy = style;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = PBUIFakeBlurConfiguration;
     v8 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       v8[1] = a2;
-      v8[2] = a3;
-      v9 = [v7 copy];
-      v10 = a1[3];
-      a1[3] = v9;
+      v8[2] = variant;
+      v9 = [styleCopy copy];
+      v10 = self[3];
+      self[3] = v9;
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

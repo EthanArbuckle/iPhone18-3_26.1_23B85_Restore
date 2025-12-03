@@ -14,35 +14,35 @@
     sub_100027688(v3, v4);
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
-  v5->_hasBoostedItemIdentifier = 0;
-  v6.receiver = v5;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_hasBoostedItemIdentifier = 0;
+  v6.receiver = selfCopy;
   v6.super_class = ICDFileEnumerator;
   [(BRBaseFileEnumerator *)&v6 invalidateChangeToken];
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)invalidate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  hasBoostedItemIdentifier = v2->_hasBoostedItemIdentifier;
-  v2->_hasBoostedItemIdentifier = 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  hasBoostedItemIdentifier = selfCopy->_hasBoostedItemIdentifier;
+  selfCopy->_hasBoostedItemIdentifier = 0;
+  objc_sync_exit(selfCopy);
 
   if (hasBoostedItemIdentifier)
   {
-    queue = v2->super._queue;
+    queue = selfCopy->super._queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10000A804;
     block[3] = &unk_1000446B0;
-    block[4] = v2;
+    block[4] = selfCopy;
     dispatch_async(queue, block);
   }
 
-  v5.receiver = v2;
+  v5.receiver = selfCopy;
   v5.super_class = ICDFileEnumerator;
   [(BRBaseFileEnumerator *)&v5 invalidate];
 }

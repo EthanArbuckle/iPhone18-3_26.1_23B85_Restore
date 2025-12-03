@@ -1,19 +1,19 @@
 @interface CRLBoardItemImporterPlaceholder
-+ (id)allocWithZone:(_NSZone *)a3;
-- (CRLBoardItemImporterPlaceholder)initWithData:(id)a3 boardItemFactory:(id)a4;
-- (CRLBoardItemImporterPlaceholder)initWithURL:(id)a3 boardItemFactory:(id)a4;
++ (id)allocWithZone:(_NSZone *)zone;
+- (CRLBoardItemImporterPlaceholder)initWithData:(id)data boardItemFactory:(id)factory;
+- (CRLBoardItemImporterPlaceholder)initWithURL:(id)l boardItemFactory:(id)factory;
 @end
 
 @implementation CRLBoardItemImporterPlaceholder
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10043EEB4;
   v5[3] = &unk_101863288;
-  v5[4] = a3;
-  v5[5] = a1;
+  v5[4] = zone;
+  v5[5] = self;
   if (qword_101A34F90 != -1)
   {
     dispatch_once(&qword_101A34F90, v5);
@@ -24,20 +24,20 @@
   return v3;
 }
 
-- (CRLBoardItemImporterPlaceholder)initWithURL:(id)a3 boardItemFactory:(id)a4
+- (CRLBoardItemImporterPlaceholder)initWithURL:(id)l boardItemFactory:(id)factory
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_alloc(objc_msgSend(objc_opt_class() p_subclassForURL:{v7)), "initWithURL:boardItemFactory:", v7, v6}];
+  factoryCopy = factory;
+  lCopy = l;
+  v8 = [objc_alloc(objc_msgSend(objc_opt_class() p_subclassForURL:{lCopy)), "initWithURL:boardItemFactory:", lCopy, factoryCopy}];
 
   return v8;
 }
 
-- (CRLBoardItemImporterPlaceholder)initWithData:(id)a3 boardItemFactory:(id)a4
+- (CRLBoardItemImporterPlaceholder)initWithData:(id)data boardItemFactory:(id)factory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() p_subclassForPreinsertionAssetWrapper:v6];
+  dataCopy = data;
+  factoryCopy = factory;
+  v8 = [objc_opt_class() p_subclassForPreinsertionAssetWrapper:dataCopy];
   if (!v8)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -67,7 +67,7 @@
     [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:372 isFatal:0 description:"invalid nil value for '%{public}s'", "instanceClass"];
   }
 
-  v12 = [[v8 alloc] initWithData:v6 boardItemFactory:v7];
+  v12 = [[v8 alloc] initWithData:dataCopy boardItemFactory:factoryCopy];
 
   return v12;
 }

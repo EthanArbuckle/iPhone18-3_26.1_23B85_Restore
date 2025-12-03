@@ -1,10 +1,10 @@
 @interface RCPCoreAnalyticsBackedAnalyticsEventSender
-- (void)sendEvent:(int64_t)a3;
+- (void)sendEvent:(int64_t)event;
 @end
 
 @implementation RCPCoreAnalyticsBackedAnalyticsEventSender
 
-- (void)sendEvent:(int64_t)a3
+- (void)sendEvent:(int64_t)event
 {
   v3 = RCPLogPlayback();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

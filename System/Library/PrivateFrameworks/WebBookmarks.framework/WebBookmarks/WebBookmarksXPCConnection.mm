@@ -1,20 +1,20 @@
 @interface WebBookmarksXPCConnection
-- (BOOL)hasBoolEntitlement:(id)a3;
-- (WebBookmarksXPCConnection)initWithConnection:(id)a3;
+- (BOOL)hasBoolEntitlement:(id)entitlement;
+- (WebBookmarksXPCConnection)initWithConnection:(id)connection;
 - (WebBookmarksXPCConnectionDelegate)delegate;
-- (id)initClientForMachService:(const char *)a3;
-- (id)messageWithName:(const char *)a3;
-- (void)_handleMessage:(id)a3;
-- (void)sendMessage:(id)a3 withReplyHandler:(id)a4;
-- (void)setHandler:(id)a3 forMessageNamed:(const char *)a4;
-- (void)setMessageHandlers:(id)a3;
+- (id)initClientForMachService:(const char *)service;
+- (id)messageWithName:(const char *)name;
+- (void)_handleMessage:(id)message;
+- (void)sendMessage:(id)message withReplyHandler:(id)handler;
+- (void)setHandler:(id)handler forMessageNamed:(const char *)named;
+- (void)setMessageHandlers:(id)handlers;
 @end
 
 @implementation WebBookmarksXPCConnection
 
-- (WebBookmarksXPCConnection)initWithConnection:(id)a3
+- (WebBookmarksXPCConnection)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v20.receiver = self;
   v20.super_class = WebBookmarksXPCConnection;
   v6 = [(WebBookmarksXPCConnection *)&v20 init];
@@ -29,7 +29,7 @@
     v10 = *(v6 + 2);
     *(v6 + 2) = v9;
 
-    objc_storeStrong(v6 + 3, a3);
+    objc_storeStrong(v6 + 3, connection);
     v11 = *(v6 + 3);
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -73,30 +73,30 @@ void __48__WebBookmarksXPCConnection_initWithConnection___block_invoke_2(uint64_
   [WeakRetained _handleMessage:*(a1 + 32)];
 }
 
-- (id)initClientForMachService:(const char *)a3
+- (id)initClientForMachService:(const char *)service
 {
-  mach_service = xpc_connection_create_mach_service(a3, 0, 0);
+  mach_service = xpc_connection_create_mach_service(service, 0, 0);
   v5 = [(WebBookmarksXPCConnection *)self initWithConnection:mach_service];
 
   return v5;
 }
 
-- (void)_handleMessage:(id)a3
+- (void)_handleMessage:(id)message
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   if (MEMORY[0x2743D6E50]() == MEMORY[0x277D86480])
   {
     connection = self->_connection;
     self->_connection = 0;
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained connection:self didCloseWithError:v4];
+    [WeakRetained connection:self didCloseWithError:messageCopy];
   }
 
   else
   {
-    string = xpc_dictionary_get_string(v4, "_name");
+    string = xpc_dictionary_get_string(messageCopy, "_name");
     v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
     if (string)
@@ -114,7 +114,7 @@ void __48__WebBookmarksXPCConnection_initWithConnection___block_invoke_2(uint64_
 
       if (v10)
       {
-        (v10)[2](v10, self, v4);
+        (v10)[2](v10, self, messageCopy);
       }
 
       else
@@ -137,17 +137,17 @@ void __48__WebBookmarksXPCConnection_initWithConnection___block_invoke_2(uint64_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setHandler:(id)a3 forMessageNamed:(const char *)a4
+- (void)setHandler:(id)handler forMessageNamed:(const char *)named
 {
   messageHandlers = self->_messageHandlers;
-  v7 = MEMORY[0x2743D6830](a3, a2);
-  v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:a4];
+  v7 = MEMORY[0x2743D6830](handler, a2);
+  v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:named];
   [(NSMutableDictionary *)messageHandlers setObject:v7 forKey:v6];
 }
 
-- (void)setMessageHandlers:(id)a3
+- (void)setMessageHandlers:(id)handlers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [handlers mutableCopy];
   messageHandlers = self->_messageHandlers;
   self->_messageHandlers = v4;
 
@@ -161,14 +161,14 @@ void __48__WebBookmarksXPCConnection_initWithConnection___block_invoke_2(uint64_
   }
 }
 
-- (BOOL)hasBoolEntitlement:(id)a3
+- (BOOL)hasBoolEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_entitlementLookupCache objectForKey:v4];
+  entitlementCopy = entitlement;
+  v5 = [(NSMutableDictionary *)self->_entitlementLookupCache objectForKey:entitlementCopy];
   if (!v5)
   {
     connection = self->_connection;
-    [v4 UTF8String];
+    [entitlementCopy UTF8String];
     v7 = xpc_connection_copy_entitlement_value();
     v8 = v7;
     if (v7 && MEMORY[0x2743D6E50](v7) == MEMORY[0x277D86448])
@@ -181,18 +181,18 @@ void __48__WebBookmarksXPCConnection_initWithConnection___block_invoke_2(uint64_
       v5 = MEMORY[0x277CBEC28];
     }
 
-    [(NSMutableDictionary *)self->_entitlementLookupCache setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_entitlementLookupCache setObject:v5 forKey:entitlementCopy];
   }
 
-  v9 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v9;
+  return bOOLValue;
 }
 
-- (id)messageWithName:(const char *)a3
+- (id)messageWithName:(const char *)name
 {
   keys[1] = *MEMORY[0x277D85DE8];
-  v3 = xpc_string_create(a3);
+  v3 = xpc_string_create(name);
   values = v3;
   keys[0] = "_name";
   v4 = xpc_dictionary_create(keys, &values, 1uLL);
@@ -202,37 +202,37 @@ void __48__WebBookmarksXPCConnection_initWithConnection___block_invoke_2(uint64_
   return v4;
 }
 
-- (void)sendMessage:(id)a3 withReplyHandler:(id)a4
+- (void)sendMessage:(id)message withReplyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   connection = self->_connection;
   if (connection)
   {
-    if (v7)
+    if (handlerCopy)
     {
       v15[0] = 0;
       v15[1] = v15;
       v15[2] = 0x3032000000;
       v15[3] = __Block_byref_object_copy__9;
       v15[4] = __Block_byref_object_dispose__9;
-      v9 = self;
-      v16 = v9;
+      selfCopy = self;
+      v16 = selfCopy;
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __58__WebBookmarksXPCConnection_sendMessage_withReplyHandler___block_invoke;
       v12[3] = &unk_279E77E20;
-      v13 = v7;
+      v13 = handlerCopy;
       v14 = v15;
       v10 = MEMORY[0x2743D6830](v12);
-      xpc_connection_send_message_with_reply(self->_connection, v6, v9->_connectionQueue, v10);
+      xpc_connection_send_message_with_reply(self->_connection, messageCopy, selfCopy->_connectionQueue, v10);
 
       _Block_object_dispose(v15, 8);
     }
 
     else
     {
-      xpc_connection_send_message(connection, v6);
+      xpc_connection_send_message(connection, messageCopy);
     }
   }
 

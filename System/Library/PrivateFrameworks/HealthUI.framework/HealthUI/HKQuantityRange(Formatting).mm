@@ -14,7 +14,7 @@
 {
   v4 = a3;
   v5 = objc_alloc_init(HKQuantityFormattingParameters);
-  v6 = [a1 unitStringForType:v4 parameters:v5];
+  v6 = [self unitStringForType:v4 parameters:v5];
 
   return v6;
 }
@@ -23,8 +23,8 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 maximum];
-  v9 = [v6 unitString:v7 quantity:v8];
+  maximum = [self maximum];
+  v9 = [v6 unitString:v7 quantity:maximum];
 
   return v9;
 }
@@ -33,7 +33,7 @@
 {
   v4 = a3;
   v5 = objc_alloc_init(HKQuantityFormattingParameters);
-  v6 = [a1 localizedStringForType:v4 parameters:v5];
+  v6 = [self localizedStringForType:v4 parameters:v5];
 
   return v6;
 }
@@ -42,9 +42,9 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 _valueStringForType:v7 parameters:v6];
-  v9 = [a1 maximum];
-  v10 = [v6 unitString:v7 quantity:v9];
+  v8 = [self _valueStringForType:v7 parameters:v6];
+  maximum = [self maximum];
+  v10 = [v6 unitString:v7 quantity:maximum];
 
   LODWORD(v7) = [v6 hasSpaceBetweenValueAndUnit];
   v11 = HKFormatValueAndUnitWithSpaceBetweenValueAndUnit(v8, v10, v7);
@@ -56,7 +56,7 @@
 {
   v4 = a3;
   v5 = objc_alloc_init(HKQuantityFormattingParameters);
-  v6 = [a1 localizedAttributedStringForType:v4 parameters:v5];
+  v6 = [self localizedAttributedStringForType:v4 parameters:v5];
 
   return v6;
 }
@@ -65,12 +65,12 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 _valueStringForType:v7 parameters:v6];
-  v9 = [a1 maximum];
-  v10 = [v6 unitString:v7 quantity:v9];
+  v8 = [self _valueStringForType:v7 parameters:v6];
+  maximum = [self maximum];
+  v10 = [v6 unitString:v7 quantity:maximum];
 
-  v11 = [v6 valueFont];
-  if (v11)
+  valueFont = [v6 valueFont];
+  if (valueFont)
   {
     [v6 valueFont];
   }
@@ -81,8 +81,8 @@
   }
   v12 = ;
 
-  v13 = [v6 unitFont];
-  if (v13)
+  unitFont = [v6 unitFont];
+  if (unitFont)
   {
     [v6 unitFont];
   }
@@ -93,9 +93,9 @@
   }
   v14 = ;
 
-  v15 = [v6 useColor];
+  useColor = [v6 useColor];
   [v6 hasSpaceBetweenValueAndUnit];
-  v16 = HKFormatAttributedValueAndUnitWithSpaceBetweenValueAndUnit(v8, v10, v12, v14, v15);
+  v16 = HKFormatAttributedValueAndUnitWithSpaceBetweenValueAndUnit(v8, v10, v12, v14, useColor);
 
   return v16;
 }
@@ -104,11 +104,11 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 minimum];
-  v9 = [v6 valueString:v7 quantity:v8];
+  minimum = [self minimum];
+  v9 = [v6 valueString:v7 quantity:minimum];
 
-  v10 = [a1 maximum];
-  v11 = [v6 valueString:v7 quantity:v10];
+  maximum = [self maximum];
+  v11 = [v6 valueString:v7 quantity:maximum];
 
   if ([v9 isEqualToString:v11])
   {

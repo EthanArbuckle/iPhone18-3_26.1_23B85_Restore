@@ -1,38 +1,38 @@
 @interface BMVisualIntelligenceCameraLookupEvent
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMVisualIntelligenceCameraLookupEvent)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BMVisualIntelligenceCameraLookupEvent)initWithSessionId:(id)a3 dimensionContext:(id)a4 visualIntelligenceContext:(id)a5 serverRequestContext:(id)a6 displayContext:(id)a7 userInteractionDetected:(id)a8;
-- (BOOL)isEqual:(id)a3;
+- (BMVisualIntelligenceCameraLookupEvent)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BMVisualIntelligenceCameraLookupEvent)initWithSessionId:(id)id dimensionContext:(id)context visualIntelligenceContext:(id)intelligenceContext serverRequestContext:(id)requestContext displayContext:(id)displayContext userInteractionDetected:(id)detected;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMVisualIntelligenceCameraLookupEvent
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMVisualIntelligenceCameraLookupEvent *)self sessionId];
-    v7 = [v5 sessionId];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    sessionId = [(BMVisualIntelligenceCameraLookupEvent *)self sessionId];
+    sessionId2 = [v5 sessionId];
+    v8 = sessionId2;
+    if (sessionId == sessionId2)
     {
     }
 
     else
     {
-      v9 = [(BMVisualIntelligenceCameraLookupEvent *)self sessionId];
-      v10 = [v5 sessionId];
-      v11 = [v9 isEqual:v10];
+      sessionId3 = [(BMVisualIntelligenceCameraLookupEvent *)self sessionId];
+      sessionId4 = [v5 sessionId];
+      v11 = [sessionId3 isEqual:sessionId4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMVisualIntelligenceCameraLookupEvent *)self dimensionContext];
-    v14 = [v5 dimensionContext];
-    v15 = v14;
-    if (v13 == v14)
+    dimensionContext = [(BMVisualIntelligenceCameraLookupEvent *)self dimensionContext];
+    dimensionContext2 = [v5 dimensionContext];
+    v15 = dimensionContext2;
+    if (dimensionContext == dimensionContext2)
     {
     }
 
     else
     {
-      v16 = [(BMVisualIntelligenceCameraLookupEvent *)self dimensionContext];
-      v17 = [v5 dimensionContext];
-      v18 = [v16 isEqual:v17];
+      dimensionContext3 = [(BMVisualIntelligenceCameraLookupEvent *)self dimensionContext];
+      dimensionContext4 = [v5 dimensionContext];
+      v18 = [dimensionContext3 isEqual:dimensionContext4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMVisualIntelligenceCameraLookupEvent *)self visualIntelligenceContext];
-    v20 = [v5 visualIntelligenceContext];
-    v21 = v20;
-    if (v19 == v20)
+    visualIntelligenceContext = [(BMVisualIntelligenceCameraLookupEvent *)self visualIntelligenceContext];
+    visualIntelligenceContext2 = [v5 visualIntelligenceContext];
+    v21 = visualIntelligenceContext2;
+    if (visualIntelligenceContext == visualIntelligenceContext2)
     {
     }
 
     else
     {
-      v22 = [(BMVisualIntelligenceCameraLookupEvent *)self visualIntelligenceContext];
-      v23 = [v5 visualIntelligenceContext];
-      v24 = [v22 isEqual:v23];
+      visualIntelligenceContext3 = [(BMVisualIntelligenceCameraLookupEvent *)self visualIntelligenceContext];
+      visualIntelligenceContext4 = [v5 visualIntelligenceContext];
+      v24 = [visualIntelligenceContext3 isEqual:visualIntelligenceContext4];
 
       if (!v24)
       {
@@ -78,18 +78,18 @@
       }
     }
 
-    v25 = [(BMVisualIntelligenceCameraLookupEvent *)self serverRequestContext];
-    v26 = [v5 serverRequestContext];
-    v27 = v26;
-    if (v25 == v26)
+    serverRequestContext = [(BMVisualIntelligenceCameraLookupEvent *)self serverRequestContext];
+    serverRequestContext2 = [v5 serverRequestContext];
+    v27 = serverRequestContext2;
+    if (serverRequestContext == serverRequestContext2)
     {
     }
 
     else
     {
-      v28 = [(BMVisualIntelligenceCameraLookupEvent *)self serverRequestContext];
-      v29 = [v5 serverRequestContext];
-      v30 = [v28 isEqual:v29];
+      serverRequestContext3 = [(BMVisualIntelligenceCameraLookupEvent *)self serverRequestContext];
+      serverRequestContext4 = [v5 serverRequestContext];
+      v30 = [serverRequestContext3 isEqual:serverRequestContext4];
 
       if (!v30)
       {
@@ -97,18 +97,18 @@
       }
     }
 
-    v31 = [(BMVisualIntelligenceCameraLookupEvent *)self displayContext];
-    v32 = [v5 displayContext];
-    v33 = v32;
-    if (v31 == v32)
+    displayContext = [(BMVisualIntelligenceCameraLookupEvent *)self displayContext];
+    displayContext2 = [v5 displayContext];
+    v33 = displayContext2;
+    if (displayContext == displayContext2)
     {
     }
 
     else
     {
-      v34 = [(BMVisualIntelligenceCameraLookupEvent *)self displayContext];
-      v35 = [v5 displayContext];
-      v36 = [v34 isEqual:v35];
+      displayContext3 = [(BMVisualIntelligenceCameraLookupEvent *)self displayContext];
+      displayContext4 = [v5 displayContext];
+      v36 = [displayContext3 isEqual:displayContext4];
 
       if (!v36)
       {
@@ -120,18 +120,18 @@ LABEL_22:
       }
     }
 
-    v38 = [(BMVisualIntelligenceCameraLookupEvent *)self userInteractionDetected];
-    v39 = [v5 userInteractionDetected];
-    if (v38 == v39)
+    userInteractionDetected = [(BMVisualIntelligenceCameraLookupEvent *)self userInteractionDetected];
+    userInteractionDetected2 = [v5 userInteractionDetected];
+    if (userInteractionDetected == userInteractionDetected2)
     {
       v12 = 1;
     }
 
     else
     {
-      v40 = [(BMVisualIntelligenceCameraLookupEvent *)self userInteractionDetected];
-      v41 = [v5 userInteractionDetected];
-      v12 = [v40 isEqual:v41];
+      userInteractionDetected3 = [(BMVisualIntelligenceCameraLookupEvent *)self userInteractionDetected];
+      userInteractionDetected4 = [v5 userInteractionDetected];
+      v12 = [userInteractionDetected3 isEqual:userInteractionDetected4];
     }
 
     goto LABEL_22;
@@ -146,77 +146,77 @@ LABEL_23:
 - (id)jsonDictionary
 {
   v28[6] = *MEMORY[0x1E69E9840];
-  v3 = [(BMVisualIntelligenceCameraLookupEvent *)self sessionId];
-  v4 = [(BMVisualIntelligenceCameraLookupEvent *)self dimensionContext];
-  v5 = [v4 jsonDictionary];
+  sessionId = [(BMVisualIntelligenceCameraLookupEvent *)self sessionId];
+  dimensionContext = [(BMVisualIntelligenceCameraLookupEvent *)self dimensionContext];
+  jsonDictionary = [dimensionContext jsonDictionary];
 
-  v6 = [(BMVisualIntelligenceCameraLookupEvent *)self visualIntelligenceContext];
-  v7 = [v6 jsonDictionary];
+  visualIntelligenceContext = [(BMVisualIntelligenceCameraLookupEvent *)self visualIntelligenceContext];
+  jsonDictionary2 = [visualIntelligenceContext jsonDictionary];
 
-  v8 = [(BMVisualIntelligenceCameraLookupEvent *)self serverRequestContext];
-  v9 = [v8 jsonDictionary];
+  serverRequestContext = [(BMVisualIntelligenceCameraLookupEvent *)self serverRequestContext];
+  jsonDictionary3 = [serverRequestContext jsonDictionary];
 
-  v10 = [(BMVisualIntelligenceCameraLookupEvent *)self displayContext];
-  v11 = [v10 jsonDictionary];
+  displayContext = [(BMVisualIntelligenceCameraLookupEvent *)self displayContext];
+  jsonDictionary4 = [displayContext jsonDictionary];
 
-  v12 = [(BMVisualIntelligenceCameraLookupEvent *)self userInteractionDetected];
-  v13 = [v12 jsonDictionary];
+  userInteractionDetected = [(BMVisualIntelligenceCameraLookupEvent *)self userInteractionDetected];
+  jsonDictionary5 = [userInteractionDetected jsonDictionary];
 
   v27[0] = @"sessionId";
-  v14 = v3;
-  if (!v3)
+  null = sessionId;
+  if (!sessionId)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v14;
-  v26 = v3;
-  v28[0] = v14;
+  v25 = null;
+  v26 = sessionId;
+  v28[0] = null;
   v27[1] = @"dimensionContext";
-  v15 = v5;
-  if (!v5)
+  null2 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v15;
-  v28[1] = v15;
+  v23 = null2;
+  v28[1] = null2;
   v27[2] = @"visualIntelligenceContext";
-  v16 = v7;
-  if (!v7)
+  null3 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[2] = v16;
+  v28[2] = null3;
   v27[3] = @"serverRequestContext";
-  v17 = v9;
-  if (!v9)
+  null4 = jsonDictionary3;
+  if (!jsonDictionary3)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[3] = v17;
+  v28[3] = null4;
   v27[4] = @"displayContext";
-  v18 = v11;
-  if (!v11)
+  null5 = jsonDictionary4;
+  if (!jsonDictionary4)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[4] = v18;
+  v28[4] = null5;
   v27[5] = @"userInteractionDetected";
-  v19 = v13;
-  if (!v13)
+  null6 = jsonDictionary5;
+  if (!jsonDictionary5)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[5] = v19;
+  v28[5] = null6;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:{6, v23}];
-  if (v13)
+  if (jsonDictionary5)
   {
-    if (v11)
+    if (jsonDictionary4)
     {
       goto LABEL_15;
     }
@@ -225,10 +225,10 @@ LABEL_23:
   else
   {
 
-    if (v11)
+    if (jsonDictionary4)
     {
 LABEL_15:
-      if (v9)
+      if (jsonDictionary3)
       {
         goto LABEL_16;
       }
@@ -237,17 +237,17 @@ LABEL_15:
     }
   }
 
-  if (v9)
+  if (jsonDictionary3)
   {
 LABEL_16:
-    if (v7)
+    if (jsonDictionary2)
     {
       goto LABEL_17;
     }
 
 LABEL_26:
 
-    if (v5)
+    if (jsonDictionary)
     {
       goto LABEL_18;
     }
@@ -257,13 +257,13 @@ LABEL_26:
 
 LABEL_25:
 
-  if (!v7)
+  if (!jsonDictionary2)
   {
     goto LABEL_26;
   }
 
 LABEL_17:
-  if (v5)
+  if (jsonDictionary)
   {
     goto LABEL_18;
   }
@@ -280,16 +280,16 @@ LABEL_18:
   return v20;
 }
 
-- (BMVisualIntelligenceCameraLookupEvent)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMVisualIntelligenceCameraLookupEvent)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v71[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"sessionId"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"sessionId"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"dimensionContext"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"dimensionContext"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -342,8 +342,8 @@ LABEL_82:
       v54 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"visualIntelligenceContext"];
-    v53 = self;
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"visualIntelligenceContext"];
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v16 = p_isa;
@@ -404,25 +404,25 @@ LABEL_80:
       v49 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"serverRequestContext"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"serverRequestContext"];
     v51 = v8;
     if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v50 = 0;
 LABEL_13:
-      v12 = [v6 objectForKeyedSubscript:@"displayContext"];
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"displayContext"];
       if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v47 = 0;
 LABEL_16:
-        v13 = [v6 objectForKeyedSubscript:@"userInteractionDetected"];
+        v13 = [dictionaryCopy objectForKeyedSubscript:@"userInteractionDetected"];
         if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v14 = 0;
 LABEL_19:
           v15 = v49;
-          v16 = [(BMVisualIntelligenceCameraLookupEvent *)v53 initWithSessionId:v51 dimensionContext:v54 visualIntelligenceContext:v49 serverRequestContext:v50 displayContext:v47 userInteractionDetected:v14];
-          v53 = v16;
+          v16 = [(BMVisualIntelligenceCameraLookupEvent *)selfCopy initWithSessionId:v51 dimensionContext:v54 visualIntelligenceContext:v49 serverRequestContext:v50 displayContext:v47 userInteractionDetected:v14];
+          selfCopy = v16;
 LABEL_63:
 
           v19 = v54;
@@ -565,7 +565,7 @@ LABEL_77:
     v15 = v49;
 LABEL_78:
 
-    self = v53;
+    self = selfCopy;
     goto LABEL_79;
   }
 
@@ -606,14 +606,14 @@ LABEL_83:
 {
   v3 = objc_opt_new();
   [(BMVisualIntelligenceCameraLookupEvent *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_sessionId)
   {
     PBDataWriterWriteStringField();
@@ -622,42 +622,42 @@ LABEL_83:
   if (self->_dimensionContext)
   {
     PBDataWriterPlaceMark();
-    [(BMVisualIntelligenceCameraLookupEventDimensionContext *)self->_dimensionContext writeTo:v4];
+    [(BMVisualIntelligenceCameraLookupEventDimensionContext *)self->_dimensionContext writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_visualIntelligenceContext)
   {
     PBDataWriterPlaceMark();
-    [(BMVisualIntelligenceCameraLookupEventVisualIntelligenceContext *)self->_visualIntelligenceContext writeTo:v4];
+    [(BMVisualIntelligenceCameraLookupEventVisualIntelligenceContext *)self->_visualIntelligenceContext writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_serverRequestContext)
   {
     PBDataWriterPlaceMark();
-    [(BMVisualIntelligenceCameraLookupEventServerRequestContext *)self->_serverRequestContext writeTo:v4];
+    [(BMVisualIntelligenceCameraLookupEventServerRequestContext *)self->_serverRequestContext writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_displayContext)
   {
     PBDataWriterPlaceMark();
-    [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self->_displayContext writeTo:v4];
+    [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self->_displayContext writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_userInteractionDetected)
   {
     PBDataWriterPlaceMark();
-    [(BMVisualIntelligenceCameraLookupEventUserInteractionDetected *)self->_userInteractionDetected writeTo:v4];
+    [(BMVisualIntelligenceCameraLookupEventUserInteractionDetected *)self->_userInteractionDetected writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v24.receiver = self;
   v24.super_class = BMVisualIntelligenceCameraLookupEvent;
   v5 = [(BMEventBase *)&v24 init];
@@ -666,12 +666,12 @@ LABEL_83:
     goto LABEL_47;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_45;
       }
@@ -682,18 +682,18 @@ LABEL_83:
       while (1)
       {
         LOBYTE(v25) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v25 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v25 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v25 & 0x7F) << v7;
@@ -710,9 +710,9 @@ LABEL_83:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_45;
       }
@@ -734,7 +734,7 @@ LABEL_16:
             goto LABEL_46;
           }
 
-          v16 = [[BMVisualIntelligenceCameraLookupEventDimensionContext alloc] initByReadFrom:v4];
+          v16 = [[BMVisualIntelligenceCameraLookupEventDimensionContext alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_46;
@@ -757,7 +757,7 @@ LABEL_16:
             goto LABEL_46;
           }
 
-          v16 = [[BMVisualIntelligenceCameraLookupEventVisualIntelligenceContext alloc] initByReadFrom:v4];
+          v16 = [[BMVisualIntelligenceCameraLookupEventVisualIntelligenceContext alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_46;
@@ -779,8 +779,8 @@ LABEL_43:
       v5->_sessionId = v18;
 
 LABEL_44:
-      v21 = [v4 position];
-      if (v21 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_45;
       }
@@ -796,7 +796,7 @@ LABEL_44:
           goto LABEL_46;
         }
 
-        v16 = [[BMVisualIntelligenceCameraLookupEventServerRequestContext alloc] initByReadFrom:v4];
+        v16 = [[BMVisualIntelligenceCameraLookupEventServerRequestContext alloc] initByReadFrom:fromCopy];
         if (!v16)
         {
           goto LABEL_46;
@@ -812,7 +812,7 @@ LABEL_44:
           goto LABEL_46;
         }
 
-        v16 = [[BMVisualIntelligenceCameraLookupEventDisplayContext alloc] initByReadFrom:v4];
+        v16 = [[BMVisualIntelligenceCameraLookupEventDisplayContext alloc] initByReadFrom:fromCopy];
         if (!v16)
         {
           goto LABEL_46;
@@ -828,7 +828,7 @@ LABEL_44:
           goto LABEL_46;
         }
 
-        v16 = [[BMVisualIntelligenceCameraLookupEventUserInteractionDetected alloc] initByReadFrom:v4];
+        v16 = [[BMVisualIntelligenceCameraLookupEventUserInteractionDetected alloc] initByReadFrom:fromCopy];
         if (!v16)
         {
           goto LABEL_46;
@@ -850,7 +850,7 @@ LABEL_35:
   }
 
 LABEL_45:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_46:
     v22 = 0;
@@ -868,37 +868,37 @@ LABEL_47:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMVisualIntelligenceCameraLookupEvent *)self sessionId];
-  v5 = [(BMVisualIntelligenceCameraLookupEvent *)self dimensionContext];
-  v6 = [(BMVisualIntelligenceCameraLookupEvent *)self visualIntelligenceContext];
-  v7 = [(BMVisualIntelligenceCameraLookupEvent *)self serverRequestContext];
-  v8 = [(BMVisualIntelligenceCameraLookupEvent *)self displayContext];
-  v9 = [(BMVisualIntelligenceCameraLookupEvent *)self userInteractionDetected];
-  v10 = [v3 initWithFormat:@"BMVisualIntelligenceCameraLookupEvent with sessionId: %@, dimensionContext: %@, visualIntelligenceContext: %@, serverRequestContext: %@, displayContext: %@, userInteractionDetected: %@", v4, v5, v6, v7, v8, v9];
+  sessionId = [(BMVisualIntelligenceCameraLookupEvent *)self sessionId];
+  dimensionContext = [(BMVisualIntelligenceCameraLookupEvent *)self dimensionContext];
+  visualIntelligenceContext = [(BMVisualIntelligenceCameraLookupEvent *)self visualIntelligenceContext];
+  serverRequestContext = [(BMVisualIntelligenceCameraLookupEvent *)self serverRequestContext];
+  displayContext = [(BMVisualIntelligenceCameraLookupEvent *)self displayContext];
+  userInteractionDetected = [(BMVisualIntelligenceCameraLookupEvent *)self userInteractionDetected];
+  v10 = [v3 initWithFormat:@"BMVisualIntelligenceCameraLookupEvent with sessionId: %@, dimensionContext: %@, visualIntelligenceContext: %@, serverRequestContext: %@, displayContext: %@, userInteractionDetected: %@", sessionId, dimensionContext, visualIntelligenceContext, serverRequestContext, displayContext, userInteractionDetected];
 
   return v10;
 }
 
-- (BMVisualIntelligenceCameraLookupEvent)initWithSessionId:(id)a3 dimensionContext:(id)a4 visualIntelligenceContext:(id)a5 serverRequestContext:(id)a6 displayContext:(id)a7 userInteractionDetected:(id)a8
+- (BMVisualIntelligenceCameraLookupEvent)initWithSessionId:(id)id dimensionContext:(id)context visualIntelligenceContext:(id)intelligenceContext serverRequestContext:(id)requestContext displayContext:(id)displayContext userInteractionDetected:(id)detected
 {
-  v22 = a3;
-  v21 = a4;
-  v20 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  idCopy = id;
+  contextCopy = context;
+  intelligenceContextCopy = intelligenceContext;
+  requestContextCopy = requestContext;
+  displayContextCopy = displayContext;
+  detectedCopy = detected;
   v23.receiver = self;
   v23.super_class = BMVisualIntelligenceCameraLookupEvent;
   v18 = [(BMEventBase *)&v23 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v18->_sessionId, a3);
-    objc_storeStrong(&v18->_dimensionContext, a4);
-    objc_storeStrong(&v18->_visualIntelligenceContext, a5);
-    objc_storeStrong(&v18->_serverRequestContext, a6);
-    objc_storeStrong(&v18->_displayContext, a7);
-    objc_storeStrong(&v18->_userInteractionDetected, a8);
+    objc_storeStrong(&v18->_sessionId, id);
+    objc_storeStrong(&v18->_dimensionContext, context);
+    objc_storeStrong(&v18->_visualIntelligenceContext, intelligenceContext);
+    objc_storeStrong(&v18->_serverRequestContext, requestContext);
+    objc_storeStrong(&v18->_displayContext, displayContext);
+    objc_storeStrong(&v18->_userInteractionDetected, detected);
   }
 
   return v18;
@@ -998,9 +998,9 @@ id __48__BMVisualIntelligenceCameraLookupEvent_columns__block_invoke(uint64_t a1
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1008,8 +1008,8 @@ id __48__BMVisualIntelligenceCameraLookupEvent_columns__block_invoke(uint64_t a1
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMVisualIntelligenceCameraLookupEvent alloc] initByReadFrom:v7];
     v4 = v8;

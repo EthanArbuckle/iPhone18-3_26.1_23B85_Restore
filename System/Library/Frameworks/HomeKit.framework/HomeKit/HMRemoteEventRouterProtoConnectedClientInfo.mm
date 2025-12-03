@@ -1,30 +1,30 @@
 @interface HMRemoteEventRouterProtoConnectedClientInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMRemoteEventRouterProtoConnectedClientInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(HMRemoteEventRouterProtoConnectedClientInfo *)self setConnectedClientIdentifierString:?];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     connectedClientIdentifierString = self->_connectedClientIdentifierString;
-    if (connectedClientIdentifierString | v4[1])
+    if (connectedClientIdentifierString | equalCopy[1])
     {
       v6 = [(NSString *)connectedClientIdentifierString isEqual:?];
     }
@@ -43,26 +43,26 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_connectedClientIdentifierString copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_connectedClientIdentifierString copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   connectedClientIdentifierString = self->_connectedClientIdentifierString;
   if (connectedClientIdentifierString)
   {
-    [a3 setConnectedClientIdentifierString:connectedClientIdentifierString];
+    [to setConnectedClientIdentifierString:connectedClientIdentifierString];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_connectedClientIdentifierString)
   {
@@ -72,12 +72,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   connectedClientIdentifierString = self->_connectedClientIdentifierString;
   if (connectedClientIdentifierString)
   {
-    [v3 setObject:connectedClientIdentifierString forKey:@"connectedClientIdentifierString"];
+    [dictionary setObject:connectedClientIdentifierString forKey:@"connectedClientIdentifierString"];
   }
 
   return v4;
@@ -89,8 +89,8 @@
   v8.receiver = self;
   v8.super_class = HMRemoteEventRouterProtoConnectedClientInfo;
   v4 = [(HMRemoteEventRouterProtoConnectedClientInfo *)&v8 description];
-  v5 = [(HMRemoteEventRouterProtoConnectedClientInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMRemoteEventRouterProtoConnectedClientInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

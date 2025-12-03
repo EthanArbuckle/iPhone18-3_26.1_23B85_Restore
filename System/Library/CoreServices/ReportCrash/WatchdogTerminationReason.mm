@@ -1,11 +1,11 @@
 @interface WatchdogTerminationReason
-+ (id)descriptionFromCode:(int)a3;
++ (id)descriptionFromCode:(int)code;
 - (_TtC11ReportCrash25WatchdogTerminationReason)init;
 @end
 
 @implementation WatchdogTerminationReason
 
-+ (id)descriptionFromCode:(int)a3
++ (id)descriptionFromCode:(int)code
 {
   type metadata accessor for WatchdogExitReasonHelper();
   static WatchdogExitReasonHelper.descriptionFromCode(_:)();

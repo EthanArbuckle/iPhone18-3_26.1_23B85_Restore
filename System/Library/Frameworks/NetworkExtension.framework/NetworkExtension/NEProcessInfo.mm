@@ -2,23 +2,23 @@
 + (BOOL)is64bitCapable;
 + (id)copyDNSUUIDs;
 + (id)copyNEHelperUUIDs;
-+ (id)copyUUIDsForBundleID:(id)a3 uid:(unsigned int)a4;
-+ (id)copyUUIDsForExecutable:(id)a3;
-+ (id)copyUUIDsForExecutableWithoutCache:(id)a3;
-+ (id)copyUUIDsForPID:(int)a3;
-+ (id)copyUUIDsFromExecutable:(uint64_t)a1;
-+ (uint64_t)copyUUIDForSingleArch:(uint64_t)a1;
++ (id)copyUUIDsForBundleID:(id)d uid:(unsigned int)uid;
++ (id)copyUUIDsForExecutable:(id)executable;
++ (id)copyUUIDsForExecutableWithoutCache:(id)cache;
++ (id)copyUUIDsForPID:(int)d;
++ (id)copyUUIDsFromExecutable:(uint64_t)executable;
++ (uint64_t)copyUUIDForSingleArch:(uint64_t)arch;
 + (void)clearUUIDCache;
 + (void)initGlobals;
 @end
 
 @implementation NEProcessInfo
 
-+ (id)copyUUIDsForPID:(int)a3
++ (id)copyUUIDsForPID:(int)d
 {
   v9 = *MEMORY[0x1E69E9840];
   bzero(buffer, 0x400uLL);
-  if (proc_pidpath(a3, buffer, 0x400u) < 0)
+  if (proc_pidpath(d, buffer, 0x400u) < 0)
   {
     v5 = 0;
   }
@@ -122,12 +122,12 @@ uint64_t __28__NEProcessInfo_initGlobals__block_invoke()
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-+ (id)copyUUIDsForExecutable:(id)a3
++ (id)copyUUIDsForExecutable:(id)executable
 {
-  v3 = a3;
+  executableCopy = executable;
   +[NEProcessInfo initGlobals];
   v4 = 0;
-  if (v3 && g_executableUUIDMapping)
+  if (executableCopy && g_executableUUIDMapping)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v6 = g_queue;
@@ -135,7 +135,7 @@ uint64_t __28__NEProcessInfo_initGlobals__block_invoke()
     v10 = 3221225472;
     v11 = __40__NEProcessInfo_copyUUIDsForExecutable___block_invoke;
     v12 = &unk_1E7F0A0E8;
-    v13 = v3;
+    v13 = executableCopy;
     v7 = v5;
     v14 = v7;
     dispatch_sync(v6, &v9);
@@ -208,7 +208,7 @@ void __40__NEProcessInfo_copyUUIDsForExecutable___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)copyUUIDsFromExecutable:(uint64_t)a1
++ (id)copyUUIDsFromExecutable:(uint64_t)executable
 {
   v54 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -543,7 +543,7 @@ LABEL_26:
   return v7;
 }
 
-+ (uint64_t)copyUUIDForSingleArch:(uint64_t)a1
++ (uint64_t)copyUUIDForSingleArch:(uint64_t)arch
 {
   v18[2] = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -603,11 +603,11 @@ LABEL_10:
   return v4;
 }
 
-+ (id)copyUUIDsForExecutableWithoutCache:(id)a3
++ (id)copyUUIDsForExecutableWithoutCache:(id)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   +[NEProcessInfo initGlobals];
-  if (v3)
+  if (cacheCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v5 = g_queue;
@@ -615,7 +615,7 @@ LABEL_10:
     v10 = 3221225472;
     v11 = __52__NEProcessInfo_copyUUIDsForExecutableWithoutCache___block_invoke;
     v12 = &unk_1E7F0A0E8;
-    v13 = v3;
+    v13 = cacheCopy;
     v6 = v4;
     v14 = v6;
     dispatch_sync(v5, &v9);
@@ -665,12 +665,12 @@ void __52__NEProcessInfo_copyUUIDsForExecutableWithoutCache___block_invoke(uint6
   v5 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)copyUUIDsForBundleID:(id)a3 uid:(unsigned int)a4
++ (id)copyUUIDsForBundleID:(id)d uid:(unsigned int)uid
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  dCopy = d;
   v6 = objc_alloc_init(v4);
-  [v5 UTF8String];
+  [dCopy UTF8String];
   v7 = NEHelperCacheCopyAppUUIDMappingForUIDExtended();
   v8 = v7;
   if (v7 && MEMORY[0x1BFAFC5E0](v7) == MEMORY[0x1E69E9E50])

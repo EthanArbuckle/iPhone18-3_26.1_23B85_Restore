@@ -1,61 +1,61 @@
 @interface SBAssistantSession
-- (BOOL)commandeerCaptureDropletPreludeForVisionInvocation:(id)a3;
+- (BOOL)commandeerCaptureDropletPreludeForVisionInvocation:(id)invocation;
 - (BOOL)contentObscuresScreen;
 - (BOOL)isActive;
 - (BOOL)shouldAllowBiometricAutoUnlock;
 - (NSString)coverSheetIdentifier;
 - (SBAssistantRootViewController)assistantRootViewController;
-- (SBAssistantSession)initWithWindowScene:(id)a3 operationQueue:(id)a4 gestureConfiguration:(id)a5;
+- (SBAssistantSession)initWithWindowScene:(id)scene operationQueue:(id)queue gestureConfiguration:(id)configuration;
 - (SBAssistantSessionDelegate)delegate;
 - (SBWindowScene)windowScene;
 - (id)_newTraitsOrientationPolicySpecifier;
-- (id)acquireElevatedSiriEffectsViewControllerAssertionWithReason:(id)a3;
+- (id)acquireElevatedSiriEffectsViewControllerAssertionWithReason:(id)reason;
 - (int64_t)participantState;
 - (void)_didChangePresentationContext;
-- (void)_dockFrameDidChange:(id)a3;
+- (void)_dockFrameDidChange:(id)change;
 - (void)_notifyDidChangePresentationContext;
 - (void)_notifySiriPresentationViewControllerDidAppear;
 - (void)_notifySiriPresentationViewControllerDidDisappear;
 - (void)_notifySiriPresentationViewControllerWillAppear;
 - (void)_notifySiriPresentationViewControllerWillDisappear;
-- (void)_operationQueue_dismissPresentables:(unint64_t)a3 withAnimationFactory:(id)a4 siriDismissalOptions:(id)a5 completion:(id)a6;
+- (void)_operationQueue_dismissPresentables:(unint64_t)presentables withAnimationFactory:(id)factory siriDismissalOptions:(id)options completion:(id)completion;
 - (void)_restoreOrientation;
-- (void)_setDisplayLayoutElementActive:(BOOL)a3;
-- (void)_setStatusBarHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)_siriPresentationViewControllerDidAppear:(BOOL)a3;
-- (void)_siriPresentationViewControllerDidDisappear:(BOOL)a3;
-- (void)_siriPresentationViewControllerWillAppear:(BOOL)a3;
-- (void)_siriPresentationViewControllerWillDisappear:(BOOL)a3;
-- (void)_toggleModalAlertHidingAssertion:(BOOL)a3;
+- (void)_setDisplayLayoutElementActive:(BOOL)active;
+- (void)_setStatusBarHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)_siriPresentationViewControllerDidAppear:(BOOL)appear;
+- (void)_siriPresentationViewControllerDidDisappear:(BOOL)disappear;
+- (void)_siriPresentationViewControllerWillAppear:(BOOL)appear;
+- (void)_siriPresentationViewControllerWillDisappear:(BOOL)disappear;
+- (void)_toggleModalAlertHidingAssertion:(BOOL)assertion;
 - (void)_updateAssistantAccessoryWindowWindowLevel;
-- (void)_updateDockViewFrame:(CGRect)a3;
-- (void)_updateOrbLocation:(id)a3;
+- (void)_updateDockViewFrame:(CGRect)frame;
+- (void)_updateOrbLocation:(id)location;
 - (void)_updateOrientationLock;
-- (void)assertWindowLevel:(double)a3;
-- (void)assistantGestureManagerDidRecognizeDismissGesture:(id)a3 preferredDismissalOptions:(id)a4;
+- (void)assertWindowLevel:(double)level;
+- (void)assistantGestureManagerDidRecognizeDismissGesture:(id)gesture preferredDismissalOptions:(id)options;
 - (void)dealloc;
-- (void)dismissSiriEffectsViewControllerWithCompletion:(id)a3;
-- (void)dismissSiriPresentationViewControllerWithAnimationFactory:(id)a3 siriDismissalOptions:(id)a4 completion:(id)a5;
-- (void)endWithAnimationFactory:(id)a3 siriDismissalOptions:(id)a4 completion:(id)a5;
+- (void)dismissSiriEffectsViewControllerWithCompletion:(id)completion;
+- (void)dismissSiriPresentationViewControllerWithAnimationFactory:(id)factory siriDismissalOptions:(id)options completion:(id)completion;
+- (void)endWithAnimationFactory:(id)factory siriDismissalOptions:(id)options completion:(id)completion;
 - (void)noteKeyboardWillAppear;
 - (void)noteKeyboardWillDisappear;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)presentSiriEffectsViewController:(id)a3 completion:(id)a4;
-- (void)presentSiriPresentationViewController:(id)a3 withAnimationFactory:(id)a4 siriPresentationOptions:(id)a5 completion:(id)a6;
-- (void)requestTamaleLaunchAnimationLayerProviderWithCompletion:(id)a3;
-- (void)setPresentationContext:(id)a3;
-- (void)setWantsDeemphasizedBackdrop:(BOOL)a3;
-- (void)siriStartedHostingSceneWithIdentifier:(id)a3 bundleIdentifier:(id)a4;
-- (void)siriStoppedHostingSceneWithIdentifier:(id)a3 bundleIdentifier:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)presentSiriEffectsViewController:(id)controller completion:(id)completion;
+- (void)presentSiriPresentationViewController:(id)controller withAnimationFactory:(id)factory siriPresentationOptions:(id)options completion:(id)completion;
+- (void)requestTamaleLaunchAnimationLayerProviderWithCompletion:(id)completion;
+- (void)setPresentationContext:(id)context;
+- (void)setWantsDeemphasizedBackdrop:(BOOL)backdrop;
+- (void)siriStartedHostingSceneWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
+- (void)siriStoppedHostingSceneWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
 @end
 
 @implementation SBAssistantSession
 
-- (SBAssistantSession)initWithWindowScene:(id)a3 operationQueue:(id)a4 gestureConfiguration:(id)a5
+- (SBAssistantSession)initWithWindowScene:(id)scene operationQueue:(id)queue gestureConfiguration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  queueCopy = queue;
+  configurationCopy = configuration;
   v21.receiver = self;
   v21.super_class = SBAssistantSession;
   v11 = [(SBAssistantSession *)&v21 init];
@@ -65,19 +65,19 @@
     presentationContext = v11->_presentationContext;
     v11->_presentationContext = v12;
 
-    objc_storeWeak(&v11->_windowScene, v8);
-    objc_storeStrong(&v11->_operationQueue, a4);
-    v14 = [SBAssistantContext contextForWindowScene:v8];
+    objc_storeWeak(&v11->_windowScene, sceneCopy);
+    objc_storeStrong(&v11->_operationQueue, queue);
+    v14 = [SBAssistantContext contextForWindowScene:sceneCopy];
     context = v11->_context;
     v11->_context = v14;
 
     v16 = +[SBSceneManagerCoordinator sharedInstance];
-    v17 = [v16 sceneDeactivationManager];
-    v18 = [v17 newAssertionWithReason:4];
+    sceneDeactivationManager = [v16 sceneDeactivationManager];
+    v18 = [sceneDeactivationManager newAssertionWithReason:4];
     resignActiveAssertion = v11->_resignActiveAssertion;
     v11->_resignActiveAssertion = v18;
 
-    objc_storeStrong(&v11->_gestureConfiguration, a5);
+    objc_storeStrong(&v11->_gestureConfiguration, configuration);
   }
 
   return v11;
@@ -99,24 +99,24 @@
 
   if (self->_hidingOtherWindows)
   {
-    v5 = [(SBAssistantContext *)self->_context windowHidingManager];
-    [v5 stopHidingWindowsForContext:self];
+    windowHidingManager = [(SBAssistantContext *)self->_context windowHidingManager];
+    [windowHidingManager stopHidingWindowsForContext:self];
 
     self->_hidingOtherWindows = 0;
   }
 
   if (self->_pendingAlerts)
   {
-    v6 = [(SBAssistantContext *)self->_context alertItemsController];
-    [v6 setForceAlertsToPend:0 forReason:@"AssistantSession"];
+    alertItemsController = [(SBAssistantContext *)self->_context alertItemsController];
+    [alertItemsController setForceAlertsToPend:0 forReason:@"AssistantSession"];
 
     self->_pendingAlerts = 0;
   }
 
   if (self->_providingCoverSheetBehavior)
   {
-    v7 = [(SBAssistantContext *)self->_context coverSheetViewController];
-    [v7 unregisterExternalBehaviorProvider:self];
+    coverSheetViewController = [(SBAssistantContext *)self->_context coverSheetViewController];
+    [coverSheetViewController unregisterExternalBehaviorProvider:self];
 
     self->_providingCoverSheetBehavior = 0;
   }
@@ -152,41 +152,41 @@
 
 - (SBAssistantRootViewController)assistantRootViewController
 {
-  v2 = [(SBAssistantSession *)self assistantWindow];
-  v3 = [v2 assistantRootViewController];
+  assistantWindow = [(SBAssistantSession *)self assistantWindow];
+  assistantRootViewController = [assistantWindow assistantRootViewController];
 
-  return v3;
+  return assistantRootViewController;
 }
 
 - (BOOL)isActive
 {
-  v3 = [(SBAssistantSession *)self presentationContext];
-  if ([v3 isAnyAssistantPresentablePresented])
+  presentationContext = [(SBAssistantSession *)self presentationContext];
+  if ([presentationContext isAnyAssistantPresentablePresented])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(SBAssistantSession *)self operationQueue];
-    v6 = [v5 pendingEvents];
-    v4 = [v6 count] != 0;
+    operationQueue = [(SBAssistantSession *)self operationQueue];
+    pendingEvents = [operationQueue pendingEvents];
+    v4 = [pendingEvents count] != 0;
   }
 
   return v4;
 }
 
-- (void)setPresentationContext:(id)a3
+- (void)setPresentationContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_presentationContext, a3);
+    objc_storeStrong(&self->_presentationContext, context);
     [(SBAssistantSession *)self _didChangePresentationContext];
   }
 }
 
-- (void)assertWindowLevel:(double)a3
+- (void)assertWindowLevel:(double)level
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = SBLogSiri();
@@ -196,32 +196,32 @@
     v8 = 138543618;
     v9 = v6;
     v10 = 2048;
-    v11 = a3;
+    levelCopy = level;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: %f", &v8, 0x16u);
   }
 
-  v7 = [(SBAssistantSession *)self assistantWindow];
-  [v7 setWindowLevel:a3];
+  assistantWindow = [(SBAssistantSession *)self assistantWindow];
+  [assistantWindow setWindowLevel:level];
 
   [(SBAssistantSession *)self _updateAssistantAccessoryWindowWindowLevel];
 }
 
 - (BOOL)shouldAllowBiometricAutoUnlock
 {
-  v2 = [(SBAssistantSession *)self presentationContext];
-  v3 = [v2 siriPresentationOptions];
+  presentationContext = [(SBAssistantSession *)self presentationContext];
+  siriPresentationOptions = [presentationContext siriPresentationOptions];
 
-  if (v3)
+  if (siriPresentationOptions)
   {
-    v4 = [v3 shouldAllowBiometricAutoUnlock];
+    shouldAllowBiometricAutoUnlock = [siriPresentationOptions shouldAllowBiometricAutoUnlock];
   }
 
   else
   {
-    v4 = 0;
+    shouldAllowBiometricAutoUnlock = 0;
   }
 
-  return v4;
+  return shouldAllowBiometricAutoUnlock;
 }
 
 - (BOOL)contentObscuresScreen
@@ -238,10 +238,10 @@ LABEL_3:
 
   else
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v5 != 1)
+    if (userInterfaceIdiom != 1)
     {
       goto LABEL_3;
     }
@@ -249,8 +249,8 @@ LABEL_3:
 
   if ([(SBAssistantSession *)self isVisible])
   {
-    v6 = [(SBAssistantSession *)self gestureManager];
-    v7 = [v6 gesturesImplyFullscreenContent] ^ 1;
+    gestureManager = [(SBAssistantSession *)self gestureManager];
+    v7 = [gestureManager gesturesImplyFullscreenContent] ^ 1;
   }
 
   else
@@ -261,24 +261,24 @@ LABEL_3:
   return v7;
 }
 
-- (void)setWantsDeemphasizedBackdrop:(BOOL)a3
+- (void)setWantsDeemphasizedBackdrop:(BOOL)backdrop
 {
-  if (self->_wantsDeemphasizedBackdrop != a3)
+  if (self->_wantsDeemphasizedBackdrop != backdrop)
   {
-    v4 = a3;
-    self->_wantsDeemphasizedBackdrop = a3;
-    v6 = [(SBAssistantSession *)self presentationContext];
-    v7 = [v6 mutableCopy];
+    backdropCopy = backdrop;
+    self->_wantsDeemphasizedBackdrop = backdrop;
+    presentationContext = [(SBAssistantSession *)self presentationContext];
+    v7 = [presentationContext mutableCopy];
 
-    [v7 setWantsDeemphasizedBackdrop:v4];
+    [v7 setWantsDeemphasizedBackdrop:backdropCopy];
     [(SBAssistantSession *)self setPresentationContext:v7];
   }
 }
 
 - (void)noteKeyboardWillAppear
 {
-  v3 = [(SBAssistantSession *)self presentationContext];
-  v4 = [v3 mutableCopy];
+  presentationContext = [(SBAssistantSession *)self presentationContext];
+  v4 = [presentationContext mutableCopy];
 
   [v4 setKeyboardVisible:1];
   [(SBAssistantSession *)self setPresentationContext:v4];
@@ -286,32 +286,32 @@ LABEL_3:
 
 - (void)noteKeyboardWillDisappear
 {
-  v3 = [(SBAssistantSession *)self presentationContext];
-  v4 = [v3 mutableCopy];
+  presentationContext = [(SBAssistantSession *)self presentationContext];
+  v4 = [presentationContext mutableCopy];
 
   [v4 setKeyboardVisible:0];
   [(SBAssistantSession *)self setPresentationContext:v4];
 }
 
-- (void)siriStartedHostingSceneWithIdentifier:(id)a3 bundleIdentifier:(id)a4
+- (void)siriStartedHostingSceneWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   if (self->_displayLayoutAssertion)
   {
-    v8 = [(SBAssistantSession *)self windowScene];
-    v9 = [v8 displayLayoutPublisher];
+    windowScene = [(SBAssistantSession *)self windowScene];
+    displayLayoutPublisher = [windowScene displayLayoutPublisher];
 
-    v10 = [objc_alloc(MEMORY[0x277D66A50]) initWithIdentifier:v6];
+    v10 = [objc_alloc(MEMORY[0x277D66A50]) initWithIdentifier:identifierCopy];
     [v10 setLevel:(*MEMORY[0x277D76EE8] + 25.0)];
     [v10 setLayoutRole:6];
     [v10 setUIApplicationElement:1];
-    [v10 setBundleIdentifier:v7];
+    [v10 setBundleIdentifier:bundleIdentifierCopy];
     hostedLayoutElement = self->_hostedLayoutElement;
     self->_hostedLayoutElement = v10;
     v12 = v10;
 
-    v13 = [v9 addElement:v12];
+    v13 = [displayLayoutPublisher addElement:v12];
     hostedLayoutElementAssertion = self->_hostedLayoutElementAssertion;
     self->_hostedLayoutElementAssertion = v13;
   }
@@ -326,11 +326,11 @@ LABEL_3:
   }
 }
 
-- (void)siriStoppedHostingSceneWithIdentifier:(id)a3 bundleIdentifier:(id)a4
+- (void)siriStoppedHostingSceneWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   if (!self->_hostedLayoutElementAssertion)
   {
     v14 = SBLogSiri();
@@ -342,8 +342,8 @@ LABEL_3:
     goto LABEL_10;
   }
 
-  v9 = [(SBSDisplayLayoutElement *)self->_hostedLayoutElement identifier];
-  if (([v9 isEqualToString:v7] & 1) == 0)
+  identifier = [(SBSDisplayLayoutElement *)self->_hostedLayoutElement identifier];
+  if (([identifier isEqualToString:identifierCopy] & 1) == 0)
   {
 
 LABEL_8:
@@ -354,9 +354,9 @@ LABEL_8:
       v16 = 138543874;
       v17 = v15;
       v18 = 2112;
-      v19 = v7;
+      v19 = identifierCopy;
       v20 = 2112;
-      v21 = v8;
+      v21 = bundleIdentifierCopy;
       _os_log_error_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_ERROR, "%{public}@ - assistant session requested scene hosting to stop with mismatched sceneIdentifier: %@ and bundleIdentifier: %@, ignoring", &v16, 0x20u);
     }
 
@@ -365,8 +365,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [(SBSDisplayLayoutElement *)self->_hostedLayoutElement bundleIdentifier];
-  v11 = [v10 isEqualToString:v8];
+  bundleIdentifier = [(SBSDisplayLayoutElement *)self->_hostedLayoutElement bundleIdentifier];
+  v11 = [bundleIdentifier isEqualToString:bundleIdentifierCopy];
 
   if (!v11)
   {
@@ -383,9 +383,9 @@ LABEL_10:
 LABEL_11:
 }
 
-- (BOOL)commandeerCaptureDropletPreludeForVisionInvocation:(id)a3
+- (BOOL)commandeerCaptureDropletPreludeForVisionInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v5 = SBLogSiri();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -401,8 +401,8 @@ LABEL_11:
     self->_externalDropletZoomUpToken = 0;
   }
 
-  v8 = [v4 associatedBezelEffectsCoordinator];
-  v9 = [v8 commandeerDropletAnimationWithToken:v4];
+  associatedBezelEffectsCoordinator = [invocationCopy associatedBezelEffectsCoordinator];
+  v9 = [associatedBezelEffectsCoordinator commandeerDropletAnimationWithToken:invocationCopy];
   v10 = self->_externalDropletZoomUpToken;
   self->_externalDropletZoomUpToken = v9;
 
@@ -456,58 +456,58 @@ void __73__SBAssistantSession_commandeerCaptureDropletPreludeForVisionInvocation
   }
 }
 
-- (void)requestTamaleLaunchAnimationLayerProviderWithCompletion:(id)a3
+- (void)requestTamaleLaunchAnimationLayerProviderWithCompletion:(id)completion
 {
   if (self->_externalDropletZoomUpToken)
   {
-    v4 = a3;
+    completionCopy = completion;
     v5 = [SBAssistantLaunchAnimationLayerProvider alloc];
-    v6 = [(SBHardwareButtonLaunchZoomUpAnimationToken *)self->_externalDropletZoomUpToken animatingDroplet];
-    v7 = [v6 layer];
-    v9 = [(SBAssistantLaunchAnimationLayerProvider *)v5 initWithDropletLayer:v7];
+    animatingDroplet = [(SBHardwareButtonLaunchZoomUpAnimationToken *)self->_externalDropletZoomUpToken animatingDroplet];
+    layer = [animatingDroplet layer];
+    completionCopy2 = [(SBAssistantLaunchAnimationLayerProvider *)v5 initWithDropletLayer:layer];
 
-    v4[2](v4, v9);
+    completionCopy[2](completionCopy, completionCopy2);
   }
 
   else
   {
-    v8 = *(a3 + 2);
-    v9 = a3;
+    v8 = *(completion + 2);
+    completionCopy2 = completion;
     v8();
   }
 }
 
-- (void)assistantGestureManagerDidRecognizeDismissGesture:(id)a3 preferredDismissalOptions:(id)a4
+- (void)assistantGestureManagerDidRecognizeDismissGesture:(id)gesture preferredDismissalOptions:(id)options
 {
-  v5 = a4;
-  v6 = [(SBAssistantSession *)self delegate];
-  [v6 assistantSession:self requestsDismissalWithDismissalOptions:v5];
+  optionsCopy = options;
+  delegate = [(SBAssistantSession *)self delegate];
+  [delegate assistantSession:self requestsDismissalWithDismissalOptions:optionsCopy];
 }
 
-- (void)presentSiriPresentationViewController:(id)a3 withAnimationFactory:(id)a4 siriPresentationOptions:(id)a5 completion:(id)a6
+- (void)presentSiriPresentationViewController:(id)controller withAnimationFactory:(id)factory siriPresentationOptions:(id)options completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  controllerCopy = controller;
+  factoryCopy = factory;
+  optionsCopy = options;
+  completionCopy = completion;
   v22 = MEMORY[0x277D85DD0];
   v23 = 3221225472;
   v24 = __116__SBAssistantSession_presentSiriPresentationViewController_withAnimationFactory_siriPresentationOptions_completion___block_invoke;
   v25 = &unk_2783B6AC0;
-  v30 = v14;
+  v30 = completionCopy;
   v31 = a2;
-  v26 = self;
-  v27 = v11;
-  v28 = v12;
-  v29 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v14;
+  selfCopy = self;
+  v27 = controllerCopy;
+  v28 = factoryCopy;
+  v29 = optionsCopy;
+  v15 = optionsCopy;
+  v16 = factoryCopy;
+  v17 = controllerCopy;
+  v18 = completionCopy;
   v19 = MEMORY[0x223D6F7F0](&v22);
-  v20 = [MEMORY[0x277CF0C30] eventWithName:@"Siri Content Presentation" handler:{v19, v22, v23, v24, v25, v26}];
-  v21 = [(SBAssistantSession *)self operationQueue];
-  [v21 executeOrInsertEvent:v20 atPosition:1];
+  v20 = [MEMORY[0x277CF0C30] eventWithName:@"Siri Content Presentation" handler:{v19, v22, v23, v24, v25, selfCopy}];
+  operationQueue = [(SBAssistantSession *)self operationQueue];
+  [operationQueue executeOrInsertEvent:v20 atPosition:1];
 }
 
 void __116__SBAssistantSession_presentSiriPresentationViewController_withAnimationFactory_siriPresentationOptions_completion___block_invoke(id *a1)
@@ -815,27 +815,27 @@ uint64_t __116__SBAssistantSession_presentSiriPresentationViewController_withAni
   return [v2 invalidate];
 }
 
-- (void)dismissSiriPresentationViewControllerWithAnimationFactory:(id)a3 siriDismissalOptions:(id)a4 completion:(id)a5
+- (void)dismissSiriPresentationViewControllerWithAnimationFactory:(id)factory siriDismissalOptions:(id)options completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  factoryCopy = factory;
+  optionsCopy = options;
+  completionCopy = completion;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __112__SBAssistantSession_dismissSiriPresentationViewControllerWithAnimationFactory_siriDismissalOptions_completion___block_invoke;
   v18[3] = &unk_2783AA4F8;
-  v21 = v11;
+  v21 = completionCopy;
   v22 = a2;
   v18[4] = self;
-  v19 = v9;
-  v20 = v10;
-  v12 = v11;
-  v13 = v10;
-  v14 = v9;
+  v19 = factoryCopy;
+  v20 = optionsCopy;
+  v12 = completionCopy;
+  v13 = optionsCopy;
+  v14 = factoryCopy;
   v15 = MEMORY[0x223D6F7F0](v18);
   v16 = [MEMORY[0x277CF0C30] eventWithName:@"Siri Content Dismissal" handler:v15];
-  v17 = [(SBAssistantSession *)self operationQueue];
-  [v17 executeOrInsertEvent:v16 atPosition:1];
+  operationQueue = [(SBAssistantSession *)self operationQueue];
+  [operationQueue executeOrInsertEvent:v16 atPosition:1];
 }
 
 uint64_t __112__SBAssistantSession_dismissSiriPresentationViewControllerWithAnimationFactory_siriDismissalOptions_completion___block_invoke(uint64_t a1)
@@ -853,23 +853,23 @@ uint64_t __112__SBAssistantSession_dismissSiriPresentationViewControllerWithAnim
   return [*(a1 + 32) _operationQueue_dismissPresentables:1 withAnimationFactory:*(a1 + 40) siriDismissalOptions:*(a1 + 48) completion:*(a1 + 56)];
 }
 
-- (void)presentSiriEffectsViewController:(id)a3 completion:(id)a4
+- (void)presentSiriEffectsViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __66__SBAssistantSession_presentSiriEffectsViewController_completion___block_invoke;
   v13[3] = &unk_2783B1320;
-  v14 = v6;
-  v15 = v7;
+  v14 = controllerCopy;
+  v15 = completionCopy;
   v13[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = controllerCopy;
+  v9 = completionCopy;
   v10 = MEMORY[0x223D6F7F0](v13);
   v11 = [MEMORY[0x277CF0C30] eventWithName:@"Siri Effects Presentation" handler:v10];
-  v12 = [(SBAssistantSession *)self operationQueue];
-  [v12 executeOrInsertEvent:v11 atPosition:1];
+  operationQueue = [(SBAssistantSession *)self operationQueue];
+  [operationQueue executeOrInsertEvent:v11 atPosition:1];
 }
 
 void __66__SBAssistantSession_presentSiriEffectsViewController_completion___block_invoke(uint64_t a1)
@@ -928,21 +928,21 @@ void __66__SBAssistantSession_presentSiriEffectsViewController_completion___bloc
   [WeakRetained _updateAssistantAccessoryWindowWindowLevel];
 }
 
-- (void)dismissSiriEffectsViewControllerWithCompletion:(id)a3
+- (void)dismissSiriEffectsViewControllerWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__SBAssistantSession_dismissSiriEffectsViewControllerWithCompletion___block_invoke;
   v10[3] = &unk_2783AB990;
-  v11 = v5;
+  v11 = completionCopy;
   v12 = a2;
   v10[4] = self;
-  v6 = v5;
+  v6 = completionCopy;
   v7 = MEMORY[0x223D6F7F0](v10);
   v8 = [MEMORY[0x277CF0C30] eventWithName:@"Siri Effects Dismissal" handler:v7];
-  v9 = [(SBAssistantSession *)self operationQueue];
-  [v9 executeOrInsertEvent:v8 atPosition:1];
+  operationQueue = [(SBAssistantSession *)self operationQueue];
+  [operationQueue executeOrInsertEvent:v8 atPosition:1];
 }
 
 uint64_t __69__SBAssistantSession_dismissSiriEffectsViewControllerWithCompletion___block_invoke(uint64_t a1)
@@ -960,32 +960,32 @@ uint64_t __69__SBAssistantSession_dismissSiriEffectsViewControllerWithCompletion
   return [*(a1 + 32) _operationQueue_dismissPresentables:2 withAnimationFactory:0 siriDismissalOptions:0 completion:*(a1 + 40)];
 }
 
-- (id)acquireElevatedSiriEffectsViewControllerAssertionWithReason:(id)a3
+- (id)acquireElevatedSiriEffectsViewControllerAssertionWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(SBAssistantSession *)self elevatedSiriEffectsViewControllerAssertion];
-  v6 = [v5 acquireForReason:v4];
+  reasonCopy = reason;
+  elevatedSiriEffectsViewControllerAssertion = [(SBAssistantSession *)self elevatedSiriEffectsViewControllerAssertion];
+  v6 = [elevatedSiriEffectsViewControllerAssertion acquireForReason:reasonCopy];
 
   return v6;
 }
 
-- (void)endWithAnimationFactory:(id)a3 siriDismissalOptions:(id)a4 completion:(id)a5
+- (void)endWithAnimationFactory:(id)factory siriDismissalOptions:(id)options completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  factoryCopy = factory;
+  optionsCopy = options;
+  completionCopy = completion;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __78__SBAssistantSession_endWithAnimationFactory_siriDismissalOptions_completion___block_invoke;
   v17[3] = &unk_2783AA4F8;
-  v20 = v11;
+  v20 = completionCopy;
   v21 = a2;
   v17[4] = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v11;
-  v13 = v10;
-  v14 = v9;
+  v18 = factoryCopy;
+  v19 = optionsCopy;
+  v12 = completionCopy;
+  v13 = optionsCopy;
+  v14 = factoryCopy;
   v15 = MEMORY[0x223D6F7F0](v17);
   v16 = [MEMORY[0x277CF0C30] eventWithName:@"end Siri Session" handler:v15];
   [(BSEventQueue *)self->_operationQueue executeOrInsertEvent:v16 atPosition:1];
@@ -1006,22 +1006,22 @@ uint64_t __78__SBAssistantSession_endWithAnimationFactory_siriDismissalOptions_c
   return [*(a1 + 32) _operationQueue_dismissPresentables:3 withAnimationFactory:*(a1 + 40) siriDismissalOptions:*(a1 + 48) completion:*(a1 + 56)];
 }
 
-- (void)_operationQueue_dismissPresentables:(unint64_t)a3 withAnimationFactory:(id)a4 siriDismissalOptions:(id)a5 completion:(id)a6
+- (void)_operationQueue_dismissPresentables:(unint64_t)presentables withAnimationFactory:(id)factory siriDismissalOptions:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(SBAssistantSession *)self presentationContext];
-  v14 = v13;
-  if (v8)
+  presentablesCopy = presentables;
+  factoryCopy = factory;
+  optionsCopy = options;
+  completionCopy = completion;
+  presentationContext = [(SBAssistantSession *)self presentationContext];
+  v14 = presentationContext;
+  if (presentablesCopy)
   {
-    v15 = [v13 isAssistantPresented];
-    if ((v8 & 2) != 0)
+    isAssistantPresented = [presentationContext isAssistantPresented];
+    if ((presentablesCopy & 2) != 0)
     {
 LABEL_3:
-      v16 = [v14 isAssistantAccessoryPresented];
-      if (v15)
+      isAssistantAccessoryPresented = [v14 isAssistantAccessoryPresented];
+      if (isAssistantPresented)
       {
         goto LABEL_11;
       }
@@ -1032,33 +1032,33 @@ LABEL_3:
 
   else
   {
-    v15 = 0;
-    if ((v8 & 2) != 0)
+    isAssistantPresented = 0;
+    if ((presentablesCopy & 2) != 0)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = 0;
-  if (v15)
+  isAssistantAccessoryPresented = 0;
+  if (isAssistantPresented)
   {
 LABEL_11:
-    v18 = [(SBAssistantSession *)self operationQueue];
-    v30 = [v18 acquireLockForReason:@"Siri Dismissal"];
+    operationQueue = [(SBAssistantSession *)self operationQueue];
+    v30 = [operationQueue acquireLockForReason:@"Siri Dismissal"];
 
     v19 = self->_siriPresentationViewController;
-    [v10 duration];
-    v21 = v10;
-    v22 = v11;
+    [factoryCopy duration];
+    v21 = factoryCopy;
+    v22 = optionsCopy;
     v23 = fabs(v20) >= 2.22044605e-16;
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __111__SBAssistantSession__operationQueue_dismissPresentables_withAnimationFactory_siriDismissalOptions_completion___block_invoke;
     v42[3] = &unk_2783B6AE8;
-    v46 = v15;
-    v47 = v16;
+    v46 = isAssistantPresented;
+    v47 = isAssistantAccessoryPresented;
     v43 = v14;
-    v44 = self;
+    selfCopy = self;
     v48 = v23;
     v24 = v19;
     v45 = v24;
@@ -1067,22 +1067,22 @@ LABEL_11:
     v33[1] = 3221225472;
     v33[2] = __111__SBAssistantSession__operationQueue_dismissPresentables_withAnimationFactory_siriDismissalOptions_completion___block_invoke_2;
     v33[3] = &unk_2783B6B10;
-    v39 = v15;
+    v39 = isAssistantPresented;
     v26 = v24;
     v34 = v26;
-    v35 = self;
+    selfCopy2 = self;
     v40 = v23;
-    v11 = v22;
-    v10 = v21;
-    v36 = v11;
-    v41 = v16;
-    v38 = v12;
+    optionsCopy = v22;
+    factoryCopy = v21;
+    v36 = optionsCopy;
+    v41 = isAssistantAccessoryPresented;
+    v38 = completionCopy;
     v27 = v30;
     v37 = v27;
     v28 = MEMORY[0x223D6F7F0](v33);
     v29 = dispatch_group_create();
     v25[2](v25);
-    if (v15)
+    if (isAssistantPresented)
     {
       dispatch_group_enter(v29);
       v31[0] = MEMORY[0x277D85DD0];
@@ -1090,7 +1090,7 @@ LABEL_11:
       v31[2] = __111__SBAssistantSession__operationQueue_dismissPresentables_withAnimationFactory_siriDismissalOptions_completion___block_invoke_3;
       v31[3] = &unk_2783A9398;
       v32 = v29;
-      [(SiriPresentationSpringBoardMainScreenViewController *)v26 animatedDisappearanceWithFactory:v10 completion:v31];
+      [(SiriPresentationSpringBoardMainScreenViewController *)v26 animatedDisappearanceWithFactory:factoryCopy completion:v31];
     }
 
     dispatch_group_notify(v29, MEMORY[0x277D85CD0], v28);
@@ -1099,7 +1099,7 @@ LABEL_11:
   }
 
 LABEL_7:
-  if (v16)
+  if (isAssistantAccessoryPresented)
   {
     goto LABEL_11;
   }
@@ -1111,7 +1111,7 @@ LABEL_7:
     _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "Siri dismissal request received with nothing to dismiss - ignoring", buf, 2u);
   }
 
-  v12[2](v12);
+  completionCopy[2](completionCopy);
 LABEL_14:
 }
 
@@ -1194,9 +1194,9 @@ uint64_t __111__SBAssistantSession__operationQueue_dismissPresentables_withAnima
   return [v14 relinquish];
 }
 
-- (void)_siriPresentationViewControllerWillAppear:(BOOL)a3
+- (void)_siriPresentationViewControllerWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v26 = *MEMORY[0x277D85DE8];
   v5 = SBLogSiri();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1211,51 +1211,51 @@ uint64_t __111__SBAssistantSession__operationQueue_dismissPresentables_withAnima
   [(SBAssistantSession *)self setVisible:1];
   if (!self->_traitsOrientationPolicySpecifier)
   {
-    v7 = [(SBAssistantSession *)self _newTraitsOrientationPolicySpecifier];
+    _newTraitsOrientationPolicySpecifier = [(SBAssistantSession *)self _newTraitsOrientationPolicySpecifier];
     traitsOrientationPolicySpecifier = self->_traitsOrientationPolicySpecifier;
-    self->_traitsOrientationPolicySpecifier = v7;
+    self->_traitsOrientationPolicySpecifier = _newTraitsOrientationPolicySpecifier;
   }
 
-  v9 = [(SBAssistantSession *)self assistantWindow];
-  v10 = [(SBAssistantSession *)self context];
-  v11 = [v10 windowHidingManager];
-  [v11 setAlpha:v9 forWindow:1.0];
+  assistantWindow = [(SBAssistantSession *)self assistantWindow];
+  context = [(SBAssistantSession *)self context];
+  windowHidingManager = [context windowHidingManager];
+  [windowHidingManager setAlpha:assistantWindow forWindow:1.0];
 
-  [v9 setHidden:0];
-  [v9 makeKeyAndVisible];
+  [assistantWindow setHidden:0];
+  [assistantWindow makeKeyAndVisible];
   [(SBAssistantSession *)self _setDisplayLayoutElementActive:1];
   [(SBAssistantSession *)self _updateOrientationLock];
-  v12 = [(SBAssistantSession *)self siriPresentationViewController];
-  [v12 addObserver:self forKeyPath:@"supportedInterfaceOrientations" options:0 context:0];
+  siriPresentationViewController = [(SBAssistantSession *)self siriPresentationViewController];
+  [siriPresentationViewController addObserver:self forKeyPath:@"supportedInterfaceOrientations" options:0 context:0];
 
   [(SBAssistantSession *)self _toggleModalAlertHidingAssertion:1];
-  v13 = [(SBAssistantSession *)self context];
-  v14 = [v13 alertItemsController];
-  [v14 setForceAlertsToPend:1 forReason:@"AssistantSession"];
+  context2 = [(SBAssistantSession *)self context];
+  alertItemsController = [context2 alertItemsController];
+  [alertItemsController setForceAlertsToPend:1 forReason:@"AssistantSession"];
 
-  v15 = [(SBAssistantSession *)self context];
-  v16 = [v15 alertItemsController];
-  [v16 moveActiveUnlockedAlertsToPendingWithAnimation:v3 completion:0];
+  context3 = [(SBAssistantSession *)self context];
+  alertItemsController2 = [context3 alertItemsController];
+  [alertItemsController2 moveActiveUnlockedAlertsToPendingWithAnimation:appearCopy completion:0];
 
   [(SBAssistantSession *)self setPendingAlerts:1];
-  v17 = [(SBAssistantSession *)self context];
-  v18 = [v17 coverSheetViewController];
-  [v18 registerExternalBehaviorProvider:self];
+  context4 = [(SBAssistantSession *)self context];
+  coverSheetViewController = [context4 coverSheetViewController];
+  [coverSheetViewController registerExternalBehaviorProvider:self];
 
   [(SBAssistantSession *)self setProvidingCoverSheetBehavior:1];
-  v19 = [MEMORY[0x277CCAB98] defaultCenter];
-  v20 = [(SBAssistantSession *)self context];
-  v21 = [v20 floatingDockController];
-  [v19 addObserver:self selector:sel__dockFrameDidChange_ name:@"SBFloatingDockControllerFrameDidChangeNotification" object:v21];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  context5 = [(SBAssistantSession *)self context];
+  floatingDockController = [context5 floatingDockController];
+  [defaultCenter addObserver:self selector:sel__dockFrameDidChange_ name:@"SBFloatingDockControllerFrameDidChangeNotification" object:floatingDockController];
 
-  v22 = [MEMORY[0x277CCAB98] defaultCenter];
-  v23 = [(SBAssistantSession *)self assistantRootViewController];
-  [v22 addObserver:self selector:sel__updateOrbLocation_ name:@"SBAssistantCanRepositionOrbIfNecessary" object:v23];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  assistantRootViewController = [(SBAssistantSession *)self assistantRootViewController];
+  [defaultCenter2 addObserver:self selector:sel__updateOrbLocation_ name:@"SBAssistantCanRepositionOrbIfNecessary" object:assistantRootViewController];
 
   [(SBAssistantSession *)self _updateOrbLocation:0];
 }
 
-- (void)_siriPresentationViewControllerDidAppear:(BOOL)a3
+- (void)_siriPresentationViewControllerDidAppear:(BOOL)appear
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = SBLogSiri();
@@ -1267,26 +1267,26 @@ uint64_t __111__SBAssistantSession__operationQueue_dismissPresentables_withAnima
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@", &v15, 0xCu);
   }
 
-  v6 = [(SBAssistantSession *)self context];
-  v7 = [v6 alertItemsController];
-  [v7 setForceAlertsToPend:0 forReason:@"AssistantSession"];
+  context = [(SBAssistantSession *)self context];
+  alertItemsController = [context alertItemsController];
+  [alertItemsController setForceAlertsToPend:0 forReason:@"AssistantSession"];
 
-  v8 = [(SBAssistantSession *)self context];
-  v9 = [v8 orientationAccomodation];
-  v10 = [(SBAssistantSession *)self siriPresentationViewController];
-  [v9 noteInterfaceOrientationChanged:objc_msgSend(v10 force:"interfaceOrientation") logMessage:{0, @"Updating interface orientation to match Siri's activation orientation"}];
+  context2 = [(SBAssistantSession *)self context];
+  orientationAccomodation = [context2 orientationAccomodation];
+  siriPresentationViewController = [(SBAssistantSession *)self siriPresentationViewController];
+  [orientationAccomodation noteInterfaceOrientationChanged:objc_msgSend(siriPresentationViewController force:"interfaceOrientation") logMessage:{0, @"Updating interface orientation to match Siri's activation orientation"}];
 
   [(SBAssistantSession *)self _notifySiriPresentationViewControllerDidAppear];
-  v11 = [(SBAssistantSession *)self gestureManager];
-  v12 = [(SBAssistantSession *)self context];
-  v13 = [v12 transientOverlayPresenter];
-  v14 = [v13 topmostPresentedViewController];
-  [v11 setTopmostTransientViewControllerAtPresentation:v14];
+  gestureManager = [(SBAssistantSession *)self gestureManager];
+  context3 = [(SBAssistantSession *)self context];
+  transientOverlayPresenter = [context3 transientOverlayPresenter];
+  topmostPresentedViewController = [transientOverlayPresenter topmostPresentedViewController];
+  [gestureManager setTopmostTransientViewControllerAtPresentation:topmostPresentedViewController];
 }
 
-- (void)_siriPresentationViewControllerWillDisappear:(BOOL)a3
+- (void)_siriPresentationViewControllerWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v20 = *MEMORY[0x277D85DE8];
   v5 = SBLogSiri();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1300,12 +1300,12 @@ uint64_t __111__SBAssistantSession__operationQueue_dismissPresentables_withAnima
   [(SBAssistantSession *)self setVisible:0];
   if ([(SBAssistantSession *)self isHidingOtherWindows])
   {
-    v7 = [(SBAssistantSession *)self context];
-    v8 = [v7 windowHidingManager];
-    [v8 stopHidingWindowsForContext:self];
+    context = [(SBAssistantSession *)self context];
+    windowHidingManager = [context windowHidingManager];
+    [windowHidingManager stopHidingWindowsForContext:self];
 
-    v9 = [(SBAssistantSession *)self suspendWallpaperAnimationAssertion];
-    [v9 invalidate];
+    suspendWallpaperAnimationAssertion = [(SBAssistantSession *)self suspendWallpaperAnimationAssertion];
+    [suspendWallpaperAnimationAssertion invalidate];
 
     [(SBAssistantSession *)self setSuspendWallpaperAnimationAssertion:0];
     [(SBAssistantSession *)self setHidingOtherWindows:0];
@@ -1313,28 +1313,28 @@ uint64_t __111__SBAssistantSession__operationQueue_dismissPresentables_withAnima
 
   [(SBAssistantSession *)self _notifySiriPresentationViewControllerWillDisappear];
   [(SBAssistantSession *)self _restoreOrientation];
-  v10 = [(SBAssistantSession *)self resignActiveAssertion];
-  v11 = [v10 isAcquired];
+  resignActiveAssertion = [(SBAssistantSession *)self resignActiveAssertion];
+  isAcquired = [resignActiveAssertion isAcquired];
 
-  if (v11)
+  if (isAcquired)
   {
-    v12 = [(SBAssistantSession *)self resignActiveAssertion];
-    [v12 relinquish];
+    resignActiveAssertion2 = [(SBAssistantSession *)self resignActiveAssertion];
+    [resignActiveAssertion2 relinquish];
   }
 
-  v13 = [(SBAssistantSession *)self context];
-  v14 = [v13 alertItemsController];
-  [v14 setForceAlertsToPend:1 forReason:@"AssistantSession"];
+  context2 = [(SBAssistantSession *)self context];
+  alertItemsController = [context2 alertItemsController];
+  [alertItemsController setForceAlertsToPend:1 forReason:@"AssistantSession"];
 
-  v15 = [(SBAssistantSession *)self context];
-  v16 = [v15 alertItemsController];
-  [v16 moveActiveUnlockedAlertsToPendingWithAnimation:v3 completion:0];
+  context3 = [(SBAssistantSession *)self context];
+  alertItemsController2 = [context3 alertItemsController];
+  [alertItemsController2 moveActiveUnlockedAlertsToPendingWithAnimation:disappearCopy completion:0];
 
-  v17 = [(SBAssistantSession *)self siriPresentationViewController];
-  [v17 removeObserver:self forKeyPath:@"supportedInterfaceOrientations"];
+  siriPresentationViewController = [(SBAssistantSession *)self siriPresentationViewController];
+  [siriPresentationViewController removeObserver:self forKeyPath:@"supportedInterfaceOrientations"];
 }
 
-- (void)_siriPresentationViewControllerDidDisappear:(BOOL)a3
+- (void)_siriPresentationViewControllerDidDisappear:(BOOL)disappear
 {
   v19 = *MEMORY[0x277D85DE8];
   v4 = SBLogSiri();
@@ -1346,20 +1346,20 @@ uint64_t __111__SBAssistantSession__operationQueue_dismissPresentables_withAnima
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@", &v17, 0xCu);
   }
 
-  v6 = [(SBAssistantSession *)self assistantWindow];
-  v7 = [v6 rootViewController];
-  v8 = [v7 presentedViewController];
+  assistantWindow = [(SBAssistantSession *)self assistantWindow];
+  rootViewController = [assistantWindow rootViewController];
+  presentedViewController = [rootViewController presentedViewController];
 
-  if (v8)
+  if (presentedViewController)
   {
-    v9 = [v6 rootViewController];
-    [v9 dismissViewControllerAnimated:0 completion:0];
+    rootViewController2 = [assistantWindow rootViewController];
+    [rootViewController2 dismissViewControllerAnimated:0 completion:0];
   }
 
-  [v6 resignAsKeyWindow];
-  [v6 setHidden:1];
-  v10 = [(SBAssistantSession *)self deferOrientationUpdatesAssertion];
-  [v10 invalidate];
+  [assistantWindow resignAsKeyWindow];
+  [assistantWindow setHidden:1];
+  deferOrientationUpdatesAssertion = [(SBAssistantSession *)self deferOrientationUpdatesAssertion];
+  [deferOrientationUpdatesAssertion invalidate];
 
   [(SBAssistantSession *)self setDeferOrientationUpdatesAssertion:0];
   [(BSInvalidatable *)self->_traitsOrientationPolicySpecifier invalidate];
@@ -1368,9 +1368,9 @@ uint64_t __111__SBAssistantSession__operationQueue_dismissPresentables_withAnima
 
   if ([(SBAssistantSession *)self isPendingAlerts])
   {
-    v12 = [(SBAssistantSession *)self context];
-    v13 = [v12 alertItemsController];
-    [v13 setForceAlertsToPend:0 forReason:@"AssistantSession"];
+    context = [(SBAssistantSession *)self context];
+    alertItemsController = [context alertItemsController];
+    [alertItemsController setForceAlertsToPend:0 forReason:@"AssistantSession"];
 
     [(SBAssistantSession *)self setPendingAlerts:0];
   }
@@ -1379,9 +1379,9 @@ uint64_t __111__SBAssistantSession__operationQueue_dismissPresentables_withAnima
   [(SBAssistantSession *)self _setDisplayLayoutElementActive:0];
   if ([(SBAssistantSession *)self isProvidingCoverSheetBehavior])
   {
-    v14 = [(SBAssistantSession *)self context];
-    v15 = [v14 coverSheetViewController];
-    [v15 unregisterExternalBehaviorProvider:self];
+    context2 = [(SBAssistantSession *)self context];
+    coverSheetViewController = [context2 coverSheetViewController];
+    [coverSheetViewController unregisterExternalBehaviorProvider:self];
 
     [(SBAssistantSession *)self setProvidingCoverSheetBehavior:0];
   }
@@ -1396,70 +1396,70 @@ uint64_t __111__SBAssistantSession__operationQueue_dismissPresentables_withAnima
 - (void)_didChangePresentationContext
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [(SBAssistantSession *)self presentationContext];
-  v4 = [v3 hasVisionModality];
+  presentationContext = [(SBAssistantSession *)self presentationContext];
+  hasVisionModality = [presentationContext hasVisionModality];
 
-  if (v4)
+  if (hasVisionModality)
   {
-    v5 = [(SBAssistantSession *)self windowScene];
-    v6 = [v5 switcherController];
-    [v6 dismissMainAndFloatingSwitchersWithSource:8 animated:1];
+    windowScene = [(SBAssistantSession *)self windowScene];
+    switcherController = [windowScene switcherController];
+    [switcherController dismissMainAndFloatingSwitchersWithSource:8 animated:1];
   }
 
-  v7 = [(SBAssistantSession *)self presentationContext];
-  v8 = [v7 siriPresentationOptions];
-  v9 = [v8 hideOtherWindowsDuringAppearance];
+  presentationContext2 = [(SBAssistantSession *)self presentationContext];
+  siriPresentationOptions = [presentationContext2 siriPresentationOptions];
+  hideOtherWindowsDuringAppearance = [siriPresentationOptions hideOtherWindowsDuringAppearance];
 
-  if (v9)
+  if (hideOtherWindowsDuringAppearance)
   {
     [(SBAssistantSession *)self setHidingOtherWindows:1];
-    v10 = [(SBAssistantSession *)self context];
-    v11 = [v10 windowHidingManager];
-    [v11 startHidingWindowsExclusivelyFromLevel:self toLevel:@"AssistantSession" forContext:*MEMORY[0x277D772B0] + -3.0 + -1.0 reason:*MEMORY[0x277D76EE8] + 25.0];
+    context = [(SBAssistantSession *)self context];
+    windowHidingManager = [context windowHidingManager];
+    [windowHidingManager startHidingWindowsExclusivelyFromLevel:self toLevel:@"AssistantSession" forContext:*MEMORY[0x277D772B0] + -3.0 + -1.0 reason:*MEMORY[0x277D76EE8] + 25.0];
 
-    v12 = [(SBAssistantSession *)self suspendWallpaperAnimationAssertion];
-    [v12 invalidate];
+    suspendWallpaperAnimationAssertion = [(SBAssistantSession *)self suspendWallpaperAnimationAssertion];
+    [suspendWallpaperAnimationAssertion invalidate];
 
-    v13 = [(SBAssistantSession *)self context];
-    v14 = [v13 wallpaperController];
-    v15 = [v14 suspendWallpaperAnimationForReason:@"AssistantSession"];
+    context2 = [(SBAssistantSession *)self context];
+    wallpaperController = [context2 wallpaperController];
+    v15 = [wallpaperController suspendWallpaperAnimationForReason:@"AssistantSession"];
     [(SBAssistantSession *)self setSuspendWallpaperAnimationAssertion:v15];
   }
 
   else
   {
     [(SBAssistantSession *)self setHidingOtherWindows:0];
-    v16 = [(SBAssistantSession *)self context];
-    v17 = [v16 windowHidingManager];
-    [v17 stopHidingWindowsForContext:self];
+    context3 = [(SBAssistantSession *)self context];
+    windowHidingManager2 = [context3 windowHidingManager];
+    [windowHidingManager2 stopHidingWindowsForContext:self];
 
-    v18 = [(SBAssistantSession *)self suspendWallpaperAnimationAssertion];
-    [v18 invalidate];
+    suspendWallpaperAnimationAssertion2 = [(SBAssistantSession *)self suspendWallpaperAnimationAssertion];
+    [suspendWallpaperAnimationAssertion2 invalidate];
 
     [(SBAssistantSession *)self setSuspendWallpaperAnimationAssertion:0];
   }
 
-  v19 = [(SBAssistantSession *)self presentationContext];
-  v20 = [v19 siriPresentationOptions];
-  v21 = [v20 shouldDeactivateScenesBelow];
+  presentationContext3 = [(SBAssistantSession *)self presentationContext];
+  siriPresentationOptions2 = [presentationContext3 siriPresentationOptions];
+  shouldDeactivateScenesBelow = [siriPresentationOptions2 shouldDeactivateScenesBelow];
 
-  if (v21)
+  if (shouldDeactivateScenesBelow)
   {
-    v22 = [(SBAssistantSession *)self resignActiveAssertion];
+    resignActiveAssertion = [(SBAssistantSession *)self resignActiveAssertion];
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v24 = [WeakRetained _fbsDisplayIdentity];
-    [v22 sb_acquireForDisplayIdentity:v24];
+    _fbsDisplayIdentity = [WeakRetained _fbsDisplayIdentity];
+    [resignActiveAssertion sb_acquireForDisplayIdentity:_fbsDisplayIdentity];
   }
 
-  v25 = [(SBAssistantSession *)self presentationContext];
-  v26 = [v25 siriPresentationOptions];
-  v27 = [v26 launchActions];
+  presentationContext4 = [(SBAssistantSession *)self presentationContext];
+  siriPresentationOptions3 = [presentationContext4 siriPresentationOptions];
+  launchActions = [siriPresentationOptions3 launchActions];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v28 = v27;
+  v28 = launchActions;
   v29 = [v28 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v29)
   {
@@ -1499,63 +1499,63 @@ uint64_t __111__SBAssistantSession__operationQueue_dismissPresentables_withAnima
 - (void)_notifySiriPresentationViewControllerWillAppear
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [(SBAssistantSession *)self delegate];
-  [v3 assistantSession:self viewWillAppearInWindowScene:WeakRetained];
+  delegate = [(SBAssistantSession *)self delegate];
+  [delegate assistantSession:self viewWillAppearInWindowScene:WeakRetained];
 
-  v4 = [(SBAssistantSession *)self gestureManager];
-  [v4 assistantSession:self viewWillAppearInWindowScene:WeakRetained];
+  gestureManager = [(SBAssistantSession *)self gestureManager];
+  [gestureManager assistantSession:self viewWillAppearInWindowScene:WeakRetained];
 }
 
 - (void)_notifySiriPresentationViewControllerDidAppear
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [(SBAssistantSession *)self delegate];
-  [v3 assistantSession:self viewDidAppearInWindowScene:WeakRetained];
+  delegate = [(SBAssistantSession *)self delegate];
+  [delegate assistantSession:self viewDidAppearInWindowScene:WeakRetained];
 
-  v4 = [(SBAssistantSession *)self gestureManager];
-  [v4 assistantSession:self viewDidAppearInWindowScene:WeakRetained];
+  gestureManager = [(SBAssistantSession *)self gestureManager];
+  [gestureManager assistantSession:self viewDidAppearInWindowScene:WeakRetained];
 }
 
 - (void)_notifySiriPresentationViewControllerWillDisappear
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [(SBAssistantSession *)self delegate];
-  [v3 assistantSession:self viewWillDisappearInWindowScene:WeakRetained];
+  delegate = [(SBAssistantSession *)self delegate];
+  [delegate assistantSession:self viewWillDisappearInWindowScene:WeakRetained];
 
-  v4 = [(SBAssistantSession *)self gestureManager];
-  [v4 assistantSession:self viewWillDisappearInWindowScene:WeakRetained];
+  gestureManager = [(SBAssistantSession *)self gestureManager];
+  [gestureManager assistantSession:self viewWillDisappearInWindowScene:WeakRetained];
 }
 
 - (void)_notifySiriPresentationViewControllerDidDisappear
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [(SBAssistantSession *)self delegate];
-  [v3 assistantSession:self viewDidDisappearInWindowScene:WeakRetained];
+  delegate = [(SBAssistantSession *)self delegate];
+  [delegate assistantSession:self viewDidDisappearInWindowScene:WeakRetained];
 
-  v4 = [(SBAssistantSession *)self gestureManager];
-  [v4 assistantSession:self viewDidDisappearInWindowScene:WeakRetained];
+  gestureManager = [(SBAssistantSession *)self gestureManager];
+  [gestureManager assistantSession:self viewDidDisappearInWindowScene:WeakRetained];
 }
 
 - (void)_notifyDidChangePresentationContext
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [(SBAssistantSession *)self delegate];
-  [v3 assistantSession:self didChangePresentationInWindowScene:WeakRetained];
+  delegate = [(SBAssistantSession *)self delegate];
+  [delegate assistantSession:self didChangePresentationInWindowScene:WeakRetained];
 
-  v4 = [(SBAssistantSession *)self gestureManager];
-  [v4 assistantSession:self didChangePresentationInWindowScene:WeakRetained];
+  gestureManager = [(SBAssistantSession *)self gestureManager];
+  [gestureManager assistantSession:self didChangePresentationInWindowScene:WeakRetained];
 }
 
-- (void)_setStatusBarHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)_setStatusBarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __51__SBAssistantSession__setStatusBarHidden_animated___block_invoke;
     v6[3] = &unk_2783A9F58;
     v6[4] = self;
-    v7 = a3;
+    hiddenCopy = hidden;
     [MEMORY[0x277D75D18] animateWithDuration:4 delay:v6 options:0 animations:0.35 completion:0.0];
   }
 
@@ -1566,7 +1566,7 @@ uint64_t __111__SBAssistantSession__operationQueue_dismissPresentables_withAnima
     v4[2] = __51__SBAssistantSession__setStatusBarHidden_animated___block_invoke_2;
     v4[3] = &unk_2783A9F58;
     v4[4] = self;
-    v5 = a3;
+    hiddenCopy2 = hidden;
     [MEMORY[0x277D75D18] performWithoutAnimation:v4];
   }
 }
@@ -1583,33 +1583,33 @@ void __51__SBAssistantSession__setStatusBarHidden_animated___block_invoke_2(uint
   [v2 requestStatusBarVisible:(*(a1 + 40) & 1) == 0 animated:0 completion:0];
 }
 
-- (void)_toggleModalAlertHidingAssertion:(BOOL)a3
+- (void)_toggleModalAlertHidingAssertion:(BOOL)assertion
 {
-  v3 = a3;
-  v5 = [(SBAssistantSession *)self hideApplicationModalAlertsAssertion];
+  assertionCopy = assertion;
+  hideApplicationModalAlertsAssertion = [(SBAssistantSession *)self hideApplicationModalAlertsAssertion];
 
-  if (v5)
+  if (hideApplicationModalAlertsAssertion)
   {
-    v6 = [(SBAssistantSession *)self hideApplicationModalAlertsAssertion];
-    [v6 invalidate];
+    hideApplicationModalAlertsAssertion2 = [(SBAssistantSession *)self hideApplicationModalAlertsAssertion];
+    [hideApplicationModalAlertsAssertion2 invalidate];
 
     [(SBAssistantSession *)self setHideApplicationModalAlertsAssertion:0];
   }
 
-  if (v3)
+  if (assertionCopy)
   {
-    v9 = [(SBAssistantSession *)self context];
-    v7 = [v9 modalAlertPresentationCoordinator];
-    v8 = [v7 hideApplicationModalAlertsForReason:@"AssistantSession"];
+    context = [(SBAssistantSession *)self context];
+    modalAlertPresentationCoordinator = [context modalAlertPresentationCoordinator];
+    v8 = [modalAlertPresentationCoordinator hideApplicationModalAlertsForReason:@"AssistantSession"];
     [(SBAssistantSession *)self setHideApplicationModalAlertsAssertion:v8];
   }
 }
 
-- (void)_updateOrbLocation:(id)a3
+- (void)_updateOrbLocation:(id)location
 {
-  v4 = [(SBAssistantSession *)self context];
-  v5 = [v4 floatingDockController];
-  [v5 floatingDockScreenFrame];
+  context = [(SBAssistantSession *)self context];
+  floatingDockController = [context floatingDockController];
+  [floatingDockController floatingDockScreenFrame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1618,10 +1618,10 @@ void __51__SBAssistantSession__setStatusBarHidden_animated___block_invoke_2(uint
   [(SBAssistantSession *)self _updateDockViewFrame:v7, v9, v11, v13];
 }
 
-- (void)_dockFrameDidChange:(id)a3
+- (void)_dockFrameDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"SBFloatingDockControllerFrame"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:@"SBFloatingDockControllerFrame"];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
@@ -1631,32 +1631,32 @@ void __51__SBAssistantSession__setStatusBarHidden_animated___block_invoke_2(uint
   [(SBAssistantSession *)self _updateDockViewFrame:v7, v9, v11, v13];
 }
 
-- (void)_updateDockViewFrame:(CGRect)a3
+- (void)_updateDockViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v9 = [WeakRetained screen];
-  v30 = [v9 fixedCoordinateSpace];
+  screen = [WeakRetained screen];
+  fixedCoordinateSpace = [screen fixedCoordinateSpace];
 
-  v10 = [(SBAssistantSession *)self siriPresentationViewController];
-  v11 = [v10 view];
-  v12 = [v11 coordinateSpace];
+  siriPresentationViewController = [(SBAssistantSession *)self siriPresentationViewController];
+  view = [siriPresentationViewController view];
+  coordinateSpace = [view coordinateSpace];
 
-  [v30 convertRect:v12 toCoordinateSpace:{x, y, width, height}];
+  [fixedCoordinateSpace convertRect:coordinateSpace toCoordinateSpace:{x, y, width, height}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(SBAssistantSession *)self context];
-  v22 = [v21 coverSheetPresentationManager];
-  v23 = [v22 isPresented];
+  context = [(SBAssistantSession *)self context];
+  coverSheetPresentationManager = [context coverSheetPresentationManager];
+  isPresented = [coverSheetPresentationManager isPresented];
 
-  v24 = [(SBAssistantSession *)self siriPresentationViewController];
-  v25 = v24;
-  if (v23)
+  siriPresentationViewController2 = [(SBAssistantSession *)self siriPresentationViewController];
+  v25 = siriPresentationViewController2;
+  if (isPresented)
   {
     v26 = *MEMORY[0x277CBF3A0];
     v27 = *(MEMORY[0x277CBF3A0] + 8);
@@ -1672,13 +1672,13 @@ void __51__SBAssistantSession__setStatusBarHidden_animated___block_invoke_2(uint
     v29 = v20;
   }
 
-  [v24 setDockFrame:{v26, v27, v28, v29}];
+  [siriPresentationViewController2 setDockFrame:{v26, v27, v28, v29}];
 }
 
-- (void)_setDisplayLayoutElementActive:(BOOL)a3
+- (void)_setDisplayLayoutElementActive:(BOOL)active
 {
   displayLayoutAssertion = self->_displayLayoutAssertion;
-  if (a3)
+  if (active)
   {
     if (displayLayoutAssertion)
     {
@@ -1690,9 +1690,9 @@ void __51__SBAssistantSession__setStatusBarHidden_animated___block_invoke_2(uint
     [v14 setLevel:(*MEMORY[0x277D76EE8] + 25.0)];
     [v14 setFillsDisplayBounds:1];
     [v14 setLayoutRole:4];
-    v10 = [(SBAssistantSession *)self context];
-    v11 = [v10 displayLayoutPublisher];
-    v12 = [v11 addElement:v14];
+    context = [(SBAssistantSession *)self context];
+    displayLayoutPublisher = [context displayLayoutPublisher];
+    v12 = [displayLayoutPublisher addElement:v14];
     v13 = self->_displayLayoutAssertion;
     self->_displayLayoutAssertion = v12;
   }
@@ -1704,9 +1704,9 @@ void __51__SBAssistantSession__setStatusBarHidden_animated___block_invoke_2(uint
       return;
     }
 
-    v5 = [(SBAssistantSession *)self context];
-    v6 = [v5 displayLayoutPublisher];
-    v14 = [v6 transitionAssertionWithReason:@"Siri Dismissal"];
+    context2 = [(SBAssistantSession *)self context];
+    displayLayoutPublisher2 = [context2 displayLayoutPublisher];
+    v14 = [displayLayoutPublisher2 transitionAssertionWithReason:@"Siri Dismissal"];
 
     [(BSInvalidatable *)self->_displayLayoutAssertion invalidate];
     v7 = self->_displayLayoutAssertion;
@@ -1724,13 +1724,13 @@ void __51__SBAssistantSession__setStatusBarHidden_animated___block_invoke_2(uint
 {
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v4 = [WeakRetained traitsPipelineManager];
+  traitsPipelineManager = [WeakRetained traitsPipelineManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__SBAssistantSession__newTraitsOrientationPolicySpecifier__block_invoke;
   v7[3] = &unk_2783B0DE8;
   objc_copyWeak(&v8, &location);
-  v5 = [v4 newBlockBasedOrientationPolicySpecifier:v7 forRole:@"SBTraitsParticipantRoleAssistant"];
+  v5 = [traitsPipelineManager newBlockBasedOrientationPolicySpecifier:v7 forRole:@"SBTraitsParticipantRoleAssistant"];
   objc_destroyWeak(&v8);
 
   objc_destroyWeak(&location);
@@ -1775,161 +1775,161 @@ uint64_t __58__SBAssistantSession__newTraitsOrientationPolicySpecifier__block_in
 
 - (void)_updateOrientationLock
 {
-  v3 = [(SBAssistantSession *)self context];
-  v4 = [v3 lockScreenManager];
-  if ([v4 isUILocked])
+  context = [(SBAssistantSession *)self context];
+  lockScreenManager = [context lockScreenManager];
+  if ([lockScreenManager isUILocked])
   {
-    v5 = [(SBAssistantSession *)self context];
-    v11 = [v5 coverSheetViewController];
+    context2 = [(SBAssistantSession *)self context];
+    coverSheetViewController = [context2 coverSheetViewController];
   }
 
   else
   {
-    v11 = [(SBAssistantSession *)self siriPresentationViewController];
+    coverSheetViewController = [(SBAssistantSession *)self siriPresentationViewController];
   }
 
-  if ([v11 shouldAutorotate] && objc_msgSend(v11, "supportedInterfaceOrientations") != 2)
+  if ([coverSheetViewController shouldAutorotate] && objc_msgSend(coverSheetViewController, "supportedInterfaceOrientations") != 2)
   {
-    v10 = [(SBAssistantSession *)self deferOrientationUpdatesAssertion];
-    [v10 invalidate];
+    deferOrientationUpdatesAssertion = [(SBAssistantSession *)self deferOrientationUpdatesAssertion];
+    [deferOrientationUpdatesAssertion invalidate];
 
     [(SBAssistantSession *)self setDeferOrientationUpdatesAssertion:0];
   }
 
   else
   {
-    v6 = [(SBAssistantSession *)self deferOrientationUpdatesAssertion];
-    [v6 invalidate];
+    deferOrientationUpdatesAssertion2 = [(SBAssistantSession *)self deferOrientationUpdatesAssertion];
+    [deferOrientationUpdatesAssertion2 invalidate];
 
-    v7 = [(SBAssistantSession *)self context];
-    v8 = [v7 orientationAccomodation];
-    v9 = [v8 deviceOrientationUpdateDeferralAssertionWithReason:@"AssistantSession"];
+    context3 = [(SBAssistantSession *)self context];
+    orientationAccomodation = [context3 orientationAccomodation];
+    v9 = [orientationAccomodation deviceOrientationUpdateDeferralAssertionWithReason:@"AssistantSession"];
     [(SBAssistantSession *)self setDeferOrientationUpdatesAssertion:v9];
   }
 }
 
 - (void)_restoreOrientation
 {
-  v3 = [(SBAssistantSession *)self context];
-  v4 = [v3 orientationAccomodation];
-  v5 = [v4 homeScreenRotationStyle];
+  context = [(SBAssistantSession *)self context];
+  orientationAccomodation = [context orientationAccomodation];
+  homeScreenRotationStyle = [orientationAccomodation homeScreenRotationStyle];
 
-  if (!v5)
+  if (!homeScreenRotationStyle)
   {
-    v6 = [(SBAssistantSession *)self context];
-    v7 = [v6 orientationAccomodation];
-    [v7 setStatusBarOrientation:1 forEmbeddedDisplayAnimated:0];
+    context2 = [(SBAssistantSession *)self context];
+    orientationAccomodation2 = [context2 orientationAccomodation];
+    [orientationAccomodation2 setStatusBarOrientation:1 forEmbeddedDisplayAnimated:0];
   }
 
-  v8 = [(SBAssistantSession *)self context];
-  v9 = [v8 lockScreenManager];
-  v10 = [v9 isUILocked];
+  context3 = [(SBAssistantSession *)self context];
+  lockScreenManager = [context3 lockScreenManager];
+  isUILocked = [lockScreenManager isUILocked];
 
-  v11 = [(SBAssistantSession *)self context];
-  v12 = v11;
-  if (v10)
+  context4 = [(SBAssistantSession *)self context];
+  v12 = context4;
+  if (isUILocked)
   {
-    v13 = [v11 orientationAccomodation];
-    v14 = [v13 homeScreenRotationStyle];
+    orientationAccomodation3 = [context4 orientationAccomodation];
+    homeScreenRotationStyle2 = [orientationAccomodation3 homeScreenRotationStyle];
 
-    if (v14)
+    if (homeScreenRotationStyle2)
     {
       return;
     }
 
-    v38 = [(SBAssistantSession *)self context];
-    v15 = [v38 orientationAccomodation];
-    v16 = v15;
+    context5 = [(SBAssistantSession *)self context];
+    orientationAccomodation4 = [context5 orientationAccomodation];
+    context9 = orientationAccomodation4;
     v17 = @"AssistantController restore orientation (locked)";
   }
 
   else
   {
-    v18 = [v11 switcherController];
-    v19 = [v18 layoutStatePrimaryElement];
-    v20 = [v19 workspaceEntity];
-    v21 = [v20 applicationSceneEntity];
-    v22 = [v21 sceneHandle];
+    switcherController = [context4 switcherController];
+    layoutStatePrimaryElement = [switcherController layoutStatePrimaryElement];
+    workspaceEntity = [layoutStatePrimaryElement workspaceEntity];
+    applicationSceneEntity = [workspaceEntity applicationSceneEntity];
+    sceneHandle = [applicationSceneEntity sceneHandle];
 
-    v23 = [(SBAssistantSession *)self context];
-    v24 = v23;
-    if (v22)
+    context6 = [(SBAssistantSession *)self context];
+    v24 = context6;
+    if (sceneHandle)
     {
-      v25 = [v23 switcherController];
-      v26 = [v25 layoutStatePrimaryElement];
-      v27 = [v26 workspaceEntity];
-      v28 = [v27 applicationSceneEntity];
-      v38 = [v28 sceneHandle];
+      switcherController2 = [context6 switcherController];
+      layoutStatePrimaryElement2 = [switcherController2 layoutStatePrimaryElement];
+      workspaceEntity2 = [layoutStatePrimaryElement2 workspaceEntity];
+      applicationSceneEntity2 = [workspaceEntity2 applicationSceneEntity];
+      context5 = [applicationSceneEntity2 sceneHandle];
 
-      if (v38)
+      if (context5)
       {
-        v29 = [v38 statusBarOrientation];
+        statusBarOrientation = [context5 statusBarOrientation];
       }
 
       else
       {
-        v29 = 1;
+        statusBarOrientation = 1;
       }
 
-      v32 = [(SBAssistantSession *)self context];
-      v33 = [v32 orientationAccomodation];
-      v34 = [v33 homeScreenRotationStyle];
+      context7 = [(SBAssistantSession *)self context];
+      orientationAccomodation5 = [context7 orientationAccomodation];
+      homeScreenRotationStyle3 = [orientationAccomodation5 homeScreenRotationStyle];
 
-      if (v34)
+      if (homeScreenRotationStyle3)
       {
-        v35 = [(SBAssistantSession *)self context];
-        v36 = [v35 orientationAccomodation];
-        [v36 updateNativeOrientationWithOrientation:v29 logMessage:{@"AssistantController restore orientation (not locked, has app)"}];
+        context8 = [(SBAssistantSession *)self context];
+        orientationAccomodation6 = [context8 orientationAccomodation];
+        [orientationAccomodation6 updateNativeOrientationWithOrientation:statusBarOrientation logMessage:{@"AssistantController restore orientation (not locked, has app)"}];
       }
 
-      v16 = [(SBAssistantSession *)self context];
-      v37 = [v16 orientationAccomodation];
-      [v37 noteInterfaceOrientationChanged:v29 force:1 logMessage:{@"AssistantController restore orientation (not locked, has app)"}];
+      context9 = [(SBAssistantSession *)self context];
+      orientationAccomodation7 = [context9 orientationAccomodation];
+      [orientationAccomodation7 noteInterfaceOrientationChanged:statusBarOrientation force:1 logMessage:{@"AssistantController restore orientation (not locked, has app)"}];
 
       goto LABEL_17;
     }
 
-    v30 = [v23 orientationAccomodation];
-    v31 = [v30 homeScreenRotationStyle];
+    orientationAccomodation8 = [context6 orientationAccomodation];
+    homeScreenRotationStyle4 = [orientationAccomodation8 homeScreenRotationStyle];
 
-    if (v31)
+    if (homeScreenRotationStyle4)
     {
       return;
     }
 
-    v38 = [(SBAssistantSession *)self context];
-    v15 = [v38 orientationAccomodation];
-    v16 = v15;
+    context5 = [(SBAssistantSession *)self context];
+    orientationAccomodation4 = [context5 orientationAccomodation];
+    context9 = orientationAccomodation4;
     v17 = @"AssistantController restore orientation (not locked, no app)";
   }
 
-  [v15 noteInterfaceOrientationChanged:1 force:1 logMessage:v17];
+  [orientationAccomodation4 noteInterfaceOrientationChanged:1 force:1 logMessage:v17];
 LABEL_17:
 }
 
 - (void)_updateAssistantAccessoryWindowWindowLevel
 {
-  v3 = [(SBAssistantSession *)self elevatedSiriEffectsViewControllerAssertion];
-  v4 = [v3 isActive];
+  elevatedSiriEffectsViewControllerAssertion = [(SBAssistantSession *)self elevatedSiriEffectsViewControllerAssertion];
+  isActive = [elevatedSiriEffectsViewControllerAssertion isActive];
 
   v5 = -0.5;
-  if (v4)
+  if (isActive)
   {
     v5 = 0.5;
   }
 
   v6 = *MEMORY[0x277D76EE8] + 25.0 + v5 - (*MEMORY[0x277D76EE8] + 25.0);
-  v7 = [(SBAssistantSession *)self assistantWindow];
-  [v7 windowLevel];
+  assistantWindow = [(SBAssistantSession *)self assistantWindow];
+  [assistantWindow windowLevel];
   v9 = v8;
 
-  v10 = [(SBAssistantSession *)self assistantAccessoryWindow];
-  [v10 setWindowLevel:v6 + v9];
+  assistantAccessoryWindow = [(SBAssistantSession *)self assistantAccessoryWindow];
+  [assistantAccessoryWindow setWindowLevel:v6 + v9];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"supportedInterfaceOrientations", a4, a5, a6}])
+  if ([path isEqualToString:{@"supportedInterfaceOrientations", object, change, context}])
   {
 
     [(SBAssistantSession *)self _updateOrientationLock];

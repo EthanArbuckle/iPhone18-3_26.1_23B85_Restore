@@ -1,14 +1,14 @@
 @interface CoreBluetoothBackedLocalBluetoothPrimitives
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManagerDidUpdateState:(id)state;
 @end
 
 @implementation CoreBluetoothBackedLocalBluetoothPrimitives
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  CoreBluetoothBackedLocalBluetoothPrimitives.centralManagerDidUpdateState(_:)(v4);
+  stateCopy = state;
+  selfCopy = self;
+  CoreBluetoothBackedLocalBluetoothPrimitives.centralManagerDidUpdateState(_:)(stateCopy);
 }
 
 @end

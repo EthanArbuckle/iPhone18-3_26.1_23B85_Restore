@@ -1,22 +1,22 @@
 @interface TITypingLog
-+ (id)typingLogWithDebug:(BOOL)a3;
++ (id)typingLogWithDebug:(BOOL)debug;
 - (BOOL)adjustForContinuousPath;
-- (TITypingLog)initWithDebug:(BOOL)a3;
+- (TITypingLog)initWithDebug:(BOOL)debug;
 - (id)correctedTransliterationSequence;
-- (id)getDebugObject:(id)a3;
+- (id)getDebugObject:(id)object;
 - (id)intendedTransliterationSequence;
-- (void)addDebugObject:(id)a3 forKey:(id)a4;
-- (void)beginKeystrokeWithIntendedKey:(id)a3 touchEvent:(id)a4 touchError:(id)a5;
-- (void)beginKeystrokeWithIntendedKey:(id)a3 touchEvent:(id)a4 touchError:(id)a5 documentBefore:(id)a6;
+- (void)addDebugObject:(id)object forKey:(id)key;
+- (void)beginKeystrokeWithIntendedKey:(id)key touchEvent:(id)event touchError:(id)error;
+- (void)beginKeystrokeWithIntendedKey:(id)key touchEvent:(id)event touchError:(id)error documentBefore:(id)before;
 - (void)beginToken;
-- (void)enumerateKeystrokesAndPathsForTokensWithBlock:(id)a3;
-- (void)finishKeystrokeWithTouchedKey:(id)a3 touchEvent:(id)a4 insertedKey:(id)a5 predictionBarState:(id)a6 inlineCompletionBarState:(id)a7;
-- (void)logAcceptedCandidate:(id)a3 intendedTransliterationCandidate:(id)a4;
+- (void)enumerateKeystrokesAndPathsForTokensWithBlock:(id)block;
+- (void)finishKeystrokeWithTouchedKey:(id)key touchEvent:(id)event insertedKey:(id)insertedKey predictionBarState:(id)state inlineCompletionBarState:(id)barState;
+- (void)logAcceptedCandidate:(id)candidate intendedTransliterationCandidate:(id)transliterationCandidate;
 - (void)logAutocorrectionInserted;
 - (void)logRejectedAutocorrection;
-- (void)registerPathStringAsKeyStrokes:(id)a3 path:(id)a4 predictionBarState:(id)a5;
+- (void)registerPathStringAsKeyStrokes:(id)strokes path:(id)path predictionBarState:(id)state;
 - (void)revisitPreviousToken;
-- (void)setTokenIndex:(unint64_t)a3;
+- (void)setTokenIndex:(unint64_t)index;
 @end
 
 @implementation TITypingLog
@@ -60,12 +60,12 @@
   }
 
   v4 = [(NSMutableArray *)self->_currentKeystrokeSequence objectAtIndex:(v3 - 1)];
-  v5 = [v4 touchedKey];
+  touchedKey = [v4 touchedKey];
 
   v6 = [(NSMutableArray *)self->_currentKeystrokeSequence objectAtIndex:(v3 - 2)];
-  v7 = [v6 touchedKey];
+  touchedKey2 = [v6 touchedKey];
 
-  if ([v5 length] == 1 && objc_msgSend(v7, "length") == 1 && (objc_msgSend(v5, "characterAtIndex:", 0), TICharIsSpace()) && (objc_msgSend(v7, "characterAtIndex:", 0), TICharIsAlphaNumeric()))
+  if ([touchedKey length] == 1 && objc_msgSend(touchedKey2, "length") == 1 && (objc_msgSend(touchedKey, "characterAtIndex:", 0), TICharIsSpace()) && (objc_msgSend(touchedKey2, "characterAtIndex:", 0), TICharIsAlphaNumeric()))
   {
     [(NSMutableArray *)self->_currentKeystrokeSequence removeLastObject];
     v8 = 1;
@@ -79,39 +79,39 @@
   return v8;
 }
 
-- (id)getDebugObject:(id)a3
+- (id)getDebugObject:(id)object
 {
   debugData = self->_debugData;
   if (debugData)
   {
-    debugData = [debugData objectForKey:a3];
+    debugData = [debugData objectForKey:object];
     v3 = vars8;
   }
 
   return debugData;
 }
 
-- (void)addDebugObject:(id)a3 forKey:(id)a4
+- (void)addDebugObject:(id)object forKey:(id)key
 {
   debugData = self->_debugData;
   if (debugData)
   {
-    [(NSMutableDictionary *)debugData setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)debugData setObject:object forKey:key];
   }
 }
 
-- (void)enumerateKeystrokesAndPathsForTokensWithBlock:(id)a3
+- (void)enumerateKeystrokesAndPathsForTokensWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(TITypingLog *)self keystrokesForTokens];
+  blockCopy = block;
+  keystrokesForTokens = [(TITypingLog *)self keystrokesForTokens];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__TITypingLog_enumerateKeystrokesAndPathsForTokensWithBlock___block_invoke;
   v7[3] = &unk_279DA0590;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [keystrokesForTokens enumerateObjectsUsingBlock:v7];
 }
 
 void __61__TITypingLog_enumerateKeystrokesAndPathsForTokensWithBlock___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -137,72 +137,72 @@ void __61__TITypingLog_enumerateKeystrokesAndPathsForTokensWithBlock___block_inv
   [(TITypingLog *)self finishKeystrokeWithTouchedKey:@"<Reject>" touchEvent:0 insertedKey:&stru_287EC4808];
 }
 
-- (void)logAcceptedCandidate:(id)a3 intendedTransliterationCandidate:(id)a4
+- (void)logAcceptedCandidate:(id)candidate intendedTransliterationCandidate:(id)transliterationCandidate
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"{%@}", v10];
-  [(TITypingLog *)self beginKeystrokeWithIntendedKey:v7 touchEvent:0 touchError:0];
-  [(TITypingLog *)self finishKeystrokeWithTouchedKey:v7 touchEvent:0 insertedKey:&stru_287EC4808];
-  if (v6)
+  candidateCopy = candidate;
+  transliterationCandidateCopy = transliterationCandidate;
+  candidateCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"{%@}", candidateCopy];
+  [(TITypingLog *)self beginKeystrokeWithIntendedKey:candidateCopy touchEvent:0 touchError:0];
+  [(TITypingLog *)self finishKeystrokeWithTouchedKey:candidateCopy touchEvent:0 insertedKey:&stru_287EC4808];
+  if (transliterationCandidateCopy)
   {
     self->_isTransliterating = 1;
-    v8 = [(NSMutableArray *)self->_correctedTransliterationForTokens lastObject];
-    [v8 appendString:v10];
+    lastObject = [(NSMutableArray *)self->_correctedTransliterationForTokens lastObject];
+    [lastObject appendString:candidateCopy];
 
-    v9 = [(NSMutableArray *)self->_intendedTransliterationForTokens lastObject];
-    [v9 appendString:v6];
+    lastObject2 = [(NSMutableArray *)self->_intendedTransliterationForTokens lastObject];
+    [lastObject2 appendString:transliterationCandidateCopy];
   }
 }
 
-- (void)registerPathStringAsKeyStrokes:(id)a3 path:(id)a4 predictionBarState:(id)a5
+- (void)registerPathStringAsKeyStrokes:(id)strokes path:(id)path predictionBarState:(id)state
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v15 length])
+  strokesCopy = strokes;
+  pathCopy = path;
+  stateCopy = state;
+  if ([strokesCopy length])
   {
     v10 = 0;
     v11 = 1;
     do
     {
-      v12 = [v15 substringWithRange:{v10, 1}];
+      v12 = [strokesCopy substringWithRange:{v10, 1}];
       [(TITypingLog *)self beginKeystrokeWithIntendedKey:0 touchEvent:0 touchError:0];
-      [(TITypingLog *)self finishKeystrokeWithTouchedKey:v12 touchEvent:0 insertedKey:v12 predictionBarState:v9 inlineCompletionBarState:0];
+      [(TITypingLog *)self finishKeystrokeWithTouchedKey:v12 touchEvent:0 insertedKey:v12 predictionBarState:stateCopy inlineCompletionBarState:0];
 
       v10 = v11;
     }
 
-    while ([v15 length] != v11++);
+    while ([strokesCopy length] != v11++);
   }
 
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSMutableArray count](self->_keystrokesForTokens, "count") - 1}];
-  [(NSMutableDictionary *)self->_pathsForTokens setObject:v8 forKeyedSubscript:v14];
+  [(NSMutableDictionary *)self->_pathsForTokens setObject:pathCopy forKeyedSubscript:v14];
 }
 
-- (void)finishKeystrokeWithTouchedKey:(id)a3 touchEvent:(id)a4 insertedKey:(id)a5 predictionBarState:(id)a6 inlineCompletionBarState:(id)a7
+- (void)finishKeystrokeWithTouchedKey:(id)key touchEvent:(id)event insertedKey:(id)insertedKey predictionBarState:(id)state inlineCompletionBarState:(id)barState
 {
-  if (a3)
+  if (key)
   {
-    v12 = a3;
+    keyCopy = key;
   }
 
   else
   {
-    v12 = @"<NoKey>";
+    keyCopy = @"<NoKey>";
   }
 
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [(TITypingLog *)self currentKeystroke];
-  [v18 setTouchedKey:v12];
+  barStateCopy = barState;
+  stateCopy = state;
+  insertedKeyCopy = insertedKey;
+  eventCopy = event;
+  keyCopy2 = key;
+  currentKeystroke = [(TITypingLog *)self currentKeystroke];
+  [currentKeystroke setTouchedKey:keyCopy];
 
-  if (v15)
+  if (insertedKeyCopy)
   {
-    v19 = v15;
+    v19 = insertedKeyCopy;
   }
 
   else
@@ -210,65 +210,65 @@ void __61__TITypingLog_enumerateKeystrokesAndPathsForTokensWithBlock___block_inv
     v19 = &stru_287EC4808;
   }
 
-  v20 = [(TITypingLog *)self currentKeystroke];
-  [v20 setInsertedKey:v19];
+  currentKeystroke2 = [(TITypingLog *)self currentKeystroke];
+  [currentKeystroke2 setInsertedKey:v19];
 
-  v21 = v16;
-  if (!v16)
+  v21 = eventCopy;
+  if (!eventCopy)
   {
     v21 = +[TITypingLog emptyTouchEventForLogging];
   }
 
-  v22 = [(TITypingLog *)self currentKeystroke];
-  [v22 setTouch:v21];
+  currentKeystroke3 = [(TITypingLog *)self currentKeystroke];
+  [currentKeystroke3 setTouch:v21];
 
-  if (!v16)
+  if (!eventCopy)
   {
   }
 
-  v23 = v14;
-  if (!v14)
+  array = stateCopy;
+  if (!stateCopy)
   {
-    v23 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v24 = [(TITypingLog *)self currentKeystroke];
-  [v24 setPredictionBarState:v23];
+  currentKeystroke4 = [(TITypingLog *)self currentKeystroke];
+  [currentKeystroke4 setPredictionBarState:array];
 
-  if (!v14)
+  if (!stateCopy)
   {
   }
 
-  v26 = v13;
-  if (!v13)
+  array2 = barStateCopy;
+  if (!barStateCopy)
   {
-    v26 = [MEMORY[0x277CBEA60] array];
+    array2 = [MEMORY[0x277CBEA60] array];
   }
 
-  v25 = [(TITypingLog *)self currentKeystroke];
-  [v25 setInlineCompletionBarState:v26];
+  currentKeystroke5 = [(TITypingLog *)self currentKeystroke];
+  [currentKeystroke5 setInlineCompletionBarState:array2];
 
-  if (!v13)
+  if (!barStateCopy)
   {
   }
 }
 
-- (void)beginKeystrokeWithIntendedKey:(id)a3 touchEvent:(id)a4 touchError:(id)a5 documentBefore:(id)a6
+- (void)beginKeystrokeWithIntendedKey:(id)key touchEvent:(id)event touchError:(id)error documentBefore:(id)before
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keyCopy = key;
+  eventCopy = event;
+  errorCopy = error;
+  beforeCopy = before;
   v14 = +[TIKeystrokeRecord keystrokeRecord];
   [(TITypingLog *)self setCurrentKeystroke:v14];
 
-  v15 = [(TITypingLog *)self currentKeystrokeSequence];
-  v16 = [(TITypingLog *)self currentKeystroke];
-  [v15 addObject:v16];
+  currentKeystrokeSequence = [(TITypingLog *)self currentKeystrokeSequence];
+  currentKeystroke = [(TITypingLog *)self currentKeystroke];
+  [currentKeystrokeSequence addObject:currentKeystroke];
 
-  if (v10)
+  if (keyCopy)
   {
-    v17 = v10;
+    v17 = keyCopy;
   }
 
   else
@@ -276,32 +276,32 @@ void __61__TITypingLog_enumerateKeystrokesAndPathsForTokensWithBlock___block_inv
     v17 = &stru_287EC4808;
   }
 
-  v18 = [(TITypingLog *)self currentKeystroke];
-  [v18 setIntendedKey:v17];
+  currentKeystroke2 = [(TITypingLog *)self currentKeystroke];
+  [currentKeystroke2 setIntendedKey:v17];
 
-  v19 = v11;
-  if (!v11)
+  v19 = eventCopy;
+  if (!eventCopy)
   {
     v19 = +[TITypingLog emptyTouchEventForLogging];
   }
 
-  v20 = [(TITypingLog *)self currentKeystroke];
-  [v20 setTouch:v19];
+  currentKeystroke3 = [(TITypingLog *)self currentKeystroke];
+  [currentKeystroke3 setTouch:v19];
 
-  if (!v11)
+  if (!eventCopy)
   {
   }
 
-  v21 = v12;
-  if (!v12)
+  v21 = errorCopy;
+  if (!errorCopy)
   {
     v21 = [TIPointError errorWithErrorVector:0.0, 0.0];
   }
 
-  v22 = [(TITypingLog *)self currentKeystroke];
-  [v22 setTouchError:v21];
+  currentKeystroke4 = [(TITypingLog *)self currentKeystroke];
+  [currentKeystroke4 setTouchError:v21];
 
-  if (!v12)
+  if (!errorCopy)
   {
   }
 
@@ -310,7 +310,7 @@ void __61__TITypingLog_enumerateKeystrokesAndPathsForTokensWithBlock___block_inv
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy_;
   v37 = __Block_byref_object_dispose_;
-  v23 = v13;
+  v23 = beforeCopy;
   v38 = v23;
   if ([v23 length] >= 0x21)
   {
@@ -350,21 +350,21 @@ void __82__TITypingLog_beginKeystrokeWithIntendedKey_touchEvent_touchError_docum
   }
 }
 
-- (void)beginKeystrokeWithIntendedKey:(id)a3 touchEvent:(id)a4 touchError:(id)a5
+- (void)beginKeystrokeWithIntendedKey:(id)key touchEvent:(id)event touchError:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  errorCopy = error;
+  eventCopy = event;
+  keyCopy = key;
   v11 = +[TIKeystrokeRecord keystrokeRecord];
   [(TITypingLog *)self setCurrentKeystroke:v11];
 
-  v12 = [(TITypingLog *)self currentKeystrokeSequence];
-  v13 = [(TITypingLog *)self currentKeystroke];
-  [v12 addObject:v13];
+  currentKeystrokeSequence = [(TITypingLog *)self currentKeystrokeSequence];
+  currentKeystroke = [(TITypingLog *)self currentKeystroke];
+  [currentKeystrokeSequence addObject:currentKeystroke];
 
-  if (v10)
+  if (keyCopy)
   {
-    v14 = v10;
+    v14 = keyCopy;
   }
 
   else
@@ -372,53 +372,53 @@ void __82__TITypingLog_beginKeystrokeWithIntendedKey_touchEvent_touchError_docum
     v14 = &stru_287EC4808;
   }
 
-  v15 = [(TITypingLog *)self currentKeystroke];
-  [v15 setIntendedKey:v14];
+  currentKeystroke2 = [(TITypingLog *)self currentKeystroke];
+  [currentKeystroke2 setIntendedKey:v14];
 
-  v16 = v9;
-  if (!v9)
+  v16 = eventCopy;
+  if (!eventCopy)
   {
     v16 = +[TITypingLog emptyTouchEventForLogging];
   }
 
-  v17 = [(TITypingLog *)self currentKeystroke];
-  [v17 setTouch:v16];
+  currentKeystroke3 = [(TITypingLog *)self currentKeystroke];
+  [currentKeystroke3 setTouch:v16];
 
-  if (!v9)
+  if (!eventCopy)
   {
   }
 
-  v19 = v8;
-  if (!v8)
+  v19 = errorCopy;
+  if (!errorCopy)
   {
     v19 = [TIPointError errorWithErrorVector:0.0, 0.0];
   }
 
-  v18 = [(TITypingLog *)self currentKeystroke];
-  [v18 setTouchError:v19];
+  currentKeystroke4 = [(TITypingLog *)self currentKeystroke];
+  [currentKeystroke4 setTouchError:v19];
 
-  if (!v8)
+  if (!errorCopy)
   {
   }
 }
 
 - (void)revisitPreviousToken
 {
-  v4 = [(NSMutableArray *)self->_keystrokesForTokens lastObject];
+  lastObject = [(NSMutableArray *)self->_keystrokesForTokens lastObject];
   [(NSMutableArray *)self->_keystrokesForTokens removeLastObject];
-  v3 = [(NSMutableArray *)self->_keystrokesForTokens lastObject];
-  [v3 addObjectsFromArray:v4];
-  [(TITypingLog *)self setCurrentKeystrokeSequence:v3];
+  lastObject2 = [(NSMutableArray *)self->_keystrokesForTokens lastObject];
+  [lastObject2 addObjectsFromArray:lastObject];
+  [(TITypingLog *)self setCurrentKeystrokeSequence:lastObject2];
 }
 
-- (void)setTokenIndex:(unint64_t)a3
+- (void)setTokenIndex:(unint64_t)index
 {
-  for (i = self->_keystrokesForTokens; [(NSMutableArray *)i count]<= a3; i = self->_keystrokesForTokens)
+  for (i = self->_keystrokesForTokens; [(NSMutableArray *)i count]<= index; i = self->_keystrokesForTokens)
   {
     [(TITypingLog *)self beginToken];
   }
 
-  v6 = a3 + 1;
+  v6 = index + 1;
   while (v6 < [(NSMutableArray *)self->_keystrokesForTokens count])
   {
     [(TITypingLog *)self revisitPreviousToken];
@@ -427,12 +427,12 @@ void __82__TITypingLog_beginKeystrokeWithIntendedKey_touchEvent_touchError_docum
 
 - (void)beginToken
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  [(TITypingLog *)self setCurrentKeystrokeSequence:v3];
+  array = [MEMORY[0x277CBEB18] array];
+  [(TITypingLog *)self setCurrentKeystrokeSequence:array];
 
   keystrokesForTokens = self->_keystrokesForTokens;
-  v5 = [(TITypingLog *)self currentKeystrokeSequence];
-  [(NSMutableArray *)keystrokesForTokens addObject:v5];
+  currentKeystrokeSequence = [(TITypingLog *)self currentKeystrokeSequence];
+  [(NSMutableArray *)keystrokesForTokens addObject:currentKeystrokeSequence];
 
   correctedTransliterationForTokens = self->_correctedTransliterationForTokens;
   v7 = [MEMORY[0x277CCAB68] stringWithString:&stru_287EC4808];
@@ -443,9 +443,9 @@ void __82__TITypingLog_beginKeystrokeWithIntendedKey_touchEvent_touchError_docum
   [(NSMutableArray *)intendedTransliterationForTokens addObject:v9];
 }
 
-- (TITypingLog)initWithDebug:(BOOL)a3
+- (TITypingLog)initWithDebug:(BOOL)debug
 {
-  v3 = a3;
+  debugCopy = debug;
   v16.receiver = self;
   v16.super_class = TITypingLog;
   v4 = [(TITypingLog *)&v16 init];
@@ -463,25 +463,25 @@ void __82__TITypingLog_beginKeystrokeWithIntendedKey_touchEvent_touchError_docum
     intendedTransliterationForTokens = v4->_intendedTransliterationForTokens;
     v4->_intendedTransliterationForTokens = v9;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     pathsForTokens = v4->_pathsForTokens;
-    v4->_pathsForTokens = v11;
+    v4->_pathsForTokens = dictionary;
 
     v4->_isTransliterating = 0;
-    if (v3)
+    if (debugCopy)
     {
-      v13 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
       debugData = v4->_debugData;
-      v4->_debugData = v13;
+      v4->_debugData = dictionary2;
     }
   }
 
   return v4;
 }
 
-+ (id)typingLogWithDebug:(BOOL)a3
++ (id)typingLogWithDebug:(BOOL)debug
 {
-  v3 = [[TITypingLog alloc] initWithDebug:a3];
+  v3 = [[TITypingLog alloc] initWithDebug:debug];
 
   return v3;
 }

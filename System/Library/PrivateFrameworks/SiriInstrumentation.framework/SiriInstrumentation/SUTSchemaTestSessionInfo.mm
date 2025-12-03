@@ -1,28 +1,28 @@
 @interface SUTSchemaTestSessionInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SUTSchemaTestSessionInfo)initWithDictionary:(id)a3;
-- (SUTSchemaTestSessionInfo)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SUTSchemaTestSessionInfo)initWithDictionary:(id)dictionary;
+- (SUTSchemaTestSessionInfo)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addTestSessionInfoItem:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTestSessionInfoItem:(id)item;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SUTSchemaTestSessionInfo
 
-- (SUTSchemaTestSessionInfo)initWithDictionary:(id)a3
+- (SUTSchemaTestSessionInfo)initWithDictionary:(id)dictionary
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v45.receiver = self;
   v45.super_class = SUTSchemaTestSessionInfo;
   v5 = [(SUTSchemaTestSessionInfo *)&v45 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"systemBuild"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"systemBuild"];
     objc_opt_class();
     v40 = v6;
     if (objc_opt_isKindOfClass())
@@ -31,7 +31,7 @@
       [(SUTSchemaTestSessionInfo *)v5 setSystemBuild:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"cpuArchitecture"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"cpuArchitecture"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,7 +39,7 @@
       [(SUTSchemaTestSessionInfo *)v5 setCpuArchitecture:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"hardwareModel"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"hardwareModel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,7 +47,7 @@
       [(SUTSchemaTestSessionInfo *)v5 setHardwareModel:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"modelNumber"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"modelNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -55,7 +55,7 @@
       [(SUTSchemaTestSessionInfo *)v5 setModelNumber:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"productType"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"productType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -63,7 +63,7 @@
       [(SUTSchemaTestSessionInfo *)v5 setProductType:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"productVersion"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"productVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,14 +71,14 @@
       [(SUTSchemaTestSessionInfo *)v5 setProductVersion:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"isSimulator"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"isSimulator"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SUTSchemaTestSessionInfo setIsSimulator:](v5, "setIsSimulator:", [v18 BOOLValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"bundleId"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"bundleId"];
     objc_opt_class();
     v39 = v19;
     if (objc_opt_isKindOfClass())
@@ -90,7 +90,7 @@
       v18 = v20;
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"deviceName"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"deviceName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,7 +98,7 @@
       [(SUTSchemaTestSessionInfo *)v5 setDeviceName:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"testSessionInfoItem"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"testSessionInfoItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -154,30 +154,30 @@
   return v5;
 }
 
-- (SUTSchemaTestSessionInfo)initWithJSON:(id)a3
+- (SUTSchemaTestSessionInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SUTSchemaTestSessionInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SUTSchemaTestSessionInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SUTSchemaTestSessionInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -191,72 +191,72 @@
 - (id)dictionaryRepresentation
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_bundleId)
   {
-    v4 = [(SUTSchemaTestSessionInfo *)self bundleId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"bundleId"];
+    bundleId = [(SUTSchemaTestSessionInfo *)self bundleId];
+    v5 = [bundleId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"bundleId"];
   }
 
   if (self->_cpuArchitecture)
   {
-    v6 = [(SUTSchemaTestSessionInfo *)self cpuArchitecture];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"cpuArchitecture"];
+    cpuArchitecture = [(SUTSchemaTestSessionInfo *)self cpuArchitecture];
+    v7 = [cpuArchitecture copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"cpuArchitecture"];
   }
 
   if (self->_deviceName)
   {
-    v8 = [(SUTSchemaTestSessionInfo *)self deviceName];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"deviceName"];
+    deviceName = [(SUTSchemaTestSessionInfo *)self deviceName];
+    v9 = [deviceName copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"deviceName"];
   }
 
   if (self->_hardwareModel)
   {
-    v10 = [(SUTSchemaTestSessionInfo *)self hardwareModel];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"hardwareModel"];
+    hardwareModel = [(SUTSchemaTestSessionInfo *)self hardwareModel];
+    v11 = [hardwareModel copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"hardwareModel"];
   }
 
   if (*&self->_has)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[SUTSchemaTestSessionInfo isSimulator](self, "isSimulator")}];
-    [v3 setObject:v12 forKeyedSubscript:@"isSimulator"];
+    [dictionary setObject:v12 forKeyedSubscript:@"isSimulator"];
   }
 
   if (self->_modelNumber)
   {
-    v13 = [(SUTSchemaTestSessionInfo *)self modelNumber];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"modelNumber"];
+    modelNumber = [(SUTSchemaTestSessionInfo *)self modelNumber];
+    v14 = [modelNumber copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"modelNumber"];
   }
 
   if (self->_productType)
   {
-    v15 = [(SUTSchemaTestSessionInfo *)self productType];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"productType"];
+    productType = [(SUTSchemaTestSessionInfo *)self productType];
+    v16 = [productType copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"productType"];
   }
 
   if (self->_productVersion)
   {
-    v17 = [(SUTSchemaTestSessionInfo *)self productVersion];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"productVersion"];
+    productVersion = [(SUTSchemaTestSessionInfo *)self productVersion];
+    v18 = [productVersion copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"productVersion"];
   }
 
   if (self->_systemBuild)
   {
-    v19 = [(SUTSchemaTestSessionInfo *)self systemBuild];
-    v20 = [v19 copy];
-    [v3 setObject:v20 forKeyedSubscript:@"systemBuild"];
+    systemBuild = [(SUTSchemaTestSessionInfo *)self systemBuild];
+    v20 = [systemBuild copy];
+    [dictionary setObject:v20 forKeyedSubscript:@"systemBuild"];
   }
 
   if ([(NSArray *)self->_testSessionInfoItems count])
   {
-    v21 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -276,16 +276,16 @@
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
-          if (v27)
+          dictionaryRepresentation = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v21 addObject:v27];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v28 = [MEMORY[0x1E695DFB0] null];
-            [v21 addObject:v28];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -295,12 +295,12 @@
       while (v24);
     }
 
-    [v3 setObject:v21 forKeyedSubscript:@"testSessionInfoItem"];
+    [dictionary setObject:array forKeyedSubscript:@"testSessionInfoItem"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v30];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v30];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -327,28 +327,28 @@
   return v10 ^ v12 ^ [(NSArray *)self->_testSessionInfoItems hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_50;
   }
 
-  v5 = [(SUTSchemaTestSessionInfo *)self systemBuild];
-  v6 = [v4 systemBuild];
-  if ((v5 != 0) == (v6 == 0))
+  systemBuild = [(SUTSchemaTestSessionInfo *)self systemBuild];
+  systemBuild2 = [equalCopy systemBuild];
+  if ((systemBuild != 0) == (systemBuild2 == 0))
   {
     goto LABEL_49;
   }
 
-  v7 = [(SUTSchemaTestSessionInfo *)self systemBuild];
-  if (v7)
+  systemBuild3 = [(SUTSchemaTestSessionInfo *)self systemBuild];
+  if (systemBuild3)
   {
-    v8 = v7;
-    v9 = [(SUTSchemaTestSessionInfo *)self systemBuild];
-    v10 = [v4 systemBuild];
-    v11 = [v9 isEqual:v10];
+    v8 = systemBuild3;
+    systemBuild4 = [(SUTSchemaTestSessionInfo *)self systemBuild];
+    systemBuild5 = [equalCopy systemBuild];
+    v11 = [systemBuild4 isEqual:systemBuild5];
 
     if (!v11)
     {
@@ -360,20 +360,20 @@
   {
   }
 
-  v5 = [(SUTSchemaTestSessionInfo *)self cpuArchitecture];
-  v6 = [v4 cpuArchitecture];
-  if ((v5 != 0) == (v6 == 0))
+  systemBuild = [(SUTSchemaTestSessionInfo *)self cpuArchitecture];
+  systemBuild2 = [equalCopy cpuArchitecture];
+  if ((systemBuild != 0) == (systemBuild2 == 0))
   {
     goto LABEL_49;
   }
 
-  v12 = [(SUTSchemaTestSessionInfo *)self cpuArchitecture];
-  if (v12)
+  cpuArchitecture = [(SUTSchemaTestSessionInfo *)self cpuArchitecture];
+  if (cpuArchitecture)
   {
-    v13 = v12;
-    v14 = [(SUTSchemaTestSessionInfo *)self cpuArchitecture];
-    v15 = [v4 cpuArchitecture];
-    v16 = [v14 isEqual:v15];
+    v13 = cpuArchitecture;
+    cpuArchitecture2 = [(SUTSchemaTestSessionInfo *)self cpuArchitecture];
+    cpuArchitecture3 = [equalCopy cpuArchitecture];
+    v16 = [cpuArchitecture2 isEqual:cpuArchitecture3];
 
     if (!v16)
     {
@@ -385,20 +385,20 @@
   {
   }
 
-  v5 = [(SUTSchemaTestSessionInfo *)self hardwareModel];
-  v6 = [v4 hardwareModel];
-  if ((v5 != 0) == (v6 == 0))
+  systemBuild = [(SUTSchemaTestSessionInfo *)self hardwareModel];
+  systemBuild2 = [equalCopy hardwareModel];
+  if ((systemBuild != 0) == (systemBuild2 == 0))
   {
     goto LABEL_49;
   }
 
-  v17 = [(SUTSchemaTestSessionInfo *)self hardwareModel];
-  if (v17)
+  hardwareModel = [(SUTSchemaTestSessionInfo *)self hardwareModel];
+  if (hardwareModel)
   {
-    v18 = v17;
-    v19 = [(SUTSchemaTestSessionInfo *)self hardwareModel];
-    v20 = [v4 hardwareModel];
-    v21 = [v19 isEqual:v20];
+    v18 = hardwareModel;
+    hardwareModel2 = [(SUTSchemaTestSessionInfo *)self hardwareModel];
+    hardwareModel3 = [equalCopy hardwareModel];
+    v21 = [hardwareModel2 isEqual:hardwareModel3];
 
     if (!v21)
     {
@@ -410,20 +410,20 @@
   {
   }
 
-  v5 = [(SUTSchemaTestSessionInfo *)self modelNumber];
-  v6 = [v4 modelNumber];
-  if ((v5 != 0) == (v6 == 0))
+  systemBuild = [(SUTSchemaTestSessionInfo *)self modelNumber];
+  systemBuild2 = [equalCopy modelNumber];
+  if ((systemBuild != 0) == (systemBuild2 == 0))
   {
     goto LABEL_49;
   }
 
-  v22 = [(SUTSchemaTestSessionInfo *)self modelNumber];
-  if (v22)
+  modelNumber = [(SUTSchemaTestSessionInfo *)self modelNumber];
+  if (modelNumber)
   {
-    v23 = v22;
-    v24 = [(SUTSchemaTestSessionInfo *)self modelNumber];
-    v25 = [v4 modelNumber];
-    v26 = [v24 isEqual:v25];
+    v23 = modelNumber;
+    modelNumber2 = [(SUTSchemaTestSessionInfo *)self modelNumber];
+    modelNumber3 = [equalCopy modelNumber];
+    v26 = [modelNumber2 isEqual:modelNumber3];
 
     if (!v26)
     {
@@ -435,20 +435,20 @@
   {
   }
 
-  v5 = [(SUTSchemaTestSessionInfo *)self productType];
-  v6 = [v4 productType];
-  if ((v5 != 0) == (v6 == 0))
+  systemBuild = [(SUTSchemaTestSessionInfo *)self productType];
+  systemBuild2 = [equalCopy productType];
+  if ((systemBuild != 0) == (systemBuild2 == 0))
   {
     goto LABEL_49;
   }
 
-  v27 = [(SUTSchemaTestSessionInfo *)self productType];
-  if (v27)
+  productType = [(SUTSchemaTestSessionInfo *)self productType];
+  if (productType)
   {
-    v28 = v27;
-    v29 = [(SUTSchemaTestSessionInfo *)self productType];
-    v30 = [v4 productType];
-    v31 = [v29 isEqual:v30];
+    v28 = productType;
+    productType2 = [(SUTSchemaTestSessionInfo *)self productType];
+    productType3 = [equalCopy productType];
+    v31 = [productType2 isEqual:productType3];
 
     if (!v31)
     {
@@ -460,20 +460,20 @@
   {
   }
 
-  v5 = [(SUTSchemaTestSessionInfo *)self productVersion];
-  v6 = [v4 productVersion];
-  if ((v5 != 0) == (v6 == 0))
+  systemBuild = [(SUTSchemaTestSessionInfo *)self productVersion];
+  systemBuild2 = [equalCopy productVersion];
+  if ((systemBuild != 0) == (systemBuild2 == 0))
   {
     goto LABEL_49;
   }
 
-  v32 = [(SUTSchemaTestSessionInfo *)self productVersion];
-  if (v32)
+  productVersion = [(SUTSchemaTestSessionInfo *)self productVersion];
+  if (productVersion)
   {
-    v33 = v32;
-    v34 = [(SUTSchemaTestSessionInfo *)self productVersion];
-    v35 = [v4 productVersion];
-    v36 = [v34 isEqual:v35];
+    v33 = productVersion;
+    productVersion2 = [(SUTSchemaTestSessionInfo *)self productVersion];
+    productVersion3 = [equalCopy productVersion];
+    v36 = [productVersion2 isEqual:productVersion3];
 
     if (!v36)
     {
@@ -485,7 +485,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[88] & 1))
+  if ((*&self->_has & 1) != (equalCopy[88] & 1))
   {
     goto LABEL_50;
   }
@@ -493,26 +493,26 @@
   if (*&self->_has)
   {
     isSimulator = self->_isSimulator;
-    if (isSimulator != [v4 isSimulator])
+    if (isSimulator != [equalCopy isSimulator])
     {
       goto LABEL_50;
     }
   }
 
-  v5 = [(SUTSchemaTestSessionInfo *)self bundleId];
-  v6 = [v4 bundleId];
-  if ((v5 != 0) == (v6 == 0))
+  systemBuild = [(SUTSchemaTestSessionInfo *)self bundleId];
+  systemBuild2 = [equalCopy bundleId];
+  if ((systemBuild != 0) == (systemBuild2 == 0))
   {
     goto LABEL_49;
   }
 
-  v38 = [(SUTSchemaTestSessionInfo *)self bundleId];
-  if (v38)
+  bundleId = [(SUTSchemaTestSessionInfo *)self bundleId];
+  if (bundleId)
   {
-    v39 = v38;
-    v40 = [(SUTSchemaTestSessionInfo *)self bundleId];
-    v41 = [v4 bundleId];
-    v42 = [v40 isEqual:v41];
+    v39 = bundleId;
+    bundleId2 = [(SUTSchemaTestSessionInfo *)self bundleId];
+    bundleId3 = [equalCopy bundleId];
+    v42 = [bundleId2 isEqual:bundleId3];
 
     if (!v42)
     {
@@ -524,20 +524,20 @@
   {
   }
 
-  v5 = [(SUTSchemaTestSessionInfo *)self deviceName];
-  v6 = [v4 deviceName];
-  if ((v5 != 0) == (v6 == 0))
+  systemBuild = [(SUTSchemaTestSessionInfo *)self deviceName];
+  systemBuild2 = [equalCopy deviceName];
+  if ((systemBuild != 0) == (systemBuild2 == 0))
   {
     goto LABEL_49;
   }
 
-  v43 = [(SUTSchemaTestSessionInfo *)self deviceName];
-  if (v43)
+  deviceName = [(SUTSchemaTestSessionInfo *)self deviceName];
+  if (deviceName)
   {
-    v44 = v43;
-    v45 = [(SUTSchemaTestSessionInfo *)self deviceName];
-    v46 = [v4 deviceName];
-    v47 = [v45 isEqual:v46];
+    v44 = deviceName;
+    deviceName2 = [(SUTSchemaTestSessionInfo *)self deviceName];
+    deviceName3 = [equalCopy deviceName];
+    v47 = [deviceName2 isEqual:deviceName3];
 
     if (!v47)
     {
@@ -549,12 +549,12 @@
   {
   }
 
-  v5 = [(SUTSchemaTestSessionInfo *)self testSessionInfoItems];
-  v6 = [v4 testSessionInfoItems];
-  if ((v5 != 0) != (v6 == 0))
+  systemBuild = [(SUTSchemaTestSessionInfo *)self testSessionInfoItems];
+  systemBuild2 = [equalCopy testSessionInfoItems];
+  if ((systemBuild != 0) != (systemBuild2 == 0))
   {
-    v48 = [(SUTSchemaTestSessionInfo *)self testSessionInfoItems];
-    if (!v48)
+    testSessionInfoItems = [(SUTSchemaTestSessionInfo *)self testSessionInfoItems];
+    if (!testSessionInfoItems)
     {
 
 LABEL_53:
@@ -562,10 +562,10 @@ LABEL_53:
       goto LABEL_51;
     }
 
-    v49 = v48;
-    v50 = [(SUTSchemaTestSessionInfo *)self testSessionInfoItems];
-    v51 = [v4 testSessionInfoItems];
-    v52 = [v50 isEqual:v51];
+    v49 = testSessionInfoItems;
+    testSessionInfoItems2 = [(SUTSchemaTestSessionInfo *)self testSessionInfoItems];
+    testSessionInfoItems3 = [equalCopy testSessionInfoItems];
+    v52 = [testSessionInfoItems2 isEqual:testSessionInfoItems3];
 
     if (v52)
     {
@@ -585,48 +585,48 @@ LABEL_51:
   return v53;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SUTSchemaTestSessionInfo *)self systemBuild];
+  toCopy = to;
+  systemBuild = [(SUTSchemaTestSessionInfo *)self systemBuild];
 
-  if (v5)
+  if (systemBuild)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(SUTSchemaTestSessionInfo *)self cpuArchitecture];
+  cpuArchitecture = [(SUTSchemaTestSessionInfo *)self cpuArchitecture];
 
-  if (v6)
+  if (cpuArchitecture)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(SUTSchemaTestSessionInfo *)self hardwareModel];
+  hardwareModel = [(SUTSchemaTestSessionInfo *)self hardwareModel];
 
-  if (v7)
+  if (hardwareModel)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(SUTSchemaTestSessionInfo *)self modelNumber];
+  modelNumber = [(SUTSchemaTestSessionInfo *)self modelNumber];
 
-  if (v8)
+  if (modelNumber)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(SUTSchemaTestSessionInfo *)self productType];
+  productType = [(SUTSchemaTestSessionInfo *)self productType];
 
-  if (v9)
+  if (productType)
   {
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(SUTSchemaTestSessionInfo *)self productVersion];
+  productVersion = [(SUTSchemaTestSessionInfo *)self productVersion];
 
-  if (v10)
+  if (productVersion)
   {
     PBDataWriterWriteStringField();
   }
@@ -636,16 +636,16 @@ LABEL_51:
     PBDataWriterWriteBOOLField();
   }
 
-  v11 = [(SUTSchemaTestSessionInfo *)self bundleId];
+  bundleId = [(SUTSchemaTestSessionInfo *)self bundleId];
 
-  if (v11)
+  if (bundleId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(SUTSchemaTestSessionInfo *)self deviceName];
+  deviceName = [(SUTSchemaTestSessionInfo *)self deviceName];
 
-  if (v12)
+  if (deviceName)
   {
     PBDataWriterWriteStringField();
   }
@@ -682,32 +682,32 @@ LABEL_51:
   }
 }
 
-- (void)addTestSessionInfoItem:(id)a3
+- (void)addTestSessionInfoItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   testSessionInfoItems = self->_testSessionInfoItems;
-  v8 = v4;
+  v8 = itemCopy;
   if (!testSessionInfoItems)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_testSessionInfoItems;
-    self->_testSessionInfoItems = v6;
+    self->_testSessionInfoItems = array;
 
-    v4 = v8;
+    itemCopy = v8;
     testSessionInfoItems = self->_testSessionInfoItems;
   }
 
-  [(NSArray *)testSessionInfoItems addObject:v4];
+  [(NSArray *)testSessionInfoItems addObject:itemCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SUTSchemaTestSessionInfo;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SUTSchemaTestSessionInfo *)self testSessionInfoItems:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(SUTSchemaTestSessionInfo *)self setTestSessionInfoItems:v7];
 

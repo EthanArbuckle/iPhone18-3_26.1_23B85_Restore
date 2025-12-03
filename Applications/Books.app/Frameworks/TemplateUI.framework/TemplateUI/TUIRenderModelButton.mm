@@ -1,51 +1,51 @@
 @interface TUIRenderModelButton
-- (BOOL)isEqualToRenderModel:(id)a3;
-- (TUIRenderModelButton)initWithReuseIdentifier:(id)a3 identifier:(id)a4 style:(id)a5 stateToButtonAttributes:(id)a6 stateToRenderModel:(id)a7 imageModelIDToResource:(id)a8 actionHandler:(id)a9 viewState:(id)a10 linkEntities:(id)a11 type:(unint64_t)a12 role:(unint64_t)a13 userInterfaceStyle:(unint64_t)a14 enabled:(BOOL)a15 pressScale:(double)a16 touchInsets:(UIEdgeInsets)a17 pointer:(id)a18 focusStyle:(id)a19 menu:(id)a20 contextMenuIsPrimaryAction:(BOOL)a21 name:(id)a22 axAttributes:(id)a23 enableBackgroundForHighlightPreview:(BOOL)a24 enableShadowForHighlightPreview:(BOOL)a25;
-- (id)_copyAppearanceWithFlags:(unint64_t)a3 statesCopyProc:(void *)a4;
+- (BOOL)isEqualToRenderModel:(id)model;
+- (TUIRenderModelButton)initWithReuseIdentifier:(id)identifier identifier:(id)a4 style:(id)style stateToButtonAttributes:(id)attributes stateToRenderModel:(id)model imageModelIDToResource:(id)resource actionHandler:(id)handler viewState:(id)self0 linkEntities:(id)self1 type:(unint64_t)self2 role:(unint64_t)self3 userInterfaceStyle:(unint64_t)self4 enabled:(BOOL)self5 pressScale:(double)self6 touchInsets:(UIEdgeInsets)self7 pointer:(id)self8 focusStyle:(id)self9 menu:(id)menu contextMenuIsPrimaryAction:(BOOL)action name:(id)name axAttributes:(id)axAttributes enableBackgroundForHighlightPreview:(BOOL)preview enableShadowForHighlightPreview:(BOOL)highlightPreview;
+- (id)_copyAppearanceWithFlags:(unint64_t)flags statesCopyProc:(void *)proc;
 - (id)description;
 @end
 
 @implementation TUIRenderModelButton
 
-- (TUIRenderModelButton)initWithReuseIdentifier:(id)a3 identifier:(id)a4 style:(id)a5 stateToButtonAttributes:(id)a6 stateToRenderModel:(id)a7 imageModelIDToResource:(id)a8 actionHandler:(id)a9 viewState:(id)a10 linkEntities:(id)a11 type:(unint64_t)a12 role:(unint64_t)a13 userInterfaceStyle:(unint64_t)a14 enabled:(BOOL)a15 pressScale:(double)a16 touchInsets:(UIEdgeInsets)a17 pointer:(id)a18 focusStyle:(id)a19 menu:(id)a20 contextMenuIsPrimaryAction:(BOOL)a21 name:(id)a22 axAttributes:(id)a23 enableBackgroundForHighlightPreview:(BOOL)a24 enableShadowForHighlightPreview:(BOOL)a25
+- (TUIRenderModelButton)initWithReuseIdentifier:(id)identifier identifier:(id)a4 style:(id)style stateToButtonAttributes:(id)attributes stateToRenderModel:(id)model imageModelIDToResource:(id)resource actionHandler:(id)handler viewState:(id)self0 linkEntities:(id)self1 type:(unint64_t)self2 role:(unint64_t)self3 userInterfaceStyle:(unint64_t)self4 enabled:(BOOL)self5 pressScale:(double)self6 touchInsets:(UIEdgeInsets)self7 pointer:(id)self8 focusStyle:(id)self9 menu:(id)menu contextMenuIsPrimaryAction:(BOOL)action name:(id)name axAttributes:(id)axAttributes enableBackgroundForHighlightPreview:(BOOL)preview enableShadowForHighlightPreview:(BOOL)highlightPreview
 {
-  right = a17.right;
-  bottom = a17.bottom;
-  left = a17.left;
-  top = a17.top;
-  v32 = a6;
-  v33 = a11;
-  v34 = a23;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  attributesCopy = attributes;
+  entitiesCopy = entities;
+  axAttributesCopy = axAttributes;
   v46.receiver = self;
   v46.super_class = TUIRenderModelButton;
-  v35 = [(TUIRenderModelInteractive *)&v46 initWithReuseIdentifier:a3 identifier:a4 style:a5 elementStates:a7 imageModelIDToResource:a8 actionHandler:a9 viewState:a16 enabled:top pressScale:left touchInsets:bottom pointer:right focusStyle:a10 menu:a15 name:a18, a19, a20, a22];
-  if (v35)
+  name = [(TUIRenderModelInteractive *)&v46 initWithReuseIdentifier:identifier identifier:a4 style:style elementStates:model imageModelIDToResource:resource actionHandler:handler viewState:scale enabled:top pressScale:left touchInsets:bottom pointer:right focusStyle:state menu:enabled name:pointer, focusStyle, menu, name];
+  if (name)
   {
-    v36 = [v33 copy];
-    linkEntities = v35->_linkEntities;
-    v35->_linkEntities = v36;
+    v36 = [entitiesCopy copy];
+    linkEntities = name->_linkEntities;
+    name->_linkEntities = v36;
 
-    v38 = [v32 copy];
-    stateToButtonAttributes = v35->_stateToButtonAttributes;
-    v35->_stateToButtonAttributes = v38;
+    v38 = [attributesCopy copy];
+    stateToButtonAttributes = name->_stateToButtonAttributes;
+    name->_stateToButtonAttributes = v38;
 
-    v35->_type = a12;
-    v35->_role = a13;
-    v35->_userInterfaceStyle = a14;
-    objc_storeStrong(&v35->_axAttributes, a23);
-    v35->_contextMenuIsPrimaryAction = a21;
-    v35->_enableBackgroundForHighlightPreview = a24;
-    v35->_enableShadowForHighlightPreview = a25;
+    name->_type = type;
+    name->_role = role;
+    name->_userInterfaceStyle = interfaceStyle;
+    objc_storeStrong(&name->_axAttributes, axAttributes);
+    name->_contextMenuIsPrimaryAction = action;
+    name->_enableBackgroundForHighlightPreview = preview;
+    name->_enableShadowForHighlightPreview = highlightPreview;
   }
 
-  return v35;
+  return name;
 }
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, modelCopy);
 
   v20.receiver = self;
   v20.super_class = TUIRenderModelButton;
@@ -73,17 +73,17 @@
   }
 
   stateToButtonAttributes = self->_stateToButtonAttributes;
-  v11 = [v6 stateToButtonAttributes];
-  v12 = v11;
-  if (stateToButtonAttributes == v11)
+  stateToButtonAttributes = [v6 stateToButtonAttributes];
+  v12 = stateToButtonAttributes;
+  if (stateToButtonAttributes == stateToButtonAttributes)
   {
   }
 
   else
   {
     v13 = self->_stateToButtonAttributes;
-    v14 = [v6 stateToButtonAttributes];
-    LODWORD(v13) = [(NSDictionary *)v13 isEqualToDictionary:v14];
+    stateToButtonAttributes2 = [v6 stateToButtonAttributes];
+    LODWORD(v13) = [(NSDictionary *)v13 isEqualToDictionary:stateToButtonAttributes2];
 
     if (!v13)
     {
@@ -92,9 +92,9 @@
   }
 
   axAttributes = self->_axAttributes;
-  v16 = [v6 axAttributes];
+  axAttributes = [v6 axAttributes];
 
-  if (axAttributes == v16)
+  if (axAttributes == axAttributes)
   {
     contextMenuIsPrimaryAction = self->_contextMenuIsPrimaryAction;
     v17 = contextMenuIsPrimaryAction == [v6 contextMenuIsPrimaryAction];
@@ -114,31 +114,31 @@ LABEL_11:
   v4 = NSStringFromClass(v3);
   type = self->_type;
   role = self->_role;
-  v7 = [(TUIRenderModelInteractive *)self enabled];
+  enabled = [(TUIRenderModelInteractive *)self enabled];
   stateToButtonAttributes = self->_stateToButtonAttributes;
-  v9 = [(TUIRenderModelInteractive *)self stateToModel];
-  v10 = [NSString stringWithFormat:@"<%@ %p type=%lu role=%lu enabled=%d stateToAttr=%@ stateToModel=%@>", v4, self, type, role, v7, stateToButtonAttributes, v9];
+  stateToModel = [(TUIRenderModelInteractive *)self stateToModel];
+  v10 = [NSString stringWithFormat:@"<%@ %p type=%lu role=%lu enabled=%d stateToAttr=%@ stateToModel=%@>", v4, self, type, role, enabled, stateToButtonAttributes, stateToModel];
 
   return v10;
 }
 
-- (id)_copyAppearanceWithFlags:(unint64_t)a3 statesCopyProc:(void *)a4
+- (id)_copyAppearanceWithFlags:(unint64_t)flags statesCopyProc:(void *)proc
 {
   v40 = objc_alloc(objc_opt_class());
-  v44 = [(TUIRenderModelInteractive *)self reuseIdentifier];
-  v42 = [(TUIRenderModelInteractive *)self identifier];
-  v39 = [(TUIRenderModelInteractive *)self style];
-  v38 = [(TUIRenderModelButton *)self stateToButtonAttributes];
-  v43 = [(TUIRenderModelInteractive *)self stateToModel];
-  v37 = (a4)(v43, a3);
-  v36 = [(TUIRenderModelInteractive *)self imageModelIDToResource];
-  v30 = [(TUIRenderModelInteractive *)self actionHandler];
-  v29 = [(TUIRenderModelInteractive *)self viewState];
-  v35 = [(TUIRenderModelButton *)self linkEntities];
-  v34 = [(TUIRenderModelButton *)self type];
-  v33 = [(TUIRenderModelButton *)self role];
-  v32 = [(TUIRenderModelButton *)self userInterfaceStyle];
-  v31 = [(TUIRenderModelInteractive *)self enabled];
+  reuseIdentifier = [(TUIRenderModelInteractive *)self reuseIdentifier];
+  identifier = [(TUIRenderModelInteractive *)self identifier];
+  style = [(TUIRenderModelInteractive *)self style];
+  stateToButtonAttributes = [(TUIRenderModelButton *)self stateToButtonAttributes];
+  stateToModel = [(TUIRenderModelInteractive *)self stateToModel];
+  v37 = (proc)(stateToModel, flags);
+  imageModelIDToResource = [(TUIRenderModelInteractive *)self imageModelIDToResource];
+  actionHandler = [(TUIRenderModelInteractive *)self actionHandler];
+  viewState = [(TUIRenderModelInteractive *)self viewState];
+  linkEntities = [(TUIRenderModelButton *)self linkEntities];
+  type = [(TUIRenderModelButton *)self type];
+  role = [(TUIRenderModelButton *)self role];
+  userInterfaceStyle = [(TUIRenderModelButton *)self userInterfaceStyle];
+  enabled = [(TUIRenderModelInteractive *)self enabled];
   [(TUIRenderModelInteractive *)self pressScale];
   v8 = v7;
   [(TUIRenderModelInteractive *)self touchInsets];
@@ -146,23 +146,23 @@ LABEL_11:
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v28 = [(TUIRenderModelInteractive *)self pointer];
-  v27 = [(TUIRenderModelInteractive *)self focusStyle];
-  v17 = [(TUIRenderModelInteractive *)self menu];
-  v18 = [(TUIRenderModelButton *)self contextMenuIsPrimaryAction];
-  v19 = [(TUIRenderModelInteractive *)self name];
-  v20 = [(TUIRenderModelButton *)self axAttributes];
-  v21 = [(TUIRenderModelButton *)self enableBackgroundForHighlightPreview];
+  pointer = [(TUIRenderModelInteractive *)self pointer];
+  focusStyle = [(TUIRenderModelInteractive *)self focusStyle];
+  menu = [(TUIRenderModelInteractive *)self menu];
+  contextMenuIsPrimaryAction = [(TUIRenderModelButton *)self contextMenuIsPrimaryAction];
+  name = [(TUIRenderModelInteractive *)self name];
+  axAttributes = [(TUIRenderModelButton *)self axAttributes];
+  enableBackgroundForHighlightPreview = [(TUIRenderModelButton *)self enableBackgroundForHighlightPreview];
   BYTE1(v26) = [(TUIRenderModelButton *)self enableShadowForHighlightPreview];
-  LOBYTE(v26) = v21;
-  LOBYTE(v25) = v18;
-  LOBYTE(v24) = v31;
-  v41 = [v40 initWithReuseIdentifier:v44 identifier:v42 style:v39 stateToButtonAttributes:v38 stateToRenderModel:v37 imageModelIDToResource:v36 actionHandler:v8 viewState:v10 linkEntities:v12 type:v14 role:v16 userInterfaceStyle:v30 enabled:v29 pressScale:v35 touchInsets:v34 pointer:v33 focusStyle:v32 menu:v24 contextMenuIsPrimaryAction:v28 name:v27 axAttributes:v17 enableBackgroundForHighlightPreview:v25 enableShadowForHighlightPreview:{v19, v20, v26}];
+  LOBYTE(v26) = enableBackgroundForHighlightPreview;
+  LOBYTE(v25) = contextMenuIsPrimaryAction;
+  LOBYTE(v24) = enabled;
+  v41 = [v40 initWithReuseIdentifier:reuseIdentifier identifier:identifier style:style stateToButtonAttributes:stateToButtonAttributes stateToRenderModel:v37 imageModelIDToResource:imageModelIDToResource actionHandler:v8 viewState:v10 linkEntities:v12 type:v14 role:v16 userInterfaceStyle:actionHandler enabled:viewState pressScale:linkEntities touchInsets:type pointer:role focusStyle:userInterfaceStyle menu:v24 contextMenuIsPrimaryAction:pointer name:focusStyle axAttributes:menu enableBackgroundForHighlightPreview:v25 enableShadowForHighlightPreview:{name, axAttributes, v26}];
 
   TUIRenderModelCopyProperties(v41, self);
-  v22 = self;
+  selfCopy = self;
 
-  return v22;
+  return selfCopy;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface VNCIContextManager
 - (VNCIContextManager)init;
-- (id)waitAndGetAvailableContextForCPUAndReturnError:(uint64_t)a1;
-- (id)waitAndGetAvailableContextForComputeDevice:(void *)a3 error:;
-- (id)waitAndGetAvailableContextForMetalDevice:(uint64_t)a1 error:(void *)a2;
-- (id)waitAndGetAvailableContextFromOptions:(void *)a3 error:;
-- (uint64_t)performBlock:(void *)a3 usingAvailableContextForComputeDevice:(void *)a4 error:;
-- (void)releaseContext:(uint64_t)a1;
+- (id)waitAndGetAvailableContextForCPUAndReturnError:(uint64_t)error;
+- (id)waitAndGetAvailableContextForComputeDevice:(void *)device error:;
+- (id)waitAndGetAvailableContextForMetalDevice:(uint64_t)device error:(void *)error;
+- (id)waitAndGetAvailableContextFromOptions:(void *)options error:;
+- (uint64_t)performBlock:(void *)block usingAvailableContextForComputeDevice:(void *)device error:;
+- (void)releaseContext:(uint64_t)context;
 @end
 
 @implementation VNCIContextManager
@@ -41,33 +41,33 @@
   return v4;
 }
 
-- (id)waitAndGetAvailableContextForComputeDevice:(void *)a3 error:
+- (id)waitAndGetAvailableContextForComputeDevice:(void *)device error:
 {
   v5 = a2;
   if (v5)
   {
     if ([VNComputeDeviceUtilities isCPUComputeDevice:v5])
     {
-      v6 = [VNCIContextManager waitAndGetAvailableContextForCPUAndReturnError:a1];
+      v6 = [VNCIContextManager waitAndGetAvailableContextForCPUAndReturnError:self];
     }
 
     else
     {
-      v7 = [VNComputeDeviceUtilities metalDeviceForComputeDevice:v5];
-      if (!v7)
+      metalDevice = [VNComputeDeviceUtilities metalDeviceForComputeDevice:v5];
+      if (!metalDevice)
       {
         v8 = +[VNProcessingDevice defaultMetalDevice];
-        v7 = [v8 metalDevice];
+        metalDevice = [v8 metalDevice];
       }
 
-      v6 = [VNCIContextManager waitAndGetAvailableContextForMetalDevice:a1 error:v7];
+      v6 = [VNCIContextManager waitAndGetAvailableContextForMetalDevice:self error:metalDevice];
     }
   }
 
-  else if (a3)
+  else if (device)
   {
     [VNError errorForInvalidArgument:0 named:@"computeDevice"];
-    *a3 = v6 = 0;
+    *device = v6 = 0;
   }
 
   else
@@ -78,70 +78,70 @@
   return v6;
 }
 
-- (id)waitAndGetAvailableContextForCPUAndReturnError:(uint64_t)a1
+- (id)waitAndGetAvailableContextForCPUAndReturnError:(uint64_t)error
 {
   v1 = [VNCIContextsHandler waitAndGetAvailableContextReturnError:?];
 
   return v1;
 }
 
-- (id)waitAndGetAvailableContextForMetalDevice:(uint64_t)a1 error:(void *)a2
+- (id)waitAndGetAvailableContextForMetalDevice:(uint64_t)device error:(void *)error
 {
-  v3 = a2;
-  os_unfair_lock_lock((a1 + 24));
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{objc_msgSend(v3, "registryID")}];
-  v5 = [*(a1 + 16) objectForKey:v4];
+  errorCopy = error;
+  os_unfair_lock_lock((device + 24));
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{objc_msgSend(errorCopy, "registryID")}];
+  v5 = [*(device + 16) objectForKey:v4];
   if (!v5)
   {
-    v5 = [[VNCIContextsHandler alloc] initWithMaxCount:v3 metalDevice:?];
-    [*(a1 + 16) setObject:? forKey:?];
+    v5 = [[VNCIContextsHandler alloc] initWithMaxCount:errorCopy metalDevice:?];
+    [*(device + 16) setObject:? forKey:?];
   }
 
-  os_unfair_lock_unlock((a1 + 24));
+  os_unfair_lock_unlock((device + 24));
   v6 = [VNCIContextsHandler waitAndGetAvailableContextReturnError:v5];
 
   return v6;
 }
 
-- (id)waitAndGetAvailableContextFromOptions:(void *)a3 error:
+- (id)waitAndGetAvailableContextFromOptions:(void *)options error:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v7 = [v5 objectForKeyedSubscript:@"VNDetectorOption_ComputeStageDeviceAssignments"];
     v8 = [v7 objectForKeyedSubscript:@"VNComputeStageMain"];
 
     if (v8)
     {
-      a1 = [(VNCIContextManager *)a1 waitAndGetAvailableContextForComputeDevice:v8 error:a3];
+      self = [(VNCIContextManager *)self waitAndGetAvailableContextForComputeDevice:v8 error:options];
     }
 
     else
     {
       v9 = +[VNProcessingDevice defaultMetalDevice];
-      v10 = [v9 metalDevice];
+      metalDevice = [v9 metalDevice];
 
-      if (v10)
+      if (metalDevice)
       {
-        [VNCIContextManager waitAndGetAvailableContextForMetalDevice:a1 error:v10];
+        [VNCIContextManager waitAndGetAvailableContextForMetalDevice:self error:metalDevice];
       }
 
       else
       {
-        [VNCIContextManager waitAndGetAvailableContextForCPUAndReturnError:a1];
+        [VNCIContextManager waitAndGetAvailableContextForCPUAndReturnError:self];
       }
-      a1 = ;
+      self = ;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)releaseContext:(uint64_t)a1
+- (void)releaseContext:(uint64_t)context
 {
   v3 = a2;
-  if (a1)
+  if (context)
   {
     v7 = v3;
     if (v3)
@@ -176,19 +176,19 @@
   }
 }
 
-- (uint64_t)performBlock:(void *)a3 usingAvailableContextForComputeDevice:(void *)a4 error:
+- (uint64_t)performBlock:(void *)block usingAvailableContextForComputeDevice:(void *)device error:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  blockCopy = block;
+  if (self)
   {
-    v9 = [(VNCIContextManager *)a1 waitAndGetAvailableContextForComputeDevice:v8 error:a4];
+    v9 = [(VNCIContextManager *)self waitAndGetAvailableContextForComputeDevice:blockCopy error:device];
     if (v9)
     {
       v10 = v7;
       v11 = v9;
-      v12 = v10[2](v10, v11, a4);
-      [(VNCIContextManager *)a1 releaseContext:v11];
+      v12 = v10[2](v10, v11, device);
+      [(VNCIContextManager *)self releaseContext:v11];
     }
 
     else

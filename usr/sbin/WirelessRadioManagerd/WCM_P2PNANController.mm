@@ -1,10 +1,10 @@
 @interface WCM_P2PNANController
 - (WCM_P2PNANController)init;
 - (void)dealloc;
-- (void)handleDisconnection:(id)a3;
-- (void)handleMessage:(id)a3;
-- (void)handleNANOn:(id)a3;
-- (void)handleNANRealTimeOn:(id)a3;
+- (void)handleDisconnection:(id)disconnection;
+- (void)handleMessage:(id)message;
+- (void)handleNANOn:(id)on;
+- (void)handleNANRealTimeOn:(id)on;
 @end
 
 @implementation WCM_P2PNANController
@@ -32,22 +32,22 @@
   [(WCM_Controller *)&v2 dealloc];
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kMessageId");
+  uint64 = xpc_dictionary_get_uint64(message, "kMessageId");
   if (uint64)
   {
     [WCM_Logging logLevel:2 message:@"Received P2PNAN message-id: %lld", uint64];
     if (uint64 == 2703)
     {
 
-      [(WCM_P2PNANController *)self handleNANRealTimeOn:a3];
+      [(WCM_P2PNANController *)self handleNANRealTimeOn:message];
     }
 
     else if (uint64 == 2701)
     {
 
-      [(WCM_P2PNANController *)self handleNANOn:a3];
+      [(WCM_P2PNANController *)self handleNANOn:message];
     }
 
     else
@@ -63,7 +63,7 @@
   }
 }
 
-- (void)handleDisconnection:(id)a3
+- (void)handleDisconnection:(id)disconnection
 {
   [WCM_Logging logLevel:2 message:@"P2PNANController handleDisconnection"];
   [(WCM_P2PNANController *)self setMNanEnabled:0];
@@ -71,9 +71,9 @@
   [(WCM_P2PNANController *)self setMNanRealTimeEnabled:0];
 }
 
-- (void)handleNANOn:(id)a3
+- (void)handleNANOn:(id)on
 {
-  dictionary = xpc_dictionary_get_dictionary(a3, "kMessageArgs");
+  dictionary = xpc_dictionary_get_dictionary(on, "kMessageArgs");
   v5 = xpc_dictionary_get_BOOL(dictionary, "kWCMP2PNANOn");
   [WCM_Logging logLevel:2 message:@"Received from P2P NAN Controller NANOn:(%d -> %d)", [(WCM_P2PNANController *)self mNanEnabled], v5];
   if (v5 != [(WCM_P2PNANController *)self mNanEnabled])
@@ -91,9 +91,9 @@
   [v6 updateNANState:v5];
 }
 
-- (void)handleNANRealTimeOn:(id)a3
+- (void)handleNANRealTimeOn:(id)on
 {
-  dictionary = xpc_dictionary_get_dictionary(a3, "kMessageArgs");
+  dictionary = xpc_dictionary_get_dictionary(on, "kMessageArgs");
   v5 = xpc_dictionary_get_BOOL(dictionary, "kWCMP2PNANRealTimeOn");
   [WCM_Logging logLevel:2 message:@"Received from P2P NAN Controller RealTimeNANOn:(%d -> %d)", [(WCM_P2PNANController *)self mNanRealTimeEnabled], v5];
   if (v5 != [(WCM_P2PNANController *)self mNanRealTimeEnabled])

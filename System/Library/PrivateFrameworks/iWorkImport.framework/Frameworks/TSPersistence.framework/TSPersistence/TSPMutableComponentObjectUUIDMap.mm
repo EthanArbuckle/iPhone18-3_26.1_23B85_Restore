@@ -1,13 +1,13 @@
 @interface TSPMutableComponentObjectUUIDMap
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)setObjectUUID:(id)a3 forIdentifier:(int64_t)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)setObjectUUID:(id)d forIdentifier:(int64_t)identifier;
 @end
 
 @implementation TSPMutableComponentObjectUUIDMap
 
-- (id)setObjectUUID:(id)a3 forIdentifier:(int64_t)a4
+- (id)setObjectUUID:(id)d forIdentifier:(int64_t)identifier
 {
-  a3;
+  d;
   if (!self->super._identifierToUUIDMap)
   {
     operator new();
@@ -21,9 +21,9 @@
   sub_276ACE740();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(TSPComponentObjectUUIDMap, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(TSPComponentObjectUUIDMap, a2, zone);
 
   return MEMORY[0x2821F9670](v4, sel_initWithComponentObjectUUIDMap_, self);
 }

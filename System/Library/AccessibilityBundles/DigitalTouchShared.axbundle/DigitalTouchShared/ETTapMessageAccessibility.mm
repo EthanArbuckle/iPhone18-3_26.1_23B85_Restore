@@ -1,32 +1,32 @@
 @interface ETTapMessageAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
-- (void)displayInScene:(id)a3;
+- (void)displayInScene:(id)scene;
 @end
 
 @implementation ETTapMessageAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ETTapMessage"];
-  [v3 validateClass:@"ETTapMessage" isKindOfClass:@"ETMessage"];
-  [v3 validateClass:@"ETTapMessage" hasInstanceMethod:@"displayInScene:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ETTapMessage"];
+  [validationsCopy validateClass:@"ETTapMessage" isKindOfClass:@"ETMessage"];
+  [validationsCopy validateClass:@"ETTapMessage" hasInstanceMethod:@"displayInScene:" withFullSignature:{"v", "@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = MEMORY[0x29EDBA0F8];
   v4 = accessibilityLocalizedString(@"tap.label");
-  v5 = [(ETTapMessageAccessibility *)self _accessibilityColorString];
-  v6 = [v3 stringWithFormat:v4, v5];
+  _accessibilityColorString = [(ETTapMessageAccessibility *)self _accessibilityColorString];
+  v6 = [v3 stringWithFormat:v4, _accessibilityColorString];
 
   return v6;
 }
 
-- (void)displayInScene:(id)a3
+- (void)displayInScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   if (UIAccessibilityIsVoiceOverRunning())
   {
     _axSetIsWaitingOnETMessageStart(1);
@@ -34,8 +34,8 @@
     v7 = 3221225472;
     v8 = __44__ETTapMessageAccessibility_displayInScene___block_invoke;
     v9 = &unk_29F2BABE0;
-    v10 = v4;
-    v11 = self;
+    v10 = sceneCopy;
+    selfCopy = self;
     AXPerformBlockOnMainThreadAfterDelay();
   }
 
@@ -43,7 +43,7 @@
   {
     v5.receiver = self;
     v5.super_class = ETTapMessageAccessibility;
-    [(ETTapMessageAccessibility *)&v5 displayInScene:v4];
+    [(ETTapMessageAccessibility *)&v5 displayInScene:sceneCopy];
   }
 }
 

@@ -1,26 +1,26 @@
 @interface DonationSchemaSDSpeechDonationEventMetaData
-- (BOOL)isEqual:(id)a3;
-- (DonationSchemaSDSpeechDonationEventMetaData)initWithDictionary:(id)a3;
-- (DonationSchemaSDSpeechDonationEventMetaData)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DonationSchemaSDSpeechDonationEventMetaData)initWithDictionary:(id)dictionary;
+- (DonationSchemaSDSpeechDonationEventMetaData)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DonationSchemaSDSpeechDonationEventMetaData
 
-- (DonationSchemaSDSpeechDonationEventMetaData)initWithDictionary:(id)a3
+- (DonationSchemaSDSpeechDonationEventMetaData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = DonationSchemaSDSpeechDonationEventMetaData;
   v5 = [(DonationSchemaSDSpeechDonationEventMetaData *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sdId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sdId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,14 +28,14 @@
       [(DonationSchemaSDSpeechDonationEventMetaData *)v5 setSdId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"deviceType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"deviceType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DonationSchemaSDSpeechDonationEventMetaData setDeviceType:](v5, "setDeviceType:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"systemBuild"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"systemBuild"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (DonationSchemaSDSpeechDonationEventMetaData)initWithJSON:(id)a3
+- (DonationSchemaSDSpeechDonationEventMetaData)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DonationSchemaSDSpeechDonationEventMetaData *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DonationSchemaSDSpeechDonationEventMetaData *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DonationSchemaSDSpeechDonationEventMetaData *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,7 +85,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(DonationSchemaSDSpeechDonationEventMetaData *)self deviceType]- 1;
@@ -99,35 +99,35 @@
       v5 = off_1E78D44E8[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"deviceType"];
+    [dictionary setObject:v5 forKeyedSubscript:@"deviceType"];
   }
 
   if (self->_sdId)
   {
-    v6 = [(DonationSchemaSDSpeechDonationEventMetaData *)self sdId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    sdId = [(DonationSchemaSDSpeechDonationEventMetaData *)self sdId];
+    dictionaryRepresentation = [sdId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"sdId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"sdId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"sdId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"sdId"];
     }
   }
 
   if (self->_systemBuild)
   {
-    v9 = [(DonationSchemaSDSpeechDonationEventMetaData *)self systemBuild];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"systemBuild"];
+    systemBuild = [(DonationSchemaSDSpeechDonationEventMetaData *)self systemBuild];
+    v10 = [systemBuild copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"systemBuild"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -146,28 +146,28 @@
   return v4 ^ v3 ^ [(NSString *)self->_systemBuild hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(DonationSchemaSDSpeechDonationEventMetaData *)self sdId];
-  v6 = [v4 sdId];
-  if ((v5 != 0) == (v6 == 0))
+  sdId = [(DonationSchemaSDSpeechDonationEventMetaData *)self sdId];
+  sdId2 = [equalCopy sdId];
+  if ((sdId != 0) == (sdId2 == 0))
   {
     goto LABEL_14;
   }
 
-  v7 = [(DonationSchemaSDSpeechDonationEventMetaData *)self sdId];
-  if (v7)
+  sdId3 = [(DonationSchemaSDSpeechDonationEventMetaData *)self sdId];
+  if (sdId3)
   {
-    v8 = v7;
-    v9 = [(DonationSchemaSDSpeechDonationEventMetaData *)self sdId];
-    v10 = [v4 sdId];
-    v11 = [v9 isEqual:v10];
+    v8 = sdId3;
+    sdId4 = [(DonationSchemaSDSpeechDonationEventMetaData *)self sdId];
+    sdId5 = [equalCopy sdId];
+    v11 = [sdId4 isEqual:sdId5];
 
     if (!v11)
     {
@@ -179,7 +179,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -187,18 +187,18 @@
   if (*&self->_has)
   {
     deviceType = self->_deviceType;
-    if (deviceType != [v4 deviceType])
+    if (deviceType != [equalCopy deviceType])
     {
       goto LABEL_15;
     }
   }
 
-  v5 = [(DonationSchemaSDSpeechDonationEventMetaData *)self systemBuild];
-  v6 = [v4 systemBuild];
-  if ((v5 != 0) != (v6 == 0))
+  sdId = [(DonationSchemaSDSpeechDonationEventMetaData *)self systemBuild];
+  sdId2 = [equalCopy systemBuild];
+  if ((sdId != 0) != (sdId2 == 0))
   {
-    v13 = [(DonationSchemaSDSpeechDonationEventMetaData *)self systemBuild];
-    if (!v13)
+    systemBuild = [(DonationSchemaSDSpeechDonationEventMetaData *)self systemBuild];
+    if (!systemBuild)
     {
 
 LABEL_18:
@@ -206,10 +206,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(DonationSchemaSDSpeechDonationEventMetaData *)self systemBuild];
-    v16 = [v4 systemBuild];
-    v17 = [v15 isEqual:v16];
+    v14 = systemBuild;
+    systemBuild2 = [(DonationSchemaSDSpeechDonationEventMetaData *)self systemBuild];
+    systemBuild3 = [equalCopy systemBuild];
+    v17 = [systemBuild2 isEqual:systemBuild3];
 
     if (v17)
     {
@@ -229,14 +229,14 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(DonationSchemaSDSpeechDonationEventMetaData *)self sdId];
+  toCopy = to;
+  sdId = [(DonationSchemaSDSpeechDonationEventMetaData *)self sdId];
 
-  if (v4)
+  if (sdId)
   {
-    v5 = [(DonationSchemaSDSpeechDonationEventMetaData *)self sdId];
+    sdId2 = [(DonationSchemaSDSpeechDonationEventMetaData *)self sdId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -245,27 +245,27 @@ LABEL_16:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(DonationSchemaSDSpeechDonationEventMetaData *)self systemBuild];
+  systemBuild = [(DonationSchemaSDSpeechDonationEventMetaData *)self systemBuild];
 
-  v7 = v8;
-  if (v6)
+  v7 = toCopy;
+  if (systemBuild)
   {
     PBDataWriterWriteStringField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = DonationSchemaSDSpeechDonationEventMetaData;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(DonationSchemaSDSpeechDonationEventMetaData *)self sdId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(DonationSchemaSDSpeechDonationEventMetaData *)self deleteSdId];
   }

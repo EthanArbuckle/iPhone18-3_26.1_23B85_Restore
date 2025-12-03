@@ -1,23 +1,23 @@
 @interface STPINController
-+ (void)sendPasscodeActivityToParentsWithCompletionHandler:(id)a3;
-- (BOOL)_authenticateWithPIN:(id)a3 forUser:(id)a4 allowPasscodeRecovery:(BOOL)a5 error:(id *)a6;
-- (BOOL)_isPINValid:(id)a3;
-- (BOOL)_saveChangesForUser:(id)a3 error:(id *)a4;
-- (BOOL)_setPasscode:(id)a3 recoveryAppleID:(id)a4 forUser:(id)a5 error:(id *)a6;
-- (BOOL)authenticateWithPIN:(id)a3 error:(id *)a4;
++ (void)sendPasscodeActivityToParentsWithCompletionHandler:(id)handler;
+- (BOOL)_authenticateWithPIN:(id)n forUser:(id)user allowPasscodeRecovery:(BOOL)recovery error:(id *)error;
+- (BOOL)_isPINValid:(id)valid;
+- (BOOL)_saveChangesForUser:(id)user error:(id *)error;
+- (BOOL)_setPasscode:(id)passcode recoveryAppleID:(id)d forUser:(id)user error:(id *)error;
+- (BOOL)authenticateWithPIN:(id)n error:(id *)error;
 - (BOOL)canRecoveryAuthenticate;
-- (STPINController)initWithUser:(id)a3;
-- (id)_timeoutEndDateForAttemptNumber:(int64_t)a3;
-- (void)_beginTimeoutUntilDate:(id)a3;
-- (void)_setNewPIN:(id)a3 currentPIN:(id)a4 recoveryAppleIDPrompt:(id)a5 completionHandler:(id)a6;
-- (void)authenticateWithPIN:(id)a3 allowPasscodeRecovery:(BOOL)a4 completionHandler:(id)a5;
+- (STPINController)initWithUser:(id)user;
+- (id)_timeoutEndDateForAttemptNumber:(int64_t)number;
+- (void)_beginTimeoutUntilDate:(id)date;
+- (void)_setNewPIN:(id)n currentPIN:(id)iN recoveryAppleIDPrompt:(id)prompt completionHandler:(id)handler;
+- (void)authenticateWithPIN:(id)n allowPasscodeRecovery:(BOOL)recovery completionHandler:(id)handler;
 @end
 
 @implementation STPINController
 
-- (STPINController)initWithUser:(id)a3
+- (STPINController)initWithUser:(id)user
 {
-  v5 = a3;
+  userCopy = user;
   v12.receiver = self;
   v12.super_class = STPINController;
   v6 = [(STPINController *)&v12 init];
@@ -26,20 +26,20 @@
     v7 = +[STLog pinController];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(STPINController *)v6 initWithUser:v5, v7];
+      [(STPINController *)v6 initWithUser:userCopy, v7];
     }
 
-    objc_storeStrong(&v6->_user, a3);
-    v8 = [v5 passcodeEntryTimeoutEndDate];
-    if (v8)
+    objc_storeStrong(&v6->_user, user);
+    passcodeEntryTimeoutEndDate = [userCopy passcodeEntryTimeoutEndDate];
+    if (passcodeEntryTimeoutEndDate)
     {
       v9 = [MEMORY[0x1E695DF00] now];
-      v10 = [v8 compare:v9];
+      v10 = [passcodeEntryTimeoutEndDate compare:v9];
 
       if (v10 == 1)
       {
-        objc_storeStrong(&v6->_timeoutEndDate, v8);
-        [(STPINController *)v6 _beginTimeoutUntilDate:v8];
+        objc_storeStrong(&v6->_timeoutEndDate, passcodeEntryTimeoutEndDate);
+        [(STPINController *)v6 _beginTimeoutUntilDate:passcodeEntryTimeoutEndDate];
       }
     }
   }
@@ -49,22 +49,22 @@
 
 - (BOOL)canRecoveryAuthenticate
 {
-  v3 = [(STPINController *)self user];
-  v4 = [v3 effectiveRecoveryAltDSID];
+  user = [(STPINController *)self user];
+  effectiveRecoveryAltDSID = [user effectiveRecoveryAltDSID];
 
-  v5 = [v3 dsid];
-  if ([v5 integerValue])
+  dsid = [user dsid];
+  if ([dsid integerValue])
   {
-    v6 = [v3 familyMemberType];
-    if ([v6 isEqualToString:@"Child"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"Teen"))
+    familyMemberType = [user familyMemberType];
+    if ([familyMemberType isEqualToString:@"Child"] & 1) != 0 || (objc_msgSend(familyMemberType, "isEqualToString:", @"Teen"))
     {
       v7 = 0;
     }
 
     else
     {
-      v8 = [v3 altDSID];
-      v7 = v8 != 0;
+      altDSID = [user altDSID];
+      v7 = altDSID != 0;
     }
   }
 
@@ -73,10 +73,10 @@
     v7 = 0;
   }
 
-  v9 = [(STPINController *)self timeoutEndDate];
-  if (v9)
+  timeoutEndDate = [(STPINController *)self timeoutEndDate];
+  if (timeoutEndDate)
   {
-    v10 = [v3 passcodeRecoveryAttemptCount] < 1;
+    v10 = [user passcodeRecoveryAttemptCount] < 1;
   }
 
   else
@@ -84,19 +84,19 @@
     v10 = 1;
   }
 
-  return (v4 != 0 || v7) && v10;
+  return (effectiveRecoveryAltDSID != 0 || v7) && v10;
 }
 
-- (BOOL)_isPINValid:(id)a3
+- (BOOL)_isPINValid:(id)valid
 {
-  v3 = a3;
-  v4 = [v3 length];
+  validCopy = valid;
+  v4 = [validCopy length];
   if (v4 == [objc_opt_class() pinLength])
   {
-    v5 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-    v6 = [v5 invertedSet];
+    decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+    invertedSet = [decimalDigitCharacterSet invertedSet];
 
-    v7 = [v3 rangeOfCharacterFromSet:v6] == 0x7FFFFFFFFFFFFFFFLL;
+    v7 = [validCopy rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -107,14 +107,14 @@
   return v7;
 }
 
-- (void)_setNewPIN:(id)a3 currentPIN:(id)a4 recoveryAppleIDPrompt:(id)a5 completionHandler:(id)a6
+- (void)_setNewPIN:(id)n currentPIN:(id)iN recoveryAppleIDPrompt:(id)prompt completionHandler:(id)handler
 {
   v66[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11 || [(STPINController *)self _isPINValid:v11])
+  nCopy = n;
+  iNCopy = iN;
+  promptCopy = prompt;
+  handlerCopy = handler;
+  if (!nCopy || [(STPINController *)self _isPINValid:nCopy])
   {
     v61 = 0;
     v62 = &v61;
@@ -130,25 +130,25 @@
     v52 = &v51;
     v53 = 0x2020000000;
     v54 = 0;
-    v15 = [(STPINController *)self user];
-    v16 = [v15 managedObjectContext];
-    [v16 setMergePolicy:*MEMORY[0x1E695D370]];
+    user = [(STPINController *)self user];
+    managedObjectContext = [user managedObjectContext];
+    [managedObjectContext setMergePolicy:*MEMORY[0x1E695D370]];
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
     v41[2] = __81__STPINController__setNewPIN_currentPIN_recoveryAppleIDPrompt_completionHandler___block_invoke;
     v41[3] = &unk_1E7CE7B18;
-    v17 = v16;
+    v17 = managedObjectContext;
     v42 = v17;
-    v18 = v15;
+    v18 = user;
     v43 = v18;
-    v44 = v12;
+    v44 = iNCopy;
     v48 = &v55;
-    v19 = v11;
+    v19 = nCopy;
     v45 = v19;
     v49 = &v51;
-    v20 = v13;
+    v20 = promptCopy;
     v50 = &v61;
-    v46 = self;
+    selfCopy = self;
     v47 = v20;
     [v17 performBlockAndWait:v41];
     if (*(v62 + 24) == 1)
@@ -157,8 +157,8 @@
       {
         if (!v20)
         {
-          v32 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v32 handleFailureInMethod:a2 object:self file:@"STPINController.m" lineNumber:169 description:@"Recovery Apple ID prompt must not be nil"];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"STPINController.m" lineNumber:169 description:@"Recovery Apple ID prompt must not be nil"];
         }
 
         v33[0] = MEMORY[0x1E69E9820];
@@ -167,11 +167,11 @@
         v33[3] = &unk_1E7CE7B68;
         v39 = &v61;
         v34 = v17;
-        v35 = self;
+        selfCopy2 = self;
         v36 = v19;
         v37 = v18;
         v40 = &v55;
-        v38 = v14;
+        v38 = handlerCopy;
         (*(v20 + 2))(v20, v33);
 
         goto LABEL_12;
@@ -185,7 +185,7 @@
       v21 = v56[5];
     }
 
-    (*(v14 + 2))(v14, v21);
+    (*(handlerCopy + 2))(handlerCopy, v21);
 LABEL_12:
 
     _Block_object_dispose(&v51, 8);
@@ -199,8 +199,8 @@ LABEL_12:
   v23 = [v22 localizedStringForKey:@"PINInvalidError" value:&stru_1F3040980 table:0];
   v24 = [v22 localizedStringForKey:@"EnterValidPIN" value:&stru_1F3040980 table:0];
   v25 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v26 = [MEMORY[0x1E695DF58] currentLocale];
-  v27 = [v25 initWithFormat:v24 locale:v26, objc_msgSend(objc_opt_class(), "pinLength")];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v27 = [v25 initWithFormat:v24 locale:currentLocale, objc_msgSend(objc_opt_class(), "pinLength")];
 
   v28 = *MEMORY[0x1E696A598];
   v65[0] = *MEMORY[0x1E696A578];
@@ -209,7 +209,7 @@ LABEL_12:
   v66[1] = v27;
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v66 forKeys:v65 count:2];
   v30 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"STErrorDomain" code:20 userInfo:v29];
-  (*(v14 + 2))(v14, v30);
+  (*(handlerCopy + 2))(handlerCopy, v30);
 
 LABEL_13:
   v31 = *MEMORY[0x1E69E9840];
@@ -401,16 +401,16 @@ void __81__STPINController__setNewPIN_currentPIN_recoveryAppleIDPrompt_completio
   *(*(a1[8] + 8) + 24) = v7;
 }
 
-- (BOOL)_setPasscode:(id)a3 recoveryAppleID:(id)a4 forUser:(id)a5 error:(id *)a6
+- (BOOL)_setPasscode:(id)passcode recoveryAppleID:(id)d forUser:(id)user error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([STBlueprint saveManagedUserBlueprintForUser:v12 error:a6])
+  passcodeCopy = passcode;
+  dCopy = d;
+  userCopy = user;
+  if ([STBlueprint saveManagedUserBlueprintForUser:userCopy error:error])
   {
-    [v12 setEffectivePasscode:v10];
-    [v12 setEffectiveRecoveryAltDSID:v11];
-    v13 = [(STPINController *)self _saveChangesForUser:v12 error:a6];
+    [userCopy setEffectivePasscode:passcodeCopy];
+    [userCopy setEffectiveRecoveryAltDSID:dCopy];
+    v13 = [(STPINController *)self _saveChangesForUser:userCopy error:error];
   }
 
   else
@@ -418,7 +418,7 @@ void __81__STPINController__setNewPIN_currentPIN_recoveryAppleIDPrompt_completio
     v14 = +[STLog pinController];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [STPINController _setPasscode:a6 recoveryAppleID:? forUser:? error:?];
+      [STPINController _setPasscode:error recoveryAppleID:? forUser:? error:?];
     }
 
     v13 = 0;
@@ -427,19 +427,19 @@ void __81__STPINController__setNewPIN_currentPIN_recoveryAppleIDPrompt_completio
   return v13;
 }
 
-- (BOOL)_saveChangesForUser:(id)a3 error:(id *)a4
+- (BOOL)_saveChangesForUser:(id)user error:(id *)error
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 managedObjectContext];
-  v7 = [v6 save:a4];
+  userCopy = user;
+  managedObjectContext = [userCopy managedObjectContext];
+  v7 = [managedObjectContext save:error];
 
   if ((v7 & 1) == 0)
   {
     v8 = +[STLog pinController];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(STPINController *)v5 _saveChangesForUser:a4 error:v8];
+      [(STPINController *)userCopy _saveChangesForUser:error error:v8];
     }
 
     v9 = +[STScreenTimeCoreBundle bundle];
@@ -450,22 +450,22 @@ void __81__STPINController__setNewPIN_currentPIN_recoveryAppleIDPrompt_completio
     v12 = *MEMORY[0x1E696AA08];
     v17[0] = v11;
     v17[1] = v12;
-    v13 = STXPCSafeErrorFromCoreDataError(*a4, 1);
+    v13 = STXPCSafeErrorFromCoreDataError(*error, 1);
     v18[1] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
 
-    *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"STErrorDomain" code:1 userInfo:v14];
+    *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"STErrorDomain" code:1 userInfo:v14];
   }
 
   v15 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (BOOL)authenticateWithPIN:(id)a3 error:(id *)a4
+- (BOOL)authenticateWithPIN:(id)n error:(id *)error
 {
-  v6 = a3;
-  v7 = [(STPINController *)self user];
-  v8 = [v7 managedObjectContext];
+  nCopy = n;
+  user = [(STPINController *)self user];
+  managedObjectContext = [user managedObjectContext];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -477,15 +477,15 @@ void __81__STPINController__setNewPIN_currentPIN_recoveryAppleIDPrompt_completio
   v13[2] = __45__STPINController_authenticateWithPIN_error___block_invoke;
   v13[3] = &unk_1E7CE7B90;
   v13[4] = self;
-  v9 = v6;
+  v9 = nCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = user;
   v15 = v10;
   v16 = &v17;
-  [v8 performBlockAndWait:v13];
-  if (a4)
+  [managedObjectContext performBlockAndWait:v13];
+  if (error)
   {
-    *a4 = v18[5];
+    *error = v18[5];
   }
 
   v11 = v18[5] == 0;
@@ -515,25 +515,25 @@ void __45__STPINController_authenticateWithPIN_error___block_invoke(uint64_t a1)
   }
 }
 
-- (void)authenticateWithPIN:(id)a3 allowPasscodeRecovery:(BOOL)a4 completionHandler:(id)a5
+- (void)authenticateWithPIN:(id)n allowPasscodeRecovery:(BOOL)recovery completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(STPINController *)self user];
-  v11 = [v10 managedObjectContext];
+  nCopy = n;
+  handlerCopy = handler;
+  user = [(STPINController *)self user];
+  managedObjectContext = [user managedObjectContext];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__STPINController_authenticateWithPIN_allowPasscodeRecovery_completionHandler___block_invoke;
   v15[3] = &unk_1E7CE7BB8;
   v15[4] = self;
-  v16 = v8;
-  v19 = a4;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  [v11 performBlock:v15];
+  v16 = nCopy;
+  recoveryCopy = recovery;
+  v17 = user;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = user;
+  v14 = nCopy;
+  [managedObjectContext performBlock:v15];
 }
 
 void __79__STPINController_authenticateWithPIN_allowPasscodeRecovery_completionHandler___block_invoke(uint64_t a1)
@@ -558,30 +558,30 @@ void __79__STPINController_authenticateWithPIN_allowPasscodeRecovery_completionH
   (*(*(a1 + 56) + 16))(*(a1 + 56), v9, [*(a1 + 48) passcodeEntryAttemptCount]);
 }
 
-- (BOOL)_authenticateWithPIN:(id)a3 forUser:(id)a4 allowPasscodeRecovery:(BOOL)a5 error:(id *)a6
+- (BOOL)_authenticateWithPIN:(id)n forUser:(id)user allowPasscodeRecovery:(BOOL)recovery error:(id *)error
 {
-  v7 = a5;
+  recoveryCopy = recovery;
   v47[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = [(STPINController *)self timeoutEndDate];
+  nCopy = n;
+  userCopy = user;
+  timeoutEndDate = [(STPINController *)self timeoutEndDate];
 
-  if (!v12 || v7 && [(STPINController *)self canRecoveryAuthenticate])
+  if (!timeoutEndDate || recoveryCopy && [(STPINController *)self canRecoveryAuthenticate])
   {
-    v13 = [v11 managedObjectContext];
-    [v13 refreshObject:v11 mergeChanges:1];
-    if (!v11 || [v11 isDeleted])
+    managedObjectContext = [userCopy managedObjectContext];
+    [managedObjectContext refreshObject:userCopy mergeChanges:1];
+    if (!userCopy || [userCopy isDeleted])
     {
       v14 = +[STLog pinController];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [STPINController _authenticateWithPIN:v11 forUser:v14 allowPasscodeRecovery:? error:?];
+        [STPINController _authenticateWithPIN:userCopy forUser:v14 allowPasscodeRecovery:? error:?];
       }
 
-      if (a6)
+      if (error)
       {
         v15 = 0;
-        *a6 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"STErrorDomain" code:11 userInfo:0];
+        *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"STErrorDomain" code:11 userInfo:0];
 LABEL_37:
 
         goto LABEL_38;
@@ -592,44 +592,44 @@ LABEL_12:
       goto LABEL_37;
     }
 
-    v19 = [v11 effectivePasscode];
-    if (v19)
+    effectivePasscode = [userCopy effectivePasscode];
+    if (effectivePasscode)
     {
-      if (([v10 isEqualToString:v19] & 1) == 0)
+      if (([nCopy isEqualToString:effectivePasscode] & 1) == 0)
       {
-        if (v12)
+        if (timeoutEndDate)
         {
-          [v11 setPasscodeRecoveryAttemptCount:{objc_msgSend(v11, "passcodeRecoveryAttemptCount") + 1}];
+          [userCopy setPasscodeRecoveryAttemptCount:{objc_msgSend(userCopy, "passcodeRecoveryAttemptCount") + 1}];
           v20 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"STErrorDomain" code:25 userInfo:0];
         }
 
         else
         {
-          v26 = [v11 passcodeEntryAttemptCount];
-          [v11 setPasscodeEntryAttemptCount:v26 + 1];
+          passcodeEntryAttemptCount = [userCopy passcodeEntryAttemptCount];
+          [userCopy setPasscodeEntryAttemptCount:passcodeEntryAttemptCount + 1];
           v27 = +[STScreenTimeCoreBundle bundle];
           v28 = [v27 localizedStringForKey:@"PINIncorrectError" value:&stru_1F3040980 table:0];
 
-          if (v26 < 5)
+          if (passcodeEntryAttemptCount < 5)
           {
             v42[0] = *MEMORY[0x1E696A578];
             v42[1] = @"PINAuthenticationAttempts";
             v43[0] = v28;
-            v29 = [MEMORY[0x1E696AD98] numberWithLongLong:v26 + 1];
+            v29 = [MEMORY[0x1E696AD98] numberWithLongLong:passcodeEntryAttemptCount + 1];
             v43[1] = v29;
             v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:2];
           }
 
           else
           {
-            v29 = [(STPINController *)self _timeoutEndDateForAttemptNumber:v26 + 1];
+            v29 = [(STPINController *)self _timeoutEndDateForAttemptNumber:passcodeEntryAttemptCount + 1];
             [(STPINController *)self _beginTimeoutUntilDate:v29];
-            [v11 setPasscodeEntryTimeoutEndDate:v29];
+            [userCopy setPasscodeEntryTimeoutEndDate:v29];
             v30 = *MEMORY[0x1E696A578];
             v45[0] = v28;
             v44[0] = v30;
             v44[1] = @"PINAuthenticationAttempts";
-            v31 = [MEMORY[0x1E696AD98] numberWithLongLong:v26 + 1];
+            v31 = [MEMORY[0x1E696AD98] numberWithLongLong:passcodeEntryAttemptCount + 1];
             v44[2] = @"PINTimeoutDate";
             v45[1] = v31;
             v45[2] = v29;
@@ -642,16 +642,16 @@ LABEL_12:
         goto LABEL_30;
       }
 
-      [v11 setPasscodeEntryAttemptCount:0];
-      [v11 setPasscodeEntryTimeoutEndDate:0];
-      [v11 setPasscodeRecoveryAttemptCount:0];
+      [userCopy setPasscodeEntryAttemptCount:0];
+      [userCopy setPasscodeEntryTimeoutEndDate:0];
+      [userCopy setPasscodeRecoveryAttemptCount:0];
       [(STPINController *)self setTimeoutEndDate:0];
       v20 = 0;
       if (!_os_feature_enabled_impl())
       {
 LABEL_30:
         v39 = 0;
-        v33 = [v13 save:&v39];
+        v33 = [managedObjectContext save:&v39];
         v34 = v39;
         if ((v33 & 1) == 0)
         {
@@ -662,10 +662,10 @@ LABEL_30:
           }
         }
 
-        if (a6)
+        if (error)
         {
           v36 = v20;
-          *a6 = v20;
+          *error = v20;
         }
 
         v15 = v20 == 0;
@@ -674,9 +674,9 @@ LABEL_30:
       }
 
       v21 = [MEMORY[0x1E695DF00] now];
-      v22 = [v11 localUserDeviceState];
-      v23 = [v22 device];
-      [v23 setLastPasscodeUseDate:v21];
+      localUserDeviceState = [userCopy localUserDeviceState];
+      device = [localUserDeviceState device];
+      [device setLastPasscodeUseDate:v21];
 
       v24 = +[STLog pinController];
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -695,23 +695,23 @@ LABEL_30:
         [STPINController _authenticateWithPIN:v25 forUser:? allowPasscodeRecovery:? error:?];
       }
 
-      [v11 setPasscodeEntryAttemptCount:0];
+      [userCopy setPasscodeEntryAttemptCount:0];
     }
 
     v20 = 0;
     goto LABEL_30;
   }
 
-  if (a6)
+  if (error)
   {
     v16 = +[STScreenTimeCoreBundle bundle];
-    v13 = [v16 localizedStringForKey:@"PINEntryTimeoutError" value:&stru_1F3040980 table:0];
+    managedObjectContext = [v16 localizedStringForKey:@"PINEntryTimeoutError" value:&stru_1F3040980 table:0];
 
     v17 = objc_alloc(MEMORY[0x1E696ABC0]);
     v46 = *MEMORY[0x1E696A578];
-    v47[0] = v13;
+    v47[0] = managedObjectContext;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:&v46 count:1];
-    *a6 = [v17 initWithDomain:@"STErrorDomain" code:24 userInfo:v18];
+    *error = [v17 initWithDomain:@"STErrorDomain" code:24 userInfo:v18];
 
     goto LABEL_12;
   }
@@ -723,11 +723,11 @@ LABEL_38:
   return v15;
 }
 
-- (id)_timeoutEndDateForAttemptNumber:(int64_t)a3
+- (id)_timeoutEndDateForAttemptNumber:(int64_t)number
 {
   v3 = 0.0;
-  v4 = a3 - 6;
-  if (a3 >= 6)
+  v4 = number - 6;
+  if (number >= 6)
   {
     if (v4 > 2)
     {
@@ -743,17 +743,17 @@ LABEL_38:
   return [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:v3];
 }
 
-- (void)_beginTimeoutUntilDate:(id)a3
+- (void)_beginTimeoutUntilDate:(id)date
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(STPINController *)self setTimeoutEndDate:v4];
-  [v4 timeIntervalSinceNow];
+  dateCopy = date;
+  [(STPINController *)self setTimeoutEndDate:dateCopy];
+  [dateCopy timeIntervalSinceNow];
   v6 = v5;
   if (!csr_check())
   {
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v8 = [v7 integerForKey:@"com.apple.ScreenTimeAgent.PINTimeoutIntervalOverride"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v8 = [standardUserDefaults integerForKey:@"com.apple.ScreenTimeAgent.PINTimeoutIntervalOverride"];
 
     if (v8 >= 1)
     {
@@ -775,19 +775,19 @@ LABEL_38:
     _os_log_impl(&dword_1B831F000, v10, OS_LOG_TYPE_INFO, "Scheduled PIN timeout for %d seconds", buf, 8u);
   }
 
-  v11 = [MEMORY[0x1E696ADC8] mainQueue];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __42__STPINController__beginTimeoutUntilDate___block_invoke;
   v18[3] = &unk_1E7CE7AA0;
   v18[4] = self;
-  v12 = v4;
+  v12 = dateCopy;
   v19 = v12;
-  [v11 addOperationWithBlock:v18];
+  [mainQueue addOperationWithBlock:v18];
 
-  v13 = [(STPINController *)self backoffTimer];
+  backoffTimer = [(STPINController *)self backoffTimer];
 
-  if (!v13)
+  if (!backoffTimer)
   {
     v14 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
     v15 = dispatch_time(0, (v6 * 1000000000.0));
@@ -844,9 +844,9 @@ void __42__STPINController__beginTimeoutUntilDate___block_invoke_2(uint64_t a1)
   [v5 postNotificationName:@"PINTimeoutDidEnd" object:*(a1 + 32) userInfo:0];
 }
 
-+ (void)sendPasscodeActivityToParentsWithCompletionHandler:(id)a3
++ (void)sendPasscodeActivityToParentsWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   if (_os_feature_enabled_impl())
   {
     v4 = +[STScreenTimeAgentPrivateConnection newContactsServiceConnection];
@@ -862,7 +862,7 @@ void __42__STPINController__beginTimeoutUntilDate___block_invoke_2(uint64_t a1)
 
   else
   {
-    v3[2](v3, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 

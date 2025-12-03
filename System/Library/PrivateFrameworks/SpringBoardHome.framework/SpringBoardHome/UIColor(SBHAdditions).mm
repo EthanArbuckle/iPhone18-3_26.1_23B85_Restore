@@ -12,7 +12,7 @@
 
 - (CGColor)sbh_isGrayscale
 {
-  result = [a1 CGColor];
+  result = [self CGColor];
   if (result)
   {
     result = CGColorGetColorSpace(result);
@@ -27,7 +27,7 @@
           v5 = 0.0;
           v6 = 0.0;
           v4 = 0.0;
-          if (![a1 getRed:&v6 green:&v5 blue:&v4 alpha:0] || v6 != v5 || v5 != v4)
+          if (![self getRed:&v6 green:&v5 blue:&v4 alpha:0] || v6 != v5 || v5 != v4)
           {
             return 0;
           }
@@ -41,24 +41,24 @@
 
 - (uint64_t)sbh_colorfulness
 {
-  if ([a1 sbh_isGrayscale])
+  if ([self sbh_isGrayscale])
   {
-    return [a1 sbh_perceivedLightness];
+    return [self sbh_perceivedLightness];
   }
 
   v5 = 0;
   v6 = 0;
   v3 = 0;
   v4 = 0;
-  [a1 getHue:&v6 saturation:&v5 brightness:&v4 alpha:&v3];
-  return [a1 sbh_perceivedLightness];
+  [self getHue:&v6 saturation:&v5 brightness:&v4 alpha:&v3];
+  return [self sbh_perceivedLightness];
 }
 
 - (uint64_t)sbh_perceivedLightness
 {
-  v1 = [a1 CGColor];
+  cGColor = [self CGColor];
 
-  return MEMORY[0x1EEDF9550](v1);
+  return MEMORY[0x1EEDF9550](cGColor);
 }
 
 + (uint64_t)sbh_randomColor
@@ -67,14 +67,14 @@
   v3 = arc4random_uniform(0xFEu) / 255.0;
   v4 = arc4random_uniform(0xFEu) / 255.0;
 
-  return [a1 colorWithRed:v2 green:v3 blue:v4 alpha:1.0];
+  return [self colorWithRed:v2 green:v3 blue:v4 alpha:1.0];
 }
 
 + (uint64_t)sbh_brightColorWithRandomHue
 {
   v2 = arc4random_uniform(0xFEu) / 255.0;
 
-  return [a1 colorWithHue:v2 saturation:1.0 brightness:1.0 alpha:1.0];
+  return [self colorWithHue:v2 saturation:1.0 brightness:1.0 alpha:1.0];
 }
 
 + (id)sbh_colorWithHexString:()SBHAdditions
@@ -82,28 +82,28 @@
   v3 = a3;
   if (!v3)
   {
-    v5 = 0;
+    uppercaseString = 0;
 LABEL_9:
     v8 = 0;
     goto LABEL_10;
   }
 
   v4 = v3;
-  v5 = [v3 uppercaseString];
+  uppercaseString = [v3 uppercaseString];
 
-  if ([v5 hasPrefix:@"#"])
+  if ([uppercaseString hasPrefix:@"#"])
   {
-    v6 = [v5 substringFromIndex:1];
+    v6 = [uppercaseString substringFromIndex:1];
 
-    v5 = v6;
+    uppercaseString = v6;
   }
 
-  if ([v5 length] != 6)
+  if ([uppercaseString length] != 6)
   {
     goto LABEL_9;
   }
 
-  v7 = [MEMORY[0x1E696AE88] scannerWithString:v5];
+  v7 = [MEMORY[0x1E696AE88] scannerWithString:uppercaseString];
   [v7 setScanLocation:0];
   v10 = 0;
   v8 = 0;
@@ -124,7 +124,7 @@ LABEL_10:
   v19 = 0.0;
   v16 = 0.0;
   v17 = 0.0;
-  [a1 getRed:&v19 green:&v18 blue:&v17 alpha:&v16];
+  [self getRed:&v19 green:&v18 blue:&v17 alpha:&v16];
   v4 = 0;
   v8.f32[0] = v19;
   v5 = v18;

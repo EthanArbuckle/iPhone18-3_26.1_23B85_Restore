@@ -1,5 +1,5 @@
 @interface HSSocketListener
-- (HSSocketListener)initWithSocket:(FileDescriptor *)a3 queue:(id)a4 clientHandler:(id)a5;
+- (HSSocketListener)initWithSocket:(FileDescriptor *)socket queue:(id)queue clientHandler:(id)handler;
 - (id).cxx_construct;
 - (void)_handleNewClient;
 - (void)close;
@@ -8,13 +8,13 @@
 
 @implementation HSSocketListener
 
-- (HSSocketListener)initWithSocket:(FileDescriptor *)a3 queue:(id)a4 clientHandler:(id)a5
+- (HSSocketListener)initWithSocket:(FileDescriptor *)socket queue:(id)queue clientHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  if ((a3->_fd & 0x80000000) == 0)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ((socket->_fd & 0x80000000) == 0)
   {
-    if (v10)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -23,7 +23,7 @@ LABEL_8:
     v18 = +[NSAssertionHandler currentHandler];
     [v18 handleFailureInMethod:a2 object:self file:@"HSSocketListener.mm" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
 
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -34,13 +34,13 @@ LABEL_8:
   v17 = +[NSAssertionHandler currentHandler];
   [v17 handleFailureInMethod:a2 object:self file:@"HSSocketListener.mm" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"socket"}];
 
-  if (!v10)
+  if (!queueCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
@@ -56,8 +56,8 @@ LABEL_4:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(v12 + 1, a4);
-    v14 = objc_retainBlock(v11);
+    objc_storeStrong(v12 + 1, queue);
+    v14 = objc_retainBlock(handlerCopy);
     v15 = *(v13 + 2);
     *(v13 + 2) = v14;
 

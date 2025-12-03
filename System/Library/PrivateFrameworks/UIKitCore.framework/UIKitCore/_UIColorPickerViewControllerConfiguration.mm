@@ -1,10 +1,10 @@
 @interface _UIColorPickerViewControllerConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UIColorPickerViewControllerConfiguration)init;
-- (_UIColorPickerViewControllerConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_UIColorPickerViewControllerConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIColorPickerViewControllerConfiguration
@@ -24,14 +24,14 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setShowsAlpha:{-[_UIColorPickerViewControllerConfiguration showsAlpha](self, "showsAlpha")}];
   [(_UIColorPickerViewControllerConfiguration *)self maxGain];
   [v4 setMaxGain:?];
-  v5 = [(_UIColorPickerViewControllerConfiguration *)self title];
-  [v4 setTitle:v5];
+  title = [(_UIColorPickerViewControllerConfiguration *)self title];
+  [v4 setTitle:title];
 
   [v4 set_userInterfaceStyleForGrid:{-[_UIColorPickerViewControllerConfiguration _userInterfaceStyleForGrid](self, "_userInterfaceStyleForGrid")}];
   [v4 set_shouldUseDarkGridInDarkMode:{-[_UIColorPickerViewControllerConfiguration _shouldUseDarkGridInDarkMode](self, "_shouldUseDarkGridInDarkMode")}];
@@ -39,8 +39,8 @@
   [v4 set_useLandscapeLayout:{-[_UIColorPickerViewControllerConfiguration _useLandscapeLayout](self, "_useLandscapeLayout")}];
   [(_UIColorPickerViewControllerConfiguration *)self _preferredWidth];
   [v4 set_preferredWidth:?];
-  v6 = [(_UIColorPickerViewControllerConfiguration *)self _suggestedColors];
-  [v4 set_suggestedColors:v6];
+  _suggestedColors = [(_UIColorPickerViewControllerConfiguration *)self _suggestedColors];
+  [v4 set_suggestedColors:_suggestedColors];
 
   [v4 set_allowsNoColor:{-[_UIColorPickerViewControllerConfiguration _allowsNoColor](self, "_allowsNoColor")}];
   [v4 set_showsEyedropper:{-[_UIColorPickerViewControllerConfiguration _showsEyedropper](self, "_showsEyedropper")}];
@@ -50,10 +50,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v7) = 1;
   }
@@ -63,9 +63,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(_UIColorPickerViewControllerConfiguration *)self showsAlpha];
-      if (v6 != [(_UIColorPickerViewControllerConfiguration *)v5 showsAlpha])
+      v5 = equalCopy;
+      showsAlpha = [(_UIColorPickerViewControllerConfiguration *)self showsAlpha];
+      if (showsAlpha != [(_UIColorPickerViewControllerConfiguration *)v5 showsAlpha])
       {
         LOBYTE(v7) = 0;
 LABEL_28:
@@ -73,10 +73,10 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v8 = [(_UIColorPickerViewControllerConfiguration *)self title];
-      v9 = [(_UIColorPickerViewControllerConfiguration *)v5 title];
-      v10 = v8;
-      v11 = v9;
+      title = [(_UIColorPickerViewControllerConfiguration *)self title];
+      title2 = [(_UIColorPickerViewControllerConfiguration *)v5 title];
+      v10 = title;
+      v11 = title2;
       v12 = v11;
       if (v10 == v11)
       {
@@ -85,8 +85,8 @@ LABEL_28:
       else
       {
         LOBYTE(v7) = 0;
-        v13 = v11;
-        v14 = v10;
+        _suggestedColors2 = v11;
+        _suggestedColors = v10;
         if (!v10 || !v11)
         {
           goto LABEL_25;
@@ -110,26 +110,26 @@ LABEL_26:
         goto LABEL_26;
       }
 
-      v19 = [(_UIColorPickerViewControllerConfiguration *)self _shouldUseDarkGridInDarkMode];
-      if (v19 != [(_UIColorPickerViewControllerConfiguration *)v5 _shouldUseDarkGridInDarkMode])
+      _shouldUseDarkGridInDarkMode = [(_UIColorPickerViewControllerConfiguration *)self _shouldUseDarkGridInDarkMode];
+      if (_shouldUseDarkGridInDarkMode != [(_UIColorPickerViewControllerConfiguration *)v5 _shouldUseDarkGridInDarkMode])
       {
         goto LABEL_26;
       }
 
-      v20 = [(_UIColorPickerViewControllerConfiguration *)self _userInterfaceStyleForGrid];
-      if (v20 != [(_UIColorPickerViewControllerConfiguration *)v5 _userInterfaceStyleForGrid])
+      _userInterfaceStyleForGrid = [(_UIColorPickerViewControllerConfiguration *)self _userInterfaceStyleForGrid];
+      if (_userInterfaceStyleForGrid != [(_UIColorPickerViewControllerConfiguration *)v5 _userInterfaceStyleForGrid])
       {
         goto LABEL_26;
       }
 
-      v21 = [(_UIColorPickerViewControllerConfiguration *)self _isEmbedded];
-      if (v21 != [(_UIColorPickerViewControllerConfiguration *)v5 _isEmbedded])
+      _isEmbedded = [(_UIColorPickerViewControllerConfiguration *)self _isEmbedded];
+      if (_isEmbedded != [(_UIColorPickerViewControllerConfiguration *)v5 _isEmbedded])
       {
         goto LABEL_26;
       }
 
-      v22 = [(_UIColorPickerViewControllerConfiguration *)self _useLandscapeLayout];
-      if (v22 != [(_UIColorPickerViewControllerConfiguration *)v5 _useLandscapeLayout])
+      _useLandscapeLayout = [(_UIColorPickerViewControllerConfiguration *)self _useLandscapeLayout];
+      if (_useLandscapeLayout != [(_UIColorPickerViewControllerConfiguration *)v5 _useLandscapeLayout])
       {
         goto LABEL_26;
       }
@@ -142,12 +142,12 @@ LABEL_26:
         goto LABEL_26;
       }
 
-      v14 = [(_UIColorPickerViewControllerConfiguration *)self _suggestedColors];
-      v13 = [(_UIColorPickerViewControllerConfiguration *)v5 _suggestedColors];
-      if (v14 == v13 && (v26 = [(_UIColorPickerViewControllerConfiguration *)self _allowsNoColor], v26 == [(_UIColorPickerViewControllerConfiguration *)v5 _allowsNoColor]) && (v27 = [(_UIColorPickerViewControllerConfiguration *)self _showsEyedropper], v27 == [(_UIColorPickerViewControllerConfiguration *)v5 _showsEyedropper]) && (v28 = [(_UIColorPickerViewControllerConfiguration *)self _showsGridOnly], v28 == [(_UIColorPickerViewControllerConfiguration *)v5 _showsGridOnly]) && (v29 = [(_UIColorPickerViewControllerConfiguration *)self _isInPopoverPresentation], v29 == [(_UIColorPickerViewControllerConfiguration *)v5 _isInPopoverPresentation]))
+      _suggestedColors = [(_UIColorPickerViewControllerConfiguration *)self _suggestedColors];
+      _suggestedColors2 = [(_UIColorPickerViewControllerConfiguration *)v5 _suggestedColors];
+      if (_suggestedColors == _suggestedColors2 && (v26 = [(_UIColorPickerViewControllerConfiguration *)self _allowsNoColor], v26 == [(_UIColorPickerViewControllerConfiguration *)v5 _allowsNoColor]) && (v27 = [(_UIColorPickerViewControllerConfiguration *)self _showsEyedropper], v27 == [(_UIColorPickerViewControllerConfiguration *)v5 _showsEyedropper]) && (v28 = [(_UIColorPickerViewControllerConfiguration *)self _showsGridOnly], v28 == [(_UIColorPickerViewControllerConfiguration *)v5 _showsGridOnly]) && (v29 = [(_UIColorPickerViewControllerConfiguration *)self _isInPopoverPresentation], v29 == [(_UIColorPickerViewControllerConfiguration *)v5 _isInPopoverPresentation]))
       {
-        v31 = [(_UIColorPickerViewControllerConfiguration *)self _isInSheetPresentation];
-        v7 = v31 ^ [(_UIColorPickerViewControllerConfiguration *)v5 _isInSheetPresentation]^ 1;
+        _isInSheetPresentation = [(_UIColorPickerViewControllerConfiguration *)self _isInSheetPresentation];
+        v7 = _isInSheetPresentation ^ [(_UIColorPickerViewControllerConfiguration *)v5 _isInSheetPresentation]^ 1;
       }
 
       else
@@ -171,9 +171,9 @@ LABEL_29:
 
 - (unint64_t)hash
 {
-  v3 = [(_UIColorPickerViewControllerConfiguration *)self showsAlpha];
-  v4 = [(_UIColorPickerViewControllerConfiguration *)self title];
-  v5 = [v4 hash] ^ v3;
+  showsAlpha = [(_UIColorPickerViewControllerConfiguration *)self showsAlpha];
+  title = [(_UIColorPickerViewControllerConfiguration *)self title];
+  v5 = [title hash] ^ showsAlpha;
   v6 = v5 ^ (2 * [(_UIColorPickerViewControllerConfiguration *)self _userInterfaceStyleForGrid]);
   if ([(_UIColorPickerViewControllerConfiguration *)self _shouldUseDarkGridInDarkMode])
   {
@@ -185,17 +185,17 @@ LABEL_29:
     v7 = 0;
   }
 
-  v8 = [(_UIColorPickerViewControllerConfiguration *)self _isEmbedded];
+  _isEmbedded = [(_UIColorPickerViewControllerConfiguration *)self _isEmbedded];
   v9 = 16;
-  if (!v8)
+  if (!_isEmbedded)
   {
     v9 = 0;
   }
 
   v10 = v7 ^ v9;
-  v11 = [(_UIColorPickerViewControllerConfiguration *)self _useLandscapeLayout];
+  _useLandscapeLayout = [(_UIColorPickerViewControllerConfiguration *)self _useLandscapeLayout];
   v12 = 32;
-  if (!v11)
+  if (!_useLandscapeLayout)
   {
     v12 = 0;
   }
@@ -213,104 +213,104 @@ LABEL_29:
     v16 = 0;
   }
 
-  v17 = [(_UIColorPickerViewControllerConfiguration *)self _showsEyedropper];
+  _showsEyedropper = [(_UIColorPickerViewControllerConfiguration *)self _showsEyedropper];
   v18 = 256;
-  if (!v17)
+  if (!_showsEyedropper)
   {
     v18 = 0;
   }
 
   v19 = v16 ^ v18;
-  v20 = [(_UIColorPickerViewControllerConfiguration *)self _showsGridOnly];
+  _showsGridOnly = [(_UIColorPickerViewControllerConfiguration *)self _showsGridOnly];
   v21 = 512;
-  if (!v20)
+  if (!_showsGridOnly)
   {
     v21 = 0;
   }
 
   v22 = v19 ^ v21;
-  v23 = [(_UIColorPickerViewControllerConfiguration *)self _isInPopoverPresentation];
+  _isInPopoverPresentation = [(_UIColorPickerViewControllerConfiguration *)self _isInPopoverPresentation];
   v24 = 1024;
-  if (!v23)
+  if (!_isInPopoverPresentation)
   {
     v24 = 0;
   }
 
   v25 = v22 ^ v24;
-  v26 = [(_UIColorPickerViewControllerConfiguration *)self _isInSheetPresentation];
+  _isInSheetPresentation = [(_UIColorPickerViewControllerConfiguration *)self _isInSheetPresentation];
   v27 = 2048;
-  if (!v26)
+  if (!_isInSheetPresentation)
   {
     v27 = 0;
   }
 
   v28 = v25 ^ v27;
-  v29 = [(_UIColorPickerViewControllerConfiguration *)self _suggestedColors];
-  v30 = v28 ^ [v29 hash];
+  _suggestedColors = [(_UIColorPickerViewControllerConfiguration *)self _suggestedColors];
+  v30 = v28 ^ [_suggestedColors hash];
 
   return v15 ^ v30;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeBool:-[_UIColorPickerViewControllerConfiguration showsAlpha](self forKey:{"showsAlpha"), @"ShowsAlpha"}];
-  v4 = [(_UIColorPickerViewControllerConfiguration *)self title];
-  [v7 encodeObject:v4 forKey:@"_Title"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[_UIColorPickerViewControllerConfiguration showsAlpha](self forKey:{"showsAlpha"), @"ShowsAlpha"}];
+  title = [(_UIColorPickerViewControllerConfiguration *)self title];
+  [coderCopy encodeObject:title forKey:@"_Title"];
 
   [(_UIColorPickerViewControllerConfiguration *)self maxGain];
-  [v7 encodeDouble:@"MaxGain" forKey:?];
-  [v7 encodeInt:-[_UIColorPickerViewControllerConfiguration _userInterfaceStyleForGrid](self forKey:{"_userInterfaceStyleForGrid"), @"_interfaceStyle"}];
-  [v7 encodeBool:-[_UIColorPickerViewControllerConfiguration _shouldUseDarkGridInDarkMode](self forKey:{"_shouldUseDarkGridInDarkMode"), @"_UseDarkGrid"}];
-  [v7 encodeBool:-[_UIColorPickerViewControllerConfiguration _isEmbedded](self forKey:{"_isEmbedded"), @"_IsEmbedded"}];
-  [v7 encodeBool:-[_UIColorPickerViewControllerConfiguration _useLandscapeLayout](self forKey:{"_useLandscapeLayout"), @"_UseLandscapeLayout"}];
+  [coderCopy encodeDouble:@"MaxGain" forKey:?];
+  [coderCopy encodeInt:-[_UIColorPickerViewControllerConfiguration _userInterfaceStyleForGrid](self forKey:{"_userInterfaceStyleForGrid"), @"_interfaceStyle"}];
+  [coderCopy encodeBool:-[_UIColorPickerViewControllerConfiguration _shouldUseDarkGridInDarkMode](self forKey:{"_shouldUseDarkGridInDarkMode"), @"_UseDarkGrid"}];
+  [coderCopy encodeBool:-[_UIColorPickerViewControllerConfiguration _isEmbedded](self forKey:{"_isEmbedded"), @"_IsEmbedded"}];
+  [coderCopy encodeBool:-[_UIColorPickerViewControllerConfiguration _useLandscapeLayout](self forKey:{"_useLandscapeLayout"), @"_UseLandscapeLayout"}];
   [(_UIColorPickerViewControllerConfiguration *)self _preferredWidth];
   *&v5 = v5;
-  [v7 encodeFloat:@"_PreferredWidth" forKey:v5];
-  v6 = [(_UIColorPickerViewControllerConfiguration *)self _suggestedColors];
-  [v7 encodeObject:v6 forKey:@"_SuggestedColors"];
+  [coderCopy encodeFloat:@"_PreferredWidth" forKey:v5];
+  _suggestedColors = [(_UIColorPickerViewControllerConfiguration *)self _suggestedColors];
+  [coderCopy encodeObject:_suggestedColors forKey:@"_SuggestedColors"];
 
-  [v7 encodeBool:-[_UIColorPickerViewControllerConfiguration _allowsNoColor](self forKey:{"_allowsNoColor"), @"_AllowsNoColor"}];
-  [v7 encodeBool:-[_UIColorPickerViewControllerConfiguration _showsEyedropper](self forKey:{"_showsEyedropper"), @"_ShowsEyedropper"}];
-  [v7 encodeBool:-[_UIColorPickerViewControllerConfiguration _showsGridOnly](self forKey:{"_showsGridOnly"), @"_ShowsGridOnly"}];
-  [v7 encodeBool:-[_UIColorPickerViewControllerConfiguration _isInPopoverPresentation](self forKey:{"_isInPopoverPresentation"), @"_IsInPopoverPresentation"}];
-  [v7 encodeBool:-[_UIColorPickerViewControllerConfiguration _isInSheetPresentation](self forKey:{"_isInSheetPresentation"), @"_IsInSheetPresentation"}];
+  [coderCopy encodeBool:-[_UIColorPickerViewControllerConfiguration _allowsNoColor](self forKey:{"_allowsNoColor"), @"_AllowsNoColor"}];
+  [coderCopy encodeBool:-[_UIColorPickerViewControllerConfiguration _showsEyedropper](self forKey:{"_showsEyedropper"), @"_ShowsEyedropper"}];
+  [coderCopy encodeBool:-[_UIColorPickerViewControllerConfiguration _showsGridOnly](self forKey:{"_showsGridOnly"), @"_ShowsGridOnly"}];
+  [coderCopy encodeBool:-[_UIColorPickerViewControllerConfiguration _isInPopoverPresentation](self forKey:{"_isInPopoverPresentation"), @"_IsInPopoverPresentation"}];
+  [coderCopy encodeBool:-[_UIColorPickerViewControllerConfiguration _isInSheetPresentation](self forKey:{"_isInSheetPresentation"), @"_IsInSheetPresentation"}];
 }
 
-- (_UIColorPickerViewControllerConfiguration)initWithCoder:(id)a3
+- (_UIColorPickerViewControllerConfiguration)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _UIColorPickerViewControllerConfiguration;
   v5 = [(_UIColorPickerViewControllerConfiguration *)&v13 init];
   if (v5)
   {
-    -[_UIColorPickerViewControllerConfiguration setShowsAlpha:](v5, "setShowsAlpha:", [v4 decodeBoolForKey:@"ShowsAlpha"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_Title"];
+    -[_UIColorPickerViewControllerConfiguration setShowsAlpha:](v5, "setShowsAlpha:", [coderCopy decodeBoolForKey:@"ShowsAlpha"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_Title"];
     [(_UIColorPickerViewControllerConfiguration *)v5 setTitle:v6];
 
-    [v4 decodeDoubleForKey:@"MaxGain"];
+    [coderCopy decodeDoubleForKey:@"MaxGain"];
     [(_UIColorPickerViewControllerConfiguration *)v5 setMaxGain:?];
-    -[_UIColorPickerViewControllerConfiguration set_userInterfaceStyleForGrid:](v5, "set_userInterfaceStyleForGrid:", [v4 decodeIntForKey:@"_interfaceStyle"]);
-    -[_UIColorPickerViewControllerConfiguration set_shouldUseDarkGridInDarkMode:](v5, "set_shouldUseDarkGridInDarkMode:", [v4 decodeBoolForKey:@"_UseDarkGrid"]);
-    -[_UIColorPickerViewControllerConfiguration set_isEmbedded:](v5, "set_isEmbedded:", [v4 decodeBoolForKey:@"_IsEmbedded"]);
-    -[_UIColorPickerViewControllerConfiguration set_useLandscapeLayout:](v5, "set_useLandscapeLayout:", [v4 decodeBoolForKey:@"_UseLandscapeLayout"]);
-    [v4 decodeFloatForKey:@"_PreferredWidth"];
+    -[_UIColorPickerViewControllerConfiguration set_userInterfaceStyleForGrid:](v5, "set_userInterfaceStyleForGrid:", [coderCopy decodeIntForKey:@"_interfaceStyle"]);
+    -[_UIColorPickerViewControllerConfiguration set_shouldUseDarkGridInDarkMode:](v5, "set_shouldUseDarkGridInDarkMode:", [coderCopy decodeBoolForKey:@"_UseDarkGrid"]);
+    -[_UIColorPickerViewControllerConfiguration set_isEmbedded:](v5, "set_isEmbedded:", [coderCopy decodeBoolForKey:@"_IsEmbedded"]);
+    -[_UIColorPickerViewControllerConfiguration set_useLandscapeLayout:](v5, "set_useLandscapeLayout:", [coderCopy decodeBoolForKey:@"_UseLandscapeLayout"]);
+    [coderCopy decodeFloatForKey:@"_PreferredWidth"];
     [(_UIColorPickerViewControllerConfiguration *)v5 set_preferredWidth:v7];
     v8 = MEMORY[0x1E695DFD8];
     v14[0] = objc_opt_class();
     v14[1] = objc_opt_class();
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
     v10 = [v8 setWithArray:v9];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"_SuggestedColors"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"_SuggestedColors"];
     [(_UIColorPickerViewControllerConfiguration *)v5 set_suggestedColors:v11];
 
-    -[_UIColorPickerViewControllerConfiguration set_allowsNoColor:](v5, "set_allowsNoColor:", [v4 decodeBoolForKey:@"_AllowsNoColor"]);
-    -[_UIColorPickerViewControllerConfiguration set_showsEyedropper:](v5, "set_showsEyedropper:", [v4 decodeBoolForKey:@"_ShowsEyedropper"]);
-    -[_UIColorPickerViewControllerConfiguration set_showsGridOnly:](v5, "set_showsGridOnly:", [v4 decodeBoolForKey:@"_ShowsGridOnly"]);
-    -[_UIColorPickerViewControllerConfiguration set_isInPopoverPresentation:](v5, "set_isInPopoverPresentation:", [v4 decodeBoolForKey:@"_IsInPopoverPresentation"]);
-    -[_UIColorPickerViewControllerConfiguration set_isInSheetPresentation:](v5, "set_isInSheetPresentation:", [v4 decodeBoolForKey:@"_IsInSheetPresentation"]);
+    -[_UIColorPickerViewControllerConfiguration set_allowsNoColor:](v5, "set_allowsNoColor:", [coderCopy decodeBoolForKey:@"_AllowsNoColor"]);
+    -[_UIColorPickerViewControllerConfiguration set_showsEyedropper:](v5, "set_showsEyedropper:", [coderCopy decodeBoolForKey:@"_ShowsEyedropper"]);
+    -[_UIColorPickerViewControllerConfiguration set_showsGridOnly:](v5, "set_showsGridOnly:", [coderCopy decodeBoolForKey:@"_ShowsGridOnly"]);
+    -[_UIColorPickerViewControllerConfiguration set_isInPopoverPresentation:](v5, "set_isInPopoverPresentation:", [coderCopy decodeBoolForKey:@"_IsInPopoverPresentation"]);
+    -[_UIColorPickerViewControllerConfiguration set_isInSheetPresentation:](v5, "set_isInSheetPresentation:", [coderCopy decodeBoolForKey:@"_IsInSheetPresentation"]);
   }
 
   return v5;

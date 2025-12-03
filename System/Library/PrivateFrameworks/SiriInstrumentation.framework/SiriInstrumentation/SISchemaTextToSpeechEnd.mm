@@ -1,24 +1,24 @@
 @interface SISchemaTextToSpeechEnd
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaTextToSpeechEnd)initWithDictionary:(id)a3;
-- (SISchemaTextToSpeechEnd)initWithJSON:(id)a3;
+- (SISchemaTextToSpeechEnd)initWithDictionary:(id)dictionary;
+- (SISchemaTextToSpeechEnd)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaTextToSpeechEnd
 
-- (SISchemaTextToSpeechEnd)initWithDictionary:(id)a3
+- (SISchemaTextToSpeechEnd)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = SISchemaTextToSpeechEnd;
   v5 = [(SISchemaTextToSpeechEnd *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"aceID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"aceID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,30 +32,30 @@
   return v5;
 }
 
-- (SISchemaTextToSpeechEnd)initWithJSON:(id)a3
+- (SISchemaTextToSpeechEnd)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaTextToSpeechEnd *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaTextToSpeechEnd *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaTextToSpeechEnd *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -68,31 +68,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_aceID)
   {
-    v4 = [(SISchemaTextToSpeechEnd *)self aceID];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"aceID"];
+    aceID = [(SISchemaTextToSpeechEnd *)self aceID];
+    v5 = [aceID copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"aceID"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(SISchemaTextToSpeechEnd *)self aceID];
-    v6 = [v4 aceID];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    aceID = [(SISchemaTextToSpeechEnd *)self aceID];
+    aceID2 = [equalCopy aceID];
+    v7 = aceID2;
+    if ((aceID != 0) != (aceID2 == 0))
     {
-      v8 = [(SISchemaTextToSpeechEnd *)self aceID];
-      if (!v8)
+      aceID3 = [(SISchemaTextToSpeechEnd *)self aceID];
+      if (!aceID3)
       {
 
 LABEL_10:
@@ -100,10 +100,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(SISchemaTextToSpeechEnd *)self aceID];
-      v11 = [v4 aceID];
-      v12 = [v10 isEqual:v11];
+      v9 = aceID3;
+      aceID4 = [(SISchemaTextToSpeechEnd *)self aceID];
+      aceID5 = [equalCopy aceID];
+      v12 = [aceID4 isEqual:aceID5];
 
       if (v12)
       {
@@ -122,12 +122,12 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(SISchemaTextToSpeechEnd *)self aceID];
+  toCopy = to;
+  aceID = [(SISchemaTextToSpeechEnd *)self aceID];
 
-  if (v4)
+  if (aceID)
   {
     PBDataWriterWriteStringField();
   }

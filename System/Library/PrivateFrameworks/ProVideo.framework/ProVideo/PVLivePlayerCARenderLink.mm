@@ -1,34 +1,34 @@
 @interface PVLivePlayerCARenderLink
-- (PVLivePlayerCARenderLink)initWithCADisplayLinkFPS:(int64_t)a3;
+- (PVLivePlayerCARenderLink)initWithCADisplayLinkFPS:(int64_t)s;
 - (int64_t)prefferedCADisplayFPS;
-- (void)displayLinkFired:(id)a3;
+- (void)displayLinkFired:(id)fired;
 - (void)rebuild;
-- (void)setPrefferedCADisplayFPS:(int64_t)a3;
+- (void)setPrefferedCADisplayFPS:(int64_t)s;
 - (void)teardown;
 @end
 
 @implementation PVLivePlayerCARenderLink
 
-- (PVLivePlayerCARenderLink)initWithCADisplayLinkFPS:(int64_t)a3
+- (PVLivePlayerCARenderLink)initWithCADisplayLinkFPS:(int64_t)s
 {
   v5.receiver = self;
   v5.super_class = PVLivePlayerCARenderLink;
   result = [(PVLivePlayerRenderLink *)&v5 init];
   if (result)
   {
-    result->_prefferedCADisplayFPS = a3;
+    result->_prefferedCADisplayFPS = s;
   }
 
   return result;
 }
 
-- (void)setPrefferedCADisplayFPS:(int64_t)a3
+- (void)setPrefferedCADisplayFPS:(int64_t)s
 {
   lock = self->super._lock;
   LOBYTE(v6) = 0;
   HGSynchronizable::Lock(lock);
-  self->_prefferedCADisplayFPS = a3;
-  v7 = CAFrameRateRangeMake(a3, a3, a3);
+  self->_prefferedCADisplayFPS = s;
+  v7 = CAFrameRateRangeMake(s, s, s);
   [(CADisplayLink *)self->_displayLink setPreferredFrameRateRange:*&v7.minimum, *&v7.maximum, *&v7.preferred, lock, v6];
   HGSynchronizable::Unlock(lock);
 }
@@ -58,8 +58,8 @@
     self->_displayLink = v3;
 
     v5 = self->_displayLink;
-    v6 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [(CADisplayLink *)v5 addToRunLoop:v6 forMode:*MEMORY[0x277CBE738]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [(CADisplayLink *)v5 addToRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE738]];
 
     v9 = CAFrameRateRangeMake(self->_prefferedCADisplayFPS, self->_prefferedCADisplayFPS, self->_prefferedCADisplayFPS);
     v7 = self->_displayLink;
@@ -68,7 +68,7 @@
   }
 }
 
-- (void)displayLinkFired:(id)a3
+- (void)displayLinkFired:(id)fired
 {
   memset(&v6, 0, sizeof(v6));
   [(CADisplayLink *)self->_displayLink timestamp];

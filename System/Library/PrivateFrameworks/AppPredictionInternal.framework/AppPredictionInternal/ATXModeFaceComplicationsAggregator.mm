@@ -1,22 +1,22 @@
 @interface ATXModeFaceComplicationsAggregator
-- (id)provideComplicationsForSuggestedFaceType:(int64_t)a3 environment:(id)a4;
-- (id)provideLandscapeComplicationsForSuggestedFaceType:(int64_t)a3 environment:(id)a4;
+- (id)provideComplicationsForSuggestedFaceType:(int64_t)type environment:(id)environment;
+- (id)provideLandscapeComplicationsForSuggestedFaceType:(int64_t)type environment:(id)environment;
 @end
 
 @implementation ATXModeFaceComplicationsAggregator
 
-- (id)provideComplicationsForSuggestedFaceType:(int64_t)a3 environment:(id)a4
+- (id)provideComplicationsForSuggestedFaceType:(int64_t)type environment:(id)environment
 {
   v35[3] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  environmentCopy = environment;
   if ([MEMORY[0x277D42590] isBetaBuild])
   {
-    v6 = 1;
+    isInternalBuild = 1;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D42590] isInternalBuild];
+    isInternalBuild = [MEMORY[0x277D42590] isInternalBuild];
   }
 
   v7 = objc_opt_new();
@@ -25,9 +25,9 @@
   v10 = objc_opt_new();
   v11 = MEMORY[0x277CBEBF8];
   v12 = v8;
-  if (v6)
+  if (isInternalBuild)
   {
-    v13 = [v7 provideComplicationsForSuggestedFaceType:a3 environment:v5];
+    v13 = [v7 provideComplicationsForSuggestedFaceType:type environment:environmentCopy];
     v14 = v13;
     if (v13)
     {
@@ -41,7 +41,7 @@
 
     [v10 addObjectsFromArray:v15];
 
-    v16 = [v8 provideComplicationsForSuggestedFaceType:a3 environment:v5];
+    v16 = [v8 provideComplicationsForSuggestedFaceType:type environment:environmentCopy];
     v17 = v16;
     if (v16)
     {
@@ -58,7 +58,7 @@
     v12 = v9;
   }
 
-  v19 = [v12 provideComplicationsForSuggestedFaceType:a3 environment:v5];
+  v19 = [v12 provideComplicationsForSuggestedFaceType:type environment:environmentCopy];
   v20 = v19;
   if (v19)
   {
@@ -72,8 +72,8 @@
 
   [v10 addObjectsFromArray:v21];
 
-  v22 = [v10 allObjects];
-  v23 = [v22 sortedArrayUsingComparator:&__block_literal_global_61];
+  allObjects = [v10 allObjects];
+  v23 = [allObjects sortedArrayUsingComparator:&__block_literal_global_61];
 
   v34[0] = &unk_283A55868;
   v24 = objc_opt_new();
@@ -157,12 +157,12 @@ LABEL_12:
   return v8;
 }
 
-- (id)provideLandscapeComplicationsForSuggestedFaceType:(int64_t)a3 environment:(id)a4
+- (id)provideLandscapeComplicationsForSuggestedFaceType:(int64_t)type environment:(id)environment
 {
-  v5 = a4;
+  environmentCopy = environment;
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  v8 = [v6 provideLandscapeComplicationsForSuggestedFaceType:a3 environment:v5];
+  v8 = [v6 provideLandscapeComplicationsForSuggestedFaceType:type environment:environmentCopy];
 
   if (v8)
   {
@@ -176,8 +176,8 @@ LABEL_12:
 
   [v7 addObjectsFromArray:v9];
 
-  v10 = [v7 allObjects];
-  v11 = [v10 sortedArrayUsingComparator:&__block_literal_global_31];
+  allObjects = [v7 allObjects];
+  v11 = [allObjects sortedArrayUsingComparator:&__block_literal_global_31];
 
   return v11;
 }

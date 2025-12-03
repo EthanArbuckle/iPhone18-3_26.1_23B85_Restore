@@ -8,24 +8,24 @@
 
 - (id)wf_localizedSubtitle
 {
-  v1 = [a1 displayRepresentation];
-  v2 = [v1 subtitle];
-  v3 = [v2 wf_localizedString];
+  displayRepresentation = [self displayRepresentation];
+  subtitle = [displayRepresentation subtitle];
+  wf_localizedString = [subtitle wf_localizedString];
 
-  return v3;
+  return wf_localizedString;
 }
 
 - (id)wf_symbolName
 {
-  v1 = [a1 displayRepresentation];
-  v2 = [v1 image];
+  displayRepresentation = [self displayRepresentation];
+  image = [displayRepresentation image];
 
-  if (v2)
+  if (image)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = v2;
+      v3 = image;
     }
 
     else
@@ -41,18 +41,18 @@
 
   v4 = v3;
 
-  v5 = [v4 systemName];
+  systemName = [v4 systemName];
 
-  return v5;
+  return systemName;
 }
 
 - (id)wf_localizedDisplayName
 {
-  v1 = [a1 displayRepresentation];
-  v2 = [v1 title];
-  v3 = [v2 wf_localizedString];
+  displayRepresentation = [self displayRepresentation];
+  title = [displayRepresentation title];
+  wf_localizedString = [title wf_localizedString];
 
-  return v3;
+  return wf_localizedString;
 }
 
 @end

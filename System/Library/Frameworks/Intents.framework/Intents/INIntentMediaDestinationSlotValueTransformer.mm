@@ -1,17 +1,17 @@
 @interface INIntentMediaDestinationSlotValueTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation INIntentMediaDestinationSlotValueTransformer
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   [objc_opt_class() reverseTransformedValueClass];
   if (objc_opt_isKindOfClass())
   {
-    v4 = INIntentSlotValueTransformFromMediaDestination(v3);
+    v4 = INIntentSlotValueTransformFromMediaDestination(valueCopy);
   }
 
   else
@@ -22,13 +22,13 @@
   return v4;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   [objc_opt_class() transformedValueClass];
   if (objc_opt_isKindOfClass())
   {
-    v4 = INIntentSlotValueTransformToMediaDestination(v3);
+    v4 = INIntentSlotValueTransformToMediaDestination(valueCopy);
   }
 
   else

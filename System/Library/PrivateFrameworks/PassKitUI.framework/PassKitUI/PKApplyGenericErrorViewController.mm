@@ -6,8 +6,8 @@
 
 - (void)handleNextStep
 {
-  v3 = [(PKApplyExplanationViewController *)self controller];
-  [v3 endApplyFlow];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  [controller endApplyFlow];
 
   v4.receiver = self;
   v4.super_class = PKApplyGenericErrorViewController;

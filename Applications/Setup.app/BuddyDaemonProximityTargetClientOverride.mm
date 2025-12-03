@@ -9,25 +9,25 @@
 - (void)beginSIMSetupExternalAuthentication;
 - (void)connectToDaemon;
 - (void)dismissProximityPinCode;
-- (void)displayProximityPinCode:(id)a3 visual:(BOOL)a4;
+- (void)displayProximityPinCode:(id)code visual:(BOOL)visual;
 - (void)endAdvertisingProximitySetup;
 - (void)endDeviceToDeviceMigration;
 - (void)endPairing;
 - (void)endSIMSetupExternalAuthentication;
-- (void)finishAccountSetupWithIntent:(int64_t)a3;
+- (void)finishAccountSetupWithIntent:(int64_t)intent;
 - (void)finishPairing;
-- (void)hasConnection:(id)a3;
+- (void)hasConnection:(id)connection;
 - (void)proximityConnectionInitiated;
-- (void)proximityConnectionPreparing:(id)a3;
+- (void)proximityConnectionPreparing:(id)preparing;
 - (void)proximityConnectionReconnected;
 - (void)proximityConnectionTerminated;
-- (void)proximitySetupCompleted:(id)a3;
-- (void)receivedLanguages:(id)a3 locale:(id)a4 model:(id)a5 deviceClass:(id)a6 accessibilitySettings:(id)a7;
-- (void)resumeProximitySetup:(id)a3;
+- (void)proximitySetupCompleted:(id)completed;
+- (void)receivedLanguages:(id)languages locale:(id)locale model:(id)model deviceClass:(id)class accessibilitySettings:(id)settings;
+- (void)resumeProximitySetup:(id)setup;
 - (void)showMigrationInterfaceOnSource;
-- (void)storeHandshake:(id)a3;
-- (void)storeInformation:(id)a3;
-- (void)suspendConnectionForSoftwareUpdate:(id)a3;
+- (void)storeHandshake:(id)handshake;
+- (void)storeInformation:(id)information;
+- (void)suspendConnectionForSoftwareUpdate:(id)update;
 @end
 
 @implementation BuddyDaemonProximityTargetClientOverride
@@ -59,24 +59,24 @@
     [(BuddyDaemonProximityTargetClientOverride *)self setConnection:v2];
 
     v3 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BuddyDaemonProximityTargetClientProtocolOverride];
-    v4 = [(BuddyDaemonProximityTargetClientOverride *)self connection];
-    [(NSXPCConnection *)v4 setExportedInterface:v3];
+    connection = [(BuddyDaemonProximityTargetClientOverride *)self connection];
+    [(NSXPCConnection *)connection setExportedInterface:v3];
 
-    v5 = [(BuddyDaemonProximityTargetClientOverride *)self connection];
-    [(NSXPCConnection *)v5 setExportedObject:self];
+    connection2 = [(BuddyDaemonProximityTargetClientOverride *)self connection];
+    [(NSXPCConnection *)connection2 setExportedObject:self];
 
     v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BYDaemonProximityTargetClientConnectionOverride];
-    v7 = [(BuddyDaemonProximityTargetClientOverride *)self connection];
-    [(NSXPCConnection *)v7 setRemoteObjectInterface:v6];
+    connection3 = [(BuddyDaemonProximityTargetClientOverride *)self connection];
+    [(NSXPCConnection *)connection3 setRemoteObjectInterface:v6];
 
-    v8 = [(BuddyDaemonProximityTargetClientOverride *)self connection];
-    [(NSXPCConnection *)v8 setInvalidationHandler:&stru_10032C408];
+    connection4 = [(BuddyDaemonProximityTargetClientOverride *)self connection];
+    [(NSXPCConnection *)connection4 setInvalidationHandler:&stru_10032C408];
 
-    v9 = [(BuddyDaemonProximityTargetClientOverride *)self connection];
-    [(NSXPCConnection *)v9 setInterruptionHandler:&stru_10032C428];
+    connection5 = [(BuddyDaemonProximityTargetClientOverride *)self connection];
+    [(NSXPCConnection *)connection5 setInterruptionHandler:&stru_10032C428];
 
-    v10 = [(BuddyDaemonProximityTargetClientOverride *)self connection];
-    [(NSXPCConnection *)v10 resume];
+    connection6 = [(BuddyDaemonProximityTargetClientOverride *)self connection];
+    [(NSXPCConnection *)connection6 resume];
   }
 }
 
@@ -86,15 +86,15 @@
   [(BYBuddyDaemonProximityTargetProtocol *)v2 dismissProximityPinCode];
 }
 
-- (void)displayProximityPinCode:(id)a3 visual:(BOOL)a4
+- (void)displayProximityPinCode:(id)code visual:(BOOL)visual
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = a4;
-  v5 = [(BuddyDaemonProximityTargetClientOverride *)v8 delegate];
-  [(BYBuddyDaemonProximityTargetProtocol *)v5 displayProximityPinCode:location[0] visual:v6];
+  objc_storeStrong(location, code);
+  visualCopy = visual;
+  delegate = [(BuddyDaemonProximityTargetClientOverride *)selfCopy delegate];
+  [(BYBuddyDaemonProximityTargetProtocol *)delegate displayProximityPinCode:location[0] visual:visualCopy];
 
   objc_storeStrong(location, 0);
 }
@@ -105,14 +105,14 @@
   [(BYBuddyDaemonProximityTargetProtocol *)v2 proximityConnectionInitiated];
 }
 
-- (void)proximityConnectionPreparing:(id)a3
+- (void)proximityConnectionPreparing:(id)preparing
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyDaemonProximityTargetClientOverride *)v5 delegate];
-  [(BYBuddyDaemonProximityTargetProtocol *)v3 proximityConnectionPreparing:location[0]];
+  objc_storeStrong(location, preparing);
+  delegate = [(BuddyDaemonProximityTargetClientOverride *)selfCopy delegate];
+  [(BYBuddyDaemonProximityTargetProtocol *)delegate proximityConnectionPreparing:location[0]];
 
   objc_storeStrong(location, 0);
 }
@@ -129,34 +129,34 @@
   [(BYBuddyDaemonProximityTargetProtocol *)v2 proximityConnectionTerminated];
 }
 
-- (void)proximitySetupCompleted:(id)a3
+- (void)proximitySetupCompleted:(id)completed
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyDaemonProximityTargetClientOverride *)v5 delegate];
-  [(BYBuddyDaemonProximityTargetProtocol *)v3 proximitySetupCompleted:location[0]];
+  objc_storeStrong(location, completed);
+  delegate = [(BuddyDaemonProximityTargetClientOverride *)selfCopy delegate];
+  [(BYBuddyDaemonProximityTargetProtocol *)delegate proximitySetupCompleted:location[0]];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)receivedLanguages:(id)a3 locale:(id)a4 model:(id)a5 deviceClass:(id)a6 accessibilitySettings:(id)a7
+- (void)receivedLanguages:(id)languages locale:(id)locale model:(id)model deviceClass:(id)class accessibilitySettings:(id)settings
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, languages);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, locale);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
+  objc_storeStrong(&v14, model);
   v13 = 0;
-  objc_storeStrong(&v13, a6);
+  objc_storeStrong(&v13, class);
   v12 = 0;
-  objc_storeStrong(&v12, a7);
-  v11 = [(BuddyDaemonProximityTargetClientOverride *)v17 delegate];
-  [(BYBuddyDaemonProximityTargetProtocol *)v11 receivedLanguages:location[0] locale:v15 model:v14 deviceClass:v13 accessibilitySettings:v12];
+  objc_storeStrong(&v12, settings);
+  delegate = [(BuddyDaemonProximityTargetClientOverride *)selfCopy delegate];
+  [(BYBuddyDaemonProximityTargetProtocol *)delegate receivedLanguages:location[0] locale:v15 model:v14 deviceClass:v13 accessibilitySettings:v12];
 
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
@@ -171,18 +171,18 @@
   [(BYBuddySetupCTLProximityMessageSessionDelegate *)v2 finishPairing];
 }
 
-- (void)finishAccountSetupWithIntent:(int64_t)a3
+- (void)finishAccountSetupWithIntent:(int64_t)intent
 {
-  v3 = [(BuddyDaemonProximityTargetClientOverride *)self intentSelectionDelegate];
-  [(BYBuddyDependentViewPresenterDelegateOverride *)v3 finishAccountSetupWithIntent:a3];
+  intentSelectionDelegate = [(BuddyDaemonProximityTargetClientOverride *)self intentSelectionDelegate];
+  [(BYBuddyDependentViewPresenterDelegateOverride *)intentSelectionDelegate finishAccountSetupWithIntent:intent];
 }
 
 - (id)remoteObject
 {
   v2 = [(BuddyDaemonProximityTargetClientOverride *)self connection:a2];
-  v3 = [(NSXPCConnection *)v2 remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)v2 remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (void)beginAdvertisingProximitySetup
@@ -221,23 +221,23 @@
   [v2 endSIMSetupExternalAuthentication];
 }
 
-- (void)hasConnection:(id)a3
+- (void)hasConnection:(id)connection
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, connection);
   objc_storeStrong(location, 0);
 }
 
-- (void)resumeProximitySetup:(id)a3
+- (void)resumeProximitySetup:(id)setup
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyDaemonProximityTargetClientOverride *)v5 remoteObject];
-  [v3 resumeProximitySetup:location[0]];
+  objc_storeStrong(location, setup);
+  remoteObject = [(BuddyDaemonProximityTargetClientOverride *)selfCopy remoteObject];
+  [remoteObject resumeProximitySetup:location[0]];
 
   objc_storeStrong(location, 0);
 }
@@ -248,38 +248,38 @@
   [v2 showMigrationInterfaceOnSource];
 }
 
-- (void)storeHandshake:(id)a3
+- (void)storeHandshake:(id)handshake
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyDaemonProximityTargetClientOverride *)v5 remoteObject];
-  [v3 storeHandshake:location[0]];
+  objc_storeStrong(location, handshake);
+  remoteObject = [(BuddyDaemonProximityTargetClientOverride *)selfCopy remoteObject];
+  [remoteObject storeHandshake:location[0]];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)storeInformation:(id)a3
+- (void)storeInformation:(id)information
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyDaemonProximityTargetClientOverride *)v5 remoteObject];
-  [v3 storeInformation:location[0]];
+  objc_storeStrong(location, information);
+  remoteObject = [(BuddyDaemonProximityTargetClientOverride *)selfCopy remoteObject];
+  [remoteObject storeInformation:location[0]];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)suspendConnectionForSoftwareUpdate:(id)a3
+- (void)suspendConnectionForSoftwareUpdate:(id)update
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyDaemonProximityTargetClientOverride *)v5 remoteObject];
-  [v3 suspendConnectionForSoftwareUpdate:location[0]];
+  objc_storeStrong(location, update);
+  remoteObject = [(BuddyDaemonProximityTargetClientOverride *)selfCopy remoteObject];
+  [remoteObject suspendConnectionForSoftwareUpdate:location[0]];
 
   objc_storeStrong(location, 0);
 }
@@ -295,8 +295,8 @@
   v16 = sub_1000C6C10;
   v17 = sub_1000C6C54;
   v18[0] = 0;
-  v2 = [(BuddyDaemonProximityTargetClientOverride *)self connection];
-  v3 = [(NSXPCConnection *)v2 synchronousRemoteObjectProxyWithErrorHandler:&stru_10032C448];
+  connection = [(BuddyDaemonProximityTargetClientOverride *)self connection];
+  v3 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:&stru_10032C448];
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;

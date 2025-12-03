@@ -7,8 +7,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(EKUIDividedGridView *)self viewController];
-  [v2 intrinsicContentSize];
+  viewController = [(EKUIDividedGridView *)self viewController];
+  [viewController intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 

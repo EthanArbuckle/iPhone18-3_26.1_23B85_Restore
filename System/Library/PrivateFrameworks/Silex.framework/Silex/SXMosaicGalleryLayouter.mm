@@ -1,92 +1,92 @@
 @interface SXMosaicGalleryLayouter
-- (CGRect)frameForItemAtIndex:(unint64_t)a3;
+- (CGRect)frameForItemAtIndex:(unint64_t)index;
 - (CGSize)contentSize;
 - (NSArray)supportedTileTypeClusters;
-- (SXMosaicGalleryLayouter)initWithDataSource:(id)a3;
+- (SXMosaicGalleryLayouter)initWithDataSource:(id)source;
 - (SXMosaicGalleryLayouterDataSource)dataSource;
-- (id)clusterForItemsInRange:(_NSRange)a3;
-- (id)itemAtIndex:(unint64_t)a3;
-- (id)itemsForRange:(_NSRange)a3;
-- (id)layoutForCluster:(id)a3 previousLayouts:(id)a4;
-- (id)viewForItem:(id)a3;
-- (id)viewForItemAtIndex:(unint64_t)a3;
+- (id)clusterForItemsInRange:(_NSRange)range;
+- (id)itemAtIndex:(unint64_t)index;
+- (id)itemsForRange:(_NSRange)range;
+- (id)layoutForCluster:(id)cluster previousLayouts:(id)layouts;
+- (id)viewForItem:(id)item;
+- (id)viewForItemAtIndex:(unint64_t)index;
 - (unint64_t)numberOfItems;
-- (void)calculateLayoutForWidth:(double)a3;
-- (void)layoutGalleryOnView:(id)a3;
+- (void)calculateLayoutForWidth:(double)width;
+- (void)layoutGalleryOnView:(id)view;
 - (void)resetLayout;
 @end
 
 @implementation SXMosaicGalleryLayouter
 
-- (SXMosaicGalleryLayouter)initWithDataSource:(id)a3
+- (SXMosaicGalleryLayouter)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = SXMosaicGalleryLayouter;
   v5 = [(SXMosaicGalleryLayouter *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataSource, v4);
+    objc_storeWeak(&v5->_dataSource, sourceCopy);
     v6->_numberOfItems = -1;
     v6->_width = 1.79769313e308;
     v6->_contentSize = *MEMORY[0x1E695F060];
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     layouts = v6->_layouts;
-    v6->_layouts = v7;
+    v6->_layouts = array;
 
-    v9 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     clusters = v6->_clusters;
-    v6->_clusters = v9;
+    v6->_clusters = array2;
   }
 
   return v6;
 }
 
-- (void)calculateLayoutForWidth:(double)a3
+- (void)calculateLayoutForWidth:(double)width
 {
   [(SXMosaicGalleryLayouter *)self width];
-  if (v5 == a3)
+  if (v5 == width)
   {
     return;
   }
 
   [(SXMosaicGalleryLayouter *)self resetLayout];
-  [(SXMosaicGalleryLayouter *)self setWidth:a3];
+  [(SXMosaicGalleryLayouter *)self setWidth:width];
   v6 = [SXMosaicGalleryColumnLayout alloc];
   [(SXMosaicGalleryLayouter *)self width];
   v7 = [SXMosaicGalleryColumnLayout initWithWidth:v6 gutter:"initWithWidth:gutter:"];
   columnLayout = self->_columnLayout;
   self->_columnLayout = v7;
 
-  v9 = [(SXMosaicGalleryLayouter *)self numberOfItems];
-  v10 = v9;
-  if (v9 >= 3)
+  numberOfItems = [(SXMosaicGalleryLayouter *)self numberOfItems];
+  v10 = numberOfItems;
+  if (numberOfItems >= 3)
   {
     v11 = 3;
   }
 
   else
   {
-    v11 = v9;
+    v11 = numberOfItems;
   }
 
-  v35 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0;
   v13 = 0;
   do
   {
-    v14 = [v35 lastObject];
-    v15 = v14;
-    if (v14)
+    lastObject = [array lastObject];
+    v15 = lastObject;
+    if (lastObject)
     {
-      v16 = [v14 rangeValue];
+      rangeValue = [lastObject rangeValue];
       v18 = v17;
     }
 
     else
     {
-      v16 = 0;
+      rangeValue = 0;
       v18 = 0;
     }
 
@@ -98,17 +98,17 @@
       {
         v21 = v13 + v11;
 LABEL_12:
-        v22 = [(SXMosaicGalleryLayouter *)self layouts];
-        v23 = [(SXMosaicGalleryLayouter *)self layoutForCluster:v20 previousLayouts:v22];
+        layouts = [(SXMosaicGalleryLayouter *)self layouts];
+        v23 = [(SXMosaicGalleryLayouter *)self layoutForCluster:v20 previousLayouts:layouts];
 
         v24 = [MEMORY[0x1E696B098] valueWithRange:{v13, v11}];
-        [v35 addObject:v24];
+        [array addObject:v24];
 
-        v25 = [(SXMosaicGalleryLayouter *)self layouts];
-        [v25 addObject:v23];
+        layouts2 = [(SXMosaicGalleryLayouter *)self layouts];
+        [layouts2 addObject:v23];
 
-        v26 = [(SXMosaicGalleryLayouter *)self clusters];
-        [v26 addObject:v20];
+        clusters = [(SXMosaicGalleryLayouter *)self clusters];
+        [clusters addObject:v20];
 
         v13 = v21;
 LABEL_13:
@@ -142,18 +142,18 @@ LABEL_13:
         goto LABEL_12;
       }
 
-      v28 = [(SXMosaicGalleryLayouter *)self clusters];
-      v29 = [(SXMosaicGalleryLayouter *)self clusters];
-      v30 = [v29 lastObject];
-      [v28 removeObject:v30];
+      clusters2 = [(SXMosaicGalleryLayouter *)self clusters];
+      clusters3 = [(SXMosaicGalleryLayouter *)self clusters];
+      lastObject2 = [clusters3 lastObject];
+      [clusters2 removeObject:lastObject2];
 
-      v31 = [(SXMosaicGalleryLayouter *)self layouts];
-      v32 = [(SXMosaicGalleryLayouter *)self layouts];
-      v33 = [v32 lastObject];
-      [v31 removeObject:v33];
+      layouts3 = [(SXMosaicGalleryLayouter *)self layouts];
+      layouts4 = [(SXMosaicGalleryLayouter *)self layouts];
+      lastObject3 = [layouts4 lastObject];
+      [layouts3 removeObject:lastObject3];
 
       v12 = 1;
-      v13 = v16;
+      v13 = rangeValue;
       v27 = 2;
     }
 
@@ -172,12 +172,12 @@ LABEL_24:
   while (v10 > v13);
 }
 
-- (void)layoutGalleryOnView:(id)a3
+- (void)layoutGalleryOnView:(id)view
 {
   v53 = *MEMORY[0x1E69E9840];
-  v42 = a3;
-  v4 = [(SXMosaicGalleryLayouter *)self columnLayout];
-  [v4 gutter];
+  viewCopy = view;
+  columnLayout = [(SXMosaicGalleryLayouter *)self columnLayout];
+  [columnLayout gutter];
   v6 = v5;
 
   v49 = 0u;
@@ -207,11 +207,11 @@ LABEL_24:
         v44 = 0u;
         v45 = 0u;
         v46 = 0u;
-        v11 = [v10 cluster];
-        v12 = [v11 items];
+        cluster = [v10 cluster];
+        items = [cluster items];
 
-        v41 = v12;
-        v13 = [v12 countByEnumeratingWithState:&v43 objects:v51 count:16];
+        v41 = items;
+        v13 = [items countByEnumeratingWithState:&v43 objects:v51 count:16];
         if (v13)
         {
           v14 = v13;
@@ -227,34 +227,34 @@ LABEL_24:
               }
 
               v17 = *(*(&v43 + 1) + 8 * v16);
-              v18 = [v10 cluster];
-              v19 = [v18 items];
-              v20 = [v19 indexOfObject:v17];
+              cluster2 = [v10 cluster];
+              items2 = [cluster2 items];
+              v20 = [items2 indexOfObject:v17];
 
               [v10 frameForItemAtIndex:v20];
               v22 = v21;
               v24 = v23;
               v26 = v25;
               v28 = v8 + v27;
-              v29 = [(SXMosaicGalleryLayouter *)self frames];
+              frames = [(SXMosaicGalleryLayouter *)self frames];
               v30 = [MEMORY[0x1E696B098] valueWithCGRect:{v22, v28, v24, v26}];
-              [v29 replaceObjectAtIndex:v7 withObject:v30];
+              [frames replaceObjectAtIndex:v7 withObject:v30];
 
               v31 = [(SXMosaicGalleryLayouter *)self viewForItem:v17];
-              v32 = [(SXMosaicGalleryLayouter *)self items];
-              v33 = [v32 indexOfObject:v17];
+              items3 = [(SXMosaicGalleryLayouter *)self items];
+              v33 = [items3 indexOfObject:v17];
 
-              v34 = [(SXMosaicGalleryLayouter *)self dataSource];
-              LOBYTE(v33) = [v34 galleryLayouter:self viewIsCurrentlyFullscreenForItemAtIndex:v33];
+              dataSource = [(SXMosaicGalleryLayouter *)self dataSource];
+              LOBYTE(v33) = [dataSource galleryLayouter:self viewIsCurrentlyFullscreenForItemAtIndex:v33];
 
               if ((v33 & 1) == 0)
               {
                 [v31 setFrame:{v22, v28, v24, v26}];
-                v35 = [v31 superview];
+                superview = [v31 superview];
 
-                if (v35 != v42)
+                if (superview != viewCopy)
                 {
-                  [v42 addSubview:v31];
+                  [viewCopy addSubview:v31];
                 }
               }
 
@@ -290,16 +290,16 @@ LABEL_24:
   height = self->_contentSize.height;
   if (width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8))
   {
-    v6 = [(SXMosaicGalleryLayouter *)self columnLayout];
-    [v6 gutter];
+    columnLayout = [(SXMosaicGalleryLayouter *)self columnLayout];
+    [columnLayout gutter];
     v8 = v7;
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = [(SXMosaicGalleryLayouter *)self layouts];
-    v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    layouts = [(SXMosaicGalleryLayouter *)self layouts];
+    v10 = [layouts countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
       v11 = v10;
@@ -311,14 +311,14 @@ LABEL_24:
         {
           if (*v18 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(layouts);
           }
 
           [*(*(&v17 + 1) + 8 * i) height];
           v13 = v8 + v13 + v15;
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v11 = [layouts countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v11);
@@ -341,14 +341,14 @@ LABEL_24:
   return result;
 }
 
-- (CGRect)frameForItemAtIndex:(unint64_t)a3
+- (CGRect)frameForItemAtIndex:(unint64_t)index
 {
-  v4 = [(SXMosaicGalleryLayouter *)self frames];
-  v5 = [v4 objectAtIndex:a3];
+  frames = [(SXMosaicGalleryLayouter *)self frames];
+  v5 = [frames objectAtIndex:index];
 
-  v6 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v5 == v6)
+  if (v5 == null)
   {
     v8 = *MEMORY[0x1E695F058];
     v10 = *(MEMORY[0x1E695F058] + 8);
@@ -376,10 +376,10 @@ LABEL_24:
   return result;
 }
 
-- (id)viewForItemAtIndex:(unint64_t)a3
+- (id)viewForItemAtIndex:(unint64_t)index
 {
-  v4 = [(SXMosaicGalleryLayouter *)self views];
-  v5 = [v4 objectAtIndex:a3];
+  views = [(SXMosaicGalleryLayouter *)self views];
+  v5 = [views objectAtIndex:index];
 
   return v5;
 }
@@ -397,11 +397,11 @@ LABEL_24:
   return supportedTileTypeClusters;
 }
 
-- (id)clusterForItemsInRange:(_NSRange)a3
+- (id)clusterForItemsInRange:(_NSRange)range
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [(SXMosaicGalleryLayouter *)self itemsForRange:a3.location, a3.length];
-  v5 = [MEMORY[0x1E695DF70] array];
+  v4 = [(SXMosaicGalleryLayouter *)self itemsForRange:range.location, range.length];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -421,9 +421,9 @@ LABEL_24:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v17 + 1) + 8 * i) tileType];
-        v12 = [MEMORY[0x1E696AD98] numberWithInt:v11];
-        [v5 addObject:v12];
+        tileType = [*(*(&v17 + 1) + 8 * i) tileType];
+        v12 = [MEMORY[0x1E696AD98] numberWithInt:tileType];
+        [array addObject:v12];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -432,8 +432,8 @@ LABEL_24:
     while (v8);
   }
 
-  v13 = [(SXMosaicGalleryLayouter *)self supportedTileTypeClusters];
-  v14 = [v13 containsObject:v5];
+  supportedTileTypeClusters = [(SXMosaicGalleryLayouter *)self supportedTileTypeClusters];
+  v14 = [supportedTileTypeClusters containsObject:array];
 
   if (v14)
   {
@@ -448,20 +448,20 @@ LABEL_24:
   return v15;
 }
 
-- (id)layoutForCluster:(id)a3 previousLayouts:(id)a4
+- (id)layoutForCluster:(id)cluster previousLayouts:(id)layouts
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 items];
-  v9 = [v8 count];
+  clusterCopy = cluster;
+  layoutsCopy = layouts;
+  items = [clusterCopy items];
+  v9 = [items count];
 
-  v10 = [v7 lastObject];
+  lastObject = [layoutsCopy lastObject];
 
-  v11 = [(SXMosaicGalleryLayouter *)self reverseNextHorizontalLivingRoomLayout];
+  reverseNextHorizontalLivingRoomLayout = [(SXMosaicGalleryLayouter *)self reverseNextHorizontalLivingRoomLayout];
   v12 = objc_opt_class();
   if (v9 == 2)
   {
-    if (([v6 clusterIsEqualToTileTypes:&unk_1F538A808] & 1) == 0 && !objc_msgSend(v6, "clusterIsEqualToTileTypes:", &unk_1F538A820))
+    if (([clusterCopy clusterIsEqualToTileTypes:&unk_1F538A808] & 1) == 0 && !objc_msgSend(clusterCopy, "clusterIsEqualToTileTypes:", &unk_1F538A820))
     {
       goto LABEL_15;
     }
@@ -474,9 +474,9 @@ LABEL_24:
     goto LABEL_17;
   }
 
-  if (![v6 isClusterOfType:3] || v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (![clusterCopy isClusterOfType:3] || lastObject && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    if ([v6 clusterIsEqualToTileTypes:&unk_1F538A7F0])
+    if ([clusterCopy clusterIsEqualToTileTypes:&unk_1F538A7F0])
     {
       v12 = objc_opt_class();
 LABEL_15:
@@ -489,8 +489,8 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v13 = [(SXMosaicGalleryLayouter *)self dataSource];
-  v14 = [v13 documentColumnLayoutForGalleryLayouter:self];
+  dataSource = [(SXMosaicGalleryLayouter *)self dataSource];
+  v14 = [dataSource documentColumnLayoutForGalleryLayouter:self];
 
   [v14 constrainedViewportSize];
   v16 = v15;
@@ -509,24 +509,24 @@ LABEL_16:
 
 LABEL_17:
   v18 = [v12 alloc];
-  v19 = [(SXMosaicGalleryLayouter *)self columnLayout];
-  v20 = [v18 initWithCluster:v6 numberOfColumns:v9 columnLayout:v19];
+  columnLayout = [(SXMosaicGalleryLayouter *)self columnLayout];
+  v20 = [v18 initWithCluster:clusterCopy numberOfColumns:v9 columnLayout:columnLayout];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v20 setReverseLayout:v11];
-    [(SXMosaicGalleryLayouter *)self setReverseNextHorizontalLivingRoomLayout:v11 ^ 1];
+    [v20 setReverseLayout:reverseNextHorizontalLivingRoomLayout];
+    [(SXMosaicGalleryLayouter *)self setReverseNextHorizontalLivingRoomLayout:reverseNextHorizontalLivingRoomLayout ^ 1];
   }
 
   return v20;
 }
 
-- (id)itemsForRange:(_NSRange)a3
+- (id)itemsForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:a3.length];
+  length = range.length;
+  location = range.location;
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:range.length];
   if (location < location + length)
   {
     do
@@ -546,24 +546,24 @@ LABEL_17:
   return v8;
 }
 
-- (id)itemAtIndex:(unint64_t)a3
+- (id)itemAtIndex:(unint64_t)index
 {
-  v5 = [(SXMosaicGalleryLayouter *)self items];
-  v6 = [v5 objectAtIndex:a3];
+  items = [(SXMosaicGalleryLayouter *)self items];
+  v6 = [items objectAtIndex:index];
 
-  v7 = [MEMORY[0x1E695DFB0] null];
-  v8 = [v6 isEqual:v7];
+  null = [MEMORY[0x1E695DFB0] null];
+  v8 = [v6 isEqual:null];
 
   if (v8)
   {
-    v9 = [(SXMosaicGalleryLayouter *)self dataSource];
-    [v9 galleryLayouter:self dimensionsForItemAtIndex:a3];
+    dataSource = [(SXMosaicGalleryLayouter *)self dataSource];
+    [dataSource galleryLayouter:self dimensionsForItemAtIndex:index];
     v11 = v10;
     v13 = v12;
 
     v14 = [[SXMosaicGalleryLayoutItem alloc] initWithDimensions:v11, v13];
-    v15 = [(SXMosaicGalleryLayouter *)self items];
-    [v15 replaceObjectAtIndex:a3 withObject:v14];
+    items2 = [(SXMosaicGalleryLayouter *)self items];
+    [items2 replaceObjectAtIndex:index withObject:v14];
 
     v6 = v14;
   }
@@ -575,8 +575,8 @@ LABEL_17:
 {
   if (self->_numberOfItems == -1)
   {
-    v3 = [(SXMosaicGalleryLayouter *)self dataSource];
-    self->_numberOfItems = [v3 numberOfItemsForGalleryLayouter:self];
+    dataSource = [(SXMosaicGalleryLayouter *)self dataSource];
+    self->_numberOfItems = [dataSource numberOfItemsForGalleryLayouter:self];
 
     v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:self->_numberOfItems];
     items = self->_items;
@@ -591,13 +591,13 @@ LABEL_17:
       v8 = 0;
       do
       {
-        v9 = [(SXMosaicGalleryLayouter *)self items];
-        v10 = [MEMORY[0x1E695DFB0] null];
-        [v9 addObject:v10];
+        items = [(SXMosaicGalleryLayouter *)self items];
+        null = [MEMORY[0x1E695DFB0] null];
+        [items addObject:null];
 
-        v11 = [(SXMosaicGalleryLayouter *)self frames];
-        v12 = [MEMORY[0x1E695DFB0] null];
-        [v11 addObject:v12];
+        frames = [(SXMosaicGalleryLayouter *)self frames];
+        null2 = [MEMORY[0x1E695DFB0] null];
+        [frames addObject:null2];
 
         ++v8;
       }
@@ -605,73 +605,73 @@ LABEL_17:
       while (v8 < self->_numberOfItems);
     }
 
-    v13 = [(SXMosaicGalleryLayouter *)self views];
+    views = [(SXMosaicGalleryLayouter *)self views];
 
-    if (!v13)
+    if (!views)
     {
       v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:self->_numberOfItems];
       views = self->_views;
       self->_views = v14;
     }
 
-    v16 = [(SXMosaicGalleryLayouter *)self views];
-    v17 = [v16 count];
-    v18 = [(SXMosaicGalleryLayouter *)self numberOfItems];
+    views2 = [(SXMosaicGalleryLayouter *)self views];
+    v17 = [views2 count];
+    numberOfItems = [(SXMosaicGalleryLayouter *)self numberOfItems];
 
-    if (v17 < v18)
+    if (v17 < numberOfItems)
     {
       do
       {
-        v19 = [(SXMosaicGalleryLayouter *)self views];
-        v20 = [MEMORY[0x1E695DFB0] null];
-        [v19 addObject:v20];
+        views3 = [(SXMosaicGalleryLayouter *)self views];
+        null3 = [MEMORY[0x1E695DFB0] null];
+        [views3 addObject:null3];
 
-        v21 = [(SXMosaicGalleryLayouter *)self views];
-        v22 = [v21 count];
-        v23 = [(SXMosaicGalleryLayouter *)self numberOfItems];
+        views4 = [(SXMosaicGalleryLayouter *)self views];
+        v22 = [views4 count];
+        numberOfItems2 = [(SXMosaicGalleryLayouter *)self numberOfItems];
       }
 
-      while (v22 < v23);
+      while (v22 < numberOfItems2);
     }
 
     while (1)
     {
-      v25 = [(SXMosaicGalleryLayouter *)self views];
-      v26 = [v25 count];
-      v27 = [(SXMosaicGalleryLayouter *)self numberOfItems];
+      views5 = [(SXMosaicGalleryLayouter *)self views];
+      v26 = [views5 count];
+      numberOfItems3 = [(SXMosaicGalleryLayouter *)self numberOfItems];
 
-      if (v26 <= v27)
+      if (v26 <= numberOfItems3)
       {
         break;
       }
 
-      v24 = [(SXMosaicGalleryLayouter *)self views];
-      [v24 removeLastObject];
+      views6 = [(SXMosaicGalleryLayouter *)self views];
+      [views6 removeLastObject];
     }
   }
 
   return self->_numberOfItems;
 }
 
-- (id)viewForItem:(id)a3
+- (id)viewForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SXMosaicGalleryLayouter *)self items];
-  v6 = [v5 indexOfObject:v4];
+  itemCopy = item;
+  items = [(SXMosaicGalleryLayouter *)self items];
+  v6 = [items indexOfObject:itemCopy];
 
-  v7 = [(SXMosaicGalleryLayouter *)self views];
-  v8 = [v7 objectAtIndex:v6];
+  views = [(SXMosaicGalleryLayouter *)self views];
+  v8 = [views objectAtIndex:v6];
 
-  v9 = [MEMORY[0x1E695DFB0] null];
-  v10 = [v8 isEqual:v9];
+  null = [MEMORY[0x1E695DFB0] null];
+  v10 = [v8 isEqual:null];
 
   if (v10)
   {
-    v11 = [(SXMosaicGalleryLayouter *)self dataSource];
-    v12 = [v11 galleryLayouter:self viewForItemAtIndex:v6];
+    dataSource = [(SXMosaicGalleryLayouter *)self dataSource];
+    v12 = [dataSource galleryLayouter:self viewForItemAtIndex:v6];
 
-    v13 = [(SXMosaicGalleryLayouter *)self views];
-    [v13 replaceObjectAtIndex:v6 withObject:v12];
+    views2 = [(SXMosaicGalleryLayouter *)self views];
+    [views2 replaceObjectAtIndex:v6 withObject:v12];
 
     v8 = v12;
   }
@@ -690,17 +690,17 @@ LABEL_17:
   self->_supportedTileTypeClusters = 0;
 
   [(SXMosaicGalleryLayouter *)self setReverseNextHorizontalLivingRoomLayout:0];
-  v5 = [(SXMosaicGalleryLayouter *)self items];
-  [v5 removeAllObjects];
+  items = [(SXMosaicGalleryLayouter *)self items];
+  [items removeAllObjects];
 
-  v6 = [(SXMosaicGalleryLayouter *)self layouts];
-  [v6 removeAllObjects];
+  layouts = [(SXMosaicGalleryLayouter *)self layouts];
+  [layouts removeAllObjects];
 
-  v7 = [(SXMosaicGalleryLayouter *)self clusters];
-  [v7 removeAllObjects];
+  clusters = [(SXMosaicGalleryLayouter *)self clusters];
+  [clusters removeAllObjects];
 
-  v8 = [(SXMosaicGalleryLayouter *)self frames];
-  [v8 removeAllObjects];
+  frames = [(SXMosaicGalleryLayouter *)self frames];
+  [frames removeAllObjects];
 }
 
 - (SXMosaicGalleryLayouterDataSource)dataSource

@@ -1,15 +1,15 @@
 @interface TDMClient
 - (_TtC16CryptoKitPrivate9TDMClient)init;
-- (_TtC16CryptoKitPrivate9TDMClient)initWithTID:(id)a3;
+- (_TtC16CryptoKitPrivate9TDMClient)initWithTID:(id)d;
 - (id)blindedElement;
-- (id)finalizeWithFSR:(id)a3 evaluatedElement:(id)a4 proof:(id)a5 publicKey:(id)a6 error:(id *)a7;
+- (id)finalizeWithFSR:(id)r evaluatedElement:(id)element proof:(id)proof publicKey:(id)key error:(id *)error;
 @end
 
 @implementation TDMClient
 
-- (_TtC16CryptoKitPrivate9TDMClient)initWithTID:(id)a3
+- (_TtC16CryptoKitPrivate9TDMClient)initWithTID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = sub_1C0D7832C();
   v6 = v5;
 
@@ -21,7 +21,7 @@
 - (id)blindedElement
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC16CryptoKitPrivate9TDMClient_be);
-  v3 = self;
+  selfCopy = self;
   result = [v2 serializedPublicKey_];
   if (result)
   {
@@ -43,13 +43,13 @@
   return result;
 }
 
-- (id)finalizeWithFSR:(id)a3 evaluatedElement:(id)a4 proof:(id)a5 publicKey:(id)a6 error:(id *)a7
+- (id)finalizeWithFSR:(id)r evaluatedElement:(id)element proof:(id)proof publicKey:(id)key error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v32 = self;
+  rCopy = r;
+  elementCopy = element;
+  proofCopy = proof;
+  keyCopy = key;
+  selfCopy = self;
   v15 = sub_1C0D7832C();
   v17 = v16;
 

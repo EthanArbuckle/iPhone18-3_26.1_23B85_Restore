@@ -9,14 +9,14 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultWorkspace];
-  if (v5)
+  selfCopy = self;
+  defaultWorkspace = [v3 defaultWorkspace];
+  if (defaultWorkspace)
   {
-    v6 = v5;
-    [v5 removeObserver:v4];
+    v6 = defaultWorkspace;
+    [defaultWorkspace removeObserver:selfCopy];
 
-    v7.receiver = v4;
+    v7.receiver = selfCopy;
     v7.super_class = type metadata accessor for ApplicationWorkspaceObserver();
     [(ApplicationWorkspaceObserver *)&v7 dealloc];
   }
@@ -36,7 +36,7 @@
 
 - (void)systemDidLeaveFirstDataProtectionLock
 {
-  v3 = self;
+  selfCopy = self;
   v2 = sub_1000407E8();
   sub_100040BCC(v2 & 1);
 }

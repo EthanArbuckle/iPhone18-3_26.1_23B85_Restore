@@ -1,17 +1,17 @@
 @interface PageControl.Coordinator
 - (_TtCV20ColorPickerUIService11PageControl11Coordinator)init;
-- (void)valueChanged:(id)a3;
+- (void)valueChanged:(id)changed;
 @end
 
 @implementation PageControl.Coordinator
 
-- (void)valueChanged:(id)a3
+- (void)valueChanged:(id)changed
 {
   v4 = *&self->parent[OBJC_IVAR____TtCV20ColorPickerUIService11PageControl11Coordinator_parent];
-  v5 = a3;
-  v6 = self;
+  changedCopy = changed;
+  selfCopy = self;
 
-  [v5 currentPage];
+  [changedCopy currentPage];
   swift_getKeyPath();
   swift_getKeyPath();
   static Published.subscript.setter();

@@ -11,28 +11,28 @@
 
 - (id)copyPath
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NWPathEvaluator *)v2 internalPath];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  internalPath = [(NWPathEvaluator *)selfCopy internalPath];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return internalPath;
 }
 
 - (NWPath)path
 {
-  v2 = [(NWPathEvaluator *)self copyPath];
+  copyPath = [(NWPathEvaluator *)self copyPath];
 
-  return v2;
+  return copyPath;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v3 = savedPathEvaluators;
-    savedPathEvaluators = v2;
+    savedPathEvaluators = weakObjectsHashTable;
 
     v4 = objc_opt_new();
     v5 = savedPathEvaluatorsLock;
@@ -61,10 +61,10 @@ void __41__NWPathEvaluator_sharedDefaultEvaluator__block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(NWPathEvaluator *)self endpoint];
-  v4 = [v3 hash];
-  v5 = [(NWPathEvaluator *)self parameters];
-  v6 = [v5 hash];
+  endpoint = [(NWPathEvaluator *)self endpoint];
+  v4 = [endpoint hash];
+  parameters = [(NWPathEvaluator *)self parameters];
+  v6 = [parameters hash];
 
   return v6 ^ v4;
 }

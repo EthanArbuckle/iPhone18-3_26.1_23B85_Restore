@@ -1,5 +1,5 @@
 @interface NWSQUICSnapshot
-- (NWSQUICSnapshot)initWithCounts:(const nstat_counts *)a3 QUICDescriptor:(nstat_tcp_descriptor *)a4 sourceIdent:(unint64_t)a5 events:(unint64_t)a6 seqno:(unint64_t)a7 provider:(unsigned int)a8;
+- (NWSQUICSnapshot)initWithCounts:(const nstat_counts *)counts QUICDescriptor:(nstat_tcp_descriptor *)descriptor sourceIdent:(unint64_t)ident events:(unint64_t)events seqno:(unint64_t)seqno provider:(unsigned int)provider;
 - (id)description;
 - (id)euuid;
 - (id)fuuid;
@@ -25,23 +25,23 @@
   }
 
   [v3 setObject:kNStatProviderUDP forKeyedSubscript:kNStatSrcKeyProvider];
-  v5 = [(NWSQUICSnapshot *)self localAddress];
+  localAddress = [(NWSQUICSnapshot *)self localAddress];
 
-  if (v5)
+  if (localAddress)
   {
     v6 = MEMORY[0x277CBEA90];
-    v7 = [(NWSQUICSnapshot *)self localAddress];
-    v8 = [v6 dataWithData:v7];
+    localAddress2 = [(NWSQUICSnapshot *)self localAddress];
+    v8 = [v6 dataWithData:localAddress2];
     [v4 setObject:v8 forKeyedSubscript:kNStatSrcKeyLocal];
   }
 
-  v9 = [(NWSQUICSnapshot *)self remoteAddress];
+  remoteAddress = [(NWSQUICSnapshot *)self remoteAddress];
 
-  if (v9)
+  if (remoteAddress)
   {
     v10 = MEMORY[0x277CBEA90];
-    v11 = [(NWSQUICSnapshot *)self remoteAddress];
-    v12 = [v10 dataWithData:v11];
+    remoteAddress2 = [(NWSQUICSnapshot *)self remoteAddress];
+    v12 = [v10 dataWithData:remoteAddress2];
     [v4 setObject:v12 forKeyedSubscript:kNStatSrcKeyRemote];
   }
 
@@ -61,53 +61,53 @@
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_descriptor.eupid];
   [v4 setObject:v18 forKeyedSubscript:kNStatSrcKeyEUPID];
 
-  v19 = [(NWSQUICSnapshot *)self uuid];
+  uuid = [(NWSQUICSnapshot *)self uuid];
 
-  if (v19)
+  if (uuid)
   {
     v20 = MEMORY[0x277CCACA8];
-    v21 = [(NWSQUICSnapshot *)self uuid];
-    v22 = [v20 stringWithString:v21];
+    uuid2 = [(NWSQUICSnapshot *)self uuid];
+    v22 = [v20 stringWithString:uuid2];
     [v4 setObject:v22 forKeyedSubscript:kNStatSrcKeyUUID];
   }
 
-  v23 = [(NWSQUICSnapshot *)self euuid];
+  euuid = [(NWSQUICSnapshot *)self euuid];
 
-  if (v23)
+  if (euuid)
   {
     v24 = MEMORY[0x277CCACA8];
-    v25 = [(NWSQUICSnapshot *)self euuid];
-    v26 = [v24 stringWithString:v25];
+    euuid2 = [(NWSQUICSnapshot *)self euuid];
+    v26 = [v24 stringWithString:euuid2];
     [v4 setObject:v26 forKeyedSubscript:kNStatSrcKeyEUUID];
   }
 
-  v27 = [(NWSQUICSnapshot *)self fuuid];
+  fuuid = [(NWSQUICSnapshot *)self fuuid];
 
-  if (v27)
+  if (fuuid)
   {
     v28 = MEMORY[0x277CCACA8];
-    v29 = [(NWSQUICSnapshot *)self fuuid];
-    v30 = [v28 stringWithString:v29];
+    fuuid2 = [(NWSQUICSnapshot *)self fuuid];
+    v30 = [v28 stringWithString:fuuid2];
     [v4 setObject:v30 forKeyedSubscript:kNStatSrcKeyFUUID];
   }
 
-  v31 = [(NWSQUICSnapshot *)self vuuid];
+  vuuid = [(NWSQUICSnapshot *)self vuuid];
 
-  if (v31)
+  if (vuuid)
   {
     v32 = MEMORY[0x277CCACA8];
-    v33 = [(NWSQUICSnapshot *)self vuuid];
-    v34 = [v32 stringWithString:v33];
+    vuuid2 = [(NWSQUICSnapshot *)self vuuid];
+    v34 = [v32 stringWithString:vuuid2];
     [v4 setObject:v34 forKeyedSubscript:kNStatSrcKeyVUUID];
   }
 
-  v35 = [(NWSQUICSnapshot *)self processName];
+  processName = [(NWSQUICSnapshot *)self processName];
 
-  if (v35)
+  if (processName)
   {
     v36 = MEMORY[0x277CCACA8];
-    v37 = [(NWSQUICSnapshot *)self processName];
-    v38 = [v36 stringWithString:v37];
+    processName2 = [(NWSQUICSnapshot *)self processName];
+    v38 = [v36 stringWithString:processName2];
     [v4 setObject:v38 forKeyedSubscript:kNStatSrcKeyProcessName];
   }
 
@@ -266,9 +266,9 @@ LABEL_34:
   if (!uuid)
   {
     v4 = [(NWSProtocolSnapshot *)self _createNSUUIDForBytes:self->_descriptor.uuid];
-    v5 = [v4 UUIDString];
+    uUIDString = [v4 UUIDString];
     v6 = self->_uuid;
-    self->_uuid = v5;
+    self->_uuid = uUIDString;
 
     uuid = self->_uuid;
   }
@@ -282,9 +282,9 @@ LABEL_34:
   if (!euuid)
   {
     v4 = [(NWSProtocolSnapshot *)self _createNSUUIDForBytes:self->_descriptor.euuid];
-    v5 = [v4 UUIDString];
+    uUIDString = [v4 UUIDString];
     v6 = self->_euuid;
-    self->_euuid = v5;
+    self->_euuid = uUIDString;
 
     euuid = self->_euuid;
   }
@@ -298,9 +298,9 @@ LABEL_34:
   if (!fuuid)
   {
     v4 = [(NWSProtocolSnapshot *)self _createNSUUIDForBytes:self->_descriptor.fuuid];
-    v5 = [v4 UUIDString];
+    uUIDString = [v4 UUIDString];
     v6 = self->_fuuid;
-    self->_fuuid = v5;
+    self->_fuuid = uUIDString;
 
     fuuid = self->_fuuid;
   }
@@ -314,9 +314,9 @@ LABEL_34:
   if (!vuuid)
   {
     v4 = [(NWSProtocolSnapshot *)self _createNSUUIDForBytes:self->_descriptor.vuuid];
-    v5 = [v4 UUIDString];
+    uUIDString = [v4 UUIDString];
     v6 = self->_vuuid;
-    self->_vuuid = v5;
+    self->_vuuid = uUIDString;
 
     vuuid = self->_vuuid;
   }
@@ -361,17 +361,17 @@ LABEL_34:
   return v5;
 }
 
-- (NWSQUICSnapshot)initWithCounts:(const nstat_counts *)a3 QUICDescriptor:(nstat_tcp_descriptor *)a4 sourceIdent:(unint64_t)a5 events:(unint64_t)a6 seqno:(unint64_t)a7 provider:(unsigned int)a8
+- (NWSQUICSnapshot)initWithCounts:(const nstat_counts *)counts QUICDescriptor:(nstat_tcp_descriptor *)descriptor sourceIdent:(unint64_t)ident events:(unint64_t)events seqno:(unint64_t)seqno provider:(unsigned int)provider
 {
   v14.receiver = self;
   v14.super_class = NWSQUICSnapshot;
-  v11 = [(NWSSnapshot *)&v14 _initWithCounts:a3 sourceIdent:a5 seqno:a7];
+  v11 = [(NWSSnapshot *)&v14 _initWithCounts:counts sourceIdent:ident seqno:seqno];
   v12 = v11;
   if (v11)
   {
-    memcpy(&v11->_descriptor, a4, sizeof(v11->_descriptor));
-    v12->_provider = a8;
-    v12->_eventFlags = a6;
+    memcpy(&v11->_descriptor, descriptor, sizeof(v11->_descriptor));
+    v12->_provider = provider;
+    v12->_eventFlags = events;
   }
 
   return v12;

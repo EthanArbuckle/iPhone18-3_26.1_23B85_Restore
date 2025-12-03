@@ -1,21 +1,21 @@
 @interface ISStaticResources
 + (id)sharedInstance;
 - (ISStaticResources)init;
-- (id)_assetCatalogResourceWithName:(id)a3 fromURL:(id)a4 cacheKey:(id)a5;
+- (id)_assetCatalogResourceWithName:(id)name fromURL:(id)l cacheKey:(id)key;
 - (id)_fileExtensionAndUTIToAssetNameMap;
-- (id)_findStaticImageWithKey:(id)a3;
+- (id)_findStaticImageWithKey:(id)key;
 - (id)debugGenericAppIconResource;
 - (id)defaultMacDarkFolderResource;
 - (id)defaultMacDataResource;
 - (id)defaultMacFolderResource;
-- (id)fallbackResourceForHint:(id)a3 descriptor:(id)a4 referenceObj:(id)a5;
+- (id)fallbackResourceForHint:(id)hint descriptor:(id)descriptor referenceObj:(id)obj;
 - (id)genericAppClipIconResource;
 - (id)genericAppIconResource;
-- (id)genericAppIconResourceForPlatform:(unint64_t)a3;
+- (id)genericAppIconResourceForPlatform:(unint64_t)platform;
 - (id)placeholderIconResource;
-- (id)placeholderIconResourceForPlatform:(unint64_t)a3;
-- (id)resourceForKnownFileTypesFromHint:(id)a3;
-- (void)_addStaticImage:(id)a3 withKey:(id)a4;
+- (id)placeholderIconResourceForPlatform:(unint64_t)platform;
+- (id)resourceForKnownFileTypesFromHint:(id)hint;
+- (void)_addStaticImage:(id)image withKey:(id)key;
 @end
 
 @implementation ISStaticResources
@@ -62,20 +62,20 @@ uint64_t __35__ISStaticResources_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)fallbackResourceForHint:(id)a3 descriptor:(id)a4 referenceObj:(id)a5
+- (id)fallbackResourceForHint:(id)hint descriptor:(id)descriptor referenceObj:(id)obj
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  hintCopy = hint;
+  descriptorCopy = descriptor;
+  objCopy = obj;
   v11 = +[ISDefaults sharedInstance];
-  v12 = [v11 isSolariumEnabled];
+  isSolariumEnabled = [v11 isSolariumEnabled];
 
-  if (v12)
+  if (isSolariumEnabled)
   {
-    if (v8)
+    if (hintCopy)
     {
-      v13 = [MEMORY[0x1E6982C40] typeWithIdentifier:v8];
+      v13 = [MEMORY[0x1E6982C40] typeWithIdentifier:hintCopy];
     }
 
     else
@@ -85,15 +85,15 @@ uint64_t __35__ISStaticResources_sharedInstance__block_invoke()
 
     if ([v13 conformsToType:*MEMORY[0x1E6982CA8]])
     {
-      if ([v9 shape] == 5 || objc_msgSend(v9, "shape") == 6)
+      if ([descriptorCopy shape] == 5 || objc_msgSend(descriptorCopy, "shape") == 6)
       {
         v16 = _ISDefaultLog();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
-          [ISStaticResources fallbackResourceForHint:v10 descriptor:v9 referenceObj:v16];
+          [ISStaticResources fallbackResourceForHint:objCopy descriptor:descriptorCopy referenceObj:v16];
         }
 
-        v15 = [(ISStaticResources *)self genericAppClipIconResource];
+        genericAppClipIconResource = [(ISStaticResources *)self genericAppClipIconResource];
       }
 
       else
@@ -101,17 +101,17 @@ uint64_t __35__ISStaticResources_sharedInstance__block_invoke()
         v25 = _ISDefaultLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
         {
-          [ISStaticResources fallbackResourceForHint:v10 descriptor:v9 referenceObj:v25];
+          [ISStaticResources fallbackResourceForHint:objCopy descriptor:descriptorCopy referenceObj:v25];
         }
 
         v26 = +[ISPlatformInfo sharedInstance];
-        v15 = -[ISStaticResources genericAppIconResourceForPlatform:](self, "genericAppIconResourceForPlatform:", [v26 nativePlatform]);
+        genericAppClipIconResource = -[ISStaticResources genericAppIconResourceForPlatform:](self, "genericAppIconResourceForPlatform:", [v26 nativePlatform]);
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = v15;
-          [v15 setAppearance:{objc_msgSend(v9, "appearance")}];
+          genericAppClipIconResource = genericAppClipIconResource;
+          [genericAppClipIconResource setAppearance:{objc_msgSend(descriptorCopy, "appearance")}];
         }
       }
     }
@@ -121,32 +121,32 @@ uint64_t __35__ISStaticResources_sharedInstance__block_invoke()
       v17 = _ISDefaultLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        [ISStaticResources fallbackResourceForHint:v10 descriptor:v9 referenceObj:v17];
+        [ISStaticResources fallbackResourceForHint:objCopy descriptor:descriptorCopy referenceObj:v17];
       }
 
       v18 = +[ISPlatformInfo sharedInstance];
-      v15 = -[ISStaticResources placeholderIconResourceForPlatform:](self, "placeholderIconResourceForPlatform:", [v18 nativePlatform]);
+      genericAppClipIconResource = -[ISStaticResources placeholderIconResourceForPlatform:](self, "placeholderIconResourceForPlatform:", [v18 nativePlatform]);
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = v15;
-        [v15 setAppearance:{objc_msgSend(v9, "appearance")}];
+        genericAppClipIconResource = genericAppClipIconResource;
+        [genericAppClipIconResource setAppearance:{objc_msgSend(descriptorCopy, "appearance")}];
         v19 = objc_alloc_init(ISGenericRecipe);
-        [v15 setSuggestedRecipe:v19];
+        [genericAppClipIconResource setSuggestedRecipe:v19];
       }
     }
   }
 
-  else if ([v9 shape] == 5 || objc_msgSend(v9, "shape") == 6)
+  else if ([descriptorCopy shape] == 5 || objc_msgSend(descriptorCopy, "shape") == 6)
   {
     v14 = _ISDefaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      [ISStaticResources fallbackResourceForHint:v10 descriptor:v9 referenceObj:v14];
+      [ISStaticResources fallbackResourceForHint:objCopy descriptor:descriptorCopy referenceObj:v14];
     }
 
-    v15 = [(ISStaticResources *)self genericAppClipIconResource];
+    genericAppClipIconResource = [(ISStaticResources *)self genericAppClipIconResource];
   }
 
   else
@@ -154,65 +154,65 @@ uint64_t __35__ISStaticResources_sharedInstance__block_invoke()
     v23 = _ISDefaultLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      [ISStaticResources fallbackResourceForHint:v10 descriptor:v9 referenceObj:v23];
+      [ISStaticResources fallbackResourceForHint:objCopy descriptor:descriptorCopy referenceObj:v23];
     }
 
     v24 = +[ISPlatformInfo sharedInstance];
-    v15 = -[ISStaticResources genericAppIconResourceForPlatform:](self, "genericAppIconResourceForPlatform:", [v24 nativePlatform]);
+    genericAppClipIconResource = -[ISStaticResources genericAppIconResourceForPlatform:](self, "genericAppIconResourceForPlatform:", [v24 nativePlatform]);
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = v15;
-      [v15 setAppearance:{objc_msgSend(v9, "appearance")}];
+      genericAppClipIconResource = genericAppClipIconResource;
+      [genericAppClipIconResource setAppearance:{objc_msgSend(descriptorCopy, "appearance")}];
     }
   }
 
-  if (!v15)
+  if (!genericAppClipIconResource)
   {
     v20 = _ISDefaultLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
     {
       v27 = 138412802;
-      v28 = v8;
+      v28 = hintCopy;
       v29 = 2112;
-      v30 = v9;
+      v30 = descriptorCopy;
       v31 = 2112;
-      v32 = v10;
+      v32 = objCopy;
       _os_log_fault_impl(&dword_1A77B8000, v20, OS_LOG_TYPE_FAULT, "Failed to resolve a fallback resource. Hint: %@, Descriptor: %@, Icon: %@", &v27, 0x20u);
     }
   }
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return genericAppClipIconResource;
 }
 
-- (id)_assetCatalogResourceWithName:(id)a3 fromURL:(id)a4 cacheKey:(id)a5
+- (id)_assetCatalogResourceWithName:(id)name fromURL:(id)l cacheKey:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ISStaticResources *)self cache];
-  v12 = [v11 objectForKey:v10];
+  nameCopy = name;
+  lCopy = l;
+  keyCopy = key;
+  cache = [(ISStaticResources *)self cache];
+  v12 = [cache objectForKey:keyCopy];
 
   if (!v12)
   {
     v16 = 0;
-    v12 = [ISAssetCatalogResource assetCatalogResourceWithURL:v9 imageName:v8 error:&v16];
+    v12 = [ISAssetCatalogResource assetCatalogResourceWithURL:lCopy imageName:nameCopy error:&v16];
     v13 = v16;
     if (v12)
     {
-      v14 = [(ISStaticResources *)self cache];
-      [v14 setObject:v12 forKey:v10];
+      cache2 = [(ISStaticResources *)self cache];
+      [cache2 setObject:v12 forKey:keyCopy];
     }
 
     else
     {
-      v14 = _ISDefaultLog();
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      cache2 = _ISDefaultLog();
+      if (os_log_type_enabled(cache2, OS_LOG_TYPE_ERROR))
       {
-        [ISStaticResources _assetCatalogResourceWithName:v10 fromURL:v13 cacheKey:v14];
+        [ISStaticResources _assetCatalogResourceWithName:keyCopy fromURL:v13 cacheKey:cache2];
       }
     }
   }
@@ -220,51 +220,51 @@ uint64_t __35__ISStaticResources_sharedInstance__block_invoke()
   return v12;
 }
 
-- (void)_addStaticImage:(id)a3 withKey:(id)a4
+- (void)_addStaticImage:(id)image withKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ISStaticResources *)self cache];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  imageCopy = image;
+  cache = [(ISStaticResources *)self cache];
+  [cache setObject:imageCopy forKey:keyCopy];
 }
 
-- (id)_findStaticImageWithKey:(id)a3
+- (id)_findStaticImageWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ISStaticResources *)self cache];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  cache = [(ISStaticResources *)self cache];
+  v6 = [cache objectForKey:keyCopy];
 
   return v6;
 }
 
-- (id)genericAppIconResourceForPlatform:(unint64_t)a3
+- (id)genericAppIconResourceForPlatform:(unint64_t)platform
 {
-  v3 = a3;
-  if (!a3)
+  platformCopy = platform;
+  if (!platform)
   {
     v5 = +[ISPlatformInfo sharedInstance];
-    v3 = [v5 nativePlatform];
+    platformCopy = [v5 nativePlatform];
   }
 
-  if (v3 <= 7)
+  if (platformCopy <= 7)
   {
-    if ((v3 - 1) < 2)
+    if ((platformCopy - 1) < 2)
     {
-      v6 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-      v7 = [v6 assetCatalogURL];
+      iconFoundationFrameworkBundle = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+      assetCatalogURL = [iconFoundationFrameworkBundle assetCatalogURL];
 
       v8 = @"com.apple.application-bundle";
 LABEL_14:
-      v10 = [(ISStaticResources *)self _assetCatalogResourceWithName:v8 fromURL:v7 cacheKey:v8];
+      v10 = [(ISStaticResources *)self _assetCatalogResourceWithName:v8 fromURL:assetCatalogURL cacheKey:v8];
 
       goto LABEL_18;
     }
 
-    if (v3 == 4)
+    if (platformCopy == 4)
     {
 LABEL_13:
-      v11 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-      v7 = [v11 assetCatalogURL];
+      iconsetResourceBundle = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+      assetCatalogURL = [iconsetResourceBundle assetCatalogURL];
 
       v8 = @"GenericAppIcon_iOS";
       goto LABEL_14;
@@ -273,18 +273,18 @@ LABEL_13:
     goto LABEL_9;
   }
 
-  switch(v3)
+  switch(platformCopy)
   {
     case 8:
-      v12 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+      iconsetResourceBundle2 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
       v13 = MEMORY[0x1E69A8990];
       v14 = @"NanoDefaultIcon";
 LABEL_17:
-      v10 = [v13 imageBagWithResourcesNamed:v14 fromBundle:v12];
+      v10 = [v13 imageBagWithResourcesNamed:v14 fromBundle:iconsetResourceBundle2];
 
       goto LABEL_18;
     case 16:
-      v12 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+      iconsetResourceBundle2 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
       v13 = MEMORY[0x1E69A8990];
       v14 = @"VisionDefaultIcon";
       goto LABEL_17;
@@ -296,7 +296,7 @@ LABEL_9:
   v9 = _ISDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    [(ISStaticResources *)v3 genericAppIconResourceForPlatform:v9];
+    [(ISStaticResources *)platformCopy genericAppIconResourceForPlatform:v9];
   }
 
   v10 = 0;
@@ -307,8 +307,8 @@ LABEL_18:
 
 - (id)genericAppClipIconResource
 {
-  v2 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-  v3 = [MEMORY[0x1E69A8990] imageBagWithResourcesNamed:@"AppClipDefaultIcon" fromBundle:v2];
+  iconsetResourceBundle = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+  v3 = [MEMORY[0x1E69A8990] imageBagWithResourcesNamed:@"AppClipDefaultIcon" fromBundle:iconsetResourceBundle];
   if (!v3)
   {
     v4 = _ISDefaultLog();
@@ -323,10 +323,10 @@ LABEL_18:
 
 - (id)debugGenericAppIconResource
 {
-  v3 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-  v4 = [v3 assetCatalogURL];
+  iconsetResourceBundle = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+  assetCatalogURL = [iconsetResourceBundle assetCatalogURL];
 
-  v5 = [(ISStaticResources *)self _assetCatalogResourceWithName:@"DebugGenericAppIcon" fromURL:v4 cacheKey:@"DebugGenericAppIcon"];
+  v5 = [(ISStaticResources *)self _assetCatalogResourceWithName:@"DebugGenericAppIcon" fromURL:assetCatalogURL cacheKey:@"DebugGenericAppIcon"];
 
   return v5;
 }
@@ -339,40 +339,40 @@ LABEL_18:
   return v4;
 }
 
-- (id)placeholderIconResourceForPlatform:(unint64_t)a3
+- (id)placeholderIconResourceForPlatform:(unint64_t)platform
 {
-  v3 = a3;
-  if (!a3)
+  platformCopy = platform;
+  if (!platform)
   {
     v5 = +[ISPlatformInfo sharedInstance];
-    v3 = [v5 nativePlatform];
+    platformCopy = [v5 nativePlatform];
   }
 
-  if (v3 > 0x20)
+  if (platformCopy > 0x20)
   {
     goto LABEL_14;
   }
 
-  if (((1 << v3) & 0x100010100) != 0)
+  if (((1 << platformCopy) & 0x100010100) != 0)
   {
-    v6 = [(ISStaticResources *)self genericAppIconResourceForPlatform:v3];
+    defaultMacUnknownFSObjectResource = [(ISStaticResources *)self genericAppIconResourceForPlatform:platformCopy];
     goto LABEL_8;
   }
 
-  if (((1 << v3) & 6) != 0)
+  if (((1 << platformCopy) & 6) != 0)
   {
-    v6 = [(ISStaticResources *)self defaultMacUnknownFSObjectResource];
+    defaultMacUnknownFSObjectResource = [(ISStaticResources *)self defaultMacUnknownFSObjectResource];
 LABEL_8:
-    v7 = v6;
+    v7 = defaultMacUnknownFSObjectResource;
     goto LABEL_9;
   }
 
-  if (v3 == 4)
+  if (platformCopy == 4)
   {
-    v9 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-    v10 = [v9 assetCatalogURL];
+    iconsetResourceBundle = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+    assetCatalogURL = [iconsetResourceBundle assetCatalogURL];
 
-    v7 = [(ISStaticResources *)self _assetCatalogResourceWithName:@"CacheMissIcon_iOS" fromURL:v10 cacheKey:@"CacheMissIcon_iOS"];
+    v7 = [(ISStaticResources *)self _assetCatalogResourceWithName:@"CacheMissIcon_iOS" fromURL:assetCatalogURL cacheKey:@"CacheMissIcon_iOS"];
   }
 
   else
@@ -381,7 +381,7 @@ LABEL_14:
     v11 = _ISDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(ISStaticResources *)v3 placeholderIconResourceForPlatform:v11];
+      [(ISStaticResources *)platformCopy placeholderIconResourceForPlatform:v11];
     }
 
     v7 = 0;
@@ -394,77 +394,77 @@ LABEL_9:
 
 - (id)defaultMacFolderResource
 {
-  v3 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v4 = [v3 assetCatalogURL];
+  iconFoundationFrameworkBundle = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL = [iconFoundationFrameworkBundle assetCatalogURL];
 
-  v5 = [(ISStaticResources *)self _assetCatalogResourceWithName:@"Folder" fromURL:v4 cacheKey:@"defaultMacFolder"];
+  v5 = [(ISStaticResources *)self _assetCatalogResourceWithName:@"Folder" fromURL:assetCatalogURL cacheKey:@"defaultMacFolder"];
 
   return v5;
 }
 
 - (id)defaultMacDarkFolderResource
 {
-  v3 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v4 = [v3 assetCatalogURL];
+  iconFoundationFrameworkBundle = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL = [iconFoundationFrameworkBundle assetCatalogURL];
 
-  v5 = [(ISStaticResources *)self _assetCatalogResourceWithName:@"FolderDark" fromURL:v4 cacheKey:@"defaultMacDarkFolder"];
+  v5 = [(ISStaticResources *)self _assetCatalogResourceWithName:@"FolderDark" fromURL:assetCatalogURL cacheKey:@"defaultMacDarkFolder"];
 
   return v5;
 }
 
 - (id)defaultMacDataResource
 {
-  v3 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-  v4 = [v3 assetCatalogURL];
+  iconsetResourceBundle = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+  assetCatalogURL = [iconsetResourceBundle assetCatalogURL];
 
-  v5 = [(ISStaticResources *)self _assetCatalogResourceWithName:@"public.data" fromURL:v4 cacheKey:@"defaultMacData"];
+  v5 = [(ISStaticResources *)self _assetCatalogResourceWithName:@"public.data" fromURL:assetCatalogURL cacheKey:@"defaultMacData"];
 
   return v5;
 }
 
 - (id)_fileExtensionAndUTIToAssetNameMap
 {
-  v3 = [(ISStaticResources *)self cache];
-  v4 = [v3 objectForKey:@"StaticAssetNameMaps"];
+  cache = [(ISStaticResources *)self cache];
+  v4 = [cache objectForKey:@"StaticAssetNameMaps"];
 
   if (!v4)
   {
-    v5 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-    v6 = [v5 URLForResource:@"StaticAssetsInfo" withExtension:@"plist"];
+    iconsetResourceBundle = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+    v6 = [iconsetResourceBundle URLForResource:@"StaticAssetsInfo" withExtension:@"plist"];
 
     v4 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v6];
     if (v4)
     {
-      v7 = [(ISStaticResources *)self cache];
-      [v7 setObject:v4 forKey:@"StaticAssetNameMaps"];
+      cache2 = [(ISStaticResources *)self cache];
+      [cache2 setObject:v4 forKey:@"StaticAssetNameMaps"];
     }
   }
 
   return v4;
 }
 
-- (id)resourceForKnownFileTypesFromHint:(id)a3
+- (id)resourceForKnownFileTypesFromHint:(id)hint
 {
-  v4 = a3;
-  v5 = [(ISStaticResources *)self _fileExtensionAndUTIToAssetNameMap];
-  v6 = [v5 objectForKey:@"ExtensionToUTI"];
-  v7 = [v6 objectForKey:v4];
+  hintCopy = hint;
+  _fileExtensionAndUTIToAssetNameMap = [(ISStaticResources *)self _fileExtensionAndUTIToAssetNameMap];
+  v6 = [_fileExtensionAndUTIToAssetNameMap objectForKey:@"ExtensionToUTI"];
+  v7 = [v6 objectForKey:hintCopy];
 
   if (!v7)
   {
-    v7 = v4;
+    v7 = hintCopy;
   }
 
-  v8 = [(ISStaticResources *)self _fileExtensionAndUTIToAssetNameMap];
-  v9 = [v8 objectForKey:@"UTIToAssetName"];
+  _fileExtensionAndUTIToAssetNameMap2 = [(ISStaticResources *)self _fileExtensionAndUTIToAssetNameMap];
+  v9 = [_fileExtensionAndUTIToAssetNameMap2 objectForKey:@"UTIToAssetName"];
   v10 = [v9 objectForKey:v7];
 
   if (v10)
   {
-    v11 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-    v12 = [v11 assetCatalogURL];
+    iconsetResourceBundle = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+    assetCatalogURL = [iconsetResourceBundle assetCatalogURL];
 
-    v13 = [(ISStaticResources *)self _assetCatalogResourceWithName:v10 fromURL:v12 cacheKey:v10];
+    v13 = [(ISStaticResources *)self _assetCatalogResourceWithName:v10 fromURL:assetCatalogURL cacheKey:v10];
   }
 
   else

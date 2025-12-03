@@ -1,24 +1,24 @@
 @interface CKDFetchShareParticipantsOperation
-- (CKDFetchShareParticipantsOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDFetchShareParticipantsOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
 - (void)_fetchIdentities;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_handleFetchedInfo:(id)a3 withIdentity:(id)a4 error:(id)a5;
-- (void)finishWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_handleFetchedInfo:(id)info withIdentity:(id)identity error:(id)error;
+- (void)finishWithError:(id)error;
 - (void)main;
 @end
 
 @implementation CKDFetchShareParticipantsOperation
 
-- (CKDFetchShareParticipantsOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDFetchShareParticipantsOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = CKDFetchShareParticipantsOperation;
-  v9 = [(CKDOperation *)&v13 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDOperation *)&v13 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_userIdentityLookupInfos(v6, v7, v8);
+    v10 = objc_msgSend_userIdentityLookupInfos(infoCopy, v7, v8);
     userIdentityLookupInfos = v9->_userIdentityLookupInfos;
     v9->_userIdentityLookupInfos = v10;
   }
@@ -33,12 +33,12 @@
   return v2;
 }
 
-- (void)_handleFetchedInfo:(id)a3 withIdentity:(id)a4 error:(id)a5
+- (void)_handleFetchedInfo:(id)info withIdentity:(id)identity error:(id)error
 {
   v63 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  identityCopy = identity;
+  errorCopy = error;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -48,11 +48,11 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v58 = v8;
+    v58 = infoCopy;
     v59 = 2112;
-    v60 = v9;
+    v60 = identityCopy;
     v61 = 2112;
-    v62 = v10;
+    v62 = errorCopy;
     _os_log_impl(&dword_22506F000, v11, OS_LOG_TYPE_INFO, "For fetch info %@, found user identity %@, error %@", buf, 0x20u);
   }
 
@@ -60,18 +60,18 @@
 
   if (v14)
   {
-    if (v9)
+    if (identityCopy)
     {
       v17 = objc_alloc(MEMORY[0x277CBC6A0]);
-      inited = objc_msgSend_initInternalWithUserIdentity_(v17, v18, v9);
-      v22 = objc_msgSend_userRecordID(v9, v20, v21);
+      inited = objc_msgSend_initInternalWithUserIdentity_(v17, v18, identityCopy);
+      v22 = objc_msgSend_userRecordID(identityCopy, v20, v21);
       v25 = objc_msgSend_recordName(v22, v23, v24);
       v28 = objc_msgSend_container(self, v26, v27);
       v31 = objc_msgSend_orgAdminUserID(v28, v29, v30);
       isEqualToString = objc_msgSend_isEqualToString_(v25, v32, v31);
       objc_msgSend_setIsOrgAdminUser_(inited, v34, isEqualToString);
 
-      v37 = objc_msgSend_userRecordID(v9, v35, v36);
+      v37 = objc_msgSend_userRecordID(identityCopy, v35, v36);
       v40 = objc_msgSend_recordName(v37, v38, v39);
       v43 = objc_msgSend_container(self, v41, v42);
       v46 = objc_msgSend_containerScopedUserID(v43, v44, v45);
@@ -90,9 +90,9 @@
     v53[2] = sub_225262638;
     v53[3] = &unk_2785463D0;
     v53[4] = self;
-    v54 = v8;
+    v54 = infoCopy;
     v55 = inited;
-    v56 = v10;
+    v56 = errorCopy;
     v51 = inited;
     dispatch_async(v50, v53);
   }
@@ -207,22 +207,22 @@
   }
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_setShareParticipantFetchedBlock_(self, v5, 0);
   v6.receiver = self;
   v6.super_class = CKDFetchShareParticipantsOperation;
-  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:errorCopy];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_setPendingRequest_(self, v5, 0);
   v6.receiver = self;
   v6.super_class = CKDFetchShareParticipantsOperation;
-  [(CKDOperation *)&v6 finishWithError:v4];
+  [(CKDOperation *)&v6 finishWithError:errorCopy];
 }
 
 @end

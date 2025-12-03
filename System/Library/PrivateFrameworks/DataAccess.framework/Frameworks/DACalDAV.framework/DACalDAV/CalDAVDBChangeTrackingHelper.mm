@@ -1,22 +1,22 @@
 @interface CalDAVDBChangeTrackingHelper
 - (BOOL)clearUnconsumedAndUnsavedChanges;
-- (CalDAVDBChangeTrackingHelper)initWithDatabase:(CalDatabase *)a3 clientIdentifier:(id)a4;
+- (CalDAVDBChangeTrackingHelper)initWithDatabase:(CalDatabase *)database clientIdentifier:(id)identifier;
 - (void)dealloc;
 @end
 
 @implementation CalDAVDBChangeTrackingHelper
 
-- (CalDAVDBChangeTrackingHelper)initWithDatabase:(CalDatabase *)a3 clientIdentifier:(id)a4
+- (CalDAVDBChangeTrackingHelper)initWithDatabase:(CalDatabase *)database clientIdentifier:(id)identifier
 {
-  v7 = a4;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = CalDAVDBChangeTrackingHelper;
   v8 = [(CalDAVDBChangeTrackingHelper *)&v10 init];
   if (v8)
   {
-    v8->_database = CFRetain(a3);
+    v8->_database = CFRetain(database);
     v8->_initialSequenceNumber = CalDatabaseGetSequenceNumber();
-    objc_storeStrong(&v8->_clientIdentifier, a4);
+    objc_storeStrong(&v8->_clientIdentifier, identifier);
   }
 
   return v8;

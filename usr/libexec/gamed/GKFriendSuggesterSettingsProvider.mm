@@ -1,47 +1,47 @@
 @interface GKFriendSuggesterSettingsProvider
-- (GKFriendSuggesterSettingsProvider)initWithStoreBag:(id)a3;
-- (void)fetchSettingsWithQueue:(id)a3 handler:(id)a4;
-- (void)fetchSettingsWithQueue:(id)a3 valuesForKeys:(id)a4 handler:(id)a5;
+- (GKFriendSuggesterSettingsProvider)initWithStoreBag:(id)bag;
+- (void)fetchSettingsWithQueue:(id)queue handler:(id)handler;
+- (void)fetchSettingsWithQueue:(id)queue valuesForKeys:(id)keys handler:(id)handler;
 @end
 
 @implementation GKFriendSuggesterSettingsProvider
 
-- (GKFriendSuggesterSettingsProvider)initWithStoreBag:(id)a3
+- (GKFriendSuggesterSettingsProvider)initWithStoreBag:(id)bag
 {
-  v5 = a3;
+  bagCopy = bag;
   v9.receiver = self;
   v9.super_class = GKFriendSuggesterSettingsProvider;
   v6 = [(GKFriendSuggesterSettingsProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storeBag, a3);
+    objc_storeStrong(&v6->_storeBag, bag);
   }
 
   return v7;
 }
 
-- (void)fetchSettingsWithQueue:(id)a3 handler:(id)a4
+- (void)fetchSettingsWithQueue:(id)queue handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  queueCopy = queue;
   v8 = +[GKFriendSuggesterSettings allBagKeys];
-  [(GKFriendSuggesterSettingsProvider *)self fetchSettingsWithQueue:v7 valuesForKeys:v8 handler:v6];
+  [(GKFriendSuggesterSettingsProvider *)self fetchSettingsWithQueue:queueCopy valuesForKeys:v8 handler:handlerCopy];
 }
 
-- (void)fetchSettingsWithQueue:(id)a3 valuesForKeys:(id)a4 handler:(id)a5
+- (void)fetchSettingsWithQueue:(id)queue valuesForKeys:(id)keys handler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(GKFriendSuggesterSettingsProvider *)self storeBag];
+  handlerCopy = handler;
+  keysCopy = keys;
+  queueCopy = queue;
+  storeBag = [(GKFriendSuggesterSettingsProvider *)self storeBag];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10019AA50;
   v13[3] = &unk_100362868;
-  v14 = v8;
-  v12 = v8;
-  [v11 getValuesForKeys:v9 queue:v10 completion:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [storeBag getValuesForKeys:keysCopy queue:queueCopy completion:v13];
 }
 
 @end

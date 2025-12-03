@@ -1,26 +1,26 @@
 @interface DeepFusionPyramidBaseClass
-+ (int)prewarmShaders:(id)a3;
-- (DeepFusionPyramidBaseClass)initWithMetalContext:(id)a3;
-- (int)_computeScratchBufferSizeForTextures:(unint64_t)a3 requiredSize:(unint64_t *)a4;
-- (int)allocateTextures:(id)a3;
-- (int)setWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unint64_t)a5 numLevels:(unint64_t)a6;
++ (int)prewarmShaders:(id)shaders;
+- (DeepFusionPyramidBaseClass)initWithMetalContext:(id)context;
+- (int)_computeScratchBufferSizeForTextures:(unint64_t)textures requiredSize:(unint64_t *)size;
+- (int)allocateTextures:(id)textures;
+- (int)setWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unint64_t)format numLevels:(unint64_t)levels;
 - (void)makeTexturesAliasable;
-- (void)makeTexturesAliasableWithRange:(_NSRange)a3;
+- (void)makeTexturesAliasableWithRange:(_NSRange)range;
 - (void)purgeResources;
 @end
 
 @implementation DeepFusionPyramidBaseClass
 
-- (DeepFusionPyramidBaseClass)initWithMetalContext:(id)a3
+- (DeepFusionPyramidBaseClass)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v21.receiver = self;
   v21.super_class = DeepFusionPyramidBaseClass;
   v6 = [(DeepFusionPyramidBaseClass *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metal, a3);
+    objc_storeStrong(&v6->_metal, context);
     v11 = objc_msgSend_sharedInstance(DeepFusionLaplacianPyramidShared, v8, v9, v10);
     v14 = objc_msgSend_getShaders_(v11, v12, *(v7 + 8), v13);
     v15 = *(v7 + 16);
@@ -58,15 +58,15 @@
   return v19;
 }
 
-- (int)setWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unint64_t)a5 numLevels:(unint64_t)a6
+- (int)setWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unint64_t)format numLevels:(unint64_t)levels
 {
-  if (a3 + a4)
+  if (width + height)
   {
-    self->_width = a3;
-    self->_height = a4;
-    self->_pixelFormat = a5;
-    self->_numLevels = a6;
-    v7 = objc_msgSend_device(self->_metal, a2, a3, a4);
+    self->_width = width;
+    self->_height = height;
+    self->_pixelFormat = format;
+    self->_numLevels = levels;
+    v7 = objc_msgSend_device(self->_metal, a2, width, height);
 
     if (v7)
     {
@@ -101,32 +101,32 @@
   return -12780;
 }
 
-- (int)_computeScratchBufferSizeForTextures:(unint64_t)a3 requiredSize:(unint64_t *)a4
+- (int)_computeScratchBufferSizeForTextures:(unint64_t)textures requiredSize:(unint64_t *)size
 {
-  if (!a4)
+  if (!size)
   {
     sub_2958C88F0();
     return -12780;
   }
 
-  *a4 = 0;
-  if (!a3)
+  *size = 0;
+  if (!textures)
   {
     sub_2958C888C();
     return -12780;
   }
 
   v7 = 0;
-  for (i = 0; i != a3; ++i)
+  for (i = 0; i != textures; ++i)
   {
     v9 = self->_height >> i;
-    v7 += objc_msgSend__strideForWidth_(self, a2, self->_width >> i, a4) * v9;
+    v7 += objc_msgSend__strideForWidth_(self, a2, self->_width >> i, size) * v9;
   }
 
   if (v7)
   {
     result = 0;
-    *a4 = v7;
+    *size = v7;
   }
 
   else
@@ -138,11 +138,11 @@
   return result;
 }
 
-+ (int)prewarmShaders:(id)a3
++ (int)prewarmShaders:(id)shaders
 {
-  v3 = a3;
+  shadersCopy = shaders;
   v4 = [DeepFusionLaplacianPyramidShaders alloc];
-  v7 = objc_msgSend_initWithMetal_(v4, v5, v3, v6);
+  v7 = objc_msgSend_initWithMetal_(v4, v5, shadersCopy, v6);
 
   if (v7)
   {
@@ -164,9 +164,9 @@
   MEMORY[0x2A1C71028]();
 }
 
-- (int)allocateTextures:(id)a3
+- (int)allocateTextures:(id)textures
 {
-  v5 = objc_msgSend_allocator(self->_metal, a2, a3, v3);
+  v5 = objc_msgSend_allocator(self->_metal, a2, textures, v3);
   v9 = objc_msgSend_newTextureDescriptor(v5, v6, v7, v8);
 
   if (!v9)
@@ -251,15 +251,15 @@ LABEL_9:
   objc_msgSend_removeAllObjects(outputTextures, v3, v4, v5);
 }
 
-- (void)makeTexturesAliasableWithRange:(_NSRange)a3
+- (void)makeTexturesAliasableWithRange:(_NSRange)range
 {
-  if (a3.location < a3.location + a3.length)
+  if (range.location < range.location + range.length)
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v6 = objc_msgSend_objectAtIndexedSubscript_(self->_outputTextures, a2, location, a3.length);
+      v6 = objc_msgSend_objectAtIndexedSubscript_(self->_outputTextures, a2, location, range.length);
       FigMetalDecRef();
 
       ++location;

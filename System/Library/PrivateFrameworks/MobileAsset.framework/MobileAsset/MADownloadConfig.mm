@@ -1,10 +1,10 @@
 @interface MADownloadConfig
 - (MADownloadConfig)init;
-- (MADownloadConfig)initWithCoder:(id)a3;
-- (MADownloadConfig)initWithPlist:(id)a3;
+- (MADownloadConfig)initWithCoder:(id)coder;
+- (MADownloadConfig)initWithPlist:(id)plist;
 - (id)encodeAsPlist;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)logConfig;
 @end
 
@@ -23,42 +23,42 @@
   return result;
 }
 
-- (MADownloadConfig)initWithCoder:(id)a3
+- (MADownloadConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = MADownloadConfig;
   v5 = [(MADownloadConfig *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"discretionary"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"discretionary"];
     v5->_discretionary = [v6 BOOLValue];
   }
 
   return v5;
 }
 
-- (MADownloadConfig)initWithPlist:(id)a3
+- (MADownloadConfig)initWithPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v7.receiver = self;
   v7.super_class = MADownloadConfig;
   v5 = [(MADownloadConfig *)&v7 init];
   if (v5)
   {
-    v5->_discretionary = getPlistNumberAsBool(v4, @"discretionary");
+    v5->_discretionary = getPlistNumberAsBool(plistCopy, @"discretionary");
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x1E696AD98];
   discretionary = self->_discretionary;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v3 numberWithBool:discretionary];
-  [v5 encodeObject:v6 forKey:@"discretionary"];
+  [coderCopy encodeObject:v6 forKey:@"discretionary"];
 }
 
 - (id)encodeAsPlist
@@ -87,9 +87,9 @@
 - (id)summary
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(MADownloadConfig *)self discretionary];
+  discretionary = [(MADownloadConfig *)self discretionary];
   v4 = @"NO";
-  if (v3)
+  if (discretionary)
   {
     v4 = @"YES";
   }

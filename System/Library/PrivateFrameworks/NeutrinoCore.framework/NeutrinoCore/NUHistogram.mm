@@ -1,15 +1,15 @@
 @interface NUHistogram
 - ($F24F406B2B787EFB06265DBA3D28CBD5)range;
 - (NUHistogram)init;
-- (NUHistogram)initWithBinCount:(int64_t)a3 range:(id)a4;
-- (NUHistogram)initWithHistogram:(id)a3;
+- (NUHistogram)initWithBinCount:(int64_t)count range:(id)range;
+- (NUHistogram)initWithHistogram:(id)histogram;
 - (double)mode;
-- (double)percentile:(double)a3;
-- (double)threshold:(double)a3;
-- (id)_samplerForSampleMode:(int64_t)a3;
+- (double)percentile:(double)percentile;
+- (double)threshold:(double)threshold;
+- (id)_samplerForSampleMode:(int64_t)mode;
 - (id)debugDescription;
-- (id)modalityAnalysisWithLimit:(int64_t)a3 locality:(double)a4 sensitivity:(double)a5 sampleMode:(int64_t)a6;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)modalityAnalysisWithLimit:(int64_t)limit locality:(double)locality sensitivity:(double)sensitivity sampleMode:(int64_t)mode;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NUHistogram
@@ -18,39 +18,39 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v4 = objc_opt_class();
-  v5 = [(NUHistogram *)self binCount];
+  binCount = [(NUHistogram *)self binCount];
   [(NUHistogram *)self range];
   v7 = v6;
   [(NUHistogram *)self range];
-  [v3 appendFormat:@"<%@:%p> count=%ld, range: [%0.3f..%0.3f], sampleCount=%ld\n", v4, self, v5, v7, v8, -[NUHistogram sampleCount](self, "sampleCount")];
-  v9 = [(NUHistogram *)self values];
-  v10 = [(NUHistogram *)self binCount];
-  if (v10 >= 1)
+  [v3 appendFormat:@"<%@:%p> count=%ld, range: [%0.3f..%0.3f], sampleCount=%ld\n", v4, self, binCount, v7, v8, -[NUHistogram sampleCount](self, "sampleCount")];
+  values = [(NUHistogram *)self values];
+  binCount2 = [(NUHistogram *)self binCount];
+  if (binCount2 >= 1)
   {
-    for (i = 0; i != v10; ++i)
+    for (i = 0; i != binCount2; ++i)
     {
       [(NUHistogram *)self range];
       v13 = v12;
       [(NUHistogram *)self range];
       v15 = v14;
       [(NUHistogram *)self range];
-      [v3 appendFormat:@"\t%4ld\t%0.3f\t%6ld\t%0.5f\n", i, v16 + i / (v10 - 1) * (v13 - v15), v9[i], v9[i] / -[NUHistogram sampleCount](self, "sampleCount")];
+      [v3 appendFormat:@"\t%4ld\t%0.3f\t%6ld\t%0.5f\n", i, v16 + i / (binCount2 - 1) * (v13 - v15), values[i], values[i] / -[NUHistogram sampleCount](self, "sampleCount")];
     }
   }
 
   return v3;
 }
 
-- (id)modalityAnalysisWithLimit:(int64_t)a3 locality:(double)a4 sensitivity:(double)a5 sampleMode:(int64_t)a6
+- (id)modalityAnalysisWithLimit:(int64_t)limit locality:(double)locality sensitivity:(double)sensitivity sampleMode:(int64_t)mode
 {
   v57 = *MEMORY[0x1E69E9840];
-  if (a3 > 0)
+  if (limit > 0)
   {
-    if (a4 > 0.0 && a4 <= 1.0)
+    if (locality > 0.0 && locality <= 1.0)
     {
-      if (a5 > 0.0 && a5 <= 1.0)
+      if (sensitivity > 0.0 && sensitivity <= 1.0)
       {
-        [(NUHistogram *)self _samplerForSampleMode:a6];
+        [(NUHistogram *)self _samplerForSampleMode:mode];
         objc_claimAutoreleasedReturnValue();
         v52[0] = 0;
         v52[1] = v52;
@@ -59,9 +59,9 @@
         v52[4] = __Block_byref_object_dispose__106;
         v52[5] = &unk_1C03FE0EF;
         memset(&v52[6], 0, 24);
-        if (a3 < 0xFFFFFFFFFFFFFFFLL)
+        if (limit < 0xFFFFFFFFFFFFFFFLL)
         {
-          std::__allocate_at_least[abi:ne200100]<std::allocator<NU::Histogram<long,double>::Sample>>(a3 + 1);
+          std::__allocate_at_least[abi:ne200100]<std::allocator<NU::Histogram<long,double>::Sample>>(limit + 1);
         }
 
         std::vector<double>::__throw_length_error[abi:ne200100]();
@@ -84,8 +84,8 @@
         if (v27)
         {
           v44 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-          v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-          v46 = [v45 componentsJoinedByString:@"\n"];
+          callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+          v46 = [callStackSymbols componentsJoinedByString:@"\n"];
           buf = 138543618;
           *buf_4 = v44;
           v55 = 2114;
@@ -96,8 +96,8 @@
 
       else if (v27)
       {
-        v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v29 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         buf = 138543362;
         *buf_4 = v29;
         _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &buf, 0xCu);
@@ -123,8 +123,8 @@
       if (v20)
       {
         v37 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v38 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v39 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         buf = 138543618;
         *buf_4 = v37;
         v55 = 2114;
@@ -135,8 +135,8 @@
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       buf = 138543362;
       *buf_4 = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &buf, 0xCu);
@@ -162,8 +162,8 @@
     if (v13)
     {
       v30 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v32 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       buf = 138543618;
       *buf_4 = v30;
       v55 = 2114;
@@ -174,8 +174,8 @@
 
   else if (v13)
   {
-    v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v15 = [v14 componentsJoinedByString:@"\n"];
+    callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+    v15 = [callStackSymbols6 componentsJoinedByString:@"\n"];
     buf = 138543362;
     *buf_4 = v15;
     _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &buf, 0xCu);
@@ -184,12 +184,12 @@
   _NUAssertFailHandler("[NUHistogram modalityAnalysisWithLimit:locality:sensitivity:sampleMode:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Histogram/NUHistogram.mm", 150, @"Invalid parameter not satisfying: %s", v33, v34, v35, v36, "limit > 0");
 }
 
-- (id)_samplerForSampleMode:(int64_t)a3
+- (id)_samplerForSampleMode:(int64_t)mode
 {
   v3 = 0;
-  if (a3 > 1)
+  if (mode > 1)
   {
-    if (a3 == 2)
+    if (mode == 2)
     {
       ptr = self->_histogram.__ptr_;
       v6 = (ptr[3] - ptr[2]) >> 3;
@@ -200,7 +200,7 @@
 
     else
     {
-      if (a3 != 3)
+      if (mode != 3)
       {
         goto LABEL_12;
       }
@@ -215,9 +215,9 @@
 
   else
   {
-    if (a3)
+    if (mode)
     {
-      if (a3 != 1)
+      if (mode != 1)
       {
         goto LABEL_12;
       }
@@ -269,19 +269,19 @@ LABEL_12:
   return v3;
 }
 
-- (double)threshold:(double)a3
+- (double)threshold:(double)threshold
 {
   ptr = self->_histogram.__ptr_;
   v4 = 1.0;
-  if (*ptr <= a3)
+  if (*ptr <= threshold)
   {
     v5 = ptr[1];
     v4 = 0.0;
-    if (v5 > a3)
+    if (v5 > threshold)
     {
       v6 = *(ptr + 2);
       v7 = (*(ptr + 3) - v6) >> 3;
-      v8 = vcvtmd_s64_f64((a3 - *ptr) / ((v5 - *ptr) / v7));
+      v8 = vcvtmd_s64_f64((threshold - *ptr) / ((v5 - *ptr) / v7));
       v9 = 0.0;
       v10 = v7 <= v8;
       v11 = v7 - v8;
@@ -307,10 +307,10 @@ LABEL_12:
   return v4;
 }
 
-- (double)percentile:(double)a3
+- (double)percentile:(double)percentile
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (a3 < 0.0 || a3 > 1.0)
+  if (percentile < 0.0 || percentile > 1.0)
   {
     v15 = NUAssertLogger();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -329,8 +329,8 @@ LABEL_12:
       if (v19)
       {
         v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v30 = v22;
         v31 = 2114;
@@ -341,8 +341,8 @@ LABEL_12:
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -352,13 +352,13 @@ LABEL_12:
   }
 
   ptr = self->_histogram.__ptr_;
-  if (a3 <= 0.0)
+  if (percentile <= 0.0)
   {
 
     return NU::Histogram<long,double>::minimum(ptr);
   }
 
-  else if (a3 >= 1.0)
+  else if (percentile >= 1.0)
   {
 
     return NU::Histogram<long,double>::maximum(ptr);
@@ -381,7 +381,7 @@ LABEL_12:
         v8 = 0;
         v9 = 0;
         v10 = v5;
-        v11 = llround(v5 * a3);
+        v11 = llround(v5 * percentile);
         while (1)
         {
           v12 = *(v6 + 8 * v9);
@@ -399,13 +399,13 @@ LABEL_12:
         }
 
         v14 = (ptr[1] - *ptr) / v7;
-        return *ptr + v9 * v14 + -(v8 - a3 * v10) / v12 * v14;
+        return *ptr + v9 * v14 + -(v8 - percentile * v10) / v12 * v14;
       }
     }
 
     else
     {
-      return *ptr + a3 * (ptr[1] - *ptr);
+      return *ptr + percentile * (ptr[1] - *ptr);
     }
   }
 }
@@ -420,17 +420,17 @@ LABEL_12:
   return result;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [NUMutableHistogram allocWithZone:a3];
+  v4 = [NUMutableHistogram allocWithZone:zone];
 
   return [(NUHistogram *)v4 initWithHistogram:self];
 }
 
-- (NUHistogram)initWithHistogram:(id)a3
+- (NUHistogram)initWithHistogram:(id)histogram
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (histogram)
   {
     v19.receiver = self;
     v19.super_class = NUHistogram;
@@ -455,8 +455,8 @@ LABEL_12:
     if (v8)
     {
       v11 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v21 = v11;
       v22 = 2114;
@@ -467,8 +467,8 @@ LABEL_12:
 
   else if (v8)
   {
-    v9 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v10 = [v9 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+    v10 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543362;
     v21 = v10;
     _os_log_error_impl(&dword_1C0184000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -477,10 +477,10 @@ LABEL_12:
   _NUAssertFailHandler("[NUHistogram initWithHistogram:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Histogram/NUHistogram.mm", 51, @"Invalid parameter not satisfying: %s", v14, v15, v16, v17, "other != nil");
 }
 
-- (NUHistogram)initWithBinCount:(int64_t)a3 range:(id)a4
+- (NUHistogram)initWithBinCount:(int64_t)count range:(id)range
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a3 <= 0)
+  if (count <= 0)
   {
     v4 = NUAssertLogger();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -499,8 +499,8 @@ LABEL_12:
       if (v8)
       {
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v19 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v19 = [callStackSymbols componentsJoinedByString:@"\n"];
         buf[0] = 138543618;
         *&buf[1] = v17;
         v32 = 2114;
@@ -511,8 +511,8 @@ LABEL_12:
 
     else if (v8)
     {
-      v9 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v10 = [v9 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v10 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       buf[0] = 138543362;
       *&buf[1] = v10;
       _os_log_error_impl(&dword_1C0184000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -524,7 +524,7 @@ LABEL_12:
 
   else
   {
-    if (a4.var0 < a4.var1)
+    if (range.var0 < range.var1)
     {
       v30.receiver = self;
       v30.super_class = NUHistogram;
@@ -549,8 +549,8 @@ LABEL_12:
       if (v14)
       {
         v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v24 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         buf[0] = 138543618;
         *&buf[1] = v22;
         v32 = 2114;
@@ -561,8 +561,8 @@ LABEL_12:
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       buf[0] = 138543362;
       *&buf[1] = v16;
       _os_log_error_impl(&dword_1C0184000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -607,8 +607,8 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v12 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v22 = v12;
       v23 = 2114;
@@ -627,8 +627,8 @@ LABEL_12:
     v9 = _NUAssertLogger;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v22 = v11;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

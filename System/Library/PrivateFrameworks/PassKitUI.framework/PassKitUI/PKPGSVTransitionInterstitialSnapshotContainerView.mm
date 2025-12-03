@@ -1,10 +1,10 @@
 @interface PKPGSVTransitionInterstitialSnapshotContainerView
-- (double)initWithSnapshotSize:(double)a3;
+- (double)initWithSnapshotSize:(double)size;
 @end
 
 @implementation PKPGSVTransitionInterstitialSnapshotContainerView
 
-- (double)initWithSnapshotSize:(double)a3
+- (double)initWithSnapshotSize:(double)size
 {
   if (result)
   {
@@ -14,7 +14,7 @@
     if (result)
     {
       result[51] = a2;
-      result[52] = a3;
+      result[52] = size;
     }
   }
 

@@ -1,15 +1,15 @@
 @interface HMDHomePresenceRemote
-- (BOOL)areUsersAtHome:(id)a3;
-- (BOOL)areUsersNotAtHome:(id)a3;
+- (BOOL)areUsersAtHome:(id)home;
+- (BOOL)areUsersNotAtHome:(id)home;
 - (BOOL)isAnyUserAtHome;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNoUserAtHome;
-- (BOOL)isUserAtHome:(id)a3;
-- (BOOL)isUserNotAtHome:(id)a3;
-- (HMDHomePresenceRemote)initWithPresenceByPairingIdentity:(id)a3;
-- (HMDHomePresenceRemote)initWithPresenceByUserId:(id)a3;
+- (BOOL)isUserAtHome:(id)home;
+- (BOOL)isUserNotAtHome:(id)home;
+- (HMDHomePresenceRemote)initWithPresenceByPairingIdentity:(id)identity;
+- (HMDHomePresenceRemote)initWithPresenceByUserId:(id)id;
 - (NSString)description;
-- (id)regionForUser:(id)a3;
+- (id)regionForUser:(id)user;
 - (unint64_t)hash;
 @end
 
@@ -24,8 +24,8 @@
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(NSDictionary *)self->_userPresenceMap allValues];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    allValues = [(NSDictionary *)self->_userPresenceMap allValues];
+    v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = *v10;
@@ -35,7 +35,7 @@
         {
           if (*v10 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
 
           if ([*(*(&v9 + 1) + 8 * i) value] == 1)
@@ -45,7 +45,7 @@
           }
         }
 
-        v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v4)
         {
           continue;
@@ -76,8 +76,8 @@ LABEL_12:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(NSDictionary *)self->_userPresenceMap allValues];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allValues = [(NSDictionary *)self->_userPresenceMap allValues];
+    v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -89,13 +89,13 @@ LABEL_12:
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
 
           v7 &= [*(*(&v11 + 1) + 8 * i) value] == 2;
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);
@@ -116,17 +116,17 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)areUsersNotAtHome:(id)a3
+- (BOOL)areUsersNotAtHome:(id)home
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  homeCopy = home;
+  if ([homeCopy count])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v4;
+    v5 = homeCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -167,17 +167,17 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)areUsersAtHome:(id)a3
+- (BOOL)areUsersAtHome:(id)home
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  homeCopy = home;
+  if ([homeCopy count])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v4;
+    v5 = homeCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -218,36 +218,36 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)isUserNotAtHome:(id)a3
+- (BOOL)isUserNotAtHome:(id)home
 {
-  v3 = [(HMDHomePresenceRemote *)self regionForUser:a3];
+  v3 = [(HMDHomePresenceRemote *)self regionForUser:home];
   v4 = [v3 value] == 2;
 
   return v4;
 }
 
-- (BOOL)isUserAtHome:(id)a3
+- (BOOL)isUserAtHome:(id)home
 {
-  v3 = [(HMDHomePresenceRemote *)self regionForUser:a3];
+  v3 = [(HMDHomePresenceRemote *)self regionForUser:home];
   v4 = [v3 value] == 1;
 
   return v4;
 }
 
-- (id)regionForUser:(id)a3
+- (id)regionForUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   userPresenceMap = self->_userPresenceMap;
-  v6 = [v4 pairingIdentity];
-  v7 = [v6 identifier];
-  v8 = [(NSDictionary *)userPresenceMap objectForKeyedSubscript:v7];
+  pairingIdentity = [userCopy pairingIdentity];
+  identifier = [pairingIdentity identifier];
+  v8 = [(NSDictionary *)userPresenceMap objectForKeyedSubscript:identifier];
 
   if (!v8)
   {
     v9 = self->_userPresenceMap;
-    v10 = [v4 uuid];
-    v11 = [v10 UUIDString];
-    v8 = [(NSDictionary *)v9 objectForKeyedSubscript:v11];
+    uuid = [userCopy uuid];
+    uUIDString = [uuid UUIDString];
+    v8 = [(NSDictionary *)v9 objectForKeyedSubscript:uUIDString];
   }
 
   return v8;
@@ -255,19 +255,19 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v2 = [(HMDHomePresenceRemote *)self userPresenceMap];
-  v3 = [v2 hash];
+  userPresenceMap = [(HMDHomePresenceRemote *)self userPresenceMap];
+  v3 = [userPresenceMap hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -278,9 +278,9 @@ LABEL_12:
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMDHomePresenceRemote *)self userPresenceMap];
-    v8 = [v6 userPresenceMap];
-    v9 = [v7 isEqualToDictionary:v8];
+    userPresenceMap = [(HMDHomePresenceRemote *)self userPresenceMap];
+    userPresenceMap2 = [v6 userPresenceMap];
+    v9 = [userPresenceMap isEqualToDictionary:userPresenceMap2];
   }
 
   else
@@ -294,16 +294,16 @@ LABEL_12:
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDHomePresenceRemote *)self userPresenceMap];
-  v4 = [v2 stringWithFormat:@"[Home-Presence-Remote: %@]", v3];
+  userPresenceMap = [(HMDHomePresenceRemote *)self userPresenceMap];
+  v4 = [v2 stringWithFormat:@"[Home-Presence-Remote: %@]", userPresenceMap];
 
   return v4;
 }
 
-- (HMDHomePresenceRemote)initWithPresenceByPairingIdentity:(id)a3
+- (HMDHomePresenceRemote)initWithPresenceByPairingIdentity:(id)identity
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identityCopy = identity;
   v24.receiver = self;
   v24.super_class = HMDHomePresenceRemote;
   v5 = [(HMDHomePresenceRemote *)&v24 init];
@@ -311,13 +311,13 @@ LABEL_12:
   if (v5)
   {
     v19 = v5;
-    v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+    v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(identityCopy, "count")}];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = [v4 allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    allKeys = [identityCopy allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v9)
     {
       v10 = v9;
@@ -328,16 +328,16 @@ LABEL_12:
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
           v13 = *(*(&v20 + 1) + 8 * i);
-          v14 = [v4 objectForKeyedSubscript:v13];
+          v14 = [identityCopy objectForKeyedSubscript:v13];
           v15 = [HMDUserPresenceRegion regionWithNumber:v14];
           [(NSDictionary *)v7 setObject:v15 forKey:v13];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v10);
@@ -352,10 +352,10 @@ LABEL_12:
   return v6;
 }
 
-- (HMDHomePresenceRemote)initWithPresenceByUserId:(id)a3
+- (HMDHomePresenceRemote)initWithPresenceByUserId:(id)id
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   v24.receiver = self;
   v24.super_class = HMDHomePresenceRemote;
   v5 = [(HMDHomePresenceRemote *)&v24 init];
@@ -363,13 +363,13 @@ LABEL_12:
   if (v5)
   {
     v19 = v5;
-    v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+    v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(idCopy, "count")}];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = [v4 allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    allKeys = [idCopy allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v9)
     {
       v10 = v9;
@@ -380,16 +380,16 @@ LABEL_12:
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
           v13 = *(*(&v20 + 1) + 8 * i);
-          v14 = [v4 objectForKeyedSubscript:v13];
+          v14 = [idCopy objectForKeyedSubscript:v13];
           v15 = [HMDUserPresenceRegion regionWithNumber:v14];
           [(NSDictionary *)v7 setObject:v15 forKey:v13];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v10);

@@ -1,122 +1,122 @@
 @interface SBDisplayManager
-- (BOOL)_shouldAcquireAudioPowerAssertionForDisplay:(id)a3;
-- (SBDisplayManager)initWithDisplayManager:(id)a3 sceneManagerCoordinator:(id)a4 assertionCoordinator:(id)a5 powerLogReporter:(id)a6;
-- (id)_createAndActivateLayoutPublisherForConnectingDisplay:(id)a3;
-- (id)_signpostMetadataForController:(id)a3;
-- (id)addObserver:(id)a3;
-- (id)layoutPublisherForDisplay:(id)a3;
-- (int64_t)windowingModeForDisplay:(id)a3;
-- (void)_acquireDisplayPowerAssertionForReason:(unint64_t)a3 forDisplay:(id)a4;
-- (void)_acquireDisplayStateControlForDisplay:(id)a3 withConfiguration:(id)a4;
-- (void)_connectControllerWithInfo:(id)a3 toDisplay:(id)a4 configuration:(id)a5;
-- (void)_connectToIdentity:(id)a3 withConfiguration:(id)a4 forDisplayManagerInit:(BOOL)a5;
-- (void)_deactivateLayoutPublisher:(id)a3 forDisconnectingDisplay:(id)a4;
-- (void)_releaseAllDisplayPowerAssertionsForDisplay:(id)a3;
-- (void)_releaseDisplayPowerAssertionForReason:(unint64_t)a3 forDisplay:(id)a4;
-- (void)_setCloneMirroringMode:(unint64_t)a3 forDisplay:(id)a4;
-- (void)_setDisableIdleSleepReason:(id)a3 forDisplay:(id)a4;
-- (void)_setDisplayArrangementItem:(id)a3 forDisplay:(id)a4;
-- (void)_setDisplayContentMirroringState:(unint64_t)a3 forDisplay:(id)a4;
-- (void)_setDisplayState:(unint64_t)a3 forDisplay:(id)a4;
-- (void)_setPowerLogEntry:(id)a3 forDisplay:(id)a4;
-- (void)assertionCoordinator:(id)a3 updatedAssertionPreferences:(id)a4 oldPreferences:(id)a5 forDisplay:(id)a6;
-- (void)backlightController:(id)a3 willAnimateBacklightToFactor:(float)a4 source:(int64_t)a5;
-- (void)beginMonitoringForExternalDisplays:(id)a3;
-- (void)cache:(id)a3 didUpdateActiveAudioRoute:(id)a4;
-- (void)cache:(id)a3 didUpdateAudioSessionPlaying:(BOOL)a4;
+- (BOOL)_shouldAcquireAudioPowerAssertionForDisplay:(id)display;
+- (SBDisplayManager)initWithDisplayManager:(id)manager sceneManagerCoordinator:(id)coordinator assertionCoordinator:(id)assertionCoordinator powerLogReporter:(id)reporter;
+- (id)_createAndActivateLayoutPublisherForConnectingDisplay:(id)display;
+- (id)_signpostMetadataForController:(id)controller;
+- (id)addObserver:(id)observer;
+- (id)layoutPublisherForDisplay:(id)display;
+- (int64_t)windowingModeForDisplay:(id)display;
+- (void)_acquireDisplayPowerAssertionForReason:(unint64_t)reason forDisplay:(id)display;
+- (void)_acquireDisplayStateControlForDisplay:(id)display withConfiguration:(id)configuration;
+- (void)_connectControllerWithInfo:(id)info toDisplay:(id)display configuration:(id)configuration;
+- (void)_connectToIdentity:(id)identity withConfiguration:(id)configuration forDisplayManagerInit:(BOOL)init;
+- (void)_deactivateLayoutPublisher:(id)publisher forDisconnectingDisplay:(id)display;
+- (void)_releaseAllDisplayPowerAssertionsForDisplay:(id)display;
+- (void)_releaseDisplayPowerAssertionForReason:(unint64_t)reason forDisplay:(id)display;
+- (void)_setCloneMirroringMode:(unint64_t)mode forDisplay:(id)display;
+- (void)_setDisableIdleSleepReason:(id)reason forDisplay:(id)display;
+- (void)_setDisplayArrangementItem:(id)item forDisplay:(id)display;
+- (void)_setDisplayContentMirroringState:(unint64_t)state forDisplay:(id)display;
+- (void)_setDisplayState:(unint64_t)state forDisplay:(id)display;
+- (void)_setPowerLogEntry:(id)entry forDisplay:(id)display;
+- (void)assertionCoordinator:(id)coordinator updatedAssertionPreferences:(id)preferences oldPreferences:(id)oldPreferences forDisplay:(id)display;
+- (void)backlightController:(id)controller willAnimateBacklightToFactor:(float)factor source:(int64_t)source;
+- (void)beginMonitoringForExternalDisplays:(id)displays;
+- (void)cache:(id)cache didUpdateActiveAudioRoute:(id)route;
+- (void)cache:(id)cache didUpdateAudioSessionPlaying:(BOOL)playing;
 - (void)dealloc;
-- (void)displayMonitor:(id)a3 didConnectIdentity:(id)a4 withConfiguration:(id)a5;
-- (void)displayMonitor:(id)a3 didUpdateIdentity:(id)a4 withConfiguration:(id)a5;
-- (void)displayMonitor:(id)a3 willDisconnectIdentity:(id)a4;
-- (void)registerDisplayControllerProvider:(id)a3;
+- (void)displayMonitor:(id)monitor didConnectIdentity:(id)identity withConfiguration:(id)configuration;
+- (void)displayMonitor:(id)monitor didUpdateIdentity:(id)identity withConfiguration:(id)configuration;
+- (void)displayMonitor:(id)monitor willDisconnectIdentity:(id)identity;
+- (void)registerDisplayControllerProvider:(id)provider;
 @end
 
 @implementation SBDisplayManager
 
-- (SBDisplayManager)initWithDisplayManager:(id)a3 sceneManagerCoordinator:(id)a4 assertionCoordinator:(id)a5 powerLogReporter:(id)a6
+- (SBDisplayManager)initWithDisplayManager:(id)manager sceneManagerCoordinator:(id)coordinator assertionCoordinator:(id)assertionCoordinator powerLogReporter:(id)reporter
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  managerCopy = manager;
+  coordinatorCopy = coordinator;
+  assertionCoordinatorCopy = assertionCoordinator;
+  reporterCopy = reporter;
   v57.receiver = self;
   v57.super_class = SBDisplayManager;
   v15 = [(SBDisplayManager *)&v57 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_displayManager, a3);
-    objc_storeStrong(&v16->_sceneManagerCoordinator, a4);
-    objc_storeStrong(&v16->_assertionCoordinator, a5);
+    objc_storeStrong(&v15->_displayManager, manager);
+    objc_storeStrong(&v16->_sceneManagerCoordinator, coordinator);
+    objc_storeStrong(&v16->_assertionCoordinator, assertionCoordinator);
     [(SBDisplayAssertionCoordinator *)v16->_assertionCoordinator setDelegate:v16];
     v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
     connectedIdentityToRecordMap = v16->_connectedIdentityToRecordMap;
     v16->_connectedIdentityToRecordMap = v17;
 
-    v19 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     rootIdentityToLayoutPublisherMap = v16->_rootIdentityToLayoutPublisherMap;
-    v16->_rootIdentityToLayoutPublisherMap = v19;
+    v16->_rootIdentityToLayoutPublisherMap = dictionary;
 
-    v21 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     rootIdentityToCADisplayQueueMap = v16->_rootIdentityToCADisplayQueueMap;
-    v16->_rootIdentityToCADisplayQueueMap = v21;
+    v16->_rootIdentityToCADisplayQueueMap = dictionary2;
 
-    v23 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
     controllerToAssertionMap = v16->_controllerToAssertionMap;
-    v16->_controllerToAssertionMap = v23;
+    v16->_controllerToAssertionMap = weakToWeakObjectsMapTable;
 
     disableIdleSleepReason = v16->_disableIdleSleepReason;
     v16->_disableIdleSleepReason = 0;
 
-    v26 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     factories = v16->_factories;
-    v16->_factories = v26;
+    v16->_factories = weakObjectsHashTable;
 
-    v28 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     identityToControllerMap = v16->_identityToControllerMap;
-    v16->_identityToControllerMap = v28;
+    v16->_identityToControllerMap = dictionary3;
 
-    v30 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     identityToWindowingModeMap = v16->_identityToWindowingModeMap;
-    v16->_identityToWindowingModeMap = v30;
+    v16->_identityToWindowingModeMap = dictionary4;
 
-    objc_storeStrong(&v16->_powerLogReporter, a6);
+    objc_storeStrong(&v16->_powerLogReporter, reporter);
     v16->_lock._os_unfair_lock_opaque = 0;
-    v32 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     lock_observers = v16->_lock_observers;
-    v16->_lock_observers = v32;
+    v16->_lock_observers = weakObjectsHashTable2;
 
-    v34 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary5 = [MEMORY[0x277CBEB38] dictionary];
     rootIdentityToDisableSleepReasons = v16->_rootIdentityToDisableSleepReasons;
-    v16->_rootIdentityToDisableSleepReasons = v34;
+    v16->_rootIdentityToDisableSleepReasons = dictionary5;
 
-    v36 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary6 = [MEMORY[0x277CBEB38] dictionary];
     rootIdentityToDisplayArrangementItems = v16->_rootIdentityToDisplayArrangementItems;
-    v16->_rootIdentityToDisplayArrangementItems = v36;
+    v16->_rootIdentityToDisplayArrangementItems = dictionary6;
 
-    v38 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary7 = [MEMORY[0x277CBEB38] dictionary];
     rootIdentityToCloneMirroringMode = v16->_rootIdentityToCloneMirroringMode;
-    v16->_rootIdentityToCloneMirroringMode = v38;
+    v16->_rootIdentityToCloneMirroringMode = dictionary7;
 
-    v40 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary8 = [MEMORY[0x277CBEB38] dictionary];
     rootIdentityToCloneMirroringModeTokens = v16->_rootIdentityToCloneMirroringModeTokens;
-    v16->_rootIdentityToCloneMirroringModeTokens = v40;
+    v16->_rootIdentityToCloneMirroringModeTokens = dictionary8;
 
-    v42 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary9 = [MEMORY[0x277CBEB38] dictionary];
     rootIdentityToCADisplayStateControl = v16->_rootIdentityToCADisplayStateControl;
-    v16->_rootIdentityToCADisplayStateControl = v42;
+    v16->_rootIdentityToCADisplayStateControl = dictionary9;
 
-    v44 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary10 = [MEMORY[0x277CBEB38] dictionary];
     rootIdentityToDisplayState = v16->_rootIdentityToDisplayState;
-    v16->_rootIdentityToDisplayState = v44;
+    v16->_rootIdentityToDisplayState = dictionary10;
 
-    v46 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary11 = [MEMORY[0x277CBEB38] dictionary];
     rootIdentityToDisplayContentMirroringState = v16->_rootIdentityToDisplayContentMirroringState;
-    v16->_rootIdentityToDisplayContentMirroringState = v46;
+    v16->_rootIdentityToDisplayContentMirroringState = dictionary11;
 
-    v48 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary12 = [MEMORY[0x277CBEB38] dictionary];
     rootIdentityToDisplayPowerAssertions = v16->_rootIdentityToDisplayPowerAssertions;
-    v16->_rootIdentityToDisplayPowerAssertions = v48;
+    v16->_rootIdentityToDisplayPowerAssertions = dictionary12;
 
     v50 = +[SBAVSystemControllerCache sharedInstance];
     avSystemControllerCache = v16->_avSystemControllerCache;
@@ -128,9 +128,9 @@
     v16->_backlightController = v52;
 
     [(SBBacklightController *)v16->_backlightController addObserver:v16];
-    v54 = [(FBDisplayManager *)v16->_displayManager mainConfiguration];
-    v55 = [v54 identity];
-    [(SBDisplayManager *)v16 _connectToIdentity:v55 withConfiguration:v54 forDisplayManagerInit:1];
+    mainConfiguration = [(FBDisplayManager *)v16->_displayManager mainConfiguration];
+    identity = [mainConfiguration identity];
+    [(SBDisplayManager *)v16 _connectToIdentity:identity withConfiguration:mainConfiguration forDisplayManagerInit:1];
   }
 
   return v16;
@@ -144,16 +144,16 @@
   [(SBDisplayManager *)&v3 dealloc];
 }
 
-- (void)beginMonitoringForExternalDisplays:(id)a3
+- (void)beginMonitoringForExternalDisplays:(id)displays
 {
-  v4 = a3;
+  displaysCopy = displays;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__SBDisplayManager_beginMonitoringForExternalDisplays___block_invoke;
   v6[3] = &unk_2783A98A0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = displaysCopy;
+  v5 = displaysCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -206,13 +206,13 @@ uint64_t __55__SBDisplayManager_beginMonitoringForExternalDisplays___block_invok
   return result;
 }
 
-- (void)registerDisplayControllerProvider:(id)a3
+- (void)registerDisplayControllerProvider:(id)provider
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  providerCopy = provider;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    if (v4)
+    if (providerCopy)
     {
       goto LABEL_3;
     }
@@ -221,7 +221,7 @@ uint64_t __55__SBDisplayManager_beginMonitoringForExternalDisplays___block_invok
   else
   {
     [SBDisplayManager registerDisplayControllerProvider:];
-    if (v4)
+    if (providerCopy)
     {
       goto LABEL_3;
     }
@@ -229,12 +229,12 @@ uint64_t __55__SBDisplayManager_beginMonitoringForExternalDisplays___block_invok
 
   [SBDisplayManager registerDisplayControllerProvider:];
 LABEL_3:
-  if ([(NSHashTable *)self->_factories containsObject:v4])
+  if ([(NSHashTable *)self->_factories containsObject:providerCopy])
   {
     [SBDisplayManager registerDisplayControllerProvider:];
   }
 
-  [(NSHashTable *)self->_factories addObject:v4];
+  [(NSHashTable *)self->_factories addObject:providerCopy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -260,7 +260,7 @@ LABEL_3:
         if (!v11)
         {
           v12 = [(FBDisplayManager *)self->_displayManager configurationForIdentity:v10];
-          v13 = [v4 displayControllerInfoForConnectingDisplay:v10 configuration:v12];
+          v13 = [providerCopy displayControllerInfoForConnectingDisplay:v10 configuration:v12];
           if (v13)
           {
             [(SBDisplayManager *)self _connectControllerWithInfo:v13 toDisplay:v10 configuration:v12];
@@ -275,30 +275,30 @@ LABEL_3:
   }
 }
 
-- (id)layoutPublisherForDisplay:(id)a3
+- (id)layoutPublisherForDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBDisplayManager layoutPublisherForDisplay:];
   }
 
-  if (([v4 isRootIdentity] & 1) == 0)
+  if (([displayCopy isRootIdentity] & 1) == 0)
   {
     [SBDisplayManager layoutPublisherForDisplay:];
   }
 
-  v5 = [(NSMutableDictionary *)self->_rootIdentityToLayoutPublisherMap objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_rootIdentityToLayoutPublisherMap objectForKey:displayCopy];
 
   return v5;
 }
 
-- (id)addObserver:(id)a3
+- (id)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  if ([(NSHashTable *)self->_lock_observers containsObject:v4])
+  if ([(NSHashTable *)self->_lock_observers containsObject:observerCopy])
   {
     [SBDisplayManager addObserver:];
   }
@@ -311,7 +311,7 @@ LABEL_3:
   v10[2] = __32__SBDisplayManager_addObserver___block_invoke;
   v10[3] = &unk_2783AEA48;
   objc_copyWeak(&v12, &location);
-  v7 = v4;
+  v7 = observerCopy;
   v11 = v7;
   v8 = [v5 initWithIdentifier:v6 forReason:@"displayCoordinator" invalidationBlock:v10];
 
@@ -337,58 +337,58 @@ void __32__SBDisplayManager_addObserver___block_invoke(uint64_t a1)
   }
 }
 
-- (int64_t)windowingModeForDisplay:(id)a3
+- (int64_t)windowingModeForDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBDisplayManager windowingModeForDisplay:];
   }
 
-  v5 = [(NSMutableDictionary *)self->_identityToWindowingModeMap objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_identityToWindowingModeMap objectForKey:displayCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  return v7;
+  return integerValue;
 }
 
-- (void)displayMonitor:(id)a3 didConnectIdentity:(id)a4 withConfiguration:(id)a5
+- (void)displayMonitor:(id)monitor didConnectIdentity:(id)identity withConfiguration:(id)configuration
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  identityCopy = identity;
+  configurationCopy = configuration;
   v9 = SBLogFBDisplayManagerCallbacks();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = _SBFLoggingMethodProem();
-    v11 = [v8 _sbLoggingDescription];
+    _sbLoggingDescription = [configurationCopy _sbLoggingDescription];
     v14 = 138543874;
     v15 = v10;
     v16 = 2114;
-    v17 = v11;
+    v17 = _sbLoggingDescription;
     v18 = 2114;
-    v19 = v7;
+    v19 = identityCopy;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@\n\tconfiguration: %{public}@;\n\tidentity: %{public}@", &v14, 0x20u);
   }
 
-  v12 = [v8 hardwareIdentifier];
-  if (v12)
+  hardwareIdentifier = [configurationCopy hardwareIdentifier];
+  if (hardwareIdentifier)
   {
     goto LABEL_7;
   }
 
-  if (([v8 isMainDisplay] & 1) == 0)
+  if (([configurationCopy isMainDisplay] & 1) == 0)
   {
-    v12 = SBLogFBDisplayManagerCallbacks();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    hardwareIdentifier = SBLogFBDisplayManagerCallbacks();
+    if (os_log_type_enabled(hardwareIdentifier, OS_LOG_TYPE_ERROR))
     {
       v13 = _SBFLoggingMethodProem();
       v14 = 138544130;
@@ -396,33 +396,33 @@ void __32__SBDisplayManager_addObserver___block_invoke(uint64_t a1)
       v16 = 2114;
       v17 = @"connecting";
       v18 = 2114;
-      v19 = v7;
+      v19 = identityCopy;
       v20 = 2114;
-      v21 = v8;
-      _os_log_error_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_ERROR, "%{public}@ told about a %{public}@ display with nil hardwareIdentifier. identity: %{public}@; configuration: %{public}@", &v14, 0x2Au);
+      v21 = configurationCopy;
+      _os_log_error_impl(&dword_21ED4E000, hardwareIdentifier, OS_LOG_TYPE_ERROR, "%{public}@ told about a %{public}@ display with nil hardwareIdentifier. identity: %{public}@; configuration: %{public}@", &v14, 0x2Au);
     }
 
 LABEL_7:
   }
 
-  [(SBDisplayManager *)self _connectToIdentity:v7 withConfiguration:v8 forDisplayManagerInit:0];
+  [(SBDisplayManager *)self _connectToIdentity:identityCopy withConfiguration:configurationCopy forDisplayManagerInit:0];
 }
 
-- (void)_connectToIdentity:(id)a3 withConfiguration:(id)a4 forDisplayManagerInit:(BOOL)a5
+- (void)_connectToIdentity:(id)identity withConfiguration:(id)configuration forDisplayManagerInit:(BOOL)init
 {
-  v5 = a5;
+  initCopy = init;
   v79 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = [(NSMutableDictionary *)self->_connectedIdentityToRecordMap objectForKey:v9];
-  v12 = [v10 hardwareIdentifier];
-  if (v12)
+  identityCopy = identity;
+  configurationCopy = configuration;
+  v11 = [(NSMutableDictionary *)self->_connectedIdentityToRecordMap objectForKey:identityCopy];
+  hardwareIdentifier = [configurationCopy hardwareIdentifier];
+  if (hardwareIdentifier)
   {
 
     goto LABEL_4;
   }
 
-  if ([v10 isMainDisplay])
+  if ([configurationCopy isMainDisplay])
   {
 LABEL_4:
     if ([v11 didConnectAtInit])
@@ -431,7 +431,7 @@ LABEL_4:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v78 = v9;
+        v78 = identityCopy;
 LABEL_26:
         _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, v14, buf, 0xCu);
         goto LABEL_63;
@@ -442,69 +442,69 @@ LABEL_26:
     {
       if (v11)
       {
-        v15 = [MEMORY[0x277CCA890] currentHandler];
-        [v15 handleFailureInMethod:a2 object:self file:@"SBDisplayManager.m" lineNumber:264 description:{@"told an identity is connecting when we're already tracking it. is frontboard telling us things out of order?: %@", v9}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SBDisplayManager.m" lineNumber:264 description:{@"told an identity is connecting when we're already tracking it. is frontboard telling us things out of order?: %@", identityCopy}];
       }
 
-      v16 = [[_SBDisplayIdentityRecord alloc] initWithIdentity:v9 connectedAtInit:v5];
+      v16 = [[_SBDisplayIdentityRecord alloc] initWithIdentity:identityCopy connectedAtInit:initCopy];
 
-      [(NSMutableDictionary *)self->_connectedIdentityToRecordMap setObject:v16 forKey:v9];
-      v17 = [v9 isRootIdentity];
-      if (v17)
+      [(NSMutableDictionary *)self->_connectedIdentityToRecordMap setObject:v16 forKey:identityCopy];
+      isRootIdentity = [identityCopy isRootIdentity];
+      if (isRootIdentity)
       {
-        [(SBDisplayAssertionCoordinator *)self->_assertionCoordinator rootDisplayDidConnect:v9];
-        v18 = [(NSMutableDictionary *)self->_rootIdentityToLayoutPublisherMap objectForKey:v9];
+        [(SBDisplayAssertionCoordinator *)self->_assertionCoordinator rootDisplayDidConnect:identityCopy];
+        v18 = [(NSMutableDictionary *)self->_rootIdentityToLayoutPublisherMap objectForKey:identityCopy];
 
         if (!v18)
         {
-          v19 = [(SBDisplayManager *)self _createAndActivateLayoutPublisherForConnectingDisplay:v9];
-          [(NSMutableDictionary *)self->_rootIdentityToLayoutPublisherMap setObject:v19 forKey:v9];
+          v19 = [(SBDisplayManager *)self _createAndActivateLayoutPublisherForConnectingDisplay:identityCopy];
+          [(NSMutableDictionary *)self->_rootIdentityToLayoutPublisherMap setObject:v19 forKey:identityCopy];
         }
 
-        v20 = [(NSMutableDictionary *)self->_rootIdentityToCADisplayQueueMap objectForKey:v9];
+        v20 = [(NSMutableDictionary *)self->_rootIdentityToCADisplayQueueMap objectForKey:identityCopy];
 
         if (!v20)
         {
-          v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:CADisplayMutation", objc_opt_class(), v9];
-          v22 = [MEMORY[0x277CF0C18] serial];
-          v23 = [v22 serviceClass:25];
-          v24 = v17;
+          identityCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:CADisplayMutation", objc_opt_class(), identityCopy];
+          serial = [MEMORY[0x277CF0C18] serial];
+          v23 = [serial serviceClass:25];
+          v24 = isRootIdentity;
           v25 = a2;
           v26 = BSDispatchQueueCreate();
 
-          [(NSMutableDictionary *)self->_rootIdentityToCADisplayQueueMap setObject:v26 forKey:v9];
+          [(NSMutableDictionary *)self->_rootIdentityToCADisplayQueueMap setObject:v26 forKey:identityCopy];
           a2 = v25;
-          v17 = v24;
+          isRootIdentity = v24;
         }
 
-        v27 = [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl objectForKey:v9];
+        v27 = [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl objectForKey:identityCopy];
 
         if (!v27)
         {
-          v28 = [v10 CADisplay];
-          v29 = [v28 stateControl];
+          cADisplay = [configurationCopy CADisplay];
+          stateControl = [cADisplay stateControl];
 
-          if (v29)
+          if (stateControl)
           {
-            [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl setObject:v29 forKey:v9];
+            [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl setObject:stateControl forKey:identityCopy];
           }
         }
 
-        [(SBDisplayManager *)self _acquireDisplayStateControlForDisplay:v9 withConfiguration:v10];
-        if ([(SBDisplayManager *)self _shouldAcquireAudioPowerAssertionForDisplay:v9])
+        [(SBDisplayManager *)self _acquireDisplayStateControlForDisplay:identityCopy withConfiguration:configurationCopy];
+        if ([(SBDisplayManager *)self _shouldAcquireAudioPowerAssertionForDisplay:identityCopy])
         {
-          [(SBDisplayManager *)self _acquireDisplayPowerAssertionForReason:1 forDisplay:v9];
+          [(SBDisplayManager *)self _acquireDisplayPowerAssertionForReason:1 forDisplay:identityCopy];
         }
 
         v30 = SBLogDisplayControlling();
         if (os_signpost_enabled(v30))
         {
           *buf = 138543362;
-          v78 = v9;
+          v78 = identityCopy;
           _os_signpost_emit_with_name_impl(&dword_21ED4E000, v30, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SB_DISPLAY_MANAGER_ROOT_DISPLAY_CONNECTED", "%{public}@", buf, 0xCu);
         }
 
-        if ([v9 isExternal])
+        if ([identityCopy isExternal])
         {
           v31 = dispatch_time(0, 100000000);
           block[0] = MEMORY[0x277D85DD0];
@@ -512,15 +512,15 @@ LABEL_26:
           block[2] = __79__SBDisplayManager__connectToIdentity_withConfiguration_forDisplayManagerInit___block_invoke;
           block[3] = &unk_2783A9BD8;
           v70 = v16;
-          v71 = v10;
-          v72 = self;
-          v73 = v9;
+          v71 = configurationCopy;
+          selfCopy = self;
+          v73 = identityCopy;
           dispatch_after(v31, MEMORY[0x277D85CD0], block);
         }
 
         else
         {
-          [(SBDisplayAssertionCoordinator *)self->_assertionCoordinator activateAssertionsForDisplay:v9];
+          [(SBDisplayAssertionCoordinator *)self->_assertionCoordinator activateAssertionsForDisplay:identityCopy];
         }
       }
 
@@ -534,7 +534,7 @@ LABEL_26:
       if (v33)
       {
         v34 = v33;
-        v54 = v17;
+        v54 = isRootIdentity;
         v53 = a2;
         v13 = 0;
         v35 = *v66;
@@ -547,13 +547,13 @@ LABEL_26:
               objc_enumerationMutation(v32);
             }
 
-            v37 = [*(*(&v65 + 1) + 8 * i) displayControllerInfoForConnectingDisplay:v9 configuration:v10];
+            v37 = [*(*(&v65 + 1) + 8 * i) displayControllerInfoForConnectingDisplay:identityCopy configuration:configurationCopy];
             if (v37)
             {
               if (v13)
               {
-                v39 = [MEMORY[0x277CCA890] currentHandler];
-                [v39 handleFailureInMethod:v53 object:self file:@"SBDisplayManager.m" lineNumber:316 description:{@"multiple factories want to provide a controller for the same display: %@; how it started: %@; how it's going: %@", v9, v13, v37}];
+                currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+                [currentHandler2 handleFailureInMethod:v53 object:self file:@"SBDisplayManager.m" lineNumber:316 description:{@"multiple factories want to provide a controller for the same display: %@; how it started: %@; how it's going: %@", identityCopy, v13, v37}];
               }
 
               v38 = v37;
@@ -567,10 +567,10 @@ LABEL_26:
 
         while (v34);
 
-        v17 = v54;
+        isRootIdentity = v54;
         if (v13)
         {
-          [(SBDisplayManager *)self _connectControllerWithInfo:v13 toDisplay:v9 configuration:v10];
+          [(SBDisplayManager *)self _connectControllerWithInfo:v13 toDisplay:identityCopy configuration:configurationCopy];
         }
       }
 
@@ -584,7 +584,7 @@ LABEL_26:
       os_unfair_lock_lock(&self->_lock);
       v40 = [(NSHashTable *)self->_lock_observers copy];
       os_unfair_lock_unlock(&self->_lock);
-      if (v17)
+      if (isRootIdentity)
       {
         v63 = 0u;
         v64 = 0u;
@@ -609,7 +609,7 @@ LABEL_26:
               v46 = *(*(&v61 + 1) + 8 * j);
               if (objc_opt_respondsToSelector())
               {
-                [v46 displayManager:self didConnectToRootDisplay:v9];
+                [v46 displayManager:self didConnectToRootDisplay:identityCopy];
               }
             }
 
@@ -644,7 +644,7 @@ LABEL_26:
             v52 = *(*(&v57 + 1) + 8 * k);
             if (objc_opt_respondsToSelector())
             {
-              [v52 displayManager:self didConnectIdentity:v9 withConfiguration:v10];
+              [v52 displayManager:self didConnectIdentity:identityCopy withConfiguration:configurationCopy];
             }
           }
 
@@ -664,7 +664,7 @@ LABEL_26:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v78 = v9;
+    v78 = identityCopy;
     v14 = "got a connect for an external display that is missing its hardwareIdentifier. ignoring: %{public}@";
     goto LABEL_26;
   }
@@ -693,35 +693,35 @@ uint64_t __79__SBDisplayManager__connectToIdentity_withConfiguration_forDisplayM
   return result;
 }
 
-- (void)displayMonitor:(id)a3 didUpdateIdentity:(id)a4 withConfiguration:(id)a5
+- (void)displayMonitor:(id)monitor didUpdateIdentity:(id)identity withConfiguration:(id)configuration
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  identityCopy = identity;
+  configurationCopy = configuration;
   v9 = SBLogFBDisplayManagerCallbacks();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = _SBFLoggingMethodProem();
-    v11 = [v8 _sbLoggingDescription];
+    _sbLoggingDescription = [configurationCopy _sbLoggingDescription];
     v17 = 138543874;
     v18 = v10;
     v19 = 2114;
-    v20 = v11;
+    v20 = _sbLoggingDescription;
     v21 = 2114;
-    v22 = v7;
+    v22 = identityCopy;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@\n\tconfiguration: %{public}@;\n\tidentity: %{public}@", &v17, 0x20u);
   }
 
-  v12 = [v8 hardwareIdentifier];
-  if (!v12)
+  hardwareIdentifier = [configurationCopy hardwareIdentifier];
+  if (!hardwareIdentifier)
   {
-    if ([v8 isMainDisplay])
+    if ([configurationCopy isMainDisplay])
     {
       goto LABEL_8;
     }
 
-    v12 = SBLogFBDisplayManagerCallbacks();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    hardwareIdentifier = SBLogFBDisplayManagerCallbacks();
+    if (os_log_type_enabled(hardwareIdentifier, OS_LOG_TYPE_ERROR))
     {
       v16 = _SBFLoggingMethodProem();
       v17 = 138544130;
@@ -729,18 +729,18 @@ uint64_t __79__SBDisplayManager__connectToIdentity_withConfiguration_forDisplayM
       v19 = 2114;
       v20 = @"updating";
       v21 = 2114;
-      v22 = v7;
+      v22 = identityCopy;
       v23 = 2114;
-      v24 = v8;
-      _os_log_error_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_ERROR, "%{public}@ told about a %{public}@ display with nil hardwareIdentifier. identity: %{public}@; configuration: %{public}@", &v17, 0x2Au);
+      v24 = configurationCopy;
+      _os_log_error_impl(&dword_21ED4E000, hardwareIdentifier, OS_LOG_TYPE_ERROR, "%{public}@ told about a %{public}@ display with nil hardwareIdentifier. identity: %{public}@; configuration: %{public}@", &v17, 0x2Au);
     }
   }
 
 LABEL_8:
-  v13 = [(NSMutableDictionary *)self->_connectedIdentityToRecordMap objectForKey:v7];
+  v13 = [(NSMutableDictionary *)self->_connectedIdentityToRecordMap objectForKey:identityCopy];
   if (v13)
   {
-    v14 = [(NSMutableDictionary *)self->_identityToControllerMap objectForKey:v7];
+    v14 = [(NSMutableDictionary *)self->_identityToControllerMap objectForKey:identityCopy];
     if (v14)
     {
       v15 = SBLogDisplayControlling();
@@ -749,7 +749,7 @@ LABEL_8:
         [SBDisplayManager displayMonitor:didUpdateIdentity:withConfiguration:];
       }
 
-      [v14 displayIdentityDidUpdate:v7 configuration:v8];
+      [v14 displayIdentityDidUpdate:identityCopy configuration:configurationCopy];
     }
   }
 
@@ -759,41 +759,41 @@ LABEL_8:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543362;
-      v18 = v7;
+      v18 = identityCopy;
       _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "got an update for an identity that we aren't tracking. ignoring update: %{public}@", &v17, 0xCu);
     }
   }
 }
 
-- (void)displayMonitor:(id)a3 willDisconnectIdentity:(id)a4
+- (void)displayMonitor:(id)monitor willDisconnectIdentity:(id)identity
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(FBDisplayManager *)self->_displayManager configurationForIdentity:v6];
+  identityCopy = identity;
+  v7 = [(FBDisplayManager *)self->_displayManager configurationForIdentity:identityCopy];
   v8 = SBLogFBDisplayManagerCallbacks();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = _SBFLoggingMethodProem();
-    v10 = [v7 _sbLoggingDescription];
+    _sbLoggingDescription = [v7 _sbLoggingDescription];
     *buf = 138543874;
     v46 = v9;
     v47 = 2114;
-    v48 = v10;
+    v48 = _sbLoggingDescription;
     v49 = 2114;
-    v50 = v6;
+    v50 = identityCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@\n\tconfiguration: %{public}@;\n\tidentity: %{public}@", buf, 0x20u);
   }
 
-  v11 = [v7 hardwareIdentifier];
-  if (!v11)
+  hardwareIdentifier = [v7 hardwareIdentifier];
+  if (!hardwareIdentifier)
   {
     if ([v7 isMainDisplay])
     {
       goto LABEL_8;
     }
 
-    v11 = SBLogFBDisplayManagerCallbacks();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    hardwareIdentifier = SBLogFBDisplayManagerCallbacks();
+    if (os_log_type_enabled(hardwareIdentifier, OS_LOG_TYPE_ERROR))
     {
       v32 = _SBFLoggingMethodProem();
       *buf = 138544130;
@@ -801,15 +801,15 @@ LABEL_8:
       v47 = 2114;
       v48 = @"disconnecting";
       v49 = 2114;
-      v50 = v6;
+      v50 = identityCopy;
       v51 = 2114;
       v52 = v7;
-      _os_log_error_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_ERROR, "%{public}@ told about a %{public}@ display with nil hardwareIdentifier. identity: %{public}@; configuration: %{public}@", buf, 0x2Au);
+      _os_log_error_impl(&dword_21ED4E000, hardwareIdentifier, OS_LOG_TYPE_ERROR, "%{public}@ told about a %{public}@ display with nil hardwareIdentifier. identity: %{public}@; configuration: %{public}@", buf, 0x2Au);
     }
   }
 
 LABEL_8:
-  v12 = [(NSMutableDictionary *)self->_connectedIdentityToRecordMap objectForKey:v6];
+  v12 = [(NSMutableDictionary *)self->_connectedIdentityToRecordMap objectForKey:identityCopy];
   if (v12)
   {
     v34 = v7;
@@ -839,7 +839,7 @@ LABEL_8:
           v19 = *(*(&v39 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v19 displayManager:self willDisconnectIdentity:v6];
+            [v19 displayManager:self willDisconnectIdentity:identityCopy];
           }
         }
 
@@ -849,12 +849,12 @@ LABEL_8:
       while (v16);
     }
 
-    v20 = [(NSMutableDictionary *)self->_identityToControllerMap objectForKey:v6];
+    v20 = [(NSMutableDictionary *)self->_identityToControllerMap objectForKey:identityCopy];
     if (v20)
     {
       v21 = [(NSMapTable *)self->_controllerToAssertionMap objectForKey:v20];
       [(SBDisplayAssertionCoordinator *)self->_assertionCoordinator invalidateAssertionForDerivedDisplayDisconnect:v21];
-      [v20 displayIdentityDidDisconnect:v6];
+      [v20 displayIdentityDidDisconnect:identityCopy];
       v22 = SBLogDisplayControlling();
       if (os_signpost_enabled(v22))
       {
@@ -864,31 +864,31 @@ LABEL_8:
         _os_signpost_emit_with_name_impl(&dword_21ED4E000, v22, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "SB_DISPLAY_MANAGER_CONTROLLER_TAKES_THE_WHEEL", "%{public}@", buf, 0xCu);
       }
 
-      [(NSMutableDictionary *)self->_identityToControllerMap removeObjectForKey:v6];
-      [(NSMutableDictionary *)self->_identityToWindowingModeMap removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_identityToControllerMap removeObjectForKey:identityCopy];
+      [(NSMutableDictionary *)self->_identityToWindowingModeMap removeObjectForKey:identityCopy];
       [(NSMapTable *)self->_controllerToAssertionMap removeObjectForKey:v20];
     }
 
-    if ([v6 isRootIdentity])
+    if ([identityCopy isRootIdentity])
     {
-      [(SBDisplayAssertionCoordinator *)self->_assertionCoordinator rootDisplayDidDisconnect:v6];
-      v24 = [(NSMutableDictionary *)self->_rootIdentityToLayoutPublisherMap objectForKey:v6];
+      [(SBDisplayAssertionCoordinator *)self->_assertionCoordinator rootDisplayDidDisconnect:identityCopy];
+      v24 = [(NSMutableDictionary *)self->_rootIdentityToLayoutPublisherMap objectForKey:identityCopy];
       if (!v24)
       {
         [SBDisplayManager displayMonitor:willDisconnectIdentity:];
       }
 
-      [(SBDisplayManager *)self _deactivateLayoutPublisher:v24 forDisconnectingDisplay:v6];
-      [(NSMutableDictionary *)self->_rootIdentityToLayoutPublisherMap removeObjectForKey:v6];
-      [(NSMutableDictionary *)self->_rootIdentityToCADisplayQueueMap removeObjectForKey:v6];
-      [(SBDisplayManager *)self _releaseAllDisplayPowerAssertionsForDisplay:v6];
-      [(NSMutableDictionary *)self->_rootIdentityToDisplayState removeObjectForKey:v6];
-      [(NSMutableDictionary *)self->_rootIdentityToDisplayContentMirroringState removeObjectForKey:v6];
-      [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl removeObjectForKey:v6];
+      [(SBDisplayManager *)self _deactivateLayoutPublisher:v24 forDisconnectingDisplay:identityCopy];
+      [(NSMutableDictionary *)self->_rootIdentityToLayoutPublisherMap removeObjectForKey:identityCopy];
+      [(NSMutableDictionary *)self->_rootIdentityToCADisplayQueueMap removeObjectForKey:identityCopy];
+      [(SBDisplayManager *)self _releaseAllDisplayPowerAssertionsForDisplay:identityCopy];
+      [(NSMutableDictionary *)self->_rootIdentityToDisplayState removeObjectForKey:identityCopy];
+      [(NSMutableDictionary *)self->_rootIdentityToDisplayContentMirroringState removeObjectForKey:identityCopy];
+      [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl removeObjectForKey:identityCopy];
     }
 
     [v12 invalidate];
-    [(NSMutableDictionary *)self->_connectedIdentityToRecordMap removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_connectedIdentityToRecordMap removeObjectForKey:identityCopy];
     os_unfair_lock_assert_not_owner(&self->_lock);
     os_unfair_lock_lock(&self->_lock);
     v25 = [(NSHashTable *)self->_lock_observers copy];
@@ -916,7 +916,7 @@ LABEL_8:
           v31 = *(*(&v35 + 1) + 8 * j);
           if (objc_opt_respondsToSelector())
           {
-            [v31 displayManager:self didDisconnectIdentity:v6];
+            [v31 displayManager:self didDisconnectIdentity:identityCopy];
           }
         }
 
@@ -936,17 +936,17 @@ LABEL_8:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v46 = v6;
+      v46 = identityCopy;
       _os_log_impl(&dword_21ED4E000, v26, OS_LOG_TYPE_DEFAULT, "got a disconnect for an identity that we aren't tracking. ignoring disconnect: %{public}@", buf, 0xCu);
     }
   }
 }
 
-- (void)assertionCoordinator:(id)a3 updatedAssertionPreferences:(id)a4 oldPreferences:(id)a5 forDisplay:(id)a6
+- (void)assertionCoordinator:(id)coordinator updatedAssertionPreferences:(id)preferences oldPreferences:(id)oldPreferences forDisplay:(id)display
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a6;
-  v9 = a4;
+  displayCopy = display;
+  preferencesCopy = preferences;
   v10 = SBLogDisplayControlling();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -956,20 +956,20 @@ LABEL_8:
     _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ assertion preferences changed. reevaluating", &v18, 0xCu);
   }
 
-  v12 = [v9 powerLogEntry];
-  [(SBDisplayManager *)self _setPowerLogEntry:v12 forDisplay:v8];
+  powerLogEntry = [preferencesCopy powerLogEntry];
+  [(SBDisplayManager *)self _setPowerLogEntry:powerLogEntry forDisplay:displayCopy];
 
-  v13 = [v9 displayArrangement];
-  [(SBDisplayManager *)self _setDisplayArrangementItem:v13 forDisplay:v8];
+  displayArrangement = [preferencesCopy displayArrangement];
+  [(SBDisplayManager *)self _setDisplayArrangementItem:displayArrangement forDisplay:displayCopy];
 
-  -[SBDisplayManager _setCloneMirroringMode:forDisplay:](self, "_setCloneMirroringMode:forDisplay:", [v9 cloneMirroringMode], v8);
-  v14 = [v9 disableSystemIdleSleepReason];
-  [(SBDisplayManager *)self _setDisableIdleSleepReason:v14 forDisplay:v8];
+  -[SBDisplayManager _setCloneMirroringMode:forDisplay:](self, "_setCloneMirroringMode:forDisplay:", [preferencesCopy cloneMirroringMode], displayCopy);
+  disableSystemIdleSleepReason = [preferencesCopy disableSystemIdleSleepReason];
+  [(SBDisplayManager *)self _setDisableIdleSleepReason:disableSystemIdleSleepReason forDisplay:displayCopy];
 
-  -[SBDisplayManager _setDisplayContentMirroringState:forDisplay:](self, "_setDisplayContentMirroringState:forDisplay:", [v9 displayContentMirroringState], v8);
-  v15 = [v9 displayState];
+  -[SBDisplayManager _setDisplayContentMirroringState:forDisplay:](self, "_setDisplayContentMirroringState:forDisplay:", [preferencesCopy displayContentMirroringState], displayCopy);
+  displayState = [preferencesCopy displayState];
 
-  [(SBDisplayManager *)self _setDisplayState:v15 forDisplay:v8];
+  [(SBDisplayManager *)self _setDisplayState:displayState forDisplay:displayCopy];
   v16 = SBLogDisplayControlling();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -980,21 +980,21 @@ LABEL_8:
   }
 }
 
-- (void)backlightController:(id)a3 willAnimateBacklightToFactor:(float)a4 source:(int64_t)a5
+- (void)backlightController:(id)controller willAnimateBacklightToFactor:(float)factor source:(int64_t)source
 {
   v23 = *MEMORY[0x277D85DE8];
   BSDispatchQueueAssertMain();
-  v8 = [(NSMutableDictionary *)self->_identityToControllerMap allValues];
-  v9 = v8;
-  v10 = fabsf(a4 + -1.0);
-  v11 = fabsf(a4);
+  allValues = [(NSMutableDictionary *)self->_identityToControllerMap allValues];
+  v9 = allValues;
+  v10 = fabsf(factor + -1.0);
+  v11 = fabsf(factor);
   if (v11 < 2.2204e-16 || v10 < 2.2204e-16)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v13 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v13 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v13)
     {
       v14 = v13;
@@ -1011,7 +1011,7 @@ LABEL_8:
           v17 = *(*(&v18 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v17 embeddedBacklightStateDidChange:v11 >= 2.2204e-16 source:a5];
+            [v17 embeddedBacklightStateDidChange:v11 >= 2.2204e-16 source:source];
           }
         }
 
@@ -1023,9 +1023,9 @@ LABEL_8:
   }
 }
 
-- (void)cache:(id)a3 didUpdateAudioSessionPlaying:(BOOL)a4
+- (void)cache:(id)cache didUpdateAudioSessionPlaying:(BOOL)playing
 {
-  v4 = a4;
+  playingCopy = playing;
   v23 = *MEMORY[0x277D85DE8];
   v6 = SBLogDisplayControlling();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1034,16 +1034,16 @@ LABEL_8:
     *buf = 138543618;
     v20 = v7;
     v21 = 1024;
-    v22 = v4;
+    v22 = playingCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ audioSessionPlaying %d", buf, 0x12u);
   }
 
-  v8 = [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl allKeys];
+  allKeys = [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl allKeys];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v9 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1054,7 +1054,7 @@ LABEL_8:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v14 + 1) + 8 * i);
@@ -1072,17 +1072,17 @@ LABEL_8:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)cache:(id)a3 didUpdateActiveAudioRoute:(id)a4
+- (void)cache:(id)cache didUpdateActiveAudioRoute:(id)route
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  routeCopy = route;
   v6 = SBLogDisplayControlling();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1090,16 +1090,16 @@ LABEL_8:
     *buf = 138543618;
     v20 = v7;
     v21 = 2112;
-    v22 = v5;
+    v22 = routeCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ activeAudioRoute %@", buf, 0x16u);
   }
 
-  v8 = [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl allKeys];
+  allKeys = [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl allKeys];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v9 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1110,7 +1110,7 @@ LABEL_8:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v14 + 1) + 8 * i);
@@ -1128,61 +1128,61 @@ LABEL_8:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (BOOL)_shouldAcquireAudioPowerAssertionForDisplay:(id)a3
+- (BOOL)_shouldAcquireAudioPowerAssertionForDisplay:(id)display
 {
-  if ([a3 isExternal])
+  if ([display isExternal])
   {
     v3 = +[SBAVSystemControllerCache sharedInstance];
-    v4 = [v3 isAudioSessionPlaying];
-    v5 = [v3 activeAudioRoute];
-    v6 = v5;
-    if (v4)
+    isAudioSessionPlaying = [v3 isAudioSessionPlaying];
+    activeAudioRoute = [v3 activeAudioRoute];
+    v6 = activeAudioRoute;
+    if (isAudioSessionPlaying)
     {
-      if ([v5 isEqual:@"HDMI"])
+      if ([activeAudioRoute isEqual:@"HDMI"])
       {
-        LOBYTE(v4) = 1;
+        LOBYTE(isAudioSessionPlaying) = 1;
       }
 
       else
       {
-        LOBYTE(v4) = [v6 isEqual:@"HDMIOutput"];
+        LOBYTE(isAudioSessionPlaying) = [v6 isEqual:@"HDMIOutput"];
       }
     }
   }
 
   else
   {
-    LOBYTE(v4) = 0;
+    LOBYTE(isAudioSessionPlaying) = 0;
   }
 
-  return v4;
+  return isAudioSessionPlaying;
 }
 
-- (void)_setDisplayArrangementItem:(id)a3 forDisplay:(id)a4
+- (void)_setDisplayArrangementItem:(id)item forDisplay:(id)display
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_rootIdentityToDisplayArrangementItems objectForKey:v7];
-  if (([v8 isEqual:v6] & 1) == 0 && v6 | v8)
+  itemCopy = item;
+  displayCopy = display;
+  v8 = [(NSMutableDictionary *)self->_rootIdentityToDisplayArrangementItems objectForKey:displayCopy];
+  if (([v8 isEqual:itemCopy] & 1) == 0 && itemCopy | v8)
   {
     rootIdentityToDisplayArrangementItems = self->_rootIdentityToDisplayArrangementItems;
-    v30 = v7;
-    if (v6)
+    v30 = displayCopy;
+    if (itemCopy)
     {
-      [(NSMutableDictionary *)rootIdentityToDisplayArrangementItems setObject:v6 forKey:v7];
+      [(NSMutableDictionary *)rootIdentityToDisplayArrangementItems setObject:itemCopy forKey:displayCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)rootIdentityToDisplayArrangementItems removeObjectForKey:v7];
+      [(NSMutableDictionary *)rootIdentityToDisplayArrangementItems removeObjectForKey:displayCopy];
     }
 
     v32 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSMutableDictionary count](self->_rootIdentityToDisplayArrangementItems, "count", v8)}];
@@ -1207,18 +1207,18 @@ LABEL_8:
           }
 
           v13 = [(FBDisplayManager *)self->_displayManager configurationForIdentity:*(*(&v34 + 1) + 8 * v12)];
-          v14 = [v13 hardwareIdentifier];
+          hardwareIdentifier = [v13 hardwareIdentifier];
           displayManager = self->_displayManager;
-          v16 = [v6 relativeDisplayIdentity];
-          v17 = [(FBDisplayManager *)displayManager configurationForIdentity:v16];
+          relativeDisplayIdentity = [itemCopy relativeDisplayIdentity];
+          v17 = [(FBDisplayManager *)displayManager configurationForIdentity:relativeDisplayIdentity];
 
-          v18 = [v17 hardwareIdentifier];
-          if (v14)
+          hardwareIdentifier2 = [v17 hardwareIdentifier];
+          if (hardwareIdentifier)
           {
             v19 = objc_alloc(MEMORY[0x277CF05D8]);
-            v20 = [v6 edge];
-            [v6 offset];
-            v21 = [v19 initWithDisplayUUID:v14 relativeToDisplayUUID:v18 alongEdge:v20 atOffset:?];
+            edge = [itemCopy edge];
+            [itemCopy offset];
+            v21 = [v19 initWithDisplayUUID:hardwareIdentifier relativeToDisplayUUID:hardwareIdentifier2 alongEdge:edge atOffset:?];
             [v32 addObject:v21];
           }
 
@@ -1237,7 +1237,7 @@ LABEL_8:
               v44 = 2114;
               v45 = v17;
               v46 = 2114;
-              v47 = v18;
+              v47 = hardwareIdentifier2;
               _os_log_fault_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_FAULT, "%{public}@ got nil displayUUIDs, which shouldn't be happening for newly active assertions. rootDisplayConfig: %{public}@; rootDisplayUUID: %{public}@; relativeDisplayConfig: %{public}@; relativeDisplayUUID: %{public}@", buf, 0x34u);
             }
           }
@@ -1254,9 +1254,9 @@ LABEL_8:
 
     v23 = SBLogDisplayControlling();
     v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
-    if (v6)
+    if (itemCopy)
     {
-      v7 = v30;
+      displayCopy = v30;
       if (v24)
       {
         v25 = _SBFLoggingMethodProem();
@@ -1265,7 +1265,7 @@ LABEL_8:
         v40 = 2114;
         v41 = v30;
         v42 = 2114;
-        v43 = v6;
+        v43 = itemCopy;
         v44 = 2114;
         v45 = v32;
         v26 = "%{public}@ %{public}@ display arrangement item changed: %{public}@\nupdating backboard with global arrangement: %{public}@";
@@ -1278,7 +1278,7 @@ LABEL_22:
 
     else
     {
-      v7 = v30;
+      displayCopy = v30;
       if (v24)
       {
         v25 = _SBFLoggingMethodProem();
@@ -1299,13 +1299,13 @@ LABEL_22:
   }
 }
 
-- (void)_setPowerLogEntry:(id)a3 forDisplay:(id)a4
+- (void)_setPowerLogEntry:(id)entry forDisplay:(id)display
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isRootIdentity])
+  entryCopy = entry;
+  displayCopy = display;
+  if ([displayCopy isRootIdentity])
   {
-    if (v6)
+    if (entryCopy)
     {
       goto LABEL_6;
     }
@@ -1314,7 +1314,7 @@ LABEL_22:
   else
   {
     [SBDisplayManager _setPowerLogEntry:forDisplay:];
-    if (v6)
+    if (entryCopy)
     {
       goto LABEL_6;
     }
@@ -1326,26 +1326,26 @@ LABEL_22:
     [SBDisplayManager _setPowerLogEntry:forDisplay:];
   }
 
-  v9 = [(FBDisplayManager *)self->_displayManager configurationForIdentity:v7];
-  v6 = [SBDisplayPowerLogEntry forDisplay:v9 mode:0 zoom:0];
+  v9 = [(FBDisplayManager *)self->_displayManager configurationForIdentity:displayCopy];
+  entryCopy = [SBDisplayPowerLogEntry forDisplay:v9 mode:0 zoom:0];
 
 LABEL_6:
-  [(SBDisplayPowerLogReporter *)self->_powerLogReporter reportPowerLogEntry:v6];
+  [(SBDisplayPowerLogReporter *)self->_powerLogReporter reportPowerLogEntry:entryCopy];
 }
 
-- (void)_setCloneMirroringMode:(unint64_t)a3 forDisplay:(id)a4
+- (void)_setCloneMirroringMode:(unint64_t)mode forDisplay:(id)display
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (([v7 isRootIdentity] & 1) == 0)
+  displayCopy = display;
+  if (([displayCopy isRootIdentity] & 1) == 0)
   {
     [SBDisplayManager _setCloneMirroringMode:forDisplay:];
   }
 
-  v8 = [(NSMutableDictionary *)self->_rootIdentityToCloneMirroringMode objectForKey:v7];
-  v9 = [v8 unsignedIntegerValue];
+  v8 = [(NSMutableDictionary *)self->_rootIdentityToCloneMirroringMode objectForKey:displayCopy];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  if (!a3)
+  if (!mode)
   {
     v12 = SBLogDisplayControlling();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1358,32 +1358,32 @@ LABEL_6:
       v31 = v14;
     }
 
-    v15 = [(NSMutableDictionary *)self->_rootIdentityToCloneMirroringModeTokens objectForKey:v7];
+    v15 = [(NSMutableDictionary *)self->_rootIdentityToCloneMirroringModeTokens objectForKey:displayCopy];
     [v15 invalidate];
-    [(NSMutableDictionary *)self->_rootIdentityToCloneMirroringMode removeObjectForKey:v7];
+    [(NSMutableDictionary *)self->_rootIdentityToCloneMirroringMode removeObjectForKey:displayCopy];
     goto LABEL_18;
   }
 
-  if (v9 != a3)
+  if (unsignedIntegerValue != mode)
   {
     rootIdentityToCloneMirroringMode = self->_rootIdentityToCloneMirroringMode;
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    [(NSMutableDictionary *)rootIdentityToCloneMirroringMode setObject:v11 forKey:v7];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:mode];
+    [(NSMutableDictionary *)rootIdentityToCloneMirroringMode setObject:v11 forKey:displayCopy];
 
-    if (a3 != 1 && a3 != 2)
+    if (mode != 1 && mode != 2)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"SBDisplayManager.m" lineNumber:579 description:{@"unexpected mirroring mode: %lu", a3}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBDisplayManager.m" lineNumber:579 description:{@"unexpected mirroring mode: %lu", mode}];
     }
 
-    if ([v7 isMainDisplay])
+    if ([displayCopy isMainDisplay])
     {
       v15 = SBLogDisplayControlling();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v17 = _SBFLoggingMethodProem();
-        v18 = SBDisplayCloneMirroringModeDescription(v9);
-        v19 = SBDisplayCloneMirroringModeDescription(a3);
+        v18 = SBDisplayCloneMirroringModeDescription(unsignedIntegerValue);
+        v19 = SBDisplayCloneMirroringModeDescription(mode);
         *buf = 138543874;
         v29 = v17;
         v30 = 2114;
@@ -1395,16 +1395,16 @@ LABEL_6:
 
     else
     {
-      v15 = [(NSMutableDictionary *)self->_rootIdentityToCloneMirroringModeTokens objectForKey:v7];
-      v27 = [(FBDisplayManager *)self->_displayManager configurationForIdentity:v7];
-      v20 = [v27 hardwareIdentifier];
+      v15 = [(NSMutableDictionary *)self->_rootIdentityToCloneMirroringModeTokens objectForKey:displayCopy];
+      v27 = [(FBDisplayManager *)self->_displayManager configurationForIdentity:displayCopy];
+      hardwareIdentifier = [v27 hardwareIdentifier];
       v21 = BKSDisplayServicesSetMainDisplayCloneMirroringModeForDestinationDisplay();
       v22 = SBLogDisplayControlling();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         v23 = _SBFLoggingMethodProem();
-        v24 = SBDisplayCloneMirroringModeDescription(v9);
-        v25 = SBDisplayCloneMirroringModeDescription(a3);
+        v24 = SBDisplayCloneMirroringModeDescription(unsignedIntegerValue);
+        v25 = SBDisplayCloneMirroringModeDescription(mode);
         v26 = NSStringFromBKSDisplayServicesCloneMirroringMode();
         *buf = 138544130;
         v29 = v23;
@@ -1416,7 +1416,7 @@ LABEL_6:
         v35 = v26;
       }
 
-      [(NSMutableDictionary *)self->_rootIdentityToCloneMirroringModeTokens setObject:v21 forKey:v7];
+      [(NSMutableDictionary *)self->_rootIdentityToCloneMirroringModeTokens setObject:v21 forKey:displayCopy];
       [v15 invalidate];
     }
 
@@ -1424,41 +1424,41 @@ LABEL_18:
   }
 }
 
-- (void)_setDisableIdleSleepReason:(id)a3 forDisplay:(id)a4
+- (void)_setDisableIdleSleepReason:(id)reason forDisplay:(id)display
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([v7 isRootIdentity] & 1) == 0)
+  reasonCopy = reason;
+  displayCopy = display;
+  if (([displayCopy isRootIdentity] & 1) == 0)
   {
     [SBDisplayManager _setDisableIdleSleepReason:forDisplay:];
   }
 
-  v8 = [(NSMutableDictionary *)self->_rootIdentityToDisableSleepReasons objectForKey:v7];
-  if (([v8 isEqualToString:v6] & 1) == 0 && v6 | v8)
+  v8 = [(NSMutableDictionary *)self->_rootIdentityToDisableSleepReasons objectForKey:displayCopy];
+  if (([v8 isEqualToString:reasonCopy] & 1) == 0 && reasonCopy | v8)
   {
     v9 = [(NSMutableDictionary *)self->_rootIdentityToDisableSleepReasons count];
     rootIdentityToDisableSleepReasons = self->_rootIdentityToDisableSleepReasons;
-    if (v6)
+    if (reasonCopy)
     {
-      [(NSMutableDictionary *)rootIdentityToDisableSleepReasons setObject:v6 forKey:v7];
+      [(NSMutableDictionary *)rootIdentityToDisableSleepReasons setObject:reasonCopy forKey:displayCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)rootIdentityToDisableSleepReasons removeObjectForKey:v7];
+      [(NSMutableDictionary *)rootIdentityToDisableSleepReasons removeObjectForKey:displayCopy];
     }
 
     v11 = [(NSMutableDictionary *)self->_rootIdentityToDisableSleepReasons count];
-    v12 = [(NSMutableDictionary *)self->_rootIdentityToDisableSleepReasons allValues];
-    v13 = [v12 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+    allValues = [(NSMutableDictionary *)self->_rootIdentityToDisableSleepReasons allValues];
+    v13 = [allValues sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
     v14 = [v13 componentsJoinedByString:@"|"];
-    v15 = [MEMORY[0x277D0AB08] sharedInstance];
-    v16 = v15;
+    mEMORY[0x277D0AB08] = [MEMORY[0x277D0AB08] sharedInstance];
+    v16 = mEMORY[0x277D0AB08];
     if (v11)
     {
-      [v15 setSystemIdleSleepDisabled:1 forReason:v14];
+      [mEMORY[0x277D0AB08] setSystemIdleSleepDisabled:1 forReason:v14];
     }
 
     if (v9)
@@ -1501,47 +1501,47 @@ LABEL_18:
   }
 }
 
-- (void)_acquireDisplayStateControlForDisplay:(id)a3 withConfiguration:(id)a4
+- (void)_acquireDisplayStateControlForDisplay:(id)display withConfiguration:(id)configuration
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isRootIdentity] & 1) == 0)
+  displayCopy = display;
+  configurationCopy = configuration;
+  if (([displayCopy isRootIdentity] & 1) == 0)
   {
     [SBDisplayManager _acquireDisplayStateControlForDisplay:withConfiguration:];
   }
 
-  v8 = [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl objectForKey:displayCopy];
   if (!v8)
   {
-    v9 = SBLogDisplayControlling();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    cADisplay = SBLogDisplayControlling();
+    if (os_log_type_enabled(cADisplay, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = v6;
-      _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "got a display state update for an identity for which we don't have a CADisplayStateControl, ignoring update: %{public}@", &v12, 0xCu);
+      v13 = displayCopy;
+      _os_log_impl(&dword_21ED4E000, cADisplay, OS_LOG_TYPE_DEFAULT, "got a display state update for an identity for which we don't have a CADisplayStateControl, ignoring update: %{public}@", &v12, 0xCu);
     }
 
     goto LABEL_11;
   }
 
-  v9 = [v7 CADisplay];
-  if ([v9 displayType]!= 2)
+  cADisplay = [configurationCopy CADisplay];
+  if ([cADisplay displayType]!= 2)
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v10 = [v6 isAirPlayDisplay];
+  isAirPlayDisplay = [displayCopy isAirPlayDisplay];
 
-  if (v10)
+  if (isAirPlayDisplay)
   {
     v11 = SBLogDisplayControlling();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = v6;
+      v13 = displayCopy;
       _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "acquiring wireless display state control for display: %{public}@", &v12, 0xCu);
     }
 
@@ -1551,67 +1551,67 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)_acquireDisplayPowerAssertionForReason:(unint64_t)a3 forDisplay:(id)a4
+- (void)_acquireDisplayPowerAssertionForReason:(unint64_t)reason forDisplay:(id)display
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (([v7 isRootIdentity] & 1) == 0)
+  displayCopy = display;
+  if (([displayCopy isRootIdentity] & 1) == 0)
   {
     [SBDisplayManager _acquireDisplayPowerAssertionForReason:forDisplay:];
   }
 
-  v8 = [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl objectForKey:v7];
+  v8 = [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl objectForKey:displayCopy];
   if (!v8)
   {
-    v9 = SBLogDisplayControlling();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    dictionary = SBLogDisplayControlling();
+    if (os_log_type_enabled(dictionary, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v21 = v7;
-      _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "got a display state update for an identity for which we don't have a CADisplayStateControl, ignoring update: %{public}@", buf, 0xCu);
+      v21 = displayCopy;
+      _os_log_impl(&dword_21ED4E000, dictionary, OS_LOG_TYPE_DEFAULT, "got a display state update for an identity for which we don't have a CADisplayStateControl, ignoring update: %{public}@", buf, 0xCu);
     }
 
     goto LABEL_17;
   }
 
-  if (([v7 isMainDisplay] & 1) == 0)
+  if (([displayCopy isMainDisplay] & 1) == 0)
   {
-    v9 = [(NSMutableDictionary *)self->_rootIdentityToDisplayPowerAssertions objectForKey:v7];
-    if (!v9)
+    dictionary = [(NSMutableDictionary *)self->_rootIdentityToDisplayPowerAssertions objectForKey:displayCopy];
+    if (!dictionary)
     {
-      v9 = [MEMORY[0x277CBEB38] dictionary];
-      [(NSMutableDictionary *)self->_rootIdentityToDisplayPowerAssertions setObject:v9 forKey:v7];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [(NSMutableDictionary *)self->_rootIdentityToDisplayPowerAssertions setObject:dictionary forKey:displayCopy];
     }
 
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    v11 = [v9 objectForKey:v10];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:reason];
+    v11 = [dictionary objectForKey:v10];
 
     if (!v11)
     {
-      if (a3 >= 3)
+      if (reason >= 3)
       {
-        v13 = [MEMORY[0x277CCA890] currentHandler];
-        [v13 handleFailureInMethod:a2 object:self file:@"SBDisplayManager.m" lineNumber:675 description:{@"unexpected display power assertion reason: %lu", a3}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SBDisplayManager.m" lineNumber:675 description:{@"unexpected display power assertion reason: %lu", reason}];
 
         v12 = 1;
       }
 
       else
       {
-        v12 = a3 + 1;
+        v12 = reason + 1;
       }
 
       v14 = SBLogDisplayControlling();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v15 = _SBFLoggingMethodProem();
-        v16 = SBDisplayPowerAssertionReasonDescription(a3);
+        v16 = SBDisplayPowerAssertionReasonDescription(reason);
         *buf = 138543874;
         v21 = v15;
         v22 = 2114;
         v23 = v16;
         v24 = 2114;
-        v25 = v7;
+        v25 = displayCopy;
         _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ acquiring power assertion with reason %{public}@ for identity %{public}@", buf, 0x20u);
       }
 
@@ -1620,43 +1620,43 @@ LABEL_12:
       v11 = [v8 createPowerAssertionWithReason:v12 identifier:v18];
 
       [v11 acquire];
-      v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-      [v9 setObject:v11 forKey:v19];
+      v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:reason];
+      [dictionary setObject:v11 forKey:v19];
     }
 
 LABEL_17:
   }
 }
 
-- (void)_releaseDisplayPowerAssertionForReason:(unint64_t)a3 forDisplay:(id)a4
+- (void)_releaseDisplayPowerAssertionForReason:(unint64_t)reason forDisplay:(id)display
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (([v6 isRootIdentity] & 1) == 0)
+  displayCopy = display;
+  if (([displayCopy isRootIdentity] & 1) == 0)
   {
     [SBDisplayManager _releaseDisplayPowerAssertionForReason:forDisplay:];
   }
 
-  v7 = [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl objectForKey:displayCopy];
   if (!v7)
   {
     v8 = SBLogDisplayControlling();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = v6;
+      v16 = displayCopy;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "got a display state update for an identity for which we don't have a CADisplayStateControl, ignoring update: %{public}@", &v15, 0xCu);
     }
 
     goto LABEL_13;
   }
 
-  if (([v6 isMainDisplay] & 1) == 0)
+  if (([displayCopy isMainDisplay] & 1) == 0)
   {
-    v8 = [(NSMutableDictionary *)self->_rootIdentityToDisplayPowerAssertions objectForKey:v6];
+    v8 = [(NSMutableDictionary *)self->_rootIdentityToDisplayPowerAssertions objectForKey:displayCopy];
     if (v8)
     {
-      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:reason];
       v10 = [v8 objectForKey:v9];
 
       if (v10)
@@ -1665,18 +1665,18 @@ LABEL_17:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v12 = _SBFLoggingMethodProem();
-          v13 = SBDisplayPowerAssertionReasonDescription(a3);
+          v13 = SBDisplayPowerAssertionReasonDescription(reason);
           v15 = 138543874;
           v16 = v12;
           v17 = 2114;
           v18 = v13;
           v19 = 2114;
-          v20 = v6;
+          v20 = displayCopy;
           _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ releasing power assertion with reason %{public}@ for identity %{public}@", &v15, 0x20u);
         }
 
         [v10 invalidate];
-        v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+        v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:reason];
         [v8 removeObjectForKey:v14];
       }
     }
@@ -1685,22 +1685,22 @@ LABEL_13:
   }
 }
 
-- (void)_releaseAllDisplayPowerAssertionsForDisplay:(id)a3
+- (void)_releaseAllDisplayPowerAssertionsForDisplay:(id)display
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 isRootIdentity] & 1) == 0)
+  displayCopy = display;
+  if (([displayCopy isRootIdentity] & 1) == 0)
   {
     [SBDisplayManager _releaseAllDisplayPowerAssertionsForDisplay:];
   }
 
-  v5 = [(NSMutableDictionary *)self->_rootIdentityToDisplayPowerAssertions objectForKey:v4];
-  v6 = [v5 allKeys];
+  v5 = [(NSMutableDictionary *)self->_rootIdentityToDisplayPowerAssertions objectForKey:displayCopy];
+  allKeys = [v5 allKeys];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1712,66 +1712,66 @@ LABEL_13:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
-        -[SBDisplayManager _releaseDisplayPowerAssertionForReason:forDisplay:](self, "_releaseDisplayPowerAssertionForReason:forDisplay:", [*(*(&v11 + 1) + 8 * v10++) unsignedIntegerValue], v4);
+        -[SBDisplayManager _releaseDisplayPowerAssertionForReason:forDisplay:](self, "_releaseDisplayPowerAssertionForReason:forDisplay:", [*(*(&v11 + 1) + 8 * v10++) unsignedIntegerValue], displayCopy);
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_setDisplayState:(unint64_t)a3 forDisplay:(id)a4
+- (void)_setDisplayState:(unint64_t)state forDisplay:(id)display
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (([v7 isRootIdentity] & 1) == 0)
+  displayCopy = display;
+  if (([displayCopy isRootIdentity] & 1) == 0)
   {
     [SBDisplayManager _setDisplayState:forDisplay:];
   }
 
-  v8 = [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl objectForKey:v7];
+  v8 = [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl objectForKey:displayCopy];
   if (!v8)
   {
     v10 = SBLogDisplayControlling();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v27 = v7;
+      v27 = displayCopy;
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "got a display state update for an identity for which we don't have a CADisplayStateControl, ignoring update: %{public}@", buf, 0xCu);
     }
 
     goto LABEL_19;
   }
 
-  if (([v7 isMainDisplay] & 1) == 0)
+  if (([displayCopy isMainDisplay] & 1) == 0)
   {
-    v9 = [(NSMutableDictionary *)self->_rootIdentityToDisplayState objectForKey:v7];
+    v9 = [(NSMutableDictionary *)self->_rootIdentityToDisplayState objectForKey:displayCopy];
     v10 = v9;
-    if (!v9 || [v9 unsignedIntegerValue]!= a3)
+    if (!v9 || [v9 unsignedIntegerValue]!= state)
     {
       rootIdentityToDisplayState = self->_rootIdentityToDisplayState;
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-      [(NSMutableDictionary *)rootIdentityToDisplayState setObject:v12 forKey:v7];
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
+      [(NSMutableDictionary *)rootIdentityToDisplayState setObject:v12 forKey:displayCopy];
 
-      if (a3)
+      if (state)
       {
-        if (a3 == 1)
+        if (state == 1)
         {
-          [(SBDisplayManager *)self _acquireDisplayPowerAssertionForReason:0 forDisplay:v7];
+          [(SBDisplayManager *)self _acquireDisplayPowerAssertionForReason:0 forDisplay:displayCopy];
           v13 = 0;
           v14 = 1;
         }
 
         else
         {
-          v15 = [MEMORY[0x277CCA890] currentHandler];
-          [v15 handleFailureInMethod:a2 object:self file:@"SBDisplayManager.m" lineNumber:738 description:{@"unexpected display state: %lu", a3}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"SBDisplayManager.m" lineNumber:738 description:{@"unexpected display state: %lu", state}];
 
           v14 = 0;
           v13 = 1;
@@ -1790,7 +1790,7 @@ LABEL_13:
         _SBFLoggingMethodProem();
         v17 = v21 = v13;
         v18 = SBDisplayStateDescription([v10 unsignedIntegerValue]);
-        v19 = SBDisplayStateDescription(a3);
+        v19 = SBDisplayStateDescription(state);
         *buf = 138544130;
         v27 = v17;
         v28 = 2114;
@@ -1798,7 +1798,7 @@ LABEL_13:
         v30 = 2114;
         v31 = v19;
         v32 = 2114;
-        v33 = v7;
+        v33 = displayCopy;
         _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ changing display state from %{public}@ to %{public}@ for identity %{public}@", buf, 0x2Au);
 
         v13 = v21;
@@ -1811,7 +1811,7 @@ LABEL_13:
       v22[4] = self;
       v24 = a2;
       v25 = v14;
-      v20 = v7;
+      v20 = displayCopy;
       v23 = v20;
       [v8 transitionToDisplayState:v14 withCompletion:v22];
       if (v13)
@@ -1836,46 +1836,46 @@ void __48__SBDisplayManager__setDisplayState_forDisplay___block_invoke(uint64_t 
   }
 }
 
-- (void)_setDisplayContentMirroringState:(unint64_t)a3 forDisplay:(id)a4
+- (void)_setDisplayContentMirroringState:(unint64_t)state forDisplay:(id)display
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (([v7 isRootIdentity] & 1) == 0)
+  displayCopy = display;
+  if (([displayCopy isRootIdentity] & 1) == 0)
   {
     [SBDisplayManager _setDisplayContentMirroringState:forDisplay:];
   }
 
-  v8 = [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl objectForKey:v7];
+  v8 = [(NSMutableDictionary *)self->_rootIdentityToCADisplayStateControl objectForKey:displayCopy];
   if (!v8)
   {
     v10 = SBLogDisplayControlling();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v24 = v7;
+      v24 = displayCopy;
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "got a display state update for an identity for which we don't have a CADisplayStateControl, ignoring update: %{public}@", buf, 0xCu);
     }
 
     goto LABEL_14;
   }
 
-  if (([v7 isMainDisplay] & 1) == 0)
+  if (([displayCopy isMainDisplay] & 1) == 0)
   {
-    v9 = [(NSMutableDictionary *)self->_rootIdentityToDisplayContentMirroringState objectForKey:v7];
+    v9 = [(NSMutableDictionary *)self->_rootIdentityToDisplayContentMirroringState objectForKey:displayCopy];
     v10 = v9;
-    if (!v9 || [v9 unsignedIntegerValue]!= a3)
+    if (!v9 || [v9 unsignedIntegerValue]!= state)
     {
       rootIdentityToDisplayContentMirroringState = self->_rootIdentityToDisplayContentMirroringState;
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-      [(NSMutableDictionary *)rootIdentityToDisplayContentMirroringState setObject:v12 forKey:v7];
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
+      [(NSMutableDictionary *)rootIdentityToDisplayContentMirroringState setObject:v12 forKey:displayCopy];
 
-      v13 = a3;
-      if (a3 >= 2)
+      stateCopy = state;
+      if (state >= 2)
       {
-        v14 = [MEMORY[0x277CCA890] currentHandler];
-        [v14 handleFailureInMethod:a2 object:self file:@"SBDisplayManager.m" lineNumber:783 description:{@"unexpected display content mirroring state: %lu", a3}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SBDisplayManager.m" lineNumber:783 description:{@"unexpected display content mirroring state: %lu", state}];
 
-        v13 = 0;
+        stateCopy = 0;
       }
 
       v15 = SBLogDisplayControlling();
@@ -1883,7 +1883,7 @@ void __48__SBDisplayManager__setDisplayState_forDisplay___block_invoke(uint64_t 
       {
         v16 = _SBFLoggingMethodProem();
         v17 = SBDisplayContentMirroringStateDescription([v10 unsignedIntegerValue]);
-        v18 = SBDisplayContentMirroringStateDescription(a3);
+        v18 = SBDisplayContentMirroringStateDescription(state);
         *buf = 138544130;
         v24 = v16;
         v25 = 2114;
@@ -1891,7 +1891,7 @@ void __48__SBDisplayManager__setDisplayState_forDisplay___block_invoke(uint64_t 
         v27 = 2114;
         v28 = v18;
         v29 = 2114;
-        v30 = v7;
+        v30 = displayCopy;
         _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ changing display content mirroring state from %{public}@ to %{public}@ for identity %{public}@", buf, 0x2Au);
       }
 
@@ -1901,9 +1901,9 @@ void __48__SBDisplayManager__setDisplayState_forDisplay___block_invoke(uint64_t 
       v19[3] = &unk_2783C4600;
       v19[4] = self;
       v21 = a2;
-      v22 = v13;
-      v20 = v7;
-      [v8 transitionToCloningState:v13 withCompletion:v19];
+      v22 = stateCopy;
+      v20 = displayCopy;
+      [v8 transitionToCloningState:stateCopy withCompletion:v19];
     }
 
 LABEL_14:
@@ -1922,53 +1922,53 @@ void __64__SBDisplayManager__setDisplayContentMirroringState_forDisplay___block_
   }
 }
 
-- (void)_connectControllerWithInfo:(id)a3 toDisplay:(id)a4 configuration:(id)a5
+- (void)_connectControllerWithInfo:(id)info toDisplay:(id)display configuration:(id)configuration
 {
   v41 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  infoCopy = info;
+  displayCopy = display;
   identityToControllerMap = self->_identityToControllerMap;
-  v35 = a5;
-  v12 = [(NSMutableDictionary *)identityToControllerMap objectForKey:v10];
+  configurationCopy = configuration;
+  v12 = [(NSMutableDictionary *)identityToControllerMap objectForKey:displayCopy];
   if (v12)
   {
-    v13 = [(NSMutableDictionary *)self->_identityToWindowingModeMap objectForKey:v10];
-    v14 = [v13 unsignedIntegerValue];
+    v13 = [(NSMutableDictionary *)self->_identityToWindowingModeMap objectForKey:displayCopy];
+    unsignedIntegerValue = [v13 unsignedIntegerValue];
 
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    v16 = SBDisplayWindowingModeDescription(v14);
-    [v15 handleFailureInMethod:a2 object:self file:@"SBDisplayManager.m" lineNumber:800 description:{@"already have a controller for display: %@; existing: %@; existingWindowingMode: %@; new: %@", v10, v12, v16, v9}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    v16 = SBDisplayWindowingModeDescription(unsignedIntegerValue);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBDisplayManager.m" lineNumber:800 description:{@"already have a controller for display: %@; existing: %@; existingWindowingMode: %@; new: %@", displayCopy, v12, v16, infoCopy}];
   }
 
   v36 = v12;
-  v17 = [v9 priorityLevel];
-  if (!SBDisplayAssertionLevelIsValid(v17))
+  priorityLevel = [infoCopy priorityLevel];
+  if (!SBDisplayAssertionLevelIsValid(priorityLevel))
   {
     [SBDisplayManager _connectControllerWithInfo:toDisplay:configuration:];
   }
 
-  v18 = [v9 displayController];
-  v19 = [v9 windowingMode];
-  v20 = [v9 deactivationReasons];
-  [(NSMutableDictionary *)self->_identityToControllerMap setObject:v18 forKey:v10];
+  displayController = [infoCopy displayController];
+  windowingMode = [infoCopy windowingMode];
+  deactivationReasons = [infoCopy deactivationReasons];
+  [(NSMutableDictionary *)self->_identityToControllerMap setObject:displayController forKey:displayCopy];
   identityToWindowingModeMap = self->_identityToWindowingModeMap;
-  v22 = [MEMORY[0x277CCABB0] numberWithInteger:v19];
-  [(NSMutableDictionary *)identityToWindowingModeMap setObject:v22 forKey:v10];
+  v22 = [MEMORY[0x277CCABB0] numberWithInteger:windowingMode];
+  [(NSMutableDictionary *)identityToWindowingModeMap setObject:v22 forKey:displayCopy];
 
-  v23 = [(SBSceneManagerCoordinator *)self->_sceneManagerCoordinator sceneManagerForDisplayIdentity:v10];
+  v23 = [(SBSceneManagerCoordinator *)self->_sceneManagerCoordinator sceneManagerForDisplayIdentity:displayCopy];
   rootIdentityToCADisplayQueueMap = self->_rootIdentityToCADisplayQueueMap;
-  v25 = [v10 rootIdentity];
-  v26 = [(NSMutableDictionary *)rootIdentityToCADisplayQueueMap objectForKey:v25];
+  rootIdentity = [displayCopy rootIdentity];
+  v26 = [(NSMutableDictionary *)rootIdentityToCADisplayQueueMap objectForKey:rootIdentity];
 
   assertionCoordinator = self->_assertionCoordinator;
-  v28 = [v10 rootIdentity];
-  v29 = [(SBDisplayAssertionCoordinator *)assertionCoordinator acquireAssertionForDisplay:v28 level:v17 deactivationReasons:v20 delegate:v18];
+  rootIdentity2 = [displayCopy rootIdentity];
+  v29 = [(SBDisplayAssertionCoordinator *)assertionCoordinator acquireAssertionForDisplay:rootIdentity2 level:priorityLevel deactivationReasons:deactivationReasons delegate:displayController];
 
-  [(NSMapTable *)self->_controllerToAssertionMap setObject:v29 forKey:v18];
+  [(NSMapTable *)self->_controllerToAssertionMap setObject:v29 forKey:displayController];
   v30 = SBLogDisplayControlling();
   if (os_signpost_enabled(v30))
   {
-    v31 = [(SBDisplayManager *)self _signpostMetadataForController:v18];
+    v31 = [(SBDisplayManager *)self _signpostMetadataForController:displayController];
     *buf = 138543362;
     v38 = v31;
     _os_signpost_emit_with_name_impl(&dword_21ED4E000, v30, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SB_DISPLAY_MANAGER_CONTROLLER_TAKES_THE_WHEEL", "%{public}@", buf, 0xCu);
@@ -1981,25 +1981,25 @@ void __64__SBDisplayManager__setDisplayContentMirroringState_forDisplay___block_
     *buf = 138543618;
     v38 = v33;
     v39 = 2114;
-    v40 = v9;
+    v40 = infoCopy;
     _os_log_impl(&dword_21ED4E000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@ connecting new controllerInfo: %{public}@", buf, 0x16u);
   }
 
   LOBYTE(v34) = [(SBBacklightController *)self->_backlightController screenIsOn];
-  [v18 connectToDisplayIdentity:v10 configuration:v35 displayManager:self sceneManager:v23 caDisplayQueue:v26 assertion:v29 embeddedBacklightOn:v34];
+  [displayController connectToDisplayIdentity:displayCopy configuration:configurationCopy displayManager:self sceneManager:v23 caDisplayQueue:v26 assertion:v29 embeddedBacklightOn:v34];
 }
 
-- (id)_createAndActivateLayoutPublisherForConnectingDisplay:(id)a3
+- (id)_createAndActivateLayoutPublisherForConnectingDisplay:(id)display
 {
-  v3 = a3;
-  if (([v3 isRootIdentity] & 1) == 0)
+  displayCopy = display;
+  if (([displayCopy isRootIdentity] & 1) == 0)
   {
     [SBDisplayManager _createAndActivateLayoutPublisherForConnectingDisplay:];
   }
 
-  if ([v3 isMainDisplay])
+  if ([displayCopy isMainDisplay])
   {
-    v4 = [MEMORY[0x277D0AAA0] sharedInstance];
+    mEMORY[0x277D0AAA0] = [MEMORY[0x277D0AAA0] sharedInstance];
   }
 
   else
@@ -2009,31 +2009,31 @@ void __64__SBDisplayManager__setDisplayContentMirroringState_forDisplay___block_
     v6 = SBExternalDisplayLayoutServiceInstanceIdentifierForDisplay();
     [v5 setInstanceIdentifier:v6];
 
-    v4 = [MEMORY[0x277D0AD28] publisherWithConfiguration:v5];
-    if (!v4)
+    mEMORY[0x277D0AAA0] = [MEMORY[0x277D0AD28] publisherWithConfiguration:v5];
+    if (!mEMORY[0x277D0AAA0])
     {
       [SBDisplayManager _createAndActivateLayoutPublisherForConnectingDisplay:];
     }
 
-    [v4 activate];
+    [mEMORY[0x277D0AAA0] activate];
   }
 
-  return v4;
+  return mEMORY[0x277D0AAA0];
 }
 
-- (void)_deactivateLayoutPublisher:(id)a3 forDisconnectingDisplay:(id)a4
+- (void)_deactivateLayoutPublisher:(id)publisher forDisconnectingDisplay:(id)display
 {
-  v10 = a3;
-  v5 = a4;
-  if (([v5 isRootIdentity] & 1) == 0)
+  publisherCopy = publisher;
+  displayCopy = display;
+  if (([displayCopy isRootIdentity] & 1) == 0)
   {
     [SBDisplayManager _deactivateLayoutPublisher:forDisconnectingDisplay:];
   }
 
-  if (([v5 isMainDisplay] & 1) == 0)
+  if (([displayCopy isMainDisplay] & 1) == 0)
   {
     v6 = objc_opt_class();
-    v7 = v10;
+    v7 = publisherCopy;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -2058,17 +2058,17 @@ void __64__SBDisplayManager__setDisplayContentMirroringState_forDisplay___block_
   }
 }
 
-- (id)_signpostMetadataForController:(id)a3
+- (id)_signpostMetadataForController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    [v3 signpostDescription];
+    [controllerCopy signpostDescription];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"<%@:%p>", objc_opt_class(), v3];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"<%@:%p>", objc_opt_class(), controllerCopy];
   }
   v4 = ;
 

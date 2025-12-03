@@ -1,35 +1,35 @@
 @interface FigCapturePreviewSinkPipeline
 - (BOOL)discardsImageQueueSampleData;
 - (CGPoint)primaryCaptureRectCenter;
-- (FigCapturePreviewSinkPipeline)initWithConfiguration:(id)a3 sourcePreviewOutput:(id)a4 imageQueueSinkNode:(id)a5 graph:(id)a6 name:(id)a7 inferenceScheduler:(id)a8 captureDevice:(id)a9 previewTapDelegate:(id)a10 zoomPIPOverlayDelegate:(id)a11 sourceStillImageOutputsByPortType:(id)a12;
+- (FigCapturePreviewSinkPipeline)initWithConfiguration:(id)configuration sourcePreviewOutput:(id)output imageQueueSinkNode:(id)node graph:(id)graph name:(id)name inferenceScheduler:(id)scheduler captureDevice:(id)device previewTapDelegate:(id)self0 zoomPIPOverlayDelegate:(id)self1 sourceStillImageOutputsByPortType:(id)self2;
 - (FigCaptureVideoTransform)outputTransform;
 - (FigCaptureVideoTransform)videoThumbnailSinkOutputTransform;
 - (float)portraitLightingEffectStrength;
-- (id)_buildImageQueuePreviewSinkPipeline:(uint64_t)a3 previewPipelineStage:(void *)a4 videoPreviewSinkConnectionConfiguration:(int)a5 previewScalerOutputBuffersAreShared:(int)a6 zoomPIPOverlayEnabled:(unsigned int)a7 zoomPIPSmartStyleRenderingEnabled:(unsigned int)a8 zoomPIPSlaveStreamingEnabled:(float)a9 zoomPIPSlaveStreamingFrameRate:(unsigned __int8)a10 debugOverlayEnabled:(unsigned __int8)a11 parallelGraphRebuildEnabled:(uint64_t)a12 transform:(uint64_t)a13 remoteVideoPreview:(unsigned __int8)a14 maxLossyCompressionLevel:(unsigned int)a15 clientAuditToken:(_OWORD *)a16 graph:(void *)a17 captureDevice:(void *)a18 previewTapDelegate:(uint64_t)a19 videoHDRImageStatisticsEnabled:(unsigned __int8)a20 zoomPIPOverlayDelegate:(uint64_t)a21 metalCommandQueue:(uint64_t)a22;
-- (id)_buildPreviewSmartStyleCoefficientsTimeMachineSinkPipeline:(uint64_t)a3 upstreamPipelineStageForPreviewTimeMachine:(uint64_t)a4 previewTimeMachineConnectionConfiguration:(void *)a5 graph:(void *)a6 captureDevice:;
-- (id)_metalCommandQueueWithNamePrefix:(uint64_t)a1 priority:(void *)a2;
-- (id)_stashPreviewImageQueueUpdatedNotificationPayload:(unint64_t)a3 previewDimensions:(int)a4 remoteVideoPreview:;
-- (uint64_t)_appendFilteredPreviewPipeline:(BWPipelineStage *)a3 desiredPipelineStage:(uint64_t)a4 desiredStreamingFilterPipelineStage:(uint64_t)a5 previewSinkPipelineConfiguration:(void *)a6 videoPreviewSinkConnectionConfiguration:(void *)a7 graph:(uint64_t)a8 inferenceScheduler:(void *)a9 captureDevice:(unsigned __int8)a10 focusBlurMapForDepthFiltersEnabled:(unsigned __int8)a11 depthFromMonocularNetworkEnabled:(unsigned __int8)a12 runMonocularDepthInVideoDepthNode:(unsigned int)a13 maxLossyCompressionLevel:(uint64_t)a14 metalCommandQueue:(unsigned __int8)a15 depthFilterRenderingIsAfterPreviewStitcher:(unsigned __int8)a16 portraitAutoSuggestEnabled:(void *)a17 sourceStillImageOutputsByPortType:(unsigned __int8)a18 usePrimaryPreviewSourceAttachedMediaForInference:;
-- (uint64_t)_buildVideoPreviewSinkPipeline:(uint64_t)a3 sourcePreviewOutput:(void *)a4 graph:(uint64_t)a5 inferenceScheduler:(void *)a6 captureDevice:(uint64_t)a7 previewTapDelegate:(uint64_t)a8 zoomPIPOverlayDelegate:(uint64_t)a9 sourceStillImageOutputsByPortType:;
+- (id)_buildImageQueuePreviewSinkPipeline:(uint64_t)pipeline previewPipelineStage:(void *)stage videoPreviewSinkConnectionConfiguration:(int)configuration previewScalerOutputBuffersAreShared:(int)shared zoomPIPOverlayEnabled:(unsigned int)enabled zoomPIPSmartStyleRenderingEnabled:(unsigned int)renderingEnabled zoomPIPSlaveStreamingEnabled:(float)streamingEnabled zoomPIPSlaveStreamingFrameRate:(unsigned __int8)self0 debugOverlayEnabled:(unsigned __int8)self1 parallelGraphRebuildEnabled:(uint64_t)self2 transform:(uint64_t)self3 remoteVideoPreview:(unsigned __int8)self4 maxLossyCompressionLevel:(unsigned int)self5 clientAuditToken:(_OWORD *)self6 graph:(void *)self7 captureDevice:(void *)self8 previewTapDelegate:(uint64_t)self9 videoHDRImageStatisticsEnabled:(unsigned __int8)statisticsEnabled zoomPIPOverlayDelegate:(uint64_t)overlayDelegate metalCommandQueue:(uint64_t)queue;
+- (id)_buildPreviewSmartStyleCoefficientsTimeMachineSinkPipeline:(uint64_t)pipeline upstreamPipelineStageForPreviewTimeMachine:(uint64_t)machine previewTimeMachineConnectionConfiguration:(void *)configuration graph:(void *)graph captureDevice:;
+- (id)_metalCommandQueueWithNamePrefix:(uint64_t)prefix priority:(void *)priority;
+- (id)_stashPreviewImageQueueUpdatedNotificationPayload:(unint64_t)payload previewDimensions:(int)dimensions remoteVideoPreview:;
+- (uint64_t)_appendFilteredPreviewPipeline:(BWPipelineStage *)pipeline desiredPipelineStage:(uint64_t)stage desiredStreamingFilterPipelineStage:(uint64_t)pipelineStage previewSinkPipelineConfiguration:(void *)configuration videoPreviewSinkConnectionConfiguration:(void *)connectionConfiguration graph:(uint64_t)graph inferenceScheduler:(void *)scheduler captureDevice:(unsigned __int8)self0 focusBlurMapForDepthFiltersEnabled:(unsigned __int8)self1 depthFromMonocularNetworkEnabled:(unsigned __int8)self2 runMonocularDepthInVideoDepthNode:(unsigned int)self3 maxLossyCompressionLevel:(uint64_t)self4 metalCommandQueue:(unsigned __int8)self5 depthFilterRenderingIsAfterPreviewStitcher:(unsigned __int8)self6 portraitAutoSuggestEnabled:(void *)self7 sourceStillImageOutputsByPortType:(unsigned __int8)self8 usePrimaryPreviewSourceAttachedMediaForInference:;
+- (uint64_t)_buildVideoPreviewSinkPipeline:(uint64_t)pipeline sourcePreviewOutput:(void *)output graph:(uint64_t)graph inferenceScheduler:(void *)scheduler captureDevice:(uint64_t)device previewTapDelegate:(uint64_t)delegate zoomPIPOverlayDelegate:(uint64_t)overlayDelegate sourceStillImageOutputsByPortType:;
 - (uint64_t)_metalCompletionQueue;
 - (uint64_t)_metalSubmissionQueue;
 - (uint64_t)_setPortraitRenderingInferencesNeededForFilters:(uint64_t)result;
 - (uint64_t)toggleDepthDensificationAccordingToFilters:(uint64_t)result;
-- (void)_buildPreviewTimeMachineSinkPipeline:(uint64_t)a3 upstreamPipelineStageForPreviewTimeMachine:(uint64_t)a4 upstreamTransform:(uint64_t)a5 previewTimeMachineConnectionConfiguration:(uint64_t)a6 videoPreviewEnabled:(uint64_t)a7 smartCameraMotionDetectionEnabled:(uint64_t)a8 graph:(void *)a9 captureDevice:(void *)a10;
+- (void)_buildPreviewTimeMachineSinkPipeline:(uint64_t)pipeline upstreamPipelineStageForPreviewTimeMachine:(uint64_t)machine upstreamTransform:(uint64_t)transform previewTimeMachineConnectionConfiguration:(uint64_t)configuration videoPreviewEnabled:(uint64_t)enabled smartCameraMotionDetectionEnabled:(uint64_t)detectionEnabled graph:(void *)graph captureDevice:(void *)self0;
 - (void)dealloc;
-- (void)liveReconfigureForOutputDimensions:(id)a3;
-- (void)setDiscardsImageQueueSampleData:(BOOL)a3;
-- (void)setFilters:(id)a3;
-- (void)setPreviewTapRegistered:(BOOL)a3;
-- (void)setPrimaryCaptureRectAspectRatio:(double)a3 center:(CGPoint)a4 trueVideoTransitionPercentComplete:(double)a5 smartFramingTransitionPercentComplete:(double)a6 smartFramingTransitionTargetFieldOfView:(int)a7 fencePortSendRight:(id)a8 uniqueID:(int64_t)a9;
-- (void)setSceneClassifierSuspended:(BOOL)a3;
-- (void)setSemanticStyle:(id)a3;
-- (void)setSemanticStyle:(id)a3 animated:(BOOL)a4;
-- (void)setSemanticStyleRenderingSuspended:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSemanticStyleSet:(id)a3 fencePortSendRight:(id)a4;
-- (void)setStoppingForModeSwitch:(BOOL)a3 parallelGraphRebuildEnabled:(BOOL)a4 ispFastSwitchEnabled:(BOOL)a5 smartStyleRenderingEnabledInTrueVideoGraph:(BOOL)a6;
-- (void)setVideoStabilizationOverscanCropEnabled:(BOOL)a3 momentMovieRecordingEnabled:(BOOL)a4;
-- (void)updateClientAuditToken:(id *)a3;
+- (void)liveReconfigureForOutputDimensions:(id)dimensions;
+- (void)setDiscardsImageQueueSampleData:(BOOL)data;
+- (void)setFilters:(id)filters;
+- (void)setPreviewTapRegistered:(BOOL)registered;
+- (void)setPrimaryCaptureRectAspectRatio:(double)ratio center:(CGPoint)center trueVideoTransitionPercentComplete:(double)complete smartFramingTransitionPercentComplete:(double)percentComplete smartFramingTransitionTargetFieldOfView:(int)view fencePortSendRight:(id)right uniqueID:(int64_t)d;
+- (void)setSceneClassifierSuspended:(BOOL)suspended;
+- (void)setSemanticStyle:(id)style;
+- (void)setSemanticStyle:(id)style animated:(BOOL)animated;
+- (void)setSemanticStyleRenderingSuspended:(BOOL)suspended animated:(BOOL)animated;
+- (void)setSemanticStyleSet:(id)set fencePortSendRight:(id)right;
+- (void)setStoppingForModeSwitch:(BOOL)switch parallelGraphRebuildEnabled:(BOOL)enabled ispFastSwitchEnabled:(BOOL)switchEnabled smartStyleRenderingEnabledInTrueVideoGraph:(BOOL)graph;
+- (void)setVideoStabilizationOverscanCropEnabled:(BOOL)enabled momentMovieRecordingEnabled:(BOOL)recordingEnabled;
+- (void)updateClientAuditToken:(id *)token;
 @end
 
 @implementation FigCapturePreviewSinkPipeline
@@ -58,9 +58,9 @@
 
 - (BOOL)discardsImageQueueSampleData
 {
-  v2 = [(BWNodeConnection *)[(BWNodeInput *)[(BWNode *)self->_imageQueueSinkNode input] connection] output];
+  output = [(BWNodeConnection *)[(BWNodeInput *)[(BWNode *)self->_imageQueueSinkNode input] connection] output];
 
-  return [(BWNodeOutput *)v2 discardsSampleData];
+  return [(BWNodeOutput *)output discardsSampleData];
 }
 
 - (float)portraitLightingEffectStrength
@@ -103,19 +103,19 @@
   [(FigCaptureSinkPipeline *)&v3 dealloc];
 }
 
-- (void)setDiscardsImageQueueSampleData:(BOOL)a3
+- (void)setDiscardsImageQueueSampleData:(BOOL)data
 {
-  v3 = a3;
-  v4 = [(BWNodeConnection *)[(BWNodeInput *)[(BWNode *)self->_imageQueueSinkNode input] connection] output];
+  dataCopy = data;
+  output = [(BWNodeConnection *)[(BWNodeInput *)[(BWNode *)self->_imageQueueSinkNode input] connection] output];
 
-  [(BWNodeOutput *)v4 setDiscardsSampleData:v3];
+  [(BWNodeOutput *)output setDiscardsSampleData:dataCopy];
 }
 
-- (void)setSceneClassifierSuspended:(BOOL)a3
+- (void)setSceneClassifierSuspended:(BOOL)suspended
 {
   if (self->_sceneClassifierSinkNode)
   {
-    v3 = a3;
+    suspendedCopy = suspended;
     sceneClassifierPipelineUpstreamOutput = self->_sceneClassifierPipelineUpstreamOutput;
     if (!sceneClassifierPipelineUpstreamOutput)
     {
@@ -123,33 +123,33 @@
       sceneClassifierPipelineUpstreamOutput = v5;
     }
 
-    [(BWNodeOutput *)sceneClassifierPipelineUpstreamOutput setDiscardsSampleData:v3];
+    [(BWNodeOutput *)sceneClassifierPipelineUpstreamOutput setDiscardsSampleData:suspendedCopy];
   }
 }
 
-- (void)setPrimaryCaptureRectAspectRatio:(double)a3 center:(CGPoint)a4 trueVideoTransitionPercentComplete:(double)a5 smartFramingTransitionPercentComplete:(double)a6 smartFramingTransitionTargetFieldOfView:(int)a7 fencePortSendRight:(id)a8 uniqueID:(int64_t)a9
+- (void)setPrimaryCaptureRectAspectRatio:(double)ratio center:(CGPoint)center trueVideoTransitionPercentComplete:(double)complete smartFramingTransitionPercentComplete:(double)percentComplete smartFramingTransitionTargetFieldOfView:(int)view fencePortSendRight:(id)right uniqueID:(int64_t)d
 {
-  if (self->_primaryCaptureRectUniqueID <= a9)
+  if (self->_primaryCaptureRectUniqueID <= d)
   {
-    v11 = *&a7;
-    y = a4.y;
-    x = a4.x;
-    if (self->_trueVideoTransitionPercentComplete < a5 && ![(BWPreviewStitcherNode *)self->_previewStitcher trueVideoCaptureEnabled])
+    v11 = *&view;
+    y = center.y;
+    x = center.x;
+    if (self->_trueVideoTransitionPercentComplete < complete && ![(BWPreviewStitcherNode *)self->_previewStitcher trueVideoCaptureEnabled])
     {
       [(BWPreviewStabilizationNode *)self->_previewStabilizationNode setRampOffStabilizationForGraphStop:1];
     }
 
-    self->_trueVideoTransitionPercentComplete = a5;
-    self->_primaryCaptureRectUniqueID = a9;
+    self->_trueVideoTransitionPercentComplete = complete;
+    self->_primaryCaptureRectUniqueID = d;
     v18 = MEMORY[0x1E695FF58];
     if (*MEMORY[0x1E695FF58] == 1)
     {
-      [a8 port];
+      [right port];
       kdebug_trace();
     }
 
     [(BWImageQueueSinkNode *)self->_imageQueueSinkNode fencePortGenerationIDWillChange];
-    [(BWPreviewStitcherNode *)self->_previewStitcher setPrimaryCaptureRectAspectRatio:0 center:v11 trueVideoTransitionPercentComplete:a8 trueVideoTransitionReferenceSampleBuffer:a3 smartFramingTransitionPercentComplete:x smartFramingTransitionTargetFieldOfView:y fencePortSendRight:a5, a6];
+    [(BWPreviewStitcherNode *)self->_previewStitcher setPrimaryCaptureRectAspectRatio:0 center:v11 trueVideoTransitionPercentComplete:right trueVideoTransitionReferenceSampleBuffer:ratio smartFramingTransitionPercentComplete:x smartFramingTransitionTargetFieldOfView:y fencePortSendRight:complete, percentComplete];
     if (*v18 == 1)
     {
 
@@ -158,23 +158,23 @@
   }
 }
 
-- (void)setVideoStabilizationOverscanCropEnabled:(BOOL)a3 momentMovieRecordingEnabled:(BOOL)a4
+- (void)setVideoStabilizationOverscanCropEnabled:(BOOL)enabled momentMovieRecordingEnabled:(BOOL)recordingEnabled
 {
   v4 = 1.0;
-  if (a3)
+  if (enabled)
   {
     v4 = self->_videoStabilizationOverscan + 1.0;
   }
 
-  v5 = a4 && !self->_applyPreviewShiftToMomentCapture;
+  v5 = recordingEnabled && !self->_applyPreviewShiftToMomentCapture;
   [(BWPreviewStitcherNode *)self->_previewStitcher rampToAdditionalZoomFactor:v5 momentMovieRecordingRecenteringEnabled:v4];
 }
 
-- (void)setStoppingForModeSwitch:(BOOL)a3 parallelGraphRebuildEnabled:(BOOL)a4 ispFastSwitchEnabled:(BOOL)a5 smartStyleRenderingEnabledInTrueVideoGraph:(BOOL)a6
+- (void)setStoppingForModeSwitch:(BOOL)switch parallelGraphRebuildEnabled:(BOOL)enabled ispFastSwitchEnabled:(BOOL)switchEnabled smartStyleRenderingEnabledInTrueVideoGraph:(BOOL)graph
 {
-  v6 = a4;
-  [(BWPreviewStitcherNode *)self->_previewStitcher setStoppingForModeSwitch:a3 delayedEndOfDataEnabled:a4 ispFastSwitchEnabled:a5 smartStyleRenderingEnabledInTrueVideoGraph:a6];
-  if (v6)
+  enabledCopy = enabled;
+  [(BWPreviewStitcherNode *)self->_previewStitcher setStoppingForModeSwitch:switch delayedEndOfDataEnabled:enabled ispFastSwitchEnabled:switchEnabled smartStyleRenderingEnabledInTrueVideoGraph:graph];
+  if (enabledCopy)
   {
     [(BWPreviewStabilizationNode *)self->_previewStabilizationNode setRampOffStabilizationForGraphStop:1];
     [(BWVideoDepthNode *)self->_videoDepthNode setReleasesResourcesAtEndOfData:0];
@@ -187,39 +187,39 @@
   }
 }
 
-- (void)setPreviewTapRegistered:(BOOL)a3
+- (void)setPreviewTapRegistered:(BOOL)registered
 {
   previewStitcher = self->_previewStitcher;
   if (previewStitcher)
   {
-    [(BWPreviewStitcherNode *)previewStitcher setPreviewTapRegistered:a3];
+    [(BWPreviewStitcherNode *)previewStitcher setPreviewTapRegistered:registered];
   }
 }
 
-- (void)updateClientAuditToken:(id *)a3
+- (void)updateClientAuditToken:(id *)token
 {
   self->_primaryCaptureRectUniqueID = 0;
   imageQueueSinkNode = self->_imageQueueSinkNode;
-  v4 = *&a3->var0[4];
-  v5[0] = *a3->var0;
+  v4 = *&token->var0[4];
+  v5[0] = *token->var0;
   v5[1] = v4;
   [(BWImageQueueSinkNode *)imageQueueSinkNode updateClientAuditToken:v5];
 }
 
-- (void)liveReconfigureForOutputDimensions:(id)a3
+- (void)liveReconfigureForOutputDimensions:(id)dimensions
 {
-  [(BWPixelTransferNode *)self->_scalerNode setOutputWidth:a3.var0];
-  [(BWPixelTransferNode *)self->_scalerNode setOutputHeight:*&a3 >> 32];
+  [(BWPixelTransferNode *)self->_scalerNode setOutputWidth:dimensions.var0];
+  [(BWPixelTransferNode *)self->_scalerNode setOutputHeight:*&dimensions >> 32];
   lowLatencyStabilizationNode = self->_lowLatencyStabilizationNode;
 
-  [(BWSmartCropNode *)lowLatencyStabilizationNode setOutputDimensions:a3];
+  [(BWSmartCropNode *)lowLatencyStabilizationNode setOutputDimensions:dimensions];
 }
 
-- (FigCapturePreviewSinkPipeline)initWithConfiguration:(id)a3 sourcePreviewOutput:(id)a4 imageQueueSinkNode:(id)a5 graph:(id)a6 name:(id)a7 inferenceScheduler:(id)a8 captureDevice:(id)a9 previewTapDelegate:(id)a10 zoomPIPOverlayDelegate:(id)a11 sourceStillImageOutputsByPortType:(id)a12
+- (FigCapturePreviewSinkPipeline)initWithConfiguration:(id)configuration sourcePreviewOutput:(id)output imageQueueSinkNode:(id)node graph:(id)graph name:(id)name inferenceScheduler:(id)scheduler captureDevice:(id)device previewTapDelegate:(id)self0 zoomPIPOverlayDelegate:(id)self1 sourceStillImageOutputsByPortType:(id)self2
 {
-  if (a3)
+  if (configuration)
   {
-    v17 = *(a3 + 1);
+    v17 = *(configuration + 1);
   }
 
   else
@@ -229,16 +229,16 @@
 
   v22.receiver = self;
   v22.super_class = FigCapturePreviewSinkPipeline;
-  v18 = [(FigCaptureSinkPipeline *)&v22 initWithGraph:a6 name:a7 sinkID:v17];
+  v18 = [(FigCaptureSinkPipeline *)&v22 initWithGraph:graph name:name sinkID:v17];
   if (v18)
   {
-    v18->_imageQueueSinkNode = a5;
-    if (a3)
+    v18->_imageQueueSinkNode = node;
+    if (configuration)
     {
-      v18->_overCaptureEnabled = *(a3 + 130);
-      v18->_singleCameraOverCaptureEnabled = *(a3 + 131);
-      v18->_videoStabilizationOverscan = *(a3 + 17);
-      v20 = *(a3 + 2);
+      v18->_overCaptureEnabled = *(configuration + 130);
+      v18->_singleCameraOverCaptureEnabled = *(configuration + 131);
+      v18->_videoStabilizationOverscan = *(configuration + 17);
+      v20 = *(configuration + 2);
     }
 
     else
@@ -250,9 +250,9 @@
     }
 
     v18->_primaryCaptureRectUniqueID = [objc_msgSend(v20 "videoPreviewSinkConfiguration")];
-    if (a3)
+    if (configuration)
     {
-      v21 = *(a3 + 9);
+      v21 = *(configuration + 9);
     }
 
     else
@@ -261,7 +261,7 @@
     }
 
     v18->_applyPreviewShiftToMomentCapture = [objc_msgSend(v21 "irisSinkConfiguration")];
-    if ([(FigCapturePreviewSinkPipeline *)v18 _buildVideoPreviewSinkPipeline:a3 sourcePreviewOutput:a4 graph:a6 inferenceScheduler:a8 captureDevice:a9 previewTapDelegate:a10 zoomPIPOverlayDelegate:a11 sourceStillImageOutputsByPortType:a12])
+    if ([(FigCapturePreviewSinkPipeline *)v18 _buildVideoPreviewSinkPipeline:configuration sourcePreviewOutput:output graph:graph inferenceScheduler:scheduler captureDevice:device previewTapDelegate:delegate zoomPIPOverlayDelegate:overlayDelegate sourceStillImageOutputsByPortType:type])
     {
       fig_log_get_emitter();
       FigDebugAssert3();
@@ -273,11 +273,11 @@
   return v18;
 }
 
-- (uint64_t)_buildVideoPreviewSinkPipeline:(uint64_t)a3 sourcePreviewOutput:(void *)a4 graph:(uint64_t)a5 inferenceScheduler:(void *)a6 captureDevice:(uint64_t)a7 previewTapDelegate:(uint64_t)a8 zoomPIPOverlayDelegate:(uint64_t)a9 sourceStillImageOutputsByPortType:
+- (uint64_t)_buildVideoPreviewSinkPipeline:(uint64_t)pipeline sourcePreviewOutput:(void *)output graph:(uint64_t)graph inferenceScheduler:(void *)scheduler captureDevice:(uint64_t)device previewTapDelegate:(uint64_t)delegate zoomPIPOverlayDelegate:(uint64_t)overlayDelegate sourceStillImageOutputsByPortType:
 {
-  v375 = a8;
-  v377 = a7;
-  v391 = a4;
+  delegateCopy = delegate;
+  deviceCopy = device;
+  outputCopy = output;
   v394 = result;
   if (!result)
   {
@@ -285,13 +285,13 @@
   }
 
   v425[0] = 0;
-  v423 = a3;
+  pipelineCopy = pipeline;
   v424 = 0;
   v343 = kFigCaptureVideoTransform_Identity;
   v422 = kFigCaptureVideoTransform_Identity;
   if (a2)
   {
-    v12 = [*(a2 + 16) previewFilterRenderingEnabled];
+    previewFilterRenderingEnabled = [*(a2 + 16) previewFilterRenderingEnabled];
     v13 = *(a2 + 181);
     LODWORD(v372) = *(a2 + 182);
     v14 = *(a2 + 183);
@@ -300,7 +300,7 @@
 
   else
   {
-    v12 = [0 previewFilterRenderingEnabled];
+    previewFilterRenderingEnabled = [0 previewFilterRenderingEnabled];
     v14 = 0;
     v13 = 0;
     LODWORD(v372) = 0;
@@ -318,23 +318,23 @@
     {
       v17 = [objc_msgSend(v16 "sourceConfiguration")];
       v18 = [objc_msgSend(FigCaptureDeviceCoreRepairStatusesByKeys() objectForKeyedSubscript:{@"FrontCameraAssembly", "intValue"}];
-      if (([v17 isPhotoFormat] & 1) == 0 && ((v12 ^ 1) & 1) == 0)
+      if (([v17 isPhotoFormat] & 1) == 0 && ((previewFilterRenderingEnabled ^ 1) & 1) == 0)
       {
-        v12 = ((v18 & 0xFFFFFFFE) != 2) & v12;
+        previewFilterRenderingEnabled = ((v18 & 0xFFFFFFFE) != 2) & previewFilterRenderingEnabled;
       }
 
       [v17 maxContinuousZoomFactorForDepthDataDelivery];
       if (v19 == 0.0)
       {
-        v20 = 0;
+        previewDepthDataDeliveryEnabled = 0;
       }
 
       else
       {
-        v20 = [*(a2 + 16) previewDepthDataDeliveryEnabled];
+        previewDepthDataDeliveryEnabled = [*(a2 + 16) previewDepthDataDeliveryEnabled];
       }
 
-      HIDWORD(v372) = v12;
+      HIDWORD(v372) = previewFilterRenderingEnabled;
       [v17 maxContinuousZoomFactorForDepthDataDelivery];
       if (v22 == 0.0)
       {
@@ -359,22 +359,22 @@
 
     else
     {
-      HIDWORD(v372) = v12;
+      HIDWORD(v372) = previewFilterRenderingEnabled;
       HIDWORD(v357) = 0;
       v21 = 0;
-      v20 = 0;
+      previewDepthDataDeliveryEnabled = 0;
     }
 
     OUTLINED_FUNCTION_14_35();
     LODWORD(v361) = v24;
     HIDWORD(v350) = v25 & (v24 ^ 1);
     v26 = *(a2 + 16);
-    HIDWORD(v341) = v20 | v21;
+    HIDWORD(v341) = previewDepthDataDeliveryEnabled | v21;
   }
 
   else
   {
-    HIDWORD(v372) = v12;
+    HIDWORD(v372) = previewFilterRenderingEnabled;
     HIDWORD(v341) = 0;
     LODWORD(v361) = 0;
     HIDWORD(v357) = 0;
@@ -386,8 +386,8 @@
   }
 
   HIDWORD(v383) = [objc_msgSend(v26 "videoPreviewSinkConfiguration")];
-  v395 = a6;
-  HIDWORD(v359) = [a6 depthType];
+  schedulerCopy = scheduler;
+  HIDWORD(v359) = [scheduler depthType];
   if (HIDWORD(v359) == 4)
   {
     HIDWORD(v361) = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters monocularStreamingDepthType]== 2;
@@ -435,8 +435,8 @@ LABEL_29:
 
   v396 = *(a2 + 128);
 LABEL_32:
-  v30 = [MEMORY[0x1E6991778] metalDevice];
-  if (!v30 || (v352 = [v30 newCommandQueue]) == 0 || (v31 = -[FigCapturePreviewSinkPipeline _metalCompletionQueue](v394)) == 0 || (v32 = v31, (v33 = -[FigCapturePreviewSinkPipeline _metalSubmissionQueue](v394)) == 0))
+  metalDevice = [MEMORY[0x1E6991778] metalDevice];
+  if (!metalDevice || (v352 = [metalDevice newCommandQueue]) == 0 || (v31 = -[FigCapturePreviewSinkPipeline _metalCompletionQueue](v394)) == 0 || (v32 = v31, (v33 = -[FigCapturePreviewSinkPipeline _metalSubmissionQueue](v394)) == 0))
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0_94();
@@ -446,27 +446,27 @@ LABEL_32:
   v34 = v33;
   [v352 setCompletionQueue:v32];
   [v352 setSubmissionQueue:v34];
-  [v394 setUpstreamOutput:a3];
-  v381 = [MEMORY[0x1E695DF70] array];
-  v385 = [MEMORY[0x1E695DF70] array];
+  [v394 setUpstreamOutput:pipeline];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   if (a2)
   {
     if (*(a2 + 16))
     {
-      [v381 addObject:?];
+      [array addObject:?];
     }
 
     if (*(a2 + 48))
     {
-      v35 = v385;
+      v35 = array2;
       if ((v29 & 1) == 0)
       {
-        v35 = v381;
+        v35 = array;
       }
 
       if (v396)
       {
-        v36 = v381;
+        v36 = array;
       }
 
       else
@@ -479,29 +479,29 @@ LABEL_32:
 
     if (!((*(a2 + 24) == 0) | BYTE4(v350) & 1))
     {
-      [v381 addObject:?];
+      [array addObject:?];
     }
 
     if (*(a2 + 32))
     {
-      [v381 addObject:?];
+      [array addObject:?];
     }
 
     if (*(a2 + 40))
     {
-      [v381 addObject:?];
+      [array addObject:?];
     }
 
     if (*(a2 + 232))
     {
       if (v29)
       {
-        v37 = v385;
+        v37 = array2;
       }
 
       else
       {
-        v37 = v381;
+        v37 = array;
       }
 
       [v37 addObject:?];
@@ -511,12 +511,12 @@ LABEL_32:
     {
       if (v29)
       {
-        v38 = v385;
+        v38 = array2;
       }
 
       else
       {
-        v38 = v381;
+        v38 = array;
       }
 
       [v38 addObject:?];
@@ -524,18 +524,18 @@ LABEL_32:
 
     if (*(a2 + 64))
     {
-      [v381 addObject:?];
+      [array addObject:?];
     }
   }
 
-  if ([v381 count])
+  if ([array count])
   {
-    v39 = v381;
+    v39 = array;
   }
 
   else
   {
-    v39 = v385;
+    v39 = array2;
   }
 
   if (![v39 count])
@@ -584,33 +584,33 @@ LABEL_32:
 
     v421.receiver = v394;
     v421.super_class = FigCapturePreviewSinkPipeline;
-    if ((objc_msgSendSuper2(&v421, sel_addNode_error_, v42, &v424) & 1) == 0 || ([v391 connectOutput:v423 toInput:-[BWNode input](v42 pipelineStage:{"input"), 0}] & 1) == 0)
+    if ((objc_msgSendSuper2(&v421, sel_addNode_error_, v42, &v424) & 1) == 0 || ([outputCopy connectOutput:pipelineCopy toInput:-[BWNode input](v42 pipelineStage:{"input"), 0}] & 1) == 0)
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_0_94();
       goto LABEL_380;
     }
 
-    v423 = [(BWNode *)v42 output];
+    pipelineCopy = [(BWNode *)v42 output];
     v40 = v394;
   }
 
-  if ([v385 count])
+  if ([array2 count])
   {
     v43 = v40;
-    v44 = -[BWFanOutNode initWithFanOutCount:mediaType:]([BWFanOutNode alloc], "initWithFanOutCount:mediaType:", [v385 count] + 1, 1986618469);
+    v44 = -[BWFanOutNode initWithFanOutCount:mediaType:]([BWFanOutNode alloc], "initWithFanOutCount:mediaType:", [array2 count] + 1, 1986618469);
     [(BWNode *)v44 setName:@"Preview Pre-Filter Splitter"];
     v420.receiver = v43;
     v420.super_class = FigCapturePreviewSinkPipeline;
-    if ((objc_msgSendSuper2(&v420, sel_addNode_error_, v44, &v424) & 1) == 0 || (v45 = v423, v46 = -[BWNode input](v44, "input"), ([OUTLINED_FUNCTION_12_40(v46 v47] & 1) == 0))
+    if ((objc_msgSendSuper2(&v420, sel_addNode_error_, v44, &v424) & 1) == 0 || (v45 = pipelineCopy, v46 = -[BWNode input](v44, "input"), ([OUTLINED_FUNCTION_12_40(v46 v47] & 1) == 0))
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_0_94();
       goto LABEL_380;
     }
 
-    v423 = [(NSArray *)[(BWNode *)v44 outputs] objectAtIndexedSubscript:0];
-    v397 = [(BWNode *)v44 outputs];
+    pipelineCopy = [(NSArray *)[(BWNode *)v44 outputs] objectAtIndexedSubscript:0];
+    outputs = [(BWNode *)v44 outputs];
     v40 = v394;
     if (a2)
     {
@@ -620,7 +620,7 @@ LABEL_32:
 
   else
   {
-    v397 = 0;
+    outputs = 0;
     if (a2)
     {
 LABEL_85:
@@ -631,10 +631,10 @@ LABEL_85:
 
   v54 = 0;
 LABEL_86:
-  v355 = a9;
-  v348 = [v54 sourceConfiguration];
+  overlayDelegateCopy = overlayDelegate;
+  sourceConfiguration = [v54 sourceConfiguration];
   v366 = v39;
-  v369 = [v348 requiredFormat];
+  requiredFormat = [sourceConfiguration requiredFormat];
   if (!a2)
   {
     LODWORD(v359) = 0;
@@ -681,7 +681,7 @@ LABEL_99:
     goto LABEL_124;
   }
 
-  if ([v395 position] != 2)
+  if ([schedulerCopy position] != 2)
   {
     LODWORD(v55) = 0;
     LODWORD(v387) = 1;
@@ -690,13 +690,13 @@ LABEL_110:
     goto LABEL_128;
   }
 
-  v57 = [v369 dimensions];
-  v58 = HIDWORD(v57);
-  if (v57 != 3840 || v58 != 2160)
+  dimensions = [requiredFormat dimensions];
+  v58 = HIDWORD(dimensions);
+  if (dimensions != 3840 || v58 != 2160)
   {
     LODWORD(v55) = 0;
     LODWORD(v387) = 1;
-    if (v57 != 2160 || v58 != 3840)
+    if (dimensions != 2160 || v58 != 3840)
     {
       goto LABEL_110;
     }
@@ -760,7 +760,7 @@ LABEL_267:
       [v63 setName:@"Face Tracking"];
       v419.receiver = v40;
       v419.super_class = FigCapturePreviewSinkPipeline;
-      if ((objc_msgSendSuper2(&v419, sel_addNode_error_, v64, &v424) & 1) == 0 || ([v391 connectOutput:v423 toInput:objc_msgSend(v64 pipelineStage:{"input"), v61}] & 1) == 0)
+      if ((objc_msgSendSuper2(&v419, sel_addNode_error_, v64, &v424) & 1) == 0 || ([outputCopy connectOutput:pipelineCopy toInput:objc_msgSend(v64 pipelineStage:{"input"), v61}] & 1) == 0)
       {
         fig_log_get_emitter();
         OUTLINED_FUNCTION_0_94();
@@ -769,7 +769,7 @@ LABEL_267:
 
       v65 = v64;
       *(v40 + 144) = v65;
-      v423 = [v65 output];
+      pipelineCopy = [v65 output];
       [OUTLINED_FUNCTION_9_50() setMirrored:?];
       [OUTLINED_FUNCTION_9_50() setRotationDegrees:?];
       [*(v40 + 144) setMaxFaces:1];
@@ -798,14 +798,14 @@ LABEL_134:
     v67 = [[BWFanOutNode alloc] initWithFanOutCount:2 mediaType:1986618469];
     v418.receiver = v40;
     v418.super_class = FigCapturePreviewSinkPipeline;
-    if ((objc_msgSendSuper2(&v418, sel_addNode_error_, v67, &v424) & 1) == 0 || ([v391 connectOutput:v423 toInput:-[BWNode input](v67 pipelineStage:{"input"), 0}] & 1) == 0)
+    if ((objc_msgSendSuper2(&v418, sel_addNode_error_, v67, &v424) & 1) == 0 || ([outputCopy connectOutput:pipelineCopy toInput:-[BWNode input](v67 pipelineStage:{"input"), 0}] & 1) == 0)
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_0_94();
       goto LABEL_380;
     }
 
-    v423 = [(NSArray *)[(BWNode *)v67 outputs] objectAtIndexedSubscript:0];
+    pipelineCopy = [(NSArray *)[(BWNode *)v67 outputs] objectAtIndexedSubscript:0];
     *(v40 + 184) = [(NSArray *)[(BWNode *)v67 outputs] objectAtIndexedSubscript:1];
   }
 
@@ -813,7 +813,7 @@ LABEL_139:
   OUTLINED_FUNCTION_7_58();
   HIDWORD(v292) = v68;
   v69 = OUTLINED_FUNCTION_11_41();
-  v425[0] = [(FigCapturePreviewSinkPipeline *)v69 _appendFilteredPreviewPipeline:v70 desiredPipelineStage:0 desiredStreamingFilterPipelineStage:0 previewSinkPipelineConfiguration:a2 videoPreviewSinkConnectionConfiguration:v71 graph:v391 inferenceScheduler:a5 captureDevice:v289 focusBlurMapForDepthFiltersEnabled:v292 depthFromMonocularNetworkEnabled:BYTE1(v292) runMonocularDepthInVideoDepthNode:BYTE2(v292) maxLossyCompressionLevel:HIDWORD(v292) metalCommandQueue:v352 depthFilterRenderingIsAfterPreviewStitcher:v296 portraitAutoSuggestEnabled:BYTE1(v296) sourceStillImageOutputsByPortType:v298 usePrimaryPreviewSourceAttachedMediaForInference:v300];
+  v425[0] = [(FigCapturePreviewSinkPipeline *)v69 _appendFilteredPreviewPipeline:v70 desiredPipelineStage:0 desiredStreamingFilterPipelineStage:0 previewSinkPipelineConfiguration:a2 videoPreviewSinkConnectionConfiguration:v71 graph:outputCopy inferenceScheduler:graph captureDevice:v289 focusBlurMapForDepthFiltersEnabled:v292 depthFromMonocularNetworkEnabled:BYTE1(v292) runMonocularDepthInVideoDepthNode:BYTE2(v292) maxLossyCompressionLevel:HIDWORD(v292) metalCommandQueue:v352 depthFilterRenderingIsAfterPreviewStitcher:v296 portraitAutoSuggestEnabled:BYTE1(v296) sourceStillImageOutputsByPortType:v298 usePrimaryPreviewSourceAttachedMediaForInference:v300];
   if (v425[0])
   {
 LABEL_241:
@@ -833,7 +833,7 @@ LABEL_140:
     }
   }
 
-  v72 = v381;
+  v72 = array;
   if (v14)
   {
     [(BWPipelineStage *)v389 priority];
@@ -861,7 +861,7 @@ LABEL_140:
     [(BWNode *)v77 setName:@"Pocket Detection"];
     v417.receiver = v40;
     v417.super_class = FigCapturePreviewSinkPipeline;
-    if ((objc_msgSendSuper2(&v417, sel_addNode_error_, v78, &v424) & 1) == 0 || (v79 = v423, v80 = -[BWNode input](v78, "input"), ([OUTLINED_FUNCTION_12_40(v80 v81] & 1) == 0))
+    if ((objc_msgSendSuper2(&v417, sel_addNode_error_, v78, &v424) & 1) == 0 || (v79 = pipelineCopy, v80 = -[BWNode input](v78, "input"), ([OUTLINED_FUNCTION_12_40(v80 v81] & 1) == 0))
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_0_94();
@@ -869,7 +869,7 @@ LABEL_140:
     }
 
     *(v40 + 136) = v78;
-    v423 = [(BWNode *)v78 output];
+    pipelineCopy = [(BWNode *)v78 output];
     if (v13)
     {
       goto LABEL_146;
@@ -879,7 +879,7 @@ LABEL_140:
   else if (v13)
   {
 LABEL_146:
-    v73 = [objc_msgSend(objc_msgSend(v395 "captureStreamsByFocalLength")];
+    v73 = [objc_msgSend(objc_msgSend(schedulerCopy "captureStreamsByFocalLength")];
     goto LABEL_154;
   }
 
@@ -894,13 +894,13 @@ LABEL_154:
       v329 = *(MEMORY[0x1E69E9B10] + 16);
       v334 = *MEMORY[0x1E69E9B10];
       v323 = *(MEMORY[0x1E69E9B10] + 32);
-      v88 = v395;
+      v88 = schedulerCopy;
     }
 
     else
     {
-      v88 = v395;
-      *&v89 = FigCaptureGetDeviceToCameraTransform([v395 position] == 2);
+      v88 = schedulerCopy;
+      *&v89 = FigCaptureGetDeviceToCameraTransform([schedulerCopy position] == 2);
       v329 = v90;
       v334 = v89;
       v323 = v91;
@@ -916,11 +916,11 @@ LABEL_154:
       v92 = 1;
     }
 
-    v93 = FigCaptureConvertDimensionsForAspectRatio([v369 dimensions], objc_msgSend(v348, "outputAspectRatio"));
+    v93 = FigCaptureConvertDimensionsForAspectRatio([requiredFormat dimensions], objc_msgSend(sourceConfiguration, "outputAspectRatio"));
     v94 = [BWSmartCropNode alloc];
-    v95 = [v88 cameraInfoByPortType];
-    v96 = [v369 horizontalSensorBinningFactor];
-    v97 = [v369 verticalSensorBinningFactor];
+    cameraInfoByPortType = [v88 cameraInfoByPortType];
+    horizontalSensorBinningFactor = [requiredFormat horizontalSensorBinningFactor];
+    verticalSensorBinningFactor = [requiredFormat verticalSensorBinningFactor];
     if (a2)
     {
       v98 = *(a2 + 164);
@@ -932,7 +932,7 @@ LABEL_154:
     }
 
     LOBYTE(v289) = 0;
-    v99 = [(BWSmartCropNode *)v94 initWithOutputDimensions:v93 cameraInfoByPortType:v95 horizontalSensorBinningFactor:v96 verticalSensorBinningFactor:v97 maxLossyCompressionLevel:v98 cameraExtrinsicMatrix:v92 processingMode:*&v334 stillCaptureEnabled:*&v329 objectMetadataIdentifiers:*&v323 captureDevice:v289];
+    v99 = [(BWSmartCropNode *)v94 initWithOutputDimensions:v93 cameraInfoByPortType:cameraInfoByPortType horizontalSensorBinningFactor:horizontalSensorBinningFactor verticalSensorBinningFactor:verticalSensorBinningFactor maxLossyCompressionLevel:v98 cameraExtrinsicMatrix:v92 processingMode:*&v334 stillCaptureEnabled:*&v329 objectMetadataIdentifiers:*&v323 captureDevice:v289];
     v100 = v99;
     if (v73)
     {
@@ -947,16 +947,16 @@ LABEL_154:
     [(BWNode *)v99 setName:v101];
     v416.receiver = v40;
     v416.super_class = FigCapturePreviewSinkPipeline;
-    if ((objc_msgSendSuper2(&v416, sel_addNode_error_, v100, &v424) & 1) == 0 || (v102 = v423, v103 = -[BWNode input](v100, "input"), ([OUTLINED_FUNCTION_12_40(v103 v104] & 1) == 0))
+    if ((objc_msgSendSuper2(&v416, sel_addNode_error_, v100, &v424) & 1) == 0 || (v102 = pipelineCopy, v103 = -[BWNode input](v100, "input"), ([OUTLINED_FUNCTION_12_40(v103 v104] & 1) == 0))
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_0_94();
       goto LABEL_380;
     }
 
-    v423 = [(BWNode *)v100 output];
+    pipelineCopy = [(BWNode *)v100 output];
     *(v40 + 160) = v100;
-    v72 = v381;
+    v72 = array;
     LOBYTE(v55) = BYTE4(v379);
     LOBYTE(v13) = v363;
   }
@@ -985,13 +985,13 @@ LABEL_154:
     v112 = 1;
   }
 
-  v113 = [v395 cameraInfoByPortType];
-  v114 = [v395 autoImageControlMode] == 0;
+  cameraInfoByPortType2 = [schedulerCopy cameraInfoByPortType];
+  v114 = [schedulerCopy autoImageControlMode] == 0;
   [-[NSDictionary objectForKeyedSubscript:](-[FigCaptureCameraParameters previewStabilizationParameters](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters "sharedInstance")];
   v116 = v115;
   v117 = [BWPreviewStabilizationNode alloc];
   LODWORD(v118) = v116;
-  v119 = [(BWPreviewStabilizationNode *)v117 initWithCameraInfoByPortType:v113 forStillImagePreview:v114 updateFinalCropRectWithStabilizationShift:v112 & 1 minimumSupportedUIZoomFactor:v118];
+  v119 = [(BWPreviewStabilizationNode *)v117 initWithCameraInfoByPortType:cameraInfoByPortType2 forStillImagePreview:v114 updateFinalCropRectWithStabilizationShift:v112 & 1 minimumSupportedUIZoomFactor:v118];
   if (!v119)
   {
     fig_log_get_emitter();
@@ -1003,7 +1003,7 @@ LABEL_154:
   [(BWNode *)v119 setName:@"Preview Stabilization"];
   v415.receiver = v40;
   v415.super_class = FigCapturePreviewSinkPipeline;
-  if ((objc_msgSendSuper2(&v415, sel_addNode_error_, v120, &v424) & 1) == 0 || (v121 = v423, v122 = -[BWNode input](v120, "input"), ([OUTLINED_FUNCTION_12_40(v122 v123] & 1) == 0))
+  if ((objc_msgSendSuper2(&v415, sel_addNode_error_, v120, &v424) & 1) == 0 || (v121 = pipelineCopy, v122 = -[BWNode input](v120, "input"), ([OUTLINED_FUNCTION_12_40(v122 v123] & 1) == 0))
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0_94();
@@ -1011,9 +1011,9 @@ LABEL_154:
   }
 
   *(v40 + 128) = v120;
-  v423 = [(BWNode *)v120 output];
+  pipelineCopy = [(BWNode *)v120 output];
 LABEL_178:
-  v130 = v395;
+  v130 = schedulerCopy;
   if (!v387)
   {
     goto LABEL_229;
@@ -1021,34 +1021,34 @@ LABEL_178:
 
   if (a2)
   {
-    v131 = [*(a2 + 16) videoPreviewSinkConfiguration];
+    videoPreviewSinkConfiguration = [*(a2 + 16) videoPreviewSinkConfiguration];
     v132 = *(a2 + 172);
     v133 = *(a2 + 169);
   }
 
   else
   {
-    v131 = [0 videoPreviewSinkConfiguration];
+    videoPreviewSinkConfiguration = [0 videoPreviewSinkConfiguration];
     v133 = 0;
     v132 = 0;
   }
 
-  if ([v395 smartFramingEnabled])
+  if ([schedulerCopy smartFramingEnabled])
   {
-    v335 = [v395 smartFramingZoomFactorsByFieldOfView];
+    smartFramingZoomFactorsByFieldOfView = [schedulerCopy smartFramingZoomFactorsByFieldOfView];
   }
 
   else
   {
-    v335 = 0;
+    smartFramingZoomFactorsByFieldOfView = 0;
   }
 
-  v324 = v131;
+  v324 = videoPreviewSinkConfiguration;
   if (a2 && *(a2 + 130) == 1)
   {
     v134 = [objc_msgSend(*(a2 + 16) "sourceConfiguration")];
     v314 = *off_1E798A0C0;
-    v135 = FigVideoCaptureSourceCopyUnderlyingSourceFormatForFormatAndPortType(v134, v369, *off_1E798A0C0, v425);
+    v135 = FigVideoCaptureSourceCopyUnderlyingSourceFormatForFormatAndPortType(v134, requiredFormat, *off_1E798A0C0, v425);
     if (v425[0])
     {
       fig_log_get_emitter();
@@ -1063,13 +1063,13 @@ LABEL_178:
       goto LABEL_265;
     }
 
-    [v135 stabilizationOverscanFromSensorForFESCropDimensions:objc_msgSend(v135 preferSIFRFormat:"fesInputCropDimensions") geometricDistortionCorrection:objc_msgSend(v135 useFESCompanionIndex:"shouldPreferSIFRFormatWithHighlightRecoveryEnabled:", objc_msgSend(v348, "highlightRecoveryEnabled")), objc_msgSend(v348, "geometricDistortionCorrectionEnabled"), 1];
+    [v135 stabilizationOverscanFromSensorForFESCropDimensions:objc_msgSend(v135 preferSIFRFormat:"fesInputCropDimensions") geometricDistortionCorrection:objc_msgSend(v135 useFESCompanionIndex:"shouldPreferSIFRFormatWithHighlightRecoveryEnabled:", objc_msgSend(sourceConfiguration, "highlightRecoveryEnabled")), objc_msgSend(sourceConfiguration, "geometricDistortionCorrectionEnabled"), 1];
     v138 = v137 == 0.0 && v136 > 0.0;
-    LODWORD(v348) = [v369 horizontalSensorBinningFactor];
-    v139 = [v369 verticalSensorBinningFactor];
+    LODWORD(sourceConfiguration) = [requiredFormat horizontalSensorBinningFactor];
+    verticalSensorBinningFactor2 = [requiredFormat verticalSensorBinningFactor];
     v140 = [+[FigCaptureSourceBackingsProvider sharedCaptureSourceBackingsProvider](FigCaptureSourceBackingsProvider "sharedCaptureSourceBackingsProvider")];
-    v141 = [v140 previewRegistrationType];
-    if (v141 == 1)
+    previewRegistrationType = [v140 previewRegistrationType];
+    if (previewRegistrationType == 1)
     {
       [(BWPipelineStage *)v389 priority];
       v142 = [FigCapturePreviewSinkPipeline _metalCommandQueueWithNamePrefix:v40 priority:@"com.apple.coremedia.previewsink.registration"];
@@ -1084,53 +1084,53 @@ LABEL_178:
     HIDWORD(v316) = [v140 previewRegistrationExcludeStaticComponentFromAlignmentShiftsEnabled];
     HIDWORD(v320) = v138;
     v318 = v142;
-    v144 = v139;
+    v144 = verticalSensorBinningFactor2;
     if (*(a2 + 130) == 1)
     {
-      v145 = v395;
-      v146 = [v395 cameraInfoByPortType];
+      v145 = schedulerCopy;
+      cameraInfoByPortType3 = [schedulerCopy cameraInfoByPortType];
     }
 
     else
     {
-      v146 = 0;
-      v145 = v395;
+      cameraInfoByPortType3 = 0;
+      v145 = schedulerCopy;
     }
 
     v159 = [BWPreviewStitcherNode alloc];
     v160 = *(a2 + 184) & BYTE4(v345);
-    v161 = [v145 sensorOrientationByPortType];
+    sensorOrientationByPortType = [v145 sensorOrientationByPortType];
     v162 = *(a2 + 131);
-    v163 = [v145 parallaxMitigationBasedOnZoomFactorEnabled];
+    parallaxMitigationBasedOnZoomFactorEnabled = [v145 parallaxMitigationBasedOnZoomFactorEnabled];
     BYTE6(v296) = v359;
     WORD2(v296) = *(a2 + 180);
     BYTE3(v296) = v143 & 1;
     BYTE2(v296) = BYTE4(v383);
-    BYTE1(v296) = v163;
+    BYTE1(v296) = parallaxMitigationBasedOnZoomFactorEnabled;
     LOBYTE(v296) = v162;
-    v292 = v335;
-    v294 = v161;
+    v292 = smartFramingZoomFactorsByFieldOfView;
+    v294 = sensorOrientationByPortType;
     BYTE1(v289) = v160;
     LOBYTE(v289) = v361 & (HIDWORD(v359) != 4);
     LODWORD(v164) = v132;
-    v165 = [BWPreviewStitcherNode initWithCameraInfoByPortType:v159 sensorBinningFactor:"initWithCameraInfoByPortType:sensorBinningFactor:inputBuffersHaveHorizontalOverscanOnly:registrationType:registrationMetalCommandQueue:excludeStaticComponentFromAlignmentShifts:propagateDepth:propagateStyles:smartFramingZoomFactorsByFieldOfView:sensorOrientationByPortType:singleCameraOverCaptureEnabled:parallaxMitigationBasedOnZoomFactorEnabled:zoomPIPOverlayEnabled:zoomPIPMinimumUIZoomFactor:zoomPIPSingleStreamModeEnabled:preallocateOutputBufferPool:primaryCaptureRectCenterYPixelOffsetEnabled:propagatePrimaryPreviewSource:" inputBuffersHaveHorizontalOverscanOnly:v146 registrationType:v348 | (v144 << 32) registrationMetalCommandQueue:HIDWORD(v320) excludeStaticComponentFromAlignmentShifts:v141 propagateDepth:v318 propagateStyles:HIDWORD(v316) smartFramingZoomFactorsByFieldOfView:v164 sensorOrientationByPortType:? singleCameraOverCaptureEnabled:? parallaxMitigationBasedOnZoomFactorEnabled:? zoomPIPOverlayEnabled:? zoomPIPMinimumUIZoomFactor:? zoomPIPSingleStreamModeEnabled:? preallocateOutputBufferPool:? primaryCaptureRectCenterYPixelOffsetEnabled:? propagatePrimaryPreviewSource:?];
+    v165 = [BWPreviewStitcherNode initWithCameraInfoByPortType:v159 sensorBinningFactor:"initWithCameraInfoByPortType:sensorBinningFactor:inputBuffersHaveHorizontalOverscanOnly:registrationType:registrationMetalCommandQueue:excludeStaticComponentFromAlignmentShifts:propagateDepth:propagateStyles:smartFramingZoomFactorsByFieldOfView:sensorOrientationByPortType:singleCameraOverCaptureEnabled:parallaxMitigationBasedOnZoomFactorEnabled:zoomPIPOverlayEnabled:zoomPIPMinimumUIZoomFactor:zoomPIPSingleStreamModeEnabled:preallocateOutputBufferPool:primaryCaptureRectCenterYPixelOffsetEnabled:propagatePrimaryPreviewSource:" inputBuffersHaveHorizontalOverscanOnly:cameraInfoByPortType3 registrationType:sourceConfiguration | (v144 << 32) registrationMetalCommandQueue:HIDWORD(v320) excludeStaticComponentFromAlignmentShifts:previewRegistrationType propagateDepth:v318 propagateStyles:HIDWORD(v316) smartFramingZoomFactorsByFieldOfView:v164 sensorOrientationByPortType:? singleCameraOverCaptureEnabled:? parallaxMitigationBasedOnZoomFactorEnabled:? zoomPIPOverlayEnabled:? zoomPIPMinimumUIZoomFactor:? zoomPIPSingleStreamModeEnabled:? preallocateOutputBufferPool:? primaryCaptureRectCenterYPixelOffsetEnabled:? propagatePrimaryPreviewSource:?];
     if (v165)
     {
       v55 = v165;
-      [(BWPreviewStitcherNode *)v165 setDelegate:v377];
+      [(BWPreviewStitcherNode *)v165 setDelegate:deviceCopy];
       [objc_msgSend(*(a2 + 16) "sourceConfiguration")];
       v167 = v166;
       v168 = [objc_msgSend(*(a2 + 16) "sourceConfiguration")];
-      v169 = [v145 clientBaseZoomFactorsByPortType];
-      v170 = v169;
+      clientBaseZoomFactorsByPortType = [v145 clientBaseZoomFactorsByPortType];
+      v170 = clientBaseZoomFactorsByPortType;
       v130 = v145;
       if (v168 == 8)
       {
         v171 = v314;
-        [objc_msgSend(v169 objectForKeyedSubscript:{v314), "floatValue"}];
+        [objc_msgSend(clientBaseZoomFactorsByPortType objectForKeyedSubscript:{v314), "floatValue"}];
         v40 = v394;
         v111 = &OBJC_IVAR___BWVISNode__frameMotionTensorsRingBuffer;
-        v72 = v381;
+        v72 = array;
         LOBYTE(v13) = v363;
         if (v167 < v205)
         {
@@ -1148,7 +1148,7 @@ LABEL_207:
       {
         v40 = v394;
         v111 = &OBJC_IVAR___BWVISNode__frameMotionTensorsRingBuffer;
-        v72 = v381;
+        v72 = array;
         LOBYTE(v13) = v363;
         if (v168 != 9)
         {
@@ -1156,7 +1156,7 @@ LABEL_207:
         }
 
         v171 = v314;
-        [objc_msgSend(v169 objectForKeyedSubscript:{v314), "floatValue"}];
+        [objc_msgSend(clientBaseZoomFactorsByPortType objectForKeyedSubscript:{v314), "floatValue"}];
         if (v167 < v172)
         {
           goto LABEL_206;
@@ -1186,24 +1186,24 @@ LABEL_207:
   }
 
   v147 = v133;
-  v148 = [v395 position] == 2;
-  v149 = [v395 isExternalVariant];
-  [v395 clientExpectsCameraMountedInLandscapeOrientation];
-  v150 = FigCapturePlatformMountsCamerasInLandscapeOrientation(v148, v149);
+  v148 = [schedulerCopy position] == 2;
+  isExternalVariant = [schedulerCopy isExternalVariant];
+  [schedulerCopy clientExpectsCameraMountedInLandscapeOrientation];
+  v150 = FigCapturePlatformMountsCamerasInLandscapeOrientation(v148, isExternalVariant);
   v151 = [BWPreviewStitcherNode alloc];
   if (a2)
   {
     v152 = *(a2 + 184) & BYTE4(v345);
-    v153 = [v395 sensorOrientationByPortType];
+    sensorOrientationByPortType2 = [schedulerCopy sensorOrientationByPortType];
     v154 = *(a2 + 131);
-    v155 = [v395 parallaxMitigationBasedOnZoomFactorEnabled];
+    parallaxMitigationBasedOnZoomFactorEnabled2 = [schedulerCopy parallaxMitigationBasedOnZoomFactorEnabled];
     v157 = *(a2 + 180);
   }
 
   else
   {
-    v153 = [v395 sensorOrientationByPortType];
-    v155 = [v395 parallaxMitigationBasedOnZoomFactorEnabled];
+    sensorOrientationByPortType2 = [schedulerCopy sensorOrientationByPortType];
+    parallaxMitigationBasedOnZoomFactorEnabled2 = [schedulerCopy parallaxMitigationBasedOnZoomFactorEnabled];
     v154 = 0;
     v152 = 0;
     v157 = 0;
@@ -1212,11 +1212,11 @@ LABEL_207:
   v111 = &OBJC_IVAR___BWVISNode__frameMotionTensorsRingBuffer;
   BYTE4(v289) = v359;
   BYTE2(v289) = v157 & 1;
-  BYTE1(v289) = v155;
+  BYTE1(v289) = parallaxMitigationBasedOnZoomFactorEnabled2;
   LOBYTE(v289) = v154 & 1;
   BYTE3(v289) = !v150;
   LODWORD(v156) = v132;
-  v158 = [BWPreviewStitcherNode initWithStitchingDisabledAndZoomPIPOverlayEnabled:v151 zoomPIPMinimumUIZoomFactor:"initWithStitchingDisabledAndZoomPIPOverlayEnabled:zoomPIPMinimumUIZoomFactor:zoomPIPSingleStreamModeEnabled:propagateDepth:propagateStyles:smartFramingZoomFactorsByFieldOfView:sensorOrientationByPortType:singleCameraOverCaptureEnabled:parallaxMitigationBasedOnZoomFactorEnabled:preallocateOutputBufferPool:primaryCaptureRectCenterYPixelOffsetEnabled:propagatePrimaryPreviewSource:" zoomPIPSingleStreamModeEnabled:HIDWORD(v383) propagateDepth:v147 & 1 propagateStyles:v361 & (HIDWORD(v359) != 4) smartFramingZoomFactorsByFieldOfView:v152 & 1 sensorOrientationByPortType:v335 singleCameraOverCaptureEnabled:v153 parallaxMitigationBasedOnZoomFactorEnabled:v156 preallocateOutputBufferPool:? primaryCaptureRectCenterYPixelOffsetEnabled:? propagatePrimaryPreviewSource:?];
+  v158 = [BWPreviewStitcherNode initWithStitchingDisabledAndZoomPIPOverlayEnabled:v151 zoomPIPMinimumUIZoomFactor:"initWithStitchingDisabledAndZoomPIPOverlayEnabled:zoomPIPMinimumUIZoomFactor:zoomPIPSingleStreamModeEnabled:propagateDepth:propagateStyles:smartFramingZoomFactorsByFieldOfView:sensorOrientationByPortType:singleCameraOverCaptureEnabled:parallaxMitigationBasedOnZoomFactorEnabled:preallocateOutputBufferPool:primaryCaptureRectCenterYPixelOffsetEnabled:propagatePrimaryPreviewSource:" zoomPIPSingleStreamModeEnabled:HIDWORD(v383) propagateDepth:v147 & 1 propagateStyles:v361 & (HIDWORD(v359) != 4) smartFramingZoomFactorsByFieldOfView:v152 & 1 sensorOrientationByPortType:smartFramingZoomFactorsByFieldOfView singleCameraOverCaptureEnabled:sensorOrientationByPortType2 parallaxMitigationBasedOnZoomFactorEnabled:v156 preallocateOutputBufferPool:? primaryCaptureRectCenterYPixelOffsetEnabled:? propagatePrimaryPreviewSource:?];
   if (!v158)
   {
 LABEL_266:
@@ -1226,16 +1226,16 @@ LABEL_266:
   }
 
   v55 = v158;
-  [(BWPreviewStitcherNode *)v158 setDelegate:v377];
+  [(BWPreviewStitcherNode *)v158 setDelegate:deviceCopy];
   if (!a2)
   {
     v175 = 0;
-    v72 = v381;
+    v72 = array;
     LOBYTE(v13) = v363;
     goto LABEL_209;
   }
 
-  v72 = v381;
+  v72 = array;
   LOBYTE(v13) = v363;
 LABEL_208:
   v175 = *(a2 + 16);
@@ -1283,9 +1283,9 @@ LABEL_209:
   }
 
   [(BWPreviewStitcherNode *)v55 setTrueVideoCaptureEnabled:v179 & 1];
-  v180 = [v369 dimensions];
-  v181 = HIDWORD(v180);
-  v182 = v180 == 3840 && v181 == 2160 || v180 == 2160 && v181 == 3840;
+  dimensions2 = [requiredFormat dimensions];
+  v181 = HIDWORD(dimensions2);
+  v182 = dimensions2 == 3840 && v181 == 2160 || dimensions2 == 2160 && v181 == 3840;
   [(BWPreviewStitcherNode *)v55 setTrueVideoCaptureFormatIs4K:v182];
   if (a2)
   {
@@ -1301,7 +1301,7 @@ LABEL_209:
   -[BWPreviewStitcherNode setThermalPressureIsCritical:](v55, "setThermalPressureIsCritical:", [v130 thermalSystemPressureLevel] > 2);
   v414.receiver = v40;
   v414.super_class = FigCapturePreviewSinkPipeline;
-  if ((objc_msgSendSuper2(&v414, sel_addNode_error_, v55, &v424) & 1) == 0 || (v185 = v423, v186 = -[BWNode input](v55, "input"), LODWORD(v328) = v361 & (HIDWORD(v359) != 4), ([OUTLINED_FUNCTION_12_40(v186 v187] & 1) == 0))
+  if ((objc_msgSendSuper2(&v414, sel_addNode_error_, v55, &v424) & 1) == 0 || (v185 = pipelineCopy, v186 = -[BWNode input](v55, "input"), LODWORD(v328) = v361 & (HIDWORD(v359) != 4), ([OUTLINED_FUNCTION_12_40(v186 v187] & 1) == 0))
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0_94();
@@ -1309,7 +1309,7 @@ LABEL_209:
   }
 
   *(v40 + 152) = v55;
-  v423 = [(BWNode *)v55 output];
+  pipelineCopy = [(BWNode *)v55 output];
   LOBYTE(v55) = BYTE4(v379);
 LABEL_229:
   if (!(v55 & 1 | ((*(v40 + v111[401]) & 1) == 0) | BYTE4(v361) & 1))
@@ -1327,7 +1327,7 @@ LABEL_229:
   FigCapturePixelFormatIsTenBit([objc_msgSend(objc_msgSend(objc_msgSend(v366 "firstObject")]);
   v194 = -[BWPixelTransferNode initWithfractionalSourceRectEnabled:]([BWPixelTransferNode alloc], "initWithfractionalSourceRectEnabled:", (([v130 parallaxMitigationBasedOnZoomFactorEnabled] | v13) | v372) & 1);
   [(BWNode *)v194 setName:@"Preview Scaler"];
-  v195 = [v366 firstObject];
+  firstObject = [v366 firstObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1343,32 +1343,32 @@ LABEL_268:
 
   if (!a2)
   {
-    v198 = [v195 transform];
+    transform = [firstObject transform];
     v200 = v210;
     v197 = 0;
     LODWORD(v372) = 0;
-    v201 = HIDWORD(v198);
+    v201 = HIDWORD(transform);
     goto LABEL_275;
   }
 
   LODWORD(v372) = (v387 ^ 1) & *(a2 + 162);
   v196 = *(a2 + 88);
   v197 = *(a2 + 164);
-  v198 = [v195 transform];
+  transform = [firstObject transform];
   v200 = v199;
-  v201 = HIDWORD(v198);
+  v201 = HIDWORD(transform);
   if (v196 != 5)
   {
 LABEL_275:
     v202 = v394;
 LABEL_276:
-    if ([objc_msgSend(v195 "sinkConfiguration")] == 6)
+    if ([objc_msgSend(firstObject "sinkConfiguration")] == 6)
     {
       v211 = MEMORY[0x1E696AD98];
-      v212 = [v195 outputFormat];
+      outputFormat = [firstObject outputFormat];
       v213 = v211;
-      v72 = v381;
-      *&v404 = [v213 numberWithInt:v212];
+      v72 = array;
+      *&v404 = [v213 numberWithInt:outputFormat];
       v203 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v404 count:1];
       v204 = 0;
     }
@@ -1383,7 +1383,7 @@ LABEL_276:
   }
 
   v202 = v394;
-  if ([objc_msgSend(v195 "sinkConfiguration")] != 1)
+  if ([objc_msgSend(firstObject "sinkConfiguration")] != 1)
   {
     goto LABEL_276;
   }
@@ -1399,7 +1399,7 @@ LABEL_279:
     [(BWPixelTransferNode *)v194 setOutputWidth:v200];
     [(BWPixelTransferNode *)v194 setOutputHeight:v200 >> 32];
     [(BWPixelTransferNode *)v194 setRotationDegrees:v201];
-    v214 = FigCaptureTransformFlipAppliedBeforeRotationToAfter(v198 & 1, v201);
+    v214 = FigCaptureTransformFlipAppliedBeforeRotationToAfter(transform & 1, v201);
     [(BWPixelTransferNode *)v194 setFlipHorizontal:v214 == 1];
     [(BWPixelTransferNode *)v194 setFlipVertical:v214 == 2];
   }
@@ -1412,7 +1412,7 @@ LABEL_279:
 
   [(BWPixelTransferNode *)v194 setGeneratesHistogram:v372];
   [(BWPixelTransferNode *)v194 setAllows422To420Conversion:1];
-  *&v422 = v198;
+  *&v422 = transform;
   *(&v422 + 1) = v200;
   v413.receiver = v202;
   v413.super_class = FigCapturePreviewSinkPipeline;
@@ -1423,18 +1423,18 @@ LABEL_279:
   }
 
   *(v202 + 48) = v194;
-  v216 = v423;
-  v217 = [(BWNode *)v194 input];
-  if (([OUTLINED_FUNCTION_12_40(v217 v218] & 1) == 0)
+  v216 = pipelineCopy;
+  input = [(BWNode *)v194 input];
+  if (([OUTLINED_FUNCTION_12_40(input v218] & 1) == 0)
   {
     goto LABEL_381;
   }
 
-  v423 = [(BWNode *)v194 output];
+  pipelineCopy = [(BWNode *)v194 output];
   if ([v72 count] < 2)
   {
-    v411 = v423;
-    v235 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v411 count:1];
+    v411 = pipelineCopy;
+    outputs2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v411 count:1];
     goto LABEL_292;
   }
 
@@ -1443,7 +1443,7 @@ LABEL_279:
   FigCaptureNameSplitterNodeOutputsCorrespondingToConnections([(BWNode *)v225 outputs], v72);
   v412.receiver = v202;
   v412.super_class = FigCapturePreviewSinkPipeline;
-  if ((objc_msgSendSuper2(&v412, sel_addNode_error_, v225, &v424) & 1) == 0 || (v226 = v423, v227 = -[BWNode input](v225, "input"), ([OUTLINED_FUNCTION_12_40(v227 v228] & 1) == 0))
+  if ((objc_msgSendSuper2(&v412, sel_addNode_error_, v225, &v424) & 1) == 0 || (v226 = pipelineCopy, v227 = -[BWNode input](v225, "input"), ([OUTLINED_FUNCTION_12_40(v227 v228] & 1) == 0))
   {
 LABEL_381:
     fig_log_get_emitter();
@@ -1453,9 +1453,9 @@ LABEL_380:
     goto LABEL_372;
   }
 
-  v235 = [(BWNode *)v225 outputs];
+  outputs2 = [(BWNode *)v225 outputs];
 LABEL_292:
-  v236 = v235;
+  v236 = outputs2;
   v409 = 0u;
   v410 = 0u;
   v407 = 0u;
@@ -1506,7 +1506,7 @@ LABEL_321:
           OUTLINED_FUNCTION_7_58();
           HIDWORD(v293) = v254;
           v255 = OUTLINED_FUNCTION_11_41();
-          v425[0] = [(FigCapturePreviewSinkPipeline *)v255 _appendFilteredPreviewPipeline:v256 desiredPipelineStage:v253 desiredStreamingFilterPipelineStage:v252 previewSinkPipelineConfiguration:a2 videoPreviewSinkConnectionConfiguration:v257 graph:v392 inferenceScheduler:a5 captureDevice:v291 focusBlurMapForDepthFiltersEnabled:v293 depthFromMonocularNetworkEnabled:BYTE1(v293) runMonocularDepthInVideoDepthNode:BYTE2(v293) maxLossyCompressionLevel:HIDWORD(v293) metalCommandQueue:v215 depthFilterRenderingIsAfterPreviewStitcher:v297 portraitAutoSuggestEnabled:BYTE1(v297) sourceStillImageOutputsByPortType:v299 usePrimaryPreviewSourceAttachedMediaForInference:v301];
+          v425[0] = [(FigCapturePreviewSinkPipeline *)v255 _appendFilteredPreviewPipeline:v256 desiredPipelineStage:v253 desiredStreamingFilterPipelineStage:v252 previewSinkPipelineConfiguration:a2 videoPreviewSinkConnectionConfiguration:v257 graph:v392 inferenceScheduler:graph captureDevice:v291 focusBlurMapForDepthFiltersEnabled:v293 depthFromMonocularNetworkEnabled:BYTE1(v293) runMonocularDepthInVideoDepthNode:BYTE2(v293) maxLossyCompressionLevel:HIDWORD(v293) metalCommandQueue:v215 depthFilterRenderingIsAfterPreviewStitcher:v297 portraitAutoSuggestEnabled:BYTE1(v297) sourceStillImageOutputsByPortType:v299 usePrimaryPreviewSourceAttachedMediaForInference:v301];
           if (v425[0])
           {
 LABEL_379:
@@ -1565,10 +1565,10 @@ LABEL_379:
         if ((HIDWORD(v384) | v260))
         {
           v262 = FigCaptureBuildPipelineStageName(@"com.apple.coremedia.capture.preview.image-queue", [objc_msgSend(v72 "firstObject")]);
-          v263 = [(BWPipelineStage *)v390 priority];
+          priority = [(BWPipelineStage *)v390 priority];
           v264 = v262;
           v202 = v394;
-          v252 = [BWPipelineStage pipelineStageWithName:v264 priority:v263];
+          v252 = [BWPipelineStage pipelineStageWithName:v264 priority:priority];
         }
 
         v265 = [v72 count];
@@ -1601,7 +1601,7 @@ LABEL_379:
           v268 = 1;
         }
 
-        v425[0] = [(FigCapturePreviewSinkPipeline *)v202 _buildImageQueuePreviewSinkPipeline:v406 previewPipelineStage:v252 videoPreviewSinkConnectionConfiguration:v266 previewScalerOutputBuffersAreShared:v265 > 1 zoomPIPOverlayEnabled:SHIDWORD(v384) zoomPIPSmartStyleRenderingEnabled:v267 & 1 zoomPIPSlaveStreamingEnabled:v268 & 1 zoomPIPSlaveStreamingFrameRate:v269 debugOverlayEnabled:0 parallelGraphRebuildEnabled:v270 & 1 transform:0 remoteVideoPreview:0 maxLossyCompressionLevel:v271 & 1 clientAuditToken:v272 graph:&v404 captureDevice:v392 previewTapDelegate:v395 videoHDRImageStatisticsEnabled:v378 zoomPIPOverlayDelegate:v274 & 1 metalCommandQueue:v376, v215];
+        v425[0] = [(FigCapturePreviewSinkPipeline *)v202 _buildImageQueuePreviewSinkPipeline:v406 previewPipelineStage:v252 videoPreviewSinkConnectionConfiguration:v266 previewScalerOutputBuffersAreShared:v265 > 1 zoomPIPOverlayEnabled:SHIDWORD(v384) zoomPIPSmartStyleRenderingEnabled:v267 & 1 zoomPIPSlaveStreamingEnabled:v268 & 1 zoomPIPSlaveStreamingFrameRate:v269 debugOverlayEnabled:0 parallelGraphRebuildEnabled:v270 & 1 transform:0 remoteVideoPreview:0 maxLossyCompressionLevel:v271 & 1 clientAuditToken:v272 graph:&v404 captureDevice:v392 previewTapDelegate:schedulerCopy videoHDRImageStatisticsEnabled:v378 zoomPIPOverlayDelegate:v274 & 1 metalCommandQueue:v376, v215];
         v236 = v371;
         goto LABEL_313;
       }
@@ -1613,7 +1613,7 @@ LABEL_379:
 
       if (v242 == *(a2 + 40))
       {
-        v425[0] = [(FigCapturePreviewSinkPipeline *)v202 _buildPreviewTimeMachineSinkPipeline:v243 upstreamPipelineStageForPreviewTimeMachine:v390 upstreamTransform:v244 previewTimeMachineConnectionConfiguration:v245 videoPreviewEnabled:v246 smartCameraMotionDetectionEnabled:0 graph:*(a2 + 161) captureDevice:v392, v395];
+        v425[0] = [(FigCapturePreviewSinkPipeline *)v202 _buildPreviewTimeMachineSinkPipeline:v243 upstreamPipelineStageForPreviewTimeMachine:v390 upstreamTransform:v244 previewTimeMachineConnectionConfiguration:v245 videoPreviewEnabled:v246 smartCameraMotionDetectionEnabled:0 graph:*(a2 + 161) captureDevice:v392, schedulerCopy];
         if (v425[0])
         {
           goto LABEL_379;
@@ -1622,7 +1622,7 @@ LABEL_379:
 
       else if (v242 == *(a2 + 232))
       {
-        v425[0] = [(FigCapturePreviewSinkPipeline *)v202 _buildPreviewSmartStyleCoefficientsTimeMachineSinkPipeline:v243 upstreamPipelineStageForPreviewTimeMachine:v390 previewTimeMachineConnectionConfiguration:v244 graph:v392 captureDevice:v395];
+        v425[0] = [(FigCapturePreviewSinkPipeline *)v202 _buildPreviewSmartStyleCoefficientsTimeMachineSinkPipeline:v243 upstreamPipelineStageForPreviewTimeMachine:v390 previewTimeMachineConnectionConfiguration:v244 graph:v392 captureDevice:schedulerCopy];
       }
 
       else
@@ -1638,7 +1638,7 @@ LABEL_379:
           v403 = 0;
           OUTLINED_FUNCTION_10_43();
           v388 = v388 & 0xFFFF000000000000 | v249;
-          v425[0] = FigCaptureBuildSceneClassifierPipeline(v202, v250, v388, 6, v251, 0, &v404, v395, a5, 0, 0, &v403);
+          v425[0] = FigCaptureBuildSceneClassifierPipeline(v202, v250, v388, 6, v251, 0, &v404, schedulerCopy, graph, 0, 0, &v403);
           if (v425[0])
           {
             goto LABEL_379;
@@ -1686,7 +1686,7 @@ LABEL_312:
           goto LABEL_379;
         }
 
-        [v395 setAttachesUprightExifOrientationMetadataToStreamingFrames:1];
+        [schedulerCopy setAttachesUprightExifOrientationMetadataToStreamingFrames:1];
       }
 
 LABEL_313:
@@ -1723,14 +1723,14 @@ LABEL_345:
         }
 
         v282 = *(*(&v399 + 1) + 8 * v281);
-        v284 = [(NSArray *)v397 objectAtIndexedSubscript:v280];
+        v284 = [(NSArray *)outputs objectAtIndexedSubscript:v280];
         if (a2)
         {
           if (v282 != *(a2 + 48))
           {
             if (v282 == *(a2 + 232))
             {
-              v425[0] = [(FigCapturePreviewSinkPipeline *)v394 _buildPreviewSmartStyleCoefficientsTimeMachineSinkPipeline:v284 upstreamPipelineStageForPreviewTimeMachine:v390 previewTimeMachineConnectionConfiguration:v283 graph:v392 captureDevice:v395];
+              v425[0] = [(FigCapturePreviewSinkPipeline *)v394 _buildPreviewSmartStyleCoefficientsTimeMachineSinkPipeline:v284 upstreamPipelineStageForPreviewTimeMachine:v390 previewTimeMachineConnectionConfiguration:v283 graph:v392 captureDevice:schedulerCopy];
             }
 
             else if (v282 == *(a2 + 56))
@@ -1741,7 +1741,7 @@ LABEL_345:
                 goto LABEL_376;
               }
 
-              [v395 setAttachesUprightExifOrientationMetadataToStreamingFrames:1];
+              [schedulerCopy setAttachesUprightExifOrientationMetadataToStreamingFrames:1];
             }
 
             goto LABEL_361;
@@ -1774,7 +1774,7 @@ LABEL_345:
         }
 
         v215 = v286 | v215 & 0xFFFF000000000000;
-        v425[0] = FigCaptureBuildSceneClassifierPipeline(v394, v284, v215, 6, v285, 0, &v404, v395, a5, 0, 0, &v406);
+        v425[0] = FigCaptureBuildSceneClassifierPipeline(v394, v284, v215, 6, v285, 0, &v404, schedulerCopy, graph, 0, 0, &v406);
         if (v425[0])
         {
 LABEL_376:
@@ -1849,14 +1849,14 @@ LABEL_372:
   return result;
 }
 
-- (void)setFilters:(id)a3
+- (void)setFilters:(id)filters
 {
-  [(FigCapturePreviewSinkPipeline *)self toggleDepthDensificationAccordingToFilters:a3];
-  [(FigCapturePreviewSinkPipeline *)self _setPortraitRenderingInferencesNeededForFilters:a3];
-  [(BWPreviewStitcherNode *)self->_previewStitcher setOverCaptureNotSupportedByDownstreamNodes:BWCIFilterArrayContainsFiltersRequiringSegmentation(a3)];
+  [(FigCapturePreviewSinkPipeline *)self toggleDepthDensificationAccordingToFilters:filters];
+  [(FigCapturePreviewSinkPipeline *)self _setPortraitRenderingInferencesNeededForFilters:filters];
+  [(BWPreviewStitcherNode *)self->_previewStitcher setOverCaptureNotSupportedByDownstreamNodes:BWCIFilterArrayContainsFiltersRequiringSegmentation(filters)];
   filterNode = self->_filterNode;
 
-  [(BWStreamingFilterNode *)filterNode changeToFilters:a3 animated:1];
+  [(BWStreamingFilterNode *)filterNode changeToFilters:filters animated:1];
 }
 
 - (uint64_t)_setPortraitRenderingInferencesNeededForFilters:(uint64_t)result
@@ -1885,12 +1885,12 @@ LABEL_372:
   return result;
 }
 
-- (void)setSemanticStyle:(id)a3 animated:(BOOL)a4
+- (void)setSemanticStyle:(id)style animated:(BOOL)animated
 {
   if (!self->_smartStyleRenderingEnabled)
   {
-    v4 = a4;
-    if ([a3 isIdentity])
+    animatedCopy = animated;
+    if ([style isIdentity])
     {
       v7 = [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F2245D48, &unk_1F2245D30, 0}];
     }
@@ -1903,29 +1903,29 @@ LABEL_372:
     [(BWInferenceNode *)self->_semanticStylePersonSegmentationNode setInferencesToSkip:v7];
     filterNode = self->_filterNode;
 
-    [(BWStreamingFilterNode *)filterNode changeToSemanticStyle:a3 animated:v4];
+    [(BWStreamingFilterNode *)filterNode changeToSemanticStyle:style animated:animatedCopy];
   }
 }
 
-- (void)setSemanticStyleSet:(id)a3 fencePortSendRight:(id)a4
+- (void)setSemanticStyleSet:(id)set fencePortSendRight:(id)right
 {
   if (!self->_smartStyleRenderingEnabled)
   {
     v7 = MEMORY[0x1E695FF58];
     if (*MEMORY[0x1E695FF58] == 1)
     {
-      [a3 leftmostRegionStartXOffset];
-      [a4 port];
+      [set leftmostRegionStartXOffset];
+      [right port];
       kdebug_trace();
     }
 
     [(BWImageQueueSinkNode *)self->_imageQueueSinkNode fencePortGenerationIDWillChange];
-    if ([objc_msgSend(a3 "semanticStyles")])
+    if ([objc_msgSend(set "semanticStyles")])
     {
       [(BWInferenceNode *)self->_semanticStylePersonSegmentationNode setInferencesToSkip:0];
     }
 
-    [(BWStreamingFilterNode *)self->_filterNode setSemanticStyleSet:a3 fencePortSendRight:a4];
+    [(BWStreamingFilterNode *)self->_filterNode setSemanticStyleSet:set fencePortSendRight:right];
     if (*v7 == 1)
     {
 
@@ -1934,25 +1934,25 @@ LABEL_372:
   }
 }
 
-- (void)setSemanticStyle:(id)a3
+- (void)setSemanticStyle:(id)style
 {
   if (!self->_smartStyleRenderingEnabled)
   {
-    [(FigCapturePreviewSinkPipeline *)self setSemanticStyle:a3 animated:0];
+    [(FigCapturePreviewSinkPipeline *)self setSemanticStyle:style animated:0];
   }
 }
 
-- (void)setSemanticStyleRenderingSuspended:(BOOL)a3 animated:(BOOL)a4
+- (void)setSemanticStyleRenderingSuspended:(BOOL)suspended animated:(BOOL)animated
 {
   if (!self->_smartStyleRenderingEnabled)
   {
-    v4 = a4;
-    v5 = a3;
+    animatedCopy = animated;
+    suspendedCopy = suspended;
     if ([(BWStreamingFilterNode *)self->_filterNode isSemanticStyleRenderingEnabled])
     {
       filterNode = self->_filterNode;
 
-      [(BWStreamingFilterNode *)filterNode setSemanticStyleRenderingSuspended:v5 animated:v4];
+      [(BWStreamingFilterNode *)filterNode setSemanticStyleRenderingSuspended:suspendedCopy animated:animatedCopy];
     }
   }
 }
@@ -1989,7 +1989,7 @@ LABEL_372:
   return result;
 }
 
-- (uint64_t)_appendFilteredPreviewPipeline:(BWPipelineStage *)a3 desiredPipelineStage:(uint64_t)a4 desiredStreamingFilterPipelineStage:(uint64_t)a5 previewSinkPipelineConfiguration:(void *)a6 videoPreviewSinkConnectionConfiguration:(void *)a7 graph:(uint64_t)a8 inferenceScheduler:(void *)a9 captureDevice:(unsigned __int8)a10 focusBlurMapForDepthFiltersEnabled:(unsigned __int8)a11 depthFromMonocularNetworkEnabled:(unsigned __int8)a12 runMonocularDepthInVideoDepthNode:(unsigned int)a13 maxLossyCompressionLevel:(uint64_t)a14 metalCommandQueue:(unsigned __int8)a15 depthFilterRenderingIsAfterPreviewStitcher:(unsigned __int8)a16 portraitAutoSuggestEnabled:(void *)a17 sourceStillImageOutputsByPortType:(unsigned __int8)a18 usePrimaryPreviewSourceAttachedMediaForInference:
+- (uint64_t)_appendFilteredPreviewPipeline:(BWPipelineStage *)pipeline desiredPipelineStage:(uint64_t)stage desiredStreamingFilterPipelineStage:(uint64_t)pipelineStage previewSinkPipelineConfiguration:(void *)configuration videoPreviewSinkConnectionConfiguration:(void *)connectionConfiguration graph:(uint64_t)graph inferenceScheduler:(void *)scheduler captureDevice:(unsigned __int8)self0 focusBlurMapForDepthFiltersEnabled:(unsigned __int8)self1 depthFromMonocularNetworkEnabled:(unsigned __int8)self2 runMonocularDepthInVideoDepthNode:(unsigned int)self3 maxLossyCompressionLevel:(uint64_t)self4 metalCommandQueue:(unsigned __int8)self5 depthFilterRenderingIsAfterPreviewStitcher:(unsigned __int8)self6 portraitAutoSuggestEnabled:(void *)self7 sourceStillImageOutputsByPortType:(unsigned __int8)self8 usePrimaryPreviewSourceAttachedMediaForInference:
 {
   if (!result)
   {
@@ -2011,9 +2011,9 @@ LABEL_372:
   }
 
   v151 = v24;
-  HIDWORD(v136) = [a6 previewDepthDataDeliveryEnabled];
+  HIDWORD(v136) = [configuration previewDepthDataDeliveryEnabled];
   v152 = v23;
-  if (!a3)
+  if (!pipeline)
   {
     if (HIDWORD(v136))
     {
@@ -2025,52 +2025,52 @@ LABEL_372:
       v25 = @"com.apple.coremedia.capture.streaming-filter";
     }
 
-    v26 = [a6 sourceConfiguration];
+    sourceConfiguration = [configuration sourceConfiguration];
     v27 = v25;
     v23 = v152;
-    a3 = [BWPipelineStage pipelineStageWithName:FigCaptureBuildPipelineStageName(v27 priority:v26), 13];
+    pipeline = [BWPipelineStage pipelineStageWithName:FigCaptureBuildPipelineStageName(v27 priority:sourceConfiguration), 13];
   }
 
-  if (a4)
+  if (stage)
   {
-    v28 = a4;
+    pipelineCopy = stage;
   }
 
   else
   {
-    v28 = a3;
+    pipelineCopy = pipeline;
   }
 
-  v146 = [objc_msgSend(a6 "sourceConfiguration")];
+  v146 = [objc_msgSend(configuration "sourceConfiguration")];
   [v146 defaultPortraitLightingEffectStrength];
   if (*(v23 + 328) == 1)
   {
-    v147 = [a9 portraitPreviewForegroundBlurEnabled];
+    portraitPreviewForegroundBlurEnabled = [scheduler portraitPreviewForegroundBlurEnabled];
   }
 
   else
   {
-    v147 = 0;
+    portraitPreviewForegroundBlurEnabled = 0;
   }
 
-  v29 = [objc_msgSend(a6 "videoPreviewSinkConfiguration")];
-  v132 = [objc_msgSend(a6 "videoPreviewSinkConfiguration")];
+  v29 = [objc_msgSend(configuration "videoPreviewSinkConfiguration")];
+  v132 = [objc_msgSend(configuration "videoPreviewSinkConfiguration")];
   v149 = v29;
   if (v29)
   {
-    v29 = *(v23 + 328) == a16;
+    v29 = *(v23 + 328) == stitcher;
   }
 
-  HIDWORD(v128) = a11;
-  HIDWORD(v134) = a18;
-  HIDWORD(v121) = a16;
-  v150 = a15 | a16;
-  v139 = [objc_msgSend(a6 "videoPreviewSinkConfiguration")];
+  HIDWORD(v128) = enabled;
+  HIDWORD(v134) = type;
+  HIDWORD(v121) = stitcher;
+  v150 = queue | stitcher;
+  v139 = [objc_msgSend(configuration "videoPreviewSinkConfiguration")];
   v30 = BWCIFilterArrayContainsPortraitEffectFilters(v139);
-  LODWORD(v141) = [a7 deferredNodePrepareSupported] & (v30 ^ 1);
+  LODWORD(v141) = [connectionConfiguration deferredNodePrepareSupported] & (v30 ^ 1);
   LODWORD(v136) = [v146 isDynamicAspectRatioSupported];
   LODWORD(v128) = 1;
-  v148 = a6;
+  configurationCopy = configuration;
   if (FigCaptureOptimizedBWInferenceScalingPathSupported())
   {
     v31 = objc_alloc_init(BWInferenceProcessingConfiguration);
@@ -2079,11 +2079,11 @@ LABEL_372:
   }
 
   v32 = [BWInferenceNode alloc];
-  v40 = OUTLINED_FUNCTION_13_34(v32, v33, v34, v35, v36, v37, v38, v39, v105, v107, v109, v111, v113, v115, v117, v119, v121, a5, v125, v128, v130, v132, v134, v136, v28, v139, v141, a8);
+  v40 = OUTLINED_FUNCTION_13_34(v32, v33, v34, v35, v36, v37, v38, v39, v105, v107, v109, v111, v113, v115, v117, v119, v121, pipelineStage, v125, v128, v130, v132, v134, v136, pipelineCopy, v139, v141, graph);
   [v40 setName:@"Segmentation Node"];
   if (v142)
   {
-    [a7 enableBypassUntilPreparedForNode:v40 deferredPreparePriority:2];
+    [connectionConfiguration enableBypassUntilPreparedForNode:v40 deferredPreparePriority:2];
   }
 
   v41 = v152;
@@ -2096,7 +2096,7 @@ LABEL_372:
     OUTLINED_FUNCTION_2_93();
     FigDebugAssert3();
 LABEL_113:
-    v43 = v151;
+    output = v151;
     goto LABEL_107;
   }
 
@@ -2117,7 +2117,7 @@ LABEL_113:
       v131 = 0;
     }
 
-    -[BWStreamingPersonSegmentationConfiguration setInputRotationAngle:](v42, "setInputRotationAngle:", -([a6 transform] >> 32));
+    -[BWStreamingPersonSegmentationConfiguration setInputRotationAngle:](v42, "setInputRotationAngle:", -([configuration transform] >> 32));
     [(BWStreamingPersonSegmentationConfiguration *)v42 setPropagateColorInput:0];
     [(BWStreamingPersonSegmentationConfiguration *)v42 setCropColorInputToPrimaryCaptureRect:0];
     [OUTLINED_FUNCTION_19_27() setPropagatesFrameRatePrevention:?];
@@ -2130,20 +2130,20 @@ LABEL_113:
     [(BWOpticalFlowInferenceConfiguration *)v45 setInputDimensions:0xC000000100];
     [(BWOpticalFlowInferenceConfiguration *)v45 setOutputDimensions:0xC000000100];
     [(BWOpticalFlowInferenceConfiguration *)v45 setConcurrencyWidth:2];
-    -[BWOpticalFlowInferenceConfiguration setInputRotationAngle:](v45, "setInputRotationAngle:", -([a6 transform] >> 32));
+    -[BWOpticalFlowInferenceConfiguration setInputRotationAngle:](v45, "setInputRotationAngle:", -([configuration transform] >> 32));
     [(BWOpticalFlowInferenceConfiguration *)v45 setColorInputCropMode:0];
     [(BWOpticalFlowInferenceConfiguration *)v45 setAttachedMediaKeyForPropagatedColorInput:0x1F219EA70];
     [v40 addInferenceOfType:117 version:BWInferenceVersionMakeMajor(1) & 0xFFFFFFFFFFFFLL configuration:v45];
-    v46 = [v40 name];
-    v47 = [v46 length];
+    name = [v40 name];
+    v47 = [name length];
     v48 = @"Optical Flow";
     if (v47)
     {
       v106 = @"Optical Flow";
-      v48 = [v46 stringByAppendingFormat:@" + %@"];
+      v48 = [name stringByAppendingFormat:@" + %@"];
     }
 
-    v43 = v151;
+    output = v151;
     [v40 setName:v48];
 
     v41 = v152;
@@ -2154,15 +2154,15 @@ LABEL_113:
   if (v150)
   {
     LODWORD(v131) = 0;
-    v43 = v151;
+    output = v151;
     goto LABEL_34;
   }
 
   LODWORD(v131) = 1;
   BWInferenceVersionMakeMajor(1);
   [OUTLINED_FUNCTION_15_32() addInferenceOfType:? version:? configuration:?];
-  v43 = v151;
-  if (v147)
+  output = v151;
+  if (portraitPreviewForegroundBlurEnabled)
   {
     *(v152 + 120) = v40;
     [(FigCapturePreviewSinkPipeline *)v152 _setPortraitRenderingInferencesNeededForFilters:v140];
@@ -2171,16 +2171,16 @@ LABEL_32:
   }
 
 LABEL_34:
-  if ((HIDWORD(v129) & ~a12) != 0)
+  if ((HIDWORD(v129) & ~networkEnabled) != 0)
   {
     [v40 addInferenceOfType:106 version:BWInferenceVersionMakeMajor(1) & 0xFFFFFFFFFFFFLL configuration:{-[BWMonocularDepthConfiguration initWithInferenceType:monocularDepthType:]([BWMonocularDepthConfiguration alloc], "initWithInferenceType:monocularDepthType:", 106, 1)}];
-    v49 = [v40 name];
-    v50 = [v49 length];
+    name2 = [v40 name];
+    v50 = [name2 length];
     v51 = @"Monocular Depth";
     if (v50)
     {
       v106 = @"Monocular Depth";
-      v51 = [v49 stringByAppendingFormat:@" + %@"];
+      v51 = [name2 stringByAppendingFormat:@" + %@"];
     }
 
     [v40 setName:v51];
@@ -2195,7 +2195,7 @@ LABEL_34:
     goto LABEL_129;
   }
 
-  v43 = [v40 output];
+  output = [v40 output];
   if (v29)
   {
     v103 = v41;
@@ -2203,30 +2203,30 @@ LABEL_34:
     v162.receiver = v103;
     v162.super_class = FigCapturePreviewSinkPipeline;
     v53 = 0x1E7988000;
-    if ((objc_msgSendSuper2(&v162, sel_addNode_error_, v104, &v164) & 1) == 0 || (-[BWPersonSegmentationFilteringNode setInputOrientationRelativeToSensor:](v104, "setInputOrientationRelativeToSensor:", [a6 transform] >> 32), -[BWPersonSegmentationFilteringNode setAlignsMaskWithPrimaryCaptureRect:](v104, "setAlignsMaskWithPrimaryCaptureRect:", -[BWStreamingPersonSegmentationConfiguration cropColorInputToPrimaryCaptureRect](v42, "cropColorInputToPrimaryCaptureRect")), -[BWNode input](v104, "input"), (objc_msgSend(OUTLINED_FUNCTION_6_64(), "connectOutput:toInput:pipelineStage:") & 1) == 0))
+    if ((objc_msgSendSuper2(&v162, sel_addNode_error_, v104, &v164) & 1) == 0 || (-[BWPersonSegmentationFilteringNode setInputOrientationRelativeToSensor:](v104, "setInputOrientationRelativeToSensor:", [configuration transform] >> 32), -[BWPersonSegmentationFilteringNode setAlignsMaskWithPrimaryCaptureRect:](v104, "setAlignsMaskWithPrimaryCaptureRect:", -[BWStreamingPersonSegmentationConfiguration cropColorInputToPrimaryCaptureRect](v42, "cropColorInputToPrimaryCaptureRect")), -[BWNode input](v104, "input"), (objc_msgSend(OUTLINED_FUNCTION_6_64(), "connectOutput:toInput:pipelineStage:") & 1) == 0))
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_2_93();
       goto LABEL_129;
     }
 
-    v43 = [(BWNode *)v104 output];
-    v52 = a9;
+    output = [(BWNode *)v104 output];
+    schedulerCopy2 = scheduler;
   }
 
   else
   {
-    v52 = a9;
+    schedulerCopy2 = scheduler;
     v53 = 0x1E7988000;
   }
 
-  if ((a12 | v147))
+  if ((networkEnabled | portraitPreviewForegroundBlurEnabled))
   {
     v54 = [BWVideoDepthInferenceConfiguration alloc];
     v55 = v138;
-    if (a15)
+    if (queue)
     {
-      v56 = [v52 isBravoVariant] ^ 1;
+      v56 = [schedulerCopy2 isBravoVariant] ^ 1;
     }
 
     else
@@ -2234,10 +2234,10 @@ LABEL_34:
       v56 = 0;
     }
 
-    v57 = [(BWVideoDepthInferenceConfiguration *)v54 initWithConcurrencyWidth:2 videoDepthLayout:1 captureDevice:v52 requiresCroppingOfDepthBuffer:a15 requiresVerticalFlipOfDepthBuffer:v56 backpressureEvent:0];
+    v57 = [(BWVideoDepthInferenceConfiguration *)v54 initWithConcurrencyWidth:2 videoDepthLayout:1 captureDevice:schedulerCopy2 requiresCroppingOfDepthBuffer:queue requiresVerticalFlipOfDepthBuffer:v56 backpressureEvent:0];
     [(BWVideoDepthInferenceConfiguration *)v57 setRequiresAppleDepthPostProcessing:1];
     [(BWVideoDepthInferenceConfiguration *)v57 setColorInputRotationChangesWithAspectRatio:v137];
-    IntAttribute = FigCaptureSourceGetIntAttribute([objc_msgSend(a6 "sourceConfiguration")], @"PearlModuleType", v165);
+    IntAttribute = FigCaptureSourceGetIntAttribute([objc_msgSend(configuration "sourceConfiguration")], @"PearlModuleType", v165);
     if (v165[0])
     {
       fig_log_get_emitter();
@@ -2259,7 +2259,7 @@ LABEL_34:
     [(BWOpticalFlowInferenceConfiguration *)v68 setInputDimensions:[(BWVideoDepthInferenceConfiguration *)v57 outputDimensions]];
     [(BWOpticalFlowInferenceConfiguration *)v68 setOutputDimensions:[(BWVideoDepthInferenceConfiguration *)v57 outputDimensions]];
     [(BWOpticalFlowInferenceConfiguration *)v68 setConcurrencyWidth:2];
-    [objc_msgSend(objc_msgSend(a6 "sourceConfiguration")];
+    [objc_msgSend(objc_msgSend(configuration "sourceConfiguration")];
     IsSensorMountedInPortraitOrientation = FigCaptureSourceIsSensorMountedInPortraitOrientation(v69);
     if (HIDWORD(v135))
     {
@@ -2275,7 +2275,7 @@ LABEL_34:
 
       [(BWOpticalFlowInferenceConfiguration *)v68 setInputRotationAngle:v71];
       [(BWOpticalFlowInferenceConfiguration *)v68 setAttachedMediaKeyForColorInput:0x1F21AAAD0];
-      -[BWOpticalFlowInferenceConfiguration setColorInputFlipHorizontal:](v68, "setColorInputFlipHorizontal:", [a6 transform] & 1);
+      -[BWOpticalFlowInferenceConfiguration setColorInputFlipHorizontal:](v68, "setColorInputFlipHorizontal:", [configuration transform] & 1);
       [(BWOpticalFlowInferenceConfiguration *)v68 setColorInputCropMode:2];
       [(BWOpticalFlowInferenceConfiguration *)v68 setAttachedMediaCropRectKey:*off_1E798A360];
       [(BWVideoDepthInferenceConfiguration *)v57 setUsePrimaryPreviewSourceAttachedMediaForInference:1];
@@ -2283,9 +2283,9 @@ LABEL_34:
 
     else
     {
-      if (a15)
+      if (queue)
       {
-        v72 = psp_rotationAngleForStreamingFilterInferences(a6);
+        v72 = psp_rotationAngleForStreamingFilterInferences(configuration);
       }
 
       else
@@ -2303,7 +2303,7 @@ LABEL_34:
     [*(v152 + 296) setName:@"Optical Flow Node"];
     if (v142)
     {
-      [a7 enableBypassUntilPreparedForNode:*(v152 + 296) deferredPreparePriority:2];
+      [connectionConfiguration enableBypassUntilPreparedForNode:*(v152 + 296) deferredPreparePriority:2];
     }
 
     v73 = *(v152 + 296);
@@ -2316,8 +2316,8 @@ LABEL_34:
       goto LABEL_129;
     }
 
-    v43 = [*(v152 + 296) output];
-    v74 = [[BWVideoDepthNode alloc] initWithInferenceScheduler:v145 captureDevice:a9 videoDepthConfiguration:v57 extraDepthOutputRetainedBufferCount:4 error:v165];
+    output = [*(v152 + 296) output];
+    v74 = [[BWVideoDepthNode alloc] initWithInferenceScheduler:v145 captureDevice:scheduler videoDepthConfiguration:v57 extraDepthOutputRetainedBufferCount:4 error:v165];
     *(v152 + 288) = v74;
     if (v165[0])
     {
@@ -2335,14 +2335,14 @@ LABEL_34:
       goto LABEL_129;
     }
 
-    v43 = [*(v152 + 288) output];
+    output = [*(v152 + 288) output];
     if (v142)
     {
       [OUTLINED_FUNCTION_19_27() setPreviewVideoDepthNodeUnprepared:?];
-      [a7 enableBypassUntilPreparedForNode:*(v152 + 288) deferredPreparePriority:2];
+      [connectionConfiguration enableBypassUntilPreparedForNode:*(v152 + 288) deferredPreparePriority:2];
     }
 
-    -[FigCapturePreviewSinkPipeline toggleDepthDensificationAccordingToFilters:](v152, [objc_msgSend(a6 "videoPreviewSinkConfiguration")]);
+    -[FigCapturePreviewSinkPipeline toggleDepthDensificationAccordingToFilters:](v152, [objc_msgSend(configuration "videoPreviewSinkConfiguration")]);
     v53 = 0x1E7988000uLL;
   }
 
@@ -2366,7 +2366,7 @@ LABEL_34:
     [v84 setName:@"Segmentation Node (secondary)"];
     if (v143)
     {
-      [a7 enableBypassUntilPreparedForNode:v84 deferredPreparePriority:2];
+      [connectionConfiguration enableBypassUntilPreparedForNode:v84 deferredPreparePriority:2];
     }
 
     v159.receiver = v152;
@@ -2378,10 +2378,10 @@ LABEL_34:
       goto LABEL_129;
     }
 
-    v43 = [v84 output];
+    output = [v84 output];
     v85 = [(BWInferenceConfiguration *)[BWStreamingPersonSegmentationConfiguration alloc] initWithInferenceType:105];
-    v86 = psp_rotationAngleForStreamingFilterInferences(a6);
-    if ([a6 transform])
+    v86 = psp_rotationAngleForStreamingFilterInferences(configuration);
+    if ([configuration transform])
     {
       v87 = -v86;
     }
@@ -2400,20 +2400,20 @@ LABEL_34:
     [(FigCapturePreviewSinkPipeline *)v152 _setPortraitRenderingInferencesNeededForFilters:v140];
   }
 
-  v151 = v43;
-  if (a15)
+  v151 = output;
+  if (queue)
   {
-    v88 = [a6 transform];
-    v89 = [a6 transform] >> 32;
+    transform = [configuration transform];
+    v89 = [configuration transform] >> 32;
   }
 
   else
   {
-    v88 = 0;
+    transform = 0;
     LODWORD(v89) = 0;
   }
 
-  v90 = [objc_msgSend(objc_msgSend(a6 "sourceConfiguration")];
+  v90 = [objc_msgSend(objc_msgSend(configuration "sourceConfiguration")];
   v91 = [BWStreamingFilterNode alloc];
   v92 = v152;
   v93 = *(v152 + 252);
@@ -2422,10 +2422,10 @@ LABEL_34:
   BYTE1(v116) = BYTE4(v135);
   LOBYTE(v116) = v90;
   LODWORD(v112) = v89;
-  BYTE4(v110) = v88 & 1;
+  BYTE4(v110) = transform & 1;
   LODWORD(v110) = [v55 priority];
-  LOBYTE(v106) = a15;
-  v95 = -[BWStreamingFilterNode initWithCaptureDevice:maxLossyCompressionLevel:semanticStyleRenderingEnabled:cinematicVideoEnabled:smartStyleRenderingEnabled:portraitPreviewForegroundBlurEnabled:depthFilterRenderingIsAfterPreviewStitcher:metalCommandQueue:priority:mirroredForMetadataAdjustment:rotationDegreesForMetadataAdjustment:sourceStillImageOutputPortTypes:squareAspectRatioConfigEnabled:cropDepthToPrimaryCaptureAspectRatio:disableDepthAndSegmentationRotationInLandscape:](v91, "initWithCaptureDevice:maxLossyCompressionLevel:semanticStyleRenderingEnabled:cinematicVideoEnabled:smartStyleRenderingEnabled:portraitPreviewForegroundBlurEnabled:depthFilterRenderingIsAfterPreviewStitcher:metalCommandQueue:priority:mirroredForMetadataAdjustment:rotationDegreesForMetadataAdjustment:sourceStillImageOutputPortTypes:squareAspectRatioConfigEnabled:cropDepthToPrimaryCaptureAspectRatio:disableDepthAndSegmentationRotationInLandscape:", a9, a13, v149, v93, v94, v147, v106, a14, v110, v112, [a17 allKeys], v116);
+  LOBYTE(v106) = queue;
+  v95 = -[BWStreamingFilterNode initWithCaptureDevice:maxLossyCompressionLevel:semanticStyleRenderingEnabled:cinematicVideoEnabled:smartStyleRenderingEnabled:portraitPreviewForegroundBlurEnabled:depthFilterRenderingIsAfterPreviewStitcher:metalCommandQueue:priority:mirroredForMetadataAdjustment:rotationDegreesForMetadataAdjustment:sourceStillImageOutputPortTypes:squareAspectRatioConfigEnabled:cropDepthToPrimaryCaptureAspectRatio:disableDepthAndSegmentationRotationInLandscape:](v91, "initWithCaptureDevice:maxLossyCompressionLevel:semanticStyleRenderingEnabled:cinematicVideoEnabled:smartStyleRenderingEnabled:portraitPreviewForegroundBlurEnabled:depthFilterRenderingIsAfterPreviewStitcher:metalCommandQueue:priority:mirroredForMetadataAdjustment:rotationDegreesForMetadataAdjustment:sourceStillImageOutputPortTypes:squareAspectRatioConfigEnabled:cropDepthToPrimaryCaptureAspectRatio:disableDepthAndSegmentationRotationInLandscape:", scheduler, node, v149, v93, v94, portraitPreviewForegroundBlurEnabled, v106, level, v110, v112, [suggestEnabled allKeys], v116);
   v158.receiver = v152;
   v158.super_class = FigCapturePreviewSinkPipeline;
   if ((objc_msgSendSuper2(&v158, sel_addNode_error_, v95, &v164) & 1) == 0)
@@ -2447,7 +2447,7 @@ LABEL_112:
     [v146 isStagePreviewRenderingSupported];
     [OUTLINED_FUNCTION_17() setStageRenderingEnabled:?];
     v92 = v152;
-    [(BWStreamingFilterNode *)v95 setFocusBlurMapDeliveryEnabled:a10];
+    [(BWStreamingFilterNode *)v95 setFocusBlurMapDeliveryEnabled:device];
     [(BWStreamingFilterNode *)v95 setPortraitAutoSuggestEnabled:HIDWORD(v122)];
     [(BWStreamingFilterNode *)v95 setDepthFromMonocularNetworkEnabled:HIDWORD(v129)];
   }
@@ -2455,7 +2455,7 @@ LABEL_112:
   [(BWStreamingFilterNode *)v95 setPrimaryStreamingPersonSegmentationEnabled:v131];
   [(BWStreamingFilterNode *)v95 setSecondaryStreamingPersonSegmentationEnabled:v150];
   [(BWStreamingFilterNode *)v95 setStreamingSegmentationFromInferenceEngine:v129];
-  if (a17)
+  if (suggestEnabled)
   {
     if (*(v92 + 252))
     {
@@ -2463,8 +2463,8 @@ LABEL_112:
       v157 = 0u;
       v154 = 0u;
       v155 = 0u;
-      v96 = [a17 allKeys];
-      v97 = [v96 countByEnumeratingWithState:&v154 objects:v153 count:16];
+      allKeys = [suggestEnabled allKeys];
+      v97 = [allKeys countByEnumeratingWithState:&v154 objects:v153 count:16];
       if (v97)
       {
         v98 = v97;
@@ -2475,10 +2475,10 @@ LABEL_112:
           {
             if (*v155 != v99)
             {
-              objc_enumerationMutation(v96);
+              objc_enumerationMutation(allKeys);
             }
 
-            if (![a7 connectOutput:objc_msgSend(a17 toInput:"objectForKeyedSubscript:" pipelineStage:{*(*(&v154 + 1) + 8 * i)), -[NSDictionary objectForKeyedSubscript:](-[BWStreamingFilterNode stillImageInputsByPortType](v95, "stillImageInputsByPortType"), "objectForKeyedSubscript:", *(*(&v154 + 1) + 8 * i)), 0}])
+            if (![connectionConfiguration connectOutput:objc_msgSend(suggestEnabled toInput:"objectForKeyedSubscript:" pipelineStage:{*(*(&v154 + 1) + 8 * i)), -[NSDictionary objectForKeyedSubscript:](-[BWStreamingFilterNode stillImageInputsByPortType](v95, "stillImageInputsByPortType"), "objectForKeyedSubscript:", *(*(&v154 + 1) + 8 * i)), 0}])
             {
               fig_log_get_emitter();
               OUTLINED_FUNCTION_2_93();
@@ -2486,7 +2486,7 @@ LABEL_112:
             }
           }
 
-          v98 = [v96 countByEnumeratingWithState:&v154 objects:v153 count:16];
+          v98 = [allKeys countByEnumeratingWithState:&v154 objects:v153 count:16];
           if (v98)
           {
             continue;
@@ -2505,7 +2505,7 @@ LABEL_112:
   }
 
   v22 = v127;
-  v43 = v151;
+  output = v151;
   if (v101 & 1 | ((v149 & 1) == 0))
   {
     v102 = 0;
@@ -2523,9 +2523,9 @@ LABEL_112:
 
   if ([v140 count])
   {
-    [a9 simulatedAperture];
+    [scheduler simulatedAperture];
     [(BWStreamingFilterNode *)v95 setSimulatedAperture:?];
-    [objc_msgSend(v148 "videoPreviewSinkConfiguration")];
+    [objc_msgSend(configurationCopy "videoPreviewSinkConfiguration")];
     [(BWStreamingFilterNode *)v95 setPortraitLightingEffectStrength:?];
   }
 
@@ -2541,27 +2541,27 @@ LABEL_129:
     goto LABEL_107;
   }
 
-  v43 = [(BWNode *)v95 output];
+  output = [(BWNode *)v95 output];
 LABEL_107:
   if (v22)
   {
-    *v22 = v43;
+    *v22 = output;
   }
 
   return v165[0];
 }
 
-- (id)_metalCommandQueueWithNamePrefix:(uint64_t)a1 priority:(void *)a2
+- (id)_metalCommandQueueWithNamePrefix:(uint64_t)prefix priority:(void *)priority
 {
-  if (!a1)
+  if (!prefix)
   {
     return 0;
   }
 
   v3 = [objc_msgSend(MEMORY[0x1E6991778] "metalDevice")];
-  [objc_msgSend(a2 stringByAppendingString:{@".metal-completion-queue", "UTF8String"}];
+  [objc_msgSend(priority stringByAppendingString:{@".metal-completion-queue", "UTF8String"}];
   v4 = FigDispatchQueueCreateWithPriority();
-  [objc_msgSend(a2 stringByAppendingString:{@".metal-submission-queue", "UTF8String"}];
+  [objc_msgSend(priority stringByAppendingString:{@".metal-submission-queue", "UTF8String"}];
   v5 = FigDispatchQueueCreateWithPriority();
   [v3 setCompletionQueue:v4];
   [v3 setSubmissionQueue:v5];
@@ -2569,17 +2569,17 @@ LABEL_107:
   return v3;
 }
 
-- (id)_buildImageQueuePreviewSinkPipeline:(uint64_t)a3 previewPipelineStage:(void *)a4 videoPreviewSinkConnectionConfiguration:(int)a5 previewScalerOutputBuffersAreShared:(int)a6 zoomPIPOverlayEnabled:(unsigned int)a7 zoomPIPSmartStyleRenderingEnabled:(unsigned int)a8 zoomPIPSlaveStreamingEnabled:(float)a9 zoomPIPSlaveStreamingFrameRate:(unsigned __int8)a10 debugOverlayEnabled:(unsigned __int8)a11 parallelGraphRebuildEnabled:(uint64_t)a12 transform:(uint64_t)a13 remoteVideoPreview:(unsigned __int8)a14 maxLossyCompressionLevel:(unsigned int)a15 clientAuditToken:(_OWORD *)a16 graph:(void *)a17 captureDevice:(void *)a18 previewTapDelegate:(uint64_t)a19 videoHDRImageStatisticsEnabled:(unsigned __int8)a20 zoomPIPOverlayDelegate:(uint64_t)a21 metalCommandQueue:(uint64_t)a22
+- (id)_buildImageQueuePreviewSinkPipeline:(uint64_t)pipeline previewPipelineStage:(void *)stage videoPreviewSinkConnectionConfiguration:(int)configuration previewScalerOutputBuffersAreShared:(int)shared zoomPIPOverlayEnabled:(unsigned int)enabled zoomPIPSmartStyleRenderingEnabled:(unsigned int)renderingEnabled zoomPIPSlaveStreamingEnabled:(float)streamingEnabled zoomPIPSlaveStreamingFrameRate:(unsigned __int8)self0 debugOverlayEnabled:(unsigned __int8)self1 parallelGraphRebuildEnabled:(uint64_t)self2 transform:(uint64_t)self3 remoteVideoPreview:(unsigned __int8)self4 maxLossyCompressionLevel:(unsigned int)self5 clientAuditToken:(_OWORD *)self6 graph:(void *)self7 captureDevice:(void *)self8 previewTapDelegate:(uint64_t)self9 videoHDRImageStatisticsEnabled:(unsigned __int8)statisticsEnabled zoomPIPOverlayDelegate:(uint64_t)overlayDelegate metalCommandQueue:(uint64_t)queue
 {
   if (result)
   {
     v27 = result;
     v84[0] = 0;
-    if ((a6 | a10) == 1 && a5)
+    if ((shared | rate) == 1 && configuration)
     {
       v28 = objc_alloc_init(BWPixelTransferNode);
       v29 = v28;
-      if (a6)
+      if (shared)
       {
         v30 = @"Zoom PIP Overlay Buffer Copier";
       }
@@ -2590,75 +2590,75 @@ LABEL_107:
       }
 
       [(BWNode *)v28 setName:v30];
-      if (a6)
+      if (shared)
       {
-        [(BWPixelTransferNode *)v29 setMaxInputLossyCompressionLevel:a15];
-        [(BWPixelTransferNode *)v29 setMaxOutputLossyCompressionLevel:a15];
+        [(BWPixelTransferNode *)v29 setMaxInputLossyCompressionLevel:level];
+        [(BWPixelTransferNode *)v29 setMaxOutputLossyCompressionLevel:level];
       }
 
       v83.receiver = v27;
       v83.super_class = FigCapturePreviewSinkPipeline;
-      if ((objc_msgSendSuper2(&v83, sel_addNode_error_, v29, v84) & 1) == 0 || ([a17 connectOutput:a2 toInput:-[BWNode input](v29 pipelineStage:{"input"), a3}] & 1) == 0)
+      if ((objc_msgSendSuper2(&v83, sel_addNode_error_, v29, v84) & 1) == 0 || ([graph connectOutput:a2 toInput:-[BWNode input](v29 pipelineStage:{"input"), pipeline}] & 1) == 0)
       {
         fig_log_get_emitter();
         OUTLINED_FUNCTION_0();
         goto LABEL_76;
       }
 
-      v31 = a3;
+      pipelineCopy2 = pipeline;
       a2 = [(BWNode *)v29 output];
     }
 
     else
     {
-      v31 = a3;
+      pipelineCopy2 = pipeline;
     }
 
-    if (a6)
+    if (shared)
     {
-      v76 = a7;
+      enabledCopy = enabled;
       v32 = [BWVideoPIPOverlayNode alloc];
-      v33 = [a18 isBravoVariant];
-      v34 = a18;
-      v35 = [a18 baseZoomFactorsByPortType];
-      *&v36 = a9;
-      v37 = [(BWVideoPIPOverlayNode *)v32 initWithDelegate:a21 metalCommandQueue:a22 secondaryCameraStreamingEnabled:a8 secondaryCameraFrameRate:a15 maxLossyCompressionLevel:v33 isDeviceBravoVariant:v35 baseZoomFactorsByPortType:v36];
+      isBravoVariant = [device isBravoVariant];
+      deviceCopy2 = device;
+      baseZoomFactorsByPortType = [device baseZoomFactorsByPortType];
+      *&v36 = streamingEnabled;
+      v37 = [(BWVideoPIPOverlayNode *)v32 initWithDelegate:overlayDelegate metalCommandQueue:queue secondaryCameraStreamingEnabled:renderingEnabled secondaryCameraFrameRate:level maxLossyCompressionLevel:isBravoVariant isDeviceBravoVariant:baseZoomFactorsByPortType baseZoomFactorsByPortType:v36];
       [(BWNode *)v37 setName:@"PIP Overlay"];
-      if ([a17 deferredNodePrepareSupported])
+      if ([graph deferredNodePrepareSupported])
       {
-        [a17 enableBypassUntilPreparedForNode:v37 deferredPreparePriority:3];
+        [graph enableBypassUntilPreparedForNode:v37 deferredPreparePriority:3];
       }
 
       v82.receiver = v27;
       v82.super_class = FigCapturePreviewSinkPipeline;
-      if ((objc_msgSendSuper2(&v82, sel_addNode_error_, v37, v84) & 1) == 0 || (v38 = v31, v39 = v37, *(v27 + 11) = v39, -[BWVideoPIPOverlayNode setSmartStyleRenderingEnabled:](v39, "setSmartStyleRenderingEnabled:", v76), ([a17 connectOutput:a2 toInput:-[BWNode input](v37 pipelineStage:{"input"), v31}] & 1) == 0))
+      if ((objc_msgSendSuper2(&v82, sel_addNode_error_, v37, v84) & 1) == 0 || (v38 = pipelineCopy2, v39 = v37, *(v27 + 11) = v39, -[BWVideoPIPOverlayNode setSmartStyleRenderingEnabled:](v39, "setSmartStyleRenderingEnabled:", enabledCopy), ([graph connectOutput:a2 toInput:-[BWNode input](v37 pipelineStage:{"input"), pipelineCopy2}] & 1) == 0))
       {
         fig_log_get_emitter();
         OUTLINED_FUNCTION_0();
         goto LABEL_76;
       }
 
-      v75 = [(BWNode *)v37 output];
+      output = [(BWNode *)v37 output];
     }
 
     else
     {
-      v34 = a18;
-      v38 = v31;
-      v75 = a2;
+      deviceCopy2 = device;
+      v38 = pipelineCopy2;
+      output = a2;
     }
 
-    v40 = [a4 sourceConfiguration];
+    sourceConfiguration = [stage sourceConfiguration];
     if (FigCapturePlatformIdentifier() <= 4)
     {
-      v42 = [v40 sourceDeviceType];
-      if (v42 > 9)
+      sourceDeviceType = [sourceConfiguration sourceDeviceType];
+      if (sourceDeviceType > 9)
       {
         v74 = 0;
         goto LABEL_26;
       }
 
-      v41 = 0x310u >> v42;
+      v41 = 0x310u >> sourceDeviceType;
     }
 
     else
@@ -2672,25 +2672,25 @@ LABEL_26:
     v78 = v43;
     if (v43)
     {
-      [v43 setPreviewTapDelegate:a19];
+      [v43 setPreviewTapDelegate:delegate];
       v44 = *(v27 + 7);
     }
 
     else
     {
       v45 = [BWImageQueueSinkNode alloc];
-      v46 = [v27 sinkID];
-      v47 = a16[1];
-      v81[0] = *a16;
+      sinkID = [v27 sinkID];
+      v47 = token[1];
+      v81[0] = *token;
       v81[1] = v47;
-      v44 = [(BWImageQueueSinkNode *)v45 initWithHFRSupport:1 ispJitterCompensationEnabled:v74 & 1 clientAuditToken:v81 sinkID:v46];
-      [(BWImageQueueSinkNode *)v44 setPreviewTapDelegate:a19];
+      v44 = [(BWImageQueueSinkNode *)v45 initWithHFRSupport:1 ispJitterCompensationEnabled:v74 & 1 clientAuditToken:v81 sinkID:sinkID];
+      [(BWImageQueueSinkNode *)v44 setPreviewTapDelegate:delegate];
       *(v27 + 7) = v44;
     }
 
-    [(BWImageQueueSinkNode *)v44 setCaptureDevice:v34];
-    [*(v27 + 7) setTransform:{a12, a13}];
-    [*(v27 + 7) setVideoHDRImageStatisticsEnabled:a20];
+    [(BWImageQueueSinkNode *)v44 setCaptureDevice:deviceCopy2];
+    [*(v27 + 7) setTransform:{rebuildEnabled, transform}];
+    [*(v27 + 7) setVideoHDRImageStatisticsEnabled:statisticsEnabled];
     if (*(v27 + 253))
     {
       v48 = 1;
@@ -2698,25 +2698,25 @@ LABEL_26:
 
     else
     {
-      v48 = [objc_msgSend(a4 "videoPreviewSinkConfiguration")];
+      v48 = [objc_msgSend(stage "videoPreviewSinkConfiguration")];
     }
 
     v49 = *(v27 + 7);
-    v50 = [a4 sourceConfiguration];
-    [objc_msgSend(v50 "requiredFormat")];
+    sourceConfiguration2 = [stage sourceConfiguration];
+    [objc_msgSend(sourceConfiguration2 "requiredFormat")];
     v52 = v51;
-    v53 = [v50 requiredMinFrameRate];
-    v55 = FigCaptureFrameRateAsFloat(v53, v54);
-    v56 = [v50 requiredMaxFrameRate];
-    v58 = FigCaptureFrameRateAsFloat(v56, v57);
+    requiredMinFrameRate = [sourceConfiguration2 requiredMinFrameRate];
+    v55 = FigCaptureFrameRateAsFloat(requiredMinFrameRate, v54);
+    requiredMaxFrameRate = [sourceConfiguration2 requiredMaxFrameRate];
+    v58 = FigCaptureFrameRateAsFloat(requiredMaxFrameRate, v57);
     v59 = BWGetMaximumDisplayFrequency();
     v60 = v59;
     v61 = v58 == v55 && fmod(v58, v59) == 0.0;
     [v49 setFenceSupportEnabled:v48];
-    [v49 setMaxLossyCompressionLevel:a15];
-    if ([objc_msgSend(v50 "requiredFormat")])
+    [v49 setMaxLossyCompressionLevel:level];
+    if ([objc_msgSend(sourceConfiguration2 "requiredFormat")])
     {
-      v62 = [objc_msgSend(v50 "requiredFormat")];
+      v62 = [objc_msgSend(sourceConfiguration2 "requiredFormat")];
     }
 
     else if ((v74 & 1) != 0 && (v52 <= v60 || v61))
@@ -2740,51 +2740,51 @@ LABEL_26:
     v80.super_class = FigCapturePreviewSinkPipeline;
     if (objc_msgSendSuper2(&v80, sel_addNode_error_, v63, v84))
     {
-      v64 = v78 ? a11 : 0;
-      if ([a17 connectOutput:v75 toInput:objc_msgSend(*(v27 + 7) pipelineStage:"input") deferredAttach:{v38, v64}])
+      v64 = v78 ? overlayEnabled : 0;
+      if ([graph connectOutput:output toInput:objc_msgSend(*(v27 + 7) pipelineStage:"input") deferredAttach:{v38, v64}])
       {
-        if ([a17 deferredNodePrepareSupported])
+        if ([graph deferredNodePrepareSupported])
         {
-          if (([objc_msgSend(a4 "sinkConfiguration")] & 1) == 0)
+          if (([objc_msgSend(stage "sinkConfiguration")] & 1) == 0)
           {
-            [a17 enableDeferredPrepareForNodesNotInPathOfSinkNode:*(v27 + 7)];
+            [graph enableDeferredPrepareForNodesNotInPathOfSinkNode:*(v27 + 7)];
             if (*(v27 + 8))
             {
-              [a17 enableDeferredPrepareForNodesNotInPathOfSinkNode:?];
+              [graph enableDeferredPrepareForNodesNotInPathOfSinkNode:?];
             }
           }
         }
 
         if (!v78 || !*(v27 + 25))
         {
-          v65 = [*(v27 + 19) rotationDegrees];
-          if (!v65)
+          rotationDegrees = [*(v27 + 19) rotationDegrees];
+          if (!rotationDegrees)
           {
-            v65 = [*(v27 + 6) rotationDegrees];
+            rotationDegrees = [*(v27 + 6) rotationDegrees];
           }
 
-          v66 = [v34 position];
-          v67 = v66 == 2;
-          v68 = FigCaptureCameraRequires180DegreesRotation(v67, [v34 isExternalVariant]);
-          v69 = [v34 isExternalVariant];
-          [v34 clientExpectsCameraMountedInLandscapeOrientation];
-          if (FigCapturePlatformMountsCamerasInLandscapeOrientation(v67, v69))
+          position = [deviceCopy2 position];
+          v67 = position == 2;
+          v68 = FigCaptureCameraRequires180DegreesRotation(v67, [deviceCopy2 isExternalVariant]);
+          isExternalVariant = [deviceCopy2 isExternalVariant];
+          [deviceCopy2 clientExpectsCameraMountedInLandscapeOrientation];
+          if (FigCapturePlatformMountsCamerasInLandscapeOrientation(v67, isExternalVariant))
           {
-            v70 = a4;
-            if ([a4 mirroringEnabled] && ((objc_msgSend(v34, "isExternalVariant") | v68) & 1) != 0 || (objc_msgSend(a4, "mirroringEnabled") & 1) == 0 && ((v71 = objc_msgSend(v34, "isExternalVariant"), v66 != 2) ? (v72 = 1) : (v72 = v71), ((v72 | v68) & 1) == 0))
+            stageCopy2 = stage;
+            if ([stage mirroringEnabled] && ((objc_msgSend(deviceCopy2, "isExternalVariant") | v68) & 1) != 0 || (objc_msgSend(stage, "mirroringEnabled") & 1) == 0 && ((v71 = objc_msgSend(deviceCopy2, "isExternalVariant"), position != 2) ? (v72 = 1) : (v72 = v71), ((v72 | v68) & 1) == 0))
             {
-              v65 = FigCaptureNormalizeAngle(v65 + 180);
+              rotationDegrees = FigCaptureNormalizeAngle(rotationDegrees + 180);
             }
           }
 
           else
           {
-            v70 = a4;
+            stageCopy2 = stage;
           }
 
-          [v70 transform];
-          *(v27 + 76) = v65;
-          [(FigCapturePreviewSinkPipeline *)v27 _stashPreviewImageQueueUpdatedNotificationPayload:v65 previewDimensions:v73 remoteVideoPreview:a14];
+          [stageCopy2 transform];
+          *(v27 + 76) = rotationDegrees;
+          [(FigCapturePreviewSinkPipeline *)v27 _stashPreviewImageQueueUpdatedNotificationPayload:rotationDegrees previewDimensions:v73 remoteVideoPreview:preview];
         }
 
         goto LABEL_54;
@@ -2806,12 +2806,12 @@ LABEL_54:
   return result;
 }
 
-- (void)_buildPreviewTimeMachineSinkPipeline:(uint64_t)a3 upstreamPipelineStageForPreviewTimeMachine:(uint64_t)a4 upstreamTransform:(uint64_t)a5 previewTimeMachineConnectionConfiguration:(uint64_t)a6 videoPreviewEnabled:(uint64_t)a7 smartCameraMotionDetectionEnabled:(uint64_t)a8 graph:(void *)a9 captureDevice:(void *)a10
+- (void)_buildPreviewTimeMachineSinkPipeline:(uint64_t)pipeline upstreamPipelineStageForPreviewTimeMachine:(uint64_t)machine upstreamTransform:(uint64_t)transform previewTimeMachineConnectionConfiguration:(uint64_t)configuration videoPreviewEnabled:(uint64_t)enabled smartCameraMotionDetectionEnabled:(uint64_t)detectionEnabled graph:(void *)graph captureDevice:(void *)self0
 {
   if (result)
   {
     v13 = result;
-    if ([a10 zeroShutterLagEnabled])
+    if ([device zeroShutterLagEnabled])
     {
       v14 = 7;
     }
@@ -2821,9 +2821,9 @@ LABEL_54:
       v14 = 4;
     }
 
-    v15 = -[BWPreviewTimeMachineSinkNode initWithCaptureDevice:processingQueuePriority:timeMachineCapacity:smartCameraMotionDetectionEnabled:sinkID:]([BWPreviewTimeMachineSinkNode alloc], "initWithCaptureDevice:processingQueuePriority:timeMachineCapacity:smartCameraMotionDetectionEnabled:sinkID:", a10, 13, v14, a8, [v13 sinkID]);
+    v15 = -[BWPreviewTimeMachineSinkNode initWithCaptureDevice:processingQueuePriority:timeMachineCapacity:smartCameraMotionDetectionEnabled:sinkID:]([BWPreviewTimeMachineSinkNode alloc], "initWithCaptureDevice:processingQueuePriority:timeMachineCapacity:smartCameraMotionDetectionEnabled:sinkID:", device, 13, v14, detectionEnabled, [v13 sinkID]);
     v22 = OUTLINED_FUNCTION_20_20(v15, sel_addNode_error_, v16, v17, v18, v19, v20, v21, v24, v25, v26, v13);
-    if (objc_msgSendSuper2(v22, v23, v15) & 1) != 0 && (v13[10] = v15, ([a9 connectOutput:a2 toInput:-[BWNode input](v15 pipelineStage:{"input"), a3}]))
+    if (objc_msgSendSuper2(v22, v23, v15) & 1) != 0 && (v13[10] = v15, ([graph connectOutput:a2 toInput:-[BWNode input](v15 pipelineStage:{"input"), pipeline}]))
     {
       [(BWNode *)v15 output];
     }
@@ -2841,7 +2841,7 @@ LABEL_54:
   return result;
 }
 
-- (id)_buildPreviewSmartStyleCoefficientsTimeMachineSinkPipeline:(uint64_t)a3 upstreamPipelineStageForPreviewTimeMachine:(uint64_t)a4 previewTimeMachineConnectionConfiguration:(void *)a5 graph:(void *)a6 captureDevice:
+- (id)_buildPreviewSmartStyleCoefficientsTimeMachineSinkPipeline:(uint64_t)pipeline upstreamPipelineStageForPreviewTimeMachine:(uint64_t)machine previewTimeMachineConnectionConfiguration:(void *)configuration graph:(void *)graph captureDevice:
 {
   if (result)
   {
@@ -2865,10 +2865,10 @@ LABEL_54:
     {
       v15 = v14;
       [(BWNode *)v14 setName:@"SmartStyle attachments Time Machine"];
-      [a6 setSmartStyleAttachedMediaTimeMachineDelegate:v15];
+      [graph setSmartStyleAttachedMediaTimeMachineDelegate:v15];
       v16.receiver = v10;
       v16.super_class = FigCapturePreviewSinkPipeline;
-      if (objc_msgSendSuper2(&v16, sel_addNode_error_, v15, &v19) & 1) != 0 && ([a5 connectOutput:a2 toInput:-[BWNode input](v15 pipelineStage:{"input"), a3}])
+      if (objc_msgSendSuper2(&v16, sel_addNode_error_, v15, &v19) & 1) != 0 && ([configuration connectOutput:a2 toInput:-[BWNode input](v15 pipelineStage:{"input"), pipeline}])
       {
         [(BWNode *)v15 output];
       }
@@ -2891,16 +2891,16 @@ LABEL_54:
   return result;
 }
 
-- (id)_stashPreviewImageQueueUpdatedNotificationPayload:(unint64_t)a3 previewDimensions:(int)a4 remoteVideoPreview:
+- (id)_stashPreviewImageQueueUpdatedNotificationPayload:(unint64_t)payload previewDimensions:(int)dimensions remoteVideoPreview:
 {
   if (result)
   {
     v7 = result;
-    v8 = [result[7] imageQueueSlot];
-    if (v8)
+    imageQueueSlot = [result[7] imageQueueSlot];
+    if (imageQueueSlot)
     {
-      v9 = v8;
-      if (a4)
+      v9 = imageQueueSlot;
+      if (dimensions)
       {
         v18[0] = @"SectionID";
         v19[0] = [v7 sinkID];
@@ -2909,9 +2909,9 @@ LABEL_54:
         v18[2] = @"RotationDegrees";
         v19[2] = [MEMORY[0x1E696AD98] numberWithInt:a2];
         v18[3] = @"ImageQueueWidth";
-        v19[3] = [MEMORY[0x1E696AD98] numberWithInt:a3];
+        v19[3] = [MEMORY[0x1E696AD98] numberWithInt:payload];
         v18[4] = @"ImageQueueHeight";
-        v19[4] = [MEMORY[0x1E696AD98] numberWithInt:HIDWORD(a3)];
+        v19[4] = [MEMORY[0x1E696AD98] numberWithInt:HIDWORD(payload)];
         v10 = MEMORY[0x1E695DF20];
         v11 = v19;
         v12 = v18;
@@ -2920,18 +2920,18 @@ LABEL_54:
 
       else
       {
-        v15 = [v7[7] imageQueue];
+        imageQueue = [v7[7] imageQueue];
         v17[0] = [v7 sinkID];
         v16[1] = @"ImageQueueSlot";
         v17[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v9];
-        v17[2] = v15;
+        v17[2] = imageQueue;
         v16[2] = @"ImageQueue";
         v16[3] = @"RotationDegrees";
         v17[3] = [MEMORY[0x1E696AD98] numberWithInt:a2];
         v16[4] = @"ImageQueueWidth";
-        v17[4] = [MEMORY[0x1E696AD98] numberWithInt:a3];
+        v17[4] = [MEMORY[0x1E696AD98] numberWithInt:payload];
         v16[5] = @"ImageQueueHeight";
-        v17[5] = [MEMORY[0x1E696AD98] numberWithInt:HIDWORD(a3)];
+        v17[5] = [MEMORY[0x1E696AD98] numberWithInt:HIDWORD(payload)];
         v10 = MEMORY[0x1E695DF20];
         v11 = v17;
         v12 = v16;

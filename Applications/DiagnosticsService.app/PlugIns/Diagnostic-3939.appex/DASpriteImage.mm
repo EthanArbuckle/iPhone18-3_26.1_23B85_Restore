@@ -1,28 +1,28 @@
 @interface DASpriteImage
-+ (id)imagesFromSprite:(id)a3 inRange:(_NSRange)a4 withImageSize:(CGSize)a5;
++ (id)imagesFromSprite:(id)sprite inRange:(_NSRange)range withImageSize:(CGSize)size;
 @end
 
 @implementation DASpriteImage
 
-+ (id)imagesFromSprite:(id)a3 inRange:(_NSRange)a4 withImageSize:(CGSize)a5
++ (id)imagesFromSprite:(id)sprite inRange:(_NSRange)range withImageSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = v9;
-  if (!v9 || (height == CGSizeZero.height ? (v11 = width == CGSizeZero.width) : (v11 = 0), !v11 ? (v12 = length == 0) : (v12 = 1), v12))
+  height = size.height;
+  width = size.width;
+  length = range.length;
+  location = range.location;
+  spriteCopy = sprite;
+  v10 = spriteCopy;
+  if (!spriteCopy || (height == CGSizeZero.height ? (v11 = width == CGSizeZero.width) : (v11 = 0), !v11 ? (v12 = length == 0) : (v12 = 1), v12))
   {
     v15 = 0;
   }
 
   else
   {
-    v14 = [v9 CGImage];
+    cGImage = [spriteCopy CGImage];
     v15 = [NSMutableArray arrayWithCapacity:length];
-    v16 = CGImageGetWidth(v14);
-    v17 = CGImageGetHeight(v14);
+    v16 = CGImageGetWidth(cGImage);
+    v17 = CGImageGetHeight(cGImage);
     v18 = (v16 / width);
     v19 = (height * (location / v18));
     if (v17 > v19)
@@ -39,7 +39,7 @@
           v28.origin.y = v22;
           v28.size.width = width;
           v28.size.height = height;
-          v24 = CGImageCreateWithImageInRect(v14, v28);
+          v24 = CGImageCreateWithImageInRect(cGImage, v28);
           v25 = [UIImage imageWithCGImage:v24];
           [v15 addObject:v25];
 

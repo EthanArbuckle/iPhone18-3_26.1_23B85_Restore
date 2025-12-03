@@ -1,7 +1,7 @@
 @interface MEExtensionUserPreferences
 + (id)log;
 + (id)sharedInstance;
-- (BOOL)isExtensionEnabled:(id)a3;
+- (BOOL)isExtensionEnabled:(id)enabled;
 - (id)_loadUserPreferences;
 - (id)_plistURL;
 - (id)_prefsDictionary;
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __33__MEExtensionUserPreferences_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_2 != -1)
   {
     dispatch_once(&log_onceToken_2, block);
@@ -79,8 +79,8 @@ void __39__MEExtensionUserPreferences__plistURL__block_invoke()
 - (id)_prefsDictionary
 {
   v3 = objc_alloc(MEMORY[0x277CBEA90]);
-  v4 = [(MEExtensionUserPreferences *)self _plistURL];
-  v5 = [v3 initWithContentsOfURL:v4];
+  _plistURL = [(MEExtensionUserPreferences *)self _plistURL];
+  v5 = [v3 initWithContentsOfURL:_plistURL];
 
   if (v5)
   {
@@ -97,9 +97,9 @@ void __39__MEExtensionUserPreferences__plistURL__block_invoke()
 
 - (id)_loadUserPreferences
 {
-  v3 = [(MEExtensionUserPreferences *)self _prefsDictionary];
+  _prefsDictionary = [(MEExtensionUserPreferences *)self _prefsDictionary];
   extensionIDToUserEnabledMap = self->_extensionIDToUserEnabledMap;
-  self->_extensionIDToUserEnabledMap = v3;
+  self->_extensionIDToUserEnabledMap = _prefsDictionary;
 
   v5 = self->_extensionIDToUserEnabledMap;
   if (!v5)
@@ -114,12 +114,12 @@ void __39__MEExtensionUserPreferences__plistURL__block_invoke()
   return v5;
 }
 
-- (BOOL)isExtensionEnabled:(id)a3
+- (BOOL)isExtensionEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(MEExtensionUserPreferences *)self _loadUserPreferences];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  _loadUserPreferences = [(MEExtensionUserPreferences *)self _loadUserPreferences];
+  v6 = [_loadUserPreferences objectForKeyedSubscript:enabledCopy];
 
   v7 = [v6 objectForKeyedSubscript:@"MEExtensionUserEnabled"];
 
@@ -132,7 +132,7 @@ void __39__MEExtensionUserPreferences__plistURL__block_invoke()
 - (void)_savePreferences
 {
   *buf = 138543362;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_257F67000, log, OS_LOG_TYPE_ERROR, "Failed to write serialized entries: %{public}@", buf, 0xCu);
 }
 
@@ -151,8 +151,8 @@ void __39__MEExtensionUserPreferences__plistURL__block_invoke()
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v8 = [(NSMutableDictionary *)self->_extensionIDToUserEnabledMap count];
-      v9 = [v6 ef_publicDescription];
-      [(MEExtensionUserPreferences *)v9 _serializedData:buf];
+      ef_publicDescription = [v6 ef_publicDescription];
+      [(MEExtensionUserPreferences *)ef_publicDescription _serializedData:buf];
     }
   }
 
@@ -166,7 +166,7 @@ void __39__MEExtensionUserPreferences__plistURL__block_invoke()
   *buf = 134218242;
   *(buf + 4) = a3;
   *(buf + 6) = 2114;
-  *(buf + 14) = a1;
+  *(buf + 14) = self;
   _os_log_error_impl(&dword_257F67000, log, OS_LOG_TYPE_ERROR, "Failed to serialize %lu entries: %{public}@", buf, 0x16u);
 }
 

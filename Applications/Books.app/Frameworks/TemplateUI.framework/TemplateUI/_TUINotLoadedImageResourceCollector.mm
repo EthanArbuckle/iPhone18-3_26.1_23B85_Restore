@@ -1,17 +1,17 @@
 @interface _TUINotLoadedImageResourceCollector
-- (void)collectImageResource:(id)a3;
+- (void)collectImageResource:(id)resource;
 @end
 
 @implementation _TUINotLoadedImageResourceCollector
 
-- (void)collectImageResource:(id)a3
+- (void)collectImageResource:(id)resource
 {
-  v4 = a3;
-  if (([v4 isImageLoaded] & 1) == 0)
+  resourceCopy = resource;
+  if (([resourceCopy isImageLoaded] & 1) == 0)
   {
     v5.receiver = self;
     v5.super_class = _TUINotLoadedImageResourceCollector;
-    [(_TUIImageResourceCollector *)&v5 collectImageResource:v4];
+    [(_TUIImageResourceCollector *)&v5 collectImageResource:resourceCopy];
   }
 }
 

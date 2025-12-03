@@ -21,8 +21,8 @@
   else
   {
     v6 = MEMORY[0x277D755D0];
-    v7 = [MEMORY[0x277D75348] systemBlueColor];
-    v3 = [v6 configurationWithHierarchicalColor:v7];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    v3 = [v6 configurationWithHierarchicalColor:systemBlueColor];
 
     v4 = DSUILocStringForKey(@"SAFETY_RESET");
     v8 = DSUILocStringForKey(@"SAFETY_RESET_DETAIL");
@@ -41,8 +41,8 @@
   v26.super_class = DSEmergencyResetWelcomeController;
   [(DSOBWelcomeController *)&v26 viewDidLoad];
   v3 = DSUILocStringForKey(@"START_EMERGENCY_RESET");
-  v4 = [(DSEmergencyResetWelcomeController *)self delegate];
-  v5 = [DSUIUtilities setUpBoldButtonForController:self title:v3 target:v4 selector:sel_pushNextPane];
+  delegate = [(DSEmergencyResetWelcomeController *)self delegate];
+  v5 = [DSUIUtilities setUpBoldButtonForController:self title:v3 target:delegate selector:sel_pushNextPane];
 
   if ([MEMORY[0x277D054D8] shouldShowBioRatchetFlow])
   {
@@ -92,54 +92,54 @@
 
 - (void)_presentDTOCell
 {
-  v3 = [(DSEmergencyResetWelcomeController *)self cell];
+  cell = [(DSEmergencyResetWelcomeController *)self cell];
 
-  if (!v3)
+  if (!cell)
   {
     v4 = [DSPlatterTableView cellWithPresentingViewController:self];
     [(DSEmergencyResetWelcomeController *)self setCell:v4];
 
-    v5 = [(DSEmergencyResetWelcomeController *)self scrollView];
-    [v5 addSubview:self->_cell];
+    scrollView = [(DSEmergencyResetWelcomeController *)self scrollView];
+    [scrollView addSubview:self->_cell];
   }
 
-  v6 = [(DSEmergencyResetWelcomeController *)self cell];
+  cell2 = [(DSEmergencyResetWelcomeController *)self cell];
 
-  if (v6)
+  if (cell2)
   {
-    v7 = [(DSEmergencyResetWelcomeController *)self contentView];
-    v8 = [v7 topAnchor];
-    v9 = [(DSEmergencyResetWelcomeController *)self cell];
-    v10 = [v9 bottomAnchor];
-    v11 = [v8 constraintEqualToAnchor:v10 constant:16.0];
+    contentView = [(DSEmergencyResetWelcomeController *)self contentView];
+    topAnchor = [contentView topAnchor];
+    cell3 = [(DSEmergencyResetWelcomeController *)self cell];
+    bottomAnchor = [cell3 bottomAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:16.0];
     [v11 setActive:1];
 
-    v12 = [(DSEmergencyResetWelcomeController *)self cell];
-    v13 = [v12 topAnchor];
-    v14 = [(DSEmergencyResetWelcomeController *)self headerView];
-    v15 = [v14 bottomAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15 constant:16.0];
+    cell4 = [(DSEmergencyResetWelcomeController *)self cell];
+    topAnchor2 = [cell4 topAnchor];
+    headerView = [(DSEmergencyResetWelcomeController *)self headerView];
+    bottomAnchor2 = [headerView bottomAnchor];
+    v16 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2 constant:16.0];
     [v16 setActive:1];
 
-    v17 = [(DSEmergencyResetWelcomeController *)self cell];
-    v18 = [v17 leadingAnchor];
-    v19 = [(DSEmergencyResetWelcomeController *)self headerView];
-    v20 = [v19 leadingAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
+    cell5 = [(DSEmergencyResetWelcomeController *)self cell];
+    leadingAnchor = [cell5 leadingAnchor];
+    headerView2 = [(DSEmergencyResetWelcomeController *)self headerView];
+    leadingAnchor2 = [headerView2 leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v21 setActive:1];
 
-    v22 = [(DSEmergencyResetWelcomeController *)self cell];
-    v23 = [v22 widthAnchor];
-    v24 = [(DSEmergencyResetWelcomeController *)self headerView];
-    v25 = [v24 widthAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25];
+    cell6 = [(DSEmergencyResetWelcomeController *)self cell];
+    widthAnchor = [cell6 widthAnchor];
+    headerView3 = [(DSEmergencyResetWelcomeController *)self headerView];
+    widthAnchor2 = [headerView3 widthAnchor];
+    v26 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     [v26 setActive:1];
 
-    v30 = [(DSEmergencyResetWelcomeController *)self cell];
-    v27 = [v30 heightAnchor];
-    v28 = [(DSEmergencyResetWelcomeController *)self cell];
-    [v28 preferredHeight];
-    v29 = [v27 constraintEqualToConstant:?];
+    cell7 = [(DSEmergencyResetWelcomeController *)self cell];
+    heightAnchor = [cell7 heightAnchor];
+    cell8 = [(DSEmergencyResetWelcomeController *)self cell];
+    [cell8 preferredHeight];
+    v29 = [heightAnchor constraintEqualToConstant:?];
     [v29 setActive:1];
   }
 }

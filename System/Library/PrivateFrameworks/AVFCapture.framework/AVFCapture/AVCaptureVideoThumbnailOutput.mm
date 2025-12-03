@@ -1,20 +1,20 @@
 @interface AVCaptureVideoThumbnailOutput
-+ (CGRect)contentsRectForFilterAtIndex:(unint64_t)a3 thumbnailSize:(CGSize)a4 filterCount:(unint64_t)a5;
++ (CGRect)contentsRectForFilterAtIndex:(unint64_t)index thumbnailSize:(CGSize)size filterCount:(unint64_t)count;
 - (AVCaptureVideoThumbnailOutput)init;
-- (BOOL)canAddConnection:(id)a3 failureReason:(id *)a4;
+- (BOOL)canAddConnection:(id)connection failureReason:(id *)reason;
 - (CGSize)thumbnailSize;
 - (NSArray)filters;
 - (NSArray)smartStyles;
-- (void)_handleNotification:(id)a3 payload:(id)a4;
+- (void)_handleNotification:(id)notification payload:(id)payload;
 - (void)_signalInvalidationOfPropagatedContentsIfNecessary;
-- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)a3;
+- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)session;
 - (void)dealloc;
-- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)a3;
-- (void)safelyHandleServerConnectionDeathForFigCaptureSession:(OpaqueFigCaptureSession *)a3;
-- (void)setFilters:(id)a3;
-- (void)setSmartStyles:(id)a3;
-- (void)setThumbnailContentsDelegate:(id)a3;
-- (void)setThumbnailSize:(CGSize)a3;
+- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)session;
+- (void)safelyHandleServerConnectionDeathForFigCaptureSession:(OpaqueFigCaptureSession *)session;
+- (void)setFilters:(id)filters;
+- (void)setSmartStyles:(id)styles;
+- (void)setThumbnailContentsDelegate:(id)delegate;
+- (void)setThumbnailSize:(CGSize)size;
 @end
 
 @implementation AVCaptureVideoThumbnailOutput
@@ -23,14 +23,14 @@
 {
   v5.receiver = self;
   v5.super_class = AVCaptureVideoThumbnailOutput;
-  v2 = [(AVCaptureOutput *)&v5 initSubclass];
-  if (v2)
+  initSubclass = [(AVCaptureOutput *)&v5 initSubclass];
+  if (initSubclass)
   {
     v3 = objc_alloc_init(AVCaptureVideoThumbnailOutputInternal);
-    v2->_internal = v3;
+    initSubclass->_internal = v3;
     if (v3)
     {
-      v2->_internal->weakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:v2];
+      initSubclass->_internal->weakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:initSubclass];
     }
 
     else
@@ -40,7 +40,7 @@
     }
   }
 
-  return v2;
+  return initSubclass;
 }
 
 - (NSArray)filters
@@ -74,38 +74,38 @@
   [(AVCaptureOutput *)&v3 dealloc];
 }
 
-- (void)setFilters:(id)a3
+- (void)setFilters:(id)filters
 {
-  self->_internal->filters = [a3 copy];
+  self->_internal->filters = [filters copy];
 
   [(AVCaptureOutput *)self bumpChangeSeed];
 }
 
-- (void)setSmartStyles:(id)a3
+- (void)setSmartStyles:(id)styles
 {
-  self->_internal->smartStyles = [a3 copy];
+  self->_internal->smartStyles = [styles copy];
 
   [(AVCaptureOutput *)self bumpChangeSeed];
 }
 
-- (void)setThumbnailSize:(CGSize)a3
+- (void)setThumbnailSize:(CGSize)size
 {
   internal = self->_internal;
-  if (a3.width != internal->thumbnailSize.width || a3.height != internal->thumbnailSize.height)
+  if (size.width != internal->thumbnailSize.width || size.height != internal->thumbnailSize.height)
   {
-    internal->thumbnailSize = a3;
+    internal->thumbnailSize = size;
     [(AVCaptureOutput *)self bumpChangeSeed];
   }
 }
 
-- (void)setThumbnailContentsDelegate:(id)a3
+- (void)setThumbnailContentsDelegate:(id)delegate
 {
-  if ([(AVWeakReference *)self->_internal->delegateWeakReference referencedObject]!= a3)
+  if ([(AVWeakReference *)self->_internal->delegateWeakReference referencedObject]!= delegate)
   {
 
-    if (a3)
+    if (delegate)
     {
-      v5 = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:a3];
+      v5 = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:delegate];
     }
 
     else
@@ -117,34 +117,34 @@
   }
 }
 
-- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
-  [objc_msgSend(MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:{CMNotificationCenterGetDefaultLocalCenter()), "addListenerWithWeakReference:callback:name:object:flags:", self->_internal->weakReference, vto_notificationHandler, *MEMORY[0x1E698FEB0], a3, 0}];
+  [objc_msgSend(MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:{CMNotificationCenterGetDefaultLocalCenter()), "addListenerWithWeakReference:callback:name:object:flags:", self->_internal->weakReference, vto_notificationHandler, *MEMORY[0x1E698FEB0], session, 0}];
   v5.receiver = self;
   v5.super_class = AVCaptureVideoThumbnailOutput;
-  [(AVCaptureOutput *)&v5 attachSafelyToFigCaptureSession:a3];
+  [(AVCaptureOutput *)&v5 attachSafelyToFigCaptureSession:session];
 }
 
-- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
-  [objc_msgSend(MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:{CMNotificationCenterGetDefaultLocalCenter()), "removeListenerWithWeakReference:callback:name:object:", self->_internal->weakReference, vto_notificationHandler, *MEMORY[0x1E698FEB0], a3}];
+  [objc_msgSend(MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:{CMNotificationCenterGetDefaultLocalCenter()), "removeListenerWithWeakReference:callback:name:object:", self->_internal->weakReference, vto_notificationHandler, *MEMORY[0x1E698FEB0], session}];
   v5.receiver = self;
   v5.super_class = AVCaptureVideoThumbnailOutput;
-  [(AVCaptureOutput *)&v5 detachSafelyFromFigCaptureSession:a3];
+  [(AVCaptureOutput *)&v5 detachSafelyFromFigCaptureSession:session];
 }
 
-- (void)safelyHandleServerConnectionDeathForFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)safelyHandleServerConnectionDeathForFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   [(AVCaptureVideoThumbnailOutput *)self _signalInvalidationOfPropagatedContentsIfNecessary];
   v5.receiver = self;
   v5.super_class = AVCaptureVideoThumbnailOutput;
-  [(AVCaptureOutput *)&v5 safelyHandleServerConnectionDeathForFigCaptureSession:a3];
+  [(AVCaptureOutput *)&v5 safelyHandleServerConnectionDeathForFigCaptureSession:session];
 }
 
-- (BOOL)canAddConnection:(id)a3 failureReason:(id *)a4
+- (BOOL)canAddConnection:(id)connection failureReason:(id *)reason
 {
-  v7 = [a3 mediaType];
-  if (![v7 isEqualToString:*MEMORY[0x1E6987608]])
+  mediaType = [connection mediaType];
+  if (![mediaType isEqualToString:*MEMORY[0x1E6987608]])
   {
     v8 = 1;
     goto LABEL_5;
@@ -154,20 +154,20 @@
   {
     v8 = 2;
 LABEL_5:
-    v9 = AVCaptureOutputConnectionFailureReasonString(v8, self, a3);
+    v9 = AVCaptureOutputConnectionFailureReasonString(v8, self, connection);
     result = 0;
-    *a4 = v9;
+    *reason = v9;
     return result;
   }
 
   return 1;
 }
 
-+ (CGRect)contentsRectForFilterAtIndex:(unint64_t)a3 thumbnailSize:(CGSize)a4 filterCount:(unint64_t)a5
++ (CGRect)contentsRectForFilterAtIndex:(unint64_t)index thumbnailSize:(CGSize)size filterCount:(unint64_t)count
 {
-  v5 = (a5 + 1);
+  v5 = (count + 1);
   v6 = 1.0 / v5;
-  v7 = a3 / v5;
+  v7 = index / v5;
   v8 = 0.0;
   v9 = 1.0;
   result.size.height = v6;
@@ -182,29 +182,29 @@ LABEL_5:
   internal = self->_internal;
   if (internal->didPropagateContents)
   {
-    v4 = [(AVWeakReference *)internal->delegateWeakReference referencedObject];
+    referencedObject = [(AVWeakReference *)internal->delegateWeakReference referencedObject];
     if (objc_opt_respondsToSelector())
     {
-      [v4 videoThumbnailOutputWillEndRenderingThumbnails:self];
+      [referencedObject videoThumbnailOutputWillEndRenderingThumbnails:self];
     }
 
     self->_internal->didPropagateContents = 0;
   }
 }
 
-- (void)_handleNotification:(id)a3 payload:(id)a4
+- (void)_handleNotification:(id)notification payload:(id)payload
 {
-  if ([a3 isEqualToString:*MEMORY[0x1E698FEB0]])
+  if ([notification isEqualToString:*MEMORY[0x1E698FEB0]])
   {
-    v6 = [a4 objectForKeyedSubscript:*MEMORY[0x1E698FAF0]];
+    v6 = [payload objectForKeyedSubscript:*MEMORY[0x1E698FAF0]];
     if (v6)
     {
       v7 = v6;
-      v8 = [(AVWeakReference *)self->_internal->delegateWeakReference referencedObject];
+      referencedObject = [(AVWeakReference *)self->_internal->delegateWeakReference referencedObject];
       if (objc_opt_respondsToSelector())
       {
-        v9 = [v7 intValue];
-        [v8 videoThumbnailOutput:self willBeginRenderingThumbnailsWithContents:{objc_msgSend(MEMORY[0x1E6979320], "objectForSlot:", v9)}];
+        intValue = [v7 intValue];
+        [referencedObject videoThumbnailOutput:self willBeginRenderingThumbnailsWithContents:{objc_msgSend(MEMORY[0x1E6979320], "objectForSlot:", intValue)}];
         self->_internal->didPropagateContents = 1;
       }
     }

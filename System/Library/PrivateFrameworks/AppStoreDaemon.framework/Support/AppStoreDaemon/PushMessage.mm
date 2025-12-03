@@ -1,14 +1,14 @@
 @interface PushMessage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation PushMessage
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -20,7 +20,7 @@
     v6 = 0;
     if (self && (isKindOfClass & 1) != 0)
     {
-      v6 = [(NSDictionary *)self->_userInfo isEqualToDictionary:v4->_userInfo];
+      v6 = [(NSDictionary *)self->_userInfo isEqualToDictionary:equalCopy->_userInfo];
     }
   }
 

@@ -1,18 +1,18 @@
 @interface UIDynamicAppDefinedColor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_generateColorsByTraitCollection;
-- (id)_resolvedColorWithTraitCollection:(id)a3;
+- (id)_resolvedColorWithTraitCollection:(id)collection;
 - (id)description;
-- (id)initWithColorsByTraitCollection:(id *)a1;
-- (void)encodeWithCoder:(id)a3;
+- (id)initWithColorsByTraitCollection:(id *)collection;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIDynamicAppDefinedColor
 
-- (id)initWithColorsByTraitCollection:(id *)a1
+- (id)initWithColorsByTraitCollection:(id *)collection
 {
-  v2 = a1;
-  if (a1)
+  collectionCopy = collection;
+  if (collection)
   {
     v3 = a2;
     if (![v3 count])
@@ -40,11 +40,11 @@
     v8 = v5;
     if (![v8 count])
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:sel__initWithColorsByThemeKey_ object:v2 file:@"UIColor.m" lineNumber:5196 description:{@"Invalid parameter not satisfying: %@", @"colorsByThemeKey.count > 0", v13, v14, v15, v16}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__initWithColorsByThemeKey_ object:collectionCopy file:@"UIColor.m" lineNumber:5196 description:{@"Invalid parameter not satisfying: %@", @"colorsByThemeKey.count > 0", v13, v14, v15, v16}];
     }
 
-    v18.receiver = v2;
+    v18.receiver = collectionCopy;
     v18.super_class = UIDynamicAppDefinedColor;
     v9 = objc_msgSendSuper2(&v18, sel_init);
     v10 = v9;
@@ -53,10 +53,10 @@
       objc_storeStrong(v9 + 3, v4);
     }
 
-    v2 = v10;
+    collectionCopy = v10;
   }
 
-  return v2;
+  return collectionCopy;
 }
 
 void __60__UIDynamicAppDefinedColor_initWithColorsByTraitCollection___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -74,34 +74,34 @@ void __60__UIDynamicAppDefinedColor_initWithColorsByTraitCollection___block_invo
   [*(a1 + 32) setObject:v5 forKey:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UIDynamicAppDefinedColor *)&self->super.super.super.isa _generateColorsByTraitCollection];
-  [v4 encodeObject:v5 forKey:@"UIDynamicAppDefinedColorsByTraitCollection"];
+  coderCopy = coder;
+  _generateColorsByTraitCollection = [(UIDynamicAppDefinedColor *)&self->super.super.super.isa _generateColorsByTraitCollection];
+  [coderCopy encodeObject:_generateColorsByTraitCollection forKey:@"UIDynamicAppDefinedColorsByTraitCollection"];
 
   v6.receiver = self;
   v6.super_class = UIDynamicAppDefinedColor;
-  [(UIColor *)&v6 encodeWithCoder:v4];
+  [(UIColor *)&v6 encodeWithCoder:coderCopy];
 }
 
 - (id)_generateColorsByTraitCollection
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(a1[3], "count")}];
-    v3 = v1[3];
+    v2 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(self[3], "count")}];
+    v3 = selfCopy[3];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __60__UIDynamicAppDefinedColor__generateColorsByTraitCollection__block_invoke;
     v5[3] = &unk_1E710BD18;
-    v1 = v2;
-    v6 = v1;
+    selfCopy = v2;
+    v6 = selfCopy;
     [v3 enumerateKeysAndObjectsUsingBlock:v5];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __60__UIDynamicAppDefinedColor__generateColorsByTraitCollection__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -113,10 +113,10 @@ void __60__UIDynamicAppDefinedColor__generateColorsByTraitCollection__block_invo
   [v4 setObject:v5 forKey:v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -126,7 +126,7 @@ void __60__UIDynamicAppDefinedColor__generateColorsByTraitCollection__block_invo
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NSDictionary *)v4->_colorsByThemeKey isEqual:self->_colorsByThemeKey];
+      v5 = [(NSDictionary *)equalCopy->_colorsByThemeKey isEqual:self->_colorsByThemeKey];
     }
 
     else
@@ -138,10 +138,10 @@ void __60__UIDynamicAppDefinedColor__generateColorsByTraitCollection__block_invo
   return v5;
 }
 
-- (id)_resolvedColorWithTraitCollection:(id)a3
+- (id)_resolvedColorWithTraitCollection:(id)collection
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionCopy = collection;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -154,7 +154,7 @@ void __60__UIDynamicAppDefinedColor__generateColorsByTraitCollection__block_invo
   v11[3] = &unk_1E710BCC8;
   v11[4] = self;
   v11[5] = &v12;
-  [(UITraitCollection *)v4 _enumerateThemeKeysForLookup:v11];
+  [(UITraitCollection *)collectionCopy _enumerateThemeKeysForLookup:v11];
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   v6 = v13[5];
   if (has_internal_diagnostics)
@@ -165,7 +165,7 @@ void __60__UIDynamicAppDefinedColor__generateColorsByTraitCollection__block_invo
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v19 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_188A29000, v9, OS_LOG_TYPE_FAULT, "Dynamic color couldn't be resolved: %@", buf, 0xCu);
       }
     }
@@ -177,7 +177,7 @@ void __60__UIDynamicAppDefinedColor__generateColorsByTraitCollection__block_invo
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v19 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_ERROR, "Dynamic color couldn't be resolved: %@", buf, 0xCu);
     }
   }
@@ -206,8 +206,8 @@ void __62__UIDynamicAppDefinedColor__resolvedColorWithTraitCollection___block_in
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(UIDynamicAppDefinedColor *)&self->super.super.super.isa _generateColorsByTraitCollection];
-  v7 = [v3 stringWithFormat:@"<%@: %p colors = %@>", v5, self, v6];;
+  _generateColorsByTraitCollection = [(UIDynamicAppDefinedColor *)&self->super.super.super.isa _generateColorsByTraitCollection];
+  v7 = [v3 stringWithFormat:@"<%@: %p colors = %@>", v5, self, _generateColorsByTraitCollection];;
 
   return v7;
 }

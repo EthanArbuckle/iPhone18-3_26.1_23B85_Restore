@@ -1,14 +1,14 @@
 @interface MTRSubscribeParams
 - (MTRSubscribeParams)init;
-- (MTRSubscribeParams)initWithCoder:(id)a3;
+- (MTRSubscribeParams)initWithCoder:(id)coder;
 - (MTRSubscribeParams)initWithMinInterval:(NSNumber *)minInterval maxInterval:(NSNumber *)maxInterval;
 - (NSNumber)autoResubscribe;
 - (NSNumber)keepPreviousSubscriptions;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAutoResubscribe:(NSNumber *)autoResubscribe;
 - (void)setKeepPreviousSubscriptions:(NSNumber *)keepPreviousSubscriptions;
-- (void)toReadPrepareParams:(void *)a3;
+- (void)toReadPrepareParams:(void *)params;
 @end
 
 @implementation MTRSubscribeParams
@@ -38,45 +38,45 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MTRSubscribeParams alloc];
-  v5 = [(MTRSubscribeParams *)self minInterval];
-  v6 = [(MTRSubscribeParams *)self maxInterval];
-  v7 = [(MTRSubscribeParams *)v4 initWithMinInterval:v5 maxInterval:v6];
+  minInterval = [(MTRSubscribeParams *)self minInterval];
+  maxInterval = [(MTRSubscribeParams *)self maxInterval];
+  v7 = [(MTRSubscribeParams *)v4 initWithMinInterval:minInterval maxInterval:maxInterval];
 
   [(MTRReadParams *)v7 setFilterByFabric:[(MTRReadParams *)self shouldFilterByFabric]];
-  v8 = [(MTRReadParams *)self minEventNumber];
-  [(MTRReadParams *)v7 setMinEventNumber:v8];
+  minEventNumber = [(MTRReadParams *)self minEventNumber];
+  [(MTRReadParams *)v7 setMinEventNumber:minEventNumber];
 
   [(MTRReadParams *)v7 setAssumeUnknownAttributesReportable:[(MTRReadParams *)self shouldAssumeUnknownAttributesReportable]];
   [(MTRSubscribeParams *)v7 setReplaceExistingSubscriptions:[(MTRSubscribeParams *)self shouldReplaceExistingSubscriptions]];
   [(MTRSubscribeParams *)v7 setReportEventsUrgently:[(MTRSubscribeParams *)self shouldReportEventsUrgently]];
   [(MTRSubscribeParams *)v7 setResubscribeAutomatically:[(MTRSubscribeParams *)self shouldResubscribeAutomatically]];
-  v9 = [(MTRSubscribeParams *)self minInterval];
-  [(MTRSubscribeParams *)v7 setMinInterval:v9];
+  minInterval2 = [(MTRSubscribeParams *)self minInterval];
+  [(MTRSubscribeParams *)v7 setMinInterval:minInterval2];
 
-  v10 = [(MTRSubscribeParams *)self maxInterval];
-  [(MTRSubscribeParams *)v7 setMaxInterval:v10];
+  maxInterval2 = [(MTRSubscribeParams *)self maxInterval];
+  [(MTRSubscribeParams *)v7 setMaxInterval:maxInterval2];
 
   return v7;
 }
 
-- (MTRSubscribeParams)initWithCoder:(id)a3
+- (MTRSubscribeParams)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = MTRSubscribeParams;
-  v5 = [(MTRReadParams *)&v10 initWithCoder:v4];
+  v5 = [(MTRReadParams *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    -[MTRSubscribeParams setReplaceExistingSubscriptions:](v5, "setReplaceExistingSubscriptions:", [v4 decodeBoolForKey:@"sFilterByFabricKey"]);
-    -[MTRSubscribeParams setReportEventsUrgently:](v5, "setReportEventsUrgently:", [v4 decodeBoolForKey:@"sMinEventNumberKey"]);
-    -[MTRSubscribeParams setResubscribeAutomatically:](v5, "setResubscribeAutomatically:", [v4 decodeBoolForKey:@"sAssumeUnknownAttributesReportableKey"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sMinIntervalKeyKey"];
+    -[MTRSubscribeParams setReplaceExistingSubscriptions:](v5, "setReplaceExistingSubscriptions:", [coderCopy decodeBoolForKey:@"sFilterByFabricKey"]);
+    -[MTRSubscribeParams setReportEventsUrgently:](v5, "setReportEventsUrgently:", [coderCopy decodeBoolForKey:@"sMinEventNumberKey"]);
+    -[MTRSubscribeParams setResubscribeAutomatically:](v5, "setResubscribeAutomatically:", [coderCopy decodeBoolForKey:@"sAssumeUnknownAttributesReportableKey"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sMinIntervalKeyKey"];
     [(MTRSubscribeParams *)v5 setMinInterval:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sMaxIntervalKeyKey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sMaxIntervalKeyKey"];
     [(MTRSubscribeParams *)v5 setMaxInterval:v7];
 
     v8 = v5;
@@ -85,44 +85,44 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MTRSubscribeParams;
-  [(MTRReadParams *)&v9 encodeWithCoder:v4];
-  [v4 encodeBool:-[MTRSubscribeParams shouldReplaceExistingSubscriptions](self forKey:{"shouldReplaceExistingSubscriptions"), @"sFilterByFabricKey"}];
-  [v4 encodeBool:-[MTRSubscribeParams shouldReportEventsUrgently](self forKey:{"shouldReportEventsUrgently"), @"sMinEventNumberKey"}];
-  [v4 encodeBool:-[MTRSubscribeParams shouldResubscribeAutomatically](self forKey:{"shouldResubscribeAutomatically"), @"sAssumeUnknownAttributesReportableKey"}];
-  v5 = [(MTRSubscribeParams *)self minInterval];
+  [(MTRReadParams *)&v9 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[MTRSubscribeParams shouldReplaceExistingSubscriptions](self forKey:{"shouldReplaceExistingSubscriptions"), @"sFilterByFabricKey"}];
+  [coderCopy encodeBool:-[MTRSubscribeParams shouldReportEventsUrgently](self forKey:{"shouldReportEventsUrgently"), @"sMinEventNumberKey"}];
+  [coderCopy encodeBool:-[MTRSubscribeParams shouldResubscribeAutomatically](self forKey:{"shouldResubscribeAutomatically"), @"sAssumeUnknownAttributesReportableKey"}];
+  minInterval = [(MTRSubscribeParams *)self minInterval];
 
-  if (v5)
+  if (minInterval)
   {
-    v6 = [(MTRSubscribeParams *)self minInterval];
-    [v4 encodeObject:v6 forKey:@"sMinIntervalKeyKey"];
+    minInterval2 = [(MTRSubscribeParams *)self minInterval];
+    [coderCopy encodeObject:minInterval2 forKey:@"sMinIntervalKeyKey"];
   }
 
-  v7 = [(MTRSubscribeParams *)self maxInterval];
+  maxInterval = [(MTRSubscribeParams *)self maxInterval];
 
-  if (v7)
+  if (maxInterval)
   {
-    v8 = [(MTRSubscribeParams *)self maxInterval];
-    [v4 encodeObject:v8 forKey:@"sMaxIntervalKeyKey"];
+    maxInterval2 = [(MTRSubscribeParams *)self maxInterval];
+    [coderCopy encodeObject:maxInterval2 forKey:@"sMaxIntervalKeyKey"];
   }
 }
 
-- (void)toReadPrepareParams:(void *)a3
+- (void)toReadPrepareParams:(void *)params
 {
   v7.receiver = self;
   v7.super_class = MTRSubscribeParams;
   [(MTRReadParams *)&v7 toReadPrepareParams:?];
-  v5 = [(MTRSubscribeParams *)self minInterval];
-  *(a3 + 54) = [v5 unsignedShortValue];
+  minInterval = [(MTRSubscribeParams *)self minInterval];
+  *(params + 54) = [minInterval unsignedShortValue];
 
-  v6 = [(MTRSubscribeParams *)self maxInterval];
-  *(a3 + 55) = [v6 unsignedShortValue];
+  maxInterval = [(MTRSubscribeParams *)self maxInterval];
+  *(params + 55) = [maxInterval unsignedShortValue];
 
-  *(a3 + 112) = ![(MTRSubscribeParams *)self shouldReplaceExistingSubscriptions];
+  *(params + 112) = ![(MTRSubscribeParams *)self shouldReplaceExistingSubscriptions];
 }
 
 - (MTRSubscribeParams)init
@@ -176,23 +176,23 @@
   v6 = v4;
   if (v4)
   {
-    v5 = [(NSNumber *)v4 BOOLValue];
+    bOOLValue = [(NSNumber *)v4 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  [(MTRSubscribeParams *)self setResubscribeAutomatically:v5];
+  [(MTRSubscribeParams *)self setResubscribeAutomatically:bOOLValue];
 }
 
 - (NSNumber)autoResubscribe
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(MTRSubscribeParams *)self shouldResubscribeAutomatically];
+  shouldResubscribeAutomatically = [(MTRSubscribeParams *)self shouldResubscribeAutomatically];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:shouldResubscribeAutomatically];
 }
 
 @end

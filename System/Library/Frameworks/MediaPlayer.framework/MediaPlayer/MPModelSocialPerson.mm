@@ -15,11 +15,11 @@
 
 - (id)artworkCatalog
 {
-  v3 = [(MPModelSocialPerson *)self artworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  artworkCatalogBlock = [(MPModelSocialPerson *)self artworkCatalogBlock];
+  v4 = artworkCatalogBlock;
+  if (artworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(artworkCatalogBlock + 16))(artworkCatalogBlock, self);
   }
 
   else
@@ -39,50 +39,50 @@
 
 + (void)__MPModelPropertySocialPersonHasLightweightProfile__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSocialPerson.m" lineNumber:36 description:@"Translator was missing mapping for MPModelPropertySocialPersonHasLightweightProfile"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSocialPerson.m" lineNumber:36 description:@"Translator was missing mapping for MPModelPropertySocialPersonHasLightweightProfile"];
 }
 
 + (void)__MPModelPropertySocialPersonArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSocialPerson.m" lineNumber:35 description:@"Translator was missing mapping for MPModelPropertySocialPersonArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSocialPerson.m" lineNumber:35 description:@"Translator was missing mapping for MPModelPropertySocialPersonArtwork"];
 }
 
 + (void)__MPModelPropertySocialPersonPendingRequestsCount__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSocialPerson.m" lineNumber:34 description:@"Translator was missing mapping for MPModelPropertySocialPersonPendingRequestsCount"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSocialPerson.m" lineNumber:34 description:@"Translator was missing mapping for MPModelPropertySocialPersonPendingRequestsCount"];
 }
 
 + (void)__MPModelPropertySocialPersonIsVerified__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSocialPerson.m" lineNumber:33 description:@"Translator was missing mapping for MPModelPropertySocialPersonIsVerified"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSocialPerson.m" lineNumber:33 description:@"Translator was missing mapping for MPModelPropertySocialPersonIsVerified"];
 }
 
 + (void)__MPModelPropertySocialPersonIsPrivate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSocialPerson.m" lineNumber:32 description:@"Translator was missing mapping for MPModelPropertySocialPersonIsPrivate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSocialPerson.m" lineNumber:32 description:@"Translator was missing mapping for MPModelPropertySocialPersonIsPrivate"];
 }
 
 + (void)__MPModelPropertySocialPersonBiography__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSocialPerson.m" lineNumber:31 description:@"Translator was missing mapping for MPModelPropertySocialPersonBiography"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSocialPerson.m" lineNumber:31 description:@"Translator was missing mapping for MPModelPropertySocialPersonBiography"];
 }
 
 + (void)__MPModelPropertySocialPersonHandle__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSocialPerson.m" lineNumber:30 description:@"Translator was missing mapping for MPModelPropertySocialPersonHandle"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSocialPerson.m" lineNumber:30 description:@"Translator was missing mapping for MPModelPropertySocialPersonHandle"];
 }
 
 + (void)__MPModelPropertySocialPersonUncensoredName__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSocialPerson.m" lineNumber:29 description:@"Translator was missing mapping for MPModelPropertySocialPersonUncensoredName"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSocialPerson.m" lineNumber:29 description:@"Translator was missing mapping for MPModelPropertySocialPersonUncensoredName"];
 }
 
 @end

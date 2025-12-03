@@ -1,18 +1,18 @@
 @interface SFEntitledAssetConfig
-- (BOOL)isEqual:(id)a3;
-- (SFEntitledAssetConfig)initWithAssetType:(unint64_t)a3 language:(id)a4 regionId:(id)a5;
-- (SFEntitledAssetConfig)initWithAssetType:(unint64_t)a3 locale:(id)a4 regionId:(id)a5;
-- (SFEntitledAssetConfig)initWithCoder:(id)a3;
-- (SFEntitledAssetConfig)initWithLanguage:(id)a3 taskHint:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SFEntitledAssetConfig)initWithAssetType:(unint64_t)type language:(id)language regionId:(id)id;
+- (SFEntitledAssetConfig)initWithAssetType:(unint64_t)type locale:(id)locale regionId:(id)id;
+- (SFEntitledAssetConfig)initWithCoder:(id)coder;
+- (SFEntitledAssetConfig)initWithLanguage:(id)language taskHint:(int64_t)hint;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFEntitledAssetConfig
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -22,7 +22,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       assetType = self->_assetType;
       if (assetType != [(SFEntitledAssetConfig *)v5 assetType])
       {
@@ -33,8 +33,8 @@ LABEL_16:
       }
 
       language = self->_language;
-      v8 = [(SFEntitledAssetConfig *)v5 language];
-      if ([language isEqualToString:v8])
+      language = [(SFEntitledAssetConfig *)v5 language];
+      if ([language isEqualToString:language])
       {
         regionId = self->_regionId;
         if (regionId)
@@ -47,8 +47,8 @@ LABEL_16:
           }
         }
 
-        v11 = [(SFEntitledAssetConfig *)v5 regionId];
-        if (!v11)
+        regionId = [(SFEntitledAssetConfig *)v5 regionId];
+        if (!regionId)
         {
           v10 = 1;
           if (!regionId)
@@ -59,9 +59,9 @@ LABEL_16:
           goto LABEL_14;
         }
 
-        v12 = v11;
-        v13 = [(SFEntitledAssetConfig *)v5 regionId];
-        v10 = [v13 isEqualToString:self->_regionId];
+        v12 = regionId;
+        regionId2 = [(SFEntitledAssetConfig *)v5 regionId];
+        v10 = [regionId2 isEqualToString:self->_regionId];
 
         if (regionId)
         {
@@ -87,29 +87,29 @@ LABEL_17:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   assetType = self->_assetType;
-  v5 = a3;
-  [v5 encodeInteger:assetType forKey:@"SFEntitledAssetConfig::assetType"];
-  [v5 encodeObject:self->_language forKey:@"SFEntitledAssetConfig::language"];
-  [v5 encodeObject:self->_regionId forKey:@"SFEntitledAssetConfig::regionId"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:assetType forKey:@"SFEntitledAssetConfig::assetType"];
+  [coderCopy encodeObject:self->_language forKey:@"SFEntitledAssetConfig::language"];
+  [coderCopy encodeObject:self->_regionId forKey:@"SFEntitledAssetConfig::regionId"];
 }
 
-- (SFEntitledAssetConfig)initWithCoder:(id)a3
+- (SFEntitledAssetConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SFEntitledAssetConfig;
   v5 = [(SFEntitledAssetConfig *)&v11 init];
   if (v5)
   {
-    v5->_assetType = [v4 decodeIntegerForKey:@"SFEntitledAssetConfig::assetType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SFEntitledAssetConfig::language"];
+    v5->_assetType = [coderCopy decodeIntegerForKey:@"SFEntitledAssetConfig::assetType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SFEntitledAssetConfig::language"];
     language = v5->_language;
     v5->_language = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SFEntitledAssetConfig::regionId"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SFEntitledAssetConfig::regionId"];
     regionId = v5->_regionId;
     v5->_regionId = v8;
   }
@@ -117,27 +117,27 @@ LABEL_17:
   return v5;
 }
 
-- (SFEntitledAssetConfig)initWithLanguage:(id)a3 taskHint:(int64_t)a4
+- (SFEntitledAssetConfig)initWithLanguage:(id)language taskHint:(int64_t)hint
 {
-  v6 = SFEntitledAssetTypeForTaskHint(a4);
+  v6 = SFEntitledAssetTypeForTaskHint(hint);
 
-  return [(SFEntitledAssetConfig *)self initWithAssetType:v6 language:a3 regionId:0];
+  return [(SFEntitledAssetConfig *)self initWithAssetType:v6 language:language regionId:0];
 }
 
-- (SFEntitledAssetConfig)initWithAssetType:(unint64_t)a3 locale:(id)a4 regionId:(id)a5
+- (SFEntitledAssetConfig)initWithAssetType:(unint64_t)type locale:(id)locale regionId:(id)id
 {
-  v8 = a5;
-  v9 = [a4 localeIdentifier];
-  v10 = [(SFEntitledAssetConfig *)self initWithAssetType:a3 language:v9 regionId:v8];
+  idCopy = id;
+  localeIdentifier = [locale localeIdentifier];
+  v10 = [(SFEntitledAssetConfig *)self initWithAssetType:type language:localeIdentifier regionId:idCopy];
 
   return v10;
 }
 
-- (SFEntitledAssetConfig)initWithAssetType:(unint64_t)a3 language:(id)a4 regionId:(id)a5
+- (SFEntitledAssetConfig)initWithAssetType:(unint64_t)type language:(id)language regionId:(id)id
 {
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  languageCopy = language;
+  idCopy = id;
+  if (!languageCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"language cannot be nil."];
   }
@@ -148,8 +148,8 @@ LABEL_17:
   v11 = v10;
   if (v10)
   {
-    v10->_assetType = a3;
-    if (a3 == 6)
+    v10->_assetType = type;
+    if (type == 6)
     {
       language = v10->_language;
       v10->_language = @"default";
@@ -157,14 +157,14 @@ LABEL_17:
 
     else
     {
-      if (a3 == 7)
+      if (type == 7)
       {
-        v12 = [SFUtilities generalASRLanguageForLocaleIdentifier:v8];
+        v12 = [SFUtilities generalASRLanguageForLocaleIdentifier:languageCopy];
       }
 
       else
       {
-        v14 = SFReplacementLocaleCodeForLocaleIdentifier(v8);
+        v14 = SFReplacementLocaleCodeForLocaleIdentifier(languageCopy);
         v15 = v14;
         if (v14)
         {
@@ -173,7 +173,7 @@ LABEL_17:
 
         else
         {
-          v16 = v8;
+          v16 = languageCopy;
         }
 
         objc_storeStrong(&v11->_language, v16);
@@ -185,7 +185,7 @@ LABEL_17:
       v11->_language = v12;
     }
 
-    v17 = [v9 copy];
+    v17 = [idCopy copy];
     regionId = v11->_regionId;
     v11->_regionId = v17;
   }

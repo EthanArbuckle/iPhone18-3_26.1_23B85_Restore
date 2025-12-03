@@ -1,27 +1,27 @@
 @interface NFVASRequest
-+ (BOOL)validateDictionary:(id)a3;
-- (NFVASRequest)initWithDictionary:(id)a3;
++ (BOOL)validateDictionary:(id)dictionary;
+- (NFVASRequest)initWithDictionary:(id)dictionary;
 - (id)asDictionary;
 - (id)description;
 @end
 
 @implementation NFVASRequest
 
-+ (BOOL)validateDictionary:(id)a3
++ (BOOL)validateDictionary:(id)dictionary
 {
-  v3 = a3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v6 = 0;
-      v4 = v3;
+      v4 = dictionaryCopy;
       goto LABEL_17;
     }
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"TerminalCap"];
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"TerminalCap"];
 
   if (v4)
   {
@@ -32,7 +32,7 @@
     }
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"TerminalProtocol"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"TerminalProtocol"];
 
   if (v5)
   {
@@ -43,7 +43,7 @@
     }
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"MerchantId"];
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"MerchantId"];
 
   if (v4)
   {
@@ -54,7 +54,7 @@
     }
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"SignupUrl"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"SignupUrl"];
 
   if (v5)
   {
@@ -68,7 +68,7 @@ LABEL_16:
     }
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"Filter"];
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"Filter"];
 
   if (v4)
   {
@@ -87,31 +87,31 @@ LABEL_17:
   return v6;
 }
 
-- (NFVASRequest)initWithDictionary:(id)a3
+- (NFVASRequest)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = NFVASRequest;
   v5 = [(NFVASRequest *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"TerminalCap"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"TerminalCap"];
     terminalCap = v5->_terminalCap;
     v5->_terminalCap = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"TerminalProtocol"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"TerminalProtocol"];
     terminalProtocol = v5->_terminalProtocol;
     v5->_terminalProtocol = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"MerchantId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"MerchantId"];
     merchantId = v5->_merchantId;
     v5->_merchantId = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"SignupUrl"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"SignupUrl"];
     signupUrl = v5->_signupUrl;
     v5->_signupUrl = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"Filter"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"Filter"];
     filter = v5->_filter;
     v5->_filter = v14;
   }

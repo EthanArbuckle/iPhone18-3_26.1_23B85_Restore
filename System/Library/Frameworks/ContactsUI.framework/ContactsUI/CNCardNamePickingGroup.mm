@@ -9,8 +9,8 @@
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(CNCardNamePickingGroupActionItem);
   v4 = MEMORY[0x1E695CD80];
-  v5 = [(CNCardGroup *)self contact];
-  v6 = [v4 stringFromContact:v5 style:0];
+  contact = [(CNCardGroup *)self contact];
+  v6 = [v4 stringFromContact:contact style:0];
   [(CNCardNamePickingGroupActionItem *)v3 setDisplayName:v6];
 
   v9[0] = v3;

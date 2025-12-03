@@ -1,25 +1,25 @@
 @interface SISchemaSiriResponseContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaSiriResponseContext)initWithDictionary:(id)a3;
-- (SISchemaSiriResponseContext)initWithJSON:(id)a3;
+- (SISchemaSiriResponseContext)initWithDictionary:(id)dictionary;
+- (SISchemaSiriResponseContext)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasSiriResponseMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasSiriResponseMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaSiriResponseContext
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_dialogPhase)
   {
-    v4 = [(SISchemaSiriResponseContext *)self dialogPhase];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"dialogPhase"];
+    dialogPhase = [(SISchemaSiriResponseContext *)self dialogPhase];
+    v5 = [dialogPhase copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"dialogPhase"];
   }
 
   has = self->_has;
@@ -36,7 +36,7 @@
       v8 = off_1E78E64D0[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"presentationType"];
+    [dictionary setObject:v8 forKeyedSubscript:@"presentationType"];
     has = self->_has;
   }
 
@@ -53,23 +53,23 @@
       v10 = off_1E78E6508[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"siriResponseMode"];
+    [dictionary setObject:v10 forKeyedSubscript:@"siriResponseMode"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (SISchemaSiriResponseContext)initWithDictionary:(id)a3
+- (SISchemaSiriResponseContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SISchemaSiriResponseContext;
   v5 = [(SISchemaSiriResponseContext *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dialogPhase"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"dialogPhase"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,14 +77,14 @@
       [(SISchemaSiriResponseContext *)v5 setDialogPhase:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"presentationType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"presentationType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaSiriResponseContext setPresentationType:](v5, "setPresentationType:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"siriResponseMode"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"siriResponseMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -97,30 +97,30 @@
   return v5;
 }
 
-- (SISchemaSiriResponseContext)initWithJSON:(id)a3
+- (SISchemaSiriResponseContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaSiriResponseContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaSiriResponseContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaSiriResponseContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -158,30 +158,30 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(SISchemaSiriResponseContext *)self dialogPhase];
-  v6 = [v4 dialogPhase];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  dialogPhase = [(SISchemaSiriResponseContext *)self dialogPhase];
+  dialogPhase2 = [equalCopy dialogPhase];
+  v7 = dialogPhase2;
+  if ((dialogPhase != 0) == (dialogPhase2 == 0))
   {
 
     goto LABEL_16;
   }
 
-  v8 = [(SISchemaSiriResponseContext *)self dialogPhase];
-  if (v8)
+  dialogPhase3 = [(SISchemaSiriResponseContext *)self dialogPhase];
+  if (dialogPhase3)
   {
-    v9 = v8;
-    v10 = [(SISchemaSiriResponseContext *)self dialogPhase];
-    v11 = [v4 dialogPhase];
-    v12 = [v10 isEqual:v11];
+    v9 = dialogPhase3;
+    dialogPhase4 = [(SISchemaSiriResponseContext *)self dialogPhase];
+    dialogPhase5 = [equalCopy dialogPhase];
+    v12 = [dialogPhase4 isEqual:dialogPhase5];
 
     if (!v12)
     {
@@ -194,7 +194,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v14 = v4[24];
+  v14 = equalCopy[24];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_16:
@@ -205,10 +205,10 @@ LABEL_16:
   if (*&has)
   {
     presentationType = self->_presentationType;
-    if (presentationType == [v4 presentationType])
+    if (presentationType == [equalCopy presentationType])
     {
       has = self->_has;
-      v14 = v4[24];
+      v14 = equalCopy[24];
       goto LABEL_12;
     }
 
@@ -225,7 +225,7 @@ LABEL_12:
   if (v16)
   {
     siriResponseMode = self->_siriResponseMode;
-    if (siriResponseMode != [v4 siriResponseMode])
+    if (siriResponseMode != [equalCopy siriResponseMode])
     {
       goto LABEL_16;
     }
@@ -237,12 +237,12 @@ LABEL_17:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(SISchemaSiriResponseContext *)self dialogPhase];
+  toCopy = to;
+  dialogPhase = [(SISchemaSiriResponseContext *)self dialogPhase];
 
-  if (v4)
+  if (dialogPhase)
   {
     PBDataWriterWriteStringField();
   }
@@ -254,17 +254,17 @@ LABEL_17:
     has = self->_has;
   }
 
-  v6 = v7;
+  v6 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasSiriResponseMode:(BOOL)a3
+- (void)setHasSiriResponseMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }

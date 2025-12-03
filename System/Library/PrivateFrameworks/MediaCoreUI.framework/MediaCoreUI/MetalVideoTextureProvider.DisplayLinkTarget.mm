@@ -1,14 +1,14 @@
 @interface MetalVideoTextureProvider.DisplayLinkTarget
-- (void)frame:(id)a3;
+- (void)frame:(id)frame;
 @end
 
 @implementation MetalVideoTextureProvider.DisplayLinkTarget
 
-- (void)frame:(id)a3
+- (void)frame:(id)frame
 {
-  v3 = a3;
+  frameCopy = frame;
 
-  sub_1C5A0CEE0(v3);
+  sub_1C5A0CEE0(frameCopy);
 }
 
 @end

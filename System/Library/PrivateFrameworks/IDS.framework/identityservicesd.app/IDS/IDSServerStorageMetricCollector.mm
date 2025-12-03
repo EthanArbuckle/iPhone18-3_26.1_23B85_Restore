@@ -1,5 +1,5 @@
 @interface IDSServerStorageMetricCollector
-- (IDSServerStorageMetricCollector)initWithTopic:(id)a3 isPrimary:(BOOL)a4;
+- (IDSServerStorageMetricCollector)initWithTopic:(id)topic isPrimary:(BOOL)primary;
 - (id)dictionaryMetric;
 - (void)endCollector;
 - (void)incrementClientTimeoutCount;
@@ -11,16 +11,16 @@
 
 @implementation IDSServerStorageMetricCollector
 
-- (IDSServerStorageMetricCollector)initWithTopic:(id)a3 isPrimary:(BOOL)a4
+- (IDSServerStorageMetricCollector)initWithTopic:(id)topic isPrimary:(BOOL)primary
 {
-  v5 = a3;
+  topicCopy = topic;
   v10.receiver = self;
   v10.super_class = IDSServerStorageMetricCollector;
   v6 = [(IDSServerStorageMetricCollector *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    [(IDSServerStorageMetricCollector *)v6 setTopic:v5];
+    [(IDSServerStorageMetricCollector *)v6 setTopic:topicCopy];
     [(IDSServerStorageMetricCollector *)v7 setWasPrimary:1];
     v8 = +[NSDate date];
     [v8 timeIntervalSinceReferenceDate];
@@ -72,16 +72,16 @@
   [(IDSServerStorageMetricCollector *)self startTime];
   v6 = v4 - v5;
   v7 = [IDSServerStorageStateMachineCompletedMetric alloc];
-  v8 = [(IDSServerStorageMetricCollector *)self topic];
-  v9 = [(IDSServerStorageMetricCollector *)self linkType];
-  v10 = [(IDSServerStorageMetricCollector *)self wasPrimary];
-  v11 = [(IDSServerStorageMetricCollector *)self messageCount];
-  v12 = [(IDSServerStorageMetricCollector *)self roundCount];
-  v13 = [(IDSServerStorageMetricCollector *)self serverTimeoutCount];
-  v14 = [(IDSServerStorageMetricCollector *)self clientTimeoutCount];
-  v15 = [(IDSServerStorageMetricCollector *)self terminationReason];
-  v16 = [(IDSServerStorageMetricCollector *)self storageCheckVersion];
-  v18 = [v7 initWithService:v8 linkType:v9 wasPrimary:v10 timeTaken:v11 messagesProcessed:v12 roundsProcessed:v13 serverTimeoutCount:v6 clientTimeoutCount:v14 terminationReason:v15 storageCheckVersion:v16];
+  topic = [(IDSServerStorageMetricCollector *)self topic];
+  linkType = [(IDSServerStorageMetricCollector *)self linkType];
+  wasPrimary = [(IDSServerStorageMetricCollector *)self wasPrimary];
+  messageCount = [(IDSServerStorageMetricCollector *)self messageCount];
+  roundCount = [(IDSServerStorageMetricCollector *)self roundCount];
+  serverTimeoutCount = [(IDSServerStorageMetricCollector *)self serverTimeoutCount];
+  clientTimeoutCount = [(IDSServerStorageMetricCollector *)self clientTimeoutCount];
+  terminationReason = [(IDSServerStorageMetricCollector *)self terminationReason];
+  storageCheckVersion = [(IDSServerStorageMetricCollector *)self storageCheckVersion];
+  v18 = [v7 initWithService:topic linkType:linkType wasPrimary:wasPrimary timeTaken:messageCount messagesProcessed:roundCount roundsProcessed:serverTimeoutCount serverTimeoutCount:v6 clientTimeoutCount:clientTimeoutCount terminationReason:terminationReason storageCheckVersion:storageCheckVersion];
 
   v17 = +[IDSCoreAnalyticsLogger defaultLogger];
   [v17 logMetric:v18];
@@ -94,10 +94,10 @@
   [(IDSServerStorageMetricCollector *)self startTime];
   v6 = v5;
   v7 = objc_alloc_init(NSMutableDictionary);
-  v8 = [(IDSServerStorageMetricCollector *)self topic];
-  if (v8)
+  topic = [(IDSServerStorageMetricCollector *)self topic];
+  if (topic)
   {
-    CFDictionarySetValue(v7, @"Topic", v8);
+    CFDictionarySetValue(v7, @"Topic", topic);
   }
 
   v9 = v4 - v6;
@@ -155,10 +155,10 @@
     CFDictionarySetValue(v7, @"terminationReason", v17);
   }
 
-  v18 = [(IDSServerStorageMetricCollector *)self storageCheckVersion];
-  if (v18)
+  storageCheckVersion = [(IDSServerStorageMetricCollector *)self storageCheckVersion];
+  if (storageCheckVersion)
   {
-    CFDictionarySetValue(v7, @"storageCheckVersion", v18);
+    CFDictionarySetValue(v7, @"storageCheckVersion", storageCheckVersion);
   }
 
   return v7;

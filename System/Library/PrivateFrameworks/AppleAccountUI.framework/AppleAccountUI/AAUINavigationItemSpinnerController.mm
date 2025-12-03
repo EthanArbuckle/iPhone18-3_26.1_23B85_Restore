@@ -1,22 +1,22 @@
 @interface AAUINavigationItemSpinnerController
-- (AAUINavigationItemSpinnerController)initWithNavigationItem:(id)a3 hideBackButton:(BOOL)a4;
+- (AAUINavigationItemSpinnerController)initWithNavigationItem:(id)item hideBackButton:(BOOL)button;
 - (void)startSpinning;
 - (void)stopSpinning;
 @end
 
 @implementation AAUINavigationItemSpinnerController
 
-- (AAUINavigationItemSpinnerController)initWithNavigationItem:(id)a3 hideBackButton:(BOOL)a4
+- (AAUINavigationItemSpinnerController)initWithNavigationItem:(id)item hideBackButton:(BOOL)button
 {
-  v7 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = AAUINavigationItemSpinnerController;
   v8 = [(AAUINavigationItemSpinnerController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_navigationItem, a3);
-    v9->_shouldHideBackButton = a4;
+    objc_storeStrong(&v8->_navigationItem, item);
+    v9->_shouldHideBackButton = button;
   }
 
   return v9;
@@ -25,13 +25,13 @@
 - (void)startSpinning
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UINavigationItem *)self->_navigationItem rightBarButtonItems];
+  rightBarButtonItems = [(UINavigationItem *)self->_navigationItem rightBarButtonItems];
   rightBarItems = self->_rightBarItems;
-  self->_rightBarItems = v3;
+  self->_rightBarItems = rightBarButtonItems;
 
-  v5 = [(UINavigationItem *)self->_navigationItem leftBarButtonItems];
+  leftBarButtonItems = [(UINavigationItem *)self->_navigationItem leftBarButtonItems];
   leftBarItems = self->_leftBarItems;
-  self->_leftBarItems = v5;
+  self->_leftBarItems = leftBarButtonItems;
 
   if (self->_shouldHideBackButton)
   {

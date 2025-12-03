@@ -1,26 +1,26 @@
 @interface BCFutureValue
 + (id)reportState;
-+ (void)futures:(id)a3 notify:(id)a4;
++ (void)futures:(id)futures notify:(id)notify;
 + (void)initialize;
 - (BCFutureValue)init;
-- (BCFutureValue)initWithValue:(id)a3;
+- (BCFutureValue)initWithValue:(id)value;
 - (id)get;
-- (id)getNonBlockingError:(id *)a3;
-- (id)sq_get:(id)a3 caller:(void *)a4 value:(id *)a5 error:(id *)a6;
-- (void)_addToState:(id)a3;
-- (void)_get:(id)a3 caller:(void *)a4;
-- (void)_notifyBlocks:(id)a3 withValue:(id)a4 error:(id)a5;
+- (id)getNonBlockingError:(id *)error;
+- (id)sq_get:(id)sq_get caller:(void *)caller value:(id *)value error:(id *)error;
+- (void)_addToState:(id)state;
+- (void)_get:(id)_get caller:(void *)caller;
+- (void)_notifyBlocks:(id)blocks withValue:(id)value error:(id)error;
 - (void)cancel;
 - (void)dealloc;
-- (void)get:(id)a3;
-- (void)getBefore:(unint64_t)a3 block:(id)a4;
+- (void)get:(id)get;
+- (void)getBefore:(unint64_t)before block:(id)block;
 @end
 
 @implementation BCFutureValue
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = dispatch_queue_create("BCFutureValue.outstandingSync", 0);
     v3 = qword_346010;
@@ -86,17 +86,17 @@
   return v8;
 }
 
-- (void)_addToState:(id)a3
+- (void)_addToState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   sync = self->_sync;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1619AC;
   v7[3] = &unk_2C7BE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   dispatch_sync(sync, v7);
 }
 
@@ -127,14 +127,14 @@
   return v2;
 }
 
-- (BCFutureValue)initWithValue:(id)a3
+- (BCFutureValue)initWithValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(BCFutureValue *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_value, a3);
+    objc_storeStrong(&v6->_value, value);
     v7->_hasValue = 1;
   }
 
@@ -146,11 +146,11 @@
   if (![(BCFutureValue *)self hasValue]&& ![(BCFutureValue *)self cancelled])
   {
     [(BCFutureValue *)self setCancelled:1];
-    v3 = [(BCFutureValue *)self waitingBlocks];
-    v4 = [v3 copy];
+    waitingBlocks = [(BCFutureValue *)self waitingBlocks];
+    v4 = [waitingBlocks copy];
 
-    v5 = [(BCFutureValue *)self waitingBlocks];
-    [v5 removeAllObjects];
+    waitingBlocks2 = [(BCFutureValue *)self waitingBlocks];
+    [waitingBlocks2 removeAllObjects];
 
     if (v4)
     {
@@ -196,19 +196,19 @@
   _Block_object_dispose(&v7, 8);
 }
 
-+ (void)futures:(id)a3 notify:(id)a4
++ (void)futures:(id)futures notify:(id)notify
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  futuresCopy = futures;
+  notifyCopy = notify;
+  if (notifyCopy)
   {
     v7 = dispatch_group_create();
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v15 = v5;
-    v8 = v5;
+    v15 = futuresCopy;
+    v8 = futuresCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -244,13 +244,13 @@
     }
 
     v14 = dispatch_get_global_queue(0, 0);
-    dispatch_group_notify(v7, v14, v6);
+    dispatch_group_notify(v7, v14, notifyCopy);
 
-    v5 = v15;
+    futuresCopy = v15;
   }
 }
 
-- (id)getNonBlockingError:(id *)a3
+- (id)getNonBlockingError:(id *)error
 {
   v7 = 0;
   v8 = &v7;
@@ -265,7 +265,7 @@
   block[3] = &unk_2CA6F0;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = error;
   dispatch_sync(sync, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -300,22 +300,22 @@
   return v4;
 }
 
-- (id)sq_get:(id)a3 caller:(void *)a4 value:(id *)a5 error:(id *)a6
+- (id)sq_get:(id)sq_get caller:(void *)caller value:(id *)value error:(id *)error
 {
-  v10 = a3;
+  sq_getCopy = sq_get;
   if ([(BCFutureValue *)self hasValue])
   {
-    if (a5)
+    if (value)
     {
-      *a5 = [(BCFutureValue *)self value];
+      *value = [(BCFutureValue *)self value];
     }
 
-    if (a6)
+    if (error)
     {
-      v11 = [(BCFutureValue *)self error];
+      error = [(BCFutureValue *)self error];
 LABEL_11:
       v12 = 0;
-      *a6 = v11;
+      *error = error;
       goto LABEL_14;
     }
 
@@ -326,14 +326,14 @@ LABEL_12:
 
   if ([(BCFutureValue *)self cancelled])
   {
-    if (a5)
+    if (value)
     {
-      *a5 = 0;
+      *value = 0;
     }
 
-    if (a6)
+    if (error)
     {
-      v11 = [NSError errorWithDomain:@"BCFutureErrorDomain" code:1 userInfo:0];
+      error = [NSError errorWithDomain:@"BCFutureErrorDomain" code:1 userInfo:0];
       goto LABEL_11;
     }
 
@@ -341,33 +341,33 @@ LABEL_12:
   }
 
   v12 = objc_opt_new();
-  [v12 setBlock:v10];
-  [v12 setCaller:a4];
-  v13 = [(BCFutureValue *)self waitingBlocks];
-  [v13 addObject:v12];
+  [v12 setBlock:sq_getCopy];
+  [v12 setCaller:caller];
+  waitingBlocks = [(BCFutureValue *)self waitingBlocks];
+  [waitingBlocks addObject:v12];
 
 LABEL_14:
 
   return v12;
 }
 
-- (void)get:(id)a3
+- (void)get:(id)get
 {
-  if (a3)
+  if (get)
   {
     v5 = 0;
     v6 = 0;
-    v4 = a3;
+    getCopy = get;
     backtrace(&v5, 2);
-    [(BCFutureValue *)self _get:v4 caller:v6];
+    [(BCFutureValue *)self _get:getCopy caller:v6];
   }
 }
 
-- (void)_get:(id)a3 caller:(void *)a4
+- (void)_get:(id)_get caller:(void *)caller
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  _getCopy = _get;
+  v7 = _getCopy;
+  if (_getCopy)
   {
     v26 = 0;
     v27 = &v26;
@@ -392,11 +392,11 @@ LABEL_14:
     v10[3] = &unk_2CE9E0;
     v12 = &v16;
     v10[4] = self;
-    v9 = v6;
+    v9 = _getCopy;
     v11 = v9;
     v13 = &v20;
     v14 = &v26;
-    v15 = a4;
+    callerCopy = caller;
     dispatch_sync(sync, v10);
     if (*(v17 + 24) == 1)
     {
@@ -410,10 +410,10 @@ LABEL_14:
   }
 }
 
-- (void)getBefore:(unint64_t)a3 block:(id)a4
+- (void)getBefore:(unint64_t)before block:(id)block
 {
-  v6 = a4;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
     v33 = 0;
     v34 = 0;
@@ -444,8 +444,8 @@ LABEL_14:
     v12 = &v27;
     v13 = &v21;
     v14 = &v17;
-    v15 = a3;
-    v9 = v6;
+    beforeCopy = before;
+    v9 = blockCopy;
     v11 = v9;
     v16 = v7;
     dispatch_sync(sync, v10);
@@ -461,16 +461,16 @@ LABEL_14:
   }
 }
 
-- (void)_notifyBlocks:(id)a3 withValue:(id)a4 error:(id)a5
+- (void)_notifyBlocks:(id)blocks withValue:(id)value error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  blocksCopy = blocks;
+  valueCopy = value;
+  errorCopy = error;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v10 = [blocksCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -482,17 +482,17 @@ LABEL_14:
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(blocksCopy);
         }
 
-        v14 = [*(*(&v15 + 1) + 8 * v13) block];
-        (v14)[2](v14, v8, v9);
+        block = [*(*(&v15 + 1) + 8 * v13) block];
+        (block)[2](block, valueCopy, errorCopy);
 
         v13 = v13 + 1;
       }
 
       while (v11 != v13);
-      v11 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [blocksCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);

@@ -1,16 +1,16 @@
 @interface MPGenericTracklistPlaybackQueue
-- (BOOL)verifyWithError:(id *)a3;
-- (MPGenericTracklistPlaybackQueue)initWithMediaRemotePlaybackQueue:(_MRSystemAppPlaybackQueue *)a3 options:(id)a4;
+- (BOOL)verifyWithError:(id *)error;
+- (MPGenericTracklistPlaybackQueue)initWithMediaRemotePlaybackQueue:(_MRSystemAppPlaybackQueue *)queue options:(id)options;
 - (id)description;
 @end
 
 @implementation MPGenericTracklistPlaybackQueue
 
-- (BOOL)verifyWithError:(id *)a3
+- (BOOL)verifyWithError:(id *)error
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = [(MPGenericTracklistPlaybackQueue *)self trackIdentifiers];
-  v5 = [v4 count];
+  trackIdentifiers = [(MPGenericTracklistPlaybackQueue *)self trackIdentifiers];
+  v5 = [trackIdentifiers count];
 
   if (!v5)
   {
@@ -18,10 +18,10 @@
     v10[0] = @"Empty track IDs array provided";
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
     v7 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MPErrorDomain" code:100 userInfo:v6];
-    if (a3)
+    if (error)
     {
       v7 = v7;
-      *a3 = v7;
+      *error = v7;
     }
   }
 
@@ -38,7 +38,7 @@
   return v6;
 }
 
-- (MPGenericTracklistPlaybackQueue)initWithMediaRemotePlaybackQueue:(_MRSystemAppPlaybackQueue *)a3 options:(id)a4
+- (MPGenericTracklistPlaybackQueue)initWithMediaRemotePlaybackQueue:(_MRSystemAppPlaybackQueue *)queue options:(id)options
 {
   v18.receiver = self;
   v18.super_class = MPGenericTracklistPlaybackQueue;

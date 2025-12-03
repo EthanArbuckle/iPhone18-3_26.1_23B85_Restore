@@ -6,19 +6,19 @@
 
 - (NSString)conversationId
 {
-  v3 = [(_CDInteractionRecord *)self bundleId];
-  if ([v3 isEqualToString:@"com.apple.MobileSMS"])
+  bundleId = [(_CDInteractionRecord *)self bundleId];
+  if ([bundleId isEqualToString:@"com.apple.MobileSMS"])
   {
 
 LABEL_4:
-    v6 = [(_CDInteractionRecord *)self domainIdentifier];
+    domainIdentifier = [(_CDInteractionRecord *)self domainIdentifier];
 LABEL_5:
-    v7 = v6;
+    v7 = domainIdentifier;
     goto LABEL_6;
   }
 
-  v4 = [(_CDInteractionRecord *)self targetBundleId];
-  v5 = [v4 isEqualToString:@"com.apple.UIKit.activity.Message"];
+  targetBundleId = [(_CDInteractionRecord *)self targetBundleId];
+  v5 = [targetBundleId isEqualToString:@"com.apple.UIKit.activity.Message"];
 
   if (v5)
   {
@@ -27,31 +27,31 @@ LABEL_5:
 
   if ([(_CDInteractionRecord *)self mechanism]!= 10 && [(_CDInteractionRecord *)self mechanism]!= 11 && [(_CDInteractionRecord *)self mechanism]!= 17 && [(_CDInteractionRecord *)self mechanism]!= 16 && [(_CDInteractionRecord *)self mechanism])
   {
-    v6 = [(_CDInteractionRecord *)self derivedIntentIdentifier];
+    domainIdentifier = [(_CDInteractionRecord *)self derivedIntentIdentifier];
     goto LABEL_5;
   }
 
-  v9 = [(_CDInteractionRecord *)self recipients];
-  if ([v9 count] != 1)
+  recipients = [(_CDInteractionRecord *)self recipients];
+  if ([recipients count] != 1)
   {
 
 LABEL_19:
-    v17 = [(_CDInteractionRecord *)self recipients];
-    if ([v17 count])
+    recipients2 = [(_CDInteractionRecord *)self recipients];
+    if ([recipients2 count])
     {
     }
 
     else
     {
-      v18 = [(_CDInteractionRecord *)self sender];
-      v19 = [v18 identifier];
+      sender = [(_CDInteractionRecord *)self sender];
+      identifier = [sender identifier];
 
-      if (v19)
+      if (identifier)
       {
         v20 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v14 = [(_CDInteractionRecord *)self sender];
-        v15 = [v14 identifier];
-        v7 = [v20 initWithFormat:@"any;-;%@", v15];
+        sender2 = [(_CDInteractionRecord *)self sender];
+        identifier2 = [sender2 identifier];
+        v7 = [v20 initWithFormat:@"any;-;%@", identifier2];
         goto LABEL_24;
       }
     }
@@ -60,20 +60,20 @@ LABEL_19:
     goto LABEL_6;
   }
 
-  v10 = [(_CDInteractionRecord *)self recipients];
-  v11 = [v10 anyObject];
-  v12 = [v11 identifier];
+  recipients3 = [(_CDInteractionRecord *)self recipients];
+  anyObject = [recipients3 anyObject];
+  identifier3 = [anyObject identifier];
 
-  if (!v12)
+  if (!identifier3)
   {
     goto LABEL_19;
   }
 
   v13 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v14 = [(_CDInteractionRecord *)self recipients];
-  v15 = [v14 anyObject];
-  v16 = [v15 identifier];
-  v7 = [v13 initWithFormat:@"any;-;%@", v16];
+  sender2 = [(_CDInteractionRecord *)self recipients];
+  identifier2 = [sender2 anyObject];
+  v15Identifier = [identifier2 identifier];
+  v7 = [v13 initWithFormat:@"any;-;%@", v15Identifier];
 
 LABEL_24:
 LABEL_6:

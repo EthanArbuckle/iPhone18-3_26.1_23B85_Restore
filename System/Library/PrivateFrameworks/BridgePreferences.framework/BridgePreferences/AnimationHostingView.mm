@@ -1,16 +1,16 @@
 @interface AnimationHostingView
-- (_TtC17BridgePreferences20AnimationHostingView)initWithCoder:(id)a3;
-- (_TtC17BridgePreferences20AnimationHostingView)initWithFrame:(CGRect)a3;
+- (_TtC17BridgePreferences20AnimationHostingView)initWithCoder:(id)coder;
+- (_TtC17BridgePreferences20AnimationHostingView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AnimationHostingView
 
-- (_TtC17BridgePreferences20AnimationHostingView)initWithFrame:(CGRect)a3
+- (_TtC17BridgePreferences20AnimationHostingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_241EA9E38();
   sub_241EA9E28();
   sub_241EA9E18();
@@ -27,13 +27,13 @@
   *v8 = 0;
   v12.receiver = self;
   v12.super_class = v9;
-  v10 = [(AnimationHostingView *)&v12 initWithFrame:x, y, width, height];
+  height = [(AnimationHostingView *)&v12 initWithFrame:x, y, width, height];
   sub_241EA474C();
 
-  return v10;
+  return height;
 }
 
-- (_TtC17BridgePreferences20AnimationHostingView)initWithCoder:(id)a3
+- (_TtC17BridgePreferences20AnimationHostingView)initWithCoder:(id)coder
 {
   sub_241EA9E38();
   sub_241EA9E28();
@@ -43,7 +43,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_241EA4614(a3);
+  v4 = sub_241EA4614(coder);
 
   return v4;
 }

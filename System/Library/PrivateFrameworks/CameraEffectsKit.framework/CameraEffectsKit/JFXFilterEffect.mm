@@ -1,81 +1,81 @@
 @interface JFXFilterEffect
-- (BOOL)enablePresentationState:(BOOL)a3;
-- (BOOL)isEqual:(id)a3;
-- (JFXFilterEffect)initWithCoder:(id)a3;
+- (BOOL)enablePresentationState:(BOOL)state;
+- (BOOL)isEqual:(id)equal;
+- (JFXFilterEffect)initWithCoder:(id)coder;
 - (id)contentProperties;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)filterContentDataSource;
 - (id)renderEffect;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setForceRenderAtPosterFrame:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setForceRenderAtPosterFrame:(BOOL)frame;
 @end
 
 @implementation JFXFilterEffect
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = JFXFilterEffect;
-  return [(JFXEffect *)&v4 copyWithZone:a3];
+  return [(JFXEffect *)&v4 copyWithZone:zone];
 }
 
 - (id)filterContentDataSource
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3 && (-[JFXEffect contentDataSource](self, "contentDataSource"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 conformsToProtocol:&unk_2855B90F0], v4, v5))
+  if (contentDataSource && (-[JFXEffect contentDataSource](self, "contentDataSource"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 conformsToProtocol:&unk_2855B90F0], v4, v5))
   {
-    v6 = [(JFXEffect *)self contentDataSource];
+    contentDataSource2 = [(JFXEffect *)self contentDataSource];
   }
 
   else
   {
-    v6 = 0;
+    contentDataSource2 = 0;
   }
 
-  return v6;
+  return contentDataSource2;
 }
 
 - (id)contentProperties
 {
-  v3 = [(JFXFilterEffect *)self filterContentDataSource];
-  if (v3)
+  filterContentDataSource = [(JFXFilterEffect *)self filterContentDataSource];
+  if (filterContentDataSource)
   {
     v15.receiver = self;
     v15.super_class = JFXFilterEffect;
-    v4 = [(JFXEffect *)&v15 contentProperties];
-    v5 = [v4 mutableCopy];
+    contentProperties = [(JFXEffect *)&v15 contentProperties];
+    v5 = [contentProperties mutableCopy];
 
-    v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
-    v7 = [v3 isExpensive];
+    contentProperties2 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
+    isExpensive = [filterContentDataSource isExpensive];
 
-    if (v7)
+    if (isExpensive)
     {
-      v8 = [v3 isExpensive];
-      [v6 setObject:v8 forKeyedSubscript:@"isExpensive"];
+      isExpensive2 = [filterContentDataSource isExpensive];
+      [contentProperties2 setObject:isExpensive2 forKeyedSubscript:@"isExpensive"];
     }
 
-    v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isStyleTransfer")}];
-    [v6 setObject:v9 forKeyedSubscript:@"isStyleTransfer"];
+    v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(filterContentDataSource, "isStyleTransfer")}];
+    [contentProperties2 setObject:v9 forKeyedSubscript:@"isStyleTransfer"];
 
-    v10 = [v3 proxyRenderScale];
+    proxyRenderScale = [filterContentDataSource proxyRenderScale];
 
-    if (v10)
+    if (proxyRenderScale)
     {
-      v11 = [v3 proxyRenderScale];
-      [v6 setObject:v11 forKeyedSubscript:@"proxyRenderScale"];
+      proxyRenderScale2 = [filterContentDataSource proxyRenderScale];
+      [contentProperties2 setObject:proxyRenderScale2 forKeyedSubscript:@"proxyRenderScale"];
     }
 
-    v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v3, "inverseToneMapOperator")}];
-    [v6 setObject:v12 forKeyedSubscript:*MEMORY[0x277D41A40]];
+    v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(filterContentDataSource, "inverseToneMapOperator")}];
+    [contentProperties2 setObject:v12 forKeyedSubscript:*MEMORY[0x277D41A40]];
 
     if (v5)
     {
-      [v5 addEntriesFromDictionary:v6];
+      [v5 addEntriesFromDictionary:contentProperties2];
       v13 = v5;
 
-      v6 = v13;
+      contentProperties2 = v13;
     }
   }
 
@@ -83,31 +83,31 @@
   {
     v16.receiver = self;
     v16.super_class = JFXFilterEffect;
-    v6 = [(JFXEffect *)&v16 contentProperties];
+    contentProperties2 = [(JFXEffect *)&v16 contentProperties];
   }
 
-  return v6;
+  return contentProperties2;
 }
 
-- (JFXFilterEffect)initWithCoder:(id)a3
+- (JFXFilterEffect)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = JFXFilterEffect;
-  return [(JFXEffect *)&v4 initWithCoder:a3];
+  return [(JFXEffect *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = JFXFilterEffect;
-  [(JFXEffect *)&v3 encodeWithCoder:a3];
+  [(JFXEffect *)&v3 encodeWithCoder:coder];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4.receiver = self;
   v4.super_class = JFXFilterEffect;
-  return [(JFXEffect *)&v4 isEqual:a3];
+  return [(JFXEffect *)&v4 isEqual:equal];
 }
 
 - (unint64_t)hash
@@ -117,14 +117,14 @@
   return [(JFXEffect *)&v3 hash];
 }
 
-- (BOOL)enablePresentationState:(BOOL)a3
+- (BOOL)enablePresentationState:(BOOL)state
 {
   v4.receiver = self;
   v4.super_class = JFXFilterEffect;
   return [(JFXEffect *)&v4 enablePresentationState:0];
 }
 
-- (void)setForceRenderAtPosterFrame:(BOOL)a3
+- (void)setForceRenderAtPosterFrame:(BOOL)frame
 {
   v3.receiver = self;
   v3.super_class = JFXFilterEffect;
@@ -139,8 +139,8 @@
   }
 
   v3 = renderEffect_s_bypassHDRVariantEffectNames;
-  v4 = [(JFXEffect *)self effectID];
-  LODWORD(v3) = [v3 containsObject:v4];
+  effectID = [(JFXEffect *)self effectID];
+  LODWORD(v3) = [v3 containsObject:effectID];
 
   if (v3)
   {
@@ -149,9 +149,9 @@
 
   v7.receiver = self;
   v7.super_class = JFXFilterEffect;
-  v5 = [(JFXEffect *)&v7 renderEffect];
+  renderEffect = [(JFXEffect *)&v7 renderEffect];
 
-  return v5;
+  return renderEffect;
 }
 
 void __31__JFXFilterEffect_renderEffect__block_invoke()

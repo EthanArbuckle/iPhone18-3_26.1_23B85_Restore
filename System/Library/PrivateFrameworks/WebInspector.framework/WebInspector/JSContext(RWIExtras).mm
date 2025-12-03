@@ -6,12 +6,12 @@
 
 - (RWIProtocolInspector)_inspector
 {
-  AssociatedObject = objc_getAssociatedObject(a1, &[JSContext(RWIExtras) _inspector]::rwiProtocolInspectorAssociatedObjectKey);
+  AssociatedObject = objc_getAssociatedObject(self, &[JSContext(RWIExtras) _inspector]::rwiProtocolInspectorAssociatedObjectKey);
   if (!AssociatedObject)
   {
-    [a1 JSGlobalContextRef];
+    [self JSGlobalContextRef];
     AssociatedObject = [[RWIProtocolInspector alloc] initWithController:JSGlobalContextGetAugmentableInspectorController()];
-    objc_setAssociatedObject(a1, &[JSContext(RWIExtras) _inspector]::rwiProtocolInspectorAssociatedObjectKey, AssociatedObject, 0x301);
+    objc_setAssociatedObject(self, &[JSContext(RWIExtras) _inspector]::rwiProtocolInspectorAssociatedObjectKey, AssociatedObject, 0x301);
     if (AssociatedObject)
     {
     }

@@ -1,27 +1,27 @@
 @interface NSConcreteTextStorage
 + (unint64_t)_writerCountTSDKey;
 - (BOOL)_lockForReading;
-- (BOOL)_lockForWritingWithExceptionHandler:(BOOL)a3;
+- (BOOL)_lockForWritingWithExceptionHandler:(BOOL)handler;
 - (BOOL)fixesAttributesLazily;
 - (NSConcreteTextStorage)init;
-- (NSConcreteTextStorage)initWithAttributedString:(id)a3;
-- (NSConcreteTextStorage)initWithString:(id)a3;
-- (NSConcreteTextStorage)initWithString:(id)a3 attributes:(id)a4;
-- (id)attribute:(id)a3 atIndex:(unint64_t)a4 effectiveRange:(_NSRange *)a5;
-- (id)attribute:(id)a3 atIndex:(unint64_t)a4 longestEffectiveRange:(_NSRange *)a5 inRange:(_NSRange)a6;
-- (id)attributesAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)attributesAtIndex:(unint64_t)a3 longestEffectiveRange:(_NSRange *)a4 inRange:(_NSRange)a5;
+- (NSConcreteTextStorage)initWithAttributedString:(id)string;
+- (NSConcreteTextStorage)initWithString:(id)string;
+- (NSConcreteTextStorage)initWithString:(id)string attributes:(id)attributes;
+- (id)attribute:(id)attribute atIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)attribute:(id)attribute atIndex:(unint64_t)index longestEffectiveRange:(_NSRange *)range inRange:(_NSRange)inRange;
+- (id)attributesAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)attributesAtIndex:(unint64_t)index longestEffectiveRange:(_NSRange *)range inRange:(_NSRange)inRange;
 - (uint64_t)_initLocks;
 - (void)_initLocks;
-- (void)_setAttributeFixingInProgress:(BOOL)a3;
+- (void)_setAttributeFixingInProgress:(BOOL)progress;
 - (void)_unlock;
-- (void)addAttribute:(id)a3 value:(id)a4 range:(_NSRange)a5;
-- (void)addAttributes:(id)a3 range:(_NSRange)a4;
+- (void)addAttribute:(id)attribute value:(id)value range:(_NSRange)range;
+- (void)addAttributes:(id)attributes range:(_NSRange)range;
 - (void)dealloc;
-- (void)removeAttribute:(id)a3 range:(_NSRange)a4;
-- (void)replaceCharactersInRange:(_NSRange)a3 withAttributedString:(id)a4;
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4;
-- (void)setAttributes:(id)a3 range:(_NSRange)a4;
+- (void)removeAttribute:(id)attribute range:(_NSRange)range;
+- (void)replaceCharactersInRange:(_NSRange)range withAttributedString:(id)string;
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string;
+- (void)setAttributes:(id)attributes range:(_NSRange)range;
 @end
 
 @implementation NSConcreteTextStorage
@@ -80,7 +80,7 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
   v3[1] = 3221225472;
   v3[2] = __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke;
   v3[3] = &unk_1E7267F40;
-  v3[4] = a1;
+  v3[4] = self;
   v3[5] = a2;
   if (_writerCountTSDKey_onceToken != -1)
   {
@@ -137,10 +137,10 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
 {
   if ((fixesAttributesLazily_readDefault & 1) == 0)
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    if ([v3 objectForKey:@"NSAlwaysFixAttributesLazily"])
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    if ([standardUserDefaults objectForKey:@"NSAlwaysFixAttributesLazily"])
     {
-      fixesAttributesLazily_alwaysFixAttributesLazily = [v3 BOOLForKey:@"NSAlwaysFixAttributesLazily"];
+      fixesAttributesLazily_alwaysFixAttributesLazily = [standardUserDefaults BOOLForKey:@"NSAlwaysFixAttributesLazily"];
     }
 
     fixesAttributesLazily_readDefault = 1;
@@ -149,7 +149,7 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
   return (fixesAttributesLazily_alwaysFixAttributesLazily & 1) != 0 || *(self->super._sideData + 2) != 0x7FFFFFFFFFFFFFFFLL || self->super._editedRange.location == 0x7FFFFFFFFFFFFFFFLL || (self->super._editedRange.length & 0xFFFFFFFFFFFF0000) != 0;
 }
 
-- (BOOL)_lockForWritingWithExceptionHandler:(BOOL)a3
+- (BOOL)_lockForWritingWithExceptionHandler:(BOOL)handler
 {
   if ((*&self->_pFlags & 4) == 0)
   {
@@ -173,7 +173,7 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
   return v7 == 11 || v7 == 0;
 }
 
-- (NSConcreteTextStorage)initWithAttributedString:(id)a3
+- (NSConcreteTextStorage)initWithAttributedString:(id)string
 {
   v9.receiver = self;
   v9.super_class = NSConcreteTextStorage;
@@ -181,9 +181,9 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
   v5 = v4;
   if (v4)
   {
-    v6 = [(NSConcreteMutableAttributedString *)[NSConcreteNotifyingMutableAttributedString allocWithZone:?], "initWithAttributedString:", a3];
-    v5->_contents = v6;
-    [(NSConcreteNotifyingMutableAttributedString *)v6 setDelegate:v5];
+    string = [(NSConcreteMutableAttributedString *)[NSConcreteNotifyingMutableAttributedString allocWithZone:?], "initWithAttributedString:", string];
+    v5->_contents = string;
+    [(NSConcreteNotifyingMutableAttributedString *)string setDelegate:v5];
     [(NSConcreteTextStorage *)v5 _initLocks];
     v7 = [(NSConcreteTextStorage *)v5 length];
     if (v7)
@@ -195,7 +195,7 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
   return v5;
 }
 
-- (NSConcreteTextStorage)initWithString:(id)a3
+- (NSConcreteTextStorage)initWithString:(id)string
 {
   v9.receiver = self;
   v9.super_class = NSConcreteTextStorage;
@@ -203,9 +203,9 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
   v5 = v4;
   if (v4)
   {
-    v6 = [(NSConcreteMutableAttributedString *)[NSConcreteNotifyingMutableAttributedString allocWithZone:?], "initWithString:", a3];
-    v5->_contents = v6;
-    [(NSConcreteNotifyingMutableAttributedString *)v6 setDelegate:v5];
+    string = [(NSConcreteMutableAttributedString *)[NSConcreteNotifyingMutableAttributedString allocWithZone:?], "initWithString:", string];
+    v5->_contents = string;
+    [(NSConcreteNotifyingMutableAttributedString *)string setDelegate:v5];
     [(NSConcreteTextStorage *)v5 _initLocks];
     v7 = [(NSConcreteTextStorage *)v5 length];
     if (v7)
@@ -217,7 +217,7 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
   return v5;
 }
 
-- (NSConcreteTextStorage)initWithString:(id)a3 attributes:(id)a4
+- (NSConcreteTextStorage)initWithString:(id)string attributes:(id)attributes
 {
   v11.receiver = self;
   v11.super_class = NSConcreteTextStorage;
@@ -225,9 +225,9 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
   v7 = v6;
   if (v6)
   {
-    v8 = [(NSConcreteMutableAttributedString *)[NSConcreteNotifyingMutableAttributedString allocWithZone:?]attributes:"initWithString:attributes:", a3, a4];
-    v7->_contents = v8;
-    [(NSConcreteNotifyingMutableAttributedString *)v8 setDelegate:v7];
+    attributes = [(NSConcreteMutableAttributedString *)[NSConcreteNotifyingMutableAttributedString allocWithZone:?]attributes:"initWithString:attributes:", string, attributes];
+    v7->_contents = attributes;
+    [(NSConcreteNotifyingMutableAttributedString *)attributes setDelegate:v7];
     [(NSConcreteTextStorage *)v7 _initLocks];
     v9 = [(NSConcreteTextStorage *)v7 length];
     if (v9)
@@ -239,9 +239,9 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
   return v7;
 }
 
-- (void)_setAttributeFixingInProgress:(BOOL)a3
+- (void)_setAttributeFixingInProgress:(BOOL)progress
 {
-  if (a3)
+  if (progress)
   {
     v3 = 8;
   }
@@ -254,9 +254,9 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
   self->_pFlags = (*&self->_pFlags & 0xFFFFFFF7 | v3);
 }
 
-- (id)attributesAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)attributesAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  if ([(NSConcreteMutableAttributedString *)self->_contents length]<= a3)
+  if ([(NSConcreteMutableAttributedString *)self->_contents length]<= index)
   {
     v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"%@: Range or index out of bounds", _NSMethodExceptionProem()), 0}];
     objc_exception_throw(v12);
@@ -264,19 +264,19 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
 
   if ([(NSTextStorage *)self ensuresFixingAttributes])
   {
-    [(NSTextStorage *)self ensureAttributesAreFixedInRange:a3, 1];
+    [(NSTextStorage *)self ensureAttributesAreFixedInRange:index, 1];
   }
 
-  v7 = [(NSConcreteMutableAttributedString *)self->_contents attributesAtIndex:a3 effectiveRange:a4];
+  v7 = [(NSConcreteMutableAttributedString *)self->_contents attributesAtIndex:index effectiveRange:range];
   if (*&self->super._flags >= 0x10000u)
   {
-    if (!a4 || (*&self->_pFlags & 1) == 0)
+    if (!range || (*&self->_pFlags & 1) == 0)
     {
       return v7;
     }
   }
 
-  else if (!a4)
+  else if (!range)
   {
     return v7;
   }
@@ -285,30 +285,30 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
   {
     sideData = self->super._sideData;
     v9 = sideData[2];
-    if (v9 <= a3)
+    if (v9 <= index)
     {
       v10 = sideData[3] + v9;
-      if (v10 <= a3)
+      if (v10 <= index)
       {
-        a4->length += a4->location - v10;
-        a4->location = *(self->super._sideData + 3) + *(self->super._sideData + 2);
+        range->length += range->location - v10;
+        range->location = *(self->super._sideData + 3) + *(self->super._sideData + 2);
       }
     }
 
     else
     {
-      a4->length = v9 - a4->location;
+      range->length = v9 - range->location;
     }
   }
 
   return v7;
 }
 
-- (id)attributesAtIndex:(unint64_t)a3 longestEffectiveRange:(_NSRange *)a4 inRange:(_NSRange)a5
+- (id)attributesAtIndex:(unint64_t)index longestEffectiveRange:(_NSRange *)range inRange:(_NSRange)inRange
 {
-  length = a5.length;
-  location = a5.location;
-  if ([(NSConcreteMutableAttributedString *)self->_contents length]<= a3)
+  length = inRange.length;
+  location = inRange.location;
+  if ([(NSConcreteMutableAttributedString *)self->_contents length]<= index)
   {
     v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"%@: Range or index out of bounds", _NSMethodExceptionProem()), 0}];
     objc_exception_throw(v13);
@@ -316,19 +316,19 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
 
   if ([(NSTextStorage *)self ensuresFixingAttributes])
   {
-    [(NSTextStorage *)self ensureAttributesAreFixedInRange:a3, 1];
+    [(NSTextStorage *)self ensureAttributesAreFixedInRange:index, 1];
   }
 
-  v10 = [(NSConcreteNotifyingMutableAttributedString *)self->_contents attributesAtIndex:a3 longestEffectiveRange:a4 inRange:location, length];
+  v10 = [(NSConcreteNotifyingMutableAttributedString *)self->_contents attributesAtIndex:index longestEffectiveRange:range inRange:location, length];
   if (*&self->super._flags >= 0x10000u)
   {
-    if (!a4 || (*&self->_pFlags & 1) == 0)
+    if (!range || (*&self->_pFlags & 1) == 0)
     {
       return v10;
     }
   }
 
-  else if (!a4)
+  else if (!range)
   {
     return v10;
   }
@@ -340,17 +340,17 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
 
   if ([(NSTextStorage *)self ensuresFixingAttributes])
   {
-    [(NSTextStorage *)self ensureAttributesAreFixedInRange:a4->location, a4->length];
+    [(NSTextStorage *)self ensureAttributesAreFixedInRange:range->location, range->length];
   }
 
   contents = self->_contents;
 
-  return [(NSConcreteNotifyingMutableAttributedString *)contents attributesAtIndex:a3 longestEffectiveRange:a4 inRange:location, length];
+  return [(NSConcreteNotifyingMutableAttributedString *)contents attributesAtIndex:index longestEffectiveRange:range inRange:location, length];
 }
 
-- (id)attribute:(id)a3 atIndex:(unint64_t)a4 effectiveRange:(_NSRange *)a5
+- (id)attribute:(id)attribute atIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  if ([(NSConcreteMutableAttributedString *)self->_contents length]<= a4)
+  if ([(NSConcreteMutableAttributedString *)self->_contents length]<= index)
   {
     v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"%@: Range or index out of bounds", _NSMethodExceptionProem()), 0}];
     objc_exception_throw(v14);
@@ -358,19 +358,19 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
 
   if ([(NSTextStorage *)self ensuresFixingAttributes])
   {
-    [(NSTextStorage *)self ensureAttributesAreFixedInRange:a4, 1];
+    [(NSTextStorage *)self ensureAttributesAreFixedInRange:index, 1];
   }
 
-  v9 = [(NSConcreteMutableAttributedString *)self->_contents attribute:a3 atIndex:a4 effectiveRange:a5];
+  v9 = [(NSConcreteMutableAttributedString *)self->_contents attribute:attribute atIndex:index effectiveRange:range];
   if (*&self->super._flags >= 0x10000u)
   {
-    if (!a5 || (*&self->_pFlags & 1) == 0)
+    if (!range || (*&self->_pFlags & 1) == 0)
     {
       return v9;
     }
   }
 
-  else if (!a5)
+  else if (!range)
   {
     return v9;
   }
@@ -379,30 +379,30 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
   {
     sideData = self->super._sideData;
     v11 = sideData[2];
-    if (v11 <= a4)
+    if (v11 <= index)
     {
       v12 = sideData[3] + v11;
-      if (v12 <= a4)
+      if (v12 <= index)
       {
-        a5->length += a5->location - v12;
-        a5->location = *(self->super._sideData + 3) + *(self->super._sideData + 2);
+        range->length += range->location - v12;
+        range->location = *(self->super._sideData + 3) + *(self->super._sideData + 2);
       }
     }
 
     else
     {
-      a5->length = v11 - a5->location;
+      range->length = v11 - range->location;
     }
   }
 
   return v9;
 }
 
-- (id)attribute:(id)a3 atIndex:(unint64_t)a4 longestEffectiveRange:(_NSRange *)a5 inRange:(_NSRange)a6
+- (id)attribute:(id)attribute atIndex:(unint64_t)index longestEffectiveRange:(_NSRange *)range inRange:(_NSRange)inRange
 {
-  length = a6.length;
-  location = a6.location;
-  if ([(NSConcreteMutableAttributedString *)self->_contents length]<= a4)
+  length = inRange.length;
+  location = inRange.location;
+  if ([(NSConcreteMutableAttributedString *)self->_contents length]<= index)
   {
     v15 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"%@: Range or index out of bounds", _NSMethodExceptionProem()), 0}];
     objc_exception_throw(v15);
@@ -410,19 +410,19 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
 
   if ([(NSTextStorage *)self ensuresFixingAttributes])
   {
-    [(NSTextStorage *)self ensureAttributesAreFixedInRange:a4, 1];
+    [(NSTextStorage *)self ensureAttributesAreFixedInRange:index, 1];
   }
 
-  v12 = [(NSConcreteMutableAttributedString *)self->_contents attribute:a3 atIndex:a4 longestEffectiveRange:a5 inRange:location, length];
+  v12 = [(NSConcreteMutableAttributedString *)self->_contents attribute:attribute atIndex:index longestEffectiveRange:range inRange:location, length];
   if (*&self->super._flags >= 0x10000u)
   {
-    if (!a5 || (*&self->_pFlags & 1) == 0)
+    if (!range || (*&self->_pFlags & 1) == 0)
     {
       return v12;
     }
   }
 
-  else if (!a5)
+  else if (!range)
   {
     return v12;
   }
@@ -434,35 +434,35 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke(uint64_t a
 
   if ([(NSTextStorage *)self ensuresFixingAttributes])
   {
-    [(NSTextStorage *)self ensureAttributesAreFixedInRange:a5->location, a5->length];
+    [(NSTextStorage *)self ensureAttributesAreFixedInRange:range->location, range->length];
   }
 
   contents = self->_contents;
 
-  return [(NSConcreteMutableAttributedString *)contents attribute:a3 atIndex:a4 longestEffectiveRange:a5 inRange:location, length];
+  return [(NSConcreteMutableAttributedString *)contents attribute:attribute atIndex:index longestEffectiveRange:range inRange:location, length];
 }
 
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __61__NSConcreteTextStorage_replaceCharactersInRange_withString___block_invoke;
   v4[3] = &unk_1E7267F68;
-  v5 = a3;
+  rangeCopy = range;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = string;
   __NSConcreteTextStorageLockedForwarding(&self->super.super.super.super.isa, v4);
 }
 
-- (void)setAttributes:(id)a3 range:(_NSRange)a4
+- (void)setAttributes:(id)attributes range:(_NSRange)range
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __45__NSConcreteTextStorage_setAttributes_range___block_invoke;
   v4[3] = &unk_1E7267F68;
   v4[4] = self;
-  v4[5] = a3;
-  v5 = a4;
+  v4[5] = attributes;
+  rangeCopy = range;
   __NSConcreteTextStorageLockedForwarding(&self->super.super.super.super.isa, v4);
 }
 
@@ -516,15 +516,15 @@ void __45__NSConcreteTextStorage_setAttributes_range___block_invoke_2(uint64_t a
   [*(*(a1 + 56) + 104) setAttributes:v8 range:{a3, a4}];
 }
 
-- (void)replaceCharactersInRange:(_NSRange)a3 withAttributedString:(id)a4
+- (void)replaceCharactersInRange:(_NSRange)range withAttributedString:(id)string
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __71__NSConcreteTextStorage_replaceCharactersInRange_withAttributedString___block_invoke;
   v4[3] = &unk_1E7267F68;
-  v4[4] = a4;
+  v4[4] = string;
   v4[5] = self;
-  v5 = a3;
+  rangeCopy = range;
   __NSConcreteTextStorageLockedForwarding(&self->super.super.super.super.isa, v4);
 }
 
@@ -533,16 +533,16 @@ void __71__NSConcreteTextStorage_replaceCharactersInRange_withAttributedString__
   [*(a1[5] + 104) replaceCharactersInRange:a1[6] withAttributedString:{a1[7], a1[4]}];
 }
 
-- (void)addAttribute:(id)a3 value:(id)a4 range:(_NSRange)a5
+- (void)addAttribute:(id)attribute value:(id)value range:(_NSRange)range
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __50__NSConcreteTextStorage_addAttribute_value_range___block_invoke;
   v5[3] = &unk_1E7267FB8;
-  v5[4] = a3;
+  v5[4] = attribute;
   v5[5] = self;
-  v5[6] = a4;
-  v6 = a5;
+  v5[6] = value;
+  rangeCopy = range;
   __NSConcreteTextStorageLockedForwarding(&self->super.super.super.super.isa, v5);
 }
 
@@ -572,15 +572,15 @@ uint64_t __50__NSConcreteTextStorage_addAttribute_value_range___block_invoke(uin
   return result;
 }
 
-- (void)removeAttribute:(id)a3 range:(_NSRange)a4
+- (void)removeAttribute:(id)attribute range:(_NSRange)range
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __47__NSConcreteTextStorage_removeAttribute_range___block_invoke;
   v4[3] = &unk_1E7267F68;
   v4[4] = self;
-  v4[5] = a3;
-  v5 = a4;
+  v4[5] = attribute;
+  rangeCopy = range;
   __NSConcreteTextStorageLockedForwarding(&self->super.super.super.super.isa, v4);
 }
 
@@ -599,15 +599,15 @@ uint64_t __47__NSConcreteTextStorage_removeAttribute_range___block_invoke(uint64
   return [v3 removeAttribute:v2 range:{v4, v5}];
 }
 
-- (void)addAttributes:(id)a3 range:(_NSRange)a4
+- (void)addAttributes:(id)attributes range:(_NSRange)range
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __45__NSConcreteTextStorage_addAttributes_range___block_invoke;
   v4[3] = &unk_1E7267F68;
   v4[4] = self;
-  v4[5] = a3;
-  v5 = a4;
+  v4[5] = attributes;
+  rangeCopy = range;
   __NSConcreteTextStorageLockedForwarding(&self->super.super.super.super.isa, v4);
 }
 
@@ -693,9 +693,9 @@ uint64_t __43__NSConcreteTextStorage__writerCountTSDKey__block_invoke_cold_1(uin
 
 - (uint64_t)_initLocks
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
 
-  return [v4 handleFailureInMethod:a1 object:a2 file:@"NSTextStorage.m" lineNumber:939 description:@"Lock is initialized!"];
+  return [currentHandler handleFailureInMethod:self object:a2 file:@"NSTextStorage.m" lineNumber:939 description:@"Lock is initialized!"];
 }
 
 @end

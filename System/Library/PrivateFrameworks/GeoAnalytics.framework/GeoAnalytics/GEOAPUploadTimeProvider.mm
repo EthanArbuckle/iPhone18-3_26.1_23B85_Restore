@@ -8,9 +8,9 @@
 - (NSDate)dateNow
 {
   v2 = +[GEOReferenceTimeManager sharedManager];
-  v3 = [v2 bestReferenceDate];
+  bestReferenceDate = [v2 bestReferenceDate];
 
-  return v3;
+  return bestReferenceDate;
 }
 
 - (double)now

@@ -1,46 +1,46 @@
 @interface AXSSKeyboardCommandMap
-- (AXSSKeyboardCommandMap)commandMapWithKeyChord:(id)a3 forCommand:(id)a4;
-- (AXSSKeyboardCommandMap)initWithCoder:(id)a3;
-- (BOOL)_isAvailableCommand:(id)a3;
-- (BOOL)_validateCommandsToKeyChords:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCommandMap:(id)a3;
-- (id)_initWithCommandsToKeyChordsDictionary:(id)a3;
-- (id)addCommandsForTransientKeyChords:(id)a3;
-- (id)commandForKeyChord:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)keyChordForCommand:(id)a3;
+- (AXSSKeyboardCommandMap)commandMapWithKeyChord:(id)chord forCommand:(id)command;
+- (AXSSKeyboardCommandMap)initWithCoder:(id)coder;
+- (BOOL)_isAvailableCommand:(id)command;
+- (BOOL)_validateCommandsToKeyChords:(id)chords;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCommandMap:(id)map;
+- (id)_initWithCommandsToKeyChordsDictionary:(id)dictionary;
+- (id)addCommandsForTransientKeyChords:(id)chords;
+- (id)commandForKeyChord:(id)chord;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)keyChordForCommand:(id)command;
 - (unint64_t)hash;
 - (void)_initializeDictionariesIfNeeded;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeTransientKeyChordsForIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeTransientKeyChordsForIdentifier:(id)identifier;
 @end
 
 @implementation AXSSKeyboardCommandMap
 
-- (id)_initWithCommandsToKeyChordsDictionary:(id)a3
+- (id)_initWithCommandsToKeyChordsDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = AXSSKeyboardCommandMap;
   v6 = [(AXSSKeyboardCommandMap *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userDefinedCommandsToKeyChords, a3);
+    objc_storeStrong(&v6->_userDefinedCommandsToKeyChords, dictionary);
   }
 
   return v7;
 }
 
-- (AXSSKeyboardCommandMap)initWithCoder:(id)a3
+- (AXSSKeyboardCommandMap)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v4 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"commandsToKeyChords"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"commandsToKeyChords"];
 
   if (v9 && ![(AXSSKeyboardCommandMap *)self _validateCommandsToKeyChords:v9])
   {
@@ -58,78 +58,78 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AXSSKeyboardCommandMap *)self userDefinedCommandsToKeyChords];
-  [v4 encodeObject:v5 forKey:@"commandsToKeyChords"];
+  coderCopy = coder;
+  userDefinedCommandsToKeyChords = [(AXSSKeyboardCommandMap *)self userDefinedCommandsToKeyChords];
+  [coderCopy encodeObject:userDefinedCommandsToKeyChords forKey:@"commandsToKeyChords"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(AXSSKeyboardCommandMap *)self userDefinedCommandsToKeyChords];
+  userDefinedCommandsToKeyChords = [(AXSSKeyboardCommandMap *)self userDefinedCommandsToKeyChords];
   v6 = v4[4];
-  v4[4] = v5;
+  v4[4] = userDefinedCommandsToKeyChords;
 
-  v7 = [(AXSSKeyboardCommandMap *)self availableCommands];
+  availableCommands = [(AXSSKeyboardCommandMap *)self availableCommands];
   v8 = v4[1];
-  v4[1] = v7;
+  v4[1] = availableCommands;
 
-  v9 = [(AXSSKeyboardCommandMap *)self transientCommands];
-  v10 = [v9 copy];
+  transientCommands = [(AXSSKeyboardCommandMap *)self transientCommands];
+  v10 = [transientCommands copy];
   v11 = v4[5];
   v4[5] = v10;
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AXSSKeyboardCommandMap *)self isEqualToCommandMap:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AXSSKeyboardCommandMap *)self isEqualToCommandMap:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(AXSSKeyboardCommandMap *)self userDefinedCommandsToKeyChords];
-  v3 = [v2 hash];
+  userDefinedCommandsToKeyChords = [(AXSSKeyboardCommandMap *)self userDefinedCommandsToKeyChords];
+  v3 = [userDefinedCommandsToKeyChords hash];
 
   return v3;
 }
 
-- (BOOL)isEqualToCommandMap:(id)a3
+- (BOOL)isEqualToCommandMap:(id)map
 {
-  v4 = a3;
-  v5 = [(AXSSKeyboardCommandMap *)self userDefinedCommandsToKeyChords];
-  v6 = [v4 userDefinedCommandsToKeyChords];
-  if (v5 == v6)
+  mapCopy = map;
+  userDefinedCommandsToKeyChords = [(AXSSKeyboardCommandMap *)self userDefinedCommandsToKeyChords];
+  userDefinedCommandsToKeyChords2 = [mapCopy userDefinedCommandsToKeyChords];
+  if (userDefinedCommandsToKeyChords == userDefinedCommandsToKeyChords2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(AXSSKeyboardCommandMap *)self userDefinedCommandsToKeyChords];
-    v8 = [v4 userDefinedCommandsToKeyChords];
-    v9 = [v7 isEqualToDictionary:v8];
+    userDefinedCommandsToKeyChords3 = [(AXSSKeyboardCommandMap *)self userDefinedCommandsToKeyChords];
+    userDefinedCommandsToKeyChords4 = [mapCopy userDefinedCommandsToKeyChords];
+    v9 = [userDefinedCommandsToKeyChords3 isEqualToDictionary:userDefinedCommandsToKeyChords4];
   }
 
   return v9;
 }
 
-- (BOOL)_validateCommandsToKeyChords:(id)a3
+- (BOOL)_validateCommandsToKeyChords:(id)chords
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  chordsCopy = chords;
+  v4 = [chordsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -140,14 +140,14 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(chordsCopy);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = [v3 objectForKeyedSubscript:{v8, v14}];
+          v9 = [chordsCopy objectForKeyedSubscript:{v8, v14}];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -161,7 +161,7 @@
         goto LABEL_13;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [chordsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       v11 = 1;
       if (v5)
       {
@@ -183,14 +183,14 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)_isAvailableCommand:(id)a3
+- (BOOL)_isAvailableCommand:(id)command
 {
-  v4 = a3;
-  v5 = [(AXSSKeyboardCommandMap *)self availableCommands];
-  if (v5)
+  commandCopy = command;
+  availableCommands = [(AXSSKeyboardCommandMap *)self availableCommands];
+  if (availableCommands)
   {
-    v6 = [(AXSSKeyboardCommandMap *)self availableCommands];
-    v7 = [v6 containsObject:v4];
+    availableCommands2 = [(AXSSKeyboardCommandMap *)self availableCommands];
+    v7 = [availableCommands2 containsObject:commandCopy];
   }
 
   else
@@ -205,16 +205,16 @@ LABEL_13:
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1C0E8A000, a2, OS_LOG_TYPE_ERROR, "Error loading default keyboard commands: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (id)commandForKeyChord:(id)a3
+- (id)commandForKeyChord:(id)chord
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isNull])
+  chordCopy = chord;
+  if ([chordCopy isNull])
   {
     goto LABEL_2;
   }
@@ -224,8 +224,8 @@ LABEL_13:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(AXSSKeyboardCommandMap *)self transientCommands];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  transientCommands = [(AXSSKeyboardCommandMap *)self transientCommands];
+  v7 = [transientCommands countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -236,13 +236,13 @@ LABEL_13:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(transientCommands);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [(AXSSKeyboardCommandMap *)self transientCommands];
-        v13 = [v12 objectForKeyedSubscript:v11];
-        v5 = [v13 objectForKeyedSubscript:v4];
+        transientCommands2 = [(AXSSKeyboardCommandMap *)self transientCommands];
+        v13 = [transientCommands2 objectForKeyedSubscript:v11];
+        v5 = [v13 objectForKeyedSubscript:chordCopy];
 
         if (v5)
         {
@@ -251,7 +251,7 @@ LABEL_13:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [transientCommands countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v8)
       {
         continue;
@@ -261,13 +261,13 @@ LABEL_13:
     }
   }
 
-  v14 = [(AXSSKeyboardCommandMap *)self keyChordsToCommands];
-  v5 = [v14 objectForKeyedSubscript:v4];
+  keyChordsToCommands = [(AXSSKeyboardCommandMap *)self keyChordsToCommands];
+  v5 = [keyChordsToCommands objectForKeyedSubscript:chordCopy];
 
   if (!v5)
   {
-    v15 = [v4 keys];
-    v16 = [v15 containsObject:@"⎋"];
+    keys = [chordCopy keys];
+    v16 = [keys containsObject:@"⎋"];
 
     if (!v16)
     {
@@ -286,74 +286,74 @@ LABEL_15:
   return v5;
 }
 
-- (id)keyChordForCommand:(id)a3
+- (id)keyChordForCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   [(AXSSKeyboardCommandMap *)self _initializeDictionariesIfNeeded];
-  v5 = [(AXSSKeyboardCommandMap *)self commandsToArraysOfKeyChords];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  commandsToArraysOfKeyChords = [(AXSSKeyboardCommandMap *)self commandsToArraysOfKeyChords];
+  v6 = [commandsToArraysOfKeyChords objectForKeyedSubscript:commandCopy];
 
   if ([v6 count] == 1 && (objc_msgSend(v6, "firstObject"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isNull"), v7, (v8 & 1) != 0))
   {
-    v9 = 0;
+    firstObject = 0;
   }
 
   else
   {
-    v9 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
-  return v9;
+  return firstObject;
 }
 
-- (AXSSKeyboardCommandMap)commandMapWithKeyChord:(id)a3 forCommand:(id)a4
+- (AXSSKeyboardCommandMap)commandMapWithKeyChord:(id)chord forCommand:(id)command
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AXSSKeyboardCommandMap *)self userDefinedCommandsToKeyChords];
-  v9 = [v8 mutableCopy];
+  chordCopy = chord;
+  commandCopy = command;
+  userDefinedCommandsToKeyChords = [(AXSSKeyboardCommandMap *)self userDefinedCommandsToKeyChords];
+  dictionary = [userDefinedCommandsToKeyChords mutableCopy];
 
-  if (!v9)
+  if (!dictionary)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  if (v7)
+  if (commandCopy)
   {
-    [v9 setObject:v6 forKeyedSubscript:v7];
+    [dictionary setObject:chordCopy forKeyedSubscript:commandCopy];
   }
 
-  v10 = [objc_alloc(objc_opt_class()) _initWithCommandsToKeyChordsDictionary:v9];
-  v11 = [(AXSSKeyboardCommandMap *)self availableCommands];
-  [v10 setAvailableCommands:v11];
+  v10 = [objc_alloc(objc_opt_class()) _initWithCommandsToKeyChordsDictionary:dictionary];
+  availableCommands = [(AXSSKeyboardCommandMap *)self availableCommands];
+  [v10 setAvailableCommands:availableCommands];
 
   return v10;
 }
 
-- (id)addCommandsForTransientKeyChords:(id)a3
+- (id)addCommandsForTransientKeyChords:(id)chords
 {
-  v4 = a3;
+  chordsCopy = chords;
   if (!self->_transientCommands)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     transientCommands = self->_transientCommands;
-    self->_transientCommands = v5;
+    self->_transientCommands = dictionary;
   }
 
-  v7 = [MEMORY[0x1E696AFB0] UUID];
-  v8 = [v7 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v9 = [(AXSSKeyboardCommandMap *)self transientCommands];
-  [v9 setObject:v4 forKeyedSubscript:v8];
+  transientCommands = [(AXSSKeyboardCommandMap *)self transientCommands];
+  [transientCommands setObject:chordsCopy forKeyedSubscript:uUIDString];
 
-  return v8;
+  return uUIDString;
 }
 
-- (void)removeTransientKeyChordsForIdentifier:(id)a3
+- (void)removeTransientKeyChordsForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AXSSKeyboardCommandMap *)self transientCommands];
-  [v5 setObject:0 forKeyedSubscript:v4];
+  identifierCopy = identifier;
+  transientCommands = [(AXSSKeyboardCommandMap *)self transientCommands];
+  [transientCommands setObject:0 forKeyedSubscript:identifierCopy];
 }
 
 - (void)initWithCoder:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

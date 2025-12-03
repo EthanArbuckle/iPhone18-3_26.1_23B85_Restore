@@ -1,13 +1,13 @@
 @interface DDSAssetPolicy
 + (id)assetPolicy;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAssetPolicy:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAssetPolicy:(id)policy;
 - (DDSAssetPolicy)init;
-- (DDSAssetPolicy)initWithCoder:(id)a3;
+- (DDSAssetPolicy)initWithCoder:(id)coder;
 - (id)dumpDescription;
-- (id)stringForAssetDownloadFrequency:(int64_t)a3;
+- (id)stringForAssetDownloadFrequency:(int64_t)frequency;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DDSAssetPolicy
@@ -38,9 +38,9 @@
   return v3;
 }
 
-- (DDSAssetPolicy)initWithCoder:(id)a3
+- (DDSAssetPolicy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = DDSAssetPolicy;
   v5 = [(DDSAssetPolicy *)&v35 init];
@@ -49,28 +49,28 @@
   {
     v7 = objc_opt_class();
     v8 = NSStringFromSelector(sel_preferredDownloadFrequency);
-    v9 = [v4 decodeObjectOfClass:v7 forKey:v8];
+    v9 = [coderCopy decodeObjectOfClass:v7 forKey:v8];
     v5->_preferredDownloadFrequency = [v9 integerValue];
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_downloadOverCellular);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     v5->_downloadOverCellular = [v12 BOOLValue];
 
     v13 = objc_opt_class();
     v14 = NSStringFromSelector(sel_downloadWithoutPower);
-    v15 = [v4 decodeObjectOfClass:v13 forKey:v14];
+    v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
     v5->_downloadWithoutPower = [v15 BOOLValue];
 
     v16 = objc_opt_class();
     v17 = NSStringFromSelector(sel_downloadCompletionNotification);
-    v18 = [v4 decodeObjectOfClass:v16 forKey:v17];
+    v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
     downloadCompletionNotification = v5->_downloadCompletionNotification;
     v5->_downloadCompletionNotification = v18;
 
     v20 = objc_opt_class();
     v21 = NSStringFromSelector(sel_idleUsageEvictionPeriod);
-    v22 = [v4 decodeObjectOfClass:v20 forKey:v21];
+    v22 = [coderCopy decodeObjectOfClass:v20 forKey:v21];
     idleUsageEvictionPeriod = v5->_idleUsageEvictionPeriod;
     v5->_idleUsageEvictionPeriod = v22;
 
@@ -79,7 +79,7 @@
     v26 = [v24 setWithObjects:{v25, objc_opt_class(), 0}];
     v27 = NSStringFromSelector(sel_notificationDownloadTriggers);
     v34 = 0;
-    v28 = [v4 decodeTopLevelObjectOfClasses:v26 forKey:v27 error:&v34];
+    v28 = [coderCopy decodeTopLevelObjectOfClasses:v26 forKey:v27 error:&v34];
     v29 = v34;
     notificationDownloadTriggers = v5->_notificationDownloadTriggers;
     v5->_notificationDownloadTriggers = v28;
@@ -102,33 +102,33 @@
   return v32;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:{-[DDSAssetPolicy preferredDownloadFrequency](self, "preferredDownloadFrequency")}];
   v7 = NSStringFromSelector(sel_preferredDownloadFrequency);
-  [v5 encodeObject:v6 forKey:v7];
+  [coderCopy encodeObject:v6 forKey:v7];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[DDSAssetPolicy downloadOverCellular](self, "downloadOverCellular")}];
   v9 = NSStringFromSelector(sel_downloadOverCellular);
-  [v5 encodeObject:v8 forKey:v9];
+  [coderCopy encodeObject:v8 forKey:v9];
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[DDSAssetPolicy downloadWithoutPower](self, "downloadWithoutPower")}];
   v11 = NSStringFromSelector(sel_downloadWithoutPower);
-  [v5 encodeObject:v10 forKey:v11];
+  [coderCopy encodeObject:v10 forKey:v11];
 
-  v12 = [(DDSAssetPolicy *)self notificationDownloadTriggers];
+  notificationDownloadTriggers = [(DDSAssetPolicy *)self notificationDownloadTriggers];
   v13 = NSStringFromSelector(sel_notificationDownloadTriggers);
-  [v5 encodeObject:v12 forKey:v13];
+  [coderCopy encodeObject:notificationDownloadTriggers forKey:v13];
 
-  v14 = [(DDSAssetPolicy *)self downloadCompletionNotification];
+  downloadCompletionNotification = [(DDSAssetPolicy *)self downloadCompletionNotification];
   v15 = NSStringFromSelector(sel_downloadCompletionNotification);
-  [v5 encodeObject:v14 forKey:v15];
+  [coderCopy encodeObject:downloadCompletionNotification forKey:v15];
 
-  v17 = [(DDSAssetPolicy *)self idleUsageEvictionPeriod];
+  idleUsageEvictionPeriod = [(DDSAssetPolicy *)self idleUsageEvictionPeriod];
   v16 = NSStringFromSelector(sel_idleUsageEvictionPeriod);
-  [v5 encodeObject:v17 forKey:v16];
+  [coderCopy encodeObject:idleUsageEvictionPeriod forKey:v16];
 }
 
 - (id)dumpDescription
@@ -141,18 +141,18 @@
     v6 = [v4 stringWithFormat:@"Frequency: %@", v5];
 
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(DDSAssetPolicy *)self downloadOverCellular];
+    downloadOverCellular = [(DDSAssetPolicy *)self downloadOverCellular];
     v9 = @"5G+Inexpensive";
-    if (v8)
+    if (downloadOverCellular)
     {
       v9 = @"all";
     }
 
     v10 = [v7 stringWithFormat:@"Cellular: %@", v9];
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [(DDSAssetPolicy *)self downloadWithoutPower];
+    downloadWithoutPower = [(DDSAssetPolicy *)self downloadWithoutPower];
     v13 = @"required";
-    if (v12)
+    if (downloadWithoutPower)
     {
       v13 = @"not required";
     }
@@ -169,15 +169,15 @@
   return v15;
 }
 
-- (id)stringForAssetDownloadFrequency:(int64_t)a3
+- (id)stringForAssetDownloadFrequency:(int64_t)frequency
 {
   v3 = @"Immediate";
-  if (a3 == 1)
+  if (frequency == 1)
   {
     v3 = @"Daily";
   }
 
-  if (a3 == 2)
+  if (frequency == 2)
   {
     return @"Weekly";
   }
@@ -188,32 +188,32 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DDSAssetPolicy *)self isEqualToAssetPolicy:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DDSAssetPolicy *)self isEqualToAssetPolicy:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToAssetPolicy:(id)a3
+- (BOOL)isEqualToAssetPolicy:(id)policy
 {
-  v4 = a3;
-  v5 = [(DDSAssetPolicy *)self notificationDownloadTriggers];
-  v6 = [v4 notificationDownloadTriggers];
-  if (DDSObjectsAreEqualOrNil(v5, v6))
+  policyCopy = policy;
+  notificationDownloadTriggers = [(DDSAssetPolicy *)self notificationDownloadTriggers];
+  notificationDownloadTriggers2 = [policyCopy notificationDownloadTriggers];
+  if (DDSObjectsAreEqualOrNil(notificationDownloadTriggers, notificationDownloadTriggers2))
   {
-    v7 = [(DDSAssetPolicy *)self downloadCompletionNotification];
-    v8 = [v4 downloadCompletionNotification];
-    if (DDSObjectsAreEqualOrNil(v7, v8))
+    downloadCompletionNotification = [(DDSAssetPolicy *)self downloadCompletionNotification];
+    downloadCompletionNotification2 = [policyCopy downloadCompletionNotification];
+    if (DDSObjectsAreEqualOrNil(downloadCompletionNotification, downloadCompletionNotification2))
     {
-      v9 = [(DDSAssetPolicy *)self idleUsageEvictionPeriod];
-      v10 = [v4 idleUsageEvictionPeriod];
-      if (DDSObjectsAreEqualOrNil(v9, v10) && (v11 = -[DDSAssetPolicy preferredDownloadFrequency](self, "preferredDownloadFrequency"), v11 == [v4 preferredDownloadFrequency]) && (v12 = -[DDSAssetPolicy downloadWithoutPower](self, "downloadWithoutPower"), v12 == objc_msgSend(v4, "downloadWithoutPower")))
+      idleUsageEvictionPeriod = [(DDSAssetPolicy *)self idleUsageEvictionPeriod];
+      idleUsageEvictionPeriod2 = [policyCopy idleUsageEvictionPeriod];
+      if (DDSObjectsAreEqualOrNil(idleUsageEvictionPeriod, idleUsageEvictionPeriod2) && (v11 = -[DDSAssetPolicy preferredDownloadFrequency](self, "preferredDownloadFrequency"), v11 == [policyCopy preferredDownloadFrequency]) && (v12 = -[DDSAssetPolicy downloadWithoutPower](self, "downloadWithoutPower"), v12 == objc_msgSend(policyCopy, "downloadWithoutPower")))
       {
-        v15 = [(DDSAssetPolicy *)self downloadOverCellular];
-        v13 = v15 ^ [v4 downloadOverCellular] ^ 1;
+        downloadOverCellular = [(DDSAssetPolicy *)self downloadOverCellular];
+        v13 = downloadOverCellular ^ [policyCopy downloadOverCellular] ^ 1;
       }
 
       else
@@ -238,12 +238,12 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DDSAssetPolicy *)self notificationDownloadTriggers];
-  v4 = [v3 hash];
-  v5 = [(DDSAssetPolicy *)self downloadCompletionNotification];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(DDSAssetPolicy *)self idleUsageEvictionPeriod];
-  v8 = v6 ^ [v7 hash];
+  notificationDownloadTriggers = [(DDSAssetPolicy *)self notificationDownloadTriggers];
+  v4 = [notificationDownloadTriggers hash];
+  downloadCompletionNotification = [(DDSAssetPolicy *)self downloadCompletionNotification];
+  v6 = [downloadCompletionNotification hash] ^ v4;
+  idleUsageEvictionPeriod = [(DDSAssetPolicy *)self idleUsageEvictionPeriod];
+  v8 = v6 ^ [idleUsageEvictionPeriod hash];
   if ([(DDSAssetPolicy *)self downloadOverCellular])
   {
     v9 = 1231;
@@ -265,9 +265,9 @@
   }
 
   v11 = v8 ^ v9 ^ v10;
-  v12 = [(DDSAssetPolicy *)self preferredDownloadFrequency];
+  preferredDownloadFrequency = [(DDSAssetPolicy *)self preferredDownloadFrequency];
 
-  return v11 ^ v12;
+  return v11 ^ preferredDownloadFrequency;
 }
 
 - (void)initWithCoder:(NSObject *)a3 .cold.1(uint64_t a1, uint64_t a2, NSObject *a3)

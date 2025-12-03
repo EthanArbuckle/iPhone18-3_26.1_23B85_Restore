@@ -9,19 +9,19 @@
 
 - (void)accessibilityIncrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_23711C838();
 }
 
 - (void)accessibilityDecrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_23711CA34();
 }
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   sub_23711CC30();
 
   return 1;
@@ -29,7 +29,7 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_23711FE5C();
 }
 

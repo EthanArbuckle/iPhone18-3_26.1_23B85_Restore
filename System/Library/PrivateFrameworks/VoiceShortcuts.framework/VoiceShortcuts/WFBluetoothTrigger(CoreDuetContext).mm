@@ -6,70 +6,70 @@
 
 - (id)contextStorePredicate
 {
-  v3 = [a1 contextStoreKeyPathForCurrentState];
-  v4 = [a1 selection];
-  if (v4 != 1)
+  contextStoreKeyPathForCurrentState = [self contextStoreKeyPathForCurrentState];
+  selection = [self selection];
+  if (selection != 1)
   {
-    if (v4)
+    if (selection)
     {
       goto LABEL_21;
     }
 
-    if ([a1 onConnect] && objc_msgSend(a1, "onDisconnect"))
+    if ([self onConnect] && objc_msgSend(self, "onDisconnect"))
     {
       v5 = MEMORY[0x277CFE360];
-      v16 = v3;
+      v16 = contextStoreKeyPathForCurrentState;
 LABEL_9:
-      [v5 predicateForKeyPath:v3 withFormat:@"SELF.%@.value != nil OR SELF.%@.value == nil", v3, v16];
+      [v5 predicateForKeyPath:contextStoreKeyPathForCurrentState withFormat:@"SELF.%@.value != nil OR SELF.%@.value == nil", contextStoreKeyPathForCurrentState, v16];
       v1 = LABEL_16:;
       goto LABEL_21;
     }
 
-    if ([a1 onConnect])
+    if ([self onConnect])
     {
-      [MEMORY[0x277CFE360] predicateForKeyPath:v3 withFormat:@"SELF.%@.value != nil", v3, v16];
+      [MEMORY[0x277CFE360] predicateForKeyPath:contextStoreKeyPathForCurrentState withFormat:@"SELF.%@.value != nil", contextStoreKeyPathForCurrentState, v16];
       goto LABEL_16;
     }
 
-    if ([a1 onDisconnect])
+    if ([self onDisconnect])
     {
-      [MEMORY[0x277CFE360] predicateForKeyPath:v3 withFormat:@"SELF.%@.value == nil", v3, v16];
+      [MEMORY[0x277CFE360] predicateForKeyPath:contextStoreKeyPathForCurrentState withFormat:@"SELF.%@.value == nil", contextStoreKeyPathForCurrentState, v16];
       goto LABEL_16;
     }
 
     goto LABEL_20;
   }
 
-  if ([a1 onConnect] && objc_msgSend(a1, "onDisconnect"))
+  if ([self onConnect] && objc_msgSend(self, "onDisconnect"))
   {
     v5 = MEMORY[0x277CFE360];
     goto LABEL_9;
   }
 
-  if ([a1 onConnect])
+  if ([self onConnect])
   {
     v6 = MEMORY[0x277CFE360];
     v7 = MEMORY[0x277CCAC30];
-    v8 = [a1 selectedDevices];
-    v9 = [v7 predicateWithFormat:@"SELF.%@.value IN %@", v3, v8];
+    selectedDevices = [self selectedDevices];
+    v9 = [v7 predicateWithFormat:@"SELF.%@.value IN %@", contextStoreKeyPathForCurrentState, selectedDevices];
     v10 = MEMORY[0x277CCAC30];
-    v11 = [a1 selectedDevices];
-    [v10 predicateWithFormat:@"NOT (SELF.value IN %@)", v3, v11];
+    selectedDevices2 = [self selectedDevices];
+    [v10 predicateWithFormat:@"NOT (SELF.value IN %@)", contextStoreKeyPathForCurrentState, selectedDevices2];
     v14 = LABEL_19:;
-    v1 = [v6 predicateForKeyPath:v3 withPredicate:v9 withPredicateForPreviousState:v14 withMinimumDurationInPreviousState:0.0];
+    v1 = [v6 predicateForKeyPath:contextStoreKeyPathForCurrentState withPredicate:v9 withPredicateForPreviousState:v14 withMinimumDurationInPreviousState:0.0];
 
     goto LABEL_21;
   }
 
-  if ([a1 onDisconnect])
+  if ([self onDisconnect])
   {
     v6 = MEMORY[0x277CFE360];
     v12 = MEMORY[0x277CCAC30];
-    v8 = [a1 selectedDevices];
-    v9 = [v12 predicateWithFormat:@"NOT (SELF.%@.value IN %@)", v3, v8];
+    selectedDevices = [self selectedDevices];
+    v9 = [v12 predicateWithFormat:@"NOT (SELF.%@.value IN %@)", contextStoreKeyPathForCurrentState, selectedDevices];
     v13 = MEMORY[0x277CCAC30];
-    v11 = [a1 selectedDevices];
-    [v13 predicateWithFormat:@"SELF.value IN %@", v3, v11];
+    selectedDevices2 = [self selectedDevices];
+    [v13 predicateWithFormat:@"SELF.value IN %@", contextStoreKeyPathForCurrentState, selectedDevices2];
     goto LABEL_19;
   }
 

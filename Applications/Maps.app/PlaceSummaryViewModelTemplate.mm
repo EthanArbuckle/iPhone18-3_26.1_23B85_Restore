@@ -1,5 +1,5 @@
 @interface PlaceSummaryViewModelTemplate
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSelected;
 - (NSString)debugString;
 - (_TtC4Maps29PlaceSummaryViewModelTemplate)init;
@@ -7,10 +7,10 @@
 - (id)hyperlinkString;
 - (int)hyperlinkType;
 - (int)trailingEntityType;
-- (void)setContainerWidth:(double)a3;
-- (void)setDebugString:(id)a3;
-- (void)setIsSelected:(BOOL)a3;
-- (void)setMetrics:(id)a3;
+- (void)setContainerWidth:(double)width;
+- (void)setDebugString:(id)string;
+- (void)setIsSelected:(BOOL)selected;
+- (void)setMetrics:(id)metrics;
 @end
 
 @implementation PlaceSummaryViewModelTemplate
@@ -19,17 +19,17 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   return v5;
 }
 
-- (void)setIsSelected:(BOOL)a3
+- (void)setIsSelected:(BOOL)selected
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   static Published.subscript.setter();
 }
 
@@ -37,25 +37,25 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   return v5;
 }
 
-- (void)setContainerWidth:(double)a3
+- (void)setContainerWidth:(double)width
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   static Published.subscript.setter();
 }
 
-- (void)setMetrics:(id)a3
+- (void)setMetrics:(id)metrics
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps29PlaceSummaryViewModelTemplate_metrics);
-  *(self + OBJC_IVAR____TtC4Maps29PlaceSummaryViewModelTemplate_metrics) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps29PlaceSummaryViewModelTemplate_metrics) = metrics;
+  metricsCopy = metrics;
 }
 
 - (NSString)debugString
@@ -74,9 +74,9 @@
   return v2;
 }
 
-- (void)setDebugString:(id)a3
+- (void)setDebugString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -92,11 +92,11 @@
   v6[1] = v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -105,7 +105,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_10021C2C8(v8);
@@ -123,7 +123,7 @@
 
 - (int)trailingEntityType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10022341C();
 
   return v3;
@@ -131,7 +131,7 @@
 
 - (id)hyperlinkString
 {
-  v2 = self;
+  selfCopy = self;
   sub_100223558();
   v4 = v3;
 
@@ -150,7 +150,7 @@
 
 - (int)hyperlinkType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10022436C();
 
   return v3;

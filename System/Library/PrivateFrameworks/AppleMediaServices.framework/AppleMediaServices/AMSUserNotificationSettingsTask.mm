@@ -2,32 +2,32 @@
 + (AMSBagKeySet)bagKeySet;
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
-- (AMSUserNotificationSettingsTask)initWithIdentifier:(id)a3 clientIdentifier:(id)a4 account:(id)a5 bag:(id)a6;
-- (id)_generateParametersForItems:(id)a3;
-- (id)_stringForKey:(id)a3 fromBag:(id)a4;
+- (AMSUserNotificationSettingsTask)initWithIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier account:(id)account bag:(id)bag;
+- (id)_generateParametersForItems:(id)items;
+- (id)_stringForKey:(id)key fromBag:(id)bag;
 - (id)_url;
 - (id)fetchAllSettings;
-- (id)updateSettings:(id)a3;
+- (id)updateSettings:(id)settings;
 @end
 
 @implementation AMSUserNotificationSettingsTask
 
-- (AMSUserNotificationSettingsTask)initWithIdentifier:(id)a3 clientIdentifier:(id)a4 account:(id)a5 bag:(id)a6
+- (AMSUserNotificationSettingsTask)initWithIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier account:(id)account bag:(id)bag
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  clientIdentifierCopy = clientIdentifier;
+  accountCopy = account;
+  bagCopy = bag;
   v18.receiver = self;
   v18.super_class = AMSUserNotificationSettingsTask;
   v15 = [(AMSTask *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_account, a5);
-    objc_storeStrong(&v16->_bag, a6);
-    objc_storeStrong(&v16->_clientIdentifier, a4);
-    objc_storeStrong(&v16->_identifier, a3);
+    objc_storeStrong(&v15->_account, account);
+    objc_storeStrong(&v16->_bag, bag);
+    objc_storeStrong(&v16->_clientIdentifier, clientIdentifier);
+    objc_storeStrong(&v16->_identifier, identifier);
   }
 
   return v16;
@@ -267,9 +267,9 @@ void __51__AMSUserNotificationSettingsTask_fetchAllSettings__block_invoke_35(uin
   [v4 finishWithPromise:v5];
 }
 
-- (id)updateSettings:(id)a3
+- (id)updateSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -277,7 +277,7 @@ void __51__AMSUserNotificationSettingsTask_fetchAllSettings__block_invoke_35(uin
   v8[3] = &unk_1E73BA488;
   objc_copyWeak(&v10, &location);
   v8[4] = self;
-  v5 = v4;
+  v5 = settingsCopy;
   v9 = v5;
   v6 = [(AMSTask *)self performBinaryTaskWithBlock:v8];
 
@@ -546,14 +546,14 @@ void __50__AMSUserNotificationSettingsTask_updateSettings___block_invoke_49(uint
   [v4 finishWithPromise:v5];
 }
 
-- (id)_generateParametersForItems:(id)a3
+- (id)_generateParametersForItems:(id)items
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 ams_dictionaryUsingTransform:&__block_literal_global_153];
+  v4 = [items ams_dictionaryUsingTransform:&__block_literal_global_153];
   v5 = [v4 ams_mapWithTransform:&__block_literal_global_54_1];
   v12 = @"notification-preferences";
-  v6 = [(AMSUserNotificationSettingsTask *)self identifier];
-  v10 = v6;
+  identifier = [(AMSUserNotificationSettingsTask *)self identifier];
+  v10 = identifier;
   v11 = v5;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v13[0] = v7;
@@ -578,8 +578,8 @@ AMSPair *__63__AMSUserNotificationSettingsTask__generateParametersForItems___blo
 {
   v3 = objc_opt_new();
   [v3 setObject:@"notification-preferences" forKeyedSubscript:@"kinds"];
-  v4 = [(AMSUserNotificationSettingsTask *)self identifier];
-  [v3 setObject:v4 forKeyedSubscript:@"service"];
+  identifier = [(AMSUserNotificationSettingsTask *)self identifier];
+  [v3 setObject:identifier forKeyedSubscript:@"service"];
 
   [v3 setObject:@"explicit" forKeyedSubscript:@"action"];
   v5 = +[AMSMediaURLBuilderUtility devicePlatform];
@@ -632,10 +632,10 @@ AMSPair *__63__AMSUserNotificationSettingsTask__generateParametersForItems___blo
   return v20;
 }
 
-- (id)_stringForKey:(id)a3 fromBag:(id)a4
+- (id)_stringForKey:(id)key fromBag:(id)bag
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [a4 stringForKey:a3];
+  v4 = [bag stringForKey:key];
   v13 = 0;
   v5 = [v4 valueWithError:&v13];
   v6 = v13;
@@ -648,8 +648,8 @@ AMSPair *__63__AMSUserNotificationSettingsTask__generateParametersForItems___blo
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
       v10 = AMSLogKey();
@@ -660,7 +660,7 @@ AMSPair *__63__AMSUserNotificationSettingsTask__generateParametersForItems___blo
       v17 = v10;
       v18 = 2114;
       v19 = v11;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@", buf, 0x20u);
     }
   }
 

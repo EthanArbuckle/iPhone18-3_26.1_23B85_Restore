@@ -1,8 +1,8 @@
 @interface TSDImageRepCachedSizedImage
 - (CGSize)imageSize;
 - (void)dealloc;
-- (void)setImageMaskPath:(CGPath *)a3;
-- (void)setImageRef:(CGImage *)a3;
+- (void)setImageMaskPath:(CGPath *)path;
+- (void)setImageRef:(CGImage *)ref;
 @end
 
 @implementation TSDImageRepCachedSizedImage
@@ -16,10 +16,10 @@
   [(TSDImageRepCachedSizedImage *)&v3 dealloc];
 }
 
-- (void)setImageRef:(CGImage *)a3
+- (void)setImageRef:(CGImage *)ref
 {
   mImageRef = self->mImageRef;
-  if (mImageRef != a3)
+  if (mImageRef != ref)
   {
     if (mImageRef)
     {
@@ -27,14 +27,14 @@
       self->mImageRef = 0;
     }
 
-    self->mImageRef = CGImageRetain(a3);
+    self->mImageRef = CGImageRetain(ref);
   }
 }
 
-- (void)setImageMaskPath:(CGPath *)a3
+- (void)setImageMaskPath:(CGPath *)path
 {
   mImageMaskPath = self->mImageMaskPath;
-  if (mImageMaskPath != a3)
+  if (mImageMaskPath != path)
   {
     if (mImageMaskPath)
     {
@@ -42,7 +42,7 @@
       self->mImageMaskPath = 0;
     }
 
-    self->mImageMaskPath = CGPathRetain(a3);
+    self->mImageMaskPath = CGPathRetain(path);
   }
 }
 

@@ -1,36 +1,36 @@
 @interface SUUIGift
-- (SUUIGift)initWithGiftCategory:(int64_t)a3;
-- (SUUIGift)initWithItem:(id)a3;
+- (SUUIGift)initWithGiftCategory:(int64_t)category;
+- (SUUIGift)initWithItem:(id)item;
 - (id)HTTPBodyDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)reset;
 @end
 
 @implementation SUUIGift
 
-- (SUUIGift)initWithGiftCategory:(int64_t)a3
+- (SUUIGift)initWithGiftCategory:(int64_t)category
 {
   v5.receiver = self;
   v5.super_class = SUUIGift;
   result = [(SUUIGift *)&v5 init];
   if (result)
   {
-    result->_category = a3;
+    result->_category = category;
   }
 
   return result;
 }
 
-- (SUUIGift)initWithItem:(id)a3
+- (SUUIGift)initWithItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = SUUIGift;
   v6 = [(SUUIGift *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_item, a3);
+    objc_storeStrong(&v6->_item, item);
   }
 
   return v7;
@@ -39,12 +39,12 @@
 - (id)HTTPBodyDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(SUUIGift *)self deliveryDate];
-  if (v4)
+  deliveryDate = [(SUUIGift *)self deliveryDate];
+  if (deliveryDate)
   {
     v5 = objc_alloc_init(MEMORY[0x277CCA968]);
     [v5 setDateFormat:@"yyyy-MM-dd"];
-    v6 = [v5 stringFromDate:v4];
+    v6 = [v5 stringFromDate:deliveryDate];
     [v3 setObject:v6 forKey:@"customSendGiftDate"];
 
     [v3 setObject:@"custom" forKey:@"dateSendType"];
@@ -55,16 +55,16 @@
     [v3 setObject:@"today" forKey:@"dateSendType"];
   }
 
-  v7 = [(SUUIGift *)self item];
-  v8 = v7;
-  if (v7)
+  item = [(SUUIGift *)self item];
+  v8 = item;
+  if (item)
   {
-    v9 = [v7 primaryItemOffer];
-    v10 = [v9 actionParameters];
+    primaryItemOffer = [item primaryItemOffer];
+    actionParameters = [primaryItemOffer actionParameters];
 
-    if (v10)
+    if (actionParameters)
     {
-      [v3 setObject:v10 forKey:@"actionParams"];
+      [v3 setObject:actionParameters forKey:@"actionParams"];
     }
 
     [v3 setObject:@"product" forKey:@"giftType"];
@@ -78,29 +78,29 @@
     [v3 setObject:@"credit" forKey:@"giftType"];
   }
 
-  v12 = [(SUUIGift *)self message];
-  if ([v12 length])
+  message = [(SUUIGift *)self message];
+  if ([message length])
   {
-    [v3 setObject:v12 forKey:@"message"];
+    [v3 setObject:message forKey:@"message"];
   }
 
-  v13 = [(SUUIGift *)self recipientAddresses];
-  if ([v13 count])
+  recipientAddresses = [(SUUIGift *)self recipientAddresses];
+  if ([recipientAddresses count])
   {
-    v14 = [v13 componentsJoinedByString:{@", "}];
+    v14 = [recipientAddresses componentsJoinedByString:{@", "}];
     [v3 setObject:v14 forKey:@"toEmail"];
   }
 
-  v15 = [(SUUIGift *)self senderEmailAddress];
-  if (v15)
+  senderEmailAddress = [(SUUIGift *)self senderEmailAddress];
+  if (senderEmailAddress)
   {
-    [v3 setObject:v15 forKey:@"senderEmail"];
+    [v3 setObject:senderEmailAddress forKey:@"senderEmail"];
   }
 
-  v16 = [(SUUIGift *)self senderName];
-  if (v16)
+  senderName = [(SUUIGift *)self senderName];
+  if (senderName)
   {
-    [v3 setObject:v16 forKey:@"fromName"];
+    [v3 setObject:senderName forKey:@"fromName"];
   }
 
   theme = self->_theme;
@@ -110,12 +110,12 @@
     [v3 setObject:v18 forKey:@"fcAdamId"];
   }
 
-  v19 = [MEMORY[0x277D7FCE0] sharedInstance];
-  v20 = [v19 guid];
+  mEMORY[0x277D7FCE0] = [MEMORY[0x277D7FCE0] sharedInstance];
+  guid = [mEMORY[0x277D7FCE0] guid];
 
-  if (v20)
+  if (guid)
   {
-    [v3 setObject:v20 forKey:@"guid"];
+    [v3 setObject:guid forKey:@"guid"];
   }
 
   return v3;
@@ -143,41 +143,41 @@
   self->_totalGiftAmountString = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_category;
-  v6 = [(NSDate *)self->_deliveryDate copyWithZone:a3];
+  v6 = [(NSDate *)self->_deliveryDate copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
   *(v5 + 24) = self->_giftAmount;
-  v8 = [(NSString *)self->_giftAmountString copyWithZone:a3];
+  v8 = [(NSString *)self->_giftAmountString copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
   objc_storeStrong((v5 + 40), self->_item);
-  v10 = [(NSString *)self->_message copyWithZone:a3];
+  v10 = [(NSString *)self->_message copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
-  v12 = [(NSArray *)self->_recipientAddresses copyWithZone:a3];
+  v12 = [(NSArray *)self->_recipientAddresses copyWithZone:zone];
   v13 = *(v5 + 56);
   *(v5 + 56) = v12;
 
-  v14 = [(NSString *)self->_senderEmailAddress copyWithZone:a3];
+  v14 = [(NSString *)self->_senderEmailAddress copyWithZone:zone];
   v15 = *(v5 + 64);
   *(v5 + 64) = v14;
 
-  v16 = [(NSString *)self->_senderName copyWithZone:a3];
+  v16 = [(NSString *)self->_senderName copyWithZone:zone];
   v17 = *(v5 + 72);
   *(v5 + 72) = v16;
 
-  v18 = [(SUUIGiftTheme *)self->_theme copyWithZone:a3];
+  v18 = [(SUUIGiftTheme *)self->_theme copyWithZone:zone];
   v19 = *(v5 + 80);
   *(v5 + 80) = v18;
 
-  v20 = [(NSString *)self->_totalGiftAmountString copyWithZone:a3];
+  v20 = [(NSString *)self->_totalGiftAmountString copyWithZone:zone];
   v21 = *(v5 + 88);
   *(v5 + 88) = v20;
 

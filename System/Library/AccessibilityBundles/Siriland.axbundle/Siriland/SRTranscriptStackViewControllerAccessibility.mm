@@ -1,14 +1,14 @@
 @interface SRTranscriptStackViewControllerAccessibility
-- (void)_enumerateSortedParentItemIndexPathsForItemIndexPaths:(id)a3 usingBlock:(id)a4;
+- (void)_enumerateSortedParentItemIndexPathsForItemIndexPaths:(id)paths usingBlock:(id)block;
 @end
 
 @implementation SRTranscriptStackViewControllerAccessibility
 
-- (void)_enumerateSortedParentItemIndexPathsForItemIndexPaths:(id)a3 usingBlock:(id)a4
+- (void)_enumerateSortedParentItemIndexPathsForItemIndexPaths:(id)paths usingBlock:(id)block
 {
   v4.receiver = self;
   v4.super_class = SRTranscriptStackViewControllerAccessibility;
-  [(SRTranscriptStackViewControllerAccessibility *)&v4 _enumerateSortedParentItemIndexPathsForItemIndexPaths:a3 usingBlock:a4];
+  [(SRTranscriptStackViewControllerAccessibility *)&v4 _enumerateSortedParentItemIndexPathsForItemIndexPaths:paths usingBlock:block];
   AXPerformBlockOnMainThreadAfterDelay();
 }
 

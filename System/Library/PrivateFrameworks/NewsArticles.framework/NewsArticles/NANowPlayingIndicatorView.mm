@@ -1,21 +1,21 @@
 @interface NANowPlayingIndicatorView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NANowPlayingIndicatorView)initWithFrame:(CGRect)a3;
-- (double)_fixedSeedValueForBarIndex:(unint64_t)a3;
-- (double)_seedValueForBarIndex:(unint64_t)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NANowPlayingIndicatorView)initWithFrame:(CGRect)frame;
+- (double)_fixedSeedValueForBarIndex:(unint64_t)index;
+- (double)_seedValueForBarIndex:(unint64_t)index;
 - (void)_bufferTimerFired;
 - (void)_reloadLevelViews;
 - (void)_updateLevelAnimations;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setLevelCornerRadius:(double)a3;
-- (void)setLevelGuttersColor:(id)a3;
-- (void)setLevelWidth:(double)a3;
-- (void)setMaximumLevelHeight:(double)a3;
-- (void)setMinimumLevelHeight:(double)a3;
-- (void)setNumberOfLevels:(int64_t)a3;
-- (void)setPlaybackState:(int64_t)a3;
-- (void)setShowsLevelGutters:(BOOL)a3;
+- (void)setLevelCornerRadius:(double)radius;
+- (void)setLevelGuttersColor:(id)color;
+- (void)setLevelWidth:(double)width;
+- (void)setMaximumLevelHeight:(double)height;
+- (void)setMinimumLevelHeight:(double)height;
+- (void)setNumberOfLevels:(int64_t)levels;
+- (void)setPlaybackState:(int64_t)state;
+- (void)setShowsLevelGutters:(BOOL)gutters;
 - (void)tintColorDidChange;
 @end
 
@@ -40,11 +40,11 @@
       if (v3 >= [(NSMutableArray *)self->_levelViews count]|| ([(NSMutableArray *)self->_levelViews objectAtIndex:v3], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
       {
         v8 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v4, v5, v6, v7}];
-        v9 = [v8 layer];
-        [v9 setCornerRadius:self->_levelCornerRadius];
-        [v9 setAnchorPoint:{0.5, 1.0}];
-        v10 = [(NANowPlayingIndicatorView *)self tintColor];
-        [v8 setBackgroundColor:v10];
+        layer = [v8 layer];
+        [layer setCornerRadius:self->_levelCornerRadius];
+        [layer setAnchorPoint:{0.5, 1.0}];
+        tintColor = [(NANowPlayingIndicatorView *)self tintColor];
+        [v8 setBackgroundColor:tintColor];
 
         levelViews = self->_levelViews;
         if (!levelViews)
@@ -81,7 +81,7 @@
 - (void)_updateLevelAnimations
 {
   v76 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6979518] disableActions];
+  disableActions = [MEMORY[0x1E6979518] disableActions];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
@@ -99,8 +99,8 @@
     v57 = *MEMORY[0x1E69795A0];
     v58 = *MEMORY[0x1E6979590];
     v56 = *MEMORY[0x1E69795B8];
-    v60 = self;
-    v59 = v3;
+    selfCopy = self;
+    v59 = disableActions;
     do
     {
       v8 = 0;
@@ -114,7 +114,7 @@
 
         v9 = *(*(&v67 + 1) + 8 * v8);
         [v9 setAlpha:1.0];
-        v10 = [v9 layer];
+        layer = [v9 layer];
         v11 = *(&self->super.super.super.super.isa + *(v7 + 2724));
         if (v11 > 1)
         {
@@ -160,8 +160,8 @@
               [v42 setBeginTime:?];
               [v42 setRemovedOnCompletion:1];
               v43 = [MEMORY[0x1E6979390] animationWithKeyPath:@"opacity"];
-              v44 = [v12 timingFunction];
-              [v43 setTimingFunction:v44];
+              timingFunction = [v12 timingFunction];
+              [v43 setTimingFunction:timingFunction];
 
               [v43 setRemovedOnCompletion:0];
               [v43 setFillMode:v65];
@@ -182,23 +182,23 @@
               [v43 setValues:v51];
 
               v7 = 0x1EC9DF000;
-              self = v60;
+              self = selfCopy;
 
               [v43 setCalculationMode:v56];
-              v52 = [MEMORY[0x1E6979308] animation];
-              [v52 setDuration:1.05];
+              animation = [MEMORY[0x1E6979308] animation];
+              [animation setDuration:1.05];
               v72[0] = v12;
               v72[1] = v42;
               v72[2] = v43;
               v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:3];
-              [v52 setAnimations:v53];
+              [animation setAnimations:v53];
 
               v5 = v62;
               LODWORD(v54) = 2139095040;
-              [v52 setRepeatCount:v54];
-              [v10 addAnimation:v52 forKey:@"nowPlayingIndicatorAnimation"];
+              [animation setRepeatCount:v54];
+              [layer addAnimation:animation forKey:@"nowPlayingIndicatorAnimation"];
 
-              v3 = v59;
+              disableActions = v59;
               goto LABEL_24;
             }
 
@@ -213,7 +213,7 @@
           [v12 setRemovedOnCompletion:0];
           [v12 setFillMode:v65];
           v23 = MEMORY[0x1E696AD98];
-          if (v3)
+          if (disableActions)
           {
             v24 = [MEMORY[0x1E696AD98] numberWithDouble:self->_minimumLevelHeight];
             [v12 setFromValue:v24];
@@ -221,14 +221,14 @@
 
           else
           {
-            v30 = [v10 presentationLayer];
-            v31 = v30;
-            if (!v30)
+            presentationLayer = [layer presentationLayer];
+            v31 = presentationLayer;
+            if (!presentationLayer)
             {
-              v30 = v10;
+              presentationLayer = layer;
             }
 
-            [v30 bounds];
+            [presentationLayer bounds];
             v32 = [v23 numberWithDouble:CGRectGetHeight(v78)];
             [v12 setFromValue:v32];
           }
@@ -280,14 +280,14 @@
           [v12 setRemovedOnCompletion:0];
           [v12 setFillMode:v65];
           v26 = MEMORY[0x1E696AD98];
-          v27 = [v10 presentationLayer];
-          v28 = v27;
-          if (!v27)
+          presentationLayer2 = [layer presentationLayer];
+          v28 = presentationLayer2;
+          if (!presentationLayer2)
           {
-            v27 = v10;
+            presentationLayer2 = layer;
           }
 
-          [v27 bounds];
+          [presentationLayer2 bounds];
           v29 = [v26 numberWithDouble:CGRectGetHeight(v77)];
           [v12 setFromValue:v29];
 
@@ -295,7 +295,7 @@
           [v12 setToValue:&unk_1F52DE0A8];
         }
 
-        [v10 addAnimation:v12 forKey:@"nowPlayingIndicatorAnimation"];
+        [layer addAnimation:v12 forKey:@"nowPlayingIndicatorAnimation"];
 LABEL_24:
 
 LABEL_25:
@@ -345,8 +345,8 @@ LABEL_25:
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [(NANowPlayingIndicatorView *)self tintColor];
-        [v8 setBackgroundColor:v9];
+        tintColor = [(NANowPlayingIndicatorView *)self tintColor];
+        [v8 setBackgroundColor:tintColor];
 
         ++v7;
       }
@@ -407,20 +407,20 @@ LABEL_25:
   }
 }
 
-- (NANowPlayingIndicatorView)initWithFrame:(CGRect)a3
+- (NANowPlayingIndicatorView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = NANowPlayingIndicatorView;
-  v3 = [(NANowPlayingIndicatorView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NANowPlayingIndicatorView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(NANowPlayingIndicatorView *)v3 setUserInteractionEnabled:0];
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [(NANowPlayingIndicatorView *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(NANowPlayingIndicatorView *)v4 setBackgroundColor:clearColor];
 
-    v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v6 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v8 = v7;
 
     v4->_interLevelSpacing = 1.0 / v8 + 1.0;
@@ -435,7 +435,7 @@ LABEL_25:
   return v4;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (self->_showsLevelGutters)
   {
@@ -447,7 +447,7 @@ LABEL_25:
 
     else
     {
-      v7 = [(NANowPlayingIndicatorView *)self tintColor:a3.origin.x];
+      v7 = [(NANowPlayingIndicatorView *)self tintColor:rect.origin.x];
       v12 = [v7 colorWithAlphaComponent:0.2];
 
       v6 = v12;
@@ -477,7 +477,7 @@ LABEL_25:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   numberOfLevels = self->_numberOfLevels;
   if (numberOfLevels)
@@ -498,12 +498,12 @@ LABEL_25:
   return result;
 }
 
-- (void)setLevelCornerRadius:(double)a3
+- (void)setLevelCornerRadius:(double)radius
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_levelCornerRadius != a3)
+  if (self->_levelCornerRadius != radius)
   {
-    self->_levelCornerRadius = a3;
+    self->_levelCornerRadius = radius;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -524,8 +524,8 @@ LABEL_25:
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v10 + 1) + 8 * v8) layer];
-          [v9 setCornerRadius:self->_levelCornerRadius];
+          layer = [*(*(&v10 + 1) + 8 * v8) layer];
+          [layer setCornerRadius:self->_levelCornerRadius];
 
           ++v8;
         }
@@ -539,48 +539,48 @@ LABEL_25:
   }
 }
 
-- (void)setLevelWidth:(double)a3
+- (void)setLevelWidth:(double)width
 {
-  if (self->_levelWidth != a3)
+  if (self->_levelWidth != width)
   {
-    self->_levelWidth = a3;
+    self->_levelWidth = width;
     [(NANowPlayingIndicatorView *)self setNeedsLayout];
   }
 }
 
-- (void)setMaximumLevelHeight:(double)a3
+- (void)setMaximumLevelHeight:(double)height
 {
-  if (self->_maximumLevelHeight != a3)
+  if (self->_maximumLevelHeight != height)
   {
-    self->_maximumLevelHeight = a3;
+    self->_maximumLevelHeight = height;
     [(NANowPlayingIndicatorView *)self _updateLevelAnimations];
   }
 }
 
-- (void)setMinimumLevelHeight:(double)a3
+- (void)setMinimumLevelHeight:(double)height
 {
-  if (self->_minimumLevelHeight != a3)
+  if (self->_minimumLevelHeight != height)
   {
-    self->_minimumLevelHeight = a3;
+    self->_minimumLevelHeight = height;
     [(NANowPlayingIndicatorView *)self _updateLevelAnimations];
   }
 }
 
-- (void)setNumberOfLevels:(int64_t)a3
+- (void)setNumberOfLevels:(int64_t)levels
 {
-  if (self->_numberOfLevels != a3)
+  if (self->_numberOfLevels != levels)
   {
-    self->_numberOfLevels = a3;
+    self->_numberOfLevels = levels;
     [(NANowPlayingIndicatorView *)self _reloadLevelViews];
   }
 }
 
-- (void)setPlaybackState:(int64_t)a3
+- (void)setPlaybackState:(int64_t)state
 {
-  if (self->_playbackState != a3)
+  if (self->_playbackState != state)
   {
-    self->_playbackState = a3;
-    if (a3 == 3)
+    self->_playbackState = state;
+    if (state == 3)
     {
       self->bufferingShouldDisplayAsPaused = 1;
       [(NANowPlayingIndicatorView *)self performSelector:sel__bufferTimerFired withObject:0 afterDelay:1.0];
@@ -599,33 +599,33 @@ LABEL_25:
   }
 }
 
-- (void)setShowsLevelGutters:(BOOL)a3
+- (void)setShowsLevelGutters:(BOOL)gutters
 {
-  if (self->_showsLevelGutters != a3)
+  if (self->_showsLevelGutters != gutters)
   {
-    self->_showsLevelGutters = a3;
+    self->_showsLevelGutters = gutters;
     [(NANowPlayingIndicatorView *)self setNeedsDisplay];
   }
 }
 
-- (void)setLevelGuttersColor:(id)a3
+- (void)setLevelGuttersColor:(id)color
 {
-  v5 = a3;
-  if (self->_levelGuttersColor != v5)
+  colorCopy = color;
+  if (self->_levelGuttersColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_levelGuttersColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_levelGuttersColor, color);
     [(NANowPlayingIndicatorView *)self setNeedsDisplay];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (double)_seedValueForBarIndex:(unint64_t)a3
+- (double)_seedValueForBarIndex:(unint64_t)index
 {
   if ([(NANowPlayingIndicatorView *)self bounceStyle]== 1)
   {
 
-    [(NANowPlayingIndicatorView *)self _fixedSeedValueForBarIndex:a3];
+    [(NANowPlayingIndicatorView *)self _fixedSeedValueForBarIndex:index];
   }
 
   else
@@ -637,11 +637,11 @@ LABEL_25:
   return result;
 }
 
-- (double)_fixedSeedValueForBarIndex:(unint64_t)a3
+- (double)_fixedSeedValueForBarIndex:(unint64_t)index
 {
-  if (a3 < 4)
+  if (index < 4)
   {
-    return dbl_1D7D3B450[a3];
+    return dbl_1D7D3B450[index];
   }
 
   [(NANowPlayingIndicatorView *)self _randomSeedValueForBar];

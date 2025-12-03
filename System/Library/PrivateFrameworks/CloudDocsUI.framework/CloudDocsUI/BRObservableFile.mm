@@ -1,12 +1,12 @@
 @interface BRObservableFile
-+ (id)observerForKey:(id)a3 onFileURL:(id)a4;
-+ (void)_applicationDidBecomeActive:(id)a3;
-+ (void)_applicationWillResignActive:(id)a3;
-+ (void)_deregisterInstance:(id)a3;
++ (id)observerForKey:(id)key onFileURL:(id)l;
++ (void)_applicationDidBecomeActive:(id)active;
++ (void)_applicationWillResignActive:(id)active;
++ (void)_deregisterInstance:(id)instance;
 + (void)_registerForApplicationLifecycleNotifications;
-+ (void)_registerInstance:(id)a3;
-- (BRObservableFile)initWithKey:(id)a3 fileURL:(id)a4;
-- (id)addObserverBlock:(id)a3;
++ (void)_registerInstance:(id)instance;
+- (BRObservableFile)initWithKey:(id)key fileURL:(id)l;
+- (id)addObserverBlock:(id)block;
 - (void)_presenterDidChange;
 - (void)dealloc;
 @end
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __65__BRObservableFile__registerForApplicationLifecycleNotifications__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_registerForApplicationLifecycleNotifications_onceToken != -1)
   {
     dispatch_once(&_registerForApplicationLifecycleNotifications_onceToken, block);
@@ -38,28 +38,28 @@ void __65__BRObservableFile__registerForApplicationLifecycleNotifications__block
   _BRObservableFileInstances = v4;
 }
 
-+ (void)_registerInstance:(id)a3
++ (void)_registerInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   v3 = _BRObservableFileInstances;
   objc_sync_enter(v3);
-  [_BRObservableFileInstances addObject:v4];
+  [_BRObservableFileInstances addObject:instanceCopy];
   objc_sync_exit(v3);
 }
 
-+ (void)_deregisterInstance:(id)a3
++ (void)_deregisterInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   v3 = _BRObservableFileInstances;
   objc_sync_enter(v3);
-  [_BRObservableFileInstances removeObject:v4];
+  [_BRObservableFileInstances removeObject:instanceCopy];
   objc_sync_exit(v3);
 }
 
-+ (void)_applicationWillResignActive:(id)a3
++ (void)_applicationWillResignActive:(id)active
 {
-  v3 = [MEMORY[0x277CCAC38] processInfo];
-  [v3 performExpiringActivityWithReason:@"Deregister file presenters" usingBlock:&__block_literal_global_5];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  [processInfo performExpiringActivityWithReason:@"Deregister file presenters" usingBlock:&__block_literal_global_5];
 }
 
 void __49__BRObservableFile__applicationWillResignActive___block_invoke(uint64_t a1, char a2)
@@ -131,10 +131,10 @@ void __49__BRObservableFile__applicationWillResignActive___block_invoke(uint64_t
   }
 }
 
-+ (void)_applicationDidBecomeActive:(id)a3
++ (void)_applicationDidBecomeActive:(id)active
 {
   v28 = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  activeCopy = active;
   v15 = _BRObservableFileInstances;
   objc_sync_enter(v15);
   v17 = 0u;
@@ -160,21 +160,21 @@ void __49__BRObservableFile__applicationWillResignActive___block_invoke(uint64_t
         if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
         {
           v8 = objc_opt_class();
-          v9 = [v6 presenter];
-          v10 = [v9 presentedItemURL];
-          v11 = [v10 path];
+          presenter = [v6 presenter];
+          presentedItemURL = [presenter presentedItemURL];
+          path = [presentedItemURL path];
           *buf = 138412802;
           v22 = v8;
           v23 = 2048;
           v24 = v6;
           v25 = 2112;
-          v26 = v11;
+          v26 = path;
           _os_log_impl(&dword_243823000, v7, OS_LOG_TYPE_INFO, "[INFO] Re-adding (<%@: %p>, %@) as file presenter due to application activation", buf, 0x20u);
         }
 
         v12 = MEMORY[0x277CCA9E8];
-        v13 = [v6 presenter];
-        [v12 addFilePresenter:v13];
+        presenter2 = [v6 presenter];
+        [v12 addFilePresenter:presenter2];
       }
 
       v3 = [obj countByEnumeratingWithState:&v17 objects:v27 count:16];
@@ -186,59 +186,59 @@ void __49__BRObservableFile__applicationWillResignActive___block_invoke(uint64_t
   objc_sync_exit(v15);
 }
 
-+ (id)observerForKey:(id)a3 onFileURL:(id)a4
++ (id)observerForKey:(id)key onFileURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithKey:v7 fileURL:v6];
+  lCopy = l;
+  keyCopy = key;
+  v8 = [[self alloc] initWithKey:keyCopy fileURL:lCopy];
 
   return v8;
 }
 
-- (BRObservableFile)initWithKey:(id)a3 fileURL:(id)a4
+- (BRObservableFile)initWithKey:(id)key fileURL:(id)l
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  lCopy = l;
   v23.receiver = self;
   v23.super_class = BRObservableFile;
   v8 = [(BRObservableFile *)&v23 init];
   if (v8)
   {
     [objc_opt_class() _registerForApplicationLifecycleNotifications];
-    [(BRObservableFile *)v8 setKey:v6];
+    [(BRObservableFile *)v8 setKey:keyCopy];
     v9 = objc_opt_new();
     [(BRObservableFile *)v8 setPresenter:v9];
 
-    v10 = [(BRObservableFile *)v8 presenter];
-    [v10 setPresentedItemURL:v7];
+    presenter = [(BRObservableFile *)v8 presenter];
+    [presenter setPresentedItemURL:lCopy];
 
     v11 = objc_opt_new();
-    v12 = [(BRObservableFile *)v8 presenter];
-    [v12 setPresentedItemOperationQueue:v11];
+    presenter2 = [(BRObservableFile *)v8 presenter];
+    [presenter2 setPresentedItemOperationQueue:v11];
 
-    v13 = [(BRObservableFile *)v8 presenter];
-    [v13 setParent:v8];
+    presenter3 = [(BRObservableFile *)v8 presenter];
+    [presenter3 setParent:v8];
 
     [objc_opt_class() _registerInstance:v8];
     v14 = MEMORY[0x277CCA9E8];
-    v15 = [(BRObservableFile *)v8 presenter];
-    [v14 addFilePresenter:v15];
+    presenter4 = [(BRObservableFile *)v8 presenter];
+    [v14 addFilePresenter:presenter4];
 
     v16 = cdui_default_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = objc_opt_class();
       v18 = v17;
-      v19 = [(BRObservableFile *)v8 presenter];
-      v20 = [v19 presentedItemURL];
-      v21 = [v20 path];
+      presenter5 = [(BRObservableFile *)v8 presenter];
+      presentedItemURL = [presenter5 presentedItemURL];
+      path = [presentedItemURL path];
       *buf = 138412802;
       v25 = v17;
       v26 = 2048;
       v27 = v8;
       v28 = 2112;
-      v29 = v21;
+      v29 = path;
       _os_log_impl(&dword_243823000, v16, OS_LOG_TYPE_INFO, "[INFO] Adding (<%@: %p>, %@) as file presenter", buf, 0x20u);
     }
 
@@ -248,11 +248,11 @@ void __49__BRObservableFile__applicationWillResignActive___block_invoke(uint64_t
   return v8;
 }
 
-- (id)addObserverBlock:(id)a3
+- (id)addObserverBlock:(id)block
 {
   v6.receiver = self;
   v6.super_class = BRObservableFile;
-  v4 = [(BRObservableFile *)&v6 addObserverBlock:a3];
+  v4 = [(BRObservableFile *)&v6 addObserverBlock:block];
   [(BRObservableFile *)self _presenterDidChange];
 
   return v4;
@@ -267,21 +267,21 @@ void __49__BRObservableFile__applicationWillResignActive___block_invoke(uint64_t
   {
     v4 = objc_opt_class();
     v5 = v4;
-    v6 = [(BRObservableFile *)self presenter];
-    v7 = [v6 presentedItemURL];
-    v8 = [v7 path];
+    presenter = [(BRObservableFile *)self presenter];
+    presentedItemURL = [presenter presentedItemURL];
+    path = [presentedItemURL path];
     *buf = 138412802;
     v13 = v4;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v8;
+    v17 = path;
     _os_log_impl(&dword_243823000, v3, OS_LOG_TYPE_INFO, "[INFO] Removing (<%@: %p>, %@) as file presenter due to dealloc", buf, 0x20u);
   }
 
   v9 = MEMORY[0x277CCA9E8];
-  v10 = [(BRObservableFile *)self presenter];
-  [v9 removeFilePresenter:v10];
+  presenter2 = [(BRObservableFile *)self presenter];
+  [v9 removeFilePresenter:presenter2];
 
   v11.receiver = self;
   v11.super_class = BRObservableFile;
@@ -291,19 +291,19 @@ void __49__BRObservableFile__applicationWillResignActive___block_invoke(uint64_t
 - (void)_presenterDidChange
 {
   key = self->_key;
-  v12 = [(BRObservableFile *)self presenter];
-  v4 = [v12 presentedItemURL];
+  presenter = [(BRObservableFile *)self presenter];
+  presentedItemURL = [presenter presentedItemURL];
   if (key)
   {
     v5 = [(BRObservableFile *)self key];
-    [v4 removeCachedResourceValueForKey:v5];
+    [presentedItemURL removeCachedResourceValueForKey:v5];
 
-    v6 = [(BRObservableFile *)self presenter];
-    v7 = [v6 presentedItemURL];
+    presenter2 = [(BRObservableFile *)self presenter];
+    presentedItemURL2 = [presenter2 presentedItemURL];
     v14 = 0;
     v8 = [(BRObservableFile *)self key];
     v13 = 0;
-    v9 = [v7 getPromisedItemResourceValue:&v14 forKey:v8 error:&v13];
+    v9 = [presentedItemURL2 getPromisedItemResourceValue:&v14 forKey:v8 error:&v13];
     v10 = v14;
     v11 = v13;
 
@@ -320,7 +320,7 @@ void __49__BRObservableFile__applicationWillResignActive___block_invoke(uint64_t
 
   else
   {
-    [(BRObservableFile *)self receiveObservedValue:v4];
+    [(BRObservableFile *)self receiveObservedValue:presentedItemURL];
   }
 }
 

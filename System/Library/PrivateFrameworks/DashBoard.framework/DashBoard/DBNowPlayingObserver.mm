@@ -1,46 +1,46 @@
 @interface DBNowPlayingObserver
-- (BOOL)_isValidNowPlayingApplication:(id)a3;
+- (BOOL)_isValidNowPlayingApplication:(id)application;
 - (DBAppHistory)appHistory;
 - (DBEnvironmentConfiguration)environment;
 - (DBNowPlayingDelegate)delegate;
-- (DBNowPlayingObserver)initWithEnvironmentConfiguration:(id)a3;
-- (id)nowPlayingLaunchInfoWithSource:(unint64_t)a3;
-- (void)_carDidTakeMainAudio:(id)a3;
-- (void)_nowPlayingDidChangeToBundleIdentifier:(id)a3;
-- (void)_updatePlaybackStateForBundleIdentifier:(id)a3 playing:(BOOL)a4;
-- (void)handleVideoStartedFromBundleIdentifier:(id)a3;
-- (void)nowPlayingManager:(id)a3 didUpdateSnapshot:(id)a4;
+- (DBNowPlayingObserver)initWithEnvironmentConfiguration:(id)configuration;
+- (id)nowPlayingLaunchInfoWithSource:(unint64_t)source;
+- (void)_carDidTakeMainAudio:(id)audio;
+- (void)_nowPlayingDidChangeToBundleIdentifier:(id)identifier;
+- (void)_updatePlaybackStateForBundleIdentifier:(id)identifier playing:(BOOL)playing;
+- (void)handleVideoStartedFromBundleIdentifier:(id)identifier;
+- (void)nowPlayingManager:(id)manager didUpdateSnapshot:(id)snapshot;
 @end
 
 @implementation DBNowPlayingObserver
 
-- (DBNowPlayingObserver)initWithEnvironmentConfiguration:(id)a3
+- (DBNowPlayingObserver)initWithEnvironmentConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = DBNowPlayingObserver;
   v5 = [(DBNowPlayingObserver *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
-    v7 = [v4 appHistory];
-    objc_storeWeak(&v6->_appHistory, v7);
+    objc_storeWeak(&v5->_environment, configurationCopy);
+    appHistory = [configurationCopy appHistory];
+    objc_storeWeak(&v6->_appHistory, appHistory);
 
-    v8 = [MEMORY[0x277CF9158] sharedManager];
-    [v8 addNowPlayingObserver:v6];
+    mEMORY[0x277CF9158] = [MEMORY[0x277CF9158] sharedManager];
+    [mEMORY[0x277CF9158] addNowPlayingObserver:v6];
 
-    if ([v4 isVehicleDataSession])
+    if ([configurationCopy isVehicleDataSession])
     {
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v9 addObserver:v6 selector:sel__carDidTakeMainAudio_ name:*MEMORY[0x277CF8918] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v6 selector:sel__carDidTakeMainAudio_ name:*MEMORY[0x277CF8918] object:0];
     }
   }
 
   return v6;
 }
 
-- (void)_carDidTakeMainAudio:(id)a3
+- (void)_carDidTakeMainAudio:(id)audio
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -63,12 +63,12 @@ void __45__DBNowPlayingObserver__carDidTakeMainAudio___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_isValidNowPlayingApplication:(id)a3
+- (BOOL)_isValidNowPlayingApplication:(id)application
 {
-  v4 = a3;
-  v5 = [(DBNowPlayingObserver *)self appHistory];
-  v6 = [v4 bundleIdentifier];
-  v7 = [v5 appDockCategoryForBundleIdentifier:v6];
+  applicationCopy = application;
+  appHistory = [(DBNowPlayingObserver *)self appHistory];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  v7 = [appHistory appDockCategoryForBundleIdentifier:bundleIdentifier];
 
   if (v7 == 2)
   {
@@ -77,9 +77,9 @@ void __45__DBNowPlayingObserver__carDidTakeMainAudio___block_invoke(uint64_t a1)
 
   else
   {
-    v9 = [(DBNowPlayingObserver *)self appHistory];
-    v10 = [v4 bundleIdentifier];
-    v11 = [v9 policyForBundleIdentifier:v10];
+    appHistory2 = [(DBNowPlayingObserver *)self appHistory];
+    bundleIdentifier2 = [applicationCopy bundleIdentifier];
+    v11 = [appHistory2 policyForBundleIdentifier:bundleIdentifier2];
 
     if ([v11 isCarPlaySupported])
     {
@@ -88,41 +88,41 @@ void __45__DBNowPlayingObserver__carDidTakeMainAudio___block_invoke(uint64_t a1)
 
     else
     {
-      v12 = [v4 info];
-      v8 = [v12 supportsBackgroundMode:*MEMORY[0x277D76778]];
+      info = [applicationCopy info];
+      v8 = [info supportsBackgroundMode:*MEMORY[0x277D76778]];
     }
   }
 
   return v8;
 }
 
-- (id)nowPlayingLaunchInfoWithSource:(unint64_t)a3
+- (id)nowPlayingLaunchInfoWithSource:(unint64_t)source
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [(DBNowPlayingObserver *)self nowPlayingApplication];
-  v6 = [(DBNowPlayingObserver *)self environment];
-  if (![v6 isVehicleDataSession])
+  nowPlayingApplication = [(DBNowPlayingObserver *)self nowPlayingApplication];
+  environment = [(DBNowPlayingObserver *)self environment];
+  if (![environment isVehicleDataSession])
   {
     goto LABEL_4;
   }
 
-  v7 = [(DBNowPlayingObserver *)self environment];
-  v8 = [v7 session];
-  v9 = [v8 carOwnsMainAudio];
+  environment2 = [(DBNowPlayingObserver *)self environment];
+  session = [environment2 session];
+  carOwnsMainAudio = [session carOwnsMainAudio];
 
-  if (v9)
+  if (carOwnsMainAudio)
   {
-    v6 = +[DBApplicationController sharedInstance];
-    v10 = [v6 applicationWithBundleIdentifier:@"com.apple.CarRadio"];
+    environment = +[DBApplicationController sharedInstance];
+    v10 = [environment applicationWithBundleIdentifier:@"com.apple.CarRadio"];
 
-    v5 = v10;
+    nowPlayingApplication = v10;
 LABEL_4:
   }
 
-  if (v5 || (-[DBNowPlayingObserver appHistory](self, "appHistory"), v11 = objc_claimAutoreleasedReturnValue(), [v11 orderedAppsMatchingDockCategory:2], v12 = objc_claimAutoreleasedReturnValue(), v11, v21[0] = MEMORY[0x277D85DD0], v21[1] = 3221225472, v21[2] = __55__DBNowPlayingObserver_nowPlayingLaunchInfoWithSource___block_invoke, v21[3] = &unk_278F04530, v21[4] = self, objc_msgSend(v12, "bs_firstObjectPassingTest:", v21), v5 = objc_claimAutoreleasedReturnValue(), v12, v5))
+  if (nowPlayingApplication || (-[DBNowPlayingObserver appHistory](self, "appHistory"), v11 = objc_claimAutoreleasedReturnValue(), [v11 orderedAppsMatchingDockCategory:2], v12 = objc_claimAutoreleasedReturnValue(), v11, v21[0] = MEMORY[0x277D85DD0], v21[1] = 3221225472, v21[2] = __55__DBNowPlayingObserver_nowPlayingLaunchInfoWithSource___block_invoke, v21[3] = &unk_278F04530, v21[4] = self, objc_msgSend(v12, "bs_firstObjectPassingTest:", v21), nowPlayingApplication = objc_claimAutoreleasedReturnValue(), v12, nowPlayingApplication))
   {
-    v13 = [v5 bundleIdentifier];
-    if ([v13 isEqualToString:@"com.apple.WebKit.WebContent"])
+    bundleIdentifier = [nowPlayingApplication bundleIdentifier];
+    if ([bundleIdentifier isEqualToString:@"com.apple.WebKit.WebContent"])
     {
       v14 = DBLogForCategory(0);
       if (os_log_type_enabled(&v14->super, OS_LOG_TYPE_DEFAULT))
@@ -136,32 +136,32 @@ LABEL_19:
 
     else
     {
-      if ([(DBNowPlayingObserver *)self _isValidNowPlayingApplication:v5])
+      if ([(DBNowPlayingObserver *)self _isValidNowPlayingApplication:nowPlayingApplication])
       {
         v14 = objc_alloc_init(DBActivationSettings);
         v16 = [MEMORY[0x277CBEBC0] URLWithString:@"music://cardisplay/show-now-playing"];
         [(DBActivationSettings *)v14 setUrl:v16];
 
-        if (a3)
+        if (source)
         {
-          v17 = a3;
+          sourceCopy = source;
         }
 
         else
         {
-          v17 = 2;
+          sourceCopy = 2;
         }
 
-        [(DBActivationSettings *)v14 setLaunchSource:v17];
+        [(DBActivationSettings *)v14 setLaunchSource:sourceCopy];
         v18 = DBLogForCategory(0);
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v23 = v5;
+          v23 = nowPlayingApplication;
           _os_log_impl(&dword_248146000, v18, OS_LOG_TYPE_DEFAULT, "Resolved now playing launch info to %@", buf, 0xCu);
         }
 
-        v19 = [DBApplicationLaunchInfo launchInfoForApplication:v5 withActivationSettings:v14];
+        v19 = [DBApplicationLaunchInfo launchInfoForApplication:nowPlayingApplication withActivationSettings:v14];
         goto LABEL_21;
       }
 
@@ -180,11 +180,11 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v5 = DBLogForCategory(0);
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  nowPlayingApplication = DBLogForCategory(0);
+  if (os_log_type_enabled(nowPlayingApplication, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "No available audio app for now playing.", buf, 2u);
+    _os_log_impl(&dword_248146000, nowPlayingApplication, OS_LOG_TYPE_DEFAULT, "No available audio app for now playing.", buf, 2u);
   }
 
   v19 = 0;
@@ -213,9 +213,9 @@ uint64_t __55__DBNowPlayingObserver_nowPlayingLaunchInfoWithSource___block_invok
   return v6;
 }
 
-- (void)handleVideoStartedFromBundleIdentifier:(id)a3
+- (void)handleVideoStartedFromBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = DBLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -223,52 +223,52 @@ uint64_t __55__DBNowPlayingObserver_nowPlayingLaunchInfoWithSource___block_invok
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "video started, updating now playing", v6, 2u);
   }
 
-  [(DBNowPlayingObserver *)self _nowPlayingDidChangeToBundleIdentifier:v4];
+  [(DBNowPlayingObserver *)self _nowPlayingDidChangeToBundleIdentifier:identifierCopy];
 }
 
-- (void)_nowPlayingDidChangeToBundleIdentifier:(id)a3
+- (void)_nowPlayingDidChangeToBundleIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = DBLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v4;
+    v26 = identifierCopy;
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "Resolved now playing identifier to %@", buf, 0xCu);
   }
 
   v24 = 0;
-  v6 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v24];
+  v6 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v24];
   v7 = v24;
   if (v6)
   {
-    v8 = [v6 applicationState];
-    v9 = [v8 isValid];
+    applicationState = [v6 applicationState];
+    isValid = [applicationState isValid];
 
-    if (v9)
+    if (isValid)
     {
-      v10 = [v6 applicationState];
-      v11 = [v10 isRestricted];
+      applicationState2 = [v6 applicationState];
+      isRestricted = [applicationState2 isRestricted];
 
-      if (v11)
+      if (isRestricted)
       {
-        v12 = DBLogForCategory(0);
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+        bundleIdentifier = DBLogForCategory(0);
+        if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
           v13 = "Now playing application is restricted; ignoring.";
 LABEL_12:
-          _os_log_impl(&dword_248146000, v12, OS_LOG_TYPE_DEFAULT, v13, buf, 2u);
+          _os_log_impl(&dword_248146000, bundleIdentifier, OS_LOG_TYPE_DEFAULT, v13, buf, 2u);
         }
       }
 
       else
       {
-        v14 = [(DBNowPlayingObserver *)self nowPlayingApplication];
-        v12 = [v14 bundleIdentifier];
+        nowPlayingApplication = [(DBNowPlayingObserver *)self nowPlayingApplication];
+        bundleIdentifier = [nowPlayingApplication bundleIdentifier];
 
-        if ([v12 isEqualToString:v4])
+        if ([bundleIdentifier isEqualToString:identifierCopy])
         {
           v15 = DBLogForCategory(0);
           if (os_log_type_enabled(&v15->super, OS_LOG_TYPE_DEFAULT))
@@ -281,7 +281,7 @@ LABEL_12:
         else
         {
           v16 = +[DBApplicationController sharedInstance];
-          v15 = [v16 applicationWithBundleIdentifier:v4];
+          v15 = [v16 applicationWithBundleIdentifier:identifierCopy];
 
           if (!v15)
           {
@@ -302,7 +302,7 @@ LABEL_12:
             }
 
             [(DBNowPlayingObserver *)self setNowPlayingApplication:v15];
-            v21 = [(DBNowPlayingObserver *)self delegate];
+            delegate = [(DBNowPlayingObserver *)self delegate];
             v22 = objc_opt_respondsToSelector();
 
             if (v22)
@@ -330,8 +330,8 @@ LABEL_12:
 
     else
     {
-      v12 = DBLogForCategory(0);
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      bundleIdentifier = DBLogForCategory(0);
+      if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v13 = "No available now playing app record.";
@@ -342,10 +342,10 @@ LABEL_12:
 
   else
   {
-    v12 = DBLogForCategory(0);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    bundleIdentifier = DBLogForCategory(0);
+    if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_ERROR))
     {
-      [(DBNowPlayingObserver *)v7 _nowPlayingDidChangeToBundleIdentifier:v12];
+      [(DBNowPlayingObserver *)v7 _nowPlayingDidChangeToBundleIdentifier:bundleIdentifier];
     }
   }
 }
@@ -358,20 +358,20 @@ void __63__DBNowPlayingObserver__nowPlayingDidChangeToBundleIdentifier___block_i
   [v4 nowPlayingObserver:v2 didChangeNowPlayingApplication:v3];
 }
 
-- (void)_updatePlaybackStateForBundleIdentifier:(id)a3 playing:(BOOL)a4
+- (void)_updatePlaybackStateForBundleIdentifier:(id)identifier playing:(BOOL)playing
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v6 allowPlaceholder:0 error:0];
-  v8 = [v7 applicationState];
-  v9 = [v8 isValid];
+  identifierCopy = identifier;
+  v7 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:0];
+  applicationState = [v7 applicationState];
+  isValid = [applicationState isValid];
 
-  if (v9)
+  if (isValid)
   {
     v10 = +[DBApplicationController sharedInstance];
-    v11 = [v10 applicationWithBundleIdentifier:v6];
+    v11 = [v10 applicationWithBundleIdentifier:identifierCopy];
 
-    self->_playing = a4;
-    v12 = [(DBNowPlayingObserver *)self delegate];
+    self->_playing = playing;
+    delegate = [(DBNowPlayingObserver *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
@@ -381,7 +381,7 @@ void __63__DBNowPlayingObserver__nowPlayingDidChangeToBundleIdentifier___block_i
       block[2] = __72__DBNowPlayingObserver__updatePlaybackStateForBundleIdentifier_playing___block_invoke;
       block[3] = &unk_278F03FE0;
       block[4] = self;
-      v16 = a4;
+      playingCopy = playing;
       v15 = v11;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
@@ -394,14 +394,14 @@ void __72__DBNowPlayingObserver__updatePlaybackStateForBundleIdentifier_playing_
   [v2 nowPlayingObserver:*(a1 + 32) didUpdatePlaybackState:*(a1 + 48) inApplication:*(a1 + 40)];
 }
 
-- (void)nowPlayingManager:(id)a3 didUpdateSnapshot:(id)a4
+- (void)nowPlayingManager:(id)manager didUpdateSnapshot:(id)snapshot
 {
-  v5 = a4;
-  v7 = [v5 bundleIdentifier];
-  [(DBNowPlayingObserver *)self _nowPlayingDidChangeToBundleIdentifier:v7];
-  v6 = [v5 state];
+  snapshotCopy = snapshot;
+  bundleIdentifier = [snapshotCopy bundleIdentifier];
+  [(DBNowPlayingObserver *)self _nowPlayingDidChangeToBundleIdentifier:bundleIdentifier];
+  state = [snapshotCopy state];
 
-  [(DBNowPlayingObserver *)self _updatePlaybackStateForBundleIdentifier:v7 playing:v6 == 2];
+  [(DBNowPlayingObserver *)self _updatePlaybackStateForBundleIdentifier:bundleIdentifier playing:state == 2];
 }
 
 - (DBAppHistory)appHistory

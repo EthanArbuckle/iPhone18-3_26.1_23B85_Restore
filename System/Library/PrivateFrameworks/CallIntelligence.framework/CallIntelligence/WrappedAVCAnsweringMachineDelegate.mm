@@ -1,8 +1,8 @@
 @interface WrappedAVCAnsweringMachineDelegate
 - (_TtC16CallIntelligence34WrappedAVCAnsweringMachineDelegate)init;
-- (void)answeringMachine:(id)a3 didFinishAnnouncement:(BOOL)a4 error:(id)a5;
-- (void)answeringMachine:(id)a3 didStart:(BOOL)a4 error:(id)a5;
-- (void)answeringMachine:(id)a3 didStop:(BOOL)a4 messageRecordingURL:(id)a5 error:(id)a6;
+- (void)answeringMachine:(id)machine didFinishAnnouncement:(BOOL)announcement error:(id)error;
+- (void)answeringMachine:(id)machine didStart:(BOOL)start error:(id)error;
+- (void)answeringMachine:(id)machine didStop:(BOOL)stop messageRecordingURL:(id)l error:(id)error;
 - (void)serverDidDisconnectForAnsweringMachine:;
 @end
 
@@ -19,29 +19,29 @@
   return [(WrappedAVCAnsweringMachineDelegate *)&v6 init];
 }
 
-- (void)answeringMachine:(id)a3 didStart:(BOOL)a4 error:(id)a5
+- (void)answeringMachine:(id)machine didStart:(BOOL)start error:(id)error
 {
-  v8 = a3;
-  v9 = self;
-  v10 = a5;
-  sub_1D2EB95FC(a4, a5);
+  machineCopy = machine;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1D2EB95FC(start, error);
 }
 
-- (void)answeringMachine:(id)a3 didFinishAnnouncement:(BOOL)a4 error:(id)a5
+- (void)answeringMachine:(id)machine didFinishAnnouncement:(BOOL)announcement error:(id)error
 {
-  v8 = a3;
-  v9 = self;
-  v10 = a5;
-  sub_1D2EB980C(a4, a5);
+  machineCopy = machine;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1D2EB980C(announcement, error);
 }
 
-- (void)answeringMachine:(id)a3 didStop:(BOOL)a4 messageRecordingURL:(id)a5 error:(id)a6
+- (void)answeringMachine:(id)machine didStop:(BOOL)stop messageRecordingURL:(id)l error:(id)error
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC7393B0, &unk_1D2EF28C0);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x1EEE9AC00](v11 - 8);
   v14 = &v20 - v13;
-  if (a5)
+  if (l)
   {
     sub_1D2EE3D48();
     v15 = sub_1D2EE3D88();
@@ -54,10 +54,10 @@
     (*(*(v16 - 8) + 56))(v14, 1, 1, v16);
   }
 
-  v17 = a3;
-  v18 = a6;
-  v19 = self;
-  sub_1D2EB9A30(a4, v14, a6);
+  machineCopy = machine;
+  errorCopy = error;
+  selfCopy = self;
+  sub_1D2EB9A30(stop, v14, error);
 
   sub_1D2E8A91C(v14);
 }

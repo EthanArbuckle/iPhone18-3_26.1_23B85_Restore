@@ -1,20 +1,20 @@
 @interface PALSession
-- (BOOL)stopTrackingIntervalForAccess:(id)a3;
-- (BOOL)stopTrackingIntervalForAccessIdentifier:(id)a3;
-- (BOOL)trackIntervalForAccess:(id)a3;
-- (BOOL)updateAssetIdentifiersForAccess:(id)a3;
+- (BOOL)stopTrackingIntervalForAccess:(id)access;
+- (BOOL)stopTrackingIntervalForAccessIdentifier:(id)identifier;
+- (BOOL)trackIntervalForAccess:(id)access;
+- (BOOL)updateAssetIdentifiersForAccess:(id)access;
 - (NSXPCConnection)connection;
-- (PALSession)initWithServer:(id)a3 targetQueue:(id)a4 connection:(id)a5;
-- (void)changeTestingSettings:(PASessionTestingSettings)a3 reply:(id)a4;
-- (void)exportToFileHandle:(id)a3 reply:(id)a4;
-- (void)finalizeAllAccessIntervalsAndRemoveSession:(BOOL)a3;
-- (void)log:(id)a3 reason:(int64_t)a4 reply:(id)a5;
-- (void)loggingEnabledWithReply:(id)a3;
-- (void)notifyRecentlyStoppedState:(id)a3;
-- (void)pruneEventsFromStartTime:(double)a3 toEndTime:(double)a4 reply:(id)a5;
-- (void)requestSandboxExtensionForStoreBasePathWithReply:(id)a3;
-- (void)setLoggingEnabled:(BOOL)a3;
-- (void)stopTrackingAccessIntervalsWithIdentifiers:(id)a3;
+- (PALSession)initWithServer:(id)server targetQueue:(id)queue connection:(id)connection;
+- (void)changeTestingSettings:(PASessionTestingSettings)settings reply:(id)reply;
+- (void)exportToFileHandle:(id)handle reply:(id)reply;
+- (void)finalizeAllAccessIntervalsAndRemoveSession:(BOOL)session;
+- (void)log:(id)log reason:(int64_t)reason reply:(id)reply;
+- (void)loggingEnabledWithReply:(id)reply;
+- (void)notifyRecentlyStoppedState:(id)state;
+- (void)pruneEventsFromStartTime:(double)time toEndTime:(double)endTime reply:(id)reply;
+- (void)requestSandboxExtensionForStoreBasePathWithReply:(id)reply;
+- (void)setLoggingEnabled:(BOOL)enabled;
+- (void)stopTrackingAccessIntervalsWithIdentifiers:(id)identifiers;
 - (void)stopTrackingAllAccessIntervals;
 @end
 
@@ -33,8 +33,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_pendingAccesses allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allKeys = [(NSMutableDictionary *)self->_pendingAccesses allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -46,7 +46,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         [(PALSession *)self stopTrackingIntervalForAccessIdentifier:*(*(&v8 + 1) + 8 * v7)];
@@ -54,37 +54,37 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (PALSession)initWithServer:(id)a3 targetQueue:(id)a4 connection:(id)a5
+- (PALSession)initWithServer:(id)server targetQueue:(id)queue connection:(id)connection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serverCopy = server;
+  queueCopy = queue;
+  connectionCopy = connection;
   v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v12 = dispatch_queue_create_with_target_V2("com.apple.privacyaccounting.session", v11, v9);
+  v12 = dispatch_queue_create_with_target_V2("com.apple.privacyaccounting.session", v11, queueCopy);
 
-  [v10 _setQueue:v12];
+  [connectionCopy _setQueue:v12];
   objc_initWeak(&location, self);
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10000754C;
   v20[3] = &unk_1000188C8;
   objc_copyWeak(&v21, &location);
-  [v10 setInterruptionHandler:v20];
+  [connectionCopy setInterruptionHandler:v20];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100007590;
   v18[3] = &unk_1000188C8;
   objc_copyWeak(&v19, &location);
-  [v10 setInvalidationHandler:v18];
-  objc_storeWeak(&self->_server, v8);
-  objc_storeWeak(&self->_connection, v10);
+  [connectionCopy setInvalidationHandler:v18];
+  objc_storeWeak(&self->_server, serverCopy);
+  objc_storeWeak(&self->_connection, connectionCopy);
   objc_storeStrong(&self->_queue, v12);
   v13 = +[NSMutableDictionary dictionary];
   pendingAccesses = self->_pendingAccesses;
@@ -101,10 +101,10 @@
   return self;
 }
 
-- (void)log:(id)a3 reason:(int64_t)a4 reply:(id)a5
+- (void)log:(id)log reason:(int64_t)reason reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  logCopy = log;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_server);
   v47[0] = 0;
   v47[1] = v47;
@@ -116,14 +116,14 @@
   v44[1] = 3221225472;
   v44[2] = sub_100007B88;
   v44[3] = &unk_1000188F0;
-  v10 = v8;
+  v10 = replyCopy;
   v44[4] = self;
   v45 = v10;
   v46 = v47;
   v11 = objc_retainBlock(v44);
   v12 = objc_loadWeakRetained(&self->_connection);
   v43 = 0;
-  v13 = [WeakRetained canWriteEvent:v7 forConnection:v12 withError:&v43];
+  v13 = [WeakRetained canWriteEvent:logCopy forConnection:v12 withError:&v43];
   v14 = v43;
 
   if (v13)
@@ -131,10 +131,10 @@
     goto LABEL_14;
   }
 
-  v15 = v7;
+  v15 = logCopy;
   if (![v15 isMemberOfClass:objc_opt_class()])
   {
-    v7 = 0;
+    logCopy = 0;
     goto LABEL_13;
   }
 
@@ -145,37 +145,37 @@
 
   v16 = v15;
   v17 = qword_10001ED58;
-  v18 = [v16 tccService];
-  LODWORD(v17) = [v17 containsObject:v18];
+  tccService = [v16 tccService];
+  LODWORD(v17) = [v17 containsObject:tccService];
 
   if (!v17)
   {
     goto LABEL_11;
   }
 
-  v19 = [v16 accessor];
-  v20 = [v19 identifierType];
+  accessor = [v16 accessor];
+  identifierType = [accessor identifierType];
 
-  if (v20 >= 4)
+  if (identifierType >= 4)
   {
-    if (v20 == 4)
+    if (identifierType == 4)
     {
-      v7 = v16;
+      logCopy = v16;
       goto LABEL_12;
     }
 
 LABEL_11:
-    v7 = 0;
+    logCopy = 0;
     goto LABEL_12;
   }
 
   v21 = +[PAApplication applicationForCurrentProcess];
-  v7 = [v16 copyWithNewAccessor:v21];
+  logCopy = [v16 copyWithNewAccessor:v21];
 
 LABEL_12:
 LABEL_13:
 
-  if (!v7)
+  if (!logCopy)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
@@ -189,12 +189,12 @@ LABEL_13:
   }
 
 LABEL_14:
-  v22 = [WeakRetained settings];
-  v23 = [v22 loggingEnabled];
+  settings = [WeakRetained settings];
+  loggingEnabled = [settings loggingEnabled];
 
-  if (v23)
+  if (loggingEnabled)
   {
-    v24 = [WeakRetained accessorResolver];
+    accessorResolver = [WeakRetained accessorResolver];
     v25 = objc_loadWeakRetained(&self->_connection);
     v26 = v25;
     if (v25)
@@ -208,13 +208,13 @@ LABEL_14:
     }
 
     v41 = v14;
-    v28 = [v24 resolveAccessorForAccess:v7 senderAuditToken:v42 withError:&v41];
+    v28 = [accessorResolver resolveAccessorForAccess:logCopy senderAuditToken:v42 withError:&v41];
     v27 = v41;
 
     if (v28)
     {
-      v29 = [v28 kind];
-      if (v29 == 2)
+      kind = [v28 kind];
+      if (kind == 2)
       {
         if (![(PALSession *)self trackIntervalForAccess:v28])
         {
@@ -232,7 +232,7 @@ LABEL_14:
         }
       }
 
-      else if (v29 == 3)
+      else if (kind == 3)
       {
         if (![(PALSession *)self stopTrackingIntervalForAccess:v28])
         {
@@ -250,21 +250,21 @@ LABEL_14:
         }
       }
 
-      else if (v29 == 4)
+      else if (kind == 4)
       {
         [(PALSession *)self updateAssetIdentifiersForAccess:v28];
       }
 
-      v33 = [WeakRetained queue];
+      queue = [WeakRetained queue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100007C94;
       block[3] = &unk_100018918;
       v37 = WeakRetained;
       v38 = v28;
-      v39 = self;
+      selfCopy = self;
       v40 = v11;
-      dispatch_async(v33, block);
+      dispatch_async(queue, block);
 
       v32 = v37;
 LABEL_34:
@@ -280,8 +280,8 @@ LABEL_34:
   {
     v27 = [NSError errorWithDomain:@"PAErrorDomain" code:2 userInfo:0];
 
-    (v11[2])(v11, v7, v27);
-    v28 = v7;
+    (v11[2])(v11, logCopy, v27);
+    v28 = logCopy;
   }
 
 LABEL_35:
@@ -289,7 +289,7 @@ LABEL_35:
   _Block_object_dispose(v47, 8);
 }
 
-- (void)setLoggingEnabled:(BOOL)a3
+- (void)setLoggingEnabled:(BOOL)enabled
 {
   WeakRetained = objc_loadWeakRetained(&self->_server);
   v6 = objc_loadWeakRetained(&self->_connection);
@@ -303,15 +303,15 @@ LABEL_35:
     v14[3] = sub_100001724;
     v14[4] = sub_100001A18;
     v15 = os_transaction_create();
-    v8 = [WeakRetained queue];
+    queue = [WeakRetained queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100007FC4;
     block[3] = &unk_100018940;
-    v13 = a3;
+    enabledCopy = enabled;
     v11 = WeakRetained;
     v12 = v14;
-    dispatch_async(v8, block);
+    dispatch_async(queue, block);
 
     _Block_object_dispose(v14, 8);
   }
@@ -328,23 +328,23 @@ LABEL_35:
   }
 }
 
-- (void)loggingEnabledWithReply:(id)a3
+- (void)loggingEnabledWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_server);
   v6 = objc_loadWeakRetained(&self->_connection);
   v7 = [WeakRetained canToggleLoggingEnabledForConnection:v6];
 
   if (v7)
   {
-    v8 = [WeakRetained queue];
+    queue = [WeakRetained queue];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100008154;
     v9[3] = &unk_100018968;
-    v11 = v4;
+    v11 = replyCopy;
     v10 = WeakRetained;
-    dispatch_async(v8, v9);
+    dispatch_async(queue, v9);
   }
 
   else
@@ -354,13 +354,13 @@ LABEL_35:
       sub_10000A278();
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(replyCopy + 2))(replyCopy, 0);
   }
 }
 
-- (void)requestSandboxExtensionForStoreBasePathWithReply:(id)a3
+- (void)requestSandboxExtensionForStoreBasePathWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_server);
   v6 = objc_loadWeakRetained(&self->_connection);
   v7 = [WeakRetained canReadEventsForConnection:v6];
@@ -388,19 +388,19 @@ LABEL_35:
       v21 = 0u;
     }
 
-    v11 = [WeakRetained queue];
+    queue = [WeakRetained queue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000083A4;
     v13[3] = &unk_100018990;
     v14 = WeakRetained;
-    v12 = v4;
+    v12 = replyCopy;
     v18 = v20;
     v19 = v21;
-    v15 = self;
+    selfCopy = self;
     v16 = v12;
     v17 = v22;
-    dispatch_async(v11, v13);
+    dispatch_async(queue, v13);
 
     _Block_object_dispose(v22, 8);
   }
@@ -417,18 +417,18 @@ LABEL_35:
   }
 }
 
-- (void)changeTestingSettings:(PASessionTestingSettings)a3 reply:(id)a4
+- (void)changeTestingSettings:(PASessionTestingSettings)settings reply:(id)reply
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = a4;
+  var1 = settings.var1;
+  var0 = settings.var0;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_server);
   v9 = objc_loadWeakRetained(&self->_connection);
   v10 = [WeakRetained canChangeTestingSettingsForConnection:v9];
 
   if (v10)
   {
-    v11 = [WeakRetained queue];
+    queue = [WeakRetained queue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100008834;
@@ -436,8 +436,8 @@ LABEL_35:
     v16 = var0;
     v17 = var1;
     v14 = WeakRetained;
-    v15 = v7;
-    dispatch_async(v11, v13);
+    v15 = replyCopy;
+    dispatch_async(queue, v13);
 
     v12 = v14;
   }
@@ -454,25 +454,25 @@ LABEL_35:
   }
 }
 
-- (void)exportToFileHandle:(id)a3 reply:(id)a4
+- (void)exportToFileHandle:(id)handle reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_server);
   v9 = objc_loadWeakRetained(&self->_connection);
   v10 = [WeakRetained canReadEventsForConnection:v9];
 
   if (v10)
   {
-    v11 = [WeakRetained queue];
+    queue = [WeakRetained queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100008A18;
     block[3] = &unk_1000189E0;
     v14 = WeakRetained;
-    v15 = v6;
-    v16 = v7;
-    dispatch_async(v11, block);
+    v15 = handleCopy;
+    v16 = replyCopy;
+    dispatch_async(queue, block);
 
     v12 = v14;
   }
@@ -489,64 +489,64 @@ LABEL_35:
   }
 }
 
-- (BOOL)trackIntervalForAccess:(id)a3
+- (BOOL)trackIntervalForAccess:(id)access
 {
-  v4 = a3;
+  accessCopy = access;
   pendingAccesses = self->_pendingAccesses;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)pendingAccesses objectForKeyedSubscript:v6];
+  identifier = [accessCopy identifier];
+  v7 = [(NSMutableDictionary *)pendingAccesses objectForKeyedSubscript:identifier];
 
   if (!v7)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
     {
-      sub_10000A41C(log, v4);
+      sub_10000A41C(log, accessCopy);
     }
 
-    v10 = [v4 accessor];
-    v11 = [v10 identifierType];
+    accessor = [accessCopy accessor];
+    identifierType = [accessor identifierType];
 
-    if ((v11 - 2) < 3)
+    if ((identifierType - 2) < 3)
     {
       v12 = self->_log;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
-        sub_10000A4C0(v12, v4);
+        sub_10000A4C0(v12, accessCopy);
       }
 
       goto LABEL_11;
     }
 
-    if (v11 == 1)
+    if (identifierType == 1)
     {
-      v13 = [v4 accessor];
-      v14 = [v13 path];
+      accessor2 = [accessCopy accessor];
+      path = [accessor2 path];
     }
 
     else
     {
-      if (v11)
+      if (identifierType)
       {
 LABEL_11:
         v15 = 0;
         goto LABEL_12;
       }
 
-      v13 = [v4 accessor];
-      v14 = [v13 bundleID];
+      accessor2 = [accessCopy accessor];
+      path = [accessor2 bundleID];
     }
 
-    v15 = v14;
+    v15 = path;
 
     if (v15)
     {
       WeakRetained = objc_loadWeakRetained(&self->_server);
-      v32 = [WeakRetained settings];
-      v33 = [v32 saltForMetricsReduction];
+      settings = [WeakRetained settings];
+      saltForMetricsReduction = [settings saltForMetricsReduction];
       v34 = objc_loadWeakRetained(&self->_server);
-      v35 = [v34 settings];
-      v36 = PALMetricDataReductionTestString(v33, v15, [v35 intervalMetricDifficulty]);
+      settings2 = [v34 settings];
+      v36 = PALMetricDataReductionTestString(saltForMetricsReduction, v15, [settings2 intervalMetricDifficulty]);
 
       if (v36)
       {
@@ -555,15 +555,15 @@ LABEL_19:
         v22 = [PALOngoingAccessIntervalState alloc];
         queue = self->_queue;
         v24 = objc_loadWeakRetained(&self->_server);
-        v25 = [v24 accessorResolver];
-        v26 = [v25 applicationMetadataResolver];
-        v27 = [(PALOngoingAccessIntervalState *)v22 initWithAccess:v4 queue:queue applicationMetadataResolver:v26 eligibleForMetricCollection:v21];
+        accessorResolver = [v24 accessorResolver];
+        applicationMetadataResolver = [accessorResolver applicationMetadataResolver];
+        v27 = [(PALOngoingAccessIntervalState *)v22 initWithAccess:accessCopy queue:queue applicationMetadataResolver:applicationMetadataResolver eligibleForMetricCollection:v21];
 
         v28 = self->_pendingAccesses;
-        v29 = [v4 identifier];
-        [(NSMutableDictionary *)v28 setObject:v27 forKeyedSubscript:v29];
+        identifier2 = [accessCopy identifier];
+        [(NSMutableDictionary *)v28 setObject:v27 forKeyedSubscript:identifier2];
 
-        v8 = [(PALSession *)self updateAssetIdentifiersForAccess:v4];
+        v8 = [(PALSession *)self updateAssetIdentifiersForAccess:accessCopy];
         goto LABEL_20;
       }
     }
@@ -572,10 +572,10 @@ LABEL_12:
     if (os_variant_has_internal_content())
     {
       v16 = objc_loadWeakRetained(&self->_server);
-      v17 = [v16 accessorResolver];
-      v18 = [v17 applicationMetadataResolver];
-      v19 = [v4 accessor];
-      v20 = [v18 bundleRecordForApplication:v19];
+      accessorResolver2 = [v16 accessorResolver];
+      applicationMetadataResolver2 = [accessorResolver2 applicationMetadataResolver];
+      accessor3 = [accessCopy accessor];
+      v20 = [applicationMetadataResolver2 bundleRecordForApplication:accessor3];
 
       v21 = !PABundleRecordIsVisibleApplication() || [v20 developerType] != 3;
     }
@@ -594,46 +594,46 @@ LABEL_20:
   return v8;
 }
 
-- (BOOL)updateAssetIdentifiersForAccess:(id)a3
+- (BOOL)updateAssetIdentifiersForAccess:(id)access
 {
-  v4 = a3;
+  accessCopy = access;
   pendingAccesses = self->_pendingAccesses;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)pendingAccesses objectForKeyedSubscript:v6];
+  identifier = [accessCopy identifier];
+  v7 = [(NSMutableDictionary *)pendingAccesses objectForKeyedSubscript:identifier];
 
   if (v7)
   {
-    v8 = [v7 assetIdentifierPool];
+    assetIdentifierPool = [v7 assetIdentifierPool];
 
-    if (v8)
+    if (assetIdentifierPool)
     {
-      v9 = [v7 assetIdentifierPool];
-      v10 = [v4 assetIdentifiers];
-      [v9 addAssetIdentifiers:v10 accessEventCount:{objc_msgSend(v4, "eventCount")}];
+      assetIdentifierPool2 = [v7 assetIdentifierPool];
+      assetIdentifiers = [accessCopy assetIdentifiers];
+      [assetIdentifierPool2 addAssetIdentifiers:assetIdentifiers accessEventCount:{objc_msgSend(accessCopy, "eventCount")}];
     }
 
     else
     {
-      v9 = [v4 assetIdentifiers];
-      [v7 recordAccessToAssetIdentifiers:v9 withVisibilityState:objc_msgSend(v4 accessEventCount:{"visibilityState"), objc_msgSend(v4, "eventCount")}];
+      assetIdentifierPool2 = [accessCopy assetIdentifiers];
+      [v7 recordAccessToAssetIdentifiers:assetIdentifierPool2 withVisibilityState:objc_msgSend(accessCopy accessEventCount:{"visibilityState"), objc_msgSend(accessCopy, "eventCount")}];
     }
   }
 
   return 1;
 }
 
-- (BOOL)stopTrackingIntervalForAccess:(id)a3
+- (BOOL)stopTrackingIntervalForAccess:(id)access
 {
-  v4 = [a3 identifier];
-  LOBYTE(self) = [(PALSession *)self stopTrackingIntervalForAccessIdentifier:v4];
+  identifier = [access identifier];
+  LOBYTE(self) = [(PALSession *)self stopTrackingIntervalForAccessIdentifier:identifier];
 
   return self;
 }
 
-- (BOOL)stopTrackingIntervalForAccessIdentifier:(id)a3
+- (BOOL)stopTrackingIntervalForAccessIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_pendingAccesses objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_pendingAccesses objectForKeyedSubscript:identifierCopy];
   if (v5)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
@@ -641,45 +641,45 @@ LABEL_20:
       sub_10000A57C();
     }
 
-    [(NSMutableDictionary *)self->_pendingAccesses setObject:0 forKeyedSubscript:v4];
-    v6 = [v5 assetIdentifierPool];
-    [v6 drainPool];
+    [(NSMutableDictionary *)self->_pendingAccesses setObject:0 forKeyedSubscript:identifierCopy];
+    assetIdentifierPool = [v5 assetIdentifierPool];
+    [assetIdentifierPool drainPool];
 
     if ([v5 eligibleForMetricCollection])
     {
-      v7 = [v5 access];
+      access = [v5 access];
       [v5 intervalSinceStart];
       WeakRetained = objc_loadWeakRetained(&self->_server);
-      v9 = [v5 assetIdentifierHashesByVisibilityState];
-      v10 = [v9 count];
+      assetIdentifierHashesByVisibilityState = [v5 assetIdentifierHashesByVisibilityState];
+      v10 = [assetIdentifierHashesByVisibilityState count];
 
       if (v10)
       {
-        v11 = [v5 assetIdentifierHashesByVisibilityState];
-        v12 = [v11 objectForKeyedSubscript:&off_100019910];
-        v24 = [v12 count];
+        assetIdentifierHashesByVisibilityState2 = [v5 assetIdentifierHashesByVisibilityState];
+        v12 = [assetIdentifierHashesByVisibilityState2 objectForKeyedSubscript:&off_100019910];
+        integerValue = [v12 count];
 
-        v13 = [v5 assetIdentifierHashesByVisibilityState];
-        v14 = [v13 objectForKeyedSubscript:&off_100019928];
+        assetIdentifierHashesByVisibilityState3 = [v5 assetIdentifierHashesByVisibilityState];
+        v14 = [assetIdentifierHashesByVisibilityState3 objectForKeyedSubscript:&off_100019928];
         [v14 count];
 
-        v15 = [v5 assetIdentifierHashesByVisibilityState];
-        v16 = [v15 objectForKeyedSubscript:&off_100019940];
+        assetIdentifierHashesByVisibilityState4 = [v5 assetIdentifierHashesByVisibilityState];
+        v16 = [assetIdentifierHashesByVisibilityState4 objectForKeyedSubscript:&off_100019940];
         [v16 count];
       }
 
       else
       {
-        v17 = [v5 eventCountByVisibilityState];
-        v18 = [v17 objectForKeyedSubscript:&off_100019910];
-        v24 = [v18 integerValue];
+        eventCountByVisibilityState = [v5 eventCountByVisibilityState];
+        v18 = [eventCountByVisibilityState objectForKeyedSubscript:&off_100019910];
+        integerValue = [v18 integerValue];
 
-        v19 = [v5 eventCountByVisibilityState];
-        v20 = [v19 objectForKeyedSubscript:&off_100019928];
+        eventCountByVisibilityState2 = [v5 eventCountByVisibilityState];
+        v20 = [eventCountByVisibilityState2 objectForKeyedSubscript:&off_100019928];
         [v20 integerValue];
 
-        v15 = [v5 eventCountByVisibilityState];
-        v16 = [v15 objectForKeyedSubscript:&off_100019940];
+        assetIdentifierHashesByVisibilityState4 = [v5 eventCountByVisibilityState];
+        v16 = [assetIdentifierHashesByVisibilityState4 objectForKeyedSubscript:&off_100019940];
         [v16 integerValue];
       }
 
@@ -688,48 +688,48 @@ LABEL_20:
       v27 = sub_100009164;
       v28 = &unk_100018A08;
       v29 = WeakRetained;
-      v30 = v7;
-      v21 = v7;
+      v30 = access;
+      v21 = access;
       v22 = WeakRetained;
       AnalyticsSendEventLazy();
     }
 
-    [(PALSession *)self notifyRecentlyStoppedState:v5, v24, v25, v26, v27, v28];
+    [(PALSession *)self notifyRecentlyStoppedState:v5, integerValue, v25, v26, v27, v28];
     [v5 invalidate];
   }
 
   return v5 != 0;
 }
 
-- (void)finalizeAllAccessIntervalsAndRemoveSession:(BOOL)a3
+- (void)finalizeAllAccessIntervalsAndRemoveSession:(BOOL)session
 {
   WeakRetained = objc_loadWeakRetained(&self->_server);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = [WeakRetained settings];
-    v8 = [v7 loggingOptions];
+    settings = [WeakRetained settings];
+    loggingOptions = [settings loggingOptions];
 
-    v9 = [(NSMutableDictionary *)self->_pendingAccesses allValues];
+    allValues = [(NSMutableDictionary *)self->_pendingAccesses allValues];
     v22[0] = 0;
     v22[1] = v22;
     v22[2] = 0x3032000000;
     v22[3] = sub_100001724;
     v22[4] = sub_100001A18;
     v23 = os_transaction_create();
-    v10 = [v6 queue];
+    queue = [v6 queue];
     v12 = _NSConcreteStackBlock;
     v13 = 3221225472;
     v14 = sub_1000095DC;
     v15 = &unk_100018A30;
-    v16 = v9;
-    v20 = v8;
-    v21 = a3;
+    v16 = allValues;
+    v20 = loggingOptions;
+    sessionCopy = session;
     v17 = v6;
-    v18 = self;
+    selfCopy = self;
     v19 = v22;
-    v11 = v9;
-    dispatch_async(v10, &v12);
+    v11 = allValues;
+    dispatch_async(queue, &v12);
 
     _Block_object_dispose(v22, 8);
   }
@@ -737,9 +737,9 @@ LABEL_20:
   [(PALSession *)self stopTrackingAllAccessIntervals:v12];
 }
 
-- (void)stopTrackingAccessIntervalsWithIdentifiers:(id)a3
+- (void)stopTrackingAccessIntervalsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v25 = +[NSMutableArray array];
   v31 = 0u;
   v32 = 0u;
@@ -764,9 +764,9 @@ LABEL_20:
 
         v10 = *(*(&v31 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_pendingAccesses objectForKeyedSubscript:v10, v24];
-        v12 = [v11 access];
-        v13 = [v12 identifier];
-        v14 = [v4 containsObject:v13];
+        access = [v11 access];
+        identifier = [access identifier];
+        v14 = [identifiersCopy containsObject:identifier];
 
         if (v14)
         {
@@ -774,10 +774,10 @@ LABEL_20:
           if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
           {
             v16 = log;
-            v17 = [v11 access];
+            access2 = [v11 access];
             WeakRetained = objc_loadWeakRetained(&self->_connection);
             *buf = v24;
-            v37 = v17;
+            v37 = access2;
             v38 = 2112;
             v39 = WeakRetained;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Stopping tracking interval for access=%@ on connection=%@", buf, 0x16u);
@@ -822,9 +822,9 @@ LABEL_20:
   }
 }
 
-- (void)pruneEventsFromStartTime:(double)a3 toEndTime:(double)a4 reply:(id)a5
+- (void)pruneEventsFromStartTime:(double)time toEndTime:(double)endTime reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_server);
   v10 = objc_loadWeakRetained(&self->_connection);
   v20 = 0;
@@ -838,7 +838,7 @@ LABEL_20:
       sub_10000A5F0();
     }
 
-    v8[2](v8, v12);
+    replyCopy[2](replyCopy, v12);
     v14 = objc_loadWeakRetained(&self->_connection);
     [v14 invalidate];
     goto LABEL_7;
@@ -846,81 +846,81 @@ LABEL_20:
 
   if (WeakRetained)
   {
-    v13 = [WeakRetained queue];
+    queue = [WeakRetained queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100009BAC;
     block[3] = &unk_1000189B8;
     v16 = WeakRetained;
-    v18 = a3;
-    v19 = a4;
-    v17 = v8;
-    dispatch_async(v13, block);
+    timeCopy = time;
+    endTimeCopy = endTime;
+    v17 = replyCopy;
+    dispatch_async(queue, block);
 
     v14 = v16;
 LABEL_7:
   }
 }
 
-- (void)notifyRecentlyStoppedState:(id)a3
+- (void)notifyRecentlyStoppedState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (!_os_feature_enabled_impl())
   {
     goto LABEL_29;
   }
 
-  v5 = [v4 access];
-  v6 = [v5 accessor];
-  v7 = [v6 identifierType];
+  access = [stateCopy access];
+  accessor = [access accessor];
+  identifierType = [accessor identifierType];
 
-  if (v7 == 4)
+  if (identifierType == 4)
   {
-    v8 = [v4 access];
-    v9 = [v8 accessor];
-    v12 = [v9 assumedIdentity];
-    v11 = [v12 description];
+    access2 = [stateCopy access];
+    accessor2 = [access2 accessor];
+    assumedIdentity = [accessor2 assumedIdentity];
+    v11 = [assumedIdentity description];
   }
 
   else
   {
-    if (v7 == 1)
+    if (identifierType == 1)
     {
-      v8 = [v4 access];
-      v9 = [v8 accessor];
-      v10 = [v9 path];
+      access2 = [stateCopy access];
+      accessor2 = [access2 accessor];
+      path = [accessor2 path];
     }
 
     else
     {
-      if (v7)
+      if (identifierType)
       {
         v11 = 0;
         goto LABEL_11;
       }
 
-      v8 = [v4 access];
-      v9 = [v8 accessor];
-      v10 = [v9 bundleID];
+      access2 = [stateCopy access];
+      accessor2 = [access2 accessor];
+      path = [accessor2 bundleID];
     }
 
-    v11 = v10;
+    v11 = path;
   }
 
 LABEL_11:
-  v13 = [v4 access];
-  v14 = [v13 category];
+  access3 = [stateCopy access];
+  category = [access3 category];
 
   if (v11)
   {
-    v50 = v14;
+    v50 = category;
     v15 = +[NSMutableSet set];
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v16 = [v4 assetIdentifierHashesByVisibilityState];
-    v17 = [v16 countByEnumeratingWithState:&v51 objects:v55 count:16];
+    assetIdentifierHashesByVisibilityState = [stateCopy assetIdentifierHashesByVisibilityState];
+    v17 = [assetIdentifierHashesByVisibilityState countByEnumeratingWithState:&v51 objects:v55 count:16];
     if (v17)
     {
       v18 = v17;
@@ -931,32 +931,32 @@ LABEL_11:
         {
           if (*v52 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(assetIdentifierHashesByVisibilityState);
           }
 
           v21 = *(*(&v51 + 1) + 8 * i);
-          v22 = [v4 assetIdentifierHashesByVisibilityState];
-          v23 = [v22 objectForKeyedSubscript:v21];
+          assetIdentifierHashesByVisibilityState2 = [stateCopy assetIdentifierHashesByVisibilityState];
+          v23 = [assetIdentifierHashesByVisibilityState2 objectForKeyedSubscript:v21];
           [v15 unionSet:v23];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v51 objects:v55 count:16];
+        v18 = [assetIdentifierHashesByVisibilityState countByEnumeratingWithState:&v51 objects:v55 count:16];
       }
 
       while (v18);
     }
 
     v24 = [v15 count];
-    v25 = [v4 assetIdentifierHashesByVisibilityState];
-    v26 = [v25 objectForKeyedSubscript:&off_100019940];
+    assetIdentifierHashesByVisibilityState3 = [stateCopy assetIdentifierHashesByVisibilityState];
+    v26 = [assetIdentifierHashesByVisibilityState3 objectForKeyedSubscript:&off_100019940];
     v27 = [v26 count];
 
-    v28 = [v4 assetIdentifierHashesByVisibilityState];
-    v29 = [v28 objectForKeyedSubscript:&off_100019928];
+    assetIdentifierHashesByVisibilityState4 = [stateCopy assetIdentifierHashesByVisibilityState];
+    v29 = [assetIdentifierHashesByVisibilityState4 objectForKeyedSubscript:&off_100019928];
     v30 = [v29 count];
 
-    v31 = [v4 assetIdentifierHashesByVisibilityState];
-    v32 = [v31 objectForKeyedSubscript:&off_100019910];
+    assetIdentifierHashesByVisibilityState5 = [stateCopy assetIdentifierHashesByVisibilityState];
+    v32 = [assetIdentifierHashesByVisibilityState5 objectForKeyedSubscript:&off_100019910];
     v33 = [v32 count];
 
     if (v24)
@@ -971,16 +971,16 @@ LABEL_11:
         v34 = @"s";
       }
 
-      [v4 intervalSinceStart];
+      [stateCopy intervalSinceStart];
       v45 = v34;
-      v14 = v50;
+      category = v50;
       [NSString stringWithFormat:@"%@ accessed %@ %lu time%@ (%lufg/%lubg/%lu?) over %.2f seconds", v11, v50, v24, v45, v27, v30, v33, v35];
     }
 
     else
     {
-      [v4 intervalSinceStart];
-      v14 = v50;
+      [stateCopy intervalSinceStart];
+      category = v50;
       [NSString stringWithFormat:@"%@ accessed %@ for %.2f seconds", v11, v50, v36, v44, v46, v47, v48, v49];
     }
     v37 = ;
@@ -996,8 +996,8 @@ LABEL_11:
     [v40 setTitle:@"Privacy Accounting"];
     [v40 setInterruptionLevel:2];
     v41 = +[NSUUID UUID];
-    v42 = [v41 UUIDString];
-    v43 = [UNNotificationRequest requestWithIdentifier:v42 content:v40 trigger:0];
+    uUIDString = [v41 UUIDString];
+    v43 = [UNNotificationRequest requestWithIdentifier:uUIDString content:v40 trigger:0];
 
     [(UNUserNotificationCenter *)self->_userNotificationCenter addNotificationRequest:v43 withCompletionHandler:0];
   }

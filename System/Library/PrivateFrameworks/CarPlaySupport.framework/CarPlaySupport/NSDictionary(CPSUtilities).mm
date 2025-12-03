@@ -6,13 +6,13 @@
 
 - (id)cps_mutableDictionaryWithValuesForKeys:()CPSUtilities
 {
-  v10 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v4 = location[0];
-  v6 = MEMORY[0x277D82BE0](v10);
+  v6 = MEMORY[0x277D82BE0](selfCopy);
   v7 = MEMORY[0x277D82BE0](v8);
   [v4 enumerateObjectsUsingBlock:?];
   v5 = MEMORY[0x277D82BE0](v8);

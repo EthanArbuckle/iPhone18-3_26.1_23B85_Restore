@@ -1,25 +1,25 @@
 @interface SBHomeGesturePanGestureRecognizer
-+ (SBHomeGesturePanGestureRecognizer)homeGesturePanGestureRecognizerWithTarget:(id)a3 action:(SEL)a4;
++ (SBHomeGesturePanGestureRecognizer)homeGesturePanGestureRecognizerWithTarget:(id)target action:(SEL)action;
 - (BOOL)_isOutsideOfExclusionTrapezoid;
 - (BOOL)_shouldBegin;
-- (BOOL)_shouldBlockHomeGestureForKeyboardInputMode:(id)a3;
-- (CGPoint)averageTouchVelocityOverTimeDuration:(double)a3;
-- (SBHomeGesturePanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 type:(int64_t)a5 options:(unint64_t)a6;
+- (BOOL)_shouldBlockHomeGestureForKeyboardInputMode:(id)mode;
+- (CGPoint)averageTouchVelocityOverTimeDuration:(double)duration;
+- (SBHomeGesturePanGestureRecognizer)initWithTarget:(id)target action:(SEL)action type:(int64_t)type options:(unint64_t)options;
 - (SBHomeGesturePanGestureRecognizerInterfaceDelegate)interfaceDelegate;
 - (UIView)viewForTouchHistory;
-- (id)_currentExclusionShapeForEdge:(unint64_t)a3;
+- (id)_currentExclusionShapeForEdge:(unint64_t)edge;
 - (id)_currentKeyboardExclusionCompositeShape;
 - (int64_t)_touchInterfaceOrientation;
-- (void)_SBLogTouchesWithMethodName:(id)a3 withMethodName:(id)a4;
+- (void)_SBLogTouchesWithMethodName:(id)name withMethodName:(id)methodName;
 - (void)_setUpExclusionTrapezoids;
 - (void)_updateHomeGestureParameters;
 - (void)reset;
 - (void)sb_commonInitHomeGesturePanGestureRecognizer;
-- (void)setPreventHorizontalSwipesOutsideTrapezoid:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setPreventHorizontalSwipesOutsideTrapezoid:(BOOL)trapezoid;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation SBHomeGesturePanGestureRecognizer
@@ -34,29 +34,29 @@
 
 - (UIView)viewForTouchHistory
 {
-  v3 = [(SBHomeGesturePanGestureRecognizer *)self delegate];
-  v4 = [v3 viewForSystemGestureRecognizer:self];
+  delegate = [(SBHomeGesturePanGestureRecognizer *)self delegate];
+  v4 = [delegate viewForSystemGestureRecognizer:self];
 
   return v4;
 }
 
 - (int64_t)_touchInterfaceOrientation
 {
-  v3 = [(SBHomeGesturePanGestureRecognizer *)self interfaceDelegate];
-  v4 = v3;
-  if (v3)
+  interfaceDelegate = [(SBHomeGesturePanGestureRecognizer *)self interfaceDelegate];
+  v4 = interfaceDelegate;
+  if (interfaceDelegate)
   {
-    v5 = [v3 touchInterfaceOrientationForGestureRecognizer:self];
+    _touchInterfaceOrientation = [interfaceDelegate touchInterfaceOrientationForGestureRecognizer:self];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SBHomeGesturePanGestureRecognizer;
-    v5 = [(SBScreenEdgePanGestureRecognizer *)&v8 _touchInterfaceOrientation];
+    _touchInterfaceOrientation = [(SBScreenEdgePanGestureRecognizer *)&v8 _touchInterfaceOrientation];
   }
 
-  v6 = v5;
+  v6 = _touchInterfaceOrientation;
 
   return v6;
 }
@@ -75,21 +75,21 @@
   v28.super_class = SBHomeGesturePanGestureRecognizer;
   if ([(SBHomeGesturePanGestureRecognizer *)&v28 _shouldBegin])
   {
-    v3 = [(SBHomeGesturePanGestureRecognizer *)self _isOutsideOfExclusionTrapezoid];
-    if (v3)
+    _isOutsideOfExclusionTrapezoid = [(SBHomeGesturePanGestureRecognizer *)self _isOutsideOfExclusionTrapezoid];
+    if (_isOutsideOfExclusionTrapezoid)
     {
       v4 = SBLogSystemGestureAppSwitcher();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
         v5 = objc_opt_class();
         v6 = NSStringFromClass(v5);
-        v7 = [(SBHomeGesturePanGestureRecognizer *)self name];
+        name = [(SBHomeGesturePanGestureRecognizer *)self name];
         *buf = 138412802;
         v30 = v6;
         v31 = 2048;
-        v32 = self;
+        selfCopy3 = self;
         v33 = 2112;
-        v34 = v7;
+        v34 = name;
         _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_INFO, "Preventing the <%@:%p> (%@) because the touch is moving vertically and outside of trapezoidal exclusion area.", buf, 0x20u);
       }
 
@@ -101,40 +101,40 @@
       v8 = 0;
     }
 
-    v9 = !v3;
+    v9 = !_isOutsideOfExclusionTrapezoid;
     if ([MEMORY[0x277D75658] isOnScreen])
     {
-      v10 = [MEMORY[0x277D75658] isInHardwareKeyboardMode];
+      isInHardwareKeyboardMode = [MEMORY[0x277D75658] isInHardwareKeyboardMode];
     }
 
     else
     {
-      v10 = 1;
+      isInHardwareKeyboardMode = 1;
     }
 
-    if ([SBApp isTypingActive] && (v10 & 1) == 0)
+    if ([SBApp isTypingActive] && (isInHardwareKeyboardMode & 1) == 0)
     {
-      v11 = [(SBHomeGesturePanGestureRecognizer *)self _touchInterfaceOrientation];
-      v12 = [MEMORY[0x277D75688] sharedInputModeController];
-      v13 = [v12 currentInputModeInPreference];
+      _touchInterfaceOrientation = [(SBHomeGesturePanGestureRecognizer *)self _touchInterfaceOrientation];
+      mEMORY[0x277D75688] = [MEMORY[0x277D75688] sharedInputModeController];
+      currentInputModeInPreference = [mEMORY[0x277D75688] currentInputModeInPreference];
 
-      v14 = [MEMORY[0x277D75418] currentDevice];
-      v15 = [v14 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v15 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         v16 = SBLogSystemGestureAppSwitcher();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
           v17 = objc_opt_class();
           v18 = NSStringFromClass(v17);
-          v19 = [(SBHomeGesturePanGestureRecognizer *)self name];
+          name2 = [(SBHomeGesturePanGestureRecognizer *)self name];
           *buf = 138412802;
           v30 = v18;
           v31 = 2048;
-          v32 = self;
+          selfCopy3 = self;
           v33 = 2112;
-          v34 = v19;
+          v34 = name2;
           _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_INFO, "Preventing the <%@:%p> (%@) because user is typing.", buf, 0x20u);
         }
 
@@ -143,7 +143,7 @@
 
       else
       {
-        if ((v11 - 3) > 1 || ![(SBHomeGesturePanGestureRecognizer *)self _shouldBlockHomeGestureForKeyboardInputMode:v13])
+        if ((_touchInterfaceOrientation - 3) > 1 || ![(SBHomeGesturePanGestureRecognizer *)self _shouldBlockHomeGestureForKeyboardInputMode:currentInputModeInPreference])
         {
           goto LABEL_23;
         }
@@ -153,13 +153,13 @@
         {
           v20 = objc_opt_class();
           v21 = NSStringFromClass(v20);
-          v22 = [(SBHomeGesturePanGestureRecognizer *)self name];
+          name3 = [(SBHomeGesturePanGestureRecognizer *)self name];
           *buf = 138412802;
           v30 = v21;
           v31 = 2048;
-          v32 = self;
+          selfCopy3 = self;
           v33 = 2112;
-          v34 = v22;
+          v34 = name3;
           _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_INFO, "Preventing the <%@:%p> (%@) because user is typing on 10-key keyboard in landscape.", buf, 0x20u);
         }
 
@@ -177,7 +177,7 @@ LABEL_23:
     v9 = 0;
   }
 
-  v23 = [MEMORY[0x277D6A798] sharedInstance];
+  mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __49__SBHomeGesturePanGestureRecognizer__shouldBegin__block_invoke;
@@ -185,7 +185,7 @@ LABEL_23:
   v27 = v9;
   v25[4] = self;
   v26 = v8;
-  [v23 logBlock:v25];
+  [mEMORY[0x277D6A798] logBlock:v25];
 
   return v9;
 }
@@ -222,16 +222,16 @@ LABEL_23:
 {
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v25 = [(SBHomeGestureSettings *)self->_homeGestureSettings exclusionTrapezoidSettings];
-    [v25 landscapeTrapezoidBaseHeight];
+    exclusionTrapezoidSettings = [(SBHomeGestureSettings *)self->_homeGestureSettings exclusionTrapezoidSettings];
+    [exclusionTrapezoidSettings landscapeTrapezoidBaseHeight];
     v4 = v3;
-    [v25 landscapeTrapezoidHeight];
+    [exclusionTrapezoidSettings landscapeTrapezoidHeight];
     v6 = v5;
-    [v25 landscapeTrapezoidAdjacentXDistanceFromEdge];
+    [exclusionTrapezoidSettings landscapeTrapezoidAdjacentXDistanceFromEdge];
     v8 = v7;
-    [v25 landscapeTrapezoidOpposingXDistanceFromEdge];
+    [exclusionTrapezoidSettings landscapeTrapezoidOpposingXDistanceFromEdge];
     v10 = v9;
-    if ([v25 allowHorizontalSwipesOutsideLandscapeTrapezoid])
+    if ([exclusionTrapezoidSettings allowHorizontalSwipesOutsideLandscapeTrapezoid])
     {
       v11 = !self->_preventHorizontalSwipesOutsideTrapezoid;
     }
@@ -245,15 +245,15 @@ LABEL_23:
     landscapeExclusionTrapezoid = self->_landscapeExclusionTrapezoid;
     self->_landscapeExclusionTrapezoid = v12;
 
-    [v25 portraitTrapezoidBaseHeight];
+    [exclusionTrapezoidSettings portraitTrapezoidBaseHeight];
     v15 = v14;
-    [v25 portraitTrapezoidHeight];
+    [exclusionTrapezoidSettings portraitTrapezoidHeight];
     v17 = v16;
-    [v25 portraitTrapezoidAdjacentXDistanceFromEdge];
+    [exclusionTrapezoidSettings portraitTrapezoidAdjacentXDistanceFromEdge];
     v19 = v18;
-    [v25 portraitTrapezoidOpposingXDistanceFromEdge];
+    [exclusionTrapezoidSettings portraitTrapezoidOpposingXDistanceFromEdge];
     v21 = v20;
-    if ([v25 allowHorizontalSwipesOutsidePortraitTrapezoid])
+    if ([exclusionTrapezoidSettings allowHorizontalSwipesOutsidePortraitTrapezoid])
     {
       v22 = !self->_preventHorizontalSwipesOutsideTrapezoid;
     }
@@ -269,24 +269,24 @@ LABEL_23:
   }
 }
 
-- (void)_SBLogTouchesWithMethodName:(id)a3 withMethodName:(id)a4
+- (void)_SBLogTouchesWithMethodName:(id)name withMethodName:(id)methodName
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D6A798] sharedInstance];
-  v9 = [v8 isEnabled];
+  nameCopy = name;
+  methodNameCopy = methodName;
+  mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
+  isEnabled = [mEMORY[0x277D6A798] isEnabled];
 
-  if (v9)
+  if (isEnabled)
   {
-    v10 = [MEMORY[0x277D6A798] sharedInstance];
+    mEMORY[0x277D6A798]2 = [MEMORY[0x277D6A798] sharedInstance];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __80__SBHomeGesturePanGestureRecognizer__SBLogTouchesWithMethodName_withMethodName___block_invoke;
     v11[3] = &unk_2783B74D0;
-    v12 = v6;
-    v13 = self;
-    v14 = v7;
-    [v10 logBlock:v11];
+    v12 = nameCopy;
+    selfCopy = self;
+    v14 = methodNameCopy;
+    [mEMORY[0x277D6A798]2 logBlock:v11];
   }
 }
 
@@ -416,12 +416,12 @@ id __80__SBHomeGesturePanGestureRecognizer__SBLogTouchesWithMethodName_withMetho
   return v32;
 }
 
-+ (SBHomeGesturePanGestureRecognizer)homeGesturePanGestureRecognizerWithTarget:(id)a3 action:(SEL)a4
++ (SBHomeGesturePanGestureRecognizer)homeGesturePanGestureRecognizerWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v7 = +[SBHomeGestureDomain rootSettings];
-  v8 = [MEMORY[0x277CF0CA8] sharedInstance];
-  v9 = [v8 homeButtonType] == 2;
+  mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+  v9 = [mEMORY[0x277CF0CA8] homeButtonType] == 2;
 
   if (([v7 recognizeAlongEdge] & v9) != 0)
   {
@@ -433,16 +433,16 @@ id __80__SBHomeGesturePanGestureRecognizer__SBLogTouchesWithMethodName_withMetho
     v10 = 1;
   }
 
-  v11 = [[a1 alloc] initWithTarget:v6 action:a4 type:v10 options:_os_feature_enabled_impl()];
+  v11 = [[self alloc] initWithTarget:targetCopy action:action type:v10 options:_os_feature_enabled_impl()];
 
   return v11;
 }
 
-- (SBHomeGesturePanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 type:(int64_t)a5 options:(unint64_t)a6
+- (SBHomeGesturePanGestureRecognizer)initWithTarget:(id)target action:(SEL)action type:(int64_t)type options:(unint64_t)options
 {
   v9.receiver = self;
   v9.super_class = SBHomeGesturePanGestureRecognizer;
-  v6 = [(SBScreenEdgePanGestureRecognizer *)&v9 initWithTarget:a3 action:a4 type:a5 options:a6];
+  v6 = [(SBScreenEdgePanGestureRecognizer *)&v9 initWithTarget:target action:action type:type options:options];
   v7 = v6;
   if (v6)
   {
@@ -452,63 +452,63 @@ id __80__SBHomeGesturePanGestureRecognizer__SBLogTouchesWithMethodName_withMetho
   return v7;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 anyObject];
-  v10 = [v7 coalescedTouchesForTouch:v9];
+  eventCopy = event;
+  beganCopy = began;
+  anyObject = [beganCopy anyObject];
+  v10 = [eventCopy coalescedTouchesForTouch:anyObject];
 
-  v11 = [(SBHomeGesturePanGestureRecognizer *)self viewForTouchHistory];
-  _SBUpdateTouchHistoryWithCoalescedTouches(self->_touchHistory, v10, self, v11, 1);
+  viewForTouchHistory = [(SBHomeGesturePanGestureRecognizer *)self viewForTouchHistory];
+  _SBUpdateTouchHistoryWithCoalescedTouches(self->_touchHistory, v10, self, viewForTouchHistory, 1);
   _SBLogCoalescedTouchesForGestureAndView(v10, self);
   v12 = NSStringFromSelector(a2);
-  [(SBHomeGesturePanGestureRecognizer *)self _SBLogTouchesWithMethodName:v8 withMethodName:v12];
+  [(SBHomeGesturePanGestureRecognizer *)self _SBLogTouchesWithMethodName:beganCopy withMethodName:v12];
 
   v13.receiver = self;
   v13.super_class = SBHomeGesturePanGestureRecognizer;
-  [(UIScreenEdgePanGestureRecognizer *)&v13 touchesBegan:v8 withEvent:v7];
+  [(UIScreenEdgePanGestureRecognizer *)&v13 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 anyObject];
-  v10 = [v7 coalescedTouchesForTouch:v9];
+  eventCopy = event;
+  movedCopy = moved;
+  anyObject = [movedCopy anyObject];
+  v10 = [eventCopy coalescedTouchesForTouch:anyObject];
 
-  v11 = [(SBHomeGesturePanGestureRecognizer *)self viewForTouchHistory];
-  _SBUpdateTouchHistoryWithCoalescedTouches(self->_touchHistory, v10, self, v11, 1);
+  viewForTouchHistory = [(SBHomeGesturePanGestureRecognizer *)self viewForTouchHistory];
+  _SBUpdateTouchHistoryWithCoalescedTouches(self->_touchHistory, v10, self, viewForTouchHistory, 1);
   _SBLogCoalescedTouchesForGestureAndView(v10, self);
   v12 = NSStringFromSelector(a2);
-  [(SBHomeGesturePanGestureRecognizer *)self _SBLogTouchesWithMethodName:v8 withMethodName:v12];
+  [(SBHomeGesturePanGestureRecognizer *)self _SBLogTouchesWithMethodName:movedCopy withMethodName:v12];
 
   v13.receiver = self;
   v13.super_class = SBHomeGesturePanGestureRecognizer;
-  [(UIScreenEdgePanGestureRecognizer *)&v13 touchesMoved:v8 withEvent:v7];
+  [(UIScreenEdgePanGestureRecognizer *)&v13 touchesMoved:movedCopy withEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 anyObject];
-  v10 = [v7 coalescedTouchesForTouch:v9];
+  eventCopy = event;
+  endedCopy = ended;
+  anyObject = [endedCopy anyObject];
+  v10 = [eventCopy coalescedTouchesForTouch:anyObject];
 
-  v11 = [(SBHomeGesturePanGestureRecognizer *)self viewForTouchHistory];
-  _SBUpdateTouchHistoryWithCoalescedTouches(self->_touchHistory, v10, self, v11, 1);
+  viewForTouchHistory = [(SBHomeGesturePanGestureRecognizer *)self viewForTouchHistory];
+  _SBUpdateTouchHistoryWithCoalescedTouches(self->_touchHistory, v10, self, viewForTouchHistory, 1);
   _SBLogCoalescedTouchesForGestureAndView(v10, self);
   v12 = NSStringFromSelector(a2);
-  [(SBHomeGesturePanGestureRecognizer *)self _SBLogTouchesWithMethodName:v8 withMethodName:v12];
+  [(SBHomeGesturePanGestureRecognizer *)self _SBLogTouchesWithMethodName:endedCopy withMethodName:v12];
 
   v13.receiver = self;
   v13.super_class = SBHomeGesturePanGestureRecognizer;
-  [(UIScreenEdgePanGestureRecognizer *)&v13 touchesEnded:v8 withEvent:v7];
+  [(UIScreenEdgePanGestureRecognizer *)&v13 touchesEnded:endedCopy withEvent:eventCopy];
 }
 
-- (CGPoint)averageTouchVelocityOverTimeDuration:(double)a3
+- (CGPoint)averageTouchVelocityOverTimeDuration:(double)duration
 {
-  [(SBTouchHistory *)self->_touchHistory averageTouchVelocityOverTimeDuration:a3];
+  [(SBTouchHistory *)self->_touchHistory averageTouchVelocityOverTimeDuration:duration];
   result.y = v4;
   result.x = v3;
   return result;
@@ -553,11 +553,11 @@ id __49__SBHomeGesturePanGestureRecognizer__shouldBegin__block_invoke(uint64_t a
   return v9;
 }
 
-- (void)setPreventHorizontalSwipesOutsideTrapezoid:(BOOL)a3
+- (void)setPreventHorizontalSwipesOutsideTrapezoid:(BOOL)trapezoid
 {
-  if (self->_preventHorizontalSwipesOutsideTrapezoid != a3)
+  if (self->_preventHorizontalSwipesOutsideTrapezoid != trapezoid)
   {
-    self->_preventHorizontalSwipesOutsideTrapezoid = a3;
+    self->_preventHorizontalSwipesOutsideTrapezoid = trapezoid;
     [(SBHomeGesturePanGestureRecognizer *)self _setUpExclusionTrapezoids];
   }
 }
@@ -566,15 +566,15 @@ id __49__SBHomeGesturePanGestureRecognizer__shouldBegin__block_invoke(uint64_t a
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [MEMORY[0x277D75658] homeGestureExclusionZones];
+    homeGestureExclusionZones = [MEMORY[0x277D75658] homeGestureExclusionZones];
   }
 
   else
   {
-    v2 = MEMORY[0x277CBEBF8];
+    homeGestureExclusionZones = MEMORY[0x277CBEBF8];
   }
 
-  v3 = [SBFluidSwitcherGestureExclusionCompositeShape exclusionCompositeShapeWithRects:v2 allowHorizontalSwipes:1];
+  v3 = [SBFluidSwitcherGestureExclusionCompositeShape exclusionCompositeShapeWithRects:homeGestureExclusionZones allowHorizontalSwipes:1];
 
   return v3;
 }
@@ -585,17 +585,17 @@ id __49__SBHomeGesturePanGestureRecognizer__shouldBegin__block_invoke(uint64_t a
   if (v3)
   {
     SBInterfaceOrientationOfTouchedEdgeForHomeGestureRecognizer(self);
-    v4 = [(SBHomeGesturePanGestureRecognizer *)self view];
-    [v4 bounds];
+    view = [(SBHomeGesturePanGestureRecognizer *)self view];
+    [view bounds];
 
-    v5 = [(SBHomeGesturePanGestureRecognizer *)self view];
-    [(SBHomeGesturePanGestureRecognizer *)self locationInView:v5];
+    view2 = [(SBHomeGesturePanGestureRecognizer *)self view];
+    [(SBHomeGesturePanGestureRecognizer *)self locationInView:view2];
 
     if (!self->_installedAsSystemGesture)
     {
-      v7 = [(SBHomeGesturePanGestureRecognizer *)self view];
-      v8 = [v7 window];
-      [v8 interfaceOrientation];
+      view3 = [(SBHomeGesturePanGestureRecognizer *)self view];
+      window = [view3 window];
+      [window interfaceOrientation];
     }
 
     _UIWindowConvertPointFromOrientationToOrientation();
@@ -618,64 +618,64 @@ id __49__SBHomeGesturePanGestureRecognizer__shouldBegin__block_invoke(uint64_t a
   return v6;
 }
 
-- (id)_currentExclusionShapeForEdge:(unint64_t)a3
+- (id)_currentExclusionShapeForEdge:(unint64_t)edge
 {
-  v3 = a3;
+  edgeCopy = edge;
   if (UIKeyboardAutomaticIsOnScreen())
   {
-    v5 = [(SBHomeGesturePanGestureRecognizer *)self _currentKeyboardExclusionCompositeShape];
+    _currentKeyboardExclusionCompositeShape = [(SBHomeGesturePanGestureRecognizer *)self _currentKeyboardExclusionCompositeShape];
     goto LABEL_12;
   }
 
-  v6 = [(SBHomeGestureSettings *)self->_homeGestureSettings exclusionTrapezoidSettings];
-  v7 = v6;
-  if ((v3 & 0xA) != 0)
+  exclusionTrapezoidSettings = [(SBHomeGestureSettings *)self->_homeGestureSettings exclusionTrapezoidSettings];
+  v7 = exclusionTrapezoidSettings;
+  if ((edgeCopy & 0xA) != 0)
   {
-    if ([v6 landscapeTrapezoidEnabled])
+    if ([exclusionTrapezoidSettings landscapeTrapezoidEnabled])
     {
       v8 = &OBJC_IVAR___SBHomeGesturePanGestureRecognizer__landscapeExclusionTrapezoid;
 LABEL_10:
-      v5 = *(&self->super.super.super.super.super.isa + *v8);
+      _currentKeyboardExclusionCompositeShape = *(&self->super.super.super.super.super.isa + *v8);
       goto LABEL_11;
     }
   }
 
-  else if ([v6 portraitTrapezoidEnabled] && (objc_msgSend(v7, "portraitTrapezoidEnabledOnlyForKeyboards") & 1) == 0)
+  else if ([exclusionTrapezoidSettings portraitTrapezoidEnabled] && (objc_msgSend(v7, "portraitTrapezoidEnabledOnlyForKeyboards") & 1) == 0)
   {
     v8 = &OBJC_IVAR___SBHomeGesturePanGestureRecognizer__portraitExclusionTrapezoid;
     goto LABEL_10;
   }
 
-  v5 = 0;
+  _currentKeyboardExclusionCompositeShape = 0;
 LABEL_11:
 
 LABEL_12:
 
-  return v5;
+  return _currentKeyboardExclusionCompositeShape;
 }
 
-- (BOOL)_shouldBlockHomeGestureForKeyboardInputMode:(id)a3
+- (BOOL)_shouldBlockHomeGestureForKeyboardInputMode:(id)mode
 {
-  v3 = [a3 softwareLayout];
-  if ([v3 isEqualToString:@"Kana"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Kana-Flick") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Korean10Key"))
+  softwareLayout = [mode softwareLayout];
+  if ([softwareLayout isEqualToString:@"Kana"] & 1) != 0 || (objc_msgSend(softwareLayout, "isEqualToString:", @"Kana-Flick") & 1) != 0 || (objc_msgSend(softwareLayout, "isEqualToString:", @"Korean10Key"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Pinyin10-Simplified"];
+    v4 = [softwareLayout isEqualToString:@"Pinyin10-Simplified"];
   }
 
   return v4;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
+  settingsCopy = settings;
+  keyCopy = key;
   homeGestureSettings = self->_homeGestureSettings;
-  if (homeGestureSettings == v9 || ([(SBHomeGestureSettings *)homeGestureSettings exclusionTrapezoidSettings], v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == v9))
+  if (homeGestureSettings == settingsCopy || ([(SBHomeGestureSettings *)homeGestureSettings exclusionTrapezoidSettings], v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == settingsCopy))
   {
     [(SBHomeGesturePanGestureRecognizer *)self _updateHomeGestureParameters];
   }

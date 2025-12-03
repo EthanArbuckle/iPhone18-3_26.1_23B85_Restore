@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (IDSRegistrationReasonTracker)init;
 - (id)registrationRequestReasonString;
-- (int64_t)getPNRReasonForUserUniqueIdentifier:(id)a3;
-- (void)clearPNRReasonForUserUniqueIdentifier:(id)a3;
-- (void)setPNRReason:(int64_t)a3 forUserUniqueIdentifier:(id)a4;
+- (int64_t)getPNRReasonForUserUniqueIdentifier:(id)identifier;
+- (void)clearPNRReasonForUserUniqueIdentifier:(id)identifier;
+- (void)setPNRReason:(int64_t)reason forUserUniqueIdentifier:(id)identifier;
 @end
 
 @implementation IDSRegistrationReasonTracker
@@ -62,63 +62,63 @@
   return v2;
 }
 
-- (void)setPNRReason:(int64_t)a3 forUserUniqueIdentifier:(id)a4
+- (void)setPNRReason:(int64_t)reason forUserUniqueIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    v6 = a4;
-    v7 = [(IDSRegistrationReasonTracker *)self PNRReasonByUserID];
+    identifierCopy = identifier;
+    pNRReasonByUserID = [(IDSRegistrationReasonTracker *)self PNRReasonByUserID];
 
-    if (!v7)
+    if (!pNRReasonByUserID)
     {
       Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
       [(IDSRegistrationReasonTracker *)self setPNRReasonByUserID:Mutable];
     }
 
-    v10 = [NSNumber numberWithInteger:a3];
-    v9 = [(IDSRegistrationReasonTracker *)self PNRReasonByUserID];
-    [v9 setObject:v10 forKeyedSubscript:v6];
+    v10 = [NSNumber numberWithInteger:reason];
+    pNRReasonByUserID2 = [(IDSRegistrationReasonTracker *)self PNRReasonByUserID];
+    [pNRReasonByUserID2 setObject:v10 forKeyedSubscript:identifierCopy];
   }
 }
 
-- (void)clearPNRReasonForUserUniqueIdentifier:(id)a3
+- (void)clearPNRReasonForUserUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v8 = v4;
-    v5 = [(IDSRegistrationReasonTracker *)self PNRReasonByUserID];
-    [v5 setObject:0 forKeyedSubscript:v8];
+    v8 = identifierCopy;
+    pNRReasonByUserID = [(IDSRegistrationReasonTracker *)self PNRReasonByUserID];
+    [pNRReasonByUserID setObject:0 forKeyedSubscript:v8];
 
-    v6 = [(IDSRegistrationReasonTracker *)self PNRReasonByUserID];
-    v7 = [v6 count];
+    pNRReasonByUserID2 = [(IDSRegistrationReasonTracker *)self PNRReasonByUserID];
+    v7 = [pNRReasonByUserID2 count];
 
-    v4 = v8;
+    identifierCopy = v8;
     if (!v7)
     {
       [(IDSRegistrationReasonTracker *)self setPNRReasonByUserID:0];
-      v4 = v8;
+      identifierCopy = v8;
     }
   }
 }
 
-- (int64_t)getPNRReasonForUserUniqueIdentifier:(id)a3
+- (int64_t)getPNRReasonForUserUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(IDSRegistrationReasonTracker *)self PNRReasonByUserID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  pNRReasonByUserID = [(IDSRegistrationReasonTracker *)self PNRReasonByUserID];
+  v6 = [pNRReasonByUserID objectForKeyedSubscript:identifierCopy];
 
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  return v7;
+  return integerValue;
 }
 
 - (id)registrationRequestReasonString
@@ -126,16 +126,16 @@
   requestReasonContainer = self->_requestReasonContainer;
   if (requestReasonContainer)
   {
-    v3 = [(IDSRequestReasonContainer *)requestReasonContainer requestReasonString];
+    requestReasonString = [(IDSRequestReasonContainer *)requestReasonContainer requestReasonString];
   }
 
   else
   {
     v4 = +[IDSRequestReasonContainer unknownReasonContainer];
-    v3 = [v4 requestReasonString];
+    requestReasonString = [v4 requestReasonString];
   }
 
-  return v3;
+  return requestReasonString;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface _CDPrivacyPolicy
 + (id)sharedPrivacyPolicy;
-- (_CDPrivacyPolicy)initWithTemporalPrecision:(double)a3 canPersistOnStorage:(BOOL)a4;
+- (_CDPrivacyPolicy)initWithTemporalPrecision:(double)precision canPersistOnStorage:(BOOL)storage;
 - (id)description;
 @end
 
@@ -18,15 +18,15 @@
   return v3;
 }
 
-- (_CDPrivacyPolicy)initWithTemporalPrecision:(double)a3 canPersistOnStorage:(BOOL)a4
+- (_CDPrivacyPolicy)initWithTemporalPrecision:(double)precision canPersistOnStorage:(BOOL)storage
 {
   v7.receiver = self;
   v7.super_class = _CDPrivacyPolicy;
   result = [(_CDPrivacyPolicy *)&v7 init];
   if (result)
   {
-    result->temporalPrecision = a3;
-    result->canPersistOnStorage = a4;
+    result->temporalPrecision = precision;
+    result->canPersistOnStorage = storage;
   }
 
   return result;

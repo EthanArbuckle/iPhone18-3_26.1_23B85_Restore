@@ -1,21 +1,21 @@
 @interface ICNoteEditorContextualMenuButtonConfigurationMenuState
 - (ICNoteEditorContextualMenuButtonConfigurationMenuState)init;
-- (ICNoteEditorContextualMenuButtonConfigurationMenuState)initWithImage:(id)a3 title:(id)a4 context:(int64_t)a5;
+- (ICNoteEditorContextualMenuButtonConfigurationMenuState)initWithImage:(id)image title:(id)title context:(int64_t)context;
 @end
 
 @implementation ICNoteEditorContextualMenuButtonConfigurationMenuState
 
-- (ICNoteEditorContextualMenuButtonConfigurationMenuState)initWithImage:(id)a3 title:(id)a4 context:(int64_t)a5
+- (ICNoteEditorContextualMenuButtonConfigurationMenuState)initWithImage:(id)image title:(id)title context:(int64_t)context
 {
   v8 = sub_2154A1D6C();
-  *(&self->super.isa + OBJC_IVAR___ICNoteEditorContextualMenuButtonConfigurationMenuState_image) = a3;
+  *(&self->super.isa + OBJC_IVAR___ICNoteEditorContextualMenuButtonConfigurationMenuState_image) = image;
   v9 = (self + OBJC_IVAR___ICNoteEditorContextualMenuButtonConfigurationMenuState_title);
   *v9 = v8;
   v9[1] = v10;
-  *(&self->super.isa + OBJC_IVAR___ICNoteEditorContextualMenuButtonConfigurationMenuState_context) = a5;
+  *(&self->super.isa + OBJC_IVAR___ICNoteEditorContextualMenuButtonConfigurationMenuState_context) = context;
   v13.receiver = self;
   v13.super_class = type metadata accessor for ICNoteEditorContextualMenuButton.Configuration.MenuState();
-  v11 = a3;
+  imageCopy = image;
   return [(ICNoteEditorContextualMenuButtonConfigurationMenuState *)&v13 init];
 }
 

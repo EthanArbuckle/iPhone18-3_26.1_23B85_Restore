@@ -1,7 +1,7 @@
 @interface ICURLResponse
 - (ICURLPerformanceMetrics)performanceMetrics;
-- (ICURLResponse)initWithURLResponse:(id)a3 urlRequest:(id)a4 bodyData:(id)a5 performanceMetrics:(id)a6;
-- (ICURLResponse)initWithURLResponse:(id)a3 urlRequest:(id)a4 bodyDataURL:(id)a5 performanceMetrics:(id)a6;
+- (ICURLResponse)initWithURLResponse:(id)response urlRequest:(id)request bodyData:(id)data performanceMetrics:(id)metrics;
+- (ICURLResponse)initWithURLResponse:(id)response urlRequest:(id)request bodyDataURL:(id)l performanceMetrics:(id)metrics;
 - (NSDate)expirationDate;
 - (id)parsedBody;
 - (id)parsedBodyArray;
@@ -145,10 +145,10 @@ LABEL_17:
 
 - (ICURLPerformanceMetrics)performanceMetrics
 {
-  v2 = [(ICURLAggregatedPerformanceMetrics *)self->_aggregatedPerformanceMetrics urlMetrics];
-  v3 = [v2 lastObject];
+  urlMetrics = [(ICURLAggregatedPerformanceMetrics *)self->_aggregatedPerformanceMetrics urlMetrics];
+  lastObject = [urlMetrics lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (int64_t)statusCode
@@ -180,47 +180,47 @@ LABEL_17:
   return v3;
 }
 
-- (ICURLResponse)initWithURLResponse:(id)a3 urlRequest:(id)a4 bodyDataURL:(id)a5 performanceMetrics:(id)a6
+- (ICURLResponse)initWithURLResponse:(id)response urlRequest:(id)request bodyDataURL:(id)l performanceMetrics:(id)metrics
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  responseCopy = response;
+  requestCopy = request;
+  lCopy = l;
+  metricsCopy = metrics;
   v19.receiver = self;
   v19.super_class = ICURLResponse;
   v15 = [(ICURLResponse *)&v19 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [requestCopy copy];
     urlRequest = v15->_urlRequest;
     v15->_urlRequest = v16;
 
-    objc_storeStrong(&v15->_urlResponse, a3);
-    objc_storeStrong(&v15->_bodyDataURL, a5);
-    objc_storeStrong(&v15->_aggregatedPerformanceMetrics, a6);
+    objc_storeStrong(&v15->_urlResponse, response);
+    objc_storeStrong(&v15->_bodyDataURL, l);
+    objc_storeStrong(&v15->_aggregatedPerformanceMetrics, metrics);
   }
 
   return v15;
 }
 
-- (ICURLResponse)initWithURLResponse:(id)a3 urlRequest:(id)a4 bodyData:(id)a5 performanceMetrics:(id)a6
+- (ICURLResponse)initWithURLResponse:(id)response urlRequest:(id)request bodyData:(id)data performanceMetrics:(id)metrics
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  responseCopy = response;
+  requestCopy = request;
+  dataCopy = data;
+  metricsCopy = metrics;
   v19.receiver = self;
   v19.super_class = ICURLResponse;
   v15 = [(ICURLResponse *)&v19 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [requestCopy copy];
     urlRequest = v15->_urlRequest;
     v15->_urlRequest = v16;
 
-    objc_storeStrong(&v15->_urlResponse, a3);
-    objc_storeStrong(&v15->_bodyData, a5);
-    objc_storeStrong(&v15->_aggregatedPerformanceMetrics, a6);
+    objc_storeStrong(&v15->_urlResponse, response);
+    objc_storeStrong(&v15->_bodyData, data);
+    objc_storeStrong(&v15->_aggregatedPerformanceMetrics, metrics);
   }
 
   return v15;

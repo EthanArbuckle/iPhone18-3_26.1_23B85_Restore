@@ -12,18 +12,18 @@
   __chkstk_darwin(v3 - 8, v5);
   v7 = &v17 - v6;
   v8 = objc_opt_self();
-  v9 = self;
-  v10 = [v8 sharedManager];
-  if (v10)
+  selfCopy = self;
+  sharedManager = [v8 sharedManager];
+  if (sharedManager)
   {
-    v11 = v10;
+    v11 = sharedManager;
     v12 = String._bridgeToObjectiveC()();
     [v11 logType:1 inFunction:"MBLog(_:)" atLine:11 withString:v12];
 
     v13 = type metadata accessor for TaskPriority();
     (*(*(v13 - 8) + 56))(v7, 1, 1, v13);
     type metadata accessor for MainActor();
-    v14 = v9;
+    v14 = selfCopy;
     v15 = static MainActor.shared.getter();
     v16 = swift_allocObject();
     v16[2] = v15;

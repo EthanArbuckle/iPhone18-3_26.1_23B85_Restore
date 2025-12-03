@@ -1,43 +1,43 @@
 @interface _BlastDoorLPSharedObjectMetadata
-- (BOOL)isEqual:(id)a3;
-- (_BlastDoorLPSharedObjectMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_BlastDoorLPSharedObjectMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorLPSharedObjectMetadata
 
-- (_BlastDoorLPSharedObjectMetadata)initWithCoder:(id)a3
+- (_BlastDoorLPSharedObjectMetadata)initWithCoder:(id)coder
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = _BlastDoorLPSharedObjectMetadata;
   v5 = [(_BlastDoorLPSharedObjectMetadata *)&v22 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"title");
+    v6 = decodeStringForKey(coderCopy, @"title");
     v7 = *&v5->_isCollaboration;
     *&v5->_isCollaboration = v6;
 
-    v8 = decodeStringForKey(v4, @"subtitle");
+    v8 = decodeStringForKey(coderCopy, @"subtitle");
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = decodeStringForKey(v4, @"information");
+    v10 = decodeStringForKey(coderCopy, @"information");
     subtitle = v5->_subtitle;
     v5->_subtitle = v10;
 
-    v12 = [v4 _bd_lp_strictlyDecodeLPImageForKey:@"icon"];
+    v12 = [coderCopy _bd_lp_strictlyDecodeLPImageForKey:@"icon"];
     information = v5->_information;
     v5->_information = v12;
 
-    *(&v5->super.__dummyPropertyForObservation + 1) = [v4 decodeBoolForKey:@"isCollaboration"];
-    if ([v4 containsValueForKey:@"specialization"])
+    *(&v5->super.__dummyPropertyForObservation + 1) = [coderCopy decodeBoolForKey:@"isCollaboration"];
+    if ([coderCopy containsValueForKey:@"specialization"])
     {
       v14 = allKnownSpecializationClasses();
       v21 = 0;
-      v15 = [v4 _bd_lp_strictlyDecodeTopLevelObjectOfClasses:v14 forKey:@"specialization" error:&v21];
+      v15 = [coderCopy _bd_lp_strictlyDecodeTopLevelObjectOfClasses:v14 forKey:@"specialization" error:&v21];
       v16 = v21;
       icon = v5->_icon;
       v5->_icon = v15;
@@ -50,38 +50,38 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *&self->_isCollaboration;
-  v5 = a3;
-  [v5 _bd_lp_encodeObjectIfNotNil:v4 forKey:@"title"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_title forKey:@"subtitle"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_subtitle forKey:@"information"];
-  [v5 encodeBool:*(&self->super.__dummyPropertyForObservation + 1) forKey:@"isCollaboration"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_information forKey:@"icon"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_icon forKey:@"specialization"];
+  coderCopy = coder;
+  [coderCopy _bd_lp_encodeObjectIfNotNil:v4 forKey:@"title"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_title forKey:@"subtitle"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_subtitle forKey:@"information"];
+  [coderCopy encodeBool:*(&self->super.__dummyPropertyForObservation + 1) forKey:@"isCollaboration"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_information forKey:@"icon"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_icon forKey:@"specialization"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_BlastDoorLPSharedObjectMetadata allocWithZone:a3];
+  v4 = [_BlastDoorLPSharedObjectMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(_BlastDoorLPSharedObjectMetadata *)self title];
-    [(_BlastDoorLPSharedObjectMetadata *)v4 setTitle:v5];
+    title = [(_BlastDoorLPSharedObjectMetadata *)self title];
+    [(_BlastDoorLPSharedObjectMetadata *)v4 setTitle:title];
 
-    v6 = [(_BlastDoorLPSharedObjectMetadata *)self subtitle];
-    [(_BlastDoorLPSharedObjectMetadata *)v4 setSubtitle:v6];
+    subtitle = [(_BlastDoorLPSharedObjectMetadata *)self subtitle];
+    [(_BlastDoorLPSharedObjectMetadata *)v4 setSubtitle:subtitle];
 
-    v7 = [(_BlastDoorLPSharedObjectMetadata *)self information];
-    [(_BlastDoorLPSharedObjectMetadata *)v4 setInformation:v7];
+    information = [(_BlastDoorLPSharedObjectMetadata *)self information];
+    [(_BlastDoorLPSharedObjectMetadata *)v4 setInformation:information];
 
     [(_BlastDoorLPSharedObjectMetadata *)v4 setIsCollaboration:[(_BlastDoorLPSharedObjectMetadata *)self isCollaboration]];
-    v8 = [(_BlastDoorLPSharedObjectMetadata *)self icon];
-    [(_BlastDoorLPSharedObjectMetadata *)v4 setIcon:v8];
+    icon = [(_BlastDoorLPSharedObjectMetadata *)self icon];
+    [(_BlastDoorLPSharedObjectMetadata *)v4 setIcon:icon];
 
-    v9 = [(_BlastDoorLPSharedObjectMetadata *)self specialization];
-    [(_BlastDoorLPSharedObjectMetadata *)v4 setSpecialization:v9];
+    specialization = [(_BlastDoorLPSharedObjectMetadata *)self specialization];
+    [(_BlastDoorLPSharedObjectMetadata *)v4 setSpecialization:specialization];
 
     v10 = v4;
   }
@@ -89,13 +89,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v27.receiver = self;
   v27.super_class = _BlastDoorLPSharedObjectMetadata;
-  if ([(_BlastDoorLPSharedObjectMetadata *)&v27 isEqual:v4])
+  if ([(_BlastDoorLPSharedObjectMetadata *)&v27 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -105,13 +105,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = *&self->_isCollaboration;
-      v8 = [v6 title];
-      if (v7 | v8)
+      title = [v6 title];
+      if (v7 | title)
       {
-        v9 = v8;
-        v10 = [v7 isEqual:v8];
+        v9 = title;
+        v10 = [v7 isEqual:title];
 
         if (!v10)
         {
@@ -120,11 +120,11 @@
       }
 
       title = self->_title;
-      v12 = [v6 subtitle];
-      if (title | v12)
+      subtitle = [v6 subtitle];
+      if (title | subtitle)
       {
-        v13 = v12;
-        v14 = [(NSString *)title isEqual:v12];
+        v13 = subtitle;
+        v14 = [(NSString *)title isEqual:subtitle];
 
         if (!v14)
         {
@@ -133,11 +133,11 @@
       }
 
       subtitle = self->_subtitle;
-      v16 = [v6 information];
-      if (subtitle | v16)
+      information = [v6 information];
+      if (subtitle | information)
       {
-        v17 = v16;
-        v18 = [(NSString *)subtitle isEqual:v16];
+        v17 = information;
+        v18 = [(NSString *)subtitle isEqual:information];
 
         if (!v18)
         {
@@ -148,10 +148,10 @@
       if (v6[9] == *(&self->super.__dummyPropertyForObservation + 1) && ((information = self->_information, [v6 icon], v20 = objc_claimAutoreleasedReturnValue(), !(information | v20)) || (v21 = v20, v22 = -[NSString isEqual:](information, "isEqual:", v20), v21, v22)))
       {
         icon = self->_icon;
-        v24 = [v6 specialization];
-        if (icon | v24)
+        specialization = [v6 specialization];
+        if (icon | specialization)
         {
-          v5 = [(_BlastDoorLPImage *)icon isEqual:v24];
+          v5 = [(_BlastDoorLPImage *)icon isEqual:specialization];
         }
 
         else

@@ -1,49 +1,49 @@
 @interface BRCFetchRecordSubResourcesHandler
-- (BOOL)saveChangedRecords:(id)a3 deletedRecordIDs:(id)a4 deletedShareRecordIDs:(id)a5 clientChangeToken:(unint64_t)a6 serverChangeToken:(id)a7 caughtUp:(BOOL)a8 pendingChanges:(id)a9;
-- (BRCFetchRecordSubResourcesHandler)initWithSessionContext:(id)a3 serverZone:(id)a4 applyScheduler:(id)a5;
+- (BOOL)saveChangedRecords:(id)records deletedRecordIDs:(id)ds deletedShareRecordIDs:(id)iDs clientChangeToken:(unint64_t)token serverChangeToken:(id)changeToken caughtUp:(BOOL)up pendingChanges:(id)changes;
+- (BRCFetchRecordSubResourcesHandler)initWithSessionContext:(id)context serverZone:(id)zone applyScheduler:(id)scheduler;
 @end
 
 @implementation BRCFetchRecordSubResourcesHandler
 
-- (BRCFetchRecordSubResourcesHandler)initWithSessionContext:(id)a3 serverZone:(id)a4 applyScheduler:(id)a5
+- (BRCFetchRecordSubResourcesHandler)initWithSessionContext:(id)context serverZone:(id)zone applyScheduler:(id)scheduler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  zoneCopy = zone;
+  schedulerCopy = scheduler;
   v15.receiver = self;
   v15.super_class = BRCFetchRecordSubResourcesHandler;
   v12 = [(BRCFetchRecordSubResourcesHandler *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_applyScheduler, a5);
-    objc_storeStrong(&v13->_serverZone, a4);
-    objc_storeStrong(&v13->_sessionContext, a3);
+    objc_storeStrong(&v12->_applyScheduler, scheduler);
+    objc_storeStrong(&v13->_serverZone, zone);
+    objc_storeStrong(&v13->_sessionContext, context);
   }
 
   return v13;
 }
 
-- (BOOL)saveChangedRecords:(id)a3 deletedRecordIDs:(id)a4 deletedShareRecordIDs:(id)a5 clientChangeToken:(unint64_t)a6 serverChangeToken:(id)a7 caughtUp:(BOOL)a8 pendingChanges:(id)a9
+- (BOOL)saveChangedRecords:(id)records deletedRecordIDs:(id)ds deletedShareRecordIDs:(id)iDs clientChangeToken:(unint64_t)token serverChangeToken:(id)changeToken caughtUp:(BOOL)up pendingChanges:(id)changes
 {
   v27 = 0;
   v16 = self->_serverZone;
-  LOBYTE(v20) = a8;
-  v17 = [(BRCServerZone *)v16 didSyncDownRequestID:a6 serverChangeToken:a7 editedRecords:a3 deletedRecordIDs:a4 deletedShareRecordIDs:a5 allocRankZones:&v27 caughtUp:v20 pendingChanges:a9];
+  LOBYTE(v20) = up;
+  v17 = [(BRCServerZone *)v16 didSyncDownRequestID:token serverChangeToken:changeToken editedRecords:records deletedRecordIDs:ds deletedShareRecordIDs:iDs allocRankZones:&v27 caughtUp:v20 pendingChanges:changes];
   if (v17)
   {
-    v18 = [(BRCSessionContext *)self->_sessionContext clientReadWriteDatabaseFacade];
+    clientReadWriteDatabaseFacade = [(BRCSessionContext *)self->_sessionContext clientReadWriteDatabaseFacade];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __155__BRCFetchRecordSubResourcesHandler_saveChangedRecords_deletedRecordIDs_deletedShareRecordIDs_clientChangeToken_serverChangeToken_caughtUp_pendingChanges___block_invoke;
     v21[3] = &unk_278505580;
     v21[4] = self;
     v22 = v16;
-    v24 = a6;
+    tokenCopy = token;
     v25 = v17;
-    v26 = a8;
+    upCopy = up;
     v23 = v27;
-    [v18 performWithFlags:41 action:v21];
+    [clientReadWriteDatabaseFacade performWithFlags:41 action:v21];
   }
 
   return v17 != 0;

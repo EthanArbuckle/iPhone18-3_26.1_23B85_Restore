@@ -1,8 +1,8 @@
 @interface MXSourceUtilities
 + (BOOL)anyClientsAvailable;
 + (BOOL)isAppAnalyticsEnabled;
-+ (BOOL)isMetricKitClient:(id)a3;
-+ (BOOL)isMetricKitClient:(id)a3 forUser:(unsigned int)a4;
++ (BOOL)isMetricKitClient:(id)client;
++ (BOOL)isMetricKitClient:(id)client forUser:(unsigned int)user;
 + (id)regionFormat;
 @end
 
@@ -36,16 +36,16 @@ void __33__MXSourceUtilities_regionFormat__block_invoke()
   }
 }
 
-+ (BOOL)isMetricKitClient:(id)a3
++ (BOOL)isMetricKitClient:(id)client
 {
-  v3 = a3;
+  clientCopy = client;
   v14 = 0;
-  v4 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:v3 error:&v14];
+  v4 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:clientCopy error:&v14];
   v5 = v14;
   if (v5)
   {
-    v6 = _MXSourceUtilitiesLog();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    containingBundleRecord = _MXSourceUtilitiesLog();
+    if (os_log_type_enabled(containingBundleRecord, OS_LOG_TYPE_ERROR))
     {
       +[MXSourceUtilities isMetricKitClient:];
     }
@@ -64,10 +64,10 @@ void __33__MXSourceUtilities_regionFormat__block_invoke()
       +[MXSourceUtilities isMetricKitClient:];
     }
 
-    v6 = [v4 containingBundleRecord];
-    v8 = [v6 bundleIdentifier];
+    containingBundleRecord = [v4 containingBundleRecord];
+    bundleIdentifier = [containingBundleRecord bundleIdentifier];
 
-    v3 = v8;
+    clientCopy = bundleIdentifier;
   }
 
 LABEL_9:
@@ -75,7 +75,7 @@ LABEL_9:
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 objectForKeyedSubscript:v3];
+    v11 = [v9 objectForKeyedSubscript:clientCopy];
     v12 = v11 != 0;
   }
 
@@ -87,26 +87,26 @@ LABEL_9:
   return v12;
 }
 
-+ (BOOL)isMetricKitClient:(id)a3 forUser:(unsigned int)a4
++ (BOOL)isMetricKitClient:(id)client forUser:(unsigned int)user
 {
-  v4 = a3;
+  clientCopy = client;
   v15 = 0;
-  v5 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:v4 error:&v15];
+  v5 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:clientCopy error:&v15];
   v6 = v15;
   if (v6)
   {
-    v7 = _MXSourceUtilitiesLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    containingBundleRecord = _MXSourceUtilitiesLog();
+    if (os_log_type_enabled(containingBundleRecord, OS_LOG_TYPE_ERROR))
     {
       +[MXSourceUtilities isMetricKitClient:];
     }
 
-    v8 = v4;
+    bundleIdentifier = clientCopy;
   }
 
   else
   {
-    v8 = v4;
+    bundleIdentifier = clientCopy;
     if (!v5)
     {
       goto LABEL_10;
@@ -118,8 +118,8 @@ LABEL_9:
       +[MXSourceUtilities isMetricKitClient:];
     }
 
-    v7 = [v5 containingBundleRecord];
-    v8 = [v7 bundleIdentifier];
+    containingBundleRecord = [v5 containingBundleRecord];
+    bundleIdentifier = [containingBundleRecord bundleIdentifier];
   }
 
 LABEL_10:
@@ -127,7 +127,7 @@ LABEL_10:
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 objectForKeyedSubscript:v8];
+    v12 = [v10 objectForKeyedSubscript:bundleIdentifier];
     v13 = v12 != 0;
   }
 
@@ -161,15 +161,15 @@ uint64_t __42__MXSourceUtilities_isAppAnalyticsEnabled__block_invoke()
   v2 = CFPreferencesCopyValue(@"MXClientsAvailable", @"com.apple.metrickitd", @"mobile", *MEMORY[0x277CBF010]);
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 uint64_t __71__MXSourceUtilities_getSignpostDataforPid_forClient_andEventTimestamp___block_invoke(uint64_t a1, void *a2)

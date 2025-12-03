@@ -1,7 +1,7 @@
 @interface FSModuleTask
-+ (id)taskWithID:(id)a3 description:(id)a4 progress:(id)a5;
++ (id)taskWithID:(id)d description:(id)description progress:(id)progress;
 - (FSModuleTask)init;
-- (FSModuleTask)initWithID:(id)a3 description:(id)a4 progress:(id)a5;
+- (FSModuleTask)initWithID:(id)d description:(id)description progress:(id)progress;
 @end
 
 @implementation FSModuleTask
@@ -19,29 +19,29 @@
   return result;
 }
 
-- (FSModuleTask)initWithID:(id)a3 description:(id)a4 progress:(id)a5
+- (FSModuleTask)initWithID:(id)d description:(id)description progress:(id)progress
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  descriptionCopy = description;
+  progressCopy = progress;
   v12 = [(FSModuleTask *)self init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_taskUUID, a3);
-    objc_storeStrong(&v13->_taskDescription, a4);
-    objc_storeStrong(&v13->_taskProgress, a5);
+    objc_storeStrong(&v12->_taskUUID, d);
+    objc_storeStrong(&v13->_taskDescription, description);
+    objc_storeStrong(&v13->_taskProgress, progress);
   }
 
   return v13;
 }
 
-+ (id)taskWithID:(id)a3 description:(id)a4 progress:(id)a5
++ (id)taskWithID:(id)d description:(id)description progress:(id)progress
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithID:v10 description:v9 progress:v8];
+  progressCopy = progress;
+  descriptionCopy = description;
+  dCopy = d;
+  v11 = [[self alloc] initWithID:dCopy description:descriptionCopy progress:progressCopy];
 
   return v11;
 }

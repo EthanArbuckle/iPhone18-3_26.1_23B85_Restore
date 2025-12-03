@@ -1,42 +1,42 @@
 @interface SBRootFolderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilityHitTestSubviews;
 - (id)_accessibilitySubviews;
 - (id)automationElements;
-- (int64_t)_accessibilityCompareElement:(id)a3 toElement:(id)a4;
-- (void)setIdleText:(id)a3;
-- (void)setSpecialLayoutManager:(id)a3 completionHandler:(id)a4;
+- (int64_t)_accessibilityCompareElement:(id)element toElement:(id)toElement;
+- (void)setIdleText:(id)text;
+- (void)setSpecialLayoutManager:(id)manager completionHandler:(id)handler;
 @end
 
 @implementation SBRootFolderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBRootFolderView"];
-  [v3 validateClass:@"_SBRootFolderLayoutWrapperView"];
-  [v3 validateClass:@"SBRootFolderViewPageManagementLayoutManager"];
-  [v3 validateClass:@"SBRootFolderView" isKindOfClass:@"SBFolderView"];
-  [v3 validateClass:@"SBFolderView" hasInstanceMethod:@"firstIconListView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"widgetIntroductionPopover" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFolderView" hasInstanceVariable:@"_scrollView" withType:"SBIconScrollView"];
-  [v3 validateClass:@"SBRootFolderView" hasInstanceMethod:@"_searchableLeadingCustomWrapperView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBRootFolderView" hasInstanceMethod:@"_searchableTrailingCustomWrapperView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBRootFolderView" hasInstanceVariable:@"_searchPulldownWrapperView" withType:"_SBRootFolderLayoutWrapperView"];
-  [v3 validateClass:@"SBRootFolderView" hasInstanceMethod:@"setIdleText:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBHPageManagementCellViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SBRootFolderViewPageManagementLayoutManager" hasInstanceVariable:@"_iconViewControllersByIcon" withType:"NSMapTable"];
-  [v3 validateClass:@"SBViewControllerTransitionContext" hasInstanceMethod:@"animator" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFramewiseInteractiveTransitionAnimator" hasInstanceMethod:@"isPresenting" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBRootFolderView" hasInstanceMethod:@"isPageManagementUIVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBRootFolderView" hasInstanceMethod:@"specialLayoutManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBRootFolderView" hasInstanceMethod:@"todayViewVisibilityProgress" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"SBRootFolderView" hasInstanceMethod:@"widgetButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBRootFolderView" hasInstanceMethod:@"doneButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBRootFolderView" hasInstanceMethod:@"scrollAccessoryView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBRootFolderView" hasInstanceMethod:@"setSpecialLayoutManager:completionHandler:" withFullSignature:{"v", "@", "@?", 0}];
-  [v3 validateClass:@"SBRootFolderView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBRootFolderView"];
+  [validationsCopy validateClass:@"_SBRootFolderLayoutWrapperView"];
+  [validationsCopy validateClass:@"SBRootFolderViewPageManagementLayoutManager"];
+  [validationsCopy validateClass:@"SBRootFolderView" isKindOfClass:@"SBFolderView"];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceMethod:@"firstIconListView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"widgetIntroductionPopover" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceVariable:@"_scrollView" withType:"SBIconScrollView"];
+  [validationsCopy validateClass:@"SBRootFolderView" hasInstanceMethod:@"_searchableLeadingCustomWrapperView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBRootFolderView" hasInstanceMethod:@"_searchableTrailingCustomWrapperView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBRootFolderView" hasInstanceVariable:@"_searchPulldownWrapperView" withType:"_SBRootFolderLayoutWrapperView"];
+  [validationsCopy validateClass:@"SBRootFolderView" hasInstanceMethod:@"setIdleText:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBHPageManagementCellViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SBRootFolderViewPageManagementLayoutManager" hasInstanceVariable:@"_iconViewControllersByIcon" withType:"NSMapTable"];
+  [validationsCopy validateClass:@"SBViewControllerTransitionContext" hasInstanceMethod:@"animator" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFramewiseInteractiveTransitionAnimator" hasInstanceMethod:@"isPresenting" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBRootFolderView" hasInstanceMethod:@"isPageManagementUIVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBRootFolderView" hasInstanceMethod:@"specialLayoutManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBRootFolderView" hasInstanceMethod:@"todayViewVisibilityProgress" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"SBRootFolderView" hasInstanceMethod:@"widgetButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBRootFolderView" hasInstanceMethod:@"doneButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBRootFolderView" hasInstanceMethod:@"scrollAccessoryView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBRootFolderView" hasInstanceMethod:@"setSpecialLayoutManager:completionHandler:" withFullSignature:{"v", "@", "@?", 0}];
+  [validationsCopy validateClass:@"SBRootFolderView" isKindOfClass:@"UIView"];
 }
 
 - (id)automationElements
@@ -47,28 +47,28 @@
     v33 = 0;
     objc_opt_class();
     v3 = __UIAccessibilityCastAsClass();
-    v4 = [v3 _allSubviews];
+    _allSubviews = [v3 _allSubviews];
   }
 
   else
   {
-    v4 = [MEMORY[0x29EDB8DE8] array];
+    _allSubviews = [MEMORY[0x29EDB8DE8] array];
     v3 = [(SBRootFolderViewAccessibility *)self safeValueForKey:@"_searchPulldownWrapperView"];
     if ([v3 _accessibilityViewIsVisible])
     {
-      [v4 addObject:v3];
+      [_allSubviews addObject:v3];
     }
 
     v5 = [(SBRootFolderViewAccessibility *)self safeValueForKey:@"_searchableLeadingCustomWrapperView"];
     if ([v5 _accessibilityViewIsVisible])
     {
-      [v4 addObject:v5];
+      [_allSubviews addObject:v5];
     }
 
     v6 = [(SBRootFolderViewAccessibility *)self safeValueForKey:@"_searchableTrailingCustomWrapperView"];
     if ([v6 _accessibilityViewIsVisible])
     {
-      [v4 addObject:v6];
+      [_allSubviews addObject:v6];
     }
 
     if ([(SBRootFolderViewAccessibility *)self safeBoolForKey:@"isPageManagementUIVisible"])
@@ -102,7 +102,7 @@
 
             v15 = [v10 objectForKey:{*(*(&v29 + 1) + 8 * i), v27, v28, v29}];
             v16 = [v15 safeValueForKey:@"view"];
-            [v4 axSafelyAddObject:v16];
+            [_allSubviews axSafelyAddObject:v16];
           }
 
           v12 = [v10 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -116,21 +116,21 @@
     }
 
     v17 = [(SBRootFolderViewAccessibility *)self safeValueForKey:@"widgetButton", v27, v28];
-    [v4 axSafelyAddObject:v17];
+    [_allSubviews axSafelyAddObject:v17];
 
     v18 = [(SBRootFolderViewAccessibility *)self safeValueForKey:@"doneButton"];
-    [v4 axSafelyAddObject:v18];
+    [_allSubviews axSafelyAddObject:v18];
 
     v19 = [(SBRootFolderViewAccessibility *)self safeUIViewForKey:@"firstIconListView"];
     v20 = [v19 safeUIViewForKey:@"widgetIntroductionPopover"];
     if ([v20 _accessibilityViewIsVisible])
     {
-      [v4 addObject:v20];
+      [_allSubviews addObject:v20];
     }
 
     v21 = [(SBRootFolderViewAccessibility *)self safeValueForKey:@"folder"];
-    v22 = [v21 automationElements];
-    [v4 addObjectsFromArray:v22];
+    automationElements = [v21 automationElements];
+    [_allSubviews addObjectsFromArray:automationElements];
 
     if (AXDeviceIsPad())
     {
@@ -143,19 +143,19 @@
     }
 
     v24 = [(SBRootFolderViewAccessibility *)self safeValueForKey:v23];
-    [v4 axSafelyAddObject:v24];
+    [_allSubviews axSafelyAddObject:v24];
 
     v25 = [(SBRootFolderViewAccessibility *)self safeValueForKey:@"dockView"];
-    [v4 axSafelyAddObject:v25];
+    [_allSubviews axSafelyAddObject:v25];
   }
 
-  return v4;
+  return _allSubviews;
 }
 
 - (id)_accessibilitySubviews
 {
-  v3 = [(SBRootFolderViewAccessibility *)self subviews];
-  v4 = [v3 mutableCopy];
+  subviews = [(SBRootFolderViewAccessibility *)self subviews];
+  v4 = [subviews mutableCopy];
 
   v5 = [(SBRootFolderViewAccessibility *)self safeValueForKey:@"_idleTextView"];
   v6 = [v4 indexOfObject:v5];
@@ -167,12 +167,12 @@
   return v4;
 }
 
-- (int64_t)_accessibilityCompareElement:(id)a3 toElement:(id)a4
+- (int64_t)_accessibilityCompareElement:(id)element toElement:(id)toElement
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Sbdockview.isa)];
-  v9 = [v7 _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Sbdockview.isa)];
+  elementCopy = element;
+  toElementCopy = toElement;
+  v8 = [elementCopy _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Sbdockview.isa)];
+  v9 = [toElementCopy _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Sbdockview.isa)];
   v10 = v9;
   if (!v8 || v9)
   {
@@ -180,7 +180,7 @@
     {
       v13.receiver = self;
       v13.super_class = SBRootFolderViewAccessibility;
-      v11 = [(SBRootFolderViewAccessibility *)&v13 _accessibilityCompareElement:v6 toElement:v7];
+      v11 = [(SBRootFolderViewAccessibility *)&v13 _accessibilityCompareElement:elementCopy toElement:toElementCopy];
     }
 
     else
@@ -201,14 +201,14 @@
 {
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v3 = [(SBRootFolderViewAccessibility *)self subviews];
-    v4 = [v3 mutableCopy];
+    subviews = [(SBRootFolderViewAccessibility *)self subviews];
+    _accessibilityHitTestSubviews = [subviews mutableCopy];
 
     v5 = [(SBRootFolderViewAccessibility *)self safeValueForKey:@"_idleTextView"];
-    v6 = [v4 indexOfObject:v5];
+    v6 = [_accessibilityHitTestSubviews indexOfObject:v5];
     if (v6 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v4 exchangeObjectAtIndex:objc_msgSend(v4 withObjectAtIndex:{"count") - 1, v6}];
+      [_accessibilityHitTestSubviews exchangeObjectAtIndex:objc_msgSend(_accessibilityHitTestSubviews withObjectAtIndex:{"count") - 1, v6}];
     }
   }
 
@@ -216,17 +216,17 @@
   {
     v8.receiver = self;
     v8.super_class = SBRootFolderViewAccessibility;
-    v4 = [(SBRootFolderViewAccessibility *)&v8 _accessibilityHitTestSubviews];
+    _accessibilityHitTestSubviews = [(SBRootFolderViewAccessibility *)&v8 _accessibilityHitTestSubviews];
   }
 
-  return v4;
+  return _accessibilityHitTestSubviews;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -234,8 +234,8 @@
   v16 = __Block_byref_object_dispose__9;
   v11.receiver = self;
   v11.super_class = SBRootFolderViewAccessibility;
-  v17 = [(SBRootFolderViewAccessibility *)&v11 _accessibilityHitTest:v7 withEvent:x, y];
-  v10 = v7;
+  v17 = [(SBRootFolderViewAccessibility *)&v11 _accessibilityHitTest:eventCopy withEvent:x, y];
+  v10 = eventCopy;
   AXPerformSafeBlock();
   v8 = v13[5];
 
@@ -274,11 +274,11 @@ void __65__SBRootFolderViewAccessibility__accessibilityHitTest_withEvent___block
   }
 }
 
-- (void)setIdleText:(id)a3
+- (void)setIdleText:(id)text
 {
   v7.receiver = self;
   v7.super_class = SBRootFolderViewAccessibility;
-  [(SBRootFolderViewAccessibility *)&v7 setIdleText:a3];
+  [(SBRootFolderViewAccessibility *)&v7 setIdleText:text];
   v4 = [(SBRootFolderViewAccessibility *)self safeValueForKey:@"_idleTextView"];
   v5 = v4;
   if (v4)
@@ -289,18 +289,18 @@ void __65__SBRootFolderViewAccessibility__accessibilityHitTest_withEvent___block
   }
 }
 
-- (void)setSpecialLayoutManager:(id)a3 completionHandler:(id)a4
+- (void)setSpecialLayoutManager:(id)manager completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x29EDCA5F8];
   v12[1] = 3221225472;
   v12[2] = __75__SBRootFolderViewAccessibility_setSpecialLayoutManager_completionHandler___block_invoke;
   v12[3] = &unk_29F3008D8;
-  v13 = v6;
-  v14 = v7;
-  v8 = v6;
-  v9 = v7;
+  v13 = managerCopy;
+  v14 = handlerCopy;
+  v8 = managerCopy;
+  v9 = handlerCopy;
   v10 = MEMORY[0x29ED38BB0](v12);
   v11.receiver = self;
   v11.super_class = SBRootFolderViewAccessibility;

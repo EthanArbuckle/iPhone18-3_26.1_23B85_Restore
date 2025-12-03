@@ -9,8 +9,8 @@
 - (NSArray)layers
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [(_UIStackedImageSingleNamedStack *)self layerImage];
-  v5[0] = v2;
+  layerImage = [(_UIStackedImageSingleNamedStack *)self layerImage];
+  v5[0] = layerImage;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 
   return v3;
@@ -18,9 +18,9 @@
 
 - (CGSize)size
 {
-  v2 = [(_UIStackedImageSingleNamedStack *)self layerImage];
-  v3 = [v2 imageObj];
-  [v3 size];
+  layerImage = [(_UIStackedImageSingleNamedStack *)self layerImage];
+  imageObj = [layerImage imageObj];
+  [imageObj size];
   v5 = v4;
   v7 = v6;
 
@@ -33,11 +33,11 @@
 
 - (CGImage)flattenedImage
 {
-  v2 = [(_UIStackedImageSingleNamedStack *)self layerImage];
-  v3 = [v2 imageObj];
-  v4 = [v3 CGImage];
+  layerImage = [(_UIStackedImageSingleNamedStack *)self layerImage];
+  imageObj = [layerImage imageObj];
+  cGImage = [imageObj CGImage];
 
-  return v4;
+  return cGImage;
 }
 
 @end

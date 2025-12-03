@@ -1,24 +1,24 @@
 @interface VCTelephonyInterface
-+ (int)ctDirectionForTelephonyLinkDirection:(int64_t)a3;
-+ (int64_t)ctSubscriptionSlotForSubscriptionSlot:(int64_t)a3;
-+ (int64_t)telephonyLinkDirectionForCtDirection:(int)a3;
-- (BOOL)getCarrierBundleValue:(id *)a3 forKey:(id)a4;
++ (int)ctDirectionForTelephonyLinkDirection:(int64_t)direction;
++ (int64_t)ctSubscriptionSlotForSubscriptionSlot:(int64_t)slot;
++ (int64_t)telephonyLinkDirectionForCtDirection:(int)direction;
+- (BOOL)getCarrierBundleValue:(id *)value forKey:(id)key;
 - (BOOL)registerForNotifications;
 - (VCTelephonyInterface)init;
-- (VCTelephonyInterface)initWithTelephonySubscriptionSlot:(int64_t)a3;
-- (id)translateVocoderTypeToCoreAudioType:(id)a3;
-- (unsigned)getSampleRateFromAudioCodecInfo:(id)a3;
-- (unsigned)validateCarrierBundleConfigParameters:(id)a3 forKey:(id)a4 defaultValue:(unsigned int)a5 minValue:(unsigned int)a6 maxValue:(unsigned int)a7;
-- (void)anbrActivationState:(id)a3 enabled:(BOOL)a4;
-- (void)anbrBitrateRecommendation:(id)a3 bitrate:(id)a4 direction:(int)a5;
+- (VCTelephonyInterface)initWithTelephonySubscriptionSlot:(int64_t)slot;
+- (id)translateVocoderTypeToCoreAudioType:(id)type;
+- (unsigned)getSampleRateFromAudioCodecInfo:(id)info;
+- (unsigned)validateCarrierBundleConfigParameters:(id)parameters forKey:(id)key defaultValue:(unsigned int)value minValue:(unsigned int)minValue maxValue:(unsigned int)maxValue;
+- (void)anbrActivationState:(id)state enabled:(BOOL)enabled;
+- (void)anbrBitrateRecommendation:(id)recommendation bitrate:(id)bitrate direction:(int)direction;
 - (void)dealloc;
-- (void)getAnbrActivationStateWithCompletionHandler:(id)a3;
-- (void)handleTelephonyNotification:(id)a3 withInfo:(id)a4;
-- (void)handleVocoderNotificationWithInfo:(id)a3;
+- (void)getAnbrActivationStateWithCompletionHandler:(id)handler;
+- (void)handleTelephonyNotification:(id)notification withInfo:(id)info;
+- (void)handleVocoderNotificationWithInfo:(id)info;
 - (void)init;
-- (void)notifyCodecModeChangeEventToCT:(_VCAudioCodecModeChangeEvent *)a3;
-- (void)queryAnbrBitrateRecommendation:(unsigned int)a3 direction:(int64_t)a4 completionHandler:(id)a5;
-- (void)setupVCMediaStreamRateAdaptationConfig:(tagVCMediaStreamRateAdaptationConfig *)a3;
+- (void)notifyCodecModeChangeEventToCT:(_VCAudioCodecModeChangeEvent *)t;
+- (void)queryAnbrBitrateRecommendation:(unsigned int)recommendation direction:(int64_t)direction completionHandler:(id)handler;
+- (void)setupVCMediaStreamRateAdaptationConfig:(tagVCMediaStreamRateAdaptationConfig *)config;
 @end
 
 @implementation VCTelephonyInterface
@@ -204,14 +204,14 @@ uint64_t __28__VCTelephonyInterface_init__block_invoke(uint64_t a1, uint64_t a2,
   return [v5 handleTelephonyNotification:a2 withInfo:a3];
 }
 
-- (VCTelephonyInterface)initWithTelephonySubscriptionSlot:(int64_t)a3
+- (VCTelephonyInterface)initWithTelephonySubscriptionSlot:(int64_t)slot
 {
   v4 = [(VCTelephonyInterface *)self init];
   v5 = v4;
   if (v4)
   {
-    v4->_subscriptionSlot = a3;
-    v4->_ctSubscriptionSlot = [VCTelephonyInterface ctSubscriptionSlotForSubscriptionSlot:a3];
+    v4->_subscriptionSlot = slot;
+    v4->_ctSubscriptionSlot = [VCTelephonyInterface ctSubscriptionSlotForSubscriptionSlot:slot];
     v5->_ctSubscriptionContext = [objc_alloc(MEMORY[0x1E6965090]) initWithSlot:v5->_ctSubscriptionSlot];
   }
 
@@ -240,15 +240,15 @@ uint64_t __28__VCTelephonyInterface_init__block_invoke(uint64_t a1, uint64_t a2,
   [(VCTelephonyInterface *)&v5 dealloc];
 }
 
-- (BOOL)getCarrierBundleValue:(id *)a3 forKey:(id)a4
+- (BOOL)getCarrierBundleValue:(id *)value forKey:(id)key
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E695DF70] array];
-  [v7 addObject:@"IMSConfig"];
-  [v7 addObject:@"Media"];
-  [v7 addObject:@"VoiceOnAP"];
-  [v7 addObject:@"RateAdaptationAlgorithms"];
-  [v7 addObject:a4];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:@"IMSConfig"];
+  [array addObject:@"Media"];
+  [array addObject:@"VoiceOnAP"];
+  [array addObject:@"RateAdaptationAlgorithms"];
+  [array addObject:key];
   v11[0] = 0;
   if (!self->_ctSubscriptionContext)
   {
@@ -256,23 +256,23 @@ uint64_t __28__VCTelephonyInterface_init__block_invoke(uint64_t a1, uint64_t a2,
   }
 
   v8 = [objc_alloc(MEMORY[0x1E6964F68]) initWithBundleType:{1, v11[0]}];
-  v9 = [(CoreTelephonyClient *)self->_coreTelephonyClient context:self->_ctSubscriptionContext getCarrierBundleValue:v7 error:v11];
+  v9 = [(CoreTelephonyClient *)self->_coreTelephonyClient context:self->_ctSubscriptionContext getCarrierBundleValue:array error:v11];
 
   if (!v9)
   {
     return 0;
   }
 
-  *a3 = v9;
+  *value = v9;
   return 1;
 }
 
-- (unsigned)validateCarrierBundleConfigParameters:(id)a3 forKey:(id)a4 defaultValue:(unsigned int)a5 minValue:(unsigned int)a6 maxValue:(unsigned int)a7
+- (unsigned)validateCarrierBundleConfigParameters:(id)parameters forKey:(id)key defaultValue:(unsigned int)value minValue:(unsigned int)minValue maxValue:(unsigned int)maxValue
 {
   v31 = *MEMORY[0x1E69E9840];
-  v11 = [a3 objectForKeyedSubscript:a4];
-  v12 = a5;
-  if (v11 && (v13 = [v11 intValue], v12 = v13, v13 >= a6) && v13 <= a7)
+  v11 = [parameters objectForKeyedSubscript:key];
+  valueCopy = value;
+  if (v11 && (v13 = [v11 intValue], valueCopy = v13, v13 >= minValue) && v13 <= maxValue)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -287,9 +287,9 @@ uint64_t __28__VCTelephonyInterface_init__block_invoke(uint64_t a1, uint64_t a2,
         v23 = 1024;
         v24 = 167;
         v25 = 2112;
-        v26 = a4;
+        keyCopy2 = key;
         v27 = 1024;
-        v28 = v12;
+        v28 = valueCopy;
         _os_log_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Key=%@ present in carrier bundle, value=%d", &v19, 0x2Cu);
       }
     }
@@ -310,30 +310,30 @@ uint64_t __28__VCTelephonyInterface_init__block_invoke(uint64_t a1, uint64_t a2,
         v23 = 1024;
         v24 = 171;
         v25 = 2112;
-        v26 = a4;
+        keyCopy2 = key;
         v27 = 1024;
-        v28 = v12;
+        v28 = valueCopy;
         v29 = 1024;
-        v30 = a5;
+        valueCopy2 = value;
         _os_log_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Key=%@ either not present in carrier bundle or out of range, value=%d default value=%d", &v19, 0x32u);
       }
     }
 
-    return a5;
+    return value;
   }
 
-  return v12;
+  return valueCopy;
 }
 
-- (void)setupVCMediaStreamRateAdaptationConfig:(tagVCMediaStreamRateAdaptationConfig *)a3
+- (void)setupVCMediaStreamRateAdaptationConfig:(tagVCMediaStreamRateAdaptationConfig *)config
 {
   v27 = *MEMORY[0x1E69E9840];
   v14 = 0;
-  a3->var0 = 0;
+  config->var0 = 0;
   if ([(VCTelephonyInterface *)self getCarrierBundleValue:&v14 forKey:@"UplinkRateAdaptation"])
   {
     v5 = v14;
-    a3->var0 = 1;
+    config->var0 = 1;
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -394,7 +394,7 @@ uint64_t __28__VCTelephonyInterface_init__block_invoke(uint64_t a1, uint64_t a2,
       v21 = 2112;
       v22 = v6;
       v23 = 2048;
-      v24 = self;
+      selfCopy = self;
       v25 = 2112;
       v26 = v5;
       v9 = " [%s] %s:%d %@(%p) UplinkRateAdaptation config=%@";
@@ -404,10 +404,10 @@ uint64_t __28__VCTelephonyInterface_init__block_invoke(uint64_t a1, uint64_t a2,
 
     _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, v9, buf, v11);
 LABEL_13:
-    a3->var1.var0.var0 = [(VCTelephonyInterface *)self validateCarrierBundleConfigParameters:v5 forKey:@"RateIncreaseMonitorPeriod" defaultValue:10 minValue:1 maxValue:15];
-    a3->var1.var0.var2 = [(VCTelephonyInterface *)self validateCarrierBundleConfigParameters:v5 forKey:@"RateDecreaseMonitorPeriod" defaultValue:5 minValue:1 maxValue:15];
-    a3->var1.var0.var1 = [(VCTelephonyInterface *)self validateCarrierBundleConfigParameters:v5 forKey:@"RateIncreaseUplinkBLERThreshold" defaultValue:0 minValue:0 maxValue:100];
-    a3->var1.var0.var3 = [(VCTelephonyInterface *)self validateCarrierBundleConfigParameters:v5 forKey:@"RateDecreaseUplinkBLERThreshold" defaultValue:10 minValue:0 maxValue:100];
+    config->var1.var0.var0 = [(VCTelephonyInterface *)self validateCarrierBundleConfigParameters:v5 forKey:@"RateIncreaseMonitorPeriod" defaultValue:10 minValue:1 maxValue:15];
+    config->var1.var0.var2 = [(VCTelephonyInterface *)self validateCarrierBundleConfigParameters:v5 forKey:@"RateDecreaseMonitorPeriod" defaultValue:5 minValue:1 maxValue:15];
+    config->var1.var0.var1 = [(VCTelephonyInterface *)self validateCarrierBundleConfigParameters:v5 forKey:@"RateIncreaseUplinkBLERThreshold" defaultValue:0 minValue:0 maxValue:100];
+    config->var1.var0.var3 = [(VCTelephonyInterface *)self validateCarrierBundleConfigParameters:v5 forKey:@"RateDecreaseUplinkBLERThreshold" defaultValue:10 minValue:0 maxValue:100];
   }
 }
 
@@ -575,7 +575,7 @@ LABEL_29:
   return v8;
 }
 
-- (void)getAnbrActivationStateWithCompletionHandler:(id)a3
+- (void)getAnbrActivationStateWithCompletionHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -594,12 +594,12 @@ LABEL_29:
     }
   }
 
-  [(CoreTelephonyClient *)self->_coreTelephonyClient getAnbrActivationState:self->_ctSubscriptionContext completion:a3];
+  [(CoreTelephonyClient *)self->_coreTelephonyClient getAnbrActivationState:self->_ctSubscriptionContext completion:handler];
 }
 
-- (void)queryAnbrBitrateRecommendation:(unsigned int)a3 direction:(int64_t)a4 completionHandler:(id)a5
+- (void)queryAnbrBitrateRecommendation:(unsigned int)recommendation direction:(int64_t)direction completionHandler:(id)handler
 {
-  v7 = *&a3;
+  v7 = *&recommendation;
   v22 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -616,16 +616,16 @@ LABEL_29:
       v18 = 1024;
       v19 = v7;
       v20 = 2048;
-      v21 = a4;
+      directionCopy = direction;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Querying CoreTelephony for the access network bitrate=%d, for direction=%ld", &v12, 0x2Cu);
     }
   }
 
-  v11 = [VCTelephonyInterface ctDirectionForTelephonyLinkDirection:a4];
-  -[CoreTelephonyClient queryAnbrBitrate:bitrate:direction:completion:](self->_coreTelephonyClient, "queryAnbrBitrate:bitrate:direction:completion:", self->_ctSubscriptionContext, [MEMORY[0x1E696AD98] numberWithUnsignedInt:v7], v11, a5);
+  v11 = [VCTelephonyInterface ctDirectionForTelephonyLinkDirection:direction];
+  -[CoreTelephonyClient queryAnbrBitrate:bitrate:direction:completion:](self->_coreTelephonyClient, "queryAnbrBitrate:bitrate:direction:completion:", self->_ctSubscriptionContext, [MEMORY[0x1E696AD98] numberWithUnsignedInt:v7], v11, handler);
 }
 
-- (void)handleTelephonyNotification:(id)a3 withInfo:(id)a4
+- (void)handleTelephonyNotification:(id)notification withInfo:(id)info
 {
   v21 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -640,10 +640,10 @@ LABEL_29:
     goto LABEL_9;
   }
 
-  if (!a3)
+  if (!notification)
   {
     v9 = "<nil>";
-    if (a4)
+    if (info)
     {
       goto LABEL_5;
     }
@@ -653,14 +653,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = [objc_msgSend(a3 "description")];
-  if (!a4)
+  v9 = [objc_msgSend(notification "description")];
+  if (!info)
   {
     goto LABEL_7;
   }
 
 LABEL_5:
-  v10 = [objc_msgSend(a4 "description")];
+  v10 = [objc_msgSend(info "description")];
 LABEL_8:
   v11 = 136316162;
   v12 = v7;
@@ -674,13 +674,13 @@ LABEL_8:
   v20 = v10;
   _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCTelephonyInterface: received notification %s, info %s", &v11, 0x30u);
 LABEL_9:
-  if ([a3 isEqualToString:*MEMORY[0x1E69650B0]])
+  if ([notification isEqualToString:*MEMORY[0x1E69650B0]])
   {
-    [(VCTelephonyInterface *)self handleVocoderNotificationWithInfo:a4];
+    [(VCTelephonyInterface *)self handleVocoderNotificationWithInfo:info];
   }
 }
 
-- (void)handleVocoderNotificationWithInfo:(id)a3
+- (void)handleVocoderNotificationWithInfo:(id)info
 {
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -689,9 +689,9 @@ LABEL_9:
     v6 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (info)
       {
-        v7 = [objc_msgSend(a3 "description")];
+        v7 = [objc_msgSend(info "description")];
       }
 
       else
@@ -711,8 +711,8 @@ LABEL_9:
     }
   }
 
-  v8 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69650C0]];
-  v9 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69650B8]];
+  v8 = [info objectForKeyedSubscript:*MEMORY[0x1E69650C0]];
+  v9 = [info objectForKeyedSubscript:*MEMORY[0x1E69650B8]];
   v10 = [(VCTelephonyInterface *)self translateVocoderTypeToCoreAudioType:v8];
   if (v10)
   {
@@ -720,23 +720,23 @@ LABEL_9:
   }
 }
 
-- (id)translateVocoderTypeToCoreAudioType:(id)a3
+- (id)translateVocoderTypeToCoreAudioType:(id)type
 {
   v18 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:*MEMORY[0x1E6965120]])
+  if ([type isEqualToString:*MEMORY[0x1E6965120]])
   {
     v4 = 1902341232;
     goto LABEL_24;
   }
 
   v4 = 1702261346;
-  if ([a3 isEqualToString:*MEMORY[0x1E69650F8]])
+  if ([type isEqualToString:*MEMORY[0x1E69650F8]])
   {
     v4 = 1702261347;
     goto LABEL_24;
   }
 
-  if ([a3 isEqualToString:*MEMORY[0x1E6965100]] & 1) != 0 || (v4 = 880176738, (objc_msgSend(a3, "isEqualToString:", *MEMORY[0x1E69650C8])))
+  if ([type isEqualToString:*MEMORY[0x1E6965100]] & 1) != 0 || (v4 = 880176738, (objc_msgSend(type, "isEqualToString:", *MEMORY[0x1E69650C8])))
   {
 LABEL_24:
     v5 = MEMORY[0x1E696AEC0];
@@ -745,55 +745,55 @@ LABEL_24:
     return [v5 stringWithCString:v6 encoding:1];
   }
 
-  if ([a3 isEqualToString:*MEMORY[0x1E69650D8]])
+  if ([type isEqualToString:*MEMORY[0x1E69650D8]])
   {
     v4 = 880179042;
     goto LABEL_24;
   }
 
-  if ([a3 isEqualToString:*MEMORY[0x1E69650D0]])
+  if ([type isEqualToString:*MEMORY[0x1E69650D0]])
   {
     v4 = 880176759;
     goto LABEL_24;
   }
 
-  if ([a3 isEqualToString:*MEMORY[0x1E6965110]])
+  if ([type isEqualToString:*MEMORY[0x1E6965110]])
   {
     v4 = 1718755360;
     goto LABEL_24;
   }
 
-  if ([a3 isEqualToString:*MEMORY[0x1E6965118]])
+  if ([type isEqualToString:*MEMORY[0x1E6965118]])
   {
     v4 = 1752309792;
     goto LABEL_24;
   }
 
-  if ([a3 isEqualToString:*MEMORY[0x1E69650F0]])
+  if ([type isEqualToString:*MEMORY[0x1E69650F0]])
   {
     v4 = 1701212704;
     goto LABEL_24;
   }
 
   v4 = 1935764850;
-  if ([a3 isEqualToString:*MEMORY[0x1E69650E0]])
+  if ([type isEqualToString:*MEMORY[0x1E69650E0]])
   {
     goto LABEL_24;
   }
 
-  if ([a3 isEqualToString:*MEMORY[0x1E6965128]])
+  if ([type isEqualToString:*MEMORY[0x1E6965128]])
   {
     v4 = 1935767394;
     goto LABEL_24;
   }
 
-  if ([a3 isEqualToString:*MEMORY[0x1E69650E8]])
+  if ([type isEqualToString:*MEMORY[0x1E69650E8]])
   {
     v4 = 1700883826;
     goto LABEL_24;
   }
 
-  if ([a3 isEqualToString:*MEMORY[0x1E6965108]])
+  if ([type isEqualToString:*MEMORY[0x1E6965108]])
   {
     v4 = 1936029299;
     goto LABEL_24;
@@ -812,7 +812,7 @@ LABEL_24:
       v14 = 1024;
       v15 = 300;
       v16 = 2080;
-      v17 = [a3 UTF8String];
+      uTF8String = [type UTF8String];
       _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCTelephonyInterface: translateVocoderTypeToCoreAudioType - invalid vocoder type %s", &v10, 0x26u);
     }
   }
@@ -820,28 +820,28 @@ LABEL_24:
   return 0;
 }
 
-- (unsigned)getSampleRateFromAudioCodecInfo:(id)a3
+- (unsigned)getSampleRateFromAudioCodecInfo:(id)info
 {
-  if ([a3 codec])
+  if ([info codec])
   {
-    if ([a3 codec] == 1)
+    if ([info codec] == 1)
     {
       return 16000;
     }
 
-    if ([a3 codec] != 2)
+    if ([info codec] != 2)
     {
       return 32000;
     }
 
-    if ([a3 evsBandwidth])
+    if ([info evsBandwidth])
     {
-      if ([a3 evsBandwidth] == 1)
+      if ([info evsBandwidth] == 1)
       {
         return 16000;
       }
 
-      [a3 evsBandwidth];
+      [info evsBandwidth];
       return 32000;
     }
   }
@@ -849,10 +849,10 @@ LABEL_24:
   return 8000;
 }
 
-- (void)notifyCodecModeChangeEventToCT:(_VCAudioCodecModeChangeEvent *)a3
+- (void)notifyCodecModeChangeEventToCT:(_VCAudioCodecModeChangeEvent *)t
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [VCPayloadUtils codecTypeForPayload:a3->payload];
+  v5 = [VCPayloadUtils codecTypeForPayload:t->payload];
   v6 = objc_alloc_init(MEMORY[0x1E6964F60]);
   [v6 setCallId:111];
   [v6 setCodec:{+[VCPayloadUtils ctAudioCodecTypeForMediaStreamCodec:](VCPayloadUtils, "ctAudioCodecTypeForMediaStreamCodec:", v5)}];
@@ -860,14 +860,14 @@ LABEL_24:
   {
     if (v5 <= 0x11 && ((1 << v5) & 0x20018) != 0)
     {
-      [v6 setEvsBitrate:{+[VCPayloadUtils ctAudioCodecEVSBitrateForBitrate:](VCPayloadUtils, "ctAudioCodecEVSBitrateForBitrate:", a3->codecBitrate)}];
-      [v6 setEvsBandwidth:{+[VCPayloadUtils ctAudioCodecEVSBandwidthForAudioCodecBandwidth:](VCPayloadUtils, "ctAudioCodecEVSBandwidthForAudioCodecBandwidth:", a3->codecBandwidth)}];
+      [v6 setEvsBitrate:{+[VCPayloadUtils ctAudioCodecEVSBitrateForBitrate:](VCPayloadUtils, "ctAudioCodecEVSBitrateForBitrate:", t->codecBitrate)}];
+      [v6 setEvsBandwidth:{+[VCPayloadUtils ctAudioCodecEVSBandwidthForAudioCodecBandwidth:](VCPayloadUtils, "ctAudioCodecEVSBandwidthForAudioCodecBandwidth:", t->codecBandwidth)}];
     }
   }
 
   else
   {
-    [v6 setAmrMode:a3->codecRateMode];
+    [v6 setAmrMode:t->codecRateMode];
   }
 
   [v6 setSampleRate:{-[VCTelephonyInterface getSampleRateFromAudioCodecInfo:](self, "getSampleRateFromAudioCodecInfo:", v6)}];
@@ -914,17 +914,17 @@ void __55__VCTelephonyInterface_notifyCodecModeChangeEventToCT___block_invoke(ui
   }
 }
 
-+ (int64_t)ctSubscriptionSlotForSubscriptionSlot:(int64_t)a3
++ (int64_t)ctSubscriptionSlotForSubscriptionSlot:(int64_t)slot
 {
   v3 = 1;
-  if (a3 == 2)
+  if (slot == 2)
   {
     v3 = 2;
   }
 
-  if (a3)
+  if (slot)
   {
-    v4 = a3 <= 2;
+    v4 = slot <= 2;
   }
 
   else
@@ -943,29 +943,29 @@ void __55__VCTelephonyInterface_notifyCodecModeChangeEventToCT___block_invoke(ui
   }
 }
 
-+ (int)ctDirectionForTelephonyLinkDirection:(int64_t)a3
++ (int)ctDirectionForTelephonyLinkDirection:(int64_t)direction
 {
-  if (a3 == 1)
+  if (direction == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 2);
+    return 2 * (direction == 2);
   }
 }
 
-+ (int64_t)telephonyLinkDirectionForCtDirection:(int)a3
++ (int64_t)telephonyLinkDirectionForCtDirection:(int)direction
 {
-  if (a3 == 1)
+  if (direction == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 2);
+    return 2 * (direction == 2);
   }
 }
 
@@ -1119,11 +1119,11 @@ LABEL_11:
   return [objc_msgSend(*(a1 + 32) delegate];
 }
 
-- (void)anbrActivationState:(id)a3 enabled:(BOOL)a4
+- (void)anbrActivationState:(id)state enabled:(BOOL)enabled
 {
   v10 = *MEMORY[0x1E69E9840];
-  v6 = [a3 slotID];
-  if (v6 == [(CTXPCServiceSubscriptionContext *)self->_ctSubscriptionContext slotID])
+  slotID = [state slotID];
+  if (slotID == [(CTXPCServiceSubscriptionContext *)self->_ctSubscriptionContext slotID])
   {
     notificationQueue = self->_notificationQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1131,19 +1131,19 @@ LABEL_11:
     block[2] = __52__VCTelephonyInterface_anbrActivationState_enabled___block_invoke;
     block[3] = &unk_1E85F37A0;
     block[4] = self;
-    v9 = a4;
+    enabledCopy = enabled;
     dispatch_async(notificationQueue, block);
   }
 }
 
-- (void)anbrBitrateRecommendation:(id)a3 bitrate:(id)a4 direction:(int)a5
+- (void)anbrBitrateRecommendation:(id)recommendation bitrate:(id)bitrate direction:(int)direction
 {
-  v5 = *&a5;
+  v5 = *&direction;
   v20 = *MEMORY[0x1E69E9840];
-  v8 = [a3 slotID];
-  if (v8 == [(CTXPCServiceSubscriptionContext *)self->_ctSubscriptionContext slotID])
+  slotID = [recommendation slotID];
+  if (slotID == [(CTXPCServiceSubscriptionContext *)self->_ctSubscriptionContext slotID])
   {
-    if ([a4 unsignedIntValue])
+    if ([bitrate unsignedIntValue])
     {
       if (v5)
       {
@@ -1154,7 +1154,7 @@ LABEL_11:
         v15[2] = __68__VCTelephonyInterface_anbrBitrateRecommendation_bitrate_direction___block_invoke;
         v15[3] = &unk_1E85F7018;
         v15[4] = self;
-        v15[5] = a4;
+        v15[5] = bitrate;
         v16 = v5;
         v15[6] = v9;
         dispatch_async(notificationQueue, v15);

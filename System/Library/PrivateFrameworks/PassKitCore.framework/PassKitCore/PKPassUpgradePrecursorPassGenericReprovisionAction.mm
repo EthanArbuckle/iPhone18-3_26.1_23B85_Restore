@@ -1,49 +1,49 @@
 @interface PKPassUpgradePrecursorPassGenericReprovisionAction
-- (PKPassUpgradePrecursorPassGenericReprovisionAction)initWithCoder:(id)a3;
-- (PKPassUpgradePrecursorPassGenericReprovisionAction)initWithDictionary:(id)a3;
-- (PKPassUpgradePrecursorPassGenericReprovisionAction)initWithSubtype:(unint64_t)a3 deviceProvisioningDataExpected:(BOOL)a4;
-- (void)_dictionaryRepresentationInto:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKPassUpgradePrecursorPassGenericReprovisionAction)initWithCoder:(id)coder;
+- (PKPassUpgradePrecursorPassGenericReprovisionAction)initWithDictionary:(id)dictionary;
+- (PKPassUpgradePrecursorPassGenericReprovisionAction)initWithSubtype:(unint64_t)subtype deviceProvisioningDataExpected:(BOOL)expected;
+- (void)_dictionaryRepresentationInto:(id)into;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassUpgradePrecursorPassGenericReprovisionAction
 
-- (PKPassUpgradePrecursorPassGenericReprovisionAction)initWithDictionary:(id)a3
+- (PKPassUpgradePrecursorPassGenericReprovisionAction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = PKPassUpgradePrecursorPassGenericReprovisionAction;
-  v5 = [(PKPassUpgradePrecursorPassAction *)&v8 initWithDictionary:v4];
+  v5 = [(PKPassUpgradePrecursorPassAction *)&v8 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"subtype"];
+    v6 = [dictionaryCopy PKStringForKey:@"subtype"];
     v5->_subtype = PKPassUpgradePrecursorPassActionGenericReprovisionSubTypeFromString(v6);
-    v5->_deviceProvisioningDataExpected = [v4 PKBoolForKey:@"deviceProvisioningDataExpected"];
+    v5->_deviceProvisioningDataExpected = [dictionaryCopy PKBoolForKey:@"deviceProvisioningDataExpected"];
   }
 
   return v5;
 }
 
-- (PKPassUpgradePrecursorPassGenericReprovisionAction)initWithSubtype:(unint64_t)a3 deviceProvisioningDataExpected:(BOOL)a4
+- (PKPassUpgradePrecursorPassGenericReprovisionAction)initWithSubtype:(unint64_t)subtype deviceProvisioningDataExpected:(BOOL)expected
 {
   v7.receiver = self;
   v7.super_class = PKPassUpgradePrecursorPassGenericReprovisionAction;
   result = [(PKPassUpgradePrecursorPassAction *)&v7 _initWithType:3];
   if (result)
   {
-    result->_subtype = a3;
-    result->_deviceProvisioningDataExpected = a4;
+    result->_subtype = subtype;
+    result->_deviceProvisioningDataExpected = expected;
   }
 
   return result;
 }
 
-- (void)_dictionaryRepresentationInto:(id)a3
+- (void)_dictionaryRepresentationInto:(id)into
 {
   v8.receiver = self;
   v8.super_class = PKPassUpgradePrecursorPassGenericReprovisionAction;
-  v4 = a3;
-  [(PKPassUpgradePrecursorPassAction *)&v8 _dictionaryRepresentationInto:v4];
+  intoCopy = into;
+  [(PKPassUpgradePrecursorPassAction *)&v8 _dictionaryRepresentationInto:intoCopy];
   v5 = self->_subtype - 1;
   if (v5 > 4)
   {
@@ -55,17 +55,17 @@
     v6 = off_1E79D9DD8[v5];
   }
 
-  [v4 setObject:v6 forKeyedSubscript:{@"subtype", v8.receiver, v8.super_class}];
+  [intoCopy setObject:v6 forKeyedSubscript:{@"subtype", v8.receiver, v8.super_class}];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_deviceProvisioningDataExpected];
-  [v4 setObject:v7 forKeyedSubscript:@"deviceProvisioningDataExpected"];
+  [intoCopy setObject:v7 forKeyedSubscript:@"deviceProvisioningDataExpected"];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = PKPassUpgradePrecursorPassGenericReprovisionAction;
-  v4 = a3;
-  [(PKPassUpgradePrecursorPassAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(PKPassUpgradePrecursorPassAction *)&v7 encodeWithCoder:coderCopy];
   v5 = self->_subtype - 1;
   if (v5 > 4)
   {
@@ -77,21 +77,21 @@
     v6 = off_1E79D9DD8[v5];
   }
 
-  [v4 encodeObject:v6 forKey:{@"subtype", v7.receiver, v7.super_class}];
-  [v4 encodeBool:self->_deviceProvisioningDataExpected forKey:@"deviceProvisioningDataExpected"];
+  [coderCopy encodeObject:v6 forKey:{@"subtype", v7.receiver, v7.super_class}];
+  [coderCopy encodeBool:self->_deviceProvisioningDataExpected forKey:@"deviceProvisioningDataExpected"];
 }
 
-- (PKPassUpgradePrecursorPassGenericReprovisionAction)initWithCoder:(id)a3
+- (PKPassUpgradePrecursorPassGenericReprovisionAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = PKPassUpgradePrecursorPassGenericReprovisionAction;
-  v5 = [(PKPassUpgradePrecursorPassAction *)&v8 initWithCoder:v4];
+  v5 = [(PKPassUpgradePrecursorPassAction *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtype"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtype"];
     v5->_subtype = PKPassUpgradePrecursorPassActionGenericReprovisionSubTypeFromString(v6);
-    v5->_deviceProvisioningDataExpected = [v4 decodeBoolForKey:@"deviceProvisioningDataExpected"];
+    v5->_deviceProvisioningDataExpected = [coderCopy decodeBoolForKey:@"deviceProvisioningDataExpected"];
   }
 
   return v5;

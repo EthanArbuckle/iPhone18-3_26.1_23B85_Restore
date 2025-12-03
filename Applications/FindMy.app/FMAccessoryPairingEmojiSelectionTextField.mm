@@ -1,10 +1,10 @@
 @interface FMAccessoryPairingEmojiSelectionTextField
 - (BOOL)isSelected;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (_TtC6FindMy41FMAccessoryPairingEmojiSelectionTextField)init;
-- (_TtC6FindMy41FMAccessoryPairingEmojiSelectionTextField)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy41FMAccessoryPairingEmojiSelectionTextField)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation FMAccessoryPairingEmojiSelectionTextField
@@ -16,13 +16,13 @@
   return [(FMAccessoryPairingEmojiSelectionTextField *)&v3 isSelected];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5.receiver = self;
   v5.super_class = type metadata accessor for FMAccessoryPairingEmojiSelectionTextField();
   v4 = v5.receiver;
-  [(FMAccessoryPairingEmojiSelectionTextField *)&v5 setSelected:v3];
+  [(FMAccessoryPairingEmojiSelectionTextField *)&v5 setSelected:selectedCopy];
   sub_10033EAF0();
 }
 
@@ -47,16 +47,16 @@
   v4.super_class = type metadata accessor for FMAccessoryPairingEmojiSelectionTextField();
   v2 = v4.receiver;
   [(FMAccessoryPairingEmojiSelectionTextField *)&v4 layoutSubviews];
-  v3 = [v2 layer];
+  layer = [v2 layer];
   [v2 bounds];
-  [v3 setCornerRadius:CGRectGetWidth(v5) * 0.5];
+  [layer setCornerRadius:CGRectGetWidth(v5) * 0.5];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   if (CEMStringIsSingleEmoji())
   {
     v10 = sub_1000F06AC(v6, v8);
@@ -78,7 +78,7 @@
   return 0;
 }
 
-- (_TtC6FindMy41FMAccessoryPairingEmojiSelectionTextField)initWithFrame:(CGRect)a3
+- (_TtC6FindMy41FMAccessoryPairingEmojiSelectionTextField)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

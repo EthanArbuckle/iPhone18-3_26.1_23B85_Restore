@@ -1,5 +1,5 @@
 @interface CLEmergencyLocationSelectorConfig
-- (id)initForFeature:(int64_t)a3 withUpdatesEnabled:(BOOL)a4;
+- (id)initForFeature:(int64_t)feature withUpdatesEnabled:(BOOL)enabled;
 - (void)dealloc;
 - (void)printConfiguration;
 - (void)setDefaultsForSIP;
@@ -7,7 +7,7 @@
 
 @implementation CLEmergencyLocationSelectorConfig
 
-- (id)initForFeature:(int64_t)a3 withUpdatesEnabled:(BOOL)a4
+- (id)initForFeature:(int64_t)feature withUpdatesEnabled:(BOOL)enabled
 {
   v20 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
@@ -17,9 +17,9 @@
   if (v6)
   {
     v6->_firstUpdateEnabled = 0;
-    v6->_feature = a3;
+    v6->_feature = feature;
     v6->_firstUpdateTimeout = 25.0;
-    v6->_periodicUpdatesEnabled = a4;
+    v6->_periodicUpdatesEnabled = enabled;
     v6->_firstLocationUsabilityCriteria = objc_alloc_init(CLEmergencyLocationUsabilityCriteria);
     v7->_locationUpdateUsabilityCriteria = objc_alloc_init(CLEmergencyLocationUsabilityCriteria);
     v7->_firstLocationEarlyReturnEnabled = 1;
@@ -81,7 +81,7 @@
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v3, OS_LOG_TYPE_DEFAULT, "#CLELS,CLEmergencyLocationSelectorConfig,self:%{private}@,dealloc,initiated", buf, 0xCu);
   }
 
@@ -95,7 +95,7 @@
     }
 
     v8 = 138477827;
-    v9 = self;
+    selfCopy2 = self;
     v5 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEmergencyLocationSelectorConfig dealloc]", "CoreLocation: %s\n", v5);
     if (v5 != buf)
@@ -143,8 +143,8 @@
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
     v5 = [CLEmergencyLocationSelectorConfig featureString:[(CLEmergencyLocationSelectorConfig *)self feature]];
-    v6 = [(CLEmergencyLocationSelectorConfig *)self firstUpdateEnabled];
-    v7 = [(CLEmergencyLocationSelectorConfig *)self periodicUpdatesEnabled];
+    firstUpdateEnabled = [(CLEmergencyLocationSelectorConfig *)self firstUpdateEnabled];
+    periodicUpdatesEnabled = [(CLEmergencyLocationSelectorConfig *)self periodicUpdatesEnabled];
     [(CLEmergencyLocationSelectorConfig *)self firstLocationMaxEarlyReturnHunc];
     v9 = v8;
     [(CLEmergencyLocationSelectorConfig *)self firstLocationMaxEarlyReturnVunc];
@@ -159,7 +159,7 @@
     v14 = v13;
     [(CLEmergencyLocationSelectorConfig *)self locationUpdateDistanceMovedToSendEarly];
     v16 = v15;
-    v17 = [(CLEmergencyLocationSelectorConfig *)self firstLocationEarlyReturnEnabled];
+    firstLocationEarlyReturnEnabled = [(CLEmergencyLocationSelectorConfig *)self firstLocationEarlyReturnEnabled];
     [(CLEmergencyLocationSelectorConfig *)self firstLocationTimeout];
     v19 = v18;
     [(CLEmergencyLocationSelectorConfig *)self locationUpdateTimeout];
@@ -168,9 +168,9 @@
     *buf = 138545922;
     v31 = v5;
     v32 = 1026;
-    v33 = v6;
+    v33 = firstUpdateEnabled;
     v34 = 1026;
-    v35 = v7;
+    v35 = periodicUpdatesEnabled;
     v36 = 2050;
     v37 = v9;
     v38 = 2050;
@@ -180,7 +180,7 @@
     v42 = 2050;
     v43 = v16;
     v44 = 1026;
-    v45 = v17;
+    v45 = firstLocationEarlyReturnEnabled;
     v46 = 2050;
     v47 = v19;
     v48 = 2050;
@@ -225,10 +225,10 @@
     }
   }
 
-  v26 = [(CLEmergencyLocationSelectorConfig *)self firstLocationUsabilityCriteria];
-  -[CLEmergencyLocationUsabilityCriteria printUsabilityCriteria:](v26, "printUsabilityCriteria:", [MEMORY[0x1E696AEC0] stringWithFormat:@"#CLELS, %@, first location usability criteria", +[CLEmergencyLocationSelectorConfig featureString:](CLEmergencyLocationSelectorConfig, "featureString:", -[CLEmergencyLocationSelectorConfig feature](self, "feature"))]);
-  v27 = [(CLEmergencyLocationSelectorConfig *)self locationUpdateUsabilityCriteria];
-  -[CLEmergencyLocationUsabilityCriteria printUsabilityCriteria:](v27, "printUsabilityCriteria:", [MEMORY[0x1E696AEC0] stringWithFormat:@"#CLELS, %@, location update usability criteria", +[CLEmergencyLocationSelectorConfig featureString:](CLEmergencyLocationSelectorConfig, "featureString:", -[CLEmergencyLocationSelectorConfig feature](self, "feature"))]);
+  firstLocationUsabilityCriteria = [(CLEmergencyLocationSelectorConfig *)self firstLocationUsabilityCriteria];
+  -[CLEmergencyLocationUsabilityCriteria printUsabilityCriteria:](firstLocationUsabilityCriteria, "printUsabilityCriteria:", [MEMORY[0x1E696AEC0] stringWithFormat:@"#CLELS, %@, first location usability criteria", +[CLEmergencyLocationSelectorConfig featureString:](CLEmergencyLocationSelectorConfig, "featureString:", -[CLEmergencyLocationSelectorConfig feature](self, "feature"))]);
+  locationUpdateUsabilityCriteria = [(CLEmergencyLocationSelectorConfig *)self locationUpdateUsabilityCriteria];
+  -[CLEmergencyLocationUsabilityCriteria printUsabilityCriteria:](locationUpdateUsabilityCriteria, "printUsabilityCriteria:", [MEMORY[0x1E696AEC0] stringWithFormat:@"#CLELS, %@, location update usability criteria", +[CLEmergencyLocationSelectorConfig featureString:](CLEmergencyLocationSelectorConfig, "featureString:", -[CLEmergencyLocationSelectorConfig feature](self, "feature"))]);
   v28 = *MEMORY[0x1E69E9840];
 }
 

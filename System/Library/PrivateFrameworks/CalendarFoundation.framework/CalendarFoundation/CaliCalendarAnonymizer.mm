@@ -1,7 +1,7 @@
 @interface CaliCalendarAnonymizer
-+ (id)anonymizedAddressURL:(id)a3;
-+ (id)anonymizedString:(id)a3 withAnonymizer:(id)a4;
-+ (id)anonymizedWebURL:(id)a3;
++ (id)anonymizedAddressURL:(id)l;
++ (id)anonymizedString:(id)string withAnonymizer:(id)anonymizer;
++ (id)anonymizedWebURL:(id)l;
 + (id)sharedAnonymizedDomainName;
 + (id)sharedAnonymizedStrings;
 + (id)sharedAnonymizedStringsCount;
@@ -75,15 +75,15 @@ void __52__CaliCalendarAnonymizer_sharedAnonymizedDomainName__block_invoke()
   }
 }
 
-+ (id)anonymizedString:(id)a3 withAnonymizer:(id)a4
++ (id)anonymizedString:(id)string withAnonymizer:(id)anonymizer
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = _Block_copy(v6);
+  stringCopy = string;
+  anonymizerCopy = anonymizer;
+  v7 = _Block_copy(anonymizerCopy);
   v8 = v7;
-  if (v6)
+  if (anonymizerCopy)
   {
-    if (v5)
+    if (stringCopy)
     {
       goto LABEL_3;
     }
@@ -94,7 +94,7 @@ LABEL_8:
   }
 
   v8 = &__block_literal_global_14;
-  if (!v5)
+  if (!stringCopy)
   {
     goto LABEL_8;
   }
@@ -104,16 +104,16 @@ LABEL_3:
   v10 = +[CaliCalendarAnonymizer sharedAnonymizedStringsCount];
   v11 = v9;
   objc_sync_enter(v11);
-  v12 = [v11 objectForKeyedSubscript:v5];
+  v12 = [v11 objectForKeyedSubscript:stringCopy];
 
   if (!v12 && v8)
   {
-    v13 = v8[2](v8, v5);
-    [v11 setObject:v13 forKeyedSubscript:v5];
+    v13 = v8[2](v8, stringCopy);
+    [v11 setObject:v13 forKeyedSubscript:stringCopy];
   }
 
-  v14 = [v11 objectForKeyedSubscript:v5];
-  [v10 addObject:v5];
+  v14 = [v11 objectForKeyedSubscript:stringCopy];
+  [v10 addObject:stringCopy];
   objc_sync_exit(v11);
 
 LABEL_9:
@@ -121,18 +121,18 @@ LABEL_9:
   return v14;
 }
 
-+ (id)anonymizedWebURL:(id)a3
++ (id)anonymizedWebURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v3 = a3;
-    v4 = [v3 scheme];
-    v5 = [v3 resourceSpecifier];
+    lCopy = l;
+    scheme = [lCopy scheme];
+    resourceSpecifier = [lCopy resourceSpecifier];
 
-    v6 = [CaliCalendarAnonymizer anonymizedString:v5 withAnonymizer:&__block_literal_global_62];
+    v6 = [CaliCalendarAnonymizer anonymizedString:resourceSpecifier withAnonymizer:&__block_literal_global_62];
 
     v7 = MEMORY[0x1E695DFF8];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", v4, v6];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", scheme, v6];
     v9 = [v7 URLWithString:v8];
   }
 
@@ -144,12 +144,12 @@ LABEL_9:
   return v9;
 }
 
-+ (id)anonymizedAddressURL:(id)a3
++ (id)anonymizedAddressURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v3 = a3;
-    if ([v3 cal_hasSchemeTel])
+    lCopy = l;
+    if ([lCopy cal_hasSchemeTel])
     {
       v4 = &__block_literal_global_56;
     }
@@ -159,13 +159,13 @@ LABEL_9:
       v4 = &__block_literal_global_35;
     }
 
-    v5 = [v3 scheme];
-    v6 = [v3 resourceSpecifier];
+    scheme = [lCopy scheme];
+    resourceSpecifier = [lCopy resourceSpecifier];
 
-    v7 = [CaliCalendarAnonymizer anonymizedString:v6 withAnonymizer:v4];
+    v7 = [CaliCalendarAnonymizer anonymizedString:resourceSpecifier withAnonymizer:v4];
 
     v8 = MEMORY[0x1E695DFF8];
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", v5, v7];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", scheme, v7];
     v10 = [v8 URLWithString:v9];
   }
 

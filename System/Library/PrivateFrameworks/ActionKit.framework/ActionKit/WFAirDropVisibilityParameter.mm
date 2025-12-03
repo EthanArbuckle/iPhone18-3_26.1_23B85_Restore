@@ -7,7 +7,7 @@
 
 - (NSArray)possibleStates
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_23DE9B0C8();
 
   if (v3)
@@ -26,7 +26,7 @@
 
 - (WFPropertyListObject)defaultSerializedRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_23DE9B4CC();
 
   return v3;

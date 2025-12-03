@@ -46,11 +46,11 @@
     while (v5);
   }
 
-  v10 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return allObjects;
 }
 
 @end

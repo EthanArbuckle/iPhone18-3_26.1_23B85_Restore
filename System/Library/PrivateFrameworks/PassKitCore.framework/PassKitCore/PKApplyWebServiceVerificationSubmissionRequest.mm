@@ -1,63 +1,63 @@
 @interface PKApplyWebServiceVerificationSubmissionRequest
-- (PKApplyWebServiceVerificationSubmissionRequest)initWithCoder:(id)a3;
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKApplyWebServiceVerificationSubmissionRequest)initWithCoder:(id)coder;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplyWebServiceVerificationSubmissionRequest
 
-- (PKApplyWebServiceVerificationSubmissionRequest)initWithCoder:(id)a3
+- (PKApplyWebServiceVerificationSubmissionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKApplyWebServiceVerificationSubmissionRequest;
-  v5 = [(PKApplyWebServiceRequest *)&v15 initWithCoder:v4];
+  v5 = [(PKApplyWebServiceRequest *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
     applicationIdentifier = v5->_applicationIdentifier;
     v5->_applicationIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
     baseURL = v5->_baseURL;
     v5->_baseURL = v8;
 
-    v5->_featureIdentifier = [v4 decodeIntegerForKey:@"featureIdentifier"];
-    v5->_verificationType = [v4 decodeIntegerForKey:@"verificationType"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"verificationInfo"];
+    v5->_featureIdentifier = [coderCopy decodeIntegerForKey:@"featureIdentifier"];
+    v5->_verificationType = [coderCopy decodeIntegerForKey:@"verificationType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"verificationInfo"];
     verificationInfo = v5->_verificationInfo;
     v5->_verificationInfo = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"odiAssessment"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"odiAssessment"];
     odiAssessment = v5->_odiAssessment;
     v5->_odiAssessment = v12;
 
-    v5->_channel = [v4 decodeIntegerForKey:@"channel"];
+    v5->_channel = [coderCopy decodeIntegerForKey:@"channel"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKApplyWebServiceVerificationSubmissionRequest;
-  v4 = a3;
-  [(PKApplyWebServiceRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_applicationIdentifier forKey:{@"applicationIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_baseURL forKey:@"baseURL"];
-  [v4 encodeInteger:self->_featureIdentifier forKey:@"featureIdentifier"];
-  [v4 encodeInteger:self->_verificationType forKey:@"verificationType"];
-  [v4 encodeObject:self->_verificationInfo forKey:@"verificationInfo"];
-  [v4 encodeObject:self->_odiAssessment forKey:@"odiAssessment"];
-  [v4 encodeInteger:self->_channel forKey:@"channel"];
+  coderCopy = coder;
+  [(PKApplyWebServiceRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_applicationIdentifier forKey:{@"applicationIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_baseURL forKey:@"baseURL"];
+  [coderCopy encodeInteger:self->_featureIdentifier forKey:@"featureIdentifier"];
+  [coderCopy encodeInteger:self->_verificationType forKey:@"verificationType"];
+  [coderCopy encodeObject:self->_verificationInfo forKey:@"verificationInfo"];
+  [coderCopy encodeObject:self->_odiAssessment forKey:@"odiAssessment"];
+  [coderCopy encodeInteger:self->_channel forKey:@"channel"];
 }
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  informationCopy = information;
+  if (!informationCopy)
   {
     v8 = PKLogFacilityTypeGetObject(0xEuLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -118,9 +118,9 @@ LABEL_16:
     {
       if (verificationType == 2)
       {
-        v15 = [(PKApplyVerificationInformation *)self->_verificationInfo trialDeposits];
+        trialDeposits = [(PKApplyVerificationInformation *)self->_verificationInfo trialDeposits];
 
-        if (!v15)
+        if (!trialDeposits)
         {
           v8 = PKLogFacilityTypeGetObject(0xEuLL);
           if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -141,9 +141,9 @@ LABEL_16:
 
     else
     {
-      v7 = [(PKApplyVerificationInformation *)self->_verificationInfo data];
+      data = [(PKApplyVerificationInformation *)self->_verificationInfo data];
 
-      if (!v7)
+      if (!data)
       {
         v8 = PKLogFacilityTypeGetObject(0xEuLL);
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -172,37 +172,37 @@ LABEL_15:
   v30[2] = @"verification";
   v30[3] = @"submit";
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:4];
-  v8 = [(PKApplyWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:v18 queryParameters:0 appleAccountInformation:v4];
+  v8 = [(PKApplyWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:v18 queryParameters:0 appleAccountInformation:informationCopy];
 
   [v8 setHTTPMethod:@"POST"];
   [v8 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v19 = [(PKApplyWebServiceRequest *)self _createMutableBody];
+  _createMutableBody = [(PKApplyWebServiceRequest *)self _createMutableBody];
   v20 = PKApplyVerificationTypeToString(self->_verificationType);
-  [v19 setObject:v20 forKey:@"verificationType"];
+  [_createMutableBody setObject:v20 forKey:@"verificationType"];
 
   v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[PKApplyVerificationInformation skippedVerification](self->_verificationInfo, "skippedVerification")}];
-  [v19 setObject:v21 forKey:@"skippedVerification"];
+  [_createMutableBody setObject:v21 forKey:@"skippedVerification"];
 
-  v22 = [(PKApplyVerificationInformation *)self->_verificationInfo data];
-  [v19 safelySetObject:v22 forKey:@"verificationData"];
+  data2 = [(PKApplyVerificationInformation *)self->_verificationInfo data];
+  [_createMutableBody safelySetObject:data2 forKey:@"verificationData"];
 
-  v23 = [(PKApplyVerificationInformation *)self->_verificationInfo trialDeposits];
-  [v19 safelySetObject:v23 forKey:@"trialDeposits"];
+  trialDeposits2 = [(PKApplyVerificationInformation *)self->_verificationInfo trialDeposits];
+  [_createMutableBody safelySetObject:trialDeposits2 forKey:@"trialDeposits"];
 
   odiAssessment = self->_odiAssessment;
   if (odiAssessment)
   {
-    [v19 setObject:odiAssessment forKey:@"odiAssessment"];
+    [_createMutableBody setObject:odiAssessment forKey:@"odiAssessment"];
   }
 
   channel = self->_channel;
   if (channel)
   {
     v26 = PKFeatureApplicationChannelToString(channel);
-    [v19 setObject:v26 forKeyedSubscript:@"channel"];
+    [_createMutableBody setObject:v26 forKeyedSubscript:@"channel"];
   }
 
-  v27 = [objc_opt_class() _HTTPBodyWithDictionary:v19];
+  v27 = [objc_opt_class() _HTTPBodyWithDictionary:_createMutableBody];
   [v8 setHTTPBody:v27];
 
   v14 = [v8 copy];

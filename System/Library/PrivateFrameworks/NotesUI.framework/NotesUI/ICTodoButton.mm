@@ -2,28 +2,28 @@
 + (CGSize)defaultImageSize;
 + (CGSize)defaultSize;
 - (CGRect)imageFrame;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
 - (CGSize)defaultImageSize;
 - (ICNote)note;
 - (ICTodoButton)init;
-- (ICTodoButton)initWithDragDelegate:(id)a3;
-- (ICTodoButton)initWithFrame:(CGRect)a3;
+- (ICTodoButton)initWithDragDelegate:(id)delegate;
+- (ICTodoButton)initWithFrame:(CGRect)frame;
 - (ICTrackedParagraph)trackedParagraph;
 - (id)_icaxParentUITextView;
 - (id)debugDescription;
 - (id)icaxCorrespondingParagraphText;
-- (id)imageForChecked:(BOOL)a3 withHighlight:(BOOL)a4;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)imageForChecked:(BOOL)checked withHighlight:(BOOL)highlight;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)didMoveToWindow;
-- (void)setDone:(BOOL)a3 animated:(BOOL)a4;
-- (void)setFrame:(CGRect)a3 leftToRight:(BOOL)a4;
-- (void)setHighlightColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setTrackedParagraph:(id)a3;
-- (void)setTrackedParagraphIsRTL:(BOOL)a3;
+- (void)setDone:(BOOL)done animated:(BOOL)animated;
+- (void)setFrame:(CGRect)frame leftToRight:(BOOL)right;
+- (void)setHighlightColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setTrackedParagraph:(id)paragraph;
+- (void)setTrackedParagraphIsRTL:(BOOL)l;
 - (void)trackedParagraphDidChange;
-- (void)updateImagesAnimated:(BOOL)a3;
+- (void)updateImagesAnimated:(BOOL)animated;
 - (void)wasPressed;
 @end
 
@@ -84,42 +84,42 @@
   return [(ICTodoButton *)self initWithFrame:0.0, 0.0, v4, v5];
 }
 
-- (void)setDone:(BOOL)a3 animated:(BOOL)a4
+- (void)setDone:(BOOL)done animated:(BOOL)animated
 {
-  if (self->_done != a3)
+  if (self->_done != done)
   {
-    self->_done = a3;
-    [(ICTodoButton *)self updateImagesAnimated:a4];
+    self->_done = done;
+    [(ICTodoButton *)self updateImagesAnimated:animated];
   }
 }
 
-- (void)setTrackedParagraph:(id)a3
+- (void)setTrackedParagraph:(id)paragraph
 {
-  obj = a3;
+  obj = paragraph;
   WeakRetained = objc_loadWeakRetained(&self->_trackedParagraph);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_trackedParagraph, obj);
-    v5 = [obj paragraph];
-    self->_trackedParagraphIsRTL = [v5 isRTL];
+    paragraph = [obj paragraph];
+    self->_trackedParagraphIsRTL = [paragraph isRTL];
 
     [(ICTodoButton *)self trackedParagraphDidChange];
   }
 }
 
-- (void)setTrackedParagraphIsRTL:(BOOL)a3
+- (void)setTrackedParagraphIsRTL:(BOOL)l
 {
-  if (self->_trackedParagraphIsRTL != a3)
+  if (self->_trackedParagraphIsRTL != l)
   {
-    self->_trackedParagraphIsRTL = a3;
+    self->_trackedParagraphIsRTL = l;
     [(ICTodoButton *)self trackedParagraphDidChange];
   }
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
-  objc_storeStrong(&self->_highlightColor, a3);
+  objc_storeStrong(&self->_highlightColor, color);
 
   [(ICTodoButton *)self updateTintColor];
 }
@@ -130,41 +130,41 @@
   v8.receiver = self;
   v8.super_class = ICTodoButton;
   v4 = [(ICTodoButton *)&v8 description];
-  v5 = [(ICTodoButton *)self accessibilityLabel];
-  v6 = [v3 stringWithFormat:@"%@ - %@", v4, v5];
+  accessibilityLabel = [(ICTodoButton *)self accessibilityLabel];
+  v6 = [v3 stringWithFormat:@"%@ - %@", v4, accessibilityLabel];
 
   return v6;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
   v6 = MEMORY[0x1E69DCDC0];
-  v7 = a5;
-  v8 = [(ICTodoButton *)self imageView];
-  [v8 frame];
+  regionCopy = region;
+  imageView = [(ICTodoButton *)self imageView];
+  [imageView frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [v7 identifier];
+  identifier = [regionCopy identifier];
 
-  v18 = [v6 regionWithRect:v17 identifier:{v10, v12, v14, v16}];
+  v18 = [v6 regionWithRect:identifier identifier:{v10, v12, v14, v16}];
 
   return v18;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = objc_alloc(MEMORY[0x1E69DD070]);
-  v6 = [(ICTodoButton *)self imageView];
-  v7 = [v5 initWithView:v6];
+  imageView = [(ICTodoButton *)self imageView];
+  v7 = [v5 initWithView:imageView];
 
-  v8 = [(ICTodoButton *)self imageView];
-  [v8 frame];
+  imageView2 = [(ICTodoButton *)self imageView];
+  [imageView2 frame];
   v10 = v9;
 
-  v11 = [(ICTodoButton *)self imageView];
-  [v11 frame];
+  imageView3 = [(ICTodoButton *)self imageView];
+  [imageView3 frame];
   v13 = v12;
 
   if (v10 < v13)
@@ -172,17 +172,17 @@
     v10 = v13;
   }
 
-  v14 = [(ICTodoButton *)self imageView];
-  [v14 frame];
+  imageView4 = [(ICTodoButton *)self imageView];
+  [imageView4 frame];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(ICTodoButton *)self imageView];
-  [v23 frame];
+  imageView5 = [(ICTodoButton *)self imageView];
+  [imageView5 frame];
   v25 = v24 - v10;
-  v26 = [(ICTodoButton *)self imageView];
-  [v26 frame];
+  imageView6 = [(ICTodoButton *)self imageView];
+  [imageView6 frame];
   v28 = v27 - v10;
   v40.origin.x = v16;
   v40.origin.y = v18;
@@ -195,9 +195,9 @@
   height = v41.size.height;
 
   v33 = [MEMORY[0x1E69DCDC8] shapeWithRoundedRect:x cornerRadius:{y, width, height, v10}];
-  v34 = [(ICTodoButton *)self isDone];
+  isDone = [(ICTodoButton *)self isDone];
   v35 = 0x1E69DCDB8;
-  if (!v34)
+  if (!isDone)
   {
     v35 = 0x1E69DCD98;
   }
@@ -231,26 +231,26 @@
   return result;
 }
 
-- (ICTodoButton)initWithFrame:(CGRect)a3
+- (ICTodoButton)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = ICTodoButton;
-  v3 = [(ICTodoButton *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICTodoButton *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(ICTodoButton *)v3 setContentMode:1];
     if (ICInternalSettingsIsTextKit2Enabled())
     {
-      v5 = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
-      v6 = [MEMORY[0x1E69DC6E8] clearConfiguration];
-      v7 = [MEMORY[0x1E69DC888] clearColor];
-      [v6 setBackgroundColor:v7];
+      borderlessButtonConfiguration = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
+      clearConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [clearConfiguration setBackgroundColor:clearColor];
 
-      [v5 setBackground:v6];
-      [v5 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
-      [v5 setImagePlacement:8];
-      [(ICTodoButton *)v4 setConfiguration:v5];
+      [borderlessButtonConfiguration setBackground:clearConfiguration];
+      [borderlessButtonConfiguration setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+      [borderlessButtonConfiguration setImagePlacement:8];
+      [(ICTodoButton *)v4 setConfiguration:borderlessButtonConfiguration];
     }
 
     else
@@ -269,13 +269,13 @@
   return v4;
 }
 
-- (ICTodoButton)initWithDragDelegate:(id)a3
+- (ICTodoButton)initWithDragDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(ICTodoButton *)self init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69DC988]) initWithDelegate:v4];
+    v6 = [objc_alloc(MEMORY[0x1E69DC988]) initWithDelegate:delegateCopy];
     [(ICTodoButton *)v5 addInteraction:v6];
   }
 
@@ -292,24 +292,24 @@
 
 - (void)trackedParagraphDidChange
 {
-  v3 = [(UIView *)self ic_isRTL];
+  ic_isRTL = [(UIView *)self ic_isRTL];
   IsTextKit2Enabled = ICInternalSettingsIsTextKit2Enabled();
-  if (!v3)
+  if (!ic_isRTL)
   {
     if (IsTextKit2Enabled)
     {
-      v5 = [(ICTodoButton *)self configuration];
-      v6 = [(ICTodoButton *)self trackedParagraph];
-      v7 = [v6 paragraph];
-      v8 = [v7 isRTL] == 0;
+      configuration = [(ICTodoButton *)self configuration];
+      trackedParagraph = [(ICTodoButton *)self trackedParagraph];
+      paragraph = [trackedParagraph paragraph];
+      v8 = [paragraph isRTL] == 0;
       v9 = 8;
       v10 = 2;
       goto LABEL_6;
     }
 
-    v5 = [(ICTodoButton *)self trackedParagraph];
-    v12 = [v5 paragraph];
-    if ([v12 isRTL])
+    configuration = [(ICTodoButton *)self trackedParagraph];
+    paragraph2 = [configuration paragraph];
+    if ([paragraph2 isRTL])
     {
       v13 = 4;
     }
@@ -327,9 +327,9 @@ LABEL_16:
 
   if (!IsTextKit2Enabled)
   {
-    v5 = [(ICTodoButton *)self trackedParagraph];
-    v12 = [v5 paragraph];
-    if ([v12 isRTL])
+    configuration = [(ICTodoButton *)self trackedParagraph];
+    paragraph2 = [configuration paragraph];
+    if ([paragraph2 isRTL])
     {
       v13 = 5;
     }
@@ -342,10 +342,10 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v5 = [(ICTodoButton *)self configuration];
-  v6 = [(ICTodoButton *)self trackedParagraph];
-  v7 = [v6 paragraph];
-  v8 = [v7 isRTL] == 0;
+  configuration = [(ICTodoButton *)self configuration];
+  trackedParagraph = [(ICTodoButton *)self trackedParagraph];
+  paragraph = [trackedParagraph paragraph];
+  v8 = [paragraph isRTL] == 0;
   v9 = 2;
   v10 = 8;
 LABEL_6:
@@ -359,9 +359,9 @@ LABEL_6:
     v11 = v10;
   }
 
-  [v5 setImagePlacement:v11];
+  [configuration setImagePlacement:v11];
 
-  [(ICTodoButton *)self setConfiguration:v5];
+  [(ICTodoButton *)self setConfiguration:configuration];
 LABEL_17:
 
   [(ICTodoButton *)self setNeedsLayout];
@@ -373,12 +373,12 @@ LABEL_17:
   }
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (!ICInternalSettingsIsTextKit2Enabled())
   {
     v26.receiver = self;
@@ -407,11 +407,11 @@ LABEL_17:
       width = width - (width - height);
     }
 
-    v18 = [(ICTodoButton *)self trackedParagraph];
-    v19 = [v18 paragraph];
-    v20 = [v19 isRTL];
+    trackedParagraph = [(ICTodoButton *)self trackedParagraph];
+    paragraph = [trackedParagraph paragraph];
+    isRTL = [paragraph isRTL];
 
-    if (v20)
+    if (isRTL)
     {
       [(ICTodoButton *)self imageEdgeInsets];
       x = v21;
@@ -434,11 +434,11 @@ LABEL_17:
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v9.receiver = self;
   v9.super_class = ICTodoButton;
-  [(ICTodoButton *)&v9 setHighlighted:a3];
+  [(ICTodoButton *)&v9 setHighlighted:highlighted];
   if ([(ICTodoButton *)self isDone])
   {
     v4 = @"completed: %@";
@@ -451,8 +451,8 @@ LABEL_17:
 
   v5 = __ICLocalizedFrameworkString_impl(v4, v4, 0, 1);
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(ICTodoButton *)self icaxCorrespondingParagraphText];
-  v8 = [v6 localizedStringWithFormat:v5, v7];
+  icaxCorrespondingParagraphText = [(ICTodoButton *)self icaxCorrespondingParagraphText];
+  v8 = [v6 localizedStringWithFormat:v5, icaxCorrespondingParagraphText];
 
   ICAccessibilityPostHighPriorityAnnouncementNotification(0, v8);
 }
@@ -464,9 +464,9 @@ LABEL_17:
   [v2 impactOccurred];
 }
 
-- (id)imageForChecked:(BOOL)a3 withHighlight:(BOOL)a4
+- (id)imageForChecked:(BOOL)checked withHighlight:(BOOL)highlight
 {
-  v4 = a3;
+  checkedCopy = checked;
   v5 = sICTodoCheckedImage;
   if (!sICTodoCheckedImage)
   {
@@ -485,7 +485,7 @@ LABEL_17:
     v5 = sICTodoCheckedImage;
   }
 
-  if (v4)
+  if (checkedCopy)
   {
     v14 = v5;
   }
@@ -498,26 +498,26 @@ LABEL_17:
   return v14;
 }
 
-- (void)updateImagesAnimated:(BOOL)a3
+- (void)updateImagesAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(ICTodoButton *)self window];
-  if (v5)
+  animatedCopy = animated;
+  window = [(ICTodoButton *)self window];
+  if (window)
   {
   }
 
   else
   {
-    v6 = [(ICTodoButton *)self overrideTintColor];
+    overrideTintColor = [(ICTodoButton *)self overrideTintColor];
 
-    if (!v6)
+    if (!overrideTintColor)
     {
       return;
     }
   }
 
-  v7 = [(ICTodoButton *)self isDone];
-  v8 = [(ICTodoButton *)self imageForChecked:v7 withHighlight:[(ICTodoButton *)self isHighlighted]];
+  isDone = [(ICTodoButton *)self isDone];
+  v8 = [(ICTodoButton *)self imageForChecked:isDone withHighlight:[(ICTodoButton *)self isHighlighted]];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __69__ICTodoButton_PlatformSpecificResponsibility__updateImagesAnimated___block_invoke;
@@ -525,11 +525,11 @@ LABEL_17:
   aBlock[4] = self;
   v9 = v8;
   v12 = v9;
-  v13 = v7;
+  v13 = isDone;
   v10 = _Block_copy(aBlock);
-  if (v3)
+  if (animatedCopy)
   {
-    if (_UISolariumEnabled() & v7)
+    if (_UISolariumEnabled() & isDone)
     {
       v10[2](v10);
     }
@@ -626,16 +626,16 @@ void __69__ICTodoButton_PlatformSpecificResponsibility__updateImagesAnimated___b
 - (CGRect)imageFrame
 {
   IsTextKit2Enabled = ICInternalSettingsIsTextKit2Enabled();
-  v4 = [(ICTodoButton *)self imageView];
-  [v4 frame];
+  imageView = [(ICTodoButton *)self imageView];
+  [imageView frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
   if ((IsTextKit2Enabled & 1) == 0)
   {
-    v13 = [(ICTodoButton *)self superview];
-    [(ICTodoButton *)self convertRect:v13 toView:v6, v8, v10, v12];
+    superview = [(ICTodoButton *)self superview];
+    [(ICTodoButton *)self convertRect:superview toView:v6, v8, v10, v12];
     v6 = v14;
     v8 = v15;
     v10 = v16;
@@ -653,45 +653,45 @@ void __69__ICTodoButton_PlatformSpecificResponsibility__updateImagesAnimated___b
   return result;
 }
 
-- (void)setFrame:(CGRect)a3 leftToRight:(BOOL)a4
+- (void)setFrame:(CGRect)frame leftToRight:(BOOL)right
 {
-  [(ICTodoButton *)self setFrame:a4, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v6 = [(ICTodoButton *)self trackedParagraph];
-  v5 = [v6 paragraph];
-  -[ICTodoButton setTrackedParagraphIsRTL:](self, "setTrackedParagraphIsRTL:", [v5 isRTL]);
+  [(ICTodoButton *)self setFrame:right, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  trackedParagraph = [(ICTodoButton *)self trackedParagraph];
+  paragraph = [trackedParagraph paragraph];
+  -[ICTodoButton setTrackedParagraphIsRTL:](self, "setTrackedParagraphIsRTL:", [paragraph isRTL]);
 }
 
 - (id)icaxCorrespondingParagraphText
 {
-  v3 = [(ICTodoButton *)self _icaxParentUITextView];
-  v4 = [v3 textStorage];
-  v5 = [v4 string];
-  v6 = [(ICTodoButton *)self trackedParagraph];
-  [v6 characterRange];
-  v7 = [v3 textStorage];
-  [v7 ic_range];
+  _icaxParentUITextView = [(ICTodoButton *)self _icaxParentUITextView];
+  textStorage = [_icaxParentUITextView textStorage];
+  string = [textStorage string];
+  trackedParagraph = [(ICTodoButton *)self trackedParagraph];
+  [trackedParagraph characterRange];
+  textStorage2 = [_icaxParentUITextView textStorage];
+  [textStorage2 ic_range];
   v8 = TSUClampRange();
-  v10 = [v5 ic_substringWithRange:{v8, v9}];
+  v10 = [string ic_substringWithRange:{v8, v9}];
 
-  v11 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v12 = [v10 stringByTrimmingCharactersInSet:v11];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v12 = [v10 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v12;
 }
 
 - (id)_icaxParentUITextView
 {
-  v2 = [(ICTodoButton *)self superview];
+  superview = [(ICTodoButton *)self superview];
   objc_opt_class();
-  while ((objc_opt_isKindOfClass() & 1) == 0 && v2)
+  while ((objc_opt_isKindOfClass() & 1) == 0 && superview)
   {
-    v3 = v2;
-    v2 = [v2 superview];
+    v3 = superview;
+    superview = [superview superview];
 
     objc_opt_class();
   }
 
-  return v2;
+  return superview;
 }
 
 @end

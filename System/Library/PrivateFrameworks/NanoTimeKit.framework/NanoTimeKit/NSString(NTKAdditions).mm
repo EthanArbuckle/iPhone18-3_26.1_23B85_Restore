@@ -6,10 +6,10 @@
 
 - (id)ntk_extractFileName
 {
-  v1 = [a1 pathComponents];
-  v2 = [v1 lastObject];
+  pathComponents = [self pathComponents];
+  lastObject = [pathComponents lastObject];
 
-  return v2;
+  return lastObject;
 }
 
 @end

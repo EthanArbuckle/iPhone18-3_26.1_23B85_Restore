@@ -1,13 +1,13 @@
 @interface FMDEraseProxy
-- (void)eraseDeviceWithOptions:(id)a3 completion:(id)a4;
+- (void)eraseDeviceWithOptions:(id)options completion:(id)completion;
 @end
 
 @implementation FMDEraseProxy
 
-- (void)eraseDeviceWithOptions:(id)a3 completion:(id)a4
+- (void)eraseDeviceWithOptions:(id)options completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  optionsCopy = options;
   v7 = +[FMNSXPCConnectionCache sharedCache];
   v8 = +[FMNSXPCConnectionConfiguration eraseDeviceServiceConfiguration];
   v9 = [v7 resumeConnectionWithConfiguration:v8];
@@ -16,10 +16,10 @@
   v17[1] = 3221225472;
   v17[2] = __51__FMDEraseProxy_eraseDeviceWithOptions_completion___block_invoke;
   v17[3] = &unk_1E86BD0E0;
-  v10 = v5;
+  v10 = completionCopy;
   v18 = v10;
   [v9 addFailureBlock:v17];
-  v11 = [v9 remoteObjectProxy];
+  remoteObjectProxy = [v9 remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __51__FMDEraseProxy_eraseDeviceWithOptions_completion___block_invoke_3;
@@ -28,7 +28,7 @@
   v16 = v10;
   v12 = v9;
   v13 = v10;
-  [v11 eraseDeviceWithOptions:v6 completion:v14];
+  [remoteObjectProxy eraseDeviceWithOptions:optionsCopy completion:v14];
 }
 
 void __51__FMDEraseProxy_eraseDeviceWithOptions_completion___block_invoke(uint64_t a1, uint64_t a2)

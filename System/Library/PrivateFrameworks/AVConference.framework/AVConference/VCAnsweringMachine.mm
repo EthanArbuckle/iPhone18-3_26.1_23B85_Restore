@@ -1,27 +1,27 @@
 @interface VCAnsweringMachine
 - (AudioStreamBasicDescription)defaultAudioFormat;
 - (BOOL)configureAudioIO;
-- (BOOL)enqueueInjectorAsset:(id)a3 blocksToDelay:(unsigned int)a4;
-- (BOOL)setUpAnnouncementAsset:(id)a3 isInitialAsset:(BOOL)a4;
+- (BOOL)enqueueInjectorAsset:(id)asset blocksToDelay:(unsigned int)delay;
+- (BOOL)setUpAnnouncementAsset:(id)asset isInitialAsset:(BOOL)initialAsset;
 - (BOOL)setUpConfigurationIndependentInternalState;
 - (BOOL)setUpEventQueue;
-- (BOOL)setUpInternalStateWithConfiguration:(id)a3;
-- (BOOL)setUpRealtimeContextWithToken:(int64_t)a3;
+- (BOOL)setUpInternalStateWithConfiguration:(id)configuration;
+- (BOOL)setUpRealtimeContextWithToken:(int64_t)token;
 - (BOOL)setupAudioMachineLearningCoordinator;
 - (BOOL)setupMediaRecorder;
-- (BOOL)setupReportingAgentWithCallID:(unsigned int)a3;
-- (VCAnsweringMachine)initWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5;
+- (BOOL)setupReportingAgentWithCallID:(unsigned int)d;
+- (VCAnsweringMachine)initWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue;
 - (__CFDictionary)clientSpecificUserInfo;
 - (__CFDictionary)reportingInitialConfiguration;
 - (id)logPrefix;
-- (id)newInjectorConfigurationForAnnouncementAsset:(id)a3;
+- (id)newInjectorConfigurationForAnnouncementAsset:(id)asset;
 - (id)onStart;
 - (id)onStop;
 - (id)start;
 - (id)stop;
-- (int)deviceRoleForCallSource:(unsigned __int8)a3;
+- (int)deviceRoleForCallSource:(unsigned __int8)source;
 - (tagVCAudioIOConfiguration)defaultAudioIOConfiguration;
-- (void)addAnnouncementAsset:(id)a3;
+- (void)addAnnouncementAsset:(id)asset;
 - (void)cleanupAnnouncementAssetInjection;
 - (void)cleanupAudioMachineLearningCoordinator;
 - (void)cleanupMediaRecorder;
@@ -30,7 +30,7 @@
 - (void)configureAudioIO;
 - (void)dealloc;
 - (void)destroyEventQueue;
-- (void)didChangeThermalLevel:(int)a3;
+- (void)didChangeThermalLevel:(int)level;
 - (void)flushEventQueue;
 - (void)invalidate;
 - (void)onStart;
@@ -43,7 +43,7 @@
 - (void)setupMediaRecorder;
 - (void)setupPeriodicReporting;
 - (void)stopMediaRecording;
-- (void)streamToken:(int64_t)a3 didEndProcessingRequest:(id)a4 urlContext:(const tagVCMediaRecorderDelegateURLContext *)a5 error:(id)a6;
+- (void)streamToken:(int64_t)token didEndProcessingRequest:(id)request urlContext:(const tagVCMediaRecorderDelegateURLContext *)context error:(id)error;
 @end
 
 @implementation VCAnsweringMachine
@@ -62,7 +62,7 @@
   return v4 != 0;
 }
 
-- (VCAnsweringMachine)initWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5
+- (VCAnsweringMachine)initWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue
 {
   v28 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ VCAnsweringMachine-init");
@@ -79,7 +79,7 @@
       v22 = 1024;
       v23 = 257;
       v24 = 2048;
-      v25 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAnsweringMachine-init (%p)", buf, 0x26u);
     }
   }
@@ -92,23 +92,23 @@
   {
     [VCAnsweringMachine initWithConfiguration:delegate:delegateQueue:];
 LABEL_20:
-    [VCAnsweringMachine initWithConfiguration:v12 delegate:a3 delegateQueue:?];
+    [VCAnsweringMachine initWithConfiguration:v12 delegate:configuration delegateQueue:?];
     return 0;
   }
 
-  if (!a3)
+  if (!configuration)
   {
     [VCAnsweringMachine initWithConfiguration:v11 delegate:? delegateQueue:?];
     goto LABEL_20;
   }
 
-  if (!a4)
+  if (!delegate)
   {
     [VCAnsweringMachine initWithConfiguration:v11 delegate:? delegateQueue:?];
     goto LABEL_20;
   }
 
-  if (!a5)
+  if (!queue)
   {
     [VCAnsweringMachine initWithConfiguration:v11 delegate:? delegateQueue:?];
     goto LABEL_20;
@@ -120,14 +120,14 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (![(VCAnsweringMachine *)v12 setUpConfigurationIndependentInternalState]|| ![(VCAnsweringMachine *)v12 setUpInternalStateWithConfiguration:a3])
+  if (![(VCAnsweringMachine *)v12 setUpConfigurationIndependentInternalState]|| ![(VCAnsweringMachine *)v12 setUpInternalStateWithConfiguration:configuration])
   {
     goto LABEL_20;
   }
 
-  dispatch_retain(a5);
-  v12->_delegateQueue = a5;
-  v12->_delegate = a4;
+  dispatch_retain(queue);
+  v12->_delegateQueue = queue;
+  v12->_delegate = delegate;
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ VCAnsweringMachine-init");
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -135,7 +135,7 @@ LABEL_20:
     v14 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [objc_msgSend(a3 "description")];
+      v15 = [objc_msgSend(configuration "description")];
       *buf = 136316162;
       v19 = v13;
       v20 = 2080;
@@ -143,7 +143,7 @@ LABEL_20:
       v22 = 1024;
       v23 = 276;
       v24 = 2048;
-      v25 = v12;
+      selfCopy = v12;
       v26 = 2080;
       v27 = v15;
       _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAnsweringMachine-init (%p) Succeeded with configuration=%s", buf, 0x30u);
@@ -170,7 +170,7 @@ LABEL_20:
       v13 = 1024;
       v14 = 287;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAnsweringMachine-dealloc (%p)", buf, 0x26u);
     }
   }
@@ -220,7 +220,7 @@ LABEL_20:
       v11 = 1024;
       v12 = 301;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAnsweringMachine-invalidate (%p)", buf, 0x26u);
     }
   }
@@ -490,7 +490,7 @@ void __26__VCAnsweringMachine_stop__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)enqueueInjectorAsset:(id)a3 blocksToDelay:(unsigned int)a4
+- (BOOL)enqueueInjectorAsset:(id)asset blocksToDelay:(unsigned int)delay
 {
   v34 = *MEMORY[0x1E69E9840];
   v7 = malloc_type_malloc(0x10uLL, 0x10800409227ACB4uLL);
@@ -501,8 +501,8 @@ void __26__VCAnsweringMachine_stop__block_invoke(uint64_t a1)
   }
 
   v8 = v7;
-  *v7 = a3;
-  *(v8 + 2) = a4;
+  *v7 = asset;
+  *(v8 + 2) = delay;
   v9 = CMSimpleQueueEnqueue(self->_realtimeContext.eventQueue, v8);
   if (v9)
   {
@@ -528,9 +528,9 @@ void __26__VCAnsweringMachine_stop__block_invoke(uint64_t a1)
       v24 = 1024;
       v25 = 396;
       v26 = 2048;
-      v27 = a3;
+      assetCopy = asset;
       v28 = 1024;
-      LODWORD(v29) = v11;
+      LODWORD(selfCopy) = v11;
       v15 = " [%s] %s:%d Failed to enqueue injector asset=%p. error=%0x";
       v16 = v14;
       v17 = 44;
@@ -567,11 +567,11 @@ void __26__VCAnsweringMachine_stop__block_invoke(uint64_t a1)
       v24 = 1024;
       v25 = 396;
       v26 = 2112;
-      v27 = v12;
+      assetCopy = v12;
       v28 = 2048;
-      v29 = self;
+      selfCopy = self;
       v30 = 2048;
-      v31 = a3;
+      assetCopy2 = asset;
       v32 = 1024;
       v33 = v11;
       v15 = " [%s] %s:%d %@(%p) Failed to enqueue injector asset=%p. error=%0x";
@@ -650,8 +650,8 @@ LABEL_15:
   VCAudioMachineLearningCoordinator_SetReadyForCaptioning(self->_realtimeContext.audioMachineLearningCoordinator, v4);
   [(VCAnsweringMachine *)self setupPeriodicReporting];
   [VCPowerManager_DefaultManager() registerForThermalEvents:self];
-  v5 = [(VCAudioIO *)self->_audioIO start];
-  if (v5)
+  start = [(VCAudioIO *)self->_audioIO start];
+  if (start)
   {
     if (objc_opt_class() == self)
     {
@@ -692,9 +692,9 @@ LABEL_15:
           v16 = 2112;
           v17 = v6;
           v18 = 2048;
-          v19 = self;
+          selfCopy = self;
           v20 = 2112;
-          v21 = v5;
+          v21 = start;
           _os_log_error_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) AudioIO start failed. error=%@", &v10, 0x3Au);
         }
       }
@@ -704,14 +704,14 @@ LABEL_15:
     [VCPowerManager_DefaultManager() unregisterForThermalEvents:self];
   }
 
-  return v5;
+  return start;
 }
 
 - (id)onStop
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v3 = [(VCAudioIO *)self->_audioIO stop];
-  if (v3)
+  stop = [(VCAudioIO *)self->_audioIO stop];
+  if (stop)
   {
     [VCAnsweringMachine onStop];
   }
@@ -728,10 +728,10 @@ LABEL_15:
     [VCPowerManager_DefaultManager() unregisterForThermalEvents:self];
   }
 
-  return v3;
+  return stop;
 }
 
-- (void)addAnnouncementAsset:(id)a3
+- (void)addAnnouncementAsset:(id)asset
 {
   block[6] = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
@@ -740,7 +740,7 @@ LABEL_15:
   block[2] = __43__VCAnsweringMachine_addAnnouncementAsset___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = asset;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -881,7 +881,7 @@ double __44__VCAnsweringMachine_setupPeriodicReporting__block_invoke(uint64_t a1
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:v4 count:7];
 }
 
-- (BOOL)setupReportingAgentWithCallID:(unsigned int)a3
+- (BOOL)setupReportingAgentWithCallID:(unsigned int)d
 {
   v21 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -945,10 +945,10 @@ LABEL_11:
   }
 
 LABEL_12:
-  v13 = [(NSUUID *)[(AVCAnsweringMachineConfiguration *)self->_configuration reportingSamplingUUID] UUIDString];
-  *buf = a3;
+  uUIDString = [(NSUUID *)[(AVCAnsweringMachineConfiguration *)self->_configuration reportingSamplingUUID] UUIDString];
+  *buf = d;
   *v17 = 0;
-  *&v17[4] = v13;
+  *&v17[4] = uUIDString;
   v18 = 12;
   memset(v19, 0, sizeof(v19));
   v20 = 0;
@@ -1062,11 +1062,11 @@ void __52__VCAnsweringMachine_setupReportingAgentWithCallID___block_invoke(uint6
   self->_internalFormat.samplesPerFrame = 480;
 }
 
-- (BOOL)setUpRealtimeContextWithToken:(int64_t)a3
+- (BOOL)setUpRealtimeContextWithToken:(int64_t)token
 {
   if ([(AVCAnsweringMachineConfiguration *)self->_configuration isMessageCaptioningEnabled]|| [(AVCAnsweringMachineConfiguration *)self->_configuration isMessageRecordingEnabled])
   {
-    self->_realtimeContext.audioToken = a3;
+    self->_realtimeContext.audioToken = token;
   }
 
   if ([(AVCAnsweringMachineConfiguration *)self->_configuration isMessageCaptioningEnabled]&& ![(VCAnsweringMachine *)self setupAudioMachineLearningCoordinator])
@@ -1102,16 +1102,16 @@ void __52__VCAnsweringMachine_setupReportingAgentWithCallID___block_invoke(uint6
   [(VCAnsweringMachine *)self cleanupAnnouncementAssetInjection];
 }
 
-- (int)deviceRoleForCallSource:(unsigned __int8)a3
+- (int)deviceRoleForCallSource:(unsigned __int8)source
 {
-  if (a3 > 6u)
+  if (source > 6u)
   {
     return 4;
   }
 
   else
   {
-    return dword_1DBD47FE0[a3];
+    return dword_1DBD47FE0[source];
   }
 }
 
@@ -1132,9 +1132,9 @@ void __52__VCAnsweringMachine_setupReportingAgentWithCallID___block_invoke(uint6
   retstr->var4 = 0;
   *&retstr->var5 = 3;
   retstr->var7 = self;
-  v5 = [(AVCAnsweringMachineConfiguration *)self->_configuration clientPid];
+  clientPid = [(AVCAnsweringMachineConfiguration *)self->_configuration clientPid];
   mSampleRate = self->_internalFormat.format.mSampleRate;
-  retstr->var8 = v5;
+  retstr->var8 = clientPid;
   retstr->var9 = mSampleRate;
   retstr->var10 = self->_internalFormat.samplesPerFrame;
   retstr->var11 = 0;
@@ -1227,13 +1227,13 @@ void __52__VCAnsweringMachine_setupReportingAgentWithCallID___block_invoke(uint6
   return v4 != 0;
 }
 
-- (id)newInjectorConfigurationForAnnouncementAsset:(id)a3
+- (id)newInjectorConfigurationForAnnouncementAsset:(id)asset
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(VCAudioInjectorConfig);
   if (v5)
   {
-    -[VCAudioInjectorConfig setPath:](v5, "setPath:", [a3 absoluteString]);
+    -[VCAudioInjectorConfig setPath:](v5, "setPath:", [asset absoluteString]);
     [(VCAudioInjectorConfig *)v5 setFromBeginning:1];
     if (self)
     {
@@ -1335,7 +1335,7 @@ void __52__VCAnsweringMachine_setupReportingAgentWithCallID___block_invoke(uint6
       v21 = 2112;
       v22 = v6;
       v23 = 2048;
-      v24 = self;
+      selfCopy = self;
       v9 = " [%s] %s:%d %@(%p) Captions disabled";
       v10 = v13;
       v11 = 48;
@@ -1434,7 +1434,7 @@ void __52__VCAnsweringMachine_setupReportingAgentWithCallID___block_invoke(uint6
       v29 = 2112;
       v30 = v8;
       v31 = 2048;
-      v32 = self;
+      selfCopy2 = self;
       v11 = " [%s] %s:%d %@(%p) Message recording disabled";
       v12 = v15;
       v13 = 48;
@@ -1533,7 +1533,7 @@ void __52__VCAnsweringMachine_setupReportingAgentWithCallID___block_invoke(uint6
     v29 = 2112;
     v30 = v7;
     v31 = 2048;
-    v32 = self;
+    selfCopy2 = self;
     v33 = 2112;
     v34 = v21;
     v11 = " [%s] %s:%d %@(%p) Successfully created mediaRecorder=%@";
@@ -1571,17 +1571,17 @@ LABEL_26:
   p_realtimeContext->sinkCommonContext.flags &= ~0x20u;
 }
 
-- (void)streamToken:(int64_t)a3 didEndProcessingRequest:(id)a4 urlContext:(const tagVCMediaRecorderDelegateURLContext *)a5 error:(id)a6
+- (void)streamToken:(int64_t)token didEndProcessingRequest:(id)request urlContext:(const tagVCMediaRecorderDelegateURLContext *)context error:(id)error
 {
   v8[7] = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
-  var1 = a5->var1;
+  var1 = context->var1;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __75__VCAnsweringMachine_streamToken_didEndProcessingRequest_urlContext_error___block_invoke;
   v8[3] = &unk_1E85F3E30;
   v8[4] = self;
-  v8[5] = a6;
+  v8[5] = error;
   v8[6] = var1;
   dispatch_async(dispatchQueue, v8);
 }
@@ -1604,11 +1604,11 @@ void __75__VCAnsweringMachine_streamToken_didEndProcessingRequest_urlContext_err
   }
 }
 
-- (void)didChangeThermalLevel:(int)a3
+- (void)didChangeThermalLevel:(int)level
 {
   v4[1] = *MEMORY[0x1E69E9840];
   v3 = @"Thermal";
-  v4[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v4[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&level];
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v4 forKeys:&v3 count:1];
   reportingGenericEvent();
 }
@@ -1785,9 +1785,9 @@ uint64_t ___VCAnsweringMachine_StartMediaRecording_block_invoke(uint64_t result)
   return result;
 }
 
-- (BOOL)setUpInternalStateWithConfiguration:(id)a3
+- (BOOL)setUpInternalStateWithConfiguration:(id)configuration
 {
-  self->_configuration = a3;
+  self->_configuration = configuration;
   ID = VCUniqueIDGenerator_GenerateID();
   v5 = [(VCAnsweringMachine *)self setupReportingAgentWithCallID:ID];
   if (v5)
@@ -1891,7 +1891,7 @@ LABEL_25:
   return v5;
 }
 
-- (BOOL)setUpAnnouncementAsset:(id)a3 isInitialAsset:(BOOL)a4
+- (BOOL)setUpAnnouncementAsset:(id)asset isInitialAsset:(BOOL)initialAsset
 {
   OUTLINED_FUNCTION_40_0();
   if (!v5)
@@ -2024,7 +2024,7 @@ LABEL_8:
 
 - (void)setUpConfigurationIndependentInternalState
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -2682,7 +2682,7 @@ LABEL_9:
 
 - (void)configureAudioIO
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -2826,7 +2826,7 @@ LABEL_9:
     }
   }
 
-  *a1 = 0;
+  *self = 0;
 }
 
 void ___VCAnsweringMachine_DispatchFinishAnnouncementNotice_block_invoke_cold_1()

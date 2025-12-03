@@ -1,6 +1,6 @@
 @interface PDFileSyncManager
 + (id)agentCache;
-+ (id)agentForAsset:(id)a3 database:(id)a4 forUpload:(BOOL)a5;
++ (id)agentForAsset:(id)asset database:(id)database forUpload:(BOOL)upload;
 + (id)countedDownloadAgentByAssetID;
 + (id)countedUploadAgentByAssetID;
 @end
@@ -43,49 +43,49 @@
   return v3;
 }
 
-+ (id)agentForAsset:(id)a3 database:(id)a4 forUpload:(BOOL)a5
++ (id)agentForAsset:(id)asset database:(id)database forUpload:(BOOL)upload
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = a1;
-  objc_sync_enter(v10);
-  if (v5)
+  uploadCopy = upload;
+  assetCopy = asset;
+  databaseCopy = database;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (uploadCopy)
   {
-    [v10 countedUploadAgentByAssetID];
+    [selfCopy countedUploadAgentByAssetID];
   }
 
   else
   {
-    [v10 countedDownloadAgentByAssetID];
+    [selfCopy countedDownloadAgentByAssetID];
   }
   v11 = ;
-  v12 = [v8 objectID];
-  v13 = [v11 objectForKey:v12];
+  objectID = [assetCopy objectID];
+  v13 = [v11 objectForKey:objectID];
 
   if (v13)
   {
     [v13 incrementCounter];
-    v14 = [v13 counter];
-    v15 = [v13 agent];
+    counter = [v13 counter];
+    agent = [v13 agent];
     CLSInitLog();
     v16 = CLSLogAsset;
     if (os_log_type_enabled(&v16->super, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [v8 objectID];
-      v18 = v17;
+      objectID2 = [assetCopy objectID];
+      v18 = objectID2;
       v19 = "DN";
       v27 = 134218754;
       v29 = 2048;
-      v28 = v15;
-      if (v5)
+      v28 = agent;
+      if (uploadCopy)
       {
         v19 = "UP";
       }
 
-      v30 = v14;
+      v30 = counter;
       v31 = 2112;
-      v32 = v17;
+      v32 = objectID2;
       v33 = 2080;
       v34 = v19;
       _os_log_debug_impl(&_mh_execute_header, &v16->super, OS_LOG_TYPE_DEBUG, "^^^^ PDFileSyncAgent: %p [%ld] :: %@ :: %s", &v27, 0x2Au);
@@ -94,39 +94,39 @@
 
   else
   {
-    v15 = [[PDFileSyncAgent alloc] initWithAsset:v8 database:v9];
-    v16 = [[PDCountedFileSyncAgent alloc] initWithAgent:v15];
-    v20 = [(PDCountedFileSyncAgent *)v16 counter];
-    v21 = [v8 objectID];
-    [v11 setObject:v16 forKey:v21];
+    agent = [[PDFileSyncAgent alloc] initWithAsset:assetCopy database:databaseCopy];
+    v16 = [[PDCountedFileSyncAgent alloc] initWithAgent:agent];
+    counter2 = [(PDCountedFileSyncAgent *)v16 counter];
+    objectID3 = [assetCopy objectID];
+    [v11 setObject:v16 forKey:objectID3];
 
     CLSInitLog();
     v22 = CLSLogAsset;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
-      v24 = [v8 objectID];
+      objectID4 = [assetCopy objectID];
       v25 = "DN";
       v27 = 134218754;
       v29 = 2048;
-      v28 = v15;
-      if (v5)
+      v28 = agent;
+      if (uploadCopy)
       {
         v25 = "UP";
       }
 
-      v30 = v20;
+      v30 = counter2;
       v31 = 2112;
-      v32 = v24;
+      v32 = objectID4;
       v33 = 2080;
       v34 = v25;
-      v26 = v24;
+      v26 = objectID4;
       _os_log_debug_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "++++ PDFileSyncAgent: %p [%ld] :: %@ :: %s", &v27, 0x2Au);
     }
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 
-  return v15;
+  return agent;
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface HDDaemonSyncEngine
-- (BOOL)applySyncChange:(id)a3 forStore:(id)a4 error:(id *)a5;
-- (BOOL)getReceivedAnchorMap:(id)a3 forStore:(id)a4 error:(id *)a5;
-- (BOOL)performSyncSession:(id)a3 accessibilityAssertion:(id)a4 error:(id *)a5;
-- (BOOL)updateLocalVersionsForStore:(id)a3 profile:(id)a4 error:(id *)a5;
+- (BOOL)applySyncChange:(id)change forStore:(id)store error:(id *)error;
+- (BOOL)getReceivedAnchorMap:(id)map forStore:(id)store error:(id *)error;
+- (BOOL)performSyncSession:(id)session accessibilityAssertion:(id)assertion error:(id *)error;
+- (BOOL)updateLocalVersionsForStore:(id)store profile:(id)profile error:(id *)error;
 - (HDCodableSyncEntityVersionMap)allSyncEntityVersionsByIdentifier;
-- (HDDaemonSyncEngine)initWithProfile:(id)a3;
-- (HDSyncAnchorRangeMap)_syncAnchorRangeMapForSession:(uint64_t)a1 store:(void *)a2 syncEntities:(void *)a3 startingAnchors:(void *)a4 error:(uint64_t)a5;
-- (id)syncAnchorRangesIfRequiredForSession:(id)a3 startingAnchors:(id)a4 error:(id *)a5;
-- (uint64_t)_applySyncChange:(objc_class *)a3 entity:(void *)a4 store:(void *)a5 error:;
-- (uint64_t)_nextSyncAnchorForEntity:(void *)a3 session:(uint64_t)a4 startSyncAnchor:(uint64_t)a5 error:;
-- (uint64_t)_singleTransactionApplySyncChange:(uint64_t)a3 entity:(void *)a4 store:(void *)a5 error:;
-- (uint64_t)_validateAnchorsForSyncChange:(void *)a3 store:(void *)a4 error:;
-- (void)resetAnchorsWithFailedChanges:(id)a3 store:(id)a4;
-- (void)resetStore:(id)a3;
+- (HDDaemonSyncEngine)initWithProfile:(id)profile;
+- (HDSyncAnchorRangeMap)_syncAnchorRangeMapForSession:(uint64_t)session store:(void *)store syncEntities:(void *)entities startingAnchors:(void *)anchors error:(uint64_t)error;
+- (id)syncAnchorRangesIfRequiredForSession:(id)session startingAnchors:(id)anchors error:(id *)error;
+- (uint64_t)_applySyncChange:(objc_class *)change entity:(void *)entity store:(void *)store error:;
+- (uint64_t)_nextSyncAnchorForEntity:(void *)entity session:(uint64_t)session startSyncAnchor:(uint64_t)anchor error:;
+- (uint64_t)_singleTransactionApplySyncChange:(uint64_t)change entity:(void *)entity store:(void *)store error:;
+- (uint64_t)_validateAnchorsForSyncChange:(void *)change store:(void *)store error:;
+- (void)resetAnchorsWithFailedChanges:(id)changes store:(id)store;
+- (void)resetStore:(id)store;
 @end
 
 @implementation HDDaemonSyncEngine
 
-- (HDDaemonSyncEngine)initWithProfile:(id)a3
+- (HDDaemonSyncEngine)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v12.receiver = self;
   v12.super_class = HDDaemonSyncEngine;
   v5 = [(HDDaemonSyncEngine *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = [HDDaemonSyncEntityManager alloc];
-    v8 = [v4 daemon];
-    v9 = [(HDDaemonSyncEntityManager *)v7 initWithDaemon:v8];
+    daemon = [profileCopy daemon];
+    v9 = [(HDDaemonSyncEntityManager *)v7 initWithDaemon:daemon];
     entityManager = v6->_entityManager;
     v6->_entityManager = v9;
   }
@@ -96,20 +96,20 @@ void __55__HDDaemonSyncEngine_allSyncEntityVersionsByIdentifier__block_invoke_2(
   [qword_280D67E08 addEntityVersionRange:v9];
 }
 
-- (BOOL)updateLocalVersionsForStore:(id)a3 profile:(id)a4 error:(id *)a5
+- (BOOL)updateLocalVersionsForStore:(id)store profile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 orderedSyncEntities];
+  storeCopy = store;
+  profileCopy = profile;
+  orderedSyncEntities = [storeCopy orderedSyncEntities];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __64__HDDaemonSyncEngine_updateLocalVersionsForStore_profile_error___block_invoke;
   v19[3] = &unk_278623A30;
-  v10 = v7;
+  v10 = storeCopy;
   v20 = v10;
-  v11 = [v9 hk_filter:v19];
+  v11 = [orderedSyncEntities hk_filter:v19];
 
-  v12 = [v8 database];
+  database = [profileCopy database];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -119,9 +119,9 @@ void __55__HDDaemonSyncEngine_allSyncEntityVersionsByIdentifier__block_invoke_2(
   v18 = v10;
   v13 = v10;
   v14 = v11;
-  LOBYTE(a5) = [(HDHealthEntity *)HDSyncAnchorEntity performWriteTransactionWithHealthDatabase:v12 error:a5 block:v16];
+  LOBYTE(error) = [(HDHealthEntity *)HDSyncAnchorEntity performWriteTransactionWithHealthDatabase:database error:error block:v16];
 
-  return a5;
+  return error;
 }
 
 uint64_t __64__HDDaemonSyncEngine_updateLocalVersionsForStore_profile_error___block_invoke(uint64_t a1, void *a2)
@@ -188,11 +188,11 @@ LABEL_11:
   return v14;
 }
 
-- (uint64_t)_singleTransactionApplySyncChange:(uint64_t)a3 entity:(void *)a4 store:(void *)a5 error:
+- (uint64_t)_singleTransactionApplySyncChange:(uint64_t)change entity:(void *)entity store:(void *)store error:
 {
   v8 = a2;
-  v9 = a4;
-  if (!a1)
+  entityCopy = entity;
+  if (!self)
   {
     v14 = 0;
     goto LABEL_14;
@@ -208,30 +208,30 @@ LABEL_11:
   v35 = __Block_byref_object_copy__176;
   v36 = __Block_byref_object_dispose__176;
   v37 = 0;
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
-  v11 = [WeakRetained database];
+  WeakRetained = objc_loadWeakRetained((self + 8));
+  database = [WeakRetained database];
   v31 = 0;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __75__HDDaemonSyncEngine__singleTransactionApplySyncChange_entity_store_error___block_invoke;
   v25[3] = &unk_27862B780;
   v28 = &v38;
-  v25[4] = a1;
+  v25[4] = self;
   v26 = v8;
-  v30 = a3;
-  v27 = v9;
+  changeCopy = change;
+  v27 = entityCopy;
   v29 = &v32;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __75__HDDaemonSyncEngine__singleTransactionApplySyncChange_entity_store_error___block_invoke_2;
   v19[3] = &unk_27862B7A8;
   v22 = &v38;
-  v19[4] = a1;
+  v19[4] = self;
   v20 = v26;
-  v24 = a3;
+  changeCopy2 = change;
   v21 = v27;
   v23 = &v32;
-  v12 = [(HDHealthEntity *)HDDataEntity performWriteTransactionWithHealthDatabase:v11 error:&v31 block:v25 inaccessibilityHandler:v19];
+  v12 = [(HDHealthEntity *)HDDataEntity performWriteTransactionWithHealthDatabase:database error:&v31 block:v25 inaccessibilityHandler:v19];
   v13 = v31;
 
   if ((v39[3] & 1) == 0)
@@ -239,11 +239,11 @@ LABEL_11:
     v15 = v33[5];
     if (v15)
     {
-      if (a5)
+      if (store)
       {
 LABEL_10:
         v16 = v15;
-        *a5 = v15;
+        *store = v15;
         goto LABEL_12;
       }
 
@@ -262,7 +262,7 @@ LABEL_12:
     v15 = v13;
     if (v15)
     {
-      if (a5)
+      if (store)
       {
         goto LABEL_10;
       }
@@ -297,32 +297,32 @@ uint64_t __75__HDDaemonSyncEngine__singleTransactionApplySyncChange_entity_store
   return 1;
 }
 
-- (uint64_t)_applySyncChange:(objc_class *)a3 entity:(void *)a4 store:(void *)a5 error:
+- (uint64_t)_applySyncChange:(objc_class *)change entity:(void *)entity store:(void *)store error:
 {
   v53 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a4;
-  v11 = v10;
-  if (!a1)
+  entityCopy = entity;
+  v11 = entityCopy;
+  if (!self)
   {
     goto LABEL_13;
   }
 
-  if (([v10 canRecieveSyncObjectsForEntityClass:a3] & 1) == 0)
+  if (([entityCopy canRecieveSyncObjectsForEntityClass:change] & 1) == 0)
   {
     v27 = MEMORY[0x277CCA9B8];
     v28 = objc_opt_class();
     v29 = NSStringFromClass(v28);
-    v30 = NSStringFromClass(a3);
-    [v27 hk_assignError:a5 code:1401 format:{@"Ignoring sync objects from %@; syncEntityClass was %@", v29, v30}];
+    v30 = NSStringFromClass(change);
+    [v27 hk_assignError:store code:1401 format:{@"Ignoring sync objects from %@; syncEntityClass was %@", v29, v30}];
 
 LABEL_13:
     v31 = 0;
     goto LABEL_29;
   }
 
-  v12 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:a1 activityName:@"ApplyChange"];
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  v12 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:self activityName:@"ApplyChange"];
+  WeakRetained = objc_loadWeakRetained((self + 8));
   v46 = 0;
   v14 = [v9 decodedObjectsForProfile:WeakRetained error:&v46];
   v15 = v46;
@@ -330,13 +330,13 @@ LABEL_13:
   if (v14)
   {
     v42 = v12;
-    v43 = a5;
-    v16 = [v9 versionRange];
+    storeCopy = store;
+    versionRange = [v9 versionRange];
     v45 = v15;
     v17 = v11;
     v18 = v14;
-    v19 = objc_loadWeakRetained((a1 + 8));
-    v20 = [(objc_class *)a3 receiveSyncObjects:v18 version:v16 syncStore:v17 profile:v19 error:&v45];
+    v19 = objc_loadWeakRetained((self + 8));
+    v20 = [(objc_class *)change receiveSyncObjects:v18 version:versionRange syncStore:v17 profile:v19 error:&v45];
 
     v21 = v45;
     if (v20 == 1)
@@ -348,7 +348,7 @@ LABEL_13:
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_FAULT))
         {
           *buf = 138543874;
-          v48 = a3;
+          changeCopy3 = change;
           v49 = 2114;
           v50 = v17;
           v51 = 2114;
@@ -356,7 +356,7 @@ LABEL_13:
           _os_log_fault_impl(&dword_228986000, v22, OS_LOG_TYPE_FAULT, "Client %{public}@ requested a reset of received sync anchor for store %{public}@ with error %{public}@.", buf, 0x20u);
         }
 
-        v23 = objc_loadWeakRetained((a1 + 8));
+        v23 = objc_loadWeakRetained((self + 8));
         v44 = 0;
         v24 = [HDSyncAnchorEntity resetSyncAnchorsOfType:3 store:v17 profile:v23 error:&v44];
         v25 = v44;
@@ -368,7 +368,7 @@ LABEL_13:
           if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
           {
             *buf = 138543362;
-            v48 = v25;
+            changeCopy3 = v25;
             _os_log_error_impl(&dword_228986000, v26, OS_LOG_TYPE_ERROR, "Failed to reset sync Anchors %{public}@", buf, 0xCu);
           }
         }
@@ -377,7 +377,7 @@ LABEL_18:
         v31 = 0;
 LABEL_23:
         v12 = v42;
-        a5 = v43;
+        store = storeCopy;
         goto LABEL_24;
       }
 
@@ -390,7 +390,7 @@ LABEL_23:
         if (v34)
         {
           *buf = 138543618;
-          v48 = a3;
+          changeCopy3 = change;
           v49 = 2114;
           v50 = v21;
           _os_log_error_impl(&dword_228986000, v33, OS_LOG_TYPE_ERROR, "Failed to receive sync objects for '%{public}@' because the journal is full: %{public}@", buf, 0x16u);
@@ -402,16 +402,16 @@ LABEL_23:
       if (v34)
       {
         *buf = 138543618;
-        v48 = a3;
+        changeCopy3 = change;
         v49 = 2114;
         v50 = v21;
         _os_log_error_impl(&dword_228986000, v33, OS_LOG_TYPE_ERROR, "Failed to receive sync objects for '%{public}@' with ignorable error: %{public}@", buf, 0x16u);
       }
 
-      v35 = objc_loadWeakRetained((a1 + 8));
-      v36 = [v35 daemon];
-      v37 = [v36 autoBugCaptureReporter];
-      [v37 reportApplyDataFailure:a3 duringSyncFromStore:v17 error:v21];
+      v35 = objc_loadWeakRetained((self + 8));
+      daemon = [v35 daemon];
+      autoBugCaptureReporter = [daemon autoBugCaptureReporter];
+      [autoBugCaptureReporter reportApplyDataFailure:change duringSyncFromStore:v17 error:v21];
 
       v21 = 0;
     }
@@ -427,10 +427,10 @@ LABEL_24:
   v38 = v21;
   if (v38)
   {
-    if (a5)
+    if (store)
     {
       v39 = v38;
-      *a5 = v38;
+      *store = v38;
     }
 
     else
@@ -458,53 +458,53 @@ uint64_t __75__HDDaemonSyncEngine__singleTransactionApplySyncChange_entity_store
   return 1;
 }
 
-- (uint64_t)_validateAnchorsForSyncChange:(void *)a3 store:(void *)a4 error:
+- (uint64_t)_validateAnchorsForSyncChange:(void *)change store:(void *)store error:
 {
   v7 = a2;
-  v8 = a3;
-  if (!a1)
+  changeCopy = change;
+  if (!self)
   {
     v18 = 0;
     goto LABEL_14;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  WeakRetained = objc_loadWeakRetained((self + 8));
   v10 = [v7 syncEntityClassForProfile:WeakRetained];
 
-  v11 = [v8 profile];
-  v12 = [v7 requiredAnchorMapWithProfile:v11 error:a4];
+  profile = [changeCopy profile];
+  v12 = [v7 requiredAnchorMapWithProfile:profile error:store];
 
   if (!v12)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:1400 description:@"invalid required anchor map"];
+    [MEMORY[0x277CCA9B8] hk_assignError:store code:1400 description:@"invalid required anchor map"];
 LABEL_12:
     v18 = 2;
     goto LABEL_13;
   }
 
-  v13 = [v10 syncEntityIdentifier];
-  v14 = objc_loadWeakRetained((a1 + 8));
-  v15 = [HDSyncAnchorEntity syncAnchorOfType:3 entityIdentifier:v13 store:v8 profile:v14 error:a4];
+  syncEntityIdentifier = [v10 syncEntityIdentifier];
+  v14 = objc_loadWeakRetained((self + 8));
+  v15 = [HDSyncAnchorEntity syncAnchorOfType:3 entityIdentifier:syncEntityIdentifier store:changeCopy profile:v14 error:store];
 
   if ((v15 & 0x8000000000000000) != 0)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:1400 format:{@"invalid last anchor %lld", v15}];
+    [MEMORY[0x277CCA9B8] hk_assignError:store code:1400 format:{@"invalid last anchor %lld", v15}];
     goto LABEL_12;
   }
 
-  v16 = [v7 syncAnchorRange];
-  if ((v16 & 0x8000000000000000) != 0 || v16 > v17)
+  syncAnchorRange = [v7 syncAnchorRange];
+  if ((syncAnchorRange & 0x8000000000000000) != 0 || syncAnchorRange > v17)
   {
     v19 = MEMORY[0x277CCA9B8];
-    v20 = HDSyncAnchorRangeDescription(v16, v17);
-    [v19 hk_assignError:a4 code:1400 format:{@"invalid anchor range %@", v20}];
+    v20 = HDSyncAnchorRangeDescription(syncAnchorRange, v17);
+    [v19 hk_assignError:store code:1400 format:{@"invalid anchor range %@", v20}];
 
     goto LABEL_12;
   }
 
-  if (v16 >= v15 || v17 > v15)
+  if (syncAnchorRange >= v15 || v17 > v15)
   {
-    if (v16 <= v15)
+    if (syncAnchorRange <= v15)
     {
       v38 = 0;
       v39 = &v38;
@@ -520,8 +520,8 @@ LABEL_12:
       v27[1] = 3221225472;
       v27[2] = __64__HDDaemonSyncEngine__validateAnchorsForSyncChange_store_error___block_invoke;
       v27[3] = &unk_27862B7D0;
-      v28 = v8;
-      v29 = a1;
+      v28 = changeCopy;
+      selfCopy = self;
       v30 = &v32;
       v31 = &v38;
       [v12 enumerateAnchorsAndEntityIdentifiersWithBlock:v27];
@@ -536,10 +536,10 @@ LABEL_12:
         v25 = v24;
         if (v24)
         {
-          if (a4)
+          if (store)
           {
             v26 = v24;
-            *a4 = v25;
+            *store = v25;
           }
 
           else
@@ -565,8 +565,8 @@ LABEL_12:
     }
 
     v22 = MEMORY[0x277CCA9B8];
-    v23 = HDSyncAnchorRangeDescription(v16, v17);
-    [v22 hk_assignError:a4 code:1400 format:{@"unexpected anchor range %@ for %@, last anchor %lld", v23, v10, v15}];
+    v23 = HDSyncAnchorRangeDescription(syncAnchorRange, v17);
+    [v22 hk_assignError:store code:1400 format:{@"unexpected anchor range %@ for %@, last anchor %lld", v23, v10, v15}];
 
     goto LABEL_12;
   }
@@ -620,17 +620,17 @@ LABEL_11:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)applySyncChange:(id)a3 forStore:(id)a4 error:(id *)a5
+- (BOOL)applySyncChange:(id)change forStore:(id)store error:(id *)error
 {
   v129 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  changeCopy = change;
+  storeCopy = store;
   v9 = &unk_283CE36F8;
-  if ([v7 conformsToProtocol:v9])
+  if ([changeCopy conformsToProtocol:v9])
   {
     Current = CFAbsoluteTimeGetCurrent();
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v12 = [v7 syncEntityClassForProfile:WeakRetained];
+    v12 = [changeCopy syncEntityClassForProfile:WeakRetained];
 
     _HKInitializeLogging();
     v13 = MEMORY[0x277CCC328];
@@ -638,19 +638,19 @@ LABEL_11:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_INFO))
     {
       v15 = v14;
-      v16 = [v7 syncAnchorRange];
-      [v7 syncAnchorRange];
+      syncAnchorRange = [changeCopy syncAnchorRange];
+      [changeCopy syncAnchorRange];
       v18 = v17;
-      [v7 sequenceNumber];
-      v19 = self;
-      v20 = v7;
-      v21 = v8;
+      [changeCopy sequenceNumber];
+      selfCopy = self;
+      v20 = changeCopy;
+      v21 = storeCopy;
       v23 = v22 = v9;
       *buf = 138544130;
       v24 = v12;
       v120 = v12;
       v121 = 2048;
-      v122 = v16;
+      v122 = syncAnchorRange;
       v123 = 2048;
       v124 = v18;
       v13 = MEMORY[0x277CCC328];
@@ -659,9 +659,9 @@ LABEL_11:
       _os_log_impl(&dword_228986000, v15, OS_LOG_TYPE_INFO, "Apply Sync change for %{public}@ over range (%lld, %lld) with sequence %{public}@", buf, 0x2Au);
 
       v9 = v22;
-      v8 = v21;
-      v7 = v20;
-      self = v19;
+      storeCopy = v21;
+      changeCopy = v20;
+      self = selfCopy;
 
       v14 = *v13;
     }
@@ -680,31 +680,31 @@ LABEL_11:
       v31 = v30;
       if (v28 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v30))
       {
-        v109 = self;
+        selfCopy2 = self;
         v32 = v13;
-        v33 = [v7 syncAnchorRange];
-        [v7 syncAnchorRange];
+        syncAnchorRange2 = [changeCopy syncAnchorRange];
+        [changeCopy syncAnchorRange];
         v34 = v28;
-        v35 = v7;
-        v36 = v8;
+        v35 = changeCopy;
+        v36 = storeCopy;
         v37 = v9;
         v39 = v38;
-        v40 = [v35 sequenceNumber];
-        v41 = [v40 integerValue];
+        sequenceNumber = [v35 sequenceNumber];
+        integerValue = [sequenceNumber integerValue];
         *buf = 138544130;
         v120 = v24;
         v121 = 2048;
-        v122 = v33;
+        v122 = syncAnchorRange2;
         v13 = v32;
-        self = v109;
+        self = selfCopy2;
         v123 = 2048;
         v124 = v39;
         v9 = v37;
-        v8 = v36;
-        v7 = v35;
+        storeCopy = v36;
+        changeCopy = v35;
         v28 = v34;
         v125 = 2048;
-        v126 = v41;
+        v126 = integerValue;
         _os_signpost_emit_with_name_impl(&dword_228986000, v31, OS_SIGNPOST_INTERVAL_BEGIN, v34, "apply-sync-change", "syncEntityClass=%{public}@, start=%lld, end=%lld, sequence=%ld", buf, 0x2Au);
       }
     }
@@ -712,11 +712,11 @@ LABEL_11:
     if (v24)
     {
       v42 = v24;
-      if (((objc_opt_respondsToSelector() & 1) == 0 || [(objc_class *)v24 supportsSyncStore:v8]) && ([v8 canRecieveSyncObjectsForEntityClass:v24]& 1) != 0)
+      if (((objc_opt_respondsToSelector() & 1) == 0 || [(objc_class *)v24 supportsSyncStore:storeCopy]) && ([storeCopy canRecieveSyncObjectsForEntityClass:v24]& 1) != 0)
       {
         v110 = v9;
-        v43 = v7;
-        v44 = v8;
+        v43 = changeCopy;
+        v44 = storeCopy;
         v45 = v44;
         if (!self)
         {
@@ -732,17 +732,17 @@ LABEL_21:
           v46 = objc_loadWeakRetained(&self->_profile);
           v47 = [v43 syncEntityClassForProfile:v46];
 
-          v48 = [v43 sequenceNumber];
-          if (v48)
+          sequenceNumber2 = [v43 sequenceNumber];
+          if (sequenceNumber2)
           {
             v49 = v47;
             v50 = [v45 expectedSequenceNumberForSyncEntityClass:v47];
-            v51 = [v48 integerValue];
-            if (v51)
+            integerValue2 = [sequenceNumber2 integerValue];
+            if (integerValue2)
             {
-              if (v50 != v51)
+              if (v50 != integerValue2)
               {
-                [MEMORY[0x277CCA9B8] hk_assignError:a5 code:1402 format:{@"Received out-of-order message for %@: Expected sequence number %ld but received %ld", v49, v50, v51}];
+                [MEMORY[0x277CCA9B8] hk_assignError:error code:1402 format:{@"Received out-of-order message for %@: Expected sequence number %ld but received %ld", v49, v50, integerValue2}];
 
                 goto LABEL_21;
               }
@@ -764,10 +764,10 @@ LABEL_21:
           }
         }
 
-        loga = v8;
+        loga = storeCopy;
 
         v56 = objc_loadWeakRetained(&self->_profile);
-        v57 = [v56 database];
+        database = [v56 database];
         v115[0] = MEMORY[0x277D85DD0];
         v115[1] = 3221225472;
         v115[2] = __53__HDDaemonSyncEngine_applySyncChange_forStore_error___block_invoke;
@@ -777,12 +777,12 @@ LABEL_21:
         v116 = v58;
         v59 = v43;
         v117 = v59;
-        v60 = [(HDHealthEntity *)HDSyncAnchorEntity performWriteTransactionWithHealthDatabase:v57 error:a5 block:v115];
+        v60 = [(HDHealthEntity *)HDSyncAnchorEntity performWriteTransactionWithHealthDatabase:database error:error block:v115];
 
         if (!v60)
         {
           v27 = 0;
-          v8 = loga;
+          storeCopy = loga;
           v9 = v110;
 LABEL_80:
 
@@ -791,11 +791,11 @@ LABEL_80:
 
         if ([v59 isSpeculative])
         {
-          v8 = loga;
+          storeCopy = loga;
           v9 = v110;
           if (([v58 supportsSpeculativeChangesForSyncEntityClass:v42]& 1) == 0)
           {
-            [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 format:{@"%@ does not support speculative changes", v42}];
+            [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"%@ does not support speculative changes", v42}];
 LABEL_44:
             v27 = 0;
             goto LABEL_80;
@@ -804,13 +804,13 @@ LABEL_44:
 LABEL_40:
           if (_os_feature_enabled_impl())
           {
-            if (([(HDDaemonSyncEngine *)self _singleTransactionApplySyncChange:v59 entity:v42 store:v58 error:a5]& 1) == 0)
+            if (([(HDDaemonSyncEngine *)self _singleTransactionApplySyncChange:v59 entity:v42 store:v58 error:error]& 1) == 0)
             {
               goto LABEL_42;
             }
           }
 
-          else if (([(HDDaemonSyncEngine *)self _applySyncChange:v59 entity:v42 store:v58 error:a5]& 1) == 0)
+          else if (([(HDDaemonSyncEngine *)self _applySyncChange:v59 entity:v42 store:v58 error:error]& 1) == 0)
           {
 LABEL_42:
             _HKInitializeLogging();
@@ -830,20 +830,20 @@ LABEL_42:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_INFO))
           {
             v67 = v66;
-            v68 = [v59 syncAnchorRange];
+            syncAnchorRange3 = [v59 syncAnchorRange];
             [v59 syncAnchorRange];
             v70 = v69;
-            v71 = [v59 sequenceNumber];
+            sequenceNumber3 = [v59 sequenceNumber];
             v72 = CFAbsoluteTimeGetCurrent();
             *buf = 138544386;
             v120 = v42;
             v121 = 2048;
-            v122 = v68;
-            v8 = loga;
+            v122 = syncAnchorRange3;
+            storeCopy = loga;
             v123 = 2048;
             v124 = v70;
             v125 = 2114;
-            v126 = v71;
+            v126 = sequenceNumber3;
             v127 = 2048;
             v128 = v72 - Current;
             _os_log_impl(&dword_228986000, v67, OS_LOG_TYPE_INFO, "Applied sync change for %{public}@ over range (%lld, %lld) sequence %{public}@ in %.3f seconds", buf, 0x34u);
@@ -859,29 +859,29 @@ LABEL_42:
             v75 = v74;
             if (v28 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v74))
             {
-              v76 = [v59 syncAnchorRange];
+              syncAnchorRange4 = [v59 syncAnchorRange];
               [v59 syncAnchorRange];
               v78 = v77;
-              v79 = [v59 sequenceNumber];
-              v80 = [v79 integerValue];
+              sequenceNumber4 = [v59 sequenceNumber];
+              integerValue3 = [sequenceNumber4 integerValue];
               *buf = 138544130;
               v120 = v42;
               v121 = 2048;
-              v122 = v76;
-              v8 = loga;
+              v122 = syncAnchorRange4;
+              storeCopy = loga;
               v123 = 2048;
               v124 = v78;
               v125 = 2048;
-              v126 = v80;
+              v126 = integerValue3;
               _os_signpost_emit_with_name_impl(&dword_228986000, v75, OS_SIGNPOST_INTERVAL_END, v28, "apply-sync-change", "syncEntityClass=%{public}@, start=%lld, end=%lld, sequence=%ld", buf, 0x2Au);
 
               v58 = v106;
             }
           }
 
-          v81 = [v59 sequenceNumber];
-          v82 = [v59 done];
-          if (v81 && ((v83 = v82, ([v59 done] & 1) == 0) ? (v84 = objc_msgSend(v81, "integerValue") + 1) : (v84 = 0), -[NSObject setExpectedSequenceNumber:forSyncEntityClass:](v58, "setExpectedSequenceNumber:forSyncEntityClass:", v84, v42), !v83) || (objc_msgSend(v59, "isSpeculative") & 1) != 0)
+          sequenceNumber5 = [v59 sequenceNumber];
+          done = [v59 done];
+          if (sequenceNumber5 && ((v83 = done, ([v59 done] & 1) == 0) ? (v84 = objc_msgSend(sequenceNumber5, "integerValue") + 1) : (v84 = 0), -[NSObject setExpectedSequenceNumber:forSyncEntityClass:](v58, "setExpectedSequenceNumber:forSyncEntityClass:", v84, v42), !v83) || (objc_msgSend(v59, "isSpeculative") & 1) != 0)
           {
             v27 = 1;
             v9 = v110;
@@ -889,27 +889,27 @@ LABEL_42:
 
           else
           {
-            v105 = v81;
+            v105 = sequenceNumber5;
             [v59 syncAnchorRange];
             v90 = v89;
-            v91 = [(objc_class *)v42 syncEntityIdentifier];
+            syncEntityIdentifier = [(objc_class *)v42 syncEntityIdentifier];
             v92 = objc_loadWeakRetained(&self->_profile);
-            v104 = a5;
+            errorCopy = error;
             v112 = v90;
-            v93 = [HDSyncAnchorEntity updateSyncAnchor:v90 type:3 entityIdentifier:v91 store:v58 updatePolicy:1 profile:v92 error:v104];
+            v93 = [HDSyncAnchorEntity updateSyncAnchor:v90 type:3 entityIdentifier:syncEntityIdentifier store:v58 updatePolicy:1 profile:v92 error:errorCopy];
 
             if (v93)
             {
               v94 = [v59 versionRange] >> 32;
               v9 = v110;
-              v81 = v105;
+              sequenceNumber5 = v105;
               if (HDCurrentSyncVersionForSyncEntity(v42) >= v94)
               {
-                v95 = [(objc_class *)v42 syncEntityIdentifier];
-                v96 = self;
+                syncEntityIdentifier2 = [(objc_class *)v42 syncEntityIdentifier];
+                selfCopy3 = self;
                 v97 = objc_loadWeakRetained(&self->_profile);
                 v113 = 0;
-                v98 = [HDSyncAnchorEntity updateSyncAnchor:v112 type:5 entityIdentifier:v95 store:v106 updatePolicy:1 profile:v97 error:&v113];
+                v98 = [HDSyncAnchorEntity updateSyncAnchor:v112 type:5 entityIdentifier:syncEntityIdentifier2 store:v106 updatePolicy:1 profile:v97 error:&v113];
                 v99 = v113;
 
                 if (!v98)
@@ -919,7 +919,7 @@ LABEL_42:
                   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
                   {
                     *buf = 138543874;
-                    v120 = v96;
+                    v120 = selfCopy3;
                     v121 = 2114;
                     v122 = v42;
                     v123 = 2114;
@@ -930,16 +930,16 @@ LABEL_42:
               }
 
               v27 = 1;
-              v8 = loga;
+              storeCopy = loga;
             }
 
             else
             {
               _HKInitializeLogging();
               v101 = *MEMORY[0x277CCC328];
-              v8 = loga;
+              storeCopy = loga;
               v9 = v110;
-              v81 = v105;
+              sequenceNumber5 = v105;
               if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_INFO))
               {
                 *buf = 0;
@@ -957,7 +957,7 @@ LABEL_42:
         v61 = v58;
         v62 = [(HDDaemonSyncEngine *)self _validateAnchorsForSyncChange:v59 store:v58 error:&v114];
         v63 = v114;
-        v8 = loga;
+        storeCopy = loga;
         if (v62 == 1)
         {
           v27 = 1;
@@ -978,10 +978,10 @@ LABEL_42:
           v87 = v86;
           if (v86)
           {
-            if (a5)
+            if (error)
             {
               v88 = v86;
-              *a5 = v87;
+              *error = v87;
             }
 
             else
@@ -1002,13 +1002,13 @@ LABEL_42:
       if (os_log_type_enabled(*v13, OS_LOG_TYPE_ERROR))
       {
         v53 = v52;
-        v54 = [(objc_class *)v24 syncEntityIdentifier];
+        syncEntityIdentifier3 = [(objc_class *)v24 syncEntityIdentifier];
         *buf = 138543874;
         v120 = v24;
         v121 = 2114;
-        v122 = v54;
+        v122 = syncEntityIdentifier3;
         v123 = 2114;
-        v124 = v8;
+        v124 = storeCopy;
         _os_log_error_impl(&dword_228986000, v53, OS_LOG_TYPE_ERROR, "Ignoring sync change with sync entity class %{public}@ (%{public}@), unsupported by %{public}@", buf, 0x20u);
 
 LABEL_57:
@@ -1022,9 +1022,9 @@ LABEL_57:
       if (os_log_type_enabled(*v13, OS_LOG_TYPE_ERROR))
       {
         v53 = v55;
-        v85 = [v7 syncEntityIdentifier];
+        syncEntityIdentifier4 = [changeCopy syncEntityIdentifier];
         *buf = 138543362;
-        v120 = v85;
+        v120 = syncEntityIdentifier4;
         _os_log_error_impl(&dword_228986000, v53, OS_LOG_TYPE_ERROR, "No sync entity available for change with sync entity identifier %{public}@; change will be ignored.", buf, 0xCu);
 
         goto LABEL_57;
@@ -1037,7 +1037,7 @@ LABEL_57:
 
   v25 = MEMORY[0x277CCA9B8];
   v26 = NSStringFromProtocol(v9);
-  [v25 hk_assignError:a5 code:125 format:{@"%@ does not conform to %@", v7, v26}];
+  [v25 hk_assignError:error code:125 format:{@"%@ does not conform to %@", changeCopy, v26}];
 
   v27 = 0;
 LABEL_81:
@@ -1068,22 +1068,22 @@ BOOL __53__HDDaemonSyncEngine_applySyncChange_forStore_error___block_invoke(uint
   return v11;
 }
 
-- (id)syncAnchorRangesIfRequiredForSession:(id)a3 startingAnchors:(id)a4 error:(id *)a5
+- (id)syncAnchorRangesIfRequiredForSession:(id)session startingAnchors:(id)anchors error:(id *)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 databaseAccessibilityAssertion];
+  sessionCopy = session;
+  anchorsCopy = anchors;
+  databaseAccessibilityAssertion = [sessionCopy databaseAccessibilityAssertion];
 
-  if (v10)
+  if (databaseAccessibilityAssertion)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v12 = [WeakRetained database];
-    v13 = [v8 databaseAccessibilityAssertion];
+    database = [WeakRetained database];
+    databaseAccessibilityAssertion2 = [sessionCopy databaseAccessibilityAssertion];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
     v44 = 0;
-    v16 = [v12 cloneAccessibilityAssertion:v13 ownerIdentifier:v15 error:&v44];
+    v16 = [database cloneAccessibilityAssertion:databaseAccessibilityAssertion2 ownerIdentifier:v15 error:&v44];
     v17 = v44;
 
     if (v16)
@@ -1104,17 +1104,17 @@ LABEL_7:
       [(HDMutableDatabaseTransactionContext *)v23 setCacheScope:1];
       [(HDMutableDatabaseTransactionContext *)v23 addAccessibilityAssertion:v16];
       v24 = objc_loadWeakRetained(&self->_profile);
-      v25 = [v24 database];
+      database2 = [v24 database];
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __81__HDDaemonSyncEngine_syncAnchorRangesIfRequiredForSession_startingAnchors_error___block_invoke;
       v33[3] = &unk_27862A8E0;
       p_buf = &buf;
-      v34 = v8;
-      v35 = self;
-      v36 = v9;
+      v34 = sessionCopy;
+      selfCopy = self;
+      v36 = anchorsCopy;
       v38 = &v39;
-      v26 = [v25 performTransactionWithContext:v23 error:a5 block:v33 inaccessibilityHandler:0];
+      v26 = [database2 performTransactionWithContext:v23 error:error block:v33 inaccessibilityHandler:0];
 
       [v16 invalidate];
       if (v26)
@@ -1150,12 +1150,12 @@ LABEL_7:
   }
 
   v18 = objc_loadWeakRetained(&self->_profile);
-  v19 = [v18 database];
+  database3 = [v18 database];
   v20 = objc_opt_class();
   v21 = NSStringFromClass(v20);
-  [v8 databaseAccessibilityTimeout];
+  [sessionCopy databaseAccessibilityTimeout];
   v43 = v17;
-  v16 = [v19 takeAccessibilityAssertionWithOwnerIdentifier:v21 timeout:&v43 error:?];
+  v16 = [database3 takeAccessibilityAssertionWithOwnerIdentifier:v21 timeout:&v43 error:?];
   v22 = v43;
 
   if (v16)
@@ -1186,10 +1186,10 @@ LABEL_14:
   if (v16)
   {
 LABEL_24:
-    if (a5)
+    if (error)
     {
       v32 = v16;
-      *a5 = v16;
+      *error = v16;
     }
 
     else
@@ -1273,22 +1273,22 @@ uint64_t __81__HDDaemonSyncEngine_syncAnchorRangesIfRequiredForSession_startingA
   return [a2 supportsSyncStore:v4];
 }
 
-- (HDSyncAnchorRangeMap)_syncAnchorRangeMapForSession:(uint64_t)a1 store:(void *)a2 syncEntities:(void *)a3 startingAnchors:(void *)a4 error:(uint64_t)a5
+- (HDSyncAnchorRangeMap)_syncAnchorRangeMapForSession:(uint64_t)session store:(void *)store syncEntities:(void *)entities startingAnchors:(void *)anchors error:(uint64_t)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v8 = a2;
-  v9 = a3;
-  v38 = a4;
-  v36 = a1;
-  if (a1)
+  storeCopy = store;
+  entitiesCopy = entities;
+  anchorsCopy = anchors;
+  sessionCopy = session;
+  if (session)
   {
-    v33 = v9;
+    v33 = entitiesCopy;
     v34 = objc_alloc_init(HDSyncAnchorRangeMap);
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    obj = v9;
+    obj = entitiesCopy;
     v10 = [obj countByEnumeratingWithState:&v39 objects:v45 count:16];
     if (v10)
     {
@@ -1304,29 +1304,29 @@ uint64_t __81__HDDaemonSyncEngine_syncAnchorRangesIfRequiredForSession_startingA
           }
 
           v14 = *(*(&v39 + 1) + 8 * i);
-          v15 = [v14 syncEntityIdentifier];
-          v16 = [v38 anchorForSyncEntityIdentifier:v15];
-          v17 = [(HDDaemonSyncEngine *)v36 _nextSyncAnchorForEntity:v14 session:v8 startSyncAnchor:v16 error:a5];
+          syncEntityIdentifier = [v14 syncEntityIdentifier];
+          v16 = [anchorsCopy anchorForSyncEntityIdentifier:syncEntityIdentifier];
+          v17 = [(HDDaemonSyncEngine *)sessionCopy _nextSyncAnchorForEntity:v14 session:storeCopy startSyncAnchor:v16 error:error];
           if ((v16 & 0x8000000000000000) != 0 || (v18 = v17, v17 < 0))
           {
-            [MEMORY[0x277CCA9B8] hk_assignError:a5 code:1400 format:@"Start or final anchor is invalid."];
+            [MEMORY[0x277CCA9B8] hk_assignError:error code:1400 format:@"Start or final anchor is invalid."];
 
             v30 = 0;
             v29 = v34;
             goto LABEL_28;
           }
 
-          v19 = [v8 syncAnchorMapLimits];
+          syncAnchorMapLimits = [storeCopy syncAnchorMapLimits];
 
-          if (v19)
+          if (syncAnchorMapLimits)
           {
-            v20 = v15;
-            v21 = v8;
+            v20 = syncEntityIdentifier;
+            v21 = storeCopy;
             v43 = HDSyncAnchorRangeMake(-1, -1);
             v44 = v22;
-            v23 = [v21 syncAnchorMapLimits];
+            syncAnchorMapLimits2 = [v21 syncAnchorMapLimits];
 
-            LOBYTE(v21) = [v23 getAnchorRange:&v43 forSyncEntityIdentifier:v20];
+            LOBYTE(v21) = [syncAnchorMapLimits2 getAnchorRange:&v43 forSyncEntityIdentifier:v20];
             if (v21)
             {
               if (v44 <= v16)
@@ -1352,7 +1352,7 @@ uint64_t __81__HDDaemonSyncEngine_syncAnchorRangesIfRequiredForSession_startingA
               if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
               {
                 *buf = 138543618;
-                v47 = v36;
+                v47 = sessionCopy;
                 v48 = 2114;
                 v49 = v20;
                 _os_log_error_impl(&dword_228986000, v25, OS_LOG_TYPE_ERROR, "%{public}@ no sync anchor map limits for sync identifier %{public}@", buf, 0x16u);
@@ -1362,14 +1362,14 @@ uint64_t __81__HDDaemonSyncEngine_syncAnchorRangesIfRequiredForSession_startingA
 
           if (v18 < v16)
           {
-            v28 = [MEMORY[0x277CCA890] currentHandler];
-            [v28 handleFailureInMethod:sel__syncAnchorRangeMapForSession_store_syncEntities_startingAnchors_error_ object:v36 file:@"HDDaemonSyncEngine.m" lineNumber:877 description:{@"Invalid parameter not satisfying: %@", @"finalAnchor >= startAnchor"}];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:sel__syncAnchorRangeMapForSession_store_syncEntities_startingAnchors_error_ object:sessionCopy file:@"HDDaemonSyncEngine.m" lineNumber:877 description:{@"Invalid parameter not satisfying: %@", @"finalAnchor >= startAnchor"}];
           }
 
           if (v18 > v16)
           {
             v26 = HDSyncAnchorRangeMake(v16, v18);
-            [(HDSyncAnchorRangeMap *)v34 setAnchorRange:v26 forSyncEntityIdentifier:v27, v15];
+            [(HDSyncAnchorRangeMap *)v34 setAnchorRange:v26 forSyncEntityIdentifier:v27, syncEntityIdentifier];
           }
         }
 
@@ -1387,7 +1387,7 @@ uint64_t __81__HDDaemonSyncEngine_syncAnchorRangesIfRequiredForSession_startingA
     v30 = v34;
 LABEL_28:
 
-    v9 = v33;
+    entitiesCopy = v33;
   }
 
   else
@@ -1411,24 +1411,24 @@ uint64_t __81__HDDaemonSyncEngine_syncAnchorRangesIfRequiredForSession_startingA
   return result;
 }
 
-- (BOOL)performSyncSession:(id)a3 accessibilityAssertion:(id)a4 error:(id *)a5
+- (BOOL)performSyncSession:(id)session accessibilityAssertion:(id)assertion error:(id *)error
 {
-  v5 = a3;
+  sessionCopy = session;
   v141 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (session)
   {
-    v8 = a4;
-    v9 = v5;
+    assertionCopy = assertion;
+    v9 = sessionCopy;
     [v9 syncWillBegin];
     v10 = v9;
-    v11 = v8;
+    v11 = assertionCopy;
     v107 = v10;
-    v97 = a5;
+    errorCopy = error;
     v102 = v11;
     if (self)
     {
       v12 = v11;
-      v113 = self;
+      selfCopy = self;
       v98 = v12;
       if (v12)
       {
@@ -1438,42 +1438,42 @@ uint64_t __81__HDDaemonSyncEngine_syncAnchorRangesIfRequiredForSession_startingA
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_profile);
-      v14 = [WeakRetained database];
+      database = [WeakRetained database];
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
       [v107 databaseAccessibilityTimeout];
       v114 = 0;
-      v103 = [v14 takeAccessibilityAssertionWithOwnerIdentifier:v16 timeout:&v114 error:?];
+      v103 = [database takeAccessibilityAssertionWithOwnerIdentifier:v16 timeout:&v114 error:?];
       v101 = v114;
 
       if (v103)
       {
         v10 = v107;
 LABEL_7:
-        v17 = [v10 syncStore];
-        if (!v17)
+        syncStore = [v10 syncStore];
+        if (!syncStore)
         {
-          v95 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
           v96 = [MEMORY[0x277CCACA8] stringWithUTF8String:"BOOL _VerifySyncEntityOrderForStore(id<HDSyncStore>  _Nonnull __strong)"];
-          [v95 handleFailureInFunction:v96 file:@"HDDaemonSyncEngine.m" lineNumber:1154 description:{@"Invalid parameter not satisfying: %@", @"syncStore != nil"}];
+          [currentHandler handleFailureInFunction:v96 file:@"HDDaemonSyncEngine.m" lineNumber:1154 description:{@"Invalid parameter not satisfying: %@", @"syncStore != nil"}];
 
-          v17 = 0;
+          syncStore = 0;
         }
 
-        v106 = v17;
-        if (([v17 enforceSyncEntityOrdering] & 1) == 0)
+        v106 = syncStore;
+        if (([syncStore enforceSyncEntityOrdering] & 1) == 0)
         {
 
           goto LABEL_30;
         }
 
-        v18 = [v106 orderedSyncEntities];
+        orderedSyncEntities = [v106 orderedSyncEntities];
         v19 = objc_alloc_init(MEMORY[0x277CBEB58]);
         v121 = 0u;
         v122 = 0u;
         v119 = 0u;
         v120 = 0u;
-        v20 = v18;
+        v20 = orderedSyncEntities;
         v21 = [v20 countByEnumeratingWithState:&v119 objects:buf count:16];
         if (v21)
         {
@@ -1521,8 +1521,8 @@ LABEL_7:
                         _os_log_error_impl(&dword_228986000, v30, OS_LOG_TYPE_ERROR, "%{public}@ is not ordered before %{public}@ in sync entities", v125, 0x16u);
                       }
 
-                      v31 = [MEMORY[0x277CCA890] currentHandler];
-                      [v31 handleFailureInMethod:sel__performSyncSession_databaseAccessibilityAssertion_error_ object:v113 file:@"HDDaemonSyncEngine.m" lineNumber:1052 description:{@"Invalid parameter not satisfying: %@", @"_VerifySyncEntityOrderForStore(store)"}];
+                      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+                      [currentHandler2 handleFailureInMethod:sel__performSyncSession_databaseAccessibilityAssertion_error_ object:selfCopy file:@"HDDaemonSyncEngine.m" lineNumber:1052 description:{@"Invalid parameter not satisfying: %@", @"_VerifySyncEntityOrderForStore(store)"}];
 
 LABEL_30:
                       _HKInitializeLogging();
@@ -1546,10 +1546,10 @@ LABEL_30:
 
                       v100 = os_signpost_id_make_with_pointer(v33, v34);
                       v35 = MEMORY[0x277CCACA8];
-                      v36 = [v34 reason];
-                      v37 = [v106 syncStoreType];
-                      v38 = [v106 syncStoreIdentifier];
-                      v99 = [v35 stringWithFormat:@"reason=%@, storeType=%ld, storeID=%@, storeEpoch=%lld", v36, v37, v38, objc_msgSend(v106, "syncEpoch")];
+                      reason = [v34 reason];
+                      syncStoreType = [v106 syncStoreType];
+                      syncStoreIdentifier = [v106 syncStoreIdentifier];
+                      v99 = [v35 stringWithFormat:@"reason=%@, storeType=%ld, storeID=%@, storeEpoch=%lld", reason, syncStoreType, syncStoreIdentifier, objc_msgSend(v106, "syncEpoch")];
 
                       _HKInitializeLogging();
                       v39 = *MEMORY[0x277CCC328];
@@ -1570,12 +1570,12 @@ LABEL_30:
                       [(HDMutableDatabaseTransactionContext *)v105 setRequiresProtectedData:1];
                       [(HDMutableDatabaseTransactionContext *)v105 setCacheScope:1];
                       [(HDMutableDatabaseTransactionContext *)v105 addAccessibilityAssertion:v103];
-                      v43 = [v107 databaseAccessibilityAssertion];
+                      databaseAccessibilityAssertion = [v107 databaseAccessibilityAssertion];
 
-                      if (v43)
+                      if (databaseAccessibilityAssertion)
                       {
-                        v44 = [v107 databaseAccessibilityAssertion];
-                        [(HDMutableDatabaseTransactionContext *)v105 addAccessibilityAssertion:v44];
+                        databaseAccessibilityAssertion2 = [v107 databaseAccessibilityAssertion];
+                        [(HDMutableDatabaseTransactionContext *)v105 addAccessibilityAssertion:databaseAccessibilityAssertion2];
                       }
 
                       v45 = objc_alloc_init(HDSyncAnchorRangeMap);
@@ -1600,7 +1600,7 @@ LABEL_30:
                         v48 = v107;
                         v49 = v106;
                         v112 = v105;
-                        v50 = [MEMORY[0x277CBEB18] array];
+                        array = [MEMORY[0x277CBEB18] array];
                         *&v115 = 0;
                         *(&v115 + 1) = &v115;
                         *&v116 = 0x2020000000;
@@ -1612,8 +1612,8 @@ LABEL_30:
                         v132 = __Block_byref_object_dispose__176;
                         v51 = v45;
                         v133 = v51;
-                        v52 = objc_loadWeakRetained(&v113->_profile);
-                        v53 = [v52 database];
+                        v52 = objc_loadWeakRetained(&selfCopy->_profile);
+                        database2 = [v52 database];
                         v124 = 0;
                         *buf = MEMORY[0x277D85DD0];
                         *&buf[8] = 3221225472;
@@ -1621,18 +1621,18 @@ LABEL_30:
                         *&buf[24] = &unk_27862B870;
                         v54 = v48;
                         *&buf[32] = v54;
-                        v135 = v113;
+                        v135 = selfCopy;
                         v109 = v49;
                         v136 = v109;
-                        v55 = v50;
+                        v55 = array;
                         v137 = v55;
                         v138 = &v128;
                         v140 = sel__performSyncTransactionForSession_store_anchorRangeMap_transactionContext_error_;
                         v139 = &v115;
-                        v56 = [v53 performTransactionWithContext:v112 error:&v124 block:buf inaccessibilityHandler:0];
+                        v56 = [database2 performTransactionWithContext:v112 error:&v124 block:buf inaccessibilityHandler:0];
                         v57 = v124;
 
-                        v58 = _Block_copy(v113->_unitTest_didCompleteReadTransaction);
+                        v58 = _Block_copy(selfCopy->_unitTest_didCompleteReadTransaction);
                         v59 = v58;
                         if (v58)
                         {
@@ -1645,15 +1645,15 @@ LABEL_30:
                           v60 = v108;
                           v61 = [(HDMutableDatabaseTransactionContext *)v112 mutableCopy];
                           [v61 setRequiresWrite:1];
-                          v62 = objc_loadWeakRetained(&v113->_profile);
-                          v63 = [v62 database];
+                          v62 = objc_loadWeakRetained(&selfCopy->_profile);
+                          database3 = [v62 database];
                           v123 = v57;
                           *&v119 = MEMORY[0x277D85DD0];
                           *(&v119 + 1) = 3221225472;
                           *&v120 = __102__HDDaemonSyncEngine__performSyncTransactionForSession_store_anchorRangeMap_transactionContext_error___block_invoke_473;
                           *(&v120 + 1) = &unk_278616048;
                           *&v121 = v55;
-                          v64 = [v63 performTransactionWithContext:v61 error:&v123 block:&v119 inaccessibilityHandler:0];
+                          v64 = [database3 performTransactionWithContext:v61 error:&v123 block:&v119 inaccessibilityHandler:0];
                           v65 = v123;
 
                           if (!v64)
@@ -1887,28 +1887,28 @@ LABEL_67:
       v84 = v104;
 LABEL_86:
 
-      v5 = buf[0];
+      sessionCopy = buf[0];
     }
 
     else
     {
       v104 = 0;
-      v5 = 0;
+      sessionCopy = 0;
     }
 
     v85 = v104;
-    [v107 syncDidFinishWithSuccess:v5 error:v85];
+    [v107 syncDidFinishWithSuccess:sessionCopy error:v85];
 
-    if ((v5 & 1) == 0)
+    if ((sessionCopy & 1) == 0)
     {
       v86 = v85;
       v87 = v86;
       if (v86)
       {
-        if (v97)
+        if (errorCopy)
         {
           v88 = v86;
-          *v97 = v87;
+          *errorCopy = v87;
         }
 
         else
@@ -1920,15 +1920,15 @@ LABEL_86:
   }
 
   v93 = *MEMORY[0x277D85DE8];
-  return v5;
+  return sessionCopy;
 }
 
-- (void)resetAnchorsWithFailedChanges:(id)a3 store:(id)a4
+- (void)resetAnchorsWithFailedChanges:(id)changes store:(id)store
 {
   v37 = *MEMORY[0x277D85DE8];
-  obj = a3;
-  v23 = a4;
-  if (v23)
+  obj = changes;
+  storeCopy = store;
+  if (storeCopy)
   {
     v28 = 0u;
     v29 = 0u;
@@ -1949,17 +1949,17 @@ LABEL_86:
           }
 
           v10 = *(*(&v26 + 1) + 8 * i);
-          v11 = [v10 syncAnchorRange];
+          syncAnchorRange = [v10 syncAnchorRange];
           v13 = v12;
           WeakRetained = objc_loadWeakRetained(&self->_profile);
           v15 = [v10 syncEntityClassForProfile:WeakRetained];
 
-          if ((v11 & 0x8000000000000000) == 0 && v11 <= v13 && v15 != 0)
+          if ((syncAnchorRange & 0x8000000000000000) == 0 && syncAnchorRange <= v13 && v15 != 0)
           {
-            v17 = [v15 syncEntityIdentifier];
+            syncEntityIdentifier = [v15 syncEntityIdentifier];
             v18 = objc_loadWeakRetained(&self->_profile);
             v25 = 0;
-            v19 = [HDSyncAnchorEntity updateSyncAnchor:v11 type:0 entityIdentifier:v17 store:v23 updatePolicy:0 profile:v18 error:&v25];
+            v19 = [HDSyncAnchorEntity updateSyncAnchor:syncAnchorRange type:0 entityIdentifier:syncEntityIdentifier store:storeCopy updatePolicy:0 profile:v18 error:&v25];
             v20 = v25;
 
             if (!v19)
@@ -1969,7 +1969,7 @@ LABEL_86:
               if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
               {
                 *buf = 134218498;
-                v31 = v11;
+                v31 = syncAnchorRange;
                 v32 = 2114;
                 v33 = v15;
                 v34 = 2114;
@@ -1990,21 +1990,21 @@ LABEL_86:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)getReceivedAnchorMap:(id)a3 forStore:(id)a4 error:(id *)a5
+- (BOOL)getReceivedAnchorMap:(id)map forStore:(id)store error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  storeCopy = store;
+  mapCopy = map;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  LOBYTE(a5) = [HDSyncAnchorEntity getSyncAnchorsOfType:3 anchorMap:v9 store:v8 profile:WeakRetained error:a5];
+  LOBYTE(error) = [HDSyncAnchorEntity getSyncAnchorsOfType:3 anchorMap:mapCopy store:storeCopy profile:WeakRetained error:error];
 
-  return a5;
+  return error;
 }
 
-- (void)resetStore:(id)a3
+- (void)resetStore:(id)store
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  storeCopy = store;
+  if (storeCopy)
   {
     _HKInitializeLogging();
     v5 = MEMORY[0x277CCC328];
@@ -2012,11 +2012,11 @@ LABEL_86:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = storeCopy;
       _os_log_debug_impl(&dword_228986000, v6, OS_LOG_TYPE_DEBUG, "resetting store %@", buf, 0xCu);
     }
 
-    v7 = v4;
+    v7 = storeCopy;
     if (self)
     {
       WeakRetained = objc_loadWeakRetained(&self->_profile);
@@ -2072,11 +2072,11 @@ void __110__HDDaemonSyncEngine__synchronizeSyncEntityClass_session_startAnchor_f
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_nextSyncAnchorForEntity:(void *)a3 session:(uint64_t)a4 startSyncAnchor:(uint64_t)a5 error:
+- (uint64_t)_nextSyncAnchorForEntity:(void *)entity session:(uint64_t)session startSyncAnchor:(uint64_t)anchor error:
 {
-  v9 = a3;
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
-  v11 = [a2 nextSyncAnchorWithSession:v9 startSyncAnchor:a4 profile:WeakRetained error:a5];
+  entityCopy = entity;
+  WeakRetained = objc_loadWeakRetained((self + 8));
+  v11 = [a2 nextSyncAnchorWithSession:entityCopy startSyncAnchor:session profile:WeakRetained error:anchor];
 
   return v11;
 }

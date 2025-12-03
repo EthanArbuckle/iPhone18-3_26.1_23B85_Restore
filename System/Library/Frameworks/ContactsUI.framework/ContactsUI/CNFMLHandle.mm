@@ -1,6 +1,6 @@
 @interface CNFMLHandle
-+ (id)handleWithIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)handleWithIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (id)comparisonIdentifier;
 - (id)debugDescription;
 - (id)description;
@@ -13,8 +13,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CNFMLHandle *)self identifier];
-  v6 = [v3 stringWithFormat:@"<%@ %p [%@]>", v4, self, v5];
+  identifier = [(CNFMLHandle *)self identifier];
+  v6 = [v3 stringWithFormat:@"<%@ %p [%@]>", v4, self, identifier];
 
   return v6;
 }
@@ -22,39 +22,39 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(CNFMLHandle *)self identifier];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  identifier = [(CNFMLHandle *)self identifier];
+  v4 = [v2 stringWithFormat:@"%@", identifier];
 
   return v4;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(CNFMLHandle *)self comparisonIdentifier];
-  v3 = [v2 hash];
+  comparisonIdentifier = [(CNFMLHandle *)self comparisonIdentifier];
+  v3 = [comparisonIdentifier hash];
 
   return v3;
 }
 
 - (id)comparisonIdentifier
 {
-  v2 = [(CNFMLHandle *)self identifier];
-  v3 = [v2 lowercaseString];
+  identifier = [(CNFMLHandle *)self identifier];
+  lowercaseString = [identifier lowercaseString];
 
-  return v3;
+  return lowercaseString;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CNFMLHandle *)self comparisonIdentifier];
-    v7 = [v5 comparisonIdentifier];
+    v5 = equalCopy;
+    comparisonIdentifier = [(CNFMLHandle *)self comparisonIdentifier];
+    comparisonIdentifier2 = [v5 comparisonIdentifier];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [comparisonIdentifier isEqualToString:comparisonIdentifier2];
   }
 
   else
@@ -65,11 +65,11 @@
   return v8;
 }
 
-+ (id)handleWithIdentifier:(id)a3
++ (id)handleWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setIdentifier:v3];
+  [v4 setIdentifier:identifierCopy];
 
   return v4;
 }

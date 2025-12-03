@@ -1,29 +1,29 @@
 @interface TUIFeedHeightLayoutCondition
-- (BOOL)evaluateWithRenderModel:(id)a3;
-- (TUIFeedHeightLayoutCondition)initWithView:(id)a3 completion:(id)a4;
-- (void)updateWithView:(id)a3;
+- (BOOL)evaluateWithRenderModel:(id)model;
+- (TUIFeedHeightLayoutCondition)initWithView:(id)view completion:(id)completion;
+- (void)updateWithView:(id)view;
 @end
 
 @implementation TUIFeedHeightLayoutCondition
 
-- (TUIFeedHeightLayoutCondition)initWithView:(id)a3 completion:(id)a4
+- (TUIFeedHeightLayoutCondition)initWithView:(id)view completion:(id)completion
 {
-  v6 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = TUIFeedHeightLayoutCondition;
-  v7 = [(TUIFeedBaseLayoutCondition *)&v10 initWithCompletion:a4];
+  v7 = [(TUIFeedBaseLayoutCondition *)&v10 initWithCompletion:completion];
   v8 = v7;
   if (v7)
   {
-    [(TUIFeedHeightLayoutCondition *)v7 updateWithView:v6];
+    [(TUIFeedHeightLayoutCondition *)v7 updateWithView:viewCopy];
   }
 
   return v8;
 }
 
-- (BOOL)evaluateWithRenderModel:(id)a3
+- (BOOL)evaluateWithRenderModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   os_unfair_lock_lock_with_options();
   state = self->super._state;
   height = self->_height;
@@ -36,21 +36,21 @@
   else
   {
     v8 = objc_opt_class();
-    v9 = TUIDynamicCast(v8, v4);
+    v9 = TUIDynamicCast(v8, modelCopy);
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 info];
-      v12 = [v11 objectForKeyedSubscript:@"TUIRenderInfoKeyIsFinal"];
-      v13 = [v12 BOOLValue];
+      info = [v9 info];
+      v12 = [info objectForKeyedSubscript:@"TUIRenderInfoKeyIsFinal"];
+      bOOLValue = [v12 BOOLValue];
 
-      v14 = [v10 sections];
-      v15 = [v14 count];
+      sections = [v10 sections];
+      v15 = [sections count];
       v7 = v15 != 0;
 
-      if (v15 && (v13 & 1) == 0)
+      if (v15 && (bOOLValue & 1) == 0)
       {
-        [v4 size];
+        [modelCopy size];
         v7 = v16 >= height;
       }
     }
@@ -64,11 +64,11 @@
   return v7;
 }
 
-- (void)updateWithView:(id)a3
+- (void)updateWithView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    [a3 bounds];
+    [view bounds];
     Height = CGRectGetHeight(v6);
   }
 

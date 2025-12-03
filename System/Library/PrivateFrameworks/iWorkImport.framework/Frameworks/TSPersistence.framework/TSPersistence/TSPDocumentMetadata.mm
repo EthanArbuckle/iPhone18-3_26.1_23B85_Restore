@@ -1,13 +1,13 @@
 @interface TSPDocumentMetadata
-- (DataProperties)propertiesForData:(SEL)a3;
+- (DataProperties)propertiesForData:(SEL)data;
 - (id).cxx_construct;
 - (void)commonInit;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)propertiesForData:(id)a3 usingBlock:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setKnownDataDigestsForAutosave:(id)a3;
-- (void)setPropertiesForData:(id)a3 usingBlock:(id)a4;
-- (void)takeSnapshotWithCollaborationMode:(BOOL)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)propertiesForData:(id)data usingBlock:(id)block;
+- (void)saveToArchiver:(id)archiver;
+- (void)setKnownDataDigestsForAutosave:(id)autosave;
+- (void)setPropertiesForData:(id)data usingBlock:(id)block;
+- (void)takeSnapshotWithCollaborationMode:(BOOL)mode;
 - (void)updateForSuccessfulSave;
 @end
 
@@ -27,7 +27,7 @@
   __dmb(0xBu);
 }
 
-- (DataProperties)propertiesForData:(SEL)a3
+- (DataProperties)propertiesForData:(SEL)data
 {
   v6 = a4;
   v9 = v6;
@@ -78,15 +78,15 @@
   return result;
 }
 
-- (void)propertiesForData:(id)a3 usingBlock:(id)a4
+- (void)propertiesForData:(id)data usingBlock:(id)block
 {
-  v6 = a3;
-  v9 = a4;
-  if (v9)
+  dataCopy = data;
+  blockCopy = block;
+  if (blockCopy)
   {
-    if (v6)
+    if (dataCopy)
     {
-      v10 = objc_msgSend_context(v6, v7, v8);
+      v10 = objc_msgSend_context(dataCopy, v7, v8);
       v13 = objc_msgSend_context(self, v11, v12);
 
       if (v10 != v13)
@@ -106,21 +106,21 @@
     block[2] = sub_276A77750;
     block[3] = &unk_27A6E55B0;
     block[4] = self;
-    v24 = v6;
-    v25 = v9;
+    v24 = dataCopy;
+    v25 = blockCopy;
     dispatch_async(accessQueue, block);
   }
 }
 
-- (void)setPropertiesForData:(id)a3 usingBlock:(id)a4
+- (void)setPropertiesForData:(id)data usingBlock:(id)block
 {
-  v6 = a3;
-  v9 = a4;
-  if (v9)
+  dataCopy = data;
+  blockCopy = block;
+  if (blockCopy)
   {
-    if (v6)
+    if (dataCopy)
     {
-      v10 = objc_msgSend_context(v6, v7, v8);
+      v10 = objc_msgSend_context(dataCopy, v7, v8);
       v13 = objc_msgSend_context(self, v11, v12);
 
       if (v10 != v13)
@@ -140,17 +140,17 @@
     block[2] = sub_276A77A18;
     block[3] = &unk_27A6E55B0;
     block[4] = self;
-    v24 = v6;
-    v25 = v9;
+    v24 = dataCopy;
+    v25 = blockCopy;
     dispatch_async(accessQueue, block);
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v41 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors(&unk_2812FBBF0, 0);
-  v4 = objc_msgSend_messageWithDescriptor_(v41, v3, off_2812FBC48[50]);
+  v4 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v3, off_2812FBC48[50]);
 
   if (*(v4 + 16))
   {
@@ -225,7 +225,7 @@ LABEL_17:
             v27 = MEMORY[0x277D81150];
             v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v26, "[TSPDocumentMetadata loadFromUnarchiver:]");
             v30 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v29, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPDocumentMetadata.mm");
-            objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v27, v31, v28, v30, 121, 0, "Document has two TSPData with the same digest: %@", v46, v41);
+            objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v27, v31, v28, v30, 121, 0, "Document has two TSPData with the same digest: %@", v46, unarchiverCopy);
 
             objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v32, v33);
           }
@@ -247,10 +247,10 @@ LABEL_17:
   }
 }
 
-- (void)takeSnapshotWithCollaborationMode:(BOOL)a3
+- (void)takeSnapshotWithCollaborationMode:(BOOL)mode
 {
   os_unfair_lock_lock(&self->_archivingLock);
-  self->_isInCollaborationModeForArchiving = a3;
+  self->_isInCollaborationModeForArchiving = mode;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -264,11 +264,11 @@ LABEL_17:
   os_unfair_lock_unlock(&self->_archivingLock);
 }
 
-- (void)setKnownDataDigestsForAutosave:(id)a3
+- (void)setKnownDataDigestsForAutosave:(id)autosave
 {
-  v8 = a3;
+  autosaveCopy = autosave;
   os_unfair_lock_lock(&self->_archivingLock);
-  v6 = objc_msgSend_copy(v8, v4, v5);
+  v6 = objc_msgSend_copy(autosaveCopy, v4, v5);
   knownDataDigests = self->_knownDataDigests;
   self->_knownDataDigests = v6;
 
@@ -288,11 +288,11 @@ LABEL_17:
   os_unfair_lock_unlock(&self->_archivingLock);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   os_unfair_lock_lock(&self->_archivingLock);
-  v35 = v4;
+  v35 = archiverCopy;
   google::protobuf::internal::AssignDescriptors(&unk_2812FBBF0, 0);
   v6 = objc_msgSend_messageWithNewFunction_descriptor_(v35, v5, sub_276A793C4, off_2812FBC48[50]);
 

@@ -1,7 +1,7 @@
 @interface _SFFormDataController
 + (id)sharedController;
-- (_SFFormDataController)initWithAggressiveKeychainCaching:(BOOL)a3;
-- (id)metadataOfBestFormForStreamlinedLogin:(id)a3 autoFillFrameHandle:(id *)a4;
+- (_SFFormDataController)initWithAggressiveKeychainCaching:(BOOL)caching;
+- (id)metadataOfBestFormForStreamlinedLogin:(id)login autoFillFrameHandle:(id *)handle;
 - (id)oneTimeCodeProvider;
 @end
 
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __41___SFFormDataController_sharedController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedController_onceToken_2 != -1)
   {
     dispatch_once(&sharedController_onceToken_2, block);
@@ -24,11 +24,11 @@
   return v2;
 }
 
-- (_SFFormDataController)initWithAggressiveKeychainCaching:(BOOL)a3
+- (_SFFormDataController)initWithAggressiveKeychainCaching:(BOOL)caching
 {
   v8.receiver = self;
   v8.super_class = _SFFormDataController;
-  v3 = [(WBUFormDataController *)&v8 initWithAggressiveKeychainCaching:a3];
+  v3 = [(WBUFormDataController *)&v8 initWithAggressiveKeychainCaching:caching];
   if (v3)
   {
     v4 = objc_alloc_init(_SFAuthenticationContext);
@@ -42,9 +42,9 @@
   return v3;
 }
 
-- (id)metadataOfBestFormForStreamlinedLogin:(id)a3 autoFillFrameHandle:(id *)a4
+- (id)metadataOfBestFormForStreamlinedLogin:(id)login autoFillFrameHandle:(id *)handle
 {
-  v5 = a3;
+  loginCopy = login;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -63,10 +63,10 @@
   v8[3] = &unk_1E84964B0;
   v8[4] = &v9;
   v8[5] = &v15;
-  [v5 enumerateFormsAndFrameHandlesUsingBlock:v8];
-  if (a4)
+  [loginCopy enumerateFormsAndFrameHandlesUsingBlock:v8];
+  if (handle)
   {
-    *a4 = v16[5];
+    *handle = v16[5];
   }
 
   v6 = v10[5];
@@ -86,9 +86,9 @@
     v5 = self->_oneTimeCodeProvider;
     self->_oneTimeCodeProvider = v4;
 
-    v6 = [(_SFFormDataController *)self autoFillQuirksManager];
-    v7 = [v6 associatedDomainsManager];
-    [(SFAppAutoFillOneTimeCodeProvider *)self->_oneTimeCodeProvider setAssociatedDomainsManager:v7];
+    autoFillQuirksManager = [(_SFFormDataController *)self autoFillQuirksManager];
+    associatedDomainsManager = [autoFillQuirksManager associatedDomainsManager];
+    [(SFAppAutoFillOneTimeCodeProvider *)self->_oneTimeCodeProvider setAssociatedDomainsManager:associatedDomainsManager];
 
     oneTimeCodeProvider = self->_oneTimeCodeProvider;
   }

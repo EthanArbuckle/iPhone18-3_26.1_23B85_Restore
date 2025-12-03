@@ -1,24 +1,24 @@
 @interface PHAGraphForceGraphRebuildTask
-- (BOOL)shouldRunWithGraphManager:(id)a3;
+- (BOOL)shouldRunWithGraphManager:(id)manager;
 - (id)taskClassDependencies;
 @end
 
 @implementation PHAGraphForceGraphRebuildTask
 
-- (BOOL)shouldRunWithGraphManager:(id)a3
+- (BOOL)shouldRunWithGraphManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = PHAGraphForceGraphRebuildTask;
-  if (-[PHAGraphRebuildTask shouldRunWithGraphManager:](&v10, sel_shouldRunWithGraphManager_, v4) && ([v4 isReady] & 1) == 0)
+  if (-[PHAGraphRebuildTask shouldRunWithGraphManager:](&v10, sel_shouldRunWithGraphManager_, managerCopy) && ([managerCopy isReady] & 1) == 0)
   {
-    v6 = [v4 workingContext];
-    v7 = [v6 loggingConnection];
+    workingContext = [managerCopy workingContext];
+    loggingConnection = [workingContext loggingConnection];
 
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       *v9 = 0;
-      _os_log_impl(&dword_22FA28000, v7, OS_LOG_TYPE_INFO, "[PHAGraphForceGraphRebuildTask] Graph is not available, forcing to rebuild", v9, 2u);
+      _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_INFO, "[PHAGraphForceGraphRebuildTask] Graph is not available, forcing to rebuild", v9, 2u);
     }
 
     v5 = 1;

@@ -1,14 +1,14 @@
 @interface ADSiriTetherListener
 - (ADSiriTetherListener)init;
-- (void)_handleNewConnection:(id)a3;
+- (void)_handleNewConnection:(id)connection;
 - (void)listen;
 @end
 
 @implementation ADSiriTetherListener
 
-- (void)_handleNewConnection:(id)a3
+- (void)_handleNewConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = kAssistantClientEntitlement;
   [kAssistantClientEntitlement UTF8String];
   v6 = xpc_connection_copy_entitlement_value();
@@ -21,16 +21,16 @@
       *buf = 136315394;
       v14 = "[ADSiriTetherListener _handleNewConnection:]";
       v15 = 2048;
-      v16 = v4;
+      v16 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s Tether attached %p", buf, 0x16u);
     }
 
-    xpc_connection_set_target_queue(v4, self->_queue);
+    xpc_connection_set_target_queue(connectionCopy, self->_queue);
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_1002DA260;
     handler[3] = &unk_10051A6B0;
-    v9 = v4;
+    v9 = connectionCopy;
     v12 = v9;
     xpc_connection_set_event_handler(v9, handler);
     xpc_connection_activate(v9);
@@ -48,7 +48,7 @@
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s Client missing entitlement %@", buf, 0x16u);
     }
 
-    xpc_connection_cancel(v4);
+    xpc_connection_cancel(connectionCopy);
   }
 }
 

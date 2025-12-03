@@ -1,27 +1,27 @@
 @interface SKUnmountOperation
-+ (BOOL)unmountWithDisk:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)_unmountWithDADisk:(id)a3;
-- (BOOL)_unmountWithDisk:(id)a3 error:(id *)a4;
-- (BOOL)unmountSnapshotsWithDisk:(id)a3 error:(id *)a4;
-- (SKUnmountOperation)initWithDisk:(id)a3 options:(id)a4 withCompletionBlock:(id)a5;
++ (BOOL)unmountWithDisk:(id)disk options:(id)options error:(id *)error;
+- (BOOL)_unmountWithDADisk:(id)disk;
+- (BOOL)_unmountWithDisk:(id)disk error:(id *)error;
+- (BOOL)unmountSnapshotsWithDisk:(id)disk error:(id *)error;
+- (SKUnmountOperation)initWithDisk:(id)disk options:(id)options withCompletionBlock:(id)block;
 - (id)description;
 - (id)newPerformOperation;
 @end
 
 @implementation SKUnmountOperation
 
-- (SKUnmountOperation)initWithDisk:(id)a3 options:(id)a4 withCompletionBlock:(id)a5
+- (SKUnmountOperation)initWithDisk:(id)disk options:(id)options withCompletionBlock:(id)block
 {
-  v8 = a3;
+  diskCopy = disk;
   v18.receiver = self;
   v18.super_class = SKUnmountOperation;
-  v9 = [(SKBaseDiskArbOperation *)&v18 initWithTarget:v8 options:a4 callbackBlock:a5];
+  v9 = [(SKBaseDiskArbOperation *)&v18 initWithTarget:diskCopy options:options callbackBlock:block];
   v10 = v9;
   if (v9)
   {
-    v11 = [(SKBaseDiskArbOperation *)v9 options];
-    v12 = [v11 objectForKeyedSubscript:kSKAPFSDiskUnmountIgnoreGroup];
-    v13 = [(SKBaseDiskArbOperation *)v10 disksForOperationWithTarget:v8 ignoreGroup:sub_100010328(v12)];
+    options = [(SKBaseDiskArbOperation *)v9 options];
+    v12 = [options objectForKeyedSubscript:kSKAPFSDiskUnmountIgnoreGroup];
+    v13 = [(SKBaseDiskArbOperation *)v10 disksForOperationWithTarget:diskCopy ignoreGroup:sub_100010328(v12)];
     disksToUnmount = v10->_disksToUnmount;
     v10->_disksToUnmount = v13;
 
@@ -30,10 +30,10 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if ([v8 isLiveFSAPFSDisk])
+        if ([diskCopy isLiveFSAPFSDisk])
         {
-          v15 = [(SKUnmountOperation *)v10 disksToUnmount];
-          v16 = [v15 setByAddingObject:v8];
+          disksToUnmount = [(SKUnmountOperation *)v10 disksToUnmount];
+          v16 = [disksToUnmount setByAddingObject:diskCopy];
           [(SKUnmountOperation *)v10 setDisksToUnmount:v16];
         }
       }
@@ -43,17 +43,17 @@
   return v10;
 }
 
-+ (BOOL)unmountWithDisk:(id)a3 options:(id)a4 error:(id *)a5
++ (BOOL)unmountWithDisk:(id)disk options:(id)options error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [[SKUnmountOperation alloc] initWithDisk:v7 options:v8 withCompletionBlock:0];
+  diskCopy = disk;
+  optionsCopy = options;
+  v9 = [[SKUnmountOperation alloc] initWithDisk:diskCopy options:optionsCopy withCompletionBlock:0];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = [(SKUnmountOperation *)v9 disksToUnmount];
-  v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  disksToUnmount = [(SKUnmountOperation *)v9 disksToUnmount];
+  v11 = [disksToUnmount countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -65,7 +65,7 @@
       {
         if (*v22 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(disksToUnmount);
         }
 
         v16 = *(*(&v21 + 1) + 8 * i);
@@ -73,9 +73,9 @@
         v17 = [(SKUnmountOperation *)v9 _unmountWithDisk:v16 error:&v20];
         v18 = v20;
         v14 &= v17;
-        if ((v17 & 1) == 0 && a5)
+        if ((v17 & 1) == 0 && error)
         {
-          if (*a5)
+          if (*error)
           {
             v14 = 0;
           }
@@ -84,12 +84,12 @@
           {
             v18 = v18;
             v14 = 0;
-            *a5 = v18;
+            *error = v18;
           }
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v12 = [disksToUnmount countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v12);
@@ -103,11 +103,11 @@
   return v14;
 }
 
-- (BOOL)_unmountWithDADisk:(id)a3
+- (BOOL)_unmountWithDADisk:(id)disk
 {
-  v4 = a3;
-  v5 = [(SKBaseDiskArbOperation *)self options];
-  v6 = [v5 objectForKeyedSubscript:kSKDiskUnmountOptionForce];
+  diskCopy = disk;
+  options = [(SKBaseDiskArbOperation *)self options];
+  v6 = [options objectForKeyedSubscript:kSKDiskUnmountOptionForce];
   if (sub_100010328(v6))
   {
     v7 = 1;
@@ -115,8 +115,8 @@
 
   else
   {
-    v8 = [(SKBaseDiskArbOperation *)self options];
-    v9 = [v8 objectForKeyedSubscript:kSKAPFSDiskUnmountForce];
+    options2 = [(SKBaseDiskArbOperation *)self options];
+    v9 = [options2 objectForKeyedSubscript:kSKAPFSDiskUnmountForce];
     v7 = sub_100010328(v9);
   }
 
@@ -124,7 +124,7 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    v15 = v4;
+    v15 = diskCopy;
     v16 = 1024;
     v17 = v7;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Calling DADiskUnmount for %@, force=%d", &v14, 0x12u);
@@ -140,31 +140,31 @@
     v11 = 0;
   }
 
-  DADiskUnmount(v4, v11, sub_100017B5C, self);
-  v12 = [(SKBaseDiskArbOperation *)self completeDiskArbOp];
+  DADiskUnmount(diskCopy, v11, sub_100017B5C, self);
+  completeDiskArbOp = [(SKBaseDiskArbOperation *)self completeDiskArbOp];
 
-  return v12;
+  return completeDiskArbOp;
 }
 
-- (BOOL)unmountSnapshotsWithDisk:(id)a3 error:(id *)a4
+- (BOOL)unmountSnapshotsWithDisk:(id)disk error:(id *)error
 {
-  v5 = a3;
+  diskCopy = disk;
   v33 = 0;
   v6 = getmntinfo_r_np(&v33, 2);
   if ((v6 & 0x80000000) == 0)
   {
     v7 = v6;
-    v28 = a4;
-    v29 = v5;
-    v8 = [v5 diskIdentifier];
-    v9 = [NSString stringWithFormat:@"@/dev/%@", v8];
+    errorCopy = error;
+    v29 = diskCopy;
+    diskIdentifier = [diskCopy diskIdentifier];
+    v9 = [NSString stringWithFormat:@"@/dev/%@", diskIdentifier];
 
     if (!v7)
     {
 LABEL_15:
       free(v33);
       v10 = 1;
-      v5 = v29;
+      diskCopy = v29;
       goto LABEL_24;
     }
 
@@ -188,8 +188,8 @@ LABEL_15:
 
           if (v18)
           {
-            v19 = [(__CFURL *)v16 path];
-            v20 = [NSString stringWithFormat:@"Unmount of snapshot %@ from %@", v15, v19];
+            path = [(__CFURL *)v16 path];
+            v20 = [NSString stringWithFormat:@"Unmount of snapshot %@ from %@", v15, path];
             [(SKBaseDiskArbOperation *)self setCurrentOperationName:v20];
 
             v9 = v30;
@@ -199,20 +199,20 @@ LABEL_15:
               v24 = sub_10000BFD0();
               if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
               {
-                v26 = [(__CFURL *)v16 path];
+                path2 = [(__CFURL *)v16 path];
                 *buf = 136315650;
                 v35 = "[SKUnmountOperation unmountSnapshotsWithDisk:error:]";
                 v36 = 2112;
                 v37 = v15;
                 v38 = 2112;
-                v39 = v26;
+                v39 = path2;
                 _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "%s: Failed to unmount snapshot %@ from %@", buf, 0x20u);
               }
 
-              v5 = v29;
-              if (v28)
+              diskCopy = v29;
+              if (errorCopy)
               {
-                *v28 = [(SKBaseDiskArbOperation *)self newDAError];
+                *errorCopy = [(SKBaseDiskArbOperation *)self newDAError];
               }
 
               free(v33);
@@ -227,11 +227,11 @@ LABEL_24:
             v21 = sub_10000BFD0();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
             {
-              v22 = [(__CFURL *)v16 path];
+              path3 = [(__CFURL *)v16 path];
               *buf = 136315394;
               v35 = "[SKUnmountOperation unmountSnapshotsWithDisk:error:]";
               v36 = 2112;
-              v37 = v22;
+              v37 = path3;
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%s: Failed to create DADisk from %@", buf, 0x16u);
 
               v9 = v30;
@@ -252,13 +252,13 @@ LABEL_24:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v40 = NSDebugDescriptionErrorKey;
     v41 = @"getmntinfo failed";
     v9 = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1];
     [SKError errorWithCode:102 userInfo:v9];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
     goto LABEL_24;
   }
 
@@ -268,23 +268,23 @@ LABEL_25:
   return v10;
 }
 
-- (BOOL)_unmountWithDisk:(id)a3 error:(id *)a4
+- (BOOL)_unmountWithDisk:(id)disk error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 mountPoint];
-  v8 = [v6 type];
-  if ([v8 isEqualToString:kSKDiskTypeAPFSLV])
+  diskCopy = disk;
+  mountPoint = [diskCopy mountPoint];
+  type = [diskCopy type];
+  if ([type isEqualToString:kSKDiskTypeAPFSLV])
   {
-    v9 = [(SKBaseDiskArbOperation *)self options];
-    v10 = [v9 objectForKeyedSubscript:kSKDiskMountOptionRecursive];
+    options = [(SKBaseDiskArbOperation *)self options];
+    v10 = [options objectForKeyedSubscript:kSKDiskMountOptionRecursive];
     v11 = sub_100010328(v10);
 
-    if (v11 && ![(SKUnmountOperation *)self unmountSnapshotsWithDisk:v6 error:a4])
+    if (v11 && ![(SKUnmountOperation *)self unmountSnapshotsWithDisk:diskCopy error:error])
     {
       goto LABEL_17;
     }
 
-    if (!v7)
+    if (!mountPoint)
     {
       goto LABEL_19;
     }
@@ -293,7 +293,7 @@ LABEL_25:
   else
   {
 
-    if (!v7)
+    if (!mountPoint)
     {
 LABEL_19:
       v19 = 1;
@@ -301,12 +301,12 @@ LABEL_19:
     }
   }
 
-  [objc_opt_class() storeMountState:v6];
-  v12 = [v6 type];
-  if (-[NSObject isEqualToString:](v12, "isEqualToString:", kSKDiskTypeAPFSLV) && [v6 isEncrypted] && !objc_msgSend(v6, "defaultEffaceable"))
+  [objc_opt_class() storeMountState:diskCopy];
+  type2 = [diskCopy type];
+  if (-[NSObject isEqualToString:](type2, "isEqualToString:", kSKDiskTypeAPFSLV) && [diskCopy isEncrypted] && !objc_msgSend(diskCopy, "defaultEffaceable"))
   {
-    v21 = [(SKBaseDiskArbOperation *)self options];
-    v22 = [v21 objectForKeyedSubscript:kSKAPFSDiskUnmountDoNotLock];
+    options2 = [(SKBaseDiskArbOperation *)self options];
+    v22 = [options2 objectForKeyedSubscript:kSKAPFSDiskUnmountDoNotLock];
     v23 = sub_100010328(v22);
 
     if (!v23)
@@ -315,35 +315,35 @@ LABEL_19:
     }
 
     v24 = 1;
-    if (!fsctl([v7 fileSystemRepresentation], 0x80014A22uLL, &v24, 0))
+    if (!fsctl([mountPoint fileSystemRepresentation], 0x80014A22uLL, &v24, 0))
     {
       goto LABEL_11;
     }
 
-    v12 = sub_10000BFD0();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    type2 = sub_10000BFD0();
+    if (os_log_type_enabled(type2, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315138;
       v26 = "[SKUnmountOperation _unmountWithDisk:error:]";
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s: Failed to stash crypto key for APFS LV, remount may fail.", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, type2, OS_LOG_TYPE_ERROR, "%s: Failed to stash crypto key for APFS LV, remount may fail.", buf, 0xCu);
     }
   }
 
 LABEL_11:
-  v13 = [NSString stringWithFormat:@"Unmount of %@", v6];
-  [(SKBaseDiskArbOperation *)self setCurrentOperationName:v13];
+  diskCopy = [NSString stringWithFormat:@"Unmount of %@", diskCopy];
+  [(SKBaseDiskArbOperation *)self setCurrentOperationName:diskCopy];
 
-  v14 = [v6 daDisk];
-  v15 = [(SKUnmountOperation *)self _unmountWithDADisk:v14];
+  daDisk = [diskCopy daDisk];
+  v15 = [(SKUnmountOperation *)self _unmountWithDADisk:daDisk];
 
   if (v15)
   {
-    [(SKBaseDiskArbOperation *)self removeWithMountPoint:v7];
+    [(SKBaseDiskArbOperation *)self removeWithMountPoint:mountPoint];
     goto LABEL_19;
   }
 
-  v16 = [v6 daDisk];
-  v17 = DADiskCopyDescription(v16);
+  daDisk2 = [diskCopy daDisk];
+  v17 = DADiskCopyDescription(daDisk2);
 
   v18 = [(__CFDictionary *)v17 objectForKeyedSubscript:kDADiskDescriptionVolumePathKey];
 
@@ -353,9 +353,9 @@ LABEL_11:
     goto LABEL_19;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [(SKBaseDiskArbOperation *)self newDAError];
+    *error = [(SKBaseDiskArbOperation *)self newDAError];
   }
 
 LABEL_17:
@@ -374,8 +374,8 @@ LABEL_20:
     v36 = 0u;
     v34 = 0u;
     v33 = 0u;
-    v6 = [(SKUnmountOperation *)self disksToUnmount];
-    v7 = [v6 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    disksToUnmount = [(SKUnmountOperation *)self disksToUnmount];
+    v7 = [disksToUnmount countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v7)
     {
       v8 = v7;
@@ -387,7 +387,7 @@ LABEL_20:
         {
           if (*v34 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(disksToUnmount);
           }
 
           v12 = *(*(&v33 + 1) + 8 * i);
@@ -401,7 +401,7 @@ LABEL_20:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v8 = [disksToUnmount countByEnumeratingWithState:&v33 objects:v38 count:16];
       }
 
       while (v8);
@@ -465,9 +465,9 @@ LABEL_20:
 
 - (id)description
 {
-  v3 = [(SKUnmountOperation *)self disksToUnmount];
-  v4 = [(SKBaseDiskArbOperation *)self options];
-  v5 = [NSString stringWithFormat:@"Unmount Operation for %@ with %@", v3, v4];
+  disksToUnmount = [(SKUnmountOperation *)self disksToUnmount];
+  options = [(SKBaseDiskArbOperation *)self options];
+  v5 = [NSString stringWithFormat:@"Unmount Operation for %@ with %@", disksToUnmount, options];
 
   return v5;
 }

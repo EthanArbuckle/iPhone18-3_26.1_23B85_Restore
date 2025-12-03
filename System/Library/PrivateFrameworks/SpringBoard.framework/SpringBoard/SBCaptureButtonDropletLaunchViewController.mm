@@ -1,25 +1,25 @@
 @interface SBCaptureButtonDropletLaunchViewController
-- (BOOL)expandHintingDropletByAddingComponents:(unint64_t)a3;
+- (BOOL)expandHintingDropletByAddingComponents:(unint64_t)components;
 - (CGPoint)preludeAnimationVelocity;
 - (CGRect)preludeAnimationRectPresentationValue;
-- (SBCaptureButtonDropletLaunchViewController)initWithButtonOrigin:(int64_t)a3;
-- (id)_configurationForStage:(unint64_t)a3;
-- (id)_defaultConfigurationForStage:(unint64_t)a3;
+- (SBCaptureButtonDropletLaunchViewController)initWithButtonOrigin:(int64_t)origin;
+- (id)_configurationForStage:(unint64_t)stage;
+- (id)_defaultConfigurationForStage:(unint64_t)stage;
 - (id)lendAnimatingDropletViewToExternalOwner;
 - (void)_applyViewConfigurationForCurrentStage;
-- (void)_setStage:(unint64_t)a3 animated:(BOOL)a4 milestones:(id)a5;
-- (void)_zoomUpAnimationCompleted:(BOOL)a3;
-- (void)appendDropletZoomUpCompletionBlock:(id)a3;
-- (void)expandDropletKeylineToIntelligentKeylineStage:(unint64_t)a3;
+- (void)_setStage:(unint64_t)stage animated:(BOOL)animated milestones:(id)milestones;
+- (void)_zoomUpAnimationCompleted:(BOOL)completed;
+- (void)appendDropletZoomUpCompletionBlock:(id)block;
+- (void)expandDropletKeylineToIntelligentKeylineStage:(unint64_t)stage;
 - (void)loadView;
-- (void)resetToOffscreenAnimated:(BOOL)a3 milestones:(id)a4;
+- (void)resetToOffscreenAnimated:(BOOL)animated milestones:(id)milestones;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SBCaptureButtonDropletLaunchViewController
 
-- (SBCaptureButtonDropletLaunchViewController)initWithButtonOrigin:(int64_t)a3
+- (SBCaptureButtonDropletLaunchViewController)initWithButtonOrigin:(int64_t)origin
 {
   v14.receiver = self;
   v14.super_class = SBCaptureButtonDropletLaunchViewController;
@@ -34,21 +34,21 @@
     buttonGeometryInfo = v4->_buttonGeometryInfo;
     v4->_buttonGeometryInfo = v7;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     toStageFloatAnimatableProperty = v4->_toStageFloatAnimatableProperty;
-    v4->_toStageFloatAnimatableProperty = v9;
+    v4->_toStageFloatAnimatableProperty = dictionary;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     toStageCompletionBlock = v4->_toStageCompletionBlock;
-    v4->_toStageCompletionBlock = v11;
+    v4->_toStageCompletionBlock = dictionary2;
 
-    v4->_associatedButton = a3;
+    v4->_associatedButton = origin;
   }
 
   return v4;
 }
 
-- (BOOL)expandHintingDropletByAddingComponents:(unint64_t)a3
+- (BOOL)expandHintingDropletByAddingComponents:(unint64_t)components
 {
   stage = self->_stage;
   if (stage - 1 > 1)
@@ -57,12 +57,12 @@
   }
 
   expansionComponents = self->_expansionComponents;
-  v6 = (expansionComponents & a3) != a3;
-  if ((expansionComponents & a3) != a3)
+  v6 = (expansionComponents & components) != components;
+  if ((expansionComponents & components) != components)
   {
-    self->_expansionComponents = expansionComponents | a3;
-    v7 = [(SBCaptureButtonDropletLaunchViewController *)self view];
-    [v7 setNeedsLayout];
+    self->_expansionComponents = expansionComponents | components;
+    view = [(SBCaptureButtonDropletLaunchViewController *)self view];
+    [view setNeedsLayout];
 
     stage = self->_stage;
   }
@@ -76,20 +76,20 @@
   return v6;
 }
 
-- (void)expandDropletKeylineToIntelligentKeylineStage:(unint64_t)a3
+- (void)expandDropletKeylineToIntelligentKeylineStage:(unint64_t)stage
 {
-  if (self->_dropetIntelligentKeylineStage != a3)
+  if (self->_dropetIntelligentKeylineStage != stage)
   {
-    self->_dropetIntelligentKeylineStage = a3;
-    v4 = [(SBCaptureButtonDropletLaunchViewController *)self view];
-    [v4 setNeedsLayout];
+    self->_dropetIntelligentKeylineStage = stage;
+    view = [(SBCaptureButtonDropletLaunchViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)appendDropletZoomUpCompletionBlock:(id)a3
+- (void)appendDropletZoomUpCompletionBlock:(id)block
 {
-  v4 = a3;
-  v9 = v4;
+  blockCopy = block;
+  v9 = blockCopy;
   if (self->_stage > 1)
   {
     pendingZoomUpCompletionBlocks = self->_pendingZoomUpCompletionBlocks;
@@ -108,7 +108,7 @@
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
@@ -120,18 +120,18 @@
   return [(DRPDropletContextView *)dropletContext acquireGeometricChangeAssertionForReason:@"Lent Droplet"];
 }
 
-- (void)resetToOffscreenAnimated:(BOOL)a3 milestones:(id)a4
+- (void)resetToOffscreenAnimated:(BOOL)animated milestones:(id)milestones
 {
-  [(SBCaptureButtonDropletLaunchViewController *)self _setStage:0 animated:a3 milestones:a4];
+  [(SBCaptureButtonDropletLaunchViewController *)self _setStage:0 animated:animated milestones:milestones];
 
   [(SBCaptureButtonDropletLaunchViewController *)self _zoomUpAnimationCompleted:0];
 }
 
 - (CGRect)preludeAnimationRectPresentationValue
 {
-  v2 = [(DRPDropletContainerView *)self->_appDropletContainer layer];
-  v3 = [v2 presentationLayer];
-  [v3 frame];
+  layer = [(DRPDropletContainerView *)self->_appDropletContainer layer];
+  presentationLayer = [layer presentationLayer];
+  [presentationLayer frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -179,14 +179,14 @@
   v16.super_class = SBCaptureButtonDropletLaunchViewController;
   [(SBCaptureButtonDropletLaunchViewController *)&v16 viewDidLoad];
   v3 = objc_alloc(MEMORY[0x277D069F0]);
-  v4 = [(SBCaptureButtonDropletLaunchViewController *)self view];
-  [v4 bounds];
+  view = [(SBCaptureButtonDropletLaunchViewController *)self view];
+  [view bounds];
   v5 = [v3 initWithFrame:?];
   dropletContext = self->_dropletContext;
   self->_dropletContext = v5;
 
-  v7 = [(SBCaptureButtonDropletLaunchViewController *)self view];
-  [v7 addSubview:self->_dropletContext];
+  view2 = [(SBCaptureButtonDropletLaunchViewController *)self view];
+  [view2 addSubview:self->_dropletContext];
 
   [(DRPDropletContextView *)self->_dropletContext setAutoresizingMask:18];
   v8 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -202,11 +202,11 @@
   self->_animator = v12;
 
   self->_stage = 0;
-  v14 = [(SBCaptureButtonDropletLaunchViewController *)self view];
-  [v14 setNeedsLayout];
+  view3 = [(SBCaptureButtonDropletLaunchViewController *)self view];
+  [view3 setNeedsLayout];
 
-  v15 = [(SBCaptureButtonDropletLaunchViewController *)self view];
-  [v15 layoutIfNeeded];
+  view4 = [(SBCaptureButtonDropletLaunchViewController *)self view];
+  [view4 layoutIfNeeded];
 }
 
 - (void)viewWillLayoutSubviews
@@ -220,25 +220,25 @@
   }
 }
 
-- (void)_setStage:(unint64_t)a3 animated:(BOOL)a4 milestones:(id)a5
+- (void)_setStage:(unint64_t)stage animated:(BOOL)animated milestones:(id)milestones
 {
-  v5 = a4;
+  animatedCopy = animated;
   v55 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = v9;
-  if (self->_stage == a3 && self->_animateNextStageTransition == v5)
+  milestonesCopy = milestones;
+  v10 = milestonesCopy;
+  if (self->_stage == stage && self->_animateNextStageTransition == animatedCopy)
   {
     goto LABEL_47;
   }
 
-  self->_stage = a3;
-  self->_animateNextStageTransition = v5;
-  if (a3 == 2 || (self->_expansionComponents = 0, self->_stage != 1))
+  self->_stage = stage;
+  self->_animateNextStageTransition = animatedCopy;
+  if (stage == 2 || (self->_expansionComponents = 0, self->_stage != 1))
   {
     self->_dropetIntelligentKeylineStage = 0;
   }
 
-  if (a3 == 3 && v9)
+  if (stage == 3 && milestonesCopy)
   {
     [SBCaptureButtonDropletLaunchViewController _setStage:a2 animated:self milestones:?];
   }
@@ -247,8 +247,8 @@
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v11 = [(NSMutableDictionary *)self->_toStageCompletionBlock allKeys];
-  v12 = [v11 countByEnumeratingWithState:&v48 objects:v54 count:16];
+  allKeys = [(NSMutableDictionary *)self->_toStageCompletionBlock allKeys];
+  v12 = [allKeys countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (v12)
   {
     v13 = v12;
@@ -259,7 +259,7 @@
       {
         if (*v49 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allKeys);
         }
 
         v16 = [(NSMutableDictionary *)self->_toStageCompletionBlock objectForKey:*(*(&v48 + 1) + 8 * i)];
@@ -270,7 +270,7 @@
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v48 objects:v54 count:16];
+      v13 = [allKeys countByEnumeratingWithState:&v48 objects:v54 count:16];
     }
 
     while (v13);
@@ -281,8 +281,8 @@
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v18 = [(NSMutableDictionary *)self->_toStageFloatAnimatableProperty allKeys];
-  v19 = [v18 countByEnumeratingWithState:&v44 objects:v53 count:16];
+  allKeys2 = [(NSMutableDictionary *)self->_toStageFloatAnimatableProperty allKeys];
+  v19 = [allKeys2 countByEnumeratingWithState:&v44 objects:v53 count:16];
   if (v19)
   {
     v20 = v19;
@@ -293,7 +293,7 @@
       {
         if (*v45 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(allKeys2);
         }
 
         v23 = [(NSMutableDictionary *)self->_toStageFloatAnimatableProperty objectForKey:*(*(&v44 + 1) + 8 * j)];
@@ -304,7 +304,7 @@
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v44 objects:v53 count:16];
+      v20 = [allKeys2 countByEnumeratingWithState:&v44 objects:v53 count:16];
     }
 
     while (v20);
@@ -353,7 +353,7 @@
 
     toStageCompletionBlock = self->_toStageCompletionBlock;
     v34 = MEMORY[0x223D6F7F0](v28);
-    v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:stage];
     [(NSMutableDictionary *)toStageCompletionBlock setObject:v34 forKey:v35];
   }
 
@@ -370,14 +370,14 @@ LABEL_41:
   {
     v36 = [MEMORY[0x277D65F90] sbf_animatablePropertyWithProgressMilestonesToBlocks:v10];
     toStageFloatAnimatableProperty = self->_toStageFloatAnimatableProperty;
-    v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:stage];
     [(NSMutableDictionary *)toStageFloatAnimatableProperty setObject:v36 forKey:v38];
   }
 
-  if (a3 != 3)
+  if (stage != 3)
   {
-    v39 = [(SBCaptureButtonDropletLaunchViewController *)self view];
-    [v39 setNeedsLayout];
+    view = [(SBCaptureButtonDropletLaunchViewController *)self view];
+    [view setNeedsLayout];
   }
 
 LABEL_47:
@@ -394,7 +394,7 @@ LABEL_47:
   }
 }
 
-- (void)_zoomUpAnimationCompleted:(BOOL)a3
+- (void)_zoomUpAnimationCompleted:(BOOL)completed
 {
   v16 = *MEMORY[0x277D85DE8];
   pendingZoomUpCompletionBlocks = self->_pendingZoomUpCompletionBlocks;
@@ -436,16 +436,16 @@ LABEL_47:
   }
 }
 
-- (id)_configurationForStage:(unint64_t)a3
+- (id)_configurationForStage:(unint64_t)stage
 {
-  v5 = [(SBCaptureButtonDropletLaunchViewController *)self view];
-  [v5 bounds];
+  view = [(SBCaptureButtonDropletLaunchViewController *)self view];
+  [view bounds];
   rect.origin.x = v6;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  if (a3 == 2)
+  if (stage == 2)
   {
     v15 = [(SBCaptureButtonDropletLaunchViewController *)self _defaultConfigurationForStage:2];
     UIRectGetCenter();
@@ -484,25 +484,25 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (a3 == 1)
+  if (stage == 1)
   {
-    v13 = self;
+    selfCopy2 = self;
     v14 = 1;
   }
 
   else
   {
-    if (a3)
+    if (stage)
     {
       v15 = 0;
       goto LABEL_15;
     }
 
-    v13 = self;
+    selfCopy2 = self;
     v14 = 0;
   }
 
-  v15 = [(SBCaptureButtonDropletLaunchViewController *)v13 _defaultConfigurationForStage:v14];
+  v15 = [(SBCaptureButtonDropletLaunchViewController *)selfCopy2 _defaultConfigurationForStage:v14];
 LABEL_15:
   objc_initWeak(&location, self);
   if (self->_stage == 2 && (self->_expansionComponents & 4) != 0)
@@ -525,11 +525,11 @@ LABEL_15:
 
   v21 = v20;
   toStageFloatAnimatableProperty = self->_toStageFloatAnimatableProperty;
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:stage];
   v24 = [(NSMutableDictionary *)toStageFloatAnimatableProperty objectForKey:v23];
 
   toStageCompletionBlock = self->_toStageCompletionBlock;
-  v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:stage];
   v27 = [(NSMutableDictionary *)toStageCompletionBlock objectForKey:v26];
 
   if (v24 | v27)
@@ -549,18 +549,18 @@ LABEL_15:
     v53[2] = __69__SBCaptureButtonDropletLaunchViewController__configurationForStage___block_invoke_3;
     v53[3] = &unk_2783B3518;
     objc_copyWeak(v55, &location);
-    v55[1] = a3;
+    v55[1] = stage;
     v54 = v27;
     [v15 addAnimationCompletionBlockForKeyPath:v21 animationCompletionBlock:v53];
 
     objc_destroyWeak(v55);
   }
 
-  if (a3 == 2 && (self->_expansionComponents & 4) != 0)
+  if (stage == 2 && (self->_expansionComponents & 4) != 0)
   {
     [v15 setDisableDropletEffectFilters:1];
-    v28 = [(SBCaptureButtonSettings *)self->_settings zoomUpDisableDropletEffectFiltersSettings];
-    [v15 setBehaviorSettingsForKeyPath:@"disableDropletEffectFilters" behaviorSettings:v28];
+    zoomUpDisableDropletEffectFiltersSettings = [(SBCaptureButtonSettings *)self->_settings zoomUpDisableDropletEffectFiltersSettings];
+    [v15 setBehaviorSettingsForKeyPath:@"disableDropletEffectFilters" behaviorSettings:zoomUpDisableDropletEffectFiltersSettings];
   }
 
   [(SBCaptureButtonSettings *)self->_settings preludeDropletRadius];
@@ -573,29 +573,29 @@ LABEL_15:
   v34 = v33;
   [v15 centerY];
   v36 = v35;
-  if (a3 == 2)
+  if (stage == 2)
   {
     v37 = self->_expansionComponents;
     if (v37)
     {
-      v38 = [(SBCaptureButtonSettings *)self->_settings zoomUpPositionXSettings];
-      [v15 setBehaviorSettingsForKeyPath:@"centerX" behaviorSettings:v38];
+      zoomUpPositionXSettings = [(SBCaptureButtonSettings *)self->_settings zoomUpPositionXSettings];
+      [v15 setBehaviorSettingsForKeyPath:@"centerX" behaviorSettings:zoomUpPositionXSettings];
 
       v37 = self->_expansionComponents;
     }
 
     if ((v37 & 2) != 0)
     {
-      v39 = [(SBCaptureButtonSettings *)self->_settings zoomUpPositionYSettings];
-      [v15 setBehaviorSettingsForKeyPath:@"centerY" behaviorSettings:v39];
+      zoomUpPositionYSettings = [(SBCaptureButtonSettings *)self->_settings zoomUpPositionYSettings];
+      [v15 setBehaviorSettingsForKeyPath:@"centerY" behaviorSettings:zoomUpPositionYSettings];
 
       v37 = self->_expansionComponents;
     }
 
     if ((v37 & 4) != 0)
     {
-      v42 = [(SBCaptureButtonSettings *)self->_settings zoomUpScaleSettings];
-      [v15 setBehaviorSettingsForKeyPath:@"containerTransform" behaviorSettings:v42];
+      zoomUpScaleSettings = [(SBCaptureButtonSettings *)self->_settings zoomUpScaleSettings];
+      [v15 setBehaviorSettingsForKeyPath:@"containerTransform" behaviorSettings:zoomUpScaleSettings];
 
       v40 = SBScreenDisplayCornerRadius();
     }
@@ -606,19 +606,19 @@ LABEL_15:
     }
 
     [v15 setContainerCornerRadius:v40];
-    v41 = [(SBCaptureButtonSettings *)self->_settings zoomUpCornerRadiusSettings];
-    [v15 setBehaviorSettingsForKeyPath:@"cornerRadius" behaviorSettings:v41];
+    zoomUpCornerRadiusSettings = [(SBCaptureButtonSettings *)self->_settings zoomUpCornerRadiusSettings];
+    [v15 setBehaviorSettingsForKeyPath:@"cornerRadius" behaviorSettings:zoomUpCornerRadiusSettings];
   }
 
   else
   {
     [(SBCaptureButtonSettings *)self->_settings preludeCornerRadius];
     [v15 setContainerCornerRadius:?];
-    v41 = [(SBCaptureButtonSettings *)self->_settings preludePresentationTranslationSettings];
-    [v15 setBehaviorSettingsForKeyPath:@"centerX" behaviorSettings:v41];
-    [v15 setBehaviorSettingsForKeyPath:@"centerY" behaviorSettings:v41];
-    [v15 setBehaviorSettingsForKeyPath:@"containerTransform" behaviorSettings:v41];
-    [v15 setBehaviorSettingsForKeyPath:@"cornerRadius" behaviorSettings:v41];
+    zoomUpCornerRadiusSettings = [(SBCaptureButtonSettings *)self->_settings preludePresentationTranslationSettings];
+    [v15 setBehaviorSettingsForKeyPath:@"centerX" behaviorSettings:zoomUpCornerRadiusSettings];
+    [v15 setBehaviorSettingsForKeyPath:@"centerY" behaviorSettings:zoomUpCornerRadiusSettings];
+    [v15 setBehaviorSettingsForKeyPath:@"containerTransform" behaviorSettings:zoomUpCornerRadiusSettings];
+    [v15 setBehaviorSettingsForKeyPath:@"cornerRadius" behaviorSettings:zoomUpCornerRadiusSettings];
   }
 
   v43 = v34 - v30 * 0.5;
@@ -647,42 +647,42 @@ LABEL_15:
   CATransform3DMakeScale(&rect.origin.y, v30 / v10, v32 / v12, 1.0);
   [v15 setContainerTransform:&rect.origin.y];
   [v15 setBoundaryEdges:v19];
-  v45 = [v15 keylineStyle];
+  keylineStyle = [v15 keylineStyle];
   v46 = +[SBHardwareButtonHintPrototypeDomain rootSettings];
   [v46 allButtonKeylineWidth];
-  [v45 setOuterWidth:?];
+  [keylineStyle setOuterWidth:?];
 
   [v15 defaultResetKeylineForCanvasSize:{v10, v12}];
   if (self->_dropetIntelligentKeylineStage)
   {
     [v15 changeToIntelligentLightStyle:2 preferAudioReactivity:0 canvasSize:{v10, v12}];
-    v47 = [v15 keylineStyle];
-    [v47 setScreenBlendMode:{-[SBCaptureButtonSettings visionIntelligenceKeylineScreenBlendMode](self->_settings, "visionIntelligenceKeylineScreenBlendMode")}];
+    keylineStyle2 = [v15 keylineStyle];
+    [keylineStyle2 setScreenBlendMode:{-[SBCaptureButtonSettings visionIntelligenceKeylineScreenBlendMode](self->_settings, "visionIntelligenceKeylineScreenBlendMode")}];
     [(SBCaptureButtonSettings *)self->_settings visionIntelligenceKeylineAlpha];
-    [v47 setAlpha:?];
+    [keylineStyle2 setAlpha:?];
     [(SBCaptureButtonSettings *)self->_settings visionIntelligenceKeylineLargeBlurRadius];
-    [v47 setKeylineBlurRadius:?];
+    [keylineStyle2 setKeylineBlurRadius:?];
     [(SBCaptureButtonSettings *)self->_settings visionIntelligenceKeylineLargeAmount];
-    [v47 setKeylineInputAmount:?];
+    [keylineStyle2 setKeylineInputAmount:?];
     [(SBCaptureButtonSettings *)self->_settings visionIntelligenceKeylineLargeStart];
-    [v47 setKeylineInputStart:?];
+    [keylineStyle2 setKeylineInputStart:?];
     [(SBCaptureButtonSettings *)self->_settings visionIntelligenceKeylineLargeEnd];
-    [v47 setKeylineInputEnd:?];
-    [v47 setSoftRim:{-[SBCaptureButtonSettings visionIntelligenceKeylineRimIsSoft](self->_settings, "visionIntelligenceKeylineRimIsSoft")}];
+    [keylineStyle2 setKeylineInputEnd:?];
+    [keylineStyle2 setSoftRim:{-[SBCaptureButtonSettings visionIntelligenceKeylineRimIsSoft](self->_settings, "visionIntelligenceKeylineRimIsSoft")}];
     [(SBCaptureButtonSettings *)self->_settings visionIntelligenceKeylineSmallWidth];
-    [v47 setOuterWidth:?];
+    [keylineStyle2 setOuterWidth:?];
     [(SBCaptureButtonSettings *)self->_settings visionIntelligenceKeylineFadeLength];
-    [v47 setKeylineFadeLengths:{v48, v48 * 0.5, v48, 0.0}];
-    [v47 keylineOutsets];
-    [v47 setKeylineOutsets:?];
+    [keylineStyle2 setKeylineFadeLengths:{v48, v48 * 0.5, v48, 0.0}];
+    [keylineStyle2 keylineOutsets];
+    [keylineStyle2 setKeylineOutsets:?];
     [(SBCaptureButtonSettings *)self->_settings visionIntelligenceKeylineFadeStart];
-    [v47 setNormalizedStartLocation:?];
+    [keylineStyle2 setNormalizedStartLocation:?];
     [(SBCaptureButtonSettings *)self->_settings visionIntelligenceKeylineFadeEnd];
-    [v47 setNormalizedStopLocation:?];
+    [keylineStyle2 setNormalizedStopLocation:?];
     if (objc_opt_respondsToSelector())
     {
       [(SBCaptureButtonSettings *)self->_settings visionIntelligenceKeylineEDRGain];
-      [v47 setEdrGain:?];
+      [keylineStyle2 setEdrGain:?];
     }
 
     settings = self->_settings;
@@ -701,10 +701,10 @@ LABEL_15:
 
   else
   {
-    v47 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-    [v47 setResponse:0.0];
-    [v47 setDampingRatio:1.0];
-    [v15 setBehaviorSettingsForKeyPath:@"keylineStyle" behaviorSettings:v47];
+    keylineStyle2 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+    [keylineStyle2 setResponse:0.0];
+    [keylineStyle2 setDampingRatio:1.0];
+    [v15 setBehaviorSettingsForKeyPath:@"keylineStyle" behaviorSettings:keylineStyle2];
   }
 
   objc_destroyWeak(&location);
@@ -758,26 +758,26 @@ void __69__SBCaptureButtonDropletLaunchViewController__configurationForStage___b
   }
 }
 
-- (id)_defaultConfigurationForStage:(unint64_t)a3
+- (id)_defaultConfigurationForStage:(unint64_t)stage
 {
   v5 = [(SBButtonBezelGeometryInfo *)self->_buttonGeometryInfo buttonScreenEdgeForButton:9];
   buttonGeometryInfo = self->_buttonGeometryInfo;
-  v7 = [(SBCaptureButtonDropletLaunchViewController *)self view];
-  [v7 bounds];
+  view = [(SBCaptureButtonDropletLaunchViewController *)self view];
+  [view bounds];
   [(SBButtonBezelGeometryInfo *)buttonGeometryInfo buttonHWRectForButton:9 onEmbeddedDisplayBounds:?];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(SBCaptureButtonDropletLaunchViewController *)self view];
-  [v16 bounds];
+  view2 = [(SBCaptureButtonDropletLaunchViewController *)self view];
+  [view2 bounds];
   v18 = v17;
   v20 = v19;
 
   v21 = MEMORY[0x277D069F8];
 
-  return [v21 hardwareButtonHintForButton:9 stage:a3 != 0 keylineStyle:0 rectEdge:v5 buttonRect:v9 canvasSize:{v11, v13, v15, v18, v20}];
+  return [v21 hardwareButtonHintForButton:9 stage:stage != 0 keylineStyle:0 rectEdge:v5 buttonRect:v9 canvasSize:{v11, v13, v15, v18, v20}];
 }
 
 - (void)_setStage:(uint64_t)a1 animated:(uint64_t)a2 milestones:.cold.1(uint64_t a1, uint64_t a2)

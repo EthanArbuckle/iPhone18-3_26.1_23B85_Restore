@@ -1,54 +1,54 @@
 @interface HDRPOxygenSaturationAnalyzer
-- (HDRPOxygenSaturationAnalyzer)initWithProfile:(id)a3 oxygenSaturationFeatureStatusProvider:(id)a4 oxygenSaturationCompanionAnalysisFeatureStatusProvider:(id)a5 unitTestDelegate:(id)a6;
-- (id)_bloodOxygenSampleWithBloodOxygenMeasurement:(void *)a3 unprocessedSample:;
-- (id)_dataTypeDetailsRoomUrlWithSample:(uint64_t)a1;
-- (id)_heartRateSampleWithBloodOxygenMeasurement:(uint64_t)a1;
-- (uint64_t)_deleteUnprocessedSample:(uint64_t)a3 error:;
+- (HDRPOxygenSaturationAnalyzer)initWithProfile:(id)profile oxygenSaturationFeatureStatusProvider:(id)provider oxygenSaturationCompanionAnalysisFeatureStatusProvider:(id)statusProvider unitTestDelegate:(id)delegate;
+- (id)_bloodOxygenSampleWithBloodOxygenMeasurement:(void *)measurement unprocessedSample:;
+- (id)_dataTypeDetailsRoomUrlWithSample:(uint64_t)sample;
+- (id)_heartRateSampleWithBloodOxygenMeasurement:(uint64_t)measurement;
+- (uint64_t)_deleteUnprocessedSample:(uint64_t)sample error:;
 - (uint64_t)_shouldAnalyzeSamples;
-- (void)_analyzeSample:(void *)a3@<X2> transaction:(void *)a4@<X3> error:(void *)a5@<X8>;
+- (void)_analyzeSample:(void *)sample@<X2> transaction:(void *)transaction@<X3> error:(void *)error@<X8>;
 - (void)_analyzeUnprocessedSamples;
-- (void)_bloodOxygenAnalysisWithUnprocessedSample:(void *)a3@<X8>;
-- (void)_insertAnalyzedSamplesWithBloodOxygenAnalysis:(void *)a3@<X2> unprocessedSample:(void *)a4@<X3> provenance:(void *)a5@<X4> error:(void *)a6@<X8>;
-- (void)_insertUnsuccessfulAnalysisSampleWithUnprocessedSample:(void *)a3@<X2> provenance:(void *)a4@<X3> analyticsPayload:(uint64_t)a5@<X4> error:(uint64_t)a6@<X8>;
+- (void)_bloodOxygenAnalysisWithUnprocessedSample:(void *)sample@<X8>;
+- (void)_insertAnalyzedSamplesWithBloodOxygenAnalysis:(void *)analysis@<X2> unprocessedSample:(void *)sample@<X3> provenance:(void *)provenance@<X4> error:(void *)error@<X8>;
+- (void)_insertUnsuccessfulAnalysisSampleWithUnprocessedSample:(void *)sample@<X2> provenance:(void *)provenance@<X3> analyticsPayload:(uint64_t)payload@<X4> error:(uint64_t)error@<X8>;
 - (void)_postMultipleMixedResultsNotification;
-- (void)_postMultipleSuccessfullResultsNotification:(uint64_t)a1;
-- (void)_postNotificationWithTitle:(void *)a3 body:(void *)a4 categoryIdentifier:(void *)a5 subtitle:(uint64_t)a6 domain:(void *)a7 url:(void *)a8 completion:;
-- (void)_postSingleSuccessfulResultNotification:(uint64_t)a1;
-- (void)_postSingleUnsuccessfulMeasurementNotification:(uint64_t)a1;
-- (void)_sendAnalyticEventsForAnalysisSummaryIfNeeded:(uint64_t)a1;
-- (void)performWorkForOperation:(id)a3 profile:(id)a4 databaseAccessibilityAssertion:(id)a5 completion:(id)a6;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
+- (void)_postMultipleSuccessfullResultsNotification:(uint64_t)notification;
+- (void)_postNotificationWithTitle:(void *)title body:(void *)body categoryIdentifier:(void *)identifier subtitle:(uint64_t)subtitle domain:(void *)domain url:(void *)url completion:;
+- (void)_postSingleSuccessfulResultNotification:(uint64_t)notification;
+- (void)_postSingleUnsuccessfulMeasurementNotification:(uint64_t)notification;
+- (void)_sendAnalyticEventsForAnalysisSummaryIfNeeded:(uint64_t)needed;
+- (void)performWorkForOperation:(id)operation profile:(id)profile databaseAccessibilityAssertion:(id)assertion completion:(id)completion;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
 @end
 
 @implementation HDRPOxygenSaturationAnalyzer
 
-- (HDRPOxygenSaturationAnalyzer)initWithProfile:(id)a3 oxygenSaturationFeatureStatusProvider:(id)a4 oxygenSaturationCompanionAnalysisFeatureStatusProvider:(id)a5 unitTestDelegate:(id)a6
+- (HDRPOxygenSaturationAnalyzer)initWithProfile:(id)profile oxygenSaturationFeatureStatusProvider:(id)provider oxygenSaturationCompanionAnalysisFeatureStatusProvider:(id)statusProvider unitTestDelegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  profileCopy = profile;
+  providerCopy = provider;
+  statusProviderCopy = statusProvider;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = HDRPOxygenSaturationAnalyzer;
   v14 = [(HDRPOxygenSaturationAnalyzer *)&v25 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_profile, v10);
-    objc_storeStrong(&v15->_oxygenSaturationStatusProvider, a4);
-    objc_storeStrong(&v15->_oxygenSaturationCompanionAnalysisStatusProvider, a5);
-    objc_storeStrong(&v15->_unitTestDelegate, a6);
+    objc_storeWeak(&v14->_profile, profileCopy);
+    objc_storeStrong(&v15->_oxygenSaturationStatusProvider, provider);
+    objc_storeStrong(&v15->_oxygenSaturationCompanionAnalysisStatusProvider, statusProvider);
+    objc_storeStrong(&v15->_unitTestDelegate, delegate);
     v16 = objc_alloc(MEMORY[0x277D10800]);
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    v19 = [v16 initWithProfile:v10 debugIdentifier:v18 delegate:v15];
+    v19 = [v16 initWithProfile:profileCopy debugIdentifier:v18 delegate:v15];
     protectedDataOperation = v15->_protectedDataOperation;
     v15->_protectedDataOperation = v19;
 
-    v21 = [MEMORY[0x277CCDAD8] unprocessedBloodOxygenDataType];
+    unprocessedBloodOxygenDataType = [MEMORY[0x277CCDAD8] unprocessedBloodOxygenDataType];
     unprocessedSampleType = v15->_unprocessedSampleType;
-    v15->_unprocessedSampleType = v21;
+    v15->_unprocessedSampleType = unprocessedBloodOxygenDataType;
 
     [(HDProtectedDataOperation *)v15->_protectedDataOperation requestWorkWithPriority:2 error:0];
     WeakRetained = objc_loadWeakRetained(&v15->_profile);
@@ -58,14 +58,14 @@
   return v15;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained dataManager];
-  [v4 addObserver:self forDataType:self->_unprocessedSampleType];
+  dataManager = [WeakRetained dataManager];
+  [dataManager addObserver:self forDataType:self->_unprocessedSampleType];
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   protectedDataOperation = self->_protectedDataOperation;
   v9 = 0;
@@ -82,13 +82,13 @@
   }
 }
 
-- (void)performWorkForOperation:(id)a3 profile:(id)a4 databaseAccessibilityAssertion:(id)a5 completion:(id)a6
+- (void)performWorkForOperation:(id)operation profile:(id)profile databaseAccessibilityAssertion:(id)assertion completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  operationCopy = operation;
+  profileCopy = profile;
+  assertionCopy = assertion;
+  completionCopy = completion;
   v32 = 0;
   v30 = 0u;
   v31 = 0u;
@@ -102,14 +102,14 @@
     v15 = HKLogRespiratoryCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = v12;
-      v16 = v11;
-      v17 = v10;
+      v26 = assertionCopy;
+      v16 = profileCopy;
+      v17 = operationCopy;
       v18 = [MEMORY[0x277CCABB0] numberWithInteger:v29];
       v19 = [MEMORY[0x277CCABB0] numberWithInteger:*(&v29 + 1)];
       v20 = [MEMORY[0x277CCABB0] numberWithInteger:v30];
       *buf = 138544130;
-      v34 = self;
+      selfCopy2 = self;
       v35 = 2112;
       v36 = v18;
       v37 = 2112;
@@ -118,9 +118,9 @@
       v40 = v20;
       _os_log_impl(&dword_262086000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] Blood Oxygen Analysis is complete. %@ sample(s) processed, of them %@ is/are user initiated, and of those %@ is/are unsuccessful measurements", buf, 0x2Au);
 
-      v10 = v17;
-      v11 = v16;
-      v12 = v26;
+      operationCopy = v17;
+      profileCopy = v16;
+      assertionCopy = v26;
     }
 
     if (*(&v29 + 1) == 1)
@@ -168,15 +168,15 @@
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v34 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_262086000, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping analysis", buf, 0xCu);
     }
   }
 
-  v22 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v23 = [v22 isAppleInternalInstall];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleInternalInstall = [mEMORY[0x277CCDD30] isAppleInternalInstall];
 
-  if (v23)
+  if (isAppleInternalInstall)
   {
     unitTestDelegate = self->_unitTestDelegate;
     __copy_constructor_8_8_t0w24_s24_s32_s40_s48(v27, &v29);
@@ -191,7 +191,7 @@
     }
   }
 
-  v13[2](v13);
+  completionCopy[2](completionCopy);
   __destructor_8_s24_s32_s40_s48(&v29);
 
   v25 = *MEMORY[0x277D85DE8];
@@ -200,7 +200,7 @@
 - (void)_analyzeUnprocessedSamples
 {
   v60 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v52 = 0;
     v53 = &v52;
@@ -246,14 +246,14 @@
     {
       v3 = objc_autoreleasePoolPush();
       v4 = MEMORY[0x277D105E0];
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      v6 = [WeakRetained database];
+      WeakRetained = objc_loadWeakRetained((self + 8));
+      database = [WeakRetained database];
       v15 = 0;
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __58__HDRPOxygenSaturationAnalyzer__analyzeUnprocessedSamples__block_invoke;
       v14[3] = &unk_279B0E320;
-      v14[4] = a1;
+      v14[4] = self;
       v14[5] = &v16;
       v14[6] = &v52;
       v14[7] = &v38;
@@ -262,7 +262,7 @@
       v14[10] = &v20;
       v14[11] = &v44;
       v14[12] = &v32;
-      v7 = [v4 performWriteTransactionWithHealthDatabase:v6 error:&v15 block:v14];
+      v7 = [v4 performWriteTransactionWithHealthDatabase:database error:&v15 block:v14];
       v8 = v15;
 
       if ((v7 & 1) == 0)
@@ -274,11 +274,11 @@
           v9 = HKLogRespiratoryCategory();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
           {
-            v10 = [v8 localizedDescription];
+            localizedDescription = [v8 localizedDescription];
             *buf = 138543618;
-            v57 = a1;
+            selfCopy = self;
             v58 = 2112;
-            v59 = v10;
+            v59 = localizedDescription;
             _os_log_error_impl(&dword_262086000, v9, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to analyze with error: %@", buf, 0x16u);
           }
         }
@@ -318,10 +318,10 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendAnalyticEventsForAnalysisSummaryIfNeeded:(uint64_t)a1
+- (void)_sendAnalyticEventsForAnalysisSummaryIfNeeded:(uint64_t)needed
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (needed)
   {
     v3 = *(a2 + 40);
     if (v3 && [v3 count])
@@ -545,56 +545,56 @@ LABEL_33:
   return v16;
 }
 
-- (void)_analyzeSample:(void *)a3@<X2> transaction:(void *)a4@<X3> error:(void *)a5@<X8>
+- (void)_analyzeSample:(void *)sample@<X2> transaction:(void *)transaction@<X3> error:(void *)error@<X8>
 {
   v9 = a2;
-  v10 = a3;
-  if (a1)
+  sampleCopy = sample;
+  if (self)
   {
-    v11 = [v9 payload];
+    payload = [v9 payload];
 
-    if (v11)
+    if (payload)
     {
       v29 = 0;
       v30 = 0;
       v31 = 0;
-      [(HDRPOxygenSaturationAnalyzer *)a1 _bloodOxygenAnalysisWithUnprocessedSample:v9, &v29];
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      v13 = [WeakRetained deviceManager];
-      v14 = [v9 device];
+      [(HDRPOxygenSaturationAnalyzer *)self _bloodOxygenAnalysisWithUnprocessedSample:v9, &v29];
+      WeakRetained = objc_loadWeakRetained((self + 8));
+      deviceManager = [WeakRetained deviceManager];
+      device = [v9 device];
       v28 = 0;
-      v15 = [v13 deviceEntityForDevice:v14 error:&v28];
+      v15 = [deviceManager deviceEntityForDevice:device error:&v28];
       v16 = v28;
 
       if (v15)
       {
-        v17 = objc_loadWeakRetained((a1 + 8));
-        v18 = [v17 dataProvenanceManager];
-        v19 = [v18 defaultLocalDataProvenanceWithDeviceEntity:v15];
+        v17 = objc_loadWeakRetained((self + 8));
+        dataProvenanceManager = [v17 dataProvenanceManager];
+        v19 = [dataProvenanceManager defaultLocalDataProvenanceWithDeviceEntity:v15];
 
         if (v29)
         {
           v25 = v29;
           v26 = v30;
           v27 = v31;
-          [(HDRPOxygenSaturationAnalyzer *)a1 _insertAnalyzedSamplesWithBloodOxygenAnalysis:v9 unprocessedSample:v19 provenance:a4 error:a5];
+          [(HDRPOxygenSaturationAnalyzer *)self _insertAnalyzedSamplesWithBloodOxygenAnalysis:v9 unprocessedSample:v19 provenance:transaction error:error];
         }
 
         else
         {
-          v23 = [v9 metadata];
-          v24 = [v23 objectForKeyedSubscript:*MEMORY[0x277CCDFC0]];
+          metadata = [v9 metadata];
+          v24 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCDFC0]];
 
           if ([v24 integerValue] == 1)
           {
-            *a5 = 1;
-            a5[1] = 0;
-            a5[2] = v31;
+            *error = 1;
+            error[1] = 0;
+            error[2] = v31;
           }
 
           else
           {
-            [(HDRPOxygenSaturationAnalyzer *)a1 _insertUnsuccessfulAnalysisSampleWithUnprocessedSample:v9 provenance:v19 analyticsPayload:v31 error:a4, a5];
+            [(HDRPOxygenSaturationAnalyzer *)self _insertUnsuccessfulAnalysisSampleWithUnprocessedSample:v9 provenance:v19 analyticsPayload:v31 error:transaction, error];
           }
         }
       }
@@ -605,10 +605,10 @@ LABEL_33:
         v21 = v20;
         if (v20)
         {
-          if (a4)
+          if (transaction)
           {
             v22 = v20;
-            *a4 = v21;
+            *transaction = v21;
           }
 
           else
@@ -617,37 +617,37 @@ LABEL_33:
           }
         }
 
-        *a5 = 0;
-        a5[1] = 0;
-        a5[2] = 0;
+        *error = 0;
+        error[1] = 0;
+        error[2] = 0;
       }
     }
 
     else
     {
-      *a5 = 0;
-      a5[1] = 0;
-      a5[2] = 0;
-      *a5 = 1;
+      *error = 0;
+      error[1] = 0;
+      error[2] = 0;
+      *error = 1;
     }
   }
 
   else
   {
-    *a5 = 0;
-    a5[1] = 0;
-    a5[2] = 0;
+    *error = 0;
+    error[1] = 0;
+    error[2] = 0;
   }
 }
 
-- (void)_bloodOxygenAnalysisWithUnprocessedSample:(void *)a3@<X8>
+- (void)_bloodOxygenAnalysisWithUnprocessedSample:(void *)sample@<X8>
 {
   v5 = a2;
   v13 = v5;
-  if (a1)
+  if (self)
   {
-    v6 = [v5 metadata];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CCC478]];
+    metadata = [v5 metadata];
+    v7 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCC478]];
 
     if (v7)
     {
@@ -663,100 +663,100 @@ LABEL_33:
     }
 
     v11 = MEMORY[0x277D0FC68];
-    v12 = [v13 payload];
-    [v11 analyzeBloodOxygenFromRawData:v12 withPressureInKilopascals:v10];
+    payload = [v13 payload];
+    [v11 analyzeBloodOxygenFromRawData:payload withPressureInKilopascals:v10];
   }
 
   else
   {
-    *a3 = 0;
-    a3[1] = 0;
-    a3[2] = 0;
+    *sample = 0;
+    sample[1] = 0;
+    sample[2] = 0;
   }
 }
 
-- (void)_insertUnsuccessfulAnalysisSampleWithUnprocessedSample:(void *)a3@<X2> provenance:(void *)a4@<X3> analyticsPayload:(uint64_t)a5@<X4> error:(uint64_t)a6@<X8>
+- (void)_insertUnsuccessfulAnalysisSampleWithUnprocessedSample:(void *)sample@<X2> provenance:(void *)provenance@<X3> analyticsPayload:(uint64_t)payload@<X4> error:(uint64_t)error@<X8>
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  if (a1)
+  provenanceCopy = provenance;
+  if (self)
   {
     v12 = MEMORY[0x277CCD0C0];
-    v13 = a3;
+    sampleCopy = sample;
     v14 = a2;
     v15 = [v12 alloc];
     v16 = [v15 initWithIdentifier:*MEMORY[0x277CCBAE0]];
     v17 = MEMORY[0x277CCD0B0];
-    v18 = [v14 startDate];
-    v19 = [v14 endDate];
+    startDate = [v14 startDate];
+    endDate = [v14 endDate];
 
-    v20 = [v17 categorySampleWithType:v16 value:0 startDate:v18 endDate:v19];
+    v20 = [v17 categorySampleWithType:v16 value:0 startDate:startDate endDate:endDate];
 
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v22 = [WeakRetained dataManager];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    dataManager = [WeakRetained dataManager];
     v27[0] = v20;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
-    v24 = [v20 endDate];
-    [v24 timeIntervalSinceReferenceDate];
-    v25 = [v22 insertDataObjects:v23 withProvenance:v13 creationDate:0 skipInsertionFilter:1 updateSourceOrder:1 resolveAssociations:a5 error:?];
+    endDate2 = [v20 endDate];
+    [endDate2 timeIntervalSinceReferenceDate];
+    v25 = [dataManager insertDataObjects:v23 withProvenance:sampleCopy creationDate:0 skipInsertionFilter:1 updateSourceOrder:1 resolveAssociations:payload error:?];
 
     if (v25)
     {
-      *a6 = 1;
-      *(a6 + 8) = v20;
-      *(a6 + 16) = v11;
+      *error = 1;
+      *(error + 8) = v20;
+      *(error + 16) = provenanceCopy;
     }
 
     else
     {
-      *a6 = 0;
-      *(a6 + 8) = 0;
-      *(a6 + 16) = 0;
+      *error = 0;
+      *(error + 8) = 0;
+      *(error + 16) = 0;
     }
   }
 
   else
   {
-    *a6 = 0;
-    *(a6 + 8) = 0;
-    *(a6 + 16) = 0;
+    *error = 0;
+    *(error + 8) = 0;
+    *(error + 16) = 0;
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_insertAnalyzedSamplesWithBloodOxygenAnalysis:(void *)a3@<X2> unprocessedSample:(void *)a4@<X3> provenance:(void *)a5@<X4> error:(void *)a6@<X8>
+- (void)_insertAnalyzedSamplesWithBloodOxygenAnalysis:(void *)analysis@<X2> unprocessedSample:(void *)sample@<X3> provenance:(void *)provenance@<X4> error:(void *)error@<X8>
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v32 = a4;
+  analysisCopy = analysis;
+  sampleCopy = sample;
   v33 = a2;
-  v28 = v10;
-  if (!a1)
+  v28 = analysisCopy;
+  if (!self)
   {
-    *a6 = 0;
-    a6[1] = 0;
-    a6[2] = 0;
+    *error = 0;
+    error[1] = 0;
+    error[2] = 0;
     goto LABEL_14;
   }
 
-  v29 = a6;
-  v11 = [(HDRPOxygenSaturationAnalyzer *)a1 _bloodOxygenSampleWithBloodOxygenMeasurement:v10 unprocessedSample:?];
-  v12 = [(HDRPOxygenSaturationAnalyzer *)a1 _heartRateSampleWithBloodOxygenMeasurement:?];
+  errorCopy = error;
+  v11 = [(HDRPOxygenSaturationAnalyzer *)self _bloodOxygenSampleWithBloodOxygenMeasurement:analysisCopy unprocessedSample:?];
+  v12 = [(HDRPOxygenSaturationAnalyzer *)self _heartRateSampleWithBloodOxygenMeasurement:?];
   v13 = v12;
   if (v12)
   {
     v37[0] = v11;
     v37[1] = v12;
-    v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:{2, v10}];
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v15 = [WeakRetained associationManager];
-    v16 = [v13 UUID];
-    v36 = v16;
+    v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:{2, analysisCopy}];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    associationManager = [WeakRetained associationManager];
+    uUID = [v13 UUID];
+    v36 = uUID;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
-    v18 = [v11 UUID];
+    uUID2 = [v11 UUID];
     v34 = 0;
-    v19 = [v15 associateObjectUUIDs:v17 objectUUID:v18 error:&v34];
+    v19 = [associationManager associateObjectUUIDs:v17 objectUUID:uUID2 error:&v34];
     v20 = v34;
 
     if ((v19 & 1) == 0)
@@ -765,10 +765,10 @@ LABEL_33:
       v20 = v21;
       if (v21)
       {
-        if (a5)
+        if (provenance)
         {
           v22 = v21;
-          *a5 = v20;
+          *provenance = v20;
         }
 
         else
@@ -784,28 +784,28 @@ LABEL_33:
   else
   {
     v35 = v11;
-    v31 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:{1, v10}];
+    v31 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:{1, analysisCopy}];
     v20 = 0;
   }
 
-  v23 = objc_loadWeakRetained((a1 + 8));
-  v24 = [v23 dataManager];
-  v25 = [v11 endDate];
-  [v25 timeIntervalSinceReferenceDate];
-  v26 = [v24 insertDataObjects:v31 withProvenance:v32 creationDate:0 skipInsertionFilter:1 updateSourceOrder:1 resolveAssociations:a5 error:?];
+  v23 = objc_loadWeakRetained((self + 8));
+  dataManager = [v23 dataManager];
+  endDate = [v11 endDate];
+  [endDate timeIntervalSinceReferenceDate];
+  v26 = [dataManager insertDataObjects:v31 withProvenance:sampleCopy creationDate:0 skipInsertionFilter:1 updateSourceOrder:1 resolveAssociations:provenance error:?];
 
   if ((v26 & 1) == 0)
   {
 LABEL_12:
-    *v29 = 0;
-    v29[1] = 0;
-    v29[2] = 0;
+    *errorCopy = 0;
+    errorCopy[1] = 0;
+    errorCopy[2] = 0;
     goto LABEL_13;
   }
 
-  *v29 = 257;
-  v29[1] = v11;
-  v29[2] = v33[2];
+  *errorCopy = 257;
+  errorCopy[1] = v11;
+  errorCopy[2] = v33[2];
 LABEL_13:
 
 LABEL_14:
@@ -814,23 +814,23 @@ LABEL_14:
 
 - (uint64_t)_shouldAnalyzeSamples
 {
-  v1 = a1;
+  selfCopy = self;
   v38 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 32);
+    v2 = *(self + 32);
     v35 = 0;
     v3 = [v2 featureStatusWithError:&v35];
     v4 = v35;
     if (v3)
     {
       v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
-      v6 = [v5 areAllRequirementsSatisfied];
+      areAllRequirementsSatisfied = [v5 areAllRequirementsSatisfied];
 
-      if (v6)
+      if (areAllRequirementsSatisfied)
       {
 
-        v7 = *(v1 + 24);
+        v7 = *(selfCopy + 24);
         v34 = 0;
         v8 = [v7 featureStatusWithError:&v34];
         v4 = v34;
@@ -843,7 +843,7 @@ LABEL_14:
             if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v37 = v1;
+              v37 = selfCopy;
               OUTLINED_FUNCTION_1_0();
               _os_log_impl(v21, v22, v23, v24, v25, 0xCu);
             }
@@ -853,29 +853,29 @@ LABEL_14:
 
           v9 = *MEMORY[0x277CCBDF8];
           v10 = [v8 objectForKeyedSubscript:*MEMORY[0x277CCBDF8]];
-          v11 = [v10 areAllRequirementsSatisfied];
+          areAllRequirementsSatisfied2 = [v10 areAllRequirementsSatisfied];
 
           _HKInitializeLogging();
           v12 = HKLogRespiratoryCategory();
           v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-          if (v11)
+          if (areAllRequirementsSatisfied2)
           {
             if (v13)
             {
               *buf = 138543362;
-              v37 = v1;
+              v37 = selfCopy;
               OUTLINED_FUNCTION_1_0();
               _os_log_impl(v14, v15, v16, v17, v18, 0xCu);
             }
 
-            v1 = 1;
+            selfCopy = 1;
             goto LABEL_23;
           }
 
           if (v13)
           {
-            v20 = [v8 objectForKeyedSubscript:v9];
-            v26 = [v20 unsatisfiedRequirementIdentifiers];
+            localizedDescription = [v8 objectForKeyedSubscript:v9];
+            unsatisfiedRequirementIdentifiers = [localizedDescription unsatisfiedRequirementIdentifiers];
             OUTLINED_FUNCTION_0_1();
             OUTLINED_FUNCTION_1_0();
             _os_log_impl(v27, v28, v29, v30, v31, 0x16u);
@@ -890,7 +890,7 @@ LABEL_14:
           v12 = HKLogRespiratoryCategory();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
           {
-            v20 = [v4 localizedDescription];
+            localizedDescription = [v4 localizedDescription];
             OUTLINED_FUNCTION_0_1();
             _os_log_error_impl(&dword_262086000, v12, OS_LOG_TYPE_ERROR, "[%{public}@ Failed to get Oxygen Saturation feature status with error: %@]", buf, 0x16u);
 LABEL_21:
@@ -898,7 +898,7 @@ LABEL_21:
         }
 
 LABEL_22:
-        v1 = 0;
+        selfCopy = 0;
 LABEL_23:
 
         goto LABEL_24;
@@ -909,7 +909,7 @@ LABEL_23:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v37 = v1;
+        v37 = selfCopy;
         _os_log_impl(&dword_262086000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Companion Analysis feature is not onboarded", buf, 0xCu);
       }
     }
@@ -920,23 +920,23 @@ LABEL_23:
       v8 = HKLogRespiratoryCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v4 localizedDescription];
+        localizedDescription2 = [v4 localizedDescription];
         OUTLINED_FUNCTION_0_1();
         _os_log_error_impl(&dword_262086000, v8, OS_LOG_TYPE_ERROR, "[%{public}@ Failed to get companion analysis feature status with error: %@]", buf, 0x16u);
       }
     }
 
-    v1 = 0;
+    selfCopy = 0;
 LABEL_24:
   }
 
   v32 = *MEMORY[0x277D85DE8];
-  return v1;
+  return selfCopy;
 }
 
-- (void)_postSingleUnsuccessfulMeasurementNotification:(uint64_t)a1
+- (void)_postSingleUnsuccessfulMeasurementNotification:(uint64_t)notification
 {
-  if (a1)
+  if (notification)
   {
     v3 = a2;
     objc_opt_class();
@@ -944,19 +944,19 @@ LABEL_24:
     v4 = [v10 localizedStringForKey:@"UNSUCCESSFUL_MEASUREMENT_NOTIFICATION_TITLE" value:&stru_28749CD18 table:@"Localizable-Windbreaker"];
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:@"UNSUCCESSFUL_MEASUREMENT_NOTIFICATION_BODY" value:&stru_28749CD18 table:@"Localizable-Windbreaker"];
-    v7 = [v3 UUID];
+    uUID = [v3 UUID];
 
-    v8 = [v7 UUIDString];
-    v9 = HKRPOxygenSaturationUnsuccessfulAnalysisEventSampleDetailsLink(v8);
-    [(HDRPOxygenSaturationAnalyzer *)a1 _postNotificationWithTitle:v4 body:v6 categoryIdentifier:@"com.apple.private.health.respiratory.phoneonly" subtitle:0 domain:14 url:v9 completion:&__block_literal_global_349];
+    uUIDString = [uUID UUIDString];
+    v9 = HKRPOxygenSaturationUnsuccessfulAnalysisEventSampleDetailsLink(uUIDString);
+    [(HDRPOxygenSaturationAnalyzer *)notification _postNotificationWithTitle:v4 body:v6 categoryIdentifier:@"com.apple.private.health.respiratory.phoneonly" subtitle:0 domain:14 url:v9 completion:&__block_literal_global_349];
   }
 }
 
-- (void)_postSingleSuccessfulResultNotification:(uint64_t)a1
+- (void)_postSingleSuccessfulResultNotification:(uint64_t)notification
 {
-  if (a1)
+  if (notification)
   {
-    v5 = OUTLINED_FUNCTION_3(a1, a2);
+    v5 = OUTLINED_FUNCTION_3(notification, a2);
     objc_opt_class();
     v19 = [OUTLINED_FUNCTION_4() bundleForClass:?];
     OUTLINED_FUNCTION_5();
@@ -971,11 +971,11 @@ LABEL_24:
   }
 }
 
-- (void)_postMultipleSuccessfullResultsNotification:(uint64_t)a1
+- (void)_postMultipleSuccessfullResultsNotification:(uint64_t)notification
 {
-  if (a1)
+  if (notification)
   {
-    v5 = OUTLINED_FUNCTION_3(a1, a2);
+    v5 = OUTLINED_FUNCTION_3(notification, a2);
     objc_opt_class();
     v19 = [OUTLINED_FUNCTION_4() bundleForClass:?];
     OUTLINED_FUNCTION_5();
@@ -992,7 +992,7 @@ LABEL_24:
 
 - (void)_postMultipleMixedResultsNotification
 {
-  if (a1)
+  if (self)
   {
     objc_opt_class();
     v6 = [OUTLINED_FUNCTION_4() bundleForClass:?];
@@ -1000,14 +1000,14 @@ LABEL_24:
     v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v4 = [v3 localizedStringForKey:@"MULTIPLE_RESULTS_AVAILABLE_NOTIFICATION_BODY" value:&stru_28749CD18 table:@"Localizable-Windbreaker"];
     v5 = HKRPOxygenSaturationShowAllDataRoomLink();
-    [(HDRPOxygenSaturationAnalyzer *)a1 _postNotificationWithTitle:v2 body:v4 categoryIdentifier:@"com.apple.private.health.respiratory.phoneonly" subtitle:0 domain:14 url:v5 completion:&__block_literal_global_327];
+    [(HDRPOxygenSaturationAnalyzer *)self _postNotificationWithTitle:v2 body:v4 categoryIdentifier:@"com.apple.private.health.respiratory.phoneonly" subtitle:0 domain:14 url:v5 completion:&__block_literal_global_327];
   }
 }
 
-- (uint64_t)_deleteUnprocessedSample:(uint64_t)a3 error:
+- (uint64_t)_deleteUnprocessedSample:(uint64_t)sample error:
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v5 = MEMORY[0x277D10688];
     v6 = a2;
@@ -1015,13 +1015,13 @@ LABEL_24:
     [v7 setGenerateDeletedObjects:0];
     [v7 setFailIfNotFound:0];
     [v7 setNotifyObservers:0];
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v9 = [WeakRetained dataManager];
-    v10 = [v6 UUID];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    dataManager = [WeakRetained dataManager];
+    uUID = [v6 UUID];
 
-    v15[0] = v10;
+    v15[0] = uUID;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-    v12 = [v9 deleteObjectsWithUUIDCollection:v11 configuration:v7 error:a3];
+    v12 = [dataManager deleteObjectsWithUUIDCollection:v11 configuration:v7 error:sample];
   }
 
   else
@@ -1033,10 +1033,10 @@ LABEL_24:
   return v12;
 }
 
-- (id)_dataTypeDetailsRoomUrlWithSample:(uint64_t)a1
+- (id)_dataTypeDetailsRoomUrlWithSample:(uint64_t)sample
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (sample)
   {
     v2 = MEMORY[0x277CCACE0];
     v3 = a2;
@@ -1044,8 +1044,8 @@ LABEL_24:
     v5 = HKRPOxygenSaturationDataTypeRoomLink();
     v6 = [v4 initWithURL:v5 resolvingAgainstBaseURL:0];
 
-    v7 = [v6 queryItems];
-    v8 = [v7 mutableCopy];
+    queryItems = [v6 queryItems];
+    v8 = [queryItems mutableCopy];
     v9 = v8;
     if (v8)
     {
@@ -1060,14 +1060,14 @@ LABEL_24:
     v11 = v10;
 
     v12 = MEMORY[0x277CCABB0];
-    v13 = [v3 endDate];
+    endDate = [v3 endDate];
 
-    [v13 timeIntervalSinceReferenceDate];
+    [endDate timeIntervalSinceReferenceDate];
     v15 = [v12 numberWithInteger:v14];
 
     v16 = MEMORY[0x277CCAD18];
-    v17 = [v15 stringValue];
-    v18 = [v16 queryItemWithName:@"date" value:v17];
+    stringValue = [v15 stringValue];
+    v18 = [v16 queryItemWithName:@"date" value:stringValue];
     v23[0] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
     [v11 addObjectsFromArray:v19];
@@ -1086,71 +1086,71 @@ LABEL_24:
   return v20;
 }
 
-- (void)_postNotificationWithTitle:(void *)a3 body:(void *)a4 categoryIdentifier:(void *)a5 subtitle:(uint64_t)a6 domain:(void *)a7 url:(void *)a8 completion:
+- (void)_postNotificationWithTitle:(void *)title body:(void *)body categoryIdentifier:(void *)identifier subtitle:(uint64_t)subtitle domain:(void *)domain url:(void *)url completion:
 {
-  v30 = a3;
-  v15 = a5;
-  v16 = a7;
-  if (a1)
+  titleCopy = title;
+  identifierCopy = identifier;
+  domainCopy = domain;
+  if (self)
   {
     v17 = MEMORY[0x277CE1F60];
-    v18 = a8;
-    v19 = a4;
+    urlCopy = url;
+    bodyCopy = body;
     v20 = a2;
     v21 = objc_alloc_init(v17);
     [v21 setTitle:v20];
 
-    if (v15)
+    if (identifierCopy)
     {
-      [v21 setSubtitle:v15];
+      [v21 setSubtitle:identifierCopy];
     }
 
-    [v21 setBody:v30];
-    [v21 setCategoryIdentifier:v19];
+    [v21 setBody:titleCopy];
+    [v21 setCategoryIdentifier:bodyCopy];
 
     v22 = [MEMORY[0x277CE1FE0] soundWithAlertType:25];
     [v21 setSound:v22];
 
-    v23 = [MEMORY[0x277CBEB38] dictionary];
-    v24 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
-    [v23 setObject:v24 forKeyedSubscript:*MEMORY[0x277CCE4D0]];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v24 = [MEMORY[0x277CCABB0] numberWithInteger:subtitle];
+    [dictionary setObject:v24 forKeyedSubscript:*MEMORY[0x277CCE4D0]];
 
-    if (v16)
+    if (domainCopy)
     {
-      v25 = [v16 absoluteString];
-      [v23 setObject:v25 forKeyedSubscript:*MEMORY[0x277CCE4E0]];
+      absoluteString = [domainCopy absoluteString];
+      [dictionary setObject:absoluteString forKeyedSubscript:*MEMORY[0x277CCE4E0]];
     }
 
-    [v23 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CCE4D8]];
-    [v21 setUserInfo:v23];
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v27 = [WeakRetained notificationManager];
-    v28 = [MEMORY[0x277CCAD78] UUID];
-    v29 = [v28 UUIDString];
-    [v27 postNotificationWithIdentifier:v29 content:v21 trigger:0 completion:v18];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CCE4D8]];
+    [v21 setUserInfo:dictionary];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    notificationManager = [WeakRetained notificationManager];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [notificationManager postNotificationWithIdentifier:uUIDString content:v21 trigger:0 completion:urlCopy];
   }
 }
 
-- (id)_bloodOxygenSampleWithBloodOxygenMeasurement:(void *)a3 unprocessedSample:
+- (id)_bloodOxygenSampleWithBloodOxygenMeasurement:(void *)measurement unprocessedSample:
 {
-  if (a1)
+  if (self)
   {
     v4 = MEMORY[0x277CCDAB0];
-    v5 = a3;
+    measurementCopy = measurement;
     v6 = a2;
-    v7 = [v4 percentUnit];
+    percentUnit = [v4 percentUnit];
     v8 = MEMORY[0x277CCD7E8];
     [v6 oxygenSaturationPercentage];
-    v10 = [v8 quantityWithUnit:v7 doubleValue:v9 / 100.0];
+    v10 = [v8 quantityWithUnit:percentUnit doubleValue:v9 / 100.0];
     v11 = MEMORY[0x277CCD800];
     v12 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCBE8]];
-    v13 = [v6 date];
-    v14 = [v6 date];
+    date = [v6 date];
+    date2 = [v6 date];
 
-    v15 = [v5 device];
-    v16 = [v5 metadata];
+    device = [measurementCopy device];
+    metadata = [measurementCopy metadata];
 
-    v17 = [v11 quantitySampleWithType:v12 quantity:v10 startDate:v13 endDate:v14 device:v15 metadata:v16];
+    v17 = [v11 quantitySampleWithType:v12 quantity:v10 startDate:date endDate:date2 device:device metadata:metadata];
   }
 
   else
@@ -1161,24 +1161,24 @@ LABEL_24:
   return v17;
 }
 
-- (id)_heartRateSampleWithBloodOxygenMeasurement:(uint64_t)a1
+- (id)_heartRateSampleWithBloodOxygenMeasurement:(uint64_t)measurement
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && ([v3 averageHeartRate], v5 > 0.0))
+  if (measurement && ([v3 averageHeartRate], v5 > 0.0))
   {
-    v6 = [MEMORY[0x277CCDAB0] countUnit];
-    v7 = [MEMORY[0x277CCDAB0] minuteUnit];
-    v8 = [v6 unitDividedByUnit:v7];
+    countUnit = [MEMORY[0x277CCDAB0] countUnit];
+    minuteUnit = [MEMORY[0x277CCDAB0] minuteUnit];
+    v8 = [countUnit unitDividedByUnit:minuteUnit];
 
     v9 = MEMORY[0x277CCD7E8];
     [v4 averageHeartRate];
     v11 = [v9 quantityWithUnit:v8 doubleValue:v10];
     v12 = MEMORY[0x277CCD800];
     v13 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCB90]];
-    v14 = [v4 date];
-    v15 = [v4 date];
-    v16 = [v12 quantitySampleWithType:v13 quantity:v11 startDate:v14 endDate:v15];
+    date = [v4 date];
+    date2 = [v4 date];
+    v16 = [v12 quantitySampleWithType:v13 quantity:v11 startDate:date endDate:date2];
   }
 
   else

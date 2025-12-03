@@ -1,45 +1,45 @@
 @interface VNDetectionprintGenerator
-+ (id)_inferenceNetworkDescriptorForConfigurationOptions:(id)a3 error:(id *)a4;
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3;
-+ (id)espressoModelPathForConfigurationOptions:(id)a3 error:(id *)a4;
-+ (unsigned)networkRequiredInputImagePixelFormatForConfigurationOptions:(id)a3;
-+ (void)fullyPopulateConfigurationOptions:(id)a3;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)_inferenceNetworkDescriptorForConfigurationOptions:(id)options error:(id *)error;
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options;
++ (id)espressoModelPathForConfigurationOptions:(id)options error:(id *)error;
++ (unsigned)networkRequiredInputImagePixelFormatForConfigurationOptions:(id)options;
++ (void)fullyPopulateConfigurationOptions:(id)options;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNDetectionprintGenerator
 
-+ (unsigned)networkRequiredInputImagePixelFormatForConfigurationOptions:(id)a3
++ (unsigned)networkRequiredInputImagePixelFormatForConfigurationOptions:(id)options
 {
-  v3 = [a1 _inferenceNetworkDescriptorForConfigurationOptions:a3 error:0];
-  v4 = [v3 onlyInputImage];
-  v5 = [v4 pixelFormatType];
+  v3 = [self _inferenceNetworkDescriptorForConfigurationOptions:options error:0];
+  onlyInputImage = [v3 onlyInputImage];
+  pixelFormatType = [onlyInputImage pixelFormatType];
 
-  return v5;
+  return pixelFormatType;
 }
 
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options
 {
-  v3 = [a1 _inferenceNetworkDescriptorForConfigurationOptions:a3 error:0];
-  v4 = [v3 onlyInputImage];
-  v5 = [v4 name];
+  v3 = [self _inferenceNetworkDescriptorForConfigurationOptions:options error:0];
+  onlyInputImage = [v3 onlyInputImage];
+  name = [onlyInputImage name];
 
-  return v5;
+  return name;
 }
 
-+ (id)espressoModelPathForConfigurationOptions:(id)a3 error:(id *)a4
++ (id)espressoModelPathForConfigurationOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [VNValidationUtilities computeDeviceForKey:@"VNDetectorInternalOption_ModelComputeDevice" inOptions:v6 error:a4];
+  optionsCopy = options;
+  v7 = [VNValidationUtilities computeDeviceForKey:@"VNDetectorInternalOption_ModelComputeDevice" inOptions:optionsCopy error:error];
   if (v7)
   {
-    v8 = [a1 _inferenceNetworkDescriptorForConfigurationOptions:v6 error:a4];
+    v8 = [self _inferenceNetworkDescriptorForConfigurationOptions:optionsCopy error:error];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 modelPathForComputeDevice:v7 error:a4];
+      v10 = [v8 modelPathForComputeDevice:v7 error:error];
     }
 
     else
@@ -56,24 +56,24 @@
   return v10;
 }
 
-+ (void)fullyPopulateConfigurationOptions:(id)a3
++ (void)fullyPopulateConfigurationOptions:(id)options
 {
-  v4 = a3;
-  v8.receiver = a1;
+  optionsCopy = options;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___VNDetectionprintGenerator;
-  objc_msgSendSuper2(&v8, sel_fullyPopulateConfigurationOptions_, v4);
-  v5 = [a1 _inferenceNetworkDescriptorForConfigurationOptions:v4 error:0];
-  v6 = [v5 allInputNames];
-  [v4 setObject:v6 forKeyedSubscript:@"VNEspressoModelFileBasedDetectorOption_InputBlobNames"];
+  objc_msgSendSuper2(&v8, sel_fullyPopulateConfigurationOptions_, optionsCopy);
+  v5 = [self _inferenceNetworkDescriptorForConfigurationOptions:optionsCopy error:0];
+  allInputNames = [v5 allInputNames];
+  [optionsCopy setObject:allInputNames forKeyedSubscript:@"VNEspressoModelFileBasedDetectorOption_InputBlobNames"];
 
-  v7 = [v5 allOutputNames];
-  [v4 setObject:v7 forKeyedSubscript:@"VNEspressoModelFileBasedDetectorOption_OutputBlobNames"];
+  allOutputNames = [v5 allOutputNames];
+  [optionsCopy setObject:allOutputNames forKeyedSubscript:@"VNEspressoModelFileBasedDetectorOption_OutputBlobNames"];
 }
 
-+ (id)_inferenceNetworkDescriptorForConfigurationOptions:(id)a3 error:(id *)a4
++ (id)_inferenceNetworkDescriptorForConfigurationOptions:(id)options error:(id *)error
 {
-  v5 = a3;
-  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:v5 error:a4];
+  optionsCopy = options;
+  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (!v6)
   {
     goto LABEL_7;
@@ -81,14 +81,14 @@
 
   if ([v6 specifiesRequestClass:objc_opt_class()] && objc_msgSend(v6, "requestRevision") == 1)
   {
-    v7 = [VNDetectionprintInferenceNetworkDescriptor sceneNetV3BasedNetworkAndReturnError:a4];
+    v7 = [VNDetectionprintInferenceNetworkDescriptor sceneNetV3BasedNetworkAndReturnError:error];
     goto LABEL_8;
   }
 
-  if (a4)
+  if (error)
   {
     [VNError errorForUnsupportedRequestSpecifier:v6];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else
@@ -102,29 +102,29 @@ LABEL_8:
   return v7;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
   v82 = *MEMORY[0x1E69E9840];
-  v13 = a5;
-  v53 = a7;
-  v54 = a9;
-  v52 = v13;
-  v55 = [VNValidationUtilities originatingRequestSpecifierInOptions:v13 error:a8];
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v52 = optionsCopy;
+  v55 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (v55)
   {
-    v51 = [(VNEspressoModelFileBasedDetector *)self espressoResources];
-    [v51 network];
-    v50 = [(VNDetectionprintInferenceNetworkDescriptor *)self->_inferenceNetworkDescriptor onlyInputImage];
-    v14 = [v50 name];
-    [v14 UTF8String];
+    espressoResources = [(VNEspressoModelFileBasedDetector *)self espressoResources];
+    [espressoResources network];
+    onlyInputImage = [(VNDetectionprintInferenceNetworkDescriptor *)self->_inferenceNetworkDescriptor onlyInputImage];
+    name = [onlyInputImage name];
+    [name UTF8String];
     v15 = espresso_network_bind_input_cvpixelbuffer();
 
     if (v15)
     {
-      if (a8)
+      if (error)
       {
         [VNError errorForEspressoReturnStatus:v15 localizedDescription:@"Could not bind input image buffer"];
-        *a8 = v16 = 0;
+        *error = v16 = 0;
       }
 
       else
@@ -142,8 +142,8 @@ LABEL_8:
       v73 = 0u;
       v74 = 0u;
       v49 = v75 = 0u;
-      v17 = [v49 allValues];
-      v18 = [v17 countByEnumeratingWithState:&v72 objects:v81 count:16];
+      allValues = [v49 allValues];
+      v18 = [allValues countByEnumeratingWithState:&v72 objects:v81 count:16];
       if (v18)
       {
         v19 = *v73;
@@ -153,7 +153,7 @@ LABEL_8:
           {
             if (*v73 != v19)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(allValues);
             }
 
             v21 = *(*(&v72 + 1) + 8 * i);
@@ -173,10 +173,10 @@ LABEL_8:
             v23 = espresso_network_bind_buffer();
             if (v23)
             {
-              if (a8)
+              if (error)
               {
                 v34 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Could not bind output %@", v21];
-                *a8 = [VNError errorForEspressoReturnStatus:v23 localizedDescription:v34];
+                *error = [VNError errorForEspressoReturnStatus:v23 localizedDescription:v34];
               }
 
               goto LABEL_21;
@@ -206,7 +206,7 @@ LABEL_8:
             *(v24 + 7) = v25;
           }
 
-          v18 = [v17 countByEnumeratingWithState:&v72 objects:v81 count:16];
+          v18 = [allValues countByEnumeratingWithState:&v72 objects:v81 count:16];
           if (v18)
           {
             continue;
@@ -216,14 +216,14 @@ LABEL_8:
         }
       }
 
-      [v51 plan];
+      [espressoResources plan];
       v33 = espresso_plan_execute_sync();
       if (v33)
       {
-        if (a8)
+        if (error)
         {
           [VNError errorForEspressoReturnStatus:v33 localizedDescription:@"Could not run network"];
-          *a8 = v16 = 0;
+          *error = v16 = 0;
         }
 
         else
@@ -274,7 +274,7 @@ LABEL_21:
               v61 = *(v43 + 3);
               v62 = v47;
               v63 = *(v43 + 7);
-              v48 = [VNDetectionprintTensor tensorFromEspressoBuffer:&v61 originatingRequestSpecifier:v55 error:a8];
+              v48 = [VNDetectionprintTensor tensorFromEspressoBuffer:&v61 originatingRequestSpecifier:v55 error:error];
               if (!v48)
               {
                 v16 = 0;
@@ -313,26 +313,26 @@ LABEL_37:
   return v16;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a4;
-  v18 = a6;
-  v19 = [(VNDetector *)self validatedImageBufferFromOptions:v17 error:a8];
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  v19 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v20 = v19;
   if (v19)
   {
-    v21 = [v19 width];
-    v22 = [v20 height];
-    v23 = [(VNDetectionprintInferenceNetworkDescriptor *)self->_inferenceNetworkDescriptor onlyInputImage];
-    v24 = [v23 pixelWidth];
-    v25 = [v23 pixelHeight];
-    v26 = v25;
-    v27 = width * v21;
-    v28 = height * v22;
+    width = [v19 width];
+    height = [v20 height];
+    onlyInputImage = [(VNDetectionprintInferenceNetworkDescriptor *)self->_inferenceNetworkDescriptor onlyInputImage];
+    pixelWidth = [onlyInputImage pixelWidth];
+    pixelHeight = [onlyInputImage pixelHeight];
+    v26 = pixelHeight;
+    v27 = width * width;
+    v28 = height * height;
     if (v27 >= v28)
     {
       v29 = v28;
@@ -343,24 +343,24 @@ LABEL_37:
       v29 = v27;
     }
 
-    if (v24 >= v25)
+    if (pixelWidth >= pixelHeight)
     {
-      v30 = v25;
+      v30 = pixelHeight;
     }
 
     else
     {
-      v30 = v24;
+      v30 = pixelWidth;
     }
 
     if (v29 < v30)
     {
-      VNRecordImageTooSmallWarningWithImageMinimumShortDimension(v18, v30);
+      VNRecordImageTooSmallWarningWithImageMinimumShortDimension(recorderCopy, v30);
     }
 
-    [v17 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
-    v31 = [v20 croppedBufferWithWidth:v24 height:v26 format:objc_msgSend(v23 cropRect:"pixelFormatType") options:v17 error:{a8, x * v21, y * v22, v27, v28}];
-    *a7 = v31;
+    [optionsCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
+    v31 = [v20 croppedBufferWithWidth:pixelWidth height:v26 format:objc_msgSend(onlyInputImage cropRect:"pixelFormatType") options:optionsCopy error:{error, x * width, y * height, v27, v28}];
+    *buffer = v31;
     v32 = v31 != 0;
   }
 
@@ -372,17 +372,17 @@ LABEL_37:
   return v32;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v11.receiver = self;
   v11.super_class = VNDetectionprintGenerator;
-  if (![(VNEspressoModelFileBasedDetector *)&v11 completeInitializationForSession:a3 error:?])
+  if (![(VNEspressoModelFileBasedDetector *)&v11 completeInitializationForSession:session error:?])
   {
     return 0;
   }
 
-  v6 = [(VNDetector *)self configurationOptions];
-  v7 = [objc_opt_class() _inferenceNetworkDescriptorForConfigurationOptions:v6 error:a4];
+  configurationOptions = [(VNDetector *)self configurationOptions];
+  v7 = [objc_opt_class() _inferenceNetworkDescriptorForConfigurationOptions:configurationOptions error:error];
   inferenceNetworkDescriptor = self->_inferenceNetworkDescriptor;
   self->_inferenceNetworkDescriptor = v7;
 

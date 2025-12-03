@@ -1,11 +1,11 @@
 @interface CSAttSiriMagusSupportedPolicy
-+ (BOOL)_isInputOriginSupportedByContinuousConversation:(id)a3;
++ (BOOL)_isInputOriginSupportedByContinuousConversation:(id)conversation;
 + (BOOL)isCurrentlyInActiveCall;
 + (BOOL)isCurrentlyInSplitterState;
 + (CSAttSiriMagusSupportedPolicy)sharedInstance;
 + (void)initialize;
-- (BOOL)isMagusSupportedWithInputOrigin:(id)a3 recordRoute:(id)a4 playbackRoute:(id)a5;
-- (void)_updateWithAsset:(id)a3;
+- (BOOL)isMagusSupportedWithInputOrigin:(id)origin recordRoute:(id)route playbackRoute:(id)playbackRoute;
+- (void)_updateWithAsset:(id)asset;
 - (void)start;
 @end
 
@@ -14,26 +14,26 @@
 + (BOOL)isCurrentlyInSplitterState
 {
   v2 = +[CSBluetoothWirelessSplitterMonitor sharedInstance];
-  v3 = [v2 splitterState];
+  splitterState = [v2 splitterState];
 
-  return v3 > 1;
+  return splitterState > 1;
 }
 
 + (BOOL)isCurrentlyInActiveCall
 {
   v2 = +[CSPhoneCallStateMonitorFactory phoneCallStateMonitor];
-  v3 = [v2 phoneCallState];
+  phoneCallState = [v2 phoneCallState];
 
-  return (v3 - 2) < 3;
+  return (phoneCallState - 2) < 3;
 }
 
-- (void)_updateWithAsset:(id)a3
+- (void)_updateWithAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = +[CSUtils isContinuousConversationSupported];
-  v6 = [v4 isMagusSupported];
+  isMagusSupported = [assetCopy isMagusSupported];
 
-  self->_isAssetMagusSupported = v5 & v6;
+  self->_isAssetMagusSupported = v5 & isMagusSupported;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -42,7 +42,7 @@
     v10 = 1024;
     v11 = v5;
     v12 = 1024;
-    v13 = v6 & 1;
+    v13 = isMagusSupported & 1;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s DeviceSupport %d AssetSupport %d", &v8, 0x18u);
   }
 }
@@ -72,26 +72,26 @@
   }
 }
 
-- (BOOL)isMagusSupportedWithInputOrigin:(id)a3 recordRoute:(id)a4 playbackRoute:(id)a5
+- (BOOL)isMagusSupportedWithInputOrigin:(id)origin recordRoute:(id)route playbackRoute:(id)playbackRoute
 {
-  v8 = a5;
-  v9 = a4;
-  LOBYTE(a3) = [(CSAttSiriMagusSupportedPolicy *)self _isMagusSupportedWithRecordRoute:v9 playbackRoute:v8 isInSplitterMode:+[CSAttSiriMagusSupportedPolicy isCurrentlyInSplitterState](CSAttSiriMagusSupportedPolicy isInActiveCall:"isCurrentlyInSplitterState") isSupportedRequestType:+[CSAttSiriMagusSupportedPolicy audioSessionId:"isCurrentlyInActiveCall"]recordDeviceInfo:[CSAttSiriMagusSupportedPolicy _isInputOriginSupportedByContinuousConversation:a3], 0, 0];
+  playbackRouteCopy = playbackRoute;
+  routeCopy = route;
+  LOBYTE(origin) = [(CSAttSiriMagusSupportedPolicy *)self _isMagusSupportedWithRecordRoute:routeCopy playbackRoute:playbackRouteCopy isInSplitterMode:+[CSAttSiriMagusSupportedPolicy isCurrentlyInSplitterState](CSAttSiriMagusSupportedPolicy isInActiveCall:"isCurrentlyInSplitterState") isSupportedRequestType:+[CSAttSiriMagusSupportedPolicy audioSessionId:"isCurrentlyInActiveCall"]recordDeviceInfo:[CSAttSiriMagusSupportedPolicy _isInputOriginSupportedByContinuousConversation:origin], 0, 0];
 
-  return a3;
+  return origin;
 }
 
-+ (BOOL)_isInputOriginSupportedByContinuousConversation:(id)a3
++ (BOOL)_isInputOriginSupportedByContinuousConversation:(id)conversation
 {
-  v3 = a3;
-  if ([v3 isEqualToString:SAInputOriginHomeButtonValue] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", SAInputOriginRemoteButtonValue) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", SAInputOriginAssistantSpeechButtonValue) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", SAInputOriginVoiceTriggerValue) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", SAInputOriginServerGeneratedValue) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", SAInputOriginMagusFollowupValue))
+  conversationCopy = conversation;
+  if ([conversationCopy isEqualToString:SAInputOriginHomeButtonValue] & 1) != 0 || (objc_msgSend(conversationCopy, "isEqualToString:", SAInputOriginRemoteButtonValue) & 1) != 0 || (objc_msgSend(conversationCopy, "isEqualToString:", SAInputOriginAssistantSpeechButtonValue) & 1) != 0 || (objc_msgSend(conversationCopy, "isEqualToString:", SAInputOriginVoiceTriggerValue) & 1) != 0 || (objc_msgSend(conversationCopy, "isEqualToString:", SAInputOriginServerGeneratedValue) & 1) != 0 || (objc_msgSend(conversationCopy, "isEqualToString:", SAInputOriginMagusFollowupValue))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:SAInputOriginClientGeneratedValue];
+    v4 = [conversationCopy isEqualToString:SAInputOriginClientGeneratedValue];
   }
 
   return v4;

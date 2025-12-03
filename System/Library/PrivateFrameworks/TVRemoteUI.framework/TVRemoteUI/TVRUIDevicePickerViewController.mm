@@ -2,7 +2,7 @@
 - (BOOL)_accessibilityFontSizesEnabled;
 - (BOOL)canPresentTip;
 - (BOOL)tipSourceSupportsSiri;
-- (CGRect)_preferredTableViewFrameWhenExpanded:(BOOL)a3;
+- (CGRect)_preferredTableViewFrameWhenExpanded:(BOOL)expanded;
 - (CGRect)tipSourceRect;
 - (CGSize)_buttonSize;
 - (TVRUIDevicePickerDelegate)delegate;
@@ -14,15 +14,15 @@
 - (double)_defaultCalculatedContentHeight;
 - (double)_effectiveContentHeight;
 - (double)_expandedContentHeight;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_cellForDevice:(id)a3;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_cellForDevice:(id)device;
 - (id)_devicesMenu;
 - (id)_lastVisibleCellSupportingFindMy;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_buttonPressed:(id)a3;
-- (void)_buttonReleased:(id)a3;
-- (void)_device:(id)a3 updatedFindMySupported:(BOOL)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_buttonPressed:(id)pressed;
+- (void)_buttonReleased:(id)released;
+- (void)_device:(id)_device updatedFindMySupported:(BOOL)supported;
 - (void)_presentShortcutsMenuPopover;
 - (void)_setupAnimators;
 - (void)_setupButtons;
@@ -30,30 +30,30 @@
 - (void)_setupDeviceTitleView;
 - (void)_setupTitleButtonIfNeeded;
 - (void)_sortAndReloadDevices;
-- (void)_titleWasLongPressed:(id)a3;
+- (void)_titleWasLongPressed:(id)pressed;
 - (void)_toggleState;
 - (void)_updateButtonsShapes;
 - (void)_updateDevice;
-- (void)_updateDeviceNameAutomationIdentifier:(id)a3;
-- (void)_updateDevicesAndReloadWithSuggestedDevices:(id)a3;
-- (void)_updateTableFrame:(BOOL)a3;
-- (void)_updateTitleViewForDevice:(id)a3;
+- (void)_updateDeviceNameAutomationIdentifier:(id)identifier;
+- (void)_updateDevicesAndReloadWithSuggestedDevices:(id)devices;
+- (void)_updateTableFrame:(BOOL)frame;
+- (void)_updateTitleViewForDevice:(id)device;
 - (void)_updateViewState;
 - (void)collapseDeviceList;
-- (void)didChangeToExpanded:(BOOL)a3;
-- (void)didTapWrapperView:(id)a3;
+- (void)didChangeToExpanded:(BOOL)expanded;
+- (void)didTapWrapperView:(id)view;
 - (void)expandDeviceList;
 - (void)loadView;
 - (void)resetSelectedDevice;
-- (void)setDevice:(id)a3;
-- (void)setDeviceTitle:(id)a3;
-- (void)setDevices:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setMenuProvider:(id)a3;
-- (void)setStyleProvider:(id)a3;
-- (void)setSuggestedDevices:(id)a3;
-- (void)setVolumeControlAvailable:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setDevice:(id)device;
+- (void)setDeviceTitle:(id)title;
+- (void)setDevices:(id)devices;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setMenuProvider:(id)provider;
+- (void)setStyleProvider:(id)provider;
+- (void)setSuggestedDevices:(id)devices;
+- (void)setVolumeControlAvailable:(BOOL)available;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -79,41 +79,41 @@
   v3 = objc_alloc_init(TVREventHaptic);
   [(TVRUIDevicePickerViewController *)self setEventHaptic:v3];
 
-  v4 = [(TVRUIDevicePickerViewController *)self titleButton];
-  v5 = [(TVRUIDevicePickerViewController *)self styleProvider];
-  v6 = [v5 defaultDeviceTitle];
-  [v4 setTitle:v6 forState:0];
+  titleButton = [(TVRUIDevicePickerViewController *)self titleButton];
+  styleProvider = [(TVRUIDevicePickerViewController *)self styleProvider];
+  defaultDeviceTitle = [styleProvider defaultDeviceTitle];
+  [titleButton setTitle:defaultDeviceTitle forState:0];
 
-  v7 = [(TVRUIDevicePickerViewController *)self styleProvider];
-  LODWORD(v5) = [v7 isPad];
+  styleProvider2 = [(TVRUIDevicePickerViewController *)self styleProvider];
+  LODWORD(styleProvider) = [styleProvider2 isPad];
 
-  if (v5)
+  if (styleProvider)
   {
-    v8 = [(TVRUIDevicePickerViewController *)self view];
-    [v8 setClipsToBounds:1];
+    view = [(TVRUIDevicePickerViewController *)self view];
+    [view setClipsToBounds:1];
   }
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(TVRUIDevicePickerViewController *)self useNewDevicePicker];
+  useNewDevicePicker = [(TVRUIDevicePickerViewController *)self useNewDevicePicker];
   v4 = _UISolariumEnabled();
-  v5 = [(TVRUIDevicePickerViewController *)self view];
-  [v5 bounds];
+  view = [(TVRUIDevicePickerViewController *)self view];
+  [view bounds];
   v94 = v7;
   v95 = v6;
   v93 = v8;
   v96 = v9;
 
-  v10 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
-  [v10 bounds];
+  deviceTitleView = [(TVRUIDevicePickerViewController *)self deviceTitleView];
+  [deviceTitleView bounds];
   v99 = v12;
   v100 = v11;
   v97 = v13;
   v98 = v14;
 
-  v15 = [(TVRUIDevicePickerViewController *)self styleProvider];
-  [v15 topControlPanelInsets];
+  styleProvider = [(TVRUIDevicePickerViewController *)self styleProvider];
+  [styleProvider topControlPanelInsets];
   v17 = v16;
   v19 = v18;
 
@@ -122,127 +122,127 @@
   v23 = v22;
   if (v4 && ![(TVRUIDevicePickerViewController *)self isDevicePickerShowing])
   {
-    v24 = [(TVRUIDevicePickerViewController *)self muteButton];
+    muteButton = [(TVRUIDevicePickerViewController *)self muteButton];
     v91 = *(MEMORY[0x277CBF2C0] + 16);
     *&v106.a = *MEMORY[0x277CBF2C0];
     v92 = *&v106.a;
     *&v106.c = v91;
     *&v106.tx = *(MEMORY[0x277CBF2C0] + 32);
     v90 = *&v106.tx;
-    [v24 setTransform:&v106];
+    [muteButton setTransform:&v106];
 
-    v25 = [(TVRUIDevicePickerViewController *)self muteButtonOverride];
+    muteButtonOverride = [(TVRUIDevicePickerViewController *)self muteButtonOverride];
     *&v106.a = v92;
     *&v106.c = v91;
     *&v106.tx = v90;
-    [v25 setTransform:&v106];
+    [muteButtonOverride setTransform:&v106];
 
-    v26 = [(TVRUIDevicePickerViewController *)self powerButton];
+    powerButton = [(TVRUIDevicePickerViewController *)self powerButton];
     *&v106.a = v92;
     *&v106.c = v91;
     *&v106.tx = v90;
-    [v26 setTransform:&v106];
+    [powerButton setTransform:&v106];
   }
 
-  if (v3)
+  if (useNewDevicePicker)
   {
-    v27 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
-    [v27 frame];
+    deviceTitleView2 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
+    [deviceTitleView2 frame];
     v29 = v28;
     v31 = v30;
     v32 = v19;
     v34 = v33;
     v36 = v35;
-    v37 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
+    tableViewWrapper = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
     v38 = v34;
     v19 = v32;
-    [v37 setCollapsedGlassBackgroundFrame:{v29, v31, v38, v36}];
+    [tableViewWrapper setCollapsedGlassBackgroundFrame:{v29, v31, v38, v36}];
 
-    v39 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
-    [v39 setShowsGlassBackground:1];
+    tableViewWrapper2 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
+    [tableViewWrapper2 setShowsGlassBackground:1];
   }
 
   v40 = self->_baseHeight * 0.5 - v23 * 0.5;
-  v41 = [(TVRUIDevicePickerViewController *)self muteButton];
+  muteButton2 = [(TVRUIDevicePickerViewController *)self muteButton];
   v42 = v21;
-  [v41 setFrame:{v17, v40, v21, v23}];
+  [muteButton2 setFrame:{v17, v40, v21, v23}];
 
-  v43 = [(TVRUIDevicePickerViewController *)self muteButtonOverride];
-  [v43 setFrame:{v17, v40, v21, v23}];
+  muteButtonOverride2 = [(TVRUIDevicePickerViewController *)self muteButtonOverride];
+  [muteButtonOverride2 setFrame:{v17, v40, v21, v23}];
 
-  v44 = [(TVRUIDevicePickerViewController *)self view];
-  [v44 bounds];
+  view2 = [(TVRUIDevicePickerViewController *)self view];
+  [view2 bounds];
   v45 = CGRectGetMaxX(v107) - v19 - v21;
   v108.origin.x = v100;
   v108.origin.y = v97;
   v108.size.width = v99;
   v108.size.height = v98;
   v46 = CGRectGetMidY(v108) - v23 * 0.5;
-  v47 = [(TVRUIDevicePickerViewController *)self powerButton];
-  [v47 setFrame:{v45, v46, v42, v23}];
+  powerButton2 = [(TVRUIDevicePickerViewController *)self powerButton];
+  [powerButton2 setFrame:{v45, v46, v42, v23}];
 
-  v48 = [(TVRUIDevicePickerViewController *)self powerButton];
-  [v48 frame];
+  powerButton3 = [(TVRUIDevicePickerViewController *)self powerButton];
+  [powerButton3 frame];
   v49 = CGRectGetMinX(v109) + -10.0;
-  v50 = [(TVRUIDevicePickerViewController *)self muteButton];
-  [v50 frame];
+  muteButton3 = [(TVRUIDevicePickerViewController *)self muteButton];
+  [muteButton3 frame];
   v51 = v49 - (CGRectGetMaxX(v110) + 10.0);
 
-  v52 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
-  v53 = [(TVRUIDevicePickerViewController *)self muteButton];
-  [v53 frame];
-  [v52 setFrame:{CGRectGetMaxX(v111) + 10.0, 0.0, v51, self->_baseHeight}];
+  deviceTitleView3 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
+  muteButton4 = [(TVRUIDevicePickerViewController *)self muteButton];
+  [muteButton4 frame];
+  [deviceTitleView3 setFrame:{CGRectGetMaxX(v111) + 10.0, 0.0, v51, self->_baseHeight}];
 
-  v54 = [(TVRUIDevicePickerViewController *)self tableViewTopSeperator];
-  v55 = [(TVRUIDevicePickerViewController *)self styleProvider];
-  [v55 touchpadInsets];
+  tableViewTopSeperator = [(TVRUIDevicePickerViewController *)self tableViewTopSeperator];
+  styleProvider2 = [(TVRUIDevicePickerViewController *)self styleProvider];
+  [styleProvider2 touchpadInsets];
   v57 = v56;
   v112.origin.x = v100;
   v112.origin.y = v97;
   v112.size.width = v99;
   v112.size.height = v98;
   Height = CGRectGetHeight(v112);
-  v59 = [(TVRUIDevicePickerViewController *)self view];
-  [v59 bounds];
+  view3 = [(TVRUIDevicePickerViewController *)self view];
+  [view3 bounds];
   Width = CGRectGetWidth(v113);
-  v61 = [(TVRUIDevicePickerViewController *)self styleProvider];
-  [v61 touchpadInsets];
+  styleProvider3 = [(TVRUIDevicePickerViewController *)self styleProvider];
+  [styleProvider3 touchpadInsets];
   v63 = Width - v62;
-  v64 = [(TVRUIDevicePickerViewController *)self styleProvider];
-  [v64 touchpadInsets];
-  [v54 setFrame:{v57, Height, v63 - v65, 1.0}];
+  styleProvider4 = [(TVRUIDevicePickerViewController *)self styleProvider];
+  [styleProvider4 touchpadInsets];
+  [tableViewTopSeperator setFrame:{v57, Height, v63 - v65, 1.0}];
 
-  v66 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
+  tableViewWrapper3 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
   v114.origin.x = v100;
   v114.origin.y = v97;
   v114.size.width = v99;
   v114.size.height = v98;
   v67 = CGRectGetMaxY(v114) + 2.0;
-  v68 = [(TVRUIDevicePickerViewController *)self view];
-  [v68 bounds];
+  view4 = [(TVRUIDevicePickerViewController *)self view];
+  [view4 bounds];
   v69 = CGRectGetWidth(v115);
-  v70 = [(TVRUIDevicePickerViewController *)self view];
-  [v70 bounds];
+  view5 = [(TVRUIDevicePickerViewController *)self view];
+  [view5 bounds];
   v71 = CGRectGetHeight(v116);
   v117.origin.x = v100;
   v117.origin.y = v97;
   v117.size.width = v99;
   v117.size.height = v98;
   v72 = v71 - CGRectGetHeight(v117) + -2.0;
-  v73 = [(TVRUIDevicePickerViewController *)self view];
-  [v73 safeAreaInsets];
-  [v66 setFrame:{0.0, v67, v69, v72 - v74}];
+  view6 = [(TVRUIDevicePickerViewController *)self view];
+  [view6 safeAreaInsets];
+  [tableViewWrapper3 setFrame:{0.0, v67, v69, v72 - v74}];
 
-  if (v3)
+  if (useNewDevicePicker)
   {
-    v75 = [(TVRUIDevicePickerViewController *)self view];
-    [v75 bounds];
+    view7 = [(TVRUIDevicePickerViewController *)self view];
+    [view7 bounds];
     v77 = v76;
     v79 = v78;
     v81 = v80;
     v83 = v82;
-    v84 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
-    [v84 setFrame:{v77, v79, v81, v83}];
+    tableViewWrapper4 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
+    [tableViewWrapper4 setFrame:{v77, v79, v81, v83}];
   }
 
   if (v4)
@@ -264,19 +264,19 @@
       v86 = CGRectGetWidth(v119);
       CGAffineTransformMakeTranslation(&v105, v86 * 0.5, 0.0);
       v104 = v106;
-      v87 = [(TVRUIDevicePickerViewController *)self muteButton];
+      muteButton5 = [(TVRUIDevicePickerViewController *)self muteButton];
       v103 = v104;
-      [v87 setTransform:&v103];
+      [muteButton5 setTransform:&v103];
 
       v102 = v106;
-      v88 = [(TVRUIDevicePickerViewController *)self muteButtonOverride];
+      muteButtonOverride3 = [(TVRUIDevicePickerViewController *)self muteButtonOverride];
       v103 = v102;
-      [v88 setTransform:&v103];
+      [muteButtonOverride3 setTransform:&v103];
 
       v101 = v105;
-      v89 = [(TVRUIDevicePickerViewController *)self powerButton];
+      powerButton4 = [(TVRUIDevicePickerViewController *)self powerButton];
       v103 = v101;
-      [v89 setTransform:&v103];
+      [powerButton4 setTransform:&v103];
     }
   }
 }
@@ -309,10 +309,10 @@
   v4 = [[TVRUIButton alloc] initWithType:30 hasTapAction:0];
   [(TVRUIDevicePickerViewController *)self setPowerButton:v4];
 
-  v5 = [(TVRUIDevicePickerViewController *)self muteButton];
-  v43[0] = v5;
-  v6 = [(TVRUIDevicePickerViewController *)self powerButton];
-  v43[1] = v6;
+  muteButton = [(TVRUIDevicePickerViewController *)self muteButton];
+  v43[0] = muteButton;
+  powerButton = [(TVRUIDevicePickerViewController *)self powerButton];
+  v43[1] = powerButton;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:2];
   [(TVRUIDevicePickerViewController *)self setButtons:v7];
 
@@ -321,8 +321,8 @@
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v8 = [(TVRUIDevicePickerViewController *)self buttons];
-  v9 = [v8 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  buttons = [(TVRUIDevicePickerViewController *)self buttons];
+  v9 = [buttons countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v9)
   {
     v10 = *v39;
@@ -332,18 +332,18 @@
       {
         if (*v39 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(buttons);
         }
 
         v12 = *(*(&v38 + 1) + 8 * i);
-        v13 = [(TVRUIDevicePickerViewController *)self view];
-        [v13 addSubview:v12];
+        view = [(TVRUIDevicePickerViewController *)self view];
+        [view addSubview:v12];
 
         [v12 addTarget:self action:sel__buttonPressed_ forControlEvents:1];
         [v12 addTarget:self action:sel__buttonReleased_ forControlEvents:448];
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v9 = [buttons countByEnumeratingWithState:&v38 objects:v42 count:16];
     }
 
     while (v9);
@@ -359,8 +359,8 @@
     }
 
     v15 = v14;
-    v16 = [(TVRUIDevicePickerViewController *)self styleProvider];
-    v17 = [v16 symbolImageForButtonPanelNamed:v15];
+    styleProvider = [(TVRUIDevicePickerViewController *)self styleProvider];
+    v17 = [styleProvider symbolImageForButtonPanelNamed:v15];
 
     v18 = MEMORY[0x277D750C8];
     v35[0] = MEMORY[0x277D85DD0];
@@ -371,21 +371,21 @@
     v19 = [v18 actionWithTitle:&stru_287E6AEF8 image:v17 identifier:0 handler:v35];
     if (v33)
     {
-      v20 = [MEMORY[0x277D75230] borderedButtonConfiguration];
-      [v20 setCornerStyle:4];
-      v21 = [v20 background];
-      [v21 setBackgroundColor:0];
+      borderedButtonConfiguration = [MEMORY[0x277D75230] borderedButtonConfiguration];
+      [borderedButtonConfiguration setCornerStyle:4];
+      background = [borderedButtonConfiguration background];
+      [background setBackgroundColor:0];
     }
 
     else
     {
-      v20 = [MEMORY[0x277D75230] plainButtonConfiguration];
+      borderedButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
     }
 
-    v22 = [MEMORY[0x277D75220] buttonWithConfiguration:v20 primaryAction:v19];
-    v23 = [(TVRUIDevicePickerViewController *)self styleProvider];
-    v24 = [v23 primaryTextAndGlyphColor];
-    [(UIButton *)v22 setTintColor:v24];
+    v22 = [MEMORY[0x277D75220] buttonWithConfiguration:borderedButtonConfiguration primaryAction:v19];
+    styleProvider2 = [(TVRUIDevicePickerViewController *)self styleProvider];
+    primaryTextAndGlyphColor = [styleProvider2 primaryTextAndGlyphColor];
+    [(UIButton *)v22 setTintColor:primaryTextAndGlyphColor];
 
     [(UIButton *)v22 setShowsMenuAsPrimaryAction:1];
     [(UIButton *)v22 setOverrideUserInterfaceStyle:2];
@@ -395,31 +395,31 @@
       [(UIButton *)v22 tvrui_setGlassBackground];
     }
 
-    v25 = [(TVRUIDevicePickerViewController *)self view];
-    [v25 addSubview:v22];
+    view2 = [(TVRUIDevicePickerViewController *)self view];
+    [view2 addSubview:v22];
 
     objc_destroyWeak(&v36);
     muteButtonOverride = self->_muteButtonOverride;
     self->_muteButtonOverride = v22;
 
-    v27 = [(TVRUIDevicePickerViewController *)self muteButton];
-    [v27 setHidden:1];
+    muteButton2 = [(TVRUIDevicePickerViewController *)self muteButton];
+    [muteButton2 setHidden:1];
 
-    v28 = [(TVRUIDevicePickerViewController *)self muteButton];
-    [v28 setAlpha:0.0];
+    muteButton3 = [(TVRUIDevicePickerViewController *)self muteButton];
+    [muteButton3 setAlpha:0.0];
 
     objc_destroyWeak(&location);
   }
 
-  v29 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v30 = *MEMORY[0x277D81C70];
-  v31 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __48__TVRUIDevicePickerViewController__setupButtons__block_invoke_2;
   v34[3] = &unk_279D88768;
   v34[4] = self;
-  v32 = [v29 addObserverForName:v30 object:0 queue:v31 usingBlock:v34];
+  v32 = [defaultCenter addObserverForName:v30 object:0 queue:mainQueue usingBlock:v34];
 }
 
 void __48__TVRUIDevicePickerViewController__setupButtons__block_invoke(uint64_t a1)
@@ -435,8 +435,8 @@ void __48__TVRUIDevicePickerViewController__setupButtons__block_invoke(uint64_t 
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(TVRUIDevicePickerViewController *)self buttons];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  buttons = [(TVRUIDevicePickerViewController *)self buttons];
+  v3 = [buttons countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -448,14 +448,14 @@ void __48__TVRUIDevicePickerViewController__setupButtons__block_invoke(uint64_t 
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(buttons);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) setHasButtonShape:_AXSButtonShapesEnabled() != 0];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [buttons countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -465,110 +465,110 @@ void __48__TVRUIDevicePickerViewController__setupButtons__block_invoke(uint64_t 
 - (void)_setupDeviceTitleView
 {
   v3 = _UISolariumEnabled();
-  v4 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
+  deviceTitleView = [(TVRUIDevicePickerViewController *)self deviceTitleView];
 
-  if (!v4)
+  if (!deviceTitleView)
   {
     v5 = [TVRUITitleView alloc];
-    v6 = [(TVRUIDevicePickerViewController *)self styleProvider];
-    v7 = [(TVRUITitleView *)v5 initWithStyleProvider:v6];
+    styleProvider = [(TVRUIDevicePickerViewController *)self styleProvider];
+    v7 = [(TVRUITitleView *)v5 initWithStyleProvider:styleProvider];
     [(TVRUIDevicePickerViewController *)self setDeviceTitleView:v7];
 
-    v8 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
-    [v8 setUserInteractionEnabled:1];
+    deviceTitleView2 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
+    [deviceTitleView2 setUserInteractionEnabled:1];
 
-    v9 = [(TVRUIDevicePickerViewController *)self view];
-    v10 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
-    [v9 addSubview:v10];
+    view = [(TVRUIDevicePickerViewController *)self view];
+    deviceTitleView3 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
+    [view addSubview:deviceTitleView3];
 
     v19 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__toggleState];
     [v19 setCancelsTouchesInView:0];
-    v11 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
-    [v11 addGestureRecognizer:v19];
+    deviceTitleView4 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
+    [deviceTitleView4 addGestureRecognizer:v19];
 
     v12 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel__titleWasLongPressed_];
     [v12 setMinimumPressDuration:1.2];
-    v13 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
-    [v13 addGestureRecognizer:v12];
+    deviceTitleView5 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
+    [deviceTitleView5 addGestureRecognizer:v12];
 
     if (v3)
     {
-      v14 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
-      [v14 tvrui_makeCapsuleCorners];
+      deviceTitleView6 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
+      [deviceTitleView6 tvrui_makeCapsuleCorners];
 
-      v15 = [(TVRUIDevicePickerViewController *)self styleProvider];
-      v16 = [v15 controlGlassVariant];
-      v17 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
-      [v17 _setBackground:v16];
+      styleProvider2 = [(TVRUIDevicePickerViewController *)self styleProvider];
+      controlGlassVariant = [styleProvider2 controlGlassVariant];
+      deviceTitleView7 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
+      [deviceTitleView7 _setBackground:controlGlassVariant];
 
-      v18 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
-      [v18 setBackgroundColor:0];
+      deviceTitleView8 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
+      [deviceTitleView8 setBackgroundColor:0];
     }
   }
 }
 
 - (void)_setupTitleButtonIfNeeded
 {
-  v3 = [(TVRUIDevicePickerViewController *)self titleButton];
+  titleButton = [(TVRUIDevicePickerViewController *)self titleButton];
 
-  if (!v3)
+  if (!titleButton)
   {
     v4 = [MEMORY[0x277D75220] buttonWithType:0];
     [(TVRUIDevicePickerViewController *)self setTitleButton:v4];
 
-    v5 = [(TVRUIDevicePickerViewController *)self titleButton];
-    v6 = [v5 titleLabel];
-    v7 = [(TVRUIDevicePickerViewController *)self styleProvider];
-    v8 = [v7 fontForDeviceTitle];
-    [v6 setFont:v8];
+    titleButton2 = [(TVRUIDevicePickerViewController *)self titleButton];
+    titleLabel = [titleButton2 titleLabel];
+    styleProvider = [(TVRUIDevicePickerViewController *)self styleProvider];
+    fontForDeviceTitle = [styleProvider fontForDeviceTitle];
+    [titleLabel setFont:fontForDeviceTitle];
 
-    v9 = [(TVRUIDevicePickerViewController *)self titleButton];
-    v10 = [v9 titleLabel];
-    [v10 setAdjustsFontForContentSizeCategory:1];
+    titleButton3 = [(TVRUIDevicePickerViewController *)self titleButton];
+    titleLabel2 = [titleButton3 titleLabel];
+    [titleLabel2 setAdjustsFontForContentSizeCategory:1];
 
-    v11 = [(TVRUIDevicePickerViewController *)self titleButton];
-    v12 = [v11 titleLabel];
-    [v12 setAdjustsFontSizeToFitWidth:1];
+    titleButton4 = [(TVRUIDevicePickerViewController *)self titleButton];
+    titleLabel3 = [titleButton4 titleLabel];
+    [titleLabel3 setAdjustsFontSizeToFitWidth:1];
 
-    v13 = [(TVRUIDevicePickerViewController *)self titleButton];
-    v14 = [v13 titleLabel];
-    v15 = [(TVRUIDevicePickerViewController *)self styleProvider];
-    v16 = [v15 textColorForDeviceTitle];
-    [v14 setTextColor:v16];
+    titleButton5 = [(TVRUIDevicePickerViewController *)self titleButton];
+    titleLabel4 = [titleButton5 titleLabel];
+    styleProvider2 = [(TVRUIDevicePickerViewController *)self styleProvider];
+    textColorForDeviceTitle = [styleProvider2 textColorForDeviceTitle];
+    [titleLabel4 setTextColor:textColorForDeviceTitle];
 
-    v17 = [(TVRUIDevicePickerViewController *)self titleButton];
-    v18 = [(TVRUIDevicePickerViewController *)self styleProvider];
-    v19 = [v18 primaryTextAndGlyphColor];
-    [v17 setTintColor:v19];
+    titleButton6 = [(TVRUIDevicePickerViewController *)self titleButton];
+    styleProvider3 = [(TVRUIDevicePickerViewController *)self styleProvider];
+    primaryTextAndGlyphColor = [styleProvider3 primaryTextAndGlyphColor];
+    [titleButton6 setTintColor:primaryTextAndGlyphColor];
 
-    v20 = [(TVRUIDevicePickerViewController *)self styleProvider];
-    v37 = [v20 chevronImage];
+    styleProvider4 = [(TVRUIDevicePickerViewController *)self styleProvider];
+    chevronImage = [styleProvider4 chevronImage];
 
-    v21 = [(TVRUIDevicePickerViewController *)self titleButton];
-    [v21 setImage:v37 forState:0];
+    titleButton7 = [(TVRUIDevicePickerViewController *)self titleButton];
+    [titleButton7 setImage:chevronImage forState:0];
 
-    v22 = [(TVRUIDevicePickerViewController *)self titleButton];
-    v23 = [v22 imageView];
-    [v23 setContentMode:1];
+    titleButton8 = [(TVRUIDevicePickerViewController *)self titleButton];
+    imageView = [titleButton8 imageView];
+    [imageView setContentMode:1];
 
-    v24 = [(TVRUIDevicePickerViewController *)self titleButton];
-    v25 = [v24 imageView];
-    v26 = [(TVRUIDevicePickerViewController *)self styleProvider];
-    v27 = [v26 tintColorForChevronImage];
-    [v25 setTintColor:v27];
+    titleButton9 = [(TVRUIDevicePickerViewController *)self titleButton];
+    imageView2 = [titleButton9 imageView];
+    styleProvider5 = [(TVRUIDevicePickerViewController *)self styleProvider];
+    tintColorForChevronImage = [styleProvider5 tintColorForChevronImage];
+    [imageView2 setTintColor:tintColorForChevronImage];
 
-    v28 = [(TVRUIDevicePickerViewController *)self titleButton];
-    [v28 addTarget:self action:sel__toggleState forControlEvents:64];
+    titleButton10 = [(TVRUIDevicePickerViewController *)self titleButton];
+    [titleButton10 addTarget:self action:sel__toggleState forControlEvents:64];
 
-    v29 = [(TVRUIDevicePickerViewController *)self titleButton];
-    [v29 setContentHorizontalAlignment:0];
+    titleButton11 = [(TVRUIDevicePickerViewController *)self titleButton];
+    [titleButton11 setContentHorizontalAlignment:0];
 
     v30 = MEMORY[0x277D75D18];
-    v31 = [(TVRUIDevicePickerViewController *)self view];
-    v32 = [v30 userInterfaceLayoutDirectionForSemanticContentAttribute:{objc_msgSend(v31, "semanticContentAttribute")}];
+    view = [(TVRUIDevicePickerViewController *)self view];
+    v32 = [v30 userInterfaceLayoutDirectionForSemanticContentAttribute:{objc_msgSend(view, "semanticContentAttribute")}];
 
-    v33 = [(TVRUIDevicePickerViewController *)self titleButton];
-    v34 = v33;
+    titleButton12 = [(TVRUIDevicePickerViewController *)self titleButton];
+    v34 = titleButton12;
     if (v32)
     {
       v35 = 3;
@@ -579,10 +579,10 @@ void __48__TVRUIDevicePickerViewController__setupButtons__block_invoke(uint64_t 
       v35 = 4;
     }
 
-    [v33 setSemanticContentAttribute:v35];
+    [titleButton12 setSemanticContentAttribute:v35];
 
-    v36 = [(TVRUIDevicePickerViewController *)self titleButton];
-    [v36 setPointerStyleProvider:&__block_literal_global_13];
+    titleButton13 = [(TVRUIDevicePickerViewController *)self titleButton];
+    [titleButton13 setPointerStyleProvider:&__block_literal_global_13];
   }
 }
 
@@ -622,26 +622,26 @@ id __60__TVRUIDevicePickerViewController__setupTitleButtonIfNeeded__block_invoke
   return v24;
 }
 
-- (void)_titleWasLongPressed:(id)a3
+- (void)_titleWasLongPressed:(id)pressed
 {
-  v5 = [(TVRUIDevicePickerViewController *)self delegate];
-  v4 = [(TVRUIDevicePickerViewController *)self device];
-  [v5 devicePickerTitleWasLongPressedForDevice:v4];
+  delegate = [(TVRUIDevicePickerViewController *)self delegate];
+  device = [(TVRUIDevicePickerViewController *)self device];
+  [delegate devicePickerTitleWasLongPressedForDevice:device];
 }
 
-- (void)setDeviceTitle:(id)a3
+- (void)setDeviceTitle:(id)title
 {
-  v5 = a3;
-  if (![(NSString *)self->_deviceTitle isEqualToString:v5])
+  titleCopy = title;
+  if (![(NSString *)self->_deviceTitle isEqualToString:titleCopy])
   {
-    objc_storeStrong(&self->_deviceTitle, a3);
+    objc_storeStrong(&self->_deviceTitle, title);
     v6 = MEMORY[0x277D75D18];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __50__TVRUIDevicePickerViewController_setDeviceTitle___block_invoke;
     v7[3] = &unk_279D88230;
     v7[4] = self;
-    v8 = v5;
+    v8 = titleCopy;
     [v6 performWithoutAnimation:v7];
   }
 }
@@ -655,9 +655,9 @@ void __50__TVRUIDevicePickerViewController_setDeviceTitle___block_invoke(uint64_
   [v3 layoutIfNeeded];
 }
 
-- (void)setMenuProvider:(id)a3
+- (void)setMenuProvider:(id)provider
 {
-  objc_storeWeak(&self->_menuProvider, a3);
+  objc_storeWeak(&self->_menuProvider, provider);
   [(TVRUIDevicePickerViewController *)self setContextMenuNeedsUpdate:1];
 
   [(TVRUIDevicePickerViewController *)self _updateViewState];
@@ -665,106 +665,106 @@ void __50__TVRUIDevicePickerViewController_setDeviceTitle___block_invoke(uint64_
 
 - (void)_setupDeviceList
 {
-  v3 = [(TVRUIDevicePickerViewController *)self useNewDevicePicker];
-  v4 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
+  useNewDevicePicker = [(TVRUIDevicePickerViewController *)self useNewDevicePicker];
+  tableViewWrapper = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
 
-  if (!v4)
+  if (!tableViewWrapper)
   {
-    v5 = [(TVRUIDevicePickerViewController *)self styleProvider];
-    [v5 deviceListRowHeight];
+    styleProvider = [(TVRUIDevicePickerViewController *)self styleProvider];
+    [styleProvider deviceListRowHeight];
     [(TVRUIDevicePickerViewController *)self setBaseHeight:?];
 
     v6 = objc_alloc_init(_TVRUITableViewWrapperView);
     [(TVRUIDevicePickerViewController *)self setTableViewWrapper:v6];
 
-    v7 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
-    [v7 setClipsToBounds:1];
+    tableViewWrapper2 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
+    [tableViewWrapper2 setClipsToBounds:1];
 
-    v8 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
-    v9 = [v8 layer];
-    [v9 setMaskedCorners:4];
+    tableViewWrapper3 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
+    layer = [tableViewWrapper3 layer];
+    [layer setMaskedCorners:4];
 
-    v10 = [(TVRUIDevicePickerViewController *)self view];
-    v11 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
-    [v10 addSubview:v11];
+    view = [(TVRUIDevicePickerViewController *)self view];
+    tableViewWrapper4 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
+    [view addSubview:tableViewWrapper4];
 
     v12 = objc_alloc(MEMORY[0x277D75B40]);
     v13 = [v12 initWithFrame:0 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [(TVRUIDevicePickerViewController *)self setTableView:v13];
 
-    v14 = [(TVRUIDevicePickerViewController *)self tableView];
-    v15 = [v14 layer];
-    [v15 setAllowsGroupBlending:0];
+    tableView = [(TVRUIDevicePickerViewController *)self tableView];
+    layer2 = [tableView layer];
+    [layer2 setAllowsGroupBlending:0];
 
-    v16 = [(TVRUIDevicePickerViewController *)self tableView];
-    v17 = [v16 layer];
-    [v17 setAllowsGroupOpacity:0];
+    tableView2 = [(TVRUIDevicePickerViewController *)self tableView];
+    layer3 = [tableView2 layer];
+    [layer3 setAllowsGroupOpacity:0];
 
-    v18 = [(TVRUIDevicePickerViewController *)self tableView];
-    [v18 setDelegate:self];
+    tableView3 = [(TVRUIDevicePickerViewController *)self tableView];
+    [tableView3 setDelegate:self];
 
-    v19 = [(TVRUIDevicePickerViewController *)self tableView];
-    [v19 setDataSource:self];
+    tableView4 = [(TVRUIDevicePickerViewController *)self tableView];
+    [tableView4 setDataSource:self];
 
-    v20 = [(TVRUIDevicePickerViewController *)self tableView];
-    [v20 setSeparatorStyle:0];
+    tableView5 = [(TVRUIDevicePickerViewController *)self tableView];
+    [tableView5 setSeparatorStyle:0];
 
-    v21 = [(TVRUIDevicePickerViewController *)self tableView];
-    [v21 setIndicatorStyle:2];
+    tableView6 = [(TVRUIDevicePickerViewController *)self tableView];
+    [tableView6 setIndicatorStyle:2];
 
-    v22 = [(TVRUIDevicePickerViewController *)self tableView];
-    v23 = [MEMORY[0x277D75348] clearColor];
-    [v22 setBackgroundColor:v23];
+    tableView7 = [(TVRUIDevicePickerViewController *)self tableView];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [tableView7 setBackgroundColor:clearColor];
 
-    v24 = [(TVRUIDevicePickerViewController *)self tableView];
-    [v24 registerClass:objc_opt_class() forCellReuseIdentifier:@"kTVRDropDownCellIdentifier"];
+    tableView8 = [(TVRUIDevicePickerViewController *)self tableView];
+    [tableView8 registerClass:objc_opt_class() forCellReuseIdentifier:@"kTVRDropDownCellIdentifier"];
 
-    v25 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
-    v26 = [(TVRUIDevicePickerViewController *)self tableView];
-    [v25 addSubview:v26];
+    tableViewWrapper5 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
+    tableView9 = [(TVRUIDevicePickerViewController *)self tableView];
+    [tableViewWrapper5 addSubview:tableView9];
 
     v46 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_didTapWrapperView_];
     [v46 setCancelsTouchesInView:0];
-    v27 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
-    [v27 addGestureRecognizer:v46];
+    tableViewWrapper6 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
+    [tableViewWrapper6 addGestureRecognizer:v46];
 
-    if (v3)
+    if (useNewDevicePicker)
     {
-      v28 = [(TVRUIDevicePickerViewController *)self view];
-      v29 = [(TVRUIDevicePickerViewController *)self muteButton];
-      [v28 bringSubviewToFront:v29];
+      view2 = [(TVRUIDevicePickerViewController *)self view];
+      muteButton = [(TVRUIDevicePickerViewController *)self muteButton];
+      [view2 bringSubviewToFront:muteButton];
 
-      v30 = [(TVRUIDevicePickerViewController *)self view];
-      v31 = [(TVRUIDevicePickerViewController *)self muteButtonOverride];
-      [v30 bringSubviewToFront:v31];
+      view3 = [(TVRUIDevicePickerViewController *)self view];
+      muteButtonOverride = [(TVRUIDevicePickerViewController *)self muteButtonOverride];
+      [view3 bringSubviewToFront:muteButtonOverride];
 
-      v32 = [(TVRUIDevicePickerViewController *)self view];
-      v33 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
-      [v32 bringSubviewToFront:v33];
+      view4 = [(TVRUIDevicePickerViewController *)self view];
+      deviceTitleView = [(TVRUIDevicePickerViewController *)self deviceTitleView];
+      [view4 bringSubviewToFront:deviceTitleView];
 
-      v34 = [(TVRUIDevicePickerViewController *)self view];
-      v35 = [(TVRUIDevicePickerViewController *)self powerButton];
-      [v34 bringSubviewToFront:v35];
+      view5 = [(TVRUIDevicePickerViewController *)self view];
+      powerButton = [(TVRUIDevicePickerViewController *)self powerButton];
+      [view5 bringSubviewToFront:powerButton];
 
-      v36 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
-      [v36 setShowsGlassBackground:1];
+      tableViewWrapper7 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
+      [tableViewWrapper7 setShowsGlassBackground:1];
 
-      v37 = [(TVRUIDevicePickerViewController *)self tableView];
-      v38 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
-      [v38 setContentViewToMask:v37];
+      tableView10 = [(TVRUIDevicePickerViewController *)self tableView];
+      tableViewWrapper8 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
+      [tableViewWrapper8 setContentViewToMask:tableView10];
 
       [(TVRUIDevicePickerViewController *)self tableView];
     }
 
     else
     {
-      v39 = [(TVRUIDevicePickerViewController *)self styleProvider];
-      v40 = [v39 separatorView];
-      [(TVRUIDevicePickerViewController *)self setTableViewTopSeperator:v40];
+      styleProvider2 = [(TVRUIDevicePickerViewController *)self styleProvider];
+      separatorView = [styleProvider2 separatorView];
+      [(TVRUIDevicePickerViewController *)self setTableViewTopSeperator:separatorView];
 
-      v41 = [(TVRUIDevicePickerViewController *)self view];
-      v42 = [(TVRUIDevicePickerViewController *)self tableViewTopSeperator];
-      [v41 addSubview:v42];
+      view6 = [(TVRUIDevicePickerViewController *)self view];
+      tableViewTopSeperator = [(TVRUIDevicePickerViewController *)self tableViewTopSeperator];
+      [view6 addSubview:tableViewTopSeperator];
 
       [(TVRUIDevicePickerViewController *)self tableViewTopSeperator];
     }
@@ -772,27 +772,27 @@ void __50__TVRUIDevicePickerViewController_setDeviceTitle___block_invoke(uint64_
     [v43 setAlpha:0.0];
 
     v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"UIA.TVRemoteService.%@", @"deviceTable"];
-    v45 = [(TVRUIDevicePickerViewController *)self tableView];
-    [v45 setAccessibilityIdentifier:v44];
+    tableView11 = [(TVRUIDevicePickerViewController *)self tableView];
+    [tableView11 setAccessibilityIdentifier:v44];
   }
 }
 
-- (void)setDevices:(id)a3
+- (void)setDevices:(id)devices
 {
-  v4 = a3;
-  if (self->_devices != v4)
+  devicesCopy = devices;
+  if (self->_devices != devicesCopy)
   {
-    v14 = v4;
-    v5 = [MEMORY[0x277CBEB18] arrayWithArray:v4];
+    v14 = devicesCopy;
+    v5 = [MEMORY[0x277CBEB18] arrayWithArray:devicesCopy];
     v6 = [(NSArray *)v5 count];
     v7 = v6 != 0;
     v8 = v6 == 0;
-    v9 = [(TVRUIDevicePickerViewController *)self titleButton];
-    v10 = [v9 imageView];
-    [v10 setHidden:v8];
+    titleButton = [(TVRUIDevicePickerViewController *)self titleButton];
+    imageView = [titleButton imageView];
+    [imageView setHidden:v8];
 
-    v11 = [(TVRUIDevicePickerViewController *)self view];
-    [v11 setUserInteractionEnabled:v7];
+    view = [(TVRUIDevicePickerViewController *)self view];
+    [view setUserInteractionEnabled:v7];
 
     devices = self->_devices;
     self->_devices = v5;
@@ -808,37 +808,37 @@ void __50__TVRUIDevicePickerViewController_setDeviceTitle___block_invoke(uint64_
 
     else
     {
-      v13 = [(TVRUIDevicePickerViewController *)self tableView];
+      tableView = [(TVRUIDevicePickerViewController *)self tableView];
       [(TVRUIDevicePickerViewController *)self _preferredTableViewFrameWhenExpanded:0];
-      [v13 setFrame:?];
+      [tableView setFrame:?];
     }
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setSuggestedDevices:(id)a3
+- (void)setSuggestedDevices:(id)devices
 {
-  v5 = a3;
-  if (+[TVRUIFeatures corianderEnabled]&& ![(NSArray *)self->_suggestedDevices isEqualToArray:v5])
+  devicesCopy = devices;
+  if (+[TVRUIFeatures corianderEnabled]&& ![(NSArray *)self->_suggestedDevices isEqualToArray:devicesCopy])
   {
-    objc_storeStrong(&self->_suggestedDevices, a3);
-    [(TVRUIDevicePickerViewController *)self _updateDevicesAndReloadWithSuggestedDevices:v5];
+    objc_storeStrong(&self->_suggestedDevices, devices);
+    [(TVRUIDevicePickerViewController *)self _updateDevicesAndReloadWithSuggestedDevices:devicesCopy];
   }
 }
 
-- (void)_updateDevicesAndReloadWithSuggestedDevices:(id)a3
+- (void)_updateDevicesAndReloadWithSuggestedDevices:(id)devices
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  devicesCopy = devices;
   if (+[TVRUIFeatures corianderEnabled])
   {
     v5 = _TVRUIDevicePickerLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(TVRUIDevicePickerViewController *)self devices];
+      devices = [(TVRUIDevicePickerViewController *)self devices];
       *buf = 134217984;
-      v41 = [v6 count];
+      v41 = [devices count];
       _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "devices count: %ld", buf, 0xCu);
     }
 
@@ -848,43 +848,43 @@ void __50__TVRUIDevicePickerViewController_setDeviceTitle___block_invoke(uint64_
       [(TVRUIDevicePickerViewController *)self _updateDevicesAndReloadWithSuggestedDevices:v7];
     }
 
-    v8 = [(TVRUIDevicePickerViewController *)self devices];
-    v9 = [v8 count];
+    devices2 = [(TVRUIDevicePickerViewController *)self devices];
+    v9 = [devices2 count];
 
     if (v9)
     {
       v10 = MEMORY[0x277CBEB40];
-      v11 = [(TVRUIDevicePickerViewController *)self devices];
-      v12 = [v10 orderedSetWithCapacity:{objc_msgSend(v11, "count")}];
+      devices3 = [(TVRUIDevicePickerViewController *)self devices];
+      v12 = [v10 orderedSetWithCapacity:{objc_msgSend(devices3, "count")}];
 
-      v13 = [(TVRUIDevicePickerViewController *)self devices];
-      v14 = [(TVRUIDevicePickerViewController *)self devices];
-      v15 = [v14 firstObject];
+      devices4 = [(TVRUIDevicePickerViewController *)self devices];
+      devices5 = [(TVRUIDevicePickerViewController *)self devices];
+      firstObject = [devices5 firstObject];
 
-      v32 = v15;
-      v33 = self;
-      if (v15 && [v15 isConnected])
+      v32 = firstObject;
+      selfCopy = self;
+      if (firstObject && [firstObject isConnected])
       {
         v16 = _TVRUIDevicePickerLog();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
-          [(TVRUIDevicePickerViewController *)v15 _updateDevicesAndReloadWithSuggestedDevices:v16];
+          [(TVRUIDevicePickerViewController *)firstObject _updateDevicesAndReloadWithSuggestedDevices:v16];
         }
 
-        [v12 addObject:v15];
-        v17 = [(TVRUIDevicePickerViewController *)self devices];
-        v18 = [(TVRUIDevicePickerViewController *)self devices];
-        v19 = [v17 subarrayWithRange:{1, objc_msgSend(v18, "count") - 1}];
+        [v12 addObject:firstObject];
+        devices6 = [(TVRUIDevicePickerViewController *)self devices];
+        devices7 = [(TVRUIDevicePickerViewController *)self devices];
+        v19 = [devices6 subarrayWithRange:{1, objc_msgSend(devices7, "count") - 1}];
 
-        v13 = v19;
+        devices4 = v19;
       }
 
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v34 = v4;
-      v20 = v4;
+      v34 = devicesCopy;
+      v20 = devicesCopy;
       v21 = [v20 countByEnumeratingWithState:&v35 objects:v39 count:16];
       if (v21)
       {
@@ -900,7 +900,7 @@ void __50__TVRUIDevicePickerViewController_setDeviceTitle___block_invoke(uint64_
             }
 
             v25 = *(*(&v35 + 1) + 8 * i);
-            if ([v13 containsObject:v25])
+            if ([devices4 containsObject:v25])
             {
               v26 = _TVRUIDevicePickerLog();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -920,27 +920,27 @@ void __50__TVRUIDevicePickerViewController_setDeviceTitle___block_invoke(uint64_
         while (v22);
       }
 
-      [v12 addObjectsFromArray:v13];
-      v27 = [v12 array];
-      self = v33;
-      devices = v33->_devices;
-      v33->_devices = v27;
+      [v12 addObjectsFromArray:devices4];
+      array = [v12 array];
+      self = selfCopy;
+      devices = selfCopy->_devices;
+      selfCopy->_devices = array;
 
       v29 = _TVRUIDevicePickerLog();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = [(TVRUIDevicePickerViewController *)v33 devices];
+        devices8 = [(TVRUIDevicePickerViewController *)selfCopy devices];
         *buf = 138543362;
-        v41 = v30;
+        v41 = devices8;
         _os_log_impl(&dword_26CFEB000, v29, OS_LOG_TYPE_DEFAULT, "Sorted device list: %{public}@", buf, 0xCu);
       }
 
-      v4 = v34;
+      devicesCopy = v34;
     }
   }
 
-  v31 = [(TVRUIDevicePickerViewController *)self tableView];
-  [v31 reloadData];
+  tableView = [(TVRUIDevicePickerViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_sortAndReloadDevices
@@ -1058,30 +1058,30 @@ void __47__TVRUIDevicePickerViewController__devicesMenu__block_invoke(uint64_t a
 
   v7 = [[TVRUICubicSpringTimingParameters alloc] initWithMass:2.0 stiffness:300.0 damping:36.0 initialVelocity:0.0, 0.0];
   v4 = +[TVRUICubicSpringTimingParameters standardTimingParameters];
-  v5 = [v4 springCubicTimingParameters];
-  [(TVRUICubicSpringTimingParameters *)v7 setSpringCubicTimingParameters:v5];
+  springCubicTimingParameters = [v4 springCubicTimingParameters];
+  [(TVRUICubicSpringTimingParameters *)v7 setSpringCubicTimingParameters:springCubicTimingParameters];
 
   v6 = [(UIViewPropertyAnimator *)[TVRUICubicSpringAnimator alloc] initWithDuration:v7 timingParameters:1.0];
   [(TVRUIDevicePickerViewController *)self setHideAnimator:v6];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(TVRUIDevicePickerViewController *)self devices:a3];
+  v4 = [(TVRUIDevicePickerViewController *)self devices:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   objc_initWeak(&location, self);
-  v8 = [v6 dequeueReusableCellWithIdentifier:@"kTVRDropDownCellIdentifier" forIndexPath:v7];
-  v9 = [(TVRUIDevicePickerViewController *)self styleProvider];
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"kTVRDropDownCellIdentifier" forIndexPath:pathCopy];
+  styleProvider = [(TVRUIDevicePickerViewController *)self styleProvider];
 
-  if (!v9)
+  if (!styleProvider)
   {
     v10 = _TVRUIDevicePickerLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1090,14 +1090,14 @@ void __47__TVRUIDevicePickerViewController__devicesMenu__block_invoke(uint64_t a
     }
   }
 
-  v11 = [(TVRUIDevicePickerViewController *)self styleProvider];
-  [v8 setStyleProvider:v11];
+  styleProvider2 = [(TVRUIDevicePickerViewController *)self styleProvider];
+  [v8 setStyleProvider:styleProvider2];
 
-  v12 = [(TVRUIDevicePickerViewController *)self devices];
-  v13 = [v12 objectAtIndex:{objc_msgSend(v7, "row")}];
+  devices = [(TVRUIDevicePickerViewController *)self devices];
+  v13 = [devices objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   [v8 setDevice:v13];
-  [v8 setShowSeparator:{objc_msgSend(v7, "row") != objc_msgSend(v6, "numberOfRowsInSection:", objc_msgSend(v7, "section")) - 1}];
+  [v8 setShowSeparator:{objc_msgSend(pathCopy, "row") != objc_msgSend(viewCopy, "numberOfRowsInSection:", objc_msgSend(pathCopy, "section")) - 1}];
   v14 = objc_alloc_init(MEMORY[0x277D75D18]);
   v15 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.3];
   [v14 setBackgroundColor:v15];
@@ -1105,7 +1105,7 @@ void __47__TVRUIDevicePickerViewController__devicesMenu__block_invoke(uint64_t a
   [v8 setSelectedBackgroundView:v14];
   if ([v13 isConnected])
   {
-    [(TVRUIDevicePickerViewController *)self setConnectedDeviceIndex:v7];
+    [(TVRUIDevicePickerViewController *)self setConnectedDeviceIndex:pathCopy];
   }
 
   v16 = MEMORY[0x277D750C8];
@@ -1132,9 +1132,9 @@ void __67__TVRUIDevicePickerViewController_tableView_cellForRowAtIndexPath___blo
   [v2 findButtonTappedForDevice:*(a1 + 32)];
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  if ([(TVRUIDevicePickerViewController *)self _accessibilityFontSizesEnabled:a3])
+  if ([(TVRUIDevicePickerViewController *)self _accessibilityFontSizesEnabled:view])
   {
     return *MEMORY[0x277D76F30];
   }
@@ -1143,12 +1143,12 @@ void __67__TVRUIDevicePickerViewController_tableView_cellForRowAtIndexPath___blo
   return result;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v15 = *MEMORY[0x277D85DE8];
   devices = self->_devices;
-  v6 = a4;
-  v7 = -[NSArray objectAtIndex:](devices, "objectAtIndex:", [v6 row]);
+  pathCopy = path;
+  v7 = -[NSArray objectAtIndex:](devices, "objectAtIndex:", [pathCopy row]);
   if ([v7 isConnected])
   {
     v8 = _TVRUIDevicePickerLog();
@@ -1164,11 +1164,11 @@ void __67__TVRUIDevicePickerViewController_tableView_cellForRowAtIndexPath___blo
 
   else
   {
-    v10 = [(TVRUIDevicePickerViewController *)self eventHaptic];
-    [v10 playSelectionEventHaptic];
+    eventHaptic = [(TVRUIDevicePickerViewController *)self eventHaptic];
+    [eventHaptic playSelectionEventHaptic];
 
-    v11 = [(TVRUIDevicePickerViewController *)self delegate];
-    [v11 devicePicked:v7];
+    delegate = [(TVRUIDevicePickerViewController *)self delegate];
+    [delegate devicePicked:v7];
 
     v8 = _TVRUIDevicePickerLog();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1184,8 +1184,8 @@ void __67__TVRUIDevicePickerViewController_tableView_cellForRowAtIndexPath___blo
   _os_log_impl(&dword_26CFEB000, v8, OS_LOG_TYPE_DEFAULT, v9, &v13, 0xCu);
 LABEL_7:
 
-  v12 = [(TVRUIDevicePickerViewController *)self tableView];
-  [v12 deselectRowAtIndexPath:v6 animated:0];
+  tableView = [(TVRUIDevicePickerViewController *)self tableView];
+  [tableView deselectRowAtIndexPath:pathCopy animated:0];
 
   if ([(TVRUIDevicePickerViewController *)self isDevicePickerShowing])
   {
@@ -1223,26 +1223,26 @@ LABEL_7:
   }
 }
 
-- (void)didChangeToExpanded:(BOOL)a3
+- (void)didChangeToExpanded:(BOOL)expanded
 {
-  v3 = a3;
-  v5 = [(TVRUIDevicePickerViewController *)self tableView];
-  [(TVRUIDevicePickerViewController *)self _preferredTableViewFrameWhenExpanded:v3];
-  [v5 setFrame:?];
+  expandedCopy = expanded;
+  tableView = [(TVRUIDevicePickerViewController *)self tableView];
+  [(TVRUIDevicePickerViewController *)self _preferredTableViewFrameWhenExpanded:expandedCopy];
+  [tableView setFrame:?];
 }
 
-- (void)didTapWrapperView:(id)a3
+- (void)didTapWrapperView:(id)view
 {
-  v11 = a3;
+  viewCopy = view;
   if ([(TVRUIDevicePickerViewController *)self isDevicePickerShowing])
   {
-    v4 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
-    [v11 locationInView:v4];
+    tableViewWrapper = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
+    [viewCopy locationInView:tableViewWrapper];
     v6 = v5;
     v8 = v7;
 
-    v9 = [(TVRUIDevicePickerViewController *)self tableView];
-    [v9 frame];
+    tableView = [(TVRUIDevicePickerViewController *)self tableView];
+    [tableView frame];
     v13.x = v6;
     v13.y = v8;
     v10 = CGRectContainsPoint(v14, v13);
@@ -1256,7 +1256,7 @@ LABEL_7:
 
 - (void)_toggleState
 {
-  v3 = [(TVRUIDevicePickerViewController *)self useNewDevicePicker];
+  useNewDevicePicker = [(TVRUIDevicePickerViewController *)self useNewDevicePicker];
   v4 = _UISolariumEnabled();
   v5 = _TVRUIDevicePickerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1270,18 +1270,18 @@ LABEL_7:
     [(TVRUIDevicePickerViewController *)self setDevicePickerShowing:[(TVRUIDevicePickerViewController *)self isDevicePickerShowing]^ 1];
     if ([(TVRUIDevicePickerViewController *)self isDevicePickerShowing])
     {
-      v8 = [(TVRUIDevicePickerViewController *)self tableView];
+      tableView = [(TVRUIDevicePickerViewController *)self tableView];
       [(TVRUIDevicePickerViewController *)self _preferredTableViewFrameWhenExpanded:0];
-      [v8 setFrame:?];
+      [tableView setFrame:?];
     }
 
-    v9 = [(TVRUIDevicePickerViewController *)self showAnimator];
-    v10 = [v9 isRunning];
+    showAnimator = [(TVRUIDevicePickerViewController *)self showAnimator];
+    isRunning = [showAnimator isRunning];
 
-    if (v10)
+    if (isRunning)
     {
-      v11 = [(TVRUIDevicePickerViewController *)self showAnimator];
-      [v11 stopAnimation:1];
+      showAnimator2 = [(TVRUIDevicePickerViewController *)self showAnimator];
+      [showAnimator2 stopAnimation:1];
 
       v12 = _TVRUIDevicePickerLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1295,17 +1295,17 @@ LABEL_13:
 
     else
     {
-      v14 = [(TVRUIDevicePickerViewController *)self hideAnimator];
-      v15 = [v14 isRunning];
+      hideAnimator = [(TVRUIDevicePickerViewController *)self hideAnimator];
+      isRunning2 = [hideAnimator isRunning];
 
-      if (!v15)
+      if (!isRunning2)
       {
 LABEL_15:
         [(TVRUIDevicePickerViewController *)self _setupAnimators];
         objc_initWeak(buf, self);
         if ([(TVRUIDevicePickerViewController *)self isDevicePickerShowing])
         {
-          v17 = [(TVRUIDevicePickerViewController *)self showAnimator];
+          showAnimator3 = [(TVRUIDevicePickerViewController *)self showAnimator];
           v28[0] = MEMORY[0x277D85DD0];
           v28[1] = 3221225472;
           v28[2] = __47__TVRUIDevicePickerViewController__toggleState__block_invoke;
@@ -1314,37 +1314,37 @@ LABEL_15:
           objc_copyWeak(&v29, buf);
           v28[4] = self;
           v30 = v4;
-          v31 = v3;
-          [v17 addAnimations:v28];
+          v31 = useNewDevicePicker;
+          [showAnimator3 addAnimations:v28];
 
           [(TVRUIDevicePickerViewController *)self _sortAndReloadDevices];
-          v19 = [(TVRUIDevicePickerViewController *)self eventHaptic];
-          [v19 playImpactEventHaptic];
+          eventHaptic = [(TVRUIDevicePickerViewController *)self eventHaptic];
+          [eventHaptic playImpactEventHaptic];
 
-          v20 = [(TVRUIDevicePickerViewController *)self delegate];
-          [v20 devicePickerWillChangeState:1 animated:0];
+          delegate = [(TVRUIDevicePickerViewController *)self delegate];
+          [delegate devicePickerWillChangeState:1 animated:0];
 
-          v21 = [(TVRUIDevicePickerViewController *)self showAnimator];
-          [v21 startAnimation];
+          showAnimator4 = [(TVRUIDevicePickerViewController *)self showAnimator];
+          [showAnimator4 startAnimation];
         }
 
         else
         {
-          v22 = [(TVRUIDevicePickerViewController *)self hideAnimator];
+          hideAnimator2 = [(TVRUIDevicePickerViewController *)self hideAnimator];
           v25[0] = MEMORY[0x277D85DD0];
           v25[1] = 3221225472;
           v25[2] = __47__TVRUIDevicePickerViewController__toggleState__block_invoke_2;
           v25[3] = &unk_279D88820;
           v18 = &v26;
           objc_copyWeak(&v26, buf);
-          v27 = v3;
-          [v22 addAnimations:v25];
+          v27 = useNewDevicePicker;
+          [hideAnimator2 addAnimations:v25];
 
-          v23 = [(TVRUIDevicePickerViewController *)self delegate];
-          [v23 devicePickerWillChangeState:0 animated:0];
+          delegate2 = [(TVRUIDevicePickerViewController *)self delegate];
+          [delegate2 devicePickerWillChangeState:0 animated:0];
 
-          v21 = [(TVRUIDevicePickerViewController *)self hideAnimator];
-          [v21 startAnimation];
+          showAnimator4 = [(TVRUIDevicePickerViewController *)self hideAnimator];
+          [showAnimator4 startAnimation];
         }
 
         objc_destroyWeak(v18);
@@ -1352,8 +1352,8 @@ LABEL_15:
         return;
       }
 
-      v16 = [(TVRUIDevicePickerViewController *)self hideAnimator];
-      [v16 stopAnimation:1];
+      hideAnimator3 = [(TVRUIDevicePickerViewController *)self hideAnimator];
+      [hideAnimator3 stopAnimation:1];
 
       v12 = _TVRUIDevicePickerLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1494,8 +1494,8 @@ void __47__TVRUIDevicePickerViewController__toggleState__block_invoke_2(uint64_t
 {
   [MEMORY[0x277D758A8] _setAlwaysAllowPopoverPresentations:1];
   v3 = objc_alloc_init(TVRUIShortcutsMenuViewController);
-  v4 = [(TVRUIDevicePickerViewController *)self playerCommandHandler];
-  [(TVRUIShortcutsMenuViewController *)v3 setPlayerCommandHandler:v4];
+  playerCommandHandler = [(TVRUIDevicePickerViewController *)self playerCommandHandler];
+  [(TVRUIShortcutsMenuViewController *)v3 setPlayerCommandHandler:playerCommandHandler];
 
   [(TVRUIShortcutsMenuViewController *)v3 setOverrideUserInterfaceStyle:2];
   [(TVRUIShortcutsMenuViewController *)v3 setModalPresentationStyle:7];
@@ -1516,15 +1516,15 @@ void __47__TVRUIDevicePickerViewController__toggleState__block_invoke_2(uint64_t
   v7 = [v6 zoomWithOptions:v5 sourceViewProvider:v11];
   [(TVRUIShortcutsMenuViewController *)v3 setPreferredTransition:v7];
 
-  v8 = [(TVRUIShortcutsMenuViewController *)v3 popoverPresentationController];
-  v9 = [(TVRUIDevicePickerViewController *)self muteButtonOverride];
-  [v8 setSourceView:v9];
+  popoverPresentationController = [(TVRUIShortcutsMenuViewController *)v3 popoverPresentationController];
+  muteButtonOverride = [(TVRUIDevicePickerViewController *)self muteButtonOverride];
+  [popoverPresentationController setSourceView:muteButtonOverride];
 
-  v10 = [(TVRUIDevicePickerViewController *)self muteButtonOverride];
-  [v10 bounds];
-  [v8 setSourceRect:?];
+  muteButtonOverride2 = [(TVRUIDevicePickerViewController *)self muteButtonOverride];
+  [muteButtonOverride2 bounds];
+  [popoverPresentationController setSourceRect:?];
 
-  [v8 setPermittedArrowDirections:-1];
+  [popoverPresentationController setPermittedArrowDirections:-1];
   [(TVRUIDevicePickerViewController *)self presentViewController:v3 animated:1 completion:0];
 
   objc_destroyWeak(&v12);
@@ -1550,11 +1550,11 @@ id __63__TVRUIDevicePickerViewController__presentShortcutsMenuPopover__block_inv
   return v2;
 }
 
-- (CGRect)_preferredTableViewFrameWhenExpanded:(BOOL)a3
+- (CGRect)_preferredTableViewFrameWhenExpanded:(BOOL)expanded
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [(TVRUIDevicePickerViewController *)self useNewDevicePicker];
-  if (v5)
+  useNewDevicePicker = [(TVRUIDevicePickerViewController *)self useNewDevicePicker];
+  if (useNewDevicePicker)
   {
     x = 25.0;
   }
@@ -1564,20 +1564,20 @@ id __63__TVRUIDevicePickerViewController__presentShortcutsMenuPopover__block_inv
     x = 0.0;
   }
 
-  v7 = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
-  [v7 bounds];
+  tableViewWrapper = [(TVRUIDevicePickerViewController *)self tableViewWrapper];
+  [tableViewWrapper bounds];
   width = v8 + x * -2.0;
   [(TVRUIDevicePickerViewController *)self _expandedContentHeight];
   height = v10;
 
-  if (a3 || v5)
+  if (expanded || useNewDevicePicker)
   {
     v14 = _TVRUIDevicePickerLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(TVRUIDevicePickerViewController *)self devices];
+      devices = [(TVRUIDevicePickerViewController *)self devices];
       v19 = 134217984;
-      v20 = [v15 count];
+      v20 = [devices count];
       _os_log_impl(&dword_26CFEB000, v14, OS_LOG_TYPE_DEFAULT, "tableViewFrameRequest with num devices %ld", &v19, 0xCu);
     }
 
@@ -1607,29 +1607,29 @@ id __63__TVRUIDevicePickerViewController__presentShortcutsMenuPopover__block_inv
   return result;
 }
 
-- (void)_updateTableFrame:(BOOL)a3
+- (void)_updateTableFrame:(BOOL)frame
 {
-  v3 = a3;
-  v5 = [(TVRUIDevicePickerViewController *)self tableView];
-  [(TVRUIDevicePickerViewController *)self _preferredTableViewFrameWhenExpanded:v3];
-  [v5 setFrame:?];
+  frameCopy = frame;
+  tableView = [(TVRUIDevicePickerViewController *)self tableView];
+  [(TVRUIDevicePickerViewController *)self _preferredTableViewFrameWhenExpanded:frameCopy];
+  [tableView setFrame:?];
 }
 
-- (void)_device:(id)a3 updatedFindMySupported:(BOOL)a4
+- (void)_device:(id)_device updatedFindMySupported:(BOOL)supported
 {
-  v4 = [(TVRUIDevicePickerViewController *)self _cellForDevice:a3, a4];
-  [v4 _updateFindMyButton];
+  supported = [(TVRUIDevicePickerViewController *)self _cellForDevice:_device, supported];
+  [supported _updateFindMyButton];
 }
 
-- (id)_cellForDevice:(id)a3
+- (id)_cellForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(TVRUIDevicePickerViewController *)self devices];
-  v6 = [v5 indexOfObject:v4];
+  deviceCopy = device;
+  devices = [(TVRUIDevicePickerViewController *)self devices];
+  v6 = [devices indexOfObject:deviceCopy];
 
   v7 = [MEMORY[0x277CCAA70] indexPathForRow:v6 inSection:0];
-  v8 = [(TVRUIDevicePickerViewController *)self tableView];
-  v9 = [v8 cellForRowAtIndexPath:v7];
+  tableView = [(TVRUIDevicePickerViewController *)self tableView];
+  v9 = [tableView cellForRowAtIndexPath:v7];
 
   [v9 _updateFindMyButton];
 
@@ -1657,8 +1657,8 @@ id __63__TVRUIDevicePickerViewController__presentShortcutsMenuPopover__block_inv
 {
   [(TVRUIDevicePickerViewController *)self baseHeight];
   v4 = v3;
-  v5 = [(TVRUIDevicePickerViewController *)self devices];
-  v6 = v4 * [v5 count];
+  devices = [(TVRUIDevicePickerViewController *)self devices];
+  v6 = v4 * [devices count];
 
   return v6;
 }
@@ -1677,13 +1677,13 @@ id __63__TVRUIDevicePickerViewController__presentShortcutsMenuPopover__block_inv
 - (double)_expandedContentHeight
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(TVRUIDevicePickerViewController *)self useNewDevicePicker];
-  v4 = [(TVRUIDevicePickerViewController *)self styleProvider];
-  [v4 touchpadHeight];
+  useNewDevicePicker = [(TVRUIDevicePickerViewController *)self useNewDevicePicker];
+  styleProvider = [(TVRUIDevicePickerViewController *)self styleProvider];
+  [styleProvider touchpadHeight];
   v6 = v5;
 
   v7 = 0.85;
-  if (!v3)
+  if (!useNewDevicePicker)
   {
     v7 = 0.5;
   }
@@ -1714,30 +1714,30 @@ id __63__TVRUIDevicePickerViewController__presentShortcutsMenuPopover__block_inv
 
 - (BOOL)_accessibilityFontSizesEnabled
 {
-  v2 = [MEMORY[0x277D75380] system];
-  v3 = [v2 preferredContentSizeCategory];
+  system = [MEMORY[0x277D75380] system];
+  preferredContentSizeCategory = [system preferredContentSizeCategory];
 
-  LOBYTE(v2) = UIContentSizeCategoryIsAccessibilityCategory(v3);
-  return v2;
+  LOBYTE(system) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
+  return system;
 }
 
 - (double)_contentHeightForPreferredContentSizeCategory
 {
   [(TVRUIDevicePickerViewController *)self _defaultCalculatedContentHeight];
   Height = v3;
-  v5 = [MEMORY[0x277D75380] system];
-  v6 = [v5 preferredContentSizeCategory];
+  system = [MEMORY[0x277D75380] system];
+  preferredContentSizeCategory = [system preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v6))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    if (([v6 isEqualToString:*MEMORY[0x277D767F0]] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277D767E8]))
+    if (([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D767F0]] & 1) != 0 || objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x277D767E8]))
     {
-      v7 = [(TVRUIDevicePickerViewController *)self view];
-      [v7 bounds];
+      view = [(TVRUIDevicePickerViewController *)self view];
+      [view bounds];
       Height = CGRectGetHeight(v9);
     }
 
-    else if (([v6 isEqualToString:*MEMORY[0x277D76800]] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277D767F8]))
+    else if (([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D76800]] & 1) != 0 || objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x277D767F8]))
     {
       Height = Height * 1.5;
     }
@@ -1746,48 +1746,48 @@ id __63__TVRUIDevicePickerViewController__presentShortcutsMenuPopover__block_inv
   return Height;
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
-  v9 = +[TVRUIButtonEvent createButtonEvent:buttonType:](TVRUIButtonEvent, "createButtonEvent:buttonType:", 1, [a3 buttonType]);
-  v4 = [(TVRUIDevicePickerViewController *)self buttonEventDelegate];
-  if (v4)
+  v9 = +[TVRUIButtonEvent createButtonEvent:buttonType:](TVRUIButtonEvent, "createButtonEvent:buttonType:", 1, [pressed buttonType]);
+  buttonEventDelegate = [(TVRUIDevicePickerViewController *)self buttonEventDelegate];
+  if (buttonEventDelegate)
   {
-    v5 = v4;
-    v6 = [(TVRUIDevicePickerViewController *)self buttonEventDelegate];
+    v5 = buttonEventDelegate;
+    buttonEventDelegate2 = [(TVRUIDevicePickerViewController *)self buttonEventDelegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(TVRUIDevicePickerViewController *)self buttonEventDelegate];
-      [v8 generatedButtonEvent:v9];
+      buttonEventDelegate3 = [(TVRUIDevicePickerViewController *)self buttonEventDelegate];
+      [buttonEventDelegate3 generatedButtonEvent:v9];
     }
   }
 }
 
-- (void)_buttonReleased:(id)a3
+- (void)_buttonReleased:(id)released
 {
-  v9 = +[TVRUIButtonEvent createButtonEvent:buttonType:](TVRUIButtonEvent, "createButtonEvent:buttonType:", 2, [a3 buttonType]);
-  v4 = [(TVRUIDevicePickerViewController *)self buttonEventDelegate];
-  if (v4)
+  v9 = +[TVRUIButtonEvent createButtonEvent:buttonType:](TVRUIButtonEvent, "createButtonEvent:buttonType:", 2, [released buttonType]);
+  buttonEventDelegate = [(TVRUIDevicePickerViewController *)self buttonEventDelegate];
+  if (buttonEventDelegate)
   {
-    v5 = v4;
-    v6 = [(TVRUIDevicePickerViewController *)self buttonEventDelegate];
+    v5 = buttonEventDelegate;
+    buttonEventDelegate2 = [(TVRUIDevicePickerViewController *)self buttonEventDelegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(TVRUIDevicePickerViewController *)self buttonEventDelegate];
-      [v8 generatedButtonEvent:v9];
+      buttonEventDelegate3 = [(TVRUIDevicePickerViewController *)self buttonEventDelegate];
+      [buttonEventDelegate3 generatedButtonEvent:v9];
     }
   }
 }
 
-- (void)_updateTitleViewForDevice:(id)a3
+- (void)_updateTitleViewForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(TVRUIDevicePickerViewController *)self styleProvider];
-  v6 = [v4 model];
-  v7 = [v5 iconForDeviceModel:v6];
+  deviceCopy = device;
+  styleProvider = [(TVRUIDevicePickerViewController *)self styleProvider];
+  model = [deviceCopy model];
+  v7 = [styleProvider iconForDeviceModel:model];
 
   v8 = MEMORY[0x277D75D18];
   v11[0] = MEMORY[0x277D85DD0];
@@ -1795,10 +1795,10 @@ id __63__TVRUIDevicePickerViewController__presentShortcutsMenuPopover__block_inv
   v11[2] = __61__TVRUIDevicePickerViewController__updateTitleViewForDevice___block_invoke;
   v11[3] = &unk_279D883D8;
   v11[4] = self;
-  v12 = v4;
+  v12 = deviceCopy;
   v13 = v7;
   v9 = v7;
-  v10 = v4;
+  v10 = deviceCopy;
   [v8 performWithoutAnimation:v11];
 }
 
@@ -1813,116 +1813,116 @@ void __61__TVRUIDevicePickerViewController__updateTitleViewForDevice___block_inv
 {
   if (![(TVRUIDevicePickerViewController *)self isDevicePickerShowing])
   {
-    v4 = [(TVRUIDevicePickerViewController *)self enabled];
-    if (v4)
+    enabled = [(TVRUIDevicePickerViewController *)self enabled];
+    if (enabled)
     {
       v5 = 1.0;
     }
 
     else
     {
-      v2 = [(TVRUIDevicePickerViewController *)self styleProvider];
-      [v2 disabledButtonAlpha];
+      styleProvider = [(TVRUIDevicePickerViewController *)self styleProvider];
+      [styleProvider disabledButtonAlpha];
       v5 = v6;
     }
 
-    v7 = [(TVRUIDevicePickerViewController *)self titleButton];
-    [v7 setAlpha:v5];
+    titleButton = [(TVRUIDevicePickerViewController *)self titleButton];
+    [titleButton setAlpha:v5];
 
-    if (!v4)
+    if (!enabled)
     {
     }
 
-    v8 = [(TVRUIDevicePickerViewController *)self enabled];
-    if (v8)
+    enabled2 = [(TVRUIDevicePickerViewController *)self enabled];
+    if (enabled2)
     {
       v9 = 1.0;
     }
 
     else
     {
-      v2 = [(TVRUIDevicePickerViewController *)self styleProvider];
-      [v2 disabledButtonAlpha];
+      styleProvider = [(TVRUIDevicePickerViewController *)self styleProvider];
+      [styleProvider disabledButtonAlpha];
       v9 = v10;
     }
 
-    v11 = [(TVRUIDevicePickerViewController *)self powerButton];
-    [v11 setAlpha:v9];
+    powerButton = [(TVRUIDevicePickerViewController *)self powerButton];
+    [powerButton setAlpha:v9];
 
-    if (!v8)
+    if (!enabled2)
     {
     }
 
-    v12 = [(TVRUIDevicePickerViewController *)self enabled];
-    if (v12)
+    enabled3 = [(TVRUIDevicePickerViewController *)self enabled];
+    if (enabled3)
     {
       v13 = 1.0;
     }
 
     else
     {
-      v2 = [(TVRUIDevicePickerViewController *)self styleProvider];
-      [v2 disabledButtonAlpha];
+      styleProvider = [(TVRUIDevicePickerViewController *)self styleProvider];
+      [styleProvider disabledButtonAlpha];
       v13 = v14;
     }
 
-    v15 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
-    [v15 setAlpha:v13];
+    deviceTitleView = [(TVRUIDevicePickerViewController *)self deviceTitleView];
+    [deviceTitleView setAlpha:v13];
 
-    if (!v12)
+    if (!enabled3)
     {
     }
 
     muteButtonOverride = self->_muteButtonOverride;
-    v17 = [(TVRUIDevicePickerViewController *)self muteButton];
-    v18 = v17;
+    muteButton = [(TVRUIDevicePickerViewController *)self muteButton];
+    v18 = muteButton;
     if (muteButtonOverride)
     {
-      [v17 setHidden:1];
+      [muteButton setHidden:1];
 
-      v19 = [(TVRUIDevicePickerViewController *)self muteButton];
-      [v19 setAlpha:0.0];
+      muteButton2 = [(TVRUIDevicePickerViewController *)self muteButton];
+      [muteButton2 setAlpha:0.0];
 
-      v20 = [(TVRUIDevicePickerViewController *)self enabled];
-      if (v20)
+      enabled4 = [(TVRUIDevicePickerViewController *)self enabled];
+      if (enabled4)
       {
         v21 = 1.0;
       }
 
       else
       {
-        v26 = [(TVRUIDevicePickerViewController *)self styleProvider];
-        [v26 disabledButtonAlpha];
+        styleProvider2 = [(TVRUIDevicePickerViewController *)self styleProvider];
+        [styleProvider2 disabledButtonAlpha];
         v21 = v22;
       }
 
-      v23 = [(TVRUIDevicePickerViewController *)self muteButtonOverride];
+      muteButtonOverride = [(TVRUIDevicePickerViewController *)self muteButtonOverride];
     }
 
     else
     {
-      [v17 setHidden:0];
+      [muteButton setHidden:0];
 
-      v20 = [(TVRUIDevicePickerViewController *)self enabled];
-      if (v20)
+      enabled4 = [(TVRUIDevicePickerViewController *)self enabled];
+      if (enabled4)
       {
         v21 = 1.0;
       }
 
       else
       {
-        v26 = [(TVRUIDevicePickerViewController *)self styleProvider];
-        [v26 disabledButtonAlpha];
+        styleProvider2 = [(TVRUIDevicePickerViewController *)self styleProvider];
+        [styleProvider2 disabledButtonAlpha];
         v21 = v24;
       }
 
-      v23 = [(TVRUIDevicePickerViewController *)self muteButton];
+      muteButtonOverride = [(TVRUIDevicePickerViewController *)self muteButton];
     }
 
-    v25 = v23;
-    [v23 setAlpha:v21];
+    v25 = muteButtonOverride;
+    [muteButtonOverride setAlpha:v21];
 
-    if (!v20)
+    if (!enabled4)
     {
     }
   }
@@ -1942,22 +1942,22 @@ void __61__TVRUIDevicePickerViewController__updateTitleViewForDevice___block_inv
   device = self->_device;
   if (device)
   {
-    v5 = [(TVRUIDevice *)device supportsMute];
-    v6 = [(TVRUIDevicePickerViewController *)self muteButton];
-    [v6 setEnabled:v5];
+    supportsMute = [(TVRUIDevice *)device supportsMute];
+    muteButton = [(TVRUIDevicePickerViewController *)self muteButton];
+    [muteButton setEnabled:supportsMute];
 
-    v7 = [(TVRUIDevice *)self->_device supportsPower];
-    v8 = [(TVRUIDevicePickerViewController *)self powerButton];
-    [v8 setEnabled:v7];
+    supportsPower = [(TVRUIDevice *)self->_device supportsPower];
+    powerButton = [(TVRUIDevicePickerViewController *)self powerButton];
+    [powerButton setEnabled:supportsPower];
 
-    v9 = [(TVRUIDevicePickerViewController *)self muteButtonOverride];
-    [v9 setEnabled:1];
+    muteButtonOverride = [(TVRUIDevicePickerViewController *)self muteButtonOverride];
+    [muteButtonOverride setEnabled:1];
 
     [(TVRUIDevicePickerViewController *)self _updateTitleViewForDevice:self->_device];
     v10 = [(TVRUIDevicePickerViewController *)self _cellForDevice:self->_device];
     [v10 _updateConnectionStatus];
-    v11 = [(TVRUIDevice *)self->_device name];
-    [(TVRUIDevicePickerViewController *)self _updateDeviceNameAutomationIdentifier:v11];
+    name = [(TVRUIDevice *)self->_device name];
+    [(TVRUIDevicePickerViewController *)self _updateDeviceNameAutomationIdentifier:name];
   }
 
   else
@@ -1971,26 +1971,26 @@ void __61__TVRUIDevicePickerViewController__updateTitleViewForDevice___block_inv
   device = self->_device;
   self->_device = 0;
 
-  v4 = [(TVRUIDevicePickerViewController *)self muteButton];
-  [v4 setEnabled:0];
+  muteButton = [(TVRUIDevicePickerViewController *)self muteButton];
+  [muteButton setEnabled:0];
 
-  v5 = [(TVRUIDevicePickerViewController *)self powerButton];
-  [v5 setEnabled:0];
+  powerButton = [(TVRUIDevicePickerViewController *)self powerButton];
+  [powerButton setEnabled:0];
 
-  v6 = [(TVRUIDevicePickerViewController *)self muteButtonOverride];
-  [v6 setEnabled:0];
+  muteButtonOverride = [(TVRUIDevicePickerViewController *)self muteButtonOverride];
+  [muteButtonOverride setEnabled:0];
 
-  v7 = [(TVRUIDevicePickerViewController *)self styleProvider];
-  v8 = [v7 defaultDeviceTitle];
+  styleProvider = [(TVRUIDevicePickerViewController *)self styleProvider];
+  defaultDeviceTitle = [styleProvider defaultDeviceTitle];
 
   v9 = MEMORY[0x277D75D18];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __54__TVRUIDevicePickerViewController_resetSelectedDevice__block_invoke;
   v14 = &unk_279D88230;
-  v15 = self;
-  v16 = v8;
-  v10 = v8;
+  selfCopy = self;
+  v16 = defaultDeviceTitle;
+  v10 = defaultDeviceTitle;
   [v9 performWithoutAnimation:&v11];
   [(TVRUIDevicePickerViewController *)self _updateViewState:v11];
   [(TVRUIDevicePickerViewController *)self _updateDeviceNameAutomationIdentifier:@"none"];
@@ -2003,21 +2003,21 @@ void __54__TVRUIDevicePickerViewController_resetSelectedDevice__block_invoke(uin
   [v2 updateTitleWithDeviceName:*(a1 + 40) icon:0];
 }
 
-- (void)_updateDeviceNameAutomationIdentifier:(id)a3
+- (void)_updateDeviceNameAutomationIdentifier:(id)identifier
 {
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"selectedDevice=%@", a3];
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"UIA.TVRemoteService.%@", v6];
-  v5 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
-  [v5 setAccessibilityIdentifier:v4];
+  identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"selectedDevice=%@", identifier];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"UIA.TVRemoteService.%@", identifier];
+  deviceTitleView = [(TVRUIDevicePickerViewController *)self deviceTitleView];
+  [deviceTitleView setAccessibilityIdentifier:v4];
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_device == v5)
+  deviceCopy = device;
+  v6 = deviceCopy;
+  if (self->_device == deviceCopy)
   {
-    if (!v5)
+    if (!deviceCopy)
     {
       goto LABEL_5;
     }
@@ -2025,51 +2025,51 @@ void __54__TVRUIDevicePickerViewController_resetSelectedDevice__block_invoke(uin
 
   else
   {
-    objc_storeStrong(&self->_device, a3);
+    objc_storeStrong(&self->_device, device);
   }
 
   [(TVRUIDevicePickerViewController *)self _updateDevice];
 LABEL_5:
 }
 
-- (void)setStyleProvider:(id)a3
+- (void)setStyleProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_styleProvider != v5)
+  providerCopy = provider;
+  if (self->_styleProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_styleProvider, a3);
-    v5 = v6;
+    v6 = providerCopy;
+    objc_storeStrong(&self->_styleProvider, provider);
+    providerCopy = v6;
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(TVRUIDevicePickerViewController *)self _updateViewState];
   }
 }
 
-- (void)setVolumeControlAvailable:(BOOL)a3
+- (void)setVolumeControlAvailable:(BOOL)available
 {
-  v4 = a3;
-  if (a3)
+  availableCopy = available;
+  if (available)
   {
-    v3 = [(TVRUIDevicePickerViewController *)self device];
-    v6 = [v3 supportsMute];
+    device = [(TVRUIDevicePickerViewController *)self device];
+    supportsMute = [device supportsMute];
   }
 
   else
   {
-    v6 = 0;
+    supportsMute = 0;
   }
 
-  v7 = [(TVRUIDevicePickerViewController *)self muteButton];
-  [v7 setEnabled:v6];
+  muteButton = [(TVRUIDevicePickerViewController *)self muteButton];
+  [muteButton setEnabled:supportsMute];
 
-  if (v4)
+  if (availableCopy)
   {
   }
 
@@ -2081,13 +2081,13 @@ LABEL_5:
 - (id)_lastVisibleCellSupportingFindMy
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v3 = [(TVRUIDevicePickerViewController *)self tableView];
-  v4 = [v3 indexPathsForVisibleRows];
+  tableView = [(TVRUIDevicePickerViewController *)self tableView];
+  indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
   v5 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"row" ascending:1];
   v26[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
-  v7 = [v4 sortedArrayUsingDescriptors:v6];
+  v7 = [indexPathsForVisibleRows sortedArrayUsingDescriptors:v6];
 
   v23 = 0u;
   v24 = 0u;
@@ -2109,13 +2109,13 @@ LABEL_3:
       }
 
       v13 = *(*(&v21 + 1) + 8 * v12);
-      v14 = [(TVRUIDevicePickerViewController *)self tableView];
-      v15 = [v14 cellForRowAtIndexPath:v13];
+      tableView2 = [(TVRUIDevicePickerViewController *)self tableView];
+      v15 = [tableView2 cellForRowAtIndexPath:v13];
 
-      v16 = [v15 device];
-      v17 = [v16 supportsFindMyRemote];
+      device = [v15 device];
+      supportsFindMyRemote = [device supportsFindMyRemote];
 
-      if (v17)
+      if (supportsFindMyRemote)
       {
         break;
       }
@@ -2160,16 +2160,16 @@ LABEL_14:
 {
   if ([(TVRUIDevicePickerViewController *)self isDevicePickerShowing])
   {
-    v3 = [(TVRUIDevicePickerViewController *)self _lastVisibleCellSupportingFindMy];
-    v4 = [v3 findMyButton];
+    _lastVisibleCellSupportingFindMy = [(TVRUIDevicePickerViewController *)self _lastVisibleCellSupportingFindMy];
+    findMyButton = [_lastVisibleCellSupportingFindMy findMyButton];
   }
 
   else
   {
-    v4 = [(TVRUIDevicePickerViewController *)self deviceTitleView];
+    findMyButton = [(TVRUIDevicePickerViewController *)self deviceTitleView];
   }
 
-  return v4;
+  return findMyButton;
 }
 
 - (CGRect)tipSourceRect
@@ -2188,18 +2188,18 @@ LABEL_14:
 - (BOOL)canPresentTip
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(TVRUIDevicePickerViewController *)self showAnimator];
-  if ([v3 isRunning])
+  showAnimator = [(TVRUIDevicePickerViewController *)self showAnimator];
+  if ([showAnimator isRunning])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(TVRUIDevicePickerViewController *)self hideAnimator];
-    v6 = [v5 isRunning];
+    hideAnimator = [(TVRUIDevicePickerViewController *)self hideAnimator];
+    isRunning = [hideAnimator isRunning];
 
-    if (v6)
+    if (isRunning)
     {
       v4 = 0;
       goto LABEL_10;
@@ -2207,18 +2207,18 @@ LABEL_14:
 
     if (![(TVRUIDevicePickerViewController *)self isDevicePickerShowing])
     {
-      v7 = [(TVRUIDevicePickerViewController *)self device];
-      v8 = [v7 supportsFindMyRemote];
+      device = [(TVRUIDevicePickerViewController *)self device];
+      supportsFindMyRemote = [device supportsFindMyRemote];
 
-      if (v8)
+      if (supportsFindMyRemote)
       {
         v4 = 1;
         goto LABEL_10;
       }
     }
 
-    v3 = [(TVRUIDevicePickerViewController *)self _lastVisibleCellSupportingFindMy];
-    v4 = v3 != 0;
+    showAnimator = [(TVRUIDevicePickerViewController *)self _lastVisibleCellSupportingFindMy];
+    v4 = showAnimator != 0;
   }
 
 LABEL_10:
@@ -2243,18 +2243,18 @@ LABEL_10:
 {
   if ([(TVRUIDevicePickerViewController *)self isDevicePickerShowing])
   {
-    v3 = [(TVRUIDevicePickerViewController *)self _lastVisibleCellSupportingFindMy];
-    v4 = [v3 device];
-    v5 = [v4 supportsSiri];
+    _lastVisibleCellSupportingFindMy = [(TVRUIDevicePickerViewController *)self _lastVisibleCellSupportingFindMy];
+    device = [_lastVisibleCellSupportingFindMy device];
+    supportsSiri = [device supportsSiri];
   }
 
   else
   {
-    v3 = [(TVRUIDevicePickerViewController *)self device];
-    v5 = [v3 supportsSiri];
+    _lastVisibleCellSupportingFindMy = [(TVRUIDevicePickerViewController *)self device];
+    supportsSiri = [_lastVisibleCellSupportingFindMy supportsSiri];
   }
 
-  return v5;
+  return supportsSiri;
 }
 
 - (_TVRUIEventDelegate)buttonEventDelegate

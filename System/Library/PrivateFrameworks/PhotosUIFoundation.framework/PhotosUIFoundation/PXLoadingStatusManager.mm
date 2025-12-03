@@ -2,21 +2,21 @@
 + (PXLoadingStatusManager)defaultManager;
 - (BOOL)_needsUpdate;
 - (PXLoadingStatusManager)init;
-- (id)loadingStatusForItemIdentifier:(id)a3;
-- (id)willBeginLoadOperationWithItemIdentifier:(id)a3;
-- (void)_didUpdateLoadOperationWithTrackingID:(id)a3 withProgress:(double)a4 indeterminate:(BOOL)a5;
-- (void)_invalidateLoadingStatusForItemIdentifier:(id)a3;
-- (void)_resetLoadingStatusForItemIdentifierIfAppropriate:(id)a3;
-- (void)_setLoadingStatus:(id)a3 forItemIdentifier:(id)a4;
-- (void)_setLoadingStatus:(id)a3 forLoadOperationTrackingID:(id)a4;
+- (id)loadingStatusForItemIdentifier:(id)identifier;
+- (id)willBeginLoadOperationWithItemIdentifier:(id)identifier;
+- (void)_didUpdateLoadOperationWithTrackingID:(id)d withProgress:(double)progress indeterminate:(BOOL)indeterminate;
+- (void)_invalidateLoadingStatusForItemIdentifier:(id)identifier;
+- (void)_resetLoadingStatusForItemIdentifierIfAppropriate:(id)appropriate;
+- (void)_setLoadingStatus:(id)status forItemIdentifier:(id)identifier;
+- (void)_setLoadingStatus:(id)status forLoadOperationTrackingID:(id)d;
 - (void)_setNeedsUpdate;
 - (void)_updateIfNeeded;
-- (void)_updateLoadingStatusForItemIdentifier:(id)a3;
-- (void)_updateLoadingStatusForItemIdentifierIfNeeded:(id)a3;
+- (void)_updateLoadingStatusForItemIdentifier:(id)identifier;
+- (void)_updateLoadingStatusForItemIdentifierIfNeeded:(id)needed;
 - (void)_updateLoadingStatusForItemIdentifiersIfNeeded;
 - (void)_updateNowIfNeeded;
-- (void)didCancelLoadOperationWithTrackingID:(id)a3;
-- (void)didCompleteLoadOperationWithTrackingID:(id)a3 withSuccess:(BOOL)a4 error:(id)a5 isFromExplicitUserAction:(BOOL)a6;
+- (void)didCancelLoadOperationWithTrackingID:(id)d;
+- (void)didCompleteLoadOperationWithTrackingID:(id)d withSuccess:(BOOL)success error:(id)error isFromExplicitUserAction:(BOOL)action;
 @end
 
 @implementation PXLoadingStatusManager
@@ -28,40 +28,40 @@
   v2 = [(PXLoadingStatusManager *)&v16 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     loadOperationTrackingIDsByItemIdentifier = v2->__loadOperationTrackingIDsByItemIdentifier;
-    v2->__loadOperationTrackingIDsByItemIdentifier = v3;
+    v2->__loadOperationTrackingIDsByItemIdentifier = strongToStrongObjectsMapTable;
 
-    v5 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     loadingStatusByItemIdentifier = v2->__loadingStatusByItemIdentifier;
-    v2->__loadingStatusByItemIdentifier = v5;
+    v2->__loadingStatusByItemIdentifier = strongToStrongObjectsMapTable2;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     itemIdentifierByLoadOperationTrackingID = v2->__itemIdentifierByLoadOperationTrackingID;
-    v2->__itemIdentifierByLoadOperationTrackingID = v7;
+    v2->__itemIdentifierByLoadOperationTrackingID = dictionary;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     loadingStatusByLoadOperationTrackingID = v2->__loadingStatusByLoadOperationTrackingID;
-    v2->__loadingStatusByLoadOperationTrackingID = v9;
+    v2->__loadingStatusByLoadOperationTrackingID = dictionary2;
 
     v11 = [MEMORY[0x1E695DFA8] set];
     invalidLoadingStatusItemIdentifiers = v2->__invalidLoadingStatusItemIdentifiers;
     v2->__invalidLoadingStatusItemIdentifiers = v11;
 
-    v13 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v13;
+    v2->_observers = weakObjectsHashTable;
   }
 
   return v2;
 }
 
-- (void)_updateLoadingStatusForItemIdentifier:(id)a3
+- (void)_updateLoadingStatusForItemIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXLoadingStatusManager *)self _loadOperationTrackingIDsByItemIdentifier];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  _loadOperationTrackingIDsByItemIdentifier = [(PXLoadingStatusManager *)self _loadOperationTrackingIDsByItemIdentifier];
+  v6 = [_loadOperationTrackingIDsByItemIdentifier objectForKey:identifierCopy];
 
   v20 = 0u;
   v21 = 0u;
@@ -85,8 +85,8 @@
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [(PXLoadingStatusManager *)self _loadingStatusByLoadOperationTrackingID];
-        v16 = [v15 objectForKeyedSubscript:v14];
+        _loadingStatusByLoadOperationTrackingID = [(PXLoadingStatusManager *)self _loadingStatusByLoadOperationTrackingID];
+        v16 = [_loadingStatusByLoadOperationTrackingID objectForKeyedSubscript:v14];
 
         if (v16)
         {
@@ -118,26 +118,26 @@
     v10 = 0;
   }
 
-  [(PXLoadingStatusManager *)self _setLoadingStatus:v10 forItemIdentifier:v4];
+  [(PXLoadingStatusManager *)self _setLoadingStatus:v10 forItemIdentifier:identifierCopy];
 }
 
-- (void)_updateLoadingStatusForItemIdentifierIfNeeded:(id)a3
+- (void)_updateLoadingStatusForItemIdentifierIfNeeded:(id)needed
 {
-  v5 = a3;
-  v4 = [(PXLoadingStatusManager *)self _invalidLoadingStatusItemIdentifiers];
-  if ([v4 containsObject:v5])
+  neededCopy = needed;
+  _invalidLoadingStatusItemIdentifiers = [(PXLoadingStatusManager *)self _invalidLoadingStatusItemIdentifiers];
+  if ([_invalidLoadingStatusItemIdentifiers containsObject:neededCopy])
   {
-    [v4 removeObject:v5];
-    [(PXLoadingStatusManager *)self _updateLoadingStatusForItemIdentifier:v5];
+    [_invalidLoadingStatusItemIdentifiers removeObject:neededCopy];
+    [(PXLoadingStatusManager *)self _updateLoadingStatusForItemIdentifier:neededCopy];
   }
 }
 
 - (void)_updateLoadingStatusForItemIdentifiersIfNeeded
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(PXLoadingStatusManager *)self _invalidLoadingStatusItemIdentifiers];
-  v4 = [v3 copy];
-  [v3 removeAllObjects];
+  _invalidLoadingStatusItemIdentifiers = [(PXLoadingStatusManager *)self _invalidLoadingStatusItemIdentifiers];
+  v4 = [_invalidLoadingStatusItemIdentifiers copy];
+  [_invalidLoadingStatusItemIdentifiers removeAllObjects];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -169,13 +169,13 @@
   }
 }
 
-- (void)_invalidateLoadingStatusForItemIdentifier:(id)a3
+- (void)_invalidateLoadingStatusForItemIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
-    v5 = [(PXLoadingStatusManager *)self _invalidLoadingStatusItemIdentifiers];
-    [v5 addObject:v4];
+    identifierCopy = identifier;
+    _invalidLoadingStatusItemIdentifiers = [(PXLoadingStatusManager *)self _invalidLoadingStatusItemIdentifiers];
+    [_invalidLoadingStatusItemIdentifiers addObject:identifierCopy];
 
     [(PXLoadingStatusManager *)self _setNeedsUpdate];
   }
@@ -202,8 +202,8 @@
 
 - (BOOL)_needsUpdate
 {
-  v2 = [(PXLoadingStatusManager *)self _invalidLoadingStatusItemIdentifiers];
-  v3 = [v2 count] != 0;
+  _invalidLoadingStatusItemIdentifiers = [(PXLoadingStatusManager *)self _invalidLoadingStatusItemIdentifiers];
+  v3 = [_invalidLoadingStatusItemIdentifiers count] != 0;
 
   return v3;
 }
@@ -215,18 +215,18 @@
     [(PXLoadingStatusManager *)self _updateLoadingStatusForItemIdentifiersIfNeeded];
     if ([(PXLoadingStatusManager *)self _needsUpdate])
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:a2 object:self file:@"PXLoadingStatusManager.m" lineNumber:206 description:@"updates still needed after an update cycle"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXLoadingStatusManager.m" lineNumber:206 description:@"updates still needed after an update cycle"];
     }
   }
 }
 
-- (void)_resetLoadingStatusForItemIdentifierIfAppropriate:(id)a3
+- (void)_resetLoadingStatusForItemIdentifierIfAppropriate:(id)appropriate
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXLoadingStatusManager *)self _loadOperationTrackingIDsByItemIdentifier];
-  v6 = [v5 objectForKey:v4];
+  appropriateCopy = appropriate;
+  _loadOperationTrackingIDsByItemIdentifier = [(PXLoadingStatusManager *)self _loadOperationTrackingIDsByItemIdentifier];
+  v6 = [_loadOperationTrackingIDsByItemIdentifier objectForKey:appropriateCopy];
 
   v7 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v6, "count")}];
   v28 = 0u;
@@ -249,8 +249,8 @@
         }
 
         v13 = *(*(&v28 + 1) + 8 * i);
-        v14 = [(PXLoadingStatusManager *)self _loadingStatusByLoadOperationTrackingID];
-        v15 = [v14 objectForKeyedSubscript:v13];
+        _loadingStatusByLoadOperationTrackingID = [(PXLoadingStatusManager *)self _loadingStatusByLoadOperationTrackingID];
+        v15 = [_loadingStatusByLoadOperationTrackingID objectForKeyedSubscript:v13];
 
         if ([v15 state] == 1)
         {
@@ -299,11 +299,11 @@ LABEL_13:
           }
 
           v21 = *(*(&v24 + 1) + 8 * j);
-          v22 = [(PXLoadingStatusManager *)self _loadingStatusByLoadOperationTrackingID];
-          [v22 removeObjectForKey:v21];
+          _loadingStatusByLoadOperationTrackingID2 = [(PXLoadingStatusManager *)self _loadingStatusByLoadOperationTrackingID];
+          [_loadingStatusByLoadOperationTrackingID2 removeObjectForKey:v21];
 
-          v23 = [(PXLoadingStatusManager *)self _itemIdentifierByLoadOperationTrackingID];
-          [v23 removeObjectForKey:v21];
+          _itemIdentifierByLoadOperationTrackingID = [(PXLoadingStatusManager *)self _itemIdentifierByLoadOperationTrackingID];
+          [_itemIdentifierByLoadOperationTrackingID removeObjectForKey:v21];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -313,27 +313,27 @@ LABEL_13:
     }
 
     [v8 minusSet:v16];
-    [(PXLoadingStatusManager *)self _invalidateLoadingStatusForItemIdentifier:v4];
+    [(PXLoadingStatusManager *)self _invalidateLoadingStatusForItemIdentifier:appropriateCopy];
   }
 }
 
-- (void)_setLoadingStatus:(id)a3 forItemIdentifier:(id)a4
+- (void)_setLoadingStatus:(id)status forItemIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXLoadingStatusManager *)self _loadingStatusByItemIdentifier];
-  v9 = [v8 objectForKey:v7];
-  if (v9 != v6 && ([v6 isEqual:v9] & 1) == 0)
+  statusCopy = status;
+  identifierCopy = identifier;
+  _loadingStatusByItemIdentifier = [(PXLoadingStatusManager *)self _loadingStatusByItemIdentifier];
+  v9 = [_loadingStatusByItemIdentifier objectForKey:identifierCopy];
+  if (v9 != statusCopy && ([statusCopy isEqual:v9] & 1) == 0)
   {
-    if (v6)
+    if (statusCopy)
     {
-      [v8 setObject:v6 forKey:v7];
+      [_loadingStatusByItemIdentifier setObject:statusCopy forKey:identifierCopy];
     }
 
     else
     {
-      [v8 removeObjectForKey:v7];
+      [_loadingStatusByItemIdentifier removeObjectForKey:identifierCopy];
     }
 
     v17 = 0u;
@@ -355,7 +355,7 @@ LABEL_13:
             objc_enumerationMutation(v10);
           }
 
-          [*(*(&v15 + 1) + 8 * i) loadingStatusManager:self didUpdateLoadingStatus:v6 forItemIdentifier:{v7, v15}];
+          [*(*(&v15 + 1) + 8 * i) loadingStatusManager:self didUpdateLoadingStatus:statusCopy forItemIdentifier:{identifierCopy, v15}];
         }
 
         v12 = [(NSHashTable *)v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -366,74 +366,74 @@ LABEL_13:
   }
 }
 
-- (void)_setLoadingStatus:(id)a3 forLoadOperationTrackingID:(id)a4
+- (void)_setLoadingStatus:(id)status forLoadOperationTrackingID:(id)d
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(PXLoadingStatusManager *)self _loadingStatusByLoadOperationTrackingID];
-  v8 = [v7 objectForKeyedSubscript:v6];
-  if (v8 != v11 && ([v11 isEqual:v8] & 1) == 0)
+  statusCopy = status;
+  dCopy = d;
+  _loadingStatusByLoadOperationTrackingID = [(PXLoadingStatusManager *)self _loadingStatusByLoadOperationTrackingID];
+  v8 = [_loadingStatusByLoadOperationTrackingID objectForKeyedSubscript:dCopy];
+  if (v8 != statusCopy && ([statusCopy isEqual:v8] & 1) == 0)
   {
-    if (v11)
+    if (statusCopy)
     {
-      [v7 setObject:v11 forKeyedSubscript:v6];
+      [_loadingStatusByLoadOperationTrackingID setObject:statusCopy forKeyedSubscript:dCopy];
     }
 
     else
     {
-      [v7 removeObjectForKey:v6];
+      [_loadingStatusByLoadOperationTrackingID removeObjectForKey:dCopy];
     }
 
-    v9 = [(PXLoadingStatusManager *)self _itemIdentifierByLoadOperationTrackingID];
-    v10 = [v9 objectForKeyedSubscript:v6];
+    _itemIdentifierByLoadOperationTrackingID = [(PXLoadingStatusManager *)self _itemIdentifierByLoadOperationTrackingID];
+    v10 = [_itemIdentifierByLoadOperationTrackingID objectForKeyedSubscript:dCopy];
 
     [(PXLoadingStatusManager *)self _invalidateLoadingStatusForItemIdentifier:v10];
   }
 }
 
-- (void)didCancelLoadOperationWithTrackingID:(id)a3
+- (void)didCancelLoadOperationWithTrackingID:(id)d
 {
-  v13 = a3;
-  if (!v13)
+  dCopy = d;
+  if (!dCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXLoadingStatusManager.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"loadOperationTrackingID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXLoadingStatusManager.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"loadOperationTrackingID"}];
   }
 
-  v5 = [(PXLoadingStatusManager *)self _loadingStatusByLoadOperationTrackingID];
-  v6 = [v5 objectForKeyedSubscript:v13];
+  _loadingStatusByLoadOperationTrackingID = [(PXLoadingStatusManager *)self _loadingStatusByLoadOperationTrackingID];
+  v6 = [_loadingStatusByLoadOperationTrackingID objectForKeyedSubscript:dCopy];
 
   if (v6)
   {
     v7 = [PXOperationStatus alloc];
     [v6 progress];
     v9 = v8;
-    v10 = [v6 error];
-    v11 = [(PXOperationStatus *)v7 initWithState:4 progress:0 indeterminate:v10 error:0 creationDate:v9];
+    error = [v6 error];
+    v11 = [(PXOperationStatus *)v7 initWithState:4 progress:0 indeterminate:error error:0 creationDate:v9];
 
-    [(PXLoadingStatusManager *)self _setLoadingStatus:v11 forLoadOperationTrackingID:v13];
+    [(PXLoadingStatusManager *)self _setLoadingStatus:v11 forLoadOperationTrackingID:dCopy];
   }
 }
 
-- (void)didCompleteLoadOperationWithTrackingID:(id)a3 withSuccess:(BOOL)a4 error:(id)a5 isFromExplicitUserAction:(BOOL)a6
+- (void)didCompleteLoadOperationWithTrackingID:(id)d withSuccess:(BOOL)success error:(id)error isFromExplicitUserAction:(BOOL)action
 {
-  v7 = a4;
-  v19 = a3;
-  v10 = a5;
-  if (!v19)
+  successCopy = success;
+  dCopy = d;
+  errorCopy = error;
+  if (!dCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PXLoadingStatusManager.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"loadOperationTrackingID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXLoadingStatusManager.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"loadOperationTrackingID"}];
   }
 
-  v11 = [(PXLoadingStatusManager *)self _loadingStatusByLoadOperationTrackingID];
-  v12 = [v11 objectForKeyedSubscript:v19];
+  _loadingStatusByLoadOperationTrackingID = [(PXLoadingStatusManager *)self _loadingStatusByLoadOperationTrackingID];
+  v12 = [_loadingStatusByLoadOperationTrackingID objectForKeyedSubscript:dCopy];
 
-  v13 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   if (v12)
   {
     v14 = [PXOperationStatus alloc];
-    if (v7)
+    if (successCopy)
     {
       v15 = 2;
       v16 = 0;
@@ -442,89 +442,89 @@ LABEL_13:
     else
     {
       v15 = 3;
-      v16 = v10;
+      v16 = errorCopy;
     }
 
-    v17 = [(PXOperationStatus *)v14 initWithState:v15 progress:0 indeterminate:v16 error:v13 creationDate:1.0];
+    v17 = [(PXOperationStatus *)v14 initWithState:v15 progress:0 indeterminate:v16 error:date creationDate:1.0];
 
-    [(PXLoadingStatusManager *)self _setLoadingStatus:v17 forLoadOperationTrackingID:v19];
+    [(PXLoadingStatusManager *)self _setLoadingStatus:v17 forLoadOperationTrackingID:dCopy];
   }
 }
 
-- (void)_didUpdateLoadOperationWithTrackingID:(id)a3 withProgress:(double)a4 indeterminate:(BOOL)a5
+- (void)_didUpdateLoadOperationWithTrackingID:(id)d withProgress:(double)progress indeterminate:(BOOL)indeterminate
 {
-  v5 = a5;
-  v16 = a3;
-  if (!v16)
+  indeterminateCopy = indeterminate;
+  dCopy = d;
+  if (!dCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXLoadingStatusManager.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"loadOperationTrackingID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXLoadingStatusManager.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"loadOperationTrackingID"}];
   }
 
-  v9 = [(PXLoadingStatusManager *)self _itemIdentifierByLoadOperationTrackingID];
-  v10 = [v9 objectForKeyedSubscript:v16];
+  _itemIdentifierByLoadOperationTrackingID = [(PXLoadingStatusManager *)self _itemIdentifierByLoadOperationTrackingID];
+  v10 = [_itemIdentifierByLoadOperationTrackingID objectForKeyedSubscript:dCopy];
 
   [(PXLoadingStatusManager *)self _resetLoadingStatusForItemIdentifierIfAppropriate:v10];
   v11 = [PXOperationStatus alloc];
-  if (v5)
+  if (indeterminateCopy)
   {
-    v12 = 0.5;
+    progressCopy = 0.5;
     v13 = 1;
   }
 
   else
   {
-    v12 = a4;
+    progressCopy = progress;
     v13 = 0;
   }
 
-  v14 = [(PXOperationStatus *)v11 initWithState:1 progress:v13 indeterminate:0 error:0 creationDate:v12];
-  [(PXLoadingStatusManager *)self _setLoadingStatus:v14 forLoadOperationTrackingID:v16];
+  v14 = [(PXOperationStatus *)v11 initWithState:1 progress:v13 indeterminate:0 error:0 creationDate:progressCopy];
+  [(PXLoadingStatusManager *)self _setLoadingStatus:v14 forLoadOperationTrackingID:dCopy];
 }
 
-- (id)willBeginLoadOperationWithItemIdentifier:(id)a3
+- (id)willBeginLoadOperationWithItemIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXLoadingStatusManager.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"itemIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXLoadingStatusManager.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"itemIdentifier"}];
   }
 
-  v6 = [(PXLoadingStatusManager *)self _loadingStatusByItemIdentifier];
-  v7 = [v6 objectForKey:v5];
+  _loadingStatusByItemIdentifier = [(PXLoadingStatusManager *)self _loadingStatusByItemIdentifier];
+  v7 = [_loadingStatusByItemIdentifier objectForKey:identifierCopy];
 
   if ([v7 state] == 3)
   {
-    [(PXLoadingStatusManager *)self _resetLoadingStatusForItemIdentifierIfAppropriate:v5];
+    [(PXLoadingStatusManager *)self _resetLoadingStatusForItemIdentifierIfAppropriate:identifierCopy];
   }
 
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  v9 = [v8 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v10 = [(PXLoadingStatusManager *)self _loadOperationTrackingIDsByItemIdentifier];
-  v11 = [v10 objectForKey:v5];
+  _loadOperationTrackingIDsByItemIdentifier = [(PXLoadingStatusManager *)self _loadOperationTrackingIDsByItemIdentifier];
+  v11 = [_loadOperationTrackingIDsByItemIdentifier objectForKey:identifierCopy];
 
   if (!v11)
   {
     v11 = [MEMORY[0x1E695DFA8] set];
-    v12 = [(PXLoadingStatusManager *)self _loadOperationTrackingIDsByItemIdentifier];
-    [v12 setObject:v11 forKey:v5];
+    _loadOperationTrackingIDsByItemIdentifier2 = [(PXLoadingStatusManager *)self _loadOperationTrackingIDsByItemIdentifier];
+    [_loadOperationTrackingIDsByItemIdentifier2 setObject:v11 forKey:identifierCopy];
   }
 
-  [v11 addObject:v9];
-  v13 = [(PXLoadingStatusManager *)self _itemIdentifierByLoadOperationTrackingID];
-  [v13 setObject:v5 forKeyedSubscript:v9];
+  [v11 addObject:uUIDString];
+  _itemIdentifierByLoadOperationTrackingID = [(PXLoadingStatusManager *)self _itemIdentifierByLoadOperationTrackingID];
+  [_itemIdentifierByLoadOperationTrackingID setObject:identifierCopy forKeyedSubscript:uUIDString];
 
-  return v9;
+  return uUIDString;
 }
 
-- (id)loadingStatusForItemIdentifier:(id)a3
+- (id)loadingStatusForItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  [(PXLoadingStatusManager *)self _updateLoadingStatusForItemIdentifierIfNeeded:v4];
-  v5 = [(PXLoadingStatusManager *)self _loadingStatusByItemIdentifier];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  [(PXLoadingStatusManager *)self _updateLoadingStatusForItemIdentifierIfNeeded:identifierCopy];
+  _loadingStatusByItemIdentifier = [(PXLoadingStatusManager *)self _loadingStatusByItemIdentifier];
+  v6 = [_loadingStatusByItemIdentifier objectForKey:identifierCopy];
 
   return v6;
 }

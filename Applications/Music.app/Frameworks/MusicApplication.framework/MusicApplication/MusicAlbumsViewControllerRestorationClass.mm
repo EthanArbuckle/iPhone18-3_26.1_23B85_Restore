@@ -1,15 +1,15 @@
 @interface MusicAlbumsViewControllerRestorationClass
-+ (id)viewControllerWithRestorationIdentifierPath:(id)a3 coder:(id)a4;
++ (id)viewControllerWithRestorationIdentifierPath:(id)path coder:(id)coder;
 - (MusicAlbumsViewControllerRestorationClass)init;
 @end
 
 @implementation MusicAlbumsViewControllerRestorationClass
 
-+ (id)viewControllerWithRestorationIdentifierPath:(id)a3 coder:(id)a4
++ (id)viewControllerWithRestorationIdentifierPath:(id)path coder:(id)coder
 {
-  v5 = a3;
-  v6 = a4;
-  sub_141008(v6);
+  pathCopy = path;
+  coderCopy = coder;
+  sub_141008(coderCopy);
   v8 = v7;
 
   return v8;

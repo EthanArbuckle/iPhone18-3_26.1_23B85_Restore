@@ -1,22 +1,22 @@
 @interface TPSInclusivityInfo
-- (TPSInclusivityInfo)initWithTargetValues:(id)a3 excludeValues:(id)a4;
+- (TPSInclusivityInfo)initWithTargetValues:(id)values excludeValues:(id)excludeValues;
 - (id)debugDescription;
 @end
 
 @implementation TPSInclusivityInfo
 
-- (TPSInclusivityInfo)initWithTargetValues:(id)a3 excludeValues:(id)a4
+- (TPSInclusivityInfo)initWithTargetValues:(id)values excludeValues:(id)excludeValues
 {
-  v7 = a3;
-  v8 = a4;
+  valuesCopy = values;
+  excludeValuesCopy = excludeValues;
   v12.receiver = self;
   v12.super_class = TPSInclusivityInfo;
   v9 = [(TPSInclusivityInfo *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_targetValues, a3);
-    objc_storeStrong(&v10->_excludeValues, a4);
+    objc_storeStrong(&v9->_targetValues, values);
+    objc_storeStrong(&v10->_excludeValues, excludeValues);
   }
 
   return v10;
@@ -30,11 +30,11 @@
   v4 = [(TPSInclusivityInfo *)&v9 debugDescription];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(TPSInclusivityInfo *)self targetValues];
-  [v5 appendFormat:@" %@ = %@", @"include", v6];
+  targetValues = [(TPSInclusivityInfo *)self targetValues];
+  [v5 appendFormat:@" %@ = %@", @"include", targetValues];
 
-  v7 = [(TPSInclusivityInfo *)self excludeValues];
-  [v5 appendFormat:@"; %@ = %@", @"exclude", v7];
+  excludeValues = [(TPSInclusivityInfo *)self excludeValues];
+  [v5 appendFormat:@"; %@ = %@", @"exclude", excludeValues];
 
   return v5;
 }

@@ -1,12 +1,12 @@
 @interface CRLWPCheckingResults
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CRLWPCheckingResults)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)addResult:(id)a3 forRange:(_NSRange)a4;
+- (void)addResult:(id)result forRange:(_NSRange)range;
 - (void)clear;
-- (void)removeResultsForRanges:(id)a3;
-- (void)replacedTextAtRange:(_NSRange)a3 amount:(int64_t)a4;
+- (void)removeResultsForRanges:(id)ranges;
+- (void)replacedTextAtRange:(_NSRange)range amount:(int64_t)amount;
 @end
 
 @implementation CRLWPCheckingResults
@@ -30,25 +30,25 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [(CRLWPRangeArray *)self->_ranges mutableCopyWithZone:a3];
+  v6 = [(CRLWPRangeArray *)self->_ranges mutableCopyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSMutableArray *)self->_results mutableCopyWithZone:a3];
+  v8 = [(NSMutableArray *)self->_results mutableCopyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
 
   if (v6)
   {
@@ -93,13 +93,13 @@
   [(CRLWPMutableRangeArray *)ranges clear];
 }
 
-- (void)removeResultsForRanges:(id)a3
+- (void)removeResultsForRanges:(id)ranges
 {
-  v16 = a3;
-  v4 = [(CRLWPRangeArray *)self->_ranges rangeCount];
-  if (v4)
+  rangesCopy = ranges;
+  rangeCount = [(CRLWPRangeArray *)self->_ranges rangeCount];
+  if (rangeCount)
   {
-    v5 = v4;
+    v5 = rangeCount;
     v6 = 0x7FFFFFFFFFFFFFFFLL;
     v7 = 0x7FFFFFFFFFFFFFFFLL;
     do
@@ -108,7 +108,7 @@
       {
         v8 = v5--;
         v9 = [(CRLWPRangeArray *)self->_ranges rangeAtIndex:v5];
-        if (![v16 intersectsRange:{v9, v10}])
+        if (![rangesCopy intersectsRange:{v9, v10}])
         {
           break;
         }
@@ -182,27 +182,27 @@ LABEL_16:
   }
 }
 
-- (void)replacedTextAtRange:(_NSRange)a3 amount:(int64_t)a4
+- (void)replacedTextAtRange:(_NSRange)range amount:(int64_t)amount
 {
-  v5 = [(CRLWPMutableRangeArray *)self->_ranges replacedTextAtRange:a3.location delta:a3.length, a4];
+  amount = [(CRLWPMutableRangeArray *)self->_ranges replacedTextAtRange:range.location delta:range.length, amount];
   if (v6)
   {
-    v7 = v5;
+    v7 = amount;
     results = self->_results;
 
     [(NSMutableArray *)results removeObjectsInRange:v7, v6];
   }
 }
 
-- (void)addResult:(id)a3 forRange:(_NSRange)a4
+- (void)addResult:(id)result forRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   ranges = self->_ranges;
-  v9 = a3;
+  resultCopy = result;
   v8 = [(CRLWPRangeArray *)ranges indexForRange:location, length];
   [(CRLWPMutableRangeArray *)self->_ranges insertRange:location atIndex:length, v8];
-  [(NSMutableArray *)self->_results insertObject:v9 atIndex:v8];
+  [(NSMutableArray *)self->_results insertObject:resultCopy atIndex:v8];
 }
 
 @end

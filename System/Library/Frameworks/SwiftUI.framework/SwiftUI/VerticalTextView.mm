@@ -1,6 +1,6 @@
 @interface VerticalTextView
 - (CGPoint)accessibilityActivationPoint;
-- (_TtC7SwiftUI16VerticalTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (_TtC7SwiftUI16VerticalTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (unint64_t)accessibilityTraits;
 @end
 
@@ -11,15 +11,15 @@
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
   v2 = v6.receiver;
-  v3 = [(VerticalTextView *)&v6 accessibilityTraits];
+  accessibilityTraits = [(VerticalTextView *)&v6 accessibilityTraits];
 
   v4 = -1;
-  if ((v3 & 0x800000000000) != 0)
+  if ((accessibilityTraits & 0x800000000000) != 0)
   {
     v4 = 0xFFFF7FFFFFFFFFFFLL;
   }
 
-  return v4 & v3;
+  return v4 & accessibilityTraits;
 }
 
 - (CGPoint)accessibilityActivationPoint
@@ -39,12 +39,12 @@
   return result;
 }
 
-- (_TtC7SwiftUI16VerticalTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC7SwiftUI16VerticalTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v11 = self + OBJC_IVAR____TtC7SwiftUI16VerticalTextView_upperLimit;
   *v11 = 0;
@@ -53,7 +53,7 @@
   *v12 = 0;
   v12[8] = 1;
   v13 = (&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC7SwiftUI16VerticalTextView_activationPointPadding);
-  v14 = a4;
+  containerCopy = container;
   static EdgeInsets.zero.getter();
   *v13 = v15;
   v13[1] = v16;
@@ -66,9 +66,9 @@
   *(&self->super.super.super.super.super.super.isa + v19) = _sSD17dictionaryLiteralSDyxq_Gx_q_td_tcfCSo21NSAttributedStringKeya_ypTt0g5Tf4g_n(MEMORY[0x1E69E7CC0]);
   v22.receiver = self;
   v22.super_class = ObjectType;
-  v20 = [(UIKitTextView *)&v22 initWithFrame:v14 textContainer:x, y, width, height];
+  height = [(UIKitTextView *)&v22 initWithFrame:containerCopy textContainer:x, y, width, height];
 
-  return v20;
+  return height;
 }
 
 @end

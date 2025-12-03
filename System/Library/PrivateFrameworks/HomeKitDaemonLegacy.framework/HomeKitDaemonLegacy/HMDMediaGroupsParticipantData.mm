@@ -1,62 +1,62 @@
 @interface HMDMediaGroupsParticipantData
-- (BOOL)isEqual:(id)a3;
-- (HMDMediaGroupsParticipantData)initWithDestination:(id)a3 destinationControllerData:(id)a4 backedUpGroups:(id)a5;
-- (HMDMediaGroupsParticipantData)initWithProtoBufferData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMDMediaGroupsParticipantData)initWithDestination:(id)destination destinationControllerData:(id)data backedUpGroups:(id)groups;
+- (HMDMediaGroupsParticipantData)initWithProtoBufferData:(id)data;
 - (id)description;
 - (id)encodeToProtoBufferData;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation HMDMediaGroupsParticipantData
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HMDMutableMediaGroupsParticipantData alloc];
-  v5 = [(HMDMediaGroupsParticipantData *)self destination];
-  v6 = [(HMDMediaGroupsParticipantData *)self destinationControllerData];
-  v7 = [(HMDMediaGroupsParticipantData *)self backedUpGroups];
-  v8 = [(HMDMediaGroupsParticipantData *)v4 initWithDestination:v5 destinationControllerData:v6 backedUpGroups:v7];
+  destination = [(HMDMediaGroupsParticipantData *)self destination];
+  destinationControllerData = [(HMDMediaGroupsParticipantData *)self destinationControllerData];
+  backedUpGroups = [(HMDMediaGroupsParticipantData *)self backedUpGroups];
+  v8 = [(HMDMediaGroupsParticipantData *)v4 initWithDestination:destination destinationControllerData:destinationControllerData backedUpGroups:backedUpGroups];
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMDMediaGroupsParticipantData *)self destination];
+  destination = [(HMDMediaGroupsParticipantData *)self destination];
 
-  if (v3)
+  if (destination)
   {
-    v4 = [(HMDMediaGroupsParticipantData *)self destination];
-    v5 = [v4 uniqueIdentifier];
+    destination2 = [(HMDMediaGroupsParticipantData *)self destination];
+    uniqueIdentifier = [destination2 uniqueIdentifier];
   }
 
   else
   {
-    v6 = [(HMDMediaGroupsParticipantData *)self destinationControllerData];
+    destinationControllerData = [(HMDMediaGroupsParticipantData *)self destinationControllerData];
 
-    if (!v6)
+    if (!destinationControllerData)
     {
-      v4 = [(HMDMediaGroupsParticipantData *)self backedUpGroups];
-      v8 = [v4 count];
+      destination2 = [(HMDMediaGroupsParticipantData *)self backedUpGroups];
+      v8 = [destination2 count];
       goto LABEL_6;
     }
 
-    v4 = [(HMDMediaGroupsParticipantData *)self destinationControllerData];
-    v5 = [v4 identifier];
+    destination2 = [(HMDMediaGroupsParticipantData *)self destinationControllerData];
+    uniqueIdentifier = [destination2 identifier];
   }
 
-  v7 = v5;
-  v8 = [v5 hash];
+  v7 = uniqueIdentifier;
+  v8 = [uniqueIdentifier hash];
 
 LABEL_6:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
   }
@@ -66,7 +66,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -80,8 +80,8 @@ LABEL_6:
       goto LABEL_9;
     }
 
-    v7 = [(HMDMediaGroupsParticipantData *)self destination];
-    v8 = [(HMDMediaGroupsParticipantData *)v6 destination];
+    destination = [(HMDMediaGroupsParticipantData *)self destination];
+    destination2 = [(HMDMediaGroupsParticipantData *)v6 destination];
     v9 = HMFEqualObjects();
 
     if (!v9)
@@ -89,18 +89,18 @@ LABEL_6:
       goto LABEL_9;
     }
 
-    v10 = [(HMDMediaGroupsParticipantData *)self destinationControllerData];
-    v11 = [(HMDMediaGroupsParticipantData *)v6 destinationControllerData];
+    destinationControllerData = [(HMDMediaGroupsParticipantData *)self destinationControllerData];
+    destinationControllerData2 = [(HMDMediaGroupsParticipantData *)v6 destinationControllerData];
     v12 = HMFEqualObjects();
 
     if (v12)
     {
       v13 = MEMORY[0x277CBEB98];
-      v14 = [(HMDMediaGroupsParticipantData *)self backedUpGroups];
-      v15 = [v13 setWithArray:v14];
+      backedUpGroups = [(HMDMediaGroupsParticipantData *)self backedUpGroups];
+      v15 = [v13 setWithArray:backedUpGroups];
       v16 = MEMORY[0x277CBEB98];
-      v17 = [(HMDMediaGroupsParticipantData *)v6 backedUpGroups];
-      v18 = [v16 setWithArray:v17];
+      backedUpGroups2 = [(HMDMediaGroupsParticipantData *)v6 backedUpGroups];
+      v18 = [v16 setWithArray:backedUpGroups2];
       v19 = [v15 isEqual:v18];
     }
 
@@ -117,11 +117,11 @@ LABEL_9:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDMediaGroupsParticipantData *)self destination];
-  v5 = v4;
-  if (v4)
+  destination = [(HMDMediaGroupsParticipantData *)self destination];
+  v5 = destination;
+  if (destination)
   {
-    v6 = v4;
+    v6 = destination;
   }
 
   else
@@ -129,11 +129,11 @@ LABEL_9:
     v6 = @"none";
   }
 
-  v7 = [(HMDMediaGroupsParticipantData *)self destinationControllerData];
-  v8 = v7;
-  if (v7)
+  destinationControllerData = [(HMDMediaGroupsParticipantData *)self destinationControllerData];
+  v8 = destinationControllerData;
+  if (destinationControllerData)
   {
-    v9 = v7;
+    v9 = destinationControllerData;
   }
 
   else
@@ -142,25 +142,25 @@ LABEL_9:
   }
 
   v10 = MEMORY[0x277CCABB0];
-  v11 = [(HMDMediaGroupsParticipantData *)self backedUpGroups];
-  v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
+  backedUpGroups = [(HMDMediaGroupsParticipantData *)self backedUpGroups];
+  v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(backedUpGroups, "count")}];
   v13 = [v3 stringWithFormat:@"<HMDMediaGroupsParticipantData destination: %@ destinationControllerData: %@ groups count: %@>", v6, v9, v12];
 
   return v13;
 }
 
-- (HMDMediaGroupsParticipantData)initWithProtoBufferData:(id)a3
+- (HMDMediaGroupsParticipantData)initWithProtoBufferData:(id)data
 {
   v4 = MEMORY[0x277CD1BC8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithData:v5];
+  dataCopy = data;
+  v6 = [[v4 alloc] initWithData:dataCopy];
 
   if ([v6 hasDestination])
   {
     v7 = objc_alloc(MEMORY[0x277CD1B80]);
-    v8 = [v6 destination];
-    v9 = [v8 data];
-    v10 = [v7 initWithProtoBufferData:v9];
+    destination = [v6 destination];
+    data = [destination data];
+    v10 = [v7 initWithProtoBufferData:data];
   }
 
   else
@@ -171,9 +171,9 @@ LABEL_9:
   if ([v6 hasDestinationController])
   {
     v11 = objc_alloc(MEMORY[0x277CD1B90]);
-    v12 = [v6 destinationController];
-    v13 = [v12 data];
-    v14 = [v11 initWithProtoBufferData:v13];
+    destinationController = [v6 destinationController];
+    data2 = [destinationController data];
+    v14 = [v11 initWithProtoBufferData:data2];
   }
 
   else
@@ -183,8 +183,8 @@ LABEL_9:
 
   if ([v6 backupGroupsCount])
   {
-    v15 = [v6 backupGroups];
-    v16 = [(HMDMediaGroupsParticipantData *)self initWithDestination:v10 destinationControllerData:v14 backedUpGroups:v15];
+    backupGroups = [v6 backupGroups];
+    v16 = [(HMDMediaGroupsParticipantData *)self initWithDestination:v10 destinationControllerData:v14 backedUpGroups:backupGroups];
   }
 
   else
@@ -198,54 +198,54 @@ LABEL_9:
 - (id)encodeToProtoBufferData
 {
   v3 = objc_alloc_init(MEMORY[0x277CD1BC8]);
-  v4 = [(HMDMediaGroupsParticipantData *)self destination];
+  destination = [(HMDMediaGroupsParticipantData *)self destination];
 
-  if (v4)
+  if (destination)
   {
     v5 = objc_alloc(MEMORY[0x277CD1BA8]);
-    v6 = [(HMDMediaGroupsParticipantData *)self destination];
-    v7 = [v6 encodeToProtoBufferData];
-    v8 = [v5 initWithData:v7];
+    destination2 = [(HMDMediaGroupsParticipantData *)self destination];
+    encodeToProtoBufferData = [destination2 encodeToProtoBufferData];
+    v8 = [v5 initWithData:encodeToProtoBufferData];
     [v3 setDestination:v8];
   }
 
-  v9 = [(HMDMediaGroupsParticipantData *)self destinationControllerData];
+  destinationControllerData = [(HMDMediaGroupsParticipantData *)self destinationControllerData];
 
-  if (v9)
+  if (destinationControllerData)
   {
     v10 = objc_alloc(MEMORY[0x277CD1BB8]);
-    v11 = [(HMDMediaGroupsParticipantData *)self destinationControllerData];
-    v12 = [v11 encodeToProtoBufferData];
-    v13 = [v10 initWithData:v12];
+    destinationControllerData2 = [(HMDMediaGroupsParticipantData *)self destinationControllerData];
+    encodeToProtoBufferData2 = [destinationControllerData2 encodeToProtoBufferData];
+    v13 = [v10 initWithData:encodeToProtoBufferData2];
     [v3 setDestinationController:v13];
   }
 
-  v14 = [(HMDMediaGroupsParticipantData *)self backedUpGroups];
-  v15 = [v14 mutableCopy];
+  backedUpGroups = [(HMDMediaGroupsParticipantData *)self backedUpGroups];
+  v15 = [backedUpGroups mutableCopy];
   [v3 setBackupGroups:v15];
 
-  v16 = [v3 data];
+  data = [v3 data];
 
-  return v16;
+  return data;
 }
 
-- (HMDMediaGroupsParticipantData)initWithDestination:(id)a3 destinationControllerData:(id)a4 backedUpGroups:(id)a5
+- (HMDMediaGroupsParticipantData)initWithDestination:(id)destination destinationControllerData:(id)data backedUpGroups:(id)groups
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  destinationCopy = destination;
+  dataCopy = data;
+  groupsCopy = groups;
+  if (groupsCopy)
   {
-    v12 = v11;
+    v12 = groupsCopy;
     v18.receiver = self;
     v18.super_class = HMDMediaGroupsParticipantData;
     v13 = [(HMDMediaGroupsParticipantData *)&v18 init];
     v14 = v13;
     if (v13)
     {
-      objc_storeStrong(&v13->_destination, a3);
-      objc_storeStrong(&v14->_destinationControllerData, a4);
-      objc_storeStrong(&v14->_backedUpGroups, a5);
+      objc_storeStrong(&v13->_destination, destination);
+      objc_storeStrong(&v14->_destinationControllerData, data);
+      objc_storeStrong(&v14->_backedUpGroups, groups);
     }
 
     return v14;

@@ -1,5 +1,5 @@
 @interface VMDSPGraph
-+ (BOOL)writeGraphTextToFile:(id)a3 samplerate:(int)a4 bufferSize:(int)a5 error:(id *)a6;
++ (BOOL)writeGraphTextToFile:(id)file samplerate:(int)samplerate bufferSize:(int)size error:(id *)error;
 + (id)_noiseSuppressionParameters;
 + (id)_reverbSuppressionParameters;
 + (id)auStrip;
@@ -79,7 +79,7 @@
   block[1] = 3221225472;
   block[2] = sub_10003408C;
   block[3] = &unk_10028A308;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002D6F88 != -1)
   {
     dispatch_once(&qword_1002D6F88, block);
@@ -90,23 +90,23 @@
   return v2;
 }
 
-+ (BOOL)writeGraphTextToFile:(id)a3 samplerate:(int)a4 bufferSize:(int)a5 error:(id *)a6
++ (BOOL)writeGraphTextToFile:(id)file samplerate:(int)samplerate bufferSize:(int)size error:(id *)error
 {
-  v7 = *&a5;
-  v8 = *&a4;
-  v10 = a3;
-  v11 = v10;
+  v7 = *&size;
+  v8 = *&samplerate;
+  fileCopy = file;
+  v11 = fileCopy;
   if (!qword_1002D6F90)
   {
-    v41 = v10;
+    v41 = fileCopy;
     v12 = +[NSBundle mainBundle];
     v13 = [v12 pathForResource:@"voiceMemo_NS_ReverbSuppressor_template" ofType:@"dspg"];
 
-    v14 = [NSMutableString stringWithContentsOfFile:v13 encoding:4 error:a6];
+    v14 = [NSMutableString stringWithContentsOfFile:v13 encoding:4 error:error];
     v15 = [v14 rangeOfString:@"noise_supression_imp_token"];
     v17 = v16;
-    v18 = [a1 nsImplementation];
-    [v14 replaceCharactersInRange:v15 withString:{v17, v18}];
+    nsImplementation = [self nsImplementation];
+    [v14 replaceCharactersInRange:v15 withString:{v17, nsImplementation}];
 
     if (!v14)
     {
@@ -119,13 +119,13 @@
     v37 = v13;
     v38 = v8;
     v39 = v7;
-    v40 = a6;
+    errorCopy = error;
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v19 = [a1 parameters];
-    v20 = [v19 countByEnumeratingWithState:&v42 objects:v46 count:16];
+    parameters = [self parameters];
+    v20 = [parameters countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v20)
     {
       v21 = v20;
@@ -136,19 +136,19 @@
         {
           if (*v43 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(parameters);
           }
 
           v24 = *(*(&v42 + 1) + 8 * i);
-          v25 = [v24 address];
+          address = [v24 address];
           [v24 defaultValue];
-          [v14 appendFormat:@"param %i %f in\n", v25, v26];
-          v27 = [v24 address];
-          v28 = [v24 graphName];
-          [v14 appendFormat:@"wireGraphParam %i (%@ %i 0 0)\n", v27, v28, objc_msgSend(v24, "internalAddress")];
+          [v14 appendFormat:@"param %i %f in\n", address, v26];
+          address2 = [v24 address];
+          graphName = [v24 graphName];
+          [v14 appendFormat:@"wireGraphParam %i (%@ %i 0 0)\n", address2, graphName, objc_msgSend(v24, "internalAddress")];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v42 objects:v46 count:16];
+        v21 = [parameters countByEnumeratingWithState:&v42 objects:v46 count:16];
       }
 
       while (v21);
@@ -158,7 +158,7 @@
     v30 = qword_1002D6F90;
     qword_1002D6F90 = v29;
 
-    a6 = v40;
+    error = errorCopy;
     v11 = v41;
     v8 = v38;
     v7 = v39;
@@ -169,7 +169,7 @@
   v33 = [qword_1002D6F90 stringByReplacingOccurrencesOfString:@"samplerate_def_token" withString:v31];
   v34 = [v33 stringByReplacingOccurrencesOfString:@"size_def_token" withString:v32];
 
-  v35 = [v34 writeToFile:v11 atomically:1 encoding:4 error:a6];
+  v35 = [v34 writeToFile:v11 atomically:1 encoding:4 error:error];
 LABEL_12:
 
   return v35;

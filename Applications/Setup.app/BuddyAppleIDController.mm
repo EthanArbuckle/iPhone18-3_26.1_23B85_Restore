@@ -1,110 +1,110 @@
 @interface BuddyAppleIDController
 - (BFFFlowItemDelegate)flowItemDelegate;
 - (BOOL)_isRestore;
-- (BOOL)controllerNeedsToRunForClass:(Class)a3;
-- (BOOL)isFlowItemOnTop:(id)a3;
-- (BOOL)responsibleForViewController:(id)a3;
+- (BOOL)controllerNeedsToRunForClass:(Class)class;
+- (BOOL)isFlowItemOnTop:(id)top;
+- (BOOL)responsibleForViewController:(id)controller;
 - (BOOL)shouldAllowStartOver;
-- (BuddyAppleIDController)initWithAccount:(id)a3 passcodeCacheManager:(id)a4 analyticsManager:(id)a5 runState:(id)a6 featureFlags:(id)a7;
+- (BuddyAppleIDController)initWithAccount:(id)account passcodeCacheManager:(id)manager analyticsManager:(id)analyticsManager runState:(id)state featureFlags:(id)flags;
 - (BuddyAppleIDControllerDelegate)delegate;
 - (BuddyAppleIDSignInController)twoAccountsiCloudSignInController;
 - (id)_authenticationContextForSecurityUpgrade;
-- (id)popToBuddyControllerWithClass:(Class)a3 animated:(BOOL)a4;
-- (id)popToBuddyControllerWithClass:(Class)a3 withOffset:(unint64_t)a4 animated:(BOOL)a5;
+- (id)popToBuddyControllerWithClass:(Class)class animated:(BOOL)animated;
+- (id)popToBuddyControllerWithClass:(Class)class withOffset:(unint64_t)offset animated:(BOOL)animated;
 - (id)securityUpgradeAccountSignInViewController;
 - (id)signInViewController;
 - (id)signInViewControllerForRestore;
-- (id)silentUpgradeViewControllerWithLoginContext:(id)a3;
+- (id)silentUpgradeViewControllerWithLoginContext:(id)context;
 - (id)upgradeAccountForRestoreAfterSoftwareUpdateSignInViewController;
 - (id)upgradeAccountSignInViewController;
-- (void)_appleIDControllerCompletedShouldProceed:(BOOL)a3 error:(id)a4;
-- (void)_authCompletedShouldProceed:(BOOL)a3 error:(id)a4;
-- (void)_beginPostUpgradeAppleIDLoginWithUsername:(id)a3 password:(id)a4 continuationKey:(id)a5 signInController:(id)a6;
-- (void)_beginPostUpgradeAppleIDLoginWithUsername:(id)a3 password:(id)a4 signInController:(id)a5;
+- (void)_appleIDControllerCompletedShouldProceed:(BOOL)proceed error:(id)error;
+- (void)_authCompletedShouldProceed:(BOOL)proceed error:(id)error;
+- (void)_beginPostUpgradeAppleIDLoginWithUsername:(id)username password:(id)password continuationKey:(id)key signInController:(id)controller;
+- (void)_beginPostUpgradeAppleIDLoginWithUsername:(id)username password:(id)password signInController:(id)controller;
 - (void)_createMeCard;
 - (void)_didFinishResponsibilityViewControllerPushSeesion;
 - (void)_loadSecurityUpgradeUI;
 - (void)_nameDevice;
 - (void)_popBackToAuthAttemptLandingPage;
-- (void)_pushNextViewController:(id)a3;
-- (void)_removeBackToViewControllerMatchingBlock:(id)a3 withOffset:(int64_t)a4;
-- (void)_setAppearanceHandler:(id)a3 forSpinnerPage:(id)a4;
-- (void)_setLogInOptionsForBuddyAppleIDAuthMode:(int)a3 signInController:(id)a4;
+- (void)_pushNextViewController:(id)controller;
+- (void)_removeBackToViewControllerMatchingBlock:(id)block withOffset:(int64_t)offset;
+- (void)_setAppearanceHandler:(id)handler forSpinnerPage:(id)page;
+- (void)_setLogInOptionsForBuddyAppleIDAuthMode:(int)mode signInController:(id)controller;
 - (void)_setupAccountForSecurityUpgrade;
-- (void)_showProximityiCloudSignInController:(id)a3;
-- (void)_showSpinnerPage:(id)a3 appearanceHandler:(id)a4;
-- (void)_showSpinnerPageWithIdentifier:(id)a3 handler:(id)a4;
+- (void)_showProximityiCloudSignInController:(id)controller;
+- (void)_showSpinnerPage:(id)page appearanceHandler:(id)handler;
+- (void)_showSpinnerPageWithIdentifier:(id)identifier handler:(id)handler;
 - (void)_showTwoAccountsiCloudSignInController;
 - (void)_showTwoAccountsiTunesSignInController;
-- (void)_signInFailedWithError:(id)a3;
+- (void)_signInFailedWithError:(id)error;
 - (void)_signInSucceeded;
-- (void)_upgradeAccountWithAuthenticationResults:(id)a3 completion:(id)a4;
+- (void)_upgradeAccountWithAuthenticationResults:(id)results completion:(id)completion;
 - (void)_willStartResponsibilityViewControllerPushSession;
-- (void)buddyAppleIDSpinnerPageDidAppear:(id)a3;
+- (void)buddyAppleIDSpinnerPageDidAppear:(id)appear;
 - (void)cancelAuthentication;
-- (void)flowItemCancelled:(id)a3;
-- (void)flowItemDone:(id)a3;
-- (void)flowItemDone:(id)a3 nextItem:(id)a4;
-- (void)flowItemDone:(id)a3 nextItemClass:(Class)a4;
-- (void)markFlowItemDone:(id)a3;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)pushFlowItem:(id)a3 animated:(BOOL)a4;
-- (void)pushFlowItem:(id)a3 inFlow:(id)a4 animated:(BOOL)a5;
-- (void)pushFlowItem:(id)a3 inFlow:(id)a4 withExtendedInitialization:(BOOL)a5 animated:(BOOL)a6;
-- (void)pushFlowItem:(id)a3 inFlow:(id)a4 withExtendedInitialization:(BOOL)a5 animated:(BOOL)a6 willPushFlowItem:(id)a7;
-- (void)removeViewControllersOnNextPush:(id)a3;
-- (void)setExistingAccountUsername:(id)a3 accountType:(unint64_t)a4;
-- (void)setNavigationController:(id)a3;
+- (void)flowItemCancelled:(id)cancelled;
+- (void)flowItemDone:(id)done;
+- (void)flowItemDone:(id)done nextItem:(id)item;
+- (void)flowItemDone:(id)done nextItemClass:(Class)class;
+- (void)markFlowItemDone:(id)done;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)pushFlowItem:(id)item animated:(BOOL)animated;
+- (void)pushFlowItem:(id)item inFlow:(id)flow animated:(BOOL)animated;
+- (void)pushFlowItem:(id)item inFlow:(id)flow withExtendedInitialization:(BOOL)initialization animated:(BOOL)animated;
+- (void)pushFlowItem:(id)item inFlow:(id)flow withExtendedInitialization:(BOOL)initialization animated:(BOOL)animated willPushFlowItem:(id)flowItem;
+- (void)removeViewControllersOnNextPush:(id)push;
+- (void)setExistingAccountUsername:(id)username accountType:(unint64_t)type;
+- (void)setNavigationController:(id)controller;
 - (void)showCreateAppleID;
 - (void)showCredentialRecovery;
 @end
 
 @implementation BuddyAppleIDController
 
-- (BuddyAppleIDController)initWithAccount:(id)a3 passcodeCacheManager:(id)a4 analyticsManager:(id)a5 runState:(id)a6 featureFlags:(id)a7
+- (BuddyAppleIDController)initWithAccount:(id)account passcodeCacheManager:(id)manager analyticsManager:(id)analyticsManager runState:(id)state featureFlags:(id)flags
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   obj = 0;
-  objc_storeStrong(&obj, a4);
+  objc_storeStrong(&obj, manager);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
+  objc_storeStrong(&v19, analyticsManager);
   v18 = 0;
-  objc_storeStrong(&v18, a6);
+  objc_storeStrong(&v18, state);
   v17 = 0;
-  objc_storeStrong(&v17, a7);
-  v11 = v22;
-  v22 = 0;
+  objc_storeStrong(&v17, flags);
+  v11 = selfCopy;
+  selfCopy = 0;
   v16.receiver = v11;
   v16.super_class = BuddyAppleIDController;
-  v22 = [(BuddyAppleIDController *)&v16 init];
-  objc_storeStrong(&v22, v22);
-  if (v22)
+  selfCopy = [(BuddyAppleIDController *)&v16 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(v22 + 14, obj);
-    objc_storeStrong(v22 + 20, v19);
-    objc_storeStrong(v22 + 21, v18);
-    *(v22 + 15) = 0;
+    objc_storeStrong(selfCopy + 14, obj);
+    objc_storeStrong(selfCopy + 20, v19);
+    objc_storeStrong(selfCopy + 21, v18);
+    *(selfCopy + 15) = 0;
     v12 = +[NSPointerArray weakObjectsPointerArray];
-    v13 = *(v22 + 16);
-    *(v22 + 16) = v12;
+    v13 = *(selfCopy + 16);
+    *(selfCopy + 16) = v12;
 
-    objc_storeStrong(v22 + 8, v17);
+    objc_storeStrong(selfCopy + 8, v17);
     if (location[0])
     {
-      objc_storeStrong(v22 + 9, location[0]);
+      objc_storeStrong(selfCopy + 9, location[0]);
     }
   }
 
-  v14 = v22;
+  v14 = selfCopy;
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&obj, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v22, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v14;
 }
 
@@ -115,80 +115,80 @@
   return WeakRetained;
 }
 
-- (void)setExistingAccountUsername:(id)a3 accountType:(unint64_t)a4
+- (void)setExistingAccountUsername:(id)username accountType:(unint64_t)type
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyAppleIDController *)v6 setExistingAccountUsername:location[0]];
-  [(BuddyAppleIDController *)v6 setExistingAccountType:a4];
+  objc_storeStrong(location, username);
+  [(BuddyAppleIDController *)selfCopy setExistingAccountUsername:location[0]];
+  [(BuddyAppleIDController *)selfCopy setExistingAccountType:type];
   objc_storeStrong(location, 0);
 }
 
-- (void)setNavigationController:(id)a3
+- (void)setNavigationController:(id)controller
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   if (location[0])
   {
-    if (location[0] != v4->_navigationController)
+    if (location[0] != selfCopy->_navigationController)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [location[0] addDelegateObserver:v4];
+        [location[0] addDelegateObserver:selfCopy];
       }
     }
   }
 
-  objc_storeStrong(&v4->_navigationController, location[0]);
+  objc_storeStrong(&selfCopy->_navigationController, location[0]);
   objc_storeStrong(location, 0);
 }
 
 - (void)showCredentialRecovery
 {
-  v30 = self;
+  selfCopy = self;
   oslog[1] = a2;
-  v2 = [(BuddyAppleIDController *)self navigationController];
-  v3 = [(UINavigationController *)v2 topViewController];
-  [v30 setAuthAttemptLandingViewController:v3];
+  navigationController = [(BuddyAppleIDController *)self navigationController];
+  topViewController = [(UINavigationController *)navigationController topViewController];
+  [selfCopy setAuthAttemptLandingViewController:topViewController];
 
   v4 = [BuddyAppleIDSignInTask alloc];
-  v5 = [v30 featureFlags];
+  featureFlags = [selfCopy featureFlags];
   v6 = +[BuddyAccountTools sharedBuddyAccountTools];
-  v7 = [(BuddyAppleIDSignInTask *)v4 initWithFeatureFlags:v5 accountTools:v6];
-  [v30 setSignInTask:v7];
+  v7 = [(BuddyAppleIDSignInTask *)v4 initWithFeatureFlags:featureFlags accountTools:v6];
+  [selfCopy setSignInTask:v7];
 
-  v8 = [v30 navigationController];
-  v9 = [v30 signInTask];
-  [v9 setNavigationController:v8];
+  navigationController2 = [selfCopy navigationController];
+  signInTask = [selfCopy signInTask];
+  [signInTask setNavigationController:navigationController2];
 
-  LOBYTE(v8) = [v30 _isRestore];
-  v10 = [v30 signInTask];
-  [v10 setRestoreFromBackupMode:v8 & 1];
+  LOBYTE(navigationController2) = [selfCopy _isRestore];
+  signInTask2 = [selfCopy signInTask];
+  [signInTask2 setRestoreFromBackupMode:navigationController2 & 1];
 
-  v11 = [v30 featureFlags];
-  LOBYTE(v10) = [v11 isUseCDPContextSecretInsteadOfSBDSecretEnabled];
+  featureFlags2 = [selfCopy featureFlags];
+  LOBYTE(signInTask2) = [featureFlags2 isUseCDPContextSecretInsteadOfSBDSecretEnabled];
 
-  if (v10)
+  if (signInTask2)
   {
     oslog[0] = _BYLoggingFacility();
     v28 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v30 passcodeCacheManager];
-      v13 = [v30 signInTask];
-      sub_10011A49C(buf, "[BuddyAppleIDController showCredentialRecovery]", v12, v13);
+      passcodeCacheManager = [selfCopy passcodeCacheManager];
+      signInTask3 = [selfCopy signInTask];
+      sub_10011A49C(buf, "[BuddyAppleIDController showCredentialRecovery]", passcodeCacheManager, signInTask3);
       _os_log_impl(&_mh_execute_header, oslog[0], v28, "%s: Setting cache manager %@ on sign in task %@", buf, 0x20u);
     }
 
     objc_storeStrong(oslog, 0);
-    v14 = [v30 passcodeCacheManager];
-    v15 = [v30 signInTask];
-    [v15 setCacheManager:v14];
+    passcodeCacheManager2 = [selfCopy passcodeCacheManager];
+    signInTask4 = [selfCopy signInTask];
+    [signInTask4 setCacheManager:passcodeCacheManager2];
   }
 
   v27 = _BYLoggingFacility();
@@ -202,59 +202,59 @@
   }
 
   objc_storeStrong(&v27, 0);
-  v18 = [v30 signInTask];
+  signInTask5 = [selfCopy signInTask];
   v19 = _NSConcreteStackBlock;
   v20 = -1073741824;
   v21 = 0;
   v22 = sub_100139524;
   v23 = &unk_10032D598;
-  v24 = v30;
-  [v18 authenticateForCredentialRecoveryWithCompletion:&v19];
+  v24 = selfCopy;
+  [signInTask5 authenticateForCredentialRecoveryWithCompletion:&v19];
 
   objc_storeStrong(&v24, 0);
 }
 
 - (void)showCreateAppleID
 {
-  v30 = self;
+  selfCopy = self;
   oslog[1] = a2;
-  v2 = [(BuddyAppleIDController *)self navigationController];
-  v3 = [(UINavigationController *)v2 topViewController];
-  [v30 setAuthAttemptLandingViewController:v3];
+  navigationController = [(BuddyAppleIDController *)self navigationController];
+  topViewController = [(UINavigationController *)navigationController topViewController];
+  [selfCopy setAuthAttemptLandingViewController:topViewController];
 
   v4 = [BuddyAppleIDSignInTask alloc];
-  v5 = [v30 featureFlags];
+  featureFlags = [selfCopy featureFlags];
   v6 = +[BuddyAccountTools sharedBuddyAccountTools];
-  v7 = [(BuddyAppleIDSignInTask *)v4 initWithFeatureFlags:v5 accountTools:v6];
-  [v30 setSignInTask:v7];
+  v7 = [(BuddyAppleIDSignInTask *)v4 initWithFeatureFlags:featureFlags accountTools:v6];
+  [selfCopy setSignInTask:v7];
 
-  v8 = [v30 navigationController];
-  v9 = [v30 signInTask];
-  [v9 setNavigationController:v8];
+  navigationController2 = [selfCopy navigationController];
+  signInTask = [selfCopy signInTask];
+  [signInTask setNavigationController:navigationController2];
 
-  LOBYTE(v8) = [v30 _isRestore];
-  v10 = [v30 signInTask];
-  [v10 setRestoreFromBackupMode:v8 & 1];
+  LOBYTE(navigationController2) = [selfCopy _isRestore];
+  signInTask2 = [selfCopy signInTask];
+  [signInTask2 setRestoreFromBackupMode:navigationController2 & 1];
 
-  v11 = [v30 featureFlags];
-  LOBYTE(v10) = [v11 isUseCDPContextSecretInsteadOfSBDSecretEnabled];
+  featureFlags2 = [selfCopy featureFlags];
+  LOBYTE(signInTask2) = [featureFlags2 isUseCDPContextSecretInsteadOfSBDSecretEnabled];
 
-  if (v10)
+  if (signInTask2)
   {
     oslog[0] = _BYLoggingFacility();
     v28 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v30 passcodeCacheManager];
-      v13 = [v30 signInTask];
-      sub_10011A49C(buf, "[BuddyAppleIDController showCreateAppleID]", v12, v13);
+      passcodeCacheManager = [selfCopy passcodeCacheManager];
+      signInTask3 = [selfCopy signInTask];
+      sub_10011A49C(buf, "[BuddyAppleIDController showCreateAppleID]", passcodeCacheManager, signInTask3);
       _os_log_impl(&_mh_execute_header, oslog[0], v28, "%s: Setting cache manager %@ on sign in task %@", buf, 0x20u);
     }
 
     objc_storeStrong(oslog, 0);
-    v14 = [v30 passcodeCacheManager];
-    v15 = [v30 signInTask];
-    [v15 setCacheManager:v14];
+    passcodeCacheManager2 = [selfCopy passcodeCacheManager];
+    signInTask4 = [selfCopy signInTask];
+    [signInTask4 setCacheManager:passcodeCacheManager2];
   }
 
   v27 = _BYLoggingFacility();
@@ -268,14 +268,14 @@
   }
 
   objc_storeStrong(&v27, 0);
-  v18 = [v30 signInTask];
+  signInTask5 = [selfCopy signInTask];
   v19 = _NSConcreteStackBlock;
   v20 = -1073741824;
   v21 = 0;
   v22 = sub_10013A298;
   v23 = &unk_10032D598;
-  v24 = v30;
-  [v18 authenticateForAccountCreationWithCompletion:&v19];
+  v24 = selfCopy;
+  [signInTask5 authenticateForAccountCreationWithCompletion:&v19];
 
   objc_storeStrong(&v24, 0);
 }
@@ -299,13 +299,13 @@
   }
 }
 
-- (BOOL)responsibleForViewController:(id)a3
+- (BOOL)responsibleForViewController:(id)controller
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(BuddyAppleIDController *)v14 assumeResponsibilityForRUIPage]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  objc_storeStrong(location, controller);
+  if ([(BuddyAppleIDController *)selfCopy assumeResponsibilityForRUIPage]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v15 = 1;
     v12 = 1;
@@ -314,10 +314,10 @@
   else
   {
     memset(__b, 0, sizeof(__b));
-    v3 = [(BuddyAppleIDController *)v14 responsibilityViewControllers];
-    v4 = [(NSPointerArray *)v3 allObjects];
+    responsibilityViewControllers = [(BuddyAppleIDController *)selfCopy responsibilityViewControllers];
+    allObjects = [(NSPointerArray *)responsibilityViewControllers allObjects];
 
-    v5 = [(NSArray *)v4 countByEnumeratingWithState:__b objects:v16 count:16];
+    v5 = [(NSArray *)allObjects countByEnumeratingWithState:__b objects:v16 count:16];
     if (v5)
     {
       v6 = *__b[2];
@@ -328,7 +328,7 @@
           if (*__b[2] != v6)
           {
             v8 = v5;
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
             v5 = v8;
           }
 
@@ -341,7 +341,7 @@
           }
         }
 
-        v5 = [(NSArray *)v4 countByEnumeratingWithState:__b objects:v16 count:16];
+        v5 = [(NSArray *)allObjects countByEnumeratingWithState:__b objects:v16 count:16];
       }
 
       while (v5);
@@ -364,7 +364,7 @@ LABEL_14:
 
 - (void)cancelAuthentication
 {
-  v7 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v5 = OS_LOG_TYPE_DEFAULT;
@@ -377,20 +377,20 @@ LABEL_14:
   }
 
   objc_storeStrong(oslog, 0);
-  [(BuddyAppleIDController *)v7 _authCompletedShouldProceed:0 error:0];
+  [(BuddyAppleIDController *)selfCopy _authCompletedShouldProceed:0 error:0];
 }
 
 - (id)upgradeAccountSignInViewController
 {
-  v38 = self;
+  selfCopy = self;
   v37[1] = a2;
-  v2 = [(BuddyAppleIDController *)self navigationController];
-  v3 = [(BuddyAppleIDController *)v38 passcodeCacheManager];
-  v4 = [(BuddyAppleIDController *)v38 featureFlags];
-  v37[0] = [BuddyAppleIDSignInController federatedAuthSignInControllerInNavigationController:v2 mode:4 passcodeCacheManager:v3 featureFlags:v4];
+  navigationController = [(BuddyAppleIDController *)self navigationController];
+  passcodeCacheManager = [(BuddyAppleIDController *)selfCopy passcodeCacheManager];
+  featureFlags = [(BuddyAppleIDController *)selfCopy featureFlags];
+  v37[0] = [BuddyAppleIDSignInController federatedAuthSignInControllerInNavigationController:navigationController mode:4 passcodeCacheManager:passcodeCacheManager featureFlags:featureFlags];
 
-  v5 = [(BuddyAppleIDController *)v38 existingAccountUsername];
-  [v37[0] setUsername:v5];
+  existingAccountUsername = [(BuddyAppleIDController *)selfCopy existingAccountUsername];
+  [v37[0] setUsername:existingAccountUsername];
 
   v6 = +[NSBundle mainBundle];
   v7 = [(NSBundle *)v6 localizedStringForKey:@"FORGOT_PASSWORD_QUESTION" value:&stru_10032F900 table:@"Localizable"];
@@ -398,7 +398,7 @@ LABEL_14:
   v35[1] = 3221225472;
   v35[2] = sub_10013B328;
   v35[3] = &unk_10032B0D0;
-  v36 = v38;
+  v36 = selfCopy;
   [v37[0] setiForgotText:v7 handler:v35];
 
   objc_initWeak(&location, v37[0]);
@@ -409,7 +409,7 @@ LABEL_14:
   v30 = sub_10013B3D0;
   v31 = &unk_10032AFA8;
   objc_copyWeak(&v33, &location);
-  v32 = v38;
+  v32 = selfCopy;
   [v8 setAppearanceHandler:&v27];
   v9 = v37[0];
   v20 = _NSConcreteStackBlock;
@@ -417,7 +417,7 @@ LABEL_14:
   v22 = 0;
   v23 = sub_10013B434;
   v24 = &unk_10032D2E0;
-  v25 = v38;
+  v25 = selfCopy;
   objc_copyWeak(v26, &location);
   [v9 setHandler:&v20];
   v10 = v37[0];
@@ -425,9 +425,9 @@ LABEL_14:
   v16 = 3221225472;
   v17 = sub_10013B560;
   v18 = &unk_10032D598;
-  v19 = v38;
+  v19 = selfCopy;
   [v10 setProximityLoginHandler:&v15];
-  v11 = v38;
+  v11 = selfCopy;
   v12 = objc_loadWeakRetained(&location);
   [(BuddyAppleIDController *)v11 _setLogInOptionsForBuddyAppleIDAuthMode:4 signInController:v12, v15, v16, v17, v18];
 
@@ -445,15 +445,15 @@ LABEL_14:
 
 - (id)upgradeAccountForRestoreAfterSoftwareUpdateSignInViewController
 {
-  v34 = self;
+  selfCopy = self;
   v33[1] = a2;
-  v2 = [(BuddyAppleIDController *)self navigationController];
-  v3 = [(BuddyAppleIDController *)v34 passcodeCacheManager];
-  v4 = [(BuddyAppleIDController *)v34 featureFlags];
-  v33[0] = [BuddyAppleIDSignInController federatedAuthSignInControllerInNavigationController:v2 mode:7 passcodeCacheManager:v3 featureFlags:v4];
+  navigationController = [(BuddyAppleIDController *)self navigationController];
+  passcodeCacheManager = [(BuddyAppleIDController *)selfCopy passcodeCacheManager];
+  featureFlags = [(BuddyAppleIDController *)selfCopy featureFlags];
+  v33[0] = [BuddyAppleIDSignInController federatedAuthSignInControllerInNavigationController:navigationController mode:7 passcodeCacheManager:passcodeCacheManager featureFlags:featureFlags];
 
-  v5 = [(BuddyAppleIDController *)v34 existingAccountUsername];
-  [v33[0] setUsername:v5];
+  existingAccountUsername = [(BuddyAppleIDController *)selfCopy existingAccountUsername];
+  [v33[0] setUsername:existingAccountUsername];
 
   v6 = +[NSBundle mainBundle];
   v7 = [(NSBundle *)v6 localizedStringForKey:@"FORGOT_PASSWORD_QUESTION" value:&stru_10032F900 table:@"Localizable"];
@@ -462,7 +462,7 @@ LABEL_14:
   v29 = 0;
   v30 = sub_10013BC18;
   v31 = &unk_10032B0D0;
-  v32 = v34;
+  v32 = selfCopy;
   [v33[0] setiForgotText:v7 handler:&v27];
 
   objc_initWeak(&location, v33[0]);
@@ -473,7 +473,7 @@ LABEL_14:
   v22 = sub_10013BCC0;
   v23 = &unk_10032AFA8;
   objc_copyWeak(&v25, &location);
-  v24 = v34;
+  v24 = selfCopy;
   [v8 setAppearanceHandler:&v19];
   v9 = v33[0];
   v12 = _NSConcreteStackBlock;
@@ -481,7 +481,7 @@ LABEL_14:
   v14 = 0;
   v15 = sub_10013BD24;
   v16 = &unk_10032D2E0;
-  v17 = v34;
+  v17 = selfCopy;
   objc_copyWeak(v18, &location);
   [v9 setHandler:&v12];
   v10 = v33[0];
@@ -497,50 +497,50 @@ LABEL_14:
 
 - (id)securityUpgradeAccountSignInViewController
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   [(BuddyAppleIDController *)self setOperationType:4];
-  v2 = [(BuddyAppleIDController *)v7 navigationController];
-  v3 = [(UINavigationController *)v2 topViewController];
-  [(BuddyAppleIDController *)v7 setAuthAttemptLandingViewController:v3];
+  navigationController = [(BuddyAppleIDController *)selfCopy navigationController];
+  topViewController = [(UINavigationController *)navigationController topViewController];
+  [(BuddyAppleIDController *)selfCopy setAuthAttemptLandingViewController:topViewController];
 
-  location[0] = [[BuddyAppleIDSpinnerPage alloc] initWithAccountMode:[(BuddyAppleIDController *)v7 operationType]];
-  [location[0] setDelegate:v7];
-  [(BuddyAppleIDController *)v7 _loadSecurityUpgradeUI];
+  location[0] = [[BuddyAppleIDSpinnerPage alloc] initWithAccountMode:[(BuddyAppleIDController *)selfCopy operationType]];
+  [location[0] setDelegate:selfCopy];
+  [(BuddyAppleIDController *)selfCopy _loadSecurityUpgradeUI];
   v4 = location[0];
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (id)silentUpgradeViewControllerWithLoginContext:(id)a3
+- (id)silentUpgradeViewControllerWithLoginContext:(id)context
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = [[BuddyAppleIDSpinnerPage alloc] initForSilentAuthentication];
-  [v13 setDelegate:v15];
+  objc_storeStrong(location, context);
+  initForSilentAuthentication = [[BuddyAppleIDSpinnerPage alloc] initForSilentAuthentication];
+  [initForSilentAuthentication setDelegate:selfCopy];
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_10013C074;
   v9 = &unk_10032B838;
-  v10 = v15;
+  v10 = selfCopy;
   v11 = location[0];
   v12 = objc_retainBlock(&v5);
-  [(BuddyAppleIDController *)v15 _setAppearanceHandler:v12 forSpinnerPage:v13];
-  v3 = v13;
+  [(BuddyAppleIDController *)selfCopy _setAppearanceHandler:v12 forSpinnerPage:initForSilentAuthentication];
+  v3 = initForSilentAuthentication;
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v10, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&initForSilentAuthentication, 0);
   objc_storeStrong(location, 0);
   return v3;
 }
 
 - (id)signInViewController
 {
-  v75 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _BYLoggingFacility();
   v73 = OS_LOG_TYPE_DEFAULT;
@@ -553,18 +553,18 @@ LABEL_14:
   }
 
   objc_storeStrong(location, 0);
-  [(BuddyAppleIDController *)v75 setOperationType:1];
-  v4 = [(BuddyAppleIDController *)v75 navigationController];
-  v5 = [(BuddyAppleIDController *)v75 passcodeCacheManager];
-  v6 = [(BuddyAppleIDController *)v75 featureFlags];
-  v71 = [BuddyAppleIDSignInController federatedAuthSignInControllerInNavigationController:v4 mode:1 passcodeCacheManager:v5 featureFlags:v6];
+  [(BuddyAppleIDController *)selfCopy setOperationType:1];
+  navigationController = [(BuddyAppleIDController *)selfCopy navigationController];
+  passcodeCacheManager = [(BuddyAppleIDController *)selfCopy passcodeCacheManager];
+  featureFlags = [(BuddyAppleIDController *)selfCopy featureFlags];
+  v71 = [BuddyAppleIDSignInController federatedAuthSignInControllerInNavigationController:navigationController mode:1 passcodeCacheManager:passcodeCacheManager featureFlags:featureFlags];
 
-  v7 = [(BuddyAppleIDController *)v75 existingAccountUsername];
-  [v71 setUsername:v7];
+  existingAccountUsername = [(BuddyAppleIDController *)selfCopy existingAccountUsername];
+  [v71 setUsername:existingAccountUsername];
 
-  if ([(BuddyAppleIDController *)v75 existingAccountType]< 2)
+  if ([(BuddyAppleIDController *)selfCopy existingAccountType]< 2)
   {
-    [(BuddyAppleIDController *)v75 _setLogInOptionsForBuddyAppleIDAuthMode:1 signInController:v71];
+    [(BuddyAppleIDController *)selfCopy _setLogInOptionsForBuddyAppleIDAuthMode:1 signInController:v71];
   }
 
   v8 = +[NSBundle mainBundle];
@@ -574,7 +574,7 @@ LABEL_14:
   v67 = 0;
   v68 = sub_10013CC08;
   v69 = &unk_10032B0D0;
-  v70 = v75;
+  v70 = selfCopy;
   [v71 setiForgotText:v9 handler:&v65];
 
   objc_initWeak(&from, v71);
@@ -585,41 +585,41 @@ LABEL_14:
   v60 = sub_10013CD08;
   v61 = &unk_10032AFA8;
   objc_copyWeak(&v63, &from);
-  v62 = v75;
+  v62 = selfCopy;
   [v10 setAppearanceHandler:&v57];
   v11 = [BYAnalyticsEventAppleIDSignIn alloc];
-  v12 = [(BuddyAppleIDController *)v75 analyticsManager];
-  v56 = [v11 initWithAnalyticsManager:v12 context:2];
+  analyticsManager = [(BuddyAppleIDController *)selfCopy analyticsManager];
+  v56 = [v11 initWithAnalyticsManager:analyticsManager context:2];
 
   v13 = [BuddyAppleIDSignInTask alloc];
-  v14 = [(BuddyAppleIDController *)v75 featureFlags];
+  featureFlags2 = [(BuddyAppleIDController *)selfCopy featureFlags];
   v15 = +[BuddyAccountTools sharedBuddyAccountTools];
-  v16 = [(BuddyAppleIDSignInTask *)v13 initWithFeatureFlags:v14 accountTools:v15];
-  [(BuddyAppleIDController *)v75 setSignInTask:v16];
+  v16 = [(BuddyAppleIDSignInTask *)v13 initWithFeatureFlags:featureFlags2 accountTools:v15];
+  [(BuddyAppleIDController *)selfCopy setSignInTask:v16];
 
-  LOBYTE(v14) = [(BuddyAppleIDController *)v75 _isRestore];
-  v17 = [(BuddyAppleIDController *)v75 signInTask];
-  [(BuddyAppleIDSignInTask *)v17 setRestoreFromBackupMode:v14 & 1];
+  LOBYTE(featureFlags2) = [(BuddyAppleIDController *)selfCopy _isRestore];
+  signInTask = [(BuddyAppleIDController *)selfCopy signInTask];
+  [(BuddyAppleIDSignInTask *)signInTask setRestoreFromBackupMode:featureFlags2 & 1];
 
-  v18 = [(BuddyAppleIDController *)v75 featureFlags];
-  LOBYTE(v17) = [(BuddyFeatureFlags *)v18 isUseCDPContextSecretInsteadOfSBDSecretEnabled];
+  featureFlags3 = [(BuddyAppleIDController *)selfCopy featureFlags];
+  LOBYTE(signInTask) = [(BuddyFeatureFlags *)featureFlags3 isUseCDPContextSecretInsteadOfSBDSecretEnabled];
 
-  if (v17)
+  if (signInTask)
   {
     oslog = _BYLoggingFacility();
     v54 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(BuddyAppleIDController *)v75 passcodeCacheManager];
-      v20 = [(BuddyAppleIDController *)v75 signInTask];
-      sub_10011A49C(v76, "[BuddyAppleIDController signInViewController]", v19, v20);
+      passcodeCacheManager2 = [(BuddyAppleIDController *)selfCopy passcodeCacheManager];
+      signInTask2 = [(BuddyAppleIDController *)selfCopy signInTask];
+      sub_10011A49C(v76, "[BuddyAppleIDController signInViewController]", passcodeCacheManager2, signInTask2);
       _os_log_impl(&_mh_execute_header, oslog, v54, "%s: Setting cache manager %@ on sign in task %@", v76, 0x20u);
     }
 
     objc_storeStrong(&oslog, 0);
-    v21 = [(BuddyAppleIDController *)v75 passcodeCacheManager];
-    v22 = [(BuddyAppleIDController *)v75 signInTask];
-    [(BuddyAppleIDSignInTask *)v22 setCacheManager:v21];
+    passcodeCacheManager3 = [(BuddyAppleIDController *)selfCopy passcodeCacheManager];
+    signInTask3 = [(BuddyAppleIDController *)selfCopy signInTask];
+    [(BuddyAppleIDSignInTask *)signInTask3 setCacheManager:passcodeCacheManager3];
   }
 
   v45 = _NSConcreteStackBlock;
@@ -628,11 +628,11 @@ LABEL_14:
   v48 = sub_10013CD6C;
   v49 = &unk_10032D638;
   objc_copyWeak(&v52, &from);
-  v50 = v75;
+  v50 = selfCopy;
   v51 = v56;
   v53 = objc_retainBlock(&v45);
-  v23 = [(BuddyAppleIDController *)v75 signInTask];
-  objc_initWeak(&v44, v23);
+  signInTask4 = [(BuddyAppleIDController *)selfCopy signInTask];
+  objc_initWeak(&v44, signInTask4);
 
   v24 = v71;
   v36 = _NSConcreteStackBlock;
@@ -676,7 +676,7 @@ LABEL_14:
 
 - (id)signInViewControllerForRestore
 {
-  v75 = self;
+  selfCopy = self;
   location[1] = a2;
   [(BuddyAppleIDController *)self setOperationType:2];
   location[0] = _BYLoggingFacility();
@@ -690,14 +690,14 @@ LABEL_14:
   }
 
   objc_storeStrong(location, 0);
-  objc_initWeak(&from, v75);
-  v4 = [(BuddyAppleIDController *)v75 navigationController];
-  v5 = [(BuddyAppleIDController *)v75 passcodeCacheManager];
-  v6 = [(BuddyAppleIDController *)v75 featureFlags];
-  v70 = [BuddyAppleIDSignInController federatedAuthSignInControllerInNavigationController:v4 mode:5 passcodeCacheManager:v5 featureFlags:v6];
+  objc_initWeak(&from, selfCopy);
+  navigationController = [(BuddyAppleIDController *)selfCopy navigationController];
+  passcodeCacheManager = [(BuddyAppleIDController *)selfCopy passcodeCacheManager];
+  featureFlags = [(BuddyAppleIDController *)selfCopy featureFlags];
+  v70 = [BuddyAppleIDSignInController federatedAuthSignInControllerInNavigationController:navigationController mode:5 passcodeCacheManager:passcodeCacheManager featureFlags:featureFlags];
 
-  v7 = [(BuddyAppleIDController *)v75 existingAccountUsername];
-  [v70 setUsername:v7];
+  existingAccountUsername = [(BuddyAppleIDController *)selfCopy existingAccountUsername];
+  [v70 setUsername:existingAccountUsername];
 
   v8 = v70;
   v9 = +[NSBundle mainBundle];
@@ -720,54 +720,54 @@ LABEL_14:
   objc_copyWeak(&v61, &v63);
   objc_copyWeak(&v62, &from);
   [v11 setAppearanceHandler:&v56];
-  [(BuddyAppleIDController *)v75 _setLogInOptionsForBuddyAppleIDAuthMode:5 signInController:v70];
+  [(BuddyAppleIDController *)selfCopy _setLogInOptionsForBuddyAppleIDAuthMode:5 signInController:v70];
   v48 = _NSConcreteStackBlock;
   v49 = -1073741824;
   v50 = 0;
   v51 = sub_10013E728;
   v52 = &unk_10032D728;
   objc_copyWeak(&v54, &v63);
-  v53 = v75;
+  v53 = selfCopy;
   v55 = objc_retainBlock(&v48);
   v12 = [BuddyAppleIDSignInTask alloc];
-  v13 = [(BuddyAppleIDController *)v75 featureFlags];
+  featureFlags2 = [(BuddyAppleIDController *)selfCopy featureFlags];
   v14 = +[BuddyAccountTools sharedBuddyAccountTools];
-  v15 = [(BuddyAppleIDSignInTask *)v12 initWithFeatureFlags:v13 accountTools:v14];
-  [(BuddyAppleIDController *)v75 setSignInTask:v15];
+  v15 = [(BuddyAppleIDSignInTask *)v12 initWithFeatureFlags:featureFlags2 accountTools:v14];
+  [(BuddyAppleIDController *)selfCopy setSignInTask:v15];
 
-  v16 = [(BuddyAppleIDController *)v75 signInTask];
-  [(BuddyAppleIDSignInTask *)v16 setSkipDataclassEnablement:1];
+  signInTask = [(BuddyAppleIDController *)selfCopy signInTask];
+  [(BuddyAppleIDSignInTask *)signInTask setSkipDataclassEnablement:1];
 
-  v17 = [(BuddyAppleIDController *)v75 signInTask];
-  [(BuddyAppleIDSignInTask *)v17 setMakeStoreServiceActive:0];
+  signInTask2 = [(BuddyAppleIDController *)selfCopy signInTask];
+  [(BuddyAppleIDSignInTask *)signInTask2 setMakeStoreServiceActive:0];
 
-  LOBYTE(v17) = [(BuddyAppleIDController *)v75 _isRestore];
-  v18 = [(BuddyAppleIDController *)v75 signInTask];
-  [(BuddyAppleIDSignInTask *)v18 setRestoreFromBackupMode:v17 & 1];
+  LOBYTE(signInTask2) = [(BuddyAppleIDController *)selfCopy _isRestore];
+  signInTask3 = [(BuddyAppleIDController *)selfCopy signInTask];
+  [(BuddyAppleIDSignInTask *)signInTask3 setRestoreFromBackupMode:signInTask2 & 1];
 
-  v19 = [(BuddyAppleIDController *)v75 featureFlags];
-  LOBYTE(v18) = [(BuddyFeatureFlags *)v19 isUseCDPContextSecretInsteadOfSBDSecretEnabled];
+  featureFlags3 = [(BuddyAppleIDController *)selfCopy featureFlags];
+  LOBYTE(signInTask3) = [(BuddyFeatureFlags *)featureFlags3 isUseCDPContextSecretInsteadOfSBDSecretEnabled];
 
-  if (v18)
+  if (signInTask3)
   {
     oslog = _BYLoggingFacility();
     v46 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(BuddyAppleIDController *)v75 passcodeCacheManager];
-      v21 = [(BuddyAppleIDController *)v75 signInTask];
-      sub_10011A49C(v76, "[BuddyAppleIDController signInViewControllerForRestore]", v20, v21);
+      passcodeCacheManager2 = [(BuddyAppleIDController *)selfCopy passcodeCacheManager];
+      signInTask4 = [(BuddyAppleIDController *)selfCopy signInTask];
+      sub_10011A49C(v76, "[BuddyAppleIDController signInViewControllerForRestore]", passcodeCacheManager2, signInTask4);
       _os_log_impl(&_mh_execute_header, oslog, v46, "%s: Setting cache manager %@ on sign in task %@", v76, 0x20u);
     }
 
     objc_storeStrong(&oslog, 0);
-    v22 = [(BuddyAppleIDController *)v75 passcodeCacheManager];
-    v23 = [(BuddyAppleIDController *)v75 signInTask];
-    [(BuddyAppleIDSignInTask *)v23 setCacheManager:v22];
+    passcodeCacheManager3 = [(BuddyAppleIDController *)selfCopy passcodeCacheManager];
+    signInTask5 = [(BuddyAppleIDController *)selfCopy signInTask];
+    [(BuddyAppleIDSignInTask *)signInTask5 setCacheManager:passcodeCacheManager3];
   }
 
-  v24 = [(BuddyAppleIDController *)v75 signInTask];
-  objc_initWeak(&v45, v24);
+  signInTask6 = [(BuddyAppleIDController *)selfCopy signInTask];
+  objc_initWeak(&v45, signInTask6);
 
   v25 = v70;
   v37 = _NSConcreteStackBlock;
@@ -812,8 +812,8 @@ LABEL_14:
 {
   location[2] = self;
   location[1] = a2;
-  v2 = [(BuddyAppleIDController *)self navigationController];
-  location[0] = [(UINavigationController *)v2 topViewController];
+  navigationController = [(BuddyAppleIDController *)self navigationController];
+  location[0] = [(UINavigationController *)navigationController topViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -831,181 +831,181 @@ LABEL_14:
   return v5;
 }
 
-- (void)flowItemCancelled:(id)a3
+- (void)flowItemCancelled:(id)cancelled
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, cancelled);
   objc_storeStrong(location, 0);
 }
 
-- (void)flowItemDone:(id)a3
+- (void)flowItemDone:(id)done
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, done);
   objc_storeStrong(location, 0);
 }
 
-- (void)flowItemDone:(id)a3 nextItem:(id)a4
+- (void)flowItemDone:(id)done nextItem:(id)item
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, done);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(BuddyAppleIDController *)v7 flowItemDone:location[0]];
+  objc_storeStrong(&v5, item);
+  [(BuddyAppleIDController *)selfCopy flowItemDone:location[0]];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)flowItemDone:(id)a3 nextItemClass:(Class)a4
+- (void)flowItemDone:(id)done nextItemClass:(Class)class
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyAppleIDController *)v6 flowItemDone:location[0], a4];
+  objc_storeStrong(location, done);
+  [(BuddyAppleIDController *)selfCopy flowItemDone:location[0], class];
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)controllerNeedsToRunForClass:(Class)a3
+- (BOOL)controllerNeedsToRunForClass:(Class)class
 {
-  v3 = [(BuddyAppleIDController *)self flowItemDelegate];
-  v4 = [(BFFFlowItemDelegate *)v3 controllerNeedsToRunForClass:a3];
+  flowItemDelegate = [(BuddyAppleIDController *)self flowItemDelegate];
+  v4 = [(BFFFlowItemDelegate *)flowItemDelegate controllerNeedsToRunForClass:class];
 
   return v4 & 1;
 }
 
-- (BOOL)isFlowItemOnTop:(id)a3
+- (BOOL)isFlowItemOnTop:(id)top
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyAppleIDController *)v7 flowItemDelegate];
-  v4 = [(BFFFlowItemDelegate *)v3 isFlowItemOnTop:location[0]];
+  objc_storeStrong(location, top);
+  flowItemDelegate = [(BuddyAppleIDController *)selfCopy flowItemDelegate];
+  v4 = [(BFFFlowItemDelegate *)flowItemDelegate isFlowItemOnTop:location[0]];
 
   objc_storeStrong(location, 0);
   return v4 & 1;
 }
 
-- (id)popToBuddyControllerWithClass:(Class)a3 animated:(BOOL)a4
+- (id)popToBuddyControllerWithClass:(Class)class animated:(BOOL)animated
 {
-  v7 = a4;
-  v4 = [(BuddyAppleIDController *)self flowItemDelegate];
-  v5 = [(BFFFlowItemDelegate *)v4 popToBuddyControllerWithClass:a3 animated:v7];
+  animatedCopy = animated;
+  flowItemDelegate = [(BuddyAppleIDController *)self flowItemDelegate];
+  v5 = [(BFFFlowItemDelegate *)flowItemDelegate popToBuddyControllerWithClass:class animated:animatedCopy];
 
   return v5;
 }
 
-- (id)popToBuddyControllerWithClass:(Class)a3 withOffset:(unint64_t)a4 animated:(BOOL)a5
+- (id)popToBuddyControllerWithClass:(Class)class withOffset:(unint64_t)offset animated:(BOOL)animated
 {
-  v8 = a5;
-  v5 = [(BuddyAppleIDController *)self flowItemDelegate];
-  v6 = [(BFFFlowItemDelegate *)v5 popToBuddyControllerWithClass:a3 withOffset:a4 animated:v8];
+  animatedCopy = animated;
+  flowItemDelegate = [(BuddyAppleIDController *)self flowItemDelegate];
+  v6 = [(BFFFlowItemDelegate *)flowItemDelegate popToBuddyControllerWithClass:class withOffset:offset animated:animatedCopy];
 
   return v6;
 }
 
-- (void)pushFlowItem:(id)a3 animated:(BOOL)a4
+- (void)pushFlowItem:(id)item animated:(BOOL)animated
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = a4;
-  v5 = [(BuddyAppleIDController *)v8 flowItemDelegate];
-  [(BFFFlowItemDelegate *)v5 pushFlowItem:location[0] animated:v6];
+  objc_storeStrong(location, item);
+  animatedCopy = animated;
+  flowItemDelegate = [(BuddyAppleIDController *)selfCopy flowItemDelegate];
+  [(BFFFlowItemDelegate *)flowItemDelegate pushFlowItem:location[0] animated:animatedCopy];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)pushFlowItem:(id)a3 inFlow:(id)a4 animated:(BOOL)a5
+- (void)pushFlowItem:(id)item inFlow:(id)flow animated:(BOOL)animated
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v8 = a5;
-  v7 = [(BuddyAppleIDController *)v11 flowItemDelegate];
-  [(BFFFlowItemDelegate *)v7 pushFlowItem:location[0] inFlow:v9 animated:v8];
+  objc_storeStrong(&v9, flow);
+  animatedCopy = animated;
+  flowItemDelegate = [(BuddyAppleIDController *)selfCopy flowItemDelegate];
+  [(BFFFlowItemDelegate *)flowItemDelegate pushFlowItem:location[0] inFlow:v9 animated:animatedCopy];
 
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)pushFlowItem:(id)a3 inFlow:(id)a4 withExtendedInitialization:(BOOL)a5 animated:(BOOL)a6
+- (void)pushFlowItem:(id)item inFlow:(id)flow withExtendedInitialization:(BOOL)initialization animated:(BOOL)animated
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v10 = a6;
-  v9 = [(BuddyAppleIDController *)v13 flowItemDelegate];
-  [(BFFFlowItemDelegate *)v9 pushFlowItem:location[0] inFlow:v11 withExtendedInitialization:a5 animated:v10];
+  objc_storeStrong(&v11, flow);
+  animatedCopy = animated;
+  flowItemDelegate = [(BuddyAppleIDController *)selfCopy flowItemDelegate];
+  [(BFFFlowItemDelegate *)flowItemDelegate pushFlowItem:location[0] inFlow:v11 withExtendedInitialization:initialization animated:animatedCopy];
 
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)pushFlowItem:(id)a3 inFlow:(id)a4 withExtendedInitialization:(BOOL)a5 animated:(BOOL)a6 willPushFlowItem:(id)a7
+- (void)pushFlowItem:(id)item inFlow:(id)flow withExtendedInitialization:(BOOL)initialization animated:(BOOL)animated willPushFlowItem:(id)flowItem
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v14 = a5;
-  v13 = a6;
+  objc_storeStrong(&v15, flow);
+  initializationCopy = initialization;
+  animatedCopy = animated;
   v12 = 0;
-  objc_storeStrong(&v12, a7);
-  v11 = [(BuddyAppleIDController *)v17 flowItemDelegate];
-  [(BFFFlowItemDelegate *)v11 pushFlowItem:location[0] inFlow:v15 withExtendedInitialization:v14 animated:v13 willPushFlowItem:v12];
+  objc_storeStrong(&v12, flowItem);
+  flowItemDelegate = [(BuddyAppleIDController *)selfCopy flowItemDelegate];
+  [(BFFFlowItemDelegate *)flowItemDelegate pushFlowItem:location[0] inFlow:v15 withExtendedInitialization:initializationCopy animated:animatedCopy willPushFlowItem:v12];
 
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)removeViewControllersOnNextPush:(id)a3
+- (void)removeViewControllersOnNextPush:(id)push
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyAppleIDController *)v5 flowItemDelegate];
-  [(BFFFlowItemDelegate *)v3 removeViewControllersOnNextPush:location[0]];
+  objc_storeStrong(location, push);
+  flowItemDelegate = [(BuddyAppleIDController *)selfCopy flowItemDelegate];
+  [(BFFFlowItemDelegate *)flowItemDelegate removeViewControllersOnNextPush:location[0]];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)markFlowItemDone:(id)a3
+- (void)markFlowItemDone:(id)done
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyAppleIDController *)v5 flowItemDelegate];
-  [(BFFFlowItemDelegate *)v3 markFlowItemDone:location[0]];
+  objc_storeStrong(location, done);
+  flowItemDelegate = [(BuddyAppleIDController *)selfCopy flowItemDelegate];
+  [(BFFFlowItemDelegate *)flowItemDelegate markFlowItemDone:location[0]];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)buddyAppleIDSpinnerPageDidAppear:(id)a3
+- (void)buddyAppleIDSpinnerPageDidAppear:(id)appear
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, appear);
   oslog = _BYLoggingFacility();
   v19 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -1016,8 +1016,8 @@ LABEL_14:
 
   objc_storeStrong(&oslog, 0);
   v18 = [NSValue valueWithPointer:location[0]];
-  v3 = [(BuddyAppleIDController *)v22 spinnerAppearanceHandlers];
-  v17 = [(NSMutableDictionary *)v3 objectForKey:v18];
+  spinnerAppearanceHandlers = [(BuddyAppleIDController *)selfCopy spinnerAppearanceHandlers];
+  v17 = [(NSMutableDictionary *)spinnerAppearanceHandlers objectForKey:v18];
 
   if (v17)
   {
@@ -1032,8 +1032,8 @@ LABEL_14:
     }
 
     objc_storeStrong(&v16, 0);
-    v6 = [(BuddyAppleIDController *)v22 spinnerAppearanceHandlers];
-    [(NSMutableDictionary *)v6 removeObjectForKey:v18];
+    spinnerAppearanceHandlers2 = [(BuddyAppleIDController *)selfCopy spinnerAppearanceHandlers];
+    [(NSMutableDictionary *)spinnerAppearanceHandlers2 removeObjectForKey:v18];
 
     (*(v17 + 2))();
   }
@@ -1051,8 +1051,8 @@ LABEL_14:
     }
 
     objc_storeStrong(&v13, 0);
-    v9 = [(BuddyAppleIDController *)v22 navigationController];
-    v10 = [(UINavigationController *)v9 popViewControllerAnimated:1];
+    navigationController = [(BuddyAppleIDController *)selfCopy navigationController];
+    v10 = [(UINavigationController *)navigationController popViewControllerAnimated:1];
   }
 
   objc_storeStrong(&v17, 0);
@@ -1060,18 +1060,18 @@ LABEL_14:
   objc_storeStrong(location, 0);
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  if ([(BuddyAppleIDController *)v9 countOfResponsibilityViewControllerPushSessions])
+  objc_storeStrong(&v7, viewController);
+  if ([(BuddyAppleIDController *)selfCopy countOfResponsibilityViewControllerPushSessions])
   {
-    v6 = [(BuddyAppleIDController *)v9 responsibilityViewControllers];
-    [(NSPointerArray *)v6 addPointer:v7];
+    responsibilityViewControllers = [(BuddyAppleIDController *)selfCopy responsibilityViewControllers];
+    [(NSPointerArray *)responsibilityViewControllers addPointer:v7];
   }
 
   objc_storeStrong(&v7, 0);
@@ -1080,19 +1080,19 @@ LABEL_14:
 
 - (BOOL)_isRestore
 {
-  v2 = [(BuddyAppleIDController *)self operationType];
-  if (v2 < 2)
+  operationType = [(BuddyAppleIDController *)self operationType];
+  if (operationType < 2)
   {
     goto LABEL_4;
   }
 
-  if (v2 == 2)
+  if (operationType == 2)
   {
     v4 = 1;
     return v4 & 1;
   }
 
-  if (v2 - 3 <= 1)
+  if (operationType - 3 <= 1)
   {
 LABEL_4:
     v4 = 0;
@@ -1103,20 +1103,20 @@ LABEL_4:
 
 - (void)_showTwoAccountsiTunesSignInController
 {
-  v25 = self;
+  selfCopy = self;
   v24[1] = a2;
-  v2 = [(BuddyAppleIDController *)self navigationController];
-  v3 = [(BuddyAppleIDController *)v25 passcodeCacheManager];
-  v4 = [(BuddyAppleIDController *)v25 featureFlags];
-  v24[0] = [BuddyAppleIDSignInController federatedAuthSignInControllerInNavigationController:v2 mode:3 passcodeCacheManager:v3 featureFlags:v4];
+  navigationController = [(BuddyAppleIDController *)self navigationController];
+  passcodeCacheManager = [(BuddyAppleIDController *)selfCopy passcodeCacheManager];
+  featureFlags = [(BuddyAppleIDController *)selfCopy featureFlags];
+  v24[0] = [BuddyAppleIDSignInController federatedAuthSignInControllerInNavigationController:navigationController mode:3 passcodeCacheManager:passcodeCacheManager featureFlags:featureFlags];
 
-  v5 = [v24[0] navigationItem];
-  [v5 setHidesBackButton:1];
+  navigationItem = [v24[0] navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  if ([(BuddyAppleIDController *)v25 existingAccountType]== 2)
+  if ([(BuddyAppleIDController *)selfCopy existingAccountType]== 2)
   {
-    v6 = [(BuddyAppleIDController *)v25 existingAccountUsername];
-    [v24[0] setUsername:v6];
+    existingAccountUsername = [(BuddyAppleIDController *)selfCopy existingAccountUsername];
+    [v24[0] setUsername:existingAccountUsername];
   }
 
   objc_initWeak(&location, v24[0]);
@@ -1127,17 +1127,17 @@ LABEL_4:
   v19 = sub_100140370;
   v20 = &unk_10032AFA8;
   objc_copyWeak(&v22, &location);
-  v21 = v25;
+  v21 = selfCopy;
   [v7 setAppearanceHandler:&v16];
   v8 = v24[0];
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_1001404E8;
   v13 = &unk_10032D2E0;
-  v14 = v25;
+  v14 = selfCopy;
   objc_copyWeak(v15, &location);
   [v8 setHandler:&v10];
-  v9 = [(BuddyAppleIDController *)v25 navigationController:v10];
+  v9 = [(BuddyAppleIDController *)selfCopy navigationController:v10];
   [(UINavigationController *)v9 pushViewController:v24[0] animated:1];
 
   objc_destroyWeak(v15);
@@ -1148,15 +1148,15 @@ LABEL_4:
   objc_storeStrong(v24, 0);
 }
 
-- (void)_showProximityiCloudSignInController:(id)a3
+- (void)_showProximityiCloudSignInController:(id)controller
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyAppleIDController *)v18 navigationController];
-  v4 = [(BuddyAppleIDController *)v18 signInTask];
-  [(BuddyAppleIDSignInTask *)v4 setNavigationController:v3];
+  objc_storeStrong(location, controller);
+  navigationController = [(BuddyAppleIDController *)selfCopy navigationController];
+  signInTask = [(BuddyAppleIDController *)selfCopy signInTask];
+  [(BuddyAppleIDSignInTask *)signInTask setNavigationController:navigationController];
 
   v16 = _BYLoggingFacility();
   v15 = OS_LOG_TYPE_DEFAULT;
@@ -1169,14 +1169,14 @@ LABEL_4:
   }
 
   objc_storeStrong(&v16, 0);
-  v7 = [(BuddyAppleIDController *)v18 signInTask];
+  signInTask2 = [(BuddyAppleIDController *)selfCopy signInTask];
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_10014165C;
   v12 = &unk_10032D598;
   v13 = location[0];
-  [(BuddyAppleIDSignInTask *)v7 authenticateWithProximity:&v8];
+  [(BuddyAppleIDSignInTask *)signInTask2 authenticateWithProximity:&v8];
 
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
@@ -1184,16 +1184,16 @@ LABEL_4:
 
 - (void)_showTwoAccountsiCloudSignInController
 {
-  v24 = self;
+  selfCopy = self;
   v23[1] = a2;
   [(BuddyAppleIDController *)self setOperationType:1];
-  v2 = [(BuddyAppleIDController *)v24 navigationController];
-  v3 = [(BuddyAppleIDController *)v24 passcodeCacheManager];
-  v4 = [(BuddyAppleIDController *)v24 featureFlags];
-  v23[0] = [BuddyAppleIDSignInController federatedAuthSignInControllerInNavigationController:v2 mode:2 passcodeCacheManager:v3 featureFlags:v4];
+  navigationController = [(BuddyAppleIDController *)selfCopy navigationController];
+  passcodeCacheManager = [(BuddyAppleIDController *)selfCopy passcodeCacheManager];
+  featureFlags = [(BuddyAppleIDController *)selfCopy featureFlags];
+  v23[0] = [BuddyAppleIDSignInController federatedAuthSignInControllerInNavigationController:navigationController mode:2 passcodeCacheManager:passcodeCacheManager featureFlags:featureFlags];
 
-  v5 = [(BuddyAppleIDController *)v24 existingAccountUsername];
-  [v23[0] setUsername:v5];
+  existingAccountUsername = [(BuddyAppleIDController *)selfCopy existingAccountUsername];
+  [v23[0] setUsername:existingAccountUsername];
 
   objc_initWeak(&location, v23[0]);
   v6 = v23[0];
@@ -1203,20 +1203,20 @@ LABEL_4:
   v18 = sub_100141BB4;
   v19 = &unk_10032AFA8;
   objc_copyWeak(&v21, &location);
-  v20 = v24;
+  v20 = selfCopy;
   [v6 setAppearanceHandler:&v15];
   v7 = v23[0];
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_100141C18;
   v12 = &unk_10032D2E0;
-  v13 = v24;
+  v13 = selfCopy;
   objc_copyWeak(v14, &location);
   [v7 setHandler:&v9];
-  v8 = [(BuddyAppleIDController *)v24 navigationController:v9];
+  v8 = [(BuddyAppleIDController *)selfCopy navigationController:v9];
   [(UINavigationController *)v8 pushViewController:v23[0] animated:1];
 
-  [(BuddyAppleIDController *)v24 setTwoAccountsiCloudSignInController:v23[0]];
+  [(BuddyAppleIDController *)selfCopy setTwoAccountsiCloudSignInController:v23[0]];
   objc_destroyWeak(v14);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v20, 0);
@@ -1225,16 +1225,16 @@ LABEL_4:
   objc_storeStrong(v23, 0);
 }
 
-- (void)_appleIDControllerCompletedShouldProceed:(BOOL)a3 error:(id)a4
+- (void)_appleIDControllerCompletedShouldProceed:(BOOL)proceed error:(id)error
 {
-  v36 = self;
+  selfCopy = self;
   v35 = a2;
-  v34 = a3;
+  proceedCopy = proceed;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v4 = [location domain];
+  objc_storeStrong(&location, error);
+  domain = [location domain];
   v5 = 1;
-  if ([v4 isEqualToString:AKAppleIDAuthenticationErrorDomain])
+  if ([domain isEqualToString:AKAppleIDAuthenticationErrorDomain])
   {
     v5 = [location code] != -7003;
   }
@@ -1245,7 +1245,7 @@ LABEL_4:
     v31 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      if (v34)
+      if (proceedCopy)
       {
         v6 = @"YASE";
       }
@@ -1264,9 +1264,9 @@ LABEL_4:
 
       else if (location)
       {
-        v30 = [location domain];
+        domain2 = [location domain];
         v29 = 1;
-        v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v30, [location code]);
+        v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain2, [location code]);
         v28 = v7;
         v27 = 1;
       }
@@ -1293,73 +1293,73 @@ LABEL_4:
   v8 = +[BYAppleIDAccountsManager sharedManager];
   [v8 clearStoredLoginContext];
 
-  if (v34)
+  if (proceedCopy)
   {
-    v12 = [(BuddyAppleIDController *)v36 delegate];
-    [(BuddyAppleIDControllerDelegate *)v12 appleIDControllerFinished:v36];
+    delegate = [(BuddyAppleIDController *)selfCopy delegate];
+    [(BuddyAppleIDControllerDelegate *)delegate appleIDControllerFinished:selfCopy];
   }
 
   else if ((BYSetupAssistantHasCompletedInitialRun() & 1) == 0)
   {
     v25 = objc_opt_new();
-    v24 = [v25 aa_primaryAppleAccount];
-    if (v24)
+    aa_primaryAppleAccount = [v25 aa_primaryAppleAccount];
+    if (aa_primaryAppleAccount)
     {
       oslog = _BYLoggingFacility();
       v22 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v24 aa_primaryEmail];
-        sub_10006AE18(v37, v21);
+        aa_primaryEmail = [aa_primaryAppleAccount aa_primaryEmail];
+        sub_10006AE18(v37, aa_primaryEmail);
         _os_log_impl(&_mh_execute_header, oslog, v22, "Removing primary account '%@' due to failure", v37, 0xCu);
 
-        objc_storeStrong(&v21, 0);
+        objc_storeStrong(&aa_primaryEmail, 0);
       }
 
       objc_storeStrong(&oslog, 0);
     }
 
-    v9 = [(BuddyAppleIDController *)v36 navigationController];
-    v10 = [(UINavigationController *)v9 topViewController];
-    v20 = [(UIViewController *)v10 view];
+    navigationController = [(BuddyAppleIDController *)selfCopy navigationController];
+    topViewController = [(UINavigationController *)navigationController topViewController];
+    view = [(UIViewController *)topViewController view];
 
-    [v20 setUserInteractionEnabled:0];
+    [view setUserInteractionEnabled:0];
     v11 = +[BuddyAccountTools sharedBuddyAccountTools];
     v13 = _NSConcreteStackBlock;
     v14 = -1073741824;
     v15 = 0;
     v16 = sub_100143018;
     v17 = &unk_10032D7F0;
-    v18 = v20;
-    v19 = v36;
+    v18 = view;
+    v19 = selfCopy;
     [v11 removePrimaryAccountCompletion:&v13];
 
     objc_storeStrong(&v19, 0);
     objc_storeStrong(&v18, 0);
-    objc_storeStrong(&v20, 0);
-    objc_storeStrong(&v24, 0);
+    objc_storeStrong(&view, 0);
+    objc_storeStrong(&aa_primaryAppleAccount, 0);
     objc_storeStrong(&v25, 0);
   }
 
   else
   {
-    [(BuddyAppleIDController *)v36 _popBackToAuthAttemptLandingPage];
+    [(BuddyAppleIDController *)selfCopy _popBackToAuthAttemptLandingPage];
   }
 
   objc_storeStrong(&location, 0);
 }
 
-- (void)_authCompletedShouldProceed:(BOOL)a3 error:(id)a4
+- (void)_authCompletedShouldProceed:(BOOL)proceed error:(id)error
 {
-  v29 = self;
+  selfCopy = self;
   v28 = a2;
-  v27 = a3;
+  proceedCopy = proceed;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, error);
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    sub_100143424(buf, "[BuddyAppleIDController _authCompletedShouldProceed:error:]", v27, location);
+    sub_100143424(buf, "[BuddyAppleIDController _authCompletedShouldProceed:error:]", proceedCopy, location);
     _os_log_debug_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEBUG, "%s shouldProceed = %d, error = %@", buf, 0x1Cu);
   }
 
@@ -1367,48 +1367,48 @@ LABEL_4:
   v4 = +[BYAppleIDAccountsManager sharedManager];
   [v4 clearStoredLoginContext];
 
-  if (v27)
+  if (proceedCopy)
   {
-    v5 = [(BuddyAppleIDController *)v29 delegate];
-    [(BuddyAppleIDControllerDelegate *)v5 appleIDControllerFinished:v29];
+    delegate = [(BuddyAppleIDController *)selfCopy delegate];
+    [(BuddyAppleIDControllerDelegate *)delegate appleIDControllerFinished:selfCopy];
   }
 
   else
   {
-    v6 = [(BuddyAppleIDController *)v29 delegate];
+    delegate2 = [(BuddyAppleIDController *)selfCopy delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(BuddyAppleIDController *)v29 delegate];
-      [(BuddyAppleIDControllerDelegate *)v8 appleIDController:v29 failedWithError:location];
+      delegate3 = [(BuddyAppleIDController *)selfCopy delegate];
+      [(BuddyAppleIDControllerDelegate *)delegate3 appleIDController:selfCopy failedWithError:location];
     }
 
     else
     {
-      v9 = [(BuddyAppleIDController *)v29 authAttemptLandingViewController];
+      authAttemptLandingViewController = [(BuddyAppleIDController *)selfCopy authAttemptLandingViewController];
 
-      if (v9)
+      if (authAttemptLandingViewController)
       {
-        v10 = [(BuddyAppleIDController *)v29 navigationController];
-        v11 = [(UINavigationController *)v10 viewControllers];
-        v12 = [(BuddyAppleIDController *)v29 authAttemptLandingViewController];
+        navigationController = [(BuddyAppleIDController *)selfCopy navigationController];
+        viewControllers = [(UINavigationController *)navigationController viewControllers];
+        authAttemptLandingViewController2 = [(BuddyAppleIDController *)selfCopy authAttemptLandingViewController];
         v23 = 0;
         v21 = 0;
         v19 = 0;
         v17 = 0;
         v13 = 0;
-        if ([(NSArray *)v11 containsObject:v12])
+        if ([(NSArray *)viewControllers containsObject:authAttemptLandingViewController2])
         {
-          v24 = [(BuddyAppleIDController *)v29 navigationController];
+          navigationController2 = [(BuddyAppleIDController *)selfCopy navigationController];
           v23 = 1;
-          v22 = [(UINavigationController *)v24 viewControllers];
+          viewControllers2 = [(UINavigationController *)navigationController2 viewControllers];
           v21 = 1;
-          v20 = [(NSArray *)v22 lastObject];
+          lastObject = [(NSArray *)viewControllers2 lastObject];
           v19 = 1;
-          v18 = [(BuddyAppleIDController *)v29 authAttemptLandingViewController];
+          authAttemptLandingViewController3 = [(BuddyAppleIDController *)selfCopy authAttemptLandingViewController];
           v17 = 1;
-          v13 = v20 != v18;
+          v13 = lastObject != authAttemptLandingViewController3;
         }
 
         if (v17)
@@ -1429,12 +1429,12 @@ LABEL_4:
 
         if (v13)
         {
-          v14 = [(BuddyAppleIDController *)v29 navigationController];
-          v15 = [(BuddyAppleIDController *)v29 authAttemptLandingViewController];
-          v16 = [(UINavigationController *)v14 popToViewController:v15 animated:1];
+          navigationController3 = [(BuddyAppleIDController *)selfCopy navigationController];
+          authAttemptLandingViewController4 = [(BuddyAppleIDController *)selfCopy authAttemptLandingViewController];
+          v16 = [(UINavigationController *)navigationController3 popToViewController:authAttemptLandingViewController4 animated:1];
         }
 
-        [(BuddyAppleIDController *)v29 setAuthAttemptLandingViewController:0];
+        [(BuddyAppleIDController *)selfCopy setAuthAttemptLandingViewController:0];
       }
     }
   }
@@ -1444,12 +1444,12 @@ LABEL_4:
 
 - (void)_signInSucceeded
 {
-  v12 = self;
+  selfCopy = self;
   v11[1] = a2;
   if ([(BuddyAppleIDController *)self operationType]== 1)
   {
-    v2 = [(BuddyAppleIDController *)v12 runState];
-    v3 = [(BYRunState *)v2 hasCompletedInitialRun]^ 1;
+    runState = [(BuddyAppleIDController *)selfCopy runState];
+    v3 = [(BYRunState *)runState hasCompletedInitialRun]^ 1;
 
     if (v3)
     {
@@ -1459,43 +1459,43 @@ LABEL_4:
       v8 = 0;
       v9 = sub_1001435A4;
       v10 = &unk_10032B0D0;
-      v11[0] = v12;
+      v11[0] = selfCopy;
       dispatch_async(v4, &block);
 
       objc_storeStrong(v11, 0);
     }
   }
 
-  v5 = [(BuddyAppleIDController *)v12 delegate];
-  [(BuddyAppleIDControllerDelegate *)v5 appleIDControllerFinished:v12];
+  delegate = [(BuddyAppleIDController *)selfCopy delegate];
+  [(BuddyAppleIDControllerDelegate *)delegate appleIDControllerFinished:selfCopy];
 }
 
-- (void)_signInFailedWithError:(id)a3
+- (void)_signInFailedWithError:(id)error
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyAppleIDController *)v11 delegate];
+  objc_storeStrong(location, error);
+  delegate = [(BuddyAppleIDController *)selfCopy delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(BuddyAppleIDController *)v11 delegate];
-    [(BuddyAppleIDControllerDelegate *)v5 appleIDController:v11 failedWithError:location[0]];
+    delegate2 = [(BuddyAppleIDController *)selfCopy delegate];
+    [(BuddyAppleIDControllerDelegate *)delegate2 appleIDController:selfCopy failedWithError:location[0]];
   }
 
   else
   {
-    v6 = [(BuddyAppleIDController *)v11 authAttemptLandingViewController];
+    authAttemptLandingViewController = [(BuddyAppleIDController *)selfCopy authAttemptLandingViewController];
 
-    if (v6)
+    if (authAttemptLandingViewController)
     {
-      v7 = [(BuddyAppleIDController *)v11 navigationController];
-      v8 = [(BuddyAppleIDController *)v11 authAttemptLandingViewController];
-      v9 = [(UINavigationController *)v7 popToViewController:v8 animated:1];
+      navigationController = [(BuddyAppleIDController *)selfCopy navigationController];
+      authAttemptLandingViewController2 = [(BuddyAppleIDController *)selfCopy authAttemptLandingViewController];
+      v9 = [(UINavigationController *)navigationController popToViewController:authAttemptLandingViewController2 animated:1];
 
-      [(BuddyAppleIDController *)v11 setAuthAttemptLandingViewController:0];
+      [(BuddyAppleIDController *)selfCopy setAuthAttemptLandingViewController:0];
     }
   }
 
@@ -1521,14 +1521,14 @@ LABEL_4:
   if (v33[0])
   {
     v29 = objc_alloc_init(ACAccountStore);
-    v28 = [v29 aa_primaryAppleAccount];
+    aa_primaryAppleAccount = [v29 aa_primaryAppleAccount];
     v27 = 0;
     v4 = v33[0];
-    v5 = [v28 aa_firstName];
-    v6 = [v28 aa_lastName];
-    v7 = [v28 aa_primaryEmail];
+    aa_firstName = [aa_primaryAppleAccount aa_firstName];
+    aa_lastName = [aa_primaryAppleAccount aa_lastName];
+    aa_primaryEmail = [aa_primaryAppleAccount aa_primaryEmail];
     obj = 0;
-    LOBYTE(v4) = [v4 setBestMeIfNeededForGivenName:v5 familyName:v6 email:v7 error:&obj];
+    LOBYTE(v4) = [v4 setBestMeIfNeededForGivenName:aa_firstName familyName:aa_lastName email:aa_primaryEmail error:&obj];
     objc_storeStrong(&v27, obj);
 
     v26 = v4 & 1;
@@ -1562,9 +1562,9 @@ LABEL_4:
 
         else if (v27)
         {
-          v19 = [v27 domain];
+          domain = [v27 domain];
           v18 = 1;
-          v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v19, [v27 code]);
+          v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v27 code]);
           v17 = v10;
           v16 = 1;
         }
@@ -1589,7 +1589,7 @@ LABEL_4:
     }
 
     objc_storeStrong(&v27, 0);
-    objc_storeStrong(&v28, 0);
+    objc_storeStrong(&aa_primaryAppleAccount, 0);
     objc_storeStrong(&v29, 0);
   }
 
@@ -1616,9 +1616,9 @@ LABEL_4:
   v16[2] = self;
   v16[1] = a2;
   v16[0] = objc_alloc_init(ACAccountStore);
-  v15 = [v16[0] aa_primaryAppleAccount];
-  v14 = [v15 aa_firstName];
-  if ((BYSetupAssistantHasCompletedInitialRun() & 1) == 0 && [v14 length])
+  aa_primaryAppleAccount = [v16[0] aa_primaryAppleAccount];
+  aa_firstName = [aa_primaryAppleAccount aa_firstName];
+  if ((BYSetupAssistantHasCompletedInitialRun() & 1) == 0 && [aa_firstName length])
   {
     v18 = MGCopyAnswer();
     v13 = v18;
@@ -1628,13 +1628,13 @@ LABEL_4:
       v11 = v17;
       if ([v13 length] && (objc_msgSend(v13, "isEqualToString:", v11) & 1) != 0)
       {
-        v10 = v14;
-        if ([v14 _containsCJKScriptsOnly])
+        v10 = aa_firstName;
+        if ([aa_firstName _containsCJKScriptsOnly])
         {
-          location = [v15 aa_lastName];
+          location = [aa_primaryAppleAccount aa_lastName];
           if ([location length] && (objc_msgSend(location, "_containsCJKScriptsOnly") & 1) != 0)
           {
-            v2 = [location stringByAppendingString:v14];
+            v2 = [location stringByAppendingString:aa_firstName];
             v3 = v10;
             v10 = v2;
           }
@@ -1667,57 +1667,57 @@ LABEL_4:
     objc_storeStrong(&v13, 0);
   }
 
-  objc_storeStrong(&v14, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&aa_firstName, 0);
+  objc_storeStrong(&aa_primaryAppleAccount, 0);
   objc_storeStrong(v16, 0);
 }
 
-- (void)_beginPostUpgradeAppleIDLoginWithUsername:(id)a3 password:(id)a4 signInController:(id)a5
+- (void)_beginPostUpgradeAppleIDLoginWithUsername:(id)username password:(id)password signInController:(id)controller
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, password);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
-  [(BuddyAppleIDController *)v10 _beginPostUpgradeAppleIDLoginWithUsername:location[0] password:v8 continuationKey:0 signInController:v7];
+  objc_storeStrong(&v7, controller);
+  [(BuddyAppleIDController *)selfCopy _beginPostUpgradeAppleIDLoginWithUsername:location[0] password:v8 continuationKey:0 signInController:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_beginPostUpgradeAppleIDLoginWithUsername:(id)a3 password:(id)a4 continuationKey:(id)a5 signInController:(id)a6
+- (void)_beginPostUpgradeAppleIDLoginWithUsername:(id)username password:(id)password continuationKey:(id)key signInController:(id)controller
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, password);
   v27 = 0;
-  objc_storeStrong(&v27, a5);
+  objc_storeStrong(&v27, key);
   v26 = 0;
-  objc_storeStrong(&v26, a6);
+  objc_storeStrong(&v26, controller);
   if (location[0] && (v28 || v27))
   {
-    v9 = [(BuddyAppleIDController *)v30 navigationController];
-    v10 = [(BuddyAppleIDController *)v30 passcodeCacheManager];
-    v11 = [BuddyAppleIDAuthManager managerWithNavigationController:v9 passcodeCacheManager:v10];
-    [(BuddyAppleIDController *)v30 setAuthManager:v11];
+    navigationController = [(BuddyAppleIDController *)selfCopy navigationController];
+    passcodeCacheManager = [(BuddyAppleIDController *)selfCopy passcodeCacheManager];
+    v11 = [BuddyAppleIDAuthManager managerWithNavigationController:navigationController passcodeCacheManager:passcodeCacheManager];
+    [(BuddyAppleIDController *)selfCopy setAuthManager:v11];
 
-    v12 = [(BuddyAppleIDController *)v30 authManager];
-    [(BuddyAppleIDAuthManager *)v12 setShouldOfferSecurityUpgrade:1];
+    authManager = [(BuddyAppleIDController *)selfCopy authManager];
+    [(BuddyAppleIDAuthManager *)authManager setShouldOfferSecurityUpgrade:1];
 
-    v13 = [(BuddyAppleIDController *)v30 authManager];
-    v14 = [(BuddyAppleIDController *)v30 accountToUpgrade];
-    [(BuddyAppleIDAuthManager *)v13 setAccountToUpgrade:v14];
+    authManager2 = [(BuddyAppleIDController *)selfCopy authManager];
+    accountToUpgrade = [(BuddyAppleIDController *)selfCopy accountToUpgrade];
+    [(BuddyAppleIDAuthManager *)authManager2 setAccountToUpgrade:accountToUpgrade];
 
-    v15 = [(BuddyAppleIDController *)v30 authManager];
-    [(BuddyAppleIDAuthManager *)v15 setHasContinuationKey:v27 != 0];
+    authManager3 = [(BuddyAppleIDController *)selfCopy authManager];
+    [(BuddyAppleIDAuthManager *)authManager3 setHasContinuationKey:v27 != 0];
 
-    v16 = [(BuddyAppleIDController *)v30 authManager];
+    authManager4 = [(BuddyAppleIDController *)selfCopy authManager];
     v17 = v26;
     v18 = location[0];
     v19 = v28;
@@ -1726,15 +1726,15 @@ LABEL_4:
     v22 = 0;
     v23 = sub_1001441EC;
     v24 = &unk_10032D598;
-    v25 = v30;
-    [(BuddyAppleIDAuthManager *)v16 authenticateWithSignInController:v17 username:v18 password:v19 completion:&v20];
+    v25 = selfCopy;
+    [(BuddyAppleIDAuthManager *)authManager4 authenticateWithSignInController:v17 username:v18 password:v19 completion:&v20];
 
     objc_storeStrong(&v25, 0);
   }
 
   else
   {
-    [(BuddyAppleIDController *)v30 _authCompletedShouldProceed:1 error:0];
+    [(BuddyAppleIDController *)selfCopy _authCompletedShouldProceed:1 error:0];
   }
 
   objc_storeStrong(&v26, 0);
@@ -1743,56 +1743,56 @@ LABEL_4:
   objc_storeStrong(location, 0);
 }
 
-- (void)_upgradeAccountWithAuthenticationResults:(id)a3 completion:(id)a4
+- (void)_upgradeAccountWithAuthenticationResults:(id)results completion:(id)completion
 {
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, completion);
   v5 = [BuddyAppleIDSignInTask alloc];
-  v6 = [(BuddyAppleIDController *)v45 featureFlags];
+  featureFlags = [(BuddyAppleIDController *)selfCopy featureFlags];
   v7 = +[BuddyAccountTools sharedBuddyAccountTools];
-  v8 = [(BuddyAppleIDSignInTask *)v5 initWithFeatureFlags:v6 accountTools:v7];
-  [(BuddyAppleIDController *)v45 setSignInTask:v8];
+  v8 = [(BuddyAppleIDSignInTask *)v5 initWithFeatureFlags:featureFlags accountTools:v7];
+  [(BuddyAppleIDController *)selfCopy setSignInTask:v8];
 
-  v9 = [(BuddyAppleIDController *)v45 navigationController];
-  v10 = [(BuddyAppleIDController *)v45 signInTask];
-  [(BuddyAppleIDSignInTask *)v10 setNavigationController:v9];
+  navigationController = [(BuddyAppleIDController *)selfCopy navigationController];
+  signInTask = [(BuddyAppleIDController *)selfCopy signInTask];
+  [(BuddyAppleIDSignInTask *)signInTask setNavigationController:navigationController];
 
-  v11 = [(BuddyAppleIDController *)v45 signInTask];
-  [(BuddyAppleIDSignInTask *)v11 setSkipDataclassEnablement:1];
+  signInTask2 = [(BuddyAppleIDController *)selfCopy signInTask];
+  [(BuddyAppleIDSignInTask *)signInTask2 setSkipDataclassEnablement:1];
 
-  LOBYTE(v11) = [(BuddyAppleIDController *)v45 _isRestore];
-  v12 = [(BuddyAppleIDController *)v45 signInTask];
-  [(BuddyAppleIDSignInTask *)v12 setRestoreFromBackupMode:v11 & 1];
+  LOBYTE(signInTask2) = [(BuddyAppleIDController *)selfCopy _isRestore];
+  signInTask3 = [(BuddyAppleIDController *)selfCopy signInTask];
+  [(BuddyAppleIDSignInTask *)signInTask3 setRestoreFromBackupMode:signInTask2 & 1];
 
-  v13 = [(BuddyAppleIDController *)v45 featureFlags];
-  LOBYTE(v12) = [(BuddyFeatureFlags *)v13 isUseCDPContextSecretInsteadOfSBDSecretEnabled];
+  featureFlags2 = [(BuddyAppleIDController *)selfCopy featureFlags];
+  LOBYTE(signInTask3) = [(BuddyFeatureFlags *)featureFlags2 isUseCDPContextSecretInsteadOfSBDSecretEnabled];
 
-  if (v12)
+  if (signInTask3)
   {
     oslog = _BYLoggingFacility();
     v41 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(BuddyAppleIDController *)v45 passcodeCacheManager];
-      v15 = [(BuddyAppleIDController *)v45 signInTask];
-      sub_10011A49C(buf, "[BuddyAppleIDController _upgradeAccountWithAuthenticationResults:completion:]", v14, v15);
+      passcodeCacheManager = [(BuddyAppleIDController *)selfCopy passcodeCacheManager];
+      signInTask4 = [(BuddyAppleIDController *)selfCopy signInTask];
+      sub_10011A49C(buf, "[BuddyAppleIDController _upgradeAccountWithAuthenticationResults:completion:]", passcodeCacheManager, signInTask4);
       _os_log_impl(&_mh_execute_header, oslog, v41, "%s: Setting cache manager %@ on sign in task %@", buf, 0x20u);
     }
 
     objc_storeStrong(&oslog, 0);
-    v16 = [(BuddyAppleIDController *)v45 passcodeCacheManager];
-    v17 = [(BuddyAppleIDController *)v45 signInTask];
-    [(BuddyAppleIDSignInTask *)v17 setCacheManager:v16];
+    passcodeCacheManager2 = [(BuddyAppleIDController *)selfCopy passcodeCacheManager];
+    signInTask5 = [(BuddyAppleIDController *)selfCopy signInTask];
+    [(BuddyAppleIDSignInTask *)signInTask5 setCacheManager:passcodeCacheManager2];
   }
 
   v18 = [BuddyAppleIDSpinnerPage alloc];
-  v40 = [(BuddyAppleIDSpinnerPage *)v18 initWithAccountMode:[(BuddyAppleIDController *)v45 operationType]];
-  v19 = [(BuddyAppleIDController *)v45 navigationController];
-  [(UINavigationController *)v19 pushViewController:v40 animated:1];
+  v40 = [(BuddyAppleIDSpinnerPage *)v18 initWithAccountMode:[(BuddyAppleIDController *)selfCopy operationType]];
+  navigationController2 = [(BuddyAppleIDController *)selfCopy navigationController];
+  [(UINavigationController *)navigationController2 pushViewController:v40 animated:1];
 
   v39 = _BYLoggingFacility();
   v38 = OS_LOG_TYPE_DEFAULT;
@@ -1808,26 +1808,26 @@ LABEL_4:
   v36 = [NSMutableArray arrayWithObject:AIDAServiceTypeCloud];
   v35 = +[ACAccountStore ams_sharedAccountStore];
   v22 = [location[0] objectForKeyedSubscript:AKAuthenticationAlternateDSIDKey];
-  v23 = [v35 ams_activeiTunesAccount];
-  v24 = [v23 aa_altDSID];
-  v25 = [v22 isEqualToString:v24];
+  ams_activeiTunesAccount = [v35 ams_activeiTunesAccount];
+  aa_altDSID = [ams_activeiTunesAccount aa_altDSID];
+  v25 = [v22 isEqualToString:aa_altDSID];
 
   if (v25)
   {
     [v36 addObject:AIDAServiceTypeStore];
   }
 
-  [(BuddyAppleIDController *)v45 _willStartResponsibilityViewControllerPushSession];
-  v26 = [(BuddyAppleIDController *)v45 signInTask];
+  [(BuddyAppleIDController *)selfCopy _willStartResponsibilityViewControllerPushSession];
+  signInTask6 = [(BuddyAppleIDController *)selfCopy signInTask];
   v27 = location[0];
   v28 = _NSConcreteStackBlock;
   v29 = -1073741824;
   v30 = 0;
   v31 = sub_100144AEC;
   v32 = &unk_10032D860;
-  v33 = v45;
+  v33 = selfCopy;
   v34 = v43;
-  [(BuddyAppleIDSignInTask *)v26 signInToServices:v36 authenticationResults:v27 completion:&v28];
+  [(BuddyAppleIDSignInTask *)signInTask6 signInToServices:v36 authenticationResults:v27 completion:&v28];
 
   objc_storeStrong(&v34, 0);
   objc_storeStrong(&v33, 0);
@@ -1840,18 +1840,18 @@ LABEL_4:
 
 - (void)_loadSecurityUpgradeUI
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   [(BuddyAppleIDController *)self setAssumeResponsibilityForRUIPage:1];
-  [(BuddyAppleIDController *)v10 _setupAccountForSecurityUpgrade];
-  v9[0] = [(BuddyAppleIDController *)v10 _authenticationContextForSecurityUpgrade];
+  [(BuddyAppleIDController *)selfCopy _setupAccountForSecurityUpgrade];
+  v9[0] = [(BuddyAppleIDController *)selfCopy _authenticationContextForSecurityUpgrade];
   location = objc_alloc_init(AKAppleIDAuthenticationController);
   v2 = _NSConcreteStackBlock;
   v3 = -1073741824;
   v4 = 0;
   v5 = sub_100144F18;
   v6 = &unk_10032D598;
-  v7 = v10;
+  v7 = selfCopy;
   [location authenticateWithContext:v9[0] completion:&v2];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&location, 0);
@@ -1860,32 +1860,32 @@ LABEL_4:
 
 - (id)_authenticationContextForSecurityUpgrade
 {
-  v17 = self;
+  selfCopy = self;
   v16[1] = a2;
   v16[0] = objc_alloc_init(AKAppleIDAuthenticationInAppContext);
-  v2 = [(BuddyAppleIDController *)v17 navigationController];
-  [v16[0] setPresentingViewController:v2];
+  navigationController = [(BuddyAppleIDController *)selfCopy navigationController];
+  [v16[0] setPresentingViewController:navigationController];
 
   v3 = +[AKAccountManager sharedInstance];
-  v4 = [(BuddyAppleIDController *)v17 accountToUpgrade];
-  v5 = [(AKAccountManager *)v3 altDSIDForAccount:v4];
+  accountToUpgrade = [(BuddyAppleIDController *)selfCopy accountToUpgrade];
+  v5 = [(AKAccountManager *)v3 altDSIDForAccount:accountToUpgrade];
   [v16[0] setAltDSID:v5];
 
-  v6 = [(BuddyAppleIDController *)v17 accountToUpgrade];
-  v7 = [(ACAccount *)v6 username];
-  [v16[0] setUsername:v7];
+  accountToUpgrade2 = [(BuddyAppleIDController *)selfCopy accountToUpgrade];
+  username = [(ACAccount *)accountToUpgrade2 username];
+  [v16[0] setUsername:username];
 
   [v16[0] setIsUsernameEditable:0];
   [v16[0] setAppProvidedContext:AKAppleIDAuthenticationAppProvidedContextAuthless];
   [v16[0] setNeedsSecurityUpgradeUI:1];
   [v16[0] setShouldOfferSecurityUpgrade:1];
   [v16[0] setForceInlinePresentation:1];
-  if ([(BuddyAppleIDController *)v17 accountToUpgradeIsPrimary])
+  if ([(BuddyAppleIDController *)selfCopy accountToUpgradeIsPrimary])
   {
     if ((+[BYWarranty shouldDisplay]& 1) != 0)
     {
-      v8 = [v16[0] httpHeadersForRemoteUI];
-      v9 = [v8 mutableCopy];
+      httpHeadersForRemoteUI = [v16[0] httpHeadersForRemoteUI];
+      v9 = [httpHeadersForRemoteUI mutableCopy];
       v10 = v9;
       v13 = 0;
       if (!v9)
@@ -1916,7 +1916,7 @@ LABEL_4:
 
 - (void)_setupAccountForSecurityUpgrade
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   v10[0] = [(BuddyAppleIDController *)self accountToUpgrade];
   v2 = +[AKAccountManager sharedInstance];
@@ -1927,13 +1927,13 @@ LABEL_4:
 
   v4 = +[AKAccountManager sharedInstance];
   v5 = [(AKAccountManager *)v4 altDSIDForAccount:location];
-  -[BuddyAppleIDController setAccountToUpgradeIsPrimary:](v11, "setAccountToUpgradeIsPrimary:", [v9 isEqualToString:v5] & 1);
+  -[BuddyAppleIDController setAccountToUpgradeIsPrimary:](selfCopy, "setAccountToUpgradeIsPrimary:", [v9 isEqualToString:v5] & 1);
 
-  if ([(BuddyAppleIDController *)v11 accountToUpgradeIsPrimary])
+  if ([(BuddyAppleIDController *)selfCopy accountToUpgradeIsPrimary])
   {
     v6 = +[BuddyAccountTools sharedBuddyAccountTools];
-    v7 = [v6 primaryAccount];
-    [(BuddyAppleIDController *)v11 setAccountToUpgrade:v7];
+    primaryAccount = [v6 primaryAccount];
+    [(BuddyAppleIDController *)selfCopy setAccountToUpgrade:primaryAccount];
   }
 
   objc_storeStrong(&location, 0);
@@ -1941,16 +1941,16 @@ LABEL_4:
   objc_storeStrong(v10, 0);
 }
 
-- (void)_showSpinnerPageWithIdentifier:(id)a3 handler:(id)a4
+- (void)_showSpinnerPageWithIdentifier:(id)identifier handler:(id)handler
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v10 = [(BuddyAppleIDController *)v13 navigationController];
-  v5 = [v10 topViewController];
+  objc_storeStrong(&v11, handler);
+  navigationController = [(BuddyAppleIDController *)selfCopy navigationController];
+  topViewController = [navigationController topViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1962,26 +1962,26 @@ LABEL_4:
   else
   {
     v7 = [BuddyAppleIDSpinnerPage alloc];
-    v8 = [(BuddyAppleIDSpinnerPage *)v7 initWithAccountMode:[(BuddyAppleIDController *)v13 operationType]];
-    [(BuddyAppleIDController *)v13 _showSpinnerPage:v8 appearanceHandler:v11, v8];
+    v8 = [(BuddyAppleIDSpinnerPage *)v7 initWithAccountMode:[(BuddyAppleIDController *)selfCopy operationType]];
+    [(BuddyAppleIDController *)selfCopy _showSpinnerPage:v8 appearanceHandler:v11, v8];
     objc_storeStrong(&v9, 0);
   }
 
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&navigationController, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_showSpinnerPage:(id)a3 appearanceHandler:(id)a4
+- (void)_showSpinnerPage:(id)page appearanceHandler:(id)handler
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, page);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v5 = [(BuddyAppleIDController *)v10 navigationController];
-  v6 = [(UINavigationController *)v5 topViewController];
+  objc_storeStrong(&v8, handler);
+  navigationController = [(BuddyAppleIDController *)selfCopy navigationController];
+  topViewController = [(UINavigationController *)navigationController topViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1992,62 +1992,62 @@ LABEL_4:
 
   else
   {
-    [(BuddyAppleIDController *)v10 _setAppearanceHandler:v8 forSpinnerPage:location[0]];
-    [location[0] setSpinnerDelegate:v10];
-    [(BuddyAppleIDController *)v10 _pushNextViewController:location[0]];
+    [(BuddyAppleIDController *)selfCopy _setAppearanceHandler:v8 forSpinnerPage:location[0]];
+    [location[0] setSpinnerDelegate:selfCopy];
+    [(BuddyAppleIDController *)selfCopy _pushNextViewController:location[0]];
   }
 
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_pushNextViewController:(id)a3
+- (void)_pushNextViewController:(id)controller
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyAppleIDController *)v8 navigationController];
-  v6 = [(UINavigationController *)v3 topViewController];
+  objc_storeStrong(location, controller);
+  navigationController = [(BuddyAppleIDController *)selfCopy navigationController];
+  topViewController = [(UINavigationController *)navigationController topViewController];
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([(UIViewController *)v6 controllerAllowsNavigatingBack]& 1) == 0)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([(UIViewController *)topViewController controllerAllowsNavigatingBack]& 1) == 0)
   {
-    v4 = [location[0] navigationItem];
-    [v4 setHidesBackButton:1];
+    navigationItem = [location[0] navigationItem];
+    [navigationItem setHidesBackButton:1];
   }
 
-  v5 = [(BuddyAppleIDController *)v8 navigationController];
-  [(UINavigationController *)v5 pushViewController:location[0] animated:1];
+  navigationController2 = [(BuddyAppleIDController *)selfCopy navigationController];
+  [(UINavigationController *)navigationController2 pushViewController:location[0] animated:1];
 
-  objc_storeStrong(&v6, 0);
+  objc_storeStrong(&topViewController, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_setAppearanceHandler:(id)a3 forSpinnerPage:(id)a4
+- (void)_setAppearanceHandler:(id)handler forSpinnerPage:(id)page
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handler);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, page);
   if (location[0])
   {
-    v5 = [(BuddyAppleIDController *)v14 spinnerAppearanceHandlers];
-    v6 = v5 == 0;
+    spinnerAppearanceHandlers = [(BuddyAppleIDController *)selfCopy spinnerAppearanceHandlers];
+    v6 = spinnerAppearanceHandlers == 0;
 
     if (v6)
     {
       v7 = objc_alloc_init(NSMutableDictionary);
-      [(BuddyAppleIDController *)v14 setSpinnerAppearanceHandlers:v7];
+      [(BuddyAppleIDController *)selfCopy setSpinnerAppearanceHandlers:v7];
     }
 
     v10 = [NSValue valueWithPointer:v12];
     v8 = objc_retainBlock(location[0]);
-    v9 = [(BuddyAppleIDController *)v14 spinnerAppearanceHandlers];
-    [(NSMutableDictionary *)v9 setObject:v8 forKeyedSubscript:v10];
+    spinnerAppearanceHandlers2 = [(BuddyAppleIDController *)selfCopy spinnerAppearanceHandlers];
+    [(NSMutableDictionary *)spinnerAppearanceHandlers2 setObject:v8 forKeyedSubscript:v10];
 
-    [v12 setSpinnerDelegate:v14];
+    [v12 setSpinnerDelegate:selfCopy];
     objc_storeStrong(&v10, 0);
     v11 = 0;
   }
@@ -2063,57 +2063,57 @@ LABEL_4:
 
 - (void)_popBackToAuthAttemptLandingPage
 {
-  v14 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEBUG))
   {
-    v2 = [(BuddyAppleIDController *)v14 authAttemptLandingViewController];
-    v3 = [(BuddyAppleIDController *)v14 navigationController];
-    v4 = [(UINavigationController *)v3 topViewController];
-    sub_100078180(buf, v2, v4);
+    authAttemptLandingViewController = [(BuddyAppleIDController *)selfCopy authAttemptLandingViewController];
+    navigationController = [(BuddyAppleIDController *)selfCopy navigationController];
+    topViewController = [(UINavigationController *)navigationController topViewController];
+    sub_100078180(buf, authAttemptLandingViewController, topViewController);
     _os_log_debug_impl(&_mh_execute_header, oslog[0], OS_LOG_TYPE_DEBUG, "Auth attempt landing = %@, top view controller = %@", buf, 0x16u);
   }
 
   objc_storeStrong(oslog, 0);
-  v5 = [(BuddyAppleIDController *)v14 authAttemptLandingViewController];
+  authAttemptLandingViewController2 = [(BuddyAppleIDController *)selfCopy authAttemptLandingViewController];
 
-  if (v5)
+  if (authAttemptLandingViewController2)
   {
-    v6 = [(BuddyAppleIDController *)v14 navigationController];
-    v7 = [(UINavigationController *)v6 viewControllers];
-    v8 = [(BuddyAppleIDController *)v14 authAttemptLandingViewController];
-    v9 = [(NSArray *)v7 containsObject:v8];
+    navigationController2 = [(BuddyAppleIDController *)selfCopy navigationController];
+    viewControllers = [(UINavigationController *)navigationController2 viewControllers];
+    authAttemptLandingViewController3 = [(BuddyAppleIDController *)selfCopy authAttemptLandingViewController];
+    v9 = [(NSArray *)viewControllers containsObject:authAttemptLandingViewController3];
 
     if (v9)
     {
-      v10 = [(BuddyAppleIDController *)v14 navigationController];
-      v11 = [(BuddyAppleIDController *)v14 authAttemptLandingViewController];
-      v12 = [(UINavigationController *)v10 popToViewController:v11 animated:1];
+      navigationController3 = [(BuddyAppleIDController *)selfCopy navigationController];
+      authAttemptLandingViewController4 = [(BuddyAppleIDController *)selfCopy authAttemptLandingViewController];
+      v12 = [(UINavigationController *)navigationController3 popToViewController:authAttemptLandingViewController4 animated:1];
     }
 
-    [(BuddyAppleIDController *)v14 setAuthAttemptLandingViewController:0];
+    [(BuddyAppleIDController *)selfCopy setAuthAttemptLandingViewController:0];
   }
 }
 
-- (void)_removeBackToViewControllerMatchingBlock:(id)a3 withOffset:(int64_t)a4
+- (void)_removeBackToViewControllerMatchingBlock:(id)block withOffset:(int64_t)offset
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = a4;
+  objc_storeStrong(location, block);
+  offsetCopy = offset;
   v13 = 0;
   v12 = objc_opt_new();
-  v5 = [(BuddyAppleIDController *)v16 navigationController];
-  v11 = [(UINavigationController *)v5 viewControllers];
+  navigationController = [(BuddyAppleIDController *)selfCopy navigationController];
+  viewControllers = [(UINavigationController *)navigationController viewControllers];
 
-  if ([v11 count] > v14)
+  if ([viewControllers count] > offsetCopy)
   {
-    for (i = [v11 count] - v14 - 1; i > 0; --i)
+    for (i = [viewControllers count] - offsetCopy - 1; i > 0; --i)
     {
       v6 = location[0];
-      v7 = [v11 objectAtIndexedSubscript:i];
+      v7 = [viewControllers objectAtIndexedSubscript:i];
       LOBYTE(v6) = v6[2](v6, v7) ^ 1;
 
       if ((v6 & 1) == 0)
@@ -2122,41 +2122,41 @@ LABEL_4:
         break;
       }
 
-      v8 = [v11 objectAtIndexedSubscript:i];
+      v8 = [viewControllers objectAtIndexedSubscript:i];
       [v12 addObject:v8];
     }
 
     if (v13)
     {
-      v9 = [(BuddyAppleIDController *)v16 flowItemDelegate];
-      [(BFFFlowItemDelegate *)v9 removeViewControllersOnNextPush:v12];
+      flowItemDelegate = [(BuddyAppleIDController *)selfCopy flowItemDelegate];
+      [(BFFFlowItemDelegate *)flowItemDelegate removeViewControllersOnNextPush:v12];
     }
   }
 
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&viewControllers, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_setLogInOptionsForBuddyAppleIDAuthMode:(int)a3 signInController:(id)a4
+- (void)_setLogInOptionsForBuddyAppleIDAuthMode:(int)mode signInController:(id)controller
 {
-  v43 = self;
+  selfCopy = self;
   v42 = a2;
-  v41 = a3;
-  objc_initWeak(&location, a4);
-  v39 = v43;
-  v38 = [(BuddyAppleIDController *)v43 hasProximityConnection];
+  modeCopy = mode;
+  objc_initWeak(&location, controller);
+  v39 = selfCopy;
+  hasProximityConnection = [(BuddyAppleIDController *)selfCopy hasProximityConnection];
   v37 = +[AKFeatureManager isProxAuthEnabled]& 1;
   v4 = 0;
-  if ((v38 & 1) == 0)
+  if ((hasProximityConnection & 1) == 0)
   {
     v4 = v37;
   }
 
   v36 = v4;
-  if (v41 == 1 || v41 == 5 || v41 == 4)
+  if (modeCopy == 1 || modeCopy == 5 || modeCopy == 4)
   {
-    if (v41 == 1)
+    if (modeCopy == 1)
     {
       if (v36)
       {
@@ -2180,7 +2180,7 @@ LABEL_4:
         v24 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
-          sub_100075A38(v46, v41, [(BuddyAppleIDController *)v43 hasProximityConnection]);
+          sub_100075A38(v46, modeCopy, [(BuddyAppleIDController *)selfCopy hasProximityConnection]);
           _os_log_impl(&_mh_execute_header, oslog, v24, "Not showing Apple ID Proximity Login for auth mode %i, in prox flow %i", v46, 0xEu);
         }
 
@@ -2200,12 +2200,12 @@ LABEL_4:
       goto LABEL_27;
     }
 
-    if ((v41 - 2) < 2)
+    if ((modeCopy - 2) < 2)
     {
       goto LABEL_24;
     }
 
-    if ((v41 - 4) < 2)
+    if ((modeCopy - 4) < 2)
     {
       if (v36)
       {
@@ -2229,7 +2229,7 @@ LABEL_4:
         v9 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          sub_100075A38(v45, v41, [(BuddyAppleIDController *)v43 hasProximityConnection]);
+          sub_100075A38(v45, modeCopy, [(BuddyAppleIDController *)selfCopy hasProximityConnection]);
           _os_log_impl(&_mh_execute_header, v10, v9, "Not showing Apple ID Proximity Login for auth mode %i, in prox flow %i", v45, 0xEu);
         }
 
@@ -2239,13 +2239,13 @@ LABEL_4:
       goto LABEL_27;
     }
 
-    if ((v41 - 6) < 3)
+    if ((modeCopy - 6) < 3)
     {
 LABEL_24:
       v8 = _BYLoggingFacility();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        sub_100082D54(v44, v41);
+        sub_100082D54(v44, modeCopy);
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Not elegible for Proximity Login with auth mode %i", v44, 8u);
       }
 
@@ -2261,7 +2261,7 @@ LABEL_27:
   v34 = OS_LOG_TYPE_ERROR;
   if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
   {
-    sub_100082D54(buf, v41);
+    sub_100082D54(buf, modeCopy);
     _os_log_error_impl(&_mh_execute_header, v35, v34, "_setLogInOptionsForBuddyAppleIDAuthMode called for unsupported auth mode %i", buf, 8u);
   }
 

@@ -1,17 +1,17 @@
 @interface COSUnlockPlaceholderViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation COSUnlockPlaceholderViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"COSUnlockPlaceholderViewController" isKindOfClass:@"BPSWelcomeOptinViewController"];
-  [v3 validateClass:@"COSUnlockPlaceholderViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"BPSWelcomeOptinViewController" hasInstanceMethod:@"watchView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"COSUnlockPlaceholderViewController" isKindOfClass:@"BPSWelcomeOptinViewController"];
+  [validationsCopy validateClass:@"COSUnlockPlaceholderViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"BPSWelcomeOptinViewController" hasInstanceMethod:@"watchView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,9 +1,9 @@
 @interface MTRDoorLockClusterGetCredentialStatusResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRDoorLockClusterGetCredentialStatusResponseParams)init;
-- (MTRDoorLockClusterGetCredentialStatusResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRDoorLockClusterGetCredentialStatusResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRDoorLockClusterGetCredentialStatusResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -42,29 +42,29 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterGetCredentialStatusResponseParams);
-  v5 = [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self credentialExists];
-  [(MTRDoorLockClusterGetCredentialStatusResponseParams *)v4 setCredentialExists:v5];
+  credentialExists = [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self credentialExists];
+  [(MTRDoorLockClusterGetCredentialStatusResponseParams *)v4 setCredentialExists:credentialExists];
 
-  v6 = [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self userIndex];
-  [(MTRDoorLockClusterGetCredentialStatusResponseParams *)v4 setUserIndex:v6];
+  userIndex = [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self userIndex];
+  [(MTRDoorLockClusterGetCredentialStatusResponseParams *)v4 setUserIndex:userIndex];
 
-  v7 = [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self creatorFabricIndex];
-  [(MTRDoorLockClusterGetCredentialStatusResponseParams *)v4 setCreatorFabricIndex:v7];
+  creatorFabricIndex = [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self creatorFabricIndex];
+  [(MTRDoorLockClusterGetCredentialStatusResponseParams *)v4 setCreatorFabricIndex:creatorFabricIndex];
 
-  v8 = [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self lastModifiedFabricIndex];
-  [(MTRDoorLockClusterGetCredentialStatusResponseParams *)v4 setLastModifiedFabricIndex:v8];
+  lastModifiedFabricIndex = [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self lastModifiedFabricIndex];
+  [(MTRDoorLockClusterGetCredentialStatusResponseParams *)v4 setLastModifiedFabricIndex:lastModifiedFabricIndex];
 
-  v9 = [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self nextCredentialIndex];
-  [(MTRDoorLockClusterGetCredentialStatusResponseParams *)v4 setNextCredentialIndex:v9];
+  nextCredentialIndex = [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self nextCredentialIndex];
+  [(MTRDoorLockClusterGetCredentialStatusResponseParams *)v4 setNextCredentialIndex:nextCredentialIndex];
 
-  v10 = [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self credentialData];
-  [(MTRDoorLockClusterGetCredentialStatusResponseParams *)v4 setCredentialData:v10];
+  credentialData = [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self credentialData];
+  [(MTRDoorLockClusterGetCredentialStatusResponseParams *)v4 setCredentialData:credentialData];
 
-  v11 = [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRDoorLockClusterGetCredentialStatusResponseParams *)v4 setTimedInvokeTimeoutMs:v11];
+  timedInvokeTimeoutMs = [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRDoorLockClusterGetCredentialStatusResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -135,7 +135,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRDoorLockClusterGetCredentialStatusResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRDoorLockClusterGetCredentialStatusResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRDoorLockClusterGetCredentialStatusResponseParams;
@@ -143,7 +143,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRDoorLockClusterGetCredentialStatusResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRDoorLockClusterGetCredentialStatusResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -159,14 +159,14 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:*struct];
   [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self setCredentialExists:v5];
 
-  if (*(a3 + 4))
+  if (*(struct + 4))
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(a3 + 1)];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(struct + 1)];
     [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self setUserIndex:v6];
   }
 
@@ -175,9 +175,9 @@ LABEL_6:
     [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self setUserIndex:0];
   }
 
-  if (*(a3 + 7))
+  if (*(struct + 7))
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 6)];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 6)];
     [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self setCreatorFabricIndex:v7];
   }
 
@@ -186,9 +186,9 @@ LABEL_6:
     [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self setCreatorFabricIndex:0];
   }
 
-  if (*(a3 + 9))
+  if (*(struct + 9))
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 8)];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 8)];
     [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self setLastModifiedFabricIndex:v8];
   }
 
@@ -197,9 +197,9 @@ LABEL_6:
     [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self setLastModifiedFabricIndex:0];
   }
 
-  if (*(a3 + 12))
+  if (*(struct + 12))
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(a3 + 5)];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(struct + 5)];
     [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self setNextCredentialIndex:v9];
   }
 
@@ -208,8 +208,8 @@ LABEL_6:
     [(MTRDoorLockClusterGetCredentialStatusResponseParams *)self setNextCredentialIndex:0];
   }
 
-  v11 = *(a3 + 16);
-  v10 = a3 + 16;
+  v11 = *(struct + 16);
+  v10 = struct + 16;
   if (v11 == 1 && (sub_238DE36B8(v10)[16] & 1) != 0)
   {
     v12 = sub_238DE36B8(v10);

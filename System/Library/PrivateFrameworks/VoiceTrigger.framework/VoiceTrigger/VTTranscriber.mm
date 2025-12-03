@@ -1,22 +1,22 @@
 @interface VTTranscriber
-- (VTTranscriber)initWithConfiguration:(id)a3 triggerTokens:(id)a4 useKeywordSpotting:(BOOL)a5;
-- (double)_getConfidence:(id)a3;
+- (VTTranscriber)initWithConfiguration:(id)configuration triggerTokens:(id)tokens useKeywordSpotting:(BOOL)spotting;
+- (double)_getConfidence:(id)confidence;
 - (void)endAudio;
 - (void)reset;
-- (void)runRecognitionWithCallback:(id)a3;
-- (void)speechRecognizer:(id)a3 didFinishRecognitionWithError:(id)a4;
-- (void)speechRecognizer:(id)a3 didRecognizeFinalResults:(id)a4;
-- (void)speechRecognizer:(id)a3 didRecognizePartialResult:(id)a4;
+- (void)runRecognitionWithCallback:(id)callback;
+- (void)speechRecognizer:(id)recognizer didFinishRecognitionWithError:(id)error;
+- (void)speechRecognizer:(id)recognizer didRecognizeFinalResults:(id)results;
+- (void)speechRecognizer:(id)recognizer didRecognizePartialResult:(id)result;
 @end
 
 @implementation VTTranscriber
 
-- (double)_getConfidence:(id)a3
+- (double)_getConfidence:(id)confidence
 {
-  v4 = a3;
-  v5 = v4;
+  confidenceCopy = confidence;
+  v5 = confidenceCopy;
   v6 = 0.0;
-  if (v4 && self->_triggerTokenList)
+  if (confidenceCopy && self->_triggerTokenList)
   {
     v9 = 0;
     v10 = &v9;
@@ -28,7 +28,7 @@
     v8[3] = &unk_2784EC9A8;
     v8[4] = self;
     v8[5] = &v9;
-    [v4 enumerateObjectsUsingBlock:v8];
+    [confidenceCopy enumerateObjectsUsingBlock:v8];
     v6 = v10[3];
     _Block_object_dispose(&v9, 8);
   }
@@ -68,17 +68,17 @@ void __32__VTTranscriber__getConfidence___block_invoke(uint64_t a1, void *a2, un
   }
 }
 
-- (void)speechRecognizer:(id)a3 didFinishRecognitionWithError:(id)a4
+- (void)speechRecognizer:(id)recognizer didFinishRecognitionWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__VTTranscriber_speechRecognizer_didFinishRecognitionWithError___block_invoke;
   v8[3] = &unk_2784ED118;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = errorCopy;
+  selfCopy = self;
+  v7 = errorCopy;
   dispatch_async(queue, v8);
 }
 
@@ -173,17 +173,17 @@ LABEL_21:
   }
 }
 
-- (void)speechRecognizer:(id)a3 didRecognizeFinalResults:(id)a4
+- (void)speechRecognizer:(id)recognizer didRecognizeFinalResults:(id)results
 {
-  v5 = a4;
+  resultsCopy = results;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__VTTranscriber_speechRecognizer_didRecognizeFinalResults___block_invoke;
   v8[3] = &unk_2784ED118;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = resultsCopy;
+  selfCopy = self;
+  v7 = resultsCopy;
   dispatch_async(queue, v8);
 }
 
@@ -196,10 +196,10 @@ void __59__VTTranscriber_speechRecognizer_didRecognizeFinalResults___block_invok
   [v3 addObjectsFromArray:v4];
 }
 
-- (void)speechRecognizer:(id)a3 didRecognizePartialResult:(id)a4
+- (void)speechRecognizer:(id)recognizer didRecognizePartialResult:(id)result
 {
-  v5 = a4;
-  v6 = v5;
+  resultCopy = result;
+  v6 = resultCopy;
   if (!self->_useKeywordSpotting)
   {
     queue = self->_queue;
@@ -208,7 +208,7 @@ void __59__VTTranscriber_speechRecognizer_didRecognizeFinalResults___block_invok
     v8[2] = __60__VTTranscriber_speechRecognizer_didRecognizePartialResult___block_invoke;
     v8[3] = &unk_2784ED118;
     v8[4] = self;
-    v9 = v5;
+    v9 = resultCopy;
     dispatch_async(queue, v8);
   }
 }
@@ -301,9 +301,9 @@ uint64_t __22__VTTranscriber_reset__block_invoke(uint64_t a1)
   [(_EARSpeechRecognitionAudioBuffer *)self->_recognizerBuffer endAudio];
 }
 
-- (void)runRecognitionWithCallback:(id)a3
+- (void)runRecognitionWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v5 = MEMORY[0x223DF24E0]();
   callback = self->_callback;
   self->_callback = v5;
@@ -320,11 +320,11 @@ uint64_t __22__VTTranscriber_reset__block_invoke(uint64_t a1)
   self->_recognizerBuffer = v8;
 }
 
-- (VTTranscriber)initWithConfiguration:(id)a3 triggerTokens:(id)a4 useKeywordSpotting:(BOOL)a5
+- (VTTranscriber)initWithConfiguration:(id)configuration triggerTokens:(id)tokens useKeywordSpotting:(BOOL)spotting
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  configurationCopy = configuration;
+  tokensCopy = tokens;
   v24.receiver = self;
   v24.super_class = VTTranscriber;
   v10 = [(VTTranscriber *)&v24 init];
@@ -339,7 +339,7 @@ uint64_t __22__VTTranscriber_reset__block_invoke(uint64_t a1)
     v10->_previousUtteranceTokens = v13;
 
     v10->_triggerConfidence = 0.0;
-    v15 = [v9 componentsSeparatedByString:@"_"];
+    v15 = [tokensCopy componentsSeparatedByString:@"_"];
     triggerTokenList = v10->_triggerTokenList;
     v10->_triggerTokenList = v15;
 
@@ -359,8 +359,8 @@ uint64_t __22__VTTranscriber_reset__block_invoke(uint64_t a1)
     v10->_recognizerBuffer = 0;
 
     v10->_isTriggerFollowedByWords = 0;
-    v10->_useKeywordSpotting = a5;
-    v20 = [objc_alloc(MEMORY[0x277D07270]) initWithConfiguration:v8];
+    v10->_useKeywordSpotting = spotting;
+    v20 = [objc_alloc(MEMORY[0x277D07270]) initWithConfiguration:configurationCopy];
     recognizer = v10->_recognizer;
     v10->_recognizer = v20;
   }

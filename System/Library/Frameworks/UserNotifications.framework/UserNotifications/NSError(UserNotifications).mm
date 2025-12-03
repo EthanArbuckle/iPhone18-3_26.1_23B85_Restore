@@ -11,8 +11,8 @@
 + (id)un_errorWithUNErrorCode:()UserNotifications userInfo:
 {
   v6 = a4;
-  v7 = [a1 _un_descriptionForUNErrorCode:a3];
-  v8 = [a1 _updateUserInfo:v6 withLocalizedDescription:v7];
+  v7 = [self _un_descriptionForUNErrorCode:a3];
+  v8 = [self _updateUserInfo:v6 withLocalizedDescription:v7];
 
   v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"UNErrorDomain" code:a3 userInfo:v8];
 
@@ -22,8 +22,8 @@
 + (id)un_errorWithUNPrivateErrorCode:()UserNotifications userInfo:
 {
   v6 = a4;
-  v7 = [a1 _un_descriptionForUNPrivateErrorCode:a3];
-  v8 = [a1 _updateUserInfo:v6 withLocalizedDescription:v7];
+  v7 = [self _un_descriptionForUNPrivateErrorCode:a3];
+  v8 = [self _updateUserInfo:v6 withLocalizedDescription:v7];
 
   v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"UNErrorDomain" code:a3 userInfo:v8];
 

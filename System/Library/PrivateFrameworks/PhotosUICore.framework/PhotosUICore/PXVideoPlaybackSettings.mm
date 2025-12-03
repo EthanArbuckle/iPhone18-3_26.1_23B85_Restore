@@ -51,10 +51,10 @@ void __41__PXVideoPlaybackSettings_sharedInstance__block_invoke()
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v11 = [v2 sectionWithRows:v10 title:@"Settings"];
 
-  v12 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v13 = MEMORY[0x1E69C6638];
   v17[0] = v11;
-  v17[1] = v12;
+  v17[1] = px_restoreDefaultsSection;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   v15 = [v13 moduleWithTitle:@"Video Playback" contents:v14];
 

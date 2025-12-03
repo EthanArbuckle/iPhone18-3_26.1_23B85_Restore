@@ -1,60 +1,60 @@
 @interface WFRemoteExecutionIncomingAceCommandSession
-- (void)handleIncomingProtobuf:(id)a3 destinations:(id)a4 options:(id)a5;
-- (void)sendResponseWithOriginatingRequestIdentifier:(id)a3 aceCommandResponseDictionary:(id)a4 error:(id)a5 destinations:(id)a6 options:(id)a7;
-- (void)sendToDestinations:(id)a3 options:(id)a4;
+- (void)handleIncomingProtobuf:(id)protobuf destinations:(id)destinations options:(id)options;
+- (void)sendResponseWithOriginatingRequestIdentifier:(id)identifier aceCommandResponseDictionary:(id)dictionary error:(id)error destinations:(id)destinations options:(id)options;
+- (void)sendToDestinations:(id)destinations options:(id)options;
 @end
 
 @implementation WFRemoteExecutionIncomingAceCommandSession
 
-- (void)sendResponseWithOriginatingRequestIdentifier:(id)a3 aceCommandResponseDictionary:(id)a4 error:(id)a5 destinations:(id)a6 options:(id)a7
+- (void)sendResponseWithOriginatingRequestIdentifier:(id)identifier aceCommandResponseDictionary:(id)dictionary error:(id)error destinations:(id)destinations options:(id)options
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[WFRemoteExecutionAceCommandRequestResponse alloc] initWithOriginatingRequestIdentifier:v16 aceCommandResponseDictionary:v15 error:v14];
+  optionsCopy = options;
+  destinationsCopy = destinations;
+  errorCopy = error;
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  v17 = [[WFRemoteExecutionAceCommandRequestResponse alloc] initWithOriginatingRequestIdentifier:identifierCopy aceCommandResponseDictionary:dictionaryCopy error:errorCopy];
 
   [(WFRemoteExecutionIncomingAceCommandSession *)self setResponse:v17];
-  [(WFRemoteExecutionIncomingAceCommandSession *)self sendToDestinations:v13 options:v12];
+  [(WFRemoteExecutionIncomingAceCommandSession *)self sendToDestinations:destinationsCopy options:optionsCopy];
 }
 
-- (void)sendToDestinations:(id)a3 options:(id)a4
+- (void)sendToDestinations:(id)destinations options:(id)options
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v31.receiver = self;
   v31.super_class = WFRemoteExecutionIncomingAceCommandSession;
-  [(WFRemoteExecutionSession *)&v31 sendToDestinations:v6 options:v7];
+  [(WFRemoteExecutionSession *)&v31 sendToDestinations:destinationsCopy options:optionsCopy];
   v8 = objc_alloc_init(MEMORY[0x1E69C65C0]);
-  v9 = [(WFRemoteExecutionIncomingAceCommandSession *)self response];
+  response = [(WFRemoteExecutionIncomingAceCommandSession *)self response];
   v30 = 0;
-  v10 = [v9 writeTo:v8 error:&v30];
+  v10 = [response writeTo:v8 error:&v30];
   v11 = v30;
 
   if (v10)
   {
     v12 = objc_alloc(MEMORY[0x1E69A5388]);
-    v13 = [v8 immutableData];
-    v14 = [v12 initWithProtobufData:v13 type:9 isResponse:0];
+    immutableData = [v8 immutableData];
+    v14 = [v12 initWithProtobufData:immutableData type:9 isResponse:0];
 
     v15 = getWFRemoteExecutionLogObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [(WFRemoteExecutionIncomingAceCommandSession *)self response];
-      v17 = [v16 identifier];
+      response2 = [(WFRemoteExecutionIncomingAceCommandSession *)self response];
+      identifier = [response2 identifier];
       *buf = 136315394;
       v33 = "[WFRemoteExecutionIncomingAceCommandSession sendToDestinations:options:]";
       v34 = 2114;
-      v35 = v17;
+      selfCopy = identifier;
       _os_log_impl(&dword_1CA256000, v15, OS_LOG_TYPE_INFO, "%s <%{public}@> sending ace command response", buf, 0x16u);
     }
 
-    v18 = [(WFRemoteExecutionSession *)self service];
+    service = [(WFRemoteExecutionSession *)self service];
     v28 = 0;
     v29 = 0;
-    v19 = [v18 sendProtobuf:v14 toDestinations:v6 priority:300 options:v7 identifier:&v29 error:&v28];
+    v19 = [service sendProtobuf:v14 toDestinations:destinationsCopy priority:300 options:optionsCopy identifier:&v29 error:&v28];
     v20 = v29;
     v21 = v28;
 
@@ -72,7 +72,7 @@
         *buf = 136315650;
         v33 = "[WFRemoteExecutionIncomingAceCommandSession sendToDestinations:options:]";
         v34 = 2114;
-        v35 = self;
+        selfCopy = self;
         v36 = 2114;
         v37 = v21;
         _os_log_impl(&dword_1CA256000, v26, OS_LOG_TYPE_ERROR, "%s %{public}@ failed to send with error: %{public}@", buf, 0x20u);
@@ -90,12 +90,12 @@
     v23 = getWFRemoteExecutionLogObject();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
     {
-      v24 = [(WFRemoteExecutionIncomingAceCommandSession *)self response];
-      v25 = [v24 identifier];
+      response3 = [(WFRemoteExecutionIncomingAceCommandSession *)self response];
+      identifier2 = [response3 identifier];
       *buf = 136315650;
       v33 = "[WFRemoteExecutionIncomingAceCommandSession sendToDestinations:options:]";
       v34 = 2114;
-      v35 = v25;
+      selfCopy = identifier2;
       v36 = 2114;
       v37 = v11;
       _os_log_impl(&dword_1CA256000, v23, OS_LOG_TYPE_FAULT, "%s <%{public}@> failed to write protobuf with error: %{public}@", buf, 0x20u);
@@ -107,24 +107,24 @@
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleIncomingProtobuf:(id)a3 destinations:(id)a4 options:(id)a5
+- (void)handleIncomingProtobuf:(id)protobuf destinations:(id)destinations options:(id)options
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  protobufCopy = protobuf;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   [(WFRemoteExecutionSession *)self setState:200];
   v11 = [WFRemoteExecutionAceCommandRequest alloc];
-  v12 = [v8 data];
+  data = [protobufCopy data];
   v35 = 0;
-  v13 = [(WFRemoteExecutionAceCommandRequest *)v11 initWithData:v12 error:&v35];
+  v13 = [(WFRemoteExecutionAceCommandRequest *)v11 initWithData:data error:&v35];
   v14 = v35;
 
   if (v13)
   {
     v15 = MEMORY[0x1E69C76D8];
-    v16 = [(WFRemoteExecutionAceCommandRequest *)v13 aceCommandDictionary];
-    v17 = [v15 aceObjectWithDictionary:v16];
+    aceCommandDictionary = [(WFRemoteExecutionAceCommandRequest *)v13 aceCommandDictionary];
+    v17 = [v15 aceObjectWithDictionary:aceCommandDictionary];
 
     if (v17)
     {
@@ -134,8 +134,8 @@
       v30[3] = &unk_1E837F9B0;
       v30[4] = self;
       v31 = v13;
-      v32 = v9;
-      v33 = v10;
+      v32 = destinationsCopy;
+      v33 = optionsCopy;
       WFPerformACECommand(v17, 0, v30);
     }
 
@@ -150,9 +150,9 @@
       }
 
       [(WFRemoteExecutionSession *)self setState:1];
-      v27 = [(WFRemoteExecutionRequest *)v13 identifier];
-      v28 = [(WFRemoteExecutionSession *)self invalidAceCommandError];
-      [(WFRemoteExecutionIncomingAceCommandSession *)self sendResponseWithOriginatingRequestIdentifier:v27 aceCommandResponseDictionary:0 error:v28 destinations:v9 options:v10];
+      identifier = [(WFRemoteExecutionRequest *)v13 identifier];
+      invalidAceCommandError = [(WFRemoteExecutionSession *)self invalidAceCommandError];
+      [(WFRemoteExecutionIncomingAceCommandSession *)self sendResponseWithOriginatingRequestIdentifier:identifier aceCommandResponseDictionary:0 error:invalidAceCommandError destinations:destinationsCopy options:optionsCopy];
 
       [(WFRemoteExecutionSession *)self finish];
     }
@@ -173,9 +173,9 @@
       }
 
       [(WFRemoteExecutionSession *)self setState:2];
-      v21 = [v8 data];
+      data2 = [protobufCopy data];
       v34 = 0;
-      v22 = [WFRemoteExecutionRequest identifierFromData:v21 error:&v34];
+      v22 = [WFRemoteExecutionRequest identifierFromData:data2 error:&v34];
       v23 = v34;
 
       v24 = getWFRemoteExecutionLogObject();
@@ -189,7 +189,7 @@
           _os_log_impl(&dword_1CA256000, v25, OS_LOG_TYPE_DEFAULT, "%s Sending unsupported ace command request error back", buf, 0xCu);
         }
 
-        [(WFRemoteExecutionIncomingAceCommandSession *)self sendResponseWithOriginatingRequestIdentifier:v22 aceCommandResponseDictionary:0 error:v14 destinations:v9 options:v10];
+        [(WFRemoteExecutionIncomingAceCommandSession *)self sendResponseWithOriginatingRequestIdentifier:v22 aceCommandResponseDictionary:0 error:v14 destinations:destinationsCopy options:optionsCopy];
       }
 
       else

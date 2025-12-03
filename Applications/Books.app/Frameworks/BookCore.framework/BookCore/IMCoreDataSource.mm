@@ -1,38 +1,38 @@
 @interface IMCoreDataSource
 + (id)persistentStoreName;
-- (IMCoreDataSource)initWithPersistentStoreURL:(id)a3;
+- (IMCoreDataSource)initWithPersistentStoreURL:(id)l;
 - (id)bundleForManagedObjectModel;
-- (id)copyMaxSortValue:(id)a3 forEntityName:(id)a4;
-- (id)copyNextSortValue:(id)a3 forKey:(id)a4 forEntityName:(id)a5;
-- (id)generationValue:(id)a3;
-- (id)metadataObjectForKey:(id)a3;
+- (id)copyMaxSortValue:(id)value forEntityName:(id)name;
+- (id)copyNextSortValue:(id)value forKey:(id)key forEntityName:(id)name;
+- (id)generationValue:(id)value;
+- (id)metadataObjectForKey:(id)key;
 - (id)newManagedObjectContext;
-- (id)newManagedObjectContextWithClass:(Class)a3;
-- (id)newPrivateQueueManagedObjectContextWithClass:(Class)a3;
-- (void)_loadPersistentStoreAndRetryIfNeeded:(BOOL)a3;
+- (id)newManagedObjectContextWithClass:(Class)class;
+- (id)newPrivateQueueManagedObjectContextWithClass:(Class)class;
+- (void)_loadPersistentStoreAndRetryIfNeeded:(BOOL)needed;
 - (void)cacheMetadataDictionary;
-- (void)incrementGeneration:(id)a3;
+- (void)incrementGeneration:(id)generation;
 - (void)loadCoreData;
-- (void)loadCoreDataPersistentStoreInitializedHandler:(id)a3 migrationHandler:(id)a4;
+- (void)loadCoreDataPersistentStoreInitializedHandler:(id)handler migrationHandler:(id)migrationHandler;
 - (void)loadManagedObjectModel;
 - (void)loadPersistentStoreCoordinator;
-- (void)saveManagedObjectContext:(id)a3;
+- (void)saveManagedObjectContext:(id)context;
 - (void)saveMetaData;
-- (void)setMetadataObject:(id)a3 forKey:(id)a4;
+- (void)setMetadataObject:(id)object forKey:(id)key;
 @end
 
 @implementation IMCoreDataSource
 
-- (IMCoreDataSource)initWithPersistentStoreURL:(id)a3
+- (IMCoreDataSource)initWithPersistentStoreURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = IMCoreDataSource;
   v6 = [(IMCoreDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_persistentStoreURL, a3);
+    objc_storeStrong(&v6->_persistentStoreURL, l);
   }
 
   return v7;
@@ -41,26 +41,26 @@
 + (id)persistentStoreName
 {
   v2 = objc_opt_class();
-  v3 = [v2 managedObjectModelName];
-  v4 = [v2 persistentStoreVersion];
-  v5 = v3;
-  if ([v4 length])
+  managedObjectModelName = [v2 managedObjectModelName];
+  persistentStoreVersion = [v2 persistentStoreVersion];
+  v5 = managedObjectModelName;
+  if ([persistentStoreVersion length])
   {
-    v5 = [v3 stringByAppendingFormat:@"-%@", v4];
+    v5 = [managedObjectModelName stringByAppendingFormat:@"-%@", persistentStoreVersion];
   }
 
-  v6 = [v2 persistentStoreNameSeed];
-  if ([v6 length])
+  persistentStoreNameSeed = [v2 persistentStoreNameSeed];
+  if ([persistentStoreNameSeed length])
   {
-    v7 = [v5 stringByAppendingFormat:@"-%@", v6];
+    v7 = [v5 stringByAppendingFormat:@"-%@", persistentStoreNameSeed];
 
     v5 = v7;
   }
 
-  v8 = [v2 persistentStoreExtension];
-  if (v8)
+  persistentStoreExtension = [v2 persistentStoreExtension];
+  if (persistentStoreExtension)
   {
-    v9 = [v5 stringByAppendingPathExtension:v8];
+    v9 = [v5 stringByAppendingPathExtension:persistentStoreExtension];
 
     v5 = v9;
   }
@@ -78,11 +78,11 @@
   [(IMCoreDataSource *)self loadPersistentStore];
 }
 
-- (void)loadCoreDataPersistentStoreInitializedHandler:(id)a3 migrationHandler:(id)a4
+- (void)loadCoreDataPersistentStoreInitializedHandler:(id)handler migrationHandler:(id)migrationHandler
 {
-  v6 = a4;
-  [(IMCoreDataSource *)self setPersistentStoreInitializedHandler:a3];
-  [(IMCoreDataSource *)self setMigrationHandler:v6];
+  migrationHandlerCopy = migrationHandler;
+  [(IMCoreDataSource *)self setPersistentStoreInitializedHandler:handler];
+  [(IMCoreDataSource *)self setMigrationHandler:migrationHandlerCopy];
 
   [(IMCoreDataSource *)self loadManagedObjectModel];
   [(IMCoreDataSource *)self loadPersistentStoreCoordinator];
@@ -97,22 +97,22 @@
   return [(IMCoreDataSource *)self newManagedObjectContextWithClass:v3];
 }
 
-- (id)newPrivateQueueManagedObjectContextWithClass:(Class)a3
+- (id)newPrivateQueueManagedObjectContextWithClass:(Class)class
 {
-  v4 = [[a3 alloc] initWithConcurrencyType:1];
-  v5 = [(IMCoreDataSource *)self persistentStoreCoordinator];
-  [v4 setPersistentStoreCoordinator:v5];
+  v4 = [[class alloc] initWithConcurrencyType:1];
+  persistentStoreCoordinator = [(IMCoreDataSource *)self persistentStoreCoordinator];
+  [v4 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v4 setUndoManager:0];
   [v4 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   return v4;
 }
 
-- (id)newManagedObjectContextWithClass:(Class)a3
+- (id)newManagedObjectContextWithClass:(Class)class
 {
-  v4 = [[a3 alloc] initWithConcurrencyType:0];
-  v5 = [(IMCoreDataSource *)self persistentStoreCoordinator];
-  [v4 setPersistentStoreCoordinator:v5];
+  v4 = [[class alloc] initWithConcurrencyType:0];
+  persistentStoreCoordinator = [(IMCoreDataSource *)self persistentStoreCoordinator];
+  [v4 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v4 setUndoManager:0];
   [v4 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
@@ -123,22 +123,22 @@
 {
   if ([(IMCoreDataSource *)self metadataDictionaryDirty])
   {
-    v3 = [(IMCoreDataSource *)self metadataDictionary];
+    metadataDictionary = [(IMCoreDataSource *)self metadataDictionary];
 
-    if (v3)
+    if (metadataDictionary)
     {
       v11[0] = NSMigratePersistentStoresAutomaticallyOption;
       v11[1] = NSInferMappingModelAutomaticallyOption;
       v12[0] = &__kCFBooleanTrue;
       v12[1] = &__kCFBooleanTrue;
       v4 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
-      v5 = [(IMCoreDataSource *)self persistentStoreCoordinator];
-      v6 = [(IMCoreDataSource *)self persistentStore];
-      v7 = [v5 metadataForPersistentStore:v6];
+      persistentStoreCoordinator = [(IMCoreDataSource *)self persistentStoreCoordinator];
+      persistentStore = [(IMCoreDataSource *)self persistentStore];
+      v7 = [persistentStoreCoordinator metadataForPersistentStore:persistentStore];
       v8 = [v7 mutableCopy];
 
-      v9 = [(IMCoreDataSource *)self metadataDictionary];
-      v10 = [v9 copy];
+      metadataDictionary2 = [(IMCoreDataSource *)self metadataDictionary];
+      v10 = [metadataDictionary2 copy];
       [v8 setObject:v10 forKey:@"BKDatabase-Metadata"];
 
       [NSPersistentStoreCoordinator setMetadata:v8 forPersistentStoreOfType:NSSQLiteStoreType URL:self->_persistentStoreURL options:v4 error:0];
@@ -147,14 +147,14 @@
   }
 }
 
-- (void)saveManagedObjectContext:(id)a3
+- (void)saveManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(IMCoreDataSource *)self saveMetaData];
-  if ([v4 hasChanges])
+  if ([contextCopy hasChanges])
   {
     v9 = 0;
-    v5 = [v4 save:&v9];
+    v5 = [contextCopy save:&v9];
     v6 = v9;
     if ((v5 & 1) == 0)
     {
@@ -195,23 +195,23 @@
 
 - (void)loadManagedObjectModel
 {
-  v3 = [(IMCoreDataSource *)self managedObjectModel];
+  managedObjectModel = [(IMCoreDataSource *)self managedObjectModel];
 
-  if (!v3)
+  if (!managedObjectModel)
   {
-    v4 = [objc_opt_class() managedObjectModelName];
-    v5 = [(IMCoreDataSource *)self bundleForManagedObjectModel];
-    v6 = [v5 pathForResource:v4 ofType:@"momd"];
+    managedObjectModelName = [objc_opt_class() managedObjectModelName];
+    bundleForManagedObjectModel = [(IMCoreDataSource *)self bundleForManagedObjectModel];
+    v6 = [bundleForManagedObjectModel pathForResource:managedObjectModelName ofType:@"momd"];
     if (!v6)
     {
-      v23 = v5;
-      v24 = v4;
-      v7 = [v5 resourceURL];
+      v23 = bundleForManagedObjectModel;
+      v24 = managedObjectModelName;
+      resourceURL = [bundleForManagedObjectModel resourceURL];
       v8 = +[NSFileManager defaultManager];
       v30 = NSURLNameKey;
       v9 = [NSArray arrayWithObjects:&v30 count:1];
-      v22 = v7;
-      v10 = [v8 contentsOfDirectoryAtURL:v7 includingPropertiesForKeys:v9 options:1 error:0];
+      v22 = resourceURL;
+      v10 = [v8 contentsOfDirectoryAtURL:resourceURL includingPropertiesForKeys:v9 options:1 error:0];
 
       v11 = objc_alloc_init(NSMutableArray);
       v25 = 0u;
@@ -234,8 +234,8 @@
             }
 
             v17 = *(*(&v25 + 1) + 8 * i);
-            v18 = [v17 pathExtension];
-            v19 = [v18 hasPrefix:@"mom"];
+            pathExtension = [v17 pathExtension];
+            v19 = [pathExtension hasPrefix:@"mom"];
 
             if (v19)
             {
@@ -249,8 +249,8 @@
         while (v14);
       }
 
-      v5 = v23;
-      v4 = v24;
+      bundleForManagedObjectModel = v23;
+      managedObjectModelName = v24;
       v6 = 0;
     }
 
@@ -262,33 +262,33 @@
 
 - (void)loadPersistentStoreCoordinator
 {
-  v3 = [(IMCoreDataSource *)self persistentStoreCoordinator];
+  persistentStoreCoordinator = [(IMCoreDataSource *)self persistentStoreCoordinator];
 
-  if (!v3)
+  if (!persistentStoreCoordinator)
   {
     v4 = [NSPersistentStoreCoordinator alloc];
-    v5 = [(IMCoreDataSource *)self managedObjectModel];
-    v6 = [v4 initWithManagedObjectModel:v5];
+    managedObjectModel = [(IMCoreDataSource *)self managedObjectModel];
+    v6 = [v4 initWithManagedObjectModel:managedObjectModel];
 
     [(IMCoreDataSource *)self setPersistentStoreCoordinator:v6];
   }
 }
 
-- (void)_loadPersistentStoreAndRetryIfNeeded:(BOOL)a3
+- (void)_loadPersistentStoreAndRetryIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v44[0] = NSMigratePersistentStoresAutomaticallyOption;
   v44[1] = NSInferMappingModelAutomaticallyOption;
   v45[0] = &__kCFBooleanFalse;
   v45[1] = &__kCFBooleanTrue;
   v5 = [NSDictionary dictionaryWithObjects:v45 forKeys:v44 count:2];
-  v6 = [(IMCoreDataSource *)self persistentStoreURL];
+  persistentStoreURL = [(IMCoreDataSource *)self persistentStoreURL];
   v7 = NSSQLiteStoreType;
-  v8 = [(IMCoreDataSource *)self persistentStoreCoordinator];
+  persistentStoreCoordinator = [(IMCoreDataSource *)self persistentStoreCoordinator];
   v35 = 0;
-  v31 = v6;
+  v31 = persistentStoreURL;
   v32 = v7;
-  v9 = [v8 addPersistentStoreWithType:v7 configuration:0 URL:v6 options:v5 error:&v35];
+  v9 = [persistentStoreCoordinator addPersistentStoreWithType:v7 configuration:0 URL:persistentStoreURL options:v5 error:&v35];
   v10 = v35;
 
   if (v9)
@@ -298,22 +298,22 @@
     v13 = v10;
 LABEL_7:
     [(IMCoreDataSource *)self setPersistentStore:v11];
-    v20 = [(IMCoreDataSource *)self persistentStoreInitializedHandler];
-    v21 = v20;
-    if (v20)
+    persistentStoreInitializedHandler = [(IMCoreDataSource *)self persistentStoreInitializedHandler];
+    v21 = persistentStoreInitializedHandler;
+    if (persistentStoreInitializedHandler)
     {
-      (*(v20 + 16))(v20);
+      (*(persistentStoreInitializedHandler + 16))(persistentStoreInitializedHandler);
     }
 
     v16 = v31;
     v17 = v32;
     if (!v9)
     {
-      v22 = [(IMCoreDataSource *)self migrationHandler];
-      v23 = v22;
-      if (v22)
+      migrationHandler = [(IMCoreDataSource *)self migrationHandler];
+      v23 = migrationHandler;
+      if (migrationHandler)
       {
-        (*(v22 + 16))(v22);
+        (*(migrationHandler + 16))(migrationHandler);
       }
     }
 
@@ -323,7 +323,7 @@ LABEL_7:
     goto LABEL_14;
   }
 
-  v30 = v3;
+  v30 = neededCopy;
   if ([v10 code] == &loc_20BD4 || objc_msgSend(v10, "code") == &loc_20B84)
   {
     v42[0] = NSMigratePersistentStoresAutomaticallyOption;
@@ -332,12 +332,12 @@ LABEL_7:
     v43[1] = &__kCFBooleanTrue;
     v14 = [NSDictionary dictionaryWithObjects:v43 forKeys:v42 count:2];
 
-    v15 = [(IMCoreDataSource *)self persistentStoreCoordinator];
+    persistentStoreCoordinator2 = [(IMCoreDataSource *)self persistentStoreCoordinator];
     v34 = v10;
     v16 = v31;
     v17 = v32;
     v18 = v14;
-    v11 = [v15 addPersistentStoreWithType:v32 configuration:0 URL:v31 options:v14 error:&v34];
+    v11 = [persistentStoreCoordinator2 addPersistentStoreWithType:v32 configuration:0 URL:v31 options:v14 error:&v34];
     v19 = v34;
 
     if (v11)
@@ -383,9 +383,9 @@ LABEL_7:
 
   if (v30)
   {
-    v26 = [(IMCoreDataSource *)self persistentStoreCoordinator];
+    persistentStoreCoordinator3 = [(IMCoreDataSource *)self persistentStoreCoordinator];
     v33 = v10;
-    v27 = [v26 bkspi_destroyPersistentStoreAtURL:v16 withType:v17 error:&v33];
+    v27 = [persistentStoreCoordinator3 bkspi_destroyPersistentStoreAtURL:v16 withType:v17 error:&v33];
     v13 = v33;
 
     if (v27)
@@ -432,12 +432,12 @@ LABEL_7:
 LABEL_14:
 }
 
-- (id)copyMaxSortValue:(id)a3 forEntityName:(id)a4
+- (id)copyMaxSortValue:(id)value forEntityName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
+  nameCopy = name;
+  valueCopy = value;
   v7 = [NSPredicate predicateWithValue:1];
-  v8 = [v6 entity:v5 withPredicate:v7 sortBy:@"sortKey" ascending:0 fetchLimit:1];
+  v8 = [valueCopy entity:nameCopy withPredicate:v7 sortBy:@"sortKey" ascending:0 fetchLimit:1];
 
   if ([v8 count])
   {
@@ -453,87 +453,87 @@ LABEL_14:
   return v10;
 }
 
-- (id)copyNextSortValue:(id)a3 forKey:(id)a4 forEntityName:(id)a5
+- (id)copyNextSortValue:(id)value forKey:(id)key forEntityName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IMCoreDataSource *)self persistentStoreCoordinator];
-  v12 = [v11 persistentStores];
-  v13 = [v12 lastObject];
+  valueCopy = value;
+  keyCopy = key;
+  nameCopy = name;
+  persistentStoreCoordinator = [(IMCoreDataSource *)self persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  lastObject = [persistentStores lastObject];
 
-  if (v13)
+  if (lastObject)
   {
-    v14 = [(IMCoreDataSource *)self metadataObjectForKey:v9];
+    v14 = [(IMCoreDataSource *)self metadataObjectForKey:keyCopy];
     if (!v14)
     {
-      v15 = [(IMCoreDataSource *)self copyMaxSortValue:v8 forEntityName:v10];
+      v15 = [(IMCoreDataSource *)self copyMaxSortValue:valueCopy forEntityName:nameCopy];
       v16 = [NSNumber alloc];
-      v17 = [v15 longLongValue];
-      v14 = [v16 initWithLongLong:&v17[kIMCoreDataSourceSortOrderInitialGap]];
+      longLongValue = [v15 longLongValue];
+      v14 = [v16 initWithLongLong:&longLongValue[kIMCoreDataSourceSortOrderInitialGap]];
     }
 
     v18 = [NSNumber alloc];
-    v19 = [v14 longLongValue];
-    v20 = [v18 initWithLongLong:&v19[kIMCoreDataSourceSortOrderInitialGap]];
-    [(IMCoreDataSource *)self setMetadataObject:v20 forKey:v9];
+    longLongValue2 = [v14 longLongValue];
+    v20 = [v18 initWithLongLong:&longLongValue2[kIMCoreDataSourceSortOrderInitialGap]];
+    [(IMCoreDataSource *)self setMetadataObject:v20 forKey:keyCopy];
   }
 
   else
   {
-    v20 = [(IMCoreDataSource *)self copyMaxSortValue:v8 forEntityName:v10];
+    v20 = [(IMCoreDataSource *)self copyMaxSortValue:valueCopy forEntityName:nameCopy];
     v21 = [NSNumber alloc];
-    v22 = [v20 longLongValue];
-    v14 = [v21 initWithLongLong:&v22[kIMCoreDataSourceSortOrderInitialGap]];
+    longLongValue3 = [v20 longLongValue];
+    v14 = [v21 initWithLongLong:&longLongValue3[kIMCoreDataSourceSortOrderInitialGap]];
   }
 
   return v14;
 }
 
-- (void)setMetadataObject:(id)a3 forKey:(id)a4
+- (void)setMetadataObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(IMCoreDataSource *)v8 persistentStore];
-  if (v9)
+  objectCopy = object;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  persistentStore = [(IMCoreDataSource *)selfCopy persistentStore];
+  if (persistentStore)
   {
-    v10 = [(IMCoreDataSource *)v8 persistentStoreCoordinator];
+    persistentStoreCoordinator = [(IMCoreDataSource *)selfCopy persistentStoreCoordinator];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_3D1E4;
     v11[3] = &unk_2C89F8;
-    v11[4] = v8;
-    v12 = v6;
-    v13 = v7;
-    [v10 performBlockAndWait:v11];
+    v11[4] = selfCopy;
+    v12 = objectCopy;
+    v13 = keyCopy;
+    [persistentStoreCoordinator performBlockAndWait:v11];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)metadataObjectForKey:(id)a3
+- (id)metadataObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_3D3A0;
   v16 = sub_3D3B0;
   v17 = 0;
-  v5 = [(IMCoreDataSource *)self persistentStore];
-  if (v5)
+  persistentStore = [(IMCoreDataSource *)self persistentStore];
+  if (persistentStore)
   {
-    v6 = [(IMCoreDataSource *)self persistentStoreCoordinator];
+    persistentStoreCoordinator = [(IMCoreDataSource *)self persistentStoreCoordinator];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_3D3B8;
     v9[3] = &unk_2C95A0;
     v9[4] = self;
     v11 = &v12;
-    v10 = v4;
-    [v6 performBlockAndWait:v9];
+    v10 = keyCopy;
+    [persistentStoreCoordinator performBlockAndWait:v9];
   }
 
   v7 = v13[5];
@@ -545,13 +545,13 @@ LABEL_14:
 
 - (void)cacheMetadataDictionary
 {
-  v3 = [(IMCoreDataSource *)self metadataDictionary];
+  metadataDictionary = [(IMCoreDataSource *)self metadataDictionary];
 
-  if (!v3)
+  if (!metadataDictionary)
   {
-    v10 = [(IMCoreDataSource *)self persistentStore];
-    v4 = [(IMCoreDataSource *)self persistentStoreCoordinator];
-    v5 = [v4 metadataForPersistentStore:v10];
+    persistentStore = [(IMCoreDataSource *)self persistentStore];
+    persistentStoreCoordinator = [(IMCoreDataSource *)self persistentStoreCoordinator];
+    v5 = [persistentStoreCoordinator metadataForPersistentStore:persistentStore];
 
     v6 = [v5 objectForKey:@"BKDatabase-Metadata"];
     v7 = v6;
@@ -572,9 +572,9 @@ LABEL_14:
   }
 }
 
-- (id)generationValue:(id)a3
+- (id)generationValue:(id)value
 {
-  v3 = [(IMCoreDataSource *)self metadataObjectForKey:a3];
+  v3 = [(IMCoreDataSource *)self metadataObjectForKey:value];
   if (!v3)
   {
     v3 = [[NSNumber alloc] initWithUnsignedLongLong:0];
@@ -583,12 +583,12 @@ LABEL_14:
   return v3;
 }
 
-- (void)incrementGeneration:(id)a3
+- (void)incrementGeneration:(id)generation
 {
-  v4 = a3;
-  v6 = [(IMCoreDataSource *)self generationValue:v4];
+  generationCopy = generation;
+  v6 = [(IMCoreDataSource *)self generationValue:generationCopy];
   v5 = [[NSNumber alloc] initWithUnsignedLongLong:{objc_msgSend(v6, "unsignedLongLongValue") + 1}];
-  [(IMCoreDataSource *)self setGenerationValue:v5 forKey:v4];
+  [(IMCoreDataSource *)self setGenerationValue:v5 forKey:generationCopy];
 }
 
 @end

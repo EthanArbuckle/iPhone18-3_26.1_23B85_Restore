@@ -1,81 +1,81 @@
 @interface REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate
-- (BOOL)isEqual:(id)a3;
-- (REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate)initWithCoder:(id)a3;
-- (REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate)initWithListIDs:(id)a3 startDate:(id)a4 endDate:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate)initWithCoder:(id)coder;
+- (REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate)initWithListIDs:(id)ds startDate:(id)date endDate:(id)endDate;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate
 
-- (REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate)initWithListIDs:(id)a3 startDate:(id)a4 endDate:(id)a5
+- (REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate)initWithListIDs:(id)ds startDate:(id)date endDate:(id)endDate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dsCopy = ds;
+  dateCopy = date;
+  endDateCopy = endDate;
   v15.receiver = self;
   v15.super_class = REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate;
   v12 = [(REMStoreInvocationValueStorage *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_listIDs, a3);
-    objc_storeStrong(&v13->_startDate, a4);
-    objc_storeStrong(&v13->_endDate, a5);
+    objc_storeStrong(&v12->_listIDs, ds);
+    objc_storeStrong(&v13->_startDate, date);
+    objc_storeStrong(&v13->_endDate, endDate);
   }
 
   return v13;
 }
 
-- (REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate)initWithCoder:(id)a3
+- (REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"listIDs"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"listIDs"];
 
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
-  v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
 
   v11 = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self initWithListIDs:v8 startDate:v9 endDate:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self listIDs];
-  [v4 encodeObject:v5 forKey:@"listIDs"];
+  coderCopy = coder;
+  listIDs = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self listIDs];
+  [coderCopy encodeObject:listIDs forKey:@"listIDs"];
 
-  v6 = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self startDate];
-  [v4 encodeObject:v6 forKey:@"startDate"];
+  startDate = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self startDate];
+  [coderCopy encodeObject:startDate forKey:@"startDate"];
 
-  v7 = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self endDate];
-  [v4 encodeObject:v7 forKey:@"endDate"];
+  endDate = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self endDate];
+  [coderCopy encodeObject:endDate forKey:@"endDate"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  v5 = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self listIDs];
-  v6 = [v4 listIDs];
-  v7 = v6;
-  if (v5 == v6)
+  listIDs = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self listIDs];
+  listIDs2 = [equalCopy listIDs];
+  v7 = listIDs2;
+  if (listIDs == listIDs2)
   {
   }
 
   else
   {
-    v8 = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self listIDs];
-    v9 = [v4 listIDs];
-    v10 = [v8 isEqual:v9];
+    listIDs3 = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self listIDs];
+    listIDs4 = [equalCopy listIDs];
+    v10 = [listIDs3 isEqual:listIDs4];
 
     if (!v10)
     {
@@ -83,18 +83,18 @@
     }
   }
 
-  v11 = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self startDate];
-  v12 = [v4 startDate];
-  v13 = v12;
-  if (v11 == v12)
+  startDate = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self startDate];
+  startDate2 = [equalCopy startDate];
+  v13 = startDate2;
+  if (startDate == startDate2)
   {
   }
 
   else
   {
-    v14 = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self startDate];
-    v15 = [v4 startDate];
-    v16 = [v14 isEqual:v15];
+    startDate3 = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self startDate];
+    startDate4 = [equalCopy startDate];
+    v16 = [startDate3 isEqual:startDate4];
 
     if (!v16)
     {
@@ -104,18 +104,18 @@ LABEL_8:
     }
   }
 
-  v18 = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self endDate];
-  v19 = [v4 endDate];
-  if (v18 == v19)
+  endDate = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self endDate];
+  endDate2 = [equalCopy endDate];
+  if (endDate == endDate2)
   {
     v17 = 1;
   }
 
   else
   {
-    v20 = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self endDate];
-    v21 = [v4 endDate];
-    v17 = [v20 isEqual:v21];
+    endDate3 = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self endDate];
+    endDate4 = [equalCopy endDate];
+    v17 = [endDate3 isEqual:endDate4];
   }
 
 LABEL_14:
@@ -124,12 +124,12 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v3 = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self listIDs];
-  v4 = [v3 hash];
-  v5 = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self startDate];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self endDate];
-  v8 = [v7 hash];
+  listIDs = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self listIDs];
+  v4 = [listIDs hash];
+  startDate = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self startDate];
+  v6 = [startDate hash] ^ v4;
+  endDate = [(REMEventKitBridgingDataViewInvocation_fetchIncompleteRemindersWithDueDate *)self endDate];
+  v8 = [endDate hash];
 
   return v6 ^ v8;
 }

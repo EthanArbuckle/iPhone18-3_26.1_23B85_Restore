@@ -1,45 +1,45 @@
 @interface AXAttributedString
-+ (id)axAttributedStringWithString:(id)a3;
-- (AXAttributedString)initWithCFAttributedString:(__CFAttributedString *)a3;
-- (AXAttributedString)initWithString:(id)a3;
-- (AXAttributedString)initWithStringOrAttributedString:(id)a3;
-- (BOOL)hasAttribute:(id)a3;
++ (id)axAttributedStringWithString:(id)string;
+- (AXAttributedString)initWithCFAttributedString:(__CFAttributedString *)string;
+- (AXAttributedString)initWithString:(id)string;
+- (AXAttributedString)initWithStringOrAttributedString:(id)string;
+- (BOOL)hasAttribute:(id)attribute;
 - (BOOL)hasAttributes;
-- (id)_axRecursivelyPropertyListCoercedRepresentationWithError:(id *)a3;
-- (id)_axRecursivelyReconstitutedRepresentationFromPropertyListWithError:(id *)a3;
-- (id)attribute:(id)a3 atIndex:(unint64_t)a4 effectiveRange:(_NSRange *)a5;
-- (id)attributeValueForKey:(id)a3;
-- (id)attributedSubstringFromRange:(_NSRange)a3;
-- (id)attributesAtIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)axAttributedStringByReplacingOccurrencesOfString:(id)a3 withString:(id)a4;
+- (id)_axRecursivelyPropertyListCoercedRepresentationWithError:(id *)error;
+- (id)_axRecursivelyReconstitutedRepresentationFromPropertyListWithError:(id *)error;
+- (id)attribute:(id)attribute atIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)attributeValueForKey:(id)key;
+- (id)attributedSubstringFromRange:(_NSRange)range;
+- (id)attributesAtIndex:(int64_t)index effectiveRange:(_NSRange *)range;
+- (id)axAttributedStringByReplacingOccurrencesOfString:(id)string withString:(id)withString;
 - (id)axAttributedStringDescription;
-- (id)axStringByReplacingCharactersInRange:(_NSRange)a3 withString:(id)a4;
+- (id)axStringByReplacingCharactersInRange:(_NSRange)range withString:(id)string;
 - (id)coalescedAttributes;
 - (id)coalescedFontAttributes;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)lowercaseString;
-- (id)stringByReplacingOccurrencesOfString:(id)a3 withString:(id)a4 options:(unint64_t)a5 range:(_NSRange)a6;
-- (id)stringByTrimmingCharactersInSet:(id)a3;
-- (id)substringFromIndex:(unint64_t)a3;
-- (id)substringWithRange:(_NSRange)a3;
+- (id)stringByReplacingOccurrencesOfString:(id)string withString:(id)withString options:(unint64_t)options range:(_NSRange)range;
+- (id)stringByTrimmingCharactersInSet:(id)set;
+- (id)substringFromIndex:(unint64_t)index;
+- (id)substringWithRange:(_NSRange)range;
 - (id)uppercaseString;
 - (unint64_t)length;
-- (unsigned)characterAtIndex:(unint64_t)a3;
-- (void)appendAXAttributedString:(id)a3;
-- (void)appendFormat:(id)a3;
-- (void)appendString:(id)a3;
-- (void)appendStringOrAXAttributedString:(id)a3;
-- (void)convertAttachmentsWithBlock:(id)a3;
+- (unsigned)characterAtIndex:(unint64_t)index;
+- (void)appendAXAttributedString:(id)string;
+- (void)appendFormat:(id)format;
+- (void)appendString:(id)string;
+- (void)appendStringOrAXAttributedString:(id)string;
+- (void)convertAttachmentsWithBlock:(id)block;
 - (void)dealloc;
-- (void)enumerateAttributesInRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)enumerateAttributesUsingBlock:(id)a3;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
-- (void)removeAttributes:(id)a3;
-- (void)replaceString:(__CFString *)a3;
-- (void)setAttribute:(id)a3 forKey:(id)a4;
-- (void)setAttribute:(id)a3 forKey:(id)a4 withRange:(_NSRange)a5;
-- (void)setAttributes:(id)a3;
-- (void)setAttributes:(id)a3 withRange:(_NSRange)a4;
+- (void)enumerateAttributesInRange:(_NSRange)range usingBlock:(id)block;
+- (void)enumerateAttributesUsingBlock:(id)block;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
+- (void)removeAttributes:(id)attributes;
+- (void)replaceString:(__CFString *)string;
+- (void)setAttribute:(id)attribute forKey:(id)key;
+- (void)setAttribute:(id)attribute forKey:(id)key withRange:(_NSRange)range;
+- (void)setAttributes:(id)attributes;
+- (void)setAttributes:(id)attributes withRange:(_NSRange)range;
 @end
 
 @implementation AXAttributedString
@@ -69,17 +69,17 @@
   [(AXAttributedString *)&v4 dealloc];
 }
 
-+ (id)axAttributedStringWithString:(id)a3
++ (id)axAttributedStringWithString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 copy];
+    v4 = [stringCopy copy];
   }
 
   else
   {
-    v4 = [objc_alloc(objc_opt_class()) initWithString:v3];
+    v4 = [objc_alloc(objc_opt_class()) initWithString:stringCopy];
   }
 
   v5 = v4;
@@ -87,12 +87,12 @@
   return v5;
 }
 
-- (AXAttributedString)initWithString:(id)a3
+- (AXAttributedString)initWithString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = v4;
+    v5 = stringCopy;
   }
 
   else
@@ -118,8 +118,8 @@
       v10 = CFAttributedStringCreate(*MEMORY[0x1E695E480], v5, 0);
       v8->_string = CFAttributedStringCreateMutableCopy(v9, 0, v10);
       CFRelease(v10);
-      v11 = [(__CFString *)v5 _accessibilityAttributedLocalizedString];
-      [v8 _setAccessibilityAttributedLocalizedString:v11];
+      _accessibilityAttributedLocalizedString = [(__CFString *)v5 _accessibilityAttributedLocalizedString];
+      [v8 _setAccessibilityAttributedLocalizedString:_accessibilityAttributedLocalizedString];
       v6 = v8;
     }
 
@@ -132,21 +132,21 @@
   return v6;
 }
 
-- (AXAttributedString)initWithCFAttributedString:(__CFAttributedString *)a3
+- (AXAttributedString)initWithCFAttributedString:(__CFAttributedString *)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = a3;
-    v5 = [(__CFAttributedString *)v4 string];
-    if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    stringCopy = string;
+    string = [(__CFAttributedString *)stringCopy string];
+    if (string && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v7 = AXRuntimeLogCommon();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
       {
-        [(AXAttributedString *)v5 initWithCFAttributedString:v7];
+        [(AXAttributedString *)string initWithCFAttributedString:v7];
       }
 
-      v8 = 0;
+      selfCopy = 0;
     }
 
     else
@@ -156,41 +156,41 @@
       self = [(AXAttributedString *)&v10 init];
       if (!self)
       {
-        v8 = 0;
+        selfCopy = 0;
         goto LABEL_12;
       }
 
-      self->_string = CFAttributedStringCreateMutableCopy(*MEMORY[0x1E695E480], 0, v4);
-      v6 = [self _accessibilityAttributedLocalizedString];
-      v7 = [v6 copy];
+      self->_string = CFAttributedStringCreateMutableCopy(*MEMORY[0x1E695E480], 0, stringCopy);
+      _accessibilityAttributedLocalizedString = [self _accessibilityAttributedLocalizedString];
+      v7 = [_accessibilityAttributedLocalizedString copy];
 
       [self _setAccessibilityAttributedLocalizedString:v7];
       self = self;
-      v8 = self;
+      selfCopy = self;
     }
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_13:
 
-  return v8;
+  return selfCopy;
 }
 
-- (AXAttributedString)initWithStringOrAttributedString:(id)a3
+- (AXAttributedString)initWithStringOrAttributedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(AXAttributedString *)self initWithCFAttributedString:v4];
+    v5 = [(AXAttributedString *)self initWithCFAttributedString:stringCopy];
   }
 
   else
   {
-    v5 = [(AXAttributedString *)self initWithString:v4];
+    v5 = [(AXAttributedString *)self initWithString:stringCopy];
   }
 
   v6 = v5;
@@ -199,24 +199,24 @@ LABEL_13:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[AXAttributedString allocWithZone:?], "initWithCFAttributedString:", [(AXAttributedString *)self cfAttributedString]];
-  v5 = [self _accessibilityAttributedLocalizedString];
-  if (v5)
+  _accessibilityAttributedLocalizedString = [self _accessibilityAttributedLocalizedString];
+  if (_accessibilityAttributedLocalizedString)
   {
-    v6 = -[AXAttributedString initWithCFAttributedString:]([AXAttributedString alloc], "initWithCFAttributedString:", [v5 cfAttributedString]);
+    v6 = -[AXAttributedString initWithCFAttributedString:]([AXAttributedString alloc], "initWithCFAttributedString:", [_accessibilityAttributedLocalizedString cfAttributedString]);
     [v4 _setAccessibilityAttributedLocalizedString:v6];
   }
 
   return v4;
 }
 
-- (id)stringByTrimmingCharactersInSet:(id)a3
+- (id)stringByTrimmingCharactersInSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = [(AXAttributedString *)self copy];
-  v6 = [(CFMutableAttributedStringRef *)v5 rangeOfCharacterFromSet:v4 options:0 range:0, [(CFMutableAttributedStringRef *)v5 length]];
+  v6 = [(CFMutableAttributedStringRef *)v5 rangeOfCharacterFromSet:setCopy options:0 range:0, [(CFMutableAttributedStringRef *)v5 length]];
   if (v7.location && !v6)
   {
     v7.length = v7.location;
@@ -224,7 +224,7 @@ LABEL_13:
     {
       v7.location = 0;
       CFAttributedStringReplaceString(v5[1], v7, &stru_1F3E63FB0);
-      v8 = [(CFMutableAttributedStringRef *)v5 rangeOfCharacterFromSet:v4 options:0 range:0, [(CFMutableAttributedStringRef *)v5 length]];
+      v8 = [(CFMutableAttributedStringRef *)v5 rangeOfCharacterFromSet:setCopy options:0 range:0, [(CFMutableAttributedStringRef *)v5 length]];
       if (!v7.location)
       {
         break;
@@ -238,7 +238,7 @@ LABEL_13:
 
   do
   {
-    v9 = [(CFMutableAttributedStringRef *)v5 rangeOfCharacterFromSet:v4 options:4 range:0, [(CFMutableAttributedStringRef *)v5 length]];
+    v9 = [(CFMutableAttributedStringRef *)v5 rangeOfCharacterFromSet:setCopy options:4 range:0, [(CFMutableAttributedStringRef *)v5 length]];
     if (!v10)
     {
       break;
@@ -261,9 +261,9 @@ LABEL_13:
   return v5;
 }
 
-- (void)convertAttachmentsWithBlock:(id)a3
+- (void)convertAttachmentsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v12 = 0;
   v13 = 0;
   v5 = [(AXAttributedString *)self length];
@@ -279,9 +279,9 @@ LABEL_13:
 
     v9 = [v7 objectForKey:UIAccessibilityTokenAttachment];
     v10 = v9;
-    if (v4 && v9)
+    if (blockCopy && v9)
     {
-      v11 = v4[2](v4, v9);
+      v11 = blockCopy[2](blockCopy, v9);
       [(AXAttributedString *)self setAttribute:v11 forKey:UIAccessibilityTokenAttachment withRange:v12, v13];
     }
 
@@ -297,51 +297,51 @@ LABEL_13:
 LABEL_10:
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v7 = CFAttributedStringGetString(self->_string);
-  [v7 getCharacters:a3 range:{location, length}];
+  [v7 getCharacters:characters range:{location, length}];
 }
 
-- (id)substringWithRange:(_NSRange)a3
+- (id)substringWithRange:(_NSRange)range
 {
-  v3 = [(__CFAttributedString *)self->_string attributedSubstringFromRange:a3.location, a3.length];
+  v3 = [(__CFAttributedString *)self->_string attributedSubstringFromRange:range.location, range.length];
   v4 = [[AXAttributedString alloc] initWithStringOrAttributedString:v3];
 
   return v4;
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
   v4 = CFAttributedStringGetString(self->_string);
-  LOWORD(a3) = [v4 characterAtIndex:a3];
+  LOWORD(index) = [v4 characterAtIndex:index];
 
-  return a3;
+  return index;
 }
 
-- (void)replaceString:(__CFString *)a3
+- (void)replaceString:(__CFString *)string
 {
-  if (a3)
+  if (string)
   {
     string = self->_string;
     v5.length = [(AXAttributedString *)self length];
     v5.location = 0;
 
-    CFAttributedStringReplaceString(string, v5, a3);
+    CFAttributedStringReplaceString(string, v5, string);
   }
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributesCopy = attributes;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [attributesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -352,42 +352,42 @@ LABEL_10:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attributesCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        v10 = [v4 objectForKey:v9];
+        v10 = [attributesCopy objectForKey:v9];
         [(AXAttributedString *)self setAttribute:v10 forKey:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [attributesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setAttribute:(id)a3 forKey:(id)a4
+- (void)setAttribute:(id)attribute forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  [(AXAttributedString *)self setAttribute:v7 forKey:v6 withRange:0, [(AXAttributedString *)self length]];
+  keyCopy = key;
+  attributeCopy = attribute;
+  [(AXAttributedString *)self setAttribute:attributeCopy forKey:keyCopy withRange:0, [(AXAttributedString *)self length]];
 }
 
-- (void)setAttribute:(id)a3 forKey:(id)a4 withRange:(_NSRange)a5
+- (void)setAttribute:(id)attribute forKey:(id)key withRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v14[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (v10 && location + length <= CFAttributedStringGetLength(self->_string))
+  attributeCopy = attribute;
+  keyCopy = key;
+  if (keyCopy && location + length <= CFAttributedStringGetLength(self->_string))
   {
     string = self->_string;
-    if (v9)
+    if (attributeCopy)
     {
-      v13 = v10;
-      v14[0] = v9;
+      v13 = keyCopy;
+      v14[0] = attributeCopy;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
       v15.location = location;
       v15.length = length;
@@ -398,21 +398,21 @@ LABEL_10:
     {
       v16.location = location;
       v16.length = length;
-      CFAttributedStringRemoveAttribute(string, v16, v10);
+      CFAttributedStringRemoveAttribute(string, v16, keyCopy);
     }
   }
 }
 
-- (void)removeAttributes:(id)a3
+- (void)removeAttributes:(id)attributes
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributesCopy = attributes;
   CFAttributedStringBeginEditing(self->_string);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4;
+  v5 = attributesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -443,11 +443,11 @@ LABEL_10:
   CFAttributedStringEndEditing(self->_string);
 }
 
-- (void)setAttributes:(id)a3 withRange:(_NSRange)a4
+- (void)setAttributes:(id)attributes withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  replacement = a3;
+  length = range.length;
+  location = range.location;
+  replacement = attributes;
   if (location + length <= CFAttributedStringGetLength(self->_string))
   {
     if (length >= 1)
@@ -464,47 +464,47 @@ LABEL_10:
   }
 }
 
-- (id)axAttributedStringByReplacingOccurrencesOfString:(id)a3 withString:(id)a4
+- (id)axAttributedStringByReplacingOccurrencesOfString:(id)string withString:(id)withString
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AXAttributedString *)self stringByReplacingOccurrencesOfString:v7 withString:v6 options:0 range:0, [(AXAttributedString *)self length]];
+  withStringCopy = withString;
+  stringCopy = string;
+  v8 = [(AXAttributedString *)self stringByReplacingOccurrencesOfString:stringCopy withString:withStringCopy options:0 range:0, [(AXAttributedString *)self length]];
 
   return v8;
 }
 
-- (id)axStringByReplacingCharactersInRange:(_NSRange)a3 withString:(id)a4
+- (id)axStringByReplacingCharactersInRange:(_NSRange)range withString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v8 = [(AXAttributedString *)self copy];
   v11.location = location;
   v11.length = length;
   CFAttributedStringSetAttributes(v8[1], v11, MEMORY[0x1E695E0F8], 1u);
   v12.location = location;
   v12.length = length;
-  CFAttributedStringReplaceString(v8[1], v12, v7);
+  CFAttributedStringReplaceString(v8[1], v12, stringCopy);
 
   return v8;
 }
 
-- (id)stringByReplacingOccurrencesOfString:(id)a3 withString:(id)a4 options:(unint64_t)a5 range:(_NSRange)a6
+- (id)stringByReplacingOccurrencesOfString:(id)string withString:(id)withString options:(unint64_t)options range:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
+  length = range.length;
+  location = range.location;
   v77 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  stringCopy = string;
+  withStringCopy = withString;
   v63 = CFAttributedStringGetString(self->_string);
   v12 = [(AXAttributedString *)self length];
-  v13 = [MEMORY[0x1E695DF70] array];
-  v61 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __84__AXAttributedString_stringByReplacingOccurrencesOfString_withString_options_range___block_invoke;
   aBlock[3] = &unk_1E80D3F10;
-  v62 = self;
+  selfCopy = self;
   aBlock[4] = self;
   v14 = _Block_copy(aBlock);
   if (location)
@@ -512,7 +512,7 @@ LABEL_10:
     v15 = 0;
     do
     {
-      v16 = v14[2](v14, v13, v15);
+      v16 = v14[2](v14, array, v15);
       v15 = v16 + v17;
     }
 
@@ -525,7 +525,7 @@ LABEL_10:
     v19 = location + length;
     do
     {
-      v20 = v14[2](v14, v13, v19);
+      v20 = v14[2](v14, array, v19);
       v19 = v20 + v21;
     }
 
@@ -537,7 +537,7 @@ LABEL_10:
     v22 = location;
     do
     {
-      v23 = v14[2](v14, v61, v22);
+      v23 = v14[2](v14, array2, v22);
       v22 = v23 + v24;
     }
 
@@ -546,11 +546,11 @@ LABEL_10:
 
   v58 = v14;
   v25 = [v63 substringWithRange:{location, length, 8}];
-  v59 = v11;
-  v60 = v10;
-  v26 = [v25 stringByReplacingOccurrencesOfString:v10 withString:v11 options:a5 range:{0, objc_msgSend(v25, "length")}];
+  v59 = withStringCopy;
+  v60 = stringCopy;
+  v26 = [v25 stringByReplacingOccurrencesOfString:stringCopy withString:withStringCopy options:options range:{0, objc_msgSend(v25, "length")}];
 
-  MutableCopy = CFAttributedStringCreateMutableCopy(*MEMORY[0x1E695E480], 0, *(&v62->super.super.super.isa + v56));
+  MutableCopy = CFAttributedStringCreateMutableCopy(*MEMORY[0x1E695E480], 0, *(&selfCopy->super.super.super.isa + v56));
   v79.location = location;
   v79.length = length;
   v57 = v26;
@@ -565,7 +565,7 @@ LABEL_10:
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  obja = v13;
+  obja = array;
   v30 = [obja countByEnumeratingWithState:&v70 objects:v76 count:16];
   if (v30)
   {
@@ -582,11 +582,11 @@ LABEL_10:
 
         v34 = *(*(&v70 + 1) + 8 * i);
         v35 = [v34 objectAtIndex:{0, v57}];
-        v36 = [v35 rangeValue];
+        rangeValue = [v35 rangeValue];
         v38 = v37;
 
         v39 = [v34 objectAtIndex:1];
-        if (v36 >= v18)
+        if (rangeValue >= v18)
         {
           v40 = v29;
         }
@@ -596,7 +596,7 @@ LABEL_10:
           v40 = 0;
         }
 
-        [(AXAttributedString *)v28 setAttributes:v39 withRange:v40 + v36, v38];
+        [(AXAttributedString *)v28 setAttributes:v39 withRange:v40 + rangeValue, v38];
       }
 
       v31 = [obja countByEnumeratingWithState:&v70 objects:v76 count:16];
@@ -609,7 +609,7 @@ LABEL_10:
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v41 = v61;
+  v41 = array2;
   v42 = [v41 countByEnumeratingWithState:&v66 objects:v75 count:16];
   if (v42)
   {
@@ -627,13 +627,13 @@ LABEL_10:
 
         v47 = *(*(&v66 + 1) + 8 * j);
         v48 = [v47 objectAtIndex:{0, v57}];
-        v49 = [v48 rangeValue];
+        rangeValue2 = [v48 rangeValue];
         v51 = v50;
 
         v52 = [v47 objectAtIndex:1];
-        if (v49 + v51 <= v45)
+        if (rangeValue2 + v51 <= v45)
         {
-          [(AXAttributedString *)v28 setAttributes:v52 withRange:v49, v51];
+          [(AXAttributedString *)v28 setAttributes:v52 withRange:rangeValue2, v51];
         }
       }
 
@@ -643,8 +643,8 @@ LABEL_10:
     while (v43);
   }
 
-  v53 = [v62 _accessibilityAttributedLocalizedString];
-  v54 = [v53 copy];
+  _accessibilityAttributedLocalizedString = [selfCopy _accessibilityAttributedLocalizedString];
+  v54 = [_accessibilityAttributedLocalizedString copy];
 
   if (v54)
   {
@@ -672,59 +672,59 @@ uint64_t __84__AXAttributedString_stringByReplacingOccurrencesOfString_withStrin
   return v10;
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v4 = a3;
-  v5 = [[AXAttributedString alloc] initWithString:v4];
+  stringCopy = string;
+  v5 = [[AXAttributedString alloc] initWithString:stringCopy];
 
   [(AXAttributedString *)self appendAXAttributedString:v5];
 }
 
-- (void)appendFormat:(id)a3
+- (void)appendFormat:(id)format
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 locale:0 arguments:&v7];
+  formatCopy = format;
+  v6 = [[v4 alloc] initWithFormat:formatCopy locale:0 arguments:&v7];
 
   [(AXAttributedString *)self appendString:v6];
 }
 
-- (void)appendAXAttributedString:(id)a3
+- (void)appendAXAttributedString:(id)string
 {
-  if (a3)
+  if (string)
   {
     string = self->_string;
-    v4 = [a3 cfAttributedString];
+    cfAttributedString = [string cfAttributedString];
 
-    [(__CFAttributedString *)string appendAttributedString:v4];
+    [(__CFAttributedString *)string appendAttributedString:cfAttributedString];
   }
 }
 
-- (void)appendStringOrAXAttributedString:(id)a3
+- (void)appendStringOrAXAttributedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(AXAttributedString *)self appendAXAttributedString:v4];
+    [(AXAttributedString *)self appendAXAttributedString:stringCopy];
   }
 
   else
   {
-    [(AXAttributedString *)self appendString:v4];
+    [(AXAttributedString *)self appendString:stringCopy];
   }
 }
 
-- (id)attributesAtIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)attributesAtIndex:(int64_t)index effectiveRange:(_NSRange *)range
 {
   Length = CFAttributedStringGetLength(self->_string);
   if (Length)
   {
     v10 = xmmword_1BF7DE700;
-    Attributes = CFAttributedStringGetAttributes(self->_string, a3, &v10);
-    if (a4)
+    Attributes = CFAttributedStringGetAttributes(self->_string, index, &v10);
+    if (range)
     {
-      *a4 = v10;
+      *range = v10;
     }
 
     Length = Attributes;
@@ -733,16 +733,16 @@ uint64_t __84__AXAttributedString_stringByReplacingOccurrencesOfString_withStrin
   return Length;
 }
 
-- (id)attribute:(id)a3 atIndex:(unint64_t)a4 effectiveRange:(_NSRange *)a5
+- (id)attribute:(id)attribute atIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v8 = a3;
+  attributeCopy = attribute;
   if (CFAttributedStringGetLength(self->_string))
   {
     v12 = xmmword_1BF7DE700;
-    Attribute = CFAttributedStringGetAttribute(self->_string, a4, v8, &v12);
-    if (a5)
+    Attribute = CFAttributedStringGetAttribute(self->_string, index, attributeCopy, &v12);
+    if (range)
     {
-      *a5 = v12;
+      *range = v12;
     }
 
     v10 = Attribute;
@@ -756,9 +756,9 @@ uint64_t __84__AXAttributedString_stringByReplacingOccurrencesOfString_withStrin
   return v10;
 }
 
-- (id)attributeValueForKey:(id)a3
+- (id)attributeValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -769,7 +769,7 @@ uint64_t __84__AXAttributedString_stringByReplacingOccurrencesOfString_withStrin
   v8[1] = 3221225472;
   v8[2] = __43__AXAttributedString_attributeValueForKey___block_invoke;
   v8[3] = &unk_1E80D3F38;
-  v5 = v4;
+  v5 = keyCopy;
   v9 = v5;
   v10 = &v11;
   [(AXAttributedString *)self enumerateAttributesUsingBlock:v8];
@@ -792,15 +792,15 @@ uint64_t __43__AXAttributedString_attributeValueForKey___block_invoke(uint64_t a
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)enumerateAttributesUsingBlock:(id)a3
+- (void)enumerateAttributesUsingBlock:(id)block
 {
-  v4 = a3;
-  [(AXAttributedString *)self enumerateAttributesInRange:0 usingBlock:[(AXAttributedString *)self length], v4];
+  blockCopy = block;
+  [(AXAttributedString *)self enumerateAttributesInRange:0 usingBlock:[(AXAttributedString *)self length], blockCopy];
 }
 
-- (void)enumerateAttributesInRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateAttributesInRange:(_NSRange)range usingBlock:(id)block
 {
-  if (a3.location != 0x7FFFFFFFFFFFFFFFLL && a3.length != 0)
+  if (range.location != 0x7FFFFFFFFFFFFFFFLL && range.length != 0)
   {
     [__CFAttributedString enumerateAttributesInRange:"enumerateAttributesInRange:options:usingBlock:" options:? usingBlock:?];
   }
@@ -840,11 +840,11 @@ uint64_t __35__AXAttributedString_hasAttributes__block_invoke(uint64_t a1, void 
   v3 = [(AXAttributedString *)self copy];
   v4 = v3[1];
   v5 = [(AXAttributedString *)self length];
-  v6 = [(AXAttributedString *)self string];
-  v7 = [v6 lowercaseString];
+  string = [(AXAttributedString *)self string];
+  lowercaseString = [string lowercaseString];
   v10.location = 0;
   v10.length = v5;
-  CFAttributedStringReplaceString(v4, v10, v7);
+  CFAttributedStringReplaceString(v4, v10, lowercaseString);
 
   return v3;
 }
@@ -854,19 +854,19 @@ uint64_t __35__AXAttributedString_hasAttributes__block_invoke(uint64_t a1, void 
   v3 = [(AXAttributedString *)self copy];
   v4 = v3[1];
   v5 = [(AXAttributedString *)self length];
-  v6 = [(AXAttributedString *)self string];
-  v7 = [v6 uppercaseString];
+  string = [(AXAttributedString *)self string];
+  uppercaseString = [string uppercaseString];
   v10.location = 0;
   v10.length = v5;
-  CFAttributedStringReplaceString(v4, v10, v7);
+  CFAttributedStringReplaceString(v4, v10, uppercaseString);
 
   return v3;
 }
 
-- (id)attributedSubstringFromRange:(_NSRange)a3
+- (id)attributedSubstringFromRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   MutableCopy = CFAttributedStringCreateMutableCopy(0, 0, self->_string);
   v7 = CFAttributedStringCreate(0, &stru_1F3E63FB0, 0);
   v8 = v7;
@@ -986,7 +986,7 @@ void __41__AXAttributedString_coalescedAttributes__block_invoke(uint64_t a1, voi
   v22 = 0;
   v23 = 0;
   v16 = [(AXAttributedString *)self length];
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = 0;
   do
   {
@@ -1025,7 +1025,7 @@ void __41__AXAttributedString_coalescedAttributes__block_invoke(uint64_t a1, voi
         if (objc_opt_isKindOfClass())
         {
           v11 = [v5 objectForKey:v10];
-          v12 = [v2 objectForKey:v10];
+          v12 = [dictionary objectForKey:v10];
           if (!v12)
           {
             if (([v10 isEqualToString:UIAccessibilityTokenBold] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", UIAccessibilityTokenItalic) & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", UIAccessibilityTokenUnderline) & 1) != 0 || objc_msgSend(v10, "isEqualToString:", UIAccessibilityTokenMisspelled))
@@ -1039,7 +1039,7 @@ void __41__AXAttributedString_coalescedAttributes__block_invoke(uint64_t a1, voi
             else if (([v10 isEqualToString:UIAccessibilityTokenFontSize] & 1) == 0 && !objc_msgSend(v10, "isEqualToString:", UIAccessibilityTokenBlockquoteLevel) || (objc_msgSend(v11, "floatValue"), v13 > 0.01))
             {
 LABEL_15:
-              [v2 setObject:v11 forKey:v10];
+              [dictionary setObject:v11 forKey:v10];
             }
           }
         }
@@ -1061,12 +1061,12 @@ LABEL_24:
 
   while (v22 != 0x7FFFFFFFFFFFFFFFLL && v22 < v16);
 
-  return v2;
+  return dictionary;
 }
 
-- (BOOL)hasAttribute:(id)a3
+- (BOOL)hasAttribute:(id)attribute
 {
-  v4 = a3;
+  attributeCopy = attribute;
   v12 = 0;
   v13 = 0;
   v5 = [(AXAttributedString *)self length];
@@ -1081,7 +1081,7 @@ LABEL_24:
       break;
     }
 
-    v10 = [v7 objectForKey:v4];
+    v10 = [v7 objectForKey:attributeCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1112,38 +1112,38 @@ LABEL_12:
   return v9;
 }
 
-- (id)substringFromIndex:(unint64_t)a3
+- (id)substringFromIndex:(unint64_t)index
 {
   v18.receiver = self;
   v18.super_class = AXAttributedString;
   v5 = [(AXAttributedString *)&v18 substringFromIndex:?];
   v6 = [AXAttributedString axAttributedStringWithString:v5];
   v7 = [(AXAttributedString *)self length];
-  if (v7 > a3)
+  if (v7 > index)
   {
     v8 = v7;
-    v16 = a3;
+    indexCopy = index;
     v17 = 0;
-    v9 = a3;
+    indexCopy2 = index;
     while (1)
     {
-      v10 = [(AXAttributedString *)self attributesAtIndex:v9 effectiveRange:&v16];
+      v10 = [(AXAttributedString *)self attributesAtIndex:indexCopy2 effectiveRange:&indexCopy];
       v11 = v10;
-      if (v16 == 0x7FFFFFFFFFFFFFFFLL)
+      if (indexCopy == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
       }
 
-      v12 = a3 - v16;
-      if (a3 < v16)
+      v12 = index - indexCopy;
+      if (index < indexCopy)
       {
         v12 = 0;
       }
 
       v13 = v17 - v12;
-      if (v16 >= a3)
+      if (indexCopy >= index)
       {
-        v14 = v16 - a3;
+        v14 = indexCopy - index;
       }
 
       else
@@ -1156,10 +1156,10 @@ LABEL_12:
         [v6 setAttributes:v11 withRange:{v14, v13}];
       }
 
-      v16 += v17;
+      indexCopy += v17;
 
-      v9 = v16;
-      if (v16 == 0x7FFFFFFFFFFFFFFFLL || v16 >= v8)
+      indexCopy2 = indexCopy;
+      if (indexCopy == 0x7FFFFFFFFFFFFFFFLL || indexCopy >= v8)
       {
         goto LABEL_15;
       }
@@ -1173,24 +1173,24 @@ LABEL_15:
 
 - (id)axAttributedStringDescription
 {
-  v2 = [(AXAttributedString *)self cfAttributedString];
+  cfAttributedString = [(AXAttributedString *)self cfAttributedString];
 
-  return [(__CFAttributedString *)v2 description];
+  return [(__CFAttributedString *)cfAttributedString description];
 }
 
-- (id)_axRecursivelyPropertyListCoercedRepresentationWithError:(id *)a3
+- (id)_axRecursivelyPropertyListCoercedRepresentationWithError:(id *)error
 {
-  v4 = [(AXAttributedString *)self attributedString];
-  v5 = [v4 _axRecursivelyPropertyListCoercedRepresentationWithError:a3];
+  attributedString = [(AXAttributedString *)self attributedString];
+  v5 = [attributedString _axRecursivelyPropertyListCoercedRepresentationWithError:error];
 
   return v5;
 }
 
-- (id)_axRecursivelyReconstitutedRepresentationFromPropertyListWithError:(id *)a3
+- (id)_axRecursivelyReconstitutedRepresentationFromPropertyListWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AXSerialize3ErrorDomain" code:1 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"AXSerialize3ErrorDomain" code:1 userInfo:0];
   }
 
   return 0;

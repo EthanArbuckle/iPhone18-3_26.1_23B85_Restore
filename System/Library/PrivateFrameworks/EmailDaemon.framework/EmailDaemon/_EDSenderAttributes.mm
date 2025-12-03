@@ -1,5 +1,5 @@
 @interface _EDSenderAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)cachedSelf;
 - (unint64_t)hash;
@@ -35,22 +35,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [(_EDSenderAttributes *)self isVIP];
-  v4 = [(_EDSenderAttributes *)self isContact];
+  isVIP = [(_EDSenderAttributes *)self isVIP];
+  isContact = [(_EDSenderAttributes *)self isContact];
   v5 = 5859909;
-  if (v3)
+  if (isVIP)
   {
     v5 = 5859942;
   }
 
-  v6 = 33 * (v5 + v4) + [(_EDSenderAttributes *)self isCoreRecent];
+  v6 = 33 * (v5 + isContact) + [(_EDSenderAttributes *)self isCoreRecent];
   return 33 * v6 + [(_EDSenderAttributes *)self isPrimarySender];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v9) = 1;
   }
@@ -60,12 +60,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(_EDSenderAttributes *)self isVIP];
-      if (v6 == [(_EDSenderAttributes *)v5 isVIP]&& (v7 = [(_EDSenderAttributes *)self isContact], v7 == [(_EDSenderAttributes *)v5 isContact]) && (v8 = [(_EDSenderAttributes *)self isCoreRecent], v8 == [(_EDSenderAttributes *)v5 isCoreRecent]))
+      v5 = equalCopy;
+      isVIP = [(_EDSenderAttributes *)self isVIP];
+      if (isVIP == [(_EDSenderAttributes *)v5 isVIP]&& (v7 = [(_EDSenderAttributes *)self isContact], v7 == [(_EDSenderAttributes *)v5 isContact]) && (v8 = [(_EDSenderAttributes *)self isCoreRecent], v8 == [(_EDSenderAttributes *)v5 isCoreRecent]))
       {
-        v11 = [(_EDSenderAttributes *)self isPrimarySender];
-        v9 = v11 ^ [(_EDSenderAttributes *)v5 isPrimarySender]^ 1;
+        isPrimarySender = [(_EDSenderAttributes *)self isPrimarySender];
+        v9 = isPrimarySender ^ [(_EDSenderAttributes *)v5 isPrimarySender]^ 1;
       }
 
       else

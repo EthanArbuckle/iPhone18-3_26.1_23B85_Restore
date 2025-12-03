@@ -1,16 +1,16 @@
 @interface UIColor
-+ (double)tui_colorComponentFrom:(id)a3 start:(unint64_t)a4 length:(unint64_t)a5;
-+ (id)tui_colorWithHexString:(id)a3;
++ (double)tui_colorComponentFrom:(id)from start:(unint64_t)start length:(unint64_t)length;
++ (id)tui_colorWithHexString:(id)string;
 @end
 
 @implementation UIColor
 
-+ (id)tui_colorWithHexString:(id)a3
++ (id)tui_colorWithHexString:(id)string
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:@"#" withString:&stru_264550];
-  v5 = [v4 uppercaseString];
+  v4 = [string stringByReplacingOccurrencesOfString:@"#" withString:&stru_264550];
+  uppercaseString = [v4 uppercaseString];
 
-  v6 = [v5 length];
+  v6 = [uppercaseString length];
   v7 = 0;
   if (v6 > 5)
   {
@@ -21,29 +21,29 @@
         goto LABEL_13;
       }
 
-      [a1 tui_colorComponentFrom:v5 start:0 length:2];
+      [self tui_colorComponentFrom:uppercaseString start:0 length:2];
       v9 = v18;
-      [a1 tui_colorComponentFrom:v5 start:2 length:2];
+      [self tui_colorComponentFrom:uppercaseString start:2 length:2];
       v11 = v19;
-      [a1 tui_colorComponentFrom:v5 start:4 length:2];
+      [self tui_colorComponentFrom:uppercaseString start:4 length:2];
       v13 = v20;
-      v14 = a1;
-      v15 = v5;
+      selfCopy4 = self;
+      v15 = uppercaseString;
       v16 = 6;
       v17 = 2;
       goto LABEL_8;
     }
 
-    [a1 tui_colorComponentFrom:v5 start:0 length:2];
+    [self tui_colorComponentFrom:uppercaseString start:0 length:2];
     v9 = v29;
-    [a1 tui_colorComponentFrom:v5 start:2 length:2];
+    [self tui_colorComponentFrom:uppercaseString start:2 length:2];
     v11 = v30;
-    v25 = a1;
-    v26 = v5;
+    selfCopy3 = self;
+    v26 = uppercaseString;
     v27 = 4;
     v28 = 2;
 LABEL_11:
-    [v25 tui_colorComponentFrom:v26 start:v27 length:v28];
+    [selfCopy3 tui_colorComponentFrom:v26 start:v27 length:v28];
     v13 = v31;
     v22 = 1.0;
     goto LABEL_12;
@@ -51,12 +51,12 @@ LABEL_11:
 
   if (v6 == (&dword_0 + 3))
   {
-    [a1 tui_colorComponentFrom:v5 start:0 length:1];
+    [self tui_colorComponentFrom:uppercaseString start:0 length:1];
     v9 = v23;
-    [a1 tui_colorComponentFrom:v5 start:1 length:1];
+    [self tui_colorComponentFrom:uppercaseString start:1 length:1];
     v11 = v24;
-    v25 = a1;
-    v26 = v5;
+    selfCopy3 = self;
+    v26 = uppercaseString;
     v27 = 2;
     v28 = 1;
     goto LABEL_11;
@@ -67,18 +67,18 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  [a1 tui_colorComponentFrom:v5 start:0 length:1];
+  [self tui_colorComponentFrom:uppercaseString start:0 length:1];
   v9 = v8;
-  [a1 tui_colorComponentFrom:v5 start:1 length:1];
+  [self tui_colorComponentFrom:uppercaseString start:1 length:1];
   v11 = v10;
-  [a1 tui_colorComponentFrom:v5 start:2 length:1];
+  [self tui_colorComponentFrom:uppercaseString start:2 length:1];
   v13 = v12;
-  v14 = a1;
-  v15 = v5;
+  selfCopy4 = self;
+  v15 = uppercaseString;
   v16 = 3;
   v17 = 1;
 LABEL_8:
-  [v14 tui_colorComponentFrom:v15 start:v16 length:v17];
+  [selfCopy4 tui_colorComponentFrom:v15 start:v16 length:v17];
   v22 = v21;
 LABEL_12:
   v7 = [UIColor colorWithRed:v9 green:v11 blue:v13 alpha:v22];
@@ -87,11 +87,11 @@ LABEL_13:
   return v7;
 }
 
-+ (double)tui_colorComponentFrom:(id)a3 start:(unint64_t)a4 length:(unint64_t)a5
++ (double)tui_colorComponentFrom:(id)from start:(unint64_t)start length:(unint64_t)length
 {
-  v6 = [a3 substringWithRange:{a4, a5}];
+  v6 = [from substringWithRange:{start, length}];
   v7 = v6;
-  if (a5 == 2)
+  if (length == 2)
   {
     v8 = v6;
     v9 = 255.0;

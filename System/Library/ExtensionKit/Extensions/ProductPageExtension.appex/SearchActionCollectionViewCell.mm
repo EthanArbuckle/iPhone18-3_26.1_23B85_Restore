@@ -1,12 +1,12 @@
 @interface SearchActionCollectionViewCell
-- (_TtC20ProductPageExtension30SearchActionCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension30SearchActionCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation SearchActionCollectionViewCell
 
-- (_TtC20ProductPageExtension30SearchActionCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension30SearchActionCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension30SearchActionCollectionViewCell_itemLayoutContext;
   v5 = sub_10076341C();

@@ -1,14 +1,14 @@
 @interface SXConditionalHints
-- (int64_t)ternaryValueForJSONValue:(id)a3 type:(int)a4;
+- (int64_t)ternaryValueForJSONValue:(id)value type:(int)type;
 @end
 
 @implementation SXConditionalHints
 
-- (int64_t)ternaryValueForJSONValue:(id)a3 type:(int)a4
+- (int64_t)ternaryValueForJSONValue:(id)value type:(int)type
 {
-  if (a4 == 2)
+  if (type == 2)
   {
-    return [a3 BOOLValue];
+    return [value BOOLValue];
   }
 
   else

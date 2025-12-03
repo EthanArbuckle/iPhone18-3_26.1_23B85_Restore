@@ -1,32 +1,32 @@
 @interface TSCEFunction_BESSELY
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_BESSELY
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
+  v8 = **arguments;
   v69 = 0;
-  v10 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v9, a3, a4, 0, &v69);
+  v10 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v9, context, spec, 0, &v69);
   v11 = v69;
   if (v11)
   {
     v15 = v11;
-    v16 = objc_msgSend_raiseErrorOrConvert_(a3, v12, v11, v13, v14);
+    v16 = objc_msgSend_raiseErrorOrConvert_(context, v12, v11, v13, v14);
   }
 
   else
   {
-    v17 = *(*a5 + 8);
+    v17 = *(*arguments + 8);
     v68 = 0;
-    v19 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v17, v18, a3, a4, 1, &v68);
+    v19 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v17, v18, context, spec, 1, &v68);
     v15 = v68;
     v24 = objc_msgSend_trunc(v19, v20, v21, v22, v23);
 
     if (v15)
     {
-      v16 = objc_msgSend_raiseErrorOrConvert_(a3, v25, v15, v27, v28);
+      v16 = objc_msgSend_raiseErrorOrConvert_(context, v25, v15, v27, v28);
     }
 
     else
@@ -36,9 +36,9 @@
       TSUDecimal::doubleValue(&v63);
       if (v34 < -2147483650.0 || v34 > 2147483650.0)
       {
-        v46 = objc_msgSend_functionName(a4, v30, v31, v32, v33);
+        v46 = objc_msgSend_functionName(spec, v30, v31, v32, v33);
         v48 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_upperBound_upperBoundInclusive_(TSCEError, v47, 2, v46, 1, 1, -2147483650.0, 2147483650.0);
-        v16 = objc_msgSend_raiseErrorOrConvert_(a3, v49, v48, v50, v51);
+        v16 = objc_msgSend_raiseErrorOrConvert_(context, v49, v48, v50, v51);
       }
 
       else
@@ -56,7 +56,7 @@
         v62 = &v63;
         v60 = v10;
         v61 = v24;
-        objc_msgSend_runBlockUnlessAborted_(a3, v35, v59, v36, v37);
+        objc_msgSend_runBlockUnlessAborted_(context, v35, v59, v36, v37);
         v42 = *(v63._decimal.w[1] + 40);
         if (v42)
         {

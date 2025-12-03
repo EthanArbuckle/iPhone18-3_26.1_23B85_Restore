@@ -1,24 +1,24 @@
 @interface MFSMTPResponse
-- (MFSMTPResponse)initWithStatus:(int)a3;
+- (MFSMTPResponse)initWithStatus:(int)status;
 - (id)description;
-- (id)errorMessageWithAddress:(id)a3 defaultMessage:(id)a4;
+- (id)errorMessageWithAddress:(id)address defaultMessage:(id)message;
 - (int)failureReason;
 - (void)_updateEnhancedStatusCodesFromLastResponse;
 - (void)dealloc;
-- (void)setLastResponseLine:(id)a3;
-- (void)setStatus:(int)a3;
+- (void)setLastResponseLine:(id)line;
+- (void)setStatus:(int)status;
 @end
 
 @implementation MFSMTPResponse
 
-- (MFSMTPResponse)initWithStatus:(int)a3
+- (MFSMTPResponse)initWithStatus:(int)status
 {
   v5.receiver = self;
   v5.super_class = MFSMTPResponse;
   result = [(MFSMTPResponse *)&v5 init];
   if (result)
   {
-    result->_status = a3;
+    result->_status = status;
     *(result + 11) &= 0xC00Fu;
     *(result + 21) &= 0xF003u;
     *(result + 10) &= 0xFC00u;
@@ -27,11 +27,11 @@
   return result;
 }
 
-- (void)setStatus:(int)a3
+- (void)setStatus:(int)status
 {
-  if (self->_status != a3)
+  if (self->_status != status)
   {
-    self->_status = a3;
+    self->_status = status;
     *(self + 11) &= 0xC00Fu;
     *(self + 21) &= 0xF003u;
     *(self + 10) &= 0xFC00u;
@@ -53,13 +53,13 @@
   {
 
     self->_statusString = 0;
-    v5 = [self->_lastResponseLine bytes];
+    bytes = [self->_lastResponseLine bytes];
     v6 = [self->_lastResponseLine length];
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __60__MFSMTPResponse__updateEnhancedStatusCodesFromLastResponse__block_invoke;
     v16 = &unk_2798B6FC8;
-    v17 = self;
+    selfCopy = self;
     v18 = a2;
     if (_updateEnhancedStatusCodesFromLastResponse_once != -1)
     {
@@ -67,14 +67,14 @@
     }
 
     v7 = objc_alloc(MEMORY[0x277CCACA8]);
-    v8 = [v7 initWithBytesNoCopy:v5 length:v6 encoding:1 freeWhenDone:{0, v13, v14, v15, v16, v17, v18}];
+    v8 = [v7 initWithBytesNoCopy:bytes length:v6 encoding:1 freeWhenDone:{0, v13, v14, v15, v16, selfCopy, v18}];
     v9 = [_updateEnhancedStatusCodesFromLastResponse__responseEnhancedStatusCodesRegex firstMatchInString:v8 options:0 range:{0, v6}];
     if (v9)
     {
       v10 = v9;
-      *(self + 10) = *(self + 10) & 0xFC00 | strtoul((v5 + [v9 rangeAtIndex:1]), 0, 10) & 0x3FF;
-      *(self + 21) = (4 * (strtoul((v5 + [v10 rangeAtIndex:2]), 0, 10) & 0x3FF)) | *(self + 21) & 0xF003;
-      *(self + 11) = (16 * (strtoul((v5 + [v10 rangeAtIndex:3]), 0, 10) & 0x3FF)) | *(self + 11) & 0xC00F;
+      *(self + 10) = *(self + 10) & 0xFC00 | strtoul((bytes + [v9 rangeAtIndex:1]), 0, 10) & 0x3FF;
+      *(self + 21) = (4 * (strtoul((bytes + [v10 rangeAtIndex:2]), 0, 10) & 0x3FF)) | *(self + 21) & 0xF003;
+      *(self + 11) = (16 * (strtoul((bytes + [v10 rangeAtIndex:3]), 0, 10) & 0x3FF)) | *(self + 11) & 0xC00F;
       v11 = [v10 rangeAtIndex:5];
       if (v11 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -110,13 +110,13 @@ uint64_t __60__MFSMTPResponse__updateEnhancedStatusCodesFromLastResponse__block_
   return result;
 }
 
-- (void)setLastResponseLine:(id)a3
+- (void)setLastResponseLine:(id)line
 {
   lastResponseLine = self->_lastResponseLine;
-  if (lastResponseLine != a3)
+  if (lastResponseLine != line)
   {
 
-    self->_lastResponseLine = a3;
+    self->_lastResponseLine = line;
 
     [(MFSMTPResponse *)self _updateEnhancedStatusCodesFromLastResponse];
   }
@@ -168,12 +168,12 @@ LABEL_17:
   return v7;
 }
 
-- (id)errorMessageWithAddress:(id)a3 defaultMessage:(id)a4
+- (id)errorMessageWithAddress:(id)address defaultMessage:(id)message
 {
-  v6 = [(MFSMTPResponse *)self failureReason];
-  if (v6 > 2)
+  failureReason = [(MFSMTPResponse *)self failureReason];
+  if (failureReason > 2)
   {
-    switch(v6)
+    switch(failureReason)
     {
       case 3:
         v7 = @"MF_SMTP_SENDING_LIMIT_EXCEEDED";
@@ -193,7 +193,7 @@ LABEL_17:
 
   else
   {
-    switch(v6)
+    switch(failureReason)
     {
       case 0:
         v7 = @"MF_SMTP_RECIPIENT_UNKNOWN";
@@ -209,19 +209,19 @@ LABEL_17:
 LABEL_13:
         v9 = @"Delayed";
 LABEL_14:
-        a4 = MFLookupLocalizedString(v7, v8, v9);
+        message = MFLookupLocalizedString(v7, v8, v9);
         break;
     }
   }
 
-  if (a3 && a4)
+  if (address && message)
   {
-    return [MEMORY[0x277CCACA8] stringWithFormat:a4, a3];
+    return [MEMORY[0x277CCACA8] stringWithFormat:message, address];
   }
 
   else
   {
-    return a4;
+    return message;
   }
 }
 

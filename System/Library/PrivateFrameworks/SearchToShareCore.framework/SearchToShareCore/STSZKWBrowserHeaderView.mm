@@ -1,41 +1,41 @@
 @interface STSZKWBrowserHeaderView
-- (BOOL)_scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4;
-- (BOOL)searchBarShouldBeginEditing:(id)a3;
-- (CGRect)_scribbleInteraction:(id)a3 frameForElement:(id)a4;
+- (BOOL)_scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location;
+- (BOOL)searchBarShouldBeginEditing:(id)editing;
+- (CGRect)_scribbleInteraction:(id)interaction frameForElement:(id)element;
 - (CGRect)contentRect;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (STSKeyCommandDelegate)keyCommandDelegate;
 - (STSZKWBrowserHeaderView)init;
 - (STSZKWBrowserHeaderViewDelegate)delegate;
 - (UIEdgeInsets)contentInset;
 - (double)_searchBarWidthFraction;
-- (id)_buttonWithTitle:(id)a3;
+- (id)_buttonWithTitle:(id)title;
 - (id)keyCommands;
-- (unint64_t)_suggestionIndexForButton:(id)a3;
-- (void)_cancelButtonPressed:(id)a3;
-- (void)_scribbleInteraction:(id)a3 didFinishWritingInElement:(id)a4;
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6;
-- (void)_searchButtonPressed:(id)a3;
-- (void)_suggestionButtonPressed:(id)a3;
-- (void)_updateTopStackView:(BOOL)a3 andBottomStackView:(BOOL)a4;
+- (unint64_t)_suggestionIndexForButton:(id)button;
+- (void)_cancelButtonPressed:(id)pressed;
+- (void)_scribbleInteraction:(id)interaction didFinishWritingInElement:(id)element;
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion;
+- (void)_searchButtonPressed:(id)pressed;
+- (void)_suggestionButtonPressed:(id)pressed;
+- (void)_updateTopStackView:(BOOL)view andBottomStackView:(BOOL)stackView;
 - (void)clear;
 - (void)downArrowPressed;
 - (void)escapeKeyPressed;
 - (void)layoutSubviews;
 - (void)returnKeyPressed;
-- (void)setBottomSuggestions:(id)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setTopSuggestions:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBottomSuggestions:(id)suggestions;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setTopSuggestions:(id)suggestions;
+- (void)traitCollectionDidChange:(id)change;
 - (void)upArrowPressed;
 @end
 
 @implementation STSZKWBrowserHeaderView
 
-- (BOOL)searchBarShouldBeginEditing:(id)a3
+- (BOOL)searchBarShouldBeginEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   writingInSearchBar = self->_writingInSearchBar;
   if (!writingInSearchBar && [(STSSearchBar *)self->_searchBar isUserInteractionEnabled])
   {
@@ -66,17 +66,17 @@ uint64_t __55__STSZKWBrowserHeaderView_searchBarShouldBeginEditing___block_invok
   v2 = [(STSZKWBrowserHeaderView *)&v43 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75348] sts_defaultBackgroundColor];
-    [(STSZKWBrowserHeaderView *)v2 setBackgroundColor:v3];
+    sts_defaultBackgroundColor = [MEMORY[0x277D75348] sts_defaultBackgroundColor];
+    [(STSZKWBrowserHeaderView *)v2 setBackgroundColor:sts_defaultBackgroundColor];
 
     [(STSZKWBrowserHeaderView *)v2 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     topZKWButtons = v2->_topZKWButtons;
-    v2->_topZKWButtons = v4;
+    v2->_topZKWButtons = array;
 
-    v6 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     bottomZKWButtons = v2->_bottomZKWButtons;
-    v2->_bottomZKWButtons = v6;
+    v2->_bottomZKWButtons = array2;
 
     v8 = objc_alloc_init(STSSearchBar);
     searchBar = v2->_searchBar;
@@ -84,54 +84,54 @@ uint64_t __55__STSZKWBrowserHeaderView_searchBarShouldBeginEditing___block_invok
 
     [(STSSearchBar *)v2->_searchBar setDelegate:v2];
     [(STSSearchBar *)v2->_searchBar setStsDelegate:v2];
-    v10 = [(STSSearchBar *)v2->_searchBar searchTextField];
-    [v10 setDelegate:v2];
+    searchTextField = [(STSSearchBar *)v2->_searchBar searchTextField];
+    [searchTextField setDelegate:v2];
 
     [(STSSearchBar *)v2->_searchBar setStsDelegate:v2];
     [(STSSearchBar *)v2->_searchBar setTranslatesAutoresizingMaskIntoConstraints:0];
     [(STSSearchBar *)v2->_searchBar _setDisableDictationButton:1];
-    v11 = [(STSSearchBar *)v2->_searchBar searchField];
+    searchField = [(STSSearchBar *)v2->_searchBar searchField];
     [(STSSearchBar *)v2->_searchBar setSearchBarStyle:2];
-    v12 = [(STSSearchBar *)v2->_searchBar searchTextField];
-    v13 = [v12 layer];
-    [v13 setCornerRadius:20.0];
+    searchTextField2 = [(STSSearchBar *)v2->_searchBar searchTextField];
+    layer = [searchTextField2 layer];
+    [layer setCornerRadius:20.0];
 
-    v14 = [(STSSearchBar *)v2->_searchBar searchTextField];
-    v15 = [v14 layer];
-    [v15 setMasksToBounds:1];
+    searchTextField3 = [(STSSearchBar *)v2->_searchBar searchTextField];
+    layer2 = [searchTextField3 layer];
+    [layer2 setMasksToBounds:1];
 
     v16 = v2->_searchBar;
-    v17 = [MEMORY[0x277D75348] systemPinkColor];
-    [(STSSearchBar *)v16 setTintColor:v17];
+    systemPinkColor = [MEMORY[0x277D75348] systemPinkColor];
+    [(STSSearchBar *)v16 setTintColor:systemPinkColor];
 
-    v18 = [(STSSearchBar *)v2->_searchBar searchTextField];
-    v19 = [MEMORY[0x277D75348] sts_headerZKWSearchButtonAndSearchTextFieldBackgroundColor];
-    [v18 setBackgroundColor:v19];
+    searchTextField4 = [(STSSearchBar *)v2->_searchBar searchTextField];
+    sts_headerZKWSearchButtonAndSearchTextFieldBackgroundColor = [MEMORY[0x277D75348] sts_headerZKWSearchButtonAndSearchTextFieldBackgroundColor];
+    [searchTextField4 setBackgroundColor:sts_headerZKWSearchButtonAndSearchTextFieldBackgroundColor];
 
     v20 = STSLocalizedString(@"SEARCHBAR_BUTTON_TITLE");
     v21 = objc_alloc(MEMORY[0x277CCAB48]);
     v44 = *MEMORY[0x277D740C0];
-    v22 = [MEMORY[0x277D75348] lightGrayColor];
-    v45[0] = v22;
+    lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+    v45[0] = lightGrayColor;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:&v44 count:1];
     v24 = [v21 initWithString:v20 attributes:v23];
 
-    v42 = v11;
-    [v11 setAttributedPlaceholder:v24];
+    v42 = searchField;
+    [searchField setAttributedPlaceholder:v24];
     [(STSZKWBrowserHeaderView *)v2 addSubview:v2->_searchBar];
-    v25 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     searchBarConstraints = v2->_searchBarConstraints;
-    v2->_searchBarConstraints = v25;
+    v2->_searchBarConstraints = array3;
 
-    v27 = [(STSZKWBrowserHeaderView *)v2 traitCollection];
-    v28 = [v27 horizontalSizeClass];
+    traitCollection = [(STSZKWBrowserHeaderView *)v2 traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    v29 = [(STSZKWBrowserHeaderView *)v2 readableContentGuide];
+    readableContentGuide = [(STSZKWBrowserHeaderView *)v2 readableContentGuide];
     v30 = v2->_searchBarConstraints;
-    v31 = [(STSSearchBar *)v2->_searchBar leadingAnchor];
-    if (v28 == 2)
+    leadingAnchor = [(STSSearchBar *)v2->_searchBar leadingAnchor];
+    if (horizontalSizeClass == 2)
     {
-      v32 = v29;
+      v32 = readableContentGuide;
     }
 
     else
@@ -139,15 +139,15 @@ uint64_t __55__STSZKWBrowserHeaderView_searchBarShouldBeginEditing___block_invok
       v32 = v2;
     }
 
-    v33 = [(STSZKWBrowserHeaderView *)v32 leadingAnchor];
-    v34 = [v31 constraintEqualToAnchor:v33];
+    leadingAnchor2 = [(STSZKWBrowserHeaderView *)v32 leadingAnchor];
+    v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [(NSMutableArray *)v30 addObject:v34];
 
     v35 = v2->_searchBarConstraints;
-    v36 = [(STSSearchBar *)v2->_searchBar trailingAnchor];
-    if (v28 == 2)
+    trailingAnchor = [(STSSearchBar *)v2->_searchBar trailingAnchor];
+    if (horizontalSizeClass == 2)
     {
-      v37 = v29;
+      v37 = readableContentGuide;
     }
 
     else
@@ -155,8 +155,8 @@ uint64_t __55__STSZKWBrowserHeaderView_searchBarShouldBeginEditing___block_invok
       v37 = v2;
     }
 
-    v38 = [(STSZKWBrowserHeaderView *)v37 trailingAnchor];
-    v39 = [v36 constraintEqualToAnchor:v38];
+    trailingAnchor2 = [(STSZKWBrowserHeaderView *)v37 trailingAnchor];
+    v39 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [(NSMutableArray *)v35 addObject:v39];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v2->_searchBarConstraints];
@@ -173,52 +173,52 @@ uint64_t __55__STSZKWBrowserHeaderView_searchBarShouldBeginEditing___block_invok
 
 - (void)clear
 {
-  v2 = [(STSSearchBar *)self->_searchBar searchTextField];
-  [v2 setText:0];
+  searchTextField = [(STSSearchBar *)self->_searchBar searchTextField];
+  [searchTextField setText:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [(STSZKWBrowserHeaderView *)self traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  traitCollection = [(STSZKWBrowserHeaderView *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  v20 = [(STSZKWBrowserHeaderView *)self readableContentGuide];
+  readableContentGuide = [(STSZKWBrowserHeaderView *)self readableContentGuide];
   searchBarConstraints = self->_searchBarConstraints;
-  v7 = [(STSSearchBar *)self->_searchBar leadingAnchor];
-  if (v5 == 2)
+  leadingAnchor = [(STSSearchBar *)self->_searchBar leadingAnchor];
+  if (horizontalSizeClass == 2)
   {
-    v8 = v20;
+    selfCopy = readableContentGuide;
   }
 
   else
   {
-    v8 = self;
+    selfCopy = self;
   }
 
-  v9 = [(STSZKWBrowserHeaderView *)v8 leadingAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  leadingAnchor2 = [(STSZKWBrowserHeaderView *)selfCopy leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [(NSMutableArray *)searchBarConstraints addObject:v10];
 
   v11 = self->_searchBarConstraints;
-  v12 = [(STSSearchBar *)self->_searchBar trailingAnchor];
-  if (v5 == 2)
+  trailingAnchor = [(STSSearchBar *)self->_searchBar trailingAnchor];
+  if (horizontalSizeClass == 2)
   {
-    v13 = v20;
+    selfCopy2 = readableContentGuide;
   }
 
   else
   {
-    v13 = self;
+    selfCopy2 = self;
   }
 
-  v14 = [(STSZKWBrowserHeaderView *)v13 trailingAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  trailingAnchor2 = [(STSZKWBrowserHeaderView *)selfCopy2 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [(NSMutableArray *)v11 addObject:v15];
 
   v16 = self->_searchBarConstraints;
-  v17 = [(STSSearchBar *)self->_searchBar topAnchor];
-  v18 = [(STSZKWBrowserHeaderView *)self topAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  topAnchor = [(STSSearchBar *)self->_searchBar topAnchor];
+  topAnchor2 = [(STSZKWBrowserHeaderView *)self topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [(NSMutableArray *)v16 addObject:v19];
 
   [MEMORY[0x277CCAAD0] activateConstraints:self->_searchBarConstraints];
@@ -387,10 +387,10 @@ void __41__STSZKWBrowserHeaderView_layoutSubviews__block_invoke_2(uint64_t a1, v
   [v6 setFrame:{*&v15.origin, __PAIR128__(*&v15.size.height, *&v14)}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(STSSearchBar *)self->_searchBar sizeThatFits:a3.width, a3.height];
+  width = fits.width;
+  [(STSSearchBar *)self->_searchBar sizeThatFits:fits.width, fits.height];
   v6 = v5;
   v7 = [(NSMutableArray *)self->_bottomZKWButtons count];
   v8 = 0.0;
@@ -426,7 +426,7 @@ void __41__STSZKWBrowserHeaderView_layoutSubviews__block_invoke_2(uint64_t a1, v
   return result;
 }
 
-- (void)_searchButtonPressed:(id)a3
+- (void)_searchButtonPressed:(id)pressed
 {
   if (!self->_writingInSearchBar)
   {
@@ -435,37 +435,37 @@ void __41__STSZKWBrowserHeaderView_layoutSubviews__block_invoke_2(uint64_t a1, v
   }
 }
 
-- (void)_cancelButtonPressed:(id)a3
+- (void)_cancelButtonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained headerDidSelectCancelButton:self];
 }
 
-- (unint64_t)_suggestionIndexForButton:(id)a3
+- (unint64_t)_suggestionIndexForButton:(id)button
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_topZKWButtons indexOfObject:v4];
+  buttonCopy = button;
+  v5 = [(NSMutableArray *)self->_topZKWButtons indexOfObject:buttonCopy];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [(NSMutableArray *)self->_bottomZKWButtons indexOfObject:v4];
+    v5 = [(NSMutableArray *)self->_bottomZKWButtons indexOfObject:buttonCopy];
   }
 
   return v5;
 }
 
-- (void)_suggestionButtonPressed:(id)a3
+- (void)_suggestionButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [(STSZKWBrowserHeaderView *)self _suggestionIndexForButton:v4];
+  v5 = [(STSZKWBrowserHeaderView *)self _suggestionIndexForButton:pressedCopy];
 
   [WeakRetained headerView:self didSelectSuggestionButtonAtIndex:v5];
 }
 
 - (CGRect)contentRect
 {
-  v2 = [(STSSearchBar *)self->_searchBar searchField];
-  [v2 frame];
+  searchField = [(STSSearchBar *)self->_searchBar searchField];
+  [searchField frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -482,11 +482,11 @@ void __41__STSZKWBrowserHeaderView_layoutSubviews__block_invoke_2(uint64_t a1, v
   return result;
 }
 
-- (void)setTopSuggestions:(id)a3
+- (void)setTopSuggestions:(id)suggestions
 {
-  if (self->_topSuggestions != a3)
+  if (self->_topSuggestions != suggestions)
   {
-    v4 = [a3 copy];
+    v4 = [suggestions copy];
     topSuggestions = self->_topSuggestions;
     self->_topSuggestions = v4;
 
@@ -494,11 +494,11 @@ void __41__STSZKWBrowserHeaderView_layoutSubviews__block_invoke_2(uint64_t a1, v
   }
 }
 
-- (void)setBottomSuggestions:(id)a3
+- (void)setBottomSuggestions:(id)suggestions
 {
-  if (self->_bottomSuggestions != a3)
+  if (self->_bottomSuggestions != suggestions)
   {
-    v4 = [a3 copy];
+    v4 = [suggestions copy];
     bottomSuggestions = self->_bottomSuggestions;
     self->_bottomSuggestions = v4;
 
@@ -506,23 +506,23 @@ void __41__STSZKWBrowserHeaderView_layoutSubviews__block_invoke_2(uint64_t a1, v
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(STSZKWBrowserHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)_updateTopStackView:(BOOL)a3 andBottomStackView:(BOOL)a4
+- (void)_updateTopStackView:(BOOL)view andBottomStackView:(BOOL)stackView
 {
-  v4 = a4;
-  v5 = a3;
+  stackViewCopy = stackView;
+  viewCopy = view;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__STSZKWBrowserHeaderView__updateTopStackView_andBottomStackView___block_invoke;
@@ -530,12 +530,12 @@ void __41__STSZKWBrowserHeaderView_layoutSubviews__block_invoke_2(uint64_t a1, v
   v9[4] = self;
   v7 = MEMORY[0x266751FB0](v9, a2);
   v8 = v7;
-  if (v5)
+  if (viewCopy)
   {
     (*(v7 + 16))(v7, self->_topZKWButtons, self->_topSuggestions);
   }
 
-  if (v4)
+  if (stackViewCopy)
   {
     (v8)[2](v8, self->_bottomZKWButtons, self->_bottomSuggestions);
   }
@@ -571,14 +571,14 @@ void __66__STSZKWBrowserHeaderView__updateTopStackView_andBottomStackView___bloc
   [*(a1 + 40) addObject:v5];
 }
 
-- (id)_buttonWithTitle:(id)a3
+- (id)_buttonWithTitle:(id)title
 {
   v4 = MEMORY[0x277D75220];
-  v5 = a3;
+  titleCopy = title;
   v6 = [v4 buttonWithType:1];
-  v7 = [(STSSearchBar *)self->_searchBar effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(STSSearchBar *)self->_searchBar effectiveUserInterfaceLayoutDirection];
   v8 = 0.0;
-  if (v7)
+  if (effectiveUserInterfaceLayoutDirection)
   {
     v9 = 8.0;
   }
@@ -588,24 +588,24 @@ void __66__STSZKWBrowserHeaderView__updateTopStackView_andBottomStackView___bloc
     v9 = 0.0;
   }
 
-  if (!v7)
+  if (!effectiveUserInterfaceLayoutDirection)
   {
     v8 = 8.0;
   }
 
   [v6 setContentEdgeInsets:{9.0, v8, 8.0, v9}];
-  [v6 setTitle:v5 forState:0];
+  [v6 setTitle:titleCopy forState:0];
 
-  v10 = [v6 titleLabel];
+  titleLabel = [v6 titleLabel];
   v11 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  [v10 setFont:v11];
+  [titleLabel setFont:v11];
 
-  v12 = [v6 layer];
-  v13 = [MEMORY[0x277D75348] whiteColor];
-  [v12 setBackgroundColor:{objc_msgSend(v13, "CGColor")}];
+  layer = [v6 layer];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [layer setBackgroundColor:{objc_msgSend(whiteColor, "CGColor")}];
 
-  v14 = [v6 layer];
-  [v14 setCornerRadius:6.0];
+  layer2 = [v6 layer];
+  [layer2 setCornerRadius:6.0];
 
   return v6;
 }
@@ -622,10 +622,10 @@ void __66__STSZKWBrowserHeaderView__updateTopStackView_andBottomStackView___bloc
   return result;
 }
 
-- (BOOL)_scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4
+- (BOOL)_scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   [(STSSearchBar *)self->_searchBar frame];
   v10 = x;
   v11 = y;
@@ -633,17 +633,17 @@ void __66__STSZKWBrowserHeaderView__updateTopStackView_andBottomStackView___bloc
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-- (void)_scribbleInteraction:(id)a3 didFinishWritingInElement:(id)a4
+- (void)_scribbleInteraction:(id)interaction didFinishWritingInElement:(id)element
 {
-  v6 = [(STSSearchBar *)self->_searchBar text:a3];
+  v6 = [(STSSearchBar *)self->_searchBar text:interaction];
   self->_writingInSearchBar = 0;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained headerView:self didSearchFor:v6];
 }
 
-- (CGRect)_scribbleInteraction:(id)a3 frameForElement:(id)a4
+- (CGRect)_scribbleInteraction:(id)interaction frameForElement:(id)element
 {
-  [(STSSearchBar *)self->_searchBar frame:a3];
+  [(STSSearchBar *)self->_searchBar frame:interaction];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -651,24 +651,24 @@ void __66__STSZKWBrowserHeaderView__updateTopStackView_andBottomStackView___bloc
   return result;
 }
 
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion
 {
-  y = a5.y;
-  x = a5.x;
-  v10 = a6;
+  y = point.y;
+  x = point.x;
+  completionCopy = completion;
   [(STSSearchBar *)self->_searchBar frame];
   v12.x = x;
   v12.y = y;
   if (CGRectContainsPoint(v13, v12))
   {
     self->_writingInSearchBar = 1;
-    v9 = [(STSSearchBar *)self->_searchBar searchTextField];
-    v10[2](v10, v9);
+    searchTextField = [(STSSearchBar *)self->_searchBar searchTextField];
+    completionCopy[2](completionCopy, searchTextField);
   }
 
   else
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
@@ -694,9 +694,9 @@ void __66__STSZKWBrowserHeaderView__updateTopStackView_andBottomStackView___bloc
   if ([(STSSearchBar *)self->_searchBar isFirstResponder])
   {
     WeakRetained = objc_loadWeakRetained(&self->_keyCommandDelegate);
-    v3 = [(STSSearchBar *)self->_searchBar searchField];
-    v4 = [v3 text];
-    [WeakRetained didPressReturnKey:v4];
+    searchField = [(STSSearchBar *)self->_searchBar searchField];
+    text = [searchField text];
+    [WeakRetained didPressReturnKey:text];
   }
 }
 

@@ -1,15 +1,15 @@
 @interface HostHandler
-- (void)contentEditCompletedWithItemWithSessionUUID:(id)a3 qlItem:(id)a4;
-- (void)contentEditCompletedWithSessionUUID:(id)a3 contentURL:(id)a4;
-- (void)didRestoreWithItems:(id)a3 sessionUUID:(id)a4;
-- (void)didRestoreWithSandboxWrapperData:(id)a3 error:(id)a4 sessionUUID:(id)a5;
-- (void)launchFailedWithSessionUUID:(id)a3 error:(id)a4;
-- (void)previewSceneMovedWithSessionUUID:(id)a3 sceneIdentifier:(id)a4;
+- (void)contentEditCompletedWithItemWithSessionUUID:(id)d qlItem:(id)item;
+- (void)contentEditCompletedWithSessionUUID:(id)d contentURL:(id)l;
+- (void)didRestoreWithItems:(id)items sessionUUID:(id)d;
+- (void)didRestoreWithSandboxWrapperData:(id)data error:(id)error sessionUUID:(id)d;
+- (void)launchFailedWithSessionUUID:(id)d error:(id)error;
+- (void)previewSceneMovedWithSessionUUID:(id)d sceneIdentifier:(id)identifier;
 @end
 
 @implementation HostHandler
 
-- (void)launchFailedWithSessionUUID:(id)a3 error:(id)a4
+- (void)launchFailedWithSessionUUID:(id)d error:(id)error
 {
   v5 = sub_23A7EDFE4();
   v6 = *(v5 - 8);
@@ -17,14 +17,14 @@
   MEMORY[0x28223BE20](v5);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_23A7EDFC4();
-  v10 = a4;
+  errorCopy = error;
 
-  sub_23A7B5798(v9, v10);
+  sub_23A7B5798(v9, errorCopy);
 
   (*(v6 + 8))(v9, v5);
 }
 
-- (void)contentEditCompletedWithSessionUUID:(id)a3 contentURL:(id)a4
+- (void)contentEditCompletedWithSessionUUID:(id)d contentURL:(id)l
 {
   v4 = sub_23A7EDF64();
   v5 = *(v4 - 8);
@@ -43,7 +43,7 @@
   (*(v10 + 8))(v13, v9);
 }
 
-- (void)contentEditCompletedWithItemWithSessionUUID:(id)a3 qlItem:(id)a4
+- (void)contentEditCompletedWithItemWithSessionUUID:(id)d qlItem:(id)item
 {
   v4 = sub_23A7EDFE4();
   v5 = *(v4 - 8);
@@ -54,7 +54,7 @@
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)previewSceneMovedWithSessionUUID:(id)a3 sceneIdentifier:(id)a4
+- (void)previewSceneMovedWithSessionUUID:(id)d sceneIdentifier:(id)identifier
 {
   v4 = sub_23A7EDFE4();
   v5 = *(v4 - 8);
@@ -66,7 +66,7 @@
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)didRestoreWithItems:(id)a3 sessionUUID:(id)a4
+- (void)didRestoreWithItems:(id)items sessionUUID:(id)d
 {
   v4 = sub_23A7EDFE4();
   v5 = *(v4 - 8);
@@ -82,7 +82,7 @@
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)didRestoreWithSandboxWrapperData:(id)a3 error:(id)a4 sessionUUID:(id)a5
+- (void)didRestoreWithSandboxWrapperData:(id)data error:(id)error sessionUUID:(id)d
 {
   v6 = sub_23A7EDFE4();
   v7 = *(v6 - 8);
@@ -92,8 +92,8 @@
   v11 = sub_23A7EE9A4();
   sub_23A7EDFC4();
 
-  v12 = a4;
-  sub_23A7B7410(v11, a4, v10);
+  errorCopy = error;
+  sub_23A7B7410(v11, error, v10);
 
   (*(v7 + 8))(v10, v6);
 }

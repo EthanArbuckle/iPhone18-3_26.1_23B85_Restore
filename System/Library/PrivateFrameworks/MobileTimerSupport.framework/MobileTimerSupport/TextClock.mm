@@ -1,7 +1,7 @@
 @interface TextClock
 - (_TtC18MobileTimerSupportP33_F15BF02653F44D6D9AC85F90DB61595B9TextClock)init;
 - (void)dealloc;
-- (void)timeFormatterTextDidChange:(id)a3;
+- (void)timeFormatterTextDidChange:(id)change;
 @end
 
 @implementation TextClock
@@ -30,18 +30,18 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_22D7A25E4();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for TextClock(0);
   [(TextClock *)&v3 dealloc];
 }
 
-- (void)timeFormatterTextDidChange:(id)a3
+- (void)timeFormatterTextDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_22D7A3220(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_22D7A3220(change);
 }
 
 @end

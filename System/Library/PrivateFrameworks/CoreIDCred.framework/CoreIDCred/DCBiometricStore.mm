@@ -1,28 +1,28 @@
 @interface DCBiometricStore
 - (DCBiometricStore)init;
-- (void)bioBindingUnboundACL:(id)a3;
-- (void)boundAppletPresentmentACL:(id)a3;
-- (void)clearProgenitorKeyDesignationsWithCompletion:(id)a3;
-- (void)credentialAuthenticationTokenStatus:(id)a3;
-- (void)deleteGlobalAuthACLWithCompletion:(id)a3;
-- (void)deleteGlobalAuthACLWithOutcomeCompletion:(id)a3;
-- (void)establishPrearmTrustV2:(id)a3 completion:(id)a4;
-- (void)generatePhoneTokenWithNonce:(id)a3 keyBlob:(id)a4 pairingID:(id)a5 completion:(id)a6;
-- (void)generatePrearmTrustCertificateFromKeyBlob:(id)a3 nonce:(id)a4 pairingID:(id)a5 completion:(id)a6;
-- (void)generatePrearmTrustCertificateWithNonce:(id)a3 pairingID:(id)a4 completion:(id)a5;
-- (void)getCASDCertificate:(id)a3;
-- (void)getGlobalProgenitorKeyAttestation:(id)a3;
-- (void)getGlobalThirdPartyProgenitorKeyAttestation:(id)a3;
-- (void)globalAuthACLTemplateUUIDsAndCredentialCountWithCompletion:(id)a3;
-- (void)globalAuthACLTemplateUUIDsWithCompletion:(id)a3;
-- (void)globalAuthACLWithCompletion:(id)a3;
-- (void)migratePrearmTrustBlob:(id)a3 completion:(id)a4;
-- (void)nonceForAuthorizationTokenWithCompletion:(id)a3;
-- (void)passcodeBindingUnboundACL:(id)a3;
-- (void)prearmCredentialWithAuthorizationToken:(id)a3 completion:(id)a4;
-- (void)revokeCredentialAuthorizationToken:(id)a3;
-- (void)setGlobalAuthACL:(id)a3 ofType:(unint64_t)a4 completion:(id)a5;
-- (void)setModifiedGlobalAuthACL:(id)a3 externalizedLAContext:(id)a4 completion:(id)a5;
+- (void)bioBindingUnboundACL:(id)l;
+- (void)boundAppletPresentmentACL:(id)l;
+- (void)clearProgenitorKeyDesignationsWithCompletion:(id)completion;
+- (void)credentialAuthenticationTokenStatus:(id)status;
+- (void)deleteGlobalAuthACLWithCompletion:(id)completion;
+- (void)deleteGlobalAuthACLWithOutcomeCompletion:(id)completion;
+- (void)establishPrearmTrustV2:(id)v2 completion:(id)completion;
+- (void)generatePhoneTokenWithNonce:(id)nonce keyBlob:(id)blob pairingID:(id)d completion:(id)completion;
+- (void)generatePrearmTrustCertificateFromKeyBlob:(id)blob nonce:(id)nonce pairingID:(id)d completion:(id)completion;
+- (void)generatePrearmTrustCertificateWithNonce:(id)nonce pairingID:(id)d completion:(id)completion;
+- (void)getCASDCertificate:(id)certificate;
+- (void)getGlobalProgenitorKeyAttestation:(id)attestation;
+- (void)getGlobalThirdPartyProgenitorKeyAttestation:(id)attestation;
+- (void)globalAuthACLTemplateUUIDsAndCredentialCountWithCompletion:(id)completion;
+- (void)globalAuthACLTemplateUUIDsWithCompletion:(id)completion;
+- (void)globalAuthACLWithCompletion:(id)completion;
+- (void)migratePrearmTrustBlob:(id)blob completion:(id)completion;
+- (void)nonceForAuthorizationTokenWithCompletion:(id)completion;
+- (void)passcodeBindingUnboundACL:(id)l;
+- (void)prearmCredentialWithAuthorizationToken:(id)token completion:(id)completion;
+- (void)revokeCredentialAuthorizationToken:(id)token;
+- (void)setGlobalAuthACL:(id)l ofType:(unint64_t)type completion:(id)completion;
+- (void)setModifiedGlobalAuthACL:(id)l externalizedLAContext:(id)context completion:(id)completion;
 @end
 
 @implementation DCBiometricStore
@@ -42,190 +42,190 @@
   return v2;
 }
 
-- (void)nonceForAuthorizationTokenWithCompletion:(id)a3
+- (void)nonceForAuthorizationTokenWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DCBiometricStore *)self client];
-  [v5 nonceForAuthorizationTokenWithCompletion:v4];
+  completionCopy = completion;
+  client = [(DCBiometricStore *)self client];
+  [client nonceForAuthorizationTokenWithCompletion:completionCopy];
 }
 
-- (void)prearmCredentialWithAuthorizationToken:(id)a3 completion:(id)a4
+- (void)prearmCredentialWithAuthorizationToken:(id)token completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DCBiometricStore *)self client];
-  [v8 prearmCredentialWithAuthorizationToken:v7 completion:v6];
+  completionCopy = completion;
+  tokenCopy = token;
+  client = [(DCBiometricStore *)self client];
+  [client prearmCredentialWithAuthorizationToken:tokenCopy completion:completionCopy];
 }
 
-- (void)establishPrearmTrustV2:(id)a3 completion:(id)a4
+- (void)establishPrearmTrustV2:(id)v2 completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DCBiometricStore *)self client];
-  [v8 establishPrearmTrustV2:v7 completion:v6];
+  completionCopy = completion;
+  v2Copy = v2;
+  client = [(DCBiometricStore *)self client];
+  [client establishPrearmTrustV2:v2Copy completion:completionCopy];
 }
 
-- (void)revokeCredentialAuthorizationToken:(id)a3
+- (void)revokeCredentialAuthorizationToken:(id)token
 {
-  v4 = a3;
-  v5 = [(DCBiometricStore *)self client];
-  [v5 revokeCredentialAuthorizationToken:v4];
+  tokenCopy = token;
+  client = [(DCBiometricStore *)self client];
+  [client revokeCredentialAuthorizationToken:tokenCopy];
 }
 
-- (void)bioBindingUnboundACL:(id)a3
+- (void)bioBindingUnboundACL:(id)l
 {
-  v4 = a3;
-  v5 = [(DCBiometricStore *)self client];
-  [v5 bioBindingUnboundACL:v4];
+  lCopy = l;
+  client = [(DCBiometricStore *)self client];
+  [client bioBindingUnboundACL:lCopy];
 }
 
-- (void)passcodeBindingUnboundACL:(id)a3
+- (void)passcodeBindingUnboundACL:(id)l
 {
-  v4 = a3;
-  v5 = [(DCBiometricStore *)self client];
-  [v5 passcodeBindingUnboundACL:v4];
+  lCopy = l;
+  client = [(DCBiometricStore *)self client];
+  [client passcodeBindingUnboundACL:lCopy];
 }
 
-- (void)setGlobalAuthACL:(id)a3 ofType:(unint64_t)a4 completion:(id)a5
+- (void)setGlobalAuthACL:(id)l ofType:(unint64_t)type completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(DCBiometricStore *)self client];
-  [v10 setGlobalAuthACL:v9 ofType:a4 completion:v8];
+  completionCopy = completion;
+  lCopy = l;
+  client = [(DCBiometricStore *)self client];
+  [client setGlobalAuthACL:lCopy ofType:type completion:completionCopy];
 }
 
-- (void)setModifiedGlobalAuthACL:(id)a3 externalizedLAContext:(id)a4 completion:(id)a5
+- (void)setModifiedGlobalAuthACL:(id)l externalizedLAContext:(id)context completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(DCBiometricStore *)self client];
-  [v11 setModifiedGlobalAuthACL:v10 externalizedLAContext:v9 completion:v8];
+  completionCopy = completion;
+  contextCopy = context;
+  lCopy = l;
+  client = [(DCBiometricStore *)self client];
+  [client setModifiedGlobalAuthACL:lCopy externalizedLAContext:contextCopy completion:completionCopy];
 }
 
-- (void)globalAuthACLWithCompletion:(id)a3
+- (void)globalAuthACLWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DCBiometricStore *)self client];
-  [v5 globalAuthACLWithCompletion:v4];
+  completionCopy = completion;
+  client = [(DCBiometricStore *)self client];
+  [client globalAuthACLWithCompletion:completionCopy];
 }
 
-- (void)deleteGlobalAuthACLWithCompletion:(id)a3
+- (void)deleteGlobalAuthACLWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__DCBiometricStore_deleteGlobalAuthACLWithCompletion___block_invoke;
   v6[3] = &unk_278E812A0;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(DCBiometricStore *)self deleteGlobalAuthACLWithOutcomeCompletion:v6];
 }
 
-- (void)deleteGlobalAuthACLWithOutcomeCompletion:(id)a3
+- (void)deleteGlobalAuthACLWithOutcomeCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DCBiometricStore *)self client];
-  [v5 deleteGlobalAuthACLWithCompletion:v4];
+  completionCopy = completion;
+  client = [(DCBiometricStore *)self client];
+  [client deleteGlobalAuthACLWithCompletion:completionCopy];
 }
 
-- (void)globalAuthACLTemplateUUIDsWithCompletion:(id)a3
+- (void)globalAuthACLTemplateUUIDsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DCBiometricStore *)self client];
+  completionCopy = completion;
+  client = [(DCBiometricStore *)self client];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__DCBiometricStore_globalAuthACLTemplateUUIDsWithCompletion___block_invoke;
   v7[3] = &unk_278E812C8;
-  v8 = v4;
-  v6 = v4;
-  [v5 globalAuthACLTemplateUUIDsWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [client globalAuthACLTemplateUUIDsWithCompletion:v7];
 }
 
-- (void)globalAuthACLTemplateUUIDsAndCredentialCountWithCompletion:(id)a3
+- (void)globalAuthACLTemplateUUIDsAndCredentialCountWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DCBiometricStore *)self client];
-  [v5 globalAuthACLTemplateUUIDsWithCompletion:v4];
+  completionCopy = completion;
+  client = [(DCBiometricStore *)self client];
+  [client globalAuthACLTemplateUUIDsWithCompletion:completionCopy];
 }
 
-- (void)generatePhoneTokenWithNonce:(id)a3 keyBlob:(id)a4 pairingID:(id)a5 completion:(id)a6
+- (void)generatePhoneTokenWithNonce:(id)nonce keyBlob:(id)blob pairingID:(id)d completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(DCBiometricStore *)self client];
-  [v14 generatePhoneTokenWithNonce:v13 keyBlob:v12 pairingID:v11 completion:v10];
+  completionCopy = completion;
+  dCopy = d;
+  blobCopy = blob;
+  nonceCopy = nonce;
+  client = [(DCBiometricStore *)self client];
+  [client generatePhoneTokenWithNonce:nonceCopy keyBlob:blobCopy pairingID:dCopy completion:completionCopy];
 }
 
-- (void)generatePrearmTrustCertificateWithNonce:(id)a3 pairingID:(id)a4 completion:(id)a5
+- (void)generatePrearmTrustCertificateWithNonce:(id)nonce pairingID:(id)d completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(DCBiometricStore *)self client];
-  [v11 generatePrearmTrustCertificateWithNonce:v10 pairingID:v9 completion:v8];
+  completionCopy = completion;
+  dCopy = d;
+  nonceCopy = nonce;
+  client = [(DCBiometricStore *)self client];
+  [client generatePrearmTrustCertificateWithNonce:nonceCopy pairingID:dCopy completion:completionCopy];
 }
 
-- (void)generatePrearmTrustCertificateFromKeyBlob:(id)a3 nonce:(id)a4 pairingID:(id)a5 completion:(id)a6
+- (void)generatePrearmTrustCertificateFromKeyBlob:(id)blob nonce:(id)nonce pairingID:(id)d completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(DCBiometricStore *)self client];
-  [v14 generatePrearmTrustCertificateFromKeyBlob:v13 nonce:v12 pairingID:v11 completion:v10];
+  completionCopy = completion;
+  dCopy = d;
+  nonceCopy = nonce;
+  blobCopy = blob;
+  client = [(DCBiometricStore *)self client];
+  [client generatePrearmTrustCertificateFromKeyBlob:blobCopy nonce:nonceCopy pairingID:dCopy completion:completionCopy];
 }
 
-- (void)migratePrearmTrustBlob:(id)a3 completion:(id)a4
+- (void)migratePrearmTrustBlob:(id)blob completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DCBiometricStore *)self client];
-  [v8 migratePrearmTrustBlob:v7 completion:v6];
+  completionCopy = completion;
+  blobCopy = blob;
+  client = [(DCBiometricStore *)self client];
+  [client migratePrearmTrustBlob:blobCopy completion:completionCopy];
 }
 
-- (void)credentialAuthenticationTokenStatus:(id)a3
+- (void)credentialAuthenticationTokenStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(DCBiometricStore *)self client];
-  [v5 credentialAuthenticationTokenStatus:v4];
+  statusCopy = status;
+  client = [(DCBiometricStore *)self client];
+  [client credentialAuthenticationTokenStatus:statusCopy];
 }
 
-- (void)getCASDCertificate:(id)a3
+- (void)getCASDCertificate:(id)certificate
 {
-  v4 = a3;
-  v5 = [(DCBiometricStore *)self client];
-  [v5 getCASDCertificate:v4];
+  certificateCopy = certificate;
+  client = [(DCBiometricStore *)self client];
+  [client getCASDCertificate:certificateCopy];
 }
 
-- (void)getGlobalProgenitorKeyAttestation:(id)a3
+- (void)getGlobalProgenitorKeyAttestation:(id)attestation
 {
-  v4 = a3;
-  v5 = [(DCBiometricStore *)self client];
-  [v5 getGlobalProgenitorKeyAttestation:v4];
+  attestationCopy = attestation;
+  client = [(DCBiometricStore *)self client];
+  [client getGlobalProgenitorKeyAttestation:attestationCopy];
 }
 
-- (void)getGlobalThirdPartyProgenitorKeyAttestation:(id)a3
+- (void)getGlobalThirdPartyProgenitorKeyAttestation:(id)attestation
 {
-  v4 = a3;
-  v5 = [(DCBiometricStore *)self client];
-  [v5 getGlobalThirdPartyProgenitorKeyAttestation:v4];
+  attestationCopy = attestation;
+  client = [(DCBiometricStore *)self client];
+  [client getGlobalThirdPartyProgenitorKeyAttestation:attestationCopy];
 }
 
-- (void)boundAppletPresentmentACL:(id)a3
+- (void)boundAppletPresentmentACL:(id)l
 {
-  v4 = a3;
-  v5 = [(DCBiometricStore *)self client];
-  [v5 boundAppletPresentmentACL:v4];
+  lCopy = l;
+  client = [(DCBiometricStore *)self client];
+  [client boundAppletPresentmentACL:lCopy];
 }
 
-- (void)clearProgenitorKeyDesignationsWithCompletion:(id)a3
+- (void)clearProgenitorKeyDesignationsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DCBiometricStore *)self client];
-  [v5 clearProgenitorKeyDesignationsWithCompletion:v4];
+  completionCopy = completion;
+  client = [(DCBiometricStore *)self client];
+  [client clearProgenitorKeyDesignationsWithCompletion:completionCopy];
 }
 
 @end

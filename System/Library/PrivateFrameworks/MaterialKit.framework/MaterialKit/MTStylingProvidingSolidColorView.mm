@@ -1,5 +1,5 @@
 @interface MTStylingProvidingSolidColorView
-- (id)visualStylingProviderForCategory:(int64_t)a3;
+- (id)visualStylingProviderForCategory:(int64_t)category;
 - (void)setHighlighted:(BOOL)highlighted;
 @end
 
@@ -74,7 +74,7 @@ id __51__MTStylingProvidingSolidColorView_setHighlighted___block_invoke_2(uint64
   return v4;
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
   stylingProviders = self->_stylingProviders;
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -82,9 +82,9 @@ id __51__MTStylingProvidingSolidColorView_setHighlighted___block_invoke_2(uint64
 
   if (!v7)
   {
-    v8 = [(MTStylingProvidingSolidColorView *)self _stylingProvidingSolidColorLayer];
-    v9 = MTCoreMaterialVisualStyleCategoryForVisualStyleCategory(a3);
-    v10 = [v8 visualStylingProviderForCategory:v9];
+    _stylingProvidingSolidColorLayer = [(MTStylingProvidingSolidColorView *)self _stylingProvidingSolidColorLayer];
+    v9 = MTCoreMaterialVisualStyleCategoryForVisualStyleCategory(category);
+    v10 = [_stylingProvidingSolidColorLayer visualStylingProviderForCategory:v9];
 
     v7 = [[MTVisualStylingProvider alloc] initWithCoreMaterialVisualStylingProvider:v10];
     v11 = self->_stylingProviders;
@@ -97,7 +97,7 @@ id __51__MTStylingProvidingSolidColorView_setHighlighted___block_invoke_2(uint64
       v11 = self->_stylingProviders;
     }
 
-    v14 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v14 = [MEMORY[0x277CCABB0] numberWithInteger:category];
     [(NSMutableDictionary *)v11 setObject:v7 forKey:v14];
   }
 

@@ -1,14 +1,14 @@
 @interface FigDepthBlurEffectRenderingParametersV4_Builder
-- (FigDepthBlurEffectRenderingParametersV4_Builder)initWithVersion:(int)a3;
+- (FigDepthBlurEffectRenderingParametersV4_Builder)initWithVersion:(int)version;
 - (id)encodedParams;
 - (void)dealloc;
-- (void)setParam:(signed __int16)a3 floatValue:(float)a4;
-- (void)setParamPair:(const FigDepthBlurEffectRenderingParametersV4_ParameterPair *)a3;
+- (void)setParam:(signed __int16)param floatValue:(float)value;
+- (void)setParamPair:(const FigDepthBlurEffectRenderingParametersV4_ParameterPair *)pair;
 @end
 
 @implementation FigDepthBlurEffectRenderingParametersV4_Builder
 
-- (FigDepthBlurEffectRenderingParametersV4_Builder)initWithVersion:(int)a3
+- (FigDepthBlurEffectRenderingParametersV4_Builder)initWithVersion:(int)version
 {
   v8.receiver = self;
   v8.super_class = FigDepthBlurEffectRenderingParametersV4_Builder;
@@ -25,7 +25,7 @@
     }
 
     v5->var0.var0 = 1145980242;
-    v5->var0.var1 = a3 - 1;
+    v5->var0.var1 = version - 1;
     *&v5->var0.var2 = 0x100000010;
     v4->_length = 0;
     v4->_capacity = 128;
@@ -65,7 +65,7 @@ LABEL_5:
   return v6;
 }
 
-- (void)setParamPair:(const FigDepthBlurEffectRenderingParametersV4_ParameterPair *)a3
+- (void)setParamPair:(const FigDepthBlurEffectRenderingParametersV4_ParameterPair *)pair
 {
   length = self->_length;
   capacity = self->_capacity;
@@ -73,7 +73,7 @@ LABEL_5:
   {
     rawParams = self->_rawParams;
 LABEL_5:
-    rawParams->var2[length] = *a3;
+    rawParams->var2[length] = *pair;
     v8 = self->_length + 1;
     self->_length = v8;
     self->_sorted = 0;
@@ -93,11 +93,11 @@ LABEL_5:
   sub_295EB4128();
 }
 
-- (void)setParam:(signed __int16)a3 floatValue:(float)a4
+- (void)setParam:(signed __int16)param floatValue:(float)value
 {
   v5[1] = 1;
-  v5[0] = a3;
-  v6 = a4;
+  v5[0] = param;
+  valueCopy = value;
   objc_msgSend_setParamPair_(self, a2, v5, v4);
 }
 

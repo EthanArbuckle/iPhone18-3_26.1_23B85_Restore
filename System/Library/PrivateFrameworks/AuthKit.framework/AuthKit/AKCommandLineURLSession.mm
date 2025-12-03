@@ -1,6 +1,6 @@
 @interface AKCommandLineURLSession
 + (id)sharedServerUIURLSession;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation AKCommandLineURLSession
@@ -29,21 +29,21 @@ uint64_t __51__AKCommandLineURLSession_sharedServerUIURLSession__block_invoke()
   return MEMORY[0x1E69E5920](v1);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
   v44 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
+  objc_storeStrong(&v40, task);
   v39 = 0;
-  objc_storeStrong(&v39, a5);
+  objc_storeStrong(&v39, redirection);
   v38 = 0;
-  objc_storeStrong(&v38, a6);
+  objc_storeStrong(&v38, request);
   v37 = 0;
-  objc_storeStrong(&v37, a7);
+  objc_storeStrong(&v37, handler);
   v36 = _AKLogSystem();
   v35 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
@@ -61,21 +61,21 @@ uint64_t __51__AKCommandLineURLSession_sharedServerUIURLSession__block_invoke()
   {
     if (v38)
     {
-      v17 = [v39 allHeaderFields];
-      v33 = [v17 aaf_filter:&__block_literal_global_29];
-      MEMORY[0x1E69E5920](v17);
+      allHeaderFields = [v39 allHeaderFields];
+      v33 = [allHeaderFields aaf_filter:&__block_literal_global_29];
+      MEMORY[0x1E69E5920](allHeaderFields);
       v31 = 0;
       v18 = 1;
       if (v33)
       {
-        v32 = [v33 allKeys];
+        allKeys = [v33 allKeys];
         v31 = 1;
-        v18 = [v32 count] == 0;
+        v18 = [allKeys count] == 0;
       }
 
       if (v31)
       {
-        MEMORY[0x1E69E5920](v32);
+        MEMORY[0x1E69E5920](allKeys);
       }
 
       if (v18)
@@ -103,8 +103,8 @@ uint64_t __51__AKCommandLineURLSession_sharedServerUIURLSession__block_invoke()
       {
         v27 = [v38 mutableCopy];
         memset(__b, 0, sizeof(__b));
-        v13 = [v33 allKeys];
-        v14 = [v13 countByEnumeratingWithState:__b objects:v42 count:16];
+        allKeys2 = [v33 allKeys];
+        v14 = [allKeys2 countByEnumeratingWithState:__b objects:v42 count:16];
         if (v14)
         {
           v10 = *__b[2];
@@ -115,7 +115,7 @@ uint64_t __51__AKCommandLineURLSession_sharedServerUIURLSession__block_invoke()
             v9 = v11;
             if (*__b[2] != v10)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(allKeys2);
             }
 
             v26 = *(__b[1] + 8 * v11);
@@ -127,7 +127,7 @@ uint64_t __51__AKCommandLineURLSession_sharedServerUIURLSession__block_invoke()
             if (v9 + 1 >= v12)
             {
               v11 = 0;
-              v12 = [v13 countByEnumeratingWithState:__b objects:v42 count:16];
+              v12 = [allKeys2 countByEnumeratingWithState:__b objects:v42 count:16];
               if (!v12)
               {
                 break;
@@ -136,7 +136,7 @@ uint64_t __51__AKCommandLineURLSession_sharedServerUIURLSession__block_invoke()
           }
         }
 
-        MEMORY[0x1E69E5920](v13);
+        MEMORY[0x1E69E5920](allKeys2);
         if (v37)
         {
           (*(v37 + 2))(v37, v27);

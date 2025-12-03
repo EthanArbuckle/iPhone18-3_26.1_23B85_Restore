@@ -1,19 +1,19 @@
 @interface TSWPHyperlinkPopoverTitleView
-- (TSWPHyperlinkPopoverTitleView)initWithFrame:(CGRect)a3 titleString:(id)a4;
+- (TSWPHyperlinkPopoverTitleView)initWithFrame:(CGRect)frame titleString:(id)string;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation TSWPHyperlinkPopoverTitleView
 
-- (TSWPHyperlinkPopoverTitleView)initWithFrame:(CGRect)a3 titleString:(id)a4
+- (TSWPHyperlinkPopoverTitleView)initWithFrame:(CGRect)frame titleString:(id)string
 {
   v7.receiver = self;
   v7.super_class = TSWPHyperlinkPopoverTitleView;
-  v5 = [(TSWPHyperlinkPopoverTitleView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(TSWPHyperlinkPopoverTitleView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
-    -[TSWPHyperlinkPopoverTitleView setTitleString:](v5, "setTitleString:", [a4 stringByRemovingPercentEncoding]);
+    -[TSWPHyperlinkPopoverTitleView setTitleString:](v5, "setTitleString:", [string stringByRemovingPercentEncoding]);
     [(TSWPHyperlinkPopoverTitleView *)v5 setOpaque:0];
   }
 
@@ -27,7 +27,7 @@
   [(TSWPHyperlinkPopoverTitleView *)&v3 dealloc];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   [(TSWPHyperlinkPopoverTitleView *)self bounds];
@@ -45,9 +45,9 @@
     }
   }
 
-  v11 = [(TSWPHyperlinkPopoverTitleView *)self titleString];
+  titleString = [(TSWPHyperlinkPopoverTitleView *)self titleString];
   [(TSWPHyperlinkPopoverTitleView *)self bounds];
-  [(NSString *)v11 sizeWithFont:v6 constrainedToSize:5 lineBreakMode:v12, v13];
+  [(NSString *)titleString sizeWithFont:v6 constrainedToSize:5 lineBreakMode:v12, v13];
   v15 = v14;
   v17 = v16;
   [(TSWPHyperlinkPopoverTitleView *)self bounds];
@@ -59,9 +59,9 @@
   v25 = v24 - v19;
   v27 = v26 + v21 * 0.5;
   v29 = v28 - v21;
-  v30 = [(TSWPHyperlinkPopoverTitleView *)self titleString];
+  titleString2 = [(TSWPHyperlinkPopoverTitleView *)self titleString];
 
-  [(NSString *)v30 drawInRect:v6 withFont:5 lineBreakMode:1 alignment:v27, v23, v29, v25];
+  [(NSString *)titleString2 drawInRect:v6 withFont:5 lineBreakMode:1 alignment:v27, v23, v29, v25];
 }
 
 @end

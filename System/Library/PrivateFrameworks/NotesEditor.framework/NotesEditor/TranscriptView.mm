@@ -1,15 +1,15 @@
 @interface TranscriptView
 - (NSArray)accessibilityElements;
-- (_TtC11NotesEditor14TranscriptView)initWithCoder:(id)a3;
-- (_TtC11NotesEditor14TranscriptView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (void)findInteraction:(id)a3 didBeginFindSession:(id)a4;
-- (void)findInteraction:(id)a3 didEndFindSession:(id)a4;
-- (void)setAccessibilityElements:(id)a3;
+- (_TtC11NotesEditor14TranscriptView)initWithCoder:(id)coder;
+- (_TtC11NotesEditor14TranscriptView)initWithFrame:(CGRect)frame textContainer:(id)container;
+- (void)findInteraction:(id)interaction didBeginFindSession:(id)session;
+- (void)findInteraction:(id)interaction didEndFindSession:(id)session;
+- (void)setAccessibilityElements:(id)elements;
 @end
 
 @implementation TranscriptView
 
-- (_TtC11NotesEditor14TranscriptView)initWithCoder:(id)a3
+- (_TtC11NotesEditor14TranscriptView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC11NotesEditor14TranscriptView_scrollAnimationDuration) = 0x3FD0000000000000;
@@ -21,25 +21,25 @@
   return result;
 }
 
-- (void)findInteraction:(id)a3 didBeginFindSession:(id)a4
+- (void)findInteraction:(id)interaction didBeginFindSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_21546EB68(v6, v7);
+  interactionCopy = interaction;
+  sessionCopy = session;
+  selfCopy = self;
+  sub_21546EB68(interactionCopy, sessionCopy);
 }
 
-- (void)findInteraction:(id)a3 didEndFindSession:(id)a4
+- (void)findInteraction:(id)interaction didEndFindSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_21546ED34(v6, v7);
+  interactionCopy = interaction;
+  sessionCopy = session;
+  selfCopy = self;
+  sub_21546ED34(interactionCopy, sessionCopy);
 }
 
 - (NSArray)accessibilityElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_215471688();
 
   if (v3)
@@ -55,18 +55,18 @@
   return v4;
 }
 
-- (void)setAccessibilityElements:(id)a3
+- (void)setAccessibilityElements:(id)elements
 {
-  if (a3)
+  if (elements)
   {
     sub_2154A1F4C();
-    v4 = self;
+    selfCopy = self;
     v5 = sub_2154A1F3C();
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
@@ -75,7 +75,7 @@
   [(TranscriptView *)&v7 setAccessibilityElements:v5];
 }
 
-- (_TtC11NotesEditor14TranscriptView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC11NotesEditor14TranscriptView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

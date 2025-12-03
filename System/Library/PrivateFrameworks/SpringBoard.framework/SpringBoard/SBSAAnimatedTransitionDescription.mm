@@ -1,39 +1,39 @@
 @interface SBSAAnimatedTransitionDescription
-+ (id)animatedTransitionDescriptionWithAnimatedTransitionIdentifier:(id)a3 behaviorSettings:(id)a4 milestones:(id)a5 responsibleProvider:(id)a6;
-+ (id)instanceWithBlock:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)animatedTransitionDescriptionWithAnimatedTransitionIdentifier:(id)identifier behaviorSettings:(id)settings milestones:(id)milestones responsibleProvider:(id)provider;
++ (id)instanceWithBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SBSAAnimatedTransitionDescription)initWithAnimatedTransitionDescription:(id)a3;
-- (id)auxillaryBehaviorSettingsForKeyPath:(id)a3;
-- (id)copyBySettingAuxillaryBehaviorSettings:(id)a3 forKeyPath:(id)a4;
-- (id)copyWithBlock:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SBSAAnimatedTransitionDescription)initWithAnimatedTransitionDescription:(id)description;
+- (id)auxillaryBehaviorSettingsForKeyPath:(id)path;
+- (id)copyBySettingAuxillaryBehaviorSettings:(id)settings forKeyPath:(id)path;
+- (id)copyWithBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SBSAAnimatedTransitionDescription
 
-+ (id)animatedTransitionDescriptionWithAnimatedTransitionIdentifier:(id)a3 behaviorSettings:(id)a4 milestones:(id)a5 responsibleProvider:(id)a6
++ (id)animatedTransitionDescriptionWithAnimatedTransitionIdentifier:(id)identifier behaviorSettings:(id)settings milestones:(id)milestones responsibleProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  settingsCopy = settings;
+  milestonesCopy = milestones;
+  providerCopy = provider;
   v15 = objc_alloc_init(SBSAAnimatedTransitionDescription);
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __147__SBSAAnimatedTransitionDescription_animatedTransitionDescriptionWithAnimatedTransitionIdentifier_behaviorSettings_milestones_responsibleProvider___block_invoke;
   v22[3] = &unk_2783BC698;
   v27 = a2;
-  v28 = a1;
-  v23 = v11;
-  v24 = v12;
-  v25 = v14;
-  v26 = v13;
-  v16 = v13;
-  v17 = v14;
-  v18 = v12;
-  v19 = v11;
+  selfCopy = self;
+  v23 = identifierCopy;
+  v24 = settingsCopy;
+  v25 = providerCopy;
+  v26 = milestonesCopy;
+  v16 = milestonesCopy;
+  v17 = providerCopy;
+  v18 = settingsCopy;
+  v19 = identifierCopy;
   v20 = [(SBSAAnimatedTransitionDescription *)v15 copyWithBlock:v22];
 
   return v20;
@@ -83,39 +83,39 @@ void __147__SBSAAnimatedTransitionDescription_animatedTransitionDescriptionWithA
   [v6 setMilestones:a1[7]];
 }
 
-- (SBSAAnimatedTransitionDescription)initWithAnimatedTransitionDescription:(id)a3
+- (SBSAAnimatedTransitionDescription)initWithAnimatedTransitionDescription:(id)description
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptionCopy = description;
   v36.receiver = self;
   v36.super_class = SBSAAnimatedTransitionDescription;
   v5 = [(SBSAAnimatedTransitionDescription *)&v36 init];
   if (v5)
   {
-    v6 = [v4 animatedTransitionIdentifier];
-    v7 = [v6 copy];
+    animatedTransitionIdentifier = [descriptionCopy animatedTransitionIdentifier];
+    v7 = [animatedTransitionIdentifier copy];
     animatedTransitionIdentifier = v5->_animatedTransitionIdentifier;
     v5->_animatedTransitionIdentifier = v7;
 
-    v9 = [v4 behaviorSettings];
-    v10 = [v9 copy];
+    behaviorSettings = [descriptionCopy behaviorSettings];
+    v10 = [behaviorSettings copy];
     behaviorSettings = v5->_behaviorSettings;
     v5->_behaviorSettings = v10;
 
-    v12 = [v4 keyPathsToAuxillaryBehaviorSettingsMap];
-    if (v12)
+    keyPathsToAuxillaryBehaviorSettingsMap = [descriptionCopy keyPathsToAuxillaryBehaviorSettingsMap];
+    if (keyPathsToAuxillaryBehaviorSettingsMap)
     {
-      v31 = v4;
-      v13 = [MEMORY[0x277CBEB38] dictionary];
+      v31 = descriptionCopy;
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       keyPathsToAuxillaryBehaviorSettingsMap = v5->_keyPathsToAuxillaryBehaviorSettingsMap;
-      v5->_keyPathsToAuxillaryBehaviorSettingsMap = v13;
+      v5->_keyPathsToAuxillaryBehaviorSettingsMap = dictionary;
 
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v15 = [v12 allKeys];
-      v16 = [v15 countByEnumeratingWithState:&v32 objects:v37 count:16];
+      allKeys = [keyPathsToAuxillaryBehaviorSettingsMap allKeys];
+      v16 = [allKeys countByEnumeratingWithState:&v32 objects:v37 count:16];
       if (v16)
       {
         v17 = v16;
@@ -126,32 +126,32 @@ void __147__SBSAAnimatedTransitionDescription_animatedTransitionDescriptionWithA
           {
             if (*v33 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(allKeys);
             }
 
             v20 = *(*(&v32 + 1) + 8 * i);
             v21 = v5->_keyPathsToAuxillaryBehaviorSettingsMap;
-            v22 = [v12 objectForKeyedSubscript:v20];
+            v22 = [keyPathsToAuxillaryBehaviorSettingsMap objectForKeyedSubscript:v20];
             v23 = [v22 copy];
             [(NSMutableDictionary *)v21 setObject:v23 forKey:v20];
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v32 objects:v37 count:16];
+          v17 = [allKeys countByEnumeratingWithState:&v32 objects:v37 count:16];
         }
 
         while (v17);
       }
 
-      v4 = v31;
+      descriptionCopy = v31;
     }
 
-    v24 = [v4 responsibleProviderDebugString];
-    v25 = [v24 copy];
+    responsibleProviderDebugString = [descriptionCopy responsibleProviderDebugString];
+    v25 = [responsibleProviderDebugString copy];
     responsibleProviderDebugString = v5->_responsibleProviderDebugString;
     v5->_responsibleProviderDebugString = v25;
 
-    v27 = [v4 milestones];
-    v28 = [v27 copy];
+    milestones = [descriptionCopy milestones];
+    v28 = [milestones copy];
     milestones = v5->_milestones;
     v5->_milestones = v28;
   }
@@ -159,11 +159,11 @@ void __147__SBSAAnimatedTransitionDescription_animatedTransitionDescriptionWithA
   return v5;
 }
 
-- (id)copyBySettingAuxillaryBehaviorSettings:(id)a3 forKeyPath:(id)a4
+- (id)copyBySettingAuxillaryBehaviorSettings:(id)settings forKeyPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 && [v7 isUnanimated])
+  settingsCopy = settings;
+  pathCopy = path;
+  if (settingsCopy && [settingsCopy isUnanimated])
   {
     [SBSAAnimatedTransitionDescription copyBySettingAuxillaryBehaviorSettings:forKeyPath:];
   }
@@ -173,11 +173,11 @@ void __147__SBSAAnimatedTransitionDescription_animatedTransitionDescriptionWithA
   v13[2] = __87__SBSAAnimatedTransitionDescription_copyBySettingAuxillaryBehaviorSettings_forKeyPath___block_invoke;
   v13[3] = &unk_2783AD778;
   v13[4] = self;
-  v14 = v7;
-  v15 = v8;
+  v14 = settingsCopy;
+  v15 = pathCopy;
   v16 = a2;
-  v9 = v8;
-  v10 = v7;
+  v9 = pathCopy;
+  v10 = settingsCopy;
   v11 = [(SBSAAnimatedTransitionDescription *)self copyWithBlock:v13];
 
   return v11;
@@ -224,9 +224,9 @@ void __87__SBSAAnimatedTransitionDescription_copyBySettingAuxillaryBehaviorSetti
   [v6 setAuxillaryBehaviorSettings:*(a1 + 40) forKeyPath:*(a1 + 48)];
 }
 
-- (id)auxillaryBehaviorSettingsForKeyPath:(id)a3
+- (id)auxillaryBehaviorSettingsForKeyPath:(id)path
 {
-  v3 = [(NSMutableDictionary *)self->_keyPathsToAuxillaryBehaviorSettingsMap objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_keyPathsToAuxillaryBehaviorSettingsMap objectForKey:path];
   v4 = objc_opt_self();
   v5 = v3;
   if (v4)
@@ -252,16 +252,16 @@ void __87__SBSAAnimatedTransitionDescription_copyBySettingAuxillaryBehaviorSetti
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = [MEMORY[0x277CF0C20] builderWithObject:self ofExpectedClass:objc_opt_class()];
   animatedTransitionIdentifier = self->_animatedTransitionIdentifier;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __45__SBSAAnimatedTransitionDescription_isEqual___block_invoke;
   v25[3] = &unk_2783ACDB8;
-  v7 = v4;
+  v7 = equalCopy;
   v26 = v7;
   v8 = [v5 appendObject:animatedTransitionIdentifier counterpart:v25];
   behaviorSettings = self->_behaviorSettings;
@@ -303,8 +303,8 @@ uint64_t __45__SBSAAnimatedTransitionDescription_isEqual___block_invoke_4(uint64
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_animatedTransitionIdentifier];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_animatedTransitionIdentifier];
   v5 = [v4 appendObject:self->_behaviorSettings];
   v6 = [v5 appendObject:self->_keyPathsToAuxillaryBehaviorSettingsMap];
   v7 = [v6 appendObject:self->_milestones];
@@ -316,12 +316,12 @@ uint64_t __45__SBSAAnimatedTransitionDescription_isEqual___block_invoke_4(uint64
 - (NSString)description
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(NSMutableDictionary *)self->_keyPathsToAuxillaryBehaviorSettingsMap allKeys];
-  v4 = [v3 count];
+  allKeys = [(NSMutableDictionary *)self->_keyPathsToAuxillaryBehaviorSettingsMap allKeys];
+  v4 = [allKeys count];
 
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -345,7 +345,7 @@ uint64_t __45__SBSAAnimatedTransitionDescription_isEqual___block_invoke_4(uint64
           v12 = MEMORY[0x277CCACA8];
           v13 = [(NSMutableDictionary *)self->_keyPathsToAuxillaryBehaviorSettingsMap objectForKey:v11];
           v14 = [v12 stringWithFormat:@"<%@ : %@>", v11, v13];
-          [v5 addObject:v14];
+          [array addObject:v14];
         }
 
         v8 = [(NSMutableDictionary *)v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -355,7 +355,7 @@ uint64_t __45__SBSAAnimatedTransitionDescription_isEqual___block_invoke_4(uint64
     }
 
     v15 = MEMORY[0x277CCACA8];
-    v16 = [v5 componentsJoinedByString:{@", "}];
+    v16 = [array componentsJoinedByString:{@", "}];
     v17 = [v15 stringWithFormat:@"[%@]", v16];
   }
 
@@ -375,30 +375,30 @@ uint64_t __45__SBSAAnimatedTransitionDescription_isEqual___block_invoke_4(uint64
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithAnimatedTransitionDescription:self];
 }
 
-+ (id)instanceWithBlock:(id)a3
++ (id)instanceWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v4 copyWithBlock:v3];
+  v5 = [v4 copyWithBlock:blockCopy];
 
   return v5;
 }
 
-- (id)copyWithBlock:(id)a3
+- (id)copyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(SBSAAnimatedTransitionDescription *)self copy];
-  if (v4)
+  if (blockCopy)
   {
     v6 = [objc_alloc(objc_msgSend(objc_opt_class() "mutatorClass"))];
-    v4[2](v4, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   return v5;

@@ -7,22 +7,22 @@
 - (UIEdgeInsets)verticalScrollIndicatorInsets;
 - (id)description;
 - (void)didEndChangeHandling;
-- (void)performChanges:(id)a3 options:(unint64_t)a4;
-- (void)setAlwaysBounceHorizontal:(BOOL)a3;
-- (void)setAlwaysBounceVertical:(BOOL)a3;
-- (void)setClipsToBounds:(BOOL)a3;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)setContentSize:(CGSize)a3;
-- (void)setDraggingPerformsScroll:(BOOL)a3;
-- (void)setHitTestContentInsets:(UIEdgeInsets)a3;
-- (void)setHorizontalInterPageSpacing:(double)a3;
-- (void)setHorizontalScrollIndicatorInsets:(UIEdgeInsets)a3;
-- (void)setScrollDecelerationRate:(int64_t)a3;
-- (void)setScrollRegime:(int64_t)a3;
-- (void)setShowsHorizontalScrollIndicator:(BOOL)a3;
-- (void)setShowsVerticalScrollIndicator:(BOOL)a3;
-- (void)setTransfersScrollToContainer:(BOOL)a3;
-- (void)setVerticalScrollIndicatorInsets:(UIEdgeInsets)a3;
+- (void)performChanges:(id)changes options:(unint64_t)options;
+- (void)setAlwaysBounceHorizontal:(BOOL)horizontal;
+- (void)setAlwaysBounceVertical:(BOOL)vertical;
+- (void)setClipsToBounds:(BOOL)bounds;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)setContentSize:(CGSize)size;
+- (void)setDraggingPerformsScroll:(BOOL)scroll;
+- (void)setHitTestContentInsets:(UIEdgeInsets)insets;
+- (void)setHorizontalInterPageSpacing:(double)spacing;
+- (void)setHorizontalScrollIndicatorInsets:(UIEdgeInsets)insets;
+- (void)setScrollDecelerationRate:(int64_t)rate;
+- (void)setScrollRegime:(int64_t)regime;
+- (void)setShowsHorizontalScrollIndicator:(BOOL)indicator;
+- (void)setShowsVerticalScrollIndicator:(BOOL)indicator;
+- (void)setTransfersScrollToContainer:(BOOL)container;
+- (void)setVerticalScrollIndicatorInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation PXGScrollViewModel
@@ -143,39 +143,39 @@
   return v19;
 }
 
-- (void)setTransfersScrollToContainer:(BOOL)a3
+- (void)setTransfersScrollToContainer:(BOOL)container
 {
-  if (self->_transfersScrollToContainer != a3)
+  if (self->_transfersScrollToContainer != container)
   {
-    self->_transfersScrollToContainer = a3;
+    self->_transfersScrollToContainer = container;
     [(PXGScrollViewModel *)self signalChange:0x8000];
   }
 }
 
-- (void)setDraggingPerformsScroll:(BOOL)a3
+- (void)setDraggingPerformsScroll:(BOOL)scroll
 {
-  if (self->_draggingPerformsScroll != a3)
+  if (self->_draggingPerformsScroll != scroll)
   {
-    self->_draggingPerformsScroll = a3;
+    self->_draggingPerformsScroll = scroll;
     [(PXGScrollViewModel *)self signalChange:128];
   }
 }
 
-- (void)setHorizontalInterPageSpacing:(double)a3
+- (void)setHorizontalInterPageSpacing:(double)spacing
 {
-  if (self->_horizontalInterPageSpacing != a3)
+  if (self->_horizontalInterPageSpacing != spacing)
   {
-    self->_horizontalInterPageSpacing = a3;
+    self->_horizontalInterPageSpacing = spacing;
     [(PXGScrollViewModel *)self signalChange:512];
   }
 }
 
-- (void)setHitTestContentInsets:(UIEdgeInsets)a3
+- (void)setHitTestContentInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   p_hitTestContentInsets = &self->_hitTestContentInsets;
   if ((PXEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
@@ -188,12 +188,12 @@
   }
 }
 
-- (void)setVerticalScrollIndicatorInsets:(UIEdgeInsets)a3
+- (void)setVerticalScrollIndicatorInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   p_verticalScrollIndicatorInsets = &self->_verticalScrollIndicatorInsets;
   if ((PXEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
@@ -206,12 +206,12 @@
   }
 }
 
-- (void)setHorizontalScrollIndicatorInsets:(UIEdgeInsets)a3
+- (void)setHorizontalScrollIndicatorInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   p_horizontalScrollIndicatorInsets = &self->_horizontalScrollIndicatorInsets;
   if ((PXEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
@@ -224,83 +224,83 @@
   }
 }
 
-- (void)setAlwaysBounceVertical:(BOOL)a3
+- (void)setAlwaysBounceVertical:(BOOL)vertical
 {
-  if (self->_alwaysBounceVertical != a3)
+  if (self->_alwaysBounceVertical != vertical)
   {
-    self->_alwaysBounceVertical = a3;
+    self->_alwaysBounceVertical = vertical;
     [(PXGScrollViewModel *)self signalChange:2048];
   }
 }
 
-- (void)setAlwaysBounceHorizontal:(BOOL)a3
+- (void)setAlwaysBounceHorizontal:(BOOL)horizontal
 {
-  if (self->_alwaysBounceHorizontal != a3)
+  if (self->_alwaysBounceHorizontal != horizontal)
   {
-    self->_alwaysBounceHorizontal = a3;
+    self->_alwaysBounceHorizontal = horizontal;
     [(PXGScrollViewModel *)self signalChange:1024];
   }
 }
 
-- (void)setShowsVerticalScrollIndicator:(BOOL)a3
+- (void)setShowsVerticalScrollIndicator:(BOOL)indicator
 {
-  if (self->_showsVerticalScrollIndicator != a3)
+  if (self->_showsVerticalScrollIndicator != indicator)
   {
-    self->_showsVerticalScrollIndicator = a3;
+    self->_showsVerticalScrollIndicator = indicator;
     [(PXGScrollViewModel *)self signalChange:64];
   }
 }
 
-- (void)setShowsHorizontalScrollIndicator:(BOOL)a3
+- (void)setShowsHorizontalScrollIndicator:(BOOL)indicator
 {
-  if (self->_showsHorizontalScrollIndicator != a3)
+  if (self->_showsHorizontalScrollIndicator != indicator)
   {
-    self->_showsHorizontalScrollIndicator = a3;
+    self->_showsHorizontalScrollIndicator = indicator;
     [(PXGScrollViewModel *)self signalChange:32];
   }
 }
 
-- (void)setClipsToBounds:(BOOL)a3
+- (void)setClipsToBounds:(BOOL)bounds
 {
-  if (self->_clipsToBounds != a3)
+  if (self->_clipsToBounds != bounds)
   {
-    self->_clipsToBounds = a3;
+    self->_clipsToBounds = bounds;
     [(PXGScrollViewModel *)self signalChange:256];
   }
 }
 
-- (void)setScrollDecelerationRate:(int64_t)a3
+- (void)setScrollDecelerationRate:(int64_t)rate
 {
-  if (self->_scrollDecelerationRate != a3)
+  if (self->_scrollDecelerationRate != rate)
   {
-    self->_scrollDecelerationRate = a3;
+    self->_scrollDecelerationRate = rate;
     [(PXGScrollViewModel *)self signalChange:8];
   }
 }
 
-- (void)setScrollRegime:(int64_t)a3
+- (void)setScrollRegime:(int64_t)regime
 {
-  if (self->_scrollRegime != a3)
+  if (self->_scrollRegime != regime)
   {
-    self->_scrollRegime = a3;
+    self->_scrollRegime = regime;
     [(PXGScrollViewModel *)self signalChange:4];
   }
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  if (a3.x != self->_contentOffset.x || a3.y != self->_contentOffset.y)
+  if (offset.x != self->_contentOffset.x || offset.y != self->_contentOffset.y)
   {
-    self->_contentOffset = a3;
+    self->_contentOffset = offset;
     [(PXGScrollViewModel *)self signalChange:2];
   }
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  if (a3.width != self->_contentSize.width || a3.height != self->_contentSize.height)
+  if (size.width != self->_contentSize.width || size.height != self->_contentSize.height)
   {
-    self->_contentSize = a3;
+    self->_contentSize = size;
     [(PXGScrollViewModel *)self signalChange:1];
   }
 }
@@ -313,29 +313,29 @@
   self->_changesOptions = 0;
 }
 
-- (void)performChanges:(id)a3 options:(unint64_t)a4
+- (void)performChanges:(id)changes options:(unint64_t)options
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  changesCopy = changes;
   changesOptions = self->_changesOptions;
-  if ((changesOptions & 4) == 0 && changesOptions && changesOptions != a4)
+  if ((changesOptions & 4) == 0 && changesOptions && changesOptions != options)
   {
     v9 = PXAssertGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
       v10 = self->_changesOptions;
       *buf = 134218240;
-      v13 = a4;
+      optionsCopy = options;
       v14 = 2048;
       v15 = v10;
       _os_log_fault_impl(&dword_21AD38000, v9, OS_LOG_TYPE_FAULT, "changes with origin %li nested within different origin %li", buf, 0x16u);
     }
   }
 
-  self->_changesOptions = a4;
+  self->_changesOptions = options;
   v11.receiver = self;
   v11.super_class = PXGScrollViewModel;
-  [(PXGScrollViewModel *)&v11 performChanges:v6];
+  [(PXGScrollViewModel *)&v11 performChanges:changesCopy];
 }
 
 - (PXGScrollViewModel)init

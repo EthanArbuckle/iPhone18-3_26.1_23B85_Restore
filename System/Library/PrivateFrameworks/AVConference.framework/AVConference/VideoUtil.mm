@@ -1,33 +1,33 @@
 @interface VideoUtil
-+ (BOOL)isBufferDescriptionForMultiImageStream:(id)a3;
-+ (CGSize)compute16AlignedResolutionForNativeWidth:(unsigned int)a3 nativeHeight:(unsigned int)a4 maxScreenPixelCount:(unint64_t)a5 maxScreenEncodingSizeSupported:(unint64_t)a6;
-+ (CGSize)computeResolutionForMainDisplayWithMaxScreenPixelCount:(unint64_t)a3;
-+ (CGSize)getBestCaptureSizeForEncodingSize:(CGSize)a3;
-+ (CGSize)lowPowerModeEncodingResolutionForMaxResolution:(CGSize)a3;
-+ (CGSize)maxCaptureEncodingResolutionForStreamConfigResolution:(int64_t)a3 lowPowerModeEnabled:(BOOL)a4;
-+ (CGSize)sizeForVideoResolution:(int64_t)a3;
-+ (__CFString)typeIdentifierForImageType:(int)a3;
-+ (id)convertPixelBuffer:(__CVBuffer *)a3 toImageType:(int)a4 withAssetIdentifier:(id)a5 cameraStatusBits:(unsigned __int8)a6 allowTimeMetaData:(BOOL)a7;
-+ (int)setupBufferPool:(__CVPixelBufferPool *)a3 width:(double)a4 height:(double)a5;
-+ (int)stereoVideoPackingTypeFromVideoBufferDescription:(id)a3;
-+ (int)videoOrientationFromVideoOrientationMessage:(int)a3;
-+ (int)videoOrientationMessageFromVideoOrientation:(int)a3;
-+ (int64_t)compareVideoAspectRatioSizeA:(CGSize)a3 toSizeB:(CGSize)a4;
-+ (int64_t)videoResolutionForWidth:(int)a3 height:(int)a4;
-+ (unsigned)videoCodecForPayload:(int)a3;
++ (BOOL)isBufferDescriptionForMultiImageStream:(id)stream;
++ (CGSize)compute16AlignedResolutionForNativeWidth:(unsigned int)width nativeHeight:(unsigned int)height maxScreenPixelCount:(unint64_t)count maxScreenEncodingSizeSupported:(unint64_t)supported;
++ (CGSize)computeResolutionForMainDisplayWithMaxScreenPixelCount:(unint64_t)count;
++ (CGSize)getBestCaptureSizeForEncodingSize:(CGSize)size;
++ (CGSize)lowPowerModeEncodingResolutionForMaxResolution:(CGSize)resolution;
++ (CGSize)maxCaptureEncodingResolutionForStreamConfigResolution:(int64_t)resolution lowPowerModeEnabled:(BOOL)enabled;
++ (CGSize)sizeForVideoResolution:(int64_t)resolution;
++ (__CFString)typeIdentifierForImageType:(int)type;
++ (id)convertPixelBuffer:(__CVBuffer *)buffer toImageType:(int)type withAssetIdentifier:(id)identifier cameraStatusBits:(unsigned __int8)bits allowTimeMetaData:(BOOL)data;
++ (int)setupBufferPool:(__CVPixelBufferPool *)pool width:(double)width height:(double)height;
++ (int)stereoVideoPackingTypeFromVideoBufferDescription:(id)description;
++ (int)videoOrientationFromVideoOrientationMessage:(int)message;
++ (int)videoOrientationMessageFromVideoOrientation:(int)orientation;
++ (int64_t)compareVideoAspectRatioSizeA:(CGSize)a toSizeB:(CGSize)b;
++ (int64_t)videoResolutionForWidth:(int)width height:(int)height;
++ (unsigned)videoCodecForPayload:(int)payload;
 @end
 
 @implementation VideoUtil
 
-+ (id)convertPixelBuffer:(__CVBuffer *)a3 toImageType:(int)a4 withAssetIdentifier:(id)a5 cameraStatusBits:(unsigned __int8)a6 allowTimeMetaData:(BOOL)a7
++ (id)convertPixelBuffer:(__CVBuffer *)buffer toImageType:(int)type withAssetIdentifier:(id)identifier cameraStatusBits:(unsigned __int8)bits allowTimeMetaData:(BOOL)data
 {
-  v54 = a7;
-  v9 = *&a4;
+  dataCopy = data;
+  v9 = *&type;
   v70[1] = *MEMORY[0x1E69E9840];
   pixelTransferSessionOut = 0;
   pixelBufferOut = 0;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
   if (CVPixelBufferCreate(*MEMORY[0x1E695E480], Width, Height, 0x42475241u, 0, &pixelBufferOut))
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -56,7 +56,7 @@
     goto LABEL_65;
   }
 
-  if (VTPixelTransferSessionTransferImage(pixelTransferSessionOut, a3, pixelBufferOut))
+  if (VTPixelTransferSessionTransferImage(pixelTransferSessionOut, buffer, pixelBufferOut))
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -150,8 +150,8 @@ LABEL_67:
 
   v24 = v23;
   v53 = Height;
-  v25 = [MEMORY[0x1E695DF88] data];
-  v26 = CGImageDestinationCreateWithData(v25, v24, 1uLL, 0);
+  data = [MEMORY[0x1E695DF88] data];
+  v26 = CGImageDestinationCreateWithData(data, v24, 1uLL, 0);
   if (!v26)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -175,10 +175,10 @@ LABEL_67:
     +[VideoUtil convertPixelBuffer:toImageType:withAssetIdentifier:cameraStatusBits:allowTimeMetaData:];
   }
 
-  v29 = [MEMORY[0x1E695DF00] date];
-  v30 = [ImageMetadataDictionary_sDateTimeFormatter stringFromDate:v29];
-  v31 = [ImageMetadataDictionary_sSubsecTimeFormatter stringFromDate:v29];
-  if ((a6 & 8) != 0)
+  date = [MEMORY[0x1E695DF00] date];
+  v30 = [ImageMetadataDictionary_sDateTimeFormatter stringFromDate:date];
+  v31 = [ImageMetadataDictionary_sSubsecTimeFormatter stringFromDate:date];
+  if ((bits & 8) != 0)
   {
     v32 = 1;
   }
@@ -188,7 +188,7 @@ LABEL_67:
     v32 = 3;
   }
 
-  if ((a6 & 8) != 0)
+  if ((bits & 8) != 0)
   {
     v33 = 3;
   }
@@ -198,12 +198,12 @@ LABEL_67:
     v33 = 1;
   }
 
-  if ((a6 & 3) == 2)
+  if ((bits & 3) == 2)
   {
     v33 = v32;
   }
 
-  if ((a6 & 3) != 0)
+  if ((bits & 3) != 0)
   {
     v34 = 8;
   }
@@ -213,7 +213,7 @@ LABEL_67:
     v34 = 6;
   }
 
-  if ((a6 & 3u) <= 1)
+  if ((bits & 3u) <= 1)
   {
     v35 = v34;
   }
@@ -223,7 +223,7 @@ LABEL_67:
     v35 = v33;
   }
 
-  if ((a6 & 0x80) != 0)
+  if ((bits & 0x80) != 0)
   {
     v36 = v35;
   }
@@ -236,10 +236,10 @@ LABEL_67:
   v37 = v31;
   v38 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v36];
   [v28 setObject:v38 forKeyedSubscript:*MEMORY[0x1E696DE78]];
-  if (a5)
+  if (identifier)
   {
     v70[0] = *MEMORY[0x1E69867A8];
-    *buf = a5;
+    *buf = identifier;
     v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:buf forKeys:v70 count:1];
     [v28 setObject:v39 forKeyedSubscript:*MEMORY[0x1E696DE30]];
   }
@@ -250,7 +250,7 @@ LABEL_67:
     v41 = v40;
     [v40 setObject:@"Apple" forKeyedSubscript:*MEMORY[0x1E696DF48]];
     [v41 setObject:ImageMetadataDictionary_sMarketingNameString forKeyedSubscript:*MEMORY[0x1E696DF50]];
-    if (v54)
+    if (dataCopy)
     {
       [v41 setObject:v30 forKeyedSubscript:*MEMORY[0x1E696DF20]];
     }
@@ -267,7 +267,7 @@ LABEL_67:
   if (v42)
   {
     v43 = v42;
-    if (v54)
+    if (dataCopy)
     {
       [v42 setObject:v30 forKeyedSubscript:*MEMORY[0x1E696D998]];
       [v43 setObject:v30 forKeyedSubscript:*MEMORY[0x1E696D990]];
@@ -283,7 +283,7 @@ LABEL_67:
       if (ImageMetadataDictionary_sMarketingNameString)
       {
         [v44 appendString:?];
-        if ((a6 & 8) != 0)
+        if ((bits & 8) != 0)
         {
           v46 = @" back FaceTime camera";
         }
@@ -306,7 +306,7 @@ LABEL_67:
   CGImageDestinationAddImage(v27, v22, v28);
   if (CGImageDestinationFinalize(v27))
   {
-    v47 = v25;
+    v47 = data;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v48 = VRTraceErrorLogLevelToCSTR();
@@ -352,14 +352,14 @@ LABEL_50:
   return v47;
 }
 
-+ (CGSize)sizeForVideoResolution:(int64_t)a3
++ (CGSize)sizeForVideoResolution:(int64_t)resolution
 {
-  if (a3 < 0x1C)
+  if (resolution < 0x1C)
   {
-    if (a3 != 27)
+    if (resolution != 27)
     {
-      v4 = dbl_1DBD495B0[a3];
-      v3 = dbl_1DBD49688[a3];
+      v4 = dbl_1DBD495B0[resolution];
+      v3 = dbl_1DBD49688[resolution];
       goto LABEL_8;
     }
   }
@@ -381,14 +381,14 @@ LABEL_8:
   return result;
 }
 
-+ (CGSize)getBestCaptureSizeForEncodingSize:(CGSize)a3
++ (CGSize)getBestCaptureSizeForEncodingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3.width;
-  v6 = a3.height;
-  if (a3.width)
+  v5 = size.width;
+  v6 = size.height;
+  if (size.width)
   {
     v7 = v6 == 0;
   }
@@ -400,7 +400,7 @@ LABEL_8:
 
   if (!v7)
   {
-    if (a3.width == a3.height)
+    if (size.width == size.height)
     {
       [VideoUtil getBestCaptureSizeForEncodingSize:1280.0, 720.0];
 LABEL_23:
@@ -487,129 +487,129 @@ LABEL_22:
   return result;
 }
 
-+ (int64_t)videoResolutionForWidth:(int)a3 height:(int)a4
++ (int64_t)videoResolutionForWidth:(int)width height:(int)height
 {
-  if (a3 == 1088 && a4 == 1088)
+  if (width == 1088 && height == 1088)
   {
     return 20;
   }
 
-  if (a3 == 96 && a4 == 96)
+  if (width == 96 && height == 96)
   {
     return 0;
   }
 
-  if (a3 == 128 && a4 == 128)
+  if (width == 128 && height == 128)
   {
     return 1;
   }
 
-  if (a3 == 192 && a4 == 112)
+  if (width == 192 && height == 112)
   {
     return 2;
   }
 
-  if (a3 == 192 && a4 == 192)
+  if (width == 192 && height == 192)
   {
     return 3;
   }
 
-  if (a3 == 240 && a4 == 240)
+  if (width == 240 && height == 240)
   {
     return 4;
   }
 
-  if (a3 == 256 && a4 == 256)
+  if (width == 256 && height == 256)
   {
     return 5;
   }
 
-  if (a3 == 320 && a4 == 176)
+  if (width == 320 && height == 176)
   {
     return 6;
   }
 
-  if (a3 == 320 && a4 == 240)
+  if (width == 320 && height == 240)
   {
     return 7;
   }
 
-  if (a3 == 320 && a4 == 320)
+  if (width == 320 && height == 320)
   {
     return 8;
   }
 
-  if (a3 == 480 && a4 == 272)
+  if (width == 480 && height == 272)
   {
     return 9;
   }
 
-  if (a3 == 480 && a4 == 368)
+  if (width == 480 && height == 368)
   {
     return 10;
   }
 
-  if (a3 == 480 && a4 == 480)
+  if (width == 480 && height == 480)
   {
     return 11;
   }
 
-  if (a3 == 512 && a4 == 512)
+  if (width == 512 && height == 512)
   {
     return 12;
   }
 
-  if (a3 == 640 && a4 == 368)
+  if (width == 640 && height == 368)
   {
     return 13;
   }
 
-  if (a3 == 640 && a4 == 480)
+  if (width == 640 && height == 480)
   {
     return 14;
   }
 
-  if (a3 == 640 && a4 == 640)
+  if (width == 640 && height == 640)
   {
     return 15;
   }
 
-  if (a3 == 720 && a4 == 720)
+  if (width == 720 && height == 720)
   {
     return 16;
   }
 
-  if (a3 == 1024 && a4 == 768)
+  if (width == 1024 && height == 768)
   {
     return 17;
   }
 
-  if (a3 == 1280 && a4 == 720)
+  if (width == 1280 && height == 720)
   {
     return 18;
   }
 
-  if (a3 == 1280 && a4 == 960)
+  if (width == 1280 && height == 960)
   {
     return 19;
   }
 
-  if (a3 == 1664 && a4 == 1248)
+  if (width == 1664 && height == 1248)
   {
     return 21;
   }
 
-  if (a3 == 1920 && a4 == 1080)
+  if (width == 1920 && height == 1080)
   {
     return 22;
   }
 
-  if (a3 == 2592 && a4 == 1936)
+  if (width == 2592 && height == 1936)
   {
     return 24;
   }
 
-  if (a4 == 2448 && a3 == 3264)
+  if (height == 2448 && width == 3264)
   {
     return 25;
   }
@@ -620,7 +620,7 @@ LABEL_22:
   }
 }
 
-+ (int)setupBufferPool:(__CVPixelBufferPool *)a3 width:(double)a4 height:(double)a5
++ (int)setupBufferPool:(__CVPixelBufferPool *)pool width:(double)width height:(double)height
 {
   v22[1] = *MEMORY[0x1E69E9840];
   v8 = objc_autoreleasePoolPush();
@@ -634,9 +634,9 @@ LABEL_22:
   v20[1] = &unk_1F5799DC8;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
   v17[0] = *MEMORY[0x1E6966208];
-  v18[0] = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v18[0] = [MEMORY[0x1E696AD98] numberWithDouble:width];
   v17[1] = *MEMORY[0x1E69660B8];
-  v12 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+  v12 = [MEMORY[0x1E696AD98] numberWithDouble:height];
   v13 = *MEMORY[0x1E6966130];
   v18[1] = v12;
   v18[2] = &unk_1F5799DE0;
@@ -645,16 +645,16 @@ LABEL_22:
   v17[3] = v14;
   v18[3] = v9;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:4];
-  LODWORD(a3) = CVPixelBufferPoolCreate(*MEMORY[0x1E695E480], v11, v15, a3);
+  LODWORD(pool) = CVPixelBufferPoolCreate(*MEMORY[0x1E695E480], v11, v15, pool);
   objc_autoreleasePoolPop(v8);
-  return a3;
+  return pool;
 }
 
-+ (int64_t)compareVideoAspectRatioSizeA:(CGSize)a3 toSizeB:(CGSize)a4
++ (int64_t)compareVideoAspectRatioSizeA:(CGSize)a toSizeB:(CGSize)b
 {
-  v4 = a3.width / a3.height;
-  v5 = a4.width / a4.height;
-  v6 = vabdd_f64(v4, a4.width / a4.height);
+  v4 = a.width / a.height;
+  v5 = b.width / b.height;
+  v6 = vabdd_f64(v4, b.width / b.height);
   v7 = -1;
   if (v4 >= v5)
   {
@@ -672,14 +672,14 @@ LABEL_22:
   }
 }
 
-+ (__CFString)typeIdentifierForImageType:(int)a3
++ (__CFString)typeIdentifierForImageType:(int)type
 {
-  if (!a3)
+  if (!type)
   {
     return @"public.jpeg";
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"public.heic";
   }
@@ -696,14 +696,14 @@ LABEL_22:
   return 0;
 }
 
-+ (unsigned)videoCodecForPayload:(int)a3
++ (unsigned)videoCodecForPayload:(int)payload
 {
-  if (a3 == 123)
+  if (payload == 123)
   {
     return 1635148593;
   }
 
-  if (a3 == 100)
+  if (payload == 100)
   {
     return 1752589105;
   }
@@ -723,9 +723,9 @@ LABEL_22:
   return 0;
 }
 
-+ (CGSize)compute16AlignedResolutionForNativeWidth:(unsigned int)a3 nativeHeight:(unsigned int)a4 maxScreenPixelCount:(unint64_t)a5 maxScreenEncodingSizeSupported:(unint64_t)a6
++ (CGSize)compute16AlignedResolutionForNativeWidth:(unsigned int)width nativeHeight:(unsigned int)height maxScreenPixelCount:(unint64_t)count maxScreenEncodingSizeSupported:(unint64_t)supported
 {
-  if (!a3)
+  if (!width)
   {
     +[VideoUtil compute16AlignedResolutionForNativeWidth:nativeHeight:maxScreenPixelCount:maxScreenEncodingSizeSupported:];
 LABEL_20:
@@ -734,56 +734,56 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (!a4)
+  if (!height)
   {
     +[VideoUtil compute16AlignedResolutionForNativeWidth:nativeHeight:maxScreenPixelCount:maxScreenEncodingSizeSupported:];
     goto LABEL_20;
   }
 
-  if (!a5)
+  if (!count)
   {
     +[VideoUtil compute16AlignedResolutionForNativeWidth:nativeHeight:maxScreenPixelCount:maxScreenEncodingSizeSupported:];
     goto LABEL_20;
   }
 
-  if (!a6)
+  if (!supported)
   {
     +[VideoUtil compute16AlignedResolutionForNativeWidth:nativeHeight:maxScreenPixelCount:maxScreenEncodingSizeSupported:];
     goto LABEL_20;
   }
 
-  v6 = a4 * a3;
+  v6 = height * width;
   if (!v6)
   {
     +[VideoUtil compute16AlignedResolutionForNativeWidth:nativeHeight:maxScreenPixelCount:maxScreenEncodingSizeSupported:];
     goto LABEL_20;
   }
 
-  if (v6 >= a6)
+  if (v6 >= supported)
   {
-    v7 = a6;
+    countCopy = supported;
   }
 
   else
   {
-    v7 = a4 * a3;
+    countCopy = height * width;
   }
 
-  if (v7 >= a5)
+  if (countCopy >= count)
   {
-    v7 = a5;
+    countCopy = count;
   }
 
-  if (v7 >= v6)
+  if (countCopy >= v6)
   {
-    v9 = ((a3 + 15) & 0xFFFFFFF0);
-    v10 = ((a4 + 15) & 0xFFFFFFF0);
+    v9 = ((width + 15) & 0xFFFFFFF0);
+    v10 = ((height + 15) & 0xFFFFFFF0);
   }
 
   else
   {
-    v8 = a3 / a4;
-    v9 = ((sqrt(v8 * v7) + 15) & 0xFFFFFFF0);
+    v8 = width / height;
+    v9 = ((sqrt(v8 * countCopy) + 15) & 0xFFFFFFF0);
     v10 = (((v9 / v8) + 15) & 0xFFFFFFF0);
   }
 
@@ -793,12 +793,12 @@ LABEL_21:
   return result;
 }
 
-+ (CGSize)computeResolutionForMainDisplayWithMaxScreenPixelCount:(unint64_t)a3
++ (CGSize)computeResolutionForMainDisplayWithMaxScreenPixelCount:(unint64_t)count
 {
   v10[2] = *MEMORY[0x1E69E9840];
   v4 = [VCHardwareSettings screenWidthForDisplayID:0];
   v5 = [VCHardwareSettings screenHeightForDisplayID:0];
-  +[VideoUtil compute16AlignedResolutionForNativeWidth:nativeHeight:maxScreenPixelCount:maxScreenEncodingSizeSupported:](VideoUtil, "compute16AlignedResolutionForNativeWidth:nativeHeight:maxScreenPixelCount:maxScreenEncodingSizeSupported:", v4, v5, a3, +[VCHardwareSettings maxScreenEncodingSizeSupported]);
+  +[VideoUtil compute16AlignedResolutionForNativeWidth:nativeHeight:maxScreenPixelCount:maxScreenEncodingSizeSupported:](VideoUtil, "compute16AlignedResolutionForNativeWidth:nativeHeight:maxScreenPixelCount:maxScreenEncodingSizeSupported:", v4, v5, count, +[VCHardwareSettings maxScreenEncodingSizeSupported]);
   if (v6 == 0.0)
   {
     [VideoUtil computeResolutionForMainDisplayWithMaxScreenPixelCount:v10];
@@ -821,10 +821,10 @@ LABEL_9:
   return result;
 }
 
-+ (int)videoOrientationMessageFromVideoOrientation:(int)a3
++ (int)videoOrientationMessageFromVideoOrientation:(int)orientation
 {
-  v3 = a3;
-  if (a3 >= 4)
+  orientationCopy = orientation;
+  if (orientation >= 4)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -838,13 +838,13 @@ LABEL_9:
     return 0;
   }
 
-  return v3;
+  return orientationCopy;
 }
 
-+ (int)videoOrientationFromVideoOrientationMessage:(int)a3
++ (int)videoOrientationFromVideoOrientationMessage:(int)message
 {
-  v3 = a3;
-  if (a3 >= 4)
+  messageCopy = message;
+  if (message >= 4)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -858,12 +858,12 @@ LABEL_9:
     return 0;
   }
 
-  return v3;
+  return messageCopy;
 }
 
-+ (CGSize)lowPowerModeEncodingResolutionForMaxResolution:(CGSize)a3
++ (CGSize)lowPowerModeEncodingResolutionForMaxResolution:(CGSize)resolution
 {
-  v3 = a3.width / a3.height;
+  v3 = resolution.width / resolution.height;
   v4 = VCMU_CompareWithAccuracy(v3, 1.3333, 0.00000011920929);
   [VideoUtil sizeForVideoResolution:19];
   v6 = v5;
@@ -880,21 +880,21 @@ LABEL_9:
   return result;
 }
 
-+ (CGSize)maxCaptureEncodingResolutionForStreamConfigResolution:(int64_t)a3 lowPowerModeEnabled:(BOOL)a4
++ (CGSize)maxCaptureEncodingResolutionForStreamConfigResolution:(int64_t)resolution lowPowerModeEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v39 = *MEMORY[0x1E69E9840];
-  [VideoUtil sizeForVideoResolution:a3];
+  [VideoUtil sizeForVideoResolution:resolution];
   v7 = v6;
   v9 = v8;
-  if (v4 && VCDefaults_GetBoolValueForKey(@"enable720pThermalLightMitigation", 0) && v7 != v9)
+  if (enabledCopy && VCDefaults_GetBoolValueForKey(@"enable720pThermalLightMitigation", 0) && v7 != v9)
   {
     [VideoUtil lowPowerModeEncodingResolutionForMaxResolution:v7, v9];
     if (v10 < v7 || v11 < v9)
     {
       v13 = v10;
       v14 = v11;
-      if (objc_opt_class() == a1)
+      if (objc_opt_class() == self)
       {
         if (VRTraceGetErrorLogLevelForModule() < 7)
         {
@@ -927,7 +927,7 @@ LABEL_9:
       {
         if (objc_opt_respondsToSelector())
         {
-          v15 = [a1 performSelector:sel_logPrefix];
+          v15 = [self performSelector:sel_logPrefix];
         }
 
         else
@@ -956,7 +956,7 @@ LABEL_9:
         v31 = 2112;
         v32 = v15;
         v33 = 2048;
-        v34 = *&a1;
+        v34 = *&self;
         v35 = 2048;
         v36 = v13;
         v37 = 2048;
@@ -980,12 +980,12 @@ LABEL_20:
   return result;
 }
 
-+ (int)stereoVideoPackingTypeFromVideoBufferDescription:(id)a3
++ (int)stereoVideoPackingTypeFromVideoBufferDescription:(id)description
 {
   v25 = *MEMORY[0x1E69E9840];
   tagBuffer = *MEMORY[0x1E6960630];
   numberOfTagsCopied = 0;
-  if (!a3 || CFArrayGetCount(a3) < 1)
+  if (!description || CFArrayGetCount(description) < 1)
   {
     return 0;
   }
@@ -997,7 +997,7 @@ LABEL_20:
   v8 = *(MEMORY[0x1E6960688] + 8);
   while (1)
   {
-    ValueAtIndex = CFArrayGetValueAtIndex(a3, v4);
+    ValueAtIndex = CFArrayGetValueAtIndex(description, v4);
     *&v26.category = v5;
     v26.value = v6;
     if (CMTagCollectionContainsTag(ValueAtIndex, v26))
@@ -1010,7 +1010,7 @@ LABEL_20:
       }
     }
 
-    if (++v4 >= CFArrayGetCount(a3))
+    if (++v4 >= CFArrayGetCount(description))
     {
       return 0;
     }
@@ -1047,12 +1047,12 @@ LABEL_20:
   return result;
 }
 
-+ (BOOL)isBufferDescriptionForMultiImageStream:(id)a3
++ (BOOL)isBufferDescriptionForMultiImageStream:(id)stream
 {
   v30 = *MEMORY[0x1E69E9840];
   tagBuffer = *MEMORY[0x1E6960630];
   numberOfTagsCopied = 0;
-  if (!a3 || CFArrayGetCount(a3) < 1)
+  if (!stream || CFArrayGetCount(stream) < 1)
   {
 LABEL_16:
     v14 = 0;
@@ -1067,7 +1067,7 @@ LABEL_16:
   v9 = *(MEMORY[0x1E6960640] + 8);
   while (1)
   {
-    ValueAtIndex = CFArrayGetValueAtIndex(a3, v7);
+    ValueAtIndex = CFArrayGetValueAtIndex(stream, v7);
     *&v31.category = v8;
     v31.value = v9;
     if (CMTagCollectionContainsTag(ValueAtIndex, v31))
@@ -1076,7 +1076,7 @@ LABEL_16:
     }
 
 LABEL_13:
-    if (++v7 >= CFArrayGetCount(a3))
+    if (++v7 >= CFArrayGetCount(stream))
     {
       goto LABEL_14;
     }

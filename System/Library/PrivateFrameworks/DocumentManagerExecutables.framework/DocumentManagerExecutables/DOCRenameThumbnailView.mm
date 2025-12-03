@@ -1,11 +1,11 @@
 @interface DOCRenameThumbnailView
 - (CGSize)intrinsicContentSize;
 - (UIImage)image;
-- (_TtC26DocumentManagerExecutablesP33_AC938FE9F5E323A5ECA7FB68EBA24A1222DOCRenameThumbnailView)initWithCoder:(id)a3;
-- (_TtC26DocumentManagerExecutablesP33_AC938FE9F5E323A5ECA7FB68EBA24A1222DOCRenameThumbnailView)initWithImage:(id)a3;
+- (_TtC26DocumentManagerExecutablesP33_AC938FE9F5E323A5ECA7FB68EBA24A1222DOCRenameThumbnailView)initWithCoder:(id)coder;
+- (_TtC26DocumentManagerExecutablesP33_AC938FE9F5E323A5ECA7FB68EBA24A1222DOCRenameThumbnailView)initWithImage:(id)image;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 @end
 
 @implementation DOCRenameThumbnailView
@@ -14,23 +14,23 @@
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  v2 = [(DOCAspectImageView *)&v4 image];
+  image = [(DOCAspectImageView *)&v4 image];
 
-  return v2;
+  return image;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  imageCopy = image;
   v5 = v7.receiver;
-  [(DOCAspectImageView *)&v7 setImage:v4];
+  [(DOCAspectImageView *)&v7 setImage:imageCopy];
   v6 = DOCRenameThumbnailView.addDecoration.getter();
   specialized static DOCRenameThumbnailView.updateDecoration(on:addDecoration:)(v5, v6 & 1);
 }
 
-- (_TtC26DocumentManagerExecutablesP33_AC938FE9F5E323A5ECA7FB68EBA24A1222DOCRenameThumbnailView)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutablesP33_AC938FE9F5E323A5ECA7FB68EBA24A1222DOCRenameThumbnailView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutablesP33_AC938FE9F5E323A5ECA7FB68EBA24A1222DOCRenameThumbnailView_item) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutablesP33_AC938FE9F5E323A5ECA7FB68EBA24A1222DOCRenameThumbnailView_initialThumbnail) = 0;
@@ -46,8 +46,8 @@
   v4.super_class = swift_getObjectType();
   v2 = v4.receiver;
   [(DOCRenameThumbnailView *)&v4 didMoveToWindow];
-  v3 = [v2 window];
-  if (v3)
+  window = [v2 window];
+  if (window)
   {
 
     DOCRenameThumbnailView.recalculateThumbnail()();
@@ -70,8 +70,8 @@
   v10.super_class = swift_getObjectType();
   v2 = v10.receiver;
   [(DOCRenameThumbnailView *)&v10 intrinsicContentSize];
-  v3 = [v2 traitCollection];
-  [v3 displayScale];
+  traitCollection = [v2 traitCollection];
+  [traitCollection displayScale];
 
   DOCAdaptSizeToRect();
   v5 = v4;
@@ -84,7 +84,7 @@
   return result;
 }
 
-- (_TtC26DocumentManagerExecutablesP33_AC938FE9F5E323A5ECA7FB68EBA24A1222DOCRenameThumbnailView)initWithImage:(id)a3
+- (_TtC26DocumentManagerExecutablesP33_AC938FE9F5E323A5ECA7FB68EBA24A1222DOCRenameThumbnailView)initWithImage:(id)image
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,29 +1,29 @@
 @interface DummyPreview
 - (NSString)description;
-- (_TtC5UIKitP33_3B71486064EBB3A7715396E0775E2F5F12DummyPreview)initWithView:(id)a3 parameters:(id)a4 target:(id)a5;
+- (_TtC5UIKitP33_3B71486064EBB3A7715396E0775E2F5F12DummyPreview)initWithView:(id)view parameters:(id)parameters target:(id)target;
 @end
 
 @implementation DummyPreview
 
-- (_TtC5UIKitP33_3B71486064EBB3A7715396E0775E2F5F12DummyPreview)initWithView:(id)a3 parameters:(id)a4 target:(id)a5
+- (_TtC5UIKitP33_3B71486064EBB3A7715396E0775E2F5F12DummyPreview)initWithView:(id)view parameters:(id)parameters target:(id)target
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for DummyPreview();
-  return [(UITargetedPreview *)&v9 initWithView:a3 parameters:a4 target:a5];
+  return [(UITargetedPreview *)&v9 initWithView:view parameters:parameters target:target];
 }
 
 - (NSString)description
 {
-  v2 = self;
-  v3 = [(UITargetedPreview *)v2 view];
-  v4 = [(UIView *)v3 layer];
+  selfCopy = self;
+  view = [(UITargetedPreview *)selfCopy view];
+  layer = [(UIView *)view layer];
 
-  v5 = [(CALayer *)v4 name];
-  if (!v5)
+  name = [(CALayer *)layer name];
+  if (!name)
   {
-    v8.receiver = v2;
+    v8.receiver = selfCopy;
     v8.super_class = type metadata accessor for DummyPreview();
-    v5 = [(UITargetedPreview *)&v8 description];
+    name = [(UITargetedPreview *)&v8 description];
   }
 
   sub_18A4A7288();

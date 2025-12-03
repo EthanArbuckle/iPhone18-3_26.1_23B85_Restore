@@ -1,43 +1,43 @@
 @interface HDSharingRelationshipSyncEntity
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
++ (id)decodeSyncObjectWithData:(id)data;
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error;
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDSharingRelationshipSyncEntity
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  end = a4.end;
-  start = a4.start;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = [MEMORY[0x277CBEB18] array];
+  end = range.end;
+  start = range.start;
+  sessionCopy = session;
+  profileCopy = profile;
+  handlerCopy = handler;
+  array = [MEMORY[0x277CBEB18] array];
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
   v35 = -1;
-  v16 = [v13 database];
+  database = [profileCopy database];
   v22 = MEMORY[0x277D85DD0];
   v23 = 3221225472;
   v24 = __110__HDSharingRelationshipSyncEntity_generateSyncObjectsForSession_syncAnchorRange_profile_messageHandler_error___block_invoke;
   v25 = &unk_2786208D0;
-  v17 = v12;
+  v17 = sessionCopy;
   v30 = start;
   v31 = end;
   v26 = v17;
   v29 = &v32;
-  v18 = v13;
+  v18 = profileCopy;
   v27 = v18;
-  v19 = v15;
+  v19 = array;
   v28 = v19;
-  LODWORD(v13) = [(HDHealthEntity *)HDSharingRelationshipEntity performReadTransactionWithHealthDatabase:v16 error:a7 block:&v22];
+  LODWORD(profileCopy) = [(HDHealthEntity *)HDSharingRelationshipEntity performReadTransactionWithHealthDatabase:database error:error block:&v22];
 
-  if (v13)
+  if (profileCopy)
   {
-    v20 = [v14 sendCodableChange:v19 resultAnchor:v33[3] sequence:0 done:1 error:{a7, v22, v23, v24, v25, v26, v27}];
+    v20 = [handlerCopy sendCodableChange:v19 resultAnchor:v33[3] sequence:0 done:1 error:{error, v22, v23, v24, v25, v26, v27}];
   }
 
   else
@@ -235,35 +235,35 @@ LABEL_30:
   return v26;
 }
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[HDCodableSharingRelationship alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[HDCodableSharingRelationship alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error
 {
-  v9 = a3;
-  v10 = [a5 database];
-  v11 = [(HDHealthEntity *)HDSharingRelationshipEntity nextSyncAnchorWithStartAnchor:a4 predicate:0 session:v9 healthDatabase:v10 error:a6];
+  sessionCopy = session;
+  database = [profile database];
+  v11 = [(HDHealthEntity *)HDSharingRelationshipEntity nextSyncAnchorWithStartAnchor:anchor predicate:0 session:sessionCopy healthDatabase:database error:error];
 
   return v11;
 }
 
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
+  objectsCopy = objects;
+  profileCopy = profile;
+  storeCopy = store;
   v13 = [HDInsertOrUpdateSharingRelationshipOperation alloc];
-  v14 = [v12 syncProvenance];
+  syncProvenance = [storeCopy syncProvenance];
 
-  v15 = [(HDInsertOrUpdateSharingRelationshipOperation *)v13 initWithCodableSharingRelationships:v10 syncProvenance:v14];
-  LODWORD(a7) = [(HDJournalableOperation *)v15 performOrJournalWithProfile:v11 error:a7];
+  v15 = [(HDInsertOrUpdateSharingRelationshipOperation *)v13 initWithCodableSharingRelationships:objectsCopy syncProvenance:syncProvenance];
+  LODWORD(error) = [(HDJournalableOperation *)v15 performOrJournalWithProfile:profileCopy error:error];
 
-  return a7 ^ 1;
+  return error ^ 1;
 }
 
 @end

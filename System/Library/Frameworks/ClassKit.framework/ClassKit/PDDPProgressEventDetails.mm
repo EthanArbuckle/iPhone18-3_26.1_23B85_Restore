@@ -1,25 +1,25 @@
 @interface PDDPProgressEventDetails
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAttachmentType:(id)a3;
-- (int)StringAsContextType:(id)a3;
-- (int)StringAsProgressInfo:(id)a3;
+- (int)StringAsAttachmentType:(id)type;
+- (int)StringAsContextType:(id)type;
+- (int)StringAsProgressInfo:(id)info;
 - (int)attachmentType;
 - (int)contextType;
 - (int)progressInfo;
 - (unint64_t)hash;
 - (void)clearOneofValuesForProgressInfo;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setActivityInfo:(id)a3;
-- (void)setActivityItemInfo:(id)a3;
-- (void)setHasContextType:(BOOL)a3;
-- (void)setHasProgressInfo:(BOOL)a3;
-- (void)setRangeInfo:(id)a3;
-- (void)setTimeIntervalInfo:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setActivityInfo:(id)info;
+- (void)setActivityItemInfo:(id)info;
+- (void)setHasContextType:(BOOL)type;
+- (void)setHasProgressInfo:(BOOL)info;
+- (void)setRangeInfo:(id)info;
+- (void)setTimeIntervalInfo:(id)info;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPProgressEventDetails
@@ -37,9 +37,9 @@
   }
 }
 
-- (void)setHasContextType:(BOOL)a3
+- (void)setHasContextType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -52,100 +52,100 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsContextType:(id)a3
+- (int)StringAsContextType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_CONTEXT_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_CONTEXT_TYPE"])
   {
     v4 = -1;
   }
 
-  else if ([v3 isEqualToString:@"NONE"])
+  else if ([typeCopy isEqualToString:@"NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"APP"])
+  else if ([typeCopy isEqualToString:@"APP"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CHAPTER"])
+  else if ([typeCopy isEqualToString:@"CHAPTER"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SECTION"])
+  else if ([typeCopy isEqualToString:@"SECTION"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LEVEL"])
+  else if ([typeCopy isEqualToString:@"LEVEL"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PAGE"])
+  else if ([typeCopy isEqualToString:@"PAGE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"TASK"])
+  else if ([typeCopy isEqualToString:@"TASK"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"CHALLENGE"])
+  else if ([typeCopy isEqualToString:@"CHALLENGE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"QUIZ"])
+  else if ([typeCopy isEqualToString:@"QUIZ"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"EXERCISE"])
+  else if ([typeCopy isEqualToString:@"EXERCISE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"LESSON"])
+  else if ([typeCopy isEqualToString:@"LESSON"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"BOOK"])
+  else if ([typeCopy isEqualToString:@"BOOK"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"GAME"])
+  else if ([typeCopy isEqualToString:@"GAME"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"DOCUMENT"])
+  else if ([typeCopy isEqualToString:@"DOCUMENT"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"AUDIO"])
+  else if ([typeCopy isEqualToString:@"AUDIO"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"VIDEO"])
+  else if ([typeCopy isEqualToString:@"VIDEO"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"COURSE"])
+  else if ([typeCopy isEqualToString:@"COURSE"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"CUSTOM"])
+  else if ([typeCopy isEqualToString:@"CUSTOM"])
   {
     v4 = 17;
   }
@@ -171,45 +171,45 @@
   }
 }
 
-- (int)StringAsAttachmentType:(id)a3
+- (int)StringAsAttachmentType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"URL_TYPE"])
+  else if ([typeCopy isEqualToString:@"URL_TYPE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CONTEXT_TYPE"])
+  else if ([typeCopy isEqualToString:@"CONTEXT_TYPE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ASSET_TYPE"])
+  else if ([typeCopy isEqualToString:@"ASSET_TYPE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"APP_TYPE"])
+  else if ([typeCopy isEqualToString:@"APP_TYPE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"HAND_IN_REQUEST_TYPE"])
+  else if ([typeCopy isEqualToString:@"HAND_IN_REQUEST_TYPE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SURVEY_TYPE"])
+  else if ([typeCopy isEqualToString:@"SURVEY_TYPE"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ASSESSMENT_TYPE"])
+  else if ([typeCopy isEqualToString:@"ASSESSMENT_TYPE"])
   {
     v4 = 7;
   }
@@ -222,44 +222,44 @@
   return v4;
 }
 
-- (void)setActivityItemInfo:(id)a3
+- (void)setActivityItemInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(PDDPProgressEventDetails *)self clearOneofValuesForProgressInfo];
   *&self->_has |= 4u;
   self->_progressInfo = 1;
   activityItemInfo = self->_activityItemInfo;
-  self->_activityItemInfo = v4;
+  self->_activityItemInfo = infoCopy;
 }
 
-- (void)setRangeInfo:(id)a3
+- (void)setRangeInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(PDDPProgressEventDetails *)self clearOneofValuesForProgressInfo];
   *&self->_has |= 4u;
   self->_progressInfo = 2;
   rangeInfo = self->_rangeInfo;
-  self->_rangeInfo = v4;
+  self->_rangeInfo = infoCopy;
 }
 
-- (void)setTimeIntervalInfo:(id)a3
+- (void)setTimeIntervalInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(PDDPProgressEventDetails *)self clearOneofValuesForProgressInfo];
   *&self->_has |= 4u;
   self->_progressInfo = 3;
   timeIntervalInfo = self->_timeIntervalInfo;
-  self->_timeIntervalInfo = v4;
+  self->_timeIntervalInfo = infoCopy;
 }
 
-- (void)setActivityInfo:(id)a3
+- (void)setActivityInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(PDDPProgressEventDetails *)self clearOneofValuesForProgressInfo];
   *&self->_has |= 4u;
   self->_progressInfo = 4;
   activityInfo = self->_activityInfo;
-  self->_activityInfo = v4;
+  self->_activityInfo = infoCopy;
 }
 
 - (int)progressInfo
@@ -275,9 +275,9 @@
   }
 }
 
-- (void)setHasProgressInfo:(BOOL)a3
+- (void)setHasProgressInfo:(BOOL)info
 {
-  if (a3)
+  if (info)
   {
     v3 = 4;
   }
@@ -290,30 +290,30 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsProgressInfo:(id)a3
+- (int)StringAsProgressInfo:(id)info
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  infoCopy = info;
+  if ([infoCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"activity_item_info"])
+  else if ([infoCopy isEqualToString:@"activity_item_info"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"range_info"])
+  else if ([infoCopy isEqualToString:@"range_info"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"time_interval_info"])
+  else if ([infoCopy isEqualToString:@"time_interval_info"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"activity_info"])
+  else if ([infoCopy isEqualToString:@"activity_info"])
   {
     v4 = 4;
   }
@@ -348,8 +348,8 @@
   v7.receiver = self;
   v7.super_class = PDDPProgressEventDetails;
   v3 = [(PDDPProgressEventDetails *)&v7 description];
-  v4 = [(PDDPProgressEventDetails *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPProgressEventDetails *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -438,29 +438,29 @@
   activityItemInfo = self->_activityItemInfo;
   if (activityItemInfo)
   {
-    v18 = [(PDDPActivityReportItem *)activityItemInfo dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"activity_item_info"];
+    dictionaryRepresentation = [(PDDPActivityReportItem *)activityItemInfo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"activity_item_info"];
   }
 
   rangeInfo = self->_rangeInfo;
   if (rangeInfo)
   {
-    v20 = [(PDDPRange *)rangeInfo dictionaryRepresentation];
-    [v4 setObject:v20 forKey:@"range_info"];
+    dictionaryRepresentation2 = [(PDDPRange *)rangeInfo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"range_info"];
   }
 
   timeIntervalInfo = self->_timeIntervalInfo;
   if (timeIntervalInfo)
   {
-    v22 = [(PDDPTimeIntervalInfo *)timeIntervalInfo dictionaryRepresentation];
-    [v4 setObject:v22 forKey:@"time_interval_info"];
+    dictionaryRepresentation3 = [(PDDPTimeIntervalInfo *)timeIntervalInfo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"time_interval_info"];
   }
 
   activityInfo = self->_activityInfo;
   if (activityInfo)
   {
-    v24 = [(PDDPActivityInfo *)activityInfo dictionaryRepresentation];
-    [v4 setObject:v24 forKey:@"activity_info"];
+    dictionaryRepresentation4 = [(PDDPActivityInfo *)activityInfo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"activity_info"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -488,26 +488,26 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_classId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_handoutId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_attachmentId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -515,7 +515,7 @@
   {
     contextType = self->_contextType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -523,164 +523,164 @@
   {
     attachmentType = self->_attachmentType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_parentObjectId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_objectIdPath)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_appIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_handoutAuthorizedObjectId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_activityItemInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_rangeInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_timeIntervalInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_activityInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_activityId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[26] = self->_progressInfo;
-    *(v4 + 128) |= 4u;
+    toCopy[26] = self->_progressInfo;
+    *(toCopy + 128) |= 4u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_classId)
   {
-    [v4 setClassId:?];
-    v4 = v6;
+    [toCopy setClassId:?];
+    toCopy = v6;
   }
 
   if (self->_handoutId)
   {
     [v6 setHandoutId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_attachmentId)
   {
     [v6 setAttachmentId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[16] = self->_contextType;
-    *(v4 + 128) |= 2u;
+    toCopy[16] = self->_contextType;
+    *(toCopy + 128) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[12] = self->_attachmentType;
-    *(v4 + 128) |= 1u;
+    toCopy[12] = self->_attachmentType;
+    *(toCopy + 128) |= 1u;
   }
 
   if (self->_parentObjectId)
   {
     [v6 setParentObjectId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_objectIdPath)
   {
     [v6 setObjectIdPath:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_appIdentifier)
   {
     [v6 setAppIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_handoutAuthorizedObjectId)
   {
     [v6 setHandoutAuthorizedObjectId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_activityItemInfo)
   {
     [v6 setActivityItemInfo:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_rangeInfo)
   {
     [v6 setRangeInfo:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_timeIntervalInfo)
   {
     [v6 setTimeIntervalInfo:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_activityInfo)
   {
     [v6 setActivityInfo:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_activityId)
   {
     [v6 setActivityId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -688,15 +688,15 @@
     *(v5 + 128) |= 4u;
   }
 
-  v7 = [(NSString *)self->_classId copyWithZone:a3];
+  v7 = [(NSString *)self->_classId copyWithZone:zone];
   v8 = v6[7];
   v6[7] = v7;
 
-  v9 = [(NSString *)self->_handoutId copyWithZone:a3];
+  v9 = [(NSString *)self->_handoutId copyWithZone:zone];
   v10 = v6[10];
   v6[10] = v9;
 
-  v11 = [(NSString *)self->_attachmentId copyWithZone:a3];
+  v11 = [(NSString *)self->_attachmentId copyWithZone:zone];
   v12 = v6[5];
   v6[5] = v11;
 
@@ -714,63 +714,63 @@
     *(v6 + 128) |= 1u;
   }
 
-  v14 = [(NSString *)self->_parentObjectId copyWithZone:a3];
+  v14 = [(NSString *)self->_parentObjectId copyWithZone:zone];
   v15 = v6[12];
   v6[12] = v14;
 
-  v16 = [(NSString *)self->_objectIdPath copyWithZone:a3];
+  v16 = [(NSString *)self->_objectIdPath copyWithZone:zone];
   v17 = v6[11];
   v6[11] = v16;
 
-  v18 = [(NSString *)self->_appIdentifier copyWithZone:a3];
+  v18 = [(NSString *)self->_appIdentifier copyWithZone:zone];
   v19 = v6[4];
   v6[4] = v18;
 
-  v20 = [(NSString *)self->_handoutAuthorizedObjectId copyWithZone:a3];
+  v20 = [(NSString *)self->_handoutAuthorizedObjectId copyWithZone:zone];
   v21 = v6[9];
   v6[9] = v20;
 
-  v22 = [(PDDPActivityReportItem *)self->_activityItemInfo copyWithZone:a3];
+  v22 = [(PDDPActivityReportItem *)self->_activityItemInfo copyWithZone:zone];
   v23 = v6[3];
   v6[3] = v22;
 
-  v24 = [(PDDPRange *)self->_rangeInfo copyWithZone:a3];
+  v24 = [(PDDPRange *)self->_rangeInfo copyWithZone:zone];
   v25 = v6[14];
   v6[14] = v24;
 
-  v26 = [(PDDPTimeIntervalInfo *)self->_timeIntervalInfo copyWithZone:a3];
+  v26 = [(PDDPTimeIntervalInfo *)self->_timeIntervalInfo copyWithZone:zone];
   v27 = v6[15];
   v6[15] = v26;
 
-  v28 = [(PDDPActivityInfo *)self->_activityInfo copyWithZone:a3];
+  v28 = [(PDDPActivityInfo *)self->_activityInfo copyWithZone:zone];
   v29 = v6[2];
   v6[2] = v28;
 
-  v30 = [(NSString *)self->_activityId copyWithZone:a3];
+  v30 = [(NSString *)self->_activityId copyWithZone:zone];
   v31 = v6[1];
   v6[1] = v30;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_41;
   }
 
-  v5 = *(v4 + 128);
+  v5 = *(equalCopy + 128);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 128) & 4) == 0 || self->_progressInfo != *(v4 + 26))
+    if ((*(equalCopy + 128) & 4) == 0 || self->_progressInfo != *(equalCopy + 26))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 128) & 4) != 0)
+  else if ((*(equalCopy + 128) & 4) != 0)
   {
 LABEL_41:
     v19 = 0;
@@ -778,13 +778,13 @@ LABEL_41:
   }
 
   classId = self->_classId;
-  if (classId | *(v4 + 7) && ![(NSString *)classId isEqual:?])
+  if (classId | *(equalCopy + 7) && ![(NSString *)classId isEqual:?])
   {
     goto LABEL_41;
   }
 
   handoutId = self->_handoutId;
-  if (handoutId | *(v4 + 10))
+  if (handoutId | *(equalCopy + 10))
   {
     if (![(NSString *)handoutId isEqual:?])
     {
@@ -793,7 +793,7 @@ LABEL_41:
   }
 
   attachmentId = self->_attachmentId;
-  if (attachmentId | *(v4 + 5))
+  if (attachmentId | *(equalCopy + 5))
   {
     if (![(NSString *)attachmentId isEqual:?])
     {
@@ -801,41 +801,41 @@ LABEL_41:
     }
   }
 
-  v9 = *(v4 + 128);
+  v9 = *(equalCopy + 128);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 128) & 2) == 0 || self->_contextType != *(v4 + 16))
+    if ((*(equalCopy + 128) & 2) == 0 || self->_contextType != *(equalCopy + 16))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 128) & 2) != 0)
+  else if ((*(equalCopy + 128) & 2) != 0)
   {
     goto LABEL_41;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 128) & 1) == 0 || self->_attachmentType != *(v4 + 12))
+    if ((*(equalCopy + 128) & 1) == 0 || self->_attachmentType != *(equalCopy + 12))
     {
       goto LABEL_41;
     }
   }
 
-  else if (*(v4 + 128))
+  else if (*(equalCopy + 128))
   {
     goto LABEL_41;
   }
 
   parentObjectId = self->_parentObjectId;
-  if (parentObjectId | *(v4 + 12) && ![(NSString *)parentObjectId isEqual:?])
+  if (parentObjectId | *(equalCopy + 12) && ![(NSString *)parentObjectId isEqual:?])
   {
     goto LABEL_41;
   }
 
   objectIdPath = self->_objectIdPath;
-  if (objectIdPath | *(v4 + 11))
+  if (objectIdPath | *(equalCopy + 11))
   {
     if (![(NSString *)objectIdPath isEqual:?])
     {
@@ -844,7 +844,7 @@ LABEL_41:
   }
 
   appIdentifier = self->_appIdentifier;
-  if (appIdentifier | *(v4 + 4))
+  if (appIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)appIdentifier isEqual:?])
     {
@@ -853,7 +853,7 @@ LABEL_41:
   }
 
   handoutAuthorizedObjectId = self->_handoutAuthorizedObjectId;
-  if (handoutAuthorizedObjectId | *(v4 + 9))
+  if (handoutAuthorizedObjectId | *(equalCopy + 9))
   {
     if (![(NSString *)handoutAuthorizedObjectId isEqual:?])
     {
@@ -862,7 +862,7 @@ LABEL_41:
   }
 
   activityItemInfo = self->_activityItemInfo;
-  if (activityItemInfo | *(v4 + 3))
+  if (activityItemInfo | *(equalCopy + 3))
   {
     if (![(PDDPActivityReportItem *)activityItemInfo isEqual:?])
     {
@@ -871,7 +871,7 @@ LABEL_41:
   }
 
   rangeInfo = self->_rangeInfo;
-  if (rangeInfo | *(v4 + 14))
+  if (rangeInfo | *(equalCopy + 14))
   {
     if (![(PDDPRange *)rangeInfo isEqual:?])
     {
@@ -880,7 +880,7 @@ LABEL_41:
   }
 
   timeIntervalInfo = self->_timeIntervalInfo;
-  if (timeIntervalInfo | *(v4 + 15))
+  if (timeIntervalInfo | *(equalCopy + 15))
   {
     if (![(PDDPTimeIntervalInfo *)timeIntervalInfo isEqual:?])
     {
@@ -889,7 +889,7 @@ LABEL_41:
   }
 
   activityInfo = self->_activityInfo;
-  if (activityInfo | *(v4 + 2))
+  if (activityInfo | *(equalCopy + 2))
   {
     if (![(PDDPActivityInfo *)activityInfo isEqual:?])
     {
@@ -898,7 +898,7 @@ LABEL_41:
   }
 
   activityId = self->_activityId;
-  if (activityId | *(v4 + 1))
+  if (activityId | *(equalCopy + 1))
   {
     v19 = [(NSString *)activityId isEqual:?];
   }
@@ -962,18 +962,18 @@ LABEL_9:
   return v15 ^ v17 ^ [(NSString *)self->_activityId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[32] & 4) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[32] & 4) != 0)
   {
-    self->_progressInfo = v4[26];
+    self->_progressInfo = fromCopy[26];
     *&self->_has |= 4u;
   }
 
-  v15 = v4;
-  if (*(v4 + 7))
+  v15 = fromCopy;
+  if (*(fromCopy + 7))
   {
     [(PDDPProgressEventDetails *)self setClassId:?];
     v5 = v15;

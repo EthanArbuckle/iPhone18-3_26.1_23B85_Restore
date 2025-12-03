@@ -30,75 +30,75 @@ uint64_t __42__CFXEffectHostAppDelegate_sharedInstance__block_invoke()
 
 - (BOOL)wantsToAssertThatLoadedSceneHasAnimateFlagDisabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"JFX_EnableAssertionThatLoadedSceneHasAnimateFlagDisabled"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"JFX_EnableAssertionThatLoadedSceneHasAnimateFlagDisabled"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)wantsToAssertThatTopLevelGroupSpansEntireScene
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"JFX_EnableAssertionThatTopLevelGroupSpansEntireScene"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"JFX_EnableAssertionThatTopLevelGroupSpansEntireScene"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)preferredDisplayColorSpace
 {
-  v2 = [(CFXEffectHostAppDelegate *)self colorSpaceDelegate];
+  colorSpaceDelegate = [(CFXEffectHostAppDelegate *)self colorSpaceDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 preferredDisplayColorSpace];
+    preferredDisplayColorSpace = [colorSpaceDelegate preferredDisplayColorSpace];
   }
 
   else
   {
     v4 = MEMORY[0x277D415E0];
     v5 = +[JFXVideoCameraController sharedInstance];
-    v3 = [v4 jfx_getColorSpaceFromCaptureColorSpace:{objc_msgSend(v5, "cameraColorSpace")}];
+    preferredDisplayColorSpace = [v4 jfx_getColorSpaceFromCaptureColorSpace:{objc_msgSend(v5, "cameraColorSpace")}];
   }
 
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 jfx_recommendedDisplayColorSpaceForColorSpace:v3];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v7 = [currentDevice jfx_recommendedDisplayColorSpaceForColorSpace:preferredDisplayColorSpace];
 
   return v7;
 }
 
 - (id)preferredExportColorSpace
 {
-  v3 = [MEMORY[0x277D415E0] rec709GammaColorSpace];
-  v4 = [(CFXEffectHostAppDelegate *)self colorSpaceDelegate];
+  rec709GammaColorSpace = [MEMORY[0x277D415E0] rec709GammaColorSpace];
+  colorSpaceDelegate = [(CFXEffectHostAppDelegate *)self colorSpaceDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 preferredExportColorSpace];
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = [v6 jfx_recommendedDisplayColorSpaceForColorSpace:v5];
+    preferredExportColorSpace = [colorSpaceDelegate preferredExportColorSpace];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v7 = [currentDevice jfx_recommendedDisplayColorSpaceForColorSpace:preferredExportColorSpace];
 
-    v3 = v7;
+    rec709GammaColorSpace = v7;
   }
 
-  return v3;
+  return rec709GammaColorSpace;
 }
 
 - (PVHostApplicationDelegate)colorSpaceDelegate

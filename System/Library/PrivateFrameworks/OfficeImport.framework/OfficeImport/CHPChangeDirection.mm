@@ -1,22 +1,22 @@
 @interface CHPChangeDirection
-- (BOOL)isObjectSupported:(id)a3;
-- (id)createNewSeriesCollectionForOrthogonalDirection:(id)a3 forChart:(id)a4;
-- (id)getGraphicPropertiesForSeriesWithIndex:(unint64_t)a3 fromCollection:(id)a4 isVaryColors:(BOOL)a5 forChart:(id)a6;
-- (id)getSeriesCollectionForOrthogonalDirection:(id)a3 forChart:(id)a4;
-- (void)addDataValue:(id)a3 to:(id)a4 withIndex:(unint64_t)a5;
-- (void)changeBarColumnDirection:(id)a3;
-- (void)changeChartDirection:(id)a3 sheet:(id)a4;
-- (void)cleanUpOldSeriesCollection:(id)a3;
-- (void)mapSeriesCollection:(id)a3 from:(id)a4 forChart:(id)a5;
-- (void)mapSeriesValues:(id)a3 to:(id)a4 forIndex:(unint64_t)a5 byRow:(BOOL)a6 forChart:(id)a7;
+- (BOOL)isObjectSupported:(id)supported;
+- (id)createNewSeriesCollectionForOrthogonalDirection:(id)direction forChart:(id)chart;
+- (id)getGraphicPropertiesForSeriesWithIndex:(unint64_t)index fromCollection:(id)collection isVaryColors:(BOOL)colors forChart:(id)chart;
+- (id)getSeriesCollectionForOrthogonalDirection:(id)direction forChart:(id)chart;
+- (void)addDataValue:(id)value to:(id)to withIndex:(unint64_t)index;
+- (void)changeBarColumnDirection:(id)direction;
+- (void)changeChartDirection:(id)direction sheet:(id)sheet;
+- (void)cleanUpOldSeriesCollection:(id)collection;
+- (void)mapSeriesCollection:(id)collection from:(id)from forChart:(id)chart;
+- (void)mapSeriesValues:(id)values to:(id)to forIndex:(unint64_t)index byRow:(BOOL)row forChart:(id)chart;
 @end
 
 @implementation CHPChangeDirection
 
-- (BOOL)isObjectSupported:(id)a3
+- (BOOL)isObjectSupported:(id)supported
 {
-  v3 = a3;
-  if (!v3)
+  supportedCopy = supported;
+  if (!supportedCopy)
   {
     goto LABEL_26;
   }
@@ -27,10 +27,10 @@
     goto LABEL_26;
   }
 
-  v4 = v3;
-  v5 = [v4 seriesCollection];
-  v6 = v5;
-  if (!v5 || ![v5 nonEmptySeriesCount])
+  v4 = supportedCopy;
+  seriesCollection = [v4 seriesCollection];
+  v6 = seriesCollection;
+  if (!seriesCollection || ![seriesCollection nonEmptySeriesCount])
   {
     v13 = 0;
 LABEL_12:
@@ -45,11 +45,11 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v9 = [v4 chart];
-  v10 = [v9 plotArea];
-  v11 = [v10 chartTypes];
+  chart = [v4 chart];
+  plotArea = [chart plotArea];
+  chartTypes = [plotArea chartTypes];
 
-  if (v11 && [v11 count] > 1)
+  if (chartTypes && [chartTypes count] > 1)
   {
     v12 = 0;
     v13 = 0;
@@ -63,19 +63,19 @@ LABEL_12:
     goto LABEL_24;
   }
 
-  v37 = [v6 firstNonEmptySeries];
-  v14 = [v37 dataValuePropertiesCollection];
-  v39 = v14;
-  if (!v14 || [v14 count] < 2)
+  firstNonEmptySeries = [v6 firstNonEmptySeries];
+  dataValuePropertiesCollection = [firstNonEmptySeries dataValuePropertiesCollection];
+  v39 = dataValuePropertiesCollection;
+  if (!dataValuePropertiesCollection || [dataValuePropertiesCollection count] < 2)
   {
     goto LABEL_42;
   }
 
-  v15 = [v37 graphicProperties];
-  if (v15 && ([v37 graphicProperties], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "hasFill"), v16, v15, v17))
+  graphicProperties = [firstNonEmptySeries graphicProperties];
+  if (graphicProperties && ([firstNonEmptySeries graphicProperties], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "hasFill"), v16, graphicProperties, v17))
   {
-    v18 = [v37 graphicProperties];
-    v19 = [v18 fill];
+    graphicProperties2 = [firstNonEmptySeries graphicProperties];
+    fill = [graphicProperties2 fill];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -83,7 +83,7 @@ LABEL_12:
       goto LABEL_45;
     }
 
-    v20 = [v19 color];
+    color = [fill color];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -92,13 +92,13 @@ LABEL_12:
       goto LABEL_45;
     }
 
-    v22 = [v19 color];
-    v23 = [v22 index];
+    color2 = [fill color];
+    index = [color2 index];
   }
 
   else
   {
-    v23 = -1;
+    index = -1;
   }
 
   v38 = [v39 count];
@@ -109,33 +109,33 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  v36 = v23;
+  v36 = index;
   v25 = 0;
   while (1)
   {
     v26 = [v39 objectAtIndex:{v25, v36}];
-    v19 = v26;
+    fill = v26;
     if (!v26)
     {
       goto LABEL_41;
     }
 
-    v27 = [v26 graphicProperties];
-    if (!v27)
+    graphicProperties3 = [v26 graphicProperties];
+    if (!graphicProperties3)
     {
       goto LABEL_41;
     }
 
-    v28 = [v19 graphicProperties];
-    v29 = [v28 hasFill];
+    graphicProperties4 = [fill graphicProperties];
+    hasFill = [graphicProperties4 hasFill];
 
-    if (!v29)
+    if (!hasFill)
     {
       goto LABEL_41;
     }
 
-    v30 = [v19 graphicProperties];
-    v31 = [v30 fill];
+    graphicProperties5 = [fill graphicProperties];
+    fill2 = [graphicProperties5 fill];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -143,7 +143,7 @@ LABEL_42:
       goto LABEL_44;
     }
 
-    v32 = [v31 color];
+    color3 = [fill2 color];
     objc_opt_class();
     v33 = objc_opt_isKindOfClass();
 
@@ -152,15 +152,15 @@ LABEL_42:
       goto LABEL_44;
     }
 
-    v34 = [v31 color];
-    v35 = [v34 index];
+    color4 = [fill2 color];
+    index2 = [color4 index];
     if (v36 == -1)
     {
-      v36 = v35;
+      v36 = index2;
       goto LABEL_40;
     }
 
-    if (v36 != v35)
+    if (v36 != index2)
     {
       break;
     }
@@ -195,14 +195,14 @@ LABEL_27:
   return v13;
 }
 
-- (void)changeBarColumnDirection:(id)a3
+- (void)changeBarColumnDirection:(id)direction
 {
-  v13 = a3;
-  v4 = [v13 chart];
-  v5 = [v4 plotArea];
-  v6 = [v5 chartTypes];
+  directionCopy = direction;
+  chart = [directionCopy chart];
+  plotArea = [chart plotArea];
+  chartTypes = [plotArea chartTypes];
 
-  v7 = [v13 seriesCollection];
+  seriesCollection = [directionCopy seriesCollection];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -210,51 +210,51 @@ LABEL_27:
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && ([v13 isGroupingStacked])
+  if (objc_opt_isKindOfClass() & 1) != 0 && ([directionCopy isGroupingStacked])
   {
     goto LABEL_17;
   }
 
-  if ([v7 nonEmptySeriesCount] < 2)
+  if ([seriesCollection nonEmptySeriesCount] < 2)
   {
     goto LABEL_17;
   }
 
-  v8 = [v7 firstNonEmptySeries];
-  v9 = [v8 valueData];
-  if ([v9 countOfCellsBeingReferenced] != 1)
+  firstNonEmptySeries = [seriesCollection firstNonEmptySeries];
+  valueData = [firstNonEmptySeries valueData];
+  if ([valueData countOfCellsBeingReferenced] != 1)
   {
 
 LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v6)
+  if (!chartTypes)
   {
 
 LABEL_11:
-    [v4 setVisibleSeriesNames:1];
-    v11 = [(CHPChangeDirection *)self getSeriesCollectionForOrthogonalDirection:v7 forChart:v4];
-    v8 = v11;
+    [chart setVisibleSeriesNames:1];
+    v11 = [(CHPChangeDirection *)self getSeriesCollectionForOrthogonalDirection:seriesCollection forChart:chart];
+    firstNonEmptySeries = v11;
     if (v11 && [v11 count])
     {
-      [(CHPChangeDirection *)self cleanUpOldSeriesCollection:v7];
-      [v13 setSeriesCollection:v8];
-      [v4 setDirectionChanged:1];
+      [(CHPChangeDirection *)self cleanUpOldSeriesCollection:seriesCollection];
+      [directionCopy setSeriesCollection:firstNonEmptySeries];
+      [chart setDirectionChanged:1];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v13 overlap];
-      [v13 setOverlap:{objc_msgSend(v13, "gapWidth")}];
-      [v13 setGapWidth:v12];
+      overlap = [directionCopy overlap];
+      [directionCopy setOverlap:{objc_msgSend(directionCopy, "gapWidth")}];
+      [directionCopy setGapWidth:overlap];
     }
 
     goto LABEL_16;
   }
 
-  v10 = [v6 count];
+  v10 = [chartTypes count];
 
   if (v10 <= 1)
   {
@@ -264,37 +264,37 @@ LABEL_11:
 LABEL_17:
 }
 
-- (void)changeChartDirection:(id)a3 sheet:(id)a4
+- (void)changeChartDirection:(id)direction sheet:(id)sheet
 {
-  v27 = a3;
+  directionCopy = direction;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = [v27 chart];
-  v6 = [v27 seriesCollection];
-  if ([v6 nonEmptySeriesCount] != 1 || (objc_msgSend(v6, "firstNonEmptySeries"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "valueData"), v8 = objc_claimAutoreleasedReturnValue(), v9 = (objc_msgSend(v8, "countOfCellsBeingReferenced") > 1) | isKindOfClass, v8, v7, (v9 & 1) != 0))
+  chart = [directionCopy chart];
+  seriesCollection = [directionCopy seriesCollection];
+  if ([seriesCollection nonEmptySeriesCount] != 1 || (objc_msgSend(seriesCollection, "firstNonEmptySeries"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "valueData"), v8 = objc_claimAutoreleasedReturnValue(), v9 = (objc_msgSend(v8, "countOfCellsBeingReferenced") > 1) | isKindOfClass, v8, v7, (v9 & 1) != 0))
   {
-    v10 = [v5 plotArea];
-    v11 = [v10 chartTypes];
+    plotArea = [chart plotArea];
+    chartTypes = [plotArea chartTypes];
 
-    if (v11 && [v11 count] >= 2)
+    if (chartTypes && [chartTypes count] >= 2)
     {
-      v12 = [CHDSeriesCollection seriesCollectionWithChart:v5];
-      v25 = v5;
+      v12 = [CHDSeriesCollection seriesCollectionWithChart:chart];
+      v25 = chart;
 
-      v13 = [v11 count];
+      v13 = [chartTypes count];
       if (v13)
       {
         for (i = 0; i != v13; ++i)
         {
-          v15 = [v11 objectAtIndex:i];
+          v15 = [chartTypes objectAtIndex:i];
           v16 = v15;
           if (v15)
           {
-            v17 = [v15 seriesCollection];
-            v18 = v17;
-            if (v17)
+            seriesCollection2 = [v15 seriesCollection];
+            v18 = seriesCollection2;
+            if (seriesCollection2)
             {
-              v19 = [v17 count];
+              v19 = [seriesCollection2 count];
               if (v19)
               {
                 for (j = 0; j != v19; ++j)
@@ -308,7 +308,7 @@ LABEL_17:
         }
       }
 
-      v5 = v25;
+      chart = v25;
       if (!(([v12 nonEmptySeriesCount] < 2) | isKindOfClass & 1))
       {
         goto LABEL_24;
@@ -317,57 +317,57 @@ LABEL_17:
 
     else
     {
-      v12 = v6;
+      v12 = seriesCollection;
     }
 
-    v22 = [(CHPChangeDirection *)self getSeriesCollectionForOrthogonalDirection:v12 forChart:v5];
+    v22 = [(CHPChangeDirection *)self getSeriesCollectionForOrthogonalDirection:v12 forChart:chart];
     v23 = v22;
     if (v22 && [v22 count])
     {
       [(CHPChangeDirection *)self cleanUpOldSeriesCollection:v12];
-      [v27 setSeriesCollection:v23];
-      [v5 setDirectionChanged:1];
+      [directionCopy setSeriesCollection:v23];
+      [chart setDirectionChanged:1];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v24 = [v27 overlap];
-      [v27 setOverlap:{objc_msgSend(v27, "gapWidth")}];
-      [v27 setGapWidth:v24];
+      overlap = [directionCopy overlap];
+      [directionCopy setOverlap:{objc_msgSend(directionCopy, "gapWidth")}];
+      [directionCopy setGapWidth:overlap];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v27 setGapWidth:40];
+        [directionCopy setGapWidth:40];
       }
     }
 
 LABEL_24:
-    v6 = v12;
+    seriesCollection = v12;
   }
 }
 
-- (id)createNewSeriesCollectionForOrthogonalDirection:(id)a3 forChart:(id)a4
+- (id)createNewSeriesCollectionForOrthogonalDirection:(id)direction forChart:(id)chart
 {
-  v30 = a3;
-  v31 = a4;
-  v6 = [v30 firstNonEmptySeries];
-  v7 = [v6 valueData];
-  v8 = [v7 countOfCellsBeingReferenced];
+  directionCopy = direction;
+  chartCopy = chart;
+  firstNonEmptySeries = [directionCopy firstNonEmptySeries];
+  valueData = [firstNonEmptySeries valueData];
+  countOfCellsBeingReferenced = [valueData countOfCellsBeingReferenced];
 
-  v9 = [v6 valueData];
-  v10 = [v9 contentFormat];
+  valueData2 = [firstNonEmptySeries valueData];
+  contentFormat = [valueData2 contentFormat];
 
-  v11 = [v6 graphicProperties];
-  if ([v11 hasFill])
+  graphicProperties = [firstNonEmptySeries graphicProperties];
+  if ([graphicProperties hasFill])
   {
-    v12 = [v6 graphicProperties];
-    v13 = [v12 fill];
-    v14 = [v13 isOverridden];
+    graphicProperties2 = [firstNonEmptySeries graphicProperties];
+    fill = [graphicProperties2 fill];
+    isOverridden = [fill isOverridden];
 
-    if (v14)
+    if (isOverridden)
     {
-      v15 = 0;
+      isVaryColors = 0;
       goto LABEL_6;
     }
   }
@@ -376,20 +376,20 @@ LABEL_24:
   {
   }
 
-  v16 = [v6 chartType];
-  v15 = [v16 isVaryColors];
+  chartType = [firstNonEmptySeries chartType];
+  isVaryColors = [chartType isVaryColors];
 
 LABEL_6:
-  v17 = [CHDSeriesCollection seriesCollectionWithChart:v31];
-  if (v8)
+  v17 = [CHDSeriesCollection seriesCollectionWithChart:chartCopy];
+  if (countOfCellsBeingReferenced)
   {
-    for (i = 0; i != v8; ++i)
+    for (i = 0; i != countOfCellsBeingReferenced; ++i)
     {
-      v19 = [v6 shallowCopy];
-      v20 = v19;
-      if (v15)
+      shallowCopy = [firstNonEmptySeries shallowCopy];
+      v20 = shallowCopy;
+      if (isVaryColors)
       {
-        [v19 setStyleIndex:i];
+        [shallowCopy setStyleIndex:i];
       }
 
       [v20 setOrder:i];
@@ -397,25 +397,25 @@ LABEL_6:
       v22 = [CHDData dataWithResources:WeakRetained];
       [v20 setValueData:v22];
 
-      if (v10)
+      if (contentFormat)
       {
-        v23 = [v20 valueData];
-        [v23 setContentFormat:v10];
+        valueData3 = [v20 valueData];
+        [valueData3 setContentFormat:contentFormat];
       }
 
-      v24 = [v6 defaultDataLabel];
-      [v20 setDefaultDataLabel:v24];
+      defaultDataLabel = [firstNonEmptySeries defaultDataLabel];
+      [v20 setDefaultDataLabel:defaultDataLabel];
 
-      v25 = [v6 trendlineCollection];
-      [v20 setTrendlineCollection:v25];
+      trendlineCollection = [firstNonEmptySeries trendlineCollection];
+      [v20 setTrendlineCollection:trendlineCollection];
 
-      v26 = [v6 errorBarXAxis];
-      [v20 setErrorBarXAxis:v26];
+      errorBarXAxis = [firstNonEmptySeries errorBarXAxis];
+      [v20 setErrorBarXAxis:errorBarXAxis];
 
-      v27 = [v6 errorBarYAxis];
-      [v20 setErrorBarYAxis:v27];
+      errorBarYAxis = [firstNonEmptySeries errorBarYAxis];
+      [v20 setErrorBarYAxis:errorBarYAxis];
 
-      v28 = [(CHPChangeDirection *)self getGraphicPropertiesForSeriesWithIndex:i fromCollection:v30 isVaryColors:v15 forChart:v31];
+      v28 = [(CHPChangeDirection *)self getGraphicPropertiesForSeriesWithIndex:i fromCollection:directionCopy isVaryColors:isVaryColors forChart:chartCopy];
       [v20 setGraphicProperties:v28];
 
       [v17 addObject:v20];
@@ -425,15 +425,15 @@ LABEL_6:
   return v17;
 }
 
-- (id)getSeriesCollectionForOrthogonalDirection:(id)a3 forChart:(id)a4
+- (id)getSeriesCollectionForOrthogonalDirection:(id)direction forChart:(id)chart
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CHPChangeDirection *)self createNewSeriesCollectionForOrthogonalDirection:v6 forChart:v7];
+  directionCopy = direction;
+  chartCopy = chart;
+  v8 = [(CHPChangeDirection *)self createNewSeriesCollectionForOrthogonalDirection:directionCopy forChart:chartCopy];
   v9 = v8;
   if (v8 && [v8 count])
   {
-    [(CHPChangeDirection *)self mapSeriesCollection:v9 from:v6 forChart:v7];
+    [(CHPChangeDirection *)self mapSeriesCollection:v9 from:directionCopy forChart:chartCopy];
     v10 = v9;
   }
 
@@ -445,41 +445,41 @@ LABEL_6:
   return v10;
 }
 
-- (void)mapSeriesCollection:(id)a3 from:(id)a4 forChart:(id)a5
+- (void)mapSeriesCollection:(id)collection from:(id)from forChart:(id)chart
 {
-  v60 = a3;
-  v7 = a4;
-  v53 = a5;
-  v8 = [v7 nonEmptySeriesCount];
-  v56 = [v7 firstNonEmptySeries];
-  v52 = v7;
-  v57 = [v60 count];
-  if (v8 == 1)
+  collectionCopy = collection;
+  fromCopy = from;
+  chartCopy = chart;
+  nonEmptySeriesCount = [fromCopy nonEmptySeriesCount];
+  firstNonEmptySeries = [fromCopy firstNonEmptySeries];
+  v52 = fromCopy;
+  v57 = [collectionCopy count];
+  if (nonEmptySeriesCount == 1)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = [v7 count];
+    v9 = [fromCopy count];
   }
 
   v10 = +[EDReferenceCollection noCoalesceCollection];
   WeakRetained = objc_loadWeakRetained(&self->super.mResources);
   v59 = [CHDData dataWithResources:WeakRetained];
 
-  v12 = [v56 categoryData];
-  v13 = [v12 contentFormat];
+  categoryData = [firstNonEmptySeries categoryData];
+  contentFormat = [categoryData contentFormat];
 
-  v51 = v13;
-  if (v13)
+  v51 = contentFormat;
+  if (contentFormat)
   {
-    [v59 setContentFormat:v13];
+    [v59 setContentFormat:contentFormat];
   }
 
-  v14 = [v56 chartType];
-  v15 = [v14 chart];
-  v16 = [v15 direction];
+  chartType = [firstNonEmptySeries chartType];
+  chart = [chartType chart];
+  direction = [chart direction];
 
   if (v9)
   {
@@ -487,9 +487,9 @@ LABEL_6:
     v17 = 0;
     for (i = 0; i != v9; ++i)
     {
-      if (v8 == 1)
+      if (nonEmptySeriesCount == 1)
       {
-        v19 = v56;
+        v19 = firstNonEmptySeries;
       }
 
       else
@@ -500,23 +500,23 @@ LABEL_6:
       v20 = v19;
       if (([v19 isEmpty] & 1) == 0)
       {
-        v21 = [v20 lastCachedName];
+        lastCachedName = [v20 lastCachedName];
 
-        if (v21)
+        if (lastCachedName)
         {
-          v22 = [v20 lastCachedName];
-          v23 = [v59 dataValues];
-          [(CHPChangeDirection *)self addDataValue:v22 to:v23 withIndex:i];
+          lastCachedName2 = [v20 lastCachedName];
+          dataValues = [v59 dataValues];
+          [(CHPChangeDirection *)self addDataValue:lastCachedName2 to:dataValues withIndex:i];
         }
 
-        v24 = [v20 name];
-        v25 = [v24 references];
+        name = [v20 name];
+        references = [name references];
 
-        if (v25)
+        if (references)
         {
-          for (j = 0; [v25 count] > j; ++j)
+          for (j = 0; [references count] > j; ++j)
           {
-            v27 = [v25 objectAtIndex:j];
+            v27 = [references objectAtIndex:j];
             [v10 addObject:v27];
           }
         }
@@ -526,14 +526,14 @@ LABEL_6:
           v54 = 1;
         }
 
-        v28 = [v20 defaultDataLabel];
-        v29 = v28;
-        if (v28)
+        defaultDataLabel = [v20 defaultDataLabel];
+        v29 = defaultDataLabel;
+        if (defaultDataLabel)
         {
-          v17 |= [v28 isShowLeaderLines];
+          v17 |= [defaultDataLabel isShowLeaderLines];
         }
 
-        [(CHPChangeDirection *)self mapSeriesValues:v20 to:v60 forIndex:i byRow:v16 != 2 forChart:v53];
+        [(CHPChangeDirection *)self mapSeriesValues:v20 to:collectionCopy forIndex:i byRow:direction != 2 forChart:chartCopy];
       }
     }
   }
@@ -552,30 +552,30 @@ LABEL_6:
 
     [v10 coalesceProgressiveCellReferencesCollection];
     [(CHDFormula *)v30 setReferences:v10];
-    [v59 setFormula:v30 chart:v53];
+    [v59 setFormula:v30 chart:chartCopy];
   }
 
-  v32 = [v56 categoryData];
-  v33 = v32;
-  if (v32)
+  categoryData2 = [firstNonEmptySeries categoryData];
+  v33 = categoryData2;
+  if (categoryData2)
   {
-    v34 = [v32 formula];
-    v35 = v34;
-    if (v34)
+    formula = [categoryData2 formula];
+    v35 = formula;
+    if (formula)
     {
-      [v34 setCleaned:1];
-      v55 = [v35 references];
+      [formula setCleaned:1];
+      references2 = [v35 references];
     }
 
     else
     {
-      v55 = 0;
+      references2 = 0;
     }
   }
 
   else
   {
-    v55 = 0;
+    references2 = 0;
   }
 
   if (v57)
@@ -583,12 +583,12 @@ LABEL_6:
     v36 = 0;
     for (k = 0; k < v57; v36 = ++k)
     {
-      v38 = [v60 objectAtIndex:v36];
+      v38 = [collectionCopy objectAtIndex:v36];
       [v38 setCategoryData:v59];
       if (v33)
       {
-        v39 = [v33 dataValues];
-        v40 = [v39 dataValueWithIndex:k];
+        dataValues2 = [v33 dataValues];
+        v40 = [dataValues2 dataValueWithIndex:k];
 
         if (v40 && [v40 contentFormatId] == -1 && objc_msgSend(v33, "contentFormatId") != -1)
         {
@@ -596,7 +596,7 @@ LABEL_6:
         }
 
         [v38 setLastCachedName:v40];
-        v41 = [v55 referenceToCellWithIndex:v36 byRow:v16 != 2];
+        v41 = [references2 referenceToCellWithIndex:v36 byRow:direction != 2];
         if (v41)
         {
           v42 = [CHDFormula formulaWithReference:v41];
@@ -607,110 +607,110 @@ LABEL_6:
         }
       }
 
-      v44 = [v38 valueData];
-      v45 = [v44 formula];
-      v46 = v45;
-      if (v45)
+      valueData = [v38 valueData];
+      formula2 = [valueData formula];
+      v46 = formula2;
+      if (formula2)
       {
-        v47 = [v45 references];
-        v48 = v47;
-        if (v47)
+        references3 = [formula2 references];
+        v48 = references3;
+        if (references3)
         {
-          [v47 coalesceProgressiveCellReferencesCollection];
+          [references3 coalesceProgressiveCellReferencesCollection];
         }
       }
 
-      v49 = [v38 defaultDataLabel];
-      v50 = v49;
-      if (((v49 != 0) & v17) == 1)
+      defaultDataLabel2 = [v38 defaultDataLabel];
+      v50 = defaultDataLabel2;
+      if (((defaultDataLabel2 != 0) & v17) == 1)
       {
-        [v49 setShowLeaderLines:1];
+        [defaultDataLabel2 setShowLeaderLines:1];
       }
     }
   }
 }
 
-- (void)mapSeriesValues:(id)a3 to:(id)a4 forIndex:(unint64_t)a5 byRow:(BOOL)a6 forChart:(id)a7
+- (void)mapSeriesValues:(id)values to:(id)to forIndex:(unint64_t)index byRow:(BOOL)row forChart:(id)chart
 {
-  v8 = a6;
-  v33 = a3;
-  v38 = a4;
-  v39 = a7;
-  v37 = [v33 valueData];
-  v35 = [v33 dataValuePropertiesCollection];
-  v11 = [v37 formula];
-  v36 = [v11 references];
+  rowCopy = row;
+  valuesCopy = values;
+  toCopy = to;
+  chartCopy = chart;
+  valueData = [valuesCopy valueData];
+  dataValuePropertiesCollection = [valuesCopy dataValuePropertiesCollection];
+  formula = [valueData formula];
+  references = [formula references];
 
-  v12 = [v38 count];
+  v12 = [toCopy count];
   if (v12)
   {
     for (i = 0; v12 != i; ++i)
     {
-      v14 = [v38 objectAtIndex:i];
-      v15 = [v36 referenceToCellWithIndex:i byRow:v8];
+      v14 = [toCopy objectAtIndex:i];
+      v15 = [references referenceToCellWithIndex:i byRow:rowCopy];
       if (v15)
       {
-        v16 = [v14 valueData];
-        v17 = [v16 formula];
-        if (!v17)
+        valueData2 = [v14 valueData];
+        formula2 = [valueData2 formula];
+        if (!formula2)
         {
-          v17 = objc_alloc_init(CHDFormula);
+          formula2 = objc_alloc_init(CHDFormula);
           WeakRetained = objc_loadWeakRetained(&self->super.mWorkbook);
-          [(CHDFormula *)v17 setWorkbook:WeakRetained];
+          [(CHDFormula *)formula2 setWorkbook:WeakRetained];
 
-          [v16 setFormula:v17 chart:v39];
+          [valueData2 setFormula:formula2 chart:chartCopy];
           [v14 setValueData:0];
-          [v14 setValueData:v16];
+          [v14 setValueData:valueData2];
         }
 
-        v19 = [(CHDFormula *)v17 references];
-        if (!v19)
+        references2 = [(CHDFormula *)formula2 references];
+        if (!references2)
         {
-          v19 = +[EDReferenceCollection noCoalesceCollection];
-          [(CHDFormula *)v17 setReferences:v19];
+          references2 = +[EDReferenceCollection noCoalesceCollection];
+          [(CHDFormula *)formula2 setReferences:references2];
         }
 
-        [v19 addObject:v15];
+        [references2 addObject:v15];
       }
 
-      v20 = [v37 dataValues];
-      v21 = [v20 dataValueWithIndex:i];
+      dataValues = [valueData dataValues];
+      v21 = [dataValues dataValueWithIndex:i];
 
       if (v21)
       {
-        v22 = [v14 valueData];
-        v23 = [v22 dataValues];
-        [(CHPChangeDirection *)self addDataValue:v21 to:v23 withIndex:a5];
+        valueData3 = [v14 valueData];
+        dataValues2 = [valueData3 dataValues];
+        [(CHPChangeDirection *)self addDataValue:v21 to:dataValues2 withIndex:index];
       }
 
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v25 = [v39 hasVisibleSeriesNames];
-      v26 = [v35 objectWithKey:i];
+      hasVisibleSeriesNames = [chartCopy hasVisibleSeriesNames];
+      v26 = [dataValuePropertiesCollection objectWithKey:i];
       v27 = v26;
       if (v26)
       {
-        v28 = [v26 shallowCopyWithIndex:a5];
+        dataLabel = [v26 shallowCopyWithIndex:index];
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && ([v28 isExplosionSet] & 1) == 0)
+        if ((objc_opt_isKindOfClass() & 1) != 0 && ([dataLabel isExplosionSet] & 1) == 0)
         {
-          [v28 setExplosion:{objc_msgSend(v33, "explosion")}];
+          [dataLabel setExplosion:{objc_msgSend(valuesCopy, "explosion")}];
         }
 
-        v29 = [v14 dataValuePropertiesCollection];
-        [v29 addObject:v28];
+        dataValuePropertiesCollection2 = [v14 dataValuePropertiesCollection];
+        [dataValuePropertiesCollection2 addObject:dataLabel];
       }
 
       else
       {
-        if (((isKindOfClass | v25) & 1) == 0)
+        if (((isKindOfClass | hasVisibleSeriesNames) & 1) == 0)
         {
           goto LABEL_21;
         }
 
-        v30 = [v33 graphicProperties];
+        graphicProperties = [valuesCopy graphicProperties];
 
-        if (!v30)
+        if (!graphicProperties)
         {
           goto LABEL_21;
         }
@@ -725,25 +725,25 @@ LABEL_6:
           +[CHDDataValueProperties dataValueProperties];
         }
         v27 = ;
-        v31 = [v33 graphicProperties];
-        [v27 setGraphicProperties:v31];
+        graphicProperties2 = [valuesCopy graphicProperties];
+        [v27 setGraphicProperties:graphicProperties2];
 
-        [v27 setDataValueIndex:a5];
-        v28 = [v27 dataLabel];
-        if (!v28)
+        [v27 setDataValueIndex:index];
+        dataLabel = [v27 dataLabel];
+        if (!dataLabel)
         {
-          v32 = [v33 defaultDataLabel];
-          [v27 setDataLabel:v32];
+          defaultDataLabel = [valuesCopy defaultDataLabel];
+          [v27 setDataLabel:defaultDataLabel];
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v27 setExplosion:{objc_msgSend(v33, "explosion")}];
+          [v27 setExplosion:{objc_msgSend(valuesCopy, "explosion")}];
         }
 
-        v29 = [v14 dataValuePropertiesCollection];
-        [v29 addObject:v27];
+        dataValuePropertiesCollection2 = [v14 dataValuePropertiesCollection];
+        [dataValuePropertiesCollection2 addObject:v27];
       }
 
 LABEL_21:
@@ -751,95 +751,95 @@ LABEL_21:
   }
 }
 
-- (id)getGraphicPropertiesForSeriesWithIndex:(unint64_t)a3 fromCollection:(id)a4 isVaryColors:(BOOL)a5 forChart:(id)a6
+- (id)getGraphicPropertiesForSeriesWithIndex:(unint64_t)index fromCollection:(id)collection isVaryColors:(BOOL)colors forChart:(id)chart
 {
-  v7 = a5;
-  v9 = a4;
-  v10 = a6;
-  v11 = [v9 firstNonEmptySeries];
-  v12 = [v11 dataValuePropertiesCollection];
-  v13 = [v12 objectWithKey:a3];
-  v14 = [v13 graphicProperties];
+  colorsCopy = colors;
+  collectionCopy = collection;
+  chartCopy = chart;
+  firstNonEmptySeries = [collectionCopy firstNonEmptySeries];
+  dataValuePropertiesCollection = [firstNonEmptySeries dataValuePropertiesCollection];
+  v13 = [dataValuePropertiesCollection objectWithKey:index];
+  graphicProperties = [v13 graphicProperties];
 
-  if (!v14)
+  if (!graphicProperties)
   {
-    if (!v7)
+    if (!colorsCopy)
     {
       goto LABEL_17;
     }
 
-    v16 = [v9 objectWithKey:a3];
-    v14 = [v16 graphicProperties];
+    v16 = [collectionCopy objectWithKey:index];
+    graphicProperties = [v16 graphicProperties];
 
-    if (!v14)
+    if (!graphicProperties)
     {
-      if ([v9 count] > a3)
+      if ([collectionCopy count] > index)
       {
         goto LABEL_17;
       }
 
-      v14 = objc_alloc_init(OADGraphicProperties);
+      graphicProperties = objc_alloc_init(OADGraphicProperties);
       v17 = [OADDrawingTheme alloc];
-      v18 = [v10 workbook];
-      v19 = [v18 theme];
-      v20 = [(OADDrawingTheme *)v17 initWithTheme:v19 colorMap:0 colorPalette:0];
+      workbook = [chartCopy workbook];
+      theme = [workbook theme];
+      v20 = [(OADDrawingTheme *)v17 initWithTheme:theme colorMap:0 colorPalette:0];
 
-      v21 = [CHAutoStyling autoStylingWithChart:v10 drawingTheme:v20];
+      v21 = [CHAutoStyling autoStylingWithChart:chartCopy drawingTheme:v20];
 
-      [v21 resolveGraphicPropertiesOfSeries:v14 forSeriesIndex:a3];
-      v22 = [v11 graphicProperties];
+      [v21 resolveGraphicPropertiesOfSeries:graphicProperties forSeriesIndex:index];
+      graphicProperties2 = [firstNonEmptySeries graphicProperties];
 
-      if (v22)
+      if (graphicProperties2)
       {
-        v23 = [v11 graphicProperties];
-        if ([v23 hasStroke])
+        graphicProperties3 = [firstNonEmptySeries graphicProperties];
+        if ([graphicProperties3 hasStroke])
         {
-          v24 = [v23 stroke];
-          v25 = v24;
-          if (!v24 || ([v24 fill], (v26 = objc_claimAutoreleasedReturnValue()) == 0) || (v31 = v26, objc_msgSend(v25, "fill"), v27 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v27, v31, (isKindOfClass & 1) != 0))
+          stroke = [graphicProperties3 stroke];
+          v25 = stroke;
+          if (!stroke || ([stroke fill], (v26 = objc_claimAutoreleasedReturnValue()) == 0) || (v31 = v26, objc_msgSend(v25, "fill"), v27 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v27, v31, (isKindOfClass & 1) != 0))
           {
             v28 = +[OADStroke nullStroke];
-            [(OADGraphicProperties *)v14 setStroke:v28];
+            [(OADGraphicProperties *)graphicProperties setStroke:v28];
           }
         }
       }
 
-      if (!v14)
+      if (!graphicProperties)
       {
 LABEL_17:
-        v14 = [v11 graphicProperties];
-        if (!v14)
+        graphicProperties = [firstNonEmptySeries graphicProperties];
+        if (!graphicProperties)
         {
-          v29 = [v9 objectWithKey:a3];
-          v14 = [v29 graphicProperties];
+          v29 = [collectionCopy objectWithKey:index];
+          graphicProperties = [v29 graphicProperties];
         }
       }
     }
   }
 
-  return v14;
+  return graphicProperties;
 }
 
-- (void)addDataValue:(id)a3 to:(id)a4 withIndex:(unint64_t)a5
+- (void)addDataValue:(id)value to:(id)to withIndex:(unint64_t)index
 {
-  v8 = a3;
-  v7 = a4;
-  if (v8 && v7)
+  valueCopy = value;
+  toCopy = to;
+  if (valueCopy && toCopy)
   {
-    [v8 setIndex:a5];
-    [v7 addDataValue:v8];
+    [valueCopy setIndex:index];
+    [toCopy addDataValue:valueCopy];
   }
 }
 
-- (void)cleanUpOldSeriesCollection:(id)a3
+- (void)cleanUpOldSeriesCollection:(id)collection
 {
-  v7 = a3;
-  v3 = [v7 count];
+  collectionCopy = collection;
+  v3 = [collectionCopy count];
   if (v3)
   {
     for (i = 0; i != v3; ++i)
     {
-      v5 = [v7 objectAtIndex:i];
+      v5 = [collectionCopy objectAtIndex:i];
       v6 = v5;
       if (v5)
       {

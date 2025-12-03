@@ -1,43 +1,43 @@
 @interface PDURLSessionProxyError
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_actualError;
-- (id)_initWithActualError:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithActualError:(id)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDURLSessionProxyError
 
 - (id)_actualError
 {
-  v3 = [(PDURLSessionProxyError *)self domain];
-  v4 = [(PDURLSessionProxyError *)self code];
+  domain = [(PDURLSessionProxyError *)self domain];
+  code = [(PDURLSessionProxyError *)self code];
   v5 = objc_opt_class();
-  v6 = [(PDURLSessionProxyError *)self userInfo];
-  v7 = [NSKeyedUnarchiver _nsurlsessionproxy_secureUnarchiveObjectOfClass:v5 withData:v6];
-  v8 = [NSError errorWithDomain:v3 code:v4 userInfo:v7];
+  userInfo = [(PDURLSessionProxyError *)self userInfo];
+  v7 = [NSKeyedUnarchiver _nsurlsessionproxy_secureUnarchiveObjectOfClass:v5 withData:userInfo];
+  v8 = [NSError errorWithDomain:domain code:code userInfo:v7];
 
   return v8;
 }
 
-- (id)_initWithActualError:(id)a3
+- (id)_initWithActualError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = [(PDURLSessionProxyError *)self init];
   if (v5)
   {
-    v6 = [v4 domain];
-    [(PDURLSessionProxyError *)v5 setDomain:v6];
+    domain = [errorCopy domain];
+    [(PDURLSessionProxyError *)v5 setDomain:domain];
 
-    -[PDURLSessionProxyError setCode:](v5, "setCode:", [v4 code]);
-    v7 = [v4 userInfo];
-    v8 = [v7 mutableCopy];
+    -[PDURLSessionProxyError setCode:](v5, "setCode:", [errorCopy code]);
+    userInfo = [errorCopy userInfo];
+    v8 = [userInfo mutableCopy];
     [v8 removeObjectForKey:@"NSErrorPeerCertificateChainKey"];
     [v8 removeObjectForKey:@"NSErrorClientCertificateChainKey"];
     [v8 removeObjectForKey:NSURLErrorFailingURLPeerTrustErrorKey];
@@ -48,7 +48,7 @@
     v12[3] = &unk_1000D55D0;
     v9 = v8;
     v13 = v9;
-    [v7 enumerateKeysAndObjectsUsingBlock:v12];
+    [userInfo enumerateKeysAndObjectsUsingBlock:v12];
 
     v10 = [NSKeyedArchiver _nsurlsessionproxy_secureArchivedDataWithRootObject:v9];
     [(PDURLSessionProxyError *)v5 setUserInfo:v10];
@@ -57,32 +57,32 @@
   return v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 36) & 2) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 36) & 2) != 0)
   {
-    self->_version = *(v4 + 8);
+    self->_version = *(fromCopy + 8);
     *&self->_has |= 2u;
   }
 
-  v5 = v4;
-  if (*(v4 + 2))
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(PDURLSessionProxyError *)self setDomain:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
-    self->_code = *(v4 + 1);
+    self->_code = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PDURLSessionProxyError *)self setUserInfo:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -112,31 +112,31 @@
   return v4 ^ v3 ^ v5 ^ [(NSData *)self->_userInfo hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   has = self->_has;
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_version != *(v4 + 8))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_version != *(equalCopy + 8))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_17;
   }
 
   domain = self->_domain;
-  if (domain | *(v4 + 2))
+  if (domain | *(equalCopy + 2))
   {
     if (![(NSString *)domain isEqual:?])
     {
@@ -146,12 +146,12 @@ LABEL_17:
     }
 
     has = self->_has;
-    v6 = *(v4 + 36);
+    v6 = *(equalCopy + 36);
   }
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_code != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_code != *(equalCopy + 1))
     {
       goto LABEL_17;
     }
@@ -163,7 +163,7 @@ LABEL_17:
   }
 
   userInfo = self->_userInfo;
-  if (userInfo | *(v4 + 3))
+  if (userInfo | *(equalCopy + 3))
   {
     v9 = [(NSData *)userInfo isEqual:?];
   }
@@ -178,9 +178,9 @@ LABEL_18:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -188,7 +188,7 @@ LABEL_18:
     *(v5 + 36) |= 2u;
   }
 
-  v7 = [(NSString *)self->_domain copyWithZone:a3];
+  v7 = [(NSString *)self->_domain copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
@@ -198,70 +198,70 @@ LABEL_18:
     *(v6 + 36) |= 1u;
   }
 
-  v9 = [(NSData *)self->_userInfo copyWithZone:a3];
+  v9 = [(NSData *)self->_userInfo copyWithZone:zone];
   v10 = v6[3];
   v6[3] = v9;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[8] = self->_version;
-    *(v4 + 36) |= 2u;
+    toCopy[8] = self->_version;
+    *(toCopy + 36) |= 2u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_domain)
   {
-    [v4 setDomain:?];
-    v4 = v5;
+    [toCopy setDomain:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_code;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 1) = self->_code;
+    *(toCopy + 36) |= 1u;
   }
 
   if (self->_userInfo)
   {
     [v5 setUserInfo:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     version = self->_version;
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_domain)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     code = self->_code;
     PBDataWriterWriteUint64Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_userInfo)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
@@ -300,15 +300,15 @@ LABEL_18:
   v7.receiver = self;
   v7.super_class = PDURLSessionProxyError;
   v3 = [(PDURLSessionProxyError *)&v7 description];
-  v4 = [(PDURLSessionProxyError *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDURLSessionProxyError *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }

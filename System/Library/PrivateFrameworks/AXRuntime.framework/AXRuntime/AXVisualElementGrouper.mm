@@ -1,11 +1,11 @@
 @interface AXVisualElementGrouper
-- (AXVisualElementGrouper)initWithHeuristics:(int64_t)a3;
-- (id)_groupablesForItems:(id)a3;
+- (AXVisualElementGrouper)initWithHeuristics:(int64_t)heuristics;
+- (id)_groupablesForItems:(id)items;
 @end
 
 @implementation AXVisualElementGrouper
 
-- (AXVisualElementGrouper)initWithHeuristics:(int64_t)a3
+- (AXVisualElementGrouper)initWithHeuristics:(int64_t)heuristics
 {
   v9.receiver = self;
   v9.super_class = AXVisualElementGrouper;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    v6 = a3 > 2;
+    v6 = heuristics > 2;
   }
 
   else
@@ -23,29 +23,29 @@
 
   if (!v6)
   {
-    v7 = dbl_1BF7DE668[a3];
-    [(AXVisualElementGrouper *)v4 setMaximumNeighbourDistance:dbl_1BF7DE650[a3]];
+    v7 = dbl_1BF7DE668[heuristics];
+    [(AXVisualElementGrouper *)v4 setMaximumNeighbourDistance:dbl_1BF7DE650[heuristics]];
     [(AXVisualElementGrouper *)v5 setMaximumDistanceForAligningEdges:v7];
   }
 
   return v5;
 }
 
-- (id)_groupablesForItems:(id)a3
+- (id)_groupablesForItems:(id)items
 {
   v90 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v60 = [MEMORY[0x1E695DF70] array];
-  v5 = [MEMORY[0x1E695DF70] array];
+  itemsCopy = items;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
-  obj = v4;
+  obj = itemsCopy;
   v6 = [obj countByEnumeratingWithState:&v84 objects:v89 count:16];
   if (!v6)
   {
-    v14 = v60;
+    v14 = array;
     goto LABEL_55;
   }
 
@@ -60,7 +60,7 @@
   v73 = v12;
   v74 = y;
   v75 = *MEMORY[0x1E695F050];
-  v14 = v60;
+  v14 = array;
   do
   {
     v15 = 0;
@@ -88,7 +88,7 @@
       v111.size.width = v73;
       if (CGRectEqualToRect(v92, v111))
       {
-        [v5 addObject:v16];
+        [array2 addObject:v16];
         v11 = v24;
         v12 = v22;
         y = v20;
@@ -238,15 +238,15 @@
         if (v8 == 1 || !v36)
         {
 LABEL_46:
-          if ([v5 count])
+          if ([array2 count])
           {
-            [v60 addObject:v5];
+            [array addObject:array2];
           }
 
           v48 = [MEMORY[0x1E695DF70] arrayWithObject:v16];
 
           v8 = 0;
-          v5 = v48;
+          array2 = v48;
           v11 = v24;
           v12 = v22;
           y = v65;
@@ -296,7 +296,7 @@ LABEL_46:
       y = v110.origin.y;
       v12 = v110.size.width;
       v11 = v110.size.height;
-      [v5 addObject:v16];
+      [array2 addObject:v16];
       if (!v8)
       {
         if (!v36 || v37)
@@ -322,28 +322,28 @@ LABEL_49:
   while (v49);
 LABEL_55:
 
-  if ([v5 count])
+  if ([array2 count])
   {
-    [v14 addObject:v5];
+    [v14 addObject:array2];
   }
 
   if ([v14 count] == 1)
   {
-    v50 = [v14 lastObject];
+    lastObject = [v14 lastObject];
     v83.receiver = self;
     v83.super_class = AXVisualElementGrouper;
-    v51 = [(AXElementGrouper *)&v83 _groupablesForItems:v50];
+    array3 = [(AXElementGrouper *)&v83 _groupablesForItems:lastObject];
   }
 
   else
   {
-    v51 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v79 = 0u;
     v80 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v50 = v14;
-    v52 = [v50 countByEnumeratingWithState:&v79 objects:v88 count:16];
+    lastObject = v14;
+    v52 = [lastObject countByEnumeratingWithState:&v79 objects:v88 count:16];
     if (v52)
     {
       v53 = v52;
@@ -354,36 +354,36 @@ LABEL_55:
         {
           if (*v80 != v54)
           {
-            objc_enumerationMutation(v50);
+            objc_enumerationMutation(lastObject);
           }
 
           v56 = *(*(&v79 + 1) + 8 * i);
           if ([v56 count] == 1)
           {
-            v57 = [v56 firstObject];
-            [v51 addObject:v57];
+            firstObject = [v56 firstObject];
+            [array3 addObject:firstObject];
           }
 
           else
           {
             v78.receiver = self;
             v78.super_class = AXVisualElementGrouper;
-            v57 = [(AXElementGrouper *)&v78 _groupablesForItems:v56];
-            v58 = [AXElementGroup groupWithElements:v57];
+            firstObject = [(AXElementGrouper *)&v78 _groupablesForItems:v56];
+            v58 = [AXElementGroup groupWithElements:firstObject];
             [v58 setUserDefinedScanningBehaviorTraits:16];
-            [v51 addObject:v58];
+            [array3 addObject:v58];
           }
         }
 
-        v53 = [v50 countByEnumeratingWithState:&v79 objects:v88 count:16];
+        v53 = [lastObject countByEnumeratingWithState:&v79 objects:v88 count:16];
       }
 
       while (v53);
-      v14 = v60;
+      v14 = array;
     }
   }
 
-  return v51;
+  return array3;
 }
 
 @end

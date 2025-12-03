@@ -1,12 +1,12 @@
 @interface CKAggregateAcknowledgmentChatItem
-- (BOOL)containsTransferGUID:(id)a3;
+- (BOOL)containsTransferGUID:(id)d;
 - (BOOL)includesFromMe;
 - (BOOL)includesMultiple;
 - (BOOL)isCommSafetySensitiveNotViewable;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)latestIsFromMe;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
-- (CKAggregateAcknowledgmentChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
+- (CKAggregateAcknowledgmentChatItem)initWithIMChatItem:(id)item maxWidth:(double)width;
 - (Class)balloonViewClass;
 - (IMMessageAcknowledgmentChatItem)sentTapbackChatItem;
 - (NSArray)acknowledgments;
@@ -21,30 +21,30 @@
 
 @implementation CKAggregateAcknowledgmentChatItem
 
-- (CKAggregateAcknowledgmentChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4
+- (CKAggregateAcknowledgmentChatItem)initWithIMChatItem:(id)item maxWidth:(double)width
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  itemCopy = item;
   v34.receiver = self;
   v34.super_class = CKAggregateAcknowledgmentChatItem;
-  v7 = [(CKChatItem *)&v34 initWithIMChatItem:v6 maxWidth:a4];
+  v7 = [(CKChatItem *)&v34 initWithIMChatItem:itemCopy maxWidth:width];
   if (v7)
   {
-    v8 = [v6 latestTapback];
-    v7->_latestAcknowledgmentType = CKMessageAcknowledgmentTypeFromIMAssociatedMessageType([v8 associatedMessageType]);
+    latestTapback = [itemCopy latestTapback];
+    v7->_latestAcknowledgmentType = CKMessageAcknowledgmentTypeFromIMAssociatedMessageType([latestTapback associatedMessageType]);
 
-    v28 = v6;
-    v9 = [v6 latestTapback];
+    v28 = itemCopy;
+    latestTapback2 = [itemCopy latestTapback];
     latestTapback = v7->_latestTapback;
-    v7->_latestTapback = v9;
+    v7->_latestTapback = latestTapback2;
 
-    v29 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v11 = [(CKAggregateAcknowledgmentChatItem *)v7 acknowledgments];
-    v12 = [v11 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    acknowledgments = [(CKAggregateAcknowledgmentChatItem *)v7 acknowledgments];
+    v12 = [acknowledgments countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v12)
     {
       v13 = v12;
@@ -55,61 +55,61 @@
         {
           if (*v31 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(acknowledgments);
           }
 
           v16 = *(*(&v30 + 1) + 8 * i);
-          v17 = [v16 tapback];
+          tapback = [v16 tapback];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v19 = [v16 tapback];
-            v20 = [v19 transferGUID];
+            tapback2 = [v16 tapback];
+            transferGUID = [tapback2 transferGUID];
 
-            if (v20)
+            if (transferGUID)
             {
-              v21 = [v16 chatContext];
-              v22 = [v16 message];
+              chatContext = [v16 chatContext];
+              message = [v16 message];
               v23 = +[CKMediaObjectManager sharedInstance];
-              v24 = [v23 mediaObjectWithTransferGUID:v20 imMessage:v22 chatContext:v21];
+              v24 = [v23 mediaObjectWithTransferGUID:transferGUID imMessage:message chatContext:chatContext];
 
               if (v24)
               {
-                [v29 addObject:v24];
+                [array addObject:v24];
               }
             }
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v13 = [acknowledgments countByEnumeratingWithState:&v30 objects:v35 count:16];
       }
 
       while (v13);
     }
 
-    v25 = [v29 copy];
+    v25 = [array copy];
     mediaObjects = v7->_mediaObjects;
     v7->_mediaObjects = v25;
 
-    v6 = v28;
+    itemCopy = v28;
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CKChatItem *)self IMChatItem];
-    v7 = [v5 IMChatItem];
+    v5 = equalCopy;
+    iMChatItem = [(CKChatItem *)self IMChatItem];
+    iMChatItem2 = [v5 IMChatItem];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [iMChatItem isEqual:iMChatItem2];
   }
 
   else
@@ -130,8 +130,8 @@
 
 - (id)associatedChatItemGUID
 {
-  v2 = [(CKAggregateAcknowledgmentChatItem *)self _imAggregateAcknowledgmentChatItem];
-  v3 = [v2 associatedMessageGUID];
+  _imAggregateAcknowledgmentChatItem = [(CKAggregateAcknowledgmentChatItem *)self _imAggregateAcknowledgmentChatItem];
+  associatedMessageGUID = [_imAggregateAcknowledgmentChatItem associatedMessageGUID];
   v4 = IMAssociatedMessageDecodeGUID();
 
   return v4;
@@ -139,58 +139,58 @@
 
 - (NSString)serviceName
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 serviceName];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  serviceName = [iMChatItem serviceName];
 
-  return v3;
+  return serviceName;
 }
 
 - (BOOL)includesFromMe
 {
-  v2 = [(CKAggregateAcknowledgmentChatItem *)self _imAggregateAcknowledgmentChatItem];
-  v3 = [v2 includesFromMe];
+  _imAggregateAcknowledgmentChatItem = [(CKAggregateAcknowledgmentChatItem *)self _imAggregateAcknowledgmentChatItem];
+  includesFromMe = [_imAggregateAcknowledgmentChatItem includesFromMe];
 
-  return v3;
+  return includesFromMe;
 }
 
 - (BOOL)latestIsFromMe
 {
-  v2 = [(CKAggregateAcknowledgmentChatItem *)self _imAggregateAcknowledgmentChatItem];
-  v3 = [v2 latestIsFromMe];
+  _imAggregateAcknowledgmentChatItem = [(CKAggregateAcknowledgmentChatItem *)self _imAggregateAcknowledgmentChatItem];
+  latestIsFromMe = [_imAggregateAcknowledgmentChatItem latestIsFromMe];
 
-  return v3;
+  return latestIsFromMe;
 }
 
 - (BOOL)includesMultiple
 {
-  v2 = [(CKAggregateAcknowledgmentChatItem *)self _imAggregateAcknowledgmentChatItem];
-  v3 = [v2 includesMultiple];
+  _imAggregateAcknowledgmentChatItem = [(CKAggregateAcknowledgmentChatItem *)self _imAggregateAcknowledgmentChatItem];
+  includesMultiple = [_imAggregateAcknowledgmentChatItem includesMultiple];
 
-  return v3;
+  return includesMultiple;
 }
 
 - (IMMessageAcknowledgmentChatItem)sentTapbackChatItem
 {
-  v2 = [(CKAggregateAcknowledgmentChatItem *)self _imAggregateAcknowledgmentChatItem];
-  v3 = [v2 fromMeAcknowledgement];
+  _imAggregateAcknowledgmentChatItem = [(CKAggregateAcknowledgmentChatItem *)self _imAggregateAcknowledgmentChatItem];
+  fromMeAcknowledgement = [_imAggregateAcknowledgmentChatItem fromMeAcknowledgement];
 
-  return v3;
+  return fromMeAcknowledgement;
 }
 
 - (int64_t)fromMeAcknowledgmentType
 {
-  v2 = [(CKAggregateAcknowledgmentChatItem *)self sentTapbackChatItem];
-  v3 = [v2 associatedMessageType];
+  sentTapbackChatItem = [(CKAggregateAcknowledgmentChatItem *)self sentTapbackChatItem];
+  associatedMessageType = [sentTapbackChatItem associatedMessageType];
 
-  return v3;
+  return associatedMessageType;
 }
 
 - (NSArray)acknowledgments
 {
-  v2 = [(CKAggregateAcknowledgmentChatItem *)self _imAggregateAcknowledgmentChatItem];
-  v3 = [v2 acknowledgments];
+  _imAggregateAcknowledgmentChatItem = [(CKAggregateAcknowledgmentChatItem *)self _imAggregateAcknowledgmentChatItem];
+  acknowledgments = [_imAggregateAcknowledgmentChatItem acknowledgments];
 
-  return v3;
+  return acknowledgments;
 }
 
 - (NSString)acknowledgmentImageName
@@ -203,13 +203,13 @@
 
 - (UIColor)acknowledgmentImageColor
 {
-  v3 = [(CKAggregateAcknowledgmentChatItem *)self latestIsFromMe];
+  latestIsFromMe = [(CKAggregateAcknowledgmentChatItem *)self latestIsFromMe];
   if (self->_latestAcknowledgmentType == 2000)
   {
     if ([(CKAggregateAcknowledgmentChatItem *)self latestIsFromMe])
     {
-      v4 = [(CKAggregateAcknowledgmentChatItem *)self serviceName];
-      v5 = [v4 isEqualToString:*MEMORY[0x1E69A7AF0]];
+      serviceName = [(CKAggregateAcknowledgmentChatItem *)self serviceName];
+      v5 = [serviceName isEqualToString:*MEMORY[0x1E69A7AF0]];
     }
 
     else
@@ -224,8 +224,8 @@
   }
 
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [v6 theme];
-  v8 = [v7 messageAcknowledgment:v3 acknowledgmentImageColor:v5];
+  theme = [v6 theme];
+  v8 = [theme messageAcknowledgment:latestIsFromMe acknowledgmentImageColor:v5];
 
   return v8;
 }
@@ -243,21 +243,21 @@
   }
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isEmojiTapbacksEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEmojiTapbacksEnabled = [mEMORY[0x1E69A8070] isEmojiTapbacksEnabled];
 
   v7 = +[CKUIBehavior sharedBehaviors];
   v8 = v7;
-  if (!v6)
+  if (!isEmojiTapbacksEnabled)
   {
     goto LABEL_5;
   }
 
-  v9 = [(CKTapbackPileViewModel *)v7 usesFannedBubbleStyle];
+  usesFannedBubbleStyle = [(CKTapbackPileViewModel *)v7 usesFannedBubbleStyle];
 
-  if (!v9)
+  if (!usesFannedBubbleStyle)
   {
     v7 = +[CKUIBehavior sharedBehaviors];
     v8 = v7;
@@ -310,8 +310,8 @@ LABEL_6:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(CKAggregateAcknowledgmentChatItem *)self acknowledgments];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  acknowledgments = [(CKAggregateAcknowledgmentChatItem *)self acknowledgments];
+  v3 = [acknowledgments countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = *v12;
@@ -321,17 +321,17 @@ LABEL_6:
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(acknowledgments);
         }
 
-        v6 = [*(*(&v11 + 1) + 8 * i) commSafetyTransferGUID];
-        if (v6)
+        commSafetyTransferGUID = [*(*(&v11 + 1) + 8 * i) commSafetyTransferGUID];
+        if (commSafetyTransferGUID)
         {
-          v7 = [MEMORY[0x1E69A5B80] sharedInstance];
-          v8 = [v7 transferForGUID:v6];
+          mEMORY[0x1E69A5B80] = [MEMORY[0x1E69A5B80] sharedInstance];
+          v8 = [mEMORY[0x1E69A5B80] transferForGUID:commSafetyTransferGUID];
 
-          v9 = [v8 commSafetySensitive];
-          if (v9 == 1)
+          commSafetySensitive = [v8 commSafetySensitive];
+          if (commSafetySensitive == 1)
           {
 
             LOBYTE(v3) = 1;
@@ -340,7 +340,7 @@ LABEL_6:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [acknowledgments countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v3)
       {
         continue;
@@ -355,16 +355,16 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)containsTransferGUID:(id)a3
+- (BOOL)containsTransferGUID:(id)d
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(CKAggregateAcknowledgmentChatItem *)self acknowledgments];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  acknowledgments = [(CKAggregateAcknowledgmentChatItem *)self acknowledgments];
+  v6 = [acknowledgments countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -374,17 +374,17 @@ LABEL_12:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(acknowledgments);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) containsTransferGUID:v4])
+        if ([*(*(&v10 + 1) + 8 * i) containsTransferGUID:dCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [acknowledgments countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;

@@ -1,50 +1,50 @@
 @interface PKApplyFooterContentLink
-- (BOOL)isEqual:(id)a3;
-- (PKApplyFooterContentLink)initWithCoder:(id)a3;
-- (PKApplyFooterContentLink)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKApplyFooterContentLink)initWithCoder:(id)coder;
+- (PKApplyFooterContentLink)initWithDictionary:(id)dictionary;
 - (_NSRange)linkRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplyFooterContentLink
 
-- (PKApplyFooterContentLink)initWithDictionary:(id)a3
+- (PKApplyFooterContentLink)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = PKApplyFooterContentLink;
   v5 = [(PKApplyFooterContentLink *)&v24 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"linkText"];
+    v6 = [dictionaryCopy PKStringForKey:@"linkText"];
     linkText = v5->_linkText;
     v5->_linkText = v6;
 
-    v8 = [v4 PKIntegerForKey:@"linkLocation"];
-    v9 = [v4 PKIntegerForKey:@"linkLength"];
+    v8 = [dictionaryCopy PKIntegerForKey:@"linkLocation"];
+    v9 = [dictionaryCopy PKIntegerForKey:@"linkLength"];
     if (v9 >= 1)
     {
       v5->_linkRange.location = v8;
       v5->_linkRange.length = v9;
     }
 
-    v10 = [v4 PKURLForKey:@"linkURL"];
+    v10 = [dictionaryCopy PKURLForKey:@"linkURL"];
     linkURL = v5->_linkURL;
     v5->_linkURL = v10;
 
-    v12 = [v4 PKStringForKey:@"termsIdentifier"];
+    v12 = [dictionaryCopy PKStringForKey:@"termsIdentifier"];
     termsIdentifier = v5->_termsIdentifier;
     v5->_termsIdentifier = v12;
 
-    v14 = [v4 PKStringForKey:@"analyticsIdentifier"];
+    v14 = [dictionaryCopy PKStringForKey:@"analyticsIdentifier"];
     analyticsIdentifier = v5->_analyticsIdentifier;
     v5->_analyticsIdentifier = v14;
 
-    v16 = [v4 PKStringForKey:@"behavior"];
+    v16 = [dictionaryCopy PKStringForKey:@"behavior"];
     v17 = v16;
     v18 = 0;
     if (v16 != @"default" && v16)
@@ -75,8 +75,8 @@
   v4 = NSStringFromRange(self->_linkRange);
   [v3 setObject:v4 forKeyedSubscript:@"linkRange"];
 
-  v5 = [(NSURL *)self->_linkURL absoluteString];
-  [v3 setObject:v5 forKeyedSubscript:@"linkURL"];
+  absoluteString = [(NSURL *)self->_linkURL absoluteString];
+  [v3 setObject:absoluteString forKeyedSubscript:@"linkURL"];
 
   [v3 setObject:self->_termsIdentifier forKeyedSubscript:@"termsIdentifier"];
   [v3 setObject:self->_analyticsIdentifier forKeyedSubscript:@"analyticsIdentifier"];
@@ -96,18 +96,18 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -285,73 +285,73 @@ LABEL_31:
   return v8;
 }
 
-- (PKApplyFooterContentLink)initWithCoder:(id)a3
+- (PKApplyFooterContentLink)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKApplyFooterContentLink;
   v5 = [(PKApplyFooterContentLink *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"linkText"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"linkText"];
     linkText = v5->_linkText;
     v5->_linkText = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"linkURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"linkURL"];
     linkURL = v5->_linkURL;
     v5->_linkURL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"termsIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"termsIdentifier"];
     termsIdentifier = v5->_termsIdentifier;
     v5->_termsIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"analyticsIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"analyticsIdentifier"];
     analyticsIdentifier = v5->_analyticsIdentifier;
     v5->_analyticsIdentifier = v12;
 
-    v14 = [v4 decodeIntegerForKey:@"linkLocation"];
-    v15 = [v4 decodeIntegerForKey:@"linkLength"];
+    v14 = [coderCopy decodeIntegerForKey:@"linkLocation"];
+    v15 = [coderCopy decodeIntegerForKey:@"linkLength"];
     if (v15 >= 1)
     {
       v5->_linkRange.location = v14;
       v5->_linkRange.length = v15;
     }
 
-    v5->_behavior = [v4 decodeIntegerForKey:@"behavior"];
+    v5->_behavior = [coderCopy decodeIntegerForKey:@"behavior"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   linkText = self->_linkText;
-  v5 = a3;
-  [v5 encodeObject:linkText forKey:@"linkText"];
-  [v5 encodeObject:self->_linkURL forKey:@"linkURL"];
-  [v5 encodeObject:self->_termsIdentifier forKey:@"termsIdentifier"];
-  [v5 encodeObject:self->_analyticsIdentifier forKey:@"analyticsIdentifier"];
-  [v5 encodeInteger:self->_linkRange.location forKey:@"linkLocation"];
-  [v5 encodeInteger:self->_linkRange.length forKey:@"linkLength"];
-  [v5 encodeInteger:self->_behavior forKey:@"behavior"];
+  coderCopy = coder;
+  [coderCopy encodeObject:linkText forKey:@"linkText"];
+  [coderCopy encodeObject:self->_linkURL forKey:@"linkURL"];
+  [coderCopy encodeObject:self->_termsIdentifier forKey:@"termsIdentifier"];
+  [coderCopy encodeObject:self->_analyticsIdentifier forKey:@"analyticsIdentifier"];
+  [coderCopy encodeInteger:self->_linkRange.location forKey:@"linkLocation"];
+  [coderCopy encodeInteger:self->_linkRange.length forKey:@"linkLength"];
+  [coderCopy encodeInteger:self->_behavior forKey:@"behavior"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKApplyFooterContentLink allocWithZone:](PKApplyFooterContentLink init];
-  v6 = [(NSString *)self->_linkText copyWithZone:a3];
+  v6 = [(NSString *)self->_linkText copyWithZone:zone];
   linkText = v5->_linkText;
   v5->_linkText = v6;
 
-  v8 = [(NSURL *)self->_linkURL copyWithZone:a3];
+  v8 = [(NSURL *)self->_linkURL copyWithZone:zone];
   linkURL = v5->_linkURL;
   v5->_linkURL = v8;
 
-  v10 = [(NSString *)self->_termsIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_termsIdentifier copyWithZone:zone];
   termsIdentifier = v5->_termsIdentifier;
   v5->_termsIdentifier = v10;
 
-  v12 = [(NSString *)self->_analyticsIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_analyticsIdentifier copyWithZone:zone];
   analyticsIdentifier = v5->_analyticsIdentifier;
   v5->_analyticsIdentifier = v12;
 

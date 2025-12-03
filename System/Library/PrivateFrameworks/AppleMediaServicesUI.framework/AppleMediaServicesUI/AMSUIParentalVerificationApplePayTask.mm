@@ -1,46 +1,46 @@
 @interface AMSUIParentalVerificationApplePayTask
-+ (BOOL)_walletHasValidSetup:(id)a3 paymentRequest:(id)a4;
-+ (id)_biometricsRequestWithAccount:(id)a3;
-+ (id)_contextIconWithBundle:(id)a3 accountParameters:(id)a4;
-+ (id)_contextTitleWithBag:(id)a3 bundle:(id)a4 accountParameters:(id)a5;
-+ (id)_messageWithBag:(id)a3 bundle:(id)a4;
-+ (id)_paymentRequestMetadataWithBag:(id)a3 bundle:(id)a4 accountParameters:(id)a5;
-+ (id)_sheetTitleWithBag:(id)a3 bundle:(id)a4;
-+ (id)_titleIconWithBundle:(id)a3;
-+ (id)paymentRequestFromPaymentSession:(id)a3 currencyCode:(id)a4 countryCode:(id)a5 networks:(id)a6 bag:(id)a7 accountParameters:(id)a8 bundle:(id)a9 biometricsRequest:(id)a10;
-- (AMSUIParentalVerificationApplePayTask)initWithAccount:(id)a3 accountParameters:(id)a4 bag:(id)a5 displayName:(id)a6 metrics:(id)a7 viewController:(id)a8;
-- (id)_presentPaymentRequest:(id)a3;
-- (id)_promiseToFetchPaymentCardTokenURL:(id)a3 requestBody:(id)a4;
-- (id)_promiseToLoadPVTURLWithBody:(id)a3;
-- (id)_promiseToRequestWalletDataUsingSession:(id)a3 bag:(id)a4 accountParameters:(id)a5 bundle:(id)a6;
++ (BOOL)_walletHasValidSetup:(id)setup paymentRequest:(id)request;
++ (id)_biometricsRequestWithAccount:(id)account;
++ (id)_contextIconWithBundle:(id)bundle accountParameters:(id)parameters;
++ (id)_contextTitleWithBag:(id)bag bundle:(id)bundle accountParameters:(id)parameters;
++ (id)_messageWithBag:(id)bag bundle:(id)bundle;
++ (id)_paymentRequestMetadataWithBag:(id)bag bundle:(id)bundle accountParameters:(id)parameters;
++ (id)_sheetTitleWithBag:(id)bag bundle:(id)bundle;
++ (id)_titleIconWithBundle:(id)bundle;
++ (id)paymentRequestFromPaymentSession:(id)session currencyCode:(id)code countryCode:(id)countryCode networks:(id)networks bag:(id)bag accountParameters:(id)parameters bundle:(id)bundle biometricsRequest:(id)self0;
+- (AMSUIParentalVerificationApplePayTask)initWithAccount:(id)account accountParameters:(id)parameters bag:(id)bag displayName:(id)name metrics:(id)metrics viewController:(id)controller;
+- (id)_presentPaymentRequest:(id)request;
+- (id)_promiseToFetchPaymentCardTokenURL:(id)l requestBody:(id)body;
+- (id)_promiseToLoadPVTURLWithBody:(id)body;
+- (id)_promiseToRequestWalletDataUsingSession:(id)session bag:(id)bag accountParameters:(id)parameters bundle:(id)bundle;
 - (id)performTask;
-- (void)paymentAuthorizationController:(id)a3 didAuthorizePayment:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationController:(id)a3 willFinishWithError:(id)a4;
-- (void)paymentAuthorizationControllerDidFinish:(id)a3;
+- (void)paymentAuthorizationController:(id)controller didAuthorizePayment:(id)payment handler:(id)handler;
+- (void)paymentAuthorizationController:(id)controller willFinishWithError:(id)error;
+- (void)paymentAuthorizationControllerDidFinish:(id)finish;
 @end
 
 @implementation AMSUIParentalVerificationApplePayTask
 
-- (AMSUIParentalVerificationApplePayTask)initWithAccount:(id)a3 accountParameters:(id)a4 bag:(id)a5 displayName:(id)a6 metrics:(id)a7 viewController:(id)a8
+- (AMSUIParentalVerificationApplePayTask)initWithAccount:(id)account accountParameters:(id)parameters bag:(id)bag displayName:(id)name metrics:(id)metrics viewController:(id)controller
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  accountCopy = account;
+  parametersCopy = parameters;
+  bagCopy = bag;
+  nameCopy = name;
+  metricsCopy = metrics;
+  controllerCopy = controller;
   v24.receiver = self;
   v24.super_class = AMSUIParentalVerificationApplePayTask;
   v18 = [(AMSTask *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_originalAccount, a3);
-    objc_storeStrong(&v19->_accountParameters, a4);
-    objc_storeStrong(&v19->_bag, a5);
-    objc_storeStrong(&v19->_displayName, a6);
-    objc_storeStrong(&v19->_metrics, a7);
-    objc_storeStrong(&v19->_viewController, a8);
+    objc_storeStrong(&v18->_originalAccount, account);
+    objc_storeStrong(&v19->_accountParameters, parameters);
+    objc_storeStrong(&v19->_bag, bag);
+    objc_storeStrong(&v19->_displayName, name);
+    objc_storeStrong(&v19->_metrics, metrics);
+    objc_storeStrong(&v19->_viewController, controller);
   }
 
   return v19;
@@ -49,14 +49,14 @@
 - (id)performTask
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v3)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v3 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = AMSLogKey();
@@ -64,13 +64,13 @@
     v25 = v5;
     v26 = 2114;
     v27 = v6;
-    _os_log_impl(&dword_1BB036000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting task", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting task", buf, 0x16u);
   }
 
   v7 = [MEMORY[0x1E6959A48] ams_sharedAccountStoreForMediaType:*MEMORY[0x1E698C4C0]];
-  v8 = [(AMSUIParentalVerificationApplePayTask *)self originalAccount];
-  v9 = [(AMSUIParentalVerificationApplePayTask *)self accountParameters];
-  v10 = [AMSUIPaymentVerificationProtocolHandler _accountToUseFromGivenAccount:v8 accountParameters:v9 accountStore:v7];
+  originalAccount = [(AMSUIParentalVerificationApplePayTask *)self originalAccount];
+  accountParameters = [(AMSUIParentalVerificationApplePayTask *)self accountParameters];
+  v10 = [AMSUIPaymentVerificationProtocolHandler _accountToUseFromGivenAccount:originalAccount accountParameters:accountParameters accountStore:v7];
 
   if (v10)
   {
@@ -91,14 +91,14 @@
   {
     v15 = *MEMORY[0x1E698C548];
     v13 = AMSCustomError();
-    v16 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v16)
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968]2)
     {
-      v16 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v17 = [v16 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v18 = objc_opt_class();
       v19 = AMSLogKey();
@@ -108,12 +108,12 @@
       v27 = v19;
       v28 = 2114;
       v29 = v13;
-      _os_log_impl(&dword_1BB036000, v17, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@", buf, 0x20u);
     }
 
     v14 = [MEMORY[0x1E698CAD0] promiseWithError:v13];
-    v20 = [(AMSUIParentalVerificationApplePayTask *)self metrics];
-    [v20 setDisplayReason:@"Missing account"];
+    metrics = [(AMSUIParentalVerificationApplePayTask *)self metrics];
+    [metrics setDisplayReason:@"Missing account"];
   }
 
   [(AMSUIParentalVerificationApplePayTask *)self setResultPromise:v14];
@@ -135,40 +135,40 @@ id __52__AMSUIParentalVerificationApplePayTask_performTask__block_invoke(uint64_
   return v9;
 }
 
-- (id)_promiseToRequestWalletDataUsingSession:(id)a3 bag:(id)a4 accountParameters:(id)a5 bundle:(id)a6
+- (id)_promiseToRequestWalletDataUsingSession:(id)session bag:(id)bag accountParameters:(id)parameters bundle:(id)bundle
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x1E69B8D70] availableNetworks];
-  v15 = [MEMORY[0x1E695DF58] currentLocale];
-  v38 = [v15 countryCode];
+  sessionCopy = session;
+  bagCopy = bag;
+  parametersCopy = parameters;
+  bundleCopy = bundle;
+  availableNetworks = [MEMORY[0x1E69B8D70] availableNetworks];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  countryCode = [currentLocale countryCode];
 
-  v16 = [MEMORY[0x1E695DF58] currentLocale];
-  v17 = [v16 currencyCode];
+  currentLocale2 = [MEMORY[0x1E695DF58] currentLocale];
+  currencyCode = [currentLocale2 currencyCode];
 
   v18 = objc_opt_class();
-  v19 = [(AMSUIParentalVerificationApplePayTask *)self account];
-  v20 = [v18 _biometricsRequestWithAccount:v19];
+  account = [(AMSUIParentalVerificationApplePayTask *)self account];
+  v20 = [v18 _biometricsRequestWithAccount:account];
   [(AMSUIParentalVerificationApplePayTask *)self setBiometricsRequest:v20];
 
-  v21 = [(AMSUIParentalVerificationApplePayTask *)self biometricsRequest];
+  biometricsRequest = [(AMSUIParentalVerificationApplePayTask *)self biometricsRequest];
 
-  v39 = v13;
-  if (v21)
+  v39 = bundleCopy;
+  if (biometricsRequest)
   {
     v22 = objc_opt_class();
-    v23 = [(AMSUIParentalVerificationApplePayTask *)self biometricsRequest];
-    v37 = v13;
-    v24 = v10;
-    v25 = v10;
-    v26 = v38;
-    v27 = [v22 paymentRequestFromPaymentSession:v25 currencyCode:v17 countryCode:v38 networks:v14 bag:v11 accountParameters:v12 bundle:v37 biometricsRequest:v23];
+    biometricsRequest2 = [(AMSUIParentalVerificationApplePayTask *)self biometricsRequest];
+    v37 = bundleCopy;
+    v24 = sessionCopy;
+    v25 = sessionCopy;
+    v26 = countryCode;
+    v27 = [v22 paymentRequestFromPaymentSession:v25 currencyCode:currencyCode countryCode:countryCode networks:availableNetworks bag:bagCopy accountParameters:parametersCopy bundle:v37 biometricsRequest:biometricsRequest2];
 
     v28 = objc_opt_class();
-    v29 = [(AMSUIParentalVerificationApplePayTask *)self biometricsRequest];
-    LODWORD(v28) = [v28 _walletHasValidSetup:v29 paymentRequest:v27];
+    biometricsRequest3 = [(AMSUIParentalVerificationApplePayTask *)self biometricsRequest];
+    LODWORD(v28) = [v28 _walletHasValidSetup:biometricsRequest3 paymentRequest:v27];
 
     if (v28)
     {
@@ -177,8 +177,8 @@ id __52__AMSUIParentalVerificationApplePayTask_performTask__block_invoke(uint64_
 
     else
     {
-      v33 = [(AMSUIParentalVerificationApplePayTask *)self metrics];
-      [v33 setDisplayReason:@"No suitable credit card in Wallet"];
+      metrics = [(AMSUIParentalVerificationApplePayTask *)self metrics];
+      [metrics setDisplayReason:@"No suitable credit card in Wallet"];
 
       v34 = MEMORY[0x1E698CAD0];
       v35 = AMSError();
@@ -188,50 +188,50 @@ id __52__AMSUIParentalVerificationApplePayTask_performTask__block_invoke(uint64_
 
   else
   {
-    v24 = v10;
-    v31 = [(AMSUIParentalVerificationApplePayTask *)self metrics];
-    [v31 setDisplayReason:@"Unable to create Wallet biometrics request"];
+    v24 = sessionCopy;
+    metrics2 = [(AMSUIParentalVerificationApplePayTask *)self metrics];
+    [metrics2 setDisplayReason:@"Unable to create Wallet biometrics request"];
 
     v32 = MEMORY[0x1E698CAD0];
     v27 = AMSError();
     v30 = [v32 promiseWithError:v27];
-    v26 = v38;
+    v26 = countryCode;
   }
 
   return v30;
 }
 
-+ (BOOL)_walletHasValidSetup:(id)a3 paymentRequest:(id)a4
++ (BOOL)_walletHasValidSetup:(id)setup paymentRequest:(id)request
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 supportedNetworks];
-  v8 = [v5 supportedCountries];
-  LOBYTE(a3) = PKCanMakePaymentsUsingNetworksIssuerCountryCodesWithCapabilities();
+  requestCopy = request;
+  setupCopy = setup;
+  supportedNetworks = [requestCopy supportedNetworks];
+  supportedCountries = [requestCopy supportedCountries];
+  LOBYTE(setup) = PKCanMakePaymentsUsingNetworksIssuerCountryCodesWithCapabilities();
 
-  v9 = [v6 localAuthContext];
+  localAuthContext = [setupCopy localAuthContext];
 
-  v10 = [v5 accesssControlRef];
-  v11 = [v9 evaluationMechanismsForAccessControl:v10 operation:3 error:0];
+  accesssControlRef = [requestCopy accesssControlRef];
+  v11 = [localAuthContext evaluationMechanismsForAccessControl:accesssControlRef operation:3 error:0];
 
-  LOBYTE(v10) = [v11 containsObject:&unk_1F394A618];
-  LOBYTE(v9) = [v11 containsObject:&unk_1F394A630];
-  LOBYTE(v10) = v10 | v9 | [v11 containsObject:&unk_1F394A648];
+  LOBYTE(accesssControlRef) = [v11 containsObject:&unk_1F394A618];
+  LOBYTE(localAuthContext) = [v11 containsObject:&unk_1F394A630];
+  LOBYTE(accesssControlRef) = accesssControlRef | localAuthContext | [v11 containsObject:&unk_1F394A648];
 
-  return a3 & v10;
+  return setup & accesssControlRef;
 }
 
-+ (id)paymentRequestFromPaymentSession:(id)a3 currencyCode:(id)a4 countryCode:(id)a5 networks:(id)a6 bag:(id)a7 accountParameters:(id)a8 bundle:(id)a9 biometricsRequest:(id)a10
++ (id)paymentRequestFromPaymentSession:(id)session currencyCode:(id)code countryCode:(id)countryCode networks:(id)networks bag:(id)bag accountParameters:(id)parameters bundle:(id)bundle biometricsRequest:(id)self0
 {
   v62 = *MEMORY[0x1E69E9840];
-  v48 = a3;
-  v47 = a4;
-  v46 = a5;
-  v45 = a6;
-  v50 = a7;
-  v44 = a8;
-  v16 = a9;
-  v49 = a10;
+  sessionCopy = session;
+  codeCopy = code;
+  countryCodeCopy = countryCode;
+  networksCopy = networks;
+  bagCopy = bag;
+  parametersCopy = parameters;
+  bundleCopy = bundle;
+  requestCopy = request;
   v52 = 0;
   v53 = &v52;
   v54 = 0x2050000000;
@@ -254,10 +254,10 @@ id __52__AMSUIParentalVerificationApplePayTask_performTask__block_invoke(uint64_
   [v19 setAPIType:0];
   [v19 setRequestType:0];
   [v19 setRequestor:0];
-  [v19 setMerchantSession:v48];
+  [v19 setMerchantSession:sessionCopy];
   [v19 setExpectsMerchantSession:1];
   [v19 setMerchantCapabilities:5];
-  [v19 setCurrencyCode:v47];
+  [v19 setCurrencyCode:codeCopy];
   v20 = AMSNormalisedCountryCodeForPaymentRequest();
   if (v20)
   {
@@ -285,26 +285,26 @@ id __52__AMSUIParentalVerificationApplePayTask_performTask__block_invoke(uint64_
 
   v23 = v22;
   _Block_object_dispose(&v52, 8);
-  v24 = [MEMORY[0x1E696AB90] zero];
-  v25 = [v22 summaryItemWithLabel:@"Parental Verification (PVK)" amount:v24];
+  zero = [MEMORY[0x1E696AB90] zero];
+  v25 = [v22 summaryItemWithLabel:@"Parental Verification (PVK)" amount:zero];
 
   v58 = v25;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v58 count:1];
   [v19 setPaymentSummaryItems:v26];
 
-  [v19 setSupportedNetworks:v45];
+  [v19 setSupportedNetworks:networksCopy];
   v27 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
-  v28 = AMSUILocalizedStringFromBundle(@"PARENTAL_VERIFICATION_APPLE_PAY_CLASSIC_SHEET_AUTH_TITLE", v50, v16);
+  v28 = AMSUILocalizedStringFromBundle(@"PARENTAL_VERIFICATION_APPLE_PAY_CLASSIC_SHEET_AUTH_TITLE", bagCopy, bundleCopy);
   [v19 setLocalizedAuthorizingTitle:v28];
 
   v29 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
-  v30 = AMSUILocalizedStringFromBundle(@"PARENTAL_VERIFICATION_APPLE_PAY_CLASSIC_SHEET_ERROR_TITLE", v50, v16);
+  v30 = AMSUILocalizedStringFromBundle(@"PARENTAL_VERIFICATION_APPLE_PAY_CLASSIC_SHEET_ERROR_TITLE", bagCopy, bundleCopy);
   [v19 setLocalizedErrorMessage:v30];
 
-  [v19 setAccesssControlRef:{objc_msgSend(v49, "localAuthAccessControlRef")}];
-  v31 = [v49 localAuthContext];
-  v32 = [v31 externalizedContext];
-  [v19 setExternalizedContext:v32];
+  [v19 setAccesssControlRef:{objc_msgSend(requestCopy, "localAuthAccessControlRef")}];
+  localAuthContext = [requestCopy localAuthContext];
+  externalizedContext = [localAuthContext externalizedContext];
+  [v19 setExternalizedContext:externalizedContext];
 
   [v19 setDisablePasscodeFallback:1];
   [v19 setClientViewSourceIdentifier:@"AMSUIPaymentSheetViewProvider"];
@@ -313,14 +313,14 @@ id __52__AMSUIParentalVerificationApplePayTask_performTask__block_invoke(uint64_
   v34 = v51;
   if (v34)
   {
-    v35 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v35)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v35 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v36 = [v35 OSLogObject];
-    if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v37 = objc_opt_class();
       v38 = AMSLogKey();
@@ -330,7 +330,7 @@ id __52__AMSUIParentalVerificationApplePayTask_performTask__block_invoke(uint64_
       *&buf[14] = v38;
       *&buf[22] = 2114;
       v60 = v34;
-      _os_log_impl(&dword_1BB036000, v36, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to serialise payment request with error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to serialise payment request with error: %{public}@", buf, 0x20u);
     }
   }
 
@@ -346,13 +346,13 @@ id __52__AMSUIParentalVerificationApplePayTask_performTask__block_invoke(uint64_
     v40 = *MEMORY[0x1E698C770];
     v56[0] = v39;
     v56[1] = v40;
-    v41 = [a1 _paymentRequestMetadataWithBag:v50 bundle:v16 accountParameters:v44];
+    v41 = [self _paymentRequestMetadataWithBag:bagCopy bundle:bundleCopy accountParameters:parametersCopy];
     v57[1] = v41;
     v56[2] = *MEMORY[0x1E698C768];
     v57[2] = @"AMSPaymentSheetPaymentRequestLayoutValuePVK";
-    v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:3];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:3];
 
-    [v19 setClientViewSourceParameter:v35];
+    [v19 setClientViewSourceParameter:mEMORY[0x1E698C968]];
   }
 
 LABEL_16:
@@ -361,30 +361,30 @@ LABEL_16:
   return v19;
 }
 
-+ (id)_biometricsRequestWithAccount:(id)a3
++ (id)_biometricsRequestWithAccount:(id)account
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E698C948];
-  v4 = a3;
+  accountCopy = account;
   v5 = objc_alloc_init(v3);
   [v5 setAuthenticationFallbackVisible:0];
   [v5 setStyle:{objc_msgSend(MEMORY[0x1E698C948], "preferredAttestationStyle")}];
   [v5 setPurpose:0];
-  v6 = [MEMORY[0x1E698CAC8] currentProcess];
+  currentProcess = [MEMORY[0x1E698CAC8] currentProcess];
   v15 = 0;
-  v7 = [objc_alloc(MEMORY[0x1E698C808]) initWithAccount:v4 clientInfo:v6 challenge:@"PVKAPCBiometricsChallenge" localAuthContext:0 options:v5 error:&v15];
+  v7 = [objc_alloc(MEMORY[0x1E698C808]) initWithAccount:accountCopy clientInfo:currentProcess challenge:@"PVKAPCBiometricsChallenge" localAuthContext:0 options:v5 error:&v15];
 
   v8 = v15;
   if (!v7)
   {
-    v9 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v9)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v9 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 = objc_opt_class();
       v12 = AMSLogKey();
@@ -394,7 +394,7 @@ LABEL_16:
       v19 = v12;
       v20 = 2114;
       v21 = v8;
-      _os_log_impl(&dword_1BB036000, v10, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create biometrics request with error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create biometrics request with error: %{public}@", buf, 0x20u);
     }
   }
 
@@ -403,33 +403,33 @@ LABEL_16:
   return v7;
 }
 
-+ (id)_paymentRequestMetadataWithBag:(id)a3 bundle:(id)a4 accountParameters:(id)a5
++ (id)_paymentRequestMetadataWithBag:(id)bag bundle:(id)bundle accountParameters:(id)parameters
 {
   v23[6] = *MEMORY[0x1E69E9840];
   v22[0] = @"sheetTitle";
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 _sheetTitleWithBag:v10 bundle:v9];
+  parametersCopy = parameters;
+  bundleCopy = bundle;
+  bagCopy = bag;
+  v11 = [self _sheetTitleWithBag:bagCopy bundle:bundleCopy];
   v23[0] = v11;
   v22[1] = @"contextTitle";
-  v12 = [a1 _contextTitleWithBag:v10 bundle:v9 accountParameters:v8];
+  v12 = [self _contextTitleWithBag:bagCopy bundle:bundleCopy accountParameters:parametersCopy];
   v23[1] = v12;
   v22[2] = @"message";
-  v13 = [a1 _messageWithBag:v10 bundle:v9];
+  v13 = [self _messageWithBag:bagCopy bundle:bundleCopy];
 
   v23[2] = v13;
   v22[3] = @"titleIcon";
-  v14 = [a1 _titleIconWithBundle:v9];
+  v14 = [self _titleIconWithBundle:bundleCopy];
   v23[3] = v14;
   v22[4] = @"contextIcon";
-  v15 = [a1 _contextIconWithBundle:v9 accountParameters:v8];
+  v15 = [self _contextIconWithBundle:bundleCopy accountParameters:parametersCopy];
 
   v23[4] = v15;
   v22[5] = @"screenScale";
   v16 = MEMORY[0x1E696AD98];
-  v17 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v17 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v18 = [v16 numberWithDouble:?];
   v23[5] = v18;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:6];
@@ -439,22 +439,22 @@ LABEL_16:
   return v19;
 }
 
-+ (id)_sheetTitleWithBag:(id)a3 bundle:(id)a4
++ (id)_sheetTitleWithBag:(id)bag bundle:(id)bundle
 {
   v5 = MEMORY[0x1E696AAE8];
-  v6 = a4;
-  v7 = a3;
+  bundleCopy = bundle;
+  bagCopy = bag;
   v8 = [v5 bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
-  v9 = AMSUILocalizedStringFromBundle(@"PARENTAL_VERIFICATION_APPLE_PAY_CLASSIC_WALLET", v7, v6);
+  v9 = AMSUILocalizedStringFromBundle(@"PARENTAL_VERIFICATION_APPLE_PAY_CLASSIC_WALLET", bagCopy, bundleCopy);
 
   return v9;
 }
 
-+ (id)_contextTitleWithBag:(id)a3 bundle:(id)a4 accountParameters:(id)a5
++ (id)_contextTitleWithBag:(id)bag bundle:(id)bundle accountParameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a5 objectForKeyedSubscript:@"PVKApplePayClassicContextTitle"];
+  bagCopy = bag;
+  bundleCopy = bundle;
+  v9 = [parameters objectForKeyedSubscript:@"PVKApplePayClassicContextTitle"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -469,35 +469,35 @@ LABEL_16:
   if (!v10)
   {
     v11 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
-    v10 = AMSUILocalizedStringFromBundle(@"PARENTAL_VERIFICATION_APPLE_PAY_CLASSIC_CONTEXT_NAME", v7, v8);
+    v10 = AMSUILocalizedStringFromBundle(@"PARENTAL_VERIFICATION_APPLE_PAY_CLASSIC_CONTEXT_NAME", bagCopy, bundleCopy);
   }
 
   return v10;
 }
 
-+ (id)_messageWithBag:(id)a3 bundle:(id)a4
++ (id)_messageWithBag:(id)bag bundle:(id)bundle
 {
   v5 = MEMORY[0x1E696AAE8];
-  v6 = a4;
-  v7 = a3;
+  bundleCopy = bundle;
+  bagCopy = bag;
   v8 = [v5 bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
-  v9 = AMSUILocalizedStringFromBundle(@"PARENTAL_VERIFICATION_APPLE_PAY_CLASSIC_MESSAGE", v7, v6);
+  v9 = AMSUILocalizedStringFromBundle(@"PARENTAL_VERIFICATION_APPLE_PAY_CLASSIC_MESSAGE", bagCopy, bundleCopy);
 
   return v9;
 }
 
-+ (id)_titleIconWithBundle:(id)a3
++ (id)_titleIconWithBundle:(id)bundle
 {
-  v3 = [MEMORY[0x1E69DCAB8] imageNamed:@"Wallet20x20" inBundle:a3 compatibleWithTraitCollection:0];
+  v3 = [MEMORY[0x1E69DCAB8] imageNamed:@"Wallet20x20" inBundle:bundle compatibleWithTraitCollection:0];
   v4 = UIImagePNGRepresentation(v3);
 
   return v4;
 }
 
-+ (id)_contextIconWithBundle:(id)a3 accountParameters:(id)a4
++ (id)_contextIconWithBundle:(id)bundle accountParameters:(id)parameters
 {
-  v5 = a3;
-  v6 = [a4 objectForKeyedSubscript:@"PVKApplePayClassicContextIcon"];
+  bundleCopy = bundle;
+  v6 = [parameters objectForKeyedSubscript:@"PVKApplePayClassicContextIcon"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -511,16 +511,16 @@ LABEL_16:
 
   if (!v7)
   {
-    v8 = [MEMORY[0x1E69DCAB8] imageNamed:@"FS54x54" inBundle:v5 compatibleWithTraitCollection:0];
+    v8 = [MEMORY[0x1E69DCAB8] imageNamed:@"FS54x54" inBundle:bundleCopy compatibleWithTraitCollection:0];
     v7 = UIImagePNGRepresentation(v8);
   }
 
   return v7;
 }
 
-- (id)_presentPaymentRequest:(id)a3
+- (id)_presentPaymentRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(MEMORY[0x1E698CA58]);
   v6 = objc_alloc_init(MEMORY[0x1E698CA58]);
   [(AMSUIParentalVerificationApplePayTask *)self setDelegatePromise:v6];
@@ -543,7 +543,7 @@ LABEL_16:
 
   v8 = v7;
   _Block_object_dispose(&v16, 8);
-  v9 = [[v7 alloc] initWithPaymentRequest:v4];
+  v9 = [[v7 alloc] initWithPaymentRequest:requestCopy];
   [v9 setDelegate:self];
   [v9 setPrivateDelegate:self];
   [(AMSUIParentalVerificationApplePayTask *)self setStrongSelf:self];
@@ -582,27 +582,27 @@ void __64__AMSUIParentalVerificationApplePayTask__presentPaymentRequest___block_
   }
 }
 
-- (void)paymentAuthorizationControllerDidFinish:(id)a3
+- (void)paymentAuthorizationControllerDidFinish:(id)finish
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v5)
+  finishCopy = finish;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v5 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
     v9 = AMSSetLogKeyIfNeeded();
-    v10 = [(AMSUIParentalVerificationApplePayTask *)self paymentData];
+    paymentData = [(AMSUIParentalVerificationApplePayTask *)self paymentData];
     v11 = @"YES";
     *buf = 138543874;
     v29 = v7;
-    if (!v10)
+    if (!paymentData)
     {
       v11 = @"NO";
     }
@@ -611,45 +611,45 @@ void __64__AMSUIParentalVerificationApplePayTask__presentPaymentRequest___block_
     v31 = v9;
     v32 = 2112;
     v33 = v11;
-    _os_log_impl(&dword_1BB036000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] paymentAuthorizationControllerDidFinish: with payment %@", buf, 0x20u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] paymentAuthorizationControllerDidFinish: with payment %@", buf, 0x20u);
   }
 
-  v12 = [(AMSUIParentalVerificationApplePayTask *)self paymentData];
-  v13 = v12 == 0;
+  paymentData2 = [(AMSUIParentalVerificationApplePayTask *)self paymentData];
+  v13 = paymentData2 == 0;
 
   if (v13)
   {
-    v17 = [(AMSUIParentalVerificationApplePayTask *)self metrics];
-    [v17 setDisplayReason:@"Present payment sheet completed with failure"];
+    metrics = [(AMSUIParentalVerificationApplePayTask *)self metrics];
+    [metrics setDisplayReason:@"Present payment sheet completed with failure"];
 
-    v18 = [(AMSUIParentalVerificationApplePayTask *)self paymentError];
-    LODWORD(v17) = v18 == 0;
+    paymentError = [(AMSUIParentalVerificationApplePayTask *)self paymentError];
+    LODWORD(metrics) = paymentError == 0;
 
-    if (v17)
+    if (metrics)
     {
       v19 = *MEMORY[0x1E698C548];
       v20 = AMSCustomError();
       [(AMSUIParentalVerificationApplePayTask *)self setPaymentError:v20];
 
-      v21 = [(AMSUIParentalVerificationApplePayTask *)self metrics];
-      [v21 setDisplayReason:@"User closed payment sheet"];
+      metrics2 = [(AMSUIParentalVerificationApplePayTask *)self metrics];
+      [metrics2 setDisplayReason:@"User closed payment sheet"];
     }
 
     v22 = [(AMSUIParentalVerificationApplePayTask *)self bag];
-    v23 = [(AMSUIParentalVerificationApplePayTask *)self viewController];
-    v24 = [(AMSUIParentalVerificationApplePayTask *)self metrics];
-    v14 = [AMSUIParentalVerificationCommon _promiseToPromptAfterFailureWithBag:v22 viewController:v23 metrics:v24 pageID:@"ContinueNoWalletPay" flowName:@"Wallet pay"];
+    viewController = [(AMSUIParentalVerificationApplePayTask *)self viewController];
+    metrics3 = [(AMSUIParentalVerificationApplePayTask *)self metrics];
+    delegatePromise2 = [AMSUIParentalVerificationCommon _promiseToPromptAfterFailureWithBag:v22 viewController:viewController metrics:metrics3 pageID:@"ContinueNoWalletPay" flowName:@"Wallet pay"];
 
-    v15 = [(AMSUIParentalVerificationApplePayTask *)self delegatePromise];
-    [v15 finishWithPromise:v14];
+    delegatePromise = [(AMSUIParentalVerificationApplePayTask *)self delegatePromise];
+    [delegatePromise finishWithPromise:delegatePromise2];
   }
 
   else
   {
-    v14 = [(AMSUIParentalVerificationApplePayTask *)self delegatePromise];
-    v15 = [(AMSUIParentalVerificationApplePayTask *)self paymentData];
-    v16 = [(AMSUIParentalVerificationApplePayTask *)self _promiseToLoadPVTURLWithBody:v15];
-    [v14 finishWithPromise:v16];
+    delegatePromise2 = [(AMSUIParentalVerificationApplePayTask *)self delegatePromise];
+    delegatePromise = [(AMSUIParentalVerificationApplePayTask *)self paymentData];
+    v16 = [(AMSUIParentalVerificationApplePayTask *)self _promiseToLoadPVTURLWithBody:delegatePromise];
+    [delegatePromise2 finishWithPromise:v16];
   }
 
   objc_initWeak(buf, self);
@@ -658,8 +658,8 @@ void __64__AMSUIParentalVerificationApplePayTask__presentPaymentRequest___block_
   v26[2] = __81__AMSUIParentalVerificationApplePayTask_paymentAuthorizationControllerDidFinish___block_invoke;
   v26[3] = &unk_1E7F24968;
   objc_copyWeak(&v27, buf);
-  [v4 dismissWithCompletion:v26];
-  [v4 setDelegate:0];
+  [finishCopy dismissWithCompletion:v26];
+  [finishCopy setDelegate:0];
   [(AMSUIParentalVerificationApplePayTask *)self setStrongSelf:0];
   objc_destroyWeak(&v27);
   objc_destroyWeak(buf);
@@ -672,20 +672,20 @@ void __81__AMSUIParentalVerificationApplePayTask_paymentAuthorizationControllerD
   WeakRetained = objc_loadWeakRetained((a1 + 32));
 }
 
-- (void)paymentAuthorizationController:(id)a3 didAuthorizePayment:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationController:(id)controller didAuthorizePayment:(id)payment handler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  paymentCopy = payment;
   v8 = MEMORY[0x1E698C968];
-  v9 = a5;
-  v10 = [v8 sharedConfig];
-  if (!v10)
+  handlerCopy = handler;
+  sharedConfig = [v8 sharedConfig];
+  if (!sharedConfig)
   {
-    v10 = [MEMORY[0x1E698C968] sharedConfig];
+    sharedConfig = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [sharedConfig OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = v12;
@@ -695,7 +695,7 @@ void __81__AMSUIParentalVerificationApplePayTask_paymentAuthorizationControllerD
     *buf = 138543874;
     v26 = v12;
     v27 = 2114;
-    if (!v7)
+    if (!paymentCopy)
     {
       v16 = @"NO";
     }
@@ -703,53 +703,53 @@ void __81__AMSUIParentalVerificationApplePayTask_paymentAuthorizationControllerD
     v28 = v14;
     v29 = 2114;
     v30 = v16;
-    _os_log_impl(&dword_1BB036000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] didAuthorizePayment: Did finish with payment? %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] didAuthorizePayment: Did finish with payment? %{public}@", buf, 0x20u);
   }
 
-  if (v7)
+  if (paymentCopy)
   {
     v17 = [objc_alloc(getPKPaymentAuthorizationResultClass()) initWithStatus:0 errors:0];
-    v18 = [v7 token];
-    v19 = [v18 paymentData];
-    [(AMSUIParentalVerificationApplePayTask *)self setPaymentData:v19];
+    token = [paymentCopy token];
+    paymentData = [token paymentData];
+    [(AMSUIParentalVerificationApplePayTask *)self setPaymentData:paymentData];
   }
 
   else
   {
-    v20 = [(AMSUIParentalVerificationApplePayTask *)self paymentError];
+    paymentError = [(AMSUIParentalVerificationApplePayTask *)self paymentError];
 
-    if (!v20)
+    if (!paymentError)
     {
       v21 = AMSError();
       [(AMSUIParentalVerificationApplePayTask *)self setPaymentError:v21];
     }
 
     v22 = objc_alloc(getPKPaymentAuthorizationResultClass());
-    v18 = [(AMSUIParentalVerificationApplePayTask *)self paymentError];
-    v24 = v18;
-    v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
-    v17 = [v22 initWithStatus:1 errors:v19];
+    token = [(AMSUIParentalVerificationApplePayTask *)self paymentError];
+    v24 = token;
+    paymentData = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
+    v17 = [v22 initWithStatus:1 errors:paymentData];
   }
 
-  v9[2](v9, v17);
+  handlerCopy[2](handlerCopy, v17);
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)paymentAuthorizationController:(id)a3 willFinishWithError:(id)a4
+- (void)paymentAuthorizationController:(id)controller willFinishWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  controllerCopy = controller;
+  errorCopy = error;
+  if (errorCopy)
   {
-    v8 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v8)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v8 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_opt_class();
       v11 = v10;
@@ -759,47 +759,47 @@ void __81__AMSUIParentalVerificationApplePayTask_paymentAuthorizationControllerD
       v16 = 2114;
       v17 = v12;
       v18 = 2114;
-      v19 = v7;
-      _os_log_impl(&dword_1BB036000, v9, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Payment sheet will finish with error: %{public}@", &v14, 0x20u);
+      v19 = errorCopy;
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Payment sheet will finish with error: %{public}@", &v14, 0x20u);
     }
   }
 
-  [v6 setPrivateDelegate:0];
-  [(AMSUIParentalVerificationApplePayTask *)self setPaymentError:v7];
+  [controllerCopy setPrivateDelegate:0];
+  [(AMSUIParentalVerificationApplePayTask *)self setPaymentError:errorCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_promiseToLoadPVTURLWithBody:(id)a3
+- (id)_promiseToLoadPVTURLWithBody:(id)body
 {
-  v4 = a3;
-  v5 = [(AMSUIParentalVerificationApplePayTask *)self metrics];
-  [v5 enqueueEventWithPageId:@"ParentalVerificationApplePay" displayReason:0];
+  bodyCopy = body;
+  metrics = [(AMSUIParentalVerificationApplePayTask *)self metrics];
+  [metrics enqueueEventWithPageId:@"ParentalVerificationApplePay" displayReason:0];
 
   v6 = [(AMSUIParentalVerificationApplePayTask *)self bag];
   v7 = [v6 URLForKey:@"verifyPaymentApplePayCardOnDevice"];
 
-  v8 = [v7 valuePromise];
+  valuePromise = [v7 valuePromise];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __70__AMSUIParentalVerificationApplePayTask__promiseToLoadPVTURLWithBody___block_invoke;
   v12[3] = &unk_1E7F25470;
   v12[4] = self;
-  v13 = v4;
-  v9 = v4;
-  v10 = [v8 thenWithBlock:v12];
+  v13 = bodyCopy;
+  v9 = bodyCopy;
+  v10 = [valuePromise thenWithBlock:v12];
 
   return v10;
 }
 
-- (id)_promiseToFetchPaymentCardTokenURL:(id)a3 requestBody:(id)a4
+- (id)_promiseToFetchPaymentCardTokenURL:(id)l requestBody:(id)body
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AMSUIParentalVerificationApplePayTask *)self account];
-  v9 = [(AMSUIParentalVerificationApplePayTask *)self accountParameters];
+  bodyCopy = body;
+  lCopy = l;
+  account = [(AMSUIParentalVerificationApplePayTask *)self account];
+  accountParameters = [(AMSUIParentalVerificationApplePayTask *)self accountParameters];
   v10 = [(AMSUIParentalVerificationApplePayTask *)self bag];
-  v11 = [AMSUIPaymentVerificationProtocolHandler _promiseToFetchURLResponseForAccount:v8 accountParameters:v9 url:v7 bag:v10 requestBody:v6 bodyEncoding:1 contentType:@"application/json"];
+  v11 = [AMSUIPaymentVerificationProtocolHandler _promiseToFetchURLResponseForAccount:account accountParameters:accountParameters url:lCopy bag:v10 requestBody:bodyCopy bodyEncoding:1 contentType:@"application/json"];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;

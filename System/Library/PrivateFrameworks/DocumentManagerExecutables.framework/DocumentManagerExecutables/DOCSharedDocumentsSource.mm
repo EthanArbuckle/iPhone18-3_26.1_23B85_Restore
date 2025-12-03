@@ -6,9 +6,9 @@
 
 - (id)providerName
 {
-  v1 = [a1 displayName];
+  displayName = [self displayName];
 
-  return v1;
+  return displayName;
 }
 
 @end

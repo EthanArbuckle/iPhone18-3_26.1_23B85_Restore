@@ -1,30 +1,30 @@
 @interface NEIKEv2IKESA
-+ (void)copyPPKFromConfig:(uint64_t)a1;
-+ (void)copySharedSecretFromConfig:(uint64_t)a1;
-- (BOOL)checkSharedKeyAuthData:(const char *)a3 usingPrimeKey:;
++ (void)copyPPKFromConfig:(uint64_t)config;
++ (void)copySharedSecretFromConfig:(uint64_t)config;
+- (BOOL)checkSharedKeyAuthData:(const char *)data usingPrimeKey:;
 - (NEIKEv2AuthPayload)copyAuthenticationPayloadUsingPrimeKey:(id *)self;
-- (NEIKEv2AuthenticationProtocol)selectSecurePasswordMethod:(void *)a1;
+- (NEIKEv2AuthenticationProtocol)selectSecurePasswordMethod:(void *)method;
 - (NSObject)copyLocalCertificateData;
 - (NSObject)copyRemoteCertificateAuthorityHashData;
-- (NSObject)createAuthenticationDataForSharedSecret:(void *)a3 octetVector:;
+- (NSObject)createAuthenticationDataForSharedSecret:(void *)secret octetVector:;
 - (NSObject)createInitiatorEAPAuthenticationDataUsingPrimeKey:(NSObject *)self;
 - (NSObject)createInitiatorGSPMAuthenticationDataUsingPrimeKey:(NSObject *)self;
-- (NSObject)createInitiatorSignedOctetVectorUsingPrimeKey:(id *)a1;
+- (NSObject)createInitiatorSignedOctetVectorUsingPrimeKey:(id *)key;
 - (NSObject)createResponderGSPMAuthenticationDataUsingPrimeKey:(NSObject *)self;
-- (NSObject)createResponderSignedOctetVectorUsingPrimeKey:(_BYTE *)a1;
-- (SecKeyRef)checkValidityOfCertificates:(_BYTE *)a1;
-- (_BYTE)copyForRekeyAsInitiator:(uint64_t)a1;
-- (_BYTE)createRemoteSignedOctetVectorUsingPrimeKey:(_BYTE *)a1;
+- (NSObject)createResponderSignedOctetVectorUsingPrimeKey:(_BYTE *)key;
+- (SecKeyRef)checkValidityOfCertificates:(_BYTE *)certificates;
+- (_BYTE)copyForRekeyAsInitiator:(uint64_t)initiator;
+- (_BYTE)createRemoteSignedOctetVectorUsingPrimeKey:(_BYTE *)key;
 - (_BYTE)hasTransport;
 - (_BYTE)headerOverhead;
 - (_BYTE)initiatorSPI;
 - (_BYTE)responderSPI;
-- (__CFData)deriveKeyFromPrimeKey:(const void *)a3 hmacContext:;
+- (__CFData)deriveKeyFromPrimeKey:(const void *)key hmacContext:;
 - (id)authenticationProtocol;
 - (id)copyRemoteCertificateAuthorityArray;
 - (id)copyTransport;
 - (id)description;
-- (id)initIKESACommonWithConfiguration:(void *)a3 sessionConfiguration:(void *)a4 queue:(void *)a5 transportDelegate:(void *)a6 socketGetBlock:(void *)a7 packetDelegate:(void *)a8 configurationDelegate:(uint64_t)a9 ikeSessionUniqueIndex:(char)a10 isInitiator:;
+- (id)initIKESACommonWithConfiguration:(void *)configuration sessionConfiguration:(void *)sessionConfiguration queue:(void *)queue transportDelegate:(void *)delegate socketGetBlock:(void *)block packetDelegate:(void *)packetDelegate configurationDelegate:(uint64_t)configurationDelegate ikeSessionUniqueIndex:(char)self0 isInitiator:;
 - (id)initiatorFirstMessage;
 - (id)initiatorNonce;
 - (id)localIdentifier;
@@ -35,48 +35,48 @@
 - (id)responderFirstMessage;
 - (id)responderNonce;
 - (id)sharedSecret;
-- (uint64_t)assignRemoteSPI:(void *)a1;
-- (uint64_t)copyAddressFrom:(unsigned __int8 *)a1 with:(unsigned int)a2;
+- (uint64_t)assignRemoteSPI:(void *)i;
+- (uint64_t)copyAddressFrom:(unsigned __int8 *)from with:(unsigned int)with;
 - (uint64_t)copyDeviceIdentityNotifyPayload;
 - (uint64_t)copyLocalSecIdentity;
 - (uint64_t)createIntAuthOctetVector;
 - (uint64_t)generateAllValuesForSAInit;
-- (uint64_t)generateAllValuesUsingSA:(_BYTE *)a1;
-- (uint64_t)generateDerivativesFromPPK:(uint64_t)a1;
+- (uint64_t)generateAllValuesUsingSA:(_BYTE *)a;
+- (uint64_t)generateDerivativesFromPPK:(uint64_t)k;
 - (uint64_t)generateInitialValues;
-- (uint64_t)generateLocalValuesForKEMProtocol:(void *)a1;
-- (uint64_t)generateLocalValuesForKEMProtocol:(void *)a3 peerPayload:;
+- (uint64_t)generateLocalValuesForKEMProtocol:(void *)protocol;
+- (uint64_t)generateLocalValuesForKEMProtocol:(void *)protocol peerPayload:;
 - (uint64_t)maximumPacketSize;
 - (uint64_t)processCurrentKeyExchange;
 - (uint64_t)processPrimaryKeyExchange;
-- (uint64_t)updateIntAuthWithPacket:(void *)a1;
+- (uint64_t)updateIntAuthWithPacket:(void *)packet;
 - (uint64_t)usesEAPOnlyAuthentication;
 - (void)clearPostAuthenticationData;
-- (void)createConcatedNoncesAndReturnError:(_BYTE *)a1;
-- (void)createConcatenatedSPIsAndReturnError:(_BYTE *)a1;
+- (void)createConcatedNoncesAndReturnError:(_BYTE *)error;
+- (void)createConcatenatedSPIsAndReturnError:(_BYTE *)error;
 - (void)dealloc;
-- (void)detachTransportWithShouldInvalidate:(void *)a1;
+- (void)detachTransportWithShouldInvalidate:(void *)invalidate;
 - (void)restorePrimeKeys;
 - (void)resyncAddress;
-- (void)setAuthProtocolFromPacket:(uint64_t)a1;
-- (void)setLocalAuthProtocolUsed:(uint64_t)a1;
-- (void)setPpkIDFromPacket:(uint64_t)a1;
-- (void)setPrimeAuthenticationDataFromPacket:(uint64_t)a1;
-- (void)setRemoteAuthProtocolUsed:(uint64_t)a1;
-- (void)setResponderIdentifierPayload:(uint64_t)a1;
-- (void)setState:(void *)a3 error:;
+- (void)setAuthProtocolFromPacket:(uint64_t)packet;
+- (void)setLocalAuthProtocolUsed:(uint64_t)used;
+- (void)setPpkIDFromPacket:(uint64_t)packet;
+- (void)setPrimeAuthenticationDataFromPacket:(uint64_t)packet;
+- (void)setRemoteAuthProtocolUsed:(uint64_t)used;
+- (void)setResponderIdentifierPayload:(uint64_t)payload;
+- (void)setState:(void *)state error:;
 - (void)switchToNATTraversalPorts;
 @end
 
 @implementation NEIKEv2IKESA
 
-- (uint64_t)generateLocalValuesForKEMProtocol:(void *)a1
+- (uint64_t)generateLocalValuesForKEMProtocol:(void *)protocol
 {
   v16 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  if (a1)
+  if (protocol)
   {
-    v5 = objc_getProperty(a1, v3, 160, 1);
+    v5 = objc_getProperty(protocol, v3, 160, 1);
 
     if (v5)
     {
@@ -92,10 +92,10 @@
     else
     {
       v8 = +[NEIKEv2KeyExchangeHandler handlerForMethod:](NEIKEv2KeyExchangeHandler, [v4 method]);
-      objc_setProperty_atomic(a1, v9, v8, 160);
+      objc_setProperty_atomic(protocol, v9, v8, 160);
 
       v7 = 1;
-      v11 = objc_getProperty(a1, v10, 160, 1);
+      v11 = objc_getProperty(protocol, v10, 160, 1);
 
       if (v11)
       {
@@ -119,14 +119,14 @@ LABEL_8:
   return v7;
 }
 
-- (uint64_t)generateLocalValuesForKEMProtocol:(void *)a3 peerPayload:
+- (uint64_t)generateLocalValuesForKEMProtocol:(void *)protocol peerPayload:
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v7 = a3;
-  if (a1)
+  protocolCopy = protocol;
+  if (self)
   {
-    v8 = objc_getProperty(a1, v6, 160, 1);
+    v8 = objc_getProperty(self, v6, 160, 1);
 
     if (v8)
     {
@@ -141,11 +141,11 @@ LABEL_8:
 
     else
     {
-      v11 = +[NEIKEv2KeyExchangeHandler handlerForMethod:peerPayload:](NEIKEv2KeyExchangeHandler, [v5 method], v7);
-      objc_setProperty_atomic(a1, v12, v11, 160);
+      v11 = +[NEIKEv2KeyExchangeHandler handlerForMethod:peerPayload:](NEIKEv2KeyExchangeHandler, [v5 method], protocolCopy);
+      objc_setProperty_atomic(self, v12, v11, 160);
 
       v10 = 1;
-      v14 = objc_getProperty(a1, v13, 160, 1);
+      v14 = objc_getProperty(self, v13, 160, 1);
 
       if (v14)
       {
@@ -172,15 +172,15 @@ LABEL_8:
 - (uint64_t)generateInitialValues
 {
   v60 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_30;
   }
 
-  v2 = a1;
-  v3 = [(NEIKEv2IKESA *)a1 preferredKEMProtocol];
-  v4 = v3;
-  if (!v3 || [v3 method] == 36 || objc_msgSend(v4, "method") == 37)
+  selfCopy = self;
+  preferredKEMProtocol = [(NEIKEv2IKESA *)self preferredKEMProtocol];
+  v4 = preferredKEMProtocol;
+  if (!preferredKEMProtocol || [preferredKEMProtocol method] == 36 || objc_msgSend(v4, "method") == 37)
   {
     v46 = ne_log_obj();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_FAULT))
@@ -193,14 +193,14 @@ LABEL_8:
     goto LABEL_30;
   }
 
-  v5 = [(NEIKEv2IKESA *)v2 generateLocalValuesForKEMProtocol:v4];
+  v5 = [(NEIKEv2IKESA *)selfCopy generateLocalValuesForKEMProtocol:v4];
 
   if (v5)
   {
-    v7 = objc_getProperty(v2, v6, 80, 1);
-    v8 = [v7 nonceSize];
+    v7 = objc_getProperty(selfCopy, v6, 80, 1);
+    nonceSize = [v7 nonceSize];
 
-    if (v8 - 257 <= 0xFFFFFF0E)
+    if (nonceSize - 257 <= 0xFFFFFF0E)
     {
       v32 = ne_log_obj();
       if (!os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
@@ -209,52 +209,52 @@ LABEL_8:
       }
 
       *buf = 67109120;
-      *v59 = v8;
+      *v59 = nonceSize;
       v43 = "Invalid nonce size %u";
       v44 = v32;
       v45 = 8;
       goto LABEL_36;
     }
 
-    v10 = objc_getProperty(v2, v9, 80, 1);
-    v11 = [v10 strictNonceSizeChecks];
+    v10 = objc_getProperty(selfCopy, v9, 80, 1);
+    strictNonceSizeChecks = [v10 strictNonceSizeChecks];
 
-    if (v11)
+    if (strictNonceSizeChecks)
     {
-      v13 = objc_getProperty(v2, v12, 96, 1);
+      v13 = objc_getProperty(selfCopy, v12, 96, 1);
 
       if (v13)
       {
-        v15 = objc_getProperty(v2, v14, 96, 1);
-        v17 = [(NEIKEv2IKESAProposal *)v15 prfProtocol];
-        v18 = [v17 nonceSize];
+        v15 = objc_getProperty(selfCopy, v14, 96, 1);
+        prfProtocol = [(NEIKEv2IKESAProposal *)v15 prfProtocol];
+        nonceSize2 = [prfProtocol nonceSize];
       }
 
       else
       {
-        v47 = v8;
+        v47 = nonceSize;
         v55 = 0u;
         v56 = 0u;
         v53 = 0u;
         v54 = 0u;
-        v48 = v2;
-        v19 = objc_getProperty(v2, v14, 80, 1);
-        v20 = [v19 proposals];
+        v48 = selfCopy;
+        v19 = objc_getProperty(selfCopy, v14, 80, 1);
+        proposals = [v19 proposals];
 
-        v18 = 16;
-        v21 = [v20 countByEnumeratingWithState:&v53 objects:buf count:16];
+        nonceSize2 = 16;
+        v21 = [proposals countByEnumeratingWithState:&v53 objects:buf count:16];
         if (v21)
         {
           v22 = v21;
           v23 = *v54;
-          v18 = 16;
+          nonceSize2 = 16;
           do
           {
             for (i = 0; i != v22; ++i)
             {
               if (*v54 != v23)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(proposals);
               }
 
               v25 = *(*(&v53 + 1) + 8 * i);
@@ -262,8 +262,8 @@ LABEL_8:
               v50 = 0u;
               v51 = 0u;
               v52 = 0u;
-              v26 = [v25 prfProtocols];
-              v27 = [v26 countByEnumeratingWithState:&v49 objects:v57 count:16];
+              prfProtocols = [v25 prfProtocols];
+              v27 = [prfProtocols countByEnumeratingWithState:&v49 objects:v57 count:16];
               if (v27)
               {
                 v28 = v27;
@@ -274,34 +274,34 @@ LABEL_8:
                   {
                     if (*v50 != v29)
                     {
-                      objc_enumerationMutation(v26);
+                      objc_enumerationMutation(prfProtocols);
                     }
 
                     v31 = *(*(&v49 + 1) + 8 * j);
-                    if ([v31 nonceSize] > v18)
+                    if ([v31 nonceSize] > nonceSize2)
                     {
-                      v18 = [v31 nonceSize];
+                      nonceSize2 = [v31 nonceSize];
                     }
                   }
 
-                  v28 = [v26 countByEnumeratingWithState:&v49 objects:v57 count:16];
+                  v28 = [prfProtocols countByEnumeratingWithState:&v49 objects:v57 count:16];
                 }
 
                 while (v28);
               }
             }
 
-            v22 = [v20 countByEnumeratingWithState:&v53 objects:buf count:16];
+            v22 = [proposals countByEnumeratingWithState:&v53 objects:buf count:16];
           }
 
           while (v22);
         }
 
-        v2 = v48;
-        v8 = v47;
+        selfCopy = v48;
+        nonceSize = v47;
       }
 
-      if (v8 < v18)
+      if (nonceSize < nonceSize2)
       {
         v32 = ne_log_obj();
         if (!os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
@@ -314,9 +314,9 @@ LABEL_30:
         }
 
         *buf = 67109376;
-        *v59 = v8;
+        *v59 = nonceSize;
         *&v59[4] = 1024;
-        *&v59[6] = v18;
+        *&v59[6] = nonceSize2;
         v43 = "Nonce size %u < minimum %u";
         v44 = v32;
         v45 = 14;
@@ -326,13 +326,13 @@ LABEL_36:
       }
     }
 
-    v33 = objc_getProperty(v2, v12, 280, 1);
-    if (!v33 || (v35 = v33, v5 = 1, v36 = objc_getProperty(v2, v34, 128, 1), v36, v35, !v36))
+    v33 = objc_getProperty(selfCopy, v12, 280, 1);
+    if (!v33 || (v35 = v33, v5 = 1, v36 = objc_getProperty(selfCopy, v34, 128, 1), v36, v35, !v36))
     {
-      v37 = [NEIKEv2Crypto createRandomWithSize:v8];
-      objc_setProperty_atomic(v2, v38, v37, 128);
+      v37 = [NEIKEv2Crypto createRandomWithSize:nonceSize];
+      objc_setProperty_atomic(selfCopy, v38, v37, 128);
 
-      v40 = objc_getProperty(v2, v39, 128, 1);
+      v40 = objc_getProperty(selfCopy, v39, 128, 1);
       v5 = v40 != 0;
     }
   }
@@ -344,16 +344,16 @@ LABEL_34:
 
 - (uint64_t)processCurrentKeyExchange
 {
-  v2 = self;
+  selfCopy = self;
   v20 = *MEMORY[0x1E69E9840];
   if (self)
   {
     self = objc_getProperty(self, a2, 160, 1);
   }
 
-  v3 = self;
+  selfCopy2 = self;
 
-  if (!v3)
+  if (!selfCopy2)
   {
     v15 = ne_log_obj();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -372,7 +372,7 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  v5 = objc_getProperty(v2, v4, 152, 1);
+  v5 = objc_getProperty(selfCopy, v4, 152, 1);
 
   if (!v5)
   {
@@ -388,11 +388,11 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v8 = objc_getProperty(v2, v6, 152, 1);
-  if (v2)
+  v8 = objc_getProperty(selfCopy, v6, 152, 1);
+  if (selfCopy)
   {
-    objc_setProperty_atomic(v2, v7, 0, 152);
-    Property = objc_getProperty(v2, v9, 160, 1);
+    objc_setProperty_atomic(selfCopy, v7, 0, 152);
+    Property = objc_getProperty(selfCopy, v9, 160, 1);
   }
 
   else
@@ -439,12 +439,12 @@ LABEL_14:
 
 - (uint64_t)generateAllValuesForSAInit
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (([(NEIKEv2IKESA *)a1 processPrimaryKeyExchange]& 1) == 0)
+  if (([(NEIKEv2IKESA *)self processPrimaryKeyExchange]& 1) == 0)
   {
     v4 = ne_log_obj();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -456,16 +456,16 @@ LABEL_14:
     return 0;
   }
 
-  return [(NEIKEv2IKESA *)a1 generateAllValuesUsingSA:?];
+  return [(NEIKEv2IKESA *)self generateAllValuesUsingSA:?];
 }
 
-- (uint64_t)generateAllValuesUsingSA:(_BYTE *)a1
+- (uint64_t)generateAllValuesUsingSA:(_BYTE *)a
 {
   v224 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  if (a1)
+  if (a)
   {
-    Property = objc_getProperty(a1, v3, 96, 1);
+    Property = objc_getProperty(a, v3, 96, 1);
   }
 
   else
@@ -491,9 +491,9 @@ LABEL_110:
     goto LABEL_111;
   }
 
-  v8 = [(NEIKEv2IKESA *)a1 initiatorNonce];
+  initiatorNonce = [(NEIKEv2IKESA *)a initiatorNonce];
 
-  if (!v8)
+  if (!initiatorNonce)
   {
     v29 = ne_log_obj();
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
@@ -507,9 +507,9 @@ LABEL_110:
     goto LABEL_110;
   }
 
-  v10 = [(NEIKEv2IKESA *)a1 responderNonce];
+  responderNonce = [(NEIKEv2IKESA *)a responderNonce];
 
-  if (!v10)
+  if (!responderNonce)
   {
     v29 = ne_log_obj();
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
@@ -523,7 +523,7 @@ LABEL_110:
     goto LABEL_110;
   }
 
-  v12 = objc_getProperty(a1, v11, 168, 1);
+  v12 = objc_getProperty(a, v11, 168, 1);
 
   if (!v12)
   {
@@ -539,27 +539,27 @@ LABEL_110:
     goto LABEL_110;
   }
 
-  v14 = v4 != a1;
+  v14 = v4 != a;
   if (!v4)
   {
     v14 = 0;
   }
 
   v202 = v14;
-  v15 = v4 == a1 || v4 != 0;
+  v15 = v4 == a || v4 != 0;
   v199 = v4;
   if (!v15)
   {
-    v32 = objc_getProperty(a1, v13, 168, 1);
-    if (a1)
+    v32 = objc_getProperty(a, v13, 168, 1);
+    if (a)
     {
-      objc_setProperty_atomic(a1, v31, 0, 168);
+      objc_setProperty_atomic(a, v31, 0, 168);
     }
 
-    v33 = [(NEIKEv2IKESA *)a1 initiatorNonce];
-    v34 = [v33 length];
-    v36 = [(NEIKEv2IKESA *)a1 responderNonce];
-    v37 = [v36 length] + v34;
+    initiatorNonce2 = [(NEIKEv2IKESA *)a initiatorNonce];
+    v34 = [initiatorNonce2 length];
+    responderNonce2 = [(NEIKEv2IKESA *)a responderNonce];
+    v37 = [responderNonce2 length] + v34;
 
     v38 = [(NSMutableData *)MEMORY[0x1E695DF88] mutableSensitiveDataWithMaxCapacity:v37];
     if (!v38)
@@ -579,11 +579,11 @@ LABEL_110:
     }
 
     v40 = v38;
-    v41 = [(NEIKEv2IKESA *)a1 initiatorNonce];
-    [(__CFData *)v40 appendData:v41];
+    initiatorNonce3 = [(NEIKEv2IKESA *)a initiatorNonce];
+    [(__CFData *)v40 appendData:initiatorNonce3];
 
-    v43 = [(NEIKEv2IKESA *)a1 responderNonce];
-    [(__CFData *)v40 appendData:v43];
+    responderNonce3 = [(NEIKEv2IKESA *)a responderNonce];
+    [(__CFData *)v40 appendData:responderNonce3];
 
     v32 = v32;
     v45 = v32;
@@ -604,15 +604,15 @@ LABEL_110:
 
   if (v17)
   {
-    v20 = objc_getProperty(a1, v18, 168, 1);
-    if (a1)
+    v20 = objc_getProperty(a, v18, 168, 1);
+    if (a)
     {
-      objc_setProperty_atomic(a1, v19, 0, 168);
+      objc_setProperty_atomic(a, v19, 0, 168);
       v215 = 0u;
       v213 = 0u;
       v214 = 0u;
       v212 = 0u;
-      v22 = objc_getProperty(a1, v21, 184, 1);
+      v22 = objc_getProperty(a, v21, 184, 1);
     }
 
     else
@@ -656,10 +656,10 @@ LABEL_110:
     }
 
     v151 = [v196 length];
-    v153 = [(NEIKEv2IKESA *)a1 initiatorNonce];
-    v154 = [v153 length];
-    v156 = [(NEIKEv2IKESA *)a1 responderNonce];
-    v157 = v151 + v154 + [v156 length] + v26;
+    initiatorNonce4 = [(NEIKEv2IKESA *)a initiatorNonce];
+    v154 = [initiatorNonce4 length];
+    responderNonce4 = [(NEIKEv2IKESA *)a responderNonce];
+    v157 = v151 + v154 + [responderNonce4 length] + v26;
 
     v158 = [(NSMutableData *)MEMORY[0x1E695DF88] mutableSensitiveDataWithMaxCapacity:v157];
     if (!v158)
@@ -681,20 +681,20 @@ LABEL_110:
 
     v45 = v158;
     [(__CFData *)v158 appendData:v196];
-    v160 = [(NEIKEv2IKESA *)a1 initiatorNonce];
-    [(__CFData *)v45 appendData:v160];
+    initiatorNonce5 = [(NEIKEv2IKESA *)a initiatorNonce];
+    [(__CFData *)v45 appendData:initiatorNonce5];
 
-    v162 = [(NEIKEv2IKESA *)a1 responderNonce];
-    [(__CFData *)v45 appendData:v162];
+    responderNonce5 = [(NEIKEv2IKESA *)a responderNonce];
+    [(__CFData *)v45 appendData:responderNonce5];
 
     v210 = 0u;
     v211 = 0u;
     v208 = 0u;
     v209 = 0u;
     v32 = v196;
-    if (a1)
+    if (a)
     {
-      v164 = objc_getProperty(a1, v163, 184, 1);
+      v164 = objc_getProperty(a, v163, 184, 1);
     }
 
     else
@@ -726,9 +726,9 @@ LABEL_110:
       while (v167);
     }
 
-    if (a1)
+    if (a)
     {
-      objc_setProperty_atomic(a1, v170, 0, 184);
+      objc_setProperty_atomic(a, v170, 0, 184);
     }
 
     if (v4)
@@ -743,28 +743,28 @@ LABEL_110:
 
     v40 = v171;
 LABEL_38:
-    v46 = [(NEIKEv2IKESA *)a1 initiatorNonce];
-    v47 = [v46 length];
-    v49 = [(NEIKEv2IKESA *)a1 responderNonce];
-    v50 = v47 + [v49 length] + 16;
+    initiatorNonce6 = [(NEIKEv2IKESA *)a initiatorNonce];
+    v47 = [initiatorNonce6 length];
+    responderNonce6 = [(NEIKEv2IKESA *)a responderNonce];
+    v50 = v47 + [responderNonce6 length] + 16;
 
     v51 = [(NSMutableData *)MEMORY[0x1E695DF88] mutableSensitiveDataWithMaxCapacity:v50];
     if (v51)
     {
       v53 = v51;
-      v54 = [(NEIKEv2IKESA *)a1 initiatorSPI];
-      v55 = [v54 value];
+      initiatorSPI = [(NEIKEv2IKESA *)a initiatorSPI];
+      value = [initiatorSPI value];
 
-      v207 = v55;
-      v57 = [(NEIKEv2IKESA *)a1 responderSPI];
-      v58 = [v57 value];
+      v207 = value;
+      responderSPI = [(NEIKEv2IKESA *)a responderSPI];
+      value2 = [responderSPI value];
 
-      v206 = v58;
-      v60 = [(NEIKEv2IKESA *)a1 initiatorNonce];
-      [(__CFData *)v53 appendData:v60];
+      v206 = value2;
+      initiatorNonce7 = [(NEIKEv2IKESA *)a initiatorNonce];
+      [(__CFData *)v53 appendData:initiatorNonce7];
 
-      v62 = [(NEIKEv2IKESA *)a1 responderNonce];
-      [(__CFData *)v53 appendData:v62];
+      responderNonce7 = [(NEIKEv2IKESA *)a responderNonce];
+      [(__CFData *)v53 appendData:responderNonce7];
 
       [(__CFData *)v53 appendBytes:&v207 length:8];
       [(__CFData *)v53 appendBytes:&v206 length:8];
@@ -776,9 +776,9 @@ LABEL_38:
       if (!Hkdf)
       {
         v197 = v32;
-        if (a1)
+        if (a)
         {
-          v65 = objc_getProperty(a1, v64, 96, 1);
+          v65 = objc_getProperty(a, v64, 96, 1);
         }
 
         else
@@ -787,62 +787,62 @@ LABEL_38:
         }
 
         v66 = v65;
-        v68 = [(NEIKEv2IKESAProposal *)v66 prfProtocol];
+        prfProtocol = [(NEIKEv2IKESAProposal *)v66 prfProtocol];
 
         v204 = v40;
-        if (a1)
+        if (a)
         {
-          v70 = objc_getProperty(a1, v69, 96, 1);
+          v70 = objc_getProperty(a, v69, 96, 1);
           v72 = v70;
           if (v70)
           {
             if (objc_getProperty(v70, v71, 104, 1))
             {
-              v74 = objc_getProperty(v72, v73, 104, 1);
+              firstObject = objc_getProperty(v72, v73, 104, 1);
             }
 
             else
             {
-              v75 = [v72 encryptionProtocols];
-              v74 = [v75 firstObject];
+              encryptionProtocols = [v72 encryptionProtocols];
+              firstObject = [encryptionProtocols firstObject];
             }
           }
 
           else
           {
-            v74 = 0;
+            firstObject = 0;
           }
 
-          v77 = objc_getProperty(a1, v76, 96, 1);
+          v77 = objc_getProperty(a, v76, 96, 1);
           v79 = v77;
           if (v77)
           {
             if (objc_getProperty(v77, v78, 112, 1))
             {
-              v81 = objc_getProperty(v79, v80, 112, 1);
+              firstObject2 = objc_getProperty(v79, v80, 112, 1);
             }
 
             else
             {
-              v82 = [v79 integrityProtocols];
-              v81 = [v82 firstObject];
+              integrityProtocols = [v79 integrityProtocols];
+              firstObject2 = [integrityProtocols firstObject];
             }
 
 LABEL_51:
 
-            v83 = [(NEIKEv2PRFProtocol *)v68 length];
-            if (v74 && (v84 = v74[2], v84 <= 0x1F) && ((0xD0100000 >> v84) & 1) != 0)
+            v83 = [(NEIKEv2PRFProtocol *)prfProtocol length];
+            if (firstObject && (v84 = firstObject[2], v84 <= 0x1F) && ((0xD0100000 >> v84) & 1) != 0)
             {
-              v85 = 0;
+              keyLength = 0;
             }
 
             else
             {
-              v85 = [(NEIKEv2IntegrityProtocol *)v81 keyLength];
+              keyLength = [(NEIKEv2IntegrityProtocol *)firstObject2 keyLength];
             }
 
-            v201 = v81;
-            v86 = [(NEIKEv2EncryptionProtocol *)v74 keyMaterialLength];
+            v201 = firstObject2;
+            keyMaterialLength = [(NEIKEv2EncryptionProtocol *)firstObject keyMaterialLength];
             if (v202)
             {
               v87 = 1;
@@ -854,11 +854,11 @@ LABEL_51:
             }
 
             v194 = v83;
-            v191 = v86;
-            v88 = v83 * v87 + 2 * (v85 + v86);
+            v191 = keyMaterialLength;
+            v88 = v83 * v87 + 2 * (keyLength + keyMaterialLength);
             v89 = [(NSMutableData *)MEMORY[0x1E695DF88] mutableSensitiveDataPrefilledWithMaxCapacity:v88];
             v192 = v89;
-            v193 = v68;
+            v193 = prfProtocol;
             if (!v89)
             {
               v178 = ne_log_obj();
@@ -876,8 +876,8 @@ LABEL_51:
             }
 
             v90 = v89;
-            obj = v74;
-            [(NEIKEv2PRFProtocol *)v68 ccDigest];
+            obj = firstObject;
+            [(NEIKEv2PRFProtocol *)prfProtocol ccDigest];
             [(__CFData *)v45 bytes];
             [(__CFData *)v45 length];
             [(__CFData *)v90 mutableBytes];
@@ -900,14 +900,14 @@ LABEL_51:
               goto LABEL_157;
             }
 
-            v92 = [(__CFData *)v90 bytes];
-            v93 = [(NSData *)MEMORY[0x1E695DEF0] sensitiveDataWithBytes:v92 length:v194];
-            objc_setProperty_atomic(a1, v94, v93, 216);
+            bytes = [(__CFData *)v90 bytes];
+            v93 = [(NSData *)MEMORY[0x1E695DEF0] sensitiveDataWithBytes:bytes length:v194];
+            objc_setProperty_atomic(a, v94, v93, 216);
 
             v4 = v199;
-            if (a1)
+            if (a)
             {
-              v96 = objc_getProperty(a1, v95, 216, 1);
+              v96 = objc_getProperty(a, v95, 216, 1);
             }
 
             else
@@ -935,12 +935,12 @@ LABEL_51:
               goto LABEL_157;
             }
 
-            v98 = &v92[v194];
-            if (v85)
+            v98 = &bytes[v194];
+            if (keyLength)
             {
-              v99 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:v98 length:v85 freeWhenDone:0];
-              v198 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:&v98[v85] length:v85 freeWhenDone:0];
-              v98 += v85 + v85;
+              v99 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:v98 length:keyLength freeWhenDone:0];
+              v198 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:&v98[keyLength] length:keyLength freeWhenDone:0];
+              v98 += keyLength + keyLength;
               v100 = v99;
             }
 
@@ -965,7 +965,7 @@ LABEL_73:
                   v172 = "SA Rekey";
                 }
 
-                if (v199 == a1)
+                if (v199 == a)
                 {
                   v172 = "Intermediate";
                 }
@@ -975,9 +975,9 @@ LABEL_73:
                 _os_log_debug_impl(&dword_1BA83C000, v113, OS_LOG_TYPE_DEBUG, "Calculated sKeySeed derivatives for %s", buf, 0xCu);
               }
 
-              if (a1)
+              if (a)
               {
-                v114 = a1[9];
+                v114 = a[9];
                 if (v114)
                 {
                   v115 = v205;
@@ -988,7 +988,7 @@ LABEL_73:
                   v115 = v103;
                 }
 
-                if (a1[9])
+                if (a[9])
                 {
                   v116 = v103;
                 }
@@ -1008,19 +1008,19 @@ LABEL_73:
 
               v117 = v115;
               v118 = v116;
-              if (v74)
+              if (firstObject)
               {
-                v119 = v74[2];
+                v119 = firstObject[2];
                 if (v119 <= 0x1F && ((0xD0100000 >> v119) & 1) != 0)
                 {
                   if (v119 == 30 || v119 == 20)
                   {
-                    v120 = [[NEIKEv2SecurityContextAESGCM alloc] initWithEncryptionProtocol:v74 outgoingEncryptionKey:v117 incomingEncryptionKey:v118];
+                    v120 = [[NEIKEv2SecurityContextAESGCM alloc] initWithEncryptionProtocol:firstObject outgoingEncryptionKey:v117 incomingEncryptionKey:v118];
                   }
 
                   else
                   {
-                    v120 = [[NEIKEv2SecurityContextChaCha20Poly1305 alloc] initWithEncryptionProtocol:v74 outgoingEncryptionKey:v117 incomingEncryptionKey:v118];
+                    v120 = [[NEIKEv2SecurityContextChaCha20Poly1305 alloc] initWithEncryptionProtocol:firstObject outgoingEncryptionKey:v117 incomingEncryptionKey:v118];
                   }
 
                   v150 = v120;
@@ -1030,7 +1030,7 @@ LABEL_73:
                     if (os_log_type_enabled(v187, OS_LOG_TYPE_ERROR))
                     {
                       *buf = 138412290;
-                      v219 = v74;
+                      v219 = firstObject;
                       _os_log_error_impl(&dword_1BA83C000, v187, OS_LOG_TYPE_ERROR, "Failed to create security context for %@", buf, 0xCu);
                     }
 
@@ -1040,7 +1040,7 @@ LABEL_73:
                   }
 
 LABEL_154:
-                  objc_setProperty_atomic(a1, v121, v150, 208);
+                  objc_setProperty_atomic(a, v121, v150, 208);
                   v216 = 1;
 
 LABEL_155:
@@ -1072,7 +1072,7 @@ LABEL_155:
               v124 = v122;
               v125 = v123;
               v126 = [NEIKEv2SecurityContextCBCPlusHMAC alloc];
-              v195 = v74;
+              v195 = firstObject;
               v189 = v117;
               v127 = v117;
               v188 = v118;
@@ -1161,9 +1161,9 @@ LABEL_120:
                                 v149 = ne_log_obj();
                                 if (os_log_type_enabled(v149, OS_LOG_TYPE_FAULT))
                                 {
-                                  v173 = [v203 type];
+                                  type = [v203 type];
                                   *buf = 67109120;
-                                  LODWORD(v219) = v173;
+                                  LODWORD(v219) = type;
                                   _os_log_fault_impl(&dword_1BA83C000, v149, OS_LOG_TYPE_FAULT, "Unknown PRF type %u", buf, 8u);
                                 }
 
@@ -1223,7 +1223,7 @@ LABEL_132:
 
                             v216 = 0;
                             v4 = v199;
-                            v74 = obj;
+                            firstObject = obj;
                             v103 = v190;
                             v118 = v188;
                             v117 = v189;
@@ -1231,7 +1231,7 @@ LABEL_132:
                           }
 
                           v4 = v199;
-                          v74 = obj;
+                          firstObject = obj;
                           v117 = v189;
                           v103 = v190;
                           v118 = v188;
@@ -1327,16 +1327,16 @@ LABEL_205:
 
             v104 = &v102[v191];
             v105 = [(NSData *)MEMORY[0x1E695DEF0] sensitiveDataWithBytes:v104 length:v194];
-            objc_setProperty_atomic(a1, v106, v105, 232);
+            objc_setProperty_atomic(a, v106, v105, 232);
 
-            v108 = objc_getProperty(a1, v107, 232, 1);
+            v108 = objc_getProperty(a, v107, 232, 1);
 
             if (v108)
             {
               v109 = [(NSData *)MEMORY[0x1E695DEF0] sensitiveDataWithBytes:v194 length:?];
-              objc_setProperty_atomic(a1, v110, v109, 248);
+              objc_setProperty_atomic(a, v110, v109, 248);
 
-              v112 = objc_getProperty(a1, v111, 248, 1);
+              v112 = objc_getProperty(a, v111, 248, 1);
 
               if (v112)
               {
@@ -1389,10 +1389,10 @@ LABEL_159:
         else
         {
           v79 = 0;
-          v74 = 0;
+          firstObject = 0;
         }
 
-        v81 = 0;
+        firstObject2 = 0;
         goto LABEL_51;
       }
 
@@ -1441,13 +1441,13 @@ LABEL_112:
   return v140;
 }
 
-- (__CFData)deriveKeyFromPrimeKey:(const void *)a3 hmacContext:
+- (__CFData)deriveKeyFromPrimeKey:(const void *)key hmacContext:
 {
   v19 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  if (a1)
+  if (self)
   {
-    Property = objc_getProperty(a1, v5, 96, 1);
+    Property = objc_getProperty(self, v5, 96, 1);
   }
 
   else
@@ -1456,13 +1456,13 @@ LABEL_112:
   }
 
   v8 = Property;
-  v10 = [(NEIKEv2IKESAProposal *)v8 prfProtocol];
-  v11 = [(NEIKEv2PRFProtocol *)v10 length];
+  prfProtocol = [(NEIKEv2IKESAProposal *)v8 prfProtocol];
+  v11 = [(NEIKEv2PRFProtocol *)prfProtocol length];
 
   v12 = [(NSMutableData *)MEMORY[0x1E695DF88] mutableSensitiveDataPrefilledWithMaxCapacity:v11];
   if (v12)
   {
-    memcpy(&__dst, a3, sizeof(__dst));
+    memcpy(&__dst, key, sizeof(__dst));
     data = 1;
     CCHmacUpdate(&__dst, [v6 bytes], objc_msgSend(v6, "length"));
     CCHmacUpdate(&__dst, &data, 1uLL);
@@ -1486,12 +1486,12 @@ LABEL_112:
   return v12;
 }
 
-- (uint64_t)generateDerivativesFromPPK:(uint64_t)a1
+- (uint64_t)generateDerivativesFromPPK:(uint64_t)k
 {
   v51 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v5 = v3;
-  if (!a1)
+  if (!k)
   {
     goto LABEL_22;
   }
@@ -1510,7 +1510,7 @@ LABEL_112:
     goto LABEL_19;
   }
 
-  v6 = objc_getProperty(a1, v4, 216, 1);
+  v6 = objc_getProperty(k, v4, 216, 1);
 
   if (!v6)
   {
@@ -1528,7 +1528,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v8 = objc_getProperty(a1, v7, 232, 1);
+  v8 = objc_getProperty(k, v7, 232, 1);
 
   if (!v8)
   {
@@ -1544,7 +1544,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v10 = objc_getProperty(a1, v9, 248, 1);
+  v10 = objc_getProperty(k, v9, 248, 1);
 
   if (!v10)
   {
@@ -1563,54 +1563,54 @@ LABEL_20:
   }
 
   memset(&ctx, 0, sizeof(ctx));
-  v12 = objc_getProperty(a1, v11, 96, 1);
-  v14 = [(NEIKEv2IKESAProposal *)v12 prfProtocol];
-  v15 = [(NEIKEv2PRFProtocol *)v14 ccHMAC];
-  CCHmacInit(&ctx, v15, [v5 bytes], objc_msgSend(v5, "length"));
+  v12 = objc_getProperty(k, v11, 96, 1);
+  prfProtocol = [(NEIKEv2IKESAProposal *)v12 prfProtocol];
+  ccHMAC = [(NEIKEv2PRFProtocol *)prfProtocol ccHMAC];
+  CCHmacInit(&ctx, ccHMAC, [v5 bytes], objc_msgSend(v5, "length"));
 
-  v17 = objc_getProperty(a1, v16, 216, 1);
-  objc_setProperty_atomic(a1, v18, v17, 224);
+  v17 = objc_getProperty(k, v16, 216, 1);
+  objc_setProperty_atomic(k, v18, v17, 224);
 
-  v20 = objc_getProperty(a1, v19, 224, 1);
-  v21 = [(NEIKEv2IKESA *)a1 deriveKeyFromPrimeKey:v20 hmacContext:&ctx];
-  objc_setProperty_atomic(a1, v22, v21, 216);
+  v20 = objc_getProperty(k, v19, 224, 1);
+  v21 = [(NEIKEv2IKESA *)k deriveKeyFromPrimeKey:v20 hmacContext:&ctx];
+  objc_setProperty_atomic(k, v22, v21, 216);
 
-  v24 = objc_getProperty(a1, v23, 216, 1);
+  v24 = objc_getProperty(k, v23, 216, 1);
   if (!v24)
   {
     goto LABEL_16;
   }
 
-  v26 = objc_getProperty(a1, v25, 232, 1);
-  objc_setProperty_atomic(a1, v27, v26, 240);
+  v26 = objc_getProperty(k, v25, 232, 1);
+  objc_setProperty_atomic(k, v27, v26, 240);
 
-  v29 = objc_getProperty(a1, v28, 240, 1);
-  v30 = [(NEIKEv2IKESA *)a1 deriveKeyFromPrimeKey:v29 hmacContext:&ctx];
-  objc_setProperty_atomic(a1, v31, v30, 232);
+  v29 = objc_getProperty(k, v28, 240, 1);
+  v30 = [(NEIKEv2IKESA *)k deriveKeyFromPrimeKey:v29 hmacContext:&ctx];
+  objc_setProperty_atomic(k, v31, v30, 232);
 
-  v33 = objc_getProperty(a1, v32, 232, 1);
+  v33 = objc_getProperty(k, v32, 232, 1);
 
   if (!v33)
   {
     goto LABEL_16;
   }
 
-  v35 = objc_getProperty(a1, v34, 248, 1);
-  objc_setProperty_atomic(a1, v36, v35, 256);
+  v35 = objc_getProperty(k, v34, 248, 1);
+  objc_setProperty_atomic(k, v36, v35, 256);
 
-  v38 = objc_getProperty(a1, v37, 256, 1);
-  v39 = [(NEIKEv2IKESA *)a1 deriveKeyFromPrimeKey:v38 hmacContext:&ctx];
-  objc_setProperty_atomic(a1, v40, v39, 248);
+  v38 = objc_getProperty(k, v37, 256, 1);
+  v39 = [(NEIKEv2IKESA *)k deriveKeyFromPrimeKey:v38 hmacContext:&ctx];
+  objc_setProperty_atomic(k, v40, v39, 248);
 
-  v42 = objc_getProperty(a1, v41, 248, 1);
+  v42 = objc_getProperty(k, v41, 248, 1);
 
   if (!v42)
   {
 LABEL_16:
     memset_s(&ctx, 0x180uLL, 0, 0x180uLL);
-    [(NEIKEv2IKESA *)a1 restorePrimeKeys];
+    [(NEIKEv2IKESA *)k restorePrimeKeys];
 LABEL_21:
-    a1 = 0;
+    k = 0;
     goto LABEL_22;
   }
 
@@ -1622,45 +1622,45 @@ LABEL_21:
   }
 
   memset_s(&ctx, 0x180uLL, 0, 0x180uLL);
-  a1 = 1;
+  k = 1;
 LABEL_22:
 
   v47 = *MEMORY[0x1E69E9840];
-  return a1;
+  return k;
 }
 
 - (void)restorePrimeKeys
 {
-  if (a1)
+  if (self)
   {
-    v3 = objc_getProperty(a1, a2, 224, 1);
+    v3 = objc_getProperty(self, a2, 224, 1);
 
     if (v3)
     {
-      v5 = objc_getProperty(a1, v4, 224, 1);
-      objc_setProperty_atomic(a1, v6, v5, 216);
+      v5 = objc_getProperty(self, v4, 224, 1);
+      objc_setProperty_atomic(self, v6, v5, 216);
 
-      objc_setProperty_atomic(a1, v7, 0, 224);
+      objc_setProperty_atomic(self, v7, 0, 224);
     }
 
-    v8 = objc_getProperty(a1, v4, 240, 1);
+    v8 = objc_getProperty(self, v4, 240, 1);
 
     if (v8)
     {
-      v10 = objc_getProperty(a1, v9, 240, 1);
-      objc_setProperty_atomic(a1, v11, v10, 232);
+      v10 = objc_getProperty(self, v9, 240, 1);
+      objc_setProperty_atomic(self, v11, v10, 232);
 
-      objc_setProperty_atomic(a1, v12, 0, 240);
+      objc_setProperty_atomic(self, v12, 0, 240);
     }
 
-    v13 = objc_getProperty(a1, v9, 256, 1);
+    v13 = objc_getProperty(self, v9, 256, 1);
 
     if (v13)
     {
-      v15 = objc_getProperty(a1, v14, 256, 1);
-      objc_setProperty_atomic(a1, v16, v15, 248);
+      v15 = objc_getProperty(self, v14, 256, 1);
+      objc_setProperty_atomic(self, v16, v15, 248);
 
-      objc_setProperty_atomic(a1, v17, 0, 256);
+      objc_setProperty_atomic(self, v17, 0, 256);
     }
 
     v18 = ne_log_obj();
@@ -1678,19 +1678,19 @@ LABEL_22:
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (!v3)
   {
-    v6 = ne_log_obj();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+    remoteCertificateAuthorityReferences = ne_log_obj();
+    if (os_log_type_enabled(remoteCertificateAuthorityReferences, OS_LOG_TYPE_FAULT))
     {
       LOWORD(buf) = 0;
-      _os_log_fault_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_FAULT, "[[NSMutableArray alloc] init] failed", &buf, 2u);
+      _os_log_fault_impl(&dword_1BA83C000, remoteCertificateAuthorityReferences, OS_LOG_TYPE_FAULT, "[[NSMutableArray alloc] init] failed", &buf, 2u);
     }
 
     goto LABEL_55;
   }
 
-  if (a1)
+  if (self)
   {
-    Property = objc_getProperty(a1, v2, 88, 1);
+    Property = objc_getProperty(self, v2, 88, 1);
   }
 
   else
@@ -1699,15 +1699,15 @@ LABEL_22:
   }
 
   v5 = Property;
-  v6 = [v5 remoteCertificateAuthorityReferences];
+  remoteCertificateAuthorityReferences = [v5 remoteCertificateAuthorityReferences];
 
-  if (v6)
+  if (remoteCertificateAuthorityReferences)
   {
     v78 = 0u;
     v79 = 0u;
     v76 = 0u;
     v77 = 0u;
-    v8 = v6;
+    v8 = remoteCertificateAuthorityReferences;
     v9 = [v8 countByEnumeratingWithState:&v76 objects:v85 count:16];
     if (v9)
     {
@@ -1752,9 +1752,9 @@ LABEL_22:
     goto LABEL_54;
   }
 
-  if (a1)
+  if (self)
   {
-    v16 = objc_getProperty(a1, v7, 88, 1);
+    v16 = objc_getProperty(self, v7, 88, 1);
   }
 
   else
@@ -1763,11 +1763,11 @@ LABEL_22:
   }
 
   v17 = v16;
-  v18 = [v17 remoteCertificateAuthorityName];
+  remoteCertificateAuthorityName = [v17 remoteCertificateAuthorityName];
 
-  if (a1)
+  if (self)
   {
-    v20 = objc_getProperty(a1, v19, 88, 1);
+    v20 = objc_getProperty(self, v19, 88, 1);
   }
 
   else
@@ -1776,10 +1776,10 @@ LABEL_22:
   }
 
   v21 = v20;
-  v22 = [v21 remoteCertificateAuthorityHash];
+  remoteCertificateAuthorityHash = [v21 remoteCertificateAuthorityHash];
 
-  v23 = v18;
-  v24 = v22;
+  v23 = remoteCertificateAuthorityName;
+  v24 = remoteCertificateAuthorityHash;
   v25 = v23;
   v26 = v24;
   objc_opt_self();
@@ -1973,7 +1973,7 @@ LABEL_76:
 LABEL_84:
 
   v38 = v67;
-  v6 = 0;
+  remoteCertificateAuthorityReferences = 0;
   v26 = v74;
 LABEL_37:
 
@@ -2037,8 +2037,8 @@ LABEL_55:
 - (NSObject)copyRemoteCertificateAuthorityHashData
 {
   v25 = *MEMORY[0x1E69E9840];
-  v1 = [(NEIKEv2IKESA *)a1 copyRemoteCertificateAuthorityArray];
-  if (!v1)
+  copyRemoteCertificateAuthorityArray = [(NEIKEv2IKESA *)self copyRemoteCertificateAuthorityArray];
+  if (!copyRemoteCertificateAuthorityArray)
   {
     v3 = ne_log_obj();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
@@ -2050,7 +2050,7 @@ LABEL_55:
     goto LABEL_26;
   }
 
-  v2 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:{20 * objc_msgSend(v1, "count")}];
+  v2 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:{20 * objc_msgSend(copyRemoteCertificateAuthorityArray, "count")}];
   if (!v2)
   {
     v15 = ne_log_obj();
@@ -2069,7 +2069,7 @@ LABEL_55:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = v1;
+  v4 = copyRemoteCertificateAuthorityArray;
   v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v5)
   {
@@ -2149,11 +2149,11 @@ LABEL_27:
 
 - (uint64_t)copyLocalSecIdentity
 {
-  v3 = objc_getProperty(a1, a2, 264, 1);
-  v5 = objc_getProperty(a1, v4, 272, 1);
+  v3 = objc_getProperty(self, a2, 264, 1);
+  v5 = objc_getProperty(self, v4, 272, 1);
   if (v3)
   {
-    v6 = [NEIKEv2Crypto copySecIdentity:v3 keyData:v5 isModernSystem:a1[22] & 1];
+    v6 = [NEIKEv2Crypto copySecIdentity:v3 keyData:v5 isModernSystem:self[22] & 1];
   }
 
   else
@@ -2173,12 +2173,12 @@ LABEL_27:
 
 - (NSObject)copyLocalCertificateData
 {
-  v2 = [(NEIKEv2IKESA *)a1 copyLocalSecIdentity];
-  if (v2)
+  copyLocalSecIdentity = [(NEIKEv2IKESA *)self copyLocalSecIdentity];
+  if (copyLocalSecIdentity)
   {
-    v3 = v2;
+    v3 = copyLocalSecIdentity;
     certificateRef = 0;
-    v4 = SecIdentityCopyCertificate(v2, &certificateRef);
+    v4 = SecIdentityCopyCertificate(copyLocalSecIdentity, &certificateRef);
     CFRelease(v3);
     if (!certificateRef || v4)
     {
@@ -2238,16 +2238,16 @@ LABEL_19:
   return 0;
 }
 
-- (uint64_t)updateIntAuthWithPacket:(void *)a1
+- (uint64_t)updateIntAuthWithPacket:(void *)packet
 {
   v55 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  if (a1)
+  if (packet)
   {
-    v5 = objc_getProperty(a1, v3, 96, 1);
-    v7 = [(NEIKEv2IKESAProposal *)v5 prfProtocol];
+    v5 = objc_getProperty(packet, v3, 96, 1);
+    prfProtocol = [(NEIKEv2IKESAProposal *)v5 prfProtocol];
 
-    if (v7)
+    if (prfProtocol)
     {
       if (v4)
       {
@@ -2271,30 +2271,30 @@ LABEL_19:
 
           if (*(v4 + 11))
           {
-            v14 = objc_getProperty(a1, v11, 232, 1);
+            v14 = objc_getProperty(packet, v11, 232, 1);
 
             if (v14)
             {
               v12 = v12;
-              v16 = objc_getProperty(a1, v15, 192, 1);
+              v16 = objc_getProperty(packet, v15, 192, 1);
 
               v18 = v12;
               if (v16)
               {
-                v19 = objc_getProperty(a1, v17, 192, 1);
+                v19 = objc_getProperty(packet, v17, 192, 1);
                 v52 = v19;
                 v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v52 count:1];
                 v18 = [v20 arrayByAddingObjectsFromArray:v12];
               }
 
               v21 = 1;
-              v22 = objc_getProperty(a1, v17, 232, 1);
-              v24 = objc_getProperty(a1, v23, 96, 1);
-              v26 = [(NEIKEv2IKESAProposal *)v24 prfProtocol];
-              v27 = [NEIKEv2Crypto createHMACFromDataVector:v18 key:v22 prfProtocol:v26];
-              objc_setProperty_atomic(a1, v28, v27, 192);
+              v22 = objc_getProperty(packet, v17, 232, 1);
+              v24 = objc_getProperty(packet, v23, 96, 1);
+              prfProtocol2 = [(NEIKEv2IKESAProposal *)v24 prfProtocol];
+              v27 = [NEIKEv2Crypto createHMACFromDataVector:v18 key:v22 prfProtocol:prfProtocol2];
+              objc_setProperty_atomic(packet, v28, v27, 192);
 
-              v30 = objc_getProperty(a1, v29, 192, 1);
+              v30 = objc_getProperty(packet, v29, 192, 1);
 
               if (v30)
               {
@@ -2333,30 +2333,30 @@ LABEL_33:
           v12 = 0;
         }
 
-        v34 = objc_getProperty(a1, v11, 248, 1);
+        v34 = objc_getProperty(packet, v11, 248, 1);
 
         if (v34)
         {
           v12 = v12;
-          v36 = objc_getProperty(a1, v35, 200, 1);
+          v36 = objc_getProperty(packet, v35, 200, 1);
 
           v18 = v12;
           if (v36)
           {
-            v38 = objc_getProperty(a1, v37, 200, 1);
+            v38 = objc_getProperty(packet, v37, 200, 1);
             v51 = v38;
             v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v51 count:1];
             v18 = [v39 arrayByAddingObjectsFromArray:v12];
           }
 
           v21 = 1;
-          v40 = objc_getProperty(a1, v37, 248, 1);
-          v42 = objc_getProperty(a1, v41, 96, 1);
-          v44 = [(NEIKEv2IKESAProposal *)v42 prfProtocol];
-          v45 = [NEIKEv2Crypto createHMACFromDataVector:v18 key:v40 prfProtocol:v44];
-          objc_setProperty_atomic(a1, v46, v45, 200);
+          v40 = objc_getProperty(packet, v37, 248, 1);
+          v42 = objc_getProperty(packet, v41, 96, 1);
+          prfProtocol3 = [(NEIKEv2IKESAProposal *)v42 prfProtocol];
+          v45 = [NEIKEv2Crypto createHMACFromDataVector:v18 key:v40 prfProtocol:prfProtocol3];
+          objc_setProperty_atomic(packet, v46, v45, 200);
 
-          v48 = objc_getProperty(a1, v47, 200, 1);
+          v48 = objc_getProperty(packet, v47, 200, 1);
 
           if (v48)
           {
@@ -2508,15 +2508,15 @@ LABEL_13:
   return v16;
 }
 
-- (NSObject)createAuthenticationDataForSharedSecret:(void *)a3 octetVector:
+- (NSObject)createAuthenticationDataForSharedSecret:(void *)secret octetVector:
 {
   v29 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v7 = a3;
+  secretCopy = secret;
   if (!v5)
   {
-    v19 = ne_log_obj();
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
+    prfProtocol2 = ne_log_obj();
+    if (!os_log_type_enabled(prfProtocol2, OS_LOG_TYPE_FAULT))
     {
       goto LABEL_16;
     }
@@ -2527,9 +2527,9 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  if (a1)
+  if (self)
   {
-    Property = objc_getProperty(a1, v6, 96, 1);
+    Property = objc_getProperty(self, v6, 96, 1);
   }
 
   else
@@ -2541,8 +2541,8 @@ LABEL_13:
 
   if (!v9)
   {
-    v19 = ne_log_obj();
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
+    prfProtocol2 = ne_log_obj();
+    if (!os_log_type_enabled(prfProtocol2, OS_LOG_TYPE_FAULT))
     {
 LABEL_16:
       v22 = 0;
@@ -2553,13 +2553,13 @@ LABEL_16:
     v28 = "[NEIKEv2IKESA(Crypto) createAuthenticationDataForSharedSecret:octetVector:]";
     v23 = "%s called with null self.chosenProposal";
 LABEL_19:
-    _os_log_fault_impl(&dword_1BA83C000, v19, OS_LOG_TYPE_FAULT, v23, &v27, 0xCu);
+    _os_log_fault_impl(&dword_1BA83C000, prfProtocol2, OS_LOG_TYPE_FAULT, v23, &v27, 0xCu);
     goto LABEL_16;
   }
 
-  if (a1)
+  if (self)
   {
-    v11 = objc_getProperty(a1, v10, 96, 1);
+    v11 = objc_getProperty(self, v10, 96, 1);
   }
 
   else
@@ -2568,12 +2568,12 @@ LABEL_19:
   }
 
   v12 = v11;
-  v14 = [(NEIKEv2IKESAProposal *)v12 prfProtocol];
+  prfProtocol = [(NEIKEv2IKESAProposal *)v12 prfProtocol];
 
-  if (!v14)
+  if (!prfProtocol)
   {
-    v19 = ne_log_obj();
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
+    prfProtocol2 = ne_log_obj();
+    if (!os_log_type_enabled(prfProtocol2, OS_LOG_TYPE_FAULT))
     {
       goto LABEL_16;
     }
@@ -2584,9 +2584,9 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (a1)
+  if (self)
   {
-    v16 = objc_getProperty(a1, v15, 96, 1);
+    v16 = objc_getProperty(self, v15, 96, 1);
   }
 
   else
@@ -2595,13 +2595,13 @@ LABEL_19:
   }
 
   v17 = v16;
-  v19 = [(NEIKEv2IKESAProposal *)v17 prfProtocol];
+  prfProtocol2 = [(NEIKEv2IKESAProposal *)v17 prfProtocol];
 
   v20 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:"Key Pad for IKEv2" length:17 freeWhenDone:0];
-  v21 = [NEIKEv2Crypto createHMACFromData:v20 key:v5 prfProtocol:v19];
+  v21 = [NEIKEv2Crypto createHMACFromData:v20 key:v5 prfProtocol:prfProtocol2];
   if (v21)
   {
-    v22 = [NEIKEv2Crypto createHMACFromDataVector:v7 key:v21 prfProtocol:v19];
+    v22 = [NEIKEv2Crypto createHMACFromDataVector:secretCopy key:v21 prfProtocol:prfProtocol2];
   }
 
   else
@@ -2621,16 +2621,16 @@ LABEL_17:
   return v22;
 }
 
-- (NSObject)createInitiatorSignedOctetVectorUsingPrimeKey:(id *)a1
+- (NSObject)createInitiatorSignedOctetVectorUsingPrimeKey:(id *)key
 {
   v2 = a2;
   v37 = *MEMORY[0x1E69E9840];
-  v4 = [(NEIKEv2IKESA *)a1 initiatorFirstMessage];
+  initiatorFirstMessage = [(NEIKEv2IKESA *)key initiatorFirstMessage];
 
-  if (!v4)
+  if (!initiatorFirstMessage)
   {
-    v10 = ne_log_obj();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+    copyPayloadData = ne_log_obj();
+    if (os_log_type_enabled(copyPayloadData, OS_LOG_TYPE_FAULT))
     {
       *buf = 136315138;
       v36 = "[NEIKEv2IKESA(Crypto) createInitiatorSignedOctetVectorUsingPrimeKey:]";
@@ -2643,12 +2643,12 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v6 = [(NEIKEv2IKESA *)a1 responderNonce];
+  responderNonce = [(NEIKEv2IKESA *)key responderNonce];
 
-  if (!v6)
+  if (!responderNonce)
   {
-    v10 = ne_log_obj();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+    copyPayloadData = ne_log_obj();
+    if (os_log_type_enabled(copyPayloadData, OS_LOG_TYPE_FAULT))
     {
       *buf = 136315138;
       v36 = "[NEIKEv2IKESA(Crypto) createInitiatorSignedOctetVectorUsingPrimeKey:]";
@@ -2661,18 +2661,18 @@ LABEL_31:
 
   if (v2)
   {
-    v8 = objc_getProperty(a1, v7, 240, 1);
+    v8 = objc_getProperty(key, v7, 240, 1);
 
     if (!v8)
     {
-      v10 = ne_log_obj();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+      copyPayloadData = ne_log_obj();
+      if (os_log_type_enabled(copyPayloadData, OS_LOG_TYPE_FAULT))
       {
         *buf = 136315138;
         v36 = "[NEIKEv2IKESA(Crypto) createInitiatorSignedOctetVectorUsingPrimeKey:]";
         v11 = "%s called with null self.skPiPrime";
 LABEL_30:
-        _os_log_fault_impl(&dword_1BA83C000, v10, OS_LOG_TYPE_FAULT, v11, buf, 0xCu);
+        _os_log_fault_impl(&dword_1BA83C000, copyPayloadData, OS_LOG_TYPE_FAULT, v11, buf, 0xCu);
         goto LABEL_31;
       }
 
@@ -2682,12 +2682,12 @@ LABEL_30:
 
   else
   {
-    v12 = objc_getProperty(a1, v7, 232, 1);
+    v12 = objc_getProperty(key, v7, 232, 1);
 
     if (!v12)
     {
-      v10 = ne_log_obj();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+      copyPayloadData = ne_log_obj();
+      if (os_log_type_enabled(copyPayloadData, OS_LOG_TYPE_FAULT))
       {
         *buf = 136315138;
         v36 = "[NEIKEv2IKESA(Crypto) createInitiatorSignedOctetVectorUsingPrimeKey:]";
@@ -2699,9 +2699,9 @@ LABEL_30:
     }
   }
 
-  if (a1)
+  if (key)
   {
-    Property = objc_getProperty(a1, v9, 96, 1);
+    Property = objc_getProperty(key, v9, 96, 1);
   }
 
   else
@@ -2713,8 +2713,8 @@ LABEL_30:
 
   if (!v14)
   {
-    v10 = ne_log_obj();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+    copyPayloadData = ne_log_obj();
+    if (os_log_type_enabled(copyPayloadData, OS_LOG_TYPE_FAULT))
     {
       *buf = 136315138;
       v36 = "[NEIKEv2IKESA(Crypto) createInitiatorSignedOctetVectorUsingPrimeKey:]";
@@ -2725,10 +2725,10 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v15 = a1[41];
-  v10 = [(NEIKEv2IdentifierPayload *)v15 copyPayloadData];
+  v15 = key[41];
+  copyPayloadData = [(NEIKEv2IdentifierPayload *)v15 copyPayloadData];
 
-  if (!v10)
+  if (!copyPayloadData)
   {
     v23 = ne_log_obj();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
@@ -2751,26 +2751,26 @@ LABEL_30:
     v17 = 232;
   }
 
-  v18 = objc_getProperty(a1, v16, v17, 1);
-  v20 = objc_getProperty(a1, v19, 96, 1);
-  v22 = [(NEIKEv2IKESAProposal *)v20 prfProtocol];
-  v23 = [NEIKEv2Crypto createHMACFromData:v10 key:v18 prfProtocol:v22];
+  v18 = objc_getProperty(key, v16, v17, 1);
+  v20 = objc_getProperty(key, v19, 96, 1);
+  prfProtocol = [(NEIKEv2IKESAProposal *)v20 prfProtocol];
+  v23 = [NEIKEv2Crypto createHMACFromData:copyPayloadData key:v18 prfProtocol:prfProtocol];
 
   if (!v23)
   {
-    v26 = ne_log_obj();
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
+    createIntAuthOctetVector = ne_log_obj();
+    if (os_log_type_enabled(createIntAuthOctetVector, OS_LOG_TYPE_FAULT))
     {
       *buf = 0;
-      _os_log_fault_impl(&dword_1BA83C000, v26, OS_LOG_TYPE_FAULT, "[NEIKEv2Crypto createHMACFromData:key:prfProtocol:] failed", buf, 2u);
+      _os_log_fault_impl(&dword_1BA83C000, createIntAuthOctetVector, OS_LOG_TYPE_FAULT, "[NEIKEv2Crypto createHMACFromData:key:prfProtocol:] failed", buf, 2u);
     }
 
     v30 = 0;
     goto LABEL_24;
   }
 
-  v26 = [(NEIKEv2IKESA *)a1 createIntAuthOctetVector];
-  if (!v26)
+  createIntAuthOctetVector = [(NEIKEv2IKESA *)key createIntAuthOctetVector];
+  if (!createIntAuthOctetVector)
   {
     v30 = ne_log_obj();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
@@ -2783,16 +2783,16 @@ LABEL_30:
     goto LABEL_23;
   }
 
-  v27 = [(NEIKEv2IKESA *)a1 initiatorFirstMessage];
-  v34[0] = v27;
-  v29 = [(NEIKEv2IKESA *)a1 responderNonce];
-  v34[1] = v29;
+  initiatorFirstMessage2 = [(NEIKEv2IKESA *)key initiatorFirstMessage];
+  v34[0] = initiatorFirstMessage2;
+  responderNonce2 = [(NEIKEv2IKESA *)key responderNonce];
+  v34[1] = responderNonce2;
   v34[2] = v23;
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:3];
 
-  if ([v26 count])
+  if ([createIntAuthOctetVector count])
   {
-    v31 = [v30 arrayByAddingObjectsFromArray:v26];
+    v31 = [v30 arrayByAddingObjectsFromArray:createIntAuthOctetVector];
 LABEL_23:
 
     v30 = v31;
@@ -2807,16 +2807,16 @@ LABEL_32:
   return v30;
 }
 
-- (NSObject)createResponderSignedOctetVectorUsingPrimeKey:(_BYTE *)a1
+- (NSObject)createResponderSignedOctetVectorUsingPrimeKey:(_BYTE *)key
 {
   v2 = a2;
   v39 = *MEMORY[0x1E69E9840];
-  v4 = [(NEIKEv2IKESA *)a1 responderFirstMessage];
+  responderFirstMessage = [(NEIKEv2IKESA *)key responderFirstMessage];
 
-  if (!v4)
+  if (!responderFirstMessage)
   {
-    v10 = ne_log_obj();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+    copyPayloadData = ne_log_obj();
+    if (os_log_type_enabled(copyPayloadData, OS_LOG_TYPE_FAULT))
     {
       *buf = 136315138;
       v38 = "[NEIKEv2IKESA(Crypto) createResponderSignedOctetVectorUsingPrimeKey:]";
@@ -2829,12 +2829,12 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v6 = [(NEIKEv2IKESA *)a1 initiatorNonce];
+  initiatorNonce = [(NEIKEv2IKESA *)key initiatorNonce];
 
-  if (!v6)
+  if (!initiatorNonce)
   {
-    v10 = ne_log_obj();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+    copyPayloadData = ne_log_obj();
+    if (os_log_type_enabled(copyPayloadData, OS_LOG_TYPE_FAULT))
     {
       *buf = 136315138;
       v38 = "[NEIKEv2IKESA(Crypto) createResponderSignedOctetVectorUsingPrimeKey:]";
@@ -2847,18 +2847,18 @@ LABEL_35:
 
   if (v2)
   {
-    v8 = objc_getProperty(a1, v7, 256, 1);
+    v8 = objc_getProperty(key, v7, 256, 1);
 
     if (!v8)
     {
-      v10 = ne_log_obj();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+      copyPayloadData = ne_log_obj();
+      if (os_log_type_enabled(copyPayloadData, OS_LOG_TYPE_FAULT))
       {
         *buf = 136315138;
         v38 = "[NEIKEv2IKESA(Crypto) createResponderSignedOctetVectorUsingPrimeKey:]";
         v11 = "%s called with null self.skPrPrime";
 LABEL_34:
-        _os_log_fault_impl(&dword_1BA83C000, v10, OS_LOG_TYPE_FAULT, v11, buf, 0xCu);
+        _os_log_fault_impl(&dword_1BA83C000, copyPayloadData, OS_LOG_TYPE_FAULT, v11, buf, 0xCu);
         goto LABEL_35;
       }
 
@@ -2868,12 +2868,12 @@ LABEL_34:
 
   else
   {
-    v12 = objc_getProperty(a1, v7, 248, 1);
+    v12 = objc_getProperty(key, v7, 248, 1);
 
     if (!v12)
     {
-      v10 = ne_log_obj();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+      copyPayloadData = ne_log_obj();
+      if (os_log_type_enabled(copyPayloadData, OS_LOG_TYPE_FAULT))
       {
         *buf = 136315138;
         v38 = "[NEIKEv2IKESA(Crypto) createResponderSignedOctetVectorUsingPrimeKey:]";
@@ -2885,9 +2885,9 @@ LABEL_34:
     }
   }
 
-  if (a1)
+  if (key)
   {
-    Property = objc_getProperty(a1, v9, 96, 1);
+    Property = objc_getProperty(key, v9, 96, 1);
   }
 
   else
@@ -2899,8 +2899,8 @@ LABEL_34:
 
   if (!v14)
   {
-    v10 = ne_log_obj();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+    copyPayloadData = ne_log_obj();
+    if (os_log_type_enabled(copyPayloadData, OS_LOG_TYPE_FAULT))
     {
       *buf = 136315138;
       v38 = "[NEIKEv2IKESA(Crypto) createResponderSignedOctetVectorUsingPrimeKey:]";
@@ -2911,9 +2911,9 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if (a1)
+  if (key)
   {
-    v15 = *(a1 + 42);
+    v15 = *(key + 42);
   }
 
   else
@@ -2922,9 +2922,9 @@ LABEL_34:
   }
 
   v16 = v15;
-  v10 = [(NEIKEv2IdentifierPayload *)v16 copyPayloadData];
+  copyPayloadData = [(NEIKEv2IdentifierPayload *)v16 copyPayloadData];
 
-  if (!v10)
+  if (!copyPayloadData)
   {
     v25 = ne_log_obj();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
@@ -2947,10 +2947,10 @@ LABEL_34:
     v18 = 248;
   }
 
-  v20 = objc_getProperty(a1, v17, v18, 1);
-  if (a1)
+  v20 = objc_getProperty(key, v17, v18, 1);
+  if (key)
   {
-    v21 = objc_getProperty(a1, v19, 96, 1);
+    v21 = objc_getProperty(key, v19, 96, 1);
   }
 
   else
@@ -2959,24 +2959,24 @@ LABEL_34:
   }
 
   v22 = v21;
-  v24 = [(NEIKEv2IKESAProposal *)v22 prfProtocol];
-  v25 = [NEIKEv2Crypto createHMACFromData:v10 key:v20 prfProtocol:v24];
+  prfProtocol = [(NEIKEv2IKESAProposal *)v22 prfProtocol];
+  v25 = [NEIKEv2Crypto createHMACFromData:copyPayloadData key:v20 prfProtocol:prfProtocol];
 
   if (!v25)
   {
-    v28 = ne_log_obj();
-    if (os_log_type_enabled(v28, OS_LOG_TYPE_FAULT))
+    createIntAuthOctetVector = ne_log_obj();
+    if (os_log_type_enabled(createIntAuthOctetVector, OS_LOG_TYPE_FAULT))
     {
       *buf = 0;
-      _os_log_fault_impl(&dword_1BA83C000, v28, OS_LOG_TYPE_FAULT, "[NEIKEv2Crypto createHMACFromData:key:prfProtocol:] failed", buf, 2u);
+      _os_log_fault_impl(&dword_1BA83C000, createIntAuthOctetVector, OS_LOG_TYPE_FAULT, "[NEIKEv2Crypto createHMACFromData:key:prfProtocol:] failed", buf, 2u);
     }
 
     v32 = 0;
     goto LABEL_28;
   }
 
-  v28 = [(NEIKEv2IKESA *)a1 createIntAuthOctetVector];
-  if (!v28)
+  createIntAuthOctetVector = [(NEIKEv2IKESA *)key createIntAuthOctetVector];
+  if (!createIntAuthOctetVector)
   {
     v32 = ne_log_obj();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
@@ -2989,16 +2989,16 @@ LABEL_34:
     goto LABEL_27;
   }
 
-  v29 = [(NEIKEv2IKESA *)a1 responderFirstMessage];
-  v36[0] = v29;
-  v31 = [(NEIKEv2IKESA *)a1 initiatorNonce];
-  v36[1] = v31;
+  responderFirstMessage2 = [(NEIKEv2IKESA *)key responderFirstMessage];
+  v36[0] = responderFirstMessage2;
+  initiatorNonce2 = [(NEIKEv2IKESA *)key initiatorNonce];
+  v36[1] = initiatorNonce2;
   v36[2] = v25;
   v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:3];
 
-  if ([v28 count])
+  if ([createIntAuthOctetVector count])
   {
-    v33 = [v32 arrayByAddingObjectsFromArray:v28];
+    v33 = [v32 arrayByAddingObjectsFromArray:createIntAuthOctetVector];
 LABEL_27:
 
     v32 = v33;
@@ -3013,30 +3013,30 @@ LABEL_36:
   return v32;
 }
 
-- (_BYTE)createRemoteSignedOctetVectorUsingPrimeKey:(_BYTE *)a1
+- (_BYTE)createRemoteSignedOctetVectorUsingPrimeKey:(_BYTE *)key
 {
-  if (a1)
+  if (key)
   {
-    if (a1[9])
+    if (key[9])
     {
-      return [(NEIKEv2IKESA *)a1 createResponderSignedOctetVectorUsingPrimeKey:a2];
+      return [(NEIKEv2IKESA *)key createResponderSignedOctetVectorUsingPrimeKey:a2];
     }
 
     else
     {
-      return [(NEIKEv2IKESA *)a1 createInitiatorSignedOctetVectorUsingPrimeKey:a2];
+      return [(NEIKEv2IKESA *)key createInitiatorSignedOctetVectorUsingPrimeKey:a2];
     }
   }
 
-  return a1;
+  return key;
 }
 
-- (SecKeyRef)checkValidityOfCertificates:(_BYTE *)a1
+- (SecKeyRef)checkValidityOfCertificates:(_BYTE *)certificates
 {
   v115 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!certificates)
   {
     v49 = 0;
     goto LABEL_51;
@@ -3044,41 +3044,41 @@ LABEL_36:
 
   if (![(__CFArray *)v3 count])
   {
-    v7 = ne_log_obj();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
+    remoteCertificateHostname = ne_log_obj();
+    if (os_log_type_enabled(remoteCertificateHostname, OS_LOG_TYPE_FAULT))
     {
       *buf = 136315138;
       v114 = "[NEIKEv2IKESA(Crypto) checkValidityOfCertificates:]";
-      _os_log_fault_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_FAULT, "%s called with null certificateDataArray.count", buf, 0xCu);
+      _os_log_fault_impl(&dword_1BA83C000, remoteCertificateHostname, OS_LOG_TYPE_FAULT, "%s called with null certificateDataArray.count", buf, 0xCu);
     }
 
     v49 = 0;
     goto LABEL_50;
   }
 
-  v6 = objc_getProperty(a1, v5, 88, 1);
-  v7 = [v6 remoteCertificateHostname];
+  v6 = objc_getProperty(certificates, v5, 88, 1);
+  remoteCertificateHostname = [v6 remoteCertificateHostname];
 
-  if (![v7 length])
+  if (![remoteCertificateHostname length])
   {
-    v9 = objc_getProperty(a1, v8, 88, 1);
-    v10 = [v9 remoteIdentifier];
-    v11 = [v10 stringValue];
+    v9 = objc_getProperty(certificates, v8, 88, 1);
+    remoteIdentifier = [v9 remoteIdentifier];
+    stringValue = [remoteIdentifier stringValue];
 
-    if ([v11 length])
+    if ([stringValue length])
     {
-      v7 = v11;
+      remoteCertificateHostname = stringValue;
     }
 
     else
     {
       v12 = 328;
-      if (a1[9])
+      if (certificates[9])
       {
         v12 = 336;
       }
 
-      Property = *&a1[v12];
+      Property = *&certificates[v12];
       v15 = Property;
       if (Property)
       {
@@ -3086,23 +3086,23 @@ LABEL_36:
       }
 
       v16 = Property;
-      v7 = [v16 stringValue];
+      remoteCertificateHostname = [v16 stringValue];
     }
   }
 
-  if (![v7 length])
+  if (![remoteCertificateHostname length])
   {
 
-    v7 = 0;
+    remoteCertificateHostname = 0;
   }
 
   v17 = ne_log_obj();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     v53 = @"<not set>";
-    if (v7)
+    if (remoteCertificateHostname)
     {
-      v53 = v7;
+      v53 = remoteCertificateHostname;
     }
 
     *buf = 138412290;
@@ -3110,7 +3110,7 @@ LABEL_36:
     _os_log_debug_impl(&dword_1BA83C000, v17, OS_LOG_TYPE_DEBUG, "Matching remote hostname %@ with remote certificate", buf, 0xCu);
   }
 
-  v18 = a1[9];
+  v18 = certificates[9];
   IPSec = SecPolicyCreateIPSec();
   if (IPSec)
   {
@@ -3120,7 +3120,7 @@ LABEL_36:
     {
       v22 = v21;
       cf = v20;
-      v103 = v7;
+      v103 = remoteCertificateHostname;
       v108 = 0u;
       v109 = 0u;
       v106 = 0u;
@@ -3155,7 +3155,7 @@ LABEL_36:
 
               CFRelease(cf);
               v49 = 0;
-              v7 = v103;
+              remoteCertificateHostname = v103;
               v4 = theArray;
               goto LABEL_49;
             }
@@ -3199,7 +3199,7 @@ LABEL_36:
       if (![v22 count])
       {
         v54 = ne_log_obj();
-        v7 = v103;
+        remoteCertificateHostname = v103;
         if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
         {
           *buf = 0;
@@ -3212,20 +3212,20 @@ LABEL_36:
         goto LABEL_49;
       }
 
-      v33 = [(NEIKEv2IKESA *)a1 copyRemoteCertificateAuthorityArray];
-      if ([v33 count])
+      copyRemoteCertificateAuthorityArray = [(NEIKEv2IKESA *)certificates copyRemoteCertificateAuthorityArray];
+      if ([copyRemoteCertificateAuthorityArray count])
       {
 LABEL_31:
-        v35 = objc_getProperty(a1, v34, 88, 1);
-        v36 = [v35 enableCertificateRevocationCheck];
-        v38 = objc_getProperty(a1, v37, 88, 1);
-        v39 = [v38 strictCertificateRevocationCheck];
+        v35 = objc_getProperty(certificates, v34, 88, 1);
+        enableCertificateRevocationCheck = [v35 enableCertificateRevocationCheck];
+        v38 = objc_getProperty(certificates, v37, 88, 1);
+        strictCertificateRevocationCheck = [v38 strictCertificateRevocationCheck];
         v40 = v22;
-        v100 = v33;
+        v100 = copyRemoteCertificateAuthorityArray;
         objc_opt_self();
         trust = 0;
         certificates = v40;
-        if (v36)
+        if (enableCertificateRevocationCheck)
         {
           v41 = ne_log_obj();
           v4 = theArray;
@@ -3235,7 +3235,7 @@ LABEL_31:
             _os_log_debug_impl(&dword_1BA83C000, v41, OS_LOG_TYPE_DEBUG, "Request certificate revocation check", buf, 2u);
           }
 
-          if (v39)
+          if (strictCertificateRevocationCheck)
           {
             v42 = 11;
           }
@@ -3507,7 +3507,7 @@ LABEL_126:
               }
 
 LABEL_112:
-              if ((v36 & v39) == 1)
+              if ((enableCertificateRevocationCheck & strictCertificateRevocationCheck) == 1)
               {
                 v73 = ne_log_obj();
                 if (os_log_type_enabled(v73, OS_LOG_TYPE_INFO))
@@ -3533,7 +3533,7 @@ LABEL_90:
               v70 = v69;
               if (v49)
               {
-                v7 = v103;
+                remoteCertificateHostname = v103;
                 if (os_log_type_enabled(v69, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 138412290;
@@ -3544,7 +3544,7 @@ LABEL_90:
 
               else
               {
-                v7 = v103;
+                remoteCertificateHostname = v103;
                 if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 0;
@@ -3619,18 +3619,18 @@ LABEL_88:
         goto LABEL_89;
       }
 
-      v55 = objc_getProperty(a1, v34, 88, 1);
-      v56 = [v55 remoteCertificateAuthorityReferences];
-      if (v56)
+      v55 = objc_getProperty(certificates, v34, 88, 1);
+      remoteCertificateAuthorityReferences = [v55 remoteCertificateAuthorityReferences];
+      if (remoteCertificateAuthorityReferences)
       {
       }
 
       else
       {
-        v66 = objc_getProperty(a1, v57, 88, 1);
-        v67 = [v66 remoteCertificateAuthorityName];
+        v66 = objc_getProperty(certificates, v57, 88, 1);
+        remoteCertificateAuthorityName = [v66 remoteCertificateAuthorityName];
 
-        if (!v67)
+        if (!remoteCertificateAuthorityName)
         {
           goto LABEL_31;
         }
@@ -3645,7 +3645,7 @@ LABEL_88:
 
       CFRelease(cf);
       v49 = 0;
-      v7 = v103;
+      remoteCertificateHostname = v103;
       v4 = theArray;
       goto LABEL_97;
     }
@@ -3667,7 +3667,7 @@ LABEL_88:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v114 = v7;
+      v114 = remoteCertificateHostname;
       _os_log_fault_impl(&dword_1BA83C000, v22, OS_LOG_TYPE_FAULT, "Could not create secure policy with hostname %@", buf, 0xCu);
     }
   }
@@ -3684,47 +3684,47 @@ LABEL_51:
 
 - (NEIKEv2AuthPayload)copyAuthenticationPayloadUsingPrimeKey:(id *)self
 {
-  v3 = self;
+  selfCopy = self;
   v109 = *MEMORY[0x1E69E9840];
   if (self)
   {
     self = objc_getProperty(self, a2, 96, 1);
   }
 
-  v4 = self;
+  selfCopy2 = self;
 
-  if (v4)
+  if (selfCopy2)
   {
-    if (v3 && (*(v3 + 9) & 1) != 0)
+    if (selfCopy && (*(selfCopy + 9) & 1) != 0)
     {
-      v5 = [(NEIKEv2IKESA *)v3 createInitiatorSignedOctetVectorUsingPrimeKey:a2];
+      v5 = [(NEIKEv2IKESA *)selfCopy createInitiatorSignedOctetVectorUsingPrimeKey:a2];
     }
 
     else
     {
-      v5 = [(NEIKEv2IKESA *)v3 createResponderSignedOctetVectorUsingPrimeKey:a2];
+      v5 = [(NEIKEv2IKESA *)selfCopy createResponderSignedOctetVectorUsingPrimeKey:a2];
     }
 
     v7 = v5;
     if (!v5)
     {
-      v9 = ne_log_obj();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+      authenticationProtocol = ne_log_obj();
+      if (os_log_type_enabled(authenticationProtocol, OS_LOG_TYPE_FAULT))
       {
         *buf = 0;
-        _os_log_fault_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_FAULT, "[self createLocalSignedOctetVectorUsingPrimeKey:] failed", buf, 2u);
+        _os_log_fault_impl(&dword_1BA83C000, authenticationProtocol, OS_LOG_TYPE_FAULT, "[self createLocalSignedOctetVectorUsingPrimeKey:] failed", buf, 2u);
       }
 
       goto LABEL_68;
     }
 
-    v9 = [(NEIKEv2IKESA *)v3 authenticationProtocol];
-    if (![v9 isSignature])
+    authenticationProtocol = [(NEIKEv2IKESA *)selfCopy authenticationProtocol];
+    if (![authenticationProtocol isSignature])
     {
-      if ([v9 method]== 2)
+      if ([authenticationProtocol method]== 2)
       {
-        v15 = [(NEIKEv2IKESA *)v3 sharedSecret];
-        v16 = [(NEIKEv2IKESA *)v3 createAuthenticationDataForSharedSecret:v15 octetVector:v7];
+        sharedSecret = [(NEIKEv2IKESA *)selfCopy sharedSecret];
+        v16 = [(NEIKEv2IKESA *)selfCopy createAuthenticationDataForSharedSecret:sharedSecret octetVector:v7];
 
         if (!v16)
         {
@@ -3745,7 +3745,7 @@ LABEL_88:
 
       else
       {
-        if ([v9 method]!= 13)
+        if ([authenticationProtocol method]!= 13)
         {
           v17 = ne_log_obj();
           if (!os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -3754,7 +3754,7 @@ LABEL_88:
           }
 
           *buf = 138412290;
-          *&buf[4] = v9;
+          *&buf[4] = authenticationProtocol;
           v18 = "Unknown auth protocol %@";
           v23 = v17;
           v24 = 12;
@@ -3763,7 +3763,7 @@ LABEL_89:
           goto LABEL_67;
         }
 
-        if (v3 && (*(v3 + 9) & 1) != 0)
+        if (selfCopy && (*(selfCopy + 9) & 1) != 0)
         {
           v20 = a2 == 0;
           v21 = 232;
@@ -3787,8 +3787,8 @@ LABEL_89:
           v25 = v22;
         }
 
-        v17 = objc_getProperty(v3, v19, v25, 1);
-        v26 = [(NEIKEv2IKESA *)v3 createAuthenticationDataForSharedSecret:v17 octetVector:v7];
+        v17 = objc_getProperty(selfCopy, v19, v25, 1);
+        v26 = [(NEIKEv2IKESA *)selfCopy createAuthenticationDataForSharedSecret:v17 octetVector:v7];
         if (!v26)
         {
           v27 = ne_log_obj();
@@ -3805,23 +3805,23 @@ LABEL_89:
       }
 
 LABEL_74:
-      v8 = objc_alloc_init(NEIKEv2AuthPayload);
-      [(NEIKEv2AuthPayload *)v8 setAuthProtocol:v9];
-      [(NEIKEv2AuthPayload *)v8 setAuthenticationData:v16];
+      localPrivateKeyRef = objc_alloc_init(NEIKEv2AuthPayload);
+      [(NEIKEv2AuthPayload *)localPrivateKeyRef setAuthProtocol:authenticationProtocol];
+      [(NEIKEv2AuthPayload *)localPrivateKeyRef setAuthenticationData:v16];
 
       goto LABEL_75;
     }
 
-    if (v3)
+    if (selfCopy)
     {
-      v11 = objc_getProperty(v3, v10, 88, 1);
+      v11 = objc_getProperty(selfCopy, v10, 88, 1);
       v12 = v11;
       if (v11 && [v11 localPrivateKeyRef])
       {
-        v8 = [v12 localPrivateKeyRef];
-        CFRetain(v8);
+        localPrivateKeyRef = [v12 localPrivateKeyRef];
+        CFRetain(localPrivateKeyRef);
 
-        if (v8)
+        if (localPrivateKeyRef)
         {
           goto LABEL_44;
         }
@@ -3836,34 +3836,34 @@ LABEL_74:
     }
 
 LABEL_41:
-    v28 = [(NEIKEv2IKESA *)v3 copyLocalSecIdentity];
-    if (v28)
+    copyLocalSecIdentity = [(NEIKEv2IKESA *)selfCopy copyLocalSecIdentity];
+    if (copyLocalSecIdentity)
     {
-      v29 = v28;
+      v29 = copyLocalSecIdentity;
       *buf = 0;
-      v30 = SecIdentityCopyPrivateKey(v28, buf);
+      v30 = SecIdentityCopyPrivateKey(copyLocalSecIdentity, buf);
       CFRelease(v29);
-      v8 = *buf;
+      localPrivateKeyRef = *buf;
       if (*buf && !v30)
       {
 LABEL_44:
-        v31 = [(NEIKEv2IKESA *)v3 authenticationProtocol];
+        authenticationProtocol2 = [(NEIKEv2IKESA *)selfCopy authenticationProtocol];
         v32 = 0x1E7F04000uLL;
-        if ([v31 method] == 1 || (objc_msgSend(v31, "isSignature") & 1) == 0)
+        if ([authenticationProtocol2 method] == 1 || (objc_msgSend(authenticationProtocol2, "isSignature") & 1) == 0)
         {
-          v36 = v31;
+          v36 = authenticationProtocol2;
           goto LABEL_50;
         }
 
-        if ([v31 isDigitalSignature])
+        if ([authenticationProtocol2 isDigitalSignature])
         {
-          v33 = [NEIKEv2Crypto copySignHashProtocolForAuth:v31];
-          v34 = v3[14];
+          v33 = [NEIKEv2Crypto copySignHashProtocolForAuth:authenticationProtocol2];
+          v34 = selfCopy[14];
           v35 = [v34 containsObject:v33];
 
           if (v35)
           {
-            v36 = v31;
+            v36 = authenticationProtocol2;
           }
 
           else
@@ -3871,7 +3871,7 @@ LABEL_44:
             v57 = ne_log_obj();
             if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
             {
-              v87 = v3[14];
+              v87 = selfCopy[14];
               *buf = 138412546;
               *&buf[4] = v33;
               v103 = 2112;
@@ -3892,31 +3892,31 @@ LABEL_50:
               _os_log_fault_impl(&dword_1BA83C000, v88, OS_LOG_TYPE_FAULT, "Failed to select auth protocol for signature generation", buf, 2u);
             }
 
-            if (!v8)
+            if (!localPrivateKeyRef)
             {
-              v9 = 0;
+              authenticationProtocol = 0;
               goto LABEL_75;
             }
 
-            CFRelease(v8);
-            v9 = 0;
+            CFRelease(localPrivateKeyRef);
+            authenticationProtocol = 0;
             goto LABEL_68;
           }
 
           v37 = *(v32 + 2392);
           v38 = v7;
-          v9 = v36;
+          authenticationProtocol = v36;
           objc_opt_self();
-          v39 = [(NEIKEv2AuthenticationProtocol *)v9 signatureAlgorithm];
-          if (v39)
+          signatureAlgorithm = [(NEIKEv2AuthenticationProtocol *)authenticationProtocol signatureAlgorithm];
+          if (signatureAlgorithm)
           {
-            v40 = v39;
-            v41 = [(NEIKEv2AuthenticationProtocol *)v9 copyHashForDataVector:v38];
+            v40 = signatureAlgorithm;
+            v41 = [(NEIKEv2AuthenticationProtocol *)authenticationProtocol copyHashForDataVector:v38];
             if (v41)
             {
               v42 = v41;
               error[0] = 0;
-              Signature = SecKeyCreateSignature(v8, v40, v41, error);
+              Signature = SecKeyCreateSignature(localPrivateKeyRef, v40, v41, error);
               v44 = Signature;
               if (!Signature || error[0])
               {
@@ -3924,7 +3924,7 @@ LABEL_50:
                 if (os_log_type_enabled(v45, OS_LOG_TYPE_FAULT))
                 {
                   *buf = 138412546;
-                  *&buf[4] = v9;
+                  *&buf[4] = authenticationProtocol;
                   v103 = 2112;
                   v104 = error[0];
                   _os_log_fault_impl(&dword_1BA83C000, v45, OS_LOG_TYPE_FAULT, "Failed to sign for %@ with private key: %@", buf, 0x16u);
@@ -3949,9 +3949,9 @@ LABEL_50:
               }
 
 LABEL_71:
-              if (v8)
+              if (localPrivateKeyRef)
               {
-                CFRelease(v8);
+                CFRelease(localPrivateKeyRef);
               }
 
               if (v16)
@@ -3960,7 +3960,7 @@ LABEL_71:
               }
 
 LABEL_68:
-              v8 = 0;
+              localPrivateKeyRef = 0;
 LABEL_75:
 
               goto LABEL_76;
@@ -3970,7 +3970,7 @@ LABEL_75:
             if (os_log_type_enabled(v89, OS_LOG_TYPE_FAULT))
             {
               *buf = 138412290;
-              *&buf[4] = v9;
+              *&buf[4] = authenticationProtocol;
               _os_log_fault_impl(&dword_1BA83C000, v89, OS_LOG_TYPE_FAULT, "Failed to copy hashed data for %@", buf, 0xCu);
             }
 
@@ -3983,7 +3983,7 @@ LABEL_75:
             if (os_log_type_enabled(v42, OS_LOG_TYPE_FAULT))
             {
               *buf = 138412290;
-              *&buf[4] = v9;
+              *&buf[4] = authenticationProtocol;
               _os_log_fault_impl(&dword_1BA83C000, v42, OS_LOG_TYPE_FAULT, "Invalid signature protcol %@", buf, 0xCu);
             }
           }
@@ -3993,14 +3993,14 @@ LABEL_75:
         }
 
         v49 = objc_alloc(MEMORY[0x1E695DFA8]);
-        v50 = v3[14];
+        v50 = selfCopy[14];
         v51 = [v49 initWithSet:v50];
 
-        v94 = v31;
-        v52 = v31;
+        v94 = authenticationProtocol2;
+        v52 = authenticationProtocol2;
         objc_opt_self();
         v53 = [NEIKEv2Crypto copySignHashSetForAuthMethod:v52];
-        if (v52 && ((v54 = [v52 method], v54 == 245) || v54 == 14 && (objc_msgSend(v52, "digitalSignatureAlgorithm") - 9) <= 2) && (BlockSize = SecKeyGetBlockSize(v8), BlockSize <= 0x81))
+        if (v52 && ((v54 = [v52 method], v54 == 245) || v54 == 14 && (objc_msgSend(v52, "digitalSignatureAlgorithm") - 9) <= 2) && (BlockSize = SecKeyGetBlockSize(localPrivateKeyRef), BlockSize <= 0x81))
         {
           v58 = BlockSize;
           v91 = v52;
@@ -4093,7 +4093,7 @@ LABEL_106:
         if (os_log_type_enabled(v71, OS_LOG_TYPE_DEBUG))
         {
           v85 = v51;
-          v86 = v3[14];
+          v86 = selfCopy[14];
           *buf = 138412290;
           *&buf[4] = v86;
           _os_log_debug_impl(&dword_1BA83C000, v71, OS_LOG_TYPE_DEBUG, "Peer hashes: %@", buf, 0xCu);
@@ -4111,13 +4111,13 @@ LABEL_106:
 
         obja = v56;
         [v51 intersectSet:v56];
-        v73 = [v51 allObjects];
-        v74 = [v73 sortedArrayUsingSelector:sel_compare_];
+        allObjects = [v51 allObjects];
+        v74 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
-        v75 = [v74 lastObject];
+        lastObject = [v74 lastObject];
         if ([v70 method] == 245)
         {
-          if (!v75)
+          if (!lastObject)
           {
             v80 = ne_log_obj();
             if (os_log_type_enabled(v80, OS_LOG_TYPE_ERROR))
@@ -4129,8 +4129,8 @@ LABEL_106:
             goto LABEL_139;
           }
 
-          v76 = [v75 hashType];
-          switch(v76)
+          hashType = [lastObject hashType];
+          switch(hashType)
           {
             case 4:
               v77 = [NEIKEv2AuthenticationProtocol alloc];
@@ -4150,7 +4150,7 @@ LABEL_137:
 LABEL_140:
 
               v32 = 0x1E7F04000;
-              v31 = v94;
+              authenticationProtocol2 = v94;
               goto LABEL_50;
           }
 
@@ -4158,7 +4158,7 @@ LABEL_140:
           if (os_log_type_enabled(v80, OS_LOG_TYPE_FAULT))
           {
             *buf = 138412290;
-            *&buf[4] = v75;
+            *&buf[4] = lastObject;
             v84 = "Unexpected hash protocol %@ when selecting RSA-PSS protocol";
 LABEL_152:
             _os_log_fault_impl(&dword_1BA83C000, v80, OS_LOG_TYPE_FAULT, v84, buf, 0xCu);
@@ -4172,7 +4172,7 @@ LABEL_152:
             v80 = ne_log_obj();
             if (os_log_type_enabled(v80, OS_LOG_TYPE_FAULT))
             {
-              v81 = v3[14];
+              v81 = selfCopy[14];
               *buf = 138412546;
               *&buf[4] = v70;
               v103 = 2112;
@@ -4183,7 +4183,7 @@ LABEL_152:
             goto LABEL_139;
           }
 
-          if (!v75)
+          if (!lastObject)
           {
             v82 = ne_log_obj();
             if (os_log_type_enabled(v82, OS_LOG_TYPE_INFO))
@@ -4196,8 +4196,8 @@ LABEL_152:
             goto LABEL_137;
           }
 
-          v79 = [v75 hashType];
-          switch(v79)
+          hashType2 = [lastObject hashType];
+          switch(hashType2)
           {
             case 4:
               v77 = [NEIKEv2AuthenticationProtocol alloc];
@@ -4217,7 +4217,7 @@ LABEL_152:
           if (os_log_type_enabled(v80, OS_LOG_TYPE_FAULT))
           {
             *buf = 138412290;
-            *&buf[4] = v75;
+            *&buf[4] = lastObject;
             v84 = "Unexpected hash protocol %@ when selecting ECDSA protocol";
             goto LABEL_152;
           }
@@ -4275,33 +4275,33 @@ LABEL_67:
     _os_log_fault_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_FAULT, "%s called with null self.chosenProposal", buf, 0xCu);
   }
 
-  v8 = 0;
+  localPrivateKeyRef = 0;
 LABEL_76:
 
   v47 = *MEMORY[0x1E69E9840];
-  return v8;
+  return localPrivateKeyRef;
 }
 
-- (BOOL)checkSharedKeyAuthData:(const char *)a3 usingPrimeKey:
+- (BOOL)checkSharedKeyAuthData:(const char *)data usingPrimeKey:
 {
   v32 = *MEMORY[0x1E69E9840];
   v5 = a2;
   v7 = v5;
-  if (a1)
+  if (self)
   {
     if (v5)
     {
-      v8 = objc_getProperty(a1, v6, 96, 1);
+      v8 = objc_getProperty(self, v6, 96, 1);
 
       if (v8)
       {
-        v10 = [(NEIKEv2IKESA *)a1 remoteAuthentication];
-        v11 = v10;
-        if (v10)
+        remoteAuthentication = [(NEIKEv2IKESA *)self remoteAuthentication];
+        v11 = remoteAuthentication;
+        if (remoteAuthentication)
         {
-          if (([v10 isSignature]& 1) == 0 && ![v11 isSecurePassword])
+          if (([remoteAuthentication isSignature]& 1) == 0 && ![v11 isSecurePassword])
           {
-            v16 = [(NEIKEv2IKESA *)a1 createRemoteSignedOctetVectorUsingPrimeKey:a3];
+            v16 = [(NEIKEv2IKESA *)self createRemoteSignedOctetVectorUsingPrimeKey:data];
             if (!v16)
             {
               v19 = ne_log_obj();
@@ -4318,7 +4318,7 @@ LABEL_76:
             v12 = v16;
             if ([v11 method]== 2)
             {
-              v18 = [(NEIKEv2IKESA *)a1 sharedSecret];
+              sharedSecret = [(NEIKEv2IKESA *)self sharedSecret];
             }
 
             else
@@ -4337,10 +4337,10 @@ LABEL_36:
                 goto LABEL_39;
               }
 
-              if (*(a1 + 9))
+              if (*(self + 9))
               {
-                v21 = a1;
-                if (a3)
+                selfCopy2 = self;
+                if (data)
                 {
                   v22 = 256;
                 }
@@ -4353,8 +4353,8 @@ LABEL_36:
 
               else
               {
-                v21 = a1;
-                if (a3)
+                selfCopy2 = self;
+                if (data)
                 {
                   v22 = 240;
                 }
@@ -4365,16 +4365,16 @@ LABEL_36:
                 }
               }
 
-              v18 = objc_getProperty(v21, v20, v22, 1);
+              sharedSecret = objc_getProperty(selfCopy2, v20, v22, 1);
             }
 
-            v24 = v18;
-            if (v18)
+            v24 = sharedSecret;
+            if (sharedSecret)
             {
-              v25 = [(NEIKEv2IKESA *)a1 createAuthenticationDataForSharedSecret:v18 octetVector:v12];
+              v25 = [(NEIKEv2IKESA *)self createAuthenticationDataForSharedSecret:sharedSecret octetVector:v12];
               if (v25)
               {
-                a1 = [NEIKEv2Crypto validateCalculatedSharedKeyAuthData:v25 remoteAuthData:v7];
+                self = [NEIKEv2Crypto validateCalculatedSharedKeyAuthData:v25 remoteAuthData:v7];
               }
 
               else
@@ -4386,7 +4386,7 @@ LABEL_36:
                   _os_log_fault_impl(&dword_1BA83C000, v26, OS_LOG_TYPE_FAULT, "createAuthenticationDataForSharedSecret: failed", &v30, 2u);
                 }
 
-                a1 = 0;
+                self = 0;
               }
 
               goto LABEL_40;
@@ -4399,7 +4399,7 @@ LABEL_36:
           if (!os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
           {
 LABEL_39:
-            a1 = 0;
+            self = 0;
 LABEL_40:
 
             goto LABEL_41;
@@ -4434,7 +4434,7 @@ LABEL_40:
       if (!os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
       {
 LABEL_10:
-        a1 = 0;
+        self = 0;
 LABEL_41:
 
         goto LABEL_42;
@@ -4465,7 +4465,7 @@ LABEL_41:
 LABEL_42:
 
   v28 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
 uint64_t __45__NEIKEv2IKESA_Crypto__copyValidateAuthBlock__block_invoke(uint64_t a1, void *a2)
@@ -4850,7 +4850,7 @@ LABEL_13:
 
 - (NSObject)createInitiatorEAPAuthenticationDataUsingPrimeKey:(NSObject *)self
 {
-  v2 = self;
+  selfCopy = self;
   v22 = *MEMORY[0x1E69E9840];
   if (self)
   {
@@ -4858,23 +4858,23 @@ LABEL_13:
 
     if (v4)
     {
-      v6 = objc_getProperty(v2, v5, 96, 1);
+      v6 = objc_getProperty(selfCopy, v5, 96, 1);
 
       if (v6)
       {
-        v8 = [(NEIKEv2IKESA *)&v2->isa createInitiatorSignedOctetVectorUsingPrimeKey:a2];
+        v8 = [(NEIKEv2IKESA *)&selfCopy->isa createInitiatorSignedOctetVectorUsingPrimeKey:a2];
         if (v8)
         {
-          v9 = objc_getProperty(v2, v7, 456, 1);
-          v10 = [(NEIKEv2EAP *)v9 sessionKey];
+          v9 = objc_getProperty(selfCopy, v7, 456, 1);
+          sessionKey = [(NEIKEv2EAP *)v9 sessionKey];
 
-          if (v10)
+          if (sessionKey)
           {
 LABEL_11:
-            v14 = [(NEIKEv2IKESA *)v2 createAuthenticationDataForSharedSecret:v10 octetVector:v8];
+            v14 = [(NEIKEv2IKESA *)selfCopy createAuthenticationDataForSharedSecret:sessionKey octetVector:v8];
             if (v14)
             {
-              v2 = v14;
+              selfCopy = v14;
 LABEL_25:
 
               goto LABEL_26;
@@ -4888,7 +4888,7 @@ LABEL_25:
             }
 
 LABEL_24:
-            v2 = 0;
+            selfCopy = 0;
             goto LABEL_25;
           }
 
@@ -4902,15 +4902,15 @@ LABEL_24:
             v12 = 232;
           }
 
-          v13 = objc_getProperty(v2, v11, v12, 1);
+          v13 = objc_getProperty(selfCopy, v11, v12, 1);
           if (v13)
           {
-            v10 = v13;
+            sessionKey = v13;
             goto LABEL_11;
           }
 
-          v10 = ne_log_obj();
-          if (!os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+          sessionKey = ne_log_obj();
+          if (!os_log_type_enabled(sessionKey, OS_LOG_TYPE_FAULT))
           {
             goto LABEL_24;
           }
@@ -4921,8 +4921,8 @@ LABEL_24:
 
         else
         {
-          v10 = ne_log_obj();
-          if (!os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+          sessionKey = ne_log_obj();
+          if (!os_log_type_enabled(sessionKey, OS_LOG_TYPE_FAULT))
           {
             goto LABEL_24;
           }
@@ -4931,7 +4931,7 @@ LABEL_24:
           v16 = "createInitiatorSignedOctetVectorUsingPrimeKey: failed";
         }
 
-        _os_log_fault_impl(&dword_1BA83C000, v10, OS_LOG_TYPE_FAULT, v16, &v20, 2u);
+        _os_log_fault_impl(&dword_1BA83C000, sessionKey, OS_LOG_TYPE_FAULT, v16, &v20, 2u);
         goto LABEL_24;
       }
 
@@ -4939,7 +4939,7 @@ LABEL_24:
       if (!os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
       {
 LABEL_16:
-        v2 = 0;
+        selfCopy = 0;
 LABEL_26:
 
         goto LABEL_27;
@@ -4969,12 +4969,12 @@ LABEL_26:
 
 LABEL_27:
   v18 = *MEMORY[0x1E69E9840];
-  return v2;
+  return selfCopy;
 }
 
 - (NSObject)createInitiatorGSPMAuthenticationDataUsingPrimeKey:(NSObject *)self
 {
-  v2 = self;
+  selfCopy = self;
   v42 = *MEMORY[0x1E69E9840];
   if (self)
   {
@@ -4994,11 +4994,11 @@ LABEL_27:
 
     if (v7)
     {
-      v9 = objc_getProperty(v2, v8, 96, 1);
+      v9 = objc_getProperty(selfCopy, v8, 96, 1);
 
       if (v9)
       {
-        v11 = [(NEIKEv2IKESA *)&v2->isa createInitiatorSignedOctetVectorUsingPrimeKey:a2];
+        v11 = [(NEIKEv2IKESA *)&selfCopy->isa createInitiatorSignedOctetVectorUsingPrimeKey:a2];
         if (!v11)
         {
           v17 = ne_log_obj();
@@ -5008,24 +5008,24 @@ LABEL_27:
             _os_log_fault_impl(&dword_1BA83C000, v17, OS_LOG_TYPE_FAULT, "createInitiatorSignedOctetVectorUsingPrimeKey failed", &v40, 2u);
           }
 
-          v2 = 0;
+          selfCopy = 0;
           goto LABEL_23;
         }
 
-        v12 = BYTE1(v2[1].isa);
-        v13 = objc_getProperty(v2, v10, 464, 1);
+        v12 = BYTE1(selfCopy[1].isa);
+        v13 = objc_getProperty(selfCopy, v10, 464, 1);
         v14 = v13;
         if (v12)
         {
-          v15 = [(NEIKEv2GSPM *)v13 createLocalSignedOctetVector];
+          createLocalSignedOctetVector = [(NEIKEv2GSPM *)v13 createLocalSignedOctetVector];
         }
 
         else
         {
-          v15 = [(NEIKEv2GSPM *)v13 createRemoteSignedOctetVector];
+          createLocalSignedOctetVector = [(NEIKEv2GSPM *)v13 createRemoteSignedOctetVector];
         }
 
-        v17 = v15;
+        v17 = createLocalSignedOctetVector;
 
         if (!v17)
         {
@@ -5049,15 +5049,15 @@ LABEL_27:
           v19 = 232;
         }
 
-        v20 = objc_getProperty(v2, v18, v19, 1);
-        v22 = objc_getProperty(v2, v21, 96, 1);
-        v24 = [(NEIKEv2IKESAProposal *)v22 prfProtocol];
-        v25 = [NEIKEv2Crypto createHMACFromDataVector:v17 key:v20 prfProtocol:v24];
+        v20 = objc_getProperty(selfCopy, v18, v19, 1);
+        v22 = objc_getProperty(selfCopy, v21, 96, 1);
+        prfProtocol = [(NEIKEv2IKESAProposal *)v22 prfProtocol];
+        v25 = [NEIKEv2Crypto createHMACFromDataVector:v17 key:v20 prfProtocol:prfProtocol];
 
         if (v25)
         {
           v26 = [v11 arrayByAddingObject:v25];
-          v28 = objc_getProperty(v2, v27, 464, 1);
+          v28 = objc_getProperty(selfCopy, v27, 464, 1);
           v29 = v28;
           if (v28)
           {
@@ -5070,11 +5070,11 @@ LABEL_27:
           }
 
           v31 = v30;
-          v33 = objc_getProperty(v2, v32, 96, 1);
-          v35 = [(NEIKEv2IKESAProposal *)v33 prfProtocol];
-          v2 = [NEIKEv2Crypto createHMACFromDataVector:v26 key:v31 prfProtocol:v35];
+          v33 = objc_getProperty(selfCopy, v32, 96, 1);
+          prfProtocol2 = [(NEIKEv2IKESAProposal *)v33 prfProtocol];
+          selfCopy = [NEIKEv2Crypto createHMACFromDataVector:v26 key:v31 prfProtocol:prfProtocol2];
 
-          if (v2)
+          if (selfCopy)
           {
             goto LABEL_22;
           }
@@ -5097,7 +5097,7 @@ LABEL_27:
 LABEL_36:
 
 LABEL_37:
-            v2 = 0;
+            selfCopy = 0;
 LABEL_22:
 
 LABEL_23:
@@ -5116,7 +5116,7 @@ LABEL_23:
       if (!os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
       {
 LABEL_12:
-        v2 = 0;
+        selfCopy = 0;
 LABEL_24:
 
         goto LABEL_25;
@@ -5146,12 +5146,12 @@ LABEL_24:
 
 LABEL_25:
   v36 = *MEMORY[0x1E69E9840];
-  return v2;
+  return selfCopy;
 }
 
 - (NSObject)createResponderGSPMAuthenticationDataUsingPrimeKey:(NSObject *)self
 {
-  v2 = self;
+  selfCopy = self;
   v42 = *MEMORY[0x1E69E9840];
   if (self)
   {
@@ -5171,11 +5171,11 @@ LABEL_25:
 
     if (v7)
     {
-      v9 = objc_getProperty(v2, v8, 96, 1);
+      v9 = objc_getProperty(selfCopy, v8, 96, 1);
 
       if (v9)
       {
-        v11 = [(NEIKEv2IKESA *)v2 createResponderSignedOctetVectorUsingPrimeKey:a2];
+        v11 = [(NEIKEv2IKESA *)selfCopy createResponderSignedOctetVectorUsingPrimeKey:a2];
         if (!v11)
         {
           v17 = ne_log_obj();
@@ -5185,24 +5185,24 @@ LABEL_25:
             _os_log_fault_impl(&dword_1BA83C000, v17, OS_LOG_TYPE_FAULT, "createResponderSignedOctetVectorUsingPrimeKey failed", &v40, 2u);
           }
 
-          v2 = 0;
+          selfCopy = 0;
           goto LABEL_23;
         }
 
-        v12 = BYTE1(v2[1].isa);
-        v13 = objc_getProperty(v2, v10, 464, 1);
+        v12 = BYTE1(selfCopy[1].isa);
+        v13 = objc_getProperty(selfCopy, v10, 464, 1);
         v14 = v13;
         if (v12)
         {
-          v15 = [(NEIKEv2GSPM *)v13 createRemoteSignedOctetVector];
+          createRemoteSignedOctetVector = [(NEIKEv2GSPM *)v13 createRemoteSignedOctetVector];
         }
 
         else
         {
-          v15 = [(NEIKEv2GSPM *)v13 createLocalSignedOctetVector];
+          createRemoteSignedOctetVector = [(NEIKEv2GSPM *)v13 createLocalSignedOctetVector];
         }
 
-        v17 = v15;
+        v17 = createRemoteSignedOctetVector;
 
         if (!v17)
         {
@@ -5226,15 +5226,15 @@ LABEL_25:
           v19 = 248;
         }
 
-        v20 = objc_getProperty(v2, v18, v19, 1);
-        v22 = objc_getProperty(v2, v21, 96, 1);
-        v24 = [(NEIKEv2IKESAProposal *)v22 prfProtocol];
-        v25 = [NEIKEv2Crypto createHMACFromDataVector:v17 key:v20 prfProtocol:v24];
+        v20 = objc_getProperty(selfCopy, v18, v19, 1);
+        v22 = objc_getProperty(selfCopy, v21, 96, 1);
+        prfProtocol = [(NEIKEv2IKESAProposal *)v22 prfProtocol];
+        v25 = [NEIKEv2Crypto createHMACFromDataVector:v17 key:v20 prfProtocol:prfProtocol];
 
         if (v25)
         {
           v26 = [v11 arrayByAddingObject:v25];
-          v28 = objc_getProperty(v2, v27, 464, 1);
+          v28 = objc_getProperty(selfCopy, v27, 464, 1);
           v29 = v28;
           if (v28)
           {
@@ -5247,11 +5247,11 @@ LABEL_25:
           }
 
           v31 = v30;
-          v33 = objc_getProperty(v2, v32, 96, 1);
-          v35 = [(NEIKEv2IKESAProposal *)v33 prfProtocol];
-          v2 = [NEIKEv2Crypto createHMACFromDataVector:v26 key:v31 prfProtocol:v35];
+          v33 = objc_getProperty(selfCopy, v32, 96, 1);
+          prfProtocol2 = [(NEIKEv2IKESAProposal *)v33 prfProtocol];
+          selfCopy = [NEIKEv2Crypto createHMACFromDataVector:v26 key:v31 prfProtocol:prfProtocol2];
 
-          if (v2)
+          if (selfCopy)
           {
             goto LABEL_22;
           }
@@ -5274,7 +5274,7 @@ LABEL_25:
 LABEL_36:
 
 LABEL_37:
-            v2 = 0;
+            selfCopy = 0;
 LABEL_22:
 
 LABEL_23:
@@ -5293,7 +5293,7 @@ LABEL_23:
       if (!os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
       {
 LABEL_12:
-        v2 = 0;
+        selfCopy = 0;
 LABEL_24:
 
         goto LABEL_25;
@@ -5323,20 +5323,20 @@ LABEL_24:
 
 LABEL_25:
   v36 = *MEMORY[0x1E69E9840];
-  return v2;
+  return selfCopy;
 }
 
-- (void)createConcatenatedSPIsAndReturnError:(_BYTE *)a1
+- (void)createConcatenatedSPIsAndReturnError:(_BYTE *)error
 {
-  v4 = [(NEIKEv2IKESA *)a1 initiatorSPI];
-  v5 = [v4 value];
+  initiatorSPI = [(NEIKEv2IKESA *)error initiatorSPI];
+  value = [initiatorSPI value];
 
-  v22 = v5;
-  v7 = [(NEIKEv2IKESA *)a1 responderSPI];
-  v8 = [v7 value];
+  v22 = value;
+  responderSPI = [(NEIKEv2IKESA *)error responderSPI];
+  value2 = [responderSPI value];
 
-  v21 = v8;
-  if (!v5)
+  v21 = value2;
+  if (!value)
   {
     v18 = @"Missing initiator SPI";
 LABEL_7:
@@ -5347,7 +5347,7 @@ LABEL_7:
     return 0;
   }
 
-  if (!v8)
+  if (!value2)
   {
     v18 = @"Missing responder SPI";
     goto LABEL_7;
@@ -5359,11 +5359,11 @@ LABEL_7:
   return v16;
 }
 
-- (void)createConcatedNoncesAndReturnError:(_BYTE *)a1
+- (void)createConcatedNoncesAndReturnError:(_BYTE *)error
 {
-  v4 = [(NEIKEv2IKESA *)a1 initiatorNonce];
-  v6 = [(NEIKEv2IKESA *)a1 responderNonce];
-  if (![v4 length])
+  initiatorNonce = [(NEIKEv2IKESA *)error initiatorNonce];
+  responderNonce = [(NEIKEv2IKESA *)error responderNonce];
+  if (![initiatorNonce length])
   {
     v16 = @"Missing initiator nonce";
 LABEL_7:
@@ -5375,27 +5375,27 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (![v6 length])
+  if (![responderNonce length])
   {
     v16 = @"Missing responder nonce";
     goto LABEL_7;
   }
 
-  v14 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:{objc_msgSend(v6, "length") + objc_msgSend(v4, "length")}];
-  [v14 appendData:v4];
-  [v14 appendData:v6];
+  v14 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:{objc_msgSend(responderNonce, "length") + objc_msgSend(initiatorNonce, "length")}];
+  [v14 appendData:initiatorNonce];
+  [v14 appendData:responderNonce];
 LABEL_4:
 
   return v14;
 }
 
-- (NEIKEv2AuthenticationProtocol)selectSecurePasswordMethod:(void *)a1
+- (NEIKEv2AuthenticationProtocol)selectSecurePasswordMethod:(void *)method
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  if (a1)
+  if (method)
   {
-    Property = objc_getProperty(a1, v3, 80, 1);
+    Property = objc_getProperty(method, v3, 80, 1);
   }
 
   else
@@ -5404,9 +5404,9 @@ LABEL_4:
   }
 
   v6 = Property;
-  v7 = [v6 supportedSecurePasswordMethods];
+  supportedSecurePasswordMethods = [v6 supportedSecurePasswordMethods];
 
-  if ([v7 count])
+  if ([supportedSecurePasswordMethods count])
   {
     if (v4)
     {
@@ -5439,12 +5439,12 @@ LABEL_4:
       else
       {
         v13 = v11 >> 1;
-        v14 = [v10 bytes];
+        bytes = [v10 bytes];
         while (1)
         {
-          v15 = *v14++;
+          v15 = *bytes++;
           v12 = [[NEIKEv2AuthenticationProtocol alloc] initWithSecurePassword:bswap32(v15) >> 16];
-          if ([v7 containsObject:v12])
+          if ([supportedSecurePasswordMethods containsObject:v12])
           {
             break;
           }
@@ -5543,8 +5543,8 @@ LABEL_16:
 
 - (id)description
 {
-  v3 = [(NEIKEv2IKESA *)self initiatorSPI];
-  v5 = [(NEIKEv2IKESA *)self responderSPI];
+  initiatorSPI = [(NEIKEv2IKESA *)self initiatorSPI];
+  responderSPI = [(NEIKEv2IKESA *)self responderSPI];
   v6 = objc_alloc(MEMORY[0x1E696AEC0]);
   if (self)
   {
@@ -5559,9 +5559,9 @@ LABEL_16:
   }
 
   v9 = @"0000000000000000";
-  if (v3)
+  if (initiatorSPI)
   {
-    v10 = v3;
+    v10 = initiatorSPI;
   }
 
   else
@@ -5569,9 +5569,9 @@ LABEL_16:
     v10 = @"0000000000000000";
   }
 
-  if (v5)
+  if (responderSPI)
   {
-    v9 = v5;
+    v9 = responderSPI;
   }
 
   v11 = [v6 initWithFormat:@"IKEv2IKESA[%llu.%llu, %@-%@]", ikeSAUniqueIndex, ikeSessionUniqueIndex, v10, v9];
@@ -5581,9 +5581,9 @@ LABEL_16:
 
 - (_BYTE)initiatorSPI
 {
-  if (a1)
+  if (self)
   {
-    if (a1[9])
+    if (self[9])
     {
       v3 = 32;
     }
@@ -5593,18 +5593,18 @@ LABEL_16:
       v3 = 40;
     }
 
-    a1 = objc_getProperty(a1, a2, v3, 1);
+    self = objc_getProperty(self, a2, v3, 1);
     v2 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (_BYTE)responderSPI
 {
-  if (a1)
+  if (self)
   {
-    if (a1[9])
+    if (self[9])
     {
       v3 = 40;
     }
@@ -5614,24 +5614,24 @@ LABEL_16:
       v3 = 32;
     }
 
-    a1 = objc_getProperty(a1, a2, v3, 1);
+    self = objc_getProperty(self, a2, v3, 1);
     v2 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)initIKESACommonWithConfiguration:(void *)a3 sessionConfiguration:(void *)a4 queue:(void *)a5 transportDelegate:(void *)a6 socketGetBlock:(void *)a7 packetDelegate:(void *)a8 configurationDelegate:(uint64_t)a9 ikeSessionUniqueIndex:(char)a10 isInitiator:
+- (id)initIKESACommonWithConfiguration:(void *)configuration sessionConfiguration:(void *)sessionConfiguration queue:(void *)queue transportDelegate:(void *)delegate socketGetBlock:(void *)block packetDelegate:(void *)packetDelegate configurationDelegate:(uint64_t)configurationDelegate ikeSessionUniqueIndex:(char)self0 isInitiator:
 {
   v40 = *MEMORY[0x1E69E9840];
   v17 = a2;
-  v18 = a3;
-  newValue = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  if (!a1)
+  configurationCopy = configuration;
+  newValue = sessionConfiguration;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  blockCopy = block;
+  packetDelegateCopy = packetDelegate;
+  if (!self)
   {
     v25 = 0;
     goto LABEL_8;
@@ -5639,7 +5639,7 @@ LABEL_16:
 
   if (v17)
   {
-    v37.receiver = a1;
+    v37.receiver = self;
     v37.super_class = NEIKEv2IKESA;
     v23 = [(NEIKEv2SPI *)&v37 init];
     if (v23)
@@ -5647,34 +5647,34 @@ LABEL_16:
       v25 = v23;
       objc_setProperty_atomic(v23, v24, newValue, 544);
       *(v25 + 74) = atomic_fetch_add_explicit(&sNEIKEv2IKESAIndex, 1uLL, memory_order_relaxed);
-      *(v25 + 73) = a9;
+      *(v25 + 73) = configurationDelegate;
       objc_setProperty_atomic(v25, v26, v17, 80);
-      objc_setProperty_atomic(v25, v27, v18, 88);
-      objc_storeWeak(v25 + 69, v19);
-      objc_setProperty_atomic_copy(v25, v28, v20, 560);
-      objc_storeWeak(v25 + 71, v21);
-      if (v21)
+      objc_setProperty_atomic(v25, v27, configurationCopy, 88);
+      objc_storeWeak(v25 + 69, queueCopy);
+      objc_setProperty_atomic_copy(v25, v28, delegateCopy, 560);
+      objc_storeWeak(v25 + 71, blockCopy);
+      if (blockCopy)
       {
         *(v25 + 25) = 1;
       }
 
-      objc_storeWeak(v25 + 72, v22);
-      v29 = [v17 outgoingInterfaceName];
-      objc_setProperty_atomic(v25, v30, v29, 304);
+      objc_storeWeak(v25 + 72, packetDelegateCopy);
+      outgoingInterfaceName = [v17 outgoingInterfaceName];
+      objc_setProperty_atomic(v25, v30, outgoingInterfaceName, 304);
 
       *(v25 + 6) = 3;
       objc_setProperty_atomic(v25, v31, 0, 56);
-      *(v25 + 9) = a10;
-      a1 = objc_alloc_init(NEIKEv2IKESPI);
-      objc_setProperty_atomic(v25, v32, a1, 32);
+      *(v25 + 9) = index;
+      self = objc_alloc_init(NEIKEv2IKESPI);
+      objc_setProperty_atomic(v25, v32, self, 32);
       goto LABEL_7;
     }
 
-    a1 = ne_log_obj();
-    if (os_log_type_enabled(&a1->super.super, OS_LOG_TYPE_FAULT))
+    self = ne_log_obj();
+    if (os_log_type_enabled(&self->super.super, OS_LOG_TYPE_FAULT))
     {
       *buf = 0;
-      _os_log_fault_impl(&dword_1BA83C000, &a1->super.super, OS_LOG_TYPE_FAULT, "[super init] failed", buf, 2u);
+      _os_log_fault_impl(&dword_1BA83C000, &self->super.super, OS_LOG_TYPE_FAULT, "[super init] failed", buf, 2u);
     }
   }
 
@@ -5697,10 +5697,10 @@ LABEL_8:
   return v25;
 }
 
-- (uint64_t)copyAddressFrom:(unsigned __int8 *)a1 with:(unsigned int)a2
+- (uint64_t)copyAddressFrom:(unsigned __int8 *)from with:(unsigned int)with
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!from)
   {
     v8 = ne_log_obj();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -5717,7 +5717,7 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  v3 = *a1;
+  v3 = *from;
   if (v3 <= 0xF)
   {
     v8 = ne_log_obj();
@@ -5757,7 +5757,7 @@ LABEL_15:
   *buf = 0u;
   v13 = 0u;
   __memcpy_chk();
-  *&buf[2] = __rev16(a2);
+  *&buf[2] = __rev16(with);
   v4 = [MEMORY[0x1E6977E08] endpointWithAddress:buf];
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -5774,58 +5774,58 @@ LABEL_7:
 
 - (id)preferredKEMProtocol
 {
-  if (objc_getProperty(a1, a2, 144, 1))
+  if (objc_getProperty(self, a2, 144, 1))
   {
-    v4 = objc_getProperty(a1, v3, 144, 1);
+    kemProtocol2 = objc_getProperty(self, v3, 144, 1);
 LABEL_3:
-    v5 = v4;
+    kemProtocol3 = kemProtocol2;
     goto LABEL_8;
   }
 
-  v6 = objc_getProperty(a1, v3, 96, 1);
+  v6 = objc_getProperty(self, v3, 96, 1);
   if (v6)
   {
     v8 = v6;
-    Property = objc_getProperty(a1, v7, 96, 1);
-    v11 = [(NEIKEv2IKESAProposal *)Property kemProtocol];
+    Property = objc_getProperty(self, v7, 96, 1);
+    kemProtocol = [(NEIKEv2IKESAProposal *)Property kemProtocol];
 
-    if (v11)
+    if (kemProtocol)
     {
-      v12 = objc_getProperty(a1, v7, 96, 1);
-      v4 = [(NEIKEv2IKESAProposal *)v12 kemProtocol];
+      v12 = objc_getProperty(self, v7, 96, 1);
+      kemProtocol2 = [(NEIKEv2IKESAProposal *)v12 kemProtocol];
       goto LABEL_3;
     }
   }
 
-  v14 = [objc_getProperty(a1 v7];
-  v15 = [v14 firstObject];
-  v5 = [(NEIKEv2IKESAProposal *)v15 kemProtocol];
+  v14 = [objc_getProperty(self v7];
+  firstObject = [v14 firstObject];
+  kemProtocol3 = [(NEIKEv2IKESAProposal *)firstObject kemProtocol];
 
 LABEL_8:
 
-  return v5;
+  return kemProtocol3;
 }
 
-- (_BYTE)copyForRekeyAsInitiator:(uint64_t)a1
+- (_BYTE)copyForRekeyAsInitiator:(uint64_t)initiator
 {
   v68 = *MEMORY[0x1E69E9840];
-  WeakRetained = objc_loadWeakRetained((a1 + 568));
-  v5 = objc_loadWeakRetained((a1 + 552));
+  WeakRetained = objc_loadWeakRetained((initiator + 568));
+  v5 = objc_loadWeakRetained((initiator + 552));
   v6 = [NEIKEv2IKESA alloc];
-  v8 = objc_getProperty(a1, v7, 80, 1);
-  v10 = objc_getProperty(a1, v9, 88, 1);
-  v12 = objc_getProperty(a1, v11, 544, 1);
-  v14 = objc_getProperty(a1, v13, 560, 1);
-  v15 = objc_loadWeakRetained((a1 + 576));
-  v16 = [(NEIKEv2IKESA *)v6 initIKESACommonWithConfiguration:v8 sessionConfiguration:v10 queue:v12 transportDelegate:v5 socketGetBlock:v14 packetDelegate:WeakRetained configurationDelegate:v15 ikeSessionUniqueIndex:*(a1 + 584) isInitiator:a2];
+  v8 = objc_getProperty(initiator, v7, 80, 1);
+  v10 = objc_getProperty(initiator, v9, 88, 1);
+  v12 = objc_getProperty(initiator, v11, 544, 1);
+  v14 = objc_getProperty(initiator, v13, 560, 1);
+  v15 = objc_loadWeakRetained((initiator + 576));
+  v16 = [(NEIKEv2IKESA *)v6 initIKESACommonWithConfiguration:v8 sessionConfiguration:v10 queue:v12 transportDelegate:v5 socketGetBlock:v14 packetDelegate:WeakRetained configurationDelegate:v15 ikeSessionUniqueIndex:*(initiator + 584) isInitiator:a2];
 
   if (v16)
   {
-    Property = objc_getProperty(a1, v17, 472, 1);
+    Property = objc_getProperty(initiator, v17, 472, 1);
     objc_setProperty_atomic(v16, v19, Property, 472);
-    v21 = objc_getProperty(a1, v20, 480, 1);
+    v21 = objc_getProperty(initiator, v20, 480, 1);
     objc_setProperty_atomic(v16, v22, v21, 480);
-    v24 = objc_getProperty(a1, v23, 488, 1);
+    v24 = objc_getProperty(initiator, v23, 488, 1);
     objc_setProperty_atomic(v16, v25, v24, 488);
     v27 = objc_getProperty(v16, v26, 472, 1);
     v29 = objc_getProperty(v16, v28, 32, 1);
@@ -5839,28 +5839,28 @@ LABEL_8:
     v37 = objc_getProperty(v16, v36, 32, 1);
     [(NEIKEv2Transport *)v35 addClient:v37 delegate:v5];
 
-    v39 = objc_getProperty(a1, v38, 304, 1);
+    v39 = objc_getProperty(initiator, v38, 304, 1);
     objc_setProperty_atomic(v16, v40, v39, 304);
-    v42 = objc_getProperty(a1, v41, 64, 1);
+    v42 = objc_getProperty(initiator, v41, 64, 1);
     objc_setProperty_atomic(v16, v43, v42, 64);
-    v45 = objc_getProperty(a1, v44, 72, 1);
+    v45 = objc_getProperty(initiator, v44, 72, 1);
     objc_setProperty_atomic(v16, v46, v45, 72);
-    v16[10] = *(a1 + 10) & 1;
-    v16[11] = *(a1 + 11) & 1;
-    v16[12] = *(a1 + 12) & 1;
-    v16[13] = *(a1 + 13) & 1;
-    v16[15] = *(a1 + 15) & 1;
-    v16[14] = *(a1 + 14) & 1;
-    v48 = objc_getProperty(a1, v47, 496, 1);
+    v16[10] = *(initiator + 10) & 1;
+    v16[11] = *(initiator + 11) & 1;
+    v16[12] = *(initiator + 12) & 1;
+    v16[13] = *(initiator + 13) & 1;
+    v16[15] = *(initiator + 15) & 1;
+    v16[14] = *(initiator + 14) & 1;
+    v48 = objc_getProperty(initiator, v47, 496, 1);
     objc_setProperty_atomic(v16, v49, v48, 496);
-    v16[18] = *(a1 + 18) & 1;
-    v16[19] = *(a1 + 19) & 1;
-    v16[20] = *(a1 + 20) & 1;
-    v51 = objc_getProperty(a1, v50, 96, 1);
+    v16[18] = *(initiator + 18) & 1;
+    v16[19] = *(initiator + 19) & 1;
+    v16[20] = *(initiator + 20) & 1;
+    v51 = objc_getProperty(initiator, v50, 96, 1);
     objc_setProperty_atomic(v16, v52, v51, 96);
-    v54 = objc_getProperty(a1, v53, 144, 1);
+    v54 = objc_getProperty(initiator, v53, 144, 1);
     objc_setProperty_atomic(v16, v55, v54, 144);
-    v57 = objc_getProperty(a1, v56, 504, 1);
+    v57 = objc_getProperty(initiator, v56, 504, 1);
     objc_setProperty_atomic(v16, v58, v57, 504);
     v59 = ne_log_large_obj();
     if (os_log_type_enabled(v59, OS_LOG_TYPE_INFO))
@@ -5868,7 +5868,7 @@ LABEL_8:
       *buf = 138412546;
       v65 = v16;
       v66 = 2112;
-      v67 = a1;
+      initiatorCopy = initiator;
       _os_log_impl(&dword_1BA83C000, v59, OS_LOG_TYPE_INFO, "Created %@ for rekey from %@", buf, 0x16u);
     }
 
@@ -5889,35 +5889,35 @@ LABEL_8:
   return v16;
 }
 
-- (void)detachTransportWithShouldInvalidate:(void *)a1
+- (void)detachTransportWithShouldInvalidate:(void *)invalidate
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (invalidate)
   {
     v4 = ne_log_obj();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138412290;
-      v23 = a1;
+      invalidateCopy = invalidate;
       _os_log_impl(&dword_1BA83C000, v4, OS_LOG_TYPE_DEFAULT, "Invalidating transports for %@", &v22, 0xCu);
     }
 
-    v6 = objc_getProperty(a1, v5, 472, 1);
-    Property = objc_getProperty(a1, v7, 32, 1);
+    v6 = objc_getProperty(invalidate, v5, 472, 1);
+    Property = objc_getProperty(invalidate, v7, 32, 1);
     [(NEIKEv2Transport *)v6 cancelClient:a2 shouldInvalidate:?];
 
-    v10 = objc_getProperty(a1, v9, 480, 1);
-    v12 = objc_getProperty(a1, v11, 32, 1);
+    v10 = objc_getProperty(invalidate, v9, 480, 1);
+    v12 = objc_getProperty(invalidate, v11, 32, 1);
     [(NEIKEv2Transport *)v10 cancelClient:v12 shouldInvalidate:a2];
 
-    v14 = objc_getProperty(a1, v13, 488, 1);
-    v16 = objc_getProperty(a1, v15, 32, 1);
+    v14 = objc_getProperty(invalidate, v13, 488, 1);
+    v16 = objc_getProperty(invalidate, v15, 32, 1);
     [(NEIKEv2Transport *)v14 cancelClient:v16 shouldInvalidate:a2];
 
-    objc_setProperty_atomic(a1, v17, 0, 472);
-    objc_setProperty_atomic(a1, v18, 0, 480);
-    objc_setProperty_atomic(a1, v19, 0, 488);
-    objc_setProperty_atomic(a1, v20, 0, 64);
+    objc_setProperty_atomic(invalidate, v17, 0, 472);
+    objc_setProperty_atomic(invalidate, v18, 0, 480);
+    objc_setProperty_atomic(invalidate, v19, 0, 488);
+    objc_setProperty_atomic(invalidate, v20, 0, 64);
   }
 
   v21 = *MEMORY[0x1E69E9840];
@@ -5925,103 +5925,103 @@ LABEL_8:
 
 - (void)clearPostAuthenticationData
 {
-  if (a1)
+  if (self)
   {
-    objc_setProperty_atomic(a1, a2, 0, 312);
-    objc_setProperty_atomic(a1, v3, 0, 320);
-    objc_storeStrong(a1 + 41, 0);
-    objc_storeStrong(a1 + 42, 0);
-    objc_setProperty_atomic(a1, v4, 0, 512);
-    objc_setProperty_atomic(a1, v5, 0, 192);
-    objc_setProperty_atomic(a1, v6, 0, 200);
-    objc_setProperty_atomic(a1, v7, 0, 232);
-    objc_setProperty_atomic(a1, v8, 0, 248);
-    objc_setProperty_atomic(a1, v9, 0, 224);
-    objc_setProperty_atomic(a1, v10, 0, 240);
-    objc_setProperty_atomic(a1, v11, 0, 256);
-    objc_setProperty_atomic(a1, v12, 0, 264);
-    objc_setProperty_atomic(a1, v13, 0, 520);
-    objc_setProperty_atomic(a1, v14, 0, 528);
-    objc_setProperty_atomic(a1, v15, 0, 536);
-    objc_setProperty_atomic(a1, v16, 0, 456);
-    objc_setProperty_atomic(a1, v17, 0, 464);
-    objc_storeStrong(a1 + 43, 0);
-    objc_storeStrong(a1 + 44, 0);
-    objc_storeStrong(a1 + 46, 0);
-    objc_storeStrong(a1 + 47, 0);
-    objc_storeStrong(a1 + 48, 0);
-    objc_storeStrong(a1 + 49, 0);
-    objc_storeStrong(a1 + 50, 0);
-    objc_storeStrong(a1 + 51, 0);
-    objc_storeStrong(a1 + 52, 0);
+    objc_setProperty_atomic(self, a2, 0, 312);
+    objc_setProperty_atomic(self, v3, 0, 320);
+    objc_storeStrong(self + 41, 0);
+    objc_storeStrong(self + 42, 0);
+    objc_setProperty_atomic(self, v4, 0, 512);
+    objc_setProperty_atomic(self, v5, 0, 192);
+    objc_setProperty_atomic(self, v6, 0, 200);
+    objc_setProperty_atomic(self, v7, 0, 232);
+    objc_setProperty_atomic(self, v8, 0, 248);
+    objc_setProperty_atomic(self, v9, 0, 224);
+    objc_setProperty_atomic(self, v10, 0, 240);
+    objc_setProperty_atomic(self, v11, 0, 256);
+    objc_setProperty_atomic(self, v12, 0, 264);
+    objc_setProperty_atomic(self, v13, 0, 520);
+    objc_setProperty_atomic(self, v14, 0, 528);
+    objc_setProperty_atomic(self, v15, 0, 536);
+    objc_setProperty_atomic(self, v16, 0, 456);
+    objc_setProperty_atomic(self, v17, 0, 464);
+    objc_storeStrong(self + 43, 0);
+    objc_storeStrong(self + 44, 0);
+    objc_storeStrong(self + 46, 0);
+    objc_storeStrong(self + 47, 0);
+    objc_storeStrong(self + 48, 0);
+    objc_storeStrong(self + 49, 0);
+    objc_storeStrong(self + 50, 0);
+    objc_storeStrong(self + 51, 0);
+    objc_storeStrong(self + 52, 0);
 
-    objc_storeStrong(a1 + 54, 0);
+    objc_storeStrong(self + 54, 0);
   }
 }
 
-- (void)setResponderIdentifierPayload:(uint64_t)a1
+- (void)setResponderIdentifierPayload:(uint64_t)payload
 {
-  if (a1)
+  if (payload)
   {
-    objc_storeStrong((a1 + 336), a2);
+    objc_storeStrong((payload + 336), a2);
   }
 }
 
-- (void)setAuthProtocolFromPacket:(uint64_t)a1
+- (void)setAuthProtocolFromPacket:(uint64_t)packet
 {
-  if (a1)
+  if (packet)
   {
-    objc_storeStrong((a1 + 376), a2);
+    objc_storeStrong((packet + 376), a2);
   }
 }
 
-- (void)setPrimeAuthenticationDataFromPacket:(uint64_t)a1
+- (void)setPrimeAuthenticationDataFromPacket:(uint64_t)packet
 {
-  if (a1)
+  if (packet)
   {
-    objc_storeStrong((a1 + 392), a2);
+    objc_storeStrong((packet + 392), a2);
   }
 }
 
-- (void)setPpkIDFromPacket:(uint64_t)a1
+- (void)setPpkIDFromPacket:(uint64_t)packet
 {
-  if (a1)
+  if (packet)
   {
-    objc_storeStrong((a1 + 432), a2);
+    objc_storeStrong((packet + 432), a2);
   }
 }
 
-- (void)setState:(void *)a3 error:
+- (void)setState:(void *)state error:
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!a1)
+  stateCopy = state;
+  if (!self)
   {
     goto LABEL_18;
   }
 
-  v7 = *(a1 + 48);
-  Property = objc_getProperty(a1, v5, 56, 1);
+  v7 = *(self + 48);
+  Property = objc_getProperty(self, v5, 56, 1);
   v9 = ne_log_obj();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
   if (v7 != a2)
   {
-    if (v6 | Property)
+    if (stateCopy | Property)
     {
       if (v10)
       {
-        SessionStateString = NEIKEv2CreateSessionStateString(*(a1 + 48));
+        SessionStateString = NEIKEv2CreateSessionStateString(*(self + 48));
         v14 = NEIKEv2CreateSessionStateString(a2);
         v23 = 138413314;
-        v24 = a1;
+        selfCopy4 = self;
         v25 = 2112;
         v26 = SessionStateString;
         v27 = 2112;
         v28 = v14;
         v29 = 2112;
-        v30 = objc_getProperty(a1, v15, 56, 1);
+        v30 = objc_getProperty(self, v15, 56, 1);
         v31 = 2112;
-        v32 = v6;
+        v32 = stateCopy;
         v16 = "%@ state %@ -> %@ error %@ -> %@";
         v17 = v9;
         v18 = 52;
@@ -6032,10 +6032,10 @@ LABEL_16:
 
     else if (v10)
     {
-      SessionStateString = NEIKEv2CreateSessionStateString(*(a1 + 48));
+      SessionStateString = NEIKEv2CreateSessionStateString(*(self + 48));
       v14 = NEIKEv2CreateSessionStateString(a2);
       v23 = 138412802;
-      v24 = a1;
+      selfCopy4 = self;
       v25 = 2112;
       v26 = SessionStateString;
       v27 = 2112;
@@ -6046,25 +6046,25 @@ LABEL_16:
       goto LABEL_16;
     }
 
-    *(a1 + 48) = a2;
-    objc_setProperty_atomic(a1, v21, v6, 56);
-    *(a1 + 8) = 1;
+    *(self + 48) = a2;
+    objc_setProperty_atomic(self, v21, stateCopy, 56);
+    *(self + 8) = 1;
     goto LABEL_18;
   }
 
-  if (!v6 || Property)
+  if (!stateCopy || Property)
   {
     if (v10)
     {
       v19 = NEIKEv2CreateSessionStateString(a2);
       v23 = 138413058;
-      v24 = a1;
+      selfCopy4 = self;
       v25 = 2112;
       v26 = v19;
       v27 = 2112;
-      v28 = objc_getProperty(a1, v20, 56, 1);
+      v28 = objc_getProperty(self, v20, 56, 1);
       v29 = 2112;
-      v30 = v6;
+      v30 = stateCopy;
       _os_log_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_DEFAULT, "%@ not changing state %@ nor error %@ -> %@", &v23, 0x2Au);
     }
   }
@@ -6075,15 +6075,15 @@ LABEL_16:
     {
       v11 = NEIKEv2CreateSessionStateString(a2);
       v23 = 138412802;
-      v24 = a1;
+      selfCopy4 = self;
       v25 = 2112;
       v26 = v11;
       v27 = 2112;
-      v28 = v6;
+      v28 = stateCopy;
       _os_log_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_DEFAULT, "%@ not changing state %@ but new error %@", &v23, 0x20u);
     }
 
-    objc_setProperty_atomic(a1, v12, v6, 56);
+    objc_setProperty_atomic(self, v12, stateCopy, 56);
   }
 
 LABEL_18:
@@ -6091,30 +6091,30 @@ LABEL_18:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)assignRemoteSPI:(void *)a1
+- (uint64_t)assignRemoteSPI:(void *)i
 {
   _cmd = a2;
-  objc_setProperty_atomic(a1, v3, _cmd, 40);
-  if (objc_getProperty(a1, v4, 472, 1))
+  objc_setProperty_atomic(i, v3, _cmd, 40);
+  if (objc_getProperty(i, v4, 472, 1))
   {
-    v6 = objc_getProperty(a1, v5, 472, 1);
-    Property = objc_getProperty(a1, v7, 32, 1);
+    v6 = objc_getProperty(i, v5, 472, 1);
+    Property = objc_getProperty(i, v7, 32, 1);
     [(NEIKEv2Transport *)v6 setRemoteSPI:Property forClient:?];
   }
 
-  if (objc_getProperty(a1, v5, 480, 1))
+  if (objc_getProperty(i, v5, 480, 1))
   {
-    v10 = objc_getProperty(a1, v9, 480, 1);
-    v12 = objc_getProperty(a1, v11, 32, 1);
+    v10 = objc_getProperty(i, v9, 480, 1);
+    v12 = objc_getProperty(i, v11, 32, 1);
     [(NEIKEv2Transport *)v10 setRemoteSPI:v12 forClient:?];
   }
 
-  v13 = objc_getProperty(a1, v9, 488, 1);
+  v13 = objc_getProperty(i, v9, 488, 1);
   v14 = _cmd;
   if (v13)
   {
-    v15 = objc_getProperty(a1, _cmd, 488, 1);
-    v17 = objc_getProperty(a1, v16, 32, 1);
+    v15 = objc_getProperty(i, _cmd, 488, 1);
+    v17 = objc_getProperty(i, v16, 32, 1);
     [(NEIKEv2Transport *)v15 setRemoteSPI:v17 forClient:?];
 
     v14 = _cmd;
@@ -6126,10 +6126,10 @@ LABEL_18:
 - (void)switchToNATTraversalPorts
 {
   v43 = *MEMORY[0x1E69E9840];
-  if ((*(a1 + 13) & 1) == 0)
+  if ((*(self + 13) & 1) == 0)
   {
-    *(a1 + 12) = 1;
-    v3 = [objc_getProperty(a1 a2];
+    *(self + 12) = 1;
+    v3 = [objc_getProperty(self a2];
     if (v3)
     {
       v5 = v3;
@@ -6148,7 +6148,7 @@ LABEL_18:
 
       else
       {
-        if ([objc_getProperty(a1 v4])
+        if ([objc_getProperty(self v4])
         {
           v7 = 0;
         }
@@ -6158,7 +6158,7 @@ LABEL_18:
           v7 = 4500;
         }
 
-        v8 = [objc_getProperty(a1 v6];
+        v8 = [objc_getProperty(self v6];
         if (v8)
         {
           v9 = v8;
@@ -6200,11 +6200,11 @@ LABEL_18:
             }
 
             v18 = [NEIKEv2IKESA copyAddressFrom:v9 with:v16];
-            if (!objc_getProperty(a1, v19, 480, 1))
+            if (!objc_getProperty(self, v19, 480, 1))
             {
-              WeakRetained = objc_loadWeakRetained((a1 + 568));
-              v23 = objc_loadWeakRetained((a1 + 552));
-              if ((*(a1 + 25) & 1) != 0 && !WeakRetained)
+              WeakRetained = objc_loadWeakRetained((self + 568));
+              v23 = objc_loadWeakRetained((self + 552));
+              if ((*(self + 25) & 1) != 0 && !WeakRetained)
               {
                 v24 = ne_log_obj();
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -6216,26 +6216,26 @@ LABEL_18:
                 goto LABEL_26;
               }
 
-              v25 = objc_getProperty(a1, v22, 304, 1);
-              v27 = objc_getProperty(a1, v26, 544, 1);
-              Property = objc_getProperty(a1, v28, 560, 1);
+              v25 = objc_getProperty(self, v22, 304, 1);
+              v27 = objc_getProperty(self, v26, 544, 1);
+              Property = objc_getProperty(self, v28, 560, 1);
               v30 = [NEIKEv2Transport createTransport:v13 remote:v18 local:v17 localPort:v25 boundInterface:v27 queue:Property socketGetBlock:WeakRetained packetDelegate:?];
 
-              objc_setProperty_atomic(a1, v31, v30, 480);
-              v33 = objc_getProperty(a1, v32, 480, 1);
-              v35 = objc_getProperty(a1, v34, 32, 1);
+              objc_setProperty_atomic(self, v31, v30, 480);
+              v33 = objc_getProperty(self, v32, 480, 1);
+              v35 = objc_getProperty(self, v34, 32, 1);
               [(NEIKEv2Transport *)v33 addClient:v35 delegate:v23];
 
-              v37 = objc_getProperty(a1, v36, 480, 1);
+              v37 = objc_getProperty(self, v36, 480, 1);
               v40[0] = MEMORY[0x1E69E9820];
               v40[1] = 3221225472;
               v40[2] = __41__NEIKEv2IKESA_switchToNATTraversalPorts__block_invoke;
               v40[3] = &unk_1E7F0B0E8;
-              v40[4] = a1;
+              v40[4] = self;
               [(NEIKEv2Transport *)v37 waitForTransport:v40];
             }
 
-            objc_getProperty(a1, v20, 480, 1);
+            objc_getProperty(self, v20, 480, 1);
 LABEL_26:
 
 LABEL_27:
@@ -6398,32 +6398,32 @@ uint64_t __40__NEIKEv2IKESA_switchToTCPEncapsulation__block_invoke(uint64_t a1, 
 
 - (void)resyncAddress
 {
-  if (a1)
+  if (self)
   {
-    self = [(NEIKEv2IKESA *)a1 copyTransport];
-    WeakRetained = objc_loadWeakRetained(a1 + 71);
+    self = [(NEIKEv2IKESA *)self copyTransport];
+    WeakRetained = objc_loadWeakRetained(self + 71);
 
-    v5 = self;
+    selfCopy2 = self;
     if (!WeakRetained)
     {
       if (self)
       {
         v6 = objc_getProperty(self, v4, 16, 1);
-        objc_setProperty_atomic(a1, v7, v6, 64);
+        objc_setProperty_atomic(self, v7, v6, 64);
 
         Property = objc_getProperty(self, v8, 24, 1);
       }
 
       else
       {
-        objc_setProperty_atomic(a1, v4, 0, 64);
+        objc_setProperty_atomic(self, v4, 0, 64);
         Property = 0;
       }
 
       v10 = Property;
-      objc_setProperty_atomic(a1, v11, v10, 72);
+      objc_setProperty_atomic(self, v11, v10, 72);
 
-      v5 = self;
+      selfCopy2 = self;
     }
   }
 }
@@ -6541,7 +6541,7 @@ LABEL_26:
 
 - (id)initiatorFirstMessage
 {
-  if (a1[9])
+  if (self[9])
   {
     v2 = 312;
   }
@@ -6551,14 +6551,14 @@ LABEL_26:
     v2 = 320;
   }
 
-  v3 = objc_getProperty(a1, a2, v2, 1);
+  v3 = objc_getProperty(self, a2, v2, 1);
 
   return v3;
 }
 
 - (id)responderFirstMessage
 {
-  if (a1[9])
+  if (self[9])
   {
     v2 = 320;
   }
@@ -6568,7 +6568,7 @@ LABEL_26:
     v2 = 312;
   }
 
-  v3 = objc_getProperty(a1, a2, v2, 1);
+  v3 = objc_getProperty(self, a2, v2, 1);
 
   return v3;
 }
@@ -6576,16 +6576,16 @@ LABEL_26:
 - (id)sharedSecret
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (objc_getProperty(a1, a2, 88, 1))
+  if (objc_getProperty(self, a2, 88, 1))
   {
-    if (!objc_getProperty(a1, v3, 528, 1))
+    if (!objc_getProperty(self, v3, 528, 1))
     {
-      Property = objc_getProperty(a1, v4, 88, 1);
+      Property = objc_getProperty(self, v4, 88, 1);
       v6 = [NEIKEv2IKESA copySharedSecretFromConfig:?];
-      objc_setProperty_atomic(a1, v7, v6, 528);
+      objc_setProperty_atomic(self, v7, v6, 528);
     }
 
-    v8 = objc_getProperty(a1, v4, 528, 1);
+    v8 = objc_getProperty(self, v4, 528, 1);
   }
 
   else
@@ -6606,19 +6606,19 @@ LABEL_26:
   return v8;
 }
 
-+ (void)copySharedSecretFromConfig:(uint64_t)a1
++ (void)copySharedSecretFromConfig:(uint64_t)config
 {
   v16 = *MEMORY[0x1E69E9840];
   v2 = a2;
   v3 = objc_opt_self();
   if (!v2)
   {
-    v11 = ne_log_obj();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    sharedSecret2 = ne_log_obj();
+    if (os_log_type_enabled(sharedSecret2, OS_LOG_TYPE_FAULT))
     {
       v14 = 136315138;
       v15 = "+[NEIKEv2IKESA copySharedSecretFromConfig:]";
-      _os_log_fault_impl(&dword_1BA83C000, v11, OS_LOG_TYPE_FAULT, "%s called with null sessionConfiguration", &v14, 0xCu);
+      _os_log_fault_impl(&dword_1BA83C000, sharedSecret2, OS_LOG_TYPE_FAULT, "%s called with null sessionConfiguration", &v14, 0xCu);
     }
 
     v7 = 0;
@@ -6628,27 +6628,27 @@ LABEL_9:
   }
 
   v4 = v3;
-  v5 = [v2 sharedSecretReference];
+  sharedSecretReference = [v2 sharedSecretReference];
 
-  if (!v5)
+  if (!sharedSecretReference)
   {
 LABEL_7:
-    v9 = [v2 sharedSecret];
+    sharedSecret = [v2 sharedSecret];
 
-    if (!v9)
+    if (!sharedSecret)
     {
       v7 = 0;
       goto LABEL_11;
     }
 
     v10 = MEMORY[0x1E695DEF0];
-    v11 = [v2 sharedSecret];
-    v7 = [(NSData *)v10 sensitiveDataWithData:v11];
+    sharedSecret2 = [v2 sharedSecret];
+    v7 = [(NSData *)v10 sensitiveDataWithData:sharedSecret2];
     goto LABEL_9;
   }
 
-  v6 = [v2 sharedSecretReference];
-  v7 = [NEIKEv2Crypto copyDataFromPersistentReference:v6];
+  sharedSecretReference2 = [v2 sharedSecretReference];
+  v7 = [NEIKEv2Crypto copyDataFromPersistentReference:sharedSecretReference2];
 
   if (!v7)
   {
@@ -6672,19 +6672,19 @@ LABEL_11:
 - (id)ppk
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if (objc_getProperty(a1, a2, 88, 1))
+    selfCopy = self;
+    if (objc_getProperty(self, a2, 88, 1))
     {
-      if (!objc_getProperty(v2, v3, 536, 1))
+      if (!objc_getProperty(selfCopy, v3, 536, 1))
       {
-        Property = objc_getProperty(v2, v4, 88, 1);
+        Property = objc_getProperty(selfCopy, v4, 88, 1);
         v6 = [NEIKEv2IKESA copyPPKFromConfig:?];
-        objc_setProperty_atomic(v2, v7, v6, 536);
+        objc_setProperty_atomic(selfCopy, v7, v6, 536);
       }
 
-      a1 = objc_getProperty(v2, v4, 536, 1);
+      self = objc_getProperty(selfCopy, v4, 536, 1);
     }
 
     else
@@ -6697,16 +6697,16 @@ LABEL_11:
         _os_log_fault_impl(&dword_1BA83C000, v8, OS_LOG_TYPE_FAULT, "%s called with null self.sessionConfiguration", &v11, 0xCu);
       }
 
-      a1 = 0;
+      self = 0;
     }
   }
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
-+ (void)copyPPKFromConfig:(uint64_t)a1
++ (void)copyPPKFromConfig:(uint64_t)config
 {
   v16 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -6728,9 +6728,9 @@ LABEL_9:
   }
 
   v4 = v3;
-  v5 = [v2 ppkReference];
+  ppkReference = [v2 ppkReference];
 
-  if (!v5)
+  if (!ppkReference)
   {
 LABEL_7:
     v9 = [v2 ppk];
@@ -6747,8 +6747,8 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v6 = [v2 ppkReference];
-  v7 = [NEIKEv2Crypto copyDataFromPersistentReference:v6];
+  ppkReference2 = [v2 ppkReference];
+  v7 = [NEIKEv2Crypto copyDataFromPersistentReference:ppkReference2];
 
   if (!v7)
   {
@@ -6772,59 +6772,59 @@ LABEL_11:
 - (id)localIdentifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = [objc_getProperty(a1 a2];
+    selfCopy = self;
+    v3 = [objc_getProperty(self a2];
 
     if (v3)
     {
-      a1 = [objc_getProperty(v2 v4];
+      self = [objc_getProperty(selfCopy v4];
     }
 
     else
     {
-      if (!objc_getProperty(v2, v4, 512, 1))
+      if (!objc_getProperty(selfCopy, v4, 512, 1))
       {
         v6 = [NEIKEv2AddressIdentifier alloc];
-        v8 = [(NEIKEv2AddressIdentifier *)v6 initWithAddress:objc_getProperty(v2, v7, 64, 1)];
+        v8 = [(NEIKEv2AddressIdentifier *)v6 initWithAddress:objc_getProperty(selfCopy, v7, 64, 1)];
         v9 = ne_log_obj();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [(NEIKEv2Identifier *)v8 copyShortDescription];
+          copyShortDescription = [(NEIKEv2Identifier *)v8 copyShortDescription];
           v14 = 138412546;
-          v15 = v2;
+          v15 = selfCopy;
           v16 = 2112;
-          v17 = v10;
+          v17 = copyShortDescription;
           _os_log_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_DEFAULT, "%@ Using fallback local identifier %@", &v14, 0x16u);
         }
 
-        objc_setProperty_atomic(v2, v11, v8, 512);
+        objc_setProperty_atomic(selfCopy, v11, v8, 512);
       }
 
-      a1 = objc_getProperty(v2, v5, 512, 1);
+      self = objc_getProperty(selfCopy, v5, 512, 1);
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
 - (id)remoteIdentifier
 {
-  if (a1)
+  if (self)
   {
-    a1 = [objc_getProperty(a1 a2];
+    self = [objc_getProperty(self a2];
     v2 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)initiatorNonce
 {
-  if (a1[9])
+  if (self[9])
   {
     v2 = 128;
   }
@@ -6834,14 +6834,14 @@ LABEL_11:
     v2 = 136;
   }
 
-  v3 = objc_getProperty(a1, a2, v2, 1);
+  v3 = objc_getProperty(self, a2, v2, 1);
 
   return v3;
 }
 
 - (id)responderNonce
 {
-  if (a1[9])
+  if (self[9])
   {
     v2 = 136;
   }
@@ -6851,7 +6851,7 @@ LABEL_11:
     v2 = 128;
   }
 
-  v3 = objc_getProperty(a1, a2, v2, 1);
+  v3 = objc_getProperty(self, a2, v2, 1);
 
   return v3;
 }
@@ -6859,7 +6859,7 @@ LABEL_11:
 - (uint64_t)copyDeviceIdentityNotifyPayload
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v9 = 0;
     goto LABEL_15;
@@ -6867,8 +6867,8 @@ LABEL_11:
 
   v17 = 0;
   v18 = 0;
-  v3 = [objc_getProperty(a1 a2];
-  v5 = [objc_getProperty(a1 v4];
+  v3 = [objc_getProperty(self a2];
+  v5 = [objc_getProperty(self v4];
   if ([v3 length] != 16)
   {
     if ([v5 length] != 15)
@@ -6993,19 +6993,19 @@ LABEL_15:
 
 - (id)authenticationProtocol
 {
-  if (a1)
+  if (self)
   {
-    v3 = a1;
-    v4 = [objc_getProperty(a1 a2];
+    selfCopy = self;
+    v4 = [objc_getProperty(self a2];
 
     if (v4)
     {
-      a1 = [objc_getProperty(v3 v5];
+      self = [objc_getProperty(selfCopy v5];
     }
 
     else
     {
-      Property = objc_getProperty(v3, v5, 96, 1);
+      Property = objc_getProperty(selfCopy, v5, 96, 1);
       if (Property)
       {
         v7 = Property[18];
@@ -7016,30 +7016,30 @@ LABEL_15:
         v7 = 0;
       }
 
-      a1 = v7;
+      self = v7;
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)remoteAuthentication
 {
-  if (a1)
+  if (self)
   {
-    v3 = a1;
-    v4 = [objc_getProperty(a1 a2];
+    selfCopy = self;
+    v4 = [objc_getProperty(self a2];
 
     if (v4)
     {
-      a1 = [objc_getProperty(v3 v5];
+      self = [objc_getProperty(selfCopy v5];
     }
 
     else
     {
-      Property = objc_getProperty(v3, v5, 96, 1);
+      Property = objc_getProperty(selfCopy, v5, 96, 1);
       if (Property)
       {
         v7 = Property[18];
@@ -7050,29 +7050,29 @@ LABEL_15:
         v7 = 0;
       }
 
-      a1 = v7;
+      self = v7;
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)usesEAPOnlyAuthentication
 {
-  v3 = [(NEIKEv2IKESA *)a1 remoteAuthentication];
-  if ([v3 method])
+  remoteAuthentication = [(NEIKEv2IKESA *)self remoteAuthentication];
+  if ([remoteAuthentication method])
   {
 
     return 0;
   }
 
   v5 = 1;
-  Property = objc_getProperty(a1, v4, 96, 1);
-  v7 = [(NEIKEv2IKESAProposal *)Property hasEAPMethods];
+  Property = objc_getProperty(self, v4, 96, 1);
+  hasEAPMethods = [(NEIKEv2IKESAProposal *)Property hasEAPMethods];
 
-  if ((v7 & 1) == 0)
+  if ((hasEAPMethods & 1) == 0)
   {
     return 0;
   }
@@ -7080,19 +7080,19 @@ LABEL_15:
   return v5;
 }
 
-- (void)setLocalAuthProtocolUsed:(uint64_t)a1
+- (void)setLocalAuthProtocolUsed:(uint64_t)used
 {
-  if (a1)
+  if (used)
   {
-    objc_storeStrong((a1 + 440), a2);
+    objc_storeStrong((used + 440), a2);
   }
 }
 
-- (void)setRemoteAuthProtocolUsed:(uint64_t)a1
+- (void)setRemoteAuthProtocolUsed:(uint64_t)used
 {
-  if (a1)
+  if (used)
   {
-    objc_storeStrong((a1 + 448), a2);
+    objc_storeStrong((used + 448), a2);
   }
 }
 

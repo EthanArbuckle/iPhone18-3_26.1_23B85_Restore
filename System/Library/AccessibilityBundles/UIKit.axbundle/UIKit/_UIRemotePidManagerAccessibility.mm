@@ -1,10 +1,10 @@
 @interface _UIRemotePidManagerAccessibility
 + (id)sharedInstance;
 - (_UIRemotePidManagerAccessibility)init;
-- (void)_main_suspendPid:(int)a3 forAssertionPointer:(id)a4;
-- (void)_main_unsuspendPid:(int)a3 forAssertionPointer:(id)a4;
-- (void)suspendPid:(int)a3 forAssertionPointer:(id)a4;
-- (void)unsuspendPid:(int)a3 forAssertionPointer:(id)a4;
+- (void)_main_suspendPid:(int)pid forAssertionPointer:(id)pointer;
+- (void)_main_unsuspendPid:(int)pid forAssertionPointer:(id)pointer;
+- (void)suspendPid:(int)pid forAssertionPointer:(id)pointer;
+- (void)unsuspendPid:(int)pid forAssertionPointer:(id)pointer;
 @end
 
 @implementation _UIRemotePidManagerAccessibility
@@ -45,20 +45,20 @@
   return v3;
 }
 
-- (void)unsuspendPid:(int)a3 forAssertionPointer:(id)a4
+- (void)unsuspendPid:(int)pid forAssertionPointer:(id)pointer
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  pidCopy = pid;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, pointer);
   v4 = MEMORY[0x29EDCA5F8];
   v5 = -1073741824;
   v6 = 0;
   v7 = __69___UIRemotePidManagerAccessibility_unsuspendPid_forAssertionPointer___block_invoke;
   v8 = &unk_29F30C9C0;
-  v9 = MEMORY[0x29EDC9748](v15);
-  v11 = v13;
+  v9 = MEMORY[0x29EDC9748](selfCopy);
+  v11 = pidCopy;
   v10 = MEMORY[0x29EDC9748](location);
   AXPerformBlockOnMainThread();
   objc_storeStrong(&v10, 0);
@@ -66,23 +66,23 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)_main_unsuspendPid:(int)a3 forAssertionPointer:(id)a4
+- (void)_main_unsuspendPid:(int)pid forAssertionPointer:(id)pointer
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  pidCopy = pid;
   location = 0;
-  objc_storeStrong(&location, a4);
-  pidToAssertions = v15->_pidToAssertions;
-  v10 = [MEMORY[0x29EDBA070] numberWithInt:v13];
+  objc_storeStrong(&location, pointer);
+  pidToAssertions = selfCopy->_pidToAssertions;
+  v10 = [MEMORY[0x29EDBA070] numberWithInt:pidCopy];
   v11 = [(NSMutableDictionary *)pidToAssertions objectForKey:?];
   *&v4 = MEMORY[0x29EDC9740](v10).n128_u64[0];
   if (!v11)
   {
     v11 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
     *&v5 = MEMORY[0x29EDC9740](0).n128_u64[0];
-    v7 = v15->_pidToAssertions;
-    v8 = [MEMORY[0x29EDBA070] numberWithInt:{v13, v5}];
+    v7 = selfCopy->_pidToAssertions;
+    v8 = [MEMORY[0x29EDBA070] numberWithInt:{pidCopy, v5}];
     [(NSMutableDictionary *)v7 setObject:v11 forKey:?];
     MEMORY[0x29EDC9740](v8);
     AXPidUnsuspend();
@@ -93,20 +93,20 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)suspendPid:(int)a3 forAssertionPointer:(id)a4
+- (void)suspendPid:(int)pid forAssertionPointer:(id)pointer
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  pidCopy = pid;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, pointer);
   v4 = MEMORY[0x29EDCA5F8];
   v5 = -1073741824;
   v6 = 0;
   v7 = __67___UIRemotePidManagerAccessibility_suspendPid_forAssertionPointer___block_invoke;
   v8 = &unk_29F30C9C0;
-  v9 = MEMORY[0x29EDC9748](v15);
-  v11 = v13;
+  v9 = MEMORY[0x29EDC9748](selfCopy);
+  v11 = pidCopy;
   v10 = MEMORY[0x29EDC9748](location);
   AXPerformBlockOnMainThread();
   objc_storeStrong(&v10, 0);
@@ -114,15 +114,15 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)_main_suspendPid:(int)a3 forAssertionPointer:(id)a4
+- (void)_main_suspendPid:(int)pid forAssertionPointer:(id)pointer
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  pidCopy = pid;
   location = 0;
-  objc_storeStrong(&location, a4);
-  pidToAssertions = v13->_pidToAssertions;
-  v8 = [MEMORY[0x29EDBA070] numberWithInt:v11];
+  objc_storeStrong(&location, pointer);
+  pidToAssertions = selfCopy->_pidToAssertions;
+  v8 = [MEMORY[0x29EDBA070] numberWithInt:pidCopy];
   v9 = [(NSMutableDictionary *)pidToAssertions objectForKey:?];
   *&v4 = MEMORY[0x29EDC9740](v8).n128_u64[0];
   if (v9)
@@ -130,8 +130,8 @@
     [v9 removeObject:{location, v4}];
     if (![v9 count])
     {
-      v5 = v13->_pidToAssertions;
-      v6 = [MEMORY[0x29EDBA070] numberWithInt:v11];
+      v5 = selfCopy->_pidToAssertions;
+      v6 = [MEMORY[0x29EDBA070] numberWithInt:pidCopy];
       [(NSMutableDictionary *)v5 removeObjectForKey:?];
       MEMORY[0x29EDC9740](v6);
       AXPidSuspend();

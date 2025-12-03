@@ -1,25 +1,25 @@
 @interface _AFClockTimerIntentSupportMutableProxy
 - (NSArray)trackedChanges;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setDuration:(double)a3;
-- (void)setState:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setDuration:(double)duration;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation _AFClockTimerIntentSupportMutableProxy
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_AFClockTimerIntentSupportProxy allocWithZone:a3];
-  v5 = [(_AFClockTimerIntentSupportProxy *)self timerID];
-  v6 = [(_AFClockTimerIntentSupportProxy *)self state];
+  v4 = [_AFClockTimerIntentSupportProxy allocWithZone:zone];
+  timerID = [(_AFClockTimerIntentSupportProxy *)self timerID];
+  state = [(_AFClockTimerIntentSupportProxy *)self state];
   [(_AFClockTimerIntentSupportProxy *)self duration];
   v8 = v7;
   [(_AFClockTimerIntentSupportProxy *)self remainingTime];
   v10 = v9;
-  v11 = [(_AFClockTimerIntentSupportProxy *)self lastModifiedDate];
-  v12 = [(_AFClockTimerIntentSupportProxy *)self title];
-  v13 = [(_AFClockTimerIntentSupportProxy *)self siriContext];
-  v14 = [(_AFClockTimerIntentSupportProxy *)v4 initWithTimerID:v5 state:v6 duration:v11 remainingTime:v12 lastModifiedDate:v13 title:v8 siriContext:v10];
+  lastModifiedDate = [(_AFClockTimerIntentSupportProxy *)self lastModifiedDate];
+  title = [(_AFClockTimerIntentSupportProxy *)self title];
+  siriContext = [(_AFClockTimerIntentSupportProxy *)self siriContext];
+  v14 = [(_AFClockTimerIntentSupportProxy *)v4 initWithTimerID:timerID state:state duration:lastModifiedDate remainingTime:title lastModifiedDate:siriContext title:v8 siriContext:v10];
 
   return v14;
 }
@@ -39,7 +39,7 @@
   return v3;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
   v10.receiver = self;
   v10.super_class = _AFClockTimerIntentSupportMutableProxy;
@@ -55,13 +55,13 @@
   }
 
   v11 = @"duration";
-  v8 = [NSNumber numberWithDouble:a3];
+  v8 = [NSNumber numberWithDouble:duration];
   v12 = v8;
   v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   [(NSMutableArray *)trackedChanges addObject:v9];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v10.receiver = self;
   v10.super_class = _AFClockTimerIntentSupportMutableProxy;
@@ -77,7 +77,7 @@
   }
 
   v11 = @"state";
-  v8 = [NSNumber numberWithUnsignedInteger:a3];
+  v8 = [NSNumber numberWithUnsignedInteger:state];
   v12 = v8;
   v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   [(NSMutableArray *)trackedChanges addObject:v9];

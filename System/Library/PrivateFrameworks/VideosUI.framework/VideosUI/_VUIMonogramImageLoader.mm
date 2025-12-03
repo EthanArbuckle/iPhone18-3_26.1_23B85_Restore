@@ -1,10 +1,10 @@
 @interface _VUIMonogramImageLoader
 + (id)sharedInstance;
 - (_VUIMonogramImageLoader)init;
-- (id)URLForObject:(id)a3;
-- (id)imageKeyForObject:(id)a3;
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 completionHandler:(id)a7;
-- (void)cancelLoad:(id)a3;
+- (id)URLForObject:(id)object;
+- (id)imageKeyForObject:(id)object;
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction completionHandler:(id)handler;
+- (void)cancelLoad:(id)load;
 @end
 
 @implementation _VUIMonogramImageLoader
@@ -53,15 +53,15 @@
   return v2;
 }
 
-- (id)imageKeyForObject:(id)a3
+- (id)imageKeyForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     generatorByType = self->_generatorByType;
     v6 = MEMORY[0x1E696AD98];
-    v7 = v4;
+    v7 = objectCopy;
     v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(v7, "preferedMonogramType")}];
     v9 = [(NSDictionary *)generatorByType objectForKey:v8];
 
@@ -76,21 +76,21 @@
   return v10;
 }
 
-- (id)URLForObject:(id)a3
+- (id)URLForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 imageURL];
-    if ([_VUIMonogramAppleAccountImageGenerator isAppleAccountsURL:v4])
+    imageURL = [objectCopy imageURL];
+    if ([_VUIMonogramAppleAccountImageGenerator isAppleAccountsURL:imageURL])
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = v4;
+      v5 = imageURL;
     }
 
     v6 = v5;
@@ -104,32 +104,32 @@
   return v6;
 }
 
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 completionHandler:(id)a7
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction completionHandler:(id)handler
 {
-  v9 = a5;
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = a7;
+  fitCopy = fit;
+  height = size.height;
+  width = size.width;
+  objectCopy = object;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = v13;
-    v16 = [v15 preferedMonogramType];
+    v15 = objectCopy;
+    preferedMonogramType = [v15 preferedMonogramType];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __101___VUIMonogramImageLoader_loadImageForObject_scaleToSize_cropToFit_imageDirection_completionHandler___block_invoke;
     aBlock[3] = &unk_1E872FB28;
-    v25 = v14;
+    v25 = handlerCopy;
     v17 = _Block_copy(aBlock);
     generatorByType = self->_generatorByType;
-    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v16];
+    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:preferedMonogramType];
     v20 = [(NSDictionary *)generatorByType objectForKey:v19];
 
     if (v20)
     {
-      v21 = [v20 loadImageForObject:v15 scaleToSize:v9 cropToFit:a6 imageDirection:v17 completionHandler:{width, height}];
-      [v21 tv_setGeneratorType:v16];
+      v21 = [v20 loadImageForObject:v15 scaleToSize:fitCopy cropToFit:direction imageDirection:v17 completionHandler:{width, height}];
+      [v21 tv_setGeneratorType:preferedMonogramType];
     }
 
     else
@@ -149,15 +149,15 @@
   return v21;
 }
 
-- (void)cancelLoad:(id)a3
+- (void)cancelLoad:(id)load
 {
-  v4 = a3;
-  v5 = [v4 tv_generatorType];
+  loadCopy = load;
+  tv_generatorType = [loadCopy tv_generatorType];
   generatorByType = self->_generatorByType;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:tv_generatorType];
   v8 = [(NSDictionary *)generatorByType objectForKey:v7];
 
-  [v8 cancelLoad:v4];
+  [v8 cancelLoad:loadCopy];
 }
 
 @end

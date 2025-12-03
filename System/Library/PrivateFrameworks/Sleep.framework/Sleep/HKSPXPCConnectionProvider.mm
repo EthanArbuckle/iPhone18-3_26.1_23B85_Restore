@@ -1,24 +1,24 @@
 @interface HKSPXPCConnectionProvider
-+ (HKSPXPCConnectionProvider)providerWithConnectionInfo:(id)a3;
++ (HKSPXPCConnectionProvider)providerWithConnectionInfo:(id)info;
 - (BOOL)isInvalidated;
-- (HKSPXPCConnectionProvider)initWithConnectionInfo:(id)a3;
-- (HKSPXPCConnectionProvider)initWithConnectionInfo:(id)a3 connectionProvider:(id)a4 heartbeatListener:(id)a5;
+- (HKSPXPCConnectionProvider)initWithConnectionInfo:(id)info;
+- (HKSPXPCConnectionProvider)initWithConnectionInfo:(id)info connectionProvider:(id)provider heartbeatListener:(id)listener;
 - (HKSPXPCConnectionProviderDelegate)delegate;
 - (NSXPCConnection)connection;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)_addPendingMessage:(id)a3;
+- (void)_addPendingMessage:(id)message;
 - (void)_didInterruptConnection;
 - (void)_didInvalidateConnection;
-- (void)_removePendingMessage:(id)a3;
+- (void)_removePendingMessage:(id)message;
 - (void)_retryPendingMessages;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 - (void)dealloc;
 - (void)invalidate;
-- (void)listenerDidReceiveHeartbeat:(id)a3;
-- (void)performRemoteBlock:(id)a3 withErrorHandler:(id)a4 doSynchronously:(BOOL)a5;
-- (void)sendMessage:(id)a3;
+- (void)listenerDidReceiveHeartbeat:(id)heartbeat;
+- (void)performRemoteBlock:(id)block withErrorHandler:(id)handler doSynchronously:(BOOL)synchronously;
+- (void)sendMessage:(id)message;
 @end
 
 @implementation HKSPXPCConnectionProvider
@@ -109,19 +109,19 @@ void __39__HKSPXPCConnectionProvider_connection__block_invoke(uint64_t a1)
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (HKSPXPCConnectionProvider)providerWithConnectionInfo:(id)a3
++ (HKSPXPCConnectionProvider)providerWithConnectionInfo:(id)info
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithConnectionInfo:v3];
+  infoCopy = info;
+  v4 = [objc_alloc(objc_opt_class()) initWithConnectionInfo:infoCopy];
 
   return v4;
 }
 
-- (HKSPXPCConnectionProvider)initWithConnectionInfo:(id)a3
+- (HKSPXPCConnectionProvider)initWithConnectionInfo:(id)info
 {
-  v4 = a3;
-  v5 = HKSPStandardHeartbeatListener(v4);
-  v6 = [(HKSPXPCConnectionProvider *)self initWithConnectionInfo:v4 connectionProvider:&__block_literal_global_19 heartbeatListener:v5];
+  infoCopy = info;
+  v5 = HKSPStandardHeartbeatListener(infoCopy);
+  v6 = [(HKSPXPCConnectionProvider *)self initWithConnectionInfo:infoCopy connectionProvider:&__block_literal_global_19 heartbeatListener:v5];
 
   return v6;
 }
@@ -139,12 +139,12 @@ id __52__HKSPXPCConnectionProvider_initWithConnectionInfo___block_invoke(uint64_
   return v7;
 }
 
-- (HKSPXPCConnectionProvider)initWithConnectionInfo:(id)a3 connectionProvider:(id)a4 heartbeatListener:(id)a5
+- (HKSPXPCConnectionProvider)initWithConnectionInfo:(id)info connectionProvider:(id)provider heartbeatListener:(id)listener
 {
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  infoCopy = info;
+  providerCopy = provider;
+  listenerCopy = listener;
   v23.receiver = self;
   v23.super_class = HKSPXPCConnectionProvider;
   v12 = [(HKSPXPCConnectionProvider *)&v23 init];
@@ -159,18 +159,18 @@ id __52__HKSPXPCConnectionProvider_initWithConnectionInfo___block_invoke(uint64_
       v26 = 2048;
       v27 = v12;
       v28 = 2114;
-      v29 = v9;
+      v29 = infoCopy;
       v15 = v14;
       _os_log_impl(&dword_269A84000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@.%p] initializing with %{public}@", buf, 0x20u);
     }
 
     v12->_connectionLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v12->_connectionInfo, a3);
-    v16 = [v10 copy];
+    objc_storeStrong(&v12->_connectionInfo, info);
+    v16 = [providerCopy copy];
     connectionProvider = v12->_connectionProvider;
     v12->_connectionProvider = v16;
 
-    objc_storeStrong(&v12->_heartbeatListener, a5);
+    objc_storeStrong(&v12->_heartbeatListener, listener);
     v12->_pendingMessagesLock._os_unfair_lock_opaque = 0;
     v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
     pendingMessages = v12->_pendingMessages;
@@ -184,50 +184,50 @@ id __52__HKSPXPCConnectionProvider_initWithConnectionInfo___block_invoke(uint64_
   return v12;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_connectionLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_connectionLock);
 }
 
-- (void)_addPendingMessage:(id)a3
+- (void)_addPendingMessage:(id)message
 {
-  v5 = a3;
-  v6 = [v5 identifier];
+  messageCopy = message;
+  identifier = [messageCopy identifier];
 
-  if (!v6)
+  if (!identifier)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HKSPXPCConnectionProvider.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"message.identifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKSPXPCConnectionProvider.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"message.identifier != nil"}];
   }
 
   os_unfair_lock_lock(&self->_pendingMessagesLock);
   pendingMessages = self->_pendingMessages;
-  v8 = [v5 identifier];
-  [(NSMutableDictionary *)pendingMessages setObject:v5 forKeyedSubscript:v8];
+  identifier2 = [messageCopy identifier];
+  [(NSMutableDictionary *)pendingMessages setObject:messageCopy forKeyedSubscript:identifier2];
 
   os_unfair_lock_unlock(&self->_pendingMessagesLock);
 }
 
-- (void)_removePendingMessage:(id)a3
+- (void)_removePendingMessage:(id)message
 {
-  v5 = a3;
-  v6 = [v5 identifier];
+  messageCopy = message;
+  identifier = [messageCopy identifier];
 
-  if (!v6)
+  if (!identifier)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HKSPXPCConnectionProvider.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"message.identifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKSPXPCConnectionProvider.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"message.identifier != nil"}];
   }
 
   os_unfair_lock_lock(&self->_pendingMessagesLock);
   pendingMessages = self->_pendingMessages;
-  v8 = [v5 identifier];
+  identifier2 = [messageCopy identifier];
 
-  [(NSMutableDictionary *)pendingMessages removeObjectForKey:v8];
+  [(NSMutableDictionary *)pendingMessages removeObjectForKey:identifier2];
 
   os_unfair_lock_unlock(&self->_pendingMessagesLock);
 }
@@ -238,10 +238,10 @@ id __52__HKSPXPCConnectionProvider_initWithConnectionInfo___block_invoke(uint64_
   if (![(HKSPXPCConnectionProvider *)self isInvalidated])
   {
     os_unfair_lock_lock(&self->_pendingMessagesLock);
-    v3 = [(NSMutableDictionary *)self->_pendingMessages allValues];
+    allValues = [(NSMutableDictionary *)self->_pendingMessages allValues];
     [(NSMutableDictionary *)self->_pendingMessages removeAllObjects];
     os_unfair_lock_unlock(&self->_pendingMessagesLock);
-    if ([v3 count])
+    if ([allValues count])
     {
       v4 = HKSPLogForCategory(4uLL);
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -251,9 +251,9 @@ id __52__HKSPXPCConnectionProvider_initWithConnectionInfo___block_invoke(uint64_
         *buf = 138543874;
         v24 = v5;
         v25 = 2048;
-        v26 = self;
+        selfCopy2 = self;
         v27 = 2048;
-        v28 = [v3 count];
+        v28 = [allValues count];
         _os_log_impl(&dword_269A84000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@.%p] %ld pending messages to retry", buf, 0x20u);
       }
 
@@ -261,8 +261,8 @@ id __52__HKSPXPCConnectionProvider_initWithConnectionInfo___block_invoke(uint64_
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v17 = v3;
-      v7 = v3;
+      v17 = allValues;
+      v7 = allValues;
       v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v8)
       {
@@ -285,7 +285,7 @@ id __52__HKSPXPCConnectionProvider_initWithConnectionInfo___block_invoke(uint64_
               *buf = 138543874;
               v24 = v14;
               v25 = 2048;
-              v26 = self;
+              selfCopy2 = self;
               v27 = 2114;
               v28 = v12;
               v15 = v14;
@@ -301,7 +301,7 @@ id __52__HKSPXPCConnectionProvider_initWithConnectionInfo___block_invoke(uint64_
         while (v9);
       }
 
-      v3 = v17;
+      allValues = v17;
     }
   }
 
@@ -317,7 +317,7 @@ id __52__HKSPXPCConnectionProvider_initWithConnectionInfo___block_invoke(uint64_
     *buf = 138543618;
     v8 = objc_opt_class();
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v4 = v8;
     _os_log_impl(&dword_269A84000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@.%p] deallocing...", buf, 0x16u);
   }
@@ -370,7 +370,7 @@ void __39__HKSPXPCConnectionProvider_connection__block_invoke_2(uint64_t a1)
       *buf = 138543618;
       v8 = objc_opt_class();
       v9 = 2048;
-      v10 = self;
+      selfCopy = self;
       v5 = v8;
       _os_log_error_impl(&dword_269A84000, v3, OS_LOG_TYPE_ERROR, "[%{public}@.%p] connection interrupted", buf, 0x16u);
     }
@@ -397,7 +397,7 @@ void __39__HKSPXPCConnectionProvider_connection__block_invoke_2(uint64_t a1)
       *buf = 138543618;
       v9 = objc_opt_class();
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       v5 = v9;
       _os_log_error_impl(&dword_269A84000, v3, OS_LOG_TYPE_ERROR, "[%{public}@.%p] connection invalidated", buf, 0x16u);
     }
@@ -426,7 +426,7 @@ void __53__HKSPXPCConnectionProvider__didInvalidateConnection__block_invoke(uint
   *(v1 + 32) = 0;
 }
 
-- (void)listenerDidReceiveHeartbeat:(id)a3
+- (void)listenerDidReceiveHeartbeat:(id)heartbeat
 {
   v12 = *MEMORY[0x277D85DE8];
   if (![(HKSPXPCConnectionProvider *)self isInvalidated])
@@ -437,7 +437,7 @@ void __53__HKSPXPCConnectionProvider__didInvalidateConnection__block_invoke(uint
       v8 = 138543618;
       v9 = objc_opt_class();
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       v5 = v9;
       _os_log_impl(&dword_269A84000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@.%p] received heartbeat, reconnecting", &v8, 0x16u);
     }
@@ -449,56 +449,56 @@ void __53__HKSPXPCConnectionProvider__didInvalidateConnection__block_invoke(uint
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performRemoteBlock:(id)a3 withErrorHandler:(id)a4 doSynchronously:(BOOL)a5
+- (void)performRemoteBlock:(id)block withErrorHandler:(id)handler doSynchronously:(BOOL)synchronously
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  synchronouslyCopy = synchronously;
+  blockCopy = block;
+  handlerCopy = handler;
   v10 = [HKSPXPCMessage alloc];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __81__HKSPXPCConnectionProvider_performRemoteBlock_withErrorHandler_doSynchronously___block_invoke;
   v13[3] = &unk_279C76080;
-  v14 = v8;
-  v11 = v8;
-  v12 = [(HKSPXPCMessage *)v10 initWithIdentifier:0 block:v13 options:v5 errorHandler:v9];
+  v14 = blockCopy;
+  v11 = blockCopy;
+  v12 = [(HKSPXPCMessage *)v10 initWithIdentifier:0 block:v13 options:synchronouslyCopy errorHandler:handlerCopy];
 
   [(HKSPXPCConnectionProvider *)self sendMessage:v12];
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 options];
-  v6 = [(HKSPXPCConnectionProvider *)self connection];
-  v7 = [v4 errorHandler];
-  if (v5)
+  messageCopy = message;
+  options = [messageCopy options];
+  connection = [(HKSPXPCConnectionProvider *)self connection];
+  errorHandler = [messageCopy errorHandler];
+  if (options)
   {
-    [v6 synchronousRemoteObjectProxyWithErrorHandler:v7];
+    [connection synchronousRemoteObjectProxyWithErrorHandler:errorHandler];
   }
 
   else
   {
-    [v6 remoteObjectProxyWithErrorHandler:v7];
+    [connection remoteObjectProxyWithErrorHandler:errorHandler];
   }
   v8 = ;
 
   if (v8)
   {
-    if (([v4 options] & 2) != 0)
+    if (([messageCopy options] & 2) != 0)
     {
-      [(HKSPXPCConnectionProvider *)self _addPendingMessage:v4];
+      [(HKSPXPCConnectionProvider *)self _addPendingMessage:messageCopy];
     }
 
-    v9 = [v4 block];
+    block = [messageCopy block];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __41__HKSPXPCConnectionProvider_sendMessage___block_invoke;
     v13[3] = &unk_279C753B8;
     v13[4] = self;
-    v14 = v4;
-    (v9)[2](v9, v8, v13);
+    v14 = messageCopy;
+    (block)[2](block, v8, v13);
   }
 
   else
@@ -509,7 +509,7 @@ void __53__HKSPXPCConnectionProvider__didInvalidateConnection__block_invoke(uint
       *buf = 138543618;
       v16 = objc_opt_class();
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v12 = v16;
       _os_log_error_impl(&dword_269A84000, v10, OS_LOG_TYPE_ERROR, "[%{public}@.%p] remote object is nil", buf, 0x16u);
     }
@@ -575,7 +575,7 @@ void __41__HKSPXPCConnectionProvider_sendMessage___block_invoke(uint64_t a1, int
     *buf = 138543618;
     v8 = objc_opt_class();
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v4 = v8;
     _os_log_impl(&dword_269A84000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@.%p] invalidating...", buf, 0x16u);
   }
@@ -603,25 +603,25 @@ void __39__HKSPXPCConnectionProvider_invalidate__block_invoke(uint64_t a1)
 
 - (id)succinctDescription
 {
-  v2 = [(HKSPXPCConnectionProvider *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(HKSPXPCConnectionProvider *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(HKSPXPCConnectionProvider *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(HKSPXPCConnectionProvider *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v5 = [(HKSPXPCConnectionProvider *)self connectionInfo];
-  v6 = [v4 appendObject:v5 withName:@"connectionInfo"];
+  connectionInfo = [(HKSPXPCConnectionProvider *)self connectionInfo];
+  v6 = [v4 appendObject:connectionInfo withName:@"connectionInfo"];
 
   return v4;
 }

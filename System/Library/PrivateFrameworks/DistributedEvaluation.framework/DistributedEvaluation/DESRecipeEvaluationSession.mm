@@ -1,47 +1,47 @@
 @interface DESRecipeEvaluationSession
-- (id)_initWithResumptionURL:(id)a3 recordSet:(id)a4 protocolClass:(Class)a5 error:(id *)a6;
-- (void)completeWithError:(id)a3 completionHandler:(id)a4;
-- (void)completeWithJSONResult:(id)a3 binaryResult:(id)a4 completionHandler:(id)a5;
-- (void)downloadAttachmentsWithConfiguration:(id)a3 completion:(id)a4;
+- (id)_initWithResumptionURL:(id)l recordSet:(id)set protocolClass:(Class)class error:(id *)error;
+- (void)completeWithError:(id)error completionHandler:(id)handler;
+- (void)completeWithJSONResult:(id)result binaryResult:(id)binaryResult completionHandler:(id)handler;
+- (void)downloadAttachmentsWithConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation DESRecipeEvaluationSession
 
-- (id)_initWithResumptionURL:(id)a3 recordSet:(id)a4 protocolClass:(Class)a5 error:(id *)a6
+- (id)_initWithResumptionURL:(id)l recordSet:(id)set protocolClass:(Class)class error:(id *)error
 {
-  DESLogAndSetSunsetError(a6);
+  DESLogAndSetSunsetError(error);
 
   return 0;
 }
 
-- (void)downloadAttachmentsWithConfiguration:(id)a3 completion:(id)a4
+- (void)downloadAttachmentsWithConfiguration:(id)configuration completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = DESLogAndReturnSunsetError();
-  (*(a4 + 2))(v5, v6);
+  (*(completion + 2))(completionCopy, v6);
 }
 
-- (void)completeWithJSONResult:(id)a3 binaryResult:(id)a4 completionHandler:(id)a5
+- (void)completeWithJSONResult:(id)result binaryResult:(id)binaryResult completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v5 = DESLogAndReturnSunsetError();
-  v6 = v7;
-  if (v7)
+  v6 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v7 + 2))(v7);
-    v6 = v7;
+    (*(handlerCopy + 2))(handlerCopy);
+    v6 = handlerCopy;
   }
 }
 
-- (void)completeWithError:(id)a3 completionHandler:(id)a4
+- (void)completeWithError:(id)error completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v4 = DESLogAndReturnSunsetError();
-  v5 = v6;
-  if (v6)
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6);
-    v5 = v6;
+    (*(handlerCopy + 2))(handlerCopy);
+    v5 = handlerCopy;
   }
 }
 

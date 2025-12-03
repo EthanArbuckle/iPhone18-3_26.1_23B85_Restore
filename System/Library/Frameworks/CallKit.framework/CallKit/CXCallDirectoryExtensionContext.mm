@@ -2,32 +2,32 @@
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
 - (BOOL)isIncremental;
-- (CXCallDirectoryExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5;
+- (CXCallDirectoryExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d;
 - (CXCallDirectoryMutableLabeledPhoneNumberEntryData)pendingIdentificationEntryDataForAddition;
 - (CXCallDirectoryMutablePhoneNumberEntryData)pendingBlockingEntryData;
 - (CXCallDirectoryMutablePhoneNumberEntryData)pendingIdentificationEntryDataForRemoval;
 - (id)delegate;
 - (void)_flushPendingBlockingEntryData;
 - (void)_flushPendingIdentificationEntryData;
-- (void)_performBlockIfIncremental:(id)a3 usingSelectorForExceptionMessage:(SEL)a4;
-- (void)appendBlockingEntryPhoneNumber:(int64_t)a3 changeType:(int64_t)a4;
-- (void)appendIdentificationEntryForAdditionWithPhoneNumber:(int64_t)a3 label:(id)a4;
-- (void)appendIdentificationEntryForRemovalWithPhoneNumber:(int64_t)a3;
+- (void)_performBlockIfIncremental:(id)incremental usingSelectorForExceptionMessage:(SEL)message;
+- (void)appendBlockingEntryPhoneNumber:(int64_t)number changeType:(int64_t)type;
+- (void)appendIdentificationEntryForAdditionWithPhoneNumber:(int64_t)number label:(id)label;
+- (void)appendIdentificationEntryForRemovalWithPhoneNumber:(int64_t)number;
 - (void)completeRequestWithCompletionHandler:(void *)completion;
 - (void)removeAllBlockingEntries;
 - (void)removeAllIdentificationEntries;
 - (void)removeBlockingEntryWithPhoneNumber:(CXCallDirectoryPhoneNumber)phoneNumber;
 - (void)removeIdentificationEntryWithPhoneNumber:(CXCallDirectoryPhoneNumber)phoneNumber;
-- (void)requestFailedWithError:(id)a3 reply:(id)a4;
+- (void)requestFailedWithError:(id)error reply:(id)reply;
 @end
 
 @implementation CXCallDirectoryExtensionContext
 
-- (CXCallDirectoryExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5
+- (CXCallDirectoryExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d
 {
   v12.receiver = self;
   v12.super_class = CXCallDirectoryExtensionContext;
-  v5 = [(CXCallDirectoryExtensionContext *)&v12 initWithInputItems:a3 listenerEndpoint:a4 contextUUID:a5];
+  v5 = [(CXCallDirectoryExtensionContext *)&v12 initWithInputItems:items listenerEndpoint:endpoint contextUUID:d];
   if (v5)
   {
     objc_initWeak(&location, v5);
@@ -147,26 +147,26 @@ void __83__CXCallDirectoryExtensionContext_initWithInputItems_listenerEndpoint_c
   return pendingIdentificationEntryDataForRemoval;
 }
 
-- (void)appendBlockingEntryPhoneNumber:(int64_t)a3 changeType:(int64_t)a4
+- (void)appendBlockingEntryPhoneNumber:(int64_t)number changeType:(int64_t)type
 {
-  if ([(CXCallDirectoryExtensionContext *)self pendingBlockingEntryChangeType]!= a4)
+  if ([(CXCallDirectoryExtensionContext *)self pendingBlockingEntryChangeType]!= type)
   {
-    v7 = [(CXCallDirectoryExtensionContext *)self pendingBlockingEntryData];
-    v8 = [v7 count];
+    pendingBlockingEntryData = [(CXCallDirectoryExtensionContext *)self pendingBlockingEntryData];
+    v8 = [pendingBlockingEntryData count];
 
     if (v8)
     {
       [(CXCallDirectoryExtensionContext *)self _flushPendingBlockingEntryData];
     }
 
-    [(CXCallDirectoryExtensionContext *)self setPendingBlockingEntryChangeType:a4];
+    [(CXCallDirectoryExtensionContext *)self setPendingBlockingEntryChangeType:type];
   }
 
-  v9 = [(CXCallDirectoryExtensionContext *)self pendingBlockingEntryData];
-  [v9 appendPhoneNumber:a3];
+  pendingBlockingEntryData2 = [(CXCallDirectoryExtensionContext *)self pendingBlockingEntryData];
+  [pendingBlockingEntryData2 appendPhoneNumber:number];
 
-  v10 = [(CXCallDirectoryExtensionContext *)self pendingBlockingEntryData];
-  v11 = [v10 count];
+  pendingBlockingEntryData3 = [(CXCallDirectoryExtensionContext *)self pendingBlockingEntryData];
+  v11 = [pendingBlockingEntryData3 count];
 
   if (v11 >> 4 >= 0x271)
   {
@@ -175,15 +175,15 @@ void __83__CXCallDirectoryExtensionContext_initWithInputItems_listenerEndpoint_c
   }
 }
 
-- (void)appendIdentificationEntryForAdditionWithPhoneNumber:(int64_t)a3 label:(id)a4
+- (void)appendIdentificationEntryForAdditionWithPhoneNumber:(int64_t)number label:(id)label
 {
-  v6 = a4;
+  labelCopy = label;
   if ([(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryChangeType])
   {
-    v7 = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForAddition];
-    v8 = [v7 count];
-    v9 = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForRemoval];
-    v10 = [v9 count];
+    pendingIdentificationEntryDataForAddition = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForAddition];
+    v8 = [pendingIdentificationEntryDataForAddition count];
+    pendingIdentificationEntryDataForRemoval = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForRemoval];
+    v10 = [pendingIdentificationEntryDataForRemoval count];
 
     if (v8 + v10)
     {
@@ -193,11 +193,11 @@ void __83__CXCallDirectoryExtensionContext_initWithInputItems_listenerEndpoint_c
     [(CXCallDirectoryExtensionContext *)self setPendingIdentificationEntryChangeType:0];
   }
 
-  v11 = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForAddition];
-  [v11 appendPhoneNumber:a3 label:v6];
+  pendingIdentificationEntryDataForAddition2 = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForAddition];
+  [pendingIdentificationEntryDataForAddition2 appendPhoneNumber:number label:labelCopy];
 
-  v12 = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForAddition];
-  v13 = [v12 count];
+  pendingIdentificationEntryDataForAddition3 = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForAddition];
+  v13 = [pendingIdentificationEntryDataForAddition3 count];
 
   if (v13 >> 4 >= 0x271)
   {
@@ -206,14 +206,14 @@ void __83__CXCallDirectoryExtensionContext_initWithInputItems_listenerEndpoint_c
   }
 }
 
-- (void)appendIdentificationEntryForRemovalWithPhoneNumber:(int64_t)a3
+- (void)appendIdentificationEntryForRemovalWithPhoneNumber:(int64_t)number
 {
   if ([(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryChangeType]!= 1)
   {
-    v5 = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForAddition];
-    v6 = [v5 count];
-    v7 = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForRemoval];
-    v8 = [v7 count];
+    pendingIdentificationEntryDataForAddition = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForAddition];
+    v6 = [pendingIdentificationEntryDataForAddition count];
+    pendingIdentificationEntryDataForRemoval = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForRemoval];
+    v8 = [pendingIdentificationEntryDataForRemoval count];
 
     if (v6 + v8)
     {
@@ -223,11 +223,11 @@ void __83__CXCallDirectoryExtensionContext_initWithInputItems_listenerEndpoint_c
     [(CXCallDirectoryExtensionContext *)self setPendingIdentificationEntryChangeType:1];
   }
 
-  v9 = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForRemoval];
-  [v9 appendPhoneNumber:a3];
+  pendingIdentificationEntryDataForRemoval2 = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForRemoval];
+  [pendingIdentificationEntryDataForRemoval2 appendPhoneNumber:number];
 
-  v10 = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForRemoval];
-  v11 = [v10 count];
+  pendingIdentificationEntryDataForRemoval3 = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForRemoval];
+  v11 = [pendingIdentificationEntryDataForRemoval3 count];
 
   if (v11 >> 4 >= 0x271)
   {
@@ -238,18 +238,18 @@ void __83__CXCallDirectoryExtensionContext_initWithInputItems_listenerEndpoint_c
 
 - (void)_flushPendingBlockingEntryData
 {
-  v3 = [(CXCallDirectoryExtensionContext *)self pendingBlockingEntryData];
-  v6 = [v3 copy];
+  pendingBlockingEntryData = [(CXCallDirectoryExtensionContext *)self pendingBlockingEntryData];
+  v6 = [pendingBlockingEntryData copy];
 
   [(CXCallDirectoryExtensionContext *)self setPendingBlockingEntryData:0];
   v4 = [(CXCallDirectoryExtensionContext *)self _remoteObjectProxyWithErrorHandler:0 synchronous:1];
-  v5 = [(CXCallDirectoryExtensionContext *)self pendingBlockingEntryChangeType];
-  if (v5 == 1)
+  pendingBlockingEntryChangeType = [(CXCallDirectoryExtensionContext *)self pendingBlockingEntryChangeType];
+  if (pendingBlockingEntryChangeType == 1)
   {
     [v4 removeBlockingEntriesWithData:v6 reply:&__block_literal_global_7_0];
   }
 
-  else if (!v5)
+  else if (!pendingBlockingEntryChangeType)
   {
     [v4 addBlockingEntriesWithData:v6 reply:&__block_literal_global_5];
   }
@@ -258,11 +258,11 @@ void __83__CXCallDirectoryExtensionContext_initWithInputItems_listenerEndpoint_c
 - (void)_flushPendingIdentificationEntryData
 {
   v7 = [(CXCallDirectoryExtensionContext *)self _remoteObjectProxyWithErrorHandler:0 synchronous:1];
-  v3 = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryChangeType];
-  if (v3 == 1)
+  pendingIdentificationEntryChangeType = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryChangeType];
+  if (pendingIdentificationEntryChangeType == 1)
   {
-    v6 = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForRemoval];
-    v5 = [v6 copy];
+    pendingIdentificationEntryDataForRemoval = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForRemoval];
+    v5 = [pendingIdentificationEntryDataForRemoval copy];
 
     [(CXCallDirectoryExtensionContext *)self setPendingIdentificationEntryDataForRemoval:0];
     [v7 removeIdentificationEntriesWithData:v5 reply:&__block_literal_global_11];
@@ -270,13 +270,13 @@ void __83__CXCallDirectoryExtensionContext_initWithInputItems_listenerEndpoint_c
 
   else
   {
-    if (v3)
+    if (pendingIdentificationEntryChangeType)
     {
       goto LABEL_6;
     }
 
-    v4 = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForAddition];
-    v5 = [v4 copy];
+    pendingIdentificationEntryDataForAddition = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForAddition];
+    v5 = [pendingIdentificationEntryDataForAddition copy];
 
     [(CXCallDirectoryExtensionContext *)self setPendingIdentificationEntryDataForAddition:0];
     [v7 addIdentificationEntriesWithData:v5 reply:&__block_literal_global_9_1];
@@ -320,19 +320,19 @@ void __48__CXCallDirectoryExtensionContext_isIncremental__block_invoke(uint64_t 
   }
 }
 
-- (void)_performBlockIfIncremental:(id)a3 usingSelectorForExceptionMessage:(SEL)a4
+- (void)_performBlockIfIncremental:(id)incremental usingSelectorForExceptionMessage:(SEL)message
 {
-  v9 = a3;
+  incrementalCopy = incremental;
   if ([(CXCallDirectoryExtensionContext *)self isIncremental])
   {
-    v9[2]();
+    incrementalCopy[2]();
   }
 
   else
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D930];
-    v8 = NSStringFromSelector(a4);
+    v8 = NSStringFromSelector(message);
     [v6 raise:v7 format:{@"Calling %@ when isIncremental is false is unsupported", v8}];
   }
 }
@@ -419,18 +419,18 @@ void __65__CXCallDirectoryExtensionContext_removeAllIdentificationEntries__block
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, &unk_1B486C3FA, buf, 2u);
   }
 
-  v6 = [(CXCallDirectoryExtensionContext *)self pendingBlockingEntryData];
-  v7 = [v6 count];
+  pendingBlockingEntryData = [(CXCallDirectoryExtensionContext *)self pendingBlockingEntryData];
+  v7 = [pendingBlockingEntryData count];
 
   if (v7)
   {
     [(CXCallDirectoryExtensionContext *)self _flushPendingBlockingEntryData];
   }
 
-  v8 = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForAddition];
-  v9 = [v8 count];
-  v10 = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForRemoval];
-  v11 = [v10 count];
+  pendingIdentificationEntryDataForAddition = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForAddition];
+  v9 = [pendingIdentificationEntryDataForAddition count];
+  pendingIdentificationEntryDataForRemoval = [(CXCallDirectoryExtensionContext *)self pendingIdentificationEntryDataForRemoval];
+  v11 = [pendingIdentificationEntryDataForRemoval count];
 
   if (v9 + v11)
   {
@@ -456,23 +456,23 @@ id __72__CXCallDirectoryExtensionContext_completeRequestWithCompletionHandler___
   return objc_msgSendSuper2(&v3, sel_completeRequestReturningItems_completionHandler_, 0, v1);
 }
 
-- (void)requestFailedWithError:(id)a3 reply:(id)a4
+- (void)requestFailedWithError:(id)error reply:(id)reply
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  replyCopy = reply;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = errorCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "request failed with error: %@", &v11, 0xCu);
   }
 
-  v9 = [(CXCallDirectoryExtensionContext *)self delegate];
-  [v9 requestFailedForExtensionContext:self withError:v6];
+  delegate = [(CXCallDirectoryExtensionContext *)self delegate];
+  [delegate requestFailedForExtensionContext:self withError:errorCopy];
 
-  v7[2](v7);
+  replyCopy[2](replyCopy);
   v10 = *MEMORY[0x1E69E9840];
 }
 

@@ -1,34 +1,34 @@
 @interface HKClinicalEphemeralAccount
 + (id)ephemeralAccountIdentifier;
-- (BOOL)isEqual:(id)a3;
-- (HKClinicalEphemeralAccount)initWithCoder:(id)a3;
-- (HKClinicalEphemeralAccount)initWithGateway:(id)a3 authResponse:(id)a4 requestedScopeString:(id)a5;
-- (HKClinicalEphemeralAccount)initWithProvenance:(id)a3 authResponse:(id)a4 requestedScopeString:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (HKClinicalEphemeralAccount)initWithCoder:(id)coder;
+- (HKClinicalEphemeralAccount)initWithGateway:(id)gateway authResponse:(id)response requestedScopeString:(id)string;
+- (HKClinicalEphemeralAccount)initWithProvenance:(id)provenance authResponse:(id)response requestedScopeString:(id)string;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalEphemeralAccount
 
-- (HKClinicalEphemeralAccount)initWithProvenance:(id)a3 authResponse:(id)a4 requestedScopeString:(id)a5
+- (HKClinicalEphemeralAccount)initWithProvenance:(id)provenance authResponse:(id)response requestedScopeString:(id)string
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [objc_opt_class() ephemeralAccountIdentifier];
+  responseCopy = response;
+  stringCopy = string;
+  provenanceCopy = provenance;
+  ephemeralAccountIdentifier = [objc_opt_class() ephemeralAccountIdentifier];
   v12 = +[HKClinicalSharingStatus unknownStatus];
   v20.receiver = self;
   v20.super_class = HKClinicalEphemeralAccount;
   v19 = 0;
-  v13 = [(HKClinicalAccount *)&v20 initWithIdentifier:v11 state:0 userEnabled:1 lastFetchDate:0 lastFullFetchDate:0 lastFailedFetchDate:0 failedFetchAttemptsCount:0 clinicalSharingStatus:v12 hasClinicalSharingScopes:v19 provenance:v10];
+  v13 = [(HKClinicalAccount *)&v20 initWithIdentifier:ephemeralAccountIdentifier state:0 userEnabled:1 lastFetchDate:0 lastFullFetchDate:0 lastFailedFetchDate:0 failedFetchAttemptsCount:0 clinicalSharingStatus:v12 hasClinicalSharingScopes:v19 provenance:provenanceCopy];
 
   if (v13)
   {
-    v14 = [v8 copy];
+    v14 = [responseCopy copy];
     authResponse = v13->_authResponse;
     v13->_authResponse = v14;
 
-    v16 = [v9 copy];
+    v16 = [stringCopy copy];
     requestedScopeString = v13->_requestedScopeString;
     v13->_requestedScopeString = v16;
   }
@@ -36,14 +36,14 @@
   return v13;
 }
 
-- (HKClinicalEphemeralAccount)initWithGateway:(id)a3 authResponse:(id)a4 requestedScopeString:(id)a5
+- (HKClinicalEphemeralAccount)initWithGateway:(id)gateway authResponse:(id)response requestedScopeString:(id)string
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[HKClinicalAccountProvenance alloc] initWithGateway:v10];
+  stringCopy = string;
+  responseCopy = response;
+  gatewayCopy = gateway;
+  v11 = [[HKClinicalAccountProvenance alloc] initWithGateway:gatewayCopy];
 
-  v12 = [(HKClinicalEphemeralAccount *)self initWithProvenance:v11 authResponse:v9 requestedScopeString:v8];
+  v12 = [(HKClinicalEphemeralAccount *)self initWithProvenance:v11 authResponse:responseCopy requestedScopeString:stringCopy];
   return v12;
 }
 
@@ -54,13 +54,13 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self != v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self != equalCopy)
   {
-    v7 = v5;
+    v7 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || (v22.receiver = self, v22.super_class = HKClinicalEphemeralAccount, ![(HKClinicalAccount *)&v22 isEqual:v7]))
     {
@@ -70,16 +70,16 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v8 = 80;
+    authResponse3 = 80;
     authResponse = self->_authResponse;
-    v10 = [(HKClinicalEphemeralAccount *)v7 authResponse];
-    if (authResponse == v10)
+    authResponse = [(HKClinicalEphemeralAccount *)v7 authResponse];
+    if (authResponse == authResponse)
     {
       goto LABEL_10;
     }
 
-    v11 = [(HKClinicalEphemeralAccount *)v7 authResponse];
-    if (!v11)
+    authResponse2 = [(HKClinicalEphemeralAccount *)v7 authResponse];
+    if (!authResponse2)
     {
       v13 = 0;
 LABEL_18:
@@ -87,16 +87,16 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v3 = v11;
+    v3 = authResponse2;
     v12 = self->_authResponse;
-    v8 = [(HKClinicalEphemeralAccount *)v7 authResponse];
-    if ([(HDFHIRAuthResponse *)v12 isEqual:v8])
+    authResponse3 = [(HKClinicalEphemeralAccount *)v7 authResponse];
+    if ([(HDFHIRAuthResponse *)v12 isEqual:authResponse3])
     {
 LABEL_10:
       requestedScopeString = self->_requestedScopeString;
-      v15 = [(HKClinicalEphemeralAccount *)v7 requestedScopeString];
-      v16 = v15;
-      if (requestedScopeString == v15)
+      requestedScopeString = [(HKClinicalEphemeralAccount *)v7 requestedScopeString];
+      v16 = requestedScopeString;
+      if (requestedScopeString == requestedScopeString)
       {
 
         v13 = 1;
@@ -104,13 +104,13 @@ LABEL_10:
 
       else
       {
-        v17 = [(HKClinicalEphemeralAccount *)v7 requestedScopeString];
-        if (v17)
+        requestedScopeString2 = [(HKClinicalEphemeralAccount *)v7 requestedScopeString];
+        if (requestedScopeString2)
         {
-          v18 = v17;
+          v18 = requestedScopeString2;
           v19 = self->_requestedScopeString;
-          v20 = [(HKClinicalEphemeralAccount *)v7 requestedScopeString];
-          v13 = [(NSString *)v19 isEqualToString:v20];
+          requestedScopeString3 = [(HKClinicalEphemeralAccount *)v7 requestedScopeString];
+          v13 = [(NSString *)v19 isEqualToString:requestedScopeString3];
         }
 
         else
@@ -120,7 +120,7 @@ LABEL_10:
         }
       }
 
-      if (authResponse == v10)
+      if (authResponse == authResponse)
       {
         goto LABEL_18;
       }
@@ -149,28 +149,28 @@ LABEL_20:
   return v4 ^ [(NSString *)self->_requestedScopeString hash];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKClinicalEphemeralAccount;
-  v4 = a3;
-  [(HKClinicalAccount *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_authResponse forKey:{@"authResponse", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_requestedScopeString forKey:@"requestedScopeString"];
+  coderCopy = coder;
+  [(HKClinicalAccount *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_authResponse forKey:{@"authResponse", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_requestedScopeString forKey:@"requestedScopeString"];
 }
 
-- (HKClinicalEphemeralAccount)initWithCoder:(id)a3
+- (HKClinicalEphemeralAccount)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = HKClinicalEphemeralAccount;
-  v5 = [(HKClinicalAccount *)&v10 initWithCoder:v4];
+  v5 = [(HKClinicalAccount *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authResponse"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authResponse"];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestedScopeString"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestedScopeString"];
       if (v7)
       {
         objc_storeStrong(&v5->_authResponse, v6);
@@ -180,14 +180,14 @@ LABEL_20:
 
       else
       {
-        [v4 hrs_failWithCocoaValueNotFoundError];
+        [coderCopy hrs_failWithCocoaValueNotFoundError];
         v8 = 0;
       }
     }
 
     else
     {
-      [v4 hrs_failWithCocoaValueNotFoundError];
+      [coderCopy hrs_failWithCocoaValueNotFoundError];
       v8 = 0;
     }
   }

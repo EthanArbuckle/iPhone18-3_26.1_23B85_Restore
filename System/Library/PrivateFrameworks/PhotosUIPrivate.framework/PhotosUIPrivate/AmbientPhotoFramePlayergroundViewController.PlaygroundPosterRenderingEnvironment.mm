@@ -4,13 +4,13 @@
 - (CGRect)px_backdropPrimaryOcclusionRect;
 - (CGRect)px_callServicesOcclusionRect;
 - (CGRect)px_floatingObscurableBounds;
-- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)a3;
-- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)a3;
+- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)layout;
+- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)layout;
 - (CGRect)px_salientContentRectangle;
-- (CGRect)px_titleBoundsForLayout:(unint64_t)a3;
+- (CGRect)px_titleBoundsForLayout:(unint64_t)layout;
 - (NSURL)px_assetDirectory;
 - (UITraitCollection)px_traitCollection;
-- (void)setPx_traitCollection:(id)a3;
+- (void)setPx_traitCollection:(id)collection;
 @end
 
 @implementation AmbientPhotoFramePlayergroundViewController.PlaygroundPosterRenderingEnvironment
@@ -42,7 +42,7 @@
   return result;
 }
 
-- (CGRect)px_titleBoundsForLayout:(unint64_t)a3
+- (CGRect)px_titleBoundsForLayout:(unint64_t)layout
 {
   v3 = sub_1B3897EBC();
   result.size.height = v6;
@@ -69,14 +69,14 @@
   return v2;
 }
 
-- (void)setPx_traitCollection:(id)a3
+- (void)setPx_traitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B38980F8(a3);
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_1B38980F8(collection);
 }
 
-- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)a3
+- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)layout
 {
   v3 = sub_1B3897EBC();
   result.size.height = v6;
@@ -86,7 +86,7 @@
   return result;
 }
 
-- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)a3
+- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)layout
 {
   v3 = sub_1B3897EBC();
   result.size.height = v6;

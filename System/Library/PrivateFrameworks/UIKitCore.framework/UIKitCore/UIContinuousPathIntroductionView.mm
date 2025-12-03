@@ -1,5 +1,5 @@
 @interface UIContinuousPathIntroductionView
-- (UIContinuousPathIntroductionView)initWithKeyboardAppearance:(int64_t)a3;
+- (UIContinuousPathIntroductionView)initWithKeyboardAppearance:(int64_t)appearance;
 - (double)mediaLayoutWidthAdjustment;
 - (id)_introductionMovieAssetURL;
 - (id)mediaContents;
@@ -7,29 +7,29 @@
 - (void)extraButtonTapAction;
 - (void)removeFromSuperview;
 - (void)setupConstraintData;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateVideoLayerWithNewVideo:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateVideoLayerWithNewVideo:(BOOL)video;
 @end
 
 @implementation UIContinuousPathIntroductionView
 
-- (UIContinuousPathIntroductionView)initWithKeyboardAppearance:(int64_t)a3
+- (UIContinuousPathIntroductionView)initWithKeyboardAppearance:(int64_t)appearance
 {
   v11.receiver = self;
   v11.super_class = UIContinuousPathIntroductionView;
-  v3 = [(UIKBTutorialModalDisplay *)&v11 initWithKeyboardAppearance:a3];
+  v3 = [(UIKBTutorialModalDisplay *)&v11 initWithKeyboardAppearance:appearance];
   v4 = v3;
   if (v3)
   {
     [v3 setAccessibilityIdentifier:@"UIContinuousPathIntroductionView"];
     v5 = +[UIColor labelColor];
-    v6 = [(UIContinuousPathIntroductionView *)v4 landscapeTextBody];
-    [v6 setTextColor:v5];
+    landscapeTextBody = [(UIContinuousPathIntroductionView *)v4 landscapeTextBody];
+    [landscapeTextBody setTextColor:v5];
 
     v7 = +[UIKeyboard activeKeyboard];
     v8 = ([v7 interfaceOrientation] - 3) <= 1 && (UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) != 1;
-    v9 = [(UIKBTutorialModalDisplay *)v4 button];
-    [v9 setHidden:v8];
+    button = [(UIKBTutorialModalDisplay *)v4 button];
+    [button setHidden:v8];
   }
 
   return v4;
@@ -38,9 +38,9 @@
 - (void)setupConstraintData
 {
   v18 = +[UIKeyboard activeKeyboard];
-  v3 = [v18 _rootInputWindowController];
-  v4 = [v3 view];
-  [v4 frame];
+  _rootInputWindowController = [v18 _rootInputWindowController];
+  view = [_rootInputWindowController view];
+  [view frame];
   v6 = v5;
 
   [(UIKBTutorialModalDisplay *)self safeAreaInsets];
@@ -51,8 +51,8 @@
 
   else
   {
-    v8 = [v3 view];
-    [v8 safeAreaInsets];
+    view2 = [_rootInputWindowController view];
+    [view2 safeAreaInsets];
     v10 = v9 > 0.0;
   }
 
@@ -175,57 +175,57 @@ LABEL_25:
     v8 = [[UIColor alloc] initWithRed:0.0 green:0.0 blue:0.0 alpha:0.12];
     [(UIView *)self->_keyboardView setBackgroundColor:v8];
 
-    v9 = [(UIView *)self->_keyboardView layer];
-    [v9 setCornerRadius:10.0];
+    layer = [(UIView *)self->_keyboardView layer];
+    [layer setCornerRadius:10.0];
 
-    v10 = [(UIView *)self->_keyboardView layer];
-    [v10 setMasksToBounds:1];
+    layer2 = [(UIView *)self->_keyboardView layer];
+    [layer2 setMasksToBounds:1];
 
-    v11 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
-    [v11 addSubview:self->_keyboardView];
+    textVideoContainer = [(UIContinuousPathIntroductionView *)self textVideoContainer];
+    [textVideoContainer addSubview:self->_keyboardView];
 
-    v12 = [(UIContinuousPathIntroductionView *)self keyboardView];
-    v13 = [v12 centerXAnchor];
-    v14 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
-    v15 = [v14 centerXAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15 constant:0.0];
+    keyboardView = [(UIContinuousPathIntroductionView *)self keyboardView];
+    centerXAnchor = [keyboardView centerXAnchor];
+    textVideoContainer2 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
+    centerXAnchor2 = [textVideoContainer2 centerXAnchor];
+    v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:0.0];
     [v16 setActive:1];
 
-    v17 = [(UIContinuousPathIntroductionView *)self videoWidth];
+    videoWidth = [(UIContinuousPathIntroductionView *)self videoWidth];
 
-    if (!v17)
+    if (!videoWidth)
     {
-      v18 = [(UIContinuousPathIntroductionView *)self keyboardView];
-      v19 = [v18 widthAnchor];
-      v20 = [v19 constraintEqualToConstant:self->_videoSize.width];
+      keyboardView2 = [(UIContinuousPathIntroductionView *)self keyboardView];
+      widthAnchor = [keyboardView2 widthAnchor];
+      v20 = [widthAnchor constraintEqualToConstant:self->_videoSize.width];
       [(UIContinuousPathIntroductionView *)self setVideoWidth:v20];
 
-      v21 = [(UIContinuousPathIntroductionView *)self videoWidth];
-      [v21 setActive:1];
+      videoWidth2 = [(UIContinuousPathIntroductionView *)self videoWidth];
+      [videoWidth2 setActive:1];
     }
 
-    v22 = [(UIContinuousPathIntroductionView *)self videoHeight];
+    videoHeight = [(UIContinuousPathIntroductionView *)self videoHeight];
 
-    if (!v22)
+    if (!videoHeight)
     {
-      v23 = [(UIContinuousPathIntroductionView *)self keyboardView];
-      v24 = [v23 heightAnchor];
-      v25 = [v24 constraintEqualToConstant:self->_videoSize.height];
+      keyboardView3 = [(UIContinuousPathIntroductionView *)self keyboardView];
+      heightAnchor = [keyboardView3 heightAnchor];
+      v25 = [heightAnchor constraintEqualToConstant:self->_videoSize.height];
       [(UIContinuousPathIntroductionView *)self setVideoHeight:v25];
 
-      v26 = [(UIContinuousPathIntroductionView *)self videoHeight];
-      [v26 setActive:1];
+      videoHeight2 = [(UIContinuousPathIntroductionView *)self videoHeight];
+      [videoHeight2 setActive:1];
     }
 
-    v27 = [(UIContinuousPathIntroductionView *)self keyboardView];
+    keyboardView4 = [(UIContinuousPathIntroductionView *)self keyboardView];
     LODWORD(v28) = 1144750080;
-    [v27 setContentHuggingPriority:1 forAxis:v28];
+    [keyboardView4 setContentHuggingPriority:1 forAxis:v28];
   }
 
   [(UIContinuousPathIntroductionView *)self updateVideoLayerWithNewVideo:1];
-  v29 = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
+  landscapeTextBody = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
 
-  if (!v29)
+  if (!landscapeTextBody)
   {
     v30 = objc_alloc_init(UILabel);
     landscapeTextBody = self->_landscapeTextBody;
@@ -235,8 +235,8 @@ LABEL_25:
     v32 = +[UIColor clearColor];
     [(UIView *)self->_landscapeTextBody setBackgroundColor:v32];
 
-    v33 = [(UIKBTutorialModalDisplay *)self textBodyFont];
-    [(UILabel *)self->_landscapeTextBody setFont:v33];
+    textBodyFont = [(UIKBTutorialModalDisplay *)self textBodyFont];
+    [(UILabel *)self->_landscapeTextBody setFont:textBodyFont];
 
     [(UILabel *)self->_landscapeTextBody setNumberOfLines:4];
     [(UILabel *)self->_landscapeTextBody setAdjustsFontSizeToFitWidth:1];
@@ -244,13 +244,13 @@ LABEL_25:
     v34 = _UILocalizedStringInSystemLanguage(@"Slide your finger across the letters to compose a word", @"Speed up your typing by sliding your finger across the letters to compose a word.");
     [(UILabel *)self->_landscapeTextBody setText:v34];
 
-    v35 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
-    [v35 addSubview:self->_landscapeTextBody];
+    textVideoContainer3 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
+    [textVideoContainer3 addSubview:self->_landscapeTextBody];
   }
 
-  v36 = [(UIContinuousPathIntroductionView *)self landscapeButton];
+  landscapeButton = [(UIContinuousPathIntroductionView *)self landscapeButton];
 
-  if (!v36)
+  if (!landscapeButton)
   {
     v37 = [UIButton buttonWithType:1];
     landscapeButton = self->_landscapeButton;
@@ -258,141 +258,141 @@ LABEL_25:
 
     [(UIView *)self->_landscapeButton setTranslatesAutoresizingMaskIntoConstraints:0];
     v39 = self->_landscapeButton;
-    v40 = [(UIKBTutorialModalDisplay *)self buttonTitle];
-    [(UIButton *)v39 setTitle:v40 forState:0];
+    buttonTitle = [(UIKBTutorialModalDisplay *)self buttonTitle];
+    [(UIButton *)v39 setTitle:buttonTitle forState:0];
 
     v41 = self->_landscapeButton;
     v42 = +[UIColor systemBlueColor];
     [(UIButton *)v41 setTitleColor:v42 forState:0];
 
     v43 = [off_1E70ECC18 boldSystemFontOfSize:18.0];
-    v44 = [(UIButton *)self->_landscapeButton titleLabel];
-    [v44 setFont:v43];
+    titleLabel = [(UIButton *)self->_landscapeButton titleLabel];
+    [titleLabel setFont:v43];
 
     [(UIControl *)self->_landscapeButton addTarget:self action:sel_extraButtonTapAction forControlEvents:64];
-    v45 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
-    [v45 addSubview:self->_landscapeButton];
+    textVideoContainer4 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
+    [textVideoContainer4 addSubview:self->_landscapeButton];
 
-    v46 = [(UIContinuousPathIntroductionView *)self landscapeButton];
+    landscapeButton2 = [(UIContinuousPathIntroductionView *)self landscapeButton];
     LODWORD(v47) = 1144766464;
-    [v46 setContentCompressionResistancePriority:1 forAxis:v47];
+    [landscapeButton2 setContentCompressionResistancePriority:1 forAxis:v47];
   }
 
-  v48 = [(UIContinuousPathIntroductionView *)self landscapeConstraints];
+  landscapeConstraints = [(UIContinuousPathIntroductionView *)self landscapeConstraints];
 
-  if (!v48)
+  if (!landscapeConstraints)
   {
     v49 = objc_alloc_init(UILayoutGuide);
-    v50 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
-    [v50 addLayoutGuide:v49];
+    textVideoContainer5 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
+    [textVideoContainer5 addLayoutGuide:v49];
 
     v51 = objc_alloc_init(UILayoutGuide);
-    v52 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
-    [v52 addLayoutGuide:v51];
+    textVideoContainer6 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
+    [textVideoContainer6 addLayoutGuide:v51];
 
-    v146 = [(UILayoutGuide *)v49 topAnchor];
-    v148 = [(UIContinuousPathIntroductionView *)self keyboardView];
-    v144 = [v148 topAnchor];
-    v142 = [v146 constraintEqualToAnchor:v144];
+    topAnchor = [(UILayoutGuide *)v49 topAnchor];
+    keyboardView5 = [(UIContinuousPathIntroductionView *)self keyboardView];
+    topAnchor2 = [keyboardView5 topAnchor];
+    v142 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v152[0] = v142;
-    v140 = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
-    v138 = [v140 topAnchor];
+    landscapeTextBody2 = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
+    topAnchor3 = [landscapeTextBody2 topAnchor];
     v113 = v49;
-    v136 = [(UILayoutGuide *)v49 bottomAnchor];
-    v134 = [v138 constraintEqualToAnchor:v136];
+    bottomAnchor = [(UILayoutGuide *)v49 bottomAnchor];
+    v134 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
     v152[1] = v134;
-    v132 = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
-    v128 = [v132 leadingAnchor];
-    v130 = [(UIContinuousPathIntroductionView *)self keyboardView];
-    v126 = [v130 trailingAnchor];
-    v124 = [v128 constraintEqualToAnchor:v126 constant:24.0];
+    landscapeTextBody3 = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
+    leadingAnchor = [landscapeTextBody3 leadingAnchor];
+    keyboardView6 = [(UIContinuousPathIntroductionView *)self keyboardView];
+    trailingAnchor = [keyboardView6 trailingAnchor];
+    v124 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:24.0];
     v152[2] = v124;
-    v122 = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
-    v120 = [v122 widthAnchor];
-    v121 = [(UIContinuousPathIntroductionView *)self keyboardView];
-    v119 = [v121 widthAnchor];
-    v118 = [v120 constraintEqualToAnchor:v119 multiplier:1.1];
+    landscapeTextBody4 = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
+    widthAnchor2 = [landscapeTextBody4 widthAnchor];
+    keyboardView7 = [(UIContinuousPathIntroductionView *)self keyboardView];
+    widthAnchor3 = [keyboardView7 widthAnchor];
+    v118 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3 multiplier:1.1];
     v152[3] = v118;
-    v117 = [(UIContinuousPathIntroductionView *)self keyboardView];
-    v115 = [v117 centerYAnchor];
-    v116 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
-    v112 = [v116 centerYAnchor];
-    v111 = [v115 constraintEqualToAnchor:v112 constant:0.0];
+    keyboardView8 = [(UIContinuousPathIntroductionView *)self keyboardView];
+    centerYAnchor = [keyboardView8 centerYAnchor];
+    textVideoContainer7 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
+    centerYAnchor2 = [textVideoContainer7 centerYAnchor];
+    v111 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:0.0];
     v152[4] = v111;
-    v110 = [(UIContinuousPathIntroductionView *)self landscapeButton];
-    v108 = [v110 topAnchor];
-    v109 = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
-    v107 = [v109 bottomAnchor];
-    v106 = [v108 constraintEqualToAnchor:v107 constant:16.0];
+    landscapeButton3 = [(UIContinuousPathIntroductionView *)self landscapeButton];
+    topAnchor4 = [landscapeButton3 topAnchor];
+    landscapeTextBody5 = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
+    bottomAnchor2 = [landscapeTextBody5 bottomAnchor];
+    v106 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:16.0];
     v152[5] = v106;
     v114 = v51;
-    v104 = [(UILayoutGuide *)v51 topAnchor];
-    v105 = [(UIContinuousPathIntroductionView *)self landscapeButton];
-    v103 = [v105 bottomAnchor];
-    v102 = [v104 constraintEqualToAnchor:v103];
+    topAnchor5 = [(UILayoutGuide *)v51 topAnchor];
+    landscapeButton4 = [(UIContinuousPathIntroductionView *)self landscapeButton];
+    bottomAnchor3 = [landscapeButton4 bottomAnchor];
+    v102 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3];
     v152[6] = v102;
-    v101 = [(UIContinuousPathIntroductionView *)self keyboardView];
-    v100 = [v101 bottomAnchor];
-    v99 = [(UILayoutGuide *)v51 bottomAnchor];
-    v98 = [v100 constraintEqualToAnchor:v99];
+    keyboardView9 = [(UIContinuousPathIntroductionView *)self keyboardView];
+    bottomAnchor4 = [keyboardView9 bottomAnchor];
+    bottomAnchor5 = [(UILayoutGuide *)v51 bottomAnchor];
+    v98 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     v152[7] = v98;
-    v97 = [(UILayoutGuide *)v51 heightAnchor];
-    v96 = [(UILayoutGuide *)v49 heightAnchor];
-    v95 = [v97 constraintEqualToAnchor:v96];
+    heightAnchor2 = [(UILayoutGuide *)v51 heightAnchor];
+    heightAnchor3 = [(UILayoutGuide *)v49 heightAnchor];
+    v95 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
     v152[8] = v95;
-    v94 = [(UIContinuousPathIntroductionView *)self landscapeButton];
-    v92 = [v94 leadingAnchor];
-    v93 = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
-    v53 = [v93 leadingAnchor];
-    v54 = [v92 constraintEqualToAnchor:v53];
+    landscapeButton5 = [(UIContinuousPathIntroductionView *)self landscapeButton];
+    leadingAnchor2 = [landscapeButton5 leadingAnchor];
+    landscapeTextBody6 = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
+    leadingAnchor3 = [landscapeTextBody6 leadingAnchor];
+    v54 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
     v152[9] = v54;
-    v55 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
-    v56 = [v55 widthAnchor];
-    v57 = [(UIContinuousPathIntroductionView *)self keyboardView];
-    v58 = [v57 widthAnchor];
-    v59 = [v56 constraintEqualToAnchor:v58 multiplier:3.0];
+    textVideoContainer8 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
+    widthAnchor4 = [textVideoContainer8 widthAnchor];
+    keyboardView10 = [(UIContinuousPathIntroductionView *)self keyboardView];
+    widthAnchor5 = [keyboardView10 widthAnchor];
+    v59 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5 multiplier:3.0];
     v152[10] = v59;
     v60 = [MEMORY[0x1E695DEC8] arrayWithObjects:v152 count:11];
     [(UIContinuousPathIntroductionView *)self setLandscapeConstraints:v60];
   }
 
-  v61 = [(UIContinuousPathIntroductionView *)self portraitConstraints];
+  portraitConstraints = [(UIContinuousPathIntroductionView *)self portraitConstraints];
 
-  if (!v61)
+  if (!portraitConstraints)
   {
-    v62 = [(UIContinuousPathIntroductionView *)self keyboardView];
-    v63 = [v62 topAnchor];
-    v64 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
-    v65 = [v64 topAnchor];
-    v66 = [v63 constraintEqualToAnchor:v65 constant:self->_paddingAdjust];
+    keyboardView11 = [(UIContinuousPathIntroductionView *)self keyboardView];
+    topAnchor6 = [keyboardView11 topAnchor];
+    textVideoContainer9 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
+    topAnchor7 = [textVideoContainer9 topAnchor];
+    v66 = [topAnchor6 constraintEqualToAnchor:topAnchor7 constant:self->_paddingAdjust];
 
     LODWORD(v67) = 1132068864;
     v149 = v66;
     [v66 setPriority:v67];
     v151[0] = v66;
-    v147 = [(UIContinuousPathIntroductionView *)self keyboardView];
-    v143 = [v147 topAnchor];
-    v145 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
-    v141 = [v145 topAnchor];
-    v139 = [v143 constraintLessThanOrEqualToAnchor:v141 constant:self->_paddingAdjust];
+    keyboardView12 = [(UIContinuousPathIntroductionView *)self keyboardView];
+    topAnchor8 = [keyboardView12 topAnchor];
+    textVideoContainer10 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
+    topAnchor9 = [textVideoContainer10 topAnchor];
+    v139 = [topAnchor8 constraintLessThanOrEqualToAnchor:topAnchor9 constant:self->_paddingAdjust];
     v151[1] = v139;
-    v137 = [(UIContinuousPathIntroductionView *)self keyboardView];
-    v133 = [v137 topAnchor];
-    v135 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
-    v131 = [v135 topAnchor];
-    v129 = [v133 constraintGreaterThanOrEqualToAnchor:v131 constant:6.0];
+    keyboardView13 = [(UIContinuousPathIntroductionView *)self keyboardView];
+    topAnchor10 = [keyboardView13 topAnchor];
+    textVideoContainer11 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
+    topAnchor11 = [textVideoContainer11 topAnchor];
+    v129 = [topAnchor10 constraintGreaterThanOrEqualToAnchor:topAnchor11 constant:6.0];
     v151[2] = v129;
-    v127 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
-    v123 = [v127 bottomAnchor];
-    v125 = [(UIContinuousPathIntroductionView *)self keyboardView];
-    v68 = [v125 bottomAnchor];
-    v69 = [v123 constraintEqualToAnchor:v68];
+    textVideoContainer12 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
+    bottomAnchor6 = [textVideoContainer12 bottomAnchor];
+    keyboardView14 = [(UIContinuousPathIntroductionView *)self keyboardView];
+    bottomAnchor7 = [keyboardView14 bottomAnchor];
+    v69 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
     v151[3] = v69;
-    v70 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
-    v71 = [v70 widthAnchor];
-    v72 = [(UIContinuousPathIntroductionView *)self keyboardView];
-    v73 = [v72 widthAnchor];
-    v74 = [v71 constraintEqualToAnchor:v73];
+    textVideoContainer13 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
+    widthAnchor6 = [textVideoContainer13 widthAnchor];
+    keyboardView15 = [(UIContinuousPathIntroductionView *)self keyboardView];
+    widthAnchor7 = [keyboardView15 widthAnchor];
+    v74 = [widthAnchor6 constraintEqualToAnchor:widthAnchor7];
     v151[4] = v74;
     v75 = [MEMORY[0x1E695DEC8] arrayWithObjects:v151 count:5];
     [(UIContinuousPathIntroductionView *)self setPortraitConstraints:v75];
@@ -409,49 +409,49 @@ LABEL_25:
 
     if (v77 != 1)
     {
-      v78 = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
-      [v78 setHidden:0];
+      landscapeTextBody7 = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
+      [landscapeTextBody7 setHidden:0];
 
-      v79 = [(UIContinuousPathIntroductionView *)self landscapeButton];
-      [v79 setHidden:0];
+      landscapeButton6 = [(UIContinuousPathIntroductionView *)self landscapeButton];
+      [landscapeButton6 setHidden:0];
 
       v80 = MEMORY[0x1E69977A0];
-      v81 = [(UIContinuousPathIntroductionView *)self portraitConstraints];
-      [v80 deactivateConstraints:v81];
+      portraitConstraints2 = [(UIContinuousPathIntroductionView *)self portraitConstraints];
+      [v80 deactivateConstraints:portraitConstraints2];
 
       v82 = MEMORY[0x1E69977A0];
-      v83 = [(UIContinuousPathIntroductionView *)self landscapeConstraints];
+      landscapeConstraints2 = [(UIContinuousPathIntroductionView *)self landscapeConstraints];
       goto LABEL_22;
     }
   }
 
-  v84 = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
-  [v84 setHidden:1];
+  landscapeTextBody8 = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
+  [landscapeTextBody8 setHidden:1];
 
-  v85 = [(UIContinuousPathIntroductionView *)self landscapeButton];
-  [v85 setHidden:1];
+  landscapeButton7 = [(UIContinuousPathIntroductionView *)self landscapeButton];
+  [landscapeButton7 setHidden:1];
 
   v86 = MEMORY[0x1E69977A0];
-  v87 = [(UIContinuousPathIntroductionView *)self landscapeConstraints];
-  [v86 deactivateConstraints:v87];
+  landscapeConstraints3 = [(UIContinuousPathIntroductionView *)self landscapeConstraints];
+  [v86 deactivateConstraints:landscapeConstraints3];
 
   v82 = MEMORY[0x1E69977A0];
-  v83 = [(UIContinuousPathIntroductionView *)self portraitConstraints];
+  landscapeConstraints2 = [(UIContinuousPathIntroductionView *)self portraitConstraints];
 LABEL_22:
-  v88 = v83;
-  [v82 activateConstraints:v83];
+  v88 = landscapeConstraints2;
+  [v82 activateConstraints:landscapeConstraints2];
 
-  v89 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
-  v150 = v89;
+  textVideoContainer14 = [(UIContinuousPathIntroductionView *)self textVideoContainer];
+  v150 = textVideoContainer14;
   v90 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v150 count:1];
 
   return v90;
 }
 
-- (void)updateVideoLayerWithNewVideo:(BOOL)a3
+- (void)updateVideoLayerWithNewVideo:(BOOL)video
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (video)
   {
     v47 = 0;
     v48 = &v47;
@@ -471,8 +471,8 @@ LABEL_22:
 
     v5 = v4;
     _Block_object_dispose(&v47, 8);
-    v6 = [(UIContinuousPathIntroductionView *)self _introductionMovieAssetURL];
-    v7 = [v4 assetWithURL:v6];
+    _introductionMovieAssetURL = [(UIContinuousPathIntroductionView *)self _introductionMovieAssetURL];
+    v7 = [v4 assetWithURL:_introductionMovieAssetURL];
 
     v47 = 0;
     v48 = &v47;
@@ -558,7 +558,7 @@ LABEL_22:
 
     v21 = v20;
     _Block_object_dispose(&v47, 8);
-    v22 = [[v20 alloc] initAuxiliarySession];
+    initAuxiliarySession = [[v20 alloc] initAuxiliarySession];
     v47 = 0;
     v48 = &v47;
     v49 = 0x2020000000;
@@ -581,21 +581,21 @@ LABEL_22:
     _Block_object_dispose(&v47, 8);
     if (!v23)
     {
-      v40 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v41 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getAVAudioSessionCategoryAmbient(void)"];
-      [v40 handleFailureInFunction:v41 file:@"UIContinuousPathIntroductionView.m" lineNumber:28 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v41 file:@"UIContinuousPathIntroductionView.m" lineNumber:28 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
 
-    [v22 setCategory:*v23 error:0];
-    [(AVQueuePlayer *)self->_player setAudioSession:v22];
-    v26 = [(UIContinuousPathIntroductionView *)self videoLayer];
+    [initAuxiliarySession setCategory:*v23 error:0];
+    [(AVQueuePlayer *)self->_player setAudioSession:initAuxiliarySession];
+    videoLayer = [(UIContinuousPathIntroductionView *)self videoLayer];
 
-    if (v26)
+    if (videoLayer)
     {
-      v27 = [(UIContinuousPathIntroductionView *)self videoLayer];
-      [v27 removeFromSuperlayer];
+      videoLayer2 = [(UIContinuousPathIntroductionView *)self videoLayer];
+      [videoLayer2 removeFromSuperlayer];
     }
   }
 
@@ -620,55 +620,55 @@ LABEL_22:
   v30 = [v28 playerLayerWithPlayer:self->_player];
   [(UIContinuousPathIntroductionView *)self setVideoLayer:v30];
 
-  v31 = [(UIContinuousPathIntroductionView *)self videoLayer];
-  v32 = [v31 superlayer];
-  v33 = v32 == 0;
+  videoLayer3 = [(UIContinuousPathIntroductionView *)self videoLayer];
+  superlayer = [videoLayer3 superlayer];
+  v33 = superlayer == 0;
 
   if (v33)
   {
-    v34 = [(UIContinuousPathIntroductionView *)self keyboardView];
-    v35 = [v34 layer];
-    v36 = [(UIContinuousPathIntroductionView *)self videoLayer];
-    [v35 addSublayer:v36];
+    keyboardView = [(UIContinuousPathIntroductionView *)self keyboardView];
+    layer = [keyboardView layer];
+    videoLayer4 = [(UIContinuousPathIntroductionView *)self videoLayer];
+    [layer addSublayer:videoLayer4];
   }
 
   width = self->_videoSize.width;
   height = self->_videoSize.height;
-  v39 = [(UIContinuousPathIntroductionView *)self videoLayer];
-  [v39 setFrame:{0.0, 0.0, width, height}];
+  videoLayer5 = [(UIContinuousPathIntroductionView *)self videoLayer];
+  [videoLayer5 setFrame:{0.0, 0.0, width, height}];
 
   [(AVQueuePlayer *)self->_player advanceToNextItem];
   [(AVQueuePlayer *)self->_player play];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v30 = a3;
-  v4 = [(UIView *)self constraints];
-  v5 = [v4 count];
+  changeCopy = change;
+  constraints = [(UIView *)self constraints];
+  v5 = [constraints count];
 
   if (v5)
   {
     [(AVQueuePlayer *)self->_player pause];
     [(UIContinuousPathIntroductionView *)self setupConstraintData];
     width = self->_videoSize.width;
-    v7 = [(UIContinuousPathIntroductionView *)self videoWidth];
-    [v7 setConstant:width];
+    videoWidth = [(UIContinuousPathIntroductionView *)self videoWidth];
+    [videoWidth setConstant:width];
 
     height = self->_videoSize.height;
-    v9 = [(UIContinuousPathIntroductionView *)self videoHeight];
-    [v9 setConstant:height];
+    videoHeight = [(UIContinuousPathIntroductionView *)self videoHeight];
+    [videoHeight setConstant:height];
 
-    v10 = [(UIContinuousPathIntroductionView *)self keyboardView];
-    [v10 layoutIfNeeded];
+    keyboardView = [(UIContinuousPathIntroductionView *)self keyboardView];
+    [keyboardView layoutIfNeeded];
 
-    v11 = [(UIView *)self traitCollection];
-    v12 = [v11 hasDifferentColorAppearanceComparedToTraitCollection:v30];
+    traitCollection = [(UIView *)self traitCollection];
+    v12 = [traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy];
 
     if (v12)
     {
-      v13 = [(UIView *)self traitCollection];
-      if ([v13 userInterfaceStyle] == 2)
+      traitCollection2 = [(UIView *)self traitCollection];
+      if ([traitCollection2 userInterfaceStyle] == 2)
       {
         v14 = 1;
       }
@@ -685,44 +685,44 @@ LABEL_22:
     {
       if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1 || (-[UIView traitCollection](self, "traitCollection"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 verticalSizeClass], v15, v16 != 1))
       {
-        v24 = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
-        [v24 setHidden:1];
+        landscapeTextBody = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
+        [landscapeTextBody setHidden:1];
 
-        v25 = [(UIContinuousPathIntroductionView *)self landscapeButton];
-        [v25 setHidden:1];
+        landscapeButton = [(UIContinuousPathIntroductionView *)self landscapeButton];
+        [landscapeButton setHidden:1];
 
-        v26 = [(UIKBTutorialModalDisplay *)self button];
-        [v26 setHidden:0];
+        button = [(UIKBTutorialModalDisplay *)self button];
+        [button setHidden:0];
 
         v27 = MEMORY[0x1E69977A0];
-        v28 = [(UIContinuousPathIntroductionView *)self landscapeConstraints];
-        [v27 deactivateConstraints:v28];
+        landscapeConstraints = [(UIContinuousPathIntroductionView *)self landscapeConstraints];
+        [v27 deactivateConstraints:landscapeConstraints];
 
         v22 = MEMORY[0x1E69977A0];
-        v23 = [(UIContinuousPathIntroductionView *)self portraitConstraints];
+        portraitConstraints = [(UIContinuousPathIntroductionView *)self portraitConstraints];
       }
 
       else
       {
-        v17 = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
-        [v17 setHidden:0];
+        landscapeTextBody2 = [(UIContinuousPathIntroductionView *)self landscapeTextBody];
+        [landscapeTextBody2 setHidden:0];
 
-        v18 = [(UIContinuousPathIntroductionView *)self landscapeButton];
-        [v18 setHidden:0];
+        landscapeButton2 = [(UIContinuousPathIntroductionView *)self landscapeButton];
+        [landscapeButton2 setHidden:0];
 
-        v19 = [(UIKBTutorialModalDisplay *)self button];
-        [v19 setHidden:1];
+        button2 = [(UIKBTutorialModalDisplay *)self button];
+        [button2 setHidden:1];
 
         v20 = MEMORY[0x1E69977A0];
-        v21 = [(UIContinuousPathIntroductionView *)self portraitConstraints];
-        [v20 deactivateConstraints:v21];
+        portraitConstraints2 = [(UIContinuousPathIntroductionView *)self portraitConstraints];
+        [v20 deactivateConstraints:portraitConstraints2];
 
         v22 = MEMORY[0x1E69977A0];
-        v23 = [(UIContinuousPathIntroductionView *)self landscapeConstraints];
+        portraitConstraints = [(UIContinuousPathIntroductionView *)self landscapeConstraints];
       }
 
-      v29 = v23;
-      [v22 activateConstraints:v23];
+      v29 = portraitConstraints;
+      [v22 activateConstraints:portraitConstraints];
 
       [(UIKBTutorialModalDisplay *)self updateMediaViewTextAndPlacement];
     }
@@ -734,8 +734,8 @@ LABEL_22:
 - (id)textBodyDescriptions
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(UIView *)self traitCollection];
-  if ([v2 verticalSizeClass] == 1)
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection verticalSizeClass] == 1)
   {
     v3 = UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL;
 
@@ -761,8 +761,8 @@ LABEL_6:
 
 - (double)mediaLayoutWidthAdjustment
 {
-  v3 = [(UIView *)self traitCollection];
-  if ([v3 verticalSizeClass] == 1)
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection verticalSizeClass] == 1)
   {
     v4 = UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL;
 
@@ -800,8 +800,8 @@ LABEL_6:
 {
   [(UIContinuousPathIntroductionView *)self removeFromSuperview];
   v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v3 = [v2 preferencesActions];
-  [v3 didTriggerOneTimeAction:*MEMORY[0x1E69D9740]];
+  preferencesActions = [v2 preferencesActions];
+  [preferencesActions didTriggerOneTimeAction:*MEMORY[0x1E69D9740]];
 
   v4 = MEMORY[0x1E69E96A0];
 

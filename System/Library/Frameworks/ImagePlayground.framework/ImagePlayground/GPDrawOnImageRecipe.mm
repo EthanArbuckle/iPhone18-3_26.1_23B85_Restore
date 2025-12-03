@@ -1,10 +1,10 @@
 @interface GPDrawOnImageRecipe
 - (BOOL)generateCaptionFromImage;
 - (GPDrawOnImageRecipe)init;
-- (GPDrawOnImageRecipe)initWithBaseImage:(__CVBuffer *)a3 sketchImage:(__CVBuffer *)a4 sketchMask:(__CVBuffer *)a5 baseImageRatio:(double)a6 sketchComplexityMeasure:(double)a7 drawOnImageAssignmentOptions:(int64_t)a8;
-- (GPDrawOnImageRecipe)initWithBaseImage:(__CVBuffer *)a3 sketchImage:(__CVBuffer *)a4 sketchMask:(__CVBuffer *)a5 baseImageRatio:(double)a6 sketchComplexityMeasure:(double)a7 generateCaptionFromImage:(BOOL)a8 drawOnImageAssignmentOptions:(int64_t)a9;
-- (GPDrawOnImageRecipe)initWithBaseImage:(__CVBuffer *)a3 sketchImage:(__CVBuffer *)a4 sketchMask:(__CVBuffer *)a5 baseImageRatio:(double)a6 sketchComplexityMeasure:(double)a7 generateCaptionFromImage:(BOOL)a8 sanitizationCategory:(int64_t)a9 drawOnImageAssignmentOptions:(int64_t)a10;
-- (GPDrawOnImageRecipe)initWithBaseImage:(__CVBuffer *)a3 sketchImage:(__CVBuffer *)a4 sketchMask:(__CVBuffer *)a5 sketchComplexityMeasure:(double)a6 drawOnImageAssignmentOptions:(int64_t)a7;
+- (GPDrawOnImageRecipe)initWithBaseImage:(__CVBuffer *)image sketchImage:(__CVBuffer *)sketchImage sketchMask:(__CVBuffer *)mask baseImageRatio:(double)ratio sketchComplexityMeasure:(double)measure drawOnImageAssignmentOptions:(int64_t)options;
+- (GPDrawOnImageRecipe)initWithBaseImage:(__CVBuffer *)image sketchImage:(__CVBuffer *)sketchImage sketchMask:(__CVBuffer *)mask baseImageRatio:(double)ratio sketchComplexityMeasure:(double)measure generateCaptionFromImage:(BOOL)fromImage drawOnImageAssignmentOptions:(int64_t)options;
+- (GPDrawOnImageRecipe)initWithBaseImage:(__CVBuffer *)image sketchImage:(__CVBuffer *)sketchImage sketchMask:(__CVBuffer *)mask baseImageRatio:(double)ratio sketchComplexityMeasure:(double)measure generateCaptionFromImage:(BOOL)fromImage sanitizationCategory:(int64_t)category drawOnImageAssignmentOptions:(int64_t)self0;
+- (GPDrawOnImageRecipe)initWithBaseImage:(__CVBuffer *)image sketchImage:(__CVBuffer *)sketchImage sketchMask:(__CVBuffer *)mask sketchComplexityMeasure:(double)measure drawOnImageAssignmentOptions:(int64_t)options;
 - (__CVBuffer)baseImage;
 - (__CVBuffer)sketchImage;
 - (__CVBuffer)sketchMask;
@@ -12,18 +12,18 @@
 - (double)sketchComplexityMeasure;
 - (int64_t)drawOnImageAssignmentOptions;
 - (int64_t)sanitizationCategory;
-- (void)setBaseImageRatio:(double)a3;
-- (void)setDrawOnImageAssignmentOptions:(int64_t)a3;
-- (void)setGenerateCaptionFromImage:(BOOL)a3;
-- (void)setSanitizationCategory:(int64_t)a3;
-- (void)setSketchComplexityMeasure:(double)a3;
+- (void)setBaseImageRatio:(double)ratio;
+- (void)setDrawOnImageAssignmentOptions:(int64_t)options;
+- (void)setGenerateCaptionFromImage:(BOOL)image;
+- (void)setSanitizationCategory:(int64_t)category;
+- (void)setSketchComplexityMeasure:(double)measure;
 @end
 
 @implementation GPDrawOnImageRecipe
 
 - (__CVBuffer)baseImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GPDrawOnImageRecipe.baseImage.getter();
 
   return v3;
@@ -31,7 +31,7 @@
 
 - (__CVBuffer)sketchImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GPDrawOnImageRecipe.sketchImage.getter();
 
   return v3;
@@ -39,7 +39,7 @@
 
 - (__CVBuffer)sketchMask
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GPDrawOnImageRecipe.sketchMask.getter();
 
   return v3;
@@ -52,11 +52,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setBaseImageRatio:(double)a3
+- (void)setBaseImageRatio:(double)ratio
 {
   v5 = OBJC_IVAR___GPDrawOnImageRecipe_baseImageRatio;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = ratio;
 }
 
 - (double)sketchComplexityMeasure
@@ -66,11 +66,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setSketchComplexityMeasure:(double)a3
+- (void)setSketchComplexityMeasure:(double)measure
 {
   v5 = OBJC_IVAR___GPDrawOnImageRecipe_sketchComplexityMeasure;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = measure;
 }
 
 - (BOOL)generateCaptionFromImage
@@ -80,11 +80,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setGenerateCaptionFromImage:(BOOL)a3
+- (void)setGenerateCaptionFromImage:(BOOL)image
 {
   v5 = OBJC_IVAR___GPDrawOnImageRecipe_generateCaptionFromImage;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = image;
 }
 
 - (int64_t)sanitizationCategory
@@ -94,11 +94,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setSanitizationCategory:(int64_t)a3
+- (void)setSanitizationCategory:(int64_t)category
 {
   v5 = OBJC_IVAR___GPDrawOnImageRecipe_sanitizationCategory;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = category;
 }
 
 - (int64_t)drawOnImageAssignmentOptions
@@ -108,43 +108,43 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDrawOnImageAssignmentOptions:(int64_t)a3
+- (void)setDrawOnImageAssignmentOptions:(int64_t)options
 {
   v5 = OBJC_IVAR___GPDrawOnImageRecipe_drawOnImageAssignmentOptions;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = options;
 }
 
-- (GPDrawOnImageRecipe)initWithBaseImage:(__CVBuffer *)a3 sketchImage:(__CVBuffer *)a4 sketchMask:(__CVBuffer *)a5 baseImageRatio:(double)a6 sketchComplexityMeasure:(double)a7 generateCaptionFromImage:(BOOL)a8 sanitizationCategory:(int64_t)a9 drawOnImageAssignmentOptions:(int64_t)a10
+- (GPDrawOnImageRecipe)initWithBaseImage:(__CVBuffer *)image sketchImage:(__CVBuffer *)sketchImage sketchMask:(__CVBuffer *)mask baseImageRatio:(double)ratio sketchComplexityMeasure:(double)measure generateCaptionFromImage:(BOOL)fromImage sanitizationCategory:(int64_t)category drawOnImageAssignmentOptions:(int64_t)self0
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  return GPDrawOnImageRecipe.init(baseImage:sketchImage:sketchMask:baseImageRatio:sketchComplexityMeasure:generateCaptionFromImage:sanitizationCategory:drawOnImageAssignmentOptions:)(a3, a4, a5, a8, a9, a10, a6, a7);
+  imageCopy = image;
+  sketchImageCopy = sketchImage;
+  maskCopy = mask;
+  return GPDrawOnImageRecipe.init(baseImage:sketchImage:sketchMask:baseImageRatio:sketchComplexityMeasure:generateCaptionFromImage:sanitizationCategory:drawOnImageAssignmentOptions:)(image, sketchImage, mask, fromImage, category, options, ratio, measure);
 }
 
-- (GPDrawOnImageRecipe)initWithBaseImage:(__CVBuffer *)a3 sketchImage:(__CVBuffer *)a4 sketchMask:(__CVBuffer *)a5 baseImageRatio:(double)a6 sketchComplexityMeasure:(double)a7 generateCaptionFromImage:(BOOL)a8 drawOnImageAssignmentOptions:(int64_t)a9
+- (GPDrawOnImageRecipe)initWithBaseImage:(__CVBuffer *)image sketchImage:(__CVBuffer *)sketchImage sketchMask:(__CVBuffer *)mask baseImageRatio:(double)ratio sketchComplexityMeasure:(double)measure generateCaptionFromImage:(BOOL)fromImage drawOnImageAssignmentOptions:(int64_t)options
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  return GPDrawOnImageRecipe.init(baseImage:sketchImage:sketchMask:baseImageRatio:sketchComplexityMeasure:generateCaptionFromImage:drawOnImageAssignmentOptions:)(a3, a4, a5, a8, a9, a6, a7);
+  imageCopy = image;
+  sketchImageCopy = sketchImage;
+  maskCopy = mask;
+  return GPDrawOnImageRecipe.init(baseImage:sketchImage:sketchMask:baseImageRatio:sketchComplexityMeasure:generateCaptionFromImage:drawOnImageAssignmentOptions:)(image, sketchImage, mask, fromImage, options, ratio, measure);
 }
 
-- (GPDrawOnImageRecipe)initWithBaseImage:(__CVBuffer *)a3 sketchImage:(__CVBuffer *)a4 sketchMask:(__CVBuffer *)a5 baseImageRatio:(double)a6 sketchComplexityMeasure:(double)a7 drawOnImageAssignmentOptions:(int64_t)a8
+- (GPDrawOnImageRecipe)initWithBaseImage:(__CVBuffer *)image sketchImage:(__CVBuffer *)sketchImage sketchMask:(__CVBuffer *)mask baseImageRatio:(double)ratio sketchComplexityMeasure:(double)measure drawOnImageAssignmentOptions:(int64_t)options
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  return GPDrawOnImageRecipe.init(baseImage:sketchImage:sketchMask:baseImageRatio:sketchComplexityMeasure:drawOnImageAssignmentOptions:)(a3, a4, a5, a8, a6, a7);
+  imageCopy = image;
+  sketchImageCopy = sketchImage;
+  maskCopy = mask;
+  return GPDrawOnImageRecipe.init(baseImage:sketchImage:sketchMask:baseImageRatio:sketchComplexityMeasure:drawOnImageAssignmentOptions:)(image, sketchImage, mask, options, ratio, measure);
 }
 
-- (GPDrawOnImageRecipe)initWithBaseImage:(__CVBuffer *)a3 sketchImage:(__CVBuffer *)a4 sketchMask:(__CVBuffer *)a5 sketchComplexityMeasure:(double)a6 drawOnImageAssignmentOptions:(int64_t)a7
+- (GPDrawOnImageRecipe)initWithBaseImage:(__CVBuffer *)image sketchImage:(__CVBuffer *)sketchImage sketchMask:(__CVBuffer *)mask sketchComplexityMeasure:(double)measure drawOnImageAssignmentOptions:(int64_t)options
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  return GPDrawOnImageRecipe.init(baseImage:sketchImage:sketchMask:sketchComplexityMeasure:drawOnImageAssignmentOptions:)(a3, a4, a5, a7, a6);
+  imageCopy = image;
+  sketchImageCopy = sketchImage;
+  maskCopy = mask;
+  return GPDrawOnImageRecipe.init(baseImage:sketchImage:sketchMask:sketchComplexityMeasure:drawOnImageAssignmentOptions:)(image, sketchImage, mask, options, measure);
 }
 
 - (GPDrawOnImageRecipe)init

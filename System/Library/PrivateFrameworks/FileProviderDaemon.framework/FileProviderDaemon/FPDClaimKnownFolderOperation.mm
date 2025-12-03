@@ -1,26 +1,26 @@
 @interface FPDClaimKnownFolderOperation
 - (BOOL)isDisallowedByOrganization;
-- (FPDClaimKnownFolderOperation)initWithDescriptors:(id)a3 server:(id)a4 request:(id)a5;
-- (FPDClaimKnownFolderOperation)initWithKnownFolderLocations:(id)a3 domain:(id)a4 server:(id)a5 localizedReason:(id)a6 request:(id)a7;
-- (FPDClaimKnownFolderOperation)initWithKnownFolders:(unint64_t)a3 domain:(id)a4 server:(id)a5 attachOptions:(unint64_t)a6 request:(id)a7;
-- (void)attachClaimedKnownFoldersWithCompletionHandler:(id)a3;
-- (void)detachKnownFolders:(id)a3 completionHandler:(id)a4;
-- (void)getKnownFolderLocationsWithCompletionHandler:(id)a3;
+- (FPDClaimKnownFolderOperation)initWithDescriptors:(id)descriptors server:(id)server request:(id)request;
+- (FPDClaimKnownFolderOperation)initWithKnownFolderLocations:(id)locations domain:(id)domain server:(id)server localizedReason:(id)reason request:(id)request;
+- (FPDClaimKnownFolderOperation)initWithKnownFolders:(unint64_t)folders domain:(id)domain server:(id)server attachOptions:(unint64_t)options request:(id)request;
+- (void)attachClaimedKnownFoldersWithCompletionHandler:(id)handler;
+- (void)detachKnownFolders:(id)folders completionHandler:(id)handler;
+- (void)getKnownFolderLocationsWithCompletionHandler:(id)handler;
 - (void)isDisallowedByOrganization;
 - (void)main;
-- (void)notifyUserWithCompletionHandler:(id)a3;
-- (void)resolveKnownFolder:(id)a3 location:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
-- (void)resolveLogicalURLsOfLocations:(id)a3 completionHandler:(id)a4;
+- (void)notifyUserWithCompletionHandler:(id)handler;
+- (void)resolveKnownFolder:(id)folder location:(id)location options:(unint64_t)options completionHandler:(id)handler;
+- (void)resolveLogicalURLsOfLocations:(id)locations completionHandler:(id)handler;
 @end
 
 @implementation FPDClaimKnownFolderOperation
 
-- (FPDClaimKnownFolderOperation)initWithKnownFolderLocations:(id)a3 domain:(id)a4 server:(id)a5 localizedReason:(id)a6 request:(id)a7
+- (FPDClaimKnownFolderOperation)initWithKnownFolderLocations:(id)locations domain:(id)domain server:(id)server localizedReason:(id)reason request:(id)request
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  locationsCopy = locations;
+  domainCopy = domain;
+  serverCopy = server;
+  requestCopy = request;
   v19.receiver = self;
   v19.super_class = FPDClaimKnownFolderOperation;
   v16 = [(FPOperation *)&v19 init];
@@ -28,11 +28,11 @@
   if (v16)
   {
     v16->_isProviderInitiated = 1;
-    v16->_knownFolders = [v12 providedKnownFolders];
-    objc_storeStrong(&v17->_locations, a3);
-    objc_storeStrong(&v17->_domain, a4);
-    objc_storeStrong(&v17->_server, a5);
-    objc_storeStrong(&v17->_request, a7);
+    v16->_knownFolders = [locationsCopy providedKnownFolders];
+    objc_storeStrong(&v17->_locations, locations);
+    objc_storeStrong(&v17->_domain, domain);
+    objc_storeStrong(&v17->_server, server);
+    objc_storeStrong(&v17->_request, request);
     v17->_attachOptions = 2;
     v17->_skipSystemAlerts = 0;
   }
@@ -40,11 +40,11 @@
   return v17;
 }
 
-- (FPDClaimKnownFolderOperation)initWithKnownFolders:(unint64_t)a3 domain:(id)a4 server:(id)a5 attachOptions:(unint64_t)a6 request:(id)a7
+- (FPDClaimKnownFolderOperation)initWithKnownFolders:(unint64_t)folders domain:(id)domain server:(id)server attachOptions:(unint64_t)options request:(id)request
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  domainCopy = domain;
+  serverCopy = server;
+  requestCopy = request;
   v19.receiver = self;
   v19.super_class = FPDClaimKnownFolderOperation;
   v16 = [(FPOperation *)&v19 init];
@@ -52,41 +52,41 @@
   if (v16)
   {
     v16->_isProviderInitiated = 0;
-    v16->_knownFolders = a3;
-    objc_storeStrong(&v16->_domain, a4);
-    objc_storeStrong(&v17->_server, a5);
-    objc_storeStrong(&v17->_request, a7);
-    v17->_attachOptions = a6;
+    v16->_knownFolders = folders;
+    objc_storeStrong(&v16->_domain, domain);
+    objc_storeStrong(&v17->_server, server);
+    objc_storeStrong(&v17->_request, request);
+    v17->_attachOptions = options;
     v17->_skipSystemAlerts = 0;
   }
 
   return v17;
 }
 
-- (FPDClaimKnownFolderOperation)initWithDescriptors:(id)a3 server:(id)a4 request:(id)a5
+- (FPDClaimKnownFolderOperation)initWithDescriptors:(id)descriptors server:(id)server request:(id)request
 {
   v46 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  descriptorsCopy = descriptors;
+  serverCopy = server;
+  requestCopy = request;
   v44.receiver = self;
   v44.super_class = FPDClaimKnownFolderOperation;
   v12 = [(FPOperation *)&v44 init];
   v13 = v12;
   if (v12)
   {
-    obj = a4;
-    v35 = a5;
-    v36 = v11;
-    v37 = v10;
+    obj = server;
+    requestCopy2 = request;
+    v36 = requestCopy;
+    v37 = serverCopy;
     v12->_isProviderInitiated = 0;
-    objc_storeStrong(&v12->_descriptors, a3);
+    objc_storeStrong(&v12->_descriptors, descriptors);
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v38 = v9;
-    v14 = v9;
+    v38 = descriptorsCopy;
+    v14 = descriptorsCopy;
     v15 = [v14 countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (!v15)
     {
@@ -105,9 +105,9 @@
         }
 
         v19 = *(*(&v40 + 1) + 8 * i);
-        v20 = [v19 knownFolder];
+        knownFolder = [v19 knownFolder];
         v21 = +[FPDKnownFolderArbiter desktopURL];
-        v22 = [v20 fp_relationshipToItemAtURL:v21];
+        v22 = [knownFolder fp_relationshipToItemAtURL:v21];
 
         if (v22 == 1)
         {
@@ -116,9 +116,9 @@
 
         else
         {
-          v24 = [v19 knownFolder];
+          knownFolder2 = [v19 knownFolder];
           v25 = +[FPDKnownFolderArbiter documentsURL];
-          v26 = [v24 fp_relationshipToItemAtURL:v25];
+          v26 = [knownFolder2 fp_relationshipToItemAtURL:v25];
 
           if (v26 != 1)
           {
@@ -137,20 +137,20 @@
 LABEL_14:
 
         objc_storeStrong(&v13->_server, obj);
-        objc_storeStrong(&v13->_request, v35);
+        objc_storeStrong(&v13->_request, requestCopy2);
         v13->_attachOptions = 2;
         v13->_skipSystemAlerts = 0;
         v39 = 0;
-        v27 = [(FPDServer *)v13->_server extensionManager];
-        v28 = [v14 firstObject];
-        v29 = [v28 logicalLocation];
-        v30 = [v27 domainForURL:v29 reason:&v39];
+        extensionManager = [(FPDServer *)v13->_server extensionManager];
+        firstObject = [v14 firstObject];
+        logicalLocation = [firstObject logicalLocation];
+        v30 = [extensionManager domainForURL:logicalLocation reason:&v39];
         domain = v13->_domain;
         v13->_domain = v30;
 
-        v10 = v37;
-        v9 = v38;
-        v11 = v36;
+        serverCopy = v37;
+        descriptorsCopy = v38;
+        requestCopy = v36;
         break;
       }
     }
@@ -177,10 +177,10 @@ LABEL_14:
       goto LABEL_12;
     }
 
-    v10 = [(FPDServer *)self->_server extensionManager];
+    extensionManager = [(FPDServer *)self->_server extensionManager];
     v11 = [(NSArray *)self->_descriptors objectAtIndexedSubscript:0];
-    v12 = [v11 logicalLocation];
-    v4 = [v10 domainForURL:v12 reason:0];
+    logicalLocation = [v11 logicalLocation];
+    v4 = [extensionManager domainForURL:logicalLocation reason:0];
 
     if (!v4)
     {
@@ -188,10 +188,10 @@ LABEL_14:
     }
   }
 
-  v5 = [(FPDDomain *)v4 provider];
-  v6 = [v5 isKnownFolderSyncingAllowedByManagement];
+  provider = [(FPDDomain *)v4 provider];
+  isKnownFolderSyncingAllowedByManagement = [provider isKnownFolderSyncingAllowedByManagement];
 
-  if (v6)
+  if (isKnownFolderSyncingAllowedByManagement)
   {
 LABEL_12:
     v8 = 0;
@@ -210,13 +210,13 @@ LABEL_13:
   return v8;
 }
 
-- (void)getKnownFolderLocationsWithCompletionHandler:(id)a3
+- (void)getKnownFolderLocationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (self->_descriptors)
   {
-    v6 = *(v4 + 2);
+    v6 = *(handlerCopy + 2);
 LABEL_5:
     v6();
     goto LABEL_6;
@@ -225,16 +225,16 @@ LABEL_5:
   if (self->_isProviderInitiated)
   {
     locations = self->_locations;
-    v6 = *(v4 + 2);
+    v6 = *(handlerCopy + 2);
     goto LABEL_5;
   }
 
-  v8 = [(FPDDomain *)self->_domain defaultBackend];
+  defaultBackend = [(FPDDomain *)self->_domain defaultBackend];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(FPDDomain *)self->_domain defaultBackend];
+    defaultBackend2 = [(FPDDomain *)self->_domain defaultBackend];
     knownFolders = self->_knownFolders;
     request = self->_request;
     v14[0] = MEMORY[0x1E69E9820];
@@ -243,7 +243,7 @@ LABEL_5:
     v14[3] = &unk_1E83C1718;
     v14[4] = self;
     v15 = v5;
-    [v10 getKnownFolderLocations:knownFolders request:request completionHandler:v14];
+    [defaultBackend2 getKnownFolderLocations:knownFolders request:request completionHandler:v14];
   }
 
   else
@@ -296,27 +296,27 @@ LABEL_6:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resolveKnownFolder:(id)a3 location:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (void)resolveKnownFolder:(id)folder location:(id)location options:(unint64_t)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v11 asExistingLocation];
-  v14 = v13;
-  if (!v13)
+  folderCopy = folder;
+  locationCopy = location;
+  handlerCopy = handler;
+  asExistingLocation = [locationCopy asExistingLocation];
+  v14 = asExistingLocation;
+  if (!asExistingLocation)
   {
-    v39 = a5;
+    optionsCopy2 = options;
     v19 = 0;
     goto LABEL_9;
   }
 
-  v15 = [v13 itemIdentifier];
-  v16 = [v15 isEqualToString:*MEMORY[0x1E6967258]];
+  itemIdentifier = [asExistingLocation itemIdentifier];
+  v16 = [itemIdentifier isEqualToString:*MEMORY[0x1E6967258]];
 
   if (!v16)
   {
-    v20 = [v14 itemIdentifier];
-    v21 = [v20 isEqualToString:*MEMORY[0x1E6967280]];
+    itemIdentifier2 = [v14 itemIdentifier];
+    v21 = [itemIdentifier2 isEqualToString:*MEMORY[0x1E6967280]];
 
     if (v21)
     {
@@ -325,23 +325,23 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v39 = a5;
+    optionsCopy2 = options;
     v23 = objc_alloc(MEMORY[0x1E69673A0]);
-    v24 = [(FPDDomain *)self->_domain identifier];
-    v25 = [v14 itemIdentifier];
-    v19 = [v23 initWithProviderDomainID:v24 itemIdentifier:v25];
+    identifier = [(FPDDomain *)self->_domain identifier];
+    itemIdentifier3 = [v14 itemIdentifier];
+    v19 = [v23 initWithProviderDomainID:identifier itemIdentifier:itemIdentifier3];
 
 LABEL_9:
-    v26 = [v11 asPathMatchingLocation];
-    v38 = self;
-    if (v26)
+    asPathMatchingLocation = [locationCopy asPathMatchingLocation];
+    selfCopy = self;
+    if (asPathMatchingLocation)
     {
       v27 = objc_alloc(MEMORY[0x1E69673A0]);
-      v28 = [(FPDDomain *)self->_domain identifier];
-      v29 = [v26 parentItemIdentifier];
-      v30 = [v27 initWithProviderDomainID:v28 itemIdentifier:v29];
+      identifier2 = [(FPDDomain *)self->_domain identifier];
+      parentItemIdentifier = [asPathMatchingLocation parentItemIdentifier];
+      v30 = [v27 initWithProviderDomainID:identifier2 itemIdentifier:parentItemIdentifier];
 
-      v31 = [v26 filename];
+      filename = [asPathMatchingLocation filename];
       v19 = v30;
       if (v30)
       {
@@ -351,27 +351,27 @@ LABEL_9:
 
     else
     {
-      v31 = 0;
+      filename = 0;
       if (v19)
       {
 LABEL_11:
-        if (([v31 containsString:@"/"] & 1) == 0 && (objc_msgSend(v31, "isEqualToString:", @".") & 1) == 0 && !objc_msgSend(v31, "isEqualToString:", @".."))
+        if (([filename containsString:@"/"] & 1) == 0 && (objc_msgSend(filename, "isEqualToString:", @".") & 1) == 0 && !objc_msgSend(filename, "isEqualToString:", @".."))
         {
-          [(FPDDomain *)v38->_domain defaultBackend];
-          v36 = v35 = v10;
-          request = v38->_request;
+          [(FPDDomain *)selfCopy->_domain defaultBackend];
+          v36 = v35 = folderCopy;
+          request = selfCopy->_request;
           v40[0] = MEMORY[0x1E69E9820];
           v40[1] = 3221225472;
           v40[2] = __86__FPDClaimKnownFolderOperation_resolveKnownFolder_location_options_completionHandler___block_invoke;
           v40[3] = &unk_1E83C1740;
-          v44 = v12;
+          v44 = handlerCopy;
           v41 = v19;
-          v42 = v31;
+          v42 = filename;
           v43 = v35;
-          v45 = v39;
+          v45 = optionsCopy2;
           [v36 itemForItemID:v41 creatingPlaceholderIfMissing:1 ignoreAlternateContentsURL:1 request:request completionHandler:v40];
 
-          v10 = v35;
+          folderCopy = v35;
           goto LABEL_18;
         }
 
@@ -379,7 +379,7 @@ LABEL_11:
         v33 = @"invalid folder name";
 LABEL_17:
         v34 = [v32 fp_invalidArgumentError:v33];
-        (*(v12 + 2))(v12, 0, v34);
+        (*(handlerCopy + 2))(handlerCopy, 0, v34);
 
 LABEL_18:
         goto LABEL_19;
@@ -395,7 +395,7 @@ LABEL_18:
   v18 = @"the root item cannot be used as the location of a known folder";
 LABEL_7:
   v22 = [v17 fp_invalidArgumentError:v18];
-  (*(v12 + 2))(v12, 0, v22);
+  (*(handlerCopy + 2))(handlerCopy, 0, v22);
 
 LABEL_19:
 }
@@ -495,15 +495,15 @@ void __86__FPDClaimKnownFolderOperation_resolveKnownFolder_location_options_comp
   }
 }
 
-- (void)resolveLogicalURLsOfLocations:(id)a3 completionHandler:(id)a4
+- (void)resolveLogicalURLsOfLocations:(id)locations completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  locationsCopy = locations;
+  handlerCopy = handler;
+  v8 = handlerCopy;
   descriptors = self->_descriptors;
   if (descriptors)
   {
-    (*(v7 + 2))(v7, descriptors, 0);
+    (*(handlerCopy + 2))(handlerCopy, descriptors, 0);
   }
 
   else
@@ -516,14 +516,14 @@ void __86__FPDClaimKnownFolderOperation_resolveKnownFolder_location_options_comp
     v36[4] = __Block_byref_object_dispose__18;
     v37 = 0;
     v11 = objc_opt_new();
-    v12 = [v6 shouldCreateBinaryCompatibilitySymlink];
-    v13 = [v6 desktopLocation];
+    shouldCreateBinaryCompatibilitySymlink = [locationsCopy shouldCreateBinaryCompatibilitySymlink];
+    desktopLocation = [locationsCopy desktopLocation];
 
-    if (v13)
+    if (desktopLocation)
     {
       dispatch_group_enter(v10);
       v14 = +[FPDKnownFolderArbiter desktopURL];
-      v15 = [v6 desktopLocation];
+      desktopLocation2 = [locationsCopy desktopLocation];
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
       v32[2] = __80__FPDClaimKnownFolderOperation_resolveLogicalURLsOfLocations_completionHandler___block_invoke;
@@ -531,16 +531,16 @@ void __86__FPDClaimKnownFolderOperation_resolveKnownFolder_location_options_comp
       v33 = v10;
       v35 = v36;
       v34 = v11;
-      [(FPDClaimKnownFolderOperation *)self resolveKnownFolder:v14 location:v15 options:v12 completionHandler:v32];
+      [(FPDClaimKnownFolderOperation *)self resolveKnownFolder:v14 location:desktopLocation2 options:shouldCreateBinaryCompatibilitySymlink completionHandler:v32];
     }
 
-    v16 = [v6 documentsLocation];
+    documentsLocation = [locationsCopy documentsLocation];
 
-    if (v16)
+    if (documentsLocation)
     {
       dispatch_group_enter(v10);
       v17 = +[FPDKnownFolderArbiter documentsURL];
-      v18 = [v6 documentsLocation];
+      documentsLocation2 = [locationsCopy documentsLocation];
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __80__FPDClaimKnownFolderOperation_resolveLogicalURLsOfLocations_completionHandler___block_invoke_2;
@@ -548,10 +548,10 @@ void __86__FPDClaimKnownFolderOperation_resolveKnownFolder_location_options_comp
       v29 = v10;
       v31 = v36;
       v30 = v11;
-      [(FPDClaimKnownFolderOperation *)self resolveKnownFolder:v17 location:v18 options:v12 completionHandler:v28];
+      [(FPDClaimKnownFolderOperation *)self resolveKnownFolder:v17 location:documentsLocation2 options:shouldCreateBinaryCompatibilitySymlink completionHandler:v28];
     }
 
-    v19 = [(FPOperation *)self callbackQueue];
+    callbackQueue = [(FPOperation *)self callbackQueue];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __80__FPDClaimKnownFolderOperation_resolveLogicalURLsOfLocations_completionHandler___block_invoke_3;
@@ -560,10 +560,10 @@ void __86__FPDClaimKnownFolderOperation_resolveKnownFolder_location_options_comp
     v27 = v36;
     v25 = v11;
     v26 = v8;
-    v24 = self;
+    selfCopy = self;
     v20 = v11;
     v21 = v10;
-    dispatch_group_notify(v21, v19, v22);
+    dispatch_group_notify(v21, callbackQueue, v22);
 
     _Block_object_dispose(v36, 8);
   }
@@ -770,10 +770,10 @@ LABEL_31:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyUserWithCompletionHandler:(id)a3
+- (void)notifyUserWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (self->_isProviderInitiated && !self->_skipSystemAlerts)
   {
     v6 = fp_current_or_default_log();
@@ -820,11 +820,11 @@ LABEL_31:
       }
     }
 
-    v14 = [(FPDDomain *)self->_domain provider];
-    v7 = [v14 providerDomainForDomain:self->_domain];
+    provider = [(FPDDomain *)self->_domain provider];
+    v7 = [provider providerDomainForDomain:self->_domain];
 
-    v15 = [(FPDDomain *)self->_domain provider];
-    [v7 setShouldHideDomainDisplayName:{objc_msgSend(v15, "shouldHideDomainDisplayName")}];
+    provider2 = [(FPDDomain *)self->_domain provider];
+    [v7 setShouldHideDomainDisplayName:{objc_msgSend(provider2, "shouldHideDomainDisplayName")}];
 
     v8 = [objc_opt_new() initWithProviderDomain:v7];
     if ([v8 presentAlertWithUserAprovalToContinue])
@@ -842,13 +842,13 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  (*(v4 + 2))(v4, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0);
 LABEL_21:
 }
 
-- (void)attachClaimedKnownFoldersWithCompletionHandler:(id)a3
+- (void)attachClaimedKnownFoldersWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   descriptors = self->_descriptors;
   if (descriptors)
   {
@@ -865,24 +865,24 @@ LABEL_21:
   v9[1] = 3221225472;
   v9[2] = __79__FPDClaimKnownFolderOperation_attachClaimedKnownFoldersWithCompletionHandler___block_invoke_2;
   v9[3] = &unk_1E83C17B8;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(FPOperation *)v7 setFinishedBlock:v9];
   [(FPOperation *)v7 start];
 }
 
-- (void)detachKnownFolders:(id)a3 completionHandler:(id)a4
+- (void)detachKnownFolders:(id)folders completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[FPDDetachKnownFolderOperation alloc] initWithKnownFolder:v7 server:self->_server request:self->_request];
+  handlerCopy = handler;
+  foldersCopy = folders;
+  v8 = [[FPDDetachKnownFolderOperation alloc] initWithKnownFolder:foldersCopy server:self->_server request:self->_request];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __69__FPDClaimKnownFolderOperation_detachKnownFolders_completionHandler___block_invoke;
   v10[3] = &unk_1E83C17B8;
-  v11 = v6;
-  v9 = v6;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(FPOperation *)v8 setFinishedBlock:v10];
   [(FPOperation *)v8 start];
 }
@@ -895,25 +895,25 @@ LABEL_21:
     domain = self->_domain;
     if (domain)
     {
-      v7 = [(FPDDomain *)domain volume];
-      v8 = [v7 role];
+      volume = [(FPDDomain *)domain volume];
+      role = [volume role];
 
-      if (v8 != 1)
+      if (role != 1)
       {
         v17 = fp_current_or_default_log();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [(FPDDomain *)self->_domain identifier];
-          v19 = [v18 fp_obfuscatedProviderDomainID];
+          identifier = [(FPDDomain *)self->_domain identifier];
+          fp_obfuscatedProviderDomainID = [identifier fp_obfuscatedProviderDomainID];
           *buf = 138412546;
-          v39 = self;
+          selfCopy4 = self;
           v40 = 2114;
-          *v41 = v19;
+          *v41 = fp_obfuscatedProviderDomainID;
           _os_log_impl(&dword_1CEFC7000, v17, OS_LOG_TYPE_DEFAULT, "[NOTICE] %@: %{public}@ is not on the home volume", buf, 0x16u);
         }
 
-        v20 = [(FPDDomain *)self->_domain provider];
-        v21 = [v20 providerDomainForDomain:self->_domain];
+        provider = [(FPDDomain *)self->_domain provider];
+        v21 = [provider providerDomainForDomain:self->_domain];
 
         if ([v21 isiCloudDriveProvider])
         {
@@ -922,7 +922,7 @@ LABEL_21:
 
         else
         {
-          v35 = [v21 domainFullDisplayName];
+          domainFullDisplayName = [v21 domainFullDisplayName];
           v22 = FPLoc();
         }
 
@@ -930,7 +930,7 @@ LABEL_21:
         v24 = *MEMORY[0x1E696A798];
         v42 = *MEMORY[0x1E696A578];
         v43[0] = v22;
-        v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:&v42 count:{1, v35}];
+        v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:&v42 count:{1, domainFullDisplayName}];
         v26 = [v23 errorWithDomain:v24 code:18 userInfo:v25];
         [(FPOperation *)self finishWithResult:0 error:v26];
 
@@ -946,8 +946,8 @@ LABEL_22:
           goto LABEL_24;
         }
 
-        v27 = [(FPDDomain *)v9 nsDomain];
-        v28 = self->_knownFolders & ~[v27 supportedKnownFolders];
+        nsDomain = [(FPDDomain *)v9 nsDomain];
+        v28 = self->_knownFolders & ~[nsDomain supportedKnownFolders];
 
         if (!v28)
         {
@@ -958,14 +958,14 @@ LABEL_22:
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
           knownFolders = self->_knownFolders;
-          v33 = [(FPDDomain *)self->_domain identifier];
-          v34 = [v33 fp_obfuscatedProviderDomainID];
+          identifier2 = [(FPDDomain *)self->_domain identifier];
+          fp_obfuscatedProviderDomainID2 = [identifier2 fp_obfuscatedProviderDomainID];
           *buf = 138412802;
-          v39 = self;
+          selfCopy4 = self;
           v40 = 1024;
           *v41 = knownFolders;
           *&v41[4] = 2114;
-          *&v41[6] = v34;
+          *&v41[6] = fp_obfuscatedProviderDomainID2;
           _os_log_impl(&dword_1CEFC7000, v31, OS_LOG_TYPE_DEFAULT, "[NOTICE] %@: attempting to switch %x to %{public}@ that doesn't support those folders", buf, 0x1Cu);
         }
 
@@ -980,22 +980,22 @@ LABEL_27:
 
       if (v9)
       {
-        v10 = [(FPDDomain *)v9 nsDomain];
-        v11 = [v10 replicatedKnownFolders];
+        nsDomain2 = [(FPDDomain *)v9 nsDomain];
+        replicatedKnownFolders = [nsDomain2 replicatedKnownFolders];
         v12 = self->_knownFolders;
 
-        if (v12 && (v12 & v11) == v12)
+        if (v12 && (v12 & replicatedKnownFolders) == v12)
         {
           v13 = fp_current_or_default_log();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [(FPDDomain *)self->_domain identifier];
-            v15 = [v14 fp_obfuscatedProviderDomainID];
+            identifier3 = [(FPDDomain *)self->_domain identifier];
+            fp_obfuscatedProviderDomainID3 = [identifier3 fp_obfuscatedProviderDomainID];
             v16 = self->_knownFolders;
             *buf = 138412802;
-            v39 = self;
+            selfCopy4 = self;
             v40 = 2114;
-            *v41 = v15;
+            *v41 = fp_obfuscatedProviderDomainID3;
             *&v41[8] = 1024;
             *&v41[10] = v16;
             _os_log_impl(&dword_1CEFC7000, v13, OS_LOG_TYPE_DEFAULT, "[NOTICE] %@: %{public}@ is already syncing the requested folders %x", buf, 0x1Cu);
@@ -1015,7 +1015,7 @@ LABEL_24:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v39 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_1CEFC7000, v29, OS_LOG_TYPE_DEFAULT, "[NOTICE] %@: resolving locations", buf, 0xCu);
     }
 
@@ -1171,14 +1171,14 @@ void __36__FPDClaimKnownFolderOperation_main__block_invoke_119(uint64_t a1, void
 - (void)isDisallowedByOrganization
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = *(a1 + 328);
-  v6 = [a2 providerDomainID];
-  v7 = [v6 fp_obfuscatedProviderDomainID];
-  v8 = *(a1 + 368);
+  v5 = *(self + 328);
+  providerDomainID = [a2 providerDomainID];
+  fp_obfuscatedProviderDomainID = [providerDomainID fp_obfuscatedProviderDomainID];
+  v8 = *(self + 368);
   v10 = 138412802;
   v11 = v5;
   v12 = 2114;
-  v13 = v7;
+  v13 = fp_obfuscatedProviderDomainID;
   v14 = 2114;
   v15 = v8;
   _os_log_error_impl(&dword_1CEFC7000, a3, OS_LOG_TYPE_ERROR, "[ERROR] Management Disallows claiming known folders %@ by %{public}@ for %{public}@", &v10, 0x20u);

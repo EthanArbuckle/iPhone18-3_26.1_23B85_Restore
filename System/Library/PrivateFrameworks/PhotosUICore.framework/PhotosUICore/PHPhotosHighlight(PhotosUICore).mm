@@ -7,35 +7,35 @@
 
 - (uint64_t)px_curationType
 {
-  v2 = [a1 preferredCurationType];
+  preferredCurationType = [self preferredCurationType];
   v3 = +[PXCuratedLibrarySettings sharedInstance];
-  v4 = [v3 useCustomDaysCurationType];
+  useCustomDaysCurationType = [v3 useCustomDaysCurationType];
 
-  if (!v4)
+  if (!useCustomDaysCurationType)
   {
-    return v2;
+    return preferredCurationType;
   }
 
-  v5 = [a1 assetCollectionSubtype];
-  if (v5 != 1000000304 && v5 != 1000000301)
+  assetCollectionSubtype = [self assetCollectionSubtype];
+  if (assetCollectionSubtype != 1000000304 && assetCollectionSubtype != 1000000301)
   {
-    return v2;
+    return preferredCurationType;
   }
 
   v6 = +[PXCuratedLibrarySettings sharedInstance];
-  v7 = [v6 daysCurationType];
+  daysCurationType = [v6 daysCurationType];
 
-  return v7;
+  return daysCurationType;
 }
 
 - (__CFString)px_navigationURLHost
 {
-  if ([a1 px_isEvent])
+  if ([self px_isEvent])
   {
     return @"events";
   }
 
-  if ([a1 px_isTrip])
+  if ([self px_isTrip])
   {
     return @"trips";
   }

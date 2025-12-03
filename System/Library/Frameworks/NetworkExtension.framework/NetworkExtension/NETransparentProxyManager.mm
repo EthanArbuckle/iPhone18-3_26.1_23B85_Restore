@@ -1,46 +1,46 @@
 @interface NETransparentProxyManager
 + (void)loadAllFromPreferencesWithCompletionHandler:(void *)completionHandler;
-+ (void)loadEverythingFromPreferencesWithCompletionHandler:(id)a3;
++ (void)loadEverythingFromPreferencesWithCompletionHandler:(id)handler;
 - (BOOL)isFromMDM;
 - (NETransparentProxyManager)init;
 - (void)additionalSetup;
-- (void)loadFromPreferencesWithCompletionHandler:(id)a3;
+- (void)loadFromPreferencesWithCompletionHandler:(id)handler;
 @end
 
 @implementation NETransparentProxyManager
 
 - (BOOL)isFromMDM
 {
-  v3 = [(NEVPNManager *)self configuration];
-  v4 = [v3 payloadInfo];
+  configuration = [(NEVPNManager *)self configuration];
+  payloadInfo = [configuration payloadInfo];
 
-  if (!v4)
+  if (!payloadInfo)
   {
     return 0;
   }
 
-  v5 = [(NEVPNManager *)self configuration];
-  v6 = [v5 payloadInfo];
-  v7 = [v6 profileSource] == 2;
+  configuration2 = [(NEVPNManager *)self configuration];
+  payloadInfo2 = [configuration2 payloadInfo];
+  v7 = [payloadInfo2 profileSource] == 2;
 
   return v7;
 }
 
-- (void)loadFromPreferencesWithCompletionHandler:(id)a3
+- (void)loadFromPreferencesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = +[NEVPNManager configurationManager];
-    v6 = [(NEVPNManager *)self configuration];
-    v7 = [v6 identifier];
+    configuration = [(NEVPNManager *)self configuration];
+    identifier = [configuration identifier];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __70__NETransparentProxyManager_loadFromPreferencesWithCompletionHandler___block_invoke;
     v8[3] = &unk_1E7F0B5D8;
     v8[4] = self;
-    v9 = v4;
-    [v5 loadConfigurationWithID:v7 withCompletionQueue:MEMORY[0x1E69E96A0] handler:v8];
+    v9 = handlerCopy;
+    [v5 loadConfigurationWithID:identifier withCompletionQueue:MEMORY[0x1E69E96A0] handler:v8];
   }
 }
 
@@ -118,23 +118,23 @@ LABEL_15:
 
 - (void)additionalSetup
 {
-  v3 = [(NEVPNManager *)self configuration];
-  v4 = [v3 VPN];
-  v10 = [v4 protocol];
+  configuration = [(NEVPNManager *)self configuration];
+  v4 = [configuration VPN];
+  protocol = [v4 protocol];
 
-  v5 = [v10 providerBundleIdentifier];
+  providerBundleIdentifier = [protocol providerBundleIdentifier];
   objc_opt_self();
-  v6 = v5;
+  v6 = providerBundleIdentifier;
 
-  [v10 setProviderBundleIdentifier:v6];
-  v7 = [MEMORY[0x1E696AAE8] mainBundle];
-  v8 = [v7 bundleIdentifier];
-  [v10 setPluginType:v8];
+  [protocol setProviderBundleIdentifier:v6];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [protocol setPluginType:bundleIdentifier];
 
-  v9 = [(NEVPNManager *)self configuration];
-  if (v9)
+  configuration2 = [(NEVPNManager *)self configuration];
+  if (configuration2)
   {
-    v9[22] = 0;
+    configuration2[22] = 0;
   }
 }
 
@@ -153,12 +153,12 @@ LABEL_15:
   return v5;
 }
 
-+ (void)loadEverythingFromPreferencesWithCompletionHandler:(id)a3
++ (void)loadEverythingFromPreferencesWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   objc_opt_self();
   g_noAppFilter = 1;
-  [NETransparentProxyManager loadAllFromPreferencesWithCompletionHandler:v3];
+  [NETransparentProxyManager loadAllFromPreferencesWithCompletionHandler:handlerCopy];
 }
 
 + (void)loadAllFromPreferencesWithCompletionHandler:(void *)completionHandler

@@ -1,27 +1,27 @@
 @interface FLTMutableSSUIntentParameter
 - (FLTMutableSSUIntentParameter)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setExample_value:(id)a3;
-- (void)setName:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setExample_value:(id)example_value;
+- (void)setName:(id)name;
 @end
 
 @implementation FLTMutableSSUIntentParameter
 
-- (void)setExample_value:(id)a3
+- (void)setExample_value:(id)example_value
 {
-  v4 = [a3 copy];
+  v4 = [example_value copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -36,9 +36,9 @@
   v2 = [(FLTMutableSSUIntentParameter *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;

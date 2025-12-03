@@ -1,51 +1,51 @@
 @interface FCPersistentAssetKeyCache
 + (id)_persistenceCoder;
-- (id)initWithCacheDirectory:(void *)a3 cacheName:(void *)a4 backgroundTaskable:;
-- (id)interestTokenForWrappingKeyIDs:(id)a3;
-- (id)wrappingKeyForWrappingKeyID:(id)a3;
+- (id)initWithCacheDirectory:(void *)directory cacheName:(void *)name backgroundTaskable:;
+- (id)interestTokenForWrappingKeyIDs:(id)ds;
+- (id)wrappingKeyForWrappingKeyID:(id)d;
 - (void)_loadFromDisk;
 - (void)_saveToDisk;
 - (void)activityObservingApplicationDidEnterBackground;
-- (void)enableFlushingWithFlushingThreshold:(unint64_t)a3;
+- (void)enableFlushingWithFlushingThreshold:(unint64_t)threshold;
 - (void)removeAllWrappingKeys;
-- (void)setWrappingKey:(id)a3 forWrappingKeyID:(id)a4;
+- (void)setWrappingKey:(id)key forWrappingKeyID:(id)d;
 @end
 
 @implementation FCPersistentAssetKeyCache
 
-- (id)initWithCacheDirectory:(void *)a3 cacheName:(void *)a4 backgroundTaskable:
+- (id)initWithCacheDirectory:(void *)directory cacheName:(void *)name backgroundTaskable:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  directoryCopy = directory;
+  nameCopy = name;
+  if (self)
   {
-    v19.receiver = a1;
+    v19.receiver = self;
     v19.super_class = FCPersistentAssetKeyCache;
-    a1 = objc_msgSendSuper2(&v19, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v19, sel_init);
+    if (self)
     {
-      v10 = [v7 stringByAppendingPathComponent:v8];
-      v11 = a1[2];
-      a1[2] = v10;
+      v10 = [v7 stringByAppendingPathComponent:directoryCopy];
+      v11 = self[2];
+      self[2] = v10;
 
       v12 = objc_alloc_init(MEMORY[0x1E69B6920]);
-      v13 = a1[4];
-      a1[4] = v12;
+      v13 = self[4];
+      self[4] = v12;
 
       v14 = objc_alloc_init(MEMORY[0x1E696AB50]);
-      v15 = a1[5];
-      a1[5] = v14;
+      v15 = self[5];
+      self[5] = v14;
 
       v16 = [objc_alloc(MEMORY[0x1E69B6920]) initWithOptions:1];
-      v17 = a1[6];
-      a1[6] = v16;
+      v17 = self[6];
+      self[6] = v16;
 
-      objc_storeStrong(a1 + 7, a4);
+      objc_storeStrong(self + 7, name);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_saveToDisk
@@ -56,33 +56,33 @@
   v12 = __Block_byref_object_copy__69;
   v13 = __Block_byref_object_dispose__69;
   v14 = 0;
-  v2 = *(a1 + 32);
+  v2 = *(self + 32);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __40__FCPersistentAssetKeyCache__saveToDisk__block_invoke;
   v8[3] = &unk_1E7C3A3A0;
-  v8[4] = a1;
+  v8[4] = self;
   v8[5] = &v9;
   [v2 performWithLockSync:v8];
 
   v3 = +[FCPersistentAssetKeyCache _persistenceCoder];
   v4 = [(FCPersistenceCoder *)v3 encodeData:?];
 
-  v5 = *(a1 + 16);
+  v5 = *(self + 16);
   v6 = [v4 writeToFile:v5 atomically:1];
 
   if (v6)
   {
-    v7 = *(a1 + 16);
+    v7 = *(self + 16);
     setxattr([v7 fileSystemRepresentation], "com.apple.newscore.storeVersion", &FCPersistentAssetKeyCacheVersion, 2uLL, 0, 0);
   }
 
   _Block_object_dispose(&v9, 8);
 }
 
-- (id)wrappingKeyForWrappingKeyID:(id)a3
+- (id)wrappingKeyForWrappingKeyID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -105,7 +105,7 @@
   v10[2] = __57__FCPersistentAssetKeyCache_wrappingKeyForWrappingKeyID___block_invoke;
   v10[3] = &unk_1E7C37408;
   v10[4] = self;
-  v7 = v4;
+  v7 = dCopy;
   v11 = v7;
   v12 = &v13;
   [(NFUnfairLock *)v6 performWithLockSync:v10];
@@ -154,9 +154,9 @@ LABEL_5:
   *(v7 + 40) = v6;
 }
 
-- (id)interestTokenForWrappingKeyIDs:(id)a3
+- (id)interestTokenForWrappingKeyIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   if (self)
   {
     interestLock = self->_interestLock;
@@ -172,7 +172,7 @@ LABEL_5:
   v12[2] = __60__FCPersistentAssetKeyCache_interestTokenForWrappingKeyIDs___block_invoke;
   v12[3] = &unk_1E7C36C58;
   v12[4] = self;
-  v6 = v4;
+  v6 = dsCopy;
   v13 = v6;
   [(NFUnfairLock *)interestLock performWithLockSync:v12];
   v10[0] = MEMORY[0x1E69E9820];
@@ -231,10 +231,10 @@ uint64_t __60__FCPersistentAssetKeyCache_interestTokenForWrappingKeyIDs___block_
   return [v1 fc_removeObjectsFromArray:*(a1 + 40)];
 }
 
-- (void)setWrappingKey:(id)a3 forWrappingKeyID:(id)a4
+- (void)setWrappingKey:(id)key forWrappingKeyID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  dCopy = d;
   if (self)
   {
     cacheEntriesLock = self->_cacheEntriesLock;
@@ -250,9 +250,9 @@ uint64_t __60__FCPersistentAssetKeyCache_interestTokenForWrappingKeyIDs___block_
   v14[2] = __61__FCPersistentAssetKeyCache_setWrappingKey_forWrappingKeyID___block_invoke;
   v14[3] = &unk_1E7C376A0;
   v14[4] = self;
-  v9 = v7;
+  v9 = dCopy;
   v15 = v9;
-  v10 = v6;
+  v10 = keyCopy;
   v16 = v10;
   [(NFUnfairLock *)cacheEntriesLock performWithLockSync:v14];
   if (self)
@@ -338,7 +338,7 @@ void __61__FCPersistentAssetKeyCache_setWrappingKey_forWrappingKeyID___block_inv
 
 - (void)removeAllWrappingKeys
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_cacheEntriesLock;
@@ -348,11 +348,11 @@ void __61__FCPersistentAssetKeyCache_setWrappingKey_forWrappingKeyID___block_inv
   v3[1] = 3221225472;
   v3[2] = __50__FCPersistentAssetKeyCache_removeAllWrappingKeys__block_invoke;
   v3[3] = &unk_1E7C36EA0;
-  v3[4] = v2;
+  v3[4] = selfCopy;
   [(FCPersistentAssetKeyCache *)self performWithLockSync:v3];
-  if (v2)
+  if (selfCopy)
   {
-    v2->_needsSave = 1;
+    selfCopy->_needsSave = 1;
   }
 }
 
@@ -386,7 +386,7 @@ uint64_t __50__FCPersistentAssetKeyCache_removeAllWrappingKeys__block_invoke(uin
   return [v4 removeAllObjects];
 }
 
-- (void)enableFlushingWithFlushingThreshold:(unint64_t)a3
+- (void)enableFlushingWithFlushingThreshold:(unint64_t)threshold
 {
   if (self)
   {
@@ -396,7 +396,7 @@ uint64_t __50__FCPersistentAssetKeyCache_removeAllWrappingKeys__block_invoke(uin
 
 - (void)activityObservingApplicationDidEnterBackground
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_backgroundTaskable;
@@ -408,7 +408,7 @@ uint64_t __50__FCPersistentAssetKeyCache_removeAllWrappingKeys__block_invoke(uin
   v5[1] = 3221225472;
   v5[2] = __75__FCPersistentAssetKeyCache_activityObservingApplicationDidEnterBackground__block_invoke;
   v5[3] = &unk_1E7C3C970;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = v3;
   FCDispatchAsyncWithQualityOfService(v4, 25, v5);
 }
@@ -434,21 +434,21 @@ uint64_t __75__FCPersistentAssetKeyCache_activityObservingApplicationDidEnterBac
 - (void)_loadFromDisk
 {
   v41 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 fileExistsAtPath:*(a1 + 16)];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v3 = [defaultManager fileExistsAtPath:*(self + 16)];
 
   if (v3)
   {
     LOWORD(value) = 0;
-    getxattr([*(a1 + 16) fileSystemRepresentation], "com.apple.newscore.storeVersion", &value, 2uLL, 0, 0);
+    getxattr([*(self + 16) fileSystemRepresentation], "com.apple.newscore.storeVersion", &value, 2uLL, 0, 0);
     if (value != 1)
     {
-      v4 = [MEMORY[0x1E696AC08] defaultManager];
-      [v4 removeItemAtPath:*(a1 + 16) error:0];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager2 removeItemAtPath:*(self + 16) error:0];
     }
   }
 
-  v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:*(a1 + 16)];
+  v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:*(self + 16)];
   v6 = +[FCPersistentAssetKeyCache _persistenceCoder];
   v27 = v5;
   v7 = [(FCPersistenceCoder *)v6 encodeData:v5];
@@ -456,18 +456,18 @@ uint64_t __75__FCPersistentAssetKeyCache_activityObservingApplicationDidEnterBac
   v26 = v7;
   v8 = [objc_alloc(MEMORY[0x1E69B6E80]) initWithData:v7];
   v9 = objc_alloc(MEMORY[0x1E695DF90]);
-  v10 = [v8 entries];
-  v11 = [v9 initWithCapacity:{objc_msgSend(v10, "count")}];
-  v12 = *(a1 + 24);
-  *(a1 + 24) = v11;
+  entries = [v8 entries];
+  v11 = [v9 initWithCapacity:{objc_msgSend(entries, "count")}];
+  v12 = *(self + 24);
+  *(self + 24) = v11;
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
   v25 = v8;
-  v13 = [v8 entries];
-  v14 = [v13 countByEnumeratingWithState:&v28 objects:v40 count:16];
+  entries2 = [v8 entries];
+  v14 = [entries2 countByEnumeratingWithState:&v28 objects:v40 count:16];
   if (v14)
   {
     v15 = v14;
@@ -479,7 +479,7 @@ uint64_t __75__FCPersistentAssetKeyCache_activityObservingApplicationDidEnterBac
       {
         if (*v29 != v17)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(entries2);
         }
 
         v19 = *(*(&v28 + 1) + 8 * i);
@@ -499,12 +499,12 @@ uint64_t __75__FCPersistentAssetKeyCache_activityObservingApplicationDidEnterBac
           _os_log_error_impl(&dword_1B63EF000, v16, OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &value, 0x26u);
         }
 
-        v21 = *(a1 + 24);
+        v21 = *(self + 24);
         v22 = [v19 key];
         [v21 fc_safelySetObject:v19 forKey:v22];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v28 objects:v40 count:16];
+      v15 = [entries2 countByEnumeratingWithState:&v28 objects:v40 count:16];
     }
 
     while (v15);

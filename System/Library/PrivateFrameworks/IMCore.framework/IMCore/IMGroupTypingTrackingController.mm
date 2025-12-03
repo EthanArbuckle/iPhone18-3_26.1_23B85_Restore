@@ -2,12 +2,12 @@
 - (IMGroupTypingTrackingController)init;
 - (IMGroupTypingTrackingControllerDelegate)delegate;
 - (NSArray)currentTypingHandles;
-- (void)_addTyper:(id)a3 messageTime:(id)a4;
-- (void)_removeTyper:(id)a3;
-- (void)invalidateScheduledTimeoutsForHandleIfNecessary:(id)a3;
-- (void)scheduleTypingTimeoutForHandle:(id)a3 withBeginDate:(id)a4;
-- (void)typingTimeoutDidTriggerWithTimer:(id)a3;
-- (void)updateWithIncomingItem:(id)a3;
+- (void)_addTyper:(id)typer messageTime:(id)time;
+- (void)_removeTyper:(id)typer;
+- (void)invalidateScheduledTimeoutsForHandleIfNecessary:(id)necessary;
+- (void)scheduleTypingTimeoutForHandle:(id)handle withBeginDate:(id)date;
+- (void)typingTimeoutDidTriggerWithTimer:(id)timer;
+- (void)updateWithIncomingItem:(id)item;
 @end
 
 @implementation IMGroupTypingTrackingController
@@ -54,17 +54,17 @@
   return v13;
 }
 
-- (void)updateWithIncomingItem:(id)a3
+- (void)updateWithIncomingItem:(id)item
 {
   v68 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v7 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v5, v6);
   isGroupTypingIndicatorsEnabled = objc_msgSend_isGroupTypingIndicatorsEnabled(v7, v8, v9);
 
   if (isGroupTypingIndicatorsEnabled)
   {
     v11 = IMOSLoggingEnabled();
-    if (!v4)
+    if (!itemCopy)
     {
       if (!v11)
       {
@@ -87,12 +87,12 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v67 = v4;
+        v67 = itemCopy;
         _os_log_impl(&dword_1A823F000, v14, OS_LOG_TYPE_INFO, "Handling item: %@", buf, 0xCu);
       }
     }
 
-    if (objc_msgSend_isFromMe(v4, v12, v13))
+    if (objc_msgSend_isFromMe(itemCopy, v12, v13))
     {
       if (IMOSLoggingEnabled())
       {
@@ -109,13 +109,13 @@ LABEL_11:
 
     else
     {
-      v18 = objc_msgSend__senderHandle(v4, v15, v16);
+      v18 = objc_msgSend__senderHandle(itemCopy, v15, v16);
       if (v18)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v20 = v4;
+          v20 = itemCopy;
           if (objc_msgSend_isIncomingTypingOrCancelTypingMessage(v20, v21, v22))
           {
             if (objc_msgSend_isCancelTypingMessage(v20, v23, v24))
@@ -200,12 +200,12 @@ LABEL_35:
   v64 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removeTyper:(id)a3
+- (void)_removeTyper:(id)typer
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typerCopy = typer;
   v5 = IMOSLoggingEnabled();
-  if (v4)
+  if (typerCopy)
   {
     if (v5)
     {
@@ -215,7 +215,7 @@ LABEL_35:
         *buf = 136315394;
         *&buf[4] = "[IMGroupTypingTrackingController _removeTyper:]";
         *&buf[12] = 2112;
-        *&buf[14] = v4;
+        *&buf[14] = typerCopy;
         _os_log_impl(&dword_1A823F000, v8, OS_LOG_TYPE_INFO, "%s handle to remove: %@", buf, 0x16u);
       }
     }
@@ -230,9 +230,9 @@ LABEL_35:
     v27[1] = 3221225472;
     v27[2] = sub_1A835D4C4;
     v27[3] = &unk_1E7813538;
-    v13 = v4;
+    v13 = typerCopy;
     v28 = v13;
-    v29 = self;
+    selfCopy = self;
     v30 = buf;
     objc_msgSend_enumerateObjectsUsingBlock_(v12, v14, v27);
 
@@ -277,12 +277,12 @@ LABEL_35:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addTyper:(id)a3 messageTime:(id)a4
+- (void)_addTyper:(id)typer messageTime:(id)time
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v8 = a4;
-  if (v6)
+  typerCopy = typer;
+  timeCopy = time;
+  if (typerCopy)
   {
     objc_msgSend_setHandleToRemoveViaAnimation_(self, v7, 0);
     if (IMOSLoggingEnabled())
@@ -293,7 +293,7 @@ LABEL_35:
         *buf = 136315394;
         *&buf[4] = "[IMGroupTypingTrackingController _addTyper:messageTime:]";
         *&buf[12] = 2112;
-        *&buf[14] = v6;
+        *&buf[14] = typerCopy;
         _os_log_impl(&dword_1A823F000, v11, OS_LOG_TYPE_INFO, "%s handle to add: %@", buf, 0x16u);
       }
     }
@@ -308,8 +308,8 @@ LABEL_35:
     v24[1] = 3221225472;
     v24[2] = sub_1A835D7D0;
     v24[3] = &unk_1E7813560;
-    v16 = v6;
-    v26 = self;
+    v16 = typerCopy;
+    selfCopy = self;
     v27 = buf;
     v25 = v16;
     objc_msgSend_enumerateObjectsUsingBlock_(v15, v17, v24);
@@ -320,7 +320,7 @@ LABEL_35:
       objc_msgSend_addObject_(v20, v21, v16);
     }
 
-    objc_msgSend_scheduleTypingTimeoutForHandle_withBeginDate_(self, v18, v16, v8);
+    objc_msgSend_scheduleTypingTimeoutForHandle_withBeginDate_(self, v18, v16, timeCopy);
 
     _Block_object_dispose(buf, 8);
   }
@@ -338,11 +338,11 @@ LABEL_35:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)invalidateScheduledTimeoutsForHandleIfNecessary:(id)a3
+- (void)invalidateScheduledTimeoutsForHandleIfNecessary:(id)necessary
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  necessaryCopy = necessary;
+  if (necessaryCopy)
   {
     *v34 = 0;
     v35 = v34;
@@ -359,7 +359,7 @@ LABEL_35:
     v26[1] = 3221225472;
     v26[2] = sub_1A835DC24;
     v26[3] = &unk_1E7813588;
-    v8 = v6;
+    v8 = necessaryCopy;
     v27 = v8;
     v28 = v34;
     v29 = &v30;
@@ -423,12 +423,12 @@ LABEL_35:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)scheduleTypingTimeoutForHandle:(id)a3 withBeginDate:(id)a4
+- (void)scheduleTypingTimeoutForHandle:(id)handle withBeginDate:(id)date
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v8 = a4;
-  if (!v8)
+  handleCopy = handle;
+  dateCopy = date;
+  if (!dateCopy)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -447,7 +447,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v6)
+  if (!handleCopy)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -464,21 +464,21 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  objc_msgSend_invalidateScheduledTimeoutsForHandleIfNecessary_(self, v7, v6);
+  objc_msgSend_invalidateScheduledTimeoutsForHandleIfNecessary_(self, v7, handleCopy);
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v21 = 138412290;
-      v22 = v6;
+      v22 = handleCopy;
       _os_log_impl(&dword_1A823F000, v9, OS_LOG_TYPE_INFO, "Scheduling typing timeout for handle %@", &v21, 0xCu);
     }
   }
 
   v10 = [IMTypingTimer alloc];
   objc_msgSend_timeoutInterval(IMGroupTypingTrackingController, v11, v12);
-  v14 = objc_msgSend_initWithHandle_beginDate_timeoutInterval_delegate_(v10, v13, v6, v8, self);
+  v14 = objc_msgSend_initWithHandle_beginDate_timeoutInterval_delegate_(v10, v13, handleCopy, dateCopy, self);
   v17 = objc_msgSend_scheduledTimers(self, v15, v16);
   objc_msgSend_addObject_(v17, v18, v14);
 
@@ -486,11 +486,11 @@ LABEL_16:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)typingTimeoutDidTriggerWithTimer:(id)a3
+- (void)typingTimeoutDidTriggerWithTimer:(id)timer
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v7 = objc_msgSend_handle(v4, v5, v6);
+  timerCopy = timer;
+  v7 = objc_msgSend_handle(timerCopy, v5, v6);
   v8 = IMOSLoggingEnabled();
   if (v7)
   {

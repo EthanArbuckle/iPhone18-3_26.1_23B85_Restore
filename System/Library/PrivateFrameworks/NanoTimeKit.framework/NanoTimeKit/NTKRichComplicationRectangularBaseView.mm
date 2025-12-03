@@ -1,12 +1,12 @@
 @interface NTKRichComplicationRectangularBaseView
-+ (id)viewWithLegacyComplicationType:(unint64_t)a3;
-+ (void)updateCustomDataAnimationFromEarlierView:(id)a3 laterView:(id)a4 isForward:(BOOL)a5 animationType:(unint64_t)a6 animationDuration:(double)a7 animationFraction:(float)a8;
++ (id)viewWithLegacyComplicationType:(unint64_t)type;
++ (void)updateCustomDataAnimationFromEarlierView:(id)view laterView:(id)laterView isForward:(BOOL)forward animationType:(unint64_t)type animationDuration:(double)duration animationFraction:(float)fraction;
 - (NTKRichComplicationRectangularBaseView)init;
-- (NTKRichComplicationRectangularBaseView)initWithFamily:(int64_t)a3;
+- (NTKRichComplicationRectangularBaseView)initWithFamily:(int64_t)family;
 - (NTKRichComplicationRectangularBaseViewDelegate)delegate;
 - (double)contentMargin;
-- (id)_createAndAddColoringLabelWithFontSize:(double)a3 weight:(double)a4 usesTextProviderTintColoring:(BOOL)a5;
-- (void)_transitToHighlightState:(BOOL)a3 fraction:(double)a4;
+- (id)_createAndAddColoringLabelWithFontSize:(double)size weight:(double)weight usesTextProviderTintColoring:(BOOL)coloring;
+- (void)_transitToHighlightState:(BOOL)state fraction:(double)fraction;
 @end
 
 @implementation NTKRichComplicationRectangularBaseView
@@ -18,25 +18,25 @@
   return [(CDRichComplicationView *)&v3 initWithFamily:11];
 }
 
-- (NTKRichComplicationRectangularBaseView)initWithFamily:(int64_t)a3
+- (NTKRichComplicationRectangularBaseView)initWithFamily:(int64_t)family
 {
-  if (a3 == 11)
+  if (family == 11)
   {
     self = [(NTKRichComplicationRectangularBaseView *)self init];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-+ (id)viewWithLegacyComplicationType:(unint64_t)a3
++ (id)viewWithLegacyComplicationType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     v4 = 0;
   }
@@ -56,19 +56,19 @@
   CDGraphicLargeRectangularComplicationInset();
 }
 
-+ (void)updateCustomDataAnimationFromEarlierView:(id)a3 laterView:(id)a4 isForward:(BOOL)a5 animationType:(unint64_t)a6 animationDuration:(double)a7 animationFraction:(float)a8
++ (void)updateCustomDataAnimationFromEarlierView:(id)view laterView:(id)laterView isForward:(BOOL)forward animationType:(unint64_t)type animationDuration:(double)duration animationFraction:(float)fraction
 {
-  v9 = a5;
-  v11 = a3;
-  v12 = a4;
+  forwardCopy = forward;
+  viewCopy = view;
+  laterViewCopy = laterView;
   memset(&v28, 0, sizeof(v28));
-  if (a6 == 1)
+  if (type == 1)
   {
     v16 = *(MEMORY[0x277CBF2C0] + 16);
     *&v28.a = *MEMORY[0x277CBF2C0];
     *&v28.c = v16;
     *&v28.tx = *(MEMORY[0x277CBF2C0] + 32);
-    if (v9)
+    if (forwardCopy)
     {
 LABEL_5:
       v13 = MEMORY[0x277CBF2C0];
@@ -78,19 +78,19 @@ LABEL_5:
       *&v27.tx = *(MEMORY[0x277CBF2C0] + 32);
       v26 = v28;
       v25 = v28;
-      v15 = v12;
+      v15 = laterViewCopy;
       goto LABEL_8;
     }
   }
 
   else
   {
-    if (!a6)
+    if (!type)
     {
       CGAffineTransformMakeScale(&v28, 0.9, 0.9);
     }
 
-    if (v9)
+    if (forwardCopy)
     {
       goto LABEL_5;
     }
@@ -105,14 +105,14 @@ LABEL_5:
   *&v25.c = v17;
   *&v25.tx = *&v26.tx;
   v13 = &v28;
-  v15 = v11;
+  v15 = viewCopy;
 LABEL_8:
   v18 = *&v13->c;
   v22 = *&v13->a;
   v23 = v18;
   v24 = *&v13->tx;
   v19 = v15;
-  if (a6 == 1)
+  if (type == 1)
   {
     CDTemplicateComplicationShouldPerformFullFade();
   }
@@ -120,32 +120,32 @@ LABEL_8:
   CLKCompressFraction();
   CLKCompressFraction();
   CLKInterpolateBetweenFloatsClipped();
-  [v11 setAlpha:?];
+  [viewCopy setAlpha:?];
   CLKInterpolateBetweenTransform();
   v21[0] = v21[1];
-  [v11 setTransform:v21];
+  [viewCopy setTransform:v21];
   CLKInterpolateBetweenFloatsClipped();
-  [v12 setAlpha:?];
+  [laterViewCopy setAlpha:?];
   v21[0] = v26;
   CLKInterpolateBetweenTransform();
   v21[0] = v20;
-  [v12 setTransform:v21];
+  [laterViewCopy setTransform:v21];
 }
 
-- (id)_createAndAddColoringLabelWithFontSize:(double)a3 weight:(double)a4 usesTextProviderTintColoring:(BOOL)a5
+- (id)_createAndAddColoringLabelWithFontSize:(double)size weight:(double)weight usesTextProviderTintColoring:(BOOL)coloring
 {
-  v5 = a5;
+  coloringCopy = coloring;
   v9 = objc_opt_new();
   [v9 setUsesLegibility:0];
   [v9 setAlpha:1.0];
-  v10 = [MEMORY[0x277D75348] whiteColor];
-  [v9 setColor:v10];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v9 setColor:whiteColor];
 
-  [v9 setUsesTextProviderTintColoring:v5];
-  v11 = [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:a3 design:a4];
-  v12 = [v11 CLKFontWithAlternativePunctuation];
+  [v9 setUsesTextProviderTintColoring:coloringCopy];
+  v11 = [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:size design:weight];
+  cLKFontWithAlternativePunctuation = [v11 CLKFontWithAlternativePunctuation];
 
-  [v9 setFont:v12];
+  [v9 setFont:cLKFontWithAlternativePunctuation];
   objc_initWeak(&location, self);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -190,7 +190,7 @@ void __117__NTKRichComplicationRectangularBaseView__createAndAddColoringLabelWit
   [v1 complicationDisplayNeedsResize:WeakRetained];
 }
 
-- (void)_transitToHighlightState:(BOOL)a3 fraction:(double)a4
+- (void)_transitToHighlightState:(BOOL)state fraction:(double)fraction
 {
   CLKInterpolateBetweenFloatsClipped();
   CGAffineTransformMakeScale(&v7, v5, v5);

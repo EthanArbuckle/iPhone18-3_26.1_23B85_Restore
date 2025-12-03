@@ -2,9 +2,9 @@
 - (SBApplicationSupportServiceDelegate)init;
 - (void)_rebuildDefaultContext;
 - (void)dealloc;
-- (void)destroyScenesWithPersistentIdentifiers:(id)a3 animationType:(unint64_t)a4 destroySessions:(BOOL)a5 forClient:(id)a6 completion:(id)a7;
-- (void)requestPasscodeCheckUIForClient:(id)a3 withCompletion:(id)a4;
-- (void)requestPasscodeUnlockUIForClient:(id)a3 withCompletion:(id)a4;
+- (void)destroyScenesWithPersistentIdentifiers:(id)identifiers animationType:(unint64_t)type destroySessions:(BOOL)sessions forClient:(id)client completion:(id)completion;
+- (void)requestPasscodeCheckUIForClient:(id)client withCompletion:(id)completion;
+- (void)requestPasscodeUnlockUIForClient:(id)client withCompletion:(id)completion;
 @end
 
 @implementation SBApplicationSupportServiceDelegate
@@ -16,15 +16,15 @@
   v2 = [(SBApplicationSupportServiceDelegate *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D77760] sharedInstance];
+    mEMORY[0x277D77760] = [MEMORY[0x277D77760] sharedInstance];
     service = v2->_service;
-    v2->_service = v3;
+    v2->_service = mEMORY[0x277D77760];
 
     [(UISApplicationSupportService *)v2->_service setDelegate:v2];
     [(SBApplicationSupportServiceDelegate *)v2 _rebuildDefaultContext];
     [(UISApplicationSupportService *)v2->_service start];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__rebuildDefaultContext name:*MEMORY[0x277D77250] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__rebuildDefaultContext name:*MEMORY[0x277D77250] object:0];
   }
 
   return v2;
@@ -32,8 +32,8 @@
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBApplicationSupportServiceSingleton.m" lineNumber:51 description:@"this object should not dealloc"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBApplicationSupportServiceSingleton.m" lineNumber:51 description:@"this object should not dealloc"];
 
   v5.receiver = self;
   v5.super_class = SBApplicationSupportServiceDelegate;
@@ -43,17 +43,17 @@
 - (void)_rebuildDefaultContext
 {
   service = self->_service;
-  v3 = [MEMORY[0x277D77738] sb_embeddedDisplayDefaultContext];
-  [(UISApplicationSupportService *)service setDefaultContext:v3];
+  sb_embeddedDisplayDefaultContext = [MEMORY[0x277D77738] sb_embeddedDisplayDefaultContext];
+  [(UISApplicationSupportService *)service setDefaultContext:sb_embeddedDisplayDefaultContext];
 }
 
-- (void)requestPasscodeUnlockUIForClient:(id)a3 withCompletion:(id)a4
+- (void)requestPasscodeUnlockUIForClient:(id)client withCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D0AAC0] sharedInstance];
-  v8 = [v7 processForPID:{objc_msgSend(v5, "pid")}];
+  clientCopy = client;
+  completionCopy = completion;
+  mEMORY[0x277D0AAC0] = [MEMORY[0x277D0AAC0] sharedInstance];
+  v8 = [mEMORY[0x277D0AAC0] processForPID:{objc_msgSend(clientCopy, "pid")}];
 
   v9 = SBLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -67,10 +67,10 @@
   v12[1] = 3221225472;
   v12[2] = __87__SBApplicationSupportServiceDelegate_requestPasscodeUnlockUIForClient_withCompletion___block_invoke;
   v12[3] = &unk_2783A9878;
-  v13 = v5;
-  v14 = v6;
-  v10 = v5;
-  v11 = v6;
+  v13 = clientCopy;
+  v14 = completionCopy;
+  v10 = clientCopy;
+  v11 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v12);
 }
 
@@ -99,13 +99,13 @@ void __87__SBApplicationSupportServiceDelegate_requestPasscodeUnlockUIForClient_
   }
 }
 
-- (void)requestPasscodeCheckUIForClient:(id)a3 withCompletion:(id)a4
+- (void)requestPasscodeCheckUIForClient:(id)client withCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D0AAC0] sharedInstance];
-  v8 = [v7 processForPID:{objc_msgSend(v5, "pid")}];
+  clientCopy = client;
+  completionCopy = completion;
+  mEMORY[0x277D0AAC0] = [MEMORY[0x277D0AAC0] sharedInstance];
+  v8 = [mEMORY[0x277D0AAC0] processForPID:{objc_msgSend(clientCopy, "pid")}];
 
   v9 = SBLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -119,10 +119,10 @@ void __87__SBApplicationSupportServiceDelegate_requestPasscodeUnlockUIForClient_
   v12[1] = 3221225472;
   v12[2] = __86__SBApplicationSupportServiceDelegate_requestPasscodeCheckUIForClient_withCompletion___block_invoke;
   v12[3] = &unk_2783A9878;
-  v13 = v5;
-  v14 = v6;
-  v10 = v5;
-  v11 = v6;
+  v13 = clientCopy;
+  v14 = completionCopy;
+  v10 = clientCopy;
+  v11 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v12);
 }
 
@@ -151,15 +151,15 @@ void __86__SBApplicationSupportServiceDelegate_requestPasscodeCheckUIForClient_w
   }
 }
 
-- (void)destroyScenesWithPersistentIdentifiers:(id)a3 animationType:(unint64_t)a4 destroySessions:(BOOL)a5 forClient:(id)a6 completion:(id)a7
+- (void)destroyScenesWithPersistentIdentifiers:(id)identifiers animationType:(unint64_t)type destroySessions:(BOOL)sessions forClient:(id)client completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
-  v14 = [v12 pid];
-  v15 = [MEMORY[0x277D0AAC0] sharedInstance];
-  v16 = [v15 processForPID:v14];
+  identifiersCopy = identifiers;
+  clientCopy = client;
+  completionCopy = completion;
+  v14 = [clientCopy pid];
+  mEMORY[0x277D0AAC0] = [MEMORY[0x277D0AAC0] sharedInstance];
+  v16 = [mEMORY[0x277D0AAC0] processForPID:v14];
 
   v17 = [MEMORY[0x277D46F50] identifierWithPid:v14];
   v18 = [MEMORY[0x277D46F48] handleForIdentifier:v17 error:0];
@@ -169,7 +169,7 @@ void __86__SBApplicationSupportServiceDelegate_requestPasscodeCheckUIForClient_w
     *buf = 138543618;
     v38 = v16;
     v39 = 2114;
-    v40 = v11;
+    v40 = identifiersCopy;
     _os_log_impl(&dword_21ED4E000, v19, OS_LOG_TYPE_INFO, "[SBAppSupportService] Received destroy scenes request from %{public}@ for %{public}@", buf, 0x16u);
   }
 
@@ -185,7 +185,7 @@ LABEL_8:
         v36 = @"This functionality is not supported for this device idiom.";
         v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
         v22 = [v21 errorWithDomain:@"SBApplicationSupportService" code:1 userInfo:v20];
-        v13[2](v13, 0, v22);
+        completionCopy[2](completionCopy, 0, v22);
 
         goto LABEL_11;
       }
@@ -193,10 +193,10 @@ LABEL_8:
 
     else
     {
-      v23 = [MEMORY[0x277D75418] currentDevice];
-      v24 = [v23 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v24 != 1)
+      if (userInterfaceIdiom != 1)
       {
         goto LABEL_8;
       }
@@ -206,11 +206,11 @@ LABEL_8:
     v25[1] = 3221225472;
     v25[2] = __129__SBApplicationSupportServiceDelegate_destroyScenesWithPersistentIdentifiers_animationType_destroySessions_forClient_completion___block_invoke_2;
     v25[3] = &unk_2783B7590;
-    v26 = v12;
-    v27 = v11;
-    v29 = a4;
-    v30 = a5;
-    v28 = v13;
+    v26 = clientCopy;
+    v27 = identifiersCopy;
+    typeCopy = type;
+    sessionsCopy = sessions;
+    v28 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], v25);
 
     v20 = v26;
@@ -222,8 +222,8 @@ LABEL_8:
   block[2] = __129__SBApplicationSupportServiceDelegate_destroyScenesWithPersistentIdentifiers_animationType_destroySessions_forClient_completion___block_invoke;
   block[3] = &unk_2783AA1E8;
   v32 = v16;
-  v33 = v11;
-  v34 = v13;
+  v33 = identifiersCopy;
+  v34 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   v20 = v32;

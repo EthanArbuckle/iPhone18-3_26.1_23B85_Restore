@@ -1,19 +1,19 @@
 @interface PHARemoveFeaturedContentTask
-- (BOOL)clearAllFeaturedStateForMemoriesAndSuggestionsWithPhotoLibrary:(id)a3 error:(id *)a4;
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)shouldRunWithGraphManager:(id)a3;
-- (BOOL)shouldRunWithPhotoLibrary:(id)a3;
+- (BOOL)clearAllFeaturedStateForMemoriesAndSuggestionsWithPhotoLibrary:(id)library error:(id *)error;
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
+- (BOOL)shouldRunWithGraphManager:(id)manager;
+- (BOOL)shouldRunWithPhotoLibrary:(id)library;
 - (PHARemoveFeaturedContentTask)init;
-- (void)timeoutFatal:(BOOL)a3;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHARemoveFeaturedContentTask
 
-- (BOOL)clearAllFeaturedStateForMemoriesAndSuggestionsWithPhotoLibrary:(id)a3 error:(id *)a4
+- (BOOL)clearAllFeaturedStateForMemoriesAndSuggestionsWithPhotoLibrary:(id)library error:(id *)error
 {
   v49[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v36 = self;
+  libraryCopy = library;
+  selfCopy = self;
   v6 = self->_loggingConnection;
   v7 = os_signpost_id_generate(v6);
   info = 0;
@@ -28,30 +28,30 @@
   }
 
   v37 = mach_absolute_time();
-  v10 = [v5 librarySpecificFetchOptions];
-  [v10 setWantsIncrementalChangeDetails:0];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
   LOBYTE(v11) = 1;
   v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"featuredState == %d", 1];
-  [v10 setPredicate:v12];
+  [librarySpecificFetchOptions setPredicate:v12];
 
-  [v10 setIncludePendingMemories:1];
-  [v10 setIncludeGuestAssets:1];
-  v13 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v10];
-  v14 = [v5 librarySpecificFetchOptions];
-  [v14 setWantsIncrementalChangeDetails:0];
-  [v14 setIncludeGuestAssets:1];
+  [librarySpecificFetchOptions setIncludePendingMemories:1];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
+  v13 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
+  librarySpecificFetchOptions2 = [libraryCopy librarySpecificFetchOptions];
+  [librarySpecificFetchOptions2 setWantsIncrementalChangeDetails:0];
+  [librarySpecificFetchOptions2 setIncludeGuestAssets:1];
   v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"featuredState == %d", 1];
-  v16 = [MEMORY[0x277CD99E0] predicateForAllFeaturedStateEnabledSuggestionTypesForWidget];
+  predicateForAllFeaturedStateEnabledSuggestionTypesForWidget = [MEMORY[0x277CD99E0] predicateForAllFeaturedStateEnabledSuggestionTypesForWidget];
   v17 = MEMORY[0x277CCA920];
-  v38 = v16;
+  v38 = predicateForAllFeaturedStateEnabledSuggestionTypesForWidget;
   v39 = v15;
-  v49[0] = v16;
+  v49[0] = predicateForAllFeaturedStateEnabledSuggestionTypesForWidget;
   v49[1] = v15;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:2];
   v19 = [v17 andPredicateWithSubpredicates:v18];
-  [v14 setPredicate:v19];
+  [librarySpecificFetchOptions2 setPredicate:v19];
 
-  v20 = [MEMORY[0x277CD99E0] fetchAllFeaturedStateEnabledSuggestionsWithOptions:v14];
+  v20 = [MEMORY[0x277CD99E0] fetchAllFeaturedStateEnabledSuggestionsWithOptions:librarySpecificFetchOptions2];
   v21 = [v13 count];
   v22 = [v20 count];
   if (v21 | v22)
@@ -65,10 +65,10 @@
     v43 = v13;
     v44 = v20;
     v41 = 0;
-    v34 = v5;
-    v11 = [v5 performChangesAndWait:v42 error:&v41];
+    v34 = libraryCopy;
+    v11 = [libraryCopy performChangesAndWait:v42 error:&v41];
     v24 = v41;
-    loggingConnection = v36->_loggingConnection;
+    loggingConnection = selfCopy->_loggingConnection;
     if (v11)
     {
       if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
@@ -94,15 +94,15 @@
         _os_log_error_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_ERROR, "[PHARemoveFeaturedContentTask] Update featured %d memories and %d suggestions - failed: %@", buf, 0x18u);
       }
 
-      if (a4)
+      if (error)
       {
         v26 = v24;
-        *a4 = v24;
+        *error = v24;
       }
     }
 
     v7 = v33;
-    v5 = v34;
+    libraryCopy = v34;
   }
 
   v27 = mach_absolute_time();
@@ -198,9 +198,9 @@ void __101__PHARemoveFeaturedContentTask_clearAllFeaturedStateForMemoriesAndSugg
   }
 }
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHARemoveFeaturedContentTask timeoutFatal:]", "PHARemoveFeaturedContentTask.m", 77, "NO");
   }
@@ -212,19 +212,19 @@ void __101__PHARemoveFeaturedContentTask_clearAllFeaturedStateForMemoriesAndSugg
   }
 }
 
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 workingContext];
-  v11 = [v10 photoLibrary];
-  v12 = [v9 analytics];
+  reporterCopy = reporter;
+  managerCopy = manager;
+  workingContext = [managerCopy workingContext];
+  photoLibrary = [workingContext photoLibrary];
+  analytics = [managerCopy analytics];
 
-  LOBYTE(a5) = [(PHARemoveFeaturedContentTask *)self runWithPhotoLibrary:v11 analytics:v12 progressReporter:v8 error:a5];
-  return a5;
+  LOBYTE(error) = [(PHARemoveFeaturedContentTask *)self runWithPhotoLibrary:photoLibrary analytics:analytics progressReporter:reporterCopy error:error];
+  return error;
 }
 
-- (BOOL)shouldRunWithPhotoLibrary:(id)a3
+- (BOOL)shouldRunWithPhotoLibrary:(id)library
 {
   v4 = PLIsFeaturedContentAllowed();
   if ((v4 & 1) == 0)
@@ -240,10 +240,10 @@ void __101__PHARemoveFeaturedContentTask_clearAllFeaturedStateForMemoriesAndSugg
   return v4 ^ 1;
 }
 
-- (BOOL)shouldRunWithGraphManager:(id)a3
+- (BOOL)shouldRunWithGraphManager:(id)manager
 {
-  v4 = [a3 photoLibrary];
-  LOBYTE(self) = [(PHARemoveFeaturedContentTask *)self shouldRunWithPhotoLibrary:v4];
+  photoLibrary = [manager photoLibrary];
+  LOBYTE(self) = [(PHARemoveFeaturedContentTask *)self shouldRunWithPhotoLibrary:photoLibrary];
 
   return self;
 }

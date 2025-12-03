@@ -1,8 +1,8 @@
 @interface NavdLocationAuthorizationMonitor
 + (id)sharedMonitor;
-- (BOOL)isAuthorizedForLocationWithClientBundleIdentifier:(id)a3;
+- (BOOL)isAuthorizedForLocationWithClientBundleIdentifier:(id)identifier;
 - (NavdLocationAuthorizationMonitor)init;
-- (int)_q_getAuthorizationForLocationWithBundleIdentifier:(id)a3;
+- (int)_q_getAuthorizationForLocationWithBundleIdentifier:(id)identifier;
 - (void)_q_reset;
 - (void)_reset;
 @end
@@ -67,10 +67,10 @@
   dispatch_sync(serialQueue, block);
 }
 
-- (int)_q_getAuthorizationForLocationWithBundleIdentifier:(id)a3
+- (int)_q_getAuthorizationForLocationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_authStatusDictionary objectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_authStatusDictionary objectForKey:identifierCopy];
   v6 = GEOFindOrCreateLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
   if (v5)
@@ -78,7 +78,7 @@
     if (v7)
     {
       v13 = 138477827;
-      v14 = v4;
+      v14 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Location auth for %{private}@ found in the dictionary. Not requesting from CL.", &v13, 0xCu);
     }
 
@@ -90,25 +90,25 @@
     if (v7)
     {
       v13 = 138477827;
-      v14 = v4;
+      v14 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Location auth for %{private}@ NOT found in the dictionary. Requesting from CL.", &v13, 0xCu);
     }
 
-    v8 = [NSBundle bundleWithPath:v4];
-    v9 = [v8 bundlePath];
-    v6 = [CLLocationManager authorizationStatusForBundlePath:v9];
+    v8 = [NSBundle bundleWithPath:identifierCopy];
+    bundlePath = [v8 bundlePath];
+    v6 = [CLLocationManager authorizationStatusForBundlePath:bundlePath];
 
     authStatusDictionary = self->_authStatusDictionary;
     v11 = [NSNumber numberWithInt:v6];
-    [(NSMutableDictionary *)authStatusDictionary setObject:v11 forKey:v4];
+    [(NSMutableDictionary *)authStatusDictionary setObject:v11 forKey:identifierCopy];
   }
 
   return v6;
 }
 
-- (BOOL)isAuthorizedForLocationWithClientBundleIdentifier:(id)a3
+- (BOOL)isAuthorizedForLocationWithClientBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -124,7 +124,7 @@
   block[3] = &unk_1000654F8;
   v20 = &v25;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   v19 = v6;
   dispatch_sync(serialQueue, block);
   v7 = self->_serialQueue;

@@ -1,47 +1,47 @@
 @interface NTKDFaceSnapshotController
 - (BOOL)_queue_cleanCache;
-- (BOOL)_queue_cleanCacheExcludingKeys:(id)a3;
+- (BOOL)_queue_cleanCacheExcludingKeys:(id)keys;
 - (BOOL)_queue_cleanContexts;
 - (BOOL)_queue_cleanSnapshotKeysWithBlankComplications;
-- (BOOL)_snapshotExistsForKey:(id)a3;
+- (BOOL)_snapshotExistsForKey:(id)key;
 - (NTKDFaceSnapshotController)init;
-- (id)_preferencesKeyForCollectionStore:(id)a3;
+- (id)_preferencesKeyForCollectionStore:(id)store;
 - (id)_queue_allSnapshotObjects;
-- (id)_queue_snapshotObjectsForFace:(id)a3 complicationTemplateChanged:(BOOL)a4;
-- (void)_endSnapshottingActivityDidTakeSnapshot:(BOOL)a3;
-- (void)_enumerateAllFacesForDeviceUUID:(id)a3 block:(id)a4;
-- (void)_enumerateRemoteComplicationsForFace:(id)a3 block:(id)a4;
+- (id)_queue_snapshotObjectsForFace:(id)face complicationTemplateChanged:(BOOL)changed;
+- (void)_endSnapshottingActivityDidTakeSnapshot:(BOOL)snapshot;
+- (void)_enumerateAllFacesForDeviceUUID:(id)d block:(id)block;
+- (void)_enumerateRemoteComplicationsForFace:(id)face block:(id)block;
 - (void)_loadComplicationCollection;
-- (void)_notifyFaceSnapshotChangedForKey:(id)a3;
-- (void)_onObserverQueue_async:(id)a3;
-- (void)_onQueue_async:(id)a3;
-- (void)_queue_snapshotFaces:(id)a3 completion:(id)a4;
+- (void)_notifyFaceSnapshotChangedForKey:(id)key;
+- (void)_onObserverQueue_async:(id)queue_async;
+- (void)_onQueue_async:(id)queue_async;
+- (void)_queue_snapshotFaces:(id)faces completion:(id)completion;
 - (void)_queue_updateAllSnapshots;
-- (void)_queue_updateSnapshotForFace:(id)a3 inStore:(id)a4;
-- (void)_queue_updateSnapshots:(id)a3 completion:(id)a4;
+- (void)_queue_updateSnapshotForFace:(id)face inStore:(id)store;
+- (void)_queue_updateSnapshots:(id)snapshots completion:(id)completion;
 - (void)_startSnapshottingActivity;
-- (void)_writeImageToDisk:(id)a3 imageName:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)collectionStore:(id)a3 didAddFace:(id)a4 forUUID:(id)a5 seqId:(id)a6;
-- (void)collectionStore:(id)a3 didRemoveFaceOfStyle:(int64_t)a4 forUUID:(id)a5 seqId:(id)a6 acknowledge:(id)a7;
-- (void)collectionStore:(id)a3 didUpdateFaceForUUID:(id)a4 withConfiguration:(id)a5 seqId:(id)a6;
-- (void)collectionStore:(id)a3 didUpdateFaceForUUID:(id)a4 withResourceDirectory:(id)a5 seqId:(id)a6 acknowledge:(id)a7;
-- (void)collectionStore:(id)a3 didUpdateOrderedUUIDs:(id)a4 seqId:(id)a5;
-- (void)collectionStore:(id)a3 didUpdateSelectedUUID:(id)a4 seqId:(id)a5;
-- (void)collectionStore:(id)a3 didUpgradeFace:(id)a4 forUUID:(id)a5 seqId:(id)a6;
-- (void)collectionStore:(id)a3 loadOrderedUUIDs:(id)a4 selectedUUID:(id)a5 facesByUUID:(id)a6 seqId:(id)a7 acknowledge:(id)a8;
-- (void)collectionStoreHasBeenCreated:(id)a3;
-- (void)collectionStoreWillBePurged:(id)a3;
-- (void)complicationCollection:(id)a3 didUpdateSampleTemplateForClient:(id)a4;
-- (void)complicationCollectionDidLoad:(id)a3;
+- (void)_writeImageToDisk:(id)disk imageName:(id)name;
+- (void)addObserver:(id)observer;
+- (void)collectionStore:(id)store didAddFace:(id)face forUUID:(id)d seqId:(id)id;
+- (void)collectionStore:(id)store didRemoveFaceOfStyle:(int64_t)style forUUID:(id)d seqId:(id)id acknowledge:(id)acknowledge;
+- (void)collectionStore:(id)store didUpdateFaceForUUID:(id)d withConfiguration:(id)configuration seqId:(id)id;
+- (void)collectionStore:(id)store didUpdateFaceForUUID:(id)d withResourceDirectory:(id)directory seqId:(id)id acknowledge:(id)acknowledge;
+- (void)collectionStore:(id)store didUpdateOrderedUUIDs:(id)ds seqId:(id)id;
+- (void)collectionStore:(id)store didUpdateSelectedUUID:(id)d seqId:(id)id;
+- (void)collectionStore:(id)store didUpgradeFace:(id)face forUUID:(id)d seqId:(id)id;
+- (void)collectionStore:(id)store loadOrderedUUIDs:(id)ds selectedUUID:(id)d facesByUUID:(id)iD seqId:(id)id acknowledge:(id)acknowledge;
+- (void)collectionStoreHasBeenCreated:(id)created;
+- (void)collectionStoreWillBePurged:(id)purged;
+- (void)complicationCollection:(id)collection didUpdateSampleTemplateForClient:(id)client;
+- (void)complicationCollectionDidLoad:(id)load;
 - (void)dealloc;
-- (void)performAfterCompletingCurrentlyPendingSnapshots:(id)a3;
-- (void)queue_updateAddableAndGallerySnapshotsWithContinuationBlock:(id)a3 finishedBlock:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)requestSnapshotOfFace:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)snapshotFace:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)snapshotLibrarySelectedFaceForDeviceUUID:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)updateAddableAndGallerySnapshotsWithContinuationBlock:(id)a3 finishedBlock:(id)a4;
+- (void)performAfterCompletingCurrentlyPendingSnapshots:(id)snapshots;
+- (void)queue_updateAddableAndGallerySnapshotsWithContinuationBlock:(id)block finishedBlock:(id)finishedBlock;
+- (void)removeObserver:(id)observer;
+- (void)requestSnapshotOfFace:(id)face options:(id)options completion:(id)completion;
+- (void)snapshotFace:(id)face options:(id)options completion:(id)completion;
+- (void)snapshotLibrarySelectedFaceForDeviceUUID:(id)d options:(id)options completion:(id)completion;
+- (void)updateAddableAndGallerySnapshotsWithContinuationBlock:(id)block finishedBlock:(id)finishedBlock;
 - (void)updateAllSnapshots;
 @end
 
@@ -63,10 +63,10 @@
     [(NSOperationQueue *)v2->_xpcSnapshotOperationQueue setQualityOfService:17];
     v5 = [NSString stringWithFormat:@"com.apple.ntkd.facesnapshotcontroller.%p", v2];
     v6 = v5;
-    v7 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     v8 = dispatch_queue_attr_make_initially_inactive(0);
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(v8, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v10 = dispatch_queue_create(v7, v9);
+    v10 = dispatch_queue_create(uTF8String, v9);
     queue = v2->_queue;
     v2->_queue = v10;
 
@@ -174,35 +174,35 @@
   [(NTKDFaceSnapshotController *)&v5 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = observerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "adding NTKDFaceSnapshotController observer - %@", &v6, 0xCu);
   }
 
   [(NSRecursiveLock *)self->_observersLock lock];
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   [(NSRecursiveLock *)self->_observersLock unlock];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = observerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "removing NTKDFaceSnapshotController observer - %@", &v6, 0xCu);
   }
 
   [(NSRecursiveLock *)self->_observersLock lock];
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
   [(NSRecursiveLock *)self->_observersLock unlock];
 }
 
@@ -228,7 +228,7 @@
     v5[1] = 3221225472;
     v5[2] = sub_10000EFAC;
     v6 = v5[3] = &unk_10005CA98;
-    v7 = self;
+    selfCopy = self;
     v4 = v6;
     [(NTKDFaceSnapshotController *)self _queue_updateSnapshots:v4 completion:v5];
   }
@@ -244,22 +244,22 @@
   }
 }
 
-- (void)snapshotFace:(id)a3 options:(id)a4 completion:(id)a5
+- (void)snapshotFace:(id)face options:(id)options completion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000F198;
   v9[3] = &unk_10005D240;
-  v10 = a5;
-  v8 = v10;
-  [(NTKDFaceSnapshotController *)self requestSnapshotOfFace:a3 options:a4 completion:v9];
+  completionCopy = completion;
+  v8 = completionCopy;
+  [(NTKDFaceSnapshotController *)self requestSnapshotOfFace:face options:options completion:v9];
 }
 
-- (void)requestSnapshotOfFace:(id)a3 options:(id)a4 completion:(id)a5
+- (void)requestSnapshotOfFace:(id)face options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  faceCopy = face;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -270,11 +270,11 @@
     v60 = 2080;
     v61 = "[NTKDFaceSnapshotController requestSnapshotOfFace:options:completion:]";
     v62 = 2112;
-    v63 = v8;
+    v63 = faceCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@: %s: In here. Face: %@", buf, 0x20u);
   }
 
-  if (v8)
+  if (faceCopy)
   {
     if (NTKDebugSnapshotInNanoTimeKitDaemon())
     {
@@ -290,17 +290,17 @@
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%@: %s snapshotInDaemon: YES", buf, 0x16u);
       }
 
-      [(NTKFaceSnapshotter *)self->_snapshotter requestSnapshotOfFace:v8 options:v9 completion:v10];
+      [(NTKFaceSnapshotter *)self->_snapshotter requestSnapshotOfFace:faceCopy options:optionsCopy completion:completionCopy];
     }
 
-    else if (v10)
+    else if (completionCopy)
     {
-      v20 = [v8 copy];
+      v20 = [faceCopy copy];
 
-      v21 = [v20 resourceDirectory];
-      [v20 setResourceDirectoryByTransferringOwnership:v21];
+      resourceDirectory = [v20 resourceDirectory];
+      [v20 setResourceDirectoryByTransferringOwnership:resourceDirectory];
 
-      v22 = [v9 valueForKey:NTKSnapshotPersistableKey];
+      v22 = [optionsCopy valueForKey:NTKSnapshotPersistableKey];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && [v22 BOOLValue])
       {
@@ -329,11 +329,11 @@
           block[2] = sub_10000F944;
           block[3] = &unk_10005CBE8;
           v56 = v23;
-          v57 = v10;
+          v57 = completionCopy;
           v28 = v23;
           dispatch_async(&_dispatch_main_q, block);
 
-          v8 = v20;
+          faceCopy = v20;
           goto LABEL_29;
         }
 
@@ -345,7 +345,7 @@
         v29 = 0;
       }
 
-      v30 = [v9 valueForKey:NTKSnapshotPriorityKey];
+      v30 = [optionsCopy valueForKey:NTKSnapshotPriorityKey];
       objc_opt_class();
       v49 = v30;
       if ((objc_opt_isKindOfClass() & 1) != 0 && (v31 = [v30 unsignedIntegerValue] - 1, v31 <= 2))
@@ -367,11 +367,11 @@
       v50[2] = sub_10000F95C;
       v50[3] = &unk_10005D308;
       v50[4] = self;
-      v8 = v20;
-      v51 = v8;
+      faceCopy = v20;
+      v51 = faceCopy;
       v54 = v29;
-      v53 = v10;
-      v52 = v9;
+      v53 = completionCopy;
+      v52 = optionsCopy;
       v35 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v33, v32, v50);
       v36 = [NSBlockOperation blockOperationWithBlock:v35];
       [v36 setQueuePriority:v34];
@@ -383,10 +383,10 @@
         v39 = NSStringFromClass(v38);
         v48 = v22;
         xpcSnapshotOperationQueue = self->_xpcSnapshotOperationQueue;
-        v47 = [(NSOperationQueue *)xpcSnapshotOperationQueue progress];
-        v41 = [v47 completedUnitCount];
-        v42 = [(NSOperationQueue *)self->_xpcSnapshotOperationQueue progress];
-        v43 = [v42 totalUnitCount];
+        progress = [(NSOperationQueue *)xpcSnapshotOperationQueue progress];
+        completedUnitCount = [progress completedUnitCount];
+        progress2 = [(NSOperationQueue *)self->_xpcSnapshotOperationQueue progress];
+        totalUnitCount = [progress2 totalUnitCount];
         *buf = 138413570;
         v60 = 2080;
         v59 = v39;
@@ -397,9 +397,9 @@
         v65 = xpcSnapshotOperationQueue;
         v22 = v48;
         v66 = 2048;
-        v67 = v41;
+        v67 = completedUnitCount;
         v68 = 2048;
-        v69 = v43;
+        v69 = totalUnitCount;
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "%@: %s adding the operation %@ to the queue:%@, count: %lld/%lld", buf, 0x3Eu);
       }
     }
@@ -434,21 +434,21 @@
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Returning early: Face is nil. %@ %s", buf, 0x16u);
     }
 
-    v8 = [NSError errorWithDomain:@"com.apple.nanotimekid.daemon" code:11000 userInfo:0];
-    (*(v10 + 2))(v10, 0, v8);
+    faceCopy = [NSError errorWithDomain:@"com.apple.nanotimekid.daemon" code:11000 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, 0, faceCopy);
   }
 
 LABEL_29:
 }
 
-- (void)snapshotLibrarySelectedFaceForDeviceUUID:(id)a3 options:(id)a4 completion:(id)a5
+- (void)snapshotLibrarySelectedFaceForDeviceUUID:(id)d options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = _NTKLoggingObjectForDomain();
   v12 = v11;
-  if (v8)
+  if (dCopy)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -467,10 +467,10 @@ LABEL_29:
     v17[1] = 3221225472;
     v17[2] = sub_100010700;
     v17[3] = &unk_10005D330;
-    v18 = v8;
-    v21 = v10;
-    v19 = self;
-    v20 = v9;
+    v18 = dCopy;
+    v21 = completionCopy;
+    selfCopy = self;
+    v20 = optionsCopy;
     [v15 checkoutStoreForCollectionIdentifier:v16 deviceUUID:v18 withHandler:v17];
   }
 
@@ -481,28 +481,28 @@ LABEL_29:
       sub_10003E220();
     }
 
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)updateAddableAndGallerySnapshotsWithContinuationBlock:(id)a3 finishedBlock:(id)a4
+- (void)updateAddableAndGallerySnapshotsWithContinuationBlock:(id)block finishedBlock:(id)finishedBlock
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100010958;
   v7[3] = &unk_10005D358;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(NTKDFaceSnapshotController *)v8 _onQueue_async:v7];
+  selfCopy = self;
+  blockCopy = block;
+  finishedBlockCopy = finishedBlock;
+  v5 = finishedBlockCopy;
+  v6 = blockCopy;
+  [(NTKDFaceSnapshotController *)selfCopy _onQueue_async:v7];
 }
 
-- (void)queue_updateAddableAndGallerySnapshotsWithContinuationBlock:(id)a3 finishedBlock:(id)a4
+- (void)queue_updateAddableAndGallerySnapshotsWithContinuationBlock:(id)block finishedBlock:(id)finishedBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  finishedBlockCopy = finishedBlock;
   v8 = +[NTKDCollectionCoordinator sharedInstance];
   v9 = +[NSMutableArray array];
   v38[0] = _NSConcreteStackBlock;
@@ -518,7 +518,7 @@ LABEL_29:
   v36[1] = 3221225472;
   v36[2] = sub_100010F84;
   v36[3] = &unk_10005D380;
-  v12 = v7;
+  v12 = finishedBlockCopy;
   v37 = v12;
   v13 = objc_retainBlock(v36);
   v14 = _NTKLoggingObjectForDomain();
@@ -537,23 +537,23 @@ LABEL_29:
     v46 = 0x3032000000;
     v47 = sub_10000FE84;
     v48 = sub_10000FE94;
-    v49 = [v11 firstObject];
+    firstObject = [v11 firstObject];
     [v11 removeObjectAtIndex:0];
     v30 = 0;
     v31 = &v30;
     v32 = 0x3032000000;
     v33 = sub_10000FE84;
     v34 = sub_10000FE94;
-    v16 = [*(*(&buf + 1) + 40) orderedUUIDs];
-    v35 = [v16 mutableCopy];
+    orderedUUIDs = [*(*(&buf + 1) + 40) orderedUUIDs];
+    v35 = [orderedUUIDs mutableCopy];
 
     v17 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [*(*(&buf + 1) + 40) collectionIdentifier];
+      collectionIdentifier = [*(*(&buf + 1) + 40) collectionIdentifier];
       v19 = [v31[5] count];
       *v41 = 138412546;
-      *&v41[4] = v18;
+      *&v41[4] = collectionIdentifier;
       *&v41[12] = 2048;
       *&v41[14] = v19;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Prewarm: Store %@ has %lu face UUIDs to enumerate.", v41, 0x16u);
@@ -570,7 +570,7 @@ LABEL_29:
     v22[2] = sub_100010FD0;
     v22[3] = &unk_10005D3F8;
     v22[4] = self;
-    v25 = v6;
+    v25 = blockCopy;
     p_buf = &buf;
     v23 = v10;
     v26 = v13;
@@ -594,36 +594,36 @@ LABEL_29:
   }
 }
 
-- (void)performAfterCompletingCurrentlyPendingSnapshots:(id)a3
+- (void)performAfterCompletingCurrentlyPendingSnapshots:(id)snapshots
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100011810;
   v5[3] = &unk_10005CB10;
-  v6 = a3;
-  v4 = v6;
+  snapshotsCopy = snapshots;
+  v4 = snapshotsCopy;
   [(NTKDFaceSnapshotController *)self _onQueue_async:v5];
 }
 
-- (void)_notifyFaceSnapshotChangedForKey:(id)a3
+- (void)_notifyFaceSnapshotChangedForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = keyCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "notify face snapshot changed for key:%@", buf, 0xCu);
   }
 
   [(NSRecursiveLock *)self->_observersLock lock];
-  v6 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   [(NSRecursiveLock *)self->_observersLock unlock];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v6;
+  v7 = allObjects;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -645,7 +645,7 @@ LABEL_29:
         v13[2] = sub_100011A9C;
         v13[3] = &unk_10005CA98;
         v13[4] = v12;
-        v14 = v4;
+        v14 = keyCopy;
         [(NTKDFaceSnapshotController *)self _onObserverQueue_async:v13];
 
         v11 = v11 + 1;
@@ -659,9 +659,9 @@ LABEL_29:
   }
 }
 
-- (void)collectionStoreHasBeenCreated:(id)a3
+- (void)collectionStoreHasBeenCreated:(id)created
 {
-  v4 = a3;
+  createdCopy = created;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -674,14 +674,14 @@ LABEL_29:
   v7[2] = sub_100011B98;
   v7[3] = &unk_10005CA98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = createdCopy;
+  v6 = createdCopy;
   [(NTKDFaceSnapshotController *)self _onQueue_async:v7];
 }
 
-- (void)collectionStoreWillBePurged:(id)a3
+- (void)collectionStoreWillBePurged:(id)purged
 {
-  v4 = a3;
+  purgedCopy = purged;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -693,92 +693,92 @@ LABEL_29:
   v7[1] = 3221225472;
   v7[2] = sub_100011CF0;
   v7[3] = &unk_10005CA98;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = purgedCopy;
+  selfCopy = self;
+  v6 = purgedCopy;
   [(NTKDFaceSnapshotController *)self _onQueue_async:v7];
 }
 
-- (void)collectionStore:(id)a3 didUpdateFaceForUUID:(id)a4 withConfiguration:(id)a5 seqId:(id)a6
+- (void)collectionStore:(id)store didUpdateFaceForUUID:(id)d withConfiguration:(id)configuration seqId:(id)id
 {
-  value = a6;
-  v8 = [(NTKDFaceSnapshotController *)self _preferencesKeyForCollectionStore:a3];
+  value = id;
+  v8 = [(NTKDFaceSnapshotController *)self _preferencesKeyForCollectionStore:store];
   CFPreferencesSetAppValue(v8, value, NTKDaemonPreferencesDomain);
 }
 
-- (void)collectionStore:(id)a3 didUpdateFaceForUUID:(id)a4 withResourceDirectory:(id)a5 seqId:(id)a6 acknowledge:(id)a7
+- (void)collectionStore:(id)store didUpdateFaceForUUID:(id)d withResourceDirectory:(id)directory seqId:(id)id acknowledge:(id)acknowledge
 {
-  v12 = a7;
-  v10 = a6;
-  v11 = [(NTKDFaceSnapshotController *)self _preferencesKeyForCollectionStore:a3];
-  CFPreferencesSetAppValue(v11, v10, NTKDaemonPreferencesDomain);
+  acknowledgeCopy = acknowledge;
+  idCopy = id;
+  v11 = [(NTKDFaceSnapshotController *)self _preferencesKeyForCollectionStore:store];
+  CFPreferencesSetAppValue(v11, idCopy, NTKDaemonPreferencesDomain);
 
-  v12[2]();
+  acknowledgeCopy[2]();
 }
 
-- (void)collectionStore:(id)a3 didAddFace:(id)a4 forUUID:(id)a5 seqId:(id)a6
+- (void)collectionStore:(id)store didAddFace:(id)face forUUID:(id)d seqId:(id)id
 {
-  value = a6;
-  v8 = [(NTKDFaceSnapshotController *)self _preferencesKeyForCollectionStore:a3];
+  value = id;
+  v8 = [(NTKDFaceSnapshotController *)self _preferencesKeyForCollectionStore:store];
   CFPreferencesSetAppValue(v8, value, NTKDaemonPreferencesDomain);
 }
 
-- (void)collectionStore:(id)a3 loadOrderedUUIDs:(id)a4 selectedUUID:(id)a5 facesByUUID:(id)a6 seqId:(id)a7 acknowledge:(id)a8
+- (void)collectionStore:(id)store loadOrderedUUIDs:(id)ds selectedUUID:(id)d facesByUUID:(id)iD seqId:(id)id acknowledge:(id)acknowledge
 {
-  v13 = a8;
-  v11 = a7;
-  v12 = [(NTKDFaceSnapshotController *)self _preferencesKeyForCollectionStore:a3];
-  CFPreferencesSetAppValue(v12, v11, NTKDaemonPreferencesDomain);
+  acknowledgeCopy = acknowledge;
+  idCopy = id;
+  v12 = [(NTKDFaceSnapshotController *)self _preferencesKeyForCollectionStore:store];
+  CFPreferencesSetAppValue(v12, idCopy, NTKDaemonPreferencesDomain);
 
-  v13[2]();
+  acknowledgeCopy[2]();
 }
 
-- (void)collectionStore:(id)a3 didUpdateSelectedUUID:(id)a4 seqId:(id)a5
+- (void)collectionStore:(id)store didUpdateSelectedUUID:(id)d seqId:(id)id
 {
-  value = a5;
-  v7 = [(NTKDFaceSnapshotController *)self _preferencesKeyForCollectionStore:a3];
+  value = id;
+  v7 = [(NTKDFaceSnapshotController *)self _preferencesKeyForCollectionStore:store];
   CFPreferencesSetAppValue(v7, value, NTKDaemonPreferencesDomain);
 }
 
-- (void)collectionStore:(id)a3 didUpdateOrderedUUIDs:(id)a4 seqId:(id)a5
+- (void)collectionStore:(id)store didUpdateOrderedUUIDs:(id)ds seqId:(id)id
 {
-  value = a5;
-  v7 = [(NTKDFaceSnapshotController *)self _preferencesKeyForCollectionStore:a3];
+  value = id;
+  v7 = [(NTKDFaceSnapshotController *)self _preferencesKeyForCollectionStore:store];
   CFPreferencesSetAppValue(v7, value, NTKDaemonPreferencesDomain);
 }
 
-- (void)collectionStore:(id)a3 didRemoveFaceOfStyle:(int64_t)a4 forUUID:(id)a5 seqId:(id)a6 acknowledge:(id)a7
+- (void)collectionStore:(id)store didRemoveFaceOfStyle:(int64_t)style forUUID:(id)d seqId:(id)id acknowledge:(id)acknowledge
 {
-  v12 = a7;
-  v10 = a6;
-  v11 = [(NTKDFaceSnapshotController *)self _preferencesKeyForCollectionStore:a3];
-  CFPreferencesSetAppValue(v11, v10, NTKDaemonPreferencesDomain);
+  acknowledgeCopy = acknowledge;
+  idCopy = id;
+  v11 = [(NTKDFaceSnapshotController *)self _preferencesKeyForCollectionStore:store];
+  CFPreferencesSetAppValue(v11, idCopy, NTKDaemonPreferencesDomain);
 
-  v12[2]();
+  acknowledgeCopy[2]();
 }
 
-- (void)collectionStore:(id)a3 didUpgradeFace:(id)a4 forUUID:(id)a5 seqId:(id)a6
+- (void)collectionStore:(id)store didUpgradeFace:(id)face forUUID:(id)d seqId:(id)id
 {
-  value = a6;
-  v8 = [(NTKDFaceSnapshotController *)self _preferencesKeyForCollectionStore:a3];
+  value = id;
+  v8 = [(NTKDFaceSnapshotController *)self _preferencesKeyForCollectionStore:store];
   CFPreferencesSetAppValue(v8, value, NTKDaemonPreferencesDomain);
 }
 
-- (void)complicationCollection:(id)a3 didUpdateSampleTemplateForClient:(id)a4
+- (void)complicationCollection:(id)collection didUpdateSampleTemplateForClient:(id)client
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001217C;
   v7[3] = &unk_10005CC38;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(NTKDFaceSnapshotController *)v8 _onQueue_async:v7];
+  selfCopy = self;
+  collectionCopy = collection;
+  clientCopy = client;
+  v5 = clientCopy;
+  v6 = collectionCopy;
+  [(NTKDFaceSnapshotController *)selfCopy _onQueue_async:v7];
 }
 
-- (void)complicationCollectionDidLoad:(id)a3
+- (void)complicationCollectionDidLoad:(id)load
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -841,8 +841,8 @@ LABEL_29:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v14 = [v27 allValues];
-  v15 = [v14 countByEnumeratingWithState:&v32 objects:v51 count:16];
+  allValues = [v27 allValues];
+  v15 = [allValues countByEnumeratingWithState:&v32 objects:v51 count:16];
   if (v15)
   {
     v16 = *v33;
@@ -852,13 +852,13 @@ LABEL_29:
       {
         if (*v33 != v16)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allValues);
         }
 
         (v11[2])(v11, *(*(&v32 + 1) + 8 * i));
       }
 
-      v15 = [v14 countByEnumeratingWithState:&v32 objects:v51 count:16];
+      v15 = [allValues countByEnumeratingWithState:&v32 objects:v51 count:16];
     }
 
     while (v15);
@@ -885,8 +885,8 @@ LABEL_29:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v21 = [v9 allValues];
-  v22 = [v21 countByEnumeratingWithState:&v28 objects:v50 count:16];
+  allValues2 = [v9 allValues];
+  v22 = [allValues2 countByEnumeratingWithState:&v28 objects:v50 count:16];
   if (v22)
   {
     v23 = *v29;
@@ -896,13 +896,13 @@ LABEL_29:
       {
         if (*v29 != v23)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(allValues2);
         }
 
         (v11[2])(v11, *(*(&v28 + 1) + 8 * j));
       }
 
-      v22 = [v21 countByEnumeratingWithState:&v28 objects:v50 count:16];
+      v22 = [allValues2 countByEnumeratingWithState:&v28 objects:v50 count:16];
     }
 
     while (v22);
@@ -914,10 +914,10 @@ LABEL_29:
   return v25;
 }
 
-- (id)_queue_snapshotObjectsForFace:(id)a3 complicationTemplateChanged:(BOOL)a4
+- (id)_queue_snapshotObjectsForFace:(id)face complicationTemplateChanged:(BOOL)changed
 {
-  v6 = a3;
-  if (!v6)
+  faceCopy = face;
+  if (!faceCopy)
   {
     v8 = &__NSArray0__struct;
     goto LABEL_22;
@@ -927,58 +927,58 @@ LABEL_29:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v34 = v6;
+    v34 = faceCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Maybe need updated snapshot for face %@", buf, 0xCu);
   }
 
   v8 = +[NSMutableArray array];
-  v9 = [v6 dailySnapshotKey];
-  v10 = [v6 unadornedSnapshotKey];
-  v11 = [(NSMutableDictionary *)self->_snapshotContexts objectForKey:v9];
-  v12 = [(NTKDFaceSnapshotController *)self _currentContext];
-  v28 = v9;
+  dailySnapshotKey = [faceCopy dailySnapshotKey];
+  unadornedSnapshotKey = [faceCopy unadornedSnapshotKey];
+  v11 = [(NSMutableDictionary *)self->_snapshotContexts objectForKey:dailySnapshotKey];
+  _currentContext = [(NTKDFaceSnapshotController *)self _currentContext];
+  v28 = dailySnapshotKey;
   if (NTKDebugDisableSnapshotting())
   {
-    v13 = 0;
+    wantsUnadornedSnapshot = 0;
     v14 = 0;
   }
 
-  else if (!a4 && v11 && -[NTKDFaceSnapshotController _snapshotExistsForKey:](self, "_snapshotExistsForKey:", v9) && ![v6 snapshotContext:v11 isStaleRelativeToContext:v12])
+  else if (!changed && v11 && -[NTKDFaceSnapshotController _snapshotExistsForKey:](self, "_snapshotExistsForKey:", dailySnapshotKey) && ![faceCopy snapshotContext:v11 isStaleRelativeToContext:_currentContext])
   {
-    v14 = [(NSMutableArray *)self->_snapshotKeysWithBlankComplications containsObject:v9];
-    v13 = [v6 wantsUnadornedSnapshot];
-    if (v13 && (v14 & 1) == 0)
+    v14 = [(NSMutableArray *)self->_snapshotKeysWithBlankComplications containsObject:dailySnapshotKey];
+    wantsUnadornedSnapshot = [faceCopy wantsUnadornedSnapshot];
+    if (wantsUnadornedSnapshot && (v14 & 1) == 0)
     {
       v14 = 0;
-      v13 = ![(NTKDFaceSnapshotController *)self _snapshotExistsForKey:v10];
+      wantsUnadornedSnapshot = ![(NTKDFaceSnapshotController *)self _snapshotExistsForKey:unadornedSnapshotKey];
     }
   }
 
   else
   {
-    v13 = [v6 wantsUnadornedSnapshot];
+    wantsUnadornedSnapshot = [faceCopy wantsUnadornedSnapshot];
     v14 = 1;
   }
 
-  v27 = v13;
+  v27 = wantsUnadornedSnapshot;
   v15 = objc_opt_new();
-  [v15 setFace:v6];
+  [v15 setFace:faceCopy];
   v16 = NTKSnapshotUIOnlyKey;
   v31 = NTKSnapshotUIOnlyKey;
   v32 = &__kCFBooleanTrue;
   v17 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
   [v15 setOptions:v17];
 
-  v18 = v9;
-  [v15 setKey:v9];
-  [v15 setContext:v12];
+  v18 = dailySnapshotKey;
+  [v15 setKey:dailySnapshotKey];
+  [v15 setContext:_currentContext];
   [v15 setSnapshotStale:v14];
   [v8 addObject:v15];
-  if ([v6 wantsUnadornedSnapshot])
+  if ([faceCopy wantsUnadornedSnapshot])
   {
     v19 = objc_opt_new();
 
-    [v19 setFace:v6];
+    [v19 setFace:faceCopy];
     v29[0] = v16;
     v29[1] = NTKSnapshotUnadornedContentKey;
     v30[0] = &__kCFBooleanTrue;
@@ -986,8 +986,8 @@ LABEL_29:
     v20 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:2];
     [v19 setOptions:v20];
 
-    [v19 setKey:v10];
-    [v19 setContext:v12];
+    [v19 setKey:unadornedSnapshotKey];
+    [v19 setContext:_currentContext];
     v21 = v27;
     [v19 setSnapshotStale:v27];
     [v8 addObject:v19];
@@ -1074,9 +1074,9 @@ LABEL_22:
   return self;
 }
 
-- (BOOL)_queue_cleanCacheExcludingKeys:(id)a3
+- (BOOL)_queue_cleanCacheExcludingKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1085,63 +1085,63 @@ LABEL_22:
   }
 
   v6 = NTKSnapshotMappedImageCache();
-  v7 = [v6 allKeys];
+  allKeys = [v6 allKeys];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100013934;
   v15[3] = &unk_10005D4E8;
-  v8 = v4;
+  v8 = keysCopy;
   v16 = v8;
-  [v7 enumerateObjectsUsingBlock:v15];
+  [allKeys enumerateObjectsUsingBlock:v15];
 
-  v9 = [(NSMutableDictionary *)self->_snapshotContexts allKeys];
+  allKeys2 = [(NSMutableDictionary *)self->_snapshotContexts allKeys];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100013AB8;
   v12[3] = &unk_10005D510;
   v13 = v8;
-  v14 = self;
+  selfCopy = self;
   v10 = v8;
-  [v9 enumerateObjectsUsingBlock:v12];
+  [allKeys2 enumerateObjectsUsingBlock:v12];
 
   sub_1000064C4(@"CleanSnapshotCache");
   return 1;
 }
 
-- (void)_onQueue_async:(id)a3
+- (void)_onQueue_async:(id)queue_async
 {
-  v4 = a3;
+  queue_asyncCopy = queue_async;
   sub_100007294(@"com.apple.ntkd.facesnapshotcontroller.asyncwork");
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100013BD8;
   block[3] = &unk_10005CB10;
-  v8 = v4;
-  v6 = v4;
+  v8 = queue_asyncCopy;
+  v6 = queue_asyncCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_onObserverQueue_async:(id)a3
+- (void)_onObserverQueue_async:(id)queue_async
 {
-  v4 = a3;
+  queue_asyncCopy = queue_async;
   sub_100007294(@"com.apple.ntkd.facesnapshotcontroller.asyncobservercallback");
   observerCallbackQueue = self->_observerCallbackQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100013CBC;
   block[3] = &unk_10005CB10;
-  v8 = v4;
-  v6 = v4;
+  v8 = queue_asyncCopy;
+  v6 = queue_asyncCopy;
   dispatch_async(observerCallbackQueue, block);
 }
 
-- (BOOL)_snapshotExistsForKey:(id)a3
+- (BOOL)_snapshotExistsForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = NTKSnapshotMappedImageCache();
-  v5 = [v4 allKeys];
-  v6 = [v5 containsObject:v3];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys containsObject:keyCopy];
 
   return v6;
 }
@@ -1160,60 +1160,60 @@ LABEL_22:
   [(NTKComplicationCollection *)v7 addObserver:self];
 }
 
-- (void)_enumerateAllFacesForDeviceUUID:(id)a3 block:(id)a4
+- (void)_enumerateAllFacesForDeviceUUID:(id)d block:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  blockCopy = block;
   v7 = +[NTKDCollectionCoordinator sharedInstance];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100013ECC;
   v10[3] = &unk_10005CC10;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = dCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = dCopy;
   [v7 enumerateAllStoresWithHandler:v10];
 }
 
-- (void)_enumerateRemoteComplicationsForFace:(id)a3 block:(id)a4
+- (void)_enumerateRemoteComplicationsForFace:(id)face block:(id)block
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000140CC;
   v7[3] = &unk_10005D538;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  faceCopy = face;
+  blockCopy = block;
+  v5 = blockCopy;
+  v6 = faceCopy;
   [v6 enumerateComplicationSlotsWithBlock:v7];
 }
 
-- (void)_queue_updateSnapshotForFace:(id)a3 inStore:(id)a4
+- (void)_queue_updateSnapshotForFace:(id)face inStore:(id)store
 {
-  v9 = a3;
-  if ([(NTKDFaceSnapshotController *)self _modernSnapshottingEnabledForStore:a4])
+  faceCopy = face;
+  if ([(NTKDFaceSnapshotController *)self _modernSnapshottingEnabledForStore:store])
   {
     v6 = +[NTKFaceSnapshotter defaultModernSnapshotOptions];
     v7 = [v6 mutableCopy];
 
     [v7 setValue:&off_10005FD00 forKey:NTKSnapshotPriorityKey];
     v8 = [v7 copy];
-    [(NTKDFaceSnapshotController *)self requestSnapshotOfFace:v9 options:v8 completion:&stru_10005D578];
+    [(NTKDFaceSnapshotController *)self requestSnapshotOfFace:faceCopy options:v8 completion:&stru_10005D578];
   }
 
   else
   {
-    [(NTKDFaceSnapshotController *)self _queue_updateSnapshotForFace:v9 complicationTemplateChanged:0];
+    [(NTKDFaceSnapshotController *)self _queue_updateSnapshotForFace:faceCopy complicationTemplateChanged:0];
   }
 }
 
-- (void)_queue_updateSnapshots:(id)a3 completion:(id)a4
+- (void)_queue_updateSnapshots:(id)snapshots completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 indexesOfObjectsPassingTest:&stru_10005D5B8];
-  v9 = [v7 objectsAtIndexes:v8];
+  completionCopy = completion;
+  snapshotsCopy = snapshots;
+  v8 = [snapshotsCopy indexesOfObjectsPassingTest:&stru_10005D5B8];
+  v9 = [snapshotsCopy objectsAtIndexes:v8];
 
   if (![(NSArray *)self->_currentSnapshots count])
   {
@@ -1222,7 +1222,7 @@ LABEL_22:
     v37[2] = sub_1000146E8;
     v37[3] = &unk_10005D5E0;
     v37[4] = self;
-    v38 = v6;
+    v38 = completionCopy;
     v24 = objc_retainBlock(v37);
     [(NTKDFaceSnapshotController *)self _startSnapshottingActivity];
     objc_storeStrong(&self->_currentSnapshots, v9);
@@ -1265,7 +1265,7 @@ LABEL_22:
     currentSnapshotCompletions = self->_currentSnapshotCompletions;
     self->_currentSnapshotCompletions = v27;
 
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_35;
     }
@@ -1288,7 +1288,7 @@ LABEL_22:
 
   v12 = v11;
   v32 = v9;
-  v33 = v6;
+  v33 = completionCopy;
   v13 = 0;
   v14 = 0;
   v15 = *v40;
@@ -1333,7 +1333,7 @@ LABEL_22:
   while (v12);
 
   v9 = v32;
-  v6 = v33;
+  completionCopy = v33;
   v8 = v34;
   if (v33)
   {
@@ -1347,7 +1347,7 @@ LABEL_22:
 
         v23 = self->_pendingSnapshotCompletions;
 LABEL_34:
-        v31 = objc_retainBlock(v6);
+        v31 = objc_retainBlock(completionCopy);
         [(NSMutableArray *)v23 addObject:v31];
 
         goto LABEL_35;
@@ -1373,28 +1373,28 @@ LABEL_33:
 LABEL_35:
 }
 
-- (void)_queue_snapshotFaces:(id)a3 completion:(id)a4
+- (void)_queue_snapshotFaces:(id)faces completion:(id)completion
 {
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_100014D2C;
   v27[3] = &unk_10005D0D8;
-  v28 = a3;
-  v29 = self;
-  v30 = a4;
-  v6 = v30;
-  v7 = v28;
+  facesCopy = faces;
+  selfCopy = self;
+  completionCopy = completion;
+  v6 = completionCopy;
+  v7 = facesCopy;
   v8 = objc_retainBlock(v27);
-  v9 = [v7 firstObject];
+  firstObject = [v7 firstObject];
   v10 = [NTKJetsamInfoInterval alloc];
-  v11 = [v9 face];
+  face = [firstObject face];
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
   v14 = [v10 initWithLabel:v13];
 
-  v15 = [v9 key];
-  v16 = [v9 face];
-  v17 = [v9 options];
+  v15 = [firstObject key];
+  face2 = [firstObject face];
+  options = [firstObject options];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100014DD8;
@@ -1402,13 +1402,13 @@ LABEL_35:
   v22[4] = self;
   v23 = v15;
   v24 = v14;
-  v25 = v9;
+  v25 = firstObject;
   v26 = v8;
   v18 = v8;
-  v19 = v9;
+  v19 = firstObject;
   v20 = v14;
   v21 = v15;
-  [(NTKDFaceSnapshotController *)self requestSnapshotOfFace:v16 options:v17 completion:v22];
+  [(NTKDFaceSnapshotController *)self requestSnapshotOfFace:face2 options:options completion:v22];
 }
 
 - (void)_startSnapshottingActivity
@@ -1426,9 +1426,9 @@ LABEL_35:
   CFPreferencesSetAppValue(@"NTKFaceSnapshotsAreDirtyKey", kCFBooleanTrue, NTKDaemonPreferencesDomain);
 }
 
-- (void)_endSnapshottingActivityDidTakeSnapshot:(BOOL)a3
+- (void)_endSnapshottingActivityDidTakeSnapshot:(BOOL)snapshot
 {
-  v3 = a3;
+  snapshotCopy = snapshot;
   v4 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1442,7 +1442,7 @@ LABEL_35:
 
   v6 = _NTKLoggingObjectForDomain();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (snapshotCopy)
   {
     if (v7)
     {
@@ -1463,28 +1463,28 @@ LABEL_35:
   }
 }
 
-- (id)_preferencesKeyForCollectionStore:(id)a3
+- (id)_preferencesKeyForCollectionStore:(id)store
 {
-  v3 = a3;
-  v4 = [v3 collectionIdentifier];
-  v5 = [v3 deviceUUID];
+  storeCopy = store;
+  collectionIdentifier = [storeCopy collectionIdentifier];
+  deviceUUID = [storeCopy deviceUUID];
 
-  v6 = [v5 UUIDString];
-  v7 = [NSString stringWithFormat:@"%@%@%@", v4, v6, @"SnapshotSequenceIdKey"];
+  uUIDString = [deviceUUID UUIDString];
+  v7 = [NSString stringWithFormat:@"%@%@%@", collectionIdentifier, uUIDString, @"SnapshotSequenceIdKey"];
 
   return v7;
 }
 
-- (void)_writeImageToDisk:(id)a3 imageName:(id)a4
+- (void)_writeImageToDisk:(id)disk imageName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
+  nameCopy = name;
+  diskCopy = disk;
   v10 = NSTemporaryDirectory();
-  v7 = [v10 stringByAppendingPathComponent:v5];
+  v7 = [v10 stringByAppendingPathComponent:nameCopy];
 
   v8 = [v7 stringByAppendingPathExtension:@"png"];
 
-  v9 = UIImagePNGRepresentation(v6);
+  v9 = UIImagePNGRepresentation(diskCopy);
 
   [v9 writeToFile:v8 options:1 error:0];
 }

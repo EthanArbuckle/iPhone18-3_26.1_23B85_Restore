@@ -1,56 +1,56 @@
 @interface GKDashboardLeaderboardScoreViewController
-- (BOOL)shouldUseTwoColumnLayoutForSize:(CGSize)a3;
-- (GKDashboardLeaderboardScoreViewController)initWithGameRecord:(id)a3 leaderboard:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (void)dataUpdated:(BOOL)a3 withError:(id)a4;
-- (void)setTimeScope:(int64_t)a3;
-- (void)setupNoContentView:(id)a3 withError:(id)a4;
-- (void)timeScopePressed:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateColumnLayoutForSize:(CGSize)a3;
+- (BOOL)shouldUseTwoColumnLayoutForSize:(CGSize)size;
+- (GKDashboardLeaderboardScoreViewController)initWithGameRecord:(id)record leaderboard:(id)leaderboard;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (void)dataUpdated:(BOOL)updated withError:(id)error;
+- (void)setTimeScope:(int64_t)scope;
+- (void)setupNoContentView:(id)view withError:(id)error;
+- (void)timeScopePressed:(id)pressed;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateColumnLayoutForSize:(CGSize)size;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation GKDashboardLeaderboardScoreViewController
 
-- (GKDashboardLeaderboardScoreViewController)initWithGameRecord:(id)a3 leaderboard:(id)a4
+- (GKDashboardLeaderboardScoreViewController)initWithGameRecord:(id)record leaderboard:(id)leaderboard
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() _gkPlatformNibName];
+  recordCopy = record;
+  leaderboardCopy = leaderboard;
+  _gkPlatformNibName = [objc_opt_class() _gkPlatformNibName];
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v25.receiver = self;
   v25.super_class = GKDashboardLeaderboardScoreViewController;
-  v10 = [(GKDashboardCollectionViewController *)&v25 initWithNibName:v8 bundle:v9];
+  v10 = [(GKDashboardCollectionViewController *)&v25 initWithNibName:_gkPlatformNibName bundle:v9];
 
   if (v10)
   {
-    [(GKDashboardLeaderboardScoreViewController *)v10 setLeaderboard:v7];
-    v11 = [v7 title];
-    [(GKDashboardLeaderboardScoreViewController *)v10 setTitle:v11];
+    [(GKDashboardLeaderboardScoreViewController *)v10 setLeaderboard:leaderboardCopy];
+    title = [leaderboardCopy title];
+    [(GKDashboardLeaderboardScoreViewController *)v10 setTitle:title];
 
     v10->_timeScope = sInitialTimeScope_0;
     v12 = objc_alloc(MEMORY[0x277D0C0A0]);
-    v13 = [v7 internal];
-    v14 = [v12 initWithInternalRepresentation:v13];
+    internal = [leaderboardCopy internal];
+    v14 = [v12 initWithInternalRepresentation:internal];
 
     [v14 setPlayerScope:1];
     [v14 setTimeScope:v10->_timeScope];
-    v15 = [[GKDashboardLeaderboardScoreDataSource alloc] initWithGameRecord:v6 leaderboard:v14];
+    v15 = [[GKDashboardLeaderboardScoreDataSource alloc] initWithGameRecord:recordCopy leaderboard:v14];
     friendDataSource = v10->_friendDataSource;
     v10->_friendDataSource = v15;
 
     [(GKDashboardLeaderboardScoreDataSource *)v10->_friendDataSource setTimeScopeTarget:v10];
     [(GKDashboardLeaderboardScoreDataSource *)v10->_friendDataSource setTimeScopeAction:sel_timeScopePressed_];
     v17 = objc_alloc(MEMORY[0x277D0C0A0]);
-    v18 = [v7 internal];
-    v19 = [v17 initWithInternalRepresentation:v18];
+    internal2 = [leaderboardCopy internal];
+    v19 = [v17 initWithInternalRepresentation:internal2];
 
     [v19 setPlayerScope:0];
     [v19 setTimeScope:v10->_timeScope];
-    v20 = [[GKDashboardLeaderboardScoreDataSource alloc] initWithGameRecord:v6 leaderboard:v19];
+    v20 = [[GKDashboardLeaderboardScoreDataSource alloc] initWithGameRecord:recordCopy leaderboard:v19];
     globalDataSource = v10->_globalDataSource;
     v10->_globalDataSource = v20;
 
@@ -74,96 +74,96 @@
   v15.receiver = self;
   v15.super_class = GKDashboardLeaderboardScoreViewController;
   [(GKDashboardCollectionViewController *)&v15 viewDidLoad];
-  v3 = [(UIViewController *)self _gkExtensionViewController];
-  v4 = [(GKDashboardLeaderboardScoreViewController *)self leaderboard];
-  v5 = [v4 identifier];
-  [v3 dashboardDidChangeToLeaderboardIdentifier:v5];
+  _gkExtensionViewController = [(UIViewController *)self _gkExtensionViewController];
+  leaderboard = [(GKDashboardLeaderboardScoreViewController *)self leaderboard];
+  identifier = [leaderboard identifier];
+  [_gkExtensionViewController dashboardDidChangeToLeaderboardIdentifier:identifier];
 
-  v6 = [(GKDashboardCollectionViewController *)self collectionView];
-  v7 = [(GKDashboardLeaderboardScoreViewController *)self view];
-  [v7 bounds];
-  LODWORD(v5) = [(GKDashboardLeaderboardScoreViewController *)self shouldUseTwoColumnLayoutForSize:v8, v9];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+  view = [(GKDashboardLeaderboardScoreViewController *)self view];
+  [view bounds];
+  LODWORD(identifier) = [(GKDashboardLeaderboardScoreViewController *)self shouldUseTwoColumnLayoutForSize:v8, v9];
 
   v10 = off_279666C78;
-  if (!v5)
+  if (!identifier)
   {
     v10 = off_279666C88;
   }
 
   v11 = objc_alloc_init(*v10);
   [v11 setTopHeaderHeight:0.0];
-  [v6 setCollectionViewLayout:v11];
-  v12 = [(GKDashboardCollectionViewController *)self dataSource];
-  [v12 setupCollectionView:v6];
+  [collectionView setCollectionViewLayout:v11];
+  dataSource = [(GKDashboardCollectionViewController *)self dataSource];
+  [dataSource setupCollectionView:collectionView];
 
   [v11 topHeaderHeight];
   if (v13 > 0.0)
   {
     v14 = +[GKDashboardLeaderboardScoreHeaderView];
-    [v6 registerNib:v14 forSupplementaryViewOfKind:@"GKCollectionLayoutTopHeaderKind" withReuseIdentifier:@"topHeader"];
-    [v6 setDataSource:self];
+    [collectionView registerNib:v14 forSupplementaryViewOfKind:@"GKCollectionLayoutTopHeaderKind" withReuseIdentifier:@"topHeader"];
+    [collectionView setDataSource:self];
   }
 }
 
-- (void)dataUpdated:(BOOL)a3 withError:(id)a4
+- (void)dataUpdated:(BOOL)updated withError:(id)error
 {
   v14.receiver = self;
   v14.super_class = GKDashboardLeaderboardScoreViewController;
-  [(GKDashboardCollectionViewController *)&v14 dataUpdated:a3 withError:a4];
-  v5 = [(GKDashboardLeaderboardScoreDataSource *)self->_friendDataSource itemCount];
-  v6 = [MEMORY[0x277D0C1F8] reporter];
+  [(GKDashboardCollectionViewController *)&v14 dataUpdated:updated withError:error];
+  itemCount = [(GKDashboardLeaderboardScoreDataSource *)self->_friendDataSource itemCount];
+  reporter = [MEMORY[0x277D0C1F8] reporter];
   v7 = *MEMORY[0x277D0BE28];
-  [v6 reportEvent:*MEMORY[0x277D0BE28] type:*MEMORY[0x277D0BA58]];
+  [reporter reportEvent:*MEMORY[0x277D0BE28] type:*MEMORY[0x277D0BA58]];
 
-  v8 = [MEMORY[0x277D0C1F8] reporter];
+  reporter2 = [MEMORY[0x277D0C1F8] reporter];
   v9 = *MEMORY[0x277D0BA18];
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
-  [v8 reportEvent:v7 type:v9 friendsPlayedThisGame:v10];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:itemCount];
+  [reporter2 reportEvent:v7 type:v9 friendsPlayedThisGame:v10];
 
-  v11 = [(GKDashboardLeaderboardScoreViewController *)self title];
+  title = [(GKDashboardLeaderboardScoreViewController *)self title];
 
-  if (!v11)
+  if (!title)
   {
-    v12 = [(GKDashboardLeaderboardScoreDataSource *)self->_globalDataSource leaderboard];
-    v13 = [v12 title];
-    [(GKDashboardLeaderboardScoreViewController *)self setTitle:v13];
+    leaderboard = [(GKDashboardLeaderboardScoreDataSource *)self->_globalDataSource leaderboard];
+    title2 = [leaderboard title];
+    [(GKDashboardLeaderboardScoreViewController *)self setTitle:title2];
   }
 }
 
-- (void)setupNoContentView:(id)a3 withError:(id)a4
+- (void)setupNoContentView:(id)view withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  errorCopy = error;
   objc_initWeak(&location, self);
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __74__GKDashboardLeaderboardScoreViewController_setupNoContentView_withError___block_invoke;
   v19 = &unk_27966D090;
   objc_copyWeak(&v20, &location);
-  [v6 setButtonAction:&v16];
+  [viewCopy setButtonAction:&v16];
   timeScope = self->_timeScope;
   if (timeScope < 2)
   {
     v11 = GKGameCenterUIFrameworkBundle();
     v12 = GKGetLocalizedStringFromTableInBundle();
-    [v6 setTitle:{v12, v16, v17, v18, v19}];
+    [viewCopy setTitle:{v12, v16, v17, v18, v19}];
 
     v13 = GKGameCenterUIFrameworkBundle();
     v14 = GKGetLocalizedStringFromTableInBundle();
-    [v6 setMessage:v14];
+    [viewCopy setMessage:v14];
 
     v15 = [MEMORY[0x277D0C0A0] localizedStringForTimeScope:self->_timeScope];
-    [v6 setButtonTitle:v15];
+    [viewCopy setButtonTitle:v15];
   }
 
   else if (timeScope == 2)
   {
     v9 = GKGameCenterUIFrameworkBundle();
     v10 = GKGetLocalizedStringFromTableInBundle();
-    [v6 setTitle:{v10, v16, v17, v18, v19}];
+    [viewCopy setTitle:{v10, v16, v17, v18, v19}];
 
-    [v6 setMessage:0];
-    [v6 setButtonTitle:0];
+    [viewCopy setMessage:0];
+    [viewCopy setButtonTitle:0];
   }
 
   objc_destroyWeak(&v20);
@@ -181,60 +181,60 @@ void __74__GKDashboardLeaderboardScoreViewController_setupNoContentView_withErro
   }
 }
 
-- (BOOL)shouldUseTwoColumnLayoutForSize:(CGSize)a3
+- (BOOL)shouldUseTwoColumnLayoutForSize:(CGSize)size
 {
-  width = a3.width;
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  width = size.width;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6 == 1 && width > 400.0)
+  if (userInterfaceIdiom == 1 && width > 400.0)
   {
     return 1;
   }
 
-  v8 = [(GKDashboardLeaderboardScoreViewController *)self traitCollection];
-  v9 = [v8 verticalSizeClass] == 1;
+  traitCollection = [(GKDashboardLeaderboardScoreViewController *)self traitCollection];
+  v9 = [traitCollection verticalSizeClass] == 1;
 
   return v9;
 }
 
-- (void)updateColumnLayoutForSize:(CGSize)a3
+- (void)updateColumnLayoutForSize:(CGSize)size
 {
-  [(GKDashboardLeaderboardScoreViewController *)self shouldUseTwoColumnLayoutForSize:a3.width, a3.height];
+  [(GKDashboardLeaderboardScoreViewController *)self shouldUseTwoColumnLayoutForSize:size.width, size.height];
   v4 = objc_opt_class();
-  v5 = [(GKDashboardCollectionViewController *)self collectionView];
-  v6 = [v5 collectionViewLayout];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
     v9 = objc_alloc_init(v4);
     [v9 setTopHeaderHeight:0.0];
-    v8 = [(GKDashboardCollectionViewController *)self collectionView];
-    [v8 setCollectionViewLayout:v9];
+    collectionView2 = [(GKDashboardCollectionViewController *)self collectionView];
+    [collectionView2 setCollectionViewLayout:v9];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v11.receiver = self;
   v11.super_class = GKDashboardLeaderboardScoreViewController;
-  v7 = a4;
-  [(GKDashboardLeaderboardScoreViewController *)&v11 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(GKDashboardLeaderboardScoreViewController *)self traitCollection];
-  v9 = [v8 horizontalSizeClass];
+  coordinatorCopy = coordinator;
+  [(GKDashboardLeaderboardScoreViewController *)&v11 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  traitCollection = [(GKDashboardLeaderboardScoreViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __96__GKDashboardLeaderboardScoreViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v10[3] = &unk_27966D880;
   v10[4] = self;
-  v10[5] = v9;
+  v10[5] = horizontalSizeClass;
   *&v10[6] = width;
   *&v10[7] = height;
-  [v7 animateAlongsideTransition:v10 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v10 completion:0];
 }
 
 void __96__GKDashboardLeaderboardScoreViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -253,16 +253,16 @@ void __96__GKDashboardLeaderboardScoreViewController_viewWillTransitionToSize_wi
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v6 = [(GKDashboardLeaderboardScoreViewController *)self view];
-  [v6 frame];
+  view = [(GKDashboardLeaderboardScoreViewController *)self view];
+  [view frame];
   [(GKDashboardLeaderboardScoreViewController *)self updateColumnLayoutForSize:v4, v5];
 }
 
-- (void)timeScopePressed:(id)a3
+- (void)timeScopePressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   v5 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:0];
   v6 = MEMORY[0x277D750F8];
   v7 = GKGameCenterUIFrameworkBundle();
@@ -297,28 +297,28 @@ void __96__GKDashboardLeaderboardScoreViewController_viewWillTransitionToSize_wi
   v17 = [v14 _actionWithTitle:v16 image:0 style:0 handler:0 shouldDismissHandler:v36];
   [v5 addAction:v17];
 
-  v18 = [v5 actions];
-  v19 = [v18 objectAtIndexedSubscript:self->_timeScope];
+  actions = [v5 actions];
+  v19 = [actions objectAtIndexedSubscript:self->_timeScope];
   [v5 setPreferredAction:v19];
 
-  v20 = [v5 preferredAction];
-  [v20 _setChecked:1];
+  preferredAction = [v5 preferredAction];
+  [preferredAction _setChecked:1];
 
-  v21 = [v4 superview];
-  v22 = [v5 popoverPresentationController];
-  [v22 setSourceView:v21];
+  superview = [pressedCopy superview];
+  popoverPresentationController = [v5 popoverPresentationController];
+  [popoverPresentationController setSourceView:superview];
 
-  v23 = [(GKDashboardCollectionViewController *)self dataSource];
-  v24 = [v23 itemCount];
+  dataSource = [(GKDashboardCollectionViewController *)self dataSource];
+  itemCount = [dataSource itemCount];
 
-  [v4 frame];
+  [pressedCopy frame];
   x = v25;
   v28 = v27;
   width = v29;
   v32 = v31;
-  if (v24 <= 0)
+  if (itemCount <= 0)
   {
-    [v4 frame];
+    [pressedCopy frame];
     v34 = v33 * 0.25;
     v39.origin.x = x;
     v39.origin.y = v28;
@@ -331,40 +331,40 @@ void __96__GKDashboardLeaderboardScoreViewController_viewWillTransitionToSize_wi
     v28 = v40.origin.y + 70.0;
   }
 
-  v35 = [v5 popoverPresentationController];
-  [v35 setSourceRect:{x, v28, width, v32}];
+  popoverPresentationController2 = [v5 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{x, v28, width, v32}];
 
   [(GKDashboardLeaderboardScoreViewController *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)setTimeScope:(int64_t)a3
+- (void)setTimeScope:(int64_t)scope
 {
-  if (self->_timeScope != a3)
+  if (self->_timeScope != scope)
   {
-    self->_timeScope = a3;
+    self->_timeScope = scope;
     [(GKDashboardLeaderboardScoreHeaderView *)self->_headerView setTimeScope:?];
-    [(GKDashboardLeaderboardScoreDataSource *)self->_friendDataSource setTimeScope:a3];
-    [(GKDashboardLeaderboardScoreDataSource *)self->_globalDataSource setTimeScope:a3];
-    [objc_opt_class() setInitialTimeScope:a3];
-    v6 = [(UIViewController *)self _gkExtensionViewController];
-    [v6 dashboardDidChangeToLeaderboardTimeScope:a3];
+    [(GKDashboardLeaderboardScoreDataSource *)self->_friendDataSource setTimeScope:scope];
+    [(GKDashboardLeaderboardScoreDataSource *)self->_globalDataSource setTimeScope:scope];
+    [objc_opt_class() setInitialTimeScope:scope];
+    _gkExtensionViewController = [(UIViewController *)self _gkExtensionViewController];
+    [_gkExtensionViewController dashboardDidChangeToLeaderboardTimeScope:scope];
 
     [(GKDashboardCollectionViewController *)self setNeedsRefresh];
   }
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  if ([v9 isEqualToString:@"GKCollectionLayoutTopHeaderKind"])
+  pathCopy = path;
+  kindCopy = kind;
+  viewCopy = view;
+  if ([kindCopy isEqualToString:@"GKCollectionLayoutTopHeaderKind"])
   {
-    v11 = [v10 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:@"topHeader" forIndexPath:v8];
+    v11 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:@"topHeader" forIndexPath:pathCopy];
 
     [v11 setTimeScope:self->_timeScope];
-    v12 = [(GKLeaderboard *)self->_leaderboard title];
-    [v11 setTitle:v12];
+    title = [(GKLeaderboard *)self->_leaderboard title];
+    [v11 setTitle:title];
 
     [v11 setTimeScopeTarget:self];
     [v11 setTimeScopeAction:sel_timeScopePressed_];
@@ -375,7 +375,7 @@ void __96__GKDashboardLeaderboardScoreViewController_viewWillTransitionToSize_wi
   {
     v14.receiver = self;
     v14.super_class = GKDashboardLeaderboardScoreViewController;
-    v11 = [(GKDashboardCollectionViewController *)&v14 collectionView:v10 viewForSupplementaryElementOfKind:v9 atIndexPath:v8];
+    v11 = [(GKDashboardCollectionViewController *)&v14 collectionView:viewCopy viewForSupplementaryElementOfKind:kindCopy atIndexPath:pathCopy];
   }
 
   return v11;

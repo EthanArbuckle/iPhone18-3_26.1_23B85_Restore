@@ -1,18 +1,18 @@
 @interface SKUIButtonCollectionViewCell
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringWithButton:(id)a3 context:(id)a4;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringWithButton:(id)button context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
 - (BOOL)_usesBackgroundWithAlpha;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5;
-- (id)viewForElementIdentifier:(id)a3;
-- (void)_buttonAction:(id)a3;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated;
+- (id)viewForElementIdentifier:(id)identifier;
+- (void)_buttonAction:(id)action;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setBackgroundColor:(id)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SKUIButtonCollectionViewCell
@@ -25,10 +25,10 @@
   [(SKUIViewReuseCollectionViewCell *)&v3 dealloc];
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -41,15 +41,15 @@
     }
   }
 
-  v17 = [v8 prefetchResourcesForViewElement:v7 reason:a4];
+  v17 = [contextCopy prefetchResourcesForViewElement:elementCopy reason:reason];
 
   return v17;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -62,8 +62,8 @@
     }
   }
 
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v17 = v16;
   v19 = v18;
 
@@ -74,10 +74,10 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -90,19 +90,19 @@
     }
   }
 
-  v18 = [v8 elementType];
-  if (v18 == 141 || v18 == 12)
+  elementType = [elementCopy elementType];
+  if (elementType == 141 || elementType == 12)
   {
-    v19 = [a1 _attributedStringWithButton:v8 context:v9];
-    v20 = [v9 labelLayoutCache];
-    [v20 requestLayoutForButton:v8 attributedString:v19 width:a4];
+    v19 = [self _attributedStringWithButton:elementCopy context:contextCopy];
+    labelLayoutCache = [contextCopy labelLayoutCache];
+    [labelLayoutCache requestLayoutForButton:elementCopy attributedString:v19 width:width];
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -115,20 +115,20 @@
     }
   }
 
-  [v8 sizeForViewElement:v7 width:a3];
+  [contextCopy sizeForViewElement:elementCopy width:width];
   v18 = v17;
 
-  v19 = a3;
+  widthCopy = width;
   v20 = v18;
   result.height = v20;
-  result.width = v19;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -145,33 +145,33 @@
   v30 = 3221225472;
   v31 = __68__SKUIButtonCollectionViewCell_reloadWithViewElement_width_context___block_invoke;
   v32 = &unk_2781F95C8;
-  v19 = v9;
+  v19 = elementCopy;
   v33 = v19;
-  v34 = self;
-  v36 = a4;
-  v20 = v10;
+  selfCopy = self;
+  widthCopy = width;
+  v20 = contextCopy;
   v35 = v20;
   [(SKUIViewReuseCollectionViewCell *)self modifyUsingBlock:&v29];
   v21 = [v20 imageResourceCacheKeyForViewElement:{v19, v29, v30, v31, v32}];
   buttonImageResourceCacheKey = self->_buttonImageResourceCacheKey;
   self->_buttonImageResourceCacheKey = v21;
 
-  v23 = [v19 style];
+  style = [v19 style];
   viewElementStyle = self->_viewElementStyle;
-  self->_viewElementStyle = v23;
+  self->_viewElementStyle = style;
 
-  v25 = [v19 buyButtonDescriptor];
+  buyButtonDescriptor = [v19 buyButtonDescriptor];
   buyButtonDescriptor = self->_buyButtonDescriptor;
-  self->_buyButtonDescriptor = v25;
+  self->_buyButtonDescriptor = buyButtonDescriptor;
 
-  objc_storeStrong(&self->_viewElement, a3);
+  objc_storeStrong(&self->_viewElement, element);
   if ([(SKUIButtonCollectionViewCell *)self _usesBackgroundWithAlpha])
   {
     button = self->_button;
     if (button)
     {
-      v28 = [MEMORY[0x277D75348] clearColor];
-      [(UIControl *)button setBackgroundColor:v28];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(UIControl *)button setBackgroundColor:clearColor];
     }
   }
 }
@@ -191,9 +191,9 @@ void __68__SKUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -208,23 +208,23 @@ void __68__SKUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
 
   v15.receiver = self;
   v15.super_class = SKUIButtonCollectionViewCell;
-  [(SKUIViewReuseCollectionViewCell *)&v15 setBackgroundColor:v4];
+  [(SKUIViewReuseCollectionViewCell *)&v15 setBackgroundColor:colorCopy];
   if ([(SKUIButtonCollectionViewCell *)self _usesBackgroundWithAlpha])
   {
     button = self->_button;
     if (button)
     {
-      v14 = [MEMORY[0x277D75348] clearColor];
-      [(UIControl *)button setBackgroundColor:v14];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(UIControl *)button setBackgroundColor:clearColor];
     }
   }
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  requestCopy = request;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -237,11 +237,11 @@ void __68__SKUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
     }
   }
 
-  v19 = [v10 requestIdentifierForResourceCacheKey:self->_buttonImageResourceCacheKey];
-  if (v19 && (v20 = [v9 requestIdentifier], v20 == objc_msgSend(v19, "unsignedIntegerValue")))
+  v19 = [contextCopy requestIdentifierForResourceCacheKey:self->_buttonImageResourceCacheKey];
+  if (v19 && (v20 = [requestCopy requestIdentifier], v20 == objc_msgSend(v19, "unsignedIntegerValue")))
   {
-    v21 = [(UIControl *)self->_button imageView];
-    [v21 setImage:v8];
+    imageView = [(UIControl *)self->_button imageView];
+    [imageView setImage:imageCopy];
 
     v22 = 1;
   }
@@ -254,11 +254,11 @@ void __68__SKUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
   return v22;
 }
 
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  stateCopy = state;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -271,19 +271,19 @@ void __68__SKUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
     }
   }
 
-  v18 = [(SKUIBuyButtonDescriptor *)self->_buyButtonDescriptor canPersonalizeUsingItemState:v8];
+  v18 = [(SKUIBuyButtonDescriptor *)self->_buyButtonDescriptor canPersonalizeUsingItemState:stateCopy];
   if (v18)
   {
     button = self->_button;
     buyButtonDescriptor = self->_buyButtonDescriptor;
-    v21 = [v9 clientContext];
-    [(UIControl *)button setValuesUsingBuyButtonDescriptor:buyButtonDescriptor itemState:v8 clientContext:v21 animated:v5];
+    clientContext = [contextCopy clientContext];
+    [(UIControl *)button setValuesUsingBuyButtonDescriptor:buyButtonDescriptor itemState:stateCopy clientContext:clientContext animated:animatedCopy];
   }
 
   return v18;
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
   if (os_variant_has_internal_content())
   {
@@ -319,8 +319,8 @@ void __68__SKUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
   [(SKUICollectionViewCell *)&v33 layoutSubviews];
   if (self->_button)
   {
-    v11 = [(SKUIButtonCollectionViewCell *)self contentView];
-    [v11 bounds];
+    contentView = [(SKUIButtonCollectionViewCell *)self contentView];
+    [contentView bounds];
     v13 = v12;
     v15 = v14;
 
@@ -329,10 +329,10 @@ void __68__SKUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
     v19 = v18;
     v20 = v13 - v16 - v18;
     v21 = self->_viewElementStyle;
-    v22 = [(IKViewElementStyle *)v21 textAlignment];
-    if (!v22)
+    textAlignment = [(IKViewElementStyle *)v21 textAlignment];
+    if (!textAlignment)
     {
-      v22 = [(IKViewElementStyle *)v21 elementAlignment];
+      textAlignment = [(IKViewElementStyle *)v21 elementAlignment];
     }
 
     v23 = *MEMORY[0x277CBF3A0];
@@ -356,15 +356,15 @@ void __68__SKUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
 
     v30 = (v15 - v27) * 0.5;
     v31 = floorf(v30);
-    if (v22 <= 5)
+    if (textAlignment <= 5)
     {
-      if (((1 << v22) & 0x35) != 0)
+      if (((1 << textAlignment) & 0x35) != 0)
       {
         v32 = (v13 - v29) * 0.5;
         v23 = floorf(v32);
       }
 
-      else if (v22 == 1)
+      else if (textAlignment == 1)
       {
         v23 = v17;
       }
@@ -379,16 +379,16 @@ void __68__SKUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
   }
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
   v8 = SKUICollectionViewForView(self);
-  v4 = [v8 delegate];
+  delegate = [v8 delegate];
   v5 = objc_opt_respondsToSelector();
   viewElement = self->_viewElement;
   if (v5)
   {
     v7 = [v8 indexPathForCell:self];
-    [v4 collectionView:v8 didConfirmButtonElement:viewElement withClickInfo:0 forItemAtIndexPath:v7];
+    [delegate collectionView:v8 didConfirmButtonElement:viewElement withClickInfo:0 forItemAtIndexPath:v7];
   }
 
   else
@@ -397,23 +397,23 @@ void __68__SKUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
   }
 }
 
-+ (id)_attributedStringWithButton:(id)a3 context:(id)a4
++ (id)_attributedStringWithButton:(id)button context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 buttonTitleStyle];
-  v8 = v7;
-  if (v7)
+  buttonCopy = button;
+  contextCopy = context;
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  v8 = buttonTitleStyle;
+  if (buttonTitleStyle)
   {
-    v9 = v7;
+    style = buttonTitleStyle;
   }
 
   else
   {
-    v9 = [v5 style];
+    style = [buttonCopy style];
   }
 
-  v10 = v9;
+  v10 = style;
 
   v11 = SKUIViewElementFontWithStyle(v10);
   if (!v11)
@@ -421,12 +421,12 @@ void __68__SKUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
     v11 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   }
 
-  v12 = [v6 tintColor];
-  v13 = SKUIViewElementPlainColorWithStyle(v10, v12);
+  tintColor = [contextCopy tintColor];
+  blackColor = SKUIViewElementPlainColorWithStyle(v10, tintColor);
 
-  if (!v13)
+  if (!blackColor)
   {
-    v13 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
   v14 = SKUIViewElementAlignmentForStyle(v10);
@@ -440,8 +440,8 @@ void __68__SKUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
     v15 = 0;
   }
 
-  v16 = [v5 buttonText];
-  v17 = [v16 attributedStringWithDefaultFont:v11 foregroundColor:v13 textAlignment:v15 style:v10];
+  buttonText = [buttonCopy buttonText];
+  v17 = [buttonText attributedStringWithDefaultFont:v11 foregroundColor:blackColor textAlignment:v15 style:v10];
 
   return v17;
 }
@@ -452,8 +452,8 @@ void __68__SKUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
   v8 = 0;
   v5 = 0.0;
   v6 = 0;
-  v2 = [(SKUIButtonCollectionViewCell *)self backgroundColor];
-  v3 = [v2 getHue:&v8 saturation:&v7 brightness:&v6 alpha:&v5];
+  backgroundColor = [(SKUIButtonCollectionViewCell *)self backgroundColor];
+  v3 = [backgroundColor getHue:&v8 saturation:&v7 brightness:&v6 alpha:&v5];
 
   return v3 && v5 < 1.0 && v5 != 0.0;
 }

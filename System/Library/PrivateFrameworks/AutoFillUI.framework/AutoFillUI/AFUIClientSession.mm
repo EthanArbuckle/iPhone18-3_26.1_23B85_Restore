@@ -1,11 +1,11 @@
 @interface AFUIClientSession
 - (AFUIClientSession)init;
 - (id)_presenter;
-- (void)_configureNSXPCConnection:(id)a3 withMachName:(id)a4;
+- (void)_configureNSXPCConnection:(id)connection withMachName:(id)name;
 - (void)_initializeBSServiceConnection;
 - (void)dealloc;
-- (void)displayForDocumentTraits:(id)a3 documentState:(id)a4 textOperationsHandler:(id)a5;
-- (void)documentStateChanged:(id)a3;
+- (void)displayForDocumentTraits:(id)traits documentState:(id)state textOperationsHandler:(id)handler;
+- (void)documentStateChanged:(id)changed;
 - (void)hide;
 @end
 
@@ -36,26 +36,26 @@
   [(AFUIClientSession *)&v4 dealloc];
 }
 
-- (void)displayForDocumentTraits:(id)a3 documentState:(id)a4 textOperationsHandler:(id)a5
+- (void)displayForDocumentTraits:(id)traits documentState:(id)state textOperationsHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AFUIClientSession *)self _presenter];
-  [v11 displayForDocumentTraits:v10 documentState:v9 textOperationsHandler:v8];
+  handlerCopy = handler;
+  stateCopy = state;
+  traitsCopy = traits;
+  _presenter = [(AFUIClientSession *)self _presenter];
+  [_presenter displayForDocumentTraits:traitsCopy documentState:stateCopy textOperationsHandler:handlerCopy];
 }
 
-- (void)documentStateChanged:(id)a3
+- (void)documentStateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(AFUIClientSession *)self _presenter];
-  [v5 documentStateChanged:v4];
+  changedCopy = changed;
+  _presenter = [(AFUIClientSession *)self _presenter];
+  [_presenter documentStateChanged:changedCopy];
 }
 
 - (void)hide
 {
-  v2 = [(AFUIClientSession *)self _presenter];
-  [v2 hide];
+  _presenter = [(AFUIClientSession *)self _presenter];
+  [_presenter hide];
 }
 
 - (void)_initializeBSServiceConnection
@@ -83,20 +83,20 @@ void __51__AFUIClientSession__initializeBSServiceConnection__block_invoke(uint64
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_configureNSXPCConnection:(id)a3 withMachName:(id)a4
+- (void)_configureNSXPCConnection:(id)connection withMachName:(id)name
 {
   v4 = MEMORY[0x1E696B0D0];
-  v5 = a3;
+  connectionCopy = connection;
   v6 = [v4 interfaceWithProtocol:&unk_1F4EAF8E8];
-  [v5 setRemoteObjectInterface:v6];
+  [connectionCopy setRemoteObjectInterface:v6];
 }
 
 - (id)_presenter
 {
-  v2 = [(AFUIClientSession *)self connection];
-  v3 = [v2 remoteObjectProxy];
+  connection = [(AFUIClientSession *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 @end

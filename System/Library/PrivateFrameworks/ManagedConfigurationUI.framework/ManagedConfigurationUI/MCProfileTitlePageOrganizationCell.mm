@@ -1,53 +1,53 @@
 @interface MCProfileTitlePageOrganizationCell
-- (MCProfileTitlePageOrganizationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (id)_createHorizontalStackWithViews:(id)a3;
+- (MCProfileTitlePageOrganizationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (id)_createHorizontalStackWithViews:(id)views;
 - (id)_createLabelLabel;
 - (id)_createValueLabel;
-- (id)_createVerticalStackWithViews:(id)a3;
-- (void)_updateConstraintWithStack:(id)a3;
-- (void)setAppleID:(id)a3;
-- (void)setOrganizationName:(id)a3;
+- (id)_createVerticalStackWithViews:(id)views;
+- (void)_updateConstraintWithStack:(id)stack;
+- (void)setAppleID:(id)d;
+- (void)setOrganizationName:(id)name;
 @end
 
 @implementation MCProfileTitlePageOrganizationCell
 
-- (MCProfileTitlePageOrganizationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MCProfileTitlePageOrganizationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v32[2] = *MEMORY[0x277D85DE8];
   v29.receiver = self;
   v29.super_class = MCProfileTitlePageOrganizationCell;
-  v4 = [(MCProfileTitlePageOrganizationCell *)&v29 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MCProfileTitlePageOrganizationCell *)&v29 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(MCProfileTitlePageOrganizationCell *)v4 setUserInteractionEnabled:0];
-    v6 = [(MCProfileTitlePageOrganizationCell *)v5 contentView];
-    [v6 setClipsToBounds:0];
+    contentView = [(MCProfileTitlePageOrganizationCell *)v5 contentView];
+    [contentView setClipsToBounds:0];
 
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [(MCProfileTitlePageOrganizationCell *)v5 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(MCProfileTitlePageOrganizationCell *)v5 setBackgroundColor:clearColor];
 
-    v8 = [(MCProfileTitlePageOrganizationCell *)v5 _createLabelLabel];
+    _createLabelLabel = [(MCProfileTitlePageOrganizationCell *)v5 _createLabelLabel];
     organizationLabel = v5->_organizationLabel;
-    v5->_organizationLabel = v8;
+    v5->_organizationLabel = _createLabelLabel;
 
     v10 = MCUILocalizedString(@"ORGANIZATION_LABEL_TITLE");
     [(UILabel *)v5->_organizationLabel setText:v10];
 
-    v11 = [(MCProfileTitlePageOrganizationCell *)v5 _createLabelLabel];
+    _createLabelLabel2 = [(MCProfileTitlePageOrganizationCell *)v5 _createLabelLabel];
     appleIDLabel = v5->_appleIDLabel;
-    v5->_appleIDLabel = v11;
+    v5->_appleIDLabel = _createLabelLabel2;
 
     v13 = MCUILocalizedString(@"APPLE_ACCOUNT_LABEL_TITLE");
     [(UILabel *)v5->_appleIDLabel setText:v13];
 
-    v14 = [(MCProfileTitlePageOrganizationCell *)v5 _createValueLabel];
+    _createValueLabel = [(MCProfileTitlePageOrganizationCell *)v5 _createValueLabel];
     organizationValueLabel = v5->_organizationValueLabel;
-    v5->_organizationValueLabel = v14;
+    v5->_organizationValueLabel = _createValueLabel;
 
-    v16 = [(MCProfileTitlePageOrganizationCell *)v5 _createValueLabel];
+    _createValueLabel2 = [(MCProfileTitlePageOrganizationCell *)v5 _createValueLabel];
     appleIDValueLabel = v5->_appleIDValueLabel;
-    v5->_appleIDValueLabel = v16;
+    v5->_appleIDValueLabel = _createValueLabel2;
 
     v32[0] = v5->_organizationLabel;
     v32[1] = v5->_organizationValueLabel;
@@ -68,8 +68,8 @@
     v5->_labelStackView = v23;
     v25 = v23;
 
-    v26 = [(MCProfileTitlePageOrganizationCell *)v5 contentView];
-    [v26 addSubview:v25];
+    contentView2 = [(MCProfileTitlePageOrganizationCell *)v5 contentView];
+    [contentView2 addSubview:v25];
 
     [(MCProfileTitlePageOrganizationCell *)v5 _updateConstraintWithStack:v25];
   }
@@ -78,25 +78,25 @@
   return v5;
 }
 
-- (void)_updateConstraintWithStack:(id)a3
+- (void)_updateConstraintWithStack:(id)stack
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v14 = @"stack";
-  v15[0] = a3;
+  v15[0] = stack;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  stackCopy = stack;
   v6 = [v4 dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v7 = MEMORY[0x277CCAAD0];
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"|-%f-[stack]-%f-|", 0x4034000000000000, 0x4034000000000000];
-  v9 = [v7 constraintsWithVisualFormat:v8 options:0 metrics:0 views:v6];
+  0x4034000000000000 = [MEMORY[0x277CCACA8] stringWithFormat:@"|-%f-[stack]-%f-|", 0x4034000000000000, 0x4034000000000000];
+  v9 = [v7 constraintsWithVisualFormat:0x4034000000000000 options:0 metrics:0 views:v6];
 
   v10 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:[stack]-0-|" options:0 metrics:0 views:v6];
 
-  v11 = [(MCProfileTitlePageOrganizationCell *)self contentView];
-  [v11 addConstraints:v9];
+  contentView = [(MCProfileTitlePageOrganizationCell *)self contentView];
+  [contentView addConstraints:v9];
 
-  v12 = [(MCProfileTitlePageOrganizationCell *)self contentView];
-  [v12 addConstraints:v10];
+  contentView2 = [(MCProfileTitlePageOrganizationCell *)self contentView];
+  [contentView2 addConstraints:v10];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -107,8 +107,8 @@
   v3 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
   [v2 setFont:v3];
 
-  v4 = [MEMORY[0x277D75348] systemGrayColor];
-  [v2 setTextColor:v4];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [v2 setTextColor:systemGrayColor];
 
   [v2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
@@ -128,11 +128,11 @@
   return v2;
 }
 
-- (id)_createHorizontalStackWithViews:(id)a3
+- (id)_createHorizontalStackWithViews:(id)views
 {
   v3 = MEMORY[0x277D75A68];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithArrangedSubviews:v4];
+  viewsCopy = views;
+  v5 = [[v3 alloc] initWithArrangedSubviews:viewsCopy];
 
   [v5 setSpacing:5.0];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -145,11 +145,11 @@
   return v5;
 }
 
-- (id)_createVerticalStackWithViews:(id)a3
+- (id)_createVerticalStackWithViews:(id)views
 {
   v3 = MEMORY[0x277D75A68];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithArrangedSubviews:v4];
+  viewsCopy = views;
+  v5 = [[v3 alloc] initWithArrangedSubviews:viewsCopy];
 
   [v5 setAxis:1];
   [v5 setAlignment:3];
@@ -160,25 +160,25 @@
   return v5;
 }
 
-- (void)setOrganizationName:(id)a3
+- (void)setOrganizationName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_organizationName isEqualToString:?])
   {
-    objc_storeStrong(&self->_organizationName, a3);
-    v5 = [(MCProfileTitlePageOrganizationCell *)self organizationValueLabel];
-    [v5 setText:v6];
+    objc_storeStrong(&self->_organizationName, name);
+    organizationValueLabel = [(MCProfileTitlePageOrganizationCell *)self organizationValueLabel];
+    [organizationValueLabel setText:nameCopy];
   }
 }
 
-- (void)setAppleID:(id)a3
+- (void)setAppleID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   if (![(NSString *)self->_appleID isEqualToString:?])
   {
-    objc_storeStrong(&self->_appleID, a3);
-    v5 = [(MCProfileTitlePageOrganizationCell *)self appleIDValueLabel];
-    [v5 setText:v6];
+    objc_storeStrong(&self->_appleID, d);
+    appleIDValueLabel = [(MCProfileTitlePageOrganizationCell *)self appleIDValueLabel];
+    [appleIDValueLabel setText:dCopy];
   }
 }
 

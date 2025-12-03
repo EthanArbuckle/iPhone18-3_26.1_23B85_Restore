@@ -1,24 +1,24 @@
 @interface SVXTaskTrackingCenter
-- (SVXTaskTrackingCenter)initWithPerformer:(id)a3 delegate:(id)a4;
-- (id)beginTrackingTaskWithContext:(id)a3 instrumentationContext:(id)a4;
-- (void)_beginContext:(id)a3;
-- (void)_endContext:(id)a3;
-- (void)_endContextsPassingTest:(id)a3;
+- (SVXTaskTrackingCenter)initWithPerformer:(id)performer delegate:(id)delegate;
+- (id)beginTrackingTaskWithContext:(id)context instrumentationContext:(id)instrumentationContext;
+- (void)_beginContext:(id)context;
+- (void)_endContext:(id)context;
+- (void)_endContextsPassingTest:(id)test;
 - (void)endTrackingAllTasks;
-- (void)endTrackingTaskWithContext:(id)a3;
-- (void)endTrackingTasksPassingTest:(id)a3;
-- (void)getContextsOfAllTrackedTasksUsingBlock:(id)a3;
-- (void)getContextsOfAllTrackedTasksUsingSyncBlock:(id)a3;
-- (void)taskTracker:(id)a3 childWillBegin:(id)a4;
-- (void)taskTrackerDidEnd:(id)a3;
+- (void)endTrackingTaskWithContext:(id)context;
+- (void)endTrackingTasksPassingTest:(id)test;
+- (void)getContextsOfAllTrackedTasksUsingBlock:(id)block;
+- (void)getContextsOfAllTrackedTasksUsingSyncBlock:(id)block;
+- (void)taskTracker:(id)tracker childWillBegin:(id)begin;
+- (void)taskTrackerDidEnd:(id)end;
 @end
 
 @implementation SVXTaskTrackingCenter
 
-- (void)_endContextsPassingTest:(id)a3
+- (void)_endContextsPassingTest:(id)test
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  testCopy = test;
   v5 = [(NSMutableSet *)self->_contexts count];
   v6 = MEMORY[0x277CEF098];
   v7 = *MEMORY[0x277CEF098];
@@ -34,9 +34,9 @@
   if (v5)
   {
     contexts = self->_contexts;
-    if (v4)
+    if (testCopy)
     {
-      v9 = [(NSMutableSet *)contexts objectsPassingTest:v4];
+      v9 = [(NSMutableSet *)contexts objectsPassingTest:testCopy];
     }
 
     else
@@ -93,11 +93,11 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_endContext:(id)a3
+- (void)_endContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4 && [(NSMutableSet *)self->_contexts containsObject:v4])
+  contextCopy = context;
+  if (contextCopy && [(NSMutableSet *)self->_contexts containsObject:contextCopy])
   {
     v5 = MEMORY[0x277CEF098];
     v6 = *MEMORY[0x277CEF098];
@@ -106,13 +106,13 @@
       v15 = 136315394;
       v16 = "[SVXTaskTrackingCenter _endContext:]";
       v17 = 2112;
-      v18 = v4;
+      selfCopy = contextCopy;
       _os_log_impl(&dword_2695B9000, v6, OS_LOG_TYPE_INFO, "%s Removing %@.", &v15, 0x16u);
     }
 
-    [(NSMutableSet *)self->_contexts removeObject:v4];
+    [(NSMutableSet *)self->_contexts removeObject:contextCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained taskTrackingCenter:self didEndTrackingTaskWithContext:v4];
+    [WeakRetained taskTrackingCenter:self didEndTrackingTaskWithContext:contextCopy];
 
     v8 = *v5;
     if (os_log_type_enabled(*v5, OS_LOG_TYPE_INFO))
@@ -120,7 +120,7 @@
       v15 = 136315394;
       v16 = "[SVXTaskTrackingCenter _endContext:]";
       v17 = 2112;
-      v18 = v4;
+      selfCopy = contextCopy;
       _os_log_impl(&dword_2695B9000, v8, OS_LOG_TYPE_INFO, "%s Removed %@.", &v15, 0x16u);
       v8 = *v5;
     }
@@ -133,7 +133,7 @@
       v15 = 136315394;
       v16 = "[SVXTaskTrackingCenter _endContext:]";
       v17 = 2048;
-      v18 = v11;
+      selfCopy = v11;
       _os_log_impl(&dword_2695B9000, v10, OS_LOG_TYPE_INFO, "%s numberOfContexts = %tu", &v15, 0x16u);
     }
 
@@ -145,7 +145,7 @@
         v15 = 136315394;
         v16 = "[SVXTaskTrackingCenter _endContext:]";
         v17 = 2112;
-        v18 = self;
+        selfCopy = self;
         _os_log_impl(&dword_2695B9000, v12, OS_LOG_TYPE_INFO, "%s %@ did become idle.", &v15, 0x16u);
       }
 
@@ -157,11 +157,11 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_beginContext:(id)a3
+- (void)_beginContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4 && ([(NSMutableSet *)self->_contexts containsObject:v4]& 1) == 0)
+  contextCopy = context;
+  if (contextCopy && ([(NSMutableSet *)self->_contexts containsObject:contextCopy]& 1) == 0)
   {
     v5 = [(NSMutableSet *)self->_contexts count];
     v6 = MEMORY[0x277CEF098];
@@ -173,7 +173,7 @@
         v16 = 136315394;
         v17 = "[SVXTaskTrackingCenter _beginContext:]";
         v18 = 2112;
-        v19 = self;
+        selfCopy = self;
         _os_log_impl(&dword_2695B9000, v7, OS_LOG_TYPE_INFO, "%s %@ will become busy.", &v16, 0x16u);
       }
 
@@ -187,13 +187,13 @@
       v16 = 136315394;
       v17 = "[SVXTaskTrackingCenter _beginContext:]";
       v18 = 2112;
-      v19 = v4;
+      selfCopy = contextCopy;
       _os_log_impl(&dword_2695B9000, v9, OS_LOG_TYPE_INFO, "%s Adding %@.", &v16, 0x16u);
     }
 
-    [(NSMutableSet *)self->_contexts addObject:v4];
+    [(NSMutableSet *)self->_contexts addObject:contextCopy];
     v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 taskTrackingCenter:self didBeginTrackingTaskWithContext:v4];
+    [v10 taskTrackingCenter:self didBeginTrackingTaskWithContext:contextCopy];
 
     v11 = *v6;
     if (os_log_type_enabled(*v6, OS_LOG_TYPE_INFO))
@@ -201,7 +201,7 @@
       v16 = 136315394;
       v17 = "[SVXTaskTrackingCenter _beginContext:]";
       v18 = 2112;
-      v19 = v4;
+      selfCopy = contextCopy;
       _os_log_impl(&dword_2695B9000, v11, OS_LOG_TYPE_INFO, "%s Added %@.", &v16, 0x16u);
       v11 = *v6;
     }
@@ -214,7 +214,7 @@
       v16 = 136315394;
       v17 = "[SVXTaskTrackingCenter _beginContext:]";
       v18 = 2048;
-      v19 = v14;
+      selfCopy = v14;
       _os_log_impl(&dword_2695B9000, v13, OS_LOG_TYPE_INFO, "%s numberOfContexts = %tu", &v16, 0x16u);
     }
   }
@@ -222,70 +222,70 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)taskTrackerDidEnd:(id)a3
+- (void)taskTrackerDidEnd:(id)end
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  endCopy = end;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v13 = "[SVXTaskTrackingCenter taskTrackerDidEnd:]";
     v14 = 2112;
-    v15 = v4;
+    v15 = endCopy;
     _os_log_impl(&dword_2695B9000, v5, OS_LOG_TYPE_INFO, "%s taskTracker = %@", buf, 0x16u);
   }
 
-  v6 = [v4 context];
+  context = [endCopy context];
   performer = self->_performer;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __43__SVXTaskTrackingCenter_taskTrackerDidEnd___block_invoke;
   v10[3] = &unk_279C68FE8;
   v10[4] = self;
-  v11 = v6;
-  v8 = v6;
+  v11 = context;
+  v8 = context;
   [(SVXPerforming *)performer performBlock:v10];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)taskTracker:(id)a3 childWillBegin:(id)a4
+- (void)taskTracker:(id)tracker childWillBegin:(id)begin
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  trackerCopy = tracker;
+  beginCopy = begin;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v16 = "[SVXTaskTrackingCenter taskTracker:childWillBegin:]";
     v17 = 2112;
-    v18 = v6;
+    v18 = trackerCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = beginCopy;
     _os_log_impl(&dword_2695B9000, v8, OS_LOG_TYPE_INFO, "%s taskTracker = %@, childTaskTracker = %@", buf, 0x20u);
   }
 
-  v9 = [v7 context];
+  context = [beginCopy context];
   performer = self->_performer;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __52__SVXTaskTrackingCenter_taskTracker_childWillBegin___block_invoke;
   v13[3] = &unk_279C68FE8;
   v13[4] = self;
-  v14 = v9;
-  v11 = v9;
+  v14 = context;
+  v11 = context;
   [(SVXPerforming *)performer performBlock:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getContextsOfAllTrackedTasksUsingSyncBlock:(id)a3
+- (void)getContextsOfAllTrackedTasksUsingSyncBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     performer = self->_performer;
     v7[0] = MEMORY[0x277D85DD0];
@@ -293,7 +293,7 @@
     v7[2] = __68__SVXTaskTrackingCenter_getContextsOfAllTrackedTasksUsingSyncBlock___block_invoke;
     v7[3] = &unk_279C68EF8;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     [(SVXPerforming *)performer performBlockSync:v7];
   }
 }
@@ -305,11 +305,11 @@ void __68__SVXTaskTrackingCenter_getContextsOfAllTrackedTasksUsingSyncBlock___bl
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)getContextsOfAllTrackedTasksUsingBlock:(id)a3
+- (void)getContextsOfAllTrackedTasksUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     performer = self->_performer;
     v7[0] = MEMORY[0x277D85DD0];
@@ -317,7 +317,7 @@ void __68__SVXTaskTrackingCenter_getContextsOfAllTrackedTasksUsingSyncBlock___bl
     v7[2] = __64__SVXTaskTrackingCenter_getContextsOfAllTrackedTasksUsingBlock___block_invoke;
     v7[3] = &unk_279C68EF8;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     [(SVXPerforming *)performer performBlock:v7];
   }
 }
@@ -350,10 +350,10 @@ void __64__SVXTaskTrackingCenter_getContextsOfAllTrackedTasksUsingBlock___block_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endTrackingTasksPassingTest:(id)a3
+- (void)endTrackingTasksPassingTest:(id)test
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  testCopy = test;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
@@ -368,24 +368,24 @@ void __64__SVXTaskTrackingCenter_getContextsOfAllTrackedTasksUsingBlock___block_
   v9[2] = __53__SVXTaskTrackingCenter_endTrackingTasksPassingTest___block_invoke;
   v9[3] = &unk_279C68EF8;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = testCopy;
+  v7 = testCopy;
   [(SVXPerforming *)performer performBlock:v9];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endTrackingTaskWithContext:(id)a3
+- (void)endTrackingTaskWithContext:(id)context
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v12 = "[SVXTaskTrackingCenter endTrackingTaskWithContext:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = contextCopy;
     _os_log_impl(&dword_2695B9000, v5, OS_LOG_TYPE_INFO, "%s context = %@", buf, 0x16u);
   }
 
@@ -395,37 +395,37 @@ void __64__SVXTaskTrackingCenter_getContextsOfAllTrackedTasksUsingBlock___block_
   v9[2] = __52__SVXTaskTrackingCenter_endTrackingTaskWithContext___block_invoke;
   v9[3] = &unk_279C68FE8;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = contextCopy;
+  v7 = contextCopy;
   [(SVXPerforming *)performer performBlock:v9];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)beginTrackingTaskWithContext:(id)a3 instrumentationContext:(id)a4
+- (id)beginTrackingTaskWithContext:(id)context instrumentationContext:(id)instrumentationContext
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  instrumentationContextCopy = instrumentationContext;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v17 = "[SVXTaskTrackingCenter beginTrackingTaskWithContext:instrumentationContext:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = contextCopy;
     _os_log_impl(&dword_2695B9000, v8, OS_LOG_TYPE_INFO, "%s context = %@", buf, 0x16u);
   }
 
-  v9 = [[SVXTaskTracker alloc] initWithContext:v6 instrumentationContext:v7 delegate:self];
+  v9 = [[SVXTaskTracker alloc] initWithContext:contextCopy instrumentationContext:instrumentationContextCopy delegate:self];
   performer = self->_performer;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __77__SVXTaskTrackingCenter_beginTrackingTaskWithContext_instrumentationContext___block_invoke;
   v14[3] = &unk_279C68FE8;
   v14[4] = self;
-  v15 = v6;
-  v11 = v6;
+  v15 = contextCopy;
+  v11 = contextCopy;
   [(SVXPerforming *)performer performBlock:v14];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -433,22 +433,22 @@ void __64__SVXTaskTrackingCenter_getContextsOfAllTrackedTasksUsingBlock___block_
   return v9;
 }
 
-- (SVXTaskTrackingCenter)initWithPerformer:(id)a3 delegate:(id)a4
+- (SVXTaskTrackingCenter)initWithPerformer:(id)performer delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  performerCopy = performer;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = SVXTaskTrackingCenter;
   v9 = [(SVXTaskTrackingCenter *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_performer, a3);
+    objc_storeStrong(&v9->_performer, performer);
     v11 = objc_alloc_init(MEMORY[0x277CCA940]);
     contexts = v10->_contexts;
     v10->_contexts = v11;
 
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;

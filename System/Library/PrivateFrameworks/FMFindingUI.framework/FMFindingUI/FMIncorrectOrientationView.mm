@@ -1,11 +1,11 @@
 @interface FMIncorrectOrientationView
-- (_TtC11FMFindingUI26FMIncorrectOrientationView)initWithCoder:(id)a3;
-- (_TtC11FMFindingUI26FMIncorrectOrientationView)initWithFrame:(CGRect)a3;
+- (_TtC11FMFindingUI26FMIncorrectOrientationView)initWithCoder:(id)coder;
+- (_TtC11FMFindingUI26FMIncorrectOrientationView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FMIncorrectOrientationView
 
-- (_TtC11FMFindingUI26FMIncorrectOrientationView)initWithCoder:(id)a3
+- (_TtC11FMFindingUI26FMIncorrectOrientationView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC11FMFindingUI26FMIncorrectOrientationView_titleLabel;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D756B8]) init];
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (_TtC11FMFindingUI26FMIncorrectOrientationView)initWithFrame:(CGRect)a3
+- (_TtC11FMFindingUI26FMIncorrectOrientationView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

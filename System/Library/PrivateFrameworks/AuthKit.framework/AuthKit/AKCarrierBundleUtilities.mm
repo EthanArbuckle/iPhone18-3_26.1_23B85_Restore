@@ -1,8 +1,8 @@
 @interface AKCarrierBundleUtilities
 + (AKCarrierBundleUtilities)sharedInstance;
 - (AKCarrierBundleUtilities)init;
-- (id)_formattedValueForPhoneNumber:(id)a3 countryCode:(id)a4;
-- (id)phoneBundleInfoWithAdditionalInfo:(id)a3 error:(id *)a4;
+- (id)_formattedValueForPhoneNumber:(id)number countryCode:(id)code;
+- (id)phoneBundleInfoWithAdditionalInfo:(id)info error:(id *)error;
 @end
 
 @implementation AKCarrierBundleUtilities
@@ -54,17 +54,17 @@
   return v2;
 }
 
-- (id)phoneBundleInfoWithAdditionalInfo:(id)a3 error:(id *)a4
+- (id)phoneBundleInfoWithAdditionalInfo:(id)info error:(id *)error
 {
-  v81 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v79 = a4;
+  objc_storeStrong(location, info);
+  errorCopy = error;
   v78 = 0;
   v77 = 0;
   v76 = 0;
-  telephonyClient = v81->_telephonyClient;
+  telephonyClient = selfCopy->_telephonyClient;
   v74 = 0;
   v46 = [(CoreTelephonyClient *)telephonyClient getSubscriptionInfoWithError:&v74];
   objc_storeStrong(&v77, v74);
@@ -75,9 +75,9 @@
     v6 = v76;
     v76 = v5;
     _objc_release(v6);
-    v73 = [(CoreTelephonyClient *)v81->_telephonyClient getCurrentDataSubscriptionContextSync:?];
-    v72 = [(CoreTelephonyClient *)v81->_telephonyClient getUserDefaultVoiceSubscriptionContext:0];
-    v71 = [v75 subscriptionsInUse];
+    v73 = [(CoreTelephonyClient *)selfCopy->_telephonyClient getCurrentDataSubscriptionContextSync:?];
+    v72 = [(CoreTelephonyClient *)selfCopy->_telephonyClient getUserDefaultVoiceSubscriptionContext:0];
+    subscriptionsInUse = [v75 subscriptionsInUse];
     memset(__b, 0, sizeof(__b));
     obj = [v75 subscriptions];
     v44 = [obj countByEnumeratingWithState:__b objects:v87 count:16];
@@ -95,19 +95,19 @@
         }
 
         v70 = *(__b[1] + 8 * v41);
-        v28 = [v73 uuid];
-        v7 = [v70 uuid];
-        v29 = v28 == v7;
-        _objc_release(v7);
-        _objc_release(v28);
+        uuid = [v73 uuid];
+        uuid2 = [v70 uuid];
+        v29 = uuid == uuid2;
+        _objc_release(uuid2);
+        _objc_release(uuid);
         v68 = v29;
-        v30 = [v72 uuid];
-        v8 = [v70 uuid];
-        v31 = v30 == v8;
-        _objc_release(v8);
-        _objc_release(v30);
+        uuid3 = [v72 uuid];
+        uuid4 = [v70 uuid];
+        v31 = uuid3 == uuid4;
+        _objc_release(uuid4);
+        _objc_release(uuid3);
         v67 = v31;
-        v32 = v71;
+        v32 = subscriptionsInUse;
         v60 = _NSConcreteStackBlock;
         v61 = -1073741824;
         v62 = 0;
@@ -125,17 +125,17 @@
         v35 = [NSNumber numberWithBool:v67];
         v86[2] = v35;
         v85[3] = @"inUse";
-        v34 = [NSNumber numberWithInt:v66 != 0x7FFFFFFFFFFFFFFFLL];
-        v86[3] = v34;
+        0x7FFFFFFFFFFFFFFFLL = [NSNumber numberWithInt:v66 != 0x7FFFFFFFFFFFFFFFLL];
+        v86[3] = 0x7FFFFFFFFFFFFFFFLL;
         v33 = [NSDictionary dictionaryWithObjects:v86 forKeys:v85 count:4];
         v59 = [(NSDictionary *)v33 mutableCopy];
         _objc_release(v33);
-        _objc_release(v34);
+        _objc_release(0x7FFFFFFFFFFFFFFFLL);
         _objc_release(v35);
         _objc_release(v36);
         _objc_release(v37);
         v58 = 0;
-        v9 = v81->_telephonyClient;
+        v9 = selfCopy->_telephonyClient;
         v56 = 0;
         v38 = [(CoreTelephonyClient *)v9 getSimHardwareInfo:v70 error:&v56];
         objc_storeStrong(&v58, v56);
@@ -155,36 +155,36 @@
           objc_storeStrong(&oslog, 0);
         }
 
-        v53 = [v57 hardwareType];
-        v25 = [NSNumber numberWithInteger:v53];
+        hardwareType = [v57 hardwareType];
+        v25 = [NSNumber numberWithInteger:hardwareType];
         [v59 setObject:? forKeyedSubscript:?];
         _objc_release(v25);
-        if (v53)
+        if (hardwareType)
         {
-          v24 = [NSNumber numberWithInt:v53 == 1];
+          v24 = [NSNumber numberWithInt:hardwareType == 1];
           [v59 setObject:? forKeyedSubscript:?];
           _objc_release(v24);
         }
 
-        v21 = [(CoreTelephonyClient *)v81->_telephonyClient getMobileSubscriberHomeCountryList:v70 error:0];
-        v52 = [v21 firstObject];
+        v21 = [(CoreTelephonyClient *)selfCopy->_telephonyClient getMobileSubscriberHomeCountryList:v70 error:0];
+        firstObject = [v21 firstObject];
         _objc_release(v21);
-        v22 = v81;
-        v23 = [v70 phoneNumber];
+        v22 = selfCopy;
+        phoneNumber = [v70 phoneNumber];
         v51 = [AKCarrierBundleUtilities _formattedValueForPhoneNumber:v22 countryCode:"_formattedValueForPhoneNumber:countryCode:"];
-        _objc_release(v23);
+        _objc_release(phoneNumber);
         if (v51)
         {
           [v59 setObject:v51 forKeyedSubscript:@"number"];
         }
 
-        v20 = [v70 label];
-        _objc_release(v20);
-        if (v20)
+        label = [v70 label];
+        _objc_release(label);
+        if (label)
         {
-          v19 = [v70 label];
+          label2 = [v70 label];
           [v59 setObject:? forKeyedSubscript:?];
-          _objc_release(v19);
+          _objc_release(label2);
         }
 
         if (location[0])
@@ -193,12 +193,12 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v18 = [v50 slotID];
-            if (v18 == [v70 slotID])
+            slotID = [v50 slotID];
+            if (slotID == [v70 slotID])
             {
-              v17 = [v50 phoneCertificate];
+              phoneCertificate = [v50 phoneCertificate];
               [v59 setObject:? forKeyedSubscript:?];
-              _objc_release(v17);
+              _objc_release(phoneCertificate);
             }
           }
 
@@ -220,7 +220,7 @@
         [v14 addObject:?];
         _objc_release(v15);
         objc_storeStrong(&v51, 0);
-        objc_storeStrong(&v52, 0);
+        objc_storeStrong(&firstObject, 0);
         objc_storeStrong(&v57, 0);
         objc_storeStrong(&v58, 0);
         objc_storeStrong(&v59, 0);
@@ -239,7 +239,7 @@
     }
 
     _objc_release(obj);
-    objc_storeStrong(&v71, 0);
+    objc_storeStrong(&subscriptionsInUse, 0);
     objc_storeStrong(&v72, 0);
     objc_storeStrong(&v73, 0);
   }
@@ -254,11 +254,11 @@
     }
 
     objc_storeStrong(&v47, 0);
-    if (v79)
+    if (errorCopy)
     {
       v13 = v77;
       v10 = v77;
-      *v79 = v13;
+      *errorCopy = v13;
     }
   }
 
@@ -273,14 +273,14 @@
   return v12;
 }
 
-- (id)_formattedValueForPhoneNumber:(id)a3 countryCode:(id)a4
+- (id)_formattedValueForPhoneNumber:(id)number countryCode:(id)code
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, number);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, code);
   v12 = 0;
   cStr = PNCopyBestGuessNormalizedNumberForCountry();
   if (cStr)

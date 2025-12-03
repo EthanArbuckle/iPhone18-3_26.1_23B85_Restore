@@ -10,17 +10,17 @@
   if (UIAccessibilityIsVoiceOverRunning())
   {
     v3 = [*MEMORY[0x29EDC8008] _accessibilityValueForKey:@"applicationDidBecomeActiveDate"];
-    v4 = [MEMORY[0x29EDB8DB0] date];
-    v5 = v4;
-    if (v3 && ([v4 timeIntervalSinceDate:v3], v6 <= 1.0))
+    date = [MEMORY[0x29EDB8DB0] date];
+    v5 = date;
+    if (v3 && ([date timeIntervalSinceDate:v3], v6 <= 1.0))
     {
     }
 
     else
     {
-      v7 = [MEMORY[0x29EDB9F48] mainBundle];
-      v8 = [v7 bundleIdentifier];
-      v9 = [v8 isEqualToString:@"com.apple.Bridge"];
+      mainBundle = [MEMORY[0x29EDB9F48] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v9 = [bundleIdentifier isEqualToString:@"com.apple.Bridge"];
 
       if ((v9 & 1) == 0)
       {
@@ -37,10 +37,10 @@
               break;
             }
 
-            v13 = [v11 superview];
+            superview = [v11 superview];
 
-            v11 = v13;
-            if (!v13)
+            v11 = superview;
+            if (!superview)
             {
               goto LABEL_12;
             }
@@ -49,7 +49,7 @@
           v16 = v12;
           if ([v16 isCollapsed])
           {
-            LOBYTE(v13) = 0;
+            LOBYTE(superview) = 0;
 LABEL_19:
 
             goto LABEL_12;
@@ -59,33 +59,33 @@ LABEL_19:
           v17 = [(PSViewControllerAccessibility *)self safeValueForKey:@"parentViewController"];
           v18 = __UIAccessibilityCastAsClass();
 
-          v19 = [v18 navigationBar];
-          v20 = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
-          v21 = [v19 _accessibilityLeafDescendantsWithOptions:v20];
-          v22 = [v21 firstObject];
+          navigationBar = [v18 navigationBar];
+          defaultVoiceOverOptions = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
+          v21 = [navigationBar _accessibilityLeafDescendantsWithOptions:defaultVoiceOverOptions];
+          firstObject = [v21 firstObject];
 
-          if (v22 || (-[PSViewControllerAccessibility safeStringForKey:](self, "safeStringForKey:", @"title"), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v25 length], v25, !v26))
+          if (firstObject || (-[PSViewControllerAccessibility safeStringForKey:](self, "safeStringForKey:", @"title"), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v25 length], v25, !v26))
           {
             v23 = v11;
           }
 
           else
           {
-            v23 = v19;
+            v23 = navigationBar;
             if (!v23)
             {
-              LOBYTE(v13) = 0;
+              LOBYTE(superview) = 0;
               goto LABEL_18;
             }
           }
 
-          LODWORD(v13) = *MEMORY[0x29EDC7F10];
+          LODWORD(superview) = *MEMORY[0x29EDC7F10];
           v27[0] = *MEMORY[0x29EDBDB28];
           v27[1] = v23;
           v24 = [MEMORY[0x29EDB8D80] arrayWithObjects:v27 count:2];
-          UIAccessibilityPostNotification(v13, v24);
+          UIAccessibilityPostNotification(superview, v24);
 
-          LOBYTE(v13) = 1;
+          LOBYTE(superview) = 1;
 LABEL_18:
 
           goto LABEL_19;
@@ -94,10 +94,10 @@ LABEL_18:
     }
   }
 
-  LOBYTE(v13) = 0;
+  LOBYTE(superview) = 0;
 LABEL_12:
   v14 = *MEMORY[0x29EDCA608];
-  return v13;
+  return superview;
 }
 
 @end

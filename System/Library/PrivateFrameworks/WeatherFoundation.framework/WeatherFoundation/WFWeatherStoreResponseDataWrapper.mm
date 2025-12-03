@@ -1,13 +1,13 @@
 @interface WFWeatherStoreResponseDataWrapper
-- (WFWeatherStoreResponseDataWrapper)initWithAQIScale:(id)a3;
-- (WFWeatherStoreResponseDataWrapper)initWithForecastData:(id)a3;
+- (WFWeatherStoreResponseDataWrapper)initWithAQIScale:(id)scale;
+- (WFWeatherStoreResponseDataWrapper)initWithForecastData:(id)data;
 @end
 
 @implementation WFWeatherStoreResponseDataWrapper
 
-- (WFWeatherStoreResponseDataWrapper)initWithForecastData:(id)a3
+- (WFWeatherStoreResponseDataWrapper)initWithForecastData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v8.receiver = self;
   v8.super_class = WFWeatherStoreResponseDataWrapper;
   v5 = [(WFWeatherStoreResponseDataWrapper *)&v8 init];
@@ -15,15 +15,15 @@
   if (v5)
   {
     [(WFWeatherStoreResponseDataWrapper *)v5 setRequestType:0];
-    [(WFWeatherStoreResponseDataWrapper *)v6 setForecastData:v4];
+    [(WFWeatherStoreResponseDataWrapper *)v6 setForecastData:dataCopy];
   }
 
   return v6;
 }
 
-- (WFWeatherStoreResponseDataWrapper)initWithAQIScale:(id)a3
+- (WFWeatherStoreResponseDataWrapper)initWithAQIScale:(id)scale
 {
-  v4 = a3;
+  scaleCopy = scale;
   v8.receiver = self;
   v8.super_class = WFWeatherStoreResponseDataWrapper;
   v5 = [(WFWeatherStoreResponseDataWrapper *)&v8 init];
@@ -31,7 +31,7 @@
   if (v5)
   {
     [(WFWeatherStoreResponseDataWrapper *)v5 setRequestType:1];
-    [(WFWeatherStoreResponseDataWrapper *)v6 setAqiScale:v4];
+    [(WFWeatherStoreResponseDataWrapper *)v6 setAqiScale:scaleCopy];
   }
 
   return v6;

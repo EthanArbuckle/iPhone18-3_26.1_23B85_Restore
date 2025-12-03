@@ -1,21 +1,21 @@
 @interface ASDExternalManifestRequestOptions
-- (ASDExternalManifestRequestOptions)initWithCoder:(id)a3;
-- (ASDExternalManifestRequestOptions)initWithURL:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASDExternalManifestRequestOptions)initWithCoder:(id)coder;
+- (ASDExternalManifestRequestOptions)initWithURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDExternalManifestRequestOptions
 
-- (ASDExternalManifestRequestOptions)initWithURL:(id)a3
+- (ASDExternalManifestRequestOptions)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = ASDExternalManifestRequestOptions;
   v5 = [(ASDExternalManifestRequestOptions *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     manifestURL = v5->_manifestURL;
     v5->_manifestURL = v6;
   }
@@ -23,10 +23,10 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[ASDExternalManifestRequestOptions allocWithZone:](ASDExternalManifestRequestOptions init];
-  v6 = [(NSURL *)self->_manifestURL copyWithZone:a3];
+  v6 = [(NSURL *)self->_manifestURL copyWithZone:zone];
   manifestURL = v5->_manifestURL;
   v5->_manifestURL = v6;
 
@@ -34,31 +34,31 @@
   return v5;
 }
 
-- (ASDExternalManifestRequestOptions)initWithCoder:(id)a3
+- (ASDExternalManifestRequestOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ASDExternalManifestRequestOptions;
-  v5 = [(ASDRequestOptions *)&v9 initWithCoder:v4];
+  v5 = [(ASDRequestOptions *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manifestURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manifestURL"];
     manifestURL = v5->_manifestURL;
     v5->_manifestURL = v6;
 
-    v5->_shouldHideUserPrompts = [v4 decodeBoolForKey:@"shouldHideUserPrompts"];
+    v5->_shouldHideUserPrompts = [coderCopy decodeBoolForKey:@"shouldHideUserPrompts"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(ASDExternalManifestRequestOptions *)self manifestURL];
-  [v5 encodeObject:v4 forKey:@"manifestURL"];
+  coderCopy = coder;
+  manifestURL = [(ASDExternalManifestRequestOptions *)self manifestURL];
+  [coderCopy encodeObject:manifestURL forKey:@"manifestURL"];
 
-  [v5 encodeBool:-[ASDExternalManifestRequestOptions shouldHideUserPrompts](self forKey:{"shouldHideUserPrompts"), @"shouldHideUserPrompts"}];
+  [coderCopy encodeBool:-[ASDExternalManifestRequestOptions shouldHideUserPrompts](self forKey:{"shouldHideUserPrompts"), @"shouldHideUserPrompts"}];
 }
 
 @end

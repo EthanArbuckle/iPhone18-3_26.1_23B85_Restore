@@ -1,18 +1,18 @@
 @interface EBStringTable
-+ (void)readWithState:(id)a3;
++ (void)readWithState:(id)state;
 @end
 
 @implementation EBStringTable
 
-+ (void)readWithState:(id)a3
++ (void)readWithState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 resources];
-  v5 = [v4 strings];
+  stateCopy = state;
+  resources = [stateCopy resources];
+  strings = [resources strings];
 
   XlStringTable::XlStringTable(v12);
-  v6 = [v3 xlReader];
-  (*(*v6 + 248))(v6, v12);
+  xlReader = [stateCopy xlReader];
+  (*(*xlReader + 248))(xlReader, v12);
   DocumentStringCount = XlStringTable::getDocumentStringCount(v12);
   if (DocumentStringCount)
   {
@@ -20,10 +20,10 @@
     do
     {
       ExternRef = XlExternSheet::getExternRef(v12, v8);
-      v10 = [v3 resources];
-      v11 = [EBString edStringFromXlString:ExternRef edResources:v10];
+      resources2 = [stateCopy resources];
+      v11 = [EBString edStringFromXlString:ExternRef edResources:resources2];
 
-      [v5 addObject:v11];
+      [strings addObject:v11];
       ++v8;
     }
 

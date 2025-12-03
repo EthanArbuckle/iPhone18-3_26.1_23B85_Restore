@@ -1,28 +1,28 @@
 @interface PDTaskSchedulerBlockTask
 - (NSString)description;
-- (PDTaskSchedulerBlockTask)initWithIdentifier:(id)a3 queue:(id)a4 block:(id)a5;
-- (void)clampToPredefinedTimePeriod:(unint64_t)a3;
-- (void)runWithTask:(id)a3;
+- (PDTaskSchedulerBlockTask)initWithIdentifier:(id)identifier queue:(id)queue block:(id)block;
+- (void)clampToPredefinedTimePeriod:(unint64_t)period;
+- (void)runWithTask:(id)task;
 @end
 
 @implementation PDTaskSchedulerBlockTask
 
-- (PDTaskSchedulerBlockTask)initWithIdentifier:(id)a3 queue:(id)a4 block:(id)a5
+- (PDTaskSchedulerBlockTask)initWithIdentifier:(id)identifier queue:(id)queue block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = PDTaskSchedulerBlockTask;
   v11 = [(PDTaskSchedulerBlockTask *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    objc_storeStrong(&v11->_executionQueue, a4);
-    v14 = [v10 copy];
+    objc_storeStrong(&v11->_executionQueue, queue);
+    v14 = [blockCopy copy];
     taskBlock = v11->_taskBlock;
     v11->_taskBlock = v14;
 
@@ -34,14 +34,14 @@
   return v11;
 }
 
-- (void)clampToPredefinedTimePeriod:(unint64_t)a3
+- (void)clampToPredefinedTimePeriod:(unint64_t)period
 {
   objc_opt_self();
   v5 = 0;
   while (1)
   {
     v6 = qword_1001A84C0[v5];
-    if (v6 >= a3)
+    if (v6 >= period)
     {
       break;
     }
@@ -77,17 +77,17 @@ LABEL_9:
   [(PDTaskSchedulerBlockTask *)self setGracePeriod:v7];
 }
 
-- (void)runWithTask:(id)a3
+- (void)runWithTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   CLSInitLog();
   v5 = CLSLogDefault;
   if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_DEBUG))
   {
     v8 = v5;
-    v9 = [(PDTaskSchedulerBlockTask *)self identifier];
+    identifier = [(PDTaskSchedulerBlockTask *)self identifier];
     *buf = 138412290;
-    v12 = v9;
+    v12 = identifier;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Running scheduled task '%@", buf, 0xCu);
   }
 
@@ -96,12 +96,12 @@ LABEL_9:
   v10[2] = sub_10006EF18;
   v10[3] = &unk_100202D40;
   v10[4] = self;
-  [v4 setExpirationHandler:v10];
-  v6 = [(PDTaskSchedulerBlockTask *)self executionQueue];
-  v7 = [(PDTaskSchedulerBlockTask *)self taskBlock];
-  dispatch_sync(v6, v7);
+  [taskCopy setExpirationHandler:v10];
+  executionQueue = [(PDTaskSchedulerBlockTask *)self executionQueue];
+  taskBlock = [(PDTaskSchedulerBlockTask *)self taskBlock];
+  dispatch_sync(executionQueue, taskBlock);
 
-  [v4 setTaskCompleted];
+  [taskCopy setTaskCompleted];
 }
 
 - (NSString)description

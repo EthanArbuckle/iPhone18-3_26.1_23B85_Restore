@@ -1,13 +1,13 @@
 @interface HKUserDomainConceptBasicProperty
-+ (id)nullPropertyWithType:(int64_t)a3 version:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)nullPropertyWithType:(int64_t)type version:(int64_t)version;
+- (BOOL)isEqual:(id)equal;
 - (HKUserDomainConceptBasicProperty)init;
-- (HKUserDomainConceptBasicProperty)initWithCoder:(id)a3;
-- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)a3 version:(int64_t)a4 doubleValue:(double)a5;
-- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)a3 version:(int64_t)a4 integerValue:(int64_t)a5;
-- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)a3 version:(int64_t)a4 timestamp:(double)a5 deleted:(BOOL)a6;
-- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)a3 version:(int64_t)a4 timestamp:(double)a5 valueType:(int64_t)a6 value:(id)a7;
-- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)a3 version:(int64_t)a4 value:(id)a5;
+- (HKUserDomainConceptBasicProperty)initWithCoder:(id)coder;
+- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)type version:(int64_t)version doubleValue:(double)value;
+- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)type version:(int64_t)version integerValue:(int64_t)value;
+- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)type version:(int64_t)version timestamp:(double)timestamp deleted:(BOOL)deleted;
+- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)type version:(int64_t)version timestamp:(double)timestamp valueType:(int64_t)valueType value:(id)value;
+- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)type version:(int64_t)version value:(id)value;
 - (NSData)dataValue;
 - (NSDate)dateValue;
 - (NSNumber)numberValue;
@@ -16,7 +16,7 @@
 - (id)_valueDescription;
 - (id)valueDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKUserDomainConceptBasicProperty
@@ -31,7 +31,7 @@
   return 0;
 }
 
-- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)a3 version:(int64_t)a4 timestamp:(double)a5 deleted:(BOOL)a6
+- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)type version:(int64_t)version timestamp:(double)timestamp deleted:(BOOL)deleted
 {
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D940];
@@ -41,32 +41,32 @@
   return 0;
 }
 
-- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)a3 version:(int64_t)a4 timestamp:(double)a5 valueType:(int64_t)a6 value:(id)a7
+- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)type version:(int64_t)version timestamp:(double)timestamp valueType:(int64_t)valueType value:(id)value
 {
-  v13 = a7;
-  if ((HKIsValidUserDomainConceptPropertyValueType(a6, v13) & 1) == 0)
+  valueCopy = value;
+  if ((HKIsValidUserDomainConceptPropertyValueType(valueType, valueCopy) & 1) == 0)
   {
-    [HKUserDomainConceptBasicProperty initWithType:a6 version:v13 timestamp:a2 valueType:self value:?];
+    [HKUserDomainConceptBasicProperty initWithType:valueType version:valueCopy timestamp:a2 valueType:self value:?];
   }
 
   v18.receiver = self;
   v18.super_class = HKUserDomainConceptBasicProperty;
-  v14 = [(HKUserDomainConceptProperty *)&v18 initWithType:a3 version:a4 timestamp:a6 == 0 deleted:a5];
+  v14 = [(HKUserDomainConceptProperty *)&v18 initWithType:type version:version timestamp:valueType == 0 deleted:timestamp];
   if (v14)
   {
-    v15 = [v13 copyWithZone:0];
+    v15 = [valueCopy copyWithZone:0];
     value = v14->_value;
     v14->_value = v15;
 
-    v14->_valueType = a6;
+    v14->_valueType = valueType;
   }
 
   return v14;
 }
 
-- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)a3 version:(int64_t)a4 value:(id)a5
+- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)type version:(int64_t)version value:(id)value
 {
-  v8 = a5;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -114,34 +114,34 @@
     }
   }
 
-  v10 = [(HKUserDomainConceptBasicProperty *)self initWithType:a3 version:a4 timestamp:v9 valueType:v8 value:CFAbsoluteTimeGetCurrent()];
+  v10 = [(HKUserDomainConceptBasicProperty *)self initWithType:type version:version timestamp:v9 valueType:valueCopy value:CFAbsoluteTimeGetCurrent()];
 
   return v10;
 }
 
-- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)a3 version:(int64_t)a4 integerValue:(int64_t)a5
+- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)type version:(int64_t)version integerValue:(int64_t)value
 {
   Current = CFAbsoluteTimeGetCurrent();
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
-  v11 = [(HKUserDomainConceptBasicProperty *)self initWithType:a3 version:a4 timestamp:3 valueType:v10 value:Current];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:value];
+  v11 = [(HKUserDomainConceptBasicProperty *)self initWithType:type version:version timestamp:3 valueType:v10 value:Current];
 
   return v11;
 }
 
-- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)a3 version:(int64_t)a4 doubleValue:(double)a5
+- (HKUserDomainConceptBasicProperty)initWithType:(int64_t)type version:(int64_t)version doubleValue:(double)value
 {
   Current = CFAbsoluteTimeGetCurrent();
-  v10 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
-  v11 = [(HKUserDomainConceptBasicProperty *)self initWithType:a3 version:a4 timestamp:2 valueType:v10 value:Current];
+  v10 = [MEMORY[0x1E696AD98] numberWithDouble:value];
+  v11 = [(HKUserDomainConceptBasicProperty *)self initWithType:type version:version timestamp:2 valueType:v10 value:Current];
 
   return v11;
 }
 
-+ (id)nullPropertyWithType:(int64_t)a3 version:(int64_t)a4
++ (id)nullPropertyWithType:(int64_t)type version:(int64_t)version
 {
-  v6 = [a1 alloc];
-  v7 = [MEMORY[0x1E695DFB0] null];
-  v8 = [v6 initWithType:a3 version:a4 value:v7];
+  v6 = [self alloc];
+  null = [MEMORY[0x1E695DFB0] null];
+  v8 = [v6 initWithType:type version:version value:null];
 
   return v8;
 }
@@ -150,8 +150,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = HKStringFromUserDomainConceptPropertyValueType(self->_valueType);
-  v5 = [(HKUserDomainConceptBasicProperty *)self _valueDescription];
-  v6 = [v3 stringWithFormat:@"'%@' %@", v4, v5];
+  _valueDescription = [(HKUserDomainConceptBasicProperty *)self _valueDescription];
+  v6 = [v3 stringWithFormat:@"'%@' %@", v4, _valueDescription];
 
   return v6;
 }
@@ -164,10 +164,10 @@
   return [(NSCopying *)self->_value hash]^ v3 ^ self->_valueType;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -177,26 +177,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v13.receiver = self;
       v13.super_class = HKUserDomainConceptBasicProperty;
       if ([(HKUserDomainConceptProperty *)&v13 isEqual:v5])
       {
         value = self->_value;
-        v7 = [(HKUserDomainConceptBasicProperty *)v5 value];
-        if (value == v7)
+        value = [(HKUserDomainConceptBasicProperty *)v5 value];
+        if (value == value)
         {
           v11 = self->_valueType == v5->_valueType;
         }
 
         else
         {
-          v8 = [(HKUserDomainConceptBasicProperty *)v5 value];
-          if (v8)
+          value2 = [(HKUserDomainConceptBasicProperty *)v5 value];
+          if (value2)
           {
             v9 = self->_value;
-            v10 = [(HKUserDomainConceptBasicProperty *)v5 value];
-            if ([(NSCopying *)v9 isEqual:v10])
+            value3 = [(HKUserDomainConceptBasicProperty *)v5 value];
+            if ([(NSCopying *)v9 isEqual:value3])
             {
               v11 = self->_valueType == v5->_valueType;
             }
@@ -229,22 +229,22 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKUserDomainConceptBasicProperty;
-  v4 = a3;
-  [(HKUserDomainConceptProperty *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_value forKey:{@"value", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_valueType forKey:@"valueType"];
+  coderCopy = coder;
+  [(HKUserDomainConceptProperty *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_value forKey:{@"value", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_valueType forKey:@"valueType"];
 }
 
-- (HKUserDomainConceptBasicProperty)initWithCoder:(id)a3
+- (HKUserDomainConceptBasicProperty)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = HKUserDomainConceptBasicProperty;
-  v5 = [(HKUserDomainConceptProperty *)&v16 initWithCoder:v4];
+  v5 = [(HKUserDomainConceptProperty *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E695DFD8]);
@@ -254,11 +254,11 @@
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v6 initWithObjects:{v7, v8, v9, v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"value"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"value"];
     value = v5->_value;
     v5->_value = v13;
 
-    v5->_valueType = [v4 decodeIntegerForKey:@"valueType"];
+    v5->_valueType = [coderCopy decodeIntegerForKey:@"valueType"];
   }
 
   return v5;
@@ -266,9 +266,9 @@
 
 - (NSString)stringValue
 {
-  v2 = [(HKUserDomainConceptBasicProperty *)self value];
+  value = [(HKUserDomainConceptBasicProperty *)self value];
   objc_opt_class();
-  v3 = v2;
+  v3 = value;
   if (objc_opt_isKindOfClass())
   {
     v4 = v3;
@@ -286,9 +286,9 @@
 
 - (NSNumber)numberValue
 {
-  v2 = [(HKUserDomainConceptBasicProperty *)self value];
+  value = [(HKUserDomainConceptBasicProperty *)self value];
   objc_opt_class();
-  v3 = v2;
+  v3 = value;
   if (objc_opt_isKindOfClass())
   {
     v4 = v3;
@@ -306,9 +306,9 @@
 
 - (NSDate)dateValue
 {
-  v2 = [(HKUserDomainConceptBasicProperty *)self value];
+  value = [(HKUserDomainConceptBasicProperty *)self value];
   objc_opt_class();
-  v3 = v2;
+  v3 = value;
   if (objc_opt_isKindOfClass())
   {
     v4 = v3;
@@ -326,9 +326,9 @@
 
 - (NSUUID)UUIDValue
 {
-  v2 = [(HKUserDomainConceptBasicProperty *)self value];
+  value = [(HKUserDomainConceptBasicProperty *)self value];
   objc_opt_class();
-  v3 = v2;
+  v3 = value;
   if (objc_opt_isKindOfClass())
   {
     v4 = v3;
@@ -346,9 +346,9 @@
 
 - (NSData)dataValue
 {
-  v2 = [(HKUserDomainConceptBasicProperty *)self value];
+  value = [(HKUserDomainConceptBasicProperty *)self value];
   objc_opt_class();
-  v3 = v2;
+  v3 = value;
   if (objc_opt_isKindOfClass())
   {
     v4 = v3;
@@ -374,8 +374,8 @@
     {
       if (valueType == 6)
       {
-        v4 = [(HKUserDomainConceptBasicProperty *)self UUIDValue];
-        v8 = [v4 UUIDString];
+        uUIDValue = [(HKUserDomainConceptBasicProperty *)self UUIDValue];
+        uUIDString = [uUIDValue UUIDString];
         goto LABEL_24;
       }
 
@@ -385,20 +385,20 @@
       }
 
       v10 = MEMORY[0x1E696AEC0];
-      v4 = [(HKUserDomainConceptBasicProperty *)self dataValue];
-      [v10 stringWithFormat:@"(%lu bytes)", objc_msgSend(v4, "length")];
+      uUIDValue = [(HKUserDomainConceptBasicProperty *)self dataValue];
+      [v10 stringWithFormat:@"(%lu bytes)", objc_msgSend(uUIDValue, "length")];
     }
 
     else if (valueType == 4)
     {
-      v4 = [(HKUserDomainConceptBasicProperty *)self numberValue];
-      HKStringFromBool([v4 BOOLValue]);
+      uUIDValue = [(HKUserDomainConceptBasicProperty *)self numberValue];
+      HKStringFromBool([uUIDValue BOOLValue]);
     }
 
     else
     {
-      v4 = [(HKUserDomainConceptBasicProperty *)self dateValue];
-      HKDiagnosticStringFromDate(v4);
+      uUIDValue = [(HKUserDomainConceptBasicProperty *)self dateValue];
+      HKDiagnosticStringFromDate(uUIDValue);
     }
 
     goto LABEL_14;
@@ -409,18 +409,18 @@
     v9 = MEMORY[0x1E696AEC0];
     if (valueType == 2)
     {
-      v4 = [(HKUserDomainConceptBasicProperty *)self numberValue];
-      [v4 doubleValue];
+      uUIDValue = [(HKUserDomainConceptBasicProperty *)self numberValue];
+      [uUIDValue doubleValue];
       [v9 stringWithFormat:@"%f", v11];
     }
 
     else
     {
-      v4 = [(HKUserDomainConceptBasicProperty *)self numberValue];
-      [v9 stringWithFormat:@"%lld", objc_msgSend(v4, "longLongValue")];
+      uUIDValue = [(HKUserDomainConceptBasicProperty *)self numberValue];
+      [v9 stringWithFormat:@"%lld", objc_msgSend(uUIDValue, "longLongValue")];
     }
 
-    v8 = LABEL_14:;
+    uUIDString = LABEL_14:;
     goto LABEL_24;
   }
 
@@ -431,8 +431,8 @@
       goto LABEL_26;
     }
 
-    v4 = [(HKUserDomainConceptBasicProperty *)self stringValue];
-    v5 = [v4 length];
+    uUIDValue = [(HKUserDomainConceptBasicProperty *)self stringValue];
+    v5 = [uUIDValue length];
     if (v5 >= 0x50)
     {
       v6 = 80;
@@ -443,11 +443,11 @@
       v6 = v5;
     }
 
-    v2 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%lu '", objc_msgSend(v4, "length")];
-    v7 = [v4 substringToIndex:v6];
+    v2 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%lu '", objc_msgSend(uUIDValue, "length")];
+    v7 = [uUIDValue substringToIndex:v6];
     [v2 appendString:v7];
 
-    if (v6 < [v4 length])
+    if (v6 < [uUIDValue length])
     {
       [v2 appendString:@"..."];
     }
@@ -456,10 +456,10 @@
     goto LABEL_25;
   }
 
-  v4 = [(HKUserDomainConceptBasicProperty *)self value];
-  v8 = [v4 description];
+  uUIDValue = [(HKUserDomainConceptBasicProperty *)self value];
+  uUIDString = [uUIDValue description];
 LABEL_24:
-  v2 = v8;
+  v2 = uUIDString;
 LABEL_25:
 
 LABEL_26:

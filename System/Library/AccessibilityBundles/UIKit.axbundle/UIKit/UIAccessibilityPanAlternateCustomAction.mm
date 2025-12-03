@@ -7,9 +7,9 @@
 
 - (uint64_t)isSecondAlternate
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 56) & 1;
+    v2 = *(self + 56) & 1;
   }
 
   else

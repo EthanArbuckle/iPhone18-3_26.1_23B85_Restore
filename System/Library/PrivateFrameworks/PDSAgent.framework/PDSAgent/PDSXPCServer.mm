@@ -1,22 +1,22 @@
 @interface PDSXPCServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSArray)connectedClients;
-- (PDSXPCServer)initWithServiceName:(id)a3 listenerVendor:(id)a4 interfaceVendor:(id)a5 daemonListenerVendor:(id)a6 queue:(id)a7 workloop:(id)a8;
+- (PDSXPCServer)initWithServiceName:(id)name listenerVendor:(id)vendor interfaceVendor:(id)interfaceVendor daemonListenerVendor:(id)listenerVendor queue:(id)queue workloop:(id)workloop;
 @end
 
 @implementation PDSXPCServer
 
-- (PDSXPCServer)initWithServiceName:(id)a3 listenerVendor:(id)a4 interfaceVendor:(id)a5 daemonListenerVendor:(id)a6 queue:(id)a7 workloop:(id)a8
+- (PDSXPCServer)initWithServiceName:(id)name listenerVendor:(id)vendor interfaceVendor:(id)interfaceVendor daemonListenerVendor:(id)listenerVendor queue:(id)queue workloop:(id)workloop
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v14)
+  nameCopy = name;
+  vendorCopy = vendor;
+  interfaceVendorCopy = interfaceVendor;
+  listenerVendorCopy = listenerVendor;
+  queueCopy = queue;
+  workloopCopy = workloop;
+  if (nameCopy)
   {
-    if (v15)
+    if (vendorCopy)
     {
       goto LABEL_3;
     }
@@ -25,10 +25,10 @@
   else
   {
     [PDSXPCServer initWithServiceName:listenerVendor:interfaceVendor:daemonListenerVendor:queue:workloop:];
-    if (v15)
+    if (vendorCopy)
     {
 LABEL_3:
-      if (v16)
+      if (interfaceVendorCopy)
       {
         goto LABEL_4;
       }
@@ -38,10 +38,10 @@ LABEL_3:
   }
 
   [PDSXPCServer initWithServiceName:listenerVendor:interfaceVendor:daemonListenerVendor:queue:workloop:];
-  if (v16)
+  if (interfaceVendorCopy)
   {
 LABEL_4:
-    if (v17)
+    if (listenerVendorCopy)
     {
       goto LABEL_5;
     }
@@ -51,17 +51,17 @@ LABEL_4:
 
 LABEL_12:
   [PDSXPCServer initWithServiceName:listenerVendor:interfaceVendor:daemonListenerVendor:queue:workloop:];
-  if (v17)
+  if (listenerVendorCopy)
   {
 LABEL_5:
-    if (v18)
+    if (queueCopy)
     {
       goto LABEL_6;
     }
 
 LABEL_14:
     [PDSXPCServer initWithServiceName:listenerVendor:interfaceVendor:daemonListenerVendor:queue:workloop:];
-    if (v19)
+    if (workloopCopy)
     {
       goto LABEL_7;
     }
@@ -71,13 +71,13 @@ LABEL_14:
 
 LABEL_13:
   [PDSXPCServer initWithServiceName:listenerVendor:interfaceVendor:daemonListenerVendor:queue:workloop:];
-  if (!v18)
+  if (!queueCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_6:
-  if (v19)
+  if (workloopCopy)
   {
     goto LABEL_7;
   }
@@ -91,14 +91,14 @@ LABEL_7:
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_workloop, a8);
-    objc_storeStrong(&v21->_daemonListenerVendor, a6);
-    objc_storeStrong(&v21->_interfaceVendor, a5);
-    v22 = [v15 listenerForMachService:v14];
+    objc_storeStrong(&v20->_workloop, workloop);
+    objc_storeStrong(&v21->_daemonListenerVendor, listenerVendor);
+    objc_storeStrong(&v21->_interfaceVendor, interfaceVendor);
+    v22 = [vendorCopy listenerForMachService:nameCopy];
     XPCListener = v21->_XPCListener;
     v21->_XPCListener = v22;
 
-    [(PDSXPCListener *)v21->_XPCListener _setQueue:v18];
+    [(PDSXPCListener *)v21->_XPCListener _setQueue:queueCopy];
     [(PDSXPCListener *)v21->_XPCListener setDelegate:v21];
   }
 
@@ -124,12 +124,12 @@ LABEL_7:
   return v4;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForEntitlement:*MEMORY[0x277D37B08]];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [connectionCopy valueForEntitlement:*MEMORY[0x277D37B08]];
   if (v8)
   {
     objc_opt_class();
@@ -139,13 +139,13 @@ LABEL_7:
     }
   }
 
-  v9 = [v7 valueForEntitlement:*MEMORY[0x277D37AF8]];
+  v9 = [connectionCopy valueForEntitlement:*MEMORY[0x277D37AF8]];
   if (!v9)
   {
     v14 = pds_defaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [PDSXPCServer listener:v7 shouldAcceptNewConnection:v14];
+      [PDSXPCServer listener:connectionCopy shouldAcceptNewConnection:v14];
     }
 
     goto LABEL_17;
@@ -160,7 +160,7 @@ LABEL_7:
       v14 = pds_defaultLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [(PDSXPCServer *)v7 listener:v9 shouldAcceptNewConnection:v14];
+        [(PDSXPCServer *)connectionCopy listener:v9 shouldAcceptNewConnection:v14];
       }
 
 LABEL_17:
@@ -180,7 +180,7 @@ LABEL_8:
   v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v9 = dispatch_queue_create_with_target_V2("com.apple.pds.xpc.clientqueue", v12, self->_workloop);
 
-  v13 = [[PDSXPCClient alloc] initWithConnection:v7 interfaceVendor:self->_interfaceVendor daemonListenerVendor:self->_daemonListenerVendor queue:v9];
+  v13 = [[PDSXPCClient alloc] initWithConnection:connectionCopy interfaceVendor:self->_interfaceVendor daemonListenerVendor:self->_daemonListenerVendor queue:v9];
   [(NSMutableArray *)self->_XPCClients addObject:v13];
   objc_initWeak(&location, self);
   v19[0] = MEMORY[0x277D85DD0];
@@ -190,12 +190,12 @@ LABEL_8:
   objc_copyWeak(&v21, &location);
   v14 = v13;
   v20 = v14;
-  [v7 setInvalidationHandler:v19];
+  [connectionCopy setInvalidationHandler:v19];
   v15 = pds_defaultLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v7;
+    v24 = connectionCopy;
     _os_log_impl(&dword_25DED8000, v15, OS_LOG_TYPE_DEFAULT, "Allowing PDS Client connection {newConnection: %@}", buf, 0xCu);
   }
 

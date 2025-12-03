@@ -9,18 +9,18 @@
 
 - (NSString)expression
 {
-  v3 = [(ICCalculateResultTextAttachment *)self calculateDocumentController];
-  v4 = [(ICAbstractTextAttachment *)self attachment];
-  v5 = [v3 expressionStringForResultAttachment:v4];
+  calculateDocumentController = [(ICCalculateResultTextAttachment *)self calculateDocumentController];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  v5 = [calculateDocumentController expressionStringForResultAttachment:attachment];
 
   return v5;
 }
 
 - (_NSRange)expressionRangeInTextStorage
 {
-  v3 = [(ICCalculateResultTextAttachment *)self calculateDocumentController];
-  v4 = [(ICAbstractTextAttachment *)self attachment];
-  v5 = [v3 expressionRangeForResultAttachment:v4];
+  calculateDocumentController = [(ICCalculateResultTextAttachment *)self calculateDocumentController];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  v5 = [calculateDocumentController expressionRangeForResultAttachment:attachment];
   v7 = v6;
 
   v8 = v5;
@@ -32,20 +32,20 @@
 
 - (NSString)localizedError
 {
-  v3 = [(ICCalculateResultTextAttachment *)self calculateDocumentController];
-  v4 = [(ICAbstractTextAttachment *)self attachment];
-  v5 = [v3 errorFullStringForResultAttachment:v4];
+  calculateDocumentController = [(ICCalculateResultTextAttachment *)self calculateDocumentController];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  v5 = [calculateDocumentController errorFullStringForResultAttachment:attachment];
 
   return v5;
 }
 
 - (id)calculateDocumentController
 {
-  v2 = [(ICAbstractTextAttachment *)self attachment];
-  v3 = [v2 note];
-  v4 = [v3 calculateDocumentController];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  note = [attachment note];
+  calculateDocumentController = [note calculateDocumentController];
 
-  return v4;
+  return calculateDocumentController;
 }
 
 @end

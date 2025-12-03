@@ -1,23 +1,23 @@
 @interface FSTaskProgressUpdater
-+ (id)progressUpdaterWithProgress:(id)a3;
-- (FSTaskProgressUpdater)initWithProgress:(id)a3;
-- (id)startPhase:(id)a3 parentUnitCount:(int64_t)a4 phaseTotalCount:(int64_t)a5 completedCounter:(const unsigned int *)a6;
++ (id)progressUpdaterWithProgress:(id)progress;
+- (FSTaskProgressUpdater)initWithProgress:(id)progress;
+- (id)startPhase:(id)phase parentUnitCount:(int64_t)count phaseTotalCount:(int64_t)totalCount completedCounter:(const unsigned int *)counter;
 - (void)dealloc;
-- (void)endPhase:(id)a3;
+- (void)endPhase:(id)phase;
 @end
 
 @implementation FSTaskProgressUpdater
 
-- (FSTaskProgressUpdater)initWithProgress:(id)a3
+- (FSTaskProgressUpdater)initWithProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   v11.receiver = self;
   v11.super_class = FSTaskProgressUpdater;
   v6 = [(FSTaskProgressUpdater *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_parentProgress, a3);
+    objc_storeStrong(&v6->_parentProgress, progress);
     timerSource = v7->_timerSource;
     v7->_timerSource = 0;
 
@@ -28,15 +28,15 @@
   return v7;
 }
 
-+ (id)progressUpdaterWithProgress:(id)a3
++ (id)progressUpdaterWithProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithProgress:v4];
+  progressCopy = progress;
+  v5 = [[self alloc] initWithProgress:progressCopy];
 
   return v5;
 }
 
-- (id)startPhase:(id)a3 parentUnitCount:(int64_t)a4 phaseTotalCount:(int64_t)a5 completedCounter:(const unsigned int *)a6
+- (id)startPhase:(id)phase parentUnitCount:(int64_t)count phaseTotalCount:(int64_t)totalCount completedCounter:(const unsigned int *)counter
 {
   if (self->_childProgress)
   {
@@ -51,12 +51,12 @@
 
   else
   {
-    [(NSProgress *)self->_parentProgress setLocalizedDescription:a3];
-    v12 = [MEMORY[0x277CCAC48] progressWithTotalUnitCount:a5];
+    [(NSProgress *)self->_parentProgress setLocalizedDescription:phase];
+    v12 = [MEMORY[0x277CCAC48] progressWithTotalUnitCount:totalCount];
     childProgress = self->_childProgress;
     self->_childProgress = v12;
 
-    [(NSProgress *)self->_parentProgress addChild:self->_childProgress withPendingUnitCount:a4];
+    [(NSProgress *)self->_parentProgress addChild:self->_childProgress withPendingUnitCount:count];
     v14 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, 0);
     timerSource = self->_timerSource;
     self->_timerSource = v14;
@@ -66,15 +66,15 @@
     {
       v17 = dispatch_time(0, 1000000000);
       dispatch_source_set_timer(v16, v17, 0x3B9ACA00uLL, 0x5F5E100uLL);
-      v18 = [(FSTaskProgressUpdater *)self childProgress];
+      childProgress = [(FSTaskProgressUpdater *)self childProgress];
       v19 = self->_timerSource;
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __85__FSTaskProgressUpdater_startPhase_parentUnitCount_phaseTotalCount_completedCounter___block_invoke;
       v22[3] = &unk_278FED1C8;
-      v23 = v18;
-      v24 = a6;
-      v20 = v18;
+      v23 = childProgress;
+      counterCopy = counter;
+      v20 = childProgress;
       dispatch_source_set_event_handler(v19, v22);
       dispatch_resume(self->_timerSource);
     }
@@ -85,10 +85,10 @@
   return v8;
 }
 
-- (void)endPhase:(id)a3
+- (void)endPhase:(id)phase
 {
-  v4 = a3;
-  v5 = v4;
+  phaseCopy = phase;
+  v5 = phaseCopy;
   if (self->_childProgress)
   {
     timerSource = self->_timerSource;
@@ -108,7 +108,7 @@
     v5 = v9;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](phaseCopy, v5);
 }
 
 - (void)dealloc

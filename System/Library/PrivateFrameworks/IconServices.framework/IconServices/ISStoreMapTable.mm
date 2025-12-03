@@ -1,66 +1,66 @@
 @interface ISStoreMapTable
-- (ISStoreMapTable)initWithURL:(id)a3 capacity:(unint64_t)a4;
+- (ISStoreMapTable)initWithURL:(id)l capacity:(unint64_t)capacity;
 - (NSData)data;
-- (id)dataForUUID:(id)a3;
+- (id)dataForUUID:(id)d;
 - (void)_extendData;
-- (void)_extendWithMultiplyer:(float)a3;
-- (void)addData:(id)a3 forUUID:(id)a4;
-- (void)enumerateWithBlock:(id)a3;
-- (void)enumerateWithUUID:(unsigned __int8)a3[16] block:(id)a4;
+- (void)_extendWithMultiplyer:(float)multiplyer;
+- (void)addData:(id)data forUUID:(id)d;
+- (void)enumerateWithBlock:(id)block;
+- (void)enumerateWithUUID:(unsigned __int8)d[16] block:(id)block;
 - (void)removeAll;
-- (void)removeDataForUUID:(id)a3;
-- (void)removeDataForUUID:(id)a3 passingTest:(id)a4;
-- (void)setBytes:(const void *)a3 size:(unint64_t)a4 forUUID:(unsigned __int8)a5[16];
+- (void)removeDataForUUID:(id)d;
+- (void)removeDataForUUID:(id)d passingTest:(id)test;
+- (void)setBytes:(const void *)bytes size:(unint64_t)size forUUID:(unsigned __int8)d[16];
 @end
 
 @implementation ISStoreMapTable
 
-- (ISStoreMapTable)initWithURL:(id)a3 capacity:(unint64_t)a4
+- (ISStoreMapTable)initWithURL:(id)l capacity:(unint64_t)capacity
 {
-  v7 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = ISStoreMapTable;
   v8 = [(ISStoreMapTable *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_url, a3);
+    objc_storeStrong(&v8->_url, l);
     v9->_dataLock._os_unfair_lock_opaque = 0;
-    v9->_initialCapacity = a4;
+    v9->_initialCapacity = capacity;
   }
 
   return v9;
 }
 
-- (void)addData:(id)a3 forUUID:(id)a4
+- (void)addData:(id)data forUUID:(id)d
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  dataCopy = data;
+  if (dataCopy)
   {
     v8[0] = 0;
     v8[1] = 0;
-    [a4 getUUIDBytes:v8];
-    -[ISStoreMapTable setBytes:size:forUUID:](self, "setBytes:size:forUUID:", [v6 bytes], objc_msgSend(v6, "length"), v8);
+    [d getUUIDBytes:v8];
+    -[ISStoreMapTable setBytes:size:forUUID:](self, "setBytes:size:forUUID:", [dataCopy bytes], objc_msgSend(dataCopy, "length"), v8);
   }
 
   else
   {
-    [(ISStoreMapTable *)self removeDataForUUID:a4];
+    [(ISStoreMapTable *)self removeDataForUUID:d];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)dataForUUID:(id)a3
+- (id)dataForUUID:(id)d
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_opt_new();
-  v6 = [(ISStoreMapTable *)self data];
+  data = [(ISStoreMapTable *)self data];
   v16[0] = 0;
   v16[1] = 0;
-  [v4 getUUIDBytes:v16];
+  [dCopy getUUIDBytes:v16];
 
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
@@ -68,7 +68,7 @@
   v14 = &unk_1E77C67C8;
   v15 = v5;
   v7 = v5;
-  [v6 _ISStoreIndex_enumerateValuesForUUID:v16 bock:&v11];
+  [data _ISStoreIndex_enumerateValuesForUUID:v16 bock:&v11];
   v8 = [v7 copy];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -82,36 +82,36 @@ void __31__ISStoreMapTable_dataForUUID___block_invoke(uint64_t a1, uint64_t a2)
   [*(a1 + 32) addObject:v3];
 }
 
-- (void)removeDataForUUID:(id)a3
+- (void)removeDataForUUID:(id)d
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ISStoreMapTable *)self data];
+  dCopy = d;
+  data = [(ISStoreMapTable *)self data];
   v7[0] = 0;
   v7[1] = 0;
-  [v4 getUUIDBytes:v7];
+  [dCopy getUUIDBytes:v7];
 
-  [v5 _ISStoreIndex_enumerateValuesForUUID:v7 bock:&__block_literal_global_4];
+  [data _ISStoreIndex_enumerateValuesForUUID:v7 bock:&__block_literal_global_4];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeDataForUUID:(id)a3 passingTest:(id)a4
+- (void)removeDataForUUID:(id)d passingTest:(id)test
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ISStoreMapTable *)self data];
+  testCopy = test;
+  dCopy = d;
+  data = [(ISStoreMapTable *)self data];
   v13[0] = 0;
   v13[1] = 0;
-  [v7 getUUIDBytes:v13];
+  [dCopy getUUIDBytes:v13];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__ISStoreMapTable_removeDataForUUID_passingTest___block_invoke;
   v11[3] = &unk_1E77C6810;
-  v12 = v6;
-  v9 = v6;
-  [v8 _ISStoreIndex_enumerateValuesForUUID:v13 bock:v11];
+  v12 = testCopy;
+  v9 = testCopy;
+  [data _ISStoreIndex_enumerateValuesForUUID:v13 bock:v11];
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -125,17 +125,17 @@ void __49__ISStoreMapTable_removeDataForUUID_passingTest___block_invoke(uint64_t
   }
 }
 
-- (void)enumerateWithBlock:(id)a3
+- (void)enumerateWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(ISStoreMapTable *)self data];
+  blockCopy = block;
+  data = [(ISStoreMapTable *)self data];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__ISStoreMapTable_enumerateWithBlock___block_invoke;
   v7[3] = &unk_1E77C6810;
-  v8 = v4;
-  v6 = v4;
-  [v5 _ISStoreIndex_enumerateValuesWithBock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [data _ISStoreIndex_enumerateValuesWithBock:v7];
 }
 
 void __38__ISStoreMapTable_enumerateWithBlock___block_invoke(uint64_t a1, uint64_t a2)
@@ -148,9 +148,9 @@ void __38__ISStoreMapTable_enumerateWithBlock___block_invoke(uint64_t a1, uint64
 - (void)removeAll
 {
   v9 = self->_data;
-  v3 = [(NSData *)v9 _ISStoreIndex_hashTableHeader];
-  v4 = v3;
-  if (!v3 || (v5 = *(v3 + 12)) == 0)
+  _ISStoreIndex_hashTableHeader = [(NSData *)v9 _ISStoreIndex_hashTableHeader];
+  v4 = _ISStoreIndex_hashTableHeader;
+  if (!_ISStoreIndex_hashTableHeader || (v5 = *(_ISStoreIndex_hashTableHeader + 12)) == 0)
   {
     v5 = 10000;
   }
@@ -170,17 +170,17 @@ void __38__ISStoreMapTable_enumerateWithBlock___block_invoke(uint64_t a1, uint64
   }
 }
 
-- (void)enumerateWithUUID:(unsigned __int8)a3[16] block:(id)a4
+- (void)enumerateWithUUID:(unsigned __int8)d[16] block:(id)block
 {
-  v6 = a4;
-  v7 = [(ISStoreMapTable *)self data];
+  blockCopy = block;
+  data = [(ISStoreMapTable *)self data];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __43__ISStoreMapTable_enumerateWithUUID_block___block_invoke;
   v9[3] = &unk_1E77C6810;
-  v10 = v6;
-  v8 = v6;
-  [v7 _ISStoreIndex_enumerateValuesForUUID:a3 bock:v9];
+  v10 = blockCopy;
+  v8 = blockCopy;
+  [data _ISStoreIndex_enumerateValuesForUUID:d bock:v9];
 }
 
 uint64_t __43__ISStoreMapTable_enumerateWithUUID_block___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -192,16 +192,16 @@ uint64_t __43__ISStoreMapTable_enumerateWithUUID_block___block_invoke(uint64_t a
   return v7(v5, a2 + 36, DataSize, a3);
 }
 
-- (void)setBytes:(const void *)a3 size:(unint64_t)a4 forUUID:(unsigned __int8)a5[16]
+- (void)setBytes:(const void *)bytes size:(unint64_t)size forUUID:(unsigned __int8)d[16]
 {
-  v9 = [(ISStoreMapTable *)self data];
-  v10 = [v9 _ISStoreIndex_hashTableHeader];
-  if (v10 && *(v10 + 12) <= *(v10 + 8))
+  data = [(ISStoreMapTable *)self data];
+  _ISStoreIndex_hashTableHeader = [data _ISStoreIndex_hashTableHeader];
+  if (_ISStoreIndex_hashTableHeader && *(_ISStoreIndex_hashTableHeader + 12) <= *(_ISStoreIndex_hashTableHeader + 8))
   {
     [(ISStoreMapTable *)self _extend];
   }
 
-  if (([v9 _ISMutableStoreIndex_addValue:a3 size:a4 forUUID:a5] & 1) == 0)
+  if (([data _ISMutableStoreIndex_addValue:bytes size:size forUUID:d] & 1) == 0)
   {
     v11 = _ISDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -239,20 +239,20 @@ uint64_t __43__ISStoreMapTable_enumerateWithUUID_block___block_invoke(uint64_t a
   return v3;
 }
 
-- (void)_extendWithMultiplyer:(float)a3
+- (void)_extendWithMultiplyer:(float)multiplyer
 {
   v5 = self->_data;
-  v6 = [(NSData *)v5 _ISStoreIndex_hashTableHeader];
-  v7 = v6;
-  if (!v6 || (v8 = *(v6 + 12)) == 0)
+  _ISStoreIndex_hashTableHeader = [(NSData *)v5 _ISStoreIndex_hashTableHeader];
+  v7 = _ISStoreIndex_hashTableHeader;
+  if (!_ISStoreIndex_hashTableHeader || (v8 = *(_ISStoreIndex_hashTableHeader + 12)) == 0)
   {
     v8 = 10000;
   }
 
-  v9 = (v8 * a3);
+  v9 = (v8 * multiplyer);
   v10 = [(NSData *)v5 length];
-  v11 = [(NSData *)v5 _ISStoreIndex_nodesOffset];
-  v12 = [MEMORY[0x1E695DEF0] _ISMutableStoreIndex_mappedDataWithCapacity:v9 additionalSize:((v10 - v11) * a3)];
+  _ISStoreIndex_nodesOffset = [(NSData *)v5 _ISStoreIndex_nodesOffset];
+  v12 = [MEMORY[0x1E695DEF0] _ISMutableStoreIndex_mappedDataWithCapacity:v9 additionalSize:((v10 - _ISStoreIndex_nodesOffset) * multiplyer)];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __41__ISStoreMapTable__extendWithMultiplyer___block_invoke;
@@ -287,16 +287,16 @@ uint64_t __41__ISStoreMapTable__extendWithMultiplyer___block_invoke(uint64_t a1,
 {
   p_data = &self->_data;
   v4 = self->_data;
-  v5 = [(NSData *)v4 _ISStoreIndex_hashTableHeader];
-  v6 = v5;
-  if (!v5 || (v7 = *(v5 + 12)) == 0)
+  _ISStoreIndex_hashTableHeader = [(NSData *)v4 _ISStoreIndex_hashTableHeader];
+  v6 = _ISStoreIndex_hashTableHeader;
+  if (!_ISStoreIndex_hashTableHeader || (v7 = *(_ISStoreIndex_hashTableHeader + 12)) == 0)
   {
     v7 = 10000;
   }
 
   v8 = [(NSData *)v4 length];
-  v9 = [(NSData *)v4 _ISStoreIndex_nodesOffset];
-  v10 = [MEMORY[0x1E695DEF0] _ISMutableStoreIndex_mappedDataWithCapacity:v7 additionalSize:((v8 - v9) * 1.5)];
+  _ISStoreIndex_nodesOffset = [(NSData *)v4 _ISStoreIndex_nodesOffset];
+  v10 = [MEMORY[0x1E695DEF0] _ISMutableStoreIndex_mappedDataWithCapacity:v7 additionalSize:((v8 - _ISStoreIndex_nodesOffset) * 1.5)];
   if (vm_copy(*MEMORY[0x1E69E9A60], -[NSData bytes](v4, "bytes"), -[NSData length](v4, "length"), [v10 bytes]))
   {
     v11 = _ISDefaultLog();

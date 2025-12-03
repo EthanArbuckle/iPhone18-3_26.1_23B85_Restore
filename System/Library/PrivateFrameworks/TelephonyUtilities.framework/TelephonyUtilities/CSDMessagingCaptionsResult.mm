@@ -1,41 +1,41 @@
 @interface CSDMessagingCaptionsResult
-- (BOOL)isEqual:(id)a3;
-- (CSDMessagingCaptionsResult)initWithCaptionsResult:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CSDMessagingCaptionsResult)initWithCaptionsResult:(id)result;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)tuCaptionsResult;
 - (unint64_t)hash;
-- (void)addTokens:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasUpdateNumber:(BOOL)a3;
-- (void)setHasUtteranceComplete:(BOOL)a3;
-- (void)setHasUtteranceNumber:(BOOL)a3;
-- (void)setHasUtteranceStartTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addTokens:(id)tokens;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasUpdateNumber:(BOOL)number;
+- (void)setHasUtteranceComplete:(BOOL)complete;
+- (void)setHasUtteranceNumber:(BOOL)number;
+- (void)setHasUtteranceStartTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingCaptionsResult
 
-- (CSDMessagingCaptionsResult)initWithCaptionsResult:(id)a3
+- (CSDMessagingCaptionsResult)initWithCaptionsResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = [(CSDMessagingCaptionsResult *)self init];
   if (v5)
   {
-    v6 = [v4 text];
-    [(CSDMessagingCaptionsResult *)v5 setText:v6];
+    text = [resultCopy text];
+    [(CSDMessagingCaptionsResult *)v5 setText:text];
 
-    -[CSDMessagingCaptionsResult setUtteranceComplete:](v5, "setUtteranceComplete:", [v4 utteranceComplete]);
-    -[CSDMessagingCaptionsResult setUtteranceNumber:](v5, "setUtteranceNumber:", [v4 utteranceNumber]);
-    -[CSDMessagingCaptionsResult setUpdateNumber:](v5, "setUpdateNumber:", [v4 updateNumber]);
-    [v4 utteranceStartTimestamp];
+    -[CSDMessagingCaptionsResult setUtteranceComplete:](v5, "setUtteranceComplete:", [resultCopy utteranceComplete]);
+    -[CSDMessagingCaptionsResult setUtteranceNumber:](v5, "setUtteranceNumber:", [resultCopy utteranceNumber]);
+    -[CSDMessagingCaptionsResult setUpdateNumber:](v5, "setUpdateNumber:", [resultCopy updateNumber]);
+    [resultCopy utteranceStartTimestamp];
     [(CSDMessagingCaptionsResult *)v5 setUtteranceStartTimestamp:?];
-    [v4 utteranceDuration];
+    [resultCopy utteranceDuration];
     [(CSDMessagingCaptionsResult *)v5 setUtteranceDuration:?];
-    v7 = [v4 tokens];
-    v8 = [v7 count];
+    tokens = [resultCopy tokens];
+    v8 = [tokens count];
 
     if (v8)
     {
@@ -47,8 +47,8 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = [v4 tokens];
-    v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    tokens2 = [resultCopy tokens];
+    v11 = [tokens2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v11)
     {
       v12 = v11;
@@ -60,27 +60,27 @@
         {
           if (*v22 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(tokens2);
           }
 
           v15 = *(*(&v21 + 1) + 8 * v14);
           v16 = objc_alloc_init(CSDMessagingCaptionsToken);
-          v17 = [v15 text];
-          [(CSDMessagingCaptionsToken *)v16 setText:v17];
+          text2 = [v15 text];
+          [(CSDMessagingCaptionsToken *)v16 setText:text2];
 
           [v15 confidence];
           [(CSDMessagingCaptionsToken *)v16 setConfidence:?];
           -[CSDMessagingCaptionsToken setLocation:](v16, "setLocation:", [v15 range]);
           [v15 range];
           [(CSDMessagingCaptionsToken *)v16 setLength:v18];
-          v19 = [(CSDMessagingCaptionsResult *)v5 tokens];
-          [v19 addObject:v16];
+          tokens3 = [(CSDMessagingCaptionsResult *)v5 tokens];
+          [tokens3 addObject:v16];
 
           v14 = v14 + 1;
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v12 = [tokens2 countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v12);
@@ -93,16 +93,16 @@
 - (id)tuCaptionsResult
 {
   v3 = [NSMutableArray alloc];
-  v4 = [(CSDMessagingCaptionsResult *)self tokens];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  tokens = [(CSDMessagingCaptionsResult *)self tokens];
+  v5 = [v3 initWithCapacity:{objc_msgSend(tokens, "count")}];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v26 = self;
-  v6 = [(CSDMessagingCaptionsResult *)self tokens];
-  v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  selfCopy = self;
+  tokens2 = [(CSDMessagingCaptionsResult *)self tokens];
+  v7 = [tokens2 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
     v8 = v7;
@@ -113,39 +113,39 @@
       {
         if (*v28 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(tokens2);
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
         v12 = [TUCaption alloc];
-        v13 = [v11 text];
+        text = [v11 text];
         [v11 confidence];
-        v15 = [v12 initWithText:v13 confidence:objc_msgSend(v11 range:{"location"), objc_msgSend(v11, "length"), v14}];
+        v15 = [v12 initWithText:text confidence:objc_msgSend(v11 range:{"location"), objc_msgSend(v11, "length"), v14}];
         [v5 addObject:v15];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v8 = [tokens2 countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v8);
   }
 
   v16 = [TUCaptionsResult alloc];
-  v17 = [(CSDMessagingCaptionsResult *)v26 text];
-  v18 = [(CSDMessagingCaptionsResult *)v26 utteranceComplete];
-  v19 = [(CSDMessagingCaptionsResult *)v26 utteranceNumber];
-  v20 = [(CSDMessagingCaptionsResult *)v26 updateNumber];
-  [(CSDMessagingCaptionsResult *)v26 utteranceStartTimestamp];
+  text2 = [(CSDMessagingCaptionsResult *)selfCopy text];
+  utteranceComplete = [(CSDMessagingCaptionsResult *)selfCopy utteranceComplete];
+  utteranceNumber = [(CSDMessagingCaptionsResult *)selfCopy utteranceNumber];
+  updateNumber = [(CSDMessagingCaptionsResult *)selfCopy updateNumber];
+  [(CSDMessagingCaptionsResult *)selfCopy utteranceStartTimestamp];
   v22 = v21;
-  [(CSDMessagingCaptionsResult *)v26 utteranceDuration];
-  v24 = [v16 initWithText:v17 utteranceComplete:v18 tokens:v5 utteranceNumber:v19 updateNumber:v20 utteranceStartTimestamp:v22 utteranceDuration:v23];
+  [(CSDMessagingCaptionsResult *)selfCopy utteranceDuration];
+  v24 = [v16 initWithText:text2 utteranceComplete:utteranceComplete tokens:v5 utteranceNumber:utteranceNumber updateNumber:updateNumber utteranceStartTimestamp:v22 utteranceDuration:v23];
 
   return v24;
 }
 
-- (void)setHasUtteranceComplete:(BOOL)a3
+- (void)setHasUtteranceComplete:(BOOL)complete
 {
-  if (a3)
+  if (complete)
   {
     v3 = 16;
   }
@@ -158,27 +158,27 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)addTokens:(id)a3
+- (void)addTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   tokens = self->_tokens;
-  v8 = v4;
+  v8 = tokensCopy;
   if (!tokens)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_tokens;
     self->_tokens = v6;
 
-    v4 = v8;
+    tokensCopy = v8;
     tokens = self->_tokens;
   }
 
-  [(NSMutableArray *)tokens addObject:v4];
+  [(NSMutableArray *)tokens addObject:tokensCopy];
 }
 
-- (void)setHasUtteranceNumber:(BOOL)a3
+- (void)setHasUtteranceNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     v3 = 8;
   }
@@ -191,9 +191,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasUpdateNumber:(BOOL)a3
+- (void)setHasUpdateNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     v3 = 4;
   }
@@ -206,9 +206,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasUtteranceStartTimestamp:(BOOL)a3
+- (void)setHasUtteranceStartTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -226,8 +226,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingCaptionsResult;
   v3 = [(CSDMessagingCaptionsResult *)&v7 description];
-  v4 = [(CSDMessagingCaptionsResult *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingCaptionsResult *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -263,8 +263,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -336,9 +336,9 @@ LABEL_19:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x10) != 0)
   {
     utteranceComplete = self->_utteranceComplete;
@@ -429,23 +429,23 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x10) != 0)
   {
-    v4[48] = self->_utteranceComplete;
-    v4[52] |= 0x10u;
+    toCopy[48] = self->_utteranceComplete;
+    toCopy[52] |= 0x10u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if ([(CSDMessagingCaptionsResult *)self tokensCount])
   {
     [v10 clearTokens];
-    v5 = [(CSDMessagingCaptionsResult *)self tokensCount];
-    if (v5)
+    tokensCount = [(CSDMessagingCaptionsResult *)self tokensCount];
+    if (tokensCount)
     {
-      v6 = v5;
+      v6 = tokensCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(CSDMessagingCaptionsResult *)self tokensAtIndex:i];
@@ -509,9 +509,9 @@ LABEL_13:
 LABEL_14:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x10) != 0)
   {
@@ -538,7 +538,7 @@ LABEL_14:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{a3, v17}];
+        v12 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{zone, v17}];
         [v6 addTokens:v12];
       }
 
@@ -548,7 +548,7 @@ LABEL_14:
     while (v9);
   }
 
-  v13 = [(NSString *)self->_text copyWithZone:a3];
+  v13 = [(NSString *)self->_text copyWithZone:zone];
   v14 = *(v6 + 3);
   *(v6 + 3) = v13;
 
@@ -602,50 +602,50 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(equalCopy + 52);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 52) & 0x10) == 0)
+    if ((*(equalCopy + 52) & 0x10) == 0)
     {
       goto LABEL_12;
     }
 
-    v10 = *(v4 + 48);
+    v10 = *(equalCopy + 48);
     if (self->_utteranceComplete)
     {
-      if ((*(v4 + 48) & 1) == 0)
+      if ((*(equalCopy + 48) & 1) == 0)
       {
         goto LABEL_12;
       }
     }
 
-    else if (*(v4 + 48))
+    else if (*(equalCopy + 48))
     {
       goto LABEL_12;
     }
   }
 
-  else if ((*(v4 + 52) & 0x10) != 0)
+  else if ((*(equalCopy + 52) & 0x10) != 0)
   {
     goto LABEL_12;
   }
 
   tokens = self->_tokens;
-  if (tokens | *(v4 + 4) && ![(NSMutableArray *)tokens isEqual:?])
+  if (tokens | *(equalCopy + 4) && ![(NSMutableArray *)tokens isEqual:?])
   {
     goto LABEL_12;
   }
 
   text = self->_text;
-  if (text | *(v4 + 3))
+  if (text | *(equalCopy + 3))
   {
     if (![(NSString *)text isEqual:?])
     {
@@ -655,50 +655,50 @@ LABEL_14:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 52) & 8) == 0 || self->_utteranceNumber != *(v4 + 11))
+    if ((*(equalCopy + 52) & 8) == 0 || self->_utteranceNumber != *(equalCopy + 11))
     {
       goto LABEL_12;
     }
   }
 
-  else if ((*(v4 + 52) & 8) != 0)
+  else if ((*(equalCopy + 52) & 8) != 0)
   {
     goto LABEL_12;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_updateNumber != *(v4 + 10))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_updateNumber != *(equalCopy + 10))
     {
       goto LABEL_12;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_12;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_utteranceStartTimestamp != *(v4 + 2))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_utteranceStartTimestamp != *(equalCopy + 2))
     {
       goto LABEL_12;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_12;
   }
 
-  v8 = (*(v4 + 52) & 1) == 0;
+  v8 = (*(equalCopy + 52) & 1) == 0;
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_13;
   }
 
-  if ((*(v4 + 52) & 1) != 0 && self->_utteranceDuration == *(v4 + 1))
+  if ((*(equalCopy + 52) & 1) != 0 && self->_utteranceDuration == *(equalCopy + 1))
   {
     v8 = 1;
     goto LABEL_13;
@@ -822,13 +822,13 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ v8 ^ v9 ^ v13 ^ v14;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((*(v4 + 52) & 0x10) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((*(fromCopy + 52) & 0x10) != 0)
   {
-    self->_utteranceComplete = *(v4 + 48);
+    self->_utteranceComplete = *(fromCopy + 48);
     *&self->_has |= 0x10u;
   }
 
@@ -836,7 +836,7 @@ LABEL_14:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

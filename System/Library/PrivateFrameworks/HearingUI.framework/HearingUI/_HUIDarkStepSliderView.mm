@@ -1,23 +1,23 @@
 @interface _HUIDarkStepSliderView
-- (_HUIDarkStepSliderView)initWithConfig:(id)a3;
-- (void)_setContraintsFromConfig:(id)a3;
+- (_HUIDarkStepSliderView)initWithConfig:(id)config;
+- (void)_setContraintsFromConfig:(id)config;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)updateConstraintsWithConfig:(id)a3;
+- (void)updateConstraintsWithConfig:(id)config;
 @end
 
 @implementation _HUIDarkStepSliderView
 
-- (_HUIDarkStepSliderView)initWithConfig:(id)a3
+- (_HUIDarkStepSliderView)initWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v13.receiver = self;
   v13.super_class = _HUIDarkStepSliderView;
   v6 = [(_HUIDarkStepSliderView *)&v13 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, config);
     v8 = objc_alloc_init(HACCCapsuleDarkBackground);
     darkBackgroundView = v7->_darkBackgroundView;
     v7->_darkBackgroundView = v8;
@@ -31,43 +31,43 @@
 
     [(HUIStepSlider *)v7->_slider setTranslatesAutoresizingMaskIntoConstraints:0];
     [(_HUIDarkStepSliderView *)v7 addSubview:v7->_slider];
-    [(_HUIDarkStepSliderView *)v7 _setContraintsFromConfig:v5];
+    [(_HUIDarkStepSliderView *)v7 _setContraintsFromConfig:configCopy];
   }
 
   return v7;
 }
 
-- (void)_setContraintsFromConfig:(id)a3
+- (void)_setContraintsFromConfig:(id)config
 {
   v56[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 style];
-  if (v5 <= 2)
+  configCopy = config;
+  style = [configCopy style];
+  if (style <= 2)
   {
-    if (!v5)
+    if (!style)
     {
       v49 = MEMORY[0x277CCAAD0];
-      v55 = [(_HUIDarkStepSliderView *)self slider];
-      v54 = [v55 leadingAnchor];
-      v53 = [(_HUIDarkStepSliderView *)self leadingAnchor];
+      slider = [(_HUIDarkStepSliderView *)self slider];
+      leadingAnchor = [slider leadingAnchor];
+      leadingAnchor2 = [(_HUIDarkStepSliderView *)self leadingAnchor];
       CCUILayoutGutter();
-      v52 = [v54 constraintEqualToAnchor:v53 constant:?];
+      v52 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
       v56[0] = v52;
-      v51 = [(_HUIDarkStepSliderView *)self slider];
-      v50 = [v51 trailingAnchor];
-      v48 = [(_HUIDarkStepSliderView *)self trailingAnchor];
+      slider2 = [(_HUIDarkStepSliderView *)self slider];
+      trailingAnchor = [slider2 trailingAnchor];
+      trailingAnchor2 = [(_HUIDarkStepSliderView *)self trailingAnchor];
       CCUILayoutGutter();
-      v47 = [v50 constraintEqualToAnchor:v48 constant:-v17];
+      v47 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v17];
       v56[1] = v47;
-      v18 = [(_HUIDarkStepSliderView *)self slider];
-      v19 = [v18 topAnchor];
-      v20 = [(_HUIDarkStepSliderView *)self topAnchor];
-      v21 = [v19 constraintEqualToAnchor:v20];
+      slider3 = [(_HUIDarkStepSliderView *)self slider];
+      topAnchor = [slider3 topAnchor];
+      topAnchor2 = [(_HUIDarkStepSliderView *)self topAnchor];
+      v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v56[2] = v21;
-      v22 = [(_HUIDarkStepSliderView *)self slider];
-      v23 = [v22 bottomAnchor];
-      v24 = [(_HUIDarkStepSliderView *)self bottomAnchor];
-      v25 = [v23 constraintEqualToAnchor:v24];
+      slider4 = [(_HUIDarkStepSliderView *)self slider];
+      bottomAnchor = [slider4 bottomAnchor];
+      bottomAnchor2 = [(_HUIDarkStepSliderView *)self bottomAnchor];
+      v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v56[3] = v25;
       v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:4];
       [v49 activateConstraints:v26];
@@ -75,54 +75,54 @@
       goto LABEL_26;
     }
 
-    if (v5 == 1)
+    if (style == 1)
     {
-      v27 = [v4 minImage];
+      minImage = [configCopy minImage];
 
-      if (v27)
+      if (minImage)
       {
         v28 = objc_alloc(MEMORY[0x277D755E8]);
-        v29 = [v4 minImage];
-        v30 = [v28 initWithImage:v29];
+        minImage2 = [configCopy minImage];
+        v30 = [v28 initWithImage:minImage2];
 
         [v30 setContentMode:7];
         [(_HUIDarkStepSliderView *)self setLeadingView:v30];
       }
 
-      v31 = [v4 maxImage];
+      maxImage = [configCopy maxImage];
 
-      if (!v31)
+      if (!maxImage)
       {
         goto LABEL_23;
       }
 
       v32 = objc_alloc(MEMORY[0x277D755E8]);
-      v33 = [v4 maxImage];
-      v34 = [v32 initWithImage:v33];
+      maxImage2 = [configCopy maxImage];
+      valueLabel3 = [v32 initWithImage:maxImage2];
 
-      [v34 setContentMode:8];
+      [valueLabel3 setContentMode:8];
       goto LABEL_22;
     }
 
-    if (v5 != 2)
+    if (style != 2)
     {
       goto LABEL_23;
     }
 
-    v6 = [v4 minImage];
+    minImage3 = [configCopy minImage];
 
-    if (v6)
+    if (minImage3)
     {
-      v7 = [v4 minImageAction];
+      minImageAction = [configCopy minImageAction];
 
-      if (v7)
+      if (minImageAction)
       {
         v8 = [MEMORY[0x277D75220] buttonWithType:0];
-        v9 = [v4 minImageAction];
-        [v8 addAction:v9 forControlEvents:64];
+        minImageAction2 = [configCopy minImageAction];
+        [v8 addAction:minImageAction2 forControlEvents:64];
 
-        v10 = [v4 minImage];
-        [v8 setImage:v10 forState:0];
+        minImage4 = [configCopy minImage];
+        [v8 setImage:minImage4 forState:0];
 
         [v8 setContentHorizontalAlignment:1];
       }
@@ -130,8 +130,8 @@
       else
       {
         v35 = objc_alloc(MEMORY[0x277D755E8]);
-        v36 = [v4 minImage];
-        v8 = [v35 initWithImage:v36];
+        minImage5 = [configCopy minImage];
+        v8 = [v35 initWithImage:minImage5];
 
         [v8 setContentMode:7];
       }
@@ -139,339 +139,339 @@
       [(_HUIDarkStepSliderView *)self setLeadingView:v8];
     }
 
-    v37 = [v4 valueLabel];
+    valueLabel = [configCopy valueLabel];
 
-    if (!v37)
+    if (!valueLabel)
     {
       goto LABEL_23;
     }
 
     v38 = [(_HUIDarkStepSliderView *)self effectiveUserInterfaceLayoutDirection]!= 1;
-    v16 = [v4 valueLabel];
-    [v16 setTextAlignment:2 * v38];
+    valueLabel2 = [configCopy valueLabel];
+    [valueLabel2 setTextAlignment:2 * v38];
 LABEL_21:
 
-    v34 = [v4 valueLabel];
+    valueLabel3 = [configCopy valueLabel];
 LABEL_22:
-    [(_HUIDarkStepSliderView *)self setTrailingView:v34];
+    [(_HUIDarkStepSliderView *)self setTrailingView:valueLabel3];
 
     goto LABEL_23;
   }
 
-  if ((v5 - 3) < 2)
+  if ((style - 3) < 2)
   {
-    v11 = [v4 minTextLabel];
-    if (v11)
+    minTextLabel = [configCopy minTextLabel];
+    if (minTextLabel)
     {
-      v12 = v11;
-      v13 = [v4 valueLabel];
+      v12 = minTextLabel;
+      valueLabel4 = [configCopy valueLabel];
 
-      if (v13)
+      if (valueLabel4)
       {
-        v14 = [v4 minTextLabel];
-        [v14 setTextAlignment:0];
+        minTextLabel2 = [configCopy minTextLabel];
+        [minTextLabel2 setTextAlignment:0];
 
-        v15 = [v4 valueLabel];
-        [v15 setTextAlignment:2];
+        valueLabel5 = [configCopy valueLabel];
+        [valueLabel5 setTextAlignment:2];
 
-        v16 = [v4 minTextLabel];
-        [(_HUIDarkStepSliderView *)self setLeadingView:v16];
+        valueLabel2 = [configCopy minTextLabel];
+        [(_HUIDarkStepSliderView *)self setLeadingView:valueLabel2];
         goto LABEL_21;
       }
     }
   }
 
 LABEL_23:
-  v39 = [(_HUIDarkStepSliderView *)self leadingView];
-  if (v39)
+  leadingView = [(_HUIDarkStepSliderView *)self leadingView];
+  if (leadingView)
   {
-    v40 = v39;
-    v41 = [(_HUIDarkStepSliderView *)self trailingView];
+    v40 = leadingView;
+    trailingView = [(_HUIDarkStepSliderView *)self trailingView];
 
-    if (v41)
+    if (trailingView)
     {
-      v42 = [(_HUIDarkStepSliderView *)self leadingView];
-      [v42 setTranslatesAutoresizingMaskIntoConstraints:0];
+      leadingView2 = [(_HUIDarkStepSliderView *)self leadingView];
+      [leadingView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v43 = [(_HUIDarkStepSliderView *)self trailingView];
-      [v43 setTranslatesAutoresizingMaskIntoConstraints:0];
+      trailingView2 = [(_HUIDarkStepSliderView *)self trailingView];
+      [trailingView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v44 = [(_HUIDarkStepSliderView *)self leadingView];
-      [(_HUIDarkStepSliderView *)self addSubview:v44];
+      leadingView3 = [(_HUIDarkStepSliderView *)self leadingView];
+      [(_HUIDarkStepSliderView *)self addSubview:leadingView3];
 
-      v45 = [(_HUIDarkStepSliderView *)self trailingView];
-      [(_HUIDarkStepSliderView *)self addSubview:v45];
+      trailingView3 = [(_HUIDarkStepSliderView *)self trailingView];
+      [(_HUIDarkStepSliderView *)self addSubview:trailingView3];
 
-      v46 = [(_HUIDarkStepSliderView *)self config];
-      [(_HUIDarkStepSliderView *)self updateConstraintsWithConfig:v46];
+      config = [(_HUIDarkStepSliderView *)self config];
+      [(_HUIDarkStepSliderView *)self updateConstraintsWithConfig:config];
     }
   }
 
 LABEL_26:
 }
 
-- (void)updateConstraintsWithConfig:(id)a3
+- (void)updateConstraintsWithConfig:(id)config
 {
   v156[14] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(_HUIDarkStepSliderView *)self setConfig:v4];
-  v5 = [(_HUIDarkStepSliderView *)self leadingView];
-  if (v5)
+  configCopy = config;
+  [(_HUIDarkStepSliderView *)self setConfig:configCopy];
+  leadingView = [(_HUIDarkStepSliderView *)self leadingView];
+  if (leadingView)
   {
-    v6 = v5;
-    v7 = [(_HUIDarkStepSliderView *)self trailingView];
+    v6 = leadingView;
+    trailingView = [(_HUIDarkStepSliderView *)self trailingView];
 
-    if (v7)
+    if (trailingView)
     {
-      v8 = [(_HUIDarkStepSliderView *)self config];
-      if ([v8 style] == 2)
+      config = [(_HUIDarkStepSliderView *)self config];
+      if ([config style] == 2)
       {
         v9 = 1;
       }
 
       else
       {
-        v10 = [(_HUIDarkStepSliderView *)self config];
-        if ([v10 style] == 3)
+        config2 = [(_HUIDarkStepSliderView *)self config];
+        if ([config2 style] == 3)
         {
           v9 = 1;
         }
 
         else
         {
-          v11 = [(_HUIDarkStepSliderView *)self config];
-          v9 = [v11 style] == 4;
+          config3 = [(_HUIDarkStepSliderView *)self config];
+          v9 = [config3 style] == 4;
         }
       }
 
-      v12 = [(_HUIDarkStepSliderView *)self config];
-      v13 = [v12 isLargeText];
+      config4 = [(_HUIDarkStepSliderView *)self config];
+      isLargeText = [config4 isLargeText];
 
-      if (v13 && v9)
+      if (isLargeText && v9)
       {
-        v14 = [(_HUIDarkStepSliderView *)self defaultLayouts];
+        defaultLayouts = [(_HUIDarkStepSliderView *)self defaultLayouts];
 
-        if (v14)
+        if (defaultLayouts)
         {
           v15 = MEMORY[0x277CCAAD0];
-          v16 = [(_HUIDarkStepSliderView *)self defaultLayouts];
-          [v15 deactivateConstraints:v16];
+          defaultLayouts2 = [(_HUIDarkStepSliderView *)self defaultLayouts];
+          [v15 deactivateConstraints:defaultLayouts2];
         }
 
-        v17 = [(_HUIDarkStepSliderView *)self largeTextLayouts];
+        largeTextLayouts = [(_HUIDarkStepSliderView *)self largeTextLayouts];
 
-        if (!v17)
+        if (!largeTextLayouts)
         {
-          v153 = [(_HUIDarkStepSliderView *)self leadingView];
-          v151 = [v153 leadingAnchor];
-          v149 = [(_HUIDarkStepSliderView *)self leadingAnchor];
+          leadingView2 = [(_HUIDarkStepSliderView *)self leadingView];
+          leadingAnchor = [leadingView2 leadingAnchor];
+          leadingAnchor2 = [(_HUIDarkStepSliderView *)self leadingAnchor];
           CCUILayoutGutter();
-          v147 = [v151 constraintEqualToAnchor:v149 constant:?];
+          v147 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
           v156[0] = v147;
-          v145 = [(_HUIDarkStepSliderView *)self leadingView];
-          v143 = [v145 topAnchor];
-          v141 = [(_HUIDarkStepSliderView *)self topAnchor];
-          v139 = [v143 constraintEqualToAnchor:v141];
+          leadingView3 = [(_HUIDarkStepSliderView *)self leadingView];
+          topAnchor = [leadingView3 topAnchor];
+          topAnchor2 = [(_HUIDarkStepSliderView *)self topAnchor];
+          v139 = [topAnchor constraintEqualToAnchor:topAnchor2];
           v156[1] = v139;
-          v137 = [(_HUIDarkStepSliderView *)self leadingView];
-          v133 = [v137 bottomAnchor];
-          v135 = [(_HUIDarkStepSliderView *)self slider];
-          v131 = [v135 topAnchor];
-          v129 = [v133 constraintEqualToAnchor:v131];
+          leadingView4 = [(_HUIDarkStepSliderView *)self leadingView];
+          bottomAnchor = [leadingView4 bottomAnchor];
+          slider = [(_HUIDarkStepSliderView *)self slider];
+          topAnchor3 = [slider topAnchor];
+          v129 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
           v156[2] = v129;
-          v127 = [(_HUIDarkStepSliderView *)self leadingView];
-          v125 = [v127 widthAnchor];
-          v123 = [(_HUIDarkStepSliderView *)self widthAnchor];
+          leadingView5 = [(_HUIDarkStepSliderView *)self leadingView];
+          widthAnchor = [leadingView5 widthAnchor];
+          widthAnchor2 = [(_HUIDarkStepSliderView *)self widthAnchor];
           CCUILayoutGutter();
-          v121 = [v125 constraintEqualToAnchor:v123 constant:v18 * -2.0];
+          v121 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:v18 * -2.0];
           v156[3] = v121;
-          v119 = [(_HUIDarkStepSliderView *)self leadingView];
-          v117 = [v119 heightAnchor];
-          v115 = [v117 constraintGreaterThanOrEqualToConstant:52.0];
+          leadingView6 = [(_HUIDarkStepSliderView *)self leadingView];
+          heightAnchor = [leadingView6 heightAnchor];
+          v115 = [heightAnchor constraintGreaterThanOrEqualToConstant:52.0];
           v156[4] = v115;
-          v113 = [(_HUIDarkStepSliderView *)self slider];
-          v109 = [v113 leadingAnchor];
-          v111 = [(_HUIDarkStepSliderView *)self leadingView];
-          v107 = [v111 leadingAnchor];
-          v105 = [v109 constraintEqualToAnchor:v107];
+          slider2 = [(_HUIDarkStepSliderView *)self slider];
+          leadingAnchor3 = [slider2 leadingAnchor];
+          leadingView7 = [(_HUIDarkStepSliderView *)self leadingView];
+          leadingAnchor4 = [leadingView7 leadingAnchor];
+          v105 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
           v156[5] = v105;
-          v103 = [(_HUIDarkStepSliderView *)self slider];
-          v101 = [v103 trailingAnchor];
-          v99 = [(_HUIDarkStepSliderView *)self trailingAnchor];
+          slider3 = [(_HUIDarkStepSliderView *)self slider];
+          trailingAnchor = [slider3 trailingAnchor];
+          trailingAnchor2 = [(_HUIDarkStepSliderView *)self trailingAnchor];
           CCUILayoutGutter();
-          v97 = [v101 constraintEqualToAnchor:v99 constant:-v19];
+          v97 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v19];
           v156[6] = v97;
-          v95 = [(_HUIDarkStepSliderView *)self slider];
-          v91 = [v95 topAnchor];
-          v93 = [(_HUIDarkStepSliderView *)self leadingView];
-          v89 = [v93 bottomAnchor];
-          v87 = [v91 constraintEqualToAnchor:v89];
+          slider4 = [(_HUIDarkStepSliderView *)self slider];
+          topAnchor4 = [slider4 topAnchor];
+          leadingView8 = [(_HUIDarkStepSliderView *)self leadingView];
+          bottomAnchor2 = [leadingView8 bottomAnchor];
+          v87 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2];
           v156[7] = v87;
-          v85 = [(_HUIDarkStepSliderView *)self slider];
-          v83 = [v85 bottomAnchor];
-          v81 = [(_HUIDarkStepSliderView *)self bottomAnchor];
-          v79 = [v83 constraintEqualToAnchor:v81 constant:-10.0];
+          slider5 = [(_HUIDarkStepSliderView *)self slider];
+          bottomAnchor3 = [slider5 bottomAnchor];
+          bottomAnchor4 = [(_HUIDarkStepSliderView *)self bottomAnchor];
+          v79 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-10.0];
           v156[8] = v79;
-          v77 = [(_HUIDarkStepSliderView *)self trailingView];
-          v73 = [v77 leadingAnchor];
-          v75 = [(_HUIDarkStepSliderView *)self leadingView];
-          v71 = [v75 leadingAnchor];
-          v69 = [v73 constraintEqualToAnchor:v71];
+          trailingView2 = [(_HUIDarkStepSliderView *)self trailingView];
+          leadingAnchor5 = [trailingView2 leadingAnchor];
+          leadingView9 = [(_HUIDarkStepSliderView *)self leadingView];
+          leadingAnchor6 = [leadingView9 leadingAnchor];
+          v69 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
           v156[9] = v69;
-          v67 = [(_HUIDarkStepSliderView *)self trailingView];
-          v63 = [v67 trailingAnchor];
-          v65 = [(_HUIDarkStepSliderView *)self slider];
-          v61 = [v65 trailingAnchor];
-          v59 = [v63 constraintEqualToAnchor:v61];
+          trailingView3 = [(_HUIDarkStepSliderView *)self trailingView];
+          trailingAnchor3 = [trailingView3 trailingAnchor];
+          slider6 = [(_HUIDarkStepSliderView *)self slider];
+          trailingAnchor4 = [slider6 trailingAnchor];
+          v59 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
           v156[10] = v59;
-          v57 = [(_HUIDarkStepSliderView *)self trailingView];
-          v55 = [v57 topAnchor];
-          v53 = [(_HUIDarkStepSliderView *)self topAnchor];
-          v51 = [v55 constraintEqualToAnchor:v53];
+          trailingView4 = [(_HUIDarkStepSliderView *)self trailingView];
+          topAnchor5 = [trailingView4 topAnchor];
+          topAnchor6 = [(_HUIDarkStepSliderView *)self topAnchor];
+          v51 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
           v156[11] = v51;
-          v49 = [(_HUIDarkStepSliderView *)self trailingView];
-          v47 = [v49 bottomAnchor];
-          v48 = [(_HUIDarkStepSliderView *)self slider];
-          v20 = [v48 topAnchor];
-          v21 = [v47 constraintEqualToAnchor:v20];
+          trailingView5 = [(_HUIDarkStepSliderView *)self trailingView];
+          bottomAnchor5 = [trailingView5 bottomAnchor];
+          slider7 = [(_HUIDarkStepSliderView *)self slider];
+          topAnchor7 = [slider7 topAnchor];
+          v21 = [bottomAnchor5 constraintEqualToAnchor:topAnchor7];
           v156[12] = v21;
-          v22 = [(_HUIDarkStepSliderView *)self trailingView];
-          v23 = [v22 widthAnchor];
-          v24 = [(_HUIDarkStepSliderView *)self leadingView];
-          v25 = [v24 widthAnchor];
-          v26 = [v23 constraintLessThanOrEqualToAnchor:v25];
+          trailingView6 = [(_HUIDarkStepSliderView *)self trailingView];
+          widthAnchor3 = [trailingView6 widthAnchor];
+          leadingView10 = [(_HUIDarkStepSliderView *)self leadingView];
+          widthAnchor4 = [leadingView10 widthAnchor];
+          v26 = [widthAnchor3 constraintLessThanOrEqualToAnchor:widthAnchor4];
           v156[13] = v26;
           v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v156 count:14];
           [(_HUIDarkStepSliderView *)self setLargeTextLayouts:v27];
         }
 
         v28 = MEMORY[0x277CCAAD0];
-        v29 = [(_HUIDarkStepSliderView *)self largeTextLayouts];
+        largeTextLayouts2 = [(_HUIDarkStepSliderView *)self largeTextLayouts];
       }
 
       else
       {
-        v30 = [(_HUIDarkStepSliderView *)self largeTextLayouts];
+        largeTextLayouts3 = [(_HUIDarkStepSliderView *)self largeTextLayouts];
 
-        if (v30)
+        if (largeTextLayouts3)
         {
           v31 = MEMORY[0x277CCAAD0];
-          v32 = [(_HUIDarkStepSliderView *)self largeTextLayouts];
-          [v31 deactivateConstraints:v32];
+          largeTextLayouts4 = [(_HUIDarkStepSliderView *)self largeTextLayouts];
+          [v31 deactivateConstraints:largeTextLayouts4];
         }
 
-        v33 = [(_HUIDarkStepSliderView *)self defaultLayouts];
+        defaultLayouts3 = [(_HUIDarkStepSliderView *)self defaultLayouts];
 
-        if (!v33)
+        if (!defaultLayouts3)
         {
-          v154 = [(_HUIDarkStepSliderView *)self leadingView];
-          v152 = [v154 leadingAnchor];
-          v150 = [(_HUIDarkStepSliderView *)self leadingAnchor];
+          leadingView11 = [(_HUIDarkStepSliderView *)self leadingView];
+          leadingAnchor7 = [leadingView11 leadingAnchor];
+          leadingAnchor8 = [(_HUIDarkStepSliderView *)self leadingAnchor];
           CCUILayoutGutter();
-          v148 = [v152 constraintEqualToAnchor:v150 constant:?];
+          v148 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:?];
           v155[0] = v148;
-          v146 = [(_HUIDarkStepSliderView *)self leadingView];
-          v144 = [v146 topAnchor];
-          v142 = [(_HUIDarkStepSliderView *)self topAnchor];
-          v140 = [v144 constraintEqualToAnchor:v142];
+          leadingView12 = [(_HUIDarkStepSliderView *)self leadingView];
+          topAnchor8 = [leadingView12 topAnchor];
+          topAnchor9 = [(_HUIDarkStepSliderView *)self topAnchor];
+          v140 = [topAnchor8 constraintEqualToAnchor:topAnchor9];
           v155[1] = v140;
-          v138 = [(_HUIDarkStepSliderView *)self leadingView];
-          v136 = [v138 bottomAnchor];
-          v134 = [(_HUIDarkStepSliderView *)self bottomAnchor];
-          v132 = [v136 constraintEqualToAnchor:v134];
+          leadingView13 = [(_HUIDarkStepSliderView *)self leadingView];
+          bottomAnchor6 = [leadingView13 bottomAnchor];
+          bottomAnchor7 = [(_HUIDarkStepSliderView *)self bottomAnchor];
+          v132 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
           v155[2] = v132;
-          v130 = [(_HUIDarkStepSliderView *)self leadingView];
-          v34 = [v130 widthAnchor];
-          v128 = v34;
-          v35 = [v4 style];
+          leadingView14 = [(_HUIDarkStepSliderView *)self leadingView];
+          widthAnchor5 = [leadingView14 widthAnchor];
+          v128 = widthAnchor5;
+          style = [configCopy style];
           v36 = 50.0;
-          if (v35 != 4)
+          if (style != 4)
           {
             v36 = 30.0;
           }
 
-          v126 = [v34 constraintEqualToConstant:v36];
+          v126 = [widthAnchor5 constraintEqualToConstant:v36];
           v155[3] = v126;
-          v124 = [(_HUIDarkStepSliderView *)self leadingView];
-          v122 = [v124 heightAnchor];
-          v120 = [v122 constraintEqualToConstant:52.0];
+          leadingView15 = [(_HUIDarkStepSliderView *)self leadingView];
+          heightAnchor2 = [leadingView15 heightAnchor];
+          v120 = [heightAnchor2 constraintEqualToConstant:52.0];
           v155[4] = v120;
-          v118 = [(_HUIDarkStepSliderView *)self slider];
-          v114 = [v118 leadingAnchor];
-          v116 = [(_HUIDarkStepSliderView *)self leadingView];
-          v112 = [v116 trailingAnchor];
-          v110 = [v114 constraintEqualToAnchor:v112];
+          slider8 = [(_HUIDarkStepSliderView *)self slider];
+          leadingAnchor9 = [slider8 leadingAnchor];
+          leadingView16 = [(_HUIDarkStepSliderView *)self leadingView];
+          trailingAnchor5 = [leadingView16 trailingAnchor];
+          v110 = [leadingAnchor9 constraintEqualToAnchor:trailingAnchor5];
           v155[5] = v110;
-          v108 = [(_HUIDarkStepSliderView *)self slider];
-          v104 = [v108 trailingAnchor];
-          v106 = [(_HUIDarkStepSliderView *)self trailingView];
-          v102 = [v106 leadingAnchor];
-          v100 = [v104 constraintEqualToAnchor:v102];
+          slider9 = [(_HUIDarkStepSliderView *)self slider];
+          trailingAnchor6 = [slider9 trailingAnchor];
+          trailingView7 = [(_HUIDarkStepSliderView *)self trailingView];
+          leadingAnchor10 = [trailingView7 leadingAnchor];
+          v100 = [trailingAnchor6 constraintEqualToAnchor:leadingAnchor10];
           v155[6] = v100;
-          v98 = [(_HUIDarkStepSliderView *)self slider];
-          v94 = [v98 topAnchor];
-          v96 = [(_HUIDarkStepSliderView *)self leadingView];
-          v92 = [v96 topAnchor];
-          v90 = [v94 constraintEqualToAnchor:v92];
+          slider10 = [(_HUIDarkStepSliderView *)self slider];
+          topAnchor10 = [slider10 topAnchor];
+          leadingView17 = [(_HUIDarkStepSliderView *)self leadingView];
+          topAnchor11 = [leadingView17 topAnchor];
+          v90 = [topAnchor10 constraintEqualToAnchor:topAnchor11];
           v155[7] = v90;
-          v88 = [(_HUIDarkStepSliderView *)self slider];
-          v84 = [v88 bottomAnchor];
-          v86 = [(_HUIDarkStepSliderView *)self leadingView];
-          v82 = [v86 bottomAnchor];
-          v80 = [v84 constraintEqualToAnchor:v82];
+          slider11 = [(_HUIDarkStepSliderView *)self slider];
+          bottomAnchor8 = [slider11 bottomAnchor];
+          leadingView18 = [(_HUIDarkStepSliderView *)self leadingView];
+          bottomAnchor9 = [leadingView18 bottomAnchor];
+          v80 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
           v155[8] = v80;
-          v78 = [(_HUIDarkStepSliderView *)self trailingView];
-          v74 = [v78 leadingAnchor];
-          v76 = [(_HUIDarkStepSliderView *)self slider];
-          v72 = [v76 trailingAnchor];
-          v70 = [v74 constraintEqualToAnchor:v72];
+          trailingView8 = [(_HUIDarkStepSliderView *)self trailingView];
+          leadingAnchor11 = [trailingView8 leadingAnchor];
+          slider12 = [(_HUIDarkStepSliderView *)self slider];
+          trailingAnchor7 = [slider12 trailingAnchor];
+          v70 = [leadingAnchor11 constraintEqualToAnchor:trailingAnchor7];
           v155[9] = v70;
-          v68 = [(_HUIDarkStepSliderView *)self trailingView];
-          v66 = [v68 trailingAnchor];
-          v64 = [(_HUIDarkStepSliderView *)self trailingAnchor];
+          trailingView9 = [(_HUIDarkStepSliderView *)self trailingView];
+          trailingAnchor8 = [trailingView9 trailingAnchor];
+          trailingAnchor9 = [(_HUIDarkStepSliderView *)self trailingAnchor];
           CCUILayoutGutter();
-          v62 = [v66 constraintEqualToAnchor:v64 constant:-v37];
+          v62 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9 constant:-v37];
           v155[10] = v62;
-          v60 = [(_HUIDarkStepSliderView *)self trailingView];
-          v56 = [v60 topAnchor];
-          v58 = [(_HUIDarkStepSliderView *)self leadingView];
-          v54 = [v58 topAnchor];
-          v52 = [v56 constraintEqualToAnchor:v54];
+          trailingView10 = [(_HUIDarkStepSliderView *)self trailingView];
+          topAnchor12 = [trailingView10 topAnchor];
+          leadingView19 = [(_HUIDarkStepSliderView *)self leadingView];
+          topAnchor13 = [leadingView19 topAnchor];
+          v52 = [topAnchor12 constraintEqualToAnchor:topAnchor13];
           v155[11] = v52;
-          v50 = [(_HUIDarkStepSliderView *)self trailingView];
-          v38 = [v50 bottomAnchor];
-          v39 = [(_HUIDarkStepSliderView *)self leadingView];
-          v40 = [v39 bottomAnchor];
-          v41 = [v38 constraintEqualToAnchor:v40];
+          trailingView11 = [(_HUIDarkStepSliderView *)self trailingView];
+          bottomAnchor10 = [trailingView11 bottomAnchor];
+          leadingView20 = [(_HUIDarkStepSliderView *)self leadingView];
+          bottomAnchor11 = [leadingView20 bottomAnchor];
+          v41 = [bottomAnchor10 constraintEqualToAnchor:bottomAnchor11];
           v155[12] = v41;
-          v42 = [(_HUIDarkStepSliderView *)self trailingView];
-          v43 = [v42 widthAnchor];
-          v44 = [v43 constraintGreaterThanOrEqualToConstant:30.0];
+          trailingView12 = [(_HUIDarkStepSliderView *)self trailingView];
+          widthAnchor6 = [trailingView12 widthAnchor];
+          v44 = [widthAnchor6 constraintGreaterThanOrEqualToConstant:30.0];
           v155[13] = v44;
           v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v155 count:14];
           [(_HUIDarkStepSliderView *)self setDefaultLayouts:v45];
         }
 
         v28 = MEMORY[0x277CCAAD0];
-        v29 = [(_HUIDarkStepSliderView *)self defaultLayouts];
+        largeTextLayouts2 = [(_HUIDarkStepSliderView *)self defaultLayouts];
       }
 
-      v46 = v29;
-      [v28 activateConstraints:v29];
+      v46 = largeTextLayouts2;
+      [v28 activateConstraints:largeTextLayouts2];
     }
   }
 }
 
 - (void)accessibilityDecrement
 {
-  v2 = [(_HUIDarkStepSliderView *)self slider];
-  [v2 accessibilityDecrement];
+  slider = [(_HUIDarkStepSliderView *)self slider];
+  [slider accessibilityDecrement];
 }
 
 - (void)accessibilityIncrement
 {
-  v2 = [(_HUIDarkStepSliderView *)self slider];
-  [v2 accessibilityIncrement];
+  slider = [(_HUIDarkStepSliderView *)self slider];
+  [slider accessibilityIncrement];
 }
 
 @end

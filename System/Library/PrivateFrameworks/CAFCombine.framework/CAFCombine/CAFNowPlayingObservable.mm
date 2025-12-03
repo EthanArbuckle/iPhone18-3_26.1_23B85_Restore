@@ -1,19 +1,19 @@
 @interface CAFNowPlayingObservable
 - (NSString)description;
-- (void)nowPlayingService:(id)a3 didUpdateArtwork:(id)a4;
-- (void)nowPlayingService:(id)a3 didUpdateAudioContentBadge:(unsigned __int8)a4;
-- (void)nowPlayingService:(id)a3 didUpdatePlaybackState:(unsigned __int8)a4;
-- (void)nowPlayingService:(id)a3 didUpdateUserVisibleDescription:(id)a4;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
+- (void)nowPlayingService:(id)service didUpdateArtwork:(id)artwork;
+- (void)nowPlayingService:(id)service didUpdateAudioContentBadge:(unsigned __int8)badge;
+- (void)nowPlayingService:(id)service didUpdatePlaybackState:(unsigned __int8)state;
+- (void)nowPlayingService:(id)service didUpdateUserVisibleDescription:(id)description;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
 @end
 
 @implementation CAFNowPlayingObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFNowPlayingObservable.description.getter();
   v5 = v4;
 
@@ -22,23 +22,23 @@
   return v6;
 }
 
-- (void)nowPlayingService:(id)a3 didUpdateUserVisibleDescription:(id)a4
+- (void)nowPlayingService:(id)service didUpdateUserVisibleDescription:(id)description
 {
-  if (a4)
+  if (description)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFNowPlayingObservable.nowPlayingService(_:didUpdateUserVisibleDescription:)();
 }
 
-- (void)nowPlayingService:(id)a3 didUpdateArtwork:(id)a4
+- (void)nowPlayingService:(id)service didUpdateArtwork:(id)artwork
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = self;
+  serviceCopy = service;
+  artworkCopy = artwork;
+  selfCopy = self;
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
 
@@ -46,39 +46,39 @@
   outlined consume of Data._Representation(v8, v10);
 }
 
-- (void)nowPlayingService:(id)a3 didUpdatePlaybackState:(unsigned __int8)a4
+- (void)nowPlayingService:(id)service didUpdatePlaybackState:(unsigned __int8)state
 {
-  v6 = a3;
-  v7 = self;
-  CAFNowPlayingObservable.nowPlayingService(_:didUpdatePlaybackState:)(v7, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFNowPlayingObservable.nowPlayingService(_:didUpdatePlaybackState:)(selfCopy, state);
 }
 
-- (void)nowPlayingService:(id)a3 didUpdateAudioContentBadge:(unsigned __int8)a4
+- (void)nowPlayingService:(id)service didUpdateAudioContentBadge:(unsigned __int8)badge
 {
-  v6 = a3;
-  v7 = self;
-  CAFNowPlayingObservable.nowPlayingService(_:didUpdateAudioContentBadge:)(v7, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFNowPlayingObservable.nowPlayingService(_:didUpdateAudioContentBadge:)(selfCopy, badge);
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFNowPlayingObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFNowPlayingObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFNowPlayingObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFNowPlayingObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFNowPlayingObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

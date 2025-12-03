@@ -1,39 +1,39 @@
 @interface XRIndexSet
-+ (id)indexSetWithIndex:(unint64_t)a3;
-+ (id)indexSetWithIndexesInRange:(_XRIndexRange)a3;
-- (BOOL)countEquals:(unint64_t)a3;
-- (XRIndexSet)initWithIndex:(unint64_t)a3;
-- (XRIndexSet)initWithIndexes:(_XRIndexRange)a3;
++ (id)indexSetWithIndex:(unint64_t)index;
++ (id)indexSetWithIndexesInRange:(_XRIndexRange)range;
+- (BOOL)countEquals:(unint64_t)equals;
+- (XRIndexSet)initWithIndex:(unint64_t)index;
+- (XRIndexSet)initWithIndexes:(_XRIndexRange)indexes;
 - (id).cxx_construct;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)count;
 - (unint64_t)firstIndex;
 - (unint64_t)lastIndex;
-- (void)enumerateIndexesUsingBlock:(id)a3;
-- (void)enumerateRangesUsingBlock:(id)a3;
+- (void)enumerateIndexesUsingBlock:(id)block;
+- (void)enumerateRangesUsingBlock:(id)block;
 @end
 
 @implementation XRIndexSet
 
-- (XRIndexSet)initWithIndex:(unint64_t)a3
+- (XRIndexSet)initWithIndex:(unint64_t)index
 {
   v6.receiver = self;
   v6.super_class = XRIndexSet;
   v4 = [(XRIndexSet *)&v6 init];
   if (v4)
   {
-    v7[0] = a3;
-    v7[1] = a3;
+    v7[0] = index;
+    v7[1] = index;
     sub_24808FECC(&v4->_impl, v7);
   }
 
   return 0;
 }
 
-- (XRIndexSet)initWithIndexes:(_XRIndexRange)a3
+- (XRIndexSet)initWithIndexes:(_XRIndexRange)indexes
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = indexes.var1;
+  var0 = indexes.var0;
   v8.receiver = self;
   v8.super_class = XRIndexSet;
   v5 = [(XRIndexSet *)&v8 init];
@@ -53,25 +53,25 @@
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(XRMutableIndexSet);
   v5 = sub_24808F164(v4, self);
   return v4;
 }
 
-+ (id)indexSetWithIndex:(unint64_t)a3
++ (id)indexSetWithIndex:(unint64_t)index
 {
   v4 = [XRIndexSet alloc];
-  v8 = objc_msgSend_initWithIndex_(v4, v5, a3, v6, v7);
+  v8 = objc_msgSend_initWithIndex_(v4, v5, index, v6, v7);
 
   return v8;
 }
 
-+ (id)indexSetWithIndexesInRange:(_XRIndexRange)a3
++ (id)indexSetWithIndexesInRange:(_XRIndexRange)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v5 = [XRIndexSet alloc];
   v8 = objc_msgSend_initWithIndexes_(v5, v6, var0, var1, v7);
 
@@ -123,7 +123,7 @@
   return result;
 }
 
-- (BOOL)countEquals:(unint64_t)a3
+- (BOOL)countEquals:(unint64_t)equals
 {
   begin_node = self->_impl._ranges.__tree_.__begin_node_;
   if (begin_node == &self->_impl._ranges.__tree_.__end_node_)
@@ -138,8 +138,8 @@
     do
     {
       v4 = v4 + begin_node->_impl._cache.__elems_[0].last - begin_node->_impl._cache.__elems_[0].first + 1;
-      v5 = v4 <= a3;
-      if (v4 > a3)
+      v5 = v4 <= equals;
+      if (v4 > equals)
       {
         break;
       }
@@ -174,7 +174,7 @@
     while (left != &self->_impl._ranges.__tree_.__end_node_);
   }
 
-  return v4 == a3 && v5;
+  return v4 == equals && v5;
 }
 
 - (unint64_t)firstIndex
@@ -199,9 +199,9 @@
   return sub_24808F4B4(&self->_impl);
 }
 
-- (void)enumerateIndexesUsingBlock:(id)a3
+- (void)enumerateIndexesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10 = 0;
   begin_node = self->_impl._ranges.__tree_.__begin_node_;
   v8[0] = begin_node;
@@ -219,7 +219,7 @@
   v9 = first;
   while (v8[0] != &self->_impl._ranges.__tree_.__end_node_ || v9 != 0)
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
     if (v10)
     {
       break;
@@ -229,16 +229,16 @@
   }
 }
 
-- (void)enumerateRangesUsingBlock:(id)a3
+- (void)enumerateRangesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   begin_node = self->_impl._ranges.__tree_.__begin_node_;
   if (begin_node != &self->_impl._ranges.__tree_.__end_node_)
   {
     do
     {
       v6 = begin_node->_impl._cache.__elems_[0].last - begin_node->_impl._cache.__elems_[0].first;
-      v4[2](v4);
+      blockCopy[2](blockCopy);
       isa = begin_node->_impl._ranges.__tree_.__begin_node_;
       if (isa)
       {

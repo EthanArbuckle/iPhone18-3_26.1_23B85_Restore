@@ -1,12 +1,12 @@
 @interface HAPDataStreamTransportInterruptPayload
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPDataStreamTransportInterruptPayload)init;
-- (HAPDataStreamTransportInterruptPayload)initWithRequestToSendIdentifiers:(id)a3 dataStreamTransportInterruptSequenceNumber:(id)a4;
+- (HAPDataStreamTransportInterruptPayload)initWithRequestToSendIdentifiers:(id)identifiers dataStreamTransportInterruptSequenceNumber:(id)number;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPDataStreamTransportInterruptPayload
@@ -14,17 +14,17 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPDataStreamTransportInterruptPayload *)self requestToSendIdentifiers];
-  v5 = [(HAPDataStreamTransportInterruptPayload *)self dataStreamTransportInterruptSequenceNumber];
-  v6 = [v3 stringWithFormat:@"<HAPDataStreamTransportInterruptPayload requestToSendIdentifiers=%@, dataStreamTransportInterruptSequenceNumber=%@>", v4, v5];
+  requestToSendIdentifiers = [(HAPDataStreamTransportInterruptPayload *)self requestToSendIdentifiers];
+  dataStreamTransportInterruptSequenceNumber = [(HAPDataStreamTransportInterruptPayload *)self dataStreamTransportInterruptSequenceNumber];
+  v6 = [v3 stringWithFormat:@"<HAPDataStreamTransportInterruptPayload requestToSendIdentifiers=%@, dataStreamTransportInterruptSequenceNumber=%@>", requestToSendIdentifiers, dataStreamTransportInterruptSequenceNumber];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -34,14 +34,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPDataStreamTransportInterruptPayload *)self requestToSendIdentifiers];
-      v8 = [(HAPDataStreamTransportInterruptPayload *)v6 requestToSendIdentifiers];
-      if (v7 != v8)
+      v6 = equalCopy;
+      requestToSendIdentifiers = [(HAPDataStreamTransportInterruptPayload *)self requestToSendIdentifiers];
+      requestToSendIdentifiers2 = [(HAPDataStreamTransportInterruptPayload *)v6 requestToSendIdentifiers];
+      if (requestToSendIdentifiers != requestToSendIdentifiers2)
       {
-        v9 = [(HAPDataStreamTransportInterruptPayload *)self requestToSendIdentifiers];
-        v3 = [(HAPDataStreamTransportInterruptPayload *)v6 requestToSendIdentifiers];
-        if (![v9 isEqual:v3])
+        requestToSendIdentifiers3 = [(HAPDataStreamTransportInterruptPayload *)self requestToSendIdentifiers];
+        requestToSendIdentifiers4 = [(HAPDataStreamTransportInterruptPayload *)v6 requestToSendIdentifiers];
+        if (![requestToSendIdentifiers3 isEqual:requestToSendIdentifiers4])
         {
           v10 = 0;
 LABEL_13:
@@ -50,25 +50,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = requestToSendIdentifiers3;
       }
 
-      v11 = [(HAPDataStreamTransportInterruptPayload *)self dataStreamTransportInterruptSequenceNumber];
-      v12 = [(HAPDataStreamTransportInterruptPayload *)v6 dataStreamTransportInterruptSequenceNumber];
-      if (v11 == v12)
+      dataStreamTransportInterruptSequenceNumber = [(HAPDataStreamTransportInterruptPayload *)self dataStreamTransportInterruptSequenceNumber];
+      dataStreamTransportInterruptSequenceNumber2 = [(HAPDataStreamTransportInterruptPayload *)v6 dataStreamTransportInterruptSequenceNumber];
+      if (dataStreamTransportInterruptSequenceNumber == dataStreamTransportInterruptSequenceNumber2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(HAPDataStreamTransportInterruptPayload *)self dataStreamTransportInterruptSequenceNumber];
-        v14 = [(HAPDataStreamTransportInterruptPayload *)v6 dataStreamTransportInterruptSequenceNumber];
-        v10 = [v13 isEqual:v14];
+        dataStreamTransportInterruptSequenceNumber3 = [(HAPDataStreamTransportInterruptPayload *)self dataStreamTransportInterruptSequenceNumber];
+        dataStreamTransportInterruptSequenceNumber4 = [(HAPDataStreamTransportInterruptPayload *)v6 dataStreamTransportInterruptSequenceNumber];
+        v10 = [dataStreamTransportInterruptSequenceNumber3 isEqual:dataStreamTransportInterruptSequenceNumber4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      requestToSendIdentifiers3 = v16;
+      if (requestToSendIdentifiers == requestToSendIdentifiers2)
       {
         goto LABEL_14;
       }
@@ -84,17 +84,17 @@ LABEL_15:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPDataStreamTransportInterruptPayload allocWithZone:a3];
-  v5 = [(HAPDataStreamTransportInterruptPayload *)self requestToSendIdentifiers];
-  v6 = [(HAPDataStreamTransportInterruptPayload *)self dataStreamTransportInterruptSequenceNumber];
-  v7 = [(HAPDataStreamTransportInterruptPayload *)v4 initWithRequestToSendIdentifiers:v5 dataStreamTransportInterruptSequenceNumber:v6];
+  v4 = [HAPDataStreamTransportInterruptPayload allocWithZone:zone];
+  requestToSendIdentifiers = [(HAPDataStreamTransportInterruptPayload *)self requestToSendIdentifiers];
+  dataStreamTransportInterruptSequenceNumber = [(HAPDataStreamTransportInterruptPayload *)self dataStreamTransportInterruptSequenceNumber];
+  v7 = [(HAPDataStreamTransportInterruptPayload *)v4 initWithRequestToSendIdentifiers:requestToSendIdentifiers dataStreamTransportInterruptSequenceNumber:dataStreamTransportInterruptSequenceNumber];
 
   return v7;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
   v41 = 0u;
@@ -119,18 +119,18 @@ LABEL_15:
   v24 = 0u;
   v22 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPDataStreamTransportInterruptPayload *)self requestToSendIdentifiers];
+  requestToSendIdentifiers = [(HAPDataStreamTransportInterruptPayload *)self requestToSendIdentifiers];
 
-  if (!v5)
+  if (!requestToSendIdentifiers)
   {
 LABEL_10:
-    v13 = [(HAPDataStreamTransportInterruptPayload *)self dataStreamTransportInterruptSequenceNumber];
+    dataStreamTransportInterruptSequenceNumber = [(HAPDataStreamTransportInterruptPayload *)self dataStreamTransportInterruptSequenceNumber];
 
-    if (v13)
+    if (dataStreamTransportInterruptSequenceNumber)
     {
-      v14 = [(HAPDataStreamTransportInterruptPayload *)self dataStreamTransportInterruptSequenceNumber];
+      dataStreamTransportInterruptSequenceNumber2 = [(HAPDataStreamTransportInterruptPayload *)self dataStreamTransportInterruptSequenceNumber];
       v20 = 0;
-      v7 = [v14 serializeWithError:&v20];
+      v7 = [dataStreamTransportInterruptSequenceNumber2 serializeWithError:&v20];
       v8 = v20;
 
       if (v8)
@@ -145,11 +145,11 @@ LABEL_10:
       if (v17)
       {
 LABEL_16:
-        if (a3)
+        if (error)
         {
           HMErrorFromOSStatus(v17);
           v8 = 0;
-          *a3 = v16 = 0;
+          *error = v16 = 0;
           goto LABEL_21;
         }
 
@@ -163,26 +163,26 @@ LABEL_16:
     goto LABEL_21;
   }
 
-  v6 = [(HAPDataStreamTransportInterruptPayload *)self requestToSendIdentifiers];
+  requestToSendIdentifiers2 = [(HAPDataStreamTransportInterruptPayload *)self requestToSendIdentifiers];
   v21 = 0;
-  v7 = [v6 serializeWithError:&v21];
+  v7 = [requestToSendIdentifiers2 serializeWithError:&v21];
   v8 = v21;
 
   if (!v8)
   {
-    v9 = [v7 bytes];
-    v10 = v9 + [v7 length];
+    bytes = [v7 bytes];
+    v10 = bytes + [v7 length];
     while (1)
     {
-      v11 = (v10 - v9) >= 255 ? 255 : v10 - v9;
+      v11 = (v10 - bytes) >= 255 ? 255 : v10 - bytes;
       v12 = TLV8BufferAppend();
       if (v12)
       {
         break;
       }
 
-      v9 += v11;
-      if (v9 >= v10)
+      bytes += v11;
+      if (bytes >= v10)
       {
 
         goto LABEL_10;
@@ -196,11 +196,11 @@ LABEL_16:
 
 LABEL_12:
 
-  if (a3)
+  if (error)
   {
     v15 = v8;
     v16 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_21;
   }
 
@@ -214,28 +214,28 @@ LABEL_21:
   return v16;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v9 = 0;
     v10 = 0;
 LABEL_16:
-    [(HAPDataStreamTransportInterruptPayload *)self setRequestToSendIdentifiers:v10, v23];
+    [(HAPDataStreamTransportInterruptPayload *)self setRequestToSendIdentifiers:v10, errorCopy];
     [(HAPDataStreamTransportInterruptPayload *)self setDataStreamTransportInterruptSequenceNumber:v9];
     v11 = 0;
     v19 = 1;
     goto LABEL_23;
   }
 
-  v23 = a4;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
-  v12 = v7 + v8;
+  v12 = bytes + v8;
   while (1)
   {
     v29 = 0;
@@ -245,10 +245,10 @@ LABEL_16:
     Next = TLV8GetNext();
     if (Next)
     {
-      if (v23)
+      if (errorCopy)
       {
         HMErrorFromOSStatus(Next);
-        *v23 = v19 = 0;
+        *errorCopy = v19 = 0;
         goto LABEL_23;
       }
 
@@ -279,7 +279,7 @@ LABEL_11:
     if (v29 == 1)
     {
       v26 = v11;
-      v14 = HAPTLVParseContiguousTlvs(1, v7, v12, v27, &v26);
+      v14 = HAPTLVParseContiguousTlvs(1, bytes, v12, v27, &v26);
       v15 = v26;
 
       if (!v15)
@@ -296,7 +296,7 @@ LABEL_11:
     }
 
 LABEL_12:
-    v7 = v27[0];
+    bytes = v27[0];
     if (v27[0] >= v12)
     {
       if (!v11)
@@ -317,11 +317,11 @@ LABEL_12:
   }
 
 LABEL_20:
-  if (v23)
+  if (errorCopy)
   {
     v21 = v11;
     v19 = 0;
-    *v23 = v11;
+    *errorCopy = v11;
     goto LABEL_23;
   }
 
@@ -332,18 +332,18 @@ LABEL_23:
   return v19;
 }
 
-- (HAPDataStreamTransportInterruptPayload)initWithRequestToSendIdentifiers:(id)a3 dataStreamTransportInterruptSequenceNumber:(id)a4
+- (HAPDataStreamTransportInterruptPayload)initWithRequestToSendIdentifiers:(id)identifiers dataStreamTransportInterruptSequenceNumber:(id)number
 {
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  numberCopy = number;
   v12.receiver = self;
   v12.super_class = HAPDataStreamTransportInterruptPayload;
   v9 = [(HAPDataStreamTransportInterruptPayload *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_requestToSendIdentifiers, a3);
-    objc_storeStrong(&v10->_dataStreamTransportInterruptSequenceNumber, a4);
+    objc_storeStrong(&v9->_requestToSendIdentifiers, identifiers);
+    objc_storeStrong(&v10->_dataStreamTransportInterruptSequenceNumber, number);
   }
 
   return v10;
@@ -356,24 +356,24 @@ LABEL_23:
   return [(HAPDataStreamTransportInterruptPayload *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPDataStreamTransportInterruptPayload);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPDataStreamTransportInterruptPayload *)v6 parseFromData:v5 error:&v11];
+    [(HAPDataStreamTransportInterruptPayload *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

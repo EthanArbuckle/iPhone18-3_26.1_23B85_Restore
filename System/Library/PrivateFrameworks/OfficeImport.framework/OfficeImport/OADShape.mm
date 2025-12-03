@@ -4,7 +4,7 @@
 - (id)description;
 - (id)geometry;
 - (int)type;
-- (void)createPresetGeometryWithShapeType:(int)a3;
+- (void)createPresetGeometryWithShapeType:(int)type;
 - (void)flattenProperties;
 - (void)removeUnnecessaryOverrides;
 @end
@@ -37,10 +37,10 @@
 
 - (int)type
 {
-  v2 = [(OADShape *)self geometry];
-  v3 = [v2 type];
+  geometry = [(OADShape *)self geometry];
+  type = [geometry type];
 
-  return v3;
+  return type;
 }
 
 - (id)geometry
@@ -48,33 +48,33 @@
   mGeometry = self->mGeometry;
   if (mGeometry)
   {
-    v3 = mGeometry;
+    geometry = mGeometry;
   }
 
   else if (self->super.mMasterGraphic)
   {
     objc_opt_class();
-    v3 = [(OADGraphic *)self->super.mMasterGraphic geometry];
+    geometry = [(OADGraphic *)self->super.mMasterGraphic geometry];
   }
 
   else
   {
-    v3 = 0;
+    geometry = 0;
   }
 
-  return v3;
+  return geometry;
 }
 
 - (void)flattenProperties
 {
   [(OADTextBody *)self->mTextBody flattenProperties];
-  v3 = [(OADShape *)self shapeProperties];
-  [v3 flatten];
+  shapeProperties = [(OADShape *)self shapeProperties];
+  [shapeProperties flatten];
 }
 
-- (void)createPresetGeometryWithShapeType:(int)a3
+- (void)createPresetGeometryWithShapeType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   if (self->mGeometry)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OADShape createPresetGeometryWithShapeType:]"];
@@ -100,10 +100,10 @@
     return 1;
   }
 
-  v4 = [(OADShape *)self shapeProperties];
-  v3 = [v4 isTextBox];
+  shapeProperties = [(OADShape *)self shapeProperties];
+  isTextBox = [shapeProperties isTextBox];
 
-  return v3;
+  return isTextBox;
 }
 
 - (id)description

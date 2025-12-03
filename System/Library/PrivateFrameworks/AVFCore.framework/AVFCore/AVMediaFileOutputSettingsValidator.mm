@@ -1,9 +1,9 @@
 @interface AVMediaFileOutputSettingsValidator
-+ (id)mediaFileOutputSettingsValidatorForFileType:(id)a3;
++ (id)mediaFileOutputSettingsValidatorForFileType:(id)type;
 + (void)initialize;
-- (AVMediaFileOutputSettingsValidator)initWithFileType:(id)a3;
-- (BOOL)validateAudioOutputSettings:(id)a3 reason:(id *)a4;
-- (BOOL)validateVideoOutputSettings:(id)a3 reason:(id *)a4;
+- (AVMediaFileOutputSettingsValidator)initWithFileType:(id)type;
+- (BOOL)validateAudioOutputSettings:(id)settings reason:(id *)reason;
+- (BOOL)validateVideoOutputSettings:(id)settings reason:(id *)reason;
 - (void)dealloc;
 @end
 
@@ -11,7 +11,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v8 = objc_alloc(MEMORY[0x1E695DF20]);
     v7 = objc_opt_class();
@@ -24,27 +24,27 @@
   }
 }
 
-+ (id)mediaFileOutputSettingsValidatorForFileType:(id)a3
++ (id)mediaFileOutputSettingsValidatorForFileType:(id)type
 {
-  v4 = [sAVMediaFileOutputSettingsValidatorClassesForFileType objectForKey:{objc_msgSend(a3, "UTI")}];
+  v4 = [sAVMediaFileOutputSettingsValidatorClassesForFileType objectForKey:{objc_msgSend(type, "UTI")}];
   if (!v4)
   {
     v4 = objc_opt_class();
   }
 
-  v5 = [[v4 alloc] initWithFileType:a3];
+  v5 = [[v4 alloc] initWithFileType:type];
 
   return v5;
 }
 
-- (AVMediaFileOutputSettingsValidator)initWithFileType:(id)a3
+- (AVMediaFileOutputSettingsValidator)initWithFileType:(id)type
 {
   v15.receiver = self;
   v15.super_class = AVMediaFileOutputSettingsValidator;
   v5 = [(AVMediaFileOutputSettingsValidator *)&v15 init];
   v6 = objc_opt_class();
   AVRequireConcreteObject(v5, a2, v6);
-  if (!a3)
+  if (!type)
   {
     v8 = v5;
     v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(v5 userInfo:{a2, @"invalid parameter not satisfying: %s", v9, v10, v11, v12, v13, "fileType != nil"), 0}];
@@ -53,7 +53,7 @@
 
   if (v5)
   {
-    v5->_fileType = [a3 copyWithZone:{-[AVMediaFileOutputSettingsValidator zone](v5, "zone")}];
+    v5->_fileType = [type copyWithZone:{-[AVMediaFileOutputSettingsValidator zone](v5, "zone")}];
   }
 
   return v5;
@@ -66,12 +66,12 @@
   [(AVMediaFileOutputSettingsValidator *)&v3 dealloc];
 }
 
-- (BOOL)validateAudioOutputSettings:(id)a3 reason:(id *)a4
+- (BOOL)validateAudioOutputSettings:(id)settings reason:(id *)reason
 {
-  v6 = [a3 audioSettingsDictionary];
-  v7 = [(AVMediaFileOutputSettingsValidator *)self fileType];
-  v8 = [v6 objectForKey:*MEMORY[0x1E69582B0]];
-  if (!v8 || (v9 = [v8 unsignedIntValue], (v10 = -[AVMediaFileType audioFileTypeID](v7, "audioFileTypeID")) == 0))
+  audioSettingsDictionary = [settings audioSettingsDictionary];
+  fileType = [(AVMediaFileOutputSettingsValidator *)self fileType];
+  v8 = [audioSettingsDictionary objectForKey:*MEMORY[0x1E69582B0]];
+  if (!v8 || (v9 = [v8 unsignedIntValue], (v10 = -[AVMediaFileType audioFileTypeID](fileType, "audioFileTypeID")) == 0))
   {
 LABEL_12:
     v13 = 0;
@@ -108,34 +108,34 @@ LABEL_12:
 
 LABEL_10:
   free(v11);
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Format ID '%@' is not compatible with file type %@", AVStringForOSType(v9), -[AVMediaFileType UTI](v7, "UTI")];
+  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Format ID '%@' is not compatible with file type %@", AVStringForOSType(v9), -[AVMediaFileType UTI](fileType, "UTI")];
   v14 = 0;
 LABEL_13:
-  v15 = [v6 objectForKey:*MEMORY[0x1E69582F0]];
+  v15 = [audioSettingsDictionary objectForKey:*MEMORY[0x1E69582F0]];
   if (v14 && v15)
   {
-    v16 = [v15 BOOLValue];
-    if (v16)
+    bOOLValue = [v15 BOOLValue];
+    if (bOOLValue)
     {
       v13 = @"Cannot write non-interleaved audio to a file";
     }
 
-    LOBYTE(v14) = v16 ^ 1;
+    LOBYTE(v14) = bOOLValue ^ 1;
   }
 
-  if (a4)
+  if (reason)
   {
-    *a4 = v13;
+    *reason = v13;
   }
 
   return v14;
 }
 
-- (BOOL)validateVideoOutputSettings:(id)a3 reason:(id *)a4
+- (BOOL)validateVideoOutputSettings:(id)settings reason:(id *)reason
 {
-  if (a4)
+  if (reason)
   {
-    *a4 = 0;
+    *reason = 0;
   }
 
   return 1;

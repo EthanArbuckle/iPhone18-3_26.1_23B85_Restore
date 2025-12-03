@@ -1,17 +1,17 @@
 @interface HMDCameraRecordingEventObserver
 - (HMDCameraRecordingEventObserver)init;
-- (HMDCameraRecordingEventObserver)initWithLogEventDispatcher:(id)a3 countersManager:(id)a4 dailyScheduler:(id)a5 dateProvider:(id)a6 currentHomeDataSource:(id)a7;
+- (HMDCameraRecordingEventObserver)initWithLogEventDispatcher:(id)dispatcher countersManager:(id)manager dailyScheduler:(id)scheduler dateProvider:(id)provider currentHomeDataSource:(id)source;
 - (HMDCurrentResidentDeviceDataSource)currentHomeDataSource;
 - (HMMLogEventDispatching)logEventDispatcher;
-- (id)logEventForCurrentHomeWithDate:(id)a3;
-- (void)deleteCountersBefore:(BOOL)a3 date:(id)a4;
-- (void)handleRecordingSessionLogEvent:(id)a3;
-- (void)handleRecordingUploadOperationEvent:(id)a3;
-- (void)observeEvent:(id)a3;
+- (id)logEventForCurrentHomeWithDate:(id)date;
+- (void)deleteCountersBefore:(BOOL)before date:(id)date;
+- (void)handleRecordingSessionLogEvent:(id)event;
+- (void)handleRecordingUploadOperationEvent:(id)event;
+- (void)observeEvent:(id)event;
 - (void)runDailyTask;
-- (void)setCountersManager:(id)a3;
-- (void)setDailyScheduler:(id)a3;
-- (void)setDateProvider:(id)a3;
+- (void)setCountersManager:(id)manager;
+- (void)setDailyScheduler:(id)scheduler;
+- (void)setDateProvider:(id)provider;
 - (void)start;
 - (void)stop;
 @end
@@ -26,25 +26,25 @@
   return v3;
 }
 
-- (void)setCountersManager:(id)a3
+- (void)setCountersManager:(id)manager
 {
   v4 = *(&self->super.isa + OBJC_IVAR___HMDCameraRecordingEventObserver_countersManager);
-  *(&self->super.isa + OBJC_IVAR___HMDCameraRecordingEventObserver_countersManager) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___HMDCameraRecordingEventObserver_countersManager) = manager;
+  managerCopy = manager;
 }
 
-- (void)setDailyScheduler:(id)a3
+- (void)setDailyScheduler:(id)scheduler
 {
   v4 = *(&self->super.isa + OBJC_IVAR___HMDCameraRecordingEventObserver_dailyScheduler);
-  *(&self->super.isa + OBJC_IVAR___HMDCameraRecordingEventObserver_dailyScheduler) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___HMDCameraRecordingEventObserver_dailyScheduler) = scheduler;
+  schedulerCopy = scheduler;
 }
 
-- (void)setDateProvider:(id)a3
+- (void)setDateProvider:(id)provider
 {
   v4 = *(&self->super.isa + OBJC_IVAR___HMDCameraRecordingEventObserver_dateProvider);
-  *(&self->super.isa + OBJC_IVAR___HMDCameraRecordingEventObserver_dateProvider) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___HMDCameraRecordingEventObserver_dateProvider) = provider;
+  providerCopy = provider;
 }
 
 - (HMDCurrentResidentDeviceDataSource)currentHomeDataSource
@@ -55,50 +55,50 @@
   return v3;
 }
 
-- (HMDCameraRecordingEventObserver)initWithLogEventDispatcher:(id)a3 countersManager:(id)a4 dailyScheduler:(id)a5 dateProvider:(id)a6 currentHomeDataSource:(id)a7
+- (HMDCameraRecordingEventObserver)initWithLogEventDispatcher:(id)dispatcher countersManager:(id)manager dailyScheduler:(id)scheduler dateProvider:(id)provider currentHomeDataSource:(id)source
 {
   swift_unknownObjectRetain();
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  managerCopy = manager;
+  schedulerCopy = scheduler;
+  providerCopy = provider;
   swift_unknownObjectRetain();
-  return sub_253210310(a3, v12, v13, v14, a7);
+  return sub_253210310(dispatcher, managerCopy, schedulerCopy, providerCopy, source);
 }
 
 - (void)start
 {
   swift_getObjectType();
   v3 = (self + OBJC_IVAR___HMDCameraRecordingEventObserver_startMutex);
-  v4 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v3);
-  sub_253210420(&v3[1], v4);
+  sub_253210420(&v3[1], selfCopy);
   os_unfair_lock_unlock(v3);
 }
 
 - (void)stop
 {
   v2 = (self + OBJC_IVAR___HMDCameraRecordingEventObserver_startMutex);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
-  sub_253210674(&v2[1], v3);
+  sub_253210674(&v2[1], selfCopy);
   os_unfair_lock_unlock(v2);
 }
 
-- (void)handleRecordingSessionLogEvent:(id)a3
+- (void)handleRecordingSessionLogEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
+  eventCopy = event;
+  selfCopy = self;
   sub_253211AC8();
 }
 
-- (void)handleRecordingUploadOperationEvent:(id)a3
+- (void)handleRecordingUploadOperationEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_253210880(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_253210880(eventCopy);
 }
 
-- (id)logEventForCurrentHomeWithDate:(id)a3
+- (id)logEventForCurrentHomeWithDate:(id)date
 {
   v4 = sub_253CCFEE8();
   v5 = *(v4 - 8);
@@ -106,7 +106,7 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_253CCFEA8();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_253210B68();
 
   (*(v5 + 8))(v8, v4);
@@ -114,7 +114,7 @@
   return v10;
 }
 
-- (void)deleteCountersBefore:(BOOL)a3 date:(id)a4
+- (void)deleteCountersBefore:(BOOL)before date:(id)date
 {
   v6 = sub_253CCFEE8();
   v7 = *(v6 - 8);
@@ -122,13 +122,13 @@
   MEMORY[0x28223BE20](v6);
   v10 = &v12 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_253CCFEA8();
-  v11 = self;
-  sub_253211170(a3, v10);
+  selfCopy = self;
+  sub_253211170(before, v10);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
   objc_opt_self();
   v4 = swift_dynamicCastObjCClass();
@@ -158,7 +158,7 @@
 
 - (void)runDailyTask
 {
-  v2 = self;
+  selfCopy = self;
   sub_253211720();
 }
 

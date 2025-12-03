@@ -1,66 +1,66 @@
 @interface SDAutoUnlockRegistrationKeySession
-- (void)handleStepData:(id)a3;
+- (void)handleStepData:(id)data;
 - (void)onQueue_start;
 - (void)start;
-- (void)transport:(id)a3 didReceivePayload:(id)a4 type:(unsigned __int16)a5 deviceID:(id)a6;
+- (void)transport:(id)transport didReceivePayload:(id)payload type:(unsigned __int16)type deviceID:(id)d;
 @end
 
 @implementation SDAutoUnlockRegistrationKeySession
 
 - (void)start
 {
-  v3 = [(SDAutoUnlockPairingSession *)self sessionQueue];
+  sessionQueue = [(SDAutoUnlockPairingSession *)self sessionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10017F080;
   block[3] = &unk_1008CDEA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(sessionQueue, block);
 }
 
 - (void)onQueue_start
 {
-  v3 = [(SDAutoUnlockPairingSession *)self sessionQueue];
-  dispatch_assert_queue_V2(v3);
+  sessionQueue = [(SDAutoUnlockPairingSession *)self sessionQueue];
+  dispatch_assert_queue_V2(sessionQueue);
 
   v4 = [SDAutoUnlockDeviceRegistrationRequest alloc];
-  v5 = [(SDAutoUnlockRegistrationKeySession *)self requestData];
-  v6 = [(SDAutoUnlockDeviceRegistrationRequest *)v4 initWithData:v5];
+  requestData = [(SDAutoUnlockRegistrationKeySession *)self requestData];
+  v6 = [(SDAutoUnlockDeviceRegistrationRequest *)v4 initWithData:requestData];
 
   if (v6 || [(SDAutoUnlockRegistrationKeySession *)self isLocallyGenerated])
   {
     v7 = +[SDStatusMonitor sharedMonitor];
-    v8 = [v7 deviceKeyBagUnlocked];
+    deviceKeyBagUnlocked = [v7 deviceKeyBagUnlocked];
 
-    if (v8)
+    if (deviceKeyBagUnlocked)
     {
       v9 = +[SDAutoUnlockAKSManager sharedManager];
-      v10 = [(SDAutoUnlockPairingSession *)self deviceID];
-      v11 = [v9 aksRegistrationSessionForDeviceID:v10 originator:1];
+      deviceID = [(SDAutoUnlockPairingSession *)self deviceID];
+      v11 = [v9 aksRegistrationSessionForDeviceID:deviceID originator:1];
       [(SDAutoUnlockPairingSession *)self setAksSession:v11];
 
-      v12 = [(SDAutoUnlockPairingSession *)self aksSession];
-      LODWORD(v10) = [v12 sessionIsValid];
+      aksSession = [(SDAutoUnlockPairingSession *)self aksSession];
+      LODWORD(deviceID) = [aksSession sessionIsValid];
 
-      if (v10)
+      if (deviceID)
       {
-        v13 = [(SDAutoUnlockPairingSession *)self aksSession];
+        aksSession2 = [(SDAutoUnlockPairingSession *)self aksSession];
         v23 = 0;
-        v14 = [v13 stepSessionWithData:0 outputData:&v23];
+        v14 = [aksSession2 stepSessionWithData:0 outputData:&v23];
         v15 = v23;
 
         if (v14)
         {
-          v16 = [(SDAutoUnlockRegistrationKeySession *)self isLocallyGenerated];
-          v17 = [(SDAutoUnlockRegistrationKeySession *)self isLocallyGenerated];
+          isLocallyGenerated = [(SDAutoUnlockRegistrationKeySession *)self isLocallyGenerated];
+          isLocallyGenerated2 = [(SDAutoUnlockRegistrationKeySession *)self isLocallyGenerated];
           v18 = &unk_1007F4790;
-          if (!v17)
+          if (!isLocallyGenerated2)
           {
             v18 = &qword_1007F4788;
           }
 
           v19 = *v18;
-          if (v16)
+          if (isLocallyGenerated)
           {
             v20 = 505;
           }
@@ -128,14 +128,14 @@
 LABEL_27:
 }
 
-- (void)handleStepData:(id)a3
+- (void)handleStepData:(id)data
 {
-  v4 = a3;
-  v5 = [[SDAutoUnlockDeviceRegistrationStep alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[SDAutoUnlockDeviceRegistrationStep alloc] initWithData:dataCopy];
 
-  v6 = [(SDAutoUnlockDeviceRegistrationStep *)v5 stepData];
+  stepData = [(SDAutoUnlockDeviceRegistrationStep *)v5 stepData];
 
-  if (!v6)
+  if (!stepData)
   {
     v12 = auto_unlock_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -148,9 +148,9 @@ LABEL_27:
   }
 
   v7 = +[SDStatusMonitor sharedMonitor];
-  v8 = [v7 deviceKeyBagUnlocked];
+  deviceKeyBagUnlocked = [v7 deviceKeyBagUnlocked];
 
-  if (!v8)
+  if (!deviceKeyBagUnlocked)
   {
     v12 = auto_unlock_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -162,10 +162,10 @@ LABEL_27:
     goto LABEL_19;
   }
 
-  v9 = [(SDAutoUnlockPairingSession *)self aksSession];
-  v10 = [(SDAutoUnlockDeviceRegistrationStep *)v5 stepData];
+  aksSession = [(SDAutoUnlockPairingSession *)self aksSession];
+  stepData2 = [(SDAutoUnlockDeviceRegistrationStep *)v5 stepData];
   v20 = 0;
-  v11 = [v9 stepSessionWithData:v10 outputData:&v20];
+  v11 = [aksSession stepSessionWithData:stepData2 outputData:&v20];
   v12 = v20;
 
   if (!v11)
@@ -179,10 +179,10 @@ LABEL_27:
     goto LABEL_18;
   }
 
-  v13 = [(SDAutoUnlockPairingSession *)self aksSession];
-  v14 = [v13 confirmSession];
+  aksSession2 = [(SDAutoUnlockPairingSession *)self aksSession];
+  confirmSession = [aksSession2 confirmSession];
 
-  if (!v14)
+  if (!confirmSession)
   {
     v18 = auto_unlock_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -217,19 +217,19 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)transport:(id)a3 didReceivePayload:(id)a4 type:(unsigned __int16)a5 deviceID:(id)a6
+- (void)transport:(id)transport didReceivePayload:(id)payload type:(unsigned __int16)type deviceID:(id)d
 {
-  v8 = a4;
-  v9 = [(SDAutoUnlockPairingSession *)self sessionQueue];
+  payloadCopy = payload;
+  sessionQueue = [(SDAutoUnlockPairingSession *)self sessionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10017F914;
   block[3] = &unk_1008CFBD8;
-  v13 = a5;
+  typeCopy = type;
   block[4] = self;
-  v12 = v8;
-  v10 = v8;
-  dispatch_async(v9, block);
+  v12 = payloadCopy;
+  v10 = payloadCopy;
+  dispatch_async(sessionQueue, block);
 }
 
 @end

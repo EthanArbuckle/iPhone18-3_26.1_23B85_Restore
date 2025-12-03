@@ -1,13 +1,13 @@
 @interface CKTapbackAttributionView
-- (CGSize)estimatedAttributionViewDismissalSizeForAnimationController:(id)a3;
-- (_TtC7ChatKit24CKTapbackAttributionView)initWithCoder:(id)a3;
-- (_TtC7ChatKit24CKTapbackAttributionView)initWithFrame:(CGRect)a3;
+- (CGSize)estimatedAttributionViewDismissalSizeForAnimationController:(id)controller;
+- (_TtC7ChatKit24CKTapbackAttributionView)initWithCoder:(id)coder;
+- (_TtC7ChatKit24CKTapbackAttributionView)initWithFrame:(CGRect)frame;
 - (_TtP7ChatKit32CKTapbackAttributionViewDelegate_)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)dismiss;
 - (void)layoutSubviews;
 - (void)present;
-- (void)tapbackAttributionViewModel:(id)a3 didTapToSaveSticker:(id)a4;
+- (void)tapbackAttributionViewModel:(id)model didTapToSaveSticker:(id)sticker;
 @end
 
 @implementation CKTapbackAttributionView
@@ -20,7 +20,7 @@
   return Strong;
 }
 
-- (_TtC7ChatKit24CKTapbackAttributionView)initWithCoder:(id)a3
+- (_TtC7ChatKit24CKTapbackAttributionView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR____TtC7ChatKit24CKTapbackAttributionView_hostedView) = 0;
@@ -31,61 +31,61 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_190CE5E38();
 }
 
 - (void)present
 {
-  v2 = self;
+  selfCopy = self;
   sub_190CE5F4C();
 }
 
 - (void)dismiss
 {
-  v2 = self;
+  selfCopy = self;
   sub_190CE5FB4();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_190CE6118(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_190CE6118(event, x, y);
 
   return v10;
 }
 
-- (_TtC7ChatKit24CKTapbackAttributionView)initWithFrame:(CGRect)a3
+- (_TtC7ChatKit24CKTapbackAttributionView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)tapbackAttributionViewModel:(id)a3 didTapToSaveSticker:(id)a4
+- (void)tapbackAttributionViewModel:(id)model didTapToSaveSticker:(id)sticker
 {
   swift_beginAccess();
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    [Strong tapbackAttributionView:self didTapToSaveSticker:a4];
+    [Strong tapbackAttributionView:self didTapToSaveSticker:sticker];
     swift_unknownObjectRelease();
   }
 }
 
-- (CGSize)estimatedAttributionViewDismissalSizeForAnimationController:(id)a3
+- (CGSize)estimatedAttributionViewDismissalSizeForAnimationController:(id)controller
 {
   v4 = *(self + OBJC_IVAR____TtC7ChatKit24CKTapbackAttributionView_viewModel);
   swift_getKeyPath();
   sub_190CE6654(&qword_1EAD56B18, type metadata accessor for TapbackAttributionViewModel);
-  v5 = self;
+  selfCopy = self;
   sub_190D51C20();
 
   v6 = *(v4 + OBJC_IVAR____TtC7ChatKit27TapbackAttributionViewModel__measuredContentSize);
-  [(CKTapbackAttributionView *)v5 bounds];
+  [(CKTapbackAttributionView *)selfCopy bounds];
   v8 = v7;
 
   v9 = v6;

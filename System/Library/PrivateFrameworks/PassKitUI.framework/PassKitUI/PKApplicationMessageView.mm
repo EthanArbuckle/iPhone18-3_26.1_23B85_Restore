@@ -1,44 +1,44 @@
 @interface PKApplicationMessageView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (BOOL)needsRemoval;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKApplicationMessageView)initWithConfiguration:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKApplicationMessageView)initWithConfiguration:(id)configuration;
 - (PKApplicationMessageViewDelegate)delegate;
 - (double)_contentOffsetForDismiss;
-- (double)_layoutWithContext:(CGFloat)a3 bounds:(CGFloat)a4;
+- (double)_layoutWithContext:(CGFloat)context bounds:(CGFloat)bounds;
 - (double)_swipeDismissThreshold;
 - (double)cachedClearViewFittingWidth;
 - (id)_createClearView;
-- (id)_initWithType:(void *)a3 configuration:;
+- (id)_initWithType:(void *)type configuration:;
 - (id)_swipedMessageView;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_cancelMySwipe;
-- (void)_clearTapped:(id)a3;
-- (void)_dismissWithAnimatedSwipe:(uint64_t)a1;
+- (void)_clearTapped:(id)tapped;
+- (void)_dismissWithAnimatedSwipe:(uint64_t)swipe;
 - (void)_expand;
 - (void)_handleTap;
 - (void)_invalidate;
 - (void)_invalidateSize;
-- (void)_longPressed:(id)a3;
+- (void)_longPressed:(id)pressed;
 - (void)_markPresented;
 - (void)_rootView;
-- (void)_setContent:(unsigned int)a3 type:(uint64_t)a4 depth:;
-- (void)_treeLayoutWithContext:(void *)a3 block:;
-- (void)_updateSubviewsWithType:(uint64_t)a3 depth:;
-- (void)_visitPostOrder:(uint64_t)a1;
-- (void)_visitPreOrder:(uint64_t)a1;
+- (void)_setContent:(unsigned int)content type:(uint64_t)type depth:;
+- (void)_treeLayoutWithContext:(void *)context block:;
+- (void)_updateSubviewsWithType:(uint64_t)type depth:;
+- (void)_visitPostOrder:(uint64_t)order;
+- (void)_visitPreOrder:(uint64_t)order;
 - (void)collapse;
 - (void)dealloc;
 - (void)dropSwipe;
 - (void)impactOccured;
 - (void)layoutSubviews;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setBlurRadius:(void *)a3 animated:(double)a4 withCompletion:;
-- (void)setContent:(id)a3 animated:(BOOL)a4;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setBlurRadius:(void *)radius animated:(double)animated withCompletion:;
+- (void)setContent:(id)content animated:(BOOL)animated;
 - (void)swipeToDismissFeedbackGenerator;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKApplicationMessageView
@@ -89,56 +89,56 @@ uint64_t __82__PKApplicationMessageView_RemovedSubviewContainer_commitAnimated_w
   return result;
 }
 
-- (PKApplicationMessageView)initWithConfiguration:(id)a3
+- (PKApplicationMessageView)initWithConfiguration:(id)configuration
 {
-  if (a3)
+  if (configuration)
   {
-    self = [(PKApplicationMessageView *)&self->super.super.super.isa _initWithType:a3 configuration:?];
-    v3 = self;
+    self = [(PKApplicationMessageView *)&self->super.super.super.isa _initWithType:configuration configuration:?];
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)_initWithType:(void *)a3 configuration:
+- (id)_initWithType:(void *)type configuration:
 {
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  typeCopy = type;
+  v7 = typeCopy;
+  if (self)
   {
     v8 = *MEMORY[0x1E695EFF8];
     v9 = *(MEMORY[0x1E695EFF8] + 8);
-    v10 = v6 ? *(v6 + 1) : 0.0;
-    v48.receiver = a1;
+    v10 = typeCopy ? *(typeCopy + 1) : 0.0;
+    v48.receiver = self;
     v48.super_class = PKApplicationMessageView;
     v11 = objc_msgSendSuper2(&v48, sel_initWithFrame_, v8, v9, v10, 0.0);
-    a1 = v11;
+    self = v11;
     if (v11)
     {
       v11[102] = a2;
-      objc_storeStrong(v11 + 100, a3);
-      *(a1 + 568) = 1;
-      a1[70] = 0x7FEFFFFFFFFFFFFFLL;
-      *(a1 + 171) = 0;
+      objc_storeStrong(v11 + 100, type);
+      *(self + 568) = 1;
+      self[70] = 0x7FEFFFFFFFFFFFFFLL;
+      *(self + 171) = 0;
       v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v13 = a1[91];
-      a1[91] = v12;
+      v13 = self[91];
+      self[91] = v12;
 
       v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v15 = a1[92];
-      a1[92] = v14;
+      v15 = self[92];
+      self[92] = v14;
 
       v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v17 = a1[93];
-      a1[93] = v16;
+      v17 = self[93];
+      self[93] = v16;
 
-      *(a1 + 656) = 0;
-      objc_initWeak(&location, a1);
+      *(self + 656) = 0;
+      objc_initWeak(&location, self);
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __56__PKApplicationMessageView__initWithType_configuration___block_invoke;
@@ -146,31 +146,31 @@ uint64_t __82__PKApplicationMessageView_RemovedSubviewContainer_commitAnimated_w
       objc_copyWeak(&v46, &location);
       v18 = _Block_copy(aBlock);
       v19 = objc_alloc_init(PKApplicationMessageScrollView);
-      v20 = a1[53];
-      a1[53] = v19;
+      v20 = self[53];
+      self[53] = v19;
 
-      [a1[53] setPagingEnabled:1];
-      [a1[53] setShowsVerticalScrollIndicator:0];
-      [a1[53] setShowsHorizontalScrollIndicator:0];
-      [a1[53] setClipsToBounds:0];
-      [a1[53] setDelegate:a1];
-      [a1 addSubview:a1[53]];
-      v21 = [a1[53] panGestureRecognizer];
-      v22 = a1[54];
-      a1[54] = v21;
+      [self[53] setPagingEnabled:1];
+      [self[53] setShowsVerticalScrollIndicator:0];
+      [self[53] setShowsHorizontalScrollIndicator:0];
+      [self[53] setClipsToBounds:0];
+      [self[53] setDelegate:self];
+      [self addSubview:self[53]];
+      panGestureRecognizer = [self[53] panGestureRecognizer];
+      v22 = self[54];
+      self[54] = panGestureRecognizer;
 
-      *(a1 + 488) = 0;
+      *(self + 488) = 0;
       if ((a2 - 1) <= 1)
       {
-        v23 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-        [v23 setPreferredSymbolConfigurationForImage:0];
-        v24 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-        [v23 setBaseForegroundColor:v24];
+        plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+        [plainButtonConfiguration setPreferredSymbolConfigurationForImage:0];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        [plainButtonConfiguration setBaseForegroundColor:secondaryLabelColor];
 
-        [v23 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
-        [v23 setCornerStyle:-1];
-        v25 = [v23 background];
-        [v25 setCornerRadius:0.0];
+        [plainButtonConfiguration setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+        [plainButtonConfiguration setCornerStyle:-1];
+        background = [plainButtonConfiguration background];
+        [background setCornerRadius:0.0];
 
         v26 = MEMORY[0x1E69DC628];
         v43[0] = MEMORY[0x1E69E9820];
@@ -179,11 +179,11 @@ uint64_t __82__PKApplicationMessageView_RemovedSubviewContainer_commitAnimated_w
         v43[3] = &unk_1E8010A60;
         objc_copyWeak(&v44, &location);
         v27 = [v26 actionWithHandler:v43];
-        v28 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v23 primaryAction:v27];
-        v29 = a1[88];
-        a1[88] = v28;
+        v28 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:v27];
+        v29 = self[88];
+        self[88] = v28;
 
-        v30 = a1[88];
+        v30 = self[88];
         v37 = MEMORY[0x1E69E9820];
         v38 = 3221225472;
         v39 = __56__PKApplicationMessageView__initWithType_configuration___block_invoke_3;
@@ -191,38 +191,38 @@ uint64_t __82__PKApplicationMessageView_RemovedSubviewContainer_commitAnimated_w
         v41 = v18;
         v42 = a2;
         [v30 setConfigurationUpdateHandler:&v37];
-        [a1[88] setAlpha:{0.0, v37, v38, v39, v40}];
-        [a1[88] _setTouchInsets:{-10.0, -10.0, -10.0, -10.0}];
-        [a1[88] sizeToFit];
-        [a1[88] setNeedsUpdateConfiguration];
-        [a1 insertSubview:a1[88] belowSubview:a1[53]];
+        [self[88] setAlpha:{0.0, v37, v38, v39, v40}];
+        [self[88] _setTouchInsets:{-10.0, -10.0, -10.0, -10.0}];
+        [self[88] sizeToFit];
+        [self[88] setNeedsUpdateConfiguration];
+        [self insertSubview:self[88] belowSubview:self[53]];
 
         objc_destroyWeak(&v44);
       }
 
-      v31 = [a1 layer];
-      [v31 setAnchorPoint:{0.5, 0.0}];
-      v32 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:a1 action:sel__tapped_];
-      v33 = a1[96];
-      a1[96] = v32;
+      layer = [self layer];
+      [layer setAnchorPoint:{0.5, 0.0}];
+      v32 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__tapped_];
+      v33 = self[96];
+      self[96] = v32;
 
-      [a1[53] addGestureRecognizer:a1[96]];
-      v34 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:a1 action:sel__longPressed_];
-      v35 = a1[97];
-      a1[97] = v34;
+      [self[53] addGestureRecognizer:self[96]];
+      v34 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:self action:sel__longPressed_];
+      v35 = self[97];
+      self[97] = v34;
 
-      [a1[97] setDelegate:a1];
-      [a1[97] setMinimumPressDuration:0.15];
-      [a1[53] addGestureRecognizer:a1[97]];
-      [a1 setLayoutMargins:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
-      [a1 setInsetsLayoutMarginsFromSafeArea:0];
+      [self[97] setDelegate:self];
+      [self[97] setMinimumPressDuration:0.15];
+      [self[53] addGestureRecognizer:self[97]];
+      [self setLayoutMargins:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+      [self setInsetsLayoutMarginsFromSafeArea:0];
 
       objc_destroyWeak(&v46);
       objc_destroyWeak(&location);
     }
   }
 
-  return a1;
+  return self;
 }
 
 uint64_t __56__PKApplicationMessageView__initWithType_configuration___block_invoke(uint64_t a1)
@@ -280,16 +280,16 @@ void __56__PKApplicationMessageView__initWithType_configuration___block_invoke_3
   [v3 setConfiguration:v5];
 }
 
-- (void)_longPressed:(id)a3
+- (void)_longPressed:(id)pressed
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v4 = [v35 state];
-  if ((v4 - 1) >= 2)
+  pressedCopy = pressed;
+  state = [pressedCopy state];
+  if ((state - 1) >= 2)
   {
-    if (v4 == 3)
+    if (state == 3)
     {
-      [v35 locationInView:self];
+      [pressedCopy locationInView:self];
       v16 = v15;
       v18 = v17;
       [(PKApplicationMessageView *)self bounds];
@@ -304,7 +304,7 @@ void __56__PKApplicationMessageView__initWithType_configuration___block_invoke_3
     goto LABEL_12;
   }
 
-  [v35 locationInView:self];
+  [pressedCopy locationInView:self];
   v6 = v5;
   v8 = v7;
   [(PKApplicationMessageView *)self bounds];
@@ -312,8 +312,8 @@ void __56__PKApplicationMessageView__initWithType_configuration___block_invoke_3
   v41.y = v8;
   if (!CGRectContainsPoint(v43, v41))
   {
-    [v35 setEnabled:0];
-    [v35 setEnabled:1];
+    [pressedCopy setEnabled:0];
+    [pressedCopy setEnabled:1];
     goto LABEL_12;
   }
 
@@ -326,20 +326,20 @@ void __56__PKApplicationMessageView__initWithType_configuration___block_invoke_3
   type = self->_type;
   if ((type - 1) < 2)
   {
-    v11 = [(PKApplicationMessageView *)self content];
-    v12 = [v11 context];
-    v13 = v12;
-    if (v12)
+    content = [(PKApplicationMessageView *)self content];
+    context = [content context];
+    v13 = context;
+    if (context)
     {
-      if (*(v12 + 8))
+      if (*(context + 8))
       {
         v14 = 0;
       }
 
       else
       {
-        v34 = *(v12 + 32);
-        v14 = ([*(v12 + 16) numberOfChildren] + v34) > 1;
+        v34 = *(context + 32);
+        v14 = ([*(context + 16) numberOfChildren] + v34) > 1;
       }
     }
 
@@ -358,17 +358,17 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v11 = [(PKApplicationMessage *)self->_message content];
-  v33 = [v11 action];
-  v14 = v33 != 0;
+  content = [(PKApplicationMessage *)self->_message content];
+  action = [content action];
+  v14 = action != 0;
 
 LABEL_34:
 LABEL_13:
-  v19 = v35;
+  v19 = pressedCopy;
   if (self->_highlighted != v14)
   {
     self->_highlighted = v14;
-    v20 = [(PKApplicationMessageView *)self layer];
+    layer = [(PKApplicationMessageView *)self layer];
     if (self->_highlightFilter)
     {
       v21 = CGColorRetain(self->_filterColor);
@@ -403,7 +403,7 @@ LABEL_13:
         [(CAFilter *)self->_highlightFilter setValue:v21 forKey:@"inputColor"];
         v39[0] = self->_highlightFilter;
         v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:1];
-        [v20 setFilters:v30];
+        [layer setFilters:v30];
       }
 
       CGColorRelease(self->_filterColor);
@@ -412,8 +412,8 @@ LABEL_13:
       aBlock[1] = 3221225472;
       aBlock[2] = __53__PKApplicationMessageView__updateHighlightAnimated___block_invoke;
       aBlock[3] = &unk_1E8010A10;
-      v37 = v20;
-      v38 = self;
+      v37 = layer;
+      selfCopy = self;
       v31 = _Block_copy(aBlock);
       if (highlighted)
       {
@@ -431,37 +431,37 @@ LABEL_13:
     CGColorRelease(v21);
     CGColorRelease(v26);
 
-    v19 = v35;
+    v19 = pressedCopy;
   }
 }
 
 - (void)_handleTap
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [*(a1 + 424) contentOffset];
+    [*(self + 424) contentOffset];
     if (v2 == 0.0)
     {
-      v3 = *(a1 + 816);
+      v3 = *(self + 816);
       if ((v3 - 1) >= 2)
       {
-        if (!v3 && (*(a1 + 680) & 1) == 0)
+        if (!v3 && (*(self + 680) & 1) == 0)
         {
-          v4 = *(a1 + 480);
+          v4 = *(self + 480);
           if (v4)
           {
             v5 = v4;
-            v6 = [v5 content];
-            v7 = [v6 action];
+            content = [v5 content];
+            action = [content action];
 
-            if (v7)
+            if (action)
             {
-              v8 = [v7 type];
-              if (v8 <= 1)
+              type = [action type];
+              if (type <= 1)
               {
-                v9 = v8;
-                v10 = [v7 url];
+                v9 = type;
+                v10 = [action url];
                 v11 = objc_alloc_init(MEMORY[0x1E69636B8]);
                 [v11 setSensitive:v9 == 1];
                 v19 = *MEMORY[0x1E699F970];
@@ -471,11 +471,11 @@ LABEL_13:
 
                 if ((PKRunningInViewService() & 1) != 0 || PKRunningInLockScreenPlugin())
                 {
-                  v13 = [a1 window];
-                  v14 = v13;
-                  if (v13)
+                  window = [self window];
+                  v14 = window;
+                  if (window)
                   {
-                    PKPostOpenApplicationNotification(v13, v10, v11);
+                    PKPostOpenApplicationNotification(window, v10, v11);
                   }
                 }
 
@@ -485,11 +485,11 @@ LABEL_13:
                 }
               }
 
-              v15 = [(PKApplicationMessageView *)a1 _rootView];
-              WeakRetained = objc_loadWeakRetained(v15 + 101);
-              v17 = [v5 registration];
-              v18 = [v17 key];
-              [WeakRetained applicationMessageView:v15 tappedApplicationMessageWithKey:v18];
+              _rootView = [(PKApplicationMessageView *)self _rootView];
+              WeakRetained = objc_loadWeakRetained(_rootView + 101);
+              registration = [v5 registration];
+              v18 = [registration key];
+              [WeakRetained applicationMessageView:_rootView tappedApplicationMessageWithKey:v18];
             }
           }
         }
@@ -498,14 +498,14 @@ LABEL_13:
       else
       {
 
-        [a1 _expand];
+        [self _expand];
       }
     }
 
     else
     {
 
-      [(PKApplicationMessageView *)a1 _cancelMySwipe];
+      [(PKApplicationMessageView *)self _cancelMySwipe];
     }
   }
 }
@@ -522,30 +522,30 @@ LABEL_13:
 - (void)_invalidate
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a1 && (*(a1 + 680) & 1) == 0)
+  if (self && (*(self + 680) & 1) == 0)
   {
-    *(a1 + 680) = 1;
-    *(a1 + 408) = 0;
-    v2 = *(a1 + 472);
+    *(self + 680) = 1;
+    *(self + 408) = 0;
+    v2 = *(self + 472);
     if (v2)
     {
-      v3 = [v2 context];
-      v4 = v3;
-      if (v3)
+      context = [v2 context];
+      v4 = context;
+      if (context)
       {
-        *(v3 + 24) = 0;
+        *(context + 24) = 0;
       }
 
-      [*(a1 + 472) setContext:0];
-      v5 = *(a1 + 472);
-      *(a1 + 472) = 0;
+      [*(self + 472) setContext:0];
+      v5 = *(self + 472);
+      *(self + 472) = 0;
     }
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = *(a1 + 728);
+    v6 = *(self + 728);
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -560,14 +560,14 @@ LABEL_13:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) context];
-          v12 = v11;
-          if (v11)
+          context2 = [*(*(&v14 + 1) + 8 * i) context];
+          v12 = context2;
+          if (context2)
           {
-            v11 = *(v11 + 24);
+            context2 = *(context2 + 24);
           }
 
-          [(PKApplicationMessageView *)v11 _invalidate];
+          [(PKApplicationMessageView *)context2 _invalidate];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -576,29 +576,29 @@ LABEL_13:
       while (v8);
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 808));
-    [WeakRetained applicationMessageViewNeedsRemoval:a1];
+    WeakRetained = objc_loadWeakRetained((self + 808));
+    [WeakRetained applicationMessageViewNeedsRemoval:self];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(PKApplicationMessageView *)self _layoutWithContext:*MEMORY[0x1E695EFF8] bounds:*(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  v3 = [(PKApplicationMessageView *)self _layoutWithContext:*MEMORY[0x1E695EFF8] bounds:*(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (double)_layoutWithContext:(CGFloat)a3 bounds:(CGFloat)a4
+- (double)_layoutWithContext:(CGFloat)context bounds:(CGFloat)bounds
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  if (*(a1 + 680) == 1)
+  if (*(self + 680) == 1)
   {
-    [a1 bounds];
+    [self bounds];
     return v7;
   }
 
@@ -606,18 +606,18 @@ LABEL_13:
   {
     v8 = a5;
     v17 = 0;
-    if ((*(a1 + 568) & 1) == 0)
+    if ((*(self + 568) & 1) == 0)
     {
-      v165.origin.x = a3;
-      v165.origin.y = a4;
+      v165.origin.x = context;
+      v165.origin.y = bounds;
       v165.size.width = a5;
       v165.size.height = a6;
-      if (CGRectEqualToRect(*(a1 + 576), v165))
+      if (CGRectEqualToRect(*(self + 576), v165))
       {
-        [a1 layoutMargins];
+        [self layoutMargins];
         v14.f64[1] = v13;
         v16.f64[1] = v15;
-        if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(a1 + 608), v14), vceqq_f64(*(a1 + 624), v16)))))
+        if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(self + 608), v14), vceqq_f64(*(self + 624), v16)))))
         {
           v17 = 1;
         }
@@ -625,21 +625,21 @@ LABEL_13:
     }
 
     v18 = HIDWORD(a2);
-    v19 = [*(a1 + 472) context];
-    v20 = v19;
-    if (v19 && (v21 = *(v19 + 32), [*(v19 + 16) numberOfChildren] + v21))
+    context = [*(self + 472) context];
+    v20 = context;
+    if (context && (v21 = *(context + 32), [*(context + 16) numberOfChildren] + v21))
     {
-      v22 = a3;
+      contextCopy2 = context;
       v24 = 0;
       v25 = 0;
-      v23 = (*(a1 + 536) & 1) == 0 && *(a1 + 408) == 0;
+      v23 = (*(self + 536) & 1) == 0 && *(self + 408) == 0;
     }
 
     else
     {
-      v22 = a3;
+      contextCopy2 = context;
       v23 = 0;
-      v24 = *(a1 + 408) == 0;
+      v24 = *(self + 408) == 0;
       v25 = 1;
     }
 
@@ -654,7 +654,7 @@ LABEL_13:
       v119 = v24;
       v120 = v23;
       v117 = v20;
-      v27 = [a1 _shouldReverseLayoutDirection];
+      _shouldReverseLayoutDirection = [self _shouldReverseLayoutDirection];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __54__PKApplicationMessageView__layoutWithContext_bounds___block_invoke;
@@ -666,7 +666,7 @@ LABEL_13:
       v162[2] = __54__PKApplicationMessageView__layoutWithContext_bounds___block_invoke_2;
       v162[3] = &unk_1E8018538;
       v162[5] = a2;
-      v162[4] = a1;
+      v162[4] = self;
       v29 = _Block_copy(v162);
       v161[0] = MEMORY[0x1E69E9820];
       v161[1] = 3221225472;
@@ -688,11 +688,11 @@ LABEL_13:
       v121 = _Block_copy(v159);
       if (v18 == 1)
       {
-        [*(a1 + 424) contentSize];
+        [*(self + 424) contentSize];
         if (v32 == v8 + v8 && v31 == a6)
         {
           v33 = *MEMORY[0x1E695EFF8];
-          if (v27)
+          if (_shouldReverseLayoutDirection)
           {
             v34 = 0.0;
           }
@@ -705,10 +705,10 @@ LABEL_13:
 
         else
         {
-          [*(a1 + 424) setContentSize:{v8 + v8, a6}];
+          [*(self + 424) setContentSize:{v8 + v8, a6}];
           v35 = -v8;
           v33 = *MEMORY[0x1E695EFF8];
-          if (v27)
+          if (_shouldReverseLayoutDirection)
           {
             v34 = 0.0;
           }
@@ -719,16 +719,16 @@ LABEL_13:
             v34 = *(MEMORY[0x1E695EFF8] + 8);
           }
 
-          [*(a1 + 424) setFrameForPointInside:{v35, v34, v8 + v8, a6}];
+          [*(self + 424) setFrameForPointInside:{v35, v34, v8 + v8, a6}];
         }
 
-        v36 = [(PKApplicationMessageView *)a1 _rootView];
-        v37 = [(PKApplicationMessageView *)v36 cachedClearViewFittingWidth];
+        _rootView = [(PKApplicationMessageView *)self _rootView];
+        cachedClearViewFittingWidth = [(PKApplicationMessageView *)_rootView cachedClearViewFittingWidth];
 
-        v38 = v8 - v37 + -8.0;
-        if (v27)
+        v38 = v8 - cachedClearViewFittingWidth + -8.0;
+        if (_shouldReverseLayoutDirection)
         {
-          v39 = v8 - v37 + -8.0;
+          v39 = v8 - cachedClearViewFittingWidth + -8.0;
         }
 
         else
@@ -736,24 +736,24 @@ LABEL_13:
           v39 = v33;
         }
 
-        v40 = [(PKApplicationMessageView *)a1 _rootView];
-        v41 = [(PKApplicationMessageView *)v40 cachedClearViewFittingWidth];
+        _rootView2 = [(PKApplicationMessageView *)self _rootView];
+        cachedClearViewFittingWidth2 = [(PKApplicationMessageView *)_rootView2 cachedClearViewFittingWidth];
 
-        v42 = v41 + 8.0;
+        v42 = cachedClearViewFittingWidth2 + 8.0;
         v166.origin.x = v39;
         v166.origin.y = v34;
         v166.size.width = v42;
         v166.size.height = a6;
-        if (!CGRectEqualToRect(*(a1 + 440), v166))
+        if (!CGRectEqualToRect(*(self + 440), v166))
         {
-          *(a1 + 440) = v39;
-          *(a1 + 448) = v34;
-          *(a1 + 456) = v42;
-          *(a1 + 464) = a6;
-          [*(a1 + 424) setFrame:{v39, v34, v42, a6}];
+          *(self + 440) = v39;
+          *(self + 448) = v34;
+          *(self + 456) = v42;
+          *(self + 464) = a6;
+          [*(self + 424) setFrame:{v39, v34, v42, a6}];
         }
 
-        if (v27)
+        if (_shouldReverseLayoutDirection)
         {
           v43 = v8 + v38;
           v44 = -(v8 + v38);
@@ -769,10 +769,10 @@ LABEL_13:
           v44 = *(MEMORY[0x1E69DDCE0] + 24);
         }
 
-        [*(a1 + 424) contentInset];
+        [*(self + 424) contentInset];
         if (v50 != v43 || v47 != v46 || v49 != v44 || v48 != v45)
         {
-          [*(a1 + 424) setContentInset:{v46, v43, v45, v44}];
+          [*(self + 424) setContentInset:{v46, v43, v45, v44}];
         }
       }
 
@@ -781,26 +781,26 @@ LABEL_13:
       v152 = &v151;
       v153 = 0x4010000000;
       v154 = &unk_1BE347799;
-      v51 = v22;
-      v155 = v22;
-      v52 = *&a4;
-      v156 = a4;
+      v51 = contextCopy2;
+      v155 = contextCopy2;
+      v52 = *&bounds;
+      boundsCopy = bounds;
       v157 = v8;
       v158 = a6;
-      v53 = *(a1 + 704);
+      v53 = *(self + 704);
       if (v53)
       {
-        LOBYTE(v52) = *(a1 + 656);
+        LOBYTE(v52) = *(self + 656);
         v28[2](v28, v53, 1, v52);
-        [*(a1 + 704) sizeThatFits:{1.79769313e308, 1.79769313e308}];
+        [*(self + 704) sizeThatFits:{1.79769313e308, 1.79769313e308}];
         v114 = v55;
         v115 = v54;
-        v113 = v22;
-        v56 = [*(a1 + 704) imageView];
-        v57 = [v56 image];
+        v113 = contextCopy2;
+        imageView = [*(self + 704) imageView];
+        image = [imageView image];
         v112 = v30;
 
-        [v57 alignmentRectInsets];
+        [image alignmentRectInsets];
         v59 = v58;
         v150[0] = MEMORY[0x1E69E9820];
         v150[1] = 3221225472;
@@ -813,10 +813,10 @@ LABEL_13:
         v150[4] = &v151;
         v63 = _Block_copy(v150);
         v64 = v63;
-        if ((v25 | *(a1 + 656)))
+        if ((v25 | *(self + 656)))
         {
           memset(&slice, 0, 32);
-          if (*(a1 + 816) != 2 && *(a1 + 552) == 1)
+          if (*(self + 816) != 2 && *(self + 552) == 1)
           {
             CGRectDivide(v152[1], &slice, v152 + 1, 4.0, CGRectMinYEdge);
           }
@@ -842,7 +842,7 @@ LABEL_13:
         }
 
         v51 = v113;
-        v77 = *(a1 + 704);
+        v77 = *(self + 704);
         v78 = *MEMORY[0x1E695EFF8];
         v79 = *(MEMORY[0x1E695EFF8] + 8);
         v80 = v29[2];
@@ -867,7 +867,7 @@ LABEL_13:
       v145[1] = 3221225472;
       v145[2] = __54__PKApplicationMessageView__layoutWithContext_bounds___block_invoke_10;
       v145[3] = &unk_1E8018638;
-      v145[4] = a1;
+      v145[4] = self;
       v85 = v30;
       v146 = v85;
       v86 = v123;
@@ -880,21 +880,21 @@ LABEL_13:
       v116 = v87;
       v122 = v86;
       v124 = v85;
-      v89 = [*(a1 + 744) count];
+      v89 = [*(self + 744) count];
       v90 = v89;
       v92 = v18 == 1 && v89 != 0;
       v144[0] = MEMORY[0x1E69E9820];
       v144[1] = 3221225472;
       v144[2] = __54__PKApplicationMessageView__layoutWithContext_bounds___block_invoke_12;
       v144[3] = &unk_1E8018660;
-      v144[4] = a1;
+      v144[4] = self;
       v93 = _Block_copy(v144);
       v134[0] = MEMORY[0x1E69E9820];
       v134[1] = 3221225472;
       v134[2] = __54__PKApplicationMessageView__layoutWithContext_bounds___block_invoke_13;
       v134[3] = &unk_1E80186B0;
       v141 = v92;
-      v134[4] = a1;
+      v134[4] = self;
       v139 = &v151;
       v94 = v93;
       v135 = v94;
@@ -912,7 +912,7 @@ LABEL_13:
       v125[1] = 3221225472;
       v125[2] = __54__PKApplicationMessageView__layoutWithContext_bounds___block_invoke_15;
       v125[3] = &unk_1E8018750;
-      v125[4] = a1;
+      v125[4] = self;
       v133 = v92;
       v99 = v94;
       v126 = v99;
@@ -927,7 +927,7 @@ LABEL_13:
       v129 = v102;
       v103 = _Block_copy(v125);
       v104 = v103;
-      if (*(a1 + 684))
+      if (*(self + 684))
       {
         v105 = (v103[2])(v103);
         v98[2](v98);
@@ -939,21 +939,21 @@ LABEL_13:
         v104[2](v104);
       }
 
-      v106 = v105 + v152[1].origin.y - a4;
+      v106 = v105 + v152[1].origin.y - bounds;
       if (!(v118 >> 33))
       {
-        *(a1 + 568) = 0;
-        *(a1 + 576) = v51;
-        *(a1 + 584) = a4;
-        *(a1 + 592) = v8;
-        *(a1 + 600) = a6;
-        [a1 layoutMargins];
-        *(a1 + 608) = v107;
-        *(a1 + 616) = v108;
-        *(a1 + 624) = v109;
-        *(a1 + 632) = v110;
-        *(a1 + 640) = v8;
-        *(a1 + 648) = v106;
+        *(self + 568) = 0;
+        *(self + 576) = v51;
+        *(self + 584) = bounds;
+        *(self + 592) = v8;
+        *(self + 600) = a6;
+        [self layoutMargins];
+        *(self + 608) = v107;
+        *(self + 616) = v108;
+        *(self + 624) = v109;
+        *(self + 632) = v110;
+        *(self + 640) = v8;
+        *(self + 648) = v106;
       }
 
       _Block_object_dispose(&v151, 8);
@@ -962,7 +962,7 @@ LABEL_13:
 
     else
     {
-      v8 = *(a1 + 640);
+      v8 = *(self + 640);
     }
   }
 
@@ -1091,38 +1091,38 @@ void __54__PKApplicationMessageView__layoutWithContext_bounds___block_invoke_8(u
   }
 }
 
-- (void)setBlurRadius:(void *)a3 animated:(double)a4 withCompletion:
+- (void)setBlurRadius:(void *)radius animated:(double)animated withCompletion:
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (!a1)
+  radiusCopy = radius;
+  v8 = radiusCopy;
+  if (!self)
   {
     goto LABEL_16;
   }
 
-  if (*(a1 + 520) == a4)
+  if (*(self + 520) == animated)
   {
-    if (v7)
+    if (radiusCopy)
     {
-      (*(v7 + 2))(v7, 1);
+      (*(radiusCopy + 2))(radiusCopy, 1);
     }
 
     goto LABEL_16;
   }
 
-  v9 = [a1 layer];
-  if (!*(a1 + 512))
+  layer = [self layer];
+  if (!*(self + 512))
   {
     v10 = objc_alloc(MEMORY[0x1E6979378]);
     v11 = [v10 initWithType:*MEMORY[0x1E6979928]];
-    v12 = *(a1 + 512);
-    *(a1 + 512) = v11;
+    v12 = *(self + 512);
+    *(self + 512) = v11;
 
-    [*(a1 + 512) setName:@"blur"];
-    v19[0] = *(a1 + 512);
+    [*(self + 512) setName:@"blur"];
+    v19[0] = *(self + 512);
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-    [v9 setFilters:v13];
+    [layer setFilters:v13];
 
     if (!a2)
     {
@@ -1131,7 +1131,7 @@ void __54__PKApplicationMessageView__layoutWithContext_bounds___block_invoke_8(u
 
 LABEL_9:
     v14 = [MEMORY[0x1E69B92B0] springAnimationWithKeyPath:@"filters.blur.inputRadius"];
-    [v14 pkui_updateForAdditiveAnimationFromScalar:*(a1 + 520) toScalar:a4];
+    [v14 pkui_updateForAdditiveAnimationFromScalar:*(self + 520) toScalar:animated];
     if (v8)
     {
       v17[0] = MEMORY[0x1E69E9820];
@@ -1142,7 +1142,7 @@ LABEL_9:
       [v14 pkui_setCompletionHandler:v17];
     }
 
-    v15 = [v9 pkui_addAdditiveAnimation:v14];
+    v15 = [layer pkui_addAdditiveAnimation:v14];
 
     goto LABEL_12;
   }
@@ -1153,9 +1153,9 @@ LABEL_9:
   }
 
 LABEL_12:
-  *(a1 + 520) = a4;
-  v16 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-  [v9 setValue:v16 forKeyPath:@"filters.blur.inputRadius"];
+  *(self + 520) = animated;
+  v16 = [MEMORY[0x1E696AD98] numberWithDouble:animated];
+  [layer setValue:v16 forKeyPath:@"filters.blur.inputRadius"];
 
   if (v8 && (a2 & 1) == 0)
   {
@@ -1984,12 +1984,12 @@ LABEL_11:
   self->_inLayout = 0;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if ([(PKApplicationMessageView *)self pointInside:v7 withEvent:x, y])
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  if ([(PKApplicationMessageView *)self pointInside:eventCopy withEvent:x, y])
   {
     if (self->_dismissable && ([(UIButton *)self->_dismissButton frame], v18.x = x, v18.y = y, CGRectContainsPoint(v19, v18)))
     {
@@ -2000,19 +2000,19 @@ LABEL_11:
     {
       v16.receiver = self;
       v16.super_class = PKApplicationMessageView;
-      v9 = [(PKApplicationMessageView *)&v16 hitTest:v7 withEvent:x, y];
-      v10 = [(PKApplicationMessageNode *)self->_content context];
-      v11 = v10;
+      v9 = [(PKApplicationMessageView *)&v16 hitTest:eventCopy withEvent:x, y];
+      context = [(PKApplicationMessageNode *)self->_content context];
+      v11 = context;
       scrollView = v9;
-      if (v10)
+      if (context)
       {
         scrollView = v9;
-        if ((*(v10 + 8) & 1) == 0)
+        if ((*(context + 8) & 1) == 0)
         {
-          v13 = *(v10 + 32);
-          v14 = [*(v10 + 16) numberOfChildren];
+          v13 = *(context + 32);
+          numberOfChildren = [*(context + 16) numberOfChildren];
           scrollView = v9;
-          if ((v14 + v13) >= 2)
+          if ((numberOfChildren + v13) >= 2)
           {
             scrollView = v9;
             if (v9 != self->_clearView)
@@ -2035,10 +2035,10 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.highlightFilter.inputColor"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.highlightFilter.inputColor"])
   {
     v5 = 1;
   }
@@ -2047,30 +2047,30 @@ LABEL_11:
   {
     v7.receiver = self;
     v7.super_class = PKApplicationMessageView;
-    v5 = [(PKApplicationMessageView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(PKApplicationMessageView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v13.receiver = self;
   v13.super_class = PKApplicationMessageView;
-  [(PKApplicationMessageView *)&v13 traitCollectionDidChange:v4];
-  if (!v4 || ([v4 preferredContentSizeCategory], v5 = objc_claimAutoreleasedReturnValue(), -[PKApplicationMessageView traitCollection](self, "traitCollection"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "preferredContentSizeCategory"), v7 = objc_claimAutoreleasedReturnValue(), v8 = UIContentSizeCategoryCompareToCategory(v5, v7), v7, v6, v5, v8))
+  [(PKApplicationMessageView *)&v13 traitCollectionDidChange:changeCopy];
+  if (!changeCopy || ([changeCopy preferredContentSizeCategory], v5 = objc_claimAutoreleasedReturnValue(), -[PKApplicationMessageView traitCollection](self, "traitCollection"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "preferredContentSizeCategory"), v7 = objc_claimAutoreleasedReturnValue(), v8 = UIContentSizeCategoryCompareToCategory(v5, v7), v7, v6, v5, v8))
   {
     if (self)
     {
-      v9 = self;
-      p_reloadQueued = &v9->_reloadQueued;
-      if (!v9->_reloadQueued)
+      selfCopy = self;
+      p_reloadQueued = &selfCopy->_reloadQueued;
+      if (!selfCopy->_reloadQueued)
       {
         while (1)
         {
           *p_reloadQueued = 1;
-          parent = v9->_parent;
+          parent = selfCopy->_parent;
           if (!parent)
           {
             break;
@@ -2079,15 +2079,15 @@ LABEL_11:
           v12 = parent;
 
           p_reloadQueued = &v12->_reloadQueued;
-          v9 = v12;
+          selfCopy = v12;
           if (v12->_reloadQueued)
           {
             goto LABEL_10;
           }
         }
 
-        v9->_reloadQueuedIsRoot = 1;
-        objc_initWeak(&location, v9);
+        selfCopy->_reloadQueuedIsRoot = 1;
+        objc_initWeak(&location, selfCopy);
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __40__PKApplicationMessageView__queueReload__block_invoke;
@@ -2098,7 +2098,7 @@ LABEL_11:
         objc_destroyWeak(&location);
       }
 
-      v12 = v9;
+      v12 = selfCopy;
 LABEL_10:
     }
   }
@@ -2106,12 +2106,12 @@ LABEL_10:
 
 - (void)_rootView
 {
-  v1 = a1;
-  v2 = v1;
-  v3 = *(v1 + 51);
+  selfCopy = self;
+  v2 = selfCopy;
+  v3 = *(selfCopy + 51);
   if (!v3)
   {
-    return v1;
+    return selfCopy;
   }
 
   do
@@ -2126,22 +2126,22 @@ LABEL_10:
   return v4;
 }
 
-- (void)setContent:(id)a3 animated:(BOOL)a4
+- (void)setContent:(id)content animated:(BOOL)animated
 {
-  v6 = a3;
-  if (self->_content != v6 && !self->_invalidated)
+  contentCopy = content;
+  if (self->_content != contentCopy && !self->_invalidated)
   {
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
     v20 = 0;
-    v7 = [(PKApplicationMessageView *)self content];
+    content = [(PKApplicationMessageView *)self content];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __48__PKApplicationMessageView_setContent_animated___block_invoke;
     v16[3] = &unk_1E8018778;
     v16[4] = &v17;
-    [v7 visitPostOrder:v16];
+    [content visitPostOrder:v16];
 
     if ((v18[3] & 1) == 0)
     {
@@ -2152,10 +2152,10 @@ LABEL_10:
     v10 = 3221225472;
     v11 = __48__PKApplicationMessageView_setContent_animated___block_invoke_2;
     v12 = &unk_1E80187A0;
-    v13 = self;
-    v14 = v6;
+    selfCopy = self;
+    v14 = contentCopy;
     v15 = &v17;
-    [(PKApplicationMessageView *)self _treeLayoutWithContext:a4 block:&v9];
+    [(PKApplicationMessageView *)self _treeLayoutWithContext:animated block:&v9];
     if ([(PKApplicationMessageView *)self needsRemoval:v9])
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -2198,67 +2198,67 @@ void __48__PKApplicationMessageView_setContent_animated___block_invoke_2(uint64_
   [(PKApplicationMessageView *)*(a1 + 32) _setContent:v1 type:0 depth:?];
 }
 
-- (void)_setContent:(unsigned int)a3 type:(uint64_t)a4 depth:
+- (void)_setContent:(unsigned int)content type:(uint64_t)type depth:
 {
   v8 = a2;
-  if (a1 && (*(a1 + 680) & 1) == 0)
+  if (self && (*(self + 680) & 1) == 0)
   {
     v41 = v8;
     v9 = objc_autoreleasePoolPush();
-    v10 = *(a1 + 472);
+    v10 = *(self + 472);
     if (v10 == v41)
     {
 LABEL_33:
-      [(PKApplicationMessageView *)a1 _updateSubviewsWithType:a3 depth:a4];
+      [(PKApplicationMessageView *)self _updateSubviewsWithType:content depth:type];
       objc_autoreleasePoolPop(v9);
       v8 = v41;
       goto LABEL_34;
     }
 
     v11 = v10;
-    objc_storeStrong((a1 + 472), a2);
-    v12 = *(a1 + 472);
+    objc_storeStrong((self + 472), a2);
+    v12 = *(self + 472);
     if (v12)
     {
-      v13 = [v12 type];
-      v14 = *(a1 + 816);
-      if (v14 != v13)
+      type = [v12 type];
+      v14 = *(self + 816);
+      if (v14 != type)
       {
-        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"PKApplicationMessageView: content type %ld does not match expected type %ld.", v13, v14}];
+        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"PKApplicationMessageView: content type %ld does not match expected type %ld.", type, v14}];
       }
     }
 
-    if (*(a1 + 816) || (v16 = *(a1 + 472)) == 0)
+    if (*(self + 816) || (v16 = *(self + 472)) == 0)
     {
-      v15 = 0;
+      message = 0;
     }
 
     else
     {
-      v15 = [v16 message];
+      message = [v16 message];
     }
 
-    objc_storeStrong((a1 + 480), v15);
-    v17 = *(a1 + 816);
+    objc_storeStrong((self + 480), message);
+    v17 = *(self + 816);
     if (v17 != 2)
     {
 LABEL_24:
       v21 = 0x1E696A000uLL;
-      v39 = v15;
+      v39 = message;
       v40 = v11;
       if (v17)
       {
         v22 = v9;
         if (v17 == 1)
         {
-          v27 = [a1 content];
-          v30 = [v27 group];
-          v28 = [v30 identifier];
+          content = [self content];
+          group = [content group];
+          identifier = [group identifier];
 
           v31 = objc_alloc(MEMORY[0x1E696AEC0]);
           v32 = objc_opt_class();
           v33 = NSStringFromClass(v32);
-          v26 = [v31 initWithFormat:@"%@.%@.%@", v33, @"ClearButton", v28, v15, v40];
+          v26 = [v31 initWithFormat:@"%@.%@.%@", v33, @"ClearButton", identifier, message, v40];
 
           v29 = @"Group";
         }
@@ -2269,7 +2269,7 @@ LABEL_24:
           {
             v26 = 0;
             v29 = 0;
-            v28 = 0;
+            identifier = 0;
             goto LABEL_32;
           }
 
@@ -2278,8 +2278,8 @@ LABEL_24:
           v25 = NSStringFromClass(v24);
           v26 = [v23 initWithFormat:@"%@.%@", v25, @"ClearAllButton"];
 
-          v27 = [a1 content];
-          v28 = [v27 identifier];
+          content = [self content];
+          identifier = [content identifier];
           v29 = @"MultipleGroups";
         }
       }
@@ -2287,9 +2287,9 @@ LABEL_24:
       else
       {
         v22 = v9;
-        v27 = [*(a1 + 480) registration];
-        v34 = [v27 key];
-        v28 = [v34 identifier];
+        content = [*(self + 480) registration];
+        v34 = [content key];
+        identifier = [v34 identifier];
 
         v26 = 0;
         v29 = @"Message";
@@ -2297,29 +2297,29 @@ LABEL_24:
 
       v21 = 0x1E696A000;
 LABEL_32:
-      [*(a1 + 704) setAccessibilityIdentifier:v26];
+      [*(self + 704) setAccessibilityIdentifier:v26];
       v35 = objc_alloc(*(v21 + 3776));
       v36 = objc_opt_class();
       v37 = NSStringFromClass(v36);
-      v38 = [v35 initWithFormat:@"%@.%@.%@", v37, v29, v28];
+      v38 = [v35 initWithFormat:@"%@.%@.%@", v37, v29, identifier];
 
-      [a1 setAccessibilityIdentifier:v38];
+      [self setAccessibilityIdentifier:v38];
       v9 = v22;
       goto LABEL_33;
     }
 
     if (v11)
     {
-      v18 = [v11 context];
+      context = [v11 context];
       [v11 setContext:0];
-      v19 = *(a1 + 472);
+      v19 = *(self + 472);
       if (v19)
       {
-        if (v18)
+        if (context)
         {
-          [(PKApplicationMessageViewContext *)v18 setNode:v19];
+          [(PKApplicationMessageViewContext *)context setNode:v19];
 LABEL_19:
-          [*(a1 + 472) setContext:v18];
+          [*(self + 472) setContext:context];
 LABEL_22:
 
           goto LABEL_23;
@@ -2327,68 +2327,68 @@ LABEL_22:
 
 LABEL_17:
         v20 = [[PKApplicationMessageViewContext alloc] initForNode:?];
-        v18 = v20;
+        context = v20;
         if (v20)
         {
-          v20[3] = a1;
+          v20[3] = self;
         }
 
         goto LABEL_19;
       }
 
-      if (v18)
+      if (context)
       {
-        v18[3] = 0;
+        context[3] = 0;
         goto LABEL_22;
       }
     }
 
-    else if (*(a1 + 472))
+    else if (*(self + 472))
     {
       goto LABEL_17;
     }
 
 LABEL_23:
-    v17 = *(a1 + 816);
+    v17 = *(self + 816);
     goto LABEL_24;
   }
 
 LABEL_34:
 }
 
-- (void)_treeLayoutWithContext:(void *)a3 block:
+- (void)_treeLayoutWithContext:(void *)context block:
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (a1)
+  contextCopy = context;
+  if (self)
   {
-    if (!v4)
+    if (!contextCopy)
     {
       __break(1u);
     }
 
-    v16 = v4;
+    v16 = contextCopy;
     context = objc_autoreleasePoolPush();
-    v5 = [(PKApplicationMessageView *)a1 _rootView];
-    v6 = v5;
-    if (*(v5 + 528) == 1)
+    _rootView = [(PKApplicationMessageView *)self _rootView];
+    v6 = _rootView;
+    if (*(_rootView + 528) == 1)
     {
       v16[2](v16, a2);
     }
 
     else
     {
-      *(v5 + 528) = 1;
-      if (v5[59])
+      *(_rootView + 528) = 1;
+      if (_rootView[59])
       {
-        [(PKApplicationMessageView *)v5 _visitPostOrder:?];
+        [(PKApplicationMessageView *)_rootView _visitPostOrder:?];
       }
 
       else
       {
-        *(v5 + 135) = 0;
-        *(v5 + 133) = 0;
-        *(v5 + 536) = 0;
+        *(_rootView + 135) = 0;
+        *(_rootView + 133) = 0;
+        *(_rootView + 536) = 0;
       }
 
       v16[2](v16, a2);
@@ -2473,29 +2473,29 @@ LABEL_34:
     }
 
     objc_autoreleasePoolPop(context);
-    v4 = v16;
+    contextCopy = v16;
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = [(PKApplicationMessageView *)self _swipedMessageView];
-  v5 = v4;
-  if (v4 != self)
+  _swipedMessageView = [(PKApplicationMessageView *)self _swipedMessageView];
+  v5 = _swipedMessageView;
+  if (_swipedMessageView != self)
   {
-    [(PKApplicationMessageView *)&v4->super.super.super.isa _cancelMySwipe];
+    [(PKApplicationMessageView *)&_swipedMessageView->super.super.super.isa _cancelMySwipe];
     if (self)
     {
-      v6 = [(PKApplicationMessageView *)self _rootView];
-      v7 = [(PKApplicationMessageView *)v6 swipeToDismissFeedbackGenerator];
-      [v7 prepare];
+      _rootView = [(PKApplicationMessageView *)self _rootView];
+      swipeToDismissFeedbackGenerator = [(PKApplicationMessageView *)_rootView swipeToDismissFeedbackGenerator];
+      [swipeToDismissFeedbackGenerator prepare];
     }
   }
 
-  v8 = [(PKApplicationMessageView *)self content];
-  v9 = [v8 context];
-  v10 = v9;
-  if (v9 && !*(v9 + 40))
+  content = [(PKApplicationMessageView *)self content];
+  context = [content context];
+  v10 = context;
+  if (context && !*(context + 40))
   {
     v11 = objc_alloc_init(PKApplicationMessageViewSwipeContext);
     v12 = v10[5];
@@ -2512,7 +2512,7 @@ LABEL_34:
 
 - (id)_swipedMessageView
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -2520,13 +2520,13 @@ LABEL_34:
     v8 = __Block_byref_object_copy__19;
     v9 = __Block_byref_object_dispose__19;
     v10 = 0;
-    v1 = [(PKApplicationMessageView *)a1 _rootView];
+    _rootView = [(PKApplicationMessageView *)self _rootView];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __46__PKApplicationMessageView__swipedMessageView__block_invoke;
     v4[3] = &unk_1E8018818;
     v4[4] = &v5;
-    [(PKApplicationMessageView *)v1 _visitPostOrder:v4];
+    [(PKApplicationMessageView *)_rootView _visitPostOrder:v4];
     v2 = v6[5];
 
     _Block_object_dispose(&v5, 8);
@@ -2542,31 +2542,31 @@ LABEL_34:
 
 - (void)_cancelMySwipe
 {
-  if (a1)
+  if (self)
   {
-    v5 = [a1 content];
-    v2 = [v5 context];
-    v3 = v2;
-    if (v2)
+    content = [self content];
+    context = [content context];
+    v3 = context;
+    if (context)
     {
-      v4 = *(v2 + 40);
-      *(v2 + 40) = 0;
+      v4 = *(context + 40);
+      *(context + 40) = 0;
     }
 
-    if (([a1[54] state] - 1) <= 1)
+    if (([self[54] state] - 1) <= 1)
     {
-      [a1[54] setEnabled:0];
-      [a1[54] setEnabled:1];
+      [self[54] setEnabled:0];
+      [self[54] setEnabled:1];
     }
 
-    [a1[53] setContentOffset:1 animated:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+    [self[53] setContentOffset:1 animated:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
   }
 }
 
-- (void)_updateSubviewsWithType:(uint64_t)a3 depth:
+- (void)_updateSubviewsWithType:(uint64_t)type depth:
 {
   v183 = *MEMORY[0x1E69E9840];
-  if (!a1 || (*(a1 + 680) & 1) != 0)
+  if (!self || (*(self + 680) & 1) != 0)
   {
     return;
   }
@@ -2575,25 +2575,25 @@ LABEL_34:
   aBlock[1] = 3221225472;
   aBlock[2] = __58__PKApplicationMessageView__updateSubviewsWithType_depth___block_invoke;
   aBlock[3] = &unk_1E80188F0;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v144 = _Block_copy(aBlock);
-  v3 = [*(a1 + 472) context];
-  v4 = a1;
-  v5 = *(a1 + 684);
-  if (*(a1 + 816) == 2)
+  context = [*(self + 472) context];
+  selfCopy2 = self;
+  v5 = *(self + 684);
+  if (*(self + 816) == 2)
   {
-    v6 = [*(a1 + 472) children];
-    if ([v6 count] < 2)
+    children = [*(self + 472) children];
+    if ([children count] < 2)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = *(a1 + 532) ^ 1;
+      v7 = *(self + 532) ^ 1;
     }
 
-    v4 = a1;
+    selfCopy2 = self;
   }
 
   else
@@ -2601,55 +2601,55 @@ LABEL_34:
     v7 = 0;
   }
 
-  v8 = *(v4 + 712);
-  v9 = ((*(v4 + 480) != 0) | v7) & 1;
-  if (v3)
+  v8 = *(selfCopy2 + 712);
+  v9 = ((*(selfCopy2 + 480) != 0) | v7) & 1;
+  if (context)
   {
-    if (*(v3 + 32) != v9)
+    if (*(context + 32) != v9)
     {
-      *(v3 + 32) = v9;
-      if (([*(v3 + 16) numberOfChildren] + v9) <= 1)
+      *(context + 32) = v9;
+      if (([*(context + 16) numberOfChildren] + v9) <= 1)
       {
-        *(v3 + 8) = 0;
+        *(context + 8) = 0;
       }
     }
 
-    if (*(v3 + 8) != 1)
+    if (*(context + 8) != 1)
     {
-      v10 = *(v3 + 32);
-      if (([*(v3 + 16) numberOfChildren] + v10) <= 1)
+      v10 = *(context + 32);
+      if (([*(context + 16) numberOfChildren] + v10) <= 1)
       {
-        v15 = *(v3 + 8);
-        *(a1 + 688) = a3;
+        v15 = *(context + 8);
+        *(self + 688) = type;
         if ((v15 & 1) == 0)
         {
 LABEL_25:
-          v16 = *(v3 + 32);
-          v145 = ([*(v3 + 16) numberOfChildren] + v16) > 1;
+          v16 = *(context + 32);
+          v145 = ([*(context + 16) numberOfChildren] + v16) > 1;
           goto LABEL_26;
         }
       }
 
       else
       {
-        if (*(a1 + 532) != 1)
+        if (*(self + 532) != 1)
         {
-          if (*(v3 + 8))
+          if (*(context + 8))
           {
-            *(v3 + 8) = 0;
+            *(context + 8) = 0;
           }
 
-          *(a1 + 688) = a3;
+          *(self + 688) = type;
           goto LABEL_25;
         }
 
-        v11 = *(v3 + 32);
-        v12 = [*(v3 + 16) numberOfChildren] + v11;
+        v11 = *(context + 32);
+        v12 = [*(context + 16) numberOfChildren] + v11;
         v13 = v12 > 1;
-        v14 = *(v3 + 8);
+        v14 = *(context + 8);
         if (v14 == v13)
         {
-          *(a1 + 688) = a3;
+          *(self + 688) = type;
           if ((v14 & 1) == 0)
           {
             goto LABEL_25;
@@ -2658,8 +2658,8 @@ LABEL_25:
 
         else
         {
-          *(v3 + 8) = v13;
-          *(a1 + 688) = a3;
+          *(context + 8) = v13;
+          *(self + 688) = type;
           if (v12 <= 1)
           {
             goto LABEL_25;
@@ -2673,11 +2673,11 @@ LABEL_25:
   }
 
   v145 = 0;
-  *(a1 + 688) = a3;
+  *(self + 688) = type;
 LABEL_26:
-  v142 = v3;
+  v142 = context;
   objc_opt_self();
-  if (!v3)
+  if (!context)
   {
     goto LABEL_29;
   }
@@ -2705,8 +2705,8 @@ LABEL_29:
 
 LABEL_31:
 
-  *(a1 + 684) = v18;
-  v150 = *(a1 + 684);
+  *(self + 684) = v18;
+  v150 = *(self + 684);
   if (!v5)
   {
     if (v150 != 1)
@@ -2724,17 +2724,17 @@ LABEL_36:
   }
 
 LABEL_37:
-  v20 = [*(a1 + 472) children];
-  v21 = v20;
+  children2 = [*(self + 472) children];
+  v21 = children2;
   v22 = MEMORY[0x1E695E0F0];
-  if (v20)
+  if (children2)
   {
-    v22 = v20;
+    v22 = children2;
   }
 
   v23 = v22;
 
-  if (*(a1 + 684) || ((v24 = *(a1 + 688), v25 = v24 == 0, v26 = v24 != 0, !v25) ? (v27 = 1) : (v27 = 3), (v28 = v9 & v26, (v9 & v26) != 0) ? (v29 = 1) : (v29 = v9), [v23 count] <= (v27 - v29)))
+  if (*(self + 684) || ((v24 = *(self + 688), v25 = v24 == 0, v26 = v24 != 0, !v25) ? (v27 = 1) : (v27 = 3), (v28 = v9 & v26, (v9 & v26) != 0) ? (v29 = 1) : (v29 = v9), [v23 count] <= (v27 - v29)))
   {
     v148 = v23;
   }
@@ -2753,7 +2753,7 @@ LABEL_37:
   }
 
   v149 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v30 = *(a1 + 712);
+  v30 = *(self + 712);
   if (!v9)
   {
     if (!v30)
@@ -2774,15 +2774,15 @@ LABEL_37:
 
     [v149 addObject:v45];
 
-    if (![*(a1 + 472) type])
+    if (![*(self + 472) type])
     {
-      v46 = a1;
-      v47 = *(a1 + 712);
+      selfCopy4 = self;
+      v47 = *(self + 712);
       if (!v47)
       {
 LABEL_66:
-        v48 = *(v46 + 712);
-        *(v46 + 712) = 0;
+        v48 = *(selfCopy4 + 712);
+        *(selfCopy4 + 712) = 0;
 
         goto LABEL_75;
       }
@@ -2790,7 +2790,7 @@ LABEL_66:
       objc_storeWeak((v47 + 616), 0);
     }
 
-    v46 = a1;
+    selfCopy4 = self;
     goto LABEL_66;
   }
 
@@ -2799,7 +2799,7 @@ LABEL_66:
     goto LABEL_75;
   }
 
-  v31 = *(a1 + 816);
+  v31 = *(self + 816);
   if (v31 == 2)
   {
     v36 = objc_alloc_init(PKApplicationMessageSummaryView);
@@ -2817,7 +2817,7 @@ LABEL_66:
     }
 
     v32 = [PKApplicationMessageContentView alloc];
-    v33 = *(a1 + 800);
+    v33 = *(self + 800);
     if (v33)
     {
       v34 = *(v33 + 8);
@@ -2832,74 +2832,74 @@ LABEL_66:
     v36 = v35;
     if (v35)
     {
-      objc_storeWeak((v35 + 616), a1);
+      objc_storeWeak((v35 + 616), self);
     }
 
     v37 = objc_alloc(MEMORY[0x1E696AEC0]);
     v38 = objc_opt_class();
     v39 = NSStringFromClass(v38);
-    v40 = [*(a1 + 480) registration];
-    v41 = [v40 key];
-    v42 = [v41 identifier];
-    v43 = [v37 initWithFormat:@"%@.%@", v39, v42];
+    registration = [*(self + 480) registration];
+    v41 = [registration key];
+    identifier = [v41 identifier];
+    v43 = [v37 initWithFormat:@"%@.%@", v39, identifier];
 
     [(PKApplicationMessageSummaryView *)v36 setAccessibilityIdentifier:v43];
   }
 
-  v50 = *(a1 + 712);
-  *(a1 + 712) = v36;
+  v50 = *(self + 712);
+  *(self + 712) = v36;
 
-  v51 = *(a1 + 712);
+  v51 = *(self + 712);
 LABEL_74:
-  v52 = [v51 layer];
-  [v52 setAnchorPoint:{0.5, 0.0}];
+  layer = [v51 layer];
+  [layer setAnchorPoint:{0.5, 0.0}];
 
-  v144[2](v144, *(a1 + 712));
-  *(a1 + 657) = 0;
-  *(a1 + 660) = v150;
-  *(a1 + 664) = *MEMORY[0x1E695F060];
+  v144[2](v144, *(self + 712));
+  *(self + 657) = 0;
+  *(self + 660) = v150;
+  *(self + 664) = *MEMORY[0x1E695F060];
 LABEL_75:
-  if (v3)
+  if (context)
   {
     v53 = v142[4];
-    v54 = [v142[2] numberOfChildren];
-    v55 = v54 + v53 != 0;
-    if (v142[5] && !*(a1 + 720))
+    numberOfChildren = [v142[2] numberOfChildren];
+    v55 = numberOfChildren + v53 != 0;
+    if (v142[5] && !*(self + 720))
     {
-      v60 = [(PKApplicationMessageView *)a1 _createClearView];
-      v61 = *(a1 + 720);
-      *(a1 + 720) = v60;
+      _createClearView = [(PKApplicationMessageView *)self _createClearView];
+      v61 = *(self + 720);
+      *(self + 720) = _createClearView;
 
-      [*(a1 + 720) sizeToFit];
-      v59 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:a1 action:sel__clearTapped_];
-      [*(a1 + 720) addGestureRecognizer:v59];
-      v62 = [*(a1 + 480) registration];
-      v63 = [v62 key];
-      v64 = [v63 identifier];
+      [*(self + 720) sizeToFit];
+      v59 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__clearTapped_];
+      [*(self + 720) addGestureRecognizer:v59];
+      registration2 = [*(self + 480) registration];
+      v63 = [registration2 key];
+      identifier2 = [v63 identifier];
 
       v65 = objc_alloc(MEMORY[0x1E696AEC0]);
       v66 = objc_opt_class();
       v67 = NSStringFromClass(v66);
-      v68 = [v65 initWithFormat:@"%@.%@", v67, v64];
+      v68 = [v65 initWithFormat:@"%@.%@", v67, identifier2];
 
-      [*(a1 + 720) setAccessibilityIdentifier:v68];
-      v144[2](v144, *(a1 + 720));
+      [*(self + 720) setAccessibilityIdentifier:v68];
+      v144[2](v144, *(self + 720));
 
 LABEL_86:
       goto LABEL_87;
     }
 
-    if (v54 != -v53)
+    if (numberOfChildren != -v53)
     {
       v55 = 1;
 LABEL_87:
-      v56 = a1;
+      selfCopy6 = self;
       goto LABEL_88;
     }
   }
 
-  v56 = a1;
-  if (*(a1 + 720))
+  selfCopy6 = self;
+  if (*(self + 720))
   {
     v57 = [PKApplicationMessageView_RemovedSubviewContainer alloc];
     if (v57)
@@ -2915,15 +2915,15 @@ LABEL_87:
     [v149 addObject:v58];
 
     v55 = 0;
-    v59 = *(a1 + 720);
-    *(a1 + 720) = 0;
+    v59 = *(self + 720);
+    *(self + 720) = 0;
     goto LABEL_86;
   }
 
   v55 = 0;
 LABEL_88:
-  v69 = [v148 differenceFromArray:*(v56 + 728) withOptions:0 usingEquivalenceTest:&__block_literal_global_218];
-  v70 = !v55 && *(a1 + 408) == 0;
+  v69 = [v148 differenceFromArray:*(selfCopy6 + 728) withOptions:0 usingEquivalenceTest:&__block_literal_global_218];
+  v70 = !v55 && *(self + 408) == 0;
   v162 = 0u;
   v163 = 0u;
   v160 = 0u;
@@ -2945,17 +2945,17 @@ LABEL_88:
         }
 
         v75 = *(*(&v160 + 1) + 8 * v74);
-        v76 = [v75 index];
-        v77 = [v75 changeType];
-        if (v77 == 1)
+        index = [v75 index];
+        changeType = [v75 changeType];
+        if (changeType == 1)
         {
-          v78 = [v75 object];
-          [*(a1 + 728) removeObjectAtIndex:v76];
-          v79 = [v78 context];
-          v80 = v79;
-          if (v79)
+          object = [v75 object];
+          [*(self + 728) removeObjectAtIndex:index];
+          context2 = [object context];
+          v80 = context2;
+          if (context2)
           {
-            v81 = *(v79 + 24);
+            v81 = *(context2 + 24);
           }
 
           else
@@ -2971,19 +2971,19 @@ LABEL_88:
           v158[2] = __58__PKApplicationMessageView__updateSubviewsWithType_depth___block_invoke_3;
           v158[3] = &__block_descriptor_33_e67_v24__0__PKApplicationMessageView_RemovedSubviewContainer_8___v___16l;
           v159 = v70;
-          v84 = [(PKApplicationMessageView_RemovedSubviewContainer *)&v83->super.isa initWithView:v82 index:(v76 + v72) layoutMode:v150 commitAnimation:v158];
+          v84 = [(PKApplicationMessageView_RemovedSubviewContainer *)&v83->super.isa initWithView:v82 index:(index + v72) layoutMode:v150 commitAnimation:v158];
           [v149 addObject:v84];
         }
 
         else
         {
-          if (v77)
+          if (changeType)
           {
             goto LABEL_103;
           }
 
-          v78 = [v75 object];
-          [*(a1 + 728) insertObject:v78 atIndex:v76];
+          object = [v75 object];
+          [*(self + 728) insertObject:object atIndex:index];
         }
 
 LABEL_103:
@@ -3036,7 +3036,7 @@ LABEL_103:
   {
     v91 = v149;
     v92 = v91;
-    if ((*(a1 + 680) & 1) == 0 && [v91 count])
+    if ((*(self + 680) & 1) == 0 && [v91 count])
     {
       v177 = 0;
       v178 = &v177;
@@ -3047,7 +3047,7 @@ LABEL_103:
       v173 = 0x3032000000;
       v174 = __Block_byref_object_copy__19;
       v175 = __Block_byref_object_dispose__19;
-      v176 = [v92 objectEnumerator];
+      objectEnumerator = [v92 objectEnumerator];
       v165 = MEMORY[0x1E69E9820];
       v166 = 3221225472;
       v167 = __59__PKApplicationMessageView__stageRemovedSubviewContainers___block_invoke;
@@ -3057,19 +3057,19 @@ LABEL_103:
       v93 = _Block_copy(&v165);
       [v92 sortUsingComparator:&__block_literal_global_224];
       v93[2](v93);
-      v143 = [*(a1 + 736) objectEnumerator];
+      objectEnumerator2 = [*(self + 736) objectEnumerator];
       v94 = 0;
       v95 = 0;
       while (1)
       {
-        v96 = [v143 nextObject];
+        nextObject = [objectEnumerator2 nextObject];
 
-        if (!v96)
+        if (!nextObject)
         {
           break;
         }
 
-        v97 = *(v96 + 40);
+        v97 = *(nextObject + 40);
         while (1)
         {
           v98 = v178[3];
@@ -3083,8 +3083,8 @@ LABEL_103:
           v93[2](v93);
         }
 
-        v100 = *(v96 + 40);
-        v94 = v96;
+        v100 = *(nextObject + 40);
+        v94 = nextObject;
         if (v100)
         {
           v99 = v100 >= v95;
@@ -3094,19 +3094,19 @@ LABEL_103:
             v101 = 0;
           }
 
-          *(v96 + 40) = v101;
-          v94 = v96;
+          *(nextObject + 40) = v101;
+          v94 = nextObject;
         }
       }
 
       v102 = [v92 count];
       v103 = 0;
-      v104 = [*(a1 + 736) count];
+      v104 = [*(self + 736) count];
       if (v104)
       {
         for (j = 0; j < v104; ++j)
         {
-          v106 = [*(a1 + 736) objectAtIndexedSubscript:j];
+          v106 = [*(self + 736) objectAtIndexedSubscript:j];
           v107 = v106;
           if (v106)
           {
@@ -3132,7 +3132,7 @@ LABEL_103:
                 }
               }
 
-              [*(a1 + 736) insertObject:v109 atIndex:j];
+              [*(self + 736) insertObject:v109 atIndex:j];
 
               ++j;
               if (v102 == ++v103)
@@ -3152,7 +3152,7 @@ LABEL_143:
         do
         {
           v111 = [v92 objectAtIndexedSubscript:v103];
-          [*(a1 + 736) addObject:v111];
+          [*(self + 736) addObject:v111];
 
           ++v103;
         }
@@ -3161,7 +3161,7 @@ LABEL_143:
       }
 
       [v92 sortUsingComparator:&__block_literal_global_226];
-      v112 = [*(a1 + 744) count];
+      v112 = [*(self + 744) count];
       if (v112)
       {
         v141 = v112;
@@ -3169,7 +3169,7 @@ LABEL_143:
         v114 = 0;
         do
         {
-          v115 = [*(a1 + 744) objectAtIndexedSubscript:v113];
+          v115 = [*(self + 744) objectAtIndexedSubscript:v113];
           v116 = v115;
           if (v115)
           {
@@ -3196,7 +3196,7 @@ LABEL_143:
                 }
               }
 
-              [*(a1 + 744) insertObject:v119 atIndex:v113];
+              [*(self + 744) insertObject:v119 atIndex:v113];
 
               ++v113;
               if (v102 == ++v114)
@@ -3226,7 +3226,7 @@ LABEL_159:
         do
         {
           v121 = [v92 objectAtIndexedSubscript:v114];
-          [*(a1 + 744) addObject:v121];
+          [*(self + 744) addObject:v121];
 
           ++v114;
         }
@@ -3234,14 +3234,14 @@ LABEL_159:
         while (v102 != v114);
       }
 
-      v122 = *(a1 + 544);
+      v122 = *(self + 544);
       if (!v122)
       {
         v123 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        v124 = *(a1 + 544);
-        *(a1 + 544) = v123;
+        v124 = *(self + 544);
+        *(self + 544) = v123;
 
-        v122 = *(a1 + 544);
+        v122 = *(self + 544);
       }
 
       [v122 addObjectsFromArray:v92];
@@ -3251,7 +3251,7 @@ LABEL_159:
     }
   }
 
-  v125 = [*(a1 + 736) count];
+  v125 = [*(self + 736) count];
   if (v125)
   {
     v171 = 0;
@@ -3259,7 +3259,7 @@ LABEL_159:
     v173 = 0x3032000000;
     v174 = __Block_byref_object_copy__19;
     v175 = __Block_byref_object_dispose__19;
-    v176 = [*(a1 + 736) lastObject];
+    objectEnumerator = [*(self + 736) lastObject];
     v165 = 0;
     v166 = &v165;
     v167 = 0x2020000000;
@@ -3268,7 +3268,7 @@ LABEL_159:
     v153[1] = 3221225472;
     v153[2] = __58__PKApplicationMessageView__updateSubviewsWithType_depth___block_invoke_5;
     v153[3] = &unk_1E8018958;
-    v153[4] = a1;
+    v153[4] = self;
     v153[5] = &v171;
     v153[6] = &v165;
     v153[7] = v125;
@@ -3278,7 +3278,7 @@ LABEL_159:
   }
 
   v126 = [v148 count];
-  v127 = [*(a1 + 728) count];
+  v127 = [*(self + 728) count];
   if (v127 >= v126)
   {
     v128 = v126;
@@ -3291,7 +3291,7 @@ LABEL_159:
 
   if (v125)
   {
-    if (*(a1 + 712))
+    if (*(self + 712))
     {
       v129 = v127 + 1;
     }
@@ -3304,21 +3304,21 @@ LABEL_159:
     v125[2](v125, v129, 0);
   }
 
-  v130 = a1;
+  selfCopy10 = self;
   if (v128)
   {
     for (k = v128 - 1; k != -1; --k)
     {
-      v132 = [*(v130 + 728) objectAtIndexedSubscript:k];
+      v132 = [*(selfCopy10 + 728) objectAtIndexedSubscript:k];
       v133 = [v148 objectAtIndexedSubscript:k];
       v134 = v133;
       if (v132 == v133)
       {
-        v139 = [v133 context];
-        v136 = v139;
-        if (v139)
+        context3 = [v133 context];
+        v136 = context3;
+        if (context3)
         {
-          v138 = *(v139 + 24);
+          v138 = *(context3 + 24);
           if (v138)
           {
             goto LABEL_188;
@@ -3334,11 +3334,11 @@ LABEL_159:
 
       else
       {
-        v135 = [v132 context];
-        v136 = v135;
-        if (v135)
+        context4 = [v132 context];
+        v136 = context4;
+        if (context4)
         {
-          v137 = *(v135 + 24);
+          v137 = *(context4 + 24);
         }
 
         else
@@ -3349,19 +3349,19 @@ LABEL_159:
         v138 = v137;
         [(PKApplicationMessageViewContext *)v136 setNode:v134];
         [v134 setContext:v136];
-        [*(a1 + 728) replaceObjectAtIndex:k withObject:v134];
+        [*(self + 728) replaceObjectAtIndex:k withObject:v134];
         if (v138)
         {
 LABEL_188:
-          [*(a1 + 424) bringSubviewToFront:v138];
+          [*(self + 424) bringSubviewToFront:v138];
 LABEL_192:
 
           goto LABEL_193;
         }
       }
 
-      v138 = -[PKApplicationMessageView _initWithType:configuration:]([PKApplicationMessageView alloc], [v134 type], *(a1 + 800));
-      v138[51] = a1;
+      v138 = -[PKApplicationMessageView _initWithType:configuration:]([PKApplicationMessageView alloc], [v134 type], *(self + 800));
+      v138[51] = self;
       *(v138 + 135) = v150;
       (v144)[2](v144, v138);
       if (v136)
@@ -3373,7 +3373,7 @@ LABEL_192:
 LABEL_193:
       if (v125)
       {
-        if (*(a1 + 712))
+        if (*(self + 712))
         {
           v140 = k + 1;
         }
@@ -3386,67 +3386,67 @@ LABEL_193:
         (v125)[2](v125, v140, v138);
       }
 
-      [(PKApplicationMessageView *)v138 _setContent:v134 type:a2 depth:v145 + a3];
+      [(PKApplicationMessageView *)v138 _setContent:v134 type:a2 depth:v145 + type];
 
-      v130 = a1;
+      selfCopy10 = self;
     }
   }
 
-  if (*(v130 + 712))
+  if (*(selfCopy10 + 712))
   {
-    [*(v130 + 424) bringSubviewToFront:?];
-    v130 = a1;
+    [*(selfCopy10 + 424) bringSubviewToFront:?];
+    selfCopy10 = self;
     if (v125)
     {
-      v125[2](v125, 0, *(a1 + 712));
-      v130 = a1;
+      v125[2](v125, 0, *(self + 712));
+      selfCopy10 = self;
     }
   }
 
-  [(PKApplicationMessageView *)v130 _invalidateSize];
+  [(PKApplicationMessageView *)selfCopy10 _invalidateSize];
 }
 
 - (double)_swipeDismissThreshold
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v1 = [(PKApplicationMessageView *)a1 _rootView];
-  v2 = [(PKApplicationMessageView *)v1 cachedClearViewFittingWidth];
+  _rootView = [(PKApplicationMessageView *)self _rootView];
+  cachedClearViewFittingWidth = [(PKApplicationMessageView *)_rootView cachedClearViewFittingWidth];
 
-  return v2 + 8.0 + 16.0;
+  return cachedClearViewFittingWidth + 8.0 + 16.0;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a4.x;
-  v8 = a3;
-  if ([v8 isScrollEnabled])
+  x = velocity.x;
+  draggingCopy = dragging;
+  if ([draggingCopy isScrollEnabled])
   {
-    v9 = [v8 panGestureRecognizer];
-    v10 = [v9 isEnabled];
+    panGestureRecognizer = [draggingCopy panGestureRecognizer];
+    isEnabled = [panGestureRecognizer isEnabled];
 
-    if (v10)
+    if (isEnabled)
     {
-      v11 = [(PKApplicationMessageView *)self content];
-      v12 = [v11 context];
+      content = [(PKApplicationMessageView *)self content];
+      context = [content context];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __87__PKApplicationMessageView_scrollViewWillEndDragging_withVelocity_targetContentOffset___block_invoke;
       v26[3] = &unk_1E80187F0;
       v26[4] = self;
-      v26[5] = a5;
+      v26[5] = offset;
       v13 = _Block_copy(v26);
-      v14 = [(PKApplicationMessageView *)self _shouldReverseLayoutDirection];
-      [v8 contentOffset];
+      _shouldReverseLayoutDirection = [(PKApplicationMessageView *)self _shouldReverseLayoutDirection];
+      [draggingCopy contentOffset];
       v16 = v15;
-      v17 = [(PKApplicationMessageView *)self _swipeDismissThreshold];
-      v18 = v16 <= -v17;
-      if (!v14)
+      _swipeDismissThreshold = [(PKApplicationMessageView *)self _swipeDismissThreshold];
+      v18 = v16 <= -_swipeDismissThreshold;
+      if (!_shouldReverseLayoutDirection)
       {
-        v18 = v16 >= v17;
+        v18 = v16 >= _swipeDismissThreshold;
       }
 
       if (!v18)
@@ -3455,7 +3455,7 @@ LABEL_193:
       }
 
       v19 = x <= 0.0;
-      if (!v14)
+      if (!_shouldReverseLayoutDirection)
       {
         v19 = x >= 0.0;
       }
@@ -3463,7 +3463,7 @@ LABEL_193:
       if (!v19)
       {
 LABEL_9:
-        if (v14)
+        if (_shouldReverseLayoutDirection)
         {
           v20 = x > 0.0;
         }
@@ -3475,37 +3475,37 @@ LABEL_9:
 
         if (v20)
         {
-          if (v12)
+          if (context)
           {
-            v21 = v12[5];
-            v12[5] = 0;
+            v21 = context[5];
+            context[5] = 0;
           }
 
-          *a5 = *MEMORY[0x1E695EFF8];
+          *offset = *MEMORY[0x1E695EFF8];
           goto LABEL_20;
         }
 
-        v22 = a5->x;
-        [v8 bounds];
+        v22 = offset->x;
+        [draggingCopy bounds];
         v24 = v22 < -v23;
-        if (!v14)
+        if (!_shouldReverseLayoutDirection)
         {
           v24 = v22 > v23;
         }
 
         if (!v24)
         {
-          if (a5->x == 0.0 && v12)
+          if (offset->x == 0.0 && context)
           {
-            v25 = v12[5];
-            v12[5] = 0;
+            v25 = context[5];
+            context[5] = 0;
           }
 
           goto LABEL_20;
         }
       }
 
-      v13[2](v13, v12);
+      v13[2](v13, context);
 LABEL_20:
     }
   }
@@ -3535,38 +3535,38 @@ void __87__PKApplicationMessageView_scrollViewWillEndDragging_withVelocity_targe
 
 - (void)impactOccured
 {
-  if (a1)
+  if (self)
   {
-    v2 = [(PKApplicationMessageView *)a1 _rootView];
-    v1 = [(PKApplicationMessageView *)v2 swipeToDismissFeedbackGenerator];
-    [v1 impactOccurredWithIntensity:0.75];
+    _rootView = [(PKApplicationMessageView *)self _rootView];
+    swipeToDismissFeedbackGenerator = [(PKApplicationMessageView *)_rootView swipeToDismissFeedbackGenerator];
+    [swipeToDismissFeedbackGenerator impactOccurredWithIntensity:0.75];
   }
 }
 
-- (void)_dismissWithAnimatedSwipe:(uint64_t)a1
+- (void)_dismissWithAnimatedSwipe:(uint64_t)swipe
 {
-  if (a1 && (*(a1 + 680) & 1) == 0)
+  if (swipe && (*(swipe + 680) & 1) == 0)
   {
     if (a2)
     {
-      [*(a1 + 424) setContentOffset:1 animated:{-[PKApplicationMessageView _contentOffsetForDismiss](a1), 0.0}];
+      [*(swipe + 424) setContentOffset:1 animated:{-[PKApplicationMessageView _contentOffsetForDismiss](swipe), 0.0}];
     }
 
-    v6 = [(PKApplicationMessageView *)a1 _rootView];
-    v4 = *(a1 + 472);
-    WeakRetained = objc_loadWeakRetained(v6 + 101);
-    [WeakRetained applicationMessageView:v6 requestsContentDismissal:v4];
+    _rootView = [(PKApplicationMessageView *)swipe _rootView];
+    v4 = *(swipe + 472);
+    WeakRetained = objc_loadWeakRetained(_rootView + 101);
+    [WeakRetained applicationMessageView:_rootView requestsContentDismissal:v4];
 
-    if (a2 && (*(a1 + 816) - 1) <= 1)
+    if (a2 && (*(swipe + 816) - 1) <= 1)
     {
-      *(a1 + 681) = 1;
+      *(swipe + 681) = 1;
     }
   }
 }
 
 - (double)_contentOffsetForDismiss
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -3576,7 +3576,7 @@ void __87__PKApplicationMessageView_scrollViewWillEndDragging_withVelocity_targe
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__19;
   v14 = __Block_byref_object_dispose__19;
-  v2 = a1[89];
+  v2 = self[89];
   v15 = v2;
   if (!v2)
   {
@@ -3585,15 +3585,15 @@ void __87__PKApplicationMessageView_scrollViewWillEndDragging_withVelocity_targe
     v9[2] = __52__PKApplicationMessageView__contentOffsetForDismiss__block_invoke;
     v9[3] = &unk_1E8018818;
     v9[4] = &v10;
-    [(PKApplicationMessageView *)a1 _visitPostOrder:v9];
+    [(PKApplicationMessageView *)self _visitPostOrder:v9];
     v2 = v11[5];
   }
 
   [v2 bounds];
   v4 = v3;
-  [a1[90] frame];
+  [self[90] frame];
   v6 = v5;
-  if ([a1 _shouldReverseLayoutDirection])
+  if ([self _shouldReverseLayoutDirection])
   {
     v7 = -(v4 + 8.0 + v6);
   }
@@ -3608,9 +3608,9 @@ void __87__PKApplicationMessageView_scrollViewWillEndDragging_withVelocity_targe
   return v7;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   if (self->_invalidated)
   {
     goto LABEL_32;
@@ -3618,28 +3618,28 @@ void __87__PKApplicationMessageView_scrollViewWillEndDragging_withVelocity_targe
 
   [(UILongPressGestureRecognizer *)self->_longPressRecognizer setEnabled:0];
   [(UILongPressGestureRecognizer *)self->_longPressRecognizer setEnabled:1];
-  v5 = [(PKApplicationMessageView *)self content];
-  v6 = [v5 context];
-  [v4 contentOffset];
+  content = [(PKApplicationMessageView *)self content];
+  context = [content context];
+  [scrollCopy contentOffset];
   v8 = v7;
-  if ([v4 isTracking])
+  if ([scrollCopy isTracking])
   {
-    v9 = [(PKApplicationMessageView *)self _shouldReverseLayoutDirection];
-    v10 = [(PKApplicationMessageView *)self _swipeDismissThreshold];
-    v11 = v8 <= -v10;
-    if (!v9)
+    _shouldReverseLayoutDirection = [(PKApplicationMessageView *)self _shouldReverseLayoutDirection];
+    _swipeDismissThreshold = [(PKApplicationMessageView *)self _swipeDismissThreshold];
+    v11 = v8 <= -_swipeDismissThreshold;
+    if (!_shouldReverseLayoutDirection)
     {
-      v11 = v8 >= v10;
+      v11 = v8 >= _swipeDismissThreshold;
     }
 
     if (v11)
     {
-      if (!v6)
+      if (!context)
       {
         goto LABEL_17;
       }
 
-      v12 = v6[5];
+      v12 = context[5];
       if (!v12)
       {
         goto LABEL_17;
@@ -3651,7 +3651,7 @@ void __87__PKApplicationMessageView_scrollViewWillEndDragging_withVelocity_targe
       }
 
       [(PKApplicationMessageView *)self impactOccured];
-      v13 = v6[5];
+      v13 = context[5];
       if (!v13)
       {
         goto LABEL_17;
@@ -3662,12 +3662,12 @@ void __87__PKApplicationMessageView_scrollViewWillEndDragging_withVelocity_targe
 
     else
     {
-      if (!v6)
+      if (!context)
       {
         goto LABEL_17;
       }
 
-      v15 = v6[5];
+      v15 = context[5];
       if (!v15)
       {
         goto LABEL_17;
@@ -3679,7 +3679,7 @@ void __87__PKApplicationMessageView_scrollViewWillEndDragging_withVelocity_targe
       }
 
       [(PKApplicationMessageView *)self impactOccured];
-      v13 = v6[5];
+      v13 = context[5];
       if (!v13)
       {
         goto LABEL_17;
@@ -3717,11 +3717,11 @@ LABEL_17:
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    if (v6)
+    if (context)
     {
-      v25 = [(PKApplicationMessageView *)self _shouldReverseLayoutDirection];
+      _shouldReverseLayoutDirection2 = [(PKApplicationMessageView *)self _shouldReverseLayoutDirection];
       v26 = 1.0;
-      if (v25)
+      if (_shouldReverseLayoutDirection2)
       {
         v26 = -1.0;
       }
@@ -3763,17 +3763,17 @@ LABEL_17:
     v45.size.width = v22;
     v45.size.height = v24;
     [(PKApplicationMessageClearView *)self->_clearView setFrame:v29, MinY, v27, CGRectGetHeight(v45)];
-    v31 = [(PKApplicationMessageView *)self _shouldReverseLayoutDirection];
-    v32 = [(PKApplicationMessageView *)self _rootView];
-    v33 = [(PKApplicationMessageView *)v32 cachedClearViewFittingWidth];
+    _shouldReverseLayoutDirection3 = [(PKApplicationMessageView *)self _shouldReverseLayoutDirection];
+    _rootView = [(PKApplicationMessageView *)self _rootView];
+    cachedClearViewFittingWidth = [(PKApplicationMessageView *)_rootView cachedClearViewFittingWidth];
 
     v34 = -v8;
-    if (!v31)
+    if (!_shouldReverseLayoutDirection3)
     {
       v34 = v8;
     }
 
-    [(PKApplicationMessageClearView *)self->_clearView setAlpha:fmin(fmax((v34 + -50.0) / (v33 + 8.0 + -50.0), 0.0), 1.0)];
+    [(PKApplicationMessageClearView *)self->_clearView setAlpha:fmin(fmax((v34 + -50.0) / (cachedClearViewFittingWidth + 8.0 + -50.0), 0.0), 1.0)];
     _Block_object_dispose(&v36, 8);
   }
 
@@ -3792,16 +3792,16 @@ void __48__PKApplicationMessageView_scrollViewDidScroll___block_invoke(uint64_t 
   }
 }
 
-- (void)_visitPostOrder:(uint64_t)a1
+- (void)_visitPostOrder:(uint64_t)order
 {
   v3 = a2;
-  if (!a1)
+  if (!order)
   {
     goto LABEL_10;
   }
 
   context = objc_autoreleasePoolPush();
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{a1, 0}];
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{order, 0}];
   if (![v4 count])
   {
     goto LABEL_9;
@@ -3809,12 +3809,12 @@ void __48__PKApplicationMessageView_scrollViewDidScroll___block_invoke(uint64_t 
 
   while (1)
   {
-    v5 = [v4 lastObject];
-    v6 = v5;
-    if ((*(v5 + 416) & 1) == 0)
+    lastObject = [v4 lastObject];
+    v6 = lastObject;
+    if ((*(lastObject + 416) & 1) == 0)
     {
-      *(v5 + 416) = 1;
-      if ([*(v5 + 728) count])
+      *(lastObject + 416) = 1;
+      if ([*(lastObject + 728) count])
       {
         v7 = v6[91];
         v10[0] = MEMORY[0x1E69E9820];
@@ -3845,7 +3845,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(PKApplicationMessageView *)a1 _visitPreOrder:?];
+  [(PKApplicationMessageView *)order _visitPreOrder:?];
 
   objc_autoreleasePoolPop(context);
 LABEL_10:
@@ -3853,8 +3853,8 @@ LABEL_10:
 
 - (void)dropSwipe
 {
-  v2 = [(PKApplicationMessageView *)self _swipedMessageView];
-  [(PKApplicationMessageView *)v2 _cancelMySwipe];
+  _swipedMessageView = [(PKApplicationMessageView *)self _swipedMessageView];
+  [(PKApplicationMessageView *)_swipedMessageView _cancelMySwipe];
 }
 
 void __46__PKApplicationMessageView__swipedMessageView__block_invoke(uint64_t a1, void *a2)
@@ -3871,45 +3871,45 @@ void __46__PKApplicationMessageView__swipedMessageView__block_invoke(uint64_t a1
 
 - (void)swipeToDismissFeedbackGenerator
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[99];
+    selfCopy = self;
+    v3 = self[99];
     if (!v3)
     {
       v4 = objc_alloc_init(MEMORY[0x1E69DCAE8]);
-      v5 = v2[99];
-      v2[99] = v4;
+      v5 = selfCopy[99];
+      selfCopy[99] = v4;
 
-      v3 = v2[99];
+      v3 = selfCopy[99];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (double)cachedClearViewFittingWidth
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = *(a1 + 784);
+  v2 = *(self + 784);
   if (!v2)
   {
-    v3 = [(PKApplicationMessageView *)a1 _createClearView];
-    [v3 sizeToFit];
+    _createClearView = [(PKApplicationMessageView *)self _createClearView];
+    [_createClearView sizeToFit];
     v4 = MEMORY[0x1E696AD98];
-    [v3 frame];
+    [_createClearView frame];
     v6 = [v4 numberWithDouble:v5];
-    v7 = *(a1 + 784);
-    *(a1 + 784) = v6;
+    v7 = *(self + 784);
+    *(self + 784) = v6;
 
-    v2 = *(a1 + 784);
+    v2 = *(self + 784);
   }
 
   [v2 doubleValue];
@@ -3918,7 +3918,7 @@ void __46__PKApplicationMessageView__swipedMessageView__block_invoke(uint64_t a1
 
 - (id)_createClearView
 {
-  v1 = *(a1 + 816);
+  v1 = *(self + 816);
   if (v1 > 2)
   {
     v2 = 0;
@@ -4586,56 +4586,56 @@ LABEL_64:
 
 - (void)_markPresented
 {
-  if (a1 && (*(a1 + 680) & 1) == 0)
+  if (self && (*(self + 680) & 1) == 0)
   {
-    if (*(a1 + 712) && *(a1 + 657) != 1)
+    if (*(self + 712) && *(self + 657) != 1)
     {
-      *(a1 + 657) = 1;
-      if ((*(a1 + 536) & 1) == 0)
+      *(self + 657) = 1;
+      if ((*(self + 536) & 1) == 0)
       {
-        *(a1 + 536) = 1;
+        *(self + 536) = 1;
       }
 
       goto LABEL_7;
     }
 
-    if ((*(a1 + 536) & 1) == 0)
+    if ((*(self + 536) & 1) == 0)
     {
-      *(a1 + 536) = 1;
-      a1 = *(a1 + 408);
-      if (a1)
+      *(self + 536) = 1;
+      self = *(self + 408);
+      if (self)
       {
 LABEL_7:
-        [(PKApplicationMessageView *)a1 _invalidateSize];
+        [(PKApplicationMessageView *)self _invalidateSize];
       }
     }
   }
 }
 
-- (void)_visitPreOrder:(uint64_t)a1
+- (void)_visitPreOrder:(uint64_t)order
 {
   v3 = a2;
-  if (a1)
+  if (order)
   {
     context = objc_autoreleasePoolPush();
-    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{a1, 0}];
+    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{order, 0}];
     if ([v4 count])
     {
       while (1)
       {
-        v5 = [v4 lastObject];
+        lastObject = [v4 lastObject];
         [v4 removeLastObject];
         v11 = 1;
         v10 = 0;
-        v3[2](v3, v5, &v11, &v10);
+        v3[2](v3, lastObject, &v11, &v10);
         if (v10 == 1)
         {
           break;
         }
 
-        if (v11 == 1 && [v5[91] count])
+        if (v11 == 1 && [lastObject[91] count])
         {
-          v6 = v5[91];
+          v6 = lastObject[91];
           v8[0] = MEMORY[0x1E69E9820];
           v8[1] = 3221225472;
           v8[2] = __43__PKApplicationMessageView__visitPreOrder___block_invoke;
@@ -4669,22 +4669,22 @@ void __59__PKApplicationMessageView__treeLayoutPostludeWithContext___block_invok
 
 - (void)_invalidateSize
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
+    selfCopy = self;
     do
     {
-      if (v1[568])
+      if (selfCopy[568])
       {
         break;
       }
 
-      v1[568] = 1;
-      v3 = v1;
-      [v1 setNeedsLayout];
+      selfCopy[568] = 1;
+      v3 = selfCopy;
+      [selfCopy setNeedsLayout];
       v2 = v3[51];
 
-      v1 = v2;
+      selfCopy = v2;
     }
 
     while (v2);
@@ -5312,13 +5312,13 @@ void __40__PKApplicationMessageView__queueReload__block_invoke_2(void *a1)
 {
   if (!self->_invalidated)
   {
-    v3 = [(PKApplicationMessageNode *)self->_content context];
-    v4 = v3;
-    if (v3)
+    context = [(PKApplicationMessageNode *)self->_content context];
+    v4 = context;
+    if (context)
     {
-      v5 = *(v3 + 8);
-      v6 = *(v3 + 32);
-      v7 = ([*(v3 + 16) numberOfChildren] + v6) > 1;
+      v5 = *(context + 8);
+      v6 = *(context + 32);
+      v7 = ([*(context + 16) numberOfChildren] + v6) > 1;
       v8 = v4[8];
       if (v8 != v7)
       {
@@ -5404,19 +5404,19 @@ void __44__PKApplicationMessageView__visitPostOrder___block_invoke(uint64_t a1, 
   [v2 addObject:v4];
 }
 
-- (void)_clearTapped:(id)a3
+- (void)_clearTapped:(id)tapped
 {
-  v4 = [(PKApplicationMessageNode *)self->_content context];
-  if (v4)
+  context = [(PKApplicationMessageNode *)self->_content context];
+  if (context)
   {
-    v5 = *(v4 + 40);
+    v5 = *(context + 40);
     if (v5)
     {
       *(v5 + 9) = 1;
     }
   }
 
-  v6 = v4;
+  v6 = context;
   [(PKApplicationMessageView *)self _dismissWithAnimatedSwipe:?];
 }
 
@@ -5432,12 +5432,12 @@ void __44__PKApplicationMessageView__visitPostOrder___block_invoke(uint64_t a1, 
     return 0;
   }
 
-  v5 = [(PKApplicationMessageNode *)self->_content context];
-  v6 = v5;
-  if (v5)
+  context = [(PKApplicationMessageNode *)self->_content context];
+  v6 = context;
+  if (context)
   {
-    v7 = *(v5 + 32);
-    v3 = [*(v5 + 16) numberOfChildren] + v7 == 0;
+    v7 = *(context + 32);
+    v3 = [*(context + 16) numberOfChildren] + v7 == 0;
   }
 
   else

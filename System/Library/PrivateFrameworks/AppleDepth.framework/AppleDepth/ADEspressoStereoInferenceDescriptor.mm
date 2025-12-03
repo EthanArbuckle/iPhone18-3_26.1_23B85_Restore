@@ -1,31 +1,31 @@
 @interface ADEspressoStereoInferenceDescriptor
-- (ADEspressoStereoInferenceDescriptor)initWithNetworkProvider:(id)a3 inputColorFormat:(unsigned int)a4 outputDisparityFormat:(unsigned int)a5;
+- (ADEspressoStereoInferenceDescriptor)initWithNetworkProvider:(id)provider inputColorFormat:(unsigned int)format outputDisparityFormat:(unsigned int)disparityFormat;
 @end
 
 @implementation ADEspressoStereoInferenceDescriptor
 
-- (ADEspressoStereoInferenceDescriptor)initWithNetworkProvider:(id)a3 inputColorFormat:(unsigned int)a4 outputDisparityFormat:(unsigned int)a5
+- (ADEspressoStereoInferenceDescriptor)initWithNetworkProvider:(id)provider inputColorFormat:(unsigned int)format outputDisparityFormat:(unsigned int)disparityFormat
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v8 = a3;
-  v9 = [v8 url];
-  v10 = [v8 layoutNamesDict];
+  v5 = *&disparityFormat;
+  v6 = *&format;
+  providerCopy = provider;
+  v9 = [providerCopy url];
+  layoutNamesDict = [providerCopy layoutNamesDict];
   v21.receiver = self;
   v21.super_class = ADEspressoStereoInferenceDescriptor;
-  v11 = [(ADEspressoInferenceDescriptor *)&v21 initWithUrl:v9 layoutNames:v10];
+  v11 = [(ADEspressoInferenceDescriptor *)&v21 initWithUrl:v9 layoutNames:layoutNamesDict];
 
   if (v11)
   {
-    v12 = [v8 descriptorForBuffer:@"i0" isInput:1 pixelFormat:v6];
+    v12 = [providerCopy descriptorForBuffer:@"i0" isInput:1 pixelFormat:v6];
     referenceInput = v11->_referenceInput;
     v11->_referenceInput = v12;
 
-    v14 = [v8 descriptorForBuffer:@"i1" isInput:1 pixelFormat:v6];
+    v14 = [providerCopy descriptorForBuffer:@"i1" isInput:1 pixelFormat:v6];
     auxiliaryInput = v11->_auxiliaryInput;
     v11->_auxiliaryInput = v14;
 
-    v16 = [v8 descriptorForBuffer:@"d" isInput:0 pixelFormat:v5];
+    v16 = [providerCopy descriptorForBuffer:@"d" isInput:0 pixelFormat:v5];
     disparityOutput = v11->_disparityOutput;
     v11->_disparityOutput = v16;
 

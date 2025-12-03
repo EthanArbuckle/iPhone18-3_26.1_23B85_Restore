@@ -5,16 +5,16 @@
 - (MPSAccelerationStructure)initWithDevice:(id)device;
 - (MPSAccelerationStructure)initWithGroup:(MPSAccelerationStructureGroup *)group;
 - (MPSBVHOptions)getBVHOptions;
-- (id)copyAccelerationStructureWithZone:(_NSZone *)a3 device:(id)a4 group:(id)a5;
+- (id)copyAccelerationStructureWithZone:(_NSZone *)zone device:(id)device group:(id)group;
 - (id)description;
 - (void)dealloc;
-- (void)decodeAccelerationStructureWithCoder:(id)a3;
-- (void)encodeClearWithEncoder:(id)a3 buffer:(id)a4 bufferOffset:(unint64_t)a5 value:(unsigned int)a6;
-- (void)encodeIndirectDispatchWithEncoder:(id)a3 pipeline:(id)a4 threadCountBuffer:(id)a5 threadCountBufferOffset:(unint64_t)a6 indirectDispatchBuffer:(id)a7 indirectDispatchBufferOffset:(unint64_t)a8;
+- (void)decodeAccelerationStructureWithCoder:(id)coder;
+- (void)encodeClearWithEncoder:(id)encoder buffer:(id)buffer bufferOffset:(unint64_t)offset value:(unsigned int)value;
+- (void)encodeIndirectDispatchWithEncoder:(id)encoder pipeline:(id)pipeline threadCountBuffer:(id)buffer threadCountBufferOffset:(unint64_t)offset indirectDispatchBuffer:(id)dispatchBuffer indirectDispatchBufferOffset:(unint64_t)bufferOffset;
 - (void)encodeWithCoder:(NSCoder *)coder;
 - (void)rebuild;
 - (void)setUsage:(MPSAccelerationStructureUsage)usage;
-- (void)sharedInitAccelerationStructureWithGroup:(id)a3;
+- (void)sharedInitAccelerationStructureWithGroup:(id)group;
 @end
 
 @implementation MPSAccelerationStructure
@@ -29,18 +29,18 @@
   self->_usage = usage;
 }
 
-- (void)sharedInitAccelerationStructureWithGroup:(id)a3
+- (void)sharedInitAccelerationStructureWithGroup:(id)group
 {
   v5 = *(&self->super.super.isa + *MEMORY[0x277CD7370]);
   self->_boundingBoxCopyPipeline = MPSLibrary::GetComputeState();
   v6 = objc_autoreleasePoolPush();
-  if (!a3)
+  if (!group)
   {
     v7 = [MPSAccelerationStructureGroup alloc];
-    a3 = objc_msgSend_initWithDevice_(v7, v8, (*(&self->super.super.isa + *MEMORY[0x277CD7350]))[2], v9, v10);
+    group = objc_msgSend_initWithDevice_(v7, v8, (*(&self->super.super.isa + *MEMORY[0x277CD7350]))[2], v9, v10);
   }
 
-  self->_group = a3;
+  self->_group = group;
 
   objc_autoreleasePoolPop(v6);
 }
@@ -79,7 +79,7 @@
   return v12;
 }
 
-- (void)decodeAccelerationStructureWithCoder:(id)a3
+- (void)decodeAccelerationStructureWithCoder:(id)coder
 {
   v22[4] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CBEB98];
@@ -89,9 +89,9 @@
   v22[3] = objc_opt_class();
   v8 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v6, v22, 4, v7);
   v12 = objc_msgSend_setWithArray_(v5, v9, v8, v10, v11);
-  self->_privateOptions = objc_msgSend_decodeObjectOfClasses_forKey_(a3, v13, v12, @"MPSAccelerationStructureKeyOptions", v14);
-  self->_status = objc_msgSend_decodeIntegerForKey_(a3, v15, @"MPSAccelerationStructureKeyStatus", v16, v17);
-  self->_usage = objc_msgSend_decodeIntegerForKey_(a3, v18, @"MPSAccelerationStructureKeyUsage", v19, v20);
+  self->_privateOptions = objc_msgSend_decodeObjectOfClasses_forKey_(coder, v13, v12, @"MPSAccelerationStructureKeyOptions", v14);
+  self->_status = objc_msgSend_decodeIntegerForKey_(coder, v15, @"MPSAccelerationStructureKeyStatus", v16, v17);
+  self->_usage = objc_msgSend_decodeIntegerForKey_(coder, v18, @"MPSAccelerationStructureKeyUsage", v19, v20);
   v21 = *MEMORY[0x277D85DE8];
 }
 
@@ -210,15 +210,15 @@
   return objc_msgSend_stringWithFormat_(v8, v10, @"%@\n\tgroup: %p\n\tbounding box: min = { %f, %f, %f }, max = { %f, %f, %f }\n\tstatus: %s\n\tusage: %s", v11, v12, v9, self->_group, *&v20, *(&v20 + 1), *(&v20 + 2), *&v19, *(&v19 + 1), *(&v19 + 2), v17, v16);
 }
 
-- (id)copyAccelerationStructureWithZone:(_NSZone *)a3 device:(id)a4 group:(id)a5
+- (id)copyAccelerationStructureWithZone:(_NSZone *)zone device:(id)device group:(id)group
 {
   v17.receiver = self;
   v17.super_class = MPSAccelerationStructure;
-  v7 = [(MPSKernel *)&v17 copyWithZone:a3 device:a4];
+  v7 = [(MPSKernel *)&v17 copyWithZone:zone device:device];
   v11 = v7;
   if (v7)
   {
-    objc_msgSend_sharedInitAccelerationStructureWithGroup_(v7, v8, a5, v9, v10);
+    objc_msgSend_sharedInitAccelerationStructureWithGroup_(v7, v8, group, v9, v10);
     v11[12] = objc_msgSend_copy(self->_privateOptions, v12, v13, v14, v15);
     v11[14] = self->_status;
     v11[15] = self->_usage;
@@ -492,40 +492,40 @@ LABEL_40:
   dispatch_release(v3);
 }
 
-- (void)encodeClearWithEncoder:(id)a3 buffer:(id)a4 bufferOffset:(unint64_t)a5 value:(unsigned int)a6
+- (void)encodeClearWithEncoder:(id)encoder buffer:(id)buffer bufferOffset:(unint64_t)offset value:(unsigned int)value
 {
-  v26 = a6;
+  valueCopy = value;
   v9 = *(&self->super.super.isa + *MEMORY[0x277CD7370]);
   ComputeState = MPSLibrary::GetComputeState();
-  objc_msgSend_setComputePipelineState_(a3, v11, ComputeState, v12, v13);
-  objc_msgSend_setBuffer_offset_atIndex_(a3, v14, a4, a5, 29);
-  objc_msgSend_setBytes_length_atIndex_(a3, v15, &v26, 4, 30);
+  objc_msgSend_setComputePipelineState_(encoder, v11, ComputeState, v12, v13);
+  objc_msgSend_setBuffer_offset_atIndex_(encoder, v14, buffer, offset, 29);
+  objc_msgSend_setBytes_length_atIndex_(encoder, v15, &valueCopy, 4, 30);
   v23 = vdupq_n_s64(1uLL);
   v24 = v23;
   v25 = 1;
   v22 = objc_msgSend_threadExecutionWidth(ComputeState, v16, v17, v18, v19);
-  objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(a3, v20, &v24, &v22, v21);
+  objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(encoder, v20, &v24, &v22, v21);
 }
 
-- (void)encodeIndirectDispatchWithEncoder:(id)a3 pipeline:(id)a4 threadCountBuffer:(id)a5 threadCountBufferOffset:(unint64_t)a6 indirectDispatchBuffer:(id)a7 indirectDispatchBufferOffset:(unint64_t)a8
+- (void)encodeIndirectDispatchWithEncoder:(id)encoder pipeline:(id)pipeline threadCountBuffer:(id)buffer threadCountBufferOffset:(unint64_t)offset indirectDispatchBuffer:(id)dispatchBuffer indirectDispatchBufferOffset:(unint64_t)bufferOffset
 {
   v14 = *(&self->super.super.isa + *MEMORY[0x277CD7370]);
   ComputeState = MPSLibrary::GetComputeState();
-  objc_msgSend_setComputePipelineState_(a3, v16, ComputeState, v17, v18);
-  objc_msgSend_setBuffer_offset_atIndex_(a3, v19, a5, a6, 28);
-  v44 = objc_msgSend_threadExecutionWidth(a4, v20, v21, v22, v23);
-  objc_msgSend_setBytes_length_atIndex_(a3, v24, &v44, 4, 29);
-  objc_msgSend_setBuffer_offset_atIndex_(a3, v25, a7, a8, 30);
+  objc_msgSend_setComputePipelineState_(encoder, v16, ComputeState, v17, v18);
+  objc_msgSend_setBuffer_offset_atIndex_(encoder, v19, buffer, offset, 28);
+  v44 = objc_msgSend_threadExecutionWidth(pipeline, v20, v21, v22, v23);
+  objc_msgSend_setBytes_length_atIndex_(encoder, v24, &v44, 4, 29);
+  objc_msgSend_setBuffer_offset_atIndex_(encoder, v25, dispatchBuffer, bufferOffset, 30);
   v40 = vdupq_n_s64(1uLL);
   v42 = v40;
   *v43 = v40;
   *&v43[16] = 1;
   v41 = objc_msgSend_threadExecutionWidth(ComputeState, v26, v27, v28, v29);
-  objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(a3, v30, v43, &v41, v31);
-  objc_msgSend_setComputePipelineState_(a3, v32, a4, v33, v34);
-  *v43 = objc_msgSend_threadExecutionWidth(a4, v35, v36, v37, v38);
+  objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(encoder, v30, v43, &v41, v31);
+  objc_msgSend_setComputePipelineState_(encoder, v32, pipeline, v33, v34);
+  *v43 = objc_msgSend_threadExecutionWidth(pipeline, v35, v36, v37, v38);
   *&v43[8] = v40;
-  objc_msgSend_dispatchThreadgroupsWithIndirectBuffer_indirectBufferOffset_threadsPerThreadgroup_(a3, v39, a7, a8, v43);
+  objc_msgSend_dispatchThreadgroupsWithIndirectBuffer_indirectBufferOffset_threadsPerThreadgroup_(encoder, v39, dispatchBuffer, bufferOffset, v43);
 }
 
 @end

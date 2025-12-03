@@ -14,7 +14,7 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_10008ABFC();
 }
 

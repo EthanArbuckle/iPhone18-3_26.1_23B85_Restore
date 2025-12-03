@@ -1,29 +1,29 @@
 @interface PLAssetsdResourceClient
-- (BOOL)estimatedOutputFileLengthForVideoURL:(id)a3 fallbackFilePath:(id)a4 exportPreset:(id)a5 exportProperties:(id)a6 outFileLength:(int64_t *)a7 error:(id *)a8;
-- (BOOL)fileDescriptorForAssetURL:(id)a3 withAdjustments:(BOOL)a4 fileExtension:(id *)a5 fileDescriptor:(int *)a6 error:(id *)a7;
-- (BOOL)fileURLForAssetURL:(id)a3 withAdjustments:(BOOL)a4 fileURL:(id *)a5 error:(id *)a6;
-- (BOOL)imageDataForAsset:(id)a3 format:(int)a4 allowPlaceholder:(BOOL)a5 wantURLOnly:(BOOL)a6 networkAccessAllowed:(BOOL)a7 trackCPLDownload:(BOOL)a8 outImageData:(id *)a9 outImageDataInfo:(id *)a10 outCPLDownloadContext:(id *)a11 error:(id *)a12;
-- (BOOL)sandboxExtensionFileURLForAssetURL:(id)a3 withAdjustments:(BOOL)a4 fileURL:(id *)a5 error:(id *)a6;
-- (BOOL)sandboxExtensionForFileSystemBookmark:(id)a3 bookmarkURL:(id *)a4 sandboxExtensionToken:(id *)a5 error:(id *)a6;
-- (BOOL)sandboxExtensionsForAssetWithUUID:(id)a3 sandboxExtensionTokens:(id *)a4 error:(id *)a5;
-- (BOOL)updateInternalResourcePath:(id)a3 objectURI:(id)a4 error:(id *)a5;
-- (PLAssetsdResourceClient)initWithQueue:(id)a3 proxyCreating:(id)a4 proxyGetter:(SEL)a5 clientState:(id)a6;
-- (id)consolidateAssets:(id)a3 completionHandler:(id)a4;
-- (id)projectExtensionDataForProjectUuid:(id)a3;
-- (void)addAssetWithURL:(id)a3 toAlbumWithUUID:(id)a4 completionHandler:(id)a5;
-- (void)addGroupWithName:(id)a3 completionHandler:(id)a4;
-- (void)adjustmentDataForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 trackCPLDownload:(BOOL)a5 completionHandler:(id)a6;
-- (void)downloadCloudSharedAsset:(id)a3 withCloudPlaceholderKind:(unint64_t)a4 shouldPrioritize:(BOOL)a5 shouldExtendTimer:(BOOL)a6 completionHandler:(id)a7;
-- (void)imageDataForAsset:(id)a3 format:(int)a4 allowPlaceholder:(BOOL)a5 wantURLOnly:(BOOL)a6 networkAccessAllowed:(BOOL)a7 trackCPLDownload:(BOOL)a8 completionHandler:(id)a9;
-- (void)saveAssetWithJobDictionary:(id)a3 imageSurface:(__IOSurface *)a4 previewImageSurface:(__IOSurface *)a5 completionHandler:(id)a6;
+- (BOOL)estimatedOutputFileLengthForVideoURL:(id)l fallbackFilePath:(id)path exportPreset:(id)preset exportProperties:(id)properties outFileLength:(int64_t *)length error:(id *)error;
+- (BOOL)fileDescriptorForAssetURL:(id)l withAdjustments:(BOOL)adjustments fileExtension:(id *)extension fileDescriptor:(int *)descriptor error:(id *)error;
+- (BOOL)fileURLForAssetURL:(id)l withAdjustments:(BOOL)adjustments fileURL:(id *)rL error:(id *)error;
+- (BOOL)imageDataForAsset:(id)asset format:(int)format allowPlaceholder:(BOOL)placeholder wantURLOnly:(BOOL)only networkAccessAllowed:(BOOL)allowed trackCPLDownload:(BOOL)download outImageData:(id *)data outImageDataInfo:(id *)self0 outCPLDownloadContext:(id *)self1 error:(id *)self2;
+- (BOOL)sandboxExtensionFileURLForAssetURL:(id)l withAdjustments:(BOOL)adjustments fileURL:(id *)rL error:(id *)error;
+- (BOOL)sandboxExtensionForFileSystemBookmark:(id)bookmark bookmarkURL:(id *)l sandboxExtensionToken:(id *)token error:(id *)error;
+- (BOOL)sandboxExtensionsForAssetWithUUID:(id)d sandboxExtensionTokens:(id *)tokens error:(id *)error;
+- (BOOL)updateInternalResourcePath:(id)path objectURI:(id)i error:(id *)error;
+- (PLAssetsdResourceClient)initWithQueue:(id)queue proxyCreating:(id)creating proxyGetter:(SEL)getter clientState:(id)state;
+- (id)consolidateAssets:(id)assets completionHandler:(id)handler;
+- (id)projectExtensionDataForProjectUuid:(id)uuid;
+- (void)addAssetWithURL:(id)l toAlbumWithUUID:(id)d completionHandler:(id)handler;
+- (void)addGroupWithName:(id)name completionHandler:(id)handler;
+- (void)adjustmentDataForAsset:(id)asset networkAccessAllowed:(BOOL)allowed trackCPLDownload:(BOOL)download completionHandler:(id)handler;
+- (void)downloadCloudSharedAsset:(id)asset withCloudPlaceholderKind:(unint64_t)kind shouldPrioritize:(BOOL)prioritize shouldExtendTimer:(BOOL)timer completionHandler:(id)handler;
+- (void)imageDataForAsset:(id)asset format:(int)format allowPlaceholder:(BOOL)placeholder wantURLOnly:(BOOL)only networkAccessAllowed:(BOOL)allowed trackCPLDownload:(BOOL)download completionHandler:(id)handler;
+- (void)saveAssetWithJobDictionary:(id)dictionary imageSurface:(__IOSurface *)surface previewImageSurface:(__IOSurface *)imageSurface completionHandler:(id)handler;
 @end
 
 @implementation PLAssetsdResourceClient
 
-- (id)projectExtensionDataForProjectUuid:(id)a3
+- (id)projectExtensionDataForProjectUuid:(id)uuid
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  uuidCopy = uuid;
   v23 = 0u;
   *sel = 0u;
   v22 = 0u;
@@ -38,10 +38,10 @@
     os_activity_scope_enter(v7, (&v23 + 8));
   }
 
-  if (!v5)
+  if (!uuidCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:623 description:{@"Invalid parameter not satisfying: %@", @"projectUuid"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:623 description:{@"Invalid parameter not satisfying: %@", @"projectUuid"}];
   }
 
   *&buf = 0;
@@ -50,14 +50,14 @@
   v27 = __Block_byref_object_copy__11880;
   v28 = __Block_byref_object_dispose__11881;
   v29 = 0;
-  v9 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v10 = [v9 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_11882];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v10 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_11882];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __62__PLAssetsdResourceClient_projectExtensionDataForProjectUuid___block_invoke_122;
   v19[3] = &unk_1E79329A8;
   p_buf = &buf;
-  v11 = v5;
+  v11 = uuidCopy;
   v20 = v11;
   [v10 projectExtensionDataForProjectUuid:v11 reply:v19];
 
@@ -123,11 +123,11 @@ void __62__PLAssetsdResourceClient_projectExtensionDataForProjectUuid___block_in
   }
 }
 
-- (BOOL)updateInternalResourcePath:(id)a3 objectURI:(id)a4 error:(id *)a5
+- (BOOL)updateInternalResourcePath:(id)path objectURI:(id)i error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  pathCopy = path;
+  iCopy = i;
   v35 = 0u;
   *sel = 0u;
   v34 = 0u;
@@ -142,16 +142,16 @@ void __62__PLAssetsdResourceClient_projectExtensionDataForProjectUuid___block_in
     os_activity_scope_enter(v12, (&v35 + 8));
   }
 
-  if (!v10)
+  if (!iCopy)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:582 description:{@"Invalid parameter not satisfying: %@", @"resourceURI"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:582 description:{@"Invalid parameter not satisfying: %@", @"resourceURI"}];
   }
 
-  if (!v9)
+  if (!pathCopy)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:583 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:583 description:{@"Invalid parameter not satisfying: %@", @"path"}];
   }
 
   *&buf = 0;
@@ -160,30 +160,30 @@ void __62__PLAssetsdResourceClient_projectExtensionDataForProjectUuid___block_in
   v41 = __Block_byref_object_copy__11880;
   v42 = __Block_byref_object_dispose__11881;
   v43 = 0;
-  v14 = PLGetSandboxExtensionTokenWithFlags(v9, *MEMORY[0x1E69E9BA8], *MEMORY[0x1E69E9BE0], 0);
+  v14 = PLGetSandboxExtensionTokenWithFlags(pathCopy, *MEMORY[0x1E69E9BA8], *MEMORY[0x1E69E9BE0], 0);
   v15 = v14;
   if (v14)
   {
     v16 = PLSandboxExtensionTokenAsData(v14);
-    v17 = [(PLAssetsdBaseClient *)self proxyFactory];
+    proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __70__PLAssetsdResourceClient_updateInternalResourcePath_objectURI_error___block_invoke;
     v33[3] = &unk_1E7932770;
     v33[4] = &buf;
-    v18 = [v17 synchronousRemoteObjectProxyWithErrorHandler:v33];
+    v18 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v33];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __70__PLAssetsdResourceClient_updateInternalResourcePath_objectURI_error___block_invoke_118;
     v32[3] = &unk_1E7932980;
     v32[4] = &buf;
-    [v18 updateInternalResourcePath:v9 objectURI:v10 sandboxExtension:v16 reply:v32];
+    [v18 updateInternalResourcePath:pathCopy objectURI:iCopy sandboxExtension:v16 reply:v32];
 
     v19 = *(*(&buf + 1) + 40);
     v20 = v19 == 0;
-    if (a5 && v19)
+    if (error && v19)
     {
-      *a5 = v19;
+      *error = v19;
     }
   }
 
@@ -191,16 +191,16 @@ void __62__PLAssetsdResourceClient_projectExtensionDataForProjectUuid___block_in
   {
     v21 = MEMORY[0x1E696ABC0];
     v37 = *MEMORY[0x1E696A368];
-    v38 = v9;
+    v38 = pathCopy;
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
     v23 = [v21 errorWithDomain:@"com.apple.photos.error" code:44004 userInfo:v22];
     v24 = *(*(&buf + 1) + 40);
     *(*(&buf + 1) + 40) = v23;
 
     v20 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = *(*(&buf + 1) + 40);
+      *error = *(*(&buf + 1) + 40);
     }
   }
 
@@ -262,11 +262,11 @@ void __70__PLAssetsdResourceClient_updateInternalResourcePath_objectURI_error___
   }
 }
 
-- (id)consolidateAssets:(id)a3 completionHandler:(id)a4
+- (id)consolidateAssets:(id)assets completionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  assetsCopy = assets;
+  handlerCopy = handler;
   v31 = 0u;
   *sel = 0u;
   v30 = 0u;
@@ -281,28 +281,28 @@ void __70__PLAssetsdResourceClient_updateInternalResourcePath_objectURI_error___
     os_activity_scope_enter(v10, (&v31 + 8));
   }
 
-  if (!v7)
+  if (!assetsCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:558 description:{@"Invalid parameter not satisfying: %@", @"assetUUIDs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:558 description:{@"Invalid parameter not satisfying: %@", @"assetUUIDs"}];
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:559 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:559 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __63__PLAssetsdResourceClient_consolidateAssets_completionHandler___block_invoke;
   v27[3] = &unk_1E7932930;
-  v13 = v7;
+  v13 = assetsCopy;
   v28 = v13;
-  v14 = v8;
+  v14 = handlerCopy;
   v29 = v14;
-  v15 = [v12 remoteObjectProxyWithErrorHandler:v27];
+  v15 = [proxyFactory remoteObjectProxyWithErrorHandler:v27];
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -382,11 +382,11 @@ void __63__PLAssetsdResourceClient_consolidateAssets_completionHandler___block_i
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)downloadCloudSharedAsset:(id)a3 withCloudPlaceholderKind:(unint64_t)a4 shouldPrioritize:(BOOL)a5 shouldExtendTimer:(BOOL)a6 completionHandler:(id)a7
+- (void)downloadCloudSharedAsset:(id)asset withCloudPlaceholderKind:(unint64_t)kind shouldPrioritize:(BOOL)prioritize shouldExtendTimer:(BOOL)timer completionHandler:(id)handler
 {
   v45 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a7;
+  assetCopy = asset;
+  handlerCopy = handler;
   v41 = 0u;
   v42 = 0u;
   v40 = 0u;
@@ -401,19 +401,19 @@ void __63__PLAssetsdResourceClient_consolidateAssets_completionHandler___block_i
     os_activity_scope_enter(v16, (&v41 + 8));
   }
 
-  if (!v13)
+  if (!assetCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:538 description:{@"Invalid parameter not satisfying: %@", @"objectID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:538 description:{@"Invalid parameter not satisfying: %@", @"objectID"}];
   }
 
-  v18 = [v13 URIRepresentation];
-  v19 = [(PLAssetsdBaseClient *)self proxyFactory];
+  uRIRepresentation = [assetCopy URIRepresentation];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __130__PLAssetsdResourceClient_downloadCloudSharedAsset_withCloudPlaceholderKind_shouldPrioritize_shouldExtendTimer_completionHandler___block_invoke;
   v38[3] = &unk_1E7932DA8;
-  v39 = v14;
+  v39 = handlerCopy;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3254779904;
   v27[2] = __130__PLAssetsdResourceClient_downloadCloudSharedAsset_withCloudPlaceholderKind_shouldPrioritize_shouldExtendTimer_completionHandler___block_invoke_101;
@@ -423,14 +423,14 @@ void __63__PLAssetsdResourceClient_consolidateAssets_completionHandler___block_i
   v32 = v41;
   v33 = v42;
   v34 = a2;
-  v20 = v18;
+  v20 = uRIRepresentation;
   v28 = v20;
-  v35 = a4;
-  v36 = a5;
-  v37 = a6;
+  kindCopy = kind;
+  prioritizeCopy = prioritize;
+  timerCopy = timer;
   v21 = v39;
   v29 = v21;
-  [v19 remoteObjectProxyWithErrorHandler:v38 handler:v27];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v38 handler:v27];
 
   if (v40 == 1)
   {
@@ -512,13 +512,13 @@ void __130__PLAssetsdResourceClient_downloadCloudSharedAsset_withCloudPlaceholde
   [v3 downloadCloudSharedAsset:v14 wantedPlaceholderkind:v11 shouldPrioritize:v12 shouldExtendTimer:v13 reply:v15];
 }
 
-- (BOOL)estimatedOutputFileLengthForVideoURL:(id)a3 fallbackFilePath:(id)a4 exportPreset:(id)a5 exportProperties:(id)a6 outFileLength:(int64_t *)a7 error:(id *)a8
+- (BOOL)estimatedOutputFileLengthForVideoURL:(id)l fallbackFilePath:(id)path exportPreset:(id)preset exportProperties:(id)properties outFileLength:(int64_t *)length error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  lCopy = l;
+  pathCopy = path;
+  presetCopy = preset;
+  propertiesCopy = properties;
   v47 = 0u;
   *sel = 0u;
   v46 = 0u;
@@ -547,22 +547,22 @@ void __130__PLAssetsdResourceClient_downloadCloudSharedAsset_withCloudPlaceholde
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v25, OS_SIGNPOST_INTERVAL_BEGIN, v23, "PLXPC Sync", "%{public}s", &buf, 0xCu);
   }
 
-  if (!v15)
+  if (!lCopy)
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:511 description:{@"Invalid parameter not satisfying: %@", @"videoURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:511 description:{@"Invalid parameter not satisfying: %@", @"videoURL"}];
   }
 
-  if (!a7)
+  if (!length)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:512 description:{@"Invalid parameter not satisfying: %@", @"outFileLength"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:512 description:{@"Invalid parameter not satisfying: %@", @"outFileLength"}];
   }
 
-  if (!a8)
+  if (!error)
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:513 description:{@"Invalid parameter not satisfying: %@", @"error"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:513 description:{@"Invalid parameter not satisfying: %@", @"error"}];
   }
 
   v42 = 0;
@@ -575,32 +575,32 @@ void __130__PLAssetsdResourceClient_downloadCloudSharedAsset_withCloudPlaceholde
   v51 = __Block_byref_object_copy__11880;
   v52 = __Block_byref_object_dispose__11881;
   v53 = 0;
-  v27 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __131__PLAssetsdResourceClient_estimatedOutputFileLengthForVideoURL_fallbackFilePath_exportPreset_exportProperties_outFileLength_error___block_invoke;
   v41[3] = &unk_1E7932770;
   v41[4] = &buf;
-  v28 = [v27 synchronousRemoteObjectProxyWithErrorHandler:v41];
+  v28 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v41];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __131__PLAssetsdResourceClient_estimatedOutputFileLengthForVideoURL_fallbackFilePath_exportPreset_exportProperties_outFileLength_error___block_invoke_99;
   v40[3] = &unk_1E79328E0;
   v40[4] = &v42;
-  [v28 estimatedFileLengthOfVideo:v15 fallbackFilePath:v16 exportPreset:v17 exportProperties:v18 reply:v40];
+  [v28 estimatedFileLengthOfVideo:lCopy fallbackFilePath:pathCopy exportPreset:presetCopy exportProperties:propertiesCopy reply:v40];
 
-  if (a7)
+  if (length)
   {
-    *a7 = v43[3];
+    *length = v43[3];
   }
 
   v29 = *(&buf + 1);
-  if (a8)
+  if (error)
   {
     v30 = *(*(&buf + 1) + 40);
     if (v30)
     {
-      *a8 = v30;
+      *error = v30;
       v29 = *(&buf + 1);
     }
   }
@@ -650,11 +650,11 @@ void __131__PLAssetsdResourceClient_estimatedOutputFileLengthForVideoURL_fallbac
   *(v5 + 40) = v3;
 }
 
-- (void)adjustmentDataForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 trackCPLDownload:(BOOL)a5 completionHandler:(id)a6
+- (void)adjustmentDataForAsset:(id)asset networkAccessAllowed:(BOOL)allowed trackCPLDownload:(BOOL)download completionHandler:(id)handler
 {
   v41 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  assetCopy = asset;
+  handlerCopy = handler;
   v37 = 0u;
   v38 = 0u;
   v36 = 0u;
@@ -669,25 +669,25 @@ void __131__PLAssetsdResourceClient_estimatedOutputFileLengthForVideoURL_fallbac
     os_activity_scope_enter(v13, (&v37 + 8));
   }
 
-  if (!v10)
+  if (!assetCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:447 description:{@"Invalid parameter not satisfying: %@", @"objectID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:447 description:{@"Invalid parameter not satisfying: %@", @"objectID"}];
   }
 
-  if (!v11)
+  if (!handlerCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:448 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:448 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v15 = [v10 URIRepresentation];
-  v16 = [(PLAssetsdBaseClient *)self proxyFactory];
+  uRIRepresentation = [assetCopy URIRepresentation];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __106__PLAssetsdResourceClient_adjustmentDataForAsset_networkAccessAllowed_trackCPLDownload_completionHandler___block_invoke;
   v34[3] = &unk_1E7932DA8;
-  v35 = v11;
+  v35 = handlerCopy;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3254779904;
   v25[2] = __106__PLAssetsdResourceClient_adjustmentDataForAsset_networkAccessAllowed_trackCPLDownload_completionHandler___block_invoke_83;
@@ -697,12 +697,12 @@ void __131__PLAssetsdResourceClient_estimatedOutputFileLengthForVideoURL_fallbac
   v30 = v37;
   v31 = v38;
   v32 = a2;
-  v17 = v15;
+  v17 = uRIRepresentation;
   v26 = v17;
-  v33 = a4;
+  allowedCopy = allowed;
   v18 = v35;
   v27 = v18;
-  [v16 remoteObjectProxyWithErrorHandler:v34 handler:v25];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v34 handler:v25];
 
   if (v36 == 1)
   {
@@ -918,10 +918,10 @@ LABEL_31:
   (*(*(a1 + 32) + 16))();
 }
 
-- (BOOL)sandboxExtensionForFileSystemBookmark:(id)a3 bookmarkURL:(id *)a4 sandboxExtensionToken:(id *)a5 error:(id *)a6
+- (BOOL)sandboxExtensionForFileSystemBookmark:(id)bookmark bookmarkURL:(id *)l sandboxExtensionToken:(id *)token error:(id *)error
 {
   v59 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  bookmarkCopy = bookmark;
   v52 = 0u;
   v53 = 0u;
   v51 = 0u;
@@ -950,22 +950,22 @@ LABEL_31:
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v18, OS_SIGNPOST_INTERVAL_BEGIN, v16, "PLXPC Sync", "%{public}s", &buf, 0xCu);
   }
 
-  if (!v11)
+  if (!bookmarkCopy)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:410 description:{@"Invalid parameter not satisfying: %@", @"objectID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:410 description:{@"Invalid parameter not satisfying: %@", @"objectID"}];
   }
 
-  if (!a4)
+  if (!l)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:411 description:{@"Invalid parameter not satisfying: %@", @"bookmarkURL"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:411 description:{@"Invalid parameter not satisfying: %@", @"bookmarkURL"}];
   }
 
-  if (!a5)
+  if (!token)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:412 description:{@"Invalid parameter not satisfying: %@", @"token"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:412 description:{@"Invalid parameter not satisfying: %@", @"token"}];
   }
 
   v47 = 0;
@@ -990,14 +990,14 @@ LABEL_31:
   v38 = __Block_byref_object_copy__11880;
   v39 = __Block_byref_object_dispose__11881;
   v40 = 0;
-  v20 = [v11 URIRepresentation];
-  v21 = [(PLAssetsdBaseClient *)self proxyFactory];
+  uRIRepresentation = [bookmarkCopy URIRepresentation];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __105__PLAssetsdResourceClient_sandboxExtensionForFileSystemBookmark_bookmarkURL_sandboxExtensionToken_error___block_invoke;
   v34[3] = &unk_1E7932770;
   v34[4] = &buf;
-  v22 = [v21 synchronousRemoteObjectProxyWithErrorHandler:v34];
+  v22 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v34];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __105__PLAssetsdResourceClient_sandboxExtensionForFileSystemBookmark_bookmarkURL_sandboxExtensionToken_error___block_invoke_81;
@@ -1006,20 +1006,20 @@ LABEL_31:
   v33[5] = &v35;
   v33[6] = &v47;
   v33[7] = &buf;
-  [v22 getSandboxExtensionForFileSystemBookmark:v20 reply:v33];
+  [v22 getSandboxExtensionForFileSystemBookmark:uRIRepresentation reply:v33];
 
   if (*(v48 + 24) == 1)
   {
-    *a5 = v36[5];
-    *a4 = v42[5];
+    *token = v36[5];
+    *l = v42[5];
   }
 
-  if (a6)
+  if (error)
   {
     v23 = *(*(&buf + 1) + 40);
     if (v23)
     {
-      *a6 = v23;
+      *error = v23;
     }
   }
 
@@ -1089,10 +1089,10 @@ void __105__PLAssetsdResourceClient_sandboxExtensionForFileSystemBookmark_bookma
   }
 }
 
-- (BOOL)sandboxExtensionsForAssetWithUUID:(id)a3 sandboxExtensionTokens:(id *)a4 error:(id *)a5
+- (BOOL)sandboxExtensionsForAssetWithUUID:(id)d sandboxExtensionTokens:(id *)tokens error:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  dCopy = d;
   v42 = 0u;
   *sel = 0u;
   v41 = 0u;
@@ -1121,16 +1121,16 @@ void __105__PLAssetsdResourceClient_sandboxExtensionForFileSystemBookmark_bookma
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PLXPC Sync", "%{public}s", &buf, 0xCu);
   }
 
-  if (!v9)
+  if (!dCopy)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:378 description:{@"Invalid parameter not satisfying: %@", @"assetUUID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:378 description:{@"Invalid parameter not satisfying: %@", @"assetUUID"}];
   }
 
-  if (!a4)
+  if (!tokens)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:379 description:{@"Invalid parameter not satisfying: %@", @"pathToTokenMap"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:379 description:{@"Invalid parameter not satisfying: %@", @"pathToTokenMap"}];
   }
 
   v37 = 0;
@@ -1149,13 +1149,13 @@ void __105__PLAssetsdResourceClient_sandboxExtensionForFileSystemBookmark_bookma
   v34 = __Block_byref_object_copy__11880;
   v35 = __Block_byref_object_dispose__11881;
   v36 = 0;
-  v18 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __90__PLAssetsdResourceClient_sandboxExtensionsForAssetWithUUID_sandboxExtensionTokens_error___block_invoke;
   v30[3] = &unk_1E7932770;
   v30[4] = &buf;
-  v19 = [v18 synchronousRemoteObjectProxyWithErrorHandler:v30];
+  v19 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v30];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __90__PLAssetsdResourceClient_sandboxExtensionsForAssetWithUUID_sandboxExtensionTokens_error___block_invoke_70;
@@ -1163,19 +1163,19 @@ void __105__PLAssetsdResourceClient_sandboxExtensionForFileSystemBookmark_bookma
   v29[4] = &v31;
   v29[5] = &v37;
   v29[6] = &buf;
-  [v19 getSandboxExtensionsForAssetWithUUID:v9 reply:v29];
+  [v19 getSandboxExtensionsForAssetWithUUID:dCopy reply:v29];
 
   if (*(v38 + 24) == 1)
   {
-    *a4 = v32[5];
+    *tokens = v32[5];
   }
 
-  if (a5)
+  if (error)
   {
     v20 = *(*(&buf + 1) + 40);
     if (v20)
     {
-      *a5 = v20;
+      *error = v20;
     }
   }
 
@@ -1241,11 +1241,11 @@ void __90__PLAssetsdResourceClient_sandboxExtensionsForAssetWithUUID_sandboxExte
   }
 }
 
-- (void)imageDataForAsset:(id)a3 format:(int)a4 allowPlaceholder:(BOOL)a5 wantURLOnly:(BOOL)a6 networkAccessAllowed:(BOOL)a7 trackCPLDownload:(BOOL)a8 completionHandler:(id)a9
+- (void)imageDataForAsset:(id)asset format:(int)format allowPlaceholder:(BOOL)placeholder wantURLOnly:(BOOL)only networkAccessAllowed:(BOOL)allowed trackCPLDownload:(BOOL)download completionHandler:(id)handler
 {
   v50 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v16 = a9;
+  assetCopy = asset;
+  handlerCopy = handler;
   v46 = 0u;
   v47 = 0u;
   v45 = 0u;
@@ -1260,13 +1260,13 @@ void __90__PLAssetsdResourceClient_sandboxExtensionsForAssetWithUUID_sandboxExte
     os_activity_scope_enter(v18, (&v46 + 8));
   }
 
-  v20 = [v28 URIRepresentation];
-  v21 = [(PLAssetsdBaseClient *)self proxyFactory];
+  uRIRepresentation = [assetCopy URIRepresentation];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
   v43[2] = __137__PLAssetsdResourceClient_imageDataForAsset_format_allowPlaceholder_wantURLOnly_networkAccessAllowed_trackCPLDownload_completionHandler___block_invoke;
   v43[3] = &unk_1E7932DA8;
-  v44 = v16;
+  v44 = handlerCopy;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3254779904;
   v30[2] = __137__PLAssetsdResourceClient_imageDataForAsset_format_allowPlaceholder_wantURLOnly_networkAccessAllowed_trackCPLDownload_completionHandler___block_invoke_59;
@@ -1276,16 +1276,16 @@ void __90__PLAssetsdResourceClient_sandboxExtensionsForAssetWithUUID_sandboxExte
   v35 = v46;
   v36 = v47;
   v37 = a2;
-  v22 = v20;
+  v22 = uRIRepresentation;
   v31 = v22;
-  v38 = a4;
-  v39 = a5;
-  v40 = a6;
-  v41 = a7;
-  v42 = a8;
+  formatCopy = format;
+  placeholderCopy = placeholder;
+  onlyCopy = only;
+  allowedCopy = allowed;
+  downloadCopy = download;
   v23 = v44;
   v32 = v23;
-  [v21 remoteObjectProxyWithErrorHandler:v43 handler:v30];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v43 handler:v30];
 
   if (v45 == 1)
   {
@@ -1421,14 +1421,14 @@ void __137__PLAssetsdResourceClient_imageDataForAsset_format_allowPlaceholder_wa
   (*(*(v25 + 32) + 16))();
 }
 
-- (BOOL)imageDataForAsset:(id)a3 format:(int)a4 allowPlaceholder:(BOOL)a5 wantURLOnly:(BOOL)a6 networkAccessAllowed:(BOOL)a7 trackCPLDownload:(BOOL)a8 outImageData:(id *)a9 outImageDataInfo:(id *)a10 outCPLDownloadContext:(id *)a11 error:(id *)a12
+- (BOOL)imageDataForAsset:(id)asset format:(int)format allowPlaceholder:(BOOL)placeholder wantURLOnly:(BOOL)only networkAccessAllowed:(BOOL)allowed trackCPLDownload:(BOOL)download outImageData:(id *)data outImageDataInfo:(id *)self0 outCPLDownloadContext:(id *)self1 error:(id *)self2
 {
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v44 = a4;
+  allowedCopy = allowed;
+  onlyCopy = only;
+  placeholderCopy = placeholder;
+  formatCopy = format;
   v68 = *MEMORY[0x1E69E9840];
-  v45 = a3;
+  assetCopy = asset;
   v61 = 0u;
   v62 = 0u;
   v60 = 0u;
@@ -1463,15 +1463,15 @@ void __137__PLAssetsdResourceClient_imageDataForAsset_format_allowPlaceholder_wa
   v65 = __Block_byref_object_copy__11880;
   v66 = __Block_byref_object_dispose__11881;
   v67 = 0;
-  v26 = [v45 URIRepresentation];
-  v43 = v15;
+  uRIRepresentation = [assetCopy URIRepresentation];
+  v43 = placeholderCopy;
   v54 = 0;
   v55 = &v54;
   v56 = 0x3032000000;
   v57 = __Block_byref_object_copy__11880;
   v58 = __Block_byref_object_dispose__11881;
   v59 = 0;
-  if (a10)
+  if (info)
   {
     v27 = objc_alloc_init(PLImageDataInfo);
   }
@@ -1481,7 +1481,7 @@ void __137__PLAssetsdResourceClient_imageDataForAsset_format_allowPlaceholder_wa
     v27 = 0;
   }
 
-  if (a11)
+  if (context)
   {
     v28 = objc_alloc_init(PLCPLDownloadContext);
   }
@@ -1491,13 +1491,13 @@ void __137__PLAssetsdResourceClient_imageDataForAsset_format_allowPlaceholder_wa
     v28 = 0;
   }
 
-  v29 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = __177__PLAssetsdResourceClient_imageDataForAsset_format_allowPlaceholder_wantURLOnly_networkAccessAllowed_trackCPLDownload_outImageData_outImageDataInfo_outCPLDownloadContext_error___block_invoke;
   v53[3] = &unk_1E7932770;
   v53[4] = &buf;
-  v30 = [v29 synchronousRemoteObjectProxyWithErrorHandler:v53];
+  v30 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v53];
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __177__PLAssetsdResourceClient_imageDataForAsset_format_allowPlaceholder_wantURLOnly_networkAccessAllowed_trackCPLDownload_outImageData_outImageDataInfo_outCPLDownloadContext_error___block_invoke_57;
@@ -1505,40 +1505,40 @@ void __137__PLAssetsdResourceClient_imageDataForAsset_format_allowPlaceholder_wa
   v31 = v27;
   v47 = v31;
   v32 = v28;
-  v50 = v13;
-  v51 = a8;
-  v52 = a9 != 0;
+  v50 = allowedCopy;
+  downloadCopy = download;
+  v52 = data != 0;
   v48 = v32;
   v49 = &v54;
-  [v30 imageDataForAssetWithObjectURI:v26 formatID:v44 allowPlaceholder:v43 wantURLOnly:v14 networkAccessAllowed:v13 trackCPLDownload:v46 reply:?];
+  [v30 imageDataForAssetWithObjectURI:uRIRepresentation formatID:formatCopy allowPlaceholder:v43 wantURLOnly:onlyCopy networkAccessAllowed:allowedCopy trackCPLDownload:v46 reply:?];
 
   if (!*(*(&buf + 1) + 40))
   {
-    if (a9)
+    if (data)
     {
-      *a9 = v55[5];
+      *data = v55[5];
     }
 
-    if (a10)
+    if (info)
     {
       v33 = v31;
-      *a10 = v31;
+      *info = v31;
     }
 
-    if (a11)
+    if (context)
     {
       v34 = v32;
-      *a11 = v32;
+      *context = v32;
     }
   }
 
   v35 = *(&buf + 1);
-  if (a12)
+  if (error)
   {
     v36 = *(*(&buf + 1) + 40);
     if (v36)
     {
-      *a12 = v36;
+      *error = v36;
       v35 = *(&buf + 1);
     }
   }
@@ -1628,11 +1628,11 @@ void __177__PLAssetsdResourceClient_imageDataForAsset_format_allowPlaceholder_wa
   }
 }
 
-- (BOOL)fileDescriptorForAssetURL:(id)a3 withAdjustments:(BOOL)a4 fileExtension:(id *)a5 fileDescriptor:(int *)a6 error:(id *)a7
+- (BOOL)fileDescriptorForAssetURL:(id)l withAdjustments:(BOOL)adjustments fileExtension:(id *)extension fileDescriptor:(int *)descriptor error:(id *)error
 {
-  v10 = a4;
+  adjustmentsCopy = adjustments;
   v53 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  lCopy = l;
   v46 = 0u;
   v47 = 0u;
   v45 = 0u;
@@ -1661,16 +1661,16 @@ void __177__PLAssetsdResourceClient_imageDataForAsset_format_allowPlaceholder_wa
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v20, OS_SIGNPOST_INTERVAL_BEGIN, v18, "PLXPC Sync", "%{public}s", &buf, 0xCu);
   }
 
-  if (!v13)
+  if (!lCopy)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:257 description:{@"Invalid parameter not satisfying: %@", @"assetURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:257 description:{@"Invalid parameter not satisfying: %@", @"assetURL"}];
   }
 
-  if (!a6)
+  if (!descriptor)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:258 description:{@"Invalid parameter not satisfying: %@", @"outFileDescriptor"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:258 description:{@"Invalid parameter not satisfying: %@", @"outFileDescriptor"}];
   }
 
   v41 = 0;
@@ -1689,13 +1689,13 @@ void __177__PLAssetsdResourceClient_imageDataForAsset_format_allowPlaceholder_wa
   v38 = __Block_byref_object_copy__11880;
   v39 = __Block_byref_object_dispose__11881;
   v40 = 0;
-  v22 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __104__PLAssetsdResourceClient_fileDescriptorForAssetURL_withAdjustments_fileExtension_fileDescriptor_error___block_invoke;
   v34[3] = &unk_1E7932770;
   v34[4] = &buf;
-  v23 = [v22 synchronousRemoteObjectProxyWithErrorHandler:v34];
+  v23 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v34];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __104__PLAssetsdResourceClient_fileDescriptorForAssetURL_withAdjustments_fileExtension_fileDescriptor_error___block_invoke_53;
@@ -1703,20 +1703,20 @@ void __177__PLAssetsdResourceClient_imageDataForAsset_format_allowPlaceholder_wa
   v33[4] = &v35;
   v33[5] = &v41;
   v33[6] = &buf;
-  v33[7] = a6;
-  [v23 fileDescriptorForPersistentURL:v13 withAdjustments:v10 reply:v33];
+  v33[7] = descriptor;
+  [v23 fileDescriptorForPersistentURL:lCopy withAdjustments:adjustmentsCopy reply:v33];
 
-  if (a5 && (v42[3] & 1) != 0)
+  if (extension && (v42[3] & 1) != 0)
   {
-    *a5 = v36[5];
+    *extension = v36[5];
   }
 
-  if (a7)
+  if (error)
   {
     v24 = *(*(&buf + 1) + 40);
     if (v24)
     {
-      *a7 = v24;
+      *error = v24;
     }
   }
 
@@ -1788,11 +1788,11 @@ void __104__PLAssetsdResourceClient_fileDescriptorForAssetURL_withAdjustments_fi
   }
 }
 
-- (BOOL)sandboxExtensionFileURLForAssetURL:(id)a3 withAdjustments:(BOOL)a4 fileURL:(id *)a5 error:(id *)a6
+- (BOOL)sandboxExtensionFileURLForAssetURL:(id)l withAdjustments:(BOOL)adjustments fileURL:(id *)rL error:(id *)error
 {
-  v8 = a4;
+  adjustmentsCopy = adjustments;
   v51 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  lCopy = l;
   v44 = 0u;
   *sel = 0u;
   v43 = 0u;
@@ -1821,16 +1821,16 @@ void __104__PLAssetsdResourceClient_fileDescriptorForAssetURL_withAdjustments_fi
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v18, OS_SIGNPOST_INTERVAL_BEGIN, v16, "PLXPC Sync", "%{public}s", &buf, 0xCu);
   }
 
-  if (!v8)
+  if (!adjustmentsCopy)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"withAdjustments"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"withAdjustments"}];
   }
 
-  if (!a5)
+  if (!rL)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"outFileURL"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"outFileURL"}];
   }
 
   v39 = 0;
@@ -1849,13 +1849,13 @@ void __104__PLAssetsdResourceClient_fileDescriptorForAssetURL_withAdjustments_fi
   v36 = __Block_byref_object_copy__11880;
   v37 = __Block_byref_object_dispose__11881;
   v38 = 0;
-  v20 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __92__PLAssetsdResourceClient_sandboxExtensionFileURLForAssetURL_withAdjustments_fileURL_error___block_invoke;
   v32[3] = &unk_1E7932770;
   v32[4] = &buf;
-  v21 = [v20 synchronousRemoteObjectProxyWithErrorHandler:v32];
+  v21 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v32];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __92__PLAssetsdResourceClient_sandboxExtensionFileURLForAssetURL_withAdjustments_fileURL_error___block_invoke_47;
@@ -1863,19 +1863,19 @@ void __104__PLAssetsdResourceClient_fileDescriptorForAssetURL_withAdjustments_fi
   v31[4] = &v33;
   v31[5] = &v39;
   v31[6] = &buf;
-  [v21 sandboxExtensionURLForPersistentURL:v11 withAdjustments:v8 reply:v31];
+  [v21 sandboxExtensionURLForPersistentURL:lCopy withAdjustments:adjustmentsCopy reply:v31];
 
   if (*(v40 + 24) == 1)
   {
-    *a5 = v34[5];
+    *rL = v34[5];
   }
 
-  if (a6)
+  if (error)
   {
     v22 = *(*(&buf + 1) + 40);
     if (v22)
     {
-      *a6 = v22;
+      *error = v22;
     }
   }
 
@@ -1948,11 +1948,11 @@ void __92__PLAssetsdResourceClient_sandboxExtensionFileURLForAssetURL_withAdjust
   }
 }
 
-- (BOOL)fileURLForAssetURL:(id)a3 withAdjustments:(BOOL)a4 fileURL:(id *)a5 error:(id *)a6
+- (BOOL)fileURLForAssetURL:(id)l withAdjustments:(BOOL)adjustments fileURL:(id *)rL error:(id *)error
 {
-  v8 = a4;
+  adjustmentsCopy = adjustments;
   v51 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  lCopy = l;
   v44 = 0u;
   *sel = 0u;
   v43 = 0u;
@@ -1981,16 +1981,16 @@ void __92__PLAssetsdResourceClient_sandboxExtensionFileURLForAssetURL_withAdjust
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v18, OS_SIGNPOST_INTERVAL_BEGIN, v16, "PLXPC Sync", "%{public}s", &buf, 0xCu);
   }
 
-  if (!v8)
+  if (!adjustmentsCopy)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"withAdjustments"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"withAdjustments"}];
   }
 
-  if (!a5)
+  if (!rL)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"outFileURL"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"outFileURL"}];
   }
 
   v39 = 0;
@@ -2009,13 +2009,13 @@ void __92__PLAssetsdResourceClient_sandboxExtensionFileURLForAssetURL_withAdjust
   v36 = __Block_byref_object_copy__11880;
   v37 = __Block_byref_object_dispose__11881;
   v38 = 0;
-  v20 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __76__PLAssetsdResourceClient_fileURLForAssetURL_withAdjustments_fileURL_error___block_invoke;
   v32[3] = &unk_1E7932770;
   v32[4] = &buf;
-  v21 = [v20 synchronousRemoteObjectProxyWithErrorHandler:v32];
+  v21 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v32];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __76__PLAssetsdResourceClient_fileURLForAssetURL_withAdjustments_fileURL_error___block_invoke_45;
@@ -2023,19 +2023,19 @@ void __92__PLAssetsdResourceClient_sandboxExtensionFileURLForAssetURL_withAdjust
   v31[4] = &v33;
   v31[5] = &v39;
   v31[6] = &buf;
-  [v21 filePathForPersistentURL:v11 withAdjustments:v8 reply:v31];
+  [v21 filePathForPersistentURL:lCopy withAdjustments:adjustmentsCopy reply:v31];
 
   if (*(v40 + 24) == 1)
   {
-    *a5 = v34[5];
+    *rL = v34[5];
   }
 
-  if (a6)
+  if (error)
   {
     v22 = *(*(&buf + 1) + 40);
     if (v22)
     {
-      *a6 = v22;
+      *error = v22;
     }
   }
 
@@ -2101,12 +2101,12 @@ void __76__PLAssetsdResourceClient_fileURLForAssetURL_withAdjustments_fileURL_er
   }
 }
 
-- (void)addAssetWithURL:(id)a3 toAlbumWithUUID:(id)a4 completionHandler:(id)a5
+- (void)addAssetWithURL:(id)l toAlbumWithUUID:(id)d completionHandler:(id)handler
 {
   v42 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  dCopy = d;
+  handlerCopy = handler;
   v38 = 0u;
   v39 = 0u;
   v37 = 0u;
@@ -2121,30 +2121,30 @@ void __76__PLAssetsdResourceClient_fileURLForAssetURL_withAdjustments_fileURL_er
     os_activity_scope_enter(v13, (&v38 + 8));
   }
 
-  if (!v9)
+  if (!lCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:168 description:{@"Invalid parameter not satisfying: %@", @"assetURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:168 description:{@"Invalid parameter not satisfying: %@", @"assetURL"}];
   }
 
-  if (!v10)
+  if (!dCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:169 description:{@"Invalid parameter not satisfying: %@", @"albumUUID"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:169 description:{@"Invalid parameter not satisfying: %@", @"albumUUID"}];
   }
 
-  if (!v11)
+  if (!handlerCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:170 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:170 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v15 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __77__PLAssetsdResourceClient_addAssetWithURL_toAlbumWithUUID_completionHandler___block_invoke;
   v35[3] = &unk_1E7932DA8;
-  v36 = v11;
+  v36 = handlerCopy;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3254779904;
   v26[2] = __77__PLAssetsdResourceClient_addAssetWithURL_toAlbumWithUUID_completionHandler___block_invoke_35;
@@ -2154,13 +2154,13 @@ void __76__PLAssetsdResourceClient_fileURLForAssetURL_withAdjustments_fileURL_er
   v32 = v38;
   v33 = v39;
   v34 = a2;
-  v16 = v9;
+  v16 = lCopy;
   v27 = v16;
-  v17 = v10;
+  v17 = dCopy;
   v28 = v17;
   v18 = v36;
   v29 = v18;
-  [v15 remoteObjectProxyWithErrorHandler:v35 handler:v26];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v35 handler:v26];
 
   if (v37 == 1)
   {
@@ -2240,11 +2240,11 @@ void __77__PLAssetsdResourceClient_addAssetWithURL_toAlbumWithUUID_completionHan
   [v3 addAssetWithURL:v11 toAlbum:v12 reply:v13];
 }
 
-- (void)addGroupWithName:(id)a3 completionHandler:(id)a4
+- (void)addGroupWithName:(id)name completionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   v31 = 0u;
   v32 = 0u;
   v30 = 0u;
@@ -2259,18 +2259,18 @@ void __77__PLAssetsdResourceClient_addAssetWithURL_toAlbumWithUUID_completionHan
     os_activity_scope_enter(v10, (&v31 + 8));
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:140 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:140 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __62__PLAssetsdResourceClient_addGroupWithName_completionHandler___block_invoke;
   v28[3] = &unk_1E7932DA8;
-  v29 = v8;
+  v29 = handlerCopy;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3254779904;
   v20[2] = __62__PLAssetsdResourceClient_addGroupWithName_completionHandler___block_invoke_23;
@@ -2280,11 +2280,11 @@ void __77__PLAssetsdResourceClient_addAssetWithURL_toAlbumWithUUID_completionHan
   v25 = v31;
   v26 = v32;
   v27 = a2;
-  v13 = v7;
+  v13 = nameCopy;
   v21 = v13;
   v14 = v29;
   v22 = v14;
-  [v12 remoteObjectProxyWithErrorHandler:v28 handler:v20];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v28 handler:v20];
 
   if (v30 == 1)
   {
@@ -2375,11 +2375,11 @@ void __62__PLAssetsdResourceClient_addGroupWithName_completionHandler___block_in
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)saveAssetWithJobDictionary:(id)a3 imageSurface:(__IOSurface *)a4 previewImageSurface:(__IOSurface *)a5 completionHandler:(id)a6
+- (void)saveAssetWithJobDictionary:(id)dictionary imageSurface:(__IOSurface *)surface previewImageSurface:(__IOSurface *)imageSurface completionHandler:(id)handler
 {
   v57 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
+  dictionaryCopy = dictionary;
+  handlerCopy = handler;
   v51 = 0u;
   v52 = 0u;
   v50 = 0u;
@@ -2394,17 +2394,17 @@ void __62__PLAssetsdResourceClient_addGroupWithName_completionHandler___block_in
     os_activity_scope_enter(v14, (&v51 + 8));
   }
 
-  if (!v12)
+  if (!handlerCopy)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceClient.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   v16 = objc_autoreleasePoolPush();
-  v17 = [v11 objectForKeyedSubscript:@"kPLImageWriterPhotoIrisMediaGroupUUID"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"kPLImageWriterPhotoIrisMediaGroupUUID"];
   if (v17)
   {
-    v18 = [v11 objectForKeyedSubscript:@"JobType"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"JobType"];
     v19 = [v18 isEqualToString:@"VideoJob"];
   }
 
@@ -2419,8 +2419,8 @@ void __62__PLAssetsdResourceClient_addGroupWithName_completionHandler___block_in
     v21 = PLGatekeeperXPCGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v11 objectForKeyedSubscript:@"JobType"];
-      v23 = [v11 objectForKeyedSubscript:@"CreatedAssetUUID"];
+      v22 = [dictionaryCopy objectForKeyedSubscript:@"JobType"];
+      v23 = [dictionaryCopy objectForKeyedSubscript:@"CreatedAssetUUID"];
       *buf = 138543618;
       v54 = v22;
       v55 = 2114;
@@ -2428,7 +2428,7 @@ void __62__PLAssetsdResourceClient_addGroupWithName_completionHandler___block_in
       _os_log_impl(&dword_1AA9BD000, v21, OS_LOG_TYPE_DEFAULT, "Sending saveAssetWithJobDictionary:imageSurface:previewImageSurface:completionHander: with job type %{public}@ uuid %{public}@", buf, 0x16u);
     }
 
-    v24 = [v11 objectForKey:@"callStack"];
+    v24 = [dictionaryCopy objectForKey:@"callStack"];
     if (v24)
     {
       v25 = PLGatekeeperXPCGetLog();
@@ -2443,27 +2443,27 @@ void __62__PLAssetsdResourceClient_addGroupWithName_completionHandler___block_in
       }
 
       v27 = [MEMORY[0x1E695DFD8] setWithObject:@"callStack"];
-      _PLJobLogDictionary(v11, 0, v27);
+      _PLJobLogDictionary(dictionaryCopy, 0, v27);
     }
 
-    if (a4)
+    if (surface)
     {
-      CFRetain(a4);
+      CFRetain(surface);
     }
 
-    if (a5)
+    if (imageSurface)
     {
-      CFRetain(a5);
+      CFRetain(imageSurface);
     }
 
-    v28 = [(PLAssetsdBaseClient *)self proxyFactory];
+    proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
     v46[2] = __105__PLAssetsdResourceClient_saveAssetWithJobDictionary_imageSurface_previewImageSurface_completionHandler___block_invoke;
     v46[3] = &unk_1E79326F0;
-    v48 = a4;
-    v49 = a5;
-    v47 = v12;
+    surfaceCopy = surface;
+    imageSurfaceCopy = imageSurface;
+    v47 = handlerCopy;
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3254779904;
     v36[2] = __105__PLAssetsdResourceClient_saveAssetWithJobDictionary_imageSurface_previewImageSurface_completionHandler___block_invoke_16;
@@ -2473,21 +2473,21 @@ void __62__PLAssetsdResourceClient_addGroupWithName_completionHandler___block_in
     v41 = v51;
     v42 = v52;
     v43 = a2;
-    v37 = v11;
-    v44 = a4;
-    v45 = a5;
+    v37 = dictionaryCopy;
+    surfaceCopy2 = surface;
+    imageSurfaceCopy2 = imageSurface;
     v38 = v47;
-    [v28 remoteObjectProxyWithErrorHandler:v46 handler:v36];
+    [proxyFactory remoteObjectProxyWithErrorHandler:v46 handler:v36];
 
-    v29 = v47;
+    error = v47;
   }
 
   else
   {
-    v24 = [(PLAssetJobExecutor *)creationRequestBridge executeCreationRequestWithJobDict:v11 previewImageSurface:a5];
-    v30 = [v24 isSuccess];
-    v29 = [v24 error];
-    (*(v12 + 2))(v12, v30, v11, v29);
+    v24 = [(PLAssetJobExecutor *)creationRequestBridge executeCreationRequestWithJobDict:dictionaryCopy previewImageSurface:imageSurface];
+    isSuccess = [v24 isSuccess];
+    error = [v24 error];
+    (*(handlerCopy + 2))(handlerCopy, isSuccess, dictionaryCopy, error);
   }
 
   objc_autoreleasePoolPop(v16);
@@ -2622,11 +2622,11 @@ void __105__PLAssetsdResourceClient_saveAssetWithJobDictionary_imageSurface_prev
 LABEL_9:
 }
 
-- (PLAssetsdResourceClient)initWithQueue:(id)a3 proxyCreating:(id)a4 proxyGetter:(SEL)a5 clientState:(id)a6
+- (PLAssetsdResourceClient)initWithQueue:(id)queue proxyCreating:(id)creating proxyGetter:(SEL)getter clientState:(id)state
 {
   v10.receiver = self;
   v10.super_class = PLAssetsdResourceClient;
-  v6 = [(PLAssetsdBaseClient *)&v10 initWithQueue:a3 proxyCreating:a4 proxyGetter:a5 clientState:a6];
+  v6 = [(PLAssetsdBaseClient *)&v10 initWithQueue:queue proxyCreating:creating proxyGetter:getter clientState:state];
   if (v6)
   {
     if ((PFIsCamera() & 1) != 0 || (pl_dispatch_once(&PLIsNebulad_didCheck, &__block_literal_global_171_3989), PLIsNebulad_isNebulad == 1))

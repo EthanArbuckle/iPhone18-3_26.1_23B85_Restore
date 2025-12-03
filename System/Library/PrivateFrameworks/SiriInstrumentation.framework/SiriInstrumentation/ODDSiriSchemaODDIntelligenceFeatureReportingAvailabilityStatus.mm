@@ -1,51 +1,51 @@
 @interface ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasBuddyStatus:(BOOL)a3;
-- (void)setHasCurrentMode:(BOOL)a3;
-- (void)setHasDownloadState:(BOOL)a3;
-- (void)setHasHasModelCatalogSubscriptionHashChangedFromLastStatus:(BOOL)a3;
-- (void)setHasInvocationsCountWhileNotAvailable:(BOOL)a3;
-- (void)setHasIsAppleIntelligenceAllowedThroughWaitlist:(BOOL)a3;
-- (void)setHasIsAppleIntelligenceEligible:(BOOL)a3;
-- (void)setHasIsAppleIntelligenceToggled:(BOOL)a3;
-- (void)setHasLastMobileAssetDownloadAttemptErrorUnderlyingCode:(BOOL)a3;
-- (void)setHasMode:(BOOL)a3;
-- (void)setHasPreviousStatus:(BOOL)a3;
-- (void)setHasSubscriptionDownloadStatus:(BOOL)a3;
-- (void)setHasTimeSinceLastAppleIntelligenceToggleInSeconds:(BOOL)a3;
-- (void)setHasTimeSinceLastAvailabilityChangeInSeconds:(BOOL)a3;
-- (void)setHasTimeSinceLastBootInSeconds:(BOOL)a3;
-- (void)setHasTimeSinceLastEligibleChangeInSeconds:(BOOL)a3;
-- (void)setHasTimeSinceLastMobileAssetDownloadAttemptInSeconds:(BOOL)a3;
-- (void)setHasTimeSinceLastMobileAssetDownloadErrorInSeconds:(BOOL)a3;
-- (void)setHasTimeSinceLastModelCatalogSubscriptionHashChangeInSeconds:(BOOL)a3;
-- (void)setHasTimeSinceLastSoftwareUpdateInSeconds:(BOOL)a3;
-- (void)setHasTimeSinceLastStatusChangeInSeconds:(BOOL)a3;
-- (void)setHasTimeSinceLastWaitlistChangeInSeconds:(BOOL)a3;
-- (void)setHasTimeSinceSampledErrorInSeconds:(BOOL)a3;
-- (void)setHasTimeSinceSubscriptionDownloadStatusCompleteInSeconds:(BOOL)a3;
-- (void)setHasUseCase:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasBuddyStatus:(BOOL)status;
+- (void)setHasCurrentMode:(BOOL)mode;
+- (void)setHasDownloadState:(BOOL)state;
+- (void)setHasHasModelCatalogSubscriptionHashChangedFromLastStatus:(BOOL)status;
+- (void)setHasInvocationsCountWhileNotAvailable:(BOOL)available;
+- (void)setHasIsAppleIntelligenceAllowedThroughWaitlist:(BOOL)waitlist;
+- (void)setHasIsAppleIntelligenceEligible:(BOOL)eligible;
+- (void)setHasIsAppleIntelligenceToggled:(BOOL)toggled;
+- (void)setHasLastMobileAssetDownloadAttemptErrorUnderlyingCode:(BOOL)code;
+- (void)setHasMode:(BOOL)mode;
+- (void)setHasPreviousStatus:(BOOL)status;
+- (void)setHasSubscriptionDownloadStatus:(BOOL)status;
+- (void)setHasTimeSinceLastAppleIntelligenceToggleInSeconds:(BOOL)seconds;
+- (void)setHasTimeSinceLastAvailabilityChangeInSeconds:(BOOL)seconds;
+- (void)setHasTimeSinceLastBootInSeconds:(BOOL)seconds;
+- (void)setHasTimeSinceLastEligibleChangeInSeconds:(BOOL)seconds;
+- (void)setHasTimeSinceLastMobileAssetDownloadAttemptInSeconds:(BOOL)seconds;
+- (void)setHasTimeSinceLastMobileAssetDownloadErrorInSeconds:(BOOL)seconds;
+- (void)setHasTimeSinceLastModelCatalogSubscriptionHashChangeInSeconds:(BOOL)seconds;
+- (void)setHasTimeSinceLastSoftwareUpdateInSeconds:(BOOL)seconds;
+- (void)setHasTimeSinceLastStatusChangeInSeconds:(BOOL)seconds;
+- (void)setHasTimeSinceLastWaitlistChangeInSeconds:(BOOL)seconds;
+- (void)setHasTimeSinceSampledErrorInSeconds:(BOOL)seconds;
+- (void)setHasTimeSinceSubscriptionDownloadStatusCompleteInSeconds:(BOOL)seconds;
+- (void)setHasUseCase:(BOOL)case;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus
 
-- (ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v72.receiver = self;
   v72.super_class = ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus;
   v5 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)&v72 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"assistantDimensions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"assistantDimensions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
       [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)v5 setAssistantDimensions:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"appleIntelligenceLocale"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"appleIntelligenceLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,21 +61,21 @@
       [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)v5 setAppleIntelligenceLocale:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"currentStatus"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"currentStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus setCurrentStatus:](v5, "setCurrentStatus:", [v10 unsignedLongLongValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"previousStatus"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"previousStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus setPreviousStatus:](v5, "setPreviousStatus:", [v11 unsignedLongLongValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"timeSinceLastStatusChangeInSeconds"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastStatusChangeInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,7 +83,7 @@
       [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)v5 setTimeSinceLastStatusChangeInSeconds:?];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"timeSinceLastAvailabilityChangeInSeconds"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastAvailabilityChangeInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,7 +92,7 @@
     }
 
     v61 = v8;
-    v14 = [v4 objectForKeyedSubscript:@"hasModelCatalogSubscriptionHashChangedFromLastStatus"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"hasModelCatalogSubscriptionHashChangedFromLastStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
     }
 
     v56 = v14;
-    v15 = [v4 objectForKeyedSubscript:@"isAppleIntelligenceEligible"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isAppleIntelligenceEligible"];
     objc_opt_class();
     v71 = v15;
     if (objc_opt_isKindOfClass())
@@ -109,7 +109,7 @@
     }
 
     v16 = v6;
-    v17 = [v4 objectForKeyedSubscript:@"isAppleIntelligenceAllowedThroughWaitlist"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"isAppleIntelligenceAllowedThroughWaitlist"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -117,7 +117,7 @@
     }
 
     v55 = v17;
-    v18 = [v4 objectForKeyedSubscript:@"isAppleIntelligenceToggled"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"isAppleIntelligenceToggled"];
     objc_opt_class();
     v70 = v18;
     if (objc_opt_isKindOfClass())
@@ -125,7 +125,7 @@
       -[ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus setIsAppleIntelligenceToggled:](v5, "setIsAppleIntelligenceToggled:", [v18 BOOLValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"timeSinceLastEligibleChangeInSeconds"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastEligibleChangeInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -134,7 +134,7 @@
     }
 
     v54 = v19;
-    v20 = [v4 objectForKeyedSubscript:@"timeSinceLastWaitlistChangeInSeconds"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastWaitlistChangeInSeconds"];
     objc_opt_class();
     v69 = v20;
     v62 = v16;
@@ -144,7 +144,7 @@
       [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)v5 setTimeSinceLastWaitlistChangeInSeconds:?];
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"timeSinceLastAppleIntelligenceToggleInSeconds"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastAppleIntelligenceToggleInSeconds"];
     objc_opt_class();
     v68 = v21;
     v57 = v13;
@@ -154,7 +154,7 @@
       [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)v5 setTimeSinceLastAppleIntelligenceToggleInSeconds:?];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"timeSinceLastBootInSeconds"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastBootInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -162,7 +162,7 @@
       [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)v5 setTimeSinceLastBootInSeconds:?];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"timeSinceLastMobileAssetDownloadAttemptInSeconds"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastMobileAssetDownloadAttemptInSeconds"];
     objc_opt_class();
     v67 = v23;
     if (objc_opt_isKindOfClass())
@@ -171,7 +171,7 @@
       [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)v5 setTimeSinceLastMobileAssetDownloadAttemptInSeconds:?];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"timeSinceLastMobileAssetDownloadErrorInSeconds"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastMobileAssetDownloadErrorInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -180,7 +180,7 @@
     }
 
     v25 = v10;
-    v26 = [v4 objectForKeyedSubscript:@"downloadState"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"downloadState"];
     objc_opt_class();
     v66 = v26;
     if (objc_opt_isKindOfClass())
@@ -189,7 +189,7 @@
     }
 
     v27 = v11;
-    v28 = [v4 objectForKeyedSubscript:@"timeSinceLastModelCatalogSubscriptionHashChangeInSeconds"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastModelCatalogSubscriptionHashChangeInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -197,7 +197,7 @@
       [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)v5 setTimeSinceLastModelCatalogSubscriptionHashChangeInSeconds:?];
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"useCase"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"useCase"];
     objc_opt_class();
     v65 = v29;
     if (objc_opt_isKindOfClass())
@@ -205,7 +205,7 @@
       -[ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus setUseCase:](v5, "setUseCase:", [v29 intValue]);
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"timeSinceLastSoftwareUpdateInSeconds"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastSoftwareUpdateInSeconds"];
     objc_opt_class();
     v64 = v30;
     v31 = v27;
@@ -215,7 +215,7 @@
       [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)v5 setTimeSinceLastSoftwareUpdateInSeconds:?];
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"timeSinceSampledErrorInSeconds"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceSampledErrorInSeconds"];
     objc_opt_class();
     v63 = v32;
     if (objc_opt_isKindOfClass())
@@ -225,7 +225,7 @@
     }
 
     v58 = v12;
-    v33 = [v4 objectForKeyedSubscript:@"buddyStatus"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"buddyStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -234,7 +234,7 @@
 
     v51 = v33;
     v60 = v25;
-    v34 = [v4 objectForKeyedSubscript:@"buildVersionPriorToSoftwareUpdate"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"buildVersionPriorToSoftwareUpdate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -242,7 +242,7 @@
       [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)v5 setBuildVersionPriorToSoftwareUpdate:v35];
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"invocationsCountWhileNotAvailable"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"invocationsCountWhileNotAvailable"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -251,7 +251,7 @@
 
     v52 = v28;
     v59 = v31;
-    v37 = [v4 objectForKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorUnderlyingCode"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorUnderlyingCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -259,7 +259,7 @@
     }
 
     v48 = v37;
-    v38 = [v4 objectForKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorUnderlyingDomain"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorUnderlyingDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -268,14 +268,14 @@
     }
 
     v50 = v34;
-    v40 = [v4 objectForKeyedSubscript:@"mode"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"mode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus setMode:](v5, "setMode:", [v40 intValue]);
     }
 
-    v41 = [v4 objectForKeyedSubscript:@"sampledErrorAsset"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"sampledErrorAsset"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -284,7 +284,7 @@
     }
 
     v53 = v24;
-    v43 = [v4 objectForKeyedSubscript:@"subscriptionDownloadStatus"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"subscriptionDownloadStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -292,7 +292,7 @@
     }
 
     v49 = v22;
-    v44 = [v4 objectForKeyedSubscript:@"timeSinceSubscriptionDownloadStatusCompleteInSeconds"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceSubscriptionDownloadStatusCompleteInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -300,7 +300,7 @@
       [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)v5 setTimeSinceSubscriptionDownloadStatusCompleteInSeconds:?];
     }
 
-    v45 = [v4 objectForKeyedSubscript:@"currentMode"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"currentMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -313,30 +313,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus)initWithJSON:(id)a3
+- (ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -349,49 +349,49 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_appleIntelligenceLocale)
   {
-    v4 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self appleIntelligenceLocale];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    appleIntelligenceLocale = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self appleIntelligenceLocale];
+    dictionaryRepresentation = [appleIntelligenceLocale dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"appleIntelligenceLocale"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"appleIntelligenceLocale"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"appleIntelligenceLocale"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"appleIntelligenceLocale"];
     }
   }
 
   if (self->_assistantDimensions)
   {
-    v7 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self assistantDimensions];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    assistantDimensions = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self assistantDimensions];
+    dictionaryRepresentation2 = [assistantDimensions dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"assistantDimensions"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"assistantDimensions"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"assistantDimensions"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"assistantDimensions"];
     }
   }
 
   if ((*(&self->_has + 2) & 8) != 0)
   {
-    v10 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self buddyStatus];
+    buddyStatus = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self buddyStatus];
     v11 = @"SADBUDDYOPTINSTATE_UNKNOWN";
-    if (v10 == 1)
+    if (buddyStatus == 1)
     {
       v11 = @"SADBUDDYOPTINSTATE_OPTEDIN";
     }
 
-    if (v10 == 2)
+    if (buddyStatus == 2)
     {
       v12 = @"SADBUDDYOPTINSTATE_OPTEDOUT";
     }
@@ -401,14 +401,14 @@
       v12 = v11;
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"buddyStatus"];
+    [dictionary setObject:v12 forKeyedSubscript:@"buddyStatus"];
   }
 
   if (self->_buildVersionPriorToSoftwareUpdate)
   {
-    v13 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self buildVersionPriorToSoftwareUpdate];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"buildVersionPriorToSoftwareUpdate"];
+    buildVersionPriorToSoftwareUpdate = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self buildVersionPriorToSoftwareUpdate];
+    v14 = [buildVersionPriorToSoftwareUpdate copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"buildVersionPriorToSoftwareUpdate"];
   }
 
   has = self->_has;
@@ -425,14 +425,14 @@
       v17 = off_1E78DD838[v16];
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"currentMode"];
+    [dictionary setObject:v17 forKeyedSubscript:@"currentMode"];
     has = self->_has;
   }
 
   if (*&has)
   {
     v27 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus currentStatus](self, "currentStatus")}];
-    [v3 setObject:v27 forKeyedSubscript:@"currentStatus"];
+    [dictionary setObject:v27 forKeyedSubscript:@"currentStatus"];
 
     has = self->_has;
     if ((*&has & 0x4000) == 0)
@@ -463,7 +463,7 @@ LABEL_27:
     v29 = off_1E78DD858[v28];
   }
 
-  [v3 setObject:v29 forKeyedSubscript:@"downloadState"];
+  [dictionary setObject:v29 forKeyedSubscript:@"downloadState"];
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -478,7 +478,7 @@ LABEL_28:
 
 LABEL_67:
   v32 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus hasModelCatalogSubscriptionHashChangedFromLastStatus](self, "hasModelCatalogSubscriptionHashChangedFromLastStatus")}];
-  [v3 setObject:v32 forKeyedSubscript:@"hasModelCatalogSubscriptionHashChangedFromLastStatus"];
+  [dictionary setObject:v32 forKeyedSubscript:@"hasModelCatalogSubscriptionHashChangedFromLastStatus"];
 
   has = self->_has;
   if ((*&has & 0x100000) == 0)
@@ -494,7 +494,7 @@ LABEL_29:
 
 LABEL_68:
   v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus invocationsCountWhileNotAvailable](self, "invocationsCountWhileNotAvailable")}];
-  [v3 setObject:v33 forKeyedSubscript:@"invocationsCountWhileNotAvailable"];
+  [dictionary setObject:v33 forKeyedSubscript:@"invocationsCountWhileNotAvailable"];
 
   has = self->_has;
   if ((*&has & 0x40) == 0)
@@ -510,7 +510,7 @@ LABEL_30:
 
 LABEL_69:
   v34 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus isAppleIntelligenceAllowedThroughWaitlist](self, "isAppleIntelligenceAllowedThroughWaitlist")}];
-  [v3 setObject:v34 forKeyedSubscript:@"isAppleIntelligenceAllowedThroughWaitlist"];
+  [dictionary setObject:v34 forKeyedSubscript:@"isAppleIntelligenceAllowedThroughWaitlist"];
 
   has = self->_has;
   if ((*&has & 0x20) == 0)
@@ -526,7 +526,7 @@ LABEL_31:
 
 LABEL_70:
   v35 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus isAppleIntelligenceEligible](self, "isAppleIntelligenceEligible")}];
-  [v3 setObject:v35 forKeyedSubscript:@"isAppleIntelligenceEligible"];
+  [dictionary setObject:v35 forKeyedSubscript:@"isAppleIntelligenceEligible"];
 
   has = self->_has;
   if ((*&has & 0x80) == 0)
@@ -542,21 +542,21 @@ LABEL_32:
 
 LABEL_71:
   v36 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus isAppleIntelligenceToggled](self, "isAppleIntelligenceToggled")}];
-  [v3 setObject:v36 forKeyedSubscript:@"isAppleIntelligenceToggled"];
+  [dictionary setObject:v36 forKeyedSubscript:@"isAppleIntelligenceToggled"];
 
   if ((*&self->_has & 0x200000) != 0)
   {
 LABEL_33:
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus lastMobileAssetDownloadAttemptErrorUnderlyingCode](self, "lastMobileAssetDownloadAttemptErrorUnderlyingCode")}];
-    [v3 setObject:v18 forKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorUnderlyingCode"];
+    [dictionary setObject:v18 forKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorUnderlyingCode"];
   }
 
 LABEL_34:
   if (self->_lastMobileAssetDownloadAttemptErrorUnderlyingDomain)
   {
-    v19 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
-    v20 = [v19 copy];
-    [v3 setObject:v20 forKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorUnderlyingDomain"];
+    lastMobileAssetDownloadAttemptErrorUnderlyingDomain = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
+    v20 = [lastMobileAssetDownloadAttemptErrorUnderlyingDomain copy];
+    [dictionary setObject:v20 forKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorUnderlyingDomain"];
   }
 
   v21 = self->_has;
@@ -572,21 +572,21 @@ LABEL_34:
       v22 = @"ORCHSIRIUNDERSTANDINGONDEVICEMODE_FULL_UOD";
     }
 
-    [v3 setObject:v22 forKeyedSubscript:@"mode"];
+    [dictionary setObject:v22 forKeyedSubscript:@"mode"];
     v21 = self->_has;
   }
 
   if ((*&v21 & 2) != 0)
   {
     v23 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus previousStatus](self, "previousStatus")}];
-    [v3 setObject:v23 forKeyedSubscript:@"previousStatus"];
+    [dictionary setObject:v23 forKeyedSubscript:@"previousStatus"];
   }
 
   if (self->_sampledErrorAsset)
   {
-    v24 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self sampledErrorAsset];
-    v25 = [v24 copy];
-    [v3 setObject:v25 forKeyedSubscript:@"sampledErrorAsset"];
+    sampledErrorAsset = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self sampledErrorAsset];
+    v25 = [sampledErrorAsset copy];
+    [dictionary setObject:v25 forKeyedSubscript:@"sampledErrorAsset"];
   }
 
   v26 = self->_has;
@@ -603,7 +603,7 @@ LABEL_34:
       v31 = off_1E78DD878[v30];
     }
 
-    [v3 setObject:v31 forKeyedSubscript:@"subscriptionDownloadStatus"];
+    [dictionary setObject:v31 forKeyedSubscript:@"subscriptionDownloadStatus"];
     v26 = self->_has;
     if ((*&v26 & 0x400) == 0)
     {
@@ -625,7 +625,7 @@ LABEL_47:
   v37 = MEMORY[0x1E696AD98];
   [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self timeSinceLastAppleIntelligenceToggleInSeconds];
   v38 = [v37 numberWithDouble:?];
-  [v3 setObject:v38 forKeyedSubscript:@"timeSinceLastAppleIntelligenceToggleInSeconds"];
+  [dictionary setObject:v38 forKeyedSubscript:@"timeSinceLastAppleIntelligenceToggleInSeconds"];
 
   v26 = self->_has;
   if ((*&v26 & 8) == 0)
@@ -643,7 +643,7 @@ LABEL_76:
   v39 = MEMORY[0x1E696AD98];
   [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self timeSinceLastAvailabilityChangeInSeconds];
   v40 = [v39 numberWithDouble:?];
-  [v3 setObject:v40 forKeyedSubscript:@"timeSinceLastAvailabilityChangeInSeconds"];
+  [dictionary setObject:v40 forKeyedSubscript:@"timeSinceLastAvailabilityChangeInSeconds"];
 
   v26 = self->_has;
   if ((*&v26 & 0x800) == 0)
@@ -661,7 +661,7 @@ LABEL_77:
   v41 = MEMORY[0x1E696AD98];
   [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self timeSinceLastBootInSeconds];
   v42 = [v41 numberWithDouble:?];
-  [v3 setObject:v42 forKeyedSubscript:@"timeSinceLastBootInSeconds"];
+  [dictionary setObject:v42 forKeyedSubscript:@"timeSinceLastBootInSeconds"];
 
   v26 = self->_has;
   if ((*&v26 & 0x100) == 0)
@@ -679,7 +679,7 @@ LABEL_78:
   v43 = MEMORY[0x1E696AD98];
   [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self timeSinceLastEligibleChangeInSeconds];
   v44 = [v43 numberWithDouble:?];
-  [v3 setObject:v44 forKeyedSubscript:@"timeSinceLastEligibleChangeInSeconds"];
+  [dictionary setObject:v44 forKeyedSubscript:@"timeSinceLastEligibleChangeInSeconds"];
 
   v26 = self->_has;
   if ((*&v26 & 0x1000) == 0)
@@ -697,7 +697,7 @@ LABEL_79:
   v45 = MEMORY[0x1E696AD98];
   [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self timeSinceLastMobileAssetDownloadAttemptInSeconds];
   v46 = [v45 numberWithDouble:?];
-  [v3 setObject:v46 forKeyedSubscript:@"timeSinceLastMobileAssetDownloadAttemptInSeconds"];
+  [dictionary setObject:v46 forKeyedSubscript:@"timeSinceLastMobileAssetDownloadAttemptInSeconds"];
 
   v26 = self->_has;
   if ((*&v26 & 0x2000) == 0)
@@ -715,7 +715,7 @@ LABEL_80:
   v47 = MEMORY[0x1E696AD98];
   [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self timeSinceLastMobileAssetDownloadErrorInSeconds];
   v48 = [v47 numberWithDouble:?];
-  [v3 setObject:v48 forKeyedSubscript:@"timeSinceLastMobileAssetDownloadErrorInSeconds"];
+  [dictionary setObject:v48 forKeyedSubscript:@"timeSinceLastMobileAssetDownloadErrorInSeconds"];
 
   v26 = self->_has;
   if ((*&v26 & 0x8000) == 0)
@@ -733,7 +733,7 @@ LABEL_81:
   v49 = MEMORY[0x1E696AD98];
   [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self timeSinceLastModelCatalogSubscriptionHashChangeInSeconds];
   v50 = [v49 numberWithDouble:?];
-  [v3 setObject:v50 forKeyedSubscript:@"timeSinceLastModelCatalogSubscriptionHashChangeInSeconds"];
+  [dictionary setObject:v50 forKeyedSubscript:@"timeSinceLastModelCatalogSubscriptionHashChangeInSeconds"];
 
   v26 = self->_has;
   if ((*&v26 & 0x20000) == 0)
@@ -751,7 +751,7 @@ LABEL_82:
   v51 = MEMORY[0x1E696AD98];
   [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self timeSinceLastSoftwareUpdateInSeconds];
   v52 = [v51 numberWithDouble:?];
-  [v3 setObject:v52 forKeyedSubscript:@"timeSinceLastSoftwareUpdateInSeconds"];
+  [dictionary setObject:v52 forKeyedSubscript:@"timeSinceLastSoftwareUpdateInSeconds"];
 
   v26 = self->_has;
   if ((*&v26 & 4) == 0)
@@ -769,7 +769,7 @@ LABEL_83:
   v53 = MEMORY[0x1E696AD98];
   [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self timeSinceLastStatusChangeInSeconds];
   v54 = [v53 numberWithDouble:?];
-  [v3 setObject:v54 forKeyedSubscript:@"timeSinceLastStatusChangeInSeconds"];
+  [dictionary setObject:v54 forKeyedSubscript:@"timeSinceLastStatusChangeInSeconds"];
 
   v26 = self->_has;
   if ((*&v26 & 0x200) == 0)
@@ -787,7 +787,7 @@ LABEL_84:
   v55 = MEMORY[0x1E696AD98];
   [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self timeSinceLastWaitlistChangeInSeconds];
   v56 = [v55 numberWithDouble:?];
-  [v3 setObject:v56 forKeyedSubscript:@"timeSinceLastWaitlistChangeInSeconds"];
+  [dictionary setObject:v56 forKeyedSubscript:@"timeSinceLastWaitlistChangeInSeconds"];
 
   v26 = self->_has;
   if ((*&v26 & 0x40000) == 0)
@@ -802,7 +802,7 @@ LABEL_86:
     v59 = MEMORY[0x1E696AD98];
     [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self timeSinceSubscriptionDownloadStatusCompleteInSeconds];
     v60 = [v59 numberWithDouble:?];
-    [v3 setObject:v60 forKeyedSubscript:@"timeSinceSubscriptionDownloadStatusCompleteInSeconds"];
+    [dictionary setObject:v60 forKeyedSubscript:@"timeSinceSubscriptionDownloadStatusCompleteInSeconds"];
 
     if ((*&self->_has & 0x10000) == 0)
     {
@@ -816,7 +816,7 @@ LABEL_85:
   v57 = MEMORY[0x1E696AD98];
   [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self timeSinceSampledErrorInSeconds];
   v58 = [v57 numberWithDouble:?];
-  [v3 setObject:v58 forKeyedSubscript:@"timeSinceSampledErrorInSeconds"];
+  [dictionary setObject:v58 forKeyedSubscript:@"timeSinceSampledErrorInSeconds"];
 
   v26 = self->_has;
   if ((*&v26 & 0x1000000) != 0)
@@ -842,12 +842,12 @@ LABEL_87:
     v62 = off_1E78DD8B8[v61];
   }
 
-  [v3 setObject:v62 forKeyedSubscript:@"useCase"];
+  [dictionary setObject:v62 forKeyedSubscript:@"useCase"];
 LABEL_91:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v63 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v63 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -1447,28 +1447,28 @@ LABEL_124:
   return v81 ^ v82 ^ v80 ^ v79 ^ v71 ^ v78 ^ v77 ^ v76 ^ v75 ^ v74 ^ v73 ^ v72 ^ v22 ^ v26 ^ v30 ^ v34 ^ v70 ^ v69 ^ v68 ^ v45 ^ v46 ^ v67 ^ v66 ^ v65 ^ v64 ^ v63 ^ v51 ^ v52 ^ v56 ^ v60 ^ v61;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_116;
   }
 
-  v5 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self assistantDimensions];
-  v6 = [v4 assistantDimensions];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self assistantDimensions];
+  assistantDimensions2 = [equalCopy assistantDimensions];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
     goto LABEL_115;
   }
 
-  v7 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self assistantDimensions];
-  if (v7)
+  assistantDimensions3 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self assistantDimensions];
+  if (assistantDimensions3)
   {
-    v8 = v7;
-    v9 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self assistantDimensions];
-    v10 = [v4 assistantDimensions];
-    v11 = [v9 isEqual:v10];
+    v8 = assistantDimensions3;
+    assistantDimensions4 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self assistantDimensions];
+    assistantDimensions5 = [equalCopy assistantDimensions];
+    v11 = [assistantDimensions4 isEqual:assistantDimensions5];
 
     if (!v11)
     {
@@ -1480,20 +1480,20 @@ LABEL_124:
   {
   }
 
-  v5 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self appleIntelligenceLocale];
-  v6 = [v4 appleIntelligenceLocale];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self appleIntelligenceLocale];
+  assistantDimensions2 = [equalCopy appleIntelligenceLocale];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
     goto LABEL_115;
   }
 
-  v12 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self appleIntelligenceLocale];
-  if (v12)
+  appleIntelligenceLocale = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self appleIntelligenceLocale];
+  if (appleIntelligenceLocale)
   {
-    v13 = v12;
-    v14 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self appleIntelligenceLocale];
-    v15 = [v4 appleIntelligenceLocale];
-    v16 = [v14 isEqual:v15];
+    v13 = appleIntelligenceLocale;
+    appleIntelligenceLocale2 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self appleIntelligenceLocale];
+    appleIntelligenceLocale3 = [equalCopy appleIntelligenceLocale];
+    v16 = [appleIntelligenceLocale2 isEqual:appleIntelligenceLocale3];
 
     if (!v16)
     {
@@ -1506,7 +1506,7 @@ LABEL_124:
   }
 
   has = self->_has;
-  v18 = v4[55];
+  v18 = equalCopy[55];
   if ((*&has & 1) != (v18 & 1))
   {
     goto LABEL_116;
@@ -1515,13 +1515,13 @@ LABEL_124:
   if (*&has)
   {
     currentStatus = self->_currentStatus;
-    if (currentStatus != [v4 currentStatus])
+    if (currentStatus != [equalCopy currentStatus])
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v20 = (*&has >> 1) & 1;
@@ -1533,13 +1533,13 @@ LABEL_124:
   if (v20)
   {
     previousStatus = self->_previousStatus;
-    if (previousStatus != [v4 previousStatus])
+    if (previousStatus != [equalCopy previousStatus])
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v22 = (*&has >> 2) & 1;
@@ -1551,14 +1551,14 @@ LABEL_124:
   if (v22)
   {
     timeSinceLastStatusChangeInSeconds = self->_timeSinceLastStatusChangeInSeconds;
-    [v4 timeSinceLastStatusChangeInSeconds];
+    [equalCopy timeSinceLastStatusChangeInSeconds];
     if (timeSinceLastStatusChangeInSeconds != v24)
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v25 = (*&has >> 3) & 1;
@@ -1570,14 +1570,14 @@ LABEL_124:
   if (v25)
   {
     timeSinceLastAvailabilityChangeInSeconds = self->_timeSinceLastAvailabilityChangeInSeconds;
-    [v4 timeSinceLastAvailabilityChangeInSeconds];
+    [equalCopy timeSinceLastAvailabilityChangeInSeconds];
     if (timeSinceLastAvailabilityChangeInSeconds != v27)
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v28 = (*&has >> 4) & 1;
@@ -1589,13 +1589,13 @@ LABEL_124:
   if (v28)
   {
     hasModelCatalogSubscriptionHashChangedFromLastStatus = self->_hasModelCatalogSubscriptionHashChangedFromLastStatus;
-    if (hasModelCatalogSubscriptionHashChangedFromLastStatus != [v4 hasModelCatalogSubscriptionHashChangedFromLastStatus])
+    if (hasModelCatalogSubscriptionHashChangedFromLastStatus != [equalCopy hasModelCatalogSubscriptionHashChangedFromLastStatus])
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v30 = (*&has >> 5) & 1;
@@ -1607,13 +1607,13 @@ LABEL_124:
   if (v30)
   {
     isAppleIntelligenceEligible = self->_isAppleIntelligenceEligible;
-    if (isAppleIntelligenceEligible != [v4 isAppleIntelligenceEligible])
+    if (isAppleIntelligenceEligible != [equalCopy isAppleIntelligenceEligible])
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v32 = (*&has >> 6) & 1;
@@ -1625,13 +1625,13 @@ LABEL_124:
   if (v32)
   {
     isAppleIntelligenceAllowedThroughWaitlist = self->_isAppleIntelligenceAllowedThroughWaitlist;
-    if (isAppleIntelligenceAllowedThroughWaitlist != [v4 isAppleIntelligenceAllowedThroughWaitlist])
+    if (isAppleIntelligenceAllowedThroughWaitlist != [equalCopy isAppleIntelligenceAllowedThroughWaitlist])
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v34 = (*&has >> 7) & 1;
@@ -1643,13 +1643,13 @@ LABEL_124:
   if (v34)
   {
     isAppleIntelligenceToggled = self->_isAppleIntelligenceToggled;
-    if (isAppleIntelligenceToggled != [v4 isAppleIntelligenceToggled])
+    if (isAppleIntelligenceToggled != [equalCopy isAppleIntelligenceToggled])
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v36 = (*&has >> 8) & 1;
@@ -1661,14 +1661,14 @@ LABEL_124:
   if (v36)
   {
     timeSinceLastEligibleChangeInSeconds = self->_timeSinceLastEligibleChangeInSeconds;
-    [v4 timeSinceLastEligibleChangeInSeconds];
+    [equalCopy timeSinceLastEligibleChangeInSeconds];
     if (timeSinceLastEligibleChangeInSeconds != v38)
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v39 = (*&has >> 9) & 1;
@@ -1680,14 +1680,14 @@ LABEL_124:
   if (v39)
   {
     timeSinceLastWaitlistChangeInSeconds = self->_timeSinceLastWaitlistChangeInSeconds;
-    [v4 timeSinceLastWaitlistChangeInSeconds];
+    [equalCopy timeSinceLastWaitlistChangeInSeconds];
     if (timeSinceLastWaitlistChangeInSeconds != v41)
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v42 = (*&has >> 10) & 1;
@@ -1699,14 +1699,14 @@ LABEL_124:
   if (v42)
   {
     timeSinceLastAppleIntelligenceToggleInSeconds = self->_timeSinceLastAppleIntelligenceToggleInSeconds;
-    [v4 timeSinceLastAppleIntelligenceToggleInSeconds];
+    [equalCopy timeSinceLastAppleIntelligenceToggleInSeconds];
     if (timeSinceLastAppleIntelligenceToggleInSeconds != v44)
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v45 = (*&has >> 11) & 1;
@@ -1718,14 +1718,14 @@ LABEL_124:
   if (v45)
   {
     timeSinceLastBootInSeconds = self->_timeSinceLastBootInSeconds;
-    [v4 timeSinceLastBootInSeconds];
+    [equalCopy timeSinceLastBootInSeconds];
     if (timeSinceLastBootInSeconds != v47)
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v48 = (*&has >> 12) & 1;
@@ -1737,14 +1737,14 @@ LABEL_124:
   if (v48)
   {
     timeSinceLastMobileAssetDownloadAttemptInSeconds = self->_timeSinceLastMobileAssetDownloadAttemptInSeconds;
-    [v4 timeSinceLastMobileAssetDownloadAttemptInSeconds];
+    [equalCopy timeSinceLastMobileAssetDownloadAttemptInSeconds];
     if (timeSinceLastMobileAssetDownloadAttemptInSeconds != v50)
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v51 = (*&has >> 13) & 1;
@@ -1756,14 +1756,14 @@ LABEL_124:
   if (v51)
   {
     timeSinceLastMobileAssetDownloadErrorInSeconds = self->_timeSinceLastMobileAssetDownloadErrorInSeconds;
-    [v4 timeSinceLastMobileAssetDownloadErrorInSeconds];
+    [equalCopy timeSinceLastMobileAssetDownloadErrorInSeconds];
     if (timeSinceLastMobileAssetDownloadErrorInSeconds != v53)
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v54 = (*&has >> 14) & 1;
@@ -1775,13 +1775,13 @@ LABEL_124:
   if (v54)
   {
     downloadState = self->_downloadState;
-    if (downloadState != [v4 downloadState])
+    if (downloadState != [equalCopy downloadState])
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v56 = (*&has >> 15) & 1;
@@ -1793,14 +1793,14 @@ LABEL_124:
   if (v56)
   {
     timeSinceLastModelCatalogSubscriptionHashChangeInSeconds = self->_timeSinceLastModelCatalogSubscriptionHashChangeInSeconds;
-    [v4 timeSinceLastModelCatalogSubscriptionHashChangeInSeconds];
+    [equalCopy timeSinceLastModelCatalogSubscriptionHashChangeInSeconds];
     if (timeSinceLastModelCatalogSubscriptionHashChangeInSeconds != v58)
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v59 = HIWORD(*&has) & 1;
@@ -1812,13 +1812,13 @@ LABEL_124:
   if (v59)
   {
     useCase = self->_useCase;
-    if (useCase != [v4 useCase])
+    if (useCase != [equalCopy useCase])
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v61 = (*&has >> 17) & 1;
@@ -1830,14 +1830,14 @@ LABEL_124:
   if (v61)
   {
     timeSinceLastSoftwareUpdateInSeconds = self->_timeSinceLastSoftwareUpdateInSeconds;
-    [v4 timeSinceLastSoftwareUpdateInSeconds];
+    [equalCopy timeSinceLastSoftwareUpdateInSeconds];
     if (timeSinceLastSoftwareUpdateInSeconds != v63)
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v64 = (*&has >> 18) & 1;
@@ -1849,14 +1849,14 @@ LABEL_124:
   if (v64)
   {
     timeSinceSampledErrorInSeconds = self->_timeSinceSampledErrorInSeconds;
-    [v4 timeSinceSampledErrorInSeconds];
+    [equalCopy timeSinceSampledErrorInSeconds];
     if (timeSinceSampledErrorInSeconds != v66)
     {
       goto LABEL_116;
     }
 
     has = self->_has;
-    v18 = v4[55];
+    v18 = equalCopy[55];
   }
 
   v67 = (*&has >> 19) & 1;
@@ -1868,26 +1868,26 @@ LABEL_124:
   if (v67)
   {
     buddyStatus = self->_buddyStatus;
-    if (buddyStatus != [v4 buddyStatus])
+    if (buddyStatus != [equalCopy buddyStatus])
     {
       goto LABEL_116;
     }
   }
 
-  v5 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self buildVersionPriorToSoftwareUpdate];
-  v6 = [v4 buildVersionPriorToSoftwareUpdate];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self buildVersionPriorToSoftwareUpdate];
+  assistantDimensions2 = [equalCopy buildVersionPriorToSoftwareUpdate];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
     goto LABEL_115;
   }
 
-  v69 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self buildVersionPriorToSoftwareUpdate];
-  if (v69)
+  buildVersionPriorToSoftwareUpdate = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self buildVersionPriorToSoftwareUpdate];
+  if (buildVersionPriorToSoftwareUpdate)
   {
-    v70 = v69;
-    v71 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self buildVersionPriorToSoftwareUpdate];
-    v72 = [v4 buildVersionPriorToSoftwareUpdate];
-    v73 = [v71 isEqual:v72];
+    v70 = buildVersionPriorToSoftwareUpdate;
+    buildVersionPriorToSoftwareUpdate2 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self buildVersionPriorToSoftwareUpdate];
+    buildVersionPriorToSoftwareUpdate3 = [equalCopy buildVersionPriorToSoftwareUpdate];
+    v73 = [buildVersionPriorToSoftwareUpdate2 isEqual:buildVersionPriorToSoftwareUpdate3];
 
     if (!v73)
     {
@@ -1901,7 +1901,7 @@ LABEL_124:
 
   v74 = self->_has;
   v75 = (*&v74 >> 20) & 1;
-  v76 = v4[55];
+  v76 = equalCopy[55];
   if (v75 != ((v76 >> 20) & 1))
   {
     goto LABEL_116;
@@ -1910,13 +1910,13 @@ LABEL_124:
   if (v75)
   {
     invocationsCountWhileNotAvailable = self->_invocationsCountWhileNotAvailable;
-    if (invocationsCountWhileNotAvailable != [v4 invocationsCountWhileNotAvailable])
+    if (invocationsCountWhileNotAvailable != [equalCopy invocationsCountWhileNotAvailable])
     {
       goto LABEL_116;
     }
 
     v74 = self->_has;
-    v76 = v4[55];
+    v76 = equalCopy[55];
   }
 
   v78 = (*&v74 >> 21) & 1;
@@ -1928,26 +1928,26 @@ LABEL_124:
   if (v78)
   {
     lastMobileAssetDownloadAttemptErrorUnderlyingCode = self->_lastMobileAssetDownloadAttemptErrorUnderlyingCode;
-    if (lastMobileAssetDownloadAttemptErrorUnderlyingCode != [v4 lastMobileAssetDownloadAttemptErrorUnderlyingCode])
+    if (lastMobileAssetDownloadAttemptErrorUnderlyingCode != [equalCopy lastMobileAssetDownloadAttemptErrorUnderlyingCode])
     {
       goto LABEL_116;
     }
   }
 
-  v5 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
-  v6 = [v4 lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
+  assistantDimensions2 = [equalCopy lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
     goto LABEL_115;
   }
 
-  v80 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
-  if (v80)
+  lastMobileAssetDownloadAttemptErrorUnderlyingDomain = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
+  if (lastMobileAssetDownloadAttemptErrorUnderlyingDomain)
   {
-    v81 = v80;
-    v82 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
-    v83 = [v4 lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
-    v84 = [v82 isEqual:v83];
+    v81 = lastMobileAssetDownloadAttemptErrorUnderlyingDomain;
+    lastMobileAssetDownloadAttemptErrorUnderlyingDomain2 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
+    lastMobileAssetDownloadAttemptErrorUnderlyingDomain3 = [equalCopy lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
+    v84 = [lastMobileAssetDownloadAttemptErrorUnderlyingDomain2 isEqual:lastMobileAssetDownloadAttemptErrorUnderlyingDomain3];
 
     if (!v84)
     {
@@ -1960,7 +1960,7 @@ LABEL_124:
   }
 
   v85 = (*&self->_has >> 22) & 1;
-  if (v85 != ((v4[55] >> 22) & 1))
+  if (v85 != ((equalCopy[55] >> 22) & 1))
   {
     goto LABEL_116;
   }
@@ -1968,28 +1968,28 @@ LABEL_124:
   if (v85)
   {
     mode = self->_mode;
-    if (mode != [v4 mode])
+    if (mode != [equalCopy mode])
     {
       goto LABEL_116;
     }
   }
 
-  v5 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self sampledErrorAsset];
-  v6 = [v4 sampledErrorAsset];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self sampledErrorAsset];
+  assistantDimensions2 = [equalCopy sampledErrorAsset];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
 LABEL_115:
 
     goto LABEL_116;
   }
 
-  v87 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self sampledErrorAsset];
-  if (v87)
+  sampledErrorAsset = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self sampledErrorAsset];
+  if (sampledErrorAsset)
   {
-    v88 = v87;
-    v89 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self sampledErrorAsset];
-    v90 = [v4 sampledErrorAsset];
-    v91 = [v89 isEqual:v90];
+    v88 = sampledErrorAsset;
+    sampledErrorAsset2 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self sampledErrorAsset];
+    sampledErrorAsset3 = [equalCopy sampledErrorAsset];
+    v91 = [sampledErrorAsset2 isEqual:sampledErrorAsset3];
 
     if (!v91)
     {
@@ -2003,19 +2003,19 @@ LABEL_115:
 
   v94 = self->_has;
   v95 = (*&v94 >> 23) & 1;
-  v96 = v4[55];
+  v96 = equalCopy[55];
   if (v95 == ((v96 >> 23) & 1))
   {
     if (v95)
     {
       subscriptionDownloadStatus = self->_subscriptionDownloadStatus;
-      if (subscriptionDownloadStatus != [v4 subscriptionDownloadStatus])
+      if (subscriptionDownloadStatus != [equalCopy subscriptionDownloadStatus])
       {
         goto LABEL_116;
       }
 
       v94 = self->_has;
-      v96 = v4[55];
+      v96 = equalCopy[55];
     }
 
     v98 = HIBYTE(*&v94) & 1;
@@ -2024,20 +2024,20 @@ LABEL_115:
       if (v98)
       {
         timeSinceSubscriptionDownloadStatusCompleteInSeconds = self->_timeSinceSubscriptionDownloadStatusCompleteInSeconds;
-        [v4 timeSinceSubscriptionDownloadStatusCompleteInSeconds];
+        [equalCopy timeSinceSubscriptionDownloadStatusCompleteInSeconds];
         if (timeSinceSubscriptionDownloadStatusCompleteInSeconds != v100)
         {
           goto LABEL_116;
         }
 
         v94 = self->_has;
-        v96 = v4[55];
+        v96 = equalCopy[55];
       }
 
       v101 = (*&v94 >> 25) & 1;
       if (v101 == ((v96 >> 25) & 1))
       {
-        if (!v101 || (currentMode = self->_currentMode, currentMode == [v4 currentMode]))
+        if (!v101 || (currentMode = self->_currentMode, currentMode == [equalCopy currentMode]))
         {
           v92 = 1;
           goto LABEL_117;
@@ -2053,22 +2053,22 @@ LABEL_117:
   return v92;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self assistantDimensions];
+  toCopy = to;
+  assistantDimensions = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self assistantDimensions];
 
-  if (v4)
+  if (assistantDimensions)
   {
-    v5 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self assistantDimensions];
+    assistantDimensions2 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self assistantDimensions];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self appleIntelligenceLocale];
+  appleIntelligenceLocale = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self appleIntelligenceLocale];
 
-  if (v6)
+  if (appleIntelligenceLocale)
   {
-    v7 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self appleIntelligenceLocale];
+    appleIntelligenceLocale2 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self appleIntelligenceLocale];
     PBDataWriterWriteSubmessage();
   }
 
@@ -2340,9 +2340,9 @@ LABEL_25:
   }
 
 LABEL_26:
-  v9 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self buildVersionPriorToSoftwareUpdate];
+  buildVersionPriorToSoftwareUpdate = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self buildVersionPriorToSoftwareUpdate];
 
-  if (v9)
+  if (buildVersionPriorToSoftwareUpdate)
   {
     PBDataWriterWriteStringField();
   }
@@ -2359,9 +2359,9 @@ LABEL_26:
     PBDataWriterWriteUint32Field();
   }
 
-  v11 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
+  lastMobileAssetDownloadAttemptErrorUnderlyingDomain = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
 
-  if (v11)
+  if (lastMobileAssetDownloadAttemptErrorUnderlyingDomain)
   {
     PBDataWriterWriteStringField();
   }
@@ -2371,19 +2371,19 @@ LABEL_26:
     PBDataWriterWriteInt32Field();
   }
 
-  v12 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self sampledErrorAsset];
+  sampledErrorAsset = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self sampledErrorAsset];
 
-  if (v12)
+  if (sampledErrorAsset)
   {
     PBDataWriterWriteStringField();
   }
 
   v13 = self->_has;
-  v14 = v15;
+  v14 = toCopy;
   if ((*&v13 & 0x800000) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v14 = v15;
+    v14 = toCopy;
     v13 = self->_has;
     if ((*&v13 & 0x1000000) == 0)
     {
@@ -2403,20 +2403,20 @@ LABEL_40:
   }
 
   PBDataWriterWriteDoubleField();
-  v14 = v15;
+  v14 = toCopy;
   if ((*&self->_has & 0x2000000) != 0)
   {
 LABEL_41:
     PBDataWriterWriteInt32Field();
-    v14 = v15;
+    v14 = toCopy;
   }
 
 LABEL_42:
 }
 
-- (void)setHasCurrentMode:(BOOL)a3
+- (void)setHasCurrentMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 0x2000000;
   }
@@ -2429,9 +2429,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasTimeSinceSubscriptionDownloadStatusCompleteInSeconds:(BOOL)a3
+- (void)setHasTimeSinceSubscriptionDownloadStatusCompleteInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 0x1000000;
   }
@@ -2444,9 +2444,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasSubscriptionDownloadStatus:(BOOL)a3
+- (void)setHasSubscriptionDownloadStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x800000;
   }
@@ -2459,9 +2459,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasMode:(BOOL)a3
+- (void)setHasMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 0x400000;
   }
@@ -2474,9 +2474,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasLastMobileAssetDownloadAttemptErrorUnderlyingCode:(BOOL)a3
+- (void)setHasLastMobileAssetDownloadAttemptErrorUnderlyingCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 0x200000;
   }
@@ -2489,9 +2489,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasInvocationsCountWhileNotAvailable:(BOOL)a3
+- (void)setHasInvocationsCountWhileNotAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 0x100000;
   }
@@ -2504,9 +2504,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasBuddyStatus:(BOOL)a3
+- (void)setHasBuddyStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x80000;
   }
@@ -2519,9 +2519,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasTimeSinceSampledErrorInSeconds:(BOOL)a3
+- (void)setHasTimeSinceSampledErrorInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 0x40000;
   }
@@ -2534,9 +2534,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasTimeSinceLastSoftwareUpdateInSeconds:(BOOL)a3
+- (void)setHasTimeSinceLastSoftwareUpdateInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 0x20000;
   }
@@ -2549,9 +2549,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasUseCase:(BOOL)a3
+- (void)setHasUseCase:(BOOL)case
 {
-  if (a3)
+  if (case)
   {
     v3 = 0x10000;
   }
@@ -2564,9 +2564,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasTimeSinceLastModelCatalogSubscriptionHashChangeInSeconds:(BOOL)a3
+- (void)setHasTimeSinceLastModelCatalogSubscriptionHashChangeInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 0x8000;
   }
@@ -2579,9 +2579,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasDownloadState:(BOOL)a3
+- (void)setHasDownloadState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 0x4000;
   }
@@ -2594,9 +2594,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasTimeSinceLastMobileAssetDownloadErrorInSeconds:(BOOL)a3
+- (void)setHasTimeSinceLastMobileAssetDownloadErrorInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 0x2000;
   }
@@ -2609,9 +2609,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasTimeSinceLastMobileAssetDownloadAttemptInSeconds:(BOOL)a3
+- (void)setHasTimeSinceLastMobileAssetDownloadAttemptInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 4096;
   }
@@ -2624,9 +2624,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasTimeSinceLastBootInSeconds:(BOOL)a3
+- (void)setHasTimeSinceLastBootInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 2048;
   }
@@ -2639,9 +2639,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasTimeSinceLastAppleIntelligenceToggleInSeconds:(BOOL)a3
+- (void)setHasTimeSinceLastAppleIntelligenceToggleInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 1024;
   }
@@ -2654,9 +2654,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasTimeSinceLastWaitlistChangeInSeconds:(BOOL)a3
+- (void)setHasTimeSinceLastWaitlistChangeInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 512;
   }
@@ -2669,9 +2669,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasTimeSinceLastEligibleChangeInSeconds:(BOOL)a3
+- (void)setHasTimeSinceLastEligibleChangeInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 256;
   }
@@ -2684,9 +2684,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasIsAppleIntelligenceToggled:(BOOL)a3
+- (void)setHasIsAppleIntelligenceToggled:(BOOL)toggled
 {
-  if (a3)
+  if (toggled)
   {
     v3 = 128;
   }
@@ -2699,9 +2699,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasIsAppleIntelligenceAllowedThroughWaitlist:(BOOL)a3
+- (void)setHasIsAppleIntelligenceAllowedThroughWaitlist:(BOOL)waitlist
 {
-  if (a3)
+  if (waitlist)
   {
     v3 = 64;
   }
@@ -2714,9 +2714,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasIsAppleIntelligenceEligible:(BOOL)a3
+- (void)setHasIsAppleIntelligenceEligible:(BOOL)eligible
 {
-  if (a3)
+  if (eligible)
   {
     v3 = 32;
   }
@@ -2729,9 +2729,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasHasModelCatalogSubscriptionHashChangedFromLastStatus:(BOOL)a3
+- (void)setHasHasModelCatalogSubscriptionHashChangedFromLastStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 16;
   }
@@ -2744,9 +2744,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasTimeSinceLastAvailabilityChangeInSeconds:(BOOL)a3
+- (void)setHasTimeSinceLastAvailabilityChangeInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 8;
   }
@@ -2759,9 +2759,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasTimeSinceLastStatusChangeInSeconds:(BOOL)a3
+- (void)setHasTimeSinceLastStatusChangeInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 4;
   }
@@ -2774,9 +2774,9 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasPreviousStatus:(BOOL)a3
+- (void)setHasPreviousStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -2789,26 +2789,26 @@ LABEL_42:
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self assistantDimensions];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  assistantDimensions = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self assistantDimensions];
+  v7 = [assistantDimensions applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self deleteAssistantDimensions];
   }
 
-  v9 = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self appleIntelligenceLocale];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  appleIntelligenceLocale = [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self appleIntelligenceLocale];
+  v10 = [appleIntelligenceLocale applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ODDSiriSchemaODDIntelligenceFeatureReportingAvailabilityStatus *)self deleteAppleIntelligenceLocale];
   }

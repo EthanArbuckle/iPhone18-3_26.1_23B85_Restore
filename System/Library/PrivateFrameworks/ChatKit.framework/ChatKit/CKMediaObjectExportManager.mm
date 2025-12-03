@@ -1,13 +1,13 @@
 @interface CKMediaObjectExportManager
 + (id)_serialBackgroundQueue;
-- (CKMediaObjectExportManager)initWithMediaObject:(id)a3;
-- (CKMediaObjectExportManager)initWithMediaObjects:(id)a3;
-- (id)_phAssetCreationRequestForMediaObject:(id)a3 withSyndicationIdentifier:(id)a4;
-- (void)dequeueMediaObject:(id)a3;
-- (void)exportMediaObject:(id)a3 withFileName:(id)a4 completion:(id)a5;
-- (void)exportMediaObjects:(id)a3 withFileNames:(id)a4 completion:(id)a5;
-- (void)exportQueuedMediaObjectsWithCompletion:(id)a3;
-- (void)queueMediaObject:(id)a3;
+- (CKMediaObjectExportManager)initWithMediaObject:(id)object;
+- (CKMediaObjectExportManager)initWithMediaObjects:(id)objects;
+- (id)_phAssetCreationRequestForMediaObject:(id)object withSyndicationIdentifier:(id)identifier;
+- (void)dequeueMediaObject:(id)object;
+- (void)exportMediaObject:(id)object withFileName:(id)name completion:(id)completion;
+- (void)exportMediaObjects:(id)objects withFileNames:(id)names completion:(id)completion;
+- (void)exportQueuedMediaObjectsWithCompletion:(id)completion;
+- (void)queueMediaObject:(id)object;
 @end
 
 @implementation CKMediaObjectExportManager
@@ -32,15 +32,15 @@ void __52__CKMediaObjectExportManager__serialBackgroundQueue__block_invoke()
   _serialBackgroundQueue_queue = v0;
 }
 
-- (CKMediaObjectExportManager)initWithMediaObject:(id)a3
+- (CKMediaObjectExportManager)initWithMediaObject:(id)object
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (object)
   {
-    v9 = a3;
+    objectCopy = object;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v9 count:1];
+    objectCopy2 = object;
+    v6 = [v4 arrayWithObjects:&objectCopy count:1];
   }
 
   else
@@ -48,72 +48,72 @@ void __52__CKMediaObjectExportManager__serialBackgroundQueue__block_invoke()
     v6 = 0;
   }
 
-  v7 = [(CKMediaObjectExportManager *)self initWithMediaObjects:v6, v9, v10];
+  v7 = [(CKMediaObjectExportManager *)self initWithMediaObjects:v6, objectCopy, v10];
 
   return v7;
 }
 
-- (CKMediaObjectExportManager)initWithMediaObjects:(id)a3
+- (CKMediaObjectExportManager)initWithMediaObjects:(id)objects
 {
-  v5 = a3;
+  objectsCopy = objects;
   v9.receiver = self;
   v9.super_class = CKMediaObjectExportManager;
   v6 = [(CKMediaObjectExportManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queuedMediaObjects, a3);
+    objc_storeStrong(&v6->_queuedMediaObjects, objects);
   }
 
   return v7;
 }
 
-- (void)queueMediaObject:(id)a3
+- (void)queueMediaObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    v4 = a3;
-    v6 = [(CKMediaObjectExportManager *)self queuedMediaObjects];
-    v5 = [v6 arrayByAddingObject:v4];
+    objectCopy = object;
+    queuedMediaObjects = [(CKMediaObjectExportManager *)self queuedMediaObjects];
+    v5 = [queuedMediaObjects arrayByAddingObject:objectCopy];
 
     [(CKMediaObjectExportManager *)self setQueuedMediaObjects:v5];
   }
 }
 
-- (void)dequeueMediaObject:(id)a3
+- (void)dequeueMediaObject:(id)object
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (object)
   {
-    v4 = a3;
-    v5 = [(CKMediaObjectExportManager *)self queuedMediaObjects];
-    v8[0] = v4;
+    objectCopy = object;
+    queuedMediaObjects = [(CKMediaObjectExportManager *)self queuedMediaObjects];
+    v8[0] = objectCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
 
-    v7 = [v5 arrayByExcludingObjectsInArray:v6];
+    v7 = [queuedMediaObjects arrayByExcludingObjectsInArray:v6];
     [(CKMediaObjectExportManager *)self setQueuedMediaObjects:v7];
   }
 }
 
-- (void)exportQueuedMediaObjectsWithCompletion:(id)a3
+- (void)exportQueuedMediaObjectsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CKMediaObjectExportManager *)self queuedMediaObjects];
-  [(CKMediaObjectExportManager *)self exportMediaObjects:v5 completion:v4];
+  completionCopy = completion;
+  queuedMediaObjects = [(CKMediaObjectExportManager *)self queuedMediaObjects];
+  [(CKMediaObjectExportManager *)self exportMediaObjects:queuedMediaObjects completion:completionCopy];
 }
 
-- (void)exportMediaObject:(id)a3 withFileName:(id)a4 completion:(id)a5
+- (void)exportMediaObject:(id)object withFileName:(id)name completion:(id)completion
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  objectCopy = object;
+  nameCopy = name;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (objectCopy)
   {
-    if (v9)
+    if (nameCopy)
     {
-      v17[0] = v9;
+      v17[0] = nameCopy;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
     }
 
@@ -122,12 +122,12 @@ void __52__CKMediaObjectExportManager__serialBackgroundQueue__block_invoke()
       v12 = 0;
     }
 
-    v16 = v8;
+    v16 = objectCopy;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
     [(CKMediaObjectExportManager *)self exportMediaObjects:v14 withFileNames:v12 completion:v11];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -143,19 +143,19 @@ void __52__CKMediaObjectExportManager__serialBackgroundQueue__block_invoke()
   }
 }
 
-- (void)exportMediaObjects:(id)a3 withFileNames:(id)a4 completion:(id)a5
+- (void)exportMediaObjects:(id)objects withFileNames:(id)names completion:(id)completion
 {
   v108 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v59 = a4;
-  v61 = a5;
+  objectsCopy = objects;
+  namesCopy = names;
+  completionCopy = completion;
   v65 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v67 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v100 = 0u;
   v101 = 0u;
   v102 = 0u;
   v103 = 0u;
-  obj = v7;
+  obj = objectsCopy;
   v8 = 0;
   v9 = 0;
   v10 = [obj countByEnumeratingWithState:&v100 objects:v107 count:16];
@@ -214,8 +214,8 @@ void __52__CKMediaObjectExportManager__serialBackgroundQueue__block_invoke()
   if (v14)
   {
     dispatch_group_enter(group);
-    v16 = [MEMORY[0x1E696AFB0] UUID];
-    v63 = [v16 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
     v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v88 = 0u;
@@ -237,8 +237,8 @@ void __52__CKMediaObjectExportManager__serialBackgroundQueue__block_invoke()
           }
 
           v22 = *(*(&v86 + 1) + 8 * j);
-          v23 = [v22 syndicationIdentifier];
-          if (!v23)
+          syndicationIdentifier = [v22 syndicationIdentifier];
+          if (!syndicationIdentifier)
           {
             v24 = IMLogHandleForCategory();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -248,10 +248,10 @@ void __52__CKMediaObjectExportManager__serialBackgroundQueue__block_invoke()
               _os_log_error_impl(&dword_19020E000, v24, OS_LOG_TYPE_ERROR, "Syndication identifier was nil for media object. mediaObject: %@", buf, 0xCu);
             }
 
-            v23 = v63;
+            syndicationIdentifier = uUIDString;
           }
 
-          [v17 addObject:v23];
+          [v17 addObject:syndicationIdentifier];
         }
 
         v19 = [v18 countByEnumeratingWithState:&v86 objects:v106 count:16];
@@ -272,24 +272,24 @@ void __52__CKMediaObjectExportManager__serialBackgroundQueue__block_invoke()
     }
 
     v26 = [v18 count];
-    v27 = [objc_opt_class() _serialBackgroundQueue];
+    _serialBackgroundQueue = [objc_opt_class() _serialBackgroundQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __74__CKMediaObjectExportManager_exportMediaObjects_withFileNames_completion___block_invoke;
     block[3] = &unk_1E72F6890;
     v76 = v18;
     v77 = v17;
-    v78 = v63;
-    v79 = self;
+    v78 = uUIDString;
+    selfCopy = self;
     v83 = v26;
     v84 = v9;
     v85 = v8;
     v81 = &v96;
     v82 = &v90;
     v80 = group;
-    v28 = v63;
+    v28 = uUIDString;
     v29 = v17;
-    dispatch_async(v27, block);
+    dispatch_async(_serialBackgroundQueue, block);
 
     v15 = &off_190DCE000;
   }
@@ -303,24 +303,24 @@ void __52__CKMediaObjectExportManager__serialBackgroundQueue__block_invoke()
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v32 isAudioMessage])
     {
-      v64 = [v32 fileURL];
+      fileURL = [v32 fileURL];
       if ([v32 isFromMe])
       {
-        v33 = CKFrameworkBundle();
-        v34 = [v33 localizedStringForKey:@"AUDIO_MESSAGE" value:&stru_1F04268F8 table:@"ChatKit"];
+        senderHandle = CKFrameworkBundle();
+        v34 = [senderHandle localizedStringForKey:@"AUDIO_MESSAGE" value:&stru_1F04268F8 table:@"ChatKit"];
       }
 
       else
       {
-        v33 = [v32 senderHandle];
+        senderHandle = [v32 senderHandle];
         v48 = MEMORY[0x1E696AEC0];
         v49 = CKFrameworkBundle();
         v50 = [v49 localizedStringForKey:@"AUDIO_MESSAGE_FROM" value:&stru_1F04268F8 table:@"ChatKit"];
-        v51 = [v33 fullName];
-        v52 = [v48 stringWithFormat:v50, v51];
+        fullName = [senderHandle fullName];
+        v52 = [v48 stringWithFormat:v50, fullName];
 
-        v53 = [MEMORY[0x1E69DC668] sharedApplication];
-        v54 = [v53 userInterfaceLayoutDirection] == 1;
+        mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+        v54 = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection] == 1;
 
         if (v54)
         {
@@ -336,15 +336,15 @@ void __52__CKMediaObjectExportManager__serialBackgroundQueue__block_invoke()
       }
 
       v56 = MEMORY[0x1E69E06E0];
-      v57 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v73[0] = MEMORY[0x1E69E9820];
       v73[1] = v31;
       v73[2] = __74__CKMediaObjectExportManager_exportMediaObjects_withFileNames_completion___block_invoke_263;
       v73[3] = &unk_1E72F1C08;
-      v74 = v61;
-      [v56 importRecordingWithSourceAudioURL:v64 name:v34 date:v57 completionHandler:v73];
+      v74 = completionCopy;
+      [v56 importRecordingWithSourceAudioURL:fileURL name:v34 date:date completionHandler:v73];
 
-      v36 = v74;
+      filename = v74;
       goto LABEL_53;
     }
 
@@ -353,35 +353,35 @@ void __52__CKMediaObjectExportManager__serialBackgroundQueue__block_invoke()
       goto LABEL_54;
     }
 
-    v64 = [MEMORY[0x1E696AC08] defaultManager];
-    v35 = [v32 transfer];
-    v36 = [v35 filename];
+    fileURL = [MEMORY[0x1E696AC08] defaultManager];
+    transfer = [v32 transfer];
+    filename = [transfer filename];
 
-    if ([v36 length])
+    if ([filename length])
     {
-      v37 = [v32 transfer];
-      v38 = [v37 fileURL];
-      v39 = [v38 path];
+      transfer2 = [v32 transfer];
+      fileURL2 = [transfer2 fileURL];
+      path = [fileURL2 path];
 
-      v40 = [v64 URLsForDirectory:15 inDomains:1];
-      v41 = [v40 firstObject];
+      v40 = [fileURL URLsForDirectory:15 inDomains:1];
+      firstObject = [v40 firstObject];
 
-      v42 = [v41 URLByAppendingPathComponent:v36];
-      v43 = [v42 path];
+      v42 = [firstObject URLByAppendingPathComponent:filename];
+      path2 = [v42 path];
 
-      if ([v64 fileExistsAtPath:v43])
+      if ([fileURL fileExistsAtPath:path2])
       {
-        v44 = [v43 uniqueSavePath];
+        uniqueSavePath = [path2 uniqueSavePath];
       }
 
       else
       {
-        v44 = v43;
+        uniqueSavePath = path2;
       }
 
-      v46 = v44;
+      v46 = uniqueSavePath;
       v72 = 0;
-      v47 = [v64 copyItemAtPath:v39 toPath:v44 error:&v72];
+      v47 = [fileURL copyItemAtPath:path toPath:uniqueSavePath error:&v72];
       v34 = v72;
 
       if (v47)
@@ -417,10 +417,10 @@ LABEL_54:
   v68[1] = v31;
   v68[2] = __74__CKMediaObjectExportManager_exportMediaObjects_withFileNames_completion___block_invoke_267;
   v68[3] = &unk_1E72F68B8;
-  v69 = v61;
+  v69 = completionCopy;
   v70 = &v96;
   v71 = &v90;
-  v58 = v61;
+  v58 = completionCopy;
   dispatch_group_notify(group, MEMORY[0x1E69E96A0], v68);
 
   _Block_object_dispose(&v90, 8);
@@ -602,22 +602,22 @@ uint64_t __74__CKMediaObjectExportManager_exportMediaObjects_withFileNames_compl
   return result;
 }
 
-- (id)_phAssetCreationRequestForMediaObject:(id)a3 withSyndicationIdentifier:(id)a4
+- (id)_phAssetCreationRequestForMediaObject:(id)object withSyndicationIdentifier:(id)identifier
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isPhotosCompatible])
+  objectCopy = object;
+  identifierCopy = identifier;
+  if ([objectCopy isPhotosCompatible])
   {
-    v8 = [v6 fileURL];
-    v9 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v10 = [v9 isLQMHQEnabled];
+    fileURL = [objectCopy fileURL];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isLQMHQEnabled = [mEMORY[0x1E69A8070] isLQMHQEnabled];
 
-    if (v10)
+    if (isLQMHQEnabled)
     {
-      v11 = [v7 length];
+      v11 = [identifierCopy length];
       v12 = v11 <= 2 ? 2 : v11;
-      v13 = [v7 substringFromIndex:(v12 - 2)];
+      v13 = [identifierCopy substringFromIndex:(v12 - 2)];
       v14 = [v13 isEqualToString:@"hq"];
 
       if (v14)
@@ -627,10 +627,10 @@ uint64_t __74__CKMediaObjectExportManager_exportMediaObjects_withFileNames_compl
         {
           v15 = dispatch_group_create();
           dispatch_group_enter(v15);
-          v16 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-          v17 = [v16 isRedesignedDetailsViewEnabled];
+          mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+          isRedesignedDetailsViewEnabled = [mEMORY[0x1E69A8070]2 isRedesignedDetailsViewEnabled];
 
-          if (v17)
+          if (isRedesignedDetailsViewEnabled)
           {
             [MEMORY[0x1E69789A8] openPhotoLibraryWithWellKnownIdentifier:1 error:0];
           }
@@ -640,46 +640,46 @@ uint64_t __74__CKMediaObjectExportManager_exportMediaObjects_withFileNames_compl
             [MEMORY[0x1E69789A8] sharedPhotoLibrary];
           }
           v19 = ;
-          v20 = [v19 librarySpecificFetchOptions];
-          [v20 setIncludeTrashedAssets:0];
-          [v20 setIncludeHiddenAssets:1];
+          librarySpecificFetchOptions = [v19 librarySpecificFetchOptions];
+          [librarySpecificFetchOptions setIncludeTrashedAssets:0];
+          [librarySpecificFetchOptions setIncludeHiddenAssets:1];
           PHAssetClass = getPHAssetClass();
-          v22 = [v7 substringToIndex:{objc_msgSend(v7, "length") - 2}];
+          v22 = [identifierCopy substringToIndex:{objc_msgSend(identifierCopy, "length") - 2}];
           v34[0] = v22;
           v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
-          v24 = [PHAssetClass fetchAssetsWithSyndicationIdentifiers:v23 options:v20 includeRejected:1];
+          v24 = [PHAssetClass fetchAssetsWithSyndicationIdentifiers:v23 options:librarySpecificFetchOptions includeRejected:1];
 
           if ([v24 count])
           {
-            v25 = [v24 firstObject];
-            [v25 fetchPropertySetsIfNeeded];
+            firstObject = [v24 firstObject];
+            [firstObject fetchPropertySetsIfNeeded];
             v32[0] = MEMORY[0x1E69E9820];
             v32[1] = 3221225472;
             v32[2] = __94__CKMediaObjectExportManager__phAssetCreationRequestForMediaObject_withSyndicationIdentifier___block_invoke;
             v32[3] = &unk_1E72EBA18;
-            v33 = v25;
-            v26 = v25;
+            v33 = firstObject;
+            v26 = firstObject;
             [v19 performChanges:v32 completionHandler:&__block_literal_global_275_1];
           }
         }
       }
     }
 
-    if (v7 && ![(CKMediaObjectExportManager *)self ignoreSyndicationIdentifiers])
+    if (identifierCopy && ![(CKMediaObjectExportManager *)self ignoreSyndicationIdentifiers])
     {
-      v27 = [MEMORY[0x1E6978698] creationRequestForAssetWithSyndicationIdentifier:v7];
+      creationRequestForAsset = [MEMORY[0x1E6978698] creationRequestForAssetWithSyndicationIdentifier:identifierCopy];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E6978698] creationRequestForAsset];
+      creationRequestForAsset = [MEMORY[0x1E6978698] creationRequestForAsset];
     }
 
-    v18 = v27;
+    v18 = creationRequestForAsset;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v18 addResourceWithType:2 fileURL:v8 options:0];
+      [v18 addResourceWithType:2 fileURL:fileURL options:0];
     }
 
     else
@@ -687,12 +687,12 @@ uint64_t __74__CKMediaObjectExportManager_exportMediaObjects_withFileNames_compl
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v18 addResourceWithType:1 fileURL:v8 options:0];
-        v28 = v6;
+        [v18 addResourceWithType:1 fileURL:fileURL options:0];
+        v28 = objectCopy;
         if ([v28 isIrisAsset])
         {
-          v29 = [v28 calculateIrisVideoPath];
-          v30 = [MEMORY[0x1E695DFF8] fileURLWithPath:v29 isDirectory:0];
+          calculateIrisVideoPath = [v28 calculateIrisVideoPath];
+          v30 = [MEMORY[0x1E695DFF8] fileURLWithPath:calculateIrisVideoPath isDirectory:0];
           [v18 addResourceWithType:9 fileURL:v30 options:0];
         }
       }

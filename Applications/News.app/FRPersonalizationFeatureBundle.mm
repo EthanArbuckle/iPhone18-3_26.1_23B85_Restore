@@ -1,24 +1,24 @@
 @interface FRPersonalizationFeatureBundle
-+ (id)personalizationFeatureBundleForFeaturesGenerator:(id)a3 groupOrder:(id)a4 feedOrder:(id)a5 userInfo:(id)a6;
++ (id)personalizationFeatureBundleForFeaturesGenerator:(id)generator groupOrder:(id)order feedOrder:(id)feedOrder userInfo:(id)info;
 - (NSArray)features;
-- (void)appendPersonalizationFeaturesGenerator:(id)a3;
+- (void)appendPersonalizationFeaturesGenerator:(id)generator;
 @end
 
 @implementation FRPersonalizationFeatureBundle
 
-+ (id)personalizationFeatureBundleForFeaturesGenerator:(id)a3 groupOrder:(id)a4 feedOrder:(id)a5 userInfo:(id)a6
++ (id)personalizationFeatureBundleForFeaturesGenerator:(id)generator groupOrder:(id)order feedOrder:(id)feedOrder userInfo:(id)info
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = objc_alloc_init(a1);
-  [v12 setFeaturesGenerator:v11];
+  infoCopy = info;
+  orderCopy = order;
+  generatorCopy = generator;
+  v12 = objc_alloc_init(self);
+  [v12 setFeaturesGenerator:generatorCopy];
 
-  v13 = [v9 dateLastOpened];
-  if (v13)
+  dateLastOpened = [infoCopy dateLastOpened];
+  if (dateLastOpened)
   {
-    v14 = [v9 dateLastOpened];
-    [v14 fc_timeIntervalUntilNow];
+    dateLastOpened2 = [infoCopy dateLastOpened];
+    [dateLastOpened2 fc_timeIntervalUntilNow];
     v15 = [NSNumber numberWithDouble:?];
     [v12 setSessionDuration:v15];
   }
@@ -28,19 +28,19 @@
     [v12 setSessionDuration:0];
   }
 
-  [v12 setGroupOrder:v10];
-  [v12 setFeedOrder:v10];
+  [v12 setGroupOrder:orderCopy];
+  [v12 setFeedOrder:orderCopy];
 
   return v12;
 }
 
 - (NSArray)features
 {
-  v3 = [(FRPersonalizationFeatureBundle *)self featuresGenerator];
-  if (v3)
+  featuresGenerator = [(FRPersonalizationFeatureBundle *)self featuresGenerator];
+  if (featuresGenerator)
   {
-    v4 = [(FRPersonalizationFeatureBundle *)self featuresGenerator];
-    v5 = v4[2]();
+    featuresGenerator2 = [(FRPersonalizationFeatureBundle *)self featuresGenerator];
+    v5 = featuresGenerator2[2]();
   }
 
   else
@@ -51,16 +51,16 @@
   return v5;
 }
 
-- (void)appendPersonalizationFeaturesGenerator:(id)a3
+- (void)appendPersonalizationFeaturesGenerator:(id)generator
 {
-  v4 = a3;
+  generatorCopy = generator;
   [(FRPersonalizationFeatureBundle *)self featuresGenerator];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000FCA0;
   v8 = v7[3] = &unk_1000C1B60;
-  v9 = v4;
-  v5 = v4;
+  v9 = generatorCopy;
+  v5 = generatorCopy;
   v6 = v8;
   [(FRPersonalizationFeatureBundle *)self setFeaturesGenerator:v7];
 }

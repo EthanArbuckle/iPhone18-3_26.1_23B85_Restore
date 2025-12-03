@@ -1,6 +1,6 @@
 @interface SessionBurnBarViewAccessibility
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)accessibilityUpdateBurnBar:(int64_t)a3;
+- (void)accessibilityUpdateBurnBar:(int64_t)bar;
 @end
 
 @implementation SessionBurnBarViewAccessibility
@@ -14,12 +14,12 @@
   [(SessionBurnBarViewAccessibility *)self setAccessibilityLabel:v3];
 }
 
-- (void)accessibilityUpdateBurnBar:(int64_t)a3
+- (void)accessibilityUpdateBurnBar:(int64_t)bar
 {
   v6.receiver = self;
   v6.super_class = SessionBurnBarViewAccessibility;
   [(SessionBurnBarViewAccessibility *)&v6 accessibilityUpdateBurnBar:?];
-  v5 = _accessibilityStringForBurnBarPosition(a3, 1);
+  v5 = _accessibilityStringForBurnBarPosition(bar, 1);
   [(SessionBurnBarViewAccessibility *)self setAccessibilityLabel:v5];
 }
 

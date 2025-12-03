@@ -1,57 +1,57 @@
 @interface CAMMessagesExtensionViewController
-+ (int64_t)_AVFlashModeForCAMTorchMode:(int64_t)a3;
-+ (int64_t)_CAMTorchModeForAVFlashMode:(int64_t)a3;
-+ (void)_removeChildViewController:(id)a3;
-+ (void)_startRegularCamera:(id)a3;
-+ (void)_stopRegularCamera:(id)a3;
++ (int64_t)_AVFlashModeForCAMTorchMode:(int64_t)mode;
++ (int64_t)_CAMTorchModeForAVFlashMode:(int64_t)mode;
++ (void)_removeChildViewController:(id)controller;
++ (void)_startRegularCamera:(id)camera;
++ (void)_stopRegularCamera:(id)camera;
 + (void)initialize;
 - (BOOL)_isReviewControllerPresented;
 - (BOOL)_shouldDisableCameraForMultitasking;
-- (BOOL)_transitionIfPossibleToNextCaptureState:(int64_t)a3;
-- (BOOL)assetExplorerReviewScreenViewController:(id)a3 canPerformActionType:(unint64_t)a4 onAsset:(id)a5 inAssetCollection:(id)a6;
-- (BOOL)assetExplorerReviewScreenViewController:(id)a3 shouldEnableActionType:(unint64_t)a4 onAsset:(id)a5 inAssetCollection:(id)a6;
-- (CAMMessagesExtensionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (CGSize)_portraitOrientedSizeForSize:(CGSize)a3;
-- (id)_descriptionForState:(int64_t)a3;
-- (id)_reviewViewControllerForAsset:(id)a3 source:(unint64_t)a4;
+- (BOOL)_transitionIfPossibleToNextCaptureState:(int64_t)state;
+- (BOOL)assetExplorerReviewScreenViewController:(id)controller canPerformActionType:(unint64_t)type onAsset:(id)asset inAssetCollection:(id)collection;
+- (BOOL)assetExplorerReviewScreenViewController:(id)controller shouldEnableActionType:(unint64_t)type onAsset:(id)asset inAssetCollection:(id)collection;
+- (CAMMessagesExtensionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (CGSize)_portraitOrientedSizeForSize:(CGSize)size;
+- (id)_descriptionForState:(int64_t)state;
+- (id)_reviewViewControllerForAsset:(id)asset source:(unint64_t)source;
 - (id)_stopAndReleaseRegularCameraViewController;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (unint64_t)availableControlsCountForReviewTransition:(id)a3;
-- (void)_adoptChildViewController:(id)a3;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (unint64_t)availableControlsCountForReviewTransition:(id)transition;
+- (void)_adoptChildViewController:(id)controller;
 - (void)_createAndEmbedRegularCameraViewControllerIfNecessary;
 - (void)_dismissReviewController;
-- (void)_handleHostDidEnterBackgroundNotification:(id)a3;
-- (void)_handlePreviewDidStartRunning:(id)a3;
-- (void)_prepareForPresentationWithCompletionHandler:(id)a3;
-- (void)_presentReviewControllerForAsset:(id)a3 source:(unint64_t)a4;
+- (void)_handleHostDidEnterBackgroundNotification:(id)notification;
+- (void)_handlePreviewDidStartRunning:(id)running;
+- (void)_prepareForPresentationWithCompletionHandler:(id)handler;
+- (void)_presentReviewControllerForAsset:(id)asset source:(unint64_t)source;
 - (void)_regularCameraDidStartCaptureSession;
 - (void)_regularCameraDidStopCaptureSession;
-- (void)_saveAssetIfNeeded:(id)a3;
-- (void)_setCaptureState:(int64_t)a3;
+- (void)_saveAssetIfNeeded:(id)needed;
+- (void)_setCaptureState:(int64_t)state;
 - (void)_startActiveCameraSession;
 - (void)_startRegularCamera;
 - (void)_stopRegularCamera;
-- (void)_transportAsset:(id)a3 forCompletionAction:(unint64_t)a4 sourceType:(unint64_t)a5 suppressLivePhoto:(BOOL)a6 completion:(id)a7;
-- (void)_updateLayoutParametersForReviewBarsModel:(id)a3 viewBounds:(CGRect)a4 orientation:(int64_t)a5 forceLayout:(BOOL)a6;
-- (void)assetExplorerReviewScreenViewController:(id)a3 didPerformCompletionAction:(unint64_t)a4 withSelectedAssetUUIDs:(id)a5 livePhotoDisabledAssetUUIDs:(id)a6 substituteAssetsByUUID:(id)a7;
-- (void)assetExplorerReviewScreenViewControllerDidPressCancel:(id)a3;
-- (void)assetExplorerReviewScreenViewControllerDidPressRetake:(id)a3;
-- (void)cameraViewController:(id)a3 didCaptureAVAsset:(id)a4 andAudioMix:(id)a5 withProperties:(id)a6 error:(id)a7;
-- (void)cameraViewController:(id)a3 didCaptureLivePhoto:(id)a4 withProperties:(id)a5 error:(id)a6;
-- (void)cameraViewController:(id)a3 didCapturePhoto:(id)a4 withProperties:(id)a5 error:(id)a6;
-- (void)cameraViewControllerDidResumeCameraSession:(id)a3;
-- (void)cameraViewControllerDidSuspendCameraSession:(id)a3;
-- (void)cameraViewControllerRequestedDismissal:(id)a3;
+- (void)_transportAsset:(id)asset forCompletionAction:(unint64_t)action sourceType:(unint64_t)type suppressLivePhoto:(BOOL)photo completion:(id)completion;
+- (void)_updateLayoutParametersForReviewBarsModel:(id)model viewBounds:(CGRect)bounds orientation:(int64_t)orientation forceLayout:(BOOL)layout;
+- (void)assetExplorerReviewScreenViewController:(id)controller didPerformCompletionAction:(unint64_t)action withSelectedAssetUUIDs:(id)ds livePhotoDisabledAssetUUIDs:(id)iDs substituteAssetsByUUID:(id)d;
+- (void)assetExplorerReviewScreenViewControllerDidPressCancel:(id)cancel;
+- (void)assetExplorerReviewScreenViewControllerDidPressRetake:(id)retake;
+- (void)cameraViewController:(id)controller didCaptureAVAsset:(id)asset andAudioMix:(id)mix withProperties:(id)properties error:(id)error;
+- (void)cameraViewController:(id)controller didCaptureLivePhoto:(id)photo withProperties:(id)properties error:(id)error;
+- (void)cameraViewController:(id)controller didCapturePhoto:(id)photo withProperties:(id)properties error:(id)error;
+- (void)cameraViewControllerDidResumeCameraSession:(id)session;
+- (void)cameraViewControllerDidSuspendCameraSession:(id)session;
+- (void)cameraViewControllerRequestedDismissal:(id)dismissal;
 - (void)dealloc;
 - (void)dismiss;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CAMMessagesExtensionViewController
@@ -63,15 +63,15 @@
   +[CAMCaptureEngine preheatCaptureResources];
 }
 
-- (CAMMessagesExtensionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CAMMessagesExtensionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a4;
-  v7 = a3;
+  bundleCopy = bundle;
+  nameCopy = name;
   CAMSignpostWithIDAndArgs();
   Current = CFAbsoluteTimeGetCurrent();
   v16.receiver = self;
   v16.super_class = CAMMessagesExtensionViewController;
-  v9 = [(CAMMessagesExtensionViewController *)&v16 initWithNibName:v7 bundle:v6];
+  v9 = [(CAMMessagesExtensionViewController *)&v16 initWithNibName:nameCopy bundle:bundleCopy];
 
   if (v9)
   {
@@ -110,20 +110,20 @@
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
 
-  v5 = [(CAMMessagesExtensionViewController *)self _stopAndReleaseRegularCameraViewController];
+  _stopAndReleaseRegularCameraViewController = [(CAMMessagesExtensionViewController *)self _stopAndReleaseRegularCameraViewController];
   v6.receiver = self;
   v6.super_class = CAMMessagesExtensionViewController;
   [(CAMMessagesExtensionViewController *)&v6 dealloc];
 }
 
-- (void)_prepareForPresentationWithCompletionHandler:(id)a3
+- (void)_prepareForPresentationWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   CAMSignpostWithIDAndArgs();
   Current = CFAbsoluteTimeGetCurrent();
-  v7 = [(CAMMessagesExtensionViewController *)self _logReferenceDescription];
+  _logReferenceDescription = [(CAMMessagesExtensionViewController *)self _logReferenceDescription];
 
-  if (v7)
+  if (_logReferenceDescription)
   {
     [(CAMMessagesExtensionViewController *)self _logReferenceTime];
     v9 = v8;
@@ -134,13 +134,13 @@
     }
 
     v11 = NSStringFromSelector(a2);
-    v12 = [(CAMMessagesExtensionViewController *)self _logReferenceDescription];
+    _logReferenceDescription2 = [(CAMMessagesExtensionViewController *)self _logReferenceDescription];
     v13 = 138543874;
     v14 = v11;
     v15 = 2048;
     v16 = Current - v9;
     v17 = 2114;
-    v18 = v12;
+    v18 = _logReferenceDescription2;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ %.3f seconds after %{public}@", &v13, 0x20u);
   }
 
@@ -166,15 +166,15 @@ LABEL_7:
     [(CAMMessagesExtensionViewController *)self _setCaptureState:1];
   }
 
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
   CAMSignpostWithIDAndArgs();
 }
 
-- (void)_handlePreviewDidStartRunning:(id)a3
+- (void)_handlePreviewDidStartRunning:(id)running
 {
   Current = CFAbsoluteTimeGetCurrent();
   [(CAMMessagesExtensionViewController *)self _logReferenceTime];
@@ -182,11 +182,11 @@ LABEL_7:
   v7 = os_log_create("com.apple.camera", "Camera");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(CAMMessagesExtensionViewController *)self _logReferenceDescription];
+    _logReferenceDescription = [(CAMMessagesExtensionViewController *)self _logReferenceDescription];
     *buf = 134218242;
     v11 = Current - v6;
     v12 = 2114;
-    v13 = v8;
+    v13 = _logReferenceDescription;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "AVCaptureVideoPreviewLayerDidStartRunningNotification %.3f seconds after %{public}@. Preloading frameworks.", buf, 0x16u);
   }
 
@@ -219,13 +219,13 @@ LABEL_7:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
-    v9 = [(CAMMessagesExtensionViewController *)self _logReferenceDescription];
+    _logReferenceDescription = [(CAMMessagesExtensionViewController *)self _logReferenceDescription];
     *buf = 138543874;
     v14 = v8;
     v15 = 2048;
     v16 = Current - v6;
     v17 = 2114;
-    v18 = v9;
+    v18 = _logReferenceDescription;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ %.3f seconds after %{public}@", buf, 0x20u);
   }
 
@@ -244,9 +244,9 @@ LABEL_7:
   CAMSignpostWithIDAndArgs();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   CAMSignpostWithIDAndArgs();
   Current = CFAbsoluteTimeGetCurrent();
   [(CAMMessagesExtensionViewController *)self _logReferenceTime];
@@ -255,35 +255,35 @@ LABEL_7:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = NSStringFromSelector(a2);
-    v11 = [(CAMMessagesExtensionViewController *)self _logReferenceDescription];
+    _logReferenceDescription = [(CAMMessagesExtensionViewController *)self _logReferenceDescription];
     *buf = 138543874;
     v19 = v10;
     v20 = 2048;
     v21 = Current - v8;
     v22 = 2114;
-    v23 = v11;
+    v23 = _logReferenceDescription;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ %.3f seconds after %{public}@", buf, 0x20u);
   }
 
   v17.receiver = self;
   v17.super_class = CAMMessagesExtensionViewController;
-  [(CAMMessagesExtensionViewController *)&v17 viewWillAppear:v3];
+  [(CAMMessagesExtensionViewController *)&v17 viewWillAppear:appearCopy];
   [(CAMMessagesExtensionViewController *)self _setDidReceiveViewWillAppear:1];
   [(CAMMessagesExtensionViewController *)self _setCaptureState:1];
   [(CAMMessagesExtensionViewController *)self _startActiveCameraSession];
-  v12 = [(CAMMessagesExtensionViewController *)self view];
-  v13 = [v12 window];
-  v14 = [v13 layer];
-  v15 = [v14 context];
+  view = [(CAMMessagesExtensionViewController *)self view];
+  window = [view window];
+  layer = [window layer];
+  context = [layer context];
   LODWORD(v16) = 1065361605;
-  [v15 setDesiredDynamicRange:v16];
+  [context setDesiredDynamicRange:v16];
 
   CAMSignpostWithIDAndArgs();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   CAMSignpostWithIDAndArgs();
   Current = CFAbsoluteTimeGetCurrent();
   [(CAMMessagesExtensionViewController *)self _logReferenceTime];
@@ -292,25 +292,25 @@ LABEL_7:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = NSStringFromSelector(a2);
-    v11 = [(CAMMessagesExtensionViewController *)self _logReferenceDescription];
+    _logReferenceDescription = [(CAMMessagesExtensionViewController *)self _logReferenceDescription];
     *buf = 138543874;
     v14 = v10;
     v15 = 2048;
     v16 = Current - v8;
     v17 = 2114;
-    v18 = v11;
+    v18 = _logReferenceDescription;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ %.3f seconds after %{public}@", buf, 0x20u);
   }
 
   v12.receiver = self;
   v12.super_class = CAMMessagesExtensionViewController;
-  [(CAMMessagesExtensionViewController *)&v12 viewDidAppear:v3];
+  [(CAMMessagesExtensionViewController *)&v12 viewDidAppear:appearCopy];
   CAMSignpostWithIDAndArgs();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   CAMSignpostWithIDAndArgs();
   Current = CFAbsoluteTimeGetCurrent();
   [(CAMMessagesExtensionViewController *)self _logReferenceTime];
@@ -319,26 +319,26 @@ LABEL_7:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = NSStringFromSelector(a2);
-    v11 = [(CAMMessagesExtensionViewController *)self _logReferenceDescription];
+    _logReferenceDescription = [(CAMMessagesExtensionViewController *)self _logReferenceDescription];
     *buf = 138543874;
     v14 = v10;
     v15 = 2048;
     v16 = Current - v8;
     v17 = 2114;
-    v18 = v11;
+    v18 = _logReferenceDescription;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ %.3f seconds after %{public}@", buf, 0x20u);
   }
 
   v12.receiver = self;
   v12.super_class = CAMMessagesExtensionViewController;
-  [(CAMMessagesExtensionViewController *)&v12 viewWillDisappear:v3];
+  [(CAMMessagesExtensionViewController *)&v12 viewWillDisappear:disappearCopy];
   [(CAMMessagesExtensionViewController *)self _stopActiveCameraSession];
   CAMSignpostWithIDAndArgs();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   CAMSignpostWithIDAndArgs();
   Current = CFAbsoluteTimeGetCurrent();
   [(CAMMessagesExtensionViewController *)self _logReferenceTime];
@@ -347,19 +347,19 @@ LABEL_7:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = NSStringFromSelector(a2);
-    v11 = [(CAMMessagesExtensionViewController *)self _logReferenceDescription];
+    _logReferenceDescription = [(CAMMessagesExtensionViewController *)self _logReferenceDescription];
     *buf = 138543874;
     v14 = v10;
     v15 = 2048;
     v16 = Current - v8;
     v17 = 2114;
-    v18 = v11;
+    v18 = _logReferenceDescription;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ %.3f seconds after %{public}@", buf, 0x20u);
   }
 
   v12.receiver = self;
   v12.super_class = CAMMessagesExtensionViewController;
-  [(CAMMessagesExtensionViewController *)&v12 viewDidDisappear:v3];
+  [(CAMMessagesExtensionViewController *)&v12 viewDidDisappear:disappearCopy];
   [(CAMMessagesExtensionViewController *)self _dismissReviewController];
   [(CAMMessagesExtensionViewController *)self _setCaptureState:0];
   [(CAMMessagesExtensionViewController *)self _setLogReferenceDescription:0];
@@ -367,22 +367,22 @@ LABEL_7:
   CAMSignpostWithIDAndArgs();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v18.receiver = self;
   v18.super_class = CAMMessagesExtensionViewController;
-  [(CAMMessagesExtensionViewController *)&v18 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(CAMMessagesExtensionViewController *)self _reviewController];
-  v9 = [v8 reviewBarsModel];
-  v10 = [v8 view];
-  v11 = [v10 window];
+  [(CAMMessagesExtensionViewController *)&v18 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  _reviewController = [(CAMMessagesExtensionViewController *)self _reviewController];
+  reviewBarsModel = [_reviewController reviewBarsModel];
+  view = [_reviewController view];
+  window = [view window];
 
-  if (v11)
+  if (window)
   {
-    v12 = [v11 _toWindowOrientation];
+    _toWindowOrientation = [window _toWindowOrientation];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000033C0;
@@ -390,9 +390,9 @@ LABEL_7:
     v15 = width;
     v16 = height;
     v13[4] = self;
-    v14 = v9;
-    v17 = v12;
-    [v7 animateAlongsideTransition:v13 completion:0];
+    v14 = reviewBarsModel;
+    v17 = _toWindowOrientation;
+    [coordinatorCopy animateAlongsideTransition:v13 completion:0];
   }
 }
 
@@ -403,48 +403,48 @@ LABEL_7:
   [(CAMMessagesExtensionViewController *)&v2 viewWillLayoutSubviews];
 }
 
-- (void)_adoptChildViewController:(id)a3
+- (void)_adoptChildViewController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
-    v20 = a3;
-    v4 = [v20 view];
-    v5 = [(CAMMessagesExtensionViewController *)self view];
-    [(CAMMessagesExtensionViewController *)self addChildViewController:v20];
-    [v5 addSubview:v4];
-    [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = [v4 leftAnchor];
-    v18 = [v5 leftAnchor];
-    v17 = [v19 constraintEqualToAnchor:v18];
+    controllerCopy = controller;
+    view = [controllerCopy view];
+    view2 = [(CAMMessagesExtensionViewController *)self view];
+    [(CAMMessagesExtensionViewController *)self addChildViewController:controllerCopy];
+    [view2 addSubview:view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
+    leftAnchor = [view leftAnchor];
+    leftAnchor2 = [view2 leftAnchor];
+    v17 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v21[0] = v17;
-    v16 = [v4 rightAnchor];
-    v15 = [v5 rightAnchor];
-    v6 = [v16 constraintEqualToAnchor:v15];
+    rightAnchor = [view rightAnchor];
+    rightAnchor2 = [view2 rightAnchor];
+    v6 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v21[1] = v6;
-    v7 = [v4 topAnchor];
-    v8 = [v5 topAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    topAnchor = [view topAnchor];
+    topAnchor2 = [view2 topAnchor];
+    v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v21[2] = v9;
-    [v4 bottomAnchor];
+    [view bottomAnchor];
     v10 = v14 = self;
-    v11 = [v5 bottomAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    bottomAnchor = [view2 bottomAnchor];
+    v12 = [v10 constraintEqualToAnchor:bottomAnchor];
     v21[3] = v12;
     v13 = [NSArray arrayWithObjects:v21 count:4];
     [NSLayoutConstraint activateConstraints:v13];
 
-    [v20 didMoveToParentViewController:v14];
+    [controllerCopy didMoveToParentViewController:v14];
   }
 }
 
-+ (void)_removeChildViewController:(id)a3
++ (void)_removeChildViewController:(id)controller
 {
-  v4 = a3;
-  [v4 willMoveToParentViewController:0];
-  v3 = [v4 view];
-  [v3 removeFromSuperview];
+  controllerCopy = controller;
+  [controllerCopy willMoveToParentViewController:0];
+  view = [controllerCopy view];
+  [view removeFromSuperview];
 
-  [v4 removeFromParentViewController];
+  [controllerCopy removeFromParentViewController];
 }
 
 - (void)_createAndEmbedRegularCameraViewControllerIfNecessary
@@ -452,7 +452,7 @@ LABEL_7:
   if (!self->__regularCameraViewController)
   {
     CAMSignpostWithIDAndArgs();
-    v3 = [(CAMMessagesExtensionViewController *)self view];
+    view = [(CAMMessagesExtensionViewController *)self view];
     v4 = CAMLayoutStyleForView();
 
     v5 = [[CAMCameraViewController alloc] initWithOverrides:0 initialLayoutStyle:v4 privateOptions:5];
@@ -472,18 +472,18 @@ LABEL_7:
 
 - (id)_stopAndReleaseRegularCameraViewController
 {
-  v3 = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
-  if (v3)
+  _regularCameraViewController = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
+  if (_regularCameraViewController)
   {
     [(CAMCameraViewController *)self->__regularCameraViewController setUberDelegate:0];
     regularCameraViewController = self->__regularCameraViewController;
     self->__regularCameraViewController = 0;
 
-    [objc_opt_class() _stopRegularCamera:v3];
-    v5 = v3;
+    [objc_opt_class() _stopRegularCamera:_regularCameraViewController];
+    v5 = _regularCameraViewController;
   }
 
-  return v3;
+  return _regularCameraViewController;
 }
 
 - (void)_startActiveCameraSession
@@ -497,13 +497,13 @@ LABEL_7:
 
 - (void)_startRegularCamera
 {
-  v3 = [(CAMMessagesExtensionViewController *)self _captureState];
-  if (v3)
+  _captureState = [(CAMMessagesExtensionViewController *)self _captureState];
+  if (_captureState)
   {
-    if (v3 == 1)
+    if (_captureState == 1)
     {
       v4 = objc_opt_class();
-      v7 = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
+      _regularCameraViewController = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
       [v4 _startRegularCamera:?];
     }
   }
@@ -524,17 +524,17 @@ LABEL_7:
 - (void)_stopRegularCamera
 {
   v3 = objc_opt_class();
-  v4 = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
-  [v3 _stopRegularCamera:v4];
+  _regularCameraViewController = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
+  [v3 _stopRegularCamera:_regularCameraViewController];
 }
 
-+ (void)_startRegularCamera:(id)a3
++ (void)_startRegularCamera:(id)camera
 {
-  v3 = a3;
-  if (v3)
+  cameraCopy = camera;
+  if (cameraCopy)
   {
     CAMSignpostWithIDAndArgs();
-    [v3 resumeCameraSession];
+    [cameraCopy resumeCameraSession];
   }
 
   else
@@ -548,22 +548,22 @@ LABEL_7:
   }
 }
 
-+ (void)_stopRegularCamera:(id)a3
++ (void)_stopRegularCamera:(id)camera
 {
-  if (a3)
+  if (camera)
   {
-    v3 = a3;
+    cameraCopy = camera;
     CAMSignpostWithIDAndArgs();
-    [v3 suspendCameraSession];
+    [cameraCopy suspendCameraSession];
   }
 }
 
-- (void)_setCaptureState:(int64_t)a3
+- (void)_setCaptureState:(int64_t)state
 {
   captureState = self->__captureState;
-  if (captureState != a3)
+  if (captureState != state)
   {
-    if ([(CAMMessagesExtensionViewController *)self _isValidStateTransitionFrom:self->__captureState to:a3])
+    if ([(CAMMessagesExtensionViewController *)self _isValidStateTransitionFrom:self->__captureState to:state])
     {
       CAMSignpostWithIDAndArgs();
       [(CAMMessagesExtensionViewController *)self _stateChangeReferenceTime];
@@ -584,7 +584,7 @@ LABEL_7:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v12 = [(CAMMessagesExtensionViewController *)self _descriptionForState:self->__captureState];
-        v13 = [(CAMMessagesExtensionViewController *)self _descriptionForState:a3];
+        v13 = [(CAMMessagesExtensionViewController *)self _descriptionForState:state];
         v17 = 138543874;
         v18 = v12;
         v19 = 2114;
@@ -594,17 +594,17 @@ LABEL_7:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Changing state from %{public}@ to %{public}@ (took %.3f seconds)", &v17, 0x20u);
       }
 
-      self->__captureState = a3;
-      if (a3 == 1)
+      self->__captureState = state;
+      if (state == 1)
       {
         [(CAMMessagesExtensionViewController *)self _createAndEmbedRegularCameraViewControllerIfNecessary];
         [(CAMMessagesExtensionViewController *)self _startRegularCamera];
       }
 
-      else if (!a3)
+      else if (!state)
       {
-        v14 = [(CAMMessagesExtensionViewController *)self _stopAndReleaseRegularCameraViewController];
-        [objc_opt_class() _removeChildViewController:v14];
+        _stopAndReleaseRegularCameraViewController = [(CAMMessagesExtensionViewController *)self _stopAndReleaseRegularCameraViewController];
+        [objc_opt_class() _removeChildViewController:_stopAndReleaseRegularCameraViewController];
       }
     }
 
@@ -614,7 +614,7 @@ LABEL_7:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v15 = [(CAMMessagesExtensionViewController *)self _descriptionForState:captureState];
-        v16 = [(CAMMessagesExtensionViewController *)self _descriptionForState:a3];
+        v16 = [(CAMMessagesExtensionViewController *)self _descriptionForState:state];
         v17 = 138543618;
         v18 = v15;
         v19 = 2114;
@@ -625,10 +625,10 @@ LABEL_7:
   }
 }
 
-- (BOOL)_transitionIfPossibleToNextCaptureState:(int64_t)a3
+- (BOOL)_transitionIfPossibleToNextCaptureState:(int64_t)state
 {
-  v5 = [(CAMMessagesExtensionViewController *)self _captureState];
-  v6 = [(CAMMessagesExtensionViewController *)self _isValidStateTransitionFrom:v5 to:a3];
+  _captureState = [(CAMMessagesExtensionViewController *)self _captureState];
+  v6 = [(CAMMessagesExtensionViewController *)self _isValidStateTransitionFrom:_captureState to:state];
   if (v6)
   {
     if ([(CAMMessagesExtensionViewController *)self _isReviewControllerPresented])
@@ -636,8 +636,8 @@ LABEL_7:
       v7 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(CAMMessagesExtensionViewController *)self _descriptionForState:v5];
-        v9 = [(CAMMessagesExtensionViewController *)self _descriptionForState:a3];
+        v8 = [(CAMMessagesExtensionViewController *)self _descriptionForState:_captureState];
+        v9 = [(CAMMessagesExtensionViewController *)self _descriptionForState:state];
         v11 = 138543618;
         v12 = v8;
         v13 = 2114;
@@ -650,7 +650,7 @@ LABEL_7:
 
     else
     {
-      [(CAMMessagesExtensionViewController *)self _setCaptureState:a3];
+      [(CAMMessagesExtensionViewController *)self _setCaptureState:state];
       LOBYTE(v6) = 1;
     }
   }
@@ -658,15 +658,15 @@ LABEL_7:
   return v6;
 }
 
-- (id)_descriptionForState:(int64_t)a3
+- (id)_descriptionForState:(int64_t)state
 {
   v3 = @"RegularCamera";
-  if (a3 != 1)
+  if (state != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (state)
   {
     return v3;
   }
@@ -679,28 +679,28 @@ LABEL_7:
 
 - (BOOL)_isReviewControllerPresented
 {
-  v2 = [(CAMMessagesExtensionViewController *)self _reviewController];
-  v3 = v2 != 0;
+  _reviewController = [(CAMMessagesExtensionViewController *)self _reviewController];
+  v3 = _reviewController != 0;
 
   return v3;
 }
 
-- (void)_presentReviewControllerForAsset:(id)a3 source:(unint64_t)a4
+- (void)_presentReviewControllerForAsset:(id)asset source:(unint64_t)source
 {
-  v6 = a3;
+  assetCopy = asset;
   CAMSignpostWithIDAndArgs();
   v7 = objc_alloc_init(CAMAnalyticsMessagesCaptureEvent);
-  [v7 populateFromReviewAsset:v6 withSourceType:a4];
+  [v7 populateFromReviewAsset:assetCopy withSourceType:source];
   [v7 publish];
   [(CAMMessagesExtensionViewController *)self _stopActiveCameraSession];
-  v8 = [(CAMMessagesExtensionViewController *)self _reviewViewControllerForAsset:v6 source:a4];
+  v8 = [(CAMMessagesExtensionViewController *)self _reviewViewControllerForAsset:assetCopy source:source];
   [v8 setModalPresentationStyle:0];
   [v8 setModalTransitionStyle:2];
-  [(CAMMessagesExtensionViewController *)self _setCurrentReviewAssset:v6];
+  [(CAMMessagesExtensionViewController *)self _setCurrentReviewAssset:assetCopy];
 
   [(CAMMessagesExtensionViewController *)self _setReviewController:v8];
-  v9 = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
-  [v9 setMessagesTransitionState:1 animated:1];
+  _regularCameraViewController = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
+  [_regularCameraViewController setMessagesTransitionState:1 animated:1];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -714,8 +714,8 @@ LABEL_7:
 - (void)_dismissReviewController
 {
   CAMSignpostWithIDAndArgs();
-  v3 = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
-  [v3 setMessagesTransitionState:3 animated:1];
+  _regularCameraViewController = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
+  [_regularCameraViewController setMessagesTransitionState:3 animated:1];
 
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -728,14 +728,14 @@ LABEL_7:
   CAMSignpostWithIDAndArgs();
 }
 
-- (void)_updateLayoutParametersForReviewBarsModel:(id)a3 viewBounds:(CGRect)a4 orientation:(int64_t)a5 forceLayout:(BOOL)a6
+- (void)_updateLayoutParametersForReviewBarsModel:(id)model viewBounds:(CGRect)bounds orientation:(int64_t)orientation forceLayout:(BOOL)layout
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v14 = [(CAMMessagesExtensionViewController *)self view];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  modelCopy = model;
+  view = [(CAMMessagesExtensionViewController *)self view];
   v15 = CAMLayoutStyleForView();
 
   v16[0] = _NSConcreteStackBlock;
@@ -748,66 +748,66 @@ LABEL_7:
   *&v16[8] = height;
   v16[4] = self;
   v16[9] = v15;
-  v16[10] = a5;
-  v17 = a6;
-  [v13 performChanges:v16];
+  v16[10] = orientation;
+  layoutCopy = layout;
+  [modelCopy performChanges:v16];
 }
 
-- (id)_reviewViewControllerForAsset:(id)a3 source:(unint64_t)a4
+- (id)_reviewViewControllerForAsset:(id)asset source:(unint64_t)source
 {
-  v5 = a3;
+  assetCopy = asset;
   v6 = objc_alloc_init(PUReviewDataSource);
-  [v6 insertAsset:v5];
+  [v6 insertAsset:assetCopy];
   v19 = [[PUReviewAssetsDataSourceManager alloc] initWithReviewDataSource:v6];
   v7 = objc_alloc_init(PUReviewScreenBarsModel);
-  v8 = [(CAMMessagesExtensionViewController *)self view];
-  v9 = [v8 window];
+  view = [(CAMMessagesExtensionViewController *)self view];
+  window = [view window];
 
-  v10 = [v9 _windowInterfaceOrientation];
-  v11 = [(CAMMessagesExtensionViewController *)self view];
-  [v11 bounds];
-  [(CAMMessagesExtensionViewController *)self _updateLayoutParametersForReviewBarsModel:v7 viewBounds:v10 orientation:0 forceLayout:?];
+  _windowInterfaceOrientation = [window _windowInterfaceOrientation];
+  view2 = [(CAMMessagesExtensionViewController *)self view];
+  [view2 bounds];
+  [(CAMMessagesExtensionViewController *)self _updateLayoutParametersForReviewBarsModel:v7 viewBounds:_windowInterfaceOrientation orientation:0 forceLayout:?];
 
   v12 = [PUAssetExplorerReviewScreenViewController alloc];
   v13 = objc_alloc_init(PUReviewAssetsMediaProvider);
   v14 = [NSIndexPath indexPathForRow:0 inSection:0];
-  v15 = [v5 identifier];
+  identifier = [assetCopy identifier];
 
-  v16 = [NSSet setWithObject:v15];
-  v17 = [v12 initWithDataSourceManager:v19 mediaProvider:v13 reviewAssetProvider:0 initialIndexPath:v14 initialSelectedAssetUUIDs:v16 initialDisabledLivePhotoAssetUUIDs:0 sourceType:a4 reviewBarsModel:v7 options:1];
+  v16 = [NSSet setWithObject:identifier];
+  v17 = [v12 initWithDataSourceManager:v19 mediaProvider:v13 reviewAssetProvider:0 initialIndexPath:v14 initialSelectedAssetUUIDs:v16 initialDisabledLivePhotoAssetUUIDs:0 sourceType:source reviewBarsModel:v7 options:1];
 
   [v17 setDelegate:self];
 
   return v17;
 }
 
-- (BOOL)assetExplorerReviewScreenViewController:(id)a3 canPerformActionType:(unint64_t)a4 onAsset:(id)a5 inAssetCollection:(id)a6
+- (BOOL)assetExplorerReviewScreenViewController:(id)controller canPerformActionType:(unint64_t)type onAsset:(id)asset inAssetCollection:(id)collection
 {
-  if (a4 > 7)
+  if (type > 7)
   {
     return 0;
   }
 
-  if (((1 << a4) & 0xD7) != 0)
+  if (((1 << type) & 0xD7) != 0)
   {
     return 1;
   }
 
-  return a4 == 5 && [a5 mediaType] == 1;
+  return type == 5 && [asset mediaType] == 1;
 }
 
-- (BOOL)assetExplorerReviewScreenViewController:(id)a3 shouldEnableActionType:(unint64_t)a4 onAsset:(id)a5 inAssetCollection:(id)a6
+- (BOOL)assetExplorerReviewScreenViewController:(id)controller shouldEnableActionType:(unint64_t)type onAsset:(id)asset inAssetCollection:(id)collection
 {
-  v7 = a5;
-  v8 = v7;
-  if (a4 > 7)
+  assetCopy = asset;
+  v8 = assetCopy;
+  if (type > 7)
   {
     goto LABEL_6;
   }
 
-  if (((1 << a4) & 0xF2) == 0)
+  if (((1 << type) & 0xF2) == 0)
   {
-    if (((1 << a4) & 5) != 0)
+    if (((1 << type) & 5) != 0)
     {
       LOBYTE(v9) = 1;
       goto LABEL_7;
@@ -818,47 +818,47 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v9 = [v7 isTemporaryPlaceholder] ^ 1;
+  v9 = [assetCopy isTemporaryPlaceholder] ^ 1;
 LABEL_7:
 
   return v9;
 }
 
-- (void)assetExplorerReviewScreenViewController:(id)a3 didPerformCompletionAction:(unint64_t)a4 withSelectedAssetUUIDs:(id)a5 livePhotoDisabledAssetUUIDs:(id)a6 substituteAssetsByUUID:(id)a7
+- (void)assetExplorerReviewScreenViewController:(id)controller didPerformCompletionAction:(unint64_t)action withSelectedAssetUUIDs:(id)ds livePhotoDisabledAssetUUIDs:(id)iDs substituteAssetsByUUID:(id)d
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = [a7 allValues];
-  v14 = [v13 firstObject];
-  if (v14)
+  controllerCopy = controller;
+  iDsCopy = iDs;
+  allValues = [d allValues];
+  firstObject = [allValues firstObject];
+  if (firstObject)
   {
-    v15 = v14;
+    _currentReviewAssset = firstObject;
 
 LABEL_4:
-    v16 = [v15 identifier];
-    v17 = [v12 containsObject:v16];
+    identifier = [_currentReviewAssset identifier];
+    v17 = [iDsCopy containsObject:identifier];
 
-    v18 = [(CAMMessagesExtensionViewController *)self view];
-    v19 = [v18 window];
+    view = [(CAMMessagesExtensionViewController *)self view];
+    window = [view window];
 
-    [v19 setUserInteractionEnabled:0];
-    [(CAMMessagesExtensionViewController *)self _saveAssetIfNeeded:v15];
-    v20 = [v11 sourceType];
+    [window setUserInteractionEnabled:0];
+    [(CAMMessagesExtensionViewController *)self _saveAssetIfNeeded:_currentReviewAssset];
+    sourceType = [controllerCopy sourceType];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100004A7C;
     v23[3] = &unk_1000105B0;
-    v24 = v19;
-    v25 = self;
-    v21 = v19;
-    [(CAMMessagesExtensionViewController *)self _transportAsset:v15 forCompletionAction:a4 sourceType:v20 suppressLivePhoto:v17 completion:v23];
+    v24 = window;
+    selfCopy = self;
+    v21 = window;
+    [(CAMMessagesExtensionViewController *)self _transportAsset:_currentReviewAssset forCompletionAction:action sourceType:sourceType suppressLivePhoto:v17 completion:v23];
 
     goto LABEL_5;
   }
 
-  v15 = [(CAMMessagesExtensionViewController *)self _currentReviewAssset];
+  _currentReviewAssset = [(CAMMessagesExtensionViewController *)self _currentReviewAssset];
 
-  if (v15)
+  if (_currentReviewAssset)
   {
     goto LABEL_4;
   }
@@ -873,16 +873,16 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)assetExplorerReviewScreenViewControllerDidPressCancel:(id)a3
+- (void)assetExplorerReviewScreenViewControllerDidPressCancel:(id)cancel
 {
-  v4 = [(CAMMessagesExtensionViewController *)self _currentReviewAssset];
+  _currentReviewAssset = [(CAMMessagesExtensionViewController *)self _currentReviewAssset];
   v5 = +[NSProcessInfo processInfo];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100004C24;
   v9[3] = &unk_1000105D8;
-  v10 = v4;
-  v6 = v4;
+  v10 = _currentReviewAssset;
+  v6 = _currentReviewAssset;
   [v5 performExpiringActivityWithReason:@"Marking files purgeable" usingBlock:v9];
 
   v7 = os_log_create("com.apple.camera", "CameraMessagesApp");
@@ -895,28 +895,28 @@ LABEL_5:
   [(CAMMessagesExtensionViewController *)self dismiss];
 }
 
-- (void)assetExplorerReviewScreenViewControllerDidPressRetake:(id)a3
+- (void)assetExplorerReviewScreenViewControllerDidPressRetake:(id)retake
 {
-  v4 = [(CAMMessagesExtensionViewController *)self _currentReviewAssset];
+  _currentReviewAssset = [(CAMMessagesExtensionViewController *)self _currentReviewAssset];
   v5 = dispatch_get_global_queue(17, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100004D64;
   block[3] = &unk_1000104D0;
-  v8 = v4;
-  v6 = v4;
+  v8 = _currentReviewAssset;
+  v6 = _currentReviewAssset;
   dispatch_async(v5, block);
 
   [(CAMMessagesExtensionViewController *)self _dismissReviewController];
   [(CAMMessagesExtensionViewController *)self _startActiveCameraSession];
 }
 
-- (void)_transportAsset:(id)a3 forCompletionAction:(unint64_t)a4 sourceType:(unint64_t)a5 suppressLivePhoto:(BOOL)a6 completion:(id)a7
+- (void)_transportAsset:(id)asset forCompletionAction:(unint64_t)action sourceType:(unint64_t)type suppressLivePhoto:(BOOL)photo completion:(id)completion
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a7;
-  if (a5 == 2)
+  photoCopy = photo;
+  assetCopy = asset;
+  completionCopy = completion;
+  if (type == 2)
   {
     v14 = 1;
   }
@@ -926,8 +926,8 @@ LABEL_5:
     v14 = 5;
   }
 
-  v15 = [(CAMMessagesExtensionViewController *)self activeConversation];
-  if (v15)
+  activeConversation = [(CAMMessagesExtensionViewController *)self activeConversation];
+  if (activeConversation)
   {
     v16 = [CAMAssetTransportController alloc];
     v35 = 0;
@@ -964,8 +964,8 @@ LABEL_5:
       v19 = v36[3];
     }
 
-    v29 = v13;
-    v20 = v8;
+    v29 = completionCopy;
+    v20 = photoCopy;
     v21 = v19;
     _Block_object_dispose(&v35, 8);
     v35 = 0;
@@ -995,26 +995,26 @@ LABEL_5:
       _Unwind_Resume(v28);
     }
 
-    v25 = [(CAMAssetTransportController *)v16 initWithConversation:v15 packageGeneratorClass:v17 statisticsManagerClass:v19 previewImageKey:*v22];
-    if (a4 == 1)
+    v25 = [(CAMAssetTransportController *)v16 initWithConversation:activeConversation packageGeneratorClass:v17 statisticsManagerClass:v19 previewImageKey:*v22];
+    if (action == 1)
     {
       CAMSignpostWithIDAndArgs();
       v27 = v20;
-      v13 = v29;
-      [v25 sendAsset:v12 suppressLivePhoto:v27 mediaOrigin:v14 completion:v29];
+      completionCopy = v29;
+      [v25 sendAsset:assetCopy suppressLivePhoto:v27 mediaOrigin:v14 completion:v29];
     }
 
-    else if (a4)
+    else if (action)
     {
-      v13 = v29;
+      completionCopy = v29;
     }
 
     else
     {
       CAMSignpostWithIDAndArgs();
       v26 = v20;
-      v13 = v29;
-      [v25 stageAsset:v12 suppressLivePhoto:v26 mediaOrigin:v14 completion:v29];
+      completionCopy = v29;
+      [v25 stageAsset:assetCopy suppressLivePhoto:v26 mediaOrigin:v14 completion:v29];
     }
   }
 
@@ -1028,9 +1028,9 @@ LABEL_5:
   }
 }
 
-- (void)_saveAssetIfNeeded:(id)a3
+- (void)_saveAssetIfNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v4 = +[CAMUserPreferences preferences];
   if ([v4 saveMessagesCapturesPhotoLibrary])
   {
@@ -1039,7 +1039,7 @@ LABEL_5:
     v6[1] = 3221225472;
     v6[2] = sub_1000051E4;
     v6[3] = &unk_1000104D0;
-    v7 = v3;
+    v7 = neededCopy;
     [v5 performChanges:v6 completionHandler:&stru_100010618];
   }
 }
@@ -1047,23 +1047,23 @@ LABEL_5:
 - (BOOL)_shouldDisableCameraForMultitasking
 {
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 isSplitScreenSupported];
+  isSplitScreenSupported = [v3 isSplitScreenSupported];
 
   if ([(CAMMessagesExtensionViewController *)self isViewLoaded])
   {
-    v5 = [(CAMMessagesExtensionViewController *)self view];
+    view = [(CAMMessagesExtensionViewController *)self view];
   }
 
   else
   {
-    v5 = 0;
+    view = 0;
   }
 
-  v6 = [v5 window];
-  v7 = [v6 screen];
-  if (v6)
+  window = [view window];
+  screen = [window screen];
+  if (window)
   {
-    [v6 bounds];
+    [window bounds];
     width = v10;
     height = v12;
   }
@@ -1076,9 +1076,9 @@ LABEL_5:
     height = CGRectZero.size.height;
   }
 
-  if (v7)
+  if (screen)
   {
-    v14 = v4;
+    v14 = isSplitScreenSupported;
   }
 
   else
@@ -1088,7 +1088,7 @@ LABEL_5:
 
   if (v14 == 1 && (v15 = width, v16 = height, !CGRectIsEmpty(*&x)))
   {
-    [v7 _referenceBounds];
+    [screen _referenceBounds];
     v19 = v18;
     v21 = v20;
     [(CAMMessagesExtensionViewController *)self _portraitOrientedSizeForSize:width, height];
@@ -1103,14 +1103,14 @@ LABEL_5:
   return v17;
 }
 
-- (CGSize)_portraitOrientedSizeForSize:(CGSize)a3
+- (CGSize)_portraitOrientedSizeForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CAMMessagesExtensionViewController *)self view];
-  v6 = [v5 window];
-  v7 = [v6 screen];
-  [v7 _referenceBounds];
+  height = size.height;
+  width = size.width;
+  view = [(CAMMessagesExtensionViewController *)self view];
+  window = [view window];
+  screen = [window screen];
+  [screen _referenceBounds];
   v9 = v8;
   v11 = v10;
 
@@ -1145,9 +1145,9 @@ LABEL_5:
   return result;
 }
 
-- (void)cameraViewController:(id)a3 didCapturePhoto:(id)a4 withProperties:(id)a5 error:(id)a6
+- (void)cameraViewController:(id)controller didCapturePhoto:(id)photo withProperties:(id)properties error:(id)error
 {
-  if (!a4 || a6)
+  if (!photo || error)
   {
     v7 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1158,14 +1158,14 @@ LABEL_5:
 
   else
   {
-    v8 = [CAMCameraReviewAdapter reviewAssetForPhoto:a4 withProperties:a5];
+    v8 = [CAMCameraReviewAdapter reviewAssetForPhoto:photo withProperties:properties];
     [(CAMMessagesExtensionViewController *)self _presentReviewControllerForAsset:v8 source:2];
   }
 }
 
-- (void)cameraViewController:(id)a3 didCaptureLivePhoto:(id)a4 withProperties:(id)a5 error:(id)a6
+- (void)cameraViewController:(id)controller didCaptureLivePhoto:(id)photo withProperties:(id)properties error:(id)error
 {
-  if (!a4 || a6)
+  if (!photo || error)
   {
     v7 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1176,14 +1176,14 @@ LABEL_5:
 
   else
   {
-    v8 = [CAMCameraReviewAdapter reviewAssetForLivePhoto:a4 withProperties:a5];
+    v8 = [CAMCameraReviewAdapter reviewAssetForLivePhoto:photo withProperties:properties];
     [(CAMMessagesExtensionViewController *)self _presentReviewControllerForAsset:v8 source:2];
   }
 }
 
-- (void)cameraViewController:(id)a3 didCaptureAVAsset:(id)a4 andAudioMix:(id)a5 withProperties:(id)a6 error:(id)a7
+- (void)cameraViewController:(id)controller didCaptureAVAsset:(id)asset andAudioMix:(id)mix withProperties:(id)properties error:(id)error
 {
-  if (!a4 || a7)
+  if (!asset || error)
   {
     v8 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1194,17 +1194,17 @@ LABEL_5:
 
   else
   {
-    v9 = [CAMCameraReviewAdapter reviewAssetForAVAsset:a4 audioMix:a5 properties:a6];
+    v9 = [CAMCameraReviewAdapter reviewAssetForAVAsset:asset audioMix:mix properties:properties];
     [(CAMMessagesExtensionViewController *)self _presentReviewControllerForAsset:v9 source:2];
   }
 }
 
-- (void)cameraViewControllerDidSuspendCameraSession:(id)a3
+- (void)cameraViewControllerDidSuspendCameraSession:(id)session
 {
-  v4 = a3;
-  v5 = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
+  sessionCopy = session;
+  _regularCameraViewController = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
 
-  if (v5 == v4)
+  if (_regularCameraViewController == sessionCopy)
   {
 
     [(CAMMessagesExtensionViewController *)self _regularCameraDidStopCaptureSession];
@@ -1226,12 +1226,12 @@ LABEL_5:
   }
 }
 
-- (void)cameraViewControllerDidResumeCameraSession:(id)a3
+- (void)cameraViewControllerDidResumeCameraSession:(id)session
 {
-  v4 = a3;
-  v5 = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
+  sessionCopy = session;
+  _regularCameraViewController = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
 
-  if (v5 == v4)
+  if (_regularCameraViewController == sessionCopy)
   {
 
     [(CAMMessagesExtensionViewController *)self _regularCameraDidStartCaptureSession];
@@ -1256,7 +1256,7 @@ LABEL_5:
   }
 }
 
-- (void)cameraViewControllerRequestedDismissal:(id)a3
+- (void)cameraViewControllerRequestedDismissal:(id)dismissal
 {
   v4 = os_log_create("com.apple.camera", "CameraMessagesApp");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1268,42 +1268,42 @@ LABEL_5:
   [(CAMMessagesExtensionViewController *)self dismiss];
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   v6 = objc_alloc_init(CAMReviewTransitionAnimator);
   [(CAMReviewTransitionAnimator *)v6 setTransitionDirection:0];
-  v7 = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
-  [(CAMReviewTransitionAnimator *)v6 setCameraViewController:v7];
+  _regularCameraViewController = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
+  [(CAMReviewTransitionAnimator *)v6 setCameraViewController:_regularCameraViewController];
 
-  v8 = [(CAMMessagesExtensionViewController *)self _reviewController];
-  [(CAMReviewTransitionAnimator *)v6 setReviewViewController:v8];
+  _reviewController = [(CAMMessagesExtensionViewController *)self _reviewController];
+  [(CAMReviewTransitionAnimator *)v6 setReviewViewController:_reviewController];
 
   [(CAMReviewTransitionAnimator *)v6 setDelegate:self];
 
   return v6;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   v4 = objc_alloc_init(CAMReviewTransitionAnimator);
   [(CAMReviewTransitionAnimator *)v4 setTransitionDirection:1];
-  v5 = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
-  [(CAMReviewTransitionAnimator *)v4 setCameraViewController:v5];
+  _regularCameraViewController = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
+  [(CAMReviewTransitionAnimator *)v4 setCameraViewController:_regularCameraViewController];
 
-  v6 = [(CAMMessagesExtensionViewController *)self _reviewController];
-  [(CAMReviewTransitionAnimator *)v4 setReviewViewController:v6];
+  _reviewController = [(CAMMessagesExtensionViewController *)self _reviewController];
+  [(CAMReviewTransitionAnimator *)v4 setReviewViewController:_reviewController];
 
   [(CAMReviewTransitionAnimator *)v4 setDelegate:self];
 
   return v4;
 }
 
-- (unint64_t)availableControlsCountForReviewTransition:(id)a3
+- (unint64_t)availableControlsCountForReviewTransition:(id)transition
 {
-  v4 = [(CAMMessagesExtensionViewController *)self _currentReviewAssset];
-  v5 = [(CAMMessagesExtensionViewController *)self _reviewController];
-  v6 = [(CAMMessagesExtensionViewController *)self assetExplorerReviewScreenViewController:v5 canPerformActionType:6 onAsset:v4 inAssetCollection:0];
-  v7 = [(CAMMessagesExtensionViewController *)self assetExplorerReviewScreenViewController:v5 canPerformActionType:5 onAsset:v4 inAssetCollection:0];
+  _currentReviewAssset = [(CAMMessagesExtensionViewController *)self _currentReviewAssset];
+  _reviewController = [(CAMMessagesExtensionViewController *)self _reviewController];
+  v6 = [(CAMMessagesExtensionViewController *)self assetExplorerReviewScreenViewController:_reviewController canPerformActionType:6 onAsset:_currentReviewAssset inAssetCollection:0];
+  v7 = [(CAMMessagesExtensionViewController *)self assetExplorerReviewScreenViewController:_reviewController canPerformActionType:5 onAsset:_currentReviewAssset inAssetCollection:0];
   v8 = 1;
   if (v6)
   {
@@ -1323,37 +1323,37 @@ LABEL_5:
   return v9;
 }
 
-+ (int64_t)_CAMTorchModeForAVFlashMode:(int64_t)a3
++ (int64_t)_CAMTorchModeForAVFlashMode:(int64_t)mode
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return mode == 1;
   }
 }
 
-+ (int64_t)_AVFlashModeForCAMTorchMode:(int64_t)a3
++ (int64_t)_AVFlashModeForCAMTorchMode:(int64_t)mode
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return mode == 1;
   }
 }
 
-- (void)_handleHostDidEnterBackgroundNotification:(id)a3
+- (void)_handleHostDidEnterBackgroundNotification:(id)notification
 {
-  v4 = [(CAMMessagesExtensionViewController *)self _reviewController];
+  _reviewController = [(CAMMessagesExtensionViewController *)self _reviewController];
 
-  if (v4)
+  if (_reviewController)
   {
     v5 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1365,9 +1365,9 @@ LABEL_5:
 
   else
   {
-    v6 = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
-    v5 = v6;
-    if (v6 && (([v6 isCapturingPhoto]& 1) != 0 || ([v5 isCapturingLivePhoto]& 1) != 0 || ([v5 isRecording]& 1) != 0 || [v5 isPreventingAdditionalCaptures]))
+    _regularCameraViewController = [(CAMMessagesExtensionViewController *)self _regularCameraViewController];
+    v5 = _regularCameraViewController;
+    if (_regularCameraViewController && (([_regularCameraViewController isCapturingPhoto]& 1) != 0 || ([v5 isCapturingLivePhoto]& 1) != 0 || ([v5 isRecording]& 1) != 0 || [v5 isPreventingAdditionalCaptures]))
     {
       v7 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))

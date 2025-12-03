@@ -1,109 +1,109 @@
 @interface BuddyPosedDeviceSelectionItemView
 - (BOOL)selected;
-- (BuddyPosedDeviceSelectionItemView)initWithContentImage:(id)a3 selectionSegment:(int64_t)a4 accessoryView:(id)a5 hostViewLayoutMargins:(NSDirectionalEdgeInsets)a6 posedDevicesPadding:(double)a7;
-- (BuddyPosedDeviceSelectionItemView)initWithContentView:(id)a3 selectionSegment:(int64_t)a4 accessoryView:(id)a5;
+- (BuddyPosedDeviceSelectionItemView)initWithContentImage:(id)image selectionSegment:(int64_t)segment accessoryView:(id)view hostViewLayoutMargins:(NSDirectionalEdgeInsets)margins posedDevicesPadding:(double)padding;
+- (BuddyPosedDeviceSelectionItemView)initWithContentView:(id)view selectionSegment:(int64_t)segment accessoryView:(id)accessoryView;
 - (NSDirectionalEdgeInsets)hostViewLayoutMargins;
-- (double)_idealPosedDeviceSizeForAspectRatio:(double)a3 layoutMargins:(NSDirectionalEdgeInsets)a4 posedDevicesPadding:(double)a5;
+- (double)_idealPosedDeviceSizeForAspectRatio:(double)ratio layoutMargins:(NSDirectionalEdgeInsets)margins posedDevicesPadding:(double)padding;
 - (double)_mainViewToAccessoryViewPadding;
 - (double)_preferredHeight;
 - (double)accessoryViewAndPaddingHeight;
 - (double)contentContainerHeight;
-- (double)updateBoundsForMaxContentHeight:(double)a3;
-- (id)_createContainerSize:(CGRect)a3 aspectRatio:(double)a4 hostViewLayoutMargins:(NSDirectionalEdgeInsets)a5 posedDevicesPadding:(double)a6;
+- (double)updateBoundsForMaxContentHeight:(double)height;
+- (id)_createContainerSize:(CGRect)size aspectRatio:(double)ratio hostViewLayoutMargins:(NSDirectionalEdgeInsets)margins posedDevicesPadding:(double)padding;
 - (id)title;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation BuddyPosedDeviceSelectionItemView
 
-- (BuddyPosedDeviceSelectionItemView)initWithContentView:(id)a3 selectionSegment:(int64_t)a4 accessoryView:(id)a5
+- (BuddyPosedDeviceSelectionItemView)initWithContentView:(id)view selectionSegment:(int64_t)segment accessoryView:(id)accessoryView
 {
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  obj[1] = a4;
+  objc_storeStrong(location, view);
+  obj[1] = segment;
   obj[0] = 0;
-  objc_storeStrong(obj, a5);
-  v7 = v44;
-  v44 = 0;
+  objc_storeStrong(obj, accessoryView);
+  v7 = selfCopy;
+  selfCopy = 0;
   v41.receiver = v7;
   v41.super_class = BuddyPosedDeviceSelectionItemView;
   v8 = [(BuddyPosedDeviceSelectionItemView *)&v41 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-  v44 = v8;
-  objc_storeStrong(&v44, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    objc_storeStrong(v44 + 2, obj[0]);
-    objc_storeStrong(v44 + 1, location[0]);
-    [v44 addSubview:*(v44 + 2)];
-    [v44 addSubview:*(v44 + 1)];
-    [v44 _mainViewToAccessoryViewPadding];
+    objc_storeStrong(selfCopy + 2, obj[0]);
+    objc_storeStrong(selfCopy + 1, location[0]);
+    [selfCopy addSubview:*(selfCopy + 2)];
+    [selfCopy addSubview:*(selfCopy + 1)];
+    [selfCopy _mainViewToAccessoryViewPadding];
     v40 = v9;
-    v10 = [*(v44 + 1) heightAnchor];
-    [*(v44 + 1) bounds];
-    v12 = [v10 constraintEqualToConstant:v11];
+    heightAnchor = [*(selfCopy + 1) heightAnchor];
+    [*(selfCopy + 1) bounds];
+    v12 = [heightAnchor constraintEqualToConstant:v11];
     v46[0] = v12;
-    v13 = [*(v44 + 1) widthAnchor];
-    [*(v44 + 1) bounds];
-    v15 = [v13 constraintEqualToConstant:v14];
+    widthAnchor = [*(selfCopy + 1) widthAnchor];
+    [*(selfCopy + 1) bounds];
+    v15 = [widthAnchor constraintEqualToConstant:v14];
     v46[1] = v15;
     v16 = [NSArray arrayWithObjects:v46 count:2];
-    v17 = *(v44 + 4);
-    *(v44 + 4) = v16;
+    v17 = *(selfCopy + 4);
+    *(selfCopy + 4) = v16;
 
-    [*(v44 + 1) bounds];
+    [*(selfCopy + 1) bounds];
     v19 = v18;
-    [*(v44 + 1) bounds];
-    *(v44 + 3) = v19 / v20;
-    v39 = [*(v44 + 1) topAnchor];
-    v38 = [v44 topAnchor];
-    v37 = [v39 constraintEqualToAnchor:?];
+    [*(selfCopy + 1) bounds];
+    *(selfCopy + 3) = v19 / v20;
+    topAnchor = [*(selfCopy + 1) topAnchor];
+    topAnchor2 = [selfCopy topAnchor];
+    v37 = [topAnchor constraintEqualToAnchor:?];
     v45[0] = v37;
-    v36 = [*(v44 + 1) centerXAnchor];
-    v35 = [v44 centerXAnchor];
-    v34 = [v36 constraintEqualToAnchor:?];
+    centerXAnchor = [*(selfCopy + 1) centerXAnchor];
+    centerXAnchor2 = [selfCopy centerXAnchor];
+    v34 = [centerXAnchor constraintEqualToAnchor:?];
     v45[1] = v34;
-    v21 = [*(v44 + 2) topAnchor];
-    v22 = [*(v44 + 1) bottomAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:v40];
+    topAnchor3 = [*(selfCopy + 2) topAnchor];
+    bottomAnchor = [*(selfCopy + 1) bottomAnchor];
+    v23 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:v40];
     v45[2] = v23;
-    v24 = [*(v44 + 2) centerXAnchor];
-    v25 = [*(v44 + 1) centerXAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    centerXAnchor3 = [*(selfCopy + 2) centerXAnchor];
+    centerXAnchor4 = [*(selfCopy + 1) centerXAnchor];
+    v26 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v45[3] = v26;
-    v27 = [v44 bottomAnchor];
-    v28 = [*(v44 + 2) bottomAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28 constant:v40];
+    bottomAnchor2 = [selfCopy bottomAnchor];
+    bottomAnchor3 = [*(selfCopy + 2) bottomAnchor];
+    v29 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:v40];
     v45[4] = v29;
     v30 = [NSArray arrayWithObjects:v45 count:5];
     [NSLayoutConstraint activateConstraints:v30];
 
-    v31 = [v44 contentContainerWidthHeightConstraints];
-    [NSLayoutConstraint activateConstraints:v31];
+    contentContainerWidthHeightConstraints = [selfCopy contentContainerWidthHeightConstraints];
+    [NSLayoutConstraint activateConstraints:contentContainerWidthHeightConstraints];
 
-    [v44 layoutSubviews];
-    [v44 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [selfCopy layoutSubviews];
+    [selfCopy setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
-  v32 = v44;
+  v32 = selfCopy;
   objc_storeStrong(obj, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v44, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v32;
 }
 
-- (BuddyPosedDeviceSelectionItemView)initWithContentImage:(id)a3 selectionSegment:(int64_t)a4 accessoryView:(id)a5 hostViewLayoutMargins:(NSDirectionalEdgeInsets)a6 posedDevicesPadding:(double)a7
+- (BuddyPosedDeviceSelectionItemView)initWithContentImage:(id)image selectionSegment:(int64_t)segment accessoryView:(id)view hostViewLayoutMargins:(NSDirectionalEdgeInsets)margins posedDevicesPadding:(double)padding
 {
-  v33 = a6;
-  v32 = self;
+  marginsCopy = margins;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v30 = a4;
+  objc_storeStrong(location, image);
+  segmentCopy = segment;
   v29 = 0;
-  objc_storeStrong(&v29, a5);
-  v28 = a7;
+  objc_storeStrong(&v29, view);
+  paddingCopy = padding;
   v10 = [UIImageView alloc];
   v27 = [v10 initWithImage:location[0]];
   v11 = [UIColor colorWithRed:0.152941182 green:0.152941182 blue:0.152941182 alpha:1.0];
@@ -118,101 +118,101 @@
   v25[1] = v15;
   v25[2] = v16;
   v26 = v14 / *&v15;
-  v17 = v32;
+  v17 = selfCopy;
   [v27 bounds];
-  v25[0] = [v17 _createContainerSize:v18 aspectRatio:v19 hostViewLayoutMargins:v20 posedDevicesPadding:{v21, v26, *&v33.top, *&v33.leading, *&v33.bottom, *&v33.trailing, *&v28, *&v18, *&v19, *&v20, *&v21}];
+  v25[0] = [v17 _createContainerSize:v18 aspectRatio:v19 hostViewLayoutMargins:v20 posedDevicesPadding:{v21, v26, *&marginsCopy.top, *&marginsCopy.leading, *&marginsCopy.bottom, *&marginsCopy.trailing, *&paddingCopy, *&v18, *&v19, *&v20, *&v21}];
   [v25[0] addSubview:v27];
   [v27 pinToEdges:v25[0]];
-  v22 = v32;
-  v32 = 0;
-  v32 = [v22 initWithContentView:v25[0] selectionSegment:v30 accessoryView:v29];
-  objc_storeStrong(&v32, v32);
-  if (v32)
+  v22 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [v22 initWithContentView:v25[0] selectionSegment:segmentCopy accessoryView:v29];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    *(v32 + 3) = v26;
-    *(v32 + 48) = v33;
-    *(v32 + 5) = v28;
+    *(selfCopy + 3) = v26;
+    *(selfCopy + 48) = marginsCopy;
+    *(selfCopy + 5) = paddingCopy;
   }
 
-  v23 = v32;
+  v23 = selfCopy;
   objc_storeStrong(v25, 0);
   objc_storeStrong(&v27, 0);
   objc_storeStrong(&v29, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v32, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v23;
 }
 
-- (double)_idealPosedDeviceSizeForAspectRatio:(double)a3 layoutMargins:(NSDirectionalEdgeInsets)a4 posedDevicesPadding:(double)a5
+- (double)_idealPosedDeviceSizeForAspectRatio:(double)ratio layoutMargins:(NSDirectionalEdgeInsets)margins posedDevicesPadding:(double)padding
 {
-  leading = a4.leading;
-  trailing = a4.trailing;
+  leading = margins.leading;
+  trailing = margins.trailing;
   v5 = +[UIDevice currentDevice];
-  v6 = [(UIDevice *)v5 userInterfaceIdiom];
+  userInterfaceIdiom = [(UIDevice *)v5 userInterfaceIdiom];
 
-  if (v6 == 1)
+  if (userInterfaceIdiom == 1)
   {
     +[OBWelcomeController preferredContentSize];
-    v11 = v7 - a5 - (leading + trailing);
+    v11 = v7 - padding - (leading + trailing);
   }
 
   else
   {
     v8 = +[UIScreen mainScreen];
     [(UIScreen *)v8 bounds];
-    v11 = v9 - a5 - (leading + trailing);
+    v11 = v9 - padding - (leading + trailing);
   }
 
-  [(BuddyPosedDeviceSelectionItemView *)self buddy_heightForContainerWidth:v11 / 3.0 ratio:a3];
+  [(BuddyPosedDeviceSelectionItemView *)self buddy_heightForContainerWidth:v11 / 3.0 ratio:ratio];
   return result;
 }
 
-- (id)_createContainerSize:(CGRect)a3 aspectRatio:(double)a4 hostViewLayoutMargins:(NSDirectionalEdgeInsets)a5 posedDevicesPadding:(double)a6
+- (id)_createContainerSize:(CGRect)size aspectRatio:(double)ratio hostViewLayoutMargins:(NSDirectionalEdgeInsets)margins posedDevicesPadding:(double)padding
 {
-  v15 = a3;
-  v14 = a5;
-  v13 = self;
+  sizeCopy = size;
+  marginsCopy = margins;
+  selfCopy = self;
   v12 = a2;
-  v11 = a4;
-  location = [[UIView alloc] initWithFrame:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  ratioCopy = ratio;
+  location = [[UIView alloc] initWithFrame:{size.origin.x, size.origin.y, size.size.width, size.size.height}];
   [location setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(BuddyPosedDeviceSelectionItemView *)v13 _idealPosedDeviceSizeForAspectRatio:v11 layoutMargins:a5.top posedDevicesPadding:a5.leading, a5.bottom, a5.trailing, a6];
-  v7 = [location buddy_scaleHeightTo:v6 ratio:v11];
+  [(BuddyPosedDeviceSelectionItemView *)selfCopy _idealPosedDeviceSizeForAspectRatio:ratioCopy layoutMargins:margins.top posedDevicesPadding:margins.leading, margins.bottom, margins.trailing, padding];
+  v7 = [location buddy_scaleHeightTo:v6 ratio:ratioCopy];
   v8 = location;
   objc_storeStrong(&location, 0);
   return v8;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = [(BuddyPosedDeviceSelectionItemView *)self accessoryView];
-  [(BuddyPosedDeviceSelectionItemAccessoryView *)v4 setSelected:a3];
+  accessoryView = [(BuddyPosedDeviceSelectionItemView *)self accessoryView];
+  [(BuddyPosedDeviceSelectionItemAccessoryView *)accessoryView setSelected:selected];
 }
 
 - (BOOL)selected
 {
   v2 = [(BuddyPosedDeviceSelectionItemView *)self accessoryView:a2];
-  v3 = [(BuddyPosedDeviceSelectionItemAccessoryView *)v2 selected];
+  selected = [(BuddyPosedDeviceSelectionItemAccessoryView *)v2 selected];
 
-  return v3 & 1;
+  return selected & 1;
 }
 
 - (id)title
 {
   v2 = [(BuddyPosedDeviceSelectionItemView *)self accessoryView:a2];
-  v3 = [(BuddyPosedDeviceSelectionItemAccessoryView *)v2 titleLabel];
-  v4 = [(UILabel *)v3 text];
+  titleLabel = [(BuddyPosedDeviceSelectionItemAccessoryView *)v2 titleLabel];
+  text = [(UILabel *)titleLabel text];
 
-  return v4;
+  return text;
 }
 
-- (double)updateBoundsForMaxContentHeight:(double)a3
+- (double)updateBoundsForMaxContentHeight:(double)height
 {
-  v3 = [(BuddyPosedDeviceSelectionItemView *)self accessoryView];
-  [(BuddyPosedDeviceSelectionItemAccessoryView *)v3 bounds];
+  accessoryView = [(BuddyPosedDeviceSelectionItemView *)self accessoryView];
+  [(BuddyPosedDeviceSelectionItemAccessoryView *)accessoryView bounds];
   v5 = v4;
   [(BuddyPosedDeviceSelectionItemView *)self _mainViewToAccessoryViewPadding];
-  v41 = a3 - (v5 + v6);
+  v41 = height - (v5 + v6);
 
   [(BuddyPosedDeviceSelectionItemView *)self aspectRatio];
   v8 = v7;
@@ -226,36 +226,36 @@
   v15 = sub_100156BEC(v41, v14);
   [(BuddyPosedDeviceSelectionItemView *)self _preferredHeight];
   v35 = sub_100156BEC(v15, v16);
-  v17 = [(BuddyPosedDeviceSelectionItemView *)self contentContainerWidthHeightConstraints];
-  [NSLayoutConstraint deactivateConstraints:v17];
+  contentContainerWidthHeightConstraints = [(BuddyPosedDeviceSelectionItemView *)self contentContainerWidthHeightConstraints];
+  [NSLayoutConstraint deactivateConstraints:contentContainerWidthHeightConstraints];
 
-  v18 = [(BuddyPosedDeviceSelectionItemView *)self contentContainer];
+  contentContainer = [(BuddyPosedDeviceSelectionItemView *)self contentContainer];
   [(BuddyPosedDeviceSelectionItemView *)self aspectRatio];
-  v20 = [(UIView *)v18 buddy_scaleHeightTo:v35 ratio:v19];
+  v20 = [(UIView *)contentContainer buddy_scaleHeightTo:v35 ratio:v19];
 
-  v21 = [(BuddyPosedDeviceSelectionItemView *)self contentContainer];
-  v22 = [(UIView *)v21 heightAnchor];
+  contentContainer2 = [(BuddyPosedDeviceSelectionItemView *)self contentContainer];
+  heightAnchor = [(UIView *)contentContainer2 heightAnchor];
   [(UIView *)self->_contentContainer bounds];
-  v24 = [(NSLayoutDimension *)v22 constraintEqualToConstant:v23];
+  v24 = [(NSLayoutDimension *)heightAnchor constraintEqualToConstant:v23];
   v43[0] = v24;
-  v25 = [(BuddyPosedDeviceSelectionItemView *)self contentContainer];
-  v26 = [(UIView *)v25 widthAnchor];
+  contentContainer3 = [(BuddyPosedDeviceSelectionItemView *)self contentContainer];
+  widthAnchor = [(UIView *)contentContainer3 widthAnchor];
   [(UIView *)self->_contentContainer bounds];
-  v31 = [(NSLayoutDimension *)v26 constraintEqualToConstant:v29, v27, v28, *&v29, v30];
+  v31 = [(NSLayoutDimension *)widthAnchor constraintEqualToConstant:v29, v27, v28, *&v29, v30];
   v43[1] = v31;
   v32 = [NSArray arrayWithObjects:v43 count:2];
   [(BuddyPosedDeviceSelectionItemView *)self setContentContainerWidthHeightConstraints:v32];
 
-  v33 = [(BuddyPosedDeviceSelectionItemView *)self contentContainerWidthHeightConstraints];
-  [NSLayoutConstraint activateConstraints:v33];
+  contentContainerWidthHeightConstraints2 = [(BuddyPosedDeviceSelectionItemView *)self contentContainerWidthHeightConstraints];
+  [NSLayoutConstraint activateConstraints:contentContainerWidthHeightConstraints2];
 
   return v35;
 }
 
 - (double)accessoryViewAndPaddingHeight
 {
-  v2 = [(BuddyPosedDeviceSelectionItemView *)self accessoryView];
-  [(BuddyPosedDeviceSelectionItemAccessoryView *)v2 bounds];
+  accessoryView = [(BuddyPosedDeviceSelectionItemView *)self accessoryView];
+  [(BuddyPosedDeviceSelectionItemAccessoryView *)accessoryView bounds];
   v4 = v3;
   [(BuddyPosedDeviceSelectionItemView *)self _mainViewToAccessoryViewPadding:v5];
   v9 = v4 + v8;
@@ -288,8 +288,8 @@
 
 - (double)contentContainerHeight
 {
-  v2 = [(BuddyPosedDeviceSelectionItemView *)self contentContainer];
-  [(UIView *)v2 bounds];
+  contentContainer = [(BuddyPosedDeviceSelectionItemView *)self contentContainer];
+  [(UIView *)contentContainer bounds];
   v4 = v3;
 
   return v4;

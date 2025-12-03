@@ -1,67 +1,67 @@
 @interface CHTextSynthesizerWithLocaleFallback
-- (CHTextSynthesizerWithLocaleFallback)initWithLocales:(id)a3 baseSynthesizer:(id)a4;
-- (id)refineDrawing:(id)a3 transcription:(id)a4 options:(id)a5 shouldCancel:(id)a6 error:(id *)a7;
-- (id)replaceDrawing:(id)a3 originalTranscription:(id)a4 replacementTranscription:(id)a5 options:(id)a6 shouldCancel:(id)a7 error:(id *)a8;
-- (id)supportedCharacterIndexesForString:(id)a3 options:(id)a4;
-- (id)synthesizeDrawingForString:(id)a3 options:(id)a4 shouldCancel:(id)a5 error:(id *)a6;
-- (id)synthesizeExpressionEvaluationResultWithBlock:(id)a3 options:(id)a4 shouldCancel:(id)a5 error:(id *)a6;
+- (CHTextSynthesizerWithLocaleFallback)initWithLocales:(id)locales baseSynthesizer:(id)synthesizer;
+- (id)refineDrawing:(id)drawing transcription:(id)transcription options:(id)options shouldCancel:(id)cancel error:(id *)error;
+- (id)replaceDrawing:(id)drawing originalTranscription:(id)transcription replacementTranscription:(id)replacementTranscription options:(id)options shouldCancel:(id)cancel error:(id *)error;
+- (id)supportedCharacterIndexesForString:(id)string options:(id)options;
+- (id)synthesizeDrawingForString:(id)string options:(id)options shouldCancel:(id)cancel error:(id *)error;
+- (id)synthesizeExpressionEvaluationResultWithBlock:(id)block options:(id)options shouldCancel:(id)cancel error:(id *)error;
 @end
 
 @implementation CHTextSynthesizerWithLocaleFallback
 
-- (CHTextSynthesizerWithLocaleFallback)initWithLocales:(id)a3 baseSynthesizer:(id)a4
+- (CHTextSynthesizerWithLocaleFallback)initWithLocales:(id)locales baseSynthesizer:(id)synthesizer
 {
-  v6 = a3;
-  v7 = a4;
+  localesCopy = locales;
+  synthesizerCopy = synthesizer;
   v17.receiver = self;
   v17.super_class = CHTextSynthesizerWithLocaleFallback;
   v13 = [(CHTextSynthesizerWithLocaleFallback *)&v17 init];
   if (v13)
   {
-    v14 = objc_msgSend_copy(v6, v8, v9, v10, v11, v12);
+    v14 = objc_msgSend_copy(localesCopy, v8, v9, v10, v11, v12);
     locales = v13->_locales;
     v13->_locales = v14;
 
-    objc_storeStrong(&v13->_synthesizer, a4);
+    objc_storeStrong(&v13->_synthesizer, synthesizer);
   }
 
   return v13;
 }
 
-- (id)supportedCharacterIndexesForString:(id)a3 options:(id)a4
+- (id)supportedCharacterIndexesForString:(id)string options:(id)options
 {
-  v6 = objc_msgSend_supportedCharacterIndexesForString_options_(self->_synthesizer, a2, a3, a4, v4, v5);
+  v6 = objc_msgSend_supportedCharacterIndexesForString_options_(self->_synthesizer, a2, string, options, v4, v5);
 
   return v6;
 }
 
-- (id)synthesizeDrawingForString:(id)a3 options:(id)a4 shouldCancel:(id)a5 error:(id *)a6
+- (id)synthesizeDrawingForString:(id)string options:(id)options shouldCancel:(id)cancel error:(id *)error
 {
-  v6 = objc_msgSend_synthesizeDrawingForString_options_shouldCancel_error_(self->_synthesizer, a2, a3, a4, a5, a6);
+  v6 = objc_msgSend_synthesizeDrawingForString_options_shouldCancel_error_(self->_synthesizer, a2, string, options, cancel, error);
 
   return v6;
 }
 
-- (id)refineDrawing:(id)a3 transcription:(id)a4 options:(id)a5 shouldCancel:(id)a6 error:(id *)a7
+- (id)refineDrawing:(id)drawing transcription:(id)transcription options:(id)options shouldCancel:(id)cancel error:(id *)error
 {
-  v7 = objc_msgSend_refineDrawing_transcription_options_shouldCancel_error_(self->_synthesizer, a2, a3, a4, a5, a6, a7);
+  v7 = objc_msgSend_refineDrawing_transcription_options_shouldCancel_error_(self->_synthesizer, a2, drawing, transcription, options, cancel, error);
 
   return v7;
 }
 
-- (id)replaceDrawing:(id)a3 originalTranscription:(id)a4 replacementTranscription:(id)a5 options:(id)a6 shouldCancel:(id)a7 error:(id *)a8
+- (id)replaceDrawing:(id)drawing originalTranscription:(id)transcription replacementTranscription:(id)replacementTranscription options:(id)options shouldCancel:(id)cancel error:(id *)error
 {
-  v8 = objc_msgSend_replaceDrawing_originalTranscription_replacementTranscription_options_shouldCancel_error_(self->_synthesizer, a2, a3, a4, a5, a6, a7, a8);
+  v8 = objc_msgSend_replaceDrawing_originalTranscription_replacementTranscription_options_shouldCancel_error_(self->_synthesizer, a2, drawing, transcription, replacementTranscription, options, cancel, error);
 
   return v8;
 }
 
-- (id)synthesizeExpressionEvaluationResultWithBlock:(id)a3 options:(id)a4 shouldCancel:(id)a5 error:(id *)a6
+- (id)synthesizeExpressionEvaluationResultWithBlock:(id)block options:(id)options shouldCancel:(id)cancel error:(id *)error
 {
   v85 = *MEMORY[0x1E69E9840];
-  v73 = a3;
-  v72 = a4;
-  v10 = a5;
+  blockCopy = block;
+  optionsCopy = options;
+  cancelCopy = cancel;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
@@ -81,9 +81,9 @@
         }
 
         v16 = *(*(&v74 + 1) + 8 * i);
-        v17 = v73[2](v73, v16);
-        v18 = v10;
-        v20 = objc_msgSend_synthesizeDrawingForString_options_shouldCancel_error_(self->_synthesizer, v19, v17, v72, v10, a6);
+        v17 = blockCopy[2](blockCopy, v16);
+        v18 = cancelCopy;
+        v20 = objc_msgSend_synthesizeDrawingForString_options_shouldCancel_error_(self->_synthesizer, v19, v17, optionsCopy, cancelCopy, error);
         v26 = v20;
         if (v20 && !objc_msgSend_numberOfNotSynthesizedCharacters(v20, v21, v22, v23, v24, v25))
         {
@@ -109,7 +109,7 @@
           goto LABEL_28;
         }
 
-        v10 = v18;
+        cancelCopy = v18;
       }
 
       v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v27, &v74, v84, 16, v28);
@@ -122,12 +122,12 @@
     }
   }
 
-  v18 = v10;
+  v18 = cancelCopy;
 
   v33 = objc_msgSend_localeWithLocaleIdentifier_(MEMORY[0x1E695DF58], v29, @"en_US", v30, v31, v32);
-  v34 = v73[2](v73, v33);
+  v34 = blockCopy[2](blockCopy, v33);
 
-  v26 = objc_msgSend_synthesizeDrawingForString_options_shouldCancel_error_(self->_synthesizer, v35, v34, v72, v18, a6);
+  v26 = objc_msgSend_synthesizeDrawingForString_options_shouldCancel_error_(self->_synthesizer, v35, v34, optionsCopy, v18, error);
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);

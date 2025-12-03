@@ -1,27 +1,27 @@
 @interface SummarySharingProfileHeaderCell
-- (_TtC18HealthExperienceUI31SummarySharingProfileHeaderCell)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI31SummarySharingProfileHeaderCell)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI31SummarySharingProfileHeaderCell)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI31SummarySharingProfileHeaderCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SummarySharingProfileHeaderCell
 
-- (_TtC18HealthExperienceUI31SummarySharingProfileHeaderCell)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI31SummarySharingProfileHeaderCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for SummarySharingProfileHeaderCell();
   return [(SummarySharingProfileHeaderCell *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC18HealthExperienceUI31SummarySharingProfileHeaderCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI31SummarySharingProfileHeaderCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SummarySharingProfileHeaderCell();
-  v4 = a3;
-  v5 = [(SummarySharingProfileHeaderCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SummarySharingProfileHeaderCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

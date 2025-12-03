@@ -1,33 +1,33 @@
 @interface PSESchemaPSECall
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PSESchemaPSECall)initWithDictionary:(id)a3;
-- (PSESchemaPSECall)initWithJSON:(id)a3;
+- (PSESchemaPSECall)initWithDictionary:(id)dictionary;
+- (PSESchemaPSECall)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasContactFirstNamePhoneticScore:(BOOL)a3;
-- (void)setHasContactFullNamePhoneticScore:(BOOL)a3;
-- (void)setHasContactLastNamePhoneticScore:(BOOL)a3;
-- (void)setHasContactMatch:(BOOL)a3;
-- (void)setHasDisconnectedReason:(BOOL)a3;
-- (void)setHasHasUserInitiatedFollowup:(BOOL)a3;
-- (void)setHasRecentCallStatus:(BOOL)a3;
-- (void)setHasTimeToEstablishInSeconds:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasContactFirstNamePhoneticScore:(BOOL)score;
+- (void)setHasContactFullNamePhoneticScore:(BOOL)score;
+- (void)setHasContactLastNamePhoneticScore:(BOOL)score;
+- (void)setHasContactMatch:(BOOL)match;
+- (void)setHasDisconnectedReason:(BOOL)reason;
+- (void)setHasHasUserInitiatedFollowup:(BOOL)followup;
+- (void)setHasRecentCallStatus:(BOOL)status;
+- (void)setHasTimeToEstablishInSeconds:(BOOL)seconds;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSESchemaPSECall
 
-- (PSESchemaPSECall)initWithDictionary:(id)a3
+- (PSESchemaPSECall)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = PSESchemaPSECall;
   v5 = [(PSESchemaPSECall *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"callDurationInSeconds"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"callDurationInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,14 +35,14 @@
       [(PSESchemaPSECall *)v5 setCallDurationInSeconds:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"hasUserInitiatedFollowup"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"hasUserInitiatedFollowup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSECall setHasUserInitiatedFollowup:](v5, "setHasUserInitiatedFollowup:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"timeToEstablishInSeconds"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"timeToEstablishInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,21 +50,21 @@
       [(PSESchemaPSECall *)v5 setTimeToEstablishInSeconds:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:{@"recentCallStatus", v8}];
+    v9 = [dictionaryCopy objectForKeyedSubscript:{@"recentCallStatus", v8}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSECall setRecentCallStatus:](v5, "setRecentCallStatus:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"disconnectedReason"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"disconnectedReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSECall setDisconnectedReason:](v5, "setDisconnectedReason:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"contactMatch"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"contactMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,7 +72,7 @@
     }
 
     v19 = v7;
-    v12 = [v4 objectForKeyedSubscript:@"contactFullNamePhoneticScore"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"contactFullNamePhoneticScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,7 +81,7 @@
     }
 
     v13 = v6;
-    v14 = [v4 objectForKeyedSubscript:@"contactFirstNamePhoneticScore"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"contactFirstNamePhoneticScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,7 +89,7 @@
       [(PSESchemaPSECall *)v5 setContactFirstNamePhoneticScore:?];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"contactLastNamePhoneticScore"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"contactLastNamePhoneticScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,30 +103,30 @@
   return v5;
 }
 
-- (PSESchemaPSECall)initWithJSON:(id)a3
+- (PSESchemaPSECall)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PSESchemaPSECall *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PSESchemaPSECall *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PSESchemaPSECall *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -139,14 +139,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v8 = MEMORY[0x1E696AD98];
     [(PSESchemaPSECall *)self callDurationInSeconds];
     v9 = [v8 numberWithDouble:?];
-    [v3 setObject:v9 forKeyedSubscript:@"callDurationInSeconds"];
+    [dictionary setObject:v9 forKeyedSubscript:@"callDurationInSeconds"];
 
     has = self->_has;
     if ((has & 0x80) == 0)
@@ -169,7 +169,7 @@ LABEL_3:
   v10 = MEMORY[0x1E696AD98];
   [(PSESchemaPSECall *)self contactFirstNamePhoneticScore];
   v11 = [v10 numberWithDouble:?];
-  [v3 setObject:v11 forKeyedSubscript:@"contactFirstNamePhoneticScore"];
+  [dictionary setObject:v11 forKeyedSubscript:@"contactFirstNamePhoneticScore"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -187,7 +187,7 @@ LABEL_16:
   v12 = MEMORY[0x1E696AD98];
   [(PSESchemaPSECall *)self contactFullNamePhoneticScore];
   v13 = [v12 numberWithDouble:?];
-  [v3 setObject:v13 forKeyedSubscript:@"contactFullNamePhoneticScore"];
+  [dictionary setObject:v13 forKeyedSubscript:@"contactFullNamePhoneticScore"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -205,7 +205,7 @@ LABEL_17:
   v14 = MEMORY[0x1E696AD98];
   [(PSESchemaPSECall *)self contactLastNamePhoneticScore];
   v15 = [v14 numberWithDouble:?];
-  [v3 setObject:v15 forKeyedSubscript:@"contactLastNamePhoneticScore"];
+  [dictionary setObject:v15 forKeyedSubscript:@"contactLastNamePhoneticScore"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -231,7 +231,7 @@ LABEL_18:
     v17 = off_1E78E12B0[v16];
   }
 
-  [v3 setObject:v17 forKeyedSubscript:@"contactMatch"];
+  [dictionary setObject:v17 forKeyedSubscript:@"contactMatch"];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -245,8 +245,8 @@ LABEL_7:
   }
 
 LABEL_22:
-  v18 = [(PSESchemaPSECall *)self disconnectedReason];
-  switch(v18)
+  disconnectedReason = [(PSESchemaPSECall *)self disconnectedReason];
+  switch(disconnectedReason)
   {
     case 1:
       v19 = @"PSECALLDISCONNECTEDREASON_REMOTEHANGUP";
@@ -358,12 +358,12 @@ LABEL_22:
       break;
     default:
       v20 = @"PSECALLDISCONNECTEDREASON_UNKNOWN";
-      if (v18 == 1001)
+      if (disconnectedReason == 1001)
       {
         v20 = @"PSECALLDISCONNECTEDREASON_IDS_QUERY_RATE_LIMITED";
       }
 
-      if (v18 == 1000)
+      if (disconnectedReason == 1000)
       {
         v19 = @"PSECALLDISCONNECTEDREASON_DECRYPTION_TIMEOUT";
       }
@@ -376,7 +376,7 @@ LABEL_22:
       break;
   }
 
-  [v3 setObject:v19 forKeyedSubscript:@"disconnectedReason"];
+  [dictionary setObject:v19 forKeyedSubscript:@"disconnectedReason"];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -391,7 +391,7 @@ LABEL_8:
 
 LABEL_65:
   v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[PSESchemaPSECall hasUserInitiatedFollowup](self, "hasUserInitiatedFollowup")}];
-  [v3 setObject:v21 forKeyedSubscript:@"hasUserInitiatedFollowup"];
+  [dictionary setObject:v21 forKeyedSubscript:@"hasUserInitiatedFollowup"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -417,7 +417,7 @@ LABEL_66:
     v23 = off_1E78E12C8[v22];
   }
 
-  [v3 setObject:v23 forKeyedSubscript:@"recentCallStatus"];
+  [dictionary setObject:v23 forKeyedSubscript:@"recentCallStatus"];
   if ((*&self->_has & 4) == 0)
   {
     goto LABEL_11;
@@ -427,12 +427,12 @@ LABEL_10:
   v5 = MEMORY[0x1E696AD98];
   [(PSESchemaPSECall *)self timeToEstablishInSeconds];
   v6 = [v5 numberWithDouble:?];
-  [v3 setObject:v6 forKeyedSubscript:@"timeToEstablishInSeconds"];
+  [dictionary setObject:v6 forKeyedSubscript:@"timeToEstablishInSeconds"];
 
 LABEL_11:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -664,16 +664,16 @@ LABEL_29:
   return v9 ^ v5 ^ v13 ^ v14 ^ v15 ^ v16 ^ v20 ^ v21 ^ v25;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_37;
   }
 
   has = self->_has;
-  v6 = v4[36];
+  v6 = equalCopy[36];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_37;
@@ -682,14 +682,14 @@ LABEL_29:
   if (*&has)
   {
     callDurationInSeconds = self->_callDurationInSeconds;
-    [v4 callDurationInSeconds];
+    [equalCopy callDurationInSeconds];
     if (callDurationInSeconds != v8)
     {
       goto LABEL_37;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -698,13 +698,13 @@ LABEL_29:
     if (v9)
     {
       hasUserInitiatedFollowup = self->_hasUserInitiatedFollowup;
-      if (hasUserInitiatedFollowup != [v4 hasUserInitiatedFollowup])
+      if (hasUserInitiatedFollowup != [equalCopy hasUserInitiatedFollowup])
       {
         goto LABEL_37;
       }
 
       has = self->_has;
-      v6 = v4[36];
+      v6 = equalCopy[36];
     }
 
     v11 = (*&has >> 2) & 1;
@@ -713,14 +713,14 @@ LABEL_29:
       if (v11)
       {
         timeToEstablishInSeconds = self->_timeToEstablishInSeconds;
-        [v4 timeToEstablishInSeconds];
+        [equalCopy timeToEstablishInSeconds];
         if (timeToEstablishInSeconds != v13)
         {
           goto LABEL_37;
         }
 
         has = self->_has;
-        v6 = v4[36];
+        v6 = equalCopy[36];
       }
 
       v14 = (*&has >> 3) & 1;
@@ -729,13 +729,13 @@ LABEL_29:
         if (v14)
         {
           recentCallStatus = self->_recentCallStatus;
-          if (recentCallStatus != [v4 recentCallStatus])
+          if (recentCallStatus != [equalCopy recentCallStatus])
           {
             goto LABEL_37;
           }
 
           has = self->_has;
-          v6 = v4[36];
+          v6 = equalCopy[36];
         }
 
         v16 = (*&has >> 4) & 1;
@@ -744,13 +744,13 @@ LABEL_29:
           if (v16)
           {
             disconnectedReason = self->_disconnectedReason;
-            if (disconnectedReason != [v4 disconnectedReason])
+            if (disconnectedReason != [equalCopy disconnectedReason])
             {
               goto LABEL_37;
             }
 
             has = self->_has;
-            v6 = v4[36];
+            v6 = equalCopy[36];
           }
 
           v18 = (*&has >> 5) & 1;
@@ -759,13 +759,13 @@ LABEL_29:
             if (v18)
             {
               contactMatch = self->_contactMatch;
-              if (contactMatch != [v4 contactMatch])
+              if (contactMatch != [equalCopy contactMatch])
               {
                 goto LABEL_37;
               }
 
               has = self->_has;
-              v6 = v4[36];
+              v6 = equalCopy[36];
             }
 
             v20 = (*&has >> 6) & 1;
@@ -774,14 +774,14 @@ LABEL_29:
               if (v20)
               {
                 contactFullNamePhoneticScore = self->_contactFullNamePhoneticScore;
-                [v4 contactFullNamePhoneticScore];
+                [equalCopy contactFullNamePhoneticScore];
                 if (contactFullNamePhoneticScore != v22)
                 {
                   goto LABEL_37;
                 }
 
                 has = self->_has;
-                v6 = v4[36];
+                v6 = equalCopy[36];
               }
 
               v23 = (*&has >> 7) & 1;
@@ -790,20 +790,20 @@ LABEL_29:
                 if (v23)
                 {
                   contactFirstNamePhoneticScore = self->_contactFirstNamePhoneticScore;
-                  [v4 contactFirstNamePhoneticScore];
+                  [equalCopy contactFirstNamePhoneticScore];
                   if (contactFirstNamePhoneticScore != v25)
                   {
                     goto LABEL_37;
                   }
 
                   has = self->_has;
-                  v6 = v4[36];
+                  v6 = equalCopy[36];
                 }
 
                 v26 = (*&has >> 8) & 1;
                 if (v26 == ((v6 >> 8) & 1))
                 {
-                  if (!v26 || (contactLastNamePhoneticScore = self->_contactLastNamePhoneticScore, [v4 contactLastNamePhoneticScore], contactLastNamePhoneticScore == v28))
+                  if (!v26 || (contactLastNamePhoneticScore = self->_contactLastNamePhoneticScore, [equalCopy contactLastNamePhoneticScore], contactLastNamePhoneticScore == v28))
                   {
                     v29 = 1;
                     goto LABEL_38;
@@ -824,9 +824,9 @@ LABEL_38:
   return v29;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -943,9 +943,9 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)setHasContactLastNamePhoneticScore:(BOOL)a3
+- (void)setHasContactLastNamePhoneticScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 256;
   }
@@ -958,9 +958,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasContactFirstNamePhoneticScore:(BOOL)a3
+- (void)setHasContactFirstNamePhoneticScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 128;
   }
@@ -973,9 +973,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasContactFullNamePhoneticScore:(BOOL)a3
+- (void)setHasContactFullNamePhoneticScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 64;
   }
@@ -988,9 +988,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasContactMatch:(BOOL)a3
+- (void)setHasContactMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 32;
   }
@@ -1003,9 +1003,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasDisconnectedReason:(BOOL)a3
+- (void)setHasDisconnectedReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 16;
   }
@@ -1018,9 +1018,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasRecentCallStatus:(BOOL)a3
+- (void)setHasRecentCallStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 8;
   }
@@ -1033,9 +1033,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasTimeToEstablishInSeconds:(BOOL)a3
+- (void)setHasTimeToEstablishInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 4;
   }
@@ -1048,9 +1048,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasHasUserInitiatedFollowup:(BOOL)a3
+- (void)setHasHasUserInitiatedFollowup:(BOOL)followup
 {
-  if (a3)
+  if (followup)
   {
     v3 = 2;
   }

@@ -1,7 +1,7 @@
 @interface DMCESSOSettingsViewController
-- (id)getESSOTestModeEnabled:(id)a3;
+- (id)getESSOTestModeEnabled:(id)enabled;
 - (id)specifiers;
-- (void)setESSOTestModeEnabled:(id)a3 specifier:(id)a4;
+- (void)setESSOTestModeEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation DMCESSOSettingsViewController
@@ -31,20 +31,20 @@
   return v12;
 }
 
-- (void)setESSOTestModeEnabled:(id)a3 specifier:(id)a4
+- (void)setESSOTestModeEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[NSUserDefaults standardUserDefaults];
   v7 = DMCDefaultsKeyESSOTestModeEnabled;
-  [v6 setObject:v5 forKey:DMCDefaultsKeyESSOTestModeEnabled];
+  [v6 setObject:enabledCopy forKey:DMCDefaultsKeyESSOTestModeEnabled];
 
   v8 = +[NSUserDefaults standardUserDefaults];
-  [v8 setObject:v5 forKey:v7 inDomain:NSGlobalDomain];
+  [v8 setObject:enabledCopy forKey:v7 inDomain:NSGlobalDomain];
 
   [(DMCESSOSettingsViewController *)self reloadSpecifiers];
 }
 
-- (id)getESSOTestModeEnabled:(id)a3
+- (id)getESSOTestModeEnabled:(id)enabled
 {
   v3 = +[NSUserDefaults standardUserDefaults];
   v4 = [v3 valueForKey:DMCDefaultsKeyESSOTestModeEnabled];

@@ -9,23 +9,23 @@
 
 - (id)fp_toProviderID
 {
-  v2 = [a1 rangeOfString:@"/"];
+  v2 = [self rangeOfString:@"/"];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [a1 substringToIndex:v2];
+    selfCopy = [self substringToIndex:v2];
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (__CFString)fp_toDomainIdentifier
 {
-  v2 = [a1 rangeOfString:@"/"];
+  v2 = [self rangeOfString:@"/"];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = @"NSFileProviderDomainDefaultIdentifier";
@@ -33,7 +33,7 @@
 
   else
   {
-    v4 = [a1 substringFromIndex:v2 + v3];
+    v4 = [self substringFromIndex:v2 + v3];
   }
 
   return v4;
@@ -53,8 +53,8 @@
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"FPProviderDomain.m" lineNumber:63 description:@"domain identifier shouldn't be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FPProviderDomain.m" lineNumber:63 description:@"domain identifier shouldn't be nil"];
 
     if (v7)
     {
@@ -62,8 +62,8 @@
     }
   }
 
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:a2 object:a1 file:@"FPProviderDomain.m" lineNumber:64 description:@"provider identifier shouldn't be nil"];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"FPProviderDomain.m" lineNumber:64 description:@"provider identifier shouldn't be nil"];
 
 LABEL_3:
   if ([v8 isEqualToString:@"NSFileProviderDomainDefaultIdentifier"])
@@ -83,11 +83,11 @@ LABEL_3:
 
 - (uint64_t)fp_isCiconiaDomain
 {
-  v2 = [a1 fp_toProviderID];
-  if (([v2 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProvider"] & 1) != 0 || objc_msgSend(v2, "isEqualToString:", @"com.apple.CloudDocs.iCloudDriveFileProviderManaged"))
+  fp_toProviderID = [self fp_toProviderID];
+  if (([fp_toProviderID isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProvider"] & 1) != 0 || objc_msgSend(fp_toProviderID, "isEqualToString:", @"com.apple.CloudDocs.iCloudDriveFileProviderManaged"))
   {
-    v3 = [a1 fp_toDomainIdentifier];
-    v4 = [v3 hasPrefix:@"Ciconia-"];
+    fp_toDomainIdentifier = [self fp_toDomainIdentifier];
+    v4 = [fp_toDomainIdentifier hasPrefix:@"Ciconia-"];
   }
 
   else

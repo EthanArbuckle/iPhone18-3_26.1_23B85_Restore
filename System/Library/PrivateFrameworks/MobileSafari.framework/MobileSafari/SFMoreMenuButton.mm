@@ -1,35 +1,35 @@
 @interface SFMoreMenuButton
 - (BOOL)isIconFilled;
 - (NSDirectionalEdgeInsets)contentInsets;
-- (SFMoreMenuButton)initWithFrame:(CGRect)a3;
+- (SFMoreMenuButton)initWithFrame:(CGRect)frame;
 - (UIColor)progressTintColor;
 - (double)_progressViewRadius;
 - (double)_progressViewTrackWidth;
-- (void)_setShowsProgressView:(BOOL)a3;
-- (void)_updateContentsAnimated:(BOOL)a3;
-- (void)_updateImageAllowingDissolve:(BOOL)a3;
+- (void)_setShowsProgressView:(BOOL)view;
+- (void)_updateContentsAnimated:(BOOL)animated;
+- (void)_updateImageAllowingDissolve:(BOOL)dissolve;
 - (void)_updateProgressViewMetrics;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setContentInsets:(NSDirectionalEdgeInsets)a3;
-- (void)setDownloadProgress:(double)a3 animated:(BOOL)a4;
-- (void)setIconFilled:(BOOL)a3;
-- (void)setNeedsPulseOnView:(id)a3;
-- (void)setProgressStyle:(int64_t)a3;
-- (void)setProgressTintColor:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSymbolScale:(int64_t)a3;
+- (void)setContentInsets:(NSDirectionalEdgeInsets)insets;
+- (void)setDownloadProgress:(double)progress animated:(BOOL)animated;
+- (void)setIconFilled:(BOOL)filled;
+- (void)setNeedsPulseOnView:(id)view;
+- (void)setProgressStyle:(int64_t)style;
+- (void)setProgressTintColor:(id)color;
+- (void)setSelected:(BOOL)selected;
+- (void)setSymbolScale:(int64_t)scale;
 - (void)tintColorDidChange;
 @end
 
 @implementation SFMoreMenuButton
 
-- (SFMoreMenuButton)initWithFrame:(CGRect)a3
+- (SFMoreMenuButton)initWithFrame:(CGRect)frame
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = SFMoreMenuButton;
-  v3 = [(SFMoreMenuButton *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFMoreMenuButton *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -53,42 +53,42 @@
   return v4;
 }
 
-- (void)setProgressStyle:(int64_t)a3
+- (void)setProgressStyle:(int64_t)style
 {
-  if (self->_progressStyle != a3)
+  if (self->_progressStyle != style)
   {
-    self->_progressStyle = a3;
+    self->_progressStyle = style;
     [(SFMoreMenuButton *)self _updateImage];
   }
 }
 
-- (void)setDownloadProgress:(double)a3 animated:(BOOL)a4
+- (void)setDownloadProgress:(double)progress animated:(BOOL)animated
 {
-  if (self->_downloadProgress != a3)
+  if (self->_downloadProgress != progress)
   {
-    self->_downloadProgress = a3;
-    [(SFMoreMenuButton *)self _updateContentsAnimated:a4];
+    self->_downloadProgress = progress;
+    [(SFMoreMenuButton *)self _updateContentsAnimated:animated];
   }
 }
 
-- (void)setNeedsPulseOnView:(id)a3
+- (void)setNeedsPulseOnView:(id)view
 {
   if (self->_isShowingArrowDown)
   {
-    [MEMORY[0x1E69DD250] _sf_performLinkAnimation:1 onView:a3];
+    [MEMORY[0x1E69DD250] _sf_performLinkAnimation:1 onView:view];
   }
 
   else
   {
-    objc_storeWeak(&self->_viewPendingPulse, a3);
+    objc_storeWeak(&self->_viewPendingPulse, view);
   }
 }
 
-- (void)setSymbolScale:(int64_t)a3
+- (void)setSymbolScale:(int64_t)scale
 {
-  if (self->_symbolScale != a3)
+  if (self->_symbolScale != scale)
   {
-    self->_symbolScale = a3;
+    self->_symbolScale = scale;
     [(SFMoreMenuButton *)self _updateImage];
 
     [(SFMoreMenuButton *)self _updateProgressViewMetrics];
@@ -108,11 +108,11 @@
   }
 }
 
-- (void)setIconFilled:(BOOL)a3
+- (void)setIconFilled:(BOOL)filled
 {
-  if (self->_iconFilled != a3)
+  if (self->_iconFilled != filled)
   {
-    self->_iconFilled = a3;
+    self->_iconFilled = filled;
     [(SFMoreMenuButton *)self _updateContentsAnimated:0];
   }
 }
@@ -122,49 +122,49 @@
   progressTintColor = self->_progressTintColor;
   if (progressTintColor)
   {
-    v3 = progressTintColor;
+    systemBlueColor = progressTintColor;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] systemBlueColor];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
   }
 
-  return v3;
+  return systemBlueColor;
 }
 
-- (void)setProgressTintColor:(id)a3
+- (void)setProgressTintColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_progressTintColor, a3);
-    v5 = [(SFMoreMenuButton *)self progressTintColor];
-    [(SFProgressView *)self->_progressView setTintColor:v5];
+    objc_storeStrong(&self->_progressTintColor, color);
+    progressTintColor = [(SFMoreMenuButton *)self progressTintColor];
+    [(SFProgressView *)self->_progressView setTintColor:progressTintColor];
   }
 }
 
-- (void)setContentInsets:(NSDirectionalEdgeInsets)a3
+- (void)setContentInsets:(NSDirectionalEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.leading;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, v3), vceqq_f64(*&self->_contentInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInsets = a3;
+    self->_contentInsets = insets;
     [(SFMoreMenuButton *)self _updateImage];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if ([(SFMoreMenuButton *)self isSelected]!= a3)
+  selectedCopy = selected;
+  if ([(SFMoreMenuButton *)self isSelected]!= selected)
   {
     v5.receiver = self;
     v5.super_class = SFMoreMenuButton;
-    [(SFMoreMenuButton *)&v5 setSelected:v3];
+    [(SFMoreMenuButton *)&v5 setSelected:selectedCopy];
     [(SFMoreMenuButton *)self updateContents];
   }
 }
@@ -175,11 +175,11 @@
   v5.super_class = SFMoreMenuButton;
   [(_SFDimmingButton *)&v5 layoutSubviews];
   [(SFProgressView *)self->_progressView intrinsicContentSize];
-  v3 = [(SFMoreMenuButton *)self _imageView];
-  [v3 bounds];
+  _imageView = [(SFMoreMenuButton *)self _imageView];
+  [_imageView bounds];
   UIRectGetCenter();
-  v4 = [(SFMoreMenuButton *)self traitCollection];
-  [v4 displayScale];
+  traitCollection = [(SFMoreMenuButton *)self traitCollection];
+  [traitCollection displayScale];
   UIRectCenteredAboutPointScale();
   [(SFProgressView *)self->_progressView setFrame:?];
 }
@@ -205,18 +205,18 @@
   }
 }
 
-- (void)_updateContentsAnimated:(BOOL)a3
+- (void)_updateContentsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v6 = v5;
   movedToWindowTime = self->_movedToWindowTime;
   if (SFDeferrableUpdateViewShouldAttemptToUpdateContents(self))
   {
     [(SFMoreMenuButton *)self _updateImageAllowingDissolve:v6 > movedToWindowTime + 1.0];
-    v8 = [(SFMoreMenuButton *)self _shouldShowProgressView];
-    [(SFMoreMenuButton *)self _setShowsProgressView:v8];
-    if (v8)
+    _shouldShowProgressView = [(SFMoreMenuButton *)self _shouldShowProgressView];
+    [(SFMoreMenuButton *)self _setShowsProgressView:_shouldShowProgressView];
+    if (_shouldShowProgressView)
     {
       downloadProgress = self->_downloadProgress;
       if (downloadProgress == -1.0)
@@ -224,16 +224,16 @@
         downloadProgress = 0.0;
       }
 
-      [(SFProgressView *)self->_progressView setProgress:v3 animated:0 completion:downloadProgress];
+      [(SFProgressView *)self->_progressView setProgress:animatedCopy animated:0 completion:downloadProgress];
 
       [(SFMoreMenuButton *)self _updateProgressViewMetrics];
     }
   }
 }
 
-- (void)_updateImageAllowingDissolve:(BOOL)a3
+- (void)_updateImageAllowingDissolve:(BOOL)dissolve
 {
-  v3 = a3;
+  dissolveCopy = dissolve;
   v31[2] = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_viewPendingPulse);
   progressStyle = self->_progressStyle;
@@ -241,15 +241,15 @@
   {
     if (progressStyle == 1)
     {
-      v9 = [(SFMoreMenuButton *)self _shouldShowProgressView];
+      _shouldShowProgressView = [(SFMoreMenuButton *)self _shouldShowProgressView];
       v10 = MEMORY[0x1E69DCAB8];
-      if (v9)
+      if (_shouldShowProgressView)
       {
         v11 = MEMORY[0x1E69DCAD8];
-        v12 = [(SFMoreMenuButton *)self tintColor];
-        v30[0] = v12;
-        v13 = [MEMORY[0x1E69DC888] clearColor];
-        v30[1] = v13;
+        tintColor = [(SFMoreMenuButton *)self tintColor];
+        v30[0] = tintColor;
+        clearColor = [MEMORY[0x1E69DC888] clearColor];
+        v30[1] = clearColor;
         v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
         v15 = [v11 _configurationWithHierarchicalColors:v14];
         v16 = @"arrow.down.circle";
@@ -284,15 +284,15 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v20 = [(SFMoreMenuButton *)self _shouldShowProgressView];
+      _shouldShowProgressView2 = [(SFMoreMenuButton *)self _shouldShowProgressView];
       v10 = MEMORY[0x1E69DCAB8];
-      if (v20)
+      if (_shouldShowProgressView2)
       {
         v21 = MEMORY[0x1E69DCAD8];
-        v12 = [(SFMoreMenuButton *)self tintColor];
-        v31[0] = v12;
-        v13 = [MEMORY[0x1E69DC888] clearColor];
-        v31[1] = v13;
+        tintColor = [(SFMoreMenuButton *)self tintColor];
+        v31[0] = tintColor;
+        clearColor = [MEMORY[0x1E69DC888] clearColor];
+        v31[1] = clearColor;
         v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
         v15 = [v21 _configurationWithHierarchicalColors:v14];
         v16 = @"ellipsis.circle";
@@ -310,7 +310,7 @@ LABEL_18:
   {
     v17 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"square.and.arrow.down"];
     v18 = 0;
-    v19 = v3 & ~self->_isShowingArrowDown;
+    v19 = dissolveCopy & ~self->_isShowingArrowDown;
     self->_isShowingArrowDown = 1;
   }
 
@@ -323,18 +323,18 @@ LABEL_18:
   }
 
 LABEL_20:
-  v22 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  v23 = [MEMORY[0x1E69DC888] clearColor];
-  v24 = [v22 background];
-  [v24 setBackgroundColor:v23];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  background = [plainButtonConfiguration background];
+  [background setBackgroundColor:clearColor2];
 
   v25 = [v17 imageWithAlignmentRectInsets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
-  [v22 setImage:v25];
+  [plainButtonConfiguration setImage:v25];
 
   v26 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDCF8] scale:self->_symbolScale];
-  [v22 setPreferredSymbolConfigurationForImage:v26];
+  [plainButtonConfiguration setPreferredSymbolConfigurationForImage:v26];
 
-  [v22 setContentInsets:{self->_contentInsets.top, self->_contentInsets.leading, self->_contentInsets.bottom, self->_contentInsets.trailing}];
+  [plainButtonConfiguration setContentInsets:{self->_contentInsets.top, self->_contentInsets.leading, self->_contentInsets.bottom, self->_contentInsets.trailing}];
   if (v19)
   {
     v27 = MEMORY[0x1E69DD250];
@@ -343,7 +343,7 @@ LABEL_20:
     v28[2] = __49__SFMoreMenuButton__updateImageAllowingDissolve___block_invoke;
     v28[3] = &unk_1E721B400;
     v28[4] = self;
-    v29 = v22;
+    v29 = plainButtonConfiguration;
     [v27 transitionWithView:self duration:5242882 options:v28 animations:0 completion:0.3];
 
     if (!v18)
@@ -354,7 +354,7 @@ LABEL_20:
     goto LABEL_24;
   }
 
-  [(SFMoreMenuButton *)self setConfiguration:v22];
+  [(SFMoreMenuButton *)self setConfiguration:plainButtonConfiguration];
   if (v18)
   {
 LABEL_24:
@@ -366,26 +366,26 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)_setShowsProgressView:(BOOL)a3
+- (void)_setShowsProgressView:(BOOL)view
 {
   progressView = self->_progressView;
-  if ((((progressView == 0) ^ a3) & 1) == 0)
+  if ((((progressView == 0) ^ view) & 1) == 0)
   {
-    if (a3)
+    if (view)
     {
-      v9 = [(SFMoreMenuButton *)self imageView];
-      [(SFProgressView *)v9 setClipsToBounds:0];
+      imageView = [(SFMoreMenuButton *)self imageView];
+      [(SFProgressView *)imageView setClipsToBounds:0];
       v5 = objc_alloc_init(SFProgressView);
       v6 = self->_progressView;
       self->_progressView = v5;
 
       [(SFProgressView *)self->_progressView setStyle:self->_progressStyle];
-      v7 = [(SFMoreMenuButton *)self progressTintColor];
-      [(SFProgressView *)self->_progressView setTintColor:v7];
+      progressTintColor = [(SFMoreMenuButton *)self progressTintColor];
+      [(SFProgressView *)self->_progressView setTintColor:progressTintColor];
 
-      [(SFProgressView *)v9 addSubview:self->_progressView];
+      [(SFProgressView *)imageView addSubview:self->_progressView];
       [(SFMoreMenuButton *)self _updateProgressViewMetrics];
-      v8 = v9;
+      v8 = imageView;
     }
 
     else
@@ -439,9 +439,9 @@ LABEL_25:
     v7 = v6;
   }
 
-  v8 = [MEMORY[0x1E69DCA40] defaultMetrics];
-  v9 = [(SFMoreMenuButton *)self traitCollection];
-  [v8 scaledValueForValue:v9 compatibleWithTraitCollection:v7];
+  defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
+  traitCollection = [(SFMoreMenuButton *)self traitCollection];
+  [defaultMetrics scaledValueForValue:traitCollection compatibleWithTraitCollection:v7];
   v11 = v10;
 
   return v11;

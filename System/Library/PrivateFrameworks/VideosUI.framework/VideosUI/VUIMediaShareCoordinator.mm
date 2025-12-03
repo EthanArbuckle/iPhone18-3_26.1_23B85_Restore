@@ -1,13 +1,13 @@
 @interface VUIMediaShareCoordinator
-+ (BOOL)shouldShowShareForMediaItem:(id)a3;
-+ (void)shareMediaItem:(id)a3 metadata:(id)a4;
++ (BOOL)shouldShowShareForMediaItem:(id)item;
++ (void)shareMediaItem:(id)item metadata:(id)metadata;
 @end
 
 @implementation VUIMediaShareCoordinator
 
-+ (BOOL)shouldShowShareForMediaItem:(id)a3
++ (BOOL)shouldShowShareForMediaItem:(id)item
 {
-  v3 = [a3 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyMediaShareMetadata"];
+  v3 = [item mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyMediaShareMetadata"];
   v4 = [v3 objectForKey:@"url"];
   v5 = [v3 objectForKey:@"title"];
   if ([v4 length])
@@ -23,29 +23,29 @@
   return v6;
 }
 
-+ (void)shareMediaItem:(id)a3 metadata:(id)a4
++ (void)shareMediaItem:(id)item metadata:(id)metadata
 {
-  v15 = a3;
-  v5 = a4;
-  v6 = [v5 vui_stringForKey:@"imageUrl"];
+  itemCopy = item;
+  metadataCopy = metadata;
+  v6 = [metadataCopy vui_stringForKey:@"imageUrl"];
   if (![(__CFString *)v6 length])
   {
-    v7 = [v15 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AC0]];
+    v7 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5AC0]];
 
     v6 = v7;
   }
 
-  v8 = [v5 objectForKey:@"url"];
-  v9 = [v5 objectForKey:@"previewUrl"];
-  v10 = [v5 objectForKey:@"title"];
-  v11 = [v5 objectForKey:@"subtitle"];
-  v12 = [v5 objectForKey:@"groupActivityMetadata"];
+  v8 = [metadataCopy objectForKey:@"url"];
+  v9 = [metadataCopy objectForKey:@"previewUrl"];
+  v10 = [metadataCopy objectForKey:@"title"];
+  v11 = [metadataCopy objectForKey:@"subtitle"];
+  v12 = [metadataCopy objectForKey:@"groupActivityMetadata"];
   if (!v6)
   {
     v6 = &stru_1F5DB25C0;
   }
 
-  v13 = [v5 objectForKey:@"metrics"];
+  v13 = [metadataCopy objectForKey:@"metrics"];
 
   v14 = +[VUIMetricsController sharedInstance];
   [v14 recordClick:v13];

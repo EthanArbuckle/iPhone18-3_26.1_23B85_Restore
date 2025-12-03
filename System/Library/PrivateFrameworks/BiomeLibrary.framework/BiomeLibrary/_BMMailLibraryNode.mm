@@ -5,7 +5,7 @@
 + (id)configurationForRecategorization;
 + (id)storeConfigurationForCategorization;
 + (id)storeConfigurationForRecategorization;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)sublibraries;
 + (id)validKeyPaths;
 @end
@@ -15,8 +15,8 @@
 + (id)sublibraries
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 CategorizationAnalytics];
-  v6[0] = v2;
+  categorizationAnalytics = [self CategorizationAnalytics];
+  v6[0] = categorizationAnalytics;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -27,7 +27,7 @@
 + (id)Categorization
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForCategorization];
+  configurationForCategorization = [self configurationForCategorization];
   v3 = +[BMMailCategorization columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -39,7 +39,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Mail.Categorization" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Mail.Categorization" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Mail.Categorization" schema:v9 configuration:configurationForCategorization];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -48,13 +48,13 @@
 
 + (id)configurationForCategorization
 {
-  v3 = [a1 storeConfigurationForCategorization];
-  v4 = [a1 syncPolicyForCategorization];
+  storeConfigurationForCategorization = [self storeConfigurationForCategorization];
+  syncPolicyForCategorization = [self syncPolicyForCategorization];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"AA21D965-0903-497B-8C07-24E166528412"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Mail.Categorization" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobilemail" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Mail.Categorization" eventClass:objc_opt_class() storeConfig:storeConfigurationForCategorization syncPolicy:syncPolicyForCategorization legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobilemail" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -70,7 +70,7 @@
 + (id)Recategorization
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForRecategorization];
+  configurationForRecategorization = [self configurationForRecategorization];
   v3 = +[BMMailRecategorization columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -82,7 +82,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Mail.Recategorization" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Mail.Recategorization" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Mail.Recategorization" schema:v9 configuration:configurationForRecategorization];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -91,13 +91,13 @@
 
 + (id)configurationForRecategorization
 {
-  v3 = [a1 storeConfigurationForRecategorization];
-  v4 = [a1 syncPolicyForRecategorization];
+  storeConfigurationForRecategorization = [self storeConfigurationForRecategorization];
+  syncPolicyForRecategorization = [self syncPolicyForRecategorization];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"38885812-A0DB-4DEF-9B31-CA4198DA0D51"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Mail.Recategorization" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobilemail" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Mail.Recategorization" eventClass:objc_opt_class() storeConfig:storeConfigurationForRecategorization syncPolicy:syncPolicyForRecategorization legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobilemail" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -110,20 +110,20 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"Categorization"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Categorization"])
   {
-    v5 = [a1 Categorization];
+    categorization = [self Categorization];
 LABEL_5:
-    v6 = v5;
+    v6 = categorization;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"Recategorization"])
+  if ([nameCopy isEqualToString:@"Recategorization"])
   {
-    v5 = [a1 Recategorization];
+    categorization = [self Recategorization];
     goto LABEL_5;
   }
 

@@ -1,19 +1,19 @@
 @interface OrgLukhnosPortmobileFilePath
 - (BOOL)isAbsolute;
-- (OrgLukhnosPortmobileFilePath)initWithNSString:(id)a3;
+- (OrgLukhnosPortmobileFilePath)initWithNSString:(id)string;
 - (id)description;
 - (id)getFileName;
 - (id)getParent;
-- (id)resolveWithNSString:(id)a3;
+- (id)resolveWithNSString:(id)string;
 - (id)toAbsolutePath;
 - (void)dealloc;
 @end
 
 @implementation OrgLukhnosPortmobileFilePath
 
-- (OrgLukhnosPortmobileFilePath)initWithNSString:(id)a3
+- (OrgLukhnosPortmobileFilePath)initWithNSString:(id)string
 {
-  v4 = new_JavaIoFile_initWithNSString_(a3);
+  v4 = new_JavaIoFile_initWithNSString_(string);
   JreStrongAssignAndConsume(&self->file_, v4);
   return self;
 }
@@ -42,22 +42,22 @@
   return [(JavaIoFile *)file description];
 }
 
-- (id)resolveWithNSString:(id)a3
+- (id)resolveWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     JreThrowNullPointerException();
   }
 
-  if ([a3 isEmpty])
+  if ([string isEmpty])
   {
     return self;
   }
 
-  v6 = new_JavaIoFile_initWithNSString_(a3);
+  v6 = new_JavaIoFile_initWithNSString_(string);
   if (![(JavaIoFile *)v6 isAbsolute])
   {
-    v6 = new_JavaIoFile_initWithJavaIoFile_withNSString_(self->file_, a3);
+    v6 = new_JavaIoFile_initWithJavaIoFile_withNSString_(self->file_, string);
   }
 
   v7 = [OrgLukhnosPortmobileFilePath alloc];
@@ -85,9 +85,9 @@
     JreThrowNullPointerException();
   }
 
-  v3 = [(JavaIoFile *)file getAbsoluteFile];
+  getAbsoluteFile = [(JavaIoFile *)file getAbsoluteFile];
   v4 = [OrgLukhnosPortmobileFilePath alloc];
-  JreStrongAssign(&v4->file_, v3);
+  JreStrongAssign(&v4->file_, getAbsoluteFile);
 
   return v4;
 }

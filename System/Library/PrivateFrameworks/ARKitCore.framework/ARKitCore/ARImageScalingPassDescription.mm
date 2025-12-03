@@ -1,15 +1,15 @@
 @interface ARImageScalingPassDescription
-- (ARImageScalingPassDescription)initWithSize:(CGSize)a3;
+- (ARImageScalingPassDescription)initWithSize:(CGSize)size;
 - (CGSize)size;
 - (id)description;
 @end
 
 @implementation ARImageScalingPassDescription
 
-- (ARImageScalingPassDescription)initWithSize:(CGSize)a3
+- (ARImageScalingPassDescription)initWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = ARImageScalingPassDescription;
   result = [(ARImageScalingPassDescription *)&v6 init];

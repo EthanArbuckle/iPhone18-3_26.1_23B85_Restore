@@ -29,8 +29,8 @@
 
 - (void)sf_configureAsStartPageBackground
 {
-  v2 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-  [a1 sf_configureAsStartPageBackgroundWithNonVibrantBackgroundColor:v2];
+  secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+  [self sf_configureAsStartPageBackgroundWithNonVibrantBackgroundColor:secondarySystemGroupedBackgroundColor];
 }
 
 + (id)sf_startPageBackgroundTraits
@@ -45,11 +45,11 @@
 
 + (id)sf_startPageCellBackgroundEffectViewWithShadow:()MobileSafariFrameworkExtras shadowRadius:
 {
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   [v6 _setGroupName:@"start-page-cell"];
   [v6 _setContinuousCornerRadius:20.0];
-  v7 = [v6 contentView];
-  [v7 _setContinuousCornerRadius:20.0];
+  contentView = [v6 contentView];
+  [contentView _setContinuousCornerRadius:20.0];
 
   if ([MEMORY[0x1E69C8880] isSolariumEnabled])
   {
@@ -88,14 +88,14 @@ LABEL_11:
   }
 
 LABEL_12:
-  v9 = [v6 layer];
-  [v9 setShadowRadius:a2];
-  [v9 setShadowPathIsBounds:1];
-  v10 = [MEMORY[0x1E69DC888] blackColor];
-  [v9 setShadowColor:{objc_msgSend(v10, "CGColor")}];
+  layer = [v6 layer];
+  [layer setShadowRadius:a2];
+  [layer setShadowPathIsBounds:1];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-  [v9 setShadowOffset:{0.0, 6.0}];
-  [v9 setShadowOpacity:0.0];
+  [layer setShadowOffset:{0.0, 6.0}];
+  [layer setShadowOpacity:0.0];
 
 LABEL_13:
 
@@ -105,8 +105,8 @@ LABEL_13:
 + (id)sf_startPageLabelVibrancyEffectView
 {
   v0 = MEMORY[0x1E69DD248];
-  v1 = [MEMORY[0x1E69DC730] _sf_defaultStartPageBackgroundEffect];
-  v2 = [v0 effectForBlurEffect:v1 style:0];
+  _sf_defaultStartPageBackgroundEffect = [MEMORY[0x1E69DC730] _sf_defaultStartPageBackgroundEffect];
+  v2 = [v0 effectForBlurEffect:_sf_defaultStartPageBackgroundEffect style:0];
 
   v3 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v2];
 
@@ -115,38 +115,38 @@ LABEL_13:
 
 - (void)sf_configureAsStartPageBackgroundIgnoringVibrancy
 {
-  v2 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-  [a1 sf_configureAsStartPageBackgroundIgnoringVibrancyWithBackgroundColor:v2];
+  secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+  [self sf_configureAsStartPageBackgroundIgnoringVibrancyWithBackgroundColor:secondarySystemGroupedBackgroundColor];
 }
 
 - (void)sf_configureAsStartPageBackgroundIgnoringVibrancyWithBackgroundColor:()MobileSafariFrameworkExtras
 {
   v4 = a3;
-  v5 = [a1 contentView];
-  [v5 setBackgroundColor:v4];
+  contentView = [self contentView];
+  [contentView setBackgroundColor:v4];
 
-  [a1 setEffect:0];
-  v7 = [a1 layer];
-  if ([v7 shadowPathIsBounds])
+  [self setEffect:0];
+  layer = [self layer];
+  if ([layer shadowPathIsBounds])
   {
     LODWORD(v6) = *"\nף=";
-    [v7 setShadowOpacity:v6];
+    [layer setShadowOpacity:v6];
   }
 }
 
 - (void)sf_configureAsStartPageBackgroundWithNonVibrantBackgroundColor:()MobileSafariFrameworkExtras
 {
   v12 = a3;
-  v4 = [a1 traitCollection];
-  v5 = [v4 sf_backgroundBlurEffect];
-  if (![v4 sf_usesVibrantAppearance])
+  traitCollection = [self traitCollection];
+  sf_backgroundBlurEffect = [traitCollection sf_backgroundBlurEffect];
+  if (![traitCollection sf_usesVibrantAppearance])
   {
 LABEL_6:
-    [a1 sf_configureAsStartPageBackgroundIgnoringVibrancyWithBackgroundColor:v12];
+    [self sf_configureAsStartPageBackgroundIgnoringVibrancyWithBackgroundColor:v12];
     goto LABEL_10;
   }
 
-  if (v5)
+  if (sf_backgroundBlurEffect)
   {
     if (debugOpaqueInPopover_onceToken != -1)
     {
@@ -158,55 +158,55 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v8 = [MEMORY[0x1E69DC888] blackColor];
-    v9 = [a1 contentView];
-    [v9 setBackgroundColor:v8];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    contentView = [self contentView];
+    [contentView setBackgroundColor:blackColor];
 
-    v7 = [MEMORY[0x1E69DD248] effectForBlurEffect:v5 style:6];
+    _sf_defaultStartPageBackgroundEffect = [MEMORY[0x1E69DD248] effectForBlurEffect:sf_backgroundBlurEffect style:6];
   }
 
   else
   {
-    v6 = [a1 contentView];
-    [v6 setBackgroundColor:0];
+    contentView2 = [self contentView];
+    [contentView2 setBackgroundColor:0];
 
-    v7 = [MEMORY[0x1E69DC730] _sf_defaultStartPageBackgroundEffect];
+    _sf_defaultStartPageBackgroundEffect = [MEMORY[0x1E69DC730] _sf_defaultStartPageBackgroundEffect];
   }
 
-  v10 = v7;
-  [a1 setEffect:v7];
+  v10 = _sf_defaultStartPageBackgroundEffect;
+  [self setEffect:_sf_defaultStartPageBackgroundEffect];
 
-  v11 = [a1 layer];
-  [v11 setShadowOpacity:0.0];
+  layer = [self layer];
+  [layer setShadowOpacity:0.0];
 
 LABEL_10:
 }
 
 - (void)sf_configureAsStartPageForegroundWithEffectStyle:()MobileSafariFrameworkExtras
 {
-  v10 = [a1 traitCollection];
-  if ([v10 sf_usesVibrantAppearance])
+  traitCollection = [self traitCollection];
+  if ([traitCollection sf_usesVibrantAppearance])
   {
-    v5 = [v10 sf_backgroundBlurEffect];
-    v6 = v5;
-    if (v5)
+    sf_backgroundBlurEffect = [traitCollection sf_backgroundBlurEffect];
+    v6 = sf_backgroundBlurEffect;
+    if (sf_backgroundBlurEffect)
     {
-      v7 = v5;
+      _sf_defaultStartPageBackgroundEffect = sf_backgroundBlurEffect;
     }
 
     else
     {
-      v7 = [MEMORY[0x1E69DC730] _sf_defaultStartPageBackgroundEffect];
+      _sf_defaultStartPageBackgroundEffect = [MEMORY[0x1E69DC730] _sf_defaultStartPageBackgroundEffect];
     }
 
-    v8 = v7;
-    v9 = [MEMORY[0x1E69DD248] effectForBlurEffect:v7 style:a3];
-    [a1 setEffect:v9];
+    v8 = _sf_defaultStartPageBackgroundEffect;
+    v9 = [MEMORY[0x1E69DD248] effectForBlurEffect:_sf_defaultStartPageBackgroundEffect style:a3];
+    [self setEffect:v9];
   }
 
   else
   {
-    [a1 setEffect:0];
+    [self setEffect:0];
   }
 }
 
@@ -214,22 +214,22 @@ LABEL_10:
 {
   v6 = MEMORY[0x1E69DC6E8];
   v7 = a4;
-  v8 = [v6 listGroupedCellConfiguration];
-  v10 = [v8 updatedConfigurationForState:v7];
+  listGroupedCellConfiguration = [v6 listGroupedCellConfiguration];
+  v10 = [listGroupedCellConfiguration updatedConfigurationForState:v7];
 
-  v9 = [v10 backgroundColor];
-  [a1 sf_setHighlighted:a3 cellState:v7 nonVibrantBackgroundColor:v9];
+  backgroundColor = [v10 backgroundColor];
+  [self sf_setHighlighted:a3 cellState:v7 nonVibrantBackgroundColor:backgroundColor];
 }
 
 - (void)sf_setHighlighted:()MobileSafariFrameworkExtras cellState:nonVibrantBackgroundColor:
 {
   v8 = a5;
-  v6 = [a1 effect];
+  effect = [self effect];
 
-  if (!v6)
+  if (!effect)
   {
-    v7 = [a1 contentView];
-    [v7 setBackgroundColor:v8];
+    contentView = [self contentView];
+    [contentView setBackgroundColor:v8];
   }
 }
 

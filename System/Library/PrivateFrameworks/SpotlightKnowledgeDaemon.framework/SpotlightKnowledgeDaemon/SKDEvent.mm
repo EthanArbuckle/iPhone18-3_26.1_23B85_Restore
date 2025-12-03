@@ -1,37 +1,37 @@
 @interface SKDEvent
-- (SKDEvent)initWithType:(unsigned __int8)a3 status:(unsigned __int8)a4 identifier:(id)a5 info:(id)a6;
+- (SKDEvent)initWithType:(unsigned __int8)type status:(unsigned __int8)status identifier:(id)identifier info:(id)info;
 - (id)message;
 - (id)statusMessage;
 - (id)typeMessage;
-- (void)addFeedback:(id)a3 value:(id)a4;
-- (void)addFeedbackFromDictionary:(id)a3;
+- (void)addFeedback:(id)feedback value:(id)value;
+- (void)addFeedbackFromDictionary:(id)dictionary;
 @end
 
 @implementation SKDEvent
 
-- (SKDEvent)initWithType:(unsigned __int8)a3 status:(unsigned __int8)a4 identifier:(id)a5 info:(id)a6
+- (SKDEvent)initWithType:(unsigned __int8)type status:(unsigned __int8)status identifier:(id)identifier info:(id)info
 {
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  infoCopy = info;
   v16.receiver = self;
   v16.super_class = SKDEvent;
   v13 = [(SKDEvent *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_type = a3;
-    v13->_status = a4;
-    objc_storeStrong(&v13->_identifier, a5);
-    objc_storeStrong(&v14->_info, a6);
+    v13->_type = type;
+    v13->_status = status;
+    objc_storeStrong(&v13->_identifier, identifier);
+    objc_storeStrong(&v14->_info, info);
   }
 
   return v14;
 }
 
-- (void)addFeedback:(id)a3 value:(id)a4
+- (void)addFeedback:(id)feedback value:(id)value
 {
-  v10 = a3;
-  v6 = a4;
+  feedbackCopy = feedback;
+  valueCopy = value;
   feedback = self->_feedback;
   if (!feedback)
   {
@@ -42,16 +42,16 @@
     feedback = self->_feedback;
   }
 
-  [(NSMutableDictionary *)feedback setObject:v6 forKey:v10];
+  [(NSMutableDictionary *)feedback setObject:valueCopy forKey:feedbackCopy];
 }
 
-- (void)addFeedbackFromDictionary:(id)a3
+- (void)addFeedbackFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     feedback = self->_feedback;
-    v8 = v4;
+    v8 = dictionaryCopy;
     if (!feedback)
     {
       v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -62,7 +62,7 @@
     }
 
     [(NSMutableDictionary *)feedback addEntriesFromDictionary:v8];
-    v4 = v8;
+    dictionaryCopy = v8;
   }
 }
 
@@ -90,33 +90,33 @@
 
 - (id)message
 {
-  v3 = [(SKDEvent *)self info];
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"messageInfoKey"];
+  info = [(SKDEvent *)self info];
+  userInfo = [info userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"messageInfoKey"];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    identifier = v5;
   }
 
   else
   {
-    v7 = [(SKDEvent *)self identifier];
+    identifier = [(SKDEvent *)self identifier];
   }
 
-  v8 = v7;
+  v8 = identifier;
 
   if (v8)
   {
-    v9 = v8;
+    typeMessage = v8;
   }
 
   else
   {
-    v9 = [(SKDEvent *)self typeMessage];
+    typeMessage = [(SKDEvent *)self typeMessage];
   }
 
-  v10 = v9;
+  v10 = typeMessage;
 
   return v10;
 }

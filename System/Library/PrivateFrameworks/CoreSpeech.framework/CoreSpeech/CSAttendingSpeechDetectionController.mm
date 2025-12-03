@@ -1,18 +1,18 @@
 @interface CSAttendingSpeechDetectionController
 - (CSAttendingServiceDelegate)delegate;
-- (CSAttendingSpeechDetectionController)initWithAudioProviderSelector:(id)a3;
+- (CSAttendingSpeechDetectionController)initWithAudioProviderSelector:(id)selector;
 - (id)_signalProvider;
-- (id)_updateAttendingOptionsForAnnounce:(id)a3;
+- (id)_updateAttendingOptionsForAnnounce:(id)announce;
 - (void)_cancelSpeechDetectionTimer;
-- (void)_setupSpeechDetectionTimerForDuration:(double)a3;
-- (void)_startActivationAtHostTime:(unint64_t)a3 sampleCount:(unint64_t)a4 amountOfSpeechInMs:(float)a5;
-- (void)attSiriSignalProvider:(id)a3 silenceFramesCountMs:(double)a4 silenceProbability:(double)a5 silenceDurationMs:(double)a6 processedAudioMs:(double)a7 deviceHasBoronEnabled:(BOOL)a8 latestBoronActiveSampleCount:(int64_t)a9;
+- (void)_setupSpeechDetectionTimerForDuration:(double)duration;
+- (void)_startActivationAtHostTime:(unint64_t)time sampleCount:(unint64_t)count amountOfSpeechInMs:(float)ms;
+- (void)attSiriSignalProvider:(id)provider silenceFramesCountMs:(double)ms silenceProbability:(double)probability silenceDurationMs:(double)durationMs processedAudioMs:(double)audioMs deviceHasBoronEnabled:(BOOL)enabled latestBoronActiveSampleCount:(int64_t)count;
 - (void)attSiriSignalProviderDidStopUnexpectedly;
 - (void)cancelAudioStreamHolding;
 - (void)dealloc;
 - (void)handleSpeechDetectionTimeout;
-- (void)startAttendingWithOptions:(id)a3 completion:(id)a4;
-- (void)stopAttendingWithReason:(int64_t)a3;
+- (void)startAttendingWithOptions:(id)options completion:(id)completion;
+- (void)stopAttendingWithReason:(int64_t)reason;
 @end
 
 @implementation CSAttendingSpeechDetectionController
@@ -46,13 +46,13 @@
   dispatch_async(queue, block);
 }
 
-- (id)_updateAttendingOptionsForAnnounce:(id)a3
+- (id)_updateAttendingOptionsForAnnounce:(id)announce
 {
-  v4 = a3;
-  v5 = v4;
+  announceCopy = announce;
+  v5 = announceCopy;
   if (!self->_isInitialTurnAnnounceFollowup)
   {
-    if ([v4 recordType] == 25)
+    if ([announceCopy recordType] == 25)
     {
       self->_isInitialTurnAnnounceFollowup = 1;
       goto LABEL_13;
@@ -130,7 +130,7 @@ LABEL_15:
   }
 }
 
-- (void)_setupSpeechDetectionTimerForDuration:(double)a3
+- (void)_setupSpeechDetectionTimerForDuration:(double)duration
 {
   [(CSAttendingSpeechDetectionController *)self _cancelSpeechDetectionTimer];
   v5 = [[CSAttSiriTimer alloc] initWithQueue:0];
@@ -144,7 +144,7 @@ LABEL_15:
     *buf = 136315394;
     v13 = "[CSAttendingSpeechDetectionController _setupSpeechDetectionTimerForDuration:]";
     v14 = 2048;
-    v15 = a3;
+    durationCopy = duration;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s Setup speech detection timer for duration %f secs", buf, 0x16u);
   }
 
@@ -154,12 +154,12 @@ LABEL_15:
   v9[2] = sub_1000644D4;
   v9[3] = &unk_100253510;
   objc_copyWeak(&v10, &location);
-  [(CSAttSiriTimer *)v8 setTimerForSecs:v9 completionBlock:a3];
+  [(CSAttSiriTimer *)v8 setTimerForSecs:v9 completionBlock:duration];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)_startActivationAtHostTime:(unint64_t)a3 sampleCount:(unint64_t)a4 amountOfSpeechInMs:(float)a5
+- (void)_startActivationAtHostTime:(unint64_t)time sampleCount:(unint64_t)count amountOfSpeechInMs:(float)ms
 {
   if (!self->_didActivate)
   {
@@ -169,18 +169,18 @@ LABEL_15:
       v29 = 136315906;
       v30 = "[CSAttendingSpeechDetectionController _startActivationAtHostTime:sampleCount:amountOfSpeechInMs:]";
       v31 = 2048;
-      v32 = a3;
+      timeCopy = time;
       v33 = 2048;
-      v34 = a4;
+      countCopy = count;
       v35 = 2048;
-      v36 = a5;
+      msCopy = ms;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s StartHostTime: %llu. SampleCount: %llu. AmountOfSpeechInMs: %f", &v29, 0x2Au);
     }
 
     self->_didActivate = 1;
     [(CSAttendingSpeechDetectionController *)self _cancelSpeechDetectionTimer];
-    v10 = [(CSAttendingSpeechDetectionController *)self _signalProvider];
-    [v10 stopWithObserver:self holdAudioStream:1];
+    _signalProvider = [(CSAttendingSpeechDetectionController *)self _signalProvider];
+    [_signalProvider stopWithObserver:self holdAudioStream:1];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (WeakRetained)
@@ -196,15 +196,15 @@ LABEL_15:
       }
     }
 
-    v16 = [(CSAttSiriSignalOptions *)self->_signalOptions attendingOptions];
+    attendingOptions = [(CSAttSiriSignalOptions *)self->_signalOptions attendingOptions];
     v17 = [CSAttendingTriggerInfo alloc];
-    v18 = [v16 attendingType];
-    v19 = [v16 recordType];
-    v20 = [v16 deviceId];
-    [v16 startOfSpeechThresholdInMs];
+    attendingType = [attendingOptions attendingType];
+    recordType = [attendingOptions recordType];
+    deviceId = [attendingOptions deviceId];
+    [attendingOptions startOfSpeechThresholdInMs];
     *&v22 = v21;
-    *&v21 = a5;
-    v23 = [(CSAttendingTriggerInfo *)v17 initWithAttendingType:v18 detectedToken:0 triggerMachTime:a3 triggerAbsStartSampleId:a4 audioRecordType:v19 audioRecordDeviceId:v20 amountOfSpeechDetectedInMs:v21 triggerThresholdInMs:v22];
+    *&v21 = ms;
+    v23 = [(CSAttendingTriggerInfo *)v17 initWithAttendingType:attendingType detectedToken:0 triggerMachTime:time triggerAbsStartSampleId:count audioRecordType:recordType audioRecordDeviceId:deviceId amountOfSpeechDetectedInMs:v21 triggerThresholdInMs:v22];
 
     v24 = objc_loadWeakRetained(&self->_delegate);
     if (v24)
@@ -222,7 +222,7 @@ LABEL_15:
   }
 }
 
-- (void)attSiriSignalProvider:(id)a3 silenceFramesCountMs:(double)a4 silenceProbability:(double)a5 silenceDurationMs:(double)a6 processedAudioMs:(double)a7 deviceHasBoronEnabled:(BOOL)a8 latestBoronActiveSampleCount:(int64_t)a9
+- (void)attSiriSignalProvider:(id)provider silenceFramesCountMs:(double)ms silenceProbability:(double)probability silenceDurationMs:(double)durationMs processedAudioMs:(double)audioMs deviceHasBoronEnabled:(BOOL)enabled latestBoronActiveSampleCount:(int64_t)count
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -230,10 +230,10 @@ LABEL_15:
   block[2] = sub_10006486C;
   block[3] = &unk_100251310;
   block[4] = self;
-  *&block[5] = a4;
-  *&block[6] = a7;
-  v11 = a8;
-  block[7] = a9;
+  *&block[5] = ms;
+  *&block[6] = audioMs;
+  enabledCopy = enabled;
+  block[7] = count;
   dispatch_async(queue, block);
 }
 
@@ -248,7 +248,7 @@ LABEL_15:
   dispatch_async(queue, block);
 }
 
-- (void)stopAttendingWithReason:(int64_t)a3
+- (void)stopAttendingWithReason:(int64_t)reason
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -256,24 +256,24 @@ LABEL_15:
   v4[2] = sub_100065338;
   v4[3] = &unk_100253C98;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reason;
   dispatch_async(queue, v4);
 }
 
-- (void)startAttendingWithOptions:(id)a3 completion:(id)a4
+- (void)startAttendingWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100065640;
   block[3] = &unk_1002533A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = optionsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = optionsCopy;
   dispatch_async(queue, block);
 }
 
@@ -300,7 +300,7 @@ LABEL_15:
     *buf = 136315394;
     v6 = "[CSAttendingSpeechDetectionController dealloc]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s Dealloc: %@", buf, 0x16u);
   }
 
@@ -309,9 +309,9 @@ LABEL_15:
   [(CSAttendingSpeechDetectionController *)&v4 dealloc];
 }
 
-- (CSAttendingSpeechDetectionController)initWithAudioProviderSelector:(id)a3
+- (CSAttendingSpeechDetectionController)initWithAudioProviderSelector:(id)selector
 {
-  v5 = a3;
+  selectorCopy = selector;
   v10.receiver = self;
   v10.super_class = CSAttendingSpeechDetectionController;
   v6 = [(CSAttendingSpeechDetectionController *)&v10 init];
@@ -322,7 +322,7 @@ LABEL_15:
     v6->_queue = v7;
 
     v6->_isInitialTurnAnnounceFollowup = 0;
-    objc_storeStrong(&v6->_audioProviderSelector, a3);
+    objc_storeStrong(&v6->_audioProviderSelector, selector);
   }
 
   return v6;

@@ -1,7 +1,7 @@
 @interface RCRecorderStyleProvider
 + (id)sharedStyleProvider;
 - (double)platterWaveformWidthCompact;
-- (id)_platterTimeLabelFontWithTextStyle:(id)a3 traitCollection:(id)a4;
+- (id)_platterTimeLabelFontWithTextStyle:(id)style traitCollection:(id)collection;
 @end
 
 @implementation RCRecorderStyleProvider
@@ -18,9 +18,9 @@
   return v3;
 }
 
-- (id)_platterTimeLabelFontWithTextStyle:(id)a3 traitCollection:(id)a4
+- (id)_platterTimeLabelFontWithTextStyle:(id)style traitCollection:(id)collection
 {
-  v4 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:a3 compatibleWithTraitCollection:a4];
+  v4 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:style compatibleWithTraitCollection:collection];
   [v4 pointSize];
   v5 = [UIFont monospacedDigitSystemFontOfSize:"monospacedDigitSystemFontOfSize:weight:" weight:?];
 
@@ -29,11 +29,11 @@
 
 - (double)platterWaveformWidthCompact
 {
-  v3 = [(RCRecorderStyleProvider *)self platterCompactViewSliceCount];
+  platterCompactViewSliceCount = [(RCRecorderStyleProvider *)self platterCompactViewSliceCount];
   [(RCRecorderStyleProvider *)self platterWaveformSliceWidth];
   v5 = v4;
   [(RCRecorderStyleProvider *)self platterWaveformSlicePadding];
-  return v6 * v3 + v3 * v5;
+  return v6 * platterCompactViewSliceCount + platterCompactViewSliceCount * v5;
 }
 
 @end

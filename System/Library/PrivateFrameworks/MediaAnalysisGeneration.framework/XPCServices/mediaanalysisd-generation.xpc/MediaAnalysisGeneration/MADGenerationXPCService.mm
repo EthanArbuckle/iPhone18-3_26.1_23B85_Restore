@@ -1,18 +1,18 @@
 @interface MADGenerationXPCService
-- (int64_t)consumeSandboxExtension:(id)a3 url:(id)a4;
-- (void)requestAlchemistProcessingForIOSurface:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)requestAlchemistProcessingForURL:(id)a3 sandboxToken:(id)a4 options:(id)a5 reply:(id)a6;
+- (int64_t)consumeSandboxExtension:(id)extension url:(id)url;
+- (void)requestAlchemistProcessingForIOSurface:(id)surface options:(id)options reply:(id)reply;
+- (void)requestAlchemistProcessingForURL:(id)l sandboxToken:(id)token options:(id)options reply:(id)reply;
 @end
 
 @implementation MADGenerationXPCService
 
-- (void)requestAlchemistProcessingForIOSurface:(id)a3 options:(id)a4 reply:(id)a5
+- (void)requestAlchemistProcessingForIOSurface:(id)surface options:(id)options reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  surfaceCopy = surface;
+  optionsCopy = options;
+  replyCopy = reply;
   pixelBufferOut = 0;
-  v10 = CVPixelBufferCreateWithIOSurface(0, v7, 0, &pixelBufferOut);
+  v10 = CVPixelBufferCreateWithIOSurface(0, surfaceCopy, 0, &pixelBufferOut);
   if (v10)
   {
     v11 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR);
@@ -25,12 +25,12 @@
     v40 = @"Failed to create CVPixelBuffer from specified IOSurface";
     v19 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
     v20 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v10 userInfo:v19];
-    v9[2](v9, 0, v20);
+    replyCopy[2](replyCopy, 0, v20);
   }
 
-  v21 = [[MADAlchemistAnalzyer alloc] initWithOptions:v8];
+  v21 = [[MADAlchemistAnalzyer alloc] initWithOptions:optionsCopy];
   v35 = 0;
-  v22 = [(MADAlchemistAnalzyer *)v21 performAlchemistForPixelBuffer:pixelBufferOut options:v8 results:&v35 cancel:0];
+  v22 = [(MADAlchemistAnalzyer *)v21 performAlchemistForPixelBuffer:pixelBufferOut options:optionsCopy results:&v35 cancel:0];
   v23 = v35;
   if (v22)
   {
@@ -44,7 +44,7 @@
     v38 = @"Error performing Alchemist processing";
     v32 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
     v33 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v32];
-    v9[2](v9, 0, v33);
+    replyCopy[2](replyCopy, 0, v33);
   }
 
   else
@@ -55,19 +55,19 @@
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "[MADGenerationXPCService] Completed Alchemist processing", &v34, 2u);
     }
 
-    (v9)[2](v9, v23, 0);
+    (replyCopy)[2](replyCopy, v23, 0);
   }
 
   sub_1000020D0(&pixelBufferOut);
 }
 
-- (void)requestAlchemistProcessingForURL:(id)a3 sandboxToken:(id)a4 options:(id)a5 reply:(id)a6
+- (void)requestAlchemistProcessingForURL:(id)l sandboxToken:(id)token options:(id)options reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11 && [(MADGenerationXPCService *)self consumeSandboxExtension:v11 url:v10]< 0)
+  lCopy = l;
+  tokenCopy = token;
+  optionsCopy = options;
+  replyCopy = reply;
+  if (tokenCopy && [(MADGenerationXPCService *)self consumeSandboxExtension:tokenCopy url:lCopy]< 0)
   {
     v14 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR);
     if (v14)
@@ -79,16 +79,16 @@
     v40 = @"[MADGenerationXPCService] Failed to consume sandbox extension";
     v22 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
     v23 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-50 userInfo:v22];
-    v13[2](v13, 0, v23);
+    replyCopy[2](replyCopy, 0, v23);
   }
 
   else
   {
-    v23 = [[MADAlchemistAnalzyer alloc] initWithOptions:v12];
+    v23 = [[MADAlchemistAnalzyer alloc] initWithOptions:optionsCopy];
     v36 = 0;
-    v24 = [(MADAlchemistAnalzyer *)v23 performAlchemistForURL:v10 options:v12 results:&v36 cancel:0];
+    v24 = [(MADAlchemistAnalzyer *)v23 performAlchemistForURL:lCopy options:optionsCopy results:&v36 cancel:0];
     v22 = v36;
-    if (v11)
+    if (tokenCopy)
     {
       sandbox_extension_release();
     }
@@ -105,7 +105,7 @@
       v38 = @"Error performing Alchemist processing";
       v33 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
       v34 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v33];
-      v13[2](v13, 0, v34);
+      replyCopy[2](replyCopy, 0, v34);
     }
 
     else
@@ -116,16 +116,16 @@
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "[MADGenerationXPCService] Completed Alchemist processing", v35, 2u);
       }
 
-      (v13)[2](v13, v22, 0);
+      (replyCopy)[2](replyCopy, v22, 0);
     }
   }
 }
 
-- (int64_t)consumeSandboxExtension:(id)a3 url:(id)a4
+- (int64_t)consumeSandboxExtension:(id)extension url:(id)url
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 fileSystemRepresentation];
+  extensionCopy = extension;
+  urlCopy = url;
+  fileSystemRepresentation = [urlCopy fileSystemRepresentation];
   v8 = +[NSXPCConnection currentConnection];
   v9 = v8;
   if (v8)
@@ -139,7 +139,7 @@
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_100008DF4(v7);
+      sub_100008DF4(fileSystemRepresentation);
     }
 
     goto LABEL_9;
@@ -149,7 +149,7 @@
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_100008E74(v7);
+      sub_100008E74(fileSystemRepresentation);
     }
 
 LABEL_9:
@@ -157,7 +157,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  [v5 UTF8String];
+  [extensionCopy UTF8String];
   v11 = sandbox_extension_consume();
   if (v11 < 0)
   {

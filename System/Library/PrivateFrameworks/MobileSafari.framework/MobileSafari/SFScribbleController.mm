@@ -1,11 +1,11 @@
 @interface SFScribbleController
 - (BOOL)isPrivateBrowsing;
-- (CGImage)_imageForScribbleAnimationWithElementFrame:(CGRect)a3;
+- (CGImage)_imageForScribbleAnimationWithElementFrame:(CGRect)frame;
 - (CGPoint)_offsetForObscuredInsets;
-- (CGRect)_frameForElementFrame:(CGRect)a3 inCoordinateSpace:(id)a4;
-- (CGRect)_frameForElementFrame:(CGRect)a3 inCoordinateSpace:(id)a4 withOutset:(double)a5;
+- (CGRect)_frameForElementFrame:(CGRect)frame inCoordinateSpace:(id)space;
+- (CGRect)_frameForElementFrame:(CGRect)frame inCoordinateSpace:(id)space withOutset:(double)outset;
 - (NSArray)normalBrowsingUserContentControllers;
-- (SFScribbleController)initWithWebView:(id)a3 delegate:(id)a4;
+- (SFScribbleController)initWithWebView:(id)view delegate:(id)delegate;
 - (SFScribbleControllerDelegate)delegate;
 - (SFURLFieldOverlayConfiguration)urlFieldOverlayConfiguration;
 - (SFURLFieldOverlayConfiguration)urlFieldOverlayNarrowConfiguration;
@@ -16,39 +16,39 @@
 - (id)_doneAction;
 - (id)_urlFieldOverlayText;
 - (void)_deselectSelectedElement;
-- (void)_endScribblingAndSaveChanges:(BOOL)a3;
+- (void)_endScribblingAndSaveChanges:(BOOL)changes;
 - (void)_hideSelectedElement;
 - (void)_performPendingSelectionRequestIfNeeded;
-- (void)_runScribbleAnimationInFrame:(CGRect)a3;
-- (void)_selectionDidMoveToLocation:(CGPoint)a3;
-- (void)_setCommonPropertiesToConfiguration:(id)a3;
-- (void)_setSelectedElement:(id)a3;
+- (void)_runScribbleAnimationInFrame:(CGRect)frame;
+- (void)_selectionDidMoveToLocation:(CGPoint)location;
+- (void)_setCommonPropertiesToConfiguration:(id)configuration;
+- (void)_setSelectedElement:(id)element;
 - (void)_startScribbling;
 - (void)clearEdits;
 - (void)invalidate;
-- (void)openFeedbackAppForScribbleReportIssueCategory:(int64_t)a3;
+- (void)openFeedbackAppForScribbleReportIssueCategory:(int64_t)category;
 - (void)reloadData;
-- (void)scribbleController:(id)a3 didUpdateSelectedElement:(id)a4 withError:(id)a5;
-- (void)scribbleControllerDidUpdateHiddenElementCount:(id)a3;
+- (void)scribbleController:(id)controller didUpdateSelectedElement:(id)element withError:(id)error;
+- (void)scribbleControllerDidUpdateHiddenElementCount:(id)count;
 - (void)startScribbling;
-- (void)updateOverlayInScrollView:(id)a3;
-- (void)updateUserDefinedContentBlockerWithHost:(id)a3;
+- (void)updateOverlayInScrollView:(id)view;
+- (void)updateUserDefinedContentBlockerWithHost:(id)host;
 @end
 
 @implementation SFScribbleController
 
-- (SFScribbleController)initWithWebView:(id)a3 delegate:(id)a4
+- (SFScribbleController)initWithWebView:(id)view delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = SFScribbleController;
   v8 = [(SFScribbleController *)&v23 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v7);
-    v10 = [objc_alloc(MEMORY[0x1E69C9820]) initWithWebView:v6];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    v10 = [objc_alloc(MEMORY[0x1E69C9820]) initWithWebView:viewCopy];
     elementController = v9->_elementController;
     v9->_elementController = v10;
 
@@ -57,7 +57,7 @@
     overlay = v9->_overlay;
     v9->_overlay = v12;
 
-    objc_storeWeak(&v9->_webView, v6);
+    objc_storeWeak(&v9->_webView, viewCopy);
     objc_initWeak(&location, v9);
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
@@ -105,12 +105,12 @@ void __49__SFScribbleController_initWithWebView_delegate___block_invoke_3(uint64
   [WeakRetained _deselectSelectedElement];
 }
 
-- (CGImage)_imageForScribbleAnimationWithElementFrame:(CGRect)a3
+- (CGImage)_imageForScribbleAnimationWithElementFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
   [(SFScribbleController *)self _frameForElementFrame:WeakRetained inCoordinateSpace:x, y, width, height];
   v10 = v9;
@@ -119,35 +119,35 @@ void __49__SFScribbleController_initWithWebView_delegate___block_invoke_3(uint64
   v16 = v15;
   v17 = [WeakRetained safari_snapshotImageFromIOSurfaceInRect:?];
   v18 = MEMORY[0x1E69C9828];
-  v19 = [v17 CGImage];
+  cGImage = [v17 CGImage];
   [WeakRetained bounds];
   v21 = v20;
   v23 = v22;
-  v24 = [WeakRetained traitCollection];
-  [v24 displayScale];
-  v26 = [v18 imageForScribbleEffectWithElementSnapshot:v19 elementFrame:v10 webViewSize:v12 webViewScale:{v14, v16, v21, v23, v25}];
+  traitCollection = [WeakRetained traitCollection];
+  [traitCollection displayScale];
+  v26 = [v18 imageForScribbleEffectWithElementSnapshot:cGImage elementFrame:v10 webViewSize:v12 webViewScale:{v14, v16, v21, v23, v25}];
 
   return v26;
 }
 
-- (void)_runScribbleAnimationInFrame:(CGRect)a3
+- (void)_runScribbleAnimationInFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
   if (WeakRetained)
   {
-    v9 = [(SFScribbleController *)self _imageForScribbleAnimationWithElementFrame:x, y, width, height];
+    height = [(SFScribbleController *)self _imageForScribbleAnimationWithElementFrame:x, y, width, height];
     v10 = objc_alloc(MEMORY[0x1E69C9828]);
     [WeakRetained bounds];
     [WeakRetained convertRect:self->_overlay toView:?];
-    v11 = [v10 initWithImage:v9 frame:?];
-    CGImageRelease(v9);
-    v12 = [(SFScribbleOverlay *)self->_overlay window];
+    v11 = [v10 initWithImage:height frame:?];
+    CGImageRelease(height);
+    window = [(SFScribbleOverlay *)self->_overlay window];
 
-    if (v12)
+    if (window)
     {
       [(SFScribbleOverlay *)self->_overlay insertSubview:v11 atIndex:0];
     }
@@ -182,9 +182,9 @@ void __53__SFScribbleController__runScribbleAnimationInFrame___block_invoke(uint
   }
 }
 
-- (void)_endScribblingAndSaveChanges:(BOOL)a3
+- (void)_endScribblingAndSaveChanges:(BOOL)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   if ([(WBSScribbleController *)self->_elementController isScribbling])
   {
     if (!self->_userInitiatedScribblingDisabled)
@@ -199,7 +199,7 @@ void __53__SFScribbleController__runScribbleAnimationInFrame___block_invoke(uint
       v8[3] = &unk_1E721B360;
       v8[4] = self;
       [(SFScribbleOverlay *)overlay endSelectionWithCompletion:v8];
-      [(WBSScribbleController *)self->_elementController endScribblingAndSaveChanges:v3];
+      [(WBSScribbleController *)self->_elementController endScribblingAndSaveChanges:changesCopy];
       [MEMORY[0x1E69C9828] discardPrewarmedContent];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained sfScribbleControllerDidEndScribbling:self];
@@ -211,8 +211,8 @@ void __53__SFScribbleController__runScribbleAnimationInFrame___block_invoke(uint
 {
   if (([(WBSScribbleController *)self->_elementController isScribbling]& 1) == 0 && !self->_userInitiatedScribblingDisabled)
   {
-    v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v4 = [v3 BOOLForKey:@"didShowDistractionControlEducationalAlertKey"];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    v4 = [safari_browserDefaults BOOLForKey:@"didShowDistractionControlEducationalAlertKey"];
 
     if (v4)
     {
@@ -222,8 +222,8 @@ void __53__SFScribbleController__runScribbleAnimationInFrame___block_invoke(uint
 
     else
     {
-      v5 = [MEMORY[0x1E695E000] safari_browserDefaults];
-      [v5 setBool:1 forKey:@"didShowDistractionControlEducationalAlertKey"];
+      safari_browserDefaults2 = [MEMORY[0x1E695E000] safari_browserDefaults];
+      [safari_browserDefaults2 setBool:1 forKey:@"didShowDistractionControlEducationalAlertKey"];
 
       objc_initWeak(&location, self);
       v6 = MEMORY[0x1E69DC650];
@@ -241,8 +241,8 @@ void __53__SFScribbleController__runScribbleAnimationInFrame___block_invoke(uint
       v12 = [v10 actionWithTitle:v11 style:0 handler:&v15];
       [v9 addAction:{v12, v15, v16, v17, v18}];
 
-      v13 = [v9 view];
-      [v13 setAccessibilityIdentifier:@"DistractionControlEducationalAlert"];
+      view = [v9 view];
+      [view setAccessibilityIdentifier:@"DistractionControlEducationalAlert"];
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained sfScribbleController:self presentAlert:v9];
@@ -308,11 +308,11 @@ void __40__SFScribbleController__startScribbling__block_invoke(uint64_t a1, uint
   }
 }
 
-- (void)updateOverlayInScrollView:(id)a3
+- (void)updateOverlayInScrollView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
-  [v4 convertRect:v4 fromView:?];
+  viewCopy = view;
+  [viewCopy bounds];
+  [viewCopy convertRect:viewCopy fromView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -333,8 +333,8 @@ void __40__SFScribbleController__startScribbling__block_invoke(uint64_t a1, uint
 
   WeakRetained = objc_loadWeakRetained(&self->_webView);
   v3 = [WeakRetained URL];
-  v4 = [v3 host];
-  [(SFScribbleController *)self updateUserDefinedContentBlockerWithHost:v4];
+  host = [v3 host];
+  [(SFScribbleController *)self updateUserDefinedContentBlockerWithHost:host];
 }
 
 - (void)clearEdits
@@ -389,12 +389,12 @@ void __34__SFScribbleController_clearEdits__block_invoke(uint64_t a1)
 - (void)_hideSelectedElement
 {
   [(SFScribbleOverlay *)self->_overlay endSelection];
-  v3 = [(WBSScribbleController *)self->_elementController selectedScribbleElement];
+  selectedScribbleElement = [(WBSScribbleController *)self->_elementController selectedScribbleElement];
 
-  if (v3)
+  if (selectedScribbleElement)
   {
-    v4 = [(WBSScribbleController *)self->_elementController selectedScribbleElement];
-    [v4 geometry];
+    selectedScribbleElement2 = [(WBSScribbleController *)self->_elementController selectedScribbleElement];
+    [selectedScribbleElement2 geometry];
     [(SFScribbleController *)self _runScribbleAnimationInFrame:?];
 
     elementController = self->_elementController;
@@ -416,25 +416,25 @@ void __34__SFScribbleController_clearEdits__block_invoke(uint64_t a1)
 - (BOOL)isPrivateBrowsing
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained isPrivateBrowsing];
+  isPrivateBrowsing = [WeakRetained isPrivateBrowsing];
 
-  return v3;
+  return isPrivateBrowsing;
 }
 
 - (NSArray)normalBrowsingUserContentControllers
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained normalBrowsingUserContentControllers];
+  normalBrowsingUserContentControllers = [WeakRetained normalBrowsingUserContentControllers];
 
-  return v3;
+  return normalBrowsingUserContentControllers;
 }
 
 - (WBSScribbleQuirksManager)scribbleQuirksManager
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained scribbleQuirksManager];
+  scribbleQuirksManager = [WeakRetained scribbleQuirksManager];
 
-  return v3;
+  return scribbleQuirksManager;
 }
 
 - (WBSUserDefinedContentBlockerManager)userDefinedContentBlockerManager
@@ -454,37 +454,37 @@ void __34__SFScribbleController_clearEdits__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)scribbleController:(id)a3 didUpdateSelectedElement:(id)a4 withError:(id)a5
+- (void)scribbleController:(id)controller didUpdateSelectedElement:(id)element withError:(id)error
 {
-  [(SFScribbleController *)self _setSelectedElement:a4];
+  [(SFScribbleController *)self _setSelectedElement:element];
 
   [(SFScribbleController *)self _performPendingSelectionRequestIfNeeded];
 }
 
-- (void)scribbleControllerDidUpdateHiddenElementCount:(id)a3
+- (void)scribbleControllerDidUpdateHiddenElementCount:(id)count
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained sfScribbleControllerDidUpdateHiddenElementCount:self];
 }
 
-- (void)updateUserDefinedContentBlockerWithHost:(id)a3
+- (void)updateUserDefinedContentBlockerWithHost:(id)host
 {
-  v6 = a3;
-  if ([v6 length])
+  hostCopy = host;
+  if ([hostCopy length])
   {
-    v4 = [(SFScribbleController *)self userDefinedContentBlockerManager];
-    v5 = [v4 hasContentBlockerWithActions];
+    userDefinedContentBlockerManager = [(SFScribbleController *)self userDefinedContentBlockerManager];
+    hasContentBlockerWithActions = [userDefinedContentBlockerManager hasContentBlockerWithActions];
 
-    if (v5)
+    if (hasContentBlockerWithActions)
     {
-      [(WBSScribbleController *)self->_elementController loadContentBlockerForHost:v6];
+      [(WBSScribbleController *)self->_elementController loadContentBlockerForHost:hostCopy];
     }
   }
 }
 
-- (CGRect)_frameForElementFrame:(CGRect)a3 inCoordinateSpace:(id)a4
+- (CGRect)_frameForElementFrame:(CGRect)frame inCoordinateSpace:(id)space
 {
-  [(SFScribbleController *)self _frameForElementFrame:a4 inCoordinateSpace:a3.origin.x withOutset:a3.origin.y, a3.size.width, a3.size.height, 0.0];
+  [(SFScribbleController *)self _frameForElementFrame:space inCoordinateSpace:frame.origin.x withOutset:frame.origin.y, frame.size.width, frame.size.height, 0.0];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -492,13 +492,13 @@ void __34__SFScribbleController_clearEdits__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGRect)_frameForElementFrame:(CGRect)a3 inCoordinateSpace:(id)a4 withOutset:(double)a5
+- (CGRect)_frameForElementFrame:(CGRect)frame inCoordinateSpace:(id)space withOutset:(double)outset
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
   v48.origin.x = x;
   v48.origin.y = y;
@@ -512,13 +512,13 @@ void __34__SFScribbleController_clearEdits__block_invoke(uint64_t a1)
   [WeakRetained _convertPointFromContentsToView:{MinX, CGRectGetMinY(v49)}];
   v15 = v14;
   v17 = v16;
-  v18 = [WeakRetained scrollView];
-  [v18 zoomScale];
+  scrollView = [WeakRetained scrollView];
+  [scrollView zoomScale];
   v50.size.width = width * v19;
   v50.size.height = height * v19;
   v50.origin.x = v15;
   v50.origin.y = v17;
-  v51 = CGRectInset(v50, -a5, -a5);
+  v51 = CGRectInset(v50, -outset, -outset);
   v20 = v51.origin.x;
   v21 = v51.origin.y;
   v22 = v51.size.width;
@@ -538,7 +538,7 @@ void __34__SFScribbleController_clearEdits__block_invoke(uint64_t a1)
   v52.size.width = v22;
   v52.size.height = v23;
   v53 = CGRectIntersection(v52, v55);
-  [WeakRetained convertRect:v11 toCoordinateSpace:{v53.origin.x, v53.origin.y, v53.size.width, v53.size.height}];
+  [WeakRetained convertRect:spaceCopy toCoordinateSpace:{v53.origin.x, v53.origin.y, v53.size.width, v53.size.height}];
   v37 = v36;
   v39 = v38;
   v41 = v40;
@@ -569,10 +569,10 @@ void __34__SFScribbleController_clearEdits__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_selectionDidMoveToLocation:(CGPoint)a3
+- (void)_selectionDidMoveToLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
   [(SFScribbleController *)self _offsetForObscuredInsets];
   v8 = v7;
@@ -581,8 +581,8 @@ void __34__SFScribbleController_clearEdits__block_invoke(uint64_t a1)
   [WeakRetained _convertPointFromViewToContents:?];
   v12 = v11 - v8;
   v14 = v13 - v10;
-  v15 = [WeakRetained scrollView];
-  [v15 zoomScale];
+  scrollView = [WeakRetained scrollView];
+  [scrollView zoomScale];
   v17 = v16;
 
   v18 = v12 * v17;
@@ -611,9 +611,9 @@ void __34__SFScribbleController_clearEdits__block_invoke(uint64_t a1)
   v4 = v6;
   if (v6)
   {
-    v5 = [(WBSScribbleController *)self->_elementController isScribbling];
+    isScribbling = [(WBSScribbleController *)self->_elementController isScribbling];
     v4 = v6;
-    if (v5)
+    if (isScribbling)
     {
       [(NSValue *)v6 CGPointValue];
       [(SFScribbleController *)self _updateScribbleControllerForElementAtPoint:?];
@@ -622,11 +622,11 @@ void __34__SFScribbleController_clearEdits__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setSelectedElement:(id)a3
+- (void)_setSelectedElement:(id)element
 {
-  if (a3)
+  if (element)
   {
-    [a3 geometry];
+    [element geometry];
     [SFScribbleController _frameForElementFrame:"_frameForElementFrame:inCoordinateSpace:withOutset:" inCoordinateSpace:self->_overlay withOutset:?];
     overlay = self->_overlay;
 
@@ -692,13 +692,13 @@ void __34__SFScribbleController_clearEdits__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_setCommonPropertiesToConfiguration:(id)a3
+- (void)_setCommonPropertiesToConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  configurationCopy = configuration;
+  array = [MEMORY[0x1E695DF70] array];
   v6 = objc_alloc_init(SFURLFieldOverlayButtonItem);
-  v7 = [(SFScribbleController *)self _cancelActionForURLFieldOverlay];
-  [(SFURLFieldOverlayButtonItem *)v6 setAction:v7];
+  _cancelActionForURLFieldOverlay = [(SFScribbleController *)self _cancelActionForURLFieldOverlay];
+  [(SFURLFieldOverlayButtonItem *)v6 setAction:_cancelActionForURLFieldOverlay];
 
   [(SFURLFieldOverlayButtonItem *)v6 setTheme:0];
   if ([MEMORY[0x1E69C8880] isSolariumEnabled])
@@ -708,8 +708,8 @@ void __34__SFScribbleController_clearEdits__block_invoke(uint64_t a1)
     [(SFURLFieldOverlayButtonItem *)v6 setIcon:v8];
   }
 
-  v9 = [(SFScribbleController *)self _cancelButtonTitle];
-  [(SFURLFieldOverlayButtonItem *)v6 setTitle:v9];
+  _cancelButtonTitle = [(SFScribbleController *)self _cancelButtonTitle];
+  [(SFURLFieldOverlayButtonItem *)v6 setTitle:_cancelButtonTitle];
 
   objc_initWeak(&location, self);
   v25[0] = MEMORY[0x1E69E9820];
@@ -720,11 +720,11 @@ void __34__SFScribbleController_clearEdits__block_invoke(uint64_t a1)
   [(SFURLFieldOverlayButtonItem *)v6 setActionHandler:v25];
   objc_destroyWeak(&v26);
   objc_destroyWeak(&location);
-  [v5 addObject:v6];
+  [array addObject:v6];
 
   v10 = objc_alloc_init(SFURLFieldOverlayButtonItem);
-  v11 = [(SFScribbleController *)self _doneAction];
-  [(SFURLFieldOverlayButtonItem *)v10 setAction:v11];
+  _doneAction = [(SFScribbleController *)self _doneAction];
+  [(SFURLFieldOverlayButtonItem *)v10 setAction:_doneAction];
 
   if ([(WBSScribbleController *)self->_elementController numberOfChangesFromCurrentSession])
   {
@@ -737,8 +737,8 @@ void __34__SFScribbleController_clearEdits__block_invoke(uint64_t a1)
   }
 
   [(SFURLFieldOverlayButtonItem *)v10 setTheme:v12];
-  v13 = [(SFScribbleController *)self _doneButtonTitle];
-  [(SFURLFieldOverlayButtonItem *)v10 setTitle:v13];
+  _doneButtonTitle = [(SFScribbleController *)self _doneButtonTitle];
+  [(SFURLFieldOverlayButtonItem *)v10 setTitle:_doneButtonTitle];
 
   [(SFURLFieldOverlayButtonItem *)v10 setAccessibilityIdentifier:@"DoneButton"];
   objc_initWeak(&location, self);
@@ -753,33 +753,33 @@ void __34__SFScribbleController_clearEdits__block_invoke(uint64_t a1)
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
-  [v5 addObject:v10];
+  [array addObject:v10];
 
-  v15 = [v5 copy];
-  [v4 setButtonItems:v15];
+  v15 = [array copy];
+  [configurationCopy setButtonItems:v15];
 
-  v16 = [(SFScribbleController *)self _urlFieldOverlayText];
-  [v4 setText:v16];
+  _urlFieldOverlayText = [(SFScribbleController *)self _urlFieldOverlayText];
+  [configurationCopy setText:_urlFieldOverlayText];
 
-  v17 = [MEMORY[0x1E69DC888] safari_scribbleThemeColor];
-  [v4 setThemeColor:v17];
+  safari_scribbleThemeColor = [MEMORY[0x1E69DC888] safari_scribbleThemeColor];
+  [configurationCopy setThemeColor:safari_scribbleThemeColor];
 
-  v18 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
-  [v4 setBackgroundColor:v18];
+  tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+  [configurationCopy setBackgroundColor:tertiarySystemFillColor];
 
-  v19 = [MEMORY[0x1E69DC888] labelColor];
-  [v4 setPrimaryTextColor:v19];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [configurationCopy setPrimaryTextColor:labelColor];
 
   v20 = [MEMORY[0x1E69DC888] sf_colorNamed:@"ScribbleDoneButtonColor"];
-  [v4 setProminentButtonBackgroundColor:v20];
+  [configurationCopy setProminentButtonBackgroundColor:v20];
 
   v21 = [MEMORY[0x1E69DC888] sf_colorNamed:@"ScribbleTextColor"];
-  [v4 setProminentButtonTextColor:v21];
+  [configurationCopy setProminentButtonTextColor:v21];
 
   if ([MEMORY[0x1E69C8880] isSolariumEnabled])
   {
-    v22 = [MEMORY[0x1E69DC888] tintColor];
-    [v4 setProminentButtonTextColor:v22];
+    tintColor = [MEMORY[0x1E69DC888] tintColor];
+    [configurationCopy setProminentButtonTextColor:tintColor];
   }
 }
 
@@ -831,7 +831,7 @@ void __60__SFScribbleController__setCommonPropertiesToConfiguration___block_invo
   [(WBSScribbleController *)elementController invalidate];
 }
 
-- (void)openFeedbackAppForScribbleReportIssueCategory:(int64_t)a3
+- (void)openFeedbackAppForScribbleReportIssueCategory:(int64_t)category
 {
   if ([MEMORY[0x1E69C8880] shouldShowInternalUI])
   {

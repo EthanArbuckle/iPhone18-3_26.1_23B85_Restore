@@ -1,96 +1,96 @@
 @interface RCVoiceMemoMetadata
-- (RCVoiceMemoMetadata)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (RCVoiceMemoMetadata)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RCVoiceMemoMetadata
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RCVoiceMemoMetadata *)self title];
-  [v4 encodeObject:v5 forKey:@"title"];
+  coderCopy = coder;
+  title = [(RCVoiceMemoMetadata *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v6 = [(RCVoiceMemoMetadata *)self path];
-  [v4 encodeObject:v6 forKey:@"path"];
+  path = [(RCVoiceMemoMetadata *)self path];
+  [coderCopy encodeObject:path forKey:@"path"];
 
-  v7 = [(RCVoiceMemoMetadata *)self folder];
-  [v4 encodeObject:v7 forKey:@"folder"];
+  folder = [(RCVoiceMemoMetadata *)self folder];
+  [coderCopy encodeObject:folder forKey:@"folder"];
 
-  v8 = [(RCVoiceMemoMetadata *)self codecs];
-  [v4 encodeObject:v8 forKey:@"codecs"];
+  codecs = [(RCVoiceMemoMetadata *)self codecs];
+  [coderCopy encodeObject:codecs forKey:@"codecs"];
 
-  v9 = [(RCVoiceMemoMetadata *)self creationTimeMillis];
-  [v4 encodeObject:v9 forKey:@"creationTimeMillis"];
+  creationTimeMillis = [(RCVoiceMemoMetadata *)self creationTimeMillis];
+  [coderCopy encodeObject:creationTimeMillis forKey:@"creationTimeMillis"];
 
-  v10 = [(RCVoiceMemoMetadata *)self durationMillis];
-  [v4 encodeObject:v10 forKey:@"durationMillis"];
+  durationMillis = [(RCVoiceMemoMetadata *)self durationMillis];
+  [coderCopy encodeObject:durationMillis forKey:@"durationMillis"];
 
-  v11 = [(RCVoiceMemoMetadata *)self deletionTimeMillis];
-  [v4 encodeObject:v11 forKey:@"deletionTimeMillis"];
+  deletionTimeMillis = [(RCVoiceMemoMetadata *)self deletionTimeMillis];
+  [coderCopy encodeObject:deletionTimeMillis forKey:@"deletionTimeMillis"];
 
-  v12 = [(RCVoiceMemoMetadata *)self favorite];
-  [v4 encodeObject:v12 forKey:@"favorite"];
+  favorite = [(RCVoiceMemoMetadata *)self favorite];
+  [coderCopy encodeObject:favorite forKey:@"favorite"];
 
-  v13 = [(RCVoiceMemoMetadata *)self recordedOnWatch];
-  [v4 encodeObject:v13 forKey:@"recordedOnWatch"];
+  recordedOnWatch = [(RCVoiceMemoMetadata *)self recordedOnWatch];
+  [coderCopy encodeObject:recordedOnWatch forKey:@"recordedOnWatch"];
 
-  v14 = [(RCVoiceMemoMetadata *)self enhanced];
-  [v4 encodeObject:v14 forKey:@"multiLayerMix"];
+  enhanced = [(RCVoiceMemoMetadata *)self enhanced];
+  [coderCopy encodeObject:enhanced forKey:@"multiLayerMix"];
 
-  v15 = [(RCVoiceMemoMetadata *)self multiLayer];
-  [v4 encodeObject:v15 forKey:@"multiLayer"];
+  multiLayer = [(RCVoiceMemoMetadata *)self multiLayer];
+  [coderCopy encodeObject:multiLayer forKey:@"multiLayer"];
 
-  v16 = [(RCVoiceMemoMetadata *)self multiLayerMix];
-  [v4 encodeObject:v16 forKey:@"enhanced"];
+  multiLayerMix = [(RCVoiceMemoMetadata *)self multiLayerMix];
+  [coderCopy encodeObject:multiLayerMix forKey:@"enhanced"];
 
-  v17 = [(RCVoiceMemoMetadata *)self wrappedURL];
-  [v4 encodeObject:v17 forKey:@"wrappedURL"];
+  wrappedURL = [(RCVoiceMemoMetadata *)self wrappedURL];
+  [coderCopy encodeObject:wrappedURL forKey:@"wrappedURL"];
 }
 
-- (RCVoiceMemoMetadata)initWithCoder:(id)a3
+- (RCVoiceMemoMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
   [(RCVoiceMemoMetadata *)self setTitle:v5];
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"path"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"path"];
   [(RCVoiceMemoMetadata *)self setPath:v6];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"folder"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"folder"];
   [(RCVoiceMemoMetadata *)self setFolder:v7];
 
   v8 = MEMORY[0x277CBEB98];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"codecs"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"codecs"];
   [(RCVoiceMemoMetadata *)self setCodecs:v11];
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationTimeMillis"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationTimeMillis"];
   [(RCVoiceMemoMetadata *)self setCreationTimeMillis:v12];
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"durationMillis"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"durationMillis"];
   [(RCVoiceMemoMetadata *)self setDurationMillis:v13];
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deletionTimeMillis"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deletionTimeMillis"];
   [(RCVoiceMemoMetadata *)self setDeletionTimeMillis:v14];
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"favorite"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"favorite"];
   [(RCVoiceMemoMetadata *)self setFavorite:v15];
 
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recordedOnWatch"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recordedOnWatch"];
   [(RCVoiceMemoMetadata *)self setRecordedOnWatch:v16];
 
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"multiLayerMix"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"multiLayerMix"];
   [(RCVoiceMemoMetadata *)self setEnhanced:v17];
 
-  v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"multiLayer"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"multiLayer"];
   [(RCVoiceMemoMetadata *)self setMultiLayer:v18];
 
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"enhanced"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enhanced"];
   [(RCVoiceMemoMetadata *)self setMultiLayerMix:v19];
 
-  v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wrappedURL"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wrappedURL"];
 
   [(RCVoiceMemoMetadata *)self setWrappedURL:v20];
   return self;

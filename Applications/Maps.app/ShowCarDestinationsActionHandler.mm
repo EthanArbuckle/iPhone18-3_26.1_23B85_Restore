@@ -1,12 +1,12 @@
 @interface ShowCarDestinationsActionHandler
-+ (void)performAction:(id)a3 inContext:(id)a4;
++ (void)performAction:(id)action inContext:(id)context;
 @end
 
 @implementation ShowCarDestinationsActionHandler
 
-+ (void)performAction:(id)a3 inContext:(id)a4
++ (void)performAction:(id)action inContext:(id)context
 {
-  v4 = a3;
+  actionCopy = action;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

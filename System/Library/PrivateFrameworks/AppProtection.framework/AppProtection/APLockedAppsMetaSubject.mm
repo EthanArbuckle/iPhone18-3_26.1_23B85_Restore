@@ -2,7 +2,7 @@
 - (BOOL)isLocked;
 - (NSString)description;
 - (_TtC13AppProtection23APLockedAppsMetaSubject)init;
-- (_TtC13AppProtection23APLockedAppsMetaSubject)initWithArena:(id)a3;
+- (_TtC13AppProtection23APLockedAppsMetaSubject)initWithArena:(id)arena;
 - (id)effectiveBundleIdentifier;
 @end
 
@@ -17,7 +17,7 @@
 
 - (BOOL)isLocked
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_185B5DB4C();
 
   return v3;
@@ -37,7 +37,7 @@
   return v2;
 }
 
-- (_TtC13AppProtection23APLockedAppsMetaSubject)initWithArena:(id)a3
+- (_TtC13AppProtection23APLockedAppsMetaSubject)initWithArena:(id)arena
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

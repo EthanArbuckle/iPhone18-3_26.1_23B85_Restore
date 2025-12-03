@@ -1,20 +1,20 @@
 @interface BMPBSafariPageViewEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasContentIsReaderText:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasContentIsReaderText:(BOOL)text;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBSafariPageViewEvent
 
-- (void)setHasContentIsReaderText:(BOOL)a3
+- (void)setHasContentIsReaderText:(BOOL)text
 {
-  if (a3)
+  if (text)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = BMPBSafariPageViewEvent;
   v4 = [(BMPBSafariPageViewEvent *)&v8 description];
-  v5 = [(BMPBSafariPageViewEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBSafariPageViewEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   uniqueId = self->_uniqueId;
   if (uniqueId)
   {
-    [v3 setObject:uniqueId forKey:@"uniqueId"];
+    [dictionary setObject:uniqueId forKey:@"uniqueId"];
   }
 
   domainId = self->_domainId;
@@ -100,134 +100,134 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_uniqueId)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_domainId)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     absoluteTimestamp = self->_absoluteTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_content)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     contentIsReaderText = self->_contentIsReaderText;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_url)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_contentProtection)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_personaId)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_uniqueId)
   {
-    [v4 setUniqueId:?];
-    v4 = v5;
+    [toCopy setUniqueId:?];
+    toCopy = v5;
   }
 
   if (self->_domainId)
   {
     [v5 setDomainId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_absoluteTimestamp;
-    *(v4 + 76) |= 1u;
+    *(toCopy + 1) = *&self->_absoluteTimestamp;
+    *(toCopy + 76) |= 1u;
   }
 
   if (self->_title)
   {
     [v5 setTitle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_content)
   {
     [v5 setContent:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 72) = self->_contentIsReaderText;
-    *(v4 + 76) |= 2u;
+    *(toCopy + 72) = self->_contentIsReaderText;
+    *(toCopy + 76) |= 2u;
   }
 
   if (self->_url)
   {
     [v5 setUrl:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_contentProtection)
   {
     [v5 setContentProtection:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_personaId)
   {
     [v5 setPersonaId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uniqueId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uniqueId copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
-  v8 = [(NSString *)self->_domainId copyWithZone:a3];
+  v8 = [(NSString *)self->_domainId copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -237,11 +237,11 @@
     *(v5 + 76) |= 1u;
   }
 
-  v10 = [(NSString *)self->_title copyWithZone:a3];
+  v10 = [(NSString *)self->_title copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
-  v12 = [(NSString *)self->_content copyWithZone:a3];
+  v12 = [(NSString *)self->_content copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
@@ -251,31 +251,31 @@
     *(v5 + 76) |= 2u;
   }
 
-  v14 = [(NSString *)self->_url copyWithZone:a3];
+  v14 = [(NSString *)self->_url copyWithZone:zone];
   v15 = *(v5 + 64);
   *(v5 + 64) = v14;
 
-  v16 = [(NSString *)self->_contentProtection copyWithZone:a3];
+  v16 = [(NSString *)self->_contentProtection copyWithZone:zone];
   v17 = *(v5 + 24);
   *(v5 + 24) = v16;
 
-  v18 = [(NSString *)self->_personaId copyWithZone:a3];
+  v18 = [(NSString *)self->_personaId copyWithZone:zone];
   v19 = *(v5 + 40);
   *(v5 + 40) = v18;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   uniqueId = self->_uniqueId;
-  if (uniqueId | *(v4 + 7))
+  if (uniqueId | *(equalCopy + 7))
   {
     if (![(NSString *)uniqueId isEqual:?])
     {
@@ -284,7 +284,7 @@
   }
 
   domainId = self->_domainId;
-  if (domainId | *(v4 + 4))
+  if (domainId | *(equalCopy + 4))
   {
     if (![(NSString *)domainId isEqual:?])
     {
@@ -292,28 +292,28 @@
     }
   }
 
-  v7 = *(v4 + 76);
+  v7 = *(equalCopy + 76);
   if (*&self->_has)
   {
-    if ((*(v4 + 76) & 1) == 0 || self->_absoluteTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 76) & 1) == 0 || self->_absoluteTimestamp != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 76))
+  else if (*(equalCopy + 76))
   {
     goto LABEL_24;
   }
 
   title = self->_title;
-  if (title | *(v4 + 6) && ![(NSString *)title isEqual:?])
+  if (title | *(equalCopy + 6) && ![(NSString *)title isEqual:?])
   {
     goto LABEL_24;
   }
 
   content = self->_content;
-  if (content | *(v4 + 2))
+  if (content | *(equalCopy + 2))
   {
     if (![(NSString *)content isEqual:?])
     {
@@ -321,10 +321,10 @@
     }
   }
 
-  v10 = *(v4 + 76);
+  v10 = *(equalCopy + 76);
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 76) & 2) == 0)
+    if ((*(equalCopy + 76) & 2) == 0)
     {
       goto LABEL_17;
     }
@@ -334,34 +334,34 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if ((*(v4 + 76) & 2) == 0)
+  if ((*(equalCopy + 76) & 2) == 0)
   {
     goto LABEL_24;
   }
 
-  v16 = *(v4 + 72);
+  v16 = *(equalCopy + 72);
   if (self->_contentIsReaderText)
   {
-    if ((*(v4 + 72) & 1) == 0)
+    if ((*(equalCopy + 72) & 1) == 0)
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_24;
   }
 
 LABEL_17:
   url = self->_url;
-  if (url | *(v4 + 8) && ![(NSString *)url isEqual:?])
+  if (url | *(equalCopy + 8) && ![(NSString *)url isEqual:?])
   {
     goto LABEL_24;
   }
 
   contentProtection = self->_contentProtection;
-  if (contentProtection | *(v4 + 3))
+  if (contentProtection | *(equalCopy + 3))
   {
     if (![(NSString *)contentProtection isEqual:?])
     {
@@ -370,7 +370,7 @@ LABEL_17:
   }
 
   personaId = self->_personaId;
-  if (personaId | *(v4 + 5))
+  if (personaId | *(equalCopy + 5))
   {
     v14 = [(NSString *)personaId isEqual:?];
   }
@@ -439,62 +439,62 @@ LABEL_25:
   return v14 ^ v15 ^ [(NSString *)self->_personaId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 7))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 7))
   {
     [(BMPBSafariPageViewEvent *)self setUniqueId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBSafariPageViewEvent *)self setDomainId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 76))
+  if (*(fromCopy + 76))
   {
-    self->_absoluteTimestamp = *(v4 + 1);
+    self->_absoluteTimestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(BMPBSafariPageViewEvent *)self setTitle:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BMPBSafariPageViewEvent *)self setContent:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 76) & 2) != 0)
+  if ((*(fromCopy + 76) & 2) != 0)
   {
-    self->_contentIsReaderText = *(v4 + 72);
+    self->_contentIsReaderText = *(fromCopy + 72);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(BMPBSafariPageViewEvent *)self setUrl:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BMPBSafariPageViewEvent *)self setContentProtection:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(BMPBSafariPageViewEvent *)self setPersonaId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

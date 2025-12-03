@@ -1,10 +1,10 @@
 @interface BMFindMyLocationChangeEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMFindMyLocationChangeEvent)initWithIDSHandle:(id)a3 locationChangeType:(unint64_t)a4;
-- (BMFindMyLocationChangeEvent)initWithIDSHandle:(id)a3 locationChangeType:(unint64_t)a4 motionActivityState:(int64_t)a5 latitude:(id)a6 longitude:(id)a7 name:(id)a8;
-- (BMFindMyLocationChangeEvent)initWithProto:(id)a3;
-- (BMFindMyLocationChangeEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMFindMyLocationChangeEvent)initWithIDSHandle:(id)handle locationChangeType:(unint64_t)type;
+- (BMFindMyLocationChangeEvent)initWithIDSHandle:(id)handle locationChangeType:(unint64_t)type motionActivityState:(int64_t)state latitude:(id)latitude longitude:(id)longitude name:(id)name;
+- (BMFindMyLocationChangeEvent)initWithProto:(id)proto;
+- (BMFindMyLocationChangeEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -12,38 +12,38 @@
 
 @implementation BMFindMyLocationChangeEvent
 
-- (BMFindMyLocationChangeEvent)initWithIDSHandle:(id)a3 locationChangeType:(unint64_t)a4
+- (BMFindMyLocationChangeEvent)initWithIDSHandle:(id)handle locationChangeType:(unint64_t)type
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
+  handleCopy = handle;
   v8 = [v6 numberWithDouble:0.0];
   v9 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
-  v10 = [(BMFindMyLocationChangeEvent *)self initWithIDSHandle:v7 locationChangeType:a4 motionActivityState:0 latitude:v8 longitude:v9 name:&stru_1EF2B2408];
+  v10 = [(BMFindMyLocationChangeEvent *)self initWithIDSHandle:handleCopy locationChangeType:type motionActivityState:0 latitude:v8 longitude:v9 name:&stru_1EF2B2408];
 
   return v10;
 }
 
-- (BMFindMyLocationChangeEvent)initWithIDSHandle:(id)a3 locationChangeType:(unint64_t)a4 motionActivityState:(int64_t)a5 latitude:(id)a6 longitude:(id)a7 name:(id)a8
+- (BMFindMyLocationChangeEvent)initWithIDSHandle:(id)handle locationChangeType:(unint64_t)type motionActivityState:(int64_t)state latitude:(id)latitude longitude:(id)longitude name:(id)name
 {
-  v13 = a3;
-  v14 = a8;
+  handleCopy = handle;
+  nameCopy = name;
   v22.receiver = self;
   v22.super_class = BMFindMyLocationChangeEvent;
   v15 = [(BMEventBase *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_idsHandle, a3);
-    v16->_locationChangeType = a4;
-    v16->_motionActivityState = a5;
+    objc_storeStrong(&v15->_idsHandle, handle);
+    v16->_locationChangeType = type;
+    v16->_motionActivityState = state;
     v17 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
     longitude = v16->_longitude;
     v16->_longitude = v17;
 
     objc_storeStrong(&v16->_latitude, v17);
-    if (v14)
+    if (nameCopy)
     {
-      v19 = v14;
+      v19 = nameCopy;
     }
 
     else
@@ -72,45 +72,45 @@
   return v10;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    v4 = BMFindMyLocationChangeEvent_v1;
+    selfCopy = BMFindMyLocationChangeEvent_v1;
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  v5 = a3;
-  v6 = [[v4 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[selfCopy alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMFindMyLocationChangeEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMFindMyLocationChangeEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMFindMyLocationChangeEvent)initWithProto:(id)a3
+- (BMFindMyLocationChangeEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 idsHandle];
-      v7 = [v5 locationChangeType];
-      v8 = v7;
-      if (v7 >= 3)
+      v5 = protoCopy;
+      idsHandle = [v5 idsHandle];
+      locationChangeType = [v5 locationChangeType];
+      v8 = locationChangeType;
+      if (locationChangeType >= 3)
       {
         v11 = __biome_log_for_category();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -123,7 +123,7 @@
 
       else
       {
-        v9 = v7;
+        v9 = locationChangeType;
       }
 
       v12 = activityTypeWithState([v5 activityState]);
@@ -133,10 +133,10 @@
       v15 = MEMORY[0x1E696AD98];
       [v5 longitude];
       v16 = [v15 numberWithDouble:?];
-      v17 = [v5 name];
-      self = [(BMFindMyLocationChangeEvent *)self initWithIDSHandle:v6 locationChangeType:v9 motionActivityState:v12 latitude:v14 longitude:v16 name:v17];
+      name = [v5 name];
+      self = [(BMFindMyLocationChangeEvent *)self initWithIDSHandle:idsHandle locationChangeType:v9 motionActivityState:v12 latitude:v14 longitude:v16 name:name];
 
-      v10 = self;
+      selfCopy = self;
     }
 
     else
@@ -147,54 +147,54 @@
         [BMFindMyLocationChangeEvent initWithProto:];
       }
 
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (BMFindMyLocationChangeEvent)initWithProtoData:(id)a3
+- (BMFindMyLocationChangeEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBFindMyLocationChangeEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBFindMyLocationChangeEvent alloc] initWithData:dataCopy];
 
     self = [(BMFindMyLocationChangeEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMFindMyLocationChangeEvent *)self idsHandle];
-  [v3 setIdsHandle:v4];
+  idsHandle = [(BMFindMyLocationChangeEvent *)self idsHandle];
+  [v3 setIdsHandle:idsHandle];
 
-  v5 = [(BMFindMyLocationChangeEvent *)self locationChangeType];
-  if (v5)
+  locationChangeType = [(BMFindMyLocationChangeEvent *)self locationChangeType];
+  if (locationChangeType)
   {
-    v6 = v5;
-    if (v5 == 2)
+    v6 = locationChangeType;
+    if (locationChangeType == 2)
     {
       v7 = 0;
       v8 = 2;
     }
 
-    else if (v5 == 1)
+    else if (locationChangeType == 1)
     {
       v7 = 0;
       v8 = 1;
@@ -248,28 +248,28 @@ LABEL_17:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     idsHandle = self->_idsHandle;
-    v7 = [v5 idsHandle];
-    if (-[NSString isEqualToString:](idsHandle, "isEqualToString:", v7) && (locationChangeType = self->_locationChangeType, locationChangeType == [v5 locationChangeType]) && (motionActivityState = self->_motionActivityState, motionActivityState == objc_msgSend(v5, "motionActivityState")))
+    idsHandle = [v5 idsHandle];
+    if (-[NSString isEqualToString:](idsHandle, "isEqualToString:", idsHandle) && (locationChangeType = self->_locationChangeType, locationChangeType == [v5 locationChangeType]) && (motionActivityState = self->_motionActivityState, motionActivityState == objc_msgSend(v5, "motionActivityState")))
     {
       latitude = self->_latitude;
-      v11 = [v5 latitude];
-      if (latitude == v11)
+      latitude = [v5 latitude];
+      if (latitude == latitude)
       {
         longitude = self->_longitude;
-        v15 = [v5 longitude];
-        if (longitude == v15)
+        longitude = [v5 longitude];
+        if (longitude == longitude)
         {
           name = self->_name;
-          v17 = [v5 name];
-          v12 = [(NSString *)name isEqualToString:v17];
+          name = [v5 name];
+          v12 = [(NSString *)name isEqualToString:name];
         }
 
         else

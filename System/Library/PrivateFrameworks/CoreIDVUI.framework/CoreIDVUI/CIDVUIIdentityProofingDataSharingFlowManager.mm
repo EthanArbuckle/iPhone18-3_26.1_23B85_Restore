@@ -1,8 +1,8 @@
 @interface CIDVUIIdentityProofingDataSharingFlowManager
 - (CIDVUIIdentityProofingDataSharingFlowManager)init;
-- (void)checkUserConsent:(id)a3;
-- (void)didChangeUserConsent:(unint64_t)a3 completion:(id)a4;
-- (void)fetchUserConsent:(id)a3;
+- (void)checkUserConsent:(id)consent;
+- (void)didChangeUserConsent:(unint64_t)consent completion:(id)completion;
+- (void)fetchUserConsent:(id)consent;
 @end
 
 @implementation CIDVUIIdentityProofingDataSharingFlowManager
@@ -21,25 +21,25 @@
   return v2;
 }
 
-- (void)checkUserConsent:(id)a3
+- (void)checkUserConsent:(id)consent
 {
-  v4 = a3;
-  v5 = [(CIDVUIIdentityProofingDataSharingFlowManager *)self dataSharingManager];
-  [v5 checkUserConsentWithCompletionHandler:v4];
+  consentCopy = consent;
+  dataSharingManager = [(CIDVUIIdentityProofingDataSharingFlowManager *)self dataSharingManager];
+  [dataSharingManager checkUserConsentWithCompletionHandler:consentCopy];
 }
 
-- (void)fetchUserConsent:(id)a3
+- (void)fetchUserConsent:(id)consent
 {
-  v4 = a3;
-  v5 = [(CIDVUIIdentityProofingDataSharingFlowManager *)self dataSharingManager];
-  [v5 fetchUserConsentWithCompletionHandler:v4];
+  consentCopy = consent;
+  dataSharingManager = [(CIDVUIIdentityProofingDataSharingFlowManager *)self dataSharingManager];
+  [dataSharingManager fetchUserConsentWithCompletionHandler:consentCopy];
 }
 
-- (void)didChangeUserConsent:(unint64_t)a3 completion:(id)a4
+- (void)didChangeUserConsent:(unint64_t)consent completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(CIDVUIIdentityProofingDataSharingFlowManager *)self dataSharingManager];
-  [v7 didChangeUserConsentWithConsent:a3 completionHandler:v6];
+  completionCopy = completion;
+  dataSharingManager = [(CIDVUIIdentityProofingDataSharingFlowManager *)self dataSharingManager];
+  [dataSharingManager didChangeUserConsentWithConsent:consent completionHandler:completionCopy];
 }
 
 @end

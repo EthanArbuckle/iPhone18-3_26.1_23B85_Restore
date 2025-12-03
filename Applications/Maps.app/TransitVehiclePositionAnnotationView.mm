@@ -1,39 +1,39 @@
 @interface TransitVehiclePositionAnnotationView
 - (TransitVehiclePositionAnnotation)transitVehiclePositionAnnotation;
-- (TransitVehiclePositionAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
+- (TransitVehiclePositionAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
 - (id)_lastUpdatedTextAttributes;
 - (void)_scheduleLastUpdatedLabelUpdate;
 - (void)_updateFromAnnotation;
 - (void)_updateHeading;
 - (void)_updateLastUpdatedLabel;
 - (void)didMoveToWindow;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setAnnotation:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setAnnotation:(id)annotation;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TransitVehiclePositionAnnotationView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = TransitVehiclePositionAnnotationView;
-  [(TransitVehiclePositionAnnotationView *)&v9 traitCollectionDidChange:v5];
-  if (v5 && (v6 = [v5 userInterfaceStyle], -[TransitVehiclePositionAnnotationView traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
+  [(TransitVehiclePositionAnnotationView *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy && (v6 = [changeCopy userInterfaceStyle], -[TransitVehiclePositionAnnotationView traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
   {
   }
 
   else
   {
-    v7 = [(TransitVehiclePositionAnnotationView *)self traitCollection];
-    v8 = [v7 userInterfaceStyle];
+    traitCollection = [(TransitVehiclePositionAnnotationView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5)
+    if (changeCopy)
     {
     }
 
-    if (v8)
+    if (userInterfaceStyle)
     {
       [(TransitVehiclePositionAnnotationView *)self updateTheme];
     }
@@ -42,28 +42,28 @@
 
 - (void)_updateHeading
 {
-  v3 = [(TransitVehiclePositionAnnotationView *)self transitVehiclePositionAnnotation];
-  v7 = [v3 vehiclePosition];
+  transitVehiclePositionAnnotation = [(TransitVehiclePositionAnnotationView *)self transitVehiclePositionAnnotation];
+  vehiclePosition = [transitVehiclePositionAnnotation vehiclePosition];
 
-  v4 = v7;
-  if (v7)
+  v4 = vehiclePosition;
+  if (vehiclePosition)
   {
-    [v7 heading];
+    [vehiclePosition heading];
     v6 = v5;
     [(TransitVehiclePositionAnnotationView *)self setHeading:?];
     [(TransitVehiclePositionAnnotationView *)self setShouldDisplayHeading:v6 >= 0.0];
-    v4 = v7;
+    v4 = vehiclePosition;
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(TransitVehiclePositionAnnotationView *)self annotation];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  annotation = [(TransitVehiclePositionAnnotationView *)self annotation];
 
-  if (v13 == v11)
+  if (annotation == objectCopy)
   {
     [(TransitVehiclePositionAnnotationView *)self _updateHeading];
     [(TransitVehiclePositionAnnotationView *)self _updateLastUpdatedLabel];
@@ -73,7 +73,7 @@
   {
     v14.receiver = self;
     v14.super_class = TransitVehiclePositionAnnotationView;
-    [(TransitVehiclePositionAnnotationView *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(TransitVehiclePositionAnnotationView *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -81,11 +81,11 @@
 {
   if (([(_MKUILabel *)self->_lastUpdatedLabel isHidden]& 1) == 0)
   {
-    v3 = [(TransitVehiclePositionAnnotationView *)self transitVehiclePositionAnnotation];
-    v4 = [v3 vehiclePosition];
-    v5 = [v4 timestamp];
+    transitVehiclePositionAnnotation = [(TransitVehiclePositionAnnotationView *)self transitVehiclePositionAnnotation];
+    vehiclePosition = [transitVehiclePositionAnnotation vehiclePosition];
+    timestamp = [vehiclePosition timestamp];
 
-    [v5 timeIntervalSinceNow];
+    [timestamp timeIntervalSinceNow];
     v7 = fabs(v6);
     v8 = 60.0;
     if (v7 < 60.0)
@@ -125,14 +125,14 @@
   labelUpdateTimer = self->_labelUpdateTimer;
   self->_labelUpdateTimer = 0;
 
-  v4 = [(TransitVehiclePositionAnnotationView *)self transitVehiclePositionAnnotation];
-  if ([v4 allowsTimestampLabel])
+  transitVehiclePositionAnnotation = [(TransitVehiclePositionAnnotationView *)self transitVehiclePositionAnnotation];
+  if ([transitVehiclePositionAnnotation allowsTimestampLabel])
   {
-    v5 = [(TransitVehiclePositionAnnotationView *)self transitVehiclePositionAnnotation];
-    v6 = [v5 vehiclePosition];
-    v7 = [v6 timestamp];
+    transitVehiclePositionAnnotation2 = [(TransitVehiclePositionAnnotationView *)self transitVehiclePositionAnnotation];
+    vehiclePosition = [transitVehiclePositionAnnotation2 vehiclePosition];
+    timestamp = [vehiclePosition timestamp];
 
-    if (v7)
+    if (timestamp)
     {
       if (!self->_lastUpdatedLabel)
       {
@@ -145,26 +145,26 @@
         [(_MKUILabel *)self->_lastUpdatedLabel setFont:v10];
 
         [(TransitVehiclePositionAnnotationView *)self addSubview:self->_lastUpdatedLabel];
-        v11 = [(_MKUILabel *)self->_lastUpdatedLabel topAnchor];
-        v12 = [(TransitVehiclePositionAnnotationView *)self centerYAnchor];
+        topAnchor = [(_MKUILabel *)self->_lastUpdatedLabel topAnchor];
+        centerYAnchor = [(TransitVehiclePositionAnnotationView *)self centerYAnchor];
         [objc_opt_class() baseDiameter];
-        v14 = [v11 constraintEqualToAnchor:v12 constant:v13 * 0.5 + 2.0];
+        v14 = [topAnchor constraintEqualToAnchor:centerYAnchor constant:v13 * 0.5 + 2.0];
         v30[0] = v14;
-        v15 = [(_MKUILabel *)self->_lastUpdatedLabel centerXAnchor];
-        v16 = [(TransitVehiclePositionAnnotationView *)self centerXAnchor];
-        v17 = [v15 constraintEqualToAnchor:v16];
+        centerXAnchor = [(_MKUILabel *)self->_lastUpdatedLabel centerXAnchor];
+        centerXAnchor2 = [(TransitVehiclePositionAnnotationView *)self centerXAnchor];
+        v17 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         v30[1] = v17;
         v18 = [NSArray arrayWithObjects:v30 count:2];
         [NSLayoutConstraint activateConstraints:v18];
       }
 
-      v19 = [(TransitVehiclePositionAnnotationView *)self transitVehiclePositionAnnotation];
-      v20 = [v19 vehiclePosition];
-      v21 = [v20 timestamp];
+      transitVehiclePositionAnnotation3 = [(TransitVehiclePositionAnnotationView *)self transitVehiclePositionAnnotation];
+      vehiclePosition2 = [transitVehiclePositionAnnotation3 vehiclePosition];
+      timestamp2 = [vehiclePosition2 timestamp];
 
-      if (v21)
+      if (timestamp2)
       {
-        [v21 timeIntervalSinceNow];
+        [timestamp2 timeIntervalSinceNow];
         v23 = [NSDate dateWithTimeIntervalSinceNow:round(v22 * 0.1) * 10.0];
 
         v24 = +[NSDate date];
@@ -173,8 +173,8 @@
         if (v25)
         {
           v26 = [NSAttributedString alloc];
-          v27 = [(TransitVehiclePositionAnnotationView *)self _lastUpdatedTextAttributes];
-          v28 = [v26 initWithString:v25 attributes:v27];
+          _lastUpdatedTextAttributes = [(TransitVehiclePositionAnnotationView *)self _lastUpdatedTextAttributes];
+          v28 = [v26 initWithString:v25 attributes:_lastUpdatedTextAttributes];
           [(_MKUILabel *)self->_lastUpdatedLabel setAttributedText:v28];
         }
 
@@ -208,45 +208,45 @@
 
 - (void)_updateFromAnnotation
 {
-  v3 = [(TransitVehiclePositionAnnotationView *)self transitVehicleAnnotation];
-  -[TransitVehiclePositionAnnotationView setAllowsAccuracyRing:](self, "setAllowsAccuracyRing:", [v3 allowsAccuracyRing]);
+  transitVehicleAnnotation = [(TransitVehiclePositionAnnotationView *)self transitVehicleAnnotation];
+  -[TransitVehiclePositionAnnotationView setAllowsAccuracyRing:](self, "setAllowsAccuracyRing:", [transitVehicleAnnotation allowsAccuracyRing]);
 
-  v4 = [(TransitVehiclePositionAnnotationView *)self transitVehicleAnnotation];
-  v5 = [v4 color];
-  [(TransitVehiclePositionAnnotationView *)self setTintColor:v5];
+  transitVehicleAnnotation2 = [(TransitVehiclePositionAnnotationView *)self transitVehicleAnnotation];
+  color = [transitVehicleAnnotation2 color];
+  [(TransitVehiclePositionAnnotationView *)self setTintColor:color];
 
   [(TransitVehiclePositionAnnotationView *)self _updateHeading];
   [(TransitVehiclePositionAnnotationView *)self _updateLastUpdatedLabel];
-  v6 = [(TransitVehiclePositionAnnotationView *)self traitCollection];
-  [v6 displayScale];
+  traitCollection = [(TransitVehiclePositionAnnotationView *)self traitCollection];
+  [traitCollection displayScale];
   v8 = v7;
 
-  v9 = [(TransitVehiclePositionAnnotationView *)self transitVehicleAnnotation];
-  v10 = [v9 imageWithScale:-[TransitVehiclePositionAnnotationView _mapkit_isDarkModeEnabled](self nightMode:{"_mapkit_isDarkModeEnabled"), v8}];
+  transitVehicleAnnotation3 = [(TransitVehiclePositionAnnotationView *)self transitVehicleAnnotation];
+  v10 = [transitVehicleAnnotation3 imageWithScale:-[TransitVehiclePositionAnnotationView _mapkit_isDarkModeEnabled](self nightMode:{"_mapkit_isDarkModeEnabled"), v8}];
 
   [(TransitVehiclePositionAnnotationView *)self setGlyphImage:v10];
 }
 
-- (void)setAnnotation:(id)a3
+- (void)setAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(TransitVehiclePositionAnnotationView *)self transitVehiclePositionAnnotation];
+  annotationCopy = annotation;
+  transitVehiclePositionAnnotation = [(TransitVehiclePositionAnnotationView *)self transitVehiclePositionAnnotation];
 
-  if (v5)
+  if (transitVehiclePositionAnnotation)
   {
-    v6 = [(TransitVehiclePositionAnnotationView *)self transitVehiclePositionAnnotation];
-    [v6 removeObserver:self forKeyPath:@"vehiclePosition"];
+    transitVehiclePositionAnnotation2 = [(TransitVehiclePositionAnnotationView *)self transitVehiclePositionAnnotation];
+    [transitVehiclePositionAnnotation2 removeObserver:self forKeyPath:@"vehiclePosition"];
   }
 
   v9.receiver = self;
   v9.super_class = TransitVehiclePositionAnnotationView;
-  [(TransitVehiclePositionAnnotationView *)&v9 setAnnotation:v4];
-  v7 = [(TransitVehiclePositionAnnotationView *)self transitVehiclePositionAnnotation];
+  [(TransitVehiclePositionAnnotationView *)&v9 setAnnotation:annotationCopy];
+  transitVehiclePositionAnnotation3 = [(TransitVehiclePositionAnnotationView *)self transitVehiclePositionAnnotation];
 
-  if (v7)
+  if (transitVehiclePositionAnnotation3)
   {
-    v8 = [(TransitVehiclePositionAnnotationView *)self transitVehiclePositionAnnotation];
-    [v8 addObserver:self forKeyPath:@"vehiclePosition" options:1 context:0];
+    transitVehiclePositionAnnotation4 = [(TransitVehiclePositionAnnotationView *)self transitVehiclePositionAnnotation];
+    [transitVehiclePositionAnnotation4 addObserver:self forKeyPath:@"vehiclePosition" options:1 context:0];
   }
 
   [(TransitVehiclePositionAnnotationView *)self _updateFromAnnotation];
@@ -257,9 +257,9 @@
   v5.receiver = self;
   v5.super_class = TransitVehiclePositionAnnotationView;
   [(TransitVehiclePositionAnnotationView *)&v5 didMoveToWindow];
-  v3 = [(TransitVehiclePositionAnnotationView *)self window];
+  window = [(TransitVehiclePositionAnnotationView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(TransitVehiclePositionAnnotationView *)self updateTheme];
   }
@@ -275,28 +275,28 @@
 
 - (TransitVehiclePositionAnnotation)transitVehiclePositionAnnotation
 {
-  v3 = [(TransitVehiclePositionAnnotationView *)self annotation];
+  annotation = [(TransitVehiclePositionAnnotationView *)self annotation];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(TransitVehiclePositionAnnotationView *)self annotation];
+    annotation2 = [(TransitVehiclePositionAnnotationView *)self annotation];
   }
 
   else
   {
-    v5 = 0;
+    annotation2 = 0;
   }
 
-  return v5;
+  return annotation2;
 }
 
-- (TransitVehiclePositionAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (TransitVehiclePositionAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = TransitVehiclePositionAnnotationView;
-  v4 = [(TransitVehiclePositionAnnotationView *)&v7 initWithAnnotation:a3 reuseIdentifier:a4];
+  v4 = [(TransitVehiclePositionAnnotationView *)&v7 initWithAnnotation:annotation reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __56__NSUserDefaults_PLKAdditions__plk_dumpMappedImageCache__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (plk_dumpMappedImageCache_onceToken != -1)
   {
     dispatch_once(&plk_dumpMappedImageCache_onceToken, block);
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __58__NSUserDefaults_PLKAdditions__plk_forceClassicLegibility__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (plk_forceClassicLegibility_onceToken != -1)
   {
     dispatch_once(&plk_forceClassicLegibility_onceToken, block);
@@ -43,7 +43,7 @@
   block[1] = 3221225472;
   block[2] = __58__NSUserDefaults_PLKAdditions__plk_disableUILabelLRUCache__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (plk_disableUILabelLRUCache_onceToken != -1)
   {
     dispatch_once(&plk_disableUILabelLRUCache_onceToken, block);
@@ -58,7 +58,7 @@
   block[1] = 3221225472;
   block[2] = __63__NSUserDefaults_PLKAdditions__plk_overridePerfDescriptorScale__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (plk_overridePerfDescriptorScale_onceToken != -1)
   {
     dispatch_once(&plk_overridePerfDescriptorScale_onceToken, block);

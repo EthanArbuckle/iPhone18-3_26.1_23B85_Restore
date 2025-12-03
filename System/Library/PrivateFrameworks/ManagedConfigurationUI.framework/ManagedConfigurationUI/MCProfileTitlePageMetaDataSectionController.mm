@@ -1,102 +1,102 @@
 @interface MCProfileTitlePageMetaDataSectionController
-- (MCProfileTitlePageMetaDataSectionController)initWithProfile:(id)a3;
+- (MCProfileTitlePageMetaDataSectionController)initWithProfile:(id)profile;
 - (MCProfileTitlePageOrganizationCell)orgCell;
 - (MCProfileTitlePageSettingsIconCell)iconCell;
 - (MCProfileTitlePageSubtitleCell)subtitleCell;
 - (MCProfileTitlePageTitleCell)titleCell;
 - (UITableView)tableView;
-- (double)heightForRowAtIndex:(unint64_t)a3;
-- (id)cellForRowAtIndex:(unint64_t)a3;
-- (void)registerCellClassWithTableView:(id)a3;
+- (double)heightForRowAtIndex:(unint64_t)index;
+- (id)cellForRowAtIndex:(unint64_t)index;
+- (void)registerCellClassWithTableView:(id)view;
 @end
 
 @implementation MCProfileTitlePageMetaDataSectionController
 
-- (MCProfileTitlePageMetaDataSectionController)initWithProfile:(id)a3
+- (MCProfileTitlePageMetaDataSectionController)initWithProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   v9.receiver = self;
   v9.super_class = MCProfileTitlePageMetaDataSectionController;
   v6 = [(MCProfileTitlePageMetaDataSectionController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_profile, a3);
+    objc_storeStrong(&v6->_profile, profile);
   }
 
   return v7;
 }
 
-- (void)registerCellClassWithTableView:(id)a3
+- (void)registerCellClassWithTableView:(id)view
 {
-  v4 = a3;
-  [(MCProfileTitlePageMetaDataSectionController *)self setTableView:v4];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"iconCell"];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"titleCell"];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"subtitleCell"];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"organizationCell"];
+  viewCopy = view;
+  [(MCProfileTitlePageMetaDataSectionController *)self setTableView:viewCopy];
+  [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"iconCell"];
+  [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"titleCell"];
+  [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"subtitleCell"];
+  [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"organizationCell"];
 }
 
-- (id)cellForRowAtIndex:(unint64_t)a3
+- (id)cellForRowAtIndex:(unint64_t)index
 {
-  if (a3 == 2)
+  if (index == 2)
   {
-    v11 = [(MCProfileTitlePageMetaDataSectionController *)self profile];
-    v12 = [v11 organization];
-    v13 = [(MCProfileTitlePageMetaDataSectionController *)self orgCell];
-    [v13 setOrganizationName:v12];
+    profile = [(MCProfileTitlePageMetaDataSectionController *)self profile];
+    organization = [profile organization];
+    orgCell = [(MCProfileTitlePageMetaDataSectionController *)self orgCell];
+    [orgCell setOrganizationName:organization];
 
-    v14 = [(MCProfileTitlePageMetaDataSectionController *)self profile];
-    v15 = [v14 payloadsWithClass:objc_opt_class()];
-    v16 = [v15 firstObject];
-    v17 = [v16 managedAppleID];
-    v18 = [(MCProfileTitlePageMetaDataSectionController *)self orgCell];
-    [v18 setAppleID:v17];
+    profile2 = [(MCProfileTitlePageMetaDataSectionController *)self profile];
+    v15 = [profile2 payloadsWithClass:objc_opt_class()];
+    firstObject = [v15 firstObject];
+    managedAppleID = [firstObject managedAppleID];
+    orgCell2 = [(MCProfileTitlePageMetaDataSectionController *)self orgCell];
+    [orgCell2 setAppleID:managedAppleID];
 
-    v7 = [(MCProfileTitlePageMetaDataSectionController *)self orgCell];
+    orgCell3 = [(MCProfileTitlePageMetaDataSectionController *)self orgCell];
   }
 
-  else if (a3 == 1)
+  else if (index == 1)
   {
     v8 = MCUILocalizedString(@"USER_ENROLLMENT_DESCRIPTION");
-    v9 = [(MCProfileTitlePageMetaDataSectionController *)self subtitleCell];
-    v10 = [v9 titleLabel];
-    [v10 setText:v8];
+    subtitleCell = [(MCProfileTitlePageMetaDataSectionController *)self subtitleCell];
+    titleLabel = [subtitleCell titleLabel];
+    [titleLabel setText:v8];
 
-    v7 = [(MCProfileTitlePageMetaDataSectionController *)self subtitleCell];
+    orgCell3 = [(MCProfileTitlePageMetaDataSectionController *)self subtitleCell];
   }
 
-  else if (a3)
+  else if (index)
   {
-    v7 = 0;
+    orgCell3 = 0;
   }
 
   else
   {
     v4 = MCUILocalizedString(@"USER_ENROLLMENT");
-    v5 = [(MCProfileTitlePageMetaDataSectionController *)self titleCell];
-    v6 = [v5 titleLabel];
-    [v6 setText:v4];
+    titleCell = [(MCProfileTitlePageMetaDataSectionController *)self titleCell];
+    titleLabel2 = [titleCell titleLabel];
+    [titleLabel2 setText:v4];
 
-    v7 = [(MCProfileTitlePageMetaDataSectionController *)self titleCell];
+    orgCell3 = [(MCProfileTitlePageMetaDataSectionController *)self titleCell];
   }
 
-  return v7;
+  return orgCell3;
 }
 
-- (double)heightForRowAtIndex:(unint64_t)a3
+- (double)heightForRowAtIndex:(unint64_t)index
 {
-  if (a3 == 2)
+  if (index == 2)
   {
     return 75.0;
   }
 
-  if (a3 == 1)
+  if (index == 1)
   {
     return *MEMORY[0x277D76F30];
   }
 
-  if (a3)
+  if (index)
   {
     return 0.0;
   }

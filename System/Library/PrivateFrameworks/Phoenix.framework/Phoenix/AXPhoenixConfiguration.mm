@@ -1,7 +1,7 @@
 @interface AXPhoenixConfiguration
 - (AXPhoenixConfiguration)init;
-- (AXPhoenixConfiguration)initWithContentsOfFileAtPath:(id)a3;
-- (id)_updateConfigWithContentsOfDictionary:(id)a3;
+- (AXPhoenixConfiguration)initWithContentsOfFileAtPath:(id)path;
+- (id)_updateConfigWithContentsOfDictionary:(id)dictionary;
 - (id)toStringifiedJSON;
 - (void)_initializeKeys;
 - (void)_setDefaultConfiguration;
@@ -28,25 +28,25 @@
   return v3;
 }
 
-- (AXPhoenixConfiguration)initWithContentsOfFileAtPath:(id)a3
+- (AXPhoenixConfiguration)initWithContentsOfFileAtPath:(id)path
 {
   v26 = *MEMORY[0x277D85DE8];
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v21;
-  v21 = 0;
+  objc_storeStrong(location, path);
+  v3 = selfCopy;
+  selfCopy = 0;
   v19.receiver = v3;
   v19.super_class = AXPhoenixConfiguration;
-  v21 = [(AXPhoenixConfiguration *)&v19 init];
-  objc_storeStrong(&v21, v21);
-  if (!v21)
+  selfCopy = [(AXPhoenixConfiguration *)&v19 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (!selfCopy)
   {
     goto LABEL_18;
   }
 
-  [v21 _initializeKeys];
+  [selfCopy _initializeKeys];
   v18 = 0;
   v16 = 0;
   v6 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:location[0] options:0 error:&v16];
@@ -75,7 +75,7 @@
 
     else
     {
-      v8 = [v21 _updateConfigWithContentsOfDictionary:v12];
+      v8 = [selfCopy _updateConfigWithContentsOfDictionary:v12];
       if ([v8 count])
       {
         v7 = AXLogBackTap();
@@ -121,12 +121,12 @@
   if (!v13)
   {
 LABEL_18:
-    v22 = MEMORY[0x277D82BE0](v21);
+    v22 = MEMORY[0x277D82BE0](selfCopy);
     v13 = 1;
   }
 
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return v22;
 }
@@ -152,101 +152,101 @@ LABEL_18:
   MEMORY[0x277D82BD8](v3);
 }
 
-- (id)_updateConfigWithContentsOfDictionary:(id)a3
+- (id)_updateConfigWithContentsOfDictionary:(id)dictionary
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v33 = [MEMORY[0x277CBEB18] array];
+  objc_storeStrong(location, dictionary);
+  array = [MEMORY[0x277CBEB18] array];
   v28 = location[0];
-  v29 = [(AXPhoenixConfiguration *)v35 majorVersionKey];
+  majorVersionKey = [(AXPhoenixConfiguration *)selfCopy majorVersionKey];
   v30 = [v28 objectForKey:?];
   MEMORY[0x277D82BD8](v30);
-  MEMORY[0x277D82BD8](v29);
+  MEMORY[0x277D82BD8](majorVersionKey);
   if (v30)
   {
-    v25 = v35;
+    v25 = selfCopy;
     v24 = location[0];
-    v27 = [(AXPhoenixConfiguration *)v35 majorVersionKey];
+    majorVersionKey2 = [(AXPhoenixConfiguration *)selfCopy majorVersionKey];
     v26 = [v24 objectForKey:?];
     [(AXPhoenixConfiguration *)v25 setMajorVersion:?];
     MEMORY[0x277D82BD8](v26);
-    MEMORY[0x277D82BD8](v27);
+    MEMORY[0x277D82BD8](majorVersionKey2);
   }
 
   else
   {
-    v23 = [(AXPhoenixConfiguration *)v35 majorVersionKey];
-    [v33 addObject:?];
-    MEMORY[0x277D82BD8](v23);
+    majorVersionKey3 = [(AXPhoenixConfiguration *)selfCopy majorVersionKey];
+    [array addObject:?];
+    MEMORY[0x277D82BD8](majorVersionKey3);
   }
 
   v20 = location[0];
-  v21 = [(AXPhoenixConfiguration *)v35 minorVersionKey];
+  minorVersionKey = [(AXPhoenixConfiguration *)selfCopy minorVersionKey];
   v22 = [v20 objectForKey:?];
   MEMORY[0x277D82BD8](v22);
-  MEMORY[0x277D82BD8](v21);
+  MEMORY[0x277D82BD8](minorVersionKey);
   if (v22)
   {
-    v17 = v35;
+    v17 = selfCopy;
     v16 = location[0];
-    v19 = [(AXPhoenixConfiguration *)v35 minorVersionKey];
+    minorVersionKey2 = [(AXPhoenixConfiguration *)selfCopy minorVersionKey];
     v18 = [v16 objectForKey:?];
     [(AXPhoenixConfiguration *)v17 setMinorVersion:?];
     MEMORY[0x277D82BD8](v18);
-    MEMORY[0x277D82BD8](v19);
+    MEMORY[0x277D82BD8](minorVersionKey2);
   }
 
   else
   {
-    v15 = [(AXPhoenixConfiguration *)v35 minorVersionKey];
-    [v33 addObject:?];
-    MEMORY[0x277D82BD8](v15);
+    minorVersionKey3 = [(AXPhoenixConfiguration *)selfCopy minorVersionKey];
+    [array addObject:?];
+    MEMORY[0x277D82BD8](minorVersionKey3);
   }
 
   v13 = location[0];
-  v14 = [(AXPhoenixConfiguration *)v35 classifierConfigurationKey];
+  classifierConfigurationKey = [(AXPhoenixConfiguration *)selfCopy classifierConfigurationKey];
   v32 = [v13 objectForKey:?];
-  MEMORY[0x277D82BD8](v14);
+  MEMORY[0x277D82BD8](classifierConfigurationKey);
   if (v32)
   {
-    v11 = v35;
-    v12 = [[AXPhoenixClassifierConfiguration alloc] initWithDictionary:v32 missingKeys:v33];
+    v11 = selfCopy;
+    v12 = [[AXPhoenixClassifierConfiguration alloc] initWithDictionary:v32 missingKeys:array];
     [(AXPhoenixConfiguration *)v11 setClassifierConfiguration:?];
     MEMORY[0x277D82BD8](v12);
   }
 
   else
   {
-    v10 = [(AXPhoenixConfiguration *)v35 classifierConfigurationKey];
-    [v33 addObject:?];
-    MEMORY[0x277D82BD8](v10);
+    classifierConfigurationKey2 = [(AXPhoenixConfiguration *)selfCopy classifierConfigurationKey];
+    [array addObject:?];
+    MEMORY[0x277D82BD8](classifierConfigurationKey2);
   }
 
   v8 = location[0];
-  v9 = [(AXPhoenixConfiguration *)v35 mitigatorConfigurationKey];
+  mitigatorConfigurationKey = [(AXPhoenixConfiguration *)selfCopy mitigatorConfigurationKey];
   v31 = [v8 objectForKey:?];
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](mitigatorConfigurationKey);
   if (v31)
   {
-    v6 = v35;
-    v7 = [[AXPhoenixMitigatorConfiguration alloc] initWithDictionary:v31 missingKeys:v33];
+    v6 = selfCopy;
+    v7 = [[AXPhoenixMitigatorConfiguration alloc] initWithDictionary:v31 missingKeys:array];
     [(AXPhoenixConfiguration *)v6 setMitigatorConfiguration:?];
     MEMORY[0x277D82BD8](v7);
   }
 
   else
   {
-    v5 = [(AXPhoenixConfiguration *)v35 mitigatorConfigurationKey];
-    [v33 addObject:?];
-    MEMORY[0x277D82BD8](v5);
+    mitigatorConfigurationKey2 = [(AXPhoenixConfiguration *)selfCopy mitigatorConfigurationKey];
+    [array addObject:?];
+    MEMORY[0x277D82BD8](mitigatorConfigurationKey2);
   }
 
-  v4 = MEMORY[0x277D82BE0](v33);
+  v4 = MEMORY[0x277D82BE0](array);
   objc_storeStrong(&v31, 0);
   objc_storeStrong(&v32, 0);
-  objc_storeStrong(&v33, 0);
+  objc_storeStrong(&array, 0);
   objc_storeStrong(location, 0);
 
   return v4;
@@ -255,37 +255,37 @@ LABEL_18:
 - (id)toStringifiedJSON
 {
   v34[4] = *MEMORY[0x277D85DE8];
-  v29 = self;
+  selfCopy = self;
   v28[1] = a2;
-  v18 = [(AXPhoenixConfiguration *)self majorVersionKey];
-  v33[0] = v18;
-  v17 = [(AXPhoenixConfiguration *)v29 majorVersion];
-  v34[0] = v17;
-  v16 = [(AXPhoenixConfiguration *)v29 minorVersionKey];
-  v33[1] = v16;
-  v15 = [(AXPhoenixConfiguration *)v29 minorVersion];
-  v34[1] = v15;
-  v14 = [(AXPhoenixConfiguration *)v29 classifierConfigurationKey];
-  v33[2] = v14;
-  v13 = [(AXPhoenixConfiguration *)v29 classifierConfiguration];
-  v12 = [(AXPhoenixClassifierConfiguration *)v13 toDictionary];
-  v34[2] = v12;
-  v11 = [(AXPhoenixConfiguration *)v29 mitigatorConfigurationKey];
-  v33[3] = v11;
-  v10 = [(AXPhoenixConfiguration *)v29 mitigatorConfiguration];
-  v9 = [(AXPhoenixMitigatorConfiguration *)v10 toDictionary];
-  v34[3] = v9;
+  majorVersionKey = [(AXPhoenixConfiguration *)self majorVersionKey];
+  v33[0] = majorVersionKey;
+  majorVersion = [(AXPhoenixConfiguration *)selfCopy majorVersion];
+  v34[0] = majorVersion;
+  minorVersionKey = [(AXPhoenixConfiguration *)selfCopy minorVersionKey];
+  v33[1] = minorVersionKey;
+  minorVersion = [(AXPhoenixConfiguration *)selfCopy minorVersion];
+  v34[1] = minorVersion;
+  classifierConfigurationKey = [(AXPhoenixConfiguration *)selfCopy classifierConfigurationKey];
+  v33[2] = classifierConfigurationKey;
+  classifierConfiguration = [(AXPhoenixConfiguration *)selfCopy classifierConfiguration];
+  toDictionary = [(AXPhoenixClassifierConfiguration *)classifierConfiguration toDictionary];
+  v34[2] = toDictionary;
+  mitigatorConfigurationKey = [(AXPhoenixConfiguration *)selfCopy mitigatorConfigurationKey];
+  v33[3] = mitigatorConfigurationKey;
+  mitigatorConfiguration = [(AXPhoenixConfiguration *)selfCopy mitigatorConfiguration];
+  toDictionary2 = [(AXPhoenixMitigatorConfiguration *)mitigatorConfiguration toDictionary];
+  v34[3] = toDictionary2;
   v28[0] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:4];
-  MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
-  MEMORY[0x277D82BD8](v17);
-  MEMORY[0x277D82BD8](v18);
+  MEMORY[0x277D82BD8](toDictionary2);
+  MEMORY[0x277D82BD8](mitigatorConfiguration);
+  MEMORY[0x277D82BD8](mitigatorConfigurationKey);
+  MEMORY[0x277D82BD8](toDictionary);
+  MEMORY[0x277D82BD8](classifierConfiguration);
+  MEMORY[0x277D82BD8](classifierConfigurationKey);
+  MEMORY[0x277D82BD8](minorVersion);
+  MEMORY[0x277D82BD8](minorVersionKey);
+  MEMORY[0x277D82BD8](majorVersion);
+  MEMORY[0x277D82BD8](majorVersionKey);
   if ([MEMORY[0x277CCAAA0] isValidJSONObject:v28[0]])
   {
     v24 = 0;

@@ -1,31 +1,31 @@
 @interface _MRSendCommandResultHandlerDialogActionProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRSendCommandResultHandlerDialogActionProtobuf
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Default"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Default"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Cancel"])
+  else if ([typeCopy isEqualToString:@"Cancel"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Destructive"])
+  else if ([typeCopy isEqualToString:@"Destructive"])
   {
     v4 = 2;
   }
@@ -44,15 +44,15 @@
   v8.receiver = self;
   v8.super_class = _MRSendCommandResultHandlerDialogActionProtobuf;
   v4 = [(_MRSendCommandResultHandlerDialogActionProtobuf *)&v8 description];
-  v5 = [(_MRSendCommandResultHandlerDialogActionProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRSendCommandResultHandlerDialogActionProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   type = self->_type;
   if (type >= 3)
   {
@@ -64,29 +64,29 @@
     v5 = off_1E769E198[type];
   }
 
-  [v3 setObject:v5 forKey:@"type"];
+  [dictionary setObject:v5 forKey:@"type"];
 
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   event = self->_event;
   if (event)
   {
-    v8 = [(_MRSendCommandMessageProtobuf *)event dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"event"];
+    dictionaryRepresentation = [(_MRSendCommandMessageProtobuf *)event dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"event"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   type = self->_type;
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteInt32Field();
   if (!self->_title)
   {
@@ -100,40 +100,40 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[6] = self->_type;
-  v5 = v4;
-  [v4 setTitle:self->_title];
+  toCopy = to;
+  toCopy[6] = self->_type;
+  v5 = toCopy;
+  [toCopy setTitle:self->_title];
   if (self->_event)
   {
     [v5 setEvent:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 24) = self->_type;
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(_MRSendCommandMessageProtobuf *)self->_event copyWithZone:a3];
+  v8 = [(_MRSendCommandMessageProtobuf *)self->_event copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_type == *(v4 + 6) && ((title = self->_title, !(title | v4[2])) || -[NSString isEqual:](title, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_type == *(equalCopy + 6) && ((title = self->_title, !(title | equalCopy[2])) || -[NSString isEqual:](title, "isEqual:")))
   {
     event = self->_event;
-    if (event | v4[1])
+    if (event | equalCopy[1])
     {
       v7 = [(_MRSendCommandMessageProtobuf *)event isEqual:?];
     }
@@ -159,19 +159,19 @@
   return v4 ^ [(_MRSendCommandMessageProtobuf *)self->_event hash]^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_type = v4[6];
-  v7 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  self->_type = fromCopy[6];
+  v7 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(_MRSendCommandResultHandlerDialogActionProtobuf *)self setTitle:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   event = self->_event;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (event)
   {
     if (!v6)
@@ -192,7 +192,7 @@
     [(_MRSendCommandResultHandlerDialogActionProtobuf *)self setEvent:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_9:
 }
 

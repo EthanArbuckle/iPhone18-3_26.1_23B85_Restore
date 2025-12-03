@@ -1,14 +1,14 @@
 @interface UPPManifestDownloadTask
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation UPPManifestDownloadTask
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a6;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   v10 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -27,9 +27,9 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%@] Received authentication challenge", buf, 0xCu);
   }
 
-  v13 = [v8 protectionSpace];
-  v14 = [v13 authenticationMethod];
-  if ([v14 isEqualToString:NSURLAuthenticationMethodClientCertificate])
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  if ([authenticationMethod isEqualToString:NSURLAuthenticationMethodClientCertificate])
   {
     v15 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -53,7 +53,7 @@
     goto LABEL_20;
   }
 
-  if ([v14 isEqualToString:NSURLAuthenticationMethodServerTrust])
+  if ([authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
   {
     v19 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -73,8 +73,8 @@
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[%@] Using server trust for authentication challenge", buf, 0xCu);
     }
 
-    v22 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [v13 serverTrust]);
-    v9[2](v9, 0, v22);
+    v22 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [protectionSpace serverTrust]);
+    handlerCopy[2](handlerCopy, 0, v22);
   }
 
   else
@@ -96,7 +96,7 @@ LABEL_19:
 
 LABEL_20:
 
-      v9[2](v9, 1, 0);
+      handlerCopy[2](handlerCopy, 1, 0);
       goto LABEL_21;
     }
 
@@ -108,27 +108,27 @@ LABEL_20:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[%@] Prompting user for authentication challenge", buf, 0xCu);
     }
 
-    v28 = sub_10033A47C([AuthenticationChallenge alloc], v8);
+    v28 = sub_10033A47C([AuthenticationChallenge alloc], challengeCopy);
     v29 = sub_10029F2B8(AuthenticationChallengeDialogRequest, v28);
     v30 = [[AMSSystemAlertDialogTask alloc] initWithRequest:v29];
-    v31 = [v30 present];
+    present = [v30 present];
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v33[2] = sub_1002159BC;
     v33[3] = &unk_10051D618;
     v33[4] = self;
     v34 = v28;
-    v35 = v9;
+    v35 = handlerCopy;
     v32 = v28;
-    [v31 addFinishBlock:v33];
+    [present addFinishBlock:v33];
   }
 
 LABEL_21:
 }
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = *(&self->_downloadIDs + 2);
   if (v5)
   {
@@ -140,34 +140,34 @@ LABEL_21:
 
     else
     {
-      v13 = [v6 scheme];
-      v14 = [v13 caseInsensitiveCompare:@"https"];
+      scheme = [v6 scheme];
+      v14 = [scheme caseInsensitiveCompare:@"https"];
 
-      v15 = [v6 port];
-      v16 = v15;
+      port = [v6 port];
+      v16 = port;
       v17 = &off_100547278;
       if (!v14)
       {
         v17 = &off_100547260;
       }
 
-      if (v15)
+      if (port)
       {
-        v17 = v15;
+        v17 = port;
       }
 
       v18 = v17;
 
-      v19 = [v6 host];
-      v20 = [v18 stringValue];
+      host = [v6 host];
+      stringValue = [v18 stringValue];
 
-      v21 = [NWHostEndpoint endpointWithHostname:v19 port:v20];
+      v21 = [NWHostEndpoint endpointWithHostname:host port:stringValue];
 
       v22 = [[NWPathEvaluator alloc] initWithEndpoint:v21 parameters:0];
-      v23 = [v22 path];
-      LODWORD(v20) = [v23 isLocal];
+      path = [v22 path];
+      LODWORD(stringValue) = [path isLocal];
 
-      if (v20)
+      if (stringValue)
       {
         v8 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -186,8 +186,8 @@ LABEL_21:
     }
 
     v25 = *(&self->_downloadIDs + 2);
-    v26 = [v25 scheme];
-    v27 = [v26 caseInsensitiveCompare:@"https"];
+    scheme2 = [v25 scheme];
+    v27 = [scheme2 caseInsensitiveCompare:@"https"];
 
     if (!v27)
     {
@@ -228,12 +228,12 @@ LABEL_21:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_getProperty(self, v9, 90, 1);
-      v11 = [*(&self->_manifestDigest + 2) processInfo];
-      v12 = [v11 bundleIdentifier];
+      processInfo = [*(&self->_manifestDigest + 2) processInfo];
+      bundleIdentifier = [processInfo bundleIdentifier];
       *v51 = 138412546;
       *&v51[4] = v10;
       *&v51[12] = 2114;
-      *&v51[14] = v12;
+      *&v51[14] = bundleIdentifier;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%@] No URL provided for request from client: %{public}@", v51, 0x16u);
     }
   }
@@ -244,7 +244,7 @@ LABEL_24:
   if (v30)
   {
     sub_100216260(self, v30);
-    v4[2](v4, v30);
+    handlerCopy[2](handlerCopy, v30);
 
     goto LABEL_32;
   }
@@ -263,7 +263,7 @@ LABEL_26:
   }
 
   v35 = *(&self->_downloadIDs + 2);
-  v36 = v4;
+  v36 = handlerCopy;
   v37 = v35;
   v38 = [[NSMutableURLRequest alloc] initWithURL:v37];
 
@@ -293,7 +293,7 @@ LABEL_26:
   *&v51[16] = sub_1002199C0;
   v52 = &unk_10051D6F0;
   v55 = v40;
-  v53 = self;
+  selfCopy = self;
   v45 = v36;
   v54 = v45;
   v46 = [v44 dataTaskWithRequest:v38 completionHandler:v51];

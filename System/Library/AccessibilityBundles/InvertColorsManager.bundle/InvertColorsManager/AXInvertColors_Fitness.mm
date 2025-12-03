@@ -1,14 +1,14 @@
 @interface AXInvertColors_Fitness
-+ (void)performValidations:(id)a3;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_Fitness
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PhoneSceneDelegate" hasInstanceMethod:@"window" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PhoneSceneDelegate"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PhoneSceneDelegate" hasInstanceMethod:@"window" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PhoneSceneDelegate"];
 }
 
 @end

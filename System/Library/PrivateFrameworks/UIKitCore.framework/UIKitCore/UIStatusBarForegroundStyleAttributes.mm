@@ -1,65 +1,65 @@
 @interface UIStatusBarForegroundStyleAttributes
-- (BOOL)_shouldUseBoldFontForStyle:(int64_t)a3;
-- (CGPoint)positionForMoonMaskInBounds:(CGRect)a3;
+- (BOOL)_shouldUseBoldFontForStyle:(int64_t)style;
+- (CGPoint)positionForMoonMaskInBounds:(CGRect)bounds;
 - (UIEdgeInsets)edgeInsetsForBatteryInsides;
 - (UIEdgeInsets)edgeInsetsForBluetoothBatteryInsides;
-- (UIStatusBarForegroundStyleAttributes)initWithHeight:(double)a3 legibilityStyle:(int64_t)a4 tintColor:(id)a5 hasBusyBackground:(BOOL)a6;
-- (UIStatusBarForegroundStyleAttributes)initWithHeight:(double)a3 legibilityStyle:(int64_t)a4 tintColor:(id)a5 hasBusyBackground:(BOOL)a6 idiom:(int64_t)a7;
-- (double)_roundDimension:(double)a3;
-- (double)baselineOffsetForStyle:(int64_t)a3;
+- (UIStatusBarForegroundStyleAttributes)initWithHeight:(double)height legibilityStyle:(int64_t)style tintColor:(id)color hasBusyBackground:(BOOL)background;
+- (UIStatusBarForegroundStyleAttributes)initWithHeight:(double)height legibilityStyle:(int64_t)style tintColor:(id)color hasBusyBackground:(BOOL)background idiom:(int64_t)idiom;
+- (double)_roundDimension:(double)dimension;
+- (double)baselineOffsetForStyle:(int64_t)style;
 - (double)rightEdgePadding;
 - (double)scale;
-- (double)sizeForMoonMaskVisible:(BOOL)a3;
-- (id)_batteryColorForCapacity:(int)a3 lowCapacity:(int)a4 style:(unint64_t)a5 usingTintColor:(BOOL)a6;
-- (id)_cacheQueue_cachedImageNamed:(id)a3 inTempGroup:(id)a4 groupFullName:(id)a5;
-- (id)_cachedImageNamed:(id)a3;
-- (id)accessibilityHUDImageNamed:(id)a3;
-- (id)batteryColorForCapacity:(int)a3 style:(unint64_t)a4 usingTintColor:(BOOL)a5;
-- (id)bluetoothBatteryColorForCapacity:(double)a3 usingTintColor:(BOOL)a4;
-- (id)bluetoothBatteryImageNameWithCapacity:(double)a3;
-- (id)cachedImageNamed:(id)a3 inTempGroup:(id)a4;
-- (id)cachedImageWithText:(id)a3 forWidth:(double)a4 lineBreakMode:(int64_t)a5 letterSpacing:(double)a6 textAlignment:(int64_t)a7 style:(int64_t)a8 itemType:(int)a9;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)sizeForMoonMaskVisible:(BOOL)visible;
+- (id)_batteryColorForCapacity:(int)capacity lowCapacity:(int)lowCapacity style:(unint64_t)style usingTintColor:(BOOL)color;
+- (id)_cacheQueue_cachedImageNamed:(id)named inTempGroup:(id)group groupFullName:(id)name;
+- (id)_cachedImageNamed:(id)named;
+- (id)accessibilityHUDImageNamed:(id)named;
+- (id)batteryColorForCapacity:(int)capacity style:(unint64_t)style usingTintColor:(BOOL)color;
+- (id)bluetoothBatteryColorForCapacity:(double)capacity usingTintColor:(BOOL)color;
+- (id)bluetoothBatteryImageNameWithCapacity:(double)capacity;
+- (id)cachedImageNamed:(id)named inTempGroup:(id)group;
+- (id)cachedImageWithText:(id)text forWidth:(double)width lineBreakMode:(int64_t)mode letterSpacing:(double)spacing textAlignment:(int64_t)alignment style:(int64_t)style itemType:(int)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)generateUniqueIdentifier;
-- (id)imageIdWithText:(id)a3 forWidth:(double)a4 lineBreakMode:(int64_t)a5 letterSpacing:(double)a6 style:(int64_t)a7;
-- (id)imageNamed:(id)a3;
-- (id)imageNamed:(id)a3 withLegibilityStyle:(int64_t)a4 legibilityStrength:(double)a5;
-- (id)imageWithText:(id)a3 ofItemType:(int)a4 forWidth:(double)a5 lineBreakMode:(int64_t)a6 letterSpacing:(double)a7 textAlignment:(int64_t)a8 style:(int64_t)a9 withLegibilityStyle:(int64_t)a10 legibilityStrength:(double)a11 shouldCache:(BOOL)a12;
-- (id)makeTextFontForStyle:(int64_t)a3;
-- (id)shadowImageForImage:(id)a3 withIdentifier:(id)a4 forStyle:(int64_t)a5 withStrength:(double)a6 inTempGroup:(id)a7 shouldCache:(BOOL)a8;
-- (id)textFontForStyle:(int64_t)a3;
-- (id)textForNetworkType:(int)a3;
-- (id)uncachedImageNamed:(id)a3;
+- (id)imageIdWithText:(id)text forWidth:(double)width lineBreakMode:(int64_t)mode letterSpacing:(double)spacing style:(int64_t)style;
+- (id)imageNamed:(id)named;
+- (id)imageNamed:(id)named withLegibilityStyle:(int64_t)style legibilityStrength:(double)strength;
+- (id)imageWithText:(id)text ofItemType:(int)type forWidth:(double)width lineBreakMode:(int64_t)mode letterSpacing:(double)spacing textAlignment:(int64_t)alignment style:(int64_t)style withLegibilityStyle:(int64_t)self0 legibilityStrength:(double)self1 shouldCache:(BOOL)self2;
+- (id)makeTextFontForStyle:(int64_t)style;
+- (id)shadowImageForImage:(id)image withIdentifier:(id)identifier forStyle:(int64_t)style withStrength:(double)strength inTempGroup:(id)group shouldCache:(BOOL)cache;
+- (id)textFontForStyle:(int64_t)style;
+- (id)textForNetworkType:(int)type;
+- (id)uncachedImageNamed:(id)named;
 - (id)uniqueIdentifier;
-- (id)untintedImageNamed:(id)a3;
-- (int64_t)activityIndicatorStyleWithSyncActivity:(BOOL)a3;
-- (void)_cacheQueue_cacheImage:(id)a3 named:(id)a4 inTempGroup:(id)a5 groupFullName:(id)a6 tintColor:(id)a7;
-- (void)_drawText:(id)a3 inRect:(CGRect)a4 withFont:(id)a5 lineBreakMode:(int64_t)a6 letterSpacing:(double)a7 textAlignment:(int64_t)a8;
-- (void)cacheImage:(id)a3 named:(id)a4 inTempGroup:(id)a5;
-- (void)drawBatteryInsidesWithSize:(CGSize)a3 capacity:(int)a4 style:(unint64_t)a5 usingTintColor:(BOOL)a6;
-- (void)drawBluetoothBatteryInsidesWithSize:(CGSize)a3 capacity:(double)a4;
-- (void)drawText:(id)a3 forWidth:(double)a4 lineBreakMode:(int64_t)a5 letterSpacing:(double)a6 textAlignment:(int64_t)a7 style:(int64_t)a8 textSize:(CGSize)a9 textHeight:(double)a10;
+- (id)untintedImageNamed:(id)named;
+- (int64_t)activityIndicatorStyleWithSyncActivity:(BOOL)activity;
+- (void)_cacheQueue_cacheImage:(id)image named:(id)named inTempGroup:(id)group groupFullName:(id)name tintColor:(id)color;
+- (void)_drawText:(id)text inRect:(CGRect)rect withFont:(id)font lineBreakMode:(int64_t)mode letterSpacing:(double)spacing textAlignment:(int64_t)alignment;
+- (void)cacheImage:(id)image named:(id)named inTempGroup:(id)group;
+- (void)drawBatteryInsidesWithSize:(CGSize)size capacity:(int)capacity style:(unint64_t)style usingTintColor:(BOOL)color;
+- (void)drawBluetoothBatteryInsidesWithSize:(CGSize)size capacity:(double)capacity;
+- (void)drawText:(id)text forWidth:(double)width lineBreakMode:(int64_t)mode letterSpacing:(double)spacing textAlignment:(int64_t)alignment style:(int64_t)style textSize:(CGSize)size textHeight:(double)self0;
 @end
 
 @implementation UIStatusBarForegroundStyleAttributes
 
-- (UIStatusBarForegroundStyleAttributes)initWithHeight:(double)a3 legibilityStyle:(int64_t)a4 tintColor:(id)a5 hasBusyBackground:(BOOL)a6 idiom:(int64_t)a7
+- (UIStatusBarForegroundStyleAttributes)initWithHeight:(double)height legibilityStyle:(int64_t)style tintColor:(id)color hasBusyBackground:(BOOL)background idiom:(int64_t)idiom
 {
-  v13 = a5;
+  colorCopy = color;
   v18.receiver = self;
   v18.super_class = UIStatusBarForegroundStyleAttributes;
   v14 = [(UIStatusBarForegroundStyleAttributes *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    v14->_height = a3;
-    v14->_legibilityStyle = a4;
-    v14->_idiom = a7;
-    objc_storeStrong(&v14->_tintColor, a5);
-    if (v13)
+    v14->_height = height;
+    v14->_legibilityStyle = style;
+    v14->_idiom = idiom;
+    objc_storeStrong(&v14->_tintColor, color);
+    if (colorCopy)
     {
       v16 = +[UIColor blackColor];
-      v15->_isTintColorBlack = [v13 isEqual:v16];
+      v15->_isTintColorBlack = [colorCopy isEqual:v16];
     }
 
     else
@@ -67,22 +67,22 @@
       v15->_isTintColorBlack = 1;
     }
 
-    v15->_hasBusyBackground = a6;
+    v15->_hasBusyBackground = background;
   }
 
   return v15;
 }
 
-- (UIStatusBarForegroundStyleAttributes)initWithHeight:(double)a3 legibilityStyle:(int64_t)a4 tintColor:(id)a5 hasBusyBackground:(BOOL)a6
+- (UIStatusBarForegroundStyleAttributes)initWithHeight:(double)height legibilityStyle:(int64_t)style tintColor:(id)color hasBusyBackground:(BOOL)background
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = [(UIStatusBarForegroundStyleAttributes *)self initWithHeight:a4 legibilityStyle:v10 tintColor:v6 hasBusyBackground:_UIDeviceNativeUserInterfaceIdiom() idiom:a3];
+  backgroundCopy = background;
+  colorCopy = color;
+  v11 = [(UIStatusBarForegroundStyleAttributes *)self initWithHeight:style legibilityStyle:colorCopy tintColor:backgroundCopy hasBusyBackground:_UIDeviceNativeUserInterfaceIdiom() idiom:height];
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   *(v4 + 56) = self->_canShowBreadcrumbs;
@@ -111,8 +111,8 @@
   height = self->_height;
   [(UIStatusBarForegroundStyleAttributes *)self scale];
   v8 = v7;
-  v9 = [(UIColor *)self->_tintColor styleString];
-  v10 = [v3 stringWithFormat:@"%@_%.2f%.2f_%@", v5, *&height, v8, v9];
+  styleString = [(UIColor *)self->_tintColor styleString];
+  v10 = [v3 stringWithFormat:@"%@_%.2f%.2f_%@", v5, *&height, v8, styleString];
 
   return v10;
 }
@@ -122,9 +122,9 @@
   cachedUniqueIdentifier = self->_cachedUniqueIdentifier;
   if (!cachedUniqueIdentifier)
   {
-    v4 = [(UIStatusBarForegroundStyleAttributes *)self generateUniqueIdentifier];
+    generateUniqueIdentifier = [(UIStatusBarForegroundStyleAttributes *)self generateUniqueIdentifier];
     v5 = self->_cachedUniqueIdentifier;
-    self->_cachedUniqueIdentifier = v4;
+    self->_cachedUniqueIdentifier = generateUniqueIdentifier;
 
     cachedUniqueIdentifier = self->_cachedUniqueIdentifier;
   }
@@ -132,9 +132,9 @@
   return cachedUniqueIdentifier;
 }
 
-- (int64_t)activityIndicatorStyleWithSyncActivity:(BOOL)a3
+- (int64_t)activityIndicatorStyleWithSyncActivity:(BOOL)activity
 {
-  if (a3)
+  if (activity)
   {
     return 7;
   }
@@ -145,10 +145,10 @@
   }
 }
 
-- (double)_roundDimension:(double)a3
+- (double)_roundDimension:(double)dimension
 {
   [(UIStatusBarForegroundStyleAttributes *)self scale];
-  v5 = round(v4 * a3) / v4;
+  v5 = round(v4 * dimension) / v4;
   result = 1.0 / v4;
   if (result < v5)
   {
@@ -181,22 +181,22 @@
   return result;
 }
 
-- (id)_batteryColorForCapacity:(int)a3 lowCapacity:(int)a4 style:(unint64_t)a5 usingTintColor:(BOOL)a6
+- (id)_batteryColorForCapacity:(int)capacity lowCapacity:(int)lowCapacity style:(unint64_t)style usingTintColor:(BOOL)color
 {
-  v6 = a6;
-  if ((a5 & 2) != 0)
+  colorCopy = color;
+  if ((style & 2) != 0)
   {
-    v9 = [UIColor systemYellowColor:*&a3];
+    v9 = [UIColor systemYellowColor:*&capacity];
   }
 
-  else if (a3 <= a4)
+  else if (capacity <= lowCapacity)
   {
     v9 = +[UIColor systemRedColor];
   }
 
   else
   {
-    if ((a5 & 1) == 0)
+    if ((style & 1) == 0)
     {
       v8 = 0;
       goto LABEL_10;
@@ -209,12 +209,12 @@
   if (!v9 || self->_hasBusyBackground)
   {
 LABEL_10:
-    if (v6)
+    if (colorCopy)
     {
-      v10 = [(UIStatusBarForegroundStyleAttributes *)self tintColor];
-      v11 = [v10 colorWithAlphaComponent:1.0];
+      tintColor = [(UIStatusBarForegroundStyleAttributes *)self tintColor];
+      v11 = [tintColor colorWithAlphaComponent:1.0];
 
-      v8 = v10;
+      v8 = tintColor;
     }
 
     else
@@ -228,21 +228,21 @@ LABEL_10:
   return v8;
 }
 
-- (id)batteryColorForCapacity:(int)a3 style:(unint64_t)a4 usingTintColor:(BOOL)a5
+- (id)batteryColorForCapacity:(int)capacity style:(unint64_t)style usingTintColor:(BOOL)color
 {
-  v5 = a5;
-  v7 = *&a3;
+  colorCopy = color;
+  v7 = *&capacity;
   v9 = +[UIStatusBar lowBatteryLevel];
 
-  return [(UIStatusBarForegroundStyleAttributes *)self _batteryColorForCapacity:v7 lowCapacity:v9 style:a4 usingTintColor:v5];
+  return [(UIStatusBarForegroundStyleAttributes *)self _batteryColorForCapacity:v7 lowCapacity:v9 style:style usingTintColor:colorCopy];
 }
 
-- (void)drawBatteryInsidesWithSize:(CGSize)a3 capacity:(int)a4 style:(unint64_t)a5 usingTintColor:(BOOL)a6
+- (void)drawBatteryInsidesWithSize:(CGSize)size capacity:(int)capacity style:(unint64_t)style usingTintColor:(BOOL)color
 {
-  v6 = a6;
-  v8 = *&a4;
-  height = a3.height;
-  width = a3.width;
+  colorCopy = color;
+  v8 = *&capacity;
+  height = size.height;
+  width = size.width;
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)
   {
@@ -255,12 +255,12 @@ LABEL_10:
   }
 
   CGContextSaveGState(v13);
-  v14 = [(UIStatusBarForegroundStyleAttributes *)self batteryColorForCapacity:v8 style:a5 usingTintColor:v6];
-  if (v6)
+  v14 = [(UIStatusBarForegroundStyleAttributes *)self batteryColorForCapacity:v8 style:style usingTintColor:colorCopy];
+  if (colorCopy)
   {
     v31 = v14;
-    v15 = [(UIStatusBarForegroundStyleAttributes *)self tintColor];
-    [v15 alphaComponent];
+    tintColor = [(UIStatusBarForegroundStyleAttributes *)self tintColor];
+    [tintColor alphaComponent];
     v16 = [v31 colorWithAlphaComponent:?];
 
     v14 = v16;
@@ -326,13 +326,13 @@ LABEL_10:
   return result;
 }
 
-- (id)bluetoothBatteryImageNameWithCapacity:(double)a3
+- (id)bluetoothBatteryImageNameWithCapacity:(double)capacity
 {
   v5 = [(UIStatusBarForegroundStyleAttributes *)self imageNamed:@"HeadsetBatteryBG"];
   [v5 size];
   v7 = v6;
   [(UIStatusBarForegroundStyleAttributes *)self edgeInsetsForBluetoothBatteryInsides];
-  [(UIStatusBarForegroundStyleAttributes *)self _roundDimension:(v7 - (v8 + v9)) * a3];
+  [(UIStatusBarForegroundStyleAttributes *)self _roundDimension:(v7 - (v8 + v9)) * capacity];
   v11 = v10;
   [(UIStatusBarForegroundStyleAttributes *)self scale];
   LODWORD(v13) = vcvtpd_s64_f64(v11 * v12);
@@ -341,21 +341,21 @@ LABEL_10:
   return v14;
 }
 
-- (id)bluetoothBatteryColorForCapacity:(double)a3 usingTintColor:(BOOL)a4
+- (id)bluetoothBatteryColorForCapacity:(double)capacity usingTintColor:(BOOL)color
 {
-  if (a3 <= 0.266666667)
+  if (capacity <= 0.266666667)
   {
     v6 = +[UIColor systemRedColor];
   }
 
   else
   {
-    if (a4)
+    if (color)
     {
       v5 = 0;
 LABEL_8:
-      v7 = [(UIStatusBarForegroundStyleAttributes *)self tintColor];
-      v8 = [v7 colorWithAlphaComponent:1.0];
+      tintColor = [(UIStatusBarForegroundStyleAttributes *)self tintColor];
+      v8 = [tintColor colorWithAlphaComponent:1.0];
 
       v5 = v8;
       goto LABEL_9;
@@ -375,11 +375,11 @@ LABEL_9:
   return v5;
 }
 
-- (void)drawBluetoothBatteryInsidesWithSize:(CGSize)a3 capacity:(double)a4
+- (void)drawBluetoothBatteryInsidesWithSize:(CGSize)size capacity:(double)capacity
 {
-  height = a3.height;
-  width = a3.width;
-  v19 = [(UIStatusBarForegroundStyleAttributes *)self bluetoothBatteryColorForCapacity:1 usingTintColor:a4];
+  height = size.height;
+  width = size.width;
+  v19 = [(UIStatusBarForegroundStyleAttributes *)self bluetoothBatteryColorForCapacity:1 usingTintColor:capacity];
   [v19 set];
   v8 = *MEMORY[0x1E695EFF8];
   v9 = *(MEMORY[0x1E695EFF8] + 8);
@@ -388,59 +388,59 @@ LABEL_9:
   v13 = v9 + v12;
   v15 = width - (v10 + v14);
   v17 = height - (v12 + v16);
-  [(UIStatusBarForegroundStyleAttributes *)self _roundDimension:v17 * a4];
+  [(UIStatusBarForegroundStyleAttributes *)self _roundDimension:v17 * capacity];
   UIRectFillUsingOperation(1, v11, v13 + v17 - v18, v15, v18);
 }
 
-- (void)_drawText:(id)a3 inRect:(CGRect)a4 withFont:(id)a5 lineBreakMode:(int64_t)a6 letterSpacing:(double)a7 textAlignment:(int64_t)a8
+- (void)_drawText:(id)text inRect:(CGRect)rect withFont:(id)font lineBreakMode:(int64_t)mode letterSpacing:(double)spacing textAlignment:(int64_t)alignment
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (a7 != 0.0 || a8 == 0)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (spacing != 0.0 || alignment == 0)
   {
-    v16 = a5;
-    v17 = a3;
+    fontCopy = font;
+    textCopy = text;
     v20.origin.x = x;
     v20.origin.y = y;
     v20.size.width = width;
     v20.size.height = height;
-    [v17 drawAtPoint:v16 forWidth:a6 withFont:x lineBreakMode:y letterSpacing:{CGRectGetWidth(v20), a7}];
+    [textCopy drawAtPoint:fontCopy forWidth:mode withFont:x lineBreakMode:y letterSpacing:{CGRectGetWidth(v20), spacing}];
   }
 
   else
   {
-    [a3 drawInRect:a5 withFont:a6 lineBreakMode:a8 alignment:0 lineSpacing:{a4.origin.x, a4.origin.y, a4.size.width, a4.size.height}];
+    [text drawInRect:font withFont:mode lineBreakMode:alignment alignment:0 lineSpacing:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   }
 }
 
-- (void)drawText:(id)a3 forWidth:(double)a4 lineBreakMode:(int64_t)a5 letterSpacing:(double)a6 textAlignment:(int64_t)a7 style:(int64_t)a8 textSize:(CGSize)a9 textHeight:(double)a10
+- (void)drawText:(id)text forWidth:(double)width lineBreakMode:(int64_t)mode letterSpacing:(double)spacing textAlignment:(int64_t)alignment style:(int64_t)style textSize:(CGSize)size textHeight:(double)self0
 {
-  height = a9.height;
-  width = a9.width;
-  v19 = a3;
-  v20 = [(UIStatusBarForegroundStyleAttributes *)self textFontForStyle:a8];
-  [(UIStatusBarForegroundStyleAttributes *)self textOffsetForStyle:a8];
-  v22 = floor((height - a10) * 0.5) + v21 + -1.0;
-  if (!a7)
+  height = size.height;
+  width = size.width;
+  textCopy = text;
+  v20 = [(UIStatusBarForegroundStyleAttributes *)self textFontForStyle:style];
+  [(UIStatusBarForegroundStyleAttributes *)self textOffsetForStyle:style];
+  v22 = floor((height - height) * 0.5) + v21 + -1.0;
+  if (!alignment)
   {
-    width = a4;
+    width = width;
   }
 
-  v23 = [(UIStatusBarForegroundStyleAttributes *)self textColorForStyle:a8];
+  v23 = [(UIStatusBarForegroundStyleAttributes *)self textColorForStyle:style];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __126__UIStatusBarForegroundStyleAttributes_drawText_forWidth_lineBreakMode_letterSpacing_textAlignment_style_textSize_textHeight___block_invoke;
   v26[3] = &unk_1E711F468;
   v26[4] = self;
-  v27 = v19;
+  v27 = textCopy;
   v28 = v20;
-  v29 = a5;
-  v30 = a6;
-  v31 = a7;
+  modeCopy = mode;
+  spacingCopy = spacing;
+  alignmentCopy = alignment;
   v24 = v20;
-  v25 = v19;
+  v25 = textCopy;
   [(UIStatusBarForegroundStyleAttributes *)self drawTextInRect:v23 withColor:v26 withBlock:0.0, v22, width, height];
 }
 
@@ -459,8 +459,8 @@ uint64_t __126__UIStatusBarForegroundStyleAttributes_drawText_forWidth_lineBreak
 
 - (double)scale
 {
-  v2 = [objc_opt_self() mainScreen];
-  [v2 scale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
   return v4;
@@ -478,9 +478,9 @@ uint64_t __126__UIStatusBarForegroundStyleAttributes_drawText_forWidth_lineBreak
   return result;
 }
 
-- (id)_cachedImageNamed:(id)a3
+- (id)_cachedImageNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -492,10 +492,10 @@ uint64_t __126__UIStatusBarForegroundStyleAttributes_drawText_forWidth_lineBreak
   block[1] = 3221225472;
   block[2] = __58__UIStatusBarForegroundStyleAttributes__cachedImageNamed___block_invoke;
   block[3] = &unk_1E70FB728;
-  v10 = v4;
+  v10 = namedCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = namedCopy;
   dispatch_sync(v5, block);
 
   v7 = v13[5];
@@ -515,43 +515,43 @@ void __58__UIStatusBarForegroundStyleAttributes__cachedImageNamed___block_invoke
   *(v5 + 40) = v4;
 }
 
-- (id)_cacheQueue_cachedImageNamed:(id)a3 inTempGroup:(id)a4 groupFullName:(id)a5
+- (id)_cacheQueue_cachedImageNamed:(id)named inTempGroup:(id)group groupFullName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 stringByAppendingString:v10];
-  if (v9)
+  namedCopy = named;
+  groupCopy = group;
+  nameCopy = name;
+  v11 = [namedCopy stringByAppendingString:nameCopy];
+  if (groupCopy)
   {
-    v12 = [(UIStatusBarForegroundStyleAttributes *)self expandedNameForImageName:v8];
+    v12 = [(UIStatusBarForegroundStyleAttributes *)self expandedNameForImageName:namedCopy];
 
-    v13 = [(UIStatusBarForegroundStyleAttributes *)self tintColor];
-    v14 = v13;
-    if (v13)
+    tintColor = [(UIStatusBarForegroundStyleAttributes *)self tintColor];
+    v14 = tintColor;
+    if (tintColor)
     {
-      v15 = [v13 styleString];
-      v16 = [v12 stringByAppendingString:v15];
+      styleString = [tintColor styleString];
+      v16 = [v12 stringByAppendingString:styleString];
 
       v12 = v16;
     }
 
-    v17 = [v10 stringByAppendingString:v9];
+    v17 = [nameCopy stringByAppendingString:groupCopy];
 
     v11 = v12;
-    v10 = v17;
+    nameCopy = v17;
   }
 
   v18 = +[UIStatusBarCache sharedInstance];
   [(UIStatusBarForegroundStyleAttributes *)self scale];
-  v19 = [v18 imageNamed:v11 forGroup:v10 withScale:?];
+  v19 = [v18 imageNamed:v11 forGroup:nameCopy withScale:?];
 
   return v19;
 }
 
-- (id)cachedImageNamed:(id)a3 inTempGroup:(id)a4
+- (id)cachedImageNamed:(id)named inTempGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
+  namedCopy = named;
+  groupCopy = group;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -564,11 +564,11 @@ void __58__UIStatusBarForegroundStyleAttributes__cachedImageNamed___block_invoke
   v13[2] = __69__UIStatusBarForegroundStyleAttributes_cachedImageNamed_inTempGroup___block_invoke;
   v13[3] = &unk_1E7103C20;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = namedCopy;
+  v15 = groupCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = groupCopy;
+  v10 = namedCopy;
   dispatch_sync(v8, v13);
 
   v11 = v18[5];
@@ -589,56 +589,56 @@ void __69__UIStatusBarForegroundStyleAttributes_cachedImageNamed_inTempGroup___b
   *(v6 + 40) = v5;
 }
 
-- (void)_cacheQueue_cacheImage:(id)a3 named:(id)a4 inTempGroup:(id)a5 groupFullName:(id)a6 tintColor:(id)a7
+- (void)_cacheQueue_cacheImage:(id)image named:(id)named inTempGroup:(id)group groupFullName:(id)name tintColor:(id)color
 {
-  v23 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = a3;
-  v16 = [v23 stringByAppendingString:v13];
-  if (v12)
+  namedCopy = named;
+  groupCopy = group;
+  nameCopy = name;
+  colorCopy = color;
+  imageCopy = image;
+  v16 = [namedCopy stringByAppendingString:nameCopy];
+  if (groupCopy)
   {
-    v17 = [(UIStatusBarForegroundStyleAttributes *)self expandedNameForImageName:v23];
+    v17 = [(UIStatusBarForegroundStyleAttributes *)self expandedNameForImageName:namedCopy];
 
-    if (v14)
+    if (colorCopy)
     {
-      v18 = [v14 styleString];
-      v19 = [v17 stringByAppendingString:v18];
+      styleString = [colorCopy styleString];
+      v19 = [v17 stringByAppendingString:styleString];
 
       v17 = v19;
     }
 
-    v20 = [v13 stringByAppendingString:v12];
+    v20 = [nameCopy stringByAppendingString:groupCopy];
 
     v21 = +[UIStatusBarCache sharedInstance];
     [v21 removeImagesInGroup:v20];
 
-    v13 = v20;
+    nameCopy = v20;
     v16 = v17;
   }
 
   v22 = +[UIStatusBarCache sharedInstance];
-  [v22 cacheImage:v15 named:v16 forGroup:v13];
+  [v22 cacheImage:imageCopy named:v16 forGroup:nameCopy];
 }
 
-- (void)cacheImage:(id)a3 named:(id)a4 inTempGroup:(id)a5
+- (void)cacheImage:(id)image named:(id)named inTempGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  namedCopy = named;
+  groupCopy = group;
   v11 = _cacheAccessQueue();
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __69__UIStatusBarForegroundStyleAttributes_cacheImage_named_inTempGroup___block_invoke;
   v15[3] = &unk_1E70F6B40;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = imageCopy;
+  v17 = namedCopy;
+  v18 = groupCopy;
+  v12 = groupCopy;
+  v13 = namedCopy;
+  v14 = imageCopy;
   dispatch_async(v11, v15);
 }
 
@@ -653,9 +653,9 @@ void __69__UIStatusBarForegroundStyleAttributes_cacheImage_named_inTempGroup___b
   [v2 _cacheQueue_cacheImage:v3 named:v4 inTempGroup:v5 groupFullName:v7 tintColor:v6];
 }
 
-- (id)uncachedImageNamed:(id)a3
+- (id)uncachedImageNamed:(id)named
 {
-  v4 = [(UIStatusBarForegroundStyleAttributes *)self expandedNameForImageName:a3];
+  v4 = [(UIStatusBarForegroundStyleAttributes *)self expandedNameForImageName:named];
   v5 = [v4 stringByAppendingString:@".png"];
 
   v9[0] = MEMORY[0x1E69E9820];
@@ -678,16 +678,16 @@ void __59__UIStatusBarForegroundStyleAttributes_uncachedImageNamed___block_invok
   [v4 setUserInterfaceIdiom:{objc_msgSend(*(a1 + 32), "idiom")}];
 }
 
-- (id)untintedImageNamed:(id)a3
+- (id)untintedImageNamed:(id)named
 {
-  v4 = a3;
-  if (v4)
+  namedCopy = named;
+  if (namedCopy)
   {
-    v5 = [(UIStatusBarForegroundStyleAttributes *)self expandedNameForImageName:v4];
+    v5 = [(UIStatusBarForegroundStyleAttributes *)self expandedNameForImageName:namedCopy];
     v6 = [(UIStatusBarForegroundStyleAttributes *)self _cachedImageNamed:v5];
     if (!v6)
     {
-      v7 = [(UIStatusBarForegroundStyleAttributes *)self uncachedImageNamed:v4];
+      v7 = [(UIStatusBarForegroundStyleAttributes *)self uncachedImageNamed:namedCopy];
       [v7 size];
       v9 = v8;
       v11 = v10;
@@ -708,15 +708,15 @@ void __59__UIStatusBarForegroundStyleAttributes_uncachedImageNamed___block_invok
   return v6;
 }
 
-- (id)imageNamed:(id)a3
+- (id)imageNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(UIStatusBarForegroundStyleAttributes *)self tintColor];
-  if (v5)
+  namedCopy = named;
+  tintColor = [(UIStatusBarForegroundStyleAttributes *)self tintColor];
+  if (tintColor)
   {
-    v6 = [(UIStatusBarForegroundStyleAttributes *)self expandedNameForImageName:v4];
-    v7 = [v5 styleString];
-    v8 = [v6 stringByAppendingString:v7];
+    v6 = [(UIStatusBarForegroundStyleAttributes *)self expandedNameForImageName:namedCopy];
+    styleString = [tintColor styleString];
+    v8 = [v6 stringByAppendingString:styleString];
 
     v9 = [(UIStatusBarForegroundStyleAttributes *)self _cachedImageNamed:v8];
     if (v9)
@@ -730,11 +730,11 @@ void __59__UIStatusBarForegroundStyleAttributes_uncachedImageNamed___block_invok
     v8 = 0;
   }
 
-  v10 = [(UIStatusBarForegroundStyleAttributes *)self untintedImageNamed:v4];
+  v10 = [(UIStatusBarForegroundStyleAttributes *)self untintedImageNamed:namedCopy];
   v9 = v10;
-  if (v5 && v10)
+  if (tintColor && v10)
   {
-    v11 = [v10 _flatImageWithColor:v5];
+    v11 = [v10 _flatImageWithColor:tintColor];
 
     [(UIStatusBarForegroundStyleAttributes *)self _cacheImage:v11 named:v8];
     v9 = v11;
@@ -745,9 +745,9 @@ LABEL_8:
   return v9;
 }
 
-- (id)accessibilityHUDImageNamed:(id)a3
+- (id)accessibilityHUDImageNamed:(id)named
 {
-  v3 = [@"Black_" stringByAppendingString:a3];
+  v3 = [@"Black_" stringByAppendingString:named];
   v4 = [v3 stringByAppendingString:@".png"];
 
   v5 = [UIImage kitImageNamed:v4];
@@ -755,45 +755,45 @@ LABEL_8:
   return v5;
 }
 
-- (id)imageNamed:(id)a3 withLegibilityStyle:(int64_t)a4 legibilityStrength:(double)a5
+- (id)imageNamed:(id)named withLegibilityStyle:(int64_t)style legibilityStrength:(double)strength
 {
   isTintColorBlack = self->_isTintColorBlack;
-  v9 = a3;
+  namedCopy = named;
   if (isTintColorBlack)
   {
-    [(UIStatusBarForegroundStyleAttributes *)self untintedImageNamed:v9];
+    [(UIStatusBarForegroundStyleAttributes *)self untintedImageNamed:namedCopy];
   }
 
   else
   {
-    [(UIStatusBarForegroundStyleAttributes *)self imageNamed:v9];
+    [(UIStatusBarForegroundStyleAttributes *)self imageNamed:namedCopy];
   }
   v10 = ;
-  v11 = [(UIStatusBarForegroundStyleAttributes *)self expandedNameForImageName:v9];
+  v11 = [(UIStatusBarForegroundStyleAttributes *)self expandedNameForImageName:namedCopy];
 
-  v12 = [(UIStatusBarForegroundStyleAttributes *)self shadowImageForImage:v10 withIdentifier:v11 forStyle:a4 withStrength:a5];
+  v12 = [(UIStatusBarForegroundStyleAttributes *)self shadowImageForImage:v10 withIdentifier:v11 forStyle:style withStrength:strength];
 
   v13 = [_UILegibilityImageSet imageFromImage:v10 withShadowImage:v12];
 
   return v13;
 }
 
-- (id)shadowImageForImage:(id)a3 withIdentifier:(id)a4 forStyle:(int64_t)a5 withStrength:(double)a6 inTempGroup:(id)a7 shouldCache:(BOOL)a8
+- (id)shadowImageForImage:(id)image withIdentifier:(id)identifier forStyle:(int64_t)style withStrength:(double)strength inTempGroup:(id)group shouldCache:(BOOL)cache
 {
-  v8 = a8;
-  v14 = a3;
-  v15 = a7;
+  cacheCopy = cache;
+  imageCopy = image;
+  groupCopy = group;
   v16 = 0;
-  if (v14 && a5)
+  if (imageCopy && style)
   {
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"shadow_%@_%d_%.2f", a4, a5, *&a6];
-    if (!v8 || ([(UIStatusBarForegroundStyleAttributes *)self cachedImageNamed:v17 inTempGroup:v15], (v16 = objc_claimAutoreleasedReturnValue()) == 0))
+    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"shadow_%@_%d_%.2f", identifier, style, *&strength];
+    if (!cacheCopy || ([(UIStatusBarForegroundStyleAttributes *)self cachedImageNamed:v17 inTempGroup:groupCopy], (v16 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v18 = [[_UILegibilitySettings alloc] initWithStyle:a5];
-      v16 = [v14 _imageForLegibilitySettings:v18 strength:a6];
+      v18 = [[_UILegibilitySettings alloc] initWithStyle:style];
+      v16 = [imageCopy _imageForLegibilitySettings:v18 strength:strength];
       if (v16)
       {
-        v19 = !v8;
+        v19 = !cacheCopy;
       }
 
       else
@@ -803,7 +803,7 @@ LABEL_8:
 
       if (!v19)
       {
-        [(UIStatusBarForegroundStyleAttributes *)self cacheImage:v16 named:v17 inTempGroup:v15];
+        [(UIStatusBarForegroundStyleAttributes *)self cacheImage:v16 named:v17 inTempGroup:groupCopy];
       }
     }
   }
@@ -811,19 +811,19 @@ LABEL_8:
   return v16;
 }
 
-- (id)imageIdWithText:(id)a3 forWidth:(double)a4 lineBreakMode:(int64_t)a5 letterSpacing:(double)a6 style:(int64_t)a7
+- (id)imageIdWithText:(id)text forWidth:(double)width lineBreakMode:(int64_t)mode letterSpacing:(double)spacing style:(int64_t)style
 {
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [(UIStatusBarForegroundStyleAttributes *)self expandedNameForImageName:a3];
-  v14 = [(UIStatusBarForegroundStyleAttributes *)self textColorForStyle:a7];
-  v15 = [v14 styleString];
-  v16 = [(UIStatusBarForegroundStyleAttributes *)self idiom];
+  v13 = [(UIStatusBarForegroundStyleAttributes *)self expandedNameForImageName:text];
+  v14 = [(UIStatusBarForegroundStyleAttributes *)self textColorForStyle:style];
+  styleString = [v14 styleString];
+  idiom = [(UIStatusBarForegroundStyleAttributes *)self idiom];
   [(UIStatusBarForegroundStyleAttributes *)self scale];
-  v18 = [v12 stringWithFormat:@"%@_%d_%.2f_%d_%@_%ld-%.2f", v13, a5, *&a6, a7, v15, v16, v17];
+  v18 = [v12 stringWithFormat:@"%@_%d_%.2f_%d_%@_%ld-%.2f", v13, mode, *&spacing, style, styleString, idiom, v17];
 
-  if (a4 != 1.79769313e308)
+  if (width != 1.79769313e308)
   {
-    v19 = [v18 stringByAppendingFormat:@"_%.2f", *&a4];
+    v19 = [v18 stringByAppendingFormat:@"_%.2f", *&width];
 
     v18 = v19;
   }
@@ -831,20 +831,20 @@ LABEL_8:
   return v18;
 }
 
-- (id)imageWithText:(id)a3 ofItemType:(int)a4 forWidth:(double)a5 lineBreakMode:(int64_t)a6 letterSpacing:(double)a7 textAlignment:(int64_t)a8 style:(int64_t)a9 withLegibilityStyle:(int64_t)a10 legibilityStrength:(double)a11 shouldCache:(BOOL)a12
+- (id)imageWithText:(id)text ofItemType:(int)type forWidth:(double)width lineBreakMode:(int64_t)mode letterSpacing:(double)spacing textAlignment:(int64_t)alignment style:(int64_t)style withLegibilityStyle:(int64_t)self0 legibilityStrength:(double)self1 shouldCache:(BOOL)self2
 {
-  v19 = *&a4;
-  v21 = a3;
-  if ([v21 length])
+  v19 = *&type;
+  textCopy = text;
+  if ([textCopy length])
   {
-    v50 = a10;
-    v22 = [(UIStatusBarForegroundStyleAttributes *)self imageIdWithText:v21 forWidth:a6 lineBreakMode:a9 letterSpacing:a5 style:a7];
+    legibilityStyleCopy = legibilityStyle;
+    v22 = [(UIStatusBarForegroundStyleAttributes *)self imageIdWithText:textCopy forWidth:mode lineBreakMode:style letterSpacing:width style:spacing];
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"TempText%d", v19];
     v51 = [MEMORY[0x1E696AEC0] stringWithFormat:@"TempTextShadow%d", v19];
-    if (!a12 || ([(UIStatusBarForegroundStyleAttributes *)self cachedImageNamed:v22 inTempGroup:v23], (v24 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!cache || ([(UIStatusBarForegroundStyleAttributes *)self cachedImageNamed:v22 inTempGroup:v23], (v24 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v25 = [(UIStatusBarForegroundStyleAttributes *)self textFontForStyle:a9];
-      [v21 sizeWithFont:v25 forWidth:a6 lineBreakMode:a5 letterSpacing:a7];
+      v25 = [(UIStatusBarForegroundStyleAttributes *)self textFontForStyle:style];
+      [textCopy sizeWithFont:v25 forWidth:mode lineBreakMode:width letterSpacing:spacing];
       v27 = v26;
       v29 = v28;
       if ([(UIStatusBarForegroundStyleAttributes *)self usesVerticalLayout])
@@ -873,7 +873,7 @@ LABEL_8:
         v36 = ContextStack[3 * (*ContextStack - 1) + 1];
       }
 
-      [(UIStatusBarForegroundStyleAttributes *)self drawText:v21 forWidth:a6 lineBreakMode:a8 letterSpacing:a9 textAlignment:a5 style:a7 textSize:v27 textHeight:v31, v29];
+      [(UIStatusBarForegroundStyleAttributes *)self drawText:textCopy forWidth:mode lineBreakMode:alignment letterSpacing:style textAlignment:width style:spacing textSize:v27 textHeight:v31, v29];
       Image = CGBitmapContextCreateImage(v36);
       if (Image)
       {
@@ -907,21 +907,21 @@ LABEL_8:
       }
 
       UIGraphicsEndImageContext();
-      if (a12)
+      if (cache)
       {
         [(UIStatusBarForegroundStyleAttributes *)self cacheImage:v24 named:v22 inTempGroup:v23];
       }
     }
 
-    v43 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v44 = [v21 stringByTrimmingCharactersInSet:v43];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v44 = [textCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
     v45 = [v44 length];
 
     if (v45)
     {
-      v46 = self;
+      selfCopy = self;
       v47 = v51;
-      v32 = [(UIStatusBarForegroundStyleAttributes *)v46 shadowImageForImage:v24 withIdentifier:v22 forStyle:v50 withStrength:v51 inTempGroup:a12 shouldCache:a11];
+      v32 = [(UIStatusBarForegroundStyleAttributes *)selfCopy shadowImageForImage:v24 withIdentifier:v22 forStyle:legibilityStyleCopy withStrength:v51 inTempGroup:cache shouldCache:strength];
     }
 
     else
@@ -942,13 +942,13 @@ LABEL_8:
   return v48;
 }
 
-- (id)cachedImageWithText:(id)a3 forWidth:(double)a4 lineBreakMode:(int64_t)a5 letterSpacing:(double)a6 textAlignment:(int64_t)a7 style:(int64_t)a8 itemType:(int)a9
+- (id)cachedImageWithText:(id)text forWidth:(double)width lineBreakMode:(int64_t)mode letterSpacing:(double)spacing textAlignment:(int64_t)alignment style:(int64_t)style itemType:(int)type
 {
-  v9 = *&a9;
-  v15 = a3;
-  if ([v15 length])
+  v9 = *&type;
+  textCopy = text;
+  if ([textCopy length])
   {
-    v16 = [(UIStatusBarForegroundStyleAttributes *)self imageIdWithText:v15 forWidth:a5 lineBreakMode:a8 letterSpacing:a4 style:a6];
+    v16 = [(UIStatusBarForegroundStyleAttributes *)self imageIdWithText:textCopy forWidth:mode lineBreakMode:style letterSpacing:width style:spacing];
     v17 = [(UIStatusBarForegroundStyleAttributes *)self _cachedImageNamed:v16];
     if (!v17)
     {
@@ -965,13 +965,13 @@ LABEL_8:
   return v17;
 }
 
-- (id)textFontForStyle:(int64_t)a3
+- (id)textFontForStyle:(int64_t)style
 {
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   v6 = [(NSMutableDictionary *)self->_cachedFonts objectForKeyedSubscript:v5];
   if (!v6)
   {
-    v6 = [(UIStatusBarForegroundStyleAttributes *)self makeTextFontForStyle:a3];
+    v6 = [(UIStatusBarForegroundStyleAttributes *)self makeTextFontForStyle:style];
     if (v6)
     {
       cachedFonts = self->_cachedFonts;
@@ -991,9 +991,9 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)_shouldUseBoldFontForStyle:(int64_t)a3
+- (BOOL)_shouldUseBoldFontForStyle:(int64_t)style
 {
-  if (a3 > 2)
+  if (style > 2)
   {
     return 1;
   }
@@ -1002,7 +1002,7 @@ LABEL_8:
   return v6 < 1.5;
 }
 
-- (id)makeTextFontForStyle:(int64_t)a3
+- (id)makeTextFontForStyle:(int64_t)style
 {
   if ([(UIStatusBarForegroundStyleAttributes *)self idiom]== 1)
   {
@@ -1012,7 +1012,7 @@ LABEL_8:
   else
   {
     v6 = 12.0;
-    if (a3 == 2)
+    if (style == 2)
     {
       [(UIStatusBarForegroundStyleAttributes *)self scale];
       if (v7 >= 1.5)
@@ -1026,7 +1026,7 @@ LABEL_8:
       }
     }
 
-    if ([(UIStatusBarForegroundStyleAttributes *)self _shouldUseBoldFontForStyle:a3])
+    if ([(UIStatusBarForegroundStyleAttributes *)self _shouldUseBoldFontForStyle:style])
     {
       [off_1E70ECC18 _opticalBoldSystemFontOfSize:v6];
     }
@@ -1041,14 +1041,14 @@ LABEL_8:
   return v5;
 }
 
-- (double)baselineOffsetForStyle:(int64_t)a3
+- (double)baselineOffsetForStyle:(int64_t)style
 {
   v5 = [(UIStatusBarForegroundStyleAttributes *)self textFontForStyle:?];
   [@"A" sizeWithFont:v5 forWidth:2 lineBreakMode:1.79769313e308 letterSpacing:0.0];
   v7 = v6;
   [(UIStatusBarForegroundStyleAttributes *)self height];
   v9 = v8;
-  [(UIStatusBarForegroundStyleAttributes *)self textOffsetForStyle:a3];
+  [(UIStatusBarForegroundStyleAttributes *)self textOffsetForStyle:style];
   v11 = v7 + v10 + -1.0 + floor((v9 - v7) * 0.5);
   [v5 descender];
   v13 = v12 + v11;
@@ -1056,12 +1056,12 @@ LABEL_8:
   return v13;
 }
 
-- (id)textForNetworkType:(int)a3
+- (id)textForNetworkType:(int)type
 {
   v3 = 0;
-  if (a3 <= 6)
+  if (type <= 6)
   {
-    switch(a3)
+    switch(type)
     {
       case 1:
         v4 = @"E";
@@ -1081,16 +1081,16 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a3 > 8)
+  if (type > 8)
   {
-    if (a3 == 9)
+    if (type == 9)
     {
       v4 = @"LTE-A";
     }
 
     else
     {
-      if (a3 != 10)
+      if (type != 10)
       {
         goto LABEL_18;
       }
@@ -1101,7 +1101,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (a3 == 7)
+  if (type == 7)
   {
     v6 = _UIKitBundle();
     v3 = [v6 localizedStringForKey:@"1x[statusBarDataNetwork]" value:@"1x" table:@"Localizable"];
@@ -1118,9 +1118,9 @@ LABEL_18:
   return v3;
 }
 
-- (double)sizeForMoonMaskVisible:(BOOL)a3
+- (double)sizeForMoonMaskVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   [(UIStatusBarForegroundStyleAttributes *)self scale];
   if (v5 <= 2.5)
   {
@@ -1138,7 +1138,7 @@ LABEL_18:
     result = 7.66666667;
   }
 
-  if (!v3)
+  if (!visibleCopy)
   {
     return 11.0;
   }
@@ -1146,12 +1146,12 @@ LABEL_18:
   return result;
 }
 
-- (CGPoint)positionForMoonMaskInBounds:(CGRect)a3
+- (CGPoint)positionForMoonMaskInBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIStatusBarForegroundStyleAttributes *)self scale];
   if (v8 <= 2.5)
   {

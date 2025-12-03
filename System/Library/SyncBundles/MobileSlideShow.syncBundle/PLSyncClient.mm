@@ -1,64 +1,64 @@
 @interface PLSyncClient
-+ (void)_logRestoreContext:(id)a3;
-- (BOOL)prepareForSyncWithHostAnchor:(id)a3 progressCallback:(id)a4 error:(id *)a5;
-- (BOOL)reconcileSync:(unsigned int)a3 withNewAnchor:(id)a4 progressCallback:(id)a5 error:(id *)a6;
++ (void)_logRestoreContext:(id)context;
+- (BOOL)prepareForSyncWithHostAnchor:(id)anchor progressCallback:(id)callback error:(id *)error;
+- (BOOL)reconcileSync:(unsigned int)sync withNewAnchor:(id)anchor progressCallback:(id)callback error:(id *)error;
 - (PLSyncClient)init;
-- (id)_albumURIForAlbumUUID:(id)a3;
+- (id)_albumURIForAlbumUUID:(id)d;
 - (id)_allAssetDirectoryURLs;
 - (id)_allAssetMetricBaseURLs;
-- (id)_getAssetsToRestoreFromPaths:(id)a3;
-- (id)_metricsForLibraryAtURL:(id)a3 error:(id *)a4;
+- (id)_getAssetsToRestoreFromPaths:(id)paths;
+- (id)_metricsForLibraryAtURL:(id)l error:(id *)error;
 - (id)_neededRestoreAssets;
 - (id)_onDeviceAlbumsByUUID;
-- (id)_onDeviceAssetsByUUIDInLibrary:(id)a3;
+- (id)_onDeviceAssetsByUUIDInLibrary:(id)library;
 - (id)_pathToRestoreContext;
-- (id)_photoLibraryWithExpectationExists:(BOOL)a3;
-- (id)_readPhotosSyncMetadataFromPath:(id)a3 error:(id *)a4;
-- (id)_restoreGroupKeyFromATAssetFilePath:(id)a3;
-- (id)_restorePathsFromBackupList:(id)a3;
-- (id)_restorePathsFromIncompleteAssetUUIDs:(id)a3 inLibrary:(id)a4;
+- (id)_photoLibraryWithExpectationExists:(BOOL)exists;
+- (id)_readPhotosSyncMetadataFromPath:(id)path error:(id *)error;
+- (id)_restoreGroupKeyFromATAssetFilePath:(id)path;
+- (id)_restorePathsFromBackupList:(id)list;
+- (id)_restorePathsFromIncompleteAssetUUIDs:(id)ds inLibrary:(id)library;
 - (id)disabledAssetTypes;
 - (id)installedAssetMetrics;
 - (id)outstandingAssetTransfers;
-- (void)_addPaths:(id)a3 toRestoreContextFilesForKey:(id)a4;
-- (void)_batchDeleteSyncedAssetsWithReason:(id)a3 subpredicate:(id)a4;
+- (void)_addPaths:(id)paths toRestoreContextFilesForKey:(id)key;
+- (void)_batchDeleteSyncedAssetsWithReason:(id)reason subpredicate:(id)subpredicate;
 - (void)_cleanupAfterSyncOrRestore;
 - (void)_clearEmptySyncAlbums;
 - (void)_clearPendingCounts;
 - (void)_clearSyncState;
-- (void)_createAlbumUUIDToObjectIDMap:(id)a3;
-- (void)_enqueueRemoteSyncCleanupJobBeforeDate:(id)a3 withFinishedBlock:(id)a4;
-- (void)_enqueueSyncSaveJob:(id)a3;
-- (void)_incrementPendingCountForContainerUUID:(id)a3;
+- (void)_createAlbumUUIDToObjectIDMap:(id)map;
+- (void)_enqueueRemoteSyncCleanupJobBeforeDate:(id)date withFinishedBlock:(id)block;
+- (void)_enqueueSyncSaveJob:(id)job;
+- (void)_incrementPendingCountForContainerUUID:(id)d;
 - (void)_initializeOutstandingAssets;
 - (void)_persistAssetAlbumOrderStructures;
-- (void)_populateRestorePathGroupsAndUpdateValidatedRestorePaths:(id)a3;
+- (void)_populateRestorePathGroupsAndUpdateValidatedRestorePaths:(id)paths;
 - (void)_pullOutMasterAlbumFromAlbumsAndEvents;
-- (void)_reconcileAlbums:(id)a3;
-- (void)_reconcileAssets:(id)a3;
-- (void)_reconcileDeviceAlbumListSortingWithAlbums:(id)a3 iTunesAlbumOrder:(id)a4 inLibrary:(id)a5;
+- (void)_reconcileAlbums:(id)albums;
+- (void)_reconcileAssets:(id)assets;
+- (void)_reconcileDeviceAlbumListSortingWithAlbums:(id)albums iTunesAlbumOrder:(id)order inLibrary:(id)library;
 - (void)_reconcileMetadata;
-- (void)_reorderAlbumListProxy:(id)a3 withAlbumsAtIndexes:(id)a4 inNewOrder:(id)a5;
-- (void)_restoreAssetTransfer:(id)a3 succeeded:(BOOL)a4 withError:(id)a5;
-- (void)_saveOrderOnSyncedAlbum:(id)a3 inLibrary:(id)a4;
+- (void)_reorderAlbumListProxy:(id)proxy withAlbumsAtIndexes:(id)indexes inNewOrder:(id)order;
+- (void)_restoreAssetTransfer:(id)transfer succeeded:(BOOL)succeeded withError:(id)error;
+- (void)_saveOrderOnSyncedAlbum:(id)album inLibrary:(id)library;
 - (void)_saveOutstandingSyncJobs;
-- (void)_setPendingAlbumCounts:(id)a3;
-- (void)_sortATAssetsToRestore:(id)a3 withUUIDPathDict:(id)a4;
+- (void)_setPendingAlbumCounts:(id)counts;
+- (void)_sortATAssetsToRestore:(id)restore withUUIDPathDict:(id)dict;
 - (void)_startListeningToMemoryPressureEvents;
 - (void)_stopListeningToMemoryPressureEvents;
-- (void)_syncAssetTransfer:(id)a3 succeeded:(BOOL)a4 withError:(id)a5;
+- (void)_syncAssetTransfer:(id)transfer succeeded:(BOOL)succeeded withError:(id)error;
 - (void)_uninitializeLibrary;
-- (void)assetTransferEndedWithSuccess:(BOOL)a3;
+- (void)assetTransferEndedWithSuccess:(BOOL)success;
 - (void)dealloc;
-- (void)restoreEndedWithError:(id)a3;
-- (void)syncEndedWithSuccess:(BOOL)a3;
+- (void)restoreEndedWithError:(id)error;
+- (void)syncEndedWithSuccess:(BOOL)success;
 @end
 
 @implementation PLSyncClient
 
-- (id)_albumURIForAlbumUUID:(id)a3
+- (id)_albumURIForAlbumUUID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = [(NSMutableDictionary *)self->_albumUUIDToObjectIDMap objectForKey:?];
   }
@@ -71,9 +71,9 @@
   return v4;
 }
 
-- (void)_createAlbumUUIDToObjectIDMap:(id)a3
+- (void)_createAlbumUUIDToObjectIDMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   [(PLSyncClient *)self _photoLibrary];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
@@ -81,19 +81,19 @@
   v6[3] = &unk_24868;
   v7 = v6[4] = self;
   v5 = v7;
-  [v5 withDispatchGroup:v4 performBlock:v6];
+  [v5 withDispatchGroup:mapCopy performBlock:v6];
 }
 
-- (void)_restoreAssetTransfer:(id)a3 succeeded:(BOOL)a4 withError:(id)a5
+- (void)_restoreAssetTransfer:(id)transfer succeeded:(BOOL)succeeded withError:(id)error
 {
-  v48 = a3;
-  v46 = a5;
-  v45 = [(PLSyncClient *)self _photoLibrary];
+  transferCopy = transfer;
+  errorCopy = error;
+  _photoLibrary = [(PLSyncClient *)self _photoLibrary];
   context = objc_autoreleasePoolPush();
-  v49 = [v48 path];
-  v47 = [(PLSyncClient *)self _restoreGroupKeyFromATAssetFilePath:v49];
-  v8 = [(PLSyncClient *)self restoreKeyToAssetGroup];
-  v50 = [v8 objectForKey:v47];
+  path = [transferCopy path];
+  v47 = [(PLSyncClient *)self _restoreGroupKeyFromATAssetFilePath:path];
+  restoreKeyToAssetGroup = [(PLSyncClient *)self restoreKeyToAssetGroup];
+  v50 = [restoreKeyToAssetGroup objectForKey:v47];
 
   v9 = PLSyncGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -105,24 +105,24 @@
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Group %{public}@ -> %{public}@", buf, 0x16u);
   }
 
-  if (a4)
+  if (succeeded)
   {
-    v10 = [(PLSyncClient *)self outstandingAssets];
-    [v10 removeObject:v48];
+    outstandingAssets = [(PLSyncClient *)self outstandingAssets];
+    [outstandingAssets removeObject:transferCopy];
 
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     buf[24] = 0;
-    v11 = [v50 assetPairs];
+    assetPairs = [v50 assetPairs];
     v57[0] = _NSConcreteStackBlock;
     v57[1] = 3221225472;
     v57[2] = sub_8378;
     v57[3] = &unk_24BC8;
-    v12 = v49;
+    v12 = path;
     v58 = v12;
     v59 = buf;
-    [v11 enumerateObjectsUsingBlock:v57];
+    [assetPairs enumerateObjectsUsingBlock:v57];
 
     if (*(*&buf[8] + 24))
     {
@@ -157,16 +157,16 @@ LABEL_30:
     goto LABEL_32;
   }
 
-  if (v46)
+  if (errorCopy)
   {
-    v17 = [v46 domain];
-    if (![v17 isEqualToString:@"ATError"] || objc_msgSend(v46, "code") == &dword_4 + 3 || objc_msgSend(v46, "code") == &dword_8 || objc_msgSend(v46, "code") == &dword_C + 2 || objc_msgSend(v46, "code") == &dword_10 || objc_msgSend(v46, "code") == &dword_8 + 1 || objc_msgSend(v46, "code") == &dword_10 + 2 || objc_msgSend(v46, "code") == &dword_4 || objc_msgSend(v46, "code") == &dword_10 + 3 || objc_msgSend(v46, "code") == &dword_14 || objc_msgSend(v46, "code") == &dword_18 + 1 || objc_msgSend(v46, "code") == &dword_18 + 3 || objc_msgSend(v46, "code") == &dword_18 || objc_msgSend(v46, "code") == &dword_1C + 3 || objc_msgSend(v46, "code") == &stru_20 || objc_msgSend(v46, "code") == &stru_20.cmd + 1 || objc_msgSend(v46, "code") == &stru_20.cmd + 2)
+    domain = [errorCopy domain];
+    if (![domain isEqualToString:@"ATError"] || objc_msgSend(errorCopy, "code") == &dword_4 + 3 || objc_msgSend(errorCopy, "code") == &dword_8 || objc_msgSend(errorCopy, "code") == &dword_C + 2 || objc_msgSend(errorCopy, "code") == &dword_10 || objc_msgSend(errorCopy, "code") == &dword_8 + 1 || objc_msgSend(errorCopy, "code") == &dword_10 + 2 || objc_msgSend(errorCopy, "code") == &dword_4 || objc_msgSend(errorCopy, "code") == &dword_10 + 3 || objc_msgSend(errorCopy, "code") == &dword_14 || objc_msgSend(errorCopy, "code") == &dword_18 + 1 || objc_msgSend(errorCopy, "code") == &dword_18 + 3 || objc_msgSend(errorCopy, "code") == &dword_18 || objc_msgSend(errorCopy, "code") == &dword_1C + 3 || objc_msgSend(errorCopy, "code") == &stru_20 || objc_msgSend(errorCopy, "code") == &stru_20.cmd + 1 || objc_msgSend(errorCopy, "code") == &stru_20.cmd + 2)
     {
     }
 
     else
     {
-      v40 = [v46 code] == &stru_20.cmd + 3;
+      v40 = [errorCopy code] == &stru_20.cmd + 3;
 
       if (!v40)
       {
@@ -174,32 +174,32 @@ LABEL_30:
         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          *&buf[4] = v48;
+          *&buf[4] = transferCopy;
           *&buf[12] = 2114;
-          *&buf[14] = v46;
+          *&buf[14] = errorCopy;
           _os_log_impl(&dword_0, v41, OS_LOG_TYPE_ERROR, "Unrecoverable error, will not attempt to restore ATAsset %{public}@ [%{public}@]", buf, 0x16u);
         }
 
-        v42 = [(PLSyncClient *)self outstandingAssets];
-        [v42 removeObject:v48];
+        outstandingAssets2 = [(PLSyncClient *)self outstandingAssets];
+        [outstandingAssets2 removeObject:transferCopy];
 
-        v43 = [v50 assetPairs];
+        assetPairs2 = [v50 assetPairs];
         v60[0] = _NSConcreteStackBlock;
         v60[1] = 3221225472;
         v60[2] = sub_828C;
         v60[3] = &unk_24BA0;
-        v61 = v49;
-        v62 = self;
-        [v43 enumerateObjectsUsingBlock:v60];
+        v61 = path;
+        selfCopy = self;
+        [assetPairs2 enumerateObjectsUsingBlock:v60];
 
 LABEL_32:
-        v19 = [v50 assetPairs];
-        v51 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v19 count]);
+        assetPairs3 = [v50 assetPairs];
+        v51 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [assetPairs3 count]);
         v55 = 0u;
         v56 = 0u;
         v53 = 0u;
         v54 = 0u;
-        obj = v19;
+        obj = assetPairs3;
         v20 = [obj countByEnumeratingWithState:&v53 objects:v63 count:16];
         if (v20)
         {
@@ -216,18 +216,18 @@ LABEL_32:
               }
 
               v25 = *(*(&v53 + 1) + 8 * i);
-              v26 = [v25 status];
-              if (v26 == 2)
+              status = [v25 status];
+              if (status == 2)
               {
-                v30 = [v25 path];
-                [v51 addObject:v30];
+                path2 = [v25 path];
+                [v51 addObject:path2];
 
                 v29 = @"COMPLETE";
               }
 
               else
               {
-                if (v26)
+                if (status)
                 {
                   v27 = 0;
                 }
@@ -237,7 +237,7 @@ LABEL_32:
                   v27 = @"PENDING";
                 }
 
-                if (v26)
+                if (status)
                 {
                   v28 = v22;
                 }
@@ -247,7 +247,7 @@ LABEL_32:
                   v28 = v22 + 1;
                 }
 
-                if (v26 == 1)
+                if (status == 1)
                 {
                   v29 = @"FAILED";
                 }
@@ -257,7 +257,7 @@ LABEL_32:
                   v29 = v27;
                 }
 
-                if (v26 != 1)
+                if (status != 1)
                 {
                   v22 = v28;
                 }
@@ -266,11 +266,11 @@ LABEL_32:
               v31 = PLSyncGetLog();
               if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
               {
-                v32 = [v25 path];
+                path3 = [v25 path];
                 *buf = 67109634;
                 *&buf[4] = v21;
                 *&buf[8] = 2114;
-                *&buf[10] = v32;
+                *&buf[10] = path3;
                 *&buf[18] = 2114;
                 *&buf[20] = v29;
                 _os_log_impl(&dword_0, v31, OS_LOG_TYPE_DEFAULT, "File[%d]: %{public}@ has status: %{public}@", buf, 0x1Cu);
@@ -308,7 +308,7 @@ LABEL_68:
 
         if ([v51 count])
         {
-          v34 = [v50 UUID];
+          uUID = [v50 UUID];
           v35 = PLSyncGetLog();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
           {
@@ -326,21 +326,21 @@ LABEL_68:
             _os_log_impl(&dword_0, v36, OS_LOG_TYPE_DEFAULT, "Sending updateRestoredAssetWithUUID:... to assetsd with %d paths", buf, 8u);
           }
 
-          v38 = [v45 assetsdClient];
-          v39 = [v38 syncClient];
-          [v39 updateRestoredAssetWithUUID:v34 paths:v51 fixAddedDate:self->_fixAddedDates];
+          assetsdClient = [_photoLibrary assetsdClient];
+          syncClient = [assetsdClient syncClient];
+          [syncClient updateRestoredAssetWithUUID:uUID paths:v51 fixAddedDate:self->_fixAddedDates];
 
           [(PLSyncClient *)self _addPaths:v51 toRestoreContextFilesForKey:@"kPLSyncRestoreContextRestoredFilesKey"];
         }
 
         else
         {
-          v34 = PLSyncGetLog();
-          if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
+          uUID = PLSyncGetLog();
+          if (os_log_type_enabled(uUID, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
             *&buf[4] = v50;
-            _os_log_impl(&dword_0, v34, OS_LOG_TYPE_DEFAULT, "Group %{public}@ is FAILED", buf, 0xCu);
+            _os_log_impl(&dword_0, uUID, OS_LOG_TYPE_DEFAULT, "Group %{public}@ is FAILED", buf, 0xCu);
           }
         }
 
@@ -354,9 +354,9 @@ LABEL_68:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    *&buf[4] = v49;
+    *&buf[4] = path;
     *&buf[12] = 2114;
-    *&buf[14] = v46;
+    *&buf[14] = errorCopy;
     _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "Potentially recoverable error when trying to restore %{public}@: %{public}@", buf, 0x16u);
   }
 
@@ -369,17 +369,17 @@ LABEL_69:
 {
   +[NSDate timeIntervalSinceReferenceDate];
   self->_lastSyncJobsSaveTime = v3;
-  v4 = [(PLSyncClient *)self outstandingSyncJobs];
-  v5 = [v4 count];
+  outstandingSyncJobs = [(PLSyncClient *)self outstandingSyncJobs];
+  v5 = [outstandingSyncJobs count];
 
   if (v5)
   {
-    v6 = [(PLSyncClient *)self outstandingSyncJobs];
-    v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
+    outstandingSyncJobs2 = [(PLSyncClient *)self outstandingSyncJobs];
+    v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [outstandingSyncJobs2 count]);
 
-    v25 = self;
-    v8 = [(PLSyncClient *)self outstandingSyncJobs];
-    v9 = [v8 copy];
+    selfCopy = self;
+    outstandingSyncJobs3 = [(PLSyncClient *)self outstandingSyncJobs];
+    v9 = [outstandingSyncJobs3 copy];
 
     v10 = PLSyncGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -418,10 +418,10 @@ LABEL_69:
             _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "Preparing %{public}@", buf, 0xCu);
           }
 
-          v19 = [v16 serializedData];
-          if (v19)
+          serializedData = [v16 serializedData];
+          if (serializedData)
           {
-            [v7 addObject:v19];
+            [v7 addObject:serializedData];
           }
 
           else
@@ -443,55 +443,55 @@ LABEL_69:
       while (v13);
     }
 
-    v22 = [(dispatch_group_t *)v25 outstandingSyncJobs];
-    [v22 removeAllObjects];
+    outstandingSyncJobs4 = [(dispatch_group_t *)selfCopy outstandingSyncJobs];
+    [outstandingSyncJobs4 removeAllObjects];
 
-    dispatch_group_enter(v25[6]);
+    dispatch_group_enter(selfCopy[6]);
     v23 = +[PLAssetsSaver sharedAssetsSaver];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_8790;
     v26[3] = &unk_24B78;
-    v26[4] = v25;
+    v26[4] = selfCopy;
     v27 = v11;
     v24 = v11;
     [v23 saveSyncedAssets:v7 completionBlock:v26];
   }
 }
 
-- (void)_syncAssetTransfer:(id)a3 succeeded:(BOOL)a4 withError:(id)a5
+- (void)_syncAssetTransfer:(id)transfer succeeded:(BOOL)succeeded withError:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PLSyncClient *)self _photoLibrary];
+  transferCopy = transfer;
+  errorCopy = error;
+  _photoLibrary = [(PLSyncClient *)self _photoLibrary];
   v11 = objc_autoreleasePoolPush();
-  if (v9 && !a4)
+  if (errorCopy && !succeeded)
   {
     v12 = PLSyncGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v115 = v9;
+      v115 = errorCopy;
       v116 = 2114;
-      v117 = v8;
+      v117 = transferCopy;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "Encountered unrecoverable error %{public}@ for asset %{public}@ during sync", buf, 0x16u);
     }
 
-    v13 = [(PLSyncClient *)self outstandingAssets];
-    [v13 removeObject:v8];
+    outstandingAssets = [(PLSyncClient *)self outstandingAssets];
+    [outstandingAssets removeObject:transferCopy];
 
     libraryGroup = self->_libraryGroup;
     v111[0] = _NSConcreteStackBlock;
     v111[1] = 3221225472;
     v111[2] = sub_94F4;
     v111[3] = &unk_24738;
-    v112 = v10;
+    v112 = _photoLibrary;
     [v112 withDispatchGroup:libraryGroup performTransaction:v111];
     v15 = v112;
     goto LABEL_23;
   }
 
-  if (!a4)
+  if (!succeeded)
   {
     v15 = PLSyncGetLog();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -504,8 +504,8 @@ LABEL_69:
     goto LABEL_18;
   }
 
-  v16 = [(PLSyncClient *)self outstandingAssets];
-  v17 = [v16 containsObject:v8];
+  outstandingAssets2 = [(PLSyncClient *)self outstandingAssets];
+  v17 = [outstandingAssets2 containsObject:transferCopy];
 
   if ((v17 & 1) == 0)
   {
@@ -516,12 +516,12 @@ LABEL_69:
     }
 
     *buf = 138412290;
-    v115 = v8;
+    v115 = transferCopy;
     v37 = "Got transfer notification of unknown asset: %@";
     goto LABEL_21;
   }
 
-  if (([v8 isDownload]& 1) == 0)
+  if (([transferCopy isDownload]& 1) == 0)
   {
     v15 = PLSyncGetLog();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -539,9 +539,9 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v18 = [v8 path];
+  path = [transferCopy path];
 
-  if (!v18)
+  if (!path)
   {
     v15 = PLSyncGetLog();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -550,7 +550,7 @@ LABEL_22:
     }
 
     *buf = 138412290;
-    v115 = v8;
+    v115 = transferCopy;
     v37 = "Asset with no path: %@, ignoring.";
 LABEL_21:
     v38 = v15;
@@ -560,14 +560,14 @@ LABEL_21:
 
   v94 = v11;
   uuidToPLSAsset = self->_uuidToPLSAsset;
-  v20 = [v8 identifier];
-  v21 = [(NSMutableDictionary *)uuidToPLSAsset objectForKey:v20];
+  identifier = [transferCopy identifier];
+  v21 = [(NSMutableDictionary *)uuidToPLSAsset objectForKey:identifier];
 
-  v22 = [(PLSyncClient *)self pathManager];
-  v15 = [v22 photoDirectoryWithType:1];
+  pathManager = [(PLSyncClient *)self pathManager];
+  v15 = [pathManager photoDirectoryWithType:1];
 
-  v23 = [v8 path];
-  v24 = [v15 stringByAppendingPathComponent:v23];
+  path2 = [transferCopy path];
+  v24 = [v15 stringByAppendingPathComponent:path2];
 
   v25 = objc_alloc_init(PLSyncSaveJob);
   v93 = v24;
@@ -576,10 +576,10 @@ LABEL_21:
   v28 = [NSURL fileURLWithPath:v26 isDirectory:0];
   [v27 setOriginalAssetURL:v28];
 
-  v29 = [v21 hasVideoComplement];
-  [v27 setHasVideoComplement:v29];
+  hasVideoComplement = [v21 hasVideoComplement];
+  [v27 setHasVideoComplement:hasVideoComplement];
   v95 = v21;
-  if (!v29)
+  if (!hasVideoComplement)
   {
     goto LABEL_56;
   }
@@ -648,9 +648,9 @@ LABEL_51:
     v34 = v83;
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
-      v54 = [v8 identifier];
+      identifier2 = [transferCopy identifier];
       *buf = 138412290;
-      v115 = v54;
+      v115 = identifier2;
       _os_log_impl(&dword_0, v35, OS_LOG_TYPE_ERROR, "Did not find iris video file for %@", buf, 0xCu);
     }
 
@@ -670,17 +670,17 @@ LABEL_33:
     }
 
     v42 = *(*(&v105 + 1) + 8 * v41);
-    v43 = [v42 stringByDeletingPathExtension];
-    v44 = [v8 identifier];
-    v45 = [v43 isEqualToString:v44];
+    stringByDeletingPathExtension = [v42 stringByDeletingPathExtension];
+    identifier3 = [transferCopy identifier];
+    v45 = [stringByDeletingPathExtension isEqualToString:identifier3];
 
     if (!v45)
     {
       goto LABEL_43;
     }
 
-    v46 = [v42 pathExtension];
-    v47 = [PFUniformTypeUtilities typeWithFilenameExtension:v46];
+    pathExtension = [v42 pathExtension];
+    v47 = [PFUniformTypeUtilities typeWithFilenameExtension:pathExtension];
 
     if (v47)
     {
@@ -728,9 +728,9 @@ LABEL_43:
   v36 = 0;
   if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
   {
-    v53 = [v8 identifier];
+    identifier4 = [transferCopy identifier];
     *buf = 138412546;
-    v115 = v53;
+    v115 = identifier4;
     v116 = 2112;
     v117 = v51;
     _os_log_impl(&dword_0, v52, OS_LOG_TYPE_DEBUG, "Found iris video file for %@ at %@", buf, 0x16u);
@@ -749,15 +749,15 @@ LABEL_55:
   v21 = v95;
 LABEL_56:
   -[NSObject setIsVideo:](v27, "setIsVideo:", [v21 isVideo]);
-  v55 = [v8 identifier];
-  [v27 setUuid:v55];
+  identifier5 = [transferCopy identifier];
+  [v27 setUuid:identifier5];
 
   v56 = [CLLocation alloc];
-  v57 = [v21 latitude];
-  [v57 doubleValue];
+  latitude = [v21 latitude];
+  [latitude doubleValue];
   v59 = v58;
-  v60 = [v21 longitude];
-  [v60 doubleValue];
+  longitude = [v21 longitude];
+  [longitude doubleValue];
   v62 = v27;
   v63 = [v56 initWithLatitude:v59 longitude:v61];
 
@@ -768,45 +768,45 @@ LABEL_56:
     [v62 setLocation:v63];
   }
 
-  v64 = [v95 facesInfo];
-  [v62 setFacesInfo:v64];
+  facesInfo = [v95 facesInfo];
+  [v62 setFacesInfo:facesInfo];
 
-  v65 = [v95 exposureDate];
-  [v65 doubleValue];
-  v67 = [NSDate dateWithTimeIntervalSinceReferenceDate:v66 - kCFAbsoluteTimeIntervalSince1904];
+  exposureDate = [v95 exposureDate];
+  [exposureDate doubleValue];
+  kCFAbsoluteTimeIntervalSince1904 = [NSDate dateWithTimeIntervalSinceReferenceDate:v66 - kCFAbsoluteTimeIntervalSince1904];
 
-  v97 = v67;
-  [v62 setCreationDate:v67];
-  v68 = [v95 modificationDate];
-  [v68 doubleValue];
+  v97 = kCFAbsoluteTimeIntervalSince1904;
+  [v62 setCreationDate:kCFAbsoluteTimeIntervalSince1904];
+  modificationDate = [v95 modificationDate];
+  [modificationDate doubleValue];
   v69 = v62;
-  v71 = [NSDate dateWithTimeIntervalSinceReferenceDate:v70 - kCFAbsoluteTimeIntervalSince1904];
+  kCFAbsoluteTimeIntervalSince19042 = [NSDate dateWithTimeIntervalSinceReferenceDate:v70 - kCFAbsoluteTimeIntervalSince1904];
 
-  obja = v71;
-  [v62 setModificationDate:v71];
+  obja = kCFAbsoluteTimeIntervalSince19042;
+  [v62 setModificationDate:kCFAbsoluteTimeIntervalSince19042];
   assetUUIDtoSortToken = self->_assetUUIDtoSortToken;
-  v73 = [v8 identifier];
-  v74 = [(NSMutableDictionary *)assetUUIDtoSortToken objectForKey:v73];
+  identifier6 = [transferCopy identifier];
+  v74 = [(NSMutableDictionary *)assetUUIDtoSortToken objectForKey:identifier6];
 
   v90 = v74;
   [v62 setSortToken:v74];
-  v75 = [v95 originalFileName];
-  if (v75)
+  originalFileName = [v95 originalFileName];
+  if (originalFileName)
   {
-    [v62 setOriginalFileName:v75];
+    [v62 setOriginalFileName:originalFileName];
   }
 
-  v88 = v75;
+  v88 = originalFileName;
   v76 = +[NSMutableSet set];
   albumsAndEvents = self->_albumsAndEvents;
   v100[0] = _NSConcreteStackBlock;
   v100[1] = 3221225472;
   v100[2] = sub_953C;
   v100[3] = &unk_24B50;
-  v87 = v8;
+  v87 = transferCopy;
   v101 = v87;
   v102 = v95;
-  v103 = self;
+  selfCopy = self;
   v78 = v76;
   v104 = v78;
   v79 = v95;
@@ -831,8 +831,8 @@ LABEL_56:
     [(PLSyncClient *)self _saveOutstandingSyncJobs];
   }
 
-  v82 = [(PLSyncClient *)self outstandingAssets];
-  [v82 removeObject:v87];
+  outstandingAssets3 = [(PLSyncClient *)self outstandingAssets];
+  [outstandingAssets3 removeObject:v87];
 
   v11 = v94;
 LABEL_23:
@@ -885,30 +885,30 @@ LABEL_23:
   return v7;
 }
 
-- (void)_addPaths:(id)a3 toRestoreContextFilesForKey:(id)a4
+- (void)_addPaths:(id)paths toRestoreContextFilesForKey:(id)key
 {
-  v5 = a3;
-  v8 = a4;
-  v9 = v5;
-  v6 = v5;
-  v7 = v8;
+  pathsCopy = paths;
+  keyCopy = key;
+  v9 = pathsCopy;
+  v6 = pathsCopy;
+  v7 = keyCopy;
   PLSafeRunWithUnfairLock();
 }
 
 - (id)_pathToRestoreContext
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_pathToRestoreContext)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_pathToRestoreContext)
   {
-    v3 = [(PLSyncClient *)v2 pathManager];
-    v4 = [v3 cloudRestoreContextPath];
-    pathToRestoreContext = v2->_pathToRestoreContext;
-    v2->_pathToRestoreContext = v4;
+    pathManager = [(PLSyncClient *)selfCopy pathManager];
+    cloudRestoreContextPath = [pathManager cloudRestoreContextPath];
+    pathToRestoreContext = selfCopy->_pathToRestoreContext;
+    selfCopy->_pathToRestoreContext = cloudRestoreContextPath;
 
-    v6 = [(NSString *)v2->_pathToRestoreContext stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [(NSString *)selfCopy->_pathToRestoreContext stringByDeletingLastPathComponent];
     v12 = 0;
-    v7 = [PLFileUtilities createDirectoryAtPath:v6 error:&v12];
+    v7 = [PLFileUtilities createDirectoryAtPath:stringByDeletingLastPathComponent error:&v12];
     v8 = v12;
     if ((v7 & 1) == 0)
     {
@@ -916,7 +916,7 @@ LABEL_23:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v14 = v6;
+        v14 = stringByDeletingLastPathComponent;
         v15 = 2114;
         v16 = v8;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "Failed to create directory %{public}@: %{public}@", buf, 0x16u);
@@ -924,16 +924,16 @@ LABEL_23:
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v10 = v2->_pathToRestoreContext;
+  v10 = selfCopy->_pathToRestoreContext;
 
   return v10;
 }
 
-- (id)_restorePathsFromBackupList:(id)a3
+- (id)_restorePathsFromBackupList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v51 = 0;
   v52 = &v51;
   v53 = 0x3032000000;
@@ -950,27 +950,27 @@ LABEL_23:
   v39 = 3221225472;
   v40 = sub_B814;
   v41 = &unk_24AD8;
-  v42 = self;
+  selfCopy = self;
   v43 = &v51;
   v44 = &v45;
   PLSafeRunWithUnfairLock();
-  v24 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
-  v5 = [(PLSyncClient *)self pathManager];
-  v29 = [v5 photoDirectoryWithType:4];
+  v24 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [listCopy count]);
+  pathManager = [(PLSyncClient *)self pathManager];
+  v29 = [pathManager photoDirectoryWithType:4];
 
-  v6 = [(PLSyncClient *)self pathManager];
-  v27 = [v6 photoDirectoryWithType:9];
+  pathManager2 = [(PLSyncClient *)self pathManager];
+  v27 = [pathManager2 photoDirectoryWithType:9];
 
   v26 = [v29 length];
-  v7 = [(PLSyncClient *)self pathManager];
-  v28 = [v7 photoDirectoryWithType:30];
+  pathManager3 = [(PLSyncClient *)self pathManager];
+  v28 = [pathManager3 photoDirectoryWithType:30];
 
   v25 = [v28 length];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v4;
+  obj = listCopy;
   v8 = [obj countByEnumeratingWithState:&v34 objects:v57 count:16];
   if (v8)
   {
@@ -984,28 +984,28 @@ LABEL_23:
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v34 + 1) + 8 * i) path];
-        if (([v52[5] containsObject:v10] & 1) == 0 && (objc_msgSend(v46[5], "containsObject:", v10) & 1) == 0)
+        path = [*(*(&v34 + 1) + 8 * i) path];
+        if (([v52[5] containsObject:path] & 1) == 0 && (objc_msgSend(v46[5], "containsObject:", path) & 1) == 0)
         {
-          v11 = [v10 rangeOfString:v29];
+          v11 = [path rangeOfString:v29];
           v13 = v12;
-          v14 = [v10 rangeOfString:v28];
+          v14 = [path rangeOfString:v28];
           v16 = v15;
-          v31 = [v10 rangeOfString:v27];
-          v17 = [v10 rangeOfString:@"." options:4 range:{objc_msgSend(v10, "length") - 5, 4}];
-          v30 = [v10 rangeOfString:@".plist" options:4 range:{objc_msgSend(v10, "length") - 6, 6}];
-          v18 = [v10 rangeOfString:@".MISC"];
+          v31 = [path rangeOfString:v27];
+          v17 = [path rangeOfString:@"." options:4 range:{objc_msgSend(path, "length") - 5, 4}];
+          v30 = [path rangeOfString:@".plist" options:4 range:{objc_msgSend(path, "length") - 6, 6}];
+          v18 = [path rangeOfString:@".MISC"];
           v19 = 1;
           if (!v11 && v13)
           {
-            v19 = [v10 length] <= v26;
+            v19 = [path length] <= v26;
           }
 
           v20 = v19;
           v21 = 1;
           if (!v14 && v16)
           {
-            v21 = [v10 length] <= v25;
+            v21 = [path length] <= v25;
           }
 
           if (v18 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1037,7 +1037,7 @@ LABEL_24:
               }
             }
 
-            [v24 addObject:v10];
+            [v24 addObject:path];
           }
         }
 
@@ -1056,19 +1056,19 @@ LABEL_26:
   return v24;
 }
 
-- (id)_restorePathsFromIncompleteAssetUUIDs:(id)a3 inLibrary:(id)a4
+- (id)_restorePathsFromIncompleteAssetUUIDs:(id)ds inLibrary:(id)library
 {
-  v5 = a4;
-  v6 = a3;
-  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
+  libraryCopy = library;
+  dsCopy = ds;
+  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dsCopy count]);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_B984;
   v12[3] = &unk_24AB0;
-  v7 = v13 = v5;
+  v7 = v13 = libraryCopy;
   v14 = v7;
-  v8 = v5;
-  [v6 enumerateObjectsUsingBlock:v12];
+  v8 = libraryCopy;
+  [dsCopy enumerateObjectsUsingBlock:v12];
 
   v9 = v14;
   v10 = v7;
@@ -1076,20 +1076,20 @@ LABEL_26:
   return v7;
 }
 
-- (void)_sortATAssetsToRestore:(id)a3 withUUIDPathDict:(id)a4
+- (void)_sortATAssetsToRestore:(id)restore withUUIDPathDict:(id)dict
 {
-  v27 = a3;
-  v6 = a4;
+  restoreCopy = restore;
+  dictCopy = dict;
   [(PLSyncClient *)self restoreKeyToAssetGroup];
   v43[0] = _NSConcreteStackBlock;
   v43[1] = 3221225472;
   v43[2] = sub_BEE8;
   v43[3] = &unk_24A20;
-  v25 = self;
+  selfCopy = self;
   v7 = v43[4] = self;
   v44 = v7;
-  v26 = v6;
-  [v6 enumerateKeysAndObjectsUsingBlock:v43];
+  v26 = dictCopy;
+  [dictCopy enumerateKeysAndObjectsUsingBlock:v43];
   v8 = PLSyncGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1122,14 +1122,14 @@ LABEL_26:
         v12 = PLSyncGetLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [v11 date];
-          v14 = [v11 UUID];
+          date = [v11 date];
+          uUID = [v11 UUID];
           *buf = 138543874;
           v47 = v10;
           v48 = 2114;
-          v49 = v13;
+          v49 = date;
           v50 = 2114;
-          v51 = v14;
+          v51 = uUID;
           _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Group %{public}@: [%{public}@, %{public}@]", buf, 0x20u);
         }
 
@@ -1138,8 +1138,8 @@ LABEL_26:
         v35 = 0u;
         v36 = 0u;
         v31 = v11;
-        v15 = [v11 assetPairs];
-        v16 = [v15 countByEnumeratingWithState:&v35 objects:v45 count:16];
+        assetPairs = [v11 assetPairs];
+        v16 = [assetPairs countByEnumeratingWithState:&v35 objects:v45 count:16];
         if (v16)
         {
           v17 = v16;
@@ -1150,24 +1150,24 @@ LABEL_26:
             {
               if (*v36 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(assetPairs);
               }
 
               v20 = *(*(&v35 + 1) + 8 * i);
               v21 = PLSyncGetLog();
               if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
               {
-                v22 = [v20 path];
-                v23 = [v20 status];
+                path = [v20 path];
+                status = [v20 status];
                 *buf = 138543618;
-                v47 = v22;
+                v47 = path;
                 v48 = 1024;
-                LODWORD(v49) = v23;
+                LODWORD(v49) = status;
                 _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "      %{public}@ [%d]", buf, 0x12u);
               }
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v35 objects:v45 count:16];
+            v17 = [assetPairs countByEnumeratingWithState:&v35 objects:v45 count:16];
           }
 
           while (v17);
@@ -1187,64 +1187,64 @@ LABEL_26:
   v33[1] = 3221225472;
   v33[2] = sub_C03C;
   v33[3] = &unk_24A48;
-  v33[4] = v25;
+  v33[4] = selfCopy;
   v34 = obj;
   v24 = obj;
-  [v27 sortUsingComparator:v33];
+  [restoreCopy sortUsingComparator:v33];
 }
 
-- (void)_populateRestorePathGroupsAndUpdateValidatedRestorePaths:(id)a3
+- (void)_populateRestorePathGroupsAndUpdateValidatedRestorePaths:(id)paths
 {
-  v4 = a3;
-  v28 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
-  v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
-  v6 = [(PLSyncClient *)self restoreKeyToAssetGroup];
+  pathsCopy = paths;
+  v28 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [pathsCopy count]);
+  v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [pathsCopy count]);
+  restoreKeyToAssetGroup = [(PLSyncClient *)self restoreKeyToAssetGroup];
 
-  if (v6)
+  if (restoreKeyToAssetGroup)
   {
     v7 = PLSyncGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(PLSyncClient *)self restoreKeyToAssetGroup];
-      v9 = [v8 count];
-      v10 = [(PLSyncClient *)self restoreKeyToAssetGroup];
+      restoreKeyToAssetGroup2 = [(PLSyncClient *)self restoreKeyToAssetGroup];
+      v9 = [restoreKeyToAssetGroup2 count];
+      restoreKeyToAssetGroup3 = [(PLSyncClient *)self restoreKeyToAssetGroup];
       *buf = 67109378;
       LODWORD(v33[0]) = v9;
       WORD2(v33[0]) = 2114;
-      *(v33 + 6) = v10;
+      *(v33 + 6) = restoreKeyToAssetGroup3;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Replacing existing restore group mapping [%d]: %{public}@", buf, 0x12u);
     }
   }
 
-  v11 = [(PLSyncClient *)self pathToRestoreKey];
+  pathToRestoreKey = [(PLSyncClient *)self pathToRestoreKey];
 
-  if (v11)
+  if (pathToRestoreKey)
   {
     v12 = PLSyncGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(PLSyncClient *)self restoreKeyToAssetGroup];
-      v14 = [v13 count];
-      v15 = [(PLSyncClient *)self pathToRestoreKey];
+      restoreKeyToAssetGroup4 = [(PLSyncClient *)self restoreKeyToAssetGroup];
+      v14 = [restoreKeyToAssetGroup4 count];
+      pathToRestoreKey2 = [(PLSyncClient *)self pathToRestoreKey];
       *buf = 67109378;
       LODWORD(v33[0]) = v14;
       WORD2(v33[0]) = 2114;
-      *(v33 + 6) = v15;
+      *(v33 + 6) = pathToRestoreKey2;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Replacing existing path to restore keys [%d]: %{public}@", buf, 0x12u);
     }
   }
 
-  v16 = [v4 count];
+  v16 = [pathsCopy count];
   if (v16 - 1 >= 0)
   {
     v17 = v16;
     v18 = PLPhotoStreamDataDirectoryName;
     do
     {
-      v19 = [v4 objectAtIndex:--v17];
+      v19 = [pathsCopy objectAtIndex:--v17];
       if ([v19 rangeOfString:v18] != 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v4 removeObjectAtIndex:v17];
+        [pathsCopy removeObjectAtIndex:v17];
         v20 = PLSyncGetLog();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
@@ -1259,8 +1259,8 @@ LABEL_26:
   }
 
   v21 = objc_alloc_init(NSMutableArray);
-  v22 = [(PLSyncClient *)self pathManager];
-  v23 = [v22 pathsGroupedByAssetBasePathFromFilePaths:v4 populateInvalidAdjustmentPaths:v21];
+  pathManager = [(PLSyncClient *)self pathManager];
+  v23 = [pathManager pathsGroupedByAssetBasePathFromFilePaths:pathsCopy populateInvalidAdjustmentPaths:v21];
 
   if ([v21 count])
   {
@@ -1275,7 +1275,7 @@ LABEL_26:
       _os_log_impl(&dword_0, v24, OS_LOG_TYPE_FAULT, "Skipping restore of invalid adjustment resource file paths [%d]: %{public}@", buf, 0x12u);
     }
 
-    [v4 removeObjectsInArray:v21];
+    [pathsCopy removeObjectsInArray:v21];
   }
 
   v29[0] = _NSConcreteStackBlock;
@@ -1291,37 +1291,37 @@ LABEL_26:
   [(PLSyncClient *)self setRestoreKeyToAssetGroup:v27];
 }
 
-- (id)_restoreGroupKeyFromATAssetFilePath:(id)a3
+- (id)_restoreGroupKeyFromATAssetFilePath:(id)path
 {
-  v4 = a3;
-  v5 = [(PLSyncClient *)self pathToRestoreKey];
-  v6 = [v5 objectForKey:v4];
+  pathCopy = path;
+  pathToRestoreKey = [(PLSyncClient *)self pathToRestoreKey];
+  stringByDeletingPathExtension = [pathToRestoreKey objectForKey:pathCopy];
 
-  if (!v6)
+  if (!stringByDeletingPathExtension)
   {
     v7 = PLSyncGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v9 = 138543362;
-      v10 = v4;
+      v10 = pathCopy;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "No restore key found for asset restore path %{public}@", &v9, 0xCu);
     }
 
-    v6 = [v4 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [pathCopy stringByDeletingPathExtension];
   }
 
-  return v6;
+  return stringByDeletingPathExtension;
 }
 
-- (id)_getAssetsToRestoreFromPaths:(id)a3
+- (id)_getAssetsToRestoreFromPaths:(id)paths
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  pathsCopy = paths;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [pathsCopy count]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = pathsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -1352,7 +1352,7 @@ LABEL_26:
   return v4;
 }
 
-- (void)restoreEndedWithError:(id)a3
+- (void)restoreEndedWithError:(id)error
 {
   v52 = 0;
   v53 = &v52;
@@ -1370,23 +1370,23 @@ LABEL_26:
   v41[2] = 3221225472;
   v41[3] = sub_D248;
   v41[4] = &unk_249D0;
-  v42 = self;
+  selfCopy = self;
   v44 = &v52;
-  v33 = a3;
-  v43 = v33;
+  errorCopy = error;
+  v43 = errorCopy;
   v45 = &v46;
   PLSafeRunWithUnfairLock();
-  [(PLSyncClient *)v42 _writeRestoreContext];
-  v35 = v42;
+  [(PLSyncClient *)selfCopy _writeRestoreContext];
+  v35 = selfCopy;
   if (v53[5])
   {
-    v3 = [(PLSyncClient *)v42 pathManager];
-    v4 = [v3 cloudRestoreBackgroundCompletePath];
+    pathManager = [(PLSyncClient *)selfCopy pathManager];
+    cloudRestoreBackgroundCompletePath = [pathManager cloudRestoreBackgroundCompletePath];
 
     v5 = [v53[5] stringByAppendingString:@"\n"];
     v6 = [v5 dataUsingEncoding:4];
     v41[0] = 0;
-    v7 = [v6 writeToFile:v4 options:1073741825 error:v41];
+    v7 = [v6 writeToFile:cloudRestoreBackgroundCompletePath options:1073741825 error:v41];
     v8 = v41[0];
     if ((v7 & 1) == 0)
     {
@@ -1394,7 +1394,7 @@ LABEL_26:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v60 = v4;
+        v60 = cloudRestoreBackgroundCompletePath;
         v61 = 2114;
         v62 = v8;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "Failed to write background restore ended file %{public}@ %{public}@", buf, 0x16u);
@@ -1410,9 +1410,9 @@ LABEL_26:
     v12 = [v10 stringFromDate:v11];
 
     v13 = [@"RestoreResultConflict_" stringByAppendingString:v12];
-    v14 = [(PLSyncClient *)v35 pathManager];
-    v15 = [v14 cloudRestoreInfoDirectoryPath];
-    v16 = [v15 stringByAppendingPathComponent:v13];
+    pathManager2 = [(PLSyncClient *)v35 pathManager];
+    cloudRestoreInfoDirectoryPath = [pathManager2 cloudRestoreInfoDirectoryPath];
+    v16 = [cloudRestoreInfoDirectoryPath stringByAppendingPathComponent:v13];
 
     v17 = [v47[5] dataUsingEncoding:4];
     v40 = 0;
@@ -1432,13 +1432,13 @@ LABEL_26:
     }
   }
 
-  v21 = [(PLSyncClient *)v35 outstandingAssets];
+  outstandingAssets = [(PLSyncClient *)v35 outstandingAssets];
   if (v34 || (totalAssetsToRestore = v35->_totalAssetsToRestore, totalAssetsToRestore >= 1))
   {
     v23 = PLSyncGetLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v21 count];
+      v24 = [outstandingAssets count];
       *buf = 134217984;
       v60 = v24;
       _os_log_impl(&dword_0, v23, OS_LOG_TYPE_ERROR, "%lu outstanding assets", buf, 0xCu);
@@ -1448,7 +1448,7 @@ LABEL_26:
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v25 = v21;
+    v25 = outstandingAssets;
     v26 = [v25 countByEnumeratingWithState:&v36 objects:v58 count:16];
     if (v26)
     {
@@ -1508,14 +1508,14 @@ LABEL_26:
   _Block_object_dispose(&v52, 8);
 }
 
-- (void)assetTransferEndedWithSuccess:(BOOL)a3
+- (void)assetTransferEndedWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   v5 = PLSyncGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (successCopy)
     {
       v6 = @"All ATAssets processed";
     }
@@ -1525,13 +1525,13 @@ LABEL_26:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "assetTransferEndedWithSuccess: %{public}@", &v11, 0xCu);
   }
 
-  if (v3)
+  if (successCopy)
   {
     v7 = objc_alloc_init(PLSyncSaveJob);
     [v7 setIsSyncComplete:1];
-    v8 = [(PLSyncClient *)self pathManager];
-    v9 = [v8 iTunesPhotosSyncMetadataFilePath];
-    v10 = [NSURL fileURLWithPath:v9 isDirectory:0];
+    pathManager = [(PLSyncClient *)self pathManager];
+    iTunesPhotosSyncMetadataFilePath = [pathManager iTunesPhotosSyncMetadataFilePath];
+    v10 = [NSURL fileURLWithPath:iTunesPhotosSyncMetadataFilePath isDirectory:0];
     [v7 setOriginalAssetURL:v10];
 
     [(PLSyncClient *)self _enqueueSyncSaveJob:v7];
@@ -1560,11 +1560,11 @@ LABEL_26:
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "_cleanupAfterSyncOrRestore: _syncRequested=%{public}@", &buf, 0xCu);
   }
 
-  v5 = [(PLSyncClient *)self _photoLibrary];
+  _photoLibrary = [(PLSyncClient *)self _photoLibrary];
   if ((*(self + 121) & 1) == 0)
   {
-    v6 = [(PLSyncClient *)self outstandingAssets];
-    v7 = [v6 count] == 0;
+    outstandingAssets = [(PLSyncClient *)self outstandingAssets];
+    v7 = [outstandingAssets count] == 0;
 
     if (v7)
     {
@@ -1580,9 +1580,9 @@ LABEL_26:
       v21 = 0x2020000000;
       v22 = 0;
       PLSafeRunWithUnfairLock();
-      v9 = [v5 assetsdClient];
-      v10 = [v9 syncClient];
-      [v10 finalizeOTARestoreRecreatingAlbums:*(*(&buf + 1) + 24)];
+      assetsdClient = [_photoLibrary assetsdClient];
+      syncClient = [assetsdClient syncClient];
+      [syncClient finalizeOTARestoreRecreatingAlbums:*(*(&buf + 1) + 24)];
 
       _Block_object_dispose(&buf, 8);
     }
@@ -1590,8 +1590,8 @@ LABEL_26:
 
   if (*(self + 121))
   {
-    v11 = [(PLSyncClient *)self outstandingAssets];
-    v12 = [v11 count] == 0;
+    outstandingAssets2 = [(PLSyncClient *)self outstandingAssets];
+    v12 = [outstandingAssets2 count] == 0;
 
     if (v12)
     {
@@ -1613,8 +1613,8 @@ LABEL_26:
   }
 
   [(PLSyncClient *)self _saveOutstandingSyncJobs];
-  v15 = [(PLSyncClient *)self outstandingAssets];
-  v16 = [v15 count] == 0;
+  outstandingAssets3 = [(PLSyncClient *)self outstandingAssets];
+  v16 = [outstandingAssets3 count] == 0;
 
   v17 = PLSyncGetLog();
   v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
@@ -1658,7 +1658,7 @@ LABEL_26:
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "_clearEmptySyncAlbums", buf, 2u);
   }
 
-  v4 = [(PLSyncClient *)self _photoLibrary];
+  _photoLibrary = [(PLSyncClient *)self _photoLibrary];
   libraryGroup = self->_libraryGroup;
   if (libraryGroup)
   {
@@ -1675,14 +1675,14 @@ LABEL_26:
   v8[1] = 3221225472;
   v8[2] = sub_DBA8;
   v8[3] = &unk_24738;
-  v9 = v4;
-  v7 = v4;
+  v9 = _photoLibrary;
+  v7 = _photoLibrary;
   [v7 withDispatchGroup:v6 performTransaction:v8];
 }
 
 - (void)_clearPendingCounts
 {
-  v3 = [(PLSyncClient *)self _photoLibrary];
+  _photoLibrary = [(PLSyncClient *)self _photoLibrary];
   libraryGroup = self->_libraryGroup;
   if (libraryGroup)
   {
@@ -1700,63 +1700,63 @@ LABEL_26:
   v7[2] = sub_DEE8;
   v7[3] = &unk_24868;
   v7[4] = self;
-  v8 = v3;
-  v6 = v3;
+  v8 = _photoLibrary;
+  v6 = _photoLibrary;
   [v6 withDispatchGroup:v5 performTransaction:v7];
 }
 
 - (void)_initializeOutstandingAssets
 {
-  v3 = [(PLSyncClient *)self _initializePhotoLibraryIfNecessary];
+  _initializePhotoLibraryIfNecessary = [(PLSyncClient *)self _initializePhotoLibraryIfNecessary];
 
-  if (!v3)
+  if (!_initializePhotoLibraryIfNecessary)
   {
     PLAbortWithReason();
   }
 
-  v5 = [(PLSyncClient *)self _neededRestoreAssets];
-  self->_totalAssetsToRestore = [v5 count];
-  v4 = [v5 mutableCopy];
+  _neededRestoreAssets = [(PLSyncClient *)self _neededRestoreAssets];
+  self->_totalAssetsToRestore = [_neededRestoreAssets count];
+  v4 = [_neededRestoreAssets mutableCopy];
   [(PLSyncClient *)self setOutstandingAssets:v4];
 }
 
 - (id)outstandingAssetTransfers
 {
-  v3 = [(PLSyncClient *)self outstandingAssets];
-  if (!v3)
+  outstandingAssets = [(PLSyncClient *)self outstandingAssets];
+  if (!outstandingAssets)
   {
     v4 = +[ATDeviceSettings sharedInstance];
-    v5 = [v4 activeRestoreType];
+    activeRestoreType = [v4 activeRestoreType];
 
     v6 = PLSyncGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      if (v5 > 3)
+      if (activeRestoreType > 3)
       {
         v7 = @"Error";
       }
 
       else
       {
-        v7 = *(&off_24C30 + v5);
+        v7 = *(&off_24C30 + activeRestoreType);
       }
 
       *buf = 67109378;
-      *v24 = v5;
+      *v24 = activeRestoreType;
       *&v24[4] = 2114;
       *&v24[6] = v7;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Populating outstandingAssets for restoreType %d (%{public}@)", buf, 0x12u);
     }
 
-    if (v5 > 1)
+    if (activeRestoreType > 1)
     {
-      v3 = 0;
+      outstandingAssets = 0;
     }
 
     else
     {
       [(PLSyncClient *)self _initializeOutstandingAssets];
-      v3 = [(PLSyncClient *)self outstandingAssets];
+      outstandingAssets = [(PLSyncClient *)self outstandingAssets];
     }
   }
 
@@ -1764,7 +1764,7 @@ LABEL_26:
   v8 = PLSyncGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v3 count];
+    v9 = [outstandingAssets count];
     *buf = 67109120;
     *v24 = v9;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "outstandingAssetTransfers %d", buf, 8u);
@@ -1774,7 +1774,7 @@ LABEL_26:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = v3;
+  v10 = outstandingAssets;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -1808,23 +1808,23 @@ LABEL_26:
   return v10;
 }
 
-- (void)syncEndedWithSuccess:(BOOL)a3
+- (void)syncEndedWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   v5 = PLSyncGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = successCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "syncEndedWithSuccess %d", v6, 8u);
   }
 
   [(PLSyncClient *)self _stopListeningToMemoryPressureEvents];
 }
 
-- (BOOL)reconcileSync:(unsigned int)a3 withNewAnchor:(id)a4 progressCallback:(id)a5 error:(id *)a6
+- (BOOL)reconcileSync:(unsigned int)sync withNewAnchor:(id)anchor progressCallback:(id)callback error:(id *)error
 {
-  v9 = a4;
+  anchorCopy = anchor;
   *(self + 121) |= 1u;
   if (+[NSThread isMainThread])
   {
@@ -1839,33 +1839,33 @@ LABEL_26:
   v11 = PLSyncGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 3)
+    if (sync > 3)
     {
       v12 = @"unknown";
     }
 
     else
     {
-      v12 = *(&off_24C10 + a3);
+      v12 = *(&off_24C10 + sync);
     }
 
     *buf = 138543618;
     v91 = v12;
     v92 = 2114;
-    v93 = v9;
+    v93 = anchorCopy;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Reconcile Sync: (type=%{public}@) anchor: %{public}@", buf, 0x16u);
   }
 
-  v13 = [(PLSyncClient *)self _initializePhotoLibraryIfNecessary];
-  v14 = [(PLSyncClient *)self pathManager];
-  v15 = [v14 iTunesPhotosSyncMetadataFilePath];
+  _initializePhotoLibraryIfNecessary = [(PLSyncClient *)self _initializePhotoLibraryIfNecessary];
+  pathManager = [(PLSyncClient *)self pathManager];
+  iTunesPhotosSyncMetadataFilePath = [pathManager iTunesPhotosSyncMetadataFilePath];
 
   v16 = +[NSFileManager defaultManager];
-  v81 = v15;
-  if ([v16 fileExistsAtPath:v15])
+  v81 = iTunesPhotosSyncMetadataFilePath;
+  if ([v16 fileExistsAtPath:iTunesPhotosSyncMetadataFilePath])
   {
     v87 = 0;
-    v17 = [(PLSyncClient *)self _readPhotosSyncMetadataFromPath:v15 error:&v87];
+    v17 = [(PLSyncClient *)self _readPhotosSyncMetadataFromPath:iTunesPhotosSyncMetadataFilePath error:&v87];
     v18 = v87;
   }
 
@@ -1879,37 +1879,37 @@ LABEL_26:
     v17 = 0;
   }
 
-  v20 = [(PLSyncClient *)self pathManager];
-  v21 = [v20 syncInfoPath];
+  pathManager2 = [(PLSyncClient *)self pathManager];
+  syncInfoPath = [pathManager2 syncInfoPath];
 
-  if ([v16 fileExistsAtPath:v21])
+  if ([v16 fileExistsAtPath:syncInfoPath])
   {
     v86 = 0;
-    v22 = [v16 removeItemAtPath:v21 error:&v86];
+    v22 = [v16 removeItemAtPath:syncInfoPath error:&v86];
     v23 = v86;
     if ((v22 & 1) == 0)
     {
       v24 = v17;
-      v25 = v9;
+      v25 = anchorCopy;
       v26 = PLSyncGetLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v91 = v21;
+        v91 = syncInfoPath;
         v92 = 2114;
         v93 = v23;
         _os_log_impl(&dword_0, v26, OS_LOG_TYPE_ERROR, "Failed to remove syncUserAgentInfoFile at path %{public}@ err: %{public}@", buf, 0x16u);
       }
 
-      v9 = v25;
+      anchorCopy = v25;
       v17 = v24;
     }
   }
 
-  v82 = v21;
+  v82 = syncInfoPath;
   if (v17)
   {
-    v80 = v9;
+    v80 = anchorCopy;
     v27 = +[NSMutableDictionary dictionary];
     v28 = [v17 objectForKeyedSubscript:@"iTunesUserAgent"];
     if (v28)
@@ -1922,10 +1922,10 @@ LABEL_26:
     v30 = [v29 decodeSnapshotFromPropertyList:v17 error:&v85];
     v79 = v85;
 
-    v31 = [v30 libraryKind];
-    if (v31)
+    libraryKind = [v30 libraryKind];
+    if (libraryKind)
     {
-      [v27 setObject:v31 forKey:@"libraryKind"];
+      [v27 setObject:libraryKind forKey:@"libraryKind"];
     }
 
     if (v30)
@@ -1955,26 +1955,26 @@ LABEL_43:
 
 LABEL_44:
           [(PLSyncClient *)self _initializeOutstandingAssets];
-          v40 = [(PLSyncClient *)self pathManager];
-          v41 = [v40 iTunesPhotosSyncCurrentLibraryUUIDPath];
+          pathManager3 = [(PLSyncClient *)self pathManager];
+          iTunesPhotosSyncCurrentLibraryUUIDPath = [pathManager3 iTunesPhotosSyncCurrentLibraryUUIDPath];
 
-          v42 = [(PLSyncClient *)self pathManager];
-          v43 = [v42 iTunesPhotosLastSyncMetadataFilePath];
-          v44 = [NSURL fileURLWithPath:v43];
+          pathManager4 = [(PLSyncClient *)self pathManager];
+          iTunesPhotosLastSyncMetadataFilePath = [pathManager4 iTunesPhotosLastSyncMetadataFilePath];
+          v44 = [NSURL fileURLWithPath:iTunesPhotosLastSyncMetadataFilePath];
 
           v77 = v44;
           v45 = [v29 decodeSnapshotFromFile:v44 error:0];
           v74 = [v30 isEqualToSnapshot:v45];
-          v46 = [v45 libraryUUID];
-          if (!v46)
+          libraryUUID = [v45 libraryUUID];
+          if (!libraryUUID)
           {
             goto LABEL_46;
           }
 
-          v47 = v46;
-          v48 = [v30 libraryUUID];
-          v49 = [v45 libraryUUID];
-          v50 = [v48 isEqual:v49];
+          v47 = libraryUUID;
+          libraryUUID2 = [v30 libraryUUID];
+          libraryUUID3 = [v45 libraryUUID];
+          v50 = [libraryUUID2 isEqual:libraryUUID3];
 
           if (!v50)
           {
@@ -1984,16 +1984,16 @@ LABEL_44:
           else
           {
 LABEL_46:
-            v51 = [v45 libraryUUID];
+            libraryUUID4 = [v45 libraryUUID];
 
-            if (v51)
+            if (libraryUUID4)
             {
               v52 = 0;
             }
 
             else
             {
-              v53 = [NSDictionary dictionaryWithContentsOfFile:v41];
+              v53 = [NSDictionary dictionaryWithContentsOfFile:iTunesPhotosSyncCurrentLibraryUUIDPath];
               v54 = [v53 objectForKey:@"libraryUUID"];
 
               if (v54 && (-[NSObject libraryUUID](v30, "libraryUUID"), v55 = objc_claimAutoreleasedReturnValue(), v56 = [v55 isEqual:v54], v55, (v56 & 1) != 0))
@@ -2006,11 +2006,11 @@ LABEL_46:
                 v57 = PLSyncGetLog();
                 if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
                 {
-                  v58 = [v30 libraryUUID];
+                  libraryUUID5 = [v30 libraryUUID];
                   *buf = 138543618;
                   v91 = v54;
                   v92 = 2114;
-                  v93 = v58;
+                  v93 = libraryUUID5;
                   _os_log_impl(&dword_0, v57, OS_LOG_TYPE_DEFAULT, "Forcing resync based on CurrentLibraryUUID.plist: previous %{public}@, snapshot %{public}@", buf, 0x16u);
                 }
 
@@ -2019,13 +2019,13 @@ LABEL_46:
             }
           }
 
-          v59 = [v30 libraryUUID];
-          v60 = [NSDictionary dictionaryWithObject:v59 forKey:@"libraryUUID"];
+          libraryUUID6 = [v30 libraryUUID];
+          v60 = [NSDictionary dictionaryWithObject:libraryUUID6 forKey:@"libraryUUID"];
 
           v61 = [NSPropertyListSerialization dataWithPropertyList:v60 format:100 options:0 error:0];
-          [v61 writeToFile:v41 options:1073741825 error:0];
-          v75 = v41;
-          [PLFileUtilities changeFileOwnerToMobileAtPath:v41 error:0];
+          [v61 writeToFile:iTunesPhotosSyncCurrentLibraryUUIDPath options:1073741825 error:0];
+          v75 = iTunesPhotosSyncCurrentLibraryUUIDPath;
+          [PLFileUtilities changeFileOwnerToMobileAtPath:iTunesPhotosSyncCurrentLibraryUUIDPath error:0];
           if (v74)
           {
             v62 = PLSyncGetLog();
@@ -2039,17 +2039,17 @@ LABEL_46:
           else
           {
             v63 = +[NSFileManager defaultManager];
-            v64 = [v77 path];
-            [v63 removeItemAtPath:v64 error:0];
+            path = [v77 path];
+            [v63 removeItemAtPath:path error:0];
 
-            v65 = [v30 albumsAndEventsByUUID];
-            v66 = [v65 mutableCopy];
+            albumsAndEventsByUUID = [v30 albumsAndEventsByUUID];
+            v66 = [albumsAndEventsByUUID mutableCopy];
             albumsAndEvents = self->_albumsAndEvents;
             self->_albumsAndEvents = v66;
 
             [(PLSyncClient *)self _pullOutMasterAlbumFromAlbumsAndEvents];
-            v68 = [v30 assetsByUUID];
-            [(PLSyncClient *)self setUuidToPLSAsset:v68];
+            assetsByUUID = [v30 assetsByUUID];
+            [(PLSyncClient *)self setUuidToPLSAsset:assetsByUUID];
 
             [(PLSyncClient *)self setLibraryChangeSnapshot:v30];
             [(PLSyncClient *)self setIsResync:v52];
@@ -2067,8 +2067,8 @@ LABEL_46:
                 v69 = @"sync";
               }
 
-              v70 = [(PLSyncClient *)self outstandingAssets];
-              v71 = [v70 count];
+              outstandingAssets = [(PLSyncClient *)self outstandingAssets];
+              v71 = [outstandingAssets count];
               *buf = 138543618;
               v91 = v69;
               v92 = 1024;
@@ -2085,7 +2085,7 @@ LABEL_46:
 
           v38 = 1;
           v18 = v79;
-          v9 = v80;
+          anchorCopy = v80;
           goto LABEL_65;
         }
       }
@@ -2109,8 +2109,8 @@ LABEL_46:
     }
 
     v18 = v79;
-    v9 = v80;
-    if (!a3)
+    anchorCopy = v80;
+    if (!sync)
     {
       goto LABEL_36;
     }
@@ -2119,7 +2119,7 @@ LABEL_46:
   else
   {
     v29 = 0;
-    if (!a3)
+    if (!sync)
     {
 LABEL_36:
       v30 = PLSyncGetLog();
@@ -2134,10 +2134,10 @@ LABEL_36:
     }
   }
 
-  if (a6)
+  if (error)
   {
     v37 = v18;
-    *a6 = v18;
+    *error = v18;
   }
 
   v30 = PLSyncGetLog();
@@ -2154,28 +2154,28 @@ LABEL_65:
   return v38;
 }
 
-- (id)_readPhotosSyncMetadataFromPath:(id)a3 error:(id *)a4
+- (id)_readPhotosSyncMetadataFromPath:(id)path error:(id *)error
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = PLSyncGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v15 = v5;
+    v15 = pathCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEBUG, "Loading photos sync metadata from %{public}@", buf, 0xCu);
   }
 
-  v7 = [NSURL fileURLWithPath:v5];
+  v7 = [NSURL fileURLWithPath:pathCopy];
   v8 = [NSInputStream inputStreamWithURL:v7];
   [v8 open];
   v13 = 0;
   v9 = [NSPropertyListSerialization propertyListWithStream:v8 options:0 format:0 error:&v13];
   v10 = v13;
   [v8 close];
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v11 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v9;
@@ -2200,8 +2200,8 @@ LABEL_65:
   {
     [(PLSyncClient *)self setMasterAlbum:?];
     v4 = self->_albumsAndEvents;
-    v5 = [v8[5] uuid];
-    [(NSMutableDictionary *)v4 removeObjectForKey:v5];
+    uuid = [v8[5] uuid];
+    [(NSMutableDictionary *)v4 removeObjectForKey:uuid];
   }
 
   _Block_object_dispose(&v7, 8);
@@ -2239,9 +2239,9 @@ LABEL_65:
   }
 }
 
-- (void)_setPendingAlbumCounts:(id)a3
+- (void)_setPendingAlbumCounts:(id)counts
 {
-  v4 = a3;
+  countsCopy = counts;
   if (self->_pendingAssetsPerContainer || (Mutable = CFDictionaryCreateMutable(kCFAllocatorSystemDefault, 0, &kCFTypeDictionaryKeyCallBacks, 0), (self->_pendingAssetsPerContainer = Mutable) != 0))
   {
     [(PLSyncClient *)self _photoLibrary];
@@ -2251,13 +2251,13 @@ LABEL_65:
     v7[3] = &unk_24868;
     v8 = v7[4] = self;
     v6 = v8;
-    [v6 withDispatchGroup:v4 performTransaction:v7];
+    [v6 withDispatchGroup:countsCopy performTransaction:v7];
   }
 }
 
-- (void)_incrementPendingCountForContainerUUID:(id)a3
+- (void)_incrementPendingCountForContainerUUID:(id)d
 {
-  key = a3;
+  key = d;
   v4 = CFDictionaryContainsKey(self->_pendingAssetsPerContainer, key);
   pendingAssetsPerContainer = self->_pendingAssetsPerContainer;
   if (v4)
@@ -2279,11 +2279,11 @@ LABEL_65:
 - (void)_persistAssetAlbumOrderStructures
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(PLSyncClient *)self pathManager];
-  v5 = [v4 pathToAssetAlbumOrderStructure];
+  pathManager = [(PLSyncClient *)self pathManager];
+  pathToAssetAlbumOrderStructure = [pathManager pathToAssetAlbumOrderStructure];
 
   v6 = +[NSFileManager defaultManager];
-  [v6 removeItemAtPath:v5 error:0];
+  [v6 removeItemAtPath:pathToAssetAlbumOrderStructure error:0];
   v7 = +[NSMutableDictionary dictionary];
   albumsAndEvents = self->_albumsAndEvents;
   v18[0] = _NSConcreteStackBlock;
@@ -2300,12 +2300,12 @@ LABEL_65:
   if (v10)
   {
     v16 = v11;
-    v13 = [v10 writeToFile:v5 options:1073741825 error:&v16];
+    v13 = [v10 writeToFile:pathToAssetAlbumOrderStructure options:1073741825 error:&v16];
     v14 = v16;
 
     if (v13)
     {
-      [PLFileUtilities changeFileOwnerToMobileAtPath:v5 error:0];
+      [PLFileUtilities changeFileOwnerToMobileAtPath:pathToAssetAlbumOrderStructure error:0];
       goto LABEL_8;
     }
   }
@@ -2319,7 +2319,7 @@ LABEL_65:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v21 = v5;
+    v21 = pathToAssetAlbumOrderStructure;
     v22 = 2114;
     v23 = v14;
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_ERROR, "Failed to write assetOrdersByAlbumUUID to path %{public}@ %{public}@", buf, 0x16u);
@@ -2331,56 +2331,56 @@ LABEL_8:
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)_saveOrderOnSyncedAlbum:(id)a3 inLibrary:(id)a4
+- (void)_saveOrderOnSyncedAlbum:(id)album inLibrary:(id)library
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10038;
   v6[3] = &unk_24738;
-  v7 = a3;
-  v5 = v7;
-  [a4 performTransactionAndWait:v6];
+  albumCopy = album;
+  v5 = albumCopy;
+  [library performTransactionAndWait:v6];
 }
 
-- (void)_reconcileDeviceAlbumListSortingWithAlbums:(id)a3 iTunesAlbumOrder:(id)a4 inLibrary:(id)a5
+- (void)_reconcileDeviceAlbumListSortingWithAlbums:(id)albums iTunesAlbumOrder:(id)order inLibrary:(id)library
 {
-  v7 = a5;
-  v29 = a4;
-  v27 = a3;
-  v33 = [PLManagedAlbumList albumListInPhotoLibrary:v7];
-  v25 = [v33 albums];
+  libraryCopy = library;
+  orderCopy = order;
+  albumsCopy = albums;
+  v33 = [PLManagedAlbumList albumListInPhotoLibrary:libraryCopy];
+  albums = [v33 albums];
   v8 = +[NSMutableIndexSet indexSet];
   v9 = +[NSMutableArray array];
-  v32 = [PLManagedAlbumList eventListInPhotoLibrary:v7];
-  v10 = [v32 albums];
+  v32 = [PLManagedAlbumList eventListInPhotoLibrary:libraryCopy];
+  albums2 = [v32 albums];
   v11 = +[NSMutableIndexSet indexSet];
   v12 = +[NSMutableArray array];
-  v31 = [PLManagedAlbumList facesAlbumListInPhotoLibrary:v7];
-  v13 = [v31 albums];
+  v31 = [PLManagedAlbumList facesAlbumListInPhotoLibrary:libraryCopy];
+  albums3 = [v31 albums];
   v14 = +[NSMutableIndexSet indexSet];
   +[NSMutableArray array];
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_10530;
   v38[3] = &unk_24958;
-  v39 = v25;
+  v39 = albums;
   v40 = v9;
   v41 = v8;
-  v42 = v10;
+  v42 = albums2;
   v43 = v12;
   v44 = v11;
-  v46 = v45 = v13;
+  v46 = v45 = albums3;
   v47 = v14;
   v28 = v14;
   v15 = v46;
-  v24 = v13;
+  v24 = albums3;
   v21 = v11;
   v16 = v12;
-  v22 = v10;
+  v22 = albums2;
   v23 = v8;
   v17 = v9;
-  v26 = v25;
-  [v27 enumerateKeysAndObjectsUsingBlock:v38];
+  v26 = albums;
+  [albumsCopy enumerateKeysAndObjectsUsingBlock:v38];
 
   +[NSMutableDictionary dictionary];
   v36[0] = _NSConcreteStackBlock;
@@ -2388,7 +2388,7 @@ LABEL_8:
   v36[2] = sub_10778;
   v18 = v36[3] = &unk_248E0;
   v37 = v18;
-  [v29 enumerateObjectsUsingBlock:v36];
+  [orderCopy enumerateObjectsUsingBlock:v36];
 
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
@@ -2401,21 +2401,21 @@ LABEL_8:
   [(PLSyncClient *)self _reorderAlbumListProxy:v26 withAlbumsAtIndexes:v23 inNewOrder:v17];
   [v16 sortUsingComparator:v20];
   [(PLSyncClient *)self _reorderAlbumListProxy:v22 withAlbumsAtIndexes:v21 inNewOrder:v16];
-  [(PLSyncClient *)self _saveOrderOnSyncedAlbum:v16 inLibrary:v7];
+  [(PLSyncClient *)self _saveOrderOnSyncedAlbum:v16 inLibrary:libraryCopy];
   [v15 sortUsingComparator:v20];
   [(PLSyncClient *)self _reorderAlbumListProxy:v24 withAlbumsAtIndexes:v28 inNewOrder:v15];
-  [(PLSyncClient *)self _saveOrderOnSyncedAlbum:v15 inLibrary:v7];
+  [(PLSyncClient *)self _saveOrderOnSyncedAlbum:v15 inLibrary:libraryCopy];
 }
 
-- (void)_reorderAlbumListProxy:(id)a3 withAlbumsAtIndexes:(id)a4 inNewOrder:(id)a5
+- (void)_reorderAlbumListProxy:(id)proxy withAlbumsAtIndexes:(id)indexes inNewOrder:(id)order
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count])
+  proxyCopy = proxy;
+  indexesCopy = indexes;
+  orderCopy = order;
+  if ([proxyCopy count])
   {
-    v10 = [v8 count];
-    if (v10 == [v9 count])
+    v10 = [indexesCopy count];
+    if (v10 == [orderCopy count])
     {
       +[NSMutableDictionary dictionary];
       v25[0] = _NSConcreteStackBlock;
@@ -2423,7 +2423,7 @@ LABEL_8:
       v25[2] = sub_10BC0;
       v11 = v25[3] = &unk_248E0;
       v26 = v11;
-      [v7 enumerateObjectsUsingBlock:v25];
+      [proxyCopy enumerateObjectsUsingBlock:v25];
       *buf = 0;
       v28 = buf;
       v29 = 0x2020000000;
@@ -2436,12 +2436,12 @@ LABEL_8:
       v19[1] = 3221225472;
       v19[2] = sub_10C68;
       v19[3] = &unk_24908;
-      v20 = v9;
+      v20 = orderCopy;
       v22 = v24;
       v12 = v11;
       v21 = v12;
       v23 = buf;
-      [v8 enumerateIndexesUsingBlock:v19];
+      [indexesCopy enumerateIndexesUsingBlock:v19];
       if (v28[24] == 1)
       {
         v14 = _NSConcreteStackBlock;
@@ -2450,7 +2450,7 @@ LABEL_8:
         v17 = &unk_24930;
         v18 = v12;
         v13 = objc_retainBlock(&v14);
-        [v7 sortUsingComparator:{v13, v14, v15, v16, v17}];
+        [proxyCopy sortUsingComparator:{v13, v14, v15, v16, v17}];
       }
 
       _Block_object_dispose(v24, 8);
@@ -2463,9 +2463,9 @@ LABEL_8:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109376;
-        *&buf[4] = [v8 count];
+        *&buf[4] = [indexesCopy count];
         LOWORD(v28) = 1024;
-        *(&v28 + 2) = [v9 count];
+        *(&v28 + 2) = [orderCopy count];
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "ERROR in _reorderAlbumListProxy, different count for existingAlbumIndexes %d and newAlbumOrderArray %d", buf, 0xEu);
       }
     }
@@ -2480,8 +2480,8 @@ LABEL_8:
   v6 = [NSNumber numberWithInt:15];
   v7 = [NSPredicate predicateWithFormat:@"(kind == %@) || (kind == %@) || (kind == %@)", v4, v5, v6];
 
-  v8 = [(PLSyncClient *)self _photoLibrary];
-  v9 = [PLGenericAlbum albumsMatchingPredicate:v7 expectedResultCount:0 inLibrary:v8];
+  _photoLibrary = [(PLSyncClient *)self _photoLibrary];
+  v9 = [PLGenericAlbum albumsMatchingPredicate:v7 expectedResultCount:0 inLibrary:_photoLibrary];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -2494,7 +2494,7 @@ LABEL_8:
   return v10;
 }
 
-- (void)_reconcileAlbums:(id)a3
+- (void)_reconcileAlbums:(id)albums
 {
   [(PLSyncClient *)self _photoLibrary];
   v5[0] = _NSConcreteStackBlock;
@@ -2506,10 +2506,10 @@ LABEL_8:
   [v4 performBlockAndWait:v5];
 }
 
-- (void)_reconcileAssets:(id)a3
+- (void)_reconcileAssets:(id)assets
 {
-  v4 = [(PLSAlbum *)self->_masterAlbum assetUUIDs];
-  v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
+  assetUUIDs = [(PLSAlbum *)self->_masterAlbum assetUUIDs];
+  v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [assetUUIDs count]);
   assetUUIDtoSortToken = self->_assetUUIDtoSortToken;
   self->_assetUUIDtoSortToken = v5;
 
@@ -2537,11 +2537,11 @@ LABEL_8:
         }
 
         v14 = [(NSMutableDictionary *)self->_uuidToPLSAsset objectForKey:*(*(&v26 + 1) + 8 * v12)];
-        v15 = [v14 exposureDate];
-        [v15 doubleValue];
-        v17 = [NSDate dateWithTimeIntervalSinceReferenceDate:v16 - kCFAbsoluteTimeIntervalSince1904];
+        exposureDate = [v14 exposureDate];
+        [exposureDate doubleValue];
+        kCFAbsoluteTimeIntervalSince1904 = [NSDate dateWithTimeIntervalSinceReferenceDate:v16 - kCFAbsoluteTimeIntervalSince1904];
 
-        [v17 timeIntervalSinceReferenceDate];
+        [kCFAbsoluteTimeIntervalSince1904 timeIntervalSinceReferenceDate];
         v11 = v18;
         if (vabdd_f64(v13, v18) < 2.22044605e-16)
         {
@@ -2555,8 +2555,8 @@ LABEL_8:
 
         v19 = self->_assetUUIDtoSortToken;
         v20 = [NSNumber numberWithDouble:v18 + v9 / 100000.0];
-        v21 = [v14 uuid];
-        [(NSMutableDictionary *)v19 setObject:v20 forKey:v21];
+        uuid = [v14 uuid];
+        [(NSMutableDictionary *)v19 setObject:v20 forKey:uuid];
 
         v12 = v12 + 1;
         v13 = v11;
@@ -2579,19 +2579,19 @@ LABEL_8:
   [v22 performBlockAndWait:v24];
 }
 
-- (id)_onDeviceAssetsByUUIDInLibrary:(id)a3
+- (id)_onDeviceAssetsByUUIDInLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   v4 = +[PLManagedAsset entityName];
   v5 = [NSFetchRequest fetchRequestWithEntityName:v4];
 
   v6 = +[PLValidatedSavedAssetType predicateForIncludeMask:useIndex:](PLValidatedSavedAssetType, "predicateForIncludeMask:useIndex:", +[PLValidatedSavedAssetType maskForFinderSyncedAsset], 1);
   [v5 setPredicate:v6];
   [v5 setRelationshipKeyPathsForPrefetching:&off_25D50];
-  v7 = [v3 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
 
   v15 = 0;
-  v8 = [v7 executeFetchRequest:v5 error:&v15];
+  v8 = [managedObjectContext executeFetchRequest:v5 error:&v15];
   v9 = v15;
 
   if (v8)
@@ -2622,24 +2622,24 @@ LABEL_8:
   return v10;
 }
 
-- (void)_batchDeleteSyncedAssetsWithReason:(id)a3 subpredicate:(id)a4
+- (void)_batchDeleteSyncedAssetsWithReason:(id)reason subpredicate:(id)subpredicate
 {
-  v6 = a4;
-  v7 = a3;
+  subpredicateCopy = subpredicate;
+  reasonCopy = reason;
   v8 = +[PLValidatedSavedAssetType predicateForIncludeMask:useIndex:](PLValidatedSavedAssetType, "predicateForIncludeMask:useIndex:", +[PLValidatedSavedAssetType maskForFinderSyncedAsset], 1);
   v9 = v8;
   v10 = v8;
-  if (v6)
+  if (subpredicateCopy)
   {
     v21[0] = v8;
-    v21[1] = v6;
+    v21[1] = subpredicateCopy;
     v11 = [NSArray arrayWithObjects:v21 count:2];
     v10 = [NSCompoundPredicate andPredicateWithSubpredicates:v11];
   }
 
-  v12 = [(PLSyncClient *)self _photoLibrary];
+  _photoLibrary = [(PLSyncClient *)self _photoLibrary];
   v18 = 0;
-  v13 = [v12 batchDeleteAssetsWithPredicate:v10 reason:v7 error:&v18];
+  v13 = [_photoLibrary batchDeleteAssetsWithPredicate:v10 reason:reasonCopy error:&v18];
 
   v14 = v18;
   if ((v13 & 1) == 0)
@@ -2652,51 +2652,51 @@ LABEL_8:
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_ERROR, "Deleting synced assets error: %{public}@", buf, 0xCu);
     }
 
-    v16 = [(PLSyncClient *)self _photoLibrary];
-    v17 = [v16 managedObjectContext];
-    [v17 setDelayedDeletions:0];
+    _photoLibrary2 = [(PLSyncClient *)self _photoLibrary];
+    managedObjectContext = [_photoLibrary2 managedObjectContext];
+    [managedObjectContext setDelayedDeletions:0];
   }
 }
 
-- (void)_enqueueRemoteSyncCleanupJobBeforeDate:(id)a3 withFinishedBlock:(id)a4
+- (void)_enqueueRemoteSyncCleanupJobBeforeDate:(id)date withFinishedBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  blockCopy = block;
   v8 = objc_alloc_init(PLSyncSaveJob);
   [v8 setCleanupSyncState:1];
-  [v8 setCleanupBeforeDate:v6];
-  [v8 setFinishedBlock:v7];
+  [v8 setCleanupBeforeDate:dateCopy];
+  [v8 setFinishedBlock:blockCopy];
 
   v9 = PLSyncGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v6;
+    v11 = dateCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "_enqueueRemoteSyncCleanupJob (cleanup sync state before: %{public}@)", &v10, 0xCu);
   }
 
   [(PLSyncClient *)self _enqueueSyncSaveJob:v8];
 }
 
-- (void)_enqueueSyncSaveJob:(id)a3
+- (void)_enqueueSyncSaveJob:(id)job
 {
-  v4 = a3;
-  v5 = [(PLSyncClient *)self outstandingSyncJobs];
+  jobCopy = job;
+  outstandingSyncJobs = [(PLSyncClient *)self outstandingSyncJobs];
 
-  if (!v5)
+  if (!outstandingSyncJobs)
   {
     v6 = +[NSMutableArray array];
     [(PLSyncClient *)self setOutstandingSyncJobs:v6];
   }
 
-  v7 = [(PLSyncClient *)self outstandingSyncJobs];
-  [v7 addObject:v4];
+  outstandingSyncJobs2 = [(PLSyncClient *)self outstandingSyncJobs];
+  [outstandingSyncJobs2 addObject:jobCopy];
 }
 
-- (BOOL)prepareForSyncWithHostAnchor:(id)a3 progressCallback:(id)a4 error:(id *)a5
+- (BOOL)prepareForSyncWithHostAnchor:(id)anchor progressCallback:(id)callback error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  anchorCopy = anchor;
+  callbackCopy = callback;
   if (+[NSThread isMainThread])
   {
     v9 = PLSyncGetLog();
@@ -2715,14 +2715,14 @@ LABEL_8:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *v31 = 138543362;
-    v32 = v7;
+    v32 = anchorCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "prepareForSyncWithHostAnchor: %{public}@", v31, 0xCu);
   }
 
   if (+[PLPhotoLibrary systemPhotoLibraryIsObtainable])
   {
     Current = CFAbsoluteTimeGetCurrent();
-    v12 = [(PLSyncClient *)self _initializePhotoLibraryIfNecessary];
+    _initializePhotoLibraryIfNecessary = [(PLSyncClient *)self _initializePhotoLibraryIfNecessary];
     [(PLSyncClient *)self _startListeningToMemoryPressureEvents];
     v28[24] = 1;
     v13 = dispatch_semaphore_create(0);
@@ -2731,7 +2731,7 @@ LABEL_8:
     v23[1] = 3221225472;
     v23[2] = sub_1422C;
     v23[3] = &unk_247C8;
-    v15 = v7;
+    v15 = anchorCopy;
     v24 = v15;
     v26 = buf;
     v16 = v13;
@@ -2773,7 +2773,7 @@ LABEL_8:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *v31 = 138543362;
-      v32 = v7;
+      v32 = anchorCopy;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "prepareForSyncWithHostAnchor: %{public}@ - called before photo library is available", v31, 0xCu);
     }
   }
@@ -2807,19 +2807,19 @@ LABEL_8:
   return v3;
 }
 
-- (id)_metricsForLibraryAtURL:(id)a3 error:(id *)a4
+- (id)_metricsForLibraryAtURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v6 = +[PLAssetsdClient sharedSystemLibraryAssetsdClient];
-  v7 = [v6 libraryInternalClient];
+  libraryInternalClient = [v6 libraryInternalClient];
   v13 = 0;
-  v8 = [v7 metricsForLibraryAtURL:v5 error:&v13];
+  v8 = [libraryInternalClient metricsForLibraryAtURL:lCopy error:&v13];
   v9 = v13;
   v10 = PLSyncGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v15 = v5;
+    v15 = lCopy;
     v16 = 2112;
     v17 = v8;
     v18 = 2112;
@@ -2827,10 +2827,10 @@ LABEL_8:
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "metrics: %@ %@ %@", buf, 0x20u);
   }
 
-  if (a4)
+  if (error)
   {
     v11 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v8;
@@ -2915,7 +2915,7 @@ LABEL_8:
   v5 = 3221225472;
   v6 = sub_15048;
   v7 = &unk_24738;
-  v8 = self;
+  selfCopy = self;
   PLSafeRunWithUnfairLock();
   v2 = PLSyncGetLog();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
@@ -2925,7 +2925,7 @@ LABEL_8:
   }
 }
 
-- (id)_photoLibraryWithExpectationExists:(BOOL)a3
+- (id)_photoLibraryWithExpectationExists:(BOOL)exists
 {
   v5 = 0;
   v6 = &v5;
@@ -2955,17 +2955,17 @@ LABEL_8:
   return result;
 }
 
-+ (void)_logRestoreContext:(id)a3
++ (void)_logRestoreContext:(id)context
 {
-  v3 = a3;
-  if ([v3 count])
+  contextCopy = context;
+  if ([contextCopy count])
   {
     v35[0] = @"kPLSyncRestoreContextRestoredFilesKey";
     v35[1] = @"kPLSyncRestoreContextRestoredFilesKey";
     v35[2] = @"kPLSyncRestoreContextUnrecoverableFilesKey";
     v4 = [NSArray arrayWithObjects:v35 count:3];
-    v5 = [v3 allKeys];
-    v6 = [v5 sortedArrayUsingSelector:"compare:"];
+    allKeys = [contextCopy allKeys];
+    v6 = [allKeys sortedArrayUsingSelector:"compare:"];
 
     v28 = 0u;
     v29 = 0u;
@@ -2994,8 +2994,8 @@ LABEL_8:
         v12 = *(*(&v26 + 1) + 8 * i);
         if ([v4 containsObject:v12, v24])
         {
-          v13 = v3;
-          v14 = [v3 objectForKeyedSubscript:v12];
+          v13 = contextCopy;
+          v14 = [contextCopy objectForKeyedSubscript:v12];
           v15 = objc_opt_respondsToSelector();
           v16 = PLSyncGetLog();
           v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
@@ -3028,14 +3028,14 @@ LABEL_15:
             _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, v20, buf, v21);
           }
 
-          v3 = v13;
+          contextCopy = v13;
           goto LABEL_17;
         }
 
         v14 = PLSyncGetLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v3 objectForKeyedSubscript:v12];
+          v22 = [contextCopy objectForKeyedSubscript:v12];
           *buf = v24;
           v31 = v12;
           v32 = 2114;
@@ -3060,7 +3060,7 @@ LABEL_19:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v23 = @"empty";
-    if (!v3)
+    if (!contextCopy)
     {
       v23 = @"nil";
     }
@@ -3088,8 +3088,8 @@ LABEL_24:
 {
   if (!self->_memoryPressureSource)
   {
-    v3 = [(PLSyncClient *)self _photoLibrary];
-    objc_initWeak(&location, v3);
+    _photoLibrary = [(PLSyncClient *)self _photoLibrary];
+    objc_initWeak(&location, _photoLibrary);
 
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -3114,19 +3114,19 @@ LABEL_24:
 - (id)_allAssetMetricBaseURLs
 {
   v3 = +[NSMutableArray array];
-  v4 = [(PLSyncClient *)self pathManager];
-  v5 = [v4 photoDirectoryWithType:4];
+  pathManager = [(PLSyncClient *)self pathManager];
+  v5 = [pathManager photoDirectoryWithType:4];
   v6 = [NSURL fileURLWithPath:v5 isDirectory:1];
   [v3 addObject:v6];
 
-  v7 = [(PLSyncClient *)self pathManager];
-  v8 = [v7 photoDirectoryWithType:15];
+  pathManager2 = [(PLSyncClient *)self pathManager];
+  v8 = [pathManager2 photoDirectoryWithType:15];
 
   v9 = [NSURL fileURLWithPath:v8 isDirectory:1];
   [v3 addObject:v9];
 
-  v10 = [(PLSyncClient *)self pathManager];
-  v11 = [v10 photoDirectoryWithType:34];
+  pathManager3 = [(PLSyncClient *)self pathManager];
+  v11 = [pathManager3 photoDirectoryWithType:34];
   v12 = [NSURL fileURLWithPath:v11 isDirectory:1];
   [v3 addObject:v12];
 
@@ -3136,14 +3136,14 @@ LABEL_24:
 - (id)_allAssetDirectoryURLs
 {
   v3 = +[NSMutableArray array];
-  v4 = [(PLSyncClient *)self pathManager];
-  v5 = [v4 photoDirectoryWithType:4];
+  pathManager = [(PLSyncClient *)self pathManager];
+  v5 = [pathManager photoDirectoryWithType:4];
   v6 = [NSURL fileURLWithPath:v5 isDirectory:1];
   [v3 addObject:v6];
 
-  v23 = self;
-  v7 = [(PLSyncClient *)self pathManager];
-  v8 = [v7 photoDirectoryWithType:15];
+  selfCopy = self;
+  pathManager2 = [(PLSyncClient *)self pathManager];
+  v8 = [pathManager2 photoDirectoryWithType:15];
 
   v9 = [NSRegularExpression regularExpressionWithPattern:@"^[0-9]*$" options:0 error:0];
   v24 = 0u;
@@ -3182,9 +3182,9 @@ LABEL_24:
     while (v13);
   }
 
-  v19 = [(PLSyncClient *)v23 pathManager];
-  v20 = [v19 iTunesSyncedAssetsDirectory];
-  v21 = [NSURL fileURLWithPath:v20 isDirectory:1];
+  pathManager3 = [(PLSyncClient *)selfCopy pathManager];
+  iTunesSyncedAssetsDirectory = [pathManager3 iTunesSyncedAssetsDirectory];
+  v21 = [NSURL fileURLWithPath:iTunesSyncedAssetsDirectory isDirectory:1];
   [v3 addObject:v21];
 
   return v3;

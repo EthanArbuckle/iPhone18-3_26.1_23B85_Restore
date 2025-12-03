@@ -1,30 +1,30 @@
 @interface INSaveParkingLocationIntent
 - (CLPlacemark)parkingLocation;
-- (INSaveParkingLocationIntent)initWithParkingLocation:(id)a3 parkingNote:(id)a4;
+- (INSaveParkingLocationIntent)initWithParkingLocation:(id)location parkingNote:(id)note;
 - (NSString)parkingNote;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setParkingLocation:(id)a3;
-- (void)setParkingNote:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setParkingLocation:(id)location;
+- (void)setParkingNote:(id)note;
 @end
 
 @implementation INSaveParkingLocationIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INSaveParkingLocationIntent *)self _typedBackingStore];
-  v13 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 parkingLocation];
-  v10 = INIntentSlotValueRedactedLocationFromLocation(v9, a3, v13);
+  idCopy = id;
+  _typedBackingStore = [(INSaveParkingLocationIntent *)self _typedBackingStore];
+  v13 = idCopy;
+  v8 = [_typedBackingStore copy];
+  parkingLocation = [_typedBackingStore parkingLocation];
+  v10 = INIntentSlotValueRedactedLocationFromLocation(parkingLocation, options, v13);
   [v8 setParkingLocation:v10];
 
-  v11 = [v7 parkingNote];
-  v12 = INIntentSlotValueRedactedStringFromString(v11, a3, v13);
+  parkingNote = [_typedBackingStore parkingNote];
+  v12 = INIntentSlotValueRedactedStringFromString(parkingNote, options, v13);
 
   [v8 setParkingNote:v12];
   [(INIntent *)self setBackingStore:v8];
@@ -34,29 +34,29 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"parkingLocation";
-  v3 = [(INSaveParkingLocationIntent *)self parkingLocation];
-  v4 = v3;
-  if (!v3)
+  parkingLocation = [(INSaveParkingLocationIntent *)self parkingLocation];
+  null = parkingLocation;
+  if (!parkingLocation)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"parkingNote";
-  v11[0] = v4;
-  v5 = [(INSaveParkingLocationIntent *)self parkingNote];
-  v6 = v5;
-  if (!v5)
+  v11[0] = null;
+  parkingNote = [(INSaveParkingLocationIntent *)self parkingNote];
+  null2 = parkingNote;
+  if (!parkingNote)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!parkingNote)
   {
   }
 
-  if (!v3)
+  if (!parkingLocation)
   {
   }
 
@@ -65,81 +65,81 @@
   return v7;
 }
 
-- (void)setParkingNote:(id)a3
+- (void)setParkingNote:(id)note
 {
-  v4 = a3;
-  v6 = [(INSaveParkingLocationIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToString(v4);
+  noteCopy = note;
+  _typedBackingStore = [(INSaveParkingLocationIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToString(noteCopy);
 
-  [v6 setParkingNote:v5];
+  [_typedBackingStore setParkingNote:v5];
 }
 
 - (NSString)parkingNote
 {
-  v2 = [(INSaveParkingLocationIntent *)self _typedBackingStore];
-  v3 = [v2 parkingNote];
-  v4 = INIntentSlotValueTransformFromString(v3);
+  _typedBackingStore = [(INSaveParkingLocationIntent *)self _typedBackingStore];
+  parkingNote = [_typedBackingStore parkingNote];
+  v4 = INIntentSlotValueTransformFromString(parkingNote);
 
   return v4;
 }
 
-- (void)setParkingLocation:(id)a3
+- (void)setParkingLocation:(id)location
 {
-  v4 = a3;
-  v6 = [(INSaveParkingLocationIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToLocation(v4);
+  locationCopy = location;
+  _typedBackingStore = [(INSaveParkingLocationIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToLocation(locationCopy);
 
-  [v6 setParkingLocation:v5];
+  [_typedBackingStore setParkingLocation:v5];
 }
 
 - (CLPlacemark)parkingLocation
 {
-  v2 = [(INSaveParkingLocationIntent *)self _typedBackingStore];
-  v3 = [v2 parkingLocation];
-  v4 = INIntentSlotValueTransformFromLocation(v3);
+  _typedBackingStore = [(INSaveParkingLocationIntent *)self _typedBackingStore];
+  parkingLocation = [_typedBackingStore parkingLocation];
+  v4 = INIntentSlotValueTransformFromLocation(parkingLocation);
 
   return v4;
 }
 
-- (INSaveParkingLocationIntent)initWithParkingLocation:(id)a3 parkingNote:(id)a4
+- (INSaveParkingLocationIntent)initWithParkingLocation:(id)location parkingNote:(id)note
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  noteCopy = note;
   v11.receiver = self;
   v11.super_class = INSaveParkingLocationIntent;
   v8 = [(INIntent *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(INSaveParkingLocationIntent *)v8 setParkingLocation:v6];
-    [(INSaveParkingLocationIntent *)v9 setParkingNote:v7];
+    [(INSaveParkingLocationIntent *)v8 setParkingLocation:locationCopy];
+    [(INSaveParkingLocationIntent *)v9 setParkingNote:noteCopy];
   }
 
   return v9;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSaveParkingLocationIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSaveParkingLocationIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INSaveParkingLocationIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSaveParkingLocationIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

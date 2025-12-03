@@ -1,29 +1,29 @@
 @interface WKUIConfigurationPreviewGenerator
-+ (id)uiImageRepresentationForBlastDoorDataSource:(id)a3 scale:(double)a4;
-+ (id)uiImageRepresentationForWorkoutFileData:(id)a3;
++ (id)uiImageRepresentationForBlastDoorDataSource:(id)source scale:(double)scale;
++ (id)uiImageRepresentationForWorkoutFileData:(id)data;
 @end
 
 @implementation WKUIConfigurationPreviewGenerator
 
-+ (id)uiImageRepresentationForWorkoutFileData:(id)a3
++ (id)uiImageRepresentationForWorkoutFileData:(id)data
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v4 = [NLWorkoutConfigurationImageGenerator createImageFromData:location[0]];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-+ (id)uiImageRepresentationForBlastDoorDataSource:(id)a3 scale:(double)a4
++ (id)uiImageRepresentationForBlastDoorDataSource:(id)source scale:(double)scale
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [NLWorkoutConfigurationImageGenerator createImageFromBlastDoorDataSource:location[0] scale:a4];
+  objc_storeStrong(location, source);
+  v6 = [NLWorkoutConfigurationImageGenerator createImageFromBlastDoorDataSource:location[0] scale:scale];
   objc_storeStrong(location, 0);
 
   return v6;

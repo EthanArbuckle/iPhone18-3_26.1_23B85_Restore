@@ -1,51 +1,51 @@
 @interface CBSpatialInteractionSession
-+ (id)dictionaryWithTokenData:(id)a3 error:(id *)a4;
-- (BOOL)matchesWithDevice:(id)a3;
-- (BOOL)updateWithSession:(id)a3;
++ (id)dictionaryWithTokenData:(id)data error:(id *)error;
+- (BOOL)matchesWithDevice:(id)device;
+- (BOOL)updateWithSession:(id)session;
 - (CBSpatialInteractionSession)init;
-- (CBSpatialInteractionSession)initWithXPCObject:(id)a3 error:(id *)a4;
+- (CBSpatialInteractionSession)initWithXPCObject:(id)object error:(id *)error;
 - (NSArray)discoveredDevices;
 - (id)_ensureXPCStarted;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (void)_activate;
 - (void)_activateDirectStart;
-- (void)_activateXPCCompleted:(id)a3 reactivate:(BOOL)a4;
-- (void)_activateXPCStart:(BOOL)a3;
-- (void)_addPeerToken:(id)a3 userInfo:(id)a4 completion:(id)a5;
+- (void)_activateXPCCompleted:(id)completed reactivate:(BOOL)reactivate;
+- (void)_activateXPCStart:(BOOL)start;
+- (void)_addPeerToken:(id)token userInfo:(id)info completion:(id)completion;
 - (void)_interrupted;
 - (void)_invalidated;
 - (void)_lostAllDevices;
 - (void)_reAddTokens;
 - (void)_update;
-- (void)_updateIfNeededWithBlock:(id)a3;
-- (void)_xpcReceivedAOPData:(id)a3;
-- (void)_xpcReceivedAdvertisingAddressChanged:(id)a3;
-- (void)_xpcReceivedDeviceFound:(id)a3;
-- (void)_xpcReceivedDeviceLost:(id)a3;
-- (void)_xpcReceivedEvent:(id)a3;
-- (void)_xpcReceivedMessage:(id)a3;
-- (void)_xpcReceivedPowerStateChanged:(id)a3;
-- (void)_xpcReceivedSystemOverrideChanged:(id)a3;
-- (void)activateWithCompletion:(id)a3;
-- (void)addPeerToken:(id)a3 completion:(id)a4;
-- (void)addPeerToken:(id)a3 userInfo:(id)a4 completion:(id)a5;
+- (void)_updateIfNeededWithBlock:(id)block;
+- (void)_xpcReceivedAOPData:(id)data;
+- (void)_xpcReceivedAdvertisingAddressChanged:(id)changed;
+- (void)_xpcReceivedDeviceFound:(id)found;
+- (void)_xpcReceivedDeviceLost:(id)lost;
+- (void)_xpcReceivedEvent:(id)event;
+- (void)_xpcReceivedMessage:(id)message;
+- (void)_xpcReceivedPowerStateChanged:(id)changed;
+- (void)_xpcReceivedSystemOverrideChanged:(id)changed;
+- (void)activateWithCompletion:(id)completion;
+- (void)addPeerToken:(id)token completion:(id)completion;
+- (void)addPeerToken:(id)token userInfo:(id)info completion:(id)completion;
 - (void)dealloc;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 - (void)invalidate;
-- (void)removePeerToken:(id)a3 completion:(id)a4;
-- (void)setAdvertiseRate:(int)a3;
-- (void)setAdvertiseRate:(int)a3 timeout:(double)a4;
-- (void)setBleRSSIThresholdOrder:(unsigned __int8)a3;
-- (void)setControlFlags:(unsigned int)a3;
-- (void)setFilter:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setScanRate:(int)a3;
-- (void)setScanRateScreenOff:(int)a3;
+- (void)removePeerToken:(id)token completion:(id)completion;
+- (void)setAdvertiseRate:(int)rate;
+- (void)setAdvertiseRate:(int)rate timeout:(double)timeout;
+- (void)setBleRSSIThresholdOrder:(unsigned __int8)order;
+- (void)setControlFlags:(unsigned int)flags;
+- (void)setFilter:(id)filter;
+- (void)setLabel:(id)label;
+- (void)setScanRate:(int)rate;
+- (void)setScanRateScreenOff:(int)off;
 @end
 
 @implementation CBSpatialInteractionSession
 
-+ (id)dictionaryWithTokenData:(id)a3 error:(id *)a4
++ (id)dictionaryWithTokenData:(id)data error:(id *)error
 {
   HIDWORD(v14) = 0;
   v5 = OPACKDecodeData();
@@ -57,10 +57,10 @@
       v12 = v5;
     }
 
-    else if (a4)
+    else if (error)
     {
       CBErrorF(312900, "Non-dict token", v6, v7, v8, v9, v10, v11, v14);
-      *a4 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -71,7 +71,7 @@
 
   else
   {
-    [(CBSpatialInteractionSession *)a4 dictionaryWithTokenData:&v15 error:?];
+    [(CBSpatialInteractionSession *)error dictionaryWithTokenData:&v15 error:?];
     v12 = v15;
   }
 
@@ -99,11 +99,11 @@
   ucat = self->_ucat;
   if (ucat && (ucat->var3 & 0x40000) != 0)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = self->_ucat;
     LogCategory_Remove();
-    self = v3;
-    v3->_ucat = 0;
+    self = selfCopy;
+    selfCopy->_ucat = 0;
   }
 
   v5.receiver = self;
@@ -111,9 +111,9 @@
   [(CBSpatialInteractionSession *)&v5 dealloc];
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  xdict = a3;
+  xdict = object;
   advertiseRate = self->_advertiseRate;
   if (advertiseRate)
   {
@@ -171,16 +171,16 @@
     xpc_dictionary_set_uint64(xdict, "siCF", controlFlags);
   }
 
-  v11 = [(CBSpatialInteractionSession *)self presenceConfigData];
-  v12 = v11;
-  if (v11)
+  presenceConfigData = [(CBSpatialInteractionSession *)self presenceConfigData];
+  v12 = presenceConfigData;
+  if (presenceConfigData)
   {
-    v13 = v11;
+    v13 = presenceConfigData;
     v14 = xdict;
-    v15 = [v12 bytes];
-    if (v15)
+    bytes = [v12 bytes];
+    if (bytes)
     {
-      v16 = v15;
+      v16 = bytes;
     }
 
     else
@@ -191,16 +191,16 @@
     xpc_dictionary_set_data(v14, "siPC", v16, [v12 length]);
   }
 
-  v17 = [(CBSpatialInteractionSession *)self uwbConfigData];
-  v18 = v17;
-  if (v17)
+  uwbConfigData = [(CBSpatialInteractionSession *)self uwbConfigData];
+  v18 = uwbConfigData;
+  if (uwbConfigData)
   {
-    v19 = v17;
+    v19 = uwbConfigData;
     v20 = xdict;
-    v21 = [v18 bytes];
-    if (v21)
+    bytes2 = [v18 bytes];
+    if (bytes2)
     {
-      v22 = v21;
+      v22 = bytes2;
     }
 
     else
@@ -251,10 +251,10 @@
       v26 = v25;
       v27 = xdict;
       v28 = v25;
-      v29 = [(NSData *)v28 bytes];
-      if (v29)
+      bytes3 = [(NSData *)v28 bytes];
+      if (bytes3)
       {
-        v30 = v29;
+        v30 = bytes3;
       }
 
       else
@@ -305,10 +305,10 @@ LABEL_44:
     v36 = v35;
     v37 = xdict;
     v38 = v35;
-    v39 = [(NSData *)v38 bytes];
-    if (v39)
+    bytes4 = [(NSData *)v38 bytes];
+    if (bytes4)
     {
-      v40 = v39;
+      v40 = bytes4;
     }
 
     else
@@ -326,7 +326,7 @@ LABEL_55:
   CUXPCEncodeObject();
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   clientID = self->_clientID;
   NSAppendPrintF_safe();
@@ -672,8 +672,8 @@ LABEL_88:
     v4 = v31;
   }
 
-  v32 = [(CBSpatialInteractionSession *)self uwbConfigData];
-  if (v32)
+  uwbConfigData = [(CBSpatialInteractionSession *)self uwbConfigData];
+  if (uwbConfigData)
   {
     v51 = CUPrintNSDataHex();
     NSAppendPrintF_safe();
@@ -682,8 +682,8 @@ LABEL_88:
     v4 = v33;
   }
 
-  v34 = [(CBSpatialInteractionSession *)self presenceConfigData];
-  if (v34)
+  presenceConfigData = [(CBSpatialInteractionSession *)self presenceConfigData];
+  if (presenceConfigData)
   {
     v52 = CUPrintNSDataHex();
     NSAppendPrintF_safe();
@@ -756,45 +756,45 @@ LABEL_88:
   return v4;
 }
 
-- (BOOL)matchesWithDevice:(id)a3
+- (BOOL)matchesWithDevice:(id)device
 {
-  v4 = [a3 deviceFlags];
+  deviceFlags = [device deviceFlags];
   controlFlags = self->_controlFlags;
-  if ((v4 & 0x100) != 0 && (controlFlags & 0x40) != 0)
+  if ((deviceFlags & 0x100) != 0 && (controlFlags & 0x40) != 0)
   {
     LOBYTE(v6) = 1;
   }
 
-  else if ((v4 & 0x400) != 0 && (controlFlags & 0x100) != 0)
+  else if ((deviceFlags & 0x400) != 0 && (controlFlags & 0x100) != 0)
   {
     LOBYTE(v6) = 1;
   }
 
-  else if ((v4 & 0x80) != 0 && (controlFlags & 0x20) != 0)
+  else if ((deviceFlags & 0x80) != 0 && (controlFlags & 0x20) != 0)
   {
     LOBYTE(v6) = 1;
   }
 
-  else if ((v4 & 0x200) != 0 && (controlFlags & 0x80) != 0)
+  else if ((deviceFlags & 0x200) != 0 && (controlFlags & 0x80) != 0)
   {
     LOBYTE(v6) = 1;
   }
 
   else
   {
-    return (v4 >> 11) & ((self->_controlFlags & 0x200) >> 9);
+    return (deviceFlags >> 11) & ((self->_controlFlags & 0x200) >> 9);
   }
 
   return v6;
 }
 
-- (BOOL)updateWithSession:(id)a3
+- (BOOL)updateWithSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 advertiseRate];
+  sessionCopy = session;
+  advertiseRate = [sessionCopy advertiseRate];
   advertiseRate = self->_advertiseRate;
-  v7 = v5 != advertiseRate;
-  if (v5 != advertiseRate)
+  v7 = advertiseRate != advertiseRate;
+  if (advertiseRate != advertiseRate)
   {
     if (advertiseRate > 39)
     {
@@ -803,8 +803,8 @@ LABEL_88:
         if (advertiseRate == 40)
         {
           v8 = "Medium";
-          v9 = [v4 advertiseRate];
-          if (v9 <= 39)
+          advertiseRate2 = [sessionCopy advertiseRate];
+          if (advertiseRate2 <= 39)
           {
             goto LABEL_36;
           }
@@ -818,8 +818,8 @@ LABEL_88:
           }
 
           v8 = "MediumMid";
-          v9 = [v4 advertiseRate];
-          if (v9 <= 39)
+          advertiseRate2 = [sessionCopy advertiseRate];
+          if (advertiseRate2 <= 39)
           {
             goto LABEL_36;
           }
@@ -832,8 +832,8 @@ LABEL_88:
         {
           case '-':
             v8 = "MediumHigh";
-            v9 = [v4 advertiseRate];
-            if (v9 <= 39)
+            advertiseRate2 = [sessionCopy advertiseRate];
+            if (advertiseRate2 <= 39)
             {
               goto LABEL_36;
             }
@@ -841,8 +841,8 @@ LABEL_88:
             break;
           case '2':
             v8 = "High";
-            v9 = [v4 advertiseRate];
-            if (v9 > 39)
+            advertiseRate2 = [sessionCopy advertiseRate];
+            if (advertiseRate2 > 39)
             {
               break;
             }
@@ -850,8 +850,8 @@ LABEL_88:
             goto LABEL_36;
           case '<':
             v8 = "Max";
-            v9 = [v4 advertiseRate];
-            if (v9 <= 39)
+            advertiseRate2 = [sessionCopy advertiseRate];
+            if (advertiseRate2 <= 39)
             {
               goto LABEL_36;
             }
@@ -873,8 +873,8 @@ LABEL_88:
         }
 
         v8 = "Periodic";
-        v9 = [v4 advertiseRate];
-        if (v9 <= 39)
+        advertiseRate2 = [sessionCopy advertiseRate];
+        if (advertiseRate2 <= 39)
         {
           goto LABEL_36;
         }
@@ -883,8 +883,8 @@ LABEL_88:
       else
       {
         v8 = "Default";
-        v9 = [v4 advertiseRate];
-        if (v9 <= 39)
+        advertiseRate2 = [sessionCopy advertiseRate];
+        if (advertiseRate2 <= 39)
         {
           goto LABEL_36;
         }
@@ -897,8 +897,8 @@ LABEL_88:
       {
         case 15:
           v8 = "PeriodicHigh";
-          v9 = [v4 advertiseRate];
-          if (v9 <= 39)
+          advertiseRate2 = [sessionCopy advertiseRate];
+          if (advertiseRate2 <= 39)
           {
             goto LABEL_36;
           }
@@ -906,8 +906,8 @@ LABEL_88:
           break;
         case 20:
           v8 = "Background";
-          v9 = [v4 advertiseRate];
-          if (v9 <= 39)
+          advertiseRate2 = [sessionCopy advertiseRate];
+          if (advertiseRate2 <= 39)
           {
             goto LABEL_36;
           }
@@ -915,22 +915,22 @@ LABEL_88:
           break;
         case 30:
           v8 = "Low";
-          v9 = [v4 advertiseRate];
-          if (v9 > 39)
+          advertiseRate2 = [sessionCopy advertiseRate];
+          if (advertiseRate2 > 39)
           {
             break;
           }
 
 LABEL_36:
-          if (v9 <= 14)
+          if (advertiseRate2 <= 14)
           {
-            if (!v9)
+            if (!advertiseRate2)
             {
               v11 = "Default";
               goto LABEL_60;
             }
 
-            if (v9 == 10)
+            if (advertiseRate2 == 10)
             {
               v11 = "Periodic";
               goto LABEL_60;
@@ -939,7 +939,7 @@ LABEL_36:
 
           else
           {
-            switch(v9)
+            switch(advertiseRate2)
             {
               case 15:
                 v11 = "PeriodicHigh";
@@ -957,8 +957,8 @@ LABEL_36:
         default:
 LABEL_47:
           v8 = "?";
-          v9 = [v4 advertiseRate];
-          if (v9 > 39)
+          advertiseRate2 = [sessionCopy advertiseRate];
+          if (advertiseRate2 > 39)
           {
             break;
           }
@@ -967,15 +967,15 @@ LABEL_47:
       }
     }
 
-    if (v9 <= 44)
+    if (advertiseRate2 <= 44)
     {
-      if (v9 == 40)
+      if (advertiseRate2 == 40)
       {
         v11 = "Medium";
         goto LABEL_60;
       }
 
-      if (v9 == 42)
+      if (advertiseRate2 == 42)
       {
         v11 = "MediumMid";
         goto LABEL_60;
@@ -984,7 +984,7 @@ LABEL_47:
 
     else
     {
-      switch(v9)
+      switch(advertiseRate2)
       {
         case '-':
           v11 = "MediumHigh";
@@ -1005,8 +1005,8 @@ LABEL_60:
     v61 = v11;
     CUAppendF();
     v10 = 0;
-    self->_advertiseRate = [v4 advertiseRate];
-    if ([v4 controlFlags] == self->_controlFlags)
+    self->_advertiseRate = [sessionCopy advertiseRate];
+    if ([sessionCopy controlFlags] == self->_controlFlags)
     {
       goto LABEL_62;
     }
@@ -1015,24 +1015,24 @@ LABEL_60:
   }
 
   v10 = 0;
-  if ([v4 controlFlags] != self->_controlFlags)
+  if ([sessionCopy controlFlags] != self->_controlFlags)
   {
 LABEL_61:
     v12 = CUPrintFlags32();
-    [v4 controlFlags];
+    [sessionCopy controlFlags];
     v62 = CUPrintFlags32();
     CUAppendF();
     v13 = v10;
 
-    self->_controlFlags = [v4 controlFlags];
+    self->_controlFlags = [sessionCopy controlFlags];
     v7 = 1;
     v10 = v13;
   }
 
 LABEL_62:
-  if ([v4 bleRSSIThresholdHint] == self->_bleRSSIThresholdHint)
+  if ([sessionCopy bleRSSIThresholdHint] == self->_bleRSSIThresholdHint)
   {
-    if ([v4 bleRSSIThresholdOrder] == self->_bleRSSIThresholdOrder)
+    if ([sessionCopy bleRSSIThresholdOrder] == self->_bleRSSIThresholdOrder)
     {
       goto LABEL_65;
     }
@@ -1041,31 +1041,31 @@ LABEL_62:
   }
 
   bleRSSIThresholdHint = self->_bleRSSIThresholdHint;
-  v64 = [v4 bleRSSIThresholdHint];
+  bleRSSIThresholdHint = [sessionCopy bleRSSIThresholdHint];
   CUAppendF();
   v22 = v10;
 
-  self->_bleRSSIThresholdHint = [v4 bleRSSIThresholdHint];
+  self->_bleRSSIThresholdHint = [sessionCopy bleRSSIThresholdHint];
   v7 = 1;
   v10 = v22;
-  if ([v4 bleRSSIThresholdOrder] != self->_bleRSSIThresholdOrder)
+  if ([sessionCopy bleRSSIThresholdOrder] != self->_bleRSSIThresholdOrder)
   {
 LABEL_64:
     v14 = CUPrintFlags32();
-    [v4 bleRSSIThresholdOrder];
+    [sessionCopy bleRSSIThresholdOrder];
     v63 = CUPrintFlags32();
     CUAppendF();
     v15 = v10;
 
-    self->_bleRSSIThresholdOrder = [v4 bleRSSIThresholdOrder];
+    self->_bleRSSIThresholdOrder = [sessionCopy bleRSSIThresholdOrder];
     v7 = 1;
     v10 = v15;
   }
 
 LABEL_65:
-  v16 = [v4 filter];
+  filter = [sessionCopy filter];
   filter = self->_filter;
-  v18 = v16;
+  v18 = filter;
   v19 = filter;
   if (v18 == v19)
   {
@@ -1088,39 +1088,39 @@ LABEL_74:
 LABEL_73:
     v23 = self->_filter;
     v24 = CUPrintNSObjectOneLine();
-    v25 = [v4 filter];
+    filter2 = [sessionCopy filter];
     v65 = CUPrintNSObjectOneLine();
     CUAppendF();
     v26 = v10;
 
-    v27 = [v4 filter];
+    filter3 = [sessionCopy filter];
     v18 = self->_filter;
-    self->_filter = v27;
+    self->_filter = filter3;
     v7 = 1;
     v10 = v26;
     goto LABEL_74;
   }
 
 LABEL_75:
-  v28 = [(CBSpatialInteractionSession *)self presenceConfigData];
-  v29 = [v4 presenceConfigData];
-  v30 = v28;
+  presenceConfigData = [(CBSpatialInteractionSession *)self presenceConfigData];
+  presenceConfigData2 = [sessionCopy presenceConfigData];
+  v30 = presenceConfigData;
   v31 = v30;
-  if (v29 == v30)
+  if (presenceConfigData2 == v30)
   {
   }
 
   else
   {
-    if ((v30 == 0) != (v29 != 0))
+    if ((v30 == 0) != (presenceConfigData2 != 0))
     {
-      v32 = [v29 isEqual:v30];
+      v32 = [presenceConfigData2 isEqual:v30];
 
       if (v32)
       {
-        v33 = [v4 scanRate];
+        scanRate = [sessionCopy scanRate];
         scanRate = self->_scanRate;
-        if (v33 == scanRate)
+        if (scanRate == scanRate)
         {
           goto LABEL_79;
         }
@@ -1133,8 +1133,8 @@ LABEL_85:
             if (scanRate == 50)
             {
               v39 = "High";
-              v40 = [v4 scanRate];
-              if (v40 > 34)
+              scanRate2 = [sessionCopy scanRate];
+              if (scanRate2 > 34)
               {
                 goto LABEL_121;
               }
@@ -1148,8 +1148,8 @@ LABEL_85:
             }
 
             v39 = "Max";
-            v40 = [v4 scanRate];
-            if (v40 <= 34)
+            scanRate2 = [sessionCopy scanRate];
+            if (scanRate2 <= 34)
             {
               goto LABEL_111;
             }
@@ -1158,8 +1158,8 @@ LABEL_85:
           else if (scanRate == 35)
           {
             v39 = "MediumLow";
-            v40 = [v4 scanRate];
-            if (v40 <= 34)
+            scanRate2 = [sessionCopy scanRate];
+            if (scanRate2 <= 34)
             {
               goto LABEL_111;
             }
@@ -1173,8 +1173,8 @@ LABEL_85:
             }
 
             v39 = "Medium";
-            v40 = [v4 scanRate];
-            if (v40 <= 34)
+            scanRate2 = [sessionCopy scanRate];
+            if (scanRate2 <= 34)
             {
               goto LABEL_111;
             }
@@ -1186,8 +1186,8 @@ LABEL_85:
           if (scanRate == 20)
           {
             v39 = "Background";
-            v40 = [v4 scanRate];
-            if (v40 <= 34)
+            scanRate2 = [sessionCopy scanRate];
+            if (scanRate2 <= 34)
             {
               goto LABEL_111;
             }
@@ -1201,8 +1201,8 @@ LABEL_85:
             }
 
             v39 = "Low";
-            v40 = [v4 scanRate];
-            if (v40 <= 34)
+            scanRate2 = [sessionCopy scanRate];
+            if (scanRate2 <= 34)
             {
               goto LABEL_111;
             }
@@ -1216,22 +1216,22 @@ LABEL_85:
             if (scanRate == 10)
             {
               v39 = "Periodic";
-              v40 = [v4 scanRate];
-              if (v40 > 34)
+              scanRate2 = [sessionCopy scanRate];
+              if (scanRate2 > 34)
               {
                 goto LABEL_121;
               }
 
 LABEL_111:
-              if (v40 > 19)
+              if (scanRate2 > 19)
               {
-                if (v40 == 20)
+                if (scanRate2 == 20)
                 {
                   v41 = "Background";
                   goto LABEL_131;
                 }
 
-                if (v40 == 30)
+                if (scanRate2 == 30)
                 {
                   v41 = "Low";
                   goto LABEL_131;
@@ -1240,13 +1240,13 @@ LABEL_111:
 
               else
               {
-                if (!v40)
+                if (!scanRate2)
                 {
                   v41 = "Default";
                   goto LABEL_131;
                 }
 
-                if (v40 == 10)
+                if (scanRate2 == 10)
                 {
                   v41 = "Periodic";
                   goto LABEL_131;
@@ -1258,8 +1258,8 @@ LABEL_111:
 
 LABEL_120:
             v39 = "?";
-            v40 = [v4 scanRate];
-            if (v40 > 34)
+            scanRate2 = [sessionCopy scanRate];
+            if (scanRate2 > 34)
             {
               goto LABEL_121;
             }
@@ -1268,23 +1268,23 @@ LABEL_120:
           }
 
           v39 = "Default";
-          v40 = [v4 scanRate];
-          if (v40 <= 34)
+          scanRate2 = [sessionCopy scanRate];
+          if (scanRate2 <= 34)
           {
             goto LABEL_111;
           }
         }
 
 LABEL_121:
-        if (v40 > 49)
+        if (scanRate2 > 49)
         {
-          if (v40 == 50)
+          if (scanRate2 == 50)
           {
             v41 = "High";
             goto LABEL_131;
           }
 
-          if (v40 == 60)
+          if (scanRate2 == 60)
           {
             v41 = "Max";
             goto LABEL_131;
@@ -1293,13 +1293,13 @@ LABEL_121:
 
         else
         {
-          if (v40 == 35)
+          if (scanRate2 == 35)
           {
             v41 = "MediumLow";
             goto LABEL_131;
           }
 
-          if (v40 == 40)
+          if (scanRate2 == 40)
           {
             v41 = "Medium";
             goto LABEL_131;
@@ -1313,12 +1313,12 @@ LABEL_131:
         CUAppendF();
         v42 = v10;
 
-        self->_scanRate = [v4 scanRate];
+        self->_scanRate = [sessionCopy scanRate];
         v7 = 1;
         v10 = v42;
-        v43 = [v4 scanRateScreenOff];
+        scanRateScreenOff = [sessionCopy scanRateScreenOff];
         scanRateScreenOff = self->_scanRateScreenOff;
-        if (v43 == scanRateScreenOff)
+        if (scanRateScreenOff == scanRateScreenOff)
         {
           goto LABEL_179;
         }
@@ -1331,8 +1331,8 @@ LABEL_132:
             if (scanRateScreenOff == 50)
             {
               v44 = "High";
-              v45 = [v4 scanRateScreenOff];
-              if (v45 > 34)
+              scanRateScreenOff2 = [sessionCopy scanRateScreenOff];
+              if (scanRateScreenOff2 > 34)
               {
                 goto LABEL_168;
               }
@@ -1346,8 +1346,8 @@ LABEL_132:
             }
 
             v44 = "Max";
-            v45 = [v4 scanRateScreenOff];
-            if (v45 <= 34)
+            scanRateScreenOff2 = [sessionCopy scanRateScreenOff];
+            if (scanRateScreenOff2 <= 34)
             {
               goto LABEL_158;
             }
@@ -1356,8 +1356,8 @@ LABEL_132:
           else if (scanRateScreenOff == 35)
           {
             v44 = "MediumLow";
-            v45 = [v4 scanRateScreenOff];
-            if (v45 <= 34)
+            scanRateScreenOff2 = [sessionCopy scanRateScreenOff];
+            if (scanRateScreenOff2 <= 34)
             {
               goto LABEL_158;
             }
@@ -1371,8 +1371,8 @@ LABEL_132:
             }
 
             v44 = "Medium";
-            v45 = [v4 scanRateScreenOff];
-            if (v45 <= 34)
+            scanRateScreenOff2 = [sessionCopy scanRateScreenOff];
+            if (scanRateScreenOff2 <= 34)
             {
               goto LABEL_158;
             }
@@ -1384,8 +1384,8 @@ LABEL_132:
           if (scanRateScreenOff == 20)
           {
             v44 = "Background";
-            v45 = [v4 scanRateScreenOff];
-            if (v45 <= 34)
+            scanRateScreenOff2 = [sessionCopy scanRateScreenOff];
+            if (scanRateScreenOff2 <= 34)
             {
               goto LABEL_158;
             }
@@ -1399,8 +1399,8 @@ LABEL_132:
             }
 
             v44 = "Low";
-            v45 = [v4 scanRateScreenOff];
-            if (v45 <= 34)
+            scanRateScreenOff2 = [sessionCopy scanRateScreenOff];
+            if (scanRateScreenOff2 <= 34)
             {
               goto LABEL_158;
             }
@@ -1414,23 +1414,23 @@ LABEL_132:
             if (scanRateScreenOff == 10)
             {
               v44 = "Periodic";
-              v45 = [v4 scanRateScreenOff];
-              if (v45 > 34)
+              scanRateScreenOff2 = [sessionCopy scanRateScreenOff];
+              if (scanRateScreenOff2 > 34)
               {
                 goto LABEL_168;
               }
 
 LABEL_158:
-              if (v45 > 19)
+              if (scanRateScreenOff2 > 19)
               {
-                if (v45 == 20)
+                if (scanRateScreenOff2 == 20)
                 {
                   v46 = "Background";
                 }
 
                 else
                 {
-                  if (v45 != 30)
+                  if (scanRateScreenOff2 != 30)
                   {
                     goto LABEL_177;
                   }
@@ -1439,9 +1439,9 @@ LABEL_158:
                 }
               }
 
-              else if (v45)
+              else if (scanRateScreenOff2)
               {
-                if (v45 != 10)
+                if (scanRateScreenOff2 != 10)
                 {
                   goto LABEL_177;
                 }
@@ -1459,7 +1459,7 @@ LABEL_178:
               CUAppendF();
               v47 = v10;
 
-              self->_scanRateScreenOff = [v4 scanRateScreenOff];
+              self->_scanRateScreenOff = [sessionCopy scanRateScreenOff];
               v7 = 1;
               v10 = v47;
               goto LABEL_179;
@@ -1467,8 +1467,8 @@ LABEL_178:
 
 LABEL_167:
             v44 = "?";
-            v45 = [v4 scanRateScreenOff];
-            if (v45 > 34)
+            scanRateScreenOff2 = [sessionCopy scanRateScreenOff];
+            if (scanRateScreenOff2 > 34)
             {
               goto LABEL_168;
             }
@@ -1477,23 +1477,23 @@ LABEL_167:
           }
 
           v44 = "Default";
-          v45 = [v4 scanRateScreenOff];
-          if (v45 <= 34)
+          scanRateScreenOff2 = [sessionCopy scanRateScreenOff];
+          if (scanRateScreenOff2 <= 34)
           {
             goto LABEL_158;
           }
         }
 
 LABEL_168:
-        if (v45 > 49)
+        if (scanRateScreenOff2 > 49)
         {
-          if (v45 == 50)
+          if (scanRateScreenOff2 == 50)
           {
             v46 = "High";
             goto LABEL_178;
           }
 
-          if (v45 == 60)
+          if (scanRateScreenOff2 == 60)
           {
             v46 = "Max";
             goto LABEL_178;
@@ -1502,13 +1502,13 @@ LABEL_168:
 
         else
         {
-          if (v45 == 35)
+          if (scanRateScreenOff2 == 35)
           {
             v46 = "MediumLow";
             goto LABEL_178;
           }
 
-          if (v45 == 40)
+          if (scanRateScreenOff2 == 40)
           {
             v46 = "Medium";
             goto LABEL_178;
@@ -1525,37 +1525,37 @@ LABEL_177:
     {
     }
 
-    v66 = [v4 presenceConfigData];
+    presenceConfigData3 = [sessionCopy presenceConfigData];
     CUAppendF();
     v37 = v10;
 
-    v29 = [v4 presenceConfigData];
-    [(CBSpatialInteractionSession *)self setPresenceConfigData:v29];
+    presenceConfigData2 = [sessionCopy presenceConfigData];
+    [(CBSpatialInteractionSession *)self setPresenceConfigData:presenceConfigData2];
     v7 = 1;
     v10 = v37;
   }
 
-  v38 = [v4 scanRate];
+  scanRate3 = [sessionCopy scanRate];
   scanRate = self->_scanRate;
-  if (v38 != scanRate)
+  if (scanRate3 != scanRate)
   {
     goto LABEL_85;
   }
 
 LABEL_79:
-  v35 = [v4 scanRateScreenOff];
+  scanRateScreenOff3 = [sessionCopy scanRateScreenOff];
   scanRateScreenOff = self->_scanRateScreenOff;
-  if (v35 != scanRateScreenOff)
+  if (scanRateScreenOff3 != scanRateScreenOff)
   {
     goto LABEL_132;
   }
 
 LABEL_179:
-  v48 = [(CBSpatialInteractionSession *)self uwbConfigData];
-  v49 = [v4 uwbConfigData];
-  v50 = v48;
+  uwbConfigData = [(CBSpatialInteractionSession *)self uwbConfigData];
+  uwbConfigData2 = [sessionCopy uwbConfigData];
+  v50 = uwbConfigData;
   v51 = v50;
-  if (v49 == v50)
+  if (uwbConfigData2 == v50)
   {
 
     var0 = self->_ucat->var0;
@@ -1583,16 +1583,16 @@ LABEL_183:
     goto LABEL_196;
   }
 
-  if ((v50 == 0) == (v49 != 0))
+  if ((v50 == 0) == (uwbConfigData2 != 0))
   {
 
 LABEL_189:
-    v69 = [v4 uwbConfigData];
+    uwbConfigData3 = [sessionCopy uwbConfigData];
     CUAppendF();
     v54 = v10;
 
-    v55 = [v4 uwbConfigData];
-    [(CBSpatialInteractionSession *)self setUwbConfigData:v55];
+    uwbConfigData4 = [sessionCopy uwbConfigData];
+    [(CBSpatialInteractionSession *)self setUwbConfigData:uwbConfigData4];
     v7 = 1;
     v10 = v54;
 
@@ -1605,7 +1605,7 @@ LABEL_189:
     goto LABEL_183;
   }
 
-  v52 = [v49 isEqual:v50];
+  v52 = [uwbConfigData2 isEqual:v50];
 
   if ((v52 & 1) == 0)
   {
@@ -1642,32 +1642,32 @@ LABEL_196:
 
 - (NSArray)discoveredDevices
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_deviceMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_deviceMap;
   v4 = v3;
   if (v3)
   {
-    v5 = [(NSMutableDictionary *)v3 allValues];
+    allValues = [(NSMutableDictionary *)v3 allValues];
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    allValues = MEMORY[0x1E695E0F0];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return allValues;
 }
 
-- (void)setAdvertiseRate:(int)a3
+- (void)setAdvertiseRate:(int)rate
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __48__CBSpatialInteractionSession_setAdvertiseRate___block_invoke;
   v3[3] = &unk_1E811D508;
-  v4 = a3;
+  rateCopy = rate;
   v3[4] = self;
   [(CBSpatialInteractionSession *)self _updateIfNeededWithBlock:v3];
 }
@@ -1721,15 +1721,15 @@ LABEL_7:
   return v1 != v3;
 }
 
-- (void)setAdvertiseRate:(int)a3 timeout:(double)a4
+- (void)setAdvertiseRate:(int)rate timeout:(double)timeout
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __56__CBSpatialInteractionSession_setAdvertiseRate_timeout___block_invoke;
   v4[3] = &unk_1E81225A0;
-  v5 = a3;
+  rateCopy = rate;
   v4[4] = self;
-  *&v4[5] = a4;
+  *&v4[5] = timeout;
   [(CBSpatialInteractionSession *)self _updateIfNeededWithBlock:v4];
 }
 
@@ -1838,13 +1838,13 @@ LABEL_5:
   return [v10 setAdvertiseRate:0];
 }
 
-- (void)setControlFlags:(unsigned int)a3
+- (void)setControlFlags:(unsigned int)flags
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __47__CBSpatialInteractionSession_setControlFlags___block_invoke;
   v3[3] = &unk_1E811D508;
-  v4 = a3;
+  flagsCopy = flags;
   v3[4] = self;
   [(CBSpatialInteractionSession *)self _updateIfNeededWithBlock:v3];
 }
@@ -1862,22 +1862,22 @@ BOOL __47__CBSpatialInteractionSession_setControlFlags___block_invoke(uint64_t a
   return v1 != v3;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v5 = a3;
-  v4 = v5;
-  [v5 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  v4 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF();
 }
 
-- (void)setScanRate:(int)a3
+- (void)setScanRate:(int)rate
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __43__CBSpatialInteractionSession_setScanRate___block_invoke;
   v3[3] = &unk_1E811D508;
-  v4 = a3;
+  rateCopy = rate;
   v3[4] = self;
   [(CBSpatialInteractionSession *)self _updateIfNeededWithBlock:v3];
 }
@@ -1895,13 +1895,13 @@ BOOL __43__CBSpatialInteractionSession_setScanRate___block_invoke(uint64_t a1)
   return v1 != v3;
 }
 
-- (void)setScanRateScreenOff:(int)a3
+- (void)setScanRateScreenOff:(int)off
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __52__CBSpatialInteractionSession_setScanRateScreenOff___block_invoke;
   v3[3] = &unk_1E811D508;
-  v4 = a3;
+  offCopy = off;
   v3[4] = self;
   [(CBSpatialInteractionSession *)self _updateIfNeededWithBlock:v3];
 }
@@ -1919,13 +1919,13 @@ BOOL __52__CBSpatialInteractionSession_setScanRateScreenOff___block_invoke(uint6
   return v1 != v3;
 }
 
-- (void)setBleRSSIThresholdOrder:(unsigned __int8)a3
+- (void)setBleRSSIThresholdOrder:(unsigned __int8)order
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __56__CBSpatialInteractionSession_setBleRSSIThresholdOrder___block_invoke;
   v3[3] = &unk_1E811D530;
-  v4 = a3;
+  orderCopy = order;
   v3[4] = self;
   [(CBSpatialInteractionSession *)self _updateIfNeededWithBlock:v3];
 }
@@ -1943,15 +1943,15 @@ BOOL __56__CBSpatialInteractionSession_setBleRSSIThresholdOrder___block_invoke(u
   return v1 != v3;
 }
 
-- (void)setFilter:(id)a3
+- (void)setFilter:(id)filter
 {
-  v4 = [a3 copy];
+  v4 = [filter copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__CBSpatialInteractionSession_setFilter___block_invoke;
   v6[3] = &unk_1E811D558;
   v7 = v4;
-  v8 = self;
+  selfCopy = self;
   v5 = v4;
   [(CBSpatialInteractionSession *)self _updateIfNeededWithBlock:v6];
 }
@@ -1993,28 +1993,28 @@ BOOL __41__CBSpatialInteractionSession_setFilter___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v5->_activateCalled)
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_activateCalled)
   {
-    v5->_activateCalled = 1;
-    v6 = MEMORY[0x1C68DF720](v4);
-    activateCompletion = v5->_activateCompletion;
-    v5->_activateCompletion = v6;
+    selfCopy->_activateCalled = 1;
+    v6 = MEMORY[0x1C68DF720](completionCopy);
+    activateCompletion = selfCopy->_activateCompletion;
+    selfCopy->_activateCompletion = v6;
 
-    dispatchQueue = v5->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __54__CBSpatialInteractionSession_activateWithCompletion___block_invoke;
     block[3] = &unk_1E811D130;
-    block[4] = v5;
+    block[4] = selfCopy;
     dispatch_async(dispatchQueue, block);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_activate
@@ -2099,7 +2099,7 @@ LABEL_15:
       ucat = self->_ucat;
     }
 
-    v5 = self;
+    selfCopy = self;
     LogPrintF_safe();
   }
 
@@ -2109,7 +2109,7 @@ LABEL_5:
   v6[2] = __51__CBSpatialInteractionSession__activateDirectStart__block_invoke;
   v6[3] = &unk_1E811D5F8;
   v6[4] = self;
-  [gCBDaemonServer activateCBSpatialInteractionSession:self completion:{v6, v5}];
+  [gCBDaemonServer activateCBSpatialInteractionSession:self completion:{v6, selfCopy}];
 }
 
 void __51__CBSpatialInteractionSession__activateDirectStart__block_invoke(uint64_t a1, void *a2)
@@ -2206,10 +2206,10 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)_activateXPCStart:(BOOL)a3
+- (void)_activateXPCStart:(BOOL)start
 {
   var0 = self->_ucat->var0;
-  if (a3)
+  if (start)
   {
     if (var0 <= 30)
     {
@@ -2247,21 +2247,21 @@ LABEL_11:
   v7 = xpc_dictionary_create(0, 0, 0);
   [(CBSpatialInteractionSession *)self encodeWithXPCObject:v7];
   xpc_dictionary_set_string(v7, "mTyp", "SpIn");
-  v8 = [(CBSpatialInteractionSession *)self _ensureXPCStarted];
+  _ensureXPCStarted = [(CBSpatialInteractionSession *)self _ensureXPCStarted];
   dispatchQueue = self->_dispatchQueue;
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __49__CBSpatialInteractionSession__activateXPCStart___block_invoke;
   handler[3] = &unk_1E81225C8;
   handler[4] = self;
-  v12 = a3;
-  xpc_connection_send_message_with_reply(v8, v7, dispatchQueue, handler);
+  startCopy = start;
+  xpc_connection_send_message_with_reply(_ensureXPCStarted, v7, dispatchQueue, handler);
 }
 
-- (void)_activateXPCCompleted:(id)a3 reactivate:(BOOL)a4
+- (void)_activateXPCCompleted:(id)completed reactivate:(BOOL)reactivate
 {
-  v4 = a4;
-  v6 = a3;
+  reactivateCopy = reactivate;
+  completedCopy = completed;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -2285,7 +2285,7 @@ LABEL_11:
     CUXPCDecodeNSData();
     CUXPCDecodeNSData();
     objc_storeStrong(&self->_advertisingAddressData, 0);
-    self->_bluetoothState = xpc_dictionary_get_int64(v6, "pwrS");
+    self->_bluetoothState = xpc_dictionary_get_int64(completedCopy, "pwrS");
     v10 = v42;
     v38 = v42[5];
     v11 = CUXPCDecodeNSData();
@@ -2295,7 +2295,7 @@ LABEL_11:
       goto LABEL_21;
     }
 
-    v12 = xpc_dictionary_get_array(v6, "devA");
+    v12 = xpc_dictionary_get_array(completedCopy, "devA");
     v13 = v12;
     if (v12)
     {
@@ -2323,16 +2323,16 @@ LABEL_11:
       {
         v21 = v42;
         v22 = v14;
-        v15 = v21[5];
+        selfCopy = v21[5];
         v21[5] = v22;
       }
 
       else
       {
-        v15 = self;
-        objc_sync_enter(v15);
-        objc_storeStrong(&v15->_deviceMap, v33[5]);
-        objc_sync_exit(v15);
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
+        objc_storeStrong(&selfCopy->_deviceMap, v33[5]);
+        objc_sync_exit(selfCopy);
       }
 
       _Block_object_dispose(&v26, 8);
@@ -2360,7 +2360,7 @@ LABEL_21:
         ucat = self->_ucat;
       }
 
-      v24 = self;
+      selfCopy2 = self;
       LogPrintF_safe();
     }
 
@@ -2374,7 +2374,7 @@ LABEL_13:
       v17[2](v17, 0);
     }
 
-    if (v4)
+    if (reactivateCopy)
     {
       v19 = MEMORY[0x1C68DF720](self->_tokenChangedHandler);
       v20 = v19;
@@ -2519,7 +2519,7 @@ void *__48__CBSpatialInteractionSession__ensureXPCStarted__block_invoke(uint64_t
       ucat = self->_ucat;
     }
 
-    v10 = self;
+    selfCopy = self;
     LogPrintF_safe();
   }
 
@@ -2693,48 +2693,48 @@ LABEL_10:
         p_var0 = LogPrintF_safe();
         v15 = v18;
 
-- (void)addPeerToken:(id)a3 userInfo:(id)a4 completion:(id)a5
+- (void)addPeerToken:(id)token userInfo:(id)info completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  infoCopy = info;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __64__CBSpatialInteractionSession_addPeerToken_userInfo_completion___block_invoke;
   v15[3] = &unk_1E811E468;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = tokenCopy;
+  v17 = infoCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = infoCopy;
+  v14 = tokenCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
-- (void)addPeerToken:(id)a3 completion:(id)a4
+- (void)addPeerToken:(id)token completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__CBSpatialInteractionSession_addPeerToken_completion___block_invoke;
   block[3] = &unk_1E811D490;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = tokenCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = tokenCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_addPeerToken:(id)a3 userInfo:(id)a4 completion:(id)a5
+- (void)_addPeerToken:(id)token userInfo:(id)info completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  infoCopy = info;
+  completionCopy = completion;
   v66 = 0;
   v67 = &v66;
   v68 = 0x3032000000;
@@ -2747,7 +2747,7 @@ LABEL_10:
   v63[3] = &unk_1E811D350;
   v65 = &v66;
   v63[4] = self;
-  v57 = v10;
+  v57 = completionCopy;
   v64 = v57;
   v17 = MEMORY[0x1C68DF720](v63);
   v56 = v17;
@@ -2768,10 +2768,10 @@ LABEL_10:
     if (objc_opt_isKindOfClass())
     {
       v25 = objc_alloc_init(CBSpatialInteractionPeerInfoClient);
-      [(CBSpatialInteractionPeerInfoClient *)v25 setTokenData:v8];
-      [(CBSpatialInteractionPeerInfoClient *)v25 setUserInfo:v9];
+      [(CBSpatialInteractionPeerInfoClient *)v25 setTokenData:tokenCopy];
+      [(CBSpatialInteractionPeerInfoClient *)v25 setUserInfo:infoCopy];
       [(CBSpatialInteractionPeerInfoClient *)v25 setUwbTokenFlags:CFDictionaryGetInt64Ranged()];
-      v55 = v9;
+      v55 = infoCopy;
       ClientID = CBXPCGetNextClientID();
       v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:ClientID];
       peerMap = self->_peerMap;
@@ -2814,19 +2814,19 @@ LABEL_10:
         xpc_dictionary_set_uint64(v33, "siPI", ClientID);
       }
 
-      if (v8)
+      if (tokenCopy)
       {
-        v34 = v8;
-        v35 = v8;
+        v34 = tokenCopy;
+        v35 = tokenCopy;
         v36 = v33;
-        v37 = [v35 bytes];
+        bytes = [v35 bytes];
         v38 = [v35 length];
-        if (!v37)
+        if (!bytes)
         {
-          v37 = "";
+          bytes = "";
         }
 
-        xpc_dictionary_set_data(v36, "siTD", v37, v38);
+        xpc_dictionary_set_data(v36, "siTD", bytes, v38);
       }
 
       v39 = [(CBSpatialInteractionSession *)self _ensureXPCStarted:v53];
@@ -2836,12 +2836,12 @@ LABEL_10:
       handler[2] = __65__CBSpatialInteractionSession__addPeerToken_userInfo_completion___block_invoke_131;
       handler[3] = &unk_1E81225F0;
       handler[4] = self;
-      v59 = v8;
+      v59 = tokenCopy;
       v60 = v27;
       v61 = v57;
       xpc_connection_send_message_with_reply(v39, v33, dispatchQueue, handler);
 
-      v9 = v55;
+      infoCopy = v55;
       v17 = v56;
       goto LABEL_17;
     }
@@ -3089,20 +3089,20 @@ LABEL_6:
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-- (void)removePeerToken:(id)a3 completion:(id)a4
+- (void)removePeerToken:(id)token completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__CBSpatialInteractionSession_removePeerToken_completion___block_invoke;
   block[3] = &unk_1E811D490;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = tokenCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = tokenCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -3365,20 +3365,20 @@ LABEL_12:
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1C68DF720](self->_deviceLostHandler, a2);
-  v4 = self;
-  objc_sync_enter(v4);
-  deviceMap = v4->_deviceMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  deviceMap = selfCopy->_deviceMap;
   if (v3)
   {
-    v6 = [(NSMutableDictionary *)deviceMap allValues];
-    [(NSMutableDictionary *)v4->_deviceMap removeAllObjects];
-    objc_sync_exit(v4);
+    allValues = [(NSMutableDictionary *)deviceMap allValues];
+    [(NSMutableDictionary *)selfCopy->_deviceMap removeAllObjects];
+    objc_sync_exit(selfCopy);
 
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = v6;
+    v7 = allValues;
     v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
@@ -3407,30 +3407,30 @@ LABEL_12:
   else
   {
     [(NSMutableDictionary *)deviceMap removeAllObjects];
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateIfNeededWithBlock:(id)a3
+- (void)_updateIfNeededWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ((v4[2](v4) & 1) != 0 && v5->_activateCalled && !v5->_changesPending)
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((blockCopy[2](blockCopy) & 1) != 0 && selfCopy->_activateCalled && !selfCopy->_changesPending)
   {
-    v5->_changesPending = 1;
-    dispatchQueue = v5->_dispatchQueue;
+    selfCopy->_changesPending = 1;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __56__CBSpatialInteractionSession__updateIfNeededWithBlock___block_invoke;
     block[3] = &unk_1E811D130;
-    block[4] = v5;
+    block[4] = selfCopy;
     dispatch_async(dispatchQueue, block);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_update
@@ -3440,13 +3440,13 @@ LABEL_12:
     return;
   }
 
-  v2 = self;
-  objc_sync_enter(v2);
-  changesPending = v2->_changesPending;
-  v2->_changesPending = 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  changesPending = selfCopy->_changesPending;
+  selfCopy->_changesPending = 0;
+  objc_sync_exit(selfCopy);
 
-  var0 = v2->_ucat->var0;
+  var0 = selfCopy->_ucat->var0;
   if (changesPending)
   {
     if (var0 <= 30)
@@ -3458,7 +3458,7 @@ LABEL_12:
           goto LABEL_13;
         }
 
-        ucat = v2->_ucat;
+        ucat = selfCopy->_ucat;
       }
 
       LogPrintF_safe();
@@ -3466,10 +3466,10 @@ LABEL_12:
 
 LABEL_13:
     xdict = xpc_dictionary_create(0, 0, 0);
-    [(CBSpatialInteractionSession *)v2 encodeWithXPCObject:xdict];
+    [(CBSpatialInteractionSession *)selfCopy encodeWithXPCObject:xdict];
     xpc_dictionary_set_string(xdict, "mTyp", "SpIU");
-    v5 = [(CBSpatialInteractionSession *)v2 _ensureXPCStarted];
-    xpc_connection_send_message(v5, xdict);
+    _ensureXPCStarted = [(CBSpatialInteractionSession *)selfCopy _ensureXPCStarted];
+    xpc_connection_send_message(_ensureXPCStarted, xdict);
 
     return;
   }
@@ -3486,17 +3486,17 @@ LABEL_13:
       return;
     }
 
-    v6 = v2->_ucat;
+    v6 = selfCopy->_ucat;
   }
 
   LogPrintF_safe();
 }
 
-- (void)_xpcReceivedEvent:(id)a3
+- (void)_xpcReceivedEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   var0 = self->_ucat->var0;
-  v27 = v4;
+  v27 = eventCopy;
   if (var0 <= 9)
   {
     if (var0 != -1)
@@ -3505,12 +3505,12 @@ LABEL_3:
       v25 = CUPrintXPC();
       LogPrintF_safe();
 
-      v4 = v27;
+      eventCopy = v27;
       goto LABEL_5;
     }
 
     v6 = _LogCategory_Initialize();
-    v4 = v27;
+    eventCopy = v27;
     if (v6)
     {
       ucat = self->_ucat;
@@ -3519,7 +3519,7 @@ LABEL_3:
   }
 
 LABEL_5:
-  if (MEMORY[0x1C68DFDD0](v4) == MEMORY[0x1E69E9E80])
+  if (MEMORY[0x1C68DFDD0](eventCopy) == MEMORY[0x1E69E9E80])
   {
     [(CBSpatialInteractionSession *)self _xpcReceivedMessage:v27];
     goto LABEL_26;
@@ -3612,10 +3612,10 @@ LABEL_21:
 LABEL_26:
 }
 
-- (void)_xpcReceivedMessage:(id)a3
+- (void)_xpcReceivedMessage:(id)message
 {
-  v11 = a3;
-  string = xpc_dictionary_get_string(v11, "mTyp");
+  messageCopy = message;
+  string = xpc_dictionary_get_string(messageCopy, "mTyp");
   if (!string)
   {
     var0 = self->_ucat->var0;
@@ -3637,7 +3637,7 @@ LABEL_13:
     }
 
 LABEL_14:
-    v8 = v11;
+    v8 = messageCopy;
 
     goto LABEL_16;
   }
@@ -3645,32 +3645,32 @@ LABEL_14:
   v5 = string;
   if (!strcmp(string, "DvFo"))
   {
-    [(CBSpatialInteractionSession *)self _xpcReceivedDeviceFound:v11];
-    v8 = v11;
+    [(CBSpatialInteractionSession *)self _xpcReceivedDeviceFound:messageCopy];
+    v8 = messageCopy;
   }
 
   else if (!strcmp(v5, "DvLo"))
   {
-    [(CBSpatialInteractionSession *)self _xpcReceivedDeviceLost:v11];
-    v8 = v11;
+    [(CBSpatialInteractionSession *)self _xpcReceivedDeviceLost:messageCopy];
+    v8 = messageCopy;
   }
 
   else if (!strcmp(v5, "AdAC"))
   {
-    [(CBSpatialInteractionSession *)self _xpcReceivedAdvertisingAddressChanged:v11];
-    v8 = v11;
+    [(CBSpatialInteractionSession *)self _xpcReceivedAdvertisingAddressChanged:messageCopy];
+    v8 = messageCopy;
   }
 
   else if (!strcmp(v5, "PwrC"))
   {
-    [(CBSpatialInteractionSession *)self _xpcReceivedPowerStateChanged:v11];
-    v8 = v11;
+    [(CBSpatialInteractionSession *)self _xpcReceivedPowerStateChanged:messageCopy];
+    v8 = messageCopy;
   }
 
   else if (!strcmp(v5, "SpAD"))
   {
-    [(CBSpatialInteractionSession *)self _xpcReceivedAOPData:v11];
-    v8 = v11;
+    [(CBSpatialInteractionSession *)self _xpcReceivedAOPData:messageCopy];
+    v8 = messageCopy;
   }
 
   else
@@ -3697,16 +3697,16 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    [(CBSpatialInteractionSession *)self _xpcReceivedSystemOverrideChanged:v11];
-    v8 = v11;
+    [(CBSpatialInteractionSession *)self _xpcReceivedSystemOverrideChanged:messageCopy];
+    v8 = messageCopy;
   }
 
 LABEL_16:
 }
 
-- (void)_xpcReceivedAdvertisingAddressChanged:(id)a3
+- (void)_xpcReceivedAdvertisingAddressChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   CUXPCDecodeBool();
   CUXPCDecodeNSData();
 
@@ -3740,9 +3740,9 @@ LABEL_5:
   }
 }
 
-- (void)_xpcReceivedAOPData:(id)a3
+- (void)_xpcReceivedAOPData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (MEMORY[0x1C68DFDD0]() == MEMORY[0x1E69E9E80])
   {
     CUXPCDecodeNSData();
@@ -3758,9 +3758,9 @@ LABEL_5:
   }
 }
 
-- (void)_xpcReceivedDeviceFound:(id)a3
+- (void)_xpcReceivedDeviceFound:(id)found
 {
-  v4 = a3;
+  foundCopy = found;
   if (MEMORY[0x1C68DFDD0]() != MEMORY[0x1E69E9E80])
   {
     [CBSpatialInteractionSession _xpcReceivedDeviceFound:?];
@@ -3768,7 +3768,7 @@ LABEL_5:
   }
 
   v21[0] = 0;
-  v5 = [[CBDevice alloc] initWithXPCObject:v4 error:v21];
+  v5 = [[CBDevice alloc] initWithXPCObject:foundCopy error:v21];
   v6 = v21[0];
   if (v5)
   {
@@ -3776,20 +3776,20 @@ LABEL_5:
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CBDevice spatialInteractionPeerID](v5, "spatialInteractionPeerID")}];
     v9 = [(NSMutableDictionary *)peerMap objectForKeyedSubscript:v8];
 
-    v10 = [v9 tokenData];
-    if (!v10 && ![(CBSpatialInteractionSession *)self matchesWithDevice:v5])
+    tokenData = [v9 tokenData];
+    if (!tokenData && ![(CBSpatialInteractionSession *)self matchesWithDevice:v5])
     {
       [CBSpatialInteractionSession _xpcReceivedDeviceFound:?];
       goto LABEL_16;
     }
 
-    [(CBDevice *)v5 setSpatialInteractionTokenData:v10];
-    v11 = [v9 userInfo];
-    [(CBDevice *)v5 setSpatialInteractionUserInfo:v11];
+    [(CBDevice *)v5 setSpatialInteractionTokenData:tokenData];
+    userInfo = [v9 userInfo];
+    [(CBDevice *)v5 setSpatialInteractionUserInfo:userInfo];
 
     -[CBDevice setSpatialInteractionUWBTokenFlags:](v5, "setSpatialInteractionUWBTokenFlags:", [v9 uwbTokenFlags]);
-    v12 = [(CBDevice *)v5 identifier];
-    if (!v12)
+    identifier = [(CBDevice *)v5 identifier];
+    if (!identifier)
     {
       [CBSpatialInteractionSession _xpcReceivedDeviceFound:?];
 LABEL_15:
@@ -3798,22 +3798,22 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v13 = self;
-    objc_sync_enter(v13);
-    deviceMap = v13->_deviceMap;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    deviceMap = selfCopy->_deviceMap;
     if (!deviceMap)
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v16 = v13->_deviceMap;
-      v13->_deviceMap = v15;
+      v16 = selfCopy->_deviceMap;
+      selfCopy->_deviceMap = v15;
 
-      deviceMap = v13->_deviceMap;
+      deviceMap = selfCopy->_deviceMap;
     }
 
-    [(NSMutableDictionary *)deviceMap setObject:v5 forKeyedSubscript:v12];
-    objc_sync_exit(v13);
+    [(NSMutableDictionary *)deviceMap setObject:v5 forKeyedSubscript:identifier];
+    objc_sync_exit(selfCopy);
 
-    var0 = v13->_ucat->var0;
+    var0 = selfCopy->_ucat->var0;
     if (var0 <= 9)
     {
       if (var0 == -1)
@@ -3823,14 +3823,14 @@ LABEL_16:
           goto LABEL_12;
         }
 
-        ucat = v13->_ucat;
+        ucat = selfCopy->_ucat;
       }
 
       LogPrintF_safe();
     }
 
 LABEL_12:
-    v18 = MEMORY[0x1C68DF720](v13->_deviceFoundHandler);
+    v18 = MEMORY[0x1C68DF720](selfCopy->_deviceFoundHandler);
     v19 = v18;
     if (v18)
     {
@@ -3852,9 +3852,9 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)_xpcReceivedDeviceLost:(id)a3
+- (void)_xpcReceivedDeviceLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   if (MEMORY[0x1C68DFDD0]() != MEMORY[0x1E69E9E80])
   {
     [CBSpatialInteractionSession _xpcReceivedDeviceLost:?];
@@ -3862,28 +3862,28 @@ LABEL_19:
   }
 
   v15 = 0;
-  v5 = [[CBDevice alloc] initWithXPCObject:v4 error:&v15];
+  v5 = [[CBDevice alloc] initWithXPCObject:lostCopy error:&v15];
   v6 = v15;
   if (v5)
   {
-    v7 = [(CBDevice *)v5 identifier];
-    if (!v7)
+    identifier = [(CBDevice *)v5 identifier];
+    if (!identifier)
     {
       [(CBSpatialInteractionSession *)self _xpcReceivedDeviceLost:v5, 0, &v16];
-      v7 = v16;
+      identifier = v16;
       goto LABEL_13;
     }
 
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = [(NSMutableDictionary *)v8->_deviceMap objectForKeyedSubscript:v7];
-    [(NSMutableDictionary *)v8->_deviceMap setObject:0 forKeyedSubscript:v7];
-    objc_sync_exit(v8);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v9 = [(NSMutableDictionary *)selfCopy->_deviceMap objectForKeyedSubscript:identifier];
+    [(NSMutableDictionary *)selfCopy->_deviceMap setObject:0 forKeyedSubscript:identifier];
+    objc_sync_exit(selfCopy);
 
-    var0 = v8->_ucat->var0;
+    var0 = selfCopy->_ucat->var0;
     if (!v9)
     {
-      [(CBSpatialInteractionSession *)var0 _xpcReceivedDeviceLost:&v8->_ucat];
+      [(CBSpatialInteractionSession *)var0 _xpcReceivedDeviceLost:&selfCopy->_ucat];
 LABEL_12:
 
       goto LABEL_13;
@@ -3893,20 +3893,20 @@ LABEL_12:
     {
       if (var0 == -1)
       {
-        ucat = v8->_ucat;
+        ucat = selfCopy->_ucat;
         if (!_LogCategory_Initialize())
         {
           goto LABEL_9;
         }
 
-        v14 = v8->_ucat;
+        v14 = selfCopy->_ucat;
       }
 
       LogPrintF_safe();
     }
 
 LABEL_9:
-    v12 = MEMORY[0x1C68DF720](v8->_deviceLostHandler);
+    v12 = MEMORY[0x1C68DF720](selfCopy->_deviceLostHandler);
     v13 = v12;
     if (v12)
     {
@@ -3921,16 +3921,16 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  v7 = v16;
+  identifier = v16;
 LABEL_13:
 
 LABEL_14:
 LABEL_15:
 }
 
-- (void)_xpcReceivedPowerStateChanged:(id)a3
+- (void)_xpcReceivedPowerStateChanged:(id)changed
 {
-  xdict = a3;
+  xdict = changed;
   if (MEMORY[0x1C68DFDD0]() == MEMORY[0x1E69E9E80])
   {
     self->_bluetoothState = xpc_dictionary_get_int64(xdict, "pwrS");
@@ -3951,9 +3951,9 @@ LABEL_15:
   }
 }
 
-- (void)_xpcReceivedSystemOverrideChanged:(id)a3
+- (void)_xpcReceivedSystemOverrideChanged:(id)changed
 {
-  xdict = a3;
+  xdict = changed;
   if (MEMORY[0x1C68DFDD0]() == MEMORY[0x1E69E9E80])
   {
     self->_scanRateOverride = xpc_dictionary_get_int64(xdict, "scRO");
@@ -3975,13 +3975,13 @@ LABEL_15:
   }
 }
 
-- (CBSpatialInteractionSession)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBSpatialInteractionSession)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v13 = [(CBSpatialInteractionSession *)self init];
   if (!v13)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_44;
     }
@@ -3989,13 +3989,13 @@ LABEL_15:
     v26 = "init failed";
 LABEL_43:
     CBErrorF(-6756, v26, v7, v8, v9, v10, v11, v12, v27);
-    *a4 = v24 = 0;
+    *error = v24 = 0;
     goto LABEL_38;
   }
 
-  if (MEMORY[0x1C68DFDD0](v6) != MEMORY[0x1E69E9E80])
+  if (MEMORY[0x1C68DFDD0](objectCopy) != MEMORY[0x1E69E9E80])
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_44;
     }

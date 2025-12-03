@@ -1,27 +1,27 @@
 @interface SafariSettingsBrowsingDataImportController
 - (SafariSettingsBrowsingDataImportController)init;
-- (id)_getComposedIdentifiersOfExtensionsDownloadedFromLockupViewsFromListOfExtensions:(id)a3 extensionsController:(id)a4;
-- (void)_computeNumberOfBookmarksToBeImportedFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_computeNumberOfChromeExtensionsToBeImportedFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_computeNumberOfChromeHistorySitesToBeImportedFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_computeNumberOfCreditCardsToBeImportedFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_computeNumberOfExtensionsToBeImportedFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_computeNumberOfHistorySitesToBeImportedFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_generateLockupViewsForAvailableAppsWithWebBookmarksSettingsGateway:(id)a3 completionHandler:(id)a4;
-- (void)_importBookmarksFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_importChromeExtensionsFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_importChromeHistoryFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_importCreditCardsFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_importExtensionsFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_importHistoryFromURL:(id)a3 completionHandler:(id)a4;
+- (id)_getComposedIdentifiersOfExtensionsDownloadedFromLockupViewsFromListOfExtensions:(id)extensions extensionsController:(id)controller;
+- (void)_computeNumberOfBookmarksToBeImportedFromURL:(id)l completionHandler:(id)handler;
+- (void)_computeNumberOfChromeExtensionsToBeImportedFromURL:(id)l completionHandler:(id)handler;
+- (void)_computeNumberOfChromeHistorySitesToBeImportedFromURL:(id)l completionHandler:(id)handler;
+- (void)_computeNumberOfCreditCardsToBeImportedFromURL:(id)l completionHandler:(id)handler;
+- (void)_computeNumberOfExtensionsToBeImportedFromURL:(id)l completionHandler:(id)handler;
+- (void)_computeNumberOfHistorySitesToBeImportedFromURL:(id)l completionHandler:(id)handler;
+- (void)_generateLockupViewsForAvailableAppsWithWebBookmarksSettingsGateway:(id)gateway completionHandler:(id)handler;
+- (void)_importBookmarksFromURL:(id)l completionHandler:(id)handler;
+- (void)_importChromeExtensionsFromURL:(id)l completionHandler:(id)handler;
+- (void)_importChromeHistoryFromURL:(id)l completionHandler:(id)handler;
+- (void)_importCreditCardsFromURL:(id)l completionHandler:(id)handler;
+- (void)_importExtensionsFromURL:(id)l completionHandler:(id)handler;
+- (void)_importHistoryFromURL:(id)l completionHandler:(id)handler;
 - (void)_postExtensionsChangedNotification;
 - (void)_recomputeFrequentlyVisitedSites;
-- (void)_scanImportURLs:(id)a3 sandboxExtensions:(id)a4 completionHandler:(id)a5;
-- (void)contentBlockerManagerExtensionListDidChange:(id)a3;
+- (void)_scanImportURLs:(id)ls sandboxExtensions:(id)extensions completionHandler:(id)handler;
+- (void)contentBlockerManagerExtensionListDidChange:(id)change;
 - (void)dealloc;
-- (void)enableExtensionWithComposedIdentifier:(id)a3 adamIdentifier:(id)a4 alternatePlatformAppBundleIdentifier:(id)a5 alternatePlatformExtensionBundleIdentifier:(id)a6;
-- (void)extensionsControllerExtensionListDidChange:(id)a3;
-- (void)importCreditCardDataWithCardNumber:(id)a3 cardName:(id)a4 cardholderName:(id)a5 cardExpirationMonth:(id)a6 cardExpirationYear:(id)a7 lastUsedDate:(id)a8;
+- (void)enableExtensionWithComposedIdentifier:(id)identifier adamIdentifier:(id)adamIdentifier alternatePlatformAppBundleIdentifier:(id)bundleIdentifier alternatePlatformExtensionBundleIdentifier:(id)extensionBundleIdentifier;
+- (void)extensionsControllerExtensionListDidChange:(id)change;
+- (void)importCreditCardDataWithCardNumber:(id)number cardName:(id)name cardholderName:(id)cardholderName cardExpirationMonth:(id)month cardExpirationYear:(id)year lastUsedDate:(id)date;
 @end
 
 @implementation SafariSettingsBrowsingDataImportController
@@ -49,9 +49,9 @@
     v3->_composedIdentifiersForLockupViewExtensions = v8;
 
     v10 = [NSString stringWithFormat:@"com.apple.Safari.%@.%p.internalQueue", objc_opt_class(), v3];
-    v11 = [v10 UTF8String];
+    uTF8String = [v10 UTF8String];
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v13 = dispatch_queue_create(v11, v12);
+    v13 = dispatch_queue_create(uTF8String, v12);
     internalQueue = v3->_internalQueue;
     v3->_internalQueue = v13;
 
@@ -60,17 +60,17 @@
     v17 = [v15 initWithTabGroupManager:v16];
 
     v18 = +[SafariSettingsController tabGroupManager];
-    v19 = [(SafariSettingsBrowsingDataImportController *)v3 selectedProfileIdentifierToImportInto];
-    v20 = [v18 profileWithIdentifier:v19];
-    v21 = [v20 serverID];
+    selectedProfileIdentifierToImportInto = [(SafariSettingsBrowsingDataImportController *)v3 selectedProfileIdentifierToImportInto];
+    v20 = [v18 profileWithIdentifier:selectedProfileIdentifierToImportInto];
+    serverID = [v20 serverID];
 
-    v22 = [v17 profileServerIDToContentBlockerManagers];
-    v23 = [v22 objectForKeyedSubscript:v21];
+    profileServerIDToContentBlockerManagers = [v17 profileServerIDToContentBlockerManagers];
+    v23 = [profileServerIDToContentBlockerManagers objectForKeyedSubscript:serverID];
     contentBlockerManager = v3->_contentBlockerManager;
     v3->_contentBlockerManager = v23;
 
-    v25 = [v17 profileServerIDToWebExtensionsControllers];
-    v26 = [v25 objectForKeyedSubscript:v21];
+    profileServerIDToWebExtensionsControllers = [v17 profileServerIDToWebExtensionsControllers];
+    v26 = [profileServerIDToWebExtensionsControllers objectForKeyedSubscript:serverID];
     webExtensionsController = v3->_webExtensionsController;
     v3->_webExtensionsController = v26;
 
@@ -123,30 +123,30 @@ void __78__SafariSettingsBrowsingDataImportController__recomputeFrequentlyVisite
   [(FrequentlyVisitedSitesController *)v10 clearFrequentlyVisitedSites];
 }
 
-- (void)_scanImportURLs:(id)a3 sandboxExtensions:(id)a4 completionHandler:(id)a5
+- (void)_scanImportURLs:(id)ls sandboxExtensions:(id)extensions completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  extensionsCopy = extensions;
+  lsCopy = ls;
   v10 = objc_alloc_init(WebBookmarksSettingsGateway);
-  [v10 scanImportURLs:v9 sandboxExtensions:v8 completionHandler:v7];
+  [v10 scanImportURLs:lsCopy sandboxExtensions:extensionsCopy completionHandler:handlerCopy];
 }
 
-- (void)_importHistoryFromURL:(id)a3 completionHandler:(id)a4
+- (void)_importHistoryFromURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   v8 = objc_alloc_init(WebBookmarksSettingsGateway);
   v9 = CFAbsoluteTimeGetCurrent() - WBUHistoryDefaultItemAgeLimit;
-  v10 = [(SafariSettingsBrowsingDataImportController *)self selectedProfileIdentifierToImportInto];
+  selectedProfileIdentifierToImportInto = [(SafariSettingsBrowsingDataImportController *)self selectedProfileIdentifierToImportInto];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __86__SafariSettingsBrowsingDataImportController__importHistoryFromURL_completionHandler___block_invoke;
   v12[3] = &unk_8ACF0;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [v8 importSafariHistoryFromURL:v7 ageLimit:v10 profileIdentifier:v12 completionHandler:v9];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [v8 importSafariHistoryFromURL:lCopy ageLimit:selectedProfileIdentifierToImportInto profileIdentifier:v12 completionHandler:v9];
 }
 
 id __86__SafariSettingsBrowsingDataImportController__importHistoryFromURL_completionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -171,19 +171,19 @@ id __86__SafariSettingsBrowsingDataImportController__importHistoryFromURL_comple
   }
 }
 
-- (void)_importBookmarksFromURL:(id)a3 completionHandler:(id)a4
+- (void)_importBookmarksFromURL:(id)l completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   v7 = objc_alloc_init(WebBookmarksSettingsGateway);
-  v8 = [objc_opt_class() suggestedImportedBookmarksFolderName];
+  suggestedImportedBookmarksFolderName = [objc_opt_class() suggestedImportedBookmarksFolderName];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __88__SafariSettingsBrowsingDataImportController__importBookmarksFromURL_completionHandler___block_invoke;
   v10[3] = &unk_89808;
-  v11 = v5;
-  v9 = v5;
-  [v7 importBookmarksFromURL:v6 inFolderWithSuggestedName:v8 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [v7 importBookmarksFromURL:lCopy inFolderWithSuggestedName:suggestedImportedBookmarksFolderName completionHandler:v10];
 }
 
 void __88__SafariSettingsBrowsingDataImportController__importBookmarksFromURL_completionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -204,16 +204,16 @@ void __88__SafariSettingsBrowsingDataImportController__importBookmarksFromURL_co
   }
 }
 
-- (void)_importExtensionsFromURL:(id)a3 completionHandler:(id)a4
+- (void)_importExtensionsFromURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __89__SafariSettingsBrowsingDataImportController__importExtensionsFromURL_completionHandler___block_invoke;
   block[3] = &unk_895D8;
   block[4] = self;
-  v8 = a3;
+  lCopy = l;
   dispatch_async(internalQueue, block);
   v9 = objc_alloc_init(WebBookmarksSettingsGateway);
   [v9 setExtensionsImporterDelegate:self];
@@ -223,10 +223,10 @@ void __88__SafariSettingsBrowsingDataImportController__importBookmarksFromURL_co
   v12[3] = &unk_8AD18;
   v12[4] = self;
   v13 = v9;
-  v14 = v6;
-  v10 = v6;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
   v11 = v9;
-  [v11 importExtensionsFromURL:v8 completionHandler:v12];
+  [v11 importExtensionsFromURL:lCopy completionHandler:v12];
 }
 
 void __89__SafariSettingsBrowsingDataImportController__importExtensionsFromURL_completionHandler___block_invoke_2(uint64_t a1, void *a2)
@@ -270,16 +270,16 @@ id __89__SafariSettingsBrowsingDataImportController__importExtensionsFromURL_com
   return (*(a1[7] + 16))();
 }
 
-- (void)_importChromeExtensionsFromURL:(id)a3 completionHandler:(id)a4
+- (void)_importChromeExtensionsFromURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __95__SafariSettingsBrowsingDataImportController__importChromeExtensionsFromURL_completionHandler___block_invoke;
   block[3] = &unk_895D8;
   block[4] = self;
-  v8 = a3;
+  lCopy = l;
   dispatch_async(internalQueue, block);
   v9 = objc_alloc_init(WebBookmarksSettingsGateway);
   [v9 setExtensionsImporterDelegate:self];
@@ -289,10 +289,10 @@ id __89__SafariSettingsBrowsingDataImportController__importExtensionsFromURL_com
   v12[3] = &unk_8AD18;
   v12[4] = self;
   v13 = v9;
-  v14 = v6;
-  v10 = v6;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
   v11 = v9;
-  [v11 importChromeExtensionsFromURL:v8 completionHandler:v12];
+  [v11 importChromeExtensionsFromURL:lCopy completionHandler:v12];
 }
 
 void __95__SafariSettingsBrowsingDataImportController__importChromeExtensionsFromURL_completionHandler___block_invoke_2(uint64_t a1, void *a2)
@@ -336,22 +336,22 @@ id __95__SafariSettingsBrowsingDataImportController__importChromeExtensionsFromU
   return (*(a1[7] + 16))();
 }
 
-- (void)_generateLockupViewsForAvailableAppsWithWebBookmarksSettingsGateway:(id)a3 completionHandler:(id)a4
+- (void)_generateLockupViewsForAvailableAppsWithWebBookmarksSettingsGateway:(id)gateway completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  gatewayCopy = gateway;
+  handlerCopy = handler;
   v8 = +[WBSASCLockupViewGenerator sharedGenerator];
-  v9 = [(NSCountedSet *)self->_availableAppsWithExtensions allObjects];
+  allObjects = [(NSCountedSet *)self->_availableAppsWithExtensions allObjects];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __132__SafariSettingsBrowsingDataImportController__generateLockupViewsForAvailableAppsWithWebBookmarksSettingsGateway_completionHandler___block_invoke;
   v12[3] = &unk_8ADE8;
-  v13 = v6;
-  v14 = v7;
+  v13 = gatewayCopy;
+  v14 = handlerCopy;
   v12[4] = self;
-  v10 = v6;
-  v11 = v7;
-  [v8 generateLockupViewsForAvailableApps:v9 lockupViewType:1 maintainRequestedOrderOfApps:0 completionHandler:v12];
+  v10 = gatewayCopy;
+  v11 = handlerCopy;
+  [v8 generateLockupViewsForAvailableApps:allObjects lockupViewType:1 maintainRequestedOrderOfApps:0 completionHandler:v12];
 }
 
 void __132__SafariSettingsBrowsingDataImportController__generateLockupViewsForAvailableAppsWithWebBookmarksSettingsGateway_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -446,10 +446,10 @@ NSString *__cdecl __132__SafariSettingsBrowsingDataImportController__generateLoc
   return v4;
 }
 
-- (void)_importCreditCardsFromURL:(id)a3 completionHandler:(id)a4
+- (void)_importCreditCardsFromURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   v8 = objc_alloc_init(WebBookmarksSettingsGateway);
   [v8 setCreditCardImporterDelegate:self];
   v11[0] = _NSConcreteStackBlock;
@@ -457,11 +457,11 @@ NSString *__cdecl __132__SafariSettingsBrowsingDataImportController__generateLoc
   v11[2] = __90__SafariSettingsBrowsingDataImportController__importCreditCardsFromURL_completionHandler___block_invoke;
   v11[3] = &unk_8AE38;
   v12 = v8;
-  v13 = v6;
+  v13 = handlerCopy;
   v11[4] = self;
   v9 = v8;
-  v10 = v6;
-  [v9 importCreditCardsFromURL:v7 completionHandler:v11];
+  v10 = handlerCopy;
+  [v9 importCreditCardsFromURL:lCopy completionHandler:v11];
 }
 
 void __90__SafariSettingsBrowsingDataImportController__importCreditCardsFromURL_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -507,21 +507,21 @@ uint64_t __90__SafariSettingsBrowsingDataImportController__importCreditCardsFrom
   }
 }
 
-- (void)_importChromeHistoryFromURL:(id)a3 completionHandler:(id)a4
+- (void)_importChromeHistoryFromURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   v8 = objc_alloc_init(WebBookmarksSettingsGateway);
   v9 = CFAbsoluteTimeGetCurrent() - WBUHistoryDefaultItemAgeLimit;
-  v10 = [(SafariSettingsBrowsingDataImportController *)self selectedProfileIdentifierToImportInto];
+  selectedProfileIdentifierToImportInto = [(SafariSettingsBrowsingDataImportController *)self selectedProfileIdentifierToImportInto];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __92__SafariSettingsBrowsingDataImportController__importChromeHistoryFromURL_completionHandler___block_invoke;
   v12[3] = &unk_8ACF0;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [v8 importChromeHistoryFromURL:v7 ageLimit:v10 profileIdentifier:v12 completionHandler:v9];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [v8 importChromeHistoryFromURL:lCopy ageLimit:selectedProfileIdentifierToImportInto profileIdentifier:v12 completionHandler:v9];
 }
 
 id __92__SafariSettingsBrowsingDataImportController__importChromeHistoryFromURL_completionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -546,19 +546,19 @@ id __92__SafariSettingsBrowsingDataImportController__importChromeHistoryFromURL_
   }
 }
 
-- (void)_computeNumberOfHistorySitesToBeImportedFromURL:(id)a3 completionHandler:(id)a4
+- (void)_computeNumberOfHistorySitesToBeImportedFromURL:(id)l completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   v7 = objc_alloc_init(WebBookmarksSettingsGateway);
   v8 = WBSHistoryExportDataType;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __112__SafariSettingsBrowsingDataImportController__computeNumberOfHistorySitesToBeImportedFromURL_completionHandler___block_invoke;
   v10[3] = &unk_89808;
-  v11 = v5;
-  v9 = v5;
-  [v7 computeNumberOfItemsToBeImportedFromURL:v6 exportMetadataDataType:v8 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [v7 computeNumberOfItemsToBeImportedFromURL:lCopy exportMetadataDataType:v8 completionHandler:v10];
 }
 
 void __112__SafariSettingsBrowsingDataImportController__computeNumberOfHistorySitesToBeImportedFromURL_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -576,19 +576,19 @@ void __112__SafariSettingsBrowsingDataImportController__computeNumberOfHistorySi
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_computeNumberOfChromeHistorySitesToBeImportedFromURL:(id)a3 completionHandler:(id)a4
+- (void)_computeNumberOfChromeHistorySitesToBeImportedFromURL:(id)l completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   v7 = objc_alloc_init(WebBookmarksSettingsGateway);
   v8 = WBSChromeHistoryExportDataType;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __118__SafariSettingsBrowsingDataImportController__computeNumberOfChromeHistorySitesToBeImportedFromURL_completionHandler___block_invoke;
   v10[3] = &unk_89808;
-  v11 = v5;
-  v9 = v5;
-  [v7 computeNumberOfItemsToBeImportedFromURL:v6 exportMetadataDataType:v8 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [v7 computeNumberOfItemsToBeImportedFromURL:lCopy exportMetadataDataType:v8 completionHandler:v10];
 }
 
 void __118__SafariSettingsBrowsingDataImportController__computeNumberOfChromeHistorySitesToBeImportedFromURL_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -606,19 +606,19 @@ void __118__SafariSettingsBrowsingDataImportController__computeNumberOfChromeHis
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_computeNumberOfExtensionsToBeImportedFromURL:(id)a3 completionHandler:(id)a4
+- (void)_computeNumberOfExtensionsToBeImportedFromURL:(id)l completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   v7 = objc_alloc_init(WebBookmarksSettingsGateway);
   v8 = WBSExtensionsExportDataType;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __110__SafariSettingsBrowsingDataImportController__computeNumberOfExtensionsToBeImportedFromURL_completionHandler___block_invoke;
   v10[3] = &unk_89808;
-  v11 = v5;
-  v9 = v5;
-  [v7 computeNumberOfItemsToBeImportedFromURL:v6 exportMetadataDataType:v8 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [v7 computeNumberOfItemsToBeImportedFromURL:lCopy exportMetadataDataType:v8 completionHandler:v10];
 }
 
 void __110__SafariSettingsBrowsingDataImportController__computeNumberOfExtensionsToBeImportedFromURL_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -636,19 +636,19 @@ void __110__SafariSettingsBrowsingDataImportController__computeNumberOfExtension
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_computeNumberOfChromeExtensionsToBeImportedFromURL:(id)a3 completionHandler:(id)a4
+- (void)_computeNumberOfChromeExtensionsToBeImportedFromURL:(id)l completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   v7 = objc_alloc_init(WebBookmarksSettingsGateway);
   v8 = WBSChromeExtensionsExportDataType;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __116__SafariSettingsBrowsingDataImportController__computeNumberOfChromeExtensionsToBeImportedFromURL_completionHandler___block_invoke;
   v10[3] = &unk_89808;
-  v11 = v5;
-  v9 = v5;
-  [v7 computeNumberOfItemsToBeImportedFromURL:v6 exportMetadataDataType:v8 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [v7 computeNumberOfItemsToBeImportedFromURL:lCopy exportMetadataDataType:v8 completionHandler:v10];
 }
 
 void __116__SafariSettingsBrowsingDataImportController__computeNumberOfChromeExtensionsToBeImportedFromURL_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -666,19 +666,19 @@ void __116__SafariSettingsBrowsingDataImportController__computeNumberOfChromeExt
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_computeNumberOfBookmarksToBeImportedFromURL:(id)a3 completionHandler:(id)a4
+- (void)_computeNumberOfBookmarksToBeImportedFromURL:(id)l completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   v7 = objc_alloc_init(WebBookmarksSettingsGateway);
   v8 = WBSBookmarksExportDataType;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __109__SafariSettingsBrowsingDataImportController__computeNumberOfBookmarksToBeImportedFromURL_completionHandler___block_invoke;
   v10[3] = &unk_89808;
-  v11 = v5;
-  v9 = v5;
-  [v7 computeNumberOfItemsToBeImportedFromURL:v6 exportMetadataDataType:v8 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [v7 computeNumberOfItemsToBeImportedFromURL:lCopy exportMetadataDataType:v8 completionHandler:v10];
 }
 
 void __109__SafariSettingsBrowsingDataImportController__computeNumberOfBookmarksToBeImportedFromURL_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -696,19 +696,19 @@ void __109__SafariSettingsBrowsingDataImportController__computeNumberOfBookmarks
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_computeNumberOfCreditCardsToBeImportedFromURL:(id)a3 completionHandler:(id)a4
+- (void)_computeNumberOfCreditCardsToBeImportedFromURL:(id)l completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   v7 = objc_alloc_init(WebBookmarksSettingsGateway);
   v8 = WBSCreditCardExportDataType;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __111__SafariSettingsBrowsingDataImportController__computeNumberOfCreditCardsToBeImportedFromURL_completionHandler___block_invoke;
   v10[3] = &unk_89808;
-  v11 = v5;
-  v9 = v5;
-  [v7 computeNumberOfItemsToBeImportedFromURL:v6 exportMetadataDataType:v8 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [v7 computeNumberOfItemsToBeImportedFromURL:lCopy exportMetadataDataType:v8 completionHandler:v10];
 }
 
 void __111__SafariSettingsBrowsingDataImportController__computeNumberOfCreditCardsToBeImportedFromURL_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -726,23 +726,23 @@ void __111__SafariSettingsBrowsingDataImportController__computeNumberOfCreditCar
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)enableExtensionWithComposedIdentifier:(id)a3 adamIdentifier:(id)a4 alternatePlatformAppBundleIdentifier:(id)a5 alternatePlatformExtensionBundleIdentifier:(id)a6
+- (void)enableExtensionWithComposedIdentifier:(id)identifier adamIdentifier:(id)adamIdentifier alternatePlatformAppBundleIdentifier:(id)bundleIdentifier alternatePlatformExtensionBundleIdentifier:(id)extensionBundleIdentifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  adamIdentifierCopy = adamIdentifier;
+  bundleIdentifierCopy = bundleIdentifier;
   internalQueue = self->_internalQueue;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = __179__SafariSettingsBrowsingDataImportController_enableExtensionWithComposedIdentifier_adamIdentifier_alternatePlatformAppBundleIdentifier_alternatePlatformExtensionBundleIdentifier___block_invoke;
   v16[3] = &unk_8AE60;
-  v17 = v9;
-  v18 = v10;
-  v19 = self;
-  v20 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
+  v17 = identifierCopy;
+  v18 = adamIdentifierCopy;
+  selfCopy = self;
+  v20 = bundleIdentifierCopy;
+  v13 = bundleIdentifierCopy;
+  v14 = adamIdentifierCopy;
+  v15 = identifierCopy;
   dispatch_sync(internalQueue, v16);
 }
 
@@ -789,32 +789,32 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)importCreditCardDataWithCardNumber:(id)a3 cardName:(id)a4 cardholderName:(id)a5 cardExpirationMonth:(id)a6 cardExpirationYear:(id)a7 lastUsedDate:(id)a8
+- (void)importCreditCardDataWithCardNumber:(id)number cardName:(id)name cardholderName:(id)cardholderName cardExpirationMonth:(id)month cardExpirationYear:(id)year lastUsedDate:(id)date
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  numberCopy = number;
+  nameCopy = name;
+  cardholderNameCopy = cardholderName;
+  monthCopy = month;
+  yearCopy = year;
+  dateCopy = date;
   internalQueue = self->_internalQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __157__SafariSettingsBrowsingDataImportController_importCreditCardDataWithCardNumber_cardName_cardholderName_cardExpirationMonth_cardExpirationYear_lastUsedDate___block_invoke;
   block[3] = &unk_8AE88;
   block[4] = self;
-  v28 = v14;
-  v29 = v15;
-  v30 = v16;
-  v31 = v17;
-  v32 = v18;
-  v33 = v19;
-  v21 = v19;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  v25 = v15;
-  v26 = v14;
+  v28 = numberCopy;
+  v29 = nameCopy;
+  v30 = cardholderNameCopy;
+  v31 = monthCopy;
+  v32 = yearCopy;
+  v33 = dateCopy;
+  v21 = dateCopy;
+  v22 = yearCopy;
+  v23 = monthCopy;
+  v24 = cardholderNameCopy;
+  v25 = nameCopy;
+  v26 = numberCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -825,13 +825,13 @@ void __157__SafariSettingsBrowsingDataImportController_importCreditCardDataWithC
   [v2 importCreditCardDataWithCardNumber:a1[5] cardName:a1[6] cardholderName:a1[7] cardExpirationMonth:a1[8] cardExpirationYear:a1[9] lastUsedDate:a1[10]];
 }
 
-- (void)contentBlockerManagerExtensionListDidChange:(id)a3
+- (void)contentBlockerManagerExtensionListDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 extensions];
-  v6 = [v5 allObjects];
-  v7 = [v4 webExtensionsController];
-  v8 = [(SafariSettingsBrowsingDataImportController *)self _getComposedIdentifiersOfExtensionsDownloadedFromLockupViewsFromListOfExtensions:v6 extensionsController:v7];
+  changeCopy = change;
+  extensions = [changeCopy extensions];
+  allObjects = [extensions allObjects];
+  webExtensionsController = [changeCopy webExtensionsController];
+  v8 = [(SafariSettingsBrowsingDataImportController *)self _getComposedIdentifiersOfExtensionsDownloadedFromLockupViewsFromListOfExtensions:allObjects extensionsController:webExtensionsController];
 
   v17 = 0u;
   v18 = 0u;
@@ -853,10 +853,10 @@ void __157__SafariSettingsBrowsingDataImportController_importCreditCardDataWithC
           objc_enumerationMutation(v9);
         }
 
-        v14 = [v4 _contentBlockerWithComposedIdentifier:{*(*(&v15 + 1) + 8 * v13), v15}];
+        v14 = [changeCopy _contentBlockerWithComposedIdentifier:{*(*(&v15 + 1) + 8 * v13), v15}];
         if (v14)
         {
-          [v4 setExtension:v14 isEnabled:1 byUserGesture:1];
+          [changeCopy setExtension:v14 isEnabled:1 byUserGesture:1];
           [(SafariSettingsBrowsingDataImportController *)self _postExtensionsChangedNotification];
         }
 
@@ -871,11 +871,11 @@ void __157__SafariSettingsBrowsingDataImportController_importCreditCardDataWithC
   }
 }
 
-- (void)extensionsControllerExtensionListDidChange:(id)a3
+- (void)extensionsControllerExtensionListDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 extensions];
-  v6 = [(SafariSettingsBrowsingDataImportController *)self _getComposedIdentifiersOfExtensionsDownloadedFromLockupViewsFromListOfExtensions:v5 extensionsController:v4];
+  changeCopy = change;
+  extensions = [changeCopy extensions];
+  v6 = [(SafariSettingsBrowsingDataImportController *)self _getComposedIdentifiersOfExtensionsDownloadedFromLockupViewsFromListOfExtensions:extensions extensionsController:changeCopy];
 
   v15 = 0u;
   v16 = 0u;
@@ -897,10 +897,10 @@ void __157__SafariSettingsBrowsingDataImportController_importCreditCardDataWithC
           objc_enumerationMutation(v7);
         }
 
-        v12 = [v4 extensionWithComposedIdentifier:{*(*(&v13 + 1) + 8 * v11), v13}];
+        v12 = [changeCopy extensionWithComposedIdentifier:{*(*(&v13 + 1) + 8 * v11), v13}];
         if (v12)
         {
-          [v4 setExtension:v12 isEnabled:1];
+          [changeCopy setExtension:v12 isEnabled:1];
           [(SafariSettingsBrowsingDataImportController *)self _postExtensionsChangedNotification];
         }
 
@@ -915,15 +915,15 @@ void __157__SafariSettingsBrowsingDataImportController_importCreditCardDataWithC
   }
 }
 
-- (id)_getComposedIdentifiersOfExtensionsDownloadedFromLockupViewsFromListOfExtensions:(id)a3 extensionsController:(id)a4
+- (id)_getComposedIdentifiersOfExtensionsDownloadedFromLockupViewsFromListOfExtensions:(id)extensions extensionsController:(id)controller
 {
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = __148__SafariSettingsBrowsingDataImportController__getComposedIdentifiersOfExtensionsDownloadedFromLockupViewsFromListOfExtensions_extensionsController___block_invoke;
   v16[3] = &unk_8AEB0;
-  v17 = a4;
-  v6 = v17;
-  v7 = [a3 safari_mapObjectsUsingBlock:v16];
+  controllerCopy = controller;
+  v6 = controllerCopy;
+  v7 = [extensions safari_mapObjectsUsingBlock:v16];
   v8 = [NSMutableSet setWithArray:v7];
 
   internalQueue = self->_internalQueue;
@@ -933,7 +933,7 @@ void __157__SafariSettingsBrowsingDataImportController_importCreditCardDataWithC
   block[3] = &unk_896A0;
   v10 = v8;
   v14 = v10;
-  v15 = self;
+  selfCopy = self;
   dispatch_sync(internalQueue, block);
   v11 = v10;
 

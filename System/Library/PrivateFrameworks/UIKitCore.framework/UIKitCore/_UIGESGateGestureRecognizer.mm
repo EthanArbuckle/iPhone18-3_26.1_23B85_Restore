@@ -1,18 +1,18 @@
 @interface _UIGESGateGestureRecognizer
-- (BOOL)_shouldReceiveTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)_shouldReceiveTouch:(id)touch withEvent:(id)event;
 - (BOOL)_validateTouchesFailingIfNeeded:(_BOOL8)result;
-- (_UIGESGateGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (_UIGESGateGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation _UIGESGateGestureRecognizer
 
-- (_UIGESGateGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UIGESGateGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _UIGESGateGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -23,7 +23,7 @@
   return v5;
 }
 
-- (BOOL)_shouldReceiveTouch:(id)a3 withEvent:(id)a4
+- (BOOL)_shouldReceiveTouch:(id)touch withEvent:(id)event
 {
   v11 = *MEMORY[0x1E69E9840];
   if (([UIApp _applicationWantsGESEvents] & 1) == 0)
@@ -39,21 +39,21 @@
       }
 
       v9 = 138412290;
-      v10 = a3;
+      touchCopy = touch;
       _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_ERROR, "Rejecting touch because the application is not currently set to receive GES events: %@", &v9, 0xCu);
     }
 
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!touch)
   {
 LABEL_5:
     LOBYTE(v5) = 0;
     return v5;
   }
 
-  return (*(a3 + 118) >> 12) & 1;
+  return (*(touch + 118) >> 12) & 1;
 }
 
 - (BOOL)_validateTouchesFailingIfNeeded:(_BOOL8)result
@@ -117,12 +117,12 @@ LABEL_5:
   return result;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  if (![(_UIGESGateGestureRecognizer *)self _validateTouchesFailingIfNeeded:a3])
+  if (![(_UIGESGateGestureRecognizer *)self _validateTouchesFailingIfNeeded:ended])
   {
-    v5 = [(UIGestureRecognizer *)self _allActiveTouches];
-    v6 = [v5 count];
+    _allActiveTouches = [(UIGestureRecognizer *)self _allActiveTouches];
+    v6 = [_allActiveTouches count];
 
     if (!v6)
     {
@@ -141,12 +141,12 @@ LABEL_5:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  if (![(_UIGESGateGestureRecognizer *)self _validateTouchesFailingIfNeeded:a3])
+  if (![(_UIGESGateGestureRecognizer *)self _validateTouchesFailingIfNeeded:cancelled])
   {
-    v5 = [(UIGestureRecognizer *)self _allActiveTouches];
-    v6 = [v5 count];
+    _allActiveTouches = [(UIGestureRecognizer *)self _allActiveTouches];
+    v6 = [_allActiveTouches count];
 
     if (!v6)
     {

@@ -1,18 +1,18 @@
 @interface CRLUIMenuControllerAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)_crlaxShouldActuallyPreventMakingVisible;
-- (void)setMenuItems:(id)a3;
-- (void)setMenuVisible:(BOOL)a3;
-- (void)setMenuVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)setMenuItems:(id)items;
+- (void)setMenuVisible:(BOOL)visible;
+- (void)setMenuVisible:(BOOL)visible animated:(BOOL)animated;
 @end
 
 @implementation CRLUIMenuControllerAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -20,9 +20,9 @@
 - (BOOL)_crlaxShouldActuallyPreventMakingVisible
 {
   v3 = +[CRLAccessibility sharedInstance];
-  v4 = [v3 needsAccessibilityElements];
+  needsAccessibilityElements = [v3 needsAccessibilityElements];
 
-  if (v4)
+  if (needsAccessibilityElements)
   {
     v8 = 0;
     v9 = &v8;
@@ -51,43 +51,43 @@
   return v5 & 1;
 }
 
-- (void)setMenuItems:(id)a3
+- (void)setMenuItems:(id)items
 {
-  v4 = self;
-  v5 = a3;
-  if ([(CRLUIMenuControllerAccessibility *)v4 _crlaxShouldPreventMutatingItems])
+  selfCopy = self;
+  itemsCopy = items;
+  if ([(CRLUIMenuControllerAccessibility *)selfCopy _crlaxShouldPreventMutatingItems])
   {
-    [(CRLUIMenuControllerAccessibility *)v4 _crlaxSetLastUpdatedMenuItemsWhilePreventingActualItemsMutation:v5];
+    [(CRLUIMenuControllerAccessibility *)selfCopy _crlaxSetLastUpdatedMenuItemsWhilePreventingActualItemsMutation:itemsCopy];
   }
 
   else
   {
-    v6.receiver = v4;
+    v6.receiver = selfCopy;
     v6.super_class = CRLUIMenuControllerAccessibility;
-    [(CRLUIMenuControllerAccessibility *)&v6 setMenuItems:v5];
+    [(CRLUIMenuControllerAccessibility *)&v6 setMenuItems:itemsCopy];
   }
 }
 
-- (void)setMenuVisible:(BOOL)a3
+- (void)setMenuVisible:(BOOL)visible
 {
-  v3 = a3;
-  if (!a3 || ![(CRLUIMenuControllerAccessibility *)self _crlaxShouldActuallyPreventMakingVisible])
+  visibleCopy = visible;
+  if (!visible || ![(CRLUIMenuControllerAccessibility *)self _crlaxShouldActuallyPreventMakingVisible])
   {
     v5.receiver = self;
     v5.super_class = CRLUIMenuControllerAccessibility;
-    [(CRLUIMenuControllerAccessibility *)&v5 setMenuVisible:v3];
+    [(CRLUIMenuControllerAccessibility *)&v5 setMenuVisible:visibleCopy];
   }
 }
 
-- (void)setMenuVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setMenuVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if (!a3 || ![(CRLUIMenuControllerAccessibility *)self _crlaxShouldActuallyPreventMakingVisible])
+  animatedCopy = animated;
+  visibleCopy = visible;
+  if (!visible || ![(CRLUIMenuControllerAccessibility *)self _crlaxShouldActuallyPreventMakingVisible])
   {
     v7.receiver = self;
     v7.super_class = CRLUIMenuControllerAccessibility;
-    [(CRLUIMenuControllerAccessibility *)&v7 setMenuVisible:v5 animated:v4];
+    [(CRLUIMenuControllerAccessibility *)&v7 setMenuVisible:visibleCopy animated:animatedCopy];
   }
 }
 

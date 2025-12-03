@@ -1,22 +1,22 @@
 @interface BCAssetDatabase
 + (void)removeDatabase;
 - (BCAssetDatabase)init;
-- (BOOL)shouldRetryAddingPersistentStoreAfterError:(id)a3;
-- (id)cachedEntities:(id)a3 byPersistentIDs:(id)a4 metrics:(id *)a5;
-- (id)cachedOutstandingAssetsByPersistentIDs:(id)a3;
+- (BOOL)shouldRetryAddingPersistentStoreAfterError:(id)error;
+- (id)cachedEntities:(id)entities byPersistentIDs:(id)ds metrics:(id *)metrics;
+- (id)cachedOutstandingAssetsByPersistentIDs:(id)ds;
 - (id)downloadCompletePathMap;
-- (id)entities:(id)a3 byPredicate:(id)a4 fromMOC:(id)a5;
-- (id)outstandingAssetDownloadCompletePathsMatchingArray:(id)a3;
-- (id)outstandingAssetsByRestoreFlag:(BOOL)a3;
-- (void)insertInstalledAssetByPersistentID:(id)a3 withSize:(unint64_t)a4;
-- (void)insertOutstandingAssetDictionaries:(id)a3 isRestore:(BOOL)a4;
-- (void)removeEntities:(id)a3 byPredicate:(id)a4;
-- (void)removeInstalledAssetsExcluding:(id)a3;
-- (void)removeOutstandingAssetByPersistentID:(id)a3;
-- (void)removeOutstandingAssetMissingFromPersistentIDs:(id)a3;
-- (void)removeOutstandingAssetsByPersistentIDs:(id)a3;
-- (void)setDownloadPath:(id)a3 forOutstandingAssetsByPersistentID:(id)a4;
-- (void)updateOutstandingAssetDictionaries:(id)a3 isRestore:(BOOL)a4;
+- (id)entities:(id)entities byPredicate:(id)predicate fromMOC:(id)c;
+- (id)outstandingAssetDownloadCompletePathsMatchingArray:(id)array;
+- (id)outstandingAssetsByRestoreFlag:(BOOL)flag;
+- (void)insertInstalledAssetByPersistentID:(id)d withSize:(unint64_t)size;
+- (void)insertOutstandingAssetDictionaries:(id)dictionaries isRestore:(BOOL)restore;
+- (void)removeEntities:(id)entities byPredicate:(id)predicate;
+- (void)removeInstalledAssetsExcluding:(id)excluding;
+- (void)removeOutstandingAssetByPersistentID:(id)d;
+- (void)removeOutstandingAssetMissingFromPersistentIDs:(id)ds;
+- (void)removeOutstandingAssetsByPersistentIDs:(id)ds;
+- (void)setDownloadPath:(id)path forOutstandingAssetsByPersistentID:(id)d;
+- (void)updateOutstandingAssetDictionaries:(id)dictionaries isRestore:(BOOL)restore;
 @end
 
 @implementation BCAssetDatabase
@@ -44,7 +44,7 @@
   return result;
 }
 
-- (BOOL)shouldRetryAddingPersistentStoreAfterError:(id)a3
+- (BOOL)shouldRetryAddingPersistentStoreAfterError:(id)error
 {
   psErrorRetryCount = self->_psErrorRetryCount;
   v5 = BCDefaultLog();
@@ -132,29 +132,29 @@
   }
 }
 
-- (void)removeEntities:(id)a3 byPredicate:(id)a4
+- (void)removeEntities:(id)entities byPredicate:(id)predicate
 {
   v8 = objc_alloc_init(NSAutoreleasePool);
-  v9 = [(BCDatabase *)self newManagedObjectContext];
+  newManagedObjectContext = [(BCDatabase *)self newManagedObjectContext];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_F084;
   v10[3] = &unk_20640;
   v10[4] = self;
-  v10[5] = a3;
-  v10[6] = a4;
-  v10[7] = v9;
+  v10[5] = entities;
+  v10[6] = predicate;
+  v10[7] = newManagedObjectContext;
   v10[8] = a2;
-  [v9 performBlockAndWait:v10];
+  [newManagedObjectContext performBlockAndWait:v10];
 }
 
-- (id)entities:(id)a3 byPredicate:(id)a4 fromMOC:(id)a5
+- (id)entities:(id)entities byPredicate:(id)predicate fromMOC:(id)c
 {
   v8 = objc_alloc_init(NSFetchRequest);
-  [v8 setEntity:{+[NSEntityDescription entityForName:inManagedObjectContext:](NSEntityDescription, "entityForName:inManagedObjectContext:", a3, a5)}];
-  [v8 setPredicate:a4];
+  [v8 setEntity:{+[NSEntityDescription entityForName:inManagedObjectContext:](NSEntityDescription, "entityForName:inManagedObjectContext:", entities, c)}];
+  [v8 setPredicate:predicate];
   v13 = 0;
-  v9 = [a5 executeFetchRequest:v8 error:&v13];
+  v9 = [c executeFetchRequest:v8 error:&v13];
   if (v9)
   {
     v10 = 1;
@@ -170,14 +170,14 @@
     v11 = BCDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_13C28(a3, &v13);
+      sub_13C28(entities, &v13);
     }
   }
 
   return v9;
 }
 
-- (id)cachedEntities:(id)a3 byPersistentIDs:(id)a4 metrics:(id *)a5
+- (id)cachedEntities:(id)entities byPersistentIDs:(id)ds metrics:(id *)metrics
 {
   v15 = 0;
   v16 = &v15;
@@ -185,214 +185,214 @@
   v18 = sub_F4D8;
   v19 = sub_F4E8;
   v20 = 0;
-  if (![a4 count])
+  if (![ds count])
   {
     v11 = BCDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       sub_13C98(v11);
-      if (!a5)
+      if (!metrics)
       {
         goto LABEL_6;
       }
     }
 
-    else if (!a5)
+    else if (!metrics)
     {
       goto LABEL_6;
     }
 
-    a5->var0 = 0;
-    a5->var1 = 0;
+    metrics->var0 = 0;
+    metrics->var1 = 0;
     goto LABEL_6;
   }
 
   v9 = objc_alloc_init(NSAutoreleasePool);
-  v10 = [(BCDatabase *)self newManagedObjectContext];
+  newManagedObjectContext = [(BCDatabase *)self newManagedObjectContext];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_F4F4;
   v14[3] = &unk_20668;
-  v14[4] = a3;
-  v14[5] = v10;
-  v14[6] = a4;
+  v14[4] = entities;
+  v14[5] = newManagedObjectContext;
+  v14[6] = ds;
   v14[7] = &v15;
-  v14[8] = a5;
-  [v10 performBlockAndWait:v14];
+  v14[8] = metrics;
+  [newManagedObjectContext performBlockAndWait:v14];
 
 LABEL_6:
-  v12 = [v16[5] allObjects];
+  allObjects = [v16[5] allObjects];
   _Block_object_dispose(&v15, 8);
-  return v12;
+  return allObjects;
 }
 
-- (id)cachedOutstandingAssetsByPersistentIDs:(id)a3
+- (id)cachedOutstandingAssetsByPersistentIDs:(id)ds
 {
-  v4 = [NSSet setWithArray:a3];
+  v4 = [NSSet setWithArray:ds];
 
   return [(BCAssetDatabase *)self cachedEntities:@"BCOutstandingAsset" byPersistentIDs:v4 metrics:0];
 }
 
-- (id)outstandingAssetsByRestoreFlag:(BOOL)a3
+- (id)outstandingAssetsByRestoreFlag:(BOOL)flag
 {
   v5 = objc_alloc_init(NSMutableArray);
   v6 = objc_alloc_init(NSAutoreleasePool);
-  v7 = [(BCDatabase *)self newManagedObjectContext];
+  newManagedObjectContext = [(BCDatabase *)self newManagedObjectContext];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_F950;
   v9[3] = &unk_20690;
-  v10 = a3;
+  flagCopy = flag;
   v9[4] = self;
-  v9[5] = v7;
+  v9[5] = newManagedObjectContext;
   v9[6] = v5;
-  [v7 performBlockAndWait:v9];
+  [newManagedObjectContext performBlockAndWait:v9];
 
   return v5;
 }
 
-- (void)insertOutstandingAssetDictionaries:(id)a3 isRestore:(BOOL)a4
+- (void)insertOutstandingAssetDictionaries:(id)dictionaries isRestore:(BOOL)restore
 {
-  v4 = a4;
+  restoreCopy = restore;
   v8 = BCDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    v14 = v4;
+    v14 = restoreCopy;
     v15 = 2112;
-    v16 = a3;
+    dictionariesCopy = dictionaries;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Inserting outstanding assets with restoreFlag %d, asset dictionary %@.", buf, 0x12u);
   }
 
   v9 = objc_alloc_init(NSAutoreleasePool);
-  v10 = [(BCDatabase *)self newManagedObjectContext];
+  newManagedObjectContext = [(BCDatabase *)self newManagedObjectContext];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_FC14;
   v11[3] = &unk_206B8;
-  v12 = v4;
-  v11[4] = a3;
-  v11[5] = v10;
+  v12 = restoreCopy;
+  v11[4] = dictionaries;
+  v11[5] = newManagedObjectContext;
   v11[6] = self;
   v11[7] = a2;
-  [v10 performBlockAndWait:v11];
+  [newManagedObjectContext performBlockAndWait:v11];
 }
 
-- (void)updateOutstandingAssetDictionaries:(id)a3 isRestore:(BOOL)a4
+- (void)updateOutstandingAssetDictionaries:(id)dictionaries isRestore:(BOOL)restore
 {
-  v4 = a4;
+  restoreCopy = restore;
   v8 = BCDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    v14 = v4;
+    v14 = restoreCopy;
     v15 = 2112;
-    v16 = a3;
+    dictionariesCopy = dictionaries;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Updating outstanding assets with restoreFlag %d, asset dictionary %@.", buf, 0x12u);
   }
 
   v9 = objc_alloc_init(NSAutoreleasePool);
-  v10 = [(BCDatabase *)self newManagedObjectContext];
+  newManagedObjectContext = [(BCDatabase *)self newManagedObjectContext];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_101B8;
   v11[3] = &unk_206B8;
-  v12 = v4;
-  v11[4] = a3;
+  v12 = restoreCopy;
+  v11[4] = dictionaries;
   v11[5] = self;
-  v11[6] = v10;
+  v11[6] = newManagedObjectContext;
   v11[7] = a2;
-  [v10 performBlockAndWait:v11];
+  [newManagedObjectContext performBlockAndWait:v11];
 }
 
-- (void)removeOutstandingAssetMissingFromPersistentIDs:(id)a3
+- (void)removeOutstandingAssetMissingFromPersistentIDs:(id)ds
 {
   v6 = BCDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = a3;
+    dsCopy = ds;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Removing outstanding assets missing from IDs %@.", buf, 0xCu);
   }
 
-  if ([a3 count])
+  if ([ds count])
   {
     v7 = objc_alloc_init(NSAutoreleasePool);
-    v8 = [(BCDatabase *)self newManagedObjectContext];
+    newManagedObjectContext = [(BCDatabase *)self newManagedObjectContext];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10774;
     v9[3] = &unk_206E0;
-    v9[4] = a3;
+    v9[4] = ds;
     v9[5] = self;
-    v9[6] = v8;
+    v9[6] = newManagedObjectContext;
     v9[7] = a2;
-    [v8 performBlockAndWait:v9];
+    [newManagedObjectContext performBlockAndWait:v9];
   }
 }
 
-- (void)removeOutstandingAssetByPersistentID:(id)a3
+- (void)removeOutstandingAssetByPersistentID:(id)d
 {
   v5 = BCDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = a3;
+    dCopy = d;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Removing outstanding by ID %@.", buf, 0xCu);
   }
 
-  [(BCAssetDatabase *)self removeEntities:@"BCOutstandingAsset" byPredicate:[NSPredicate predicateWithFormat:@"persistentID == %@", a3]];
+  [(BCAssetDatabase *)self removeEntities:@"BCOutstandingAsset" byPredicate:[NSPredicate predicateWithFormat:@"persistentID == %@", d]];
 }
 
-- (void)removeOutstandingAssetsByPersistentIDs:(id)a3
+- (void)removeOutstandingAssetsByPersistentIDs:(id)ds
 {
   v5 = BCDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = a3;
+    dsCopy = ds;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Removing outstanding by IDs %@.", buf, 0xCu);
   }
 
-  if ([a3 count])
+  if ([ds count])
   {
-    [(BCAssetDatabase *)self removeEntities:@"BCOutstandingAsset" byPredicate:[NSPredicate predicateWithFormat:@"persistentID IN %@", a3]];
+    [(BCAssetDatabase *)self removeEntities:@"BCOutstandingAsset" byPredicate:[NSPredicate predicateWithFormat:@"persistentID IN %@", ds]];
   }
 }
 
-- (void)setDownloadPath:(id)a3 forOutstandingAssetsByPersistentID:(id)a4
+- (void)setDownloadPath:(id)path forOutstandingAssetsByPersistentID:(id)d
 {
   v8 = BCDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v13 = a3;
+    pathCopy = path;
     v14 = 2112;
-    v15 = a4;
+    dCopy = d;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Setting download path %@ for ID %@.", buf, 0x16u);
   }
 
   v9 = objc_alloc_init(NSAutoreleasePool);
-  v10 = [(BCDatabase *)self newManagedObjectContext];
+  newManagedObjectContext = [(BCDatabase *)self newManagedObjectContext];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10F30;
   v11[3] = &unk_20640;
-  v11[4] = a4;
+  v11[4] = d;
   v11[5] = self;
-  v11[6] = v10;
-  v11[7] = a3;
+  v11[6] = newManagedObjectContext;
+  v11[7] = path;
   v11[8] = a2;
-  [v10 performBlockAndWait:v11];
+  [newManagedObjectContext performBlockAndWait:v11];
 }
 
-- (id)outstandingAssetDownloadCompletePathsMatchingArray:(id)a3
+- (id)outstandingAssetDownloadCompletePathsMatchingArray:(id)array
 {
   v5 = BCDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = a3;
+    *(&buf + 4) = array;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Outstanding asset downloads complete with paths %@.", &buf, 0xCu);
   }
 
@@ -403,15 +403,15 @@ LABEL_6:
   v14 = sub_F4E8;
   v15 = 0;
   v6 = objc_alloc_init(NSAutoreleasePool);
-  v7 = [(BCDatabase *)self newManagedObjectContext];
+  newManagedObjectContext = [(BCDatabase *)self newManagedObjectContext];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_11324;
   v10[3] = &unk_20708;
-  v10[4] = v7;
-  v10[5] = a3;
+  v10[4] = newManagedObjectContext;
+  v10[5] = array;
   v10[6] = &buf;
-  [v7 performBlockAndWait:v10];
+  [newManagedObjectContext performBlockAndWait:v10];
 
   v8 = *(*(&buf + 1) + 40);
   _Block_object_dispose(&buf, 8);
@@ -427,46 +427,46 @@ LABEL_6:
   v12 = sub_F4E8;
   v13 = 0;
   v3 = objc_alloc_init(NSAutoreleasePool);
-  v4 = [(BCDatabase *)self newManagedObjectContext];
+  newManagedObjectContext = [(BCDatabase *)self newManagedObjectContext];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_115FC;
   v7[3] = &unk_20730;
-  v7[4] = v4;
+  v7[4] = newManagedObjectContext;
   v7[5] = &v8;
-  [v4 performBlockAndWait:v7];
+  [newManagedObjectContext performBlockAndWait:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
   return v5;
 }
 
-- (void)removeInstalledAssetsExcluding:(id)a3
+- (void)removeInstalledAssetsExcluding:(id)excluding
 {
-  if ([a3 count])
+  if ([excluding count])
   {
-    v5 = [NSPredicate predicateWithFormat:@"NOT (persistentID IN %@)", a3];
+    excluding = [NSPredicate predicateWithFormat:@"NOT (persistentID IN %@)", excluding];
 
-    [(BCAssetDatabase *)self removeEntities:@"BCInstalledAsset" byPredicate:v5];
+    [(BCAssetDatabase *)self removeEntities:@"BCInstalledAsset" byPredicate:excluding];
   }
 }
 
-- (void)insertInstalledAssetByPersistentID:(id)a3 withSize:(unint64_t)a4
+- (void)insertInstalledAssetByPersistentID:(id)d withSize:(unint64_t)size
 {
-  if ([a3 length])
+  if ([d length])
   {
     v8 = objc_alloc_init(NSAutoreleasePool);
-    v9 = [(BCDatabase *)self newManagedObjectContext];
+    newManagedObjectContext = [(BCDatabase *)self newManagedObjectContext];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_118FC;
     v11[3] = &unk_20758;
-    v11[4] = a3;
+    v11[4] = d;
     v11[5] = self;
-    v11[6] = v9;
-    v11[7] = a4;
+    v11[6] = newManagedObjectContext;
+    v11[7] = size;
     v11[8] = a2;
-    [v9 performBlockAndWait:v11];
+    [newManagedObjectContext performBlockAndWait:v11];
   }
 
   else

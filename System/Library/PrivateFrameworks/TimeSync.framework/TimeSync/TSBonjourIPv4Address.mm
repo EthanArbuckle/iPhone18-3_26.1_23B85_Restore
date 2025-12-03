@@ -1,14 +1,14 @@
 @interface TSBonjourIPv4Address
-+ (BOOL)getLinkLayerAddress:(char *)a3 forIPv4Address:(unsigned int)a4 error:(id *)a5;
-- (BOOL)getLinkLayerAddressError:(id *)a3;
++ (BOOL)getLinkLayerAddress:(char *)address forIPv4Address:(unsigned int)pv4Address error:(id *)error;
+- (BOOL)getLinkLayerAddressError:(id *)error;
 - (TSBonjourIPv4Address)init;
-- (TSBonjourIPv4Address)initWithIPv4Address:(unsigned int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSBonjourIPv4Address)initWithIPv4Address:(unsigned int)address;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSBonjourIPv4Address
 
-+ (BOOL)getLinkLayerAddress:(char *)a3 forIPv4Address:(unsigned int)a4 error:(id *)a5
++ (BOOL)getLinkLayerAddress:(char *)address forIPv4Address:(unsigned int)pv4Address error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
   v7 = 101;
@@ -83,7 +83,7 @@ LABEL_13:
     if (*(v19 + 93) == 2)
     {
       v21 = v19 + v20 + 92;
-      if (v21[1] == 18 && v21[6] == 6 && *(v21 + 1) && bswap32(*(v19 + 24)) == a4)
+      if (v21[1] == 18 && v21[6] == 6 && *(v21 + 1) && bswap32(*(v19 + 24)) == pv4Address)
       {
         break;
       }
@@ -100,8 +100,8 @@ LABEL_13:
 
   v23 = &v21[v21[5]];
   v24 = *(v23 + 2);
-  *(a3 + 2) = *(v23 + 6);
-  *a3 = v24;
+  *(address + 2) = *(v23 + 6);
+  *address = v24;
   v15 = 1;
 LABEL_14:
   free(v10);
@@ -119,14 +119,14 @@ LABEL_14:
   return 0;
 }
 
-- (TSBonjourIPv4Address)initWithIPv4Address:(unsigned int)a3
+- (TSBonjourIPv4Address)initWithIPv4Address:(unsigned int)address
 {
   v5.receiver = self;
   v5.super_class = TSBonjourIPv4Address;
   result = [(TSBonjourIPv4Address *)&v5 init];
   if (result)
   {
-    result->_ipv4Address = a3;
+    result->_ipv4Address = address;
     result->_hasLinkLayerAddress = 0;
     *result->_linkLayerAddress = -1;
     *&result->_linkLayerAddress[4] = -1;
@@ -135,9 +135,9 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)getLinkLayerAddressError:(id *)a3
+- (BOOL)getLinkLayerAddressError:(id *)error
 {
-  v4 = [objc_opt_class() getLinkLayerAddress:self->_linkLayerAddress forIPv4Address:self->_ipv4Address error:a3];
+  v4 = [objc_opt_class() getLinkLayerAddress:self->_linkLayerAddress forIPv4Address:self->_ipv4Address error:error];
   if (v4)
   {
     self->_hasLinkLayerAddress = 1;
@@ -146,17 +146,17 @@ LABEL_14:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithIPv4Address:", -[TSBonjourIPv4Address ipv4Address](self, "ipv4Address")}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithIPv4Address:", -[TSBonjourIPv4Address ipv4Address](self, "ipv4Address")}];
   if ([(TSBonjourIPv4Address *)self hasLinkLayerAddress])
   {
     [v4 setHasLinkLayerAddress:1];
-    v5 = [v4 linkLayerAddress];
-    v6 = [(TSBonjourIPv4Address *)self linkLayerAddress];
-    v7 = *(v6 + 2);
-    *v5 = *v6;
-    *(v5 + 4) = v7;
+    linkLayerAddress = [v4 linkLayerAddress];
+    linkLayerAddress2 = [(TSBonjourIPv4Address *)self linkLayerAddress];
+    v7 = *(linkLayerAddress2 + 2);
+    *linkLayerAddress = *linkLayerAddress2;
+    *(linkLayerAddress + 4) = v7;
   }
 
   return v4;

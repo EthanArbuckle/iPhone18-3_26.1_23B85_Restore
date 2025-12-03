@@ -1,5 +1,5 @@
 @interface HMAccessorySettingsMessageDispatcherFinishSendingMessageEvent
-- (HMAccessorySettingsMessageDispatcherFinishSendingMessageEvent)initWithMessageName:(id)a3;
+- (HMAccessorySettingsMessageDispatcherFinishSendingMessageEvent)initWithMessageName:(id)name;
 - (id)eventPayload;
 @end
 
@@ -9,18 +9,18 @@
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v3 = [HMCoreAnalyticsStringFieldData alloc];
-  v4 = [(HMAccessorySettingsMessageDispatcherFinishSendingMessageEvent *)self messageName];
-  v5 = [(HMCoreAnalyticsStringFieldData *)v3 initWithName:@"messageName" stringValue:v4];
+  messageName = [(HMAccessorySettingsMessageDispatcherFinishSendingMessageEvent *)self messageName];
+  v5 = [(HMCoreAnalyticsStringFieldData *)v3 initWithName:@"messageName" stringValue:messageName];
 
   v14.receiver = self;
   v14.super_class = HMAccessorySettingsMessageDispatcherFinishSendingMessageEvent;
-  v6 = [(HMCoreAnalyticsTimedMetricEvent *)&v14 eventPayload];
-  v7 = [v6 mutableCopy];
+  eventPayload = [(HMCoreAnalyticsTimedMetricEvent *)&v14 eventPayload];
+  v7 = [eventPayload mutableCopy];
 
-  v8 = [(HMCoreAnalyticsFieldData *)v5 name];
-  v15 = v8;
-  v9 = [(HMCoreAnalyticsFieldData *)v5 value];
-  v16[0] = v9;
+  name = [(HMCoreAnalyticsFieldData *)v5 name];
+  v15 = name;
+  value = [(HMCoreAnalyticsFieldData *)v5 value];
+  v16[0] = value;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
   [v7 setValuesForKeysWithDictionary:v10];
 
@@ -30,19 +30,19 @@
   return v11;
 }
 
-- (HMAccessorySettingsMessageDispatcherFinishSendingMessageEvent)initWithMessageName:(id)a3
+- (HMAccessorySettingsMessageDispatcherFinishSendingMessageEvent)initWithMessageName:(id)name
 {
-  v5 = a3;
-  if (v5)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v6 = v5;
+    v6 = nameCopy;
     v12.receiver = self;
     v12.super_class = HMAccessorySettingsMessageDispatcherFinishSendingMessageEvent;
     v7 = [(HMCoreAnalyticsMetricEvent *)&v12 initWithName:@"com.apple.HomeKit.HMAccessorySettingsMetricsDispatcher.MessageDispatcher.FinishSendingMessageEvent"];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_messageName, a3);
+      objc_storeStrong(&v7->_messageName, name);
     }
 
     return v8;

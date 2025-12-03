@@ -2,22 +2,22 @@
 - (SFCredentialProviderExtensionHelperProxy)init;
 - (id)_proxyObject;
 - (void)dealloc;
-- (void)fetchAllCredentialIdentitiesMatchingDomains:(id)a3 completion:(id)a4;
-- (void)fetchAllCredentialIdentitiesMatchingDomains:(id)a3 forExtension:(id)a4 completion:(id)a5;
-- (void)fetchAllPaskeyCredentialIdentitiesWithCompletion:(id)a3;
-- (void)fetchCredentialIdentitiesForService:(id)a3 serviceIdentifierType:(int64_t)a4 credentialIdentityTypes:(int64_t)a5 completion:(id)a6;
-- (void)fetchOneTimeCodeCredentialIdentitiesMatchingDomains:(id)a3 completion:(id)a4;
-- (void)fetchOneTimeCodeCredentialIdentitiesMatchingDomains:(id)a3 forExtension:(id)a4 completion:(id)a5;
-- (void)fetchPasskeyCredentialIdentitiesMatchingDomains:(id)a3 completion:(id)a4;
-- (void)fetchPasswordCredentialIdentitiesMatchingDomains:(id)a3 completion:(id)a4;
-- (void)fetchPasswordCredentialIdentitiesMatchingDomains:(id)a3 forExtension:(id)a4 completion:(id)a5;
-- (void)getCredentialProviderExtensionStateWithCompletion:(id)a3;
+- (void)fetchAllCredentialIdentitiesMatchingDomains:(id)domains completion:(id)completion;
+- (void)fetchAllCredentialIdentitiesMatchingDomains:(id)domains forExtension:(id)extension completion:(id)completion;
+- (void)fetchAllPaskeyCredentialIdentitiesWithCompletion:(id)completion;
+- (void)fetchCredentialIdentitiesForService:(id)service serviceIdentifierType:(int64_t)type credentialIdentityTypes:(int64_t)types completion:(id)completion;
+- (void)fetchOneTimeCodeCredentialIdentitiesMatchingDomains:(id)domains completion:(id)completion;
+- (void)fetchOneTimeCodeCredentialIdentitiesMatchingDomains:(id)domains forExtension:(id)extension completion:(id)completion;
+- (void)fetchPasskeyCredentialIdentitiesMatchingDomains:(id)domains completion:(id)completion;
+- (void)fetchPasswordCredentialIdentitiesMatchingDomains:(id)domains completion:(id)completion;
+- (void)fetchPasswordCredentialIdentitiesMatchingDomains:(id)domains forExtension:(id)extension completion:(id)completion;
+- (void)getCredentialProviderExtensionStateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)removeAllCredentialIdentitiesWithCompletion:(id)a3;
-- (void)removeCredentialIdentities:(id)a3 completion:(id)a4;
-- (void)removeCredentialIdentityStoreForApplication:(id)a3 completion:(id)a4;
-- (void)replaceCredentialIdentitiesWithIdentities:(id)a3 completion:(id)a4;
-- (void)saveCredentialIdentities:(id)a3 completion:(id)a4;
+- (void)removeAllCredentialIdentitiesWithCompletion:(id)completion;
+- (void)removeCredentialIdentities:(id)identities completion:(id)completion;
+- (void)removeCredentialIdentityStoreForApplication:(id)application completion:(id)completion;
+- (void)replaceCredentialIdentitiesWithIdentities:(id)identities completion:(id)completion;
+- (void)saveCredentialIdentities:(id)identities completion:(id)completion;
 @end
 
 @implementation SFCredentialProviderExtensionHelperProxy
@@ -163,17 +163,17 @@ void __56__SFCredentialProviderExtensionHelperProxy__proxyObject__block_invoke(u
   }
 }
 
-- (void)getCredentialProviderExtensionStateWithCompletion:(id)a3
+- (void)getCredentialProviderExtensionStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = v4;
-    v5 = [(SFCredentialProviderExtensionHelperProxy *)self _proxyObject];
-    v6 = v5;
-    if (v5)
+    v8 = completionCopy;
+    _proxyObject = [(SFCredentialProviderExtensionHelperProxy *)self _proxyObject];
+    v6 = _proxyObject;
+    if (_proxyObject)
     {
-      [v5 getCredentialProviderExtensionStateWithCompletion:v8];
+      [_proxyObject getCredentialProviderExtensionStateWithCompletion:v8];
     }
 
     else
@@ -182,87 +182,87 @@ void __56__SFCredentialProviderExtensionHelperProxy__proxyObject__block_invoke(u
       v8[2](v8, v7);
     }
 
-    v4 = v8;
+    completionCopy = v8;
   }
 }
 
-- (void)saveCredentialIdentities:(id)a3 completion:(id)a4
+- (void)saveCredentialIdentities:(id)identities completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(SFCredentialProviderExtensionHelperProxy *)self _proxyObject];
-  v8 = v7;
-  if (!v6 || v7)
+  identitiesCopy = identities;
+  completionCopy = completion;
+  _proxyObject = [(SFCredentialProviderExtensionHelperProxy *)self _proxyObject];
+  v8 = _proxyObject;
+  if (!completionCopy || _proxyObject)
   {
-    [v7 saveCredentialIdentities:v10 completion:v6];
+    [_proxyObject saveCredentialIdentities:identitiesCopy completion:completionCopy];
   }
 
   else
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SFExternalCredentialIdentityStoreErrorDomain" code:0 userInfo:0];
-    v6[2](v6, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
   }
 }
 
-- (void)removeCredentialIdentities:(id)a3 completion:(id)a4
+- (void)removeCredentialIdentities:(id)identities completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(SFCredentialProviderExtensionHelperProxy *)self _proxyObject];
-  v8 = v7;
-  if (!v6 || v7)
+  identitiesCopy = identities;
+  completionCopy = completion;
+  _proxyObject = [(SFCredentialProviderExtensionHelperProxy *)self _proxyObject];
+  v8 = _proxyObject;
+  if (!completionCopy || _proxyObject)
   {
-    [v7 removeCredentialIdentities:v10 completion:v6];
+    [_proxyObject removeCredentialIdentities:identitiesCopy completion:completionCopy];
   }
 
   else
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SFExternalCredentialIdentityStoreErrorDomain" code:0 userInfo:0];
-    v6[2](v6, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
   }
 }
 
-- (void)removeAllCredentialIdentitiesWithCompletion:(id)a3
+- (void)removeAllCredentialIdentitiesWithCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(SFCredentialProviderExtensionHelperProxy *)self _proxyObject];
-  v5 = v4;
-  if (!v7 || v4)
+  completionCopy = completion;
+  _proxyObject = [(SFCredentialProviderExtensionHelperProxy *)self _proxyObject];
+  v5 = _proxyObject;
+  if (!completionCopy || _proxyObject)
   {
-    [v4 removeAllCredentialIdentitiesWithCompletion:v7];
+    [_proxyObject removeAllCredentialIdentitiesWithCompletion:completionCopy];
   }
 
   else
   {
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SFExternalCredentialIdentityStoreErrorDomain" code:0 userInfo:0];
-    v7[2](v7, 0, v6);
+    completionCopy[2](completionCopy, 0, v6);
   }
 }
 
-- (void)replaceCredentialIdentitiesWithIdentities:(id)a3 completion:(id)a4
+- (void)replaceCredentialIdentitiesWithIdentities:(id)identities completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(SFCredentialProviderExtensionHelperProxy *)self _proxyObject];
-  v8 = v7;
-  if (!v6 || v7)
+  identitiesCopy = identities;
+  completionCopy = completion;
+  _proxyObject = [(SFCredentialProviderExtensionHelperProxy *)self _proxyObject];
+  v8 = _proxyObject;
+  if (!completionCopy || _proxyObject)
   {
-    [v7 replaceCredentialIdentitiesWithIdentities:v10 completion:v6];
+    [_proxyObject replaceCredentialIdentitiesWithIdentities:identitiesCopy completion:completionCopy];
   }
 
   else
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SFExternalCredentialIdentityStoreErrorDomain" code:0 userInfo:0];
-    v6[2](v6, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
   }
 }
 
-- (void)fetchPasswordCredentialIdentitiesMatchingDomains:(id)a3 forExtension:(id)a4 completion:(id)a5
+- (void)fetchPasswordCredentialIdentitiesMatchingDomains:(id)domains forExtension:(id)extension completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  domainsCopy = domains;
+  extensionCopy = extension;
+  completionCopy = completion;
+  if (completionCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     v11 = self->_connection;
@@ -271,13 +271,13 @@ void __56__SFCredentialProviderExtensionHelperProxy__proxyObject__block_invoke(u
     v14[1] = 3221225472;
     v14[2] = __117__SFCredentialProviderExtensionHelperProxy_fetchPasswordCredentialIdentitiesMatchingDomains_forExtension_completion___block_invoke;
     v14[3] = &unk_279B61748;
-    v12 = v10;
+    v12 = completionCopy;
     v15 = v12;
     v13 = [(NSXPCConnection *)v11 remoteObjectProxyWithErrorHandler:v14];
 
     if (v13)
     {
-      [v13 fetchPasswordCredentialIdentitiesMatchingDomains:v8 forExtension:v9 completion:v12];
+      [v13 fetchPasswordCredentialIdentitiesMatchingDomains:domainsCopy forExtension:extensionCopy completion:v12];
     }
 
     else
@@ -299,11 +299,11 @@ void __117__SFCredentialProviderExtensionHelperProxy_fetchPasswordCredentialIden
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchPasswordCredentialIdentitiesMatchingDomains:(id)a3 completion:(id)a4
+- (void)fetchPasswordCredentialIdentitiesMatchingDomains:(id)domains completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  domainsCopy = domains;
+  completionCopy = completion;
+  if (completionCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     v8 = self->_connection;
@@ -312,13 +312,13 @@ void __117__SFCredentialProviderExtensionHelperProxy_fetchPasswordCredentialIden
     v11[1] = 3221225472;
     v11[2] = __104__SFCredentialProviderExtensionHelperProxy_fetchPasswordCredentialIdentitiesMatchingDomains_completion___block_invoke;
     v11[3] = &unk_279B61748;
-    v9 = v7;
+    v9 = completionCopy;
     v12 = v9;
     v10 = [(NSXPCConnection *)v8 remoteObjectProxyWithErrorHandler:v11];
 
     if (v10)
     {
-      [v10 fetchPasswordCredentialIdentitiesMatchingDomains:v6 completion:v9];
+      [v10 fetchPasswordCredentialIdentitiesMatchingDomains:domainsCopy completion:v9];
     }
 
     else
@@ -340,11 +340,11 @@ void __104__SFCredentialProviderExtensionHelperProxy_fetchPasswordCredentialIden
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchPasskeyCredentialIdentitiesMatchingDomains:(id)a3 completion:(id)a4
+- (void)fetchPasskeyCredentialIdentitiesMatchingDomains:(id)domains completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  domainsCopy = domains;
+  completionCopy = completion;
+  if (completionCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     v8 = self->_connection;
@@ -353,13 +353,13 @@ void __104__SFCredentialProviderExtensionHelperProxy_fetchPasswordCredentialIden
     v11[1] = 3221225472;
     v11[2] = __103__SFCredentialProviderExtensionHelperProxy_fetchPasskeyCredentialIdentitiesMatchingDomains_completion___block_invoke;
     v11[3] = &unk_279B61748;
-    v9 = v7;
+    v9 = completionCopy;
     v12 = v9;
     v10 = [(NSXPCConnection *)v8 synchronousRemoteObjectProxyWithErrorHandler:v11];
 
     if (v10)
     {
-      [v10 fetchPasskeyCredentialIdentitiesMatchingDomains:v6 completion:v9];
+      [v10 fetchPasskeyCredentialIdentitiesMatchingDomains:domainsCopy completion:v9];
     }
 
     else
@@ -381,10 +381,10 @@ void __103__SFCredentialProviderExtensionHelperProxy_fetchPasskeyCredentialIdent
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchAllPaskeyCredentialIdentitiesWithCompletion:(id)a3
+- (void)fetchAllPaskeyCredentialIdentitiesWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     v5 = self->_connection;
@@ -393,7 +393,7 @@ void __103__SFCredentialProviderExtensionHelperProxy_fetchPasskeyCredentialIdent
     v8[1] = 3221225472;
     v8[2] = __93__SFCredentialProviderExtensionHelperProxy_fetchAllPaskeyCredentialIdentitiesWithCompletion___block_invoke;
     v8[3] = &unk_279B61748;
-    v6 = v4;
+    v6 = completionCopy;
     v9 = v6;
     v7 = [(NSXPCConnection *)v5 synchronousRemoteObjectProxyWithErrorHandler:v8];
 
@@ -421,12 +421,12 @@ void __93__SFCredentialProviderExtensionHelperProxy_fetchAllPaskeyCredentialIden
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchAllCredentialIdentitiesMatchingDomains:(id)a3 forExtension:(id)a4 completion:(id)a5
+- (void)fetchAllCredentialIdentitiesMatchingDomains:(id)domains forExtension:(id)extension completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  domainsCopy = domains;
+  extensionCopy = extension;
+  completionCopy = completion;
+  if (completionCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     v11 = self->_connection;
@@ -435,13 +435,13 @@ void __93__SFCredentialProviderExtensionHelperProxy_fetchAllPaskeyCredentialIden
     v14[1] = 3221225472;
     v14[2] = __112__SFCredentialProviderExtensionHelperProxy_fetchAllCredentialIdentitiesMatchingDomains_forExtension_completion___block_invoke;
     v14[3] = &unk_279B61748;
-    v12 = v10;
+    v12 = completionCopy;
     v15 = v12;
     v13 = [(NSXPCConnection *)v11 synchronousRemoteObjectProxyWithErrorHandler:v14];
 
     if (v13)
     {
-      [v13 fetchAllCredentialIdentitiesMatchingDomains:v8 forExtension:v9 completion:v12];
+      [v13 fetchAllCredentialIdentitiesMatchingDomains:domainsCopy forExtension:extensionCopy completion:v12];
     }
 
     else
@@ -463,11 +463,11 @@ void __112__SFCredentialProviderExtensionHelperProxy_fetchAllCredentialIdentitie
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchAllCredentialIdentitiesMatchingDomains:(id)a3 completion:(id)a4
+- (void)fetchAllCredentialIdentitiesMatchingDomains:(id)domains completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  domainsCopy = domains;
+  completionCopy = completion;
+  if (completionCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     v8 = self->_connection;
@@ -476,13 +476,13 @@ void __112__SFCredentialProviderExtensionHelperProxy_fetchAllCredentialIdentitie
     v11[1] = 3221225472;
     v11[2] = __99__SFCredentialProviderExtensionHelperProxy_fetchAllCredentialIdentitiesMatchingDomains_completion___block_invoke;
     v11[3] = &unk_279B61748;
-    v9 = v7;
+    v9 = completionCopy;
     v12 = v9;
     v10 = [(NSXPCConnection *)v8 synchronousRemoteObjectProxyWithErrorHandler:v11];
 
     if (v10)
     {
-      [v10 fetchAllCredentialIdentitiesMatchingDomains:v6 completion:v9];
+      [v10 fetchAllCredentialIdentitiesMatchingDomains:domainsCopy completion:v9];
     }
 
     else
@@ -504,12 +504,12 @@ void __99__SFCredentialProviderExtensionHelperProxy_fetchAllCredentialIdentities
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchOneTimeCodeCredentialIdentitiesMatchingDomains:(id)a3 forExtension:(id)a4 completion:(id)a5
+- (void)fetchOneTimeCodeCredentialIdentitiesMatchingDomains:(id)domains forExtension:(id)extension completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  domainsCopy = domains;
+  extensionCopy = extension;
+  completionCopy = completion;
+  if (completionCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     v11 = self->_connection;
@@ -518,13 +518,13 @@ void __99__SFCredentialProviderExtensionHelperProxy_fetchAllCredentialIdentities
     v14[1] = 3221225472;
     v14[2] = __120__SFCredentialProviderExtensionHelperProxy_fetchOneTimeCodeCredentialIdentitiesMatchingDomains_forExtension_completion___block_invoke;
     v14[3] = &unk_279B61748;
-    v12 = v10;
+    v12 = completionCopy;
     v15 = v12;
     v13 = [(NSXPCConnection *)v11 remoteObjectProxyWithErrorHandler:v14];
 
     if (v13)
     {
-      [v13 fetchOneTimeCodeCredentialIdentitiesMatchingDomains:v8 forExtension:v9 completion:v12];
+      [v13 fetchOneTimeCodeCredentialIdentitiesMatchingDomains:domainsCopy forExtension:extensionCopy completion:v12];
     }
 
     else
@@ -546,11 +546,11 @@ void __120__SFCredentialProviderExtensionHelperProxy_fetchOneTimeCodeCredentialI
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchOneTimeCodeCredentialIdentitiesMatchingDomains:(id)a3 completion:(id)a4
+- (void)fetchOneTimeCodeCredentialIdentitiesMatchingDomains:(id)domains completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  domainsCopy = domains;
+  completionCopy = completion;
+  if (completionCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     v8 = self->_connection;
@@ -559,13 +559,13 @@ void __120__SFCredentialProviderExtensionHelperProxy_fetchOneTimeCodeCredentialI
     v11[1] = 3221225472;
     v11[2] = __107__SFCredentialProviderExtensionHelperProxy_fetchOneTimeCodeCredentialIdentitiesMatchingDomains_completion___block_invoke;
     v11[3] = &unk_279B61748;
-    v9 = v7;
+    v9 = completionCopy;
     v12 = v9;
     v10 = [(NSXPCConnection *)v8 remoteObjectProxyWithErrorHandler:v11];
 
     if (v10)
     {
-      [v10 fetchOneTimeCodeCredentialIdentitiesMatchingDomains:v6 completion:v9];
+      [v10 fetchOneTimeCodeCredentialIdentitiesMatchingDomains:domainsCopy completion:v9];
     }
 
     else
@@ -587,28 +587,28 @@ void __107__SFCredentialProviderExtensionHelperProxy_fetchOneTimeCodeCredentialI
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)removeCredentialIdentityStoreForApplication:(id)a3 completion:(id)a4
+- (void)removeCredentialIdentityStoreForApplication:(id)application completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(SFCredentialProviderExtensionHelperProxy *)self _proxyObject];
-  v8 = v7;
-  if (!v6 || v7)
+  applicationCopy = application;
+  completionCopy = completion;
+  _proxyObject = [(SFCredentialProviderExtensionHelperProxy *)self _proxyObject];
+  v8 = _proxyObject;
+  if (!completionCopy || _proxyObject)
   {
-    [v7 removeCredentialIdentityStoreForApplication:v10 completion:v6];
+    [_proxyObject removeCredentialIdentityStoreForApplication:applicationCopy completion:completionCopy];
   }
 
   else
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SFExternalCredentialIdentityStoreErrorDomain" code:0 userInfo:0];
-    v6[2](v6, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
   }
 }
 
-- (void)fetchCredentialIdentitiesForService:(id)a3 serviceIdentifierType:(int64_t)a4 credentialIdentityTypes:(int64_t)a5 completion:(id)a6
+- (void)fetchCredentialIdentitiesForService:(id)service serviceIdentifierType:(int64_t)type credentialIdentityTypes:(int64_t)types completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  serviceCopy = service;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   v12 = self->_connection;
   os_unfair_lock_unlock(&self->_lock);
@@ -616,13 +616,13 @@ void __107__SFCredentialProviderExtensionHelperProxy_fetchOneTimeCodeCredentialI
   v15[1] = 3221225472;
   v15[2] = __137__SFCredentialProviderExtensionHelperProxy_fetchCredentialIdentitiesForService_serviceIdentifierType_credentialIdentityTypes_completion___block_invoke;
   v15[3] = &unk_279B61748;
-  v13 = v11;
+  v13 = completionCopy;
   v16 = v13;
   v14 = [(NSXPCConnection *)v12 synchronousRemoteObjectProxyWithErrorHandler:v15];
 
   if (v14)
   {
-    [v14 fetchCredentialIdentitiesForService:v10 serviceIdentifierType:a4 credentialIdentityTypes:a5 completion:v13];
+    [v14 fetchCredentialIdentitiesForService:serviceCopy serviceIdentifierType:type credentialIdentityTypes:types completion:v13];
   }
 
   else

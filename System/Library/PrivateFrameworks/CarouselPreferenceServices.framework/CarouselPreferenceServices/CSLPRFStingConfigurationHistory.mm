@@ -1,42 +1,42 @@
 @interface CSLPRFStingConfigurationHistory
-- (BOOL)isValidHistoryItem:(id)a3;
+- (BOOL)isValidHistoryItem:(id)item;
 - (CSLPRFStingConfigurationHistory)init;
-- (CSLPRFStingConfigurationHistory)initWithSetting:(id)a3 model:(id)a4;
-- (id)_historyItemForActionType:(unint64_t)a3;
-- (id)_itemForActionType:(unint64_t)a3 withBundleID:(id)a4;
-- (id)itemForActionType:(unint64_t)a3;
-- (id)itemForWorkoutWithBundleID:(id)a3;
-- (unint64_t)historyActionType:(unint64_t)a3;
-- (void)addHistoryItem:(id)a3;
+- (CSLPRFStingConfigurationHistory)initWithSetting:(id)setting model:(id)model;
+- (id)_historyItemForActionType:(unint64_t)type;
+- (id)_itemForActionType:(unint64_t)type withBundleID:(id)d;
+- (id)itemForActionType:(unint64_t)type;
+- (id)itemForWorkoutWithBundleID:(id)d;
+- (unint64_t)historyActionType:(unint64_t)type;
+- (void)addHistoryItem:(id)item;
 @end
 
 @implementation CSLPRFStingConfigurationHistory
 
-- (id)_historyItemForActionType:(unint64_t)a3
+- (id)_historyItemForActionType:(unint64_t)type
 {
   v39 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (type)
   {
-    v5 = [(CSLPRFStingConfigurationHistorySetting *)self->_historySetting read];
-    v6 = [v5 actionsDictionary];
-    if (!v6)
+    read = [(CSLPRFStingConfigurationHistorySetting *)self->_historySetting read];
+    actionsDictionary = [read actionsDictionary];
+    if (!actionsDictionary)
     {
       v8 = cslprf_sting_settings_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        if (a3 > 0x2A)
+        if (type > 0x2A)
         {
           v17 = 0;
         }
 
         else
         {
-          v17 = off_278744510[a3 - 1];
+          v17 = off_278744510[type - 1];
         }
 
         v21 = v17;
         *buf = 138412802;
-        v31 = self;
+        selfCopy5 = self;
         v32 = 2080;
         v33 = "[CSLPRFStingConfigurationHistory _historyItemForActionType:]";
         v34 = 2112;
@@ -50,8 +50,8 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    v8 = [v6 objectForKeyedSubscript:v7];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+    v8 = [actionsDictionary objectForKeyedSubscript:v7];
 
     if (v8)
     {
@@ -59,8 +59,8 @@ LABEL_38:
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v9 = [v8 reversedOrderedSet];
-      v10 = [v9 countByEnumeratingWithState:&v26 objects:v38 count:16];
+      reversedOrderedSet = [v8 reversedOrderedSet];
+      v10 = [reversedOrderedSet countByEnumeratingWithState:&v26 objects:v38 count:16];
       if (v10)
       {
         v11 = v10;
@@ -71,7 +71,7 @@ LABEL_38:
           {
             if (*v27 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(reversedOrderedSet);
             }
 
             v14 = *(*(&v26 + 1) + 8 * i);
@@ -80,19 +80,19 @@ LABEL_38:
               v18 = cslprf_sting_settings_log();
               if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
               {
-                if (a3 > 0x2A)
+                if (type > 0x2A)
                 {
                   v19 = 0;
                 }
 
                 else
                 {
-                  v19 = off_278744510[a3 - 1];
+                  v19 = off_278744510[type - 1];
                 }
 
                 v22 = v19;
                 *buf = 138413058;
-                v31 = self;
+                selfCopy5 = self;
                 v32 = 2080;
                 v33 = "[CSLPRFStingConfigurationHistory _historyItemForActionType:]";
                 v34 = 2112;
@@ -107,7 +107,7 @@ LABEL_38:
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v26 objects:v38 count:16];
+          v11 = [reversedOrderedSet countByEnumeratingWithState:&v26 objects:v38 count:16];
           if (v11)
           {
             continue;
@@ -117,60 +117,60 @@ LABEL_38:
         }
       }
 
-      v9 = cslprf_sting_settings_log();
-      if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      reversedOrderedSet = cslprf_sting_settings_log();
+      if (!os_log_type_enabled(reversedOrderedSet, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_36;
       }
 
-      if (a3 > 0x2A)
+      if (type > 0x2A)
       {
         v15 = 0;
       }
 
       else
       {
-        v15 = off_278744510[a3 - 1];
+        v15 = off_278744510[type - 1];
       }
 
       v23 = v15;
       *buf = 138413058;
-      v31 = self;
+      selfCopy5 = self;
       v32 = 2080;
       v33 = "[CSLPRFStingConfigurationHistory _historyItemForActionType:]";
       v34 = 2112;
       v35 = v23;
       v36 = 2112;
       v37 = v8;
-      _os_log_error_impl(&dword_22CE92000, v9, OS_LOG_TYPE_ERROR, "%@: %s no valid history item for action %@ historyItems %@", buf, 0x2Au);
+      _os_log_error_impl(&dword_22CE92000, reversedOrderedSet, OS_LOG_TYPE_ERROR, "%@: %s no valid history item for action %@ historyItems %@", buf, 0x2Au);
     }
 
     else
     {
-      v9 = cslprf_sting_settings_log();
-      if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      reversedOrderedSet = cslprf_sting_settings_log();
+      if (!os_log_type_enabled(reversedOrderedSet, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_36;
       }
 
-      if (a3 > 0x2A)
+      if (type > 0x2A)
       {
         v20 = 0;
       }
 
       else
       {
-        v20 = off_278744510[a3 - 1];
+        v20 = off_278744510[type - 1];
       }
 
       v23 = v20;
       *buf = 138412802;
-      v31 = self;
+      selfCopy5 = self;
       v32 = 2080;
       v33 = "[CSLPRFStingConfigurationHistory _historyItemForActionType:]";
       v34 = 2112;
       v35 = v23;
-      _os_log_impl(&dword_22CE92000, v9, OS_LOG_TYPE_DEFAULT, "%@: %s no history items for action %@", buf, 0x20u);
+      _os_log_impl(&dword_22CE92000, reversedOrderedSet, OS_LOG_TYPE_DEFAULT, "%@: %s no history items for action %@", buf, 0x20u);
     }
 
 LABEL_36:
@@ -180,14 +180,14 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  v5 = cslprf_sting_settings_log();
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  read = cslprf_sting_settings_log();
+  if (os_log_type_enabled(read, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v31 = self;
+    selfCopy5 = self;
     v32 = 2080;
     v33 = "[CSLPRFStingConfigurationHistory _historyItemForActionType:]";
-    _os_log_error_impl(&dword_22CE92000, v5, OS_LOG_TYPE_ERROR, "%@: %s action type isn't valid", buf, 0x16u);
+    _os_log_error_impl(&dword_22CE92000, read, OS_LOG_TYPE_ERROR, "%@: %s action type isn't valid", buf, 0x16u);
   }
 
   v16 = 0;
@@ -198,18 +198,18 @@ LABEL_39:
   return v16;
 }
 
-- (id)_itemForActionType:(unint64_t)a3 withBundleID:(id)a4
+- (id)_itemForActionType:(unint64_t)type withBundleID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3)
+  dCopy = d;
+  if (type)
   {
-    v7 = [(CSLPRFStingConfigurationHistorySetting *)self->_historySetting read];
-    v8 = [v7 actionsDictionary];
-    if (v8)
+    read = [(CSLPRFStingConfigurationHistorySetting *)self->_historySetting read];
+    actionsDictionary = [read actionsDictionary];
+    if (actionsDictionary)
     {
-      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-      v10 = [v8 objectForKeyedSubscript:v9];
+      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+      v10 = [actionsDictionary objectForKeyedSubscript:v9];
 
       v23 = 0u;
       v24 = 0u;
@@ -230,8 +230,8 @@ LABEL_39:
             }
 
             v15 = *(*(&v21 + 1) + 8 * i);
-            v16 = [v15 bundleID];
-            v17 = [v16 isEqualToString:v6];
+            bundleID = [v15 bundleID];
+            v17 = [bundleID isEqualToString:dCopy];
 
             if (v17)
             {
@@ -271,21 +271,21 @@ LABEL_14:
   return v18;
 }
 
-- (id)itemForWorkoutWithBundleID:(id)a3
+- (id)itemForWorkoutWithBundleID:(id)d
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CSLPRFStingSettingsModel *)self->_model startWorkoutsListForBundleID:v4];
-  v6 = [v5 firstObject];
-  v7 = [v6 workoutIdentifier];
+  dCopy = d;
+  v5 = [(CSLPRFStingSettingsModel *)self->_model startWorkoutsListForBundleID:dCopy];
+  firstObject = [v5 firstObject];
+  workoutIdentifier = [firstObject workoutIdentifier];
   v8 = objc_alloc_init(CSLPRFStingConfigurationHistory);
-  v9 = [(CSLPRFStingConfigurationHistory *)v8 _itemForActionType:6 withBundleID:v4];
+  v9 = [(CSLPRFStingConfigurationHistory *)v8 _itemForActionType:6 withBundleID:dCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 identifier];
+    identifier = [v9 identifier];
 
-    if (v11)
+    if (identifier)
     {
       v27 = v8;
       v30 = 0u;
@@ -297,7 +297,7 @@ LABEL_14:
       if (v13)
       {
         v14 = v13;
-        v25 = v6;
+        v25 = firstObject;
         v26 = v5;
         v15 = *v29;
         while (2)
@@ -309,15 +309,15 @@ LABEL_14:
               objc_enumerationMutation(v12);
             }
 
-            v17 = [*(*(&v28 + 1) + 8 * i) workoutIdentifier];
-            v18 = [v10 identifier];
-            v19 = [v17 isEqualToString:v18];
+            workoutIdentifier2 = [*(*(&v28 + 1) + 8 * i) workoutIdentifier];
+            identifier2 = [v10 identifier];
+            v19 = [workoutIdentifier2 isEqualToString:identifier2];
 
             if (v19)
             {
-              v20 = [v10 identifier];
+              identifier3 = [v10 identifier];
 
-              v7 = v20;
+              workoutIdentifier = identifier3;
               goto LABEL_13;
             }
           }
@@ -332,7 +332,7 @@ LABEL_14:
         }
 
 LABEL_13:
-        v6 = v25;
+        firstObject = v25;
         v5 = v26;
       }
 
@@ -342,11 +342,11 @@ LABEL_13:
     else
     {
 
-      v7 = 0;
+      workoutIdentifier = 0;
     }
   }
 
-  if (v7)
+  if (workoutIdentifier)
   {
     v21 = 6;
   }
@@ -356,32 +356,32 @@ LABEL_13:
     v21 = 9;
   }
 
-  v22 = [[CSLPRFStingConfigurationHistoryItem alloc] initWithBundleID:v4 actionType:v21 identifier:v7];
+  v22 = [[CSLPRFStingConfigurationHistoryItem alloc] initWithBundleID:dCopy actionType:v21 identifier:workoutIdentifier];
 
   v23 = *MEMORY[0x277D85DE8];
 
   return v22;
 }
 
-- (id)itemForActionType:(unint64_t)a3
+- (id)itemForActionType:(unint64_t)type
 {
   v152 = *MEMORY[0x277D85DE8];
   v5 = cslprf_sting_settings_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    if (a3 - 1 > 0x29)
+    if (type - 1 > 0x29)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = off_278744510[a3 - 1];
+      v6 = off_278744510[type - 1];
     }
 
     v7 = v6;
     *buf = 138412802;
-    v138 = self;
+    selfCopy8 = self;
     v139 = 2080;
     v140 = "[CSLPRFStingConfigurationHistory itemForActionType:]";
     v141 = 2112;
@@ -389,9 +389,9 @@ LABEL_13:
     _os_log_impl(&dword_22CE92000, v5, OS_LOG_TYPE_INFO, "%@ %s: retrieving history item for %@", buf, 0x20u);
   }
 
-  if (a3 != 18)
+  if (type != 18)
   {
-    v10 = [(CSLPRFStingConfigurationHistory *)self historyActionType:a3];
+    v10 = [(CSLPRFStingConfigurationHistory *)self historyActionType:type];
     v108 = [(CSLPRFStingSettingsModel *)self->_model bundleIDsForActionType:v10];
     if (v10 > 0x2A || ((0x3BFFFFFFFFBuLL >> v10) & 1) != 0)
     {
@@ -414,7 +414,7 @@ LABEL_13:
           v97 = v95;
           v98 = @"Configure";
           *buf = 138413314;
-          v138 = self;
+          selfCopy8 = self;
           v139 = 2080;
           v140 = "[CSLPRFStingConfigurationHistory itemForActionType:]";
           v141 = 2112;
@@ -426,7 +426,7 @@ LABEL_13:
           _os_log_error_impl(&dword_22CE92000, log, OS_LOG_TYPE_ERROR, "%@ %s no valid apps for %@ returning to %@ %@", buf, 0x34u);
         }
 
-        v107 = 0;
+        bundleID2 = 0;
         goto LABEL_123;
       }
 
@@ -445,7 +445,7 @@ LABEL_13:
 
         v15 = v13;
         *buf = 138413058;
-        v138 = self;
+        selfCopy8 = self;
         v139 = 2080;
         v140 = "[CSLPRFStingConfigurationHistory itemForActionType:]";
         v141 = 2112;
@@ -473,7 +473,7 @@ LABEL_13:
 
         v14 = v12;
         *buf = 138412802;
-        v138 = self;
+        selfCopy8 = self;
         v139 = 2080;
         v140 = "[CSLPRFStingConfigurationHistory itemForActionType:]";
         v141 = 2112;
@@ -500,7 +500,7 @@ LABEL_13:
 
         v20 = v18;
         *buf = 138413058;
-        v138 = self;
+        selfCopy8 = self;
         v139 = 2080;
         v140 = "[CSLPRFStingConfigurationHistory itemForActionType:]";
         v141 = 2112;
@@ -510,20 +510,20 @@ LABEL_13:
         _os_log_impl(&dword_22CE92000, v17, OS_LOG_TYPE_INFO, "%@ %s found history item for %@ %@", buf, 0x2Au);
       }
 
-      v21 = [(__CFString *)v16 bundleID];
-      v22 = [(__CFString *)v108 containsObject:v21];
+      bundleID = [(__CFString *)v16 bundleID];
+      v22 = [(__CFString *)v108 containsObject:bundleID];
 
       if (v22)
       {
-        v107 = [(__CFString *)v16 bundleID];
+        bundleID2 = [(__CFString *)v16 bundleID];
         goto LABEL_45;
       }
 
-      v107 = [(__CFString *)v108 objectAtIndexedSubscript:0];
+      bundleID2 = [(__CFString *)v108 objectAtIndexedSubscript:0];
       v23 = cslprf_sting_settings_log();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v93 = [(__CFString *)v16 bundleID];
+        bundleID3 = [(__CFString *)v16 bundleID];
         if ((v10 - 1) > 0x29)
         {
           v94 = 0;
@@ -536,15 +536,15 @@ LABEL_13:
 
         v96 = v94;
         *buf = 138413314;
-        v138 = self;
+        selfCopy8 = self;
         v139 = 2080;
         v140 = "[CSLPRFStingConfigurationHistory itemForActionType:]";
         v141 = 2112;
-        v142 = v93;
+        v142 = bundleID3;
         v143 = 2112;
         v144 = v96;
         v145 = 2112;
-        v146 = v107;
+        v146 = bundleID2;
         _os_log_error_impl(&dword_22CE92000, v23, OS_LOG_TYPE_ERROR, "%@ %s history item bundleID %@ isn't valid  for %@ using %@", buf, 0x34u);
       }
     }
@@ -553,13 +553,13 @@ LABEL_13:
     {
       if (v10 == 6 && [(__CFString *)v108 containsObject:@"com.apple.SessionTrackerApp"])
       {
-        v107 = @"com.apple.SessionTrackerApp";
+        bundleID2 = @"com.apple.SessionTrackerApp";
         v19 = @"com.apple.SessionTrackerApp";
       }
 
       else
       {
-        v107 = [(__CFString *)v108 objectAtIndexedSubscript:0];
+        bundleID2 = [(__CFString *)v108 objectAtIndexedSubscript:0];
       }
 
       v23 = cslprf_sting_settings_log();
@@ -577,13 +577,13 @@ LABEL_13:
 
         v25 = v24;
         *buf = 138413058;
-        v138 = self;
+        selfCopy8 = self;
         v139 = 2080;
         v140 = "[CSLPRFStingConfigurationHistory itemForActionType:]";
         v141 = 2112;
         v142 = v25;
         v143 = 2112;
-        v144 = v107;
+        v144 = bundleID2;
         _os_log_impl(&dword_22CE92000, v23, OS_LOG_TYPE_DEFAULT, "%@ %s: Could not find history for item for actionType:%@ using bundleID %@", buf, 0x2Au);
       }
     }
@@ -594,13 +594,13 @@ LABEL_45:
     {
       if (v10 == 38)
       {
-        v106 = [(CSLPRFStingSettingsModel *)self->_model accessibilityItems];
-        v105 = [v106 firstObject];
-        log = [v105 identifier];
+        accessibilityItems = [(CSLPRFStingSettingsModel *)self->_model accessibilityItems];
+        firstObject = [accessibilityItems firstObject];
+        log = [firstObject identifier];
         if (v16)
         {
-          v57 = [(__CFString *)v16 identifier];
-          v58 = v57 == 0;
+          identifier = [(__CFString *)v16 identifier];
+          v58 = identifier == 0;
 
           if (!v58)
           {
@@ -608,7 +608,7 @@ LABEL_45:
             v118 = 0u;
             v115 = 0u;
             v116 = 0u;
-            v59 = v106;
+            v59 = accessibilityItems;
             v60 = [v59 countByEnumeratingWithState:&v115 objects:v135 count:16];
             if (v60)
             {
@@ -623,17 +623,17 @@ LABEL_45:
                   }
 
                   v63 = *(*(&v115 + 1) + 8 * i);
-                  v64 = [v63 identifier];
-                  v65 = [(__CFString *)v16 identifier];
-                  v66 = [v64 isEqualToString:v65];
+                  identifier2 = [v63 identifier];
+                  identifier3 = [(__CFString *)v16 identifier];
+                  v66 = [identifier2 isEqualToString:identifier3];
 
                   if (v66)
                   {
-                    v68 = [v63 identifier];
+                    identifier4 = [v63 identifier];
 
                     v69 = v63;
-                    v105 = v69;
-                    log = v68;
+                    firstObject = v69;
+                    log = identifier4;
                     goto LABEL_97;
                   }
                 }
@@ -659,17 +659,17 @@ LABEL_97:
           v72 = @"RunAccessibilityShortcut";
           model = self->_model;
           *buf = 138413570;
-          v138 = @"RunAccessibilityShortcut";
+          selfCopy8 = @"RunAccessibilityShortcut";
           v139 = 2112;
-          v140 = v107;
+          v140 = bundleID2;
           v141 = 2112;
           v142 = log;
           v143 = 2112;
           v144 = model;
           v145 = 2112;
-          v146 = v105;
+          v146 = firstObject;
           v147 = 2112;
-          v148 = v106;
+          v148 = accessibilityItems;
           _os_log_impl(&dword_22CE92000, v70, v71, "Returning AX shortcut item for actionType=%@, bundleID=%@ workoutIdentifier=%@ model=%@ AX shortcut=%@ AX shortcuts=%@", buf, 0x3Eu);
         }
 
@@ -679,7 +679,7 @@ LABEL_97:
 
       if (v10 == 42)
       {
-        v106 = [(CSLPRFStingSettingsModel *)self->_model controlItems];
+        accessibilityItems = [(CSLPRFStingSettingsModel *)self->_model controlItems];
         v124 = 0;
         v125 = &v124;
         v126 = 0x3032000000;
@@ -691,14 +691,14 @@ LABEL_97:
         v114[2] = __53__CSLPRFStingConfigurationHistory_itemForActionType___block_invoke_8;
         v114[3] = &unk_278744D70;
         v114[4] = &v124;
-        [v106 enumerateKeysAndObjectsUsingBlock:v114];
-        v35 = [v125[5] firstObject];
-        log = [v35 identifier];
-        v103 = v35;
+        [accessibilityItems enumerateKeysAndObjectsUsingBlock:v114];
+        firstObject2 = [v125[5] firstObject];
+        log = [firstObject2 identifier];
+        v103 = firstObject2;
         if (v16)
         {
-          v36 = [(__CFString *)v16 identifier];
-          v37 = v36 == 0;
+          identifier5 = [(__CFString *)v16 identifier];
+          v37 = identifier5 == 0;
 
           if (!v37)
           {
@@ -721,15 +721,15 @@ LABEL_97:
                   }
 
                   v42 = *(*(&v110 + 1) + 8 * j);
-                  v43 = [v42 identifier];
-                  v44 = [(__CFString *)v16 identifier];
-                  v45 = [v43 isEqualToString:v44];
+                  identifier6 = [v42 identifier];
+                  identifier7 = [(__CFString *)v16 identifier];
+                  v45 = [identifier6 isEqualToString:identifier7];
 
                   if (v45)
                   {
-                    v74 = [v42 identifier];
+                    identifier8 = [v42 identifier];
 
-                    log = v74;
+                    log = identifier8;
                     goto LABEL_102;
                   }
                 }
@@ -756,9 +756,9 @@ LABEL_102:
           v78 = self->_model;
           v79 = v125[5];
           *buf = 138413826;
-          v138 = @"RunControl";
+          selfCopy8 = @"RunControl";
           v139 = 2112;
-          v140 = v107;
+          v140 = bundleID2;
           v141 = 2112;
           v142 = log;
           v143 = 2112;
@@ -768,7 +768,7 @@ LABEL_102:
           v147 = 2112;
           v148 = v79;
           v149 = 2112;
-          v150 = v106;
+          v150 = accessibilityItems;
           _os_log_impl(&dword_22CE92000, v75, v76, "Returning control item for actionType=%@, bundleID=%@ workoutIdentifier=%@ model=%@ control=%@ controls=%@ controlsByBundleID=%@", buf, 0x48u);
         }
 
@@ -782,7 +782,7 @@ LABEL_102:
     {
       if (v10 == 2)
       {
-        v106 = [(CSLPRFStingSettingsModel *)self->_model shortcutItems];
+        accessibilityItems = [(CSLPRFStingSettingsModel *)self->_model shortcutItems];
         v124 = 0;
         v125 = &v124;
         v126 = 0x3032000000;
@@ -794,14 +794,14 @@ LABEL_102:
         v123[2] = __53__CSLPRFStingConfigurationHistory_itemForActionType___block_invoke;
         v123[3] = &unk_278744D70;
         v123[4] = &v124;
-        [v106 enumerateKeysAndObjectsUsingBlock:v123];
-        v46 = [v125[5] firstObject];
-        log = [v46 identifier];
-        v104 = v46;
+        [accessibilityItems enumerateKeysAndObjectsUsingBlock:v123];
+        firstObject3 = [v125[5] firstObject];
+        log = [firstObject3 identifier];
+        v104 = firstObject3;
         if (v16)
         {
-          v47 = [(__CFString *)v16 identifier];
-          v48 = v47 == 0;
+          identifier9 = [(__CFString *)v16 identifier];
+          v48 = identifier9 == 0;
 
           if (!v48)
           {
@@ -824,15 +824,15 @@ LABEL_102:
                   }
 
                   v53 = *(*(&v119 + 1) + 8 * k);
-                  v54 = [v53 identifier];
-                  v55 = [(__CFString *)v16 identifier];
-                  v56 = [v54 isEqualToString:v55];
+                  identifier10 = [v53 identifier];
+                  identifier11 = [(__CFString *)v16 identifier];
+                  v56 = [identifier10 isEqualToString:identifier11];
 
                   if (v56)
                   {
-                    v80 = [v53 identifier];
+                    identifier12 = [v53 identifier];
 
-                    log = v80;
+                    log = identifier12;
                     goto LABEL_107;
                   }
                 }
@@ -859,9 +859,9 @@ LABEL_107:
           v84 = self->_model;
           v85 = v125[5];
           *buf = 138413826;
-          v138 = @"RunShortcut";
+          selfCopy8 = @"RunShortcut";
           v139 = 2112;
-          v140 = v107;
+          v140 = bundleID2;
           v141 = 2112;
           v142 = log;
           v143 = 2112;
@@ -871,7 +871,7 @@ LABEL_107:
           v147 = 2112;
           v148 = v85;
           v149 = 2112;
-          v150 = v106;
+          v150 = accessibilityItems;
           _os_log_impl(&dword_22CE92000, v81, v82, "Returning shortcut item for actionType=%@, bundleID=%@ workoutIdentifier=%@ model=%@ shortcut=%@ shortcuts=%@ shortcutsByBundleID=%@", buf, 0x48u);
         }
 
@@ -882,18 +882,18 @@ LABEL_107:
 
       if (v10 == 6)
       {
-        v106 = [(CSLPRFStingSettingsModel *)self->_model startWorkoutsListForBundleID:v107];
-        v102 = [v106 firstObject];
-        log = [v102 workoutIdentifier];
+        accessibilityItems = [(CSLPRFStingSettingsModel *)self->_model startWorkoutsListForBundleID:bundleID2];
+        firstObject4 = [accessibilityItems firstObject];
+        log = [firstObject4 workoutIdentifier];
         if (v16)
         {
-          v26 = [(__CFString *)v16 identifier];
-          v27 = v26 == 0;
+          identifier13 = [(__CFString *)v16 identifier];
+          v27 = identifier13 == 0;
 
           if (v27)
           {
-            v86 = [(__CFString *)v16 actionType];
-            v87 = [v86 integerValue] == 9;
+            actionType = [(__CFString *)v16 actionType];
+            v87 = [actionType integerValue] == 9;
 
             if (v87)
             {
@@ -910,7 +910,7 @@ LABEL_107:
             v133 = 0u;
             v130 = 0u;
             v131 = 0u;
-            v28 = v106;
+            v28 = accessibilityItems;
             v29 = [v28 countByEnumeratingWithState:&v130 objects:v151 count:16];
             if (v29)
             {
@@ -924,15 +924,15 @@ LABEL_107:
                     objc_enumerationMutation(v28);
                   }
 
-                  v32 = [*(*(&v130 + 1) + 8 * m) workoutIdentifier];
-                  v33 = [(__CFString *)v16 identifier];
-                  v34 = [v32 isEqualToString:v33];
+                  workoutIdentifier = [*(*(&v130 + 1) + 8 * m) workoutIdentifier];
+                  identifier14 = [(__CFString *)v16 identifier];
+                  v34 = [workoutIdentifier isEqualToString:identifier14];
 
                   if (v34)
                   {
-                    v67 = [(__CFString *)v16 identifier];
+                    identifier15 = [(__CFString *)v16 identifier];
 
-                    log = v67;
+                    log = identifier15;
                     goto LABEL_95;
                   }
                 }
@@ -960,19 +960,19 @@ LABEL_95:
             v100 = @"OpenWorkout";
             v101 = self->_model;
             *buf = 138413826;
-            v138 = @"StartWorkout";
+            selfCopy8 = @"StartWorkout";
             v139 = 2112;
             v140 = @"OpenWorkout";
             v141 = 2112;
-            v142 = v107;
+            v142 = bundleID2;
             v143 = 2112;
             v144 = 0;
             v145 = 2112;
             v146 = v101;
             v147 = 2112;
-            v148 = v102;
+            v148 = firstObject4;
             v149 = 2112;
-            v150 = v106;
+            v150 = accessibilityItems;
             _os_log_error_impl(&dword_22CE92000, v88, OS_LOG_TYPE_ERROR, "Missing identifier for workout item actionType=%@, switching to actionType to %@, bundleID=%@ workoutIdentifier=%@ model=%@ workout=%@ workouts=%@", buf, 0x48u);
           }
 
@@ -989,15 +989,15 @@ LABEL_115:
           v89 = off_278744510[v10 - 1];
           v90 = self->_model;
           *buf = 138413314;
-          v138 = v89;
+          selfCopy8 = v89;
           v139 = 2112;
-          v140 = v107;
+          v140 = bundleID2;
           v141 = 2112;
           v142 = log;
           v143 = 2112;
           v144 = v90;
           v145 = 2112;
-          v146 = v102;
+          v146 = firstObject4;
           _os_log_impl(&dword_22CE92000, v88, OS_LOG_TYPE_INFO, "Returning workout item actionType=%@, bundleID=%@ workoutIdentifier=%@ model=%@ workout=%@", buf, 0x34u);
         }
 
@@ -1007,10 +1007,10 @@ LABEL_121:
       }
     }
 
-    v8 = [[CSLPRFStingConfigurationHistoryItem alloc] initWithBundleID:v107 actionType:v10 identifier:log];
+    v8 = [[CSLPRFStingConfigurationHistoryItem alloc] initWithBundleID:bundleID2 actionType:v10 identifier:log];
 
 LABEL_123:
-    v9 = v107;
+    v9 = bundleID2;
     goto LABEL_124;
   }
 
@@ -1019,7 +1019,7 @@ LABEL_123:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v138 = self;
+    selfCopy8 = self;
     v139 = 2080;
     v140 = "[CSLPRFStingConfigurationHistory itemForActionType:]";
     v141 = 2112;
@@ -1034,14 +1034,14 @@ LABEL_124:
   return v8;
 }
 
-- (void)addHistoryItem:(id)a3
+- (void)addHistoryItem:(id)item
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(CSLPRFStingConfigurationHistory *)self isValidHistoryItem:v4])
+  itemCopy = item;
+  if ([(CSLPRFStingConfigurationHistory *)self isValidHistoryItem:itemCopy])
   {
-    v5 = [(CSLPRFStingConfigurationHistory *)v4 actionType];
-    v6 = -[CSLPRFStingConfigurationHistory historyActionType:](self, "historyActionType:", [v5 integerValue]);
+    actionType = [(CSLPRFStingConfigurationHistory *)itemCopy actionType];
+    v6 = -[CSLPRFStingConfigurationHistory historyActionType:](self, "historyActionType:", [actionType integerValue]);
 
     log = [MEMORY[0x277CCABB0] numberWithInteger:v6];
     obj = self;
@@ -1049,28 +1049,28 @@ LABEL_124:
     v7 = cslprf_sting_settings_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [log integerValue];
-      if ((v8 - 1) > 0x29)
+      integerValue = [log integerValue];
+      if ((integerValue - 1) > 0x29)
       {
         v9 = 0;
       }
 
       else
       {
-        v9 = off_278744510[v8 - 1];
+        v9 = off_278744510[integerValue - 1];
       }
 
       v10 = v9;
       *buf = 138412546;
-      v42 = v4;
+      selfCopy = itemCopy;
       v43 = 2112;
       v44 = v10;
       _os_log_impl(&dword_22CE92000, v7, OS_LOG_TYPE_INFO, "Storing %@ with %@", buf, 0x16u);
     }
 
-    v34 = [(CSLPRFStingConfigurationHistorySetting *)obj->_historySetting read];
-    v11 = [(CSLPRFStingConfigurationHistoryData *)v34 actionsDictionary];
-    v12 = [v11 mutableCopy];
+    read = [(CSLPRFStingConfigurationHistorySetting *)obj->_historySetting read];
+    actionsDictionary = [(CSLPRFStingConfigurationHistoryData *)read actionsDictionary];
+    v12 = [actionsDictionary mutableCopy];
 
     v13 = v12;
     if (!v12)
@@ -1086,11 +1086,11 @@ LABEL_124:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v42 = obj;
+      selfCopy = obj;
       v43 = 2080;
       v44 = "[CSLPRFStingConfigurationHistory addHistoryItem:]";
       v45 = 2112;
-      v46 = v4;
+      v46 = itemCopy;
       v47 = 2112;
       v48 = v31;
       _os_log_impl(&dword_22CE92000, v15, OS_LOG_TYPE_INFO, "%@ %s Before adding %@, currentItems = %@", buf, 0x2Au);
@@ -1099,9 +1099,9 @@ LABEL_124:
     if (v31)
     {
       v16 = objc_alloc_init(MEMORY[0x277CBEB40]);
-      v17 = [(CSLPRFStingConfigurationHistory *)v4 bundleID];
+      bundleID = [(CSLPRFStingConfigurationHistory *)itemCopy bundleID];
 
-      if (v17)
+      if (bundleID)
       {
         v38 = 0u;
         v39 = 0u;
@@ -1122,9 +1122,9 @@ LABEL_124:
               }
 
               v22 = *(*(&v36 + 1) + 8 * i);
-              v23 = [v22 bundleID];
-              v24 = [(CSLPRFStingConfigurationHistory *)v4 bundleID];
-              v25 = [v23 isEqualToString:v24];
+              bundleID2 = [v22 bundleID];
+              bundleID3 = [(CSLPRFStingConfigurationHistory *)itemCopy bundleID];
+              v25 = [bundleID2 isEqualToString:bundleID3];
 
               if ((v25 & 1) == 0)
               {
@@ -1144,15 +1144,15 @@ LABEL_124:
         }
       }
 
-      [v16 removeObject:v4];
-      [v16 addObject:v4];
+      [v16 removeObject:itemCopy];
+      [v16 addObject:itemCopy];
       v26 = [v16 copy];
       [v32 setObject:v26 forKeyedSubscript:log];
     }
 
     else
     {
-      v16 = [objc_alloc(MEMORY[0x277CBEB70]) initWithObject:v4];
+      v16 = [objc_alloc(MEMORY[0x277CBEB70]) initWithObject:itemCopy];
       [v32 setObject:v16 forKeyedSubscript:log];
     }
 
@@ -1161,25 +1161,25 @@ LABEL_124:
     {
       v28 = [v32 objectForKeyedSubscript:log];
       *buf = 138413058;
-      v42 = obj;
+      selfCopy = obj;
       v43 = 2080;
       v44 = "[CSLPRFStingConfigurationHistory addHistoryItem:]";
       v45 = 2112;
-      v46 = v4;
+      v46 = itemCopy;
       v47 = 2112;
       v48 = v28;
       _os_log_impl(&dword_22CE92000, v27, OS_LOG_TYPE_INFO, "%@ %s: After adding %@, currentItems = %@", buf, 0x2Au);
     }
 
-    if (!v34)
+    if (!read)
     {
-      v34 = objc_alloc_init(CSLPRFStingConfigurationHistoryData);
+      read = objc_alloc_init(CSLPRFStingConfigurationHistoryData);
     }
 
     v29 = [v32 copy];
-    [(CSLPRFStingConfigurationHistoryData *)v34 setActionsDictionary:v29];
+    [(CSLPRFStingConfigurationHistoryData *)read setActionsDictionary:v29];
 
-    [(CSLPRFStingConfigurationHistorySetting *)obj->_historySetting write:v34];
+    [(CSLPRFStingConfigurationHistorySetting *)obj->_historySetting write:read];
     objc_sync_exit(obj);
   }
 
@@ -1189,11 +1189,11 @@ LABEL_124:
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v42 = self;
+      selfCopy = self;
       v43 = 2080;
       v44 = "[CSLPRFStingConfigurationHistory addHistoryItem:]";
       v45 = 2112;
-      v46 = v4;
+      v46 = itemCopy;
       _os_log_error_impl(&dword_22CE92000, log, OS_LOG_TYPE_ERROR, "%@: %s item %@ is not valid, not adding", buf, 0x20u);
     }
   }
@@ -1201,26 +1201,26 @@ LABEL_124:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)historyActionType:(unint64_t)a3
+- (unint64_t)historyActionType:(unint64_t)type
 {
-  if (a3 == 9)
+  if (type == 9)
   {
     return 6;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-- (BOOL)isValidHistoryItem:(id)a3
+- (BOOL)isValidHistoryItem:(id)item
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 actionType];
-  v6 = v5;
-  if (!v5)
+  itemCopy = item;
+  actionType = [itemCopy actionType];
+  v6 = actionType;
+  if (!actionType)
   {
     v8 = cslprf_sting_settings_log();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1231,20 +1231,20 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v12 = [0 integerValue];
+    integerValue = [0 integerValue];
     v13 = 0;
-    if ((v12 - 1) <= 0x29)
+    if ((integerValue - 1) <= 0x29)
     {
-      v13 = off_278744510[v12 - 1];
+      v13 = off_278744510[integerValue - 1];
     }
 
     v14 = v13;
     v19 = 138413058;
-    v20 = self;
+    selfCopy2 = self;
     v21 = 2080;
     v22 = "[CSLPRFStingConfigurationHistory isValidHistoryItem:]";
     v23 = 2112;
-    v24 = v4;
+    v24 = itemCopy;
     v25 = 2112;
     v26 = v14;
     v15 = "%@: %s item %@ does not include a valid action of type %@";
@@ -1252,15 +1252,15 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  v7 = -[CSLPRFStingConfigurationHistory historyActionType:](self, "historyActionType:", [v5 integerValue]);
+  v7 = -[CSLPRFStingConfigurationHistory historyActionType:](self, "historyActionType:", [actionType integerValue]);
   if (v7 <= 0x2A && ((0x3BFFFFFFFFBuLL >> v7) & 1) == 0)
   {
     goto LABEL_6;
   }
 
   v8 = [(CSLPRFStingSettingsModel *)self->_model bundleIDsForActionType:v7];
-  v9 = [v4 bundleID];
-  v10 = [v8 containsObject:v9];
+  bundleID = [itemCopy bundleID];
+  v10 = [v8 containsObject:bundleID];
 
   if ((v10 & 1) == 0)
   {
@@ -1273,11 +1273,11 @@ LABEL_12:
     }
 
     v19 = 138413058;
-    v20 = self;
+    selfCopy2 = self;
     v21 = 2080;
     v22 = "[CSLPRFStingConfigurationHistory isValidHistoryItem:]";
     v23 = 2112;
-    v24 = v4;
+    v24 = itemCopy;
     v25 = 2112;
     v26 = v8;
     v15 = "%@: %s item %@ does not have a valid bundleID %@";
@@ -1295,18 +1295,18 @@ LABEL_14:
   return v11;
 }
 
-- (CSLPRFStingConfigurationHistory)initWithSetting:(id)a3 model:(id)a4
+- (CSLPRFStingConfigurationHistory)initWithSetting:(id)setting model:(id)model
 {
-  v7 = a3;
-  v8 = a4;
+  settingCopy = setting;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = CSLPRFStingConfigurationHistory;
   v9 = [(CSLPRFStingConfigurationHistory *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_historySetting, a3);
-    objc_storeStrong(&v10->_model, a4);
+    objc_storeStrong(&v9->_historySetting, setting);
+    objc_storeStrong(&v10->_model, model);
   }
 
   return v10;

@@ -1,35 +1,35 @@
 @interface _IMDOpenGraphSpotlightMappingInfo
-+ (id)infoForLinkMetadata:(id)a3;
-+ (id)infoForOGType:(id)a3;
-- (_IMDOpenGraphSpotlightMappingInfo)initWithOGType:(id)a3 indexer:(id)a4;
-- (_IMDOpenGraphSpotlightMappingInfo)initWithOGType:(id)a3 prefix:(id)a4 linkType:(id)a5 linkSubType:(id)a6;
++ (id)infoForLinkMetadata:(id)metadata;
++ (id)infoForOGType:(id)type;
+- (_IMDOpenGraphSpotlightMappingInfo)initWithOGType:(id)type indexer:(id)indexer;
+- (_IMDOpenGraphSpotlightMappingInfo)initWithOGType:(id)type prefix:(id)prefix linkType:(id)linkType linkSubType:(id)subType;
 @end
 
 @implementation _IMDOpenGraphSpotlightMappingInfo
 
-+ (id)infoForOGType:(id)a3
++ (id)infoForOGType:(id)type
 {
   v3 = qword_1EBA54258;
-  v5 = a3;
+  typeCopy = type;
   if (v3 != -1)
   {
     sub_1B7CFA8B8();
   }
 
-  v6 = objc_msgSend_objectForKeyedSubscript_(qword_1EBA54250, v4, v5);
+  v6 = objc_msgSend_objectForKeyedSubscript_(qword_1EBA54250, v4, typeCopy);
 
   return v6;
 }
 
-+ (id)infoForLinkMetadata:(id)a3
++ (id)infoForLinkMetadata:(id)metadata
 {
-  v4 = a3;
-  v7 = objc_msgSend_itemType(v4, v5, v6);
+  metadataCopy = metadata;
+  v7 = objc_msgSend_itemType(metadataCopy, v5, v6);
 
   if (v7)
   {
-    v10 = objc_msgSend_itemType(v4, v8, v9);
-    v12 = objc_msgSend_infoForOGType_(a1, v11, v10);
+    v10 = objc_msgSend_itemType(metadataCopy, v8, v9);
+    v12 = objc_msgSend_infoForOGType_(self, v11, v10);
   }
 
   else
@@ -40,34 +40,34 @@
   return v12;
 }
 
-- (_IMDOpenGraphSpotlightMappingInfo)initWithOGType:(id)a3 indexer:(id)a4
+- (_IMDOpenGraphSpotlightMappingInfo)initWithOGType:(id)type indexer:(id)indexer
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = objc_msgSend_prefix(v6, v8, v9);
-  v13 = objc_msgSend_linkType(v6, v11, v12);
-  v16 = objc_msgSend_linkSubtype(v6, v14, v15);
+  indexerCopy = indexer;
+  typeCopy = type;
+  v10 = objc_msgSend_prefix(indexerCopy, v8, v9);
+  v13 = objc_msgSend_linkType(indexerCopy, v11, v12);
+  v16 = objc_msgSend_linkSubtype(indexerCopy, v14, v15);
 
-  v18 = objc_msgSend_initWithOGType_prefix_linkType_linkSubType_(self, v17, v7, v10, v13, v16);
+  v18 = objc_msgSend_initWithOGType_prefix_linkType_linkSubType_(self, v17, typeCopy, v10, v13, v16);
   return v18;
 }
 
-- (_IMDOpenGraphSpotlightMappingInfo)initWithOGType:(id)a3 prefix:(id)a4 linkType:(id)a5 linkSubType:(id)a6
+- (_IMDOpenGraphSpotlightMappingInfo)initWithOGType:(id)type prefix:(id)prefix linkType:(id)linkType linkSubType:(id)subType
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  typeCopy = type;
+  prefixCopy = prefix;
+  linkTypeCopy = linkType;
+  subTypeCopy = subType;
   v18.receiver = self;
   v18.super_class = _IMDOpenGraphSpotlightMappingInfo;
   v15 = [(_IMDOpenGraphSpotlightMappingInfo *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_ogType, a3);
-    objc_storeStrong(&v16->_prefix, a4);
-    objc_storeStrong(&v16->_linkType, a5);
-    objc_storeStrong(&v16->_linkSubType, a6);
+    objc_storeStrong(&v15->_ogType, type);
+    objc_storeStrong(&v16->_prefix, prefix);
+    objc_storeStrong(&v16->_linkType, linkType);
+    objc_storeStrong(&v16->_linkSubType, subType);
   }
 
   return v16;

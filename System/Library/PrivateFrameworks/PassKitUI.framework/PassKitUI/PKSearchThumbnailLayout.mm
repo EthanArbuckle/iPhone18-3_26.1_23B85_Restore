@@ -1,28 +1,28 @@
 @interface PKSearchThumbnailLayout
-- (id)_modifiedLayoutAttributes:(id)a3;
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (id)_modifiedLayoutAttributes:(id)attributes;
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 @end
 
 @implementation PKSearchThumbnailLayout
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = PKSearchThumbnailLayout;
-  v4 = [(PKSearchThumbnailLayout *)&v7 layoutAttributesForItemAtIndexPath:a3];
+  v4 = [(PKSearchThumbnailLayout *)&v7 layoutAttributesForItemAtIndexPath:path];
   v5 = [(PKSearchThumbnailLayout *)self _modifiedLayoutAttributes:v4];
 
   return v5;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v10.receiver = self;
   v10.super_class = PKSearchThumbnailLayout;
-  v4 = [(PKSearchThumbnailLayout *)&v10 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(PKSearchThumbnailLayout *)&v10 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = [v4 mutableCopy];
 
   if ([v5 count])
@@ -43,29 +43,29 @@
   return v5;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = PKSearchThumbnailLayout;
-  v5 = [(PKSearchThumbnailLayout *)&v8 layoutAttributesForSupplementaryViewOfKind:a3 atIndexPath:a4];
+  v5 = [(PKSearchThumbnailLayout *)&v8 layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:path];
   v6 = [(PKSearchThumbnailLayout *)self _modifiedLayoutAttributes:v5];
 
   return v6;
 }
 
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = PKSearchThumbnailLayout;
-  v5 = [(PKSearchThumbnailLayout *)&v8 layoutAttributesForDecorationViewOfKind:a3 atIndexPath:a4];
+  v5 = [(PKSearchThumbnailLayout *)&v8 layoutAttributesForDecorationViewOfKind:kind atIndexPath:path];
   v6 = [(PKSearchThumbnailLayout *)self _modifiedLayoutAttributes:v5];
 
   return v6;
 }
 
-- (id)_modifiedLayoutAttributes:(id)a3
+- (id)_modifiedLayoutAttributes:(id)attributes
 {
-  v4 = [a3 copy];
+  v4 = [attributes copy];
   v5 = v4;
   v6 = 1.0;
   if (self->_hidden)

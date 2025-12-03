@@ -7,8 +7,8 @@
 
 - (CGPoint)coordinateSystemOrigin
 {
-  v2 = [(PUTilingViewCoordinateSystem *)self tilingView];
-  [v2 contentOffset];
+  tilingView = [(PUTilingViewCoordinateSystem *)self tilingView];
+  [tilingView contentOffset];
   v4 = v3;
   v6 = v5;
 
@@ -21,10 +21,10 @@
 
 - (id)parentCoordinateSystem
 {
-  v2 = [(PUTilingViewCoordinateSystem *)self tilingView];
-  v3 = [v2 contentCoordinateSystem];
+  tilingView = [(PUTilingViewCoordinateSystem *)self tilingView];
+  contentCoordinateSystem = [tilingView contentCoordinateSystem];
 
-  return v3;
+  return contentCoordinateSystem;
 }
 
 @end

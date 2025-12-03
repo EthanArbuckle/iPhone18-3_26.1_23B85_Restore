@@ -1,58 +1,58 @@
 @interface IDSCloudKitKeyValueStore
-- (IDSCloudKitKeyValueStore)initWithContainer:(id)a3 queue:(id)a4;
-- (void)fetchDataForKey:(id)a3 completion:(id)a4;
-- (void)fetchObjectForKey:(id)a3 completion:(id)a4;
-- (void)setData:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setObject:(id)a3 forKey:(id)a4 completion:(id)a5;
+- (IDSCloudKitKeyValueStore)initWithContainer:(id)container queue:(id)queue;
+- (void)fetchDataForKey:(id)key completion:(id)completion;
+- (void)fetchObjectForKey:(id)key completion:(id)completion;
+- (void)setData:(id)data forKey:(id)key completion:(id)completion;
+- (void)setObject:(id)object forKey:(id)key completion:(id)completion;
 @end
 
 @implementation IDSCloudKitKeyValueStore
 
-- (IDSCloudKitKeyValueStore)initWithContainer:(id)a3 queue:(id)a4
+- (IDSCloudKitKeyValueStore)initWithContainer:(id)container queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  containerCopy = container;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = IDSCloudKitKeyValueStore;
   v9 = [(IDSCloudKitKeyValueStore *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a4);
-    objc_storeStrong(&v10->_container, a3);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_container, container);
   }
 
   return v10;
 }
 
-- (void)fetchDataForKey:(id)a3 completion:(id)a4
+- (void)fetchDataForKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[IDSCKRecordID alloc] initWithRecordName:v7];
+  completionCopy = completion;
+  keyCopy = key;
+  v8 = [[IDSCKRecordID alloc] initWithRecordName:keyCopy];
 
-  v9 = [(IDSCloudKitKeyValueStore *)self container];
-  v10 = [v9 privateCloudDatabase];
+  container = [(IDSCloudKitKeyValueStore *)self container];
+  privateCloudDatabase = [container privateCloudDatabase];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_1A7B5B74C;
   v12[3] = &unk_1E77E09A8;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [v10 fetchRecordWithID:v8 completionHandler:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [privateCloudDatabase fetchRecordWithID:v8 completionHandler:v12];
 }
 
-- (void)setData:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setData:(id)data forKey:(id)key completion:(id)completion
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[IDSCKRecordID alloc] initWithRecordName:v9];
+  completionCopy = completion;
+  keyCopy = key;
+  dataCopy = data;
+  v11 = [[IDSCKRecordID alloc] initWithRecordName:keyCopy];
 
   v12 = [[IDSCKRecord alloc] initWithRecordType:@"IDSKeyValueStore" recordID:v11];
-  [(IDSCKRecord *)v12 setObject:v10 forKey:@"kPayloadKey"];
+  [(IDSCKRecord *)v12 setObject:dataCopy forKey:@"kPayloadKey"];
 
   v13 = [IDSCKModifyRecordsOperation alloc];
   v25[0] = v12;
@@ -64,43 +64,43 @@
   v20 = 3221225472;
   v21 = sub_1A7B5BAC0;
   v22 = &unk_1E77E09D0;
-  v23 = self;
-  v24 = v8;
-  v16 = v8;
+  selfCopy = self;
+  v24 = completionCopy;
+  v16 = completionCopy;
   [(IDSCKModifyRecordsOperation *)v15 setModifyRecordsCompletionBlock:&v19];
   v17 = [(IDSCloudKitKeyValueStore *)self container:v19];
-  v18 = [v17 privateCloudDatabase];
-  [v18 addOperation:v15];
+  privateCloudDatabase = [v17 privateCloudDatabase];
+  [privateCloudDatabase addOperation:v15];
 }
 
-- (void)fetchObjectForKey:(id)a3 completion:(id)a4
+- (void)fetchObjectForKey:(id)key completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1A7B5BC3C;
   v8[3] = &unk_1E77E0A20;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(IDSCloudKitKeyValueStore *)self fetchDataForKey:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(IDSCloudKitKeyValueStore *)self fetchDataForKey:key completion:v8];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setObject:(id)object forKey:(id)key completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = MEMORY[0x1E696ACC8];
-  v10 = a4;
-  v11 = [v9 archivedDataWithRootObject:a3 requiringSecureCoding:0 error:0];
+  keyCopy = key;
+  v11 = [v9 archivedDataWithRootObject:object requiringSecureCoding:0 error:0];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_1A7B5BE30;
   v14[3] = &unk_1E77E0A48;
   v14[4] = self;
-  v15 = v8;
-  v12 = v8;
-  v13 = self;
-  [(IDSCloudKitKeyValueStore *)v13 setData:v11 forKey:v10 completion:v14];
+  v15 = completionCopy;
+  v12 = completionCopy;
+  selfCopy = self;
+  [(IDSCloudKitKeyValueStore *)selfCopy setData:v11 forKey:keyCopy completion:v14];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface PUPhotoEditSnapshotFinishingNode
-- (PUPhotoEditSnapshotFinishingNode)initWithAdjustmentNode:(id)a3 baseMediaNode:(id)a4 currentImageNode:(id)a5 currentVideoNode:(id)a6 completionHandler:(id)a7;
+- (PUPhotoEditSnapshotFinishingNode)initWithAdjustmentNode:(id)node baseMediaNode:(id)mediaNode currentImageNode:(id)imageNode currentVideoNode:(id)videoNode completionHandler:(id)handler;
 - (void)run;
 @end
 
@@ -8,22 +8,22 @@
 - (void)run
 {
   v4 = objc_alloc_init(PUPhotoEditSnapshot);
-  v5 = [(PUPhotoEditSnapshotFinishingNode *)self baseMediaNode];
-  v6 = [v5 imageData];
+  baseMediaNode = [(PUPhotoEditSnapshotFinishingNode *)self baseMediaNode];
+  imageData = [baseMediaNode imageData];
 
-  v7 = [(PUPhotoEditSnapshotFinishingNode *)self currentImageNode];
-  v8 = [v7 imageData];
+  currentImageNode = [(PUPhotoEditSnapshotFinishingNode *)self currentImageNode];
+  imageData2 = [currentImageNode imageData];
 
-  v9 = [(PUPhotoEditSnapshotFinishingNode *)self currentImageNode];
-  v10 = [v9 imageDataUTI];
+  currentImageNode2 = [(PUPhotoEditSnapshotFinishingNode *)self currentImageNode];
+  imageDataUTI = [currentImageNode2 imageDataUTI];
 
-  v11 = [(PUPhotoEditSnapshotFinishingNode *)self adjustmentNode];
-  v12 = [v11 adjustmentData];
+  adjustmentNode = [(PUPhotoEditSnapshotFinishingNode *)self adjustmentNode];
+  adjustmentData = [adjustmentNode adjustmentData];
 
-  v13 = [v12 baseVersion];
-  v14 = [(PUPhotoEditSnapshotFinishingNode *)self currentVideoNode];
+  baseVersion = [adjustmentData baseVersion];
+  currentVideoNode = [(PUPhotoEditSnapshotFinishingNode *)self currentVideoNode];
 
-  if (v14)
+  if (currentVideoNode)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -32,29 +32,29 @@
     aBlock[4] = self;
     aBlock[5] = a2;
     v15 = _Block_copy(aBlock);
-    v16 = [(PUPhotoEditSnapshotFinishingNode *)self currentVideoNode];
-    [v16 videoAsset];
-    v17 = v10;
-    v19 = v18 = v6;
-    v27 = v8;
+    currentVideoNode2 = [(PUPhotoEditSnapshotFinishingNode *)self currentVideoNode];
+    [currentVideoNode2 videoAsset];
+    v17 = imageDataUTI;
+    v19 = v18 = imageData;
+    v27 = imageData2;
     v15[2](v15, v19);
-    v20 = v26 = v13;
+    v20 = v26 = baseVersion;
 
-    v21 = [(PUPhotoEditSnapshotFinishingNode *)self baseMediaNode];
-    v22 = [v21 videoAsset];
-    v23 = v15[2](v15, v22);
+    baseMediaNode2 = [(PUPhotoEditSnapshotFinishingNode *)self baseMediaNode];
+    videoAsset = [baseMediaNode2 videoAsset];
+    v23 = v15[2](v15, videoAsset);
 
-    v6 = v18;
-    v10 = v17;
+    imageData = v18;
+    imageDataUTI = v17;
 
     [(PUPhotoEditSnapshot *)v4 _setVideoComplement:v20];
     [(PUPhotoEditSnapshot *)v4 _setBaseVideoComplement:v23];
 
-    v8 = v27;
-    v13 = v26;
+    imageData2 = v27;
+    baseVersion = v26;
   }
 
-  if (v13)
+  if (baseVersion)
   {
     v24 = 2;
   }
@@ -64,10 +64,10 @@
     v24 = 1;
   }
 
-  [(PUPhotoEditSnapshot *)v4 _setImageData:v8, v26];
-  [(PUPhotoEditSnapshot *)v4 _setImageUTI:v10];
-  [(PUPhotoEditSnapshot *)v4 _setBaseImageData:v6];
-  [(PUPhotoEditSnapshot *)v4 _setAdjustmentData:v12];
+  [(PUPhotoEditSnapshot *)v4 _setImageData:imageData2, v26];
+  [(PUPhotoEditSnapshot *)v4 _setImageUTI:imageDataUTI];
+  [(PUPhotoEditSnapshot *)v4 _setBaseImageData:imageData];
+  [(PUPhotoEditSnapshot *)v4 _setAdjustmentData:adjustmentData];
   [(PUPhotoEditSnapshot *)v4 _setWorkImageVersion:v24];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -109,17 +109,17 @@ uint64_t __39__PUPhotoEditSnapshotFinishingNode_run__block_invoke_2(uint64_t a1)
   return [v4 complete];
 }
 
-- (PUPhotoEditSnapshotFinishingNode)initWithAdjustmentNode:(id)a3 baseMediaNode:(id)a4 currentImageNode:(id)a5 currentVideoNode:(id)a6 completionHandler:(id)a7
+- (PUPhotoEditSnapshotFinishingNode)initWithAdjustmentNode:(id)node baseMediaNode:(id)mediaNode currentImageNode:(id)imageNode currentVideoNode:(id)videoNode completionHandler:(id)handler
 {
   v24[3] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v22 = a6;
-  v16 = a7;
-  v24[0] = v13;
-  v24[1] = v14;
-  v24[2] = v15;
+  nodeCopy = node;
+  mediaNodeCopy = mediaNode;
+  imageNodeCopy = imageNode;
+  videoNodeCopy = videoNode;
+  handlerCopy = handler;
+  v24[0] = nodeCopy;
+  v24[1] = mediaNodeCopy;
+  v24[2] = imageNodeCopy;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:3];
   v23.receiver = self;
   v23.super_class = PUPhotoEditSnapshotFinishingNode;
@@ -127,11 +127,11 @@ uint64_t __39__PUPhotoEditSnapshotFinishingNode_run__block_invoke_2(uint64_t a1)
 
   if (v18)
   {
-    objc_storeStrong(&v18->_adjustmentNode, a3);
-    objc_storeStrong(&v18->_baseMediaNode, a4);
-    objc_storeStrong(&v18->_currentImageNode, a5);
-    objc_storeStrong(&v18->_currentVideoNode, a6);
-    v19 = [v16 copy];
+    objc_storeStrong(&v18->_adjustmentNode, node);
+    objc_storeStrong(&v18->_baseMediaNode, mediaNode);
+    objc_storeStrong(&v18->_currentImageNode, imageNode);
+    objc_storeStrong(&v18->_currentVideoNode, videoNode);
+    v19 = [handlerCopy copy];
     completionHandler = v18->_completionHandler;
     v18->_completionHandler = v19;
   }

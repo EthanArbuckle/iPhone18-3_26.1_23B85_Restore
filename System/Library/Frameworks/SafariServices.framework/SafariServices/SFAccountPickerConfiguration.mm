@@ -2,7 +2,7 @@
 - ($115C4C562B26FF47E01F9F4EA65B5887)connectedAppAuditToken;
 - (BOOL)shouldAllowAddingNewPasswords;
 - (SFAccountPickerConfiguration)init;
-- (void)setConnectedAppAuditToken:(id *)a3;
+- (void)setConnectedAppAuditToken:(id *)token;
 @end
 
 @implementation SFAccountPickerConfiguration
@@ -24,22 +24,22 @@
 
 - (BOOL)shouldAllowAddingNewPasswords
 {
-  v2 = [(SFAccountPickerConfiguration *)self shouldEnableAddingNewPasswordsIfPossible];
-  if (v2)
+  shouldEnableAddingNewPasswordsIfPossible = [(SFAccountPickerConfiguration *)self shouldEnableAddingNewPasswordsIfPossible];
+  if (shouldEnableAddingNewPasswordsIfPossible)
   {
     v3 = MEMORY[0x1E69B1B18];
 
-    LOBYTE(v2) = [v3 shouldAllowAddingNewPasswords];
+    LOBYTE(shouldEnableAddingNewPasswordsIfPossible) = [v3 shouldAllowAddingNewPasswords];
   }
 
-  return v2;
+  return shouldEnableAddingNewPasswordsIfPossible;
 }
 
-- (void)setConnectedAppAuditToken:(id *)a3
+- (void)setConnectedAppAuditToken:(id *)token
 {
   self->_hasAuditToken = 1;
-  v3 = *a3->var0;
-  *&self->_connectedAppAuditToken.val[4] = *&a3->var0[4];
+  v3 = *token->var0;
+  *&self->_connectedAppAuditToken.val[4] = *&token->var0[4];
   *self->_connectedAppAuditToken.val = v3;
 }
 

@@ -1,16 +1,16 @@
 @interface DragAndDropBridge.SpringLoadedEffect
 - (_TtCC7SwiftUI17DragAndDropBridge18SpringLoadedEffect)init;
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4;
+- (void)interaction:(id)interaction didChangeWithContext:(id)context;
 @end
 
 @implementation DragAndDropBridge.SpringLoadedEffect
 
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4
+- (void)interaction:(id)interaction didChangeWithContext:(id)context
 {
-  v6 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v7 = self;
-  DragAndDropBridge.SpringLoadedEffect.interaction(_:didChangeWith:)(v6, a4);
+  selfCopy = self;
+  DragAndDropBridge.SpringLoadedEffect.interaction(_:didChangeWith:)(interactionCopy, context);
 
   swift_unknownObjectRelease();
 }

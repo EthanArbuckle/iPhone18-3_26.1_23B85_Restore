@@ -1,52 +1,52 @@
 @interface BRItemCollectionGatherer
-- (BOOL)_buildCollectionOnItemIfPossible:(id)a3;
-- (BOOL)_canWatchItem:(id)a3;
-- (BOOL)_isItemOwnedByAnyCollection:(id)a3;
-- (BOOL)_shouldFilterEvaluatedItem:(id)a3 collectionRootItem:(id)a4;
+- (BOOL)_buildCollectionOnItemIfPossible:(id)possible;
+- (BOOL)_canWatchItem:(id)item;
+- (BOOL)_isItemOwnedByAnyCollection:(id)collection;
+- (BOOL)_shouldFilterEvaluatedItem:(id)item collectionRootItem:(id)rootItem;
 - (BOOL)_signalDelegateIfNeededOnFinishGathering;
-- (BRItemCollectionGatherer)initWithDelegate:(id)a3 query:(id)a4;
-- (id)_getAppLibraryURLFromConfig:(id)a3;
+- (BRItemCollectionGatherer)initWithDelegate:(id)delegate query:(id)query;
+- (id)_getAppLibraryURLFromConfig:(id)config;
 - (id)_getDeletedItems;
 - (id)_getUpdatedItems;
-- (unint64_t)_itemID:(id)a3 becameOwnedByCollection:(id)a4;
-- (unint64_t)_itemID:(id)a3 wasDeletedByCollection:(id)a4;
+- (unint64_t)_itemID:(id)d becameOwnedByCollection:(id)collection;
+- (unint64_t)_itemID:(id)d wasDeletedByCollection:(id)collection;
 - (void)_accountDidChangeNotificationBlock;
-- (void)_addDeletedItems:(id)a3;
-- (void)_addItemCollectionOnItem:(id)a3;
-- (void)_addUpdatedItems:(id)a3;
-- (void)_boostAppLibraryOfItemIfNeeded:(id)a3;
-- (void)_invalidateAndNotifyDelegate:(BOOL)a3;
+- (void)_addDeletedItems:(id)items;
+- (void)_addItemCollectionOnItem:(id)item;
+- (void)_addUpdatedItems:(id)items;
+- (void)_boostAppLibraryOfItemIfNeeded:(id)needed;
+- (void)_invalidateAndNotifyDelegate:(BOOL)delegate;
 - (void)_itemCollectionGathererSendUpdates;
 - (void)_queueSignalDelegateIfNeededOnFinishGathering;
-- (void)_removeCollectionFromGatherSet:(id)a3;
+- (void)_removeCollectionFromGatherSet:(id)set;
 - (void)_signalDelegateIfNeededOnFinishGathering;
 - (void)_startObservingAccountTokenDidChangeNotification;
-- (void)_startWatchingAppLibraries:(id)a3;
-- (void)_startWatchingNewSubItem:(id)a3;
-- (void)_startWatchingRootItemWithConfig:(id)a3;
-- (void)_startWatchingURLs:(id)a3;
+- (void)_startWatchingAppLibraries:(id)libraries;
+- (void)_startWatchingNewSubItem:(id)item;
+- (void)_startWatchingRootItemWithConfig:(id)config;
+- (void)_startWatchingURLs:(id)ls;
 - (void)_stopObeservingCollections;
 - (void)_stopObservingAccountTokenDidChangeNotification;
-- (void)_stopWatchingItemIDRecusively:(id)a3 itemIDsInItem:(id)a4;
+- (void)_stopWatchingItemIDRecusively:(id)recusively itemIDsInItem:(id)item;
 - (void)_unboostApplibrariesIfNeeded;
-- (void)collection:(id)a3 didEncounterError:(id)a4;
-- (void)collection:(id)a3 didUpdateItems:(id)a4 replaceItemsByFormerID:(id)a5 deleteItemsWithIDs:(id)a6;
-- (void)collectionDidFinishGathering:(id)a3;
-- (void)dataForCollectionShouldBeReloaded:(id)a3;
-- (void)dataForCollectionShouldBeReloaded:(id)a3 deleteItemsWithIDs:(id)a4;
+- (void)collection:(id)collection didEncounterError:(id)error;
+- (void)collection:(id)collection didUpdateItems:(id)items replaceItemsByFormerID:(id)d deleteItemsWithIDs:(id)ds;
+- (void)collectionDidFinishGathering:(id)gathering;
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded;
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded deleteItemsWithIDs:(id)ds;
 - (void)disableUpdates;
 - (void)enableUpdates;
-- (void)pauseWatchingWithCompletionBlock:(id)a3;
+- (void)pauseWatchingWithCompletionBlock:(id)block;
 - (void)resumeWatching;
-- (void)startWatchingRootItemWithScopes:(id)a3;
+- (void)startWatchingRootItemWithScopes:(id)scopes;
 @end
 
 @implementation BRItemCollectionGatherer
 
-- (BRItemCollectionGatherer)initWithDelegate:(id)a3 query:(id)a4
+- (BRItemCollectionGatherer)initWithDelegate:(id)delegate query:(id)query
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queryCopy = query;
   v45.receiver = self;
   v45.super_class = BRItemCollectionGatherer;
   v8 = [(BRItemCollectionGatherer *)&v45 init];
@@ -63,11 +63,11 @@
     v14 = *(v8 + 1);
     *(v8 + 1) = v13;
 
-    objc_storeWeak(v8 + 3, v6);
-    objc_storeStrong(v8 + 4, a4);
-    v15 = [*(v8 + 4) predicate];
+    objc_storeWeak(v8 + 3, delegateCopy);
+    objc_storeStrong(v8 + 4, query);
+    predicate = [*(v8 + 4) predicate];
     v16 = *(v8 + 5);
-    *(v8 + 5) = v15;
+    *(v8 + 5) = predicate;
 
     v17 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v18 = *(v8 + 7);
@@ -175,31 +175,31 @@ void __76__BRItemCollectionGatherer__startObservingAccountTokenDidChangeNotifica
   }
 }
 
-- (BOOL)_shouldFilterEvaluatedItem:(id)a3 collectionRootItem:(id)a4
+- (BOOL)_shouldFilterEvaluatedItem:(id)item collectionRootItem:(id)rootItem
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 itemID];
-  if ((-[BRWatchingConfiguration watchTypes](self->_config, "watchTypes") & 0x40) != 0 && ![v6 isFolder])
+  itemCopy = item;
+  rootItemCopy = rootItem;
+  itemID = [rootItemCopy itemID];
+  if ((-[BRWatchingConfiguration watchTypes](self->_config, "watchTypes") & 0x40) != 0 && ![itemCopy isFolder])
   {
     goto LABEL_21;
   }
 
   if (([(BRWatchingConfiguration *)self->_config watchTypes]& 1) == 0)
   {
-    v9 = [v6 parentItemID];
+    parentItemID = [itemCopy parentItemID];
 
-    if (!v9)
+    if (!parentItemID)
     {
       v31 = brc_bread_crumbs("[BRItemCollectionGatherer _shouldFilterEvaluatedItem:collectionRootItem:]", 387);
       v32 = brc_default_log(0, 0);
       if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412802;
-        v43 = self;
+        selfCopy = self;
         v44 = 2112;
-        v45 = v6;
+        v45 = itemCopy;
         v46 = 2112;
         v47 = v31;
         _os_log_fault_impl(&dword_1AE2A9000, v32, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: %@ - fp items should always have a parentItemID set on it - %@%@", buf, 0x20u);
@@ -208,44 +208,44 @@ void __76__BRItemCollectionGatherer__startObservingAccountTokenDidChangeNotifica
       goto LABEL_21;
     }
 
-    v10 = [v6 parentItemID];
-    if (!v10)
+    parentItemID2 = [itemCopy parentItemID];
+    if (!parentItemID2)
     {
       goto LABEL_27;
     }
 
-    v11 = v10;
+    v11 = parentItemID2;
     watchedAppLibraryFPItemIDs = self->_watchedAppLibraryFPItemIDs;
-    v13 = [v6 parentItemID];
-    LODWORD(watchedAppLibraryFPItemIDs) = [(NSMutableSet *)watchedAppLibraryFPItemIDs containsObject:v13];
+    parentItemID3 = [itemCopy parentItemID];
+    LODWORD(watchedAppLibraryFPItemIDs) = [(NSMutableSet *)watchedAppLibraryFPItemIDs containsObject:parentItemID3];
 
     if (!watchedAppLibraryFPItemIDs)
     {
       goto LABEL_27;
     }
 
-    v14 = [v6 displayName];
-    v15 = [v14 isEqual:@"Documents"];
+    displayName = [itemCopy displayName];
+    v15 = [displayName isEqual:@"Documents"];
 
     if (([(BRWatchingConfiguration *)self->_config watchTypes]& 6) != 0 || v15)
     {
-      v16 = [v7 providerItemIdentifier];
-      v17 = [v16 isEqualToString:*MEMORY[0x1E6967168]];
+      providerItemIdentifier = [rootItemCopy providerItemIdentifier];
+      v17 = [providerItemIdentifier isEqualToString:*MEMORY[0x1E6967168]];
 
-      if (!v17 || (v15 & 1) == 0 && ([v6 displayName], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqual:", @"Desktop"), v18, (v19 & 1) == 0))
+      if (!v17 || (v15 & 1) == 0 && ([itemCopy displayName], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqual:", @"Desktop"), v18, (v19 & 1) == 0))
       {
 LABEL_27:
-        v20 = [(BRWatchingConfiguration *)self->_config gatherPrefix];
+        gatherPrefix = [(BRWatchingConfiguration *)self->_config gatherPrefix];
 
-        if (!v20)
+        if (!gatherPrefix)
         {
           goto LABEL_24;
         }
 
         v21 = MEMORY[0x1E696AE70];
         v22 = MEMORY[0x1E696AEC0];
-        v23 = [(BRWatchingConfiguration *)self->_config gatherPrefix];
-        v24 = [v22 stringWithFormat:@"^%@", v23];
+        gatherPrefix2 = [(BRWatchingConfiguration *)self->_config gatherPrefix];
+        v24 = [v22 stringWithFormat:@"^%@", gatherPrefix2];
         v41 = 0;
         v25 = [v21 regularExpressionWithPattern:v24 options:0 error:&v41];
         v26 = v41;
@@ -262,16 +262,16 @@ LABEL_27:
           goto LABEL_21;
         }
 
-        v35 = [v6 displayName];
-        v36 = [v6 displayName];
-        v37 = [v25 numberOfMatchesInString:v35 options:0 range:{0, objc_msgSend(v36, "length")}];
+        displayName2 = [itemCopy displayName];
+        displayName3 = [itemCopy displayName];
+        v37 = [v25 numberOfMatchesInString:displayName2 options:0 range:{0, objc_msgSend(displayName3, "length")}];
 
         if (v37)
         {
 LABEL_24:
-          v38 = [v6 fileURL];
-          v39 = [v38 lastPathComponent];
-          v40 = [v39 br_isExcludedWithMaximumDepth:1];
+          fileURL = [itemCopy fileURL];
+          lastPathComponent = [fileURL lastPathComponent];
+          v40 = [lastPathComponent br_isExcludedWithMaximumDepth:1];
 
           v30 = v40 ^ 1;
           goto LABEL_22;
@@ -284,21 +284,21 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v29 = [v6 itemID];
-  v30 = [v29 isEqualToItemID:v8];
+  itemID2 = [itemCopy itemID];
+  v30 = [itemID2 isEqualToItemID:itemID];
 
 LABEL_22:
   v33 = *MEMORY[0x1E69E9840];
   return v30;
 }
 
-- (void)_addItemCollectionOnItem:(id)a3
+- (void)_addItemCollectionOnItem:(id)item
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 itemID];
-  v6 = [(NSMutableDictionary *)self->_itemIDToItemCollectionMap objectForKey:v5];
+  itemID = [itemCopy itemID];
+  v6 = [(NSMutableDictionary *)self->_itemIDToItemCollectionMap objectForKey:itemID];
 
   if (!v6)
   {
@@ -306,20 +306,20 @@ LABEL_22:
     v8 = brc_default_log(1, 0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v16 = [v4 providerItemIdentifier];
+      providerItemIdentifier = [itemCopy providerItemIdentifier];
       *location = 138413058;
       *&location[4] = self;
       v24 = 2112;
-      v25 = v5;
+      v25 = itemID;
       v26 = 2112;
-      v27 = v16;
+      v27 = providerItemIdentifier;
       v28 = 2112;
       v29 = v7;
       _os_log_debug_impl(&dword_1AE2A9000, v8, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - Adding Item Collection on itemID = %@, providerItemIdentifier = %@%@", location, 0x2Au);
     }
 
-    v9 = [MEMORY[0x1E69673A8] defaultManager];
-    v10 = [v9 newCollectionWithItemID:v5];
+    defaultManager = [MEMORY[0x1E69673A8] defaultManager];
+    v10 = [defaultManager newCollectionWithItemID:itemID];
 
     objc_initWeak(location, self);
     v11 = MEMORY[0x1E696AE18];
@@ -328,20 +328,20 @@ LABEL_22:
     v19 = __53__BRItemCollectionGatherer__addItemCollectionOnItem___block_invoke;
     v20 = &unk_1E7A16B70;
     objc_copyWeak(&v22, location);
-    v21 = v4;
+    v21 = itemCopy;
     v12 = [v11 predicateWithBlock:&v17];
     [v10 setItemFilteringPredicate:{v12, v17, v18, v19, v20}];
 
     [v10 setDelegate:self];
     [v10 setWorkingQueue:self->_queue];
     [v10 setShowHiddenFiles:1];
-    v13 = [v10 settings];
-    [v13 setRequireSandboxAccess:1];
+    settings = [v10 settings];
+    [settings setRequireSandboxAccess:1];
 
-    v14 = [v10 settings];
-    [v14 setUnbounded:1];
+    settings2 = [v10 settings];
+    [settings2 setUnbounded:1];
 
-    [(NSMutableDictionary *)self->_itemIDToItemCollectionMap setObject:v10 forKey:v5];
+    [(NSMutableDictionary *)self->_itemIDToItemCollectionMap setObject:v10 forKey:itemID];
     [(NSMutableSet *)self->_waitingToBeGatheredCollections addObject:v10];
     [(NSMutableSet *)self->_collectionsSet addObject:v10];
     [v10 startObserving];
@@ -371,11 +371,11 @@ uint64_t __53__BRItemCollectionGatherer__addItemCollectionOnItem___block_invoke(
   return v6;
 }
 
-- (BOOL)_canWatchItem:(id)a3
+- (BOOL)_canWatchItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 itemID];
+  itemID = [itemCopy itemID];
   if (([(BRWatchingConfiguration *)self->_config watchTypes]& 2) != 0 || ([(BRWatchingConfiguration *)self->_config watchTypes]& 1) != 0)
   {
     v14 = [(NSMutableDictionary *)self->_itemIDToItemCollectionMap count]== 0;
@@ -383,22 +383,22 @@ uint64_t __53__BRItemCollectionGatherer__addItemCollectionOnItem___block_invoke(
 
   else
   {
-    v6 = [(NSMutableDictionary *)self->_itemIDToItemCollectionMap objectForKey:v5];
+    v6 = [(NSMutableDictionary *)self->_itemIDToItemCollectionMap objectForKey:itemID];
 
-    if (v6 || ![v4 isFolder] || !-[BRWatchingConfiguration watchTypes](self->_config, "watchTypes"))
+    if (v6 || ![itemCopy isFolder] || !-[BRWatchingConfiguration watchTypes](self->_config, "watchTypes"))
     {
       goto LABEL_12;
     }
 
     watchedAppLibraryFPItemIDs = self->_watchedAppLibraryFPItemIDs;
-    v8 = [v4 parentItemID];
-    LODWORD(watchedAppLibraryFPItemIDs) = [(NSMutableSet *)watchedAppLibraryFPItemIDs containsObject:v8];
+    parentItemID = [itemCopy parentItemID];
+    LODWORD(watchedAppLibraryFPItemIDs) = [(NSMutableSet *)watchedAppLibraryFPItemIDs containsObject:parentItemID];
 
-    if (!watchedAppLibraryFPItemIDs || (([v4 displayName], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqual:", @"Documents"), v9, (-[BRWatchingConfiguration watchTypes](self->_config, "watchTypes") & 8) != 0) || (v10 & 1) == 0) && ((v10 | (-[BRWatchingConfiguration watchTypes](self->_config, "watchTypes") >> 2)) & 1) != 0)
+    if (!watchedAppLibraryFPItemIDs || (([itemCopy displayName], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqual:", @"Documents"), v9, (-[BRWatchingConfiguration watchTypes](self->_config, "watchTypes") & 8) != 0) || (v10 & 1) == 0) && ((v10 | (-[BRWatchingConfiguration watchTypes](self->_config, "watchTypes") >> 2)) & 1) != 0)
     {
-      v11 = [v4 fileURL];
-      v12 = [v11 path];
-      v13 = [v12 br_isExcludedWithMaximumDepth:1024];
+      fileURL = [itemCopy fileURL];
+      path = [fileURL path];
+      v13 = [path br_isExcludedWithMaximumDepth:1024];
 
       v14 = v13 ^ 1;
     }
@@ -413,61 +413,61 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)_buildCollectionOnItemIfPossible:(id)a3
+- (BOOL)_buildCollectionOnItemIfPossible:(id)possible
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  possibleCopy = possible;
   v5 = brc_bread_crumbs("[BRItemCollectionGatherer _buildCollectionOnItemIfPossible:]", 544);
   v6 = brc_default_log(1, 0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v4 itemID];
-    v11 = [v4 providerItemIdentifier];
+    itemID = [possibleCopy itemID];
+    providerItemIdentifier = [possibleCopy providerItemIdentifier];
     v12 = 138413058;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v10;
+    v15 = itemID;
     v16 = 2112;
-    v17 = v11;
+    v17 = providerItemIdentifier;
     v18 = 2112;
     v19 = v5;
     _os_log_debug_impl(&dword_1AE2A9000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - _buildCollectionOnItemIfPossible itemID = %@, providerItemIdentifier = %@%@", &v12, 0x2Au);
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [(BRItemCollectionGatherer *)self _canWatchItem:v4];
+  v7 = [(BRItemCollectionGatherer *)self _canWatchItem:possibleCopy];
   if (v7)
   {
-    [(BRItemCollectionGatherer *)self _addItemCollectionOnItem:v4];
+    [(BRItemCollectionGatherer *)self _addItemCollectionOnItem:possibleCopy];
   }
 
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (id)_getAppLibraryURLFromConfig:(id)a3
+- (id)_getAppLibraryURLFromConfig:(id)config
 {
-  v4 = a3;
-  v5 = [(BRWatchingConfiguration *)self->_config appLibraryIDToURLMapOfSuppliedAppIDs];
-  v6 = [v5 valueForKey:v4];
+  configCopy = config;
+  appLibraryIDToURLMapOfSuppliedAppIDs = [(BRWatchingConfiguration *)self->_config appLibraryIDToURLMapOfSuppliedAppIDs];
+  v6 = [appLibraryIDToURLMapOfSuppliedAppIDs valueForKey:configCopy];
 
   if (!v6)
   {
-    v7 = [(BRWatchingConfiguration *)self->_config appLibraryIDToURLMapOfSuppliedURLs];
-    v6 = [v7 valueForKey:v4];
+    appLibraryIDToURLMapOfSuppliedURLs = [(BRWatchingConfiguration *)self->_config appLibraryIDToURLMapOfSuppliedURLs];
+    v6 = [appLibraryIDToURLMapOfSuppliedURLs valueForKey:configCopy];
   }
 
   return v6;
 }
 
-- (void)_boostAppLibraryOfItemIfNeeded:(id)a3
+- (void)_boostAppLibraryOfItemIfNeeded:(id)needed
 {
-  v4 = [a3 fileURL];
-  v5 = [v4 br_containerID];
+  fileURL = [needed fileURL];
+  br_containerID = [fileURL br_containerID];
 
-  if (([(NSMutableSet *)self->_boostedAppLibraries containsObject:v5]& 1) == 0)
+  if (([(NSMutableSet *)self->_boostedAppLibraries containsObject:br_containerID]& 1) == 0)
   {
-    v6 = [(BRItemCollectionGatherer *)self _getAppLibraryURLFromConfig:v5];
+    v6 = [(BRItemCollectionGatherer *)self _getAppLibraryURLFromConfig:br_containerID];
     if (v6)
     {
       v7 = [BRFileProviderServicesFactory itemServiceSyncProxyForURL:v6];
@@ -475,8 +475,8 @@ LABEL_12:
       v8[1] = 3221225472;
       v8[2] = __59__BRItemCollectionGatherer__boostAppLibraryOfItemIfNeeded___block_invoke;
       v8[3] = &unk_1E7A16B98;
-      v9 = v5;
-      v10 = self;
+      v9 = br_containerID;
+      selfCopy = self;
       [v7 boostFilePresenter:v8];
     }
   }
@@ -508,10 +508,10 @@ void __59__BRItemCollectionGatherer__boostAppLibraryOfItemIfNeeded___block_invok
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startWatchingURLs:(id)a3
+- (void)_startWatchingURLs:(id)ls
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lsCopy = ls;
   v5 = brc_bread_crumbs("[BRItemCollectionGatherer _startWatchingURLs:]", 586);
   v6 = brc_default_log(1, 0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -523,7 +523,7 @@ void __59__BRItemCollectionGatherer__boostAppLibraryOfItemIfNeeded___block_invok
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = v4;
+  v7 = lsCopy;
   v8 = [v7 countByEnumeratingWithState:&v29 objects:v41 count:16];
   if (v8)
   {
@@ -544,12 +544,12 @@ LABEL_5:
       v14 = brc_default_log(1, 0);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        v18 = [v12 path];
-        v19 = [v18 fp_obfuscatedPath];
+        path = [v12 path];
+        fp_obfuscatedPath = [path fp_obfuscatedPath];
         *buf = 138412802;
-        v34 = self;
+        selfCopy3 = self;
         v35 = 2112;
-        v36 = v19;
+        v36 = fp_obfuscatedPath;
         v37 = 2112;
         v38 = v13;
         _os_log_debug_impl(&dword_1AE2A9000, v14, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - -- _startWatchingURLsIfNeeded working on %@%@", buf, 0x20u);
@@ -565,12 +565,12 @@ LABEL_5:
           v21 = brc_default_log(0, 0);
           if (os_log_type_enabled(v21, 0x90u))
           {
-            v22 = [v12 path];
-            v23 = [v22 fp_obfuscatedPath];
+            path2 = [v12 path];
+            fp_obfuscatedPath2 = [path2 fp_obfuscatedPath];
             *buf = 138412802;
-            v34 = self;
+            selfCopy3 = self;
             v35 = 2112;
-            v36 = v23;
+            v36 = fp_obfuscatedPath2;
             v37 = 2112;
             v38 = v17;
             _os_log_error_impl(&dword_1AE2A9000, v21, 0x90u, "[ERROR] %@ - Can't Watch url %@ since its not in a synced location.%@", buf, 0x20u);
@@ -582,31 +582,31 @@ LABEL_21:
           goto LABEL_22;
         }
 
-        v15 = [MEMORY[0x1E69673A8] defaultManager];
+        defaultManager = [MEMORY[0x1E69673A8] defaultManager];
         v28 = 0;
-        v16 = [v15 itemForURL:v12 error:&v28];
+        v16 = [defaultManager itemForURL:v12 error:&v28];
         v17 = v28;
 
         if (!v16)
         {
           v21 = brc_bread_crumbs("[BRItemCollectionGatherer _startWatchingURLs:]", 601);
-          v22 = brc_default_log(0, 0);
-          if (!os_log_type_enabled(v22, 0x90u))
+          path2 = brc_default_log(0, 0);
+          if (!os_log_type_enabled(path2, 0x90u))
           {
             goto LABEL_20;
           }
 
-          v23 = [v12 path];
-          v25 = [v23 fp_obfuscatedPath];
+          fp_obfuscatedPath2 = [v12 path];
+          v23Fp_obfuscatedPath = [fp_obfuscatedPath2 fp_obfuscatedPath];
           *buf = 138413058;
-          v34 = self;
+          selfCopy3 = self;
           v35 = 2112;
-          v36 = v25;
+          v36 = v23Fp_obfuscatedPath;
           v37 = 2112;
           v38 = v17;
           v39 = 2112;
           v40 = v21;
-          _os_log_error_impl(&dword_1AE2A9000, v22, 0x90u, "[ERROR] %@ - Can't build an fpItem for %@ - %@%@", buf, 0x2Au);
+          _os_log_error_impl(&dword_1AE2A9000, path2, 0x90u, "[ERROR] %@ - Can't build an fpItem for %@ - %@%@", buf, 0x2Au);
 
 LABEL_24:
 LABEL_20:
@@ -666,24 +666,24 @@ unint64_t __47__BRItemCollectionGatherer__startWatchingURLs___block_invoke(uint6
   return result;
 }
 
-- (void)_startWatchingAppLibraries:(id)a3
+- (void)_startWatchingAppLibraries:(id)libraries
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  librariesCopy = libraries;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__12;
   v24 = __Block_byref_object_dispose__12;
-  v25 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v25 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(librariesCopy, "count")}];
   v5 = brc_bread_crumbs("[BRItemCollectionGatherer _startWatchingAppLibraries:]", 620);
   v6 = brc_default_log(1, 0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
-    v29 = v4;
+    v29 = librariesCopy;
     v30 = 2112;
     v31 = v5;
     _os_log_debug_impl(&dword_1AE2A9000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ -  _startWatchingAppLibrariesIfNeeded(%@)%@", buf, 0x20u);
@@ -703,7 +703,7 @@ unint64_t __47__BRItemCollectionGatherer__startWatchingURLs___block_invoke(uint6
   v16[4] = self;
   v17 = v8;
   v18 = &v20;
-  [v4 enumerateKeysAndObjectsUsingBlock:v16];
+  [librariesCopy enumerateKeysAndObjectsUsingBlock:v16];
   if ([v21[5] count])
   {
     v9 = self->_appLibrariesLookupAttempts + 1;
@@ -792,26 +792,26 @@ uint64_t __55__BRItemCollectionGatherer__startWatchingAppLibraries___block_invok
   return [*(a1 + 32) _startWatchingAppLibraries:*(*(*(a1 + 40) + 8) + 40)];
 }
 
-- (void)startWatchingRootItemWithScopes:(id)a3
+- (void)startWatchingRootItemWithScopes:(id)scopes
 {
-  v4 = a3;
-  v5 = [[BRWatchingConfiguration alloc] initWithScopes:v4 predicate:self->_predicate];
+  scopesCopy = scopes;
+  v5 = [[BRWatchingConfiguration alloc] initWithScopes:scopesCopy predicate:self->_predicate];
 
   [(BRItemCollectionGatherer *)self _startWatchingRootItemWithConfig:v5];
   [(BRItemCollectionGatherer *)self _startObservingAccountTokenDidChangeNotification];
 }
 
-- (void)_startWatchingRootItemWithConfig:(id)a3
+- (void)_startWatchingRootItemWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__BRItemCollectionGatherer__startWatchingRootItemWithConfig___block_invoke;
   v7[3] = &unk_1E7A14A08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configCopy;
+  v6 = configCopy;
   dispatch_async(queue, v7);
 }
 
@@ -851,43 +851,43 @@ void __61__BRItemCollectionGatherer__startWatchingRootItemWithConfig___block_inv
   }
 }
 
-- (void)_startWatchingNewSubItem:(id)a3
+- (void)_startWatchingNewSubItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__BRItemCollectionGatherer__startWatchingNewSubItem___block_invoke;
   v7[3] = &unk_1E7A14A08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemCopy;
+  v6 = itemCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_stopWatchingItemIDRecusively:(id)a3 itemIDsInItem:(id)a4
+- (void)_stopWatchingItemIDRecusively:(id)recusively itemIDsInItem:(id)item
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v29 = a4;
+  recusivelyCopy = recusively;
+  itemCopy = item;
   dispatch_assert_queue_V2(self->_queue);
   v7 = brc_bread_crumbs("[BRItemCollectionGatherer _stopWatchingItemIDRecusively:itemIDsInItem:]", 701);
   v8 = brc_default_log(1, 0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v36 = self;
+    selfCopy4 = self;
     v37 = 2112;
-    v38 = v6;
+    v38 = recusivelyCopy;
     v39 = 2112;
     v40 = v7;
     _os_log_debug_impl(&dword_1AE2A9000, v8, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - stop watching itemID %@ recursively%@", buf, 0x20u);
   }
 
-  if (v6)
+  if (recusivelyCopy)
   {
-    [v29 addObject:v6];
-    v9 = [(NSMutableDictionary *)self->_itemIDToItemCollectionMap objectForKey:v6];
+    [itemCopy addObject:recusivelyCopy];
+    v9 = [(NSMutableDictionary *)self->_itemIDToItemCollectionMap objectForKey:recusivelyCopy];
     v10 = v9;
     if (v9)
     {
@@ -897,26 +897,26 @@ void __61__BRItemCollectionGatherer__startWatchingRootItemWithConfig___block_inv
       v12 = brc_default_log(1, 0);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        v27 = [v10 items];
+        items = [v10 items];
         *buf = 138413058;
-        v36 = self;
+        selfCopy4 = self;
         v37 = 2112;
-        v38 = v6;
+        v38 = recusivelyCopy;
         v39 = 2112;
-        v40 = v27;
+        v40 = items;
         v41 = 2112;
         v42 = v11;
         _os_log_debug_impl(&dword_1AE2A9000, v12, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - item %@ collection childs %@%@", buf, 0x2Au);
       }
 
-      v28 = v6;
+      v28 = recusivelyCopy;
 
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v13 = [v10 items];
-      v14 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      items2 = [v10 items];
+      v14 = [items2 countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (v14)
       {
         v15 = v14;
@@ -927,46 +927,46 @@ void __61__BRItemCollectionGatherer__startWatchingRootItemWithConfig___block_inv
           {
             if (*v31 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(items2);
             }
 
             v18 = *(*(&v30 + 1) + 8 * i);
-            v19 = [v18 itemID];
-            v20 = [(BRItemCollectionGatherer *)self _itemID:v19 wasDeletedByCollection:v10];
+            itemID = [v18 itemID];
+            v20 = [(BRItemCollectionGatherer *)self _itemID:itemID wasDeletedByCollection:v10];
 
             if (v20)
             {
-              v21 = brc_bread_crumbs("[BRItemCollectionGatherer _stopWatchingItemIDRecusively:itemIDsInItem:]", 722);
+              itemID3 = brc_bread_crumbs("[BRItemCollectionGatherer _stopWatchingItemIDRecusively:itemIDsInItem:]", 722);
               v22 = brc_default_log(1, 0);
               if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
               {
-                v23 = [v18 itemID];
+                itemID2 = [v18 itemID];
                 *buf = 138413058;
-                v36 = self;
+                selfCopy4 = self;
                 v37 = 2112;
-                v38 = v23;
+                v38 = itemID2;
                 v39 = 2048;
                 v40 = v20;
                 v41 = 2112;
-                v42 = v21;
+                v42 = itemID3;
                 _os_log_debug_impl(&dword_1AE2A9000, v22, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - item ID %@ is owned by %lu other collections. Stopping the recursive traverse%@", buf, 0x2Au);
               }
             }
 
             else
             {
-              v21 = [v18 itemID];
-              [(BRItemCollectionGatherer *)self _stopWatchingItemIDRecusively:v21 itemIDsInItem:v29];
+              itemID3 = [v18 itemID];
+              [(BRItemCollectionGatherer *)self _stopWatchingItemIDRecusively:itemID3 itemIDsInItem:itemCopy];
             }
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
+          v15 = [items2 countByEnumeratingWithState:&v30 objects:v34 count:16];
         }
 
         while (v15);
       }
 
-      v6 = v28;
+      recusivelyCopy = v28;
       [(NSMutableDictionary *)self->_itemIDToItemCollectionMap removeObjectForKey:v28];
       [(BRItemCollectionGatherer *)self _removeCollectionFromGatherSet:v10];
     }
@@ -978,9 +978,9 @@ void __61__BRItemCollectionGatherer__startWatchingRootItemWithConfig___block_inv
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412802;
-        v36 = self;
+        selfCopy4 = self;
         v37 = 2112;
-        v38 = v6;
+        v38 = recusivelyCopy;
         v39 = 2112;
         v40 = v24;
         _os_log_debug_impl(&dword_1AE2A9000, v25, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - No collection found for item %@%@", buf, 0x20u);
@@ -997,9 +997,9 @@ void __61__BRItemCollectionGatherer__startWatchingRootItemWithConfig___block_inv
   v5 = brc_default_log(0, 0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
   {
-    *a1 = 138412290;
+    *self = 138412290;
     *a2 = v4;
-    _os_log_fault_impl(&dword_1AE2A9000, v5, OS_LOG_TYPE_FAULT, "[CRIT] Assertion failed: appLibraryURL%@", a1, 0xCu);
+    _os_log_fault_impl(&dword_1AE2A9000, v5, OS_LOG_TYPE_FAULT, "[CRIT] Assertion failed: appLibraryURL%@", self, 0xCu);
   }
 }
 
@@ -1061,7 +1061,7 @@ void __56__BRItemCollectionGatherer__unboostApplibrariesIfNeeded__block_invoke(u
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_invalidateAndNotifyDelegate:(BOOL)a3
+- (void)_invalidateAndNotifyDelegate:(BOOL)delegate
 {
   invalidateQueue = self->_invalidateQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1069,7 +1069,7 @@ void __56__BRItemCollectionGatherer__unboostApplibrariesIfNeeded__block_invoke(u
   v4[2] = __57__BRItemCollectionGatherer__invalidateAndNotifyDelegate___block_invoke;
   v4[3] = &unk_1E7A15768;
   v4[4] = self;
-  v5 = a3;
+  delegateCopy = delegate;
   dispatch_async(invalidateQueue, v4);
 }
 
@@ -1142,7 +1142,7 @@ void __57__BRItemCollectionGatherer__invalidateAndNotifyDelegate___block_invoke_
 
 - (void)disableUpdates
 {
-  OUTLINED_FUNCTION_4_5(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_4_5(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_3_2();
   OUTLINED_FUNCTION_3_0();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x20u);
@@ -1160,7 +1160,7 @@ void __42__BRItemCollectionGatherer_disableUpdates__block_invoke(uint64_t a1)
 
 - (void)enableUpdates
 {
-  OUTLINED_FUNCTION_4_5(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_4_5(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_3_2();
   OUTLINED_FUNCTION_3_0();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x20u);
@@ -1176,17 +1176,17 @@ void __41__BRItemCollectionGatherer_enableUpdates__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)pauseWatchingWithCompletionBlock:(id)a3
+- (void)pauseWatchingWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__BRItemCollectionGatherer_pauseWatchingWithCompletionBlock___block_invoke;
   v7[3] = &unk_1E7A16670;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1290,10 +1290,10 @@ void __42__BRItemCollectionGatherer_resumeWatching__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)_removeCollectionFromGatherSet:(id)a3
+- (void)_removeCollectionFromGatherSet:(id)set
 {
   v19 = *MEMORY[0x1E69E9840];
-  [(NSMutableSet *)self->_waitingToBeGatheredCollections removeObject:a3];
+  [(NSMutableSet *)self->_waitingToBeGatheredCollections removeObject:set];
   if (![(BRItemCollectionGatherer *)self _signalDelegateIfNeededOnFinishGathering])
   {
     if (!self->_finishedLookingUpAppLibraries)
@@ -1312,12 +1312,12 @@ void __42__BRItemCollectionGatherer_resumeWatching__block_invoke(uint64_t a1)
       v7 = brc_default_log(1, 0);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        v9 = [(NSMutableSet *)self->_waitingToBeGatheredCollections anyObject];
+        anyObject = [(NSMutableSet *)self->_waitingToBeGatheredCollections anyObject];
         v10 = [(NSMutableSet *)self->_waitingToBeGatheredCollections count];
         v11 = 138413058;
-        v12 = self;
+        selfCopy = self;
         v13 = 2112;
-        v14 = v9;
+        v14 = anyObject;
         v15 = 2048;
         v16 = v10 - 1;
         v17 = 2112;
@@ -1330,37 +1330,37 @@ void __42__BRItemCollectionGatherer_resumeWatching__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)_itemID:(id)a3 becameOwnedByCollection:(id)a4
+- (unint64_t)_itemID:(id)d becameOwnedByCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_itemOwnersMap objectForKey:v6];
+  dCopy = d;
+  collectionCopy = collection;
+  v8 = [(NSMutableDictionary *)self->_itemOwnersMap objectForKey:dCopy];
   if (!v8)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    [(NSMutableDictionary *)self->_itemOwnersMap setObject:v8 forKey:v6];
+    [(NSMutableDictionary *)self->_itemOwnersMap setObject:v8 forKey:dCopy];
   }
 
-  [v8 addObject:v7];
+  [v8 addObject:collectionCopy];
   v9 = [v8 count];
 
   return v9;
 }
 
-- (unint64_t)_itemID:(id)a3 wasDeletedByCollection:(id)a4
+- (unint64_t)_itemID:(id)d wasDeletedByCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_itemOwnersMap objectForKey:v6];
+  dCopy = d;
+  collectionCopy = collection;
+  v8 = [(NSMutableDictionary *)self->_itemOwnersMap objectForKey:dCopy];
   if (!v8)
   {
     [BRItemCollectionGatherer _itemID:wasDeletedByCollection:];
   }
 
-  [v8 removeObject:v7];
+  [v8 removeObject:collectionCopy];
   if (![v8 count])
   {
-    [(NSMutableDictionary *)self->_itemOwnersMap removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_itemOwnersMap removeObjectForKey:dCopy];
   }
 
   v9 = [v8 count];
@@ -1368,59 +1368,59 @@ void __42__BRItemCollectionGatherer_resumeWatching__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (BOOL)_isItemOwnedByAnyCollection:(id)a3
+- (BOOL)_isItemOwnedByAnyCollection:(id)collection
 {
-  v3 = [(NSMutableDictionary *)self->_itemOwnersMap objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_itemOwnersMap objectForKey:collection];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-- (void)dataForCollectionShouldBeReloaded:(id)a3
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded
 {
   queue = self->_queue;
-  v5 = a3;
+  reloadedCopy = reloaded;
   dispatch_assert_queue_V2(queue);
-  [(BRItemCollectionGatherer *)self dataForCollectionShouldBeReloaded:v5 deleteItemsWithIDs:MEMORY[0x1E695E0F0]];
+  [(BRItemCollectionGatherer *)self dataForCollectionShouldBeReloaded:reloadedCopy deleteItemsWithIDs:MEMORY[0x1E695E0F0]];
 }
 
-- (void)dataForCollectionShouldBeReloaded:(id)a3 deleteItemsWithIDs:(id)a4
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded deleteItemsWithIDs:(id)ds
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  reloadedCopy = reloaded;
+  dsCopy = ds;
   dispatch_assert_queue_V2(self->_queue);
-  if (([(NSMutableSet *)self->_collectionsSet containsObject:v6]& 1) != 0)
+  if (([(NSMutableSet *)self->_collectionsSet containsObject:reloadedCopy]& 1) != 0)
   {
     v8 = brc_bread_crumbs("[BRItemCollectionGatherer dataForCollectionShouldBeReloaded:deleteItemsWithIDs:]", 907);
     v9 = brc_default_log(1, 0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v13 = 138412802;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2112;
-      v16 = v6;
+      v16 = reloadedCopy;
       v17 = 2112;
       v18 = v8;
       _os_log_debug_impl(&dword_1AE2A9000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - dataForCollectionShouldBeReloaded on collection %@ - forwarding it to the didUpdate method%@", &v13, 0x20u);
     }
 
-    v10 = [v6 items];
-    [(BRItemCollectionGatherer *)self collection:v6 didUpdateItems:v10 replaceItemsByFormerID:MEMORY[0x1E695E0F8] deleteItemsWithIDs:v7];
+    items = [reloadedCopy items];
+    [(BRItemCollectionGatherer *)self collection:reloadedCopy didUpdateItems:items replaceItemsByFormerID:MEMORY[0x1E695E0F8] deleteItemsWithIDs:dsCopy];
   }
 
   else
   {
-    v10 = brc_bread_crumbs("[BRItemCollectionGatherer dataForCollectionShouldBeReloaded:deleteItemsWithIDs:]", 904);
+    items = brc_bread_crumbs("[BRItemCollectionGatherer dataForCollectionShouldBeReloaded:deleteItemsWithIDs:]", 904);
     v11 = brc_default_log(1, 0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412802;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2112;
-      v16 = v6;
+      v16 = reloadedCopy;
       v17 = 2112;
-      v18 = v10;
+      v18 = items;
       _os_log_impl(&dword_1AE2A9000, v11, OS_LOG_TYPE_DEFAULT, "[WARNING] %@ - Ignoring events from item collection: %@%@", &v13, 0x20u);
     }
   }
@@ -1428,11 +1428,11 @@ void __42__BRItemCollectionGatherer_resumeWatching__block_invoke(uint64_t a1)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)collectionDidFinishGathering:(id)a3
+- (void)collectionDidFinishGathering:(id)gathering
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([(NSMutableSet *)self->_collectionsSet containsObject:v4]& 1) == 0)
+  gatheringCopy = gathering;
+  if (([(NSMutableSet *)self->_collectionsSet containsObject:gatheringCopy]& 1) == 0)
   {
     WeakRetained = brc_bread_crumbs("[BRItemCollectionGatherer collectionDidFinishGathering:]", 913);
     v18 = brc_default_log(1, 0);
@@ -1441,7 +1441,7 @@ void __42__BRItemCollectionGatherer_resumeWatching__block_invoke(uint64_t a1)
       *buf = 138412802;
       *&buf[4] = self;
       v26 = 2112;
-      v27 = v4;
+      v27 = gatheringCopy;
       v28 = 2112;
       v29 = WeakRetained;
       _os_log_impl(&dword_1AE2A9000, v18, OS_LOG_TYPE_DEFAULT, "[WARNING] %@ - Ignoring events from item collection: %@%@", buf, 0x20u);
@@ -1457,23 +1457,23 @@ void __42__BRItemCollectionGatherer_resumeWatching__block_invoke(uint64_t a1)
     *buf = 138412802;
     *&buf[4] = self;
     v26 = 2112;
-    v27 = v4;
+    v27 = gatheringCopy;
     v28 = 2112;
     v29 = v5;
     _os_log_debug_impl(&dword_1AE2A9000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - collectionDidFinishGathering on %@%@", buf, 0x20u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [v4 items];
-  [WeakRetained itemCollectionGathererGatheredItems:v8];
+  items = [gatheringCopy items];
+  [WeakRetained itemCollectionGathererGatheredItems:items];
 
   v9 = [(NSMutableDictionary *)self->_itemIDToItemCollectionMap count];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = [v4 items];
-  v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  items2 = [gatheringCopy items];
+  v11 = [items2 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1484,24 +1484,24 @@ void __42__BRItemCollectionGatherer_resumeWatching__block_invoke(uint64_t a1)
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(items2);
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 itemID];
-        [(BRItemCollectionGatherer *)self _itemID:v16 becameOwnedByCollection:v4];
+        itemID = [v15 itemID];
+        [(BRItemCollectionGatherer *)self _itemID:itemID becameOwnedByCollection:gatheringCopy];
 
         [(BRItemCollectionGatherer *)self _buildCollectionOnItemIfPossible:v15];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v12 = [items2 countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v12);
   }
 
   finishedInitialGathering = self->_finishedInitialGathering;
-  [(BRItemCollectionGatherer *)self _removeCollectionFromGatherSet:v4];
+  [(BRItemCollectionGatherer *)self _removeCollectionFromGatherSet:gatheringCopy];
   if (!finishedInitialGathering && self->_finishedInitialGathering && v9 != [(NSMutableDictionary *)self->_itemIDToItemCollectionMap count])
   {
     [BRItemCollectionGatherer collectionDidFinishGathering:buf];
@@ -1512,25 +1512,25 @@ LABEL_17:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addDeletedItems:(id)a3
+- (void)_addDeletedItems:(id)items
 {
   queue = self->_queue;
-  v5 = a3;
+  itemsCopy = items;
   dispatch_assert_queue_V2(queue);
-  [(NSMutableSet *)self->_deletedItems addObjectsFromArray:v5];
-  [(NSMutableDictionary *)self->_addedItems removeObjectsForKeys:v5];
+  [(NSMutableSet *)self->_deletedItems addObjectsFromArray:itemsCopy];
+  [(NSMutableDictionary *)self->_addedItems removeObjectsForKeys:itemsCopy];
 }
 
-- (void)_addUpdatedItems:(id)a3
+- (void)_addUpdatedItems:(id)items
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   dispatch_assert_queue_V2(self->_queue);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v4;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -1547,12 +1547,12 @@ LABEL_17:
 
         v10 = *(*(&v16 + 1) + 8 * i);
         addedItems = self->_addedItems;
-        v12 = [v10 itemID];
-        [(NSMutableDictionary *)addedItems setObject:v10 forKeyedSubscript:v12];
+        itemID = [v10 itemID];
+        [(NSMutableDictionary *)addedItems setObject:v10 forKeyedSubscript:itemID];
 
         deletedItems = self->_deletedItems;
-        v14 = [v10 itemID];
-        [(NSMutableSet *)deletedItems removeObject:v14];
+        itemID2 = [v10 itemID];
+        [(NSMutableSet *)deletedItems removeObject:itemID2];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -1567,29 +1567,29 @@ LABEL_17:
 - (id)_getUpdatedItems
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(NSMutableDictionary *)self->_addedItems allValues];
+  allValues = [(NSMutableDictionary *)self->_addedItems allValues];
   [(NSMutableDictionary *)self->_addedItems removeAllObjects];
 
-  return v3;
+  return allValues;
 }
 
 - (id)_getDeletedItems
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(NSMutableSet *)self->_deletedItems allObjects];
+  allObjects = [(NSMutableSet *)self->_deletedItems allObjects];
   [(NSMutableSet *)self->_deletedItems removeAllObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (void)collection:(id)a3 didEncounterError:(id)a4
+- (void)collection:(id)collection didEncounterError:(id)error
 {
   v60 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (([(NSMutableSet *)self->_collectionsSet containsObject:v6]& 1) != 0)
+  collectionCopy = collection;
+  errorCopy = error;
+  if (([(NSMutableSet *)self->_collectionsSet containsObject:collectionCopy]& 1) != 0)
   {
-    v8 = [(NSMutableSet *)self->_waitingToBeGatheredCollections containsObject:v6];
+    v8 = [(NSMutableSet *)self->_waitingToBeGatheredCollections containsObject:collectionCopy];
     v9 = brc_bread_crumbs("[BRItemCollectionGatherer collection:didEncounterError:]", 985);
     v10 = brc_default_log(0, 0);
     if (os_log_type_enabled(v10, 0x90u))
@@ -1603,9 +1603,9 @@ LABEL_17:
       }
 
       *&v57[12] = 2112;
-      *&v57[14] = v6;
+      *&v57[14] = collectionCopy;
       *&v57[22] = 2112;
-      v58 = v7;
+      v58 = errorCopy;
       *v59 = 2112;
       *&v59[2] = v38;
       *&v59[10] = 2112;
@@ -1624,7 +1624,7 @@ LABEL_17:
     v46[1] = 3221225472;
     v46[2] = __57__BRItemCollectionGatherer_collection_didEncounterError___block_invoke;
     v46[3] = &unk_1E7A16C10;
-    v12 = v6;
+    v12 = collectionCopy;
     v47 = v12;
     v48 = v57;
     [(NSMutableDictionary *)itemIDToItemCollectionMap enumerateKeysAndObjectsUsingBlock:v46];
@@ -1636,7 +1636,7 @@ LABEL_17:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412802;
-        v50 = self;
+        selfCopy6 = self;
         v51 = 2112;
         v52 = v12;
         v53 = 2112;
@@ -1664,18 +1664,18 @@ LABEL_17:
     }
 
     v17 = [(NSMutableDictionary *)failureCountByItemID objectForKeyedSubscript:v13];
-    v18 = [v17 longLongValue];
-    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v18];
+    longLongValue = [v17 longLongValue];
+    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:longLongValue];
     [(NSMutableDictionary *)self->_failureCountByItemID setObject:v19 forKeyedSubscript:*(*&v57[8] + 40)];
 
-    v20 = v18 + 1;
+    v20 = longLongValue + 1;
     v42 = 0;
     v43 = &v42;
     v44 = 0x2020000000;
     v45 = 0;
-    if ((v18 + 1) < 6)
+    if ((longLongValue + 1) < 6)
     {
-      if ([v7 br_isFileProviderErrorCode:-1005])
+      if ([errorCopy br_isFileProviderErrorCode:-1005])
       {
         v21 = brc_bread_crumbs("[BRItemCollectionGatherer collection:didEncounterError:]", 1008);
         v22 = brc_default_log(1, 0);
@@ -1683,7 +1683,7 @@ LABEL_17:
         {
           v29 = *(*&v57[8] + 40);
           *buf = 138412802;
-          v50 = self;
+          selfCopy6 = self;
           v51 = 2112;
           v52 = v29;
           v53 = 2112;
@@ -1694,9 +1694,9 @@ LABEL_17:
         goto LABEL_22;
       }
 
-      if (![v7 br_isCocoaErrorCode:257])
+      if (![errorCopy br_isCocoaErrorCode:257])
       {
-        v34 = [MEMORY[0x1E69673A8] defaultManager];
+        defaultManager = [MEMORY[0x1E69673A8] defaultManager];
         v35 = *(*&v57[8] + 40);
         v41[0] = MEMORY[0x1E69E9820];
         v41[1] = 3221225472;
@@ -1705,7 +1705,7 @@ LABEL_17:
         v41[4] = self;
         v41[5] = v57;
         v41[6] = &v42;
-        [v34 fetchItemForItemID:v35 completionHandler:v41];
+        [defaultManager fetchItemForItemID:v35 completionHandler:v41];
 
         if ((v43[3] & 1) == 0)
         {
@@ -1714,7 +1714,7 @@ LABEL_17:
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412802;
-            v50 = self;
+            selfCopy6 = self;
             v51 = 2048;
             v52 = v20;
             v53 = 2112;
@@ -1735,7 +1735,7 @@ LABEL_23:
         {
           v39 = *(*&v57[8] + 40);
           *buf = 138413058;
-          v50 = self;
+          selfCopy6 = self;
           v51 = 2112;
           v52 = v30;
           v53 = 2112;
@@ -1763,7 +1763,7 @@ LABEL_27:
       {
         v40 = *(*&v57[8] + 40);
         *buf = 138412802;
-        v50 = self;
+        selfCopy6 = self;
         v51 = 2112;
         v52 = v40;
         v53 = 2112;
@@ -1781,7 +1781,7 @@ LABEL_27:
       {
         v23 = *(*&v57[8] + 40);
         *buf = 138412802;
-        v50 = self;
+        selfCopy6 = self;
         v51 = 2112;
         v52 = v23;
         v53 = 2112;
@@ -1805,7 +1805,7 @@ LABEL_22:
     *v57 = 138412802;
     *&v57[4] = self;
     *&v57[12] = 2112;
-    *&v57[14] = v6;
+    *&v57[14] = collectionCopy;
     *&v57[22] = 2112;
     v58 = v25;
     _os_log_impl(&dword_1AE2A9000, v26, OS_LOG_TYPE_DEFAULT, "[WARNING] %@ - Ignoring events from item collection: %@%@", v57, 0x20u);
@@ -1882,13 +1882,13 @@ LABEL_6:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)collection:(id)a3 didUpdateItems:(id)a4 replaceItemsByFormerID:(id)a5 deleteItemsWithIDs:(id)a6
+- (void)collection:(id)collection didUpdateItems:(id)items replaceItemsByFormerID:(id)d deleteItemsWithIDs:(id)ds
 {
   v62 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (([(NSMutableSet *)self->_collectionsSet containsObject:v9]& 1) != 0)
+  collectionCopy = collection;
+  itemsCopy = items;
+  dsCopy = ds;
+  if (([(NSMutableSet *)self->_collectionsSet containsObject:collectionCopy]& 1) != 0)
   {
     v12 = brc_bread_crumbs("[BRItemCollectionGatherer collection:didUpdateItems:replaceItemsByFormerID:deleteItemsWithIDs:]", 1066);
     v13 = brc_default_log(1, 0);
@@ -1901,8 +1901,8 @@ LABEL_6:
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v42 = v10;
-    v14 = v10;
+    v42 = itemsCopy;
+    v14 = itemsCopy;
     v15 = [v14 countByEnumeratingWithState:&v48 objects:v61 count:16];
     if (v15)
     {
@@ -1918,8 +1918,8 @@ LABEL_6:
           }
 
           v19 = *(*(&v48 + 1) + 8 * i);
-          v20 = [v19 itemID];
-          [(BRItemCollectionGatherer *)self _itemID:v20 becameOwnedByCollection:v9];
+          itemID = [v19 itemID];
+          [(BRItemCollectionGatherer *)self _itemID:itemID becameOwnedByCollection:collectionCopy];
 
           [(BRItemCollectionGatherer *)self _startWatchingNewSubItem:v19];
         }
@@ -1937,8 +1937,8 @@ LABEL_6:
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v41 = v11;
-    v21 = v11;
+    v41 = dsCopy;
+    v21 = dsCopy;
     v22 = [v21 countByEnumeratingWithState:&v44 objects:v60 count:16];
     if (v22)
     {
@@ -1962,7 +1962,7 @@ LABEL_6:
             if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412802;
-              v53 = self;
+              selfCopy5 = self;
               v54 = 2112;
               v55 = v26;
               v56 = 2112;
@@ -1973,7 +1973,7 @@ LABEL_6:
             goto LABEL_24;
           }
 
-          v27 = [(BRItemCollectionGatherer *)self _itemID:v26 wasDeletedByCollection:v9];
+          v27 = [(BRItemCollectionGatherer *)self _itemID:v26 wasDeletedByCollection:collectionCopy];
           if (v27)
           {
             v28 = v27;
@@ -1982,7 +1982,7 @@ LABEL_6:
             if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138413058;
-              v53 = self;
+              selfCopy5 = self;
               v54 = 2112;
               v55 = v26;
               v56 = 2048;
@@ -2001,7 +2001,7 @@ LABEL_24:
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412802;
-            v53 = self;
+            selfCopy5 = self;
             v54 = 2112;
             v55 = v26;
             v56 = 2112;
@@ -2028,7 +2028,7 @@ LABEL_25:
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138413058;
-      v53 = self;
+      selfCopy5 = self;
       v54 = 2112;
       v55 = v43;
       v56 = 2112;
@@ -2041,8 +2041,8 @@ LABEL_25:
     [(BRItemCollectionGatherer *)self _addUpdatedItems:v40];
     [(BRItemCollectionGatherer *)self _addDeletedItems:v43];
     br_pacer_signal(self->_notificationPacer);
-    v11 = v41;
-    v10 = v42;
+    dsCopy = v41;
+    itemsCopy = v42;
   }
 
   else
@@ -2052,9 +2052,9 @@ LABEL_25:
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v53 = self;
+      selfCopy5 = self;
       v54 = 2112;
-      v55 = v9;
+      v55 = collectionCopy;
       v56 = 2112;
       v57 = v37;
       _os_log_impl(&dword_1AE2A9000, v38, OS_LOG_TYPE_DEFAULT, "[WARNING] %@ - Ignoring events from item collection: %@%@", buf, 0x20u);

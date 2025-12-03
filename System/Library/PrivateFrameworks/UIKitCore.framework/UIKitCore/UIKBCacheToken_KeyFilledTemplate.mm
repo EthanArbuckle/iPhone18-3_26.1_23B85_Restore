@@ -1,18 +1,18 @@
 @interface UIKBCacheToken_KeyFilledTemplate
-+ (id)tokenTemplateFilledForKey:(id)a3 style:(int)a4 renderConfig:(id)a5 size:(CGSize)a6;
-- (id)_stringWithAdditionalValues:(id)a3;
++ (id)tokenTemplateFilledForKey:(id)key style:(int)style renderConfig:(id)config size:(CGSize)size;
+- (id)_stringWithAdditionalValues:(id)values;
 @end
 
 @implementation UIKBCacheToken_KeyFilledTemplate
 
-+ (id)tokenTemplateFilledForKey:(id)a3 style:(int)a4 renderConfig:(id)a5 size:(CGSize)a6
++ (id)tokenTemplateFilledForKey:(id)key style:(int)style renderConfig:(id)config size:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v10 = a5;
-  v11 = a3;
+  height = size.height;
+  width = size.width;
+  configCopy = config;
+  keyCopy = key;
   v12 = objc_alloc(objc_opt_class());
-  if ((a4 & 0xFFFFFFFE) == 0x6A)
+  if ((style & 0xFFFFFFFE) == 0x6A)
   {
     v13 = 129;
   }
@@ -22,7 +22,7 @@
     v13 = 1;
   }
 
-  v14 = [v12 _initWithKey:v11 style:v13 renderConfig:v10 displayInsets:{0.0, 0.0, 0.0, 0.0}];
+  v14 = [v12 _initWithKey:keyCopy style:v13 renderConfig:configCopy displayInsets:{0.0, 0.0, 0.0, 0.0}];
 
   [v14 setEmptyFields:1];
   *(v14 + 19) = width;
@@ -31,16 +31,16 @@
   return v14;
 }
 
-- (id)_stringWithAdditionalValues:(id)a3
+- (id)_stringWithAdditionalValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__UIKBCacheToken_KeyFilledTemplate__stringWithAdditionalValues___block_invoke;
   v8[3] = &unk_1E710E830;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = valuesCopy;
+  v5 = valuesCopy;
   v6 = [(UIKBCacheToken *)self stringForConstruction:v8];
 
   return v6;

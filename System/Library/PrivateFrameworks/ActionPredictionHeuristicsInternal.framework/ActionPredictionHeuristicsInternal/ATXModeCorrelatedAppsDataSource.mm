@@ -1,35 +1,35 @@
 @interface ATXModeCorrelatedAppsDataSource
-- (ATXModeCorrelatedAppsDataSource)initWithDevice:(id)a3;
-- (void)modeCorrelatedAppsInCurrentModeWithCallback:(id)a3;
+- (ATXModeCorrelatedAppsDataSource)initWithDevice:(id)device;
+- (void)modeCorrelatedAppsInCurrentModeWithCallback:(id)callback;
 @end
 
 @implementation ATXModeCorrelatedAppsDataSource
 
-- (ATXModeCorrelatedAppsDataSource)initWithDevice:(id)a3
+- (ATXModeCorrelatedAppsDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = ATXModeCorrelatedAppsDataSource;
   v6 = [(ATXModeCorrelatedAppsDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (void)modeCorrelatedAppsInCurrentModeWithCallback:(id)a3
+- (void)modeCorrelatedAppsInCurrentModeWithCallback:(id)callback
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D41C60] currentModeEvent];
-  v5 = v4;
-  if (v4)
+  callbackCopy = callback;
+  currentModeEvent = [MEMORY[0x277D41C60] currentModeEvent];
+  v5 = currentModeEvent;
+  if (currentModeEvent)
   {
-    v6 = [v4 eventBody];
-    [v6 atx_dndModeSemanticType];
+    eventBody = [currentModeEvent eventBody];
+    [eventBody atx_dndModeSemanticType];
 
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:DNDModeSemanticTypeToATXActivityType()];
     v8 = objc_alloc(MEMORY[0x277CBEAA8]);
@@ -43,11 +43,11 @@
     v7 = 0;
   }
 
-  v10 = [MEMORY[0x277D41C68] currentModeEvent];
-  if (v10)
+  currentModeEvent2 = [MEMORY[0x277D41C68] currentModeEvent];
+  if (currentModeEvent2)
   {
     v11 = objc_alloc(MEMORY[0x277CBEAA8]);
-    [v10 timestamp];
+    [currentModeEvent2 timestamp];
     v12 = [v11 initWithTimeIntervalSinceReferenceDate:?];
     v13 = v12;
     if (v9)
@@ -61,8 +61,8 @@ LABEL_13:
       }
 
       v15 = MEMORY[0x277CCABB0];
-      v16 = [v10 eventBody];
-      [v16 modeType];
+      eventBody2 = [currentModeEvent2 eventBody];
+      [eventBody2 modeType];
       v17 = [v15 numberWithUnsignedInteger:BMUserFocusInferredModeTypeToActivity()];
 
       v18 = v13;
@@ -79,8 +79,8 @@ LABEL_11:
     else
     {
       v21 = MEMORY[0x277CCABB0];
-      v22 = [v10 eventBody];
-      [v22 modeType];
+      eventBody3 = [currentModeEvent2 eventBody];
+      [eventBody3 modeType];
       v17 = [v21 numberWithUnsignedInteger:BMUserFocusInferredModeTypeToActivity()];
 
       v23 = v13;
@@ -125,7 +125,7 @@ LABEL_14:
     }
 
 LABEL_22:
-    (*(v3 + 2))(v3, 0, 0, 0);
+    (*(callbackCopy + 2))(callbackCopy, 0, 0, 0);
     goto LABEL_29;
   }
 
@@ -161,7 +161,7 @@ LABEL_22:
   v38[4] = v33;
   v36 = [v35 _pas_mappedArrayWithTransform:v38];
 
-  (*(v3 + 2))(v3, v36, v9, 0);
+  (*(callbackCopy + 2))(callbackCopy, v36, v9, 0);
 LABEL_29:
 
   v37 = *MEMORY[0x277D85DE8];

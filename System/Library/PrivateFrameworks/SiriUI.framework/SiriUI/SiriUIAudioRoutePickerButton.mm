@@ -1,5 +1,5 @@
 @interface SiriUIAudioRoutePickerButton
-- (SiriUIAudioRoutePickerButton)initWithFrame:(CGRect)a3;
+- (SiriUIAudioRoutePickerButton)initWithFrame:(CGRect)frame;
 - (id)_baseBluetoothImage;
 - (id)_bluetoothImage;
 - (id)_bluetoothImageHighlighted;
@@ -8,25 +8,25 @@
 
 @implementation SiriUIAudioRoutePickerButton
 
-- (SiriUIAudioRoutePickerButton)initWithFrame:(CGRect)a3
+- (SiriUIAudioRoutePickerButton)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SiriUIAudioRoutePickerButton;
-  v3 = [(SiriUIContentButton *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriUIContentButton *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SiriUIAudioRoutePickerButton *)v3 _bluetoothImage];
-    [(SiriUIAudioRoutePickerButton *)v4 setImage:v5 forState:0];
+    _bluetoothImage = [(SiriUIAudioRoutePickerButton *)v3 _bluetoothImage];
+    [(SiriUIAudioRoutePickerButton *)v4 setImage:_bluetoothImage forState:0];
 
-    v6 = [(SiriUIAudioRoutePickerButton *)v4 _bluetoothImageOn];
-    [(SiriUIAudioRoutePickerButton *)v4 setImage:v6 forState:4];
+    _bluetoothImageOn = [(SiriUIAudioRoutePickerButton *)v4 _bluetoothImageOn];
+    [(SiriUIAudioRoutePickerButton *)v4 setImage:_bluetoothImageOn forState:4];
 
-    v7 = [(SiriUIAudioRoutePickerButton *)v4 _bluetoothImageHighlighted];
-    [(SiriUIAudioRoutePickerButton *)v4 setImage:v7 forState:1];
+    _bluetoothImageHighlighted = [(SiriUIAudioRoutePickerButton *)v4 _bluetoothImageHighlighted];
+    [(SiriUIAudioRoutePickerButton *)v4 setImage:_bluetoothImageHighlighted forState:1];
 
-    v8 = [(SiriUIAudioRoutePickerButton *)v4 _bluetoothImageHighlighted];
-    [(SiriUIAudioRoutePickerButton *)v4 setImage:v8 forState:5];
+    _bluetoothImageHighlighted2 = [(SiriUIAudioRoutePickerButton *)v4 _bluetoothImageHighlighted];
+    [(SiriUIAudioRoutePickerButton *)v4 setImage:_bluetoothImageHighlighted2 forState:5];
   }
 
   return v4;
@@ -43,27 +43,27 @@
 
 - (id)_bluetoothImage
 {
-  v2 = [(SiriUIAudioRoutePickerButton *)self _baseBluetoothImage];
-  v3 = [MEMORY[0x277D75348] siriui_lightMaskingColor];
-  v4 = [v2 _flatImageWithColor:v3];
+  _baseBluetoothImage = [(SiriUIAudioRoutePickerButton *)self _baseBluetoothImage];
+  siriui_lightMaskingColor = [MEMORY[0x277D75348] siriui_lightMaskingColor];
+  v4 = [_baseBluetoothImage _flatImageWithColor:siriui_lightMaskingColor];
 
   return v4;
 }
 
 - (id)_bluetoothImageOn
 {
-  v2 = [(SiriUIAudioRoutePickerButton *)self _baseBluetoothImage];
-  v3 = [MEMORY[0x277D75348] whiteColor];
-  v4 = [v2 _flatImageWithColor:v3];
+  _baseBluetoothImage = [(SiriUIAudioRoutePickerButton *)self _baseBluetoothImage];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v4 = [_baseBluetoothImage _flatImageWithColor:whiteColor];
 
   return v4;
 }
 
 - (id)_bluetoothImageHighlighted
 {
-  v2 = [(SiriUIAudioRoutePickerButton *)self _baseBluetoothImage];
-  v3 = [MEMORY[0x277D75348] siriui_lightMaskingHighlightColor];
-  v4 = [v2 _flatImageWithColor:v3];
+  _baseBluetoothImage = [(SiriUIAudioRoutePickerButton *)self _baseBluetoothImage];
+  siriui_lightMaskingHighlightColor = [MEMORY[0x277D75348] siriui_lightMaskingHighlightColor];
+  v4 = [_baseBluetoothImage _flatImageWithColor:siriui_lightMaskingHighlightColor];
 
   return v4;
 }

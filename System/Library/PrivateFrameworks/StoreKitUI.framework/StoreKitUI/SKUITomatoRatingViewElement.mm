@@ -1,15 +1,15 @@
 @interface SKUITomatoRatingViewElement
-- (SKUITomatoRatingViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUITomatoRatingViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUITomatoRatingViewElement
 
-- (SKUITomatoRatingViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUITomatoRatingViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUITomatoRatingViewElement initWithDOMElement:parent:elementFactory:];
@@ -17,14 +17,14 @@
 
   v24.receiver = self;
   v24.super_class = SKUITomatoRatingViewElement;
-  v11 = [(SKUIViewElement *)&v24 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v24 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"value"];
+    v12 = [elementCopy getAttribute:@"value"];
     [v12 floatValue];
     v11->_tomatoRating = v13;
 
-    v14 = [v8 getAttribute:@"freshness"];
+    v14 = [elementCopy getAttribute:@"freshness"];
     if ([v14 length])
     {
       if (![v14 isEqualToString:@"certified"])
@@ -46,7 +46,7 @@ LABEL_17:
         v22[3] = &unk_2781FA390;
         v18 = v11;
         v23 = v18;
-        v19 = [(IKTextParser *)SKUIViewElementText textWithDOMElement:v8 usingParseBlock:v22];
+        v19 = [(IKTextParser *)SKUIViewElementText textWithDOMElement:elementCopy usingParseBlock:v22];
         ratingText = v18->_ratingText;
         v18->_ratingText = v19;
 
@@ -56,10 +56,10 @@ LABEL_17:
 
     else
     {
-      v15 = [v8 getAttribute:@"certified"];
-      v16 = [v15 BOOLValue];
+      v15 = [elementCopy getAttribute:@"certified"];
+      bOOLValue = [v15 BOOLValue];
 
-      if (!v16)
+      if (!bOOLValue)
       {
         if (v11->_tomatoRating >= 0.6)
         {
@@ -106,17 +106,17 @@ id __72__SKUITomatoRatingViewElement_initWithDOMElement_parent_elementFactory___
   return v11;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SKUITomatoRatingViewElement;
-  v5 = [(SKUIViewElement *)&v9 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v9 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_freshness = [(SKUITomatoRatingViewElement *)v4 freshness];
-    [(SKUITomatoRatingViewElement *)v4 tomatoRating];
+    self->_freshness = [(SKUITomatoRatingViewElement *)elementCopy freshness];
+    [(SKUITomatoRatingViewElement *)elementCopy tomatoRating];
     self->_tomatoRating = v7;
   }
 

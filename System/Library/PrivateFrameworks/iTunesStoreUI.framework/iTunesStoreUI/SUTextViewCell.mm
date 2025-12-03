@@ -1,23 +1,23 @@
 @interface SUTextViewCell
-- (BOOL)textContentViewShouldBeginEditing:(id)a3;
-- (BOOL)textContentViewShouldEndEditing:(id)a3;
-- (SUTextViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BOOL)textContentViewShouldBeginEditing:(id)editing;
+- (BOOL)textContentViewShouldEndEditing:(id)editing;
+- (SUTextViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)textContentViewDidChange:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)textContentViewDidChange:(id)change;
 @end
 
 @implementation SUTextViewCell
 
-- (SUTextViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SUTextViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = SUTextViewCell;
-  v4 = [(SUTableCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SUTableCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DCEF8]);
@@ -68,52 +68,52 @@
   [(UIScrollView *)self->_scrollView setContentSize:v5, v7];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   [(SUTextContentView *)self->_textContentView setBackgroundColor:?];
   v5.receiver = self;
   v5.super_class = SUTextViewCell;
-  [(SUTextViewCell *)&v5 setBackgroundColor:a3];
+  [(SUTextViewCell *)&v5 setBackgroundColor:color];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v3.receiver = self;
   v3.super_class = SUTextViewCell;
-  [(SUTextViewCell *)&v3 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SUTextViewCell *)&v3 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = SUTextViewCell;
   [(SUTableCell *)&v4 setHighlighted:0 animated:0];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = SUTextViewCell;
   [(SUTableCell *)&v4 setSelected:0 animated:0];
 }
 
-- (void)textContentViewDidChange:(id)a3
+- (void)textContentViewDidChange:(id)change
 {
-  [a3 rectForScrollToVisible];
+  [change rectForScrollToVisible];
   x = v11.origin.x;
   y = v11.origin.y;
   width = v11.size.width;
   height = v11.size.height;
   if (!CGRectIsEmpty(v11))
   {
-    [a3 convertRect:self->_scrollView toView:{x, y, width, height}];
+    [change convertRect:self->_scrollView toView:{x, y, width, height}];
     scrollView = self->_scrollView;
 
     [(UIScrollView *)scrollView scrollRectToVisible:1 animated:?];
   }
 }
 
-- (BOOL)textContentViewShouldBeginEditing:(id)a3
+- (BOOL)textContentViewShouldBeginEditing:(id)editing
 {
   delegate = self->_delegate;
   if (delegate)
@@ -127,7 +127,7 @@
   }
 }
 
-- (BOOL)textContentViewShouldEndEditing:(id)a3
+- (BOOL)textContentViewShouldEndEditing:(id)editing
 {
   delegate = self->_delegate;
   if (delegate)

@@ -7,7 +7,7 @@
 
 - (BOOL)hasAllRefinements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10013C47C();
 
   return v3 & 1;

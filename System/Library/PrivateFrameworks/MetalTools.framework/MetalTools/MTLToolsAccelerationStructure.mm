@@ -1,8 +1,8 @@
 @interface MTLToolsAccelerationStructure
 - (MTLAccelerationStructureDescriptor)descriptor;
 - (MTLResourceID)gpuResourceID;
-- (MTLToolsAccelerationStructure)initWithBaseObject:(id)a3 parent:(id)a4;
-- (MTLToolsAccelerationStructure)initWithBaseObject:(id)a3 parent:(id)a4 heap:(id)a5;
+- (MTLToolsAccelerationStructure)initWithBaseObject:(id)object parent:(id)parent;
+- (MTLToolsAccelerationStructure)initWithBaseObject:(id)object parent:(id)parent heap:(id)heap;
 - (unint64_t)accelerationStructureUniqueIdentifier;
 - (unint64_t)bufferOffset;
 - (unint64_t)gpuHandle;
@@ -10,102 +10,102 @@
 - (unint64_t)size;
 - (unint64_t)uniqueIdentifier;
 - (void)dealloc;
-- (void)setDescriptor:(id)a3;
+- (void)setDescriptor:(id)descriptor;
 @end
 
 @implementation MTLToolsAccelerationStructure
 
 - (unint64_t)size
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 size];
+  return [baseObject size];
 }
 
 - (unint64_t)bufferOffset
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 bufferOffset];
+  return [baseObject bufferOffset];
 }
 
 - (unint64_t)uniqueIdentifier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 uniqueIdentifier];
+  return [baseObject uniqueIdentifier];
 }
 
 - (unint64_t)accelerationStructureUniqueIdentifier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 accelerationStructureUniqueIdentifier];
+  return [baseObject accelerationStructureUniqueIdentifier];
 }
 
 - (MTLAccelerationStructureDescriptor)descriptor
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 descriptor];
+  return [baseObject descriptor];
 }
 
-- (void)setDescriptor:(id)a3
+- (void)setDescriptor:(id)descriptor
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setDescriptor:a3];
+  [baseObject setDescriptor:descriptor];
 }
 
 - (unint64_t)resourceIndex
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 resourceIndex];
+  return [baseObject resourceIndex];
 }
 
 - (unint64_t)gpuHandle
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuHandle];
+  return [baseObject gpuHandle];
 }
 
 - (MTLResourceID)gpuResourceID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuResourceID];
+  return [baseObject gpuResourceID];
 }
 
-- (MTLToolsAccelerationStructure)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTLToolsAccelerationStructure)initWithBaseObject:(id)object parent:(id)parent
 {
   v9.receiver = self;
   v9.super_class = MTLToolsAccelerationStructure;
   v6 = [MTLToolsResource initWithBaseObject:sel_initWithBaseObject_parent_ parent:?];
   if (v6)
   {
-    v7 = [a3 buffer];
-    if (v7)
+    buffer = [object buffer];
+    if (buffer)
     {
-      v6->_toolsBuffer = [(MTLToolsResource *)[MTLToolsBuffer alloc] initWithBaseObject:v7 parent:a4];
+      v6->_toolsBuffer = [(MTLToolsResource *)[MTLToolsBuffer alloc] initWithBaseObject:buffer parent:parent];
     }
   }
 
   return v6;
 }
 
-- (MTLToolsAccelerationStructure)initWithBaseObject:(id)a3 parent:(id)a4 heap:(id)a5
+- (MTLToolsAccelerationStructure)initWithBaseObject:(id)object parent:(id)parent heap:(id)heap
 {
   v10.receiver = self;
   v10.super_class = MTLToolsAccelerationStructure;
-  v7 = [(MTLToolsResource *)&v10 initWithBaseObject:a3 parent:a4 heap:a5];
+  v7 = [(MTLToolsResource *)&v10 initWithBaseObject:object parent:parent heap:heap];
   if (v7)
   {
-    v8 = [a3 buffer];
-    if (v8)
+    buffer = [object buffer];
+    if (buffer)
     {
-      v7->_toolsBuffer = [(MTLToolsResource *)[MTLToolsBuffer alloc] initWithBaseObject:v8 parent:a4];
+      v7->_toolsBuffer = [(MTLToolsResource *)[MTLToolsBuffer alloc] initWithBaseObject:buffer parent:parent];
     }
   }
 

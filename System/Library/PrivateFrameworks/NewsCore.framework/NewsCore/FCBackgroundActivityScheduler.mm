@@ -1,28 +1,28 @@
 @interface FCBackgroundActivityScheduler
-- (id)_makeFullIdentifierFromIdentifier:(id)a3;
-- (int64_t)_makeFromFCResult:(int64_t)a3;
-- (void)cancelRepeatingTaskWithIdentifier:(id)a3;
-- (void)requestBackgroundAppRefreshStartingAfter:(id)a3 before:(id)a4;
-- (void)scheduleBackgroundTaskRepeatingAtInterval:(double)a3 identifier:(id)a4 task:(id)a5;
+- (id)_makeFullIdentifierFromIdentifier:(id)identifier;
+- (int64_t)_makeFromFCResult:(int64_t)result;
+- (void)cancelRepeatingTaskWithIdentifier:(id)identifier;
+- (void)requestBackgroundAppRefreshStartingAfter:(id)after before:(id)before;
+- (void)scheduleBackgroundTaskRepeatingAtInterval:(double)interval identifier:(id)identifier task:(id)task;
 @end
 
 @implementation FCBackgroundActivityScheduler
 
-- (void)scheduleBackgroundTaskRepeatingAtInterval:(double)a3 identifier:(id)a4 task:(id)a5
+- (void)scheduleBackgroundTaskRepeatingAtInterval:(double)interval identifier:(id)identifier task:(id)task
 {
-  v8 = a5;
-  v9 = [(FCBackgroundActivityScheduler *)self _makeFullIdentifierFromIdentifier:a4];
+  taskCopy = task;
+  v9 = [(FCBackgroundActivityScheduler *)self _makeFullIdentifierFromIdentifier:identifier];
   v10 = [objc_alloc(MEMORY[0x1E696AAD0]) initWithIdentifier:v9];
   [v10 setRepeats:1];
-  [v10 setInterval:a3];
+  [v10 setInterval:interval];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __91__FCBackgroundActivityScheduler_scheduleBackgroundTaskRepeatingAtInterval_identifier_task___block_invoke;
   v13[3] = &unk_1E7C42158;
   v14 = v10;
-  v15 = self;
-  v16 = v8;
-  v11 = v8;
+  selfCopy = self;
+  v16 = taskCopy;
+  v11 = taskCopy;
   v12 = v10;
   [v12 scheduleWithBlock:v13];
 }
@@ -56,34 +56,34 @@ uint64_t __91__FCBackgroundActivityScheduler_scheduleBackgroundTaskRepeatingAtIn
   return v4(v2, v3);
 }
 
-- (void)cancelRepeatingTaskWithIdentifier:(id)a3
+- (void)cancelRepeatingTaskWithIdentifier:(id)identifier
 {
-  v4 = [(FCBackgroundActivityScheduler *)self _makeFullIdentifierFromIdentifier:a3];
+  v4 = [(FCBackgroundActivityScheduler *)self _makeFullIdentifierFromIdentifier:identifier];
   v3 = [objc_alloc(MEMORY[0x1E696AAD0]) initWithIdentifier:v4];
   [v3 invalidate];
 }
 
-- (void)requestBackgroundAppRefreshStartingAfter:(id)a3 before:(id)a4
+- (void)requestBackgroundAppRefreshStartingAfter:(id)after before:(id)before
 {
   v5 = MEMORY[0x1E699A4B8];
-  v6 = a4;
-  v7 = a3;
-  v15 = [v5 scheduler];
+  beforeCopy = before;
+  afterCopy = after;
+  scheduler = [v5 scheduler];
   v8 = MEMORY[0x1E699A488];
-  v9 = [MEMORY[0x1E696AAE8] mainBundle];
-  v10 = [v9 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
   v11 = *MEMORY[0x1E699A570];
-  v12 = [MEMORY[0x1E696AAE8] mainBundle];
-  v13 = [v12 bundleIdentifier];
-  v14 = [v8 applicationLaunchActivityWithName:v10 priority:v11 forApplication:v13 withReason:*MEMORY[0x1E699A540] duration:*MEMORY[0x1E699A4F0] startingAfter:v7 startingBefore:v6];
+  mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+  v14 = [v8 applicationLaunchActivityWithName:bundleIdentifier priority:v11 forApplication:bundleIdentifier2 withReason:*MEMORY[0x1E699A540] duration:*MEMORY[0x1E699A4F0] startingAfter:afterCopy startingBefore:beforeCopy];
 
   [v14 setRequiresNetwork:1];
-  [v15 submitActivity:v14];
+  [scheduler submitActivity:v14];
 }
 
-- (int64_t)_makeFromFCResult:(int64_t)a3
+- (int64_t)_makeFromFCResult:(int64_t)result
 {
-  if (a3 == 2)
+  if (result == 2)
   {
     return 2;
   }
@@ -94,16 +94,16 @@ uint64_t __91__FCBackgroundActivityScheduler_scheduleBackgroundTaskRepeatingAtIn
   }
 }
 
-- (id)_makeFullIdentifierFromIdentifier:(id)a3
+- (id)_makeFullIdentifierFromIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E696AAE8];
-  v4 = a3;
-  v5 = [v3 mainBundle];
-  v6 = [v5 bundleIdentifier];
+  identifierCopy = identifier;
+  mainBundle = [v3 mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v7 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:v6];
+  v7 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:bundleIdentifier];
   [v7 appendString:@"."];
-  [v7 appendString:v4];
+  [v7 appendString:identifierCopy];
 
   return v7;
 }

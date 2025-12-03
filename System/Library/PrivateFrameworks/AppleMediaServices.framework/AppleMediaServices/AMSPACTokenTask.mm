@@ -1,23 +1,23 @@
 @interface AMSPACTokenTask
-+ (id)signatureForSimLabelID:(id)a3 fromSignatures:(id)a4;
-+ (id)signatureMapFromServerSignatures:(id)a3;
-+ (id)tokenForSimLabelID:(id)a3 withQueue:(id)a4 signingData:(id)a5;
-- (AMSPACTokenTask)initWithSimLabelID:(id)a3;
++ (id)signatureForSimLabelID:(id)d fromSignatures:(id)signatures;
++ (id)signatureMapFromServerSignatures:(id)signatures;
++ (id)tokenForSimLabelID:(id)d withQueue:(id)queue signingData:(id)data;
+- (AMSPACTokenTask)initWithSimLabelID:(id)d;
 - (id)perform;
 @end
 
 @implementation AMSPACTokenTask
 
-- (AMSPACTokenTask)initWithSimLabelID:(id)a3
+- (AMSPACTokenTask)initWithSimLabelID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = AMSPACTokenTask;
   v6 = [(AMSTask *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_simLabelID, a3);
+    objc_storeStrong(&v6->_simLabelID, d);
   }
 
   return v7;
@@ -25,43 +25,43 @@
 
 - (id)perform
 {
-  v3 = [(AMSPACTokenTask *)self simLabelID];
+  simLabelID = [(AMSPACTokenTask *)self simLabelID];
 
-  if (v3)
+  if (simLabelID)
   {
-    v4 = [(AMSPACTokenTask *)self simLabelID];
+    simLabelID2 = [(AMSPACTokenTask *)self simLabelID];
     v5 = dispatch_get_global_queue(0, 0);
-    v6 = [(AMSPACTokenTask *)self signingData];
-    v7 = [AMSPACTokenTask tokenForSimLabelID:v4 withQueue:v5 signingData:v6];
+    signingData = [(AMSPACTokenTask *)self signingData];
+    v7 = [AMSPACTokenTask tokenForSimLabelID:simLabelID2 withQueue:v5 signingData:signingData];
   }
 
   else
   {
-    v4 = AMSError(12, @"Cannot fetch PAC token", @"SIM labelID is missing", 0);
-    v7 = [AMSPromise promiseWithError:v4];
+    simLabelID2 = AMSError(12, @"Cannot fetch PAC token", @"SIM labelID is missing", 0);
+    v7 = [AMSPromise promiseWithError:simLabelID2];
   }
 
   return v7;
 }
 
-+ (id)tokenForSimLabelID:(id)a3 withQueue:(id)a4 signingData:(id)a5
++ (id)tokenForSimLabelID:(id)d withQueue:(id)queue signingData:(id)data
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  dCopy = d;
+  dataCopy = data;
+  queueCopy = queue;
   v11 = objc_opt_new();
-  v12 = [objc_alloc(MEMORY[0x1E69A4888]) initWithQueue:v10];
+  v12 = [objc_alloc(MEMORY[0x1E69A4888]) initWithQueue:queueCopy];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __60__AMSPACTokenTask_tokenForSimLabelID_withQueue_signingData___block_invoke;
   v18[3] = &unk_1E73BA648;
   v13 = v11;
-  v20 = v8;
-  v21 = a1;
+  v20 = dCopy;
+  selfCopy = self;
   v19 = v13;
-  v14 = v8;
-  [v12 generatePhoneAuthenticationSignatureOverData:v9 withCompletion:v18];
+  v14 = dCopy;
+  [v12 generatePhoneAuthenticationSignatureOverData:dataCopy withCompletion:v18];
 
   v15 = v20;
   v16 = v13;
@@ -140,16 +140,16 @@ void __60__AMSPACTokenTask_tokenForSimLabelID_withQueue_signingData___block_invo
   }
 }
 
-+ (id)signatureMapFromServerSignatures:(id)a3
++ (id)signatureMapFromServerSignatures:(id)signatures
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  signaturesCopy = signatures;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = signaturesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -165,9 +165,9 @@ void __60__AMSPACTokenTask_tokenForSimLabelID_withQueue_signingData___block_invo
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 serverVerifiableEncoding];
-        v12 = [v10 subscriptionIdentifier];
-        [v4 setObject:v11 forKeyedSubscript:v12];
+        serverVerifiableEncoding = [v10 serverVerifiableEncoding];
+        subscriptionIdentifier = [v10 subscriptionIdentifier];
+        [v4 setObject:serverVerifiableEncoding forKeyedSubscript:subscriptionIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -181,11 +181,11 @@ void __60__AMSPACTokenTask_tokenForSimLabelID_withQueue_signingData___block_invo
   return v13;
 }
 
-+ (id)signatureForSimLabelID:(id)a3 fromSignatures:(id)a4
++ (id)signatureForSimLabelID:(id)d fromSignatures:(id)signatures
 {
-  v6 = a3;
-  v7 = [a1 signatureMapFromServerSignatures:a4];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  dCopy = d;
+  v7 = [self signatureMapFromServerSignatures:signatures];
+  v8 = [v7 objectForKeyedSubscript:dCopy];
 
   return v8;
 }

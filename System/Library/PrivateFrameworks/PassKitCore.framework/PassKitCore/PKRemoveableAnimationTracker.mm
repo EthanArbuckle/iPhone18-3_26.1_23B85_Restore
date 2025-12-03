@@ -1,38 +1,38 @@
 @interface PKRemoveableAnimationTracker
-+ (id)createForAnimation:(id)a3 inLayer:(id)a4 store:(id)a5 withPreemptAction:(id)a6 completionAction:(id)a7;
++ (id)createForAnimation:(id)animation inLayer:(id)layer store:(id)store withPreemptAction:(id)action completionAction:(id)completionAction;
 - (CALayer)layer;
 - (void)_preempt;
 - (void)_remove;
-- (void)_removeWithLayer:(uint64_t)a1;
+- (void)_removeWithLayer:(uint64_t)layer;
 @end
 
 @implementation PKRemoveableAnimationTracker
 
 - (void)_preempt
 {
-  if (!a1 || (*(a1 + 11) & 1) != 0)
+  if (!self || (*(self + 11) & 1) != 0)
   {
     return;
   }
 
-  *(a1 + 11) = 1;
-  v9 = _Block_copy(*(a1 + 16));
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  *(self + 11) = 1;
+  v9 = _Block_copy(*(self + 16));
+  v2 = *(self + 16);
+  *(self + 16) = 0;
 
-  if ((*(a1 + 8) & 1) == 0 && (*(a1 + 9) & 1) == 0)
+  if ((*(self + 8) & 1) == 0 && (*(self + 9) & 1) == 0)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
+    WeakRetained = objc_loadWeakRetained((self + 32));
     v4 = WeakRetained;
     if (!WeakRetained)
     {
-      [(PKRemoveableAnimationTracker *)a1 _removeWithLayer:?];
+      [(PKRemoveableAnimationTracker *)self _removeWithLayer:?];
 LABEL_16:
 
       goto LABEL_17;
     }
 
-    v5 = [WeakRetained animationForKey:*(a1 + 40)];
+    v5 = [WeakRetained animationForKey:*(self + 40)];
     if (v5)
     {
       [v4 pkui_elapsedDurationForAnimation:v5];
@@ -43,23 +43,23 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      *(a1 + 24) = 1;
+      *(self + 24) = 1;
       if (v9)
       {
         v9[2]();
       }
 
-      v7 = a1;
+      selfCopy2 = self;
       v8 = v4;
     }
 
     else
     {
-      v7 = a1;
+      selfCopy2 = self;
       v8 = 0;
     }
 
-    [(PKRemoveableAnimationTracker *)v7 _removeWithLayer:v8];
+    [(PKRemoveableAnimationTracker *)selfCopy2 _removeWithLayer:v8];
     goto LABEL_15;
   }
 
@@ -68,26 +68,26 @@ LABEL_17:
 
 - (void)_remove
 {
-  if (a1 && (*(a1 + 8) & 1) == 0)
+  if (self && (*(self + 8) & 1) == 0)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
-    [(PKRemoveableAnimationTracker *)a1 _removeWithLayer:?];
+    WeakRetained = objc_loadWeakRetained((self + 32));
+    [(PKRemoveableAnimationTracker *)self _removeWithLayer:?];
   }
 }
 
-+ (id)createForAnimation:(id)a3 inLayer:(id)a4 store:(id)a5 withPreemptAction:(id)a6 completionAction:(id)a7
++ (id)createForAnimation:(id)animation inLayer:(id)layer store:(id)store withPreemptAction:(id)action completionAction:(id)completionAction
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
-  if (v11 && v12)
+  animationCopy = animation;
+  layerCopy = layer;
+  storeCopy = store;
+  actionCopy = action;
+  completionActionCopy = completionAction;
+  v16 = completionActionCopy;
+  if (animationCopy && layerCopy)
   {
-    v17 = [v11 delegate];
+    delegate = [animationCopy delegate];
 
-    if (v17)
+    if (delegate)
     {
       __break(1u);
     }
@@ -101,18 +101,18 @@ LABEL_17:
         v32.super_class = PKRemoveableAnimationTracker;
         v19 = objc_msgSendSuper2(&v32, sel_init);
 LABEL_6:
-        objc_storeWeak(v19 + 4, v12);
-        v20 = _Block_copy(v14);
+        objc_storeWeak(v19 + 4, layerCopy);
+        v20 = _Block_copy(actionCopy);
         v21 = v19[2];
         v19[2] = v20;
 
-        if (v13)
+        if (storeCopy)
         {
           *(v19 + 10) = 1;
-          [v13[1] addObject:v19];
+          [storeCopy[1] addObject:v19];
         }
 
-        objc_initWeak(&v32.receiver, v13);
+        objc_initWeak(&v32.receiver, storeCopy);
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __100__PKRemoveableAnimationTracker_createForAnimation_inLayer_store_withPreemptAction_completionAction___block_invoke;
@@ -121,8 +121,8 @@ LABEL_6:
         v29 = v22;
         objc_copyWeak(&v31, &v32.receiver);
         v30 = v16;
-        [v11 pkui_setCompletionHandler:v28];
-        v23 = [v12 pkui_addAdditiveAnimation:v11];
+        [animationCopy pkui_setCompletionHandler:v28];
+        v23 = [layerCopy pkui_addAdditiveAnimation:animationCopy];
         v24 = v22[5];
         v22[5] = v23;
 
@@ -140,9 +140,9 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (v15)
+  if (completionActionCopy)
   {
-    (*(v15 + 2))(v15, v11 == 0);
+    (*(completionActionCopy + 2))(completionActionCopy, animationCopy == 0);
   }
 
   v26 = 0;
@@ -185,18 +185,18 @@ uint64_t __100__PKRemoveableAnimationTracker_createForAnimation_inLayer_store_wi
   return result;
 }
 
-- (void)_removeWithLayer:(uint64_t)a1
+- (void)_removeWithLayer:(uint64_t)layer
 {
   v3 = a2;
-  if ((*(a1 + 8) & 1) == 0 && (*(a1 + 9) & 1) == 0)
+  if ((*(layer + 8) & 1) == 0 && (*(layer + 9) & 1) == 0)
   {
     v4 = v3;
-    if ((*(a1 + 11) & 1) != 0 || ([(PKRemoveableAnimationTracker *)a1 _preempt], v3 = v4, (*(a1 + 8) & 1) == 0))
+    if ((*(layer + 11) & 1) != 0 || ([(PKRemoveableAnimationTracker *)layer _preempt], v3 = v4, (*(layer + 8) & 1) == 0))
     {
-      *(a1 + 8) = 1;
+      *(layer + 8) = 1;
       if (v3)
       {
-        [v4 removeAnimationForKey:*(a1 + 40)];
+        [v4 removeAnimationForKey:*(layer + 40)];
         v3 = v4;
       }
     }

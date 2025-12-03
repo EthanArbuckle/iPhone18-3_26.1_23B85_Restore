@@ -1,39 +1,39 @@
 @interface PREditorRootViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axSetAccessibilityElements;
 - (void)_axSetDepthEffectButton;
 - (void)_axSetPageControlValue;
 - (void)_updateMenuElements;
 - (void)currentLookDidChange;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation PREditorRootViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PREditorRootViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"PRComplicationSceneHostViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"PREditorRootViewController" hasProperty:@"pageControl" withType:"@"];
-  [v3 validateClass:@"PREditorRootViewController" hasInstanceMethod:@"currentLookDidChange" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PREditorRootViewController" hasInstanceMethod:@"currentLook" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PREditingLook" hasProperty:@"displayName" withType:"@"];
-  [v3 validateClass:@"PREditorRootViewController" hasInstanceMethod:@"inlineComplicationReticleView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PREditorRootViewController" hasInstanceMethod:@"titleReticleView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PREditorRootViewController" hasInstanceMethod:@"complicationRowReticleView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PREditorRootViewController" hasInstanceMethod:@"complicationSidebarReticleView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PREditorRootViewController" hasInstanceMethod:@"reticleVibrancyView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PREditorRootViewController" hasInstanceMethod:@"cancelButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PREditorRootViewController" hasInstanceMethod:@"editor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PREditor" hasInstanceMethod:@"posterRole" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PREditorRootViewController" hasInstanceMethod:@"isDepthEffectDisabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PREditorRootViewController" hasInstanceMethod:@"leadingMenuElementViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PREditorRootViewController" hasInstanceMethod:@"_updateMenuElements" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PREditorRootViewController" hasInstanceMethod:@"quickActionsHostViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRQuickActionsSceneHostViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PREditorRootViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"PRComplicationSceneHostViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"PREditorRootViewController" hasProperty:@"pageControl" withType:"@"];
+  [validationsCopy validateClass:@"PREditorRootViewController" hasInstanceMethod:@"currentLookDidChange" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PREditorRootViewController" hasInstanceMethod:@"currentLook" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PREditingLook" hasProperty:@"displayName" withType:"@"];
+  [validationsCopy validateClass:@"PREditorRootViewController" hasInstanceMethod:@"inlineComplicationReticleView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PREditorRootViewController" hasInstanceMethod:@"titleReticleView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PREditorRootViewController" hasInstanceMethod:@"complicationRowReticleView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PREditorRootViewController" hasInstanceMethod:@"complicationSidebarReticleView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PREditorRootViewController" hasInstanceMethod:@"reticleVibrancyView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PREditorRootViewController" hasInstanceMethod:@"cancelButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PREditorRootViewController" hasInstanceMethod:@"editor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PREditor" hasInstanceMethod:@"posterRole" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PREditorRootViewController" hasInstanceMethod:@"isDepthEffectDisabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PREditorRootViewController" hasInstanceMethod:@"leadingMenuElementViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PREditorRootViewController" hasInstanceMethod:@"_updateMenuElements" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PREditorRootViewController" hasInstanceMethod:@"quickActionsHostViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRQuickActionsSceneHostViewController" isKindOfClass:@"UIViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -45,11 +45,11 @@
   [(PREditorRootViewControllerAccessibility *)self _axSetAccessibilityElements];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PREditorRootViewControllerAccessibility;
-  [(PREditorRootViewControllerAccessibility *)&v6 viewDidAppear:a3];
+  [(PREditorRootViewControllerAccessibility *)&v6 viewDidAppear:appear];
   [(PREditorRootViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
   v4 = *MEMORY[0x29EDC7ED8];
   v5 = [(PREditorRootViewControllerAccessibility *)self safeValueForKey:@"cancelButton"];
@@ -143,8 +143,8 @@ LABEL_6:
   [v12 setAccessibilityFrameBlock:v28];
 
   [(PREditorRootViewControllerAccessibility *)self _axSetDepthEffectButton];
-  v16 = [v22 view];
-  objc_initWeak(&location, v16);
+  view = [v22 view];
+  objc_initWeak(&location, view);
   objc_initWeak(&from, self);
   v23[0] = MEMORY[0x29EDCA5F8];
   v23[1] = 3221225472;
@@ -152,15 +152,15 @@ LABEL_6:
   v23[3] = &unk_29F2EBF48;
   objc_copyWeak(&v24, &location);
   objc_copyWeak(&v25, &from);
-  [v16 setAccessibilityElementsBlock:v23];
+  [view setAccessibilityElementsBlock:v23];
   v17 = v6;
   objc_opt_class();
   v18 = [(PREditorRootViewControllerAccessibility *)self safeValueForKey:@"quickActionsHostViewController"];
   v19 = __UIAccessibilityCastAsClass();
 
-  v20 = [v19 view];
+  view2 = [v19 view];
 
-  [v20 _accessibilitySetSortPriority:-100];
+  [view2 _accessibilitySetSortPriority:-100];
   objc_destroyWeak(&v25);
   objc_destroyWeak(&v24);
   objc_destroyWeak(&from);
@@ -247,8 +247,8 @@ id __70__PREditorRootViewControllerAccessibility__axSetAccessibilityElements__bl
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
-        v8 = [v7 accessibilityLabel];
-        if (([v8 isEqualToString:@"square.2.stack.3d"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"square.2.layers.3d") & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"square.2.layers.3d.fill"))
+        accessibilityLabel = [v7 accessibilityLabel];
+        if (([accessibilityLabel isEqualToString:@"square.2.stack.3d"] & 1) != 0 || (objc_msgSend(accessibilityLabel, "isEqualToString:", @"square.2.layers.3d") & 1) != 0 || objc_msgSend(accessibilityLabel, "isEqualToString:", @"square.2.layers.3d.fill"))
         {
           v9 = accessibilityLocalizedString(@"primary.action.button.depth.effect.label");
           [v7 setAccessibilityLabel:v9];

@@ -1,7 +1,7 @@
 @interface _HDPauseRingsScheduleEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row;
 - (id)orderedProperties;
 @end
 
@@ -15,26 +15,26 @@
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
   v9.receiver = self;
   v9.super_class = _HDPauseRingsScheduleEntityEncoder;
-  v4 = [(HDEntityEncoder *)&v9 superclassEncoder];
-  v5 = [v4 orderedProperties];
-  v6 = [v3 arrayByAddingObjectsFromArray:v5];
+  superclassEncoder = [(HDEntityEncoder *)&v9 superclassEncoder];
+  orderedProperties = [superclassEncoder orderedProperties];
+  v6 = [v3 arrayByAddingObjectsFromArray:orderedProperties];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row
 {
-  v3 = [objc_alloc(MEMORY[0x277CCD788]) _init];
+  _init = [objc_alloc(MEMORY[0x277CCD788]) _init];
 
-  return v3;
+  return _init;
 }
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v8 = [(HDEntityEncoder *)self superclassEncoder];
-  v9 = [v8 codableRepresentationForPersistentID:a3 row:a4 error:a5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v9 = [superclassEncoder codableRepresentationForPersistentID:d row:row error:error];
 
   if (v9)
   {
@@ -52,16 +52,16 @@
   return v10;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  v12 = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v12 = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
   if (v12)
   {
-    [v10 setStartDateIndex:HDSQLiteColumnWithNameAsInt64()];
-    [v10 setEndDateIndex:HDSQLiteColumnWithNameAsInt64()];
+    [objectCopy setStartDateIndex:HDSQLiteColumnWithNameAsInt64()];
+    [objectCopy setEndDateIndex:HDSQLiteColumnWithNameAsInt64()];
   }
 
   return v12;

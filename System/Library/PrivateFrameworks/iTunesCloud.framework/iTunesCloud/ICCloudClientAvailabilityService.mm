@@ -10,10 +10,10 @@
 - (BOOL)shouldProhibitMusicActionForCurrentNetworkConditions;
 - (BOOL)shouldProhibitStoreAppsActionForCurrentNetworkConditions;
 - (BOOL)shouldProhibitVideosActionForCurrentNetworkConditions;
-- (ICCloudClientAvailabilityService)initWithListenerEndpointProvider:(id)a3;
+- (ICCloudClientAvailabilityService)initWithListenerEndpointProvider:(id)provider;
 - (ICCloudServerListenerEndpointProviding)listenerEndpointProvider;
 - (NSXPCConnection)xpcConnection;
-- (id)_xpcConnectionWithListenerEndpoint:(id)a3;
+- (id)_xpcConnectionWithListenerEndpoint:(id)endpoint;
 @end
 
 @implementation ICCloudClientAvailabilityService
@@ -25,13 +25,13 @@
   return WeakRetained;
 }
 
-- (id)_xpcConnectionWithListenerEndpoint:(id)a3
+- (id)_xpcConnectionWithListenerEndpoint:(id)endpoint
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  endpointCopy = endpoint;
+  if (endpointCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v4];
+    v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
     v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F2CCEF38];
     [v5 setRemoteObjectInterface:v6];
     [v5 setExportedObject:self];
@@ -156,14 +156,14 @@ void __71__ICCloudClientAvailabilityService__xpcConnectionWithListenerEndpoint__
   v10 = __Block_byref_object_copy__26402;
   v11 = __Block_byref_object_dispose__26403;
   v12 = 0;
-  v3 = [(ICCloudClientAvailabilityService *)self serialQueue];
+  serialQueue = [(ICCloudClientAvailabilityService *)self serialQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__ICCloudClientAvailabilityService_xpcConnection__block_invoke;
   v6[3] = &unk_1E7BFA430;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serialQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -248,8 +248,8 @@ LABEL_10:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(ICCloudClientAvailabilityService *)self xpcConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_22_26407];
+  xpcConnection = [(ICCloudClientAvailabilityService *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_22_26407];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __53__ICCloudClientAvailabilityService_canShowCloudVideo__block_invoke_2;
@@ -257,9 +257,9 @@ LABEL_10:
   v5[4] = &v6;
   [v3 canShowCloudVideoWithCompletion:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(xpcConnection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return xpcConnection;
 }
 
 - (BOOL)canShowCloudMusic
@@ -268,8 +268,8 @@ LABEL_10:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(ICCloudClientAvailabilityService *)self xpcConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_20_26410];
+  xpcConnection = [(ICCloudClientAvailabilityService *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_20_26410];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __53__ICCloudClientAvailabilityService_canShowCloudMusic__block_invoke_2;
@@ -277,9 +277,9 @@ LABEL_10:
   v5[4] = &v6;
   [v3 canShowCloudMusicWithCompletion:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(xpcConnection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return xpcConnection;
 }
 
 - (BOOL)canShowCloudDownloadButtons
@@ -288,8 +288,8 @@ LABEL_10:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(ICCloudClientAvailabilityService *)self xpcConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_18_26412];
+  xpcConnection = [(ICCloudClientAvailabilityService *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_18_26412];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __63__ICCloudClientAvailabilityService_canShowCloudDownloadButtons__block_invoke_2;
@@ -297,9 +297,9 @@ LABEL_10:
   v5[4] = &v6;
   [v3 canShowCloudDownloadButtonsWithCompletion:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(xpcConnection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return xpcConnection;
 }
 
 - (BOOL)shouldProhibitStoreAppsActionForCurrentNetworkConditions
@@ -308,8 +308,8 @@ LABEL_10:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v2 = [(ICCloudClientAvailabilityService *)self xpcConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_16];
+  xpcConnection = [(ICCloudClientAvailabilityService *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_16];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __92__ICCloudClientAvailabilityService_shouldProhibitStoreAppsActionForCurrentNetworkConditions__block_invoke_2;
@@ -317,9 +317,9 @@ LABEL_10:
   v5[4] = &v6;
   [v3 shouldProhibitStoreAppsActionForCurrentNetworkConditionsWithCompletion:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(xpcConnection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return xpcConnection;
 }
 
 - (BOOL)isCellularDataRestrictedForStoreApps
@@ -328,8 +328,8 @@ LABEL_10:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v2 = [(ICCloudClientAvailabilityService *)self xpcConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_14];
+  xpcConnection = [(ICCloudClientAvailabilityService *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_14];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __72__ICCloudClientAvailabilityService_isCellularDataRestrictedForStoreApps__block_invoke_2;
@@ -337,9 +337,9 @@ LABEL_10:
   v5[4] = &v6;
   [v3 isCellularDataRestrictedForStoreAppsWithCompletion:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(xpcConnection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return xpcConnection;
 }
 
 - (BOOL)shouldProhibitVideosActionForCurrentNetworkConditions
@@ -348,8 +348,8 @@ LABEL_10:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v2 = [(ICCloudClientAvailabilityService *)self xpcConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_12_26414];
+  xpcConnection = [(ICCloudClientAvailabilityService *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_12_26414];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __89__ICCloudClientAvailabilityService_shouldProhibitVideosActionForCurrentNetworkConditions__block_invoke_2;
@@ -357,9 +357,9 @@ LABEL_10:
   v5[4] = &v6;
   [v3 shouldProhibitVideosActionForCurrentNetworkConditionsWithCompletion:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(xpcConnection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return xpcConnection;
 }
 
 - (BOOL)isCellularDataRestrictedForVideos
@@ -368,8 +368,8 @@ LABEL_10:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v2 = [(ICCloudClientAvailabilityService *)self xpcConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_10_26416];
+  xpcConnection = [(ICCloudClientAvailabilityService *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_10_26416];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __69__ICCloudClientAvailabilityService_isCellularDataRestrictedForVideos__block_invoke_2;
@@ -377,9 +377,9 @@ LABEL_10:
   v5[4] = &v6;
   [v3 isCellularDataRestrictedForVideosWithCompletion:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(xpcConnection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return xpcConnection;
 }
 
 - (BOOL)shouldProhibitMusicActionForCurrentNetworkConditions
@@ -388,8 +388,8 @@ LABEL_10:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v2 = [(ICCloudClientAvailabilityService *)self xpcConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_8_26418];
+  xpcConnection = [(ICCloudClientAvailabilityService *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_8_26418];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __88__ICCloudClientAvailabilityService_shouldProhibitMusicActionForCurrentNetworkConditions__block_invoke_2;
@@ -397,9 +397,9 @@ LABEL_10:
   v5[4] = &v6;
   [v3 shouldProhibitMusicActionForCurrentNetworkConditionsWithCompletion:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(xpcConnection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return xpcConnection;
 }
 
 - (BOOL)isCellularDataRestrictedForMusic
@@ -408,8 +408,8 @@ LABEL_10:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v2 = [(ICCloudClientAvailabilityService *)self xpcConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_6_26420];
+  xpcConnection = [(ICCloudClientAvailabilityService *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_6_26420];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __68__ICCloudClientAvailabilityService_isCellularDataRestrictedForMusic__block_invoke_2;
@@ -417,9 +417,9 @@ LABEL_10:
   v5[4] = &v6;
   [v3 isCellularDataRestrictedForMusicWithCompletion:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(xpcConnection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return xpcConnection;
 }
 
 - (BOOL)hasProperNetworkConditionsToShowCloudMedia
@@ -428,8 +428,8 @@ LABEL_10:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(ICCloudClientAvailabilityService *)self xpcConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_4];
+  xpcConnection = [(ICCloudClientAvailabilityService *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_4];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __78__ICCloudClientAvailabilityService_hasProperNetworkConditionsToShowCloudMedia__block_invoke_2;
@@ -437,9 +437,9 @@ LABEL_10:
   v5[4] = &v6;
   [v3 hasProperNetworkConditionsToShowCloudMediaWithCompletion:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(xpcConnection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return xpcConnection;
 }
 
 - (BOOL)hasProperNetworkConditionsToPlayMedia
@@ -448,8 +448,8 @@ LABEL_10:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(ICCloudClientAvailabilityService *)self xpcConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_26422];
+  xpcConnection = [(ICCloudClientAvailabilityService *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_26422];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __73__ICCloudClientAvailabilityService_hasProperNetworkConditionsToPlayMedia__block_invoke_2;
@@ -457,21 +457,21 @@ LABEL_10:
   v5[4] = &v6;
   [v3 hasProperNetworkConditionsToPlayMediaWithCompletion:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(xpcConnection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return xpcConnection;
 }
 
-- (ICCloudClientAvailabilityService)initWithListenerEndpointProvider:(id)a3
+- (ICCloudClientAvailabilityService)initWithListenerEndpointProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = ICCloudClientAvailabilityService;
   v5 = [(ICCloudClientAvailabilityService *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_listenerEndpointProvider, v4);
+    objc_storeWeak(&v5->_listenerEndpointProvider, providerCopy);
     v7 = dispatch_queue_create("com.apple.itunescloudd.ICCloudClientAvailabilityService.serial.queue", 0);
     serialQueue = v6->_serialQueue;
     v6->_serialQueue = v7;

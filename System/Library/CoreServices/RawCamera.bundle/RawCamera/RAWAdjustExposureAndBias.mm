@@ -1,5 +1,5 @@
 @interface RAWAdjustExposureAndBias
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (id)customAttributes;
 - (id)customAttributes;
 - (id)outputImage;
@@ -8,19 +8,19 @@
 
 @implementation RAWAdjustExposureAndBias
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
-  if (objc_msgSend_isEqualToString_(v4, v5, @"inputExposure", v6, v7) & 1) != 0 || (objc_msgSend_isEqualToString_(v4, v8, @"inputBias", v9, v10))
+  keyCopy = key;
+  if (objc_msgSend_isEqualToString_(keyCopy, v5, @"inputExposure", v6, v7) & 1) != 0 || (objc_msgSend_isEqualToString_(keyCopy, v8, @"inputBias", v9, v10))
   {
     v11 = 0;
   }
 
   else
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = &OBJC_METACLASS___RAWAdjustExposureAndBias;
-    v11 = objc_msgSendSuper2(&v13, sel_automaticallyNotifiesObserversForKey_, v4);
+    v11 = objc_msgSendSuper2(&v13, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v11;

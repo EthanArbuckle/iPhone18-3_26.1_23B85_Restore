@@ -17,7 +17,7 @@
     v18 = 1024;
     v19 = a3;
     v20 = 2112;
-    v21 = a1;
+    selfCopy2 = self;
     _os_log_debug_impl(&dword_1D4576000, v5, OS_LOG_TYPE_DEBUG, "Updating backup exclusion flag %@ to %d for %@", buf, 0x1Cu);
   }
 
@@ -30,7 +30,7 @@
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:2];
 
   v15 = 0;
-  v11 = [a1 setResourceValues:v10 error:&v15];
+  v11 = [self setResourceValues:v10 error:&v15];
   v12 = v15;
   v13 = v12;
   if ((v11 & 1) == 0 && [v12 code] != 4)
@@ -43,7 +43,7 @@
       v18 = 1024;
       v19 = a3;
       v20 = 2112;
-      v21 = a1;
+      selfCopy2 = self;
       v22 = 2112;
       v23 = v13;
       _os_log_error_impl(&dword_1D4576000, v14, OS_LOG_TYPE_ERROR, "Error marking %@=%d for %@: %@", buf, 0x26u);

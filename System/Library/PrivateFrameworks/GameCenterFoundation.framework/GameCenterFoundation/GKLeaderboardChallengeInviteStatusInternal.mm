@@ -1,6 +1,6 @@
 @interface GKLeaderboardChallengeInviteStatusInternal
 + (id)secureCodedPropertyKeys;
-- (GKLeaderboardChallengeInviteStatusInternal)initWithServerRepresentation:(id)a3;
+- (GKLeaderboardChallengeInviteStatusInternal)initWithServerRepresentation:(id)representation;
 @end
 
 @implementation GKLeaderboardChallengeInviteStatusInternal
@@ -34,15 +34,15 @@ void __69__GKLeaderboardChallengeInviteStatusInternal_secureCodedPropertyKeys__b
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (GKLeaderboardChallengeInviteStatusInternal)initWithServerRepresentation:(id)a3
+- (GKLeaderboardChallengeInviteStatusInternal)initWithServerRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v9.receiver = self;
   v9.super_class = GKLeaderboardChallengeInviteStatusInternal;
   v5 = [(GKLeaderboardChallengeInviteStatusInternal *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"responses"];
+    v6 = [representationCopy objectForKeyedSubscript:@"responses"];
     v7 = [v6 _gkMapWithBlock:&__block_literal_global_325];
     [(GKLeaderboardChallengeInviteStatusInternal *)v5 setInvitees:v7];
   }

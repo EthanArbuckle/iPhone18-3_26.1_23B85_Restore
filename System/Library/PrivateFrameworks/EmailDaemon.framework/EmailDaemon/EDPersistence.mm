@@ -1,7 +1,7 @@
 @interface EDPersistence
 + (OS_os_log)log;
 - (EDPersistence)init;
-- (id)persistenceStateWithStatistics:(id)a3;
+- (id)persistenceStateWithStatistics:(id)statistics;
 - (void)dealloc;
 - (void)reportWorkloadToDAS;
 - (void)scheduleRecurringActivity;
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __20__EDPersistence_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_73 != -1)
   {
     dispatch_once(&log_onceToken_73, block);
@@ -66,9 +66,9 @@ void __20__EDPersistence_log__block_invoke(uint64_t a1)
     blockedSenderManager = v3->_blockedSenderManager;
     v3->_blockedSenderManager = v10;
 
-    v12 = [objc_alloc(MEMORY[0x1E699B9A0]) initGlobalInstance];
+    initGlobalInstance = [objc_alloc(MEMORY[0x1E699B9A0]) initGlobalInstance];
     alarmScheduler = v3->_alarmScheduler;
-    v3->_alarmScheduler = v12;
+    v3->_alarmScheduler = initGlobalInstance;
   }
 
   return v3;
@@ -76,8 +76,8 @@ void __20__EDPersistence_log__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(EDPersistence *)self remoteContentURLSession];
-  [v3 invalidateAndCancel:1];
+  remoteContentURLSession = [(EDPersistence *)self remoteContentURLSession];
+  [remoteContentURLSession invalidateAndCancel:1];
 
   v4.receiver = self;
   v4.super_class = EDPersistence;
@@ -88,89 +88,89 @@ void __20__EDPersistence_log__block_invoke(uint64_t a1)
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"EDPersistence.m" lineNumber:66 description:{@"%s can only be called from unit tests", "-[EDPersistence test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDPersistence.m" lineNumber:66 description:{@"%s can only be called from unit tests", "-[EDPersistence test_tearDown]"}];
   }
 
-  v4 = [(EDPersistence *)self remindMeNotificationController];
-  [v4 test_tearDown];
+  remindMeNotificationController = [(EDPersistence *)self remindMeNotificationController];
+  [remindMeNotificationController test_tearDown];
 
-  v5 = [(EDPersistence *)self messageChangeManager];
-  [v5 test_tearDown];
+  messageChangeManager = [(EDPersistence *)self messageChangeManager];
+  [messageChangeManager test_tearDown];
 
-  v6 = [(EDPersistence *)self senderPersistence];
-  [v6 test_tearDown];
+  senderPersistence = [(EDPersistence *)self senderPersistence];
+  [senderPersistence test_tearDown];
 
-  v7 = [(EDPersistence *)self blockedSenderManager];
-  [v7 test_tearDown];
+  blockedSenderManager = [(EDPersistence *)self blockedSenderManager];
+  [blockedSenderManager test_tearDown];
 
-  v8 = [(EDPersistence *)self remoteContentManager];
-  [v8 test_tearDown];
+  remoteContentManager = [(EDPersistence *)self remoteContentManager];
+  [remoteContentManager test_tearDown];
 
-  v9 = [(EDPersistence *)self remoteContentPersistence];
-  [v9 test_tearDown];
+  remoteContentPersistence = [(EDPersistence *)self remoteContentPersistence];
+  [remoteContentPersistence test_tearDown];
 
-  v10 = [(EDPersistence *)self searchableIndexManager];
-  [v10 test_tearDown];
+  searchableIndexManager = [(EDPersistence *)self searchableIndexManager];
+  [searchableIndexManager test_tearDown];
 
-  v11 = [(EDPersistence *)self mailboxPersistence];
-  [v11 test_tearDown];
+  mailboxPersistence = [(EDPersistence *)self mailboxPersistence];
+  [mailboxPersistence test_tearDown];
 
-  v12 = [(EDPersistence *)self messagePersistence];
-  [v12 test_tearDown];
+  messagePersistence = [(EDPersistence *)self messagePersistence];
+  [messagePersistence test_tearDown];
 
-  v13 = [(EDPersistence *)self bimiManager];
-  [v13 test_tearDown];
+  bimiManager = [(EDPersistence *)self bimiManager];
+  [bimiManager test_tearDown];
 
-  v14 = [(EDPersistence *)self database];
-  [v14 test_tearDown];
+  database = [(EDPersistence *)self database];
+  [database test_tearDown];
 }
 
 - (void)scheduleRecurringActivity
 {
-  v3 = [(EDPersistence *)self database];
-  [v3 scheduleRecurringActivity];
+  database = [(EDPersistence *)self database];
+  [database scheduleRecurringActivity];
 
-  v4 = [(EDPersistence *)self searchableIndexManager];
-  [v4 scheduleRecurringActivity];
+  searchableIndexManager = [(EDPersistence *)self searchableIndexManager];
+  [searchableIndexManager scheduleRecurringActivity];
 
-  v5 = [(EDPersistence *)self remoteContentManager];
-  [v5 scheduleRecurringActivity];
+  remoteContentManager = [(EDPersistence *)self remoteContentManager];
+  [remoteContentManager scheduleRecurringActivity];
 
-  v6 = [(EDPersistence *)self senderPersistence];
-  [v6 scheduleRecurringActivity];
+  senderPersistence = [(EDPersistence *)self senderPersistence];
+  [senderPersistence scheduleRecurringActivity];
 
-  v7 = [(EDPersistence *)self readLaterPersistence];
-  [v7 scheduleRecurringActivity];
+  readLaterPersistence = [(EDPersistence *)self readLaterPersistence];
+  [readLaterPersistence scheduleRecurringActivity];
 
-  v8 = [(EDPersistence *)self mailboxPersistence];
-  [v8 scheduleRecurringActivity];
+  mailboxPersistence = [(EDPersistence *)self mailboxPersistence];
+  [mailboxPersistence scheduleRecurringActivity];
 
-  v9 = [(EDPersistence *)self diagnosticsController];
-  [v9 scheduleRecurringActivity];
+  diagnosticsController = [(EDPersistence *)self diagnosticsController];
+  [diagnosticsController scheduleRecurringActivity];
 
-  v10 = [(EDPersistence *)self businessCloudStorage];
-  [v10 scheduleRecurringActivity];
+  businessCloudStorage = [(EDPersistence *)self businessCloudStorage];
+  [businessCloudStorage scheduleRecurringActivity];
 
-  v11 = [(EDPersistence *)self bimiManager];
-  [v11 downloadAndVerifyIndicatorsIfNeeded];
+  bimiManager = [(EDPersistence *)self bimiManager];
+  [bimiManager downloadAndVerifyIndicatorsIfNeeded];
 }
 
-- (id)persistenceStateWithStatistics:(id)a3
+- (id)persistenceStateWithStatistics:(id)statistics
 {
   v12[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  statisticsCopy = statistics;
   v11[0] = *MEMORY[0x1E699AA70];
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v3, "messages")}];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(statisticsCopy, "messages")}];
   v12[0] = v4;
   v11[1] = *MEMORY[0x1E699AA60];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v3, "messageData")}];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(statisticsCopy, "messageData")}];
   v12[1] = v5;
   v11[2] = *MEMORY[0x1E699AA78];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v3, "messagesDeleted")}];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(statisticsCopy, "messagesDeleted")}];
   v12[2] = v6;
   v11[3] = *MEMORY[0x1E699AA68];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v3, "messageDataDeleted")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(statisticsCopy, "messageDataDeleted")}];
   v12[3] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:4];
 
@@ -183,7 +183,7 @@ void __20__EDPersistence_log__block_invoke(uint64_t a1)
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1C61EF000, a2, OS_LOG_TYPE_ERROR, "Failed to report # of emails to DAS: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

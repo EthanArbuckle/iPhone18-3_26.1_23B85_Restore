@@ -1,14 +1,14 @@
 @interface VKARWalkingArrivalStoreFront
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (Coordinate3D<geo::Degrees,)bottomCenterCoordinate;
 - (Matrix<double,)normal;
 - (Mercator3<double>)bottomCenterPoint;
 - (OrientedBox<double,)face;
 - (Unit<geo::MeterUnitDescription,)faceHeightInMeters;
 - (Unit<geo::MeterUnitDescription,)faceWidthInMeters;
-- (VKARWalkingArrivalStoreFront)initWithGEOOrientedBox:(id)a3;
-- (VKARWalkingArrivalStoreFront)initWithOrientedRect:(const void *)a3;
-- (VKARWalkingArrivalStoreFront)initWithYaw:(float)a3 pitch:(float)a4 roll:(float)a5 x:(double)a6 y:(double)a7 z:(double)a8 w:(float)a9 h:(float)a10;
+- (VKARWalkingArrivalStoreFront)initWithGEOOrientedBox:(id)box;
+- (VKARWalkingArrivalStoreFront)initWithOrientedRect:(const void *)rect;
+- (VKARWalkingArrivalStoreFront)initWithYaw:(float)yaw pitch:(float)pitch roll:(float)roll x:(double)x y:(double)y z:(double)z w:(float)w h:(float)self0;
 - (id).cxx_construct;
 - (id)description;
 @end
@@ -50,14 +50,14 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v21.receiver = self;
   v21.super_class = VKARWalkingArrivalStoreFront;
-  if ([(VKARWalkingArrivalStoreFront *)&v21 isEqual:v4]&& (v5 = objc_opt_class(), v5 == objc_opt_class()))
+  if ([(VKARWalkingArrivalStoreFront *)&v21 isEqual:equalCopy]&& (v5 = objc_opt_class(), v5 == objc_opt_class()))
   {
-    v8 = v4;
+    v8 = equalCopy;
     [(VKARWalkingArrivalStoreFront *)self bottomCenterPoint];
     v10 = v9;
     *&v19[2] = v9;
@@ -161,22 +161,22 @@
   return v3;
 }
 
-- (VKARWalkingArrivalStoreFront)initWithOrientedRect:(const void *)a3
+- (VKARWalkingArrivalStoreFront)initWithOrientedRect:(const void *)rect
 {
   v42.receiver = self;
   v42.super_class = VKARWalkingArrivalStoreFront;
   v4 = [(VKARWalkingArrivalStoreFront *)&v42 init];
   if (v4)
   {
-    v34 = *a3;
-    v35 = *(a3 + 2);
+    v34 = *rect;
+    v35 = *(rect + 2);
     v5 = [VKSharedResourcesManager sharedResources:geo::Geocentric<double>::toCoordinate3D<geo::Degrees];
-    v6 = [v5 undulationModel];
+    undulationModel = [v5 undulationModel];
 
     v7 = v41.f64[0];
-    if (v6)
+    if (undulationModel)
     {
-      Undulation = md::GeoidModel::getUndulation(v6, v41.f64[0], v41.f64[1]);
+      Undulation = md::GeoidModel::getUndulation(undulationModel, v41.f64[0], v41.f64[1]);
       if (HIDWORD(Undulation))
       {
         v9 = *&Undulation;
@@ -194,8 +194,8 @@
     }
 
     v4->_undulation._value = v9;
-    v58 = *a3;
-    v59 = *(a3 + 2);
+    v58 = *rect;
+    v59 = *(rect + 2);
     v34 = 0uLL;
     v35 = 0.0;
     geo::Geocentric<double>::toCoordinate3D<geo::Radians,double>(&v58, &v34);
@@ -208,7 +208,7 @@
     }
 
     *&v36 = v57;
-    gm::Quaternion<double>::operator*(v55, &v34, a3 + 24);
+    gm::Quaternion<double>::operator*(v55, &v34, rect + 24);
     gm::quaternionToEulerAnglesYXZ<double>(v55, &v52, &v54, &v53);
     v11 = v53;
     v12 = v54;
@@ -245,7 +245,7 @@
     v36 = v44;
     v37 = v45;
     v20 = v46;
-    v21 = vsubq_f64(*(a3 + 72), *(a3 + 56));
+    v21 = vsubq_f64(*(rect + 72), *(rect + 56));
     v4->_dimensionsInMeters = vcvt_f32_f64(v21);
     v22 = vdupq_lane_s64(0x3E5ACB157F7410BCLL, 0);
     v22.f64[0] = v31;
@@ -265,12 +265,12 @@
   return v4;
 }
 
-- (VKARWalkingArrivalStoreFront)initWithYaw:(float)a3 pitch:(float)a4 roll:(float)a5 x:(double)a6 y:(double)a7 z:(double)a8 w:(float)a9 h:(float)a10
+- (VKARWalkingArrivalStoreFront)initWithYaw:(float)yaw pitch:(float)pitch roll:(float)roll x:(double)x y:(double)y z:(double)z w:(float)w h:(float)self0
 {
-  gm::quaternionFromEulerAnglesZYX<float>(&v24, a3, a4, a5);
-  *&v26 = a6;
-  *(&v26 + 1) = a7;
-  v27 = a8;
+  gm::quaternionFromEulerAnglesZYX<float>(&v24, yaw, pitch, roll);
+  *&v26 = x;
+  *(&v26 + 1) = y;
+  zCopy = z;
   v28 = v24;
   gdc::mun::transformFromPwinTransform(&v33, &v26);
   for (i = 0; i != 3; ++i)
@@ -279,41 +279,41 @@
   }
 
   v26 = v33;
-  v27 = v34;
+  zCopy = v34;
   v28 = v24;
   v29 = v25;
   v30 = *&v35[3];
   __asm { FMOV            V0.2D, #0.5 }
 
-  v20 = vmulq_f64(vcvtq_f64_f32(__PAIR64__(LODWORD(a10), LODWORD(a9))), _Q0);
+  v20 = vmulq_f64(vcvtq_f64_f32(__PAIR64__(LODWORD(h), LODWORD(w))), _Q0);
   v31 = vnegq_f64(v20);
   v32 = v20;
   return [(VKARWalkingArrivalStoreFront *)self initWithOrientedRect:&v26];
 }
 
-- (VKARWalkingArrivalStoreFront)initWithGEOOrientedBox:(id)a3
+- (VKARWalkingArrivalStoreFront)initWithGEOOrientedBox:(id)box
 {
-  v4 = a3;
-  if ([v4 hasPosition] && objc_msgSend(v4, "hasWidth") && (objc_msgSend(v4, "hasHeight") & 1) != 0)
+  boxCopy = box;
+  if ([boxCopy hasPosition] && objc_msgSend(boxCopy, "hasWidth") && (objc_msgSend(boxCopy, "hasHeight") & 1) != 0)
   {
-    v5 = [v4 position];
-    if ([v5 hasX] && objc_msgSend(v5, "hasY") && objc_msgSend(v5, "hasZ") && objc_msgSend(v5, "hasYaw") && objc_msgSend(v5, "hasPitch") && (objc_msgSend(v5, "hasRoll") & 1) != 0)
+    position = [boxCopy position];
+    if ([position hasX] && objc_msgSend(position, "hasY") && objc_msgSend(position, "hasZ") && objc_msgSend(position, "hasYaw") && objc_msgSend(position, "hasPitch") && (objc_msgSend(position, "hasRoll") & 1) != 0)
     {
-      [v5 yaw];
+      [position yaw];
       v7 = v6;
-      [v5 pitch];
+      [position pitch];
       v9 = v8;
-      [v5 roll];
+      [position roll];
       v11 = v10;
-      [v5 x];
+      [position x];
       v13 = v12;
-      [v5 y];
+      [position y];
       v15 = v14;
-      [v5 z];
+      [position z];
       v17 = v16;
-      [v4 width];
+      [boxCopy width];
       v19 = v18;
-      [v4 height];
+      [boxCopy height];
       v20 = v7;
       *&v21 = v9;
       *&v22 = v11;
@@ -321,21 +321,21 @@
       *&v25 = v24;
       *&v24 = v20;
       self = [(VKARWalkingArrivalStoreFront *)self initWithYaw:v24 pitch:v21 roll:v22 x:v13 y:v15 z:v17 w:v23 h:v25];
-      v26 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v26 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v26 = 0;
+    selfCopy = 0;
   }
 
-  return v26;
+  return selfCopy;
 }
 
 @end

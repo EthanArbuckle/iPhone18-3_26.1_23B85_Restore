@@ -1,53 +1,53 @@
 @interface CDRichComplicationCornerView
-+ (CGSize)viewSizeForDevice:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CDRichComplicationCornerView)initWithFamily:(int64_t)a3;
-- (CDRichComplicationCornerView)initWithFontFallback:(int64_t)a3;
-- (id)_createAndAddColoringLabelWithFontSize:(double)a3;
-- (id)_fontWithSize:(double)a3 fontWeight:(double)a4;
-- (id)_fontWithSize:(double)a3 withFontDescriptor:(id)a4;
++ (CGSize)viewSizeForDevice:(id)device;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CDRichComplicationCornerView)initWithFamily:(int64_t)family;
+- (CDRichComplicationCornerView)initWithFontFallback:(int64_t)fallback;
+- (id)_createAndAddColoringLabelWithFontSize:(double)size;
+- (id)_fontWithSize:(double)size fontWeight:(double)weight;
+- (id)_fontWithSize:(double)size withFontDescriptor:(id)descriptor;
 - (void)_createHitTestPathIfNecessary;
-- (void)_layoutCurvedLabel:(id)a3 centerAngleInDegree:(double)a4 editingRotationInDegree:(double)a5;
-- (void)_layoutView:(id)a3 origin:(CGPoint)a4 editingTranslation:(CGPoint)a5 editingRotationInDegree:(double)a6;
-- (void)_transitToHighlightState:(BOOL)a3 fraction:(double)a4;
-- (void)_updateColoringLabel:(id)a3 withFontWeight:(double)a4;
+- (void)_layoutCurvedLabel:(id)label centerAngleInDegree:(double)degree editingRotationInDegree:(double)inDegree;
+- (void)_layoutView:(id)view origin:(CGPoint)origin editingTranslation:(CGPoint)translation editingRotationInDegree:(double)degree;
+- (void)_transitToHighlightState:(BOOL)state fraction:(double)fraction;
+- (void)_updateColoringLabel:(id)label withFontWeight:(double)weight;
 @end
 
 @implementation CDRichComplicationCornerView
 
-- (CDRichComplicationCornerView)initWithFontFallback:(int64_t)a3
+- (CDRichComplicationCornerView)initWithFontFallback:(int64_t)fallback
 {
   v5.receiver = self;
   v5.super_class = CDRichComplicationCornerView;
   result = [(CDRichComplicationView *)&v5 initWithFamily:8];
   if (result)
   {
-    result->_fontFallback = a3;
+    result->_fontFallback = fallback;
   }
 
   return result;
 }
 
-- (CDRichComplicationCornerView)initWithFamily:(int64_t)a3
+- (CDRichComplicationCornerView)initWithFamily:(int64_t)family
 {
-  if (a3 == 8)
+  if (family == 8)
   {
     self = [(CDRichComplicationCornerView *)self init];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(CDRichComplicationCornerView *)self _createHitTestPathIfNecessary];
   [(CDRichComplicationCornerView *)self bounds];
   v11.x = x;
@@ -73,8 +73,8 @@
     v8 = v7;
     v10 = v9;
     cornerComplicationPosition = self->_cornerComplicationPosition;
-    v12 = [(CDRichComplicationView *)self device];
-    v13 = [CDRichComplicationCornerUtilities hitTestPathWithViewBounds:cornerComplicationPosition position:v12 forDevice:v4, v6, v8, v10];
+    device = [(CDRichComplicationView *)self device];
+    v13 = [CDRichComplicationCornerUtilities hitTestPathWithViewBounds:cornerComplicationPosition position:device forDevice:v4, v6, v8, v10];
     hitTestPath = self->_hitTestPath;
     self->_hitTestPath = v13;
 
@@ -86,16 +86,16 @@
   }
 }
 
-- (id)_createAndAddColoringLabelWithFontSize:(double)a3
+- (id)_createAndAddColoringLabelWithFontSize:(double)size
 {
   v5 = objc_opt_new();
-  v6 = [(CDRichComplicationCornerView *)self _fontWithSize:a3 fontWeight:*MEMORY[0x277D74420]];
+  v6 = [(CDRichComplicationCornerView *)self _fontWithSize:size fontWeight:*MEMORY[0x277D74420]];
   [v5 setFont:v6];
   [v5 setUsesLegibility:0];
   [v5 setUppercase:1];
   [v5 setAlpha:1.0];
-  v7 = [MEMORY[0x277D75348] whiteColor];
-  [v5 setColor:v7];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v5 setColor:whiteColor];
 
   [v5 setUsesTextProviderTintColoring:1];
   objc_initWeak(&location, self);
@@ -142,75 +142,75 @@ void __71__CDRichComplicationCornerView__createAndAddColoringLabelWithFontSize__
   [v1 complicationDisplayNeedsResize:WeakRetained];
 }
 
-- (void)_updateColoringLabel:(id)a3 withFontWeight:(double)a4
+- (void)_updateColoringLabel:(id)label withFontWeight:(double)weight
 {
-  v5 = a3;
-  v6 = [v5 font];
-  [v6 pointSize];
+  labelCopy = label;
+  font = [labelCopy font];
+  [font pointSize];
   v7 = [CDRichComplicationCornerView _fontWithSize:"_fontWithSize:fontWeight:" fontWeight:?];
-  [v5 setFont:v7];
+  [labelCopy setFont:v7];
 
   [(CDRichComplicationCornerView *)self setNeedsLayout];
 }
 
-- (id)_fontWithSize:(double)a3 fontWeight:(double)a4
+- (id)_fontWithSize:(double)size fontWeight:(double)weight
 {
-  v5 = [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:a3 design:a4];
-  v6 = [v5 CLKFontWithAlternativePunctuation];
+  v5 = [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:size design:weight];
+  cLKFontWithAlternativePunctuation = [v5 CLKFontWithAlternativePunctuation];
 
   if (self->_fontFallback == 1)
   {
-    v7 = [v6 CLKFontWithLooplessThaiFallback];
+    cLKFontWithLooplessThaiFallback = [cLKFontWithAlternativePunctuation CLKFontWithLooplessThaiFallback];
 
-    v6 = v7;
+    cLKFontWithAlternativePunctuation = cLKFontWithLooplessThaiFallback;
   }
 
-  return v6;
+  return cLKFontWithAlternativePunctuation;
 }
 
-- (id)_fontWithSize:(double)a3 withFontDescriptor:(id)a4
+- (id)_fontWithSize:(double)size withFontDescriptor:(id)descriptor
 {
   v9.receiver = self;
   v9.super_class = CDRichComplicationCornerView;
-  v5 = [(CDRichComplicationView *)&v9 _fontWithSize:a4 withFontDescriptor:a3];
+  v5 = [(CDRichComplicationView *)&v9 _fontWithSize:descriptor withFontDescriptor:size];
   v6 = v5;
   if (self->_fontFallback == 1)
   {
-    v7 = [v5 CLKFontWithLooplessThaiFallback];
+    cLKFontWithLooplessThaiFallback = [v5 CLKFontWithLooplessThaiFallback];
 
-    v6 = v7;
+    v6 = cLKFontWithLooplessThaiFallback;
   }
 
   return v6;
 }
 
-- (void)_layoutCurvedLabel:(id)a3 centerAngleInDegree:(double)a4 editingRotationInDegree:(double)a5
+- (void)_layoutCurvedLabel:(id)label centerAngleInDegree:(double)degree editingRotationInDegree:(double)inDegree
 {
-  v6 = a3;
-  v7 = [v6 textProvider];
-  if (v7)
+  labelCopy = label;
+  textProvider = [labelCopy textProvider];
+  if (textProvider)
   {
 
     goto LABEL_4;
   }
 
-  v8 = [v6 imageView];
+  imageView = [labelCopy imageView];
 
-  if (v8)
+  if (imageView)
   {
 LABEL_4:
     v9 = *(MEMORY[0x277CBF2C0] + 16);
     *&v67.a = *MEMORY[0x277CBF2C0];
     *&v67.c = v9;
     *&v67.tx = *(MEMORY[0x277CBF2C0] + 32);
-    [v6 setTransform:&v67];
-    [v6 frame];
-    [v6 sizeThatFits:{v10, v11}];
-    [v6 setFrame:{0.0, 0.0, v12, v13}];
+    [labelCopy setTransform:&v67];
+    [labelCopy frame];
+    [labelCopy sizeThatFits:{v10, v11}];
+    [labelCopy setFrame:{0.0, 0.0, v12, v13}];
     v66 = *MEMORY[0x277CBF348];
-    [v6 getTextCenter:&v66 startAngle:0 endAngle:0];
-    v14 = [(CDRichComplicationView *)self device];
-    [v14 screenBounds];
+    [labelCopy getTextCenter:&v66 startAngle:0 endAngle:0];
+    device = [(CDRichComplicationView *)self device];
+    [device screenBounds];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -226,8 +226,8 @@ LABEL_4:
     v69.size.width = v20;
     v69.size.height = v22;
     MidY = CGRectGetMidY(v69);
-    v25 = [(CDRichComplicationView *)self device];
-    v26 = CDCornerComplicationSize(v25);
+    device2 = [(CDRichComplicationView *)self device];
+    v26 = CDCornerComplicationSize(device2);
     v28 = v27;
 
     cornerComplicationPosition = self->_cornerComplicationPosition;
@@ -238,10 +238,10 @@ LABEL_4:
         v48 = v66;
         v35 = MidX - *&v66;
         v49 = MidY - *(&v66 + 1);
-        [v6 frame];
+        [labelCopy frame];
         v31 = *&v48 - v50 * 0.5;
         v51 = *(&v66 + 1);
-        [v6 frame];
+        [labelCopy frame];
         v32 = v49;
         v30 = v51 - v52 * 0.5;
         goto LABEL_12;
@@ -262,10 +262,10 @@ LABEL_4:
         v35 = v34 - (CGRectGetWidth(v70) - v26);
         v36 = v66;
         v37 = v62 - *(&v66 + 1);
-        [v6 frame];
+        [labelCopy frame];
         v31 = *&v36 - v38 * 0.5;
         v39 = *(&v66 + 1);
-        [v6 frame];
+        [labelCopy frame];
         v32 = v37;
         v30 = v39 - v40 * 0.5;
 LABEL_12:
@@ -285,7 +285,7 @@ LABEL_15:
       v64 = v65;
       CGAffineTransformTranslate(&v65, &v64, -v31, -v30);
       v67 = v65;
-      [v6 setTransform:&v65];
+      [labelCopy setTransform:&v65];
       goto LABEL_16;
     }
 
@@ -299,10 +299,10 @@ LABEL_15:
       v73.size.height = v22;
       v54 = v53 - (CGRectGetHeight(v73) - v28);
       v55 = *&v66;
-      [v6 frame];
+      [labelCopy frame];
       v31 = v55 - v56 * 0.5;
       v57 = *(&v66 + 1);
-      [v6 frame];
+      [labelCopy frame];
       v32 = v54;
       v30 = v57 - v58 * 0.5;
     }
@@ -333,10 +333,10 @@ LABEL_15:
       v72.size.height = v22;
       v43 = v42 - (CGRectGetHeight(v72) - v60);
       v44 = *&v66;
-      [v6 frame];
+      [labelCopy frame];
       v31 = v44 - v45 * 0.5;
       v46 = *(&v66 + 1);
-      [v6 frame];
+      [labelCopy frame];
       v32 = v43;
       v30 = v46 - v47 * 0.5;
     }
@@ -348,10 +348,10 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)_layoutView:(id)a3 origin:(CGPoint)a4 editingTranslation:(CGPoint)a5 editingRotationInDegree:(double)a6
+- (void)_layoutView:(id)view origin:(CGPoint)origin editingTranslation:(CGPoint)translation editingRotationInDegree:(double)degree
 {
-  y = a4.y;
-  x = a4.x;
+  y = origin.y;
+  x = origin.x;
   v9 = *MEMORY[0x277CBF348];
   v8 = *(MEMORY[0x277CBF348] + 8);
   cornerComplicationPosition = self->_cornerComplicationPosition;
@@ -361,29 +361,29 @@ LABEL_16:
     {
       if (cornerComplicationPosition == 1)
       {
-        v9 = -a5.x;
-        v8 = a5.y;
+        v9 = -translation.x;
+        v8 = translation.y;
       }
 
       goto LABEL_11;
     }
 
-    v8 = a5.y;
+    v8 = translation.y;
 LABEL_10:
-    v9 = a5.x;
+    v9 = translation.x;
     goto LABEL_11;
   }
 
   if (cornerComplicationPosition == 2)
   {
-    v8 = -a5.y;
+    v8 = -translation.y;
     goto LABEL_10;
   }
 
   if (cornerComplicationPosition == 3)
   {
-    v9 = -a5.x;
-    v8 = -a5.y;
+    v9 = -translation.x;
+    v8 = -translation.y;
   }
 
 LABEL_11:
@@ -394,7 +394,7 @@ LABEL_11:
   *&v16.a = *&v17.a;
   *&v16.c = v11;
   *&v16.tx = *&v17.tx;
-  v12 = a3;
+  viewCopy = view;
   CGAffineTransformTranslate(&v17, &v16, x, y);
   v15 = v17;
   CGAffineTransformTranslate(&v16, &v15, v9, v8);
@@ -410,10 +410,10 @@ LABEL_11:
   v15 = v17;
   CGAffineTransformRotate(&v16, &v15, -v14);
   v17 = v16;
-  [v12 setTransform:&v16];
+  [viewCopy setTransform:&v16];
 }
 
-- (void)_transitToHighlightState:(BOOL)a3 fraction:(double)a4
+- (void)_transitToHighlightState:(BOOL)state fraction:(double)fraction
 {
   CLKInterpolateBetweenFloatsClipped();
   CGAffineTransformMakeScale(&v7, v5, v5);
@@ -421,9 +421,9 @@ LABEL_11:
   [(CDRichComplicationCornerView *)self setTransform:&v6];
 }
 
-+ (CGSize)viewSizeForDevice:(id)a3
++ (CGSize)viewSizeForDevice:(id)device
 {
-  v3 = CDCornerComplicationSize(a3);
+  v3 = CDCornerComplicationSize(device);
   result.height = v4;
   result.width = v3;
   return result;

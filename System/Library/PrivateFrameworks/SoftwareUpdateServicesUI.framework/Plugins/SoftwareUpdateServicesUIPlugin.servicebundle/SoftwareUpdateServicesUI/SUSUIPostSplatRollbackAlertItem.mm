@@ -18,9 +18,9 @@
   v7 = sub_6CB0();
   v6 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"LOCKSCREEN_SOFTWARE_ROLLBACK_ALERT_MESSAGE"];
   v5 = [v7 localizedStringForKey:? value:? table:?];
-  v4 = [(SUSUIBaseRollbackAlertItem *)self rollbackDescriptor];
-  v3 = [(SURollbackDescriptor *)v4 productVersion];
-  v8 = [NSString stringWithFormat:v5, v3];
+  rollbackDescriptor = [(SUSUIBaseRollbackAlertItem *)self rollbackDescriptor];
+  productVersion = [(SURollbackDescriptor *)rollbackDescriptor productVersion];
+  v8 = [NSString stringWithFormat:v5, productVersion];
 
   return v8;
 }

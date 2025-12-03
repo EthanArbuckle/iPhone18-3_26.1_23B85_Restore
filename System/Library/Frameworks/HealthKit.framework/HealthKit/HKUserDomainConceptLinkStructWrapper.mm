@@ -1,7 +1,7 @@
 @interface HKUserDomainConceptLinkStructWrapper
 - (HKUserDomainConceptLinkStructWrapper)init;
-- (HKUserDomainConceptLinkStructWrapper)initWithLink:(id)a3;
-- (HKUserDomainConceptLinkStructWrapper)initWithTarget:(id)a3 type:(int64_t)a4;
+- (HKUserDomainConceptLinkStructWrapper)initWithLink:(id)link;
+- (HKUserDomainConceptLinkStructWrapper)initWithTarget:(id)target type:(int64_t)type;
 - (NSString)description;
 - (NSUUID)target;
 - (int64_t)hash;
@@ -9,13 +9,13 @@
 
 @implementation HKUserDomainConceptLinkStructWrapper
 
-- (HKUserDomainConceptLinkStructWrapper)initWithLink:(id)a3
+- (HKUserDomainConceptLinkStructWrapper)initWithLink:(id)link
 {
-  v4 = a3;
-  v5 = [v4 targetUUID];
-  v6 = [v4 type];
+  linkCopy = link;
+  targetUUID = [linkCopy targetUUID];
+  type = [linkCopy type];
 
-  v7 = [(HKUserDomainConceptLinkStructWrapper *)self initWithTarget:v5 type:v6];
+  v7 = [(HKUserDomainConceptLinkStructWrapper *)self initWithTarget:targetUUID type:type];
   return v7;
 }
 
@@ -39,7 +39,7 @@
   return v15;
 }
 
-- (HKUserDomainConceptLinkStructWrapper)initWithTarget:(id)a3 type:(int64_t)a4
+- (HKUserDomainConceptLinkStructWrapper)initWithTarget:(id)target type:(int64_t)type
 {
   ObjectType = swift_getObjectType();
   v7 = sub_191CC61A8();
@@ -51,7 +51,7 @@
   v13 = (self + OBJC_IVAR___HKUserDomainConceptLinkStructWrapper_value);
   v14 = type metadata accessor for UserDomainConceptLinkStruct(0);
   (*(v8 + 16))(v13 + *(v14 + 20), v12, v7);
-  *v13 = a4;
+  *v13 = type;
   v17.receiver = self;
   v17.super_class = ObjectType;
   v15 = [(HKUserDomainConceptLinkStructWrapper *)&v17 init];
@@ -61,7 +61,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   UserDomainConceptLinkStructWrapper.description.getter();
 
   v3 = sub_191CC6778();
@@ -77,7 +77,7 @@
   v4 = *(type metadata accessor for UserDomainConceptLinkStruct(0) + 20);
   sub_191CC61A8();
   sub_191C0DD28(&qword_1EADCAC70, MEMORY[0x1E69695A8]);
-  v5 = self;
+  selfCopy = self;
   sub_191CC66A8();
   v6 = sub_191CC7508();
 

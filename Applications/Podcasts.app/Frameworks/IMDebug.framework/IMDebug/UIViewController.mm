@@ -1,6 +1,6 @@
 @interface UIViewController
 - (id)recursiveDescription;
-- (void)addDescriptionToString:(id)a3 indentLevel:(int64_t)a4;
+- (void)addDescriptionToString:(id)string indentLevel:(int64_t)level;
 @end
 
 @implementation UIViewController
@@ -13,23 +13,23 @@
   return v3;
 }
 
-- (void)addDescriptionToString:(id)a3 indentLevel:(int64_t)a4
+- (void)addDescriptionToString:(id)string indentLevel:(int64_t)level
 {
-  v6 = a3;
-  v7 = [&stru_10658 stringByPaddingToLength:a4 withString:@" " startingAtIndex:0];
-  [v6 appendString:v7];
+  stringCopy = string;
+  v7 = [&stru_10658 stringByPaddingToLength:level withString:@" " startingAtIndex:0];
+  [stringCopy appendString:v7];
   v8 = [(UIViewController *)self debugDescription];
-  v9 = [(UIViewController *)self view];
-  [v9 frame];
+  view = [(UIViewController *)self view];
+  [view frame];
   v10 = NSStringFromCGRect(v22);
-  [v6 appendFormat:@"%@, %@", v8, v10];
+  [stringCopy appendFormat:@"%@, %@", v8, v10];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = [(UIViewController *)self childViewControllers];
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  childViewControllers = [(UIViewController *)self childViewControllers];
+  v12 = [childViewControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
     v13 = v12;
@@ -41,17 +41,17 @@
       {
         if (*v18 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v16 = *(*(&v17 + 1) + 8 * v15);
-        [v6 appendFormat:@"\n%@>", v7];
-        [v16 addDescriptionToString:v6 indentLevel:a4 + 1];
+        [stringCopy appendFormat:@"\n%@>", v7];
+        [v16 addDescriptionToString:stringCopy indentLevel:level + 1];
         v15 = v15 + 1;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v13 = [childViewControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v13);

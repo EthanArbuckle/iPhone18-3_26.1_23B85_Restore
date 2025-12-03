@@ -1,22 +1,22 @@
 @interface VCSessionBandwidthAllocationTable
-- (BOOL)shouldAddBackupEntry:(id)a3 referenceTable:(id)a4 referenceQualityIndices:(id)a5;
-- (BOOL)shouldAppendEntry:(id)a3 appendedVideoEncoderGroups:(id)a4;
-- (BOOL)shouldAppendEntry:(id)a3 appendedVideoEncoderGroups:(id)a4 is1080pCameraAvailable:(BOOL)a5;
-- (BOOL)shouldUseRepairBitrateForEntry:(id)a3 isRedundancyEnabled:(BOOL)a4 isRedundancyEnabledFor720Stream:(BOOL)a5;
-- (VCSessionBandwidthAllocationTable)initWithType:(unsigned __int8)a3;
-- (id)entryForStreamID:(id)a3;
-- (id)newAggregatedBandwidthTableWithRedundancy:(BOOL)a3 redundancyEnabledFor720Stream:(BOOL)a4 enableMap:(id)a5 is1080pCameraAvailable:(BOOL)a6;
-- (id)tableEntriesForStreamToken:(int64_t)a3;
-- (void)addBandwidthAllocationTableEntry:(id)a3;
-- (void)appendEntry:(id)a3 streamTokenEntries:(id)a4 currentNetworkBitrate:(unsigned int *)a5 shouldUseRepairBitrate:(BOOL)a6 appendedVideoEncoderGroups:(id)a7;
-- (void)cleanupStreamTokenEntries:(id)a3 currentNetworkBitrate:(unsigned int *)a4 isRedundancyEnabled:(BOOL)a5 appendedVideoEncoderGroups:(id)a6;
+- (BOOL)shouldAddBackupEntry:(id)entry referenceTable:(id)table referenceQualityIndices:(id)indices;
+- (BOOL)shouldAppendEntry:(id)entry appendedVideoEncoderGroups:(id)groups;
+- (BOOL)shouldAppendEntry:(id)entry appendedVideoEncoderGroups:(id)groups is1080pCameraAvailable:(BOOL)available;
+- (BOOL)shouldUseRepairBitrateForEntry:(id)entry isRedundancyEnabled:(BOOL)enabled isRedundancyEnabledFor720Stream:(BOOL)stream;
+- (VCSessionBandwidthAllocationTable)initWithType:(unsigned __int8)type;
+- (id)entryForStreamID:(id)d;
+- (id)newAggregatedBandwidthTableWithRedundancy:(BOOL)redundancy redundancyEnabledFor720Stream:(BOOL)stream enableMap:(id)map is1080pCameraAvailable:(BOOL)available;
+- (id)tableEntriesForStreamToken:(int64_t)token;
+- (void)addBandwidthAllocationTableEntry:(id)entry;
+- (void)appendEntry:(id)entry streamTokenEntries:(id)entries currentNetworkBitrate:(unsigned int *)bitrate shouldUseRepairBitrate:(BOOL)repairBitrate appendedVideoEncoderGroups:(id)groups;
+- (void)cleanupStreamTokenEntries:(id)entries currentNetworkBitrate:(unsigned int *)bitrate isRedundancyEnabled:(BOOL)enabled appendedVideoEncoderGroups:(id)groups;
 - (void)dealloc;
-- (void)printTable:(id)a3;
+- (void)printTable:(id)table;
 @end
 
 @implementation VCSessionBandwidthAllocationTable
 
-- (VCSessionBandwidthAllocationTable)initWithType:(unsigned __int8)a3
+- (VCSessionBandwidthAllocationTable)initWithType:(unsigned __int8)type
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -25,7 +25,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
+    v4->_type = type;
     v4->_streamTokenEntries = objc_alloc_init(MEMORY[0x1E695DF90]);
     v5->_streamIDToEntryTable = objc_alloc_init(MEMORY[0x1E695DF90]);
     v5->_maxActiveScreenEncoders = +[VCHardwareSettings maxActiveScreenEncoders];
@@ -44,9 +44,9 @@
   [(VCObject *)&v3 dealloc];
 }
 
-- (id)entryForStreamID:(id)a3
+- (id)entryForStreamID:(id)d
 {
-  if (a3)
+  if (d)
   {
     return [(NSMutableDictionary *)self->_streamIDToEntryTable objectForKeyedSubscript:?];
   }
@@ -57,53 +57,53 @@
   }
 }
 
-- (void)addBandwidthAllocationTableEntry:(id)a3
+- (void)addBandwidthAllocationTableEntry:(id)entry
 {
-  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenEntries, "objectForKeyedSubscript:", [a3 streamToken]);
+  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenEntries, "objectForKeyedSubscript:", [entry streamToken]);
   if (!v5)
   {
     v5 = objc_alloc_init(VCSessionBandwidthAllocationTableStreamInfo);
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_streamTokenEntries, "setObject:forKeyedSubscript:", v5, [a3 streamToken]);
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_streamTokenEntries, "setObject:forKeyedSubscript:", v5, [entry streamToken]);
   }
 
-  [(VCSessionBandwidthAllocationTableStreamInfo *)v5 addTableEntry:a3];
+  [(VCSessionBandwidthAllocationTableStreamInfo *)v5 addTableEntry:entry];
   streamIDToEntryTable = self->_streamIDToEntryTable;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "streamID")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(entry, "streamID")}];
 
-  [(NSMutableDictionary *)streamIDToEntryTable setObject:a3 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)streamIDToEntryTable setObject:entry forKeyedSubscript:v7];
 }
 
-- (id)tableEntriesForStreamToken:(int64_t)a3
+- (id)tableEntriesForStreamToken:(int64_t)token
 {
-  v3 = -[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenEntries, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:a3]);
+  v3 = -[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenEntries, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:token]);
 
   return [v3 sortedEntries];
 }
 
-- (BOOL)shouldUseRepairBitrateForEntry:(id)a3 isRedundancyEnabled:(BOOL)a4 isRedundancyEnabledFor720Stream:(BOOL)a5
+- (BOOL)shouldUseRepairBitrateForEntry:(id)entry isRedundancyEnabled:(BOOL)enabled isRedundancyEnabledFor720Stream:(BOOL)stream
 {
-  if (a4)
+  if (enabled)
   {
-    v7 = [a3 hasRepairStreamID];
-    if (v7)
+    hasRepairStreamID = [entry hasRepairStreamID];
+    if (hasRepairStreamID)
     {
-      LOBYTE(v7) = [a3 qualityIndex] != 1000 || a5;
+      LOBYTE(hasRepairStreamID) = [entry qualityIndex] != 1000 || stream;
     }
   }
 
   else
   {
-    LOBYTE(v7) = 0;
+    LOBYTE(hasRepairStreamID) = 0;
   }
 
-  return v7;
+  return hasRepairStreamID;
 }
 
-- (id)newAggregatedBandwidthTableWithRedundancy:(BOOL)a3 redundancyEnabledFor720Stream:(BOOL)a4 enableMap:(id)a5 is1080pCameraAvailable:(BOOL)a6
+- (id)newAggregatedBandwidthTableWithRedundancy:(BOOL)redundancy redundancyEnabledFor720Stream:(BOOL)stream enableMap:(id)map is1080pCameraAvailable:(BOOL)available
 {
-  v6 = a6;
-  v42 = a4;
-  v8 = a3;
+  availableCopy = available;
+  streamCopy = stream;
+  redundancyCopy = redundancy;
   v74 = *MEMORY[0x1E69E9840];
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -113,7 +113,7 @@
   v51[2] = __142__VCSessionBandwidthAllocationTable_newAggregatedBandwidthTableWithRedundancy_redundancyEnabledFor720Stream_enableMap_is1080pCameraAvailable___block_invoke;
   v51[3] = &unk_1E85F9CF8;
   v51[4] = v11;
-  v51[5] = a5;
+  v51[5] = map;
   v51[6] = v10;
   [(NSMutableDictionary *)streamTokenEntries enumerateKeysAndObjectsUsingBlock:v51];
   v13 = [objc_msgSend(v10 "allKeys")];
@@ -129,9 +129,9 @@
   if (v48)
   {
     v47 = *v71;
-    v41 = self;
-    v39 = v6;
-    v40 = v8;
+    selfCopy = self;
+    v39 = availableCopy;
+    v40 = redundancyCopy;
     v37 = v14;
     v38 = v10;
     do
@@ -150,19 +150,19 @@
         if (![v17 isStartOnDemand] || (objc_msgSend(v17, "isSubscribedTo") & 1) != 0 || -[VCSessionBandwidthAllocationTable shouldAddBackupEntry:referenceTable:referenceQualityIndices:](self, "shouldAddBackupEntry:referenceTable:referenceQualityIndices:", v16, v10, obj))
         {
           v18 = [v11 objectForKeyedSubscript:{objc_msgSend(v17, "streamToken")}];
-          [(VCSessionBandwidthAllocationTable *)self cleanupStreamTokenEntries:v18 currentNetworkBitrate:&v50 isRedundancyEnabled:v8 appendedVideoEncoderGroups:v14];
-          if ([(VCSessionBandwidthAllocationTable *)self shouldAppendEntry:v17 appendedVideoEncoderGroups:v14 is1080pCameraAvailable:v6])
+          [(VCSessionBandwidthAllocationTable *)self cleanupStreamTokenEntries:v18 currentNetworkBitrate:&v50 isRedundancyEnabled:redundancyCopy appendedVideoEncoderGroups:v14];
+          if ([(VCSessionBandwidthAllocationTable *)self shouldAppendEntry:v17 appendedVideoEncoderGroups:v14 is1080pCameraAvailable:availableCopy])
           {
             v44 = v17;
-            v46 = [(VCSessionBandwidthAllocationTable *)self shouldUseRepairBitrateForEntry:v17 isRedundancyEnabled:v8 isRedundancyEnabledFor720Stream:v42];
+            v46 = [(VCSessionBandwidthAllocationTable *)self shouldUseRepairBitrateForEntry:v17 isRedundancyEnabled:redundancyCopy isRedundancyEnabledFor720Stream:streamCopy];
             [VCSessionBandwidthAllocationTable appendEntry:"appendEntry:streamTokenEntries:currentNetworkBitrate:shouldUseRepairBitrate:appendedVideoEncoderGroups:" streamTokenEntries:v17 currentNetworkBitrate:v18 shouldUseRepairBitrate:&v50 appendedVideoEncoderGroups:?];
             v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
             v65 = 0u;
             v66 = 0u;
             v67 = 0u;
             v68 = 0u;
-            v20 = [(NSMutableDictionary *)self->_streamTokenEntries allKeys];
-            v21 = [v20 countByEnumeratingWithState:&v65 objects:v64 count:16];
+            allKeys = [(NSMutableDictionary *)self->_streamTokenEntries allKeys];
+            v21 = [allKeys countByEnumeratingWithState:&v65 objects:v64 count:16];
             if (v21)
             {
               v22 = v21;
@@ -173,13 +173,13 @@
                 {
                   if (*v66 != v23)
                   {
-                    objc_enumerationMutation(v20);
+                    objc_enumerationMutation(allKeys);
                   }
 
                   [v19 setObject:objc_msgSend(MEMORY[0x1E695DEC8] forKeyedSubscript:{"arrayWithArray:", objc_msgSend(v11, "objectForKeyedSubscript:", *(*(&v65 + 1) + 8 * i))), *(*(&v65 + 1) + 8 * i)}];
                 }
 
-                v22 = [v20 countByEnumeratingWithState:&v65 objects:v64 count:16];
+                v22 = [allKeys countByEnumeratingWithState:&v65 objects:v64 count:16];
               }
 
               while (v22);
@@ -188,14 +188,14 @@
             [v43 setObject:v19 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v50)}];
             if (!v46)
             {
-              v25 = [v44 maxNetworkBitrate];
-              v26 = [v44 minNetworkBitrate];
-              v50 += v25 - v26;
+              maxNetworkBitrate = [v44 maxNetworkBitrate];
+              minNetworkBitrate = [v44 minNetworkBitrate];
+              v50 += maxNetworkBitrate - minNetworkBitrate;
             }
 
-            self = v41;
-            v6 = v39;
-            v8 = v40;
+            self = selfCopy;
+            availableCopy = v39;
+            redundancyCopy = v40;
             v14 = v37;
             v10 = v38;
           }
@@ -227,7 +227,7 @@
         v56 = 1024;
         v57 = 178;
         v58 = 1024;
-        LODWORD(v59) = v8;
+        LODWORD(v59) = redundancyCopy;
         v31 = " [%s] %s:%d Recomputed tier table. isRedundancyEnabled=%d";
         v32 = v30;
         v33 = 34;
@@ -265,9 +265,9 @@ LABEL_32:
         v58 = 2112;
         v59 = v27;
         v60 = 2048;
-        v61 = self;
+        selfCopy2 = self;
         v62 = 1024;
-        v63 = v8;
+        v63 = redundancyCopy;
         v31 = " [%s] %s:%d %@(%p) Recomputed tier table. isRedundancyEnabled=%d";
         v32 = v35;
         v33 = 54;
@@ -299,14 +299,14 @@ uint64_t __142__VCSessionBandwidthAllocationTable_newAggregatedBandwidthTableWit
   return result;
 }
 
-- (BOOL)shouldAppendEntry:(id)a3 appendedVideoEncoderGroups:(id)a4
+- (BOOL)shouldAppendEntry:(id)entry appendedVideoEncoderGroups:(id)groups
 {
   v45 = *MEMORY[0x1E69E9840];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v6 = [a4 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(a3, "streamGroupID"))}];
+  v6 = [groups objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(entry, "streamGroupID"))}];
   v7 = [v6 countByEnumeratingWithState:&v41 objects:v40 count:16];
   if (v7)
   {
@@ -322,7 +322,7 @@ uint64_t __142__VCSessionBandwidthAllocationTable_newAggregatedBandwidthTableWit
           objc_enumerationMutation(v6);
         }
 
-        if ([objc_msgSend(objc_msgSend(a4 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(a3, "streamGroupID"))), "objectForKeyedSubscript:", *(*(&v41 + 1) + 8 * i)), "count"}])
+        if ([objc_msgSend(objc_msgSend(groups objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(entry, "streamGroupID"))), "objectForKeyedSubscript:", *(*(&v41 + 1) + 8 * i)), "count"}])
         {
           ++v9;
         }
@@ -339,16 +339,16 @@ uint64_t __142__VCSessionBandwidthAllocationTable_newAggregatedBandwidthTableWit
     v9 = 0;
   }
 
-  if ([a3 streamGroupID] == 1935897189)
+  if ([entry streamGroupID] == 1935897189)
   {
     v12 = &OBJC_IVAR___VCSessionBandwidthAllocationTable__maxActiveScreenEncoders;
-    v13 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v13 = self;
-    if ([a3 streamGroupID] != 1667329381)
+    selfCopy2 = self;
+    if ([entry streamGroupID] != 1667329381)
     {
       v14 = -1;
       goto LABEL_18;
@@ -357,19 +357,19 @@ uint64_t __142__VCSessionBandwidthAllocationTable_newAggregatedBandwidthTableWit
     v12 = &OBJC_IVAR___VCSessionBandwidthAllocationTable__maxActiveCameraEncoders;
   }
 
-  v14 = *(&v13->super.super.isa + *v12);
+  v14 = *(&selfCopy2->super.super.isa + *v12);
 LABEL_18:
-  if (v9 < v14 || (v15 = [a4 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(a3, "streamGroupID"))}], objc_msgSend(objc_msgSend(v15, "objectForKeyedSubscript:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(a3, "encoderGroupID"))), "count")))
+  if (v9 < v14 || (v15 = [groups objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(entry, "streamGroupID"))}], objc_msgSend(objc_msgSend(v15, "objectForKeyedSubscript:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(entry, "encoderGroupID"))), "count")))
   {
     LOBYTE(v16) = 1;
     return v16;
   }
 
-  if (objc_opt_class() != v13)
+  if (objc_opt_class() != selfCopy2)
   {
     if (objc_opt_respondsToSelector())
     {
-      v17 = [(VCSessionBandwidthAllocationTable *)v13 performSelector:sel_logPrefix];
+      v17 = [(VCSessionBandwidthAllocationTable *)selfCopy2 performSelector:sel_logPrefix];
     }
 
     else
@@ -399,11 +399,11 @@ LABEL_18:
     v33 = 2112;
     *v34 = v17;
     *&v34[8] = 2048;
-    v35 = v13;
+    v35 = selfCopy2;
     v36 = 1024;
     v37 = v9;
     v38 = 1024;
-    v39 = [a3 qualityIndex];
+    qualityIndex = [entry qualityIndex];
     v20 = " [%s] %s:%d %@(%p) Reached max screen encoders=%d Not adding streamQualityIndex=%d";
     v21 = v24;
     v22 = 60;
@@ -429,7 +429,7 @@ LABEL_18:
     v33 = 1024;
     *v34 = v9;
     *&v34[4] = 1024;
-    *&v34[6] = [a3 qualityIndex];
+    *&v34[6] = [entry qualityIndex];
     v20 = " [%s] %s:%d Reached max screen encoders=%d Not adding streamQualityIndex=%d";
     v21 = v19;
     v22 = 40;
@@ -442,10 +442,10 @@ LABEL_33:
   return v16;
 }
 
-- (BOOL)shouldAppendEntry:(id)a3 appendedVideoEncoderGroups:(id)a4 is1080pCameraAvailable:(BOOL)a5
+- (BOOL)shouldAppendEntry:(id)entry appendedVideoEncoderGroups:(id)groups is1080pCameraAvailable:(BOOL)available
 {
   v20 = *MEMORY[0x1E69E9840];
-  if ([a3 streamGroupID] == 1667329381 && objc_msgSend(a3, "qualityIndex") == 1800 && !a5)
+  if ([entry streamGroupID] == 1667329381 && objc_msgSend(entry, "qualityIndex") == 1800 && !available)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -460,7 +460,7 @@ LABEL_33:
         v16 = 1024;
         v17 = 219;
         v18 = 1024;
-        v19 = [a3 qualityIndex];
+        qualityIndex = [entry qualityIndex];
         _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Skipping stream [1080x1080] with qualityIndex=%d as camera doesn't support", &v12, 0x22u);
       }
     }
@@ -471,89 +471,89 @@ LABEL_33:
   else
   {
 
-    return [(VCSessionBandwidthAllocationTable *)self shouldAppendEntry:a3 appendedVideoEncoderGroups:a4];
+    return [(VCSessionBandwidthAllocationTable *)self shouldAppendEntry:entry appendedVideoEncoderGroups:groups];
   }
 }
 
-- (void)cleanupStreamTokenEntries:(id)a3 currentNetworkBitrate:(unsigned int *)a4 isRedundancyEnabled:(BOOL)a5 appendedVideoEncoderGroups:(id)a6
+- (void)cleanupStreamTokenEntries:(id)entries currentNetworkBitrate:(unsigned int *)bitrate isRedundancyEnabled:(BOOL)enabled appendedVideoEncoderGroups:(id)groups
 {
-  v7 = a5;
-  v10 = [a3 lastObject];
-  if ([v10 isStartOnDemand] && (objc_msgSend(v10, "isSubscribedTo") & 1) == 0)
+  enabledCopy = enabled;
+  lastObject = [entries lastObject];
+  if ([lastObject isStartOnDemand] && (objc_msgSend(lastObject, "isSubscribedTo") & 1) == 0)
   {
-    if (v7 && [v10 hasRepairStreamID])
+    if (enabledCopy && [lastObject hasRepairStreamID])
     {
-      v11 = [v10 repairMaxNetworkBitrate];
+      repairMaxNetworkBitrate = [lastObject repairMaxNetworkBitrate];
     }
 
     else
     {
-      v11 = [v10 maxNetworkBitrate];
+      repairMaxNetworkBitrate = [lastObject maxNetworkBitrate];
     }
 
-    *a4 -= v11;
-    if ([v10 streamGroupID] == 1935897189 || objc_msgSend(v10, "streamGroupID") == 1667329381)
+    *bitrate -= repairMaxNetworkBitrate;
+    if ([lastObject streamGroupID] == 1935897189 || objc_msgSend(lastObject, "streamGroupID") == 1667329381)
     {
-      v12 = [a6 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(v10, "streamGroupID"))}];
-      v13 = [v12 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(v10, "encoderGroupID"))}];
-      [v13 removeObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(v10, "streamID"))}];
+      v12 = [groups objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(lastObject, "streamGroupID"))}];
+      v13 = [v12 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(lastObject, "encoderGroupID"))}];
+      [v13 removeObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(lastObject, "streamID"))}];
     }
 
-    [a3 removeLastObject];
+    [entries removeLastObject];
   }
 }
 
-- (void)appendEntry:(id)a3 streamTokenEntries:(id)a4 currentNetworkBitrate:(unsigned int *)a5 shouldUseRepairBitrate:(BOOL)a6 appendedVideoEncoderGroups:(id)a7
+- (void)appendEntry:(id)entry streamTokenEntries:(id)entries currentNetworkBitrate:(unsigned int *)bitrate shouldUseRepairBitrate:(BOOL)repairBitrate appendedVideoEncoderGroups:(id)groups
 {
-  v8 = a6;
-  [a4 addObject:?];
-  if (v8)
+  repairBitrateCopy = repairBitrate;
+  [entries addObject:?];
+  if (repairBitrateCopy)
   {
-    v11 = [a3 repairMaxNetworkBitrate];
+    repairMaxNetworkBitrate = [entry repairMaxNetworkBitrate];
   }
 
   else
   {
-    v11 = [a3 minNetworkBitrate];
+    repairMaxNetworkBitrate = [entry minNetworkBitrate];
   }
 
-  *a5 += v11;
-  if ([a3 streamGroupID] == 1935897189 || objc_msgSend(a3, "streamGroupID") == 1667329381)
+  *bitrate += repairMaxNetworkBitrate;
+  if ([entry streamGroupID] == 1935897189 || objc_msgSend(entry, "streamGroupID") == 1667329381)
   {
-    if (![a7 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(a3, "streamGroupID"))}])
+    if (![groups objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(entry, "streamGroupID"))}])
     {
-      v12 = [MEMORY[0x1E695DF90] dictionary];
-      [a7 setObject:v12 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(a3, "streamGroupID"))}];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [groups setObject:dictionary forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(entry, "streamGroupID"))}];
     }
 
-    v13 = [a7 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(a3, "streamGroupID"))}];
-    if (![v13 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(a3, "encoderGroupID"))}])
+    v13 = [groups objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(entry, "streamGroupID"))}];
+    if (![v13 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(entry, "encoderGroupID"))}])
     {
       v14 = [MEMORY[0x1E695DFA8] set];
-      v15 = [a7 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(a3, "streamGroupID"))}];
-      [v15 setObject:v14 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(a3, "encoderGroupID"))}];
+      v15 = [groups objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(entry, "streamGroupID"))}];
+      [v15 setObject:v14 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(entry, "encoderGroupID"))}];
     }
 
-    v16 = [a7 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(a3, "streamGroupID"))}];
-    v17 = [v16 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(a3, "encoderGroupID"))}];
-    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "streamID")}];
+    v16 = [groups objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(entry, "streamGroupID"))}];
+    v17 = [v16 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(entry, "encoderGroupID"))}];
+    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(entry, "streamID")}];
 
     [v17 addObject:v18];
   }
 }
 
-- (BOOL)shouldAddBackupEntry:(id)a3 referenceTable:(id)a4 referenceQualityIndices:(id)a5
+- (BOOL)shouldAddBackupEntry:(id)entry referenceTable:(id)table referenceQualityIndices:(id)indices
 {
   v22 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [a5 countByEnumeratingWithState:&v18 objects:v17 count:16];
+  v8 = [indices countByEnumeratingWithState:&v18 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
-    v10 = 0;
+    streamToken = 0;
     v11 = *v19;
     v12 = 1;
     do
@@ -563,14 +563,14 @@ LABEL_33:
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(a5);
+          objc_enumerationMutation(indices);
         }
 
         v14 = *(*(&v18 + 1) + 8 * v13);
-        v15 = [a4 objectForKeyedSubscript:v14];
-        if ([v14 isEqualToNumber:a3])
+        v15 = [table objectForKeyedSubscript:v14];
+        if ([v14 isEqualToNumber:entry])
         {
-          v10 = [v15 streamToken];
+          streamToken = [v15 streamToken];
 LABEL_8:
           v12 = 0;
           goto LABEL_11;
@@ -593,7 +593,7 @@ LABEL_11:
       }
 
       while (v9 != v13);
-      v8 = [a5 countByEnumeratingWithState:&v18 objects:v17 count:16];
+      v8 = [indices countByEnumeratingWithState:&v18 objects:v17 count:16];
       v9 = v8;
     }
 
@@ -603,7 +603,7 @@ LABEL_11:
   return v8;
 }
 
-- (void)printTable:(id)a3
+- (void)printTable:(id)table
 {
   v39 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -656,7 +656,7 @@ LABEL_11:
         v35 = 2112;
         v36 = v5;
         v37 = 2048;
-        v38 = self;
+        selfCopy = self;
         v8 = " [%s] %s:%d %@(%p) downlink bandwidth alloctor table ########### ";
         v9 = v12;
         v10 = 48;
@@ -666,9 +666,9 @@ LABEL_11:
   }
 
   v13 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"self" ascending:1];
-  v14 = [a3 allKeys];
+  allKeys = [table allKeys];
   v28 = v13;
-  v15 = [v14 sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v28, 1)}];
+  v15 = [allKeys sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v28, 1)}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -688,7 +688,7 @@ LABEL_11:
         }
 
         v20 = *(*(&v24 + 1) + 8 * i);
-        v21 = [a3 objectForKeyedSubscript:v20];
+        v21 = [table objectForKeyedSubscript:v20];
         v22[0] = MEMORY[0x1E69E9820];
         v22[1] = 3221225472;
         v22[2] = __48__VCSessionBandwidthAllocationTable_printTable___block_invoke;

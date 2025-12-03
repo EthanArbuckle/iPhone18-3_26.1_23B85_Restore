@@ -1,21 +1,21 @@
 @interface BSUIGoalsShareSheet
-+ (void)presentShareSheetFromViewController:(id)a3 sourceView:(id)a4 sourceBarButtonItem:(id)a5 image:(id)a6 kind:(unint64_t)a7 year:(unint64_t)a8 title:(id)a9 sharingUrls:(id)a10 completion:(id)a11;
++ (void)presentShareSheetFromViewController:(id)controller sourceView:(id)view sourceBarButtonItem:(id)item image:(id)image kind:(unint64_t)kind year:(unint64_t)year title:(id)title sharingUrls:(id)self0 completion:(id)self1;
 @end
 
 @implementation BSUIGoalsShareSheet
 
-+ (void)presentShareSheetFromViewController:(id)a3 sourceView:(id)a4 sourceBarButtonItem:(id)a5 image:(id)a6 kind:(unint64_t)a7 year:(unint64_t)a8 title:(id)a9 sharingUrls:(id)a10 completion:(id)a11
++ (void)presentShareSheetFromViewController:(id)controller sourceView:(id)view sourceBarButtonItem:(id)item image:(id)image kind:(unint64_t)kind year:(unint64_t)year title:(id)title sharingUrls:(id)self0 completion:(id)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a11;
-  v20 = a10;
-  v21 = a9;
-  v22 = a6;
-  v23 = [[_BSUIGoalsSharableTextProvider alloc] initWithSharableImage:v22 kind:a7 year:a8 title:v21 sharingUrls:v20];
+  controllerCopy = controller;
+  viewCopy = view;
+  itemCopy = item;
+  completionCopy = completion;
+  urlsCopy = urls;
+  titleCopy = title;
+  imageCopy = image;
+  v23 = [[_BSUIGoalsSharableTextProvider alloc] initWithSharableImage:imageCopy kind:kind year:year title:titleCopy sharingUrls:urlsCopy];
 
-  v24 = [[_BSUIGoalsSharableImageProvider alloc] initWithSharableImage:v22];
+  v24 = [[_BSUIGoalsSharableImageProvider alloc] initWithSharableImage:imageCopy];
   v25 = [UIActivityViewController alloc];
   v45[0] = v23;
   v45[1] = v24;
@@ -24,21 +24,21 @@
 
   if (objc_opt_respondsToSelector())
   {
-    if (v17)
+    if (viewCopy)
     {
-      v28 = [v27 popoverPresentationController];
-      [v28 setSourceView:v17];
+      popoverPresentationController = [v27 popoverPresentationController];
+      [popoverPresentationController setSourceView:viewCopy];
     }
 
     else
     {
-      if (!v18)
+      if (!itemCopy)
       {
         goto LABEL_7;
       }
 
-      v28 = [v27 popoverPresentationController];
-      [v28 setBarButtonItem:v18];
+      popoverPresentationController = [v27 popoverPresentationController];
+      [popoverPresentationController setBarButtonItem:itemCopy];
     }
   }
 
@@ -50,30 +50,30 @@ LABEL_7:
   v29 = [NSArray arrayWithObjects:v44 count:4];
   [v27 setExcludedActivityTypes:v29];
 
-  v30 = [v16 view];
-  v31 = [v30 window];
+  view = [controllerCopy view];
+  window = [view window];
 
-  if (([v31 isKeyWindow] & 1) == 0)
+  if (([window isKeyWindow] & 1) == 0)
   {
-    [v31 makeKeyWindow];
+    [window makeKeyWindow];
   }
 
-  v32 = [v31 tintColor];
+  tintColor = [window tintColor];
   v33 = +[UIColor bc_booksLabelColor];
-  [v31 setTintColor:v33];
+  [window setTintColor:v33];
 
   v37 = _NSConcreteStackBlock;
   v38 = 3221225472;
   v39 = sub_9A60;
   v40 = &unk_386E10;
-  v41 = v31;
-  v42 = v32;
-  v43 = v19;
-  v34 = v19;
-  v35 = v32;
-  v36 = v31;
+  v41 = window;
+  v42 = tintColor;
+  v43 = completionCopy;
+  v34 = completionCopy;
+  v35 = tintColor;
+  v36 = window;
   [v27 setCompletionWithItemsHandler:&v37];
-  [v16 presentViewController:v27 animated:1 completion:{0, v37, v38, v39, v40}];
+  [controllerCopy presentViewController:v27 animated:1 completion:{0, v37, v38, v39, v40}];
 }
 
 @end

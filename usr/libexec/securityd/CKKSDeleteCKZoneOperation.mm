@@ -1,5 +1,5 @@
 @interface CKKSDeleteCKZoneOperation
-- (CKKSDeleteCKZoneOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5;
+- (CKKSDeleteCKZoneOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState;
 - (void)groupStart;
 @end
 
@@ -17,10 +17,10 @@
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v3 = [(CKKSDeleteCKZoneOperation *)self deps];
-  v4 = [v3 views];
+  deps = [(CKKSDeleteCKZoneOperation *)self deps];
+  views = [deps views];
 
-  v5 = [v4 countByEnumeratingWithState:&v32 objects:v44 count:16];
+  v5 = [views countByEnumeratingWithState:&v32 objects:v44 count:16];
   if (v5)
   {
     v6 = *v33;
@@ -31,18 +31,18 @@
       {
         if (*v33 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(views);
         }
 
         v8 = v37[5];
-        v9 = [*(*(&v32 + 1) + 8 * v7) zoneID];
-        [v8 addObject:v9];
+        zoneID = [*(*(&v32 + 1) + 8 * v7) zoneID];
+        [v8 addObject:zoneID];
 
         v7 = v7 + 1;
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v32 objects:v44 count:16];
+      v5 = [views countByEnumeratingWithState:&v32 objects:v44 count:16];
     }
 
     while (v5);
@@ -62,17 +62,17 @@
     }
 
     objc_initWeak(buf, self);
-    v14 = [(CKKSDeleteCKZoneOperation *)self deps];
-    v15 = [v14 cloudKitClassDependencies];
-    v16 = [objc_msgSend(v15 "modifyRecordZonesOperationClass")];
+    deps2 = [(CKKSDeleteCKZoneOperation *)self deps];
+    cloudKitClassDependencies = [deps2 cloudKitClassDependencies];
+    v16 = [objc_msgSend(cloudKitClassDependencies "modifyRecordZonesOperationClass")];
     v17 = [v16 initWithRecordZonesToSave:0 recordZoneIDsToDelete:v37[5]];
 
-    v18 = [v17 configuration];
-    [v18 setIsCloudKitSupportOperation:1];
+    configuration = [v17 configuration];
+    [configuration setIsCloudKitSupportOperation:1];
 
-    v19 = [(CKKSDeleteCKZoneOperation *)self deps];
-    v20 = [v19 ckdatabase];
-    [v17 setDatabase:v20];
+    deps3 = [(CKKSDeleteCKZoneOperation *)self deps];
+    ckdatabase = [deps3 ckdatabase];
+    [v17 setDatabase:ckdatabase];
 
     [v17 setName:@"zone-creation-operation"];
     v21 = [CKOperationGroup CKKSGroupWithName:@"zone-creation"];
@@ -86,9 +86,9 @@
     objc_copyWeak(&v31, buf);
     v30[4] = &v36;
     [v17 setModifyRecordZonesCompletionBlock:v30];
-    v22 = [(CKKSDeleteCKZoneOperation *)self deps];
-    v23 = [v22 ckdatabase];
-    [v23 addOperation:v17];
+    deps4 = [(CKKSDeleteCKZoneOperation *)self deps];
+    ckdatabase2 = [deps4 ckdatabase];
+    [ckdatabase2 addOperation:v17];
 
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
@@ -98,11 +98,11 @@
     v24 = [CKKSResultOperation named:@"determine-next-state" withBlockTakingSelf:v28];
     [(CKKSDeleteCKZoneOperation *)self setSetResultStateOperation:v24];
 
-    v25 = [(CKKSDeleteCKZoneOperation *)self setResultStateOperation];
-    [v25 addDependency:v17];
+    setResultStateOperation = [(CKKSDeleteCKZoneOperation *)self setResultStateOperation];
+    [setResultStateOperation addDependency:v17];
 
-    v26 = [(CKKSDeleteCKZoneOperation *)self setResultStateOperation];
-    [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v26];
+    setResultStateOperation2 = [(CKKSDeleteCKZoneOperation *)self setResultStateOperation];
+    [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:setResultStateOperation2];
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(&v31);
@@ -118,27 +118,27 @@
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "No zones to delete", buf, 2u);
     }
 
-    v27 = [(CKKSDeleteCKZoneOperation *)self intendedState];
-    [(CKKSDeleteCKZoneOperation *)self setNextState:v27];
+    intendedState = [(CKKSDeleteCKZoneOperation *)self intendedState];
+    [(CKKSDeleteCKZoneOperation *)self setNextState:intendedState];
   }
 
   _Block_object_dispose(&v36, 8);
 }
 
-- (CKKSDeleteCKZoneOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5
+- (CKKSDeleteCKZoneOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
   v15.receiver = self;
   v15.super_class = CKKSDeleteCKZoneOperation;
   v12 = [(CKKSGroupOperation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong((v12 + 150), a3);
-    objc_storeStrong((v13 + 142), a4);
-    objc_storeStrong((v13 + 134), a5);
+    objc_storeStrong((v12 + 150), dependencies);
+    objc_storeStrong((v13 + 142), state);
+    objc_storeStrong((v13 + 134), errorState);
     v13[128] = 0;
   }
 

@@ -1,26 +1,26 @@
 @interface HULockupView
 - (HULockupInternalResizingDelegate)internalViewResizingDelegate;
-- (HULockupView)initWithFrame:(CGRect)a3;
+- (HULockupView)initWithFrame:(CGRect)frame;
 - (HULockupViewDelegate)delegate;
 - (double)_maxPossibleTitleLengthForDownloadControl;
-- (id)initializeIconViewWithSize:(unint64_t)a3;
-- (void)_buttonTapped:(id)a3;
-- (void)expandableTextViewDidCollapse:(id)a3;
-- (void)expandableTextViewDidExpand:(id)a3;
+- (id)initializeIconViewWithSize:(unint64_t)size;
+- (void)_buttonTapped:(id)tapped;
+- (void)expandableTextViewDidCollapse:(id)collapse;
+- (void)expandableTextViewDidExpand:(id)expand;
 - (void)resetDownloadControlVerticalConstraint;
-- (void)updateDescriptionExpandableTextView:(id)a3 animate:(BOOL)a4;
-- (void)updateIconView:(id)a3 animate:(BOOL)a4;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)updateDescriptionExpandableTextView:(id)view animate:(BOOL)animate;
+- (void)updateIconView:(id)view animate:(BOOL)animate;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HULockupView
 
-- (HULockupView)initWithFrame:(CGRect)a3
+- (HULockupView)initWithFrame:(CGRect)frame
 {
   v186[3] = *MEMORY[0x277D85DE8];
   v180.receiver = self;
   v180.super_class = HULockupView;
-  v3 = [(HULockupView *)&v180 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HULockupView *)&v180 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -28,24 +28,24 @@
     v5 = [(HULockupView *)v4 initializeIconViewWithSize:[(HULockupView *)v4 iconSize]];
     [(HULockupView *)v4 setIconView:v5];
 
-    v6 = [(HULockupView *)v4 iconView];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    iconView = [(HULockupView *)v4 iconView];
+    [iconView setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v7 = objc_alloc_init(MEMORY[0x277D75D18]);
     [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [MEMORY[0x277D75348] systemExtraLightGrayColor];
-    v9 = [v8 CGColor];
-    v10 = [v7 layer];
-    [v10 setBorderColor:v9];
+    systemExtraLightGrayColor = [MEMORY[0x277D75348] systemExtraLightGrayColor];
+    cGColor = [systemExtraLightGrayColor CGColor];
+    layer = [v7 layer];
+    [layer setBorderColor:cGColor];
 
-    v11 = [v7 layer];
-    [v11 setBorderWidth:1.0];
+    layer2 = [v7 layer];
+    [layer2 setBorderWidth:1.0];
 
-    v12 = [v7 layer];
-    [v12 setCornerRadius:10.0];
+    layer3 = [v7 layer];
+    [layer3 setCornerRadius:10.0];
 
-    v13 = [(HULockupView *)v4 iconView];
-    [v7 addSubview:v13];
+    iconView2 = [(HULockupView *)v4 iconView];
+    [v7 addSubview:iconView2];
 
     v14 = objc_alloc(MEMORY[0x277D756B8]);
     v15 = *MEMORY[0x277CBF3A0];
@@ -55,384 +55,384 @@
     v19 = [v14 initWithFrame:{*MEMORY[0x277CBF3A0], v16, v17, v18}];
     [(HULockupView *)v4 setTitleLabel:v19];
 
-    v20 = [(HULockupView *)v4 titleLabel];
-    [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+    titleLabel = [(HULockupView *)v4 titleLabel];
+    [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v21 = [(HULockupView *)v4 titleLabel];
-    [v21 setAdjustsFontSizeToFitWidth:1];
+    titleLabel2 = [(HULockupView *)v4 titleLabel];
+    [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
-    v22 = [(HULockupView *)v4 titleLabel];
-    [v22 setMinimumScaleFactor:0.75];
+    titleLabel3 = [(HULockupView *)v4 titleLabel];
+    [titleLabel3 setMinimumScaleFactor:0.75];
 
     v23 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-    v24 = [(HULockupView *)v4 titleLabel];
-    [v24 setFont:v23];
+    titleLabel4 = [(HULockupView *)v4 titleLabel];
+    [titleLabel4 setFont:v23];
 
     v25 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v15, v16, v17, v18}];
     [(HULockupView *)v4 setDetailLabel:v25];
 
-    v26 = [(HULockupView *)v4 detailLabel];
-    [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
+    detailLabel = [(HULockupView *)v4 detailLabel];
+    [detailLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v27 = *MEMORY[0x277D76938];
     v28 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76938]];
-    v29 = [(HULockupView *)v4 detailLabel];
-    [v29 setFont:v28];
+    detailLabel2 = [(HULockupView *)v4 detailLabel];
+    [detailLabel2 setFont:v28];
 
     v30 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v15, v16, v17, v18}];
     [(HULockupView *)v4 setSecondaryDetailLabel:v30];
 
-    v31 = [(HULockupView *)v4 secondaryDetailLabel];
-    [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
+    secondaryDetailLabel = [(HULockupView *)v4 secondaryDetailLabel];
+    [secondaryDetailLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v32 = [MEMORY[0x277D74300] preferredFontForTextStyle:v27];
-    v33 = [(HULockupView *)v4 secondaryDetailLabel];
-    [v33 setFont:v32];
+    secondaryDetailLabel2 = [(HULockupView *)v4 secondaryDetailLabel];
+    [secondaryDetailLabel2 setFont:v32];
 
-    v34 = [MEMORY[0x277D75348] systemGrayColor];
-    v35 = [(HULockupView *)v4 secondaryDetailLabel];
-    [v35 setTextColor:v34];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    secondaryDetailLabel3 = [(HULockupView *)v4 secondaryDetailLabel];
+    [secondaryDetailLabel3 setTextColor:systemGrayColor];
 
     v36 = objc_alloc(MEMORY[0x277D75A68]);
-    v37 = [(HULockupView *)v4 titleLabel];
-    v186[0] = v37;
-    v38 = [(HULockupView *)v4 detailLabel];
-    v186[1] = v38;
-    v39 = [(HULockupView *)v4 secondaryDetailLabel];
-    v186[2] = v39;
+    titleLabel5 = [(HULockupView *)v4 titleLabel];
+    v186[0] = titleLabel5;
+    detailLabel3 = [(HULockupView *)v4 detailLabel];
+    v186[1] = detailLabel3;
+    secondaryDetailLabel4 = [(HULockupView *)v4 secondaryDetailLabel];
+    v186[2] = secondaryDetailLabel4;
     v40 = [MEMORY[0x277CBEA60] arrayWithObjects:v186 count:3];
     v41 = [v36 initWithArrangedSubviews:v40];
     [(HULockupView *)v4 setLabelStackView:v41];
 
-    v42 = [(HULockupView *)v4 labelStackView];
-    [v42 setSpacing:2.0];
+    labelStackView = [(HULockupView *)v4 labelStackView];
+    [labelStackView setSpacing:2.0];
 
-    v43 = [(HULockupView *)v4 labelStackView];
-    [v43 setAxis:1];
+    labelStackView2 = [(HULockupView *)v4 labelStackView];
+    [labelStackView2 setAxis:1];
 
-    v44 = [(HULockupView *)v4 labelStackView];
-    [v44 setTranslatesAutoresizingMaskIntoConstraints:0];
+    labelStackView3 = [(HULockupView *)v4 labelStackView];
+    [labelStackView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v45 = objc_alloc_init(HUDownloadControl);
     [(HULockupView *)v4 setDownloadControl:v45];
 
-    v46 = [(HULockupView *)v4 downloadControl];
-    [v46 setTranslatesAutoresizingMaskIntoConstraints:0];
+    downloadControl = [(HULockupView *)v4 downloadControl];
+    [downloadControl setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v47 = [(HULockupView *)v4 downloadControl];
-    [v47 setAllowsAddImage:0];
+    downloadControl2 = [(HULockupView *)v4 downloadControl];
+    [downloadControl2 setAllowsAddImage:0];
 
-    v48 = [(HULockupView *)v4 downloadControl];
-    [v48 setDisplayStyle:1];
+    downloadControl3 = [(HULockupView *)v4 downloadControl];
+    [downloadControl3 setDisplayStyle:1];
 
-    v49 = [MEMORY[0x277D75348] hf_keyColor];
-    v50 = [(HULockupView *)v4 downloadControl];
-    [v50 setFilledTintColor:v49];
+    hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+    downloadControl4 = [(HULockupView *)v4 downloadControl];
+    [downloadControl4 setFilledTintColor:hf_keyColor];
 
-    v51 = [MEMORY[0x277D75348] systemFillColor];
-    v52 = [(HULockupView *)v4 downloadControl];
-    [v52 setTintColor:v51];
+    systemFillColor = [MEMORY[0x277D75348] systemFillColor];
+    downloadControl5 = [(HULockupView *)v4 downloadControl];
+    [downloadControl5 setTintColor:systemFillColor];
 
-    v53 = [(HULockupView *)v4 downloadControl];
-    [v53 addTarget:v4 action:sel__buttonTapped_ forControlEvents:64];
+    downloadControl6 = [(HULockupView *)v4 downloadControl];
+    [downloadControl6 addTarget:v4 action:sel__buttonTapped_ forControlEvents:64];
 
-    v54 = [(HULockupView *)v4 downloadControl];
-    [v54 setControlStatus:1 animated:{0x3FF0000000000000, 0}];
+    downloadControl7 = [(HULockupView *)v4 downloadControl];
+    [downloadControl7 setControlStatus:1 animated:{0x3FF0000000000000, 0}];
 
-    v55 = [(HULockupView *)v4 downloadControl];
+    downloadControl8 = [(HULockupView *)v4 downloadControl];
     v56 = _HULocalizedStringWithDefaultValue(@"HUSoftwareUpdateControlTitle_Update", @"HUSoftwareUpdateControlTitle_Update", 1);
-    [v55 setTitle:v56 forControlStatusType:1];
+    [downloadControl8 setTitle:v56 forControlStatusType:1];
 
     [(HULockupView *)v4 _maxPossibleTitleLengthForDownloadControl];
     v58 = v57;
-    v59 = [(HULockupView *)v4 downloadControl];
-    [v59 setMinTitleLength:v58];
+    downloadControl9 = [(HULockupView *)v4 downloadControl];
+    [downloadControl9 setMinTitleLength:v58];
 
-    v60 = [(HULockupView *)v4 downloadControl];
-    [v60 sizeToFit];
+    downloadControl10 = [(HULockupView *)v4 downloadControl];
+    [downloadControl10 sizeToFit];
 
     v61 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v15, v16, v17, v18}];
     [v61 addSubview:v7];
-    v62 = [(HULockupView *)v4 labelStackView];
-    [v61 addSubview:v62];
+    labelStackView4 = [(HULockupView *)v4 labelStackView];
+    [v61 addSubview:labelStackView4];
 
-    v63 = [(HULockupView *)v4 downloadControl];
-    [v61 addSubview:v63];
+    downloadControl11 = [(HULockupView *)v4 downloadControl];
+    [v61 addSubview:downloadControl11];
 
     v182 = *MEMORY[0x277D740A8];
     v64 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76920]];
     v185[0] = v64;
     v183 = *MEMORY[0x277D740C0];
     v65 = v183;
-    v66 = [MEMORY[0x277D75348] labelColor];
-    v185[1] = v66;
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    v185[1] = labelColor;
     v184 = *MEMORY[0x277D74118];
-    v67 = [MEMORY[0x277D74248] defaultParagraphStyle];
-    v185[2] = v67;
+    defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+    v185[2] = defaultParagraphStyle;
     v68 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v185 forKeys:&v182 count:3];
 
     v179 = v68;
     v69 = [v68 mutableCopy];
-    v70 = [MEMORY[0x277D75348] hf_keyColor];
-    [v69 setObject:v70 forKeyedSubscript:v65];
+    hf_keyColor2 = [MEMORY[0x277D75348] hf_keyColor];
+    [v69 setObject:hf_keyColor2 forKeyedSubscript:v65];
 
     v71 = [[HUExpandableTextView alloc] initWithFrame:v15, v16, v17, v18];
     [(HULockupView *)v4 setDescriptionExpandableTextView:v71];
 
-    v72 = [(HULockupView *)v4 descriptionExpandableTextView];
-    [v72 setTextAttributes:v68];
+    descriptionExpandableTextView = [(HULockupView *)v4 descriptionExpandableTextView];
+    [descriptionExpandableTextView setTextAttributes:v68];
 
-    v73 = [(HULockupView *)v4 descriptionExpandableTextView];
-    [v73 setDelegate:v4];
+    descriptionExpandableTextView2 = [(HULockupView *)v4 descriptionExpandableTextView];
+    [descriptionExpandableTextView2 setDelegate:v4];
 
-    v74 = [(HULockupView *)v4 descriptionExpandableTextView];
-    [v74 setTranslatesAutoresizingMaskIntoConstraints:0];
+    descriptionExpandableTextView3 = [(HULockupView *)v4 descriptionExpandableTextView];
+    [descriptionExpandableTextView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v75 = +[HUFadeInButton button];
-    v76 = [(HULockupView *)v4 descriptionExpandableTextView];
-    [v76 setMoreButton:v75];
+    descriptionExpandableTextView4 = [(HULockupView *)v4 descriptionExpandableTextView];
+    [descriptionExpandableTextView4 setMoreButton:v75];
 
     v77 = objc_alloc(MEMORY[0x277CCA898]);
     v78 = _HULocalizedStringWithDefaultValue(@"HUMoreButtonTitle", @"HUMoreButtonTitle", 1);
     v178 = [v77 initWithString:v78 attributes:v69];
 
-    v79 = [(HULockupView *)v4 descriptionExpandableTextView];
-    v80 = [v79 moreButton];
-    [v80 setAttributedTitle:v178 forState:0];
+    descriptionExpandableTextView5 = [(HULockupView *)v4 descriptionExpandableTextView];
+    moreButton = [descriptionExpandableTextView5 moreButton];
+    [moreButton setAttributedTitle:v178 forState:0];
 
-    v81 = [(HULockupView *)v4 descriptionExpandableTextView];
-    [v81 setAlwaysShowMoreButtonUnlessExpanded:1];
+    descriptionExpandableTextView6 = [(HULockupView *)v4 descriptionExpandableTextView];
+    [descriptionExpandableTextView6 setAlwaysShowMoreButtonUnlessExpanded:1];
 
-    v82 = [(HULockupView *)v4 descriptionExpandableTextView];
-    v83 = [v82 moreButton];
-    [v83 sizeToFit];
+    descriptionExpandableTextView7 = [(HULockupView *)v4 descriptionExpandableTextView];
+    moreButton2 = [descriptionExpandableTextView7 moreButton];
+    [moreButton2 sizeToFit];
 
     v84 = objc_alloc(MEMORY[0x277D75A68]);
     v181[0] = v61;
-    v85 = [(HULockupView *)v4 descriptionExpandableTextView];
-    v181[1] = v85;
+    descriptionExpandableTextView8 = [(HULockupView *)v4 descriptionExpandableTextView];
+    v181[1] = descriptionExpandableTextView8;
     v86 = [MEMORY[0x277CBEA60] arrayWithObjects:v181 count:2];
     v87 = [v84 initWithArrangedSubviews:v86];
     [(HULockupView *)v4 setStackView:v87];
 
-    v88 = [(HULockupView *)v4 stackView];
-    [v88 setSpacing:16.0];
+    stackView = [(HULockupView *)v4 stackView];
+    [stackView setSpacing:16.0];
 
-    v89 = [(HULockupView *)v4 stackView];
-    [v89 setAxis:1];
+    stackView2 = [(HULockupView *)v4 stackView];
+    [stackView2 setAxis:1];
 
-    v90 = [(HULockupView *)v4 stackView];
-    [v90 setTranslatesAutoresizingMaskIntoConstraints:0];
+    stackView3 = [(HULockupView *)v4 stackView];
+    [stackView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v91 = [(HULockupView *)v4 stackView];
-    [(HULockupView *)v4 addSubview:v91];
+    stackView4 = [(HULockupView *)v4 stackView];
+    [(HULockupView *)v4 addSubview:stackView4];
 
-    v92 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     [(HULockupView *)v4 iconSize];
     HUDefaultSizeForIconSize();
     v94 = v93;
     v96 = v95;
-    v97 = [v7 widthAnchor];
-    v98 = [v97 constraintEqualToConstant:v94 + 10.0];
-    [v92 addObject:v98];
+    widthAnchor = [v7 widthAnchor];
+    v98 = [widthAnchor constraintEqualToConstant:v94 + 10.0];
+    [array addObject:v98];
 
-    v99 = [v7 heightAnchor];
-    v100 = [v99 constraintEqualToConstant:v96 + 10.0];
-    [v92 addObject:v100];
+    heightAnchor = [v7 heightAnchor];
+    v100 = [heightAnchor constraintEqualToConstant:v96 + 10.0];
+    [array addObject:v100];
 
-    v101 = [v7 leadingAnchor];
-    v102 = [(HULockupView *)v4 leadingAnchor];
-    v103 = [v101 constraintEqualToAnchor:v102];
-    [v92 addObject:v103];
+    leadingAnchor = [v7 leadingAnchor];
+    leadingAnchor2 = [(HULockupView *)v4 leadingAnchor];
+    v103 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [array addObject:v103];
 
-    v104 = [v7 centerYAnchor];
-    v105 = [(HULockupView *)v4 labelStackView];
-    v106 = [v105 centerYAnchor];
-    v107 = [v104 constraintEqualToAnchor:v106];
-    [v92 addObject:v107];
+    centerYAnchor = [v7 centerYAnchor];
+    labelStackView5 = [(HULockupView *)v4 labelStackView];
+    centerYAnchor2 = [labelStackView5 centerYAnchor];
+    v107 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v107];
 
-    v108 = [(HULockupView *)v4 iconView];
-    v109 = [v108 widthAnchor];
-    v110 = [v109 constraintEqualToConstant:v94 + -15.0];
-    [v92 addObject:v110];
+    iconView3 = [(HULockupView *)v4 iconView];
+    widthAnchor2 = [iconView3 widthAnchor];
+    v110 = [widthAnchor2 constraintEqualToConstant:v94 + -15.0];
+    [array addObject:v110];
 
-    v111 = [(HULockupView *)v4 iconView];
-    v112 = [v111 heightAnchor];
-    v113 = [v112 constraintEqualToConstant:v96 + -15.0];
-    [v92 addObject:v113];
+    iconView4 = [(HULockupView *)v4 iconView];
+    heightAnchor2 = [iconView4 heightAnchor];
+    v113 = [heightAnchor2 constraintEqualToConstant:v96 + -15.0];
+    [array addObject:v113];
 
-    v114 = [(HULockupView *)v4 iconView];
-    v115 = [v114 centerXAnchor];
-    v116 = [v7 centerXAnchor];
-    v117 = [v115 constraintEqualToAnchor:v116];
-    [v92 addObject:v117];
+    iconView5 = [(HULockupView *)v4 iconView];
+    centerXAnchor = [iconView5 centerXAnchor];
+    centerXAnchor2 = [v7 centerXAnchor];
+    v117 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    [array addObject:v117];
 
-    v118 = [(HULockupView *)v4 iconView];
-    v119 = [v118 centerYAnchor];
-    v120 = [v7 centerYAnchor];
-    v121 = [v119 constraintEqualToAnchor:v120];
-    [v92 addObject:v121];
+    iconView6 = [(HULockupView *)v4 iconView];
+    centerYAnchor3 = [iconView6 centerYAnchor];
+    centerYAnchor4 = [v7 centerYAnchor];
+    v121 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+    [array addObject:v121];
 
-    v122 = [(HULockupView *)v4 labelStackView];
-    v123 = [v122 topAnchor];
-    v124 = [v61 layoutMarginsGuide];
-    v125 = [v124 topAnchor];
-    v126 = [v123 constraintEqualToAnchor:v125];
-    [v92 addObject:v126];
+    labelStackView6 = [(HULockupView *)v4 labelStackView];
+    topAnchor = [labelStackView6 topAnchor];
+    layoutMarginsGuide = [v61 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v126 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v126];
 
-    v127 = [(HULockupView *)v4 labelStackView];
-    v128 = [v127 leadingAnchor];
-    v129 = [v7 trailingAnchor];
-    v130 = [v128 constraintEqualToAnchor:v129 constant:12.0];
-    [v92 addObject:v130];
+    labelStackView7 = [(HULockupView *)v4 labelStackView];
+    leadingAnchor3 = [labelStackView7 leadingAnchor];
+    trailingAnchor = [v7 trailingAnchor];
+    v130 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:12.0];
+    [array addObject:v130];
 
-    v131 = [(HULockupView *)v4 labelStackView];
-    v132 = [v131 bottomAnchor];
-    v133 = [v61 bottomAnchor];
-    v134 = [v132 constraintEqualToAnchor:v133];
-    [v92 addObject:v134];
+    labelStackView8 = [(HULockupView *)v4 labelStackView];
+    bottomAnchor = [labelStackView8 bottomAnchor];
+    bottomAnchor2 = [v61 bottomAnchor];
+    v134 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    [array addObject:v134];
 
-    v135 = [(HULockupView *)v4 downloadControl];
-    v136 = [v135 topAnchor];
-    v137 = [v7 topAnchor];
-    v138 = [v136 constraintEqualToAnchor:v137];
+    downloadControl12 = [(HULockupView *)v4 downloadControl];
+    topAnchor3 = [downloadControl12 topAnchor];
+    topAnchor4 = [v7 topAnchor];
+    v138 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     [(HULockupView *)v4 setDownloadControlTopConstraint:v138];
 
-    v139 = [(HULockupView *)v4 downloadControl];
-    v140 = [v139 centerYAnchor];
-    v141 = [(HULockupView *)v4 labelStackView];
-    v142 = [v141 centerYAnchor];
-    v143 = [v140 constraintEqualToAnchor:v142];
+    downloadControl13 = [(HULockupView *)v4 downloadControl];
+    centerYAnchor5 = [downloadControl13 centerYAnchor];
+    labelStackView9 = [(HULockupView *)v4 labelStackView];
+    centerYAnchor6 = [labelStackView9 centerYAnchor];
+    v143 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     [(HULockupView *)v4 setDownloadControlCenterYConstraint:v143];
 
-    v144 = [(HULockupView *)v4 downloadControlCenterYConstraint];
-    [v92 addObject:v144];
+    downloadControlCenterYConstraint = [(HULockupView *)v4 downloadControlCenterYConstraint];
+    [array addObject:downloadControlCenterYConstraint];
 
-    v145 = [(HULockupView *)v4 downloadControl];
-    v146 = [v145 leadingAnchor];
-    v147 = [(HULockupView *)v4 labelStackView];
-    v148 = [v147 trailingAnchor];
-    v149 = [v146 constraintGreaterThanOrEqualToAnchor:v148 constant:12.0];
-    [v92 addObject:v149];
+    downloadControl14 = [(HULockupView *)v4 downloadControl];
+    leadingAnchor4 = [downloadControl14 leadingAnchor];
+    labelStackView10 = [(HULockupView *)v4 labelStackView];
+    trailingAnchor2 = [labelStackView10 trailingAnchor];
+    v149 = [leadingAnchor4 constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:12.0];
+    [array addObject:v149];
 
-    v150 = [(HULockupView *)v4 downloadControl];
-    v151 = [v150 trailingAnchor];
-    v152 = [v61 safeAreaLayoutGuide];
-    v153 = [v152 trailingAnchor];
-    v154 = [v151 constraintEqualToAnchor:v153];
-    [v92 addObject:v154];
+    downloadControl15 = [(HULockupView *)v4 downloadControl];
+    trailingAnchor3 = [downloadControl15 trailingAnchor];
+    safeAreaLayoutGuide = [v61 safeAreaLayoutGuide];
+    trailingAnchor4 = [safeAreaLayoutGuide trailingAnchor];
+    v154 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
+    [array addObject:v154];
 
-    v155 = [(HULockupView *)v4 downloadControl];
-    v156 = [v155 widthAnchor];
-    v157 = [(HULockupView *)v4 downloadControl];
-    [v157 intrinsicContentSize];
-    v158 = [v156 constraintEqualToConstant:?];
+    downloadControl16 = [(HULockupView *)v4 downloadControl];
+    widthAnchor3 = [downloadControl16 widthAnchor];
+    downloadControl17 = [(HULockupView *)v4 downloadControl];
+    [downloadControl17 intrinsicContentSize];
+    v158 = [widthAnchor3 constraintEqualToConstant:?];
     [(HULockupView *)v4 setDownloadControlWidthConstraint:v158];
 
-    v159 = [(HULockupView *)v4 downloadControlWidthConstraint];
-    [v92 addObject:v159];
+    downloadControlWidthConstraint = [(HULockupView *)v4 downloadControlWidthConstraint];
+    [array addObject:downloadControlWidthConstraint];
 
-    v160 = [(HULockupView *)v4 stackView];
-    v161 = [v160 topAnchor];
-    v162 = [(HULockupView *)v4 topAnchor];
-    v163 = [v161 constraintEqualToAnchor:v162];
-    [v92 addObject:v163];
+    stackView5 = [(HULockupView *)v4 stackView];
+    topAnchor5 = [stackView5 topAnchor];
+    topAnchor6 = [(HULockupView *)v4 topAnchor];
+    v163 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
+    [array addObject:v163];
 
-    v164 = [(HULockupView *)v4 stackView];
-    v165 = [v164 leadingAnchor];
-    v166 = [(HULockupView *)v4 leadingAnchor];
-    v167 = [v165 constraintEqualToAnchor:v166];
-    [v92 addObject:v167];
+    stackView6 = [(HULockupView *)v4 stackView];
+    leadingAnchor5 = [stackView6 leadingAnchor];
+    leadingAnchor6 = [(HULockupView *)v4 leadingAnchor];
+    v167 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
+    [array addObject:v167];
 
-    v168 = [(HULockupView *)v4 stackView];
-    v169 = [v168 trailingAnchor];
-    v170 = [(HULockupView *)v4 trailingAnchor];
-    v171 = [v169 constraintEqualToAnchor:v170];
-    [v92 addObject:v171];
+    stackView7 = [(HULockupView *)v4 stackView];
+    trailingAnchor5 = [stackView7 trailingAnchor];
+    trailingAnchor6 = [(HULockupView *)v4 trailingAnchor];
+    v171 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
+    [array addObject:v171];
 
-    v172 = [(HULockupView *)v4 stackView];
-    v173 = [v172 bottomAnchor];
-    v174 = [(HULockupView *)v4 layoutMarginsGuide];
-    v175 = [v174 bottomAnchor];
-    v176 = [v173 constraintEqualToAnchor:v175];
-    [v92 addObject:v176];
+    stackView8 = [(HULockupView *)v4 stackView];
+    bottomAnchor3 = [stackView8 bottomAnchor];
+    layoutMarginsGuide2 = [(HULockupView *)v4 layoutMarginsGuide];
+    bottomAnchor4 = [layoutMarginsGuide2 bottomAnchor];
+    v176 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
+    [array addObject:v176];
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v92];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
   }
 
   return v4;
 }
 
-- (id)initializeIconViewWithSize:(unint64_t)a3
+- (id)initializeIconViewWithSize:(unint64_t)size
 {
   v3 = objc_alloc_init(MEMORY[0x277D755E8]);
 
   return v3;
 }
 
-- (void)updateIconView:(id)a3 animate:(BOOL)a4
+- (void)updateIconView:(id)view animate:(BOOL)animate
 {
-  v5 = a3;
-  v8 = [(HULockupView *)self item];
-  v6 = [v8 latestResults];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13E98]];
-  [v5 setImage:v7];
+  viewCopy = view;
+  item = [(HULockupView *)self item];
+  latestResults = [item latestResults];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E98]];
+  [viewCopy setImage:v7];
 }
 
-- (void)updateDescriptionExpandableTextView:(id)a3 animate:(BOOL)a4
+- (void)updateDescriptionExpandableTextView:(id)view animate:(BOOL)animate
 {
-  v8 = a3;
-  v5 = [(HULockupView *)self item];
-  v6 = [v5 latestResults];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+  viewCopy = view;
+  item = [(HULockupView *)self item];
+  latestResults = [item latestResults];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E20]];
 
   if (v7)
   {
-    [v8 setStringGenerator:v7];
+    [viewCopy setStringGenerator:v7];
   }
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v3 = a3;
-  v5 = [(HULockupView *)self item];
-  v62 = [v5 latestResults];
+  animationCopy = animation;
+  item = [(HULockupView *)self item];
+  latestResults = [item latestResults];
 
-  v6 = [(HULockupView *)self iconView];
-  [(HULockupView *)self updateIconView:v6 animate:v3];
+  iconView = [(HULockupView *)self iconView];
+  [(HULockupView *)self updateIconView:iconView animate:animationCopy];
 
-  v7 = [v62 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  v8 = [(HULockupView *)self titleLabel];
-  [v8 setText:v7];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  titleLabel = [(HULockupView *)self titleLabel];
+  [titleLabel setText:v7];
 
-  v9 = [v62 objectForKeyedSubscript:*MEMORY[0x277D13E30]];
-  v10 = [(HULockupView *)self detailLabel];
-  [v10 setText:v9];
+  v9 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E30]];
+  detailLabel = [(HULockupView *)self detailLabel];
+  [detailLabel setText:v9];
 
-  v11 = [v62 objectForKeyedSubscript:*MEMORY[0x277D13EF8]];
-  v12 = [(HULockupView *)self secondaryDetailLabel];
-  [v12 setText:v11];
+  v11 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EF8]];
+  secondaryDetailLabel = [(HULockupView *)self secondaryDetailLabel];
+  [secondaryDetailLabel setText:v11];
 
-  v13 = [v62 objectForKeyedSubscript:*MEMORY[0x277D140F0]];
-  v14 = [v13 BOOLValue];
+  v13 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D140F0]];
+  bOOLValue = [v13 BOOLValue];
 
-  v15 = [v62 objectForKeyedSubscript:*MEMORY[0x277D14100]];
-  v16 = [v15 BOOLValue];
+  v15 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14100]];
+  bOOLValue2 = [v15 BOOLValue];
 
-  v17 = [v62 objectForKeyedSubscript:*MEMORY[0x277D14110]];
-  v18 = [v17 BOOLValue];
+  v17 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14110]];
+  bOOLValue3 = [v17 BOOLValue];
 
-  if (v14)
+  if (bOOLValue)
   {
-    if (v18)
+    if (bOOLValue3)
     {
-      v19 = [MEMORY[0x277D75348] systemFillColor];
-      v20 = [(HULockupView *)self downloadControl];
-      [v20 setTintColor:v19];
+      systemFillColor = [MEMORY[0x277D75348] systemFillColor];
+      downloadControl = [(HULockupView *)self downloadControl];
+      [downloadControl setTintColor:systemFillColor];
 
-      v21 = [MEMORY[0x277D75348] systemGrayColor];
-      v22 = [(HULockupView *)self downloadControl];
-      [v22 setFilledTintColor:v21];
+      systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+      downloadControl2 = [(HULockupView *)self downloadControl];
+      [downloadControl2 setFilledTintColor:systemGrayColor];
 
       v23 = 1.0;
       v24 = 1;
@@ -441,19 +441,19 @@
 
     else
     {
-      v29 = [v62 objectForKeyedSubscript:*MEMORY[0x277D14108]];
+      v29 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14108]];
       if (v29)
       {
-        v21 = v29;
+        systemGrayColor = v29;
         [v29 floatValue];
         v31 = v30;
-        v32 = [MEMORY[0x277D75348] systemFillColor];
-        v33 = [(HULockupView *)self downloadControl];
-        [v33 setFilledTintColor:v32];
+        systemFillColor2 = [MEMORY[0x277D75348] systemFillColor];
+        downloadControl3 = [(HULockupView *)self downloadControl];
+        [downloadControl3 setFilledTintColor:systemFillColor2];
 
-        v34 = [MEMORY[0x277D75348] hf_keyColor];
-        v35 = [(HULockupView *)self downloadControl];
-        [v35 setTintColor:v34];
+        hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+        downloadControl4 = [(HULockupView *)self downloadControl];
+        [downloadControl4 setTintColor:hf_keyColor];
 
         v24 = 0;
         v23 = v31;
@@ -462,15 +462,15 @@
 
       else
       {
-        v36 = [MEMORY[0x277D75348] systemFillColor];
-        v37 = [(HULockupView *)self downloadControl];
-        [v37 setFilledTintColor:v36];
+        systemFillColor3 = [MEMORY[0x277D75348] systemFillColor];
+        downloadControl5 = [(HULockupView *)self downloadControl];
+        [downloadControl5 setFilledTintColor:systemFillColor3];
 
-        v38 = [MEMORY[0x277D75348] systemFillColor];
-        v39 = [(HULockupView *)self downloadControl];
-        [v39 setTintColor:v38];
+        systemFillColor4 = [MEMORY[0x277D75348] systemFillColor];
+        downloadControl6 = [(HULockupView *)self downloadControl];
+        [downloadControl6 setTintColor:systemFillColor4];
 
-        v21 = 0;
+        systemGrayColor = 0;
         v24 = 0;
         v23 = 1.0;
         v25 = 3;
@@ -480,82 +480,82 @@
 
   else
   {
-    v26 = [MEMORY[0x277D75348] hf_keyColor];
-    v27 = [(HULockupView *)self downloadControl];
-    [v27 setFilledTintColor:v26];
+    hf_keyColor2 = [MEMORY[0x277D75348] hf_keyColor];
+    downloadControl7 = [(HULockupView *)self downloadControl];
+    [downloadControl7 setFilledTintColor:hf_keyColor2];
 
-    v21 = [MEMORY[0x277D75348] systemFillColor];
-    v28 = [(HULockupView *)self downloadControl];
-    [v28 setTintColor:v21];
+    systemGrayColor = [MEMORY[0x277D75348] systemFillColor];
+    downloadControl8 = [(HULockupView *)self downloadControl];
+    [downloadControl8 setTintColor:systemGrayColor];
 
     v23 = 1.0;
     v25 = 1;
     v24 = 1;
   }
 
-  v40 = [(HULockupView *)self downloadControl];
-  v41 = [v40 controlStatus];
+  downloadControl9 = [(HULockupView *)self downloadControl];
+  controlStatus = [downloadControl9 controlStatus];
 
-  v42 = [(HULockupView *)self downloadControl];
-  [v42 setControlStatus:v25 animated:{*&v23, v3}];
+  downloadControl10 = [(HULockupView *)self downloadControl];
+  [downloadControl10 setControlStatus:v25 animated:{*&v23, animationCopy}];
 
-  v43 = [(HULockupView *)self downloadControl];
-  v44 = [v62 objectForKeyedSubscript:*MEMORY[0x277D13DE8]];
-  [v43 setTitle:v44 forControlStatusType:1];
+  downloadControl11 = [(HULockupView *)self downloadControl];
+  v44 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13DE8]];
+  [downloadControl11 setTitle:v44 forControlStatusType:1];
 
-  v45 = [(HULockupView *)self downloadControl];
-  [v45 setHidden:v16];
+  downloadControl12 = [(HULockupView *)self downloadControl];
+  [downloadControl12 setHidden:bOOLValue2];
 
-  v46 = [(HULockupView *)self downloadControl];
-  [v46 setEnabled:v24 & (v18 ^ 1u)];
+  downloadControl13 = [(HULockupView *)self downloadControl];
+  [downloadControl13 setEnabled:v24 & (bOOLValue3 ^ 1u)];
 
-  if (v41 != v25)
+  if (controlStatus != v25)
   {
-    v47 = [(HULockupView *)self downloadControl];
-    [v47 intrinsicContentSize];
+    downloadControl14 = [(HULockupView *)self downloadControl];
+    [downloadControl14 intrinsicContentSize];
     v49 = v48;
-    v50 = [(HULockupView *)self downloadControlWidthConstraint];
-    [v50 setConstant:v49];
+    downloadControlWidthConstraint = [(HULockupView *)self downloadControlWidthConstraint];
+    [downloadControlWidthConstraint setConstant:v49];
   }
 
-  v51 = [(HULockupView *)self descriptionExpandableTextView];
-  [(HULockupView *)self updateDescriptionExpandableTextView:v51 animate:v3];
+  descriptionExpandableTextView = [(HULockupView *)self descriptionExpandableTextView];
+  [(HULockupView *)self updateDescriptionExpandableTextView:descriptionExpandableTextView animate:animationCopy];
 
-  v52 = [(HULockupView *)self descriptionExpandableTextView];
-  v53 = [v52 text];
-  v54 = [v53 length] == 0;
-  v55 = [(HULockupView *)self descriptionExpandableTextView];
-  [v55 setHidden:v54];
+  descriptionExpandableTextView2 = [(HULockupView *)self descriptionExpandableTextView];
+  text = [descriptionExpandableTextView2 text];
+  v54 = [text length] == 0;
+  descriptionExpandableTextView3 = [(HULockupView *)self descriptionExpandableTextView];
+  [descriptionExpandableTextView3 setHidden:v54];
 
-  v56 = [(HULockupView *)self descriptionExpandableTextView];
-  v57 = [v56 text];
-  v58 = [v57 length];
+  descriptionExpandableTextView4 = [(HULockupView *)self descriptionExpandableTextView];
+  text2 = [descriptionExpandableTextView4 text];
+  v58 = [text2 length];
 
   if (!v58)
   {
-    v59 = [(HULockupView *)self descriptionExpandableTextView];
-    [v59 setDelegate:0];
+    descriptionExpandableTextView5 = [(HULockupView *)self descriptionExpandableTextView];
+    [descriptionExpandableTextView5 setDelegate:0];
 
-    v60 = [(HULockupView *)self descriptionExpandableTextView];
-    [v60 setExpanded:1];
+    descriptionExpandableTextView6 = [(HULockupView *)self descriptionExpandableTextView];
+    [descriptionExpandableTextView6 setExpanded:1];
 
-    v61 = [(HULockupView *)self descriptionExpandableTextView];
-    [v61 setDelegate:self];
+    descriptionExpandableTextView7 = [(HULockupView *)self descriptionExpandableTextView];
+    [descriptionExpandableTextView7 setDelegate:self];
   }
 
   [(HULockupView *)self resetDownloadControlVerticalConstraint];
 }
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
-  v7 = a3;
-  v4 = [(HULockupView *)self delegate];
+  tappedCopy = tapped;
+  delegate = [(HULockupView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(HULockupView *)self delegate];
-    [v6 lockupView:self downloadControlTapped:v7];
+    delegate2 = [(HULockupView *)self delegate];
+    [delegate2 lockupView:self downloadControlTapped:tappedCopy];
   }
 
   [(HULockupView *)self resetDownloadControlVerticalConstraint];
@@ -563,14 +563,14 @@
 
 - (void)resetDownloadControlVerticalConstraint
 {
-  v3 = [(HULockupView *)self downloadControl];
-  v4 = [v3 controlStatus];
+  downloadControl = [(HULockupView *)self downloadControl];
+  controlStatus = [downloadControl controlStatus];
 
-  v5 = [(HULockupView *)self downloadControlTopConstraint];
-  [v5 setActive:(v4 - 3) < 2];
+  downloadControlTopConstraint = [(HULockupView *)self downloadControlTopConstraint];
+  [downloadControlTopConstraint setActive:(controlStatus - 3) < 2];
 
-  v6 = [(HULockupView *)self downloadControlCenterYConstraint];
-  [v6 setActive:(v4 - 3) > 1];
+  downloadControlCenterYConstraint = [(HULockupView *)self downloadControlCenterYConstraint];
+  [downloadControlCenterYConstraint setActive:(controlStatus - 3) > 1];
 }
 
 - (double)_maxPossibleTitleLengthForDownloadControl
@@ -620,29 +620,29 @@ void __57__HULockupView__maxPossibleTitleLengthForDownloadControl__block_invoke(
   }
 }
 
-- (void)expandableTextViewDidExpand:(id)a3
+- (void)expandableTextViewDidExpand:(id)expand
 {
-  v4 = [(HULockupView *)self delegate];
+  delegate = [(HULockupView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v7 = [(HULockupView *)self delegate];
-    v6 = [(HULockupView *)self descriptionExpandableTextView];
-    [v7 lockupView:self expandableTextViewDidExpand:v6];
+    delegate2 = [(HULockupView *)self delegate];
+    descriptionExpandableTextView = [(HULockupView *)self descriptionExpandableTextView];
+    [delegate2 lockupView:self expandableTextViewDidExpand:descriptionExpandableTextView];
   }
 }
 
-- (void)expandableTextViewDidCollapse:(id)a3
+- (void)expandableTextViewDidCollapse:(id)collapse
 {
-  v4 = [(HULockupView *)self delegate];
+  delegate = [(HULockupView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v7 = [(HULockupView *)self delegate];
-    v6 = [(HULockupView *)self descriptionExpandableTextView];
-    [v7 lockupView:self expandableTextViewDidCollapse:v6];
+    delegate2 = [(HULockupView *)self delegate];
+    descriptionExpandableTextView = [(HULockupView *)self descriptionExpandableTextView];
+    [delegate2 lockupView:self expandableTextViewDidCollapse:descriptionExpandableTextView];
   }
 }
 

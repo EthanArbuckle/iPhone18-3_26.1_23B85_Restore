@@ -1,7 +1,7 @@
 @interface FMAddItemFlowHeaderView
 - (_TtC6FindMy23FMAddItemFlowHeaderView)init;
-- (_TtC6FindMy23FMAddItemFlowHeaderView)initWithCoder:(id)a3;
-- (_TtC6FindMy23FMAddItemFlowHeaderView)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy23FMAddItemFlowHeaderView)initWithCoder:(id)coder;
+- (_TtC6FindMy23FMAddItemFlowHeaderView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FMAddItemFlowHeaderView
@@ -21,7 +21,7 @@
   return v5;
 }
 
-- (_TtC6FindMy23FMAddItemFlowHeaderView)initWithCoder:(id)a3
+- (_TtC6FindMy23FMAddItemFlowHeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC6FindMy23FMAddItemFlowHeaderView_headerLabel;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(UILabel) init];
@@ -32,7 +32,7 @@
   return result;
 }
 
-- (_TtC6FindMy23FMAddItemFlowHeaderView)initWithFrame:(CGRect)a3
+- (_TtC6FindMy23FMAddItemFlowHeaderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

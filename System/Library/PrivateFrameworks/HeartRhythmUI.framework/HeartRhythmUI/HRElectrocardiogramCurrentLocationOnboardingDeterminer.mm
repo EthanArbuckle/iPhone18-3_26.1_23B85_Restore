@@ -1,28 +1,28 @@
 @interface HRElectrocardiogramCurrentLocationOnboardingDeterminer
-- (HRElectrocardiogramCurrentLocationOnboardingDeterminer)initWithHealthStore:(id)a3;
-- (void)_submitOnboardingUIErrorEventWithCountryCode:(void *)a3 algorithmVersion:(void *)a4 onboardingEligibility:;
-- (void)isElectrocardiogramOnboardingAvailableInCurrentLocationForActiveWatch:(id)a3;
-- (void)isElectrocardiogramOnboardingAvailableInCurrentLocationForWatch:(void *)a3 completion:;
+- (HRElectrocardiogramCurrentLocationOnboardingDeterminer)initWithHealthStore:(id)store;
+- (void)_submitOnboardingUIErrorEventWithCountryCode:(void *)code algorithmVersion:(void *)version onboardingEligibility:;
+- (void)isElectrocardiogramOnboardingAvailableInCurrentLocationForActiveWatch:(id)watch;
+- (void)isElectrocardiogramOnboardingAvailableInCurrentLocationForWatch:(void *)watch completion:;
 @end
 
 @implementation HRElectrocardiogramCurrentLocationOnboardingDeterminer
 
-- (HRElectrocardiogramCurrentLocationOnboardingDeterminer)initWithHealthStore:(id)a3
+- (HRElectrocardiogramCurrentLocationOnboardingDeterminer)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = HRElectrocardiogramCurrentLocationOnboardingDeterminer;
   v6 = [(HRElectrocardiogramCurrentLocationOnboardingDeterminer *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v8 = HKPreferredRegulatoryDomainProvider();
     mobileCountryCodeManager = v7->_mobileCountryCodeManager;
     v7->_mobileCountryCodeManager = v8;
 
     v10 = objc_alloc(MEMORY[0x277CCCFE8]);
-    v11 = [v10 initWithLoggingCategory:*MEMORY[0x277CCC2D8] healthDataSource:v5];
+    v11 = [v10 initWithLoggingCategory:*MEMORY[0x277CCC2D8] healthDataSource:storeCopy];
     analyticsEventSubmissionManager = v7->_analyticsEventSubmissionManager;
     v7->_analyticsEventSubmissionManager = v11;
   }
@@ -30,12 +30,12 @@
   return v7;
 }
 
-- (void)isElectrocardiogramOnboardingAvailableInCurrentLocationForActiveWatch:(id)a3
+- (void)isElectrocardiogramOnboardingAvailableInCurrentLocationForActiveWatch:(id)watch
 {
   v4 = MEMORY[0x277CCD6A0];
-  v5 = a3;
-  v7 = [v4 activeNonFamilySetupDevice];
-  [(HRElectrocardiogramCurrentLocationOnboardingDeterminer *)self isElectrocardiogramOnboardingAvailableInCurrentLocationForWatch:v6 completion:v5];
+  watchCopy = watch;
+  activeNonFamilySetupDevice = [v4 activeNonFamilySetupDevice];
+  [(HRElectrocardiogramCurrentLocationOnboardingDeterminer *)self isElectrocardiogramOnboardingAvailableInCurrentLocationForWatch:v6 completion:watchCopy];
 }
 
 void __133__HRElectrocardiogramCurrentLocationOnboardingDeterminer_isElectrocardiogramOnboardingAvailableInCurrentLocationForWatch_completion___block_invoke(uint64_t *a1, void *a2, void *a3)
@@ -229,47 +229,47 @@ LABEL_36:
 LABEL_10:
 }
 
-- (void)isElectrocardiogramOnboardingAvailableInCurrentLocationForWatch:(void *)a3 completion:
+- (void)isElectrocardiogramOnboardingAvailableInCurrentLocationForWatch:(void *)watch completion:
 {
-  v4 = a3;
-  v5 = v4;
-  if (a1)
+  watchCopy = watch;
+  v5 = watchCopy;
+  if (self)
   {
-    v6 = *(a1 + 16);
+    v6 = *(self + 16);
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __133__HRElectrocardiogramCurrentLocationOnboardingDeterminer_isElectrocardiogramOnboardingAvailableInCurrentLocationForWatch_completion___block_invoke;
     v7[3] = &unk_2796FB8F0;
-    v7[4] = a1;
+    v7[4] = self;
     v9 = sel_isElectrocardiogramOnboardingAvailableInCurrentLocationForWatch_completion_;
-    v8 = v4;
+    v8 = watchCopy;
     [v6 fetchMobileCountryCodeFromCellularWithCompletion:v7];
   }
 }
 
-- (void)_submitOnboardingUIErrorEventWithCountryCode:(void *)a3 algorithmVersion:(void *)a4 onboardingEligibility:
+- (void)_submitOnboardingUIErrorEventWithCountryCode:(void *)code algorithmVersion:(void *)version onboardingEligibility:
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v7 = MEMORY[0x277D129B0];
-    v8 = a4;
-    v9 = a3;
+    versionCopy = version;
+    codeCopy = code;
     v10 = a2;
     v11 = [v7 alloc];
     v12 = *MEMORY[0x277CCC010];
-    v13 = [v9 stringValue];
+    stringValue = [codeCopy stringValue];
 
-    v14 = [v10 ISOCode];
+    iSOCode = [v10 ISOCode];
 
-    v15 = [v11 initWithFeatureIdentifier:v12 featureVersion:v13 countryCode:v14 step:@"Intro" onboardingEligibility:v8];
-    v16 = *(a1 + 24);
+    v15 = [v11 initWithFeatureIdentifier:v12 featureVersion:stringValue countryCode:iSOCode step:@"Intro" onboardingEligibility:versionCopy];
+    v16 = *(self + 24);
     v23 = 0;
     v17 = v16;
-    LOBYTE(v8) = [v17 submitEvent:v15 error:&v23];
+    LOBYTE(versionCopy) = [v17 submitEvent:v15 error:&v23];
     v18 = v23;
 
-    if ((v8 & 1) == 0)
+    if ((versionCopy & 1) == 0)
     {
       _HKInitializeLogging();
       v19 = *MEMORY[0x277CCC2D8];

@@ -1,10 +1,10 @@
 @interface HMDCloudKitReachabilitySource
-- (int64_t)areCloudKitServersReachableWithError:(id *)a3;
+- (int64_t)areCloudKitServersReachableWithError:(id *)error;
 @end
 
 @implementation HMDCloudKitReachabilitySource
 
-- (int64_t)areCloudKitServersReachableWithError:(id *)a3
+- (int64_t)areCloudKitServersReachableWithError:(id *)error
 {
   v71 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277CBC220]);
@@ -101,10 +101,10 @@ LABEL_7:
     }
 
     objc_autoreleasePoolPop(v24);
-    if (a3)
+    if (error)
     {
       v18 = 0;
-      *a3 = *(*(&buf + 1) + 40);
+      *error = *(*(&buf + 1) + 40);
       goto LABEL_8;
     }
 

@@ -1,11 +1,11 @@
 @interface SmartActionMenuItem
 - (_TtC16CallIntelligence19SmartActionMenuItem)init;
-- (_TtC16CallIntelligence19SmartActionMenuItem)initWithRecommendationId:(id)a3 actionDescription:(id)a4 iconType:(id)a5;
+- (_TtC16CallIntelligence19SmartActionMenuItem)initWithRecommendationId:(id)id actionDescription:(id)description iconType:(id)type;
 @end
 
 @implementation SmartActionMenuItem
 
-- (_TtC16CallIntelligence19SmartActionMenuItem)initWithRecommendationId:(id)a3 actionDescription:(id)a4 iconType:(id)a5
+- (_TtC16CallIntelligence19SmartActionMenuItem)initWithRecommendationId:(id)id actionDescription:(id)description iconType:(id)type
 {
   ObjectType = swift_getObjectType();
   v7 = sub_1D2EE3EB8();

@@ -1,9 +1,9 @@
 @interface SBDaemonHandler
-+ (BOOL)addRequest:(id)a3 forKey:(id)a4 forDaemonPid:(int)a5;
++ (BOOL)addRequest:(id)request forKey:(id)key forDaemonPid:(int)pid;
 + (id)stateDescription;
 + (void)initialize;
-+ (void)noteDaemonCanceled:(id)a3;
-+ (void)removeRequestForKey:(id)a3 forDaemonPid:(int)a4;
++ (void)noteDaemonCanceled:(id)canceled;
++ (void)removeRequestForKey:(id)key forDaemonPid:(int)pid;
 @end
 
 @implementation SBDaemonHandler
@@ -27,10 +27,10 @@ void __29__SBDaemonHandler_initialize__block_invoke()
   __queue = Serial;
 }
 
-+ (BOOL)addRequest:(id)a3 forKey:(id)a4 forDaemonPid:(int)a5
++ (BOOL)addRequest:(id)request forKey:(id)key forDaemonPid:(int)pid
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  keyCopy = key;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -40,12 +40,12 @@ void __29__SBDaemonHandler_initialize__block_invoke()
   v13[1] = 3221225472;
   v13[2] = __50__SBDaemonHandler_addRequest_forKey_forDaemonPid___block_invoke;
   v13[3] = &unk_2783B9A20;
-  v17 = a5;
-  v15 = v8;
+  pidCopy = pid;
+  v15 = keyCopy;
   v16 = &v18;
-  v14 = v7;
-  v10 = v8;
-  v11 = v7;
+  v14 = requestCopy;
+  v10 = keyCopy;
+  v11 = requestCopy;
   dispatch_sync(v9, v13);
   LOBYTE(v9) = *(v19 + 24);
 
@@ -78,17 +78,17 @@ LABEL_4:
 LABEL_5:
 }
 
-+ (void)removeRequestForKey:(id)a3 forDaemonPid:(int)a4
++ (void)removeRequestForKey:(id)key forDaemonPid:(int)pid
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = __queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __52__SBDaemonHandler_removeRequestForKey_forDaemonPid___block_invoke;
   v8[3] = &unk_2783AC098;
-  v10 = a4;
-  v9 = v5;
-  v7 = v5;
+  pidCopy = pid;
+  v9 = keyCopy;
+  v7 = keyCopy;
   dispatch_sync(v6, v8);
 }
 
@@ -183,9 +183,9 @@ uint64_t __35__SBDaemonHandler_stateDescription__block_invoke_2(uint64_t a1, voi
   return v10;
 }
 
-+ (void)noteDaemonCanceled:(id)a3
++ (void)noteDaemonCanceled:(id)canceled
 {
-  v3 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(a3, "pid")}];
+  v3 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(canceled, "pid")}];
   [__daemonsByPid removeObjectForKey:v3];
 }
 

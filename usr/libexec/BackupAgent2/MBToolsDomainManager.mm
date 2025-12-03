@@ -1,13 +1,13 @@
 @interface MBToolsDomainManager
-- (MBToolsDomainManager)initWithTools:(id)a3 error:(id *)a4;
+- (MBToolsDomainManager)initWithTools:(id)tools error:(id *)error;
 @end
 
 @implementation MBToolsDomainManager
 
-- (MBToolsDomainManager)initWithTools:(id)a3 error:(id *)a4
+- (MBToolsDomainManager)initWithTools:(id)tools error:(id *)error
 {
-  v7 = a3;
-  v8 = [MBPersona personalPersonaWithError:a4];
+  toolsCopy = tools;
+  v8 = [MBPersona personalPersonaWithError:error];
   if (v8)
   {
     v12.receiver = self;
@@ -16,7 +16,7 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_tools, a3);
+      objc_storeStrong(&v9->_tools, tools);
     }
   }
 

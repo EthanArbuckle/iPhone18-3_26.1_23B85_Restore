@@ -1,38 +1,38 @@
 @interface BMPhotosMemoriesViewed
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMPhotosMemoriesViewed)initWithIdentifier:(id)a3 viewedDurationBucket:(int)a4 watchedToEnd:(id)a5;
-- (BMPhotosMemoriesViewed)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMPhotosMemoriesViewed)initWithIdentifier:(id)identifier viewedDurationBucket:(int)bucket watchedToEnd:(id)end;
+- (BMPhotosMemoriesViewed)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPhotosMemoriesViewed
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMPhotosMemoriesViewed *)self identifier];
-    v7 = [v5 identifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    identifier = [(BMPhotosMemoriesViewed *)self identifier];
+    identifier2 = [v5 identifier];
+    v8 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v9 = [(BMPhotosMemoriesViewed *)self identifier];
-      v10 = [v5 identifier];
-      v11 = [v9 isEqual:v10];
+      identifier3 = [(BMPhotosMemoriesViewed *)self identifier];
+      identifier4 = [v5 identifier];
+      v11 = [identifier3 isEqual:identifier4];
 
       if (!v11)
       {
@@ -40,8 +40,8 @@
       }
     }
 
-    v13 = [(BMPhotosMemoriesViewed *)self viewedDurationBucket];
-    if (v13 == [v5 viewedDurationBucket])
+    viewedDurationBucket = [(BMPhotosMemoriesViewed *)self viewedDurationBucket];
+    if (viewedDurationBucket == [v5 viewedDurationBucket])
     {
       if (!-[BMPhotosMemoriesViewed hasWatchedToEnd](self, "hasWatchedToEnd") && ![v5 hasWatchedToEnd])
       {
@@ -51,8 +51,8 @@
 
       if (-[BMPhotosMemoriesViewed hasWatchedToEnd](self, "hasWatchedToEnd") && [v5 hasWatchedToEnd])
       {
-        v14 = [(BMPhotosMemoriesViewed *)self watchedToEnd];
-        v12 = v14 ^ [v5 watchedToEnd] ^ 1;
+        watchedToEnd = [(BMPhotosMemoriesViewed *)self watchedToEnd];
+        v12 = watchedToEnd ^ [v5 watchedToEnd] ^ 1;
 LABEL_14:
 
         goto LABEL_15;
@@ -73,7 +73,7 @@ LABEL_15:
 - (id)jsonDictionary
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMPhotosMemoriesViewed *)self identifier];
+  identifier = [(BMPhotosMemoriesViewed *)self identifier];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMPhotosMemoriesViewed viewedDurationBucket](self, "viewedDurationBucket")}];
   if ([(BMPhotosMemoriesViewed *)self hasWatchedToEnd])
   {
@@ -86,29 +86,29 @@ LABEL_15:
   }
 
   v12[0] = @"identifier";
-  v6 = v3;
-  if (!v3)
+  null = identifier;
+  if (!identifier)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v6;
+  v13[0] = null;
   v12[1] = @"viewedDurationBucket";
-  v7 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v7;
+  v13[1] = null2;
   v12[2] = @"watchedToEnd";
-  v8 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (v5)
   {
@@ -119,7 +119,7 @@ LABEL_15:
 
 LABEL_17:
 
-    if (v3)
+    if (identifier)
     {
       goto LABEL_13;
     }
@@ -133,7 +133,7 @@ LABEL_17:
   }
 
 LABEL_12:
-  if (v3)
+  if (identifier)
   {
     goto LABEL_13;
   }
@@ -146,16 +146,16 @@ LABEL_13:
   return v9;
 }
 
-- (BMPhotosMemoriesViewed)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMPhotosMemoriesViewed)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"identifier"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"viewedDurationBucket"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"viewedDurationBucket"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -169,10 +169,10 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v10 = 0;
-            v14 = 0;
+            selfCopy = 0;
             goto LABEL_21;
           }
 
@@ -184,8 +184,8 @@ LABEL_4:
           v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
           v22 = [v25 initWithDomain:v21 code:2 userInfo:v15];
           v10 = 0;
-          v14 = 0;
-          *a4 = v22;
+          selfCopy = 0;
+          *error = v22;
           goto LABEL_20;
         }
 
@@ -200,13 +200,13 @@ LABEL_4:
       v10 = 0;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"watchedToEnd"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"watchedToEnd"];
     if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v24 = objc_alloc(MEMORY[0x1E696ABC0]);
           v23 = *MEMORY[0x1E698F240];
@@ -214,11 +214,11 @@ LABEL_4:
           v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"watchedToEnd"];
           v27 = v19;
           v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-          *a4 = [v24 initWithDomain:v23 code:2 userInfo:v20];
+          *error = [v24 initWithDomain:v23 code:2 userInfo:v20];
         }
 
         v16 = 0;
-        v14 = 0;
+        selfCopy = 0;
         goto LABEL_20;
       }
 
@@ -231,7 +231,7 @@ LABEL_4:
     }
 
     self = -[BMPhotosMemoriesViewed initWithIdentifier:viewedDurationBucket:watchedToEnd:](self, "initWithIdentifier:viewedDurationBucket:watchedToEnd:", v8, [v10 intValue], v16);
-    v14 = self;
+    selfCopy = self;
 LABEL_20:
 
     goto LABEL_21;
@@ -244,10 +244,10 @@ LABEL_20:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_22;
   }
 
@@ -258,27 +258,27 @@ LABEL_20:
   v31[0] = v10;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
   v8 = 0;
-  v14 = 0;
-  *a4 = [v12 initWithDomain:v13 code:2 userInfo:v9];
+  selfCopy = 0;
+  *error = [v12 initWithDomain:v13 code:2 userInfo:v9];
 LABEL_21:
 
 LABEL_22:
   v17 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMPhotosMemoriesViewed *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -293,9 +293,9 @@ LABEL_22:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v35.receiver = self;
   v35.super_class = BMPhotosMemoriesViewed;
   v5 = [(BMEventBase *)&v35 init];
@@ -304,12 +304,12 @@ LABEL_22:
     goto LABEL_51;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -320,18 +320,18 @@ LABEL_22:
       while (1)
       {
         v36 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v36 & 0x7F) << v7;
@@ -349,9 +349,9 @@ LABEL_22:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -373,18 +373,18 @@ LABEL_16:
         while (1)
         {
           v36 = 0;
-          v26 = [v4 position] + 1;
-          if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+          v26 = [fromCopy position] + 1;
+          if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
           {
-            v28 = [v4 data];
-            [v28 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v25 |= (v36 & 0x7F) << v23;
@@ -402,7 +402,7 @@ LABEL_16:
           }
         }
 
-        v29 = (v25 != 0) & ~[v4 hasError];
+        v29 = (v25 != 0) & ~[fromCopy hasError];
 LABEL_43:
         v5->_watchedToEnd = v29;
       }
@@ -415,18 +415,18 @@ LABEL_43:
         while (1)
         {
           v36 = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v36 & 0x7F) << v16;
@@ -442,7 +442,7 @@ LABEL_43:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v18 > 3)
+        if (([fromCopy hasError] & 1) != 0 || v18 > 3)
         {
 LABEL_46:
           LODWORD(v18) = 0;
@@ -456,13 +456,13 @@ LABEL_46:
         goto LABEL_50;
       }
 
-      v32 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v32 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_50:
     v33 = 0;
@@ -480,30 +480,30 @@ LABEL_51:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMPhotosMemoriesViewed *)self identifier];
+  identifier = [(BMPhotosMemoriesViewed *)self identifier];
   v5 = BMPhotosMemoriesViewedDurationAsString([(BMPhotosMemoriesViewed *)self viewedDurationBucket]);
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMPhotosMemoriesViewed watchedToEnd](self, "watchedToEnd")}];
-  v7 = [v3 initWithFormat:@"BMPhotosMemoriesViewed with identifier: %@, viewedDurationBucket: %@, watchedToEnd: %@", v4, v5, v6];
+  v7 = [v3 initWithFormat:@"BMPhotosMemoriesViewed with identifier: %@, viewedDurationBucket: %@, watchedToEnd: %@", identifier, v5, v6];
 
   return v7;
 }
 
-- (BMPhotosMemoriesViewed)initWithIdentifier:(id)a3 viewedDurationBucket:(int)a4 watchedToEnd:(id)a5
+- (BMPhotosMemoriesViewed)initWithIdentifier:(id)identifier viewedDurationBucket:(int)bucket watchedToEnd:(id)end
 {
-  v9 = a3;
-  v10 = a5;
+  identifierCopy = identifier;
+  endCopy = end;
   v13.receiver = self;
   v13.super_class = BMPhotosMemoriesViewed;
   v11 = [(BMEventBase *)&v13 init];
   if (v11)
   {
     v11->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v11->_identifier, a3);
-    v11->_viewedDurationBucket = a4;
-    if (v10)
+    objc_storeStrong(&v11->_identifier, identifier);
+    v11->_viewedDurationBucket = bucket;
+    if (endCopy)
     {
       v11->_hasWatchedToEnd = 1;
-      v11->_watchedToEnd = [v10 BOOLValue];
+      v11->_watchedToEnd = [endCopy BOOLValue];
     }
 
     else
@@ -547,9 +547,9 @@ LABEL_51:
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -557,8 +557,8 @@ LABEL_51:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMPhotosMemoriesViewed alloc] initByReadFrom:v7];
     v4 = v8;

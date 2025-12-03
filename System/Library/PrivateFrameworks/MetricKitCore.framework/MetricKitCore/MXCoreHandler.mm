@@ -1,38 +1,38 @@
 @interface MXCoreHandler
-- (BOOL)shouldDeliverDataForBundleID:(id)a3 andTeamID:(id)a4;
-- (MXCoreHandler)initWithClientUtil:(id)a3 andDeliveryDataCacher:(id)a4 andDeliveryPathUtil:(id)a5 andMetricServices:(id)a6 andDelegate:(id)a7;
+- (BOOL)shouldDeliverDataForBundleID:(id)d andTeamID:(id)iD;
+- (MXCoreHandler)initWithClientUtil:(id)util andDeliveryDataCacher:(id)cacher andDeliveryPathUtil:(id)pathUtil andMetricServices:(id)services andDelegate:(id)delegate;
 - (MXCoreHandlerDelegate)delegate;
-- (unint64_t)_successCountFromSavingMetricPayloadsToDeliveryDirectoryForClientMetrics:(id)a3;
+- (unint64_t)_successCountFromSavingMetricPayloadsToDeliveryDirectoryForClientMetrics:(id)metrics;
 - (void)_handleClientAvailability;
 - (void)_processDataActivity;
 - (void)_reportMetricKitUsage;
-- (void)_updateClientAvailabilityAndPrepareDataActivityForBundleID:(id)a3;
+- (void)_updateClientAvailabilityAndPrepareDataActivityForBundleID:(id)d;
 - (void)performDataActivity;
-- (void)registerClientAndTeamForBundleID:(id)a3 andTeamID:(id)a4;
-- (void)registerClientForBundleID:(id)a3;
-- (void)saveMetricPayloadsToDeliveryDirectoryAndReportSuccessForClientMetrics:(id)a3;
+- (void)registerClientAndTeamForBundleID:(id)d andTeamID:(id)iD;
+- (void)registerClientForBundleID:(id)d;
+- (void)saveMetricPayloadsToDeliveryDirectoryAndReportSuccessForClientMetrics:(id)metrics;
 @end
 
 @implementation MXCoreHandler
 
-- (MXCoreHandler)initWithClientUtil:(id)a3 andDeliveryDataCacher:(id)a4 andDeliveryPathUtil:(id)a5 andMetricServices:(id)a6 andDelegate:(id)a7
+- (MXCoreHandler)initWithClientUtil:(id)util andDeliveryDataCacher:(id)cacher andDeliveryPathUtil:(id)pathUtil andMetricServices:(id)services andDelegate:(id)delegate
 {
-  v22 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  utilCopy = util;
+  cacherCopy = cacher;
+  pathUtilCopy = pathUtil;
+  servicesCopy = services;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = MXCoreHandler;
   v17 = [(MXCoreHandler *)&v23 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_clientUtil, a3);
-    objc_storeStrong(&v18->_deliveryDataCacher, a4);
-    objc_storeStrong(&v18->_deliveryPathUtil, a5);
-    objc_storeStrong(&v18->_metricServices, a6);
-    objc_storeWeak(&v18->_delegate, v16);
+    objc_storeStrong(&v17->_clientUtil, util);
+    objc_storeStrong(&v18->_deliveryDataCacher, cacher);
+    objc_storeStrong(&v18->_deliveryPathUtil, pathUtil);
+    objc_storeStrong(&v18->_metricServices, services);
+    objc_storeWeak(&v18->_delegate, delegateCopy);
     v19 = os_log_create("com.apple.metrickit", "core.handler");
     logHandle = v18->_logHandle;
     v18->_logHandle = v19;
@@ -46,45 +46,45 @@
   return v18;
 }
 
-- (void)registerClientForBundleID:(id)a3
+- (void)registerClientForBundleID:(id)d
 {
-  v5 = a3;
-  [(MXCoreHandler *)self _updateClientAvailabilityAndPrepareDataActivityForBundleID:v5];
-  if (([(MXClientUtilProtocol *)self->_clientUtil hasClientForBundleID:v5]& 1) == 0)
+  dCopy = d;
+  [(MXCoreHandler *)self _updateClientAvailabilityAndPrepareDataActivityForBundleID:dCopy];
+  if (([(MXClientUtilProtocol *)self->_clientUtil hasClientForBundleID:dCopy]& 1) == 0)
   {
-    [(MXClientUtilProtocol *)self->_clientUtil registerClientForBundleID:v5];
+    [(MXClientUtilProtocol *)self->_clientUtil registerClientForBundleID:dCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained clientDidRegisterForBundleID:v5];
+    [WeakRetained clientDidRegisterForBundleID:dCopy];
   }
 }
 
-- (void)registerClientAndTeamForBundleID:(id)a3 andTeamID:(id)a4
+- (void)registerClientAndTeamForBundleID:(id)d andTeamID:(id)iD
 {
-  v8 = a3;
-  v6 = a4;
-  [(MXCoreHandler *)self _updateClientAvailabilityAndPrepareDataActivityForBundleID:v8];
-  if (([(MXClientUtilProtocol *)self->_clientUtil hasClientForBundleID:v8]& 1) == 0)
+  dCopy = d;
+  iDCopy = iD;
+  [(MXCoreHandler *)self _updateClientAvailabilityAndPrepareDataActivityForBundleID:dCopy];
+  if (([(MXClientUtilProtocol *)self->_clientUtil hasClientForBundleID:dCopy]& 1) == 0)
   {
-    [(MXClientUtilProtocol *)self->_clientUtil registerClientForBundleID:v8];
-    [(MXClientUtilProtocol *)self->_clientUtil registerTeamForBundleID:v8 andTeamID:v6];
+    [(MXClientUtilProtocol *)self->_clientUtil registerClientForBundleID:dCopy];
+    [(MXClientUtilProtocol *)self->_clientUtil registerTeamForBundleID:dCopy andTeamID:iDCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained clientDidRegisterForBundleID:v8];
+    [WeakRetained clientDidRegisterForBundleID:dCopy];
   }
 }
 
-- (void)_updateClientAvailabilityAndPrepareDataActivityForBundleID:(id)a3
+- (void)_updateClientAvailabilityAndPrepareDataActivityForBundleID:(id)d
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   [(MXClientUtilProtocol *)self->_clientUtil persistAllClients];
   [(MXClientUtilProtocol *)self->_clientUtil updateClientAsAvailableFromPersistence];
   logHandle = self->_logHandle;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
   {
     v6 = logHandle;
-    v7 = [(MXCoreHandler *)self clientUtil];
+    clientUtil = [(MXCoreHandler *)self clientUtil];
     v10[0] = 67109120;
-    v10[1] = [v7 isClientAvailableForBundleID:v4];
+    v10[1] = [clientUtil isClientAvailableForBundleID:dCopy];
     _os_log_impl(&dword_258D6F000, v6, OS_LOG_TYPE_INFO, "Interested clients now available State: %d\n", v10, 8u);
   }
 
@@ -106,11 +106,11 @@
   }
 }
 
-- (void)saveMetricPayloadsToDeliveryDirectoryAndReportSuccessForClientMetrics:(id)a3
+- (void)saveMetricPayloadsToDeliveryDirectoryAndReportSuccessForClientMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   [(MXCoreHandler *)self _reportMetricKitUsage];
-  v5 = [(MXCoreHandler *)self _successCountFromSavingMetricPayloadsToDeliveryDirectoryForClientMetrics:v4];
+  v5 = [(MXCoreHandler *)self _successCountFromSavingMetricPayloadsToDeliveryDirectoryForClientMetrics:metricsCopy];
 
   clientUtil = self->_clientUtil;
 
@@ -119,16 +119,16 @@
 
 - (void)_processDataActivity
 {
-  v3 = [(MXMetricServicesProtocol *)self->_metricServices clientMetricPayloadsForAllClients];
-  if (v3)
+  clientMetricPayloadsForAllClients = [(MXMetricServicesProtocol *)self->_metricServices clientMetricPayloadsForAllClients];
+  if (clientMetricPayloadsForAllClients)
   {
-    v5 = v3;
+    v5 = clientMetricPayloadsForAllClients;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained metricIsAvailableFromSourceDirectoryForSavingToDeliveryDirectoryWithClientMetrics:v5];
 
     [(MXCoreHandler *)self _handleClientAvailability];
     [(MXDeliveryDataCacherProtocol *)self->_deliveryDataCacher notifyDataAvailableForDelivery];
-    v3 = v5;
+    clientMetricPayloadsForAllClients = v5;
   }
 }
 
@@ -157,8 +157,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(MXClientUtilProtocol *)self->_clientUtil allClients];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allClients = [(MXClientUtilProtocol *)self->_clientUtil allClients];
+  v4 = [allClients countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -170,14 +170,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allClients);
         }
 
         [(MXClientUtilProtocol *)self->_clientUtil reportMetricKitUsageForBundleID:*(*(&v9 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allClients countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -186,16 +186,16 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)_successCountFromSavingMetricPayloadsToDeliveryDirectoryForClientMetrics:(id)a3
+- (unint64_t)_successCountFromSavingMetricPayloadsToDeliveryDirectoryForClientMetrics:(id)metrics
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metricsCopy = metrics;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  allKeys = [metricsCopy allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v6)
   {
     v8 = v6;
@@ -209,7 +209,7 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
@@ -221,11 +221,11 @@
           _os_log_impl(&dword_258D6F000, logHandle, OS_LOG_TYPE_DEFAULT, "Payload delivery for client: %@", buf, 0xCu);
         }
 
-        v14 = [v4 objectForKeyedSubscript:{v12, v17}];
+        v14 = [metricsCopy objectForKeyedSubscript:{v12, v17}];
         v9 += [(MXDeliveryDataCacherProtocol *)self->_deliveryDataCacher saveMetrics:v14 toDeliveryDirectoryForBundleID:v12];
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v18 objects:v24 count:16];
     }
 
     while (v8);
@@ -240,14 +240,14 @@
   return v9;
 }
 
-- (BOOL)shouldDeliverDataForBundleID:(id)a3 andTeamID:(id)a4
+- (BOOL)shouldDeliverDataForBundleID:(id)d andTeamID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(MXClientUtilProtocol *)self->_clientUtil isClientAvailableForBundleID:v6])
+  dCopy = d;
+  iDCopy = iD;
+  if ([(MXClientUtilProtocol *)self->_clientUtil isClientAvailableForBundleID:dCopy])
   {
-    v8 = [(MXClientUtilProtocol *)self->_clientUtil teamIDForBundleID:v6];
-    v9 = [v8 compare:v7] == 0;
+    v8 = [(MXClientUtilProtocol *)self->_clientUtil teamIDForBundleID:dCopy];
+    v9 = [v8 compare:iDCopy] == 0;
   }
 
   else

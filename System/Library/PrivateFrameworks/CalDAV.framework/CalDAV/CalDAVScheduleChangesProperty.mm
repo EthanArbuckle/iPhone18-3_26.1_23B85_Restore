@@ -1,10 +1,10 @@
 @interface CalDAVScheduleChangesProperty
-+ (id)debugStringForType:(int)a3;
-+ (id)propertyWithItem:(id)a3;
++ (id)debugStringForType:(int)type;
++ (id)propertyWithItem:(id)item;
 - (CalDAVScheduleChangesProperty)init;
 - (NSArray)recurrenceIDs;
-- (id)changeForOccurrence:(id)a3;
-- (void)addOccurrenceChange:(id)a3;
+- (id)changeForOccurrence:(id)occurrence;
+- (void)addOccurrenceChange:(id)change;
 @end
 
 @implementation CalDAVScheduleChangesProperty
@@ -21,98 +21,98 @@
     [(CalDAVScheduleChangesProperty *)v3 setDateStamp:0];
     [(CalDAVScheduleChangesProperty *)v3 setAttendeeAddress:0];
     [(CalDAVScheduleChangesProperty *)v3 setMasterChange:0];
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    [(CalDAVScheduleChangesProperty *)v3 setOccurrenceChanges:v4];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(CalDAVScheduleChangesProperty *)v3 setOccurrenceChanges:dictionary];
   }
 
   return v3;
 }
 
-+ (id)debugStringForType:(int)a3
++ (id)debugStringForType:(int)type
 {
-  if ((a3 - 1) > 3)
+  if ((type - 1) > 3)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return off_278D66DB0[a3 - 1];
+    return off_278D66DB0[type - 1];
   }
 }
 
-+ (id)propertyWithItem:(id)a3
++ (id)propertyWithItem:(id)item
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  itemCopy = item;
+  if (!itemCopy)
   {
     v4 = 0;
     goto LABEL_23;
   }
 
   v4 = objc_opt_new();
-  v5 = [v3 dtstamp];
-  v6 = [v5 payloadAsString];
+  dtstamp = [itemCopy dtstamp];
+  payloadAsString = [dtstamp payloadAsString];
 
-  if ([v6 length])
+  if ([payloadAsString length])
   {
-    [v4 setDateStamp:v6];
+    [v4 setDateStamp:payloadAsString];
   }
 
-  v7 = [v3 action];
-  v8 = [v7 create];
+  action = [itemCopy action];
+  create = [action create];
 
-  if (!v8)
+  if (!create)
   {
-    v9 = [v7 cancel];
+    cancel = [action cancel];
 
-    if (v9)
+    if (cancel)
     {
       [v4 setActionType:3];
-      v10 = [v7 cancel];
+      cancel2 = [action cancel];
     }
 
     else
     {
-      v11 = [v7 reply];
+      reply = [action reply];
 
-      if (v11)
+      if (reply)
       {
         [v4 setActionType:4];
-        v12 = [v7 reply];
-        v13 = [v12 attendee];
-        v14 = [v13 payloadAsString];
-        v15 = [v14 trimWhiteSpace];
-        [v4 setAttendeeAddress:v15];
+        reply2 = [action reply];
+        attendee = [reply2 attendee];
+        payloadAsString2 = [attendee payloadAsString];
+        trimWhiteSpace = [payloadAsString2 trimWhiteSpace];
+        [v4 setAttendeeAddress:trimWhiteSpace];
 
-        v10 = [v7 reply];
+        cancel2 = [action reply];
       }
 
       else
       {
-        v16 = [v7 update];
+        update = [action update];
 
-        if (!v16)
+        if (!update)
         {
           goto LABEL_22;
         }
 
         [v4 setActionType:2];
-        v10 = [v7 update];
+        cancel2 = [action update];
       }
     }
 
-    v17 = v10;
-    v18 = [v10 recurrences];
+    v17 = cancel2;
+    recurrences = [cancel2 recurrences];
 
-    if (v18)
+    if (recurrences)
     {
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v19 = v18;
+      v19 = recurrences;
       v20 = [v19 countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v20)
       {
@@ -150,17 +150,17 @@ LABEL_23:
   return v4;
 }
 
-- (void)addOccurrenceChange:(id)a3
+- (void)addOccurrenceChange:(id)change
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  changeCopy = change;
+  v5 = changeCopy;
+  if (changeCopy)
   {
-    if ([v4 isMaster])
+    if ([changeCopy isMaster])
     {
-      v6 = [(CalDAVScheduleChangesProperty *)self masterChange];
+      masterChange = [(CalDAVScheduleChangesProperty *)self masterChange];
 
-      if (v6)
+      if (masterChange)
       {
         v7 = scheduleChangesLogHandle();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -174,39 +174,39 @@ LABEL_23:
 
     else
     {
-      v8 = [v5 recurrenceID];
-      v9 = [v8 ICSStringWithOptions:0];
+      recurrenceID = [v5 recurrenceID];
+      v9 = [recurrenceID ICSStringWithOptions:0];
 
-      v10 = [(CalDAVScheduleChangesProperty *)self occurrenceChanges];
-      [v10 setObject:v5 forKeyedSubscript:v9];
+      occurrenceChanges = [(CalDAVScheduleChangesProperty *)self occurrenceChanges];
+      [occurrenceChanges setObject:v5 forKeyedSubscript:v9];
     }
   }
 }
 
 - (NSArray)recurrenceIDs
 {
-  v2 = [(CalDAVScheduleChangesProperty *)self occurrenceChanges];
-  v3 = [v2 allValues];
-  v4 = [v3 arrayByApplyingSelector:sel_recurrenceID];
+  occurrenceChanges = [(CalDAVScheduleChangesProperty *)self occurrenceChanges];
+  allValues = [occurrenceChanges allValues];
+  v4 = [allValues arrayByApplyingSelector:sel_recurrenceID];
 
   return v4;
 }
 
-- (id)changeForOccurrence:(id)a3
+- (id)changeForOccurrence:(id)occurrence
 {
-  if (a3)
+  if (occurrence)
   {
-    v4 = [a3 ICSStringWithOptions:0];
-    v5 = [(CalDAVScheduleChangesProperty *)self occurrenceChanges];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    v4 = [occurrence ICSStringWithOptions:0];
+    occurrenceChanges = [(CalDAVScheduleChangesProperty *)self occurrenceChanges];
+    masterChange = [occurrenceChanges objectForKeyedSubscript:v4];
   }
 
   else
   {
-    v6 = [(CalDAVScheduleChangesProperty *)self masterChange];
+    masterChange = [(CalDAVScheduleChangesProperty *)self masterChange];
   }
 
-  return v6;
+  return masterChange;
 }
 
 @end

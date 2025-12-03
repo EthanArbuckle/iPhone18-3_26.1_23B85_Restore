@@ -1,5 +1,5 @@
 @interface CHPointStrokeFIFO
-- (CHPointStrokeFIFO)initWithFIFO:(id)a3;
+- (CHPointStrokeFIFO)initWithFIFO:(id)o;
 - (void)addPoint:(CHPointStrokeFIFO *)self;
 - (void)clear;
 - (void)flush;
@@ -7,12 +7,12 @@
 
 @implementation CHPointStrokeFIFO
 
-- (CHPointStrokeFIFO)initWithFIFO:(id)a3
+- (CHPointStrokeFIFO)initWithFIFO:(id)o
 {
-  v4 = a3;
+  oCopy = o;
   v9.receiver = self;
   v9.super_class = CHPointStrokeFIFO;
-  v5 = [(CHPointFIFO *)&v9 initWithFIFO:v4];
+  v5 = [(CHPointFIFO *)&v9 initWithFIFO:oCopy];
   if (v5)
   {
     v6 = objc_alloc_init(CHDrawing);

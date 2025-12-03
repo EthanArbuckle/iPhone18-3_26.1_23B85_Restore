@@ -1,19 +1,19 @@
 @interface AVCaptureFileOutputDelegateWrapper
-+ (id)wrapperWithURL:(id)a3 delegate:(id)a4 settingsID:(int64_t)a5 connections:(id)a6;
-- (AVCaptureFileOutputDelegateWrapper)initWithURL:(id)a3 delegate:(id)a4 settingsID:(int64_t)a5 connections:(id)a6;
++ (id)wrapperWithURL:(id)l delegate:(id)delegate settingsID:(int64_t)d connections:(id)connections;
+- (AVCaptureFileOutputDelegateWrapper)initWithURL:(id)l delegate:(id)delegate settingsID:(int64_t)d connections:(id)connections;
 - (void)dealloc;
 @end
 
 @implementation AVCaptureFileOutputDelegateWrapper
 
-+ (id)wrapperWithURL:(id)a3 delegate:(id)a4 settingsID:(int64_t)a5 connections:(id)a6
++ (id)wrapperWithURL:(id)l delegate:(id)delegate settingsID:(int64_t)d connections:(id)connections
 {
-  v6 = [objc_alloc(objc_opt_class()) initWithURL:a3 delegate:a4 settingsID:a5 connections:a6];
+  v6 = [objc_alloc(objc_opt_class()) initWithURL:l delegate:delegate settingsID:d connections:connections];
 
   return v6;
 }
 
-- (AVCaptureFileOutputDelegateWrapper)initWithURL:(id)a3 delegate:(id)a4 settingsID:(int64_t)a5 connections:(id)a6
+- (AVCaptureFileOutputDelegateWrapper)initWithURL:(id)l delegate:(id)delegate settingsID:(int64_t)d connections:(id)connections
 {
   v14.receiver = self;
   v14.super_class = AVCaptureFileOutputDelegateWrapper;
@@ -21,14 +21,14 @@
   v11 = v10;
   if (v10)
   {
-    v10->_settingsID = a5;
-    v10->_outputFileURL = [a3 copy];
-    v11->_connections = a6;
+    v10->_settingsID = d;
+    v10->_outputFileURL = [l copy];
+    v11->_connections = connections;
     v12 = objc_alloc_init(MEMORY[0x1E69881A0]);
     v11->_delegateStorage = v12;
-    if (a4)
+    if (delegate)
     {
-      [(AVWeakReferencingDelegateStorage *)v12 setDelegate:a4 queue:MEMORY[0x1E69E96A0]];
+      [(AVWeakReferencingDelegateStorage *)v12 setDelegate:delegate queue:MEMORY[0x1E69E96A0]];
     }
   }
 

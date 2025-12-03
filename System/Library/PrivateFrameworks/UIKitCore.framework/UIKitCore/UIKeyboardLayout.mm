@@ -1,87 +1,87 @@
 @interface UIKeyboardLayout
-+ (CGSize)keyboardSizeForInputMode:(id)a3 screenTraits:(id)a4 keyboardType:(int64_t)a5;
-- (BOOL)_canAddTouchesToScreenGestureRecognizer:(id)a3;
-- (BOOL)_hasRelatedTouchesForTouchState:(id)a3;
-- (BOOL)_shouldAllowKeyboardHandlingForTouchesBegan:(id)a3 withEvent:(id)a4;
-- (BOOL)_shouldAllowKeyboardHandlingForTouchesEndedOrCancelled:(id)a3 withEvent:(id)a4;
-- (BOOL)_shouldAllowKeyboardHandlingForTouchesMoved:(id)a3 withEvent:(id)a4;
-- (BOOL)_shouldAllowKeyboardHandlingIfNecessaryForTouch:(id)a3 phase:(int64_t)a4 withTouchState:(id)a5 task:(id)a6;
-- (BOOL)queryShouldNeverIgnoreTouchStateWithIdentifier:(id)a3 touchState:(id)a4 startPoint:(CGPoint)a5 forRestingState:(unint64_t)a6;
-- (BOOL)shouldAllowSelectionGestures:(BOOL)a3 atPoint:(CGPoint)a4 toBegin:(BOOL)a5;
++ (CGSize)keyboardSizeForInputMode:(id)mode screenTraits:(id)traits keyboardType:(int64_t)type;
+- (BOOL)_canAddTouchesToScreenGestureRecognizer:(id)recognizer;
+- (BOOL)_hasRelatedTouchesForTouchState:(id)state;
+- (BOOL)_shouldAllowKeyboardHandlingForTouchesBegan:(id)began withEvent:(id)event;
+- (BOOL)_shouldAllowKeyboardHandlingForTouchesEndedOrCancelled:(id)cancelled withEvent:(id)event;
+- (BOOL)_shouldAllowKeyboardHandlingForTouchesMoved:(id)moved withEvent:(id)event;
+- (BOOL)_shouldAllowKeyboardHandlingIfNecessaryForTouch:(id)touch phase:(int64_t)phase withTouchState:(id)state task:(id)task;
+- (BOOL)queryShouldNeverIgnoreTouchStateWithIdentifier:(id)identifier touchState:(id)state startPoint:(CGPoint)point forRestingState:(unint64_t)restingState;
+- (BOOL)shouldAllowSelectionGestures:(BOOL)gestures atPoint:(CGPoint)point toBegin:(BOOL)begin;
 - (BOOL)supportsVirtualDrift;
-- (CGPoint)_uikbrtTouchDrifting:(id)a3 touchCenterForFingerID:(unint64_t)a4;
+- (CGPoint)_uikbrtTouchDrifting:(id)drifting touchCenterForFingerID:(unint64_t)d;
 - (CGPoint)getCenterForKeyUnderLeftIndexFinger;
 - (CGPoint)getCenterForKeyUnderRightIndexFinger;
 - (CGPoint)leftVirtualDriftOffset;
 - (CGPoint)rightVirtualDriftOffset;
-- (CGRect)dragGestureRectInView:(id)a3;
-- (CGRect)frameForKeylayoutName:(id)a3;
+- (CGRect)dragGestureRectInView:(id)view;
+- (CGRect)frameForKeylayoutName:(id)name;
 - (CGSize)handRestRecognizerStandardKeyPixelSize;
 - (CGSize)stretchFactor;
 - (UIEdgeInsets)keyplanePadding;
-- (UIKeyboardLayout)initWithFrame:(CGRect)a3;
+- (UIKeyboardLayout)initWithFrame:(CGRect)frame;
 - (UIKeyboardLayoutSizeDelegate)sizeDelegate;
 - (UIKeyboardTaskQueue)taskQueue;
 - (UIKeyboardTypingStyleEstimator)typingStyleEstimator;
 - (double)flickDistance;
-- (id)_uikbrtTouchDrifting:(id)a3 touchIdentifiersForFingerID:(unint64_t)a4;
-- (id)touchCancelledTaskForTouchState:(id)a3 forResting:(BOOL)a4;
-- (id)touchChangedTaskForTouchState:(id)a3;
-- (id)touchDownTaskForTouchState:(id)a3;
-- (id)touchDraggedTaskForTouchState:(id)a3;
-- (id)touchUUIDsToCommitBeforeTouchUUID:(id)a3;
-- (id)touchUpTaskForTouchState:(id)a3;
-- (unint64_t)_uikbrtTouchDrifting:(id)a3 fingerIDFortouchIdentifier:(id)a4;
-- (unint64_t)fingerIDForTouchUUID:(id)a3;
-- (void)_addTouchToScreenEdgePanRecognizer:(id)a3;
+- (id)_uikbrtTouchDrifting:(id)drifting touchIdentifiersForFingerID:(unint64_t)d;
+- (id)touchCancelledTaskForTouchState:(id)state forResting:(BOOL)resting;
+- (id)touchChangedTaskForTouchState:(id)state;
+- (id)touchDownTaskForTouchState:(id)state;
+- (id)touchDraggedTaskForTouchState:(id)state;
+- (id)touchUUIDsToCommitBeforeTouchUUID:(id)d;
+- (id)touchUpTaskForTouchState:(id)state;
+- (unint64_t)_uikbrtTouchDrifting:(id)drifting fingerIDFortouchIdentifier:(id)identifier;
+- (unint64_t)fingerIDForTouchUUID:(id)d;
+- (void)_addTouchToScreenEdgePanRecognizer:(id)recognizer;
 - (void)_clearDeferredTouchTasks;
-- (void)_enumerateDeferredTouchUUIDs:(id)a3 withBlock:(id)a4;
+- (void)_enumerateDeferredTouchUUIDs:(id)ds withBlock:(id)block;
 - (void)_executeDeferredTouchTasks;
-- (void)_ignoreTouchState:(id)a3;
-- (void)_removeTouchesFromProcessing:(id)a3;
+- (void)_ignoreTouchState:(id)state;
+- (void)_removeTouchesFromProcessing:(id)processing;
 - (void)_resetFingerDetectionFromLayout;
-- (void)_setRequiresExclusiveTouch:(BOOL)a3;
-- (void)_touchEndedProcessingForTouches:(id)a3;
-- (void)_uikbrtTouchDriftingStateChanged:(id)a3;
-- (void)_updateTouchState:(id)a3 errorVector:(CGPoint)a4 rowOffsetFromHomeRow:(int64_t)a5;
-- (void)assertSavedLocation:(CGPoint)a3 onTouch:(id)a4 inWindow:(id)a5 resetPrevious:(BOOL)a6;
-- (void)cancelTouchesForTwoFingerTapGesture:(id)a3;
-- (void)clearShiftIfNecessaryForEndedTouchState:(id)a3;
-- (void)commitTouchUUIDs:(id)a3 cancelInsteadOfUp:(BOOL)a4;
-- (void)commitTouches:(id)a3 executionContext:(id)a4;
+- (void)_setRequiresExclusiveTouch:(BOOL)touch;
+- (void)_touchEndedProcessingForTouches:(id)touches;
+- (void)_uikbrtTouchDriftingStateChanged:(id)changed;
+- (void)_updateTouchState:(id)state errorVector:(CGPoint)vector rowOffsetFromHomeRow:(int64_t)row;
+- (void)assertSavedLocation:(CGPoint)location onTouch:(id)touch inWindow:(id)window resetPrevious:(BOOL)previous;
+- (void)cancelTouchesForTwoFingerTapGesture:(id)gesture;
+- (void)clearShiftIfNecessaryForEndedTouchState:(id)state;
+- (void)commitTouchUUIDs:(id)ds cancelInsteadOfUp:(BOOL)up;
+- (void)commitTouches:(id)touches executionContext:(id)context;
 - (void)deactivateActiveKeys;
 - (void)dealloc;
-- (void)didCommitTouchState:(id)a3;
+- (void)didCommitTouchState:(id)state;
 - (void)didEndIndirectSelectionGesture;
 - (void)didMoveToWindow;
 - (void)forceUpdatesForCommittedTouch;
-- (void)recognizer:(id)a3 beginTouchDownForTouchWithId:(id)a4 atPoint:(CGPoint)a5 forBeginState:(unint64_t)a6 whenStateReady:(id)a7;
-- (void)recognizer:(id)a3 cancelTouchOnLayoutWithId:(id)a4 startPoint:(CGPoint)a5 endPoint:(CGPoint)a6 whenReady:(id)a7;
-- (void)recognizer:(id)a3 continueTrackingIgnoredTouchWithId:(id)a4 currentPoint:(CGPoint)a5 whenReady:(id)a6;
-- (void)recognizer:(id)a3 releaseTouchToLayoutWithId:(id)a4 startPoint:(CGPoint)a5 endPoint:(CGPoint)a6 whenReady:(id)a7;
-- (void)recognizer:(id)a3 restartTouchDownForTouchWithId:(id)a4 startingAt:(double)a5 atPoint:(CGPoint)a6 currentPoint:(CGPoint)a7 whenStateReady:(id)a8;
-- (void)recognizer:(id)a3 shouldContinueTrackingTouchWithId:(id)a4 startingAt:(double)a5 atPoint:(CGPoint)a6 currentPoint:(CGPoint)a7 forContinueState:(unint64_t)a8 whenStateReady:(id)a9;
-- (void)recognizer:(id)a3 willIgnoreTouchWithId:(id)a4 startingAt:(double)a5 atPoint:(CGPoint)a6 currentPoint:(CGPoint)a7 whenReady:(id)a8;
-- (void)recognizerBlockUntilTaskQueueReadyForceUsingDeferredTask:(BOOL)a3;
+- (void)recognizer:(id)recognizer beginTouchDownForTouchWithId:(id)id atPoint:(CGPoint)point forBeginState:(unint64_t)state whenStateReady:(id)ready;
+- (void)recognizer:(id)recognizer cancelTouchOnLayoutWithId:(id)id startPoint:(CGPoint)point endPoint:(CGPoint)endPoint whenReady:(id)ready;
+- (void)recognizer:(id)recognizer continueTrackingIgnoredTouchWithId:(id)id currentPoint:(CGPoint)point whenReady:(id)ready;
+- (void)recognizer:(id)recognizer releaseTouchToLayoutWithId:(id)id startPoint:(CGPoint)point endPoint:(CGPoint)endPoint whenReady:(id)ready;
+- (void)recognizer:(id)recognizer restartTouchDownForTouchWithId:(id)id startingAt:(double)at atPoint:(CGPoint)point currentPoint:(CGPoint)currentPoint whenStateReady:(id)ready;
+- (void)recognizer:(id)recognizer shouldContinueTrackingTouchWithId:(id)id startingAt:(double)at atPoint:(CGPoint)point currentPoint:(CGPoint)currentPoint forContinueState:(unint64_t)state whenStateReady:(id)ready;
+- (void)recognizer:(id)recognizer willIgnoreTouchWithId:(id)id startingAt:(double)at atPoint:(CGPoint)point currentPoint:(CGPoint)currentPoint whenReady:(id)ready;
+- (void)recognizerBlockUntilTaskQueueReadyForceUsingDeferredTask:(BOOL)task;
 - (void)reloadKeyboardGestureRecognition;
 - (void)resetHRRLayoutState;
-- (void)screenEdgePanRecognizerStateDidChange:(id)a3;
-- (void)setTaskQueue:(id)a3;
-- (void)showKeyboardWithInputTraits:(id)a3 screenTraits:(id)a4 splitTraits:(id)a5;
-- (void)touchCancelled:(id)a3;
-- (void)touchChanged:(id)a3;
-- (void)touchDown:(id)a3;
-- (void)touchDragged:(id)a3;
-- (void)touchUp:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesEstimatedPropertiesUpdated:(id)a3;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)screenEdgePanRecognizerStateDidChange:(id)change;
+- (void)setTaskQueue:(id)queue;
+- (void)showKeyboardWithInputTraits:(id)traits screenTraits:(id)screenTraits splitTraits:(id)splitTraits;
+- (void)touchCancelled:(id)cancelled;
+- (void)touchChanged:(id)changed;
+- (void)touchDown:(id)down;
+- (void)touchDragged:(id)dragged;
+- (void)touchUp:(id)up;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesEstimatedPropertiesUpdated:(id)updated;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 - (void)updateTouchProcessingForKeyboardChange;
 - (void)updateTouchProcessingForKeyplaneChange;
 - (void)willBeginIndirectSelectionGesture;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation UIKeyboardLayout
@@ -97,10 +97,10 @@
 {
   [(UIKeyboardLayout *)self setDeferredTouchDownTask:0];
   [(UIKeyboardLayout *)self setDeferredTouchMovedTask:0];
-  v3 = [(UIKeyboardLayout *)self targetEdgesForScreenGestureRecognition];
-  v4 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
-  v5 = v4;
-  if (v3)
+  targetEdgesForScreenGestureRecognition = [(UIKeyboardLayout *)self targetEdgesForScreenGestureRecognition];
+  screenEdgePanRecognizer = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+  v5 = screenEdgePanRecognizer;
+  if (targetEdgesForScreenGestureRecognition)
   {
 
     if (!v5)
@@ -108,31 +108,31 @@
       v6 = [[_UIScreenEdgePanRecognizer alloc] initWithType:3];
       [(UIKeyboardLayout *)self setScreenEdgePanRecognizer:v6];
 
-      v7 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
-      [v7 setDelegate:self];
+      screenEdgePanRecognizer2 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+      [screenEdgePanRecognizer2 setDelegate:self];
 
-      v8 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
-      v9 = [(UIView *)self _window];
-      [v9 _sceneReferenceBounds];
-      [v8 setScreenBounds:?];
+      screenEdgePanRecognizer3 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+      _window = [(UIView *)self _window];
+      [_window _sceneReferenceBounds];
+      [screenEdgePanRecognizer3 setScreenBounds:?];
     }
 
-    v10 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
-    [v10 reset];
+    screenEdgePanRecognizer4 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+    [screenEdgePanRecognizer4 reset];
 
-    v11 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
-    v12 = [v11 targetEdges];
+    screenEdgePanRecognizer5 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+    targetEdges = [screenEdgePanRecognizer5 targetEdges];
 
-    if (v12 != v3)
+    if (targetEdges != targetEdgesForScreenGestureRecognition)
     {
-      v13 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
-      [v13 setTargetEdges:v3];
+      screenEdgePanRecognizer6 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+      [screenEdgePanRecognizer6 setTargetEdges:targetEdgesForScreenGestureRecognition];
     }
   }
 
   else
   {
-    [v4 setDelegate:0];
+    [screenEdgePanRecognizer setDelegate:0];
 
     [(UIKeyboardLayout *)self setScreenEdgePanRecognizer:0];
   }
@@ -141,9 +141,9 @@
 - (void)deactivateActiveKeys
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(UIKeyboardLayout *)self handRestRecognizer];
+  handRestRecognizer = [(UIKeyboardLayout *)self handRestRecognizer];
 
-  if (v3)
+  if (handRestRecognizer)
   {
     v4 = [(NSMutableArray *)self->_uncommittedTouchUUIDs copy];
     v20 = 0u;
@@ -189,8 +189,8 @@
               v11 = [UIKBTouchState touchForTouchUUID:v9];
               if (v11)
               {
-                v12 = [(UIKeyboardLayout *)self handRestRecognizer];
-                [v12 markTouchProcessed:v11 withIdentifier:v9];
+                handRestRecognizer2 = [(UIKeyboardLayout *)self handRestRecognizer];
+                [handRestRecognizer2 markTouchProcessed:v11 withIdentifier:v9];
               }
             }
 
@@ -223,18 +223,18 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+  screenEdgePanRecognizer = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
 
-  if (v3)
+  if (screenEdgePanRecognizer)
   {
-    v5 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
-    v4 = [(UIView *)self _window];
-    [v4 _sceneReferenceBounds];
-    [v5 setScreenBounds:?];
+    screenEdgePanRecognizer2 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+    _window = [(UIView *)self _window];
+    [_window _sceneReferenceBounds];
+    [screenEdgePanRecognizer2 setScreenBounds:?];
   }
 }
 
-+ (CGSize)keyboardSizeForInputMode:(id)a3 screenTraits:(id)a4 keyboardType:(int64_t)a5
++ (CGSize)keyboardSizeForInputMode:(id)mode screenTraits:(id)traits keyboardType:(int64_t)type
 {
   v5 = *MEMORY[0x1E695F060];
   v6 = *(MEMORY[0x1E695F060] + 8);
@@ -243,11 +243,11 @@
   return result;
 }
 
-- (UIKeyboardLayout)initWithFrame:(CGRect)a3
+- (UIKeyboardLayout)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = UIKeyboardLayout;
-  v3 = [(UIView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -284,52 +284,52 @@
   [(_UIKBRTRecognizer *)self->_handRestRecognizer setDelegate:0];
   [(_UIScreenEdgePanRecognizer *)self->_screenEdgePanRecognizer setDelegate:0];
   [(UIKeyboardLayout *)self setSizeDelegate:0];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v7[0] = @"UIKeyboardPrivateWillChangeFrameNotification";
   v7[1] = @"UIKeyboardPrivateDidChangeFrameNotification";
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
-  [(NSNotificationCenter *)v4 _uiRemoveObserver:v5 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v5 names:?];
 
   v6.receiver = self;
   v6.super_class = UIKeyboardLayout;
   [(UIView *)&v6 dealloc];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v14 = a3;
-  v4 = [(UIView *)self window];
-  v5 = [v4 screen];
+  windowCopy = window;
+  window = [(UIView *)self window];
+  screen = [window screen];
 
-  v6 = [(UIKBScreenTraits *)self->_screenTraits screen];
-  v7 = v6;
-  if (v6)
+  screen2 = [(UIKBScreenTraits *)self->_screenTraits screen];
+  v7 = screen2;
+  if (screen2)
   {
-    v8 = v6;
+    screen3 = screen2;
   }
 
   else
   {
-    v8 = [v14 screen];
+    screen3 = [windowCopy screen];
   }
 
-  v9 = v8;
+  v9 = screen3;
 
-  if (v5 != v9)
+  if (screen != v9)
   {
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    v11 = v10;
-    if (v5)
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v11 = defaultCenter;
+    if (screen)
     {
       if (self->_listeningForWillChange)
       {
-        [v10 removeObserver:self name:@"UIKeyboardPrivateWillChangeFrameNotification" object:v5];
+        [defaultCenter removeObserver:self name:@"UIKeyboardPrivateWillChangeFrameNotification" object:screen];
         self->_listeningForWillChange = 0;
       }
 
       if (self->_listeningForDidChange)
       {
-        [v11 removeObserver:self name:@"UIKeyboardPrivateDidChangeFrameNotification" object:v5];
+        [v11 removeObserver:self name:@"UIKeyboardPrivateDidChangeFrameNotification" object:screen];
         self->_listeningForDidChange = 0;
       }
     }
@@ -368,27 +368,27 @@
   return taskQueue;
 }
 
-- (void)setTaskQueue:(id)a3
+- (void)setTaskQueue:(id)queue
 {
-  v5 = a3;
-  if (self->_taskQueue != v5)
+  queueCopy = queue;
+  if (self->_taskQueue != queueCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_taskQueue, a3);
-    v5 = v6;
+    v6 = queueCopy;
+    objc_storeStrong(&self->_taskQueue, queue);
+    queueCopy = v6;
   }
 }
 
-- (void)showKeyboardWithInputTraits:(id)a3 screenTraits:(id)a4 splitTraits:(id)a5
+- (void)showKeyboardWithInputTraits:(id)traits screenTraits:(id)screenTraits splitTraits:(id)splitTraits
 {
-  v7 = a3;
-  v8 = a4;
+  traitsCopy = traits;
+  screenTraitsCopy = screenTraits;
   inputTraits = self->_inputTraits;
-  self->_inputTraits = v7;
-  v11 = v7;
+  self->_inputTraits = traitsCopy;
+  v11 = traitsCopy;
 
   screenTraits = self->_screenTraits;
-  self->_screenTraits = v8;
+  self->_screenTraits = screenTraitsCopy;
 }
 
 void __40__UIKeyboardLayout_deactivateActiveKeys__block_invoke(void *a1)
@@ -399,23 +399,23 @@ void __40__UIKeyboardLayout_deactivateActiveKeys__block_invoke(void *a1)
   *(v3 + 40) = v2;
 }
 
-- (void)_setRequiresExclusiveTouch:(BOOL)a3
+- (void)_setRequiresExclusiveTouch:(BOOL)touch
 {
-  v3 = a3;
-  v4 = [(UIView *)self _rootInputWindowController];
-  [v4 setExclusiveTouch:v3];
+  touchCopy = touch;
+  _rootInputWindowController = [(UIView *)self _rootInputWindowController];
+  [_rootInputWindowController setExclusiveTouch:touchCopy];
 }
 
-- (id)touchDownTaskForTouchState:(id)a3
+- (id)touchDownTaskForTouchState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __47__UIKeyboardLayout_touchDownTaskForTouchState___block_invoke;
   v12 = &unk_1E70FD1B8;
-  v13 = self;
-  v14 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v14 = stateCopy;
+  v5 = stateCopy;
   v6 = _Block_copy(&v9);
   v7 = [v6 copy];
 
@@ -472,9 +472,9 @@ void __47__UIKeyboardLayout_touchDownTaskForTouchState___block_invoke_2(uint64_t
   [v3 returnExecutionToParentWithInfo:v7];
 }
 
-- (void)touchDown:(id)a3
+- (void)touchDown:(id)down
 {
-  v4 = a3;
+  downCopy = down;
   v5 = _UIKeyboardTouchLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -482,7 +482,7 @@ void __47__UIKeyboardLayout_touchDownTaskForTouchState___block_invoke_2(uint64_t
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "touch down", buf, 2u);
   }
 
-  v6 = [(UIKeyboardLayout *)self _touchStateForTouch:v4];
+  v6 = [(UIKeyboardLayout *)self _touchStateForTouch:downCopy];
   [v6 timestamp];
   v8 = v7;
   v9 = mach_absolute_time();
@@ -512,15 +512,15 @@ void __47__UIKeyboardLayout_touchDownTaskForTouchState___block_invoke_2(uint64_t
   v22 = 0;
   v23 = v9;
   v16 = _Block_copy(aBlock);
-  if ([(UIKeyboardLayout *)self _shouldAllowKeyboardHandlingIfNecessaryForTouch:v4 phase:0 withTouchState:v15 task:v16])
+  if ([(UIKeyboardLayout *)self _shouldAllowKeyboardHandlingIfNecessaryForTouch:downCopy phase:0 withTouchState:v15 task:v16])
   {
     if (qword_1ED497230 != -1)
     {
       dispatch_once(&qword_1ED497230, &__block_literal_global_207_1);
     }
 
-    v17 = [(UIKeyboardLayout *)self taskQueue];
-    [v17 addTask:v16 breadcrumb:qword_1ED497228];
+    taskQueue = [(UIKeyboardLayout *)self taskQueue];
+    [taskQueue addTask:v16 breadcrumb:qword_1ED497228];
   }
 }
 
@@ -567,16 +567,16 @@ void __30__UIKeyboardLayout_touchDown___block_invoke_205()
   qword_1ED497228 = v0;
 }
 
-- (id)touchDraggedTaskForTouchState:(id)a3
+- (id)touchDraggedTaskForTouchState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __50__UIKeyboardLayout_touchDraggedTaskForTouchState___block_invoke;
   v12 = &unk_1E70FD1B8;
-  v13 = self;
-  v14 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v14 = stateCopy;
+  v5 = stateCopy;
   v6 = _Block_copy(&v9);
   v7 = [v6 copy];
 
@@ -608,9 +608,9 @@ void __50__UIKeyboardLayout_touchDraggedTaskForTouchState___block_invoke(uint64_
   }
 }
 
-- (void)touchDragged:(id)a3
+- (void)touchDragged:(id)dragged
 {
-  v4 = a3;
+  draggedCopy = dragged;
   v5 = _UIKeyboardTouchLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -618,7 +618,7 @@ void __50__UIKeyboardLayout_touchDraggedTaskForTouchState___block_invoke(uint64_
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "touch drag", buf, 2u);
   }
 
-  v6 = [(UIKeyboardLayout *)self _touchStateForTouch:v4];
+  v6 = [(UIKeyboardLayout *)self _touchStateForTouch:draggedCopy];
   kdebug_trace();
   v7 = kac_get_log();
   v8 = os_signpost_id_make_with_pointer(v7, v6);
@@ -642,15 +642,15 @@ void __50__UIKeyboardLayout_touchDraggedTaskForTouchState___block_invoke(uint64_
   v12 = v6;
   v19 = v12;
   v13 = _Block_copy(&v15);
-  if ([(UIKeyboardLayout *)self _shouldAllowKeyboardHandlingIfNecessaryForTouch:v4 phase:1 withTouchState:v12 task:v13, v15, v16, v17, v18])
+  if ([(UIKeyboardLayout *)self _shouldAllowKeyboardHandlingIfNecessaryForTouch:draggedCopy phase:1 withTouchState:v12 task:v13, v15, v16, v17, v18])
   {
     if (qword_1ED497240 != -1)
     {
       dispatch_once(&qword_1ED497240, &__block_literal_global_216_0);
     }
 
-    v14 = [(UIKeyboardLayout *)self taskQueue];
-    [v14 addTask:v13 breadcrumb:qword_1ED497238];
+    taskQueue = [(UIKeyboardLayout *)self taskQueue];
+    [taskQueue addTask:v13 breadcrumb:qword_1ED497238];
   }
 }
 
@@ -693,29 +693,29 @@ void __33__UIKeyboardLayout_touchDragged___block_invoke_214()
   qword_1ED497238 = v0;
 }
 
-- (void)_touchEndedProcessingForTouches:(id)a3
+- (void)_touchEndedProcessingForTouches:(id)touches
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD50] indexSet];
+  touchesCopy = touches;
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   uncommittedTouchUUIDs = self->_uncommittedTouchUUIDs;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __52__UIKeyboardLayout__touchEndedProcessingForTouches___block_invoke;
   v15[3] = &unk_1E7116E98;
-  v7 = v4;
+  v7 = touchesCopy;
   v16 = v7;
-  v8 = v5;
+  v8 = indexSet;
   v17 = v8;
-  v18 = self;
+  selfCopy = self;
   [(NSMutableArray *)uncommittedTouchUUIDs enumerateObjectsWithOptions:2 usingBlock:v15];
   if ([v8 count])
   {
-    v9 = [v8 lastIndex];
-    [v8 removeIndex:v9];
-    v10 = [(NSMutableArray *)self->_uncommittedTouchUUIDs objectAtIndex:v9];
+    lastIndex = [v8 lastIndex];
+    [v8 removeIndex:lastIndex];
+    v10 = [(NSMutableArray *)self->_uncommittedTouchUUIDs objectAtIndex:lastIndex];
     if (v10)
     {
-      v11 = v10;
+      screenEdgePanRecognizer2 = v10;
       v12 = [UIKBTouchState touchForTouchUUID:v10];
       v13 = [(NSMutableArray *)self->_uncommittedTouchUUIDs objectsAtIndexes:v8];
       [(UIKeyboardLayout *)self commitTouchUUIDs:v13];
@@ -729,13 +729,13 @@ LABEL_7:
 
   if (![(NSMutableArray *)self->_uncommittedTouchUUIDs count])
   {
-    v14 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+    screenEdgePanRecognizer = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
 
-    if (v14)
+    if (screenEdgePanRecognizer)
     {
       [(UIKeyboardLayout *)self _clearDeferredTouchTasks];
-      v11 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
-      [v11 reset];
+      screenEdgePanRecognizer2 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+      [screenEdgePanRecognizer2 reset];
       goto LABEL_7;
     }
   }
@@ -755,16 +755,16 @@ void __52__UIKeyboardLayout__touchEndedProcessingForTouches___block_invoke(uint6
   }
 }
 
-- (id)touchUpTaskForTouchState:(id)a3
+- (id)touchUpTaskForTouchState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __45__UIKeyboardLayout_touchUpTaskForTouchState___block_invoke;
   v12 = &unk_1E70FD1B8;
-  v13 = self;
-  v14 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v14 = stateCopy;
+  v5 = stateCopy;
   v6 = _Block_copy(&v9);
   v7 = [v6 copy];
 
@@ -811,9 +811,9 @@ void __45__UIKeyboardLayout_touchUpTaskForTouchState___block_invoke_2(uint64_t a
   [v6 returnExecutionToParent];
 }
 
-- (void)touchUp:(id)a3
+- (void)touchUp:(id)up
 {
-  v4 = a3;
+  upCopy = up;
   v5 = _UIKeyboardTouchLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -821,7 +821,7 @@ void __45__UIKeyboardLayout_touchUpTaskForTouchState___block_invoke_2(uint64_t a
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "touch up", buf, 2u);
   }
 
-  v6 = [(UIKeyboardLayout *)self _touchStateForTouch:v4];
+  v6 = [(UIKeyboardLayout *)self _touchStateForTouch:upCopy];
   [v6 timestamp];
   v8 = v7;
   kdebug_trace();
@@ -849,15 +849,15 @@ void __45__UIKeyboardLayout_touchUpTaskForTouchState___block_invoke_2(uint64_t a
   v23 = v8;
   v24 = 0;
   v15 = _Block_copy(&v17);
-  if ([(UIKeyboardLayout *)self _shouldAllowKeyboardHandlingIfNecessaryForTouch:v4 phase:3 withTouchState:v14 task:v15, v17, v18, v19, v20])
+  if ([(UIKeyboardLayout *)self _shouldAllowKeyboardHandlingIfNecessaryForTouch:upCopy phase:3 withTouchState:v14 task:v15, v17, v18, v19, v20])
   {
     if (qword_1ED497250 != -1)
     {
       dispatch_once(&qword_1ED497250, &__block_literal_global_224);
     }
 
-    v16 = [(UIKeyboardLayout *)self taskQueue];
-    [v16 addTask:v15 breadcrumb:qword_1ED497248];
+    taskQueue = [(UIKeyboardLayout *)self taskQueue];
+    [taskQueue addTask:v15 breadcrumb:qword_1ED497248];
   }
 }
 
@@ -902,58 +902,58 @@ void __28__UIKeyboardLayout_touchUp___block_invoke_222()
   qword_1ED497248 = v0;
 }
 
-- (void)didCommitTouchState:(id)a3
+- (void)didCommitTouchState:(id)state
 {
   uncommittedTouchUUIDs = self->_uncommittedTouchUUIDs;
-  v5 = a3;
-  v6 = [v5 touchUUID];
-  [(NSMutableArray *)uncommittedTouchUUIDs removeObject:v6];
+  stateCopy = state;
+  touchUUID = [stateCopy touchUUID];
+  [(NSMutableArray *)uncommittedTouchUUIDs removeObject:touchUUID];
 
   if (![(NSMutableArray *)self->_uncommittedTouchUUIDs count])
   {
-    v7 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+    screenEdgePanRecognizer = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
 
-    if (v7)
+    if (screenEdgePanRecognizer)
     {
       [(UIKeyboardLayout *)self _clearDeferredTouchTasks];
-      v8 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
-      [v8 reset];
+      screenEdgePanRecognizer2 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+      [screenEdgePanRecognizer2 reset];
     }
   }
 
-  [v5 timestamp];
+  [stateCopy timestamp];
   [(UIKeyboardLayout *)self setLastTouchUpTime:?];
-  v9 = [v5 touchUUID];
+  touchUUID2 = [stateCopy touchUUID];
 
-  v10 = [(UIKeyboardLayout *)self activeTouchUUID];
-  v11 = [v9 isEqual:v10];
+  activeTouchUUID = [(UIKeyboardLayout *)self activeTouchUUID];
+  v11 = [touchUUID2 isEqual:activeTouchUUID];
 
   if (v11)
   {
     [(UIKeyboardLayout *)self setActiveTouchUUID:0];
-    v12 = [(UIKeyboardLayout *)self deferredTaskForActiveTouch];
+    deferredTaskForActiveTouch = [(UIKeyboardLayout *)self deferredTaskForActiveTouch];
 
-    if (v12)
+    if (deferredTaskForActiveTouch)
     {
-      v13 = [(UIKeyboardLayout *)self deferredTaskForActiveTouch];
-      v13[2]();
+      deferredTaskForActiveTouch2 = [(UIKeyboardLayout *)self deferredTaskForActiveTouch];
+      deferredTaskForActiveTouch2[2]();
 
       [(UIKeyboardLayout *)self setDeferredTaskForActiveTouch:0];
     }
   }
 }
 
-- (id)touchCancelledTaskForTouchState:(id)a3 forResting:(BOOL)a4
+- (id)touchCancelledTaskForTouchState:(id)state forResting:(BOOL)resting
 {
-  v6 = a3;
+  stateCopy = state;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__UIKeyboardLayout_touchCancelledTaskForTouchState_forResting___block_invoke;
   aBlock[3] = &unk_1E70FD0F0;
   aBlock[4] = self;
-  v12 = v6;
-  v13 = a4;
-  v7 = v6;
+  v12 = stateCopy;
+  restingCopy = resting;
+  v7 = stateCopy;
   v8 = _Block_copy(aBlock);
   v9 = [v8 copy];
 
@@ -999,10 +999,10 @@ void __63__UIKeyboardLayout_touchCancelledTaskForTouchState_forResting___block_i
   [v4 returnExecutionToParent];
 }
 
-- (void)touchCancelled:(id)a3
+- (void)touchCancelled:(id)cancelled
 {
-  v4 = a3;
-  v5 = [(UIKeyboardLayout *)self _touchStateForTouch:v4];
+  cancelledCopy = cancelled;
+  v5 = [(UIKeyboardLayout *)self _touchStateForTouch:cancelledCopy];
   v6 = [(UIKeyboardLayout *)self touchCancelledTaskForTouchState:v5 forResting:0];
   v7 = _UIKeyboardTouchLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1011,7 +1011,7 @@ void __63__UIKeyboardLayout_touchCancelledTaskForTouchState_forResting___block_i
     _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "touch cancelled", v10, 2u);
   }
 
-  v8 = [(UIKeyboardLayout *)self _shouldAllowKeyboardHandlingIfNecessaryForTouch:v4 phase:4 withTouchState:v5 task:v6];
+  v8 = [(UIKeyboardLayout *)self _shouldAllowKeyboardHandlingIfNecessaryForTouch:cancelledCopy phase:4 withTouchState:v5 task:v6];
   if (v8)
   {
     if (qword_1ED497260 != -1)
@@ -1019,8 +1019,8 @@ void __63__UIKeyboardLayout_touchCancelledTaskForTouchState_forResting___block_i
       dispatch_once(&qword_1ED497260, &__block_literal_global_229_0);
     }
 
-    v9 = [(UIKeyboardLayout *)self taskQueue];
-    [v9 addTask:v6 breadcrumb:qword_1ED497258];
+    taskQueue = [(UIKeyboardLayout *)self taskQueue];
+    [taskQueue addTask:v6 breadcrumb:qword_1ED497258];
   }
 }
 
@@ -1031,16 +1031,16 @@ void __35__UIKeyboardLayout_touchCancelled___block_invoke()
   qword_1ED497258 = v0;
 }
 
-- (id)touchChangedTaskForTouchState:(id)a3
+- (id)touchChangedTaskForTouchState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __50__UIKeyboardLayout_touchChangedTaskForTouchState___block_invoke;
   v12 = &unk_1E70FD1B8;
-  v13 = self;
-  v14 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v14 = stateCopy;
+  v5 = stateCopy;
   v6 = _Block_copy(&v9);
   v7 = [v6 copy];
 
@@ -1066,17 +1066,17 @@ void __50__UIKeyboardLayout_touchChangedTaskForTouchState___block_invoke(uint64_
   }
 }
 
-- (void)touchChanged:(id)a3
+- (void)touchChanged:(id)changed
 {
-  v6 = [(UIKeyboardLayout *)self _touchStateForTouch:a3];
+  v6 = [(UIKeyboardLayout *)self _touchStateForTouch:changed];
   v4 = [(UIKeyboardLayout *)self touchChangedTaskForTouchState:?];
   if (qword_1ED497270 != -1)
   {
     dispatch_once(&qword_1ED497270, &__block_literal_global_233_1);
   }
 
-  v5 = [(UIKeyboardLayout *)self taskQueue];
-  [v5 addTask:v4 breadcrumb:qword_1ED497268];
+  taskQueue = [(UIKeyboardLayout *)self taskQueue];
+  [taskQueue addTask:v4 breadcrumb:qword_1ED497268];
 }
 
 void __33__UIKeyboardLayout_touchChanged___block_invoke()
@@ -1086,22 +1086,22 @@ void __33__UIKeyboardLayout_touchChanged___block_invoke()
   qword_1ED497268 = v0;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  if ([(UIKeyboardLayout *)v8 _shouldAllowKeyboardHandlingForTouchesBegan:v6 withEvent:v7])
+  beganCopy = began;
+  eventCopy = event;
+  selfCopy = self;
+  if ([(UIKeyboardLayout *)selfCopy _shouldAllowKeyboardHandlingForTouchesBegan:beganCopy withEvent:eventCopy])
   {
     v23 = 488;
-    v24 = v7;
-    objc_storeStrong(&v8->_currentTouchDownEvent, a4);
+    v24 = eventCopy;
+    objc_storeStrong(&selfCopy->_currentTouchDownEvent, event);
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    obj = v6;
+    obj = beganCopy;
     v9 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (!v9)
     {
@@ -1121,12 +1121,12 @@ void __33__UIKeyboardLayout_touchChanged___block_invoke()
 
         v13 = *(*(&v26 + 1) + 8 * i);
         v14 = [UIKBTouchState touchUUIDForTouch:v13, v23];
-        [(NSMutableArray *)v8->_uncommittedTouchUUIDs addObject:v14];
+        [(NSMutableArray *)selfCopy->_uncommittedTouchUUIDs addObject:v14];
         v15 = UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL;
         v16 = +[UIKeyboardImpl isFloating];
         if (v15 == 1)
         {
-          [(UIKeyboardLayout *)v8 hasActiveContinuousPathInput];
+          [(UIKeyboardLayout *)selfCopy hasActiveContinuousPathInput];
           if (!v16)
           {
             goto LABEL_13;
@@ -1138,7 +1138,7 @@ void __33__UIKeyboardLayout_touchChanged___block_invoke()
         else
         {
           v18 = _AXSZoomTouchEnabled() == 0;
-          v19 = v18 & ~[(UIKeyboardLayout *)v8 hasActiveContinuousPathInput];
+          v19 = v18 & ~[(UIKeyboardLayout *)selfCopy hasActiveContinuousPathInput];
           if (((v19 | v16) & 1) == 0)
           {
             goto LABEL_13;
@@ -1147,15 +1147,15 @@ void __33__UIKeyboardLayout_touchChanged___block_invoke()
           v17 = v19 ^ 1;
         }
 
-        v20 = [(UIKeyboardLayout *)v8 touchUUIDsToCommitBeforeTouchUUID:v14];
-        [(UIKeyboardLayout *)v8 commitTouchUUIDs:v20 cancelInsteadOfUp:v17];
+        v20 = [(UIKeyboardLayout *)selfCopy touchUUIDsToCommitBeforeTouchUUID:v14];
+        [(UIKeyboardLayout *)selfCopy commitTouchUUIDs:v20 cancelInsteadOfUp:v17];
 
 LABEL_13:
-        v21 = [v13 window];
+        window = [v13 window];
 
-        if (v21)
+        if (window)
         {
-          [(UIKeyboardLayout *)v8 touchDown:v13];
+          [(UIKeyboardLayout *)selfCopy touchDown:v13];
         }
       }
 
@@ -1164,28 +1164,28 @@ LABEL_13:
       {
 LABEL_17:
 
-        v22 = *(&v8->super.super.super.isa + v23);
-        *(&v8->super.super.super.isa + v23) = 0;
+        v22 = *(&selfCopy->super.super.super.isa + v23);
+        *(&selfCopy->super.super.super.isa + v23) = 0;
 
-        v7 = v24;
+        eventCopy = v24;
         break;
       }
     }
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = self;
-  if ([(UIKeyboardLayout *)v7 _shouldAllowKeyboardHandlingForTouchesMoved:v6 withEvent:a4])
+  movedCopy = moved;
+  selfCopy = self;
+  if ([(UIKeyboardLayout *)selfCopy _shouldAllowKeyboardHandlingForTouchesMoved:movedCopy withEvent:event])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = v6;
+    v8 = movedCopy;
     v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
@@ -1201,7 +1201,7 @@ LABEL_17:
             objc_enumerationMutation(v8);
           }
 
-          [(UIKeyboardLayout *)v7 touchDragged:*(*(&v13 + 1) + 8 * v12++), v13];
+          [(UIKeyboardLayout *)selfCopy touchDragged:*(*(&v13 + 1) + 8 * v12++), v13];
         }
 
         while (v10 != v12);
@@ -1213,10 +1213,10 @@ LABEL_17:
   }
 }
 
-- (void)clearShiftIfNecessaryForEndedTouchState:(id)a3
+- (void)clearShiftIfNecessaryForEndedTouchState:(id)state
 {
-  v4 = [a3 touchUUID];
-  v5 = [v4 isEqual:self->_shiftKeyTouchUUID];
+  touchUUID = [state touchUUID];
+  v5 = [touchUUID isEqual:self->_shiftKeyTouchUUID];
 
   if (v5)
   {
@@ -1230,25 +1230,25 @@ LABEL_17:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v7 timestamp];
+  endedCopy = ended;
+  eventCopy = event;
+  [eventCopy timestamp];
   self->_timestampOfLastTouchesEnded = v8;
-  v9 = self;
-  if ([(UIKeyboardLayout *)v9 _shouldAllowKeyboardHandlingForTouchesEndedOrCancelled:v6 withEvent:v7])
+  selfCopy = self;
+  if ([(UIKeyboardLayout *)selfCopy _shouldAllowKeyboardHandlingForTouchesEndedOrCancelled:endedCopy withEvent:eventCopy])
   {
-    v10 = [(UIKeyboardLayout *)v9 handRestRecognizer];
+    handRestRecognizer = [(UIKeyboardLayout *)selfCopy handRestRecognizer];
 
-    if (v10)
+    if (handRestRecognizer)
     {
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v11 = v6;
+      v11 = endedCopy;
       v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v12)
       {
@@ -1264,7 +1264,7 @@ LABEL_17:
               objc_enumerationMutation(v11);
             }
 
-            [(UIKeyboardLayout *)v9 touchUp:*(*(&v16 + 1) + 8 * v15++), v16];
+            [(UIKeyboardLayout *)selfCopy touchUp:*(*(&v16 + 1) + 8 * v15++), v16];
           }
 
           while (v13 != v15);
@@ -1277,34 +1277,34 @@ LABEL_17:
 
     else
     {
-      [(UIKeyboardLayout *)v9 _touchEndedProcessingForTouches:v6];
+      [(UIKeyboardLayout *)selfCopy _touchEndedProcessingForTouches:endedCopy];
     }
   }
 
   else
   {
-    [(UIKeyboardLayout *)v9 _removeTouchesFromProcessing:v6];
+    [(UIKeyboardLayout *)selfCopy _removeTouchesFromProcessing:endedCopy];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = self;
-  if (![(UIKeyboardLayout *)v7 _shouldAllowKeyboardHandlingForTouchesEndedOrCancelled:v6 withEvent:a4])
+  cancelledCopy = cancelled;
+  selfCopy = self;
+  if (![(UIKeyboardLayout *)selfCopy _shouldAllowKeyboardHandlingForTouchesEndedOrCancelled:cancelledCopy withEvent:event])
   {
-    [(UIKeyboardLayout *)v7 _removeTouchesFromProcessing:v6];
+    [(UIKeyboardLayout *)selfCopy _removeTouchesFromProcessing:cancelledCopy];
     goto LABEL_27;
   }
 
-  v32 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v31 = v6;
-  v8 = v6;
+  v31 = cancelledCopy;
+  v8 = cancelledCopy;
   v9 = [v8 countByEnumeratingWithState:&v39 objects:v44 count:16];
   v10 = &OBJC_IVAR___UIDictationController__monitor;
   if (!v9)
@@ -1324,23 +1324,23 @@ LABEL_17:
         objc_enumerationMutation(v8);
       }
 
-      v14 = [(UIKeyboardLayout *)v7 _touchStateForTouch:*(*(&v39 + 1) + 8 * v13)];
+      v14 = [(UIKeyboardLayout *)selfCopy _touchStateForTouch:*(*(&v39 + 1) + 8 * v13)];
       v15 = v14;
       if (v14)
       {
-        v16 = *(&v7->super.super.super.isa + v10[662]);
-        v17 = [v14 touchUUID];
-        if ([v16 containsObject:v17])
+        v16 = *(&selfCopy->super.super.super.isa + v10[662]);
+        touchUUID = [v14 touchUUID];
+        if ([v16 containsObject:touchUUID])
         {
 
 LABEL_11:
-          v21 = [v15 touchUUID];
-          [v32 addObject:v21];
+          touchUUID2 = [v15 touchUUID];
+          [array addObject:touchUUID2];
 
           goto LABEL_13;
         }
 
-        touchIgnoredUUIDSet = v7->_touchIgnoredUUIDSet;
+        touchIgnoredUUIDSet = selfCopy->_touchIgnoredUUIDSet;
         [v15 touchUUID];
         v20 = v19 = v10;
         LODWORD(touchIgnoredUUIDSet) = [(NSMutableSet *)touchIgnoredUUIDSet containsObject:v20];
@@ -1351,12 +1351,12 @@ LABEL_11:
           goto LABEL_11;
         }
 
-        deferredTouchTaskListsQueue = v7->_deferredTouchTaskListsQueue;
+        deferredTouchTaskListsQueue = selfCopy->_deferredTouchTaskListsQueue;
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __47__UIKeyboardLayout_touchesCancelled_withEvent___block_invoke;
         block[3] = &unk_1E70F35B8;
-        block[4] = v7;
+        block[4] = selfCopy;
         v38 = v15;
         dispatch_sync(deferredTouchTaskListsQueue, block);
       }
@@ -1377,7 +1377,7 @@ LABEL_15:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v23 = v32;
+  v23 = array;
   v24 = [v23 countByEnumeratingWithState:&v33 objects:v43 count:16];
   if (v24)
   {
@@ -1394,7 +1394,7 @@ LABEL_15:
         }
 
         v28 = [UIKBTouchState touchForTouchUUID:*(*(&v33 + 1) + 8 * v27)];
-        [(UIKeyboardLayout *)v7 touchCancelled:v28];
+        [(UIKeyboardLayout *)selfCopy touchCancelled:v28];
 
         ++v27;
       }
@@ -1406,19 +1406,19 @@ LABEL_15:
     while (v25);
   }
 
-  if (![*(&v7->super.super.super.isa + v10[662]) count])
+  if (![*(&selfCopy->super.super.super.isa + v10[662]) count])
   {
-    v29 = [(UIKeyboardLayout *)v7 screenEdgePanRecognizer];
+    screenEdgePanRecognizer = [(UIKeyboardLayout *)selfCopy screenEdgePanRecognizer];
 
-    if (v29)
+    if (screenEdgePanRecognizer)
     {
-      [(UIKeyboardLayout *)v7 _clearDeferredTouchTasks];
-      v30 = [(UIKeyboardLayout *)v7 screenEdgePanRecognizer];
-      [v30 reset];
+      [(UIKeyboardLayout *)selfCopy _clearDeferredTouchTasks];
+      screenEdgePanRecognizer2 = [(UIKeyboardLayout *)selfCopy screenEdgePanRecognizer];
+      [screenEdgePanRecognizer2 reset];
     }
   }
 
-  v6 = v31;
+  cancelledCopy = v31;
 LABEL_27:
 }
 
@@ -1437,16 +1437,16 @@ void __47__UIKeyboardLayout_touchesCancelled_withEvent___block_invoke(uint64_t a
   }
 }
 
-- (void)touchesEstimatedPropertiesUpdated:(id)a3
+- (void)touchesEstimatedPropertiesUpdated:(id)updated
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
+  updatedCopy = updated;
+  selfCopy = self;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [updatedCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1458,24 +1458,24 @@ void __47__UIKeyboardLayout_touchesCancelled_withEvent___block_invoke(uint64_t a
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(updatedCopy);
         }
 
-        [(UIKeyboardLayout *)v5 touchChanged:*(*(&v10 + 1) + 8 * v9++)];
+        [(UIKeyboardLayout *)selfCopy touchChanged:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [updatedCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_removeTouchesFromProcessing:(id)a3
+- (void)_removeTouchesFromProcessing:(id)processing
 {
   v31 = *MEMORY[0x1E69E9840];
-  obj = a3;
+  obj = processing;
   if (*&self->_handRestRecognizer != 0 || self->_touchDrifting)
   {
     v28 = 0u;
@@ -1502,16 +1502,16 @@ void __47__UIKeyboardLayout_touchesCancelled_withEvent___block_invoke(uint64_t a
           if (v9)
           {
             handRestRecognizer = self->_handRestRecognizer;
-            v12 = [v9 touchUUID];
-            [(_UIKBRTRecognizer *)handRestRecognizer markTouchProcessed:v8 withIdentifier:v12];
+            touchUUID = [v9 touchUUID];
+            [(_UIKBRTRecognizer *)handRestRecognizer markTouchProcessed:v8 withIdentifier:touchUUID];
 
             fingerDetection = self->_fingerDetection;
-            v14 = [v10 touchUUID];
-            [(_UIKBRTFingerDetection *)fingerDetection removeTouchWithIdentifier:v14 touchCancelled:1];
+            touchUUID2 = [v10 touchUUID];
+            [(_UIKBRTFingerDetection *)fingerDetection removeTouchWithIdentifier:touchUUID2 touchCancelled:1];
 
             touchDrifting = self->_touchDrifting;
-            v16 = [v10 touchUUID];
-            [(_UIKBRTTouchDrifting *)touchDrifting removeTouchWithIdentifier:v16 touchCancelled:1];
+            touchUUID3 = [v10 touchUUID];
+            [(_UIKBRTTouchDrifting *)touchDrifting removeTouchWithIdentifier:touchUUID3 touchCancelled:1];
 
             [v10 locationInWindow];
             [(UIView *)self convertPoint:0 fromView:?];
@@ -1519,9 +1519,9 @@ void __47__UIKeyboardLayout_touchesCancelled_withEvent___block_invoke(uint64_t a
             v20 = v19;
             [v10 timestamp];
             v22 = v21;
-            v23 = [v10 pathIndex];
-            v24 = [v10 touchUUID];
-            [(UIKeyboardLayout *)self handRestRecognizerNotifyRestForBegin:0 location:v23 timestamp:v24 pathIndex:0 touchUUID:v18 context:v20, v22];
+            pathIndex = [v10 pathIndex];
+            touchUUID4 = [v10 touchUUID];
+            [(UIKeyboardLayout *)self handRestRecognizerNotifyRestForBegin:0 location:pathIndex timestamp:touchUUID4 pathIndex:0 touchUUID:v18 context:v20, v22];
           }
         }
 
@@ -1533,10 +1533,10 @@ void __47__UIKeyboardLayout_touchesCancelled_withEvent___block_invoke(uint64_t a
   }
 }
 
-- (id)touchUUIDsToCommitBeforeTouchUUID:(id)a3
+- (id)touchUUIDsToCommitBeforeTouchUUID:(id)d
 {
-  v4 = a3;
-  if ([(NSMutableArray *)self->_uncommittedTouchUUIDs indexOfObject:v4]== 0x7FFFFFFFFFFFFFFFLL)
+  dCopy = d;
+  if ([(NSMutableArray *)self->_uncommittedTouchUUIDs indexOfObject:dCopy]== 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
   }
@@ -1548,8 +1548,8 @@ void __47__UIKeyboardLayout_touchesCancelled_withEvent___block_invoke(uint64_t a
     v10 = 3221225472;
     v11 = __54__UIKeyboardLayout_touchUUIDsToCommitBeforeTouchUUID___block_invoke;
     v12 = &unk_1E7116EE8;
-    v13 = v4;
-    v14 = self;
+    v13 = dCopy;
+    selfCopy = self;
     v7 = [(NSMutableArray *)uncommittedTouchUUIDs indexesOfObjectsPassingTest:&v9];
     v5 = [(NSMutableArray *)self->_uncommittedTouchUUIDs objectsAtIndexes:v7, v9, v10, v11, v12];
   }
@@ -1577,15 +1577,15 @@ uint64_t __54__UIKeyboardLayout_touchUUIDsToCommitBeforeTouchUUID___block_invoke
   return v7;
 }
 
-- (void)commitTouchUUIDs:(id)a3 cancelInsteadOfUp:(BOOL)a4
+- (void)commitTouchUUIDs:(id)ds cancelInsteadOfUp:(BOOL)up
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __55__UIKeyboardLayout_commitTouchUUIDs_cancelInsteadOfUp___block_invoke;
   v4[3] = &unk_1E7116F38;
   v4[4] = self;
-  v5 = a4;
-  [a3 enumerateObjectsUsingBlock:v4];
+  upCopy = up;
+  [ds enumerateObjectsUsingBlock:v4];
 }
 
 void __55__UIKeyboardLayout_commitTouchUUIDs_cancelInsteadOfUp___block_invoke(uint64_t a1, void *a2)
@@ -1650,30 +1650,30 @@ void __55__UIKeyboardLayout_commitTouchUUIDs_cancelInsteadOfUp___block_invoke_4(
   [v2 forceShiftUpdateIfKeyboardStateChanged];
 }
 
-- (void)commitTouches:(id)a3 executionContext:(id)a4
+- (void)commitTouches:(id)touches executionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  touchesCopy = touches;
+  contextCopy = context;
+  if ([touchesCopy count])
   {
-    v8 = [v6 objectAtIndex:0];
-    v9 = [v6 subarrayWithRange:{1, objc_msgSend(v6, "count") - 1}];
-    v10 = [v8 window];
+    v8 = [touchesCopy objectAtIndex:0];
+    v9 = [touchesCopy subarrayWithRange:{1, objc_msgSend(touchesCopy, "count") - 1}];
+    window = [v8 window];
 
-    if (!v10)
+    if (!window)
     {
-      v11 = [(UIView *)self window];
-      [v8 setWindow:v11];
+      window2 = [(UIView *)self window];
+      [v8 setWindow:window2];
     }
 
     v12 = [(UIKeyboardLayout *)self _touchStateForTouch:v8];
     uncommittedTouchUUIDs = self->_uncommittedTouchUUIDs;
-    v14 = [v12 touchUUID];
-    v15 = [(NSMutableArray *)uncommittedTouchUUIDs indexOfObject:v14];
+    touchUUID = [v12 touchUUID];
+    v15 = [(NSMutableArray *)uncommittedTouchUUIDs indexOfObject:touchUUID];
 
     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(UIKeyboardLayout *)self commitTouches:v9 executionContext:v7];
+      [(UIKeyboardLayout *)self commitTouches:v9 executionContext:contextCopy];
     }
 
     else
@@ -1687,14 +1687,14 @@ void __55__UIKeyboardLayout_commitTouchUUIDs_cancelInsteadOfUp___block_invoke_4(
       v16 = v12;
       v19 = v16;
       v20 = v9;
-      v17 = [v7 childWithContinuation:v18];
+      v17 = [contextCopy childWithContinuation:v18];
       [(UIKeyboardLayout *)self touchUp:v16 executionContext:v17];
     }
   }
 
   else
   {
-    [v7 returnExecutionToParent];
+    [contextCopy returnExecutionToParent];
   }
 }
 
@@ -1708,11 +1708,11 @@ void __51__UIKeyboardLayout_commitTouches_executionContext___block_invoke(uint64
   [*(a1 + 32) commitTouches:*(a1 + 48) executionContext:v5];
 }
 
-- (void)_enumerateDeferredTouchUUIDs:(id)a3 withBlock:(id)a4
+- (void)_enumerateDeferredTouchUUIDs:(id)ds withBlock:(id)block
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  blockCopy = block;
   [(UIKeyboardLayout *)self setIsExecutingDeferredTouchTasks:1];
   v24 = 0;
   v25 = &v24;
@@ -1727,7 +1727,7 @@ void __51__UIKeyboardLayout_commitTouches_executionContext___block_invoke(uint64
   block[3] = &unk_1E70FB728;
   v23 = &v24;
   block[4] = self;
-  v9 = v6;
+  v9 = dsCopy;
   v22 = v9;
   dispatch_sync(deferredTouchTaskListsQueue, block);
   v19 = 0u;
@@ -1750,8 +1750,8 @@ void __51__UIKeyboardLayout_commitTouches_executionContext___block_invoke(uint64
         }
 
         v14 = *(*(&v17 + 1) + 8 * v13);
-        v15 = [MEMORY[0x1E695DFB0] null];
-        v16 = v14 == v15;
+        null = [MEMORY[0x1E695DFB0] null];
+        v16 = v14 == null;
 
         if (!v16)
         {
@@ -1784,27 +1784,27 @@ void __59__UIKeyboardLayout__enumerateDeferredTouchUUIDs_withBlock___block_invok
   *(v5 + 40) = v4;
 }
 
-- (void)recognizerBlockUntilTaskQueueReadyForceUsingDeferredTask:(BOOL)a3
+- (void)recognizerBlockUntilTaskQueueReadyForceUsingDeferredTask:(BOOL)task
 {
   if (pthread_main_np() == 1)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UIKeyboardLayout.m" lineNumber:1512 description:@"Must be called off the main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboardLayout.m" lineNumber:1512 description:@"Must be called off the main thread"];
 
-    if (!a3)
+    if (!task)
     {
 LABEL_3:
-      v6 = [(UIKeyboardLayout *)self taskQueue];
-      v7 = [v6 isMainThreadExecutingTask];
+      taskQueue = [(UIKeyboardLayout *)self taskQueue];
+      isMainThreadExecutingTask = [taskQueue isMainThreadExecutingTask];
 
-      if (!v7)
+      if (!isMainThreadExecutingTask)
       {
         return;
       }
     }
   }
 
-  else if (!a3)
+  else if (!task)
   {
     goto LABEL_3;
   }
@@ -1815,7 +1815,7 @@ LABEL_3:
     dispatch_once(&qword_1ED497290, &__block_literal_global_251_1);
   }
 
-  v9 = [(UIKeyboardLayout *)self taskQueue];
+  taskQueue2 = [(UIKeyboardLayout *)self taskQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __77__UIKeyboardLayout_recognizerBlockUntilTaskQueueReadyForceUsingDeferredTask___block_invoke_3;
@@ -1823,7 +1823,7 @@ LABEL_3:
   v15 = v8;
   v10 = qword_1ED497288;
   v11 = v8;
-  [v9 addDeferredTask:v14 breadcrumb:v10];
+  [taskQueue2 addDeferredTask:v14 breadcrumb:v10];
 
   v12 = dispatch_time(0, 10000000000);
   dispatch_semaphore_wait(v11, v12);
@@ -1844,23 +1844,23 @@ void __77__UIKeyboardLayout_recognizerBlockUntilTaskQueueReadyForceUsingDeferred
   [v3 returnExecutionToParent];
 }
 
-- (void)recognizer:(id)a3 beginTouchDownForTouchWithId:(id)a4 atPoint:(CGPoint)a5 forBeginState:(unint64_t)a6 whenStateReady:(id)a7
+- (void)recognizer:(id)recognizer beginTouchDownForTouchWithId:(id)id atPoint:(CGPoint)point forBeginState:(unint64_t)state whenStateReady:(id)ready
 {
-  y = a5.y;
-  x = a5.x;
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = [(UIKeyboardLayout *)self handRestRecognizer];
+  y = point.y;
+  x = point.x;
+  recognizerCopy = recognizer;
+  idCopy = id;
+  readyCopy = ready;
+  handRestRecognizer = [(UIKeyboardLayout *)self handRestRecognizer];
 
-  if (v16 == v13)
+  if (handRestRecognizer == recognizerCopy)
   {
     v36[0] = 0;
     v36[1] = v36;
     v36[2] = 0x2020000000;
     v37 = 1;
-    v17 = [v15 copy];
-    v18 = v14;
+    v17 = [readyCopy copy];
+    v18 = idCopy;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __97__UIKeyboardLayout_recognizer_beginTouchDownForTouchWithId_atPoint_forBeginState_whenStateReady___block_invoke;
@@ -1868,7 +1868,7 @@ void __77__UIKeyboardLayout_recognizerBlockUntilTaskQueueReadyForceUsingDeferred
     block[4] = self;
     v19 = v18;
     v32 = v36;
-    v33 = a6;
+    stateCopy = state;
     v31 = v19;
     v34 = x;
     v35 = y;
@@ -1879,7 +1879,7 @@ void __77__UIKeyboardLayout_recognizerBlockUntilTaskQueueReadyForceUsingDeferred
     v22[2] = __97__UIKeyboardLayout_recognizer_beginTouchDownForTouchWithId_atPoint_forBeginState_whenStateReady___block_invoke_5;
     v22[3] = &unk_1E7117000;
     v26 = v36;
-    v27 = a6;
+    stateCopy2 = state;
     v22[4] = self;
     v28 = x;
     v29 = y;
@@ -1895,7 +1895,7 @@ void __77__UIKeyboardLayout_recognizerBlockUntilTaskQueueReadyForceUsingDeferred
 
   else
   {
-    (*(v15 + 2))(v15, v14, 0);
+    (*(readyCopy + 2))(readyCopy, idCopy, 0);
   }
 }
 
@@ -2108,18 +2108,18 @@ void __97__UIKeyboardLayout_recognizer_beginTouchDownForTouchWithId_atPoint_forB
   [v6 returnExecutionToParent];
 }
 
-- (void)recognizer:(id)a3 restartTouchDownForTouchWithId:(id)a4 startingAt:(double)a5 atPoint:(CGPoint)a6 currentPoint:(CGPoint)a7 whenStateReady:(id)a8
+- (void)recognizer:(id)recognizer restartTouchDownForTouchWithId:(id)id startingAt:(double)at atPoint:(CGPoint)point currentPoint:(CGPoint)currentPoint whenStateReady:(id)ready
 {
-  y = a7.y;
-  x = a7.x;
-  v11 = a6.y;
-  v12 = a6.x;
-  v16 = a4;
-  v17 = a8;
-  v18 = a3;
-  v19 = [(UIKeyboardLayout *)self handRestRecognizer];
+  y = currentPoint.y;
+  x = currentPoint.x;
+  v11 = point.y;
+  v12 = point.x;
+  idCopy = id;
+  readyCopy = ready;
+  recognizerCopy = recognizer;
+  handRestRecognizer = [(UIKeyboardLayout *)self handRestRecognizer];
 
-  if (v19 == v18)
+  if (handRestRecognizer == recognizerCopy)
   {
     v29[0] = 0;
     v29[1] = v29;
@@ -2130,14 +2130,14 @@ void __97__UIKeyboardLayout_recognizer_beginTouchDownForTouchWithId_atPoint_forB
     block[2] = __109__UIKeyboardLayout_recognizer_restartTouchDownForTouchWithId_startingAt_atPoint_currentPoint_whenStateReady___block_invoke;
     block[3] = &unk_1E7117050;
     block[4] = self;
-    v24 = a5;
+    atCopy = at;
     v25 = v12;
-    v21 = v16;
+    v21 = idCopy;
     v23 = v29;
     v26 = v11;
     v27 = x;
     v28 = y;
-    v22 = v17;
+    v22 = readyCopy;
     dispatch_sync(MEMORY[0x1E69E96A0], block);
 
     _Block_object_dispose(v29, 8);
@@ -2145,7 +2145,7 @@ void __97__UIKeyboardLayout_recognizer_beginTouchDownForTouchWithId_atPoint_forB
 
   else
   {
-    (*(v17 + 2))(v17, v16, 0);
+    (*(readyCopy + 2))(readyCopy, idCopy, 0);
   }
 }
 
@@ -2342,20 +2342,20 @@ void __109__UIKeyboardLayout_recognizer_restartTouchDownForTouchWithId_startingA
   [v6 returnExecutionToParent];
 }
 
-- (void)recognizer:(id)a3 shouldContinueTrackingTouchWithId:(id)a4 startingAt:(double)a5 atPoint:(CGPoint)a6 currentPoint:(CGPoint)a7 forContinueState:(unint64_t)a8 whenStateReady:(id)a9
+- (void)recognizer:(id)recognizer shouldContinueTrackingTouchWithId:(id)id startingAt:(double)at atPoint:(CGPoint)point currentPoint:(CGPoint)currentPoint forContinueState:(unint64_t)state whenStateReady:(id)ready
 {
-  y = a6.y;
-  x = a6.x;
-  v15 = a4;
-  v16 = a9;
-  v17 = a3;
-  v18 = [(UIKeyboardLayout *)self handRestRecognizer];
+  y = point.y;
+  x = point.x;
+  idCopy = id;
+  readyCopy = ready;
+  recognizerCopy = recognizer;
+  handRestRecognizer = [(UIKeyboardLayout *)self handRestRecognizer];
 
-  if (v18 == v17)
+  if (handRestRecognizer == recognizerCopy)
   {
-    if (a8 == 3)
+    if (state == 3)
     {
-      v16[2](v16, v15, [v15 isEqual:self->_shiftKeyTouchUUID]);
+      readyCopy[2](readyCopy, idCopy, [idCopy isEqual:self->_shiftKeyTouchUUID]);
     }
 
     else
@@ -2365,18 +2365,18 @@ void __109__UIKeyboardLayout_recognizer_restartTouchDownForTouchWithId_startingA
       v19[2] = __129__UIKeyboardLayout_recognizer_shouldContinueTrackingTouchWithId_startingAt_atPoint_currentPoint_forContinueState_whenStateReady___block_invoke;
       v19[3] = &unk_1E71170C8;
       v19[4] = self;
-      v20 = v15;
-      v22 = a8;
+      v20 = idCopy;
+      stateCopy = state;
       v23 = x;
       v24 = y;
-      v21 = v16;
+      v21 = readyCopy;
       dispatch_sync(MEMORY[0x1E69E96A0], v19);
     }
   }
 
   else
   {
-    v16[2](v16, v15, 0);
+    readyCopy[2](readyCopy, idCopy, 0);
   }
 }
 
@@ -2499,12 +2499,12 @@ void __129__UIKeyboardLayout_recognizer_shouldContinueTrackingTouchWithId_starti
   [v3 returnExecutionToParentWithInfo:v4];
 }
 
-- (BOOL)queryShouldNeverIgnoreTouchStateWithIdentifier:(id)a3 touchState:(id)a4 startPoint:(CGPoint)a5 forRestingState:(unint64_t)a6
+- (BOOL)queryShouldNeverIgnoreTouchStateWithIdentifier:(id)identifier touchState:(id)state startPoint:(CGPoint)point forRestingState:(unint64_t)restingState
 {
-  y = a5.y;
-  x = a5.x;
-  v11 = a3;
-  v12 = a4;
+  y = point.y;
+  x = point.x;
+  identifierCopy = identifier;
+  stateCopy = state;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -2524,19 +2524,19 @@ void __129__UIKeyboardLayout_recognizer_shouldContinueTrackingTouchWithId_starti
   block[3] = &unk_1E7117118;
   v21 = &v30;
   block[4] = self;
-  v14 = v11;
+  v14 = identifierCopy;
   v22 = &v24;
-  v23 = a6;
+  restingStateCopy = restingState;
   v20 = v14;
   dispatch_sync(deferredTouchTaskListsQueue, block);
-  v15 = [v31[5] currentTouchPoint];
-  [v15 CGPointValue];
-  LOBYTE(a6) = [(UIKeyboardLayout *)self handRestRecognizerShouldNeverIgnoreTouchState:v12 fromPoint:a6 toPoint:v25[5] forRestingState:x otherRestedTouchLocations:y, v16, v17];
+  currentTouchPoint = [v31[5] currentTouchPoint];
+  [currentTouchPoint CGPointValue];
+  LOBYTE(restingState) = [(UIKeyboardLayout *)self handRestRecognizerShouldNeverIgnoreTouchState:stateCopy fromPoint:restingState toPoint:v25[5] forRestingState:x otherRestedTouchLocations:y, v16, v17];
 
   _Block_object_dispose(&v24, 8);
   _Block_object_dispose(&v30, 8);
 
-  return a6;
+  return restingState;
 }
 
 void __105__UIKeyboardLayout_queryShouldNeverIgnoreTouchStateWithIdentifier_touchState_startPoint_forRestingState___block_invoke(uint64_t a1)
@@ -2598,32 +2598,32 @@ uint64_t __105__UIKeyboardLayout_queryShouldNeverIgnoreTouchStateWithIdentifier_
   return v5;
 }
 
-- (void)recognizer:(id)a3 willIgnoreTouchWithId:(id)a4 startingAt:(double)a5 atPoint:(CGPoint)a6 currentPoint:(CGPoint)a7 whenReady:(id)a8
+- (void)recognizer:(id)recognizer willIgnoreTouchWithId:(id)id startingAt:(double)at atPoint:(CGPoint)point currentPoint:(CGPoint)currentPoint whenReady:(id)ready
 {
-  y = a7.y;
-  x = a7.x;
-  v13 = a4;
-  v14 = a8;
-  v15 = a3;
-  v16 = [(UIKeyboardLayout *)self handRestRecognizer];
+  y = currentPoint.y;
+  x = currentPoint.x;
+  idCopy = id;
+  readyCopy = ready;
+  recognizerCopy = recognizer;
+  handRestRecognizer = [(UIKeyboardLayout *)self handRestRecognizer];
 
-  if (v16 == v15)
+  if (handRestRecognizer == recognizerCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __95__UIKeyboardLayout_recognizer_willIgnoreTouchWithId_startingAt_atPoint_currentPoint_whenReady___block_invoke;
     block[3] = &unk_1E70F8FA8;
     block[4] = self;
-    v18 = v13;
+    v18 = idCopy;
     v20 = x;
     v21 = y;
-    v19 = v14;
+    v19 = readyCopy;
     dispatch_sync(MEMORY[0x1E69E96A0], block);
   }
 
   else
   {
-    (*(v14 + 2))(v14, v13);
+    (*(readyCopy + 2))(readyCopy, idCopy);
   }
 }
 
@@ -2793,28 +2793,28 @@ void __95__UIKeyboardLayout_recognizer_willIgnoreTouchWithId_startingAt_atPoint_
   [v5 returnExecutionToParent];
 }
 
-- (void)recognizer:(id)a3 continueTrackingIgnoredTouchWithId:(id)a4 currentPoint:(CGPoint)a5 whenReady:(id)a6
+- (void)recognizer:(id)recognizer continueTrackingIgnoredTouchWithId:(id)id currentPoint:(CGPoint)point whenReady:(id)ready
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = a3;
-  v12 = [(UIKeyboardLayout *)self handRestRecognizer];
+  idCopy = id;
+  readyCopy = ready;
+  recognizerCopy = recognizer;
+  handRestRecognizer = [(UIKeyboardLayout *)self handRestRecognizer];
 
-  if (v12 == v11)
+  if (handRestRecognizer == recognizerCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __89__UIKeyboardLayout_recognizer_continueTrackingIgnoredTouchWithId_currentPoint_whenReady___block_invoke;
     block[3] = &unk_1E70FCE28;
     block[4] = self;
-    v14 = v9;
-    v15 = v10;
+    v14 = idCopy;
+    v15 = readyCopy;
     dispatch_sync(MEMORY[0x1E69E96A0], block);
   }
 
   else
   {
-    (*(v10 + 2))(v10, v9);
+    (*(readyCopy + 2))(readyCopy, idCopy);
   }
 }
 
@@ -2971,18 +2971,18 @@ void __89__UIKeyboardLayout_recognizer_continueTrackingIgnoredTouchWithId_curren
   [v5 returnExecutionToParent];
 }
 
-- (void)recognizer:(id)a3 releaseTouchToLayoutWithId:(id)a4 startPoint:(CGPoint)a5 endPoint:(CGPoint)a6 whenReady:(id)a7
+- (void)recognizer:(id)recognizer releaseTouchToLayoutWithId:(id)id startPoint:(CGPoint)point endPoint:(CGPoint)endPoint whenReady:(id)ready
 {
-  y = a6.y;
-  x = a6.x;
-  v10 = a5.y;
-  v11 = a5.x;
-  v13 = a4;
-  v14 = a7;
+  y = endPoint.y;
+  x = endPoint.x;
+  v10 = point.y;
+  v11 = point.x;
+  idCopy = id;
+  readyCopy = ready;
   [(UIKeyboardLayout *)self recognizerBlockUntilTaskQueueReadyForceUsingDeferredTask:0];
-  v15 = [v14 copy];
+  v15 = [readyCopy copy];
 
-  v16 = v13;
+  v16 = idCopy;
   v17 = self->_deferredTouchTaskListsQueue;
   v18 = self->_touchIgnoredUUIDSet;
   v19 = self->_deferredTouchTaskLists;
@@ -2991,7 +2991,7 @@ void __89__UIKeyboardLayout_recognizer_continueTrackingIgnoredTouchWithId_curren
   block[2] = __88__UIKeyboardLayout_recognizer_releaseTouchToLayoutWithId_startPoint_endPoint_whenReady___block_invoke;
   block[3] = &unk_1E7117280;
   v26 = v17;
-  v27 = self;
+  selfCopy = self;
   v33 = v11;
   v34 = v10;
   v35 = x;
@@ -3178,10 +3178,10 @@ void __88__UIKeyboardLayout_recognizer_releaseTouchToLayoutWithId_startPoint_end
   [v5 returnExecutionToParent];
 }
 
-- (void)recognizer:(id)a3 cancelTouchOnLayoutWithId:(id)a4 startPoint:(CGPoint)a5 endPoint:(CGPoint)a6 whenReady:(id)a7
+- (void)recognizer:(id)recognizer cancelTouchOnLayoutWithId:(id)id startPoint:(CGPoint)point endPoint:(CGPoint)endPoint whenReady:(id)ready
 {
-  v9 = a4;
-  v10 = a7;
+  idCopy = id;
+  readyCopy = ready;
   [(UIKeyboardLayout *)self recognizerBlockUntilTaskQueueReadyForceUsingDeferredTask:0];
   v11 = self->_deferredTouchTaskListsQueue;
   v15[0] = MEMORY[0x1E69E9820];
@@ -3189,11 +3189,11 @@ void __88__UIKeyboardLayout_recognizer_releaseTouchToLayoutWithId_startPoint_end
   v15[2] = __87__UIKeyboardLayout_recognizer_cancelTouchOnLayoutWithId_startPoint_endPoint_whenReady___block_invoke;
   v15[3] = &unk_1E70F5F08;
   v16 = v11;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
+  selfCopy = self;
+  v18 = idCopy;
+  v19 = readyCopy;
+  v12 = readyCopy;
+  v13 = idCopy;
   v14 = v11;
   dispatch_sync(MEMORY[0x1E69E96A0], v15);
 }
@@ -3536,18 +3536,18 @@ uint64_t __39__UIKeyboardLayout_resetHRRLayoutState__block_invoke(uint64_t a1)
   return [*(*(a1 + 32) + 608) removeAllObjects];
 }
 
-- (BOOL)_shouldAllowKeyboardHandlingIfNecessaryForTouch:(id)a3 phase:(int64_t)a4 withTouchState:(id)a5 task:(id)a6
+- (BOOL)_shouldAllowKeyboardHandlingIfNecessaryForTouch:(id)touch phase:(int64_t)phase withTouchState:(id)state task:(id)task
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  touchCopy = touch;
+  stateCopy = state;
+  taskCopy = task;
   if (![(UIKeyboardLayout *)self isExecutingDeferredTouchTasks])
   {
-    v13 = [(UIKeyboardLayout *)self handRestRecognizer];
+    handRestRecognizer = [(UIKeyboardLayout *)self handRestRecognizer];
 
-    if (v13)
+    if (handRestRecognizer)
     {
-      v14 = [UIKBTouchStateTask touchStateTaskForTouchState:v11 andTask:v12];
+      v14 = [UIKBTouchStateTask touchStateTaskForTouchState:stateCopy andTask:taskCopy];
       v52 = 0;
       v53 = &v52;
       v54 = 0x3032000000;
@@ -3560,86 +3560,86 @@ uint64_t __39__UIKeyboardLayout_resetHRRLayoutState__block_invoke(uint64_t a1)
       v46 = __94__UIKeyboardLayout__shouldAllowKeyboardHandlingIfNecessaryForTouch_phase_withTouchState_task___block_invoke;
       v47 = &unk_1E70FED68;
       v50 = &v52;
-      v48 = self;
-      v16 = v11;
+      selfCopy = self;
+      v16 = stateCopy;
       v49 = v16;
-      v51 = a4;
+      phaseCopy = phase;
       dispatch_sync(deferredTouchTaskListsQueue, &v44);
       v17 = v53[5];
       v18 = v17 == 0;
       if (v17)
       {
-        [v17 addTask:{v14, v44, v45, v46, v47, v48}];
-        if (a4 > 2)
+        [v17 addTask:{v14, v44, v45, v46, v47, selfCopy}];
+        if (phase > 2)
         {
-          if (a4 == 3)
+          if (phase == 3)
           {
             fingerDetection = self->_fingerDetection;
-            v40 = [v16 touchUUID];
-            [(_UIKBRTFingerDetection *)fingerDetection removeTouchWithIdentifier:v40 touchCancelled:0];
+            touchUUID = [v16 touchUUID];
+            [(_UIKBRTFingerDetection *)fingerDetection removeTouchWithIdentifier:touchUUID touchCancelled:0];
 
             touchDrifting = self->_touchDrifting;
-            v42 = [v16 touchUUID];
-            [(_UIKBRTTouchDrifting *)touchDrifting removeTouchWithIdentifier:v42 touchCancelled:0];
+            touchUUID2 = [v16 touchUUID];
+            [(_UIKBRTTouchDrifting *)touchDrifting removeTouchWithIdentifier:touchUUID2 touchCancelled:0];
 
-            v30 = [(UIKeyboardLayout *)self handRestRecognizer];
-            v31 = [v16 touchUUID];
-            [v30 touchUp:v10 withIdentifier:v31];
+            handRestRecognizer2 = [(UIKeyboardLayout *)self handRestRecognizer];
+            touchUUID3 = [v16 touchUUID];
+            [handRestRecognizer2 touchUp:touchCopy withIdentifier:touchUUID3];
             goto LABEL_14;
           }
 
-          if (a4 == 4)
+          if (phase == 4)
           {
             v35 = self->_fingerDetection;
-            v36 = [v16 touchUUID];
-            [(_UIKBRTFingerDetection *)v35 removeTouchWithIdentifier:v36 touchCancelled:1];
+            touchUUID4 = [v16 touchUUID];
+            [(_UIKBRTFingerDetection *)v35 removeTouchWithIdentifier:touchUUID4 touchCancelled:1];
 
             v37 = self->_touchDrifting;
-            v38 = [v16 touchUUID];
-            [(_UIKBRTTouchDrifting *)v37 removeTouchWithIdentifier:v38 touchCancelled:1];
+            touchUUID5 = [v16 touchUUID];
+            [(_UIKBRTTouchDrifting *)v37 removeTouchWithIdentifier:touchUUID5 touchCancelled:1];
 
-            v30 = [(UIKeyboardLayout *)self handRestRecognizer];
-            v31 = [v16 touchUUID];
-            [v30 touchCancelled:v10 withIdentifier:v31];
+            handRestRecognizer2 = [(UIKeyboardLayout *)self handRestRecognizer];
+            touchUUID3 = [v16 touchUUID];
+            [handRestRecognizer2 touchCancelled:touchCopy withIdentifier:touchUUID3];
             goto LABEL_14;
           }
         }
 
         else
         {
-          if ((a4 - 1) < 2)
+          if ((phase - 1) < 2)
           {
-            v19 = [(UIKeyboardLayout *)self handRestRecognizer];
-            v20 = [v16 touchUUID];
-            [v19 touchDragged:v10 withIdentifier:v20];
+            handRestRecognizer3 = [(UIKeyboardLayout *)self handRestRecognizer];
+            touchUUID6 = [v16 touchUUID];
+            [handRestRecognizer3 touchDragged:touchCopy withIdentifier:touchUUID6];
 
             [v16 locationInWindow];
             [(UIView *)self convertPoint:0 fromView:?];
             v22 = v21;
             v24 = v23;
-            v25 = [(UIKeyboardLayout *)self fingerDetection];
-            v26 = [v16 touchUUID];
+            fingerDetection = [(UIKeyboardLayout *)self fingerDetection];
+            touchUUID7 = [v16 touchUUID];
             [v16 pathMajorRadius];
             v28 = v27;
             [v16 timestamp];
-            [v25 moveTouchWithIdentifier:v26 toLocation:v22 withRadius:v24 atTouchTime:{v28, v29}];
+            [fingerDetection moveTouchWithIdentifier:touchUUID7 toLocation:v22 withRadius:v24 atTouchTime:{v28, v29}];
 
-            v30 = [(UIKeyboardLayout *)self touchDrifting];
-            v31 = [v16 touchUUID];
+            handRestRecognizer2 = [(UIKeyboardLayout *)self touchDrifting];
+            touchUUID3 = [v16 touchUUID];
             [v16 pathMajorRadius];
             v33 = v32;
             [v16 timestamp];
-            [v30 moveTouchWithIdentifier:v31 toLocation:v22 withRadius:v24 atTouchTime:{v33, v34}];
+            [handRestRecognizer2 moveTouchWithIdentifier:touchUUID3 toLocation:v22 withRadius:v24 atTouchTime:{v33, v34}];
 LABEL_14:
 
             goto LABEL_15;
           }
 
-          if (!a4)
+          if (!phase)
           {
-            v30 = [(UIKeyboardLayout *)self handRestRecognizer];
-            v31 = [v16 touchUUID];
-            [v30 touchDown:v10 withIdentifier:v31 canLogTouch:{-[UITextInputTraits isSecureTextEntry](self->_inputTraits, "isSecureTextEntry") ^ 1}];
+            handRestRecognizer2 = [(UIKeyboardLayout *)self handRestRecognizer];
+            touchUUID3 = [v16 touchUUID];
+            [handRestRecognizer2 touchDown:touchCopy withIdentifier:touchUUID3 canLogTouch:{-[UITextInputTraits isSecureTextEntry](self->_inputTraits, "isSecureTextEntry") ^ 1}];
             goto LABEL_14;
           }
         }
@@ -3732,24 +3732,24 @@ void __94__UIKeyboardLayout__shouldAllowKeyboardHandlingIfNecessaryForTouch_phas
   [(UIKeyboardLayout *)self setIsExecutingDeferredTouchTasks:0];
 }
 
-- (void)_addTouchToScreenEdgePanRecognizer:(id)a3
+- (void)_addTouchToScreenEdgePanRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v15 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
-  [v4 _locationInSceneReferenceSpace];
+  recognizerCopy = recognizer;
+  screenEdgePanRecognizer = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+  [recognizerCopy _locationInSceneReferenceSpace];
   v6 = v5;
   v8 = v7;
-  [v4 timestamp];
+  [recognizerCopy timestamp];
   v10 = v9;
-  v11 = [v4 _edgeType];
-  v12 = [v4 _edgeAim];
-  v13 = [(UIKBScreenTraits *)self->_screenTraits orientation];
-  if ([v4 _edgeForcePending])
+  _edgeType = [recognizerCopy _edgeType];
+  _edgeAim = [recognizerCopy _edgeAim];
+  orientation = [(UIKBScreenTraits *)self->_screenTraits orientation];
+  if ([recognizerCopy _edgeForcePending])
   {
     v14 = 1;
   }
 
-  else if ([v4 _edgeForceActive])
+  else if ([recognizerCopy _edgeForceActive])
   {
     v14 = 2;
   }
@@ -3759,38 +3759,38 @@ void __94__UIKeyboardLayout__shouldAllowKeyboardHandlingIfNecessaryForTouch_phas
     v14 = 0;
   }
 
-  if ((v11 - 1) >= 4)
+  if ((_edgeType - 1) >= 4)
   {
-    v11 = 0;
+    _edgeType = 0;
   }
 
-  [v15 incorporateTouchSampleAtLocation:v11 timestamp:(v12 >> 1) & 1 | (4 * (v12 & 1)) & 0xF7 | (8 * ((v12 >> 2) & 1)) | (v12 >> 2) & 2 modifier:v13 region:v14 interfaceOrientation:v6 forceState:{v8, v10}];
+  [screenEdgePanRecognizer incorporateTouchSampleAtLocation:_edgeType timestamp:(_edgeAim >> 1) & 1 | (4 * (_edgeAim & 1)) & 0xF7 | (8 * ((_edgeAim >> 2) & 1)) | (_edgeAim >> 2) & 2 modifier:orientation region:v14 interfaceOrientation:v6 forceState:{v8, v10}];
 }
 
-- (void)assertSavedLocation:(CGPoint)a3 onTouch:(id)a4 inWindow:(id)a5 resetPrevious:(BOOL)a6
+- (void)assertSavedLocation:(CGPoint)location onTouch:(id)touch inWindow:(id)window resetPrevious:(BOOL)previous
 {
-  v6 = a6;
-  y = a3.y;
-  x = a3.x;
-  v14 = a4;
-  v10 = a5;
-  v11 = [v14 window];
+  previousCopy = previous;
+  y = location.y;
+  x = location.x;
+  touchCopy = touch;
+  windowCopy = window;
+  window = [touchCopy window];
 
-  if (!v11)
+  if (!window)
   {
-    [v10 convertPoint:0 toWindow:{x, y}];
+    [windowCopy convertPoint:0 toWindow:{x, y}];
     x = v12;
     y = v13;
   }
 
-  [v14 _setLocationInWindow:v6 resetPrevious:{x, y}];
+  [touchCopy _setLocationInWindow:previousCopy resetPrevious:{x, y}];
 }
 
-- (BOOL)_shouldAllowKeyboardHandlingForTouchesBegan:(id)a3 withEvent:(id)a4
+- (BOOL)_shouldAllowKeyboardHandlingForTouchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(UIKeyboardLayout *)self canHandleEvent:v7])
+  beganCopy = began;
+  eventCopy = event;
+  if (![(UIKeyboardLayout *)self canHandleEvent:eventCopy])
   {
     goto LABEL_12;
   }
@@ -3802,10 +3802,10 @@ void __94__UIKeyboardLayout__shouldAllowKeyboardHandlingIfNecessaryForTouch_phas
       goto LABEL_16;
     }
 
-    v8 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
-    v9 = [v8 state];
+    screenEdgePanRecognizer = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+    state = [screenEdgePanRecognizer state];
 
-    if (!v9)
+    if (!state)
     {
       [(UIKeyboardLayout *)self _executeDeferredTouchTasks];
       goto LABEL_10;
@@ -3814,23 +3814,23 @@ void __94__UIKeyboardLayout__shouldAllowKeyboardHandlingIfNecessaryForTouch_phas
     if (!self->_deferredTouchDownTask)
     {
 LABEL_16:
-      if ([(UIKeyboardLayout *)self _canAddTouchesToScreenGestureRecognizer:v6])
+      if ([(UIKeyboardLayout *)self _canAddTouchesToScreenGestureRecognizer:beganCopy])
       {
-        v10 = [v6 anyObject];
-        [(UIKeyboardLayout *)self _addTouchToScreenEdgePanRecognizer:v10];
-        v11 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
-        v12 = [v11 state];
+        anyObject = [beganCopy anyObject];
+        [(UIKeyboardLayout *)self _addTouchToScreenEdgePanRecognizer:anyObject];
+        screenEdgePanRecognizer2 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+        state2 = [screenEdgePanRecognizer2 state];
 
-        if (v12)
+        if (state2)
         {
 
           goto LABEL_10;
         }
 
-        [v10 locationInView:0];
+        [anyObject locationInView:0];
         v15 = v14;
         v17 = v16;
-        v18 = [v10 window];
+        window = [anyObject window];
         objc_initWeak(&location, self);
         v22[0] = MEMORY[0x1E69E9820];
         v22[1] = 3221225472;
@@ -3839,12 +3839,12 @@ LABEL_16:
         objc_copyWeak(v27, &location);
         v27[1] = v15;
         v27[2] = v17;
-        v19 = v10;
+        v19 = anyObject;
         v23 = v19;
-        v20 = v18;
+        v20 = window;
         v24 = v20;
-        v25 = v6;
-        v26 = v7;
+        v25 = beganCopy;
+        v26 = eventCopy;
         [(UIKeyboardLayout *)self setDeferredTouchDownTask:v22];
 
         objc_destroyWeak(v27);
@@ -3871,33 +3871,33 @@ void __74__UIKeyboardLayout__shouldAllowKeyboardHandlingForTouchesBegan_withEven
   [WeakRetained touchesBegan:*(a1 + 48) withEvent:*(a1 + 56)];
 }
 
-- (BOOL)_shouldAllowKeyboardHandlingForTouchesMoved:(id)a3 withEvent:(id)a4
+- (BOOL)_shouldAllowKeyboardHandlingForTouchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(UIKeyboardLayout *)self canHandleEvent:v7])
+  movedCopy = moved;
+  eventCopy = event;
+  if (![(UIKeyboardLayout *)self canHandleEvent:eventCopy])
   {
     goto LABEL_10;
   }
 
-  if ([(UIKeyboardLayout *)self isExecutingDeferredTouchTasks]|| !self->_deferredTouchDownTask || ![(UIKeyboardLayout *)self _canAddTouchesToScreenGestureRecognizer:v6])
+  if ([(UIKeyboardLayout *)self isExecutingDeferredTouchTasks]|| !self->_deferredTouchDownTask || ![(UIKeyboardLayout *)self _canAddTouchesToScreenGestureRecognizer:movedCopy])
   {
 LABEL_12:
     v19 = 1;
     goto LABEL_13;
   }
 
-  v8 = [v6 anyObject];
-  [(UIKeyboardLayout *)self _addTouchToScreenEdgePanRecognizer:v8];
-  v9 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
-  v10 = [v9 state];
+  anyObject = [movedCopy anyObject];
+  [(UIKeyboardLayout *)self _addTouchToScreenEdgePanRecognizer:anyObject];
+  screenEdgePanRecognizer = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+  state = [screenEdgePanRecognizer state];
 
-  if (!v10)
+  if (!state)
   {
-    [v8 locationInView:0];
+    [anyObject locationInView:0];
     v14 = v13;
     v16 = v15;
-    v17 = [v8 window];
+    window = [anyObject window];
     objc_initWeak(&location, self);
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
@@ -3906,11 +3906,11 @@ LABEL_12:
     objc_copyWeak(v26, &location);
     v26[1] = v14;
     v26[2] = v16;
-    v22 = v8;
-    v18 = v17;
+    v22 = anyObject;
+    v18 = window;
     v23 = v18;
-    v24 = v6;
-    v25 = v7;
+    v24 = movedCopy;
+    v25 = eventCopy;
     [(UIKeyboardLayout *)self setDeferredTouchMovedTask:v21];
 
     objc_destroyWeak(v26);
@@ -3919,10 +3919,10 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  v11 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
-  v12 = [v11 state];
+  screenEdgePanRecognizer2 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+  state2 = [screenEdgePanRecognizer2 state];
 
-  if (v12 != 1)
+  if (state2 != 1)
   {
 
     goto LABEL_12;
@@ -3945,15 +3945,15 @@ void __74__UIKeyboardLayout__shouldAllowKeyboardHandlingForTouchesMoved_withEven
   [WeakRetained touchesMoved:*(a1 + 48) withEvent:*(a1 + 56)];
 }
 
-- (BOOL)_shouldAllowKeyboardHandlingForTouchesEndedOrCancelled:(id)a3 withEvent:(id)a4
+- (BOOL)_shouldAllowKeyboardHandlingForTouchesEndedOrCancelled:(id)cancelled withEvent:(id)event
 {
-  v5 = [(UIKeyboardLayout *)self canHandleEvent:a4];
+  v5 = [(UIKeyboardLayout *)self canHandleEvent:event];
   if (v5)
   {
-    v6 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
-    v7 = [v6 state];
+    screenEdgePanRecognizer = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+    state = [screenEdgePanRecognizer state];
 
-    if (!v7)
+    if (!state)
     {
       [(UIKeyboardLayout *)self _executeDeferredTouchTasks];
     }
@@ -4008,11 +4008,11 @@ void __74__UIKeyboardLayout__shouldAllowKeyboardHandlingForTouchesMoved_withEven
     while (v20);
   }
 
-  v22 = [(UIKeyboardLayout *)self fingerDetection];
-  [v22 updateWithFCenter:v24 jCenter:v18 keySize:v8 rowOffsets:v10 homeRowOffsetIndex:{v12, v14, v4, v6}];
+  fingerDetection = [(UIKeyboardLayout *)self fingerDetection];
+  [fingerDetection updateWithFCenter:v24 jCenter:v18 keySize:v8 rowOffsets:v10 homeRowOffsetIndex:{v12, v14, v4, v6}];
 
-  v23 = [(UIKeyboardLayout *)self touchDrifting];
-  [v23 updateWithFCenter:v24 jCenter:v18 keySize:v8 rowOffsets:v10 homeRowOffsetIndex:{v12, v14, v4, v6}];
+  touchDrifting = [(UIKeyboardLayout *)self touchDrifting];
+  [touchDrifting updateWithFCenter:v24 jCenter:v18 keySize:v8 rowOffsets:v10 homeRowOffsetIndex:{v12, v14, v4, v6}];
 }
 
 - (void)updateTouchProcessingForKeyboardChange
@@ -4023,13 +4023,13 @@ void __74__UIKeyboardLayout__shouldAllowKeyboardHandlingForTouchesMoved_withEven
     dispatch_once(&qword_1ED4973F0, &__block_literal_global_371_2);
   }
 
-  v3 = [(UIKeyboardLayout *)self taskQueue];
+  taskQueue = [(UIKeyboardLayout *)self taskQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __58__UIKeyboardLayout_updateTouchProcessingForKeyboardChange__block_invoke_3;
   v4[3] = &unk_1E7116F10;
   objc_copyWeak(&v5, &location);
-  [v3 addTask:v4 breadcrumb:qword_1ED4973E8];
+  [taskQueue addTask:v4 breadcrumb:qword_1ED4973E8];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -4256,27 +4256,27 @@ void __58__UIKeyboardLayout_updateTouchProcessingForKeyboardChange__block_invoke
 
 - (void)updateTouchProcessingForKeyplaneChange
 {
-  v3 = [(UIKeyboardLayout *)self touchDrifting];
-  [v3 reset];
+  touchDrifting = [(UIKeyboardLayout *)self touchDrifting];
+  [touchDrifting reset];
 
-  v4 = [(UIKeyboardLayout *)self getHandRestRecognizerState];
-  v5 = v4;
-  if ((v4 - 1) < 2)
+  getHandRestRecognizerState = [(UIKeyboardLayout *)self getHandRestRecognizerState];
+  v5 = getHandRestRecognizerState;
+  if ((getHandRestRecognizerState - 1) < 2)
   {
-    v6 = [(UIKeyboardLayout *)self handRestRecognizer];
+    handRestRecognizer = [(UIKeyboardLayout *)self handRestRecognizer];
 
-    if (!v6)
+    if (!handRestRecognizer)
     {
       v7 = objc_alloc_init(_UIKBRTRecognizer);
       [(UIKeyboardLayout *)self setHandRestRecognizer:v7];
 
-      v8 = [(UIKeyboardLayout *)self handRestRecognizer];
-      [v8 setDelegate:self];
+      handRestRecognizer2 = [(UIKeyboardLayout *)self handRestRecognizer];
+      [handRestRecognizer2 setDelegate:self];
     }
 
-    v9 = [(UIKeyboardLayout *)self fingerDetection];
+    fingerDetection = [(UIKeyboardLayout *)self fingerDetection];
 
-    if (!v9)
+    if (!fingerDetection)
     {
       v10 = [[_UIKBRTFingerDetection alloc] initWithParentView:self];
       [(UIKeyboardLayout *)self setFingerDetection:v10];
@@ -4285,8 +4285,8 @@ void __58__UIKeyboardLayout_updateTouchProcessingForKeyboardChange__block_invoke
     if (v5 == 1)
     {
       v11 = +[_UIKBRTTouchDrifting isEnabled];
-      v12 = [(UIKeyboardLayout *)self touchDrifting];
-      v13 = v12;
+      touchDrifting2 = [(UIKeyboardLayout *)self touchDrifting];
+      v13 = touchDrifting2;
       if (v11)
       {
 
@@ -4295,8 +4295,8 @@ void __58__UIKeyboardLayout_updateTouchProcessingForKeyboardChange__block_invoke
           v14 = [[_UIKBRTTouchDrifting alloc] initWithParentView:self];
           [(UIKeyboardLayout *)self setTouchDrifting:v14];
 
-          v15 = [(UIKeyboardLayout *)self touchDrifting];
-          [v15 setDelegate:self];
+          touchDrifting3 = [(UIKeyboardLayout *)self touchDrifting];
+          [touchDrifting3 setDelegate:self];
         }
 
         goto LABEL_15;
@@ -4305,71 +4305,71 @@ void __58__UIKeyboardLayout_updateTouchProcessingForKeyboardChange__block_invoke
 
     else
     {
-      v12 = [(UIKeyboardLayout *)self touchDrifting];
-      v13 = v12;
+      touchDrifting2 = [(UIKeyboardLayout *)self touchDrifting];
+      v13 = touchDrifting2;
     }
 
-    [v12 setDelegate:0];
+    [touchDrifting2 setDelegate:0];
 
     [(UIKeyboardLayout *)self setTouchDrifting:0];
 LABEL_15:
     if ((_UIInternalPreferenceUsesDefault_0(&_MergedGlobals_943, @"_UIKBRT_CadenceMonitor") & 1) != 0 || byte_1ED48B2E4)
     {
-      v18 = [(UIKeyboardLayout *)self cadenceMonitor];
+      cadenceMonitor = [(UIKeyboardLayout *)self cadenceMonitor];
 
-      if (!v18)
+      if (!cadenceMonitor)
       {
         v19 = objc_alloc_init(UIKBCadenceMonitor);
         [(UIKeyboardLayout *)self setCadenceMonitor:v19];
       }
 
-      v20 = [(UIKeyboardLayout *)self handRestRecognizer];
-      v21 = [v20 averagingRules];
-      v22 = [(UIKeyboardLayout *)self cadenceMonitor];
-      [v21 addObject:v22];
+      handRestRecognizer3 = [(UIKeyboardLayout *)self handRestRecognizer];
+      averagingRules = [handRestRecognizer3 averagingRules];
+      cadenceMonitor2 = [(UIKeyboardLayout *)self cadenceMonitor];
+      [averagingRules addObject:cadenceMonitor2];
     }
 
     if (((_UIInternalPreferenceUsesDefault_0(&dword_1ED48B2E8, @"_UIKBRT_TouchVelocities") & 1) != 0 || byte_1ED48B2EC) && MGGetBoolAnswer())
     {
-      v23 = [(UIKeyboardLayout *)self touchVelocities];
+      touchVelocities = [(UIKeyboardLayout *)self touchVelocities];
 
-      if (!v23)
+      if (!touchVelocities)
       {
         v24 = objc_alloc_init(_UIKBRTTouchVelocities);
         [(UIKeyboardLayout *)self setTouchVelocities:v24];
       }
 
-      v25 = [(UIKeyboardLayout *)self handRestRecognizer];
-      v26 = [v25 averagingRules];
-      v27 = [(UIKeyboardLayout *)self touchVelocities];
-      [v26 addObject:v27];
+      handRestRecognizer4 = [(UIKeyboardLayout *)self handRestRecognizer];
+      averagingRules2 = [handRestRecognizer4 averagingRules];
+      touchVelocities2 = [(UIKeyboardLayout *)self touchVelocities];
+      [averagingRules2 addObject:touchVelocities2];
     }
 
     [(UIKeyboardLayout *)self handRestRecognizerStandardKeyPixelSize];
     v29 = v28;
     v31 = v30;
-    v32 = [(UIKeyboardLayout *)self handRestRecognizer];
-    [v32 setStandardKeyPixelSize:{v29, v31}];
+    handRestRecognizer5 = [(UIKeyboardLayout *)self handRestRecognizer];
+    [handRestRecognizer5 setStandardKeyPixelSize:{v29, v31}];
 
-    v33 = [(UIKeyboardLayout *)self handRestRecognizer];
-    [v33 setDisableHomeRowReturn:v5 == 2];
+    handRestRecognizer6 = [(UIKeyboardLayout *)self handRestRecognizer];
+    [handRestRecognizer6 setDisableHomeRowReturn:v5 == 2];
 
     [(UIKeyboardLayout *)self _resetFingerDetectionFromLayout];
-    v34 = [(UIKeyboardLayout *)self cadenceMonitor];
-    [v34 reset];
+    cadenceMonitor3 = [(UIKeyboardLayout *)self cadenceMonitor];
+    [cadenceMonitor3 reset];
 
     v17 = 0;
     goto LABEL_27;
   }
 
-  if (v4)
+  if (getHandRestRecognizerState)
   {
     return;
   }
 
   [(UIKeyboardLayout *)self setCadenceMonitor:0];
-  v16 = [(UIKeyboardLayout *)self touchDrifting];
-  [v16 setDelegate:0];
+  touchDrifting4 = [(UIKeyboardLayout *)self touchDrifting];
+  [touchDrifting4 setDelegate:0];
 
   [(UIKeyboardLayout *)self setTouchDrifting:0];
   [(UIKeyboardLayout *)self setFingerDetection:0];
@@ -4380,20 +4380,20 @@ LABEL_27:
   [(UIKeyboardLayout *)self _setRequiresExclusiveTouch:v17];
 }
 
-- (BOOL)_canAddTouchesToScreenGestureRecognizer:(id)a3
+- (BOOL)_canAddTouchesToScreenGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  if ([v4 count] == 1)
+  recognizerCopy = recognizer;
+  if ([recognizerCopy count] == 1)
   {
-    v5 = [v4 anyObject];
+    anyObject = [recognizerCopy anyObject];
     [(UIKeyboardLayout *)self lastTouchUpTime];
-    if (v6 == 0.0 || ([v5 timestamp], v8 = v7, -[UIKeyboardLayout lastTouchUpTime](self, "lastTouchUpTime"), v8 - v9 >= 0.15))
+    if (v6 == 0.0 || ([anyObject timestamp], v8 = v7, -[UIKeyboardLayout lastTouchUpTime](self, "lastTouchUpTime"), v8 - v9 >= 0.15))
     {
-      v11 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
-      if (v11)
+      screenEdgePanRecognizer = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+      if (screenEdgePanRecognizer)
       {
-        v12 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
-        v13 = [v12 state] != 2;
+        screenEdgePanRecognizer2 = [(UIKeyboardLayout *)self screenEdgePanRecognizer];
+        v13 = [screenEdgePanRecognizer2 state] != 2;
       }
 
       else
@@ -4418,15 +4418,15 @@ LABEL_27:
   return v10;
 }
 
-- (void)screenEdgePanRecognizerStateDidChange:(id)a3
+- (void)screenEdgePanRecognizerStateDidChange:(id)change
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  changeCopy = change;
+  if ([changeCopy state] == 1)
   {
     [(UIKeyboardLayout *)self _clearDeferredTouchTasks];
   }
 
-  else if ([v4 state] == 2)
+  else if ([changeCopy state] == 2)
   {
     [(UIKeyboardLayout *)self _executeDeferredTouchTasks];
   }
@@ -4459,43 +4459,43 @@ LABEL_27:
   return result;
 }
 
-- (void)_updateTouchState:(id)a3 errorVector:(CGPoint)a4 rowOffsetFromHomeRow:(int64_t)a5
+- (void)_updateTouchState:(id)state errorVector:(CGPoint)vector rowOffsetFromHomeRow:(int64_t)row
 {
   touchDrifting = self->_touchDrifting;
   if (touchDrifting)
   {
-    y = a4.y;
-    x = a4.x;
-    v9 = a3;
-    v12 = [v9 touchUUID];
-    [v9 timestamp];
+    y = vector.y;
+    x = vector.x;
+    stateCopy = state;
+    touchUUID = [stateCopy touchUUID];
+    [stateCopy timestamp];
     v11 = v10;
 
-    [(_UIKBRTTouchDrifting *)touchDrifting updateTouchWithIdentifier:v12 withTouchTime:a5 resultingError:v11 rowOffsetFromHomeRow:x, y];
+    [(_UIKBRTTouchDrifting *)touchDrifting updateTouchWithIdentifier:touchUUID withTouchTime:row resultingError:v11 rowOffsetFromHomeRow:x, y];
   }
 }
 
-- (void)_ignoreTouchState:(id)a3
+- (void)_ignoreTouchState:(id)state
 {
   touchDrifting = self->_touchDrifting;
   if (touchDrifting)
   {
-    v4 = a3;
-    v7 = [v4 touchUUID];
-    [v4 timestamp];
+    stateCopy = state;
+    touchUUID = [stateCopy touchUUID];
+    [stateCopy timestamp];
     v6 = v5;
 
-    [(_UIKBRTTouchDrifting *)touchDrifting ignoreTouchWithIdentifier:v7 withTouchTime:v6];
+    [(_UIKBRTTouchDrifting *)touchDrifting ignoreTouchWithIdentifier:touchUUID withTouchTime:v6];
   }
 }
 
-- (BOOL)_hasRelatedTouchesForTouchState:(id)a3
+- (BOOL)_hasRelatedTouchesForTouchState:(id)state
 {
   fingerDetection = self->_fingerDetection;
   if (fingerDetection)
   {
-    v4 = [a3 touchUUID];
-    v5 = [(_UIKBRTFingerDetection *)fingerDetection fingerIdsRelatedToTouchWithIdentifier:v4 sinceTimestamp:0 includeThumbs:0.0];
+    touchUUID = [state touchUUID];
+    v5 = [(_UIKBRTFingerDetection *)fingerDetection fingerIdsRelatedToTouchWithIdentifier:touchUUID sinceTimestamp:0 includeThumbs:0.0];
 
     LOBYTE(fingerDetection) = [v5 count] != 0;
   }
@@ -4505,20 +4505,20 @@ LABEL_27:
 
 - (BOOL)supportsVirtualDrift
 {
-  v2 = [(UIKeyboardLayout *)self touchDrifting];
-  v3 = v2 != 0;
+  touchDrifting = [(UIKeyboardLayout *)self touchDrifting];
+  v3 = touchDrifting != 0;
 
   return v3;
 }
 
 - (CGPoint)leftVirtualDriftOffset
 {
-  v3 = [(UIKeyboardLayout *)self touchDrifting];
+  touchDrifting = [(UIKeyboardLayout *)self touchDrifting];
 
-  if (v3)
+  if (touchDrifting)
   {
-    v4 = [(UIKeyboardLayout *)self touchDrifting];
-    [v4 leftHandDriftOffset];
+    touchDrifting2 = [(UIKeyboardLayout *)self touchDrifting];
+    [touchDrifting2 leftHandDriftOffset];
     v6 = v5;
     v8 = v7;
   }
@@ -4538,12 +4538,12 @@ LABEL_27:
 
 - (CGPoint)rightVirtualDriftOffset
 {
-  v3 = [(UIKeyboardLayout *)self touchDrifting];
+  touchDrifting = [(UIKeyboardLayout *)self touchDrifting];
 
-  if (v3)
+  if (touchDrifting)
   {
-    v4 = [(UIKeyboardLayout *)self touchDrifting];
-    [v4 rightHandDriftOffset];
+    touchDrifting2 = [(UIKeyboardLayout *)self touchDrifting];
+    [touchDrifting2 rightHandDriftOffset];
     v6 = v5;
     v8 = v7;
   }
@@ -4561,28 +4561,28 @@ LABEL_27:
   return result;
 }
 
-- (void)_uikbrtTouchDriftingStateChanged:(id)a3
+- (void)_uikbrtTouchDriftingStateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(UIKeyboardLayout *)self touchDrifting];
+  changedCopy = changed;
+  touchDrifting = [(UIKeyboardLayout *)self touchDrifting];
 
-  if (v5 == v4)
+  if (touchDrifting == changedCopy)
   {
 
     [(UIKeyboardLayout *)self setNeedsVirtualDriftUpdate];
   }
 }
 
-- (unint64_t)_uikbrtTouchDrifting:(id)a3 fingerIDFortouchIdentifier:(id)a4
+- (unint64_t)_uikbrtTouchDrifting:(id)drifting fingerIDFortouchIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIKeyboardLayout *)self touchDrifting];
+  identifierCopy = identifier;
+  driftingCopy = drifting;
+  touchDrifting = [(UIKeyboardLayout *)self touchDrifting];
 
-  if (v8 == v7)
+  if (touchDrifting == driftingCopy)
   {
-    v10 = [(UIKeyboardLayout *)self fingerDetection];
-    v9 = [v10 fingerIdForTouchWithIdentifier:v6];
+    fingerDetection = [(UIKeyboardLayout *)self fingerDetection];
+    v9 = [fingerDetection fingerIdForTouchWithIdentifier:identifierCopy];
   }
 
   else
@@ -4593,15 +4593,15 @@ LABEL_27:
   return v9;
 }
 
-- (id)_uikbrtTouchDrifting:(id)a3 touchIdentifiersForFingerID:(unint64_t)a4
+- (id)_uikbrtTouchDrifting:(id)drifting touchIdentifiersForFingerID:(unint64_t)d
 {
-  v6 = a3;
-  v7 = [(UIKeyboardLayout *)self touchDrifting];
+  driftingCopy = drifting;
+  touchDrifting = [(UIKeyboardLayout *)self touchDrifting];
 
-  if (v7 == v6)
+  if (touchDrifting == driftingCopy)
   {
-    v9 = [(UIKeyboardLayout *)self fingerDetection];
-    v8 = [v9 touchIdentifiersForFingerId:a4];
+    fingerDetection = [(UIKeyboardLayout *)self fingerDetection];
+    v8 = [fingerDetection touchIdentifiersForFingerId:d];
   }
 
   else
@@ -4612,15 +4612,15 @@ LABEL_27:
   return v8;
 }
 
-- (CGPoint)_uikbrtTouchDrifting:(id)a3 touchCenterForFingerID:(unint64_t)a4
+- (CGPoint)_uikbrtTouchDrifting:(id)drifting touchCenterForFingerID:(unint64_t)d
 {
-  v6 = a3;
-  v7 = [(UIKeyboardLayout *)self touchDrifting];
+  driftingCopy = drifting;
+  touchDrifting = [(UIKeyboardLayout *)self touchDrifting];
 
-  if (v7 == v6)
+  if (touchDrifting == driftingCopy)
   {
-    v10 = [(UIKeyboardLayout *)self fingerDetection];
-    [v10 touchLocationForFingerId:a4];
+    fingerDetection = [(UIKeyboardLayout *)self fingerDetection];
+    [fingerDetection touchLocationForFingerId:d];
     v8 = v11;
     v9 = v12;
   }
@@ -4638,12 +4638,12 @@ LABEL_27:
   return result;
 }
 
-- (unint64_t)fingerIDForTouchUUID:(id)a3
+- (unint64_t)fingerIDForTouchUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(UIKeyboardLayout *)self fingerDetection];
+  dCopy = d;
+  fingerDetection = [(UIKeyboardLayout *)self fingerDetection];
 
-  if (v5 && (-[UIKeyboardLayout fingerDetection](self, "fingerDetection"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 fingerIdForTouchWithIdentifier:v4], v6, (v7 - 1) <= 0xB))
+  if (fingerDetection && (-[UIKeyboardLayout fingerDetection](self, "fingerDetection"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 fingerIdForTouchWithIdentifier:dCopy], v6, (v7 - 1) <= 0xB))
   {
     v8 = qword_18A680268[v7 - 1];
   }
@@ -4668,11 +4668,11 @@ LABEL_27:
   return result;
 }
 
-- (CGRect)dragGestureRectInView:(id)a3
+- (CGRect)dragGestureRectInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(UIView *)self bounds];
-  [(UIView *)self convertRect:v4 toView:v17.origin.x + v17.size.width + -80.0, CGRectGetMaxY(v17) + -80.0, 80.0, 80.0];
+  [(UIView *)self convertRect:viewCopy toView:v17.origin.x + v17.size.width + -80.0, CGRectGetMaxY(v17) + -80.0, 80.0, 80.0];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -4689,7 +4689,7 @@ LABEL_27:
   return result;
 }
 
-- (CGRect)frameForKeylayoutName:(id)a3
+- (CGRect)frameForKeylayoutName:(id)name
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -4704,32 +4704,32 @@ LABEL_27:
 
 - (void)willBeginIndirectSelectionGesture
 {
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v2 postNotificationName:@"UIKeyboardWillBeginIndirectSelectionGestureNotification" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"UIKeyboardWillBeginIndirectSelectionGestureNotification" object:0 userInfo:0];
 }
 
 - (void)didEndIndirectSelectionGesture
 {
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v2 postNotificationName:@"UIKeyboardDidEndIndirectSelectionGestureNotification" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"UIKeyboardDidEndIndirectSelectionGestureNotification" object:0 userInfo:0];
 }
 
-- (void)cancelTouchesForTwoFingerTapGesture:(id)a3
+- (void)cancelTouchesForTwoFingerTapGesture:(id)gesture
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  gestureCopy = gesture;
+  if ([gestureCopy count])
   {
-    v5 = [(UIKeyboardLayout *)self handRestRecognizer];
+    handRestRecognizer = [(UIKeyboardLayout *)self handRestRecognizer];
 
-    if (v5)
+    if (handRestRecognizer)
     {
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v35 = v4;
-      v6 = v4;
+      v35 = gestureCopy;
+      v6 = gestureCopy;
       v7 = [v6 countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v7)
       {
@@ -4751,18 +4751,18 @@ LABEL_27:
             {
               p_touchIgnoredUUIDSet = &self->_touchIgnoredUUIDSet;
               touchIgnoredUUIDSet = self->_touchIgnoredUUIDSet;
-              v16 = [v12 touchUUID];
-              LOBYTE(touchIgnoredUUIDSet) = [(NSMutableSet *)touchIgnoredUUIDSet containsObject:v16];
+              touchUUID = [v12 touchUUID];
+              LOBYTE(touchIgnoredUUIDSet) = [(NSMutableSet *)touchIgnoredUUIDSet containsObject:touchUUID];
 
               if ((touchIgnoredUUIDSet & 1) != 0 || (p_touchIgnoredUUIDSet = &self->_uncommittedTouchUUIDs, uncommittedTouchUUIDs = self->_uncommittedTouchUUIDs, [v13 touchUUID], v18 = objc_claimAutoreleasedReturnValue(), LODWORD(uncommittedTouchUUIDs) = -[NSMutableArray containsObject:](uncommittedTouchUUIDs, "containsObject:", v18), v18, uncommittedTouchUUIDs))
               {
                 v19 = *p_touchIgnoredUUIDSet;
-                v20 = [v13 touchUUID];
-                [v19 removeObject:v20];
+                touchUUID2 = [v13 touchUUID];
+                [v19 removeObject:touchUUID2];
 
-                v21 = [(UIKeyboardLayout *)self handRestRecognizer];
-                v22 = [v13 touchUUID];
-                [v21 markTouchProcessed:v11 withIdentifier:v22];
+                handRestRecognizer2 = [(UIKeyboardLayout *)self handRestRecognizer];
+                touchUUID3 = [v13 touchUUID];
+                [handRestRecognizer2 markTouchProcessed:v11 withIdentifier:touchUUID3];
               }
 
               [v13 locationInWindow];
@@ -4771,17 +4771,17 @@ LABEL_27:
               v26 = v25;
               [v13 timestamp];
               v28 = v27;
-              v29 = [v13 pathIndex];
-              v30 = [v13 touchUUID];
-              [(UIKeyboardLayout *)self handRestRecognizerNotifyRestForBegin:0 location:v29 timestamp:v30 pathIndex:0 touchUUID:v24 context:v26, v28];
+              pathIndex = [v13 pathIndex];
+              touchUUID4 = [v13 touchUUID];
+              [(UIKeyboardLayout *)self handRestRecognizerNotifyRestForBegin:0 location:pathIndex timestamp:touchUUID4 pathIndex:0 touchUUID:v24 context:v26, v28];
 
-              v31 = [(UIKeyboardLayout *)self fingerDetection];
-              v32 = [v13 touchUUID];
-              [v31 removeTouchWithIdentifier:v32 touchCancelled:1];
+              fingerDetection = [(UIKeyboardLayout *)self fingerDetection];
+              touchUUID5 = [v13 touchUUID];
+              [fingerDetection removeTouchWithIdentifier:touchUUID5 touchCancelled:1];
 
-              v33 = [(UIKeyboardLayout *)self touchDrifting];
-              v34 = [v13 touchUUID];
-              [v33 removeTouchWithIdentifier:v34 touchCancelled:1];
+              touchDrifting = [(UIKeyboardLayout *)self touchDrifting];
+              touchUUID6 = [v13 touchUUID];
+              [touchDrifting removeTouchWithIdentifier:touchUUID6 touchCancelled:1];
             }
           }
 
@@ -4791,23 +4791,23 @@ LABEL_27:
         while (v8);
       }
 
-      v4 = v35;
+      gestureCopy = v35;
     }
   }
 }
 
 - (UIEdgeInsets)keyplanePadding
 {
-  v3 = [(UIKeyboardLayout *)self currentKeyplane];
+  currentKeyplane = [(UIKeyboardLayout *)self currentKeyplane];
   [(UIView *)self frame];
   v5 = v4;
   v7 = v6;
-  [v3 keyUnionPaddedFrame];
+  [currentKeyplane keyUnionPaddedFrame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  if (([v3 visualStyling] & 0xFF0000) == 0x90000)
+  if (([currentKeyplane visualStyling] & 0xFF0000) == 0x90000)
   {
     v16 = 0.0;
   }
@@ -4828,21 +4828,21 @@ LABEL_27:
   return result;
 }
 
-- (BOOL)shouldAllowSelectionGestures:(BOOL)a3 atPoint:(CGPoint)a4 toBegin:(BOOL)a5
+- (BOOL)shouldAllowSelectionGestures:(BOOL)gestures atPoint:(CGPoint)point toBegin:(BOOL)begin
 {
   v54 = *MEMORY[0x1E69E9840];
   v5 = 1;
-  if (!a5)
+  if (!begin)
   {
     return v5;
   }
 
-  if (a3)
+  if (gestures)
   {
     return v5;
   }
 
-  v7 = [(UIKeyboardLayout *)self handRestRecognizer:a4.x];
+  v7 = [(UIKeyboardLayout *)self handRestRecognizer:point.x];
 
   if (!v7)
   {
@@ -4853,8 +4853,8 @@ LABEL_27:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v8 = [(UIView *)self gestureRecognizers];
-  v9 = [v8 countByEnumeratingWithState:&v48 objects:v53 count:16];
+  gestureRecognizers = [(UIView *)self gestureRecognizers];
+  v9 = [gestureRecognizers countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (!v9)
   {
     goto LABEL_39;
@@ -4867,7 +4867,7 @@ LABEL_27:
     {
       if (*v49 != v10)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(gestureRecognizers);
       }
 
       v12 = *(*(&v48 + 1) + 8 * i);
@@ -4882,8 +4882,8 @@ LABEL_27:
 
         v34 = v33[40];
         v35 = [UIKBTouchState touchUUIDsForTouches:?];
-        v13 = [v34 lastObject];
-        [v13 timestamp];
+        lastObject = [v34 lastObject];
+        [lastObject timestamp];
         v15 = v14;
 
         v16 = [v35 count];
@@ -4960,7 +4960,7 @@ LABEL_18:
               v5 = 0;
 LABEL_38:
 
-              v8 = v33;
+              gestureRecognizers = v33;
               goto LABEL_39;
             }
           }
@@ -4969,8 +4969,8 @@ LABEL_38:
           {
           }
 
-          v29 = [(UIKeyboardLayout *)self fingerDetection];
-          v30 = v29 == 0;
+          fingerDetection = [(UIKeyboardLayout *)self fingerDetection];
+          v30 = fingerDetection == 0;
 
           if (!v30)
           {
@@ -5001,7 +5001,7 @@ LABEL_38:
       }
     }
 
-    v9 = [v8 countByEnumeratingWithState:&v48 objects:v53 count:16];
+    v9 = [gestureRecognizers countByEnumeratingWithState:&v48 objects:v53 count:16];
     if (v9)
     {
       continue;

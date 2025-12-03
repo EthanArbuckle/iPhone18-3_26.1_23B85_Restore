@@ -1,29 +1,29 @@
 @interface WFTriggerMigrator
-+ (id)migrateTriggerUponUnarchival:(id)a3;
-+ (id)migrateUserFocusActivityTriggerFromUniqueIdentifierToSemanticIdentifier:(id)a3;
-+ (id)migratedUserFocusActivityTriggerFromLegacyDNDTrigger:(id)a3;
-- (id)unarchiver:(id)a3 didDecodeObject:(id)a4;
++ (id)migrateTriggerUponUnarchival:(id)unarchival;
++ (id)migrateUserFocusActivityTriggerFromUniqueIdentifierToSemanticIdentifier:(id)identifier;
++ (id)migratedUserFocusActivityTriggerFromLegacyDNDTrigger:(id)trigger;
+- (id)unarchiver:(id)unarchiver didDecodeObject:(id)object;
 @end
 
 @implementation WFTriggerMigrator
 
-+ (id)migrateUserFocusActivityTriggerFromUniqueIdentifierToSemanticIdentifier:(id)a3
++ (id)migrateUserFocusActivityTriggerFromUniqueIdentifierToSemanticIdentifier:(id)identifier
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = getWFTriggersLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v30 = "+[WFTriggerMigrator migrateUserFocusActivityTriggerFromUniqueIdentifierToSemanticIdentifier:]";
     v31 = 2112;
-    v32 = v3;
+    v32 = identifierCopy;
     _os_log_impl(&dword_1CA256000, v4, OS_LOG_TYPE_DEFAULT, "%s [Migration] Migrating from unique identifier to semantic identifier on WFUserFocusActivityTrigger (%@)", buf, 0x16u);
   }
 
-  v5 = [v3 activitySemanticIdentifier];
+  activitySemanticIdentifier = [identifierCopy activitySemanticIdentifier];
 
-  if (v5)
+  if (activitySemanticIdentifier)
   {
     v6 = getWFTriggersLogObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -33,12 +33,12 @@
       _os_log_impl(&dword_1CA256000, v6, OS_LOG_TYPE_DEFAULT, "%s [Migration] Trigger already has a semantic identifier, moving on", buf, 0xCu);
     }
 
-    v7 = v3;
+    v7 = identifierCopy;
   }
 
   else
   {
-    v8 = [v3 activityUniqueIdentifier];
+    activityUniqueIdentifier = [identifierCopy activityUniqueIdentifier];
     +[WFFocusModesManager availableModes];
     v24 = 0u;
     v25 = 0u;
@@ -59,16 +59,16 @@
           }
 
           v14 = *(*(&v24 + 1) + 8 * i);
-          v15 = [v14 activityUniqueIdentifier];
-          v16 = [v15 UUIDString];
-          v17 = [v16 isEqualToString:v8];
+          activityUniqueIdentifier2 = [v14 activityUniqueIdentifier];
+          uUIDString = [activityUniqueIdentifier2 UUIDString];
+          v17 = [uUIDString isEqualToString:activityUniqueIdentifier];
 
           if (v17)
           {
-            v20 = [v14 activityIdentifier];
-            [v3 setActivitySemanticIdentifier:v20];
+            activityIdentifier = [v14 activityIdentifier];
+            [identifierCopy setActivitySemanticIdentifier:activityIdentifier];
 
-            v21 = v3;
+            v21 = identifierCopy;
             goto LABEL_19;
           }
         }
@@ -91,19 +91,19 @@
       _os_log_impl(&dword_1CA256000, v18, OS_LOG_TYPE_ERROR, "%s [Migration] Unable to find a focus that matches the trigger. Returning the original trigger without a semantic identifier.", buf, 0xCu);
     }
 
-    v19 = v3;
+    v19 = identifierCopy;
 LABEL_19:
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return identifierCopy;
 }
 
-+ (id)migratedUserFocusActivityTriggerFromLegacyDNDTrigger:(id)a3
++ (id)migratedUserFocusActivityTriggerFromLegacyDNDTrigger:(id)trigger
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  triggerCopy = trigger;
   v4 = getWFTriggersLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -132,14 +132,14 @@ LABEL_19:
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 activityIdentifier];
-        v12 = [v11 isEqualToString:@"com.apple.donotdisturb.mode.default"];
+        activityIdentifier = [v10 activityIdentifier];
+        v12 = [activityIdentifier isEqualToString:@"com.apple.donotdisturb.mode.default"];
 
         if (v12)
         {
           v14 = [[WFUserFocusActivityTrigger alloc] initWithActivity:v10];
-          -[WFUserFocusActivityTrigger setOnEnable:](v14, "setOnEnable:", [v3 onEnable]);
-          -[WFUserFocusActivityTrigger setOnDisable:](v14, "setOnDisable:", [v3 onDisable]);
+          -[WFUserFocusActivityTrigger setOnEnable:](v14, "setOnEnable:", [triggerCopy onEnable]);
+          -[WFUserFocusActivityTrigger setOnDisable:](v14, "setOnDisable:", [triggerCopy onDisable]);
 
           goto LABEL_15;
         }
@@ -163,7 +163,7 @@ LABEL_19:
     _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_ERROR, "%s [Migration] Unable to find Do Not Disturb focus so unable to migrate to a WFUserFocusActivityTrigger. Returning the original WFDNDTrigger.", buf, 0xCu);
   }
 
-  v14 = v3;
+  v14 = triggerCopy;
 LABEL_15:
 
   v15 = *MEMORY[0x1E69E9840];
@@ -171,13 +171,13 @@ LABEL_15:
   return v14;
 }
 
-+ (id)migrateTriggerUponUnarchival:(id)a3
++ (id)migrateTriggerUponUnarchival:(id)unarchival
 {
-  v4 = a3;
+  unarchivalCopy = unarchival;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 migratedUserFocusActivityTriggerFromLegacyDNDTrigger:v4];
+    v5 = [self migratedUserFocusActivityTriggerFromLegacyDNDTrigger:unarchivalCopy];
   }
 
   else
@@ -185,12 +185,12 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [a1 migrateUserFocusActivityTriggerFromUniqueIdentifierToSemanticIdentifier:v4];
+      v5 = [self migrateUserFocusActivityTriggerFromUniqueIdentifierToSemanticIdentifier:unarchivalCopy];
     }
 
     else
     {
-      v5 = v4;
+      v5 = unarchivalCopy;
     }
   }
 
@@ -199,9 +199,9 @@ LABEL_15:
   return v6;
 }
 
-- (id)unarchiver:(id)a3 didDecodeObject:(id)a4
+- (id)unarchiver:(id)unarchiver didDecodeObject:(id)object
 {
-  v5 = [objc_opt_class() migrateTriggerUponUnarchival:a4];
+  v5 = [objc_opt_class() migrateTriggerUponUnarchival:object];
 
   return v5;
 }

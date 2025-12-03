@@ -1,48 +1,48 @@
 @interface RFMapAnnotation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFMapAnnotation)initWithCoder:(id)a3;
-- (RFMapAnnotation)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFMapAnnotation)initWithCoder:(id)coder;
+- (RFMapAnnotation)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RFMapAnnotation
 
 - (unint64_t)hash
 {
-  v3 = [(RFMapAnnotation *)self coordinate];
-  v4 = [v3 hash];
-  v5 = [(RFMapAnnotation *)self content];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(RFMapAnnotation *)self title];
-  v8 = [v7 hash];
-  v9 = [(RFMapAnnotation *)self anchor];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(RFMapAnnotation *)self label];
-  v12 = [v11 hash];
+  coordinate = [(RFMapAnnotation *)self coordinate];
+  v4 = [coordinate hash];
+  content = [(RFMapAnnotation *)self content];
+  v6 = [content hash] ^ v4;
+  title = [(RFMapAnnotation *)self title];
+  v8 = [title hash];
+  anchor = [(RFMapAnnotation *)self anchor];
+  v10 = v6 ^ v8 ^ [anchor hash];
+  label = [(RFMapAnnotation *)self label];
+  v12 = [label hash];
 
   return v10 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if ([(RFMapAnnotation *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(RFMapAnnotation *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
-      v6 = [(RFMapAnnotation *)self coordinate];
-      v7 = [(RFMapAnnotation *)v5 coordinate];
-      if ((v6 != 0) == (v7 == 0))
+      v5 = equalCopy;
+      coordinate = [(RFMapAnnotation *)self coordinate];
+      coordinate2 = [(RFMapAnnotation *)v5 coordinate];
+      if ((coordinate != 0) == (coordinate2 == 0))
       {
         v10 = 0;
 LABEL_50:
@@ -50,32 +50,32 @@ LABEL_50:
         goto LABEL_51;
       }
 
-      v8 = [(RFMapAnnotation *)self coordinate];
-      if (v8)
+      coordinate3 = [(RFMapAnnotation *)self coordinate];
+      if (coordinate3)
       {
-        v9 = [(RFMapAnnotation *)self coordinate];
-        v48 = [(RFMapAnnotation *)v5 coordinate];
-        if (![v9 isEqual:?])
+        coordinate4 = [(RFMapAnnotation *)self coordinate];
+        coordinate5 = [(RFMapAnnotation *)v5 coordinate];
+        if (![coordinate4 isEqual:?])
         {
           v10 = 0;
           goto LABEL_48;
         }
 
-        v47 = v9;
+        v47 = coordinate4;
       }
 
-      v49 = [(RFMapAnnotation *)self content];
-      v11 = [(RFMapAnnotation *)v5 content];
-      if ((v49 != 0) != (v11 == 0))
+      content = [(RFMapAnnotation *)self content];
+      content2 = [(RFMapAnnotation *)v5 content];
+      if ((content != 0) != (content2 == 0))
       {
-        v12 = [(RFMapAnnotation *)self content];
-        if (v12)
+        content3 = [(RFMapAnnotation *)self content];
+        if (content3)
         {
-          v13 = v12;
-          v14 = [(RFMapAnnotation *)self content];
+          v13 = content3;
+          content4 = [(RFMapAnnotation *)self content];
           [(RFMapAnnotation *)v5 content];
-          v45 = v44 = v14;
-          if (![v14 isEqual:?])
+          v45 = v44 = content4;
+          if (![content4 isEqual:?])
           {
             v10 = 0;
             v19 = v13;
@@ -91,19 +91,19 @@ LABEL_50:
           v46 = 0;
         }
 
-        v15 = [(RFMapAnnotation *)self title];
-        v16 = [(RFMapAnnotation *)v5 title];
-        if ((v15 != 0) != (v16 == 0))
+        title = [(RFMapAnnotation *)self title];
+        title2 = [(RFMapAnnotation *)v5 title];
+        if ((title != 0) != (title2 == 0))
         {
-          v42 = v15;
-          v43 = v16;
-          v17 = [(RFMapAnnotation *)self title];
-          if (v17)
+          v42 = title;
+          v43 = title2;
+          title3 = [(RFMapAnnotation *)self title];
+          if (title3)
           {
-            v18 = [(RFMapAnnotation *)self title];
-            v39 = [(RFMapAnnotation *)v5 title];
-            v40 = v18;
-            if (![v18 isEqual:?])
+            title4 = [(RFMapAnnotation *)self title];
+            title5 = [(RFMapAnnotation *)v5 title];
+            v40 = title4;
+            if (![title4 isEqual:?])
             {
               v10 = 0;
               v19 = v46;
@@ -111,7 +111,7 @@ LABEL_50:
               goto LABEL_43;
             }
 
-            v41 = v17;
+            v41 = title3;
           }
 
           else
@@ -119,33 +119,33 @@ LABEL_50:
             v41 = 0;
           }
 
-          v21 = [(RFMapAnnotation *)self anchor];
-          v22 = [(RFMapAnnotation *)v5 anchor];
-          if ((v21 != 0) != (v22 == 0))
+          anchor = [(RFMapAnnotation *)self anchor];
+          anchor2 = [(RFMapAnnotation *)v5 anchor];
+          if ((anchor != 0) != (anchor2 == 0))
           {
-            v38 = v22;
+            v38 = anchor2;
             [(RFMapAnnotation *)self anchor];
             v37 = v20 = v45;
             if (v37)
             {
-              v33 = v21;
-              v23 = [(RFMapAnnotation *)self anchor];
-              v35 = [(RFMapAnnotation *)v5 anchor];
-              v36 = v23;
-              if (![v23 isEqual:?])
+              v33 = anchor;
+              anchor3 = [(RFMapAnnotation *)self anchor];
+              anchor4 = [(RFMapAnnotation *)v5 anchor];
+              v36 = anchor3;
+              if (![anchor3 isEqual:?])
               {
                 v10 = 0;
                 v27 = v37;
-                v21 = v33;
+                anchor = v33;
                 goto LABEL_41;
               }
 
-              v21 = v33;
+              anchor = v33;
             }
 
-            v24 = [(RFMapAnnotation *)self label];
-            v25 = [(RFMapAnnotation *)v5 label];
-            if ((v24 != 0) == (v25 == 0))
+            label = [(RFMapAnnotation *)self label];
+            label2 = [(RFMapAnnotation *)v5 label];
+            if ((label != 0) == (label2 == 0))
             {
 
               v10 = 0;
@@ -155,7 +155,7 @@ LABEL_50:
               {
 LABEL_42:
 
-                v17 = v41;
+                title3 = v41;
                 v19 = v46;
                 if (!v41)
                 {
@@ -168,17 +168,17 @@ LABEL_42:
 
             else
             {
-              v32 = v25;
-              v34 = v24;
-              v26 = [(RFMapAnnotation *)self label];
+              v32 = label2;
+              v34 = label;
+              label3 = [(RFMapAnnotation *)self label];
               v20 = v45;
               v27 = v37;
-              if (v26)
+              if (label3)
               {
-                v31 = v26;
-                v30 = [(RFMapAnnotation *)self label];
-                v29 = [(RFMapAnnotation *)v5 label];
-                v10 = [v30 isEqual:v29];
+                v31 = label3;
+                label4 = [(RFMapAnnotation *)self label];
+                label5 = [(RFMapAnnotation *)v5 label];
+                v10 = [label4 isEqual:label5];
 
                 if (!v37)
                 {
@@ -205,7 +205,7 @@ LABEL_41:
           v10 = 0;
           v19 = v46;
           v20 = v45;
-          v17 = v41;
+          title3 = v41;
           if (!v41)
           {
 LABEL_44:
@@ -215,8 +215,8 @@ LABEL_44:
 LABEL_46:
 
 LABEL_47:
-              v9 = v47;
-              if (!v8)
+              coordinate4 = v47;
+              if (!coordinate3)
               {
 LABEL_49:
 
@@ -255,27 +255,27 @@ LABEL_51:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(RFMapAnnotation *)self coordinate];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  coordinate = [(RFMapAnnotation *)self coordinate];
+  v6 = [coordinate copy];
   [v4 setCoordinate:v6];
 
-  v7 = [(RFMapAnnotation *)self content];
-  v8 = [v7 copy];
+  content = [(RFMapAnnotation *)self content];
+  v8 = [content copy];
   [v4 setContent:v8];
 
-  v9 = [(RFMapAnnotation *)self title];
-  v10 = [v9 copy];
+  title = [(RFMapAnnotation *)self title];
+  v10 = [title copy];
   [v4 setTitle:v10];
 
-  v11 = [(RFMapAnnotation *)self anchor];
-  v12 = [v11 copy];
+  anchor = [(RFMapAnnotation *)self anchor];
+  v12 = [anchor copy];
   [v4 setAnchor:v12];
 
-  v13 = [(RFMapAnnotation *)self label];
-  v14 = [v13 copy];
+  label = [(RFMapAnnotation *)self label];
+  v14 = [label copy];
   [v4 setLabel:v14];
 
   return v4;
@@ -284,31 +284,31 @@ LABEL_51:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFMapAnnotation alloc] initWithFacade:self];
-  v3 = [(_SFPBRFMapAnnotation *)v2 jsonData];
+  jsonData = [(_SFPBRFMapAnnotation *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFMapAnnotation alloc] initWithFacade:self];
-  v3 = [(_SFPBRFMapAnnotation *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFMapAnnotation *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFMapAnnotation alloc] initWithFacade:self];
-  v5 = [(_SFPBRFMapAnnotation *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFMapAnnotation *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFMapAnnotation)initWithCoder:(id)a3
+- (RFMapAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFMapAnnotation alloc] initWithData:v5];
   v7 = [(RFMapAnnotation *)self initWithProtobuf:v6];
@@ -316,59 +316,59 @@ LABEL_51:
   return v7;
 }
 
-- (RFMapAnnotation)initWithProtobuf:(id)a3
+- (RFMapAnnotation)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v26.receiver = self;
   v26.super_class = RFMapAnnotation;
   v5 = [(RFMapAnnotation *)&v26 init];
   if (v5)
   {
-    v6 = [v4 coordinate];
+    coordinate = [protobufCopy coordinate];
 
-    if (v6)
+    if (coordinate)
     {
       v7 = [SFLatLng alloc];
-      v8 = [v4 coordinate];
-      v9 = [(SFLatLng *)v7 initWithProtobuf:v8];
+      coordinate2 = [protobufCopy coordinate];
+      v9 = [(SFLatLng *)v7 initWithProtobuf:coordinate2];
       [(RFMapAnnotation *)v5 setCoordinate:v9];
     }
 
-    v10 = [v4 content];
+    content = [protobufCopy content];
 
-    if (v10)
+    if (content)
     {
       v11 = [RFVisualProperty alloc];
-      v12 = [v4 content];
-      v13 = [(RFVisualProperty *)v11 initWithProtobuf:v12];
+      content2 = [protobufCopy content];
+      v13 = [(RFVisualProperty *)v11 initWithProtobuf:content2];
       [(RFMapAnnotation *)v5 setContent:v13];
     }
 
-    v14 = [v4 title];
+    title = [protobufCopy title];
 
-    if (v14)
+    if (title)
     {
-      v15 = [v4 title];
-      [(RFMapAnnotation *)v5 setTitle:v15];
+      title2 = [protobufCopy title];
+      [(RFMapAnnotation *)v5 setTitle:title2];
     }
 
-    v16 = [v4 anchor];
+    anchor = [protobufCopy anchor];
 
-    if (v16)
+    if (anchor)
     {
       v17 = [RFMapPoint alloc];
-      v18 = [v4 anchor];
-      v19 = [(RFMapPoint *)v17 initWithProtobuf:v18];
+      anchor2 = [protobufCopy anchor];
+      v19 = [(RFMapPoint *)v17 initWithProtobuf:anchor2];
       [(RFMapAnnotation *)v5 setAnchor:v19];
     }
 
-    v20 = [v4 label];
+    label = [protobufCopy label];
 
-    if (v20)
+    if (label)
     {
       v21 = [RFTextProperty alloc];
-      v22 = [v4 label];
-      v23 = [(RFTextProperty *)v21 initWithProtobuf:v22];
+      label2 = [protobufCopy label];
+      v23 = [(RFTextProperty *)v21 initWithProtobuf:label2];
       [(RFMapAnnotation *)v5 setLabel:v23];
     }
 

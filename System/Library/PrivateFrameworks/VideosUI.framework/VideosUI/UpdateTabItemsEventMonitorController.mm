@@ -1,20 +1,20 @@
 @interface UpdateTabItemsEventMonitorController
-- (void)appDocumentDidReceiveEvent:(id)a3;
+- (void)appDocumentDidReceiveEvent:(id)event;
 - (void)appDocumentHasBecomeActive;
 @end
 
 @implementation UpdateTabItemsEventMonitorController
 
-- (void)appDocumentDidReceiveEvent:(id)a3
+- (void)appDocumentDidReceiveEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E374C280(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_1E374C280(eventCopy);
 }
 
 - (void)appDocumentHasBecomeActive
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E374C5A8();
 }
 

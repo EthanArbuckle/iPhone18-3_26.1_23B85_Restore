@@ -1,69 +1,69 @@
 @interface InboxNewSectionViewController
 - (BOOL)_canEnableRefresh;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)inPadSidebar;
-- (BOOL)isFocusBannerSection:(int64_t)a3;
-- (BOOL)isIdentityChooserSection:(int64_t)a3;
+- (BOOL)isFocusBannerSection:(int64_t)section;
+- (BOOL)isIdentityChooserSection:(int64_t)section;
 - (BOOL)shouldShowFocusBanner;
 - (BOOL)shouldShowIdentityChooser;
 - (CGSize)preferredContentSize;
-- (InboxNewSectionViewController)initWithModel:(id)a3;
+- (InboxNewSectionViewController)initWithModel:(id)model;
 - (InboxNewSectionViewControllerDelegate)inboxNewSectionDelegate;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (id)_eventForIndexPath:(id)a3;
-- (id)_groupForIndexPath:(id)a3;
-- (id)_groupForSection:(int64_t)a3;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 dismissalPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)noContentStringForInboxTableView:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (id)_eventForIndexPath:(id)path;
+- (id)_groupForIndexPath:(id)path;
+- (id)_groupForSection:(int64_t)section;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration dismissalPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)noContentStringForInboxTableView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
 - (int64_t)firstGroupSection;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_delegateShouldClose;
-- (void)_focusConfigurationChanged:(id)a3;
+- (void)_focusConfigurationChanged:(id)changed;
 - (void)_refreshIfNeeded;
-- (void)_selectedOccurrencesChanged:(id)a3;
+- (void)_selectedOccurrencesChanged:(id)changed;
 - (void)_updateGroupVisibility;
-- (void)accountRefreshFinished:(id)a3;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)copy:(id)a3;
-- (void)cut:(id)a3;
+- (void)accountRefreshFinished:(id)finished;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)copy:(id)copy;
+- (void)cut:(id)cut;
 - (void)dealloc;
-- (void)focusBannerTableViewCellToggled:(id)a3;
-- (void)inboxTableViewGroupController:(id)a3 addedRows:(id)a4 removedRows:(id)a5 updatedRows:(id)a6;
-- (void)inboxTableViewGroupController:(id)a3 inspectEvent:(id)a4;
-- (void)inboxTableViewGroupController:(id)a3 requestsReloadOfRow:(int64_t)a4;
-- (void)inboxTableViewGroupController:(id)a3 viewCommentsForEvent:(id)a4;
-- (void)inboxTableViewGroupController:(id)a3 viewProposedTimeForAttendee:(id)a4 onEvent:(id)a5;
+- (void)focusBannerTableViewCellToggled:(id)toggled;
+- (void)inboxTableViewGroupController:(id)controller addedRows:(id)rows removedRows:(id)removedRows updatedRows:(id)updatedRows;
+- (void)inboxTableViewGroupController:(id)controller inspectEvent:(id)event;
+- (void)inboxTableViewGroupController:(id)controller requestsReloadOfRow:(int64_t)row;
+- (void)inboxTableViewGroupController:(id)controller viewCommentsForEvent:(id)event;
+- (void)inboxTableViewGroupController:(id)controller viewProposedTimeForAttendee:(id)attendee onEvent:(id)event;
 - (void)inboxWillDismiss;
 - (void)loadView;
-- (void)refresh:(id)a3;
-- (void)setViewIsVisible:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 prefetchRowsAtIndexPaths:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)refresh:(id)refresh;
+- (void)setViewIsVisible:(BOOL)visible;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view prefetchRowsAtIndexPaths:(id)paths;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation InboxNewSectionViewController
 
-- (InboxNewSectionViewController)initWithModel:(id)a3
+- (InboxNewSectionViewController)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v21.receiver = self;
   v21.super_class = InboxNewSectionViewController;
   v6 = [(InboxNewSectionViewController *)&v21 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
     +[CalendarMessageCell defaultRowHeight];
     v7->_minimumContentHeight = v8 * 4.5;
     v9 = [(InboxNotificationsGroupController *)[InboxInvitationsGroupController alloc] initWithModel:v7->_model delegate:v7];
@@ -98,18 +98,18 @@
 - (void)_refreshIfNeeded
 {
   self->_isRefreshing = 1;
-  v3 = [(InboxNewSectionViewController *)self visibleGroups];
-  v4 = [v3 count];
+  visibleGroups = [(InboxNewSectionViewController *)self visibleGroups];
+  v4 = [visibleGroups count];
 
   [(InboxNewSectionViewController *)self _updateGroupVisibility];
-  v5 = [(InboxNewSectionViewController *)self visibleGroups];
-  v6 = [v5 count];
+  visibleGroups2 = [(InboxNewSectionViewController *)self visibleGroups];
+  v6 = [visibleGroups2 count];
 
-  v10 = [(InboxNewSectionViewController *)self tableView];
-  [v10 reloadData];
+  tableView = [(InboxNewSectionViewController *)self tableView];
+  [tableView reloadData];
   if (v6)
   {
-    [v10 setShowNoContentString:0];
+    [tableView setShowNoContentString:0];
   }
 
   else
@@ -124,7 +124,7 @@
       v9 = [(InboxNewSectionViewController *)self shouldShowFocusBanner]^ 1;
     }
 
-    [v10 setShowNoContentString:v9];
+    [tableView setShowNoContentString:v9];
     if (v4)
     {
       [(InboxNewSectionViewController *)self _delegateShouldClose];
@@ -132,7 +132,7 @@
     }
   }
 
-  v7 = [(InboxNewSectionViewController *)self view];
+  view = [(InboxNewSectionViewController *)self view];
   IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy();
 
   if (IsRegularInViewHierarchy)
@@ -148,29 +148,29 @@ LABEL_10:
 - (void)_updateGroupVisibility
 {
   v3 = objc_opt_new();
-  v4 = [(InboxNewSectionViewController *)self allGroups];
+  allGroups = [(InboxNewSectionViewController *)self allGroups];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001379C8;
   v7[3] = &unk_1002120D0;
   v8 = v3;
   v5 = v3;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [allGroups enumerateObjectsUsingBlock:v7];
 
   v6 = [NSArray arrayWithArray:v5];
   [(InboxNewSectionViewController *)self setVisibleGroups:v6];
 }
 
-- (void)setViewIsVisible:(BOOL)a3
+- (void)setViewIsVisible:(BOOL)visible
 {
-  self->_viewIsVisible = a3;
-  v4 = [(InboxNewSectionViewController *)self allGroups];
+  self->_viewIsVisible = visible;
+  allGroups = [(InboxNewSectionViewController *)self allGroups];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100137ABC;
   v5[3] = &unk_1002120F0;
-  v6 = a3;
-  [v4 enumerateObjectsUsingBlock:v5];
+  visibleCopy = visible;
+  [allGroups enumerateObjectsUsingBlock:v5];
 }
 
 - (void)inboxWillDismiss
@@ -183,8 +183,8 @@ LABEL_10:
 
 - (void)dealloc
 {
-  v3 = [(InboxNewSectionViewController *)self view];
-  [v3 removeInteraction:self->_contextMenuInteraction];
+  view = [(InboxNewSectionViewController *)self view];
+  [view removeInteraction:self->_contextMenuInteraction];
 
   contextMenuInteraction = self->_contextMenuInteraction;
   self->_contextMenuInteraction = 0;
@@ -207,8 +207,8 @@ LABEL_10:
 
 - (void)loadView
 {
-  v3 = [(InboxNewSectionViewController *)self inPadSidebar];
-  if (v3)
+  inPadSidebar = [(InboxNewSectionViewController *)self inPadSidebar];
+  if (inPadSidebar)
   {
     v4 = 1;
   }
@@ -221,7 +221,7 @@ LABEL_10:
   v6 = [[InboxTableView alloc] initWithFrame:v4 style:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(InboxTableView *)v6 setListViewDelegate:self];
   [(InboxTableView *)v6 setPrefetchDataSource:self];
-  if (v3)
+  if (inPadSidebar)
   {
     v5 = +[UIColor clearColor];
     [(InboxTableView *)v6 setSeparatorColor:v5];
@@ -239,8 +239,8 @@ LABEL_10:
   contextMenuInteraction = self->_contextMenuInteraction;
   self->_contextMenuInteraction = v3;
 
-  v5 = [(InboxNewSectionViewController *)self view];
-  [v5 addInteraction:self->_contextMenuInteraction];
+  view = [(InboxNewSectionViewController *)self view];
+  [view addInteraction:self->_contextMenuInteraction];
 }
 
 - (BOOL)_canEnableRefresh
@@ -249,10 +249,10 @@ LABEL_10:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v2 = [(CUIKCalendarModel *)self->_model eventStore];
-  v3 = [v2 sources];
+  eventStore = [(CUIKCalendarModel *)self->_model eventStore];
+  sources = [eventStore sources];
 
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  v4 = [sources countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v4)
   {
     v5 = v4;
@@ -263,7 +263,7 @@ LABEL_10:
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sources);
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
@@ -308,7 +308,7 @@ LABEL_10:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v5 = [sources countByEnumeratingWithState:&v20 objects:v25 count:16];
       v14 = 0;
     }
 
@@ -325,33 +325,33 @@ LABEL_22:
   return v14;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = InboxNewSectionViewController;
   [(InboxNewSectionViewController *)&v13 viewWillAppear:?];
-  v5 = [(InboxNewSectionViewController *)self refreshControl];
-  if (!v5)
+  refreshControl = [(InboxNewSectionViewController *)self refreshControl];
+  if (!refreshControl)
   {
     if (![(InboxNewSectionViewController *)self _canEnableRefresh])
     {
       goto LABEL_5;
     }
 
-    v5 = objc_alloc_init(UIRefreshControl);
-    [v5 addTarget:self action:"_pulledToRefresh:" forControlEvents:4096];
-    v6 = [(InboxNewSectionViewController *)self tableView];
-    [v6 _setRefreshControl:v5];
+    refreshControl = objc_alloc_init(UIRefreshControl);
+    [refreshControl addTarget:self action:"_pulledToRefresh:" forControlEvents:4096];
+    tableView = [(InboxNewSectionViewController *)self tableView];
+    [tableView _setRefreshControl:refreshControl];
 
-    [(InboxNewSectionViewController *)self setRefreshControl:v5];
+    [(InboxNewSectionViewController *)self setRefreshControl:refreshControl];
   }
 
 LABEL_5:
-  v7 = [(InboxNewSectionViewController *)self navigationController];
-  v8 = [v7 view];
-  v9 = [v8 window];
+  navigationController = [(InboxNewSectionViewController *)self navigationController];
+  view = [navigationController view];
+  window = [view window];
 
-  if (v9)
+  if (window)
   {
     EKUIPushFallbackSizingContextWithViewHierarchy();
     [(InboxNewSectionViewController *)self _refreshIfNeeded];
@@ -368,15 +368,15 @@ LABEL_5:
   v11[1] = 3221225472;
   v11[2] = sub_100138090;
   v11[3] = &unk_100212150;
-  v12 = a3;
+  appearCopy = appear;
   [(NSArray *)allGroups enumerateObjectsUsingBlock:v11];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = InboxNewSectionViewController;
-  [(InboxNewSectionViewController *)&v7 viewDidAppear:a3];
+  [(InboxNewSectionViewController *)&v7 viewDidAppear:appear];
   [(InboxNewSectionViewController *)self setViewIsVisible:1];
   if (self->_destination == 2)
   {
@@ -394,11 +394,11 @@ LABEL_5:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = InboxNewSectionViewController;
-  [(InboxNewSectionViewController *)&v7 viewWillDisappear:a3];
+  [(InboxNewSectionViewController *)&v7 viewWillDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
 
@@ -413,36 +413,36 @@ LABEL_5:
   [(InboxNewSectionViewController *)self setViewIsVisible:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = InboxNewSectionViewController;
-  [(InboxNewSectionViewController *)&v4 viewDidDisappear:a3];
+  [(InboxNewSectionViewController *)&v4 viewDidDisappear:disappear];
   [(NSArray *)self->_allGroups enumerateObjectsUsingBlock:&stru_100212170];
 }
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(InboxNewSectionViewController *)self tableView];
+  tableView = [(InboxNewSectionViewController *)self tableView];
   if (EKUICurrentWidthSizeClassIsCompactInViewHierarchy())
   {
-    v4 = [(InboxNewSectionViewController *)self presentedViewController];
-    v5 = [v4 isBeingPresented];
+    presentedViewController = [(InboxNewSectionViewController *)self presentedViewController];
+    isBeingPresented = [presentedViewController isBeingPresented];
   }
 
   else
   {
-    v5 = 0;
+    isBeingPresented = 0;
   }
 
-  if (!self->_isRefreshing && (v5 & 1) == 0)
+  if (!self->_isRefreshing && (isBeingPresented & 1) == 0)
   {
     [(InboxNewSectionViewController *)self _refreshIfNeeded];
   }
 
-  v6 = [(InboxNewSectionViewController *)self tableView];
+  tableView2 = [(InboxNewSectionViewController *)self tableView];
   EKUIContainedControllerIdealWidth();
-  [v6 sizeThatFits:?];
+  [tableView2 sizeThatFits:?];
   minimumContentHeight = v7;
 
   if (self->_minimumContentHeight >= minimumContentHeight)
@@ -472,9 +472,9 @@ LABEL_5:
   return result;
 }
 
-- (void)_selectedOccurrencesChanged:(id)a3
+- (void)_selectedOccurrencesChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (self->_currentSelectedEvent && !self->_selectionTimer)
   {
     v7[0] = _NSConcreteStackBlock;
@@ -488,130 +488,130 @@ LABEL_5:
   }
 }
 
-- (void)_focusConfigurationChanged:(id)a3
+- (void)_focusConfigurationChanged:(id)changed
 {
-  v3 = [(InboxNewSectionViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(InboxNewSectionViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (BOOL)isFocusBannerSection:(int64_t)a3
+- (BOOL)isFocusBannerSection:(int64_t)section
 {
-  v5 = [(InboxNewSectionViewController *)self shouldShowFocusBanner];
-  if (v5)
+  shouldShowFocusBanner = [(InboxNewSectionViewController *)self shouldShowFocusBanner];
+  if (shouldShowFocusBanner)
   {
-    LOBYTE(v5) = [(InboxNewSectionViewController *)self focusBannerSection]== a3;
+    LOBYTE(shouldShowFocusBanner) = [(InboxNewSectionViewController *)self focusBannerSection]== section;
   }
 
-  return v5;
+  return shouldShowFocusBanner;
 }
 
-- (BOOL)isIdentityChooserSection:(int64_t)a3
+- (BOOL)isIdentityChooserSection:(int64_t)section
 {
-  v5 = [(InboxNewSectionViewController *)self shouldShowIdentityChooser];
-  if (v5)
+  shouldShowIdentityChooser = [(InboxNewSectionViewController *)self shouldShowIdentityChooser];
+  if (shouldShowIdentityChooser)
   {
-    LOBYTE(v5) = [(InboxNewSectionViewController *)self identityChooserSection]== a3;
+    LOBYTE(shouldShowIdentityChooser) = [(InboxNewSectionViewController *)self identityChooserSection]== section;
   }
 
-  return v5;
+  return shouldShowIdentityChooser;
 }
 
 - (int64_t)firstGroupSection
 {
-  v3 = [(InboxNewSectionViewController *)self shouldShowFocusBanner];
-  v4 = [(InboxNewSectionViewController *)self shouldShowIdentityChooser];
+  shouldShowFocusBanner = [(InboxNewSectionViewController *)self shouldShowFocusBanner];
+  shouldShowIdentityChooser = [(InboxNewSectionViewController *)self shouldShowIdentityChooser];
   v5 = 1;
-  if (v3)
+  if (shouldShowFocusBanner)
   {
     v5 = 2;
   }
 
-  if (v4)
+  if (shouldShowIdentityChooser)
   {
     return v5;
   }
 
   else
   {
-    return v3;
+    return shouldShowFocusBanner;
   }
 }
 
 - (BOOL)shouldShowIdentityChooser
 {
-  v3 = [(CUIKCalendarModel *)self->_model containsDelegateSources];
-  if (v3)
+  containsDelegateSources = [(CUIKCalendarModel *)self->_model containsDelegateSources];
+  if (containsDelegateSources)
   {
-    LOBYTE(v3) = self->_destination != 2;
+    LOBYTE(containsDelegateSources) = self->_destination != 2;
   }
 
-  return v3;
+  return containsDelegateSources;
 }
 
 - (BOOL)shouldShowFocusBanner
 {
-  v3 = [(CUIKCalendarModel *)self->_model focusFilterMode];
-  if (v3)
+  focusFilterMode = [(CUIKCalendarModel *)self->_model focusFilterMode];
+  if (focusFilterMode)
   {
     if (CalSystemSolariumEnabled())
     {
-      LOBYTE(v3) = [(InboxNewSectionViewController *)self destination]!= 2;
+      LOBYTE(focusFilterMode) = [(InboxNewSectionViewController *)self destination]!= 2;
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(focusFilterMode) = 1;
     }
   }
 
-  return v3;
+  return focusFilterMode;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = [(InboxNewSectionViewController *)self visibleGroups];
-  v5 = [v4 count];
+  visibleGroups = [(InboxNewSectionViewController *)self visibleGroups];
+  v5 = [visibleGroups count];
 
   v6 = &v5[[(InboxNewSectionViewController *)self shouldShowIdentityChooser]];
   return &v6[[(InboxNewSectionViewController *)self shouldShowFocusBanner]];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if ([(InboxNewSectionViewController *)self isIdentityChooserSection:a4])
+  if ([(InboxNewSectionViewController *)self isIdentityChooserSection:section])
   {
-    v6 = [(CUIKCalendarModel *)self->_model sortedEnabledDelegates];
-    v7 = [v6 count] + 1;
+    sortedEnabledDelegates = [(CUIKCalendarModel *)self->_model sortedEnabledDelegates];
+    numberOfRows = [sortedEnabledDelegates count] + 1;
 LABEL_6:
 
-    return v7;
+    return numberOfRows;
   }
 
-  if (![(InboxNewSectionViewController *)self isFocusBannerSection:a4])
+  if (![(InboxNewSectionViewController *)self isFocusBannerSection:section])
   {
-    v6 = [(InboxNewSectionViewController *)self _groupForSection:a4];
-    v7 = [v6 numberOfRows];
+    sortedEnabledDelegates = [(InboxNewSectionViewController *)self _groupForSection:section];
+    numberOfRows = [sortedEnabledDelegates numberOfRows];
     goto LABEL_6;
   }
 
   return 1;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (-[InboxNewSectionViewController isIdentityChooserSection:](self, "isIdentityChooserSection:", [v7 section]))
+  viewCopy = view;
+  pathCopy = path;
+  if (-[InboxNewSectionViewController isIdentityChooserSection:](self, "isIdentityChooserSection:", [pathCopy section]))
   {
     v8 = objc_opt_new();
-    if ([v7 row])
+    if ([pathCopy row])
     {
-      v9 = [(CUIKCalendarModel *)self->_model sortedEnabledDelegates];
-      v10 = [v9 objectAtIndex:{objc_msgSend(v7, "row") - 1}];
+      sortedEnabledDelegates = [(CUIKCalendarModel *)self->_model sortedEnabledDelegates];
+      v10 = [sortedEnabledDelegates objectAtIndex:{objc_msgSend(pathCopy, "row") - 1}];
 
       v11 = CUIKDisplayedTitleForSource();
-      v12 = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
-      v13 = [v10 isEqual:v12];
+      sourceForSelectedIdentity = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
+      v13 = [v10 isEqual:sourceForSelectedIdentity];
     }
 
     else
@@ -619,16 +619,16 @@ LABEL_6:
       v20 = [NSBundle bundleForClass:objc_opt_class()];
       v11 = [v20 localizedStringForKey:@"My Calendar" value:&stru_1002133B8 table:0];
 
-      v12 = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
+      sourceForSelectedIdentity = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
       v10 = 0;
-      v13 = v12 == 0;
+      v13 = sourceForSelectedIdentity == 0;
     }
 
     v21 = [(CUIKCalendarModel *)self->_model eventNotificationReferencesForIdentity:v10];
     v22 = [v21 count];
 
-    v23 = [(EKUIFocusBannerTableViewCell *)v8 titleLabel];
-    [v23 setText:v11];
+    titleLabel = [(EKUIFocusBannerTableViewCell *)v8 titleLabel];
+    [titleLabel setText:v11];
 
     if (v13)
     {
@@ -641,24 +641,24 @@ LABEL_6:
     }
 
     [(EKUIFocusBannerTableViewCell *)v8 setAccessoryType:v24];
-    v25 = [(EKUIFocusBannerTableViewCell *)v8 titleLabel];
-    [v25 setEnabled:1];
+    titleLabel2 = [(EKUIFocusBannerTableViewCell *)v8 titleLabel];
+    [titleLabel2 setEnabled:1];
 
     if (v22)
     {
-      v26 = CUIKLocalizedStringForInteger();
-      v27 = [(EKUIFocusBannerTableViewCell *)v8 detailLabel];
-      [v27 setText:v26];
+      detailLabel2 = CUIKLocalizedStringForInteger();
+      detailLabel = [(EKUIFocusBannerTableViewCell *)v8 detailLabel];
+      [detailLabel setText:detailLabel2];
     }
 
     else
     {
-      v26 = [(EKUIFocusBannerTableViewCell *)v8 detailLabel];
-      [v26 setText:0];
+      detailLabel2 = [(EKUIFocusBannerTableViewCell *)v8 detailLabel];
+      [detailLabel2 setText:0];
     }
   }
 
-  else if (-[InboxNewSectionViewController isFocusBannerSection:](self, "isFocusBannerSection:", [v7 section]))
+  else if (-[InboxNewSectionViewController isFocusBannerSection:](self, "isFocusBannerSection:", [pathCopy section]))
   {
     if (!self->_focusBannerCell)
     {
@@ -688,26 +688,26 @@ LABEL_6:
 
   else
   {
-    v16 = [(InboxNewSectionViewController *)self _groupForIndexPath:v7];
-    v17 = [v7 row];
-    if ([v6 isTracking] & 1) != 0 || (objc_msgSend(v6, "isScrollAnimating") & 1) != 0 || (objc_msgSend(v6, "isDecelerating"))
+    v16 = [(InboxNewSectionViewController *)self _groupForIndexPath:pathCopy];
+    v17 = [pathCopy row];
+    if ([viewCopy isTracking] & 1) != 0 || (objc_msgSend(viewCopy, "isScrollAnimating") & 1) != 0 || (objc_msgSend(viewCopy, "isDecelerating"))
     {
-      v18 = 1;
+      isRunningTest = 1;
     }
 
     else
     {
-      v18 = [UIApp isRunningTest];
+      isRunningTest = [UIApp isRunningTest];
     }
 
-    v8 = [v16 cellForRow:v17 allowAsyncLoading:v18];
+    v8 = [v16 cellForRow:v17 allowAsyncLoading:isRunningTest];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [(InboxNewSectionViewController *)self inPadSidebar];
-      [(EKUIFocusBannerTableViewCell *)v8 setDrawsOwnSeparator:v19];
-      [(EKUIFocusBannerTableViewCell *)v8 setInPadSidebar:v19];
+      inPadSidebar = [(InboxNewSectionViewController *)self inPadSidebar];
+      [(EKUIFocusBannerTableViewCell *)v8 setDrawsOwnSeparator:inPadSidebar];
+      [(EKUIFocusBannerTableViewCell *)v8 setInPadSidebar:inPadSidebar];
     }
   }
 
@@ -720,14 +720,14 @@ LABEL_6:
   return v8;
 }
 
-- (void)tableView:(id)a3 prefetchRowsAtIndexPaths:(id)a4
+- (void)tableView:(id)view prefetchRowsAtIndexPaths:(id)paths
 {
-  v5 = a4;
+  pathsCopy = paths;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [pathsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -738,7 +738,7 @@ LABEL_6:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pathsCopy);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -749,50 +749,50 @@ LABEL_6:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [pathsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if (-[InboxNewSectionViewController isIdentityChooserSection:](self, "isIdentityChooserSection:", [v5 section]) || -[InboxNewSectionViewController isFocusBannerSection:](self, "isFocusBannerSection:", objc_msgSend(v5, "section")))
+  pathCopy = path;
+  if (-[InboxNewSectionViewController isIdentityChooserSection:](self, "isIdentityChooserSection:", [pathCopy section]) || -[InboxNewSectionViewController isFocusBannerSection:](self, "isFocusBannerSection:", objc_msgSend(pathCopy, "section")))
   {
     v6 = UITableViewAutomaticDimension;
   }
 
   else
   {
-    v7 = [(InboxNewSectionViewController *)self _groupForIndexPath:v5];
-    [v7 estimatedHeightForRow:{objc_msgSend(v5, "row")}];
+    v7 = [(InboxNewSectionViewController *)self _groupForIndexPath:pathCopy];
+    [v7 estimatedHeightForRow:{objc_msgSend(pathCopy, "row")}];
     v6 = v8;
   }
 
   return v6;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if (-[InboxNewSectionViewController isIdentityChooserSection:](self, "isIdentityChooserSection:", [v5 section]))
+  pathCopy = path;
+  if (-[InboxNewSectionViewController isIdentityChooserSection:](self, "isIdentityChooserSection:", [pathCopy section]))
   {
-    v6 = v5;
+    v6 = pathCopy;
   }
 
-  else if (-[InboxNewSectionViewController isFocusBannerSection:](self, "isFocusBannerSection:", [v5 section]))
+  else if (-[InboxNewSectionViewController isFocusBannerSection:](self, "isFocusBannerSection:", [pathCopy section]))
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(InboxNewSectionViewController *)self _groupForIndexPath:v5];
-    if ([v7 canSelectRow:{objc_msgSend(v5, "row")}])
+    v7 = [(InboxNewSectionViewController *)self _groupForIndexPath:pathCopy];
+    if ([v7 canSelectRow:{objc_msgSend(pathCopy, "row")}])
     {
-      v8 = v5;
+      v8 = pathCopy;
     }
 
     else
@@ -806,25 +806,25 @@ LABEL_6:
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = kCalUILogInboxHandle;
   if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138412290;
-    v12 = v7;
+    v12 = pathCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Index path selected: [%@]", &v11, 0xCu);
   }
 
-  if (-[InboxNewSectionViewController isIdentityChooserSection:](self, "isIdentityChooserSection:", [v7 section]))
+  if (-[InboxNewSectionViewController isIdentityChooserSection:](self, "isIdentityChooserSection:", [pathCopy section]))
   {
-    [v6 deselectRowAtIndexPath:v7 animated:1];
-    if ([v7 row])
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    if ([pathCopy row])
     {
-      v9 = [(CUIKCalendarModel *)self->_model sortedEnabledDelegates];
-      v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v7, "row") - 1}];
+      sortedEnabledDelegates = [(CUIKCalendarModel *)self->_model sortedEnabledDelegates];
+      v10 = [sortedEnabledDelegates objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row") - 1}];
     }
 
     else
@@ -836,34 +836,34 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  if (!-[InboxNewSectionViewController isFocusBannerSection:](self, "isFocusBannerSection:", [v7 section]))
+  if (!-[InboxNewSectionViewController isFocusBannerSection:](self, "isFocusBannerSection:", [pathCopy section]))
   {
-    v10 = [(InboxNewSectionViewController *)self _groupForIndexPath:v7];
-    [v10 rowSelected:{objc_msgSend(v7, "row")}];
+    v10 = [(InboxNewSectionViewController *)self _groupForIndexPath:pathCopy];
+    [v10 rowSelected:{objc_msgSend(pathCopy, "row")}];
 LABEL_10:
   }
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  if ([(InboxNewSectionViewController *)self isIdentityChooserSection:a4])
+  if ([(InboxNewSectionViewController *)self isIdentityChooserSection:section])
   {
     v6 = [NSBundle bundleForClass:objc_opt_class()];
-    v7 = [v6 localizedStringForKey:@"View Notifications:" value:&stru_1002133B8 table:0];
+    titleForHeader = [v6 localizedStringForKey:@"View Notifications:" value:&stru_1002133B8 table:0];
   }
 
   else
   {
-    if ([(InboxNewSectionViewController *)self isFocusBannerSection:a4])
+    if ([(InboxNewSectionViewController *)self isFocusBannerSection:section])
     {
       goto LABEL_7;
     }
 
-    v6 = [(InboxNewSectionViewController *)self _groupForSection:a4];
-    v7 = [v6 titleForHeader];
+    v6 = [(InboxNewSectionViewController *)self _groupForSection:section];
+    titleForHeader = [v6 titleForHeader];
   }
 
-  v8 = v7;
+  v8 = titleForHeader;
 
   if (v8)
   {
@@ -881,27 +881,27 @@ LABEL_8:
   return v10;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = [(InboxNewSectionViewController *)self view];
-  [v5 locationInView:v6];
+  interactionCopy = interaction;
+  view = [(InboxNewSectionViewController *)self view];
+  [interactionCopy locationInView:view];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(InboxNewSectionViewController *)self view];
-  v12 = [(InboxNewSectionViewController *)self tableView];
-  [v11 convertPoint:v12 toView:{v8, v10}];
+  view2 = [(InboxNewSectionViewController *)self view];
+  tableView = [(InboxNewSectionViewController *)self tableView];
+  [view2 convertPoint:tableView toView:{v8, v10}];
   v14 = v13;
   v16 = v15;
 
-  v17 = [(InboxNewSectionViewController *)self tableView];
-  v18 = [v17 indexPathForRowAtPoint:{v14, v16}];
+  tableView2 = [(InboxNewSectionViewController *)self tableView];
+  v18 = [tableView2 indexPathForRowAtPoint:{v14, v16}];
 
   if (v18)
   {
-    v19 = [(InboxNewSectionViewController *)self tableView];
-    [v19 rectForRowAtIndexPath:v18];
+    tableView3 = [(InboxNewSectionViewController *)self tableView];
+    [tableView3 rectForRowAtIndexPath:v18];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -944,24 +944,24 @@ LABEL_8:
   return v29;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
   targetedPreview = self->_targetedPreview;
   self->_targetedPreview = 0;
-  v7 = a3;
+  interactionCopy = interaction;
 
-  v8 = [(InboxNewSectionViewController *)self tableView];
-  [v7 locationInView:v8];
+  tableView = [(InboxNewSectionViewController *)self tableView];
+  [interactionCopy locationInView:tableView];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(InboxNewSectionViewController *)self tableView];
-  v14 = [v13 indexPathForRowAtPoint:{v10, v12}];
+  tableView2 = [(InboxNewSectionViewController *)self tableView];
+  v14 = [tableView2 indexPathForRowAtPoint:{v10, v12}];
 
   if (v14)
   {
-    v15 = [(InboxNewSectionViewController *)self tableView];
-    v16 = [v15 cellForRowAtIndexPath:v14];
+    tableView3 = [(InboxNewSectionViewController *)self tableView];
+    v16 = [tableView3 cellForRowAtIndexPath:v14];
 
     v17 = [[UITargetedPreview alloc] initWithView:v16];
     v18 = self->_targetedPreview;
@@ -974,7 +974,7 @@ LABEL_8:
   return v19;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 dismissalPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration dismissalPreviewForItemWithIdentifier:(id)identifier
 {
   targetedPreview = self->_targetedPreview;
   v7 = targetedPreview;
@@ -984,30 +984,30 @@ LABEL_8:
   return targetedPreview;
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a5;
-  v7 = [v6 previewViewController];
+  animatorCopy = animator;
+  previewViewController = [animatorCopy previewViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 previewViewController];
+    previewViewController2 = [animatorCopy previewViewController];
   }
 
   else
   {
-    v8 = 0;
+    previewViewController2 = 0;
   }
 
-  v9 = [v8 event];
-  [v8 willCommitPreview];
-  if (v9)
+  event = [previewViewController2 event];
+  [previewViewController2 willCommitPreview];
+  if (event)
   {
     v10 = kCalUILogInboxHandle;
     if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v14 = v9;
+      v14 = event;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Requesting from our delegate that the following event should be inspected: [%@]", buf, 0xCu);
     }
 
@@ -1016,12 +1016,12 @@ LABEL_8:
     v11[2] = sub_100139974;
     v11[3] = &unk_10020EC68;
     v11[4] = self;
-    v12 = v9;
-    [v6 addAnimations:v11];
+    v12 = event;
+    [animatorCopy addAnimations:v11];
   }
 }
 
-- (id)noContentStringForInboxTableView:(id)a3
+- (id)noContentStringForInboxTableView:(id)view
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"No Invitations" value:&stru_1002133B8 table:0];
@@ -1029,12 +1029,12 @@ LABEL_8:
   return v4;
 }
 
-- (void)inboxTableViewGroupController:(id)a3 addedRows:(id)a4 removedRows:(id)a5 updatedRows:(id)a6
+- (void)inboxTableViewGroupController:(id)controller addedRows:(id)rows removedRows:(id)removedRows updatedRows:(id)updatedRows
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  rowsCopy = rows;
+  removedRowsCopy = removedRows;
+  updatedRowsCopy = updatedRows;
   if (self->_viewIsVisible)
   {
     if (self->_reloadsSuspendedUntilRefreshCompletes)
@@ -1044,12 +1044,12 @@ LABEL_8:
 
     else
     {
-      v14 = [(InboxNewSectionViewController *)self visibleGroups];
+      visibleGroups = [(InboxNewSectionViewController *)self visibleGroups];
       [(InboxNewSectionViewController *)self _updateGroupVisibility];
-      v48 = v14;
-      if (v10)
+      v48 = visibleGroups;
+      if (controllerCopy)
       {
-        v15 = [v14 indexOfObject:v10];
+        v15 = [visibleGroups indexOfObject:controllerCopy];
       }
 
       else
@@ -1057,26 +1057,26 @@ LABEL_8:
         v15 = 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      v49 = v11;
-      v16 = [v11 count];
-      v17 = [v12 count];
-      v18 = [v13 count];
-      v19 = [(InboxNewSectionViewController *)self firstGroupSection];
-      if (v17 && (-[InboxNewSectionViewController visibleGroups](self, "visibleGroups"), v47 = v17, v20 = v15, v21 = v10, v22 = v13, v23 = v16, v24 = v12, v25 = v18, v26 = objc_claimAutoreleasedReturnValue(), v27 = [v26 count], v26, v18 = v25, v12 = v24, v16 = v23, v13 = v22, v10 = v21, v15 = v20, v17 = v47, !v27))
+      v49 = rowsCopy;
+      v16 = [rowsCopy count];
+      v17 = [removedRowsCopy count];
+      v18 = [updatedRowsCopy count];
+      firstGroupSection = [(InboxNewSectionViewController *)self firstGroupSection];
+      if (v17 && (-[InboxNewSectionViewController visibleGroups](self, "visibleGroups"), v47 = v17, v20 = v15, v21 = controllerCopy, v22 = updatedRowsCopy, v23 = v16, v24 = removedRowsCopy, v25 = v18, v26 = objc_claimAutoreleasedReturnValue(), v27 = [v26 count], v26, v18 = v25, removedRowsCopy = v24, v16 = v23, updatedRowsCopy = v22, controllerCopy = v21, v15 = v20, v17 = v47, !v27))
       {
         [(InboxNewSectionViewController *)self _delegateShouldClose];
       }
 
       else
       {
-        v28 = v19 + v15;
-        if (([v10 hasRows] & 1) != 0 || v15 == 0x7FFFFFFFFFFFFFFFLL)
+        v28 = firstGroupSection + v15;
+        if (([controllerCopy hasRows] & 1) != 0 || v15 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v31 = [(InboxNewSectionViewController *)self tableView];
-          v32 = v31;
+          tableView = [(InboxNewSectionViewController *)self tableView];
+          v32 = tableView;
           if (v16 || v17 || v18)
           {
-            [v31 beginUpdates];
+            [tableView beginUpdates];
 
             v56[0] = _NSConcreteStackBlock;
             v56[1] = 3221225472;
@@ -1086,51 +1086,51 @@ LABEL_8:
             v58 = v28;
             v32 = v57;
             [v49 enumerateIndexesUsingBlock:v56];
-            v33 = [(InboxNewSectionViewController *)self tableView];
-            [v33 insertRowsAtIndexPaths:v32 withRowAnimation:6];
+            tableView2 = [(InboxNewSectionViewController *)self tableView];
+            [tableView2 insertRowsAtIndexPaths:v32 withRowAnimation:6];
 
             v53[0] = _NSConcreteStackBlock;
             v53[1] = 3221225472;
             v53[2] = sub_10013A064;
             v53[3] = &unk_100212210;
-            v54 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v12, "count")}];
+            v54 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(removedRowsCopy, "count")}];
             v55 = v28;
             v34 = v54;
-            [v12 enumerateIndexesUsingBlock:v53];
-            v35 = [(InboxNewSectionViewController *)self tableView];
-            [v35 deleteRowsAtIndexPaths:v34 withRowAnimation:6];
+            [removedRowsCopy enumerateIndexesUsingBlock:v53];
+            tableView3 = [(InboxNewSectionViewController *)self tableView];
+            [tableView3 deleteRowsAtIndexPaths:v34 withRowAnimation:6];
 
             v50[0] = _NSConcreteStackBlock;
             v50[1] = 3221225472;
             v50[2] = sub_10013A0C8;
             v50[3] = &unk_100212210;
-            v51 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v13, "count")}];
+            v51 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(updatedRowsCopy, "count")}];
             v52 = v28;
             v36 = v51;
-            [v13 enumerateIndexesUsingBlock:v50];
-            v37 = [(InboxNewSectionViewController *)self tableView];
-            [v37 reloadRowsAtIndexPaths:v36 withRowAnimation:6];
+            [updatedRowsCopy enumerateIndexesUsingBlock:v50];
+            tableView4 = [(InboxNewSectionViewController *)self tableView];
+            [tableView4 reloadRowsAtIndexPaths:v36 withRowAnimation:6];
 
-            v38 = [(InboxNewSectionViewController *)self tableView];
-            [v38 endUpdates];
+            tableView5 = [(InboxNewSectionViewController *)self tableView];
+            [tableView5 endUpdates];
           }
 
           else
           {
-            [v31 reloadData];
+            [tableView reloadData];
           }
         }
 
         else
         {
-          v29 = [(InboxNewSectionViewController *)self tableView];
+          tableView6 = [(InboxNewSectionViewController *)self tableView];
           v30 = [NSIndexSet indexSetWithIndex:v28];
-          [v29 deleteSections:v30 withRowAnimation:6];
+          [tableView6 deleteSections:v30 withRowAnimation:6];
         }
       }
 
-      v39 = [(InboxNewSectionViewController *)self visibleGroups];
-      if ([v39 count] || -[InboxNewSectionViewController shouldShowIdentityChooser](self, "shouldShowIdentityChooser"))
+      visibleGroups2 = [(InboxNewSectionViewController *)self visibleGroups];
+      if ([visibleGroups2 count] || -[InboxNewSectionViewController shouldShowIdentityChooser](self, "shouldShowIdentityChooser"))
       {
         v40 = 0;
       }
@@ -1140,15 +1140,15 @@ LABEL_8:
         v40 = [(InboxNewSectionViewController *)self shouldShowFocusBanner]^ 1;
       }
 
-      v41 = [(InboxNewSectionViewController *)self tableView];
-      [v41 setShowNoContentString:v40];
+      tableView7 = [(InboxNewSectionViewController *)self tableView];
+      [tableView7 setShowNoContentString:v40];
 
       if (self->_wantsDisplayReviewPrompt)
       {
         if ([v48 count])
         {
-          v42 = [(InboxNewSectionViewController *)self visibleGroups];
-          v43 = [v42 count];
+          visibleGroups3 = [(InboxNewSectionViewController *)self visibleGroups];
+          v43 = [visibleGroups3 count];
 
           if (!v43)
           {
@@ -1165,19 +1165,19 @@ LABEL_8:
         }
       }
 
-      v11 = v49;
+      rowsCopy = v49;
     }
   }
 }
 
-- (void)inboxTableViewGroupController:(id)a3 inspectEvent:(id)a4
+- (void)inboxTableViewGroupController:(id)controller inspectEvent:(id)event
 {
-  v6 = a4;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_inboxNewSectionDelegate);
 
   if (WeakRetained)
   {
-    if (v6)
+    if (eventCopy)
     {
       v8 = kCalUILogInboxHandle;
       if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_DEBUG))
@@ -1187,11 +1187,11 @@ LABEL_8:
       }
 
       v9 = objc_loadWeakRetained(&self->_inboxNewSectionDelegate);
-      [v9 inboxNewSectionViewController:self inspectEvent:v6];
+      [v9 inboxNewSectionViewController:self inspectEvent:eventCopy];
 
       if (self->_destination == 2)
       {
-        objc_storeStrong(&self->_currentSelectedEvent, a4);
+        objc_storeStrong(&self->_currentSelectedEvent, event);
       }
     }
   }
@@ -1207,34 +1207,34 @@ LABEL_8:
   }
 }
 
-- (void)inboxTableViewGroupController:(id)a3 viewCommentsForEvent:(id)a4
+- (void)inboxTableViewGroupController:(id)controller viewCommentsForEvent:(id)event
 {
-  v7 = a4;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_inboxNewSectionDelegate);
 
-  if (v7 && WeakRetained)
+  if (eventCopy && WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_inboxNewSectionDelegate);
-    [v6 inboxNewSectionViewController:self viewCommentsForEvent:v7];
+    [v6 inboxNewSectionViewController:self viewCommentsForEvent:eventCopy];
   }
 }
 
-- (void)inboxTableViewGroupController:(id)a3 viewProposedTimeForAttendee:(id)a4 onEvent:(id)a5
+- (void)inboxTableViewGroupController:(id)controller viewProposedTimeForAttendee:(id)attendee onEvent:(id)event
 {
-  v10 = a4;
-  v7 = a5;
+  attendeeCopy = attendee;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_inboxNewSectionDelegate);
 
-  if (v7 && WeakRetained)
+  if (eventCopy && WeakRetained)
   {
     v9 = objc_loadWeakRetained(&self->_inboxNewSectionDelegate);
-    [v9 inboxNewSectionViewController:self viewProposedTimeForAttendee:v10 onEvent:v7];
+    [v9 inboxNewSectionViewController:self viewProposedTimeForAttendee:attendeeCopy onEvent:eventCopy];
   }
 }
 
-- (void)inboxTableViewGroupController:(id)a3 requestsReloadOfRow:(int64_t)a4
+- (void)inboxTableViewGroupController:(id)controller requestsReloadOfRow:(int64_t)row
 {
-  v6 = a3;
+  controllerCopy = controller;
   if (self->_viewIsVisible)
   {
     if (self->_reloadsSuspendedUntilRefreshCompletes)
@@ -1244,33 +1244,33 @@ LABEL_8:
 
     else
     {
-      v15 = v6;
-      v7 = [(InboxNewSectionViewController *)self visibleGroups];
-      v8 = [v7 indexOfObject:v15];
-      v9 = [(InboxNewSectionViewController *)self firstGroupSection];
+      v15 = controllerCopy;
+      visibleGroups = [(InboxNewSectionViewController *)self visibleGroups];
+      v8 = [visibleGroups indexOfObject:v15];
+      firstGroupSection = [(InboxNewSectionViewController *)self firstGroupSection];
 
-      v10 = [NSIndexPath indexPathForRow:a4 inSection:&v8[v9]];
-      v11 = [(InboxNewSectionViewController *)self tableView];
-      [v11 beginUpdates];
+      v10 = [NSIndexPath indexPathForRow:row inSection:&v8[firstGroupSection]];
+      tableView = [(InboxNewSectionViewController *)self tableView];
+      [tableView beginUpdates];
 
-      v12 = [(InboxNewSectionViewController *)self tableView];
+      tableView2 = [(InboxNewSectionViewController *)self tableView];
       v13 = [NSArray arrayWithObjects:v10, 0];
-      [v12 reloadRowsAtIndexPaths:v13 withRowAnimation:100];
+      [tableView2 reloadRowsAtIndexPaths:v13 withRowAnimation:100];
 
-      v14 = [(InboxNewSectionViewController *)self tableView];
-      [v14 endUpdates];
+      tableView3 = [(InboxNewSectionViewController *)self tableView];
+      [tableView3 endUpdates];
 
-      v6 = v15;
+      controllerCopy = v15;
     }
   }
 }
 
-- (void)refresh:(id)a3
+- (void)refresh:(id)refresh
 {
   CalAnalyticsSendEvent();
   v4 = [EKAccountRefresher alloc];
-  v5 = [(CUIKCalendarModel *)self->_model eventStore];
-  v6 = [v4 initWithEventStore:v5];
+  eventStore = [(CUIKCalendarModel *)self->_model eventStore];
+  v6 = [v4 initWithEventStore:eventStore];
   currentAccountRefresher = self->_currentAccountRefresher;
   self->_currentAccountRefresher = v6;
 
@@ -1280,22 +1280,22 @@ LABEL_8:
   [(EKAccountRefresher *)v8 refresh];
 }
 
-- (void)accountRefreshFinished:(id)a3
+- (void)accountRefreshFinished:(id)finished
 {
-  v7 = a3;
+  finishedCopy = finished;
   self->_reloadsSuspendedUntilRefreshCompletes = 0;
   currentAccountRefresher = self->_currentAccountRefresher;
   self->_currentAccountRefresher = 0;
 
-  v5 = [(InboxNewSectionViewController *)self refreshControl];
+  refreshControl = [(InboxNewSectionViewController *)self refreshControl];
 
-  if (v5)
+  if (refreshControl)
   {
-    v6 = [(InboxNewSectionViewController *)self refreshControl];
-    [v6 endRefreshing];
+    refreshControl2 = [(InboxNewSectionViewController *)self refreshControl];
+    [refreshControl2 endRefreshing];
   }
 
-  if ([v7 allAccountsOffline])
+  if ([finishedCopy allAccountsOffline])
   {
     [EKUIAccountErrorDisplayer presentAlertForOfflineErrorUsingViewController:self];
   }
@@ -1307,35 +1307,35 @@ LABEL_8:
   }
 }
 
-- (id)_eventForIndexPath:(id)a3
+- (id)_eventForIndexPath:(id)path
 {
-  v4 = a3;
-  if (-[InboxNewSectionViewController isIdentityChooserSection:](self, "isIdentityChooserSection:", [v4 section]) || -[InboxNewSectionViewController isFocusBannerSection:](self, "isFocusBannerSection:", objc_msgSend(v4, "section")))
+  pathCopy = path;
+  if (-[InboxNewSectionViewController isIdentityChooserSection:](self, "isIdentityChooserSection:", [pathCopy section]) || -[InboxNewSectionViewController isFocusBannerSection:](self, "isFocusBannerSection:", objc_msgSend(pathCopy, "section")))
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(InboxNewSectionViewController *)self _groupForIndexPath:v4];
-    v5 = [v6 eventForRow:{objc_msgSend(v4, "row")}];
+    v6 = [(InboxNewSectionViewController *)self _groupForIndexPath:pathCopy];
+    v5 = [v6 eventForRow:{objc_msgSend(pathCopy, "row")}];
   }
 
   return v5;
 }
 
-- (id)_groupForIndexPath:(id)a3
+- (id)_groupForIndexPath:(id)path
 {
-  v4 = [a3 section];
+  section = [path section];
 
-  return [(InboxNewSectionViewController *)self _groupForSection:v4];
+  return [(InboxNewSectionViewController *)self _groupForSection:section];
 }
 
-- (id)_groupForSection:(int64_t)a3
+- (id)_groupForSection:(int64_t)section
 {
-  v4 = a3 - [(InboxNewSectionViewController *)self firstGroupSection];
-  v5 = [(InboxNewSectionViewController *)self visibleGroups];
-  v6 = [v5 count];
+  v4 = section - [(InboxNewSectionViewController *)self firstGroupSection];
+  visibleGroups = [(InboxNewSectionViewController *)self visibleGroups];
+  v6 = [visibleGroups count];
 
   if (v4 >= v6)
   {
@@ -1344,8 +1344,8 @@ LABEL_8:
 
   else
   {
-    v7 = [(InboxNewSectionViewController *)self visibleGroups];
-    v8 = [v7 objectAtIndexedSubscript:v4];
+    visibleGroups2 = [(InboxNewSectionViewController *)self visibleGroups];
+    v8 = [visibleGroups2 objectAtIndexedSubscript:v4];
   }
 
   return v8;
@@ -1376,13 +1376,13 @@ LABEL_8:
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
+  senderCopy = sender;
   v7 = 0;
-  if (([CUIKPasteboardUtilities declinesToPerformCutCopyPasteAction:a3 withSender:v6]& 1) == 0 && "paste:" != a3)
+  if (([CUIKPasteboardUtilities declinesToPerformCutCopyPasteAction:action withSender:senderCopy]& 1) == 0 && "paste:" != action)
   {
-    if ("copy:" == a3)
+    if ("copy:" == action)
     {
       if (self->_indexPathForRowWithContextMenu)
       {
@@ -1408,11 +1408,11 @@ LABEL_14:
 
     else
     {
-      if ("cut:" != a3)
+      if ("cut:" != action)
       {
         v14.receiver = self;
         v14.super_class = InboxNewSectionViewController;
-        v7 = [(InboxNewSectionViewController *)&v14 canPerformAction:a3 withSender:v6];
+        v7 = [(InboxNewSectionViewController *)&v14 canPerformAction:action withSender:senderCopy];
         goto LABEL_16;
       }
 
@@ -1440,7 +1440,7 @@ LABEL_16:
   return v7;
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
   if (self->_indexPathForRowWithContextMenu)
   {
@@ -1448,16 +1448,16 @@ LABEL_16:
     if (v4)
     {
       v7 = v4;
-      v5 = [(CUIKCalendarModel *)self->_model pasteboardManager];
+      pasteboardManager = [(CUIKCalendarModel *)self->_model pasteboardManager];
       v6 = [NSSet setWithObject:v7];
-      [v5 cutEvents:v6 delegate:self];
+      [pasteboardManager cutEvents:v6 delegate:self];
 
       v4 = v7;
     }
   }
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
   if (self->_indexPathForRowWithContextMenu)
   {
@@ -1465,18 +1465,18 @@ LABEL_16:
     if (v4)
     {
       v7 = v4;
-      v5 = [(CUIKCalendarModel *)self->_model pasteboardManager];
+      pasteboardManager = [(CUIKCalendarModel *)self->_model pasteboardManager];
       v6 = [NSSet setWithObject:v7];
-      [v5 copyEvents:v6 delegate:self];
+      [pasteboardManager copyEvents:v6 delegate:self];
 
       v4 = v7;
     }
   }
 }
 
-- (void)focusBannerTableViewCellToggled:(id)a3
+- (void)focusBannerTableViewCellToggled:(id)toggled
 {
-  if ([a3 on])
+  if ([toggled on])
   {
     v4 = 1;
   }

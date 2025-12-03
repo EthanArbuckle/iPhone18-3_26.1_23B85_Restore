@@ -1,9 +1,9 @@
 @interface PXStoryStyleConfiguration
-- (BOOL)isEqual:(id)a3;
-- (PXStoryStyleConfiguration)initWithOriginalColorGradeCategory:(id)a3 customColorGradeKind:(int64_t)a4 songResource:(id)a5 autoEditDecisionList:(id)a6 isCustomized:(BOOL)a7;
-- (id)copyWithAutoEditDecisionList:(id)a3;
-- (id)copyWithCustomizedColorGradeKind:(int64_t)a3;
-- (id)copyWithCustomizedSongResource:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PXStoryStyleConfiguration)initWithOriginalColorGradeCategory:(id)category customColorGradeKind:(int64_t)kind songResource:(id)resource autoEditDecisionList:(id)list isCustomized:(BOOL)customized;
+- (id)copyWithAutoEditDecisionList:(id)list;
+- (id)copyWithCustomizedColorGradeKind:(int64_t)kind;
+- (id)copyWithCustomizedSongResource:(id)resource;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -12,16 +12,16 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PXStoryStyleConfiguration *)self originalColorGradeCategory];
-  v4 = [v3 hash];
+  originalColorGradeCategory = [(PXStoryStyleConfiguration *)self originalColorGradeCategory];
+  v4 = [originalColorGradeCategory hash];
 
   return v4 ^ (2 * [(PXStoryStyleConfiguration *)self customColorGradeKind]);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v14) = 1;
   }
@@ -31,21 +31,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXStoryStyleConfiguration *)self originalColorGradeCategory];
-      v7 = [(PXStoryStyleConfiguration *)v5 originalColorGradeCategory];
-      if ((v6 == v7 || [v6 isEqualToString:v7]) && (v8 = -[PXStoryStyleConfiguration customColorGradeKind](self, "customColorGradeKind"), v8 == -[PXStoryStyleConfiguration customColorGradeKind](v5, "customColorGradeKind")))
+      v5 = equalCopy;
+      originalColorGradeCategory = [(PXStoryStyleConfiguration *)self originalColorGradeCategory];
+      originalColorGradeCategory2 = [(PXStoryStyleConfiguration *)v5 originalColorGradeCategory];
+      if ((originalColorGradeCategory == originalColorGradeCategory2 || [originalColorGradeCategory isEqualToString:originalColorGradeCategory2]) && (v8 = -[PXStoryStyleConfiguration customColorGradeKind](self, "customColorGradeKind"), v8 == -[PXStoryStyleConfiguration customColorGradeKind](v5, "customColorGradeKind")))
       {
-        v9 = [(PXStoryStyleConfiguration *)self songResource];
-        v10 = [(PXStoryStyleConfiguration *)v5 songResource];
-        if (v9 == v10 || [v9 isEqual:v10])
+        songResource = [(PXStoryStyleConfiguration *)self songResource];
+        songResource2 = [(PXStoryStyleConfiguration *)v5 songResource];
+        if (songResource == songResource2 || [songResource isEqual:songResource2])
         {
-          v11 = [(PXStoryStyleConfiguration *)self autoEditDecisionList];
-          v12 = [(PXStoryStyleConfiguration *)v5 autoEditDecisionList];
-          if (v11 == v12 || [v11 isEqual:v12])
+          autoEditDecisionList = [(PXStoryStyleConfiguration *)self autoEditDecisionList];
+          autoEditDecisionList2 = [(PXStoryStyleConfiguration *)v5 autoEditDecisionList];
+          if (autoEditDecisionList == autoEditDecisionList2 || [autoEditDecisionList isEqual:autoEditDecisionList2])
           {
-            v13 = [(PXStoryStyleConfiguration *)self isCustomized];
-            v14 = v13 ^ [(PXStoryStyleConfiguration *)v5 isCustomized]^ 1;
+            isCustomized = [(PXStoryStyleConfiguration *)self isCustomized];
+            v14 = isCustomized ^ [(PXStoryStyleConfiguration *)v5 isCustomized]^ 1;
           }
 
           else
@@ -80,69 +80,69 @@
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXStoryStyleConfiguration *)self originalColorGradeCategory];
+  originalColorGradeCategory = [(PXStoryStyleConfiguration *)self originalColorGradeCategory];
   [(PXStoryStyleConfiguration *)self customColorGradeKind];
   v7 = PFStoryColorGradeKindToString();
-  v8 = [(PXStoryStyleConfiguration *)self songResource];
-  v9 = [(PXStoryStyleConfiguration *)self autoEditDecisionList];
-  v10 = [v3 initWithFormat:@"<%@ %p; colorGradeCategory: %@; colorGradeKind: %@; songResource: %@; EDL:%@>", v5, self, v6, v7, v8, v9];
+  songResource = [(PXStoryStyleConfiguration *)self songResource];
+  autoEditDecisionList = [(PXStoryStyleConfiguration *)self autoEditDecisionList];
+  v10 = [v3 initWithFormat:@"<%@ %p; colorGradeCategory: %@; colorGradeKind: %@; songResource: %@; EDL:%@>", v5, self, originalColorGradeCategory, v7, songResource, autoEditDecisionList];
 
   return v10;
 }
 
-- (id)copyWithAutoEditDecisionList:(id)a3
+- (id)copyWithAutoEditDecisionList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(PXStoryStyleConfiguration *)self originalColorGradeCategory];
-  v7 = [(PXStoryStyleConfiguration *)self customColorGradeKind];
-  v8 = [(PXStoryStyleConfiguration *)self songResource];
-  v9 = [v5 initWithOriginalColorGradeCategory:v6 customColorGradeKind:v7 songResource:v8 autoEditDecisionList:v4 isCustomized:{-[PXStoryStyleConfiguration isCustomized](self, "isCustomized")}];
+  originalColorGradeCategory = [(PXStoryStyleConfiguration *)self originalColorGradeCategory];
+  customColorGradeKind = [(PXStoryStyleConfiguration *)self customColorGradeKind];
+  songResource = [(PXStoryStyleConfiguration *)self songResource];
+  v9 = [v5 initWithOriginalColorGradeCategory:originalColorGradeCategory customColorGradeKind:customColorGradeKind songResource:songResource autoEditDecisionList:listCopy isCustomized:{-[PXStoryStyleConfiguration isCustomized](self, "isCustomized")}];
 
   return v9;
 }
 
-- (id)copyWithCustomizedSongResource:(id)a3
+- (id)copyWithCustomizedSongResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(PXStoryStyleConfiguration *)self originalColorGradeCategory];
-  v7 = [(PXStoryStyleConfiguration *)self customColorGradeKind];
-  v8 = [(PXStoryStyleConfiguration *)self autoEditDecisionList];
-  v9 = [v5 initWithOriginalColorGradeCategory:v6 customColorGradeKind:v7 songResource:v4 autoEditDecisionList:v8 isCustomized:1];
+  originalColorGradeCategory = [(PXStoryStyleConfiguration *)self originalColorGradeCategory];
+  customColorGradeKind = [(PXStoryStyleConfiguration *)self customColorGradeKind];
+  autoEditDecisionList = [(PXStoryStyleConfiguration *)self autoEditDecisionList];
+  v9 = [v5 initWithOriginalColorGradeCategory:originalColorGradeCategory customColorGradeKind:customColorGradeKind songResource:resourceCopy autoEditDecisionList:autoEditDecisionList isCustomized:1];
 
   return v9;
 }
 
-- (id)copyWithCustomizedColorGradeKind:(int64_t)a3
+- (id)copyWithCustomizedColorGradeKind:(int64_t)kind
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(PXStoryStyleConfiguration *)self originalColorGradeCategory];
-  v7 = [(PXStoryStyleConfiguration *)self songResource];
-  v8 = [(PXStoryStyleConfiguration *)self autoEditDecisionList];
-  v9 = [v5 initWithOriginalColorGradeCategory:v6 customColorGradeKind:a3 songResource:v7 autoEditDecisionList:v8 isCustomized:1];
+  originalColorGradeCategory = [(PXStoryStyleConfiguration *)self originalColorGradeCategory];
+  songResource = [(PXStoryStyleConfiguration *)self songResource];
+  autoEditDecisionList = [(PXStoryStyleConfiguration *)self autoEditDecisionList];
+  v9 = [v5 initWithOriginalColorGradeCategory:originalColorGradeCategory customColorGradeKind:kind songResource:songResource autoEditDecisionList:autoEditDecisionList isCustomized:1];
 
   return v9;
 }
 
-- (PXStoryStyleConfiguration)initWithOriginalColorGradeCategory:(id)a3 customColorGradeKind:(int64_t)a4 songResource:(id)a5 autoEditDecisionList:(id)a6 isCustomized:(BOOL)a7
+- (PXStoryStyleConfiguration)initWithOriginalColorGradeCategory:(id)category customColorGradeKind:(int64_t)kind songResource:(id)resource autoEditDecisionList:(id)list isCustomized:(BOOL)customized
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  categoryCopy = category;
+  resourceCopy = resource;
+  listCopy = list;
   v19.receiver = self;
   v19.super_class = PXStoryStyleConfiguration;
   v15 = [(PXStoryStyleConfiguration *)&v19 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [categoryCopy copy];
     originalColorGradeCategory = v15->_originalColorGradeCategory;
     v15->_originalColorGradeCategory = v16;
 
-    v15->_customColorGradeKind = a4;
-    objc_storeStrong(&v15->_songResource, a5);
-    objc_storeStrong(&v15->_autoEditDecisionList, a6);
-    v15->_isCustomized = a7;
+    v15->_customColorGradeKind = kind;
+    objc_storeStrong(&v15->_songResource, resource);
+    objc_storeStrong(&v15->_autoEditDecisionList, list);
+    v15->_isCustomized = customized;
   }
 
   return v15;

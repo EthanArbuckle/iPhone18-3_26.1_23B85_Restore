@@ -1,118 +1,118 @@
 @interface IDSDAccountController
-+ (BOOL)isDefaultPairedDeviceFromID:(id)a3 accountUniqueID:(id)a4 serviceName:(id)a5;
++ (BOOL)isDefaultPairedDeviceFromID:(id)d accountUniqueID:(id)iD serviceName:(id)name;
 + (IDSDAccountController)sharedInstance;
-- (BOOL)_isAccountInfoRegistered:(id)a3;
+- (BOOL)_isAccountInfoRegistered:(id)registered;
 - (BOOL)_loadAndEnableStoredAccounts;
 - (BOOL)hasActiveSMSAccount;
 - (BOOL)hasForcedReRegistered;
 - (BOOL)hasiCloudAccount;
-- (BOOL)isEnabledAccount:(id)a3;
+- (BOOL)isEnabledAccount:(id)account;
 - (BOOL)isLocalSetupEnabled;
 - (BOOL)isTraditionalLocalSetupEnabled;
 - (BOOL)isiCloudHSA2;
 - (BOOL)isiCloudSignedIn;
 - (BOOL)isiTunesSignedIn;
 - (IDSDAccountController)init;
-- (IDSDAccountController)initWithServiceController:(id)a3 registrationController:(id)a4 systemAccountAdapter:(id)a5 deviceSupport:(id)a6;
+- (IDSDAccountController)initWithServiceController:(id)controller registrationController:(id)registrationController systemAccountAdapter:(id)adapter deviceSupport:(id)support;
 - (NSArray)accounts;
 - (NSSet)enabledAccounts;
-- (id)_createAccountWithDictionary:(id)a3 service:(id)a4 uniqueID:(id)a5;
+- (id)_createAccountWithDictionary:(id)dictionary service:(id)service uniqueID:(id)d;
 - (id)_inUseProfileIDs;
 - (id)_inUseUsernames;
-- (id)_legacyAccountsOnService:(id)a3;
-- (id)_preferencesOnDomain:(id)a3;
-- (id)_strippedAccountInfo:(id)a3;
-- (id)accountOnService:(id)a3 withAliasURI:(id)a4;
-- (id)accountOnService:(id)a3 withLoginID:(id)a4;
-- (id)accountOnService:(id)a3 withVettedAliasURI:(id)a4;
-- (id)accountUniqueIDsWithType:(int)a3;
-- (id)accountWithServiceName:(id)a3 aliasURI:(id)a4;
-- (id)accountWithServiceName:(id)a3 loginID:(id)a4;
-- (id)accountWithServiceName:(id)a3 myID:(id)a4;
-- (id)accountWithUniqueID:(id)a3;
-- (id)accountsOfAdHocType:(unsigned int)a3;
-- (id)accountsOnService:(id)a3;
-- (id)accountsOnService:(id)a3 withType:(int)a4;
-- (id)accountsWithType:(int)a3;
-- (id)appleIDAccountOnService:(id)a3;
-- (id)cloudPairedIDForDeviceID:(id)a3;
-- (id)deviceCertificateForService:(id)a3 uri:(id)a4;
-- (id)deviceIDForPushToken:(id)a3;
-- (id)deviceNameForDeviceID:(id)a3;
-- (id)enabledAccountsOnService:(id)a3;
-- (id)existingAccountOnService:(id)a3 withType:(int)a4 loginID:(id)a5;
-- (id)localAccountOnService:(id)a3;
-- (id)primaryAccountForAdHocAccount:(id)a3;
-- (id)propertiesForDeviceWithUniqueID:(id)a3;
-- (id)publicKeyForDeviceID:(id)a3;
-- (id)pushTokenForDeviceID:(id)a3;
-- (id)registeredAccountsOnService:(id)a3;
-- (id)registeredDevicesOnService:(id)a3;
-- (id)registeredDevicesOnService:(id)a3 withLinkedURI:(id)a4;
-- (id)registeredLocalURIsOnService:(id)a3;
-- (id)threadSafeServiceWithAccountUniqueID:(id)a3;
-- (void)_addAccount:(id)a3;
-- (void)_addAccountDuringInitialSetup:(id)a3;
-- (void)_attachOrphanedPhoneAliases:(id)a3 toRecipientAccounts:(id)a4 withAccountsToEnable:(id)a5;
-- (void)_cleanUpAccountCredentialForRemovedAccount:(id)a3;
+- (id)_legacyAccountsOnService:(id)service;
+- (id)_preferencesOnDomain:(id)domain;
+- (id)_strippedAccountInfo:(id)info;
+- (id)accountOnService:(id)service withAliasURI:(id)i;
+- (id)accountOnService:(id)service withLoginID:(id)d;
+- (id)accountOnService:(id)service withVettedAliasURI:(id)i;
+- (id)accountUniqueIDsWithType:(int)type;
+- (id)accountWithServiceName:(id)name aliasURI:(id)i;
+- (id)accountWithServiceName:(id)name loginID:(id)d;
+- (id)accountWithServiceName:(id)name myID:(id)d;
+- (id)accountWithUniqueID:(id)d;
+- (id)accountsOfAdHocType:(unsigned int)type;
+- (id)accountsOnService:(id)service;
+- (id)accountsOnService:(id)service withType:(int)type;
+- (id)accountsWithType:(int)type;
+- (id)appleIDAccountOnService:(id)service;
+- (id)cloudPairedIDForDeviceID:(id)d;
+- (id)deviceCertificateForService:(id)service uri:(id)uri;
+- (id)deviceIDForPushToken:(id)token;
+- (id)deviceNameForDeviceID:(id)d;
+- (id)enabledAccountsOnService:(id)service;
+- (id)existingAccountOnService:(id)service withType:(int)type loginID:(id)d;
+- (id)localAccountOnService:(id)service;
+- (id)primaryAccountForAdHocAccount:(id)account;
+- (id)propertiesForDeviceWithUniqueID:(id)d;
+- (id)publicKeyForDeviceID:(id)d;
+- (id)pushTokenForDeviceID:(id)d;
+- (id)registeredAccountsOnService:(id)service;
+- (id)registeredDevicesOnService:(id)service;
+- (id)registeredDevicesOnService:(id)service withLinkedURI:(id)i;
+- (id)registeredLocalURIsOnService:(id)service;
+- (id)threadSafeServiceWithAccountUniqueID:(id)d;
+- (void)_addAccount:(id)account;
+- (void)_addAccountDuringInitialSetup:(id)setup;
+- (void)_attachOrphanedPhoneAliases:(id)aliases toRecipientAccounts:(id)accounts withAccountsToEnable:(id)enable;
+- (void)_cleanUpAccountCredentialForRemovedAccount:(id)account;
 - (void)_cleanUpAccountCredentialStore;
 - (void)_cleanupLegacyAccounts;
 - (void)_cleanupLegacyLocalAccounts;
 - (void)_cleanupLocalAccounts;
-- (void)_disableAccountWithUniqueID:(id)a3;
-- (void)_disablePrimaryAccountWithUniqueID:(id)a3 userAction:(BOOL)a4;
-- (void)_enableAccountWithUniqueID:(id)a3;
-- (void)_forceDisableAccountWithUniqueID:(id)a3;
-- (void)_forceDisablePrimaryAccountWithUniqueID:(id)a3;
+- (void)_disableAccountWithUniqueID:(id)d;
+- (void)_disablePrimaryAccountWithUniqueID:(id)d userAction:(BOOL)action;
+- (void)_enableAccountWithUniqueID:(id)d;
+- (void)_forceDisableAccountWithUniqueID:(id)d;
+- (void)_forceDisablePrimaryAccountWithUniqueID:(id)d;
 - (void)_kickRemoteCacheWipe;
 - (void)_loadAndEnableStoredLegacyAccounts;
 - (void)_migrateLegacyAccounts;
 - (void)_migrateLegacyAccounts1;
 - (void)_migrateLegacyAccounts2;
-- (void)_persistAccounts:(id)a3;
+- (void)_persistAccounts:(id)accounts;
 - (void)_refreshLocalAccounts;
 - (void)_registerForAllRegistrationsSucceeded;
 - (void)_registerSysdiagnoseBlock;
-- (void)_removeAccount:(id)a3;
-- (void)_removePrimaryAccount:(id)a3;
+- (void)_removeAccount:(id)account;
+- (void)_removePrimaryAccount:(id)account;
 - (void)_resumeGDRReAuthenticateIfNecessary;
 - (void)_servicesChanged;
-- (void)_servicesRemoved:(id)a3;
+- (void)_servicesRemoved:(id)removed;
 - (void)_setupAdHocAccounts;
-- (void)_setupAdHocAccountsForPrimaryAccount:(id)a3;
+- (void)_setupAdHocAccountsForPrimaryAccount:(id)account;
 - (void)_setupForLocal;
 - (void)_setupLinkedAccounts;
 - (void)_setupLocalAccounts;
 - (void)_storeAccounts;
 - (void)_updateDeviceProperties;
-- (void)addAccount:(id)a3;
-- (void)addPrimaryAccount:(id)a3;
-- (void)authKitAccountUpdate:(id)a3;
+- (void)addAccount:(id)account;
+- (void)addPrimaryAccount:(id)account;
+- (void)authKitAccountUpdate:(id)update;
 - (void)dealloc;
 - (void)delayedSaveSettings;
-- (void)deliveryController:(id)a3 uniqueID:(id)a4 isCloudConnected:(BOOL)a5;
-- (void)deliveryController:(id)a3 uniqueID:(id)a4 isConnected:(BOOL)a5;
-- (void)deliveryController:(id)a3 uniqueID:(id)a4 isNearby:(BOOL)a5;
-- (void)disableAccountWithUniqueID:(id)a3;
-- (void)enableAccountWithUniqueID:(id)a3;
-- (void)enablePrimaryAccountWithUniqueID:(id)a3;
-- (void)forceDisableAccountWithUniqueID:(id)a3;
-- (void)forceRemoveAccount:(id)a3;
+- (void)deliveryController:(id)controller uniqueID:(id)d isCloudConnected:(BOOL)connected;
+- (void)deliveryController:(id)controller uniqueID:(id)d isConnected:(BOOL)connected;
+- (void)deliveryController:(id)controller uniqueID:(id)d isNearby:(BOOL)nearby;
+- (void)disableAccountWithUniqueID:(id)d;
+- (void)enableAccountWithUniqueID:(id)d;
+- (void)enablePrimaryAccountWithUniqueID:(id)d;
+- (void)forceDisableAccountWithUniqueID:(id)d;
+- (void)forceRemoveAccount:(id)account;
 - (void)hardDeregister;
-- (void)issueDependentIDQueriesWithCompletionBlock:(id)a3;
+- (void)issueDependentIDQueriesWithCompletionBlock:(id)block;
 - (void)issueGetDependentAndGetHandlesRequest;
 - (void)issueGetDependentRequest;
-- (void)issueGetDependentRequestForAccount:(id)a3;
+- (void)issueGetDependentRequestForAccount:(id)account;
 - (void)loadDeviceProperties;
 - (void)loadStoredAccounts;
-- (void)removeAccount:(id)a3;
-- (void)saveDevicePropertiesWithOldKeys:(id)a3;
-- (void)setNSUUID:(id)a3 onDeviceWithUniqueID:(id)a4;
-- (void)setupLocalAccountForService:(id)a3;
+- (void)removeAccount:(id)account;
+- (void)saveDevicePropertiesWithOldKeys:(id)keys;
+- (void)setNSUUID:(id)d onDeviceWithUniqueID:(id)iD;
+- (void)setupLocalAccountForService:(id)service;
 - (void)startLocalSetup;
 - (void)stopLocalSetup;
 - (void)triggerFinalDeregister;
-- (void)updateDevicePropertiesWithDevices:(id)a3;
+- (void)updateDevicePropertiesWithDevices:(id)devices;
 - (void)updateExpiredDependent;
 @end
 
@@ -168,10 +168,10 @@
     [(IDSDAccountController *)self _cleanupLegacyAccounts];
     [(IDSDAccountController *)self _cleanupLegacyLocalAccounts];
     [(IDSDAccountController *)self _setupLinkedAccounts];
-    v4 = [(IDSDAccountController *)self isLocalSetupEnabled];
+    isLocalSetupEnabled = [(IDSDAccountController *)self isLocalSetupEnabled];
     v5 = +[IMRGLog registration];
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (isLocalSetupEnabled)
     {
       if (v6)
       {
@@ -192,14 +192,14 @@
 
       [(IDSDAccountController *)self _cleanupLocalAccounts];
       [(IDSDAccountController *)self _setupAdHocAccounts];
-      v7 = [(IDSDAccountController *)self daemon];
-      [v7 updateTopics];
+      daemon = [(IDSDAccountController *)self daemon];
+      [daemon updateTopics];
     }
 
     [(IDSDAccountController *)self _cleanUpAccountCredentialStore];
     [(IDSDAccountController *)self _resumeGDRReAuthenticateIfNecessary];
-    v8 = [(IDSDAccountController *)self delegate];
-    [v8 accountControllerDidFinishLoadingAccounts:self];
+    delegate = [(IDSDAccountController *)self delegate];
+    [delegate accountControllerDidFinishLoadingAccounts:self];
   }
 }
 
@@ -212,12 +212,12 @@
   objc_autoreleasePoolPop(v3);
 }
 
-+ (BOOL)isDefaultPairedDeviceFromID:(id)a3 accountUniqueID:(id)a4 serviceName:(id)a5
++ (BOOL)isDefaultPairedDeviceFromID:(id)d accountUniqueID:(id)iD serviceName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 isEqualToIgnoringCase:IDSDefaultPairedDevice])
+  dCopy = d;
+  iDCopy = iD;
+  nameCopy = name;
+  if ([dCopy isEqualToIgnoringCase:IDSDefaultPairedDevice])
   {
     v10 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -233,31 +233,31 @@
   else
   {
     v30 = 0;
-    v12 = [v7 _stripPotentialTokenURIWithToken:&v30];
+    v12 = [dCopy _stripPotentialTokenURIWithToken:&v30];
     v13 = v30;
-    if ([v7 hasPrefix:@"device:"])
+    if ([dCopy hasPrefix:@"device:"])
     {
-      v14 = [v7 _stripFZIDPrefix];
+      _stripFZIDPrefix = [dCopy _stripFZIDPrefix];
     }
 
     else
     {
-      v14 = 0;
+      _stripFZIDPrefix = 0;
     }
 
-    if ([v13 length] || objc_msgSend(v14, "length"))
+    if ([v13 length] || objc_msgSend(_stripFZIDPrefix, "length"))
     {
       v15 = +[IDSDAccountController sharedInstance];
-      v16 = [v15 accountWithUniqueID:v8];
+      v16 = [v15 accountWithUniqueID:iDCopy];
 
       if (v16)
       {
-        v17 = [v16 defaultPairedDependentRegistration];
-        v18 = v17;
-        if (v17)
+        defaultPairedDependentRegistration = [v16 defaultPairedDependentRegistration];
+        v18 = defaultPairedDependentRegistration;
+        if (defaultPairedDependentRegistration)
         {
-          v19 = [v17 objectForKey:IDSDevicePropertyPushToken];
-          v20 = v19;
+          v19 = [defaultPairedDependentRegistration objectForKey:IDSDevicePropertyPushToken];
+          smallDescription2 = v19;
           if (v19 && [v19 isEqualToData:v13])
           {
             v21 = OSLogHandleForIDSCategory();
@@ -274,7 +274,7 @@
           else
           {
             v23 = [v18 objectForKey:IDSDevicePropertyIdentifierOverride];
-            if ([v14 length] && objc_msgSend(v14, "isEqualToIgnoringCase:", v23))
+            if ([_stripFZIDPrefix length] && objc_msgSend(_stripFZIDPrefix, "isEqualToIgnoringCase:", v23))
             {
               v24 = OSLogHandleForIDSCategory();
               if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -307,13 +307,13 @@
           v25 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
-            v26 = [v16 smallDescription];
+            smallDescription = [v16 smallDescription];
             *buf = 138412290;
-            v32 = v26;
+            v32 = smallDescription;
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Did not find a default paired device on this account %@", buf, 0xCu);
           }
 
-          v20 = [v16 smallDescription];
+          smallDescription2 = [v16 smallDescription];
           DLCSessionLogWithLevel();
           v11 = 0;
         }
@@ -339,7 +339,7 @@
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v32 = v7;
+        v32 = dCopy;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Did not find fromToken or FromDeviceUniqueID in %@", buf, 0xCu);
       }
 
@@ -351,12 +351,12 @@
   return v11;
 }
 
-- (IDSDAccountController)initWithServiceController:(id)a3 registrationController:(id)a4 systemAccountAdapter:(id)a5 deviceSupport:(id)a6
+- (IDSDAccountController)initWithServiceController:(id)controller registrationController:(id)registrationController systemAccountAdapter:(id)adapter deviceSupport:(id)support
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  controllerCopy = controller;
+  registrationControllerCopy = registrationController;
+  adapterCopy = adapter;
+  supportCopy = support;
   v33.receiver = self;
   v33.super_class = IDSDAccountController;
   v15 = [(IDSDAccountController *)&v33 init];
@@ -392,10 +392,10 @@
     authkitQueue = v15->_authkitQueue;
     v15->_authkitQueue = v25;
 
-    objc_storeStrong(&v15->_serviceController, a3);
-    objc_storeStrong(&v15->_registrationController, a4);
-    objc_storeStrong(&v15->_systemAccountAdapter, a5);
-    objc_storeStrong(&v15->_deviceSupport, a6);
+    objc_storeStrong(&v15->_serviceController, controller);
+    objc_storeStrong(&v15->_registrationController, registrationController);
+    objc_storeStrong(&v15->_systemAccountAdapter, adapter);
+    objc_storeStrong(&v15->_deviceSupport, support);
     v27 = [CUTDeferredTaskQueue alloc];
     v28 = im_primary_queue();
     v29 = [v27 initWithCapacity:1 queue:v28 block:&stru_100BDCE40];
@@ -508,14 +508,14 @@
     }
 
     [(IDSDAccountController *)self setHasHardDeregistered:1];
-    v4 = [(IDSDAccountController *)self accounts];
-    v5 = [v4 _copyForEnumerating];
+    accounts = [(IDSDAccountController *)self accounts];
+    _copyForEnumerating = [accounts _copyForEnumerating];
 
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = v5;
+    v6 = _copyForEnumerating;
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v7)
     {
@@ -545,15 +545,15 @@
   }
 }
 
-- (void)_removeAccount:(id)a3
+- (void)_removeAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = objc_autoreleasePoolPush();
-  if (v4)
+  if (accountCopy)
   {
     accountIDMap = self->_accountIDMap;
-    v7 = [v4 uniqueID];
-    v8 = [(NSMutableDictionary *)accountIDMap objectForKey:v7];
+    uniqueID = [accountCopy uniqueID];
+    v8 = [(NSMutableDictionary *)accountIDMap objectForKey:uniqueID];
 
     v9 = +[IMRGLog registration];
     v10 = v9;
@@ -562,56 +562,56 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412290;
-        v19 = v4;
+        v19 = accountCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Removing account %@", &v18, 0xCu);
       }
 
-      [v4 setIsBeingRemoved:1];
-      [v4 cleanupAccount];
-      v11 = [v4 uniqueID];
-      [(IDSDAccountController *)self _disableAccountWithUniqueID:v11];
+      [accountCopy setIsBeingRemoved:1];
+      [accountCopy cleanupAccount];
+      uniqueID2 = [accountCopy uniqueID];
+      [(IDSDAccountController *)self _disableAccountWithUniqueID:uniqueID2];
 
       [(NSRecursiveLock *)self->_accountIDMapLock lock];
       v12 = self->_accountIDMap;
-      v13 = [v4 uniqueID];
-      [(NSMutableDictionary *)v12 removeObjectForKey:v13];
+      uniqueID3 = [accountCopy uniqueID];
+      [(NSMutableDictionary *)v12 removeObjectForKey:uniqueID3];
 
       [(NSRecursiveLock *)self->_accountIDMapLock unlock];
       [(IDSDAccountController *)self delayedSaveSettings];
       v14 = +[IDSDaemon sharedInstance];
-      v15 = [v4 service];
-      v16 = [v15 pushTopic];
-      v10 = [v14 broadcasterForTopic:v16 ignoreServiceListener:1 messageContext:0];
+      service = [accountCopy service];
+      pushTopic = [service pushTopic];
+      v10 = [v14 broadcasterForTopic:pushTopic ignoreServiceListener:1 messageContext:0];
 
-      v17 = [v4 accountSetupInfo];
-      [v10 accountRemoved:v17];
+      accountSetupInfo = [accountCopy accountSetupInfo];
+      [v10 accountRemoved:accountSetupInfo];
 
-      [(IDSDAccountController *)self _cleanUpAccountCredentialForRemovedAccount:v4];
+      [(IDSDAccountController *)self _cleanUpAccountCredentialForRemovedAccount:accountCopy];
     }
 
     else if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      sub_1009202C4(v4);
+      sub_1009202C4(accountCopy);
     }
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)_removePrimaryAccount:(id)a3
+- (void)_removePrimaryAccount:(id)account
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  accountCopy = account;
+  v5 = accountCopy;
+  if (accountCopy)
   {
-    if ([v4 isAdHocAccount])
+    if ([accountCopy isAdHocAccount])
     {
       v6 = +[IMRGLog warning];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [v5 uniqueID];
+        uniqueID = [v5 uniqueID];
         *buf = 138412290;
-        v20 = v7;
+        v20 = uniqueID;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Tried to remove ad hoc account directly, ignoring... { uniqueID: %@ }", buf, 0xCu);
       }
     }
@@ -620,8 +620,8 @@
     {
       v8 = objc_alloc_init(NSMutableArray);
       [v8 addObject:v5];
-      v9 = [v5 adHocAccounts];
-      [v8 addObjectsFromArray:v9];
+      adHocAccounts = [v5 adHocAccounts];
+      [v8 addObjectsFromArray:adHocAccounts];
 
       v16 = 0u;
       v17 = 0u;
@@ -671,8 +671,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(IDSDAccountController *)self accounts];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  accounts = [(IDSDAccountController *)self accounts];
+  v5 = [accounts countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -683,17 +683,17 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(accounts);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) loginID];
-        if (v9)
+        loginID = [*(*(&v11 + 1) + 8 * i) loginID];
+        if (loginID)
         {
-          [v3 addObject:v9];
+          [v3 addObject:loginID];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [accounts countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -709,8 +709,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(IDSDAccountController *)self accounts];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  accounts = [(IDSDAccountController *)self accounts];
+  v5 = [accounts countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -721,17 +721,17 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(accounts);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) dsID];
-        if (v9)
+        dsID = [*(*(&v11 + 1) + 8 * i) dsID];
+        if (dsID)
         {
-          [v3 addObject:v9];
+          [v3 addObject:dsID];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [accounts countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -740,18 +740,18 @@
   return v3;
 }
 
-- (void)_cleanUpAccountCredentialForRemovedAccount:(id)a3
+- (void)_cleanUpAccountCredentialForRemovedAccount:(id)account
 {
-  v12 = a3;
+  accountCopy = account;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v12 loginID];
-  v6 = [v12 dsID];
+  loginID = [accountCopy loginID];
+  dsID = [accountCopy dsID];
   v7 = +[FTPasswordManager sharedInstance];
-  v8 = [(IDSDAccountController *)self _inUseUsernames];
-  v9 = [v8 allObjects];
-  v10 = [(IDSDAccountController *)self _inUseProfileIDs];
-  v11 = [v10 allObjects];
-  [v7 cleanUpAccountsWithUsername:v5 orProfileID:v6 basedOnInUseUsernames:v9 profileIDs:v11 completionBlock:0];
+  _inUseUsernames = [(IDSDAccountController *)self _inUseUsernames];
+  allObjects = [_inUseUsernames allObjects];
+  _inUseProfileIDs = [(IDSDAccountController *)self _inUseProfileIDs];
+  allObjects2 = [_inUseProfileIDs allObjects];
+  [v7 cleanUpAccountsWithUsername:loginID orProfileID:dsID basedOnInUseUsernames:allObjects profileIDs:allObjects2 completionBlock:0];
 
   objc_autoreleasePoolPop(v4);
 }
@@ -772,11 +772,11 @@
   [v3 cleanUpAccountsBasedOnInUseUsernamesBlock:v5 profileIDBlock:v4 completionBlock:0];
 }
 
-- (void)_addAccount:(id)a3
+- (void)_addAccount:(id)account
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  accountCopy = account;
+  v5 = accountCopy;
+  if (!accountCopy)
   {
     v10 = +[IMRGLog warning];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -793,8 +793,8 @@ LABEL_17:
   }
 
   accountIDMap = self->_accountIDMap;
-  v7 = [v4 uniqueID];
-  v8 = [(NSMutableDictionary *)accountIDMap objectForKey:v7];
+  uniqueID = [accountCopy uniqueID];
+  v8 = [(NSMutableDictionary *)accountIDMap objectForKey:uniqueID];
 
   v9 = +[IMRGLog registration];
   v10 = v9;
@@ -817,20 +817,20 @@ LABEL_17:
 
   [(NSRecursiveLock *)self->_accountIDMapLock lock];
   v12 = self->_accountIDMap;
-  v13 = [v5 uniqueID];
-  [(NSMutableDictionary *)v12 setObject:v5 forKey:v13];
+  uniqueID2 = [v5 uniqueID];
+  [(NSMutableDictionary *)v12 setObject:v5 forKey:uniqueID2];
 
   [(NSRecursiveLock *)self->_accountIDMapLock unlock];
   [(IDSDAccountController *)self delayedSaveSettings];
   if (![v5 isTemporary] || (objc_msgSend(v5, "expirationDate"), v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
   {
-    v15 = [(IDSDAccountController *)self daemon];
-    v16 = [v5 service];
-    v17 = [v16 pushTopic];
-    v18 = [v15 broadcasterForTopic:v17 ignoreServiceListener:1 messageContext:0];
+    daemon = [(IDSDAccountController *)self daemon];
+    service = [v5 service];
+    pushTopic = [service pushTopic];
+    v18 = [daemon broadcasterForTopic:pushTopic ignoreServiceListener:1 messageContext:0];
 
-    v19 = [v5 accountSetupInfo];
-    [v18 accountAdded:v19];
+    accountSetupInfo = [v5 accountSetupInfo];
+    [v18 accountAdded:accountSetupInfo];
 LABEL_12:
 
     goto LABEL_13;
@@ -839,18 +839,18 @@ LABEL_12:
   v18 = +[IMRGLog registration];
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v5 uniqueID];
+    accountSetupInfo = [v5 uniqueID];
     v23 = 138412290;
-    v24 = v19;
+    v24 = accountSetupInfo;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Delaying broadcast for unprovisioned temporary account %@", &v23, 0xCu);
     goto LABEL_12;
   }
 
 LABEL_13:
 
-  v20 = [v5 service];
-  v21 = [v20 pushTopic];
-  v22 = [v21 isEqualToIgnoringCase:@"com.apple.private.alloy.accountssync"];
+  service2 = [v5 service];
+  pushTopic2 = [service2 pushTopic];
+  v22 = [pushTopic2 isEqualToIgnoringCase:@"com.apple.private.alloy.accountssync"];
 
   if (v22)
   {
@@ -868,20 +868,20 @@ LABEL_13:
 LABEL_18:
 }
 
-- (void)addPrimaryAccount:(id)a3
+- (void)addPrimaryAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = objc_autoreleasePoolPush();
-  if (v4)
+  if (accountCopy)
   {
-    if ([v4 isAdHocAccount])
+    if ([accountCopy isAdHocAccount])
     {
       v6 = +[IMRGLog warning];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [v4 uniqueID];
+        uniqueID = [accountCopy uniqueID];
         v16 = 138412290;
-        v17 = v7;
+        v17 = uniqueID;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Tried to add ad hoc account directly, ignoring... { uniqueID: %@ }", &v16, 0xCu);
       }
     }
@@ -889,24 +889,24 @@ LABEL_18:
     else
     {
       accountIDMap = self->_accountIDMap;
-      v9 = [v4 uniqueID];
-      v10 = [(NSMutableDictionary *)accountIDMap objectForKey:v9];
+      uniqueID2 = [accountCopy uniqueID];
+      v10 = [(NSMutableDictionary *)accountIDMap objectForKey:uniqueID2];
 
       if (v10)
       {
         v6 = +[IMRGLog registration];
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
         {
-          sub_1009203CC(v4);
+          sub_1009203CC(accountCopy);
         }
       }
 
       else
       {
-        v11 = [v4 service];
-        v12 = [v4 accountType];
-        v13 = [v4 loginID];
-        v6 = [(IDSDAccountController *)self existingAccountOnService:v11 withType:v12 loginID:v13];
+        service = [accountCopy service];
+        accountType = [accountCopy accountType];
+        loginID = [accountCopy loginID];
+        v6 = [(IDSDAccountController *)self existingAccountOnService:service withType:accountType loginID:loginID];
 
         if (v6)
         {
@@ -918,14 +918,14 @@ LABEL_18:
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "  ** Found existing matching account, removing: %@", &v16, 0xCu);
           }
 
-          v15 = [v6 linkedAccounts];
-          [v15 __imForEach:&stru_100BDCEE8];
+          linkedAccounts = [v6 linkedAccounts];
+          [linkedAccounts __imForEach:&stru_100BDCEE8];
 
           [(IDSDAccountController *)self _removeAccount:v6];
         }
 
-        [(IDSDAccountController *)self _addAccount:v4];
-        [(IDSDAccountController *)self _setupAdHocAccountsForPrimaryAccount:v4];
+        [(IDSDAccountController *)self _addAccount:accountCopy];
+        [(IDSDAccountController *)self _setupAdHocAccountsForPrimaryAccount:accountCopy];
       }
     }
   }
@@ -943,66 +943,66 @@ LABEL_18:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)addAccount:(id)a3
+- (void)addAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 uniqueID];
+    uniqueID = [accountCopy uniqueID];
     v7 = +[FTDeviceSupport sharedInstance];
-    v8 = [v7 deviceInformationString];
+    deviceInformationString = [v7 deviceInformationString];
     v9 = 138412546;
-    v10 = v6;
+    v10 = uniqueID;
     v11 = 2112;
-    v12 = v8;
+    v12 = deviceInformationString;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Client requested add account with unique ID %@ (Environment: %@)", &v9, 0x16u);
   }
 
-  [(IDSDAccountController *)self addPrimaryAccount:v4];
+  [(IDSDAccountController *)self addPrimaryAccount:accountCopy];
 }
 
-- (void)removeAccount:(id)a3
+- (void)removeAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 uniqueID];
+    uniqueID = [accountCopy uniqueID];
     v7 = +[FTDeviceSupport sharedInstance];
-    v8 = [v7 deviceInformationString];
+    deviceInformationString = [v7 deviceInformationString];
     v9 = 138412546;
-    v10 = v6;
+    v10 = uniqueID;
     v11 = 2112;
-    v12 = v8;
+    v12 = deviceInformationString;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Client requested remove account with unique ID %@ (Environment: %@)", &v9, 0x16u);
   }
 
-  [(IDSDAccountController *)self _removePrimaryAccount:v4];
+  [(IDSDAccountController *)self _removePrimaryAccount:accountCopy];
 }
 
-- (void)forceRemoveAccount:(id)a3
+- (void)forceRemoveAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 smallDescription];
+    smallDescription = [accountCopy smallDescription];
     v8 = 138412290;
-    v9 = v6;
+    v9 = smallDescription;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Force removing account {account: %@}", &v8, 0xCu);
   }
 
-  if (v4)
+  if (accountCopy)
   {
-    if ([v4 isAdHocAccount])
+    if ([accountCopy isAdHocAccount])
     {
-      [(IDSDAccountController *)self _removeAccount:v4];
+      [(IDSDAccountController *)self _removeAccount:accountCopy];
     }
 
     else
     {
-      [(IDSDAccountController *)self _removePrimaryAccount:v4];
+      [(IDSDAccountController *)self _removePrimaryAccount:accountCopy];
     }
   }
 
@@ -1017,27 +1017,27 @@ LABEL_18:
   }
 }
 
-- (void)_disablePrimaryAccountWithUniqueID:(id)a3 userAction:(BOOL)a4
+- (void)_disablePrimaryAccountWithUniqueID:(id)d userAction:(BOOL)action
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 length])
+  actionCopy = action;
+  dCopy = d;
+  if ([dCopy length])
   {
-    v7 = [(IDSDAccountController *)self accountWithUniqueID:v6];
+    v7 = [(IDSDAccountController *)self accountWithUniqueID:dCopy];
     v8 = v7;
     if (v7)
     {
       if (![v7 isAdHocAccount])
       {
-        if (v4)
+        if (actionCopy)
         {
           [v8 setIsUserDisabled:1];
         }
 
         v11 = objc_alloc_init(NSMutableArray);
         [v11 addObject:v8];
-        v12 = [v8 adHocAccounts];
-        [v11 addObjectsFromArray:v12];
+        adHocAccounts = [v8 adHocAccounts];
+        [v11 addObjectsFromArray:adHocAccounts];
 
         v34 = 0u;
         v35 = 0u;
@@ -1048,14 +1048,14 @@ LABEL_18:
         if (v13)
         {
           v15 = v13;
-          v16 = 0;
+          uniqueID = 0;
           v17 = *v33;
           *&v14 = 138412290;
           v27 = v14;
           while (2)
           {
             v18 = 0;
-            v19 = v16;
+            v19 = uniqueID;
             do
             {
               if (*v33 != v17)
@@ -1063,9 +1063,9 @@ LABEL_18:
                 objc_enumerationMutation(v9);
               }
 
-              v16 = [*(*(&v32 + 1) + 8 * v18) uniqueID];
+              uniqueID = [*(*(&v32 + 1) + 8 * v18) uniqueID];
 
-              if (([(NSMutableSet *)self->_enabledAccounts containsObject:v16]& 1) != 0)
+              if (([(NSMutableSet *)self->_enabledAccounts containsObject:uniqueID]& 1) != 0)
               {
 
                 v30 = 0u;
@@ -1087,8 +1087,8 @@ LABEL_18:
                         objc_enumerationMutation(v21);
                       }
 
-                      v26 = [*(*(&v28 + 1) + 8 * i) uniqueID];
-                      [(IDSDAccountController *)self _disableAccountWithUniqueID:v26];
+                      uniqueID2 = [*(*(&v28 + 1) + 8 * i) uniqueID];
+                      [(IDSDAccountController *)self _disableAccountWithUniqueID:uniqueID2];
                     }
 
                     v23 = [v21 countByEnumeratingWithState:&v28 objects:v36 count:16];
@@ -1104,12 +1104,12 @@ LABEL_18:
               if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
               {
                 *buf = v27;
-                v39 = v16;
+                v39 = uniqueID;
                 _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "Account with unique ID %@ is already disabled, ignoring...", buf, 0xCu);
               }
 
               v18 = v18 + 1;
-              v19 = v16;
+              v19 = uniqueID;
             }
 
             while (v15 != v18);
@@ -1125,7 +1125,7 @@ LABEL_18:
 
         else
         {
-          v16 = 0;
+          uniqueID = 0;
         }
 
 LABEL_33:
@@ -1137,7 +1137,7 @@ LABEL_33:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v39 = v6;
+        v39 = dCopy;
         v10 = "Tried to disable ad hoc account directly, ignoring... { uniqueID: %@ }";
 LABEL_10:
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, v10, buf, 0xCu);
@@ -1150,7 +1150,7 @@ LABEL_10:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v39 = v6;
+        v39 = dCopy;
         v10 = "Tried to disable a primary account we don't know about, ignoring... { uniqueID: %@ }";
         goto LABEL_10;
       }
@@ -1171,12 +1171,12 @@ LABEL_34:
 LABEL_35:
 }
 
-- (void)_forceDisablePrimaryAccountWithUniqueID:(id)a3
+- (void)_forceDisablePrimaryAccountWithUniqueID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [(IDSDAccountController *)self accountWithUniqueID:v4];
+    v5 = [(IDSDAccountController *)self accountWithUniqueID:dCopy];
     v6 = v5;
     if (v5)
     {
@@ -1185,8 +1185,8 @@ LABEL_35:
         [v6 setIsUserDisabled:1];
         v9 = objc_alloc_init(NSMutableArray);
         [v9 addObject:v6];
-        v10 = [v6 adHocAccounts];
-        [v9 addObjectsFromArray:v10];
+        adHocAccounts = [v6 adHocAccounts];
+        [v9 addObjectsFromArray:adHocAccounts];
 
         v18 = 0u;
         v19 = 0u;
@@ -1207,8 +1207,8 @@ LABEL_35:
                 objc_enumerationMutation(v7);
               }
 
-              v15 = [*(*(&v16 + 1) + 8 * i) uniqueID];
-              [(IDSDAccountController *)self _forceDisableAccountWithUniqueID:v15];
+              uniqueID = [*(*(&v16 + 1) + 8 * i) uniqueID];
+              [(IDSDAccountController *)self _forceDisableAccountWithUniqueID:uniqueID];
             }
 
             v12 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -1224,7 +1224,7 @@ LABEL_35:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v22 = v4;
+        v22 = dCopy;
         v8 = "Tried to disable ad hoc account directly, ignoring... { uniqueID: %@ }";
 LABEL_10:
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, v8, buf, 0xCu);
@@ -1237,7 +1237,7 @@ LABEL_10:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v22 = v4;
+        v22 = dCopy;
         v8 = "Tried to disable a primary account we don't know about, ignoring... { uniqueID: %@ }";
         goto LABEL_10;
       }
@@ -1258,76 +1258,76 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)_forceDisableAccountWithUniqueID:(id)a3
+- (void)_forceDisableAccountWithUniqueID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [(IDSDAccountController *)self accountWithUniqueID:v4];
+    v5 = [(IDSDAccountController *)self accountWithUniqueID:dCopy];
     if (v5)
     {
-      if ([(NSMutableSet *)self->_enabledAccounts containsObject:v4])
+      if ([(NSMutableSet *)self->_enabledAccounts containsObject:dCopy])
       {
         v6 = +[IMRGLog registration];
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
-          v7 = [v5 loginID];
-          v8 = [v5 service];
-          v9 = [v8 identifier];
+          loginID = [v5 loginID];
+          service = [v5 service];
+          identifier = [service identifier];
           v10 = +[FTDeviceSupport sharedInstance];
-          v11 = [v10 deviceInformationString];
+          deviceInformationString = [v10 deviceInformationString];
           v23 = 138413314;
-          v24 = v4;
+          v24 = dCopy;
           v25 = 2112;
-          v26 = v7;
+          v26 = loginID;
           v27 = 2112;
-          v28 = v9;
+          v28 = identifier;
           v29 = 2112;
-          v30 = v11;
+          v30 = deviceInformationString;
           v31 = 2112;
-          v32 = self;
+          selfCopy = self;
           _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Force disable account with uniqueID %@ login ID %@ service %@ called (Environment: %@) %@", &v23, 0x34u);
         }
 
-        [(NSMutableSet *)self->_enabledAccounts removeObject:v4];
+        [(NSMutableSet *)self->_enabledAccounts removeObject:dCopy];
       }
 
       [v5 deactivateRegistration];
       [v5 resetErrorState];
-      v12 = [v5 service];
-      v13 = [v12 identifier];
+      service2 = [v5 service];
+      identifier2 = [service2 identifier];
 
       v14 = +[IMRGLog registration];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v23 = 138412290;
-        v24 = v13;
+        v24 = identifier2;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Clearing service's cache {serviceIdentifier: %@}", &v23, 0xCu);
       }
 
       v15 = +[IDSPeerIDManager sharedInstance];
-      [v15 forgetPeerTokensForService:v13 reason:14];
+      [v15 forgetPeerTokensForService:identifier2 reason:14];
 
       v16 = +[IDSIDStatusQueryController sharedInstance];
-      [v16 removeCachedEntriesForService:v13];
+      [v16 removeCachedEntriesForService:identifier2];
 
       v17 = +[IDSDaemon sharedInstance];
-      v18 = [v5 service];
-      v19 = [v18 pushTopic];
-      v20 = [v17 broadcasterForTopic:v19 ignoreServiceListener:1 messageContext:0];
+      service3 = [v5 service];
+      pushTopic = [service3 pushTopic];
+      v20 = [v17 broadcasterForTopic:pushTopic ignoreServiceListener:1 messageContext:0];
 
-      v21 = [v5 service];
-      v22 = [v21 identifier];
-      [v20 accountDisabled:v4 onService:v22];
+      service4 = [v5 service];
+      identifier3 = [service4 identifier];
+      [v20 accountDisabled:dCopy onService:identifier3];
     }
 
     else
     {
-      v13 = +[IMRGLog warning];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      identifier2 = +[IMRGLog warning];
+      if (os_log_type_enabled(identifier2, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v23) = 0;
-        _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Tried to force disable an account we don't know about, ignoring...", &v23, 2u);
+        _os_log_impl(&_mh_execute_header, identifier2, OS_LOG_TYPE_DEFAULT, "Tried to force disable an account we don't know about, ignoring...", &v23, 2u);
       }
     }
   }
@@ -1343,28 +1343,28 @@ LABEL_20:
   }
 }
 
-- (void)_disableAccountWithUniqueID:(id)a3
+- (void)_disableAccountWithUniqueID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [(IDSDAccountController *)self accountWithUniqueID:v4];
+    v5 = [(IDSDAccountController *)self accountWithUniqueID:dCopy];
     if (!v5)
     {
-      v15 = +[IMRGLog warning];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      identifier2 = +[IMRGLog warning];
+      if (os_log_type_enabled(identifier2, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v25) = 0;
-        _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Tried to disable an account we don't know about, ignoring...", &v25, 2u);
+        _os_log_impl(&_mh_execute_header, identifier2, OS_LOG_TYPE_DEFAULT, "Tried to disable an account we don't know about, ignoring...", &v25, 2u);
       }
 
       goto LABEL_16;
     }
 
-    if (([(NSMutableSet *)self->_enabledAccounts containsObject:v4]& 1) == 0)
+    if (([(NSMutableSet *)self->_enabledAccounts containsObject:dCopy]& 1) == 0)
     {
-      v15 = +[IMRGLog registration];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+      identifier2 = +[IMRGLog registration];
+      if (os_log_type_enabled(identifier2, OS_LOG_TYPE_DEBUG))
       {
         sub_100920450();
       }
@@ -1372,60 +1372,60 @@ LABEL_20:
       goto LABEL_16;
     }
 
-    if ([(NSMutableSet *)self->_enabledAccounts containsObject:v4])
+    if ([(NSMutableSet *)self->_enabledAccounts containsObject:dCopy])
     {
       v6 = +[IMRGLog registration];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [v5 loginID];
-        v8 = [v5 service];
-        v9 = [v8 identifier];
+        loginID = [v5 loginID];
+        service = [v5 service];
+        identifier = [service identifier];
         v10 = +[FTDeviceSupport sharedInstance];
-        v11 = [v10 deviceInformationString];
+        deviceInformationString = [v10 deviceInformationString];
         v25 = 138413314;
-        v26 = v4;
+        v26 = dCopy;
         v27 = 2112;
-        v28 = v7;
+        v28 = loginID;
         v29 = 2112;
-        v30 = v9;
+        v30 = identifier;
         v31 = 2112;
-        v32 = v11;
+        v32 = deviceInformationString;
         v33 = 2112;
-        v34 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Disable account with uniqueID %@ login ID %@ service %@ called (Environment: %@) %@", &v25, 0x34u);
       }
 
-      [(NSMutableSet *)self->_enabledAccounts removeObject:v4];
+      [(NSMutableSet *)self->_enabledAccounts removeObject:dCopy];
       [v5 deactivateRegistration];
       v12 = +[IDSKeyTransparencyVerifier sharedInstance];
-      v13 = [v12 registerUpdateRateLimiter];
-      [v13 clearAllItems];
+      registerUpdateRateLimiter = [v12 registerUpdateRateLimiter];
+      [registerUpdateRateLimiter clearAllItems];
 
-      v14 = [v5 service];
-      v15 = [v14 identifier];
+      service2 = [v5 service];
+      identifier2 = [service2 identifier];
 
       v16 = +[IMRGLog registration];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v25 = 138412290;
-        v26 = v15;
+        v26 = identifier2;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Clearing service's cache {serviceIdentifier: %@}", &v25, 0xCu);
       }
 
       v17 = +[IDSPeerIDManager sharedInstance];
-      [v17 forgetPeerTokensForService:v15 reason:14];
+      [v17 forgetPeerTokensForService:identifier2 reason:14];
 
       v18 = +[IDSIDStatusQueryController sharedInstance];
-      [v18 removeCachedEntriesForService:v15];
+      [v18 removeCachedEntriesForService:identifier2];
 
       v19 = +[IDSDaemon sharedInstance];
-      v20 = [v5 service];
-      v21 = [v20 pushTopic];
-      v22 = [v19 broadcasterForTopic:v21 ignoreServiceListener:1 messageContext:0];
+      service3 = [v5 service];
+      pushTopic = [service3 pushTopic];
+      v22 = [v19 broadcasterForTopic:pushTopic ignoreServiceListener:1 messageContext:0];
 
-      v23 = [v5 service];
-      v24 = [v23 identifier];
-      [v22 accountDisabled:v4 onService:v24];
+      service4 = [v5 service];
+      identifier3 = [service4 identifier];
+      [v22 accountDisabled:dCopy onService:identifier3];
 
 LABEL_16:
     }
@@ -1442,12 +1442,12 @@ LABEL_16:
   }
 }
 
-- (void)enablePrimaryAccountWithUniqueID:(id)a3
+- (void)enablePrimaryAccountWithUniqueID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [(IDSDAccountController *)self accountWithUniqueID:v4];
+    v5 = [(IDSDAccountController *)self accountWithUniqueID:dCopy];
     v6 = v5;
     if (v5)
     {
@@ -1457,7 +1457,7 @@ LABEL_16:
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v40 = v4;
+          v40 = dCopy;
           v8 = "Tried to enable ad hoc account directly, ignoring.. { uniqueID: %@ }";
 LABEL_13:
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, v8, buf, 0xCu);
@@ -1477,8 +1477,8 @@ LABEL_13:
           [v6 setIsUserDisabled:0];
           v12 = objc_alloc_init(NSMutableArray);
           [v12 addObject:v6];
-          v13 = [v6 adHocAccounts];
-          [v12 addObjectsFromArray:v13];
+          adHocAccounts = [v6 adHocAccounts];
+          [v12 addObjectsFromArray:adHocAccounts];
 
           v35 = 0u;
           v36 = 0u;
@@ -1489,14 +1489,14 @@ LABEL_13:
           if (v14)
           {
             v16 = v14;
-            v17 = 0;
+            uniqueID = 0;
             v18 = *v34;
             *&v15 = 138412290;
             v28 = v15;
             while (2)
             {
               v19 = 0;
-              v20 = v17;
+              v20 = uniqueID;
               do
               {
                 if (*v34 != v18)
@@ -1504,9 +1504,9 @@ LABEL_13:
                   objc_enumerationMutation(v7);
                 }
 
-                v17 = [*(*(&v33 + 1) + 8 * v19) uniqueID];
+                uniqueID = [*(*(&v33 + 1) + 8 * v19) uniqueID];
 
-                if (![(NSMutableSet *)self->_enabledAccounts containsObject:v17])
+                if (![(NSMutableSet *)self->_enabledAccounts containsObject:uniqueID])
                 {
 
                   v31 = 0u;
@@ -1528,8 +1528,8 @@ LABEL_13:
                           objc_enumerationMutation(v22);
                         }
 
-                        v27 = [*(*(&v29 + 1) + 8 * i) uniqueID];
-                        [(IDSDAccountController *)self _enableAccountWithUniqueID:v27];
+                        uniqueID2 = [*(*(&v29 + 1) + 8 * i) uniqueID];
+                        [(IDSDAccountController *)self _enableAccountWithUniqueID:uniqueID2];
                       }
 
                       v24 = [v22 countByEnumeratingWithState:&v29 objects:v37 count:16];
@@ -1545,12 +1545,12 @@ LABEL_13:
                 if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = v28;
-                  v40 = v17;
+                  v40 = uniqueID;
                   _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "Account with unique ID %@ is already enabled, ignoring...", buf, 0xCu);
                 }
 
                 v19 = v19 + 1;
-                v20 = v17;
+                v20 = uniqueID;
               }
 
               while (v16 != v19);
@@ -1566,7 +1566,7 @@ LABEL_13:
 
           else
           {
-            v17 = 0;
+            uniqueID = 0;
           }
 
 LABEL_34:
@@ -1591,7 +1591,7 @@ LABEL_34:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v40 = v4;
+        v40 = dCopy;
         v8 = "Tried to enable a primary account we don't know about, ignoring... { uniqueID: %@ }";
         goto LABEL_13;
       }
@@ -1612,21 +1612,21 @@ LABEL_35:
 LABEL_36:
 }
 
-- (void)_enableAccountWithUniqueID:(id)a3
+- (void)_enableAccountWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
-  if ([v4 length])
+  if ([dCopy length])
   {
-    v6 = [(IDSDAccountController *)self accountWithUniqueID:v4];
+    v6 = [(IDSDAccountController *)self accountWithUniqueID:dCopy];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 serviceType];
-      v9 = [v7 accountType];
-      if ([(IDSRegistrationController *)self->_registrationController systemSupportsServiceType:v8 accountType:v9 isTemporary:[v7 isTemporary]])
+      serviceType = [v6 serviceType];
+      accountType = [v7 accountType];
+      if ([(IDSRegistrationController *)self->_registrationController systemSupportsServiceType:serviceType accountType:accountType isTemporary:[v7 isTemporary]])
       {
-        if ([(NSMutableSet *)self->_enabledAccounts containsObject:v4])
+        if ([(NSMutableSet *)self->_enabledAccounts containsObject:dCopy])
         {
           v10 = +[IMRGLog registration];
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1637,51 +1637,51 @@ LABEL_36:
 
         else
         {
-          v48 = v8;
+          v48 = serviceType;
           v49 = v5;
           v50 = v7;
-          if (([(NSMutableSet *)self->_enabledAccounts containsObject:v4]& 1) == 0)
+          if (([(NSMutableSet *)self->_enabledAccounts containsObject:dCopy]& 1) == 0)
           {
             v19 = objc_autoreleasePoolPush();
             v20 = +[IMRGLog registration];
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
-              v21 = [v7 loginID];
-              v22 = [v7 service];
-              v23 = [v22 identifier];
+              loginID = [v7 loginID];
+              service = [v7 service];
+              identifier = [service identifier];
               v24 = +[FTDeviceSupport sharedInstance];
-              v25 = [v24 deviceInformationString];
+              deviceInformationString = [v24 deviceInformationString];
               *buf = 138413314;
-              v65 = v4;
+              v65 = dCopy;
               v66 = 2112;
-              v67 = v21;
+              v67 = loginID;
               v68 = 2112;
-              v69 = v23;
+              v69 = identifier;
               v70 = 2112;
-              v71 = v25;
+              v71 = deviceInformationString;
               v72 = 2112;
-              v73 = self;
+              selfCopy = self;
               _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Enable account with uniqueID %@ login ID %@ service %@ called (Environment: %@) %@", buf, 0x34u);
 
               v7 = v50;
             }
 
-            [(NSMutableSet *)self->_enabledAccounts addObject:v4];
+            [(NSMutableSet *)self->_enabledAccounts addObject:dCopy];
             [v7 activateRegistration];
-            v26 = [(IDSDAccountController *)self daemon];
-            v27 = [v7 service];
-            v28 = [v27 pushTopic];
-            v29 = [v26 broadcasterForTopic:v28 ignoreServiceListener:1 messageContext:0];
+            daemon = [(IDSDAccountController *)self daemon];
+            service2 = [v7 service];
+            pushTopic = [service2 pushTopic];
+            v29 = [daemon broadcasterForTopic:pushTopic ignoreServiceListener:1 messageContext:0];
 
-            v30 = [v7 service];
-            v31 = [v30 identifier];
-            [v29 accountEnabled:v4 onService:v31];
+            service3 = [v7 service];
+            identifier2 = [service3 identifier];
+            [v29 accountEnabled:dCopy onService:identifier2];
 
             objc_autoreleasePoolPop(v19);
           }
 
           v53 = objc_alloc_init(NSMutableSet);
-          v52 = [v7 service];
+          service4 = [v7 service];
           v58 = 0u;
           v59 = 0u;
           v60 = 0u;
@@ -1702,14 +1702,14 @@ LABEL_36:
                 }
 
                 v37 = *(*(&v58 + 1) + 8 * i);
-                if (([v37 isEqualToIgnoringCase:v4]& 1) == 0 && v9)
+                if (([v37 isEqualToIgnoringCase:dCopy]& 1) == 0 && accountType)
                 {
                   v38 = [(IDSDAccountController *)self accountWithUniqueID:v37];
-                  if ([v38 accountType] == v9)
+                  if ([v38 accountType] == accountType)
                   {
-                    v39 = [v38 service];
+                    service5 = [v38 service];
 
-                    if (v39 == v52)
+                    if (service5 == service4)
                     {
                       v40 = +[IMRGLog registration];
                       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -1731,7 +1731,7 @@ LABEL_36:
             while (v34);
           }
 
-          v51 = v4;
+          v51 = dCopy;
 
           v56 = 0u;
           v57 = 0u;
@@ -1771,8 +1771,8 @@ LABEL_36:
           }
 
           v7 = v50;
-          v4 = v51;
-          v8 = v48;
+          dCopy = v51;
+          serviceType = v48;
           v5 = v49;
         }
       }
@@ -1784,20 +1784,20 @@ LABEL_36:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v65 = v8;
+          v65 = serviceType;
           v66 = 1024;
-          LODWORD(v67) = v9;
+          LODWORD(v67) = accountType;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Tried to enable an account with unsupported type -- ignoring and disabling... { serviceType: %@, accountType: %d }", buf, 0x12u);
         }
 
         v13 = +[IDSDaemon sharedInstance];
-        v14 = [v7 service];
-        v15 = [v14 pushTopic];
-        v16 = [v13 broadcasterForTopic:v15 ignoreServiceListener:1 messageContext:0];
+        service6 = [v7 service];
+        pushTopic2 = [service6 pushTopic];
+        v16 = [v13 broadcasterForTopic:pushTopic2 ignoreServiceListener:1 messageContext:0];
 
-        v17 = [v7 service];
-        v18 = [v17 identifier];
-        [v16 accountDisabled:v4 onService:v18];
+        service7 = [v7 service];
+        identifier3 = [service7 identifier];
+        [v16 accountDisabled:dCopy onService:identifier3];
 
         objc_autoreleasePoolPop(v11);
       }
@@ -1805,11 +1805,11 @@ LABEL_36:
 
     else
     {
-      v8 = +[IMRGLog warning];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      serviceType = +[IMRGLog warning];
+      if (os_log_type_enabled(serviceType, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Tried to enable an account we don't know about, ignoring...", buf, 2u);
+        _os_log_impl(&_mh_execute_header, serviceType, OS_LOG_TYPE_DEFAULT, "Tried to enable an account we don't know about, ignoring...", buf, 2u);
       }
     }
   }
@@ -1827,74 +1827,74 @@ LABEL_36:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)enableAccountWithUniqueID:(id)a3
+- (void)enableAccountWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
   v6 = +[IMRGLog registration];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = +[FTDeviceSupport sharedInstance];
-    v8 = [v7 deviceInformationString];
+    deviceInformationString = [v7 deviceInformationString];
     v9 = 138412546;
-    v10 = v4;
+    v10 = dCopy;
     v11 = 2112;
-    v12 = v8;
+    v12 = deviceInformationString;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Client requested enable account with unique ID %@ (Environment: %@)", &v9, 0x16u);
   }
 
-  [(IDSDAccountController *)self enablePrimaryAccountWithUniqueID:v4];
+  [(IDSDAccountController *)self enablePrimaryAccountWithUniqueID:dCopy];
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)disableAccountWithUniqueID:(id)a3
+- (void)disableAccountWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = +[FTDeviceSupport sharedInstance];
-    v7 = [v6 deviceInformationString];
+    deviceInformationString = [v6 deviceInformationString];
     v8 = 138412546;
-    v9 = v4;
+    v9 = dCopy;
     v10 = 2112;
-    v11 = v7;
+    v11 = deviceInformationString;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Client requested disable account with unique ID %@ (Environment: %@)", &v8, 0x16u);
   }
 
-  [(IDSDAccountController *)self _disablePrimaryAccountWithUniqueID:v4 userAction:1];
+  [(IDSDAccountController *)self _disablePrimaryAccountWithUniqueID:dCopy userAction:1];
 }
 
-- (void)forceDisableAccountWithUniqueID:(id)a3
+- (void)forceDisableAccountWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = +[FTDeviceSupport sharedInstance];
-    v7 = [v6 deviceInformationString];
+    deviceInformationString = [v6 deviceInformationString];
     v8 = 138412546;
-    v9 = v4;
+    v9 = dCopy;
     v10 = 2112;
-    v11 = v7;
+    v11 = deviceInformationString;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Client requested force disable account with unique ID %@ (Environment: %@)", &v8, 0x16u);
   }
 
-  [(IDSDAccountController *)self _forceDisablePrimaryAccountWithUniqueID:v4];
+  [(IDSDAccountController *)self _forceDisablePrimaryAccountWithUniqueID:dCopy];
 }
 
-- (id)accountOnService:(id)a3 withAliasURI:(id)a4
+- (id)accountOnService:(id)service withAliasURI:(id)i
 {
-  v6 = a3;
-  v7 = a4;
-  v20 = v6;
-  if (v6)
+  serviceCopy = service;
+  iCopy = i;
+  v20 = serviceCopy;
+  if (serviceCopy)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = [(IDSDAccountController *)self accountsOnService:v6];
+    v8 = [(IDSDAccountController *)self accountsOnService:serviceCopy];
     v9 = [v8 countByEnumeratingWithState:&v21 objects:v27 count:16];
     if (v9)
     {
@@ -1925,7 +1925,7 @@ LABEL_36:
 
           if ([v12 isEnabled])
           {
-            if ([v12 hasAliasURI:v7])
+            if ([v12 hasAliasURI:iCopy])
             {
               v16 = OSLogHandleForIDSCategory();
               if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -1983,18 +1983,18 @@ LABEL_30:
   return v15;
 }
 
-- (id)accountOnService:(id)a3 withVettedAliasURI:(id)a4
+- (id)accountOnService:(id)service withVettedAliasURI:(id)i
 {
-  v6 = a3;
-  v7 = a4;
-  v20 = v6;
-  if (v6)
+  serviceCopy = service;
+  iCopy = i;
+  v20 = serviceCopy;
+  if (serviceCopy)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = [(IDSDAccountController *)self accountsOnService:v6];
+    v8 = [(IDSDAccountController *)self accountsOnService:serviceCopy];
     v9 = [v8 countByEnumeratingWithState:&v21 objects:v27 count:16];
     if (v9)
     {
@@ -2025,7 +2025,7 @@ LABEL_30:
 
           if ([v12 isEnabled])
           {
-            if ([v12 hasVettedAliasURI:v7])
+            if ([v12 hasVettedAliasURI:iCopy])
             {
               v16 = OSLogHandleForIDSCategory();
               if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -2083,18 +2083,18 @@ LABEL_30:
   return v15;
 }
 
-- (id)accountOnService:(id)a3 withLoginID:(id)a4
+- (id)accountOnService:(id)service withLoginID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v23 = v7;
-  if (v7)
+  serviceCopy = service;
+  dCopy = d;
+  v23 = serviceCopy;
+  if (serviceCopy)
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    obj = [(IDSDAccountController *)self accountsOnService:v7];
+    obj = [(IDSDAccountController *)self accountsOnService:serviceCopy];
     v9 = [obj countByEnumeratingWithState:&v25 objects:v31 count:16];
     if (v9)
     {
@@ -2125,11 +2125,11 @@ LABEL_30:
 
           if ([v12 isEnabled])
           {
-            v14 = [v8 length];
+            v14 = [dCopy length];
             if (!v14)
             {
-              v4 = [v12 loginID];
-              if (![v4 length])
+              loginID = [v12 loginID];
+              if (![loginID length])
               {
 
 LABEL_29:
@@ -2152,8 +2152,8 @@ LABEL_29:
             }
 
             v15 = v14 == 0;
-            v16 = [v12 loginID];
-            v17 = [v16 isEqualToIgnoringCase:v8];
+            loginID2 = [v12 loginID];
+            v17 = [loginID2 isEqualToIgnoringCase:dCopy];
 
             if (v15)
             {
@@ -2208,16 +2208,16 @@ LABEL_35:
   return v19;
 }
 
-- (id)localAccountOnService:(id)a3
+- (id)localAccountOnService:(id)service
 {
-  v4 = a3;
-  if (v4)
+  serviceCopy = service;
+  if (serviceCopy)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(IDSDAccountController *)self accountsOnService:v4, 0];
+    v5 = [(IDSDAccountController *)self accountsOnService:serviceCopy, 0];
     v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
@@ -2260,16 +2260,16 @@ LABEL_12:
   return v6;
 }
 
-- (id)appleIDAccountOnService:(id)a3
+- (id)appleIDAccountOnService:(id)service
 {
-  v4 = a3;
-  if (v4)
+  serviceCopy = service;
+  if (serviceCopy)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(IDSDAccountController *)self accountsOnService:v4, 0];
+    v5 = [(IDSDAccountController *)self accountsOnService:serviceCopy, 0];
     v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
@@ -2312,10 +2312,10 @@ LABEL_12:
   return v6;
 }
 
-- (id)accountsOnService:(id)a3 withType:(int)a4
+- (id)accountsOnService:(id)service withType:(int)type
 {
-  v6 = a3;
-  if (v6)
+  serviceCopy = service;
+  if (serviceCopy)
   {
     v7 = objc_autoreleasePoolPush();
     v8 = objc_alloc_init(NSMutableArray);
@@ -2323,7 +2323,7 @@ LABEL_12:
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [(IDSDAccountController *)self accountsOnService:v6, 0];
+    v9 = [(IDSDAccountController *)self accountsOnService:serviceCopy, 0];
     v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
@@ -2339,7 +2339,7 @@ LABEL_12:
           }
 
           v14 = *(*(&v16 + 1) + 8 * i);
-          if ([v14 accountType] == a4)
+          if ([v14 accountType] == type)
           {
             [v8 addObject:v14];
           }
@@ -2362,27 +2362,27 @@ LABEL_12:
   return v8;
 }
 
-- (id)accountWithServiceName:(id)a3 aliasURI:(id)a4
+- (id)accountWithServiceName:(id)name aliasURI:(id)i
 {
-  v6 = a3;
-  v26 = a4;
-  v27 = v6;
-  if ([v6 length])
+  nameCopy = name;
+  iCopy = i;
+  v27 = nameCopy;
+  if ([nameCopy length])
   {
     v7 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v34 = v6;
+      v34 = nameCopy;
       v35 = 2112;
-      v36 = v26;
+      v36 = iCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Finding account with service name %@ aliasURI %@", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v23 = v6;
-      v25 = v26;
+      v23 = nameCopy;
+      v25 = iCopy;
       _IDSLogV();
     }
 
@@ -2421,11 +2421,11 @@ LABEL_12:
 
           if ([v12 isEnabled])
           {
-            v14 = [v12 service];
-            v15 = [v14 identifier];
-            if ([v15 isEqualToIgnoringCase:v27])
+            service = [v12 service];
+            identifier = [service identifier];
+            if ([identifier isEqualToIgnoringCase:v27])
             {
-              v16 = [v12 hasAliasURI:v26];
+              v16 = [v12 hasAliasURI:iCopy];
 
               if (v16)
               {
@@ -2497,12 +2497,12 @@ LABEL_41:
   return v19;
 }
 
-- (id)accountWithServiceName:(id)a3 loginID:(id)a4
+- (id)accountWithServiceName:(id)name loginID:(id)d
 {
-  v6 = a3;
-  v26 = a4;
-  v27 = v6;
-  if ([v6 length])
+  nameCopy = name;
+  dCopy = d;
+  v27 = nameCopy;
+  if ([nameCopy length])
   {
     v7 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -2510,14 +2510,14 @@ LABEL_41:
       *buf = 138412546;
       v35 = v27;
       v36 = 2112;
-      v37 = v26;
+      v37 = dCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Finding account with service name %@ loginID %@", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
       v23 = v27;
-      v25 = v26;
+      v25 = dCopy;
       _IDSLogV();
     }
 
@@ -2556,11 +2556,11 @@ LABEL_41:
 
           if ([v11 isEnabled])
           {
-            v13 = [v11 service];
-            v14 = [v13 identifier];
-            if ([v14 isEqualToIgnoringCase:v27])
+            service = [v11 service];
+            identifier = [service identifier];
+            if ([identifier isEqualToIgnoringCase:v27])
             {
-              v15 = [v11 loginID];
+              loginID = [v11 loginID];
               v16 = IMAreEmailsLogicallyTheSame();
 
               if (v16)
@@ -2633,19 +2633,19 @@ LABEL_41:
   return v19;
 }
 
-- (id)accountWithUniqueID:(id)a3
+- (id)accountWithUniqueID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_accountIDMap objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_accountIDMap objectForKey:dCopy];
     if (!v5)
     {
       v6 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v9 = v4;
+        v9 = dCopy;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "  => No account found for unique ID: %@", buf, 0xCu);
       }
 
@@ -2664,12 +2664,12 @@ LABEL_41:
   return v5;
 }
 
-- (id)accountWithServiceName:(id)a3 myID:(id)a4
+- (id)accountWithServiceName:(id)name myID:(id)d
 {
-  v6 = a3;
-  v42 = a4;
-  v44 = v6;
-  if (![v6 length])
+  nameCopy = name;
+  dCopy = d;
+  v44 = nameCopy;
+  if (![nameCopy length])
   {
     v18 = 0;
     goto LABEL_73;
@@ -2679,20 +2679,20 @@ LABEL_41:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v56 = v6;
+    v56 = nameCopy;
     v57 = 2112;
-    v58 = v42;
+    v58 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Finding account with service name %@ myID %@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v38 = v6;
-    v40 = v42;
+    v38 = nameCopy;
+    v40 = dCopy;
     _IDSLogV();
   }
 
-  if ([v42 hasPrefix:{@"P:", v38, v40}])
+  if ([dCopy hasPrefix:{@"P:", v38, v40}])
   {
     v51 = 0u;
     v52 = 0u;
@@ -2725,17 +2725,17 @@ LABEL_41:
 
             if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
             {
-              v39 = v11;
+              loginID = v11;
               _IDSLogV();
             }
 
-            v13 = [v11 service];
-            v14 = [v13 identifier];
-            if ([v14 isEqualToIgnoringCase:v44])
+            service = [v11 service];
+            identifier = [service identifier];
+            if ([identifier isEqualToIgnoringCase:v44])
             {
-              v39 = [v11 loginID];
+              loginID = [v11 loginID];
               v15 = [NSString stringWithFormat:@"P:%@"];
-              v16 = [v42 isEqualToString:v15];
+              v16 = [dCopy isEqualToString:v15];
 
               if (v16)
               {
@@ -2794,7 +2794,7 @@ LABEL_71:
     goto LABEL_72;
   }
 
-  if ([v42 hasPrefix:@"D:"])
+  if ([dCopy hasPrefix:@"D:"])
   {
     v47 = 0u;
     v48 = 0u;
@@ -2826,19 +2826,19 @@ LABEL_71:
 
           if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
           {
-            v39 = v22;
+            loginID = v22;
             _IDSLogV();
           }
 
           if ([v22 isEnabled])
           {
-            v24 = [v22 service];
-            v25 = [v24 identifier];
-            if ([v25 isEqualToIgnoringCase:v44])
+            service2 = [v22 service];
+            identifier2 = [service2 identifier];
+            if ([identifier2 isEqualToIgnoringCase:v44])
             {
-              v26 = [v22 accountInfo];
-              v27 = [v26 objectForKey:v41];
-              v28 = [v42 isEqualToString:v27];
+              accountInfo = [v22 accountInfo];
+              v27 = [accountInfo objectForKey:v41];
+              v28 = [dCopy isEqualToString:v27];
 
               if (v28)
               {
@@ -2916,15 +2916,15 @@ LABEL_73:
   return v18;
 }
 
-- (id)accountsWithType:(int)a3
+- (id)accountsWithType:(int)type
 {
   v5 = objc_alloc_init(NSMutableArray);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(IDSDAccountController *)self accounts];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  accounts = [(IDSDAccountController *)self accounts];
+  v7 = [accounts countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2935,17 +2935,17 @@ LABEL_73:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(accounts);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([v11 accountType] == a3)
+        if ([v11 accountType] == type)
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [accounts countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -2954,15 +2954,15 @@ LABEL_73:
   return v5;
 }
 
-- (id)accountUniqueIDsWithType:(int)a3
+- (id)accountUniqueIDsWithType:(int)type
 {
   v5 = objc_alloc_init(NSMutableArray);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(IDSDAccountController *)self accounts];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  accounts = [(IDSDAccountController *)self accounts];
+  v7 = [accounts countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2973,18 +2973,18 @@ LABEL_73:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(accounts);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([v11 accountType] == a3)
+        if ([v11 accountType] == type)
         {
-          v12 = [v11 uniqueID];
-          [v5 addObject:v12];
+          uniqueID = [v11 uniqueID];
+          [v5 addObject:uniqueID];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [accounts countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -2993,9 +2993,9 @@ LABEL_73:
   return v5;
 }
 
-- (BOOL)isEnabledAccount:(id)a3
+- (BOOL)isEnabledAccount:(id)account
 {
-  if (a3)
+  if (account)
   {
     return [(NSMutableSet *)self->_enabledAccounts containsObject:?];
   }
@@ -3006,19 +3006,19 @@ LABEL_73:
   }
 }
 
-- (id)primaryAccountForAdHocAccount:(id)a3
+- (id)primaryAccountForAdHocAccount:(id)account
 {
-  v4 = a3;
-  if ([v4 isAdHocAccount])
+  accountCopy = account;
+  if ([accountCopy isAdHocAccount])
   {
-    v5 = [(IDSDAccountController *)self accounts];
-    v6 = [v5 _copyForEnumerating];
+    accounts = [(IDSDAccountController *)self accounts];
+    _copyForEnumerating = [accounts _copyForEnumerating];
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = v6;
+    v7 = _copyForEnumerating;
     v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
@@ -3033,8 +3033,8 @@ LABEL_73:
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          v12 = [v11 adHocAccounts];
-          if ([v12 containsObject:v4])
+          adHocAccounts = [v11 adHocAccounts];
+          if ([adHocAccounts containsObject:accountCopy])
           {
             v8 = v11;
 
@@ -3057,33 +3057,33 @@ LABEL_13:
 
   else
   {
-    v8 = v4;
+    v8 = accountCopy;
   }
 
   return v8;
 }
 
-- (id)existingAccountOnService:(id)a3 withType:(int)a4 loginID:(id)a5
+- (id)existingAccountOnService:(id)service withType:(int)type loginID:(id)d
 {
-  v6 = *&a4;
-  v8 = a3;
-  v38 = a5;
+  smallDescription = *&type;
+  serviceCopy = service;
+  dCopy = d;
   v9 = 0;
-  if (!v8 || !v6)
+  if (!serviceCopy || !smallDescription)
   {
     goto LABEL_39;
   }
 
-  v34 = self;
-  v35 = v8;
-  v10 = [(IDSDAccountController *)self accountsOnService:v8 withType:v6];
-  v11 = [v10 _copyForEnumerating];
+  selfCopy = self;
+  v35 = serviceCopy;
+  v10 = [(IDSDAccountController *)self accountsOnService:serviceCopy withType:smallDescription];
+  _copyForEnumerating = [v10 _copyForEnumerating];
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v11;
+  obj = _copyForEnumerating;
   v12 = [obj countByEnumeratingWithState:&v43 objects:v52 count:16];
   if (!v12)
   {
@@ -3097,7 +3097,7 @@ LABEL_13:
   v15 = 0;
   v9 = 0;
   v16 = *v44;
-  v37 = v6;
+  v37 = smallDescription;
   do
   {
     for (i = 0; i != v13; i = i + 1)
@@ -3113,37 +3113,37 @@ LABEL_13:
         v19 = +[IMRGLog registration];
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v6 = [v18 smallDescription];
+          smallDescription = [v18 smallDescription];
           *buf = 138412290;
-          v49 = v6;
+          v49 = smallDescription;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "  => Found **extra** account %@, deleting...", buf, 0xCu);
 
-          LODWORD(v6) = v37;
+          LODWORD(smallDescription) = v37;
         }
 
         v14 = 1;
       }
 
-      if (v6 != 2)
+      if (smallDescription != 2)
       {
-        v20 = [v18 loginID];
-        v21 = [v20 length];
-        if (v38 || v21)
+        loginID = [v18 loginID];
+        v21 = [loginID length];
+        if (dCopy || v21)
         {
-          v6 = [v18 loginID];
-          v22 = [v6 isEqualToIgnoringCase:v38];
+          smallDescription = [v18 loginID];
+          v22 = [smallDescription isEqualToIgnoringCase:dCopy];
 
-          LODWORD(v6) = v37;
+          LODWORD(smallDescription) = v37;
           if ((v22 & 1) == 0)
           {
             v26 = +[IMRGLog registration];
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
-              v27 = [v18 smallDescription];
+              smallDescription2 = [v18 smallDescription];
               *buf = 138412546;
-              v49 = v27;
+              v49 = smallDescription2;
               v50 = 2112;
-              v51 = v38;
+              v51 = dCopy;
               _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "  => Found **mismatched** account %@ ID %@, deleting...", buf, 0x16u);
             }
 
@@ -3163,9 +3163,9 @@ LABEL_13:
         v24 = +[IMRGLog registration];
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [v23 smallDescription];
+          smallDescription3 = [v23 smallDescription];
           *buf = 138412290;
-          v49 = v25;
+          v49 = smallDescription3;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "  => Found existing account %@", buf, 0xCu);
         }
 
@@ -3209,7 +3209,7 @@ LABEL_31:
           objc_enumerationMutation(v28);
         }
 
-        [(IDSDAccountController *)v34 _removeAccount:*(*(&v39 + 1) + 8 * j)];
+        [(IDSDAccountController *)selfCopy _removeAccount:*(*(&v39 + 1) + 8 * j)];
       }
 
       v30 = [v28 countByEnumeratingWithState:&v39 objects:v47 count:16];
@@ -3218,36 +3218,36 @@ LABEL_31:
     while (v30);
   }
 
-  v8 = v35;
+  serviceCopy = v35;
 LABEL_39:
 
   return v9;
 }
 
-- (id)threadSafeServiceWithAccountUniqueID:(id)a3
+- (id)threadSafeServiceWithAccountUniqueID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     [(NSRecursiveLock *)self->_accountIDMapLock lock];
-    v5 = [(NSMutableDictionary *)self->_accountIDMap objectForKey:v4];
-    v6 = [v5 service];
-    if (v6)
+    v5 = [(NSMutableDictionary *)self->_accountIDMap objectForKey:dCopy];
+    service = [v5 service];
+    if (service)
     {
       v7 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218242;
-        v13 = v6;
+        v13 = service;
         v14 = 2112;
-        v15 = v4;
+        v15 = dCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "  => (Thread Safe) Found service: %p (for UID: %@)", buf, 0x16u);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v10 = v6;
-        v11 = v4;
+        v10 = service;
+        v11 = dCopy;
         _IDSLogV();
       }
     }
@@ -3258,13 +3258,13 @@ LABEL_39:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v13 = v4;
+        v13 = dCopy;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "  => (Thread Safe) No service found for unique ID: %@", buf, 0xCu);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v10 = v4;
+        v10 = dCopy;
         _IDSLogV();
       }
     }
@@ -3274,17 +3274,17 @@ LABEL_39:
 
   else
   {
-    v6 = 0;
+    service = 0;
   }
 
-  return v6;
+  return service;
 }
 
-- (id)registeredLocalURIsOnService:(id)a3
+- (id)registeredLocalURIsOnService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = +[IDSDServiceController sharedInstance];
-  v6 = [v5 serviceWithIdentifier:v4];
+  v6 = [v5 serviceWithIdentifier:serviceCopy];
   v7 = [(IDSDAccountController *)self registeredAccountsOnService:v6];
 
   v8 = objc_alloc_init(NSMutableSet);
@@ -3307,8 +3307,8 @@ LABEL_39:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v18 + 1) + 8 * i) prefixedURIStringsFromRegistration];
-        v15 = [v14 __imArrayByApplyingBlock:&stru_100BDCF08];
+        prefixedURIStringsFromRegistration = [*(*(&v18 + 1) + 8 * i) prefixedURIStringsFromRegistration];
+        v15 = [prefixedURIStringsFromRegistration __imArrayByApplyingBlock:&stru_100BDCF08];
         if (v15)
         {
           [v8 addObjectsFromArray:v15];
@@ -3321,16 +3321,16 @@ LABEL_39:
     while (v11);
   }
 
-  v16 = [v8 allObjects];
+  allObjects = [v8 allObjects];
 
-  return v16;
+  return allObjects;
 }
 
-- (id)registeredDevicesOnService:(id)a3
+- (id)registeredDevicesOnService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = +[IDSDServiceController sharedInstance];
-  v6 = [v5 serviceWithIdentifier:v4];
+  v6 = [v5 serviceWithIdentifier:serviceCopy];
   v7 = [(IDSDAccountController *)self registeredAccountsOnService:v6];
 
   v8 = +[NSMutableSet set];
@@ -3353,10 +3353,10 @@ LABEL_39:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * i) registeredDevices];
-        if (v14)
+        registeredDevices = [*(*(&v17 + 1) + 8 * i) registeredDevices];
+        if (registeredDevices)
         {
-          [v8 addObjectsFromArray:v14];
+          [v8 addObjectsFromArray:registeredDevices];
         }
       }
 
@@ -3366,22 +3366,22 @@ LABEL_39:
     while (v11);
   }
 
-  v15 = [v8 allObjects];
+  allObjects = [v8 allObjects];
 
-  return v15;
+  return allObjects;
 }
 
-- (id)registeredDevicesOnService:(id)a3 withLinkedURI:(id)a4
+- (id)registeredDevicesOnService:(id)service withLinkedURI:(id)i
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = &__NSArray0__struct;
-  if (v6 && v7)
+  serviceCopy = service;
+  iCopy = i;
+  v8 = iCopy;
+  allObjects = &__NSArray0__struct;
+  if (serviceCopy && iCopy)
   {
     v10 = +[IDSDServiceController sharedInstance];
-    v25 = v6;
-    v11 = [v10 serviceWithIdentifier:v6];
+    v25 = serviceCopy;
+    v11 = [v10 serviceWithIdentifier:serviceCopy];
     v12 = [(IDSDAccountController *)self registeredAccountsOnService:v11];
 
     v13 = +[NSMutableSet set];
@@ -3403,15 +3403,15 @@ LABEL_39:
             objc_enumerationMutation(obj);
           }
 
-          v15 = [*(*(&v33 + 1) + 8 * i) registeredDevices];
-          v16 = v15;
-          if (v15)
+          registeredDevices = [*(*(&v33 + 1) + 8 * i) registeredDevices];
+          v16 = registeredDevices;
+          if (registeredDevices)
           {
             v31 = 0u;
             v32 = 0u;
             v29 = 0u;
             v30 = 0u;
-            v17 = [v15 countByEnumeratingWithState:&v29 objects:v37 count:16];
+            v17 = [registeredDevices countByEnumeratingWithState:&v29 objects:v37 count:16];
             if (v17)
             {
               v18 = v17;
@@ -3426,8 +3426,8 @@ LABEL_39:
                   }
 
                   v21 = *(*(&v29 + 1) + 8 * j);
-                  v22 = [v21 linkedURIs];
-                  v23 = [v22 containsObject:v8];
+                  linkedURIs = [v21 linkedURIs];
+                  v23 = [linkedURIs containsObject:v8];
 
                   if (v23)
                   {
@@ -3449,44 +3449,44 @@ LABEL_39:
       while (v28);
     }
 
-    v9 = [v13 allObjects];
+    allObjects = [v13 allObjects];
 
-    v6 = v25;
+    serviceCopy = v25;
   }
 
-  return v9;
+  return allObjects;
 }
 
-- (void)setupLocalAccountForService:(id)a3
+- (void)setupLocalAccountForService:(id)service
 {
-  v4 = a3;
-  v5 = [(IDSDAccountController *)self existingAccountOnService:v4 withType:2 loginID:0];
+  serviceCopy = service;
+  v5 = [(IDSDAccountController *)self existingAccountOnService:serviceCopy withType:2 loginID:0];
   if (!v5)
   {
     v6 = +[IMRGLog registration];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 identifier];
+      identifier = [serviceCopy identifier];
       *buf = 138412290;
-      v15 = v7;
+      v15 = identifier;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, " => Creating a local account for service %@", buf, 0xCu);
     }
 
     v8 = [IDSDAccount alloc];
     v9 = +[NSString stringGUID];
-    v10 = [(IDSDAccount *)v8 initWithLoginID:&stru_100C06028 service:v4 uniqueID:v9 accountType:2 accountConfig:0];
+    v10 = [(IDSDAccount *)v8 initWithLoginID:&stru_100C06028 service:serviceCopy uniqueID:v9 accountType:2 accountConfig:0];
 
     [(IDSDAccountController *)self addPrimaryAccount:v10];
-    v11 = [(IDSDAccount *)v10 uniqueID];
-    [(IDSDAccountController *)self enablePrimaryAccountWithUniqueID:v11];
+    uniqueID = [(IDSDAccount *)v10 uniqueID];
+    [(IDSDAccountController *)self enablePrimaryAccountWithUniqueID:uniqueID];
 
-    v12 = [(IDSDAccount *)v10 linkedAccounts];
+    linkedAccounts = [(IDSDAccount *)v10 linkedAccounts];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100464DE0;
     v13[3] = &unk_100BDB090;
     v13[4] = self;
-    [v12 __imForEach:v13];
+    [linkedAccounts __imForEach:v13];
   }
 }
 
@@ -3504,9 +3504,9 @@ LABEL_39:
   v16 = 0u;
   v17 = 0u;
   v3 = +[IDSDServiceController sharedInstance];
-  v4 = [v3 allServices];
+  allServices = [v3 allServices];
 
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  v5 = [allServices countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v5)
   {
     v6 = *v17;
@@ -3516,25 +3516,25 @@ LABEL_39:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allServices);
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
-        v9 = [v8 identifier];
+        identifier = [v8 identifier];
         if (![v8 adHocServiceType])
         {
-          v10 = [v9 isEqualToIgnoringCase:@"com.apple.madrid"];
-          v11 = [v9 isEqualToIgnoringCase:@"com.apple.private.alloy.sms"];
-          v12 = [v9 isEqualToIgnoringCase:@"com.apple.ess"];
-          v13 = [v9 isEqualToIgnoringCase:@"com.apple.private.ac"];
-          if (((v10 | v11 | v12 | v13 | [v9 isEqualToIgnoringCase:@"com.apple.private.alloy.facetime.multi"]) & 1) == 0)
+          v10 = [identifier isEqualToIgnoringCase:@"com.apple.madrid"];
+          v11 = [identifier isEqualToIgnoringCase:@"com.apple.private.alloy.sms"];
+          v12 = [identifier isEqualToIgnoringCase:@"com.apple.ess"];
+          v13 = [identifier isEqualToIgnoringCase:@"com.apple.private.ac"];
+          if (((v10 | v11 | v12 | v13 | [identifier isEqualToIgnoringCase:@"com.apple.private.alloy.facetime.multi"]) & 1) == 0)
           {
             [(IDSDAccountController *)self setupLocalAccountForService:v8];
           }
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v5 = [allServices countByEnumeratingWithState:&v16 objects:v21 count:16];
     }
 
     while (v5);
@@ -3571,9 +3571,9 @@ LABEL_39:
   v18 = 0u;
   v19 = 0u;
   v3 = +[IDSDServiceController sharedInstance];
-  v4 = [v3 allServices];
+  allServices = [v3 allServices];
 
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  v5 = [allServices countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3584,18 +3584,18 @@ LABEL_39:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allServices);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 identifier];
+        identifier = [v9 identifier];
         if (![v9 adHocServiceType])
         {
-          v11 = [v10 isEqualToIgnoringCase:@"com.apple.madrid"];
-          v12 = [v10 isEqualToIgnoringCase:@"com.apple.private.alloy.sms"];
-          v13 = [v10 isEqualToIgnoringCase:@"com.apple.ess"];
-          v14 = [v10 isEqualToIgnoringCase:@"com.apple.private.ac"];
-          v15 = [v10 isEqualToIgnoringCase:@"com.apple.private.alloy.facetime.multi"];
+          v11 = [identifier isEqualToIgnoringCase:@"com.apple.madrid"];
+          v12 = [identifier isEqualToIgnoringCase:@"com.apple.private.alloy.sms"];
+          v13 = [identifier isEqualToIgnoringCase:@"com.apple.ess"];
+          v14 = [identifier isEqualToIgnoringCase:@"com.apple.private.ac"];
+          v15 = [identifier isEqualToIgnoringCase:@"com.apple.private.alloy.facetime.multi"];
           if ((v11 & 1) == 0 && (v12 & 1) == 0 && (v13 & 1) == 0 && (v14 & 1) == 0 && (v15 & 1) == 0)
           {
             v16 = [(IDSDAccountController *)self existingAccountOnService:v9 withType:2 loginID:0];
@@ -3604,7 +3604,7 @@ LABEL_39:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v6 = [allServices countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v6);
@@ -3613,25 +3613,25 @@ LABEL_39:
 
 - (void)_cleanupLocalAccounts
 {
-  v3 = [(IDSDAccountController *)self accounts];
-  v4 = [v3 _copyForEnumerating];
+  accounts = [(IDSDAccountController *)self accounts];
+  _copyForEnumerating = [accounts _copyForEnumerating];
 
   v5 = objc_alloc_init(NSMutableSet);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v4;
+  obj = _copyForEnumerating;
   v6 = [obj countByEnumeratingWithState:&v33 objects:v40 count:16];
   if (!v6)
   {
-    v9 = 0;
+    isRegistered = 0;
     v10 = 0;
     goto LABEL_30;
   }
 
   v8 = v6;
-  v9 = 0;
+  isRegistered = 0;
   v10 = 0;
   v11 = *v34;
   *&v7 = 138412290;
@@ -3653,28 +3653,28 @@ LABEL_39:
 
       if ([v13 accountType] != 2)
       {
-        v16 = [v13 service];
-        v17 = [v16 adHocServiceType];
+        service = [v13 service];
+        adHocServiceType = [service adHocServiceType];
 
-        if (v17 == 2)
+        if (adHocServiceType == 2)
         {
           v18 = +[IMRGLog registration];
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [v13 smallDescription];
+            smallDescription = [v13 smallDescription];
             *buf = v27;
-            v39 = v19;
+            v39 = smallDescription;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Cleaning up account for local service %@", buf, 0xCu);
           }
 
           [v5 addObject:v13];
-          if (v9)
+          if (isRegistered)
           {
-            v9 = 1;
+            isRegistered = 1;
             goto LABEL_18;
           }
 
-          v9 = [v13 isRegistered];
+          isRegistered = [v13 isRegistered];
           if (v10)
           {
             continue;
@@ -3715,9 +3715,9 @@ LABEL_19:
       v14 = +[IMRGLog registration];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v13 smallDescription];
+        smallDescription2 = [v13 smallDescription];
         *buf = v27;
-        v39 = v15;
+        v39 = smallDescription2;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Cleaning up local account %@", buf, 0xCu);
       }
 
@@ -3738,8 +3738,8 @@ LABEL_30:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v21 = [v5 allObjects];
-  v22 = [v21 countByEnumeratingWithState:&v29 objects:v37 count:16];
+  allObjects = [v5 allObjects];
+  v22 = [allObjects countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v22)
   {
     v23 = v22;
@@ -3750,19 +3750,19 @@ LABEL_30:
       {
         if (*v30 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(allObjects);
         }
 
         [(IDSDAccountController *)self _removeAccount:*(*(&v29 + 1) + 8 * j)];
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v29 objects:v37 count:16];
+      v23 = [allObjects countByEnumeratingWithState:&v29 objects:v37 count:16];
     }
 
     while (v23);
   }
 
-  if ((v9 & (v10 != 0)) == 1)
+  if ((isRegistered & (v10 != 0)) == 1)
   {
     v26 = +[IMRGLog registration];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -3775,10 +3775,10 @@ LABEL_30:
   }
 }
 
-- (id)_strippedAccountInfo:(id)a3
+- (id)_strippedAccountInfo:(id)info
 {
-  v3 = a3;
-  v4 = [[NSMutableDictionary alloc] initWithDictionary:v3];
+  infoCopy = info;
+  v4 = [[NSMutableDictionary alloc] initWithDictionary:infoCopy];
 
   [v4 removeObjectForKey:kIDSServiceDefaultsAccountTypeKey];
   [v4 removeObjectForKey:kIDSServiceDefaultsHasEverRegistered];
@@ -3788,13 +3788,13 @@ LABEL_30:
   return v4;
 }
 
-- (BOOL)_isAccountInfoRegistered:(id)a3
+- (BOOL)_isAccountInfoRegistered:(id)registered
 {
-  v3 = [a3 objectForKey:kIDSServiceDefaultsRegistrationInfoKey];
+  v3 = [registered objectForKey:kIDSServiceDefaultsRegistrationInfoKey];
   v4 = [v3 objectForKey:kIDSServiceDefaultsRegistrationInfoStatusKey];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
-  return v5 == 5;
+  return intValue == 5;
 }
 
 - (void)_setupForLocal
@@ -3807,17 +3807,17 @@ LABEL_30:
 - (BOOL)isLocalSetupEnabled
 {
   v2 = +[IDSPairingManager sharedInstance];
-  v3 = [v2 isCurrentDevicePairedOrPairing];
+  isCurrentDevicePairedOrPairing = [v2 isCurrentDevicePairedOrPairing];
 
-  return v3;
+  return isCurrentDevicePairedOrPairing;
 }
 
 - (BOOL)isTraditionalLocalSetupEnabled
 {
   v2 = +[IDSPairingManager sharedInstance];
-  v3 = [v2 isTraditionalDevicePairedOrPairing];
+  isTraditionalDevicePairedOrPairing = [v2 isTraditionalDevicePairedOrPairing];
 
-  return v3;
+  return isTraditionalDevicePairedOrPairing;
 }
 
 - (void)startLocalSetup
@@ -3855,34 +3855,34 @@ LABEL_30:
   [(IDSDAccountController *)self setHasHardDeregistered:0];
 }
 
-- (void)_setupAdHocAccountsForPrimaryAccount:(id)a3
+- (void)_setupAdHocAccountsForPrimaryAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = objc_autoreleasePoolPush();
-  if (v4)
+  if (accountCopy)
   {
-    if ([v4 isAdHocAccount])
+    if ([accountCopy isAdHocAccount])
     {
       v95 = +[IMRGLog registration];
       if (os_log_type_enabled(v95, OS_LOG_TYPE_DEBUG))
       {
-        sub_100920674(v4);
+        sub_100920674(accountCopy);
       }
 
       goto LABEL_122;
     }
 
-    v98 = self;
-    v6 = [v4 service];
+    selfCopy = self;
+    service = [accountCopy service];
     v7 = +[IDSDServiceController sharedInstance];
-    v95 = v6;
-    v8 = [v6 identifier];
-    v9 = [v7 adHocServicesForIdentifier:v8];
-    v10 = [v9 _copyForEnumerating];
+    v95 = service;
+    identifier = [service identifier];
+    v9 = [v7 adHocServicesForIdentifier:identifier];
+    _copyForEnumerating = [v9 _copyForEnumerating];
 
-    v11 = [v10 count];
+    v11 = [_copyForEnumerating count];
     v12 = +[IMRGLog registration];
-    v13 = v12;
+    loginID = v12;
     if (!v11)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -3897,36 +3897,36 @@ LABEL_30:
     v14 = &off_1009AB000;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v4 smallDescription];
+      smallDescription = [accountCopy smallDescription];
       *buf = 138412290;
-      v128 = v15;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, " * Setting up adhoc accounts for %@", buf, 0xCu);
+      v128 = smallDescription;
+      _os_log_impl(&_mh_execute_header, loginID, OS_LOG_TYPE_DEFAULT, " * Setting up adhoc accounts for %@", buf, 0xCu);
     }
 
-    v13 = [v4 loginID];
-    v16 = [v4 accountType];
-    v105 = [v4 userUniqueIdentifier];
-    i = [v4 registration];
-    v89 = [i adHocServiceNames];
+    loginID = [accountCopy loginID];
+    accountType = [accountCopy accountType];
+    userUniqueIdentifier = [accountCopy userUniqueIdentifier];
+    i = [accountCopy registration];
+    adHocServiceNames = [i adHocServiceNames];
 
     v121 = 0u;
     v122 = 0u;
     v119 = 0u;
     v120 = 0u;
-    v90 = v10;
-    obj = v10;
-    v18 = v98;
+    v90 = _copyForEnumerating;
+    obj = _copyForEnumerating;
+    v18 = selfCopy;
     v101 = [obj countByEnumeratingWithState:&v119 objects:v135 count:16];
     if (v101)
     {
-      v96 = v16 != 0;
+      v96 = accountType != 0;
       v100 = *v120;
       v93 = kIDSServiceDefaultsPrimaryAccountKey;
       v94 = kIDSServiceDefaultsPrimaryServiceNameKey;
       v92 = kIDSServiceDefaultsUserUniqueIdentifier;
-      v108 = v16;
-      v97 = v4;
-      v107 = v13;
+      v108 = accountType;
+      v97 = accountCopy;
+      v107 = loginID;
       do
       {
         for (i = 0; i != v101; ++i)
@@ -3938,22 +3938,22 @@ LABEL_30:
 
           v19 = *(*(&v119 + 1) + 8 * i);
           v14 = objc_autoreleasePoolPush();
-          if ([v19 adHocServiceType] == 2 && !-[IDSDAccountController isLocalSetupEnabled](v18, "isLocalSetupEnabled") || objc_msgSend(v19, "adHocServiceType", v89) == 5 && !-[IDSDAccountController isLocalSetupEnabled](v18, "isLocalSetupEnabled"))
+          if ([v19 adHocServiceType] == 2 && !-[IDSDAccountController isLocalSetupEnabled](v18, "isLocalSetupEnabled") || objc_msgSend(v19, "adHocServiceType", adHocServiceNames) == 5 && !-[IDSDAccountController isLocalSetupEnabled](v18, "isLocalSetupEnabled"))
           {
             goto LABEL_103;
           }
 
           v102 = v14;
           v103 = i;
-          v20 = [v19 enabledOnlyWhenPaired];
+          enabledOnlyWhenPaired = [v19 enabledOnlyWhenPaired];
           v21 = +[IDSPairingManager sharedInstance];
-          v22 = [v21 isCurrentDeviceTinkerConfiguredWatch];
+          isCurrentDeviceTinkerConfiguredWatch = [v21 isCurrentDeviceTinkerConfiguredWatch];
 
           v104 = v19;
           if ([v19 enabledOnlyOnStandaloneDevices])
           {
             v23 = +[FTDeviceSupport sharedInstance];
-            v24 = ([v23 deviceType] == 6) & (v22 ^ 1);
+            v24 = ([v23 deviceType] == 6) & (isCurrentDeviceTinkerConfiguredWatch ^ 1);
           }
 
           else
@@ -3961,8 +3961,8 @@ LABEL_30:
             v24 = 0;
           }
 
-          v25 = [v104 disabledOnTinkerWatch] & v22;
-          if (v20)
+          v25 = [v104 disabledOnTinkerWatch] & isCurrentDeviceTinkerConfiguredWatch;
+          if (enabledOnlyWhenPaired)
           {
             if (v24 & 1 | ![(IDSDAccountController *)v18 isTraditionalLocalSetupEnabled]| v25 & 1)
             {
@@ -3978,7 +3978,7 @@ LABEL_26:
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
             {
               v28 = @"NO";
-              if (v22)
+              if (isCurrentDeviceTinkerConfiguredWatch)
               {
                 v29 = @"YES";
               }
@@ -4019,7 +4019,7 @@ LABEL_26:
           }
 
           v14 = v102;
-          if (!v16)
+          if (!accountType)
           {
             v26 = v104;
             i = v103;
@@ -4045,48 +4045,48 @@ LABEL_38:
 
           i = v103;
           v26 = v104;
-          if (v16 == 1)
+          if (accountType == 1)
           {
             goto LABEL_38;
           }
 
           v109 = 0;
 LABEL_40:
-          v31 = [(IDSDAccountController *)v18 accountsOnService:v26 withType:v16];
-          v32 = [v31 _copyForEnumerating];
+          v31 = [(IDSDAccountController *)v18 accountsOnService:v26 withType:accountType];
+          _copyForEnumerating2 = [v31 _copyForEnumerating];
 
           v117 = 0u;
           v118 = 0u;
           v115 = 0u;
           v116 = 0u;
-          v33 = v32;
+          v33 = _copyForEnumerating2;
           v34 = [v33 countByEnumeratingWithState:&v115 objects:v126 count:16];
           if (!v34)
           {
 
             v110 = 0;
 LABEL_77:
-            v18 = v98;
+            v18 = selfCopy;
             v56 = objc_autoreleasePoolPush();
             v57 = [IDSDAccount alloc];
             v58 = +[NSString stringGUID];
-            v59 = [v4 accountInfo];
-            v60 = [v4 uniqueID];
-            v61 = [(IDSDAccount *)v57 initAdHocAccountWithLoginID:v13 service:v104 uniqueID:v58 accountType:v108 accountConfig:v59 primaryAccount:v60];
+            accountInfo = [accountCopy accountInfo];
+            uniqueID = [accountCopy uniqueID];
+            v61 = [(IDSDAccount *)v57 initAdHocAccountWithLoginID:loginID service:v104 uniqueID:v58 accountType:v108 accountConfig:accountInfo primaryAccount:uniqueID];
 
             v62 = +[IMRGLog registration];
             if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
             {
-              v63 = [v61 smallDescription];
+              smallDescription2 = [v61 smallDescription];
               *buf = 138412290;
-              v128 = v63;
+              v128 = smallDescription2;
               _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEFAULT, "  => Created ad hoc account %@", buf, 0xCu);
             }
 
             v27 = v61;
-            [(IDSDAccountController *)v98 _addAccount:v61];
+            [(IDSDAccountController *)selfCopy _addAccount:v61];
             objc_autoreleasePoolPop(v56);
-            v16 = v108;
+            accountType = v108;
             goto LABEL_85;
           }
 
@@ -4106,7 +4106,7 @@ LABEL_77:
               }
 
               v39 = *(*(&v115 + 1) + 8 * j);
-              if (v16)
+              if (accountType)
               {
                 v40 = 1;
                 if (!v27)
@@ -4117,8 +4117,8 @@ LABEL_77:
 
               else
               {
-                v41 = [*(*(&v115 + 1) + 8 * j) userUniqueIdentifier];
-                v40 = [v41 isEqualToString:v105];
+                userUniqueIdentifier2 = [*(*(&v115 + 1) + 8 * j) userUniqueIdentifier];
+                v40 = [userUniqueIdentifier2 isEqualToString:userUniqueIdentifier];
 
                 if (!v27)
                 {
@@ -4131,12 +4131,12 @@ LABEL_77:
                 v42 = +[IMRGLog registration];
                 if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
                 {
-                  v43 = [v39 smallDescription];
+                  smallDescription3 = [v39 smallDescription];
                   *buf = 138412290;
-                  v128 = v43;
+                  v128 = smallDescription3;
                   _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "  => Found **extra** adhoc account %@, deleting...", buf, 0xCu);
 
-                  v16 = v108;
+                  accountType = v108;
                 }
 
                 v36 = 1;
@@ -4145,26 +4145,26 @@ LABEL_77:
 LABEL_53:
               if (v109)
               {
-                v44 = [v39 loginID];
-                if ([v44 length] || -[NSObject length](v107, "length"))
+                loginID2 = [v39 loginID];
+                if ([loginID2 length] || -[NSObject length](v107, "length"))
                 {
-                  v45 = [v39 loginID];
-                  v46 = [v45 isEqualToIgnoringCase:v107];
+                  loginID3 = [v39 loginID];
+                  v46 = [loginID3 isEqualToIgnoringCase:v107];
 
-                  v16 = v108;
+                  accountType = v108;
                   if ((v46 & 1) == 0)
                   {
                     v47 = +[IMRGLog registration];
                     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
                     {
-                      v48 = [v39 smallDescription];
+                      smallDescription4 = [v39 smallDescription];
                       *buf = 138412546;
-                      v128 = v48;
+                      v128 = smallDescription4;
                       v129 = 2112;
                       v130 = v107;
                       _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "  => Found **mismatched** adhoc account %@ primary ID %@, deleting...", buf, 0x16u);
 
-                      v16 = v108;
+                      accountType = v108;
                     }
 
 LABEL_62:
@@ -4217,46 +4217,46 @@ LABEL_62:
 
           if (!v27)
           {
-            v4 = v97;
-            v13 = v107;
+            accountCopy = v97;
+            loginID = v107;
             goto LABEL_77;
           }
 
-          v4 = v97;
-          v52 = [v97 uniqueID];
-          v53 = [v95 identifier];
-          v54 = [v27 primaryAccount];
-          v55 = v54;
-          v13 = v107;
-          v18 = v98;
-          if (v54 != v97)
+          accountCopy = v97;
+          uniqueID2 = [v97 uniqueID];
+          identifier2 = [v95 identifier];
+          primaryAccount = [v27 primaryAccount];
+          v55 = primaryAccount;
+          loginID = v107;
+          v18 = selfCopy;
+          if (primaryAccount != v97)
           {
 
             goto LABEL_81;
           }
 
-          v64 = [v27 primaryAccountUniqueID];
-          v65 = [v64 isEqualToIgnoringCase:v52];
+          primaryAccountUniqueID = [v27 primaryAccountUniqueID];
+          v65 = [primaryAccountUniqueID isEqualToIgnoringCase:uniqueID2];
 
-          v16 = v108;
+          accountType = v108;
           if ((v65 & 1) == 0)
           {
 LABEL_81:
-            [v27 setObject:v53 forKey:v94];
-            [v27 setObject:v52 forKey:v93];
-            [v27 setObject:v105 forKey:v92];
+            [v27 setObject:identifier2 forKey:v94];
+            [v27 setObject:uniqueID2 forKey:v93];
+            [v27 setObject:userUniqueIdentifier forKey:v92];
             v66 = +[IMRGLog registration];
             if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
             {
-              v67 = [v27 smallDescription];
+              smallDescription5 = [v27 smallDescription];
               *buf = 138412290;
-              v128 = v67;
+              v128 = smallDescription5;
               _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_DEFAULT, "  => Updating primary account info for %@", buf, 0xCu);
 
-              v16 = v108;
+              accountType = v108;
             }
 
-            [(IDSDAccountController *)v98 delayedSaveSettings];
+            [(IDSDAccountController *)selfCopy delayedSaveSettings];
           }
 
 LABEL_85:
@@ -4288,38 +4288,38 @@ LABEL_85:
             while (v70);
           }
 
-          v73 = [v4 isEnabled];
-          if (v73 != [v27 isEnabled])
+          isEnabled = [accountCopy isEnabled];
+          if (isEnabled != [v27 isEnabled])
           {
-            v74 = [v4 isEnabled];
+            isEnabled2 = [accountCopy isEnabled];
             v75 = +[IMRGLog registration];
             v76 = os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT);
-            if (v74)
+            if (isEnabled2)
             {
               if (v76)
               {
-                v77 = [v27 smallDescription];
+                smallDescription6 = [v27 smallDescription];
                 *buf = 138412290;
-                v128 = v77;
+                v128 = smallDescription6;
                 _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_DEFAULT, "  * Enabling account: %@", buf, 0xCu);
               }
 
-              v78 = [v27 uniqueID];
-              [(IDSDAccountController *)v18 _enableAccountWithUniqueID:v78];
+              uniqueID3 = [v27 uniqueID];
+              [(IDSDAccountController *)v18 _enableAccountWithUniqueID:uniqueID3];
             }
 
             else
             {
               if (v76)
               {
-                v79 = [v27 smallDescription];
+                smallDescription7 = [v27 smallDescription];
                 *buf = 138412290;
-                v128 = v79;
+                v128 = smallDescription7;
                 _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_DEFAULT, "  * Disabling account: %@", buf, 0xCu);
               }
 
-              v78 = [v27 uniqueID];
-              [(IDSDAccountController *)v18 _disableAccountWithUniqueID:v78];
+              uniqueID3 = [v27 uniqueID];
+              [(IDSDAccountController *)v18 _disableAccountWithUniqueID:uniqueID3];
             }
           }
 
@@ -4337,15 +4337,15 @@ LABEL_103:
       while (v101);
     }
 
-    [v4 refreshAdHocServiceNames];
-    v10 = v90;
+    [accountCopy refreshAdHocServiceNames];
+    _copyForEnumerating = v90;
     v5 = v91;
-    v80 = v89;
-    if (!v89)
+    v80 = adHocServiceNames;
+    if (!adHocServiceNames)
     {
-      i = [v4 registration];
-      v81 = [i adHocServiceNames];
-      if (!v81)
+      i = [accountCopy registration];
+      adHocServiceNames2 = [i adHocServiceNames];
+      if (!adHocServiceNames2)
       {
 
 LABEL_120:
@@ -4355,18 +4355,18 @@ LABEL_122:
         goto LABEL_123;
       }
 
-      v14 = v81;
+      v14 = adHocServiceNames2;
     }
 
-    v82 = [v4 registration];
-    v83 = [v82 adHocServiceNames];
-    v84 = [v80 isEqualToArray:v83];
+    registration = [accountCopy registration];
+    adHocServiceNames3 = [registration adHocServiceNames];
+    v84 = [v80 isEqualToArray:adHocServiceNames3];
 
     if (!v80)
     {
     }
 
-    if ((v84 & 1) == 0 && [v4 isRegistered])
+    if ((v84 & 1) == 0 && [accountCopy isRegistered])
     {
       v85 = +[IMRGLog registration];
       if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
@@ -4378,16 +4378,16 @@ LABEL_122:
       v86 = +[IMRGLog registration];
       if (os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT))
       {
-        v87 = [v4 registration];
-        v88 = [v87 adHocServiceNames];
+        registration2 = [accountCopy registration];
+        adHocServiceNames4 = [registration2 adHocServiceNames];
         *buf = 138412546;
         v128 = v80;
         v129 = 2112;
-        v130 = v88;
+        v130 = adHocServiceNames4;
         _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_DEFAULT, " current service names %@ new service names %@", buf, 0x16u);
       }
 
-      [v4 registerAccount];
+      [accountCopy registerAccount];
     }
 
     goto LABEL_120;
@@ -4406,14 +4406,14 @@ LABEL_123:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Setting up ad hoc accounts", buf, 2u);
   }
 
-  v4 = [(IDSDAccountController *)self accounts];
-  v5 = [v4 _copyForEnumerating];
+  accounts = [(IDSDAccountController *)self accounts];
+  _copyForEnumerating = [accounts _copyForEnumerating];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v5;
+  v6 = _copyForEnumerating;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v7)
   {
@@ -4463,11 +4463,11 @@ LABEL_123:
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v4 = [(IDSDAccountController *)self accounts];
-  v5 = [v4 _copyForEnumerating];
+  accounts = [(IDSDAccountController *)self accounts];
+  _copyForEnumerating = [accounts _copyForEnumerating];
 
-  obj = v5;
-  v44 = [v5 countByEnumeratingWithState:&v56 objects:v65 count:16];
+  obj = _copyForEnumerating;
+  v44 = [_copyForEnumerating countByEnumeratingWithState:&v56 objects:v65 count:16];
   if (v44)
   {
     v43 = *v57;
@@ -4483,24 +4483,24 @@ LABEL_123:
         }
 
         v8 = *(*(&v56 + 1) + 8 * i);
-        v9 = [v8 service];
+        service = [v8 service];
         v10 = +[IDSDServiceController sharedInstance];
-        v11 = [v10 linkedServicesForService:v9];
+        v11 = [v10 linkedServicesForService:service];
 
         if ([v11 count])
         {
           v47 = i;
-          v12 = [v2[504] registration];
-          if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+          registration = [v2[504] registration];
+          if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v41;
-            v62 = v9;
+            v62 = service;
             v63 = 2112;
             v64 = v11;
-            _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, " Service: %@  has linked services: %@", buf, 0x16u);
+            _os_log_impl(&_mh_execute_header, registration, OS_LOG_TYPE_DEFAULT, " Service: %@  has linked services: %@", buf, 0x16u);
           }
 
-          v46 = v9;
+          v46 = service;
 
           v54 = 0u;
           v55 = 0u;
@@ -4509,7 +4509,7 @@ LABEL_123:
           v45 = v11;
           v49 = v11;
           v13 = [v49 countByEnumeratingWithState:&v52 objects:v60 count:16];
-          v14 = self;
+          selfCopy2 = self;
           if (v13)
           {
             v15 = v13;
@@ -4527,60 +4527,60 @@ LABEL_123:
                 if ([v17 disabledOnTinkerWatch])
                 {
                   v18 = +[IDSPairingManager sharedInstance];
-                  v19 = [v18 isCurrentDeviceTinkerConfiguredWatch];
+                  isCurrentDeviceTinkerConfiguredWatch = [v18 isCurrentDeviceTinkerConfiguredWatch];
 
-                  if (v19)
+                  if (isCurrentDeviceTinkerConfiguredWatch)
                   {
                     continue;
                   }
                 }
 
-                v20 = [v8 linkedAccounts];
+                linkedAccounts = [v8 linkedAccounts];
                 v51[0] = _NSConcreteStackBlock;
                 v51[1] = 3221225472;
                 v51[2] = sub_100467128;
                 v51[3] = &unk_100BDCF30;
                 v51[4] = v17;
-                v21 = [v20 __imArrayByFilteringWithBlock:v51];
-                v22 = [v21 firstObject];
+                v21 = [linkedAccounts __imArrayByFilteringWithBlock:v51];
+                firstObject = [v21 firstObject];
 
-                if (v22)
+                if (firstObject)
                 {
-                  v23 = [v2[504] registration];
-                  if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+                  registration2 = [v2[504] registration];
+                  if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 0;
-                    _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, " We already have linked accounts, let's just double check the activation", buf, 2u);
+                    _os_log_impl(&_mh_execute_header, registration2, OS_LOG_TYPE_DEFAULT, " We already have linked accounts, let's just double check the activation", buf, 2u);
                   }
 
-                  v24 = [v8 isEnabled];
-                  if (v24 != [(IDSDAccount *)v22 isEnabled])
+                  isEnabled = [v8 isEnabled];
+                  if (isEnabled != [(IDSDAccount *)firstObject isEnabled])
                   {
-                    v25 = [v2[504] registration];
-                    if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+                    registration3 = [v2[504] registration];
+                    if (os_log_type_enabled(registration3, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 0;
-                      _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, " * They're not the same, let's fix that", buf, 2u);
+                      _os_log_impl(&_mh_execute_header, registration3, OS_LOG_TYPE_DEFAULT, " * They're not the same, let's fix that", buf, 2u);
                     }
 
-                    v26 = [v8 isEnabled];
-                    v27 = [v2[504] registration];
-                    v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
-                    if (v26)
+                    isEnabled2 = [v8 isEnabled];
+                    registration4 = [v2[504] registration];
+                    v28 = os_log_type_enabled(registration4, OS_LOG_TYPE_DEFAULT);
+                    if (isEnabled2)
                     {
                       if (v28)
                       {
                         *buf = 138412290;
-                        v62 = v22;
-                        _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, " * Enabling account: %@", buf, 0xCu);
+                        v62 = firstObject;
+                        _os_log_impl(&_mh_execute_header, registration4, OS_LOG_TYPE_DEFAULT, " * Enabling account: %@", buf, 0xCu);
                       }
 
-                      v29 = [(IDSDAccount *)v22 uniqueID];
-                      [(IDSDAccountController *)v14 enableAccountWithUniqueID:v29];
+                      uniqueID = [(IDSDAccount *)firstObject uniqueID];
+                      [(IDSDAccountController *)selfCopy2 enableAccountWithUniqueID:uniqueID];
 
                       if ([v8 accountType] != 2)
                       {
-                        [(IDSDAccount *)v22 registerAccount];
+                        [(IDSDAccount *)firstObject registerAccount];
                       }
                     }
 
@@ -4589,12 +4589,12 @@ LABEL_123:
                       if (v28)
                       {
                         *buf = 138412290;
-                        v62 = v22;
-                        _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, " * Disabling account: %@", buf, 0xCu);
+                        v62 = firstObject;
+                        _os_log_impl(&_mh_execute_header, registration4, OS_LOG_TYPE_DEFAULT, " * Disabling account: %@", buf, 0xCu);
                       }
 
-                      v39 = [(IDSDAccount *)v22 uniqueID];
-                      [(IDSDAccountController *)v14 disableAccountWithUniqueID:v39];
+                      uniqueID2 = [(IDSDAccount *)firstObject uniqueID];
+                      [(IDSDAccountController *)selfCopy2 disableAccountWithUniqueID:uniqueID2];
                     }
                   }
                 }
@@ -4602,43 +4602,43 @@ LABEL_123:
                 else if ([v8 accountType] == 1)
                 {
                   v30 = [IDSDAccount alloc];
-                  v31 = [v8 loginID];
+                  loginID = [v8 loginID];
                   +[NSString stringGUID];
                   v33 = v32 = v2;
-                  v34 = [v8 accountType];
-                  v35 = [v8 accountInfo];
-                  v22 = [(IDSDAccount *)v30 initWithLoginID:v31 service:v17 uniqueID:v33 accountType:v34 accountConfig:v35];
+                  accountType = [v8 accountType];
+                  accountInfo = [v8 accountInfo];
+                  firstObject = [(IDSDAccount *)v30 initWithLoginID:loginID service:v17 uniqueID:v33 accountType:accountType accountConfig:accountInfo];
 
                   v2 = v32;
-                  v36 = [v32[504] registration];
-                  if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+                  registration5 = [v32[504] registration];
+                  if (os_log_type_enabled(registration5, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138412290;
-                    v62 = v22;
-                    _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "  Creating a linked account: %@", buf, 0xCu);
+                    v62 = firstObject;
+                    _os_log_impl(&_mh_execute_header, registration5, OS_LOG_TYPE_DEFAULT, "  Creating a linked account: %@", buf, 0xCu);
                   }
 
-                  v14 = self;
-                  [(IDSDAccountController *)self addAccount:v22];
+                  selfCopy2 = self;
+                  [(IDSDAccountController *)self addAccount:firstObject];
                   if ([v8 isEnabled])
                   {
-                    v37 = [v2[504] registration];
-                    if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+                    registration6 = [v2[504] registration];
+                    if (os_log_type_enabled(registration6, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 0;
-                      _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "  ... and enabling it", buf, 2u);
+                      _os_log_impl(&_mh_execute_header, registration6, OS_LOG_TYPE_DEFAULT, "  ... and enabling it", buf, 2u);
                     }
 
-                    v38 = [(IDSDAccount *)v22 uniqueID];
-                    [(IDSDAccountController *)self enableAccountWithUniqueID:v38];
+                    uniqueID3 = [(IDSDAccount *)firstObject uniqueID];
+                    [(IDSDAccountController *)self enableAccountWithUniqueID:uniqueID3];
 
-                    [(IDSDAccount *)v22 registerAccount];
+                    [(IDSDAccount *)firstObject registerAccount];
                   }
                 }
 
                 else
                 {
-                  v22 = 0;
+                  firstObject = 0;
                 }
               }
 
@@ -4648,7 +4648,7 @@ LABEL_123:
             while (v15);
           }
 
-          v9 = v46;
+          service = v46;
           i = v47;
           v11 = v45;
         }
@@ -4660,11 +4660,11 @@ LABEL_123:
     while (v44);
   }
 
-  v40 = [v2[504] registration];
-  if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
+  registration7 = [v2[504] registration];
+  if (os_log_type_enabled(registration7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, " => Done setting up linked accounts", buf, 2u);
+    _os_log_impl(&_mh_execute_header, registration7, OS_LOG_TYPE_DEFAULT, " => Done setting up linked accounts", buf, 2u);
   }
 }
 
@@ -4677,56 +4677,56 @@ LABEL_123:
 
 - (void)_migrateLegacyAccounts1
 {
-  v2 = self;
-  v3 = [(IDSDAccountController *)self userDefaults];
-  v4 = [v3 appBoolForKey:@"ImportedLegacyIMAccounts"];
+  selfCopy = self;
+  userDefaults = [(IDSDAccountController *)self userDefaults];
+  v4 = [userDefaults appBoolForKey:@"ImportedLegacyIMAccounts"];
 
   if (v4)
   {
-    v5 = +[IMRGLog registration];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    allServices = +[IMRGLog registration];
+    if (os_log_type_enabled(allServices, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Not importing legacy accounts, we've already done this", buf, 2u);
+      _os_log_impl(&_mh_execute_header, allServices, OS_LOG_TYPE_DEFAULT, "Not importing legacy accounts, we've already done this", buf, 2u);
     }
   }
 
   else
   {
-    v6 = [(IDSDAccountController *)v2 userDefaults];
-    [v6 setAppBool:1 forKey:@"ImportedLegacyIMAccounts"];
+    userDefaults2 = [(IDSDAccountController *)selfCopy userDefaults];
+    [userDefaults2 setAppBool:1 forKey:@"ImportedLegacyIMAccounts"];
 
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
     v7 = +[IDSDServiceController sharedInstance];
-    v5 = [v7 allServices];
+    allServices = [v7 allServices];
 
-    v49 = [v5 countByEnumeratingWithState:&v52 objects:v60 count:16];
+    v49 = [allServices countByEnumeratingWithState:&v52 objects:v60 count:16];
     if (v49)
     {
       v48 = *v53;
       v43 = kIDSServiceDefaultsAccounts;
       v42 = kIDSServiceDefaultsEnabledAccounts;
-      v44 = v5;
-      v41 = v2;
+      v44 = allServices;
+      v41 = selfCopy;
       do
       {
         for (i = 0; i != v49; i = i + 1)
         {
           if (*v53 != v48)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allServices);
           }
 
           v9 = *(*(&v52 + 1) + 8 * i);
-          v10 = [v9 identifier];
-          v11 = [v10 isEqualToIgnoringCase:@"com.apple.madrid"];
+          identifier = [v9 identifier];
+          v11 = [identifier isEqualToIgnoringCase:@"com.apple.madrid"];
           v12 = @"com.apple.imservice.iMessage";
           if ((v11 & 1) == 0)
           {
-            v13 = [v10 isEqualToIgnoringCase:@"com.apple.ess"];
+            v13 = [identifier isEqualToIgnoringCase:@"com.apple.ess"];
             v12 = @"com.apple.imservice.FaceTime";
             if (!v13)
             {
@@ -4748,13 +4748,13 @@ LABEL_123:
               _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Importing from domain %@ => %@", buf, 0x16u);
             }
 
-            v16 = [(IDSDAccountController *)v2 userDefaults];
-            v17 = [v9 preferencesDomain];
-            v18 = [v16 copyKeyListForAppID:v17];
+            userDefaults3 = [(IDSDAccountController *)selfCopy userDefaults];
+            preferencesDomain = [v9 preferencesDomain];
+            v18 = [userDefaults3 copyKeyListForAppID:preferencesDomain];
 
-            v19 = [(IDSDAccountController *)v2 userDefaults];
-            v20 = [v9 preferencesDomain];
-            v21 = [v19 copyMultipleForCurrentKeys:v18 appID:v20];
+            userDefaults4 = [(IDSDAccountController *)selfCopy userDefaults];
+            preferencesDomain2 = [v9 preferencesDomain];
+            v21 = [userDefaults4 copyMultipleForCurrentKeys:v18 appID:preferencesDomain2];
 
             v22 = [v21 objectForKey:@"Accounts"];
             v23 = [v22 count];
@@ -4774,8 +4774,8 @@ LABEL_123:
 
             else
             {
-              v25 = [(IDSDAccountController *)v2 userDefaults];
-              v24 = [v25 copyKeyListForAppID:v14];
+              userDefaults5 = [(IDSDAccountController *)selfCopy userDefaults];
+              v24 = [userDefaults5 copyKeyListForAppID:v14];
 
               v26 = +[IMRGLog registration];
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -4787,8 +4787,8 @@ LABEL_123:
 
               if ([v24 count])
               {
-                v27 = [(IDSDAccountController *)v2 userDefaults];
-                v28 = [v27 copyMultipleForCurrentKeys:v24 appID:v14];
+                userDefaults6 = [(IDSDAccountController *)selfCopy userDefaults];
+                v28 = [userDefaults6 copyMultipleForCurrentKeys:v24 appID:v14];
 
                 v29 = +[IMRGLog registration];
                 if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -4825,15 +4825,15 @@ LABEL_123:
                   v35 = [v47 objectForKey:@"ActiveAccounts"];
                   [v32 setObject:v35 forKey:v42];
 
-                  v36 = [(IDSDAccountController *)v41 userDefaults];
-                  v37 = [v9 preferencesDomain];
-                  [v36 setMultiple:v32 remove:0 appID:v37];
+                  userDefaults7 = [(IDSDAccountController *)v41 userDefaults];
+                  preferencesDomain3 = [v9 preferencesDomain];
+                  [userDefaults7 setMultiple:v32 remove:0 appID:preferencesDomain3];
 
-                  v38 = [(IDSDAccountController *)v41 userDefaults];
-                  v39 = [v9 preferencesDomain];
-                  [v38 synchronizeAppID:v39];
+                  userDefaults8 = [(IDSDAccountController *)v41 userDefaults];
+                  preferencesDomain4 = [v9 preferencesDomain];
+                  [userDefaults8 synchronizeAppID:preferencesDomain4];
 
-                  v2 = v41;
+                  selfCopy = v41;
                   v40 = v47;
 
                   v30 = v45;
@@ -4850,13 +4850,13 @@ LABEL_123:
                   v40 = v47;
                 }
 
-                v5 = v44;
+                allServices = v44;
               }
             }
           }
         }
 
-        v49 = [v5 countByEnumeratingWithState:&v52 objects:v60 count:16];
+        v49 = [allServices countByEnumeratingWithState:&v52 objects:v60 count:16];
       }
 
       while (v49);
@@ -4866,8 +4866,8 @@ LABEL_123:
 
 - (void)_migrateLegacyAccounts2
 {
-  v3 = [(IDSDAccountController *)self userDefaults];
-  v4 = [v3 appBoolForKey:@"ImportedLegacyIDSAccounts2"];
+  userDefaults = [(IDSDAccountController *)self userDefaults];
+  v4 = [userDefaults appBoolForKey:@"ImportedLegacyIDSAccounts2"];
 
   if (v4)
   {
@@ -4886,8 +4886,8 @@ LABEL_123:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(IDSDServiceController *)self->_serviceController allServices];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    allServices = [(IDSDServiceController *)self->_serviceController allServices];
+    v7 = [allServices countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v7)
     {
       v9 = *v17;
@@ -4899,45 +4899,45 @@ LABEL_123:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allServices);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
           v12 = [(IDSDAccountController *)self _legacyAccountsOnService:v11, v15];
-          v13 = [v11 preferencesDomain];
-          [v5 setObject:v12 forKeyedSubscript:v13];
+          preferencesDomain = [v11 preferencesDomain];
+          [v5 setObject:v12 forKeyedSubscript:preferencesDomain];
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v7 = [allServices countByEnumeratingWithState:&v16 objects:v21 count:16];
       }
 
       while (v7);
     }
 
-    v14 = [(IDSDAccountController *)self userDefaults];
-    [v14 setAppBool:1 forKey:@"ImportedLegacyIDSAccounts2"];
+    userDefaults2 = [(IDSDAccountController *)self userDefaults];
+    [userDefaults2 setAppBool:1 forKey:@"ImportedLegacyIDSAccounts2"];
 
     [(IDSDAccountController *)self _persistAccounts:v5];
   }
 }
 
-- (id)_legacyAccountsOnService:(id)a3
+- (id)_legacyAccountsOnService:(id)service
 {
-  v4 = a3;
-  v5 = [v4 preferencesDomain];
-  if ([v5 length])
+  serviceCopy = service;
+  preferencesDomain = [serviceCopy preferencesDomain];
+  if ([preferencesDomain length])
   {
     v6 = +[IMRGLog registration];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v24 = 138412546;
-      v25 = v5;
+      v25 = preferencesDomain;
       v26 = 2112;
-      v27 = v4;
+      v27 = serviceCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Importing from domain %@ => %@", &v24, 0x16u);
     }
 
-    v7 = [(IDSDAccountController *)self _preferencesOnDomain:v5];
+    v7 = [(IDSDAccountController *)self _preferencesOnDomain:preferencesDomain];
     v8 = kIDSServiceDefaultsAccounts;
     v9 = [v7 objectForKeyedSubscript:kIDSServiceDefaultsAccounts];
     v10 = [v9 count];
@@ -4946,8 +4946,8 @@ LABEL_123:
     {
       v11 = [(IDSDAccountController *)self _preferencesOnDomain:@"com.apple.identityservicesd"];
       v12 = [v11 objectForKeyedSubscript:@"services"];
-      v13 = [v4 preferencesDomain];
-      v14 = [v12 objectForKeyedSubscript:v13];
+      preferencesDomain2 = [serviceCopy preferencesDomain];
+      v14 = [v12 objectForKeyedSubscript:preferencesDomain2];
 
       v15 = [v14 objectForKeyedSubscript:v8];
       v16 = [v15 count];
@@ -4958,7 +4958,7 @@ LABEL_123:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           v24 = 138412546;
-          v25 = v4;
+          v25 = serviceCopy;
           v26 = 2112;
           v27 = v14;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Skipping service import: %@, we already have accounts: %@", &v24, 0x16u);
@@ -4977,7 +4977,7 @@ LABEL_123:
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
             v24 = 138412290;
-            v25 = v5;
+            v25 = preferencesDomain;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Migrating legacy account found no enabled accounts { legacyDomain : %@ }", &v24, 0xCu);
           }
         }
@@ -5024,38 +5024,38 @@ LABEL_123:
   return v18;
 }
 
-- (void)_persistAccounts:(id)a3
+- (void)_persistAccounts:(id)accounts
 {
-  v4 = a3;
+  accountsCopy = accounts;
   v5 = objc_autoreleasePoolPush();
   v6 = +[IMRGLog registration];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 count]);
+    v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [accountsCopy count]);
     v11 = 138412290;
     v12 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Persisting %@ accounts", &v11, 0xCu);
   }
 
   v8 = JWEncodeDictionary();
-  v9 = [v8 _FTCopyOptionallyGzippedData];
+  _FTCopyOptionallyGzippedData = [v8 _FTCopyOptionallyGzippedData];
 
-  v10 = [(IDSDAccountController *)self userDefaults];
-  [v10 setValue:v9 forKey:@"services" appID:@"com.apple.identityservicesd"];
+  userDefaults = [(IDSDAccountController *)self userDefaults];
+  [userDefaults setValue:_FTCopyOptionallyGzippedData forKey:@"services" appID:@"com.apple.identityservicesd"];
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (id)_preferencesOnDomain:(id)a3
+- (id)_preferencesOnDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(IDSDAccountController *)self userDefaults];
-  v6 = [v5 copyKeyListForAppID:v4];
+  domainCopy = domain;
+  userDefaults = [(IDSDAccountController *)self userDefaults];
+  v6 = [userDefaults copyKeyListForAppID:domainCopy];
 
   if (v6)
   {
-    v7 = [(IDSDAccountController *)self userDefaults];
-    v8 = [v7 copyMultipleForCurrentKeys:v6 appID:v4];
+    userDefaults2 = [(IDSDAccountController *)self userDefaults];
+    v8 = [userDefaults2 copyMultipleForCurrentKeys:v6 appID:domainCopy];
   }
 
   else
@@ -5068,8 +5068,8 @@ LABEL_123:
 
 - (BOOL)hasForcedReRegistered
 {
-  v3 = [(IDSDAccountController *)self userDefaults];
-  v4 = [v3 appValueForKey:@"ReRegisteredForDevicesHash"];
+  userDefaults = [(IDSDAccountController *)self userDefaults];
+  v4 = [userDefaults appValueForKey:@"ReRegisteredForDevicesHash"];
 
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -5099,14 +5099,14 @@ LABEL_123:
     LOBYTE(v6) = 1;
   }
 
-  v9 = [(IDSDAccountController *)self userDefaults];
-  v10 = [v9 appValueForKey:@"ReRegisteredForDevices"];
+  userDefaults2 = [(IDSDAccountController *)self userDefaults];
+  v10 = [userDefaults2 appValueForKey:@"ReRegisteredForDevices"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v10 integerValue];
-    v12 = v11 == sub_10046829C();
+    integerValue = [v10 integerValue];
+    v12 = integerValue == sub_10046829C();
   }
 
   else
@@ -5114,16 +5114,16 @@ LABEL_123:
     v12 = 0;
   }
 
-  v13 = [(IDSDAccountController *)self userDefaults];
-  v14 = [v13 appBoolForKey:@"ReRegisterForAliasRepair"];
+  userDefaults3 = [(IDSDAccountController *)self userDefaults];
+  v14 = [userDefaults3 appBoolForKey:@"ReRegisterForAliasRepair"];
 
   return v12 & v6 & (v14 ^ 1);
 }
 
 - (void)_cleanupLegacyAccounts
 {
-  v3 = [(IDSDAccountController *)self userDefaults];
-  v4 = [v3 appBoolForKey:@"DidCleanLegacyAccountPrefs"];
+  userDefaults = [(IDSDAccountController *)self userDefaults];
+  v4 = [userDefaults appBoolForKey:@"DidCleanLegacyAccountPrefs"];
 
   if ((v4 & 1) == 0)
   {
@@ -5146,15 +5146,15 @@ LABEL_123:
             objc_enumerationMutation(obj);
           }
 
-          v8 = [*(*(&v23 + 1) + 8 * i) preferencesDomain];
-          v9 = [(IDSDAccountController *)self userDefaults];
-          v10 = [v9 copyKeyListForAppID:v8];
+          preferencesDomain = [*(*(&v23 + 1) + 8 * i) preferencesDomain];
+          userDefaults2 = [(IDSDAccountController *)self userDefaults];
+          v10 = [userDefaults2 copyKeyListForAppID:preferencesDomain];
 
-          v11 = [(IDSDAccountController *)self userDefaults];
-          [v11 setMultiple:0 remove:v10 appID:v8];
+          userDefaults3 = [(IDSDAccountController *)self userDefaults];
+          [userDefaults3 setMultiple:0 remove:v10 appID:preferencesDomain];
 
           v12 = NSHomeDirectory();
-          v13 = [NSString stringWithFormat:@"%@/Library/Preferences/%@.plist", v12, v8];
+          v13 = [NSString stringWithFormat:@"%@/Library/Preferences/%@.plist", v12, preferencesDomain];
           v14 = +[NSFileManager defaultManager];
           v22 = 0;
           v15 = [v14 removeItemAtPath:v13 error:&v22];
@@ -5185,8 +5185,8 @@ LABEL_123:
       while (v6);
     }
 
-    v19 = [(IDSDAccountController *)self userDefaults];
-    [v19 setAppBool:1 forKey:@"DidCleanLegacyAccountPrefs"];
+    userDefaults4 = [(IDSDAccountController *)self userDefaults];
+    [userDefaults4 setAppBool:1 forKey:@"DidCleanLegacyAccountPrefs"];
   }
 }
 
@@ -5200,16 +5200,16 @@ LABEL_123:
   }
 
   v31 = objc_alloc_init(NSMutableArray);
-  v4 = [(IDSDAccountController *)self userDefaults];
-  v5 = [v4 appBoolForKey:@"MigratedToNewDisabledState"];
+  userDefaults = [(IDSDAccountController *)self userDefaults];
+  v5 = [userDefaults appBoolForKey:@"MigratedToNewDisabledState"];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v33 = self;
-  v6 = [(IDSDAccountController *)self accounts];
-  v7 = [v6 countByEnumeratingWithState:&v38 objects:v45 count:16];
+  selfCopy = self;
+  accounts = [(IDSDAccountController *)self accounts];
+  v7 = [accounts countByEnumeratingWithState:&v38 objects:v45 count:16];
   if (v7)
   {
     v8 = v7;
@@ -5220,14 +5220,14 @@ LABEL_123:
       {
         if (*v39 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(accounts);
         }
 
         v11 = *(*(&v38 + 1) + 8 * i);
-        v12 = [v11 service];
-        v13 = [v12 pushTopic];
+        service = [v11 service];
+        pushTopic = [service pushTopic];
 
-        if ([v13 isEqualToIgnoringCase:@"com.apple.private.alloy.willow"] && !objc_msgSend(v11, "accountType"))
+        if ([pushTopic isEqualToIgnoringCase:@"com.apple.private.alloy.willow"] && !objc_msgSend(v11, "accountType"))
         {
           [v31 addObject:v11];
           if (v5)
@@ -5243,8 +5243,8 @@ LABEL_123:
 
         if (([v11 isAdHocAccount] & 1) == 0)
         {
-          v14 = [v11 uniqueID];
-          v15 = [(IDSDAccountController *)v33 isEnabledAccount:v14];
+          uniqueID = [v11 uniqueID];
+          v15 = [(IDSDAccountController *)selfCopy isEnabledAccount:uniqueID];
 
           if ((v15 & 1) == 0)
           {
@@ -5253,12 +5253,12 @@ LABEL_123:
         }
 
 LABEL_15:
-        v16 = [v11 service];
-        if ([v16 adHocServiceType] == 5)
+        service2 = [v11 service];
+        if ([service2 adHocServiceType] == 5)
         {
-          v17 = [v11 accountType];
+          accountType = [v11 accountType];
 
-          if (v17 != 2)
+          if (accountType != 2)
           {
             [v31 addObject:v11];
           }
@@ -5269,17 +5269,17 @@ LABEL_15:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v38 objects:v45 count:16];
+      v8 = [accounts countByEnumeratingWithState:&v38 objects:v45 count:16];
     }
 
     while (v8);
   }
 
-  v18 = v33;
+  v18 = selfCopy;
   if ((v5 & 1) == 0)
   {
-    v19 = [(IDSDAccountController *)v33 userDefaults];
-    [v19 setAppBool:1 forKey:@"MigratedToNewDisabledState"];
+    userDefaults2 = [(IDSDAccountController *)selfCopy userDefaults];
+    [userDefaults2 setAppBool:1 forKey:@"MigratedToNewDisabledState"];
   }
 
   v37 = 0u;
@@ -5306,12 +5306,12 @@ LABEL_15:
         v26 = +[IMRGLog internalCleanup];
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = [v25 smallDescription];
+          smallDescription = [v25 smallDescription];
           *buf = v32;
-          v43 = v27;
+          v43 = smallDescription;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Removing account %@", buf, 0xCu);
 
-          v18 = v33;
+          v18 = selfCopy;
         }
 
         [(IDSDAccountController *)v18 _removeAccount:v25];
@@ -5323,10 +5323,10 @@ LABEL_15:
     while (v22);
   }
 
-  v28 = [(IDSDAccountController *)v18 hasForcedReRegistered];
+  hasForcedReRegistered = [(IDSDAccountController *)v18 hasForcedReRegistered];
   v29 = +[IMRGLog registration];
   v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
-  if (v28)
+  if (hasForcedReRegistered)
   {
     if (v30)
     {
@@ -5359,10 +5359,10 @@ LABEL_15:
   }
 }
 
-- (void)_servicesRemoved:(id)a3
+- (void)_servicesRemoved:(id)removed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"RemovedServices"];
+  userInfo = [removed userInfo];
+  v5 = [userInfo objectForKey:@"RemovedServices"];
 
   v6 = +[IMRGLog sub_services];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -5374,12 +5374,12 @@ LABEL_15:
 
   if ([v5 count])
   {
-    v7 = [(NSMutableDictionary *)self->_accountIDMap allKeys];
+    allKeys = [(NSMutableDictionary *)self->_accountIDMap allKeys];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v8 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
       v9 = v8;
@@ -5391,13 +5391,13 @@ LABEL_15:
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allKeys);
           }
 
           v12 = [(NSMutableDictionary *)self->_accountIDMap objectForKey:*(*(&v17 + 1) + 8 * v11)];
-          v13 = [v12 service];
-          v14 = [v13 identifier];
-          v15 = [v5 containsObject:v14];
+          service = [v12 service];
+          identifier = [service identifier];
+          v15 = [v5 containsObject:identifier];
 
           if (v15)
           {
@@ -5408,7 +5408,7 @@ LABEL_15:
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v9);
@@ -5419,41 +5419,41 @@ LABEL_15:
   }
 }
 
-- (id)_createAccountWithDictionary:(id)a3 service:(id)a4 uniqueID:(id)a5
+- (id)_createAccountWithDictionary:(id)dictionary service:(id)service uniqueID:(id)d
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[IDSDAccount alloc] initWithDictionary:v9 service:v8 uniqueID:v7];
+  dCopy = d;
+  serviceCopy = service;
+  dictionaryCopy = dictionary;
+  v10 = [[IDSDAccount alloc] initWithDictionary:dictionaryCopy service:serviceCopy uniqueID:dCopy];
 
   return v10;
 }
 
-- (void)_addAccountDuringInitialSetup:(id)a3
+- (void)_addAccountDuringInitialSetup:(id)setup
 {
   accountIDMapLock = self->_accountIDMapLock;
-  v5 = a3;
+  setupCopy = setup;
   [(NSRecursiveLock *)accountIDMapLock lock];
   accountIDMap = self->_accountIDMap;
-  v7 = [v5 uniqueID];
-  [(NSMutableDictionary *)accountIDMap setObject:v5 forKey:v7];
+  uniqueID = [setupCopy uniqueID];
+  [(NSMutableDictionary *)accountIDMap setObject:setupCopy forKey:uniqueID];
 
   v8 = self->_accountIDMapLock;
 
   [(NSRecursiveLock *)v8 unlock];
 }
 
-- (void)_attachOrphanedPhoneAliases:(id)a3 toRecipientAccounts:(id)a4 withAccountsToEnable:(id)a5
+- (void)_attachOrphanedPhoneAliases:(id)aliases toRecipientAccounts:(id)accounts withAccountsToEnable:(id)enable
 {
-  v7 = a3;
-  v8 = a4;
-  v25 = a5;
-  if ([v7 count])
+  aliasesCopy = aliases;
+  accountsCopy = accounts;
+  enableCopy = enable;
+  if ([aliasesCopy count])
   {
     v9 = +[IMRGLog registration];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 count]);
+      v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [aliasesCopy count]);
       *buf = 138412290;
       v37 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Dropped aliases { count: %@ }", buf, 0xCu);
@@ -5462,7 +5462,7 @@ LABEL_15:
     v11 = +[IMRGLog registration];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 count]);
+      v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [accountsCopy count]);
       *buf = 138412290;
       v37 = v12;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Donor accounts { count: %@ }", buf, 0xCu);
@@ -5472,8 +5472,8 @@ LABEL_15:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v22 = v8;
-    obj = v8;
+    v22 = accountsCopy;
+    obj = accountsCopy;
     v26 = [obj countByEnumeratingWithState:&v32 objects:v41 count:16];
     if (v26)
     {
@@ -5489,12 +5489,12 @@ LABEL_15:
           }
 
           v27 = v13;
-          v14 = [v25 objectForKeyedSubscript:*(*(&v32 + 1) + 8 * v13)];
+          v14 = [enableCopy objectForKeyedSubscript:*(*(&v32 + 1) + 8 * v13)];
           v28 = 0u;
           v29 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v15 = v7;
+          v15 = aliasesCopy;
           v16 = [v15 countByEnumeratingWithState:&v28 objects:v40 count:16];
           if (v16)
           {
@@ -5539,44 +5539,44 @@ LABEL_15:
       while (v26);
     }
 
-    v8 = v22;
+    accountsCopy = v22;
   }
 }
 
 - (BOOL)_loadAndEnableStoredAccounts
 {
-  v3 = [(IDSDAccountController *)self userDefaults];
-  v4 = [v3 copyValueForKey:@"services" appID:@"com.apple.identityservicesd"];
+  userDefaults = [(IDSDAccountController *)self userDefaults];
+  v4 = [userDefaults copyValueForKey:@"services" appID:@"com.apple.identityservicesd"];
 
   v60 = v4;
   v5 = v4;
-  v6 = self;
-  v7 = [v5 _FTOptionallyDecompressData];
+  selfCopy = self;
+  _FTOptionallyDecompressData = [v5 _FTOptionallyDecompressData];
   v65 = JWDecodeDictionary();
 
   v71 = objc_alloc_init(NSMutableDictionary);
-  v8 = [(IDSDServiceController *)self->_serviceController allServices];
+  allServices = [(IDSDServiceController *)self->_serviceController allServices];
   v9 = +[IMRGLog registration];
-  p_isa = &v6->super.isa;
+  p_isa = &selfCopy->super.isa;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 count]);
+    v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [allServices count]);
     *buf = 138412290;
     v101 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Loaded services { count: %@ }", buf, 0xCu);
 
-    v6 = p_isa;
+    selfCopy = p_isa;
   }
 
-  v11 = [(IDSDAccountController *)v6 userDefaults];
-  v73 = [v11 appBoolForKey:@"performed-user-intent-migrate"];
+  userDefaults2 = [(IDSDAccountController *)selfCopy userDefaults];
+  v73 = [userDefaults2 appBoolForKey:@"performed-user-intent-migrate"];
 
   v12 = p_isa;
   v96 = 0u;
   v97 = 0u;
   v94 = 0u;
   v95 = 0u;
-  obj = v8;
+  obj = allServices;
   v13 = &uuid_unparse_upper_ptr;
   v66 = [obj countByEnumeratingWithState:&v94 objects:v109 count:16];
   if (v66)
@@ -5596,8 +5596,8 @@ LABEL_15:
         v15 = *(*(&v94 + 1) + 8 * i);
         v16 = objc_autoreleasePoolPush();
         v80 = v15;
-        v17 = [v15 preferencesDomain];
-        v18 = [v65 objectForKeyedSubscript:v17];
+        preferencesDomain = [v15 preferencesDomain];
+        v18 = [v65 objectForKeyedSubscript:preferencesDomain];
 
         v19 = [v18 objectForKeyedSubscript:v63];
         v74 = [v18 objectForKeyedSubscript:v62];
@@ -5613,8 +5613,8 @@ LABEL_15:
           v91 = 0u;
           v92 = 0u;
           v93 = 0u;
-          v81 = [v19 allKeys];
-          v20 = [v81 countByEnumeratingWithState:&v90 objects:v108 count:16];
+          allKeys = [v19 allKeys];
+          v20 = [allKeys countByEnumeratingWithState:&v90 objects:v108 count:16];
           v79 = v19;
           if (!v20)
           {
@@ -5631,7 +5631,7 @@ LABEL_15:
             {
               if (*v91 != v23)
               {
-                objc_enumerationMutation(v81);
+                objc_enumerationMutation(allKeys);
               }
 
               v25 = *(*(&v90 + 1) + 8 * v24);
@@ -5641,17 +5641,17 @@ LABEL_15:
                 v27 = [v12 accountWithUniqueID:v25];
                 if (v27)
                 {
-                  v28 = [v13[504] warning];
-                  if (os_log_type_enabled(v28, OS_LOG_TYPE_FAULT))
+                  warning = [v13[504] warning];
+                  if (os_log_type_enabled(warning, OS_LOG_TYPE_FAULT))
                   {
-                    v29 = [v27 accountSetupInfo];
+                    accountSetupInfo = [v27 accountSetupInfo];
                     *buf = 138412802;
                     v101 = v25;
                     v102 = 2112;
-                    v103 = v29;
+                    v103 = accountSetupInfo;
                     v104 = 2112;
                     *v105 = v26;
-                    _os_log_fault_impl(&_mh_execute_header, v28, OS_LOG_TYPE_FAULT, "We already have an existing account with for this uniqueID -- not loading { uniqueID: %@, existingAccountInfo: %@, newAccountInfo: %@ }", buf, 0x20u);
+                    _os_log_fault_impl(&_mh_execute_header, warning, OS_LOG_TYPE_FAULT, "We already have an existing account with for this uniqueID -- not loading { uniqueID: %@, existingAccountInfo: %@, newAccountInfo: %@ }", buf, 0x20u);
 
                     v13 = &uuid_unparse_upper_ptr;
                   }
@@ -5660,11 +5660,11 @@ LABEL_15:
                 }
 
                 v30 = [v12 _createAccountWithDictionary:v26 service:v80 uniqueID:v25];
-                v28 = v30;
+                warning = v30;
                 if (!v30)
                 {
-                  v31 = [v13[504] warning];
-                  if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
+                  warning2 = [v13[504] warning];
+                  if (os_log_type_enabled(warning2, OS_LOG_TYPE_FAULT))
                   {
                     *buf = 138412802;
                     v101 = v25;
@@ -5672,17 +5672,17 @@ LABEL_15:
                     v103 = v80;
                     v104 = 2112;
                     *v105 = v26;
-                    _os_log_fault_impl(&_mh_execute_header, v31, OS_LOG_TYPE_FAULT, "Failed to create account { uniqueID: %@, service: %@, accountInfo: %@ }", buf, 0x20u);
+                    _os_log_fault_impl(&_mh_execute_header, warning2, OS_LOG_TYPE_FAULT, "Failed to create account { uniqueID: %@, service: %@, accountInfo: %@ }", buf, 0x20u);
                   }
 
                   goto LABEL_36;
                 }
 
-                v31 = [v30 serviceType];
-                v32 = [v28 accountType];
-                if ([v12[9] systemSupportsServiceType:v31 accountType:v32 isTemporary:{-[NSObject isTemporary](v28, "isTemporary")}])
+                warning2 = [v30 serviceType];
+                accountType = [warning accountType];
+                if ([v12[9] systemSupportsServiceType:warning2 accountType:accountType isTemporary:{-[NSObject isTemporary](warning, "isTemporary")}])
                 {
-                  if (v32 || ([v80 wantsPhoneNumberAccount]& 1) != 0)
+                  if (accountType || ([v80 wantsPhoneNumberAccount]& 1) != 0)
                   {
                     if ([v80 disabledOnTinkerWatch])
                     {
@@ -5700,9 +5700,9 @@ LABEL_15:
                           v102 = 2112;
                           v103 = v80;
                           v104 = 2112;
-                          *v105 = v31;
+                          *v105 = warning2;
                           *&v105[8] = 1024;
-                          *&v105[10] = v32;
+                          *&v105[10] = accountType;
                           v106 = 2112;
                           v107 = v26;
                           _os_log_error_impl(&_mh_execute_header, log, OS_LOG_TYPE_ERROR, "Tried to load a tinker disabled account -- dropping! { uniqueID: %@, service: %@, serviceType: %@, accountType: %d, accountInfo: %@ }", buf, 0x30u);
@@ -5714,19 +5714,19 @@ LABEL_15:
 
                     if ((v73 & 1) == 0)
                     {
-                      [v28 loadAliasUserIntentMetadataIfNeeded];
+                      [warning loadAliasUserIntentMetadataIfNeeded];
                     }
 
-                    if (v32 == 1)
+                    if (accountType == 1)
                     {
                       [v72 addObject:v25];
                     }
 
-                    [v12 _addAccountDuringInitialSetup:v28];
+                    [v12 _addAccountDuringInitialSetup:warning];
                     v13 = &uuid_unparse_upper_ptr;
                     if ([v74 containsObject:v25])
                     {
-                      [v71 setObject:v28 forKeyedSubscript:v25];
+                      [v71 setObject:warning forKeyedSubscript:v25];
                     }
 
 LABEL_36:
@@ -5743,7 +5743,7 @@ LABEL_37:
                     *buf = 138413058;
                     v101 = v25;
                     v102 = 2112;
-                    v103 = v31;
+                    v103 = warning2;
                     v104 = 1024;
                     *v105 = 0;
                     *&v105[4] = 2112;
@@ -5754,15 +5754,15 @@ LABEL_37:
 
                 else
                 {
-                  if (!v32)
+                  if (!accountType)
                   {
-                    v34 = [v28 aliases];
-                    logb = [v34 count];
+                    aliases = [warning aliases];
+                    logb = [aliases count];
 
                     if (logb)
                     {
-                      v35 = [v28 aliases];
-                      [v70 addObject:v35];
+                      aliases2 = [warning aliases];
+                      [v70 addObject:aliases2];
                     }
                   }
 
@@ -5772,9 +5772,9 @@ LABEL_37:
                     *buf = 138413058;
                     v101 = v25;
                     v102 = 2112;
-                    v103 = v31;
+                    v103 = warning2;
                     v104 = 1024;
-                    *v105 = v32;
+                    *v105 = accountType;
                     *&v105[4] = 2112;
                     *&v105[6] = v26;
                     _os_log_error_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "Tried to load account on a device that does not support this service/account type -- dropping! { uniqueID: %@, serviceType: %@, accountType: %d, accountInfo: %@ }", buf, 0x26u);
@@ -5794,7 +5794,7 @@ LABEL_38:
             }
 
             while (v21 != v24);
-            v38 = [v81 countByEnumeratingWithState:&v90 objects:v108 count:16];
+            v38 = [allKeys countByEnumeratingWithState:&v90 objects:v108 count:16];
             v21 = v38;
             if (!v38)
             {
@@ -5823,13 +5823,13 @@ LABEL_50:
     while (v66);
   }
 
-  v39 = [v13[504] registration];
-  if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+  registration = [v13[504] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     v40 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [p_isa[1] count]);
     *buf = 138412290;
     v101 = v40;
-    _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Loaded accounts { count: %@ }", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, registration, OS_LOG_TYPE_DEFAULT, "Loaded accounts { count: %@ }", buf, 0xCu);
   }
 
   v41 = +[IMRGLog registration];
@@ -5873,8 +5873,8 @@ LABEL_50:
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v49 = [v42 allValues];
-  v50 = [v49 countByEnumeratingWithState:&v82 objects:v98 count:16];
+  allValues = [v42 allValues];
+  v50 = [allValues countByEnumeratingWithState:&v82 objects:v98 count:16];
   if (v50)
   {
     v51 = v50;
@@ -5885,7 +5885,7 @@ LABEL_50:
       {
         if (*v83 != v52)
         {
-          objc_enumerationMutation(v49);
+          objc_enumerationMutation(allValues);
         }
 
         v54 = *(*(&v82 + 1) + 8 * k);
@@ -5894,7 +5894,7 @@ LABEL_50:
         objc_autoreleasePoolPop(v55);
       }
 
-      v51 = [v49 countByEnumeratingWithState:&v82 objects:v98 count:16];
+      v51 = [allValues countByEnumeratingWithState:&v82 objects:v98 count:16];
     }
 
     while (v51);
@@ -5902,8 +5902,8 @@ LABEL_50:
 
   if ((v73 & 1) == 0)
   {
-    v56 = [p_isa userDefaults];
-    [v56 setAppBool:1 forKey:@"performed-user-intent-migrate"];
+    userDefaults3 = [p_isa userDefaults];
+    [userDefaults3 setAppBool:1 forKey:@"performed-user-intent-migrate"];
 
     v57 = +[IMRGLog registration];
     if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
@@ -5920,12 +5920,12 @@ LABEL_50:
 
 - (void)_loadAndEnableStoredLegacyAccounts
 {
-  v2 = self;
-  v3 = [(IDSDServiceController *)self->_serviceController allServices];
+  selfCopy = self;
+  allServices = [(IDSDServiceController *)self->_serviceController allServices];
   v4 = +[IMRGLog registration];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 count]);
+    v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [allServices count]);
     *buf = 138412290;
     v102 = v5;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Loaded services { count: %@ }", buf, 0xCu);
@@ -5936,7 +5936,7 @@ LABEL_50:
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v6 = v3;
+  v6 = allServices;
   v7 = [v6 countByEnumeratingWithState:&v94 objects:v108 count:16];
   if (v7)
   {
@@ -5944,7 +5944,7 @@ LABEL_50:
     v9 = *v95;
     v64 = kIDSServiceDefaultsAccounts;
     v63 = kIDSServiceDefaultsEnabledAccounts;
-    v76 = v2;
+    v76 = selfCopy;
     v66 = *v95;
     v67 = v6;
     do
@@ -5959,8 +5959,8 @@ LABEL_50:
         }
 
         v11 = *(*(&v94 + 1) + 8 * v10);
-        v12 = [v11 preferencesDomain];
-        v13 = [v12 length];
+        preferencesDomain = [v11 preferencesDomain];
+        v13 = [preferencesDomain length];
 
         if (v13)
         {
@@ -5969,15 +5969,15 @@ LABEL_50:
             goto LABEL_59;
           }
 
-          v14 = [v11 legacyPreferencesDomain];
+          legacyPreferencesDomain = [v11 legacyPreferencesDomain];
           v15 = [NSMutableArray alloc];
           v16 = v11;
-          v17 = [v11 preferencesDomain];
-          v18 = [v15 initWithObjects:{v17, 0}];
+          preferencesDomain2 = [v11 preferencesDomain];
+          v18 = [v15 initWithObjects:{preferencesDomain2, 0}];
 
-          if (v14)
+          if (legacyPreferencesDomain)
           {
-            [v18 addObject:v14];
+            [v18 addObject:legacyPreferencesDomain];
           }
 
           v92 = 0u;
@@ -6000,8 +6000,8 @@ LABEL_14:
               }
 
               v23 = *(*(&v90 + 1) + 8 * v22);
-              v24 = [(IDSDAccountController *)v2 userDefaults];
-              v25 = [v24 copyKeyListForAppID:v23];
+              userDefaults = [(IDSDAccountController *)selfCopy userDefaults];
+              v25 = [userDefaults copyKeyListForAppID:v23];
 
               if (v25)
               {
@@ -6023,11 +6023,11 @@ LABEL_14:
               }
             }
 
-            v69 = v14;
+            v69 = legacyPreferencesDomain;
             v70 = v10;
-            v26 = [(IDSDAccountController *)v2 userDefaults];
+            userDefaults2 = [(IDSDAccountController *)selfCopy userDefaults];
             v72 = v25;
-            v27 = [v26 copyMultipleForCurrentKeys:v25 appID:v23];
+            v27 = [userDefaults2 copyMultipleForCurrentKeys:v25 appID:v23];
 
             v28 = [v27 objectForKeyedSubscript:v64];
             v68 = v27;
@@ -6036,11 +6036,11 @@ LABEL_14:
             v77 = v28;
             if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
             {
-              v54 = [v28 allKeys];
+              allKeys = [v28 allKeys];
               *buf = 138412802;
               v102 = v23;
               v103 = 2112;
-              v104 = v54;
+              v104 = allKeys;
               v105 = 2112;
               v106 = v75;
               _os_log_debug_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "Defaults dictionary loaded { domain: %@, accounts: %@, enabledAccounts: %@ }", buf, 0x20u);
@@ -6054,8 +6054,8 @@ LABEL_14:
             v89 = 0u;
             v86 = 0u;
             v87 = 0u;
-            v30 = [v28 allKeys];
-            v31 = [v30 countByEnumeratingWithState:&v86 objects:v100 count:16];
+            allKeys2 = [v28 allKeys];
+            v31 = [allKeys2 countByEnumeratingWithState:&v86 objects:v100 count:16];
             if (v31)
             {
               v32 = v31;
@@ -6067,12 +6067,12 @@ LABEL_14:
                 {
                   if (*v87 != v33)
                   {
-                    objc_enumerationMutation(v30);
+                    objc_enumerationMutation(allKeys2);
                   }
 
                   v35 = *(*(&v86 + 1) + 8 * v34);
                   v36 = [v28 objectForKeyedSubscript:v35];
-                  v37 = [(IDSDAccountController *)v2 accountWithUniqueID:v35];
+                  v37 = [(IDSDAccountController *)selfCopy accountWithUniqueID:v35];
                   v38 = [[IDSDAccount alloc] initWithDictionary:v36 service:v16 uniqueID:v35];
                   v39 = v38;
                   if (v36)
@@ -6082,12 +6082,12 @@ LABEL_14:
                       v40 = +[IMRGLog warning];
                       if (os_log_type_enabled(v40, OS_LOG_TYPE_FAULT))
                       {
-                        v41 = [v37 accountSetupInfo];
+                        accountSetupInfo = [v37 accountSetupInfo];
                         *buf = 138412802;
                         v102 = v35;
                         v103 = 2112;
-                        v104 = v41;
-                        v42 = v41;
+                        v104 = accountSetupInfo;
+                        v42 = accountSetupInfo;
                         v105 = 2112;
                         v106 = v36;
                         _os_log_fault_impl(&_mh_execute_header, v40, OS_LOG_TYPE_FAULT, "We already have an existing account with for this uniqueID -- not loading { uniqueID: %@, existingAccountInfo: %@, newAccountInfo: %@ }", buf, 0x20u);
@@ -6095,7 +6095,7 @@ LABEL_14:
 
 LABEL_34:
 
-                      v2 = v76;
+                      selfCopy = v76;
                       goto LABEL_35;
                     }
 
@@ -6116,7 +6116,7 @@ LABEL_34:
                       goto LABEL_34;
                     }
 
-                    [(IDSDAccountController *)v2 _addAccountDuringInitialSetup:v38];
+                    [(IDSDAccountController *)selfCopy _addAccountDuringInitialSetup:v38];
                     if ([v75 containsObject:v35])
                     {
                       [v74 addObject:v35];
@@ -6130,14 +6130,14 @@ LABEL_35:
                 }
 
                 while (v32 != v34);
-                v43 = [v30 countByEnumeratingWithState:&v86 objects:v100 count:16];
+                v43 = [allKeys2 countByEnumeratingWithState:&v86 objects:v100 count:16];
                 v32 = v43;
               }
 
               while (v43);
             }
 
-            v14 = v69;
+            legacyPreferencesDomain = v69;
             v10 = v70;
             v44 = v72;
             if (v69 && -[NSObject isEqualToString:](v65, "isEqualToString:", v69) && [v72 count])
@@ -6170,8 +6170,8 @@ LABEL_35:
                     }
 
                     v51 = *(*(&v82 + 1) + 8 * i);
-                    v52 = [(IDSDAccountController *)v2 userDefaults];
-                    [v52 setValue:0 forKey:v51 appID:v69];
+                    userDefaults3 = [(IDSDAccountController *)selfCopy userDefaults];
+                    [userDefaults3 setValue:0 forKey:v51 appID:v69];
                   }
 
                   v48 = [v46 countByEnumeratingWithState:&v82 objects:v99 count:16];
@@ -6180,8 +6180,8 @@ LABEL_35:
                 while (v48);
               }
 
-              v53 = [(IDSDAccountController *)v2 userDefaults];
-              [v53 synchronizeAppID:v69];
+              userDefaults4 = [(IDSDAccountController *)selfCopy userDefaults];
+              [userDefaults4 synchronizeAppID:v69];
 
               v44 = v72;
               v28 = v77;
@@ -6197,12 +6197,12 @@ LABEL_57:
 
         else
         {
-          v14 = +[IMRGLog registration];
-          if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+          legacyPreferencesDomain = +[IMRGLog registration];
+          if (os_log_type_enabled(legacyPreferencesDomain, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
             v102 = v11;
-            _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Bad preference domain { service: %@ }", buf, 0xCu);
+            _os_log_impl(&_mh_execute_header, legacyPreferencesDomain, OS_LOG_TYPE_DEFAULT, "Bad preference domain { service: %@ }", buf, 0xCu);
           }
         }
 
@@ -6220,7 +6220,7 @@ LABEL_59:
   v55 = +[IMRGLog registration];
   if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
   {
-    v56 = [NSNumber numberWithUnsignedInteger:[(NSMutableDictionary *)v2->_accountIDMap count]];
+    v56 = [NSNumber numberWithUnsignedInteger:[(NSMutableDictionary *)selfCopy->_accountIDMap count]];
     *buf = 138412290;
     v102 = v56;
     _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "Loaded legacy accounts { count: %@ }", buf, 0xCu);
@@ -6253,7 +6253,7 @@ LABEL_59:
           objc_enumerationMutation(v58);
         }
 
-        [(IDSDAccountController *)v2 _enableAccountWithUniqueID:*(*(&v78 + 1) + 8 * j)];
+        [(IDSDAccountController *)selfCopy _enableAccountWithUniqueID:*(*(&v78 + 1) + 8 * j)];
       }
 
       v60 = [v58 countByEnumeratingWithState:&v78 objects:v98 count:16];
@@ -6330,25 +6330,25 @@ LABEL_59:
 
                 v12 = *(*(&v36 + 1) + 8 * i);
                 v13 = objc_autoreleasePoolPush();
-                v14 = [v12 accountInfo];
-                if (v14)
+                accountInfo = [v12 accountInfo];
+                if (accountInfo)
                 {
-                  v15 = [v12 uniqueID];
+                  uniqueID = [v12 uniqueID];
 
-                  if (v15)
+                  if (uniqueID)
                   {
-                    v16 = [v12 uniqueID];
-                    [v34 setObject:v14 forKeyedSubscript:v16];
+                    uniqueID2 = [v12 uniqueID];
+                    [v34 setObject:accountInfo forKeyedSubscript:uniqueID2];
                   }
                 }
 
-                v17 = [v12 uniqueID];
-                v18 = [(IDSDAccountController *)self isEnabledAccount:v17];
+                uniqueID3 = [v12 uniqueID];
+                v18 = [(IDSDAccountController *)self isEnabledAccount:uniqueID3];
 
                 if (v18)
                 {
-                  v19 = [v12 uniqueID];
-                  [v35 addObject:v19];
+                  uniqueID4 = [v12 uniqueID];
+                  [v35 addObject:uniqueID4];
                 }
 
                 objc_autoreleasePoolPop(v13);
@@ -6363,7 +6363,7 @@ LABEL_59:
           [v30 setObject:v34 forKeyedSubscript:v26];
           [v30 setObject:v35 forKeyedSubscript:v25];
           v20 = [v34 count];
-          v21 = [v31 preferencesDomain];
+          preferencesDomain = [v31 preferencesDomain];
           if (v20)
           {
             v22 = v30;
@@ -6375,7 +6375,7 @@ LABEL_59:
           }
 
           v3 = v28;
-          [v28 setObject:v22 forKeyedSubscript:v21];
+          [v28 setObject:v22 forKeyedSubscript:preferencesDomain];
 
           objc_autoreleasePoolPop(context);
           v4 = v33 + 1;
@@ -6393,12 +6393,12 @@ LABEL_59:
   }
 }
 
-- (id)accountsOnService:(id)a3
+- (id)accountsOnService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   context = objc_autoreleasePoolPush();
   v19 = objc_alloc_init(NSMutableArray);
-  v20 = self;
+  selfCopy = self;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -6418,21 +6418,21 @@ LABEL_59:
           objc_enumerationMutation(obj);
         }
 
-        v9 = [(NSMutableDictionary *)v20->_accountIDMap objectForKey:*(*(&v21 + 1) + 8 * i), context];
-        v10 = [v9 service];
-        v11 = v10;
-        if (v10 == v4)
+        context = [(NSMutableDictionary *)selfCopy->_accountIDMap objectForKey:*(*(&v21 + 1) + 8 * i), context];
+        service = [context service];
+        v11 = service;
+        if (service == serviceCopy)
         {
 
 LABEL_10:
-          [v19 addObject:v9];
+          [v19 addObject:context];
           goto LABEL_11;
         }
 
-        v12 = [v9 service];
-        v13 = [v12 identifier];
-        v14 = [v4 identifier];
-        v15 = [v13 isEqualToString:v14];
+        service2 = [context service];
+        identifier = [service2 identifier];
+        identifier2 = [serviceCopy identifier];
+        v15 = [identifier isEqualToString:identifier2];
 
         if (v15)
         {
@@ -6453,16 +6453,16 @@ LABEL_11:
   return v19;
 }
 
-- (id)enabledAccountsOnService:(id)a3
+- (id)enabledAccountsOnService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   context = objc_autoreleasePoolPush();
   v18 = objc_alloc_init(NSMutableArray);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v20 = self;
+  selfCopy = self;
   obj = self->_accountIDMap;
   v5 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
@@ -6478,19 +6478,19 @@ LABEL_11:
           objc_enumerationMutation(obj);
         }
 
-        v9 = [(NSMutableDictionary *)v20->_accountIDMap objectForKey:*(*(&v21 + 1) + 8 * i), context];
-        v10 = [v9 service];
-        v11 = v10;
-        if (v10 == v4)
+        context = [(NSMutableDictionary *)selfCopy->_accountIDMap objectForKey:*(*(&v21 + 1) + 8 * i), context];
+        service = [context service];
+        v11 = service;
+        if (service == serviceCopy)
         {
         }
 
         else
         {
-          v12 = [v9 service];
-          v13 = [v12 identifier];
-          v14 = [v4 identifier];
-          v15 = [v13 isEqualToString:v14];
+          service2 = [context service];
+          identifier = [service2 identifier];
+          identifier2 = [serviceCopy identifier];
+          v15 = [identifier isEqualToString:identifier2];
 
           if (!v15)
           {
@@ -6498,9 +6498,9 @@ LABEL_11:
           }
         }
 
-        if ([v9 isEnabled])
+        if ([context isEnabled])
         {
-          [v18 addObject:v9];
+          [v18 addObject:context];
         }
 
 LABEL_12:
@@ -6517,18 +6517,18 @@ LABEL_12:
   return v18;
 }
 
-- (id)registeredAccountsOnService:(id)a3
+- (id)registeredAccountsOnService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc_init(NSMutableArray);
-  if ([v4 adHocServiceType] != 5)
+  if ([serviceCopy adHocServiceType] != 5)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(IDSDAccountController *)self accountsOnService:v4, 0];
+    v7 = [(IDSDAccountController *)self accountsOnService:serviceCopy, 0];
     v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
@@ -6562,7 +6562,7 @@ LABEL_12:
   return v6;
 }
 
-- (id)accountsOfAdHocType:(unsigned int)a3
+- (id)accountsOfAdHocType:(unsigned int)type
 {
   context = objc_autoreleasePoolPush();
   v5 = objc_alloc_init(NSMutableArray);
@@ -6586,13 +6586,13 @@ LABEL_12:
         }
 
         v11 = [(NSMutableDictionary *)self->_accountIDMap objectForKey:*(*(&v17 + 1) + 8 * i)];
-        v12 = [v11 service];
-        v13 = [v12 adHocServiceType];
+        service = [v11 service];
+        adHocServiceType = [service adHocServiceType];
 
-        if (v13 == a3)
+        if (adHocServiceType == type)
         {
-          v14 = [v11 uniqueID];
-          [v5 addObject:v14];
+          uniqueID = [v11 uniqueID];
+          [v5 addObject:uniqueID];
         }
       }
 
@@ -6613,8 +6613,8 @@ LABEL_12:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(IDSDAccountController *)self accounts];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v14 count:16];
+  accounts = [(IDSDAccountController *)self accounts];
+  v3 = [accounts countByEnumeratingWithState:&v8 objects:v14 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -6624,7 +6624,7 @@ LABEL_12:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accounts);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -6643,7 +6643,7 @@ LABEL_12:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v14 count:16];
+      v3 = [accounts countByEnumeratingWithState:&v8 objects:v14 count:16];
       if (v3)
       {
         continue;
@@ -6658,12 +6658,12 @@ LABEL_16:
   return v3;
 }
 
-- (void)issueDependentIDQueriesWithCompletionBlock:(id)a3
+- (void)issueDependentIDQueriesWithCompletionBlock:(id)block
 {
-  v23 = a3;
+  blockCopy = block;
   im_assert_primary_base_queue();
-  v4 = [(IDSDAccountController *)self accounts];
-  v5 = [v4 _copyForEnumerating];
+  accounts = [(IDSDAccountController *)self accounts];
+  _copyForEnumerating = [accounts _copyForEnumerating];
 
   group = dispatch_group_create();
   v45[0] = 0;
@@ -6682,7 +6682,7 @@ LABEL_16:
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v5;
+  obj = _copyForEnumerating;
   v6 = [obj countByEnumeratingWithState:&v37 objects:v48 count:16];
   if (v6)
   {
@@ -6701,25 +6701,25 @@ LABEL_16:
         v10 = objc_autoreleasePoolPush();
         if (([v9 isAdHocAccount] & 1) == 0 && objc_msgSend(v9, "isEnabled") && objc_msgSend(v9, "isRegistered") && (objc_msgSend(v9, "shouldRegisterUsingDSHandle") & 1) == 0)
         {
-          v11 = [v9 prefixedURIStringsFromRegistration];
-          v12 = [v11 firstObject];
+          prefixedURIStringsFromRegistration = [v9 prefixedURIStringsFromRegistration];
+          firstObject = [prefixedURIStringsFromRegistration firstObject];
 
-          if ([v12 isEqualToIgnoringCase:v24])
+          if ([firstObject isEqualToIgnoringCase:v24])
           {
 
-            v12 = 0;
+            firstObject = 0;
           }
 
-          v13 = [v9 registration];
-          v14 = [v13 registrationCert];
+          registration = [v9 registration];
+          registrationCert = [registration registrationCert];
 
-          v15 = [v9 service];
-          v16 = [v15 identifier];
+          service = [v9 service];
+          identifier = [service identifier];
 
-          if (v12 && v14 && v16)
+          if (firstObject && registrationCert && identifier)
           {
             dispatch_group_enter(group);
-            v17 = [IDSURI URIWithPrefixedURI:v12 withServiceLoggingHint:v16];
+            v17 = [IDSURI URIWithPrefixedURI:firstObject withServiceLoggingHint:identifier];
             v18 = +[IDSPeerIDManager sharedInstance];
             v47 = v17;
             v19 = [NSArray arrayWithObjects:&v47 count:1];
@@ -6732,7 +6732,7 @@ LABEL_16:
             v36 = v41;
             v33 = group;
             LOBYTE(v22) = 0;
-            [v18 startQueryForURIs:v19 fromIdentity:v14 fromURI:v17 fromService:v16 forSending:0 forceToServer:0 clientRequestedForceQuery:v22 reason:@"GDRQuery" completionBlock:v32];
+            [v18 startQueryForURIs:v19 fromIdentity:registrationCert fromURI:v17 fromService:identifier forSending:0 forceToServer:0 clientRequestedForceQuery:v22 reason:@"GDRQuery" completionBlock:v32];
           }
         }
 
@@ -6750,11 +6750,11 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = sub_10046C030;
   block[3] = &unk_100BDCD70;
-  v28 = v23;
+  v28 = blockCopy;
   v29 = v45;
   v30 = v41;
   v31 = v43;
-  v21 = v23;
+  v21 = blockCopy;
   dispatch_group_notify(group, v20, block);
 
   _Block_object_dispose(v41, 8);
@@ -6764,14 +6764,14 @@ LABEL_16:
 
 - (void)issueGetDependentRequest
 {
-  v2 = [(IDSDAccountController *)self accounts];
-  v3 = [v2 _copyForEnumerating];
+  accounts = [(IDSDAccountController *)self accounts];
+  _copyForEnumerating = [accounts _copyForEnumerating];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v3;
+  v4 = _copyForEnumerating;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -6789,15 +6789,15 @@ LABEL_16:
         v9 = *(*(&v14 + 1) + 8 * i);
         if (([v9 isAdHocAccount] & 1) == 0)
         {
-          v10 = [v9 registration];
-          v11 = [v10 dependentRegistrationResponseCode];
-          v12 = [v11 integerValue];
+          registration = [v9 registration];
+          dependentRegistrationResponseCode = [registration dependentRegistrationResponseCode];
+          integerValue = [dependentRegistrationResponseCode integerValue];
 
           if ([v9 isEnabled])
           {
             if ([v9 isRegistered])
             {
-              v13 = v12 == 0;
+              v13 = integerValue == 0;
             }
 
             else
@@ -6822,14 +6822,14 @@ LABEL_16:
 
 - (void)_resumeGDRReAuthenticateIfNecessary
 {
-  v2 = [(IDSDAccountController *)self accounts];
-  v3 = [v2 _copyForEnumerating];
+  accounts = [(IDSDAccountController *)self accounts];
+  _copyForEnumerating = [accounts _copyForEnumerating];
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = v3;
+  v4 = _copyForEnumerating;
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -6860,14 +6860,14 @@ LABEL_16:
 
 - (void)updateExpiredDependent
 {
-  v2 = [(IDSDAccountController *)self accounts];
-  v3 = [v2 _copyForEnumerating];
+  accounts = [(IDSDAccountController *)self accounts];
+  _copyForEnumerating = [accounts _copyForEnumerating];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = v3;
+  v4 = _copyForEnumerating;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -6885,12 +6885,12 @@ LABEL_16:
         v9 = *(*(&v13 + 1) + 8 * i);
         if (([v9 isAdHocAccount] & 1) == 0 && objc_msgSend(v9, "isEnabled") && objc_msgSend(v9, "isRegistered"))
         {
-          v10 = [v9 registration];
-          v11 = [v10 dependentRegistrationsTTL];
+          registration = [v9 registration];
+          dependentRegistrationsTTL = [registration dependentRegistrationsTTL];
 
-          if (v11)
+          if (dependentRegistrationsTTL)
           {
-            [v11 timeIntervalSinceNow];
+            [dependentRegistrationsTTL timeIntervalSinceNow];
             if (v12 < 1.0)
             {
               [v9 _issueDependentCheck];
@@ -6906,25 +6906,25 @@ LABEL_16:
   }
 }
 
-- (void)issueGetDependentRequestForAccount:(id)a3
+- (void)issueGetDependentRequestForAccount:(id)account
 {
-  v3 = a3;
-  if (([v3 isAdHocAccount] & 1) == 0 && objc_msgSend(v3, "isEnabled") && objc_msgSend(v3, "isRegistered"))
+  accountCopy = account;
+  if (([accountCopy isAdHocAccount] & 1) == 0 && objc_msgSend(accountCopy, "isEnabled") && objc_msgSend(accountCopy, "isRegistered"))
   {
-    [v3 _issueDependentCheck];
+    [accountCopy _issueDependentCheck];
   }
 }
 
 - (void)issueGetDependentAndGetHandlesRequest
 {
-  v2 = [(IDSDAccountController *)self accounts];
-  v3 = [v2 _copyForEnumerating];
+  accounts = [(IDSDAccountController *)self accounts];
+  _copyForEnumerating = [accounts _copyForEnumerating];
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = v3;
+  v4 = _copyForEnumerating;
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -6957,8 +6957,8 @@ LABEL_16:
 - (BOOL)hasiCloudAccount
 {
   v3 = +[IDSDServiceController sharedInstance];
-  v4 = [v3 iCloudService];
-  v5 = [(IDSDAccountController *)self appleIDAccountOnService:v4];
+  iCloudService = [v3 iCloudService];
+  v5 = [(IDSDAccountController *)self appleIDAccountOnService:iCloudService];
   LOBYTE(self) = v5 != 0;
 
   return self;
@@ -6982,31 +6982,31 @@ LABEL_16:
 
 - (void)_registerForAllRegistrationsSucceeded
 {
-  v3 = [(IDSDAccountController *)self registrationListener];
+  registrationListener = [(IDSDAccountController *)self registrationListener];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10046C80C;
   v5[3] = &unk_100BDCFA0;
   v5[4] = self;
-  v4 = [v3 addBlockForRegistrationCompletion:v5];
+  v4 = [registrationListener addBlockForRegistrationCompletion:v5];
 }
 
 - (void)_kickRemoteCacheWipe
 {
-  v3 = [(IDSDAccountController *)self userDefaults];
-  v4 = [v3 appValueForKey:@"triggeredRemoteSessionVersion"];
+  userDefaults = [(IDSDAccountController *)self userDefaults];
+  v4 = [userDefaults appValueForKey:@"triggeredRemoteSessionVersion"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 integerValue];
-    if (v5 >= 1)
+    integerValue = [v4 integerValue];
+    if (integerValue >= 1)
     {
       v6 = +[IMRGLog registration];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218498;
-        v33 = v5;
+        v33 = integerValue;
         v34 = 2048;
         v35 = 1;
         v36 = 2112;
@@ -7020,7 +7020,7 @@ LABEL_16:
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
   v7 = [IDSServerBag sharedInstanceForBagType:0];
@@ -7029,18 +7029,18 @@ LABEL_16:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ([v6 BOOLValue]& 1) == 0)
   {
-    v19 = +[IMRGLog registration];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    userDefaults2 = +[IMRGLog registration];
+    if (os_log_type_enabled(userDefaults2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
       v33 = v6;
       v34 = 2048;
-      v35 = v5;
+      v35 = integerValue;
       v36 = 2048;
       v37 = 1;
       v38 = 2112;
       v39 = &off_100C3DC70;
-      _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Not triggering remote session update, server bag disabled {bagDisabledValue: %@, appIntegerValue: %llu, latestVersion: %llu, interestingServices: %@}", buf, 0x2Au);
+      _os_log_impl(&_mh_execute_header, userDefaults2, OS_LOG_TYPE_DEFAULT, "Not triggering remote session update, server bag disabled {bagDisabledValue: %@, appIntegerValue: %llu, latestVersion: %llu, interestingServices: %@}", buf, 0x2Au);
     }
   }
 
@@ -7050,7 +7050,7 @@ LABEL_16:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v33 = v5;
+      v33 = integerValue;
       v34 = 2048;
       v35 = 1;
       v36 = 2112;
@@ -7122,8 +7122,8 @@ LABEL_16:
       while (v10);
     }
 
-    v19 = [(IDSDAccountController *)self userDefaults];
-    [v19 setAppValue:&off_100C3C718 forKey:@"triggeredRemoteSessionVersion"];
+    userDefaults2 = [(IDSDAccountController *)self userDefaults];
+    [userDefaults2 setAppValue:&off_100C3C718 forKey:@"triggeredRemoteSessionVersion"];
     v6 = v20;
     v4 = v21;
   }
@@ -7131,17 +7131,17 @@ LABEL_16:
 LABEL_28:
 }
 
-- (id)cloudPairedIDForDeviceID:(id)a3
+- (id)cloudPairedIDForDeviceID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_deviceProperties objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_deviceProperties objectForKey:d];
   v4 = [v3 objectForKey:@"nsuuid"];
 
   return v4;
 }
 
-- (id)deviceIDForPushToken:(id)a3
+- (id)deviceIDForPushToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -7153,7 +7153,7 @@ LABEL_28:
     v6 = *v30;
     v23 = v5;
     v20 = *v30;
-    v21 = self;
+    selfCopy = self;
     do
     {
       v7 = 0;
@@ -7170,8 +7170,8 @@ LABEL_28:
         v27 = 0u;
         v28 = 0u;
         v24 = v8;
-        v9 = [v8 dependentRegistrations];
-        v10 = [v9 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        dependentRegistrations = [v8 dependentRegistrations];
+        v10 = [dependentRegistrations countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v10)
         {
           v11 = v10;
@@ -7182,12 +7182,12 @@ LABEL_28:
             {
               if (*v26 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(dependentRegistrations);
               }
 
               v14 = *(*(&v25 + 1) + 8 * i);
               v15 = [v14 _dataForKey:@"push-token"];
-              v16 = [v15 isEqualToData:v4];
+              v16 = [v15 isEqualToData:tokenCopy];
 
               if (v16)
               {
@@ -7199,7 +7199,7 @@ LABEL_28:
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v25 objects:v33 count:16];
+            v11 = [dependentRegistrations countByEnumeratingWithState:&v25 objects:v33 count:16];
             if (v11)
             {
               continue;
@@ -7212,7 +7212,7 @@ LABEL_28:
         v7 = v7 + 1;
         v5 = v23;
         v6 = v20;
-        self = v21;
+        self = selfCopy;
       }
 
       while (v7 != v22);
@@ -7233,9 +7233,9 @@ LABEL_19:
   return v17;
 }
 
-- (id)pushTokenForDeviceID:(id)a3
+- (id)pushTokenForDeviceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -7248,7 +7248,7 @@ LABEL_19:
     v7 = IDSPrivateDeviceDataUniqueID;
     v25 = v5;
     v21 = *v32;
-    v22 = self;
+    selfCopy = self;
     do
     {
       v8 = 0;
@@ -7260,14 +7260,14 @@ LABEL_19:
         }
 
         v24 = v8;
-        v9 = [(NSMutableDictionary *)self->_accountIDMap objectForKey:*(*(&v31 + 1) + 8 * v8), v21, v22];
+        selfCopy = [(NSMutableDictionary *)self->_accountIDMap objectForKey:*(*(&v31 + 1) + 8 * v8), v21, selfCopy];
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v26 = v9;
-        v10 = [v9 dependentRegistrations];
-        v11 = [v10 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        v26 = selfCopy;
+        dependentRegistrations = [selfCopy dependentRegistrations];
+        v11 = [dependentRegistrations countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v11)
         {
           v12 = v11;
@@ -7278,13 +7278,13 @@ LABEL_19:
             {
               if (*v28 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(dependentRegistrations);
               }
 
               v15 = *(*(&v27 + 1) + 8 * i);
               v16 = [v15 _dictionaryForKey:@"private-device-data"];
               v17 = [v16 _stringForKey:v7];
-              v18 = [v17 isEqualToIgnoringCase:v4];
+              v18 = [v17 isEqualToIgnoringCase:dCopy];
 
               if (v18)
               {
@@ -7295,7 +7295,7 @@ LABEL_19:
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v27 objects:v35 count:16];
+            v12 = [dependentRegistrations countByEnumeratingWithState:&v27 objects:v35 count:16];
             if (v12)
             {
               continue;
@@ -7308,7 +7308,7 @@ LABEL_19:
         v8 = v24 + 1;
         v5 = v25;
         v6 = v21;
-        self = v22;
+        self = selfCopy;
       }
 
       while ((v24 + 1) != v23);
@@ -7329,9 +7329,9 @@ LABEL_19:
   return v19;
 }
 
-- (id)deviceNameForDeviceID:(id)a3
+- (id)deviceNameForDeviceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -7344,7 +7344,7 @@ LABEL_19:
     v7 = IDSPrivateDeviceDataUniqueID;
     v25 = v5;
     v21 = *v32;
-    v22 = self;
+    selfCopy = self;
     do
     {
       v8 = 0;
@@ -7356,14 +7356,14 @@ LABEL_19:
         }
 
         v24 = v8;
-        v9 = [(NSMutableDictionary *)self->_accountIDMap objectForKey:*(*(&v31 + 1) + 8 * v8), v21, v22];
+        selfCopy = [(NSMutableDictionary *)self->_accountIDMap objectForKey:*(*(&v31 + 1) + 8 * v8), v21, selfCopy];
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v26 = v9;
-        v10 = [v9 dependentRegistrations];
-        v11 = [v10 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        v26 = selfCopy;
+        dependentRegistrations = [selfCopy dependentRegistrations];
+        v11 = [dependentRegistrations countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v11)
         {
           v12 = v11;
@@ -7374,13 +7374,13 @@ LABEL_19:
             {
               if (*v28 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(dependentRegistrations);
               }
 
               v15 = *(*(&v27 + 1) + 8 * i);
               v16 = [v15 _dictionaryForKey:@"private-device-data"];
               v17 = [v16 _stringForKey:v7];
-              v18 = [v17 isEqualToIgnoringCase:v4];
+              v18 = [v17 isEqualToIgnoringCase:dCopy];
 
               if (v18)
               {
@@ -7391,7 +7391,7 @@ LABEL_19:
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v27 objects:v35 count:16];
+            v12 = [dependentRegistrations countByEnumeratingWithState:&v27 objects:v35 count:16];
             if (v12)
             {
               continue;
@@ -7404,7 +7404,7 @@ LABEL_19:
         v8 = v24 + 1;
         v5 = v25;
         v6 = v21;
-        self = v22;
+        self = selfCopy;
       }
 
       while ((v24 + 1) != v23);
@@ -7425,9 +7425,9 @@ LABEL_19:
   return v19;
 }
 
-- (id)publicKeyForDeviceID:(id)a3
+- (id)publicKeyForDeviceID:(id)d
 {
-  v29 = a3;
+  dCopy = d;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -7441,7 +7441,7 @@ LABEL_19:
     v7 = IDSPrivateDeviceDataUniqueID;
     v27 = v4;
     v23 = *v35;
-    v24 = self;
+    selfCopy = self;
     do
     {
       v8 = 0;
@@ -7459,8 +7459,8 @@ LABEL_19:
         v32 = 0u;
         v33 = 0u;
         v28 = v9;
-        v10 = [v9 dependentRegistrations];
-        v11 = [v10 countByEnumeratingWithState:&v30 objects:v40 count:16];
+        dependentRegistrations = [v9 dependentRegistrations];
+        v11 = [dependentRegistrations countByEnumeratingWithState:&v30 objects:v40 count:16];
         if (v11)
         {
           v12 = v11;
@@ -7471,13 +7471,13 @@ LABEL_19:
             {
               if (*v31 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(dependentRegistrations);
               }
 
               v15 = *(*(&v30 + 1) + 8 * i);
               v16 = [v15 _dictionaryForKey:v6];
               v17 = [v16 _stringForKey:v7];
-              v18 = [v17 isEqualToIgnoringCase:v29];
+              v18 = [v17 isEqualToIgnoringCase:dCopy];
 
               if (v18)
               {
@@ -7489,7 +7489,7 @@ LABEL_19:
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v30 objects:v40 count:16];
+            v12 = [dependentRegistrations countByEnumeratingWithState:&v30 objects:v40 count:16];
             if (v12)
             {
               continue;
@@ -7502,7 +7502,7 @@ LABEL_19:
         v8 = v26 + 1;
         v4 = v27;
         v5 = v23;
-        self = v24;
+        self = selfCopy;
       }
 
       while ((v26 + 1) != v25);
@@ -7516,7 +7516,7 @@ LABEL_19:
   if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v39 = v29;
+    v39 = dCopy;
     _os_log_impl(&_mh_execute_header, p_super, OS_LOG_TYPE_DEFAULT, "No public key found {deviceID: %@}", buf, 0xCu);
   }
 
@@ -7526,15 +7526,15 @@ LABEL_20:
   return v20;
 }
 
-- (void)deliveryController:(id)a3 uniqueID:(id)a4 isConnected:(BOOL)a5
+- (void)deliveryController:(id)controller uniqueID:(id)d isConnected:(BOOL)connected
 {
-  v5 = a5;
-  v6 = a4;
+  connectedCopy = connected;
+  dCopy = d;
   v7 = +[IMRGLog registration];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"NO";
-    if (v5)
+    if (connectedCopy)
     {
       v8 = @"YES";
     }
@@ -7542,13 +7542,13 @@ LABEL_20:
     v12 = 138412546;
     v13 = v8;
     v14 = 2112;
-    v15 = v6;
+    v15 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Received connected change to %@ for device with uniqueID %@", &v12, 0x16u);
   }
 
   v9 = +[IDSDevicePropertiesStateNotifier sharedInstance];
   v10 = v9;
-  if (v5)
+  if (connectedCopy)
   {
     v11 = kIDSDeviceStatePropertiesIsConnected;
   }
@@ -7558,18 +7558,18 @@ LABEL_20:
     v11 = 0;
   }
 
-  [v9 setState:v11 forProperty:kIDSDeviceStatePropertiesIsConnected deviceUniqueID:v6];
+  [v9 setState:v11 forProperty:kIDSDeviceStatePropertiesIsConnected deviceUniqueID:dCopy];
 }
 
-- (void)deliveryController:(id)a3 uniqueID:(id)a4 isNearby:(BOOL)a5
+- (void)deliveryController:(id)controller uniqueID:(id)d isNearby:(BOOL)nearby
 {
-  v5 = a5;
-  v6 = a4;
+  nearbyCopy = nearby;
+  dCopy = d;
   v7 = +[IMRGLog registration];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"NO";
-    if (v5)
+    if (nearbyCopy)
     {
       v8 = @"YES";
     }
@@ -7577,13 +7577,13 @@ LABEL_20:
     v12 = 138412546;
     v13 = v8;
     v14 = 2112;
-    v15 = v6;
+    v15 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Received nearby change to %@ for device with uniqueID %@", &v12, 0x16u);
   }
 
   v9 = +[IDSDevicePropertiesStateNotifier sharedInstance];
   v10 = v9;
-  if (v5)
+  if (nearbyCopy)
   {
     v11 = kIDSDeviceStatePropertiesIsNearby;
   }
@@ -7593,18 +7593,18 @@ LABEL_20:
     v11 = 0;
   }
 
-  [v9 setState:v11 forProperty:kIDSDeviceStatePropertiesIsNearby deviceUniqueID:v6];
+  [v9 setState:v11 forProperty:kIDSDeviceStatePropertiesIsNearby deviceUniqueID:dCopy];
 }
 
-- (void)deliveryController:(id)a3 uniqueID:(id)a4 isCloudConnected:(BOOL)a5
+- (void)deliveryController:(id)controller uniqueID:(id)d isCloudConnected:(BOOL)connected
 {
-  v5 = a5;
-  v6 = a4;
+  connectedCopy = connected;
+  dCopy = d;
   v7 = +[IMRGLog registration];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"NO";
-    if (v5)
+    if (connectedCopy)
     {
       v8 = @"YES";
     }
@@ -7612,13 +7612,13 @@ LABEL_20:
     v12 = 138412546;
     v13 = v8;
     v14 = 2112;
-    v15 = v6;
+    v15 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Received cloud connected change to %@ for device with uniqueID %@", &v12, 0x16u);
   }
 
   v9 = +[IDSDevicePropertiesStateNotifier sharedInstance];
   v10 = v9;
-  if (v5)
+  if (connectedCopy)
   {
     v11 = kIDSDeviceStatePropertiesIsCloudConnected;
   }
@@ -7628,14 +7628,14 @@ LABEL_20:
     v11 = 0;
   }
 
-  [v9 setState:v11 forProperty:kIDSDeviceStatePropertiesIsCloudConnected deviceUniqueID:v6];
+  [v9 setState:v11 forProperty:kIDSDeviceStatePropertiesIsCloudConnected deviceUniqueID:dCopy];
 }
 
-- (void)setNSUUID:(id)a3 onDeviceWithUniqueID:(id)a4
+- (void)setNSUUID:(id)d onDeviceWithUniqueID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  dCopy = d;
+  iDCopy = iD;
+  if ([iDCopy length])
   {
     deviceProperties = self->_deviceProperties;
     if (!deviceProperties)
@@ -7647,12 +7647,12 @@ LABEL_20:
       deviceProperties = self->_deviceProperties;
     }
 
-    v11 = [(NSMutableDictionary *)deviceProperties objectForKey:v7];
+    v11 = [(NSMutableDictionary *)deviceProperties objectForKey:iDCopy];
     v12 = [[NSMutableDictionary alloc] initWithDictionary:v11];
     v13 = v12;
-    if (v6)
+    if (dCopy)
     {
-      CFDictionarySetValue(v12, IDSDevicePropertyNSUUID, v6);
+      CFDictionarySetValue(v12, IDSDevicePropertyNSUUID, dCopy);
     }
 
     else
@@ -7660,7 +7660,7 @@ LABEL_20:
       [(__CFDictionary *)v12 removeObjectForKey:IDSDevicePropertyNSUUID];
     }
 
-    [(NSMutableDictionary *)self->_deviceProperties setObject:v13 forKey:v7];
+    [(NSMutableDictionary *)self->_deviceProperties setObject:v13 forKey:iDCopy];
     v15 = +[IMRGLog registration];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -7674,10 +7674,10 @@ LABEL_20:
     v31 = v11;
 
     [(IDSDAccountController *)self saveDevicePropertiesWithOldKeys:0];
-    if (v6)
+    if (dCopy)
     {
       v17 = +[IDSUTunDeliveryController sharedInstance];
-      [v17 deviceWithUniqueID:v7 updatedUUID:v6];
+      [v17 deviceWithUniqueID:iDCopy updatedUUID:dCopy];
     }
 
     v34 = 0u;
@@ -7685,9 +7685,9 @@ LABEL_20:
     v32 = 0u;
     v33 = 0u;
     v18 = +[IDSDServiceController sharedInstance];
-    v19 = [v18 allServices];
+    allServices = [v18 allServices];
 
-    v20 = [v19 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    v20 = [allServices countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v20)
     {
       v21 = v20;
@@ -7698,18 +7698,18 @@ LABEL_20:
         {
           if (*v33 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(allServices);
           }
 
           v24 = *(*(&v32 + 1) + 8 * i);
           v25 = +[IDSDaemon sharedInstance];
-          v26 = [v24 pushTopic];
-          v27 = [v25 broadcasterForTopic:v26 messageContext:0];
+          pushTopic = [v24 pushTopic];
+          v27 = [v25 broadcasterForTopic:pushTopic messageContext:0];
 
-          [v27 device:v7 nsuuidChanged:v6];
+          [v27 device:iDCopy nsuuidChanged:dCopy];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v21 = [allServices countByEnumeratingWithState:&v32 objects:v36 count:16];
       }
 
       while (v21);
@@ -7719,7 +7719,7 @@ LABEL_20:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = v6;
+      v38 = dCopy;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Finished broadcasting nsuuid %@ to all services", buf, 0xCu);
     }
 
@@ -7736,12 +7736,12 @@ LABEL_20:
   }
 }
 
-- (id)propertiesForDeviceWithUniqueID:(id)a3
+- (id)propertiesForDeviceWithUniqueID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [(NSMutableDictionary *)self->_deviceProperties objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_deviceProperties objectForKey:dCopy];
   }
 
   else
@@ -7763,26 +7763,26 @@ LABEL_20:
     v5 = [(IDSDAccountController *)self accountsOnService:?];
     if (![v5 count])
     {
-      v6 = [(NSMutableDictionary *)self->_deviceProperties allKeys];
+      allKeys = [(NSMutableDictionary *)self->_deviceProperties allKeys];
       deviceProperties = self->_deviceProperties;
       self->_deviceProperties = 0;
 
-      [(IDSDAccountController *)self saveDevicePropertiesWithOldKeys:v6];
+      [(IDSDAccountController *)self saveDevicePropertiesWithOldKeys:allKeys];
     }
 
     v4 = v8;
   }
 }
 
-- (void)updateDevicePropertiesWithDevices:(id)a3
+- (void)updateDevicePropertiesWithDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   v5 = objc_alloc_init(NSMutableSet);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v6 = v4;
+  v6 = devicesCopy;
   v7 = [v6 countByEnumeratingWithState:&v33 objects:v40 count:16];
   if (v7)
   {
@@ -7819,8 +7819,8 @@ LABEL_20:
 
   v15 = [[NSMutableDictionary alloc] initWithDictionary:self->_deviceProperties];
   v16 = [NSMutableSet alloc];
-  v17 = [(NSMutableDictionary *)self->_deviceProperties allKeys];
-  v18 = [v16 initWithArray:v17];
+  allKeys = [(NSMutableDictionary *)self->_deviceProperties allKeys];
+  v18 = [v16 initWithArray:allKeys];
 
   v19 = +[IMRGLog registration];
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -7881,23 +7881,23 @@ LABEL_20:
   deviceProperties = self->_deviceProperties;
   self->_deviceProperties = v15;
 
-  v28 = [v22 allObjects];
-  [(IDSDAccountController *)self saveDevicePropertiesWithOldKeys:v28];
+  allObjects = [v22 allObjects];
+  [(IDSDAccountController *)self saveDevicePropertiesWithOldKeys:allObjects];
 }
 
-- (void)saveDevicePropertiesWithOldKeys:(id)a3
+- (void)saveDevicePropertiesWithOldKeys:(id)keys
 {
-  v4 = a3;
-  if ([v4 count])
+  keysCopy = keys;
+  if ([keysCopy count])
   {
-    v5 = [(IDSDAccountController *)self userDefaults];
-    [v5 setMultiple:0 remove:v4 appID:@"com.apple.ids.deviceproperties"];
+    userDefaults = [(IDSDAccountController *)self userDefaults];
+    [userDefaults setMultiple:0 remove:keysCopy appID:@"com.apple.ids.deviceproperties"];
   }
 
   if ([(NSMutableDictionary *)self->_deviceProperties count])
   {
-    v6 = [(IDSDAccountController *)self userDefaults];
-    [v6 setMultiple:self->_deviceProperties remove:0 appID:@"com.apple.ids.deviceproperties"];
+    userDefaults2 = [(IDSDAccountController *)self userDefaults];
+    [userDefaults2 setMultiple:self->_deviceProperties remove:0 appID:@"com.apple.ids.deviceproperties"];
   }
 
   v7 = +[IMRGLog registration];
@@ -7911,14 +7911,14 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Saving device properties settings: %@   (domain: %@)", buf, 0x16u);
   }
 
-  v9 = [(IDSDAccountController *)self userDefaults];
-  [v9 synchronizeAppID:@"com.apple.ids.deviceproperties"];
+  userDefaults3 = [(IDSDAccountController *)self userDefaults];
+  [userDefaults3 synchronizeAppID:@"com.apple.ids.deviceproperties"];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v4;
+  obj = keysCopy;
   v24 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v24)
   {
@@ -7939,9 +7939,9 @@ LABEL_20:
         v27 = 0u;
         v28 = 0u;
         v12 = +[IDSDServiceController sharedInstance];
-        v13 = [v12 allServices];
+        allServices = [v12 allServices];
 
-        v14 = [v13 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        v14 = [allServices countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v14)
         {
           v15 = v14;
@@ -7953,20 +7953,20 @@ LABEL_20:
             {
               if (*v26 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(allServices);
               }
 
               v18 = *(*(&v25 + 1) + 8 * v17);
               v19 = +[IDSDaemon sharedInstance];
-              v20 = [v18 pushTopic];
-              v21 = [v19 broadcasterForTopic:v20 messageContext:0];
+              pushTopic = [v18 pushTopic];
+              v21 = [v19 broadcasterForTopic:pushTopic messageContext:0];
 
               [v21 device:v11 nsuuidChanged:0];
               v17 = v17 + 1;
             }
 
             while (v15 != v17);
-            v15 = [v13 countByEnumeratingWithState:&v25 objects:v33 count:16];
+            v15 = [allServices countByEnumeratingWithState:&v25 objects:v33 count:16];
           }
 
           while (v15);
@@ -7992,8 +7992,8 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Loading device properties", buf, 2u);
   }
 
-  v4 = [(IDSDAccountController *)self userDefaults];
-  v5 = [v4 copyKeyListForAppID:@"com.apple.ids.deviceproperties"];
+  userDefaults = [(IDSDAccountController *)self userDefaults];
+  v5 = [userDefaults copyKeyListForAppID:@"com.apple.ids.deviceproperties"];
 
   deviceProperties = self->_deviceProperties;
   self->_deviceProperties = 0;
@@ -8038,9 +8038,9 @@ LABEL_20:
             }
 
             v20 = *(*(&v48 + 1) + 8 * i);
-            v21 = [(NSMutableDictionary *)self->_deviceProperties objectForKey:v20, context];
+            context = [(NSMutableDictionary *)self->_deviceProperties objectForKey:v20, context];
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([v21 objectForKey:v42], v43 = v16, v22 = v15, v23 = v17, v24 = v18, v25 = v13, v26 = self, v27 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v27, self = v26, v13 = v25, v18 = v24, v17 = v23, v15 = v22, v16 = v43, (isKindOfClass & 1) == 0))
+            if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([context objectForKey:v42], v43 = v16, v22 = v15, v23 = v17, v24 = v18, v25 = v13, v26 = self, v27 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v27, self = v26, v13 = v25, v18 = v24, v17 = v23, v15 = v22, v16 = v43, (isKindOfClass & 1) == 0))
             {
               if (!v16)
               {
@@ -8138,28 +8138,28 @@ LABEL_20:
 
 - (BOOL)isiCloudHSA2
 {
-  v3 = [(IDSDServiceController *)self->_serviceController iCloudService];
-  v4 = [(IDSDAccountController *)self appleIDAccountOnService:v3];
+  iCloudService = [(IDSDServiceController *)self->_serviceController iCloudService];
+  v4 = [(IDSDAccountController *)self appleIDAccountOnService:iCloudService];
 
   if (v4 && [v4 accountType] == 1)
   {
-    v5 = [v4 dsID];
-    v6 = [v4 loginID];
+    dsID = [v4 dsID];
+    loginID = [v4 loginID];
     v7 = IMWeakLinkClass();
     if ([v7 isAccountsFrameworkAvailable])
     {
-      v8 = [v7 sharedInstance];
-      if (v8)
+      sharedInstance = [v7 sharedInstance];
+      if (sharedInstance)
       {
-        v9 = sub_1004508E4(v5);
-        v10 = [v8 authKitAccountWithDSID:v9];
+        v9 = sub_1004508E4(dsID);
+        v10 = [sharedInstance authKitAccountWithDSID:v9];
         if (v10)
         {
           goto LABEL_11;
         }
 
         v15 = 0;
-        v10 = [v8 authKitAccountWithAppleID:v6 error:&v15];
+        v10 = [sharedInstance authKitAccountWithAppleID:loginID error:&v15];
         v11 = v15;
         if (v11)
         {
@@ -8175,7 +8175,7 @@ LABEL_20:
         if (v10)
         {
 LABEL_11:
-          v13 = [v8 securityLevelForAccount:v10] == 4;
+          v13 = [sharedInstance securityLevelForAccount:v10] == 4;
         }
 
         else
@@ -8204,20 +8204,20 @@ LABEL_11:
   return v13;
 }
 
-- (void)authKitAccountUpdate:(id)a3
+- (void)authKitAccountUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 registrationStatus];
-  v6 = [v4 serviceType];
-  v7 = [v4 profileID];
+  updateCopy = update;
+  registrationStatus = [updateCopy registrationStatus];
+  serviceType = [updateCopy serviceType];
+  profileID = [updateCopy profileID];
 
-  v8 = (v5 - 1) < 0xFFFFFFFFFFFFFFFELL;
-  if (v7)
+  v8 = (registrationStatus - 1) < 0xFFFFFFFFFFFFFFFELL;
+  if (profileID)
   {
-    v9 = sub_1004508E4(v7);
+    v9 = sub_1004508E4(profileID);
     if (v9)
     {
-      if ([v6 isEqualToIgnoringCase:@"iMessage"])
+      if ([serviceType isEqualToIgnoringCase:@"iMessage"])
       {
         v10 = 4;
       }
@@ -8227,7 +8227,7 @@ LABEL_11:
         v10 = 0;
       }
 
-      if ([v6 isEqualToIgnoringCase:@"FaceTime"])
+      if ([serviceType isEqualToIgnoringCase:@"FaceTime"])
       {
         v10 = 5;
       }
@@ -8248,18 +8248,18 @@ LABEL_11:
   }
 }
 
-- (id)deviceCertificateForService:(id)a3 uri:(id)a4
+- (id)deviceCertificateForService:(id)service uri:(id)uri
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IDSDAccountController *)self accountWithServiceName:v6 aliasURI:v7];
+  serviceCopy = service;
+  uriCopy = uri;
+  v8 = [(IDSDAccountController *)self accountWithServiceName:serviceCopy aliasURI:uriCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 primaryRegistration];
-    v11 = [v10 registrationCert];
+    primaryRegistration = [v8 primaryRegistration];
+    registrationCert = [primaryRegistration registrationCert];
 
-    if (v11)
+    if (registrationCert)
     {
       goto LABEL_9;
     }
@@ -8268,9 +8268,9 @@ LABEL_11:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412546;
-      v16 = v6;
+      v16 = serviceCopy;
       v17 = 2112;
-      v18 = v7;
+      v18 = uriCopy;
       v13 = "Couldn't find device certificate (service: %@)  (uri: %@)";
 LABEL_7:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, v13, &v15, 0x16u);
@@ -8283,18 +8283,18 @@ LABEL_7:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412546;
-      v16 = v6;
+      v16 = serviceCopy;
       v17 = 2112;
-      v18 = v7;
+      v18 = uriCopy;
       v13 = "Couldn't find account (service %@)  (uri: %@)";
       goto LABEL_7;
     }
   }
 
-  v11 = 0;
+  registrationCert = 0;
 LABEL_9:
 
-  return v11;
+  return registrationCert;
 }
 
 @end

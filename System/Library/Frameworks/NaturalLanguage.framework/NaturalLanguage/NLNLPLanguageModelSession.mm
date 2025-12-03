@@ -1,43 +1,43 @@
 @interface NLNLPLanguageModelSession
-- (NLNLPLanguageModelSession)initWithLanguageModel:(id)a3 options:(id)a4;
-- (id)conditionalProbabilitiesForStrings:(id)a3 context:(id)a4;
-- (id)conditionalProbabilityForString:(id)a3 context:(id)a4;
-- (id)conditionalProbabilityForToken:(id)a3 context:(id)a4;
+- (NLNLPLanguageModelSession)initWithLanguageModel:(id)model options:(id)options;
+- (id)conditionalProbabilitiesForStrings:(id)strings context:(id)context;
+- (id)conditionalProbabilityForString:(id)string context:(id)context;
+- (id)conditionalProbabilityForToken:(id)token context:(id)context;
 - (id)description;
 - (id)predictionInitialCharacterSet;
-- (id)predictionOptionsForMaximumPredictions:(unint64_t)a3 maximumTokensPerPrediction:(unint64_t)a4;
-- (id)stateWithOptions:(id)a3;
+- (id)predictionOptionsForMaximumPredictions:(unint64_t)predictions maximumTokensPerPrediction:(unint64_t)prediction;
+- (id)stateWithOptions:(id)options;
 - (void)dealloc;
-- (void)enumeratePredictionsForContext:(id)a3 maximumPredictions:(unint64_t)a4 maximumTokensPerPrediction:(unint64_t)a5 withBlock:(id)a6;
+- (void)enumeratePredictionsForContext:(id)context maximumPredictions:(unint64_t)predictions maximumTokensPerPrediction:(unint64_t)prediction withBlock:(id)block;
 @end
 
 @implementation NLNLPLanguageModelSession
 
-- (NLNLPLanguageModelSession)initWithLanguageModel:(id)a3 options:(id)a4
+- (NLNLPLanguageModelSession)initWithLanguageModel:(id)model options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 granularity];
+  optionsCopy = options;
+  modelCopy = model;
+  granularity = [modelCopy granularity];
   v9 = objc_alloc(MEMORY[0x1E695DF20]);
-  v10 = [v7 localization];
+  localization = [modelCopy localization];
   v11 = MEMORY[0x1E69980C0];
-  if (v8 != 1)
+  if (granularity != 1)
   {
     v11 = MEMORY[0x1E69980C8];
   }
 
   v12 = *v11;
   v13 = MEMORY[0x1E6998120];
-  if (v8 != 1)
+  if (granularity != 1)
   {
     v13 = MEMORY[0x1E6998128];
   }
 
-  v14 = [v9 initWithObjectsAndKeys:{v10, *MEMORY[0x1E69980F8], v12, *MEMORY[0x1E69980B8], *v13, *MEMORY[0x1E6998130], 0}];
+  v14 = [v9 initWithObjectsAndKeys:{localization, *MEMORY[0x1E69980F8], v12, *MEMORY[0x1E69980B8], *v13, *MEMORY[0x1E6998130], 0}];
 
   v17.receiver = self;
   v17.super_class = NLNLPLanguageModelSession;
-  v15 = [(NLLanguageModelSession *)&v17 initWithLanguageModel:v7 options:v6];
+  v15 = [(NLLanguageModelSession *)&v17 initWithLanguageModel:modelCopy options:optionsCopy];
 
   if (v15)
   {
@@ -66,9 +66,9 @@
   v9.receiver = self;
   v9.super_class = NLNLPLanguageModelSession;
   v4 = [(NLNLPLanguageModelSession *)&v9 description];
-  v5 = [(NLLanguageModelSession *)self languageModel];
-  v6 = [v5 localization];
-  v7 = objc_msgSend(v3, "stringWithFormat:", @"%@(%@"), v4, v6;
+  languageModel = [(NLLanguageModelSession *)self languageModel];
+  localization = [languageModel localization];
+  v7 = objc_msgSend(v3, "stringWithFormat:", @"%@(%@"), v4, localization;
 
   if (self->_model)
   {
@@ -80,10 +80,10 @@
   return v7;
 }
 
-- (id)conditionalProbabilityForToken:(id)a3 context:(id)a4
+- (id)conditionalProbabilityForToken:(id)token context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  contextCopy = context;
   if (self->_model)
   {
     v8 = CoreLMCopyTokenIdsForText();
@@ -102,7 +102,7 @@
 
     if (v12)
     {
-      v13 = 0;
+      initWithInvalidProbability = 0;
       if (!v8)
       {
         if (!v10)
@@ -124,12 +124,12 @@
         if (CFArrayGetCount(v17) == 1 && (ValueAtIndex = CFArrayGetValueAtIndex(v18, 0), valuePtr = 0.0, CFNumberGetValue(ValueAtIndex, kCFNumberDoubleType, &valuePtr)))
         {
           v20 = [NLProbabilityInfo alloc];
-          v13 = [(NLProbabilityInfo *)v20 initWithProbability:0 flags:valuePtr];
+          initWithInvalidProbability = [(NLProbabilityInfo *)v20 initWithProbability:0 flags:valuePtr];
         }
 
         else
         {
-          v13 = 0;
+          initWithInvalidProbability = 0;
         }
 
         CFRelease(v18);
@@ -137,7 +137,7 @@
 
       else
       {
-        v13 = 0;
+        initWithInvalidProbability = 0;
       }
 
       v21 = self->_model;
@@ -146,14 +146,14 @@
 
     else
     {
-      v13 = 0;
+      initWithInvalidProbability = 0;
     }
 
     CFRelease(v8);
     if (!v11)
     {
 LABEL_10:
-      if (v13)
+      if (initWithInvalidProbability)
       {
         goto LABEL_12;
       }
@@ -167,17 +167,17 @@ LABEL_9:
   }
 
 LABEL_11:
-  v13 = [[NLProbabilityInfo alloc] initWithInvalidProbability];
+  initWithInvalidProbability = [[NLProbabilityInfo alloc] initWithInvalidProbability];
 LABEL_12:
 
-  return v13;
+  return initWithInvalidProbability;
 }
 
-- (id)conditionalProbabilityForString:(id)a3 context:(id)a4
+- (id)conditionalProbabilityForString:(id)string context:(id)context
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  contextCopy = context;
   if (self->_model)
   {
     v8 = CoreLMCopyTokenIdsForText();
@@ -196,7 +196,7 @@ LABEL_12:
 
     if (v12)
     {
-      v13 = 0;
+      initWithInvalidProbability = 0;
       if (!v8)
       {
         goto LABEL_32;
@@ -209,7 +209,7 @@ LABEL_12:
       v15 = self->_model;
       if (CoreLMUpdateWithContext())
       {
-        v30 = v6;
+        v30 = stringCopy;
         if (v14)
         {
           v17 = 0;
@@ -275,19 +275,19 @@ LABEL_12:
           }
 
 LABEL_29:
-          v13 = 0;
+          initWithInvalidProbability = 0;
         }
 
         else
         {
           v18 = 1.0;
 LABEL_27:
-          v13 = [[NLProbabilityInfo alloc] initWithProbability:0 flags:v18];
+          initWithInvalidProbability = [[NLProbabilityInfo alloc] initWithProbability:0 flags:v18];
         }
 
         v27 = self->_model;
         CoreLMReset();
-        v6 = v30;
+        stringCopy = v30;
         if (v8)
         {
           goto LABEL_31;
@@ -295,7 +295,7 @@ LABEL_27:
 
 LABEL_32:
 
-        if (v13)
+        if (initWithInvalidProbability)
         {
           goto LABEL_34;
         }
@@ -303,7 +303,7 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      v13 = 0;
+      initWithInvalidProbability = 0;
     }
 
 LABEL_31:
@@ -312,32 +312,32 @@ LABEL_31:
   }
 
 LABEL_33:
-  v13 = [[NLProbabilityInfo alloc] initWithInvalidProbability];
+  initWithInvalidProbability = [[NLProbabilityInfo alloc] initWithInvalidProbability];
 LABEL_34:
 
   v28 = *MEMORY[0x1E69E9840];
 
-  return v13;
+  return initWithInvalidProbability;
 }
 
-- (id)conditionalProbabilitiesForStrings:(id)a3 context:(id)a4
+- (id)conditionalProbabilitiesForStrings:(id)strings context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  stringsCopy = strings;
+  contextCopy = context;
   if (self->_model && (v8 = CoreLMCopyTokenIdsForText()) != 0)
   {
     v9 = v8;
     model = self->_model;
     if (CoreLMUpdateWithContext())
     {
-      v11 = [NLNLPLanguageModelNode conditionalProbabilitiesForStrings:v6 modelState:self->_model copyRequired:0];
+      v11 = [NLNLPLanguageModelNode conditionalProbabilitiesForStrings:stringsCopy modelState:self->_model copyRequired:0];
       v12 = self->_model;
       CoreLMReset();
     }
 
     else
     {
-      v11 = [NLNLPLanguageModelNode conditionalProbabilitiesForStrings:v6 modelState:0 copyRequired:0];
+      v11 = [NLNLPLanguageModelNode conditionalProbabilitiesForStrings:stringsCopy modelState:0 copyRequired:0];
     }
 
     CFRelease(v9);
@@ -345,18 +345,18 @@ LABEL_34:
 
   else
   {
-    v11 = [NLNLPLanguageModelNode conditionalProbabilitiesForStrings:v6 modelState:0 copyRequired:0];
+    v11 = [NLNLPLanguageModelNode conditionalProbabilitiesForStrings:stringsCopy modelState:0 copyRequired:0];
   }
 
   return v11;
 }
 
-- (id)stateWithOptions:(id)a3
+- (id)stateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if (self->_model && (v5 = CoreLMCreateCopy()) != 0)
   {
-    v6 = [[NLNLPLanguageModelState alloc] initWithSession:self options:v4 context:&stru_1F10C6540 modelState:v5];
+    v6 = [[NLNLPLanguageModelState alloc] initWithSession:self options:optionsCopy context:&stru_1F10C6540 modelState:v5];
   }
 
   else
@@ -367,22 +367,22 @@ LABEL_34:
   return v6;
 }
 
-- (id)predictionOptionsForMaximumPredictions:(unint64_t)a3 maximumTokensPerPrediction:(unint64_t)a4
+- (id)predictionOptionsForMaximumPredictions:(unint64_t)predictions maximumTokensPerPrediction:(unint64_t)prediction
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  if (a3 <= 0xA)
+  if (predictions <= 0xA)
   {
-    a3 = 10;
+    predictions = 10;
   }
 
   v12[0] = *MEMORY[0x1E6998108];
   v5 = *MEMORY[0x1E6998118];
   v11[0] = *MEMORY[0x1E6998110];
   v11[1] = v5;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:predictions];
   v12[1] = v6;
   v11[2] = *MEMORY[0x1E6998100];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:prediction];
   v12[2] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:3];
 
@@ -410,11 +410,11 @@ uint64_t __58__NLNLPLanguageModelSession_predictionInitialCharacterSet__block_in
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)enumeratePredictionsForContext:(id)a3 maximumPredictions:(unint64_t)a4 maximumTokensPerPrediction:(unint64_t)a5 withBlock:(id)a6
+- (void)enumeratePredictionsForContext:(id)context maximumPredictions:(unint64_t)predictions maximumTokensPerPrediction:(unint64_t)prediction withBlock:(id)block
 {
   v46 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
+  contextCopy = context;
+  blockCopy = block;
   if (self->_model)
   {
     v11 = CoreLMCopyTokenIdsForText();
@@ -425,13 +425,13 @@ uint64_t __58__NLNLPLanguageModelSession_predictionInitialCharacterSet__block_in
       if (CoreLMUpdateWithContext())
       {
         v35 = v12;
-        v37 = v9;
-        v34 = [(NLNLPLanguageModelSession *)self predictionOptionsForMaximumPredictions:a4 maximumTokensPerPrediction:a5];
+        v37 = contextCopy;
+        v34 = [(NLNLPLanguageModelSession *)self predictionOptionsForMaximumPredictions:predictions maximumTokensPerPrediction:prediction];
         v14 = self->_model;
         v15 = CoreLMCopyPredictions();
         v16 = [v15 keysSortedByValueUsingComparator:&__block_literal_global_311];
-        v36 = self;
-        v17 = [(NLNLPLanguageModelSession *)self predictionInitialCharacterSet];
+        selfCopy = self;
+        predictionInitialCharacterSet = [(NLNLPLanguageModelSession *)self predictionInitialCharacterSet];
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
@@ -458,7 +458,7 @@ LABEL_6:
             v26 = v25;
 
             v40 = 0;
-            [v23 rangeOfCharacterFromSet:v17 options:8];
+            [v23 rangeOfCharacterFromSet:predictionInitialCharacterSet options:8];
             if (v27)
             {
               v28 = [[NLProbabilityInfo alloc] initWithProbability:0 flags:v26];
@@ -474,11 +474,11 @@ LABEL_6:
 
               v30 = v29;
               v31 = [[NLPredictionInfo alloc] initWithPrediction:v29 probabilityInfo:v28];
-              v10[2](v10, v31, &v40);
+              blockCopy[2](blockCopy, v31, &v40);
               ++v20;
             }
 
-            if ((v40 & 1) != 0 || v20 >= a4)
+            if ((v40 & 1) != 0 || v20 >= predictions)
             {
               break;
             }
@@ -496,10 +496,10 @@ LABEL_6:
           }
         }
 
-        v32 = v36->_model;
+        v32 = selfCopy->_model;
         CoreLMReset();
 
-        v9 = v37;
+        contextCopy = v37;
         v12 = v35;
       }
 

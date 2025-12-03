@@ -1,21 +1,21 @@
 @interface SBTraitsInputsOrientationNonFlatOverrideValidator
 - (id)description;
-- (id)validateInputs:(id)a3 withContext:(id)a4;
-- (void)setLastNonFlatOrientationOverride:(int64_t)a3;
+- (id)validateInputs:(id)inputs withContext:(id)context;
+- (void)setLastNonFlatOrientationOverride:(int64_t)override;
 @end
 
 @implementation SBTraitsInputsOrientationNonFlatOverrideValidator
 
-- (void)setLastNonFlatOrientationOverride:(int64_t)a3
+- (void)setLastNonFlatOrientationOverride:(int64_t)override
 {
-  if ((a3 - 5) <= 1)
+  if ((override - 5) <= 1)
   {
     [(SBTraitsInputsOrientationNonFlatOverrideValidator *)a2 setLastNonFlatOrientationOverride:?];
   }
 
-  if (self->_lastNonFlatOrientationOverride != a3)
+  if (self->_lastNonFlatOrientationOverride != override)
   {
-    self->_lastNonFlatOrientationOverride = a3;
+    self->_lastNonFlatOrientationOverride = override;
   }
 }
 
@@ -33,26 +33,26 @@
   return v4;
 }
 
-- (id)validateInputs:(id)a3 withContext:(id)a4
+- (id)validateInputs:(id)inputs withContext:(id)context
 {
   v16.receiver = self;
   v16.super_class = SBTraitsInputsOrientationNonFlatOverrideValidator;
-  v5 = [(SBTraitsInputsValidator *)&v16 validateInputs:a3 withContext:a4];
-  v6 = [v5 deviceOrientationInputs];
-  v7 = [v6 currentDeviceOrientation];
-  if ((v7 - 1) >= 4 && self->_lastNonFlatOrientationOverride)
+  v5 = [(SBTraitsInputsValidator *)&v16 validateInputs:inputs withContext:context];
+  deviceOrientationInputs = [v5 deviceOrientationInputs];
+  currentDeviceOrientation = [deviceOrientationInputs currentDeviceOrientation];
+  if ((currentDeviceOrientation - 1) >= 4 && self->_lastNonFlatOrientationOverride)
   {
-    v8 = [objc_alloc(MEMORY[0x277D734A8]) initWithCurrentDeviceOrientation:v7 nonFlatDeviceOrientation:self->_lastNonFlatOrientationOverride];
+    v8 = [objc_alloc(MEMORY[0x277D734A8]) initWithCurrentDeviceOrientation:currentDeviceOrientation nonFlatDeviceOrientation:self->_lastNonFlatOrientationOverride];
 
-    v6 = v8;
+    deviceOrientationInputs = v8;
   }
 
   v9 = objc_alloc(MEMORY[0x277D734B0]);
-  v10 = [v5 interfaceIdiomInputs];
-  v11 = [v5 userInterfaceStyleInputs];
-  v12 = [v5 keyboardInputs];
-  v13 = [v5 ambientPresentationInputs];
-  v14 = [v9 initWithInterfaceIdiomInputs:v10 userInterfaceStyleInputs:v11 deviceOrientationInputs:v6 keyboardInputs:v12 ambientPresentationInputs:v13];
+  interfaceIdiomInputs = [v5 interfaceIdiomInputs];
+  userInterfaceStyleInputs = [v5 userInterfaceStyleInputs];
+  keyboardInputs = [v5 keyboardInputs];
+  ambientPresentationInputs = [v5 ambientPresentationInputs];
+  v14 = [v9 initWithInterfaceIdiomInputs:interfaceIdiomInputs userInterfaceStyleInputs:userInterfaceStyleInputs deviceOrientationInputs:deviceOrientationInputs keyboardInputs:keyboardInputs ambientPresentationInputs:ambientPresentationInputs];
 
   return v14;
 }

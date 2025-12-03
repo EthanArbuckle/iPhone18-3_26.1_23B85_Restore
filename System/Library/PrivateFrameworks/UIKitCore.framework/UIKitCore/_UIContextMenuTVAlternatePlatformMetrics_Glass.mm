@@ -36,8 +36,8 @@
 
     [(_UIContextMenuPlatformMetrics *)v3 setSectionSeparatorInsets:0.0, 14.0, 0.0, 14.0];
     [(_UIContextMenuPlatformMetrics *)v3 setMinIntraItemSpacing:12.0];
-    v5 = [(_UIContextMenuPlatformMetrics *)v3 decorationViewSymbolConfiguration];
-    [(_UIContextMenuPlatformMetrics *)v3 setChildIndicatorSymbolConfiguration:v5];
+    decorationViewSymbolConfiguration = [(_UIContextMenuPlatformMetrics *)v3 decorationViewSymbolConfiguration];
+    [(_UIContextMenuPlatformMetrics *)v3 setChildIndicatorSymbolConfiguration:decorationViewSymbolConfiguration];
 
     [(_UIContextMenuPlatformMetrics *)v3 setHeaderPadding:16.0, 16.0, -2.0, 16.0];
     v6 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleCaption1"];
@@ -52,11 +52,11 @@
     v9 = [UIImageSymbolConfiguration configurationWithTextStyle:@"UICTFontTextStyleCaption1" scale:1];
     [(_UIContextMenuPlatformMetrics *)v3 setDecorationViewSymbolConfiguration:v9];
 
-    v10 = [(_UIContextMenuPlatformMetrics *)v3 headerFont];
-    [(_UIContextMenuPlatformMetrics *)v3 setTitleEmphasizedFont:v10];
+    headerFont = [(_UIContextMenuPlatformMetrics *)v3 headerFont];
+    [(_UIContextMenuPlatformMetrics *)v3 setTitleEmphasizedFont:headerFont];
 
-    v11 = [(_UIContextMenuPlatformMetrics *)v3 headerFont];
-    [(_UIContextMenuPlatformMetrics *)v3 setIconEmphasizedSymbolFont:v11];
+    headerFont2 = [(_UIContextMenuPlatformMetrics *)v3 headerFont];
+    [(_UIContextMenuPlatformMetrics *)v3 setIconEmphasizedSymbolFont:headerFont2];
 
     [(_UIContextMenuPlatformMetrics *)v3 setItemPrimaryCompositingFilterProvider:0];
     [(_UIContextMenuPlatformMetrics *)v3 setItemPrimaryEmphasizedColorProvider:&__block_literal_global_15_2];

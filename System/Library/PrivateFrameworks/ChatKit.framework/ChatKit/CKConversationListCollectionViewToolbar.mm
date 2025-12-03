@@ -1,16 +1,16 @@
 @interface CKConversationListCollectionViewToolbar
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)contractHeight;
 - (void)expandHeight;
 @end
 
 @implementation CKConversationListCollectionViewToolbar
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v12.receiver = self;
   v12.super_class = CKConversationListCollectionViewToolbar;
-  [(CKConversationListCollectionViewToolbar *)&v12 sizeThatFits:a3.width, a3.height];
+  [(CKConversationListCollectionViewToolbar *)&v12 sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   if ([(CKConversationListCollectionViewToolbar *)self shouldExpandHeight])

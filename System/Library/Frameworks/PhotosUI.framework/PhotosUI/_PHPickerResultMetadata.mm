@@ -1,12 +1,12 @@
 @interface _PHPickerResultMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)acceptableCropRect;
 - (CGRect)normalizedFaceAreaRect;
 - (CGRect)preferredCropRect;
-- (_PHPickerResultMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_PHPickerResultMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _PHPickerResultMetadata
@@ -50,80 +50,80 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   pixelWidth = self->_pixelWidth;
-  v8 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:pixelWidth];
-  [v8 encodeObject:v6 forKey:@"PHPickerResultMetadataPixelWidthKey"];
+  [coderCopy encodeObject:v6 forKey:@"PHPickerResultMetadataPixelWidthKey"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_pixelHeight];
-  [v8 encodeObject:v7 forKey:@"PHPickerResultMetadataPixelHeightKey"];
+  [coderCopy encodeObject:v7 forKey:@"PHPickerResultMetadataPixelHeightKey"];
 
-  [v8 encodeCGRect:@"PHPickerResultMetadataPreferredCropRectKey" forKey:{self->_preferredCropRect.origin.x, self->_preferredCropRect.origin.y, self->_preferredCropRect.size.width, self->_preferredCropRect.size.height}];
-  [v8 encodeCGRect:@"PHPickerResultMetadataAcceptableCropRectKey" forKey:{self->_acceptableCropRect.origin.x, self->_acceptableCropRect.origin.y, self->_acceptableCropRect.size.width, self->_acceptableCropRect.size.height}];
-  [v8 encodeCGRect:@"PHPickerResultMetadataNormalizedFaceAreaRectKey" forKey:{self->_normalizedFaceAreaRect.origin.x, self->_normalizedFaceAreaRect.origin.y, self->_normalizedFaceAreaRect.size.width, self->_normalizedFaceAreaRect.size.height}];
-  [v8 encodeBool:self->_allowsItemProviderOpenInPlace forKey:@"PHPickerResultMetadataAllowsItemProviderOpenInPlaceKey"];
-  [v8 encodeObject:self->_suggestedName forKey:@"PHPickerResultMetadataSuggestedNameKey"];
-  [v8 encodeObject:self->_typeIdentifiers forKey:@"PHPickerResultMetadataTypeIdentifiersKey"];
-  [v8 encodeObject:self->_filePromiseURLs forKey:@"PHPickerResultMetadataFilePromiseURLsKey"];
-  [v8 encodeObject:self->_sandboxExtensionTokens forKey:@"PHPickerResultMetadataSandboxExtensionTokensKey"];
-  [v8 encodeObject:self->_itemIdentifier forKey:@"PHPickerResultMetadataItemIdentifierKey"];
+  [coderCopy encodeCGRect:@"PHPickerResultMetadataPreferredCropRectKey" forKey:{self->_preferredCropRect.origin.x, self->_preferredCropRect.origin.y, self->_preferredCropRect.size.width, self->_preferredCropRect.size.height}];
+  [coderCopy encodeCGRect:@"PHPickerResultMetadataAcceptableCropRectKey" forKey:{self->_acceptableCropRect.origin.x, self->_acceptableCropRect.origin.y, self->_acceptableCropRect.size.width, self->_acceptableCropRect.size.height}];
+  [coderCopy encodeCGRect:@"PHPickerResultMetadataNormalizedFaceAreaRectKey" forKey:{self->_normalizedFaceAreaRect.origin.x, self->_normalizedFaceAreaRect.origin.y, self->_normalizedFaceAreaRect.size.width, self->_normalizedFaceAreaRect.size.height}];
+  [coderCopy encodeBool:self->_allowsItemProviderOpenInPlace forKey:@"PHPickerResultMetadataAllowsItemProviderOpenInPlaceKey"];
+  [coderCopy encodeObject:self->_suggestedName forKey:@"PHPickerResultMetadataSuggestedNameKey"];
+  [coderCopy encodeObject:self->_typeIdentifiers forKey:@"PHPickerResultMetadataTypeIdentifiersKey"];
+  [coderCopy encodeObject:self->_filePromiseURLs forKey:@"PHPickerResultMetadataFilePromiseURLsKey"];
+  [coderCopy encodeObject:self->_sandboxExtensionTokens forKey:@"PHPickerResultMetadataSandboxExtensionTokensKey"];
+  [coderCopy encodeObject:self->_itemIdentifier forKey:@"PHPickerResultMetadataItemIdentifierKey"];
 }
 
-- (_PHPickerResultMetadata)initWithCoder:(id)a3
+- (_PHPickerResultMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v36.receiver = self;
   v36.super_class = _PHPickerResultMetadata;
   v5 = [(_PHPickerResultMetadata *)&v36 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerResultMetadataPixelWidthKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerResultMetadataPixelWidthKey"];
     v5->_pixelWidth = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerResultMetadataPixelHeightKey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerResultMetadataPixelHeightKey"];
     v5->_pixelHeight = [v7 unsignedIntegerValue];
 
-    [v4 decodeCGRectForKey:@"PHPickerResultMetadataPreferredCropRectKey"];
+    [coderCopy decodeCGRectForKey:@"PHPickerResultMetadataPreferredCropRectKey"];
     v5->_preferredCropRect.origin.x = v8;
     v5->_preferredCropRect.origin.y = v9;
     v5->_preferredCropRect.size.width = v10;
     v5->_preferredCropRect.size.height = v11;
-    [v4 decodeCGRectForKey:@"PHPickerResultMetadataAcceptableCropRectKey"];
+    [coderCopy decodeCGRectForKey:@"PHPickerResultMetadataAcceptableCropRectKey"];
     v5->_acceptableCropRect.origin.x = v12;
     v5->_acceptableCropRect.origin.y = v13;
     v5->_acceptableCropRect.size.width = v14;
     v5->_acceptableCropRect.size.height = v15;
-    [v4 decodeCGRectForKey:@"PHPickerResultMetadataNormalizedFaceAreaRectKey"];
+    [coderCopy decodeCGRectForKey:@"PHPickerResultMetadataNormalizedFaceAreaRectKey"];
     v5->_normalizedFaceAreaRect.origin.x = v16;
     v5->_normalizedFaceAreaRect.origin.y = v17;
     v5->_normalizedFaceAreaRect.size.width = v18;
     v5->_normalizedFaceAreaRect.size.height = v19;
-    v5->_allowsItemProviderOpenInPlace = [v4 decodeBoolForKey:@"PHPickerResultMetadataAllowsItemProviderOpenInPlaceKey"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerResultMetadataSuggestedNameKey"];
+    v5->_allowsItemProviderOpenInPlace = [coderCopy decodeBoolForKey:@"PHPickerResultMetadataAllowsItemProviderOpenInPlaceKey"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerResultMetadataSuggestedNameKey"];
     suggestedName = v5->_suggestedName;
     v5->_suggestedName = v20;
 
     v22 = MEMORY[0x1E695DFD8];
     v23 = objc_opt_class();
     v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"PHPickerResultMetadataTypeIdentifiersKey"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"PHPickerResultMetadataTypeIdentifiersKey"];
     typeIdentifiers = v5->_typeIdentifiers;
     v5->_typeIdentifiers = v25;
 
     v27 = objc_opt_class();
-    v28 = [v4 decodeDictionaryWithKeysOfClass:v27 objectsOfClass:objc_opt_class() forKey:@"PHPickerResultMetadataFilePromiseURLsKey"];
+    v28 = [coderCopy decodeDictionaryWithKeysOfClass:v27 objectsOfClass:objc_opt_class() forKey:@"PHPickerResultMetadataFilePromiseURLsKey"];
     filePromiseURLs = v5->_filePromiseURLs;
     v5->_filePromiseURLs = v28;
 
     v30 = objc_opt_class();
-    v31 = [v4 decodeDictionaryWithKeysOfClass:v30 objectsOfClass:objc_opt_class() forKey:@"PHPickerResultMetadataSandboxExtensionTokensKey"];
+    v31 = [coderCopy decodeDictionaryWithKeysOfClass:v30 objectsOfClass:objc_opt_class() forKey:@"PHPickerResultMetadataSandboxExtensionTokensKey"];
     sandboxExtensionTokens = v5->_sandboxExtensionTokens;
     v5->_sandboxExtensionTokens = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerResultMetadataItemIdentifierKey"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerResultMetadataItemIdentifierKey"];
     itemIdentifier = v5->_itemIdentifier;
     v5->_itemIdentifier = v33;
   }
@@ -131,7 +131,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(_PHPickerResultMetadata);
   v4->_pixelWidth = self->_pixelWidth;
@@ -216,10 +216,10 @@
   return [(NSString *)self->_itemIdentifier hash]- v23 + 32 * v23 + 0x5A44E007B1A55FLL;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -230,7 +230,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = objc_opt_class();
       if (v6)
       {
@@ -332,7 +332,7 @@ LABEL_28:
         }
 
         v12 = objc_opt_class();
-        v4 = NSStringFromClass(v12);
+        equalCopy = NSStringFromClass(v12);
         v13 = objc_opt_class();
         NSStringFromClass(v13);
         objc_claimAutoreleasedReturnValue();

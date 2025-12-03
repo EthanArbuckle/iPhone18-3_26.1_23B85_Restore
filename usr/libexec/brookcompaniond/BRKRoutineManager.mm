@@ -1,23 +1,23 @@
 @interface BRKRoutineManager
-+ (void)fetchLocationsOfInterestWithSingleRetryOfType:(int64_t)a3 routineManager:(id)a4 withHandler:(id)a5;
++ (void)fetchLocationsOfInterestWithSingleRetryOfType:(int64_t)type routineManager:(id)manager withHandler:(id)handler;
 @end
 
 @implementation BRKRoutineManager
 
-+ (void)fetchLocationsOfInterestWithSingleRetryOfType:(int64_t)a3 routineManager:(id)a4 withHandler:(id)a5
++ (void)fetchLocationsOfInterestWithSingleRetryOfType:(int64_t)type routineManager:(id)manager withHandler:(id)handler
 {
-  v7 = a4;
+  managerCopy = manager;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100002A6C;
   v11[3] = &unk_100008338;
-  v13 = a5;
-  v14 = a3;
-  v12 = v7;
-  v8 = v13;
-  v9 = v7;
+  handlerCopy = handler;
+  typeCopy = type;
+  v12 = managerCopy;
+  v8 = handlerCopy;
+  v9 = managerCopy;
   v10 = objc_retainBlock(v11);
-  [v9 fetchLocationsOfInterestOfType:a3 withHandler:v10];
+  [v9 fetchLocationsOfInterestOfType:type withHandler:v10];
 }
 
 @end

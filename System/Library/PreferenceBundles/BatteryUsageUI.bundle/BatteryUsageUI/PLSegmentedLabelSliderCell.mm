@@ -1,16 +1,16 @@
 @interface PLSegmentedLabelSliderCell
-- (PLSegmentedLabelSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (PLSegmentedLabelSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (PLSegmentedLabelSliderCellDelegate)delegate;
 - (id)createLabelStack;
 - (id)createSlider;
-- (void)darkenValue:(float)a3;
-- (void)drawRect:(CGRect)a3;
+- (void)darkenValue:(float)value;
+- (void)drawRect:(CGRect)rect;
 - (void)hideLabelsIfNecessary;
-- (void)highlightValue:(float)a3;
-- (void)reloadWithSpecifier:(id)a3 animated:(BOOL)a4;
-- (void)sliderValueChangedToValue:(float)a3;
-- (void)sliderValueChangedWithSlider:(id)a3;
-- (void)sliderValueChangingSlider:(id)a3;
+- (void)highlightValue:(float)value;
+- (void)reloadWithSpecifier:(id)specifier animated:(BOOL)animated;
+- (void)sliderValueChangedToValue:(float)value;
+- (void)sliderValueChangedWithSlider:(id)slider;
+- (void)sliderValueChangingSlider:(id)slider;
 @end
 
 @implementation PLSegmentedLabelSliderCell
@@ -37,19 +37,19 @@
   return v3;
 }
 
-- (void)sliderValueChangingSlider:(id)a3
+- (void)sliderValueChangingSlider:(id)slider
 {
-  v7 = a3;
-  [v7 value];
+  sliderCopy = slider;
+  [sliderCopy value];
   [(PLSegmentedLabelSliderCell *)self darkenValue:?];
-  v4 = [(PLSegmentedLabelSliderCell *)self delegate];
-  [v7 value];
-  v5 = [v4 shouldShowHighLight:?];
+  delegate = [(PLSegmentedLabelSliderCell *)self delegate];
+  [sliderCopy value];
+  v5 = [delegate shouldShowHighLight:?];
 
   if (v5)
   {
-    v6 = [(PLSegmentedLabelSliderCell *)self delegate];
-    [v6 getHighlightValue];
+    delegate2 = [(PLSegmentedLabelSliderCell *)self delegate];
+    [delegate2 getHighlightValue];
     [(PLSegmentedLabelSliderCell *)self highlightValue:?];
   }
 
@@ -58,40 +58,40 @@
     [(PLSegmentedLabelSliderCell *)self removeHighlight:1];
   }
 
-  if (![v7 state] && (objc_msgSend(v7, "isTracking") & 1) == 0)
+  if (![sliderCopy state] && (objc_msgSend(sliderCopy, "isTracking") & 1) == 0)
   {
-    [v7 value];
+    [sliderCopy value];
     [(PLSegmentedLabelSliderCell *)self sliderValueChangedToValue:?];
   }
 }
 
-- (void)sliderValueChangedWithSlider:(id)a3
+- (void)sliderValueChangedWithSlider:(id)slider
 {
-  [a3 value];
+  [slider value];
 
   [(PLSegmentedLabelSliderCell *)self sliderValueChangedToValue:?];
 }
 
-- (void)sliderValueChangedToValue:(float)a3
+- (void)sliderValueChangedToValue:(float)value
 {
-  v5 = [(PLSegmentedLabelSliderCell *)self delegate];
-  *&v6 = a3;
-  [v5 setSegmentedControlValue:v6];
+  delegate = [(PLSegmentedLabelSliderCell *)self delegate];
+  *&v6 = value;
+  [delegate setSegmentedControlValue:v6];
 
-  v7 = [(PLSegmentedLabelSliderCell *)self slider];
-  [v7 maximumValue];
+  slider = [(PLSegmentedLabelSliderCell *)self slider];
+  [slider maximumValue];
   v9 = v8;
 
-  if (v9 != a3)
+  if (v9 != value)
   {
-    v10 = [(PLSegmentedLabelSliderCell *)self delegate];
-    *&v11 = a3;
-    v12 = [v10 shouldShowHighLight:v11];
+    delegate2 = [(PLSegmentedLabelSliderCell *)self delegate];
+    *&v11 = value;
+    v12 = [delegate2 shouldShowHighLight:v11];
 
     if (v12)
     {
-      v13 = [(PLSegmentedLabelSliderCell *)self delegate];
-      [v13 getHighlightValue];
+      delegate3 = [(PLSegmentedLabelSliderCell *)self delegate];
+      [delegate3 getHighlightValue];
       [(PLSegmentedLabelSliderCell *)self highlightValue:?];
     }
 
@@ -100,8 +100,8 @@
       [(PLSegmentedLabelSliderCell *)self removeHighlight:1];
     }
 
-    v14 = [(PLSegmentedLabelSliderCell *)self delegate];
-    [v14 getSegmentedControlValue];
+    delegate4 = [(PLSegmentedLabelSliderCell *)self delegate];
+    [delegate4 getSegmentedControlValue];
     v16 = v15;
 
     LODWORD(v17) = v16;
@@ -110,12 +110,12 @@
   }
 }
 
-- (void)darkenValue:(float)a3
+- (void)darkenValue:(float)value
 {
-  v5 = [(PLSegmentedLabelSliderCell *)self labelMap];
-  *&v6 = a3;
+  labelMap = [(PLSegmentedLabelSliderCell *)self labelMap];
+  *&v6 = value;
   v7 = [NSNumber numberWithFloat:v6];
-  v8 = [v5 objectForKeyedSubscript:v7];
+  v8 = [labelMap objectForKeyedSubscript:v7];
 
   if (v8)
   {
@@ -123,10 +123,10 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = [(PLSegmentedLabelSliderCell *)self labelStack];
-    v10 = [v9 arrangedSubviews];
+    labelStack = [(PLSegmentedLabelSliderCell *)self labelStack];
+    arrangedSubviews = [labelStack arrangedSubviews];
 
-    v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v11 = [arrangedSubviews countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
     {
       v12 = v11;
@@ -137,30 +137,30 @@
         {
           if (*v23 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(arrangedSubviews);
           }
 
           v15 = *(*(&v22 + 1) + 8 * i);
-          v16 = [v15 textColor];
+          textColor = [v15 textColor];
           v17 = +[UIColor systemGreenColor];
 
-          if (v16 != v17)
+          if (textColor != v17)
           {
             v18 = +[UIColor systemGrayColor];
             [v15 setTextColor:v18];
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v12 = [arrangedSubviews countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v12);
     }
 
-    v19 = [v8 textColor];
+    textColor2 = [v8 textColor];
     v20 = +[UIColor systemGreenColor];
 
-    if (v19 != v20)
+    if (textColor2 != v20)
     {
       v21 = +[UIColor labelColor];
       [v8 setTextColor:v21];
@@ -168,12 +168,12 @@
   }
 }
 
-- (void)highlightValue:(float)a3
+- (void)highlightValue:(float)value
 {
-  v5 = [(PLSegmentedLabelSliderCell *)self labelMap];
-  *&v6 = a3;
+  labelMap = [(PLSegmentedLabelSliderCell *)self labelMap];
+  *&v6 = value;
   v7 = [NSNumber numberWithFloat:v6];
-  v9 = [v5 objectForKeyedSubscript:v7];
+  v9 = [labelMap objectForKeyedSubscript:v7];
 
   if (v9)
   {
@@ -195,27 +195,27 @@
 
   if ([(PLSegmentedLabelSliderCell *)self segments])
   {
-    v5 = [(PLSegmentedLabelSliderCell *)self segments];
+    segments = [(PLSegmentedLabelSliderCell *)self segments];
   }
 
   else
   {
-    v5 = 1;
+    segments = 1;
   }
 
-  v6 = [(PLSegmentedLabelSliderCell *)self maxValue];
-  v7 = [(PLSegmentedLabelSliderCell *)self minValue];
-  v8 = [(PLSegmentedLabelSliderCell *)self minValue];
-  if (v8 <= [(PLSegmentedLabelSliderCell *)self maxValue])
+  maxValue = [(PLSegmentedLabelSliderCell *)self maxValue];
+  minValue = [(PLSegmentedLabelSliderCell *)self minValue];
+  minValue2 = [(PLSegmentedLabelSliderCell *)self minValue];
+  if (minValue2 <= [(PLSegmentedLabelSliderCell *)self maxValue])
   {
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
     height = CGRectZero.size.height;
-    v12 = (v6 - v7) / v5;
+    v12 = (maxValue - minValue) / segments;
     do
     {
       v13 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-      v14 = [PLBatteryUIUtilities localizedStringWithPercentage:v8];
+      v14 = [PLBatteryUIUtilities localizedStringWithPercentage:minValue2];
       [v13 setText:v14];
 
       v15 = +[UIColor systemGrayColor];
@@ -227,108 +227,108 @@
       [v13 setAdjustsFontForContentSizeCategory:1];
       [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
       [v13 setNumberOfLines:1];
-      v17 = [(PLSegmentedLabelSliderCell *)self labelMap];
-      v18 = [NSNumber numberWithInt:v8];
-      [v17 setObject:v13 forKeyedSubscript:v18];
+      labelMap = [(PLSegmentedLabelSliderCell *)self labelMap];
+      v18 = [NSNumber numberWithInt:minValue2];
+      [labelMap setObject:v13 forKeyedSubscript:v18];
 
       [v3 addArrangedSubview:v13];
-      v8 = (v8 + v12);
+      minValue2 = (minValue2 + v12);
     }
 
-    while (v8 <= [(PLSegmentedLabelSliderCell *)self maxValue]);
+    while (minValue2 <= [(PLSegmentedLabelSliderCell *)self maxValue]);
   }
 
   return v3;
 }
 
-- (PLSegmentedLabelSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PLSegmentedLabelSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v79.receiver = self;
   v79.super_class = PLSegmentedLabelSliderCell;
-  v9 = [(PLSegmentedLabelSliderCell *)&v79 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(PLSegmentedLabelSliderCell *)&v79 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   if (v9)
   {
-    v10 = [v8 propertyForKey:@"PLSegmentedLabelSliderCellSegmentCountKey"];
+    v10 = [specifierCopy propertyForKey:@"PLSegmentedLabelSliderCellSegmentCountKey"];
     -[PLSegmentedLabelSliderCell setSegments:](v9, "setSegments:", [v10 intValue]);
 
-    v11 = [v8 propertyForKey:@"PLSegmentedLabelSliderCellMaxValueKey"];
+    v11 = [specifierCopy propertyForKey:@"PLSegmentedLabelSliderCellMaxValueKey"];
     -[PLSegmentedLabelSliderCell setMaxValue:](v9, "setMaxValue:", [v11 intValue]);
 
-    v12 = [v8 propertyForKey:@"PLSegmentedLabelSliderCellMinValueKey"];
+    v12 = [specifierCopy propertyForKey:@"PLSegmentedLabelSliderCellMinValueKey"];
     -[PLSegmentedLabelSliderCell setMinValue:](v9, "setMinValue:", [v12 intValue]);
 
-    v78 = v8;
-    v13 = [v8 propertyForKey:@"PLSegmentedLabelSliderCellDelegateKey"];
+    v78 = specifierCopy;
+    v13 = [specifierCopy propertyForKey:@"PLSegmentedLabelSliderCellDelegateKey"];
     [(PLSegmentedLabelSliderCell *)v9 setDelegate:v13];
 
-    v14 = [(PLSegmentedLabelSliderCell *)v9 createLabelStack];
-    [(PLSegmentedLabelSliderCell *)v9 setLabelStack:v14];
+    createLabelStack = [(PLSegmentedLabelSliderCell *)v9 createLabelStack];
+    [(PLSegmentedLabelSliderCell *)v9 setLabelStack:createLabelStack];
 
-    v15 = [(PLSegmentedLabelSliderCell *)v9 createSlider];
-    [(PLSegmentedLabelSliderCell *)v9 setSlider:v15];
+    createSlider = [(PLSegmentedLabelSliderCell *)v9 createSlider];
+    [(PLSegmentedLabelSliderCell *)v9 setSlider:createSlider];
 
-    v16 = [(PLSegmentedLabelSliderCell *)v9 delegate];
-    [v16 getSegmentedControlValue];
+    delegate = [(PLSegmentedLabelSliderCell *)v9 delegate];
+    [delegate getSegmentedControlValue];
     [(PLSegmentedLabelSliderCell *)v9 setCurrentValue:0 animated:?];
 
-    v17 = [(PLSegmentedLabelSliderCell *)v9 delegate];
-    v18 = [(PLSegmentedLabelSliderCell *)v9 slider];
-    [v18 value];
-    v19 = [v17 shouldShowHighLight:?];
+    delegate2 = [(PLSegmentedLabelSliderCell *)v9 delegate];
+    slider = [(PLSegmentedLabelSliderCell *)v9 slider];
+    [slider value];
+    v19 = [delegate2 shouldShowHighLight:?];
 
     if (v19)
     {
-      v20 = [(PLSegmentedLabelSliderCell *)v9 delegate];
-      [v20 getHighlightValue];
+      delegate3 = [(PLSegmentedLabelSliderCell *)v9 delegate];
+      [delegate3 getHighlightValue];
       [(PLSegmentedLabelSliderCell *)v9 highlightValue:?];
     }
 
-    v21 = [(PLSegmentedLabelSliderCell *)v9 contentView];
-    v22 = [(PLSegmentedLabelSliderCell *)v9 labelStack];
-    v77 = v21;
-    [v21 addSubview:v22];
+    contentView = [(PLSegmentedLabelSliderCell *)v9 contentView];
+    labelStack = [(PLSegmentedLabelSliderCell *)v9 labelStack];
+    v77 = contentView;
+    [contentView addSubview:labelStack];
 
-    v23 = [(PLSegmentedLabelSliderCell *)v9 slider];
-    [v21 addSubview:v23];
+    slider2 = [(PLSegmentedLabelSliderCell *)v9 slider];
+    [contentView addSubview:slider2];
 
-    v24 = [(PLSegmentedLabelSliderCell *)v9 slider];
-    [v21 bringSubviewToFront:v24];
+    slider3 = [(PLSegmentedLabelSliderCell *)v9 slider];
+    [contentView bringSubviewToFront:slider3];
 
     [(PLSegmentedLabelSliderCell *)v9 setSeparatorStyle:1];
     [(PLSegmentedLabelSliderCell *)v9 setSeparatorInset:0.0, 0.0, 0.0, 0.0];
-    v25 = [(PLSegmentedLabelSliderCell *)v9 labelStack];
-    v26 = [v25 arrangedSubviews];
-    v27 = [v26 firstObject];
+    labelStack2 = [(PLSegmentedLabelSliderCell *)v9 labelStack];
+    arrangedSubviews = [labelStack2 arrangedSubviews];
+    firstObject = [arrangedSubviews firstObject];
 
-    [v27 sizeToFit];
-    v28 = [(PLSegmentedLabelSliderCell *)v9 labelStack];
-    v29 = [v28 arrangedSubviews];
-    v30 = [v29 lastObject];
+    [firstObject sizeToFit];
+    labelStack3 = [(PLSegmentedLabelSliderCell *)v9 labelStack];
+    arrangedSubviews2 = [labelStack3 arrangedSubviews];
+    lastObject = [arrangedSubviews2 lastObject];
 
-    [v30 sizeToFit];
-    v75 = v30;
-    v76 = v27;
+    [lastObject sizeToFit];
+    v75 = lastObject;
+    v76 = firstObject;
     if (+[PLBatteryUIUtilities isDeviceLayoutRTL])
     {
-      v31 = v30;
+      v31 = lastObject;
     }
 
     else
     {
-      v31 = v27;
+      v31 = firstObject;
     }
 
     [v31 frame];
     v33 = v32 * 0.5;
     if (+[PLBatteryUIUtilities isDeviceLayoutRTL])
     {
-      v34 = v27;
+      v34 = firstObject;
     }
 
     else
     {
-      v34 = v30;
+      v34 = lastObject;
     }
 
     [v34 frame];
@@ -343,83 +343,83 @@
       v37 = v35 * 0.5;
     }
 
-    v74 = [(PLSegmentedLabelSliderCell *)v9 slider];
-    v72 = [v74 topAnchor];
-    v73 = [(PLSegmentedLabelSliderCell *)v9 contentView];
-    v71 = [v73 topAnchor];
-    v70 = [v72 constraintEqualToAnchor:v71 constant:7.0];
+    slider4 = [(PLSegmentedLabelSliderCell *)v9 slider];
+    topAnchor = [slider4 topAnchor];
+    contentView2 = [(PLSegmentedLabelSliderCell *)v9 contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v70 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:7.0];
     v80[0] = v70;
-    v69 = [(PLSegmentedLabelSliderCell *)v9 slider];
-    v67 = [v69 leadingAnchor];
-    v68 = [(PLSegmentedLabelSliderCell *)v9 contentView];
-    v66 = [v68 leadingAnchor];
-    v65 = [v67 constraintEqualToAnchor:v66 constant:(v37 + 7.0)];
+    slider5 = [(PLSegmentedLabelSliderCell *)v9 slider];
+    leadingAnchor = [slider5 leadingAnchor];
+    contentView3 = [(PLSegmentedLabelSliderCell *)v9 contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v65 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:(v37 + 7.0)];
     v80[1] = v65;
-    v64 = [(PLSegmentedLabelSliderCell *)v9 slider];
-    v62 = [v64 trailingAnchor];
-    v63 = [(PLSegmentedLabelSliderCell *)v9 contentView];
-    v61 = [v63 trailingAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61 constant:(-7.0 - v37)];
+    slider6 = [(PLSegmentedLabelSliderCell *)v9 slider];
+    trailingAnchor = [slider6 trailingAnchor];
+    contentView4 = [(PLSegmentedLabelSliderCell *)v9 contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v60 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:(-7.0 - v37)];
     v80[2] = v60;
-    v59 = [(PLSegmentedLabelSliderCell *)v9 labelStack];
-    v57 = [v59 topAnchor];
-    v58 = [(PLSegmentedLabelSliderCell *)v9 slider];
-    v56 = [v58 bottomAnchor];
-    v55 = [v57 constraintEqualToAnchor:v56 constant:3.0];
+    labelStack4 = [(PLSegmentedLabelSliderCell *)v9 labelStack];
+    topAnchor3 = [labelStack4 topAnchor];
+    slider7 = [(PLSegmentedLabelSliderCell *)v9 slider];
+    bottomAnchor = [slider7 bottomAnchor];
+    v55 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:3.0];
     v80[3] = v55;
-    v54 = [(PLSegmentedLabelSliderCell *)v9 labelStack];
-    v51 = [v54 leadingAnchor];
-    v52 = [(PLSegmentedLabelSliderCell *)v9 slider];
-    v50 = [v52 leadingAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50 constant:(18.0 - v33)];
+    labelStack5 = [(PLSegmentedLabelSliderCell *)v9 labelStack];
+    leadingAnchor3 = [labelStack5 leadingAnchor];
+    slider8 = [(PLSegmentedLabelSliderCell *)v9 slider];
+    leadingAnchor4 = [slider8 leadingAnchor];
+    v49 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:(18.0 - v33)];
     v80[4] = v49;
-    v48 = [(PLSegmentedLabelSliderCell *)v9 labelStack];
-    v38 = [v48 trailingAnchor];
-    v39 = [(PLSegmentedLabelSliderCell *)v9 slider];
-    v40 = [v39 trailingAnchor];
-    v41 = [v38 constraintEqualToAnchor:v40 constant:(v36 + -18.0)];
+    labelStack6 = [(PLSegmentedLabelSliderCell *)v9 labelStack];
+    trailingAnchor3 = [labelStack6 trailingAnchor];
+    slider9 = [(PLSegmentedLabelSliderCell *)v9 slider];
+    trailingAnchor4 = [slider9 trailingAnchor];
+    v41 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:(v36 + -18.0)];
     v80[5] = v41;
-    v42 = [(PLSegmentedLabelSliderCell *)v9 labelStack];
-    v43 = [v42 bottomAnchor];
-    v44 = [(PLSegmentedLabelSliderCell *)v9 contentView];
-    v45 = [v44 bottomAnchor];
-    v46 = [v43 constraintEqualToAnchor:v45 constant:-15.0];
+    labelStack7 = [(PLSegmentedLabelSliderCell *)v9 labelStack];
+    bottomAnchor2 = [labelStack7 bottomAnchor];
+    contentView5 = [(PLSegmentedLabelSliderCell *)v9 contentView];
+    bottomAnchor3 = [contentView5 bottomAnchor];
+    v46 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-15.0];
     v80[6] = v46;
     v53 = [NSArray arrayWithObjects:v80 count:7];
 
     [NSLayoutConstraint activateConstraints:v53];
     [(PLSegmentedLabelSliderCell *)v9 setNeedsLayout];
 
-    v8 = v78;
+    specifierCopy = v78;
   }
 
   return v9;
 }
 
-- (void)reloadWithSpecifier:(id)a3 animated:(BOOL)a4
+- (void)reloadWithSpecifier:(id)specifier animated:(BOOL)animated
 {
-  v6 = a3;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_24D00;
   block[3] = &unk_1648D0;
-  v9 = v6;
-  v7 = v6;
+  v9 = specifierCopy;
+  v7 = specifierCopy;
   objc_copyWeak(&v11, &location);
-  v12 = a4;
-  v10 = self;
+  animatedCopy = animated;
+  selfCopy = self;
   dispatch_async(&_dispatch_main_q, block);
   objc_destroyWeak(&v11);
 
   objc_destroyWeak(&location);
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v4.receiver = self;
   v4.super_class = PLSegmentedLabelSliderCell;
-  [(PLSegmentedLabelSliderCell *)&v4 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PLSegmentedLabelSliderCell *)&v4 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   [(PLSegmentedLabelSliderCell *)self hideLabelsIfNecessary];
 }
 
@@ -429,28 +429,28 @@
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v3 = [(PLSegmentedLabelSliderCell *)self labelMap];
+  labelMap = [(PLSegmentedLabelSliderCell *)self labelMap];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_24FE0;
   v12[3] = &unk_1648F8;
   v12[4] = &v13;
-  [v3 enumerateKeysAndObjectsUsingBlock:v12];
+  [labelMap enumerateKeysAndObjectsUsingBlock:v12];
 
-  v4 = [(PLSegmentedLabelSliderCell *)self slider];
-  [v4 frame];
+  slider = [(PLSegmentedLabelSliderCell *)self slider];
+  [slider frame];
   v6 = v5;
-  v7 = [(PLSegmentedLabelSliderCell *)self segments];
+  segments = [(PLSegmentedLabelSliderCell *)self segments];
   v8 = v14[6];
 
-  v9 = [(PLSegmentedLabelSliderCell *)self labelMap];
+  labelMap2 = [(PLSegmentedLabelSliderCell *)self labelMap];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_2507C;
   v10[3] = &unk_164920;
   v10[4] = self;
-  v11 = v6 / v7 < v8;
-  [v9 enumerateKeysAndObjectsUsingBlock:v10];
+  v11 = v6 / segments < v8;
+  [labelMap2 enumerateKeysAndObjectsUsingBlock:v10];
 
   _Block_object_dispose(&v13, 8);
 }

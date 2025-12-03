@@ -1,26 +1,26 @@
 @interface MapsSaveRouteContainee
 - (BOOL)_doneEnabled;
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (MapsSaveRouteContainee)initWithDelegate:(id)a3 isEditing:(BOOL)a4 showInitialKeyboard:(BOOL)a5;
-- (double)heightForLayout:(unint64_t)a3;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (MapsSaveRouteContainee)initWithDelegate:(id)delegate isEditing:(BOOL)editing showInitialKeyboard:(BOOL)keyboard;
+- (double)heightForLayout:(unint64_t)layout;
 - (void)_pressedCancel;
-- (void)_pressedSave:(id)a3;
+- (void)_pressedSave:(id)save;
 - (void)_startFetchingAddressIfNeeded;
 - (void)_textValuesDidChange;
 - (void)didBecomeCurrent;
 - (void)viewDidLoad;
-- (void)willBecomeCurrent:(BOOL)a3;
+- (void)willBecomeCurrent:(BOOL)current;
 @end
 
 @implementation MapsSaveRouteContainee
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a5;
-  v9 = [a3 text];
-  v10 = [v9 stringByReplacingCharactersInRange:location withString:{length, v8}];
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  text = [view text];
+  v10 = [text stringByReplacingCharactersInRange:location withString:{length, textCopy}];
 
   LOBYTE(location) = [v10 length] < 0x2711;
   return location;
@@ -28,37 +28,37 @@
 
 - (BOOL)_doneEnabled
 {
-  v3 = [(UITextField *)self->_nameField text];
-  if ([v3 length])
+  text = [(UITextField *)self->_nameField text];
+  if ([text length])
   {
-    v4 = [(UITextField *)self->_nameField text];
+    text2 = [(UITextField *)self->_nameField text];
   }
 
   else
   {
-    v4 = &stru_1016631F0;
+    text2 = &stru_1016631F0;
   }
 
-  v5 = [(TextViewWithPlaceholderText *)self->_notesField text];
-  if ([v5 length])
+  text3 = [(TextViewWithPlaceholderText *)self->_notesField text];
+  if ([text3 length])
   {
-    v6 = [(TextViewWithPlaceholderText *)self->_notesField text];
+    text4 = [(TextViewWithPlaceholderText *)self->_notesField text];
   }
 
   else
   {
-    v6 = &stru_1016631F0;
+    text4 = &stru_1016631F0;
   }
 
   isEditing = self->_isEditing;
-  v8 = [(__CFString *)v4 length];
+  v8 = [(__CFString *)text2 length];
   if (isEditing)
   {
     if (v8)
     {
-      if ([(NSString *)self->_originalName isEqualToString:v4])
+      if ([(NSString *)self->_originalName isEqualToString:text2])
       {
-        v9 = ![(NSString *)self->_originalNotes isEqualToString:v6];
+        v9 = ![(NSString *)self->_originalNotes isEqualToString:text4];
       }
 
       else
@@ -83,9 +83,9 @@
 
 - (void)_textValuesDidChange
 {
-  v3 = [(MapsSaveRouteContainee *)self _doneEnabled];
-  v4 = [(ModalCardHeaderView *)self->_modalHeaderView trailingButton];
-  [v4 setEnabled:v3];
+  _doneEnabled = [(MapsSaveRouteContainee *)self _doneEnabled];
+  trailingButton = [(ModalCardHeaderView *)self->_modalHeaderView trailingButton];
+  [trailingButton setEnabled:_doneEnabled];
 }
 
 - (void)didBecomeCurrent
@@ -99,19 +99,19 @@
   }
 }
 
-- (void)willBecomeCurrent:(BOOL)a3
+- (void)willBecomeCurrent:(BOOL)current
 {
   v6.receiver = self;
   v6.super_class = MapsSaveRouteContainee;
-  [(ContaineeViewController *)&v6 willBecomeCurrent:a3];
-  v4 = [(MapsSaveRouteContainee *)self _doneEnabled];
-  v5 = [(ModalCardHeaderView *)self->_modalHeaderView trailingButton];
-  [v5 setEnabled:v4];
+  [(ContaineeViewController *)&v6 willBecomeCurrent:current];
+  _doneEnabled = [(MapsSaveRouteContainee *)self _doneEnabled];
+  trailingButton = [(ModalCardHeaderView *)self->_modalHeaderView trailingButton];
+  [trailingButton setEnabled:_doneEnabled];
 }
 
-- (void)_pressedSave:(id)a3
+- (void)_pressedSave:(id)save
 {
-  v4 = a3;
+  saveCopy = save;
   v5 = sub_1007989A4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -119,7 +119,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "pressed save", buf, 2u);
   }
 
-  v6 = v4;
+  v6 = saveCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -135,26 +135,26 @@
 
   [v8 setEnabled:0];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v10 = [WeakRetained routeData];
+  routeData = [WeakRetained routeData];
 
-  v11 = [(UITextField *)self->_nameField text];
-  if ([v11 length])
+  text = [(UITextField *)self->_nameField text];
+  if ([text length])
   {
     [(UITextField *)self->_nameField text];
   }
 
   else
   {
-    [v10 routeName];
+    [routeData routeName];
   }
   v12 = ;
 
-  [v10 setUserProvidedName:v12];
-  v13 = [(TextViewWithPlaceholderText *)self->_notesField text];
-  v14 = v13;
-  if (v13)
+  [routeData setUserProvidedName:v12];
+  text2 = [(TextViewWithPlaceholderText *)self->_notesField text];
+  v14 = text2;
+  if (text2)
   {
-    v15 = v13;
+    v15 = text2;
   }
 
   else
@@ -162,7 +162,7 @@
     v15 = &stru_1016631F0;
   }
 
-  [v10 setUserProvidedNotes:v15];
+  [routeData setUserProvidedNotes:v15];
 
   v16 = dispatch_group_create();
   if (self->_isEditing)
@@ -176,18 +176,18 @@
     goto LABEL_27;
   }
 
-  v18 = [(MapsSaveRouteOfflineDownloadView *)self->_offlineDownloadView estimatedRegionSizeInBytes];
+  estimatedRegionSizeInBytes = [(MapsSaveRouteOfflineDownloadView *)self->_offlineDownloadView estimatedRegionSizeInBytes];
   v19 = +[MapsOfflineUIHelper sharedHelper];
-  v43 = v18;
-  v20 = [v19 alertControllerForInsufficientDiskSpaceForDownloadSize:v18];
+  v43 = estimatedRegionSizeInBytes;
+  v20 = [v19 alertControllerForInsufficientDiskSpaceForDownloadSize:estimatedRegionSizeInBytes];
 
   if (!v20)
   {
     v42 = v12;
     v22 = objc_loadWeakRetained(&self->_delegate);
-    v23 = [v22 routeData];
-    v24 = [v23 boundingMapRegion];
-    v25 = [GEOMapRegion _maps_offlineDownloadRegionForRouteBounds:v24];
+    routeData2 = [v22 routeData];
+    boundingMapRegion = [routeData2 boundingMapRegion];
+    v25 = [GEOMapRegion _maps_offlineDownloadRegionForRouteBounds:boundingMapRegion];
 
     v26 = sub_1007989A4();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
@@ -226,7 +226,7 @@
     v64 = v41;
     v32 = v30;
     v62 = v32;
-    v63 = self;
+    selfCopy = self;
     v33 = objc_retainBlock(v61);
     dispatch_group_enter(v32);
     v34 = +[GEOMapService sharedService];
@@ -265,7 +265,7 @@ LABEL_27:
       v53[1] = 3221225472;
       v53[2] = sub_100F27D88;
       v53[3] = &unk_10165D300;
-      v54 = v10;
+      v54 = routeData;
       v55 = v16;
       [MapsSavedRoutesManager saveRouteData:v54 completion:v53];
     }
@@ -280,7 +280,7 @@ LABEL_27:
       block[3] = &unk_101661480;
       objc_copyWeak(&v52, buf);
       v50 = v16;
-      v51 = v10;
+      v51 = routeData;
       dispatch_group_notify(fetchAddressDispatchGroup, &_dispatch_main_q, block);
 
       objc_destroyWeak(&v52);
@@ -294,7 +294,7 @@ LABEL_27:
     v45[3] = &unk_101661480;
     objc_copyWeak(&v48, buf);
     v46 = v8;
-    v47 = v10;
+    v47 = routeData;
     dispatch_group_notify(v16, &_dispatch_main_q, v45);
 
     objc_destroyWeak(&v48);
@@ -329,20 +329,20 @@ LABEL_31:
   [WeakRetained popContainee];
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
   v3 = -1.0;
-  if (a3 - 3 <= 2)
+  if (layout - 3 <= 2)
   {
-    v5 = [(MapsSaveRouteContainee *)self view];
-    [v5 layoutIfNeeded];
+    view = [(MapsSaveRouteContainee *)self view];
+    [view layoutIfNeeded];
 
-    v6 = [(MapsSaveRouteContainee *)self view];
-    [v6 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+    view2 = [(MapsSaveRouteContainee *)self view];
+    [view2 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
     v8 = v7;
 
-    v9 = [(ContaineeViewController *)self cardPresentationController];
-    [v9 bottomSafeOffset];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController bottomSafeOffset];
     v3 = v10 + v8;
   }
 
@@ -354,16 +354,16 @@ LABEL_31:
   if (!self->_isEditing)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v4 = [WeakRetained routeData];
+    routeData = [WeakRetained routeData];
 
-    v5 = [v4 address];
-    if (!v5 || (v6 = v5, [v4 iso3166CountryCode], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8 <= 1))
+    address = [routeData address];
+    if (!address || (v6 = address, [routeData iso3166CountryCode], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8 <= 1))
     {
-      v9 = [v4 boundingMapRegion];
-      v10 = v9;
-      if (v9)
+      boundingMapRegion = [routeData boundingMapRegion];
+      v10 = boundingMapRegion;
+      if (boundingMapRegion)
       {
-        [v9 centerLat];
+        [boundingMapRegion centerLat];
         v12 = v11;
         [v10 centerLng];
         v14 = v13;
@@ -380,7 +380,7 @@ LABEL_31:
         objc_copyWeak(&v22, &location);
         v18 = v17;
         v20 = v18;
-        v21 = v4;
+        v21 = routeData;
         [v16 submitWithHandler:v19 networkActivity:0];
 
         objc_destroyWeak(&v22);
@@ -396,16 +396,16 @@ LABEL_31:
   v186.super_class = MapsSaveRouteContainee;
   [(ContaineeViewController *)&v186 viewDidLoad];
   [(MapsSaveRouteContainee *)self _startFetchingAddressIfNeeded];
-  v3 = [(MapsSaveRouteContainee *)self view];
-  [v3 setAccessibilityIdentifier:@"SaveToLibraryView"];
+  view = [(MapsSaveRouteContainee *)self view];
+  [view setAccessibilityIdentifier:@"SaveToLibraryView"];
 
-  v4 = [(ContaineeViewController *)self headerView];
+  headerView = [(ContaineeViewController *)self headerView];
   v5 = [[_TtC4Maps19ModalCardHeaderView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(ModalCardHeaderView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  LODWORD(v3) = self->_isEditing;
+  LODWORD(view) = self->_isEditing;
   v6 = +[NSBundle mainBundle];
   v7 = v6;
-  if (v3)
+  if (view)
   {
     v8 = @"[Route Creation] Edit Route Title";
   }
@@ -430,8 +430,8 @@ LABEL_31:
   [v11 addTarget:self action:"_pressedSave:" forControlEvents:64];
   v180 = v11;
   [(ModalCardHeaderView *)v5 setTrailingButton:v11];
-  v185 = v4;
-  [v4 addSubview:v5];
+  v185 = headerView;
+  [headerView addSubview:v5];
   v184 = v5;
   objc_storeStrong(&self->_modalHeaderView, v5);
   v14 = objc_opt_new();
@@ -439,8 +439,8 @@ LABEL_31:
   self->_contentContainer = v14;
 
   [(UIView *)self->_contentContainer setTranslatesAutoresizingMaskIntoConstraints:0];
-  v16 = [(ContaineeViewController *)self contentView];
-  [v16 addSubview:self->_contentContainer];
+  contentView = [(ContaineeViewController *)self contentView];
+  [contentView addSubview:self->_contentContainer];
 
   v17 = objc_opt_new();
   [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -460,18 +460,18 @@ LABEL_31:
   [(UITextField *)self->_nameField setPlaceholder:v22];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v24 = [WeakRetained routeData];
+  routeData = [WeakRetained routeData];
 
-  v25 = [v24 userProvidedName];
-  v179 = v24;
-  if ([v25 length])
+  userProvidedName = [routeData userProvidedName];
+  v179 = routeData;
+  if ([userProvidedName length])
   {
-    [v24 userProvidedName];
+    [routeData userProvidedName];
   }
 
   else
   {
-    [v24 routeName];
+    [routeData routeName];
   }
   v26 = ;
   [(UITextField *)self->_nameField setText:v26];
@@ -505,16 +505,16 @@ LABEL_31:
   v35 = +[NSBundle mainBundle];
   [v35 localizedStringForKey:@"[Route Creation] Add notes" value:@"localized string not found" table:0];
   v36 = v182 = v17;
-  v37 = [(TextViewWithPlaceholderText *)self->_notesField placeholderLabel];
-  [v37 setText:v36];
+  placeholderLabel = [(TextViewWithPlaceholderText *)self->_notesField placeholderLabel];
+  [placeholderLabel setText:v36];
 
   v38 = +[UIColor secondaryLabelColor];
-  v39 = [(TextViewWithPlaceholderText *)self->_notesField placeholderLabel];
-  [v39 setTextColor:v38];
+  placeholderLabel2 = [(TextViewWithPlaceholderText *)self->_notesField placeholderLabel];
+  [placeholderLabel2 setTextColor:v38];
 
   v40 = +[UIFont system17];
-  v41 = [(TextViewWithPlaceholderText *)self->_notesField placeholderLabel];
-  [v41 setFont:v40];
+  placeholderLabel3 = [(TextViewWithPlaceholderText *)self->_notesField placeholderLabel];
+  [placeholderLabel3 setFont:v40];
 
   v42 = +[UIFont system17];
   [(TextViewWithPlaceholderText *)self->_notesField setFont:v42];
@@ -524,9 +524,9 @@ LABEL_31:
   [(TextViewWithPlaceholderText *)self->_notesField setTextColor:v43];
 
   v44 = objc_loadWeakRetained(&self->_delegate);
-  v45 = [v44 routeData];
-  v46 = [v45 userProvidedNotes];
-  [(TextViewWithPlaceholderText *)self->_notesField setText:v46];
+  routeData2 = [v44 routeData];
+  userProvidedNotes = [routeData2 userProvidedNotes];
+  [(TextViewWithPlaceholderText *)self->_notesField setText:userProvidedNotes];
 
   v47 = v182;
   [v182 addSubview:self->_notesField];
@@ -538,16 +538,16 @@ LABEL_31:
     if (GEOSupportsOfflineMaps())
     {
       v49 = +[MapsOfflineUIHelper sharedHelper];
-      v50 = [v49 isUsingOfflineMaps];
+      isUsingOfflineMaps = [v49 isUsingOfflineMaps];
 
-      if ((v50 & 1) == 0)
+      if ((isUsingOfflineMaps & 1) == 0)
       {
         v51 = objc_loadWeakRetained(&self->_delegate);
-        v52 = [v51 routeData];
-        v175 = [v52 boundingMapRegion];
+        routeData3 = [v51 routeData];
+        boundingMapRegion = [routeData3 boundingMapRegion];
 
-        v53 = [GEOMapRegion _maps_offlineDownloadRegionForRouteBounds:v175];
-        v54 = [GEOMapRegion _maps_offlineCoverageRegionForRouteBounds:v175];
+        v53 = [GEOMapRegion _maps_offlineDownloadRegionForRouteBounds:boundingMapRegion];
+        v54 = [GEOMapRegion _maps_offlineCoverageRegionForRouteBounds:boundingMapRegion];
         v55 = +[MapsOfflineUIHelper sharedHelper];
         v56 = [v55 subscriptionInfoForRegion:v54];
         existingOfflineSubscription = self->_existingOfflineSubscription;
@@ -564,7 +564,7 @@ LABEL_31:
         v61 = v53;
         [(MapsSaveRouteOfflineDownloadView *)self->_offlineDownloadView _setContinuousCornerRadius:10.0];
         [(UIView *)self->_contentContainer addSubview:self->_offlineDownloadView];
-        v62 = v175;
+        v62 = boundingMapRegion;
         if (!self->_existingOfflineSubscription)
         {
           v63 = objc_alloc_init(UILabel);
@@ -596,7 +596,7 @@ LABEL_31:
 
           [(UIView *)self->_contentContainer addSubview:self->_offlineDownloadFooter];
           v61 = v53;
-          v62 = v175;
+          v62 = boundingMapRegion;
         }
 
         v47 = v182;
@@ -604,107 +604,107 @@ LABEL_31:
     }
   }
 
-  v176 = [(ModalCardHeaderView *)v184 leadingAnchor];
-  v172 = [v185 leadingAnchor];
-  v170 = [v176 constraintEqualToAnchor:v172];
+  leadingAnchor = [(ModalCardHeaderView *)v184 leadingAnchor];
+  leadingAnchor2 = [v185 leadingAnchor];
+  v170 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v190[0] = v170;
-  v168 = [(ModalCardHeaderView *)v184 topAnchor];
-  v167 = [v185 topAnchor];
-  v166 = [v168 constraintEqualToAnchor:v167];
+  topAnchor = [(ModalCardHeaderView *)v184 topAnchor];
+  topAnchor2 = [v185 topAnchor];
+  v166 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v190[1] = v166;
-  v165 = [(ModalCardHeaderView *)v184 trailingAnchor];
-  v164 = [v185 trailingAnchor];
-  v163 = [v165 constraintEqualToAnchor:v164];
+  trailingAnchor = [(ModalCardHeaderView *)v184 trailingAnchor];
+  trailingAnchor2 = [v185 trailingAnchor];
+  v163 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v190[2] = v163;
-  v162 = [(ModalCardHeaderView *)v184 bottomAnchor];
-  v161 = [v185 bottomAnchor];
-  v160 = [v162 constraintEqualToAnchor:v161];
+  bottomAnchor = [(ModalCardHeaderView *)v184 bottomAnchor];
+  bottomAnchor2 = [v185 bottomAnchor];
+  v160 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v190[3] = v160;
-  v159 = [v185 heightAnchor];
-  v158 = [v159 constraintEqualToConstant:72.0];
+  heightAnchor = [v185 heightAnchor];
+  v158 = [heightAnchor constraintEqualToConstant:72.0];
   v190[4] = v158;
-  v156 = [(UIView *)self->_contentContainer leadingAnchor];
-  v157 = [(ContaineeViewController *)self contentView];
-  v155 = [v157 leadingAnchor];
-  v154 = [v156 constraintEqualToAnchor:v155];
+  leadingAnchor3 = [(UIView *)self->_contentContainer leadingAnchor];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  leadingAnchor4 = [contentView2 leadingAnchor];
+  v154 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v190[5] = v154;
-  v152 = [(UIView *)self->_contentContainer trailingAnchor];
-  v153 = [(ContaineeViewController *)self contentView];
-  v151 = [v153 trailingAnchor];
-  v150 = [v152 constraintEqualToAnchor:v151];
+  trailingAnchor3 = [(UIView *)self->_contentContainer trailingAnchor];
+  contentView3 = [(ContaineeViewController *)self contentView];
+  trailingAnchor4 = [contentView3 trailingAnchor];
+  v150 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v190[6] = v150;
-  v148 = [(UIView *)self->_contentContainer topAnchor];
-  v149 = [(ContaineeViewController *)self headerView];
-  v147 = [v149 bottomAnchor];
-  v146 = [v148 constraintEqualToAnchor:v147];
+  topAnchor3 = [(UIView *)self->_contentContainer topAnchor];
+  headerView2 = [(ContaineeViewController *)self headerView];
+  bottomAnchor3 = [headerView2 bottomAnchor];
+  v146 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3];
   v190[7] = v146;
-  v144 = [(UIView *)self->_contentContainer bottomAnchor];
-  v145 = [(ContaineeViewController *)self contentView];
-  v143 = [v145 bottomAnchor];
-  v142 = [v144 constraintEqualToAnchor:v143];
+  bottomAnchor4 = [(UIView *)self->_contentContainer bottomAnchor];
+  contentView4 = [(ContaineeViewController *)self contentView];
+  bottomAnchor5 = [contentView4 bottomAnchor];
+  v142 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v190[8] = v142;
-  v141 = [v47 leadingAnchor];
-  v140 = [(UIView *)self->_contentContainer leadingAnchor];
-  v139 = [v141 constraintEqualToAnchor:v140 constant:16.0];
+  leadingAnchor5 = [v47 leadingAnchor];
+  leadingAnchor6 = [(UIView *)self->_contentContainer leadingAnchor];
+  v139 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:16.0];
   v190[9] = v139;
-  v138 = [v47 trailingAnchor];
-  v137 = [(UIView *)self->_contentContainer trailingAnchor];
-  v136 = [v138 constraintEqualToAnchor:v137 constant:-16.0];
+  trailingAnchor5 = [v47 trailingAnchor];
+  trailingAnchor6 = [(UIView *)self->_contentContainer trailingAnchor];
+  v136 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-16.0];
   v190[10] = v136;
-  v135 = [v47 topAnchor];
-  v134 = [(UIView *)self->_contentContainer topAnchor];
-  v133 = [v135 constraintEqualToAnchor:v134];
+  topAnchor4 = [v47 topAnchor];
+  topAnchor5 = [(UIView *)self->_contentContainer topAnchor];
+  v133 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v190[11] = v133;
-  v132 = [(UITextField *)self->_nameField leadingAnchor];
-  v131 = [v47 leadingAnchor];
-  v130 = [v132 constraintEqualToAnchor:v131 constant:15.0];
+  leadingAnchor7 = [(UITextField *)self->_nameField leadingAnchor];
+  leadingAnchor8 = [v47 leadingAnchor];
+  v130 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:15.0];
   v190[12] = v130;
-  v129 = [(UITextField *)self->_nameField trailingAnchor];
-  v128 = [v47 trailingAnchor];
-  v127 = [v129 constraintEqualToAnchor:v128 constant:-10.0];
+  trailingAnchor7 = [(UITextField *)self->_nameField trailingAnchor];
+  trailingAnchor8 = [v47 trailingAnchor];
+  v127 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-10.0];
   v190[13] = v127;
-  v126 = [(UITextField *)self->_nameField topAnchor];
-  v125 = [v47 topAnchor];
-  v124 = [v126 constraintEqualToAnchor:v125 constant:-1.0];
+  topAnchor6 = [(UITextField *)self->_nameField topAnchor];
+  topAnchor7 = [v47 topAnchor];
+  v124 = [topAnchor6 constraintEqualToAnchor:topAnchor7 constant:-1.0];
   v190[14] = v124;
-  v123 = [(UITextField *)self->_nameField heightAnchor];
-  v122 = [v123 constraintEqualToConstant:48.0];
+  heightAnchor2 = [(UITextField *)self->_nameField heightAnchor];
+  v122 = [heightAnchor2 constraintEqualToConstant:48.0];
   v190[15] = v122;
-  v121 = [v183 leadingAnchor];
-  v120 = [v47 leadingAnchor];
-  v119 = [v121 constraintEqualToAnchor:v120 constant:16.0];
+  leadingAnchor9 = [v183 leadingAnchor];
+  leadingAnchor10 = [v47 leadingAnchor];
+  v119 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:16.0];
   v190[16] = v119;
-  v118 = [v183 trailingAnchor];
-  v117 = [v47 trailingAnchor];
-  v116 = [v118 constraintEqualToAnchor:v117];
+  trailingAnchor9 = [v183 trailingAnchor];
+  trailingAnchor10 = [v47 trailingAnchor];
+  v116 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   v190[17] = v116;
-  v115 = [v183 topAnchor];
-  v114 = [(UITextField *)self->_nameField bottomAnchor];
-  v113 = [v115 constraintEqualToAnchor:v114];
+  topAnchor8 = [v183 topAnchor];
+  bottomAnchor6 = [(UITextField *)self->_nameField bottomAnchor];
+  v113 = [topAnchor8 constraintEqualToAnchor:bottomAnchor6];
   v190[18] = v113;
-  v112 = [(TextViewWithPlaceholderText *)self->_notesField leadingAnchor];
-  v111 = [v47 leadingAnchor];
-  v110 = [v112 constraintEqualToAnchor:v111 constant:10.0];
+  leadingAnchor11 = [(TextViewWithPlaceholderText *)self->_notesField leadingAnchor];
+  leadingAnchor12 = [v47 leadingAnchor];
+  v110 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12 constant:10.0];
   v190[19] = v110;
-  v109 = [(TextViewWithPlaceholderText *)self->_notesField trailingAnchor];
-  v108 = [v47 trailingAnchor];
-  v107 = [v109 constraintEqualToAnchor:v108 constant:-16.0];
+  trailingAnchor11 = [(TextViewWithPlaceholderText *)self->_notesField trailingAnchor];
+  trailingAnchor12 = [v47 trailingAnchor];
+  v107 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12 constant:-16.0];
   v190[20] = v107;
-  v106 = [(TextViewWithPlaceholderText *)self->_notesField topAnchor];
-  v105 = [v183 bottomAnchor];
-  v104 = [v106 constraintEqualToAnchor:v105 constant:6.0];
+  topAnchor9 = [(TextViewWithPlaceholderText *)self->_notesField topAnchor];
+  bottomAnchor7 = [v183 bottomAnchor];
+  v104 = [topAnchor9 constraintEqualToAnchor:bottomAnchor7 constant:6.0];
   v190[21] = v104;
-  v103 = [(TextViewWithPlaceholderText *)self->_notesField heightAnchor];
-  v72 = [v103 constraintEqualToConstant:92.0];
+  heightAnchor3 = [(TextViewWithPlaceholderText *)self->_notesField heightAnchor];
+  v72 = [heightAnchor3 constraintEqualToConstant:92.0];
   v190[22] = v72;
-  v73 = [(TextViewWithPlaceholderText *)self->_notesField bottomAnchor];
-  v74 = [v47 bottomAnchor];
-  v75 = [v73 constraintEqualToAnchor:v74 constant:6.0];
+  bottomAnchor8 = [(TextViewWithPlaceholderText *)self->_notesField bottomAnchor];
+  bottomAnchor9 = [v47 bottomAnchor];
+  v75 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9 constant:6.0];
   v190[23] = v75;
-  v76 = [(UIView *)self->_contentContainer bottomAnchor];
+  bottomAnchor10 = [(UIView *)self->_contentContainer bottomAnchor];
   [v47 bottomAnchor];
   v78 = v77 = v47;
-  v79 = [v76 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v78 multiplier:1.0];
+  v79 = [bottomAnchor10 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v78 multiplier:1.0];
   v190[24] = v79;
   v80 = [NSArray arrayWithObjects:v190 count:25];
   [NSLayoutConstraint activateConstraints:v80];
@@ -713,17 +713,17 @@ LABEL_31:
   v82 = self->_offlineDownloadView;
   if (v82)
   {
-    v177 = [(MapsSaveRouteOfflineDownloadView *)v82 leadingAnchor];
-    v173 = [(UIView *)self->_contentContainer leadingAnchor];
-    v83 = [v177 constraintEqualToAnchor:v173 constant:16.0];
+    leadingAnchor13 = [(MapsSaveRouteOfflineDownloadView *)v82 leadingAnchor];
+    leadingAnchor14 = [(UIView *)self->_contentContainer leadingAnchor];
+    v83 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14 constant:16.0];
     v189[0] = v83;
-    v84 = [(MapsSaveRouteOfflineDownloadView *)self->_offlineDownloadView trailingAnchor];
-    v85 = [(UIView *)self->_contentContainer trailingAnchor];
-    v86 = [v84 constraintEqualToAnchor:v85 constant:-16.0];
+    trailingAnchor13 = [(MapsSaveRouteOfflineDownloadView *)self->_offlineDownloadView trailingAnchor];
+    trailingAnchor14 = [(UIView *)self->_contentContainer trailingAnchor];
+    v86 = [trailingAnchor13 constraintEqualToAnchor:trailingAnchor14 constant:-16.0];
     v189[1] = v86;
-    v87 = [(MapsSaveRouteOfflineDownloadView *)self->_offlineDownloadView topAnchor];
-    v88 = [v77 bottomAnchor];
-    v89 = [v87 constraintEqualToAnchor:v88 constant:16.0];
+    topAnchor10 = [(MapsSaveRouteOfflineDownloadView *)self->_offlineDownloadView topAnchor];
+    bottomAnchor11 = [v77 bottomAnchor];
+    v89 = [topAnchor10 constraintEqualToAnchor:bottomAnchor11 constant:16.0];
     v189[2] = v89;
     v90 = [NSArray arrayWithObjects:v189 count:3];
     [NSLayoutConstraint activateConstraints:v90];
@@ -731,69 +731,69 @@ LABEL_31:
     v91 = self->_offlineDownloadFooter;
     if (v91)
     {
-      v178 = [(UILabel *)v91 leadingAnchor];
-      v171 = [(MapsSaveRouteOfflineDownloadView *)self->_offlineDownloadView leadingAnchor];
-      v92 = [v178 constraintEqualToAnchor:v171 constant:16.0];
+      leadingAnchor15 = [(UILabel *)v91 leadingAnchor];
+      leadingAnchor16 = [(MapsSaveRouteOfflineDownloadView *)self->_offlineDownloadView leadingAnchor];
+      v92 = [leadingAnchor15 constraintEqualToAnchor:leadingAnchor16 constant:16.0];
       v188[0] = v92;
-      v93 = [(UILabel *)self->_offlineDownloadFooter trailingAnchor];
-      v174 = [(MapsSaveRouteOfflineDownloadView *)self->_offlineDownloadView trailingAnchor];
-      v169 = [v93 constraintEqualToAnchor:v174 constant:-16.0];
+      trailingAnchor15 = [(UILabel *)self->_offlineDownloadFooter trailingAnchor];
+      trailingAnchor16 = [(MapsSaveRouteOfflineDownloadView *)self->_offlineDownloadView trailingAnchor];
+      v169 = [trailingAnchor15 constraintEqualToAnchor:trailingAnchor16 constant:-16.0];
       v188[1] = v169;
-      v94 = [(UILabel *)self->_offlineDownloadFooter topAnchor];
-      v95 = [(MapsSaveRouteOfflineDownloadView *)self->_offlineDownloadView bottomAnchor];
-      v96 = [v94 constraintEqualToSystemSpacingBelowAnchor:v95 multiplier:1.0];
+      topAnchor11 = [(UILabel *)self->_offlineDownloadFooter topAnchor];
+      bottomAnchor12 = [(MapsSaveRouteOfflineDownloadView *)self->_offlineDownloadView bottomAnchor];
+      v96 = [topAnchor11 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor12 multiplier:1.0];
       v188[2] = v96;
-      v97 = [(UIView *)self->_contentContainer bottomAnchor];
-      v98 = [(UILabel *)self->_offlineDownloadFooter bottomAnchor];
-      v99 = [v97 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v98 multiplier:1.0];
+      bottomAnchor13 = [(UIView *)self->_contentContainer bottomAnchor];
+      bottomAnchor14 = [(UILabel *)self->_offlineDownloadFooter bottomAnchor];
+      v99 = [bottomAnchor13 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:bottomAnchor14 multiplier:1.0];
       v188[3] = v99;
       v100 = [NSArray arrayWithObjects:v188 count:4];
       [NSLayoutConstraint activateConstraints:v100];
 
-      v101 = v171;
-      v102 = v178;
+      bottomAnchor16 = leadingAnchor16;
+      bottomAnchor15 = leadingAnchor15;
     }
 
     else
     {
-      v102 = [(UIView *)self->_contentContainer bottomAnchor];
-      v101 = [(MapsSaveRouteOfflineDownloadView *)self->_offlineDownloadView bottomAnchor];
-      v92 = [v102 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v101 multiplier:1.0];
+      bottomAnchor15 = [(UIView *)self->_contentContainer bottomAnchor];
+      bottomAnchor16 = [(MapsSaveRouteOfflineDownloadView *)self->_offlineDownloadView bottomAnchor];
+      v92 = [bottomAnchor15 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:bottomAnchor16 multiplier:1.0];
       v187 = v92;
-      v93 = [NSArray arrayWithObjects:&v187 count:1];
-      [NSLayoutConstraint activateConstraints:v93];
+      trailingAnchor15 = [NSArray arrayWithObjects:&v187 count:1];
+      [NSLayoutConstraint activateConstraints:trailingAnchor15];
     }
 
     v81 = v182;
   }
 }
 
-- (MapsSaveRouteContainee)initWithDelegate:(id)a3 isEditing:(BOOL)a4 showInitialKeyboard:(BOOL)a5
+- (MapsSaveRouteContainee)initWithDelegate:(id)delegate isEditing:(BOOL)editing showInitialKeyboard:(BOOL)keyboard
 {
-  v8 = a3;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = MapsSaveRouteContainee;
   v9 = [(MapsSaveRouteContainee *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
-    v10->_isEditing = a4;
-    v10->_showInitialKeyboard = a5;
-    v11 = [(ContaineeViewController *)v10 cardPresentationController];
-    [v11 setHideGrabber:1];
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    v10->_isEditing = editing;
+    v10->_showInitialKeyboard = keyboard;
+    cardPresentationController = [(ContaineeViewController *)v10 cardPresentationController];
+    [cardPresentationController setHideGrabber:1];
 
-    v12 = [(ContaineeViewController *)v10 cardPresentationController];
-    [v12 setPresentedModally:1];
+    cardPresentationController2 = [(ContaineeViewController *)v10 cardPresentationController];
+    [cardPresentationController2 setPresentedModally:1];
 
-    v13 = [(ContaineeViewController *)v10 cardPresentationController];
-    [v13 setAllowsSwipeToDismiss:0];
+    cardPresentationController3 = [(ContaineeViewController *)v10 cardPresentationController];
+    [cardPresentationController3 setAllowsSwipeToDismiss:0];
 
-    v14 = [v8 routeData];
-    v15 = [v14 userProvidedName];
-    if ([(__CFString *)v15 length])
+    routeData = [delegateCopy routeData];
+    userProvidedName = [routeData userProvidedName];
+    if ([(__CFString *)userProvidedName length])
     {
-      v16 = v15;
+      v16 = userProvidedName;
     }
 
     else
@@ -802,10 +802,10 @@ LABEL_31:
     }
 
     objc_storeStrong(&v10->_originalName, v16);
-    v17 = [v14 userProvidedNotes];
-    if ([(__CFString *)v17 length])
+    userProvidedNotes = [routeData userProvidedNotes];
+    if ([(__CFString *)userProvidedNotes length])
     {
-      v18 = v17;
+      v18 = userProvidedNotes;
     }
 
     else

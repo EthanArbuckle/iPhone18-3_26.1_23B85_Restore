@@ -1,86 +1,86 @@
 @interface PKApplyWebServiceCreateRequest
-- (PKApplyWebServiceCreateRequest)initWithCoder:(id)a3;
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (PKApplyWebServiceCreateRequest)initWithCoder:(id)coder;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplyWebServiceCreateRequest
 
-- (PKApplyWebServiceCreateRequest)initWithCoder:(id)a3
+- (PKApplyWebServiceCreateRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = PKApplyWebServiceCreateRequest;
-  v5 = [(PKApplyWebServiceRequest *)&v21 initWithCoder:v4];
+  v5 = [(PKApplyWebServiceRequest *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_featureIdentifier = [v4 decodeIntegerForKey:@"featureIdentifier"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installmentConfiguration"];
+    v5->_featureIdentifier = [coderCopy decodeIntegerForKey:@"featureIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installmentConfiguration"];
     installmentConfiguration = v5->_installmentConfiguration;
     v5->_installmentConfiguration = v6;
 
-    v5->_updateUserInfoSubType = [v4 decodeIntegerForKey:@"updateUserInfoSubType"];
-    v5->_channel = [v4 decodeIntegerForKey:@"channel"];
-    v5->_applicationType = [v4 decodeIntegerForKey:@"applicationType"];
-    v5->_verificationType = [v4 decodeIntegerForKey:@"verificationType"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+    v5->_updateUserInfoSubType = [coderCopy decodeIntegerForKey:@"updateUserInfoSubType"];
+    v5->_channel = [coderCopy decodeIntegerForKey:@"channel"];
+    v5->_applicationType = [coderCopy decodeIntegerForKey:@"applicationType"];
+    v5->_verificationType = [coderCopy decodeIntegerForKey:@"verificationType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referenceIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referenceIdentifier"];
     referenceIdentifier = v5->_referenceIdentifier;
     v5->_referenceIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fundingSourceIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fundingSourceIdentifier"];
     fundingSourceIdentifier = v5->_fundingSourceIdentifier;
     v5->_fundingSourceIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"invitationDetails"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"invitationDetails"];
     invitationDetails = v5->_invitationDetails;
     v5->_invitationDetails = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preliminaryAssessmentIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preliminaryAssessmentIdentifier"];
     preliminaryAssessmentIdentifier = v5->_preliminaryAssessmentIdentifier;
     v5->_preliminaryAssessmentIdentifier = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"odiAssessment"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"odiAssessment"];
     odiAssessment = v5->_odiAssessment;
     v5->_odiAssessment = v18;
 
-    v5->_associatedIntent = [v4 decodeIntegerForKey:@"associatedIntent"];
+    v5->_associatedIntent = [coderCopy decodeIntegerForKey:@"associatedIntent"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKApplyWebServiceCreateRequest;
-  v4 = a3;
-  [(PKApplyWebServiceRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_featureIdentifier forKey:{@"featureIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_installmentConfiguration forKey:@"installmentConfiguration"];
-  [v4 encodeInteger:self->_updateUserInfoSubType forKey:@"updateUserInfoSubType"];
-  [v4 encodeInteger:self->_channel forKey:@"channel"];
-  [v4 encodeInteger:self->_applicationType forKey:@"applicationType"];
-  [v4 encodeInteger:self->_verificationType forKey:@"verificationType"];
-  [v4 encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
-  [v4 encodeObject:self->_referenceIdentifier forKey:@"referenceIdentifier"];
-  [v4 encodeObject:self->_fundingSourceIdentifier forKey:@"fundingSourceIdentifier"];
-  [v4 encodeObject:self->_invitationDetails forKey:@"invitationDetails"];
-  [v4 encodeObject:self->_preliminaryAssessmentIdentifier forKey:@"preliminaryAssessmentIdentifier"];
-  [v4 encodeObject:self->_odiAssessment forKey:@"odiAssessment"];
-  [v4 encodeInteger:self->_associatedIntent forKey:@"associatedIntent"];
+  coderCopy = coder;
+  [(PKApplyWebServiceRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_featureIdentifier forKey:{@"featureIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_installmentConfiguration forKey:@"installmentConfiguration"];
+  [coderCopy encodeInteger:self->_updateUserInfoSubType forKey:@"updateUserInfoSubType"];
+  [coderCopy encodeInteger:self->_channel forKey:@"channel"];
+  [coderCopy encodeInteger:self->_applicationType forKey:@"applicationType"];
+  [coderCopy encodeInteger:self->_verificationType forKey:@"verificationType"];
+  [coderCopy encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
+  [coderCopy encodeObject:self->_referenceIdentifier forKey:@"referenceIdentifier"];
+  [coderCopy encodeObject:self->_fundingSourceIdentifier forKey:@"fundingSourceIdentifier"];
+  [coderCopy encodeObject:self->_invitationDetails forKey:@"invitationDetails"];
+  [coderCopy encodeObject:self->_preliminaryAssessmentIdentifier forKey:@"preliminaryAssessmentIdentifier"];
+  [coderCopy encodeObject:self->_odiAssessment forKey:@"odiAssessment"];
+  [coderCopy encodeInteger:self->_associatedIntent forKey:@"associatedIntent"];
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  lCopy = l;
+  informationCopy = information;
+  v8 = informationCopy;
+  if (!lCopy)
   {
     v10 = PKLogFacilityTypeGetObject(0xEuLL);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -100,7 +100,7 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (!v7)
+  if (!informationCopy)
   {
     v10 = PKLogFacilityTypeGetObject(0xEuLL);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -142,84 +142,84 @@ LABEL_31:
   v37[1] = v10;
   v37[2] = @"create";
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:3];
-  v12 = [(PKApplyWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:v11 queryParameters:0 appleAccountInformation:v8];
+  v12 = [(PKApplyWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v11 queryParameters:0 appleAccountInformation:v8];
 
   [v12 setHTTPMethod:@"POST"];
   [v12 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v13 = [(PKApplyWebServiceRequest *)self _createMutableBody];
+  _createMutableBody = [(PKApplyWebServiceRequest *)self _createMutableBody];
   installmentConfiguration = self->_installmentConfiguration;
   if (installmentConfiguration)
   {
-    [(PKPaymentInstallmentConfiguration *)installmentConfiguration encodeToBodyDictionary:v13];
+    [(PKPaymentInstallmentConfiguration *)installmentConfiguration encodeToBodyDictionary:_createMutableBody];
   }
 
   applicationType = self->_applicationType;
   if (applicationType)
   {
     v16 = PKFeatureApplicationTypeToString(applicationType);
-    [v13 setObject:v16 forKeyedSubscript:@"applicationType"];
+    [_createMutableBody setObject:v16 forKeyedSubscript:@"applicationType"];
 
-    [v13 setObject:self->_referenceIdentifier forKeyedSubscript:@"referenceIdentifier"];
+    [_createMutableBody setObject:self->_referenceIdentifier forKeyedSubscript:@"referenceIdentifier"];
     v17 = self->_applicationType;
     if (v17 == 2)
     {
-      v18 = [(PKFeatureApplicationInvitationDetails *)self->_invitationDetails jsonRepresentation];
-      [v13 setObject:v18 forKeyedSubscript:@"invitationDetails"];
+      jsonRepresentation = [(PKFeatureApplicationInvitationDetails *)self->_invitationDetails jsonRepresentation];
+      [_createMutableBody setObject:jsonRepresentation forKeyedSubscript:@"invitationDetails"];
 
-      [v13 setObject:self->_accountIdentifier forKeyedSubscript:@"accountIdentifier"];
+      [_createMutableBody setObject:self->_accountIdentifier forKeyedSubscript:@"accountIdentifier"];
       v17 = self->_applicationType;
     }
 
     if (v17 == 6)
     {
       v19 = PKApplyVerificationTypeToString(self->_verificationType);
-      [v13 setObject:v19 forKeyedSubscript:@"verificationType"];
+      [_createMutableBody setObject:v19 forKeyedSubscript:@"verificationType"];
     }
   }
 
   preliminaryAssessmentIdentifier = self->_preliminaryAssessmentIdentifier;
   if (preliminaryAssessmentIdentifier)
   {
-    [v13 setObject:preliminaryAssessmentIdentifier forKeyedSubscript:@"preliminaryAssessmentIdentifier"];
+    [_createMutableBody setObject:preliminaryAssessmentIdentifier forKeyedSubscript:@"preliminaryAssessmentIdentifier"];
   }
 
-  v21 = [(PKApplyWebServiceRequest *)self experimentDetails];
+  experimentDetails = [(PKApplyWebServiceRequest *)self experimentDetails];
 
-  if (v21)
+  if (experimentDetails)
   {
-    v22 = [(PKApplyWebServiceRequest *)self experimentDetails];
-    [v13 setObject:v22 forKeyedSubscript:@"experiment"];
+    experimentDetails2 = [(PKApplyWebServiceRequest *)self experimentDetails];
+    [_createMutableBody setObject:experimentDetails2 forKeyedSubscript:@"experiment"];
   }
 
   odiAssessment = self->_odiAssessment;
   if (odiAssessment)
   {
-    [v13 setObject:odiAssessment forKeyedSubscript:@"odiAssessment"];
+    [_createMutableBody setObject:odiAssessment forKeyedSubscript:@"odiAssessment"];
   }
 
   updateUserInfoSubType = self->_updateUserInfoSubType;
   if (updateUserInfoSubType)
   {
     v25 = PKFeatureApplicationUpdateUserInfoSubTypeToString(updateUserInfoSubType);
-    [v13 setObject:v25 forKeyedSubscript:@"updateUserInfoSubType"];
+    [_createMutableBody setObject:v25 forKeyedSubscript:@"updateUserInfoSubType"];
   }
 
   channel = self->_channel;
   if (channel)
   {
     v27 = PKFeatureApplicationChannelToString(channel);
-    [v13 setObject:v27 forKeyedSubscript:@"channel"];
+    [_createMutableBody setObject:v27 forKeyedSubscript:@"channel"];
   }
 
   associatedIntent = self->_associatedIntent;
   if (associatedIntent)
   {
     v29 = PKFeatureApplicationAssociatedIntentToString(associatedIntent);
-    [v13 setObject:v29 forKeyedSubscript:@"associatedIntent"];
+    [_createMutableBody setObject:v29 forKeyedSubscript:@"associatedIntent"];
   }
 
-  [v13 safelySetObject:self->_fundingSourceIdentifier forKey:@"fundingSourceIdentifier"];
-  v30 = [objc_opt_class() _HTTPBodyWithDictionary:v13];
+  [_createMutableBody safelySetObject:self->_fundingSourceIdentifier forKey:@"fundingSourceIdentifier"];
+  v30 = [objc_opt_class() _HTTPBodyWithDictionary:_createMutableBody];
   [v12 setHTTPBody:v30];
 
   v31 = [v12 copy];

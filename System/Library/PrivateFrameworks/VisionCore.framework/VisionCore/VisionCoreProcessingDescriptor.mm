@@ -1,55 +1,55 @@
 @interface VisionCoreProcessingDescriptor
-+ (id)URLForResourceNamed:(id)a3 error:(id *)a4;
++ (id)URLForResourceNamed:(id)named error:(id *)error;
 + (id)_identifierToSubclassMapping;
-+ (id)_subclassResponsibleForIdentifier:(uint64_t)a1;
++ (id)_subclassResponsibleForIdentifier:(uint64_t)identifier;
 + (id)availableIdentifiers;
-+ (id)availableVersionsForIdentifier:(id)a3 error:(id *)a4;
-+ (id)descriptorForIdentifier:(id)a3 version:(id)a4 error:(id *)a5;
-+ (id)descriptorForSpecifier:(id)a3 error:(id *)a4;
-+ (id)descriptorsForIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)availableVersionsForIdentifier:(id)identifier error:(id *)error;
++ (id)descriptorForIdentifier:(id)identifier version:(id)version error:(id *)error;
++ (id)descriptorForSpecifier:(id)specifier error:(id *)error;
++ (id)descriptorsForIdentifier:(id)identifier error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)identifier;
-- (VisionCoreProcessingDescriptor)initWithCoder:(id)a3;
-- (VisionCoreProcessingDescriptor)initWithSpecifier:(id)a3;
+- (VisionCoreProcessingDescriptor)initWithCoder:(id)coder;
+- (VisionCoreProcessingDescriptor)initWithSpecifier:(id)specifier;
 - (VisionCoreResourceVersion)version;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VisionCoreProcessingDescriptor
 
-- (VisionCoreProcessingDescriptor)initWithCoder:(id)a3
+- (VisionCoreProcessingDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"specifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"specifier"];
 
   if (v5)
   {
     self = [(VisionCoreProcessingDescriptor *)self initWithSpecifier:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = VisionCoreProcessingDescriptor;
-  v4 = a3;
-  [(VisionCoreDescriptor *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_specifier forKey:{@"specifier", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(VisionCoreDescriptor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_specifier forKey:{@"specifier", v5.receiver, v5.super_class}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -59,11 +59,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VisionCoreProcessingDescriptor *)self specifier];
-      v7 = [(VisionCoreProcessingDescriptor *)v5 specifier];
+      v5 = equalCopy;
+      specifier = [(VisionCoreProcessingDescriptor *)self specifier];
+      specifier2 = [(VisionCoreProcessingDescriptor *)v5 specifier];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [specifier isEqual:specifier2];
     }
 
     else
@@ -81,22 +81,22 @@
   v8.receiver = self;
   v8.super_class = VisionCoreProcessingDescriptor;
   v4 = [(VisionCoreDescriptor *)&v8 description];
-  v5 = [(VisionCoreProcessingDescriptor *)self specifier];
-  v6 = [v3 initWithFormat:@"%@ %@", v4, v5];
+  specifier = [(VisionCoreProcessingDescriptor *)self specifier];
+  v6 = [v3 initWithFormat:@"%@ %@", v4, specifier];
 
   return v6;
 }
 
-- (VisionCoreProcessingDescriptor)initWithSpecifier:(id)a3
+- (VisionCoreProcessingDescriptor)initWithSpecifier:(id)specifier
 {
-  v5 = a3;
+  specifierCopy = specifier;
   v9.receiver = self;
   v9.super_class = VisionCoreProcessingDescriptor;
   v6 = [(VisionCoreProcessingDescriptor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_specifier, a3);
+    objc_storeStrong(&v6->_specifier, specifier);
   }
 
   return v7;
@@ -104,58 +104,58 @@
 
 - (VisionCoreResourceVersion)version
 {
-  v2 = [(VisionCoreProcessingDescriptor *)self specifier];
-  v3 = [v2 version];
+  specifier = [(VisionCoreProcessingDescriptor *)self specifier];
+  version = [specifier version];
 
-  return v3;
+  return version;
 }
 
 - (NSString)identifier
 {
-  v2 = [(VisionCoreProcessingDescriptor *)self specifier];
-  v3 = [v2 identifier];
+  specifier = [(VisionCoreProcessingDescriptor *)self specifier];
+  identifier = [specifier identifier];
 
-  return v3;
+  return identifier;
 }
 
-+ (id)URLForResourceNamed:(id)a3 error:(id *)a4
++ (id)URLForResourceNamed:(id)named error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 resourcesBundle];
-  v8 = v7;
-  if (a4 && !v7)
+  namedCopy = named;
+  resourcesBundle = [self resourcesBundle];
+  v8 = resourcesBundle;
+  if (error && !resourcesBundle)
   {
     v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v10 = NSStringFromClass(a1);
+    v10 = NSStringFromClass(self);
     v11 = [v9 initWithFormat:@"%@ did not provide a valid resources bundle", v10];
 
-    *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v11];
+    *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v11];
   }
 
-  v12 = [v8 URLForResource:v6 withExtension:0];
+  v12 = [v8 URLForResource:namedCopy withExtension:0];
   v13 = v12;
   if (v12)
   {
     v14 = v12;
   }
 
-  else if (a4)
+  else if (error)
   {
     v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v16 = [v8 bundlePath];
-    v17 = [v15 initWithFormat:@"Could not locate resource %@ in %@", v6, v16];
+    bundlePath = [v8 bundlePath];
+    v17 = [v15 initWithFormat:@"Could not locate resource %@ in %@", namedCopy, bundlePath];
 
-    *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v17];
+    *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v17];
   }
 
   return v13;
 }
 
-+ (id)descriptorsForIdentifier:(id)a3 error:(id *)a4
++ (id)descriptorsForIdentifier:(id)identifier error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 availableVersionsForIdentifier:v6 error:a4];
+  identifierCopy = identifier;
+  v7 = [self availableVersionsForIdentifier:identifierCopy error:error];
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
@@ -178,7 +178,7 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [a1 descriptorForIdentifier:v6 version:*(*(&v18 + 1) + 8 * i) error:{a4, v18}];
+          v14 = [self descriptorForIdentifier:identifierCopy version:*(*(&v18 + 1) + 8 * i) error:{error, v18}];
           if (!v14)
           {
 
@@ -212,31 +212,31 @@ LABEL_12:
   return v16;
 }
 
-+ (id)descriptorForSpecifier:(id)a3 error:(id *)a4
++ (id)descriptorForSpecifier:(id)specifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 identifier];
-  v8 = [v6 version];
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  version = [specifierCopy version];
 
-  v9 = [a1 descriptorForIdentifier:v7 version:v8 error:a4];
+  v9 = [self descriptorForIdentifier:identifier version:version error:error];
 
   return v9;
 }
 
-+ (id)descriptorForIdentifier:(id)a3 version:(id)a4 error:(id *)a5
++ (id)descriptorForIdentifier:(id)identifier version:(id)version error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(VisionCoreProcessingDescriptor *)a1 _subclassResponsibleForIdentifier:v8];
+  identifierCopy = identifier;
+  versionCopy = version;
+  v10 = [(VisionCoreProcessingDescriptor *)self _subclassResponsibleForIdentifier:identifierCopy];
   if (v10)
   {
-    v11 = [v10 descriptorForIdentifier:v8 version:v9 error:a5];
+    v11 = [v10 descriptorForIdentifier:identifierCopy version:versionCopy error:error];
   }
 
-  else if (a5)
+  else if (error)
   {
-    [MEMORY[0x1E696ABC0] VisionCoreErrorForUnknownProcessingDescriptorIdentifier:v8];
-    *a5 = v11 = 0;
+    [MEMORY[0x1E696ABC0] VisionCoreErrorForUnknownProcessingDescriptorIdentifier:identifierCopy];
+    *error = v11 = 0;
   }
 
   else
@@ -247,7 +247,7 @@ LABEL_12:
   return v11;
 }
 
-+ (id)_subclassResponsibleForIdentifier:(uint64_t)a1
++ (id)_subclassResponsibleForIdentifier:(uint64_t)identifier
 {
   v2 = a2;
   objc_opt_self();
@@ -334,19 +334,19 @@ void __62__VisionCoreProcessingDescriptor__identifierToSubclassMapping__block_in
   _identifierToSubclassMapping_ourIdentifierToClassMapping = v12;
 }
 
-+ (id)availableVersionsForIdentifier:(id)a3 error:(id *)a4
++ (id)availableVersionsForIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(VisionCoreProcessingDescriptor *)a1 _subclassResponsibleForIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(VisionCoreProcessingDescriptor *)self _subclassResponsibleForIdentifier:identifierCopy];
   if (v7)
   {
-    v8 = [v7 availableVersionsForIdentifier:v6 error:a4];
+    v8 = [v7 availableVersionsForIdentifier:identifierCopy error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
-    [MEMORY[0x1E696ABC0] VisionCoreErrorForUnknownProcessingDescriptorIdentifier:v6];
-    *a4 = v8 = 0;
+    [MEMORY[0x1E696ABC0] VisionCoreErrorForUnknownProcessingDescriptorIdentifier:identifierCopy];
+    *error = v8 = 0;
   }
 
   else
@@ -360,9 +360,9 @@ void __62__VisionCoreProcessingDescriptor__identifierToSubclassMapping__block_in
 + (id)availableIdentifiers
 {
   v2 = +[VisionCoreProcessingDescriptor _identifierToSubclassMapping];
-  v3 = [v2 allKeys];
+  allKeys = [v2 allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 @end

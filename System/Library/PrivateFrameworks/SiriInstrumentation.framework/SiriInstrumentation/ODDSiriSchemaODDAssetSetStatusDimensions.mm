@@ -1,29 +1,29 @@
 @interface ODDSiriSchemaODDAssetSetStatusDimensions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDAssetSetStatusDimensions)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDAssetSetStatusDimensions)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDAssetSetStatusDimensions)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDAssetSetStatusDimensions)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addClientProcessAssetAvailabilityStatus:(id)a3;
-- (void)setHasAssetSetStatusEventTimestampInSecondsSince1970:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addClientProcessAssetAvailabilityStatus:(id)status;
+- (void)setHasAssetSetStatusEventTimestampInSecondsSince1970:(BOOL)since1970;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDAssetSetStatusDimensions
 
-- (ODDSiriSchemaODDAssetSetStatusDimensions)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDAssetSetStatusDimensions)initWithDictionary:(id)dictionary
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = ODDSiriSchemaODDAssetSetStatusDimensions;
   v5 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)&v32 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"assistantDimensions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"assistantDimensions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(ODDSiriSchemaODDAssetSetStatusDimensions *)v5 setAssistantDimensions:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"previousSystemBuild"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"previousSystemBuild"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,14 +39,14 @@
       [(ODDSiriSchemaODDAssetSetStatusDimensions *)v5 setPreviousSystemBuild:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"buildInstallationTimestampInSecondsSince1970"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"buildInstallationTimestampInSecondsSince1970"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAssetSetStatusDimensions setBuildInstallationTimestampInSecondsSince1970:](v5, "setBuildInstallationTimestampInSecondsSince1970:", [v10 unsignedLongLongValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"assetSetStatus"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"assetSetStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,7 +54,7 @@
       [(ODDSiriSchemaODDAssetSetStatusDimensions *)v5 setAssetSetStatus:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"clientProcessAssetAvailabilityStatus"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"clientProcessAssetAvailabilityStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -101,7 +101,7 @@
       v11 = v24;
     }
 
-    v21 = [v4 objectForKeyedSubscript:{@"assetSetStatusEventTimestampInSecondsSince1970", v24, v25, v26, v27, v28}];
+    v21 = [dictionaryCopy objectForKeyedSubscript:{@"assetSetStatusEventTimestampInSecondsSince1970", v24, v25, v26, v27, v28}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,30 +114,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDAssetSetStatusDimensions)initWithJSON:(id)a3
+- (ODDSiriSchemaODDAssetSetStatusDimensions)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -151,54 +151,54 @@
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_assetSetStatus)
   {
-    v4 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assetSetStatus];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    assetSetStatus = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assetSetStatus];
+    dictionaryRepresentation = [assetSetStatus dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"assetSetStatus"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"assetSetStatus"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"assetSetStatus"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"assetSetStatus"];
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ODDSiriSchemaODDAssetSetStatusDimensions assetSetStatusEventTimestampInSecondsSince1970](self, "assetSetStatusEventTimestampInSecondsSince1970")}];
-    [v3 setObject:v7 forKeyedSubscript:@"assetSetStatusEventTimestampInSecondsSince1970"];
+    [dictionary setObject:v7 forKeyedSubscript:@"assetSetStatusEventTimestampInSecondsSince1970"];
   }
 
   if (self->_assistantDimensions)
   {
-    v8 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assistantDimensions];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    assistantDimensions = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assistantDimensions];
+    dictionaryRepresentation2 = [assistantDimensions dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"assistantDimensions"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"assistantDimensions"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"assistantDimensions"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"assistantDimensions"];
     }
   }
 
   if (*&self->_has)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ODDSiriSchemaODDAssetSetStatusDimensions buildInstallationTimestampInSecondsSince1970](self, "buildInstallationTimestampInSecondsSince1970")}];
-    [v3 setObject:v11 forKeyedSubscript:@"buildInstallationTimestampInSecondsSince1970"];
+    [dictionary setObject:v11 forKeyedSubscript:@"buildInstallationTimestampInSecondsSince1970"];
   }
 
   if ([(NSArray *)self->_clientProcessAssetAvailabilityStatus count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -218,16 +218,16 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          if (v18)
+          dictionaryRepresentation3 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v12 addObject:v18];
+            [array addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v19 = [MEMORY[0x1E695DFB0] null];
-            [v12 addObject:v19];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null3];
           }
         }
 
@@ -237,19 +237,19 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"clientProcessAssetAvailabilityStatus"];
+    [dictionary setObject:array forKeyedSubscript:@"clientProcessAssetAvailabilityStatus"];
   }
 
   if (self->_previousSystemBuild)
   {
-    v20 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self previousSystemBuild];
-    v21 = [v20 copy];
-    [v3 setObject:v21 forKeyedSubscript:@"previousSystemBuild"];
+    previousSystemBuild = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self previousSystemBuild];
+    v21 = [previousSystemBuild copy];
+    [dictionary setObject:v21 forKeyedSubscript:@"previousSystemBuild"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v23];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v23];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -281,28 +281,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
-  v5 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assistantDimensions];
-  v6 = [v4 assistantDimensions];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assistantDimensions];
+  assistantDimensions2 = [equalCopy assistantDimensions];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
     goto LABEL_24;
   }
 
-  v7 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assistantDimensions];
-  if (v7)
+  assistantDimensions3 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assistantDimensions];
+  if (assistantDimensions3)
   {
-    v8 = v7;
-    v9 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assistantDimensions];
-    v10 = [v4 assistantDimensions];
-    v11 = [v9 isEqual:v10];
+    v8 = assistantDimensions3;
+    assistantDimensions4 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assistantDimensions];
+    assistantDimensions5 = [equalCopy assistantDimensions];
+    v11 = [assistantDimensions4 isEqual:assistantDimensions5];
 
     if (!v11)
     {
@@ -314,20 +314,20 @@
   {
   }
 
-  v5 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self previousSystemBuild];
-  v6 = [v4 previousSystemBuild];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self previousSystemBuild];
+  assistantDimensions2 = [equalCopy previousSystemBuild];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
     goto LABEL_24;
   }
 
-  v12 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self previousSystemBuild];
-  if (v12)
+  previousSystemBuild = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self previousSystemBuild];
+  if (previousSystemBuild)
   {
-    v13 = v12;
-    v14 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self previousSystemBuild];
-    v15 = [v4 previousSystemBuild];
-    v16 = [v14 isEqual:v15];
+    v13 = previousSystemBuild;
+    previousSystemBuild2 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self previousSystemBuild];
+    previousSystemBuild3 = [equalCopy previousSystemBuild];
+    v16 = [previousSystemBuild2 isEqual:previousSystemBuild3];
 
     if (!v16)
     {
@@ -339,7 +339,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[56] & 1))
+  if ((*&self->_has & 1) != (equalCopy[56] & 1))
   {
     goto LABEL_25;
   }
@@ -347,26 +347,26 @@
   if (*&self->_has)
   {
     buildInstallationTimestampInSecondsSince1970 = self->_buildInstallationTimestampInSecondsSince1970;
-    if (buildInstallationTimestampInSecondsSince1970 != [v4 buildInstallationTimestampInSecondsSince1970])
+    if (buildInstallationTimestampInSecondsSince1970 != [equalCopy buildInstallationTimestampInSecondsSince1970])
     {
       goto LABEL_25;
     }
   }
 
-  v5 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assetSetStatus];
-  v6 = [v4 assetSetStatus];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assetSetStatus];
+  assistantDimensions2 = [equalCopy assetSetStatus];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
     goto LABEL_24;
   }
 
-  v18 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assetSetStatus];
-  if (v18)
+  assetSetStatus = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assetSetStatus];
+  if (assetSetStatus)
   {
-    v19 = v18;
-    v20 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assetSetStatus];
-    v21 = [v4 assetSetStatus];
-    v22 = [v20 isEqual:v21];
+    v19 = assetSetStatus;
+    assetSetStatus2 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assetSetStatus];
+    assetSetStatus3 = [equalCopy assetSetStatus];
+    v22 = [assetSetStatus2 isEqual:assetSetStatus3];
 
     if (!v22)
     {
@@ -378,22 +378,22 @@
   {
   }
 
-  v5 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self clientProcessAssetAvailabilityStatus];
-  v6 = [v4 clientProcessAssetAvailabilityStatus];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self clientProcessAssetAvailabilityStatus];
+  assistantDimensions2 = [equalCopy clientProcessAssetAvailabilityStatus];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
 LABEL_24:
 
     goto LABEL_25;
   }
 
-  v23 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self clientProcessAssetAvailabilityStatus];
-  if (v23)
+  clientProcessAssetAvailabilityStatus = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self clientProcessAssetAvailabilityStatus];
+  if (clientProcessAssetAvailabilityStatus)
   {
-    v24 = v23;
-    v25 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self clientProcessAssetAvailabilityStatus];
-    v26 = [v4 clientProcessAssetAvailabilityStatus];
-    v27 = [v25 isEqual:v26];
+    v24 = clientProcessAssetAvailabilityStatus;
+    clientProcessAssetAvailabilityStatus2 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self clientProcessAssetAvailabilityStatus];
+    clientProcessAssetAvailabilityStatus3 = [equalCopy clientProcessAssetAvailabilityStatus];
+    v27 = [clientProcessAssetAvailabilityStatus2 isEqual:clientProcessAssetAvailabilityStatus3];
 
     if (!v27)
     {
@@ -406,9 +406,9 @@ LABEL_24:
   }
 
   v30 = (*&self->_has >> 1) & 1;
-  if (v30 == ((v4[56] >> 1) & 1))
+  if (v30 == ((equalCopy[56] >> 1) & 1))
   {
-    if (!v30 || (assetSetStatusEventTimestampInSecondsSince1970 = self->_assetSetStatusEventTimestampInSecondsSince1970, assetSetStatusEventTimestampInSecondsSince1970 == [v4 assetSetStatusEventTimestampInSecondsSince1970]))
+    if (!v30 || (assetSetStatusEventTimestampInSecondsSince1970 = self->_assetSetStatusEventTimestampInSecondsSince1970, assetSetStatusEventTimestampInSecondsSince1970 == [equalCopy assetSetStatusEventTimestampInSecondsSince1970]))
     {
       v28 = 1;
       goto LABEL_26;
@@ -422,21 +422,21 @@ LABEL_26:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assistantDimensions];
+  toCopy = to;
+  assistantDimensions = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assistantDimensions];
 
-  if (v5)
+  if (assistantDimensions)
   {
-    v6 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assistantDimensions];
+    assistantDimensions2 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assistantDimensions];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self previousSystemBuild];
+  previousSystemBuild = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self previousSystemBuild];
 
-  if (v7)
+  if (previousSystemBuild)
   {
     PBDataWriterWriteStringField();
   }
@@ -446,11 +446,11 @@ LABEL_26:
     PBDataWriterWriteUint64Field();
   }
 
-  v8 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assetSetStatus];
+  assetSetStatus = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assetSetStatus];
 
-  if (v8)
+  if (assetSetStatus)
   {
-    v9 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assetSetStatus];
+    assetSetStatus2 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assetSetStatus];
     PBDataWriterWriteSubmessage();
   }
 
@@ -491,9 +491,9 @@ LABEL_26:
   }
 }
 
-- (void)setHasAssetSetStatusEventTimestampInSecondsSince1970:(BOOL)a3
+- (void)setHasAssetSetStatusEventTimestampInSecondsSince1970:(BOOL)since1970
 {
-  if (a3)
+  if (since1970)
   {
     v3 = 2;
   }
@@ -506,50 +506,50 @@ LABEL_26:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addClientProcessAssetAvailabilityStatus:(id)a3
+- (void)addClientProcessAssetAvailabilityStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   clientProcessAssetAvailabilityStatus = self->_clientProcessAssetAvailabilityStatus;
-  v8 = v4;
+  v8 = statusCopy;
   if (!clientProcessAssetAvailabilityStatus)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_clientProcessAssetAvailabilityStatus;
-    self->_clientProcessAssetAvailabilityStatus = v6;
+    self->_clientProcessAssetAvailabilityStatus = array;
 
-    v4 = v8;
+    statusCopy = v8;
     clientProcessAssetAvailabilityStatus = self->_clientProcessAssetAvailabilityStatus;
   }
 
-  [(NSArray *)clientProcessAssetAvailabilityStatus addObject:v4];
+  [(NSArray *)clientProcessAssetAvailabilityStatus addObject:statusCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v15.receiver = self;
   v15.super_class = ODDSiriSchemaODDAssetSetStatusDimensions;
-  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:v4];
-  v6 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assistantDimensions];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:policyCopy];
+  assistantDimensions = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assistantDimensions];
+  v7 = [assistantDimensions applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODDSiriSchemaODDAssetSetStatusDimensions *)self deleteAssistantDimensions];
   }
 
-  v9 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assetSetStatus];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  assetSetStatus = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self assetSetStatus];
+  v10 = [assetSetStatus applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ODDSiriSchemaODDAssetSetStatusDimensions *)self deleteAssetSetStatus];
   }
 
-  v12 = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self clientProcessAssetAvailabilityStatus];
-  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v12 underConditions:v4];
+  clientProcessAssetAvailabilityStatus = [(ODDSiriSchemaODDAssetSetStatusDimensions *)self clientProcessAssetAvailabilityStatus];
+  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:clientProcessAssetAvailabilityStatus underConditions:policyCopy];
   [(ODDSiriSchemaODDAssetSetStatusDimensions *)self setClientProcessAssetAvailabilityStatus:v13];
 
   return v5;

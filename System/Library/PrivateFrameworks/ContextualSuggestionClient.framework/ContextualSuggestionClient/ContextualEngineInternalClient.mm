@@ -1,20 +1,20 @@
 @interface ContextualEngineInternalClient
 - (_TtC26ContextualSuggestionClient30ContextualEngineInternalClient)init;
-- (void)fetchAllSnapshotsWithCompletion:(id)a3;
-- (void)fetchSnapshotOverrideWithCompletion:(id)a3;
-- (void)overrideWithSnapshot:(ATXContextualSuggestionSnapshot *)a3 completion:(id)a4;
-- (void)updateWithCompletion:(id)a3;
+- (void)fetchAllSnapshotsWithCompletion:(id)completion;
+- (void)fetchSnapshotOverrideWithCompletion:(id)completion;
+- (void)overrideWithSnapshot:(ATXContextualSuggestionSnapshot *)snapshot completion:(id)completion;
+- (void)updateWithCompletion:(id)completion;
 @end
 
 @implementation ContextualEngineInternalClient
 
-- (void)fetchAllSnapshotsWithCompletion:(id)a3
+- (void)fetchAllSnapshotsWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27EDD5F30, &qword_2441DAEC0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -34,13 +34,13 @@
   sub_2441AD2EC(0, 0, v8, &unk_2441DB248, v13);
 }
 
-- (void)fetchSnapshotOverrideWithCompletion:(id)a3
+- (void)fetchSnapshotOverrideWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27EDD5F30, &qword_2441DAEC0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -60,15 +60,15 @@
   sub_2441AD2EC(0, 0, v8, &unk_2441DB228, v13);
 }
 
-- (void)overrideWithSnapshot:(ATXContextualSuggestionSnapshot *)a3 completion:(id)a4
+- (void)overrideWithSnapshot:(ATXContextualSuggestionSnapshot *)snapshot completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27EDD5F30, &qword_2441DAEC0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = snapshot;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_2441D8D9C();
@@ -83,18 +83,18 @@
   v15[3] = 0;
   v15[4] = &unk_2441DB200;
   v15[5] = v14;
-  v16 = a3;
+  snapshotCopy = snapshot;
 
   sub_2441AD2EC(0, 0, v10, &unk_2441DB208, v15);
 }
 
-- (void)updateWithCompletion:(id)a3
+- (void)updateWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27EDD5F30, &qword_2441DAEC0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;

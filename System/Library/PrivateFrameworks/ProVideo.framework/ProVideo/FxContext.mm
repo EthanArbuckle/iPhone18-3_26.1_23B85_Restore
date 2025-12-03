@@ -1,28 +1,28 @@
 @interface FxContext
-+ (id)contextForCGImageWithOptions:(id)a3;
-+ (id)contextForCIImageWithOptions:(id)a3;
-+ (id)contextForGLTextureWithOptions:(id)a3;
-+ (id)contextWithCGContext:(CGContext *)a3 options:(id)a4;
-+ (id)contextWithFxBitmapImage:(id)a3 options:(id)a4;
++ (id)contextForCGImageWithOptions:(id)options;
++ (id)contextForCIImageWithOptions:(id)options;
++ (id)contextForGLTextureWithOptions:(id)options;
++ (id)contextWithCGContext:(CGContext *)context options:(id)options;
++ (id)contextWithFxBitmapImage:(id)image options:(id)options;
 - (CGColorSpace)glTextureColorSpace;
 - (CGContext)cgContext;
 - (CGImage)cgImage;
 - (CGSize)glTextureSize;
-- (FxContext)initWithCGContext:(CGContext *)a3 options:(id)a4;
-- (FxContext)initWithFxBitmapImage:(id)a3 options:(id)a4;
+- (FxContext)initWithCGContext:(CGContext *)context options:(id)options;
+- (FxContext)initWithFxBitmapImage:(id)image options:(id)options;
 - (id)bitmap;
 - (id)ciImage;
 - (id)derivedCIContext;
-- (id)initForCGImageWithOptions:(id)a3;
-- (id)initForCIImageWithOptions:(id)a3;
-- (id)initForGLTextureWithOptions:(id)a3;
+- (id)initForCGImageWithOptions:(id)options;
+- (id)initForCIImageWithOptions:(id)options;
+- (id)initForGLTextureWithOptions:(id)options;
 - (unint64_t)glTexture;
 - (void)dealloc;
-- (void)drawFxSample:(id)a3 withRegionOfInterest:(id)a4;
-- (void)setCGImage:(CGImage *)a3;
-- (void)setCIImage:(id)a3;
-- (void)setGLTexture:(unint64_t)a3 size:(CGSize)a4 flipped:(BOOL)a5 colorSpace:(CGColorSpace *)a6;
-- (void)setOptions:(id)a3;
+- (void)drawFxSample:(id)sample withRegionOfInterest:(id)interest;
+- (void)setCGImage:(CGImage *)image;
+- (void)setCIImage:(id)image;
+- (void)setGLTexture:(unint64_t)texture size:(CGSize)size flipped:(BOOL)flipped colorSpace:(CGColorSpace *)space;
+- (void)setOptions:(id)options;
 @end
 
 @implementation FxContext
@@ -108,7 +108,7 @@ LABEL_22:
   [(FxContext *)&v21 dealloc];
 }
 
-- (id)initForCGImageWithOptions:(id)a3
+- (id)initForCGImageWithOptions:(id)options
 {
   v7.receiver = self;
   v7.super_class = FxContext;
@@ -121,14 +121,14 @@ LABEL_22:
     {
       v5->var0 = 1;
       v5->var2.var2.var0 = 0;
-      v4->_priv->var1 = a3;
+      v4->_priv->var1 = options;
     }
   }
 
   return v4;
 }
 
-- (FxContext)initWithCGContext:(CGContext *)a3 options:(id)a4
+- (FxContext)initWithCGContext:(CGContext *)context options:(id)options
 {
   v9.receiver = self;
   v9.super_class = FxContext;
@@ -140,15 +140,15 @@ LABEL_22:
     if (v7)
     {
       v7->var0 = 2;
-      v6->_priv->var2.var2.var0 = CGContextRetain(a3);
-      v6->_priv->var1 = a4;
+      v6->_priv->var2.var2.var0 = CGContextRetain(context);
+      v6->_priv->var1 = options;
     }
   }
 
   return v6;
 }
 
-- (id)initForGLTextureWithOptions:(id)a3
+- (id)initForGLTextureWithOptions:(id)options
 {
   v7.receiver = self;
   v7.super_class = FxContext;
@@ -164,14 +164,14 @@ LABEL_22:
       *(&v4->_priv->var2.var5 + 1) = *MEMORY[0x277CBF3A8];
       v4->_priv->var2.var2.var2 = 0;
       v4->_priv->var2.var2.var3 = 0;
-      v4->_priv->var1 = a3;
+      v4->_priv->var1 = options;
     }
   }
 
   return v4;
 }
 
-- (FxContext)initWithFxBitmapImage:(id)a3 options:(id)a4
+- (FxContext)initWithFxBitmapImage:(id)image options:(id)options
 {
   v9.receiver = self;
   v9.super_class = FxContext;
@@ -183,15 +183,15 @@ LABEL_22:
     if (v7)
     {
       v7->var0 = 5;
-      v6->_priv->var2.var2.var0 = a3;
-      v6->_priv->var1 = a4;
+      v6->_priv->var2.var2.var0 = image;
+      v6->_priv->var1 = options;
     }
   }
 
   return v6;
 }
 
-- (id)initForCIImageWithOptions:(id)a3
+- (id)initForCIImageWithOptions:(id)options
 {
   v7.receiver = self;
   v7.super_class = FxContext;
@@ -204,51 +204,51 @@ LABEL_22:
     {
       v5->var0 = 6;
       v5->var2.var2.var0 = 0;
-      v4->_priv->var1 = a3;
+      v4->_priv->var1 = options;
     }
   }
 
   return v4;
 }
 
-+ (id)contextForCGImageWithOptions:(id)a3
++ (id)contextForCGImageWithOptions:(id)options
 {
-  v3 = [objc_alloc(objc_opt_class()) initForCGImageWithOptions:a3];
+  v3 = [objc_alloc(objc_opt_class()) initForCGImageWithOptions:options];
 
   return v3;
 }
 
-+ (id)contextWithCGContext:(CGContext *)a3 options:(id)a4
++ (id)contextWithCGContext:(CGContext *)context options:(id)options
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithCGContext:a3 options:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithCGContext:context options:options];
 
   return v4;
 }
 
-+ (id)contextForGLTextureWithOptions:(id)a3
++ (id)contextForGLTextureWithOptions:(id)options
 {
-  v3 = [objc_alloc(objc_opt_class()) initForGLTextureWithOptions:a3];
+  v3 = [objc_alloc(objc_opt_class()) initForGLTextureWithOptions:options];
 
   return v3;
 }
 
-+ (id)contextWithFxBitmapImage:(id)a3 options:(id)a4
++ (id)contextWithFxBitmapImage:(id)image options:(id)options
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithFxBitmapImage:a3 options:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithFxBitmapImage:image options:options];
 
   return v4;
 }
 
-+ (id)contextForCIImageWithOptions:(id)a3
++ (id)contextForCIImageWithOptions:(id)options
 {
-  v3 = [objc_alloc(objc_opt_class()) initForCIImageWithOptions:a3];
+  v3 = [objc_alloc(objc_opt_class()) initForCIImageWithOptions:options];
 
   return v3;
 }
 
-- (void)setCGImage:(CGImage *)a3
+- (void)setCGImage:(CGImage *)image
 {
-  if (FxDebugAssert(self->_priv->var0 == 1, &cfstr_NonCgimageFxco.isa, a3, v3, v4, v5, v6, v7, v11))
+  if (FxDebugAssert(self->_priv->var0 == 1, &cfstr_NonCgimageFxco.isa, image, v3, v4, v5, v6, v7, v11))
   {
     var0 = self->_priv->var2.var0.var0;
     if (var0)
@@ -256,7 +256,7 @@ LABEL_22:
       CGImageRelease(var0);
     }
 
-    self->_priv->var2.var2.var0 = CGImageRetain(a3);
+    self->_priv->var2.var2.var0 = CGImageRetain(image);
   }
 }
 
@@ -286,11 +286,11 @@ LABEL_22:
   }
 }
 
-- (void)setGLTexture:(unint64_t)a3 size:(CGSize)a4 flipped:(BOOL)a5 colorSpace:(CGColorSpace *)a6
+- (void)setGLTexture:(unint64_t)texture size:(CGSize)size flipped:(BOOL)flipped colorSpace:(CGColorSpace *)space
 {
-  height = a4.height;
-  width = a4.width;
-  if (FxDebugAssert(self->_priv->var0 == 3, &cfstr_NonGltextureFx.isa, a3, a5, a6, v6, v7, v8, v19))
+  height = size.height;
+  width = size.width;
+  if (FxDebugAssert(self->_priv->var0 == 3, &cfstr_NonGltextureFx.isa, texture, flipped, space, v6, v7, v8, v19))
   {
     priv = self->_priv;
     var3 = priv->var2.var2.var3;
@@ -300,14 +300,14 @@ LABEL_22:
       priv = self->_priv;
     }
 
-    priv->var2.var2.var0 = a3;
+    priv->var2.var2.var0 = texture;
     v17 = self->_priv;
     v17->var2.var2.var1.width = width;
     v17->var2.var2.var1.height = height;
-    v17->var2.var2.var2 = a5;
-    if (a6)
+    v17->var2.var2.var2 = flipped;
+    if (space)
     {
-      v18 = CGColorSpaceRetain(a6);
+      v18 = CGColorSpaceRetain(space);
     }
 
     else
@@ -375,16 +375,16 @@ LABEL_22:
   }
 }
 
-- (void)setCIImage:(id)a3
+- (void)setCIImage:(id)image
 {
-  if (FxDebugAssert(self->_priv->var0 == 6, &cfstr_NonCiimageFxco.isa, a3, v3, v4, v5, v6, v7, v11))
+  if (FxDebugAssert(self->_priv->var0 == 6, &cfstr_NonCiimageFxco.isa, image, v3, v4, v5, v6, v7, v11))
   {
     var0 = self->_priv->var2.var0.var0;
     if (var0)
     {
     }
 
-    self->_priv->var2.var2.var0 = a3;
+    self->_priv->var2.var2.var0 = image;
   }
 }
 
@@ -414,22 +414,22 @@ LABEL_22:
   }
 }
 
-- (void)drawFxSample:(id)a3 withRegionOfInterest:(id)a4
+- (void)drawFxSample:(id)sample withRegionOfInterest:(id)interest
 {
-  [a3 setRegionOfInterest:a4];
-  [a3 setContext:self];
+  [sample setRegionOfInterest:interest];
+  [sample setContext:self];
 
-  [a3 evaluateWithOptions:0];
+  [sample evaluateWithOptions:0];
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
   var1 = self->_priv->var1;
   if (var1)
   {
   }
 
-  self->_priv->var1 = a3;
+  self->_priv->var1 = options;
 }
 
 @end

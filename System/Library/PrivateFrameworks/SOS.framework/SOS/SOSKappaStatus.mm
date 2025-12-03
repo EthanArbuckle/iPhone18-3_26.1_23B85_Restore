@@ -2,7 +2,7 @@
 - (BOOL)isKappaFlow;
 - (BOOL)isKappaFlowActive;
 - (SOSKappaStatus)init;
-- (SOSKappaStatus)initWithSOSStatus:(id)a3;
+- (SOSKappaStatus)initWithSOSStatus:(id)status;
 - (id)description;
 @end
 
@@ -15,16 +15,16 @@
   return 0;
 }
 
-- (SOSKappaStatus)initWithSOSStatus:(id)a3
+- (SOSKappaStatus)initWithSOSStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   v9.receiver = self;
   v9.super_class = SOSKappaStatus;
   v6 = [(SOSKappaStatus *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sosStatus, a3);
+    objc_storeStrong(&v6->_sosStatus, status);
   }
 
   return v7;
@@ -32,30 +32,30 @@
 
 - (BOOL)isKappaFlow
 {
-  v2 = [(SOSKappaStatus *)self sosStatus];
-  v3 = [v2 trigger] == 7;
+  sosStatus = [(SOSKappaStatus *)self sosStatus];
+  v3 = [sosStatus trigger] == 7;
 
   return v3;
 }
 
 - (BOOL)isKappaFlowActive
 {
-  v3 = [(SOSKappaStatus *)self isKappaFlow];
-  if (v3)
+  isKappaFlow = [(SOSKappaStatus *)self isKappaFlow];
+  if (isKappaFlow)
   {
-    v4 = [(SOSKappaStatus *)self sosStatus];
-    v5 = [v4 isFlowActiveAndNotResting];
+    sosStatus = [(SOSKappaStatus *)self sosStatus];
+    isFlowActiveAndNotResting = [sosStatus isFlowActiveAndNotResting];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isKappaFlow) = isFlowActiveAndNotResting;
   }
 
-  return v3;
+  return isKappaFlow;
 }
 
 - (id)description
 {
-  v2 = [(SOSKappaStatus *)self sosStatus];
-  v3 = [v2 description];
+  sosStatus = [(SOSKappaStatus *)self sosStatus];
+  v3 = [sosStatus description];
 
   return v3;
 }

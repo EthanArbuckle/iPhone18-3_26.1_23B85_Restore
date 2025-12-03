@@ -1,23 +1,23 @@
 @interface NETunnelProviderManager
 + (NETunnelProviderManager)forPerAppVPN;
 + (void)loadAllFromPreferencesWithCompletionHandler:(void *)completionHandler;
-- (NETunnelProviderManager)initWithSessionType:(int)a3 tunnelType:(int64_t)a4;
+- (NETunnelProviderManager)initWithSessionType:(int)type tunnelType:(int64_t)tunnelType;
 - (NETunnelProviderRoutingMethod)routingMethod;
 - (NSArray)copyAppRules;
 - (void)additionalSetup;
 - (void)loadAppRules;
-- (void)loadFromPreferencesWithCompletionHandler:(id)a3;
+- (void)loadFromPreferencesWithCompletionHandler:(id)handler;
 @end
 
 @implementation NETunnelProviderManager
 
 - (NETunnelProviderRoutingMethod)routingMethod
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NEVPNManager *)v2 configuration];
-  v4 = [v3 appVPN];
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEVPNManager *)selfCopy configuration];
+  appVPN = [configuration appVPN];
+  if (appVPN)
   {
     v5 = NETunnelProviderRoutingMethodSourceApplication;
   }
@@ -27,56 +27,56 @@
     v5 = NETunnelProviderRoutingMethodDestinationIP;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v5;
 }
 
 - (NSArray)copyAppRules
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NEVPNManager *)v2 configuration];
-  v4 = [v3 appVPN];
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEVPNManager *)selfCopy configuration];
+  appVPN = [configuration appVPN];
+  if (appVPN)
   {
-    v5 = [(NEVPNManager *)v2 configuration];
-    v6 = [v5 appVPN];
-    v7 = [v6 appRules];
+    configuration2 = [(NEVPNManager *)selfCopy configuration];
+    appVPN2 = [configuration2 appVPN];
+    appRules = [appVPN2 appRules];
 
-    if (!v7)
+    if (!appRules)
     {
-      v4 = 0;
+      appVPN = 0;
       goto LABEL_6;
     }
 
     v8 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v3 = [(NEVPNManager *)v2 configuration];
-    v9 = [v3 appVPN];
-    v10 = [v9 appRules];
-    v4 = [v8 initWithArray:v10 copyItems:1];
+    configuration = [(NEVPNManager *)selfCopy configuration];
+    appVPN3 = [configuration appVPN];
+    appRules2 = [appVPN3 appRules];
+    appVPN = [v8 initWithArray:appRules2 copyItems:1];
   }
 
 LABEL_6:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return appVPN;
 }
 
-- (void)loadFromPreferencesWithCompletionHandler:(id)a3
+- (void)loadFromPreferencesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = +[NEVPNManager configurationManager];
-    v6 = [(NEVPNManager *)self configuration];
-    v7 = [v6 identifier];
+    configuration = [(NEVPNManager *)self configuration];
+    identifier = [configuration identifier];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __68__NETunnelProviderManager_loadFromPreferencesWithCompletionHandler___block_invoke;
     v8[3] = &unk_1E7F0B5D8;
     v8[4] = self;
-    v9 = v4;
-    [v5 loadConfigurationWithID:v7 withCompletionQueue:MEMORY[0x1E69E96A0] handler:v8];
+    v9 = handlerCopy;
+    [v5 loadConfigurationWithID:identifier withCompletionQueue:MEMORY[0x1E69E96A0] handler:v8];
   }
 }
 
@@ -173,15 +173,15 @@ LABEL_16:
 - (void)loadAppRules
 {
   v67 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_50;
   }
 
-  v2 = [a1 configuration];
-  v3 = [v2 appVPN];
-  v4 = [v3 appRules];
-  v5 = [v4 count];
+  configuration = [self configuration];
+  appVPN = [configuration appVPN];
+  appRules = [appVPN appRules];
+  v5 = [appRules count];
 
   if (!v5)
   {
@@ -189,35 +189,35 @@ LABEL_16:
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695DEC8]);
-  [a1 setMailDomains:v6];
+  [self setMailDomains:v6];
 
   v7 = objc_alloc_init(MEMORY[0x1E695DEC8]);
-  [a1 setCalendarDomains:v7];
+  [self setCalendarDomains:v7];
 
   v8 = objc_alloc_init(MEMORY[0x1E695DEC8]);
-  [a1 setContactsDomains:v8];
+  [self setContactsDomains:v8];
 
   v9 = objc_alloc_init(MEMORY[0x1E695DEC8]);
-  [a1 setSafariDomains:v9];
+  [self setSafariDomains:v9];
 
   v10 = objc_alloc_init(MEMORY[0x1E695DEC8]);
-  [a1 setExcludedDomains:v10];
+  [self setExcludedDomains:v10];
 
   v11 = objc_alloc_init(MEMORY[0x1E695DEC8]);
-  [a1 setAssociatedDomains:v11];
+  [self setAssociatedDomains:v11];
 
   v59 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v60 = a1;
+  selfCopy = self;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v12 = [a1 configuration];
-  v13 = [v12 appVPN];
-  v14 = [v13 appRules];
+  configuration2 = [self configuration];
+  appVPN2 = [configuration2 appVPN];
+  appRules2 = [appVPN2 appRules];
 
-  obj = v14;
-  v15 = [v14 countByEnumeratingWithState:&v62 objects:v66 count:16];
+  obj = appRules2;
+  v15 = [appRules2 countByEnumeratingWithState:&v62 objects:v66 count:16];
   if (!v15)
   {
     goto LABEL_47;
@@ -236,78 +236,78 @@ LABEL_16:
       }
 
       v19 = *(*(&v62 + 1) + 8 * v18);
-      v20 = [v19 matchSigningIdentifier];
-      if ([v20 isEqualToString:@"com.apple.mobilemail"])
+      matchSigningIdentifier = [v19 matchSigningIdentifier];
+      if ([matchSigningIdentifier isEqualToString:@"com.apple.mobilemail"])
       {
         goto LABEL_13;
       }
 
-      v21 = [v19 matchSigningIdentifier];
-      if ([v21 isEqualToString:@"com.apple.email.maild"])
+      matchSigningIdentifier2 = [v19 matchSigningIdentifier];
+      if ([matchSigningIdentifier2 isEqualToString:@"com.apple.email.maild"])
       {
         goto LABEL_12;
       }
 
-      v22 = [v19 matchSigningIdentifier];
-      if ([v22 isEqualToString:@"com.apple.datausage.dataaccess.activesync"])
+      matchSigningIdentifier3 = [v19 matchSigningIdentifier];
+      if ([matchSigningIdentifier3 isEqualToString:@"com.apple.datausage.dataaccess.activesync"])
       {
 
 LABEL_12:
 LABEL_13:
 
 LABEL_14:
-        v23 = [v19 matchSigningIdentifier];
-        if ([v23 isEqualToString:@"com.apple.mobilemail"])
+        matchSigningIdentifier4 = [v19 matchSigningIdentifier];
+        if ([matchSigningIdentifier4 isEqualToString:@"com.apple.mobilemail"])
         {
-          v24 = [v19 matchDomains];
-          v25 = [v24 count];
+          matchDomains = [v19 matchDomains];
+          v25 = [matchDomains count];
 
           if (!v25)
           {
             goto LABEL_40;
           }
 
-          v26 = [v19 matchDomains];
-          [v60 setMailDomains:v26];
+          matchDomains2 = [v19 matchDomains];
+          [selfCopy setMailDomains:matchDomains2];
           goto LABEL_17;
         }
 
         goto LABEL_39;
       }
 
-      v27 = [v19 matchSigningIdentifier];
-      v28 = [v27 isEqualToString:@"com.apple.mobilenotes"];
+      matchSigningIdentifier5 = [v19 matchSigningIdentifier];
+      v28 = [matchSigningIdentifier5 isEqualToString:@"com.apple.mobilenotes"];
 
       if (v28)
       {
         goto LABEL_14;
       }
 
-      v29 = [v19 matchSigningIdentifier];
-      if ([v29 isEqualToString:@"com.apple.mobilecal"])
+      matchSigningIdentifier6 = [v19 matchSigningIdentifier];
+      if ([matchSigningIdentifier6 isEqualToString:@"com.apple.mobilecal"])
       {
         goto LABEL_22;
       }
 
-      v30 = [v19 matchSigningIdentifier];
-      if ([v30 isEqualToString:@"com.apple.calaccessd"])
+      matchSigningIdentifier7 = [v19 matchSigningIdentifier];
+      if ([matchSigningIdentifier7 isEqualToString:@"com.apple.calaccessd"])
       {
 
 LABEL_22:
 LABEL_23:
-        v23 = [v19 matchSigningIdentifier];
-        if ([v23 isEqualToString:@"com.apple.mobilecal"])
+        matchSigningIdentifier4 = [v19 matchSigningIdentifier];
+        if ([matchSigningIdentifier4 isEqualToString:@"com.apple.mobilecal"])
         {
-          v31 = [v19 matchDomains];
-          v32 = [v31 count];
+          matchDomains3 = [v19 matchDomains];
+          v32 = [matchDomains3 count];
 
           if (!v32)
           {
             goto LABEL_40;
           }
 
-          v26 = [v19 matchDomains];
-          [v60 setCalendarDomains:v26];
+          matchDomains2 = [v19 matchDomains];
+          [selfCopy setCalendarDomains:matchDomains2];
           goto LABEL_17;
         }
 
@@ -316,92 +316,92 @@ LABEL_39:
         goto LABEL_40;
       }
 
-      v33 = [v19 matchSigningIdentifier];
-      v34 = [v33 isEqualToString:@"com.apple.reminders"];
+      matchSigningIdentifier8 = [v19 matchSigningIdentifier];
+      v34 = [matchSigningIdentifier8 isEqualToString:@"com.apple.reminders"];
 
       if (v34)
       {
         goto LABEL_23;
       }
 
-      v35 = [v19 matchSigningIdentifier];
-      if ([v35 isEqualToString:@"com.apple.MobileAddressBook"])
+      matchSigningIdentifier9 = [v19 matchSigningIdentifier];
+      if ([matchSigningIdentifier9 isEqualToString:@"com.apple.MobileAddressBook"])
       {
 
 LABEL_30:
-        v23 = [v19 matchSigningIdentifier];
-        if (([v23 isEqualToString:@"com.apple.MobileAddressBook"] & 1) == 0)
+        matchSigningIdentifier4 = [v19 matchSigningIdentifier];
+        if (([matchSigningIdentifier4 isEqualToString:@"com.apple.MobileAddressBook"] & 1) == 0)
         {
           goto LABEL_39;
         }
 
-        v38 = [v19 matchDomains];
-        v39 = [v38 count];
+        matchDomains4 = [v19 matchDomains];
+        v39 = [matchDomains4 count];
 
         if (!v39)
         {
           goto LABEL_40;
         }
 
-        v26 = [v19 matchDomains];
-        [v60 setContactsDomains:v26];
+        matchDomains2 = [v19 matchDomains];
+        [selfCopy setContactsDomains:matchDomains2];
         goto LABEL_17;
       }
 
-      v36 = [v19 matchSigningIdentifier];
-      v37 = [v36 isEqualToString:@"com.apple.dataaccessd"];
+      matchSigningIdentifier10 = [v19 matchSigningIdentifier];
+      v37 = [matchSigningIdentifier10 isEqualToString:@"com.apple.dataaccessd"];
 
       if (v37)
       {
         goto LABEL_30;
       }
 
-      v40 = [v19 matchSigningIdentifier];
-      if ([v40 isEqualToString:@"com.apple.mobilesafari"])
+      matchSigningIdentifier11 = [v19 matchSigningIdentifier];
+      if ([matchSigningIdentifier11 isEqualToString:@"com.apple.mobilesafari"])
       {
 
 LABEL_36:
-        v23 = [v19 matchSigningIdentifier];
-        if (([v23 isEqualToString:@"com.apple.mobilesafari"] & 1) == 0)
+        matchSigningIdentifier4 = [v19 matchSigningIdentifier];
+        if (([matchSigningIdentifier4 isEqualToString:@"com.apple.mobilesafari"] & 1) == 0)
         {
           goto LABEL_39;
         }
 
-        v43 = [v19 matchDomains];
-        v44 = [v43 count];
+        matchDomains5 = [v19 matchDomains];
+        v44 = [matchDomains5 count];
 
         if (!v44)
         {
           goto LABEL_40;
         }
 
-        v26 = [v19 matchDomains];
-        [v60 setSafariDomains:v26];
+        matchDomains2 = [v19 matchDomains];
+        [selfCopy setSafariDomains:matchDomains2];
 LABEL_17:
 
         goto LABEL_40;
       }
 
-      v41 = [v19 matchSigningIdentifier];
-      v42 = [v41 isEqualToString:@"com.apple.webapp"];
+      matchSigningIdentifier12 = [v19 matchSigningIdentifier];
+      v42 = [matchSigningIdentifier12 isEqualToString:@"com.apple.webapp"];
 
       if (v42)
       {
         goto LABEL_36;
       }
 
-      v45 = [v19 matchSigningIdentifier];
-      v46 = [v45 isEqualToString:@"com.apple.swcd"];
+      matchSigningIdentifier13 = [v19 matchSigningIdentifier];
+      v46 = [matchSigningIdentifier13 isEqualToString:@"com.apple.swcd"];
 
       if (v46)
       {
-        v47 = [v19 matchDomains];
-        v48 = [v47 count];
+        matchDomains6 = [v19 matchDomains];
+        v48 = [matchDomains6 count];
 
         if (v48)
         {
-          v26 = [v19 matchDomains];
-          [v60 setAssociatedDomains:v26];
+          matchDomains2 = [v19 matchDomains];
+          [selfCopy setAssociatedDomains:matchDomains2];
           goto LABEL_17;
         }
       }
@@ -424,19 +424,19 @@ LABEL_40:
 LABEL_47:
 
   v50 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v59];
-  [v60 setAppRules:v50];
+  [selfCopy setAppRules:v50];
 
-  v51 = [v60 configuration];
-  v52 = [v51 appVPN];
-  v53 = [v52 excludedDomains];
-  v54 = [v53 count];
+  configuration3 = [selfCopy configuration];
+  appVPN3 = [configuration3 appVPN];
+  excludedDomains = [appVPN3 excludedDomains];
+  v54 = [excludedDomains count];
 
   if (v54)
   {
-    v55 = [v60 configuration];
-    v56 = [v55 appVPN];
-    v57 = [v56 excludedDomains];
-    [v60 setExcludedDomains:v57];
+    configuration4 = [selfCopy configuration];
+    appVPN4 = [configuration4 appVPN];
+    excludedDomains2 = [appVPN4 excludedDomains];
+    [selfCopy setExcludedDomains:excludedDomains2];
   }
 
 LABEL_50:
@@ -445,54 +445,54 @@ LABEL_50:
 
 - (void)additionalSetup
 {
-  v3 = [(NEVPNManager *)self configuration];
-  v4 = [v3 appVPN];
+  configuration = [(NEVPNManager *)self configuration];
+  appVPN = [configuration appVPN];
 
-  v5 = [(NEVPNManager *)self configuration];
-  v6 = v5;
-  if (v4)
+  configuration2 = [(NEVPNManager *)self configuration];
+  v6 = configuration2;
+  if (appVPN)
   {
-    v7 = [v5 appVPN];
-    v16 = [v7 protocol];
+    appVPN2 = [configuration2 appVPN];
+    protocol = [appVPN2 protocol];
 
-    v8 = [(NEVPNManager *)self configuration];
-    [v8 appVPN];
+    configuration3 = [(NEVPNManager *)self configuration];
+    [configuration3 appVPN];
   }
 
   else
   {
-    v9 = [v5 VPN];
-    v16 = [v9 protocol];
+    v9 = [configuration2 VPN];
+    protocol = [v9 protocol];
 
-    v8 = [(NEVPNManager *)self configuration];
-    [v8 VPN];
+    configuration3 = [(NEVPNManager *)self configuration];
+    [configuration3 VPN];
   }
   v10 = ;
-  v11 = [v10 tunnelType];
+  tunnelType = [v10 tunnelType];
 
-  if ((v11 - 1) <= 1)
+  if ((tunnelType - 1) <= 1)
   {
-    v12 = [v16 providerBundleIdentifier];
+    providerBundleIdentifier = [protocol providerBundleIdentifier];
     objc_opt_self();
-    [v16 setProviderBundleIdentifier:v12];
-    v13 = [(NEVPNManager *)self configuration];
-    if (v13)
+    [protocol setProviderBundleIdentifier:providerBundleIdentifier];
+    configuration4 = [(NEVPNManager *)self configuration];
+    if (configuration4)
     {
-      v13[22] = 0;
+      configuration4[22] = 0;
     }
   }
 
-  v14 = [MEMORY[0x1E696AAE8] mainBundle];
-  v15 = [v14 bundleIdentifier];
-  [v16 setPluginType:v15];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [protocol setPluginType:bundleIdentifier];
 }
 
-- (NETunnelProviderManager)initWithSessionType:(int)a3 tunnelType:(int64_t)a4
+- (NETunnelProviderManager)initWithSessionType:(int)type tunnelType:(int64_t)tunnelType
 {
-  v6 = [(NEVPNConnection *)[NETunnelProviderSession alloc] initWithType:a3];
+  v6 = [(NEVPNConnection *)[NETunnelProviderSession alloc] initWithType:type];
   v21.receiver = self;
   v21.super_class = NETunnelProviderManager;
-  v7 = [(NEVPNManager *)&v21 initWithGrade:1 connection:v6 tunnelType:a4];
+  v7 = [(NEVPNManager *)&v21 initWithGrade:1 connection:v6 tunnelType:tunnelType];
 
   if (v7)
   {
@@ -536,7 +536,7 @@ LABEL_50:
     v7[1] = 3221225472;
     v7[2] = __71__NETunnelProviderManager_loadAllFromPreferencesWithCompletionHandler___block_invoke;
     v7[3] = &unk_1E7F0B1E8;
-    v9 = a1;
+    selfCopy = self;
     v8 = v4;
     [v6 loadConfigurationsWithCompletionQueue:MEMORY[0x1E69E96A0] handler:v7];
   }

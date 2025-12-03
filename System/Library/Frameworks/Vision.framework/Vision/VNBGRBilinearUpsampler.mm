@@ -1,26 +1,26 @@
 @interface VNBGRBilinearUpsampler
-- (BOOL)applyEspressoMask:(id *)a3 toImage:(__CVBuffer *)a4 highResMaskBuffer:(__CVBuffer *)a5;
-- (BOOL)applyPixelBufferMask:(__CVBuffer *)a3 toImage:(__CVBuffer *)a4 highResMaskBuffer:(__CVBuffer *)a5;
-- (BOOL)applyTextureMask:(id)a3 toImage:(__CVBuffer *)a4 highResMaskBuffer:(__CVBuffer *)a5;
-- (BOOL)handlePostProcessingRequest:(id *)a3;
+- (BOOL)applyEspressoMask:(id *)mask toImage:(__CVBuffer *)image highResMaskBuffer:(__CVBuffer *)buffer;
+- (BOOL)applyPixelBufferMask:(__CVBuffer *)mask toImage:(__CVBuffer *)image highResMaskBuffer:(__CVBuffer *)buffer;
+- (BOOL)applyTextureMask:(id)mask toImage:(__CVBuffer *)image highResMaskBuffer:(__CVBuffer *)buffer;
+- (BOOL)handlePostProcessingRequest:(id *)request;
 - (VNBGRBilinearUpsampler)init;
-- (VNBGRBilinearUpsampler)initWithMetalDevice:(id)a3;
-- (id)computePipelineStateFor:(id)a3;
-- (id)createTextureOfSize:(CGSize)a3 withFormat:(unint64_t)a4;
-- (id)libraryReturnError:(id *)a3;
-- (id)textureFromPixelBuffer:(__CVBuffer *)a3 format:(unint64_t)a4;
+- (VNBGRBilinearUpsampler)initWithMetalDevice:(id)device;
+- (id)computePipelineStateFor:(id)for;
+- (id)createTextureOfSize:(CGSize)size withFormat:(unint64_t)format;
+- (id)libraryReturnError:(id *)error;
+- (id)textureFromPixelBuffer:(__CVBuffer *)buffer format:(unint64_t)format;
 - (void)dealloc;
 @end
 
 @implementation VNBGRBilinearUpsampler
 
-- (id)textureFromPixelBuffer:(__CVBuffer *)a3 format:(unint64_t)a4
+- (id)textureFromPixelBuffer:(__CVBuffer *)buffer format:(unint64_t)format
 {
   image = 0;
   metalTextureCache = self->_metalTextureCache;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  if (CVMetalTextureCacheCreateTextureFromImage(0, metalTextureCache, a3, 0, a4, Width, Height, 0, &image))
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  if (CVMetalTextureCacheCreateTextureFromImage(0, metalTextureCache, buffer, 0, format, Width, Height, 0, &image))
   {
     exception = __cxa_allocate_exception(0x10uLL);
     MEMORY[0x1AC556740](exception, "Failed to create input image texture.");
@@ -33,46 +33,46 @@
   return v9;
 }
 
-- (id)createTextureOfSize:(CGSize)a3 withFormat:(unint64_t)a4
+- (id)createTextureOfSize:(CGSize)size withFormat:(unint64_t)format
 {
-  v5 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:a4 width:a3.width height:a3.height mipmapped:0];
+  v5 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:format width:size.width height:size.height mipmapped:0];
   [v5 setUsage:3];
   v6 = [(MTLDevice *)self->_device newTextureWithDescriptor:v5];
 
   return v6;
 }
 
-- (BOOL)applyEspressoMask:(id *)a3 toImage:(__CVBuffer *)a4 highResMaskBuffer:(__CVBuffer *)a5
+- (BOOL)applyEspressoMask:(id *)mask toImage:(__CVBuffer *)image highResMaskBuffer:(__CVBuffer *)buffer
 {
-  v9 = [(MTLDevice *)self->_device newBufferWithBytes:a3->var0 length:4 * a3->var13 * a3->var8 options:0];
-  v10 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:55 width:a3->var4 height:a3->var5 mipmapped:0];
+  v9 = [(MTLDevice *)self->_device newBufferWithBytes:mask->var0 length:4 * mask->var13 * mask->var8 options:0];
+  v10 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:55 width:mask->var4 height:mask->var5 mipmapped:0];
   [v10 setUsage:3];
-  v11 = [v9 newTextureWithDescriptor:v10 offset:0 bytesPerRow:4 * a3->var10];
-  LOBYTE(a5) = [(VNBGRBilinearUpsampler *)self applyTextureMask:v11 toImage:a4 highResMaskBuffer:a5];
+  v11 = [v9 newTextureWithDescriptor:v10 offset:0 bytesPerRow:4 * mask->var10];
+  LOBYTE(buffer) = [(VNBGRBilinearUpsampler *)self applyTextureMask:v11 toImage:image highResMaskBuffer:buffer];
 
-  return a5;
+  return buffer;
 }
 
-- (BOOL)applyPixelBufferMask:(__CVBuffer *)a3 toImage:(__CVBuffer *)a4 highResMaskBuffer:(__CVBuffer *)a5
+- (BOOL)applyPixelBufferMask:(__CVBuffer *)mask toImage:(__CVBuffer *)image highResMaskBuffer:(__CVBuffer *)buffer
 {
-  if (CVPixelBufferGetPixelFormatType(a3) != 1278226534)
+  if (CVPixelBufferGetPixelFormatType(mask) != 1278226534)
   {
     exception = __cxa_allocate_exception(0x10uLL);
     MEMORY[0x1AC556740](exception, "Invalid pixel buffer format.");
     __cxa_throw(exception, MEMORY[0x1E69E5408], MEMORY[0x1E69E5288]);
   }
 
-  v9 = [(VNBGRBilinearUpsampler *)self textureFromPixelBuffer:a3 format:55];
-  v10 = [(VNBGRBilinearUpsampler *)self applyTextureMask:v9 toImage:a4 highResMaskBuffer:a5];
+  v9 = [(VNBGRBilinearUpsampler *)self textureFromPixelBuffer:mask format:55];
+  v10 = [(VNBGRBilinearUpsampler *)self applyTextureMask:v9 toImage:image highResMaskBuffer:buffer];
 
   return v10;
 }
 
-- (BOOL)applyTextureMask:(id)a3 toImage:(__CVBuffer *)a4 highResMaskBuffer:(__CVBuffer *)a5
+- (BOOL)applyTextureMask:(id)mask toImage:(__CVBuffer *)image highResMaskBuffer:(__CVBuffer *)buffer
 {
-  v16 = a3;
-  v7 = [(VNBGRBilinearUpsampler *)self textureFromPixelBuffer:a5 format:55];
-  v8 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  maskCopy = mask;
+  v7 = [(VNBGRBilinearUpsampler *)self textureFromPixelBuffer:buffer format:55];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
   blurFilter = self->_blurFilter;
   if (!blurFilter || ([(MPSImageGaussianBlur *)blurFilter sigma], self->_featheringSigma != v10))
   {
@@ -84,31 +84,31 @@
     self->_blurFilter = v13;
   }
 
-  [(MPSImageGaussianBlur *)self->_blurFilter encodeToCommandBuffer:v8 inPlaceTexture:&v16 fallbackCopyAllocator:0];
-  [(MPSImageBilinearScale *)self->_bilinearScale encodeToCommandBuffer:v8 sourceTexture:v16 destinationTexture:v7];
-  [v8 commit];
-  [v8 waitUntilCompleted];
+  [(MPSImageGaussianBlur *)self->_blurFilter encodeToCommandBuffer:commandBuffer inPlaceTexture:&maskCopy fallbackCopyAllocator:0];
+  [(MPSImageBilinearScale *)self->_bilinearScale encodeToCommandBuffer:commandBuffer sourceTexture:maskCopy destinationTexture:v7];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
 
   return 1;
 }
 
-- (BOOL)handlePostProcessingRequest:(id *)a3
+- (BOOL)handlePostProcessingRequest:(id *)request
 {
-  if (a3->var2)
+  if (request->var2)
   {
-    return [(VNBGRBilinearUpsampler *)self applyPixelBufferMask:a3->var2 toImage:a3->var0 highResMaskBuffer:a3->var3];
+    return [(VNBGRBilinearUpsampler *)self applyPixelBufferMask:request->var2 toImage:request->var0 highResMaskBuffer:request->var3];
   }
 
   else
   {
-    return [(VNBGRBilinearUpsampler *)self applyEspressoMask:a3->var1 toImage:a3->var0 highResMaskBuffer:a3->var3];
+    return [(VNBGRBilinearUpsampler *)self applyEspressoMask:request->var1 toImage:request->var0 highResMaskBuffer:request->var3];
   }
 }
 
-- (id)computePipelineStateFor:(id)a3
+- (id)computePipelineStateFor:(id)for
 {
   device = self->_device;
-  v4 = [(MTLLibrary *)self->_library newFunctionWithName:a3];
+  v4 = [(MTLLibrary *)self->_library newFunctionWithName:for];
   v5 = [(MTLDevice *)device newComputePipelineStateWithFunction:v4 error:0];
 
   return v5;
@@ -135,19 +135,19 @@
   return v4;
 }
 
-- (VNBGRBilinearUpsampler)initWithMetalDevice:(id)a3
+- (VNBGRBilinearUpsampler)initWithMetalDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v16.receiver = self;
   v16.super_class = VNBGRBilinearUpsampler;
   v6 = [(VNBGRBilinearUpsampler *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
-    v8 = [(MTLDevice *)v7->_device newCommandQueue];
+    objc_storeStrong(&v6->_device, device);
+    newCommandQueue = [(MTLDevice *)v7->_device newCommandQueue];
     commandQueue = v7->_commandQueue;
-    v7->_commandQueue = v8;
+    v7->_commandQueue = newCommandQueue;
 
     v10 = [(VNBGRBilinearUpsampler *)v7 libraryReturnError:0];
     library = v7->_library;
@@ -173,7 +173,7 @@ LABEL_6:
   return v12;
 }
 
-- (id)libraryReturnError:(id *)a3
+- (id)libraryReturnError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   library = self->_library;
@@ -181,7 +181,7 @@ LABEL_6:
   {
     device = self->_device;
     v7 = VNFrameworkBundle();
-    v8 = [(MTLDevice *)device newDefaultLibraryWithBundle:v7 error:a3];
+    v8 = [(MTLDevice *)device newDefaultLibraryWithBundle:v7 error:error];
     v9 = self->_library;
     self->_library = v8;
 

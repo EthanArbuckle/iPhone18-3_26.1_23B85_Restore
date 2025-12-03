@@ -1,22 +1,22 @@
 @interface REDonatedActionStore
 - (BOOL)_shouldLimitQueries;
 - (id)_init;
-- (void)_finishLoadingData:(unint64_t)a3;
-- (void)_notified_addDonatedActionsForInstalledApps:(id)a3;
-- (void)_notified_distributeRecentDeletedActions:(id)a3;
-- (void)_notified_distributeRecentDonatedActions:(id)a3;
-- (void)_notified_removeDonatedActionsForUninstalledApps:(id)a3;
-- (void)_notified_removeThenDistributeAllActions:(id)a3;
+- (void)_finishLoadingData:(unint64_t)data;
+- (void)_notified_addDonatedActionsForInstalledApps:(id)apps;
+- (void)_notified_distributeRecentDeletedActions:(id)actions;
+- (void)_notified_distributeRecentDonatedActions:(id)actions;
+- (void)_notified_removeDonatedActionsForUninstalledApps:(id)apps;
+- (void)_notified_removeThenDistributeAllActions:(id)actions;
 - (void)_queue_distributeAllDonatedActions;
-- (void)_queue_distributeAllDonatedActionsWithIdentifier:(id)a3;
+- (void)_queue_distributeAllDonatedActionsWithIdentifier:(id)identifier;
 - (void)_queue_distributeRecentDeletedActions;
 - (void)_queue_distributeRecentDonatedActions;
 - (void)_subscribeToNotifications;
 - (void)dealloc;
-- (void)fetchDonationWithIdentifier:(id)a3 completion:(id)a4;
+- (void)fetchDonationWithIdentifier:(id)identifier completion:(id)completion;
 - (void)start;
 - (void)synchronizeDonationsIfNecessary;
-- (void)triggerDistributeAllDonatedActions:(BOOL)a3;
+- (void)triggerDistributeAllDonatedActions:(BOOL)actions;
 @end
 
 @implementation REDonatedActionStore
@@ -25,8 +25,8 @@
 {
   v20.receiver = self;
   v20.super_class = REDonatedActionStore;
-  v2 = [(REObservableSingleton *)&v20 _init];
-  if (v2)
+  _init = [(REObservableSingleton *)&v20 _init];
+  if (_init)
   {
     if (!CoreDuetLibraryCore())
     {
@@ -36,29 +36,29 @@
 
     v3 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v4 = dispatch_queue_create("com.apple.RelevanceEngine.REDonationActionStore", v3);
-    v5 = v2[3];
-    v2[3] = v4;
+    v5 = _init[3];
+    _init[3] = v4;
 
-    objc_initWeak(&location, v2);
-    v6 = v2[3];
+    objc_initWeak(&location, _init);
+    v6 = _init[3];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __29__REDonatedActionStore__init__block_invoke;
     v17[3] = &unk_2785F9A90;
     objc_copyWeak(&v18, &location);
     v7 = [REUpNextScheduler schedulerWithQueue:v6 delay:v17 updateBlock:0.1];
-    v8 = v2[4];
-    v2[4] = v7;
+    v8 = _init[4];
+    _init[4] = v7;
 
-    v9 = v2[3];
+    v9 = _init[3];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __29__REDonatedActionStore__init__block_invoke_2;
     v15[3] = &unk_2785F9A90;
     objc_copyWeak(&v16, &location);
     v10 = [REUpNextScheduler schedulerWithQueue:v9 delay:v15 updateBlock:0.1];
-    v11 = v2[5];
-    v2[5] = v10;
+    v11 = _init[5];
+    _init[5] = v10;
 
     v12 = CFPreferencesCopyAppValue(@"REQueryVersionKey", @"com.apple.RelevanceEngine");
     if (!v12 || ([&unk_283BBD4B8 isEqual:v12] & 1) == 0)
@@ -68,14 +68,14 @@
       CFPreferencesSetAppValue(@"REQueryVersionKey", &unk_283BBD4B8, @"com.apple.RelevanceEngine");
     }
 
-    *(v2 + 17) = 0;
+    *(_init + 17) = 0;
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
   }
 
-  v13 = v2;
+  v13 = _init;
 LABEL_9:
 
   return v13;
@@ -95,11 +95,11 @@ void __29__REDonatedActionStore__init__block_invoke_2(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = REDonatedActionStore;
@@ -147,21 +147,21 @@ uint64_t __29__REDonatedActionStore_start__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)fetchDonationWithIdentifier:(id)a3 completion:(id)a4
+- (void)fetchDonationWithIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a4;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v6 = a3;
+    identifierCopy = identifier;
     v7 = +[(RESingleton *)REDuetKnowledgeStore];
-    v8 = [v7 queryForDuetEventWithIdentifier:v6];
+    v8 = [v7 queryForDuetEventWithIdentifier:identifierCopy];
 
     v9 = +[(RESingleton *)REDuetKnowledgeStore];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __63__REDonatedActionStore_fetchDonationWithIdentifier_completion___block_invoke;
     v10[3] = &unk_2785FBA10;
-    v11 = v5;
+    v11 = completionCopy;
     [v9 executeQuery:v8 responseQueue:MEMORY[0x277D85CD0] completion:v10];
   }
 }
@@ -232,14 +232,14 @@ uint64_t __55__REDonatedActionStore_synchronizeDonationsIfNecessary__block_invok
   return result;
 }
 
-- (void)triggerDistributeAllDonatedActions:(BOOL)a3
+- (void)triggerDistributeAllDonatedActions:(BOOL)actions
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __59__REDonatedActionStore_triggerDistributeAllDonatedActions___block_invoke;
   v4[3] = &unk_2785FA448;
-  v5 = a3;
+  actionsCopy = actions;
   v4[4] = self;
   dispatch_async(queue, v4);
 }
@@ -263,38 +263,38 @@ uint64_t __59__REDonatedActionStore_triggerDistributeAllDonatedActions___block_i
 
 - (void)_subscribeToNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__notified_addDonatedActionsForInstalledApps_ name:@"REApplicationStateDidInstall" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__notified_addDonatedActionsForInstalledApps_ name:@"REApplicationStateDidInstall" object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__notified_removeDonatedActionsForUninstalledApps_ name:@"REApplicationStateDidUninstall" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__notified_removeDonatedActionsForUninstalledApps_ name:@"REApplicationStateDidUninstall" object:0];
 
   if (!REDeviceUnlockedSinceBoot())
   {
     self->_isMonitoringLockState = 1;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:self selector:sel__notified_removeThenDistributeAllActions_ name:@"REDeviceLockStateChangedNotification" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel__notified_removeThenDistributeAllActions_ name:@"REDeviceLockStateChangedNotification" object:0];
   }
 
-  v6 = [get_DKSystemEventStreamsClass() appIntentsStream];
-  v7 = [v6 name];
+  appIntentsStream = [get_DKSystemEventStreamsClass() appIntentsStream];
+  name = [appIntentsStream name];
 
-  v8 = [MEMORY[0x277CCA9A0] defaultCenter];
+  defaultCenter4 = [MEMORY[0x277CCA9A0] defaultCenter];
   v9 = get_DKKnowledgeStorageDidInsertEventsNotification();
-  [v8 addObserver:self selector:sel__notified_distributeRecentDonatedActions_ name:v9 object:v7];
+  [defaultCenter4 addObserver:self selector:sel__notified_distributeRecentDonatedActions_ name:v9 object:name];
 
-  v10 = [MEMORY[0x277CCA9A0] defaultCenter];
+  defaultCenter5 = [MEMORY[0x277CCA9A0] defaultCenter];
   v11 = get_DKKnowledgeStorageDidTombstoneEventsNotification();
-  [v10 addObserver:self selector:sel__notified_distributeRecentDeletedActions_ name:v11 object:v7];
+  [defaultCenter5 addObserver:self selector:sel__notified_distributeRecentDeletedActions_ name:v11 object:name];
 
-  v12 = [get_DKSystemEventStreamsClass() appActivityStream];
-  v13 = [v12 name];
+  appActivityStream = [get_DKSystemEventStreamsClass() appActivityStream];
+  name2 = [appActivityStream name];
 
-  v14 = [MEMORY[0x277CCA9A0] defaultCenter];
+  defaultCenter6 = [MEMORY[0x277CCA9A0] defaultCenter];
   v15 = get_DKKnowledgeStorageDidInsertEventsNotification();
-  [v14 addObserver:self selector:sel__notified_distributeRecentDonatedActions_ name:v15 object:v13];
+  [defaultCenter6 addObserver:self selector:sel__notified_distributeRecentDonatedActions_ name:v15 object:name2];
 
-  v16 = [MEMORY[0x277CCA9A0] defaultCenter];
+  defaultCenter7 = [MEMORY[0x277CCA9A0] defaultCenter];
   v17 = get_DKKnowledgeStorageDidTombstoneEventsNotification();
   v30 = 0;
   v31 = &v30;
@@ -316,20 +316,20 @@ uint64_t __59__REDonatedActionStore_triggerDistributeAllDonatedActions___block_i
     goto LABEL_11;
   }
 
-  [v16 addObserver:self selector:sel__notified_distributeRecentDeletedActions_ name:v17 object:*v18];
+  [defaultCenter7 addObserver:self selector:sel__notified_distributeRecentDeletedActions_ name:v17 object:*v18];
 
-  v20 = [get_DKSystemEventStreamsClass() appRelevantShortcutsStream];
-  v21 = [v20 name];
+  appRelevantShortcutsStream = [get_DKSystemEventStreamsClass() appRelevantShortcutsStream];
+  name3 = [appRelevantShortcutsStream name];
 
-  v22 = [MEMORY[0x277CCA9A0] defaultCenter];
+  defaultCenter8 = [MEMORY[0x277CCA9A0] defaultCenter];
   v23 = get_DKKnowledgeStorageDidInsertEventsNotification();
-  [v22 addObserver:self selector:sel__notified_distributeRecentDonatedActions_ name:v23 object:v21];
+  [defaultCenter8 addObserver:self selector:sel__notified_distributeRecentDonatedActions_ name:v23 object:name3];
 
-  v24 = [MEMORY[0x277CCA9A0] defaultCenter];
+  defaultCenter9 = [MEMORY[0x277CCA9A0] defaultCenter];
   v25 = get_DKKnowledgeStorageDidTombstoneEventsNotification();
-  [v24 addObserver:self selector:sel__notified_distributeRecentDeletedActions_ name:v25 object:v21];
+  [defaultCenter9 addObserver:self selector:sel__notified_distributeRecentDeletedActions_ name:v25 object:name3];
 
-  v26 = [MEMORY[0x277CCA9A0] defaultCenter];
+  defaultCenter10 = [MEMORY[0x277CCA9A0] defaultCenter];
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -352,7 +352,7 @@ LABEL_11:
     _Unwind_Resume(v29);
   }
 
-  [v26 addObserver:self selector:sel__notified_removeThenDistributeAllActions_ name:*v27 object:0];
+  [defaultCenter10 addObserver:self selector:sel__notified_removeThenDistributeAllActions_ name:*v27 object:0];
 
   xpc_set_event_stream_handler("com.apple.distnoted.matching", 0, &__block_literal_global_24);
 }
@@ -379,8 +379,8 @@ void __49__REDonatedActionStore__subscribeToNotifications__block_invoke(int a1, 
     v2 = CFPreferencesCopyAppValue(@"LastAttemptedQueryDate", @"com.apple.RelevanceEngine");
     if (v2)
     {
-      v3 = [MEMORY[0x277CBEAA8] date];
-      [v3 timeIntervalSinceDate:v2];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSinceDate:v2];
       v5 = v4;
 
       v6 = v5 < 3600.0;
@@ -416,14 +416,14 @@ void __41__REDonatedActionStore__beginLoadingData__block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)_finishLoadingData:(unint64_t)a3
+- (void)_finishLoadingData:(unint64_t)data
 {
   v9 = *MEMORY[0x277D85DE8];
   v5 = RELogForDomain(14);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = a3;
+    dataCopy = data;
     _os_log_impl(&dword_22859F000, v5, OS_LOG_TYPE_DEFAULT, "Finished loading data: %lu items.", &v7, 0xCu);
   }
 
@@ -444,7 +444,7 @@ void __43__REDonatedActionStore__finishLoadingData___block_invoke(uint64_t a1, v
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_22859F000, a2, OS_LOG_TYPE_ERROR, "LastDonateQueryEndDate is in the future (%@). isNewDonation may be inaccurate.", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -533,22 +533,22 @@ void __58__REDonatedActionStore__queue_distributeAllDonatedActions__block_invoke
   [v4 donationActionStoreReceivedDonation:*(a1 + 32) isNewDonation:v5];
 }
 
-- (void)_queue_distributeAllDonatedActionsWithIdentifier:(id)a3
+- (void)_queue_distributeAllDonatedActionsWithIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = RELogForDomain(14);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&dword_22859F000, v5, OS_LOG_TYPE_DEFAULT, "Distributing all donated actions with identifier %{public}@.", &buf, 0xCu);
   }
 
   v6 = CFPreferencesCopyAppValue(@"LastDonateQueryEndDate", @"com.apple.RelevanceEngine");
   [(REDonatedActionStore *)self _beginLoadingData];
   v7 = +[(RESingleton *)REDuetKnowledgeStore];
-  v8 = [v7 queryForAllDonatedActionsWithIdentifier:v4];
+  v8 = [v7 queryForAllDonatedActionsWithIdentifier:identifierCopy];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -565,14 +565,14 @@ void __58__REDonatedActionStore__queue_distributeAllDonatedActions__block_invoke
   v13 = 3221225472;
   v14 = __73__REDonatedActionStore__queue_distributeAllDonatedActionsWithIdentifier___block_invoke;
   v15 = &unk_2785FBAF0;
-  v16 = self;
+  selfCopy = self;
   v18 = &v20;
   p_buf = &buf;
   v10 = v6;
   v17 = v10;
   [v9 executeQuerySynchronouslyWithBatching:v8 completion:&v12];
 
-  [(REDonatedActionStore *)self _finishLoadingData:v21[3], v12, v13, v14, v15, v16];
+  [(REDonatedActionStore *)self _finishLoadingData:v21[3], v12, v13, v14, v15, selfCopy];
   CFPreferencesSetAppValue(@"LastAttemptedQueryDate", [MEMORY[0x277CBEAA8] date], @"com.apple.RelevanceEngine");
   self->_synchronized = 1;
 
@@ -778,7 +778,7 @@ void __61__REDonatedActionStore__queue_distributeRecentDonatedActions__block_inv
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_22859F000, a2, OS_LOG_TYPE_ERROR, "LastDeleteQueryEndDate is in the future (%@). Ignoring date.", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -852,16 +852,16 @@ void __61__REDonatedActionStore__queue_distributeRecentDeletedActions__block_inv
   }
 }
 
-- (void)_notified_distributeRecentDeletedActions:(id)a3
+- (void)_notified_distributeRecentDeletedActions:(id)actions
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionsCopy = actions;
   v5 = RELogForDomain(14);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [actionsCopy name];
     v8 = 138543362;
-    v9 = v6;
+    v9 = name;
     _os_log_impl(&dword_22859F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ received; distribute recently deleted actions.", &v8, 0xCu);
   }
 
@@ -869,16 +869,16 @@ void __61__REDonatedActionStore__queue_distributeRecentDeletedActions__block_inv
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notified_distributeRecentDonatedActions:(id)a3
+- (void)_notified_distributeRecentDonatedActions:(id)actions
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionsCopy = actions;
   v5 = RELogForDomain(14);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [actionsCopy name];
     v8 = 138543362;
-    v9 = v6;
+    v9 = name;
     _os_log_impl(&dword_22859F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ received; distribute recently donated actions.", &v8, 0xCu);
   }
 
@@ -886,11 +886,11 @@ void __61__REDonatedActionStore__queue_distributeRecentDeletedActions__block_inv
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notified_addDonatedActionsForInstalledApps:(id)a3
+- (void)_notified_addDonatedActionsForInstalledApps:(id)apps
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"REApplicationStateBundleIdentifiers"];
+  userInfo = [apps userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"REApplicationStateBundleIdentifiers"];
 
   v6 = RELogForDomain(14);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -907,7 +907,7 @@ void __61__REDonatedActionStore__queue_distributeRecentDeletedActions__block_inv
   v11[2] = __68__REDonatedActionStore__notified_addDonatedActionsForInstalledApps___block_invoke;
   v11[3] = &unk_2785F9AE0;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   v9 = v5;
   dispatch_async(queue, v11);
 
@@ -950,11 +950,11 @@ void __68__REDonatedActionStore__notified_addDonatedActionsForInstalledApps___bl
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notified_removeDonatedActionsForUninstalledApps:(id)a3
+- (void)_notified_removeDonatedActionsForUninstalledApps:(id)apps
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"REApplicationStateBundleIdentifiers"];
+  userInfo = [apps userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"REApplicationStateBundleIdentifiers"];
 
   v6 = RELogForDomain(14);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -971,7 +971,7 @@ void __68__REDonatedActionStore__notified_addDonatedActionsForInstalledApps___bl
   v11[2] = __73__REDonatedActionStore__notified_removeDonatedActionsForUninstalledApps___block_invoke;
   v11[3] = &unk_2785F9AE0;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   v9 = v5;
   dispatch_async(queue, v11);
 
@@ -1032,26 +1032,26 @@ void __73__REDonatedActionStore__notified_removeDonatedActionsForUninstalledApps
   }
 }
 
-- (void)_notified_removeThenDistributeAllActions:(id)a3
+- (void)_notified_removeThenDistributeAllActions:(id)actions
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [@"REDeviceLockStateChangedNotification" isEqualToString:v5];
+  actionsCopy = actions;
+  name = [actionsCopy name];
+  v6 = [@"REDeviceLockStateChangedNotification" isEqualToString:name];
 
   if (v6 && self->_isMonitoringLockState)
   {
     self->_isMonitoringLockState = 0;
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 removeObserver:self name:@"REDeviceLockStateChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"REDeviceLockStateChangedNotification" object:0];
   }
 
   v8 = RELogForDomain(14);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v4 name];
+    name2 = [actionsCopy name];
     *buf = 138543362;
-    v14 = v9;
+    v14 = name2;
     _os_log_impl(&dword_22859F000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ received; remove then distribute all actions.", buf, 0xCu);
   }
 

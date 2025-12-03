@@ -11,14 +11,14 @@
   v3 = [(MUPlacePhotoViewAccessibility *)self safeValueForKey:@"imageView"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 image];
+  image = [v4 image];
 
-  v6 = [v5 CGImage];
-  if (v6)
+  cGImage = [image CGImage];
+  if (cGImage)
   {
-    DataProvider = CGImageGetDataProvider(v6);
+    DataProvider = CGImageGetDataProvider(cGImage);
     v8 = CGImageSourceCreateWithDataProvider(DataProvider, 0);
-    v9 = MAImageCaptioningCopyCaptionWithSource();
+    accessibilityLabel = MAImageCaptioningCopyCaptionWithSource();
     if (v8)
     {
       CFRelease(v8);
@@ -29,10 +29,10 @@
   {
     v11.receiver = self;
     v11.super_class = MUPlacePhotoViewAccessibility;
-    v9 = [(MUPlacePhotoViewAccessibility *)&v11 accessibilityLabel];
+    accessibilityLabel = [(MUPlacePhotoViewAccessibility *)&v11 accessibilityLabel];
   }
 
-  return v9;
+  return accessibilityLabel;
 }
 
 @end

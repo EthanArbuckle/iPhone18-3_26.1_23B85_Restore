@@ -1,35 +1,35 @@
 @interface SCRCPhotoEvaluatorLuminance
-+ (id)detect:(id)a3 inRect:(CGRect)a4;
++ (id)detect:(id)detect inRect:(CGRect)rect;
 @end
 
 @implementation SCRCPhotoEvaluatorLuminance
 
-+ (id)detect:(id)a3 inRect:(CGRect)a4
++ (id)detect:(id)detect inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  detectCopy = detect;
   v44.origin.x = x;
   v44.origin.y = y;
   v44.size.width = width;
   v44.size.height = height;
   if (CGRectIsEmpty(v44) || (v45.origin.x = x, v45.origin.y = y, v45.size.width = width, v45.size.height = height, CGRectIsNull(v45)) || (v46.origin.x = x, v46.origin.y = y, v46.size.width = width, v46.size.height = height, CGRectIsInfinite(v46)))
   {
-    v10 = [a1 detect:v9];
+    v10 = [self detect:detectCopy];
   }
 
   else
   {
-    v13 = [v9 data];
-    v14 = [v9 bytesPerPixel];
-    v15 = [v9 width];
-    v16 = [v9 height];
+    data = [detectCopy data];
+    bytesPerPixel = [detectCopy bytesPerPixel];
+    width = [detectCopy width];
+    height = [detectCopy height];
     v17 = width;
     v18 = height;
     v19 = y;
-    v20 = v15 - width;
+    v20 = width - width;
     if (v20 >= x)
     {
       v20 = x;
@@ -45,8 +45,8 @@
       v21 = 0;
     }
 
-    v22 = v16 - v18;
-    if (v16 - v18 >= v19)
+    v22 = height - v18;
+    if (height - v18 >= v19)
     {
       v22 = y;
     }
@@ -78,7 +78,7 @@
       v27 = 0;
       v28 = 0;
       v29 = 0;
-      v30 = v13 + v14 * (v21 + v23 * v15) + 2;
+      v30 = data + bytesPerPixel * (v21 + v23 * width) + 2;
       do
       {
         v31 = height;
@@ -104,7 +104,7 @@
               ++v28;
             }
 
-            v32 += v15 * v14;
+            v32 += width * bytesPerPixel;
             --v31;
           }
 
@@ -112,7 +112,7 @@
         }
 
         ++v24;
-        v30 += v14;
+        v30 += bytesPerPixel;
       }
 
       while (v24 != v17);

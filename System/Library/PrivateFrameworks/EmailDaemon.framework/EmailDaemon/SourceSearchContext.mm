@@ -1,37 +1,37 @@
 @interface SourceSearchContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (EDRemoteSearchDelegate)delegate;
 - (NSArray)referencedMailboxes;
-- (SourceSearchContext)initWithQuery:(id)a3 criterion:(id)a4 delegate:(id)a5 offset:(id)a6 sessionID:(unint64_t)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SourceSearchContext)initWithQuery:(id)query criterion:(id)criterion delegate:(id)delegate offset:(id)offset sessionID:(unint64_t)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)referencedConversations;
 @end
 
 @implementation SourceSearchContext
 
-- (SourceSearchContext)initWithQuery:(id)a3 criterion:(id)a4 delegate:(id)a5 offset:(id)a6 sessionID:(unint64_t)a7
+- (SourceSearchContext)initWithQuery:(id)query criterion:(id)criterion delegate:(id)delegate offset:(id)offset sessionID:(unint64_t)d
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  queryCopy = query;
+  criterionCopy = criterion;
+  delegateCopy = delegate;
+  offsetCopy = offset;
   v20.receiver = self;
   v20.super_class = SourceSearchContext;
   v17 = [(SourceSearchContext *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_query, a3);
-    objc_storeStrong(&v18->_criterion, a4);
-    objc_storeWeak(&v18->_delegate, v15);
-    objc_storeStrong(&v18->_offset, a6);
-    v18->_sessionID = a7;
+    objc_storeStrong(&v17->_query, query);
+    objc_storeStrong(&v18->_criterion, criterion);
+    objc_storeWeak(&v18->_delegate, delegateCopy);
+    objc_storeStrong(&v18->_offset, offset);
+    v18->_sessionID = d;
   }
 
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([(SourceSearchContext *)self isMemberOfClass:objc_opt_class()])
   {
@@ -51,10 +51,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_6;
   }
@@ -67,25 +67,25 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v5 = v4;
-  v6 = [(SourceSearchContext *)v5 criterion];
-  if (![v6 isEqual:self->_criterion])
+  v5 = equalCopy;
+  criterion = [(SourceSearchContext *)v5 criterion];
+  if (![criterion isEqual:self->_criterion])
   {
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v7 = [(SourceSearchContext *)v5 delegate];
+  delegate = [(SourceSearchContext *)v5 delegate];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (![v7 isEqual:WeakRetained])
+  if (![delegate isEqual:WeakRetained])
   {
 
     goto LABEL_8;
   }
 
-  v9 = [(SourceSearchContext *)v5 query];
-  v10 = [v9 isEqual:self->_query];
+  query = [(SourceSearchContext *)v5 query];
+  v10 = [query isEqual:self->_query];
 
   if ((v10 & 1) == 0)
   {
@@ -101,18 +101,18 @@ LABEL_10:
 
 - (NSArray)referencedMailboxes
 {
-  v2 = [(SourceSearchContext *)self criterion];
-  v3 = [v2 referencedMailboxes];
+  criterion = [(SourceSearchContext *)self criterion];
+  referencedMailboxes = [criterion referencedMailboxes];
 
-  return v3;
+  return referencedMailboxes;
 }
 
 - (id)referencedConversations
 {
-  v2 = [(SourceSearchContext *)self criterion];
-  v3 = [v2 referencedConversations];
+  criterion = [(SourceSearchContext *)self criterion];
+  referencedConversations = [criterion referencedConversations];
 
-  return v3;
+  return referencedConversations;
 }
 
 - (EDRemoteSearchDelegate)delegate

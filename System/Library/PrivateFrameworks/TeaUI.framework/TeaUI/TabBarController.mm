@@ -1,11 +1,11 @@
 @interface TabBarController
-- (BOOL)tabBarController:(id)a3 shouldSelectViewController:(id)a4;
+- (BOOL)tabBarController:(id)controller shouldSelectViewController:(id)viewController;
 - (NSArray)viewControllers;
-- (_TtC5TeaUI16TabBarController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC5TeaUI16TabBarController)initWithTabs:(id)a3;
-- (void)setViewControllers:(id)a3;
-- (void)tabBarController:(id)a3 didSelectViewController:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC5TeaUI16TabBarController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC5TeaUI16TabBarController)initWithTabs:(id)tabs;
+- (void)setViewControllers:(id)controllers;
+- (void)tabBarController:(id)controller didSelectViewController:(id)viewController;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -13,7 +13,7 @@
 
 - (NSArray)viewControllers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TabBarController.viewControllers.getter();
 
   if (v3)
@@ -30,64 +30,64 @@
   return v4;
 }
 
-- (void)setViewControllers:(id)a3
+- (void)setViewControllers:(id)controllers
 {
-  if (a3)
+  if (controllers)
   {
     sub_1D7E0A1A8(0, &qword_1EDBB31B0);
     sub_1D8191314();
   }
 
-  v4 = self;
+  selfCopy = self;
   TabBarController.viewControllers.setter();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   TabBarController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  TabBarController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  TabBarController.viewDidAppear(_:)(appear);
 }
 
-- (_TtC5TeaUI16TabBarController)initWithTabs:(id)a3
+- (_TtC5TeaUI16TabBarController)initWithTabs:(id)tabs
 {
   sub_1D7E0A1A8(0, &qword_1ECA11088);
   sub_1D8191314();
   TabBarController.init(tabs:)();
 }
 
-- (_TtC5TeaUI16TabBarController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUI16TabBarController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D8190F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   TabBarController.init(nibName:bundle:)();
 }
 
-- (BOOL)tabBarController:(id)a3 shouldSelectViewController:(id)a4
+- (BOOL)tabBarController:(id)controller shouldSelectViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  TabBarController.tabBarController(_:shouldSelect:)(&v8->super, v7);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  TabBarController.tabBarController(_:shouldSelect:)(&selfCopy->super, viewControllerCopy);
 
   return 1;
 }
 
-- (void)tabBarController:(id)a3 didSelectViewController:(id)a4
+- (void)tabBarController:(id)controller didSelectViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  TabBarController.tabBarController(_:didSelect:)(&v8->super, v7);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  TabBarController.tabBarController(_:didSelect:)(&selfCopy->super, viewControllerCopy);
 }
 
 @end

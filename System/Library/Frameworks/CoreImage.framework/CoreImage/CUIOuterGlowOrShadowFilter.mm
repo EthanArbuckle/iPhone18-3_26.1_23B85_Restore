@@ -87,22 +87,22 @@
   v6 = v5;
   if ([(NSNumber *)self->inputSize unsignedIntValue]> 0x31)
   {
-    v7 = 50;
+    unsignedIntValue = 50;
   }
 
   else
   {
-    v7 = [(NSNumber *)self->inputSize unsignedIntValue];
+    unsignedIntValue = [(NSNumber *)self->inputSize unsignedIntValue];
   }
 
   if ([(NSNumber *)self->inputSpread unsignedIntValue]> 0x63)
   {
-    v8 = 100;
+    unsignedIntValue2 = 100;
   }
 
   else
   {
-    v8 = [(NSNumber *)self->inputSpread unsignedIntValue];
+    unsignedIntValue2 = [(NSNumber *)self->inputSpread unsignedIntValue];
   }
 
   if (!self->inputImage)
@@ -111,7 +111,7 @@
   }
 
   v9 = fmin(fmax(v6, 0.0), 50.0);
-  if (v9 <= 0.0 || v7 == 0)
+  if (v9 <= 0.0 || unsignedIntValue == 0)
   {
     [(CIVector *)self->inputOffset Y];
     if (fabs(v11) < 0.5)
@@ -131,7 +131,7 @@
   v15 = fmin(fmax(v4, 0.01), 1.0);
   if (inputSize)
   {
-    v16 = v8;
+    v16 = unsignedIntValue2;
   }
 
   else
@@ -141,7 +141,7 @@
 
   if (inputSize)
   {
-    v17 = v7;
+    v17 = unsignedIntValue;
   }
 
   else
@@ -160,7 +160,7 @@
     v18 = [(CIImage *)v18 imageByApplyingTransform:&v43];
   }
 
-  v24 = [(CUIOuterGlowOrShadowFilter *)self _kernel];
+  _kernel = [(CUIOuterGlowOrShadowFilter *)self _kernel];
   [(CIImage *)self->inputImage extent];
   v26 = v25;
   v28 = v27;
@@ -184,7 +184,7 @@
   v44[0] = v18;
   v44[1] = inputColor;
   v44[2] = [MEMORY[0x1E696AD98] numberWithDouble:v15];
-  return [v24 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v44, 3), x, y, width, height}];
+  return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v44, 3), x, y, width, height}];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface CNPosterPreviewViewController
-- (CNPosterPreviewViewController)initWithPosterConfiguration:(id)a3 fromProviderItem:(id)a4 contact:(id)a5 editingState:(int64_t)a6 isEditingSNaP:(BOOL)a7;
+- (CNPosterPreviewViewController)initWithPosterConfiguration:(id)configuration fromProviderItem:(id)item contact:(id)contact editingState:(int64_t)state isEditingSNaP:(BOOL)p;
 - (CNPosterPreviewViewControllerDelegate)delegate;
-- (id)backgroundColorFromPhotoPickerProviderItem:(id)a3;
-- (void)previewViewDidCreateWithPosterConfiguration:(id)a3;
-- (void)previewViewDidFinishWithPosterConfiguration:(id)a3;
+- (id)backgroundColorFromPhotoPickerProviderItem:(id)item;
+- (void)previewViewDidCreateWithPosterConfiguration:(id)configuration;
+- (void)previewViewDidFinishWithPosterConfiguration:(id)configuration;
 - (void)previewViewDidSelectUseDifferentPoster;
 - (void)skipPosterSetup;
 - (void)updateNavigationBar;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation CNPosterPreviewViewController
@@ -22,23 +22,23 @@
 
 - (void)previewViewDidSelectUseDifferentPoster
 {
-  v3 = [(CNPosterPreviewViewController *)self delegate];
-  [v3 posterPreviewViewControllerDidSelectUseDifferentPoster:self];
+  delegate = [(CNPosterPreviewViewController *)self delegate];
+  [delegate posterPreviewViewControllerDidSelectUseDifferentPoster:self];
 }
 
-- (void)previewViewDidFinishWithPosterConfiguration:(id)a3
+- (void)previewViewDidFinishWithPosterConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CNPosterPreviewViewController *)self delegate];
-  [v5 posterPreviewViewController:self didFinishWithPosterConfiguration:v4];
+  configurationCopy = configuration;
+  delegate = [(CNPosterPreviewViewController *)self delegate];
+  [delegate posterPreviewViewController:self didFinishWithPosterConfiguration:configurationCopy];
 }
 
-- (void)previewViewDidCreateWithPosterConfiguration:(id)a3
+- (void)previewViewDidCreateWithPosterConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CNPosterPreviewViewController *)self contact];
-  v6 = [v5 posterName];
-  v7 = [_TtC10ContactsUI32CNPosterPreviewViewConfiguration configurationForExistingPosterConfiguration:v4 displayName:v6];
+  configurationCopy = configuration;
+  contact = [(CNPosterPreviewViewController *)self contact];
+  posterName = [contact posterName];
+  v7 = [_TtC10ContactsUI32CNPosterPreviewViewConfiguration configurationForExistingPosterConfiguration:configurationCopy displayName:posterName];
 
   [(CNPosterPreviewViewController *)self setConfiguration:v7];
   [(CNPosterPreviewViewController *)self setEditingState:[CNMeCardSharingSettingsEditingStateMachine stateAfterPerformingAction:1 onState:[(CNPosterPreviewViewController *)self editingState]]];
@@ -48,17 +48,17 @@
 
 - (void)skipPosterSetup
 {
-  v3 = [(CNPosterPreviewViewController *)self delegate];
-  [v3 posterPreviewViewControllerDidSelectCustomizeLater:self];
+  delegate = [(CNPosterPreviewViewController *)self delegate];
+  [delegate posterPreviewViewControllerDidSelectCustomizeLater:self];
 }
 
 - (void)updateNavigationBar
 {
-  v3 = [(CNPosterPreviewViewController *)self configuration];
-  v4 = [v3 hasExistingPoster];
+  configuration = [(CNPosterPreviewViewController *)self configuration];
+  hasExistingPoster = [configuration hasExistingPoster];
   v5 = CNContactsUIBundle();
   v6 = v5;
-  if (v4)
+  if (hasExistingPoster)
   {
     v7 = @"SNAP_POSTER_PREVIEW";
   }
@@ -71,34 +71,34 @@
   v8 = [v5 localizedStringForKey:v7 value:&stru_1F0CE7398 table:@"Localized"];
   [(CNPosterPreviewViewController *)self setTitle:v8];
 
-  v9 = [(CNPosterPreviewViewController *)self navigationItem];
-  [v9 _setBackgroundHidden:1];
+  navigationItem = [(CNPosterPreviewViewController *)self navigationItem];
+  [navigationItem _setBackgroundHidden:1];
 
   if ([(CNPosterPreviewViewController *)self editingState]== 1)
   {
     v10 = objc_alloc(MEMORY[0x1E69DC708]);
-    v14 = CNContactsUIBundle();
-    v11 = [v14 localizedStringForKey:@"SNAP_POSTER_PREVIEW_SKIP" value:&stru_1F0CE7398 table:@"Localized"];
+    navigationItem3 = CNContactsUIBundle();
+    v11 = [navigationItem3 localizedStringForKey:@"SNAP_POSTER_PREVIEW_SKIP" value:&stru_1F0CE7398 table:@"Localized"];
     v12 = [v10 initWithTitle:v11 style:0 target:self action:sel_skipPosterSetup];
-    v13 = [(CNPosterPreviewViewController *)self navigationItem];
-    [v13 setRightBarButtonItem:v12];
+    navigationItem2 = [(CNPosterPreviewViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v12];
   }
 
   else
   {
-    v14 = [(CNPosterPreviewViewController *)self navigationItem];
-    [v14 setRightBarButtonItem:0];
+    navigationItem3 = [(CNPosterPreviewViewController *)self navigationItem];
+    [navigationItem3 setRightBarButtonItem:0];
   }
 }
 
-- (id)backgroundColorFromPhotoPickerProviderItem:(id)a3
+- (id)backgroundColorFromPhotoPickerProviderItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 imageType];
-  if (v4 == 2 || v4 == 4)
+  itemCopy = item;
+  imageType = [itemCopy imageType];
+  if (imageType == 2 || imageType == 4)
   {
     objc_opt_class();
-    v10 = v3;
+    v10 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v11 = v10;
@@ -111,14 +111,14 @@
 
     v7 = v11;
 
-    v9 = [v7 backgroundColor];
+    backgroundColor = [v7 backgroundColor];
     goto LABEL_12;
   }
 
-  if (v4 == 3)
+  if (imageType == 3)
   {
     objc_opt_class();
-    v5 = v3;
+    v5 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -131,72 +131,72 @@
 
     v7 = v6;
 
-    v8 = [v7 backgroundColorVariant];
-    v9 = [v8 color];
+    backgroundColorVariant = [v7 backgroundColorVariant];
+    backgroundColor = [backgroundColorVariant color];
 
 LABEL_12:
     goto LABEL_14;
   }
 
-  v9 = 0;
+  backgroundColor = 0;
 LABEL_14:
 
-  return v9;
+  return backgroundColor;
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v39[4] = *MEMORY[0x1E69E9840];
   v38.receiver = self;
   v38.super_class = CNPosterPreviewViewController;
-  [(CNPosterPreviewViewController *)&v38 viewIsAppearing:a3];
+  [(CNPosterPreviewViewController *)&v38 viewIsAppearing:appearing];
   v4 = [_TtC10ContactsUI26CNPosterPreviewViewWrapper alloc];
-  v5 = [(CNPosterPreviewViewController *)self configuration];
-  v6 = [(CNPosterPreviewViewController *)self contact];
-  v7 = [(CNPosterPreviewViewController *)self editingState];
-  v8 = [(CNPosterPreviewViewController *)self view];
-  v9 = [v8 window];
-  v10 = [v9 windowScene];
-  v11 = [(CNPosterPreviewViewWrapper *)v4 initWithConfiguration:v5 contact:v6 editingState:v7 delegate:self windowScene:v10];
+  configuration = [(CNPosterPreviewViewController *)self configuration];
+  contact = [(CNPosterPreviewViewController *)self contact];
+  editingState = [(CNPosterPreviewViewController *)self editingState];
+  view = [(CNPosterPreviewViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  v11 = [(CNPosterPreviewViewWrapper *)v4 initWithConfiguration:configuration contact:contact editingState:editingState delegate:self windowScene:windowScene];
 
   v12 = v11;
-  v13 = [(CNPosterPreviewViewWrapper *)v11 hostingController];
-  v14 = [v13 view];
+  hostingController = [(CNPosterPreviewViewWrapper *)v11 hostingController];
+  view2 = [hostingController view];
 
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v15 = [(CNPosterPreviewViewWrapper *)v12 hostingController];
-  [v15 willMoveToParentViewController:self];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  hostingController2 = [(CNPosterPreviewViewWrapper *)v12 hostingController];
+  [hostingController2 willMoveToParentViewController:self];
 
   v37 = v12;
-  v16 = [(CNPosterPreviewViewWrapper *)v12 hostingController];
-  [(CNPosterPreviewViewController *)self addChildViewController:v16];
+  hostingController3 = [(CNPosterPreviewViewWrapper *)v12 hostingController];
+  [(CNPosterPreviewViewController *)self addChildViewController:hostingController3];
 
-  v17 = [(CNPosterPreviewViewController *)self view];
-  [v17 addSubview:v14];
+  view3 = [(CNPosterPreviewViewController *)self view];
+  [view3 addSubview:view2];
 
-  v18 = [(CNPosterPreviewViewWrapper *)v12 hostingController];
-  [v18 didMoveToParentViewController:self];
+  hostingController4 = [(CNPosterPreviewViewWrapper *)v12 hostingController];
+  [hostingController4 didMoveToParentViewController:self];
 
   v29 = MEMORY[0x1E696ACD8];
-  v35 = [v14 leadingAnchor];
-  v36 = [(CNPosterPreviewViewController *)self view];
-  v34 = [v36 leadingAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  leadingAnchor = [view2 leadingAnchor];
+  view4 = [(CNPosterPreviewViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v33 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v39[0] = v33;
-  v31 = [v14 trailingAnchor];
-  v32 = [(CNPosterPreviewViewController *)self view];
-  v30 = [v32 trailingAnchor];
-  v28 = [v31 constraintEqualToAnchor:v30];
+  trailingAnchor = [view2 trailingAnchor];
+  view5 = [(CNPosterPreviewViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v39[1] = v28;
-  v19 = [v14 topAnchor];
-  v20 = [(CNPosterPreviewViewController *)self view];
-  v21 = [v20 topAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  topAnchor = [view2 topAnchor];
+  view6 = [(CNPosterPreviewViewController *)self view];
+  topAnchor2 = [view6 topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v39[2] = v22;
-  v23 = [v14 bottomAnchor];
-  v24 = [(CNPosterPreviewViewController *)self view];
-  v25 = [v24 bottomAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  bottomAnchor = [view2 bottomAnchor];
+  view7 = [(CNPosterPreviewViewController *)self view];
+  bottomAnchor2 = [view7 bottomAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v39[3] = v26;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:4];
   [v29 activateConstraints:v27];
@@ -210,21 +210,21 @@ LABEL_14:
   [(CNPosterPreviewViewController *)self updateNavigationBar];
 }
 
-- (CNPosterPreviewViewController)initWithPosterConfiguration:(id)a3 fromProviderItem:(id)a4 contact:(id)a5 editingState:(int64_t)a6 isEditingSNaP:(BOOL)a7
+- (CNPosterPreviewViewController)initWithPosterConfiguration:(id)configuration fromProviderItem:(id)item contact:(id)contact editingState:(int64_t)state isEditingSNaP:(BOOL)p
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  pCopy = p;
+  configurationCopy = configuration;
+  itemCopy = item;
+  contactCopy = contact;
   v30.receiver = self;
   v30.super_class = CNPosterPreviewViewController;
   v15 = [(CNPosterPreviewViewController *)&v30 init];
   if (v15)
   {
-    if (v12)
+    if (configurationCopy)
     {
-      v16 = [v14 posterName];
-      v17 = [_TtC10ContactsUI32CNPosterPreviewViewConfiguration configurationForExistingPosterConfiguration:v12 displayName:v16];
+      posterName = [contactCopy posterName];
+      v17 = [_TtC10ContactsUI32CNPosterPreviewViewConfiguration configurationForExistingPosterConfiguration:configurationCopy displayName:posterName];
       configuration = v15->_configuration;
       v15->_configuration = v17;
     }
@@ -232,7 +232,7 @@ LABEL_14:
     else
     {
       objc_opt_class();
-      v19 = v13;
+      v19 = itemCopy;
       if (objc_opt_isKindOfClass())
       {
         v20 = v19;
@@ -245,30 +245,30 @@ LABEL_14:
 
       configuration = v20;
 
-      v29 = v13;
-      v28 = v7;
+      v29 = itemCopy;
+      v28 = pCopy;
       if (configuration)
       {
-        v16 = [(CNPosterPreviewViewConfiguration *)configuration monogramText];
+        posterName = [(CNPosterPreviewViewConfiguration *)configuration monogramText];
       }
 
       else
       {
-        v16 = 0;
+        posterName = 0;
       }
 
-      v21 = [v19 assetIdentifier];
+      assetIdentifier = [v19 assetIdentifier];
       v22 = [(CNPosterPreviewViewController *)v15 backgroundColorFromPhotoPickerProviderItem:v19];
-      v23 = [v14 posterName];
-      v24 = [_TtC10ContactsUI32CNPosterPreviewViewConfiguration configurationForNewPosterWithPhotoAssetID:v21 backgroundColor:v22 displayName:v23 isEditingSNaP:v28 monogramText:v16];
+      posterName2 = [contactCopy posterName];
+      v24 = [_TtC10ContactsUI32CNPosterPreviewViewConfiguration configurationForNewPosterWithPhotoAssetID:assetIdentifier backgroundColor:v22 displayName:posterName2 isEditingSNaP:v28 monogramText:posterName];
       v25 = v15->_configuration;
       v15->_configuration = v24;
 
-      v13 = v29;
+      itemCopy = v29;
     }
 
-    objc_storeStrong(&v15->_contact, a5);
-    v15->_editingState = a6;
+    objc_storeStrong(&v15->_contact, contact);
+    v15->_editingState = state;
     v26 = v15;
   }
 

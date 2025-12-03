@@ -14,8 +14,8 @@
     v19[9] = v2;
     v19[10] = v3;
     v7 = objc_alloc_init(SBPrototypeProminentPresentingActivityElementViewProvider);
-    v8 = [SBApp systemApertureControllerForMainDisplay];
-    v9 = [v8 registerElement:v7];
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+    v9 = [systemApertureControllerForMainDisplay registerElement:v7];
     elementAssertion = self->_elementAssertion;
     self->_elementAssertion = v9;
 

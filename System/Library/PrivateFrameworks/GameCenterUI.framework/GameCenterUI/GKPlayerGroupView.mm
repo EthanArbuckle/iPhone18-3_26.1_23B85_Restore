@@ -30,38 +30,38 @@
 - (NSLayoutConstraint)playerView7WidthContraint;
 - (UIView)iconContainer;
 - (void)awakeFromNib;
-- (void)configureWithPlayers:(id)a3 messagesGroupIdentifier:(id)a4 playerSelectionProxy:(id)a5;
+- (void)configureWithPlayers:(id)players messagesGroupIdentifier:(id)identifier playerSelectionProxy:(id)proxy;
 - (void)layoutSubviews;
-- (void)setIconContainer:(id)a3;
-- (void)setPlayerView1:(id)a3;
-- (void)setPlayerView1LeadingConstraint:(id)a3;
-- (void)setPlayerView1TopConstraint:(id)a3;
-- (void)setPlayerView1WidthContraint:(id)a3;
-- (void)setPlayerView2:(id)a3;
-- (void)setPlayerView2BottomConstraint:(id)a3;
-- (void)setPlayerView2TrailingConstraint:(id)a3;
-- (void)setPlayerView2WidthContraint:(id)a3;
-- (void)setPlayerView3:(id)a3;
-- (void)setPlayerView3BottomConstraint:(id)a3;
-- (void)setPlayerView3LeadingConstraint:(id)a3;
-- (void)setPlayerView3WidthContraint:(id)a3;
-- (void)setPlayerView4:(id)a3;
-- (void)setPlayerView4TopConstraint:(id)a3;
-- (void)setPlayerView4TrailingConstraint:(id)a3;
-- (void)setPlayerView4WidthContraint:(id)a3;
-- (void)setPlayerView5:(id)a3;
-- (void)setPlayerView5BottomConstraint:(id)a3;
-- (void)setPlayerView5LeadingConstraint:(id)a3;
-- (void)setPlayerView5WidthContraint:(id)a3;
-- (void)setPlayerView6:(id)a3;
-- (void)setPlayerView6LeadingConstraint:(id)a3;
-- (void)setPlayerView6TopConstraint:(id)a3;
-- (void)setPlayerView6WidthContraint:(id)a3;
-- (void)setPlayerView7:(id)a3;
-- (void)setPlayerView7BottomConstraint:(id)a3;
-- (void)setPlayerView7LeadingConstraint:(id)a3;
-- (void)setPlayerView7WidthContraint:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setIconContainer:(id)container;
+- (void)setPlayerView1:(id)view1;
+- (void)setPlayerView1LeadingConstraint:(id)constraint;
+- (void)setPlayerView1TopConstraint:(id)constraint;
+- (void)setPlayerView1WidthContraint:(id)contraint;
+- (void)setPlayerView2:(id)view2;
+- (void)setPlayerView2BottomConstraint:(id)constraint;
+- (void)setPlayerView2TrailingConstraint:(id)constraint;
+- (void)setPlayerView2WidthContraint:(id)contraint;
+- (void)setPlayerView3:(id)view3;
+- (void)setPlayerView3BottomConstraint:(id)constraint;
+- (void)setPlayerView3LeadingConstraint:(id)constraint;
+- (void)setPlayerView3WidthContraint:(id)contraint;
+- (void)setPlayerView4:(id)view4;
+- (void)setPlayerView4TopConstraint:(id)constraint;
+- (void)setPlayerView4TrailingConstraint:(id)constraint;
+- (void)setPlayerView4WidthContraint:(id)contraint;
+- (void)setPlayerView5:(id)view5;
+- (void)setPlayerView5BottomConstraint:(id)constraint;
+- (void)setPlayerView5LeadingConstraint:(id)constraint;
+- (void)setPlayerView5WidthContraint:(id)contraint;
+- (void)setPlayerView6:(id)view6;
+- (void)setPlayerView6LeadingConstraint:(id)constraint;
+- (void)setPlayerView6TopConstraint:(id)constraint;
+- (void)setPlayerView6WidthContraint:(id)contraint;
+- (void)setPlayerView7:(id)view7;
+- (void)setPlayerView7BottomConstraint:(id)constraint;
+- (void)setPlayerView7LeadingConstraint:(id)constraint;
+- (void)setPlayerView7WidthContraint:(id)contraint;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation GKPlayerGroupView
@@ -73,10 +73,10 @@
   return v2;
 }
 
-- (void)setIconContainer:(id)a3
+- (void)setIconContainer:(id)container
 {
-  v4 = a3;
-  v5 = self;
+  containerCopy = container;
+  selfCopy = self;
   sub_24E0D2800();
 }
 
@@ -87,10 +87,10 @@
   return v2;
 }
 
-- (void)setPlayerView1:(id)a3
+- (void)setPlayerView1:(id)view1
 {
-  v4 = a3;
-  v5 = self;
+  view1Copy = view1;
+  selfCopy = self;
   sub_24E0D28E0();
 }
 
@@ -101,10 +101,10 @@
   return v2;
 }
 
-- (void)setPlayerView2:(id)a3
+- (void)setPlayerView2:(id)view2
 {
-  v4 = a3;
-  v5 = self;
+  view2Copy = view2;
+  selfCopy = self;
   sub_24E0D29C0();
 }
 
@@ -115,10 +115,10 @@
   return v2;
 }
 
-- (void)setPlayerView3:(id)a3
+- (void)setPlayerView3:(id)view3
 {
-  v4 = a3;
-  v5 = self;
+  view3Copy = view3;
+  selfCopy = self;
   sub_24E0D2AA0();
 }
 
@@ -129,10 +129,10 @@
   return v2;
 }
 
-- (void)setPlayerView4:(id)a3
+- (void)setPlayerView4:(id)view4
 {
-  v4 = a3;
-  v5 = self;
+  view4Copy = view4;
+  selfCopy = self;
   sub_24E0D2B80();
 }
 
@@ -143,10 +143,10 @@
   return v2;
 }
 
-- (void)setPlayerView5:(id)a3
+- (void)setPlayerView5:(id)view5
 {
-  v4 = a3;
-  v5 = self;
+  view5Copy = view5;
+  selfCopy = self;
   sub_24E0D2C60();
 }
 
@@ -157,10 +157,10 @@
   return v2;
 }
 
-- (void)setPlayerView6:(id)a3
+- (void)setPlayerView6:(id)view6
 {
-  v4 = a3;
-  v5 = self;
+  view6Copy = view6;
+  selfCopy = self;
   sub_24E0D2D40();
 }
 
@@ -171,10 +171,10 @@
   return v2;
 }
 
-- (void)setPlayerView7:(id)a3
+- (void)setPlayerView7:(id)view7
 {
-  v4 = a3;
-  v5 = self;
+  view7Copy = view7;
+  selfCopy = self;
   sub_24E0D2E20();
 }
 
@@ -185,10 +185,10 @@
   return v2;
 }
 
-- (void)setPlayerView1WidthContraint:(id)a3
+- (void)setPlayerView1WidthContraint:(id)contraint
 {
-  v4 = a3;
-  v5 = self;
+  contraintCopy = contraint;
+  selfCopy = self;
   sub_24E0D2F00();
 }
 
@@ -199,10 +199,10 @@
   return v2;
 }
 
-- (void)setPlayerView2WidthContraint:(id)a3
+- (void)setPlayerView2WidthContraint:(id)contraint
 {
-  v4 = a3;
-  v5 = self;
+  contraintCopy = contraint;
+  selfCopy = self;
   sub_24E0D2FE0();
 }
 
@@ -213,10 +213,10 @@
   return v2;
 }
 
-- (void)setPlayerView3WidthContraint:(id)a3
+- (void)setPlayerView3WidthContraint:(id)contraint
 {
-  v4 = a3;
-  v5 = self;
+  contraintCopy = contraint;
+  selfCopy = self;
   sub_24E0D30C0();
 }
 
@@ -227,10 +227,10 @@
   return v2;
 }
 
-- (void)setPlayerView4WidthContraint:(id)a3
+- (void)setPlayerView4WidthContraint:(id)contraint
 {
-  v4 = a3;
-  v5 = self;
+  contraintCopy = contraint;
+  selfCopy = self;
   sub_24E0D31A0();
 }
 
@@ -241,10 +241,10 @@
   return v2;
 }
 
-- (void)setPlayerView5WidthContraint:(id)a3
+- (void)setPlayerView5WidthContraint:(id)contraint
 {
-  v4 = a3;
-  v5 = self;
+  contraintCopy = contraint;
+  selfCopy = self;
   sub_24E0D3280();
 }
 
@@ -255,10 +255,10 @@
   return v2;
 }
 
-- (void)setPlayerView6WidthContraint:(id)a3
+- (void)setPlayerView6WidthContraint:(id)contraint
 {
-  v4 = a3;
-  v5 = self;
+  contraintCopy = contraint;
+  selfCopy = self;
   sub_24E0D3360();
 }
 
@@ -269,10 +269,10 @@
   return v2;
 }
 
-- (void)setPlayerView7WidthContraint:(id)a3
+- (void)setPlayerView7WidthContraint:(id)contraint
 {
-  v4 = a3;
-  v5 = self;
+  contraintCopy = contraint;
+  selfCopy = self;
   sub_24E0D3440();
 }
 
@@ -283,10 +283,10 @@
   return v2;
 }
 
-- (void)setPlayerView1LeadingConstraint:(id)a3
+- (void)setPlayerView1LeadingConstraint:(id)constraint
 {
-  v4 = a3;
-  v5 = self;
+  constraintCopy = constraint;
+  selfCopy = self;
   sub_24E0D3520();
 }
 
@@ -297,10 +297,10 @@
   return v2;
 }
 
-- (void)setPlayerView1TopConstraint:(id)a3
+- (void)setPlayerView1TopConstraint:(id)constraint
 {
-  v4 = a3;
-  v5 = self;
+  constraintCopy = constraint;
+  selfCopy = self;
   sub_24E0D3600();
 }
 
@@ -311,10 +311,10 @@
   return v2;
 }
 
-- (void)setPlayerView2TrailingConstraint:(id)a3
+- (void)setPlayerView2TrailingConstraint:(id)constraint
 {
-  v4 = a3;
-  v5 = self;
+  constraintCopy = constraint;
+  selfCopy = self;
   sub_24E0D36E0();
 }
 
@@ -325,10 +325,10 @@
   return v2;
 }
 
-- (void)setPlayerView2BottomConstraint:(id)a3
+- (void)setPlayerView2BottomConstraint:(id)constraint
 {
-  v4 = a3;
-  v5 = self;
+  constraintCopy = constraint;
+  selfCopy = self;
   sub_24E0D37C0();
 }
 
@@ -339,10 +339,10 @@
   return v2;
 }
 
-- (void)setPlayerView3LeadingConstraint:(id)a3
+- (void)setPlayerView3LeadingConstraint:(id)constraint
 {
-  v4 = a3;
-  v5 = self;
+  constraintCopy = constraint;
+  selfCopy = self;
   sub_24E0D38A0();
 }
 
@@ -353,10 +353,10 @@
   return v2;
 }
 
-- (void)setPlayerView3BottomConstraint:(id)a3
+- (void)setPlayerView3BottomConstraint:(id)constraint
 {
-  v4 = a3;
-  v5 = self;
+  constraintCopy = constraint;
+  selfCopy = self;
   sub_24E0D3980();
 }
 
@@ -367,10 +367,10 @@
   return v2;
 }
 
-- (void)setPlayerView4TrailingConstraint:(id)a3
+- (void)setPlayerView4TrailingConstraint:(id)constraint
 {
-  v4 = a3;
-  v5 = self;
+  constraintCopy = constraint;
+  selfCopy = self;
   sub_24E0D3A60();
 }
 
@@ -381,10 +381,10 @@
   return v2;
 }
 
-- (void)setPlayerView4TopConstraint:(id)a3
+- (void)setPlayerView4TopConstraint:(id)constraint
 {
-  v4 = a3;
-  v5 = self;
+  constraintCopy = constraint;
+  selfCopy = self;
   sub_24E0D3B40();
 }
 
@@ -395,10 +395,10 @@
   return v2;
 }
 
-- (void)setPlayerView5LeadingConstraint:(id)a3
+- (void)setPlayerView5LeadingConstraint:(id)constraint
 {
-  v4 = a3;
-  v5 = self;
+  constraintCopy = constraint;
+  selfCopy = self;
   sub_24E0D3C20();
 }
 
@@ -409,10 +409,10 @@
   return v2;
 }
 
-- (void)setPlayerView5BottomConstraint:(id)a3
+- (void)setPlayerView5BottomConstraint:(id)constraint
 {
-  v4 = a3;
-  v5 = self;
+  constraintCopy = constraint;
+  selfCopy = self;
   sub_24E0D3D00();
 }
 
@@ -423,10 +423,10 @@
   return v2;
 }
 
-- (void)setPlayerView6LeadingConstraint:(id)a3
+- (void)setPlayerView6LeadingConstraint:(id)constraint
 {
-  v4 = a3;
-  v5 = self;
+  constraintCopy = constraint;
+  selfCopy = self;
   sub_24E0D3DE0();
 }
 
@@ -437,10 +437,10 @@
   return v2;
 }
 
-- (void)setPlayerView6TopConstraint:(id)a3
+- (void)setPlayerView6TopConstraint:(id)constraint
 {
-  v4 = a3;
-  v5 = self;
+  constraintCopy = constraint;
+  selfCopy = self;
   sub_24E0D3EC0();
 }
 
@@ -451,10 +451,10 @@
   return v2;
 }
 
-- (void)setPlayerView7LeadingConstraint:(id)a3
+- (void)setPlayerView7LeadingConstraint:(id)constraint
 {
-  v4 = a3;
-  v5 = self;
+  constraintCopy = constraint;
+  selfCopy = self;
   sub_24E0D3FA0();
 }
 
@@ -465,27 +465,27 @@
   return v2;
 }
 
-- (void)setPlayerView7BottomConstraint:(id)a3
+- (void)setPlayerView7BottomConstraint:(id)constraint
 {
-  v4 = a3;
-  v5 = self;
+  constraintCopy = constraint;
+  selfCopy = self;
   sub_24E0D4080();
 }
 
 - (void)awakeFromNib
 {
-  v2 = self;
+  selfCopy = self;
   GKPlayerGroupView.awakeFromNib()();
 }
 
-- (void)configureWithPlayers:(id)a3 messagesGroupIdentifier:(id)a4 playerSelectionProxy:(id)a5
+- (void)configureWithPlayers:(id)players messagesGroupIdentifier:(id)identifier playerSelectionProxy:(id)proxy
 {
   sub_24DF95978();
   v8 = sub_24E347F08();
-  if (a4)
+  if (identifier)
   {
     v9 = sub_24E347CF8();
-    a4 = v10;
+    identifier = v10;
   }
 
   else
@@ -494,24 +494,24 @@
   }
 
   swift_unknownObjectRetain();
-  v11 = self;
-  GKPlayerGroupView.configure(players:messagesGroupIdentifier:playerSelectionProxy:)(v8, v9, a4, a5);
+  selfCopy = self;
+  GKPlayerGroupView.configure(players:messagesGroupIdentifier:playerSelectionProxy:)(v8, v9, identifier, proxy);
   swift_unknownObjectRelease();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   GKPlayerGroupView.traitCollectionDidChange(_:)(v9);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   GKPlayerGroupView.layoutSubviews()();
 }
 

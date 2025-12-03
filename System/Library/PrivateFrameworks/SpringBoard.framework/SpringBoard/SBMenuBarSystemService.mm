@@ -1,9 +1,9 @@
 @interface SBMenuBarSystemService
 - (SBMenuBarSystemService)init;
-- (void)_queryMenuBarSupportedForClient:(id)a3 withCompletion:(id)a4;
-- (void)_toggleMenuBarVisibilityForClient:(id)a3;
-- (void)systemServiceServer:(id)a3 queryMenuBarSupportedForClient:(id)a4 withCompletion:(id)a5;
-- (void)systemServiceServer:(id)a3 toggleMenuBarVisibilityForClient:(id)a4;
+- (void)_queryMenuBarSupportedForClient:(id)client withCompletion:(id)completion;
+- (void)_toggleMenuBarVisibilityForClient:(id)client;
+- (void)systemServiceServer:(id)server queryMenuBarSupportedForClient:(id)client withCompletion:(id)completion;
+- (void)systemServiceServer:(id)server toggleMenuBarVisibilityForClient:(id)client;
 @end
 
 @implementation SBMenuBarSystemService
@@ -27,88 +27,88 @@
   return v2;
 }
 
-- (void)_queryMenuBarSupportedForClient:(id)a3 withCompletion:(id)a4
+- (void)_queryMenuBarSupportedForClient:(id)client withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  clientCopy = client;
   BSDispatchQueueAssertMain();
   menuBarVisibilityRequestAuthenticator = self->_menuBarVisibilityRequestAuthenticator;
   v13 = 0;
-  LOBYTE(self) = [(FBServiceClientAuthenticator *)menuBarVisibilityRequestAuthenticator authenticateClient:v7 error:&v13];
+  LOBYTE(self) = [(FBServiceClientAuthenticator *)menuBarVisibilityRequestAuthenticator authenticateClient:clientCopy error:&v13];
 
   v9 = v13;
   if (self)
   {
-    v10 = [SBApp windowSceneManager];
-    v11 = [v10 activeDisplayWindowScene];
-    v12 = [v11 menuBarManager];
+    windowSceneManager = [SBApp windowSceneManager];
+    activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
+    menuBarManager = [activeDisplayWindowScene menuBarManager];
 
-    v6[2](v6, [v12 isMenuBarSupported]);
+    completionCopy[2](completionCopy, [menuBarManager isMenuBarSupported]);
   }
 
   else
   {
-    v12 = SBLogMenuBar();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    menuBarManager = SBLogMenuBar();
+    if (os_log_type_enabled(menuBarManager, OS_LOG_TYPE_ERROR))
     {
       [SBMenuBarSystemService _queryMenuBarSupportedForClient:v9 withCompletion:?];
     }
   }
 }
 
-- (void)_toggleMenuBarVisibilityForClient:(id)a3
+- (void)_toggleMenuBarVisibilityForClient:(id)client
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   BSDispatchQueueAssertMain();
   menuBarVisibilityRequestAuthenticator = self->_menuBarVisibilityRequestAuthenticator;
   v14 = 0;
-  v6 = [(FBServiceClientAuthenticator *)menuBarVisibilityRequestAuthenticator authenticateClient:v4 error:&v14];
+  v6 = [(FBServiceClientAuthenticator *)menuBarVisibilityRequestAuthenticator authenticateClient:clientCopy error:&v14];
   v7 = v14;
   if (v6)
   {
-    v8 = [SBApp windowSceneManager];
-    v9 = [v8 activeDisplayWindowScene];
-    v10 = [v9 menuBarManager];
+    windowSceneManager = [SBApp windowSceneManager];
+    activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
+    menuBarManager = [activeDisplayWindowScene menuBarManager];
 
-    v11 = [v10 isMenuBarVisible]^ 1;
+    v11 = [menuBarManager isMenuBarVisible]^ 1;
     v12 = SBLogMenuBar();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v4 processHandle];
+      processHandle = [clientCopy processHandle];
       *buf = 67109378;
       v16 = v11;
       v17 = 2114;
-      v18 = v13;
+      v18 = processHandle;
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "system service setting menu bar to visible: %d for client %{public}@", buf, 0x12u);
     }
 
-    [v10 requestMenuBarVisibility:v11];
+    [menuBarManager requestMenuBarVisibility:v11];
   }
 
   else
   {
-    v10 = SBLogMenuBar();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    menuBarManager = SBLogMenuBar();
+    if (os_log_type_enabled(menuBarManager, OS_LOG_TYPE_ERROR))
     {
       [SBMenuBarSystemService _queryMenuBarSupportedForClient:v7 withCompletion:?];
     }
   }
 }
 
-- (void)systemServiceServer:(id)a3 queryMenuBarSupportedForClient:(id)a4 withCompletion:(id)a5
+- (void)systemServiceServer:(id)server queryMenuBarSupportedForClient:(id)client withCompletion:(id)completion
 {
-  v6 = a4;
-  v9 = a5;
-  v7 = v9;
-  v8 = v6;
+  clientCopy = client;
+  completionCopy = completion;
+  v7 = completionCopy;
+  v8 = clientCopy;
   BSDispatchMain();
 }
 
-- (void)systemServiceServer:(id)a3 toggleMenuBarVisibilityForClient:(id)a4
+- (void)systemServiceServer:(id)server toggleMenuBarVisibilityForClient:(id)client
 {
-  v5 = a4;
-  v4 = v5;
+  clientCopy = client;
+  v4 = clientCopy;
   BSDispatchMain();
 }
 

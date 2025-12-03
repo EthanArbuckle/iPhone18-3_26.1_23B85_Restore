@@ -1,28 +1,28 @@
 @interface PresenceSubscription
-+ (id)predicateForChannelIdentifier:(id)a3;
-+ (id)predicateForPresenceIdentifier:(id)a3;
++ (id)predicateForChannelIdentifier:(id)identifier;
++ (id)predicateForPresenceIdentifier:(id)identifier;
 @end
 
 @implementation PresenceSubscription
 
-+ (id)predicateForChannelIdentifier:(id)a3
++ (id)predicateForChannelIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[PresenceSubscription channelIdentifierKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  identifierCopy = [v3 predicateWithFormat:@"%K == %@", v5, identifierCopy];
 
-  return v6;
+  return identifierCopy;
 }
 
-+ (id)predicateForPresenceIdentifier:(id)a3
++ (id)predicateForPresenceIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[PresenceSubscription presenceIdentifierKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  identifierCopy = [v3 predicateWithFormat:@"%K == %@", v5, identifierCopy];
 
-  return v6;
+  return identifierCopy;
 }
 
 @end

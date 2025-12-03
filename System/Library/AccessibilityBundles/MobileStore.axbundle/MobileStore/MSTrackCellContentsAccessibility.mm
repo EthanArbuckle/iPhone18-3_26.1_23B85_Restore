@@ -7,13 +7,13 @@
 - (id)accessibilityLabel
 {
   v3 = [(MSTrackCellContentsAccessibility *)self safeValueForKey:@"_item"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v5 = [v3 safeValueForKey:@"artistName"];
   v6 = [v3 safeValueForKey:@"contentRating"];
   v7 = [v6 safeValueForKey:@"isExplicitContent"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = accessibilityLocalizedString(@"explicit.content");
   }

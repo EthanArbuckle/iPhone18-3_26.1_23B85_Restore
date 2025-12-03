@@ -1,21 +1,21 @@
 @interface HDCachedSecureCKRecordJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (HDCachedSecureCKRecordJournalEntry)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (HDCachedSecureCKRecordJournalEntry)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDCachedSecureCKRecordJournalEntry
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  entriesCopy = entries;
+  profileCopy = profile;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = v5;
+  v7 = entriesCopy;
   v8 = [v7 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v8)
   {
@@ -34,10 +34,10 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v12 recordID];
-          v14 = [v12 recordData];
+          recordID = [v12 recordID];
+          recordData = [v12 recordData];
           v31 = 0;
-          v15 = [HDCachedSecureCKRecordEntity insertOrUpdateWithRecordID:v13 recordData:v14 profile:v6 error:&v31];
+          v15 = [HDCachedSecureCKRecordEntity insertOrUpdateWithRecordID:recordID recordData:recordData profile:profileCopy error:&v31];
           v16 = v31;
 
           if (!v15)
@@ -63,9 +63,9 @@
             }
 
             v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", objc_opt_class()];
-            v19 = [v6 daemon];
-            v20 = [v19 autoBugCaptureReporter];
-            [v20 reportJournalFailureWithErrorDescription:v18 provenance:0 error:v16];
+            daemon = [profileCopy daemon];
+            autoBugCaptureReporter = [daemon autoBugCaptureReporter];
+            [autoBugCaptureReporter reportJournalFailureWithErrorDescription:v18 provenance:0 error:v16];
           }
         }
 
@@ -104,16 +104,16 @@ LABEL_19:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (HDCachedSecureCKRecordJournalEntry)initWithCoder:(id)a3
+- (HDCachedSecureCKRecordJournalEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HDCachedSecureCKRecordJournalEntry;
-  v5 = [(HDJournalEntry *)&v9 initWithCoder:v4];
+  v5 = [(HDJournalEntry *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_recordID = [v4 decodeInt64ForKey:@"journal_entry_record_id"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"journal_entry_record_data"];
+    v5->_recordID = [coderCopy decodeInt64ForKey:@"journal_entry_record_id"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"journal_entry_record_data"];
     recordData = v5->_recordData;
     v5->_recordData = v6;
   }
@@ -121,12 +121,12 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   recordID = self->_recordID;
-  v5 = a3;
-  [v5 encodeInt64:recordID forKey:@"journal_entry_record_id"];
-  [v5 encodeObject:self->_recordData forKey:@"journal_entry_record_data"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:recordID forKey:@"journal_entry_record_id"];
+  [coderCopy encodeObject:self->_recordData forKey:@"journal_entry_record_data"];
 }
 
 @end

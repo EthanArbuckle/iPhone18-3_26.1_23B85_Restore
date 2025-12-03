@@ -1,34 +1,34 @@
 @interface PNRODSchemaPNRODScheduleDebugSummary
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PNRODSchemaPNRODScheduleDebugSummary)initWithDictionary:(id)a3;
-- (PNRODSchemaPNRODScheduleDebugSummary)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PNRODSchemaPNRODScheduleDebugSummary)initWithDictionary:(id)dictionary;
+- (PNRODSchemaPNRODScheduleDebugSummary)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasDataSourceIndex:(BOOL)a3;
-- (void)setHasDelayFromLastBiomeBookmarkInSecond:(BOOL)a3;
-- (void)setHasEventTimestampInMsSince1970:(BOOL)a3;
-- (void)setHasFailureReasonIndex:(BOOL)a3;
-- (void)setHasNumRequestsWrite:(BOOL)a3;
-- (void)setHasProcessingTimeInSecond:(BOOL)a3;
-- (void)setHasProcessingWaitTimeInSecond:(BOOL)a3;
-- (void)setHasWorkerIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasDataSourceIndex:(BOOL)index;
+- (void)setHasDelayFromLastBiomeBookmarkInSecond:(BOOL)second;
+- (void)setHasEventTimestampInMsSince1970:(BOOL)since1970;
+- (void)setHasFailureReasonIndex:(BOOL)index;
+- (void)setHasNumRequestsWrite:(BOOL)write;
+- (void)setHasProcessingTimeInSecond:(BOOL)second;
+- (void)setHasProcessingWaitTimeInSecond:(BOOL)second;
+- (void)setHasWorkerIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PNRODSchemaPNRODScheduleDebugSummary
 
-- (PNRODSchemaPNRODScheduleDebugSummary)initWithDictionary:(id)a3
+- (PNRODSchemaPNRODScheduleDebugSummary)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = PNRODSchemaPNRODScheduleDebugSummary;
   v5 = [(PNRODSchemaPNRODScheduleDebugSummary *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"scheduleId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"scheduleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,21 +36,21 @@
       [(PNRODSchemaPNRODScheduleDebugSummary *)v5 setScheduleId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"numRequestsRead"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"numRequestsRead"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PNRODSchemaPNRODScheduleDebugSummary setNumRequestsRead:](v5, "setNumRequestsRead:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"numRequestsWrite"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"numRequestsWrite"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PNRODSchemaPNRODScheduleDebugSummary setNumRequestsWrite:](v5, "setNumRequestsWrite:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"processingWaitTimeInSecond"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"processingWaitTimeInSecond"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
     }
 
     v20 = v10;
-    v11 = [v4 objectForKeyedSubscript:@"processingTimeInSecond"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"processingTimeInSecond"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,14 +67,14 @@
       [(PNRODSchemaPNRODScheduleDebugSummary *)v5 setProcessingTimeInSecond:?];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"eventTimestampInMsSince1970"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"eventTimestampInMsSince1970"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PNRODSchemaPNRODScheduleDebugSummary setEventTimestampInMsSince1970:](v5, "setEventTimestampInMsSince1970:", [v12 unsignedLongLongValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"delayFromLastBiomeBookmarkInSecond"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"delayFromLastBiomeBookmarkInSecond"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,7 +84,7 @@
 
     v21 = v9;
     v22 = v8;
-    v14 = [v4 objectForKeyedSubscript:@"failureReasonIndex"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"failureReasonIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,14 +92,14 @@
     }
 
     v15 = v6;
-    v16 = [v4 objectForKeyedSubscript:@"dataSourceIndex"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"dataSourceIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PNRODSchemaPNRODScheduleDebugSummary setDataSourceIndex:](v5, "setDataSourceIndex:", [v16 longLongValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"workerIndex"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"workerIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -112,30 +112,30 @@
   return v5;
 }
 
-- (PNRODSchemaPNRODScheduleDebugSummary)initWithJSON:(id)a3
+- (PNRODSchemaPNRODScheduleDebugSummary)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PNRODSchemaPNRODScheduleDebugSummary *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PNRODSchemaPNRODScheduleDebugSummary *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PNRODSchemaPNRODScheduleDebugSummary *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -148,12 +148,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x80) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PNRODSchemaPNRODScheduleDebugSummary dataSourceIndex](self, "dataSourceIndex")}];
-    [v3 setObject:v9 forKeyedSubscript:@"dataSourceIndex"];
+    [dictionary setObject:v9 forKeyedSubscript:@"dataSourceIndex"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -176,7 +176,7 @@ LABEL_3:
   v10 = MEMORY[0x1E696AD98];
   [(PNRODSchemaPNRODScheduleDebugSummary *)self delayFromLastBiomeBookmarkInSecond];
   v11 = [v10 numberWithDouble:?];
-  [v3 setObject:v11 forKeyedSubscript:@"delayFromLastBiomeBookmarkInSecond"];
+  [dictionary setObject:v11 forKeyedSubscript:@"delayFromLastBiomeBookmarkInSecond"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -192,7 +192,7 @@ LABEL_4:
 
 LABEL_15:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[PNRODSchemaPNRODScheduleDebugSummary eventTimestampInMsSince1970](self, "eventTimestampInMsSince1970")}];
-  [v3 setObject:v12 forKeyedSubscript:@"eventTimestampInMsSince1970"];
+  [dictionary setObject:v12 forKeyedSubscript:@"eventTimestampInMsSince1970"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -208,7 +208,7 @@ LABEL_5:
 
 LABEL_16:
   v13 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PNRODSchemaPNRODScheduleDebugSummary failureReasonIndex](self, "failureReasonIndex")}];
-  [v3 setObject:v13 forKeyedSubscript:@"failureReasonIndex"];
+  [dictionary setObject:v13 forKeyedSubscript:@"failureReasonIndex"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -224,7 +224,7 @@ LABEL_6:
 
 LABEL_17:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODScheduleDebugSummary numRequestsRead](self, "numRequestsRead")}];
-  [v3 setObject:v14 forKeyedSubscript:@"numRequestsRead"];
+  [dictionary setObject:v14 forKeyedSubscript:@"numRequestsRead"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -240,7 +240,7 @@ LABEL_7:
 
 LABEL_18:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODScheduleDebugSummary numRequestsWrite](self, "numRequestsWrite")}];
-  [v3 setObject:v15 forKeyedSubscript:@"numRequestsWrite"];
+  [dictionary setObject:v15 forKeyedSubscript:@"numRequestsWrite"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -258,7 +258,7 @@ LABEL_19:
   v16 = MEMORY[0x1E696AD98];
   [(PNRODSchemaPNRODScheduleDebugSummary *)self processingTimeInSecond];
   v17 = [v16 numberWithDouble:?];
-  [v3 setObject:v17 forKeyedSubscript:@"processingTimeInSecond"];
+  [dictionary setObject:v17 forKeyedSubscript:@"processingTimeInSecond"];
 
   if ((*&self->_has & 4) != 0)
   {
@@ -266,35 +266,35 @@ LABEL_9:
     v5 = MEMORY[0x1E696AD98];
     [(PNRODSchemaPNRODScheduleDebugSummary *)self processingWaitTimeInSecond];
     v6 = [v5 numberWithDouble:?];
-    [v3 setObject:v6 forKeyedSubscript:@"processingWaitTimeInSecond"];
+    [dictionary setObject:v6 forKeyedSubscript:@"processingWaitTimeInSecond"];
   }
 
 LABEL_10:
   if (self->_scheduleId)
   {
-    v7 = [(PNRODSchemaPNRODScheduleDebugSummary *)self scheduleId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    scheduleId = [(PNRODSchemaPNRODScheduleDebugSummary *)self scheduleId];
+    dictionaryRepresentation = [scheduleId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"scheduleId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"scheduleId"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"scheduleId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"scheduleId"];
     }
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PNRODSchemaPNRODScheduleDebugSummary workerIndex](self, "workerIndex")}];
-    [v3 setObject:v19 forKeyedSubscript:@"workerIndex"];
+    [dictionary setObject:v19 forKeyedSubscript:@"workerIndex"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -480,30 +480,30 @@ LABEL_32:
   return v7 ^ v3 ^ v8 ^ v12 ^ v13 ^ v17 ^ v21 ^ v22 ^ v23 ^ v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_44;
   }
 
-  v5 = [(PNRODSchemaPNRODScheduleDebugSummary *)self scheduleId];
-  v6 = [v4 scheduleId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  scheduleId = [(PNRODSchemaPNRODScheduleDebugSummary *)self scheduleId];
+  scheduleId2 = [equalCopy scheduleId];
+  v7 = scheduleId2;
+  if ((scheduleId != 0) == (scheduleId2 == 0))
   {
 
     goto LABEL_44;
   }
 
-  v8 = [(PNRODSchemaPNRODScheduleDebugSummary *)self scheduleId];
-  if (v8)
+  scheduleId3 = [(PNRODSchemaPNRODScheduleDebugSummary *)self scheduleId];
+  if (scheduleId3)
   {
-    v9 = v8;
-    v10 = [(PNRODSchemaPNRODScheduleDebugSummary *)self scheduleId];
-    v11 = [v4 scheduleId];
-    v12 = [v10 isEqual:v11];
+    v9 = scheduleId3;
+    scheduleId4 = [(PNRODSchemaPNRODScheduleDebugSummary *)self scheduleId];
+    scheduleId5 = [equalCopy scheduleId];
+    v12 = [scheduleId4 isEqual:scheduleId5];
 
     if (!v12)
     {
@@ -516,7 +516,7 @@ LABEL_32:
   }
 
   has = self->_has;
-  v14 = v4[40];
+  v14 = equalCopy[40];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_44:
@@ -527,13 +527,13 @@ LABEL_44:
   if (*&has)
   {
     numRequestsRead = self->_numRequestsRead;
-    if (numRequestsRead != [v4 numRequestsRead])
+    if (numRequestsRead != [equalCopy numRequestsRead])
     {
       goto LABEL_44;
     }
 
     has = self->_has;
-    v14 = v4[40];
+    v14 = equalCopy[40];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -545,13 +545,13 @@ LABEL_44:
   if (v16)
   {
     numRequestsWrite = self->_numRequestsWrite;
-    if (numRequestsWrite != [v4 numRequestsWrite])
+    if (numRequestsWrite != [equalCopy numRequestsWrite])
     {
       goto LABEL_44;
     }
 
     has = self->_has;
-    v14 = v4[40];
+    v14 = equalCopy[40];
   }
 
   v18 = (*&has >> 2) & 1;
@@ -563,14 +563,14 @@ LABEL_44:
   if (v18)
   {
     processingWaitTimeInSecond = self->_processingWaitTimeInSecond;
-    [v4 processingWaitTimeInSecond];
+    [equalCopy processingWaitTimeInSecond];
     if (processingWaitTimeInSecond != v20)
     {
       goto LABEL_44;
     }
 
     has = self->_has;
-    v14 = v4[40];
+    v14 = equalCopy[40];
   }
 
   v21 = (*&has >> 3) & 1;
@@ -582,14 +582,14 @@ LABEL_44:
   if (v21)
   {
     processingTimeInSecond = self->_processingTimeInSecond;
-    [v4 processingTimeInSecond];
+    [equalCopy processingTimeInSecond];
     if (processingTimeInSecond != v23)
     {
       goto LABEL_44;
     }
 
     has = self->_has;
-    v14 = v4[40];
+    v14 = equalCopy[40];
   }
 
   v24 = (*&has >> 4) & 1;
@@ -601,13 +601,13 @@ LABEL_44:
   if (v24)
   {
     eventTimestampInMsSince1970 = self->_eventTimestampInMsSince1970;
-    if (eventTimestampInMsSince1970 != [v4 eventTimestampInMsSince1970])
+    if (eventTimestampInMsSince1970 != [equalCopy eventTimestampInMsSince1970])
     {
       goto LABEL_44;
     }
 
     has = self->_has;
-    v14 = v4[40];
+    v14 = equalCopy[40];
   }
 
   v26 = (*&has >> 5) & 1;
@@ -619,14 +619,14 @@ LABEL_44:
   if (v26)
   {
     delayFromLastBiomeBookmarkInSecond = self->_delayFromLastBiomeBookmarkInSecond;
-    [v4 delayFromLastBiomeBookmarkInSecond];
+    [equalCopy delayFromLastBiomeBookmarkInSecond];
     if (delayFromLastBiomeBookmarkInSecond != v28)
     {
       goto LABEL_44;
     }
 
     has = self->_has;
-    v14 = v4[40];
+    v14 = equalCopy[40];
   }
 
   v29 = (*&has >> 6) & 1;
@@ -638,13 +638,13 @@ LABEL_44:
   if (v29)
   {
     failureReasonIndex = self->_failureReasonIndex;
-    if (failureReasonIndex != [v4 failureReasonIndex])
+    if (failureReasonIndex != [equalCopy failureReasonIndex])
     {
       goto LABEL_44;
     }
 
     has = self->_has;
-    v14 = v4[40];
+    v14 = equalCopy[40];
   }
 
   v31 = (*&has >> 7) & 1;
@@ -656,10 +656,10 @@ LABEL_44:
   if (v31)
   {
     dataSourceIndex = self->_dataSourceIndex;
-    if (dataSourceIndex == [v4 dataSourceIndex])
+    if (dataSourceIndex == [equalCopy dataSourceIndex])
     {
       has = self->_has;
-      v14 = v4[40];
+      v14 = equalCopy[40];
       goto LABEL_40;
     }
 
@@ -676,7 +676,7 @@ LABEL_40:
   if (v33)
   {
     workerIndex = self->_workerIndex;
-    if (workerIndex != [v4 workerIndex])
+    if (workerIndex != [equalCopy workerIndex])
     {
       goto LABEL_44;
     }
@@ -688,14 +688,14 @@ LABEL_45:
   return v35;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(PNRODSchemaPNRODScheduleDebugSummary *)self scheduleId];
+  toCopy = to;
+  scheduleId = [(PNRODSchemaPNRODScheduleDebugSummary *)self scheduleId];
 
-  if (v4)
+  if (scheduleId)
   {
-    v5 = [(PNRODSchemaPNRODScheduleDebugSummary *)self scheduleId];
+    scheduleId2 = [(PNRODSchemaPNRODScheduleDebugSummary *)self scheduleId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -706,11 +706,11 @@ LABEL_45:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v7 = v8;
+    v7 = toCopy;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -730,7 +730,7 @@ LABEL_7:
   }
 
   PBDataWriterWriteDoubleField();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -745,7 +745,7 @@ LABEL_8:
 
 LABEL_19:
   PBDataWriterWriteDoubleField();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -760,7 +760,7 @@ LABEL_9:
 
 LABEL_20:
   PBDataWriterWriteUint64Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -775,7 +775,7 @@ LABEL_10:
 
 LABEL_21:
   PBDataWriterWriteDoubleField();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -790,7 +790,7 @@ LABEL_11:
 
 LABEL_22:
   PBDataWriterWriteInt64Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -805,20 +805,20 @@ LABEL_12:
 
 LABEL_23:
   PBDataWriterWriteInt64Field();
-  v7 = v8;
+  v7 = toCopy;
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_13:
     PBDataWriterWriteInt64Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 
 LABEL_14:
 }
 
-- (void)setHasWorkerIndex:(BOOL)a3
+- (void)setHasWorkerIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 256;
   }
@@ -831,9 +831,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasDataSourceIndex:(BOOL)a3
+- (void)setHasDataSourceIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 128;
   }
@@ -846,9 +846,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasFailureReasonIndex:(BOOL)a3
+- (void)setHasFailureReasonIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 64;
   }
@@ -861,9 +861,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasDelayFromLastBiomeBookmarkInSecond:(BOOL)a3
+- (void)setHasDelayFromLastBiomeBookmarkInSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 32;
   }
@@ -876,9 +876,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasEventTimestampInMsSince1970:(BOOL)a3
+- (void)setHasEventTimestampInMsSince1970:(BOOL)since1970
 {
-  if (a3)
+  if (since1970)
   {
     v3 = 16;
   }
@@ -891,9 +891,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasProcessingTimeInSecond:(BOOL)a3
+- (void)setHasProcessingTimeInSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 8;
   }
@@ -906,9 +906,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasProcessingWaitTimeInSecond:(BOOL)a3
+- (void)setHasProcessingWaitTimeInSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 4;
   }
@@ -921,9 +921,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasNumRequestsWrite:(BOOL)a3
+- (void)setHasNumRequestsWrite:(BOOL)write
 {
-  if (a3)
+  if (write)
   {
     v3 = 2;
   }
@@ -936,17 +936,17 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = PNRODSchemaPNRODScheduleDebugSummary;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(PNRODSchemaPNRODScheduleDebugSummary *)self scheduleId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(PNRODSchemaPNRODScheduleDebugSummary *)self deleteScheduleId];
   }

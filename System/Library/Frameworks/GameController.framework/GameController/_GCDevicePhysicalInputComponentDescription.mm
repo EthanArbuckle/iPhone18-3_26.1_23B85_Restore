@@ -1,34 +1,34 @@
 @interface _GCDevicePhysicalInputComponentDescription
-- (BOOL)update:(id)a3 withContext:(id)a4;
+- (BOOL)update:(id)update withContext:(id)context;
 - (_GCDevicePhysicalInputComponentDescription)init;
-- (_GCDevicePhysicalInputComponentDescription)initWithCoder:(id)a3;
-- (_GCDevicePhysicalInputComponentDescription)initWithIdentifier:(id)a3 elements:(id)a4 bindings:(id)a5;
-- (id)createWithContext:(id)a3;
-- (id)materializeWithContext:(id)a3;
-- (void)_applyBinding:(id)a3 toComponent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (_GCDevicePhysicalInputComponentDescription)initWithCoder:(id)coder;
+- (_GCDevicePhysicalInputComponentDescription)initWithIdentifier:(id)identifier elements:(id)elements bindings:(id)bindings;
+- (id)createWithContext:(id)context;
+- (id)materializeWithContext:(id)context;
+- (void)_applyBinding:(id)binding toComponent:(id)component;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _GCDevicePhysicalInputComponentDescription
 
-- (_GCDevicePhysicalInputComponentDescription)initWithIdentifier:(id)a3 elements:(id)a4 bindings:(id)a5
+- (_GCDevicePhysicalInputComponentDescription)initWithIdentifier:(id)identifier elements:(id)elements bindings:(id)bindings
 {
   v18.receiver = self;
   v18.super_class = _GCDevicePhysicalInputComponentDescription;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  bindingsCopy = bindings;
+  elementsCopy = elements;
+  identifierCopy = identifier;
   v10 = [(_GCDevicePhysicalInputComponentDescription *)&v18 init];
-  v11 = [v9 copyWithZone:{0, v18.receiver, v18.super_class}];
+  v11 = [identifierCopy copyWithZone:{0, v18.receiver, v18.super_class}];
 
   identifier = v10->_identifier;
   v10->_identifier = v11;
 
-  v13 = [v8 copy];
+  v13 = [elementsCopy copy];
   elementDescriptions = v10->_elementDescriptions;
   v10->_elementDescriptions = v13;
 
-  v15 = [v7 copy];
+  v15 = [bindingsCopy copy];
   bindingDescriptions = v10->_bindingDescriptions;
   v10->_bindingDescriptions = v15;
 
@@ -42,42 +42,42 @@
   return 0;
 }
 
-- (_GCDevicePhysicalInputComponentDescription)initWithCoder:(id)a3
+- (_GCDevicePhysicalInputComponentDescription)initWithCoder:(id)coder
 {
   v4 = initWithCoder__onceToken_1;
-  v5 = a3;
+  coderCopy = coder;
   if (v4 != -1)
   {
     [_GCDevicePhysicalInputComponentDescription initWithCoder:];
   }
 
   v6 = GCIPCObjectIdentifier_Classes();
-  v7 = [v5 decodeObjectOfClasses:v6 forKey:@"identifier"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"identifier"];
 
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [v5 decodeObjectOfClasses:v10 forKey:@"elements"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"elements"];
 
-  v12 = [v5 decodeObjectOfClasses:initWithCoder__BindingClasses_1 forKey:@"bindings"];
+  v12 = [coderCopy decodeObjectOfClasses:initWithCoder__BindingClasses_1 forKey:@"bindings"];
 
   v13 = [(_GCDevicePhysicalInputComponentDescription *)self initWithIdentifier:v7 elements:v11 bindings:v12];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_elementDescriptions forKey:@"elements"];
-  [v5 encodeObject:self->_bindingDescriptions forKey:@"bindings"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_elementDescriptions forKey:@"elements"];
+  [coderCopy encodeObject:self->_bindingDescriptions forKey:@"bindings"];
 }
 
-- (id)materializeWithContext:(id)a3
+- (id)materializeWithContext:(id)context
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   materializedInputProfile = self->_materializedInputProfile;
   if (materializedInputProfile)
   {
@@ -104,7 +104,7 @@ LABEL_5:
         objc_enumerationMutation(v8);
       }
 
-      v13 = [*(*(&v20 + 1) + 8 * v12) materializeWithContext:{v4, v20}];
+      v13 = [*(*(&v20 + 1) + 8 * v12) materializeWithContext:{contextCopy, v20}];
       if (!v13)
       {
         break;
@@ -129,7 +129,7 @@ LABEL_5:
   v15 = [v7 count];
   if (v15 == [(NSArray *)self->_bindingDescriptions count])
   {
-    v16 = [(_GCDevicePhysicalInputComponentDescription *)self createWithContext:v4];
+    v16 = [(_GCDevicePhysicalInputComponentDescription *)self createWithContext:contextCopy];
     v17 = self->_materializedInputProfile;
     self->_materializedInputProfile = v16;
 
@@ -152,12 +152,12 @@ LABEL_15:
   return v6;
 }
 
-- (id)createWithContext:(id)a3
+- (id)createWithContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = [GCPhysicalInputProfile alloc];
-  v5 = [(_GCDevicePhysicalInputComponentDescription *)self identifier];
-  v6 = [(GCPhysicalInputProfile *)v4 initWithIdentifier:v5];
+  identifier = [(_GCDevicePhysicalInputComponentDescription *)self identifier];
+  v6 = [(GCPhysicalInputProfile *)v4 initWithIdentifier:identifier];
 
   v19 = 0u;
   v20 = 0u;
@@ -206,14 +206,14 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)update:(id)a3 withContext:(id)a4
+- (BOOL)update:(id)update withContext:(id)context
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 identifier];
-  v10 = [(_GCDevicePhysicalInputComponentDescription *)self identifier];
-  v11 = [v9 isEqual:v10];
+  updateCopy = update;
+  contextCopy = context;
+  identifier = [updateCopy identifier];
+  identifier2 = [(_GCDevicePhysicalInputComponentDescription *)self identifier];
+  v11 = [identifier isEqual:identifier2];
 
   if ((v11 & 1) == 0)
   {
@@ -240,7 +240,7 @@ LABEL_5:
         objc_enumerationMutation(v13);
       }
 
-      v18 = [*(*(&v24 + 1) + 8 * v17) materializeWithContext:{v8, v24}];
+      v18 = [*(*(&v24 + 1) + 8 * v17) materializeWithContext:{contextCopy, v24}];
       if (!v18)
       {
         break;
@@ -266,26 +266,26 @@ LABEL_5:
   v21 = [(NSArray *)self->_bindingDescriptions count];
   if (v20 == v21)
   {
-    [(_GCDevicePhysicalInputComponentDescription *)self _applyBinding:v12 toComponent:v7];
+    [(_GCDevicePhysicalInputComponentDescription *)self _applyBinding:v12 toComponent:updateCopy];
   }
 
   v22 = *MEMORY[0x1E69E9840];
   return v20 == v21;
 }
 
-- (void)_applyBinding:(id)a3 toComponent:(id)a4
+- (void)_applyBinding:(id)binding toComponent:(id)component
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 conformsToProtocol:&unk_1F4E94BA0])
+  bindingCopy = binding;
+  componentCopy = component;
+  if ([componentCopy conformsToProtocol:&unk_1F4E94BA0])
   {
     [(GCPhysicalInputProfile *)self->_materializedInputProfile setGamepadEventSource:0];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v8 = v6;
+    v8 = bindingCopy;
     v9 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v9)
     {
@@ -314,14 +314,14 @@ LABEL_5:
     }
   }
 
-  if ([v7 conformsToProtocol:&unk_1F4EA7458])
+  if ([componentCopy conformsToProtocol:&unk_1F4EA7458])
   {
     [(GCPhysicalInputProfile *)self->_materializedInputProfile setKeyboardEventSource:0];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v14 = v6;
+    v14 = bindingCopy;
     v15 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v15)
     {

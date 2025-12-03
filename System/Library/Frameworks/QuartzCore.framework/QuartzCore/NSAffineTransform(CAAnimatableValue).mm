@@ -8,9 +8,9 @@
 - (void)CA_interpolateValue:()CAAnimatableValue byFraction:
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [a1 CA_CGAffineTransformValue];
+    [self CA_CGAffineTransformValue];
   }
 
   else
@@ -41,20 +41,20 @@
   v15 = v9;
   v16 = v10;
   v17 = v11;
-  v7 = [MEMORY[0x1E696AA98] transform];
+  transform = [MEMORY[0x1E696AA98] transform];
   v9 = v12;
   v10 = v13;
   v11 = v14;
-  [v7 setTransformStruct:&v9];
-  return v7;
+  [transform setTransformStruct:&v9];
+  return transform;
 }
 
 - (void)CA_addValue:()CAAnimatableValue multipliedBy:
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [a1 CA_CGAffineTransformValue];
+    [self CA_CGAffineTransformValue];
     v18 = *v25;
     v19 = *&v25[16];
     v20 = v26;
@@ -111,12 +111,12 @@ LABEL_6:
   v16 = vmlaq_n_f64(vmulq_n_f64(v18, *&v25[16]), v19, *&v25[24]);
   v17 = vmlaq_n_f64(vmulq_n_f64(v18, *v25), v19, *&v25[8]);
   v21 = vmlaq_n_f64(vmlaq_n_f64(v20, v18, v26.f64[0]), v19, v26.f64[1]);
-  v14 = [MEMORY[0x1E696AA98] transform];
+  transform = [MEMORY[0x1E696AA98] transform];
   v22 = v17;
   v23 = v16;
   v24 = v21;
-  [v14 setTransformStruct:&v22];
-  return v14;
+  [transform setTransformStruct:&v22];
+  return transform;
 }
 
 @end

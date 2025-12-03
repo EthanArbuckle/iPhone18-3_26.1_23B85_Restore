@@ -1,18 +1,18 @@
 @interface SKUIJSONDataConsumer
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5;
+- (id)objectForData:(id)data response:(id)response error:(id *)error;
 @end
 
 @implementation SKUIJSONDataConsumer
 
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5
+- (id)objectForData:(id)data response:(id)response error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIJSONDataConsumer objectForData:response:error:];
   }
 
-  v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v6 options:0 error:a5];
+  v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:error];
 
   return v7;
 }

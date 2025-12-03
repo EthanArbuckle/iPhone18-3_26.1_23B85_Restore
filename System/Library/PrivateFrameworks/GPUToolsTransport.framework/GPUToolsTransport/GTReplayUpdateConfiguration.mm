@@ -1,19 +1,19 @@
 @interface GTReplayUpdateConfiguration
-- (GTReplayUpdateConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTReplayUpdateConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTReplayUpdateConfiguration
 
-- (GTReplayUpdateConfiguration)initWithCoder:(id)a3
+- (GTReplayUpdateConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = GTReplayUpdateConfiguration;
-  v5 = [(GTReplayRequest *)&v10 initWithCoder:v4];
+  v5 = [(GTReplayRequest *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"configuration"];
+    v6 = [coderCopy decodeObjectForKey:@"configuration"];
     configuration = v5->_configuration;
     v5->_configuration = v6;
 
@@ -23,13 +23,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GTReplayUpdateConfiguration;
-  v4 = a3;
-  [(GTReplayRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_configuration forKey:{@"configuration", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(GTReplayRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_configuration forKey:{@"configuration", v5.receiver, v5.super_class}];
 }
 
 @end

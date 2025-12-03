@@ -1,20 +1,20 @@
 @interface EKUIPopupTableViewCell
-- (EKUIPopupTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (EKUIPopupTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_updateConstraints;
-- (void)setPopupMenuProvider:(id)a3;
-- (void)setShowSelectedImage:(BOOL)a3;
-- (void)setTitleStrikethrough:(BOOL)a3;
+- (void)setPopupMenuProvider:(id)provider;
+- (void)setShowSelectedImage:(BOOL)image;
+- (void)setTitleStrikethrough:(BOOL)strikethrough;
 @end
 
 @implementation EKUIPopupTableViewCell
 
-- (EKUIPopupTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (EKUIPopupTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  identifierCopy = identifier;
   v34.receiver = self;
   v34.super_class = EKUIPopupTableViewCell;
-  v7 = [(EKUITableViewCell *)&v34 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(EKUITableViewCell *)&v34 initWithStyle:style reuseIdentifier:identifierCopy];
   if (v7)
   {
     v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -28,19 +28,19 @@
     [(UILabel *)v7->_textLabel setAdjustsFontForContentSizeCategory:1];
     LODWORD(v11) = 1148846080;
     [(UILabel *)v7->_textLabel setContentCompressionResistancePriority:0 forAxis:v11];
-    v12 = [(EKUIPopupTableViewCell *)v7 contentView];
-    [v12 addSubview:v7->_textLabel];
+    contentView = [(EKUIPopupTableViewCell *)v7 contentView];
+    [contentView addSubview:v7->_textLabel];
 
-    v13 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-    [v13 setTitleLineBreakMode:4];
-    v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v13 setBaseForegroundColor:v14];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    [plainButtonConfiguration setTitleLineBreakMode:4];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [plainButtonConfiguration setBaseForegroundColor:secondaryLabelColor];
 
-    [v13 contentInsets];
+    [plainButtonConfiguration contentInsets];
     v16 = v15;
-    [v13 contentInsets];
-    [v13 setContentInsets:{v16, 0.0}];
-    v17 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v13 primaryAction:0];
+    [plainButtonConfiguration contentInsets];
+    [plainButtonConfiguration setContentInsets:{v16, 0.0}];
+    v17 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:0];
     popupButton = v7->_popupButton;
     v7->_popupButton = v17;
 
@@ -64,8 +64,8 @@
     LODWORD(v23) = 1144750080;
     [(UIButton *)v7->_popupButton setContentCompressionResistancePriority:0 forAxis:v23];
     [(EKUIPopupTableViewCell *)v7 _setPopupMenuButton:v7->_popupButton];
-    v24 = [(EKUIPopupTableViewCell *)v7 contentView];
-    [v24 addSubview:v7->_popupButton];
+    contentView2 = [(EKUIPopupTableViewCell *)v7 contentView];
+    [contentView2 addSubview:v7->_popupButton];
 
     [(EKUIPopupTableViewCell *)v7 _updateConstraints];
     objc_initWeak(&from, v7);
@@ -176,90 +176,90 @@ void __56__EKUIPopupTableViewCell_initWithStyle_reuseIdentifier___block_invoke_1
     [MEMORY[0x1E696ACD8] deactivateConstraints:?];
   }
 
-  v3 = [(EKUIPopupTableViewCell *)self traitCollection];
-  v4 = EKUIUsesLargeTextLayout(v3);
+  traitCollection = [(EKUIPopupTableViewCell *)self traitCollection];
+  v4 = EKUIUsesLargeTextLayout(traitCollection);
 
-  v5 = [(UILabel *)self->_textLabel leadingAnchor];
-  v39 = [(EKUIPopupTableViewCell *)self contentView];
-  v38 = [v39 layoutMarginsGuide];
-  [v38 leadingAnchor];
-  v37 = v41 = v5;
-  v6 = [v5 constraintEqualToAnchor:?];
+  leadingAnchor = [(UILabel *)self->_textLabel leadingAnchor];
+  contentView = [(EKUIPopupTableViewCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  [layoutMarginsGuide leadingAnchor];
+  v37 = v41 = leadingAnchor;
+  v6 = [leadingAnchor constraintEqualToAnchor:?];
   v7 = v6;
   if (v4)
   {
     v47[0] = v6;
-    v33 = [(UILabel *)self->_textLabel topAnchor];
-    v45 = [(EKUIPopupTableViewCell *)self contentView];
-    v44 = [v45 layoutMarginsGuide];
-    v43 = [v44 topAnchor];
-    v42 = [v33 constraintEqualToAnchor:?];
+    topAnchor = [(UILabel *)self->_textLabel topAnchor];
+    contentView2 = [(EKUIPopupTableViewCell *)self contentView];
+    layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide2 topAnchor];
+    v42 = [topAnchor constraintEqualToAnchor:?];
     v47[1] = v42;
-    v8 = [(UIButton *)self->_popupButton leadingAnchor];
-    v32 = [(EKUIPopupTableViewCell *)self contentView];
-    v31 = [v32 layoutMarginsGuide];
-    v29 = [v31 leadingAnchor];
-    v40 = v8;
-    v27 = [v8 constraintEqualToAnchor:v29];
+    leadingAnchor2 = [(UIButton *)self->_popupButton leadingAnchor];
+    contentView3 = [(EKUIPopupTableViewCell *)self contentView];
+    layoutMarginsGuide3 = [contentView3 layoutMarginsGuide];
+    leadingAnchor3 = [layoutMarginsGuide3 leadingAnchor];
+    v40 = leadingAnchor2;
+    v27 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
     v47[2] = v27;
-    v9 = [(UIButton *)self->_popupButton trailingAnchor];
-    v35 = [(EKUIPopupTableViewCell *)self contentView];
-    v34 = [v35 layoutMarginsGuide];
-    v26 = [v34 trailingAnchor];
-    v36 = v9;
-    v10 = [v9 constraintLessThanOrEqualToAnchor:v26];
-    v47[3] = v10;
-    v11 = [(UIButton *)self->_popupButton topAnchor];
-    v12 = [(UILabel *)self->_textLabel bottomAnchor];
-    v30 = [v11 constraintEqualToAnchor:v12];
+    trailingAnchor = [(UIButton *)self->_popupButton trailingAnchor];
+    contentView4 = [(EKUIPopupTableViewCell *)self contentView];
+    layoutMarginsGuide4 = [contentView4 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide4 trailingAnchor];
+    layoutMarginsGuide6 = trailingAnchor;
+    contentView7 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
+    v47[3] = contentView7;
+    topAnchor3 = [(UIButton *)self->_popupButton topAnchor];
+    bottomAnchor = [(UILabel *)self->_textLabel bottomAnchor];
+    v30 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
     v47[4] = v30;
-    v13 = [(UIButton *)self->_popupButton bottomAnchor];
-    v14 = [(EKUIPopupTableViewCell *)self contentView];
-    v15 = [v14 layoutMarginsGuide];
-    [v15 bottomAnchor];
+    bottomAnchor2 = [(UIButton *)self->_popupButton bottomAnchor];
+    contentView5 = [(EKUIPopupTableViewCell *)self contentView];
+    layoutMarginsGuide5 = [contentView5 layoutMarginsGuide];
+    [layoutMarginsGuide5 bottomAnchor];
     v16 = v28 = v7;
-    v17 = [v13 constraintEqualToAnchor:v16];
+    v17 = [bottomAnchor2 constraintEqualToAnchor:v16];
     v47[5] = v17;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:6];
     constraints = self->_constraints;
     self->_constraints = v18;
 
-    v20 = v27;
+    contentView6 = v27;
     v7 = v28;
 
-    v21 = v26;
+    centerYAnchor2 = trailingAnchor2;
   }
 
   else
   {
     v46[0] = v6;
-    v22 = [(UILabel *)self->_textLabel centerYAnchor];
-    v45 = [(EKUIPopupTableViewCell *)self contentView];
-    v44 = [v45 layoutMarginsGuide];
-    [v44 centerYAnchor];
-    v43 = v33 = v22;
-    v42 = [v22 constraintEqualToAnchor:?];
+    centerYAnchor = [(UILabel *)self->_textLabel centerYAnchor];
+    contentView2 = [(EKUIPopupTableViewCell *)self contentView];
+    layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+    [layoutMarginsGuide2 centerYAnchor];
+    topAnchor2 = topAnchor = centerYAnchor;
+    v42 = [centerYAnchor constraintEqualToAnchor:?];
     v46[1] = v42;
-    v23 = [(UIButton *)self->_popupButton leadingAnchor];
+    leadingAnchor4 = [(UIButton *)self->_popupButton leadingAnchor];
     [(UILabel *)self->_textLabel trailingAnchor];
-    v32 = v40 = v23;
-    v31 = [v23 constraintGreaterThanOrEqualToAnchor:v32 constant:8.0];
-    v46[2] = v31;
-    v24 = [(UIButton *)self->_popupButton trailingAnchor];
-    v20 = [(EKUIPopupTableViewCell *)self contentView];
-    v36 = [v20 layoutMarginsGuide];
-    [v36 trailingAnchor];
-    v35 = v29 = v24;
-    v34 = [v24 constraintEqualToAnchor:?];
-    v46[3] = v34;
-    v21 = [(UIButton *)self->_popupButton centerYAnchor];
-    v10 = [(EKUIPopupTableViewCell *)self contentView];
-    v11 = [v10 layoutMarginsGuide];
-    v12 = [v11 centerYAnchor];
-    v30 = [v21 constraintEqualToAnchor:v12];
+    contentView3 = v40 = leadingAnchor4;
+    layoutMarginsGuide3 = [leadingAnchor4 constraintGreaterThanOrEqualToAnchor:contentView3 constant:8.0];
+    v46[2] = layoutMarginsGuide3;
+    trailingAnchor3 = [(UIButton *)self->_popupButton trailingAnchor];
+    contentView6 = [(EKUIPopupTableViewCell *)self contentView];
+    layoutMarginsGuide6 = [contentView6 layoutMarginsGuide];
+    [layoutMarginsGuide6 trailingAnchor];
+    contentView4 = leadingAnchor3 = trailingAnchor3;
+    layoutMarginsGuide4 = [trailingAnchor3 constraintEqualToAnchor:?];
+    v46[3] = layoutMarginsGuide4;
+    centerYAnchor2 = [(UIButton *)self->_popupButton centerYAnchor];
+    contentView7 = [(EKUIPopupTableViewCell *)self contentView];
+    topAnchor3 = [contentView7 layoutMarginsGuide];
+    bottomAnchor = [topAnchor3 centerYAnchor];
+    v30 = [centerYAnchor2 constraintEqualToAnchor:bottomAnchor];
     v46[4] = v30;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:5];
-    v13 = self->_constraints;
+    bottomAnchor2 = self->_constraints;
     self->_constraints = v25;
   }
 
@@ -268,26 +268,26 @@ void __56__EKUIPopupTableViewCell_initWithStyle_reuseIdentifier___block_invoke_1
   [(UIButton *)self->_popupButton setNeedsUpdateConstraints];
 }
 
-- (void)setPopupMenuProvider:(id)a3
+- (void)setPopupMenuProvider:(id)provider
 {
-  v4 = [a3 copy];
+  v4 = [provider copy];
   [(UIButton *)self->_popupButton _setMenuProvider:v4];
 }
 
-- (void)setShowSelectedImage:(BOOL)a3
+- (void)setShowSelectedImage:(BOOL)image
 {
-  if (self->_showSelectedImage != a3)
+  if (self->_showSelectedImage != image)
   {
-    self->_showSelectedImage = a3;
+    self->_showSelectedImage = image;
     [(UIButton *)self->_popupButton setNeedsUpdateConfiguration];
   }
 }
 
-- (void)setTitleStrikethrough:(BOOL)a3
+- (void)setTitleStrikethrough:(BOOL)strikethrough
 {
-  if (self->_titleStrikethrough != a3)
+  if (self->_titleStrikethrough != strikethrough)
   {
-    self->_titleStrikethrough = a3;
+    self->_titleStrikethrough = strikethrough;
     [(UIButton *)self->_popupButton setNeedsUpdateConfiguration];
   }
 }

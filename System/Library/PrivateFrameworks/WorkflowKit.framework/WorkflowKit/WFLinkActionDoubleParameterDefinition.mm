@@ -1,23 +1,23 @@
 @interface WFLinkActionDoubleParameterDefinition
 - (Class)parameterClass;
-- (WFLinkActionDoubleParameterDefinition)initWithParameterMetadata:(id)a3;
-- (id)defaultSerializedRepresentationFromParameterMetadataDefaultValue:(id)a3;
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4;
-- (id)localizedTitleForLinkValue:(id)a3;
+- (WFLinkActionDoubleParameterDefinition)initWithParameterMetadata:(id)metadata;
+- (id)defaultSerializedRepresentationFromParameterMetadataDefaultValue:(id)value;
+- (id)linkValueFromParameterState:(id)state action:(id)action;
+- (id)localizedTitleForLinkValue:(id)value;
 - (id)parameterDefinitionDictionary;
-- (id)parameterStateFromLinkValue:(id)a3;
+- (id)parameterStateFromLinkValue:(id)value;
 @end
 
 @implementation WFLinkActionDoubleParameterDefinition
 
-- (id)localizedTitleForLinkValue:(id)a3
+- (id)localizedTitleForLinkValue:(id)value
 {
-  v3 = [a3 value];
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  value = [value value];
+  if (value && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v4 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     [v4 setNumberStyle:1];
-    v5 = [v4 stringFromNumber:v3];
+    v5 = [v4 stringFromNumber:value];
   }
 
   else
@@ -28,31 +28,31 @@
   return v5;
 }
 
-- (id)parameterStateFromLinkValue:(id)a3
+- (id)parameterStateFromLinkValue:(id)value
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [a3 value];
-  if (v4)
+  value = [value value];
+  if (value)
   {
-    v5 = [(WFLinkActionParameterDefinition *)self valueType];
-    v6 = [v5 objectIsMemberOfType:v4];
+    valueType = [(WFLinkActionParameterDefinition *)self valueType];
+    v6 = [valueType objectIsMemberOfType:value];
 
     if (v6)
     {
-      v7 = [[WFNumberSubstitutableState alloc] initWithNumber:v4];
+      v7 = [[WFNumberSubstitutableState alloc] initWithNumber:value];
       goto LABEL_8;
     }
 
     v8 = getWFAppIntentsLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(WFLinkActionParameterDefinition *)self valueType];
+      valueType2 = [(WFLinkActionParameterDefinition *)self valueType];
       v12 = 136315650;
       v13 = "[WFLinkActionDoubleParameterDefinition parameterStateFromLinkValue:]";
       v14 = 2114;
-      v15 = v4;
+      v15 = value;
       v16 = 2114;
-      v17 = v9;
+      v17 = valueType2;
     }
   }
 
@@ -64,11 +64,11 @@ LABEL_8:
   return v7;
 }
 
-- (id)defaultSerializedRepresentationFromParameterMetadataDefaultValue:(id)a3
+- (id)defaultSerializedRepresentationFromParameterMetadataDefaultValue:(id)value
 {
   v8.receiver = self;
   v8.super_class = WFLinkActionDoubleParameterDefinition;
-  v3 = [(WFLinkActionParameterDefinition *)&v8 defaultSerializedRepresentationFromParameterMetadataDefaultValue:a3];
+  v3 = [(WFLinkActionParameterDefinition *)&v8 defaultSerializedRepresentationFromParameterMetadataDefaultValue:value];
   if (v3)
   {
     objc_opt_class();
@@ -90,9 +90,9 @@ LABEL_8:
 
   v5 = v4;
 
-  v6 = [v5 stringValue];
+  stringValue = [v5 stringValue];
 
-  return v6;
+  return stringValue;
 }
 
 - (id)parameterDefinitionDictionary
@@ -162,14 +162,14 @@ LABEL_8:
 
   else
   {
-    v16 = [(WFLinkActionParameterDefinition *)self parameterMetadata];
-    v17 = [v16 wf_localizedTitle];
-    [v9 setValue:v17 forKey:@"StepperDescription"];
+    parameterMetadata = [(WFLinkActionParameterDefinition *)self parameterMetadata];
+    wf_localizedTitle = [parameterMetadata wf_localizedTitle];
+    [v9 setValue:wf_localizedTitle forKey:@"StepperDescription"];
 
     v18 = MEMORY[0x1E696AEC0];
-    v19 = [(WFLinkActionParameterDefinition *)self parameterMetadata];
-    v20 = [v19 wf_localizedTitle];
-    v21 = [v18 localizedStringWithFormat:@"%@: %@", v20, @"%ld"];
+    parameterMetadata2 = [(WFLinkActionParameterDefinition *)self parameterMetadata];
+    wf_localizedTitle2 = [parameterMetadata2 wf_localizedTitle];
+    v21 = [v18 localizedStringWithFormat:@"%@: %@", wf_localizedTitle2, @"%ld"];
     [v9 setValue:v21 forKey:@"StepperNoun"];
   }
 
@@ -178,27 +178,27 @@ LABEL_8:
 LABEL_17:
   v27.receiver = self;
   v27.super_class = WFLinkActionDoubleParameterDefinition;
-  v24 = [(WFLinkActionParameterDefinition *)&v27 parameterDefinitionDictionary];
-  v25 = [v24 definitionByAddingEntriesInDictionary:v9];
+  parameterDefinitionDictionary = [(WFLinkActionParameterDefinition *)&v27 parameterDefinitionDictionary];
+  v25 = [parameterDefinitionDictionary definitionByAddingEntriesInDictionary:v9];
 
   return v25;
 }
 
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4
+- (id)linkValueFromParameterState:(id)state action:(id)action
 {
-  v6 = a3;
-  if (!v6)
+  stateCopy = state;
+  if (!stateCopy)
   {
     v11.receiver = self;
     v11.super_class = WFLinkActionDoubleParameterDefinition;
-    v8 = [(WFLinkActionParameterDefinition *)&v11 linkValueFromParameterState:0 action:a4];
+    v8 = [(WFLinkActionParameterDefinition *)&v11 linkValueFromParameterState:0 action:action];
     goto LABEL_10;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 decimalNumber];
+    decimalNumber = [stateCopy decimalNumber];
   }
 
   else
@@ -209,13 +209,13 @@ LABEL_17:
       goto LABEL_9;
     }
 
-    v7 = [v6 number];
+    decimalNumber = [stateCopy number];
   }
 
-  v9 = v7;
-  if (v7)
+  v9 = decimalNumber;
+  if (decimalNumber)
   {
-    v8 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:v7];
+    v8 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:decimalNumber];
 
     goto LABEL_10;
   }
@@ -248,14 +248,14 @@ LABEL_10:
   return v6;
 }
 
-- (WFLinkActionDoubleParameterDefinition)initWithParameterMetadata:(id)a3
+- (WFLinkActionDoubleParameterDefinition)initWithParameterMetadata:(id)metadata
 {
   v4 = MEMORY[0x1E69AC938];
-  v5 = a3;
-  v6 = [v4 doubleValueType];
+  metadataCopy = metadata;
+  doubleValueType = [v4 doubleValueType];
   v9.receiver = self;
   v9.super_class = WFLinkActionDoubleParameterDefinition;
-  v7 = [(WFLinkActionParameterDefinition *)&v9 initWithValueType:v6 parameterMetadata:v5];
+  v7 = [(WFLinkActionParameterDefinition *)&v9 initWithValueType:doubleValueType parameterMetadata:metadataCopy];
 
   return v7;
 }

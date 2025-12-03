@@ -1,7 +1,7 @@
 @interface MTL4RenderPipelineColorAttachmentDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4RenderPipelineColorAttachmentDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)reset;
 @end
@@ -17,9 +17,9 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 8) = *&self->_pixelFormat;
   *(result + 3) = self->_sourceRGBBlendFactor;
   *(result + 6) = self->_sourceAlphaBlendFactor;
@@ -29,15 +29,15 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  return Class == object_getClass(a3) && *(a3 + 1) == self->_pixelFormat && *(a3 + 2) == self->_blendingState && *(a3 + 3) == self->_sourceRGBBlendFactor && *(a3 + 4) == self->_destinationRGBBlendFactor && *(a3 + 5) == self->_rgbBlendOperation && *(a3 + 6) == self->_sourceAlphaBlendFactor && *(a3 + 7) == self->_destinationAlphaBlendFactor && *(a3 + 8) == self->_alphaBlendOperation && *(a3 + 9) == self->_writeMask;
+  return Class == object_getClass(equal) && *(equal + 1) == self->_pixelFormat && *(equal + 2) == self->_blendingState && *(equal + 3) == self->_sourceRGBBlendFactor && *(equal + 4) == self->_destinationRGBBlendFactor && *(equal + 5) == self->_rgbBlendOperation && *(equal + 6) == self->_sourceAlphaBlendFactor && *(equal + 7) == self->_destinationAlphaBlendFactor && *(equal + 8) == self->_alphaBlendOperation && *(equal + 9) == self->_writeMask;
 }
 
 - (unint64_t)hash

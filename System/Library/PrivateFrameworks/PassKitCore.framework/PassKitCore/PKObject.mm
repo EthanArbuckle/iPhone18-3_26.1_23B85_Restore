@@ -1,50 +1,50 @@
 @interface PKObject
-+ (id)_createWithFileDataAccessor:(id)a3 validationOptions:(unint64_t)a4 warnings:(id *)a5 error:(id *)a6;
-+ (id)createWithData:(id)a3 warnings:(id *)a4 error:(id *)a5;
-+ (id)createWithFileURL:(id)a3 warnings:(id *)a4 error:(id *)a5;
++ (id)_createWithFileDataAccessor:(id)accessor validationOptions:(unint64_t)options warnings:(id *)warnings error:(id *)error;
++ (id)createWithData:(id)data warnings:(id *)warnings error:(id *)error;
++ (id)createWithFileURL:(id)l warnings:(id *)warnings error:(id *)error;
 - (BOOL)isContentLoaded;
-- (BOOL)isImageSetLoaded:(int64_t)a3;
-- (BOOL)isImageSetType:(int64_t)a3 equalToImageSetTypeFromObject:(id)a4;
-- (BOOL)remoteAssetsDownloadedForConfiguration:(id)a3;
-- (BOOL)remoteAssetsDownloadedForSEIDs:(id)a3;
+- (BOOL)isImageSetLoaded:(int64_t)loaded;
+- (BOOL)isImageSetType:(int64_t)type equalToImageSetTypeFromObject:(id)object;
+- (BOOL)remoteAssetsDownloadedForConfiguration:(id)configuration;
+- (BOOL)remoteAssetsDownloadedForSEIDs:(id)ds;
 - (PKDisplayTraitCollection)preferredDisplayTraits;
-- (PKObject)initWithCoder:(id)a3;
-- (PKObject)initWithData:(id)a3 error:(id *)a4;
-- (PKObject)initWithDictionary:(id)a3 bundle:(id)a4;
-- (PKObject)initWithFileURL:(id)a3 error:(id *)a4;
+- (PKObject)initWithCoder:(id)coder;
+- (PKObject)initWithData:(id)data error:(id *)error;
+- (PKObject)initWithDictionary:(id)dictionary bundle:(id)bundle;
+- (PKObject)initWithFileURL:(id)l error:(id *)error;
 - (id)archiveData;
 - (id)content;
 - (id)contentLoadedIfNeeded;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dataForBundleResourceNamed:(id)a3 withExtension:(id)a4;
-- (id)dataForBundleResources:(id)a3;
-- (id)imageSetLoadedIfNeeded:(int64_t)a3;
-- (id)localizedString:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dataForBundleResourceNamed:(id)named withExtension:(id)extension;
+- (id)dataForBundleResources:(id)resources;
+- (id)imageSetLoadedIfNeeded:(int64_t)needed;
+- (id)localizedString:(id)string;
 - (id)modificationDate;
-- (id)passLocalizedStringForKey:(id)a3;
+- (id)passLocalizedStringForKey:(id)key;
 - (id)serializedFileWrapper;
 - (void)_lock_flushLoadedImageSets;
 - (void)dealloc;
-- (void)downloadRemoteAssetsForSEIDS:(id)a3 completion:(id)a4;
-- (void)downloadRemoteAssetsWithCloudStoreCoordinatorDelegate:(id)a3 seids:(id)a4 completion:(id)a5;
-- (void)downloadRemoteAssetsWithConfiguration:(id)a3 completion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)downloadRemoteAssetsForSEIDS:(id)s completion:(id)completion;
+- (void)downloadRemoteAssetsWithCloudStoreCoordinatorDelegate:(id)delegate seids:(id)seids completion:(id)completion;
+- (void)downloadRemoteAssetsWithConfiguration:(id)configuration completion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
 - (void)flushFormattedFieldValues;
 - (void)flushLoadedImageSets;
-- (void)loadCachedImageSet:(int64_t)a3;
-- (void)loadContentAsyncWithCompletion:(id)a3;
+- (void)loadCachedImageSet:(int64_t)set;
+- (void)loadContentAsyncWithCompletion:(id)completion;
 - (void)loadContentSync;
-- (void)loadImageSetAsync:(int64_t)a3 preheat:(BOOL)a4 withCompletion:(id)a5;
-- (void)loadImageSetSync:(int64_t)a3 preheat:(BOOL)a4;
+- (void)loadImageSetAsync:(int64_t)async preheat:(BOOL)preheat withCompletion:(id)completion;
+- (void)loadImageSetSync:(int64_t)sync preheat:(BOOL)preheat;
 - (void)noteShared;
-- (void)reloadDisplayProfileOfType:(int64_t)a3;
-- (void)requestUpdateWithCompletion:(id)a3;
-- (void)revocationStatusWithCompletion:(id)a3;
-- (void)setContent:(id)a3;
-- (void)setImageSet:(id)a3 forImageSetType:(int64_t)a4;
-- (void)setMissingImageSetsFromObject:(id)a3;
-- (void)setPreferredDisplayTraits:(id)a3;
-- (void)setSettings:(unint64_t)a3;
+- (void)reloadDisplayProfileOfType:(int64_t)type;
+- (void)requestUpdateWithCompletion:(id)completion;
+- (void)revocationStatusWithCompletion:(id)completion;
+- (void)setContent:(id)content;
+- (void)setImageSet:(id)set forImageSetType:(int64_t)type;
+- (void)setMissingImageSetsFromObject:(id)object;
+- (void)setPreferredDisplayTraits:(id)traits;
+- (void)setSettings:(unint64_t)settings;
 @end
 
 @implementation PKObject
@@ -82,9 +82,9 @@
 {
   if (![(PKObject *)self isContentLoaded])
   {
-    v4 = [(PKObject *)self dataAccessor];
-    v3 = [v4 content];
-    [(PKObject *)self setContent:v3];
+    dataAccessor = [(PKObject *)self dataAccessor];
+    content = [dataAccessor content];
+    [(PKObject *)self setContent:content];
   }
 }
 
@@ -96,9 +96,9 @@
   return v3;
 }
 
-- (PKObject)initWithData:(id)a3 error:(id *)a4
+- (PKObject)initWithData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = [objc_msgSend(objc_opt_class() "resolvingClass")];
 
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -110,9 +110,9 @@
   return v7;
 }
 
-- (PKObject)initWithFileURL:(id)a3 error:(id *)a4
+- (PKObject)initWithFileURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = [objc_msgSend(objc_opt_class() "resolvingClass")];
 
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -124,21 +124,21 @@
   return v7;
 }
 
-+ (id)createWithData:(id)a3 warnings:(id *)a4 error:(id *)a5
++ (id)createWithData:(id)data warnings:(id *)warnings error:(id *)error
 {
-  v8 = a3;
+  dataCopy = data;
   v15 = 0;
-  v9 = [[PKSerializedDataAccessor alloc] initWithData:v8 error:&v15];
+  v9 = [[PKSerializedDataAccessor alloc] initWithData:dataCopy error:&v15];
 
   v10 = v15;
   v11 = v10;
   if (v10)
   {
-    if (a5)
+    if (error)
     {
       v12 = v10;
       v13 = 0;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
@@ -149,27 +149,27 @@
 
   else
   {
-    v13 = [a1 createWithFileDataAccessor:v9 warnings:a4 error:a5];
+    v13 = [self createWithFileDataAccessor:v9 warnings:warnings error:error];
   }
 
   return v13;
 }
 
-+ (id)createWithFileURL:(id)a3 warnings:(id *)a4 error:(id *)a5
++ (id)createWithFileURL:(id)l warnings:(id *)warnings error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   v15 = 0;
-  v9 = [[PKFileDataAccessor alloc] initWithFileURL:v8 error:&v15];
+  v9 = [[PKFileDataAccessor alloc] initWithFileURL:lCopy error:&v15];
 
   v10 = v15;
   v11 = v10;
   if (v10)
   {
-    if (a5)
+    if (error)
     {
       v12 = v10;
       v13 = 0;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
@@ -180,26 +180,26 @@
 
   else
   {
-    v13 = [a1 createWithFileDataAccessor:v9 warnings:a4 error:a5];
+    v13 = [self createWithFileDataAccessor:v9 warnings:warnings error:error];
   }
 
   return v13;
 }
 
-+ (id)_createWithFileDataAccessor:(id)a3 validationOptions:(unint64_t)a4 warnings:(id *)a5 error:(id *)a6
++ (id)_createWithFileDataAccessor:(id)accessor validationOptions:(unint64_t)options warnings:(id *)warnings error:(id *)error
 {
   v72 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  if (v18)
+  accessorCopy = accessor;
+  if (accessorCopy)
   {
-    v19 = [a1 resolvingClass];
-    if (v19 != a1)
+    resolvingClass = [self resolvingClass];
+    if (resolvingClass != self)
     {
-      v20 = v19;
+      v20 = resolvingClass;
       v21 = PKLogFacilityTypeGetObject(0);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = NSStringFromClass(a1);
+        v22 = NSStringFromClass(self);
         v23 = NSStringFromClass(v20);
         *buf = 138412546;
         v69 = v22;
@@ -208,24 +208,24 @@
         _os_log_impl(&dword_1AD337000, v21, OS_LOG_TYPE_DEFAULT, "PKObject: unable to use subclass %@ to create an automatically typed object instead of root resolving class %@.", buf, 0x16u);
       }
 
-      if (a6)
+      if (error)
       {
-        v24 = NSStringFromClass(a1);
+        v24 = NSStringFromClass(self);
         v61 = NSStringFromClass(v20);
-        *a6 = PKValidationErrorWithReason(@"forbidden to use subclass %@ to create an automatically typed object instead of root resolving class %@.", v25, v26, v27, v28, v29, v30, v31, v24);
+        *error = PKValidationErrorWithReason(@"forbidden to use subclass %@ to create an automatically typed object instead of root resolving class %@.", v25, v26, v27, v28, v29, v30, v31, v24);
       }
 
       goto LABEL_9;
     }
 
     v33 = objc_autoreleasePoolPush();
-    v34 = [v18 dictionary];
-    v35 = [v18 bundle];
-    v43 = v35;
-    if (v34 && v35)
+    dictionary = [accessorCopy dictionary];
+    bundle = [accessorCopy bundle];
+    v43 = bundle;
+    if (dictionary && bundle)
     {
-      v44 = [a1 classForDictionary:v34 bundle:v35];
-      if (a5)
+      v44 = [self classForDictionary:dictionary bundle:bundle];
+      if (warnings)
       {
         v45 = &v67;
       }
@@ -235,12 +235,12 @@
         v45 = 0;
       }
 
-      if (a5)
+      if (warnings)
       {
         v67 = 0;
       }
 
-      if (a6)
+      if (error)
       {
         v46 = &v66;
       }
@@ -250,15 +250,15 @@
         v46 = 0;
       }
 
-      if (a6)
+      if (error)
       {
         v66 = 0;
       }
 
       v65 = 0;
       v62 = v44;
-      v47 = [v44 isValidObjectWithFileDataAccessor:v18 validationOptions:a4 warnings:v45 error:v46 signingDate:&v65 passDictionary:v34];
-      if (a5)
+      v47 = [v44 isValidObjectWithFileDataAccessor:accessorCopy validationOptions:options warnings:v45 error:v46 signingDate:&v65 passDictionary:dictionary];
+      if (warnings)
       {
         v48 = v67;
       }
@@ -269,7 +269,7 @@
       }
 
       v64 = v33;
-      if (a6)
+      if (error)
       {
         v49 = v66;
       }
@@ -283,17 +283,17 @@
       v63 = v65;
       if (v47)
       {
-        v53 = [v62 dataTypeIdentifier];
-        [v18 setExplicitDataTypeIdentifier:v53];
+        dataTypeIdentifier = [v62 dataTypeIdentifier];
+        [accessorCopy setExplicitDataTypeIdentifier:dataTypeIdentifier];
 
-        v54 = [[v62 alloc] initWithDictionary:v34 bundle:v43];
+        v54 = [[v62 alloc] initWithDictionary:dictionary bundle:v43];
         v51 = v54;
         if (v54)
         {
-          objc_storeStrong((v54 + 128), a3);
-          v55 = [v18 manifestHash];
+          objc_storeStrong((v54 + 128), accessor);
+          manifestHash = [accessorCopy manifestHash];
           v56 = *(v51 + 120);
-          *(v51 + 120) = v55;
+          *(v51 + 120) = manifestHash;
 
           objc_storeStrong((v51 + 160), v52);
         }
@@ -317,16 +317,16 @@
     }
 
     objc_autoreleasePoolPop(v33);
-    if (a5 && v48)
+    if (warnings && v48)
     {
       v57 = v48;
-      *a5 = v48;
+      *warnings = v48;
     }
 
-    if (a6 && v49)
+    if (error && v49)
     {
       v58 = v49;
-      *a6 = v49;
+      *error = v49;
     }
 
     v32 = v51;
@@ -334,7 +334,7 @@
 
   else
   {
-    if (!a6)
+    if (!error)
     {
 LABEL_9:
       v32 = 0;
@@ -342,7 +342,7 @@ LABEL_9:
     }
 
     PKValidationErrorWithReason(0, v11, v12, v13, v14, v15, v16, v17, v60);
-    *a6 = v32 = 0;
+    *error = v32 = 0;
   }
 
 LABEL_41:
@@ -350,11 +350,11 @@ LABEL_41:
   return v32;
 }
 
-- (PKObject)initWithDictionary:(id)a3 bundle:(id)a4
+- (PKObject)initWithDictionary:(id)dictionary bundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = PKObject;
-  v4 = [(PKObject *)&v6 init:a3];
+  v4 = [(PKObject *)&v6 init:dictionary];
   if (v4)
   {
     v4->_settings = [objc_opt_class() defaultSettings];
@@ -364,19 +364,19 @@ LABEL_41:
   return v4;
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   os_unfair_lock_lock(&self->_lock);
   content = self->_content;
-  self->_content = v4;
+  self->_content = contentCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)loadContentAsyncWithCompletion:(id)a3
+- (void)loadContentAsyncWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(PKObject *)self isContentLoaded])
   {
     v5 = dispatch_get_global_queue(0, 0);
@@ -384,7 +384,7 @@ LABEL_41:
     v11[1] = 3221225472;
     v11[2] = __43__PKObject_loadContentAsyncWithCompletion___block_invoke_4;
     v11[3] = &unk_1E79C4428;
-    v12 = v4;
+    v12 = completionCopy;
     v6 = v11;
     block = MEMORY[0x1E69E9820];
     v19 = 3221225472;
@@ -398,17 +398,17 @@ LABEL_41:
 
   else
   {
-    v8 = [(PKObject *)self dataAccessor];
-    if (v8)
+    dataAccessor = [(PKObject *)self dataAccessor];
+    if (dataAccessor)
     {
-      v7 = v8;
+      v7 = dataAccessor;
       objc_initWeak(&block, self);
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __43__PKObject_loadContentAsyncWithCompletion___block_invoke;
       v15[3] = &unk_1E79DA2C0;
       objc_copyWeak(&v17, &block);
-      v16 = v4;
+      v16 = completionCopy;
       [v7 contentWithCompletion:v15];
 
       objc_destroyWeak(&v17);
@@ -422,7 +422,7 @@ LABEL_41:
       v13[1] = 3221225472;
       v13[2] = __43__PKObject_loadContentAsyncWithCompletion___block_invoke_3;
       v13[3] = &unk_1E79C4428;
-      v14 = v4;
+      v14 = completionCopy;
       v10 = v13;
       block = MEMORY[0x1E69E9820];
       v19 = 3221225472;
@@ -459,103 +459,103 @@ void __43__PKObject_loadContentAsyncWithCompletion___block_invoke(uint64_t a1, v
 
 - (void)flushFormattedFieldValues
 {
-  v2 = [(PKObject *)self content];
-  [v2 flushFormattedFieldValues];
+  content = [(PKObject *)self content];
+  [content flushFormattedFieldValues];
 }
 
 - (PKDisplayTraitCollection)preferredDisplayTraits
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = self->_preferredDisplayTraits;
-  if (!v3)
+  initWithDefaultTraits = self->_preferredDisplayTraits;
+  if (!initWithDefaultTraits)
   {
-    v3 = [[PKDisplayTraitCollection alloc] initWithDefaultTraits];
+    initWithDefaultTraits = [[PKDisplayTraitCollection alloc] initWithDefaultTraits];
     preferredDisplayTraits = self->_preferredDisplayTraits;
-    self->_preferredDisplayTraits = v3;
+    self->_preferredDisplayTraits = initWithDefaultTraits;
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return initWithDefaultTraits;
 }
 
-- (void)setPreferredDisplayTraits:(id)a3
+- (void)setPreferredDisplayTraits:(id)traits
 {
-  v4 = a3;
+  traitsCopy = traits;
   os_unfair_lock_lock(&self->_lock);
   preferredDisplayTraits = self->_preferredDisplayTraits;
-  self->_preferredDisplayTraits = v4;
+  self->_preferredDisplayTraits = traitsCopy;
 
   [(PKObject *)self _lock_flushLoadedImageSets];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)isImageSetLoaded:(int64_t)a3
+- (BOOL)isImageSetLoaded:(int64_t)loaded
 {
   os_unfair_lock_lock(&self->_lock);
-  LOBYTE(a3) = self->_imageSets[a3] != 0;
+  LOBYTE(loaded) = self->_imageSets[loaded] != 0;
   os_unfair_lock_unlock(&self->_lock);
-  return a3;
+  return loaded;
 }
 
-- (void)setImageSet:(id)a3 forImageSetType:(int64_t)a4
+- (void)setImageSet:(id)set forImageSetType:(int64_t)type
 {
-  v6 = a3;
+  setCopy = set;
   os_unfair_lock_lock(&self->_lock);
-  v7 = &self->super.isa + a4;
+  v7 = &self->super.isa + type;
   v8 = v7[3];
-  v7[3] = v6;
+  v7[3] = setCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)loadCachedImageSet:(int64_t)a3
+- (void)loadCachedImageSet:(int64_t)set
 {
   if (![(PKObject *)self isImageSetLoaded:?])
   {
     dataAccessor = self->_dataAccessor;
     displayProfile = self->_displayProfile;
-    v7 = [(PKObject *)self preferredDisplayTraits];
-    v9 = [(PKDataAccessor *)dataAccessor cachedImageSetForType:a3 withDisplayProfile:displayProfile displayTraits:v7];
+    preferredDisplayTraits = [(PKObject *)self preferredDisplayTraits];
+    v9 = [(PKDataAccessor *)dataAccessor cachedImageSetForType:set withDisplayProfile:displayProfile displayTraits:preferredDisplayTraits];
 
     v8 = v9;
     if (v9)
     {
-      [(PKObject *)self setImageSet:v9 forImageSetType:a3];
+      [(PKObject *)self setImageSet:v9 forImageSetType:set];
       v8 = v9;
     }
   }
 }
 
-- (void)loadImageSetSync:(int64_t)a3 preheat:(BOOL)a4
+- (void)loadImageSetSync:(int64_t)sync preheat:(BOOL)preheat
 {
-  v4 = a4;
+  preheatCopy = preheat;
   if (![(PKObject *)self isImageSetLoaded:?])
   {
-    v7 = [(PKObject *)self dataAccessor];
+    dataAccessor = [(PKObject *)self dataAccessor];
     [(PKObject *)self preferredImageScale];
     v9 = v8;
-    v10 = [(PKObject *)self preferredImageSuffix];
-    v11 = [(PKObject *)self displayProfile];
-    v12 = [v7 imageSetForType:a3 screenScale:v10 suffix:v11 displayProfile:v4 preheat:v9];
+    preferredImageSuffix = [(PKObject *)self preferredImageSuffix];
+    displayProfile = [(PKObject *)self displayProfile];
+    v12 = [dataAccessor imageSetForType:sync screenScale:preferredImageSuffix suffix:displayProfile displayProfile:preheatCopy preheat:v9];
 
-    [(PKObject *)self setImageSet:v12 forImageSetType:a3];
+    [(PKObject *)self setImageSet:v12 forImageSetType:sync];
   }
 }
 
-- (void)loadImageSetAsync:(int64_t)a3 preheat:(BOOL)a4 withCompletion:(id)a5
+- (void)loadImageSetAsync:(int64_t)async preheat:(BOOL)preheat withCompletion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  if ([(PKObject *)self isImageSetLoaded:a3])
+  preheatCopy = preheat;
+  completionCopy = completion;
+  if ([(PKObject *)self isImageSetLoaded:async])
   {
     v9 = dispatch_get_global_queue(0, 0);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __53__PKObject_loadImageSetAsync_preheat_withCompletion___block_invoke_2;
     v17[3] = &unk_1E79C4428;
-    v18 = v8;
+    v18 = completionCopy;
     v10 = v17;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -569,23 +569,23 @@ void __43__PKObject_loadContentAsyncWithCompletion___block_invoke(uint64_t a1, v
 
   else
   {
-    v12 = [(PKObject *)self dataAccessor];
-    if (v12)
+    dataAccessor = [(PKObject *)self dataAccessor];
+    if (dataAccessor)
     {
-      v11 = v12;
+      v11 = dataAccessor;
       objc_initWeak(block, self);
       [(PKObject *)self preferredImageScale];
       v14 = v13;
-      v15 = [(PKObject *)self preferredImageSuffix];
-      v16 = [(PKObject *)self displayProfile];
+      preferredImageSuffix = [(PKObject *)self preferredImageSuffix];
+      displayProfile = [(PKObject *)self displayProfile];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __53__PKObject_loadImageSetAsync_preheat_withCompletion___block_invoke;
       v19[3] = &unk_1E79DA2E8;
       objc_copyWeak(v21, block);
-      v21[1] = a3;
-      v20 = v8;
-      [v11 imageSetForType:a3 screenScale:v15 suffix:v16 displayProfile:v5 preheat:v19 withCompletion:v14];
+      v21[1] = async;
+      v20 = completionCopy;
+      [v11 imageSetForType:async screenScale:preferredImageSuffix suffix:displayProfile displayProfile:preheatCopy preheat:v19 withCompletion:v14];
 
       objc_destroyWeak(v21);
       objc_destroyWeak(block);
@@ -593,9 +593,9 @@ void __43__PKObject_loadContentAsyncWithCompletion___block_invoke(uint64_t a1, v
 
     else
     {
-      if (v8)
+      if (completionCopy)
       {
-        v8[2](v8);
+        completionCopy[2](completionCopy);
       }
 
       v11 = 0;
@@ -648,124 +648,124 @@ uint64_t __53__PKObject_loadImageSetAsync_preheat_withCompletion___block_invoke_
   }
 }
 
-- (void)revocationStatusWithCompletion:(id)a3
+- (void)revocationStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKObject *)self dataAccessor];
-  [v5 revocationStatusWithCompletion:v4];
+  completionCopy = completion;
+  dataAccessor = [(PKObject *)self dataAccessor];
+  [dataAccessor revocationStatusWithCompletion:completionCopy];
 }
 
-- (void)requestUpdateWithCompletion:(id)a3
+- (void)requestUpdateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKObject *)self dataAccessor];
-  [v5 requestUpdateWithCompletion:v4];
+  completionCopy = completion;
+  dataAccessor = [(PKObject *)self dataAccessor];
+  [dataAccessor requestUpdateWithCompletion:completionCopy];
 }
 
 - (void)noteShared
 {
   [(PKObject *)self setShareCount:[(PKObject *)self shareCount]+ 1];
-  v3 = [(PKObject *)self dataAccessor];
-  [v3 noteShared];
+  dataAccessor = [(PKObject *)self dataAccessor];
+  [dataAccessor noteShared];
 }
 
-- (BOOL)remoteAssetsDownloadedForSEIDs:(id)a3
+- (BOOL)remoteAssetsDownloadedForSEIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(PKObject *)self dataAccessor];
-  v6 = [v5 remoteAssetsDownloadedForSEIDs:v4];
+  dsCopy = ds;
+  dataAccessor = [(PKObject *)self dataAccessor];
+  v6 = [dataAccessor remoteAssetsDownloadedForSEIDs:dsCopy];
 
   return v6;
 }
 
-- (BOOL)remoteAssetsDownloadedForConfiguration:(id)a3
+- (BOOL)remoteAssetsDownloadedForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(PKObject *)self dataAccessor];
-  v6 = [v5 remoteAssetsDownloadedForConfiguration:v4];
+  configurationCopy = configuration;
+  dataAccessor = [(PKObject *)self dataAccessor];
+  v6 = [dataAccessor remoteAssetsDownloadedForConfiguration:configurationCopy];
 
   return v6;
 }
 
-- (void)downloadRemoteAssetsForSEIDS:(id)a3 completion:(id)a4
+- (void)downloadRemoteAssetsForSEIDS:(id)s completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  sCopy = s;
   v8 = objc_alloc_init(PKDownloadRemoteAssetConfiguration);
-  [(PKDownloadRemoteAssetConfiguration *)v8 setSeids:v7];
+  [(PKDownloadRemoteAssetConfiguration *)v8 setSeids:sCopy];
 
-  [(PKObject *)self downloadRemoteAssetsWithConfiguration:v8 completion:v6];
+  [(PKObject *)self downloadRemoteAssetsWithConfiguration:v8 completion:completionCopy];
 }
 
-- (void)downloadRemoteAssetsWithCloudStoreCoordinatorDelegate:(id)a3 seids:(id)a4 completion:(id)a5
+- (void)downloadRemoteAssetsWithCloudStoreCoordinatorDelegate:(id)delegate seids:(id)seids completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  seidsCopy = seids;
+  delegateCopy = delegate;
   v11 = objc_alloc_init(PKDownloadRemoteAssetConfiguration);
-  [(PKDownloadRemoteAssetConfiguration *)v11 setCloudStoreCoordinatorDelegate:v10];
+  [(PKDownloadRemoteAssetConfiguration *)v11 setCloudStoreCoordinatorDelegate:delegateCopy];
 
-  [(PKDownloadRemoteAssetConfiguration *)v11 setSeids:v9];
-  [(PKObject *)self downloadRemoteAssetsWithConfiguration:v11 completion:v8];
+  [(PKDownloadRemoteAssetConfiguration *)v11 setSeids:seidsCopy];
+  [(PKObject *)self downloadRemoteAssetsWithConfiguration:v11 completion:completionCopy];
 }
 
-- (void)downloadRemoteAssetsWithConfiguration:(id)a3 completion:(id)a4
+- (void)downloadRemoteAssetsWithConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKObject *)self dataAccessor];
-  [v8 downloadRemoteAssetsWithConfiguration:v7 completion:v6];
+  completionCopy = completion;
+  configurationCopy = configuration;
+  dataAccessor = [(PKObject *)self dataAccessor];
+  [dataAccessor downloadRemoteAssetsWithConfiguration:configurationCopy completion:completionCopy];
 }
 
-- (id)localizedString:(id)a3
+- (id)localizedString:(id)string
 {
-  v4 = a3;
-  v5 = [(PKObject *)self dataAccessor];
-  v6 = [v5 bundle];
+  stringCopy = string;
+  dataAccessor = [(PKObject *)self dataAccessor];
+  bundle = [dataAccessor bundle];
 
-  v7 = PKLocalizedPassStringForPassBundle(v4, v6, 0);
+  v7 = PKLocalizedPassStringForPassBundle(stringCopy, bundle, 0);
 
   return v7;
 }
 
 - (id)archiveData
 {
-  v2 = [(PKObject *)self dataAccessor];
-  v3 = [v2 archiveData];
+  dataAccessor = [(PKObject *)self dataAccessor];
+  archiveData = [dataAccessor archiveData];
 
-  return v3;
+  return archiveData;
 }
 
 - (id)serializedFileWrapper
 {
-  v2 = [(PKObject *)self dataAccessor];
-  v3 = [v2 serializedFileWrapper];
+  dataAccessor = [(PKObject *)self dataAccessor];
+  serializedFileWrapper = [dataAccessor serializedFileWrapper];
 
-  return v3;
+  return serializedFileWrapper;
 }
 
 - (id)modificationDate
 {
-  v2 = [(PKObject *)self dataAccessor];
-  v3 = [v2 resourceValueForKey:*MEMORY[0x1E695DA98]];
+  dataAccessor = [(PKObject *)self dataAccessor];
+  v3 = [dataAccessor resourceValueForKey:*MEMORY[0x1E695DA98]];
 
   return v3;
 }
 
-- (void)setSettings:(unint64_t)a3
+- (void)setSettings:(unint64_t)settings
 {
-  if (self->_settings != a3)
+  if (self->_settings != settings)
   {
-    self->_settings = a3;
-    v5 = [(PKObject *)self dataAccessor];
-    [v5 updateSettings:a3];
+    self->_settings = settings;
+    dataAccessor = [(PKObject *)self dataAccessor];
+    [dataAccessor updateSettings:settings];
   }
 }
 
-- (void)reloadDisplayProfileOfType:(int64_t)a3
+- (void)reloadDisplayProfileOfType:(int64_t)type
 {
-  v5 = [(PKObject *)self dataAccessor];
-  v7 = [v5 displayProfileOfType:a3];
+  dataAccessor = [(PKObject *)self dataAccessor];
+  v7 = [dataAccessor displayProfileOfType:type];
 
   v6 = v7;
   if (v7)
@@ -775,80 +775,80 @@ uint64_t __53__PKObject_loadImageSetAsync_preheat_withCompletion___block_invoke_
   }
 }
 
-- (id)dataForBundleResourceNamed:(id)a3 withExtension:(id)a4
+- (id)dataForBundleResourceNamed:(id)named withExtension:(id)extension
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKObject *)self dataAccessor];
-  v9 = [v8 dataForBundleResourceNamed:v7 withExtension:v6];
+  extensionCopy = extension;
+  namedCopy = named;
+  dataAccessor = [(PKObject *)self dataAccessor];
+  v9 = [dataAccessor dataForBundleResourceNamed:namedCopy withExtension:extensionCopy];
 
   return v9;
 }
 
-- (id)dataForBundleResources:(id)a3
+- (id)dataForBundleResources:(id)resources
 {
-  v4 = a3;
-  v5 = [(PKObject *)self dataAccessor];
-  v6 = [v5 dataForBundleResources:v4];
+  resourcesCopy = resources;
+  dataAccessor = [(PKObject *)self dataAccessor];
+  v6 = [dataAccessor dataForBundleResources:resourcesCopy];
 
   return v6;
 }
 
-- (id)passLocalizedStringForKey:(id)a3
+- (id)passLocalizedStringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKObject *)self dataAccessor];
-  v6 = [v5 passLocalizedStringForKey:v4];
+  keyCopy = key;
+  dataAccessor = [(PKObject *)self dataAccessor];
+  v6 = [dataAccessor passLocalizedStringForKey:keyCopy];
 
   return v6;
 }
 
-- (id)imageSetLoadedIfNeeded:(int64_t)a3
+- (id)imageSetLoadedIfNeeded:(int64_t)needed
 {
-  [(PKObject *)self loadImageSetSync:a3 preheat:0];
-  v5 = self->_imageSets[a3];
+  [(PKObject *)self loadImageSetSync:needed preheat:0];
+  v5 = self->_imageSets[needed];
 
   return v5;
 }
 
-- (BOOL)isImageSetType:(int64_t)a3 equalToImageSetTypeFromObject:(id)a4
+- (BOOL)isImageSetType:(int64_t)type equalToImageSetTypeFromObject:(id)object
 {
-  v6 = a4;
-  v7 = [(PKObject *)self imageSetLoadedIfNeeded:a3];
-  v8 = [v6 imageSetLoadedIfNeeded:a3];
+  objectCopy = object;
+  v7 = [(PKObject *)self imageSetLoadedIfNeeded:type];
+  v8 = [objectCopy imageSetLoadedIfNeeded:type];
 
-  LOBYTE(v6) = [v7 isEqual:v8];
-  return v6;
+  LOBYTE(objectCopy) = [v7 isEqual:v8];
+  return objectCopy;
 }
 
-- (void)setMissingImageSetsFromObject:(id)a3
+- (void)setMissingImageSetsFromObject:(id)object
 {
-  v4 = a3;
-  if (v4 && self != v4)
+  objectCopy = object;
+  if (objectCopy && self != objectCopy)
   {
-    if (self >= v4)
+    if (self >= objectCopy)
     {
-      v5 = v4;
+      selfCopy = objectCopy;
     }
 
     else
     {
-      v5 = self;
+      selfCopy = self;
     }
 
-    v9 = v4;
-    if (self >= v4)
+    v9 = objectCopy;
+    if (self >= objectCopy)
     {
-      v6 = self;
+      selfCopy2 = self;
     }
 
     else
     {
-      v6 = v4;
+      selfCopy2 = objectCopy;
     }
 
-    os_unfair_lock_lock(&v5->_lock);
-    os_unfair_lock_lock(&v6->_lock);
+    os_unfair_lock_lock(&selfCopy->_lock);
+    os_unfair_lock_lock(&selfCopy2->_lock);
     imageSets = self->_imageSets;
     for (i = 3; i != 12; ++i)
     {
@@ -860,48 +860,48 @@ uint64_t __53__PKObject_loadImageSetAsync_preheat_withCompletion___block_invoke_
       ++imageSets;
     }
 
-    os_unfair_lock_unlock(&v6->_lock);
-    os_unfair_lock_unlock(&v5->_lock);
-    v4 = v9;
+    os_unfair_lock_unlock(&selfCopy2->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
+    objectCopy = v9;
   }
 }
 
-- (PKObject)initWithCoder:(id)a3
+- (PKObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v38.receiver = self;
   v38.super_class = PKObject;
   v5 = [(PKObject *)&v38 init];
   if (v5)
   {
     v37 = objc_autoreleasePoolPush();
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
     [(PKObject *)v5 setUniqueID:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manifestHash"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manifestHash"];
     [(PKObject *)v5 setManifestHash:v7];
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"content"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"content"];
     [(PKObject *)v5 setContent:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"webServiceURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"webServiceURL"];
     [(PKObject *)v5 setWebServiceURL:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authenticationToken"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authenticationToken"];
     [(PKObject *)v5 setAuthenticationToken:v13];
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"displayProfile"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"displayProfile"];
     [(PKObject *)v5 setDisplayProfile:v17];
 
-    -[PKObject setShareCount:](v5, "setShareCount:", [v4 decodeIntegerForKey:@"shareCount"]);
-    -[PKObject setSettingsWithoutUpdatingDataAccessor:](v5, "setSettingsWithoutUpdatingDataAccessor:", [v4 decodeIntegerForKey:@"settings"]);
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signingDate"];
+    -[PKObject setShareCount:](v5, "setShareCount:", [coderCopy decodeIntegerForKey:@"shareCount"]);
+    -[PKObject setSettingsWithoutUpdatingDataAccessor:](v5, "setSettingsWithoutUpdatingDataAccessor:", [coderCopy decodeIntegerForKey:@"settings"]);
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signingDate"];
     [(PKObject *)v5 setSigningDate:v18];
 
     v36 = MEMORY[0x1E695DFD8];
@@ -921,7 +921,7 @@ uint64_t __53__PKObject_loadImageSetAsync_preheat_withCompletion___block_invoke_
     do
     {
       v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"images_%ld", v27];
-      v30 = [v4 decodeObjectOfClasses:v26 forKey:v29];
+      v30 = [coderCopy decodeObjectOfClasses:v26 forKey:v29];
       v31 = imageSets[v27];
       imageSets[v27] = v30;
 
@@ -937,71 +937,71 @@ uint64_t __53__PKObject_loadImageSetAsync_preheat_withCompletion___block_invoke_
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(PKObject *)self uniqueID];
-  [v15 encodeObject:v5 forKey:@"uniqueID"];
+  uniqueID = [(PKObject *)self uniqueID];
+  [coderCopy encodeObject:uniqueID forKey:@"uniqueID"];
 
-  v6 = [(PKObject *)self manifestHash];
-  [v15 encodeObject:v6 forKey:@"manifestHash"];
+  manifestHash = [(PKObject *)self manifestHash];
+  [coderCopy encodeObject:manifestHash forKey:@"manifestHash"];
 
-  v7 = [(PKObject *)self content];
-  [v15 encodeObject:v7 forKey:@"content"];
+  content = [(PKObject *)self content];
+  [coderCopy encodeObject:content forKey:@"content"];
 
-  v8 = [(PKObject *)self webServiceURL];
-  [v15 encodeObject:v8 forKey:@"webServiceURL"];
+  webServiceURL = [(PKObject *)self webServiceURL];
+  [coderCopy encodeObject:webServiceURL forKey:@"webServiceURL"];
 
-  v9 = [(PKObject *)self authenticationToken];
-  [v15 encodeObject:v9 forKey:@"authenticationToken"];
+  authenticationToken = [(PKObject *)self authenticationToken];
+  [coderCopy encodeObject:authenticationToken forKey:@"authenticationToken"];
 
-  v10 = [(PKObject *)self displayProfile];
-  [v15 encodeObject:v10 forKey:@"displayProfile"];
+  displayProfile = [(PKObject *)self displayProfile];
+  [coderCopy encodeObject:displayProfile forKey:@"displayProfile"];
 
-  [v15 encodeInteger:-[PKObject settings](self forKey:{"settings"), @"settings"}];
-  [v15 encodeInteger:-[PKObject shareCount](self forKey:{"shareCount"), @"shareCount"}];
-  v11 = [(PKObject *)self signingDate];
-  [v15 encodeObject:v11 forKey:@"signingDate"];
+  [coderCopy encodeInteger:-[PKObject settings](self forKey:{"settings"), @"settings"}];
+  [coderCopy encodeInteger:-[PKObject shareCount](self forKey:{"shareCount"), @"shareCount"}];
+  signingDate = [(PKObject *)self signingDate];
+  [coderCopy encodeObject:signingDate forKey:@"signingDate"];
 
   for (i = 0; i != 9; ++i)
   {
     v13 = self->_imageSets[i];
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"images_%ld", i];
-    [v15 encodeObject:v13 forKey:v14];
+    [coderCopy encodeObject:v13 forKey:v14];
   }
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uniqueID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uniqueID copyWithZone:zone];
   v7 = *(v5 + 112);
   *(v5 + 112) = v6;
 
-  v8 = [(NSData *)self->_manifestHash copyWithZone:a3];
+  v8 = [(NSData *)self->_manifestHash copyWithZone:zone];
   v9 = *(v5 + 120);
   *(v5 + 120) = v8;
 
-  v10 = [(PKObject *)self content];
+  content = [(PKObject *)self content];
   v11 = *(v5 + 16);
-  *(v5 + 16) = v10;
+  *(v5 + 16) = content;
 
-  v12 = [(NSURL *)self->_webServiceURL copyWithZone:a3];
+  v12 = [(NSURL *)self->_webServiceURL copyWithZone:zone];
   v13 = *(v5 + 144);
   *(v5 + 144) = v12;
 
-  v14 = [(NSString *)self->_authenticationToken copyWithZone:a3];
+  v14 = [(NSString *)self->_authenticationToken copyWithZone:zone];
   v15 = *(v5 + 152);
   *(v5 + 152) = v14;
 
-  v16 = [(PKDisplayProfile *)self->_displayProfile copyWithZone:a3];
+  v16 = [(PKDisplayProfile *)self->_displayProfile copyWithZone:zone];
   v17 = *(v5 + 136);
   *(v5 + 136) = v16;
 
-  v18 = [(NSString *)self->_preferredImageSuffix copyWithZone:a3];
+  v18 = [(NSString *)self->_preferredImageSuffix copyWithZone:zone];
   v19 = *(v5 + 192);
   *(v5 + 192) = v18;
 

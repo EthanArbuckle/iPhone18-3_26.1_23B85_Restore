@@ -1,15 +1,15 @@
 @interface OKWidgetContentColorCubeFilter
-+ (id)filterWithMinHueAngle:(id)a3 inputMaxHueAngle:(id)a4 inputReplaceColor:(id)a5;
++ (id)filterWithMinHueAngle:(id)angle inputMaxHueAngle:(id)hueAngle inputReplaceColor:(id)color;
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (id)inputKeys;
 - (id)outputImage;
-- (void)createCubeWithMinHueAngle:(double)a3 maxHueAngle:(double)a4;
+- (void)createCubeWithMinHueAngle:(double)angle maxHueAngle:(double)hueAngle;
 - (void)dealloc;
-- (void)rgbToHSV:(float *)a3 hsv:(float *)a4;
-- (void)setSettingInputMaxHueAngle:(id)a3;
-- (void)setSettingInputMinHueAngle:(id)a3;
-- (void)setSettingInputReplaceColor:(id)a3;
+- (void)rgbToHSV:(float *)v hsv:(float *)hsv;
+- (void)setSettingInputMaxHueAngle:(id)angle;
+- (void)setSettingInputMinHueAngle:(id)angle;
+- (void)setSettingInputReplaceColor:(id)color;
 @end
 
 @implementation OKWidgetContentColorCubeFilter
@@ -52,7 +52,7 @@
 + (id)supportedSettings
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKWidgetContentColorCubeFilter;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v11[0] = @"inputMinHueAngle";
@@ -71,7 +71,7 @@
   return v2;
 }
 
-- (void)setSettingInputReplaceColor:(id)a3
+- (void)setSettingInputReplaceColor:(id)color
 {
   inputReplaceColor = self->_inputReplaceColor;
   if (inputReplaceColor)
@@ -80,10 +80,10 @@
     self->_inputReplaceColor = 0;
   }
 
-  self->_inputReplaceColor = a3;
+  self->_inputReplaceColor = color;
 }
 
-- (void)setSettingInputMinHueAngle:(id)a3
+- (void)setSettingInputMinHueAngle:(id)angle
 {
   inputMinHueAngle = self->_inputMinHueAngle;
   if (inputMinHueAngle)
@@ -92,10 +92,10 @@
     self->_inputMinHueAngle = 0;
   }
 
-  self->_inputMinHueAngle = a3;
+  self->_inputMinHueAngle = angle;
 }
 
-- (void)setSettingInputMaxHueAngle:(id)a3
+- (void)setSettingInputMaxHueAngle:(id)angle
 {
   inputMaxHueAngle = self->_inputMaxHueAngle;
   if (inputMaxHueAngle)
@@ -104,7 +104,7 @@
     self->_inputMaxHueAngle = 0;
   }
 
-  self->_inputMaxHueAngle = a3;
+  self->_inputMaxHueAngle = angle;
 }
 
 - (id)inputKeys
@@ -134,25 +134,25 @@
   return [v7 valueForKey:v8];
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetContentColorCubeFilter"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetContentColorCubeFilter"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
-+ (id)filterWithMinHueAngle:(id)a3 inputMaxHueAngle:(id)a4 inputReplaceColor:(id)a5
++ (id)filterWithMinHueAngle:(id)angle inputMaxHueAngle:(id)hueAngle inputReplaceColor:(id)color
 {
   v8 = objc_alloc_init(OKWidgetContentColorCubeFilter);
-  [(OKWidgetContentColorCubeFilter *)v8 setInputMinHueAngle:a3];
-  [(OKWidgetContentColorCubeFilter *)v8 setInputMaxHueAngle:a4];
-  [(OKWidgetContentColorCubeFilter *)v8 setInputReplaceColor:a5];
+  [(OKWidgetContentColorCubeFilter *)v8 setInputMinHueAngle:angle];
+  [(OKWidgetContentColorCubeFilter *)v8 setInputMaxHueAngle:hueAngle];
+  [(OKWidgetContentColorCubeFilter *)v8 setInputReplaceColor:color];
 
   return v8;
 }
 
-- (void)createCubeWithMinHueAngle:(double)a3 maxHueAngle:(double)a4
+- (void)createCubeWithMinHueAngle:(double)angle maxHueAngle:(double)hueAngle
 {
   v29 = *MEMORY[0x277D85DE8];
   v7 = malloc_type_malloc(0x400000uLL, 0x100004052888210uLL);
@@ -177,15 +177,15 @@
         v26 = v17;
         [(OKWidgetContentColorCubeFilter *)self rgbToHSV:&v26 hsv:v25];
         v18 = v25[0];
-        if (v25[0] > a3 && v18 < a4)
+        if (v25[0] > angle && v18 < hueAngle)
         {
-          v21 = [(UIColor *)self->_inputReplaceColor CGColor];
-          if (CGColorGetNumberOfComponents(v21) != 4)
+          cGColor = [(UIColor *)self->_inputReplaceColor CGColor];
+          if (CGColorGetNumberOfComponents(cGColor) != 4)
           {
             goto LABEL_12;
           }
 
-          Components = CGColorGetComponents(v21);
+          Components = CGColorGetComponents(cGColor);
           *v10 = vcvt_f32_f64(*Components);
           v23 = Components[1].f64[1];
           v24 = Components[1].f64[0];
@@ -222,35 +222,35 @@ LABEL_12:
   self->_cubeData = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v7 length:0x400000 freeWhenDone:1];
 }
 
-- (void)rgbToHSV:(float *)a3 hsv:(float *)a4
+- (void)rgbToHSV:(float *)v hsv:(float *)hsv
 {
-  v4 = *a3;
-  v5 = a3[1];
-  v6 = a3[2];
-  v7 = fmaxf(fmaxf(*a3, v5), v6);
-  a4[2] = v7;
+  v4 = *v;
+  v5 = v[1];
+  v6 = v[2];
+  v7 = fmaxf(fmaxf(*v, v5), v6);
+  hsv[2] = v7;
   if (v7 == 0.0)
   {
-    a4[1] = 0.0;
+    hsv[1] = 0.0;
     v12 = -1.0;
   }
 
   else
   {
     v8 = v7 - fminf(fminf(v4, v5), v6);
-    a4[1] = v8 / v7;
-    v9 = *a3;
-    v10 = a3[1];
-    if (*a3 == v7)
+    hsv[1] = v8 / v7;
+    v9 = *v;
+    v10 = v[1];
+    if (*v == v7)
     {
-      v11 = (v10 - a3[2]) / v8;
+      v11 = (v10 - v[2]) / v8;
     }
 
     else
     {
       if (v10 == v7)
       {
-        v13 = (a3[2] - v9) / v8;
+        v13 = (v[2] - v9) / v8;
         v14 = 2.0;
       }
 
@@ -270,7 +270,7 @@ LABEL_12:
     }
   }
 
-  *a4 = v12;
+  *hsv = v12;
 }
 
 @end

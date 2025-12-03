@@ -2,7 +2,7 @@
 + (Class)layerClass;
 - (NSString)accessibilityAssetName;
 - (NSString)description;
-- (_TtC11FMFindingUI14FMAVPlayerView)initWithFrame:(CGRect)a3;
+- (_TtC11FMFindingUI14FMAVPlayerView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 @end
 
@@ -18,16 +18,16 @@
 - (void)dealloc
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC11FMFindingUI14FMAVPlayerView_assetManager);
-  v3 = self;
+  selfCopy = self;
   [v2 invalidate];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for FMAVPlayerView();
   [(FMAVPlayerView *)&v4 dealloc];
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A59F3F4();
 
   v3 = sub_24A62EBE4();
@@ -35,7 +35,7 @@
   return v3;
 }
 
-- (_TtC11FMFindingUI14FMAVPlayerView)initWithFrame:(CGRect)a3
+- (_TtC11FMFindingUI14FMAVPlayerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

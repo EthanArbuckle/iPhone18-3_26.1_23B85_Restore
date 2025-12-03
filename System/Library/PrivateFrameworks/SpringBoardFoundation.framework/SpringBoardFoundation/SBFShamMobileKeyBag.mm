@@ -1,58 +1,58 @@
 @interface SBFShamMobileKeyBag
-+ (id)shamKeyBagWithRecoveryRequired:(BOOL)a3 correctPasscode:(id)a4;
-+ (id)shamKeyBagWithRecoveryRequired:(BOOL)a3 recoveryPossible:(BOOL)a4 timeScaleFactor:(float)a5 correctPasscode:(id)a6;
-- (BOOL)beginRecovery:(id)a3 error:(id *)a4;
-- (SBFShamMobileKeyBag)initWithRecoveryRequired:(BOOL)a3 recoveryPossible:(BOOL)a4 timeScaleFactor:(float)a5 correctPasscode:(id)a6;
++ (id)shamKeyBagWithRecoveryRequired:(BOOL)required correctPasscode:(id)passcode;
++ (id)shamKeyBagWithRecoveryRequired:(BOOL)required recoveryPossible:(BOOL)possible timeScaleFactor:(float)factor correctPasscode:(id)passcode;
+- (BOOL)beginRecovery:(id)recovery error:(id *)error;
+- (SBFShamMobileKeyBag)initWithRecoveryRequired:(BOOL)required recoveryPossible:(BOOL)possible timeScaleFactor:(float)factor correctPasscode:(id)passcode;
 - (id)extendedState;
 - (id)state;
-- (int64_t)_simplifiedLockStateForLockState:(int64_t)a3;
-- (void)_queue_initializeSecretChangeMachine:(id)a3;
+- (int64_t)_simplifiedLockStateForLockState:(int64_t)state;
+- (void)_queue_initializeSecretChangeMachine:(id)machine;
 - (void)_queue_stepSecretChangeMachine;
-- (void)createStashBag:(id)a3 skipSEKeepUserDataOperation:(BOOL)a4 completion:(id)a5 completionQueue:(id)a6;
+- (void)createStashBag:(id)bag skipSEKeepUserDataOperation:(BOOL)operation completion:(id)completion completionQueue:(id)queue;
 - (void)lock;
-- (void)waitForUnlockWithTimeout:(float)a3;
+- (void)waitForUnlockWithTimeout:(float)timeout;
 @end
 
 @implementation SBFShamMobileKeyBag
 
-+ (id)shamKeyBagWithRecoveryRequired:(BOOL)a3 correctPasscode:(id)a4
++ (id)shamKeyBagWithRecoveryRequired:(BOOL)required correctPasscode:(id)passcode
 {
-  v4 = a3;
-  v5 = a4;
-  v6 = [[SBFShamMobileKeyBag alloc] initWithRecoveryRequired:v4 correctPasscode:v5];
+  requiredCopy = required;
+  passcodeCopy = passcode;
+  v6 = [[SBFShamMobileKeyBag alloc] initWithRecoveryRequired:requiredCopy correctPasscode:passcodeCopy];
 
   return v6;
 }
 
-+ (id)shamKeyBagWithRecoveryRequired:(BOOL)a3 recoveryPossible:(BOOL)a4 timeScaleFactor:(float)a5 correctPasscode:(id)a6
++ (id)shamKeyBagWithRecoveryRequired:(BOOL)required recoveryPossible:(BOOL)possible timeScaleFactor:(float)factor correctPasscode:(id)passcode
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = a6;
+  possibleCopy = possible;
+  requiredCopy = required;
+  passcodeCopy = passcode;
   v10 = [SBFShamMobileKeyBag alloc];
-  *&v11 = a5;
-  v12 = [(SBFShamMobileKeyBag *)v10 initWithRecoveryRequired:v8 recoveryPossible:v7 timeScaleFactor:v9 correctPasscode:v11];
+  *&v11 = factor;
+  v12 = [(SBFShamMobileKeyBag *)v10 initWithRecoveryRequired:requiredCopy recoveryPossible:possibleCopy timeScaleFactor:passcodeCopy correctPasscode:v11];
 
   return v12;
 }
 
-- (SBFShamMobileKeyBag)initWithRecoveryRequired:(BOOL)a3 recoveryPossible:(BOOL)a4 timeScaleFactor:(float)a5 correctPasscode:(id)a6
+- (SBFShamMobileKeyBag)initWithRecoveryRequired:(BOOL)required recoveryPossible:(BOOL)possible timeScaleFactor:(float)factor correctPasscode:(id)passcode
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = a6;
+  possibleCopy = possible;
+  requiredCopy = required;
+  passcodeCopy = passcode;
   v20.receiver = self;
   v20.super_class = SBFShamMobileKeyBag;
   v11 = [(SBFShamMobileKeyBag *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    v11->_timeScaleFactor = a5;
+    v11->_timeScaleFactor = factor;
     v13 = dispatch_queue_create("com.apple.springboardfoundation.shamkeybag", 0);
     queue = v12->_queue;
     v12->_queue = v13;
 
-    v15 = [v10 copy];
+    v15 = [passcodeCopy copy];
     queue_correctPasscode = v12->_queue_correctPasscode;
     v12->_queue_correctPasscode = v15;
 
@@ -66,8 +66,8 @@
     [(SBFMutableMobileKeyBagState *)v12->_queue_state setPermanentlyBlocked:0];
     [(SBFMutableMobileKeyBagState *)v12->_queue_state setShouldWipe:0];
     [(SBFMutableMobileKeyBagState *)v12->_queue_state setRecoveryEnabled:1];
-    [(SBFMutableMobileKeyBagState *)v12->_queue_state setRecoveryRequired:v8];
-    [(SBFMutableMobileKeyBagState *)v12->_queue_state setRecoveryPossible:v7];
+    [(SBFMutableMobileKeyBagState *)v12->_queue_state setRecoveryRequired:requiredCopy];
+    [(SBFMutableMobileKeyBagState *)v12->_queue_state setRecoveryPossible:possibleCopy];
     [(SBFMutableMobileKeyBagState *)v12->_queue_state setEscrowCount:0];
   }
 
@@ -85,23 +85,23 @@
   dispatch_async(queue, block);
 }
 
-- (void)createStashBag:(id)a3 skipSEKeepUserDataOperation:(BOOL)a4 completion:(id)a5 completionQueue:(id)a6
+- (void)createStashBag:(id)bag skipSEKeepUserDataOperation:(BOOL)operation completion:(id)completion completionQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  bagCopy = bag;
+  completionCopy = completion;
+  queueCopy = queue;
   queue = self->_queue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __93__SBFShamMobileKeyBag_createStashBag_skipSEKeepUserDataOperation_completion_completionQueue___block_invoke;
   v16[3] = &unk_1E80808C0;
   v16[4] = self;
-  v17 = v11;
-  v18 = v9;
-  v19 = v10;
-  v13 = v9;
-  v14 = v11;
-  v15 = v10;
+  v17 = queueCopy;
+  v18 = bagCopy;
+  v19 = completionCopy;
+  v13 = bagCopy;
+  v14 = queueCopy;
+  v15 = completionCopy;
   dispatch_async(queue, v16);
 }
 
@@ -147,30 +147,30 @@ void __93__SBFShamMobileKeyBag_createStashBag_skipSEKeepUserDataOperation_comple
   }
 }
 
-- (BOOL)beginRecovery:(id)a3 error:(id *)a4
+- (BOOL)beginRecovery:(id)recovery error:(id *)error
 {
-  v5 = a3;
+  recoveryCopy = recovery;
   queue = self->_queue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __43__SBFShamMobileKeyBag_beginRecovery_error___block_invoke;
   v9[3] = &unk_1E807F290;
   v9[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = recoveryCopy;
+  v7 = recoveryCopy;
   dispatch_async(queue, v9);
 
   return 1;
 }
 
-- (void)waitForUnlockWithTimeout:(float)a3
+- (void)waitForUnlockWithTimeout:(float)timeout
 {
-  v5 = [(SBFShamMobileKeyBag *)self state];
-  v6 = [v5 lockState];
+  state = [(SBFShamMobileKeyBag *)self state];
+  lockState = [state lockState];
 
-  if (v6)
+  if (lockState)
   {
-    v7 = ((a3 * 1000000.0) / self->_timeScaleFactor);
+    v7 = ((timeout * 1000000.0) / self->_timeScaleFactor);
 
     usleep(v7);
   }
@@ -178,8 +178,8 @@ void __93__SBFShamMobileKeyBag_createStashBag_skipSEKeepUserDataOperation_comple
 
 - (id)state
 {
-  v3 = [(SBFShamMobileKeyBag *)self extendedState];
-  v4 = [v3 mutableCopy];
+  extendedState = [(SBFShamMobileKeyBag *)self extendedState];
+  v4 = [extendedState mutableCopy];
 
   [v4 setLockState:{-[SBFShamMobileKeyBag _simplifiedLockStateForLockState:](self, "_simplifiedLockStateForLockState:", objc_msgSend(v4, "lockState"))}];
   v5 = [v4 copy];
@@ -221,10 +221,10 @@ uint64_t __36__SBFShamMobileKeyBag_extendedState__block_invoke(uint64_t a1)
   return [v5 _queue_stepSecretChangeMachine];
 }
 
-- (void)_queue_initializeSecretChangeMachine:(id)a3
+- (void)_queue_initializeSecretChangeMachine:(id)machine
 {
   self->_queue_escrowState = 1;
-  v4 = [a3 copy];
+  v4 = [machine copy];
   queue_trialPasscode = self->_queue_trialPasscode;
   self->_queue_trialPasscode = v4;
 
@@ -282,12 +282,12 @@ uint64_t __36__SBFShamMobileKeyBag_extendedState__block_invoke(uint64_t a1)
   }
 }
 
-- (int64_t)_simplifiedLockStateForLockState:(int64_t)a3
+- (int64_t)_simplifiedLockStateForLockState:(int64_t)state
 {
-  result = a3;
-  if ((a3 - 4) <= 3)
+  result = state;
+  if ((state - 4) <= 3)
   {
-    return qword_1BEAD5C18[a3 - 4];
+    return qword_1BEAD5C18[state - 4];
   }
 
   return result;

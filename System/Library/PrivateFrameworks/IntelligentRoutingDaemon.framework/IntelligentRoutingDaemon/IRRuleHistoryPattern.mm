@@ -1,101 +1,101 @@
 @interface IRRuleHistoryPattern
-+ (BOOL)_filterHistoryBySameApp:(id)a3 withSystemState:(id)a4;
-+ (BOOL)filterHistoryByBrokeredDeviceScan:(id)a3;
-+ (BOOL)filterHistoryBySimilarApp:(id)a3 withSystemState:(id)a4;
-- (BOOL)_filterHistoryByEventsToWatch:(id)a3;
-- (BOOL)_filterHistoryByMilo:(id)a3 withMiloPrediction:(id)a4;
-- (BOOL)_filterHistoryBySameDay:(id)a3 comparedToDate:(id)a4 withSystemState:(id)a5;
-- (BOOL)_filterHistoryBySameLoi:(id)a3 withSystemState:(id)a4;
-- (BOOL)_filterHistoryByTimeInterval:(id)a3 comparedToDate:(id)a4;
-- (BOOL)_filterHistorywithSameCandidates:(id)a3 withSameCandidates:(id)a4;
++ (BOOL)_filterHistoryBySameApp:(id)app withSystemState:(id)state;
++ (BOOL)filterHistoryByBrokeredDeviceScan:(id)scan;
++ (BOOL)filterHistoryBySimilarApp:(id)app withSystemState:(id)state;
+- (BOOL)_filterHistoryByEventsToWatch:(id)watch;
+- (BOOL)_filterHistoryByMilo:(id)milo withMiloPrediction:(id)prediction;
+- (BOOL)_filterHistoryBySameDay:(id)day comparedToDate:(id)date withSystemState:(id)state;
+- (BOOL)_filterHistoryBySameLoi:(id)loi withSystemState:(id)state;
+- (BOOL)_filterHistoryByTimeInterval:(id)interval comparedToDate:(id)date;
+- (BOOL)_filterHistorywithSameCandidates:(id)candidates withSameCandidates:(id)sameCandidates;
 - (IRRuleHistoryPattern)init;
-- (IRRuleHistoryPattern)initWithEventsToWatch:(id)a3 filters:(id)a4 timeInterval:(double)a5 maxNumberOfEventsInHistory:(unint64_t)a6 minNumberOfEventsInHistory:(unint64_t)a7 threshold:(double)a8;
-- (id)_filterHistoryEvents:(id)a3 withSystemState:(id)a4 date:(id)a5 miloPrediction:(id)a6 candiatesContainer:(id)a7;
-- (id)executeRuleWithCandiatesContainer:(id)a3 systemStatus:(id)a4 historyContainer:(id)a5 miloPrediction:(id)a6 nearbyDeviceContainer:(id)a7 date:(id)a8;
+- (IRRuleHistoryPattern)initWithEventsToWatch:(id)watch filters:(id)filters timeInterval:(double)interval maxNumberOfEventsInHistory:(unint64_t)history minNumberOfEventsInHistory:(unint64_t)inHistory threshold:(double)threshold;
+- (id)_filterHistoryEvents:(id)events withSystemState:(id)state date:(id)date miloPrediction:(id)prediction candiatesContainer:(id)container;
+- (id)executeRuleWithCandiatesContainer:(id)container systemStatus:(id)status historyContainer:(id)historyContainer miloPrediction:(id)prediction nearbyDeviceContainer:(id)deviceContainer date:(id)date;
 @end
 
 @implementation IRRuleHistoryPattern
 
-+ (BOOL)filterHistoryBySimilarApp:(id)a3 withSystemState:(id)a4
++ (BOOL)filterHistoryBySimilarApp:(id)app withSystemState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 _filterHistoryBySameApp:v6 withSystemState:v7])
+  appCopy = app;
+  stateCopy = state;
+  if ([self _filterHistoryBySameApp:appCopy withSystemState:stateCopy])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [v6 sharingPolicy];
-    v10 = [v7 avInitialRouteSharingPolicy];
-    v8 = [v9 isEqual:v10];
+    sharingPolicy = [appCopy sharingPolicy];
+    avInitialRouteSharingPolicy = [stateCopy avInitialRouteSharingPolicy];
+    v8 = [sharingPolicy isEqual:avInitialRouteSharingPolicy];
   }
 
   return v8;
 }
 
-+ (BOOL)_filterHistoryBySameApp:(id)a3 withSystemState:(id)a4
++ (BOOL)_filterHistoryBySameApp:(id)app withSystemState:(id)state
 {
-  v5 = a4;
-  v6 = [a3 event];
-  v7 = [v6 bundleID];
-  v8 = [v5 appInFocusBundleID];
+  stateCopy = state;
+  event = [app event];
+  bundleID = [event bundleID];
+  appInFocusBundleID = [stateCopy appInFocusBundleID];
 
-  LOBYTE(v5) = [v7 isEqual:v8];
-  return v5;
+  LOBYTE(stateCopy) = [bundleID isEqual:appInFocusBundleID];
+  return stateCopy;
 }
 
-- (BOOL)_filterHistoryByMilo:(id)a3 withMiloPrediction:(id)a4
+- (BOOL)_filterHistoryByMilo:(id)milo withMiloPrediction:(id)prediction
 {
-  v5 = a4;
-  v6 = [a3 miloPredictionEvent];
-  v7 = [v5 scoreForPredictionEventEvent:v6];
+  predictionCopy = prediction;
+  miloPredictionEvent = [milo miloPredictionEvent];
+  v7 = [predictionCopy scoreForPredictionEventEvent:miloPredictionEvent];
 
   [v7 doubleValue];
   v9 = v8;
 
   v10 = +[IRPreferences shared];
-  v11 = [v10 miloLslIsSameMiloThreshold];
-  [v11 doubleValue];
+  miloLslIsSameMiloThreshold = [v10 miloLslIsSameMiloThreshold];
+  [miloLslIsSameMiloThreshold doubleValue];
   v13 = v12;
 
   return v9 > v13;
 }
 
-+ (BOOL)filterHistoryByBrokeredDeviceScan:(id)a3
++ (BOOL)filterHistoryByBrokeredDeviceScan:(id)scan
 {
-  v3 = a3;
-  v4 = [v3 event];
-  if ([v4 eventType] == 9)
+  scanCopy = scan;
+  event = [scanCopy event];
+  if ([event eventType] == 9)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 event];
-    v5 = [v6 eventType] == 10;
+    event2 = [scanCopy event];
+    v5 = [event2 eventType] == 10;
   }
 
   return v5;
 }
 
-- (BOOL)_filterHistoryByEventsToWatch:(id)a3
+- (BOOL)_filterHistoryByEventsToWatch:(id)watch
 {
-  v4 = a3;
-  v5 = [(IRRuleHistoryPattern *)self eventsToWatch];
-  v6 = [v4 event];
+  watchCopy = watch;
+  eventsToWatch = [(IRRuleHistoryPattern *)self eventsToWatch];
+  event = [watchCopy event];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(watchCopy) = [eventsToWatch containsObject:event];
+  return watchCopy;
 }
 
-- (BOOL)_filterHistoryByTimeInterval:(id)a3 comparedToDate:(id)a4
+- (BOOL)_filterHistoryByTimeInterval:(id)interval comparedToDate:(id)date
 {
-  v6 = a4;
-  v7 = [a3 date];
-  [v6 timeIntervalSinceDate:v7];
+  dateCopy = date;
+  date = [interval date];
+  [dateCopy timeIntervalSinceDate:date];
   v9 = v8;
 
   [(IRRuleHistoryPattern *)self timeInterval];
@@ -104,36 +104,36 @@
   return self;
 }
 
-- (BOOL)_filterHistoryBySameLoi:(id)a3 withSystemState:(id)a4
+- (BOOL)_filterHistoryBySameLoi:(id)loi withSystemState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 systemState];
-  if ([v7 locationSemanticUserSpecificPlaceType])
+  loiCopy = loi;
+  stateCopy = state;
+  systemState = [loiCopy systemState];
+  if ([systemState locationSemanticUserSpecificPlaceType])
   {
 
 LABEL_4:
-    v9 = [v5 systemState];
-    v10 = [v9 locationSemanticUserSpecificPlaceType];
-    v11 = v10 == [v6 locationSemanticUserSpecificPlaceType];
+    systemState2 = [loiCopy systemState];
+    locationSemanticUserSpecificPlaceType = [systemState2 locationSemanticUserSpecificPlaceType];
+    v11 = locationSemanticUserSpecificPlaceType == [stateCopy locationSemanticUserSpecificPlaceType];
     goto LABEL_5;
   }
 
-  v8 = [v6 locationSemanticUserSpecificPlaceType];
+  locationSemanticUserSpecificPlaceType2 = [stateCopy locationSemanticUserSpecificPlaceType];
 
-  if (v8)
+  if (locationSemanticUserSpecificPlaceType2)
   {
     goto LABEL_4;
   }
 
-  v9 = [v5 systemState];
-  v13 = [v9 locationSemanticLoiIdentifier];
-  if (v13)
+  systemState2 = [loiCopy systemState];
+  locationSemanticLoiIdentifier = [systemState2 locationSemanticLoiIdentifier];
+  if (locationSemanticLoiIdentifier)
   {
-    v14 = [v5 systemState];
-    v15 = [v14 locationSemanticLoiIdentifier];
-    v16 = [v6 locationSemanticLoiIdentifier];
-    v11 = [v15 isEqual:v16];
+    systemState3 = [loiCopy systemState];
+    locationSemanticLoiIdentifier2 = [systemState3 locationSemanticLoiIdentifier];
+    locationSemanticLoiIdentifier3 = [stateCopy locationSemanticLoiIdentifier];
+    v11 = [locationSemanticLoiIdentifier2 isEqual:locationSemanticLoiIdentifier3];
   }
 
   else
@@ -145,35 +145,35 @@ LABEL_5:
   return v11;
 }
 
-- (BOOL)_filterHistoryBySameDay:(id)a3 comparedToDate:(id)a4 withSystemState:(id)a5
+- (BOOL)_filterHistoryBySameDay:(id)day comparedToDate:(id)date withSystemState:(id)state
 {
   v7 = MEMORY[0x277CBEAA8];
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 date];
-  v11 = [v8 timeZoneSeconds];
+  stateCopy = state;
+  dateCopy = date;
+  date = [day date];
+  timeZoneSeconds = [stateCopy timeZoneSeconds];
 
-  LOBYTE(v7) = [v7 isDate:v10 inSameDayAsDate:v9 forTimeZoneInSeconds:v11];
+  LOBYTE(v7) = [v7 isDate:date inSameDayAsDate:dateCopy forTimeZoneInSeconds:timeZoneSeconds];
   return v7;
 }
 
-- (BOOL)_filterHistorywithSameCandidates:(id)a3 withSameCandidates:(id)a4
+- (BOOL)_filterHistorywithSameCandidates:(id)candidates withSameCandidates:(id)sameCandidates
 {
-  v5 = a4;
-  v6 = [a3 candidateIdentifier];
-  v7 = [v5 candidateForCandidateIdentifier:v6];
+  sameCandidatesCopy = sameCandidates;
+  candidateIdentifier = [candidates candidateIdentifier];
+  v7 = [sameCandidatesCopy candidateForCandidateIdentifier:candidateIdentifier];
 
   return v7 != 0;
 }
 
-- (id)_filterHistoryEvents:(id)a3 withSystemState:(id)a4 date:(id)a5 miloPrediction:(id)a6 candiatesContainer:(id)a7
+- (id)_filterHistoryEvents:(id)events withSystemState:(id)state date:(id)date miloPrediction:(id)prediction candiatesContainer:(id)container
 {
   v49 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v39 = a6;
-  v37 = a7;
+  eventsCopy = events;
+  stateCopy = state;
+  dateCopy = date;
+  predictionCopy = prediction;
+  containerCopy = container;
   v43 = [(NSSet *)self->_filters containsObject:@"kIRRuleHistoryPatternFilterIsSameMilo"];
   v42 = [(NSSet *)self->_filters containsObject:@"kIRRuleHistoryPatternFilterIsSameApp"];
   v41 = [(NSSet *)self->_filters containsObject:@"kIRRuleHistoryPatternFilterIsSimilarApp"];
@@ -185,7 +185,7 @@ LABEL_5:
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v17 = v12;
+  v17 = eventsCopy;
   v18 = [v17 countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (!v18)
   {
@@ -209,10 +209,10 @@ LABEL_5:
         continue;
       }
 
-      v23 = [(IRRuleHistoryPattern *)self _filterHistoryByTimeInterval:v22 comparedToDate:v14];
+      v23 = [(IRRuleHistoryPattern *)self _filterHistoryByTimeInterval:v22 comparedToDate:dateCopy];
       if (v43 && v23)
       {
-        v24 = [(IRRuleHistoryPattern *)self _filterHistoryByMilo:v22 withMiloPrediction:v39];
+        v24 = [(IRRuleHistoryPattern *)self _filterHistoryByMilo:v22 withMiloPrediction:predictionCopy];
       }
 
       else
@@ -222,7 +222,7 @@ LABEL_5:
 
       if ((v42 & v24) == 1)
       {
-        v25 = [IRRuleHistoryPattern _filterHistoryBySameApp:v22 withSystemState:v13];
+        v25 = [IRRuleHistoryPattern _filterHistoryBySameApp:v22 withSystemState:stateCopy];
       }
 
       else
@@ -232,7 +232,7 @@ LABEL_5:
 
       if ((v41 & v25) == 1)
       {
-        v26 = [IRRuleHistoryPattern filterHistoryBySimilarApp:v22 withSystemState:v13];
+        v26 = [IRRuleHistoryPattern filterHistoryBySimilarApp:v22 withSystemState:stateCopy];
       }
 
       else
@@ -242,7 +242,7 @@ LABEL_5:
 
       if ((v40 & v26) == 1)
       {
-        v27 = [(IRRuleHistoryPattern *)self _filterHistoryBySameLoi:v22 withSystemState:v13];
+        v27 = [(IRRuleHistoryPattern *)self _filterHistoryBySameLoi:v22 withSystemState:stateCopy];
       }
 
       else
@@ -252,7 +252,7 @@ LABEL_5:
 
       if ((v15 & v27) == 1)
       {
-        v28 = [(IRRuleHistoryPattern *)self _filterHistoryBySameDay:v22 comparedToDate:v14 withSystemState:v13];
+        v28 = [(IRRuleHistoryPattern *)self _filterHistoryBySameDay:v22 comparedToDate:dateCopy withSystemState:stateCopy];
         if (!v16)
         {
           goto LABEL_21;
@@ -274,7 +274,7 @@ LABEL_21:
         }
       }
 
-      if (v28 && [(IRRuleHistoryPattern *)self _filterHistorywithSameCandidates:v22 withSameCandidates:v37])
+      if (v28 && [(IRRuleHistoryPattern *)self _filterHistorywithSameCandidates:v22 withSameCandidates:containerCopy])
       {
 LABEL_26:
         [v38 addObject:v22];
@@ -289,12 +289,12 @@ LABEL_26:
 LABEL_29:
 
   v29 = [v38 count];
-  v30 = [(IRRuleHistoryPattern *)self maxNumberOfEventsInHistory];
-  v31 = (v29 - v30) & ~((v29 - v30) >> 63);
-  v32 = [(IRRuleHistoryPattern *)self maxNumberOfEventsInHistory];
-  if (v29 >= v32)
+  maxNumberOfEventsInHistory = [(IRRuleHistoryPattern *)self maxNumberOfEventsInHistory];
+  v31 = (v29 - maxNumberOfEventsInHistory) & ~((v29 - maxNumberOfEventsInHistory) >> 63);
+  maxNumberOfEventsInHistory2 = [(IRRuleHistoryPattern *)self maxNumberOfEventsInHistory];
+  if (v29 >= maxNumberOfEventsInHistory2)
   {
-    v33 = v32;
+    v33 = maxNumberOfEventsInHistory2;
   }
 
   else
@@ -309,19 +309,19 @@ LABEL_29:
   return v34;
 }
 
-- (id)executeRuleWithCandiatesContainer:(id)a3 systemStatus:(id)a4 historyContainer:(id)a5 miloPrediction:(id)a6 nearbyDeviceContainer:(id)a7 date:(id)a8
+- (id)executeRuleWithCandiatesContainer:(id)container systemStatus:(id)status historyContainer:(id)historyContainer miloPrediction:(id)prediction nearbyDeviceContainer:(id)deviceContainer date:(id)date
 {
   v62 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a8;
-  v17 = [a5 historyEvents];
-  v51 = self;
-  v48 = v15;
-  v49 = v14;
-  v47 = v16;
-  v18 = [(IRRuleHistoryPattern *)self _filterHistoryEvents:v17 withSystemState:v14 date:v16 miloPrediction:v15 candiatesContainer:v13];
+  containerCopy = container;
+  statusCopy = status;
+  predictionCopy = prediction;
+  dateCopy = date;
+  historyEvents = [historyContainer historyEvents];
+  selfCopy = self;
+  v48 = predictionCopy;
+  v49 = statusCopy;
+  v47 = dateCopy;
+  v18 = [(IRRuleHistoryPattern *)self _filterHistoryEvents:historyEvents withSystemState:statusCopy date:dateCopy miloPrediction:predictionCopy candiatesContainer:containerCopy];
 
   v19 = [MEMORY[0x277CCA940] set];
   v56 = 0u;
@@ -344,12 +344,12 @@ LABEL_29:
         }
 
         v25 = *(*(&v56 + 1) + 8 * i);
-        v26 = [v25 candidateIdentifier];
+        candidateIdentifier = [v25 candidateIdentifier];
 
-        if (v26)
+        if (candidateIdentifier)
         {
-          v27 = [v25 candidateIdentifier];
-          [v19 addObject:v27];
+          candidateIdentifier2 = [v25 candidateIdentifier];
+          [v19 addObject:candidateIdentifier2];
         }
       }
 
@@ -366,9 +366,9 @@ LABEL_29:
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v50 = v13;
-  v30 = [v13 candidates];
-  v31 = [v30 countByEnumeratingWithState:&v52 objects:v60 count:16];
+  v50 = containerCopy;
+  candidates = [containerCopy candidates];
+  v31 = [candidates countByEnumeratingWithState:&v52 objects:v60 count:16];
   if (v31)
   {
     v32 = v31;
@@ -379,37 +379,37 @@ LABEL_29:
       {
         if (*v53 != v33)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(candidates);
         }
 
         v35 = *(*(&v52 + 1) + 8 * j);
-        v36 = [v35 candidateIdentifier];
-        v37 = [v19 countForObject:v36];
+        candidateIdentifier3 = [v35 candidateIdentifier];
+        v37 = [v19 countForObject:candidateIdentifier3];
 
-        v38 = [(IRRuleHistoryPattern *)v51 calculateScoreWithoutPortion];
+        calculateScoreWithoutPortion = [(IRRuleHistoryPattern *)selfCopy calculateScoreWithoutPortion];
         v39 = v37 / v28;
         if (!v28)
         {
           v39 = 0.0;
         }
 
-        if (v38)
+        if (calculateScoreWithoutPortion)
         {
           v39 = v37;
         }
 
         v40 = [MEMORY[0x277CCABB0] numberWithDouble:v39];
-        v41 = [v35 candidateIdentifier];
-        [v29 setObject:v40 forKeyedSubscript:v41];
+        candidateIdentifier4 = [v35 candidateIdentifier];
+        [v29 setObject:v40 forKeyedSubscript:candidateIdentifier4];
       }
 
-      v32 = [v30 countByEnumeratingWithState:&v52 objects:v60 count:16];
+      v32 = [candidates countByEnumeratingWithState:&v52 objects:v60 count:16];
     }
 
     while (v32);
   }
 
-  v42 = [[IRRuleOutputHistoryPattern alloc] initWithRule:v51];
+  v42 = [[IRRuleOutputHistoryPattern alloc] initWithRule:selfCopy];
   [(IRRuleOutputHistoryPattern *)v42 setNumberOfEventsInHistory:v28];
   v43 = [v29 copy];
   [(IRRuleOutputHistoryPattern *)v42 setScoreForCandidates:v43];
@@ -426,22 +426,22 @@ LABEL_29:
   return [(IRRuleHistoryPattern *)&v3 init];
 }
 
-- (IRRuleHistoryPattern)initWithEventsToWatch:(id)a3 filters:(id)a4 timeInterval:(double)a5 maxNumberOfEventsInHistory:(unint64_t)a6 minNumberOfEventsInHistory:(unint64_t)a7 threshold:(double)a8
+- (IRRuleHistoryPattern)initWithEventsToWatch:(id)watch filters:(id)filters timeInterval:(double)interval maxNumberOfEventsInHistory:(unint64_t)history minNumberOfEventsInHistory:(unint64_t)inHistory threshold:(double)threshold
 {
-  v14 = a3;
-  v15 = a4;
+  watchCopy = watch;
+  filtersCopy = filters;
   v19.receiver = self;
   v19.super_class = IRRuleHistoryPattern;
   v16 = [(IRRuleHistoryPattern *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    [(IRRuleHistoryPattern *)v16 setEventsToWatch:v14];
-    [(IRRuleHistoryPattern *)v17 setFilters:v15];
-    [(IRRuleHistoryPattern *)v17 setTimeInterval:a5];
-    [(IRRuleHistoryPattern *)v17 setMaxNumberOfEventsInHistory:a6];
-    [(IRRuleHistoryPattern *)v17 setMinNumberOfEventsInHistory:a7];
-    [(IRRuleHistoryPattern *)v17 setThreshold:a8];
+    [(IRRuleHistoryPattern *)v16 setEventsToWatch:watchCopy];
+    [(IRRuleHistoryPattern *)v17 setFilters:filtersCopy];
+    [(IRRuleHistoryPattern *)v17 setTimeInterval:interval];
+    [(IRRuleHistoryPattern *)v17 setMaxNumberOfEventsInHistory:history];
+    [(IRRuleHistoryPattern *)v17 setMinNumberOfEventsInHistory:inHistory];
+    [(IRRuleHistoryPattern *)v17 setThreshold:threshold];
   }
 
   return v17;

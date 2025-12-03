@@ -1,11 +1,11 @@
 @interface _SFRSAKeySpecifier
-- (_SFRSAKeySpecifier)initWithBitSize:(int64_t)a3;
-- (_SFRSAKeySpecifier)initWithCoder:(id)a3;
+- (_SFRSAKeySpecifier)initWithBitSize:(int64_t)size;
+- (_SFRSAKeySpecifier)initWithCoder:(id)coder;
 @end
 
 @implementation _SFRSAKeySpecifier
 
-- (_SFRSAKeySpecifier)initWithBitSize:(int64_t)a3
+- (_SFRSAKeySpecifier)initWithBitSize:(int64_t)size
 {
   v8.receiver = self;
   v8.super_class = _SFRSAKeySpecifier;
@@ -16,13 +16,13 @@
     rsaKeySpecifierInternal = v4->_rsaKeySpecifierInternal;
     v4->_rsaKeySpecifierInternal = v5;
 
-    *(v4->_rsaKeySpecifierInternal + 1) = a3;
+    *(v4->_rsaKeySpecifierInternal + 1) = size;
   }
 
   return v4;
 }
 
-- (_SFRSAKeySpecifier)initWithCoder:(id)a3
+- (_SFRSAKeySpecifier)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _SFRSAKeySpecifier;

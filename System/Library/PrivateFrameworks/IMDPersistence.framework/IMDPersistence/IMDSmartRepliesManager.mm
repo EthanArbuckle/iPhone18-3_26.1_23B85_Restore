@@ -1,6 +1,6 @@
 @interface IMDSmartRepliesManager
 + (id)sharedManager;
-- (id)messageIndexingJobWithSize:(int64_t)a3 context:(id)a4 timingCollection:(id)a5;
+- (id)messageIndexingJobWithSize:(int64_t)size context:(id)context timingCollection:(id)collection;
 @end
 
 @implementation IMDSmartRepliesManager
@@ -17,7 +17,7 @@
   return v3;
 }
 
-- (id)messageIndexingJobWithSize:(int64_t)a3 context:(id)a4 timingCollection:(id)a5
+- (id)messageIndexingJobWithSize:(int64_t)size context:(id)context timingCollection:(id)collection
 {
   v5 = objc_alloc_init(IMDSmartRepliesMessageDonationJob);
 

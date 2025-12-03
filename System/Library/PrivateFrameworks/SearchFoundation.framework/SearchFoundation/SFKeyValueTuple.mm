@@ -1,38 +1,38 @@
 @interface SFKeyValueTuple
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFKeyValueTuple)initWithCoder:(id)a3;
-- (SFKeyValueTuple)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFKeyValueTuple)initWithCoder:(id)coder;
+- (SFKeyValueTuple)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFKeyValueTuple
 
-- (SFKeyValueTuple)initWithProtobuf:(id)a3
+- (SFKeyValueTuple)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFKeyValueTuple;
   v5 = [(SFKeyValueTuple *)&v12 init];
   if (v5)
   {
-    v6 = [v4 key];
+    v6 = [protobufCopy key];
 
     if (v6)
     {
-      v7 = [v4 key];
+      v7 = [protobufCopy key];
       [(SFKeyValueTuple *)v5 setKey:v7];
     }
 
-    v8 = [v4 value];
+    value = [protobufCopy value];
 
-    if (v8)
+    if (value)
     {
-      v9 = [v4 value];
-      [(SFKeyValueTuple *)v5 setValue:v9];
+      value2 = [protobufCopy value];
+      [(SFKeyValueTuple *)v5 setValue:value2];
     }
 
     v10 = v5;
@@ -45,25 +45,25 @@
 {
   v3 = [(SFKeyValueTuple *)self key];
   v4 = [v3 hash];
-  v5 = [(SFKeyValueTuple *)self value];
-  v6 = [v5 hash];
+  value = [(SFKeyValueTuple *)self value];
+  v6 = [value hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFKeyValueTuple *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFKeyValueTuple *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
+      v6 = equalCopy;
       v7 = [(SFKeyValueTuple *)self key];
       v8 = [(SFKeyValueTuple *)v6 key];
       if ((v7 != 0) == (v8 == 0))
@@ -91,10 +91,10 @@ LABEL_18:
         v21 = v10;
       }
 
-      v12 = [(SFKeyValueTuple *)self value];
-      v13 = [(SFKeyValueTuple *)v6 value];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      value = [(SFKeyValueTuple *)self value];
+      value2 = [(SFKeyValueTuple *)v6 value];
+      v14 = value2;
+      if ((value != 0) == (value2 == 0))
       {
 
         v11 = 0;
@@ -102,14 +102,14 @@ LABEL_18:
 
       else
       {
-        v15 = [(SFKeyValueTuple *)self value];
-        if (v15)
+        value3 = [(SFKeyValueTuple *)self value];
+        if (value3)
         {
-          v16 = v15;
-          v19 = [(SFKeyValueTuple *)self value];
+          v16 = value3;
+          value4 = [(SFKeyValueTuple *)self value];
           [(SFKeyValueTuple *)v6 value];
           v17 = v20 = v3;
-          v11 = [v19 isEqual:v17];
+          v11 = [value4 isEqual:v17];
 
           v3 = v20;
         }
@@ -138,15 +138,15 @@ LABEL_20:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(SFKeyValueTuple *)self key];
   v6 = [v5 copy];
   [v4 setKey:v6];
 
-  v7 = [(SFKeyValueTuple *)self value];
-  v8 = [v7 copy];
+  value = [(SFKeyValueTuple *)self value];
+  v8 = [value copy];
   [v4 setValue:v8];
 
   return v4;
@@ -155,31 +155,31 @@ LABEL_20:
 - (NSData)jsonData
 {
   v2 = [[_SFPBKeyValueTuple alloc] initWithFacade:self];
-  v3 = [(_SFPBKeyValueTuple *)v2 jsonData];
+  jsonData = [(_SFPBKeyValueTuple *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBKeyValueTuple alloc] initWithFacade:self];
-  v3 = [(_SFPBKeyValueTuple *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBKeyValueTuple *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBKeyValueTuple alloc] initWithFacade:self];
-  v5 = [(_SFPBKeyValueTuple *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBKeyValueTuple *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFKeyValueTuple)initWithCoder:(id)a3
+- (SFKeyValueTuple)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBKeyValueTuple alloc] initWithData:v5];
   v7 = [(SFKeyValueTuple *)self initWithProtobuf:v6];

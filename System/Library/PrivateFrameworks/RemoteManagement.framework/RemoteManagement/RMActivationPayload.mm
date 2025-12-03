@@ -1,11 +1,11 @@
 @interface RMActivationPayload
-- (BOOL)_loadAnyDeclaration:(id)a3 error:(id *)a4;
-- (BOOL)_updatePropertiesForActivation:(id)a3 error:(id *)a4;
-- (BOOL)loadPayload:(id)a3 error:(id *)a4;
-- (BOOL)reloadReturningError:(id *)a3;
+- (BOOL)_loadAnyDeclaration:(id)declaration error:(id *)error;
+- (BOOL)_updatePropertiesForActivation:(id)activation error:(id *)error;
+- (BOOL)loadPayload:(id)payload error:(id *)error;
+- (BOOL)reloadReturningError:(id *)error;
 - (RMPredicateDescription)predicateDescription;
 - (id)reportDetails;
-- (void)setPredicateDescription:(id)a3;
+- (void)setPredicateDescription:(id)description;
 @end
 
 @implementation RMActivationPayload
@@ -17,11 +17,11 @@
   [(RMActivationPayload *)self didAccessValueForKey:@"predicateDescription"];
   if (!v3)
   {
-    v4 = [(RMActivationPayload *)self predicateDescription];
-    if (v4)
+    predicateDescription = [(RMActivationPayload *)self predicateDescription];
+    if (predicateDescription)
     {
       v7 = 0;
-      v3 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v7];
+      v3 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:predicateDescription error:&v7];
       v5 = v7;
       if (v3)
       {
@@ -43,15 +43,15 @@
   return v3;
 }
 
-- (void)setPredicateDescription:(id)a3
+- (void)setPredicateDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   [(RMActivationPayload *)self willChangeValueForKey:@"predicateDescription"];
-  [(RMActivationPayload *)self setPrimitiveValue:v4 forKey:@"predicateDescription"];
-  if (v4)
+  [(RMActivationPayload *)self setPrimitiveValue:descriptionCopy forKey:@"predicateDescription"];
+  if (descriptionCopy)
   {
     v7 = 0;
-    v5 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v7];
+    v5 = [NSKeyedArchiver archivedDataWithRootObject:descriptionCopy requiringSecureCoding:1 error:&v7];
     v6 = v7;
     if (!v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
@@ -72,15 +72,15 @@
 {
   v13.receiver = self;
   v13.super_class = RMActivationPayload;
-  v3 = [(RMDeclarationPayload *)&v13 reportDetails];
-  v4 = [v3 mutableCopy];
+  reportDetails = [(RMDeclarationPayload *)&v13 reportDetails];
+  v4 = [reportDetails mutableCopy];
 
-  v5 = [(RMActivationPayload *)self configurationReferences];
-  if ([v5 count])
+  configurationReferences = [(RMActivationPayload *)self configurationReferences];
+  if ([configurationReferences count])
   {
-    v6 = [v5 valueForKey:@"configurationIdentifier"];
-    v7 = [v6 allObjects];
-    v8 = [v7 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+    v6 = [configurationReferences valueForKey:@"configurationIdentifier"];
+    allObjects = [v6 allObjects];
+    v8 = [allObjects sortedArrayUsingSelector:"caseInsensitiveCompare:"];
   }
 
   else
@@ -90,8 +90,8 @@
 
   [v4 setObject:v8 forKeyedSubscript:@"configurationReferences"];
 
-  v9 = [(RMActivationPayload *)self predicateDescription];
-  v10 = [v9 description];
+  predicateDescription = [(RMActivationPayload *)self predicateDescription];
+  v10 = [predicateDescription description];
   [v4 setObject:v10 forKeyedSubscript:@"predicateDescription"];
 
   v11 = [v4 copy];
@@ -99,13 +99,13 @@
   return v11;
 }
 
-- (BOOL)loadPayload:(id)a3 error:(id *)a4
+- (BOOL)loadPayload:(id)payload error:(id *)error
 {
-  v6 = a3;
+  payloadCopy = payload;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    LOBYTE(a4) = [(RMActivationPayload *)self _loadAnyDeclaration:v6 error:a4];
+    LOBYTE(error) = [(RMActivationPayload *)self _loadAnyDeclaration:payloadCopy error:error];
   }
 
   else
@@ -113,7 +113,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = payloadCopy;
       v20 = 0;
       v8 = [v7 serializeAsDataWithType:0 error:&v20];
       v9 = v20;
@@ -121,18 +121,18 @@
       if (v8)
       {
         [(RMActivationPayload *)self setPayload:v8];
-        v11 = [v7 declarationType];
-        [(RMActivationPayload *)self setDeclarationType:v11];
+        declarationType = [v7 declarationType];
+        [(RMActivationPayload *)self setDeclarationType:declarationType];
 
-        v12 = [(RMActivationPayload *)self serverToken];
-        v13 = [v7 declarationServerToken];
-        if (v12 != v13 && ([v12 isEqualToString:v13] & 1) == 0)
+        serverToken = [(RMActivationPayload *)self serverToken];
+        declarationServerToken = [v7 declarationServerToken];
+        if (serverToken != declarationServerToken && ([serverToken isEqualToString:declarationServerToken] & 1) == 0)
         {
-          [(RMActivationPayload *)self setServerToken:v13];
+          [(RMActivationPayload *)self setServerToken:declarationServerToken];
         }
 
-        LODWORD(a4) = [(RMActivationPayload *)self _updatePropertiesForActivation:v7 error:a4];
-        if (a4)
+        LODWORD(error) = [(RMActivationPayload *)self _updatePropertiesForActivation:v7 error:error];
+        if (error)
         {
           [(RMActivationPayload *)self setLoadState:1];
         }
@@ -140,43 +140,43 @@
 
       else
       {
-        if (a4 && v9)
+        if (error && v9)
         {
           v18 = v9;
-          *a4 = v10;
+          *error = v10;
         }
 
         [(RMActivationPayload *)self failedLoadingWithError:v10];
-        LOBYTE(a4) = 0;
+        LOBYTE(error) = 0;
       }
     }
 
     else
     {
       v14 = +[RMModelActivationBase rm_payloadTypeName];
-      v15 = [objc_opt_class() rm_payloadTypeName];
-      v16 = [RMErrorUtilities createIncorrectPayloadTypeErrorWithExpectedType:v14 actualType:v15];
+      rm_payloadTypeName = [objc_opt_class() rm_payloadTypeName];
+      v16 = [RMErrorUtilities createIncorrectPayloadTypeErrorWithExpectedType:v14 actualType:rm_payloadTypeName];
 
-      if (a4 && v16)
+      if (error && v16)
       {
         v17 = v16;
-        *a4 = v16;
+        *error = v16;
       }
 
       [(RMActivationPayload *)self failedLoadingWithError:v16];
 
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
-  return a4;
+  return error;
 }
 
-- (BOOL)reloadReturningError:(id *)a3
+- (BOOL)reloadReturningError:(id *)error
 {
-  v5 = [(RMActivationPayload *)self payload];
+  payload = [(RMActivationPayload *)self payload];
   v14 = 0;
-  v6 = [RMModelDeclarationBase loadData:v5 serializationType:0 error:&v14];
+  v6 = [RMModelDeclarationBase loadData:payload serializationType:0 error:&v14];
   v7 = v14;
 
   objc_opt_class();
@@ -190,7 +190,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(RMActivationPayload *)self _updatePropertiesForActivation:v6 error:a3];
+      v8 = [(RMActivationPayload *)self _updatePropertiesForActivation:v6 error:error];
       if (v8)
       {
         [(RMActivationPayload *)self setLoadState:1];
@@ -200,13 +200,13 @@
     else
     {
       v9 = +[RMModelActivationBase rm_payloadTypeName];
-      v10 = [objc_opt_class() rm_payloadTypeName];
-      v11 = [RMErrorUtilities createIncorrectPayloadTypeErrorWithExpectedType:v9 actualType:v10];
+      rm_payloadTypeName = [objc_opt_class() rm_payloadTypeName];
+      v11 = [RMErrorUtilities createIncorrectPayloadTypeErrorWithExpectedType:v9 actualType:rm_payloadTypeName];
 
-      if (a3 && v11)
+      if (error && v11)
       {
         v12 = v11;
-        *a3 = v11;
+        *error = v11;
       }
 
       [(RMActivationPayload *)self failedLoadingWithError:v11];
@@ -218,24 +218,24 @@
   return v8;
 }
 
-- (BOOL)_loadAnyDeclaration:(id)a3 error:(id *)a4
+- (BOOL)_loadAnyDeclaration:(id)declaration error:(id *)error
 {
-  v6 = a3;
+  declarationCopy = declaration;
   v15 = 0;
-  v7 = [v6 serializeAsDataWithType:0 error:&v15];
+  v7 = [declarationCopy serializeAsDataWithType:0 error:&v15];
   v8 = v15;
   v9 = v8;
   if (v7)
   {
     [(RMActivationPayload *)self setPayload:v7];
-    v10 = [v6 declarationType];
-    [(RMActivationPayload *)self setDeclarationType:v10];
+    declarationType = [declarationCopy declarationType];
+    [(RMActivationPayload *)self setDeclarationType:declarationType];
 
-    v11 = [(RMActivationPayload *)self serverToken];
-    v12 = [v6 declarationServerToken];
-    if (v11 != v12 && ([v11 isEqualToString:v12] & 1) == 0)
+    serverToken = [(RMActivationPayload *)self serverToken];
+    declarationServerToken = [declarationCopy declarationServerToken];
+    if (serverToken != declarationServerToken && ([serverToken isEqualToString:declarationServerToken] & 1) == 0)
     {
-      [(RMActivationPayload *)self setServerToken:v12];
+      [(RMActivationPayload *)self setServerToken:declarationServerToken];
     }
 
     [(RMActivationPayload *)self setLoadState:4];
@@ -243,10 +243,10 @@
 
   else
   {
-    if (a4 && v8)
+    if (error && v8)
     {
       v13 = v8;
-      *a4 = v9;
+      *error = v9;
     }
 
     [(RMActivationPayload *)self failedLoadingWithError:v9];
@@ -255,28 +255,28 @@
   return v7 != 0;
 }
 
-- (BOOL)_updatePropertiesForActivation:(id)a3 error:(id *)a4
+- (BOOL)_updatePropertiesForActivation:(id)activation error:(id *)error
 {
-  v6 = a3;
+  activationCopy = activation;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v33 = v6;
-    v8 = 0;
+    v33 = activationCopy;
+    payloadStandardConfigurations = 0;
     goto LABEL_7;
   }
 
-  v7 = v6;
-  v8 = [v7 payloadStandardConfigurations];
-  v9 = [v7 payloadPredicate];
-  if (!v9)
+  managedObjectContext = activationCopy;
+  payloadStandardConfigurations = [managedObjectContext payloadStandardConfigurations];
+  payloadPredicate = [managedObjectContext payloadPredicate];
+  if (!payloadPredicate)
   {
 LABEL_5:
-    v33 = v6;
+    v33 = activationCopy;
 
 LABEL_7:
-    v7 = [(RMActivationPayload *)self managedObjectContext];
-    v9 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [0 count] + objc_msgSend(v8, "count"));
+    managedObjectContext = [(RMActivationPayload *)self managedObjectContext];
+    payloadPredicate = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [0 count] + objc_msgSend(payloadStandardConfigurations, "count"));
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
@@ -296,14 +296,14 @@ LABEL_7:
           }
 
           v17 = *(*(&v38 + 1) + 8 * i);
-          v18 = [v9 objectForKeyedSubscript:v17];
+          v18 = [payloadPredicate objectForKeyedSubscript:v17];
 
           if (!v18)
           {
-            v19 = [[RMConfigurationPayloadReference alloc] initWithContext:v7];
+            v19 = [[RMConfigurationPayloadReference alloc] initWithContext:managedObjectContext];
             [(RMConfigurationPayloadReference *)v19 setConfigurationIdentifier:v17];
             [(RMConfigurationPayloadReference *)v19 setRequired:1];
-            [v9 setObject:v19 forKeyedSubscript:v17];
+            [payloadPredicate setObject:v19 forKeyedSubscript:v17];
           }
         }
 
@@ -317,8 +317,8 @@ LABEL_7:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v8 = v8;
-    v20 = [v8 countByEnumeratingWithState:&v34 objects:v43 count:16];
+    payloadStandardConfigurations = payloadStandardConfigurations;
+    v20 = [payloadStandardConfigurations countByEnumeratingWithState:&v34 objects:v43 count:16];
     if (v20)
     {
       v21 = v20;
@@ -329,58 +329,58 @@ LABEL_7:
         {
           if (*v35 != v22)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(payloadStandardConfigurations);
           }
 
           v24 = *(*(&v34 + 1) + 8 * j);
-          v25 = [v9 objectForKeyedSubscript:v24];
+          v25 = [payloadPredicate objectForKeyedSubscript:v24];
 
           if (!v25)
           {
-            v26 = [[RMConfigurationPayloadReference alloc] initWithContext:v7];
+            v26 = [[RMConfigurationPayloadReference alloc] initWithContext:managedObjectContext];
             [(RMConfigurationPayloadReference *)v26 setConfigurationIdentifier:v24];
-            [v9 setObject:v26 forKeyedSubscript:v24];
+            [payloadPredicate setObject:v26 forKeyedSubscript:v24];
           }
         }
 
-        v21 = [v8 countByEnumeratingWithState:&v34 objects:v43 count:16];
+        v21 = [payloadStandardConfigurations countByEnumeratingWithState:&v34 objects:v43 count:16];
       }
 
       while (v21);
     }
 
-    v27 = [v9 allValues];
-    v11 = [NSSet setWithArray:v27];
+    allValues = [payloadPredicate allValues];
+    v11 = [NSSet setWithArray:allValues];
 
-    v28 = [(RMActivationPayload *)self configurationReferences];
-    v29 = v28;
-    if (v28 != v11 && ([v28 isEqualToSet:v11] & 1) == 0)
+    configurationReferences = [(RMActivationPayload *)self configurationReferences];
+    v29 = configurationReferences;
+    if (configurationReferences != v11 && ([configurationReferences isEqualToSet:v11] & 1) == 0)
     {
       [(RMActivationPayload *)self setConfigurationReferences:v11];
     }
 
     v30 = 1;
-    v6 = v33;
+    activationCopy = v33;
     goto LABEL_29;
   }
 
   v42 = 0;
-  v10 = [[RMPredicateDescription alloc] initWithFormat:v9 error:&v42];
+  v10 = [[RMPredicateDescription alloc] initWithFormat:payloadPredicate error:&v42];
   v11 = v42;
   [(RMActivationPayload *)self setPredicateDescription:v10];
 
-  v12 = [(RMActivationPayload *)self predicateDescription];
+  predicateDescription = [(RMActivationPayload *)self predicateDescription];
 
-  if (v12)
+  if (predicateDescription)
   {
 
     goto LABEL_5;
   }
 
-  if (a4 && v11)
+  if (error && v11)
   {
     v32 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   [(RMActivationPayload *)self failedLoadingWithError:v11];

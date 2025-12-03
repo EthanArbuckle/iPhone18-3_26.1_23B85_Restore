@@ -1,6 +1,6 @@
 @interface DKApplicationStateStore
 - (id)focalApplication;
-- (void)updateElements:(id)a3 displayType:(unint64_t)a4;
+- (void)updateElements:(id)elements displayType:(unint64_t)type;
 @end
 
 @implementation DKApplicationStateStore
@@ -55,16 +55,16 @@
   return v10;
 }
 
-- (void)updateElements:(id)a3 displayType:(unint64_t)a4
+- (void)updateElements:(id)elements displayType:(unint64_t)type
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  elementsCopy = elements;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v6;
+  v8 = elementsCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -82,7 +82,7 @@
 
         v13 = *(*(&v20 + 1) + 8 * v12);
         v14 = [DKApplicationState alloc];
-        v15 = [(DKApplicationState *)v14 initWithDisplayType:a4 element:v13, v20];
+        v15 = [(DKApplicationState *)v14 initWithDisplayType:type element:v13, v20];
         [v7 addObject:v15];
 
         ++v12;
@@ -96,12 +96,12 @@
   }
 
   [v7 sortUsingSelector:sel_compare_];
-  if (a4 <= 2)
+  if (type <= 2)
   {
-    v16 = [v7 firstObject];
-    v17 = &self->super.isa + a4;
+    firstObject = [v7 firstObject];
+    v17 = &self->super.isa + type;
     v18 = v17[1];
-    v17[1] = v16;
+    v17[1] = firstObject;
   }
 
   v19 = *MEMORY[0x277D85DE8];

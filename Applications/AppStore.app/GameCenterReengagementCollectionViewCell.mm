@@ -1,5 +1,5 @@
 @interface GameCenterReengagementCollectionViewCell
-- (id)focusItemsInRect:(CGRect)a3;
+- (id)focusItemsInRect:(CGRect)rect;
 - (void)layoutSubviews;
 @end
 
@@ -7,17 +7,17 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10041F0EC();
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_10041F6B4(x, y, width, height);
 
   sub_10002849C(&qword_100985340);

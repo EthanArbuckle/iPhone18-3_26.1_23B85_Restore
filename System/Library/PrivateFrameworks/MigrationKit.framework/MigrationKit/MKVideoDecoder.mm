@@ -1,7 +1,7 @@
 @interface MKVideoDecoder
 - (MKVideoDecoder)init;
-- (id)extractFormatOfAsset:(id)a3;
-- (id)mediaFormatWithFormatDescriptions:(id)a3;
+- (id)extractFormatOfAsset:(id)asset;
+- (id)mediaFormatWithFormatDescriptions:(id)descriptions;
 @end
 
 @implementation MKVideoDecoder
@@ -20,15 +20,15 @@
   return v3;
 }
 
-- (id)extractFormatOfAsset:(id)a3
+- (id)extractFormatOfAsset:(id)asset
 {
-  v4 = a3;
-  if (!v4)
+  assetCopy = asset;
+  if (!assetCopy)
   {
     goto LABEL_7;
   }
 
-  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4];
+  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:assetCopy];
   if (!v5)
   {
     goto LABEL_7;
@@ -59,7 +59,7 @@ LABEL_7:
   v27 = __Block_byref_object_copy__0;
   v28 = __Block_byref_object_dispose__0;
   v29 = 0;
-  v10 = [(MKVideoDecoder *)self mediaType];
+  mediaType = [(MKVideoDecoder *)self mediaType];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __39__MKVideoDecoder_extractFormatOfAsset___block_invoke;
@@ -68,15 +68,15 @@ LABEL_7:
   v23 = &v30;
   v11 = v9;
   v21 = v11;
-  [v8 loadTracksWithMediaType:v10 completionHandler:v20];
+  [v8 loadTracksWithMediaType:mediaType completionHandler:v20];
 
   dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
   v12 = v25[5];
   if ([v31[5] count])
   {
     v13 = [v31[5] objectAtIndex:0];
-    v14 = [v13 formatDescriptions];
-    v15 = [(MKVideoDecoder *)self mediaFormatWithFormatDescriptions:v14];
+    formatDescriptions = [v13 formatDescriptions];
+    v15 = [(MKVideoDecoder *)self mediaFormatWithFormatDescriptions:formatDescriptions];
   }
 
   else
@@ -92,7 +92,7 @@ LABEL_7:
     v18 = +[MKLog log];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [(MKVideoDecoder *)v4 extractFormatOfAsset:v12, v18];
+      [(MKVideoDecoder *)assetCopy extractFormatOfAsset:v12, v18];
     }
   }
 
@@ -101,7 +101,7 @@ LABEL_8:
   {
     v19.receiver = self;
     v19.super_class = MKVideoDecoder;
-    v16 = [(MKFileDecoder *)&v19 extractFormatOfAsset:v4];
+    v16 = [(MKFileDecoder *)&v19 extractFormatOfAsset:assetCopy];
 
     v15 = v16;
   }
@@ -122,23 +122,23 @@ void __39__MKVideoDecoder_extractFormatOfAsset___block_invoke(uint64_t a1, void 
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)mediaFormatWithFormatDescriptions:(id)a3
+- (id)mediaFormatWithFormatDescriptions:(id)descriptions
 {
-  v3 = a3;
+  descriptionsCopy = descriptions;
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  if ([v3 count])
+  if ([descriptionsCopy count])
   {
     v5 = 0;
     do
     {
-      v6 = [v3 objectAtIndexedSubscript:v5];
+      v6 = [descriptionsCopy objectAtIndexedSubscript:v5];
 
       MediaType = CMFormatDescriptionGetMediaType(v6);
       v8 = FourCCString(MediaType);
       MediaSubType = CMFormatDescriptionGetMediaSubType(v6);
       v10 = FourCCString(MediaSubType);
       [v4 appendFormat:@"%@/%@", v8, v10];
-      if ([v3 count] - 1 > v5)
+      if ([descriptionsCopy count] - 1 > v5)
       {
         [v4 appendString:{@", "}];
       }
@@ -146,7 +146,7 @@ void __39__MKVideoDecoder_extractFormatOfAsset___block_invoke(uint64_t a1, void 
       ++v5;
     }
 
-    while ([v3 count] > v5);
+    while ([descriptionsCopy count] > v5);
   }
 
   return v4;

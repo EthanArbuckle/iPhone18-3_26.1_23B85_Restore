@@ -1,33 +1,33 @@
 @interface PUProgressIndicatorView
 - (CGSize)intrinsicContentSize;
-- (PUProgressIndicatorView)initWithCoder:(id)a3;
-- (PUProgressIndicatorView)initWithStyle:(int64_t)a3;
+- (PUProgressIndicatorView)initWithCoder:(id)coder;
+- (PUProgressIndicatorView)initWithStyle:(int64_t)style;
 - (id)_newVisualEffectBackgroundView;
 - (void)_endShowingProgressIfReady;
-- (void)_handleBeginShowingAnimated:(BOOL)a3 wasImmediate:(BOOL)a4;
-- (void)_setCurrentState:(int64_t)a3;
-- (void)_updateProgressViewsWithAnimation:(int64_t)a3 completion:(id)a4;
+- (void)_handleBeginShowingAnimated:(BOOL)animated wasImmediate:(BOOL)immediate;
+- (void)_setCurrentState:(int64_t)state;
+- (void)_updateProgressViewsWithAnimation:(int64_t)animation completion:(id)completion;
 - (void)_updateSubviewsOrdering;
-- (void)beginShowingProgressImmediately:(BOOL)a3 animated:(BOOL)a4;
-- (void)beginShowingProgressWithDelay:(double)a3 animated:(BOOL)a4;
-- (void)endShowingProgressImmediately:(BOOL)a3 animated:(BOOL)a4 withCompletionHandler:(id)a5;
-- (void)setCurrentProgress:(double)a3;
-- (void)setDeterminate:(BOOL)a3;
-- (void)setLocalizedMessage:(id)a3;
-- (void)setShowsBackground:(BOOL)a3;
+- (void)beginShowingProgressImmediately:(BOOL)immediately animated:(BOOL)animated;
+- (void)beginShowingProgressWithDelay:(double)delay animated:(BOOL)animated;
+- (void)endShowingProgressImmediately:(BOOL)immediately animated:(BOOL)animated withCompletionHandler:(id)handler;
+- (void)setCurrentProgress:(double)progress;
+- (void)setDeterminate:(BOOL)determinate;
+- (void)setLocalizedMessage:(id)message;
+- (void)setShowsBackground:(BOOL)background;
 - (void)updateConstraints;
 @end
 
 @implementation PUProgressIndicatorView
 
-- (void)_setCurrentState:(int64_t)a3
+- (void)_setCurrentState:(int64_t)state
 {
   currentState = self->__currentState;
   if (currentState > 1)
   {
     if (currentState == 2)
     {
-      if (a3 == 3)
+      if (state == 3)
       {
         goto LABEL_14;
       }
@@ -35,11 +35,11 @@
       goto LABEL_13;
     }
 
-    if (currentState != 3 || a3 != 4)
+    if (currentState != 3 || state != 4)
     {
 LABEL_13:
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"PUProgressIndicatorView.m" lineNumber:703 description:{@"Invalid transition %ld %ld", self->__currentState, a3}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUProgressIndicatorView.m" lineNumber:703 description:{@"Invalid transition %ld %ld", self->__currentState, state}];
     }
   }
 
@@ -47,7 +47,7 @@ LABEL_13:
   {
     if (!currentState)
     {
-      if (a3 == 1)
+      if (state == 1)
       {
         goto LABEL_14;
       }
@@ -55,14 +55,14 @@ LABEL_13:
       goto LABEL_13;
     }
 
-    if (currentState != 1 || (a3 & 0xFFFFFFFFFFFFFFFELL) != 2)
+    if (currentState != 1 || (state & 0xFFFFFFFFFFFFFFFELL) != 2)
     {
       goto LABEL_13;
     }
   }
 
 LABEL_14:
-  self->__currentState = a3;
+  self->__currentState = state;
 }
 
 - (void)_endShowingProgressIfReady
@@ -113,13 +113,13 @@ void __53__PUProgressIndicatorView__endShowingProgressIfReady__block_invoke(uint
   }
 }
 
-- (void)endShowingProgressImmediately:(BOOL)a3 animated:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)endShowingProgressImmediately:(BOOL)immediately animated:(BOOL)animated withCompletionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   [(PUProgressIndicatorView *)self _setCurrentState:3];
-  self->_wantsImmediateHide = a3;
-  self->_wantsAnimatedHide = a4;
-  v9 = [v8 copy];
+  self->_wantsImmediateHide = immediately;
+  self->_wantsAnimatedHide = animated;
+  v9 = [handlerCopy copy];
 
   completionHandler = self->_completionHandler;
   self->_completionHandler = v9;
@@ -127,15 +127,15 @@ void __53__PUProgressIndicatorView__endShowingProgressIfReady__block_invoke(uint
   [(PUProgressIndicatorView *)self _endShowingProgressIfReady];
 }
 
-- (void)_handleBeginShowingAnimated:(BOOL)a3 wasImmediate:(BOOL)a4
+- (void)_handleBeginShowingAnimated:(BOOL)animated wasImmediate:(BOOL)immediate
 {
-  v5 = a3;
+  animatedCopy = animated;
   if ([(PUProgressIndicatorView *)self _currentState]== 1)
   {
-    if (a4 || ([(PUProgressIndicatorView *)self currentProgress], v7 < 0.833))
+    if (immediate || ([(PUProgressIndicatorView *)self currentProgress], v7 < 0.833))
     {
       [(PUProgressIndicatorView *)self _setCurrentState:2];
-      [(PUProgressIndicatorView *)self _updateProgressViewsAnimated:v5 completion:0];
+      [(PUProgressIndicatorView *)self _updateProgressViewsAnimated:animatedCopy completion:0];
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
 
       [(PUProgressIndicatorView *)self _setTimestampBeganShowing:?];
@@ -144,31 +144,31 @@ void __53__PUProgressIndicatorView__endShowingProgressIfReady__block_invoke(uint
     else
     {
 
-      [(PUProgressIndicatorView *)self endShowingProgressImmediately:1 animated:v5 withCompletionHandler:0];
+      [(PUProgressIndicatorView *)self endShowingProgressImmediately:1 animated:animatedCopy withCompletionHandler:0];
     }
   }
 }
 
-- (void)beginShowingProgressWithDelay:(double)a3 animated:(BOOL)a4
+- (void)beginShowingProgressWithDelay:(double)delay animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(PUProgressIndicatorView *)self _setCurrentState:1];
-  if (a3 <= 0.0)
+  if (delay <= 0.0)
   {
 
-    [(PUProgressIndicatorView *)self _handleBeginShowingAnimated:v4 wasImmediate:1];
+    [(PUProgressIndicatorView *)self _handleBeginShowingAnimated:animatedCopy wasImmediate:1];
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v7 = dispatch_time(0, (a3 * 1000000000.0));
+    v7 = dispatch_time(0, (delay * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __66__PUProgressIndicatorView_beginShowingProgressWithDelay_animated___block_invoke;
     block[3] = &unk_1E7B7FA08;
     objc_copyWeak(&v9, &location);
-    v10 = v4;
+    v10 = animatedCopy;
     dispatch_after(v7, MEMORY[0x1E69E96A0], block);
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -181,31 +181,31 @@ void __66__PUProgressIndicatorView_beginShowingProgressWithDelay_animated___bloc
   [WeakRetained _handleBeginShowingAnimated:*(a1 + 40) wasImmediate:0];
 }
 
-- (void)beginShowingProgressImmediately:(BOOL)a3 animated:(BOOL)a4
+- (void)beginShowingProgressImmediately:(BOOL)immediately animated:(BOOL)animated
 {
   v4 = 1.25;
-  if (a3)
+  if (immediately)
   {
     v4 = 0.0;
   }
 
-  [(PUProgressIndicatorView *)self beginShowingProgressWithDelay:a4 animated:v4];
+  [(PUProgressIndicatorView *)self beginShowingProgressWithDelay:animated animated:v4];
 }
 
-- (void)setShowsBackground:(BOOL)a3
+- (void)setShowsBackground:(BOOL)background
 {
-  if (self->_showsBackground != a3)
+  if (self->_showsBackground != background)
   {
-    self->_showsBackground = a3;
+    self->_showsBackground = background;
     [(PUProgressIndicatorView *)self _updateProgressViewsAnimated:0 completion:0];
   }
 }
 
-- (void)setDeterminate:(BOOL)a3
+- (void)setDeterminate:(BOOL)determinate
 {
-  if (self->_isDeterminate != a3)
+  if (self->_isDeterminate != determinate)
   {
-    self->_isDeterminate = a3;
+    self->_isDeterminate = determinate;
     if (self->_spinnerView)
     {
       v3 = 1;
@@ -220,14 +220,14 @@ void __66__PUProgressIndicatorView_beginShowingProgressWithDelay_animated___bloc
   }
 }
 
-- (void)setLocalizedMessage:(id)a3
+- (void)setLocalizedMessage:(id)message
 {
   localizedMessage = self->_localizedMessage;
-  if (localizedMessage != a3)
+  if (localizedMessage != message)
   {
-    v5 = a3;
+    messageCopy = message;
     v6 = [(NSString *)localizedMessage length]!= 0;
-    v7 = [v5 copy];
+    v7 = [messageCopy copy];
 
     v8 = self->_localizedMessage;
     self->_localizedMessage = v7;
@@ -236,11 +236,11 @@ void __66__PUProgressIndicatorView_beginShowingProgressWithDelay_animated___bloc
   }
 }
 
-- (void)setCurrentProgress:(double)a3
+- (void)setCurrentProgress:(double)progress
 {
-  if (self->_currentProgress != a3)
+  if (self->_currentProgress != progress)
   {
-    self->_currentProgress = a3;
+    self->_currentProgress = progress;
     [(PUProgressIndicatorView *)self _updatePieProgress];
   }
 }
@@ -254,10 +254,10 @@ void __66__PUProgressIndicatorView_beginShowingProgressWithDelay_animated___bloc
   [(PUProgressIndicatorView *)self bringSubviewToFront:messageLabel];
 }
 
-- (void)_updateProgressViewsWithAnimation:(int64_t)a3 completion:(id)a4
+- (void)_updateProgressViewsWithAnimation:(int64_t)animation completion:(id)completion
 {
   v76 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   if ([(PUProgressIndicatorView *)self _currentState]== 2 && !self->_isDeterminate)
   {
     if (self->_spinnerView)
@@ -265,20 +265,20 @@ void __66__PUProgressIndicatorView_beginShowingProgressWithDelay_animated___bloc
       goto LABEL_7;
     }
 
-    v31 = [(PUProgressIndicatorView *)self style];
+    style = [(PUProgressIndicatorView *)self style];
     labelAndSpinnerConstraints = 0;
-    if (v31 > 2)
+    if (style > 2)
     {
-      if (v31 != 3)
+      if (style != 3)
       {
-        if (v31 == 4)
+        if (style == 4)
         {
-          v58 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+          secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
           goto LABEL_86;
         }
 
         v32 = 0;
-        if (v31 != 5)
+        if (style != 5)
         {
 LABEL_88:
           v59 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:v32];
@@ -289,9 +289,9 @@ LABEL_88:
           [(UIActivityIndicatorView *)self->_spinnerView startAnimating];
           [(UIActivityIndicatorView *)self->_spinnerView setTranslatesAutoresizingMaskIntoConstraints:0];
           [(PUProgressIndicatorView *)self addSubview:self->_spinnerView];
-          v10 = [MEMORY[0x1E695DF70] array];
-          [v10 addObject:self->_spinnerView];
-          v7 = 0;
+          array = [MEMORY[0x1E695DF70] array];
+          [array addObject:self->_spinnerView];
+          array2 = 0;
           goto LABEL_5;
         }
       }
@@ -299,7 +299,7 @@ LABEL_88:
 
     else
     {
-      if (!v31)
+      if (!style)
       {
         labelAndSpinnerConstraints = 0;
 LABEL_87:
@@ -307,10 +307,10 @@ LABEL_87:
         goto LABEL_88;
       }
 
-      if (v31 != 1)
+      if (style != 1)
       {
         v32 = 0;
-        if (v31 == 2)
+        if (style == 2)
         {
           labelAndSpinnerConstraints = [MEMORY[0x1E69DC888] whiteColor];
           v32 = 101;
@@ -320,29 +320,29 @@ LABEL_87:
       }
     }
 
-    v58 = [MEMORY[0x1E69DC888] whiteColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] whiteColor];
 LABEL_86:
-    labelAndSpinnerConstraints = v58;
+    labelAndSpinnerConstraints = secondaryLabelColor;
     goto LABEL_87;
   }
 
   if (!self->_spinnerView)
   {
 LABEL_7:
-    v7 = 0;
-    v10 = 0;
+    array2 = 0;
+    array = 0;
     goto LABEL_8;
   }
 
-  v7 = [MEMORY[0x1E695DF70] array];
-  [v7 addObject:self->_spinnerView];
+  array2 = [MEMORY[0x1E695DF70] array];
+  [array2 addObject:self->_spinnerView];
   v8 = self->_spinnerView;
   self->_spinnerView = 0;
 
   spinnerViewConstraints = self->_spinnerViewConstraints;
   self->_spinnerViewConstraints = 0;
 
-  v10 = 0;
+  array = 0;
   labelAndSpinnerConstraints = self->_labelAndSpinnerConstraints;
   self->_labelAndSpinnerConstraints = 0;
 LABEL_5:
@@ -352,15 +352,15 @@ LABEL_8:
   {
     if (!self->_pieProgressView)
     {
-      v12 = [(PUProgressIndicatorView *)self style];
-      if ((v12 - 1) > 3)
+      style2 = [(PUProgressIndicatorView *)self style];
+      if ((style2 - 1) > 3)
       {
         v13 = 1;
       }
 
       else
       {
-        v13 = qword_1B3D0D5E8[v12 - 1];
+        v13 = qword_1B3D0D5E8[style2 - 1];
       }
 
       v55 = [objc_alloc(MEMORY[0x1E69BE1C8]) initWithFrame:v13 style:{0.0, 0.0, 20.0, 20.0}];
@@ -370,17 +370,17 @@ LABEL_8:
       [(PLRoundProgressView *)self->_pieProgressView setTranslatesAutoresizingMaskIntoConstraints:0];
       if ([(PUProgressIndicatorView *)self isStyleCompactBackground])
       {
-        v57 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-        [(PLRoundProgressView *)self->_pieProgressView setManualColor:v57];
+        secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        [(PLRoundProgressView *)self->_pieProgressView setManualColor:secondaryLabelColor2];
       }
 
       [(PUProgressIndicatorView *)self addSubview:self->_pieProgressView];
-      if (!v10)
+      if (!array)
       {
-        v10 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
       }
 
-      [v10 addObject:self->_pieProgressView];
+      [array addObject:self->_pieProgressView];
     }
   }
 
@@ -389,13 +389,13 @@ LABEL_8:
     v14 = self->_pieProgressView;
     if (v14)
     {
-      if (!v7)
+      if (!array2)
       {
-        v7 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v14 = self->_pieProgressView;
       }
 
-      [v7 addObject:v14];
+      [array2 addObject:v14];
       v15 = self->_pieProgressView;
       self->_pieProgressView = 0;
 
@@ -419,11 +419,11 @@ LABEL_8:
       self->_messageLabel = v20;
 
       [(UILabel *)self->_messageLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-      v22 = [(PUProgressIndicatorView *)self isStyleCompactBackground];
+      isStyleCompactBackground = [(PUProgressIndicatorView *)self isStyleCompactBackground];
       v23 = +[PUInterfaceManager currentTheme];
       v24 = v23;
       v25 = self->_messageLabel;
-      if (v22)
+      if (isStyleCompactBackground)
       {
         [v23 configureCompactProgressIndicatorMessageLabel:v25];
       }
@@ -434,18 +434,18 @@ LABEL_8:
       }
 
       [(PUProgressIndicatorView *)self addSubview:self->_messageLabel];
-      if (!v10)
+      if (!array)
       {
-        v10 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
       }
 
-      [v10 addObject:self->_messageLabel];
+      [array addObject:self->_messageLabel];
       messageLabel = self->_messageLabel;
     }
 
     localizedMessage = self->_localizedMessage;
-    v34 = [(UILabel *)messageLabel text];
-    LOBYTE(localizedMessage) = [(NSString *)localizedMessage isEqualToString:v34];
+    text = [(UILabel *)messageLabel text];
+    LOBYTE(localizedMessage) = [(NSString *)localizedMessage isEqualToString:text];
 
     if ((localizedMessage & 1) == 0)
     {
@@ -460,13 +460,13 @@ LABEL_8:
     v26 = self->_messageLabel;
     if (v26)
     {
-      if (!v7)
+      if (!array2)
       {
-        v7 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v26 = self->_messageLabel;
       }
 
-      [v7 addObject:v26];
+      [array2 addObject:v26];
       v27 = self->_messageLabel;
       self->_messageLabel = 0;
 
@@ -488,17 +488,17 @@ LABEL_37:
   {
     if (!self->_visualEffectView)
     {
-      v36 = [(PUProgressIndicatorView *)self _newVisualEffectBackgroundView];
+      _newVisualEffectBackgroundView = [(PUProgressIndicatorView *)self _newVisualEffectBackgroundView];
       visualEffectView = self->_visualEffectView;
-      self->_visualEffectView = v36;
+      self->_visualEffectView = _newVisualEffectBackgroundView;
 
       [(PUProgressIndicatorView *)self addSubview:self->_visualEffectView];
-      if (!v10)
+      if (!array)
       {
-        v10 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
       }
 
-      [v10 addObject:self->_visualEffectView];
+      [array addObject:self->_visualEffectView];
     }
   }
 
@@ -507,13 +507,13 @@ LABEL_37:
     v38 = self->_visualEffectView;
     if (v38)
     {
-      if (!v7)
+      if (!array2)
       {
-        v7 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v38 = self->_visualEffectView;
       }
 
-      [v7 addObject:v38];
+      [array2 addObject:v38];
       v39 = self->_visualEffectView;
       self->_visualEffectView = 0;
 
@@ -522,17 +522,17 @@ LABEL_37:
     }
   }
 
-  if ([v10 count])
+  if ([array count])
   {
     [(PUProgressIndicatorView *)self _updateSubviewsOrdering];
-    v41 = a3 != 0;
+    v41 = animation != 0;
     v42 = 0.4;
-    if (a3 != 1)
+    if (animation != 1)
     {
       v42 = 0.0;
     }
 
-    if (a3 == 2)
+    if (animation == 2)
     {
       v43 = 0.2;
     }
@@ -567,14 +567,14 @@ LABEL_59:
     goto LABEL_62;
   }
 
-  v41 = a3 != 0;
+  v41 = animation != 0;
   v44 = 0.4;
-  if (a3 != 1)
+  if (animation != 1)
   {
     v44 = 0.0;
   }
 
-  if (a3 == 2)
+  if (animation == 2)
   {
     v43 = 0.2;
   }
@@ -594,10 +594,10 @@ LABEL_62:
   aBlock[1] = 3221225472;
   aBlock[2] = __72__PUProgressIndicatorView__updateProgressViewsWithAnimation_completion___block_invoke_2;
   aBlock[3] = &unk_1E7B80CB0;
-  v45 = v7;
+  v45 = array2;
   v71 = v45;
-  v72 = self;
-  v46 = v6;
+  selfCopy = self;
+  v46 = completionCopy;
   v73 = v46;
   v47 = _Block_copy(aBlock);
   v48 = v47;
@@ -607,7 +607,7 @@ LABEL_62:
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v49 = v10;
+    v49 = array;
     v50 = [v49 countByEnumeratingWithState:&v66 objects:v75 count:16];
     if (v50)
     {
@@ -765,8 +765,8 @@ void __72__PUProgressIndicatorView__updateProgressViewsWithAnimation_completion_
 
 - (id)_newVisualEffectBackgroundView
 {
-  v2 = [(PUProgressIndicatorView *)self isStyleCompactBackground];
-  if (v2)
+  isStyleCompactBackground = [(PUProgressIndicatorView *)self isStyleCompactBackground];
+  if (isStyleCompactBackground)
   {
     v3 = 7;
   }
@@ -776,7 +776,7 @@ void __72__PUProgressIndicatorView__updateProgressViewsWithAnimation_completion_
     v3 = 8;
   }
 
-  if (v2)
+  if (isStyleCompactBackground)
   {
     v4 = 14.0;
   }
@@ -788,9 +788,9 @@ void __72__PUProgressIndicatorView__updateProgressViewsWithAnimation_completion_
 
   v5 = [MEMORY[0x1E69DC730] effectWithStyle:v3];
   v6 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v5];
-  v7 = [v6 layer];
-  [v7 setAllowsGroupOpacity:0];
-  [v7 setCornerRadius:v4];
+  layer = [v6 layer];
+  [layer setAllowsGroupOpacity:0];
+  [layer setCornerRadius:v4];
   [v6 setClipsToBounds:1];
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
@@ -841,9 +841,9 @@ void __72__PUProgressIndicatorView__updateProgressViewsWithAnimation_completion_
   if (self->_visualEffectView)
   {
     v10 = v10 + 24.0;
-    v11 = [(PUProgressIndicatorView *)self isStyleCompactBackground];
+    isStyleCompactBackground = [(PUProgressIndicatorView *)self isStyleCompactBackground];
     v12 = 12.0;
-    if (v11)
+    if (isStyleCompactBackground)
     {
       v12 = 5.0;
     }
@@ -860,8 +860,8 @@ void __72__PUProgressIndicatorView__updateProgressViewsWithAnimation_completion_
 
 - (void)updateConstraints
 {
-  v3 = [(PUProgressIndicatorView *)self isStyleCompactBackground];
-  if (v3)
+  isStyleCompactBackground = [(PUProgressIndicatorView *)self isStyleCompactBackground];
+  if (isStyleCompactBackground)
   {
     v4 = 6.0;
   }
@@ -873,7 +873,7 @@ void __72__PUProgressIndicatorView__updateProgressViewsWithAnimation_completion_
 
   if (self->_spinnerView && !self->_spinnerViewConstraints)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if (self->_showsBackground)
     {
       v6 = v4;
@@ -887,25 +887,25 @@ void __72__PUProgressIndicatorView__updateProgressViewsWithAnimation_completion_
     v7 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_spinnerView attribute:5 relatedBy:0 toItem:self attribute:5 multiplier:1.0 constant:v6];
     LODWORD(v8) = 1148846080;
     [v7 setPriority:v8];
-    [(NSArray *)v5 addObject:v7];
+    [(NSArray *)array addObject:v7];
     v9 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_spinnerView attribute:6 relatedBy:0 toItem:self attribute:6 multiplier:1.0 constant:-v6];
 
     LODWORD(v10) = 1144750080;
     [v9 setPriority:v10];
-    [(NSArray *)v5 addObject:v9];
+    [(NSArray *)array addObject:v9];
     v11 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_spinnerView attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
 
     LODWORD(v12) = 1144750080;
     [v11 setPriority:v12];
-    [(NSArray *)v5 addObject:v11];
-    [(PUProgressIndicatorView *)self addConstraints:v5];
+    [(NSArray *)array addObject:v11];
+    [(PUProgressIndicatorView *)self addConstraints:array];
     spinnerViewConstraints = self->_spinnerViewConstraints;
-    self->_spinnerViewConstraints = v5;
+    self->_spinnerViewConstraints = array;
   }
 
   if (self->_pieProgressView && !self->_pieProgressViewConstraints)
   {
-    v14 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     if (self->_showsBackground)
     {
       v15 = v4;
@@ -919,26 +919,26 @@ void __72__PUProgressIndicatorView__updateProgressViewsWithAnimation_completion_
     v16 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_pieProgressView attribute:5 relatedBy:0 toItem:self attribute:5 multiplier:1.0 constant:v15];
     LODWORD(v17) = 1148846080;
     [v16 setPriority:v17];
-    [(NSArray *)v14 addObject:v16];
+    [(NSArray *)array2 addObject:v16];
     v18 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_pieProgressView attribute:6 relatedBy:0 toItem:self attribute:6 multiplier:1.0 constant:-v15];
 
     LODWORD(v19) = 1144750080;
     [v18 setPriority:v19];
-    [(NSArray *)v14 addObject:v18];
+    [(NSArray *)array2 addObject:v18];
     v20 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_pieProgressView attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
 
     LODWORD(v21) = 1144750080;
     [v20 setPriority:v21];
-    [(NSArray *)v14 addObject:v20];
+    [(NSArray *)array2 addObject:v20];
     v22 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_pieProgressView attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:20.0];
-    [(NSArray *)v14 addObject:v22];
+    [(NSArray *)array2 addObject:v22];
 
     v23 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_pieProgressView attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:20.0];
-    [(NSArray *)v14 addObject:v23];
+    [(NSArray *)array2 addObject:v23];
 
-    [(PUProgressIndicatorView *)self addConstraints:v14];
+    [(PUProgressIndicatorView *)self addConstraints:array2];
     pieProgressViewConstraints = self->_pieProgressViewConstraints;
-    self->_pieProgressViewConstraints = v14;
+    self->_pieProgressViewConstraints = array2;
   }
 
   if (self->_messageLabel)
@@ -948,7 +948,7 @@ void __72__PUProgressIndicatorView__updateProgressViewsWithAnimation_completion_
       goto LABEL_39;
     }
 
-    v25 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     if (!self->_showsBackground)
     {
       v4 = 0.0;
@@ -957,9 +957,9 @@ void __72__PUProgressIndicatorView__updateProgressViewsWithAnimation_completion_
     v26 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_messageLabel attribute:5 relatedBy:0 toItem:self attribute:5 multiplier:1.0 constant:v4];
     LODWORD(v27) = 1144750080;
     [v26 setPriority:v27];
-    [(NSArray *)v25 addObject:v26];
+    [(NSArray *)array3 addObject:v26];
     v28 = -6.0;
-    if (!v3)
+    if (!isStyleCompactBackground)
     {
       v28 = -v4;
     }
@@ -968,15 +968,15 @@ void __72__PUProgressIndicatorView__updateProgressViewsWithAnimation_completion_
 
     LODWORD(v30) = 1148846080;
     [v29 setPriority:v30];
-    [(NSArray *)v25 addObject:v29];
+    [(NSArray *)array3 addObject:v29];
     v31 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_messageLabel attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
 
     LODWORD(v32) = 1144750080;
     [v31 setPriority:v32];
-    [(NSArray *)v25 addObject:v31];
-    [(PUProgressIndicatorView *)self addConstraints:v25];
+    [(NSArray *)array3 addObject:v31];
+    [(PUProgressIndicatorView *)self addConstraints:array3];
     messageLabelConstraints = self->_messageLabelConstraints;
-    self->_messageLabelConstraints = v25;
+    self->_messageLabelConstraints = array3;
 
     if (self->_messageLabel)
     {
@@ -986,9 +986,9 @@ LABEL_39:
         goto LABEL_40;
       }
 
-      v34 = [MEMORY[0x1E695DF70] array];
+      array4 = [MEMORY[0x1E695DF70] array];
       v35 = 5.0;
-      if (!v3)
+      if (!isStyleCompactBackground)
       {
         v35 = 8.0;
       }
@@ -996,19 +996,19 @@ LABEL_39:
       v36 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_messageLabel attribute:5 relatedBy:0 toItem:self->_spinnerView attribute:6 multiplier:1.0 constant:v35];
       LODWORD(v37) = 1148846080;
       [v36 setPriority:v37];
-      [(NSArray *)v34 addObject:v36];
-      [(PUProgressIndicatorView *)self addConstraints:v34];
+      [(NSArray *)array4 addObject:v36];
+      [(PUProgressIndicatorView *)self addConstraints:array4];
       labelAndSpinnerConstraints = self->_labelAndSpinnerConstraints;
-      self->_labelAndSpinnerConstraints = v34;
+      self->_labelAndSpinnerConstraints = array4;
 
       if (self->_messageLabel)
       {
 LABEL_40:
         if (self->_pieProgressView && !self->_labelAndPieProgressConstraints)
         {
-          v39 = [MEMORY[0x1E695DF70] array];
+          array5 = [MEMORY[0x1E695DF70] array];
           v40 = 5.0;
-          if (!v3)
+          if (!isStyleCompactBackground)
           {
             v40 = 8.0;
           }
@@ -1016,10 +1016,10 @@ LABEL_40:
           v41 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_messageLabel attribute:5 relatedBy:0 toItem:self->_pieProgressView attribute:6 multiplier:1.0 constant:v40];
           LODWORD(v42) = 1148846080;
           [v41 setPriority:v42];
-          [(NSArray *)v39 addObject:v41];
-          [(PUProgressIndicatorView *)self addConstraints:v39];
+          [(NSArray *)array5 addObject:v41];
+          [(PUProgressIndicatorView *)self addConstraints:array5];
           labelAndPieProgressConstraints = self->_labelAndPieProgressConstraints;
-          self->_labelAndPieProgressConstraints = v39;
+          self->_labelAndPieProgressConstraints = array5;
         }
       }
     }
@@ -1029,16 +1029,16 @@ LABEL_40:
   if (visualEffectView && !self->_backgroundViewConstraints)
   {
     v45 = _NSDictionaryOfVariableBindings(&cfstr_Visualeffectvi.isa, visualEffectView, 0);
-    v46 = [MEMORY[0x1E695DF70] array];
+    array6 = [MEMORY[0x1E695DF70] array];
     v47 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|[_visualEffectView]|" options:0 metrics:0 views:v45];
-    [(NSArray *)v46 addObjectsFromArray:v47];
+    [(NSArray *)array6 addObjectsFromArray:v47];
 
     v48 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|[_visualEffectView]|" options:0 metrics:0 views:v45];
-    [(NSArray *)v46 addObjectsFromArray:v48];
+    [(NSArray *)array6 addObjectsFromArray:v48];
 
-    [(PUProgressIndicatorView *)self addConstraints:v46];
+    [(PUProgressIndicatorView *)self addConstraints:array6];
     backgroundViewConstraints = self->_backgroundViewConstraints;
-    self->_backgroundViewConstraints = v46;
+    self->_backgroundViewConstraints = array6;
   }
 
   v50.receiver = self;
@@ -1046,15 +1046,15 @@ LABEL_40:
   [(PUProgressIndicatorView *)&v50 updateConstraints];
 }
 
-- (PUProgressIndicatorView)initWithCoder:(id)a3
+- (PUProgressIndicatorView)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PUProgressIndicatorView.m" lineNumber:117 description:@"unsupported initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUProgressIndicatorView.m" lineNumber:117 description:@"unsupported initializer"];
 
   return [(PUProgressIndicatorView *)self initWithStyle:0];
 }
 
-- (PUProgressIndicatorView)initWithStyle:(int64_t)a3
+- (PUProgressIndicatorView)initWithStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = PUProgressIndicatorView;
@@ -1063,7 +1063,7 @@ LABEL_40:
   if (v4)
   {
     v4->_isDeterminate = 1;
-    v4->_style = a3;
+    v4->_style = style;
     [(PUProgressIndicatorView *)v4 setOpaque:0];
   }
 

@@ -1,38 +1,38 @@
 @interface SBSystemActionSimplePreviewElement
-- (BOOL)shouldSuppressElementWhilePresentingAppWithBundleId:(id)a3;
-- (SBSystemActionSimplePreviewElement)initWithSystemAction:(id)a3;
-- (SBSystemActionSimplePreviewElement)initWithSystemAction:(id)a3 contentProvider:(id)a4 keyColor:(id)a5;
+- (BOOL)shouldSuppressElementWhilePresentingAppWithBundleId:(id)id;
+- (SBSystemActionSimplePreviewElement)initWithSystemAction:(id)action;
+- (SBSystemActionSimplePreviewElement)initWithSystemAction:(id)action contentProvider:(id)provider keyColor:(id)color;
 - (uint64_t)systemAction;
-- (void)setKeyColor:(uint64_t)a1;
+- (void)setKeyColor:(uint64_t)color;
 @end
 
 @implementation SBSystemActionSimplePreviewElement
 
-- (SBSystemActionSimplePreviewElement)initWithSystemAction:(id)a3
+- (SBSystemActionSimplePreviewElement)initWithSystemAction:(id)action
 {
-  v5 = a3;
-  if (!v5)
+  actionCopy = action;
+  if (!actionCopy)
   {
     [SBSystemActionSimplePreviewElement initWithSystemAction:a2];
   }
 
-  v6 = v5;
+  v6 = actionCopy;
   v7 = objc_alloc_init(MEMORY[0x277D67DF0]);
-  v8 = [v6 configuredAction];
-  v9 = [v8 leadingApertureView];
-  if (!v9)
+  configuredAction = [v6 configuredAction];
+  leadingApertureView = [configuredAction leadingApertureView];
+  if (!leadingApertureView)
   {
     [(SBSystemActionSimplePreviewElement *)a2 initWithSystemAction:?];
   }
 
-  v10 = v9;
-  v11 = [objc_alloc(MEMORY[0x277D67E10]) initWithView:v9];
+  v10 = leadingApertureView;
+  v11 = [objc_alloc(MEMORY[0x277D67E10]) initWithView:leadingApertureView];
   [v7 setLeadingContentViewProvider:v11];
-  v12 = [v8 trailingApertureView];
-  v13 = v12;
-  if (v12)
+  trailingApertureView = [configuredAction trailingApertureView];
+  v13 = trailingApertureView;
+  if (trailingApertureView)
   {
-    v14 = v12;
+    v14 = trailingApertureView;
   }
 
   else
@@ -45,42 +45,42 @@
 
   v17 = [objc_alloc(MEMORY[0x277D67E10]) initWithView:v16];
   [v7 setTrailingContentViewProvider:v17];
-  v18 = [v10 keyColor];
-  v19 = [(SBSystemActionSimplePreviewElement *)self initWithSystemAction:v6 contentProvider:v7 keyColor:v18];
+  keyColor = [v10 keyColor];
+  v19 = [(SBSystemActionSimplePreviewElement *)self initWithSystemAction:v6 contentProvider:v7 keyColor:keyColor];
 
   return v19;
 }
 
-- (SBSystemActionSimplePreviewElement)initWithSystemAction:(id)a3 contentProvider:(id)a4 keyColor:(id)a5
+- (SBSystemActionSimplePreviewElement)initWithSystemAction:(id)action contentProvider:(id)provider keyColor:(id)color
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  actionCopy = action;
+  providerCopy = provider;
+  colorCopy = color;
+  if (!actionCopy)
   {
     [SBSystemActionSimplePreviewElement initWithSystemAction:a2 contentProvider:? keyColor:?];
   }
 
-  v13 = v12;
-  v14 = [v10 configuredAction];
-  v15 = [v14 identifier];
+  v13 = colorCopy;
+  configuredAction = [actionCopy configuredAction];
+  identifier = [configuredAction identifier];
 
-  v16 = [v15 componentsSeparatedByString:@"."];
-  v17 = [v16 lastObject];
-  v18 = [@"SBSystemAction-" stringByAppendingString:v17];
+  v16 = [identifier componentsSeparatedByString:@"."];
+  lastObject = [v16 lastObject];
+  v18 = [@"SBSystemAction-" stringByAppendingString:lastObject];
 
   v19 = [SBSAElementIdentification alloc];
-  v20 = [v10 hostBundleIdentifier];
-  v21 = [(SBSAElementIdentification *)v19 initWithClientIdentifier:v20 elementIdentifier:v18];
+  hostBundleIdentifier = [actionCopy hostBundleIdentifier];
+  v21 = [(SBSAElementIdentification *)v19 initWithClientIdentifier:hostBundleIdentifier elementIdentifier:v18];
 
   v25.receiver = self;
   v25.super_class = SBSystemActionSimplePreviewElement;
-  v22 = [(SBSystemApertureProvidedContentElement *)&v25 initWithIdentifier:v21 contentProvider:v11];
+  v22 = [(SBSystemApertureProvidedContentElement *)&v25 initWithIdentifier:v21 contentProvider:providerCopy];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_keyColor, a5);
-    objc_storeStrong(&v23->_systemAction, a3);
+    objc_storeStrong(&v22->_keyColor, color);
+    objc_storeStrong(&v23->_systemAction, action);
     [(SBSystemApertureProvidedContentElement *)v23 setMinimumSupportedLayoutMode:1];
     [(SBSystemApertureProvidedContentElement *)v23 setMaximumSupportedLayoutMode:2];
     [(SBSystemApertureProvidedContentElement *)v23 setPreferredLayoutMode:2];
@@ -89,27 +89,27 @@
   return v23;
 }
 
-- (BOOL)shouldSuppressElementWhilePresentingAppWithBundleId:(id)a3
+- (BOOL)shouldSuppressElementWhilePresentingAppWithBundleId:(id)id
 {
-  v4 = a3;
-  v5 = [(SBSystemApertureProvidedContentElement *)self clientIdentifier];
-  v6 = [v5 isEqualToString:v4];
+  idCopy = id;
+  clientIdentifier = [(SBSystemApertureProvidedContentElement *)self clientIdentifier];
+  v6 = [clientIdentifier isEqualToString:idCopy];
 
   return v6;
 }
 
-- (void)setKeyColor:(uint64_t)a1
+- (void)setKeyColor:(uint64_t)color
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1 && (BSEqualObjects() & 1) == 0)
+  if (color && (BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong((a1 + 168), a2);
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    objc_storeStrong((color + 168), a2);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v7 = @"SBSystemApertureNotificationUserInfoElementKey";
-    v8[0] = a1;
+    v8[0] = color;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-    [v5 postNotificationName:@"SBSystemApertureElementKeyColorDidInvalidateNotification" object:0 userInfo:v6];
+    [defaultCenter postNotificationName:@"SBSystemApertureElementKeyColorDidInvalidateNotification" object:0 userInfo:v6];
   }
 }
 

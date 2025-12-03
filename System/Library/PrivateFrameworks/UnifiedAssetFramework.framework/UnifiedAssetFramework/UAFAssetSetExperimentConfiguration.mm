@@ -1,8 +1,8 @@
 @interface UAFAssetSetExperimentConfiguration
-+ (BOOL)isValid:(id)a3 error:(id *)a4;
-+ (id)fromContentsOfURL:(id)a3 error:(id *)a4;
++ (BOOL)isValid:(id)valid error:(id *)error;
++ (id)fromContentsOfURL:(id)l error:(id *)error;
 + (id)supportedFileVersions;
-- (UAFAssetSetExperimentConfiguration)initWithDictionary:(id)a3;
+- (UAFAssetSetExperimentConfiguration)initWithDictionary:(id)dictionary;
 @end
 
 @implementation UAFAssetSetExperimentConfiguration
@@ -17,19 +17,19 @@
   return v2;
 }
 
-+ (BOOL)isValid:(id)a3 error:(id *)a4
++ (BOOL)isValid:(id)valid error:(id *)error
 {
-  v5 = a3;
+  validCopy = valid;
   v6 = +[UAFAssetSetExperimentConfiguration supportedFileVersions];
-  v7 = [UAFConfiguration isValid:v5 fileType:@"AssetSetExperiment" fileVersions:v6 error:a4];
+  v7 = [UAFConfiguration isValid:validCopy fileType:@"AssetSetExperiment" fileVersions:v6 error:error];
 
-  if (v7 && [UAFConfiguration isValidValue:v5 key:@"AutoAssetSpecifiers" kind:objc_opt_class() required:1 error:a4])
+  if (v7 && [UAFConfiguration isValidValue:validCopy key:@"AutoAssetSpecifiers" kind:objc_opt_class() required:1 error:error])
   {
     v12 = 0;
     v13 = &v12;
     v14 = 0x2020000000;
     v15 = 1;
-    v8 = [v5 objectForKeyedSubscript:@"AutoAssetSpecifiers"];
+    v8 = [validCopy objectForKeyedSubscript:@"AutoAssetSpecifiers"];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __52__UAFAssetSetExperimentConfiguration_isValid_error___block_invoke;
@@ -63,23 +63,23 @@ void __52__UAFAssetSetExperimentConfiguration_isValid_error___block_invoke(uint6
   }
 }
 
-+ (id)fromContentsOfURL:(id)a3 error:(id *)a4
++ (id)fromContentsOfURL:(id)l error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a4)
+  lCopy = l;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v18 = 0;
-  v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v5 error:&v18];
+  v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:lCopy error:&v18];
   v7 = v18;
   v8 = v7;
-  if (a4)
+  if (error)
   {
     v9 = v7;
-    *a4 = v8;
+    *error = v8;
   }
 
   if (v6)
@@ -94,7 +94,7 @@ void __52__UAFAssetSetExperimentConfiguration_isValid_error___block_invoke(uint6
 
   if (v10)
   {
-    if ([UAFAssetSetExperimentConfiguration isValid:v6 error:a4])
+    if ([UAFAssetSetExperimentConfiguration isValid:v6 error:error])
     {
       v15 = [[UAFAssetSetExperimentConfiguration alloc] initWithDictionary:v6];
       goto LABEL_15;
@@ -106,7 +106,7 @@ void __52__UAFAssetSetExperimentConfiguration_isValid_error___block_invoke(uint6
       *buf = 136315394;
       v20 = "+[UAFAssetSetExperimentConfiguration fromContentsOfURL:error:]";
       v21 = 2112;
-      v22 = v5;
+      v22 = lCopy;
       v12 = "%s Failed to validate UAFAssetSetExperimentConfiguration dictionary from %@";
       v13 = v11;
       v14 = 22;
@@ -122,7 +122,7 @@ void __52__UAFAssetSetExperimentConfiguration_isValid_error___block_invoke(uint6
       *buf = 136315650;
       v20 = "+[UAFAssetSetExperimentConfiguration fromContentsOfURL:error:]";
       v21 = 2112;
-      v22 = v5;
+      v22 = lCopy;
       v23 = 2112;
       v24 = v8;
       v12 = "%s Failed to load UAFAssetSetExperimentConfiguration dictionary from %@: %@";
@@ -141,16 +141,16 @@ LABEL_15:
   return v15;
 }
 
-- (UAFAssetSetExperimentConfiguration)initWithDictionary:(id)a3
+- (UAFAssetSetExperimentConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = UAFAssetSetExperimentConfiguration;
   v5 = [(UAFAssetSetExperimentConfiguration *)&v15 init];
   if (v5)
   {
     v6 = objc_opt_new();
-    v7 = [v4 objectForKeyedSubscript:@"AutoAssetSpecifiers"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"AutoAssetSpecifiers"];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __57__UAFAssetSetExperimentConfiguration_initWithDictionary___block_invoke;

@@ -1,9 +1,9 @@
 @interface SAInstruction
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
 - (BOOL)hasOffsetIntoBinary;
 - (BOOL)hasSourceInfo;
-- (BOOL)symbolicateWithOptions:(unint64_t)a3 pid:(int)a4 additionalCSSymbolicatorFlags:(unsigned int)a5;
+- (BOOL)symbolicateWithOptions:(unint64_t)options pid:(int)pid additionalCSSymbolicatorFlags:(unsigned int)flags;
 - (NSString)debugDescription;
 - (SABinary)binary;
 - (SASegment)segment;
@@ -11,12 +11,12 @@
 - (SASymbol)symbol;
 - (id)realSegment;
 - (int64_t)offsetIntoBinary;
-- (uint64_t)enumerateSymbolsNullable:(void *)a1;
+- (uint64_t)enumerateSymbolsNullable:(void *)nullable;
 - (unint64_t)sizeInBytesForSerializedVersion;
-- (void)addSelfToSerializationDictionary:(id)a3;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
 - (void)checkForNewSymbol;
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6;
-- (void)setSymbol:(void *)a3 sourceinfo:;
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary;
+- (void)setSymbol:(void *)symbol sourceinfo:;
 @end
 
 @implementation SAInstruction
@@ -31,9 +31,9 @@
 - (void)checkForNewSymbol
 {
   v79[16] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1[5];
+    v1 = self[5];
     v64 = 0;
     v65 = &v64;
     v66 = 0x3032000000;
@@ -58,9 +58,9 @@
     v49 = __Block_byref_object_copy__2;
     v50 = __Block_byref_object_dispose__2;
     v51 = 0;
-    v32 = a1;
-    v2 = [(SAInstruction *)a1 realSegment];
-    v3 = v2;
+    selfCopy = self;
+    realSegment = [(SAInstruction *)self realSegment];
+    v3 = realSegment;
     v39[1] = 3221225472;
     v39[0] = MEMORY[0x1E69E9820];
     v40 = __34__SAInstruction_checkForNewSymbol__block_invoke;
@@ -69,9 +69,9 @@
     v43 = &v52;
     v44 = &v58;
     v45 = &v46;
-    if (v2)
+    if (realSegment)
     {
-      v4 = v2;
+      v4 = realSegment;
       objc_sync_enter(v4);
       v33 = v4;
       v5 = [(SASegment *)v4 nonInlineSymbolAtOffsetIntoSegment:v1];
@@ -83,7 +83,7 @@
         v8 = v7[4];
         if (v8 && (v79[0] = MEMORY[0x1E69E9820], v79[1] = 3221225472, v79[2] = __51__SASymbol_nonInlineSourceInfoAtOffsetIntoSegment___block_invoke, v79[3] = &__block_descriptor_40_e22_q16__0__SASourceInfo_8l, v79[4] = v1, v9 = SABinarySearchArray(v8, 0, v79), v9 != 0x7FFFFFFFFFFFFFFFLL))
         {
-          v10 = [v7[4] objectAtIndexedSubscript:{v9, v32}];
+          v10 = [v7[4] objectAtIndexedSubscript:{v9, selfCopy}];
         }
 
         else
@@ -122,8 +122,8 @@
               }
 
               v17 = *(*(&v74 + 1) + 8 * v16);
-              v18 = [v17 offsetIntoSegment];
-              if ([v17 length] + v18 > v1)
+              offsetIntoSegment = [v17 offsetIntoSegment];
+              if ([v17 length] + offsetIntoSegment > v1)
               {
                 if ([v17 offsetIntoSegment] > v1)
                 {
@@ -168,8 +168,8 @@ LABEL_30:
                     }
 
                     v26 = *(*(&v70 + 1) + 8 * i);
-                    v27 = [v26 offsetIntoSegment];
-                    if ([v26 length] + v27 > v1)
+                    offsetIntoSegment2 = [v26 offsetIntoSegment];
+                    if ([v26 length] + offsetIntoSegment2 > v1)
                     {
                       if ([v26 offsetIntoSegment] > v1)
                       {
@@ -227,7 +227,7 @@ LABEL_35:
       v30 = v53[5];
     }
 
-    [(SAInstruction *)v32 setSymbol:v29 sourceinfo:v30];
+    [(SAInstruction *)selfCopy setSymbol:v29 sourceinfo:v30];
     _Block_object_dispose(&v46, 8);
 
     _Block_object_dispose(&v52, 8);
@@ -239,14 +239,14 @@ LABEL_35:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSymbol:(void *)a3 sourceinfo:
+- (void)setSymbol:(void *)symbol sourceinfo:
 {
-  if (a1)
+  if (self)
   {
-    obj = a1;
+    obj = self;
     objc_sync_enter(obj);
     objc_storeStrong(obj + 1, a2);
-    objc_storeStrong(obj + 2, a3);
+    objc_storeStrong(obj + 2, symbol);
     objc_sync_exit(obj);
   }
 }
@@ -257,15 +257,15 @@ LABEL_35:
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_segment);
-    v5 = [v4 hasOffsetIntoBinary];
+    hasOffsetIntoBinary = [v4 hasOffsetIntoBinary];
   }
 
   else
   {
-    v5 = 1;
+    hasOffsetIntoBinary = 1;
   }
 
-  return v5;
+  return hasOffsetIntoBinary;
 }
 
 - (int64_t)offsetIntoBinary
@@ -278,9 +278,9 @@ LABEL_35:
   }
 
   v4 = objc_loadWeakRetained(&self->_segment);
-  v5 = [v4 hasOffsetIntoBinary];
+  hasOffsetIntoBinary = [v4 hasOffsetIntoBinary];
 
-  if (!v5)
+  if (!hasOffsetIntoBinary)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -294,29 +294,29 @@ LABEL_35:
 
 - (id)realSegment
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 4);
+    WeakRetained = objc_loadWeakRetained(self + 4);
     v3 = WeakRetained;
     if (WeakRetained)
     {
-      v1 = WeakRetained;
+      selfCopy = WeakRetained;
     }
 
     else
     {
-      v4 = objc_loadWeakRetained(v1 + 3);
-      v1 = [(SABinary *)v4 createFakeEntireBinarySegment];
+      v4 = objc_loadWeakRetained(selfCopy + 3);
+      selfCopy = [(SABinary *)v4 createFakeEntireBinarySegment];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (BOOL)symbolicateWithOptions:(unint64_t)a3 pid:(int)a4 additionalCSSymbolicatorFlags:(unsigned int)a5
+- (BOOL)symbolicateWithOptions:(unint64_t)options pid:(int)pid additionalCSSymbolicatorFlags:(unsigned int)flags
 {
-  v7 = a3;
+  optionsCopy = options;
   if (self)
   {
     if (self->_sourceInfoOrSourceInfos)
@@ -339,12 +339,12 @@ LABEL_35:
   }
 
   v12 = WeakRetained;
-  v13 = [(SABinary *)WeakRetained symbolOwnerWrapperWithOptions:v7 pid:a4 checkExclave:1 additionalCSSymbolicatorFlags:a5];
+  v13 = [(SABinary *)WeakRetained symbolOwnerWrapperWithOptions:optionsCopy pid:pid checkExclave:1 additionalCSSymbolicatorFlags:flags];
   if (v13)
   {
-    v14 = [(SAInstruction *)&self->super.isa realSegment];
-    v15 = v14;
-    if (!v14 || (v16 = [(SASegment *)v14 baseAddressInSymbolOwnerWrapper:v13], v16 == -1))
+    realSegment = [(SAInstruction *)&self->super.isa realSegment];
+    v15 = realSegment;
+    if (!realSegment || (v16 = [(SASegment *)realSegment baseAddressInSymbolOwnerWrapper:v13], v16 == -1))
     {
       v9 = 0;
     }
@@ -458,21 +458,21 @@ void __34__SAInstruction_checkForNewSymbol__block_invoke(void *a1, id obj, void 
   }
 }
 
-- (uint64_t)enumerateSymbolsNullable:(void *)a1
+- (uint64_t)enumerateSymbolsNullable:(void *)nullable
 {
   v63 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!nullable)
   {
 LABEL_38:
     v13 = 0;
     goto LABEL_25;
   }
 
-  v4 = a1;
-  objc_sync_enter(v4);
-  v5 = v4[1];
-  v6 = v4[2];
-  objc_sync_exit(v4);
+  nullableCopy = nullable;
+  objc_sync_enter(nullableCopy);
+  v5 = nullableCopy[1];
+  v6 = nullableCopy[2];
+  objc_sync_exit(nullableCopy);
 
   if (!v5)
   {
@@ -521,11 +521,11 @@ LABEL_38:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       v26 = [v5 debugDescription];
-      v2 = [v26 UTF8String];
+      uTF8String = [v26 UTF8String];
       v27 = [v6 count];
       v28 = object_getClassName(v6);
       *buf = 136315650;
-      ClassName = v2;
+      ClassName = uTF8String;
       v59 = 2048;
       v60 = v27;
       v61 = 2080;
@@ -535,46 +535,46 @@ LABEL_38:
 
     *__error() = v24;
     v29 = [v5 debugDescription];
-    v7 = [v29 UTF8String];
+    uTF8String2 = [v29 UTF8String];
     [v6 count];
     object_getClassName(v6);
-    _SASetCrashLogMessage(4378, "1 symbol %s, but %lu source infos (%s)", v30, v31, v32, v33, v34, v35, v7);
+    _SASetCrashLogMessage(4378, "1 symbol %s, but %lu source infos (%s)", v30, v31, v32, v33, v34, v35, uTF8String2);
 
     _os_crash();
     __break(1u);
     goto LABEL_32;
   }
 
-  v2 = v5;
+  uTF8String = v5;
   if (a2)
   {
-    v7 = v6;
-    if (!v7)
+    uTF8String2 = v6;
+    if (!uTF8String2)
     {
 LABEL_8:
-      if ([v2 count])
+      if ([uTF8String count])
       {
         v9 = 0;
         while (1)
         {
-          if (!v7)
+          if (!uTF8String2)
           {
             goto LABEL_13;
           }
 
-          v10 = [v7 objectAtIndexedSubscript:v9];
-          v11 = [MEMORY[0x1E695DFB0] null];
+          v10 = [uTF8String2 objectAtIndexedSubscript:v9];
+          null = [MEMORY[0x1E695DFB0] null];
 
-          if (v10 == v11)
+          if (v10 == null)
           {
             break;
           }
 
 LABEL_14:
-          v12 = [v2 objectAtIndexedSubscript:v9];
+          v12 = [uTF8String objectAtIndexedSubscript:v9];
           (*(a2 + 16))(a2, v12, v10, v9);
 
-          if (++v9 >= [v2 count])
+          if (++v9 >= [uTF8String count])
           {
             goto LABEL_15;
           }
@@ -593,8 +593,8 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v7 count];
-      if (v8 == [v2 count])
+      v8 = [uTF8String2 count];
+      if (v8 == [uTF8String count])
       {
         goto LABEL_8;
       }
@@ -607,14 +607,14 @@ LABEL_32:
     v37 = _sa_logt();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
-      v38 = object_getClassName(v7);
+      v38 = object_getClassName(uTF8String2);
       *buf = 136315138;
       ClassName = v38;
       _os_log_error_impl(&dword_1E0E2F000, v37, OS_LOG_TYPE_ERROR, "symbol is array, but source info is %s", buf, 0xCu);
     }
 
     *__error() = v36;
-    v39 = object_getClassName(v7);
+    v39 = object_getClassName(uTF8String2);
     _SASetCrashLogMessage(4359, "symbol is array, but source info is %s", v40, v41, v42, v43, v44, v45, v39);
     _os_crash();
     __break(1u);
@@ -623,8 +623,8 @@ LABEL_35:
     v47 = _sa_logt();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
     {
-      v48 = [v2 count];
-      v49 = [v7 count];
+      v48 = [uTF8String count];
+      v49 = [uTF8String2 count];
       *buf = 134218240;
       ClassName = v48;
       v59 = 2048;
@@ -633,8 +633,8 @@ LABEL_35:
     }
 
     *__error() = v46;
-    v50 = [v2 count];
-    [v7 count];
+    v50 = [uTF8String count];
+    [uTF8String2 count];
     _SASetCrashLogMessage(4360, "%lu symbols, but %lu source infos", v51, v52, v53, v54, v55, v56, v50);
     _os_crash();
     __break(1u);
@@ -642,7 +642,7 @@ LABEL_35:
   }
 
 LABEL_16:
-  v13 = [v2 count];
+  v13 = [uTF8String count];
 
 LABEL_24:
 LABEL_25:
@@ -681,9 +681,9 @@ LABEL_25:
           }
 
           v7 = *(*(&v11 + 1) + 8 * i);
-          v8 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
 
-          if (v7 != v8)
+          if (v7 != null)
           {
             LOBYTE(v3) = 1;
             goto LABEL_13;
@@ -717,7 +717,7 @@ LABEL_13:
   v33 = &unk_1E86F6E00;
   v4 = v3;
   v34 = v4;
-  v35 = self;
+  selfCopy = self;
   v5 = MEMORY[0x1E12EBE50](&v30);
   symbolOrSymbols = self->_symbolOrSymbols;
   objc_opt_class();
@@ -736,9 +736,9 @@ LABEL_13:
 
         v9 = [self->_symbolOrSymbols objectAtIndexedSubscript:v7];
         v10 = [self->_sourceInfoOrSourceInfos objectAtIndexedSubscript:v7];
-        v11 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
 
-        if (v10 == v11)
+        if (v10 == null)
         {
 
           v10 = 0;
@@ -823,26 +823,26 @@ void __33__SAInstruction_debugDescription__block_invoke(uint64_t a1, void *a2, v
 - (SASourceInfo)sourceInfo
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_sourceInfoOrSourceInfos)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_sourceInfoOrSourceInfos)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    sourceInfoOrSourceInfos = v2->_sourceInfoOrSourceInfos;
+    sourceInfoOrSourceInfos = selfCopy->_sourceInfoOrSourceInfos;
     if (isKindOfClass)
     {
-      v5 = [v2->_sourceInfoOrSourceInfos firstObject];
-      v6 = [MEMORY[0x1E695DFB0] null];
+      firstObject = [selfCopy->_sourceInfoOrSourceInfos firstObject];
+      null = [MEMORY[0x1E695DFB0] null];
 
-      if (v5 == v6)
+      if (firstObject == null)
       {
         v7 = 0;
       }
 
       else
       {
-        v7 = v5;
+        v7 = firstObject;
       }
     }
 
@@ -855,20 +855,20 @@ void __33__SAInstruction_debugDescription__block_invoke(uint64_t a1, void *a2, v
         v11 = _sa_logt();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          ClassName = object_getClassName(v2->_sourceInfoOrSourceInfos);
+          ClassName = object_getClassName(selfCopy->_sourceInfoOrSourceInfos);
           *buf = 136315138;
           v21 = ClassName;
           _os_log_error_impl(&dword_1E0E2F000, v11, OS_LOG_TYPE_ERROR, "source info is %s", buf, 0xCu);
         }
 
         *__error() = v10;
-        v13 = object_getClassName(v2->_sourceInfoOrSourceInfos);
+        v13 = object_getClassName(selfCopy->_sourceInfoOrSourceInfos);
         _SASetCrashLogMessage(4443, "source info is %s", v14, v15, v16, v17, v18, v19, v13);
         _os_crash();
         __break(1u);
       }
 
-      v7 = v2->_sourceInfoOrSourceInfos;
+      v7 = selfCopy->_sourceInfoOrSourceInfos;
     }
   }
 
@@ -877,7 +877,7 @@ void __33__SAInstruction_debugDescription__block_invoke(uint64_t a1, void *a2, v
     v7 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v8 = *MEMORY[0x1E69E9840];
 
@@ -887,17 +887,17 @@ void __33__SAInstruction_debugDescription__block_invoke(uint64_t a1, void *a2, v
 - (SASymbol)symbol
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  symbolOrSymbols = v2->_symbolOrSymbols;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  symbolOrSymbols = selfCopy->_symbolOrSymbols;
   if (symbolOrSymbols)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v5 = v2->_symbolOrSymbols;
+    v5 = selfCopy->_symbolOrSymbols;
     if (isKindOfClass)
     {
-      v6 = [v2->_symbolOrSymbols firstObject];
+      firstObject = [selfCopy->_symbolOrSymbols firstObject];
     }
 
     else
@@ -909,26 +909,26 @@ void __33__SAInstruction_debugDescription__block_invoke(uint64_t a1, void *a2, v
         v10 = _sa_logt();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
-          ClassName = object_getClassName(v2->_symbolOrSymbols);
+          ClassName = object_getClassName(selfCopy->_symbolOrSymbols);
           *buf = 136315138;
           v20 = ClassName;
           _os_log_error_impl(&dword_1E0E2F000, v10, OS_LOG_TYPE_ERROR, "symbol is %s", buf, 0xCu);
         }
 
         *__error() = v9;
-        v12 = object_getClassName(v2->_symbolOrSymbols);
+        v12 = object_getClassName(selfCopy->_symbolOrSymbols);
         _SASetCrashLogMessage(4457, "symbol is %s", v13, v14, v15, v16, v17, v18, v12);
         _os_crash();
         __break(1u);
       }
 
-      v6 = v2->_symbolOrSymbols;
+      firstObject = selfCopy->_symbolOrSymbols;
     }
 
-    symbolOrSymbols = v6;
+    symbolOrSymbols = firstObject;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v7 = *MEMORY[0x1E69E9840];
 
@@ -944,22 +944,22 @@ void __33__SAInstruction_debugDescription__block_invoke(uint64_t a1, void *a2, v
 
 - (unint64_t)sizeInBytesForSerializedVersion
 {
-  v2 = [(SAInstruction *)self numSymbols];
-  if (v2 <= 1)
+  numSymbols = [(SAInstruction *)self numSymbols];
+  if (numSymbols <= 1)
   {
     return 99;
   }
 
   else
   {
-    return 56 * v2 + 43;
+    return 56 * numSymbols + 43;
   }
 }
 
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
   v37 = *MEMORY[0x1E69E9840];
-  if ([(SAInstruction *)self sizeInBytesForSerializedVersion]!= a4)
+  if ([(SAInstruction *)self sizeInBytesForSerializedVersion]!= length)
   {
     v19 = *__error();
     v20 = _sa_logt();
@@ -967,37 +967,37 @@ void __33__SAInstruction_debugDescription__block_invoke(uint64_t a1, void *a2, v
     {
       v21 = [(SAInstruction *)self debugDescription];
       *buf = 136315650;
-      v32 = [v21 UTF8String];
+      uTF8String = [v21 UTF8String];
       v33 = 2048;
-      v34 = [(SAInstruction *)self sizeInBytesForSerializedVersion];
+      sizeInBytesForSerializedVersion = [(SAInstruction *)self sizeInBytesForSerializedVersion];
       v35 = 2048;
-      v36 = a4;
+      lengthCopy = length;
       _os_log_error_impl(&dword_1E0E2F000, v20, OS_LOG_TYPE_ERROR, "%s: size %lu != buffer length %lu", buf, 0x20u);
     }
 
     *__error() = v19;
     v22 = [(SAInstruction *)self debugDescription];
-    v23 = [v22 UTF8String];
+    uTF8String2 = [v22 UTF8String];
     [(SAInstruction *)self sizeInBytesForSerializedVersion];
-    _SASetCrashLogMessage(5578, "%s: size %lu != buffer length %lu", v24, v25, v26, v27, v28, v29, v23);
+    _SASetCrashLogMessage(5578, "%s: size %lu != buffer length %lu", v24, v25, v26, v27, v28, v29, uTF8String2);
 
     _os_crash();
     __break(1u);
   }
 
-  *&a3->var0 = 1025;
-  *(&a3->var1 + 1) = self->_offsetIntoSegment;
+  *&buffer->var0 = 1025;
+  *(&buffer->var1 + 1) = self->_offsetIntoSegment;
   WeakRetained = objc_loadWeakRetained(&self->_binary);
-  v10 = [WeakRetained uuid];
+  uuid = [WeakRetained uuid];
 
-  if (v10)
+  if (uuid)
   {
-    [v10 getUUIDBytes:&a3->var2 + 2];
+    [uuid getUUIDBytes:&buffer->var2 + 2];
   }
 
   else
   {
-    uuid_clear(&a3->var2 + 2);
+    uuid_clear(&buffer->var2 + 2);
   }
 
   v11 = objc_loadWeakRetained(&self->_segment);
@@ -1005,40 +1005,40 @@ void __33__SAInstruction_debugDescription__block_invoke(uint64_t a1, void *a2, v
   if (v11)
   {
     v12 = objc_loadWeakRetained(&self->_segment);
-    *(&a3->var4.var6 + 2) = SASerializableIndexForPointerFromSerializationDictionary(v12, a5);
+    *(&buffer->var4.var6 + 2) = SASerializableIndexForPointerFromSerializationDictionary(v12, dictionary);
   }
 
   else
   {
-    *(&a3->var4.var6 + 2) = -1;
+    *(&buffer->var4.var6 + 2) = -1;
   }
 
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __98__SAInstruction_Serialization__addSelfToBuffer_bufferLength_withCompletedSerializationDictionary___block_invoke;
   v30[3] = &unk_1E86F6E90;
-  v30[4] = a5;
-  v30[5] = a3;
+  v30[4] = dictionary;
+  v30[5] = buffer;
   v13 = [(SAInstruction *)self enumerateSymbols:v30];
   if (v13 != 1)
   {
     if (v13)
     {
-      BYTE2(a3->var5) = v13 - 1;
+      BYTE2(buffer->var5) = v13 - 1;
       v14 = (v13 - 1);
       goto LABEL_13;
     }
 
-    *(&a3->var4.var1 + 2) = -1;
-    *(&a3->var4.var4 + 2) = -1;
+    *(&buffer->var4.var1 + 2) = -1;
+    *(&buffer->var4.var4 + 2) = -1;
   }
 
   v14 = 0;
-  BYTE2(a3->var5) = 0;
+  BYTE2(buffer->var5) = 0;
 LABEL_13:
-  v15 = a3 + 56 * v14;
+  v15 = buffer + 56 * v14;
   v16 = objc_loadWeakRetained(&self->_binary);
-  *(v15 + 91) = SASerializableIndexForPointerFromSerializationDictionary(v16, a5);
+  *(v15 + 91) = SASerializableIndexForPointerFromSerializationDictionary(v16, dictionary);
 
   v17 = *MEMORY[0x1E69E9840];
   return 1;
@@ -1080,10 +1080,10 @@ void __98__SAInstruction_Serialization__addSelfToBuffer_bufferLength_withComplet
   }
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
-  v5 = [objc_opt_class() classDictionaryKey];
-  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(a3, self, v5);
+  classDictionaryKey = [objc_opt_class() classDictionaryKey];
+  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(dictionary, self, classDictionaryKey);
 
   if (v6)
   {
@@ -1092,7 +1092,7 @@ void __98__SAInstruction_Serialization__addSelfToBuffer_bufferLength_withComplet
     if (WeakRetained)
     {
       v8 = objc_loadWeakRetained(&self->_binary);
-      [v8 addSelfToSerializationDictionary:a3];
+      [v8 addSelfToSerializationDictionary:dictionary];
     }
 
     v9 = objc_loadWeakRetained(&self->_segment);
@@ -1100,14 +1100,14 @@ void __98__SAInstruction_Serialization__addSelfToBuffer_bufferLength_withComplet
     if (v9)
     {
       v10 = objc_loadWeakRetained(&self->_segment);
-      [v10 addSelfToSerializationDictionary:a3];
+      [v10 addSelfToSerializationDictionary:dictionary];
     }
 
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __65__SAInstruction_Serialization__addSelfToSerializationDictionary___block_invoke;
     v11[3] = &unk_1E86F6EB8;
-    v11[4] = a3;
+    v11[4] = dictionary;
     [(SAInstruction *)self enumerateSymbols:v11];
   }
 }
@@ -1124,7 +1124,7 @@ void __65__SAInstruction_Serialization__addSelfToSerializationDictionary___block
   }
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
   v4 = objc_alloc_init(objc_opt_self());
   objc_storeWeak(v4 + 3, 0);
@@ -1132,29 +1132,29 @@ void __65__SAInstruction_Serialization__addSelfToSerializationDictionary___block
   return v4;
 }
 
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary
 {
   v51 = *MEMORY[0x1E69E9840];
-  if (*a3 >= 5u)
+  if (*buffer >= 5u)
   {
     goto LABEL_32;
   }
 
-  if (a4 <= 0x19)
+  if (length <= 0x19)
   {
     v27 = *__error();
     v28 = _sa_logt();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v48 = a4;
+      lengthCopy2 = length;
       v49 = 2048;
       v50 = 26;
       _os_log_error_impl(&dword_1E0E2F000, v28, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAInstruction struct %lu", buf, 0x16u);
     }
 
     *__error() = v27;
-    _SASetCrashLogMessage(5669, "bufferLength %lu < serialized SAInstruction struct %lu", v29, v30, v31, v32, v33, v34, a4);
+    _SASetCrashLogMessage(5669, "bufferLength %lu < serialized SAInstruction struct %lu", v29, v30, v31, v32, v33, v34, length);
     _os_crash();
     __break(1u);
 LABEL_29:
@@ -1163,14 +1163,14 @@ LABEL_29:
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v48 = a4;
+      lengthCopy2 = length;
       v49 = 2048;
       v50 = 91;
       _os_log_error_impl(&dword_1E0E2F000, v36, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAInstruction struct v3 %lu", buf, 0x16u);
     }
 
     *__error() = v35;
-    _SASetCrashLogMessage(5699, "bufferLength %lu < serialized SAInstruction struct v3 %lu", v37, v38, v39, v40, v41, v42, a4);
+    _SASetCrashLogMessage(5699, "bufferLength %lu < serialized SAInstruction struct v3 %lu", v37, v38, v39, v40, v41, v42, length);
     _os_crash();
     __break(1u);
 LABEL_32:
@@ -1178,30 +1178,30 @@ LABEL_32:
     objc_exception_throw(v43);
   }
 
-  if (*(a3 + 1) < 4u)
+  if (*(buffer + 1) < 4u)
   {
-    if (uuid_is_null(a3 + 10))
+    if (uuid_is_null(buffer + 10))
     {
       v12 = 0;
       goto LABEL_25;
     }
 
-    v13 = uuidForBytes(a3 + 10);
+    v13 = uuidForBytes(buffer + 10);
     v12 = [SABinary binaryWithUUID:v13 absolutePath:0];
   }
 
   else
   {
-    v10 = *(a3 + 56 * *(a3 + 90) + 91);
+    v10 = *(buffer + 56 * *(buffer + 90) + 91);
     v11 = objc_opt_class();
-    v12 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v10, a5, a6, v11, 0);
+    v12 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v10, dictionary, bufferDictionary, v11, 0);
     if (!v12)
     {
       goto LABEL_25;
     }
   }
 
-  v14 = *(a3 + 1);
+  v14 = *(buffer + 1);
   if (v14 < 2)
   {
     goto LABEL_25;
@@ -1209,7 +1209,7 @@ LABEL_32:
 
   if (v14 != 2)
   {
-    if (a4 > 0x5A)
+    if (length > 0x5A)
     {
       v18 = gSASerializationEncodedVersionBeingDecoded();
       if (*v18 <= 30)
@@ -1217,15 +1217,15 @@ LABEL_32:
         *gBinaryBeingDecoded(&gBinaryBeingDecoded) = v12;
       }
 
-      v19 = *(a3 + 82);
+      v19 = *(buffer + 82);
       v20 = objc_opt_class();
-      v21 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v19, a5, a6, v20, 0);
+      v21 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v19, dictionary, bufferDictionary, v20, 0);
       if (*v18 <= 30)
       {
         *gBinaryBeingDecoded(&gBinaryBeingDecoded) = 0;
       }
 
-      LODWORD(v16) = *(a3 + 90);
+      LODWORD(v16) = *(buffer + 90);
       goto LABEL_21;
     }
 
@@ -1252,18 +1252,18 @@ LABEL_21:
   v44[1] = 3221225472;
   v44[2] = __128__SAInstruction_Serialization__populateReferencesUsingBuffer_bufferLength_andDeserializationDictionary_andDataBufferDictionary___block_invoke;
   v44[3] = &unk_1E86F6EE0;
-  v44[4] = a5;
-  v44[5] = a6;
+  v44[4] = dictionary;
+  v44[5] = bufferDictionary;
   v22 = v21;
   v45 = v22;
   v12 = v12;
   v46 = v12;
   v23 = MEMORY[0x1E12EBE50](v44);
-  (v23)[2](v23, a3 + 26, -1);
+  (v23)[2](v23, buffer + 26, -1);
   if (v16)
   {
-    v24 = *(a3 + 26);
-    v25 = a3 + 91;
+    v24 = *(buffer + 26);
+    v25 = buffer + 91;
     v16 = v16;
     do
     {

@@ -1,9 +1,9 @@
 @interface PreferencesAssistantSetBluetooth
 - (PreferencesAssistantSetBluetooth)init;
 - (void)_finish;
-- (void)availableChanged:(id)a3;
+- (void)availableChanged:(id)changed;
 - (void)dealloc;
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation PreferencesAssistantSetBluetooth
@@ -48,15 +48,15 @@
   [(PreferencesAssistantSetBluetooth *)&v5 dealloc];
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_3DF4;
   v4[3] = &unk_10598;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  completionCopy = completion;
+  v3 = completionCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
@@ -78,31 +78,31 @@
   v6 = objc_alloc_init(SASettingSetBoolResponse);
   [v6 setSetting:v4];
   completion = self->_completion;
-  v8 = [v6 dictionary];
-  completion[2](completion, v8);
+  dictionary = [v6 dictionary];
+  completion[2](completion, dictionary);
 }
 
-- (void)availableChanged:(id)a3
+- (void)availableChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = PALogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 object];
+    object = [changedCopy object];
     v7 = +[BluetoothManager sharedInstance];
     v11 = 138412546;
-    v12 = v6;
+    v12 = object;
     v13 = 1024;
-    v14 = [v7 available];
+    available = [v7 available];
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "######## BT available note: %@; available: %d", &v11, 0x12u);
   }
 
   if (self->_waitingOnBT)
   {
-    v8 = [v4 object];
-    v9 = [v8 BOOLValue];
+    object2 = [changedCopy object];
+    bOOLValue = [object2 BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
       self->_waitingOnBT = 0;
       v10 = +[BluetoothManager sharedInstance];

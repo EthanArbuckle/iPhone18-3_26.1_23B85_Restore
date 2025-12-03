@@ -4,31 +4,31 @@
 - (BOOL)hasFooterPaymentSetupField;
 - (BOOL)hasIncompletePaymentSetupFields;
 - (BOOL)hasVisibleEditableFields;
-- (BOOL)requirementsMetForFieldWithIdentifier:(id)a3;
+- (BOOL)requirementsMetForFieldWithIdentifier:(id)identifier;
 - (BOOL)requirementsMetForVisibleFields;
 - (BOOL)validValuesProvidedForVisibleFields;
 - (PKPaymentSetupFieldsModel)init;
-- (PKPaymentSetupFieldsModel)initWithPaymentSetupFields:(id)a3 footerFields:(id)a4;
-- (id)encryptedPerFieldSubmissionValuesForDestination:(id)a3;
+- (PKPaymentSetupFieldsModel)initWithPaymentSetupFields:(id)fields footerFields:(id)footerFields;
+- (id)encryptedPerFieldSubmissionValuesForDestination:(id)destination;
 - (id)incompletePaymentSetupFields;
 - (id)odiAttributes;
-- (id)paymentSetupFieldWithIdentifier:(id)a3;
-- (id)secondaryEntryFieldsModelWithPaymentSetupFields:(id)a3;
-- (id)secureSubmissionValuesForDestination:(id)a3;
+- (id)paymentSetupFieldWithIdentifier:(id)identifier;
+- (id)secondaryEntryFieldsModelWithPaymentSetupFields:(id)fields;
+- (id)secureSubmissionValuesForDestination:(id)destination;
 - (id)setupFieldAnalytics;
-- (id)submissionValuesForDestination:(id)a3;
-- (void)_addField:(id)a3 result:(id)a4 destination:(id)a5 submissionSecurity:(unint64_t)a6;
+- (id)submissionValuesForDestination:(id)destination;
+- (void)_addField:(id)field result:(id)result destination:(id)destination submissionSecurity:(unint64_t)security;
 - (void)disableDOBPrefill;
 - (void)lockFields;
 - (void)prefillDefaultValues;
-- (void)prefillDefaultValuesWithPostalAddress:(id)a3;
-- (void)prefillValuesWithFPAN:(id)a3 targetDevice:(id)a4;
-- (void)prefillValuesWithPaymentCredential:(id)a3 targetDevice:(id)a4;
-- (void)replaceAllPaymentSetupFields:(id)a3 footerFields:(id)a4;
-- (void)replaceAllPaymentSetupFieldsPreservingCurrentValues:(id)a3;
+- (void)prefillDefaultValuesWithPostalAddress:(id)address;
+- (void)prefillValuesWithFPAN:(id)n targetDevice:(id)device;
+- (void)prefillValuesWithPaymentCredential:(id)credential targetDevice:(id)device;
+- (void)replaceAllPaymentSetupFields:(id)fields footerFields:(id)footerFields;
+- (void)replaceAllPaymentSetupFieldsPreservingCurrentValues:(id)values;
 - (void)resetAllPaymentSetupFieldValues;
 - (void)unhideFieldsWithEnteredValues;
-- (void)updateWithPaymentSetupFields:(id)a3 footerFields:(id)a4;
+- (void)updateWithPaymentSetupFields:(id)fields footerFields:(id)footerFields;
 @end
 
 @implementation PKPaymentSetupFieldsModel
@@ -52,15 +52,15 @@
   return v2;
 }
 
-- (PKPaymentSetupFieldsModel)initWithPaymentSetupFields:(id)a3 footerFields:(id)a4
+- (PKPaymentSetupFieldsModel)initWithPaymentSetupFields:(id)fields footerFields:(id)footerFields
 {
-  v6 = a3;
-  v7 = a4;
+  fieldsCopy = fields;
+  footerFieldsCopy = footerFields;
   v8 = [(PKPaymentSetupFieldsModel *)self init];
   v9 = v8;
   if (v8)
   {
-    [(PKPaymentSetupFieldsModel *)v8 replaceAllPaymentSetupFields:v6 footerFields:v7];
+    [(PKPaymentSetupFieldsModel *)v8 replaceAllPaymentSetupFields:fieldsCopy footerFields:footerFieldsCopy];
   }
 
   return v9;
@@ -70,60 +70,60 @@
 {
   if (PKShowFakePaymentSetupFields())
   {
-    v3 = [a1 fakePaymentSetupProvisioningFields];
+    fakePaymentSetupProvisioningFields = [self fakePaymentSetupProvisioningFields];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = [PKPaymentSetupField paymentSetupFieldWithIdentifier:@"cardholderName"];
-    [v4 addObject:v5];
+    [array addObject:v5];
 
     v6 = [PKPaymentSetupField paymentSetupFieldWithIdentifier:@"primaryAccountNumber"];
-    [v4 addObject:v6];
+    [array addObject:v6];
 
-    v3 = [MEMORY[0x1E695DEC8] arrayWithArray:v4];
+    fakePaymentSetupProvisioningFields = [MEMORY[0x1E695DEC8] arrayWithArray:array];
   }
 
-  return v3;
+  return fakePaymentSetupProvisioningFields;
 }
 
 + (id)fakePaymentSetupProvisioningFields
 {
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = [PKPaymentSetupField paymentSetupFieldWithIdentifier:@"cardholderName"];
-  [v2 addObject:v3];
+  [array addObject:v3];
 
   v4 = [PKPaymentSetupField paymentSetupFieldWithIdentifier:@"primaryAccountNumber"];
-  [v2 addObject:v4];
+  [array addObject:v4];
 
   v5 = [PKPaymentSetupField paymentSetupFieldWithIdentifier:@"cardExpiration"];
-  [v2 addObject:v5];
+  [array addObject:v5];
 
   v6 = [PKPaymentSetupField paymentSetupFieldWithIdentifier:@"cardSecurityCode"];
-  [v2 addObject:v6];
+  [array addObject:v6];
 
   v7 = +[PKPaymentSetupField sampleCustomPaymentSetupFields];
-  [v2 addObjectsFromArray:v7];
+  [array addObjectsFromArray:v7];
 
-  v8 = [MEMORY[0x1E695DEC8] arrayWithArray:v2];
+  v8 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
 
   return v8;
 }
 
-- (void)replaceAllPaymentSetupFields:(id)a3 footerFields:(id)a4
+- (void)replaceAllPaymentSetupFields:(id)fields footerFields:(id)footerFields
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_footerFields, a4);
+  fieldsCopy = fields;
+  footerFieldsCopy = footerFields;
+  objc_storeStrong(&self->_footerFields, footerFields);
   [(PKPaymentSetupFieldsModel *)self resetAllPaymentSetupFieldValues];
   [(NSMutableArray *)self->_paymentSetupFields removeAllObjects];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v6;
+  v8 = fieldsCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -141,9 +141,9 @@
         v13 = *(*(&v16 + 1) + 8 * i);
         if ([v13 isFieldTypeFooter])
         {
-          v14 = [v13 footerFieldObject];
+          footerFieldObject = [v13 footerFieldObject];
           footerField = self->_footerField;
-          self->_footerField = v14;
+          self->_footerField = footerFieldObject;
         }
 
         else
@@ -161,15 +161,15 @@
   [(PKPaymentSetupFieldsModel *)self prefillDefaultValues];
 }
 
-- (void)replaceAllPaymentSetupFieldsPreservingCurrentValues:(id)a3
+- (void)replaceAllPaymentSetupFieldsPreservingCurrentValues:(id)values
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valuesCopy = values;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v5 = [valuesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -180,39 +180,39 @@
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(valuesCopy);
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:v10];
+        identifier = [v9 identifier];
+        v11 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:identifier];
 
         if (v11)
         {
-          v12 = [v9 fieldType];
-          if (v12 == [v11 fieldType])
+          fieldType = [v9 fieldType];
+          if (fieldType == [v11 fieldType])
           {
-            v13 = [v11 currentValue];
+            currentValue = [v11 currentValue];
 
-            if (v13)
+            if (currentValue)
             {
-              v14 = [v11 currentValue];
-              [v9 setCurrentValue:v14];
+              currentValue2 = [v11 currentValue];
+              [v9 setCurrentValue:currentValue2];
 
               [v9 setSource:{objc_msgSend(v11, "source")}];
-              v15 = [v11 originalCameraCaptureValue];
-              [v9 setOriginalCameraCaptureValue:v15];
+              originalCameraCaptureValue = [v11 originalCameraCaptureValue];
+              [v9 setOriginalCameraCaptureValue:originalCameraCaptureValue];
 
               if ([v9 isFieldTypeText])
               {
-                v16 = [v11 displayFormat];
-                v17 = [v16 length];
+                displayFormat = [v11 displayFormat];
+                v17 = [displayFormat length];
 
                 if (v17)
                 {
-                  v18 = [v9 textFieldObject];
-                  v19 = [v11 displayFormat];
-                  [v18 updateDisplayFormat:v19];
+                  textFieldObject = [v9 textFieldObject];
+                  displayFormat2 = [v11 displayFormat];
+                  [textFieldObject updateDisplayFormat:displayFormat2];
                 }
               }
             }
@@ -220,26 +220,26 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v6 = [valuesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v6);
   }
 
-  [(PKPaymentSetupFieldsModel *)self replaceAllPaymentSetupFields:v4];
+  [(PKPaymentSetupFieldsModel *)self replaceAllPaymentSetupFields:valuesCopy];
 }
 
-- (void)updateWithPaymentSetupFields:(id)a3 footerFields:(id)a4
+- (void)updateWithPaymentSetupFields:(id)fields footerFields:(id)footerFields
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_footerFields, a4);
+  fieldsCopy = fields;
+  footerFieldsCopy = footerFields;
+  objc_storeStrong(&self->_footerFields, footerFields);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = fieldsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -255,20 +255,20 @@
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v13 identifier];
-        v15 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:v14];
+        identifier = [v13 identifier];
+        v15 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:identifier];
 
         if (v15)
         {
-          v16 = [v13 rawConfigurationDictionary];
-          [v15 updateWithConfiguration:v16];
+          rawConfigurationDictionary = [v13 rawConfigurationDictionary];
+          [v15 updateWithConfiguration:rawConfigurationDictionary];
         }
 
         else if ([v13 isFieldTypeFooter])
         {
-          v17 = [v13 footerFieldObject];
+          footerFieldObject = [v13 footerFieldObject];
           footerField = self->_footerField;
-          self->_footerField = v17;
+          self->_footerField = footerFieldObject;
         }
 
         else
@@ -286,17 +286,17 @@
   [(PKPaymentSetupFieldsModel *)self prefillDefaultValues];
 }
 
-- (id)secondaryEntryFieldsModelWithPaymentSetupFields:(id)a3
+- (id)secondaryEntryFieldsModelWithPaymentSetupFields:(id)fields
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fieldsCopy = fields;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v4;
+  obj = fieldsCopy;
   v7 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v7)
   {
@@ -312,14 +312,14 @@
         }
 
         v11 = *(*(&v34 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        v13 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:v12];
+        identifier = [v11 identifier];
+        v13 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:identifier];
         v14 = [v13 copy];
 
         if (v14)
         {
-          v15 = [v11 rawConfigurationDictionary];
-          [v14 updateWithConfiguration:v15];
+          rawConfigurationDictionary = [v11 rawConfigurationDictionary];
+          [v14 updateWithConfiguration:rawConfigurationDictionary];
 
           [v14 setHidden:{objc_msgSend(v14, "isHidden") ^ 1}];
           v16 = v5;
@@ -333,7 +333,7 @@
         }
 
         [v16 addObject:v17];
-        [v6 addObject:v12];
+        [v6 addObject:identifier];
       }
 
       v8 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
@@ -346,8 +346,8 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v18 = [(PKPaymentSetupFieldsModel *)self paymentSetupFields];
-  v19 = [v18 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  paymentSetupFields = [(PKPaymentSetupFieldsModel *)self paymentSetupFields];
+  v19 = [paymentSetupFields countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v19)
   {
     v20 = v19;
@@ -358,12 +358,12 @@
       {
         if (*v31 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(paymentSetupFields);
         }
 
         v23 = *(*(&v30 + 1) + 8 * j);
-        v24 = [v23 identifier];
-        v25 = [v6 containsObject:v24];
+        identifier2 = [v23 identifier];
+        v25 = [v6 containsObject:identifier2];
 
         if ((v25 & 1) == 0)
         {
@@ -373,7 +373,7 @@
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v20 = [paymentSetupFields countByEnumeratingWithState:&v30 objects:v38 count:16];
     }
 
     while (v20);
@@ -410,9 +410,9 @@
         v7 = *(*(&v9 + 1) + 8 * i);
         if ([v7 isHidden])
         {
-          v8 = [v7 currentValue];
+          currentValue = [v7 currentValue];
 
-          if (v8)
+          if (currentValue)
           {
             [v7 setHidden:0];
           }
@@ -529,10 +529,10 @@ id __58__PKPaymentSetupFieldsModel_readonlySetupFieldIdentifiers__block_invoke(u
   return v4;
 }
 
-- (id)paymentSetupFieldWithIdentifier:(id)a3
+- (id)paymentSetupFieldWithIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -553,8 +553,8 @@ LABEL_3:
       }
 
       v10 = *(*(&v18 + 1) + 8 * v9);
-      v11 = [v10 identifier];
-      v12 = [v11 isEqualToString:v4];
+      identifier = [v10 identifier];
+      v12 = [identifier isEqualToString:identifierCopy];
 
       if (v12)
       {
@@ -587,7 +587,7 @@ LABEL_9:
   }
 
   footerField = self->_footerField;
-  if (footerField && (-[PKPaymentSetupField identifier](footerField, "identifier"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 isEqualToString:v4], v15, v16))
+  if (footerField && (-[PKPaymentSetupField identifier](footerField, "identifier"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 isEqualToString:identifierCopy], v15, v16))
   {
     v13 = self->_footerField;
   }
@@ -605,7 +605,7 @@ LABEL_15:
 - (id)incompletePaymentSetupFields
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -628,7 +628,7 @@ LABEL_15:
         v9 = *(*(&v12 + 1) + 8 * i);
         if (([v9 submissionStringMeetsAllRequirements] & 1) == 0)
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
@@ -638,23 +638,23 @@ LABEL_15:
     while (v6);
   }
 
-  v10 = [MEMORY[0x1E695DEC8] arrayWithArray:v3];
+  v10 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
 
   return v10;
 }
 
 - (BOOL)hasIncompletePaymentSetupFields
 {
-  v2 = [(PKPaymentSetupFieldsModel *)self incompletePaymentSetupFields];
-  v3 = [v2 count] != 0;
+  incompletePaymentSetupFields = [(PKPaymentSetupFieldsModel *)self incompletePaymentSetupFields];
+  v3 = [incompletePaymentSetupFields count] != 0;
 
   return v3;
 }
 
-- (id)submissionValuesForDestination:(id)a3
+- (id)submissionValuesForDestination:(id)destination
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  destinationCopy = destination;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v19 = 0u;
   v20 = 0u;
@@ -682,11 +682,11 @@ LABEL_15:
       }
 
       v13 = *(*(&v19 + 1) + 8 * i);
-      [(PKPaymentSetupFieldsModel *)self _addField:v13 result:v5 destination:v4 submissionSecurity:0];
+      [(PKPaymentSetupFieldsModel *)self _addField:v13 result:v5 destination:destinationCopy submissionSecurity:0];
       if ([v13 supportsAddressAutofill])
       {
-        v14 = [v13 source];
-        switch(v14)
+        source = [v13 source];
+        switch(source)
         {
           case 4:
             v9 = 1;
@@ -740,16 +740,16 @@ LABEL_19:
 
 - (BOOL)hasFooterPaymentSetupField
 {
-  v2 = [(PKPaymentSetupFieldsModel *)self footerPaymentSetupField];
-  v3 = v2 != 0;
+  footerPaymentSetupField = [(PKPaymentSetupFieldsModel *)self footerPaymentSetupField];
+  v3 = footerPaymentSetupField != 0;
 
   return v3;
 }
 
-- (id)secureSubmissionValuesForDestination:(id)a3
+- (id)secureSubmissionValuesForDestination:(id)destination
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  destinationCopy = destination;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v13 = 0u;
   v14 = 0u;
@@ -770,7 +770,7 @@ LABEL_19:
           objc_enumerationMutation(v6);
         }
 
-        [(PKPaymentSetupFieldsModel *)self _addField:*(*(&v13 + 1) + 8 * i) result:v5 destination:v4 submissionSecurity:1, v13];
+        [(PKPaymentSetupFieldsModel *)self _addField:*(*(&v13 + 1) + 8 * i) result:v5 destination:destinationCopy submissionSecurity:1, v13];
       }
 
       v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -784,10 +784,10 @@ LABEL_19:
   return v11;
 }
 
-- (id)encryptedPerFieldSubmissionValuesForDestination:(id)a3
+- (id)encryptedPerFieldSubmissionValuesForDestination:(id)destination
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  destinationCopy = destination;
   v28 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v29 = 0u;
   v30 = 0u;
@@ -801,7 +801,7 @@ LABEL_19:
     v8 = *v30;
     v9 = @"cardPIN";
     v26 = v5;
-    v27 = v4;
+    v27 = destinationCopy;
     v25 = @"cardPIN";
     do
     {
@@ -815,7 +815,7 @@ LABEL_19:
         v11 = *(*(&v29 + 1) + 8 * i);
         if ([v11 submissionStringMeetsAllRequirements])
         {
-          if (!v4)
+          if (!destinationCopy)
           {
             if ([v11 submissionSecurity] != 2)
             {
@@ -823,10 +823,10 @@ LABEL_19:
             }
 
 LABEL_12:
-            v14 = [v11 submissionKey];
-            v15 = [v11 submissionString];
-            v16 = v14;
-            v12 = v16;
+            submissionKey = [v11 submissionKey];
+            submissionString = [v11 submissionString];
+            v16 = submissionKey;
+            submissionDestination = v16;
             if (v16 == v9)
             {
             }
@@ -852,30 +852,30 @@ LABEL_20:
             v18 = 1;
 LABEL_21:
             v19 = [PKEncryptedPaymentSetupFieldSubmissionContainer alloc];
-            v20 = [v11 fieldSubmissionEncryptionScheme];
-            v21 = [v11 fieldSubmissionEncryptionCertificates];
-            v22 = [(PKEncryptedPaymentSetupFieldSubmissionContainer *)v19 initWithValue:v15 format:v18 scheme:v20 certificates:v21];
+            fieldSubmissionEncryptionScheme = [v11 fieldSubmissionEncryptionScheme];
+            fieldSubmissionEncryptionCertificates = [v11 fieldSubmissionEncryptionCertificates];
+            v22 = [(PKEncryptedPaymentSetupFieldSubmissionContainer *)v19 initWithValue:submissionString format:v18 scheme:fieldSubmissionEncryptionScheme certificates:fieldSubmissionEncryptionCertificates];
 
             [v11 addSupplementalSubmissionValues:v22];
-            [v28 setObject:v22 forKeyedSubscript:v12];
+            [v28 setObject:v22 forKeyedSubscript:submissionDestination];
 
             v5 = v26;
-            v4 = v27;
+            destinationCopy = v27;
             v9 = v25;
 LABEL_22:
 
             continue;
           }
 
-          v12 = [v11 submissionDestination];
-          if (![v12 isEqualToString:v4])
+          submissionDestination = [v11 submissionDestination];
+          if (![submissionDestination isEqualToString:destinationCopy])
           {
             goto LABEL_22;
           }
 
-          v13 = [v11 submissionSecurity];
+          submissionSecurity = [v11 submissionSecurity];
 
-          if (v13 == 2)
+          if (submissionSecurity == 2)
           {
             goto LABEL_12;
           }
@@ -893,64 +893,64 @@ LABEL_22:
   return v23;
 }
 
-- (void)_addField:(id)a3 result:(id)a4 destination:(id)a5 submissionSecurity:(unint64_t)a6
+- (void)_addField:(id)field result:(id)result destination:(id)destination submissionSecurity:(unint64_t)security
 {
-  v28 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v28 submissionSecurity];
-  if ([v28 submissionStringMeetsAllRequirements])
+  fieldCopy = field;
+  resultCopy = result;
+  destinationCopy = destination;
+  submissionSecurity = [fieldCopy submissionSecurity];
+  if ([fieldCopy submissionStringMeetsAllRequirements])
   {
-    if (!v10 || ([v28 submissionDestination], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", v10), v12, v13))
+    if (!destinationCopy || ([fieldCopy submissionDestination], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", destinationCopy), v12, v13))
     {
-      if (v11 == a6)
+      if (submissionSecurity == security)
       {
-        v14 = [v28 submissionKey];
-        v15 = [v28 submissionString];
-        v16 = v15;
-        if (v14 && v15)
+        submissionKey = [fieldCopy submissionKey];
+        submissionString = [fieldCopy submissionString];
+        v16 = submissionString;
+        if (submissionKey && submissionString)
         {
-          [v9 setObject:v15 forKey:v14];
+          [resultCopy setObject:submissionString forKey:submissionKey];
         }
       }
     }
   }
 
-  v17 = [v28 pickerFieldObject];
-  if ([v17 pickerType] == 2)
+  pickerFieldObject = [fieldCopy pickerFieldObject];
+  if ([pickerFieldObject pickerType] == 2)
   {
-    v18 = [v17 currentValue];
-    v19 = [v18 nextLevelPicker];
+    currentValue = [pickerFieldObject currentValue];
+    nextLevelPicker = [currentValue nextLevelPicker];
 
-    if (v19)
+    if (nextLevelPicker)
     {
       do
       {
-        v20 = [v19 submissionSecurity];
-        if ([v19 submissionStringMeetsAllRequirements])
+        submissionSecurity2 = [nextLevelPicker submissionSecurity];
+        if ([nextLevelPicker submissionStringMeetsAllRequirements])
         {
-          if (!v10 || ([v19 submissionDestination], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", v10), v21, v22))
+          if (!destinationCopy || ([nextLevelPicker submissionDestination], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", destinationCopy), v21, v22))
           {
-            if (v20 == a6)
+            if (submissionSecurity2 == security)
             {
-              v23 = [v19 submissionKey];
-              v24 = [v19 submissionString];
-              v25 = v24;
-              if (v23 && v24)
+              submissionKey2 = [nextLevelPicker submissionKey];
+              submissionString2 = [nextLevelPicker submissionString];
+              v25 = submissionString2;
+              if (submissionKey2 && submissionString2)
               {
-                [v9 setObject:v24 forKey:v23];
+                [resultCopy setObject:submissionString2 forKey:submissionKey2];
               }
             }
           }
         }
 
-        v26 = [v19 currentValue];
-        v27 = [v26 nextLevelPicker];
+        currentValue2 = [nextLevelPicker currentValue];
+        nextLevelPicker2 = [currentValue2 nextLevelPicker];
 
-        v19 = v27;
+        nextLevelPicker = nextLevelPicker2;
       }
 
-      while (v27);
+      while (nextLevelPicker2);
     }
   }
 }
@@ -1012,9 +1012,9 @@ LABEL_22:
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
-        v8 = [v7 identifier];
-        v9 = v8;
-        if (v8 == @"dateOfBirth")
+        identifier = [v7 identifier];
+        v9 = identifier;
+        if (identifier == @"dateOfBirth")
         {
 
 LABEL_12:
@@ -1022,9 +1022,9 @@ LABEL_12:
           continue;
         }
 
-        if (@"dateOfBirth" && v8)
+        if (@"dateOfBirth" && identifier)
         {
-          v10 = [(__CFString *)v8 isEqualToString:@"dateOfBirth"];
+          v10 = [(__CFString *)identifier isEqualToString:@"dateOfBirth"];
 
           if (v10)
           {
@@ -1058,8 +1058,8 @@ LABEL_12:
   v333 = 0u;
   v334 = 0u;
   v335 = 0u;
-  v5 = self->_paymentSetupFields;
-  v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v332 objects:v341 count:16];
+  currentLocale = self->_paymentSetupFields;
+  v6 = [(NSMutableArray *)currentLocale countByEnumeratingWithState:&v332 objects:v341 count:16];
   if (!v6)
   {
     goto LABEL_324;
@@ -1074,14 +1074,14 @@ LABEL_12:
     {
       if (*v333 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(currentLocale);
       }
 
       v11 = *(*(&v332 + 1) + 8 * i);
       if (([v11 isFieldTypeFooter] & 1) == 0)
       {
-        v12 = [v11 identifier];
-        [v4 setObject:v11 forKey:v12];
+        identifier = [v11 identifier];
+        [v4 setObject:v11 forKey:identifier];
 
         if (v8)
         {
@@ -1091,23 +1091,23 @@ LABEL_12:
 
         if ([v11 isFieldTypeDate])
         {
-          v13 = [v11 dateFieldObject];
-          v14 = [v13 defaultDate];
+          dateFieldObject = [v11 dateFieldObject];
+          defaultDate = [dateFieldObject defaultDate];
           goto LABEL_14;
         }
 
         if ([v11 isFieldTypePicker])
         {
-          v13 = [v11 pickerFieldObject];
-          v14 = [v13 defaultPickerItem];
+          dateFieldObject = [v11 pickerFieldObject];
+          defaultDate = [dateFieldObject defaultPickerItem];
 LABEL_14:
-          v15 = v14;
+          v15 = defaultDate;
         }
 
         else
         {
-          v13 = [v11 defaultValue];
-          v15 = v13;
+          dateFieldObject = [v11 defaultValue];
+          v15 = dateFieldObject;
         }
 
         v8 = v15 == 0;
@@ -1115,7 +1115,7 @@ LABEL_14:
       }
     }
 
-    v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v332 objects:v341 count:16];
+    v7 = [(NSMutableArray *)currentLocale countByEnumeratingWithState:&v332 objects:v341 count:16];
   }
 
   while (v7);
@@ -1125,7 +1125,7 @@ LABEL_14:
     goto LABEL_325;
   }
 
-  v5 = [MEMORY[0x1E695DF58] currentLocale];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
   v16 = 0x1E695C000uLL;
   v17 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:0];
   v18 = *MEMORY[0x1E695C240];
@@ -1145,25 +1145,25 @@ LABEL_14:
   v23 = [v4 objectForKey:@"lastName"];
   v278 = [v4 objectForKey:@"email"];
   v265 = v22;
-  v24 = [v22 defaultValue];
-  if (v24)
+  defaultValue = [v22 defaultValue];
+  if (defaultValue)
   {
     goto LABEL_21;
   }
 
-  v25 = [v23 defaultValue];
+  defaultValue2 = [v23 defaultValue];
 
-  if (!v25)
+  if (!defaultValue2)
   {
     if (v22 && [v22 populateFromMeCard])
     {
-      v79 = [v277 givenName];
-      v80 = [v79 stringByApplyingTransform:*MEMORY[0x1E695DA48] reverse:0];
+      givenName = [v277 givenName];
+      v80 = [givenName stringByApplyingTransform:*MEMORY[0x1E695DA48] reverse:0];
 
       [v22 setDefaultValue:v80];
-      v81 = [v22 currentValue];
+      currentValue = [v22 currentValue];
 
-      if (!v81)
+      if (!currentValue)
       {
         [v22 setCurrentValue:v80];
       }
@@ -1171,15 +1171,15 @@ LABEL_14:
 
     if (v23 && [v23 populateFromMeCard])
     {
-      v82 = [v277 familyName];
-      v24 = [v82 stringByApplyingTransform:*MEMORY[0x1E695DA48] reverse:0];
+      familyName = [v277 familyName];
+      defaultValue = [familyName stringByApplyingTransform:*MEMORY[0x1E695DA48] reverse:0];
 
-      [v23 setDefaultValue:v24];
-      v83 = [v23 currentValue];
+      [v23 setDefaultValue:defaultValue];
+      currentValue2 = [v23 currentValue];
 
-      if (!v83)
+      if (!currentValue2)
       {
-        [v23 setCurrentValue:v24];
+        [v23 setCurrentValue:defaultValue];
       }
 
 LABEL_21:
@@ -1190,8 +1190,8 @@ LABEL_21:
   v269 = v23;
   if (v278)
   {
-    v26 = [v278 defaultValue];
-    if (v26)
+    defaultValue3 = [v278 defaultValue];
+    if (defaultValue3)
     {
       goto LABEL_147;
     }
@@ -1202,9 +1202,9 @@ LABEL_21:
       v328 = 0u;
       v329 = 0u;
       v330 = 0u;
-      v26 = v331 = 0u;
-      v295 = v26;
-      v309 = [v26 countByEnumeratingWithState:&v328 objects:v339 count:16];
+      defaultValue3 = v331 = 0u;
+      v295 = defaultValue3;
+      v309 = [defaultValue3 countByEnumeratingWithState:&v328 objects:v339 count:16];
       if (!v309)
       {
         v273 = 0;
@@ -1225,7 +1225,7 @@ LABEL_21:
       v29 = *MEMORY[0x1E695CB60];
       v293 = *MEMORY[0x1E695CB68];
       v275 = *MEMORY[0x1E695CBC8];
-      v303 = v5;
+      v303 = currentLocale;
       v304 = *MEMORY[0x1E695CB58];
       v287 = *MEMORY[0x1E695CBD8];
       while (1)
@@ -1236,13 +1236,13 @@ LABEL_21:
           v31 = v29;
           if (*v329 != v306)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(defaultValue3);
           }
 
           v32 = *(*(&v328 + 1) + 8 * v30);
-          v33 = [v32 label];
-          v34 = [v32 value];
-          v35 = v33;
+          label = [v32 label];
+          value = [v32 value];
+          v35 = label;
           v36 = v28;
           v37 = v36;
           if (v35 == v36)
@@ -1252,16 +1252,16 @@ LABEL_21:
 LABEL_42:
             if ([v27 length])
             {
-              v5 = v303;
+              currentLocale = v303;
               v28 = v304;
               goto LABEL_98;
             }
 
             v47 = v27;
-            v27 = v34;
+            v27 = value;
             v28 = v304;
 LABEL_90:
-            v5 = v303;
+            currentLocale = v303;
 
             goto LABEL_98;
           }
@@ -1303,7 +1303,7 @@ LABEL_57:
             v47 = v299;
             if (![v299 length])
             {
-              v299 = v34;
+              v299 = value;
               goto LABEL_88;
             }
 
@@ -1346,7 +1346,7 @@ LABEL_71:
             v47 = v289;
             if (![v289 length])
             {
-              v289 = v34;
+              v289 = value;
               goto LABEL_87;
             }
 
@@ -1388,9 +1388,9 @@ LABEL_85:
             v47 = v281;
             if (![v281 length])
             {
-              v281 = v34;
+              v281 = value;
 LABEL_87:
-              v26 = v295;
+              defaultValue3 = v295;
 LABEL_88:
               v27 = obj;
               v28 = v304;
@@ -1400,7 +1400,7 @@ LABEL_89:
             }
 
 LABEL_94:
-            v26 = v295;
+            defaultValue3 = v295;
 LABEL_95:
             v27 = obj;
             v28 = v304;
@@ -1464,7 +1464,7 @@ LABEL_96:
 
             if (v66)
             {
-              v26 = v295;
+              defaultValue3 = v295;
               v27 = obj;
               goto LABEL_96;
             }
@@ -1517,7 +1517,7 @@ LABEL_96:
           if (v47 == v75)
           {
 
-            v26 = v295;
+            defaultValue3 = v295;
             goto LABEL_89;
           }
 
@@ -1528,7 +1528,7 @@ LABEL_96:
             if (v77)
             {
 LABEL_117:
-              v26 = v295;
+              defaultValue3 = v295;
               goto LABEL_96;
             }
           }
@@ -1541,21 +1541,21 @@ LABEL_117:
           v29 = v31;
           if (![v273 length])
           {
-            v273 = v34;
-            v26 = v295;
+            v273 = value;
+            defaultValue3 = v295;
             goto LABEL_90;
           }
 
-          v26 = v295;
+          defaultValue3 = v295;
 LABEL_97:
-          v5 = v303;
+          currentLocale = v303;
 LABEL_98:
 
           ++v30;
         }
 
         while (v309 != v30);
-        v78 = [v26 countByEnumeratingWithState:&v328 objects:v339 count:16];
+        v78 = [defaultValue3 countByEnumeratingWithState:&v328 objects:v339 count:16];
         v309 = v78;
         if (!v78)
         {
@@ -1645,12 +1645,12 @@ LABEL_142:
           v16 = 0x1E695C000uLL;
 LABEL_143:
 
-          v26 = v295;
+          defaultValue3 = v295;
 LABEL_144:
           [v278 setDefaultValue:v84];
-          v87 = [v278 currentValue];
+          currentValue3 = [v278 currentValue];
 
-          if (!v87)
+          if (!currentValue3)
           {
             [v278 setCurrentValue:v84];
           }
@@ -1668,25 +1668,25 @@ LABEL_147:
   v89 = v88;
   if (v88)
   {
-    v90 = [v88 defaultValue];
-    if (v90)
+    defaultValue4 = [v88 defaultValue];
+    if (defaultValue4)
     {
       goto LABEL_155;
     }
 
     if ([v89 populateFromMeCard])
     {
-      v90 = [*(v16 + 3456) stringFromContact:v277 style:0];
+      defaultValue4 = [*(v16 + 3456) stringFromContact:v277 style:0];
       v91 = PKCurrentRegion();
       v92 = [v91 isEqual:@"JP"];
 
-      if (v92 && ([v90 canBeConvertedToEncoding:5] & 1) == 0)
+      if (v92 && ([defaultValue4 canBeConvertedToEncoding:5] & 1) == 0)
       {
 
-        v90 = 0;
+        defaultValue4 = 0;
       }
 
-      [v89 setDefaultValue:v90];
+      [v89 setDefaultValue:defaultValue4];
 LABEL_155:
     }
   }
@@ -1702,76 +1702,76 @@ LABEL_155:
   v290 = [v4 objectForKey:@"administrativeArea"];
   v288 = [v4 objectForKey:@"state"];
   v294 = [v4 objectForKey:@"countryCode"];
-  v95 = [v93 defaultValue];
-  if (v95)
+  defaultValue5 = [v93 defaultValue];
+  if (defaultValue5)
   {
-    v96 = 0;
+    populateFromMeCard = 0;
   }
 
   else
   {
-    v96 = [v93 populateFromMeCard];
+    populateFromMeCard = [v93 populateFromMeCard];
   }
 
-  v97 = [v94 defaultValue];
+  defaultValue6 = [v94 defaultValue];
   v270 = v94;
-  if (v97)
+  if (defaultValue6)
   {
-    v98 = 0;
+    populateFromMeCard2 = 0;
   }
 
   else
   {
-    v98 = [v94 populateFromMeCard];
+    populateFromMeCard2 = [v94 populateFromMeCard];
   }
 
-  v99 = [v280 defaultValue];
+  defaultValue7 = [v280 defaultValue];
   v267 = v93;
-  if (v99)
+  if (defaultValue7)
   {
-    v100 = 0;
+    populateFromMeCard3 = 0;
   }
 
   else
   {
-    v100 = [v280 populateFromMeCard];
+    populateFromMeCard3 = [v280 populateFromMeCard];
   }
 
-  v101 = [v276 defaultValue];
-  if (v101)
+  defaultValue8 = [v276 defaultValue];
+  if (defaultValue8)
   {
-    v102 = 0;
+    populateFromMeCard4 = 0;
   }
 
   else
   {
-    v102 = [v276 populateFromMeCard];
+    populateFromMeCard4 = [v276 populateFromMeCard];
   }
 
-  v103 = [v282 defaultValue];
-  if (v103)
+  defaultValue9 = [v282 defaultValue];
+  if (defaultValue9)
   {
-    v104 = 0;
+    populateFromMeCard5 = 0;
   }
 
   else
   {
-    v104 = [v282 populateFromMeCard];
+    populateFromMeCard5 = [v282 populateFromMeCard];
   }
 
-  v105 = [v284 defaultValue];
-  if (v105)
+  defaultValue10 = [v284 defaultValue];
+  if (defaultValue10)
   {
-    v106 = 0;
+    populateFromMeCard6 = 0;
   }
 
   else
   {
-    v106 = [v284 populateFromMeCard];
+    populateFromMeCard6 = [v284 populateFromMeCard];
   }
 
-  v107 = [v286 defaultValue];
-  if (v107)
+  defaultValue11 = [v286 defaultValue];
+  if (defaultValue11)
   {
     LOBYTE(v108) = 1;
   }
@@ -1783,8 +1783,8 @@ LABEL_155:
 
   v310 = v108;
 
-  v109 = [v290 defaultValue];
-  if (v109)
+  defaultValue12 = [v290 defaultValue];
+  if (defaultValue12)
   {
     LOBYTE(v110) = 1;
   }
@@ -1796,8 +1796,8 @@ LABEL_155:
 
   v264 = v89;
 
-  v111 = [v288 defaultValue];
-  if (v111)
+  defaultValue13 = [v288 defaultValue];
+  if (defaultValue13)
   {
 LABEL_181:
 
@@ -1810,37 +1810,37 @@ LABEL_181:
 
   else
   {
-    v135 = [v288 populateFromMeCard];
-    v136 = (v96 & v98 | v100 & v102) & v104 & v106;
+    populateFromMeCard7 = [v288 populateFromMeCard];
+    v136 = (populateFromMeCard & populateFromMeCard2 | populateFromMeCard3 & populateFromMeCard4) & populateFromMeCard5 & populateFromMeCard6;
     v4 = v266;
     v112 = v269;
     v113 = v270;
     v114 = v290;
     v115 = v294;
-    if ((v136 & 1) != 0 && v135)
+    if ((v136 & 1) != 0 && populateFromMeCard7)
     {
       v137 = MEMORY[0x1E695DA48];
       if (v267 || v270 || v280 || v276)
       {
-        v138 = [v268 street];
-        v139 = [v138 componentsSeparatedByString:@"\n"];
+        street = [v268 street];
+        v139 = [street componentsSeparatedByString:@"\n"];
 
-        v140 = [v139 firstObject];
+        firstObject = [v139 firstObject];
         v141 = *v137;
-        v142 = [v140 stringByApplyingTransform:*v137 reverse:0];
+        v142 = [firstObject stringByApplyingTransform:*v137 reverse:0];
 
         [v267 setDefaultValue:v142];
-        v143 = [v267 currentValue];
+        currentValue4 = [v267 currentValue];
 
-        if (!v143)
+        if (!currentValue4)
         {
           [v267 setCurrentValue:v142];
         }
 
         [v280 setDefaultValue:v142];
-        v144 = [v280 currentValue];
+        currentValue5 = [v280 currentValue];
 
-        if (!v144)
+        if (!currentValue5)
         {
           [v280 setCurrentValue:v142];
         }
@@ -1851,17 +1851,17 @@ LABEL_181:
           v146 = [v145 stringByApplyingTransform:v141 reverse:0];
 
           [v270 setDefaultValue:v146];
-          v147 = [v270 currentValue];
+          currentValue6 = [v270 currentValue];
 
-          if (!v147)
+          if (!currentValue6)
           {
             [v270 setCurrentValue:v146];
           }
 
           [v276 setDefaultValue:v146];
-          v148 = [v276 currentValue];
+          currentValue7 = [v276 currentValue];
 
-          if (!v148)
+          if (!currentValue7)
           {
             [v276 setCurrentValue:v146];
           }
@@ -1875,13 +1875,13 @@ LABEL_181:
 
       if (v284)
       {
-        v149 = [v268 postalCode];
-        [v284 setDefaultValue:v149];
-        v150 = [v284 currentValue];
+        postalCode = [v268 postalCode];
+        [v284 setDefaultValue:postalCode];
+        currentValue8 = [v284 currentValue];
 
-        if (!v150)
+        if (!currentValue8)
         {
-          [v284 setCurrentValue:v149];
+          [v284 setCurrentValue:postalCode];
         }
 
         v115 = v294;
@@ -1889,13 +1889,13 @@ LABEL_181:
 
       if (!((v286 == 0) | v310 & 1))
       {
-        v151 = [v268 subLocality];
-        v152 = [v151 stringByApplyingTransform:*v137 reverse:0];
+        subLocality = [v268 subLocality];
+        v152 = [subLocality stringByApplyingTransform:*v137 reverse:0];
 
         [v286 setDefaultValue:v152];
-        v153 = [v286 currentValue];
+        currentValue9 = [v286 currentValue];
 
-        if (!v153)
+        if (!currentValue9)
         {
           [v286 setDefaultValue:v152];
         }
@@ -1905,13 +1905,13 @@ LABEL_181:
 
       if (!((v114 == 0) | v110 & 1))
       {
-        v154 = [v268 subAdministrativeArea];
-        v155 = [v154 stringByApplyingTransform:*v137 reverse:0];
+        subAdministrativeArea = [v268 subAdministrativeArea];
+        v155 = [subAdministrativeArea stringByApplyingTransform:*v137 reverse:0];
 
         [v114 setDefaultValue:v155];
-        v156 = [v114 currentValue];
+        currentValue10 = [v114 currentValue];
 
-        if (!v156)
+        if (!currentValue10)
         {
           [v114 setCurrentValue:v155];
         }
@@ -1921,27 +1921,27 @@ LABEL_181:
 
       if (v288)
       {
-        v157 = [v268 state];
-        v158 = [v157 stringByApplyingTransform:*v137 reverse:0];
+        state = [v268 state];
+        v158 = [state stringByApplyingTransform:*v137 reverse:0];
 
         if (v158)
         {
           if ([v288 isFieldTypePicker])
           {
             v159 = v288;
-            v160 = [v159 pickerItems];
+            pickerItems = [v159 pickerItems];
             v325[0] = MEMORY[0x1E69E9820];
             v325[1] = 3221225472;
             v325[2] = __49__PKPaymentSetupFieldsModel_prefillDefaultValues__block_invoke;
             v325[3] = &unk_1E79C8418;
             v326 = v158;
-            v161 = [v160 pk_firstObjectPassingTest:v325];
+            v161 = [pickerItems pk_firstObjectPassingTest:v325];
 
             if (v161)
             {
-              v162 = [v159 currentValue];
+              currentValue11 = [v159 currentValue];
 
-              if (!v162)
+              if (!currentValue11)
               {
                 [v159 setCurrentValue:v161];
               }
@@ -1955,9 +1955,9 @@ LABEL_181:
           else
           {
             [v288 setDefaultValue:v158];
-            v172 = [v288 currentValue];
+            currentValue12 = [v288 currentValue];
 
-            if (!v172)
+            if (!currentValue12)
             {
               [v288 setCurrentValue:v158];
             }
@@ -1969,15 +1969,15 @@ LABEL_181:
 
       if (v282)
       {
-        v173 = [v268 city];
-        v111 = [v173 stringByApplyingTransform:*v137 reverse:0];
+        city = [v268 city];
+        defaultValue13 = [city stringByApplyingTransform:*v137 reverse:0];
 
-        [v282 setDefaultValue:v111];
-        v174 = [v282 currentValue];
+        [v282 setDefaultValue:defaultValue13];
+        currentValue13 = [v282 currentValue];
 
-        if (!v174)
+        if (!currentValue13)
         {
-          [v282 setCurrentValue:v111];
+          [v282 setCurrentValue:defaultValue13];
         }
 
         goto LABEL_181;
@@ -1991,20 +1991,20 @@ LABEL_181:
     goto LABEL_272;
   }
 
-  v117 = [v115 pickerItems];
-  v118 = [v117 count];
+  pickerItems2 = [v115 pickerItems];
+  v118 = [pickerItems2 count];
 
   if (!v118)
   {
-    v119 = [MEMORY[0x1E695DF58] ISOCountryCodes];
-    if ([v119 count])
+    iSOCountryCodes = [MEMORY[0x1E695DF58] ISOCountryCodes];
+    if ([iSOCountryCodes count])
     {
-      v120 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v119, "count")}];
+      v120 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(iSOCountryCodes, "count")}];
       v321 = 0u;
       v322 = 0u;
       v323 = 0u;
       v324 = 0u;
-      v121 = v119;
+      v121 = iSOCountryCodes;
       v122 = [v121 countByEnumeratingWithState:&v321 objects:v338 count:16];
       if (v122)
       {
@@ -2020,7 +2020,7 @@ LABEL_181:
             }
 
             v126 = *(*(&v321 + 1) + 8 * j);
-            v127 = PKLocalizedStringForCountryCode(v5, v126);
+            v127 = PKLocalizedStringForCountryCode(currentLocale, v126);
             if ([v127 length])
             {
               v128 = [[PKPaymentSetupFieldPickerItem alloc] initWithName:v127 value:v126];
@@ -2048,18 +2048,18 @@ LABEL_181:
     v115 = v294;
   }
 
-  v130 = [v115 defaultValue];
-  v131 = [v115 currentValue];
+  defaultValue14 = [v115 defaultValue];
+  currentValue14 = [v115 currentValue];
 
-  if (v131)
+  if (currentValue14)
   {
     goto LABEL_271;
   }
 
-  if (v130)
+  if (defaultValue14)
   {
-    v132 = [v294 pickerItems];
-    v133 = [PKPaymentSetupFieldPicker pickerItemMatchingValue:v130 pickerItems:v132];
+    pickerItems3 = [v294 pickerItems];
+    v133 = [PKPaymentSetupFieldPicker pickerItemMatchingValue:defaultValue14 pickerItems:pickerItems3];
 
     if (v133)
     {
@@ -2086,16 +2086,16 @@ LABEL_181:
     goto LABEL_266;
   }
 
-  v164 = [v268 ISOCountryCode];
-  v165 = [v164 uppercaseString];
+  iSOCountryCode = [v268 ISOCountryCode];
+  uppercaseString = [iSOCountryCode uppercaseString];
 
-  v166 = [(NSMutableArray *)v5 regionCode];
+  regionCode = [(NSMutableArray *)currentLocale regionCode];
   if (!v133)
   {
-    if (v165)
+    if (uppercaseString)
     {
-      v167 = [v294 pickerItems];
-      v168 = [PKPaymentSetupFieldPicker pickerItemMatchingValue:v165 pickerItems:v167];
+      pickerItems4 = [v294 pickerItems];
+      v168 = [PKPaymentSetupFieldPicker pickerItemMatchingValue:uppercaseString pickerItems:pickerItems4];
 
       v4 = v266;
       if (v168)
@@ -2113,7 +2113,7 @@ LABEL_181:
     }
   }
 
-  if (v133 || !v166)
+  if (v133 || !regionCode)
   {
     if (v133)
     {
@@ -2123,15 +2123,15 @@ LABEL_181:
     goto LABEL_260;
   }
 
-  v171 = [v294 pickerItems];
-  v168 = [PKPaymentSetupFieldPicker pickerItemMatchingValue:v166 pickerItems:v171];
+  pickerItems5 = [v294 pickerItems];
+  v168 = [PKPaymentSetupFieldPicker pickerItemMatchingValue:regionCode pickerItems:pickerItems5];
 
   v4 = v266;
   if (!v168)
   {
 LABEL_260:
-    v175 = [v294 pickerItems];
-    v168 = [PKPaymentSetupFieldPicker pickerItemMatchingValue:@"US" pickerItems:v175];
+    pickerItems6 = [v294 pickerItems];
+    v168 = [PKPaymentSetupFieldPicker pickerItemMatchingValue:@"US" pickerItems:pickerItems6];
 
     if (v168)
     {
@@ -2193,18 +2193,18 @@ LABEL_272:
   v274 = v176 = v286;
   if (v274)
   {
-    v177 = [v274 defaultDate];
-    if (v177)
+    defaultDate2 = [v274 defaultDate];
+    if (defaultDate2)
     {
       goto LABEL_283;
     }
 
     if ([v274 populateFromMeCard])
     {
-      v177 = [v277 birthday];
+      defaultDate2 = [v277 birthday];
       v178 = objc_alloc(MEMORY[0x1E695DEE8]);
       v179 = [v178 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-      if (v177 && [v177 year] != 0x7FFFFFFFFFFFFFFFLL && (objc_msgSend(v179, "dateFromComponents:", v177), (v180 = objc_claimAutoreleasedReturnValue()) != 0))
+      if (defaultDate2 && [defaultDate2 year] != 0x7FFFFFFFFFFFFFFFLL && (objc_msgSend(v179, "dateFromComponents:", defaultDate2), (v180 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v181 = v180;
 
@@ -2214,17 +2214,17 @@ LABEL_272:
       else
       {
         v182 = objc_alloc_init(MEMORY[0x1E695DF10]);
-        v183 = [MEMORY[0x1E695DF00] date];
-        [v182 setYear:{objc_msgSend(v179, "component:fromDate:", 4, v183)}];
+        date = [MEMORY[0x1E695DF00] date];
+        [v182 setYear:{objc_msgSend(v179, "component:fromDate:", 4, date)}];
 
         [v182 setMonth:1];
         [v182 setDay:1];
         v181 = [v179 dateFromComponents:v182];
       }
 
-      v184 = [v274 currentValue];
+      currentValue15 = [v274 currentValue];
 
-      if (!v184)
+      if (!currentValue15)
       {
         [v274 setDefaultDate:v181];
       }
@@ -2240,8 +2240,8 @@ LABEL_283:
   v272 = [v4 objectForKey:@"citizenship"];
   if (v272)
   {
-    v185 = [v272 defaultValue];
-    if (v185)
+    defaultValue15 = [v272 defaultValue];
+    if (defaultValue15)
     {
       goto LABEL_319;
     }
@@ -2249,24 +2249,24 @@ LABEL_283:
     if ([v272 populateFromMeCard])
     {
       v186 = v272;
-      v185 = [v272 defaultValue];
-      v187 = [(NSMutableArray *)v5 regionCode];
-      v188 = [v272 pickerItems];
-      v189 = [v188 count];
+      defaultValue15 = [v272 defaultValue];
+      regionCode2 = [(NSMutableArray *)currentLocale regionCode];
+      pickerItems7 = [v272 pickerItems];
+      v189 = [pickerItems7 count];
 
       if (!v189)
       {
-        v190 = [MEMORY[0x1E695DF58] ISOCountryCodes];
-        if ([v190 count])
+        iSOCountryCodes2 = [MEMORY[0x1E695DF58] ISOCountryCodes];
+        if ([iSOCountryCodes2 count])
         {
-          v311 = v187;
-          v191 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v190, "count")}];
+          v311 = regionCode2;
+          v191 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(iSOCountryCodes2, "count")}];
           v317 = 0u;
           v318 = 0u;
           v319 = 0u;
           v320 = 0u;
-          v307 = v190;
-          v192 = v190;
+          v307 = iSOCountryCodes2;
+          v192 = iSOCountryCodes2;
           v193 = [v192 countByEnumeratingWithState:&v317 objects:v337 count:16];
           if (v193)
           {
@@ -2282,7 +2282,7 @@ LABEL_283:
                 }
 
                 v197 = *(*(&v317 + 1) + 8 * k);
-                v198 = PKLocalizedStringForCountryCode(v5, v197);
+                v198 = PKLocalizedStringForCountryCode(currentLocale, v197);
                 if ([v198 length])
                 {
                   v199 = [[PKPaymentSetupFieldPickerItem alloc] initWithName:v198 value:v197];
@@ -2304,18 +2304,18 @@ LABEL_283:
           v4 = v266;
           v116 = v267;
           v176 = v286;
-          v190 = v307;
-          v187 = v311;
+          iSOCountryCodes2 = v307;
+          regionCode2 = v311;
         }
       }
 
-      v201 = [v186 currentValue];
+      currentValue16 = [v186 currentValue];
 
-      if (!v201)
+      if (!currentValue16)
       {
-        if (!v185 || ([v186 pickerItems], v202 = objc_claimAutoreleasedReturnValue(), +[PKPaymentSetupFieldPicker pickerItemMatchingValue:pickerItems:](PKPaymentSetupFieldPicker, "pickerItemMatchingValue:pickerItems:", v185, v202), v203 = objc_claimAutoreleasedReturnValue(), v202, !v203))
+        if (!defaultValue15 || ([v186 pickerItems], v202 = objc_claimAutoreleasedReturnValue(), +[PKPaymentSetupFieldPicker pickerItemMatchingValue:pickerItems:](PKPaymentSetupFieldPicker, "pickerItemMatchingValue:pickerItems:", defaultValue15, v202), v203 = objc_claimAutoreleasedReturnValue(), v202, !v203))
         {
-          if (v187 && ([v186 pickerItems], v206 = objc_claimAutoreleasedReturnValue(), +[PKPaymentSetupFieldPicker pickerItemMatchingValue:pickerItems:](PKPaymentSetupFieldPicker, "pickerItemMatchingValue:pickerItems:", v187, v206), v203 = objc_claimAutoreleasedReturnValue(), v206, v203))
+          if (regionCode2 && ([v186 pickerItems], v206 = objc_claimAutoreleasedReturnValue(), +[PKPaymentSetupFieldPicker pickerItemMatchingValue:pickerItems:](PKPaymentSetupFieldPicker, "pickerItemMatchingValue:pickerItems:", regionCode2, v206), v203 = objc_claimAutoreleasedReturnValue(), v206, v203))
           {
             v204 = PKLogFacilityTypeGetObject(7uLL);
             if (!os_log_type_enabled(v204, OS_LOG_TYPE_DEFAULT))
@@ -2329,8 +2329,8 @@ LABEL_283:
 
           else
           {
-            v208 = [v186 pickerItems];
-            v203 = [PKPaymentSetupFieldPicker pickerItemMatchingValue:@"US" pickerItems:v208];
+            pickerItems8 = [v186 pickerItems];
+            v203 = [PKPaymentSetupFieldPicker pickerItemMatchingValue:@"US" pickerItems:pickerItems8];
 
             v204 = PKLogFacilityTypeGetObject(7uLL);
             v209 = os_log_type_enabled(v204, OS_LOG_TYPE_DEFAULT);
@@ -2386,8 +2386,8 @@ LABEL_319:
   if (v210)
   {
     v262 = v210;
-    v212 = [v210 defaultValue];
-    if (v212)
+    defaultValue16 = [v210 defaultValue];
+    if (defaultValue16)
     {
       goto LABEL_322;
     }
@@ -2463,11 +2463,11 @@ LABEL_319:
           }
 
           v221 = *(*(&v313 + 1) + 8 * v220);
-          v222 = [v221 label];
-          v223 = [v221 value];
-          v224 = [v223 stringValue];
+          label2 = [v221 label];
+          value2 = [v221 value];
+          stringValue = [value2 stringValue];
 
-          v225 = v222;
+          v225 = label2;
           v226 = v218;
           v227 = v226;
           if (v225 == v226)
@@ -2475,7 +2475,7 @@ LABEL_319:
 
 LABEL_345:
             v229 = v312;
-            v312 = v224;
+            v312 = stringValue;
             goto LABEL_389;
           }
 
@@ -2501,7 +2501,7 @@ LABEL_345:
 
 LABEL_353:
             v229 = v300;
-            v300 = v224;
+            v300 = stringValue;
             goto LABEL_389;
           }
 
@@ -2527,7 +2527,7 @@ LABEL_353:
 
 LABEL_361:
             v229 = v298;
-            v298 = v224;
+            v298 = stringValue;
             goto LABEL_389;
           }
 
@@ -2565,7 +2565,7 @@ LABEL_387:
                 goto LABEL_390;
               }
 
-              v292 = v224;
+              v292 = stringValue;
 LABEL_389:
 
               goto LABEL_390;
@@ -2750,14 +2750,14 @@ LABEL_422:
           if ([v259 length])
           {
             [v262 setDefaultValue:v259];
-            v257 = [v262 currentValue];
+            currentValue17 = [v262 currentValue];
 
-            if (!v257)
+            if (!currentValue17)
             {
               [v262 setCurrentValue:v259];
             }
 
-            v212 = v259;
+            defaultValue16 = v259;
           }
 
           else
@@ -2769,7 +2769,7 @@ LABEL_422:
               _os_log_impl(&dword_1AD337000, v258, OS_LOG_TYPE_DEFAULT, "No prefilled phone number could be found", buf, 2u);
             }
 
-            v212 = v259;
+            defaultValue16 = v259;
           }
 
 LABEL_322:
@@ -2862,9 +2862,9 @@ uint64_t __49__PKPaymentSetupFieldsModel_prefillDefaultValues__block_invoke_50(u
   return v7;
 }
 
-- (void)prefillDefaultValuesWithPostalAddress:(id)a3
+- (void)prefillDefaultValuesWithPostalAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v5 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:@"street1"];
   v6 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:@"street2"];
   v7 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:@"addressLine1"];
@@ -2890,12 +2890,12 @@ uint64_t __49__PKPaymentSetupFieldsModel_prefillDefaultValues__block_invoke_50(u
 
   else
   {
-    v13 = [v4 street];
-    v14 = [v13 componentsSeparatedByString:@"\n"];
+    street = [addressCopy street];
+    v14 = [street componentsSeparatedByString:@"\n"];
 
-    v15 = [v14 firstObject];
+    firstObject = [v14 firstObject];
     v16 = *MEMORY[0x1E695DA48];
-    v17 = [v15 stringByApplyingTransform:*MEMORY[0x1E695DA48] reverse:0];
+    v17 = [firstObject stringByApplyingTransform:*MEMORY[0x1E695DA48] reverse:0];
 
     __67__PKPaymentSetupFieldsModel_prefillDefaultValuesWithPostalAddress___block_invoke(v5, v17);
     __67__PKPaymentSetupFieldsModel_prefillDefaultValuesWithPostalAddress___block_invoke(v7, v17);
@@ -2915,18 +2915,18 @@ uint64_t __49__PKPaymentSetupFieldsModel_prefillDefaultValues__block_invoke_50(u
   }
 
   v20 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:@"postalCode"];
-  v21 = [v4 postalCode];
-  __67__PKPaymentSetupFieldsModel_prefillDefaultValuesWithPostalAddress___block_invoke(v20, v21);
+  postalCode = [addressCopy postalCode];
+  __67__PKPaymentSetupFieldsModel_prefillDefaultValuesWithPostalAddress___block_invoke(v20, postalCode);
   v22 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:@"city"];
-  v23 = [v4 city];
-  v24 = [v23 stringByApplyingTransform:v16 reverse:0];
+  city = [addressCopy city];
+  v24 = [city stringByApplyingTransform:v16 reverse:0];
 
   __67__PKPaymentSetupFieldsModel_prefillDefaultValuesWithPostalAddress___block_invoke(v22, v24);
   v25 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:@"state"];
   if (v25)
   {
-    v26 = [v4 state];
-    v27 = [v26 stringByApplyingTransform:v16 reverse:0];
+    state = [addressCopy state];
+    v27 = [state stringByApplyingTransform:v16 reverse:0];
 
     if (v27)
     {
@@ -2934,13 +2934,13 @@ uint64_t __49__PKPaymentSetupFieldsModel_prefillDefaultValues__block_invoke_50(u
       {
         v31 = v5;
         v30 = v25;
-        v28 = [v30 pickerItems];
+        pickerItems = [v30 pickerItems];
         v34[0] = MEMORY[0x1E69E9820];
         v34[1] = 3221225472;
         v34[2] = __67__PKPaymentSetupFieldsModel_prefillDefaultValuesWithPostalAddress___block_invoke_2;
         v34[3] = &unk_1E79C8418;
         v35 = v27;
-        v29 = [v28 pk_firstObjectPassingTest:v34];
+        v29 = [pickerItems pk_firstObjectPassingTest:v34];
 
         if (v29)
         {
@@ -3029,20 +3029,20 @@ LABEL_15:
   return v10;
 }
 
-- (void)prefillValuesWithPaymentCredential:(id)a3 targetDevice:(id)a4
+- (void)prefillValuesWithPaymentCredential:(id)credential targetDevice:(id)device
 {
   v123[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isFPANCredential])
+  credentialCopy = credential;
+  deviceCopy = device;
+  if ([credentialCopy isFPANCredential])
   {
     v8 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:@"primaryAccountNumber"];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 currentValue];
+      currentValue = [v8 currentValue];
 
-      if (!v10)
+      if (!currentValue)
       {
         [(NSMutableArray *)self->_paymentSetupFields removeObject:v9];
         v11 = [[PKPaymentSetupFieldBuiltInCardOnFilePrimaryAccountNumber alloc] initWithIdentifier:@"cardOnFilePrimaryAccountNumber"];
@@ -3050,23 +3050,23 @@ LABEL_15:
       }
     }
 
-    v12 = [v6 fpanCredential];
+    fpanCredential = [credentialCopy fpanCredential];
     v13 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:@"cardholderName"];
-    v14 = [v13 currentValue];
+    currentValue2 = [v13 currentValue];
 
-    if (!v14)
+    if (!currentValue2)
     {
-      v15 = [v12 cardholderName];
-      [v13 setCurrentValue:v15];
+      cardholderName = [fpanCredential cardholderName];
+      [v13 setCurrentValue:cardholderName];
     }
 
     v16 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:@"cardSecurityCode"];
-    v17 = [v16 currentValue];
+    currentValue3 = [v16 currentValue];
 
-    if (!v17)
+    if (!currentValue3)
     {
-      v18 = [v12 securityCode];
-      [v16 setCurrentValue:v18];
+      securityCode = [fpanCredential securityCode];
+      [v16 setCurrentValue:securityCode];
     }
   }
 
@@ -3075,13 +3075,13 @@ LABEL_15:
   if (v19)
   {
     [v19 setReadonly:1];
-    v21 = PKSanitizedPrimaryAccountRepresentationForPaymentCredential(v6);
+    v21 = PKSanitizedPrimaryAccountRepresentationForPaymentCredential(credentialCopy);
     [v20 setCurrentValue:v21];
 
-    v22 = [v6 credentialType];
-    if ([v6 isLocalPassCredential])
+    credentialType = [credentialCopy credentialType];
+    if ([credentialCopy isLocalPassCredential])
     {
-      if (v22 == 123)
+      if (credentialType == 123)
       {
         v23 = @"ACCOUNT_ON_IPHONE";
 LABEL_19:
@@ -3096,14 +3096,14 @@ LABEL_22:
       v24 = @"CARD_ON_IPHONE";
     }
 
-    else if ([v6 isFPANCredential])
+    else if ([credentialCopy isFPANCredential])
     {
       v24 = @"CARD_NUMBER";
     }
 
     else
     {
-      if (v22 == 123)
+      if (credentialType == 123)
       {
         v23 = @"ACCOUNT_ON_FILE";
         goto LABEL_19;
@@ -3121,27 +3121,27 @@ LABEL_23:
   v28 = v27;
   if (v27)
   {
-    v29 = [v27 currentValue];
+    currentValue4 = [v27 currentValue];
 
-    if (!v29)
+    if (!currentValue4)
     {
-      v30 = [v6 remoteCredential];
-      v31 = [v30 paymentPass];
+      remoteCredential = [credentialCopy remoteCredential];
+      paymentPass = [remoteCredential paymentPass];
 
-      v32 = [v31 primaryAccountIdentifier];
-      v33 = [v31 uniqueID];
-      if (v32 && (objc_opt_respondsToSelector() & 1) != 0)
+      primaryAccountIdentifier = [paymentPass primaryAccountIdentifier];
+      uniqueID = [paymentPass uniqueID];
+      if (primaryAccountIdentifier && (objc_opt_respondsToSelector() & 1) != 0)
       {
         v120 = 0;
-        [v7 fpanCredentialForPrimaryAccountIdentifier:v32 passUniqueID:v33 credential:&v120 error:0];
+        [deviceCopy fpanCredentialForPrimaryAccountIdentifier:primaryAccountIdentifier passUniqueID:uniqueID credential:&v120 error:0];
         v34 = v120;
         v35 = v34;
         if (v34)
         {
-          v36 = [v34 securityCode];
-          if (v36)
+          securityCode2 = [v34 securityCode];
+          if (securityCode2)
           {
-            [v28 setCurrentValue:v36];
+            [v28 setCurrentValue:securityCode2];
           }
         }
       }
@@ -3152,19 +3152,19 @@ LABEL_23:
   v38 = v37;
   if (v37)
   {
-    v39 = [v37 currentValue];
+    currentValue5 = [v37 currentValue];
 
-    if (!v39)
+    if (!currentValue5)
     {
-      v40 = [v6 expiration];
+      expiration = [credentialCopy expiration];
 
-      if (v40)
+      if (expiration)
       {
-        v41 = PKExpirationDateFormatter();
-        v42 = [v6 expiration];
-        v43 = [v41 dateFromString:v42];
+        fpanCredential3 = PKExpirationDateFormatter();
+        expiration2 = [credentialCopy expiration];
+        expirationDate2 = [fpanCredential3 dateFromString:expiration2];
 
-        if (!v43)
+        if (!expirationDate2)
         {
           goto LABEL_41;
         }
@@ -3172,106 +3172,106 @@ LABEL_23:
         goto LABEL_40;
       }
 
-      v44 = [v6 fpanCredential];
-      v45 = [v44 expirationDate];
+      fpanCredential2 = [credentialCopy fpanCredential];
+      expirationDate = [fpanCredential2 expirationDate];
 
-      if (v45)
+      if (expirationDate)
       {
-        v41 = [v6 fpanCredential];
-        v43 = [v41 expirationDate];
+        fpanCredential3 = [credentialCopy fpanCredential];
+        expirationDate2 = [fpanCredential3 expirationDate];
 LABEL_40:
-        [v38 setCurrentValue:v43];
+        [v38 setCurrentValue:expirationDate2];
 LABEL_41:
       }
     }
   }
 
-  v46 = [v6 accountCredential];
-  v47 = [v46 account];
+  accountCredential = [credentialCopy accountCredential];
+  account = [accountCredential account];
 
-  v48 = [v47 creditDetails];
-  if ([v6 isAccountCredential] && v48)
+  creditDetails = [account creditDetails];
+  if ([credentialCopy isAccountCredential] && creditDetails)
   {
-    v49 = [v48 currencyCode];
-    v116 = [v47 feature];
-    v50 = [v48 accountSummary];
-    v51 = [v47 accessLevel];
-    if (v51 >= 2)
+    currencyCode = [creditDetails currencyCode];
+    feature = [account feature];
+    accountSummary = [creditDetails accountSummary];
+    accessLevel = [account accessLevel];
+    if (accessLevel >= 2)
     {
-      if (v51 != 2)
+      if (accessLevel != 2)
       {
 LABEL_67:
 
         goto LABEL_68;
       }
 
-      v118 = v49;
+      v118 = currencyCode;
       v113 = v28;
       v114 = v20;
-      v115 = v7;
+      v115 = deviceCopy;
       v53 = [[PKPaymentSetupFieldText alloc] initWithIdentifier:@"spendActivity" type:1];
       [(PKPaymentSetupField *)v53 textFieldObject];
-      v54 = v119 = v50;
+      textFieldObject2 = v119 = accountSummary;
 
       v55 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-      v56 = [MEMORY[0x1E695DF00] date];
-      v57 = [v55 components:8 fromDate:v56];
-      v58 = [v57 month];
+      date = [MEMORY[0x1E695DF00] date];
+      v57 = [v55 components:8 fromDate:date];
+      month = [v57 month];
 
-      v59 = PKGregorianMonthSpecificLocalizedStringKeyForKey(@"SPENDING_LABEL", v58);
+      v59 = PKGregorianMonthSpecificLocalizedStringKeyForKey(@"SPENDING_LABEL", month);
       v65 = PKLocalizedFeatureString(v59, 2, 0, v60, v61, v62, v63, v64, v109);
-      [v54 setLocalizedDisplayName:v65];
+      [textFieldObject2 setLocalizedDisplayName:v65];
 
       v66 = PKCurrentUserAltDSID();
       v67 = [v119 accountUserActivityForAccountUserAltDSID:v66];
 
       v117 = v67;
-      v68 = [(NSDecimalNumber *)v67 totalSpending];
-      v69 = [v48 currencyCode];
-      v70 = v69;
-      if (v68 && v69)
+      totalSpending = [(NSDecimalNumber *)v67 totalSpending];
+      currencyCode2 = [creditDetails currencyCode];
+      v70 = currencyCode2;
+      if (totalSpending && currencyCode2)
       {
-        v111 = PKCurrencyAmountCreate(v68, v69, 0);
-        v71 = [MEMORY[0x1E696AB90] zero];
-        v72 = [(NSDecimalNumber *)v68 compare:v71];
+        v111 = PKCurrencyAmountCreate(totalSpending, currencyCode2, 0);
+        zero = [MEMORY[0x1E696AB90] zero];
+        v72 = [(NSDecimalNumber *)totalSpending compare:zero];
 
         if (v72 == -1)
         {
-          v110 = [v111 negativeValue];
+          negativeValue = [v111 negativeValue];
 
-          v106 = [v110 formattedStringValue];
-          v107 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F2281668.isa, v106);
-          [v54 setCurrentValue:v107];
+          formattedStringValue = [negativeValue formattedStringValue];
+          v107 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F2281668.isa, formattedStringValue);
+          [textFieldObject2 setCurrentValue:v107];
 
-          v74 = v106;
-          v73 = v110;
+          formattedStringValue2 = formattedStringValue;
+          v73 = negativeValue;
         }
 
         else
         {
           v73 = v111;
-          v74 = [v111 formattedStringValue];
-          [v54 setCurrentValue:v74];
+          formattedStringValue2 = [v111 formattedStringValue];
+          [textFieldObject2 setCurrentValue:formattedStringValue2];
         }
       }
 
-      [v54 setReadonly:1];
-      v121 = v54;
+      [textFieldObject2 setReadonly:1];
+      v121 = textFieldObject2;
       v108 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v121 count:1];
       [(PKPaymentSetupFieldsModel *)self updateWithPaymentSetupFields:v108];
 
       v28 = v113;
-      v95 = v117;
+      creditLimit = v117;
     }
 
     else
     {
       v112 = v28;
       v114 = v20;
-      v115 = v7;
-      v118 = v49;
-      v119 = v50;
-      if ([v50 requiresDebtCollectionNotices])
+      v115 = deviceCopy;
+      v118 = currencyCode;
+      v119 = accountSummary;
+      if ([accountSummary requiresDebtCollectionNotices])
       {
         v52 = 0;
       }
@@ -3279,39 +3279,39 @@ LABEL_67:
       else
       {
         v75 = [[PKPaymentSetupFieldBuiltInBalance alloc] initWithIdentifier:@"balance" type:1];
-        v76 = [(PKPaymentSetupField *)v75 textFieldObject];
+        textFieldObject = [(PKPaymentSetupField *)v75 textFieldObject];
 
-        v82 = PKLocalizedFeatureString(@"ACCOUNT_DASHBOARD_SUMMARY_CARD_BALANCE", v116, 0, v77, v78, v79, v80, v81, v109);
-        v83 = v76;
-        [v76 setLocalizedDisplayName:v82];
+        v82 = PKLocalizedFeatureString(@"ACCOUNT_DASHBOARD_SUMMARY_CARD_BALANCE", feature, 0, v77, v78, v79, v80, v81, v109);
+        v83 = textFieldObject;
+        [textFieldObject setLocalizedDisplayName:v82];
 
-        v84 = [v47 creditDetails];
-        v85 = [v84 cardBalance];
+        creditDetails2 = [account creditDetails];
+        cardBalance = [creditDetails2 cardBalance];
 
-        v86 = [v85 amount];
-        v87 = [MEMORY[0x1E696AB90] zero];
-        v88 = [v86 compare:v87];
+        amount = [cardBalance amount];
+        zero2 = [MEMORY[0x1E696AB90] zero];
+        v88 = [amount compare:zero2];
 
         if (v88 == -1)
         {
-          v92 = [v85 negativeValue];
+          negativeValue2 = [cardBalance negativeValue];
 
-          v90 = [v92 formattedStringValue];
-          v109 = v90;
+          formattedStringValue3 = [negativeValue2 formattedStringValue];
+          v109 = formattedStringValue3;
           v93 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F2281668.isa);
           v52 = v83;
           [v83 setCurrentValue:v93];
 
-          v85 = v92;
+          cardBalance = negativeValue2;
         }
 
         else
         {
-          v89 = [v85 formattedStringValue];
-          v90 = v89;
-          if (v89)
+          formattedStringValue4 = [cardBalance formattedStringValue];
+          formattedStringValue3 = formattedStringValue4;
+          if (formattedStringValue4)
           {
-            v91 = v89;
+            v91 = formattedStringValue4;
           }
 
           else
@@ -3327,23 +3327,23 @@ LABEL_67:
         v94 = [MEMORY[0x1E695DEC8] arrayWithObjects:v123 count:1];
         [(PKPaymentSetupFieldsModel *)self updateWithPaymentSetupFields:v94];
 
-        v49 = v118;
-        v50 = v119;
+        currencyCode = v118;
+        accountSummary = v119;
       }
 
-      v95 = [v50 creditLimit];
+      creditLimit = [accountSummary creditLimit];
       v96 = [[PKPaymentSetupFieldText alloc] initWithIdentifier:@"limit" type:1];
-      v54 = [(PKPaymentSetupField *)v96 textFieldObject];
+      textFieldObject2 = [(PKPaymentSetupField *)v96 textFieldObject];
 
-      v102 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_CREDIT_DETAILS_CREDIT_LIMIT", v116, 0, v97, v98, v99, v100, v101, v109);
-      [v54 setLocalizedDisplayName:v102];
+      v102 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_CREDIT_DETAILS_CREDIT_LIMIT", feature, 0, v97, v98, v99, v100, v101, v109);
+      [textFieldObject2 setLocalizedDisplayName:v102];
 
-      v68 = PKCurrencyAmountCreate(v95, v49, 0);
-      v103 = [(NSDecimalNumber *)v68 formattedStringValue];
-      v104 = v103;
-      if (v103)
+      totalSpending = PKCurrencyAmountCreate(creditLimit, currencyCode, 0);
+      formattedStringValue5 = [(NSDecimalNumber *)totalSpending formattedStringValue];
+      v104 = formattedStringValue5;
+      if (formattedStringValue5)
       {
-        v105 = v103;
+        v105 = formattedStringValue5;
       }
 
       else
@@ -3351,34 +3351,34 @@ LABEL_67:
         v105 = &stru_1F227FD28;
       }
 
-      [v54 setCurrentValue:v105];
+      [textFieldObject2 setCurrentValue:v105];
 
-      [v54 setReadonly:1];
-      v122 = v54;
+      [textFieldObject2 setReadonly:1];
+      v122 = textFieldObject2;
       v70 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v122 count:1];
       [(PKPaymentSetupFieldsModel *)self updateWithPaymentSetupFields:v70];
       v28 = v112;
     }
 
     v20 = v114;
-    v7 = v115;
-    v49 = v118;
-    v50 = v119;
+    deviceCopy = v115;
+    currencyCode = v118;
+    accountSummary = v119;
     goto LABEL_67;
   }
 
 LABEL_68:
 }
 
-- (void)prefillValuesWithFPAN:(id)a3 targetDevice:(id)a4
+- (void)prefillValuesWithFPAN:(id)n targetDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  nCopy = n;
+  deviceCopy = device;
+  if (nCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v15 = 0;
     v16 = 0;
-    [v7 fpanDescriptorAndCredentialForFPAN:v6 descriptor:&v16 credential:&v15 error:0];
+    [deviceCopy fpanDescriptorAndCredentialForFPAN:nCopy descriptor:&v16 credential:&v15 error:0];
     v8 = v16;
     v9 = v15;
     v10 = v9;
@@ -3391,15 +3391,15 @@ LABEL_68:
         v13 = v12;
         if (v12)
         {
-          v14 = [v12 currentValue];
+          currentValue = [v12 currentValue];
 
-          if (!v14)
+          if (!currentValue)
           {
-            [v13 setCurrentValue:v6];
+            [v13 setCurrentValue:nCopy];
           }
         }
 
-        [(PKPaymentSetupFieldsModel *)self prefillValuesWithPaymentCredential:v11 targetDevice:v7];
+        [(PKPaymentSetupFieldsModel *)self prefillValuesWithPaymentCredential:v11 targetDevice:deviceCopy];
       }
     }
   }
@@ -3429,12 +3429,12 @@ LABEL_68:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
+        identifier = [v9 identifier];
 
-        if (v10)
+        if (identifier)
         {
-          v11 = [v9 identifier];
-          [v3 setObject:@"true" forKey:v11];
+          identifier2 = [v9 identifier];
+          [v3 setObject:@"true" forKey:identifier2];
         }
       }
 
@@ -3473,17 +3473,17 @@ LABEL_68:
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 odiAttribute];
-        if (v10)
+        odiAttribute = [v9 odiAttribute];
+        if (odiAttribute)
         {
-          v11 = v10;
-          v12 = [v9 submissionString];
+          v11 = odiAttribute;
+          submissionString = [v9 submissionString];
 
-          if (v12)
+          if (submissionString)
           {
-            v13 = [v9 submissionString];
-            v14 = [v9 odiAttribute];
-            [v3 setObject:v13 forKey:v14];
+            submissionString2 = [v9 submissionString];
+            odiAttribute2 = [v9 odiAttribute];
+            [v3 setObject:submissionString2 forKey:odiAttribute2];
           }
         }
       }
@@ -3509,62 +3509,62 @@ LABEL_68:
   return v15;
 }
 
-- (BOOL)requirementsMetForFieldWithIdentifier:(id)a3
+- (BOOL)requirementsMetForFieldWithIdentifier:(id)identifier
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:identifierCopy];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = [v5 requirements];
-  v7 = [v6 countByEnumeratingWithState:&v29 objects:v37 count:16];
+  requirements = [v5 requirements];
+  v7 = [requirements countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v7)
   {
     v8 = v7;
     v25 = v5;
-    v26 = v4;
+    v26 = identifierCopy;
     v9 = *v30;
-    v27 = self;
-    v28 = v6;
+    selfCopy = self;
+    v28 = requirements;
     while (2)
     {
       for (i = 0; i != v8; ++i)
       {
         if (*v30 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(requirements);
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
         if ([v11 type] == 1)
         {
-          v12 = [v11 fieldIdentifier];
-          v13 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:v12];
+          fieldIdentifier = [v11 fieldIdentifier];
+          v13 = [(PKPaymentSetupFieldsModel *)self paymentSetupFieldWithIdentifier:fieldIdentifier];
           v14 = v13;
           if (v13 && [v13 isFieldTypePicker])
           {
-            v15 = [v14 pickerFieldObject];
-            v16 = [v15 currentValue];
-            v17 = [v16 submissionValue];
-            v18 = [v11 value];
-            v19 = v18;
-            v20 = !v17 || v18 == 0;
-            v21 = v20 ? v17 == v18 : [v17 isEqual:v18];
+            pickerFieldObject = [v14 pickerFieldObject];
+            currentValue = [pickerFieldObject currentValue];
+            submissionValue = [currentValue submissionValue];
+            value = [v11 value];
+            v19 = value;
+            v20 = !submissionValue || value == 0;
+            v21 = v20 ? submissionValue == value : [submissionValue isEqual:value];
 
-            self = v27;
-            v6 = v28;
+            self = selfCopy;
+            requirements = v28;
             if ((v21 & 1) == 0)
             {
               v23 = PKLogFacilityTypeGetObject(7uLL);
-              v4 = v26;
+              identifierCopy = v26;
               if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
                 v34 = v26;
                 v35 = 2112;
-                v36 = v12;
+                v36 = fieldIdentifier;
                 _os_log_impl(&dword_1AD337000, v23, OS_LOG_TYPE_DEFAULT, "Requirement not met for %@, based on %@", buf, 0x16u);
               }
 
@@ -3575,7 +3575,7 @@ LABEL_68:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v29 objects:v37 count:16];
+      v8 = [requirements countByEnumeratingWithState:&v29 objects:v37 count:16];
       if (v8)
       {
         continue;
@@ -3585,7 +3585,7 @@ LABEL_68:
     }
 
     v22 = 1;
-    v4 = v26;
+    identifierCopy = v26;
 LABEL_23:
     v5 = v25;
   }
@@ -3605,8 +3605,8 @@ LABEL_23:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(PKPaymentSetupFieldsModel *)self visiblePaymentSetupFields];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  visiblePaymentSetupFields = [(PKPaymentSetupFieldsModel *)self visiblePaymentSetupFields];
+  v3 = [visiblePaymentSetupFields countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -3617,7 +3617,7 @@ LABEL_23:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(visiblePaymentSetupFields);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -3628,7 +3628,7 @@ LABEL_23:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [visiblePaymentSetupFields countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -3651,8 +3651,8 @@ LABEL_13:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(PKPaymentSetupFieldsModel *)self visiblePaymentSetupFields];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  visiblePaymentSetupFields = [(PKPaymentSetupFieldsModel *)self visiblePaymentSetupFields];
+  v3 = [visiblePaymentSetupFields countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -3663,7 +3663,7 @@ LABEL_13:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(visiblePaymentSetupFields);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -3674,7 +3674,7 @@ LABEL_13:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [visiblePaymentSetupFields countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -3697,8 +3697,8 @@ LABEL_12:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(PKPaymentSetupFieldsModel *)self visiblePaymentSetupFields];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  visiblePaymentSetupFields = [(PKPaymentSetupFieldsModel *)self visiblePaymentSetupFields];
+  v3 = [visiblePaymentSetupFields countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -3708,7 +3708,7 @@ LABEL_12:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(visiblePaymentSetupFields);
         }
 
         if (![*(*(&v7 + 1) + 8 * i) isReadonly])
@@ -3718,7 +3718,7 @@ LABEL_12:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [visiblePaymentSetupFields countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;

@@ -4,14 +4,14 @@
 - (NSURL)watchMailboxURL;
 - (PKSharingMessageExtensionRelayServerLocalProperties)localProperties;
 - (PKSharingMessageExtensionRelayServerMessage)init;
-- (id)_initWithCommonMessage:(id)a3 url:(id)a4;
-- (id)_messageDataURLWithData:(id)a3;
-- (id)_messageDataWithDataURL:(id)a3;
+- (id)_initWithCommonMessage:(id)message url:(id)url;
+- (id)_messageDataURLWithData:(id)data;
+- (id)_messageDataWithDataURL:(id)l;
 - (id)urlRepresentation;
 - (unint64_t)status;
-- (void)setLocalProperties:(id)a3;
-- (void)setMailboxURLS:(id)a3;
-- (void)setStatus:(unint64_t)a3;
+- (void)setLocalProperties:(id)properties;
+- (void)setMailboxURLS:(id)s;
+- (void)setStatus:(unint64_t)status;
 @end
 
 @implementation PKSharingMessageExtensionRelayServerMessage
@@ -51,20 +51,20 @@
   return v2;
 }
 
-- (id)_initWithCommonMessage:(id)a3 url:(id)a4
+- (id)_initWithCommonMessage:(id)message url:(id)url
 {
-  v6 = a4;
+  urlCopy = url;
   v20.receiver = self;
   v20.super_class = PKSharingMessageExtensionRelayServerMessage;
-  v7 = [(PKSharingMessageExtensionCommonMessage *)&v20 _initWithCommonMessage:a3 url:v6];
+  v7 = [(PKSharingMessageExtensionCommonMessage *)&v20 _initWithCommonMessage:message url:urlCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 messageData];
-    if (v9 || ([v8 _messageDataWithDataURL:v6], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+    messageData = [v7 messageData];
+    if (messageData || ([v8 _messageDataWithDataURL:urlCopy], (messageData = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v10 = v9;
-      v11 = [objc_alloc(MEMORY[0x1E69B90B8]) initWithData:v9];
+      v10 = messageData;
+      v11 = [objc_alloc(MEMORY[0x1E69B90B8]) initWithData:messageData];
       v12 = *(v8 + 3);
       *(v8 + 3) = v11;
     }
@@ -78,22 +78,22 @@
       [*(v8 + 3) setVersion:1];
     }
 
-    v13 = [v8 messageType];
-    *(v8 + 32) = v13 == 0;
+    messageType = [v8 messageType];
+    *(v8 + 32) = messageType == 0;
 
     if (*(v8 + 32) == 1)
     {
       [v8 setMessageType:@"pkrelayservermessage"];
-      v14 = [*(v8 + 3) thumbnailImage];
-      [v8 setRawThumbnailData:v14];
+      thumbnailImage = [*(v8 + 3) thumbnailImage];
+      [v8 setRawThumbnailData:thumbnailImage];
 
       [*(v8 + 3) setThumbnailImage:0];
-      v15 = [*(v8 + 3) title];
-      [v8 setTitle:v15];
+      title = [*(v8 + 3) title];
+      [v8 setTitle:title];
 
       [*(v8 + 3) setTitle:0];
-      v16 = [*(v8 + 3) subtitle];
-      [v8 setSubtitle:v16];
+      subtitle = [*(v8 + 3) subtitle];
+      [v8 setSubtitle:subtitle];
 
       [*(v8 + 3) setSubtitle:0];
     }
@@ -107,7 +107,7 @@
   overrideURL = self->_overrideURL;
   if (overrideURL)
   {
-    v3 = overrideURL;
+    urlRepresentation = overrideURL;
   }
 
   else
@@ -117,30 +117,30 @@
     if (useLegacyMessageFormat)
     {
       v7 = [(PKProtobufRelaySharingMessage *)message copy];
-      v8 = [(PKSharingMessageExtensionCommonMessage *)self rawThumbnailData];
-      [v7 setThumbnailImage:v8];
+      rawThumbnailData = [(PKSharingMessageExtensionCommonMessage *)self rawThumbnailData];
+      [v7 setThumbnailImage:rawThumbnailData];
 
-      v9 = [(PKSharingMessageExtensionCommonMessage *)self title];
-      [v7 setTitle:v9];
+      title = [(PKSharingMessageExtensionCommonMessage *)self title];
+      [v7 setTitle:title];
 
-      v10 = [(PKSharingMessageExtensionCommonMessage *)self subtitle];
-      [v7 setSubtitle:v10];
+      subtitle = [(PKSharingMessageExtensionCommonMessage *)self subtitle];
+      [v7 setSubtitle:subtitle];
 
-      v11 = [v7 data];
-      v12 = [(PKSharingMessageExtensionRelayServerMessage *)self _messageDataURLWithData:v11];
+      data = [v7 data];
+      v12 = [(PKSharingMessageExtensionRelayServerMessage *)self _messageDataURLWithData:data];
 
       goto LABEL_7;
     }
 
-    v13 = [(PKProtobufRelaySharingMessage *)message data];
-    [(PKSharingMessageExtensionCommonMessage *)self setMessageData:v13];
+    data2 = [(PKProtobufRelaySharingMessage *)message data];
+    [(PKSharingMessageExtensionCommonMessage *)self setMessageData:data2];
 
     v15.receiver = self;
     v15.super_class = PKSharingMessageExtensionRelayServerMessage;
-    v3 = [(PKSharingMessageExtensionCommonMessage *)&v15 urlRepresentation];
+    urlRepresentation = [(PKSharingMessageExtensionCommonMessage *)&v15 urlRepresentation];
   }
 
-  v12 = v3;
+  v12 = urlRepresentation;
 LABEL_7:
 
   return v12;
@@ -148,13 +148,13 @@ LABEL_7:
 
 - (unint64_t)status
 {
-  v2 = [(PKProtobufRelaySharingMessage *)self->_message status];
+  status = [(PKProtobufRelaySharingMessage *)self->_message status];
   v3 = PKShareStatusFromString();
 
   return v3;
 }
 
-- (void)setStatus:(unint64_t)a3
+- (void)setStatus:(unint64_t)status
 {
   message = self->_message;
   v4 = PKShareStatusToString();
@@ -195,20 +195,20 @@ LABEL_7:
   return v5;
 }
 
-- (void)setMailboxURLS:(id)a3
+- (void)setMailboxURLS:(id)s
 {
   message = self->_message;
-  v5 = [a3 pk_arrayByApplyingBlock:&__block_literal_global_225];
+  v5 = [s pk_arrayByApplyingBlock:&__block_literal_global_225];
   v4 = [v5 mutableCopy];
   [(PKProtobufRelaySharingMessage *)message setMailboxURLs:v4];
 }
 
 - (PKSharingMessageExtensionRelayServerLocalProperties)localProperties
 {
-  v2 = [(PKProtobufRelaySharingMessage *)self->_message localData];
-  if (v2)
+  localData = [(PKProtobufRelaySharingMessage *)self->_message localData];
+  if (localData)
   {
-    v3 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v2 error:0];
+    v3 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:localData error:0];
   }
 
   else
@@ -219,11 +219,11 @@ LABEL_7:
   return v3;
 }
 
-- (void)setLocalProperties:(id)a3
+- (void)setLocalProperties:(id)properties
 {
-  if (a3)
+  if (properties)
   {
-    v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+    v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:properties requiringSecureCoding:1 error:0];
   }
 
   else
@@ -235,11 +235,11 @@ LABEL_7:
   [(PKProtobufRelaySharingMessage *)self->_message setLocalData:v4];
 }
 
-- (id)_messageDataURLWithData:(id)a3
+- (id)_messageDataURLWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = [a3 base64EncodedStringWithOptions:0];
+    v3 = [data base64EncodedStringWithOptions:0];
     if (v3)
     {
       v4 = [@"data:application/vnd.apple.pkrelayservermessagebase64 "];;
@@ -260,21 +260,21 @@ LABEL_7:
   return v5;
 }
 
-- (id)_messageDataWithDataURL:(id)a3
+- (id)_messageDataWithDataURL:(id)l
 {
-  if (!a3)
+  if (!l)
   {
     v7 = 0;
     goto LABEL_10;
   }
 
-  v3 = a3;
-  v4 = [v3 absoluteString];
-  v5 = [v3 scheme];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  scheme = [lCopy scheme];
 
-  if ([v5 isEqualToString:@"data"])
+  if ([scheme isEqualToString:@"data"])
   {
-    v6 = [v4 hasPrefix:{@"data:application/vnd.apple.pkrelayservermessage;base64, "}];
+    v6 = [absoluteString hasPrefix:{@"data:application/vnd.apple.pkrelayservermessage;base64, "}];
 
     if (!v6)
     {
@@ -282,8 +282,8 @@ LABEL_7:
       goto LABEL_9;
     }
 
-    v5 = [v4 substringFromIndex:{objc_msgSend(@"data:application/vnd.apple.pkrelayservermessagebase64, ", "length")}];;
-    v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v5 options:1];
+    scheme = [absoluteString substringFromIndex:{objc_msgSend(@"data:application/vnd.apple.pkrelayservermessagebase64, ", "length")}];;
+    v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:scheme options:1];
   }
 
   else
@@ -304,18 +304,18 @@ LABEL_10:
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p ", v5, self];;
 
-  v7 = [(PKSharingMessageExtensionCommonMessage *)self title];
-  [v6 appendFormat:@"title: '%@'; ", v7];
+  title = [(PKSharingMessageExtensionCommonMessage *)self title];
+  [v6 appendFormat:@"title: '%@'; ", title];
 
-  v8 = [(PKSharingMessageExtensionCommonMessage *)self subtitle];
-  [v6 appendFormat:@"subtitle: '%@'; ", v8];
+  subtitle = [(PKSharingMessageExtensionCommonMessage *)self subtitle];
+  [v6 appendFormat:@"subtitle: '%@'; ", subtitle];
 
   [(PKSharingMessageExtensionRelayServerMessage *)self status];
   v9 = PKShareStatusToString();
   [v6 appendFormat:@"status: '%@'; ", v9];
 
-  v10 = [(PKSharingMessageExtensionRelayServerMessage *)self localProperties];
-  [v6 appendFormat:@"localProperties: '%@'; ", v10];
+  localProperties = [(PKSharingMessageExtensionRelayServerMessage *)self localProperties];
+  [v6 appendFormat:@"localProperties: '%@'; ", localProperties];
 
   [v6 appendFormat:@">"];
   v11 = [MEMORY[0x1E696AEC0] stringWithString:v6];

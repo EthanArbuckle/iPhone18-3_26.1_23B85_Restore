@@ -1,17 +1,17 @@
 @interface AAAccountStoreProxy
-+ (BOOL)_isAccountDaemonConnectionError:(id)a3;
-- (void)saveAccount:(id)a3 onAccountStore:(id)a4 withCompletionHandler:(id)a5;
++ (BOOL)_isAccountDaemonConnectionError:(id)error;
+- (void)saveAccount:(id)account onAccountStore:(id)store withCompletionHandler:(id)handler;
 @end
 
 @implementation AAAccountStoreProxy
 
-+ (BOOL)_isAccountDaemonConnectionError:(id)a3
++ (BOOL)_isAccountDaemonConnectionError:(id)error
 {
-  v3 = a3;
-  if ([v3 code] == 10002)
+  errorCopy = error;
+  if ([errorCopy code] == 10002)
   {
-    v4 = [v3 domain];
-    v5 = [v4 isEqualToString:*MEMORY[0x1E6959978]];
+    domain = [errorCopy domain];
+    v5 = [domain isEqualToString:*MEMORY[0x1E6959978]];
   }
 
   else
@@ -22,11 +22,11 @@
   return v5;
 }
 
-- (void)saveAccount:(id)a3 onAccountStore:(id)a4 withCompletionHandler:(id)a5
+- (void)saveAccount:(id)account onAccountStore:(id)store withCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  accountCopy = account;
+  storeCopy = store;
+  handlerCopy = handler;
   v10 = _AAAccountStoreLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -37,12 +37,12 @@
   v14[1] = 3221225472;
   v14[2] = __72__AAAccountStoreProxy_saveAccount_onAccountStore_withCompletionHandler___block_invoke;
   v14[3] = &unk_1E7C9AFD8;
-  v15 = v8;
-  v16 = v7;
-  v17 = v9;
-  v11 = v9;
-  v12 = v7;
-  v13 = v8;
+  v15 = storeCopy;
+  v16 = accountCopy;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = accountCopy;
+  v13 = storeCopy;
   [v13 saveAccount:v12 withCompletionHandler:v14];
 }
 

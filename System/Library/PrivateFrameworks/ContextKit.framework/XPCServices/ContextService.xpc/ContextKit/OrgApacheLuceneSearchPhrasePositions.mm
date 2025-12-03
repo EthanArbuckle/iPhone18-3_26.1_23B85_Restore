@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneSearchPhrasePositions
 - (BOOL)nextPosition;
-- (OrgApacheLuceneSearchPhrasePositions)initWithOrgApacheLuceneIndexPostingsEnum:(id)a3 withInt:(int)a4 withInt:(int)a5 withOrgApacheLuceneIndexTermArray:(id)a6;
+- (OrgApacheLuceneSearchPhrasePositions)initWithOrgApacheLuceneIndexPostingsEnum:(id)enum withInt:(int)int withInt:(int)withInt withOrgApacheLuceneIndexTermArray:(id)array;
 - (id)description;
 - (void)dealloc;
 - (void)firstPosition;
@@ -8,13 +8,13 @@
 
 @implementation OrgApacheLuceneSearchPhrasePositions
 
-- (OrgApacheLuceneSearchPhrasePositions)initWithOrgApacheLuceneIndexPostingsEnum:(id)a3 withInt:(int)a4 withInt:(int)a5 withOrgApacheLuceneIndexTermArray:(id)a6
+- (OrgApacheLuceneSearchPhrasePositions)initWithOrgApacheLuceneIndexPostingsEnum:(id)enum withInt:(int)int withInt:(int)withInt withOrgApacheLuceneIndexTermArray:(id)array
 {
   self->rptGroup_ = -1;
-  JreStrongAssign(&self->postings_, a3);
-  self->offset_ = a4;
-  self->ord_ = a5;
-  JreStrongAssign(&self->terms_, a6);
+  JreStrongAssign(&self->postings_, enum);
+  self->offset_ = int;
+  self->ord_ = withInt;
+  JreStrongAssign(&self->terms_, array);
   return self;
 }
 
@@ -26,9 +26,9 @@
     goto LABEL_6;
   }
 
-  v4 = [(OrgApacheLuceneIndexPostingsEnum *)postings freq];
-  self->count_ = v4 - 1;
-  if (v4 < 1)
+  freq = [(OrgApacheLuceneIndexPostingsEnum *)postings freq];
+  self->count_ = freq - 1;
+  if (freq < 1)
   {
     return;
   }

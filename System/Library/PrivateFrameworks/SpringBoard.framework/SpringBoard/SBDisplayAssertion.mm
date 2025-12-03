@@ -1,38 +1,38 @@
 @interface SBDisplayAssertion
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithPhysicalDisplay:(id)a3 level:(unint64_t)a4 deactivationReasons:(unint64_t)a5 assertionStack:(id)a6 delegate:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithPhysicalDisplay:(id)display level:(unint64_t)level deactivationReasons:(unint64_t)reasons assertionStack:(id)stack delegate:(id)delegate;
 - (id)description;
 - (void)_didGainControlOfDisplay;
 - (void)_didInvalidateForDisplayDisconnect;
-- (void)_didLoseControlOfDisplayForDeactivationReasons:(unint64_t)a3;
-- (void)_didReceiveNewDeactivationReasons:(unint64_t)a3;
+- (void)_didLoseControlOfDisplayForDeactivationReasons:(unint64_t)reasons;
+- (void)_didReceiveNewDeactivationReasons:(unint64_t)reasons;
 - (void)dealloc;
 - (void)invalidate;
-- (void)updateWithPreferences:(id)a3;
+- (void)updateWithPreferences:(id)preferences;
 @end
 
 @implementation SBDisplayAssertion
 
-- (id)_initWithPhysicalDisplay:(id)a3 level:(unint64_t)a4 deactivationReasons:(unint64_t)a5 assertionStack:(id)a6 delegate:(id)a7
+- (id)_initWithPhysicalDisplay:(id)display level:(unint64_t)level deactivationReasons:(unint64_t)reasons assertionStack:(id)stack delegate:(id)delegate
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  if (([v13 isRootIdentity] & 1) == 0)
+  displayCopy = display;
+  stackCopy = stack;
+  delegateCopy = delegate;
+  if (([displayCopy isRootIdentity] & 1) == 0)
   {
     [SBDisplayAssertion _initWithPhysicalDisplay:level:deactivationReasons:assertionStack:delegate:];
   }
 
-  if (SBDisplayAssertionLevelIsValid(a4))
+  if (SBDisplayAssertionLevelIsValid(level))
   {
-    if (v14)
+    if (stackCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_10:
     [SBDisplayAssertion _initWithPhysicalDisplay:level:deactivationReasons:assertionStack:delegate:];
-    if (v15)
+    if (delegateCopy)
     {
       goto LABEL_6;
     }
@@ -41,13 +41,13 @@ LABEL_10:
   }
 
   [SBDisplayAssertion _initWithPhysicalDisplay:level:deactivationReasons:assertionStack:delegate:];
-  if (!v14)
+  if (!stackCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_5:
-  if (v15)
+  if (delegateCopy)
   {
     goto LABEL_6;
   }
@@ -61,11 +61,11 @@ LABEL_6:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_rootDisplayIdentity, a3);
-    v17->_level = a4;
-    v17->_deactivationReasonsWhenActive = a5;
-    objc_storeWeak(&v17->_assertionStack, v14);
-    objc_storeWeak(&v17->_delegate, v15);
+    objc_storeStrong(&v16->_rootDisplayIdentity, display);
+    v17->_level = level;
+    v17->_deactivationReasonsWhenActive = reasons;
+    objc_storeWeak(&v17->_assertionStack, stackCopy);
+    objc_storeWeak(&v17->_delegate, delegateCopy);
     *&v17->_invalidated = 0;
     v17->_hasControlOfDisplay = 0;
   }
@@ -76,7 +76,7 @@ LABEL_6:
 - (void)dealloc
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -93,15 +93,15 @@ LABEL_6:
   WeakRetained = objc_loadWeakRetained(&self->_assertionStack);
   v8 = [v3 appendObject:WeakRetained withName:@"stack"];
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -111,14 +111,14 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(FBSDisplayIdentity *)self->_rootDisplayIdentity isEqual:v5->_rootDisplayIdentity]&& self->_level == v5->_level)
       {
         WeakRetained = objc_loadWeakRetained(&self->_assertionStack);
-        v7 = [WeakRetained displayIdentity];
+        displayIdentity = [WeakRetained displayIdentity];
         v8 = objc_loadWeakRetained(&v5->_assertionStack);
-        v9 = [v8 displayIdentity];
-        v10 = [v7 isEqual:v9];
+        displayIdentity2 = [v8 displayIdentity];
+        v10 = [displayIdentity isEqual:displayIdentity2];
       }
 
       else
@@ -136,20 +136,20 @@ LABEL_6:
   return v10;
 }
 
-- (void)updateWithPreferences:(id)a3
+- (void)updateWithPreferences:(id)preferences
 {
   if (!self->_invalidated)
   {
-    v5 = a3;
+    preferencesCopy = preferences;
     WeakRetained = objc_loadWeakRetained(&self->_assertionStack);
-    [WeakRetained _assertion:self updatedPreferences:v5];
+    [WeakRetained _assertion:self updatedPreferences:preferencesCopy];
   }
 }
 
 - (void)invalidate
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -188,14 +188,14 @@ LABEL_6:
   }
 }
 
-- (void)_didLoseControlOfDisplayForDeactivationReasons:(unint64_t)a3
+- (void)_didLoseControlOfDisplayForDeactivationReasons:(unint64_t)reasons
 {
   v10 = *MEMORY[0x277D85DE8];
   if (!self->_invalidated && self->_hasControlOfDisplay)
   {
     self->_hasControlOfDisplay = 0;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained displayAssertion:self didLoseControlOfDisplayForDeactivationReasons:a3];
+    [WeakRetained displayAssertion:self didLoseControlOfDisplayForDeactivationReasons:reasons];
 
     v6 = SBLogDisplayControlling();
     if (os_signpost_enabled(v6))
@@ -208,14 +208,14 @@ LABEL_6:
   }
 }
 
-- (void)_didReceiveNewDeactivationReasons:(unint64_t)a3
+- (void)_didReceiveNewDeactivationReasons:(unint64_t)reasons
 {
   if (!self->_invalidated)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained displayAssertion:self didReceiveNewDeactivationReasons:a3];
+      [WeakRetained displayAssertion:self didReceiveNewDeactivationReasons:reasons];
     }
   }
 }

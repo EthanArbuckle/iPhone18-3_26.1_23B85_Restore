@@ -1,8 +1,8 @@
 @interface CSAudioZeroFilter
-- (CSAudioZeroFilter)initWithZeroWindowSize:(unint64_t)a3 approxAbsSpeechThreshold:(unsigned __int16)a4 numHostTicksPerAudioSample:(double)a5;
+- (CSAudioZeroFilter)initWithZeroWindowSize:(unint64_t)size approxAbsSpeechThreshold:(unsigned __int16)threshold numHostTicksPerAudioSample:(double)sample;
 - (id)metrics;
-- (unint64_t)endAudioAndFetchAnyTrailingZerosPacket:(id *)a3;
-- (unint64_t)filterZerosInAudioPacket:(id)a3 atBufferHostTime:(unint64_t)a4 filteredPacket:(id *)a5;
+- (unint64_t)endAudioAndFetchAnyTrailingZerosPacket:(id *)packet;
+- (unint64_t)filterZerosInAudioPacket:(id)packet atBufferHostTime:(unint64_t)time filteredPacket:(id *)filteredPacket;
 @end
 
 @implementation CSAudioZeroFilter
@@ -46,7 +46,7 @@
     while (v3 != v4);
   }
 
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v13[0] = @"CSInitialContinuousZeros";
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v6];
   v14[0] = v7;
@@ -54,7 +54,7 @@
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v5];
   v13[2] = @"CSMidSegmentContinuousZeros";
   v14[1] = v8;
-  v14[2] = v12;
+  v14[2] = array;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
 
   v10 = *MEMORY[0x1E69E9840];
@@ -62,9 +62,9 @@
   return v9;
 }
 
-- (unint64_t)endAudioAndFetchAnyTrailingZerosPacket:(id *)a3
+- (unint64_t)endAudioAndFetchAnyTrailingZerosPacket:(id *)packet
 {
-  if (a3)
+  if (packet)
   {
     ptr = self->_audioZeroFilterImpl.__ptr_;
     v5 = ptr[2];
@@ -146,33 +146,33 @@
       }
     }
 
-    *a3 = [MEMORY[0x1E695DEF0] dataWithBytes:0 length:0];
+    *packet = [MEMORY[0x1E695DEF0] dataWithBytes:0 length:0];
   }
 
   return 0;
 }
 
-- (unint64_t)filterZerosInAudioPacket:(id)a3 atBufferHostTime:(unint64_t)a4 filteredPacket:(id *)a5
+- (unint64_t)filterZerosInAudioPacket:(id)packet atBufferHostTime:(unint64_t)time filteredPacket:(id *)filteredPacket
 {
-  v8 = a3;
-  v9 = v8;
-  if (a5)
+  packetCopy = packet;
+  v9 = packetCopy;
+  if (filteredPacket)
   {
-    if (v8 && *self->_audioZeroFilterImpl.__ptr_)
+    if (packetCopy && *self->_audioZeroFilterImpl.__ptr_)
     {
-      v10 = [v8 length];
+      v10 = [packetCopy length];
       ptr = self->_audioZeroFilterImpl.__ptr_;
-      v12 = [v9 bytes];
+      bytes = [v9 bytes];
       v21 = v10 >> 1;
       if (*ptr)
       {
         v13 = *(ptr + 2);
         if (v13)
         {
-          a4 = (a4 - v13 * ptr[10]);
+          time = (time - v13 * ptr[10]);
         }
 
-        v20 = a4;
+        timeCopy = time;
         if (v10 >= 2)
         {
           std::__allocate_at_least[abi:ne200100]<std::allocator<unsigned short>>(v21);
@@ -180,13 +180,13 @@
 
         if ((*(ptr + 10) & 1) == 0)
         {
-          v17 = *v12 == 0;
+          v17 = *bytes == 0;
         }
 
         v19 = v9;
         v16 = 0;
-        *(ptr + 6) = (v20 + 0 * ptr[10]);
-        v15 = 0;
+        *(ptr + 6) = (timeCopy + 0 * ptr[10]);
+        timeCopy2 = 0;
       }
 
       else
@@ -196,30 +196,30 @@
           std::__allocate_at_least[abi:ne200100]<std::allocator<unsigned short>>(v21);
         }
 
-        v15 = a4;
+        timeCopy2 = time;
         v16 = v10 & 0xFFFFFFFFFFFFFFFELL;
       }
 
       [MEMORY[0x1E695DEF0] dataWithBytes:0 length:{v16, v19}];
-      *a5 = a4 = v15;
+      *filteredPacket = time = timeCopy2;
     }
 
     else
     {
-      v14 = v8;
-      *a5 = v9;
+      v14 = packetCopy;
+      *filteredPacket = v9;
     }
   }
 
   else
   {
-    a4 = 0;
+    time = 0;
   }
 
-  return a4;
+  return time;
 }
 
-- (CSAudioZeroFilter)initWithZeroWindowSize:(unint64_t)a3 approxAbsSpeechThreshold:(unsigned __int16)a4 numHostTicksPerAudioSample:(double)a5
+- (CSAudioZeroFilter)initWithZeroWindowSize:(unint64_t)size approxAbsSpeechThreshold:(unsigned __int16)threshold numHostTicksPerAudioSample:(double)sample
 {
   v6.receiver = self;
   v6.super_class = CSAudioZeroFilter;

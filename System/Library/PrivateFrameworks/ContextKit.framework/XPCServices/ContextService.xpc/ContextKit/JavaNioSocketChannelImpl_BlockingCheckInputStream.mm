@@ -1,18 +1,18 @@
 @interface JavaNioSocketChannelImpl_BlockingCheckInputStream
-- (JavaNioSocketChannelImpl_BlockingCheckInputStream)initWithJavaIoInputStream:(id)a3 withJavaNioChannelsSocketChannel:(id)a4;
+- (JavaNioSocketChannelImpl_BlockingCheckInputStream)initWithJavaIoInputStream:(id)stream withJavaNioChannelsSocketChannel:(id)channel;
 - (id)checkBlocking;
 - (int)read;
-- (int)readWithByteArray:(id)a3;
+- (int)readWithByteArray:(id)array;
 - (void)close;
 - (void)dealloc;
 @end
 
 @implementation JavaNioSocketChannelImpl_BlockingCheckInputStream
 
-- (JavaNioSocketChannelImpl_BlockingCheckInputStream)initWithJavaIoInputStream:(id)a3 withJavaNioChannelsSocketChannel:(id)a4
+- (JavaNioSocketChannelImpl_BlockingCheckInputStream)initWithJavaIoInputStream:(id)stream withJavaNioChannelsSocketChannel:(id)channel
 {
-  JavaIoFilterInputStream_initWithJavaIoInputStream_(self, a3);
-  JreStrongAssign(&self->channel_, a4);
+  JavaIoFilterInputStream_initWithJavaIoInputStream_(self, stream);
+  JreStrongAssign(&self->channel_, channel);
   return self;
 }
 
@@ -30,7 +30,7 @@
 
 - (id)checkBlocking
 {
-  v1 = *(a1 + 16);
+  v1 = *(self + 16);
   if (!v1)
   {
     JreThrowNullPointerException();
@@ -46,7 +46,7 @@
   return result;
 }
 
-- (int)readWithByteArray:(id)a3
+- (int)readWithByteArray:(id)array
 {
   [JavaNioSocketChannelImpl_BlockingCheckInputStream checkBlocking]_0(self);
   v5 = atomic_load(&self->super.in_);
@@ -55,7 +55,7 @@
     JreThrowNullPointerException();
   }
 
-  return [v5 readWithByteArray:a3];
+  return [v5 readWithByteArray:array];
 }
 
 - (void)close

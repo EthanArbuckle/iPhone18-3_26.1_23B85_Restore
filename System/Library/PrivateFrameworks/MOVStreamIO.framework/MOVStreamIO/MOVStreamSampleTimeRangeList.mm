@@ -1,17 +1,17 @@
 @interface MOVStreamSampleTimeRangeList
 - ($B22509A9E1E897CB5DF0DB02A23A695A)timeRange;
-- ($B22509A9E1E897CB5DF0DB02A23A695A)timeRangeAtIndex:(SEL)a3;
-- (BOOL)containsTimeRange:(id *)a3;
+- ($B22509A9E1E897CB5DF0DB02A23A695A)timeRangeAtIndex:(SEL)index;
+- (BOOL)containsTimeRange:(id *)range;
 - (MOVStreamSampleTimeRangeList)init;
-- (MOVStreamSampleTimeRangeList)initWithTimeRange:(id *)a3;
-- (MOVStreamSampleTimeRangeList)initWithTimeRanges:(const void *)a3;
+- (MOVStreamSampleTimeRangeList)initWithTimeRange:(id *)range;
+- (MOVStreamSampleTimeRangeList)initWithTimeRanges:(const void *)ranges;
 - (id).cxx_construct;
-- (int64_t)indexOfTimeRangeAtTime:(id *)a3;
+- (int64_t)indexOfTimeRangeAtTime:(id *)time;
 @end
 
 @implementation MOVStreamSampleTimeRangeList
 
-- (MOVStreamSampleTimeRangeList)initWithTimeRanges:(const void *)a3
+- (MOVStreamSampleTimeRangeList)initWithTimeRanges:(const void *)ranges
 {
   v8.receiver = self;
   v8.super_class = MOVStreamSampleTimeRangeList;
@@ -19,7 +19,7 @@
   p_ranges = &v4->_ranges;
   if (v4)
   {
-    v6 = p_ranges == a3;
+    v6 = p_ranges == ranges;
   }
 
   else
@@ -29,19 +29,19 @@
 
   if (!v6)
   {
-    std::vector<CMTimeRange>::__assign_with_size[abi:ne200100]<CMTimeRange*,CMTimeRange*>(p_ranges, *a3, *(a3 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 4));
+    std::vector<CMTimeRange>::__assign_with_size[abi:ne200100]<CMTimeRange*,CMTimeRange*>(p_ranges, *ranges, *(ranges + 1), 0xAAAAAAAAAAAAAAABLL * ((*(ranges + 1) - *ranges) >> 4));
   }
 
   return v4;
 }
 
-- (MOVStreamSampleTimeRangeList)initWithTimeRange:(id *)a3
+- (MOVStreamSampleTimeRangeList)initWithTimeRange:(id *)range
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = *&a3->var0.var3;
-  v10[0] = *&a3->var0.var0;
+  v4 = *&range->var0.var3;
+  v10[0] = *&range->var0.var0;
   v10[1] = v4;
-  v10[2] = *&a3->var1.var1;
+  v10[2] = *&range->var1.var1;
   v8 = 0;
   v9 = 0;
   __p = 0;
@@ -72,7 +72,7 @@
   return 0;
 }
 
-- (BOOL)containsTimeRange:(id *)a3
+- (BOOL)containsTimeRange:(id *)range
 {
   v24 = *MEMORY[0x277D85DE8];
   v22 = *MEMORY[0x277CC08D0];
@@ -97,8 +97,8 @@
       *&range.duration.timescale = v14;
       *&range.start.value = v13;
       CMTimeRangeGetEnd(&time1, &range);
-      *&range.start.value = *&a3->var0.var0;
-      range.start.epoch = a3->var0.var3;
+      *&range.start.value = *&range->var0.var0;
+      range.start.epoch = range->var0.var3;
       v15 = CMTimeCompare(&time1, &range.start);
       if (v15 < 0)
       {
@@ -140,7 +140,7 @@
     *&range.start.epoch = v5;
     *&range.duration.timescale = v6;
     range.duration.epoch = 0;
-    time1 = a3->var0;
+    time1 = range->var0;
     return CMTimeRangeContainsTime(&range, &time1) != 0;
   }
 
@@ -176,7 +176,7 @@
   return self;
 }
 
-- ($B22509A9E1E897CB5DF0DB02A23A695A)timeRangeAtIndex:(SEL)a3
+- ($B22509A9E1E897CB5DF0DB02A23A695A)timeRangeAtIndex:(SEL)index
 {
   v4 = *&self->var0.var1;
   v5 = 0xAAAAAAAAAAAAAAABLL * ((self->var0.var3 - v4) >> 4);
@@ -198,11 +198,11 @@
   return self;
 }
 
-- (int64_t)indexOfTimeRangeAtTime:(id *)a3
+- (int64_t)indexOfTimeRangeAtTime:(id *)time
 {
   v24 = *MEMORY[0x277D85DE8];
   memset(&v19, 0, sizeof(v19));
-  start.start = *a3;
+  start.start = *time;
   CMTimeMake(&duration, 1, 0x7FFFFFFF);
   CMTimeRangeMake(&v19, &start.start, &duration);
   v22 = *MEMORY[0x277CC08D0];
@@ -280,7 +280,7 @@
     start.start.flags = v5;
     *&start.start.epoch = v6;
     *&start.duration.timescale = v7;
-    duration = *a3;
+    duration = *time;
     if (!CMTimeRangeContainsTime(&start, &duration))
     {
       return -1;

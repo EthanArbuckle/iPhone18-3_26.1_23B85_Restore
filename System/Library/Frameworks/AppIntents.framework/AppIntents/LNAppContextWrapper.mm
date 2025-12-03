@@ -1,22 +1,22 @@
 @interface LNAppContextWrapper
 - (LNAppContextWrapper)init;
-- (void)performAction:(id)a3 options:(id)a4 reportingProgress:(id)a5 delegate:(id)a6 auditToken:(id *)a7 completionHandler:(id)a8;
+- (void)performAction:(id)action options:(id)options reportingProgress:(id)progress delegate:(id)delegate auditToken:(id *)token completionHandler:(id)handler;
 @end
 
 @implementation LNAppContextWrapper
 
-- (void)performAction:(id)a3 options:(id)a4 reportingProgress:(id)a5 delegate:(id)a6 auditToken:(id *)a7 completionHandler:(id)a8
+- (void)performAction:(id)action options:(id)options reportingProgress:(id)progress delegate:(id)delegate auditToken:(id *)token completionHandler:(id)handler
 {
-  v14 = a8;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [(LNAppContextWrapper *)self appContext];
-  v20 = *&a7->var0[4];
-  v21[0] = *a7->var0;
+  handlerCopy = handler;
+  delegateCopy = delegate;
+  progressCopy = progress;
+  optionsCopy = options;
+  actionCopy = action;
+  appContext = [(LNAppContextWrapper *)self appContext];
+  v20 = *&token->var0[4];
+  v21[0] = *token->var0;
   v21[1] = v20;
-  [v19 performAction:v18 options:v17 reportingProgress:v16 delegate:v15 auditToken:v21 completionHandler:v14];
+  [appContext performAction:actionCopy options:optionsCopy reportingProgress:progressCopy delegate:delegateCopy auditToken:v21 completionHandler:handlerCopy];
 }
 
 - (LNAppContextWrapper)init

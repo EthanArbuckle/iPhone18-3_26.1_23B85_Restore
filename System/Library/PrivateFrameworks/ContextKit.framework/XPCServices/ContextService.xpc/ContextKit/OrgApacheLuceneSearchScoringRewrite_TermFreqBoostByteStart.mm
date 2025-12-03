@@ -11,14 +11,14 @@
 {
   v22.receiver = self;
   v22.super_class = OrgApacheLuceneSearchScoringRewrite_TermFreqBoostByteStart;
-  v3 = [(OrgApacheLuceneUtilBytesRefHash_DirectBytesStartArray *)&v22 init__];
-  if (!v3)
+  init__ = [(OrgApacheLuceneUtilBytesRefHash_DirectBytesStartArray *)&v22 init__];
+  if (!init__)
   {
     JreThrowNullPointerException();
   }
 
-  v10 = v3;
-  v11 = [IOSFloatArray newArrayWithLength:OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(v3[2], 4, v4, v5, v6, v7, v8, v9)];
+  v10 = init__;
+  v11 = [IOSFloatArray newArrayWithLength:OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(init__[2], 4, v4, v5, v6, v7, v8, v9)];
   JreStrongAssignAndConsume(&self->boost_, v11);
   v18 = v10[2];
   if ((atomic_load_explicit(&OrgApacheLuceneUtilRamUsageEstimator__initialized, memory_order_acquire) & 1) == 0)
@@ -36,8 +36,8 @@
 {
   v23.receiver = self;
   v23.super_class = OrgApacheLuceneSearchScoringRewrite_TermFreqBoostByteStart;
-  v3 = [(OrgApacheLuceneUtilBytesRefHash_DirectBytesStartArray *)&v23 grow];
-  if (!v3 || (v10 = v3, v11 = OrgApacheLuceneUtilArrayUtil_growWithFloatArray_withInt_(self->boost_, v3[2], v4, v5, v6, v7, v8, v9), JreStrongAssign(&self->boost_, v11), (termState = self->termState_) == 0))
+  grow = [(OrgApacheLuceneUtilBytesRefHash_DirectBytesStartArray *)&v23 grow];
+  if (!grow || (v10 = grow, v11 = OrgApacheLuceneUtilArrayUtil_growWithFloatArray_withInt_(self->boost_, grow[2], v4, v5, v6, v7, v8, v9), JreStrongAssign(&self->boost_, v11), (termState = self->termState_) == 0))
   {
     JreThrowNullPointerException();
   }

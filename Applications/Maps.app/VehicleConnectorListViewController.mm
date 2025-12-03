@@ -1,37 +1,37 @@
 @interface VehicleConnectorListViewController
 - (UITableView)tableView;
-- (VehicleConnectorListViewController)initWithVehicle:(id)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (VehicleConnectorListViewController)initWithVehicle:(id)vehicle;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation VehicleConnectorListViewController
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [v6 section];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  section = [pathCopy section];
 
-  if (v7)
+  if (section)
   {
     v9 = [[EditVehicleConnectorsViewController alloc] initWithVehicle:self->_vehicle];
-    v8 = [(VehicleConnectorListViewController *)self navigationController];
-    [v8 pushViewController:v9 animated:1];
+    navigationController = [(VehicleConnectorListViewController *)self navigationController];
+    [navigationController pushViewController:v9 animated:1];
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = [a4 section];
+  section = [path section];
   result = 44.0;
-  if (!v4)
+  if (!section)
   {
     return 72.0;
   }
@@ -39,37 +39,37 @@
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 section];
+  pathCopy = path;
+  viewCopy = view;
+  section = [pathCopy section];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [v7 dequeueReusableCellWithIdentifier:v10 forIndexPath:v6];
-  if (v8)
+  v11 = [viewCopy dequeueReusableCellWithIdentifier:v10 forIndexPath:pathCopy];
+  if (section)
   {
 
     [v11 setSelectionStyle:3];
     v12 = +[NSBundle mainBundle];
     v13 = [v12 localizedStringForKey:@"[Virtual Garage][Button] Add Adapter Plug" value:@"localized string not found" table:0];
-    v14 = [v11 textLabel];
-    [v14 setText:v13];
+    textLabel = [v11 textLabel];
+    [textLabel setText:v13];
 
     v15 = +[UIColor systemBlueColor];
-    v16 = [v11 textLabel];
-    [v16 setTextColor:v15];
+    textLabel2 = [v11 textLabel];
+    [textLabel2 setTextColor:v15];
 
     v17 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    v18 = [v11 textLabel];
-    [v18 setFont:v17];
+    textLabel3 = [v11 textLabel];
+    [textLabel3 setFont:v17];
   }
 
   else
   {
 
     unpackedConnectorTypes = self->_unpackedConnectorTypes;
-    v20 = [v6 row];
+    v20 = [pathCopy row];
 
     v17 = [(NSArray *)unpackedConnectorTypes objectAtIndexedSubscript:v20];
     [v11 setConnectorType:{objc_msgSend(v17, "unsignedIntegerValue")}];
@@ -78,9 +78,9 @@
   return v11;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 1;
   }
@@ -91,7 +91,7 @@
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_editingEnabled)
   {
@@ -104,24 +104,24 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = VehicleConnectorListViewController;
-  [(VehicleConnectorListViewController *)&v7 viewWillDisappear:a3];
-  v4 = [(VehicleConnectorListViewController *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  [(VehicleConnectorListViewController *)&v7 viewWillDisappear:disappear];
+  traitCollection = [(VehicleConnectorListViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v5)
+  if (!userInterfaceIdiom)
   {
     v6 = +[UIApplication sharedMapsDelegate];
     [v6 setLockedOrientations:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v12.receiver = self;
   v12.super_class = VehicleConnectorListViewController;
   [(VehicleConnectorListViewController *)&v12 viewWillAppear:?];
@@ -130,19 +130,19 @@
   unpackedConnectorTypes = self->_unpackedConnectorTypes;
   self->_unpackedConnectorTypes = v5;
 
-  v7 = [(VehicleConnectorListViewController *)self tableView];
-  [v7 reloadData];
+  tableView = [(VehicleConnectorListViewController *)self tableView];
+  [tableView reloadData];
 
-  v8 = [(VehicleConnectorListViewController *)self traitCollection];
-  v9 = [v8 userInterfaceIdiom];
+  traitCollection = [(VehicleConnectorListViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v9)
+  if (!userInterfaceIdiom)
   {
     v10 = +[UIApplication sharedMapsDelegate];
     [v10 setLockedOrientations:2];
 
     v11 = +[UIDevice currentDevice];
-    [v11 setOrientation:1 animated:v3];
+    [v11 setOrientation:1 animated:appearCopy];
   }
 }
 
@@ -151,40 +151,40 @@
   v29.receiver = self;
   v29.super_class = VehicleConnectorListViewController;
   [(VehicleConnectorListViewController *)&v29 viewDidLoad];
-  v3 = [(VehicleConnectorListViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"VehicleConnectorListView"];
+  view = [(VehicleConnectorListViewController *)self view];
+  [view setAccessibilityIdentifier:@"VehicleConnectorListView"];
 
   v4 = +[UIColor systemGroupedBackgroundColor];
-  v5 = [(VehicleConnectorListViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  view2 = [(VehicleConnectorListViewController *)self view];
+  [view2 setBackgroundColor:v4];
 
-  v6 = [(VehicleConnectorListViewController *)self view];
-  v7 = [(VehicleConnectorListViewController *)self tableView];
-  [v6 addSubview:v7];
+  view3 = [(VehicleConnectorListViewController *)self view];
+  tableView = [(VehicleConnectorListViewController *)self tableView];
+  [view3 addSubview:tableView];
 
-  v28 = [(VehicleConnectorListViewController *)self tableView];
-  v26 = [v28 leadingAnchor];
-  v27 = [(VehicleConnectorListViewController *)self view];
-  v25 = [v27 leadingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  tableView2 = [(VehicleConnectorListViewController *)self tableView];
+  leadingAnchor = [tableView2 leadingAnchor];
+  view4 = [(VehicleConnectorListViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v30[0] = v24;
-  v23 = [(VehicleConnectorListViewController *)self tableView];
-  v21 = [v23 trailingAnchor];
-  v22 = [(VehicleConnectorListViewController *)self view];
-  v20 = [v22 trailingAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  tableView3 = [(VehicleConnectorListViewController *)self tableView];
+  trailingAnchor = [tableView3 trailingAnchor];
+  view5 = [(VehicleConnectorListViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v30[1] = v19;
-  v18 = [(VehicleConnectorListViewController *)self tableView];
-  v8 = [v18 topAnchor];
-  v9 = [(VehicleConnectorListViewController *)self view];
-  v10 = [v9 topAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  tableView4 = [(VehicleConnectorListViewController *)self tableView];
+  topAnchor = [tableView4 topAnchor];
+  view6 = [(VehicleConnectorListViewController *)self view];
+  topAnchor2 = [view6 topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v30[2] = v11;
-  v12 = [(VehicleConnectorListViewController *)self tableView];
-  v13 = [v12 bottomAnchor];
-  v14 = [(VehicleConnectorListViewController *)self view];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  tableView5 = [(VehicleConnectorListViewController *)self tableView];
+  bottomAnchor = [tableView5 bottomAnchor];
+  view7 = [(VehicleConnectorListViewController *)self view];
+  bottomAnchor2 = [view7 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v30[3] = v16;
   v17 = [NSArray arrayWithObjects:v30 count:4];
   [NSLayoutConstraint activateConstraints:v17];
@@ -215,23 +215,23 @@
   return tableView;
 }
 
-- (VehicleConnectorListViewController)initWithVehicle:(id)a3
+- (VehicleConnectorListViewController)initWithVehicle:(id)vehicle
 {
-  v5 = a3;
+  vehicleCopy = vehicle;
   v13.receiver = self;
   v13.super_class = VehicleConnectorListViewController;
   v6 = [(VehicleConnectorListViewController *)&v13 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_vehicle, a3);
+    objc_storeStrong(&v6->_vehicle, vehicle);
     v8 = +[NSUserDefaults standardUserDefaults];
     v7->_editingEnabled = [v8 BOOLForKey:@"VirtualGarageEditConnectorPlugs"];
 
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"[Virtual Garage][Title] Plug Type" value:@"localized string not found" table:0];
-    v11 = [(VehicleConnectorListViewController *)v7 navigationItem];
-    [v11 setTitle:v10];
+    navigationItem = [(VehicleConnectorListViewController *)v7 navigationItem];
+    [navigationItem setTitle:v10];
   }
 
   return v7;

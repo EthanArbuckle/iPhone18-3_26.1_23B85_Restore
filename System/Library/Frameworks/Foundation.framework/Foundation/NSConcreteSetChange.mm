@@ -1,11 +1,11 @@
 @interface NSConcreteSetChange
-- (NSConcreteSetChange)initWithType:(unint64_t)a3 object:(id)a4;
+- (NSConcreteSetChange)initWithType:(unint64_t)type object:(id)object;
 - (void)dealloc;
 @end
 
 @implementation NSConcreteSetChange
 
-- (NSConcreteSetChange)initWithType:(unint64_t)a3 object:(id)a4
+- (NSConcreteSetChange)initWithType:(unint64_t)type object:(id)object
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -14,8 +14,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_changeType = a3;
-    v6->_value = a4;
+    v6->_changeType = type;
+    v6->_value = object;
   }
 
   return v7;

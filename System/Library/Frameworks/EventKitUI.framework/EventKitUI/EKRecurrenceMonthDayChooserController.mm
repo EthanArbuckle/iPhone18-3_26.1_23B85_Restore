@@ -1,23 +1,23 @@
 @interface EKRecurrenceMonthDayChooserController
-- (EKRecurrenceMonthDayChooserController)initWithDate:(id)a3;
+- (EKRecurrenceMonthDayChooserController)initWithDate:(id)date;
 - (id)cellLabels;
 - (id)daysOfTheMonth;
 - (void)prepareForDisplay;
 - (void)refreshCells;
-- (void)selectCell:(id)a3 atIndex:(int64_t)a4;
-- (void)setDaysOfTheMonth:(id)a3;
-- (void)setProhibitsMultipleDaysInMonthlyRecurrence:(BOOL)a3;
-- (void)updateFromRecurrenceRule:(id)a3;
-- (void)updateRecurrenceRuleBuilder:(id)a3;
+- (void)selectCell:(id)cell atIndex:(int64_t)index;
+- (void)setDaysOfTheMonth:(id)month;
+- (void)setProhibitsMultipleDaysInMonthlyRecurrence:(BOOL)recurrence;
+- (void)updateFromRecurrenceRule:(id)rule;
+- (void)updateRecurrenceRuleBuilder:(id)builder;
 @end
 
 @implementation EKRecurrenceMonthDayChooserController
 
-- (EKRecurrenceMonthDayChooserController)initWithDate:(id)a3
+- (EKRecurrenceMonthDayChooserController)initWithDate:(id)date
 {
   v7.receiver = self;
   v7.super_class = EKRecurrenceMonthDayChooserController;
-  v3 = [(EKRecurrenceChooserController *)&v7 initWithDate:a3];
+  v3 = [(EKRecurrenceChooserController *)&v7 initWithDate:date];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -30,36 +30,36 @@
 
 - (id)daysOfTheMonth
 {
-  v2 = [(NSMutableSet *)self->_daysOfTheMonthSet allObjects];
-  v3 = [v2 sortedArrayUsingSelector:sel_compare_];
+  allObjects = [(NSMutableSet *)self->_daysOfTheMonthSet allObjects];
+  v3 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
   return v3;
 }
 
-- (void)setDaysOfTheMonth:(id)a3
+- (void)setDaysOfTheMonth:(id)month
 {
-  v6 = [MEMORY[0x1E695DFD8] setWithArray:a3];
+  v6 = [MEMORY[0x1E695DFD8] setWithArray:month];
   v4 = [v6 mutableCopy];
   daysOfTheMonthSet = self->_daysOfTheMonthSet;
   self->_daysOfTheMonthSet = v4;
 }
 
-- (void)updateRecurrenceRuleBuilder:(id)a3
+- (void)updateRecurrenceRuleBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [(EKRecurrenceMonthDayChooserController *)self daysOfTheMonth];
-  [v4 setDayNumbers:v5];
+  builderCopy = builder;
+  daysOfTheMonth = [(EKRecurrenceMonthDayChooserController *)self daysOfTheMonth];
+  [builderCopy setDayNumbers:daysOfTheMonth];
 }
 
-- (void)updateFromRecurrenceRule:(id)a3
+- (void)updateFromRecurrenceRule:(id)rule
 {
-  v6 = a3;
-  v4 = [v6 daysOfTheMonth];
+  ruleCopy = rule;
+  daysOfTheMonth = [ruleCopy daysOfTheMonth];
 
-  if (v4)
+  if (daysOfTheMonth)
   {
-    v5 = [v6 daysOfTheMonth];
-    [(EKRecurrenceMonthDayChooserController *)self setDaysOfTheMonth:v5];
+    daysOfTheMonth2 = [ruleCopy daysOfTheMonth];
+    [(EKRecurrenceMonthDayChooserController *)self setDaysOfTheMonth:daysOfTheMonth2];
 
     [(EKRecurrenceMonthDayChooserController *)self refreshCells];
   }
@@ -105,13 +105,13 @@ void __51__EKRecurrenceMonthDayChooserController_cellLabels__block_invoke()
 
 - (void)refreshCells
 {
-  v8 = [(EKRecurrenceGridChooserController *)self allCells];
-  if ([v8 count])
+  allCells = [(EKRecurrenceGridChooserController *)self allCells];
+  if ([allCells count])
   {
     v3 = 0;
     do
     {
-      v4 = [v8 objectAtIndexedSubscript:v3];
+      v4 = [allCells objectAtIndexedSubscript:v3];
       daysOfTheMonthSet = self->_daysOfTheMonthSet;
       v6 = [MEMORY[0x1E696AD98] numberWithInteger:++v3];
       v7 = [(NSMutableSet *)daysOfTheMonthSet containsObject:v6];
@@ -119,19 +119,19 @@ void __51__EKRecurrenceMonthDayChooserController_cellLabels__block_invoke()
       [v4 setSelected:v7];
     }
 
-    while (v3 < [v8 count]);
+    while (v3 < [allCells count]);
   }
 }
 
-- (void)selectCell:(id)a3 atIndex:(int64_t)a4
+- (void)selectCell:(id)cell atIndex:(int64_t)index
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (-[NSMutableSet count](self->_daysOfTheMonthSet, "count") != 1 || ([v6 selected] & 1) == 0)
+  cellCopy = cell;
+  if (-[NSMutableSet count](self->_daysOfTheMonthSet, "count") != 1 || ([cellCopy selected] & 1) == 0)
   {
-    [v6 setSelected:{objc_msgSend(v6, "selected") ^ 1}];
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4 + 1];
-    if ([v6 selected] && -[EKRecurrenceMonthDayChooserController prohibitsMultipleDaysInMonthlyRecurrence](self, "prohibitsMultipleDaysInMonthlyRecurrence"))
+    [cellCopy setSelected:{objc_msgSend(cellCopy, "selected") ^ 1}];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:index + 1];
+    if ([cellCopy selected] && -[EKRecurrenceMonthDayChooserController prohibitsMultipleDaysInMonthlyRecurrence](self, "prohibitsMultipleDaysInMonthlyRecurrence"))
     {
       v11[0] = v7;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
@@ -142,9 +142,9 @@ void __51__EKRecurrenceMonthDayChooserController_cellLabels__block_invoke()
 
     else
     {
-      v9 = [v6 selected];
+      selected = [cellCopy selected];
       daysOfTheMonthSet = self->_daysOfTheMonthSet;
-      if (v9)
+      if (selected)
       {
         [(NSMutableSet *)daysOfTheMonthSet addObject:v7];
       }
@@ -159,22 +159,22 @@ void __51__EKRecurrenceMonthDayChooserController_cellLabels__block_invoke()
   }
 }
 
-- (void)setProhibitsMultipleDaysInMonthlyRecurrence:(BOOL)a3
+- (void)setProhibitsMultipleDaysInMonthlyRecurrence:(BOOL)recurrence
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (self->_prohibitsMultipleDaysInMonthlyRecurrence != a3)
+  if (self->_prohibitsMultipleDaysInMonthlyRecurrence != recurrence)
   {
-    self->_prohibitsMultipleDaysInMonthlyRecurrence = a3;
-    if (a3)
+    self->_prohibitsMultipleDaysInMonthlyRecurrence = recurrence;
+    if (recurrence)
     {
-      v4 = [(EKRecurrenceMonthDayChooserController *)self daysOfTheMonth];
-      v5 = [v4 count];
+      daysOfTheMonth = [(EKRecurrenceMonthDayChooserController *)self daysOfTheMonth];
+      v5 = [daysOfTheMonth count];
 
       if (v5)
       {
-        v6 = [(EKRecurrenceMonthDayChooserController *)self daysOfTheMonth];
-        v7 = [v6 firstObject];
-        v9[0] = v7;
+        daysOfTheMonth2 = [(EKRecurrenceMonthDayChooserController *)self daysOfTheMonth];
+        firstObject = [daysOfTheMonth2 firstObject];
+        v9[0] = firstObject;
         v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
         [(EKRecurrenceMonthDayChooserController *)self setDaysOfTheMonth:v8];
 

@@ -16,28 +16,28 @@
 
   v5 = [MPPropertySet alloc];
   v6 = +[MPModelAlbum requiredLibraryAddStatusObservationProperties];
-  v7 = [v6 properties];
-  v8 = [v7 allObjects];
-  v9 = [v5 initWithProperties:v8 relationships:v4];
+  properties = [v6 properties];
+  allObjects = [properties allObjects];
+  v9 = [v5 initWithProperties:allObjects relationships:v4];
 
   return v9;
 }
 
 - (id)storeIDs
 {
-  v2 = [(MCDAlbumTracksDataSource *)self album];
-  v3 = [v2 identifiers];
-  v4 = [v3 universalStore];
-  v5 = [v4 adamID];
+  album = [(MCDAlbumTracksDataSource *)self album];
+  identifiers = [album identifiers];
+  universalStore = [identifiers universalStore];
+  adamID = [universalStore adamID];
 
-  if (v5)
+  if (adamID)
   {
-    v6 = [NSString stringWithFormat:@"%lld", v5];
+    v6 = [NSString stringWithFormat:@"%lld", adamID];
     v8 = v6;
-    v5 = [NSArray arrayWithObjects:&v8 count:1];
+    adamID = [NSArray arrayWithObjects:&v8 count:1];
   }
 
-  return v5;
+  return adamID;
 }
 
 @end

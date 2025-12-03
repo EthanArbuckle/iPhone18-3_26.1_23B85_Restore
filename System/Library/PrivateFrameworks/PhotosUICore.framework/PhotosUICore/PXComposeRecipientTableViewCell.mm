@@ -1,48 +1,48 @@
 @interface PXComposeRecipientTableViewCell
-- (PXComposeRecipientTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PXComposeRecipientTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_textColor;
 - (void)_updateAccessoryImageView;
 - (void)_updateAddressLabel;
 - (void)_updateAvatarView;
 - (void)_updateLocalizedNameLabel;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXComposeRecipientTableViewCell
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (PXComposeRecipientTableCellModelObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXComposeRecipientTableCellModelObservationContext == context)
   {
-    v9 = v6 & 0x1C;
-    v10 = v6 & 0x18;
-    v12 = v8;
-    if ((v6 & 0x81) != 0)
+    v9 = changeCopy & 0x1C;
+    v10 = changeCopy & 0x18;
+    v12 = observableCopy;
+    if ((changeCopy & 0x81) != 0)
     {
       [(PXComposeRecipientTableViewCell *)self _updateAvatarView];
-      v8 = v12;
+      observableCopy = v12;
     }
 
-    v11 = v6 & 0x60;
+    v11 = changeCopy & 0x60;
     if (v9)
     {
       [(PXComposeRecipientTableViewCell *)self _updateLocalizedNameLabel];
-      v8 = v12;
+      observableCopy = v12;
     }
 
     if (v10)
     {
       [(PXComposeRecipientTableViewCell *)self _updateAddressLabel];
-      v8 = v12;
+      observableCopy = v12;
     }
 
     if (v11)
     {
       [(PXComposeRecipientTableViewCell *)self _updateAccessoryImageView];
-      v8 = v12;
+      observableCopy = v12;
     }
   }
 }
@@ -79,9 +79,9 @@
 
 - (void)_updateAddressLabel
 {
-  v5 = [(PXComposeRecipientTableCellModel *)self->_cellModel address];
-  [(UILabel *)self->_addressLabel setText:v5];
-  if (v5)
+  address = [(PXComposeRecipientTableCellModel *)self->_cellModel address];
+  [(UILabel *)self->_addressLabel setText:address];
+  if (address)
   {
     v3 = 0;
   }
@@ -92,23 +92,23 @@
   }
 
   [(PXComposeRecipientTableViewCell *)self setSelectionStyle:v3];
-  v4 = [(PXComposeRecipientTableViewCell *)self _textColor];
-  [(UILabel *)self->_addressLabel setTextColor:v4];
+  _textColor = [(PXComposeRecipientTableViewCell *)self _textColor];
+  [(UILabel *)self->_addressLabel setTextColor:_textColor];
 
   [(PXComposeRecipientTableViewCell *)self setNeedsLayout];
 }
 
 - (void)_updateLocalizedNameLabel
 {
-  v3 = [(PXComposeRecipientTableCellModel *)self->_cellModel name];
-  [(UILabel *)self->_localizedNameLabel setText:v3];
+  name = [(PXComposeRecipientTableCellModel *)self->_cellModel name];
+  [(UILabel *)self->_localizedNameLabel setText:name];
 
-  v4 = [(PXComposeRecipientTableViewCell *)self _textColor];
-  [(UILabel *)self->_localizedNameLabel setTextColor:v4];
+  _textColor = [(PXComposeRecipientTableViewCell *)self _textColor];
+  [(UILabel *)self->_localizedNameLabel setTextColor:_textColor];
 
-  v5 = [(PXComposeRecipientTableCellModel *)self->_cellModel address];
+  address = [(PXComposeRecipientTableCellModel *)self->_cellModel address];
 
-  if (v5)
+  if (address)
   {
     v6 = 32770;
   }
@@ -126,8 +126,8 @@
 - (void)_updateAvatarView
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PXComposeRecipientTableCellModel *)self->_cellModel contact];
-  if (v4)
+  contact = [(PXComposeRecipientTableCellModel *)self->_cellModel contact];
+  if (contact)
   {
     if (!self->_contactAvatarViewController)
     {
@@ -135,15 +135,15 @@
       contactAvatarViewController = self->_contactAvatarViewController;
       self->_contactAvatarViewController = v5;
 
-      v7 = [(CNAvatarViewController *)self->_contactAvatarViewController view];
+      view = [(CNAvatarViewController *)self->_contactAvatarViewController view];
       contactAvatarView = self->_contactAvatarView;
-      self->_contactAvatarView = v7;
+      self->_contactAvatarView = view;
 
-      v9 = [(PXComposeRecipientTableViewCell *)self contentView];
-      [v9 addSubview:self->_contactAvatarView];
+      contentView = [(PXComposeRecipientTableViewCell *)self contentView];
+      [contentView addSubview:self->_contactAvatarView];
     }
 
-    v21[0] = v4;
+    v21[0] = contact;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
     [(CNAvatarViewController *)self->_contactAvatarViewController setContacts:v10];
 
@@ -156,13 +156,13 @@
     }
 
 LABEL_9:
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewCell+iOS.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"avatarView"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewCell+iOS.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"avatarView"}];
 
     goto LABEL_5;
   }
 
-  v14 = [(PXComposeRecipientTableCellModel *)self->_cellModel image];
+  image = [(PXComposeRecipientTableCellModel *)self->_cellModel image];
   customAvatarImageView = self->_customAvatarImageView;
   if (!customAvatarImageView)
   {
@@ -170,17 +170,17 @@ LABEL_9:
     v17 = self->_customAvatarImageView;
     self->_customAvatarImageView = v16;
 
-    v18 = [MEMORY[0x1E69DC888] lightGrayColor];
-    [(PXRoundImageView *)self->_customAvatarImageView setBackgroundColor:v18];
+    lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+    [(PXRoundImageView *)self->_customAvatarImageView setBackgroundColor:lightGrayColor];
 
     [(PXRoundImageView *)self->_customAvatarImageView setAccessibilityIgnoresInvertColors:1];
-    v19 = [(PXComposeRecipientTableViewCell *)self contentView];
-    [v19 addSubview:self->_customAvatarImageView];
+    contentView2 = [(PXComposeRecipientTableViewCell *)self contentView];
+    [contentView2 addSubview:self->_customAvatarImageView];
 
     customAvatarImageView = self->_customAvatarImageView;
   }
 
-  [(PXRoundImageView *)customAvatarImageView setImage:v14];
+  [(PXRoundImageView *)customAvatarImageView setImage:image];
   v11 = self->_customAvatarImageView;
   [(PXRoundImageView *)self->_customAvatarImageView setHidden:0];
   [(UIView *)self->_contactAvatarView setHidden:1];
@@ -200,8 +200,8 @@ LABEL_5:
 
 - (id)_textColor
 {
-  v3 = [(PXComposeRecipientTableCellModel *)self->_cellModel address];
-  if (v3)
+  address = [(PXComposeRecipientTableCellModel *)self->_cellModel address];
+  if (address)
   {
     if ([(PXComposeRecipientTableCellModel *)self->_cellModel isValidAddress])
     {
@@ -212,15 +212,15 @@ LABEL_5:
     {
       [MEMORY[0x1E69DC888] systemGreenColor];
     }
-    v4 = ;
+    secondaryLabelColor = ;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
 
-  v5 = v4;
+  v5 = secondaryLabelColor;
 
   return v5;
 }
@@ -230,8 +230,8 @@ LABEL_5:
   v53.receiver = self;
   v53.super_class = PXComposeRecipientTableViewCell;
   [(PXComposeRecipientTableViewCell *)&v53 layoutSubviews];
-  v3 = [(PXComposeRecipientTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PXComposeRecipientTableViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -270,8 +270,8 @@ LABEL_5:
     v56.size.width = v13;
     v56.size.height = v13;
     v26 = CGRectGetMinX(v56) - v15;
-    v27 = [(PXComposeRecipientTableViewCell *)self contentView];
-    [v27 frame];
+    contentView2 = [(PXComposeRecipientTableViewCell *)self contentView];
+    [contentView2 frame];
     v28 = v5;
     v30 = v26 - v29;
 
@@ -312,11 +312,11 @@ LABEL_5:
   }
 
   [(UIView *)self->_avatarView setFrame:v15, v24, v13, v13];
-  v33 = [(UILabel *)*p_localizedNameLabel text];
-  v34 = [v33 length];
+  text = [(UILabel *)*p_localizedNameLabel text];
+  v34 = [text length];
 
-  v35 = [(UILabel *)*p_addressLabel text];
-  v36 = [v35 length] != 0;
+  text2 = [(UILabel *)*p_addressLabel text];
+  v36 = [text2 length] != 0;
 
   v37 = fmin(v50, v30);
   v38 = fmin(v49, v30);
@@ -373,11 +373,11 @@ LABEL_19:
   [(UILabel *)*p_localizedNameLabel setFrame:v39, MaxY, v37, v44];
 }
 
-- (PXComposeRecipientTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PXComposeRecipientTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v18.receiver = self;
   v18.super_class = PXComposeRecipientTableViewCell;
-  v4 = [(PXComposeRecipientTableViewCell *)&v18 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PXComposeRecipientTableViewCell *)&v18 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(PXComposeRecipientTableCellModel);
@@ -390,8 +390,8 @@ LABEL_19:
     localizedNameLabel = v4->_localizedNameLabel;
     v4->_localizedNameLabel = v7;
 
-    v9 = [(PXComposeRecipientTableViewCell *)v4 contentView];
-    [v9 addSubview:v4->_localizedNameLabel];
+    contentView = [(PXComposeRecipientTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_localizedNameLabel];
 
     v10 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     addressLabel = v4->_addressLabel;
@@ -400,8 +400,8 @@ LABEL_19:
     v12 = [MEMORY[0x1E69DB878] px_preferredFontForTextStyle:*MEMORY[0x1E69DDD80] withSymbolicTraits:0x8000 options:2];
     [(UILabel *)v4->_addressLabel setFont:v12];
 
-    v13 = [(PXComposeRecipientTableViewCell *)v4 contentView];
-    [v13 addSubview:v4->_addressLabel];
+    contentView2 = [(PXComposeRecipientTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_addressLabel];
 
     v14 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     accessoryImageView = v4->_accessoryImageView;

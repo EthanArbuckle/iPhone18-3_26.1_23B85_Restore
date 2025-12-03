@@ -1,20 +1,20 @@
 @interface VisionCoreSparseOpticalFlowSession
 - (VisionCoreSparseOpticalFlowSession)init;
-- (__n128)setSceneHomography:(__n128)a3;
+- (__n128)setSceneHomography:(__n128)homography;
 - (id).cxx_construct;
-- (int)findClosestQuadIndex:(int)a3 candidateIndices:()vector<int;
-- (unint64_t)updateKeypointsWithOpticalFlowResultsSourceBuffer:(VisionCoreSparseOpticalFlowSession *)self destBuffer:(SEL)a2 matchBuffer:matchCount:;
+- (int)findClosestQuadIndex:(int)index candidateIndices:()vector<int;
+- (unint64_t)updateKeypointsWithOpticalFlowResultsSourceBuffer:(VisionCoreSparseOpticalFlowSession *)self destBuffer:(SEL)buffer matchBuffer:matchCount:;
 - (void)dealloc;
 - (void)resetGroupingMemory;
 - (void)saveCurrentMatchingToMemoryMatchCounts:(vector<unsigned)long;
-- (void)setAllDstPoints:(void *)a3;
-- (void)setAllSrcPoints:(void *)a3;
-- (void)setGroupingMemoryDstPoints:(void *)a3;
-- (void)setGroupingMemoryQuadPointsCounts:(void *)a3;
-- (void)setGroupingMemorySrcPoints:(void *)a3;
-- (void)setQuadPointCounts:(void *)a3;
-- (void)updateMemoryKeypointsWithOpticalFlowResultsSourceBuffer:(VisionCoreSparseOpticalFlowSession *)self destBuffer:(SEL)a2 matchBuffer:start:;
-- (void)updateReferenceTexture:(id)a3 frame:(__CVBuffer *)a4;
+- (void)setAllDstPoints:(void *)points;
+- (void)setAllSrcPoints:(void *)points;
+- (void)setGroupingMemoryDstPoints:(void *)points;
+- (void)setGroupingMemoryQuadPointsCounts:(void *)counts;
+- (void)setGroupingMemorySrcPoints:(void *)points;
+- (void)setQuadPointCounts:(void *)counts;
+- (void)updateMemoryKeypointsWithOpticalFlowResultsSourceBuffer:(VisionCoreSparseOpticalFlowSession *)self destBuffer:(SEL)buffer matchBuffer:start:;
+- (void)updateReferenceTexture:(id)texture frame:(__CVBuffer *)frame;
 @end
 
 @implementation VisionCoreSparseOpticalFlowSession
@@ -33,69 +33,69 @@
   return self;
 }
 
-- (void)setGroupingMemoryDstPoints:(void *)a3
+- (void)setGroupingMemoryDstPoints:(void *)points
 {
   anon_d0 = self->_anon_d0;
-  if (anon_d0 != a3)
+  if (anon_d0 != points)
   {
-    std::vector<half>::__assign_with_size[abi:ne200100]<half *,half *>(anon_d0, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 1);
+    std::vector<half>::__assign_with_size[abi:ne200100]<half *,half *>(anon_d0, *points, *(points + 1), (*(points + 1) - *points) >> 1);
   }
 }
 
-- (void)setGroupingMemoryQuadPointsCounts:(void *)a3
+- (void)setGroupingMemoryQuadPointsCounts:(void *)counts
 {
   p_groupingMemoryQuadPointsCounts = &self->_groupingMemoryQuadPointsCounts;
-  if (p_groupingMemoryQuadPointsCounts != a3)
+  if (p_groupingMemoryQuadPointsCounts != counts)
   {
-    std::vector<unsigned long>::__assign_with_size[abi:ne200100]<unsigned long *,unsigned long *>(p_groupingMemoryQuadPointsCounts, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 3);
+    std::vector<unsigned long>::__assign_with_size[abi:ne200100]<unsigned long *,unsigned long *>(p_groupingMemoryQuadPointsCounts, *counts, *(counts + 1), (*(counts + 1) - *counts) >> 3);
   }
 }
 
-- (void)setGroupingMemorySrcPoints:(void *)a3
+- (void)setGroupingMemorySrcPoints:(void *)points
 {
   anon_a0 = self->_anon_a0;
-  if (anon_a0 != a3)
+  if (anon_a0 != points)
   {
-    std::vector<half>::__assign_with_size[abi:ne200100]<half *,half *>(anon_a0, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 1);
+    std::vector<half>::__assign_with_size[abi:ne200100]<half *,half *>(anon_a0, *points, *(points + 1), (*(points + 1) - *points) >> 1);
   }
 }
 
-- (void)setAllDstPoints:(void *)a3
+- (void)setAllDstPoints:(void *)points
 {
   anon_88 = self->_anon_88;
-  if (anon_88 != a3)
+  if (anon_88 != points)
   {
-    std::vector<half>::__assign_with_size[abi:ne200100]<half *,half *>(anon_88, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 1);
+    std::vector<half>::__assign_with_size[abi:ne200100]<half *,half *>(anon_88, *points, *(points + 1), (*(points + 1) - *points) >> 1);
   }
 }
 
-- (void)setQuadPointCounts:(void *)a3
+- (void)setQuadPointCounts:(void *)counts
 {
   p_quadPointCounts = &self->_quadPointCounts;
-  if (p_quadPointCounts != a3)
+  if (p_quadPointCounts != counts)
   {
-    std::vector<unsigned long>::__assign_with_size[abi:ne200100]<unsigned long *,unsigned long *>(p_quadPointCounts, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 3);
+    std::vector<unsigned long>::__assign_with_size[abi:ne200100]<unsigned long *,unsigned long *>(p_quadPointCounts, *counts, *(counts + 1), (*(counts + 1) - *counts) >> 3);
   }
 }
 
-- (void)setAllSrcPoints:(void *)a3
+- (void)setAllSrcPoints:(void *)points
 {
   anon_58 = self->_anon_58;
-  if (anon_58 != a3)
+  if (anon_58 != points)
   {
-    std::vector<half>::__assign_with_size[abi:ne200100]<half *,half *>(anon_58, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 1);
+    std::vector<half>::__assign_with_size[abi:ne200100]<half *,half *>(anon_58, *points, *(points + 1), (*(points + 1) - *points) >> 1);
   }
 }
 
-- (__n128)setSceneHomography:(__n128)a3
+- (__n128)setSceneHomography:(__n128)homography
 {
   result[15] = a2;
-  result[16] = a3;
+  result[16] = homography;
   result[17] = a4;
   return result;
 }
 
-- (void)updateMemoryKeypointsWithOpticalFlowResultsSourceBuffer:(VisionCoreSparseOpticalFlowSession *)self destBuffer:(SEL)a2 matchBuffer:start:
+- (void)updateMemoryKeypointsWithOpticalFlowResultsSourceBuffer:(VisionCoreSparseOpticalFlowSession *)self destBuffer:(SEL)buffer matchBuffer:start:
 {
   anon_a0 = self->_anon_a0;
   v7 = *self->_anon_a0;
@@ -367,7 +367,7 @@ LABEL_60:
   }
 }
 
-- (unint64_t)updateKeypointsWithOpticalFlowResultsSourceBuffer:(VisionCoreSparseOpticalFlowSession *)self destBuffer:(SEL)a2 matchBuffer:matchCount:
+- (unint64_t)updateKeypointsWithOpticalFlowResultsSourceBuffer:(VisionCoreSparseOpticalFlowSession *)self destBuffer:(SEL)buffer matchBuffer:matchCount:
 {
   v6 = v5;
   begin = self->_quadPointCounts.__begin_;
@@ -732,7 +732,7 @@ LABEL_79:
   return v13;
 }
 
-- (int)findClosestQuadIndex:(int)a3 candidateIndices:()vector<int
+- (int)findClosestQuadIndex:(int)index candidateIndices:()vector<int
 {
   var0 = a4->var0;
   if (a4->var1 == a4->var0)
@@ -741,15 +741,15 @@ LABEL_79:
   }
 
   v8 = 0;
-  v9 = a3;
+  indexCopy = index;
   v10 = -1;
   v11 = 1.79769313e308;
   do
   {
-    if (var0[v8] != a3)
+    if (var0[v8] != index)
     {
       v12 = [(NSMutableArray *)self->_trackedQuads objectAtIndexedSubscript:?];
-      v13 = [(NSMutableArray *)self->_trackedQuads objectAtIndexedSubscript:v9];
+      v13 = [(NSMutableArray *)self->_trackedQuads objectAtIndexedSubscript:indexCopy];
       [v12 getEmptyDistanceBetweenCenters:v13];
       v15 = v14;
 
@@ -849,8 +849,8 @@ LABEL_79:
         }
 
         groupingMemoryQuadIDs = self->_groupingMemoryQuadIDs;
-        v8 = [*(*(&v9 + 1) + 8 * v6) UUID];
-        [(NSMutableArray *)groupingMemoryQuadIDs addObject:v8];
+        uUID = [*(*(&v9 + 1) + 8 * v6) UUID];
+        [(NSMutableArray *)groupingMemoryQuadIDs addObject:uUID];
 
         ++v6;
       }
@@ -863,12 +863,12 @@ LABEL_79:
   }
 }
 
-- (void)updateReferenceTexture:(id)a3 frame:(__CVBuffer *)a4
+- (void)updateReferenceTexture:(id)texture frame:(__CVBuffer *)frame
 {
-  v7 = a3;
+  textureCopy = texture;
   CVBufferRelease(self->_prevFrame);
-  objc_storeStrong(&self->_texture, a3);
-  self->_prevFrame = CVBufferRetain(a4);
+  objc_storeStrong(&self->_texture, texture);
+  self->_prevFrame = CVBufferRetain(frame);
 }
 
 - (void)dealloc

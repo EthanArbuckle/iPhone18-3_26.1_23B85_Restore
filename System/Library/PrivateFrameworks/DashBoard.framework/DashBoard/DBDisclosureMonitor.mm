@@ -1,9 +1,9 @@
 @interface DBDisclosureMonitor
 - (DBDisclosureMonitor)init;
 - (void)_observersDisclosureMonitorDidChange;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)markSafe;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)turnFeaturesOff;
 @end
 
@@ -20,9 +20,9 @@
     callbackQueue = v2->_callbackQueue;
     v2->_callbackQueue = Serial;
 
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = weakObjectsHashTable;
 
     v2->_markedSafe = [MEMORY[0x277CF89D0] qaModeLockout];
   }
@@ -46,29 +46,29 @@
   [(DBDisclosureMonitor *)self _observersDisclosureMonitorDidChange];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBDisclosureMonitor *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(DBDisclosureMonitor *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBDisclosureMonitor *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(DBDisclosureMonitor *)self observers];
+  [observers removeObject:observerCopy];
 }
 
 - (void)_observersDisclosureMonitorDidChange
 {
-  v3 = [(DBDisclosureMonitor *)self callbackQueue];
+  callbackQueue = [(DBDisclosureMonitor *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__DBDisclosureMonitor__observersDisclosureMonitorDidChange__block_invoke;
   block[3] = &unk_278F01580;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(callbackQueue, block);
 }
 
 void __59__DBDisclosureMonitor__observersDisclosureMonitorDidChange__block_invoke(uint64_t a1)

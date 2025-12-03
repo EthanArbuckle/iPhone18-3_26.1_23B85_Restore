@@ -1,42 +1,42 @@
 @interface DMDConfigurationSourceRepresentation
-- (DMDConfigurationSourceRepresentation)initWithConfigurationSource:(id)a3;
+- (DMDConfigurationSourceRepresentation)initWithConfigurationSource:(id)source;
 - (NSString)debugDescription;
 - (NSString)description;
 @end
 
 @implementation DMDConfigurationSourceRepresentation
 
-- (DMDConfigurationSourceRepresentation)initWithConfigurationSource:(id)a3
+- (DMDConfigurationSourceRepresentation)initWithConfigurationSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v19.receiver = self;
   v19.super_class = DMDConfigurationSourceRepresentation;
   v5 = [(DMDConfigurationSourceRepresentation *)&v19 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [sourceCopy identifier];
     identifier = v5->_identifier;
-    v5->_identifier = v6;
+    v5->_identifier = identifier;
 
-    v8 = [v4 organizationIdentifier];
+    organizationIdentifier = [sourceCopy organizationIdentifier];
     organizationIdentifier = v5->_organizationIdentifier;
-    v5->_organizationIdentifier = v8;
+    v5->_organizationIdentifier = organizationIdentifier;
 
-    v10 = [v4 displayName];
+    displayName = [sourceCopy displayName];
     displayName = v5->_displayName;
-    v5->_displayName = v10;
+    v5->_displayName = displayName;
 
-    v12 = [v4 machServiceName];
+    machServiceName = [sourceCopy machServiceName];
     machServiceName = v5->_machServiceName;
-    v5->_machServiceName = v12;
+    v5->_machServiceName = machServiceName;
 
-    v14 = [v4 listenerEndpoint];
+    listenerEndpoint = [sourceCopy listenerEndpoint];
     listenerEndpoint = v5->_listenerEndpoint;
-    v5->_listenerEndpoint = v14;
+    v5->_listenerEndpoint = listenerEndpoint;
 
-    v16 = [v4 reportingRequirements];
+    reportingRequirements = [sourceCopy reportingRequirements];
     reportingRequirements = v5->_reportingRequirements;
-    v5->_reportingRequirements = v16;
+    v5->_reportingRequirements = reportingRequirements;
   }
 
   return v5;

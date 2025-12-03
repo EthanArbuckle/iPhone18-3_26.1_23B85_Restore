@@ -1,6 +1,6 @@
 @interface EntitlementABCIssue
 - (BOOL)shouldBeReportedNow;
-- (EntitlementABCIssue)initWithClient:(id)a3 processName:(id)a4 clientUUID:(id)a5 platform:(id)a6 forReporter:(id)a7;
+- (EntitlementABCIssue)initWithClient:(id)client processName:(id)name clientUUID:(id)d platform:(id)platform forReporter:(id)reporter;
 - (id)context;
 - (id)tag;
 - (unint64_t)abcReason;
@@ -10,24 +10,24 @@
 
 @implementation EntitlementABCIssue
 
-- (EntitlementABCIssue)initWithClient:(id)a3 processName:(id)a4 clientUUID:(id)a5 platform:(id)a6 forReporter:(id)a7
+- (EntitlementABCIssue)initWithClient:(id)client processName:(id)name clientUUID:(id)d platform:(id)platform forReporter:(id)reporter
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  clientCopy = client;
+  nameCopy = name;
+  dCopy = d;
+  platformCopy = platform;
+  reporterCopy = reporter;
   v20.receiver = self;
   v20.super_class = EntitlementABCIssue;
   v17 = [(EntitlementABCIssue *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    [(EntitlementABCIssue *)v17 setClientName:v12];
-    [(EntitlementABCIssue *)v18 setProcessName:v13];
-    [(EntitlementABCIssue *)v18 setClientUUID:v14];
-    [(EntitlementABCIssue *)v18 setPlatform:v15];
-    [(EntitlementABCIssue *)v18 setReporter:v16];
+    [(EntitlementABCIssue *)v17 setClientName:clientCopy];
+    [(EntitlementABCIssue *)v18 setProcessName:nameCopy];
+    [(EntitlementABCIssue *)v18 setClientUUID:dCopy];
+    [(EntitlementABCIssue *)v18 setPlatform:platformCopy];
+    [(EntitlementABCIssue *)v18 setReporter:reporterCopy];
   }
 
   return v18;
@@ -65,15 +65,15 @@
 
 - (BOOL)shouldBeReportedNow
 {
-  v3 = [(EntitlementABCIssue *)self nextAction];
+  nextAction = [(EntitlementABCIssue *)self nextAction];
 
-  if (!v3)
+  if (!nextAction)
   {
     return 0;
   }
 
-  v4 = [(EntitlementABCIssue *)self nextAction];
-  [v4 timeIntervalSinceNow];
+  nextAction2 = [(EntitlementABCIssue *)self nextAction];
+  [nextAction2 timeIntervalSinceNow];
   v6 = v5 < 0.0;
 
   return v6;
@@ -102,25 +102,25 @@
     {
       v8 = v7;
       v9 = [(EntitlementABCIssue *)self tag];
-      v10 = [(EntitlementABCIssue *)self nextAction];
+      nextAction = [(EntitlementABCIssue *)self nextAction];
       *buf = 138412546;
       v19 = v9;
       v20 = 2112;
-      v21 = v10;
+      v21 = nextAction;
       _os_log_impl(&dword_223E00000, v8, OS_LOG_TYPE_INFO, "Entitlement issue %@ will be reported, nextAction=%@\n", buf, 0x16u);
     }
 
     objc_initWeak(buf, self);
-    v11 = [(EntitlementABCIssue *)self reporter];
-    v12 = [v11 biometricABC];
-    v13 = [(EntitlementABCIssue *)self abcReason];
-    v14 = [(EntitlementABCIssue *)self context];
+    reporter = [(EntitlementABCIssue *)self reporter];
+    biometricABC = [reporter biometricABC];
+    abcReason = [(EntitlementABCIssue *)self abcReason];
+    context = [(EntitlementABCIssue *)self context];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __29__EntitlementABCIssue_report__block_invoke;
     v16[3] = &unk_2784FA5C8;
     objc_copyWeak(&v17, buf);
-    [v12 sendAutoBugCaptureEvent:v13 withContext:v14 replyBlock:v16];
+    [biometricABC sendAutoBugCaptureEvent:abcReason withContext:context replyBlock:v16];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(buf);

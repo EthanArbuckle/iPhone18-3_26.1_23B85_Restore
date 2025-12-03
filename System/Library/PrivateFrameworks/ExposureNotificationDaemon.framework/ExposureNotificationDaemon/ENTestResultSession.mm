@@ -1,56 +1,56 @@
 @interface ENTestResultSession
-+ (id)sessionWithVerificationCode:(id)a3 configuration:(id)a4 maxRetryTime:(unint64_t)a5 nonce:(id)a6 URLSession:(id)a7 queue:(id)a8 error:(id *)a9;
-- (BOOL)_checkInvalidatedAndReturnError:(id *)a3;
-- (BOOL)_performVerificationRequestWithError:(id *)a3;
-- (id)_initWithAgencyAPIKey:(id)a3 certificateURL:(id)a4 acceptedReportTypes:(id)a5 healthAuthorityID:(id)a6 maxRetryTime:(unint64_t)a7 nonce:(id)a8 queue:(id)a9 region:(id)a10 uploadURL:(id)a11 URLSession:(id)a12 verificationCode:(id)a13 verifyURL:(id)a14;
-- (id)getMetadataAndReturnError:(id *)a3;
-- (void)_flushVerificationCompletionsWithError:(id)a3;
-- (void)_performCertificateRequestWithToken:(id)a3 temporaryExposureKeys:(id)a4 completionHandler:(id)a5;
-- (void)_performUploadRequestWithTemporaryExposureKeys:(id)a3 revisionToken:(id)a4 certificate:(id)a5 HMACKey:(id)a6 userMetadata:(id)a7 completionHandler:(id)a8;
++ (id)sessionWithVerificationCode:(id)code configuration:(id)configuration maxRetryTime:(unint64_t)time nonce:(id)nonce URLSession:(id)session queue:(id)queue error:(id *)error;
+- (BOOL)_checkInvalidatedAndReturnError:(id *)error;
+- (BOOL)_performVerificationRequestWithError:(id *)error;
+- (id)_initWithAgencyAPIKey:(id)key certificateURL:(id)l acceptedReportTypes:(id)types healthAuthorityID:(id)d maxRetryTime:(unint64_t)time nonce:(id)nonce queue:(id)queue region:(id)self0 uploadURL:(id)self1 URLSession:(id)self2 verificationCode:(id)self3 verifyURL:(id)self4;
+- (id)getMetadataAndReturnError:(id *)error;
+- (void)_flushVerificationCompletionsWithError:(id)error;
+- (void)_performCertificateRequestWithToken:(id)token temporaryExposureKeys:(id)keys completionHandler:(id)handler;
+- (void)_performUploadRequestWithTemporaryExposureKeys:(id)keys revisionToken:(id)token certificate:(id)certificate HMACKey:(id)key userMetadata:(id)metadata completionHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
-- (void)uploadTemporaryExposureKeys:(id)a3 revisionToken:(id)a4 userMetadata:(id)a5 completionHandler:(id)a6;
-- (void)verifyCodeWithCompletionHandler:(id)a3;
+- (void)uploadTemporaryExposureKeys:(id)keys revisionToken:(id)token userMetadata:(id)metadata completionHandler:(id)handler;
+- (void)verifyCodeWithCompletionHandler:(id)handler;
 @end
 
 @implementation ENTestResultSession
 
-- (id)_initWithAgencyAPIKey:(id)a3 certificateURL:(id)a4 acceptedReportTypes:(id)a5 healthAuthorityID:(id)a6 maxRetryTime:(unint64_t)a7 nonce:(id)a8 queue:(id)a9 region:(id)a10 uploadURL:(id)a11 URLSession:(id)a12 verificationCode:(id)a13 verifyURL:(id)a14
+- (id)_initWithAgencyAPIKey:(id)key certificateURL:(id)l acceptedReportTypes:(id)types healthAuthorityID:(id)d maxRetryTime:(unint64_t)time nonce:(id)nonce queue:(id)queue region:(id)self0 uploadURL:(id)self1 URLSession:(id)self2 verificationCode:(id)self3 verifyURL:(id)self4
 {
-  v53 = a3;
-  v52 = a4;
-  v18 = a5;
-  v51 = a5;
-  v19 = a6;
-  v20 = a8;
-  v50 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
-  v24 = a13;
-  v25 = a14;
+  keyCopy = key;
+  lCopy = l;
+  typesCopy = types;
+  typesCopy2 = types;
+  dCopy = d;
+  nonceCopy = nonce;
+  queueCopy = queue;
+  regionCopy = region;
+  rLCopy = rL;
+  sessionCopy = session;
+  codeCopy = code;
+  uRLCopy = uRL;
   v54.receiver = self;
   v54.super_class = ENTestResultSession;
   v26 = [(ENTestResultSession *)&v54 init];
   if (v26)
   {
-    v27 = [v53 copy];
+    v27 = [keyCopy copy];
     agencyAPIKey = v26->_agencyAPIKey;
     v26->_agencyAPIKey = v27;
 
-    v29 = [v52 copy];
+    v29 = [lCopy copy];
     certificateURL = v26->_certificateURL;
     v26->_certificateURL = v29;
 
-    objc_storeStrong(&v26->_acceptedReportTypes, v18);
-    v31 = [v19 copy];
+    objc_storeStrong(&v26->_acceptedReportTypes, typesCopy);
+    v31 = [dCopy copy];
     healthAuthorityID = v26->_healthAuthorityID;
     v26->_healthAuthorityID = v31;
 
-    v26->_maxRetryTime = a7;
-    if (v20)
+    v26->_maxRetryTime = time;
+    if (nonceCopy)
     {
-      v33 = [v20 copy];
+      v33 = [nonceCopy copy];
     }
 
     else
@@ -65,26 +65,26 @@
     persistentSession = v26->_persistentSession;
     v26->_persistentSession = v35;
 
-    objc_storeStrong(&v26->_queue, a9);
-    v37 = [v21 copy];
+    objc_storeStrong(&v26->_queue, queue);
+    v37 = [regionCopy copy];
     region = v26->_region;
     v26->_region = v37;
 
     v26->_state = 0;
-    objc_storeStrong(&v26->_URLSession, a12);
-    v39 = [v22 copy];
+    objc_storeStrong(&v26->_URLSession, session);
+    v39 = [rLCopy copy];
     uploadURL = v26->_uploadURL;
     v26->_uploadURL = v39;
 
-    v41 = [MEMORY[0x277CCAD70] UUID];
+    uUID = [MEMORY[0x277CCAD70] UUID];
     UUID = v26->_UUID;
-    v26->_UUID = v41;
+    v26->_UUID = uUID;
 
-    v43 = [v24 copy];
+    v43 = [codeCopy copy];
     verificationCode = v26->_verificationCode;
     v26->_verificationCode = v43;
 
-    v45 = [v25 copy];
+    v45 = [uRLCopy copy];
     verificationURL = v26->_verificationURL;
     v26->_verificationURL = v45;
   }
@@ -100,42 +100,42 @@
   [(ENTestResultSession *)&v3 dealloc];
 }
 
-+ (id)sessionWithVerificationCode:(id)a3 configuration:(id)a4 maxRetryTime:(unint64_t)a5 nonce:(id)a6 URLSession:(id)a7 queue:(id)a8 error:(id *)a9
++ (id)sessionWithVerificationCode:(id)code configuration:(id)configuration maxRetryTime:(unint64_t)time nonce:(id)nonce URLSession:(id)session queue:(id)queue error:(id *)error
 {
-  v31 = a3;
-  v15 = a4;
-  v28 = a6;
-  v30 = a7;
-  v29 = a8;
-  v16 = [v15 testVerificationAPIKey];
-  if (v16)
+  codeCopy = code;
+  configurationCopy = configuration;
+  nonceCopy = nonce;
+  sessionCopy = session;
+  queueCopy = queue;
+  testVerificationAPIKey = [configurationCopy testVerificationAPIKey];
+  if (testVerificationAPIKey)
   {
-    v17 = [v15 testVerificationCertificateURL];
-    if (v17)
+    testVerificationCertificateURL = [configurationCopy testVerificationCertificateURL];
+    if (testVerificationCertificateURL)
     {
-      v18 = [v15 healthAuthorityID];
-      if (v18)
+      healthAuthorityID = [configurationCopy healthAuthorityID];
+      if (healthAuthorityID)
       {
-        v19 = [v15 testVerificationURL];
-        if (v19)
+        testVerificationURL = [configurationCopy testVerificationURL];
+        if (testVerificationURL)
         {
-          v20 = [v15 tekUploadURL];
-          if (v20)
+          tekUploadURL = [configurationCopy tekUploadURL];
+          if (tekUploadURL)
           {
-            v21 = [v15 acceptedReportTypes];
-            v22 = [a1 alloc];
-            v23 = [v15 region];
+            acceptedReportTypes = [configurationCopy acceptedReportTypes];
+            v22 = [self alloc];
+            region = [configurationCopy region];
             v24 = v22;
-            v25 = v28;
-            v26 = [v24 _initWithAgencyAPIKey:v16 certificateURL:v17 acceptedReportTypes:v21 healthAuthorityID:v18 maxRetryTime:a5 nonce:v28 queue:v29 region:v23 uploadURL:v20 URLSession:v30 verificationCode:v31 verifyURL:v19];
+            v25 = nonceCopy;
+            v26 = [v24 _initWithAgencyAPIKey:testVerificationAPIKey certificateURL:testVerificationCertificateURL acceptedReportTypes:acceptedReportTypes healthAuthorityID:healthAuthorityID maxRetryTime:time nonce:nonceCopy queue:queueCopy region:region uploadURL:tekUploadURL URLSession:sessionCopy verificationCode:codeCopy verifyURL:testVerificationURL];
           }
 
           else
           {
-            if (a9)
+            if (error)
             {
               ENTestResultErrorF(10);
-              *a9 = v26 = 0;
+              *error = v26 = 0;
             }
 
             else
@@ -143,16 +143,16 @@
               v26 = 0;
             }
 
-            v25 = v28;
+            v25 = nonceCopy;
           }
         }
 
         else
         {
-          if (a9)
+          if (error)
           {
             ENTestResultErrorF(10);
-            *a9 = v26 = 0;
+            *error = v26 = 0;
           }
 
           else
@@ -160,17 +160,17 @@
             v26 = 0;
           }
 
-          v25 = v28;
+          v25 = nonceCopy;
         }
       }
 
       else
       {
-        v25 = v28;
-        if (a9)
+        v25 = nonceCopy;
+        if (error)
         {
           ENTestResultErrorF(10);
-          *a9 = v26 = 0;
+          *error = v26 = 0;
         }
 
         else
@@ -182,10 +182,10 @@
 
     else
     {
-      if (a9)
+      if (error)
       {
         ENTestResultErrorF(10);
-        *a9 = v26 = 0;
+        *error = v26 = 0;
       }
 
       else
@@ -193,16 +193,16 @@
         v26 = 0;
       }
 
-      v25 = v28;
+      v25 = nonceCopy;
     }
   }
 
   else
   {
-    if (a9)
+    if (error)
     {
       ENTestResultErrorF(10);
-      *a9 = v26 = 0;
+      *error = v26 = 0;
     }
 
     else
@@ -210,21 +210,21 @@
       v26 = 0;
     }
 
-    v25 = v28;
+    v25 = nonceCopy;
   }
 
   return v26;
 }
 
-- (void)verifyCodeWithCompletionHandler:(id)a3
+- (void)verifyCodeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __55__ENTestResultSession_verifyCodeWithCompletionHandler___block_invoke;
   v20[3] = &unk_278FD2FA0;
   v20[4] = self;
-  v21 = v4;
+  v21 = handlerCopy;
   v5 = MEMORY[0x24C214430](v20);
   v19 = 0;
   v6 = [(ENTestResultSession *)self _checkInvalidatedAndReturnError:&v19];
@@ -253,17 +253,17 @@
     {
       if (state != 1)
       {
-        v17 = [(ENTestResultPersistentSession *)self->_persistentSession verificationError];
-        (v5)[2](v5, v17 == 0, v17);
+        verificationError = [(ENTestResultPersistentSession *)self->_persistentSession verificationError];
+        (v5)[2](v5, verificationError == 0, verificationError);
 LABEL_16:
 
         goto LABEL_17;
       }
 
       v10 = +[ENLoggingPrefs sharedENLoggingPrefs];
-      v11 = [v10 isSensitiveLoggingAllowed];
+      isSensitiveLoggingAllowed = [v10 isSensitiveLoggingAllowed];
 
-      if (v11 && gLogCategory_ENTestResultSession <= 50 && (gLogCategory_ENTestResultSession != -1 || _LogCategory_Initialize()))
+      if (isSensitiveLoggingAllowed && gLogCategory_ENTestResultSession <= 50 && (gLogCategory_ENTestResultSession != -1 || _LogCategory_Initialize()))
       {
         [ENTestResultSession verifyCodeWithCompletionHandler:?];
       }
@@ -279,8 +279,8 @@ LABEL_16:
       verificationCompletions = self->_verificationCompletions;
     }
 
-    v17 = MEMORY[0x24C214430](v5);
-    [(NSMutableArray *)verificationCompletions addObject:v17];
+    verificationError = MEMORY[0x24C214430](v5);
+    [(NSMutableArray *)verificationCompletions addObject:verificationError];
     goto LABEL_16;
   }
 
@@ -314,36 +314,36 @@ LABEL_11:
   (*(*(a1 + 40) + 16))(*(a1 + 40), a2);
 }
 
-- (void)uploadTemporaryExposureKeys:(id)a3 revisionToken:(id)a4 userMetadata:(id)a5 completionHandler:(id)a6
+- (void)uploadTemporaryExposureKeys:(id)keys revisionToken:(id)token userMetadata:(id)metadata completionHandler:(id)handler
 {
   v48 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keysCopy = keys;
+  tokenCopy = token;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __96__ENTestResultSession_uploadTemporaryExposureKeys_revisionToken_userMetadata_completionHandler___block_invoke;
   v45[3] = &unk_278FD2FC8;
   v45[4] = self;
-  v46 = v13;
+  v46 = handlerCopy;
   v33 = MEMORY[0x24C214430](v45);
   v14 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v15 = [v14 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v14 isSensitiveLoggingAllowed];
 
-  if (v15 && gLogCategory_ENTestResultSession <= 50 && (gLogCategory_ENTestResultSession != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && gLogCategory_ENTestResultSession <= 50 && (gLogCategory_ENTestResultSession != -1 || _LogCategory_Initialize()))
   {
-    [ENTestResultSession uploadTemporaryExposureKeys:v10 revisionToken:? userMetadata:? completionHandler:?];
+    [ENTestResultSession uploadTemporaryExposureKeys:keysCopy revisionToken:? userMetadata:? completionHandler:?];
   }
 
-  v32 = self;
-  v34 = v12;
-  v35 = v11;
+  selfCopy = self;
+  v34 = metadataCopy;
+  v35 = tokenCopy;
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v16 = v10;
+  v16 = keysCopy;
   v17 = [v16 countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v17)
   {
@@ -361,9 +361,9 @@ LABEL_11:
 
         v21 = *(*(&v41 + 1) + 8 * v20);
         v22 = +[ENLoggingPrefs sharedENLoggingPrefs];
-        v23 = [v22 isRPILoggingAllowed];
+        isRPILoggingAllowed = [v22 isRPILoggingAllowed];
 
-        if (v23 && gLogCategory_ENTestResultSession <= 30 && (gLogCategory_ENTestResultSession != -1 || _LogCategory_Initialize()))
+        if (isRPILoggingAllowed && gLogCategory_ENTestResultSession <= 30 && (gLogCategory_ENTestResultSession != -1 || _LogCategory_Initialize()))
         {
           [ENTestResultSession uploadTemporaryExposureKeys:v21 revisionToken:? userMetadata:? completionHandler:?];
         }
@@ -379,14 +379,14 @@ LABEL_11:
     while (v24);
   }
 
-  v25 = [(ENTestResultPersistentSession *)v32->_persistentSession verificationToken];
-  if (v25)
+  verificationToken = [(ENTestResultPersistentSession *)selfCopy->_persistentSession verificationToken];
+  if (verificationToken)
   {
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __96__ENTestResultSession_uploadTemporaryExposureKeys_revisionToken_userMetadata_completionHandler___block_invoke_2;
     v36[3] = &unk_278FD2FF0;
-    v36[4] = v32;
+    v36[4] = selfCopy;
     v37 = v16;
     v26 = v35;
     v38 = v35;
@@ -394,17 +394,17 @@ LABEL_11:
     v39 = v34;
     v28 = v33;
     v40 = v33;
-    [(ENTestResultSession *)v32 _performCertificateRequestWithToken:v25 temporaryExposureKeys:v37 completionHandler:v36];
+    [(ENTestResultSession *)selfCopy _performCertificateRequestWithToken:verificationToken temporaryExposureKeys:v37 completionHandler:v36];
   }
 
   else
   {
     v28 = v33;
-    v29 = [(ENTestResultPersistentSession *)v32->_persistentSession verificationError];
+    verificationError = [(ENTestResultPersistentSession *)selfCopy->_persistentSession verificationError];
     v27 = v34;
-    if (v29)
+    if (verificationError)
     {
-      (v33)[2](v33, 0, 0, v29);
+      (v33)[2](v33, 0, 0, verificationError);
     }
 
     else
@@ -515,17 +515,17 @@ LABEL_17:
   [*(a1 + 32) _flushVerificationCompletionsWithError:v5];
 }
 
-- (void)_flushVerificationCompletionsWithError:(id)a3
+- (void)_flushVerificationCompletionsWithError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   p_verificationCompletions = &self->_verificationCompletions;
   if ([(NSMutableArray *)self->_verificationCompletions count])
   {
     v6 = +[ENLoggingPrefs sharedENLoggingPrefs];
-    v7 = [v6 isSensitiveLoggingAllowed];
+    isSensitiveLoggingAllowed = [v6 isSensitiveLoggingAllowed];
 
-    if (v7 && gLogCategory_ENTestResultSession <= 30 && (gLogCategory_ENTestResultSession != -1 || _LogCategory_Initialize()))
+    if (isSensitiveLoggingAllowed && gLogCategory_ENTestResultSession <= 30 && (gLogCategory_ENTestResultSession != -1 || _LogCategory_Initialize()))
     {
       [(ENTestResultSession *)self _flushVerificationCompletionsWithError:?];
     }
@@ -565,18 +565,18 @@ LABEL_17:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performCertificateRequestWithToken:(id)a3 temporaryExposureKeys:(id)a4 completionHandler:(id)a5
+- (void)_performCertificateRequestWithToken:(id)token temporaryExposureKeys:(id)keys completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ENTestResultPersistentSession *)self->_persistentSession certificate];
-  v12 = [(ENTestResultPersistentSession *)self->_persistentSession HMACKey];
-  v13 = [(ENTestResultPersistentSession *)self->_persistentSession teks];
-  v14 = v13;
-  if (v11)
+  tokenCopy = token;
+  keysCopy = keys;
+  handlerCopy = handler;
+  certificate = [(ENTestResultPersistentSession *)self->_persistentSession certificate];
+  hMACKey = [(ENTestResultPersistentSession *)self->_persistentSession HMACKey];
+  teks = [(ENTestResultPersistentSession *)self->_persistentSession teks];
+  v14 = teks;
+  if (certificate)
   {
-    v15 = v12 == 0;
+    v15 = hMACKey == 0;
   }
 
   else
@@ -584,14 +584,14 @@ LABEL_17:
     v15 = 1;
   }
 
-  if (v15 || v13 == 0)
+  if (v15 || teks == 0)
   {
     agencyAPIKey = self->_agencyAPIKey;
     certificateURL = self->_certificateURL;
     URLSession = self->_URLSession;
     queue = self->_queue;
     v29 = 0;
-    v21 = [ENTestResultCertificateRequest certificateRequestWithToken:v8 temporaryExposureKeys:v9 APIKey:agencyAPIKey requestURL:certificateURL URLSession:URLSession queue:queue error:&v29];
+    v21 = [ENTestResultCertificateRequest certificateRequestWithToken:tokenCopy temporaryExposureKeys:keysCopy APIKey:agencyAPIKey requestURL:certificateURL URLSession:URLSession queue:queue error:&v29];
     v22 = v29;
     networkRequest = self->_networkRequest;
     self->_networkRequest = v21;
@@ -606,21 +606,21 @@ LABEL_17:
       v26[2] = __99__ENTestResultSession__performCertificateRequestWithToken_temporaryExposureKeys_completionHandler___block_invoke;
       v26[3] = &unk_278FD3040;
       v26[4] = self;
-      v27 = v9;
-      v28 = v10;
+      v27 = keysCopy;
+      v28 = handlerCopy;
       [(ENTestResultNetworkRequest *)v25 resumeWithCompletionHandler:v26];
       self->_state = 3;
     }
 
     else
     {
-      (*(v10 + 2))(v10, 0, 0, v22);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v22);
     }
   }
 
   else
   {
-    (*(v10 + 2))(v10, v11, v12, 0);
+    (*(handlerCopy + 2))(handlerCopy, certificate, hMACKey, 0);
   }
 }
 
@@ -668,18 +668,18 @@ void __99__ENTestResultSession__performCertificateRequestWithToken_temporaryExpo
   }
 }
 
-- (void)_performUploadRequestWithTemporaryExposureKeys:(id)a3 revisionToken:(id)a4 certificate:(id)a5 HMACKey:(id)a6 userMetadata:(id)a7 completionHandler:(id)a8
+- (void)_performUploadRequestWithTemporaryExposureKeys:(id)keys revisionToken:(id)token certificate:(id)certificate HMACKey:(id)key userMetadata:(id)metadata completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [(ENTestResultPersistentSession *)self->_persistentSession revisionToken];
-  if (v20)
+  keysCopy = keys;
+  tokenCopy = token;
+  certificateCopy = certificate;
+  keyCopy = key;
+  metadataCopy = metadata;
+  handlerCopy = handler;
+  revisionToken = [(ENTestResultPersistentSession *)self->_persistentSession revisionToken];
+  if (revisionToken)
   {
-    v19[2](v19, 1, v20, 0);
+    handlerCopy[2](handlerCopy, 1, revisionToken, 0);
   }
 
   else
@@ -689,7 +689,7 @@ void __99__ENTestResultSession__performCertificateRequestWithToken_temporaryExpo
     URLSession = self->_URLSession;
     queue = self->_queue;
     v32 = 0;
-    v25 = [ENTestResultUploadRequest uploadRequestWithCertificate:v16 healthAuthorityID:healthAuthorityID revisionToken:v15 symmetricKey:v17 temporaryExposureKeys:v14 userMetadata:v18 requestURL:uploadURL URLSession:URLSession queue:queue error:&v32];
+    v25 = [ENTestResultUploadRequest uploadRequestWithCertificate:certificateCopy healthAuthorityID:healthAuthorityID revisionToken:tokenCopy symmetricKey:keyCopy temporaryExposureKeys:keysCopy userMetadata:metadataCopy requestURL:uploadURL URLSession:URLSession queue:queue error:&v32];
     v26 = v32;
     networkRequest = self->_networkRequest;
     self->_networkRequest = v25;
@@ -704,14 +704,14 @@ void __99__ENTestResultSession__performCertificateRequestWithToken_temporaryExpo
       v30[2] = __135__ENTestResultSession__performUploadRequestWithTemporaryExposureKeys_revisionToken_certificate_HMACKey_userMetadata_completionHandler___block_invoke;
       v30[3] = &unk_278FD3068;
       v30[4] = self;
-      v31 = v19;
+      v31 = handlerCopy;
       [(ENTestResultNetworkRequest *)v29 resumeWithCompletionHandler:v30];
       self->_state = 4;
     }
 
     else
     {
-      (v19)[2](v19, 0, 0, v26);
+      (handlerCopy)[2](handlerCopy, 0, 0, v26);
     }
   }
 }
@@ -753,12 +753,12 @@ void __135__ENTestResultSession__performUploadRequestWithTemporaryExposureKeys_r
   v9();
 }
 
-- (BOOL)_checkInvalidatedAndReturnError:(id *)a3
+- (BOOL)_checkInvalidatedAndReturnError:(id *)error
 {
   state = self->_state;
   if (state >= 6)
   {
-    [ENTestResultSession _checkInvalidatedAndReturnError:a3];
+    [ENTestResultSession _checkInvalidatedAndReturnError:error];
   }
 
   return state < 6;
@@ -779,7 +779,7 @@ void __135__ENTestResultSession__performUploadRequestWithTemporaryExposureKeys_r
   }
 }
 
-- (id)getMetadataAndReturnError:(id *)a3
+- (id)getMetadataAndReturnError:(id *)error
 {
   if (![(ENTestResultSession *)self _checkInvalidatedAndReturnError:?])
   {
@@ -790,26 +790,26 @@ LABEL_11:
 
   if (self->_state <= 1)
   {
-    if (a3)
+    if (error)
     {
       ENErrorF();
-      *a3 = v6 = 0;
+      *error = v6 = 0;
       goto LABEL_6;
     }
 
     goto LABEL_11;
   }
 
-  v5 = [(ENTestResultPersistentSession *)self->_persistentSession fetchedMetadata];
-  v6 = v5;
-  if (v5)
+  fetchedMetadata = [(ENTestResultPersistentSession *)self->_persistentSession fetchedMetadata];
+  v6 = fetchedMetadata;
+  if (fetchedMetadata)
   {
-    v7 = v5;
+    v7 = fetchedMetadata;
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = ENErrorF();
+    *error = ENErrorF();
   }
 
 LABEL_6:
@@ -817,9 +817,9 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)_performVerificationRequestWithError:(id *)a3
+- (BOOL)_performVerificationRequestWithError:(id *)error
 {
-  v4 = [ENTestResultVerificationRequest verificationRequestWithCode:self->_verificationCode acceptedReportTypes:self->_acceptedReportTypes APIKey:self->_agencyAPIKey nonce:self->_nonce requestURL:self->_verificationURL URLSession:self->_URLSession queue:self->_queue error:a3];
+  v4 = [ENTestResultVerificationRequest verificationRequestWithCode:self->_verificationCode acceptedReportTypes:self->_acceptedReportTypes APIKey:self->_agencyAPIKey nonce:self->_nonce requestURL:self->_verificationURL URLSession:self->_URLSession queue:self->_queue error:error];
   networkRequest = self->_networkRequest;
   self->_networkRequest = v4;
 

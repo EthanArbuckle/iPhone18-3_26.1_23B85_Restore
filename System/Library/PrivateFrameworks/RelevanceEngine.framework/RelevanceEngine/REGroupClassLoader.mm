@@ -1,23 +1,23 @@
 @interface REGroupClassLoader
-- (BOOL)isEqual:(id)a3;
-- (REGroupClassLoader)initWithLoaders:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_enumerateBundleConfigurations:(id)a3;
-- (void)_enumerateClassesWithBlock:(id)a3;
-- (void)enumerateObjectsWithBlock:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REGroupClassLoader)initWithLoaders:(id)loaders;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_enumerateBundleConfigurations:(id)configurations;
+- (void)_enumerateClassesWithBlock:(id)block;
+- (void)enumerateObjectsWithBlock:(id)block;
 @end
 
 @implementation REGroupClassLoader
 
-- (REGroupClassLoader)initWithLoaders:(id)a3
+- (REGroupClassLoader)initWithLoaders:(id)loaders
 {
-  v4 = a3;
+  loadersCopy = loaders;
   v9.receiver = self;
   v9.super_class = REGroupClassLoader;
   v5 = [(REClassLoader *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [loadersCopy copy];
     loaders = v5->_loaders;
     v5->_loaders = v6;
   }
@@ -25,10 +25,10 @@
   return v5;
 }
 
-- (void)_enumerateClassesWithBlock:(id)a3
+- (void)_enumerateClassesWithBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -49,7 +49,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) enumerateClassesWithBlock:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) enumerateClassesWithBlock:{blockCopy, v11}];
       }
 
       while (v7 != v9);
@@ -62,10 +62,10 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enumerateBundleConfigurations:(id)a3
+- (void)_enumerateBundleConfigurations:(id)configurations
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationsCopy = configurations;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -86,7 +86,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) enumerateBundleConfigurations:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) enumerateBundleConfigurations:{configurationsCopy, v11}];
       }
 
       while (v7 != v9);
@@ -99,10 +99,10 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateObjectsWithBlock:(id)a3
+- (void)enumerateObjectsWithBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -123,7 +123,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) enumerateObjectsWithBlock:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) enumerateObjectsWithBlock:{blockCopy, v11}];
       }
 
       while (v7 != v9);
@@ -136,20 +136,20 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSOrderedSet *)self->_loaders copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSOrderedSet *)self->_loaders copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -160,7 +160,7 @@
     if (objc_opt_isKindOfClass())
     {
       loaders = self->_loaders;
-      v6 = v4->_loaders;
+      v6 = equalCopy->_loaders;
       v7 = loaders;
       v8 = v7;
       if (v7 == v6)

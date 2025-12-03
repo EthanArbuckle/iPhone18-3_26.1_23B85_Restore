@@ -2,54 +2,54 @@
 + (SBUIBiometricResource)sharedInstance;
 - (BOOL)hasBiometricAuthenticationCapabilityEnabled;
 - (SBUIBiometricResource)init;
-- (SBUIBiometricResource)initWithBiometricKitInterface:(id)a3;
-- (double)fallbackIndicatorMinimumDurationLeewayForBiometricKitInterface:(id)a3;
-- (id)acquireFaceDetectionWantedAssertionForReason:(id)a3;
-- (id)acquireFingerDetectionWantedAssertionForReason:(id)a3 HIDEventsOnly:(BOOL)a4;
-- (id)acquireMatchingAssertionWithMode:(unint64_t)a3 reason:(id)a4;
-- (id)acquireSimulatedLockoutAssertionWithLockoutState:(unint64_t)a3 forReason:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBUIBiometricResource)initWithBiometricKitInterface:(id)interface;
+- (double)fallbackIndicatorMinimumDurationLeewayForBiometricKitInterface:(id)interface;
+- (id)acquireFaceDetectionWantedAssertionForReason:(id)reason;
+- (id)acquireFingerDetectionWantedAssertionForReason:(id)reason HIDEventsOnly:(BOOL)only;
+- (id)acquireMatchingAssertionWithMode:(unint64_t)mode reason:(id)reason;
+- (id)acquireSimulatedLockoutAssertionWithLockoutState:(unint64_t)state forReason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)biometricLockoutState;
-- (unint64_t)wakeSourceForBiometricKitInterface:(id)a3;
-- (void)_activateFaceDetectAssertion:(id)a3;
-- (void)_activateFingerDetectAssertion:(id)a3;
-- (void)_activateMatchAssertion:(id)a3;
-- (void)_addFaceDetectionWantedAssertion:(id)a3;
-- (void)_addFingerDetectionWantedAssertion:(id)a3 HIDEventsOnly:(BOOL)a4;
-- (void)_addMatchingAssertion:(id)a3;
-- (void)_addSimulatedLockoutAssertion:(id)a3;
-- (void)_clearFinishedOperationsIfNeededForAssertion:(id)a3;
+- (unint64_t)wakeSourceForBiometricKitInterface:(id)interface;
+- (void)_activateFaceDetectAssertion:(id)assertion;
+- (void)_activateFingerDetectAssertion:(id)assertion;
+- (void)_activateMatchAssertion:(id)assertion;
+- (void)_addFaceDetectionWantedAssertion:(id)assertion;
+- (void)_addFingerDetectionWantedAssertion:(id)assertion HIDEventsOnly:(BOOL)only;
+- (void)_addMatchingAssertion:(id)assertion;
+- (void)_addSimulatedLockoutAssertion:(id)assertion;
+- (void)_clearFinishedOperationsIfNeededForAssertion:(id)assertion;
 - (void)_deactivateAllPearlAssertions;
-- (void)_deactivateAssertion:(id)a3;
+- (void)_deactivateAssertion:(id)assertion;
 - (void)_deviceWillWake;
 - (void)_forceBioLockout;
-- (void)_matchingAllowedStateMayHaveChangedForReason:(id)a3;
-- (void)_notifyObserversOfEvent:(unint64_t)a3;
-- (void)_presenceDetectAllowedStateMayHaveChangedForReason:(id)a3;
-- (void)_profileSettingsChanged:(id)a3;
-- (void)_reallyResumeMatchingForAssertion:(id)a3 advisory:(BOOL)a4;
-- (void)_reallySetAuthenticated:(BOOL)a3 keybagState:(id)a4;
+- (void)_matchingAllowedStateMayHaveChangedForReason:(id)reason;
+- (void)_notifyObserversOfEvent:(unint64_t)event;
+- (void)_presenceDetectAllowedStateMayHaveChangedForReason:(id)reason;
+- (void)_profileSettingsChanged:(id)changed;
+- (void)_reallyResumeMatchingForAssertion:(id)assertion advisory:(BOOL)advisory;
+- (void)_reallySetAuthenticated:(BOOL)authenticated keybagState:(id)state;
 - (void)_reevaluateFaceDetection;
 - (void)_reevaluateFingerDetection;
 - (void)_reevaluateMatching;
-- (void)_removeFaceDetectionWantedAssertion:(id)a3;
-- (void)_removeFingerDetectionWantedAssertion:(id)a3 HIDEventsOnly:(BOOL)a4;
-- (void)_removeMatchingAssertion:(id)a3;
-- (void)_removeSimulatedLockoutAssertion:(id)a3;
-- (void)_updateHandlersForEvent:(unint64_t)a3;
-- (void)addObserver:(id)a3;
-- (void)biometricKitInterface:(id)a3 enrolledIdentitiesDidChange:(BOOL)a4;
-- (void)biometricKitInterface:(id)a3 handleEvent:(unint64_t)a4;
+- (void)_removeFaceDetectionWantedAssertion:(id)assertion;
+- (void)_removeFingerDetectionWantedAssertion:(id)assertion HIDEventsOnly:(BOOL)only;
+- (void)_removeMatchingAssertion:(id)assertion;
+- (void)_removeSimulatedLockoutAssertion:(id)assertion;
+- (void)_updateHandlersForEvent:(unint64_t)event;
+- (void)addObserver:(id)observer;
+- (void)biometricKitInterface:(id)interface enrolledIdentitiesDidChange:(BOOL)change;
+- (void)biometricKitInterface:(id)interface handleEvent:(unint64_t)event;
 - (void)dealloc;
-- (void)keybag:(id)a3 extendedStateDidChange:(id)a4;
+- (void)keybag:(id)keybag extendedStateDidChange:(id)change;
 - (void)noteScreenDidTurnOff;
 - (void)noteScreenWillTurnOff;
 - (void)noteScreenWillTurnOn;
-- (void)removeObserver:(id)a3;
-- (void)resumeMatchingAdvisory:(BOOL)a3;
-- (void)resumeMatchingForAssertion:(id)a3 advisory:(BOOL)a4;
+- (void)removeObserver:(id)observer;
+- (void)resumeMatchingAdvisory:(BOOL)advisory;
+- (void)resumeMatchingForAssertion:(id)assertion advisory:(BOOL)advisory;
 @end
 
 @implementation SBUIBiometricResource
@@ -86,10 +86,10 @@
     result = [(NSMutableOrderedSet *)self->_simulatedLockoutAssertions count];
     if (result)
     {
-      v4 = [(NSMutableOrderedSet *)self->_simulatedLockoutAssertions firstObject];
-      v5 = [v4 lockoutState];
+      firstObject = [(NSMutableOrderedSet *)self->_simulatedLockoutAssertions firstObject];
+      lockoutState = [firstObject lockoutState];
 
-      return v5;
+      return lockoutState;
     }
   }
 
@@ -538,21 +538,21 @@ uint64_t __39__SBUIBiometricResource_sharedInstance__block_invoke()
   return v4;
 }
 
-- (SBUIBiometricResource)initWithBiometricKitInterface:(id)a3
+- (SBUIBiometricResource)initWithBiometricKitInterface:(id)interface
 {
-  v5 = a3;
+  interfaceCopy = interface;
   v14.receiver = self;
   v14.super_class = SBUIBiometricResource;
   v6 = [(SBUIBiometricResource *)&v14 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E69D4000] sharedInstance];
+    mEMORY[0x1E69D4000] = [MEMORY[0x1E69D4000] sharedInstance];
     keybag = v6->_keybag;
-    v6->_keybag = v7;
+    v6->_keybag = mEMORY[0x1E69D4000];
 
     [(SBFMobileKeyBag *)v6->_keybag addObserver:v6];
-    v9 = [(SBFMobileKeyBag *)v6->_keybag extendedState];
-    v6->_isAuthenticated = [v9 isEffectivelyLocked] ^ 1;
+    extendedState = [(SBFMobileKeyBag *)v6->_keybag extendedState];
+    v6->_isAuthenticated = [extendedState isEffectivelyLocked] ^ 1;
 
     v6->_bkMatchPearlOperationClass = _SBUIEffectiveBiometricClassFromString(@"BKMatchPearlOperation");
     __SBUIBiometricEMRootDomainConnect = IORegisterForSystemPower(0, &__ioPortRef, _PowerChanged, &__ioPMNotifier);
@@ -561,11 +561,11 @@ uint64_t __39__SBUIBiometricResource_sharedInstance__block_invoke()
       IONotificationPortSetDispatchQueue(__ioPortRef, MEMORY[0x1E69E96A0]);
     }
 
-    v10 = [MEMORY[0x1E69ADFB8] sharedConnection];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
     profileConnection = v6->_profileConnection;
-    v6->_profileConnection = v10;
+    v6->_profileConnection = mEMORY[0x1E69ADFB8];
 
-    objc_storeStrong(&v6->_biometricInterface, a3);
+    objc_storeStrong(&v6->_biometricInterface, interface);
     [(_SBUIBiometricKitInterface *)v6->_biometricInterface setDelegate:v6];
     v6->_hasMesaHardware = [(_SBUIBiometricKitInterface *)v6->_biometricInterface isTouchIDCapable];
     v6->_hasPearlHardware = [(_SBUIBiometricKitInterface *)v6->_biometricInterface isPearlIDCapable];
@@ -581,8 +581,8 @@ uint64_t __39__SBUIBiometricResource_sharedInstance__block_invoke()
 
     v6->_lastEvent = 0;
     v6->_shouldSendFingerOffNotification = 0;
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v6 selector:sel__profileSettingsChanged_ name:*MEMORY[0x1E69ADD68] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__profileSettingsChanged_ name:*MEMORY[0x1E69ADD68] object:0];
   }
 
   return v6;
@@ -599,8 +599,8 @@ uint64_t __39__SBUIBiometricResource_sharedInstance__block_invoke()
     __SBUIBiometricEMRootDomainConnect = 0;
   }
 
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(_SBUIBiometricKitInterface *)self->_biometricInterface setDelegate:0];
   v4.receiver = self;
@@ -608,46 +608,46 @@ uint64_t __39__SBUIBiometricResource_sharedInstance__block_invoke()
   [(SBUIBiometricResource *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v8 = v4;
-  if (!v4)
+  observerCopy = observer;
+  v8 = observerCopy;
+  if (!observerCopy)
   {
     [SBUIBiometricResource addObserver:];
-    v4 = 0;
+    observerCopy = 0;
   }
 
   observers = self->_observers;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (!observerCopy)
   {
     [SBUIBiometricResource removeObserver:];
-    v4 = 0;
+    observerCopy = 0;
   }
 
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 }
 
-- (id)acquireMatchingAssertionWithMode:(unint64_t)a3 reason:(id)a4
+- (id)acquireMatchingAssertionWithMode:(unint64_t)mode reason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   v7 = [_SBUIBiometricMatchingAssertion alloc];
   v10 = MEMORY[0x1E69E9820];
@@ -655,7 +655,7 @@ uint64_t __39__SBUIBiometricResource_sharedInstance__block_invoke()
   v12 = __65__SBUIBiometricResource_acquireMatchingAssertionWithMode_reason___block_invoke;
   v13 = &unk_1E789FB60;
   objc_copyWeak(&v14, &location);
-  v8 = [(_SBUIBiometricMatchingAssertion *)v7 initWithMatchMode:a3 reason:v6 invalidationBlock:&v10];
+  v8 = [(_SBUIBiometricMatchingAssertion *)v7 initWithMatchMode:mode reason:reasonCopy invalidationBlock:&v10];
   if (v8)
   {
     [(SBUIBiometricResource *)self _addMatchingAssertion:v8, v10, v11, v12, v13];
@@ -696,12 +696,12 @@ void __65__SBUIBiometricResource_acquireMatchingAssertionWithMode_reason___block
   [WeakRetained _removeMatchingAssertion:v6];
 }
 
-- (void)resumeMatchingForAssertion:(id)a3 advisory:(BOOL)a4
+- (void)resumeMatchingForAssertion:(id)assertion advisory:(BOOL)advisory
 {
-  v4 = a4;
-  v6 = a3;
+  advisoryCopy = advisory;
+  assertionCopy = assertion;
   v7 = objc_opt_class();
-  v10 = v6;
+  v10 = assertionCopy;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
@@ -723,12 +723,12 @@ void __65__SBUIBiometricResource_acquireMatchingAssertionWithMode_reason___block
   v9 = v8;
 
   [(SBUIBiometricResource *)self _reevaluateMatching];
-  [(SBUIBiometricResource *)self _reallyResumeMatchingForAssertion:v9 advisory:v4];
+  [(SBUIBiometricResource *)self _reallyResumeMatchingForAssertion:v9 advisory:advisoryCopy];
 }
 
-- (void)resumeMatchingAdvisory:(BOOL)a3
+- (void)resumeMatchingAdvisory:(BOOL)advisory
 {
-  v3 = a3;
+  advisoryCopy = advisory;
   v15 = *MEMORY[0x1E69E9840];
   [(SBUIBiometricResource *)self _reevaluateMatching];
   v12 = 0u;
@@ -751,7 +751,7 @@ void __65__SBUIBiometricResource_acquireMatchingAssertionWithMode_reason___block
           objc_enumerationMutation(v5);
         }
 
-        [(SBUIBiometricResource *)self _reallyResumeMatchingForAssertion:*(*(&v10 + 1) + 8 * v9++) advisory:v3, v10];
+        [(SBUIBiometricResource *)self _reallyResumeMatchingForAssertion:*(*(&v10 + 1) + 8 * v9++) advisory:advisoryCopy, v10];
       }
 
       while (v7 != v9);
@@ -762,10 +762,10 @@ void __65__SBUIBiometricResource_acquireMatchingAssertionWithMode_reason___block
   }
 }
 
-- (id)acquireFingerDetectionWantedAssertionForReason:(id)a3 HIDEventsOnly:(BOOL)a4
+- (id)acquireFingerDetectionWantedAssertionForReason:(id)reason HIDEventsOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
+  onlyCopy = only;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   v7 = [_SBUIBiometricOperationAssertion alloc];
   v8 = MEMORY[0x1E69E96A0];
@@ -775,12 +775,12 @@ void __65__SBUIBiometricResource_acquireMatchingAssertionWithMode_reason___block
   v12[2] = __86__SBUIBiometricResource_acquireFingerDetectionWantedAssertionForReason_HIDEventsOnly___block_invoke;
   v12[3] = &unk_1E789FB88;
   objc_copyWeak(&v13, &location);
-  v14 = v4;
-  v10 = [(_SBUIBiometricOperationAssertion *)v7 initWithIdentifier:@"FingerDetectionWanted" forReason:v6 queue:v8 invalidationBlock:v12];
+  v14 = onlyCopy;
+  v10 = [(_SBUIBiometricOperationAssertion *)v7 initWithIdentifier:@"FingerDetectionWanted" forReason:reasonCopy queue:v8 invalidationBlock:v12];
 
   if (v10)
   {
-    [(SBUIBiometricResource *)self _addFingerDetectionWantedAssertion:v10 HIDEventsOnly:v4];
+    [(SBUIBiometricResource *)self _addFingerDetectionWantedAssertion:v10 HIDEventsOnly:onlyCopy];
   }
 
   objc_destroyWeak(&v13);
@@ -818,9 +818,9 @@ void __86__SBUIBiometricResource_acquireFingerDetectionWantedAssertionForReason_
   [WeakRetained _removeFingerDetectionWantedAssertion:v6 HIDEventsOnly:*(a1 + 40)];
 }
 
-- (id)acquireFaceDetectionWantedAssertionForReason:(id)a3
+- (id)acquireFaceDetectionWantedAssertionForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   v5 = [_SBUIBiometricOperationAssertion alloc];
   v6 = MEMORY[0x1E69E96A0];
@@ -830,7 +830,7 @@ void __86__SBUIBiometricResource_acquireFingerDetectionWantedAssertionForReason_
   v12 = __70__SBUIBiometricResource_acquireFaceDetectionWantedAssertionForReason___block_invoke;
   v13 = &unk_1E789FB60;
   objc_copyWeak(&v14, &location);
-  v8 = [(_SBUIBiometricOperationAssertion *)v5 initWithIdentifier:@"FaceDetectionWanted" forReason:v4 queue:v6 invalidationBlock:&v10];
+  v8 = [(_SBUIBiometricOperationAssertion *)v5 initWithIdentifier:@"FaceDetectionWanted" forReason:reasonCopy queue:v6 invalidationBlock:&v10];
 
   if (v8)
   {
@@ -872,9 +872,9 @@ void __70__SBUIBiometricResource_acquireFaceDetectionWantedAssertionForReason___
   [WeakRetained _removeFaceDetectionWantedAssertion:v6];
 }
 
-- (id)acquireSimulatedLockoutAssertionWithLockoutState:(unint64_t)a3 forReason:(id)a4
+- (id)acquireSimulatedLockoutAssertionWithLockoutState:(unint64_t)state forReason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   v7 = [_SBUISimulatedLockoutAssertion alloc];
   v10 = MEMORY[0x1E69E9820];
@@ -882,7 +882,7 @@ void __70__SBUIBiometricResource_acquireFaceDetectionWantedAssertionForReason___
   v12 = __84__SBUIBiometricResource_acquireSimulatedLockoutAssertionWithLockoutState_forReason___block_invoke;
   v13 = &unk_1E789FB60;
   objc_copyWeak(&v14, &location);
-  v8 = [(_SBUISimulatedLockoutAssertion *)v7 initWithLockoutState:a3 reason:v6 invalidationBlock:&v10];
+  v8 = [(_SBUISimulatedLockoutAssertion *)v7 initWithLockoutState:state reason:reasonCopy invalidationBlock:&v10];
   if (v8)
   {
     [(SBUIBiometricResource *)self _addSimulatedLockoutAssertion:v8, v10, v11, v12, v13];
@@ -953,7 +953,7 @@ void __84__SBUIBiometricResource_acquireSimulatedLockoutAssertionWithLockoutStat
   }
 }
 
-- (void)_profileSettingsChanged:(id)a3
+- (void)_profileSettingsChanged:(id)changed
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -979,10 +979,10 @@ uint64_t __49__SBUIBiometricResource__profileSettingsChanged___block_invoke(uint
   return [*(a1 + 32) _matchingAllowedStateMayHaveChangedForReason:@"Profile settings changed"];
 }
 
-- (void)keybag:(id)a3 extendedStateDidChange:(id)a4
+- (void)keybag:(id)keybag extendedStateDidChange:(id)change
 {
-  v5 = a4;
-  v4 = v5;
+  changeCopy = change;
+  v4 = changeCopy;
   BSDispatchMain();
 }
 
@@ -1005,30 +1005,30 @@ uint64_t __55__SBUIBiometricResource_keybag_extendedStateDidChange___block_invok
 
 - (id)succinctDescription
 {
-  v2 = [(SBUIBiometricResource *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBUIBiometricResource *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBUIBiometricResource *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBUIBiometricResource *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBUIBiometricResource *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBUIBiometricResource *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63__SBUIBiometricResource_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E789DD98;
-  v5 = v4;
+  v5 = succinctDescriptionBuilder;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = [v5 modifyBody:v9];
   v7 = v5;
 
@@ -1051,9 +1051,9 @@ id __63__SBUIBiometricResource_descriptionBuilderWithMultilinePrefix___block_inv
   return [*(a1 + 32) appendObject:*(*(a1 + 40) + 128) withName:@"PasscodeRequiredAssertions"];
 }
 
-- (void)biometricKitInterface:(id)a3 enrolledIdentitiesDidChange:(BOOL)a4
+- (void)biometricKitInterface:(id)interface enrolledIdentitiesDidChange:(BOOL)change
 {
-  v4 = a4;
+  changeCopy = change;
   v12 = *MEMORY[0x1E69E9840];
   v6 = SBLogBiometricResource();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1065,7 +1065,7 @@ id __63__SBUIBiometricResource_descriptionBuilderWithMultilinePrefix___block_inv
   }
 
   v8 = @"Not Enrolled";
-  if (v4)
+  if (changeCopy)
   {
     v8 = @"Enrolled";
   }
@@ -1074,11 +1074,11 @@ id __63__SBUIBiometricResource_descriptionBuilderWithMultilinePrefix___block_inv
   [(SBUIBiometricResource *)self _matchingAllowedStateMayHaveChangedForReason:v9];
 }
 
-- (void)biometricKitInterface:(id)a3 handleEvent:(unint64_t)a4
+- (void)biometricKitInterface:(id)interface handleEvent:(unint64_t)event
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  switch(a4)
+  interfaceCopy = interface;
+  switch(event)
   {
     case 0uLL:
       kdebug_trace();
@@ -1209,7 +1209,7 @@ id __63__SBUIBiometricResource_descriptionBuilderWithMultilinePrefix___block_inv
       v8 = "Status: match attempt failed and reached bio lockout";
       goto LABEL_87;
     case 0xCuLL:
-      v15 = [(SBUIBiometricResource *)self biometricLockoutState];
+      biometricLockoutState = [(SBUIBiometricResource *)self biometricLockoutState];
       v16 = SBLogBiometricResource();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
@@ -1217,7 +1217,7 @@ id __63__SBUIBiometricResource_descriptionBuilderWithMultilinePrefix___block_inv
         _os_log_impl(&dword_1A9A79000, v16, OS_LOG_TYPE_INFO, "Status: match operation started", buf, 2u);
       }
 
-      if (!v15)
+      if (!biometricLockoutState)
       {
         goto LABEL_89;
       }
@@ -1526,7 +1526,7 @@ LABEL_15:
 
       self->_requiresSecureIndicator = 1;
 LABEL_89:
-      [(SBUIBiometricResource *)self _updateHandlersForEvent:a4, v27];
+      [(SBUIBiometricResource *)self _updateHandlersForEvent:event, v27];
 LABEL_90:
 
       return;
@@ -1535,9 +1535,9 @@ LABEL_90:
   }
 }
 
-- (unint64_t)wakeSourceForBiometricKitInterface:(id)a3
+- (unint64_t)wakeSourceForBiometricKitInterface:(id)interface
 {
-  if (self->_biometricInterface != a3)
+  if (self->_biometricInterface != interface)
   {
     return 0;
   }
@@ -1554,10 +1554,10 @@ LABEL_90:
   }
 }
 
-- (double)fallbackIndicatorMinimumDurationLeewayForBiometricKitInterface:(id)a3
+- (double)fallbackIndicatorMinimumDurationLeewayForBiometricKitInterface:(id)interface
 {
   result = 0.0;
-  if (self->_biometricInterface == a3)
+  if (self->_biometricInterface == interface)
   {
     return self->_pearlIndicatorConfiguration.fallbackIndicatorMinimumDurationLeeway;
   }
@@ -1565,14 +1565,14 @@ LABEL_90:
   return result;
 }
 
-- (void)_reallySetAuthenticated:(BOOL)a3 keybagState:(id)a4
+- (void)_reallySetAuthenticated:(BOOL)authenticated keybagState:(id)state
 {
-  v4 = a3;
+  authenticatedCopy = authenticated;
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (self->_isAuthenticated != v4)
+  stateCopy = state;
+  if (self->_isAuthenticated != authenticatedCopy)
   {
-    self->_isAuthenticated = v4;
+    self->_isAuthenticated = authenticatedCopy;
     v7 = SBLogBiometricResource();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -1582,13 +1582,13 @@ LABEL_90:
       _os_log_impl(&dword_1A9A79000, v7, OS_LOG_TYPE_INFO, "Authentication state changed - authenticated: %@", &v13, 0xCu);
     }
 
-    if (v4)
+    if (authenticatedCopy)
     {
-      v9 = v6;
-      v10 = v9;
+      v9 = stateCopy;
+      extendedState = v9;
       if (!v9)
       {
-        v10 = [(SBFMobileKeyBag *)self->_keybag extendedState];
+        extendedState = [(SBFMobileKeyBag *)self->_keybag extendedState];
       }
 
       v11 = SBLogBiometricResource();
@@ -1597,11 +1597,11 @@ LABEL_90:
         v13 = 138543618;
         v14 = v9;
         v15 = 2114;
-        v16 = v10;
+        v16 = extendedState;
         _os_log_impl(&dword_1A9A79000, v11, OS_LOG_TYPE_DEFAULT, "Became authenticated with keybag state: %{public}@, local keybag state: %{public}@", &v13, 0x16u);
       }
 
-      if ([v10 lockState] == 7)
+      if ([extendedState lockState] == 7)
       {
         v12 = SBLogBiometricResource();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -1616,18 +1616,18 @@ LABEL_90:
   }
 }
 
-- (void)_reallyResumeMatchingForAssertion:(id)a3 advisory:(BOOL)a4
+- (void)_reallyResumeMatchingForAssertion:(id)assertion advisory:(BOOL)advisory
 {
-  v4 = a4;
+  advisoryCopy = advisory;
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  v8 = v4 && [v6 restartCount] == 0;
+  assertionCopy = assertion;
+  v7 = assertionCopy;
+  v8 = advisoryCopy && [assertionCopy restartCount] == 0;
   v9 = SBLogBiometricResource();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 67109634;
-    v36 = v4;
+    v36 = advisoryCopy;
     v37 = 1024;
     v38 = v8;
     v39 = 2112;
@@ -1635,7 +1635,7 @@ LABEL_90:
     _os_log_impl(&dword_1A9A79000, v9, OS_LOG_TYPE_INFO, "evaluating resumption (advisory: %{BOOL}u advisoryRestart: %{BOOL}u) for assertion %@", buf, 0x18u);
   }
 
-  if (!v8 && v4 || !self->_bkMatchPearlOperationClass)
+  if (!v8 && advisoryCopy || !self->_bkMatchPearlOperationClass)
   {
     goto LABEL_35;
   }
@@ -1644,8 +1644,8 @@ LABEL_90:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = [v7 operations];
-  v11 = [v10 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  operations = [v7 operations];
+  v11 = [operations countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (!v11)
   {
 
@@ -1662,7 +1662,7 @@ LABEL_90:
     {
       if (*v29 != v14)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(operations);
       }
 
       v16 = *(*(&v28 + 1) + 8 * i);
@@ -1726,7 +1726,7 @@ LABEL_28:
       v13 |= v21;
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v28 objects:v34 count:16];
+    v12 = [operations countByEnumeratingWithState:&v28 objects:v34 count:16];
   }
 
   while (v12);
@@ -1746,13 +1746,13 @@ LABEL_34:
 LABEL_35:
 }
 
-- (void)_activateMatchAssertion:(id)a3
+- (void)_activateMatchAssertion:(id)assertion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(SBUIBiometricResource *)self _clearFinishedOperationsIfNeededForAssertion:v4];
-  v5 = [v4 matchMode];
-  if (v5 == 3)
+  assertionCopy = assertion;
+  [(SBUIBiometricResource *)self _clearFinishedOperationsIfNeededForAssertion:assertionCopy];
+  matchMode = [assertionCopy matchMode];
+  if (matchMode == 3)
   {
     unlockCredentialSet = self->_unlockCredentialSet;
   }
@@ -1763,27 +1763,27 @@ LABEL_35:
   }
 
   v7 = unlockCredentialSet;
-  v8 = [v4 operations];
+  operations = [assertionCopy operations];
 
-  if (!v8)
+  if (!operations)
   {
-    if (v5)
+    if (matchMode)
     {
       biometricInterface = self->_biometricInterface;
       v28 = 0;
-      v10 = [(_SBUIBiometricKitInterface *)biometricInterface createMatchOperationsWithMode:v5 andCredentialSet:v7 error:&v28];
+      v10 = [(_SBUIBiometricKitInterface *)biometricInterface createMatchOperationsWithMode:matchMode andCredentialSet:v7 error:&v28];
       v11 = v28;
       if (v10)
       {
         v12 = [MEMORY[0x1E695DFD8] setWithArray:v10];
-        [v4 setOperations:v12];
+        [assertionCopy setOperations:v12];
 
         v26 = 0u;
         v27 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v13 = [v4 operations];
-        v14 = [v13 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        operations2 = [assertionCopy operations];
+        v14 = [operations2 countByEnumeratingWithState:&v24 objects:v29 count:16];
         if (v14)
         {
           v15 = v14;
@@ -1795,7 +1795,7 @@ LABEL_35:
             {
               if (*v25 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(operations2);
               }
 
               v18 = *(*(&v24 + 1) + 8 * i);
@@ -1803,12 +1803,12 @@ LABEL_35:
               v21[1] = 3221225472;
               v21[2] = __49__SBUIBiometricResource__activateMatchAssertion___block_invoke;
               v21[3] = &unk_1E789FBB0;
-              v22 = v4;
-              v23 = self;
+              v22 = assertionCopy;
+              selfCopy = self;
               [v18 startWithReply:v21];
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v24 objects:v29 count:16];
+            v15 = [operations2 countByEnumeratingWithState:&v24 objects:v29 count:16];
           }
 
           while (v15);
@@ -1818,8 +1818,8 @@ LABEL_35:
 
       else
       {
-        v13 = SBLogBiometricResource();
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+        operations2 = SBLogBiometricResource();
+        if (os_log_type_enabled(operations2, OS_LOG_TYPE_ERROR))
         {
           [SBUIBiometricResource _activateMatchAssertion:];
         }
@@ -1829,7 +1829,7 @@ LABEL_35:
     else
     {
       v19 = [MEMORY[0x1E695DFD8] set];
-      [v4 setOperations:v19];
+      [assertionCopy setOperations:v19];
     }
   }
 }
@@ -1863,25 +1863,25 @@ uint64_t __49__SBUIBiometricResource__activateMatchAssertion___block_invoke_2(ui
   return [*(a1 + 48) _deactivateAssertion:*(a1 + 32)];
 }
 
-- (void)_clearFinishedOperationsIfNeededForAssertion:(id)a3
+- (void)_clearFinishedOperationsIfNeededForAssertion:(id)assertion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = SBLogBiometricResource();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v18 = v4;
+    v18 = assertionCopy;
     _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_INFO, "_clearFinishedOperationsIfNeededForAssertion: %{public}@", buf, 0xCu);
   }
 
-  if (self->_isAuthenticated && [v4 matchMode] == 3)
+  if (self->_isAuthenticated && [assertionCopy matchMode] == 3)
   {
-    v6 = SBLogBiometricResource();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    operations = SBLogBiometricResource();
+    if (os_log_type_enabled(operations, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_1A9A79000, v6, OS_LOG_TYPE_INFO, "Not clearing operations because we're already authenticated.", buf, 2u);
+      _os_log_impl(&dword_1A9A79000, operations, OS_LOG_TYPE_INFO, "Not clearing operations because we're already authenticated.", buf, 2u);
     }
   }
 
@@ -1891,8 +1891,8 @@ uint64_t __49__SBUIBiometricResource__activateMatchAssertion___block_invoke_2(ui
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [v4 operations];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    operations = [assertionCopy operations];
+    v7 = [operations countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1904,7 +1904,7 @@ uint64_t __49__SBUIBiometricResource__activateMatchAssertion___block_invoke_2(ui
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(operations);
           }
 
           if ([*(*(&v12 + 1) + 8 * v10) state] == 4)
@@ -1917,7 +1917,7 @@ uint64_t __49__SBUIBiometricResource__activateMatchAssertion___block_invoke_2(ui
               _os_log_impl(&dword_1A9A79000, v11, OS_LOG_TYPE_INFO, "Clearing operations because we found a finished one.", buf, 2u);
             }
 
-            [v4 setOperations:0];
+            [assertionCopy setOperations:0];
             goto LABEL_19;
           }
 
@@ -1925,7 +1925,7 @@ uint64_t __49__SBUIBiometricResource__activateMatchAssertion___block_invoke_2(ui
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [operations countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v8)
         {
           continue;
@@ -1939,13 +1939,13 @@ uint64_t __49__SBUIBiometricResource__activateMatchAssertion___block_invoke_2(ui
 LABEL_19:
 }
 
-- (void)_activateFingerDetectAssertion:(id)a3
+- (void)_activateFingerDetectAssertion:(id)assertion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 operations];
+  assertionCopy = assertion;
+  operations = [assertionCopy operations];
 
-  if (!v5)
+  if (!operations)
   {
     biometricInterface = self->_biometricInterface;
     v24 = 0;
@@ -1954,14 +1954,14 @@ LABEL_19:
     if (v7)
     {
       v9 = [MEMORY[0x1E695DFD8] setWithArray:v7];
-      [v4 setOperations:v9];
+      [assertionCopy setOperations:v9];
 
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v10 = [v4 operations];
-      v11 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      operations2 = [assertionCopy operations];
+      v11 = [operations2 countByEnumeratingWithState:&v20 objects:v25 count:16];
       if (v11)
       {
         v12 = v11;
@@ -1973,7 +1973,7 @@ LABEL_19:
           {
             if (*v21 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(operations2);
             }
 
             v15 = *(*(&v20 + 1) + 8 * i);
@@ -1981,12 +1981,12 @@ LABEL_19:
             v17[1] = 3221225472;
             v17[2] = __56__SBUIBiometricResource__activateFingerDetectAssertion___block_invoke;
             v17[3] = &unk_1E789FBB0;
-            v18 = v4;
-            v19 = self;
+            v18 = assertionCopy;
+            selfCopy = self;
             [v15 startWithReply:v17];
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
+          v12 = [operations2 countByEnumeratingWithState:&v20 objects:v25 count:16];
         }
 
         while (v12);
@@ -1996,8 +1996,8 @@ LABEL_19:
 
     else
     {
-      v10 = SBLogBiometricResource();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      operations2 = SBLogBiometricResource();
+      if (os_log_type_enabled(operations2, OS_LOG_TYPE_ERROR))
       {
         [SBUIBiometricResource _activateFingerDetectAssertion:];
       }
@@ -2034,13 +2034,13 @@ uint64_t __56__SBUIBiometricResource__activateFingerDetectAssertion___block_invo
   return [*(a1 + 48) _deactivateAssertion:*(a1 + 32)];
 }
 
-- (void)_activateFaceDetectAssertion:(id)a3
+- (void)_activateFaceDetectAssertion:(id)assertion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 operations];
+  assertionCopy = assertion;
+  operations = [assertionCopy operations];
 
-  if (!v5)
+  if (!operations)
   {
     biometricInterface = self->_biometricInterface;
     v24 = 0;
@@ -2049,14 +2049,14 @@ uint64_t __56__SBUIBiometricResource__activateFingerDetectAssertion___block_invo
     if (v7)
     {
       v9 = [MEMORY[0x1E695DFD8] setWithArray:v7];
-      [v4 setOperations:v9];
+      [assertionCopy setOperations:v9];
 
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v10 = [v4 operations];
-      v11 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      operations2 = [assertionCopy operations];
+      v11 = [operations2 countByEnumeratingWithState:&v20 objects:v25 count:16];
       if (v11)
       {
         v12 = v11;
@@ -2068,7 +2068,7 @@ uint64_t __56__SBUIBiometricResource__activateFingerDetectAssertion___block_invo
           {
             if (*v21 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(operations2);
             }
 
             v15 = *(*(&v20 + 1) + 8 * i);
@@ -2076,12 +2076,12 @@ uint64_t __56__SBUIBiometricResource__activateFingerDetectAssertion___block_invo
             v17[1] = 3221225472;
             v17[2] = __54__SBUIBiometricResource__activateFaceDetectAssertion___block_invoke;
             v17[3] = &unk_1E789FBB0;
-            v18 = v4;
-            v19 = self;
+            v18 = assertionCopy;
+            selfCopy = self;
             [v15 startWithReply:v17];
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
+          v12 = [operations2 countByEnumeratingWithState:&v20 objects:v25 count:16];
         }
 
         while (v12);
@@ -2091,8 +2091,8 @@ uint64_t __56__SBUIBiometricResource__activateFingerDetectAssertion___block_invo
 
     else
     {
-      v10 = SBLogBiometricResource();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      operations2 = SBLogBiometricResource();
+      if (os_log_type_enabled(operations2, OS_LOG_TYPE_ERROR))
       {
         [SBUIBiometricResource _activateFaceDetectAssertion:];
       }
@@ -2129,16 +2129,16 @@ uint64_t __54__SBUIBiometricResource__activateFaceDetectAssertion___block_invoke
   return [*(a1 + 48) _deactivateAssertion:*(a1 + 32)];
 }
 
-- (void)_deactivateAssertion:(id)a3
+- (void)_deactivateAssertion:(id)assertion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assertionCopy = assertion;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 operations];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  operations = [assertionCopy operations];
+  v5 = [operations countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2150,20 +2150,20 @@ uint64_t __54__SBUIBiometricResource__activateFaceDetectAssertion___block_invoke
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(operations);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) cancel];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [operations countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 
-  [v3 setOperations:0];
+  [assertionCopy setOperations:0];
 }
 
 - (void)_deactivateAllPearlAssertions
@@ -2195,8 +2195,8 @@ uint64_t __54__SBUIBiometricResource__activateFaceDetectAssertion___block_invoke
           v15 = 0u;
           v16 = 0u;
           v17 = 0u;
-          v9 = [v8 operations];
-          v10 = [v9 countByEnumeratingWithState:&v14 objects:v22 count:16];
+          operations = [v8 operations];
+          v10 = [operations countByEnumeratingWithState:&v14 objects:v22 count:16];
           if (v10)
           {
             v11 = v10;
@@ -2208,7 +2208,7 @@ uint64_t __54__SBUIBiometricResource__activateFaceDetectAssertion___block_invoke
               {
                 if (*v15 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(operations);
                 }
 
                 if (objc_opt_isKindOfClass())
@@ -2222,7 +2222,7 @@ uint64_t __54__SBUIBiometricResource__activateFaceDetectAssertion___block_invoke
               }
 
               while (v11 != v13);
-              v11 = [v9 countByEnumeratingWithState:&v14 objects:v22 count:16];
+              v11 = [operations countByEnumeratingWithState:&v14 objects:v22 count:16];
               if (v11)
               {
                 continue;
@@ -2245,11 +2245,11 @@ LABEL_17:
   }
 }
 
-- (void)_addMatchingAssertion:(id)a3
+- (void)_addMatchingAssertion:(id)assertion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  assertionCopy = assertion;
+  if (!assertionCopy)
   {
     [SBUIBiometricResource _addMatchingAssertion:];
   }
@@ -2264,13 +2264,13 @@ LABEL_17:
     matchAssertions = self->_matchAssertions;
   }
 
-  [(NSMutableOrderedSet *)matchAssertions addObject:v4];
+  [(NSMutableOrderedSet *)matchAssertions addObject:assertionCopy];
   v8 = SBLogBiometricResource();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = self->_matchAssertions;
     v10 = 134218242;
-    v11 = v4;
+    v11 = assertionCopy;
     v12 = 2112;
     v13 = v9;
     _os_log_impl(&dword_1A9A79000, v8, OS_LOG_TYPE_INFO, "Biometric matching assertion added (%p) - all assertions: %@", &v10, 0x16u);
@@ -2279,23 +2279,23 @@ LABEL_17:
   [(SBUIBiometricResource *)self _reevaluateMatching];
 }
 
-- (void)_removeMatchingAssertion:(id)a3
+- (void)_removeMatchingAssertion:(id)assertion
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  assertionCopy = assertion;
+  if (!assertionCopy)
   {
     [SBUIBiometricResource _removeMatchingAssertion:];
   }
 
-  [(SBUIBiometricResource *)self _deactivateAssertion:v4];
-  [(NSMutableOrderedSet *)self->_matchAssertions removeObject:v4];
+  [(SBUIBiometricResource *)self _deactivateAssertion:assertionCopy];
+  [(NSMutableOrderedSet *)self->_matchAssertions removeObject:assertionCopy];
   v5 = SBLogBiometricResource();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     matchAssertions = self->_matchAssertions;
     v8 = 134218242;
-    v9 = v4;
+    v9 = assertionCopy;
     v10 = 2112;
     v11 = matchAssertions;
     _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_INFO, "Biometric matching wanted assertion removed (%p) - remaining reasons: %@", &v8, 0x16u);
@@ -2310,17 +2310,17 @@ LABEL_17:
   [(SBUIBiometricResource *)self _reevaluateMatching];
 }
 
-- (void)_addFingerDetectionWantedAssertion:(id)a3 HIDEventsOnly:(BOOL)a4
+- (void)_addFingerDetectionWantedAssertion:(id)assertion HIDEventsOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  assertionCopy = assertion;
+  if (!assertionCopy)
   {
     [SBUIBiometricResource _addFingerDetectionWantedAssertion:HIDEventsOnly:];
   }
 
-  if (v4)
+  if (onlyCopy)
   {
     p_HIDEventsOnlyFingerDetectAssertions = &self->_HIDEventsOnlyFingerDetectAssertions;
     HIDEventsOnlyFingerDetectAssertions = self->_HIDEventsOnlyFingerDetectAssertions;
@@ -2345,16 +2345,16 @@ LABEL_5:
   }
 
 LABEL_6:
-  [(NSMutableOrderedSet *)HIDEventsOnlyFingerDetectAssertions addObject:v6];
+  [(NSMutableOrderedSet *)HIDEventsOnlyFingerDetectAssertions addObject:assertionCopy];
   v11 = SBLogBiometricResource();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     normalFingerDetectAssertions = self->_normalFingerDetectAssertions;
     v13 = self->_HIDEventsOnlyFingerDetectAssertions;
     v14 = 134218754;
-    v15 = v6;
+    v15 = assertionCopy;
     v16 = 1024;
-    v17 = v4;
+    v17 = onlyCopy;
     v18 = 2112;
     v19 = normalFingerDetectAssertions;
     v20 = 2112;
@@ -2365,33 +2365,33 @@ LABEL_6:
   [(SBUIBiometricResource *)self _reevaluateFingerDetection];
 }
 
-- (void)_removeFingerDetectionWantedAssertion:(id)a3 HIDEventsOnly:(BOOL)a4
+- (void)_removeFingerDetectionWantedAssertion:(id)assertion HIDEventsOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  assertionCopy = assertion;
+  if (!assertionCopy)
   {
     [SBUIBiometricResource _removeFingerDetectionWantedAssertion:HIDEventsOnly:];
   }
 
-  [(SBUIBiometricResource *)self _deactivateAssertion:v6];
+  [(SBUIBiometricResource *)self _deactivateAssertion:assertionCopy];
   v7 = 104;
-  if (v4)
+  if (onlyCopy)
   {
     v7 = 112;
   }
 
-  [*(&self->super.isa + v7) removeObject:v6];
+  [*(&self->super.isa + v7) removeObject:assertionCopy];
   v8 = SBLogBiometricResource();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     normalFingerDetectAssertions = self->_normalFingerDetectAssertions;
     HIDEventsOnlyFingerDetectAssertions = self->_HIDEventsOnlyFingerDetectAssertions;
     v11 = 134218754;
-    v12 = v6;
+    v12 = assertionCopy;
     v13 = 1024;
-    v14 = v4;
+    v14 = onlyCopy;
     v15 = 2112;
     v16 = normalFingerDetectAssertions;
     v17 = 2112;
@@ -2402,11 +2402,11 @@ LABEL_6:
   [(SBUIBiometricResource *)self _reevaluateFingerDetection];
 }
 
-- (void)_addFaceDetectionWantedAssertion:(id)a3
+- (void)_addFaceDetectionWantedAssertion:(id)assertion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  assertionCopy = assertion;
+  if (!assertionCopy)
   {
     [SBUIBiometricResource _addFaceDetectionWantedAssertion:];
   }
@@ -2421,13 +2421,13 @@ LABEL_6:
     faceDetectAssertions = self->_faceDetectAssertions;
   }
 
-  [(NSMutableOrderedSet *)faceDetectAssertions addObject:v4];
+  [(NSMutableOrderedSet *)faceDetectAssertions addObject:assertionCopy];
   v8 = SBLogBiometricResource();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = self->_faceDetectAssertions;
     v10 = 134218242;
-    v11 = v4;
+    v11 = assertionCopy;
     v12 = 2112;
     v13 = v9;
     _os_log_impl(&dword_1A9A79000, v8, OS_LOG_TYPE_INFO, "Face detect wanted assertion added (%p) - all assertions: %@", &v10, 0x16u);
@@ -2436,23 +2436,23 @@ LABEL_6:
   [(SBUIBiometricResource *)self _reevaluateFaceDetection];
 }
 
-- (void)_removeFaceDetectionWantedAssertion:(id)a3
+- (void)_removeFaceDetectionWantedAssertion:(id)assertion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  assertionCopy = assertion;
+  if (!assertionCopy)
   {
     [SBUIBiometricResource _removeFaceDetectionWantedAssertion:];
   }
 
-  [(SBUIBiometricResource *)self _deactivateAssertion:v4];
-  [(NSMutableOrderedSet *)self->_faceDetectAssertions removeObject:v4];
+  [(SBUIBiometricResource *)self _deactivateAssertion:assertionCopy];
+  [(NSMutableOrderedSet *)self->_faceDetectAssertions removeObject:assertionCopy];
   v5 = SBLogBiometricResource();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     faceDetectAssertions = self->_faceDetectAssertions;
     v7 = 134218242;
-    v8 = v4;
+    v8 = assertionCopy;
     v9 = 2112;
     v10 = faceDetectAssertions;
     _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_INFO, "Face detect wanted assertion removed (%p) - remaining assertions: %@", &v7, 0x16u);
@@ -2461,11 +2461,11 @@ LABEL_6:
   [(SBUIBiometricResource *)self _reevaluateFaceDetection];
 }
 
-- (void)_addSimulatedLockoutAssertion:(id)a3
+- (void)_addSimulatedLockoutAssertion:(id)assertion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  assertionCopy = assertion;
+  if (!assertionCopy)
   {
     [SBUIBiometricResource _addSimulatedLockoutAssertion:];
   }
@@ -2480,13 +2480,13 @@ LABEL_6:
     simulatedLockoutAssertions = self->_simulatedLockoutAssertions;
   }
 
-  [(NSMutableOrderedSet *)simulatedLockoutAssertions addObject:v4];
+  [(NSMutableOrderedSet *)simulatedLockoutAssertions addObject:assertionCopy];
   v8 = SBLogBiometricResource();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = self->_simulatedLockoutAssertions;
     v10 = 134218242;
-    v11 = v4;
+    v11 = assertionCopy;
     v12 = 2112;
     v13 = v9;
     _os_log_impl(&dword_1A9A79000, v8, OS_LOG_TYPE_INFO, "Passcode required assertion added (%p) - all assertions: %@", &v10, 0x16u);
@@ -2495,22 +2495,22 @@ LABEL_6:
   [(SBUIBiometricResource *)self _reevaluateMatching];
 }
 
-- (void)_removeSimulatedLockoutAssertion:(id)a3
+- (void)_removeSimulatedLockoutAssertion:(id)assertion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  assertionCopy = assertion;
+  if (!assertionCopy)
   {
     [SBUIBiometricResource _removeSimulatedLockoutAssertion:];
   }
 
-  [(NSMutableOrderedSet *)self->_simulatedLockoutAssertions removeObject:v4];
+  [(NSMutableOrderedSet *)self->_simulatedLockoutAssertions removeObject:assertionCopy];
   v5 = SBLogBiometricResource();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     simulatedLockoutAssertions = self->_simulatedLockoutAssertions;
     v7 = 134218242;
-    v8 = v4;
+    v8 = assertionCopy;
     v9 = 2112;
     v10 = simulatedLockoutAssertions;
     _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_INFO, "Passcode required assertion removed (%p) - remaining assertions: %@", &v7, 0x16u);
@@ -2519,10 +2519,10 @@ LABEL_6:
   [(SBUIBiometricResource *)self _reevaluateMatching];
 }
 
-- (void)_presenceDetectAllowedStateMayHaveChangedForReason:(id)a3
+- (void)_presenceDetectAllowedStateMayHaveChangedForReason:(id)reason
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   screenIsOn = self->_screenIsOn;
   if (self->_isPresenceDetectionAllowed != screenIsOn)
   {
@@ -2534,7 +2534,7 @@ LABEL_6:
       v8 = 138543618;
       v9 = v7;
       v10 = 2112;
-      v11 = v4;
+      v11 = reasonCopy;
       _os_log_impl(&dword_1A9A79000, v6, OS_LOG_TYPE_INFO, "PresenceDetection allowed changed to %{public}@ for reason: %@", &v8, 0x16u);
     }
   }
@@ -2543,10 +2543,10 @@ LABEL_6:
   [(SBUIBiometricResource *)self _reevaluateFaceDetection];
 }
 
-- (void)_matchingAllowedStateMayHaveChangedForReason:(id)a3
+- (void)_matchingAllowedStateMayHaveChangedForReason:(id)reason
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   if ([(SBUIBiometricResource *)self hasBiometricAuthenticationCapabilityEnabled])
   {
     screenIsOn = self->_screenIsOn;
@@ -2568,7 +2568,7 @@ LABEL_6:
       *buf = 138543618;
       v21 = v8;
       v22 = 2112;
-      v23 = v4;
+      v23 = reasonCopy;
       _os_log_impl(&dword_1A9A79000, v7, OS_LOG_TYPE_INFO, "Matching allowed changed to %{public}@ for reason: %@", buf, 0x16u);
     }
 
@@ -2608,13 +2608,13 @@ LABEL_6:
   [(SBUIBiometricResource *)self _reevaluateMatching];
 }
 
-- (void)_updateHandlersForEvent:(unint64_t)a3
+- (void)_updateHandlersForEvent:(unint64_t)event
 {
   v21 = *MEMORY[0x1E69E9840];
   BSDispatchQueueAssertMain();
   lastEvent = self->_lastEvent;
-  self->_lastEvent = a3;
-  if (a3 != 4)
+  self->_lastEvent = event;
+  if (event != 4)
   {
     goto LABEL_9;
   }
@@ -2643,20 +2643,20 @@ LABEL_6:
 LABEL_9:
     if (self->_isMatchingEnabled)
     {
-      if (a3 == 1)
+      if (event == 1)
       {
         v10 = 1;
         goto LABEL_20;
       }
 
-      if (!a3)
+      if (!event)
       {
         v10 = 0;
         goto LABEL_20;
       }
 
-      [(SBUIBiometricResource *)self _notifyObserversOfEvent:a3];
-      if (a3 == 4)
+      [(SBUIBiometricResource *)self _notifyObserversOfEvent:event];
+      if (event == 4)
       {
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
@@ -2669,27 +2669,27 @@ LABEL_9:
 
     else
     {
-      if (!a3 && self->_shouldSendFingerOffNotification)
+      if (!event && self->_shouldSendFingerOffNotification)
       {
         self->_shouldSendFingerOffNotification = 0;
-        v11 = self;
-        v12 = 0;
+        selfCopy2 = self;
+        eventCopy = 0;
 LABEL_22:
-        [(SBUIBiometricResource *)v11 _notifyObserversOfEvent:v12];
+        [(SBUIBiometricResource *)selfCopy2 _notifyObserversOfEvent:eventCopy];
         return;
       }
 
       if (self->_isForegroundFingerDetectionEnabled)
       {
-        if (a3 > 1)
+        if (event > 1)
         {
 LABEL_21:
-          v11 = self;
-          v12 = a3;
+          selfCopy2 = self;
+          eventCopy = event;
           goto LABEL_22;
         }
 
-        v10 = a3 == 1;
+        v10 = event == 1;
 LABEL_20:
         self->_shouldSendFingerOffNotification = v10;
         goto LABEL_21;
@@ -2697,14 +2697,14 @@ LABEL_20:
 
       if (self->_isFaceDetectionEnabled)
       {
-        if (a3 == 13)
+        if (event == 13)
         {
           v15 = 1;
         }
 
         else
         {
-          if (a3 != 22)
+          if (event != 22)
           {
             goto LABEL_21;
           }
@@ -2726,8 +2726,8 @@ LABEL_20:
       [SBUIBiometricResource _updateHandlersForEvent:];
     }
 
-    v14 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    [v14 lockDeviceImmediately:1];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    [mEMORY[0x1E69ADFB8] lockDeviceImmediately:1];
   }
 }
 
@@ -2737,7 +2737,7 @@ void __49__SBUIBiometricResource__updateHandlersForEvent___block_invoke(uint64_t
   [v2 postNotificationName:@"SBBiometricEventMonitorHasAuthenticated" object:*(a1 + 32)];
 }
 
-- (void)_notifyObserversOfEvent:(unint64_t)a3
+- (void)_notifyObserversOfEvent:(unint64_t)event
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -2763,7 +2763,7 @@ void __49__SBUIBiometricResource__updateHandlersForEvent___block_invoke(uint64_t
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 biometricResource:self observeEvent:a3];
+          [v10 biometricResource:self observeEvent:event];
         }
 
         ++v9;

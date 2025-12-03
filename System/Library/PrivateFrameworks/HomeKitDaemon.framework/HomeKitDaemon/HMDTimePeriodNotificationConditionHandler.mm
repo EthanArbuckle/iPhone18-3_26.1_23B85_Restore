@@ -1,12 +1,12 @@
 @interface HMDTimePeriodNotificationConditionHandler
 + (id)logCategory;
-- (BOOL)canHandleCondition:(id)a3;
-- (BOOL)conditionPasses:(id)a3 registrationUser:(id)a4;
+- (BOOL)canHandleCondition:(id)condition;
+- (BOOL)conditionPasses:(id)passes registrationUser:(id)user;
 - (HMDHome)home;
-- (HMDTimePeriodNotificationConditionHandler)initWithHome:(id)a3;
-- (HMDTimePeriodNotificationConditionHandler)initWithHome:(id)a3 timeProvider:(id)a4 sunriseSunsetProvider:(id)a5;
-- (id)_dateComponentsForTimePeriodElement:(id)a3 home:(id)a4;
-- (id)_dateTodayMatchingComponents:(id)a3;
+- (HMDTimePeriodNotificationConditionHandler)initWithHome:(id)home;
+- (HMDTimePeriodNotificationConditionHandler)initWithHome:(id)home timeProvider:(id)provider sunriseSunsetProvider:(id)sunsetProvider;
+- (id)_dateComponentsForTimePeriodElement:(id)element home:(id)home;
+- (id)_dateTodayMatchingComponents:(id)components;
 @end
 
 @implementation HMDTimePeriodNotificationConditionHandler
@@ -18,32 +18,32 @@
   return WeakRetained;
 }
 
-- (id)_dateTodayMatchingComponents:(id)a3
+- (id)_dateTodayMatchingComponents:(id)components
 {
-  v4 = a3;
-  v5 = [(HMDTimePeriodNotificationConditionHandler *)self timeProvider];
-  v6 = [v5 currentDate];
+  componentsCopy = components;
+  timeProvider = [(HMDTimePeriodNotificationConditionHandler *)self timeProvider];
+  currentDate = [timeProvider currentDate];
 
-  v7 = [MEMORY[0x277CBEA80] currentCalendar];
-  v8 = [v7 components:124 fromDate:v6];
-  [v8 setHour:{objc_msgSend(v4, "hour")}];
-  v9 = [v4 minute];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v8 = [currentCalendar components:124 fromDate:currentDate];
+  [v8 setHour:{objc_msgSend(componentsCopy, "hour")}];
+  minute = [componentsCopy minute];
 
-  [v8 setMinute:v9];
-  v10 = [v7 dateFromComponents:v8];
+  [v8 setMinute:minute];
+  v10 = [currentCalendar dateFromComponents:v8];
 
   return v10;
 }
 
-- (id)_dateComponentsForTimePeriodElement:(id)a3 home:(id)a4
+- (id)_dateComponentsForTimePeriodElement:(id)element home:(id)home
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  homeCopy = home;
   v8 = objc_opt_class();
   if (v8 == objc_opt_class())
   {
-    v15 = v6;
+    v15 = elementCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,9 +59,9 @@
 
     v14 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [v14 setHour:{objc_msgSend(v17, "hour")}];
-    v18 = [v17 minute];
+    minute = [v17 minute];
 
-    [v14 setMinute:v18];
+    [v14 setMinute:minute];
     [v14 setSecond:0];
     goto LABEL_22;
   }
@@ -69,7 +69,7 @@
   v9 = objc_opt_class();
   if (v9 == objc_opt_class())
   {
-    v19 = v6;
+    v19 = elementCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,33 +83,33 @@
 
     v21 = v20;
 
-    v22 = [v21 significantEvent];
-    v23 = [v22 isEqualToString:*MEMORY[0x277CD0FA8]];
+    significantEvent = [v21 significantEvent];
+    v23 = [significantEvent isEqualToString:*MEMORY[0x277CD0FA8]];
 
     if (v23)
     {
-      v24 = [(HMDTimePeriodNotificationConditionHandler *)self sunriseSunsetProvider];
-      v25 = [v24 sunriseTimeForHome:v7];
+      sunriseSunsetProvider = [(HMDTimePeriodNotificationConditionHandler *)self sunriseSunsetProvider];
+      v25 = [sunriseSunsetProvider sunriseTimeForHome:homeCopy];
     }
 
     else
     {
-      v26 = [v21 significantEvent];
-      v27 = [v26 isEqualToString:*MEMORY[0x277CD0FB0]];
+      significantEvent2 = [v21 significantEvent];
+      v27 = [significantEvent2 isEqualToString:*MEMORY[0x277CD0FB0]];
 
       if (!v27)
       {
         v34 = objc_autoreleasePoolPush();
-        v35 = self;
+        selfCopy = self;
         v36 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
         {
           v37 = HMFGetLogIdentifier();
-          v38 = [v21 significantEvent];
+          significantEvent3 = [v21 significantEvent];
           v41 = 138543618;
           v42 = v37;
           v43 = 2112;
-          v44 = v38;
+          v44 = significantEvent3;
           _os_log_impl(&dword_229538000, v36, OS_LOG_TYPE_ERROR, "%{public}@Only sunrise & sunset are supported, not: %@", &v41, 0x16u);
         }
 
@@ -118,28 +118,28 @@
         goto LABEL_21;
       }
 
-      v24 = [(HMDTimePeriodNotificationConditionHandler *)self sunriseSunsetProvider];
-      v25 = [v24 sunsetTimeForHome:v7];
+      sunriseSunsetProvider = [(HMDTimePeriodNotificationConditionHandler *)self sunriseSunsetProvider];
+      v25 = [sunriseSunsetProvider sunsetTimeForHome:homeCopy];
     }
 
     v28 = v25;
 
     v29 = objc_alloc(MEMORY[0x277CBEA80]);
     v30 = [v29 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-    v31 = [v21 offset];
-    v32 = [v30 dateByAddingComponents:v31 toDate:v28 options:0];
+    offset = [v21 offset];
+    v32 = [v30 dateByAddingComponents:offset toDate:v28 options:0];
 
-    v33 = [v32 hmf_dateComponents];
+    hmf_dateComponents = [v32 hmf_dateComponents];
     v14 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-    [v14 setHour:{objc_msgSend(v33, "hour")}];
-    [v14 setMinute:{objc_msgSend(v33, "minute")}];
+    [v14 setHour:{objc_msgSend(hmf_dateComponents, "hour")}];
+    [v14 setMinute:{objc_msgSend(hmf_dateComponents, "minute")}];
 
 LABEL_21:
     goto LABEL_22;
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy2 = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
@@ -147,7 +147,7 @@ LABEL_21:
     v41 = 138543618;
     v42 = v13;
     v43 = 2112;
-    v44 = v6;
+    v44 = elementCopy;
     _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_ERROR, "%{public}@Unsupported HMDTimePeriodElement: %@", &v41, 0x16u);
   }
 
@@ -160,12 +160,12 @@ LABEL_22:
   return v14;
 }
 
-- (BOOL)conditionPasses:(id)a3 registrationUser:(id)a4
+- (BOOL)conditionPasses:(id)passes registrationUser:(id)user
 {
   v62 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v49 = a4;
-  v7 = v6;
+  passesCopy = passes;
+  userCopy = user;
+  v7 = passesCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -181,15 +181,15 @@ LABEL_22:
 
   if (v9)
   {
-    v10 = [v9 startElement];
-    v11 = [v9 endElement];
-    v12 = [(HMDTimePeriodNotificationConditionHandler *)self home];
-    v48 = v10;
-    v13 = [(HMDTimePeriodNotificationConditionHandler *)self _dateComponentsForTimePeriodElement:v10 home:v12];
-    v47 = v11;
-    v14 = [(HMDTimePeriodNotificationConditionHandler *)self _dateComponentsForTimePeriodElement:v11 home:v12];
+    startElement = [v9 startElement];
+    endElement = [v9 endElement];
+    home = [(HMDTimePeriodNotificationConditionHandler *)self home];
+    v48 = startElement;
+    v13 = [(HMDTimePeriodNotificationConditionHandler *)self _dateComponentsForTimePeriodElement:startElement home:home];
+    v47 = endElement;
+    v14 = [(HMDTimePeriodNotificationConditionHandler *)self _dateComponentsForTimePeriodElement:endElement home:home];
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -206,29 +206,29 @@ LABEL_22:
     objc_autoreleasePoolPop(v15);
     if (v13 && v14)
     {
-      v45 = v12;
-      v19 = [(HMDTimePeriodNotificationConditionHandler *)v16 _dateTodayMatchingComponents:v13];
-      v20 = [(HMDTimePeriodNotificationConditionHandler *)v16 _dateTodayMatchingComponents:v14];
-      v21 = [(HMDTimePeriodNotificationConditionHandler *)v16 timeProvider];
-      v22 = [v21 currentDate];
+      v45 = home;
+      v19 = [(HMDTimePeriodNotificationConditionHandler *)selfCopy _dateTodayMatchingComponents:v13];
+      v20 = [(HMDTimePeriodNotificationConditionHandler *)selfCopy _dateTodayMatchingComponents:v14];
+      timeProvider = [(HMDTimePeriodNotificationConditionHandler *)selfCopy timeProvider];
+      currentDate = [timeProvider currentDate];
 
       v23 = [v19 compare:v20];
       v24 = objc_alloc(MEMORY[0x277CCA970]);
-      v46 = v22;
+      v46 = currentDate;
       if (v23 == -1)
       {
         v25 = [v24 initWithStartDate:v19 endDate:v20];
-        LOBYTE(v26) = [v25 containsDate:v22];
+        LOBYTE(v26) = [v25 containsDate:currentDate];
       }
 
       else
       {
         v25 = [v24 initWithStartDate:v20 endDate:v19];
-        LODWORD(v26) = [v25 containsDate:v22] ^ 1;
+        LODWORD(v26) = [v25 containsDate:currentDate] ^ 1;
       }
 
       v35 = objc_autoreleasePoolPush();
-      v36 = v16;
+      v36 = selfCopy;
       v37 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
       {
@@ -256,20 +256,20 @@ LABEL_22:
 
       objc_autoreleasePoolPop(v35);
       v32 = v47;
-      v12 = v45;
+      home = v45;
     }
 
     else
     {
       v30 = objc_autoreleasePoolPush();
-      v26 = v16;
+      v26 = selfCopy;
       v31 = HMFGetOSLogHandle();
       v32 = v47;
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
         v43 = v14;
-        v34 = v33 = v12;
+        v34 = v33 = home;
         *buf = 138543874;
         v51 = v34;
         v52 = 2112;
@@ -278,7 +278,7 @@ LABEL_22:
         v55 = v47;
         _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_ERROR, "%{public}@Unable to retrieve date components for startElement: %@ endElement: %@", buf, 0x20u);
 
-        v12 = v33;
+        home = v33;
         v14 = v43;
       }
 
@@ -290,7 +290,7 @@ LABEL_22:
   else
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy2 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -310,40 +310,40 @@ LABEL_22:
   return v26;
 }
 
-- (BOOL)canHandleCondition:(id)a3
+- (BOOL)canHandleCondition:(id)condition
 {
-  v3 = a3;
+  conditionCopy = condition;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  return isKindOfClass & (v3 != 0);
+  return isKindOfClass & (conditionCopy != 0);
 }
 
-- (HMDTimePeriodNotificationConditionHandler)initWithHome:(id)a3 timeProvider:(id)a4 sunriseSunsetProvider:(id)a5
+- (HMDTimePeriodNotificationConditionHandler)initWithHome:(id)home timeProvider:(id)provider sunriseSunsetProvider:(id)sunsetProvider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  homeCopy = home;
+  providerCopy = provider;
+  sunsetProviderCopy = sunsetProvider;
   v14.receiver = self;
   v14.super_class = HMDTimePeriodNotificationConditionHandler;
   v11 = [(HMDTimePeriodNotificationConditionHandler *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_home, v8);
-    objc_storeStrong(&v12->_timeProvider, a4);
-    objc_storeStrong(&v12->_sunriseSunsetProvider, a5);
+    objc_storeWeak(&v11->_home, homeCopy);
+    objc_storeStrong(&v12->_timeProvider, provider);
+    objc_storeStrong(&v12->_sunriseSunsetProvider, sunsetProvider);
   }
 
   return v12;
 }
 
-- (HMDTimePeriodNotificationConditionHandler)initWithHome:(id)a3
+- (HMDTimePeriodNotificationConditionHandler)initWithHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_alloc_init(HMDTimePeriodNotificationConditionDefaultTimeProvider);
   v6 = objc_alloc_init(HMDTimePeriodNotificationConditionDefaultSunsetSunriseProvider);
-  v7 = [(HMDTimePeriodNotificationConditionHandler *)self initWithHome:v4 timeProvider:v5 sunriseSunsetProvider:v6];
+  v7 = [(HMDTimePeriodNotificationConditionHandler *)self initWithHome:homeCopy timeProvider:v5 sunriseSunsetProvider:v6];
 
   return v7;
 }

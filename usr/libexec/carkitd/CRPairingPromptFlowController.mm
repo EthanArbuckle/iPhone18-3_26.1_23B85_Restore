@@ -1,5 +1,5 @@
 @interface CRPairingPromptFlowController
-+ (id)_descriptionForStep:(unint64_t)a3;
++ (id)_descriptionForStep:(unint64_t)step;
 - (BOOL)_hasExistingBluetoothPairing;
 - (BOOL)_isMessagingBluetoothConnected;
 - (BOOL)_needsBluetoothTurnedOn;
@@ -14,53 +14,53 @@
 - (CRPairingPromptFlowController)init;
 - (CRPairingPromptFlowDelegate)promptDelegate;
 - (id)_carKeyInfo;
-- (unint64_t)_nextStepAfterResponse:(id)a3;
+- (unint64_t)_nextStepAfterResponse:(id)response;
 - (unint64_t)_outOfBandPairingDeclineCount;
 - (void)_dismiss;
-- (void)_handleTimedOutWaitingOnMessagingVehicle:(id)a3;
+- (void)_handleTimedOutWaitingOnMessagingVehicle:(id)vehicle;
 - (void)_incrementOutOfBandPairingDeclineCount;
-- (void)_performPresentationAction:(id)a3;
-- (void)_presentAllowWhileLockedPromptWithCompletion:(id)a3;
-- (void)_presentAssetProgressPromptWithCompletion:(id)a3;
-- (void)_presentAssetReadyPromptWithCompletion:(id)a3;
-- (void)_presentAssetReadySoonPromptWithCompletion:(id)a3;
-- (void)_presentAssetUnavailablePromptWithCompletion:(id)a3;
-- (void)_presentBluetoothConfirmationPromptWithCompletion:(id)a3;
-- (void)_presentBluetoothContactsSyncPromptWithCompletion:(id)a3;
-- (void)_presentBluetoothFailedPromptWithCompletion:(id)a3;
-- (void)_presentCheckSoftwareUpdatesWithCompletion:(id)a3;
-- (void)_presentConnectCarPlayFromCarKeyPromptWithCompletion:(id)a3;
-- (void)_presentConnectCarPlayPromptWithCompletion:(id)a3;
-- (void)_presentEnhancedIntegrationPromptWithCompletion:(id)a3;
-- (void)_presentNextStepAfterResponse:(id)a3;
-- (void)_presentSetupCarKeysWithCompletion:(id)a3;
-- (void)_presentUseWirelessCarPlayPromptWithCompletion:(id)a3;
+- (void)_performPresentationAction:(id)action;
+- (void)_presentAllowWhileLockedPromptWithCompletion:(id)completion;
+- (void)_presentAssetProgressPromptWithCompletion:(id)completion;
+- (void)_presentAssetReadyPromptWithCompletion:(id)completion;
+- (void)_presentAssetReadySoonPromptWithCompletion:(id)completion;
+- (void)_presentAssetUnavailablePromptWithCompletion:(id)completion;
+- (void)_presentBluetoothConfirmationPromptWithCompletion:(id)completion;
+- (void)_presentBluetoothContactsSyncPromptWithCompletion:(id)completion;
+- (void)_presentBluetoothFailedPromptWithCompletion:(id)completion;
+- (void)_presentCheckSoftwareUpdatesWithCompletion:(id)completion;
+- (void)_presentConnectCarPlayFromCarKeyPromptWithCompletion:(id)completion;
+- (void)_presentConnectCarPlayPromptWithCompletion:(id)completion;
+- (void)_presentEnhancedIntegrationPromptWithCompletion:(id)completion;
+- (void)_presentNextStepAfterResponse:(id)response;
+- (void)_presentSetupCarKeysWithCompletion:(id)completion;
+- (void)_presentUseWirelessCarPlayPromptWithCompletion:(id)completion;
 - (void)_presentWaitingOnMessagingPrompt;
 - (void)_presentWaitingOnStartSessionPrompt;
 - (void)_startWaitingOnMessagingVehicleTimer;
 - (void)_stopWaitingOnMessagingVehicleTimer;
 - (void)cancel;
-- (void)handleBluetoothPairingConfirmationRequestForDeviceIdentifier:(id)a3 vehicleName:(id)a4 numericCode:(id)a5;
-- (void)handleBluetoothPairingFailedForDeviceIdentifier:(id)a3 vehicleName:(id)a4 isTimeout:(BOOL)a5;
+- (void)handleBluetoothPairingConfirmationRequestForDeviceIdentifier:(id)identifier vehicleName:(id)name numericCode:(id)code;
+- (void)handleBluetoothPairingFailedForDeviceIdentifier:(id)identifier vehicleName:(id)name isTimeout:(BOOL)timeout;
 - (void)handleCarKeyInitiatedPairingFailed;
-- (void)handleConnectedMessagingVehicle:(id)a3 pairingAccepted:(id)a4;
-- (void)handleDisconnectedMessagingVehicle:(id)a3;
-- (void)handleFailedToFindThemeAssetForMessagingVehicle:(id)a3 shouldOfferSoftwareUpdate:(BOOL)a4 description:(id)a5;
-- (void)handleUnsupportedMessagingConnectionForDeviceIdentifier:(id)a3;
+- (void)handleConnectedMessagingVehicle:(id)vehicle pairingAccepted:(id)accepted;
+- (void)handleDisconnectedMessagingVehicle:(id)vehicle;
+- (void)handleFailedToFindThemeAssetForMessagingVehicle:(id)vehicle shouldOfferSoftwareUpdate:(BOOL)update description:(id)description;
+- (void)handleUnsupportedMessagingConnectionForDeviceIdentifier:(id)identifier;
 @end
 
 @implementation CRPairingPromptFlowController
 
-+ (id)_descriptionForStep:(unint64_t)a3
++ (id)_descriptionForStep:(unint64_t)step
 {
-  if (a3 - 1 > 0x11)
+  if (step - 1 > 0x11)
   {
     return @"started";
   }
 
   else
   {
-    return off_1000DEEE0[a3 - 1];
+    return off_1000DEEE0[step - 1];
   }
 }
 
@@ -86,11 +86,11 @@
   return v3;
 }
 
-- (void)handleBluetoothPairingConfirmationRequestForDeviceIdentifier:(id)a3 vehicleName:(id)a4 numericCode:(id)a5
+- (void)handleBluetoothPairingConfirmationRequestForDeviceIdentifier:(id)identifier vehicleName:(id)name numericCode:(id)code
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  nameCopy = name;
+  codeCopy = code;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v11 = CarPairingLogging();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -99,13 +99,13 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "received Bluetooth pairing confirmation request, continuing prompt flow", v15, 2u);
   }
 
-  v12 = [(CRPairingPromptFlowController *)self bluetoothDeviceIdentifier];
-  v13 = [v12 isEqualToString:v10];
+  bluetoothDeviceIdentifier = [(CRPairingPromptFlowController *)self bluetoothDeviceIdentifier];
+  v13 = [bluetoothDeviceIdentifier isEqualToString:identifierCopy];
 
   if (v13)
   {
-    [(CRPairingPromptFlowController *)self setVehicleName:v8];
-    [(CRPairingPromptFlowController *)self setNumericCode:v9];
+    [(CRPairingPromptFlowController *)self setVehicleName:nameCopy];
+    [(CRPairingPromptFlowController *)self setNumericCode:codeCopy];
     if (![(CRPairingPromptFlowController *)self currentStep])
     {
       [(CRPairingPromptFlowController *)self _presentNextStepAfterResponse:0];
@@ -122,11 +122,11 @@
   }
 }
 
-- (void)handleBluetoothPairingFailedForDeviceIdentifier:(id)a3 vehicleName:(id)a4 isTimeout:(BOOL)a5
+- (void)handleBluetoothPairingFailedForDeviceIdentifier:(id)identifier vehicleName:(id)name isTimeout:(BOOL)timeout
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  timeoutCopy = timeout;
+  identifierCopy = identifier;
+  nameCopy = name;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v10 = CarPairingLogging();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -135,11 +135,11 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "received Bluetooth failed, adding failed prompt to flow", v16, 2u);
   }
 
-  v11 = [(CRPairingPromptFlowController *)self bluetoothDeviceIdentifier];
-  v12 = v11;
-  if (v11)
+  bluetoothDeviceIdentifier = [(CRPairingPromptFlowController *)self bluetoothDeviceIdentifier];
+  v12 = bluetoothDeviceIdentifier;
+  if (bluetoothDeviceIdentifier)
   {
-    if (([v11 isEqualToString:v8] & 1) == 0)
+    if (([bluetoothDeviceIdentifier isEqualToString:identifierCopy] & 1) == 0)
     {
       v13 = CarPairingLogging();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -153,11 +153,11 @@
 
   else
   {
-    [(CRPairingPromptFlowController *)self setBluetoothDeviceIdentifier:v8];
+    [(CRPairingPromptFlowController *)self setBluetoothDeviceIdentifier:identifierCopy];
   }
 
-  [(CRPairingPromptFlowController *)self setVehicleName:v9];
-  if (v5)
+  [(CRPairingPromptFlowController *)self setVehicleName:nameCopy];
+  if (timeoutCopy)
   {
     v14 = 2;
   }
@@ -168,8 +168,8 @@
   }
 
   [(CRPairingPromptFlowController *)self setBluetoothFailureReason:v14];
-  v15 = [(CRPairingPromptFlowController *)self currentStep];
-  if (v15 <= 5 && ((1 << v15) & 0x25) != 0)
+  currentStep = [(CRPairingPromptFlowController *)self currentStep];
+  if (currentStep <= 5 && ((1 << currentStep) & 0x25) != 0)
   {
     [(CRPairingPromptFlowController *)self _presentNextStepAfterResponse:&__kCFBooleanFalse];
   }
@@ -177,37 +177,37 @@
 LABEL_15:
 }
 
-- (void)handleConnectedMessagingVehicle:(id)a3 pairingAccepted:(id)a4
+- (void)handleConnectedMessagingVehicle:(id)vehicle pairingAccepted:(id)accepted
 {
-  v6 = a4;
-  v7 = a3;
+  acceptedCopy = accepted;
+  vehicleCopy = vehicle;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v8 = CarPairingLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = v6;
+    v12 = acceptedCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "received messaging connection, continuing prompt flow. pairing accepted: %{public}@", &v11, 0xCu);
   }
 
-  [(CRPairingPromptFlowController *)self setMessagingVehicle:v7];
-  [(CRPairingPromptFlowController *)self setPairingAccepted:v6];
-  v9 = [v7 vehicleName];
+  [(CRPairingPromptFlowController *)self setMessagingVehicle:vehicleCopy];
+  [(CRPairingPromptFlowController *)self setPairingAccepted:acceptedCopy];
+  vehicleName = [vehicleCopy vehicleName];
 
-  [(CRPairingPromptFlowController *)self setVehicleName:v9];
-  v10 = [(CRPairingPromptFlowController *)self currentStep];
-  if (v10 == 5 || !v10)
+  [(CRPairingPromptFlowController *)self setVehicleName:vehicleName];
+  currentStep = [(CRPairingPromptFlowController *)self currentStep];
+  if (currentStep == 5 || !currentStep)
   {
     [(CRPairingPromptFlowController *)self _presentNextStepAfterResponse:&__kCFBooleanTrue];
   }
 }
 
-- (void)handleUnsupportedMessagingConnectionForDeviceIdentifier:(id)a3
+- (void)handleUnsupportedMessagingConnectionForDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v5 = [(CRPairingPromptFlowController *)self bluetoothDeviceIdentifier];
-  v6 = [v5 isEqualToString:v4];
+  bluetoothDeviceIdentifier = [(CRPairingPromptFlowController *)self bluetoothDeviceIdentifier];
+  v6 = [bluetoothDeviceIdentifier isEqualToString:identifierCopy];
 
   v7 = CarPairingLogging();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -235,9 +235,9 @@ LABEL_15:
   }
 }
 
-- (void)handleDisconnectedMessagingVehicle:(id)a3
+- (void)handleDisconnectedMessagingVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v5 = CarPairingLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -246,12 +246,12 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "disconnected messaging connection", buf, 2u);
   }
 
-  v6 = [(CRPairingPromptFlowController *)self messagingVehicle];
-  v7 = [v4 isEqual:v6];
+  messagingVehicle = [(CRPairingPromptFlowController *)self messagingVehicle];
+  v7 = [vehicleCopy isEqual:messagingVehicle];
 
   if (v7)
   {
-    if ([v4 transportType] == 2)
+    if ([vehicleCopy transportType] == 2)
     {
       v8 = CarPairingLogging();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -268,17 +268,17 @@ LABEL_15:
   }
 }
 
-- (void)handleFailedToFindThemeAssetForMessagingVehicle:(id)a3 shouldOfferSoftwareUpdate:(BOOL)a4 description:(id)a5
+- (void)handleFailedToFindThemeAssetForMessagingVehicle:(id)vehicle shouldOfferSoftwareUpdate:(BOOL)update description:(id)description
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  updateCopy = update;
+  descriptionCopy = description;
+  vehicleCopy = vehicle;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v10 = CarPairingLogging();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"NO";
-    if (v5)
+    if (updateCopy)
     {
       v11 = @"YES";
     }
@@ -288,12 +288,12 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "failed to find available asset, should offer software update: %{public}@", &v14, 0xCu);
   }
 
-  v12 = [(CRPairingPromptFlowController *)self messagingVehicle];
-  v13 = [v9 isEqual:v12];
+  messagingVehicle = [(CRPairingPromptFlowController *)self messagingVehicle];
+  v13 = [vehicleCopy isEqual:messagingVehicle];
 
   if (v13)
   {
-    [(CRPairingPromptFlowController *)self setAssetUnavailableDescription:v8];
+    [(CRPairingPromptFlowController *)self setAssetUnavailableDescription:descriptionCopy];
     if ([(CRPairingPromptFlowController *)self currentStep]== 12)
     {
       [(CRPairingPromptFlowController *)self _presentNextStepAfterResponse:0];
@@ -322,22 +322,22 @@ LABEL_15:
 
 - (BOOL)_isMessagingBluetoothConnected
 {
-  v2 = [(CRPairingPromptFlowController *)self messagingVehicle];
-  v3 = (([v2 transportType] - 2) & 0xFFFFFFFFFFFFFFFDLL) == 0;
+  messagingVehicle = [(CRPairingPromptFlowController *)self messagingVehicle];
+  v3 = (([messagingVehicle transportType] - 2) & 0xFFFFFFFFFFFFFFFDLL) == 0;
 
   return v3;
 }
 
 - (BOOL)_supportsUSB
 {
-  v2 = [(CRPairingPromptFlowController *)self messagingVehicle];
-  v3 = [v2 supportsUSBCarPlay];
+  messagingVehicle = [(CRPairingPromptFlowController *)self messagingVehicle];
+  supportsUSBCarPlay = [messagingVehicle supportsUSBCarPlay];
 
   v4 = CarPairingLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"NO";
-    if (v3)
+    if (supportsUSBCarPlay)
     {
       v5 = @"YES";
     }
@@ -347,27 +347,27 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "supports wired: %@", &v7, 0xCu);
   }
 
-  return v3;
+  return supportsUSBCarPlay;
 }
 
 - (BOOL)_supportsOutOfBandPairing
 {
-  v2 = [(CRPairingPromptFlowController *)self messagingVehicle];
-  if ([v2 supportsWirelessCarPlay])
+  messagingVehicle = [(CRPairingPromptFlowController *)self messagingVehicle];
+  if ([messagingVehicle supportsWirelessCarPlay])
   {
-    v3 = [v2 supportsWiredBluetoothPairing];
+    supportsWiredBluetoothPairing = [messagingVehicle supportsWiredBluetoothPairing];
   }
 
   else
   {
-    v3 = 0;
+    supportsWiredBluetoothPairing = 0;
   }
 
   v4 = CarPairingLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"NO";
-    if (v3)
+    if (supportsWiredBluetoothPairing)
     {
       v5 = @"YES";
     }
@@ -377,15 +377,15 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "supports OOB: %@", &v7, 0xCu);
   }
 
-  return v3;
+  return supportsWiredBluetoothPairing;
 }
 
 - (BOOL)_hasExistingBluetoothPairing
 {
-  v3 = [(CRPairingPromptFlowController *)self promptDelegate];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  promptDelegate = [(CRPairingPromptFlowController *)self promptDelegate];
+  if (promptDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 hasExistingBluetoothPairingForPairingPromptFlow:self];
+    v4 = [promptDelegate hasExistingBluetoothPairingForPairingPromptFlow:self];
   }
 
   else
@@ -412,10 +412,10 @@ LABEL_15:
 
 - (BOOL)_supportsEnhancedIntegration
 {
-  v3 = [(CRPairingPromptFlowController *)self promptDelegate];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  promptDelegate = [(CRPairingPromptFlowController *)self promptDelegate];
+  if (promptDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 enhancedIntegrationSupportedForPairingPromptFlow:self];
+    v4 = [promptDelegate enhancedIntegrationSupportedForPairingPromptFlow:self];
   }
 
   else
@@ -428,10 +428,10 @@ LABEL_15:
 
 - (BOOL)_supportsStartSession
 {
-  v3 = [(CRPairingPromptFlowController *)self promptDelegate];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  promptDelegate = [(CRPairingPromptFlowController *)self promptDelegate];
+  if (promptDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 startSessionRequestSupportedForPairingPromptFlow:self];
+    v4 = [promptDelegate startSessionRequestSupportedForPairingPromptFlow:self];
   }
 
   else
@@ -444,10 +444,10 @@ LABEL_15:
 
 - (BOOL)_supportsThemeAssets
 {
-  v3 = [(CRPairingPromptFlowController *)self promptDelegate];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  promptDelegate = [(CRPairingPromptFlowController *)self promptDelegate];
+  if (promptDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 supportsThemeAssetsForPairingPromptFlow:self];
+    v4 = [promptDelegate supportsThemeAssetsForPairingPromptFlow:self];
   }
 
   else
@@ -470,10 +470,10 @@ LABEL_15:
 
 - (BOOL)_needsBluetoothTurnedOn
 {
-  v3 = [(CRPairingPromptFlowController *)self promptDelegate];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  promptDelegate = [(CRPairingPromptFlowController *)self promptDelegate];
+  if (promptDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 needsBluetoothTurnedOnForPairingPromptFlow:self];
+    v4 = [promptDelegate needsBluetoothTurnedOnForPairingPromptFlow:self];
   }
 
   else
@@ -486,10 +486,10 @@ LABEL_15:
 
 - (BOOL)_needsWiFiTurnedOn
 {
-  v3 = [(CRPairingPromptFlowController *)self promptDelegate];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  promptDelegate = [(CRPairingPromptFlowController *)self promptDelegate];
+  if (promptDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 needsWiFiTurnedOnForPairingPromptFlow:self];
+    v4 = [promptDelegate needsWiFiTurnedOnForPairingPromptFlow:self];
   }
 
   else
@@ -502,10 +502,10 @@ LABEL_15:
 
 - (unint64_t)_outOfBandPairingDeclineCount
 {
-  v3 = [(CRPairingPromptFlowController *)self promptDelegate];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  promptDelegate = [(CRPairingPromptFlowController *)self promptDelegate];
+  if (promptDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 outOfBandPairingDeclineCountForPairingPromptFlow:self];
+    v4 = [promptDelegate outOfBandPairingDeclineCountForPairingPromptFlow:self];
     v5 = CarPairingLogging();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -525,10 +525,10 @@ LABEL_15:
 
 - (void)_incrementOutOfBandPairingDeclineCount
 {
-  v3 = [(CRPairingPromptFlowController *)self promptDelegate];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  promptDelegate = [(CRPairingPromptFlowController *)self promptDelegate];
+  if (promptDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v3 incrementOutOfBandPairingDeclineCountForPairingPromptFlow:self];
+    [promptDelegate incrementOutOfBandPairingDeclineCountForPairingPromptFlow:self];
     v4 = CarPairingLogging();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -540,10 +540,10 @@ LABEL_15:
 
 - (id)_carKeyInfo
 {
-  v3 = [(CRPairingPromptFlowController *)self promptDelegate];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  promptDelegate = [(CRPairingPromptFlowController *)self promptDelegate];
+  if (promptDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 carKeyInfoForPairingPromptFlow:self];
+    v4 = [promptDelegate carKeyInfoForPairingPromptFlow:self];
   }
 
   else
@@ -556,13 +556,13 @@ LABEL_15:
 
 - (BOOL)_supportsCarKeys
 {
-  v2 = [(CRPairingPromptFlowController *)self _carKeyInfo];
+  _carKeyInfo = [(CRPairingPromptFlowController *)self _carKeyInfo];
 
   v3 = CarPairingLogging();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = @"NO";
-    if (v2)
+    if (_carKeyInfo)
     {
       v4 = @"YES";
     }
@@ -572,12 +572,12 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "supports car keys: %@", &v6, 0xCu);
   }
 
-  return v2 != 0;
+  return _carKeyInfo != 0;
 }
 
-- (unint64_t)_nextStepAfterResponse:(id)a3
+- (unint64_t)_nextStepAfterResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   switch([(CRPairingPromptFlowController *)self currentStep])
   {
     case 0uLL:
@@ -586,16 +586,16 @@ LABEL_15:
         goto LABEL_40;
       }
 
-      v14 = [(CRPairingPromptFlowController *)self messagingVehicle];
-      if (v14)
+      messagingVehicle = [(CRPairingPromptFlowController *)self messagingVehicle];
+      if (messagingVehicle)
       {
       }
 
       else
       {
-        v18 = [(CRPairingPromptFlowController *)self numericCode];
+        numericCode = [(CRPairingPromptFlowController *)self numericCode];
 
-        if (v18)
+        if (numericCode)
         {
           v5 = 2;
           goto LABEL_62;
@@ -614,7 +614,7 @@ LABEL_15:
 
       goto LABEL_62;
     case 1uLL:
-      v9 = [v4 BOOLValue] == 0;
+      v9 = [responseCopy BOOLValue] == 0;
       v10 = 18;
       v11 = 5;
       goto LABEL_26;
@@ -626,7 +626,7 @@ LABEL_40:
         goto LABEL_62;
       }
 
-      if (![v4 BOOLValue])
+      if (![responseCopy BOOLValue])
       {
         goto LABEL_2;
       }
@@ -647,13 +647,13 @@ LABEL_40:
     case 0x12uLL:
       goto LABEL_2;
     case 5uLL:
-      if ([v4 BOOLValue])
+      if ([responseCopy BOOLValue])
       {
         if ([(CRPairingPromptFlowController *)self _isMessagingBluetoothConnected])
         {
-          v16 = [(CRPairingPromptFlowController *)self pairingAccepted];
+          pairingAccepted = [(CRPairingPromptFlowController *)self pairingAccepted];
 
-          if (!v16)
+          if (!pairingAccepted)
           {
             v5 = 8;
             goto LABEL_62;
@@ -662,8 +662,8 @@ LABEL_40:
 
         if ([(CRPairingPromptFlowController *)self _supportsUSB])
         {
-          v17 = [(CRPairingPromptFlowController *)self pairingAccepted];
-          if (v17)
+          pairingAccepted2 = [(CRPairingPromptFlowController *)self pairingAccepted];
+          if (pairingAccepted2)
           {
           }
 
@@ -681,9 +681,9 @@ LABEL_40:
 
         else
         {
-          v15 = [(CRPairingPromptFlowController *)self startedFromCarKey];
+          startedFromCarKey = [(CRPairingPromptFlowController *)self startedFromCarKey];
 LABEL_25:
-          v9 = v15 == 0;
+          v9 = startedFromCarKey == 0;
           v10 = 18;
           v11 = 9;
 LABEL_26:
@@ -711,7 +711,7 @@ LABEL_26:
 
       goto LABEL_62;
     case 6uLL:
-      if (![v4 BOOLValue])
+      if (![responseCopy BOOLValue])
       {
         goto LABEL_2;
       }
@@ -721,7 +721,7 @@ LABEL_26:
       v11 = 7;
       goto LABEL_26;
     case 7uLL:
-      if (-[CRPairingPromptFlowController _supportsUSB](self, "_supportsUSB") && !-[CRPairingPromptFlowController _supportsThemeAssets](self, "_supportsThemeAssets") || ([v4 BOOLValue] & 1) != 0)
+      if (-[CRPairingPromptFlowController _supportsUSB](self, "_supportsUSB") && !-[CRPairingPromptFlowController _supportsThemeAssets](self, "_supportsThemeAssets") || ([responseCopy BOOLValue] & 1) != 0)
       {
         v5 = 9;
         goto LABEL_62;
@@ -730,7 +730,7 @@ LABEL_26:
       [(CRPairingPromptFlowController *)self _cancelWithRequiredStepsRemaining:1];
       goto LABEL_2;
     case 8uLL:
-      v15 = [v4 BOOLValue];
+      startedFromCarKey = [responseCopy BOOLValue];
       goto LABEL_25;
     case 9uLL:
       if (![(CRPairingPromptFlowController *)self _needsToWaitOnStartSession])
@@ -738,9 +738,9 @@ LABEL_26:
         goto LABEL_5;
       }
 
-      v6 = [(CRPairingPromptFlowController *)self receivedStartSessionWithThemeAssetInfo];
+      receivedStartSessionWithThemeAssetInfo = [(CRPairingPromptFlowController *)self receivedStartSessionWithThemeAssetInfo];
 
-      if (v6)
+      if (receivedStartSessionWithThemeAssetInfo)
       {
         goto LABEL_5;
       }
@@ -749,12 +749,12 @@ LABEL_26:
       goto LABEL_62;
     case 0xAuLL:
 LABEL_5:
-      v7 = [(CRPairingPromptFlowController *)self receivedStartSessionWithThemeAssetInfo];
-      if ([v7 BOOLValue])
+      receivedStartSessionWithThemeAssetInfo2 = [(CRPairingPromptFlowController *)self receivedStartSessionWithThemeAssetInfo];
+      if ([receivedStartSessionWithThemeAssetInfo2 BOOLValue])
       {
-        v8 = [(CRPairingPromptFlowController *)self _supportsThemeAssets];
+        _supportsThemeAssets = [(CRPairingPromptFlowController *)self _supportsThemeAssets];
 
-        if (v8)
+        if (_supportsThemeAssets)
         {
           v5 = 12;
           goto LABEL_62;
@@ -791,9 +791,9 @@ LABEL_62:
     case 0xBuLL:
       goto LABEL_45;
     case 0xCuLL:
-      if (v4)
+      if (responseCopy)
       {
-        v12 = [v4 BOOLValue] == 0;
+        v12 = [responseCopy BOOLValue] == 0;
         v13 = 14;
 LABEL_30:
         if (v12)
@@ -814,7 +814,7 @@ LABEL_30:
 
       goto LABEL_62;
     case 0xDuLL:
-      v12 = [v4 BOOLValue] == 0;
+      v12 = [responseCopy BOOLValue] == 0;
       v13 = 17;
       goto LABEL_30;
     default:
@@ -823,10 +823,10 @@ LABEL_30:
   }
 }
 
-- (void)_presentNextStepAfterResponse:(id)a3
+- (void)_presentNextStepAfterResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(CRPairingPromptFlowController *)self _nextStepAfterResponse:v4];
+  responseCopy = response;
+  v5 = [(CRPairingPromptFlowController *)self _nextStepAfterResponse:responseCopy];
   v6 = CarPairingLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -868,8 +868,8 @@ LABEL_30:
       [(CRPairingPromptFlowController *)self _presentBluetoothFailedPromptWithCompletion:v8];
       break;
     case 5uLL:
-      v13 = [(CRPairingPromptFlowController *)self messagingVehicle];
-      v14 = v13 == 0;
+      messagingVehicle = [(CRPairingPromptFlowController *)self messagingVehicle];
+      v14 = messagingVehicle == 0;
 
       if (!v14)
       {
@@ -891,8 +891,8 @@ LABEL_30:
       (v8[2])(v8, 0);
       break;
     case 0xAuLL:
-      v11 = [(CRPairingPromptFlowController *)self receivedStartSessionWithThemeAssetInfo];
-      v12 = v11 == 0;
+      receivedStartSessionWithThemeAssetInfo = [(CRPairingPromptFlowController *)self receivedStartSessionWithThemeAssetInfo];
+      v12 = receivedStartSessionWithThemeAssetInfo == 0;
 
       if (v12)
       {
@@ -939,22 +939,22 @@ LABEL_7:
   objc_destroyWeak(buf);
 }
 
-- (void)_performPresentationAction:(id)a3
+- (void)_performPresentationAction:(id)action
 {
-  v5 = a3;
-  v4 = [(CRPairingPromptFlowController *)self promptDelegate];
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  actionCopy = action;
+  promptDelegate = [(CRPairingPromptFlowController *)self promptDelegate];
+  if (promptDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 pairingPromptFlow:self wantsToPerformPresentation:v5];
+    [promptDelegate pairingPromptFlow:self wantsToPerformPresentation:actionCopy];
   }
 }
 
 - (void)_dismiss
 {
-  v3 = [(CRPairingPromptFlowController *)self promptDelegate];
-  if (v3)
+  promptDelegate = [(CRPairingPromptFlowController *)self promptDelegate];
+  if (promptDelegate)
   {
-    v4 = v3;
+    v4 = promptDelegate;
     if (objc_opt_respondsToSelector())
     {
       [v4 didCompletePairingPromptFlow:self];
@@ -964,25 +964,25 @@ LABEL_7:
   _objc_release_x2();
 }
 
-- (void)_presentBluetoothConfirmationPromptWithCompletion:(id)a3
+- (void)_presentBluetoothConfirmationPromptWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRPairingPromptFlowController *)self bluetoothDeviceIdentifier];
-  v6 = [(CRPairingPromptFlowController *)self vehicleName];
-  v7 = [(CRPairingPromptFlowController *)self numericCode];
+  completionCopy = completion;
+  bluetoothDeviceIdentifier = [(CRPairingPromptFlowController *)self bluetoothDeviceIdentifier];
+  vehicleName = [(CRPairingPromptFlowController *)self vehicleName];
+  numericCode = [(CRPairingPromptFlowController *)self numericCode];
   objc_initWeak(&location, self);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100049590;
   v12[3] = &unk_1000DEC80;
-  v8 = v6;
+  v8 = vehicleName;
   v13 = v8;
-  v9 = v7;
+  v9 = numericCode;
   v14 = v9;
   objc_copyWeak(&v17, &location);
-  v10 = v5;
+  v10 = bluetoothDeviceIdentifier;
   v15 = v10;
-  v11 = v4;
+  v11 = completionCopy;
   v16 = v11;
   [(CRPairingPromptFlowController *)self _performPresentationAction:v12];
 
@@ -990,19 +990,19 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)_presentBluetoothContactsSyncPromptWithCompletion:(id)a3
+- (void)_presentBluetoothContactsSyncPromptWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRPairingPromptFlowController *)self bluetoothDeviceIdentifier];
+  completionCopy = completion;
+  bluetoothDeviceIdentifier = [(CRPairingPromptFlowController *)self bluetoothDeviceIdentifier];
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100049920;
   v8[3] = &unk_1000DECA8;
   objc_copyWeak(&v11, &location);
-  v6 = v5;
+  v6 = bluetoothDeviceIdentifier;
   v9 = v6;
-  v7 = v4;
+  v7 = completionCopy;
   v10 = v7;
   [(CRPairingPromptFlowController *)self _performPresentationAction:v8];
 
@@ -1010,19 +1010,19 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)_presentBluetoothFailedPromptWithCompletion:(id)a3
+- (void)_presentBluetoothFailedPromptWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRPairingPromptFlowController *)self vehicleName];
+  completionCopy = completion;
+  vehicleName = [(CRPairingPromptFlowController *)self vehicleName];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100049C80;
   v8[3] = &unk_1000DECD0;
   v11 = [(CRPairingPromptFlowController *)self bluetoothFailureReason]== 2;
-  v9 = v5;
-  v10 = v4;
-  v6 = v4;
-  v7 = v5;
+  v9 = vehicleName;
+  v10 = completionCopy;
+  v6 = completionCopy;
+  v7 = vehicleName;
   [(CRPairingPromptFlowController *)self _performPresentationAction:v8];
 }
 
@@ -1039,19 +1039,19 @@ LABEL_7:
   [(CRPairingPromptFlowController *)self _performPresentationAction:&stru_1000DED10];
 }
 
-- (void)_presentAllowWhileLockedPromptWithCompletion:(id)a3
+- (void)_presentAllowWhileLockedPromptWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRPairingPromptFlowController *)self vehicleName];
+  completionCopy = completion;
+  vehicleName = [(CRPairingPromptFlowController *)self vehicleName];
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100049F38;
   v8[3] = &unk_1000DED60;
-  v6 = v5;
+  v6 = vehicleName;
   v9 = v6;
   objc_copyWeak(&v11, &location);
-  v7 = v4;
+  v7 = completionCopy;
   v10 = v7;
   [(CRPairingPromptFlowController *)self _performPresentationAction:v8];
 
@@ -1059,9 +1059,9 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)_presentUseWirelessCarPlayPromptWithCompletion:(id)a3
+- (void)_presentUseWirelessCarPlayPromptWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CRPairingPromptFlowController *)self _hasExistingBluetoothPairing])
   {
     v5 = CarPairingLogging();
@@ -1077,8 +1077,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [(CRPairingPromptFlowController *)self _outOfBandPairingDeclineCount];
-  if (v7 >= 4)
+  _outOfBandPairingDeclineCount = [(CRPairingPromptFlowController *)self _outOfBandPairingDeclineCount];
+  if (_outOfBandPairingDeclineCount >= 4)
   {
     v5 = CarPairingLogging();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1090,15 +1090,15 @@ LABEL_7:
 
 LABEL_8:
 
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_30;
   }
 
-  v8 = v7;
-  v9 = [(CRPairingPromptFlowController *)self _needsBluetoothTurnedOn];
-  v10 = [(CRPairingPromptFlowController *)self _needsWiFiTurnedOn];
-  v11 = v10;
-  if (v9)
+  v8 = _outOfBandPairingDeclineCount;
+  _needsBluetoothTurnedOn = [(CRPairingPromptFlowController *)self _needsBluetoothTurnedOn];
+  _needsWiFiTurnedOn = [(CRPairingPromptFlowController *)self _needsWiFiTurnedOn];
+  v11 = _needsWiFiTurnedOn;
+  if (_needsBluetoothTurnedOn)
   {
     v12 = CarPairingLogging();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1117,7 +1117,7 @@ LABEL_8:
   }
 
   v13 = 0;
-  if (v10)
+  if (_needsWiFiTurnedOn)
   {
 LABEL_15:
     v14 = CarPairingLogging();
@@ -1149,10 +1149,10 @@ LABEL_18:
 
   else
   {
-    v17 = [(CRPairingPromptFlowController *)self _supportsUSB];
+    _supportsUSB = [(CRPairingPromptFlowController *)self _supportsUSB];
     v15 = CarPairingLogging();
     v18 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-    if (v17)
+    if (_supportsUSB)
     {
       if (v18)
       {
@@ -1181,10 +1181,10 @@ LABEL_18:
   v19[2] = sub_10004A4C4;
   v19[3] = &unk_1000DEDB0;
   objc_copyWeak(v21, buf);
-  v22 = v9;
+  v22 = _needsBluetoothTurnedOn;
   v23 = v11;
   v19[4] = self;
-  v20 = v4;
+  v20 = completionCopy;
   v21[1] = v13;
   v21[2] = v16;
   [(CRPairingPromptFlowController *)self _performPresentationAction:v19];
@@ -1194,13 +1194,13 @@ LABEL_18:
 LABEL_30:
 }
 
-- (void)_presentConnectCarPlayPromptWithCompletion:(id)a3
+- (void)_presentConnectCarPlayPromptWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRPairingPromptFlowController *)self showBluetoothOnlyOption];
-  v6 = [(CRPairingPromptFlowController *)self _needsWiFiTurnedOn];
-  v7 = v6;
-  if (v6)
+  completionCopy = completion;
+  showBluetoothOnlyOption = [(CRPairingPromptFlowController *)self showBluetoothOnlyOption];
+  _needsWiFiTurnedOn = [(CRPairingPromptFlowController *)self _needsWiFiTurnedOn];
+  v7 = _needsWiFiTurnedOn;
+  if (_needsWiFiTurnedOn)
   {
     v8 = CarPairingLogging();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1224,10 +1224,10 @@ LABEL_30:
   v11[3] = &unk_1000DEE00;
   objc_copyWeak(v13, buf);
   v14 = v7;
-  v10 = v4;
+  v10 = completionCopy;
   v11[4] = self;
   v12 = v10;
-  v15 = v5;
+  v15 = showBluetoothOnlyOption;
   v13[1] = v9;
   [(CRPairingPromptFlowController *)self _performPresentationAction:v11];
 
@@ -1235,13 +1235,13 @@ LABEL_30:
   objc_destroyWeak(buf);
 }
 
-- (void)_presentConnectCarPlayFromCarKeyPromptWithCompletion:(id)a3
+- (void)_presentConnectCarPlayFromCarKeyPromptWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRPairingPromptFlowController *)self showBluetoothOnlyOption];
-  v6 = [(CRPairingPromptFlowController *)self _needsWiFiTurnedOn];
-  v7 = v6;
-  if (v6)
+  completionCopy = completion;
+  showBluetoothOnlyOption = [(CRPairingPromptFlowController *)self showBluetoothOnlyOption];
+  _needsWiFiTurnedOn = [(CRPairingPromptFlowController *)self _needsWiFiTurnedOn];
+  v7 = _needsWiFiTurnedOn;
+  if (_needsWiFiTurnedOn)
   {
     v8 = CarPairingLogging();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1265,10 +1265,10 @@ LABEL_30:
   v11[3] = &unk_1000DEE00;
   objc_copyWeak(v13, buf);
   v14 = v7;
-  v10 = v4;
+  v10 = completionCopy;
   v11[4] = self;
   v12 = v10;
-  v15 = v5;
+  v15 = showBluetoothOnlyOption;
   v13[1] = v9;
   [(CRPairingPromptFlowController *)self _performPresentationAction:v11];
 
@@ -1288,19 +1288,19 @@ LABEL_30:
   [(CRPairingPromptFlowController *)self _performPresentationAction:&stru_1000DEE20];
 }
 
-- (void)_presentEnhancedIntegrationPromptWithCompletion:(id)a3
+- (void)_presentEnhancedIntegrationPromptWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRPairingPromptFlowController *)self vehicleName];
+  completionCopy = completion;
+  vehicleName = [(CRPairingPromptFlowController *)self vehicleName];
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10004B0B0;
   v8[3] = &unk_1000DED60;
-  v6 = v5;
+  v6 = vehicleName;
   v9 = v6;
   objc_copyWeak(&v11, &location);
-  v7 = v4;
+  v7 = completionCopy;
   v10 = v7;
   [(CRPairingPromptFlowController *)self _performPresentationAction:v8];
 
@@ -1308,14 +1308,14 @@ LABEL_30:
   objc_destroyWeak(&location);
 }
 
-- (void)_presentAssetProgressPromptWithCompletion:(id)a3
+- (void)_presentAssetProgressPromptWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRPairingPromptFlowController *)self vehicleName];
-  v6 = [(CRPairingPromptFlowController *)self promptDelegate];
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  completionCopy = completion;
+  vehicleName = [(CRPairingPromptFlowController *)self vehicleName];
+  promptDelegate = [(CRPairingPromptFlowController *)self promptDelegate];
+  if (promptDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v7 = [v6 assetProgressForPairingPromptFlow:self];
+    v7 = [promptDelegate assetProgressForPairingPromptFlow:self];
   }
 
   else
@@ -1328,11 +1328,11 @@ LABEL_30:
   v11[1] = 3221225472;
   v11[2] = sub_10004B43C;
   v11[3] = &unk_1000DEE48;
-  v8 = v5;
+  v8 = vehicleName;
   v12 = v8;
   v9 = v7;
   v13 = v9;
-  v10 = v4;
+  v10 = completionCopy;
   v14 = v10;
   objc_copyWeak(&v15, &location);
   [(CRPairingPromptFlowController *)self _performPresentationAction:v11];
@@ -1341,19 +1341,19 @@ LABEL_30:
   objc_destroyWeak(&location);
 }
 
-- (void)_presentAssetUnavailablePromptWithCompletion:(id)a3
+- (void)_presentAssetUnavailablePromptWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRPairingPromptFlowController *)self assetUnavailableDescription];
+  completionCopy = completion;
+  assetUnavailableDescription = [(CRPairingPromptFlowController *)self assetUnavailableDescription];
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10004B7E8;
   v8[3] = &unk_1000DED60;
-  v6 = v5;
+  v6 = assetUnavailableDescription;
   v9 = v6;
   objc_copyWeak(&v11, &location);
-  v7 = v4;
+  v7 = completionCopy;
   v10 = v7;
   [(CRPairingPromptFlowController *)self _performPresentationAction:v8];
 
@@ -1361,19 +1361,19 @@ LABEL_30:
   objc_destroyWeak(&location);
 }
 
-- (void)_presentAssetReadyPromptWithCompletion:(id)a3
+- (void)_presentAssetReadyPromptWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRPairingPromptFlowController *)self vehicleName];
+  completionCopy = completion;
+  vehicleName = [(CRPairingPromptFlowController *)self vehicleName];
   objc_initWeak(&location, self);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10004BB94;
   v14[3] = &unk_1000DEE98;
   objc_copyWeak(&v17, &location);
-  v6 = v5;
+  v6 = vehicleName;
   v15 = v6;
-  v7 = v4;
+  v7 = completionCopy;
   v16 = v7;
   v8 = objc_retainBlock(v14);
   if (_os_feature_enabled_impl())
@@ -1385,15 +1385,15 @@ LABEL_30:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "App Clips feature enabled", buf, 2u);
     }
 
-    v10 = [(CRPairingPromptFlowController *)self promptDelegate];
-    if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+    promptDelegate = [(CRPairingPromptFlowController *)self promptDelegate];
+    if (promptDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_10004BD88;
       v11[3] = &unk_1000DE290;
       v12 = v8;
-      [v10 fetchAppClipIdentifiersForPairingPromptFlow:self completion:v11];
+      [promptDelegate fetchAppClipIdentifiersForPairingPromptFlow:self completion:v11];
     }
   }
 
@@ -1406,45 +1406,45 @@ LABEL_30:
   objc_destroyWeak(&location);
 }
 
-- (void)_presentAssetReadySoonPromptWithCompletion:(id)a3
+- (void)_presentAssetReadySoonPromptWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(CRPairingPromptFlowController *)self vehicleName];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10004BE5C;
   v8 = v7[3] = &unk_1000DE680;
-  v9 = v4;
-  v5 = v4;
+  v9 = completionCopy;
+  v5 = completionCopy;
   v6 = v8;
   [(CRPairingPromptFlowController *)self _performPresentationAction:v7];
 }
 
-- (void)_presentSetupCarKeysWithCompletion:(id)a3
+- (void)_presentSetupCarKeysWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRPairingPromptFlowController *)self vehicleName];
+  completionCopy = completion;
+  vehicleName = [(CRPairingPromptFlowController *)self vehicleName];
   [(CRPairingPromptFlowController *)self _carKeyInfo];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10004C058;
   v9[3] = &unk_1000DEE70;
-  v11 = v10 = v5;
-  v12 = v4;
-  v6 = v4;
+  v11 = v10 = vehicleName;
+  v12 = completionCopy;
+  v6 = completionCopy;
   v7 = v11;
-  v8 = v5;
+  v8 = vehicleName;
   [(CRPairingPromptFlowController *)self _performPresentationAction:v9];
 }
 
-- (void)_presentCheckSoftwareUpdatesWithCompletion:(id)a3
+- (void)_presentCheckSoftwareUpdatesWithCompletion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10004C20C;
   v5[3] = &unk_1000DEEC0;
-  v6 = a3;
-  v4 = v6;
+  completionCopy = completion;
+  v4 = completionCopy;
   [(CRPairingPromptFlowController *)self _performPresentationAction:v5];
 }
 
@@ -1465,9 +1465,9 @@ LABEL_30:
 
 - (void)_stopWaitingOnMessagingVehicleTimer
 {
-  v3 = [(CRPairingPromptFlowController *)self waitingOnMessagingVehicleTimer];
-  v4 = v3;
-  if (v3 && [v3 isValid])
+  waitingOnMessagingVehicleTimer = [(CRPairingPromptFlowController *)self waitingOnMessagingVehicleTimer];
+  v4 = waitingOnMessagingVehicleTimer;
+  if (waitingOnMessagingVehicleTimer && [waitingOnMessagingVehicleTimer isValid])
   {
     v5 = CarPairingLogging();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -1481,7 +1481,7 @@ LABEL_30:
   }
 }
 
-- (void)_handleTimedOutWaitingOnMessagingVehicle:(id)a3
+- (void)_handleTimedOutWaitingOnMessagingVehicle:(id)vehicle
 {
   if ([(CRPairingPromptFlowController *)self currentStep]== 5)
   {

@@ -1,12 +1,12 @@
 @interface RAPReportComposerCommentPart
-- (RAPReportComposerCommentPart)initWithCommentQuestion:(id)a3;
+- (RAPReportComposerCommentPart)initWithCommentQuestion:(id)question;
 @end
 
 @implementation RAPReportComposerCommentPart
 
-- (RAPReportComposerCommentPart)initWithCommentQuestion:(id)a3
+- (RAPReportComposerCommentPart)initWithCommentQuestion:(id)question
 {
-  v4 = a3;
+  questionCopy = question;
   v20.receiver = self;
   v20.super_class = RAPReportComposerCommentPart;
   v5 = [(RAPTablePart *)&v20 initWithSections:&__NSArray0__struct];
@@ -15,24 +15,24 @@
     goto LABEL_23;
   }
 
-  if ([v4 emphasis] != 4)
+  if ([questionCopy emphasis] != 4)
   {
-    v6 = [[RAPReportComposerCommentSection alloc] initWithQuestion:v4];
+    v6 = [[RAPReportComposerCommentSection alloc] initWithQuestion:questionCopy];
     commentSection = v5->_commentSection;
     v5->_commentSection = v6;
   }
 
-  if ([v4 emphasis] != 3)
+  if ([questionCopy emphasis] != 3)
   {
-    v8 = [[RAPReportComposerPhotosSection alloc] initWithQuestion:v4];
+    v8 = [[RAPReportComposerPhotosSection alloc] initWithQuestion:questionCopy];
     photoSection = v5->_photoSection;
     v5->_photoSection = v8;
   }
 
-  v10 = [v4 emphasis];
-  if (v10 > 2)
+  emphasis = [questionCopy emphasis];
+  if (emphasis > 2)
   {
-    switch(v10)
+    switch(emphasis)
     {
       case 3:
         v23 = v5->_commentSection;
@@ -52,7 +52,7 @@
     goto LABEL_20;
   }
 
-  switch(v10)
+  switch(emphasis)
   {
     case 0:
       goto LABEL_14;
@@ -76,16 +76,16 @@ LABEL_20:
   }
 
 LABEL_21:
-  if ([v4 shouldShowEmail])
+  if ([questionCopy shouldShowEmail])
   {
-    v14 = [[RAPReportComposerEmailSection alloc] initWithQuestion:v4];
+    v14 = [[RAPReportComposerEmailSection alloc] initWithQuestion:questionCopy];
     emailSection = v5->_emailSection;
     v5->_emailSection = v14;
 
     v21 = v5->_emailSection;
     v16 = [NSArray arrayWithObjects:&v21 count:1];
-    v17 = [(RAPTablePart *)v5 sections];
-    v18 = [v16 arrayByAddingObjectsFromArray:v17];
+    sections = [(RAPTablePart *)v5 sections];
+    v18 = [v16 arrayByAddingObjectsFromArray:sections];
     [(RAPTablePart *)v5 setSections:v18];
   }
 

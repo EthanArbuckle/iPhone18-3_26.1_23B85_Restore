@@ -20,35 +20,35 @@
 
 - (uint64_t)icqIndex
 {
-  v2 = [a1 scheme];
-  if (!v2)
+  scheme = [self scheme];
+  if (!scheme)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v3 = v2;
-  v4 = [a1 scheme];
-  if (([v4 isEqualToString:@"icq"] & 1) == 0)
+  v3 = scheme;
+  scheme2 = [self scheme];
+  if (([scheme2 isEqualToString:@"icq"] & 1) == 0)
   {
 
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = [a1 host];
+  host = [self host];
 
-  if (!v5)
+  if (!host)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v6 = [a1 host];
+  host2 = [self host];
   v11 = 0;
-  v7 = [MEMORY[0x277CCAC80] scannerWithString:v6];
+  v7 = [MEMORY[0x277CCAC80] scannerWithString:host2];
   v8 = 0x7FFFFFFFFFFFFFFFLL;
   if ([v7 scanInteger:&v11])
   {
-    v9 = [v7 scanLocation];
-    if (v9 == [v6 length])
+    scanLocation = [v7 scanLocation];
+    if (scanLocation == [host2 length])
     {
       v8 = v11;
     }
@@ -60,13 +60,13 @@
 - (uint64_t)icqui_isStopFamilySharingURL
 {
   v18 = *MEMORY[0x277D85DE8];
-  v1 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:a1 resolvingAgainstBaseURL:1];
+  v1 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:self resolvingAgainstBaseURL:1];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [v1 queryItems];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  queryItems = [v1 queryItems];
+  v3 = [queryItems countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -77,15 +77,15 @@
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(queryItems);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
-        v8 = [v7 name];
-        if ([v8 isEqualToString:@"action"])
+        name = [v7 name];
+        if ([name isEqualToString:@"action"])
         {
-          v9 = [v7 value];
-          v10 = [v9 isEqualToString:@"STOP_FAMILY_SHARING"];
+          value = [v7 value];
+          v10 = [value isEqualToString:@"STOP_FAMILY_SHARING"];
 
           if (v10)
           {
@@ -99,7 +99,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [queryItems countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v4);
@@ -114,7 +114,7 @@ LABEL_13:
 - (uint64_t)icqui_isJoinOrLeaveFamilySharingURL
 {
   v20 = *MEMORY[0x277D85DE8];
-  v1 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:a1 resolvingAgainstBaseURL:1];
+  v1 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:self resolvingAgainstBaseURL:1];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -136,11 +136,11 @@ LABEL_13:
         }
 
         v6 = *(*(&v15 + 1) + 8 * i);
-        v7 = [v6 name];
-        if ([v7 isEqualToString:@"action"])
+        name = [v6 name];
+        if ([name isEqualToString:@"action"])
         {
-          v8 = [v6 value];
-          if ([v8 isEqualToString:@"JOIN_FAMILY"])
+          value = [v6 value];
+          if ([value isEqualToString:@"JOIN_FAMILY"])
           {
 
 LABEL_16:
@@ -148,8 +148,8 @@ LABEL_16:
             goto LABEL_17;
           }
 
-          v9 = [v6 value];
-          v10 = [v9 isEqualToString:@"LEAVE_FAMILY_SHARING"];
+          value2 = [v6 value];
+          v10 = [value2 isEqualToString:@"LEAVE_FAMILY_SHARING"];
 
           if (v10)
           {

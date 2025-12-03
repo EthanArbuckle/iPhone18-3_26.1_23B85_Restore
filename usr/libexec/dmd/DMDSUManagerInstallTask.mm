@@ -1,8 +1,8 @@
 @interface DMDSUManagerInstallTask
 + (DMDSUManagerInstallTask)sharedInstallTask;
-+ (id)_dmfStatusErrorFromSUStatusError:(id)a3;
-+ (id)productKeyFromStatus:(id)a3;
-+ (id)productKeyOrDefaultFromStatus:(id)a3;
++ (id)_dmfStatusErrorFromSUStatusError:(id)error;
++ (id)productKeyFromStatus:(id)status;
++ (id)productKeyOrDefaultFromStatus:(id)status;
 @end
 
 @implementation DMDSUManagerInstallTask
@@ -19,14 +19,14 @@
   return v3;
 }
 
-+ (id)_dmfStatusErrorFromSUStatusError:(id)a3
++ (id)_dmfStatusErrorFromSUStatusError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
     v8 = NSUnderlyingErrorKey;
-    v9 = v3;
+    v9 = errorCopy;
     v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
     v6 = DMFErrorWithCodeAndUserInfo();
   }
@@ -39,13 +39,13 @@
   return v6;
 }
 
-+ (id)productKeyFromStatus:(id)a3
++ (id)productKeyFromStatus:(id)status
 {
-  v4 = [a3 productBuildVersion];
-  if (v4)
+  productBuildVersion = [status productBuildVersion];
+  if (productBuildVersion)
   {
-    v5 = [a1 defaultProductKey];
-    v6 = [v5 stringByAppendingString:v4];
+    defaultProductKey = [self defaultProductKey];
+    v6 = [defaultProductKey stringByAppendingString:productBuildVersion];
   }
 
   else
@@ -56,21 +56,21 @@
   return v6;
 }
 
-+ (id)productKeyOrDefaultFromStatus:(id)a3
++ (id)productKeyOrDefaultFromStatus:(id)status
 {
-  v4 = [a1 productKeyFromStatus:a3];
+  v4 = [self productKeyFromStatus:status];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    defaultProductKey = v4;
   }
 
   else
   {
-    v6 = [a1 defaultProductKey];
+    defaultProductKey = [self defaultProductKey];
   }
 
-  v7 = v6;
+  v7 = defaultProductKey;
 
   return v7;
 }

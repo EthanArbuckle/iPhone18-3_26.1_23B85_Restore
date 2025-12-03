@@ -1,23 +1,23 @@
 @interface BSUIApplicationSupport
-+ (id)GSEventPortNameForBundleID:(id)a3;
++ (id)GSEventPortNameForBundleID:(id)d;
 + (id)defaultEnvironment;
-+ (id)resolveServiceName:(id)a3;
++ (id)resolveServiceName:(id)name;
 @end
 
 @implementation BSUIApplicationSupport
 
-+ (id)GSEventPortNameForBundleID:(id)a3
++ (id)GSEventPortNameForBundleID:(id)d
 {
-  v3 = [a3 stringByAppendingString:@".gsEvents"];
+  v3 = [d stringByAppendingString:@".gsEvents"];
 
   return v3;
 }
 
-+ (id)resolveServiceName:(id)a3
++ (id)resolveServiceName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[BSMachServiceAliases environmentAliases];
-  v5 = [v4 resolveMachService:v3];
+  v5 = [v4 resolveMachService:nameCopy];
 
   return v5;
 }
@@ -25,9 +25,9 @@
 + (id)defaultEnvironment
 {
   v2 = +[BSMachServiceAliases environmentAliases];
-  v3 = [v2 environmentRepresentation];
+  environmentRepresentation = [v2 environmentRepresentation];
 
-  return v3;
+  return environmentRepresentation;
 }
 
 @end

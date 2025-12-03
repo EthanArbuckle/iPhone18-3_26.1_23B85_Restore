@@ -2,24 +2,24 @@
 + (id)getInstance;
 - (HAPBTLECentralManager)init;
 - (id)_getCentralManager;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)registerCentralManagerDelegate:(id)a3;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)registerCentralManagerDelegate:(id)delegate;
 @end
 
 @implementation HAPBTLECentralManager
 
-- (void)registerCentralManagerDelegate:(id)a3
+- (void)registerCentralManagerDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HAPBTLECentralManager *)self workQueue];
+  delegateCopy = delegate;
+  workQueue = [(HAPBTLECentralManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__HAPBTLECentralManager_registerCentralManagerDelegate___block_invoke;
   v7[3] = &unk_2786D7050;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegateCopy;
+  selfCopy = self;
+  v6 = delegateCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __56__HAPBTLECentralManager_registerCentralManagerDelegate___block_invoke(uint64_t a1)
@@ -37,17 +37,17 @@ void __56__HAPBTLECentralManager_registerCentralManagerDelegate___block_invoke(u
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [a3 state];
-  [(HAPBTLECentralManager *)self setState:v4];
+  state = [state state];
+  [(HAPBTLECentralManager *)self setState:state];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(HAPBTLECentralManager *)self delegates];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  delegates = [(HAPBTLECentralManager *)self delegates];
+  v6 = [delegates countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -59,17 +59,17 @@ void __56__HAPBTLECentralManager_registerCentralManagerDelegate___block_invoke(u
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(delegates);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) centralManagerDelegate];
-        [v10 didUpdateBTLEState:v4];
+        centralManagerDelegate = [*(*(&v12 + 1) + 8 * v9) centralManagerDelegate];
+        [centralManagerDelegate didUpdateBTLEState:state];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [delegates countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -80,17 +80,17 @@ void __56__HAPBTLECentralManager_registerCentralManagerDelegate___block_invoke(u
 
 - (id)_getCentralManager
 {
-  v3 = [(HAPBTLECentralManager *)self centralManager];
+  centralManager = [(HAPBTLECentralManager *)self centralManager];
 
-  if (!v3)
+  if (!centralManager)
   {
     v4 = objc_alloc(MEMORY[0x277CBDFF8]);
-    v5 = [(HAPBTLECentralManager *)self workQueue];
-    v6 = [v4 initWithDelegate:self queue:v5];
+    workQueue = [(HAPBTLECentralManager *)self workQueue];
+    v6 = [v4 initWithDelegate:self queue:workQueue];
     [(HAPBTLECentralManager *)self setCentralManager:v6];
 
-    v7 = [(HAPBTLECentralManager *)self centralManager];
-    -[HAPBTLECentralManager setState:](self, "setState:", [v7 state]);
+    centralManager2 = [(HAPBTLECentralManager *)self centralManager];
+    -[HAPBTLECentralManager setState:](self, "setState:", [centralManager2 state]);
   }
 
   return [(HAPBTLECentralManager *)self centralManager];
@@ -127,7 +127,7 @@ void __56__HAPBTLECentralManager_registerCentralManagerDelegate___block_invoke(u
   block[1] = 3221225472;
   block[2] = __36__HAPBTLECentralManager_getInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (getInstance_onceToken != -1)
   {
     dispatch_once(&getInstance_onceToken, block);

@@ -1,27 +1,27 @@
 @interface EDMessageDataLayoutManager
-+ (id)messageDataDirectoryURLForGlobalMessageID:(int64_t)a3 rootMessageDataDirectory:(id)a4;
-+ (id)rootMessageDataDirectoryForBasePath:(id)a3 purgeable:(BOOL)a4;
++ (id)messageDataDirectoryURLForGlobalMessageID:(int64_t)d rootMessageDataDirectory:(id)directory;
++ (id)rootMessageDataDirectoryForBasePath:(id)path purgeable:(BOOL)purgeable;
 @end
 
 @implementation EDMessageDataLayoutManager
 
-+ (id)messageDataDirectoryURLForGlobalMessageID:(int64_t)a3 rootMessageDataDirectory:(id)a4
++ (id)messageDataDirectoryURLForGlobalMessageID:(int64_t)d rootMessageDataDirectory:(id)directory
 {
-  v5 = a4;
+  directoryCopy = directory;
   v6 = MEMORY[0x1E695DFF8];
-  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
-  v8 = [v7 stringValue];
-  v9 = [v6 fileURLWithPath:v8 isDirectory:1 relativeToURL:v5];
+  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
+  stringValue = [v7 stringValue];
+  v9 = [v6 fileURLWithPath:stringValue isDirectory:1 relativeToURL:directoryCopy];
 
   return v9;
 }
 
-+ (id)rootMessageDataDirectoryForBasePath:(id)a3 purgeable:(BOOL)a4
++ (id)rootMessageDataDirectoryForBasePath:(id)path purgeable:(BOOL)purgeable
 {
-  v4 = a4;
-  v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:a3 isDirectory:1];
+  purgeableCopy = purgeable;
+  v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:path isDirectory:1];
   v6 = v5;
-  if (v4)
+  if (purgeableCopy)
   {
     v7 = @"MessageData";
   }

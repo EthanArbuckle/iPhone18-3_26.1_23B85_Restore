@@ -11,9 +11,9 @@
   v6 = objc_alloc_init(v4);
   [v6 setMotionActivityType:{objc_msgSend(v5, "type")}];
   [v6 setMotionActivityConfidence:{objc_msgSend(v5, "confidence")}];
-  v7 = [v5 startDate];
+  startDate = [v5 startDate];
 
-  [v7 timeIntervalSinceReferenceDate];
+  [startDate timeIntervalSinceReferenceDate];
   [v6 setStartTimeCFAbsolute:?];
 
   return v6;

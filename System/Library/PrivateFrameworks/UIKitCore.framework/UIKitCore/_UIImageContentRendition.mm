@@ -1,8 +1,8 @@
 @interface _UIImageContentRendition
-+ (id)renditionWithContentProvider:(uint64_t)a1;
-+ (id)renditionWithContentProvider:(void *)a3 color:;
-+ (id)renditionWithContentProvider:(void *)a3 color:(void *)a4 effects:;
-+ (id)renditionWithContentProvider:(void *)a3 color:(void *)a4 effects:(int)a5 drawMode:;
++ (id)renditionWithContentProvider:(uint64_t)provider;
++ (id)renditionWithContentProvider:(void *)provider color:;
++ (id)renditionWithContentProvider:(void *)provider color:(void *)color effects:;
++ (id)renditionWithContentProvider:(void *)provider color:(void *)color effects:(int)effects drawMode:;
 - (uint64_t)CGImage;
 - (uint64_t)drawInContext:(uint64_t)result;
 - (void)dealloc;
@@ -19,8 +19,8 @@
     result = *(result + 8);
     if (!result)
     {
-      v2 = [(_UIImageContentProvider *)*(v1 + 32) CGImageProvider];
-      v3 = v2[2]();
+      cGImageProvider = [(_UIImageContentProvider *)*(v1 + 32) CGImageProvider];
+      v3 = cGImageProvider[2]();
       *(v1 + 8) = CGImageRetain(v3);
 
       return *(v1 + 8);
@@ -43,7 +43,7 @@
   [(_UIImageContentRendition *)&v4 dealloc];
 }
 
-+ (id)renditionWithContentProvider:(uint64_t)a1
++ (id)renditionWithContentProvider:(uint64_t)provider
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -52,32 +52,32 @@
   return v4;
 }
 
-+ (id)renditionWithContentProvider:(void *)a3 color:
++ (id)renditionWithContentProvider:(void *)provider color:
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = a2;
   v6 = objc_opt_self();
-  v7 = [(_UIImageContentRendition *)v6 renditionWithContentProvider:v5 color:v4 effects:0];
+  v7 = [(_UIImageContentRendition *)v6 renditionWithContentProvider:v5 color:providerCopy effects:0];
 
   return v7;
 }
 
-+ (id)renditionWithContentProvider:(void *)a3 color:(void *)a4 effects:
++ (id)renditionWithContentProvider:(void *)provider color:(void *)color effects:
 {
-  v6 = a4;
-  v7 = a3;
+  colorCopy = color;
+  providerCopy = provider;
   v8 = a2;
   v9 = objc_opt_self();
-  v10 = [(_UIImageContentRendition *)v9 renditionWithContentProvider:v8 color:v7 effects:v6 drawMode:0];
+  v10 = [(_UIImageContentRendition *)v9 renditionWithContentProvider:v8 color:providerCopy effects:colorCopy drawMode:0];
 
   return v10;
 }
 
-+ (id)renditionWithContentProvider:(void *)a3 color:(void *)a4 effects:(int)a5 drawMode:
++ (id)renditionWithContentProvider:(void *)provider color:(void *)color effects:(int)effects drawMode:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
+  providerCopy = provider;
+  colorCopy = color;
   objc_opt_self();
   v11 = objc_opt_new();
   v12 = *(v11 + 32);
@@ -85,13 +85,13 @@
   v13 = v8;
 
   v14 = *(v11 + 40);
-  *(v11 + 40) = v9;
-  v15 = v9;
+  *(v11 + 40) = providerCopy;
+  v15 = providerCopy;
 
   v16 = *(v11 + 48);
-  *(v11 + 48) = v10;
+  *(v11 + 48) = colorCopy;
 
-  *(v11 + 24) = a5;
+  *(v11 + 24) = effects;
 
   return v11;
 }
@@ -116,25 +116,25 @@
 
 - (void)rbSymbolConfiguration
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[2];
+    selfCopy = self;
+    v3 = self[2];
     if (!v3)
     {
-      v4 = [(_UIImageContentProvider *)a1[4] rbSymbolConfigurationProvider];
-      v5 = v4[2]();
-      v6 = v2[2];
-      v2[2] = v5;
+      rbSymbolConfigurationProvider = [(_UIImageContentProvider *)self[4] rbSymbolConfigurationProvider];
+      v5 = rbSymbolConfigurationProvider[2]();
+      v6 = selfCopy[2];
+      selfCopy[2] = v5;
 
-      v3 = v2[2];
+      v3 = selfCopy[2];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

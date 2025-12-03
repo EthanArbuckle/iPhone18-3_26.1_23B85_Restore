@@ -1,14 +1,14 @@
 @interface AVCMediaStreamNegotiatorSettingsCoreDeviceSystemAudio
-- (AVCMediaStreamNegotiatorSettingsCoreDeviceSystemAudio)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5;
+- (AVCMediaStreamNegotiatorSettingsCoreDeviceSystemAudio)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error;
 - (unint64_t)preferredMediaBitRate;
 - (unint64_t)ptime;
 @end
 
 @implementation AVCMediaStreamNegotiatorSettingsCoreDeviceSystemAudio
 
-- (AVCMediaStreamNegotiatorSettingsCoreDeviceSystemAudio)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5
+- (AVCMediaStreamNegotiatorSettingsCoreDeviceSystemAudio)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error
 {
-  v6 = a4;
+  roleCopy = role;
   v17 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = AVCMediaStreamNegotiatorSettingsCoreDeviceSystemAudio;
@@ -30,13 +30,13 @@
   {
 
     v9 = 0;
-    *a5 = @"audioRules init failed";
+    *error = @"audioRules init failed";
     goto LABEL_10;
   }
 
-  if (v6 == 1 && [a3 objectForKey:@"AVCMediaStreamNegotiatorAccessNetworkType"])
+  if (roleCopy == 1 && [options objectForKey:@"AVCMediaStreamNegotiatorAccessNetworkType"])
   {
-    v12 = [a3 objectForKeyedSubscript:@"AVCMediaStreamNegotiatorAccessNetworkType"];
+    v12 = [options objectForKeyedSubscript:@"AVCMediaStreamNegotiatorAccessNetworkType"];
     if (!v12)
     {
       v15 = @"cannot get accessNetworkType from Init options";
@@ -59,9 +59,9 @@ LABEL_10:
   v15 = @"_audioConfiguration init failed";
 LABEL_15:
 
-  if (a5)
+  if (error)
   {
-    *a5 = v15;
+    *error = v15;
   }
 
   return 0;

@@ -9,7 +9,7 @@
 
 - (id)stringByXMLUnquoting
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   [v1 replaceOccurrencesOfString:@"&amp;" withString:@"&" options:0 range:{0, objc_msgSend(v1, "length")}];
   [v1 replaceOccurrencesOfString:@"&lt;" withString:@"<" options:0 range:{0, objc_msgSend(v1, "length")}];
   [v1 replaceOccurrencesOfString:@"&gt;" withString:@">" options:0 range:{0, objc_msgSend(v1, "length")}];
@@ -27,19 +27,19 @@
     [NSString(DAVExtensions) stringByURLQuotingPaths];
   }
 
-  v2 = [a1 stringByAddingPercentEncodingWithAllowedCharacters:stringByURLQuotingPaths_allowedCharacterSet];
+  v2 = [self stringByAddingPercentEncodingWithAllowedCharacters:stringByURLQuotingPaths_allowedCharacterSet];
   v3 = v2;
   if (v2)
   {
-    v4 = v2;
+    selfCopy = v2;
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  v5 = v4;
+  v5 = selfCopy;
 
   return v5;
 }
@@ -51,19 +51,19 @@
     [NSString(DAVExtensions) stringByURLQuoting];
   }
 
-  v2 = [a1 stringByAddingPercentEncodingWithAllowedCharacters:stringByURLQuoting_allowedCharacterSet];
+  v2 = [self stringByAddingPercentEncodingWithAllowedCharacters:stringByURLQuoting_allowedCharacterSet];
   v3 = v2;
   if (v2)
   {
-    v4 = v2;
+    selfCopy = v2;
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  v5 = v4;
+  v5 = selfCopy;
 
   return v5;
 }

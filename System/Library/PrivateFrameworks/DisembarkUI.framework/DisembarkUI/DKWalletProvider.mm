@@ -1,6 +1,6 @@
 @interface DKWalletProvider
 - (id)localPaymentCards;
-- (void)fetchAppleWalletCards:(id)a3;
+- (void)fetchAppleWalletCards:(id)cards;
 @end
 
 @implementation DKWalletProvider
@@ -8,15 +8,15 @@
 - (id)localPaymentCards
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [MEMORY[0x277D37FC0] sharedInstance];
-  v4 = [v3 paymentPassesWithLocallyStoredValue];
+  mEMORY[0x277D37FC0] = [MEMORY[0x277D37FC0] sharedInstance];
+  paymentPassesWithLocallyStoredValue = [mEMORY[0x277D37FC0] paymentPassesWithLocallyStoredValue];
 
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v5 = [paymentPassesWithLocallyStoredValue countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -27,37 +27,37 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(paymentPassesWithLocallyStoredValue);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
         v10 = objc_alloc_init(DKWalletLocalPaymentCardViewModel);
-        v11 = [v9 localizedName];
-        [(DKWalletLocalPaymentCardViewModel *)v10 setTitle:v11];
+        localizedName = [v9 localizedName];
+        [(DKWalletLocalPaymentCardViewModel *)v10 setTitle:localizedName];
 
-        v12 = [v9 localizedDescription];
-        [(DKWalletLocalPaymentCardViewModel *)v10 setSubtitle:v12];
+        localizedDescription = [v9 localizedDescription];
+        [(DKWalletLocalPaymentCardViewModel *)v10 setSubtitle:localizedDescription];
 
-        v13 = [(DKWalletLocalPaymentCardViewModel *)v10 title];
-        if (v13)
+        title = [(DKWalletLocalPaymentCardViewModel *)v10 title];
+        if (title)
         {
         }
 
         else
         {
-          v14 = [(DKWalletLocalPaymentCardViewModel *)v10 subtitle];
+          subtitle = [(DKWalletLocalPaymentCardViewModel *)v10 subtitle];
 
-          if (!v14)
+          if (!subtitle)
           {
             goto LABEL_10;
           }
         }
 
-        [v2 addObject:v10];
+        [array addObject:v10];
 LABEL_10:
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [paymentPassesWithLocallyStoredValue countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -65,12 +65,12 @@ LABEL_10:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return array;
 }
 
-- (void)fetchAppleWalletCards:(id)a3
+- (void)fetchAppleWalletCards:(id)cards
 {
-  v4 = a3;
+  cardsCopy = cards;
   v5 = [objc_alloc(MEMORY[0x277D38B88]) initWithSetupAssistant:0];
   v6 = [objc_alloc(MEMORY[0x277D38B78]) initWithSetupAssistantContext:v5];
   v8[0] = MEMORY[0x277D85DD0];
@@ -78,8 +78,8 @@ LABEL_10:
   v8[2] = __42__DKWalletProvider_fetchAppleWalletCards___block_invoke;
   v8[3] = &unk_278F7DC88;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = cardsCopy;
+  v7 = cardsCopy;
   [v6 expressResetCardsWithCompletion:v8];
 }
 

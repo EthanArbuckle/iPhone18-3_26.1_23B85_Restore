@@ -1,27 +1,27 @@
 @interface INFERENCESchemaINFERENCETaskSpecificInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (INFERENCESchemaINFERENCELongRunningTaskInfo)longRunningTaskInfo;
-- (INFERENCESchemaINFERENCETaskSpecificInfo)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCETaskSpecificInfo)initWithJSON:(id)a3;
+- (INFERENCESchemaINFERENCETaskSpecificInfo)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCETaskSpecificInfo)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (void)deleteLongRunningTaskInfo;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCETaskSpecificInfo
 
-- (INFERENCESchemaINFERENCETaskSpecificInfo)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCETaskSpecificInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = INFERENCESchemaINFERENCETaskSpecificInfo;
   v5 = [(INFERENCESchemaINFERENCETaskSpecificInfo *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"longRunningTaskInfo"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"longRunningTaskInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,30 +35,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCETaskSpecificInfo)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCETaskSpecificInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCETaskSpecificInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCETaskSpecificInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCETaskSpecificInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -71,43 +71,43 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_longRunningTaskInfo)
   {
-    v4 = [(INFERENCESchemaINFERENCETaskSpecificInfo *)self longRunningTaskInfo];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    longRunningTaskInfo = [(INFERENCESchemaINFERENCETaskSpecificInfo *)self longRunningTaskInfo];
+    dictionaryRepresentation = [longRunningTaskInfo dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"longRunningTaskInfo"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"longRunningTaskInfo"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"longRunningTaskInfo"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"longRunningTaskInfo"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     whichTaskinfo = self->_whichTaskinfo;
-    if (whichTaskinfo == [v4 whichTaskinfo])
+    if (whichTaskinfo == [equalCopy whichTaskinfo])
     {
-      v6 = [(INFERENCESchemaINFERENCETaskSpecificInfo *)self longRunningTaskInfo];
-      v7 = [v4 longRunningTaskInfo];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      longRunningTaskInfo = [(INFERENCESchemaINFERENCETaskSpecificInfo *)self longRunningTaskInfo];
+      longRunningTaskInfo2 = [equalCopy longRunningTaskInfo];
+      v8 = longRunningTaskInfo2;
+      if ((longRunningTaskInfo != 0) != (longRunningTaskInfo2 == 0))
       {
-        v9 = [(INFERENCESchemaINFERENCETaskSpecificInfo *)self longRunningTaskInfo];
-        if (!v9)
+        longRunningTaskInfo3 = [(INFERENCESchemaINFERENCETaskSpecificInfo *)self longRunningTaskInfo];
+        if (!longRunningTaskInfo3)
         {
 
 LABEL_11:
@@ -115,10 +115,10 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(INFERENCESchemaINFERENCETaskSpecificInfo *)self longRunningTaskInfo];
-        v12 = [v4 longRunningTaskInfo];
-        v13 = [v11 isEqual:v12];
+        v10 = longRunningTaskInfo3;
+        longRunningTaskInfo4 = [(INFERENCESchemaINFERENCETaskSpecificInfo *)self longRunningTaskInfo];
+        longRunningTaskInfo5 = [equalCopy longRunningTaskInfo];
+        v13 = [longRunningTaskInfo4 isEqual:longRunningTaskInfo5];
 
         if (v13)
         {
@@ -138,14 +138,14 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(INFERENCESchemaINFERENCETaskSpecificInfo *)self longRunningTaskInfo];
+  toCopy = to;
+  longRunningTaskInfo = [(INFERENCESchemaINFERENCETaskSpecificInfo *)self longRunningTaskInfo];
 
-  if (v4)
+  if (longRunningTaskInfo)
   {
-    v5 = [(INFERENCESchemaINFERENCETaskSpecificInfo *)self longRunningTaskInfo];
+    longRunningTaskInfo2 = [(INFERENCESchemaINFERENCETaskSpecificInfo *)self longRunningTaskInfo];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -175,17 +175,17 @@ LABEL_9:
   return v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = INFERENCESchemaINFERENCETaskSpecificInfo;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(INFERENCESchemaINFERENCETaskSpecificInfo *)self longRunningTaskInfo:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(INFERENCESchemaINFERENCETaskSpecificInfo *)self deleteLongRunningTaskInfo];
   }

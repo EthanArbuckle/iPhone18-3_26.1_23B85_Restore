@@ -17,22 +17,22 @@
 
 - (BOOL)isHealthChecklistAvailable
 {
-  v3 = [(HKHealthChecklistUtilities *)self isHealthAppVisibleAndInstalled];
-  if (v3)
+  isHealthAppVisibleAndInstalled = [(HKHealthChecklistUtilities *)self isHealthAppVisibleAndInstalled];
+  if (isHealthAppVisibleAndInstalled)
   {
-    v4 = [(HKHealthChecklistUtilities *)self isMedicalIDAvailable];
-    LOBYTE(v3) = v4 & [(HKHealthChecklistUtilities *)self isEmergencySOSAvailable];
+    isMedicalIDAvailable = [(HKHealthChecklistUtilities *)self isMedicalIDAvailable];
+    LOBYTE(isHealthAppVisibleAndInstalled) = isMedicalIDAvailable & [(HKHealthChecklistUtilities *)self isEmergencySOSAvailable];
   }
 
-  return v3;
+  return isHealthAppVisibleAndInstalled;
 }
 
 - (BOOL)isHealthAppVisibleAndInstalled
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (v3 == @"com.apple.Health")
+  if (bundleIdentifier == @"com.apple.Health")
   {
     LOBYTE(v5) = 1;
   }
@@ -49,9 +49,9 @@
 - (BOOL)isMedicalIDAvailable
 {
   v2 = +[_HKBehavior sharedBehavior];
-  v3 = [v2 isiPad];
+  isiPad = [v2 isiPad];
 
-  if (v3)
+  if (isiPad)
   {
     return 0;
   }

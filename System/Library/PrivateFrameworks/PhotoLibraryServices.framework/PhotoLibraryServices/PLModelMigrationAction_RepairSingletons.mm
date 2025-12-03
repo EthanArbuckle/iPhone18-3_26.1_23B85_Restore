@@ -1,20 +1,20 @@
 @interface PLModelMigrationAction_RepairSingletons
-+ (BOOL)repairSingletonObjectsInDatabaseUsingContext:(id)a3 pathManager:(id)a4 error:(id *)a5;
-+ (void)_repairRootFolderFixedOrderKeysInStore:(id)a3 context:(id)a4 pathManager:(id)a5;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
++ (BOOL)repairSingletonObjectsInDatabaseUsingContext:(id)context pathManager:(id)manager error:(id *)error;
++ (void)_repairRootFolderFixedOrderKeysInStore:(id)store context:(id)context pathManager:(id)manager;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RepairSingletons
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = [(PLModelMigrationActionCore *)self cancellableDiscreteProgressWithTotalUnitCount:1 pendingParentUnitCount:0];
   v8 = objc_opt_class();
-  v9 = [(PLModelMigrationActionCore *)self pathManager];
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
   v16 = 0;
-  v10 = [v8 repairSingletonObjectsInDatabaseUsingContext:v6 pathManager:v9 error:&v16];
+  v10 = [v8 repairSingletonObjectsInDatabaseUsingContext:contextCopy pathManager:pathManager error:&v16];
   v11 = v16;
 
   [v7 setCompletedUnitCount:{objc_msgSend(v7, "completedUnitCount") + 1}];
@@ -29,12 +29,12 @@
     }
   }
 
-  [v6 reset];
+  [contextCopy reset];
   [(PLModelMigrationActionCore *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
     v13 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   if (v10)
@@ -50,16 +50,16 @@
   return v14;
 }
 
-+ (void)_repairRootFolderFixedOrderKeysInStore:(id)a3 context:(id)a4 pathManager:(id)a5
++ (void)_repairRootFolderFixedOrderKeysInStore:(id)store context:(id)context pathManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  contextCopy = context;
+  managerCopy = manager;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = NSStringFromSelector(a2);
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PLModelMigrationActionRepairs.m" lineNumber:86 description:{@"%@ can only be called from assetsd", v19}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrationActionRepairs.m" lineNumber:86 description:{@"%@ can only be called from assetsd", v19}];
   }
 
   v12 = [PLRelationshipOrderKeyManager alloc];
@@ -67,27 +67,27 @@
   v23[1] = 3221225472;
   v23[2] = __102__PLModelMigrationAction_RepairSingletons__repairRootFolderFixedOrderKeysInStore_context_pathManager___block_invoke;
   v23[3] = &unk_1E7577E50;
-  v24 = v9;
-  v25 = v11;
-  v13 = v11;
-  v14 = v9;
+  v24 = storeCopy;
+  v25 = managerCopy;
+  v13 = managerCopy;
+  v14 = storeCopy;
   v15 = [(PLRelationshipOrderKeyManager *)v12 initWithGenerateContextBlock:v23];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __102__PLModelMigrationAction_RepairSingletons__repairRootFolderFixedOrderKeysInStore_context_pathManager___block_invoke_2;
   v20[3] = &unk_1E7578848;
-  v21 = v10;
+  v21 = contextCopy;
   v22 = v15;
   v16 = v15;
-  v17 = v10;
+  v17 = contextCopy;
   [v17 performBlockAndWait:v20];
 }
 
-+ (BOOL)repairSingletonObjectsInDatabaseUsingContext:(id)a3 pathManager:(id)a4 error:(id *)a5
++ (BOOL)repairSingletonObjectsInDatabaseUsingContext:(id)context pathManager:(id)manager error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  contextCopy = context;
+  managerCopy = manager;
   v10 = PLMigrationGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -95,7 +95,7 @@
     _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEFAULT, "Creating PLGenericAlbum singletons", &v26, 2u);
   }
 
-  [PLGenericAlbum addSingletonObjectsToContext:v8];
+  [PLGenericAlbum addSingletonObjectsToContext:contextCopy];
   v11 = PLMigrationGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -103,24 +103,24 @@
     _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Creating PLManagedAlbumList singletons", &v26, 2u);
   }
 
-  [PLManagedAlbumList addSingletonObjectsToContext:v8];
-  v12 = [v8 save:a5];
+  [PLManagedAlbumList addSingletonObjectsToContext:contextCopy];
+  v12 = [contextCopy save:error];
   if (v12)
   {
     PLGenericAlbumHashOfSingletonAlbumValues(0);
-    v13 = [v8 persistentStoreCoordinator];
-    v14 = [v13 persistentStores];
-    v15 = [v14 firstObject];
+    persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
+    persistentStores = [persistentStoreCoordinator persistentStores];
+    firstObject = [persistentStores firstObject];
 
-    v16 = [v15 metadata];
-    v17 = v16;
-    if (v16)
+    metadata = [firstObject metadata];
+    v17 = metadata;
+    if (metadata)
     {
-      v18 = [v16 mutableCopy];
+      v18 = [metadata mutableCopy];
       v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:3056];
       [v18 setObject:v19 forKeyedSubscript:@"PLAlbumSingletonHashKey"];
 
-      [v15 setMetadata:v18];
+      [firstObject setMetadata:v18];
       v20 = PLMigrationGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
@@ -148,10 +148,10 @@
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEFAULT, "Enforcing fixed album order", &v26, 2u);
     }
 
-    v22 = [v8 persistentStoreCoordinator];
-    v23 = [v22 persistentStores];
-    v24 = [v23 objectAtIndexedSubscript:0];
-    [a1 _repairRootFolderFixedOrderKeysInStore:v24 context:v8 pathManager:v9];
+    persistentStoreCoordinator2 = [contextCopy persistentStoreCoordinator];
+    persistentStores2 = [persistentStoreCoordinator2 persistentStores];
+    v24 = [persistentStores2 objectAtIndexedSubscript:0];
+    [self _repairRootFolderFixedOrderKeysInStore:v24 context:contextCopy pathManager:managerCopy];
   }
 
   return v12;

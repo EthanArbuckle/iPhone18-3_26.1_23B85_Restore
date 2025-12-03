@@ -1,35 +1,35 @@
 @interface WFOpenURLContextualAction
-- (BOOL)isEqual:(id)a3;
-- (WFOpenURLContextualAction)initWithCoder:(id)a3;
-- (WFOpenURLContextualAction)initWithURL:(id)a3 bundleIdentifier:(id)a4 actionTitle:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (WFOpenURLContextualAction)initWithCoder:(id)coder;
+- (WFOpenURLContextualAction)initWithURL:(id)l bundleIdentifier:(id)identifier actionTitle:(id)title;
 - (id)_staticDisplayStringForDecoding;
 - (id)uniqueIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFOpenURLContextualAction
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WFOpenURLContextualAction;
-  v4 = a3;
-  [(WFContextualAction *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_url forKey:{@"url", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  [(WFContextualAction *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_url forKey:{@"url", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
 }
 
-- (WFOpenURLContextualAction)initWithCoder:(id)a3
+- (WFOpenURLContextualAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = WFOpenURLContextualAction;
-  v5 = [(WFContextualAction *)&v12 initWithCoder:v4];
+  v5 = [(WFContextualAction *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     v8 = v7;
     if (v6)
     {
@@ -72,14 +72,14 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v18.receiver = self;
   v18.super_class = WFOpenURLContextualAction;
-  if ([(WFContextualAction *)&v18 isEqual:v4])
+  if ([(WFContextualAction *)&v18 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v11) = 0;
@@ -118,10 +118,10 @@ LABEL_19:
       }
     }
 
-    v14 = [v5 bundleIdentifier];
-    v15 = [(WFOpenURLContextualAction *)self bundleIdentifier];
-    v13 = v14;
-    v16 = v15;
+    bundleIdentifier = [v5 bundleIdentifier];
+    bundleIdentifier2 = [(WFOpenURLContextualAction *)self bundleIdentifier];
+    v13 = bundleIdentifier;
+    v16 = bundleIdentifier2;
     v12 = v16;
     if (v13 == v16)
     {
@@ -155,8 +155,8 @@ LABEL_21:
   v5 = [(WFOpenURLContextualAction *)self url];
   v6 = [v3 combine:v5];
 
-  v7 = [(WFOpenURLContextualAction *)self bundleIdentifier];
-  v8 = [v3 combineContentsOfPropertyListObject:v7];
+  bundleIdentifier = [(WFOpenURLContextualAction *)self bundleIdentifier];
+  v8 = [v3 combineContentsOfPropertyListObject:bundleIdentifier];
 
   v9 = [v3 finalize];
   return v9;
@@ -169,18 +169,18 @@ LABEL_21:
   v4 = [(WFOpenURLContextualAction *)self url];
   v5 = [v3 combine:v4];
 
-  v6 = [(WFOpenURLContextualAction *)self bundleIdentifier];
-  v7 = [v3 combineContentsOfPropertyListObject:v6];
+  bundleIdentifier = [(WFOpenURLContextualAction *)self bundleIdentifier];
+  v7 = [v3 combineContentsOfPropertyListObject:bundleIdentifier];
 
-  v8 = [(WFContextualAction *)self displayString];
-  v9 = [v3 combineContentsOfPropertyListObject:v8];
+  displayString = [(WFContextualAction *)self displayString];
+  v9 = [v3 combineContentsOfPropertyListObject:displayString];
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v3, "finalize")}];
-  v11 = [v10 stringValue];
+  stringValue = [v10 stringValue];
 
-  v12 = [(WFContextualAction *)self identifier];
-  v17[0] = v12;
-  v17[1] = v11;
+  identifier = [(WFContextualAction *)self identifier];
+  v17[0] = identifier;
+  v17[1] = stringValue;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
 
   v14 = [v13 componentsJoinedByString:@"."];
@@ -190,106 +190,106 @@ LABEL_21:
   return v14;
 }
 
-- (WFOpenURLContextualAction)initWithURL:(id)a3 bundleIdentifier:(id)a4 actionTitle:(id)a5
+- (WFOpenURLContextualAction)initWithURL:(id)l bundleIdentifier:(id)identifier actionTitle:(id)title
 {
   v44 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  lCopy = l;
+  identifierCopy = identifier;
+  titleCopy = title;
+  if (lCopy)
   {
-    if (v11)
+    if (identifierCopy)
     {
 LABEL_6:
-      obj = a3;
-      v37 = v12;
-      if (v12)
+      obj = l;
+      v37 = titleCopy;
+      if (titleCopy)
       {
-        v17 = v12;
+        lCopy = titleCopy;
         v18 = 0;
-        v19 = v17;
+        v19 = lCopy;
       }
 
       else
       {
         v20 = MEMORY[0x1E696AEC0];
         v21 = WFLocalizedStringWithKey(@"Open URL (Contextual Action)", @"Open URL %@");
-        v17 = [v20 localizedStringWithFormat:v21, v10];
+        lCopy = [v20 localizedStringWithFormat:v21, lCopy];
 
         v19 = WFLocalizedStringWithKey(@"Open URL (Contextual Action, Title)", @"Open URL");
         v18 = @"%@";
       }
 
       v22 = [WFContextualActionParameter alloc];
-      v23 = [v10 absoluteString];
-      v24 = [(WFContextualActionParameter *)v22 initWithType:@"WFURLContentItem" displayString:0 wfParameterKey:@"WFInput" wfSerializedRepresentation:v23];
+      absoluteString = [lCopy absoluteString];
+      v24 = [(WFContextualActionParameter *)v22 initWithType:@"WFURLContentItem" displayString:0 wfParameterKey:@"WFInput" wfSerializedRepresentation:absoluteString];
       v39 = v24;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1];
-      v26 = [WFContextualActionIcon iconWithApplicationBundleIdentifier:v11];
-      self = [(WFContextualAction *)self initWithIdentifier:@"is.workflow.actions.openurl" wfActionIdentifier:@"is.workflow.actions.openurl" associatedAppBundleIdentifier:v11 parameters:v25 displayString:v17 title:v19 subtitle:v18 icon:v26];
+      v26 = [WFContextualActionIcon iconWithApplicationBundleIdentifier:identifierCopy];
+      self = [(WFContextualAction *)self initWithIdentifier:@"is.workflow.actions.openurl" wfActionIdentifier:@"is.workflow.actions.openurl" associatedAppBundleIdentifier:identifierCopy parameters:v25 displayString:lCopy title:v19 subtitle:v18 icon:v26];
 
       if (self)
       {
         objc_storeStrong(&self->_url, obj);
-        v27 = [v11 copy];
+        v27 = [identifierCopy copy];
         bundleIdentifier = self->_bundleIdentifier;
         self->_bundleIdentifier = v27;
 
-        v29 = self;
+        selfCopy = self;
       }
 
-      v30 = self;
-      v12 = v37;
+      selfCopy2 = self;
+      titleCopy = v37;
       goto LABEL_12;
     }
 
     v38 = 0;
-    v13 = v10;
+    v13 = lCopy;
   }
 
   else
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"WFOpenURLContextualAction.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"url"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFOpenURLContextualAction.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"url"}];
 
-    if (v11)
+    if (identifierCopy)
     {
       goto LABEL_6;
     }
 
     v38 = 0;
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v35 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NSString * _Nullable WFBundleIdentifierForHandlingURL(NSURL * _Nonnull __strong, NSError *__autoreleasing  _Nullable * _Nullable)"}];
-    [v34 handleFailureInFunction:v35 file:@"WFOpenURLContextualAction.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"url"}];
+    [currentHandler2 handleFailureInFunction:v35 file:@"WFOpenURLContextualAction.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"url"}];
   }
 
-  v14 = [objc_alloc(MEMORY[0x1E69AA860]) initWithURL:v10 error:&v38];
-  v15 = [v14 bundleIdentifier];
+  v14 = [objc_alloc(MEMORY[0x1E69AA860]) initWithURL:lCopy error:&v38];
+  bundleIdentifier = [v14 bundleIdentifier];
 
   v16 = v38;
-  v11 = v16;
-  if (v15)
+  identifierCopy = v16;
+  if (bundleIdentifier)
   {
 
-    v11 = v15;
+    identifierCopy = bundleIdentifier;
     goto LABEL_6;
   }
 
-  v17 = getWFVoiceShortcutClientLogObject();
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+  lCopy = getWFVoiceShortcutClientLogObject();
+  if (os_log_type_enabled(lCopy, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315394;
     v41 = "[WFOpenURLContextualAction initWithURL:bundleIdentifier:actionTitle:]";
     v42 = 2112;
-    v43 = v10;
-    _os_log_impl(&dword_1B1DE3000, v17, OS_LOG_TYPE_ERROR, "%s Can't determine what bundle identifier can open %@", buf, 0x16u);
+    v43 = lCopy;
+    _os_log_impl(&dword_1B1DE3000, lCopy, OS_LOG_TYPE_ERROR, "%s Can't determine what bundle identifier can open %@", buf, 0x16u);
   }
 
-  v30 = 0;
+  selfCopy2 = 0;
 LABEL_12:
 
   v31 = *MEMORY[0x1E69E9840];
-  return v30;
+  return selfCopy2;
 }
 
 @end

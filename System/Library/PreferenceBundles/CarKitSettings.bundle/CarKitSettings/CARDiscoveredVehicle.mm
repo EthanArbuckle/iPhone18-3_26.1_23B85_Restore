@@ -20,8 +20,8 @@
   if (v2)
   {
     v3 = +[NSUUID UUID];
-    v4 = [v3 UUIDString];
-    [(CARDiscoveredVehicle *)v2 setIdentifier:v4];
+    uUIDString = [v3 UUIDString];
+    [(CARDiscoveredVehicle *)v2 setIdentifier:uUIDString];
   }
 
   return v2;
@@ -29,91 +29,91 @@
 
 - (NSString)displayName
 {
-  v3 = [(CARDiscoveredVehicle *)self accessory];
-  v4 = [v3 displayName];
+  accessory = [(CARDiscoveredVehicle *)self accessory];
+  displayName = [accessory displayName];
 
-  if (!v4)
+  if (!displayName)
   {
-    v6 = [(CARDiscoveredVehicle *)self bluetoothDevice];
+    bluetoothDevice = [(CARDiscoveredVehicle *)self bluetoothDevice];
 
-    if (!v6 || (-[CARDiscoveredVehicle bluetoothDevice](self, "bluetoothDevice"), v7 = objc_claimAutoreleasedReturnValue(), [v7 name], v4 = objc_claimAutoreleasedReturnValue(), v7, !v4))
+    if (!bluetoothDevice || (-[CARDiscoveredVehicle bluetoothDevice](self, "bluetoothDevice"), v7 = objc_claimAutoreleasedReturnValue(), [v7 name], displayName = objc_claimAutoreleasedReturnValue(), v7, !displayName))
     {
-      v8 = [(CARDiscoveredVehicle *)self bluetoothLEDevice];
+      bluetoothLEDevice = [(CARDiscoveredVehicle *)self bluetoothLEDevice];
 
-      if (!v8 || (-[CARDiscoveredVehicle bluetoothLEDevice](self, "bluetoothLEDevice"), v9 = objc_claimAutoreleasedReturnValue(), [v9 name], v4 = objc_claimAutoreleasedReturnValue(), v9, !v4))
+      if (!bluetoothLEDevice || (-[CARDiscoveredVehicle bluetoothLEDevice](self, "bluetoothLEDevice"), v9 = objc_claimAutoreleasedReturnValue(), [v9 name], displayName = objc_claimAutoreleasedReturnValue(), v9, !displayName))
       {
-        v4 = &stru_6FD90;
+        displayName = &stru_6FD90;
       }
     }
   }
 
-  return v4;
+  return displayName;
 }
 
 - (NSString)debugConnectionStatusDescription
 {
-  v3 = [(CARDiscoveredVehicle *)self accessory];
+  accessory = [(CARDiscoveredVehicle *)self accessory];
 
-  if (v3)
+  if (accessory)
   {
     v4 = @"DEBUG_ACCESSORY_CONNECTED";
     goto LABEL_3;
   }
 
-  v8 = [(CARDiscoveredVehicle *)self bluetoothDevice];
+  bluetoothDevice = [(CARDiscoveredVehicle *)self bluetoothDevice];
 
-  if (v8)
+  if (bluetoothDevice)
   {
-    v9 = [(CARDiscoveredVehicle *)self bluetoothDevice];
-    v10 = [v9 connectionStatus];
+    bluetoothDevice2 = [(CARDiscoveredVehicle *)self bluetoothDevice];
+    connectionStatus = [bluetoothDevice2 connectionStatus];
 
-    if (v10 == (&dword_0 + 2))
+    if (connectionStatus == (&dword_0 + 2))
     {
       goto LABEL_14;
     }
 
-    if (v10 == &dword_4)
+    if (connectionStatus == &dword_4)
     {
 LABEL_13:
       v4 = @"DEBUG_BLUETOOTH_CONNECTED";
       goto LABEL_3;
     }
 
-    v11 = [(CARDiscoveredVehicle *)self bluetoothDevice];
-    v12 = [v11 isPaired];
+    bluetoothDevice3 = [(CARDiscoveredVehicle *)self bluetoothDevice];
+    isPaired = [bluetoothDevice3 isPaired];
 
-    if (v12)
+    if (isPaired)
     {
       goto LABEL_16;
     }
   }
 
-  v13 = [(CARDiscoveredVehicle *)self bluetoothLEDevice];
+  bluetoothLEDevice = [(CARDiscoveredVehicle *)self bluetoothLEDevice];
 
-  if (!v13)
+  if (!bluetoothLEDevice)
   {
     goto LABEL_17;
   }
 
-  v14 = [(CARDiscoveredVehicle *)self bluetoothLEDevice];
-  v15 = [v14 connectionStatus];
+  bluetoothLEDevice2 = [(CARDiscoveredVehicle *)self bluetoothLEDevice];
+  connectionStatus2 = [bluetoothLEDevice2 connectionStatus];
 
-  if (v15 == (&dword_0 + 2))
+  if (connectionStatus2 == (&dword_0 + 2))
   {
 LABEL_14:
     v4 = @"DEBUG_BLUETOOTH_CONNECTING";
     goto LABEL_3;
   }
 
-  if (v15 == &dword_4)
+  if (connectionStatus2 == &dword_4)
   {
     goto LABEL_13;
   }
 
-  v16 = [(CARDiscoveredVehicle *)self bluetoothLEDevice];
-  v17 = [v16 isPaired];
+  bluetoothLEDevice3 = [(CARDiscoveredVehicle *)self bluetoothLEDevice];
+  isPaired2 = [bluetoothLEDevice3 isPaired];
 
-  if (v17)
+  if (isPaired2)
   {
 LABEL_16:
     v4 = @"DEBUG_BLUETOOTH_PAIRED";
@@ -131,56 +131,56 @@ LABEL_3:
 
 - (BOOL)isConnecting
 {
-  v3 = [(CARDiscoveredVehicle *)self bluetoothDevice];
+  bluetoothDevice = [(CARDiscoveredVehicle *)self bluetoothDevice];
 
-  if (v3)
+  if (bluetoothDevice)
   {
-    v4 = [(CARDiscoveredVehicle *)self bluetoothDevice];
+    bluetoothDevice2 = [(CARDiscoveredVehicle *)self bluetoothDevice];
   }
 
   else
   {
-    v5 = [(CARDiscoveredVehicle *)self bluetoothLEDevice];
+    bluetoothLEDevice = [(CARDiscoveredVehicle *)self bluetoothLEDevice];
 
-    if (!v5)
+    if (!bluetoothLEDevice)
     {
       return 0;
     }
 
-    v4 = [(CARDiscoveredVehicle *)self bluetoothLEDevice];
+    bluetoothDevice2 = [(CARDiscoveredVehicle *)self bluetoothLEDevice];
   }
 
-  v6 = v4;
-  v7 = [v4 connectionStatus];
+  v6 = bluetoothDevice2;
+  connectionStatus = [bluetoothDevice2 connectionStatus];
 
-  if (v7 == (&dword_0 + 2))
+  if (connectionStatus == (&dword_0 + 2))
   {
     return 1;
   }
 
-  if (v7 != &dword_4)
+  if (connectionStatus != &dword_4)
   {
     return 0;
   }
 
-  v8 = [(CARDiscoveredVehicle *)self accessory];
-  v9 = v8 == 0;
+  accessory = [(CARDiscoveredVehicle *)self accessory];
+  v9 = accessory == 0;
 
   return v9;
 }
 
 - (NSString)bluetoothAddress
 {
-  v3 = [(CARDiscoveredVehicle *)self accessory];
-  v4 = [v3 bluetoothAddress];
+  accessory = [(CARDiscoveredVehicle *)self accessory];
+  bluetoothAddress = [accessory bluetoothAddress];
 
-  if (!v4)
+  if (!bluetoothAddress)
   {
-    v5 = [(CARDiscoveredVehicle *)self bluetoothDevice];
-    v4 = [v5 bluetoothAddress];
+    bluetoothDevice = [(CARDiscoveredVehicle *)self bluetoothDevice];
+    bluetoothAddress = [bluetoothDevice bluetoothAddress];
   }
 
-  return v4;
+  return bluetoothAddress;
 }
 
 - (id)description
@@ -188,8 +188,8 @@ LABEL_3:
   v7.receiver = self;
   v7.super_class = CARDiscoveredVehicle;
   v3 = [(CARDiscoveredVehicle *)&v7 description];
-  v4 = [(CARDiscoveredVehicle *)self identifier];
-  v5 = [NSString stringWithFormat:@"%@ (identifier: %@)", v3, v4];
+  identifier = [(CARDiscoveredVehicle *)self identifier];
+  v5 = [NSString stringWithFormat:@"%@ (identifier: %@)", v3, identifier];
 
   return v5;
 }

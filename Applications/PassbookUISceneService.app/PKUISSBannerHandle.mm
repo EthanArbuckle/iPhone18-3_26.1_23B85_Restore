@@ -1,18 +1,18 @@
 @interface PKUISSBannerHandle
-- (void)configureForRequest:(id)a3 withState:(id)a4 didStartReply:(id)a5;
-- (void)detachWithReply:(id)a3;
-- (void)displayWithReply:(id)a3;
-- (void)updateState:(id)a3 withReply:(id)a4;
+- (void)configureForRequest:(id)request withState:(id)state didStartReply:(id)reply;
+- (void)detachWithReply:(id)reply;
+- (void)displayWithReply:(id)reply;
+- (void)updateState:(id)state withReply:(id)reply;
 @end
 
 @implementation PKUISSBannerHandle
 
-- (void)configureForRequest:(id)a3 withState:(id)a4 didStartReply:(id)a5
+- (void)configureForRequest:(id)request withState:(id)state didStartReply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
+  requestCopy = request;
+  stateCopy = state;
+  replyCopy = reply;
+  v12 = replyCopy;
   if (!self->_invalidated)
   {
     if (self->_phase)
@@ -27,7 +27,7 @@ LABEL_6:
       }
 
       v20 = 134217984;
-      v21 = self;
+      selfCopy5 = self;
       v14 = "PKUISSBannerHandle (%p): out of order - configure - invalidating.";
 LABEL_5:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, v14, &v20, 0xCu);
@@ -35,7 +35,7 @@ LABEL_5:
     }
 
     self->_phase = 1;
-    if (!v11)
+    if (!replyCopy)
     {
       v13 = PKLogFacilityTypeGetObject();
       if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -44,12 +44,12 @@ LABEL_5:
       }
 
       v20 = 134217984;
-      v21 = self;
+      selfCopy5 = self;
       v14 = "PKUISSBannerHandle (%p): missing reply - invalidating.";
       goto LABEL_5;
     }
 
-    if (!v9)
+    if (!requestCopy)
     {
       v13 = PKLogFacilityTypeGetObject();
       if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -58,15 +58,15 @@ LABEL_5:
       }
 
       v20 = 134217984;
-      v21 = self;
+      selfCopy5 = self;
       v14 = "PKUISSBannerHandle (%p): missing request - invalidating.";
       goto LABEL_5;
     }
 
-    if (v10)
+    if (stateCopy)
     {
-      v15 = [v10 type];
-      if (v15 != [v9 type])
+      type = [stateCopy type];
+      if (type != [requestCopy type])
       {
         v13 = PKLogFacilityTypeGetObject();
         if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -75,14 +75,14 @@ LABEL_5:
         }
 
         v20 = 134217984;
-        v21 = self;
+        selfCopy5 = self;
         v14 = "PKUISSBannerHandle (%p): type mismatch - invalidating.";
         goto LABEL_5;
       }
     }
 
-    objc_storeStrong(&self->_request, a3);
-    objc_storeStrong(&self->_clientState, a4);
+    objc_storeStrong(&self->_request, request);
+    objc_storeStrong(&self->_clientState, state);
     v16 = objc_retainBlock(v12);
     didStartReply = self->_didStartReply;
     self->_didStartReply = v16;
@@ -90,11 +90,11 @@ LABEL_5:
     v18 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(PKBannerHandleRequest *)self->_request type];
+      type2 = [(PKBannerHandleRequest *)self->_request type];
       v20 = 134218240;
-      v21 = self;
+      selfCopy5 = self;
       v22 = 2048;
-      v23 = v19;
+      v23 = type2;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "PKUISSBannerHandle (%p): configured for %ld.", &v20, 0x16u);
     }
   }
@@ -102,32 +102,32 @@ LABEL_5:
 LABEL_7:
 }
 
-- (void)updateState:(id)a3 withReply:(id)a4
+- (void)updateState:(id)state withReply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  replyCopy = reply;
   if (!self->_invalidated)
   {
     phase = self->_phase;
     if (self->_phase)
     {
-      if (v7)
+      if (stateCopy)
       {
-        v10 = [v7 type];
-        if (v10 != [(PKBannerHandleRequest *)self->_request type])
+        type = [stateCopy type];
+        if (type != [(PKBannerHandleRequest *)self->_request type])
         {
           v11 = PKLogFacilityTypeGetObject();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
             v17 = 134217984;
-            v18 = self;
+            selfCopy4 = self;
             v12 = "PKUISSBannerHandle (%p): type mismatch - ignoring state update.";
             goto LABEL_20;
           }
 
 LABEL_21:
 
-          v8[2](v8, 0);
+          replyCopy[2](replyCopy, 0);
           goto LABEL_22;
         }
 
@@ -140,7 +140,7 @@ LABEL_21:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v17 = 134217984;
-          v18 = self;
+          selfCopy4 = self;
           v12 = "PKUISSBannerHandle (%p): ignoring state update.";
 LABEL_20:
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, v12, &v17, 0xCu);
@@ -151,17 +151,17 @@ LABEL_20:
       }
 
       v14 = self->_clientState;
-      objc_storeStrong(&self->_clientState, a3);
+      objc_storeStrong(&self->_clientState, state);
       v15 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 134217984;
-        v18 = self;
+        selfCopy4 = self;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "PKUISSBannerHandle (%p): state updated.", &v17, 0xCu);
       }
 
-      v8[2](v8, 0);
-      if (v7 | v14 && (self->_phase & 0xFE) == 2)
+      replyCopy[2](replyCopy, 0);
+      if (stateCopy | v14 && (self->_phase & 0xFE) == 2)
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         [WeakRetained bannerHandle:self didChangeFromClientState:v14];
@@ -174,7 +174,7 @@ LABEL_20:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 134217984;
-        v18 = self;
+        selfCopy4 = self;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "PKUISSBannerHandle (%p): out of order - update state - invalidating.", &v17, 0xCu);
       }
 
@@ -185,9 +185,9 @@ LABEL_20:
 LABEL_22:
 }
 
-- (void)displayWithReply:(id)a3
+- (void)displayWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (self->_invalidated)
   {
     goto LABEL_13;
@@ -199,7 +199,7 @@ LABEL_22:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v17 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "PKUISSBannerHandle (%p): out of order - display - invalidating.", buf, 0xCu);
     }
 
@@ -212,8 +212,8 @@ LABEL_22:
     goto LABEL_12;
   }
 
-  v6 = [(PKBannerHandleRequest *)request type];
-  if (v6 == 2)
+  type = [(PKBannerHandleRequest *)request type];
+  if (type == 2)
   {
     v7 = v13;
     v13[0] = _NSConcreteStackBlock;
@@ -222,7 +222,7 @@ LABEL_22:
     goto LABEL_17;
   }
 
-  if (v6 == 1)
+  if (type == 1)
   {
     if (PKSystemApertureIsAvailable())
     {
@@ -238,7 +238,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v6 || !PKSystemApertureIsAvailable())
+  if (type || !PKSystemApertureIsAvailable())
   {
     goto LABEL_12;
   }
@@ -262,20 +262,20 @@ LABEL_17:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v17 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "PKUISSBannerHandle (%p): started.", buf, 0xCu);
   }
 
-  v4[2](v4, 0);
+  replyCopy[2](replyCopy, 0);
   self->_phase = 2;
   v11[2](v11);
 
 LABEL_13:
 }
 
-- (void)detachWithReply:(id)a3
+- (void)detachWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -298,7 +298,7 @@ LABEL_13:
   *(*(&buf + 1) + 24) = v7;
 
   self->_detached = 1;
-  v4[2](v4, 0);
+  replyCopy[2](replyCopy, 0);
   sub_1000011B0(self, 0);
   if (*(*(&buf + 1) + 24) != UIBackgroundTaskInvalid)
   {

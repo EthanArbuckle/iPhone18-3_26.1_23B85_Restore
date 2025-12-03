@@ -7,8 +7,8 @@
 + (id)eks_garbageUUID
 {
   v2 = +[NSUUID UUID];
-  v3 = [v2 UUIDString];
-  v4 = [NSString stringWithFormat:@"GARBAGE:%@", v3];
+  uUIDString = [v2 UUIDString];
+  v4 = [NSString stringWithFormat:@"GARBAGE:%@", uUIDString];
 
   return v4;
 }

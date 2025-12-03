@@ -1,5 +1,5 @@
 @interface HMDEntryExitLogEvent
-- (HMDEntryExitLogEvent)initWithReason:(unint64_t)a3 isFalse:(BOOL)a4 lastFired:(double)a5 isInitial:(BOOL)a6;
+- (HMDEntryExitLogEvent)initWithReason:(unint64_t)reason isFalse:(BOOL)false lastFired:(double)fired isInitial:(BOOL)initial;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -118,18 +118,18 @@
   return v9;
 }
 
-- (HMDEntryExitLogEvent)initWithReason:(unint64_t)a3 isFalse:(BOOL)a4 lastFired:(double)a5 isInitial:(BOOL)a6
+- (HMDEntryExitLogEvent)initWithReason:(unint64_t)reason isFalse:(BOOL)false lastFired:(double)fired isInitial:(BOOL)initial
 {
   v11.receiver = self;
   v11.super_class = HMDEntryExitLogEvent;
   result = [(HMMLogEvent *)&v11 init];
   if (result)
   {
-    result->_isEntry = a3 == 0;
-    result->_isExit = a3 == 1;
-    result->_secondsLastFired = a5;
-    result->_isFalse = a4;
-    result->_isInitial = a6;
+    result->_isEntry = reason == 0;
+    result->_isExit = reason == 1;
+    result->_secondsLastFired = fired;
+    result->_isFalse = false;
+    result->_isInitial = initial;
   }
 
   return result;

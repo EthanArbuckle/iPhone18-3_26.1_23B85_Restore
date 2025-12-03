@@ -1,13 +1,13 @@
 @interface EKEventAttendeeDetailGroup
-- (id)itemAtIndex:(unint64_t)a3;
+- (id)itemAtIndex:(unint64_t)index;
 @end
 
 @implementation EKEventAttendeeDetailGroup
 
-- (id)itemAtIndex:(unint64_t)a3
+- (id)itemAtIndex:(unint64_t)index
 {
-  v3 = [(EKEventDetailGroup *)self items];
-  v4 = [v3 objectAtIndex:0];
+  items = [(EKEventDetailGroup *)self items];
+  v4 = [items objectAtIndex:0];
 
   return v4;
 }

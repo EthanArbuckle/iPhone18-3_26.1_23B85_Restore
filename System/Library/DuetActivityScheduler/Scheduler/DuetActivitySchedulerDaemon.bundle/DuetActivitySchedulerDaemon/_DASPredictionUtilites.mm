@@ -1,23 +1,23 @@
 @interface _DASPredictionUtilites
-+ (id)computeAccuraciesFromSortedPredictions:(id)a3 andObservations:(id)a4 withEqualityOperator:(id)a5;
++ (id)computeAccuraciesFromSortedPredictions:(id)predictions andObservations:(id)observations withEqualityOperator:(id)operator;
 @end
 
 @implementation _DASPredictionUtilites
 
-+ (id)computeAccuraciesFromSortedPredictions:(id)a3 andObservations:(id)a4 withEqualityOperator:(id)a5
++ (id)computeAccuraciesFromSortedPredictions:(id)predictions andObservations:(id)observations withEqualityOperator:(id)operator
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  predictionsCopy = predictions;
+  observationsCopy = observations;
+  operatorCopy = operator;
   v10 = objc_alloc_init(_DASPredictionAccuracy);
-  if ([v7 count])
+  if ([predictionsCopy count])
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v20 = v8;
-    obj = v8;
+    v20 = observationsCopy;
+    obj = observationsCopy;
     v11 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (!v11)
     {
@@ -41,10 +41,10 @@
         v22[1] = 3221225472;
         v22[2] = sub_1F0C;
         v22[3] = &unk_40B8;
-        v16 = v9;
+        v16 = operatorCopy;
         v22[4] = v15;
         v23 = v16;
-        v17 = [v7 indexOfObjectPassingTest:v22];
+        v17 = [predictionsCopy indexOfObjectPassingTest:v22];
         if (v17 != 0x7FFFFFFFFFFFFFFFLL)
         {
           if (!v17)
@@ -88,7 +88,7 @@ LABEL_14:
 LABEL_20:
 
         [(_DASPredictionAccuracy *)v10 setTotalPredictionIntervals:[(_DASPredictionAccuracy *)v10 totalPredictionIntervals]+ 1];
-        v8 = v20;
+        observationsCopy = v20;
         break;
       }
     }

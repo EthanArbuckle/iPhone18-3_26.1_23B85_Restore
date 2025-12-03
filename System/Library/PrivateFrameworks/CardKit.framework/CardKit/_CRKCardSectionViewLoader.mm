@@ -1,11 +1,11 @@
 @interface _CRKCardSectionViewLoader
-- (BOOL)cardSectionShouldBeDisplayed:(id)a3;
+- (BOOL)cardSectionShouldBeDisplayed:(id)displayed;
 - (_CRKCardSectionViewLoader)init;
 - (_CRKCardSectionViewLoaderDelegate)delegate;
 - (id)_allViewConfigurations;
-- (id)_viewConfigurationForCardSection:(id)a3 providerIdentifier:(id)a4;
-- (id)viewConfigurationForCardSection:(id)a3;
-- (void)_loadIdentifiedCardSectionViewProvidersFromCard:(id)a3 identifiedProviders:(id)a4 delegate:(id)a5 completion:(id)a6;
+- (id)_viewConfigurationForCardSection:(id)section providerIdentifier:(id)identifier;
+- (id)viewConfigurationForCardSection:(id)section;
+- (void)_loadIdentifiedCardSectionViewProvidersFromCard:(id)card identifiedProviders:(id)providers delegate:(id)delegate completion:(id)completion;
 @end
 
 @implementation _CRKCardSectionViewLoader
@@ -33,18 +33,18 @@
   return v2;
 }
 
-- (void)_loadIdentifiedCardSectionViewProvidersFromCard:(id)a3 identifiedProviders:(id)a4 delegate:(id)a5 completion:(id)a6
+- (void)_loadIdentifiedCardSectionViewProvidersFromCard:(id)card identifiedProviders:(id)providers delegate:(id)delegate completion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v21 = a4;
-  v22 = a5;
-  v11 = a6;
-  v12 = v11;
-  v23 = v10;
-  if (v10)
+  cardCopy = card;
+  providersCopy = providers;
+  delegateCopy = delegate;
+  completionCopy = completion;
+  v12 = completionCopy;
+  v23 = cardCopy;
+  if (cardCopy)
   {
-    v20 = v11;
+    v20 = completionCopy;
     v38[0] = 0;
     v38[1] = v38;
     v38[2] = 0x2020000000;
@@ -55,7 +55,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v42 = v10;
+      v42 = cardCopy;
       _os_log_impl(&dword_243247000, v14, OS_LOG_TYPE_DEFAULT, "Loading card section view providers for card\n    Card: %@", buf, 0xCu);
     }
 
@@ -63,7 +63,7 @@
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v15 = v21;
+    v15 = providersCopy;
     v16 = [v15 countByEnumeratingWithState:&v33 objects:v40 count:16];
     if (v16)
     {
@@ -89,7 +89,7 @@
             v29[4] = v19;
             v31 = v38;
             v30 = v13;
-            [v19 requestIdentifiedCardSectionViewProviderForCard:v23 delegate:v22 reply:v29];
+            [v19 requestIdentifiedCardSectionViewProviderForCard:v23 delegate:delegateCopy reply:v29];
 
             objc_destroyWeak(&v32);
           }
@@ -117,33 +117,33 @@
     v12 = v20;
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    (*(v11 + 2))(v11, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (id)viewConfigurationForCardSection:(id)a3
+- (id)viewConfigurationForCardSection:(id)section
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4 && [(_CRKCardSectionViewLoader *)self cardSectionShouldBeDisplayed:v4])
+  sectionCopy = section;
+  if (sectionCopy && [(_CRKCardSectionViewLoader *)self cardSectionShouldBeDisplayed:sectionCopy])
   {
-    v5 = [(NSMutableSet *)self->_identifiedCardSectionViewProviders allObjects];
+    allObjects = [(NSMutableSet *)self->_identifiedCardSectionViewProviders allObjects];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __61___CRKCardSectionViewLoader_viewConfigurationForCardSection___block_invoke;
     v24[3] = &unk_278DA3920;
     v24[4] = self;
-    v6 = v4;
+    v6 = sectionCopy;
     v25 = v6;
-    v7 = [v5 sortedArrayUsingComparator:v24];
+    v7 = [allObjects sortedArrayUsingComparator:v24];
 
     v18 = MEMORY[0x277D85DD0];
     v19 = 3221225472;
     v20 = __61___CRKCardSectionViewLoader_viewConfigurationForCardSection___block_invoke_14;
     v21 = &unk_278DA3948;
-    v22 = self;
+    selfCopy = self;
     v8 = v6;
     v23 = v8;
     v9 = [v7 indexOfObjectWithOptions:2 passingTest:&v18];
@@ -160,12 +160,12 @@
 
     else
     {
-      v12 = [v7 objectAtIndex:{v9, v18, v19, v20, v21, v22}];
-      v13 = [v12 providerIdentifier];
+      v12 = [v7 objectAtIndex:{v9, v18, v19, v20, v21, selfCopy}];
+      providerIdentifier = [v12 providerIdentifier];
 
-      v14 = [(NSMutableDictionary *)self->_cardSectionViewConfigurationsByCardSectionIdentifiersByProviderIdentifiers objectForKey:v13];
-      v15 = [v8 cardSectionIdentifier];
-      v11 = [v14 objectForKey:v15];
+      v14 = [(NSMutableDictionary *)self->_cardSectionViewConfigurationsByCardSectionIdentifiersByProviderIdentifiers objectForKey:providerIdentifier];
+      cardSectionIdentifier = [v8 cardSectionIdentifier];
+      v11 = [v14 objectForKey:cardSectionIdentifier];
 
       v16 = *MEMORY[0x277CF93F0];
       if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_DEFAULT))
@@ -175,7 +175,7 @@
         v28 = 2112;
         v29 = v8;
         v30 = 2112;
-        v31 = v13;
+        v31 = providerIdentifier;
         _os_log_impl(&dword_243247000, v16, OS_LOG_TYPE_DEFAULT, "Found highest priority view configuration for card section\n    View configuration: %@\n    Card section: %@\n    Provider identifier: %@", buf, 0x20u);
       }
     }
@@ -189,11 +189,11 @@
   return v11;
 }
 
-- (BOOL)cardSectionShouldBeDisplayed:(id)a3
+- (BOOL)cardSectionShouldBeDisplayed:(id)displayed
 {
   vetoingProviderIdentifiersByVetoedCardSectionIdentifiers = self->_vetoingProviderIdentifiersByVetoedCardSectionIdentifiers;
-  v4 = [a3 cardSectionIdentifier];
-  v5 = [(NSMutableDictionary *)vetoingProviderIdentifiersByVetoedCardSectionIdentifiers objectForKey:v4];
+  cardSectionIdentifier = [displayed cardSectionIdentifier];
+  v5 = [(NSMutableDictionary *)vetoingProviderIdentifiersByVetoedCardSectionIdentifiers objectForKey:cardSectionIdentifier];
   LOBYTE(vetoingProviderIdentifiersByVetoedCardSectionIdentifiers) = v5 == 0;
 
   return vetoingProviderIdentifiersByVetoedCardSectionIdentifiers;
@@ -207,8 +207,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableDictionary *)self->_cardSectionViewConfigurationsByCardSectionIdentifiersByProviderIdentifiers allValues];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_cardSectionViewConfigurationsByCardSectionIdentifiersByProviderIdentifiers allValues];
+  v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -219,14 +219,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) allValues];
-        [v3 addObjectsFromArray:v9];
+        allValues2 = [*(*(&v11 + 1) + 8 * i) allValues];
+        [v3 addObjectsFromArray:allValues2];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -235,17 +235,17 @@
   return v3;
 }
 
-- (id)_viewConfigurationForCardSection:(id)a3 providerIdentifier:(id)a4
+- (id)_viewConfigurationForCardSection:(id)section providerIdentifier:(id)identifier
 {
   v4 = 0;
-  if (a3 && a4)
+  if (section && identifier)
   {
     cardSectionViewConfigurationsByCardSectionIdentifiersByProviderIdentifiers = self->_cardSectionViewConfigurationsByCardSectionIdentifiersByProviderIdentifiers;
-    v7 = a3;
-    v8 = [(NSMutableDictionary *)cardSectionViewConfigurationsByCardSectionIdentifiersByProviderIdentifiers objectForKey:a4];
-    v9 = [v7 cardSectionIdentifier];
+    sectionCopy = section;
+    v8 = [(NSMutableDictionary *)cardSectionViewConfigurationsByCardSectionIdentifiersByProviderIdentifiers objectForKey:identifier];
+    cardSectionIdentifier = [sectionCopy cardSectionIdentifier];
 
-    v4 = [v8 objectForKey:v9];
+    v4 = [v8 objectForKey:cardSectionIdentifier];
   }
 
   return v4;

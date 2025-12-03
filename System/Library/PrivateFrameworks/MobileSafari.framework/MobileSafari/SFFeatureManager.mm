@@ -103,14 +103,14 @@ uint64_t __52__SFFeatureManager_showRectangularTabsInSeparateBar__block_invoke()
     return 2;
   }
 
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__SFFeatureManager_preferredCapsuleLayoutStyle__block_invoke;
   block[3] = &unk_1E721B360;
-  v8 = v3;
+  v8 = safari_browserDefaults;
   v4 = preferredCapsuleLayoutStyle_onceToken;
-  v5 = v3;
+  v5 = safari_browserDefaults;
   if (v4 != -1)
   {
     dispatch_once(&preferredCapsuleLayoutStyle_onceToken, block);
@@ -162,8 +162,8 @@ void __49__SFFeatureManager_usesFormatMenuInUnifiedTabBar__block_invoke()
 
 + (int64_t)preferredNewDocumentShortcutBehavior
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 safari_integerForKey:@"NewDocumentShortcutBehavior" defaultValue:{+[SFFeatureManager defaultNewDocumentShortcutBehavior](SFFeatureManager, "defaultNewDocumentShortcutBehavior")}];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults safari_integerForKey:@"NewDocumentShortcutBehavior" defaultValue:{+[SFFeatureManager defaultNewDocumentShortcutBehavior](SFFeatureManager, "defaultNewDocumentShortcutBehavior")}];
 
   return v3;
 }
@@ -175,8 +175,8 @@ void __49__SFFeatureManager_usesFormatMenuInUnifiedTabBar__block_invoke()
     return 1;
   }
 
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 safari_BOOLForKey:@"HideBarsWhenScrolling" defaultValue:1];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults safari_BOOLForKey:@"HideBarsWhenScrolling" defaultValue:1];
 
   return v3;
 }

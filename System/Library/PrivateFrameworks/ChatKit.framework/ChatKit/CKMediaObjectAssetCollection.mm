@@ -1,13 +1,13 @@
 @interface CKMediaObjectAssetCollection
-- (id)localizedDateDescriptionWithOptions:(unint64_t)a3;
+- (id)localizedDateDescriptionWithOptions:(unint64_t)options;
 @end
 
 @implementation CKMediaObjectAssetCollection
 
-- (id)localizedDateDescriptionWithOptions:(unint64_t)a3
+- (id)localizedDateDescriptionWithOptions:(unint64_t)options
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"CKMediaObjectAssetDataSource.m" lineNumber:64 description:@"not implemented yet"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CKMediaObjectAssetDataSource.m" lineNumber:64 description:@"not implemented yet"];
 
   abort();
 }

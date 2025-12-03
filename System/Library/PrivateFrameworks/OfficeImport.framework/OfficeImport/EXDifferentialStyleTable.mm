@@ -1,31 +1,31 @@
 @interface EXDifferentialStyleTable
-+ (void)readFrom:(_xmlNode *)a3 state:(id)a4;
++ (void)readFrom:(_xmlNode *)from state:(id)state;
 @end
 
 @implementation EXDifferentialStyleTable
 
-+ (void)readFrom:(_xmlNode *)a3 state:(id)a4
++ (void)readFrom:(_xmlNode *)from state:(id)state
 {
-  v5 = a4;
-  if (a3)
+  stateCopy = state;
+  if (from)
   {
-    v12 = v5;
-    v6 = [v5 resources];
-    v7 = [v6 differentialStyles];
+    v12 = stateCopy;
+    resources = [stateCopy resources];
+    differentialStyles = [resources differentialStyles];
 
-    v8 = [v12 EXSpreadsheetMLNamespace];
-    Child = OCXFindChild(a3, v8, "dxf");
+    eXSpreadsheetMLNamespace = [v12 EXSpreadsheetMLNamespace];
+    Child = OCXFindChild(from, eXSpreadsheetMLNamespace, "dxf");
 
     while (Child)
     {
       v10 = [EXDifferentialStyle edDifferentialStyleFromXmlDifferentialStyleElement:Child state:v12];
-      [v7 addObject:v10];
+      [differentialStyles addObject:v10];
 
-      v11 = [v12 EXSpreadsheetMLNamespace];
-      Child = OCXFindNextChild(Child, v11, "dxf");
+      eXSpreadsheetMLNamespace2 = [v12 EXSpreadsheetMLNamespace];
+      Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace2, "dxf");
     }
 
-    v5 = v12;
+    stateCopy = v12;
   }
 }
 

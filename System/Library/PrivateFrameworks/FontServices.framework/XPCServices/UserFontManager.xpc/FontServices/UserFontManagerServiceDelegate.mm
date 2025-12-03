@@ -1,17 +1,17 @@
 @interface UserFontManagerServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation UserFontManagerServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v7 = connectionCopy;
+  if (connectionCopy)
   {
-    [v6 auditToken];
+    [connectionCopy auditToken];
   }
 
   else

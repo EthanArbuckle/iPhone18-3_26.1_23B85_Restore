@@ -1,28 +1,28 @@
 @interface _LTDLanguageAssetCacheObserver
-- (_LTDLanguageAssetCacheObserver)initWithID:(id)a3 taskHint:(int64_t)a4 progress:(BOOL)a5 observations:(id)a6 completion:(id)a7;
+- (_LTDLanguageAssetCacheObserver)initWithID:(id)d taskHint:(int64_t)hint progress:(BOOL)progress observations:(id)observations completion:(id)completion;
 @end
 
 @implementation _LTDLanguageAssetCacheObserver
 
-- (_LTDLanguageAssetCacheObserver)initWithID:(id)a3 taskHint:(int64_t)a4 progress:(BOOL)a5 observations:(id)a6 completion:(id)a7
+- (_LTDLanguageAssetCacheObserver)initWithID:(id)d taskHint:(int64_t)hint progress:(BOOL)progress observations:(id)observations completion:(id)completion
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  dCopy = d;
+  observationsCopy = observations;
+  completionCopy = completion;
   v24.receiver = self;
   v24.super_class = _LTDLanguageAssetCacheObserver;
   v16 = [(_LTDLanguageAssetCacheObserver *)&v24 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_observerId, a3);
-    v17->_taskHint = a4;
-    v17->_isIndeterminate = !a5;
-    v18 = MEMORY[0x238398770](v14);
+    objc_storeStrong(&v16->_observerId, d);
+    v17->_taskHint = hint;
+    v17->_isIndeterminate = !progress;
+    v18 = MEMORY[0x238398770](observationsCopy);
     observations = v17->_observations;
     v17->_observations = v18;
 
-    v20 = MEMORY[0x238398770](v15);
+    v20 = MEMORY[0x238398770](completionCopy);
     completion = v17->_completion;
     v17->_completion = v20;
 

@@ -1,22 +1,22 @@
 @interface MFFlagColorTriageInteraction
-+ (id)_localizedColorNameFromFlagColor:(unint64_t)a3;
-+ (id)mailMenuCommandsWithSelector:(SEL)a3;
-- (id)cardActionWithCompletion:(id)a3;
++ (id)_localizedColorNameFromFlagColor:(unint64_t)color;
++ (id)mailMenuCommandsWithSelector:(SEL)selector;
+- (id)cardActionWithCompletion:(id)completion;
 - (id)triageAction;
 - (id)undoTitle;
-- (void)setFlagColor:(id)a3;
+- (void)setFlagColor:(id)color;
 @end
 
 @implementation MFFlagColorTriageInteraction
 
 - (id)undoTitle
 {
-  v2 = [(MFFlagColorTriageInteraction *)self flagColor];
+  flagColor = [(MFFlagColorTriageInteraction *)self flagColor];
   v3 = +[NSBundle mainBundle];
-  if (v2)
+  if (flagColor)
   {
     v4 = [v3 localizedStringForKey:@"OPERATION_FLAG_COLOR_DESC" value:&stru_100662A88 table:@"Main"];
-    v5 = [objc_opt_class() _localizedColorNameFromFlagColor:{objc_msgSend(v2, "unsignedIntegerValue")}];
+    v5 = [objc_opt_class() _localizedColorNameFromFlagColor:{objc_msgSend(flagColor, "unsignedIntegerValue")}];
     v6 = [NSString stringWithFormat:v4, v5];
   }
 
@@ -28,28 +28,28 @@
   return v6;
 }
 
-- (void)setFlagColor:(id)a3
+- (void)setFlagColor:(id)color
 {
-  v5 = a3;
-  if (self->_flagColor != v5)
+  colorCopy = color;
+  if (self->_flagColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_flagColor, a3);
-    v6 = [(MFFlagColorTriageInteraction *)self triageAction];
-    [v6 setFlagColor:v7];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_flagColor, color);
+    triageAction = [(MFFlagColorTriageInteraction *)self triageAction];
+    [triageAction setFlagColor:v7];
 
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
-+ (id)_localizedColorNameFromFlagColor:(unint64_t)a3
++ (id)_localizedColorNameFromFlagColor:(unint64_t)color
 {
   v3 = &stru_100662A88;
-  if (a3 <= 2)
+  if (color <= 2)
   {
-    if (a3)
+    if (color)
     {
-      if (a3 == 1)
+      if (color == 1)
       {
         v4 = +[NSBundle mainBundle];
         v5 = [v4 localizedStringForKey:@"FLAG_COLOR_ORANGE" value:&stru_100662A88 table:@"Main"];
@@ -57,7 +57,7 @@
 
       else
       {
-        if (a3 != 2)
+        if (color != 2)
         {
           goto LABEL_18;
         }
@@ -74,9 +74,9 @@
     }
   }
 
-  else if (a3 > 4)
+  else if (color > 4)
   {
-    if (a3 == 5)
+    if (color == 5)
     {
       v4 = +[NSBundle mainBundle];
       v5 = [v4 localizedStringForKey:@"FLAG_COLOR_PURPLE" value:&stru_100662A88 table:@"Main"];
@@ -84,7 +84,7 @@
 
     else
     {
-      if (a3 != 6)
+      if (color != 6)
       {
         goto LABEL_18;
       }
@@ -96,7 +96,7 @@
 
   else
   {
-    if (a3 == 3)
+    if (color == 3)
     {
       v4 = +[NSBundle mainBundle];
       [v4 localizedStringForKey:@"FLAG_COLOR_GREEN" value:&stru_100662A88 table:@"Main"];
@@ -123,11 +123,11 @@ LABEL_18:
   if (!colorTriageAction)
   {
     v4 = [MSFlagTriageAction alloc];
-    v5 = [(MFTriageInteraction *)self messageListItemSelection];
-    v6 = [v4 initWithMessageListSelection:v5 origin:-[MFTriageInteraction origin](self actor:"origin") delegate:-[MFTriageInteraction actor](self reason:{"actor"), self, -[MFFlagChangeTriageInteraction reason](self, "reason")}];
+    messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+    v6 = [v4 initWithMessageListSelection:messageListItemSelection origin:-[MFTriageInteraction origin](self actor:"origin") delegate:-[MFTriageInteraction actor](self reason:{"actor"), self, -[MFFlagChangeTriageInteraction reason](self, "reason")}];
 
-    v7 = [(MFFlagColorTriageInteraction *)self flagColor];
-    [v6 setFlagColor:v7];
+    flagColor = [(MFFlagColorTriageInteraction *)self flagColor];
+    [v6 setFlagColor:flagColor];
 
     v8 = self->_colorTriageAction;
     self->_colorTriageAction = v6;
@@ -138,30 +138,30 @@ LABEL_18:
   return colorTriageAction;
 }
 
-- (id)cardActionWithCompletion:(id)a3
+- (id)cardActionWithCompletion:(id)completion
 {
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_1001CD54C;
   v18 = &unk_100653520;
-  v19 = self;
-  v4 = a3;
-  v20 = v4;
+  selfCopy = self;
+  completionCopy = completion;
+  v20 = completionCopy;
   v5 = [MFFlagColorCardAction cardActionWithTitle:0 shortTitle:0 imageName:0 tintColor:0 handlerEnabled:0 handler:&v15];
   v6 = [(MFTriageInteraction *)self messageListItemSelection:v15];
-  v7 = [v6 messageListItems];
-  v8 = [v7 firstObject];
+  messageListItems = [v6 messageListItems];
+  firstObject = [messageListItems firstObject];
 
-  v9 = [v8 flags];
-  v10 = [v9 flagged];
+  flags = [firstObject flags];
+  flagged = [flags flagged];
 
-  if (v10)
+  if (flagged)
   {
-    v11 = [v8 flagColors];
-    v12 = v11;
-    if (v11)
+    flagColors = [firstObject flagColors];
+    v12 = flagColors;
+    if (flagColors)
     {
-      v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v11 firstIndex]);
+      v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [flagColors firstIndex]);
     }
 
     else
@@ -178,13 +178,13 @@ LABEL_18:
   return v5;
 }
 
-+ (id)mailMenuCommandsWithSelector:(SEL)a3
++ (id)mailMenuCommandsWithSelector:(SEL)selector
 {
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_1001CD784;
   v10 = &unk_100654138;
-  v12 = a3;
+  selectorCopy = selector;
   v3 = objc_alloc_init(NSMutableArray);
   v11 = v3;
   v4 = objc_retainBlock(&v7);

@@ -1,19 +1,19 @@
 @interface AMSUIWebLoadPluginAction
-- (AMSUIWebLoadPluginAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebLoadPluginAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebLoadPluginAction
 
-- (AMSUIWebLoadPluginAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebLoadPluginAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = AMSUIWebLoadPluginAction;
-  v7 = [(AMSUIWebAction *)&v12 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v12 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"bundleIdentifier"];
+    v8 = [objectCopy objectForKeyedSubscript:@"bundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,50 +37,50 @@
   v29 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = AMSUIWebLoadPluginAction;
-  v3 = [(AMSUIWebAction *)&v22 runAction];
-  v4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v4)
+  runAction = [(AMSUIWebAction *)&v22 runAction];
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
-    v8 = [(AMSUIWebLoadPluginAction *)self bundleIdentifier];
+    bundleIdentifier = [(AMSUIWebLoadPluginAction *)self bundleIdentifier];
     *buf = 138543874;
     v24 = v6;
     v25 = 2114;
     v26 = v7;
     v27 = 2114;
-    v28 = v8;
-    _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running plugin action. Bundle identifier: %{public}@", buf, 0x20u);
+    v28 = bundleIdentifier;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running plugin action. Bundle identifier: %{public}@", buf, 0x20u);
   }
 
-  v9 = [(AMSUIWebLoadPluginAction *)self bundleIdentifier];
+  bundleIdentifier2 = [(AMSUIWebLoadPluginAction *)self bundleIdentifier];
 
-  if (v9)
+  if (bundleIdentifier2)
   {
-    v10 = [(AMSUIWebAction *)self context];
-    v11 = [v10 pluginLoader];
-    v12 = [(AMSUIWebLoadPluginAction *)self bundleIdentifier];
-    v13 = [v11 pluginForBundleIdentifier:v12];
+    context = [(AMSUIWebAction *)self context];
+    pluginLoader = [context pluginLoader];
+    bundleIdentifier3 = [(AMSUIWebLoadPluginAction *)self bundleIdentifier];
+    v13 = [pluginLoader pluginForBundleIdentifier:bundleIdentifier3];
 
     if (v13)
     {
-      v14 = [(AMSUIWebAction *)self context];
-      v15 = [v14 dataProvider];
-      v16 = [v15 syncProperties];
-      v17 = [v16 promiseAdapter];
+      context2 = [(AMSUIWebAction *)self context];
+      dataProvider = [context2 dataProvider];
+      syncProperties = [dataProvider syncProperties];
+      promiseAdapter = [syncProperties promiseAdapter];
     }
 
     else
     {
       v19 = MEMORY[0x1E698CAD0];
-      v14 = AMSError();
-      v17 = [v19 promiseWithError:v14];
+      context2 = AMSError();
+      promiseAdapter = [v19 promiseWithError:context2];
     }
   }
 
@@ -88,12 +88,12 @@
   {
     v18 = MEMORY[0x1E698CAD0];
     v13 = AMSError();
-    v17 = [v18 promiseWithError:v13];
+    promiseAdapter = [v18 promiseWithError:v13];
   }
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v17;
+  return promiseAdapter;
 }
 
 @end

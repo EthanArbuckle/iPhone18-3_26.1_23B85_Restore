@@ -1,42 +1,42 @@
 @interface CPWCarSceneDelegate
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation CPWCarSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v6 = a3;
+  sceneCopy = scene;
   v7 = sub_100002238(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v36 = v6;
+    v36 = sceneCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Scene is connecting: %{public}@", buf, 0xCu);
   }
 
-  v8 = v6;
-  v34 = self;
-  v9 = [NSArray arrayWithObjects:&v34 count:1];
+  v8 = sceneCopy;
+  selfCopy = self;
+  v9 = [NSArray arrayWithObjects:&selfCopy count:1];
   v10 = [NSString stringWithFormat:@"%p", self];
   [v8 _registerSettingsDiffActionArray:v9 forKey:v10];
 
   v11 = [[UIWindow alloc] initWithWindowScene:v8];
   [(CPWCarSceneDelegate *)self setWindow:v11];
 
-  v12 = [v8 _FBSScene];
-  v13 = [v12 settings];
-  v14 = [v13 displayIdentity];
-  v33 = [v14 isCarInstrumentsDisplay];
+  _FBSScene = [v8 _FBSScene];
+  settings = [_FBSScene settings];
+  displayIdentity = [settings displayIdentity];
+  isCarInstrumentsDisplay = [displayIdentity isCarInstrumentsDisplay];
 
   objc_opt_class();
-  v15 = [v8 _FBSScene];
-  v16 = [v15 settings];
-  if (v16 && (objc_opt_isKindOfClass() & 1) != 0)
+  _FBSScene2 = [v8 _FBSScene];
+  settings2 = [_FBSScene2 settings];
+  if (settings2 && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v17 = v16;
+    v17 = settings2;
   }
 
   else
@@ -45,13 +45,13 @@
   }
 
   v18 = +[UIApplication sharedApplication];
-  v19 = [v18 delegate];
+  delegate = [v18 delegate];
 
   objc_opt_class();
-  v20 = [v17 wallpaper];
-  if (v20 && (objc_opt_isKindOfClass() & 1) != 0)
+  wallpaper = [v17 wallpaper];
+  if (wallpaper && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v21 = v20;
+    v21 = wallpaper;
   }
 
   else
@@ -67,58 +67,58 @@
 
   v23 = objc_alloc_init(*v22);
   v24 = [CPWRootViewController alloc];
-  v25 = [v17 wallpaper];
-  v26 = [v19 assetLibrary];
-  v27 = [v17 isDimmed];
-  v28 = [v19 wallpaperCache];
-  v29 = [(CPWRootViewController *)v24 initWithWallpaper:v25 assetLibrary:v26 isDimmed:v27 wallpaperProvider:v23 wallpaperCache:v28 isInstrumentCluster:v33];
+  wallpaper2 = [v17 wallpaper];
+  assetLibrary = [delegate assetLibrary];
+  isDimmed = [v17 isDimmed];
+  wallpaperCache = [delegate wallpaperCache];
+  v29 = [(CPWRootViewController *)v24 initWithWallpaper:wallpaper2 assetLibrary:assetLibrary isDimmed:isDimmed wallpaperProvider:v23 wallpaperCache:wallpaperCache isInstrumentCluster:isCarInstrumentsDisplay];
   [(CPWCarSceneDelegate *)self setRootViewController:v29];
 
-  v30 = [(CPWCarSceneDelegate *)self rootViewController];
-  v31 = [(CPWCarSceneDelegate *)self window];
-  [v31 setRootViewController:v30];
+  rootViewController = [(CPWCarSceneDelegate *)self rootViewController];
+  window = [(CPWCarSceneDelegate *)self window];
+  [window setRootViewController:rootViewController];
 
-  v32 = [(CPWCarSceneDelegate *)self window];
-  [v32 makeKeyAndVisible];
+  window2 = [(CPWCarSceneDelegate *)self window];
+  [window2 makeKeyAndVisible];
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = sub_100002238(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = v4;
+    v11 = disconnectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Scene did disconnect: %{public}@", buf, 0xCu);
   }
 
-  v9 = self;
-  v6 = v4;
-  v7 = [NSArray arrayWithObjects:&v9 count:1];
+  selfCopy = self;
+  v6 = disconnectCopy;
+  v7 = [NSArray arrayWithObjects:&selfCopy count:1];
   [v6 _unregisterSettingsDiffActionArrayForKey:v7];
 
-  v8 = [(CPWCarSceneDelegate *)self rootViewController];
-  [v8 invalidate];
+  rootViewController = [(CPWCarSceneDelegate *)self rootViewController];
+  [rootViewController invalidate];
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v9 = a3;
+  sceneCopy = scene;
   v10 = sub_100002238(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138543362;
-    v19 = v9;
+    v19 = sceneCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Handling update for scene: %{public}@", &v18, 0xCu);
   }
 
   objc_opt_class();
-  v11 = [v9 _FBSScene];
-  v12 = [v11 settings];
-  if (v12 && (objc_opt_isKindOfClass() & 1) != 0)
+  _FBSScene = [sceneCopy _FBSScene];
+  settings = [_FBSScene settings];
+  if (settings && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v13 = v12;
+    v13 = settings;
   }
 
   else
@@ -126,13 +126,13 @@
     v13 = 0;
   }
 
-  v14 = [v13 wallpaper];
-  v15 = [(CPWCarSceneDelegate *)self rootViewController];
-  [v15 setWallpaper:v14];
+  wallpaper = [v13 wallpaper];
+  rootViewController = [(CPWCarSceneDelegate *)self rootViewController];
+  [rootViewController setWallpaper:wallpaper];
 
-  v16 = [v13 isDimmed];
-  v17 = [(CPWCarSceneDelegate *)self rootViewController];
-  [v17 setShouldHomeScreenWallpaperBeDimmed:v16];
+  isDimmed = [v13 isDimmed];
+  rootViewController2 = [(CPWCarSceneDelegate *)self rootViewController];
+  [rootViewController2 setShouldHomeScreenWallpaperBeDimmed:isDimmed];
 }
 
 @end

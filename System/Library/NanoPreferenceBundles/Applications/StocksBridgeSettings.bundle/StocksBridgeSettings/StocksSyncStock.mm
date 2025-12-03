@@ -2,29 +2,29 @@
 - (BOOL)shouldUseCompanyNameAsListName;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)listName;
-- (StocksSyncStock)initWithSymbol:(id)a3 companyName:(id)a4 listName:(id)a5 compactListName:(id)a6 type:(id)a7;
+- (StocksSyncStock)initWithSymbol:(id)symbol companyName:(id)name listName:(id)listName compactListName:(id)compactListName type:(id)type;
 @end
 
 @implementation StocksSyncStock
 
-- (StocksSyncStock)initWithSymbol:(id)a3 companyName:(id)a4 listName:(id)a5 compactListName:(id)a6 type:(id)a7
+- (StocksSyncStock)initWithSymbol:(id)symbol companyName:(id)name listName:(id)listName compactListName:(id)compactListName type:(id)type
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  symbolCopy = symbol;
+  nameCopy = name;
+  listNameCopy = listName;
+  compactListNameCopy = compactListName;
+  typeCopy = type;
   v21.receiver = self;
   v21.super_class = StocksSyncStock;
   v17 = [(StocksSyncStock *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_symbol, a3);
-    objc_storeStrong(&v18->_companyName, a4);
-    objc_storeStrong(&v18->_listName, a5);
-    objc_storeStrong(&v18->_compactListName, a6);
-    objc_storeStrong(&v18->_type, a7);
+    objc_storeStrong(&v17->_symbol, symbol);
+    objc_storeStrong(&v18->_companyName, name);
+    objc_storeStrong(&v18->_listName, listName);
+    objc_storeStrong(&v18->_compactListName, compactListName);
+    objc_storeStrong(&v18->_type, type);
   }
 
   return v18;
@@ -32,9 +32,9 @@
 
 - (BOOL)shouldUseCompanyNameAsListName
 {
-  v3 = [(NSString *)self->_companyName naui_containsCJKScripts];
+  naui_containsCJKScripts = [(NSString *)self->_companyName naui_containsCJKScripts];
   LODWORD(v4) = [(StocksSyncStock *)self isIndex];
-  if ((v3 & 1) != 0 || v4)
+  if ((naui_containsCJKScripts & 1) != 0 || v4)
   {
     v4 = [(NSString *)self->_companyName length];
     if (v4)
@@ -48,9 +48,9 @@
 
 - (NSString)listName
 {
-  v3 = [(StocksSyncStock *)self shouldUseCompanyNameAsListName];
+  shouldUseCompanyNameAsListName = [(StocksSyncStock *)self shouldUseCompanyNameAsListName];
   v4 = self->_companyName;
-  if ((v3 & 1) == 0)
+  if ((shouldUseCompanyNameAsListName & 1) == 0)
   {
     if ([(NSString *)self->_listName length])
     {

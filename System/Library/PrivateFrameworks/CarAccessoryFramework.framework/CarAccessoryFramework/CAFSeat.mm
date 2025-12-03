@@ -9,25 +9,25 @@
 - (NSDictionary)fansIndexed;
 - (NSDictionary)heatingCoolingsIndexed;
 - (NSDictionary)seatBeltsIndexed;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFSeat
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFSeat;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABD38])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABD38])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -40,12 +40,12 @@
   [(CAFAccessory *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABD38])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABD38])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -61,11 +61,11 @@
 - (NSArray)seatBeltServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000022000004"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000022000004"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000022000004"];
@@ -85,11 +85,11 @@
 - (NSArray)heatingCoolingServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000022000001"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000022000001"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000022000001"];
@@ -109,11 +109,11 @@
 - (NSArray)fanServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000022000002"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000022000002"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000022000002"];
@@ -133,11 +133,11 @@
 - (NSArray)seatBelts
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(CAFSeat *)self seatBeltServices];
+  seatBeltServices = [(CAFSeat *)self seatBeltServices];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"vehicleLayoutKey" ascending:1];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  v5 = [v2 sortedArrayUsingDescriptors:v4];
+  v5 = [seatBeltServices sortedArrayUsingDescriptors:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 
@@ -164,13 +164,13 @@
 - (NSArray)heatingCoolings
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v2 = [(CAFSeat *)self heatingCoolingServices];
+  heatingCoolingServices = [(CAFSeat *)self heatingCoolingServices];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"vehicleLayoutKey" ascending:1];
   v9[0] = v3;
   v4 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:0 ascending:1 selector:sel_typeCompare_];
   v9[1] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:2];
-  v6 = [v2 sortedArrayUsingDescriptors:v5];
+  v6 = [heatingCoolingServices sortedArrayUsingDescriptors:v5];
 
   v7 = *MEMORY[0x277D85DE8];
 
@@ -197,11 +197,11 @@
 - (NSArray)fans
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(CAFSeat *)self fanServices];
+  fanServices = [(CAFSeat *)self fanServices];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"vehicleLayoutKey" ascending:1];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  v5 = [v2 sortedArrayUsingDescriptors:v4];
+  v5 = [fanServices sortedArrayUsingDescriptors:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 

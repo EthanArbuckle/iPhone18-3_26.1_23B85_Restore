@@ -1,17 +1,17 @@
 @interface TickerWindow
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC7ChatKitP33_1CDF9E619B3482BCE1E7C40D34D4226E12TickerWindow)initWithCoder:(id)a3;
-- (_TtC7ChatKitP33_1CDF9E619B3482BCE1E7C40D34D4226E12TickerWindow)initWithFrame:(CGRect)a3;
-- (_TtC7ChatKitP33_1CDF9E619B3482BCE1E7C40D34D4226E12TickerWindow)initWithWindowScene:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC7ChatKitP33_1CDF9E619B3482BCE1E7C40D34D4226E12TickerWindow)initWithCoder:(id)coder;
+- (_TtC7ChatKitP33_1CDF9E619B3482BCE1E7C40D34D4226E12TickerWindow)initWithFrame:(CGRect)frame;
+- (_TtC7ChatKitP33_1CDF9E619B3482BCE1E7C40D34D4226E12TickerWindow)initWithWindowScene:(id)scene;
 @end
 
 @implementation TickerWindow
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_190D2A830(width, height);
   v8 = v7;
 
@@ -22,33 +22,33 @@
   return result;
 }
 
-- (_TtC7ChatKitP33_1CDF9E619B3482BCE1E7C40D34D4226E12TickerWindow)initWithWindowScene:(id)a3
+- (_TtC7ChatKitP33_1CDF9E619B3482BCE1E7C40D34D4226E12TickerWindow)initWithWindowScene:(id)scene
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7ChatKitP33_1CDF9E619B3482BCE1E7C40D34D4226E12TickerWindow_tickCounter) = 0;
   v5.receiver = self;
   v5.super_class = type metadata accessor for TickerWindow();
-  return [(TickerWindow *)&v5 initWithWindowScene:a3];
+  return [(TickerWindow *)&v5 initWithWindowScene:scene];
 }
 
-- (_TtC7ChatKitP33_1CDF9E619B3482BCE1E7C40D34D4226E12TickerWindow)initWithFrame:(CGRect)a3
+- (_TtC7ChatKitP33_1CDF9E619B3482BCE1E7C40D34D4226E12TickerWindow)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7ChatKitP33_1CDF9E619B3482BCE1E7C40D34D4226E12TickerWindow_tickCounter) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for TickerWindow();
   return [(TickerWindow *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC7ChatKitP33_1CDF9E619B3482BCE1E7C40D34D4226E12TickerWindow)initWithCoder:(id)a3
+- (_TtC7ChatKitP33_1CDF9E619B3482BCE1E7C40D34D4226E12TickerWindow)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7ChatKitP33_1CDF9E619B3482BCE1E7C40D34D4226E12TickerWindow_tickCounter) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for TickerWindow();
-  v4 = a3;
-  v5 = [(TickerWindow *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(TickerWindow *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

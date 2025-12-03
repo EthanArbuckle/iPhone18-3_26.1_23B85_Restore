@@ -1,12 +1,12 @@
 @interface DDDevicePickerViewController
-+ (BOOL)isSupportedForBrowseDescriptor:(id)a3 parameters:(id)a4;
-- (DDDevicePickerViewController)initWithBrowseDescriptor:(id)a3 parameters:(id)a4;
++ (BOOL)isSupportedForBrowseDescriptor:(id)descriptor parameters:(id)parameters;
+- (DDDevicePickerViewController)initWithBrowseDescriptor:(id)descriptor parameters:(id)parameters;
 - (void)viewDidLoad;
 @end
 
 @implementation DDDevicePickerViewController
 
-+ (BOOL)isSupportedForBrowseDescriptor:(id)a3 parameters:(id)a4
++ (BOOL)isSupportedForBrowseDescriptor:(id)descriptor parameters:(id)parameters
 {
   if (isSupportedForBrowseDescriptor_parameters__onceToken != -1)
   {
@@ -22,10 +22,10 @@ void __74__DDDevicePickerViewController_isSupportedForBrowseDescriptor_parameter
   isSupportedForBrowseDescriptor_parameters__isSupported = [v0 isEqual:{@"AppleTV5, 3"}] ^ 1;
 }
 
-- (DDDevicePickerViewController)initWithBrowseDescriptor:(id)a3 parameters:(id)a4
+- (DDDevicePickerViewController)initWithBrowseDescriptor:(id)descriptor parameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  parametersCopy = parameters;
   v14.receiver = self;
   v14.super_class = DDDevicePickerViewController;
   v8 = [(DDDevicePickerViewController *)&v14 initWithNibName:0 bundle:0];
@@ -38,7 +38,7 @@ void __74__DDDevicePickerViewController_isSupportedForBrowseDescriptor_parameter
       _os_log_impl(&dword_238060000, v9, OS_LOG_TYPE_INFO, "Creating _ChildViewController for non-TV device", v13, 2u);
     }
 
-    v10 = [[DDDevicePickerSceneViewController alloc] initWithBrowseDescriptor:v6 parameters:v7];
+    v10 = [[DDDevicePickerSceneViewController alloc] initWithBrowseDescriptor:descriptorCopy parameters:parametersCopy];
     childViewController = v8->_childViewController;
     v8->_childViewController = v10;
   }
@@ -52,49 +52,49 @@ void __74__DDDevicePickerViewController_isSupportedForBrowseDescriptor_parameter
   v31.super_class = DDDevicePickerViewController;
   [(DDDevicePickerViewController *)&v31 viewDidLoad];
   [(DDDevicePickerViewController *)self addChildViewController:self->_childViewController];
-  v3 = [(DDDevicePickerViewController *)self view];
-  v4 = [(DDDevicePicker *)self->_childViewController view];
-  [v3 addSubview:v4];
+  view = [(DDDevicePickerViewController *)self view];
+  view2 = [(DDDevicePicker *)self->_childViewController view];
+  [view addSubview:view2];
 
   [(DDDevicePicker *)self->_childViewController didMoveToParentViewController:self];
-  v5 = [(DDDevicePicker *)self->_childViewController view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [(DDDevicePicker *)self->_childViewController view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [(DDDevicePickerViewController *)self navigationController];
-  v8 = [v7 navigationBar];
-  [v8 frame];
+  array = [MEMORY[0x277CBEB18] array];
+  navigationController = [(DDDevicePickerViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
   v10 = v9;
 
-  v11 = [(DDDevicePicker *)self->_childViewController view];
-  v12 = [v11 topAnchor];
-  v13 = [(DDDevicePickerViewController *)self view];
-  v14 = [v13 topAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14 constant:-v10];
-  [v6 addObject:v15];
+  view4 = [(DDDevicePicker *)self->_childViewController view];
+  topAnchor = [view4 topAnchor];
+  view5 = [(DDDevicePickerViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-v10];
+  [array addObject:v15];
 
-  v16 = [(DDDevicePicker *)self->_childViewController view];
-  v17 = [v16 leadingAnchor];
-  v18 = [(DDDevicePickerViewController *)self view];
-  v19 = [v18 leadingAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
-  [v6 addObject:v20];
+  view6 = [(DDDevicePicker *)self->_childViewController view];
+  leadingAnchor = [view6 leadingAnchor];
+  view7 = [(DDDevicePickerViewController *)self view];
+  leadingAnchor2 = [view7 leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v20];
 
-  v21 = [(DDDevicePicker *)self->_childViewController view];
-  v22 = [v21 trailingAnchor];
-  v23 = [(DDDevicePickerViewController *)self view];
-  v24 = [v23 trailingAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
-  [v6 addObject:v25];
+  view8 = [(DDDevicePicker *)self->_childViewController view];
+  trailingAnchor = [view8 trailingAnchor];
+  view9 = [(DDDevicePickerViewController *)self view];
+  trailingAnchor2 = [view9 trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v25];
 
-  v26 = [(DDDevicePicker *)self->_childViewController view];
-  v27 = [v26 bottomAnchor];
-  v28 = [(DDDevicePickerViewController *)self view];
-  v29 = [v28 bottomAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
-  [v6 addObject:v30];
+  view10 = [(DDDevicePicker *)self->_childViewController view];
+  bottomAnchor = [view10 bottomAnchor];
+  view11 = [(DDDevicePickerViewController *)self view];
+  bottomAnchor2 = [view11 bottomAnchor];
+  v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v30];
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v6];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 }
 
 @end

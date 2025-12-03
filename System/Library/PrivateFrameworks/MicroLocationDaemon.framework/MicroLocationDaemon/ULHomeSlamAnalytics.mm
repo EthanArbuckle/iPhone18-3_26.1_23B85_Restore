@@ -2,24 +2,24 @@
 + (id)shared;
 - (ULHomeSlamAnalytics)init;
 - (id)_createBGTRequest;
-- (uint64_t)logEventAcceleratedTriggerChanged:(uint64_t)a3 AtTimestamp:(int)a4;
-- (uint64_t)logEventDaemonStartedAtTimestamp:(void *)a1;
-- (uint64_t)logEventEnterHomeLOIAtTimestamp:(void *)a1;
-- (uint64_t)logEventExitHomeLOIAtTimestamp:(void *)a1;
-- (uint64_t)logEventMiLoEnabled:(uint64_t)a3 AtTimestamp:(int)a4;
-- (uint64_t)logEventRequireIsLowLatencyChanged:(uint64_t)a3 AtTimestamp:(int)a4;
-- (uint64_t)logEventScanEventGeneratedAfterDisplayOnAtTimeStamp:(void *)a1;
-- (uint64_t)logEventScreenOffAtTimestamp:(void *)a1;
-- (uint64_t)logEventScreenOnAtTimestamp:(void *)a1;
-- (uint64_t)logEventSleepStateRegisterAtTimestamp:(void *)a1;
-- (uint64_t)logSleepStateEvent:(uint64_t)a3 atTimestamp:(int)a4;
-- (void)_logEventType:(uint64_t)a3 atTimestamp:(__int16)a4;
+- (uint64_t)logEventAcceleratedTriggerChanged:(uint64_t)changed AtTimestamp:(int)timestamp;
+- (uint64_t)logEventDaemonStartedAtTimestamp:(void *)timestamp;
+- (uint64_t)logEventEnterHomeLOIAtTimestamp:(void *)timestamp;
+- (uint64_t)logEventExitHomeLOIAtTimestamp:(void *)timestamp;
+- (uint64_t)logEventMiLoEnabled:(uint64_t)enabled AtTimestamp:(int)timestamp;
+- (uint64_t)logEventRequireIsLowLatencyChanged:(uint64_t)changed AtTimestamp:(int)timestamp;
+- (uint64_t)logEventScanEventGeneratedAfterDisplayOnAtTimeStamp:(void *)stamp;
+- (uint64_t)logEventScreenOffAtTimestamp:(void *)timestamp;
+- (uint64_t)logEventScreenOnAtTimestamp:(void *)timestamp;
+- (uint64_t)logEventSleepStateRegisterAtTimestamp:(void *)timestamp;
+- (uint64_t)logSleepStateEvent:(uint64_t)event atTimestamp:(int)timestamp;
+- (void)_logEventType:(uint64_t)type atTimestamp:(__int16)timestamp;
 - (void)_registerForBackgroundTask;
 - (void)_runStopDetectionAnalyticsTask;
 - (void)_unregisterForBackgroundTask;
 - (void)dealloc;
 - (void)resetDependencies;
-- (void)setDependenciesAndRegisterToBackgroundTaskWithDB:(ULDatabaseStoreInterface *)a3 environment:(id)a4;
+- (void)setDependenciesAndRegisterToBackgroundTaskWithDB:(ULDatabaseStoreInterface *)b environment:(id)environment;
 @end
 
 @implementation ULHomeSlamAnalytics
@@ -32,7 +32,7 @@
     block[1] = 3221225472;
     block[2] = __29__ULHomeSlamAnalytics_shared__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (+[ULHomeSlamAnalytics shared]::onceToken != -1)
     {
       dispatch_once(&+[ULHomeSlamAnalytics shared]::onceToken, block);
@@ -63,30 +63,30 @@ void __29__ULHomeSlamAnalytics_shared__block_invoke(uint64_t a1)
   v2 = [(ULHomeSlamAnalytics *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
-    [(ULHomeSlamAnalytics *)v2 setSleepWakeEventsQueue:v3];
+    array = [MEMORY[0x277CBEB18] array];
+    [(ULHomeSlamAnalytics *)v2 setSleepWakeEventsQueue:array];
   }
 
   return v2;
 }
 
-- (void)setDependenciesAndRegisterToBackgroundTaskWithDB:(ULDatabaseStoreInterface *)a3 environment:(id)a4
+- (void)setDependenciesAndRegisterToBackgroundTaskWithDB:(ULDatabaseStoreInterface *)b environment:(id)environment
 {
-  v7 = a4;
-  v6 = [v7 queue];
-  dispatch_assert_queue_V2(v6);
+  environmentCopy = environment;
+  queue = [environmentCopy queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(ULHomeSlamAnalytics *)self setDbStore:a3];
-  [(ULHomeSlamAnalytics *)self setEnvironment:v7];
+  [(ULHomeSlamAnalytics *)self setDbStore:b];
+  [(ULHomeSlamAnalytics *)self setEnvironment:environmentCopy];
   [(ULHomeSlamAnalytics *)self _registerForBackgroundTask];
   [(ULHomeSlamAnalytics *)self setDependenciesSet:1];
 }
 
 - (void)resetDependencies
 {
-  v3 = [(ULHomeSlamAnalytics *)self environment];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  environment = [(ULHomeSlamAnalytics *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
   [(ULHomeSlamAnalytics *)self setDbStore:0];
   [(ULHomeSlamAnalytics *)self setEnvironment:0];
@@ -103,70 +103,70 @@ void __29__ULHomeSlamAnalytics_shared__block_invoke(uint64_t a1)
   [(ULHomeSlamAnalytics *)&v3 dealloc];
 }
 
-- (uint64_t)logEventDaemonStartedAtTimestamp:(void *)a1
+- (uint64_t)logEventDaemonStartedAtTimestamp:(void *)timestamp
 {
-  v4 = [a1 environment];
-  v5 = [v4 queue];
-  dispatch_assert_queue_V2(v5);
+  environment = [timestamp environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  return [a1 _logEventType:4 atTimestamp:a2];
+  return [timestamp _logEventType:4 atTimestamp:a2];
 }
 
-- (uint64_t)logEventScreenOnAtTimestamp:(void *)a1
+- (uint64_t)logEventScreenOnAtTimestamp:(void *)timestamp
 {
-  v4 = [a1 environment];
-  v5 = [v4 queue];
-  dispatch_assert_queue_V2(v5);
+  environment = [timestamp environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  return [a1 _logEventType:0 atTimestamp:a2];
+  return [timestamp _logEventType:0 atTimestamp:a2];
 }
 
-- (uint64_t)logEventScreenOffAtTimestamp:(void *)a1
+- (uint64_t)logEventScreenOffAtTimestamp:(void *)timestamp
 {
-  v4 = [a1 environment];
-  v5 = [v4 queue];
-  dispatch_assert_queue_V2(v5);
+  environment = [timestamp environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  return [a1 _logEventType:1 atTimestamp:a2];
+  return [timestamp _logEventType:1 atTimestamp:a2];
 }
 
-- (uint64_t)logEventEnterHomeLOIAtTimestamp:(void *)a1
+- (uint64_t)logEventEnterHomeLOIAtTimestamp:(void *)timestamp
 {
-  v4 = [a1 environment];
-  v5 = [v4 queue];
-  dispatch_assert_queue_V2(v5);
+  environment = [timestamp environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  return [a1 _logEventType:5 atTimestamp:a2];
+  return [timestamp _logEventType:5 atTimestamp:a2];
 }
 
-- (uint64_t)logEventExitHomeLOIAtTimestamp:(void *)a1
+- (uint64_t)logEventExitHomeLOIAtTimestamp:(void *)timestamp
 {
-  v4 = [a1 environment];
-  v5 = [v4 queue];
-  dispatch_assert_queue_V2(v5);
+  environment = [timestamp environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  return [a1 _logEventType:6 atTimestamp:a2];
+  return [timestamp _logEventType:6 atTimestamp:a2];
 }
 
-- (uint64_t)logEventSleepStateRegisterAtTimestamp:(void *)a1
+- (uint64_t)logEventSleepStateRegisterAtTimestamp:(void *)timestamp
 {
-  v4 = [a1 environment];
-  v5 = [v4 queue];
-  dispatch_assert_queue_V2(v5);
+  environment = [timestamp environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  return [a1 _logEventType:7 atTimestamp:a2];
+  return [timestamp _logEventType:7 atTimestamp:a2];
 }
 
-- (uint64_t)logSleepStateEvent:(uint64_t)a3 atTimestamp:(int)a4
+- (uint64_t)logSleepStateEvent:(uint64_t)event atTimestamp:(int)timestamp
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = [a1 environment];
-  v8 = [v7 queue];
-  dispatch_assert_queue_V2(v8);
+  environment = [self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (a4 > 29)
+  if (timestamp > 29)
   {
-    switch(a4)
+    switch(timestamp)
     {
       case 30:
         v9 = 11;
@@ -182,20 +182,20 @@ void __29__ULHomeSlamAnalytics_shared__block_invoke(uint64_t a1)
     goto LABEL_11;
   }
 
-  if (!a4)
+  if (!timestamp)
   {
 LABEL_19:
     v9 = 8;
     goto LABEL_22;
   }
 
-  if (a4 == 10)
+  if (timestamp == 10)
   {
     v9 = 9;
     goto LABEL_22;
   }
 
-  if (a4 != 20)
+  if (timestamp != 20)
   {
 LABEL_11:
     if (onceToken_MicroLocation_Default != -1)
@@ -211,7 +211,7 @@ LABEL_11:
       v16 = 2082;
       v17 = "";
       v18 = 1026;
-      v19 = a4;
+      timestampCopy2 = timestamp;
       _os_log_impl(&dword_258FE9000, v10, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:received unknown ULSleepWakeState value, state:%{public}d}", &v14, 0x18u);
     }
 
@@ -228,7 +228,7 @@ LABEL_11:
       v16 = 2082;
       v17 = "";
       v18 = 1026;
-      v19 = a4;
+      timestampCopy2 = timestamp;
       _os_signpost_emit_with_name_impl(&dword_258FE9000, v11, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "received unknown ULSleepWakeState value", "{msg%{public}.0s:received unknown ULSleepWakeState value, state:%{public}d}", &v14, 0x18u);
     }
 
@@ -237,18 +237,18 @@ LABEL_11:
 
   v9 = 10;
 LABEL_22:
-  result = [a1 _logEventType:v9 atTimestamp:a2];
+  result = [self _logEventType:v9 atTimestamp:a2];
   v13 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (uint64_t)logEventRequireIsLowLatencyChanged:(uint64_t)a3 AtTimestamp:(int)a4
+- (uint64_t)logEventRequireIsLowLatencyChanged:(uint64_t)changed AtTimestamp:(int)timestamp
 {
-  v7 = [a1 environment];
-  v8 = [v7 queue];
-  dispatch_assert_queue_V2(v8);
+  environment = [self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (a4)
+  if (timestamp)
   {
     v9 = 14;
   }
@@ -258,16 +258,16 @@ LABEL_22:
     v9 = 15;
   }
 
-  return [a1 _logEventType:v9 atTimestamp:a2];
+  return [self _logEventType:v9 atTimestamp:a2];
 }
 
-- (uint64_t)logEventMiLoEnabled:(uint64_t)a3 AtTimestamp:(int)a4
+- (uint64_t)logEventMiLoEnabled:(uint64_t)enabled AtTimestamp:(int)timestamp
 {
-  v7 = [a1 environment];
-  v8 = [v7 queue];
-  dispatch_assert_queue_V2(v8);
+  environment = [self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (a4)
+  if (timestamp)
   {
     v9 = 18;
   }
@@ -277,16 +277,16 @@ LABEL_22:
     v9 = 19;
   }
 
-  return [a1 _logEventType:v9 atTimestamp:a2];
+  return [self _logEventType:v9 atTimestamp:a2];
 }
 
-- (uint64_t)logEventAcceleratedTriggerChanged:(uint64_t)a3 AtTimestamp:(int)a4
+- (uint64_t)logEventAcceleratedTriggerChanged:(uint64_t)changed AtTimestamp:(int)timestamp
 {
-  v7 = [a1 environment];
-  v8 = [v7 queue];
-  dispatch_assert_queue_V2(v8);
+  environment = [self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (a4)
+  if (timestamp)
   {
     v9 = 16;
   }
@@ -296,26 +296,26 @@ LABEL_22:
     v9 = 17;
   }
 
-  return [a1 _logEventType:v9 atTimestamp:a2];
+  return [self _logEventType:v9 atTimestamp:a2];
 }
 
-- (uint64_t)logEventScanEventGeneratedAfterDisplayOnAtTimeStamp:(void *)a1
+- (uint64_t)logEventScanEventGeneratedAfterDisplayOnAtTimeStamp:(void *)stamp
 {
-  v4 = [a1 environment];
-  v5 = [v4 queue];
-  dispatch_assert_queue_V2(v5);
+  environment = [stamp environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  return [a1 _logEventType:20 atTimestamp:a2];
+  return [stamp _logEventType:20 atTimestamp:a2];
 }
 
-- (void)_logEventType:(uint64_t)a3 atTimestamp:(__int16)a4
+- (void)_logEventType:(uint64_t)type atTimestamp:(__int16)timestamp
 {
   v18 = *MEMORY[0x277D85DE8];
-  if ([a1 dbStore])
+  if ([self dbStore])
   {
-    ULHomeSlamAnalyticEventDO::ULHomeSlamAnalyticEventDO(&v12, a4, a2);
-    v7 = [a1 dbStore];
-    v8 = (*(*v7 + 136))(v7);
+    ULHomeSlamAnalyticEventDO::ULHomeSlamAnalyticEventDO(&v12, timestamp, a2);
+    dbStore = [self dbStore];
+    v8 = (*(*dbStore + 136))(dbStore);
     v14 = v12;
     v15 = v13;
     v17 = 0uLL;
@@ -366,17 +366,17 @@ LABEL_22:
 - (void)_registerForBackgroundTask
 {
   objc_initWeak(&location, self);
-  v3 = [(ULHomeSlamAnalytics *)self environment];
-  v4 = [v3 backgroundSystemTaskManager];
-  v5 = [(ULHomeSlamAnalytics *)self _createBGTRequest];
-  v6 = [(ULHomeSlamAnalytics *)self environment];
-  v7 = [v6 queue];
+  environment = [(ULHomeSlamAnalytics *)self environment];
+  backgroundSystemTaskManager = [environment backgroundSystemTaskManager];
+  _createBGTRequest = [(ULHomeSlamAnalytics *)self _createBGTRequest];
+  environment2 = [(ULHomeSlamAnalytics *)self environment];
+  queue = [environment2 queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__ULHomeSlamAnalytics__registerForBackgroundTask__block_invoke;
   v8[3] = &unk_2798D4410;
   objc_copyWeak(&v9, &location);
-  [v4 registerAndSubmitTaskWithRequest:v5 usingQueue:v7 launchHandler:v8];
+  [backgroundSystemTaskManager registerAndSubmitTaskWithRequest:_createBGTRequest usingQueue:queue launchHandler:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -397,29 +397,29 @@ void __49__ULHomeSlamAnalytics__registerForBackgroundTask__block_invoke(uint64_t
 
 - (void)_unregisterForBackgroundTask
 {
-  v3 = [(ULHomeSlamAnalytics *)self environment];
-  v2 = [v3 backgroundSystemTaskManager];
-  [v2 deregisterAndCancelTaskWithIdentifier:@"com.apple.milod.homeSlamAnalytics"];
+  environment = [(ULHomeSlamAnalytics *)self environment];
+  backgroundSystemTaskManager = [environment backgroundSystemTaskManager];
+  [backgroundSystemTaskManager deregisterAndCancelTaskWithIdentifier:@"com.apple.milod.homeSlamAnalytics"];
 }
 
 - (id)_createBGTRequest
 {
   v2 = +[ULDefaultsSingleton shared];
-  v3 = [v2 defaultsDictionary];
+  defaultsDictionary = [v2 defaultsDictionary];
 
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULHomeSlamAnalyticsInterval"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaultsDictionary objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
   {
-    v6 = [&unk_286A71310 intValue];
+    intValue = [&unk_286A71310 intValue];
   }
 
-  v7 = v6;
+  v7 = intValue;
 
   v8 = [[ULBGRepeatingSystemTaskRequest alloc] initWithIdentifier:@"com.apple.milod.homeSlamAnalytics" interval:v7 minDurationBetweenInstances:v7 * 0.8];
   [(ULBGSystemTaskRequest *)v8 setPriority:1];
@@ -454,7 +454,7 @@ void __49__ULHomeSlamAnalytics__registerForBackgroundTask__block_invoke(uint64_t
       v10 = 2082;
       v11 = "";
       v12 = 2082;
-      v13 = [@"com.apple.MicroLocation.AllDayTriggers" UTF8String];
+      uTF8String = [@"com.apple.MicroLocation.AllDayTriggers" UTF8String];
       _os_log_impl(&dword_258FE9000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:sending CoreAnalytics event, event type:%{public, location:escape_only}s}", &v8, 0x1Cu);
     }
 

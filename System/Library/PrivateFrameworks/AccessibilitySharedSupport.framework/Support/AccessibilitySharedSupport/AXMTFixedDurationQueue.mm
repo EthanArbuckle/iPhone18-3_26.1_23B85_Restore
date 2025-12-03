@@ -1,13 +1,13 @@
 @interface AXMTFixedDurationQueue
-- (AXMTFixedDurationQueue)initWithDuration:(double)a3;
-- (void)_dequeueEntriesOlderThan:(id)a3;
-- (void)enqueueValue:(id)a3 withTimestamp:(id)a4;
+- (AXMTFixedDurationQueue)initWithDuration:(double)duration;
+- (void)_dequeueEntriesOlderThan:(id)than;
+- (void)enqueueValue:(id)value withTimestamp:(id)timestamp;
 - (void)reset;
 @end
 
 @implementation AXMTFixedDurationQueue
 
-- (AXMTFixedDurationQueue)initWithDuration:(double)a3
+- (AXMTFixedDurationQueue)initWithDuration:(double)duration
 {
   v9.receiver = self;
   v9.super_class = AXMTFixedDurationQueue;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->__duration = a3;
+    v4->__duration = duration;
     v6 = objc_opt_new();
     valuesWithTimestamps = v5->__valuesWithTimestamps;
     v5->__valuesWithTimestamps = v6;
@@ -29,33 +29,33 @@
   v4.receiver = self;
   v4.super_class = AXMTFixedDurationQueue;
   [(AXMTQueue *)&v4 reset];
-  v3 = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
-  [v3 removeAllObjects];
+  _valuesWithTimestamps = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
+  [_valuesWithTimestamps removeAllObjects];
 }
 
-- (void)enqueueValue:(id)a3 withTimestamp:(id)a4
+- (void)enqueueValue:(id)value withTimestamp:(id)timestamp
 {
-  v33 = a4;
-  v6 = a3;
-  v7 = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
-  v8 = [v7 count];
+  timestampCopy = timestamp;
+  valueCopy = value;
+  _valuesWithTimestamps = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
+  v8 = [_valuesWithTimestamps count];
 
   if (v8)
   {
-    v9 = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
-    v10 = [v9 lastObject];
-    v11 = [v10 timestamp];
+    _valuesWithTimestamps2 = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
+    lastObject = [_valuesWithTimestamps2 lastObject];
+    timestamp = [lastObject timestamp];
 
-    if ([v11 compare:v33] == 1)
+    if ([timestamp compare:timestampCopy] == 1)
     {
       v12 = objc_opt_new();
-      v13 = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
-      v14 = [v13 lastObject];
-      v15 = [v14 timestamp];
+      _valuesWithTimestamps3 = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
+      lastObject2 = [_valuesWithTimestamps3 lastObject];
+      timestamp2 = [lastObject2 timestamp];
 
-      if (v15)
+      if (timestamp2)
       {
-        v16 = [v12 stringFromDate:v15];
+        v16 = [v12 stringFromDate:timestamp2];
       }
 
       else
@@ -63,13 +63,13 @@
         v16 = @"NULL";
       }
 
-      v20 = [v12 stringFromDate:v33];
+      v20 = [v12 stringFromDate:timestampCopy];
       [NSException raise:@"AXEFixedDurationQueueError" format:@"enqueueValue: timestamp specified (%@) was earlier than the most recent entry in the queue (%@).", v20, v16];
     }
 
     else
     {
-      [v33 timeIntervalSinceDate:v11];
+      [timestampCopy timeIntervalSinceDate:timestamp];
       v18 = v17;
       [(AXMTFixedDurationQueue *)self _duration];
       if (v18 > v19)
@@ -81,18 +81,18 @@
 
   if (![(AXMTQueue *)self filled])
   {
-    v21 = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
-    v22 = [v21 count];
+    _valuesWithTimestamps4 = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
+    v22 = [_valuesWithTimestamps4 count];
 
     if (v22)
     {
-      v23 = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
-      v24 = [v23 firstObject];
-      v25 = [v24 timestamp];
+      _valuesWithTimestamps5 = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
+      firstObject = [_valuesWithTimestamps5 firstObject];
+      timestamp3 = [firstObject timestamp];
 
-      if (v25)
+      if (timestamp3)
       {
-        [v33 timeIntervalSinceDate:v25];
+        [timestampCopy timeIntervalSinceDate:timestamp3];
         v27 = v26;
         [(AXMTFixedDurationQueue *)self _duration];
         if (v27 > v28)
@@ -104,34 +104,34 @@
   }
 
   [(AXMTFixedDurationQueue *)self _duration];
-  v30 = [NSDate dateWithTimeInterval:v33 sinceDate:-v29];
+  v30 = [NSDate dateWithTimeInterval:timestampCopy sinceDate:-v29];
   [(AXMTFixedDurationQueue *)self _dequeueEntriesOlderThan:v30];
 
-  v31 = [_AXEFixedDurationQueueValueWithTimestamp createWithValue:v6 timestamp:v33];
-  v32 = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
-  [v32 addObject:v31];
+  v31 = [_AXEFixedDurationQueueValueWithTimestamp createWithValue:valueCopy timestamp:timestampCopy];
+  _valuesWithTimestamps6 = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
+  [_valuesWithTimestamps6 addObject:v31];
 
-  [(AXMTQueue *)self _enqueue:v6];
+  [(AXMTQueue *)self _enqueue:valueCopy];
 }
 
-- (void)_dequeueEntriesOlderThan:(id)a3
+- (void)_dequeueEntriesOlderThan:(id)than
 {
-  v12 = a3;
+  thanCopy = than;
   while (1)
   {
-    v4 = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
-    v5 = [v4 count];
+    _valuesWithTimestamps = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
+    v5 = [_valuesWithTimestamps count];
 
     if (!v5)
     {
       break;
     }
 
-    v6 = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
-    v7 = [v6 firstObject];
+    _valuesWithTimestamps2 = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
+    firstObject = [_valuesWithTimestamps2 firstObject];
 
-    v8 = [v7 timestamp];
-    v9 = [v8 compare:v12];
+    timestamp = [firstObject timestamp];
+    v9 = [timestamp compare:thanCopy];
 
     if (v9 != -1)
     {
@@ -139,9 +139,9 @@
       break;
     }
 
-    v10 = [(AXMTQueue *)self _dequeue];
-    v11 = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
-    [v11 removeObjectAtIndex:0];
+    _dequeue = [(AXMTQueue *)self _dequeue];
+    _valuesWithTimestamps3 = [(AXMTFixedDurationQueue *)self _valuesWithTimestamps];
+    [_valuesWithTimestamps3 removeObjectAtIndex:0];
   }
 }
 

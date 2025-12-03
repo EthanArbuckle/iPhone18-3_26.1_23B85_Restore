@@ -1,21 +1,21 @@
 @interface CAMTimelapseBackendSessionContext
 - (CAMTimelapseBackendSessionContext)init;
-- (CAMTimelapseBackendSessionContext)initWithTimelapseUUID:(id)a3;
+- (CAMTimelapseBackendSessionContext)initWithTimelapseUUID:(id)d;
 - (id)description;
 @end
 
 @implementation CAMTimelapseBackendSessionContext
 
-- (CAMTimelapseBackendSessionContext)initWithTimelapseUUID:(id)a3
+- (CAMTimelapseBackendSessionContext)initWithTimelapseUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = CAMTimelapseBackendSessionContext;
   v6 = [(CAMTimelapseBackendSessionContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_timelapseUUID, a3);
+    objc_storeStrong(&v6->_timelapseUUID, d);
   }
 
   return v7;

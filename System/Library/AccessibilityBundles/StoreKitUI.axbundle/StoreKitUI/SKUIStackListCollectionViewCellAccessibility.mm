@@ -10,8 +10,8 @@
   v3 = [(SKUIStackListCollectionViewCellAccessibility *)self safeValueForKey:@"listViews"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 keyEnumerator];
-  v6 = [v5 allObjects];
+  keyEnumerator = [v4 keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
   v7 = MEMORY[0x29ED3A170]();
 
   return v7;

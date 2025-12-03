@@ -1,7 +1,7 @@
 @interface PHUnauthorizedFetchResult
-- (BOOL)isEqual:(id)a3;
-- (PHUnauthorizedFetchResult)fetchResultWithChangeHandlingValue:(id)a3;
-- (PHUnauthorizedFetchResult)initWithOptions:(id)a3 status:(int64_t)a4 fetchBlock:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PHUnauthorizedFetchResult)fetchResultWithChangeHandlingValue:(id)value;
+- (PHUnauthorizedFetchResult)initWithOptions:(id)options status:(int64_t)status fetchBlock:(id)block;
 - (id)calculateMediaTypeCounts;
 - (id)description;
 - (unint64_t)hash;
@@ -18,19 +18,19 @@
   return v2;
 }
 
-- (PHUnauthorizedFetchResult)fetchResultWithChangeHandlingValue:(id)a3
+- (PHUnauthorizedFetchResult)fetchResultWithChangeHandlingValue:(id)value
 {
   if ([PHPhotoLibrary checkAuthorizationStatusForAPIAccessLevel:2]&& (fetchBlock = self->_fetchBlock) != 0)
   {
-    v5 = fetchBlock[2](fetchBlock, self->_options);
+    selfCopy = fetchBlock[2](fetchBlock, self->_options);
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)calculateMediaTypeCounts
@@ -42,11 +42,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PHUnauthorizedFetchResult *)self identifier];
-  v4 = v3;
-  if (v3)
+  identifier = [(PHUnauthorizedFetchResult *)self identifier];
+  v4 = identifier;
+  if (identifier)
   {
-    v5 = [v3 hash];
+    v5 = [identifier hash];
   }
 
   else
@@ -61,23 +61,23 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = PHUnauthorizedFetchResult;
-  if ([(PHUnauthorizedFetchResult *)&v9 isEqual:v4])
+  if ([(PHUnauthorizedFetchResult *)&v9 isEqual:equalCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(PHUnauthorizedFetchResult *)self identifier];
-    if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    identifier = [(PHUnauthorizedFetchResult *)self identifier];
+    if (identifier && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [v4 identifier];
-      v5 = [v6 isEqualToString:v7];
+      identifier2 = [equalCopy identifier];
+      v5 = [identifier isEqualToString:identifier2];
     }
 
     else
@@ -89,10 +89,10 @@
   return v5;
 }
 
-- (PHUnauthorizedFetchResult)initWithOptions:(id)a3 status:(int64_t)a4 fetchBlock:(id)a5
+- (PHUnauthorizedFetchResult)initWithOptions:(id)options status:(int64_t)status fetchBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  optionsCopy = options;
+  blockCopy = block;
   v28.receiver = self;
   v28.super_class = PHUnauthorizedFetchResult;
   v10 = [(PHFetchResult *)&v28 init];
@@ -101,27 +101,27 @@
     goto LABEL_16;
   }
 
-  v11 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
   objects = v10->_objects;
-  v10->_objects = v11;
+  v10->_objects = array;
 
-  v13 = [MEMORY[0x1E695DFB8] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
   objectIDs = v10->_objectIDs;
-  v10->_objectIDs = v13;
+  v10->_objectIDs = orderedSet;
 
-  v15 = [MEMORY[0x1E696AFB0] UUID];
-  v16 = [v15 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   identifier = v10->_identifier;
-  v10->_identifier = v16;
+  v10->_identifier = uUIDString;
 
-  v18 = [v8 copy];
+  v18 = [optionsCopy copy];
   options = v10->_options;
   v10->_options = v18;
 
   v20 = 0;
-  if (a4 > 2)
+  if (status > 2)
   {
-    if ((a4 - 3) < 2)
+    if ((status - 3) < 2)
     {
       v20 = 1;
       v21 = -1;
@@ -131,7 +131,7 @@
 
   else
   {
-    switch(a4)
+    switch(status)
     {
       case 0:
         v20 = 1;
@@ -155,7 +155,7 @@ LABEL_11:
   v24 = v10->_options;
   if (!v24 || [(PHFetchOptions *)v24 wantsIncrementalChangeDetails])
   {
-    v25 = [v9 copy];
+    v25 = [blockCopy copy];
     fetchBlock = v10->_fetchBlock;
     v10->_fetchBlock = v25;
 

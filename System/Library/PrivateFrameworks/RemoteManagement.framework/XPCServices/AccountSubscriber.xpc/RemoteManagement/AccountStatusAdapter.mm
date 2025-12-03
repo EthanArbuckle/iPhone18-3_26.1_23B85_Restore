@@ -1,8 +1,8 @@
 @interface AccountStatusAdapter
 - (AccountStatusAdapter)init;
-- (id)getRemotelyManagedAccountsForStore:(id)a3;
-- (id)getStatusInfoFromAccount:(id)a3;
-- (id)getStatusKeyPathFromAccount:(id)a3;
+- (id)getRemotelyManagedAccountsForStore:(id)store;
+- (id)getStatusInfoFromAccount:(id)account;
+- (id)getStatusKeyPathFromAccount:(id)account;
 @end
 
 @implementation AccountStatusAdapter
@@ -22,21 +22,21 @@
   return v2;
 }
 
-- (id)getRemotelyManagedAccountsForStore:(id)a3
+- (id)getRemotelyManagedAccountsForStore:(id)store
 {
-  v4 = [a3 identifier];
+  identifier = [store identifier];
   v5 = objc_opt_new();
-  v6 = [(AccountStatusAdapter *)self accountStore];
-  v7 = [v6 accounts];
+  accountStore = [(AccountStatusAdapter *)self accountStore];
+  accounts = [accountStore accounts];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000043C4;
   v13[3] = &unk_10001C850;
-  v14 = v4;
+  v14 = identifier;
   v8 = v5;
   v15 = v8;
-  v9 = v4;
-  [v7 enumerateObjectsUsingBlock:v13];
+  v9 = identifier;
+  [accounts enumerateObjectsUsingBlock:v13];
 
   v10 = v15;
   v11 = v8;
@@ -44,14 +44,14 @@
   return v8;
 }
 
-- (id)getStatusKeyPathFromAccount:(id)a3
+- (id)getStatusKeyPathFromAccount:(id)account
 {
-  v3 = a3;
-  v4 = [AccountStatusHandler handlerForAccount:v3];
+  accountCopy = account;
+  v4 = [AccountStatusHandler handlerForAccount:accountCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 getStatusKeyPathFromAccount:v3];
+    v6 = [v4 getStatusKeyPathFromAccount:accountCopy];
   }
 
   else
@@ -59,7 +59,7 @@
     v7 = +[RMLog accountStatusAdapter];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_1000131F0(v3, v7);
+      sub_1000131F0(accountCopy, v7);
     }
 
     v6 = 0;
@@ -68,14 +68,14 @@
   return v6;
 }
 
-- (id)getStatusInfoFromAccount:(id)a3
+- (id)getStatusInfoFromAccount:(id)account
 {
-  v3 = a3;
-  v4 = [AccountStatusHandler handlerForAccount:v3];
+  accountCopy = account;
+  v4 = [AccountStatusHandler handlerForAccount:accountCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 getStatusInfoFromAccount:v3];
+    v6 = [v4 getStatusInfoFromAccount:accountCopy];
   }
 
   else
@@ -83,7 +83,7 @@
     v7 = +[RMLog accountStatusAdapter];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_1000131F0(v3, v7);
+      sub_1000131F0(accountCopy, v7);
     }
 
     v6 = &__NSDictionary0__struct;

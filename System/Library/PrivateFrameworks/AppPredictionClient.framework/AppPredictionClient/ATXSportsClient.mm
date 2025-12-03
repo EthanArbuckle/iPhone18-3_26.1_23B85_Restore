@@ -1,7 +1,7 @@
 @interface ATXSportsClient
 + (id)sharedInstance;
 - (ATXSportsClient)init;
-- (void)requestedSchedulesForTeamsWithReply:(id)a3;
+- (void)requestedSchedulesForTeamsWithReply:(id)reply;
 @end
 
 @implementation ATXSportsClient
@@ -68,16 +68,16 @@ void __23__ATXSportsClient_init__block_invoke_20()
   }
 }
 
-- (void)requestedSchedulesForTeamsWithReply:(id)a3
+- (void)requestedSchedulesForTeamsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   connection = self->_connection;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__ATXSportsClient_requestedSchedulesForTeamsWithReply___block_invoke;
   v8[3] = &unk_1E80C08E0;
-  v9 = v4;
-  v6 = v4;
+  v9 = replyCopy;
+  v6 = replyCopy;
   v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v8];
   [v7 requestedSchedulesForTeamsWithReply:v6];
 }

@@ -1,20 +1,20 @@
 @interface GKInviteMessageSupport
-+ (id)extractPropertiesWithData:(id)a3;
-+ (id)makeInviteMessageDoneWithProperties:(id)a3;
++ (id)extractPropertiesWithData:(id)data;
++ (id)makeInviteMessageDoneWithProperties:(id)properties;
 @end
 
 @implementation GKInviteMessageSupport
 
-+ (id)makeInviteMessageDoneWithProperties:(id)a3
++ (id)makeInviteMessageDoneWithProperties:(id)properties
 {
-  v3 = a3;
-  if (a3)
+  propertiesCopy = properties;
+  if (properties)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D7DC950, qword_227AA10E8);
-    v3 = sub_227A7241C();
+    propertiesCopy = sub_227A7241C();
   }
 
-  v4 = static InviteMessageSupport.makeInviteMessageDone(properties:)(v3);
+  v4 = static InviteMessageSupport.makeInviteMessageDone(properties:)(propertiesCopy);
   v6 = v5;
 
   v7 = sub_227A71B8C();
@@ -23,9 +23,9 @@
   return v7;
 }
 
-+ (id)extractPropertiesWithData:(id)a3
++ (id)extractPropertiesWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = sub_227A71B9C();
   v6 = v5;
 

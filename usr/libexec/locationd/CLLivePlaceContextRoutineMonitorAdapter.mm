@@ -1,11 +1,11 @@
 @interface CLLivePlaceContextRoutineMonitorAdapter
-- (CLLivePlaceContextRoutineMonitorAdapter)initWithLivePlaceContext:(void *)a3;
-- (void)onPeriodicPlaceInferenceUpdates:(id)a3;
+- (CLLivePlaceContextRoutineMonitorAdapter)initWithLivePlaceContext:(void *)context;
+- (void)onPeriodicPlaceInferenceUpdates:(id)updates;
 @end
 
 @implementation CLLivePlaceContextRoutineMonitorAdapter
 
-- (CLLivePlaceContextRoutineMonitorAdapter)initWithLivePlaceContext:(void *)a3
+- (CLLivePlaceContextRoutineMonitorAdapter)initWithLivePlaceContext:(void *)context
 {
   v7.receiver = self;
   v7.super_class = CLLivePlaceContextRoutineMonitorAdapter;
@@ -13,14 +13,14 @@
   v5 = v4;
   if (v4)
   {
-    v4->_livePlaceUpdater = a3;
+    v4->_livePlaceUpdater = context;
     [(CLLivePlaceContextRoutineMonitorAdapter *)v4 setValid:1];
   }
 
   return v5;
 }
 
-- (void)onPeriodicPlaceInferenceUpdates:(id)a3
+- (void)onPeriodicPlaceInferenceUpdates:(id)updates
 {
   if (qword_1025D47A0 != -1)
   {
@@ -38,11 +38,11 @@
     v10 = 2050;
     v11 = livePlaceUpdater;
     v12 = 1026;
-    v13 = [a3 count];
+    v13 = [updates count];
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#pcLive onPeriodicPlaceInferenceUpdates, livePlaceUpdater:%{public}p, mapItems:%{public}d}", v7, 0x22u);
   }
 
-  sub_100417D9C(self->_livePlaceUpdater, a3);
+  sub_100417D9C(self->_livePlaceUpdater, updates);
 }
 
 @end

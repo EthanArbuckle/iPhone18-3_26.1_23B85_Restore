@@ -1,16 +1,16 @@
 @interface WeakTapUI
-- (void)vasReadSuccessWithMerchantNames:(id)a3;
+- (void)vasReadSuccessWithMerchantNames:(id)names;
 @end
 
 @implementation WeakTapUI
 
-- (void)vasReadSuccessWithMerchantNames:(id)a3
+- (void)vasReadSuccessWithMerchantNames:(id)names
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v5 = Strong;
-    v6 = a3;
+    namesCopy = names;
     [v5 vasReadSuccessWithMerchantNames_];
 
     swift_unknownObjectRelease();

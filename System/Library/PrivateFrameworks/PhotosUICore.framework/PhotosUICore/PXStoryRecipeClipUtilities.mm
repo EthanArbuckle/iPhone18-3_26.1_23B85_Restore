@@ -1,10 +1,10 @@
 @interface PXStoryRecipeClipUtilities
-+ (BOOL)asset:(id)a3 isClassifiedAs:(id)a4;
-+ (BOOL)assetHasHighCurationScore:(id)a3;
-+ (BOOL)assetHasSignificantFaceArea:(id)a3;
-+ (BOOL)assetIsPet:(id)a3;
-+ (BOOL)canRotate1UpClipsInRange:(_NSRange)a3 clipCatalog:(id)a4 maxAdjacent1Ups:(int64_t)a5;
-+ (BOOL)canRotateAsset:(id)a3;
++ (BOOL)asset:(id)asset isClassifiedAs:(id)as;
++ (BOOL)assetHasHighCurationScore:(id)score;
++ (BOOL)assetHasSignificantFaceArea:(id)area;
++ (BOOL)assetIsPet:(id)pet;
++ (BOOL)canRotate1UpClipsInRange:(_NSRange)range clipCatalog:(id)catalog maxAdjacent1Ups:(int64_t)ups;
++ (BOOL)canRotateAsset:(id)asset;
 + (id)doNotRotateSceneIdentifiers;
 + (id)doNotRotateWithSkySceneIdentifiers;
 + (id)peopleSceneIdentifiers;
@@ -14,27 +14,27 @@
 
 @implementation PXStoryRecipeClipUtilities
 
-+ (BOOL)canRotate1UpClipsInRange:(_NSRange)a3 clipCatalog:(id)a4 maxAdjacent1Ups:(int64_t)a5
++ (BOOL)canRotate1UpClipsInRange:(_NSRange)range clipCatalog:(id)catalog maxAdjacent1Ups:(int64_t)ups
 {
-  v5 = 0x7FFFFFFFLL;
-  if (a5)
+  upsCopy = 0x7FFFFFFFLL;
+  if (ups)
   {
-    v5 = a5;
+    upsCopy = ups;
   }
 
-  v19 = v5;
-  v6 = a3.location + a3.length;
-  if (a3.location < a3.location + a3.length)
+  v19 = upsCopy;
+  v6 = range.location + range.length;
+  if (range.location < range.location + range.length)
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     v10 = 0;
     v11 = 0;
     do
     {
-      v12 = [a4 clipAtIndex:location];
-      v13 = [v12 displayAssets];
-      v14 = [v13 count];
+      v12 = [catalog clipAtIndex:location];
+      displayAssets = [v12 displayAssets];
+      v14 = [displayAssets count];
 
       if (v14 == 1)
       {
@@ -62,25 +62,25 @@
   return 1;
 }
 
-+ (BOOL)assetHasHighCurationScore:(id)a3
++ (BOOL)assetHasHighCurationScore:(id)score
 {
-  v3 = a3;
+  scoreCopy = score;
   v4 = +[PXStorySettings sharedInstance];
   [v4 autoEditHighCurationScoreThreshold];
   v6 = v5;
 
-  [v3 px_storyResourceFetchCurationScore];
+  [scoreCopy px_storyResourceFetchCurationScore];
   LOBYTE(v4) = v7 >= v6;
 
   return v4;
 }
 
-+ (BOOL)canRotateAsset:(id)a3
++ (BOOL)canRotateAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [a1 doNotRotateSceneIdentifiers];
-  v6 = [a1 asset:v4 isClassifiedAs:v5];
-  v7 = (v6 & 1) == 0 && (([a1 skySceneIdentifiers], v8 = ;
+  assetCopy = asset;
+  doNotRotateSceneIdentifiers = [self doNotRotateSceneIdentifiers];
+  v6 = [self asset:assetCopy isClassifiedAs:doNotRotateSceneIdentifiers];
+  v7 = (v6 & 1) == 0 && (([self skySceneIdentifiers], v8 = ;
   return v7;
 }
 
@@ -141,13 +141,13 @@ void __57__PXStoryRecipeClipUtilities_doNotRotateSceneIdentifiers__block_invoke(
   doNotRotateSceneIdentifiers_doNotRotateSceneIdentifiers = v0;
 }
 
-+ (BOOL)assetIsPet:(id)a3
++ (BOOL)assetIsPet:(id)pet
 {
-  v4 = a3;
-  v5 = [a1 petSceneIdentifiers];
-  v6 = [a1 asset:v4 isClassifiedAs:v5];
+  petCopy = pet;
+  petSceneIdentifiers = [self petSceneIdentifiers];
+  v6 = [self asset:petCopy isClassifiedAs:petSceneIdentifiers];
 
-  v7 = v6 && ([a1 assetHasSignificantFaceArea:v4] & 1) != 0;
+  v7 = v6 && ([self assetHasSignificantFaceArea:petCopy] & 1) != 0;
   return v7;
 }
 
@@ -170,11 +170,11 @@ void __49__PXStoryRecipeClipUtilities_petSceneIdentifiers__block_invoke()
   petSceneIdentifiers_petSceneIdentifiers = v0;
 }
 
-+ (BOOL)asset:(id)a3 isClassifiedAs:(id)a4
++ (BOOL)asset:(id)asset isClassifiedAs:(id)as
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 px_storyResourceFetchSceneClassifications];
+  asCopy = as;
+  px_storyResourceFetchSceneClassifications = [asset px_storyResourceFetchSceneClassifications];
   v7 = +[PXStorySettings sharedInstance];
   [v7 autoEditSceneConfidenceThreshold];
   v9 = v8;
@@ -183,7 +183,7 @@ void __49__PXStoryRecipeClipUtilities_petSceneIdentifiers__block_invoke()
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v6;
+  v10 = px_storyResourceFetchSceneClassifications;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -202,7 +202,7 @@ void __49__PXStoryRecipeClipUtilities_petSceneIdentifiers__block_invoke()
         if (v15 >= v9)
         {
           v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v14, "extendedSceneIdentifier")}];
-          v17 = [v5 containsObject:v16];
+          v17 = [asCopy containsObject:v16];
 
           if (v17)
           {
@@ -227,9 +227,9 @@ LABEL_12:
   return v11;
 }
 
-+ (BOOL)assetHasSignificantFaceArea:(id)a3
++ (BOOL)assetHasSignificantFaceArea:(id)area
 {
-  [a3 faceAreaRect];
+  [area faceAreaRect];
   width = v9.size.width;
   height = v9.size.height;
   if (CGRectIsEmpty(v9))

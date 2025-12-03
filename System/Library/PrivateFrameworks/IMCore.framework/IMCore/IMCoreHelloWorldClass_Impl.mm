@@ -19,9 +19,9 @@
 - (void)printGreeting
 {
   v2 = *(&self->super.isa + OBJC_IVAR___IMCoreHelloWorldClass_Impl_sharedUtilitiesHelloWorld);
-  v4 = self;
+  selfCopy = self;
   sub_1A84E58EC();
-  v3 = *(&v4->super.isa + OBJC_IVAR___IMCoreHelloWorldClass_Impl_persistenceHelloWorld);
+  v3 = *(&selfCopy->super.isa + OBJC_IVAR___IMCoreHelloWorldClass_Impl_persistenceHelloWorld);
   sub_1A84E57BC();
 }
 

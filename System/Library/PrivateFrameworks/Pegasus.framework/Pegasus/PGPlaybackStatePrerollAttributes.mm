@@ -1,13 +1,13 @@
 @interface PGPlaybackStatePrerollAttributes
-+ (id)prerollAttributesForAdContentWithRequiredLinearPlaybackEndTime:(double)a3 preferredTintColor:(id)a4;
-+ (id)prerollAttributesForSponsoredContentWithRequiredLinearPlaybackEndTime:(double)a3 preferredTintColor:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (PGPlaybackStatePrerollAttributes)initWithDictionary:(id)a3;
-- (PGPlaybackStatePrerollAttributes)initWithRequiredLinearPlaybackEndTime:(double)a3 preferredTintColor:(id)a4 contentType:(int64_t)a5;
++ (id)prerollAttributesForAdContentWithRequiredLinearPlaybackEndTime:(double)time preferredTintColor:(id)color;
++ (id)prerollAttributesForSponsoredContentWithRequiredLinearPlaybackEndTime:(double)time preferredTintColor:(id)color;
+- (BOOL)isEqual:(id)equal;
+- (PGPlaybackStatePrerollAttributes)initWithDictionary:(id)dictionary;
+- (PGPlaybackStatePrerollAttributes)initWithRequiredLinearPlaybackEndTime:(double)time preferredTintColor:(id)color contentType:(int64_t)type;
 - (UIColor)preferredTintColor;
 - (double)requiredLinearPlaybackEndTime;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)preferredTintColorDescription;
 - (id)succinctDescription;
 - (int64_t)contentType;
@@ -15,42 +15,42 @@
 
 @implementation PGPlaybackStatePrerollAttributes
 
-+ (id)prerollAttributesForAdContentWithRequiredLinearPlaybackEndTime:(double)a3 preferredTintColor:(id)a4
++ (id)prerollAttributesForAdContentWithRequiredLinearPlaybackEndTime:(double)time preferredTintColor:(id)color
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithRequiredLinearPlaybackEndTime:v6 preferredTintColor:1 contentType:a3];
+  colorCopy = color;
+  v7 = [[self alloc] initWithRequiredLinearPlaybackEndTime:colorCopy preferredTintColor:1 contentType:time];
 
   return v7;
 }
 
-+ (id)prerollAttributesForSponsoredContentWithRequiredLinearPlaybackEndTime:(double)a3 preferredTintColor:(id)a4
++ (id)prerollAttributesForSponsoredContentWithRequiredLinearPlaybackEndTime:(double)time preferredTintColor:(id)color
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithRequiredLinearPlaybackEndTime:v6 preferredTintColor:2 contentType:a3];
+  colorCopy = color;
+  v7 = [[self alloc] initWithRequiredLinearPlaybackEndTime:colorCopy preferredTintColor:2 contentType:time];
 
   return v7;
 }
 
-- (PGPlaybackStatePrerollAttributes)initWithRequiredLinearPlaybackEndTime:(double)a3 preferredTintColor:(id)a4 contentType:(int64_t)a5
+- (PGPlaybackStatePrerollAttributes)initWithRequiredLinearPlaybackEndTime:(double)time preferredTintColor:(id)color contentType:(int64_t)type
 {
-  v8 = (*&a3 & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
-  if (a3 >= 0.0)
+  v8 = (*&time & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
+  if (time >= 0.0)
   {
     v8 = 0;
   }
 
-  v9 = (*&a3 & 0x7FFFFFFFFFFFFFFFLL) == 0 || v8;
-  v10 = a3 < 0.0 && ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
-  v11 = a4;
+  v9 = (*&time & 0x7FFFFFFFFFFFFFFFLL) == 0 || v8;
+  v10 = time < 0.0 && ((*&time & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
+  colorCopy = color;
   v12 = 2;
-  if (v11)
+  if (colorCopy)
   {
     v12 = 3;
   }
 
-  if (a3 <= 0.0)
+  if (time <= 0.0)
   {
-    v13 = (v11 != 0) + 1;
+    v13 = (colorCopy != 0) + 1;
   }
 
   else
@@ -59,22 +59,22 @@
   }
 
   v14 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v13];
-  v15 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+  v15 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   [v14 setObject:v15 forKeyedSubscript:&unk_1F3959068];
 
   if (((v9 | v10) & 1) == 0)
   {
-    v16 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v16 = [MEMORY[0x1E696AD98] numberWithDouble:time];
     [v14 setObject:v16 forKey:&unk_1F3959080];
   }
 
-  if (v11)
+  if (colorCopy)
   {
     v25 = 0.0;
     v26 = 0.0;
     v23 = 0.0;
     v24 = 0.0;
-    [v11 getRed:&v26 green:&v25 blue:&v24 alpha:&v23];
+    [colorCopy getRed:&v26 green:&v25 blue:&v24 alpha:&v23];
     v17 = [MEMORY[0x1E696AD98] numberWithDouble:v26];
     [v14 setObject:v17 forKey:&unk_1F3959098];
 
@@ -93,15 +93,15 @@
   return v21;
 }
 
-- (PGPlaybackStatePrerollAttributes)initWithDictionary:(id)a3
+- (PGPlaybackStatePrerollAttributes)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PGPlaybackStatePrerollAttributes;
   v5 = [(PGPlaybackStatePrerollAttributes *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     dictionaryRepresentation = v5->_dictionaryRepresentation;
     v5->_dictionaryRepresentation = v6;
   }
@@ -111,28 +111,28 @@
 
 - (UIColor)preferredTintColor
 {
-  v3 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
-  v4 = [v3 objectForKey:&unk_1F3959098];
+  dictionaryRepresentation = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
+  v4 = [dictionaryRepresentation objectForKey:&unk_1F3959098];
 
   if (v4)
   {
-    v5 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
-    v6 = [v5 objectForKey:&unk_1F3959098];
+    dictionaryRepresentation2 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
+    v6 = [dictionaryRepresentation2 objectForKey:&unk_1F3959098];
     [v6 doubleValue];
     v8 = v7;
 
-    v9 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
-    v10 = [v9 objectForKey:&unk_1F39590B0];
+    dictionaryRepresentation3 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
+    v10 = [dictionaryRepresentation3 objectForKey:&unk_1F39590B0];
     [v10 doubleValue];
     v12 = v11;
 
-    v13 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
-    v14 = [v13 objectForKey:&unk_1F39590C8];
+    dictionaryRepresentation4 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
+    v14 = [dictionaryRepresentation4 objectForKey:&unk_1F39590C8];
     [v14 doubleValue];
     v16 = v15;
 
-    v17 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
-    v18 = [v17 objectForKey:&unk_1F39590E0];
+    dictionaryRepresentation5 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
+    v18 = [dictionaryRepresentation5 objectForKey:&unk_1F39590E0];
     [v18 doubleValue];
     v20 = v19;
 
@@ -149,30 +149,30 @@
 
 - (int64_t)contentType
 {
-  v2 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
-  v3 = [v2 objectForKey:&unk_1F3959068];
-  v4 = [v3 integerValue];
+  dictionaryRepresentation = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation objectForKey:&unk_1F3959068];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (double)requiredLinearPlaybackEndTime
 {
-  v2 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
-  v3 = [v2 objectForKey:&unk_1F3959080];
+  dictionaryRepresentation = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation objectForKey:&unk_1F3959080];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -180,42 +180,42 @@
     v5 = 0;
   }
 
-  v6 = [v5 dictionaryRepresentation];
-  v7 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
-  v8 = [v6 isEqualToDictionary:v7];
+  dictionaryRepresentation = [v5 dictionaryRepresentation];
+  dictionaryRepresentation2 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
+  v8 = [dictionaryRepresentation isEqualToDictionary:dictionaryRepresentation2];
 
   return v8;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(PGPlaybackStatePrerollAttributes *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PGPlaybackStatePrerollAttributes *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PGPlaybackStatePrerollAttributes *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PGPlaybackStatePrerollAttributes *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(PGPlaybackStatePrerollAttributes *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(PGPlaybackStatePrerollAttributes *)self succinctDescriptionBuilder];
   [(PGPlaybackStatePrerollAttributes *)self requiredLinearPlaybackEndTime];
-  v5 = [v4 appendDouble:@"requiredLinearPlaybackEndTime" withName:3 decimalPrecision:?];
-  v6 = [(PGPlaybackStatePrerollAttributes *)self contentType];
+  v5 = [succinctDescriptionBuilder appendDouble:@"requiredLinearPlaybackEndTime" withName:3 decimalPrecision:?];
+  contentType = [(PGPlaybackStatePrerollAttributes *)self contentType];
   v7 = @"unknown";
-  if (v6 == 1)
+  if (contentType == 1)
   {
     v7 = @"Advertisement";
   }
 
-  if (v6 == 2)
+  if (contentType == 2)
   {
     v8 = @"Sponsored";
   }
@@ -225,31 +225,31 @@
     v8 = v7;
   }
 
-  [v4 appendString:v8 withName:@"Content Type"];
-  v9 = [(PGPlaybackStatePrerollAttributes *)self preferredTintColorDescription];
-  [v4 appendString:v9 withName:@"preferredTintColor" skipIfEmpty:1];
+  [succinctDescriptionBuilder appendString:v8 withName:@"Content Type"];
+  preferredTintColorDescription = [(PGPlaybackStatePrerollAttributes *)self preferredTintColorDescription];
+  [succinctDescriptionBuilder appendString:preferredTintColorDescription withName:@"preferredTintColor" skipIfEmpty:1];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (id)preferredTintColorDescription
 {
-  v3 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
-  v4 = [v3 objectForKey:&unk_1F3959098];
+  dictionaryRepresentation = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
+  v4 = [dictionaryRepresentation objectForKey:&unk_1F3959098];
 
   if (v4)
   {
-    v5 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
-    v6 = [v5 objectForKey:&unk_1F3959098];
+    dictionaryRepresentation2 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
+    v6 = [dictionaryRepresentation2 objectForKey:&unk_1F3959098];
 
-    v7 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
-    v8 = [v7 objectForKey:&unk_1F39590B0];
+    dictionaryRepresentation3 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
+    v8 = [dictionaryRepresentation3 objectForKey:&unk_1F39590B0];
 
-    v9 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
-    v10 = [v9 objectForKey:&unk_1F39590C8];
+    dictionaryRepresentation4 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
+    v10 = [dictionaryRepresentation4 objectForKey:&unk_1F39590C8];
 
-    v11 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
-    v12 = [v11 objectForKey:&unk_1F39590E0];
+    dictionaryRepresentation5 = [(PGPlaybackStatePrerollAttributes *)self dictionaryRepresentation];
+    v12 = [dictionaryRepresentation5 objectForKey:&unk_1F39590E0];
 
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"r: %@ g: %@ b: %@ a: %@", v6, v8, v10, v12];
   }

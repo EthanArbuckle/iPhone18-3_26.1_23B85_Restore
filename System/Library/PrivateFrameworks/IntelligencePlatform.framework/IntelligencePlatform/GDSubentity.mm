@@ -1,24 +1,24 @@
 @interface GDSubentity
-- (GDSubentity)initWithParentEntityIdentifier:(id)a3 relationshipIdentifier:(id)a4 facts:(id)a5 entityClass:(unint64_t)a6;
+- (GDSubentity)initWithParentEntityIdentifier:(id)identifier relationshipIdentifier:(id)relationshipIdentifier facts:(id)facts entityClass:(unint64_t)class;
 @end
 
 @implementation GDSubentity
 
-- (GDSubentity)initWithParentEntityIdentifier:(id)a3 relationshipIdentifier:(id)a4 facts:(id)a5 entityClass:(unint64_t)a6
+- (GDSubentity)initWithParentEntityIdentifier:(id)identifier relationshipIdentifier:(id)relationshipIdentifier facts:(id)facts entityClass:(unint64_t)class
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  identifierCopy = identifier;
+  relationshipIdentifierCopy = relationshipIdentifier;
+  factsCopy = facts;
   v17.receiver = self;
   v17.super_class = GDSubentity;
   v14 = [(GDSubentity *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_parentEntityIdentifier, a3);
-    objc_storeStrong(&v15->_relationshipIdentifier, a4);
-    objc_storeStrong(&v15->_facts, a5);
-    v15->_entityClass = a6;
+    objc_storeStrong(&v14->_parentEntityIdentifier, identifier);
+    objc_storeStrong(&v15->_relationshipIdentifier, relationshipIdentifier);
+    objc_storeStrong(&v15->_facts, facts);
+    v15->_entityClass = class;
   }
 
   return v15;

@@ -1,6 +1,6 @@
 @interface MTLTelemetryCommandQueue
 - (id)commandBuffer;
-- (id)commandBufferWithDescriptor:(id)a3;
+- (id)commandBufferWithDescriptor:(id)descriptor;
 - (id)commandBufferWithUnretainedReferences;
 @end
 
@@ -8,8 +8,8 @@
 
 - (id)commandBuffer
 {
-  v3 = [(MTLToolsObject *)self device];
-  if (![(MTLDevice *)v3 enableTelemetry])
+  device = [(MTLToolsObject *)self device];
+  if (![(MTLDevice *)device enableTelemetry])
   {
     return 0;
   }
@@ -18,14 +18,14 @@
   if (result)
   {
     v5 = result;
-    v6 = *(v3 + 91);
+    v6 = *(device + 91);
     if (v6)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __41__MTLTelemetryCommandQueue_commandBuffer__block_invoke;
       block[3] = &unk_2787B4A48;
-      block[4] = v3;
+      block[4] = device;
       dispatch_sync(v6, block);
     }
 
@@ -37,8 +37,8 @@
 
 - (id)commandBufferWithUnretainedReferences
 {
-  v3 = [(MTLToolsObject *)self device];
-  if (![(MTLDevice *)v3 enableTelemetry])
+  device = [(MTLToolsObject *)self device];
+  if (![(MTLDevice *)device enableTelemetry])
   {
     return 0;
   }
@@ -47,14 +47,14 @@
   if (result)
   {
     v5 = result;
-    v6 = *(v3 + 91);
+    v6 = *(device + 91);
     if (v6)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __65__MTLTelemetryCommandQueue_commandBufferWithUnretainedReferences__block_invoke;
       block[3] = &unk_2787B4A48;
-      block[4] = v3;
+      block[4] = device;
       dispatch_sync(v6, block);
     }
 
@@ -71,10 +71,10 @@ uint64_t __65__MTLTelemetryCommandQueue_commandBufferWithUnretainedReferences__b
   return result;
 }
 
-- (id)commandBufferWithDescriptor:(id)a3
+- (id)commandBufferWithDescriptor:(id)descriptor
 {
-  v5 = [(MTLToolsObject *)self device];
-  if (![(MTLDevice *)v5 enableTelemetry])
+  device = [(MTLToolsObject *)self device];
+  if (![(MTLDevice *)device enableTelemetry])
   {
     return 0;
   }
@@ -83,19 +83,19 @@ uint64_t __65__MTLTelemetryCommandQueue_commandBufferWithUnretainedReferences__b
   if (result)
   {
     v7 = result;
-    v8 = *(v5 + 91);
+    v8 = *(device + 91);
     if (v8)
     {
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __56__MTLTelemetryCommandQueue_commandBufferWithDescriptor___block_invoke;
       v9[3] = &unk_2787B4928;
-      v9[4] = v5;
-      v9[5] = a3;
+      v9[4] = device;
+      v9[5] = descriptor;
       dispatch_sync(v8, v9);
     }
 
-    return [[MTLTelemetryCommandBuffer alloc] initWithCommandBuffer:v7 commandQueue:self descriptor:a3];
+    return [[MTLTelemetryCommandBuffer alloc] initWithCommandBuffer:v7 commandQueue:self descriptor:descriptor];
   }
 
   return result;

@@ -1,14 +1,14 @@
 @interface PFXValidatedElementReader
-- (BOOL)mapStartElementWithState:(id)a3;
+- (BOOL)mapStartElementWithState:(id)state;
 @end
 
 @implementation PFXValidatedElementReader
 
-- (BOOL)mapStartElementWithState:(id)a3
+- (BOOL)mapStartElementWithState:(id)state
 {
-  v4 = [a3 currentXmlStackEntry];
+  currentXmlStackEntry = [state currentXmlStackEntry];
 
-  return [(PFXValidatedElementReader *)self isParentValid:v4];
+  return [(PFXValidatedElementReader *)self isParentValid:currentXmlStackEntry];
 }
 
 @end

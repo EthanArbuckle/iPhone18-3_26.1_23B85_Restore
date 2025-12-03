@@ -1,28 +1,28 @@
 @interface FCOperationNotificationRetrySignal
-- (FCOperationNotificationRetrySignal)initWithNotificationName:(id)a3 timeout:(double)a4;
+- (FCOperationNotificationRetrySignal)initWithNotificationName:(id)name timeout:(double)timeout;
 - (void)dealloc;
-- (void)onQueue:(id)a3 signal:(id)a4;
+- (void)onQueue:(id)queue signal:(id)signal;
 @end
 
 @implementation FCOperationNotificationRetrySignal
 
-- (FCOperationNotificationRetrySignal)initWithNotificationName:(id)a3 timeout:(double)a4
+- (FCOperationNotificationRetrySignal)initWithNotificationName:(id)name timeout:(double)timeout
 {
-  v7 = a3;
+  nameCopy = name;
   v21.receiver = self;
   v21.super_class = FCOperationNotificationRetrySignal;
   v8 = [(FCOperationNotificationRetrySignal *)&v21 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_notificationName, a3);
-    v9->_timeout = a4;
+    objc_storeStrong(&v8->_notificationName, name);
+    v9->_timeout = timeout;
     v10 = dispatch_group_create();
     dispatch_group_enter(v10);
     objc_storeStrong(&v9->_group, v10);
-    v9->_timeoutTime = dispatch_time(0, (a4 * 1000000000.0));
+    v9->_timeoutTime = dispatch_time(0, (timeout * 1000000000.0));
     v11 = [[FCOnce alloc] initWithOptions:1];
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __71__FCOperationNotificationRetrySignal_initWithNotificationName_timeout___block_invoke;
@@ -31,7 +31,7 @@
     v20 = v10;
     v13 = v10;
     v14 = v11;
-    v15 = [v12 addObserverForName:v7 object:0 queue:0 usingBlock:v18];
+    v15 = [defaultCenter addObserverForName:nameCopy object:0 queue:0 usingBlock:v18];
     notificationObserver = v9->_notificationObserver;
     v9->_notificationObserver = v15;
   }
@@ -52,26 +52,26 @@ void __71__FCOperationNotificationRetrySignal_initWithNotificationName_timeout__
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_notificationObserver];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_notificationObserver];
 
   v4.receiver = self;
   v4.super_class = FCOperationNotificationRetrySignal;
   [(FCOperationNotificationRetrySignal *)&v4 dealloc];
 }
 
-- (void)onQueue:(id)a3 signal:(id)a4
+- (void)onQueue:(id)queue signal:(id)signal
 {
-  v6 = a4;
+  signalCopy = signal;
   group = self->_group;
   timeoutTime = self->_timeoutTime;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __53__FCOperationNotificationRetrySignal_onQueue_signal___block_invoke;
   v10[3] = &unk_1E7C40890;
-  v11 = v6;
-  v9 = v6;
-  FCDispatchGroupNotifyWithTimeout(group, a3, timeoutTime, v10);
+  v11 = signalCopy;
+  v9 = signalCopy;
+  FCDispatchGroupNotifyWithTimeout(group, queue, timeoutTime, v10);
 }
 
 @end

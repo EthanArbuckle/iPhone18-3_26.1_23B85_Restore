@@ -3,9 +3,9 @@
 - (id)source;
 - (id)values;
 - (void)dealloc;
-- (void)setOldValues:(void *)a1;
-- (void)setSource:(void *)a1;
-- (void)setValues:(void *)a1;
+- (void)setOldValues:(void *)values;
+- (void)setSource:(void *)source;
+- (void)setValues:(void *)values;
 @end
 
 @implementation _CFPrefsPendingKVONotification
@@ -30,11 +30,11 @@
   return result;
 }
 
-- (void)setSource:(void *)a1
+- (void)setSource:(void *)source
 {
-  if (a1)
+  if (source)
   {
-    objc_setProperty_atomic(a1, newValue, newValue, 8);
+    objc_setProperty_atomic(source, newValue, newValue, 8);
   }
 }
 
@@ -48,11 +48,11 @@
   return result;
 }
 
-- (void)setOldValues:(void *)a1
+- (void)setOldValues:(void *)values
 {
-  if (a1)
+  if (values)
   {
-    objc_setProperty_atomic(a1, newValue, newValue, 16);
+    objc_setProperty_atomic(values, newValue, newValue, 16);
   }
 }
 
@@ -66,11 +66,11 @@
   return result;
 }
 
-- (void)setValues:(void *)a1
+- (void)setValues:(void *)values
 {
-  if (a1)
+  if (values)
   {
-    objc_setProperty_atomic(a1, newValue, newValue, 24);
+    objc_setProperty_atomic(values, newValue, newValue, 24);
   }
 }
 

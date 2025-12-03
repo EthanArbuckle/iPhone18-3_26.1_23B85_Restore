@@ -3,21 +3,21 @@
 + (_TtC34SiriCrossDeviceArbitrationFeedback19FeedbackServiceImpl)sharedService;
 - (_TtP34SiriCrossDeviceArbitrationFeedback23FeedbackServiceDelegate_)delegate;
 - (_TtP34SiriCrossDeviceArbitrationFeedback7Globals_)globals;
-- (void)add:(id)a3;
-- (void)addWithParticipation:(id)a3 directoryPath:(id)a4;
+- (void)add:(id)add;
+- (void)addWithParticipation:(id)participation directoryPath:(id)path;
 - (void)handleAssistantDismissed;
-- (void)handleWithResponse:(id)a3 completion:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setGlobals:(id)a3;
+- (void)handleWithResponse:(id)response completion:(id)completion;
+- (void)setDelegate:(id)delegate;
+- (void)setGlobals:(id)globals;
 @end
 
 @implementation FeedbackServiceImpl
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
-  v4 = a3;
-  v5 = self;
-  sub_266A6E2B4(v4);
+  addCopy = add;
+  selfCopy = self;
+  sub_266A6E2B4(addCopy);
 }
 
 + (_TtC34SiriCrossDeviceArbitrationFeedback19FeedbackServiceImpl)sharedService
@@ -34,26 +34,26 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_266A9D3B8(a3);
+  selfCopy = self;
+  sub_266A9D3B8(delegate);
 }
 
 - (_TtP34SiriCrossDeviceArbitrationFeedback7Globals_)globals
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_266A9D630();
 
   return v3;
 }
 
-- (void)setGlobals:(id)a3
+- (void)setGlobals:(id)globals
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_266A9D720(a3);
+  selfCopy = self;
+  sub_266A9D720(globals);
 }
 
 + (NSURL)receivedArbitrationsDirectoryURL
@@ -70,28 +70,28 @@
   return v7;
 }
 
-- (void)addWithParticipation:(id)a3 directoryPath:(id)a4
+- (void)addWithParticipation:(id)participation directoryPath:(id)path
 {
   v6 = sub_266ABDA84();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
-  sub_266A66EF8(v9, v6, v8);
+  participationCopy = participation;
+  selfCopy = self;
+  sub_266A66EF8(participationCopy, v6, v8);
 }
 
 - (void)handleAssistantDismissed
 {
-  v2 = self;
+  selfCopy = self;
   sub_266A9D88C();
 }
 
-- (void)handleWithResponse:(id)a3 completion:(id)a4
+- (void)handleWithResponse:(id)response completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_266A9DB40(v7, v8, v6);
+  responseCopy = response;
+  selfCopy = self;
+  sub_266A9DB40(responseCopy, selfCopy, v6);
   _Block_release(v6);
 }
 

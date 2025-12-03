@@ -1,27 +1,27 @@
 @interface MTNotificationManager
 - (BOOL)canPromptForNotificationPermissionsWithPreWarmSheet;
 - (MTNotificationManager)init;
-- (id)computeNotificationsWithSchedulingOptions:(unint64_t)a3;
+- (id)computeNotificationsWithSchedulingOptions:(unint64_t)options;
 - (id)preWarmSheetMetricsOverlayDictionary;
-- (void)_showDetailUsingURL:(id)a3;
+- (void)_showDetailUsingURL:(id)l;
 - (void)clearAllNotifications;
-- (void)determineCanSendNewEpisodeAlertsWithSchedulingOptions:(unint64_t)a3 completion:(id)a4;
-- (void)markEpisodesAsNotified:(id)a3;
-- (void)playPodcastDefaultBehaviorForNotificationEpisode:(id)a3;
-- (void)playPodcastNotificationEpisodes:(id)a3;
-- (void)postLocalNotificationForPlayerItem:(id)a3;
-- (void)processNotificationsWithSchedulingOptions:(unint64_t)a3 reason:(id)a4 completion:(id)a5;
+- (void)determineCanSendNewEpisodeAlertsWithSchedulingOptions:(unint64_t)options completion:(id)completion;
+- (void)markEpisodesAsNotified:(id)notified;
+- (void)playPodcastDefaultBehaviorForNotificationEpisode:(id)episode;
+- (void)playPodcastNotificationEpisodes:(id)episodes;
+- (void)postLocalNotificationForPlayerItem:(id)item;
+- (void)processNotificationsWithSchedulingOptions:(unint64_t)options reason:(id)reason completion:(id)completion;
 - (void)requestNotificationPermissionsIfNeeded;
 - (void)requestNotificationPermissionsWithPreWarmSheetIfNeeded;
-- (void)scheduleLocalNotificationForPodcast:(id)a3 schedulingOptions:(unint64_t)a4 completion:(id)a5;
-- (void)scheduleLocalNotifications:(id)a3 schedulingOptions:(unint64_t)a4 completion:(id)a5;
+- (void)scheduleLocalNotificationForPodcast:(id)podcast schedulingOptions:(unint64_t)options completion:(id)completion;
+- (void)scheduleLocalNotifications:(id)notifications schedulingOptions:(unint64_t)options completion:(id)completion;
 - (void)setUpNotificationStatusIsAuthorizedUpdates;
-- (void)showPodcastDetailForOneShowWithMultipleNotificationEpisodes:(id)a3;
-- (void)showPodcastDetailForOneShowWithOneNotificationEpisode:(id)a3;
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
-- (void)userNotificationCenter:(id)a3 openSettingsForNotification:(id)a4;
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5;
+- (void)showPodcastDetailForOneShowWithMultipleNotificationEpisodes:(id)episodes;
+- (void)showPodcastDetailForOneShowWithOneNotificationEpisode:(id)episode;
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
+- (void)userNotificationCenter:(id)center openSettingsForNotification:(id)notification;
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler;
 @end
 
 @implementation MTNotificationManager
@@ -127,16 +127,16 @@ LABEL_12:
 - (id)preWarmSheetMetricsOverlayDictionary
 {
   v2 = objc_alloc_init(_TtC8ShelfKit26UniversalMetricsDictionary);
-  v3 = [v2 dictionary];
-  v4 = [v3 mutableCopy];
+  dictionary = [v2 dictionary];
+  v4 = [dictionary mutableCopy];
 
   v5 = +[_TtC8ShelfKit15MetricsActivity shared];
-  v6 = [v5 pageContext];
-  v7 = v6;
+  pageContext = [v5 pageContext];
+  v7 = pageContext;
   v8 = &stru_1004F3018;
-  if (v6)
+  if (pageContext)
   {
-    v8 = v6;
+    v8 = pageContext;
   }
 
   v9 = v8;
@@ -145,7 +145,7 @@ LABEL_12:
   [v4 setValue:@"xp_amp_podcasts_main" forKey:@"topic"];
   v10 = objc_alloc_init(AMSMutablePromise);
   v11 = +[_TtC18PodcastsFoundation26AnalyticsIdentifierManager sharedInstance];
-  v12 = [v11 identifierPromise];
+  identifierPromise = [v11 identifierPromise];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10006015C;
@@ -154,7 +154,7 @@ LABEL_12:
   v13 = v10;
   v20 = v13;
   v14 = v4;
-  [v12 addFinishBlock:v18];
+  [identifierPromise addFinishBlock:v18];
 
   v15 = v20;
   v16 = v13;
@@ -162,23 +162,23 @@ LABEL_12:
   return v13;
 }
 
-- (void)determineCanSendNewEpisodeAlertsWithSchedulingOptions:(unint64_t)a3 completion:(id)a4
+- (void)determineCanSendNewEpisodeAlertsWithSchedulingOptions:(unint64_t)options completion:(id)completion
 {
-  v4 = a3;
-  v5 = a4;
-  if (v5)
+  optionsCopy = options;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v6 = +[PodcastsApplicationStateMonitor shared];
-    v7 = [v6 currentState];
+    currentState = [v6 currentState];
 
-    if ((v4 & 1) != 0 || v7 == 2)
+    if ((optionsCopy & 1) != 0 || currentState == 2)
     {
       v10 = +[UNUserNotificationCenter currentNotificationCenter];
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_100060468;
       v11[3] = &unk_1004D89F8;
-      v12 = v5;
+      v12 = completionCopy;
       [v10 getNotificationSettingsWithCompletionHandler:v11];
     }
 
@@ -187,21 +187,21 @@ LABEL_12:
       v8 = _MTLogCategoryNotifications();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [PodcastsApplicationStateMonitor descriptionForState:v7];
+        v9 = [PodcastsApplicationStateMonitor descriptionForState:currentState];
         *buf = 138412290;
         v14 = v9;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "canSendNotifications is NO (reason: appState = %@)", buf, 0xCu);
       }
 
-      (*(v5 + 2))(v5, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)processNotificationsWithSchedulingOptions:(unint64_t)a3 reason:(id)a4 completion:(id)a5
+- (void)processNotificationsWithSchedulingOptions:(unint64_t)options reason:(id)reason completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  reasonCopy = reason;
+  completionCopy = completion;
   v10 = _MTLogCategoryNotifications();
   v11 = os_signpost_id_generate(v10);
 
@@ -210,9 +210,9 @@ LABEL_12:
   if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
     *buf = 134218242;
-    *&buf[4] = a3;
+    *&buf[4] = options;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = reasonCopy;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "ProcessNotifications", "SchedulingOptions=%{name=schedulingOptions}lu Reason=%{name=reason}@", buf, 0x16u);
   }
 
@@ -220,9 +220,9 @@ LABEL_12:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = reasonCopy;
     *&buf[12] = 1024;
-    *&buf[14] = a3;
+    *&buf[14] = options;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[BEGIN] processing notifications for '%@' (scheduling options = %d)", buf, 0x12u);
   }
 
@@ -243,9 +243,9 @@ LABEL_12:
   v25[1] = 3221225472;
   v25[2] = sub_100060900;
   v25[3] = &unk_1004D8A20;
-  v17 = v8;
+  v17 = reasonCopy;
   v26 = v17;
-  v18 = v9;
+  v18 = completionCopy;
   v27 = v18;
   v28 = buf;
   v29 = v11;
@@ -258,8 +258,8 @@ LABEL_12:
   objc_copyWeak(v23, &location);
   v20 = v19;
   v22 = v20;
-  v23[1] = a3;
-  [(MTNotificationManager *)self determineCanSendNewEpisodeAlertsWithSchedulingOptions:a3 completion:v21];
+  v23[1] = options;
+  [(MTNotificationManager *)self determineCanSendNewEpisodeAlertsWithSchedulingOptions:options completion:v21];
 
   objc_destroyWeak(v23);
   objc_destroyWeak(&location);
@@ -267,44 +267,44 @@ LABEL_12:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)markEpisodesAsNotified:(id)a3
+- (void)markEpisodesAsNotified:(id)notified
 {
-  v3 = a3;
+  notifiedCopy = notified;
   v4 = _MTLogCategoryNotifications();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 descriptionForNotificationLogging];
+    descriptionForNotificationLogging = [notifiedCopy descriptionForNotificationLogging];
     *buf = 138412290;
-    v14 = v5;
+    v14 = descriptionForNotificationLogging;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Marking as notified: %@", buf, 0xCu);
   }
 
   v6 = +[MTDB sharedInstance];
-  v7 = [v6 mainOrPrivateContext];
+  mainOrPrivateContext = [v6 mainOrPrivateContext];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100060DA0;
   v10[3] = &unk_1004D8798;
-  v11 = v3;
-  v12 = v7;
-  v8 = v7;
-  v9 = v3;
+  v11 = notifiedCopy;
+  v12 = mainOrPrivateContext;
+  v8 = mainOrPrivateContext;
+  v9 = notifiedCopy;
   [v8 performBlockAndWait:v10];
 }
 
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings
 {
-  v8 = a3;
-  v5 = a4;
+  centerCopy = center;
+  settingsCopy = settings;
   v6 = +[IMURLBag sharedInstance];
-  v7 = [AMSUserNotification notificationCenter:v8 didChangeSettings:v5 bag:v6];
+  v7 = [AMSUserNotification notificationCenter:centerCopy didChangeSettings:settingsCopy bag:v6];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  responseCopy = response;
+  handlerCopy = handler;
   v9 = _MTLogCategoryNotifications();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -312,23 +312,23 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "didReceiveNotificationResponse", buf, 2u);
   }
 
-  if (![AMSUserNotification shouldHandleNotificationResponse:v7])
+  if (![AMSUserNotification shouldHandleNotificationResponse:responseCopy])
   {
-    v13 = [v7 notification];
-    v14 = [v13 request];
-    v11 = [v14 content];
+    notification = [responseCopy notification];
+    request = [notification request];
+    content = [request content];
 
-    v15 = [v11 mt_notificationEpisodes];
+    mt_notificationEpisodes = [content mt_notificationEpisodes];
     v16 = _MTLogCategoryNotifications();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v15 count];
+      v17 = [mt_notificationEpisodes count];
       *buf = 134217984;
       v45 = v17;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "didReceiveNotificationResponse for %lu episodes", buf, 0xCu);
     }
 
-    v18 = [v15 mt_compactMap:&stru_1004D8AD8];
+    v18 = [mt_notificationEpisodes mt_compactMap:&stru_1004D8AD8];
     v19 = [NSSet setWithArray:v18];
     v20 = [v19 count];
 
@@ -338,7 +338,7 @@ LABEL_12:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v45 = v7;
+        v45 = responseCopy;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "Unexpected notification content [no podcasts] in response %@", buf, 0xCu);
       }
 
@@ -353,28 +353,28 @@ LABEL_12:
     }
 
     v37 = v18;
-    v38 = v7;
-    v39 = v11;
-    v40 = v8;
-    v21 = [v7 mt_actionType];
-    v41 = self;
-    if (!v21 && v20 == 1)
+    v38 = responseCopy;
+    v39 = content;
+    v40 = handlerCopy;
+    mt_actionType = [responseCopy mt_actionType];
+    selfCopy = self;
+    if (!mt_actionType && v20 == 1)
     {
-      if ([v15 count] == 1)
+      if ([mt_notificationEpisodes count] == 1)
       {
-        v21 = 3;
+        mt_actionType = 3;
       }
 
       else
       {
-        v21 = 4;
+        mt_actionType = 4;
       }
     }
 
     v22 = +[MTFeedUpdateMetricsAction notificationTapped];
     v23 = +[MTFeedUpdateMetricsDataKey actionType];
     v42[0] = v23;
-    v24 = [NSNumber numberWithInteger:v21];
+    v24 = [NSNumber numberWithInteger:mt_actionType];
     v43[0] = v24;
     v25 = +[MTFeedUpdateMetricsDataKey uniquePodcastUuidCount];
     v42[1] = v25;
@@ -382,7 +382,7 @@ LABEL_12:
     v43[1] = v26;
     v27 = +[MTFeedUpdateMetricsDataKey notificationEpisodesCount];
     v42[2] = v27;
-    v28 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v15 count]);
+    v28 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [mt_notificationEpisodes count]);
     v43[2] = v28;
     v29 = [NSDictionary dictionaryWithObjects:v43 forKeys:v42 count:3];
     [IMMetrics recordUserAction:v22 dataSource:0 withData:v29];
@@ -391,30 +391,30 @@ LABEL_12:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v45 = v21;
+      v45 = mt_actionType;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "didReceiveNotificationResponse for actionType %lu", buf, 0xCu);
     }
 
-    if (v21 <= 1)
+    if (mt_actionType <= 1)
     {
-      if (v21)
+      if (mt_actionType)
       {
-        v31 = v21 == 1;
-        v11 = v39;
-        v8 = v40;
+        v31 = mt_actionType == 1;
+        content = v39;
+        handlerCopy = v40;
         v18 = v37;
-        v7 = v38;
+        responseCopy = v38;
         if (v31)
         {
-          v34 = [v15 firstObject];
-          [(MTNotificationManager *)v41 playPodcastDefaultBehaviorForNotificationEpisode:v34];
+          firstObject = [mt_notificationEpisodes firstObject];
+          [(MTNotificationManager *)selfCopy playPodcastDefaultBehaviorForNotificationEpisode:firstObject];
         }
 
         goto LABEL_39;
       }
 
       v36 = _MTLogCategoryDefault();
-      v7 = v38;
+      responseCopy = v38;
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
@@ -422,46 +422,46 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "Unexpected notification action type encountered in %@", buf, 0xCu);
       }
 
-      v11 = v39;
-      v8 = v40;
+      content = v39;
+      handlerCopy = v40;
     }
 
     else
     {
-      if (v21 == 2)
+      if (mt_actionType == 2)
       {
-        [(MTNotificationManager *)v41 playPodcastNotificationEpisodes:v15];
+        [(MTNotificationManager *)selfCopy playPodcastNotificationEpisodes:mt_notificationEpisodes];
       }
 
       else
       {
-        if (v21 != 3)
+        if (mt_actionType != 3)
         {
-          v31 = v21 == 4;
-          v11 = v39;
-          v8 = v40;
+          v31 = mt_actionType == 4;
+          content = v39;
+          handlerCopy = v40;
           v18 = v37;
-          v7 = v38;
+          responseCopy = v38;
           if (v31)
           {
-            [(MTNotificationManager *)v41 showPodcastDetailForOneShowWithMultipleNotificationEpisodes:v15];
+            [(MTNotificationManager *)selfCopy showPodcastDetailForOneShowWithMultipleNotificationEpisodes:mt_notificationEpisodes];
           }
 
           goto LABEL_39;
         }
 
-        v35 = [v15 firstObject];
-        [(MTNotificationManager *)v41 showPodcastDetailForOneShowWithOneNotificationEpisode:v35];
+        firstObject2 = [mt_notificationEpisodes firstObject];
+        [(MTNotificationManager *)selfCopy showPodcastDetailForOneShowWithOneNotificationEpisode:firstObject2];
       }
 
-      v11 = v39;
-      v8 = v40;
-      v7 = v38;
+      content = v39;
+      handlerCopy = v40;
+      responseCopy = v38;
     }
 
     v18 = v37;
 LABEL_39:
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
 
     goto LABEL_40;
   }
@@ -473,19 +473,19 @@ LABEL_39:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Handing notification response over to AMS for further processing", buf, 2u);
   }
 
-  v11 = +[IMURLBag sharedInstance];
-  v12 = [AMSUserNotification handleNotificationResponse:v7 bag:v11];
-  v8[2](v8);
+  content = +[IMURLBag sharedInstance];
+  v12 = [AMSUserNotification handleNotificationResponse:responseCopy bag:content];
+  handlerCopy[2](handlerCopy);
 LABEL_40:
 }
 
-- (void)userNotificationCenter:(id)a3 openSettingsForNotification:(id)a4
+- (void)userNotificationCenter:(id)center openSettingsForNotification:(id)notification
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 request];
-  v8 = [v7 content];
-  v9 = [v8 mt_podcastUuid];
+  centerCopy = center;
+  notificationCopy = notification;
+  request = [notificationCopy request];
+  content = [request content];
+  mt_podcastUuid = [content mt_podcastUuid];
 
   v10 = +[NSNotificationCenter defaultCenter];
   v11 = +[UIApplication sharedApplication];
@@ -509,13 +509,13 @@ LABEL_40:
   v29 = &v32;
   v12 = v10;
   v26 = v12;
-  v13 = v9;
+  v13 = mt_podcastUuid;
   v27 = v13;
   v14 = objc_retainBlock(v25);
   v15 = +[UIApplication sharedApplication];
-  v16 = [v15 applicationState];
+  applicationState = [v15 applicationState];
 
-  if (v16)
+  if (applicationState)
   {
     v17 = +[NSOperationQueue mainQueue];
     v18 = MTApplicationDidBecomeActiveNotification;
@@ -542,24 +542,24 @@ LABEL_40:
   _Block_object_dispose(&v32, 8);
 }
 
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler
 {
-  v8 = a5;
-  v6 = [a4 request];
-  v7 = ([v6 mt_schedulingOptions] << 63) >> 63;
+  handlerCopy = handler;
+  request = [notification request];
+  v7 = ([request mt_schedulingOptions] << 63) >> 63;
 
-  v8[2](v8, v7);
+  handlerCopy[2](handlerCopy, v7);
 }
 
-- (void)showPodcastDetailForOneShowWithOneNotificationEpisode:(id)a3
+- (void)showPodcastDetailForOneShowWithOneNotificationEpisode:(id)episode
 {
-  v4 = a3;
-  if (v4)
+  episodeCopy = episode;
+  if (episodeCopy)
   {
     v5 = +[MTDB sharedInstance];
-    v6 = [v5 mainQueueContext];
-    v7 = [v4 uuid];
-    v8 = [v6 episodeForUuid:v7];
+    mainQueueContext = [v5 mainQueueContext];
+    uuid = [episodeCopy uuid];
+    v8 = [mainQueueContext episodeForUuid:uuid];
 
     if (v8)
     {
@@ -568,7 +568,7 @@ LABEL_40:
 
     else
     {
-      +[MTPodcast productURLForStoreCollectionId:storeTrackId:](MTPodcast, "productURLForStoreCollectionId:storeTrackId:", [v4 podcastStoreCollectionId], objc_msgSend(v4, "storeTrackId"));
+      +[MTPodcast productURLForStoreCollectionId:storeTrackId:](MTPodcast, "productURLForStoreCollectionId:storeTrackId:", [episodeCopy podcastStoreCollectionId], objc_msgSend(episodeCopy, "storeTrackId"));
     }
     v9 = ;
     v10 = _MTLogCategoryNotifications();
@@ -577,9 +577,9 @@ LABEL_40:
     {
       if (v11)
       {
-        v12 = [v9 absoluteString];
+        absoluteString = [v9 absoluteString];
         v13 = 138412290;
-        v14 = v12;
+        v14 = absoluteString;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Showing Podcast Details with one episode with URL %@", &v13, 0xCu);
       }
     }
@@ -604,10 +604,10 @@ LABEL_40:
   }
 }
 
-- (void)showPodcastDetailForOneShowWithMultipleNotificationEpisodes:(id)a3
+- (void)showPodcastDetailForOneShowWithMultipleNotificationEpisodes:(id)episodes
 {
-  v4 = a3;
-  if ([v4 count] <= 1)
+  episodesCopy = episodes;
+  if ([episodesCopy count] <= 1)
   {
     v5 = _MTLogCategoryDefault();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -617,13 +617,13 @@ LABEL_40:
     }
   }
 
-  if ([v4 count])
+  if ([episodesCopy count])
   {
-    v6 = [v4 firstObject];
+    firstObject = [episodesCopy firstObject];
     v7 = +[MTDB sharedInstance];
-    v8 = [v7 mainOrPrivateContext];
-    v9 = [v6 podcastUuid];
-    v10 = [v8 podcastForUuid:v9];
+    mainOrPrivateContext = [v7 mainOrPrivateContext];
+    podcastUuid = [firstObject podcastUuid];
+    v10 = [mainOrPrivateContext podcastForUuid:podcastUuid];
 
     if (v10)
     {
@@ -632,7 +632,7 @@ LABEL_40:
 
     else
     {
-      +[MTPodcast productURLForStoreCollectionId:storeTrackId:](MTPodcast, "productURLForStoreCollectionId:storeTrackId:", [v6 podcastStoreCollectionId], 0);
+      +[MTPodcast productURLForStoreCollectionId:storeTrackId:](MTPodcast, "productURLForStoreCollectionId:storeTrackId:", [firstObject podcastStoreCollectionId], 0);
     }
     v11 = ;
     v12 = _MTLogCategoryNotifications();
@@ -641,9 +641,9 @@ LABEL_40:
     {
       if (v13)
       {
-        v14 = [v11 absoluteString];
+        absoluteString = [v11 absoluteString];
         v15 = 138412290;
-        v16 = v14;
+        v16 = absoluteString;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Showing Podcast Details with multiple episodes with URL %@", &v15, 0xCu);
       }
     }
@@ -658,24 +658,24 @@ LABEL_40:
   }
 }
 
-- (void)_showDetailUsingURL:(id)a3
+- (void)_showDetailUsingURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
     v4 = dispatch_get_global_queue(0, 0);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100061F14;
     block[3] = &unk_1004D8358;
-    v6 = v3;
+    v6 = lCopy;
     dispatch_async(v4, block);
   }
 }
 
-- (void)playPodcastDefaultBehaviorForNotificationEpisode:(id)a3
+- (void)playPodcastDefaultBehaviorForNotificationEpisode:(id)episode
 {
-  v3 = a3;
+  episodeCopy = episode;
   v4 = _MTLogCategoryNotifications();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -684,19 +684,19 @@ LABEL_40:
   }
 
   v5 = +[MTDB sharedInstance];
-  v6 = [v5 mainOrPrivateContext];
+  mainOrPrivateContext = [v5 mainOrPrivateContext];
 
-  v7 = [v3 uuid];
-  if (v7)
+  uuid = [episodeCopy uuid];
+  if (uuid)
   {
-    v8 = [v3 uuid];
-    v9 = [v6 episodeForUuid:v8];
+    uuid2 = [episodeCopy uuid];
+    v9 = [mainOrPrivateContext episodeForUuid:uuid2];
     v10 = v9 == 0;
 
     if (!v10)
     {
-      v11 = [v3 uuid];
-      v12 = [MTPlaybackQueueFactory playEpisodeUuid:v11];
+      uuid3 = [episodeCopy uuid];
+      v12 = [MTPlaybackQueueFactory playEpisodeUuid:uuid3];
 
       if (v12)
       {
@@ -705,19 +705,19 @@ LABEL_40:
     }
   }
 
-  v13 = [v3 storeTrackId];
+  storeTrackId = [episodeCopy storeTrackId];
   v14 = _MTLogCategoryNotifications();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    v15 = [v3 uuid];
+    uuid4 = [episodeCopy uuid];
     *buf = 138412546;
-    *&buf[4] = v15;
+    *&buf[4] = uuid4;
     *&buf[12] = 2048;
-    *&buf[14] = v13;
+    *&buf[14] = storeTrackId;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "didReceiveNotificationResponse playPodcastDefaultBehaviorForNotificationEpisode failed manifest from episode uuid %@. Will attempt to create from adam ID %lld", buf, 0x16u);
   }
 
-  if ([MTStoreIdentifier isNotEmpty:v13]&& (v16 = [MTNetworkMediaManifest alloc], [NSString stringWithFormat:@"%llu", v13], v17 = objc_claimAutoreleasedReturnValue(), v12 = [(MTNetworkMediaManifest *)v16 initWithEpisodeAdamId:v17 assetInfo:0], v17, v12))
+  if ([MTStoreIdentifier isNotEmpty:storeTrackId]&& (v16 = [MTNetworkMediaManifest alloc], [NSString stringWithFormat:@"%llu", storeTrackId], v17 = objc_claimAutoreleasedReturnValue(), v12 = [(MTNetworkMediaManifest *)v16 initWithEpisodeAdamId:v17 assetInfo:0], v17, v12))
   {
 LABEL_10:
     *buf = 0;
@@ -756,19 +756,19 @@ LABEL_10:
   }
 }
 
-- (void)playPodcastNotificationEpisodes:(id)a3
+- (void)playPodcastNotificationEpisodes:(id)episodes
 {
-  v3 = a3;
+  episodesCopy = episodes;
   v4 = +[MTDB sharedInstance];
-  v5 = [v4 mainOrPrivateContext];
+  mainOrPrivateContext = [v4 mainOrPrivateContext];
 
   *&buf = _NSConcreteStackBlock;
   *(&buf + 1) = 3221225472;
   v21 = sub_100064EE0;
   v22 = &unk_1004D8CF0;
-  v23 = v5;
-  v6 = v5;
-  v7 = [v3 mt_compactMap:&buf];
+  v23 = mainOrPrivateContext;
+  v6 = mainOrPrivateContext;
+  v7 = [episodesCopy mt_compactMap:&buf];
 
   v8 = _MTLogCategoryNotifications();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -788,7 +788,7 @@ LABEL_10:
     }
   }
 
-  v11 = [v3 mt_compactMap:&stru_1004D8D30];
+  v11 = [episodesCopy mt_compactMap:&stru_1004D8D30];
   v12 = [v11 mt_compactMap:&stru_1004D8B90];
   v13 = _MTLogCategoryNotifications();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -846,7 +846,7 @@ LABEL_9:
 LABEL_13:
 }
 
-- (id)computeNotificationsWithSchedulingOptions:(unint64_t)a3
+- (id)computeNotificationsWithSchedulingOptions:(unint64_t)options
 {
   v4 = objc_alloc_init(MTNotificationInfo);
   v5 = +[MTEpisode predicateForEpisodesFirstAvailableThisWeek];
@@ -859,28 +859,28 @@ LABEL_13:
   v12 = [v10 AND:v11];
 
   v13 = +[MTDB sharedInstance];
-  v14 = [v13 privateQueueContext];
+  privateQueueContext = [v13 privateQueueContext];
 
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100062B2C;
   v24[3] = &unk_1004D8BB8;
-  v25 = v14;
+  v25 = privateQueueContext;
   v26 = v5;
   v27 = v12;
-  v29 = a3;
+  optionsCopy = options;
   v15 = v4;
   v28 = v15;
   v16 = v12;
   v17 = v5;
-  v18 = v14;
+  v18 = privateQueueContext;
   [v18 performBlockAndWait:v24];
   v19 = _MTLogCategoryNotifications();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(MTNotificationInfo *)v15 descriptionForNotificationLogging];
+    descriptionForNotificationLogging = [(MTNotificationInfo *)v15 descriptionForNotificationLogging];
     *buf = 138412290;
-    v31 = v20;
+    v31 = descriptionForNotificationLogging;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Computed notification items: %@", buf, 0xCu);
   }
 
@@ -890,18 +890,18 @@ LABEL_13:
   return v15;
 }
 
-- (void)scheduleLocalNotifications:(id)a3 schedulingOptions:(unint64_t)a4 completion:(id)a5
+- (void)scheduleLocalNotifications:(id)notifications schedulingOptions:(unint64_t)options completion:(id)completion
 {
-  v8 = a3;
+  notificationsCopy = notifications;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10006316C;
   v20[3] = &unk_1004D84D0;
-  v9 = a5;
-  v21 = v9;
+  completionCopy = completion;
+  v21 = completionCopy;
   v10 = objc_retainBlock(v20);
-  v11 = [v8 podcasts];
-  v12 = [v11 count] == 0;
+  podcasts = [notificationsCopy podcasts];
+  v12 = [podcasts count] == 0;
 
   if (v12)
   {
@@ -914,9 +914,9 @@ LABEL_13:
     v13 = _MTLogCategoryNotifications();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v8 descriptionForNotificationLogging];
+      descriptionForNotificationLogging = [notificationsCopy descriptionForNotificationLogging];
       *buf = 138412290;
-      v23 = v14;
+      v23 = descriptionForNotificationLogging;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Attempting to post notifications for: %@", buf, 0xCu);
     }
 
@@ -925,90 +925,90 @@ LABEL_13:
     v15[2] = sub_100063184;
     v15[3] = &unk_1004D8BE0;
     objc_copyWeak(v18, &location);
-    v16 = v8;
-    v18[1] = a4;
+    v16 = notificationsCopy;
+    v18[1] = options;
     v17 = v10;
-    [(MTNotificationManager *)self determineCanSendNewEpisodeAlertsWithSchedulingOptions:a4 completion:v15];
+    [(MTNotificationManager *)self determineCanSendNewEpisodeAlertsWithSchedulingOptions:options completion:v15];
 
     objc_destroyWeak(v18);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)postLocalNotificationForPlayerItem:(id)a3
+- (void)postLocalNotificationForPlayerItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 podcastUuid];
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  podcastUuid = [itemCopy podcastUuid];
+  v5 = podcastUuid;
+  if (podcastUuid)
   {
-    v6 = v4;
+    absoluteString = podcastUuid;
   }
 
   else
   {
-    v7 = [v3 artworkUrl];
-    v6 = [v7 absoluteString];
+    artworkUrl = [itemCopy artworkUrl];
+    absoluteString = [artworkUrl absoluteString];
   }
 
   v8 = +[NSMutableArray array];
   v9 = +[PUIObjCArtworkProvider shared];
-  v10 = [v3 podcastUuid];
-  v11 = [v3 artworkUrl];
-  v12 = [v11 absoluteString];
+  podcastUuid2 = [itemCopy podcastUuid];
+  artworkUrl2 = [itemCopy artworkUrl];
+  absoluteString2 = [artworkUrl2 absoluteString];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000635A0;
   v16[3] = &unk_1004D8C30;
-  v17 = v6;
+  v17 = absoluteString;
   v18 = v8;
-  v19 = v3;
-  v13 = v3;
+  v19 = itemCopy;
+  v13 = itemCopy;
   v14 = v8;
-  v15 = v6;
-  [v9 artworkPathForShow:v10 size:v12 source:v16 completionHandler:{0x50uLL, 0x50uLL}];
+  v15 = absoluteString;
+  [v9 artworkPathForShow:podcastUuid2 size:absoluteString2 source:v16 completionHandler:{0x50uLL, 0x50uLL}];
 }
 
-- (void)scheduleLocalNotificationForPodcast:(id)a3 schedulingOptions:(unint64_t)a4 completion:(id)a5
+- (void)scheduleLocalNotificationForPodcast:(id)podcast schedulingOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = a3;
-  v36 = a5;
-  v37 = [v6 title];
-  v7 = [v6 episodes];
-  v8 = [v7 count];
+  podcastCopy = podcast;
+  completionCopy = completion;
+  title = [podcastCopy title];
+  episodes = [podcastCopy episodes];
+  v8 = [episodes count];
 
   v35 = +[UNNotificationCategory mt_localNotificationForNewEpisodesAvailable];
   if (v8 == 1)
   {
-    v9 = [v6 episodes];
-    v10 = [v9 firstObject];
+    episodes2 = [podcastCopy episodes];
+    firstObject = [episodes2 firstObject];
 
-    v34 = [v6 title];
-    v11 = [v10 bestTitle];
-    v12 = [v11 length];
+    title2 = [podcastCopy title];
+    bestTitle = [firstObject bestTitle];
+    v12 = [bestTitle length];
 
     if (v12)
     {
-      v13 = [v10 bestTitle];
+      bestTitle2 = [firstObject bestTitle];
     }
 
     else
     {
       v15 = +[NSBundle mainBundle];
-      v13 = [v15 localizedStringForKey:@"NOTIFICATION_SINGLE_EPISODE_NO_TITLE_FOR_PODCAST_AVAILABLE_MESSAGE_BODY" value:&stru_1004F3018 table:0];
+      bestTitle2 = [v15 localizedStringForKey:@"NOTIFICATION_SINGLE_EPISODE_NO_TITLE_FOR_PODCAST_AVAILABLE_MESSAGE_BODY" value:&stru_1004F3018 table:0];
     }
   }
 
   else
   {
-    v34 = [v6 title];
-    v10 = +[NSBundle mainBundle];
-    v14 = [v10 localizedStringForKey:@"NOTIFICATION_MULTIPLE_EPISODES_AVAILABLE_MESSAGE_BODY_FORMAT" value:&stru_1004F3018 table:0];
-    v13 = [NSString localizedStringWithFormat:v14, v8];
+    title2 = [podcastCopy title];
+    firstObject = +[NSBundle mainBundle];
+    v14 = [firstObject localizedStringForKey:@"NOTIFICATION_MULTIPLE_EPISODES_AVAILABLE_MESSAGE_BODY_FORMAT" value:&stru_1004F3018 table:0];
+    bestTitle2 = [NSString localizedStringWithFormat:v14, v8];
   }
 
   v16 = +[NSMutableArray array];
-  v17 = [v6 uuid];
+  uuid = [podcastCopy uuid];
   v18 = _MTLogCategoryNotifications();
   v19 = os_signpost_id_generate(v18);
 
@@ -1023,51 +1023,51 @@ LABEL_13:
   v22 = _MTLogCategoryNotifications();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v6 descriptionForNotificationLogging];
+    descriptionForNotificationLogging = [podcastCopy descriptionForNotificationLogging];
     *buf = 138412290;
-    v52 = v23;
+    v52 = descriptionForNotificationLogging;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Loading image to attach to notification for: %@", buf, 0xCu);
   }
 
   v24 = +[PUIObjCArtworkProvider shared];
-  v25 = [v6 uuid];
+  uuid2 = [podcastCopy uuid];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_100063FD0;
   v39[3] = &unk_1004D8C80;
-  v40 = v17;
+  v40 = uuid;
   v41 = v16;
   v42 = v35;
-  v43 = v34;
-  v44 = v13;
-  v45 = v37;
+  v43 = title2;
+  v44 = bestTitle2;
+  v45 = title;
   v48 = v19;
   v49 = v8;
-  v50 = a4;
-  v46 = v6;
-  v47 = v36;
-  v26 = v36;
-  v27 = v6;
-  v28 = v37;
-  v29 = v13;
-  v30 = v34;
+  optionsCopy = options;
+  v46 = podcastCopy;
+  v47 = completionCopy;
+  v26 = completionCopy;
+  v27 = podcastCopy;
+  v28 = title;
+  v29 = bestTitle2;
+  v30 = title2;
   v31 = v35;
   v32 = v16;
-  v33 = v17;
-  [v24 artworkPathForShow:v25 size:v39 completionHandler:{0x50uLL, 0x50uLL}];
+  v33 = uuid;
+  [v24 artworkPathForShow:uuid2 size:v39 completionHandler:{0x50uLL, 0x50uLL}];
 }
 
 - (void)clearAllNotifications
 {
   v2 = +[MTDB sharedInstance];
-  v3 = [v2 privateQueueContext];
+  privateQueueContext = [v2 privateQueueContext];
 
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100064878;
   v5[3] = &unk_1004D8358;
-  v6 = v3;
-  v4 = v3;
+  v6 = privateQueueContext;
+  v4 = privateQueueContext;
   [v4 performBlock:v5];
 }
 

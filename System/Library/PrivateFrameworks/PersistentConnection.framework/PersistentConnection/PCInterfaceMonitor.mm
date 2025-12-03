@@ -1,19 +1,19 @@
 @interface PCInterfaceMonitor
 + (BOOL)isNetworkingPowerExpensiveToUse;
-+ (id)sharedInstanceForIdentifier:(int64_t)a3;
++ (id)sharedInstanceForIdentifier:(int64_t)identifier;
 - (BOOL)isLTEWithCDRX;
 - (NSString)networkCode;
-- (PCInterfaceMonitor)initWithInterfaceIdentifier:(int64_t)a3;
+- (PCInterfaceMonitor)initWithInterfaceIdentifier:(int64_t)identifier;
 - (__CFString)wwanInterfaceName;
 - (int)currentRAT;
 - (unint64_t)interface5GMode;
-- (void)addDelegate:(id)a3 queue:(id)a4;
+- (void)addDelegate:(id)delegate queue:(id)queue;
 - (void)dealloc;
-- (void)interfaceConstraintChanged:(id)a3;
-- (void)interfaceLinkQualityChanged:(id)a3 previousLinkQuality:(int)a4;
-- (void)interfaceRadioHotnessChanged:(id)a3;
-- (void)interfaceReachabilityChanged:(id)a3;
-- (void)removeDelegate:(id)a3;
+- (void)interfaceConstraintChanged:(id)changed;
+- (void)interfaceLinkQualityChanged:(id)changed previousLinkQuality:(int)quality;
+- (void)interfaceRadioHotnessChanged:(id)changed;
+- (void)interfaceReachabilityChanged:(id)changed;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation PCInterfaceMonitor
@@ -61,22 +61,22 @@
   return v4;
 }
 
-+ (id)sharedInstanceForIdentifier:(int64_t)a3
++ (id)sharedInstanceForIdentifier:(int64_t)identifier
 {
-  if (a3 <= 1)
+  if (identifier <= 1)
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    if (!sharedInstanceForIdentifier__sInstances[a3])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!sharedInstanceForIdentifier__sInstances[identifier])
     {
-      v6 = [[PCInterfaceMonitor alloc] initWithInterfaceIdentifier:a3];
-      v7 = sharedInstanceForIdentifier__sInstances[a3];
-      sharedInstanceForIdentifier__sInstances[a3] = v6;
+      v6 = [[PCInterfaceMonitor alloc] initWithInterfaceIdentifier:identifier];
+      v7 = sharedInstanceForIdentifier__sInstances[identifier];
+      sharedInstanceForIdentifier__sInstances[identifier] = v6;
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v3 = sharedInstanceForIdentifier__sInstances[a3];
+    v3 = sharedInstanceForIdentifier__sInstances[identifier];
   }
 
   else
@@ -87,16 +87,16 @@
   return v3;
 }
 
-- (PCInterfaceMonitor)initWithInterfaceIdentifier:(int64_t)a3
+- (PCInterfaceMonitor)initWithInterfaceIdentifier:(int64_t)identifier
 {
   v11.receiver = self;
   v11.super_class = PCInterfaceMonitor;
   v4 = [(PCInterfaceMonitor *)&v11 init];
   if (v4)
   {
-    if (a3)
+    if (identifier)
     {
-      if (a3 != 1)
+      if (identifier != 1)
       {
 LABEL_7:
         [(PCInterfaceUsabilityMonitorProtocol *)v4->_internal setTrackUsability:1];
@@ -134,58 +134,58 @@ LABEL_7:
   [(PCInterfaceMonitor *)&v3 dealloc];
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10 | v6)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  if (delegateCopy | queueCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    if (!v7->_delegateMap)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!selfCopy->_delegateMap)
     {
       v8 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:5 valueOptions:512 capacity:1];
-      delegateMap = v7->_delegateMap;
-      v7->_delegateMap = v8;
+      delegateMap = selfCopy->_delegateMap;
+      selfCopy->_delegateMap = v8;
     }
 
-    if (v10 && v6)
+    if (delegateCopy && queueCopy)
     {
-      [(NSMapTable *)v7->_delegateMap setObject:v6 forKey:v10];
+      [(NSMapTable *)selfCopy->_delegateMap setObject:queueCopy forKey:delegateCopy];
     }
 
-    else if (v10)
+    else if (delegateCopy)
     {
-      [(NSMapTable *)v7->_delegateMap removeObjectForKey:v10];
+      [(NSMapTable *)selfCopy->_delegateMap removeObjectForKey:delegateCopy];
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
-    v6 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSMapTable *)v5->_delegateMap removeObjectForKey:v6];
-    objc_sync_exit(v5);
+    v6 = delegateCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMapTable *)selfCopy->_delegateMap removeObjectForKey:v6];
+    objc_sync_exit(selfCopy);
 
-    v4 = v6;
+    delegateCopy = v6;
   }
 }
 
-- (void)interfaceLinkQualityChanged:(id)a3 previousLinkQuality:(int)a4
+- (void)interfaceLinkQualityChanged:(id)changed previousLinkQuality:(int)quality
 {
   v23 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(NSMapTable *)v6->_delegateMap copy];
-  objc_sync_exit(v6);
+  changedCopy = changed;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [(NSMapTable *)selfCopy->_delegateMap copy];
+  objc_sync_exit(selfCopy);
 
   v20 = 0u;
   v21 = 0u;
@@ -209,14 +209,14 @@ LABEL_7:
         v12 = *(*(&v18 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          v13 = [v8 objectForKey:{v12, v15}];
+          v13 = [v8 objectForKey:{v12, changedCopy}];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __70__PCInterfaceMonitor_interfaceLinkQualityChanged_previousLinkQuality___block_invoke;
           block[3] = &unk_279A1A288;
           block[4] = v12;
-          block[5] = v6;
-          v17 = a4;
+          block[5] = selfCopy;
+          qualityCopy = quality;
           dispatch_async(v13, block);
         }
 
@@ -241,14 +241,14 @@ void __70__PCInterfaceMonitor_interfaceLinkQualityChanged_previousLinkQuality___
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)interfaceReachabilityChanged:(id)a3
+- (void)interfaceReachabilityChanged:(id)changed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMapTable *)v4->_delegateMap copy];
-  objc_sync_exit(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMapTable *)selfCopy->_delegateMap copy];
+  objc_sync_exit(selfCopy);
 
   v17 = 0u;
   v18 = 0u;
@@ -278,7 +278,7 @@ void __70__PCInterfaceMonitor_interfaceLinkQualityChanged_previousLinkQuality___
           block[2] = __51__PCInterfaceMonitor_interfaceReachabilityChanged___block_invoke;
           block[3] = &unk_279A19D48;
           block[4] = v10;
-          block[5] = v4;
+          block[5] = selfCopy;
           dispatch_async(v11, block);
         }
 
@@ -303,14 +303,14 @@ void __51__PCInterfaceMonitor_interfaceReachabilityChanged___block_invoke(uint64
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)interfaceRadioHotnessChanged:(id)a3
+- (void)interfaceRadioHotnessChanged:(id)changed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMapTable *)v4->_delegateMap copy];
-  objc_sync_exit(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMapTable *)selfCopy->_delegateMap copy];
+  objc_sync_exit(selfCopy);
 
   v17 = 0u;
   v18 = 0u;
@@ -340,7 +340,7 @@ void __51__PCInterfaceMonitor_interfaceReachabilityChanged___block_invoke(uint64
           block[2] = __51__PCInterfaceMonitor_interfaceRadioHotnessChanged___block_invoke;
           block[3] = &unk_279A19D48;
           block[4] = v10;
-          block[5] = v4;
+          block[5] = selfCopy;
           dispatch_async(v11, block);
         }
 
@@ -365,14 +365,14 @@ void __51__PCInterfaceMonitor_interfaceRadioHotnessChanged___block_invoke(uint64
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)interfaceConstraintChanged:(id)a3
+- (void)interfaceConstraintChanged:(id)changed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMapTable *)v4->_delegateMap copy];
-  objc_sync_exit(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMapTable *)selfCopy->_delegateMap copy];
+  objc_sync_exit(selfCopy);
 
   v17 = 0u;
   v18 = 0u;
@@ -402,7 +402,7 @@ void __51__PCInterfaceMonitor_interfaceRadioHotnessChanged___block_invoke(uint64
           block[2] = __49__PCInterfaceMonitor_interfaceConstraintChanged___block_invoke;
           block[3] = &unk_279A19D48;
           block[4] = v10;
-          block[5] = v4;
+          block[5] = selfCopy;
           dispatch_async(v11, block);
         }
 
@@ -458,15 +458,15 @@ void __49__PCInterfaceMonitor_interfaceConstraintChanged___block_invoke(uint64_t
   internal = self->_internal;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(PCInterfaceUsabilityMonitorProtocol *)self->_internal networkCode];
+    networkCode = [(PCInterfaceUsabilityMonitorProtocol *)self->_internal networkCode];
   }
 
   else
   {
-    v4 = 0;
+    networkCode = 0;
   }
 
-  return v4;
+  return networkCode;
 }
 
 @end

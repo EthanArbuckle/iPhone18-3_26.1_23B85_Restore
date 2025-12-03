@@ -1,19 +1,19 @@
 @interface BackupManagerProvider
-- (BackupManagerProvider)initWithAccount:(id)a3;
+- (BackupManagerProvider)initWithAccount:(id)account;
 @end
 
 @implementation BackupManagerProvider
 
-- (BackupManagerProvider)initWithAccount:(id)a3
+- (BackupManagerProvider)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v12.receiver = self;
   v12.super_class = BackupManagerProvider;
   v5 = [(BackupManagerProvider *)&v12 init];
   if (v5)
   {
     v11 = 0;
-    v6 = [objc_alloc(MEMORY[0x277D28A40]) initWithAccount:v4 delegate:0 eventQueue:0 error:&v11];
+    v6 = [objc_alloc(MEMORY[0x277D28A40]) initWithAccount:accountCopy delegate:0 eventQueue:0 error:&v11];
     v7 = v11;
     backupManager = v5->_backupManager;
     v5->_backupManager = v6;

@@ -1,19 +1,19 @@
 @interface SBWindowHideRequest
-+ (id)hideRequestWithWindowLevelRange:(SBWindowLevelRange_struct)a3 reason:(id)a4;
++ (id)hideRequestWithWindowLevelRange:(SBWindowLevelRange_struct)range reason:(id)reason;
 - (SBWindowLevelRange_struct)windowLevelRange;
 - (id)description;
 @end
 
 @implementation SBWindowHideRequest
 
-+ (id)hideRequestWithWindowLevelRange:(SBWindowLevelRange_struct)a3 reason:(id)a4
++ (id)hideRequestWithWindowLevelRange:(SBWindowLevelRange_struct)range reason:(id)reason
 {
-  end = a3.end;
-  start = a3.start;
-  v6 = a4;
+  end = range.end;
+  start = range.start;
+  reasonCopy = reason;
   v7 = objc_alloc_init(SBWindowHideRequest);
   [(SBWindowHideRequest *)v7 setWindowLevelRange:start, end];
-  [(SBWindowHideRequest *)v7 setReason:v6];
+  [(SBWindowHideRequest *)v7 setReason:reasonCopy];
 
   return v7;
 }
@@ -23,8 +23,8 @@
   v3 = MEMORY[0x277CCACA8];
   [(SBWindowHideRequest *)self windowLevelRange];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%.f, %.f)", v4, v5];
-  v7 = [(SBWindowHideRequest *)self reason];
-  v8 = [v3 stringWithFormat:@"<SBWindowHideRequest: range = %@ reason = %@>", v6, v7];;
+  reason = [(SBWindowHideRequest *)self reason];
+  v8 = [v3 stringWithFormat:@"<SBWindowHideRequest: range = %@ reason = %@>", v6, reason];;
 
   return v8;
 }

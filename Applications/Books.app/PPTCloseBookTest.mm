@@ -9,21 +9,21 @@
   v16.receiver = self;
   v16.super_class = PPTCloseBookTest;
   [(PPTSubtestBasedOpenTest *)&v16 startTest];
-  v3 = [(PPTBasicTest *)self bookController];
+  bookController = [(PPTBasicTest *)self bookController];
 
-  if (!v3)
+  if (!bookController)
   {
     goto LABEL_15;
   }
 
   objc_opt_class();
-  v4 = [(PPTBasicTest *)self bookController];
+  bookController2 = [(PPTBasicTest *)self bookController];
   v5 = BUDynamicCast();
 
   if (!v5)
   {
-    v7 = [(PPTBasicTest *)self bookController];
-    v8 = [_TtC5Books12RETestDriver isValidWithViewController:v7];
+    bookController3 = [(PPTBasicTest *)self bookController];
+    v8 = [_TtC5Books12RETestDriver isValidWithViewController:bookController3];
 
     if (v8)
     {
@@ -34,14 +34,14 @@
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Asking RETestDriver to close book", v15, 2u);
       }
 
-      v10 = [(PPTBasicTest *)self bookController];
-      v11 = [_TtC5Books12RETestDriver closeBookWithViewController:v10];
+      bookController4 = [(PPTBasicTest *)self bookController];
+      v11 = [_TtC5Books12RETestDriver closeBookWithViewController:bookController4];
       goto LABEL_14;
     }
 
-    v12 = [(PPTBasicTest *)self bookController];
+    bookController5 = [(PPTBasicTest *)self bookController];
 
-    if (v12)
+    if (bookController5)
     {
       v13 = sub_1001E65B0();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -50,8 +50,8 @@
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Asking THTestDriver to close book", v15, 2u);
       }
 
-      v10 = [(PPTBasicTest *)self bookController];
-      v11 = [THTestDriver closeBookWithBookController:v10];
+      bookController4 = [(PPTBasicTest *)self bookController];
+      v11 = [THTestDriver closeBookWithBookController:bookController4];
 LABEL_14:
       v14 = v11;
 

@@ -1,58 +1,58 @@
 @interface INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasFrequencyPercentage:(BOOL)a3;
-- (void)setHasIsModelPredictedChoice:(BOOL)a3;
-- (void)setHasIsUserSelectedChoice:(BOOL)a3;
-- (void)setHasLastContiguousCount:(BOOL)a3;
-- (void)setHasLocationAffinity156Kilometers:(BOOL)a3;
-- (void)setHasLocationAffinity2500Meters:(BOOL)a3;
-- (void)setHasLocationAffinity300Meters:(BOOL)a3;
-- (void)setHasLocationFrequencyCount156Kilometers:(BOOL)a3;
-- (void)setHasLocationFrequencyCount2500Meters:(BOOL)a3;
-- (void)setHasLocationFrequencyCount300Meters:(BOOL)a3;
-- (void)setHasRecencyRank:(BOOL)a3;
-- (void)setHasRecencySeconds:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasFrequencyPercentage:(BOOL)percentage;
+- (void)setHasIsModelPredictedChoice:(BOOL)choice;
+- (void)setHasIsUserSelectedChoice:(BOOL)choice;
+- (void)setHasLastContiguousCount:(BOOL)count;
+- (void)setHasLocationAffinity156Kilometers:(BOOL)kilometers;
+- (void)setHasLocationAffinity2500Meters:(BOOL)meters;
+- (void)setHasLocationAffinity300Meters:(BOOL)meters;
+- (void)setHasLocationFrequencyCount156Kilometers:(BOOL)kilometers;
+- (void)setHasLocationFrequencyCount2500Meters:(BOOL)meters;
+- (void)setHasLocationFrequencyCount300Meters:(BOOL)meters;
+- (void)setHasRecencyRank:(BOOL)rank;
+- (void)setHasRecencySeconds:(BOOL)seconds;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals
 
-- (INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals;
   v5 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals *)&v28 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"choice"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"choice"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals setChoice:](v5, "setChoice:", [v6 longLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isUserSelectedChoice"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isUserSelectedChoice"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals setIsUserSelectedChoice:](v5, "setIsUserSelectedChoice:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isModelPredictedChoice"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isModelPredictedChoice"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals setIsModelPredictedChoice:](v5, "setIsModelPredictedChoice:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"frequencyPercentage"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"frequencyPercentage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,21 +60,21 @@
       [(INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals *)v5 setFrequencyPercentage:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"recencySeconds"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"recencySeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals setRecencySeconds:](v5, "setRecencySeconds:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"recencyRank"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"recencyRank"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals setRecencyRank:](v5, "setRecencyRank:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"lastContiguousCount"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"lastContiguousCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,7 +82,7 @@
     }
 
     v27 = v6;
-    v13 = [v4 objectForKeyedSubscript:{@"locationAffinity300Meters", v12}];
+    v13 = [dictionaryCopy objectForKeyedSubscript:{@"locationAffinity300Meters", v12}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,7 +91,7 @@
     }
 
     v26 = v7;
-    v14 = [v4 objectForKeyedSubscript:@"locationAffinity2500Meters"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"locationAffinity2500Meters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
     }
 
     v25 = v8;
-    v15 = [v4 objectForKeyedSubscript:@"locationAffinity156Kilometers"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"locationAffinity156Kilometers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -110,7 +110,7 @@
 
     v23 = v11;
     v24 = v9;
-    v16 = [v4 objectForKeyedSubscript:@"locationFrequencyCount300Meters"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"locationFrequencyCount300Meters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -118,14 +118,14 @@
     }
 
     v17 = v10;
-    v18 = [v4 objectForKeyedSubscript:@"locationFrequencyCount2500Meters"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"locationFrequencyCount2500Meters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals setLocationFrequencyCount2500Meters:](v5, "setLocationFrequencyCount2500Meters:", [v18 longLongValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"locationFrequencyCount156Kilometers"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"locationFrequencyCount156Kilometers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -138,30 +138,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -174,12 +174,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals choice](self, "choice")}];
-    [v3 setObject:v7 forKeyedSubscript:@"choice"];
+    [dictionary setObject:v7 forKeyedSubscript:@"choice"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -202,7 +202,7 @@ LABEL_3:
   v8 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals *)self frequencyPercentage];
   v9 = [v8 numberWithFloat:?];
-  [v3 setObject:v9 forKeyedSubscript:@"frequencyPercentage"];
+  [dictionary setObject:v9 forKeyedSubscript:@"frequencyPercentage"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -218,7 +218,7 @@ LABEL_4:
 
 LABEL_20:
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals isModelPredictedChoice](self, "isModelPredictedChoice")}];
-  [v3 setObject:v10 forKeyedSubscript:@"isModelPredictedChoice"];
+  [dictionary setObject:v10 forKeyedSubscript:@"isModelPredictedChoice"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -234,7 +234,7 @@ LABEL_5:
 
 LABEL_21:
   v11 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals isUserSelectedChoice](self, "isUserSelectedChoice")}];
-  [v3 setObject:v11 forKeyedSubscript:@"isUserSelectedChoice"];
+  [dictionary setObject:v11 forKeyedSubscript:@"isUserSelectedChoice"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -250,7 +250,7 @@ LABEL_6:
 
 LABEL_22:
   v12 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals lastContiguousCount](self, "lastContiguousCount")}];
-  [v3 setObject:v12 forKeyedSubscript:@"lastContiguousCount"];
+  [dictionary setObject:v12 forKeyedSubscript:@"lastContiguousCount"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -268,7 +268,7 @@ LABEL_23:
   v13 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals *)self locationAffinity156Kilometers];
   v14 = [v13 numberWithFloat:?];
-  [v3 setObject:v14 forKeyedSubscript:@"locationAffinity156Kilometers"];
+  [dictionary setObject:v14 forKeyedSubscript:@"locationAffinity156Kilometers"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -286,7 +286,7 @@ LABEL_24:
   v15 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals *)self locationAffinity2500Meters];
   v16 = [v15 numberWithFloat:?];
-  [v3 setObject:v16 forKeyedSubscript:@"locationAffinity2500Meters"];
+  [dictionary setObject:v16 forKeyedSubscript:@"locationAffinity2500Meters"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -304,7 +304,7 @@ LABEL_25:
   v17 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals *)self locationAffinity300Meters];
   v18 = [v17 numberWithFloat:?];
-  [v3 setObject:v18 forKeyedSubscript:@"locationAffinity300Meters"];
+  [dictionary setObject:v18 forKeyedSubscript:@"locationAffinity300Meters"];
 
   has = self->_has;
   if ((has & 0x1000) == 0)
@@ -320,7 +320,7 @@ LABEL_10:
 
 LABEL_26:
   v19 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals locationFrequencyCount156Kilometers](self, "locationFrequencyCount156Kilometers")}];
-  [v3 setObject:v19 forKeyedSubscript:@"locationFrequencyCount156Kilometers"];
+  [dictionary setObject:v19 forKeyedSubscript:@"locationFrequencyCount156Kilometers"];
 
   has = self->_has;
   if ((has & 0x800) == 0)
@@ -336,7 +336,7 @@ LABEL_11:
 
 LABEL_27:
   v20 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals locationFrequencyCount2500Meters](self, "locationFrequencyCount2500Meters")}];
-  [v3 setObject:v20 forKeyedSubscript:@"locationFrequencyCount2500Meters"];
+  [dictionary setObject:v20 forKeyedSubscript:@"locationFrequencyCount2500Meters"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -352,7 +352,7 @@ LABEL_12:
 
 LABEL_28:
   v21 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals locationFrequencyCount300Meters](self, "locationFrequencyCount300Meters")}];
-  [v3 setObject:v21 forKeyedSubscript:@"locationFrequencyCount300Meters"];
+  [dictionary setObject:v21 forKeyedSubscript:@"locationFrequencyCount300Meters"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -368,19 +368,19 @@ LABEL_13:
 
 LABEL_29:
   v22 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals recencyRank](self, "recencyRank")}];
-  [v3 setObject:v22 forKeyedSubscript:@"recencyRank"];
+  [dictionary setObject:v22 forKeyedSubscript:@"recencyRank"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_14:
     v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionChoiceDependentSignals recencySeconds](self, "recencySeconds")}];
-    [v3 setObject:v5 forKeyedSubscript:@"recencySeconds"];
+    [dictionary setObject:v5 forKeyedSubscript:@"recencySeconds"];
   }
 
 LABEL_15:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -661,16 +661,16 @@ LABEL_52:
   return v6 ^ v5 ^ v7 ^ v12 ^ v13 ^ v14 ^ v15 ^ v20 ^ v21 ^ v26 ^ v31 ^ v32 ^ v33;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_54;
   }
 
   has = self->_has;
-  v6 = v4[40];
+  v6 = equalCopy[40];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_54;
@@ -679,13 +679,13 @@ LABEL_52:
   if (*&has)
   {
     choice = self->_choice;
-    if (choice != [v4 choice])
+    if (choice != [equalCopy choice])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -697,13 +697,13 @@ LABEL_52:
   if (v8)
   {
     isUserSelectedChoice = self->_isUserSelectedChoice;
-    if (isUserSelectedChoice != [v4 isUserSelectedChoice])
+    if (isUserSelectedChoice != [equalCopy isUserSelectedChoice])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -715,13 +715,13 @@ LABEL_52:
   if (v10)
   {
     isModelPredictedChoice = self->_isModelPredictedChoice;
-    if (isModelPredictedChoice != [v4 isModelPredictedChoice])
+    if (isModelPredictedChoice != [equalCopy isModelPredictedChoice])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -733,14 +733,14 @@ LABEL_52:
   if (v12)
   {
     frequencyPercentage = self->_frequencyPercentage;
-    [v4 frequencyPercentage];
+    [equalCopy frequencyPercentage];
     if (frequencyPercentage != v14)
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v15 = (*&has >> 4) & 1;
@@ -752,13 +752,13 @@ LABEL_52:
   if (v15)
   {
     recencySeconds = self->_recencySeconds;
-    if (recencySeconds != [v4 recencySeconds])
+    if (recencySeconds != [equalCopy recencySeconds])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v17 = (*&has >> 5) & 1;
@@ -770,13 +770,13 @@ LABEL_52:
   if (v17)
   {
     recencyRank = self->_recencyRank;
-    if (recencyRank != [v4 recencyRank])
+    if (recencyRank != [equalCopy recencyRank])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v19 = (*&has >> 6) & 1;
@@ -788,13 +788,13 @@ LABEL_52:
   if (v19)
   {
     lastContiguousCount = self->_lastContiguousCount;
-    if (lastContiguousCount != [v4 lastContiguousCount])
+    if (lastContiguousCount != [equalCopy lastContiguousCount])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v21 = (*&has >> 7) & 1;
@@ -806,14 +806,14 @@ LABEL_52:
   if (v21)
   {
     locationAffinity300Meters = self->_locationAffinity300Meters;
-    [v4 locationAffinity300Meters];
+    [equalCopy locationAffinity300Meters];
     if (locationAffinity300Meters != v23)
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v24 = (*&has >> 8) & 1;
@@ -825,14 +825,14 @@ LABEL_52:
   if (v24)
   {
     locationAffinity2500Meters = self->_locationAffinity2500Meters;
-    [v4 locationAffinity2500Meters];
+    [equalCopy locationAffinity2500Meters];
     if (locationAffinity2500Meters != v26)
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v27 = (*&has >> 9) & 1;
@@ -844,14 +844,14 @@ LABEL_52:
   if (v27)
   {
     locationAffinity156Kilometers = self->_locationAffinity156Kilometers;
-    [v4 locationAffinity156Kilometers];
+    [equalCopy locationAffinity156Kilometers];
     if (locationAffinity156Kilometers != v29)
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v30 = (*&has >> 10) & 1;
@@ -863,13 +863,13 @@ LABEL_52:
   if (v30)
   {
     locationFrequencyCount300Meters = self->_locationFrequencyCount300Meters;
-    if (locationFrequencyCount300Meters != [v4 locationFrequencyCount300Meters])
+    if (locationFrequencyCount300Meters != [equalCopy locationFrequencyCount300Meters])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v32 = (*&has >> 11) & 1;
@@ -881,10 +881,10 @@ LABEL_52:
   if (v32)
   {
     locationFrequencyCount2500Meters = self->_locationFrequencyCount2500Meters;
-    if (locationFrequencyCount2500Meters == [v4 locationFrequencyCount2500Meters])
+    if (locationFrequencyCount2500Meters == [equalCopy locationFrequencyCount2500Meters])
     {
       has = self->_has;
-      v6 = v4[40];
+      v6 = equalCopy[40];
       goto LABEL_50;
     }
 
@@ -903,7 +903,7 @@ LABEL_50:
   if (v34)
   {
     locationFrequencyCount156Kilometers = self->_locationFrequencyCount156Kilometers;
-    if (locationFrequencyCount156Kilometers != [v4 locationFrequencyCount156Kilometers])
+    if (locationFrequencyCount156Kilometers != [equalCopy locationFrequencyCount156Kilometers])
     {
       goto LABEL_54;
     }
@@ -915,9 +915,9 @@ LABEL_55:
   return v36;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -1090,9 +1090,9 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)setHasLocationFrequencyCount156Kilometers:(BOOL)a3
+- (void)setHasLocationFrequencyCount156Kilometers:(BOOL)kilometers
 {
-  if (a3)
+  if (kilometers)
   {
     v3 = 4096;
   }
@@ -1105,9 +1105,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasLocationFrequencyCount2500Meters:(BOOL)a3
+- (void)setHasLocationFrequencyCount2500Meters:(BOOL)meters
 {
-  if (a3)
+  if (meters)
   {
     v3 = 2048;
   }
@@ -1120,9 +1120,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasLocationFrequencyCount300Meters:(BOOL)a3
+- (void)setHasLocationFrequencyCount300Meters:(BOOL)meters
 {
-  if (a3)
+  if (meters)
   {
     v3 = 1024;
   }
@@ -1135,9 +1135,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasLocationAffinity156Kilometers:(BOOL)a3
+- (void)setHasLocationAffinity156Kilometers:(BOOL)kilometers
 {
-  if (a3)
+  if (kilometers)
   {
     v3 = 512;
   }
@@ -1150,9 +1150,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasLocationAffinity2500Meters:(BOOL)a3
+- (void)setHasLocationAffinity2500Meters:(BOOL)meters
 {
-  if (a3)
+  if (meters)
   {
     v3 = 256;
   }
@@ -1165,9 +1165,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasLocationAffinity300Meters:(BOOL)a3
+- (void)setHasLocationAffinity300Meters:(BOOL)meters
 {
-  if (a3)
+  if (meters)
   {
     v3 = 128;
   }
@@ -1180,9 +1180,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasLastContiguousCount:(BOOL)a3
+- (void)setHasLastContiguousCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -1195,9 +1195,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasRecencyRank:(BOOL)a3
+- (void)setHasRecencyRank:(BOOL)rank
 {
-  if (a3)
+  if (rank)
   {
     v3 = 32;
   }
@@ -1210,9 +1210,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasRecencySeconds:(BOOL)a3
+- (void)setHasRecencySeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 16;
   }
@@ -1225,9 +1225,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasFrequencyPercentage:(BOOL)a3
+- (void)setHasFrequencyPercentage:(BOOL)percentage
 {
-  if (a3)
+  if (percentage)
   {
     v3 = 8;
   }
@@ -1240,9 +1240,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasIsModelPredictedChoice:(BOOL)a3
+- (void)setHasIsModelPredictedChoice:(BOOL)choice
 {
-  if (a3)
+  if (choice)
   {
     v3 = 4;
   }
@@ -1255,9 +1255,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasIsUserSelectedChoice:(BOOL)a3
+- (void)setHasIsUserSelectedChoice:(BOOL)choice
 {
-  if (a3)
+  if (choice)
   {
     v3 = 2;
   }

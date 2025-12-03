@@ -1,17 +1,17 @@
 @interface AWDCoreRoutineLMPRequestedInstance
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConfidence:(BOOL)a3;
-- (void)setHasOccurrences:(BOOL)a3;
-- (void)setHasReason:(BOOL)a3;
-- (void)setHasSuggested:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasConfidence:(BOOL)confidence;
+- (void)setHasOccurrences:(BOOL)occurrences;
+- (void)setHasReason:(BOOL)reason;
+- (void)setHasSuggested:(BOOL)suggested;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineLMPRequestedInstance
@@ -24,9 +24,9 @@
   [(AWDCoreRoutineLMPRequestedInstance *)&v3 dealloc];
 }
 
-- (void)setHasSuggested:(BOOL)a3
+- (void)setHasSuggested:(BOOL)suggested
 {
-  if (a3)
+  if (suggested)
   {
     v3 = 16;
   }
@@ -39,9 +39,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasConfidence:(BOOL)a3
+- (void)setHasConfidence:(BOOL)confidence
 {
-  if (a3)
+  if (confidence)
   {
     v3 = 2;
   }
@@ -54,9 +54,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasOccurrences:(BOOL)a3
+- (void)setHasOccurrences:(BOOL)occurrences
 {
-  if (a3)
+  if (occurrences)
   {
     v3 = 4;
   }
@@ -69,9 +69,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasReason:(BOOL)a3
+- (void)setHasReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 8;
   }
@@ -93,22 +93,22 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   eventId = self->_eventId;
   if (eventId)
   {
-    [v3 setObject:eventId forKey:@"eventId"];
+    [dictionary setObject:eventId forKey:@"eventId"];
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_suggested), @"suggested"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_suggested), @"suggested"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -119,10 +119,10 @@ LABEL_7:
       }
 
 LABEL_13:
-      [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_occurrences), @"occurrences"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_occurrences), @"occurrences"}];
       if ((*&self->_has & 8) == 0)
       {
-        return v3;
+        return dictionary;
       }
 
       goto LABEL_9;
@@ -134,7 +134,7 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_confidence), @"confidence"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_confidence), @"confidence"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -145,13 +145,13 @@ LABEL_8:
   if ((has & 8) != 0)
   {
 LABEL_9:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_reason), @"reason"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_reason), @"reason"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -215,24 +215,24 @@ LABEL_13:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 44) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 44) |= 1u;
   }
 
   if (self->_eventId)
   {
-    [a3 setEventId:?];
+    [to setEventId:?];
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(a3 + 40) = self->_suggested;
-    *(a3 + 44) |= 0x10u;
+    *(to + 40) = self->_suggested;
+    *(to + 44) |= 0x10u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -251,8 +251,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 4) = self->_confidence;
-  *(a3 + 44) |= 2u;
+  *(to + 4) = self->_confidence;
+  *(to + 44) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -266,21 +266,21 @@ LABEL_8:
   }
 
 LABEL_13:
-  *(a3 + 8) = self->_occurrences;
-  *(a3 + 44) |= 4u;
+  *(to + 8) = self->_occurrences;
+  *(to + 44) |= 4u;
   if ((*&self->_has & 8) == 0)
   {
     return;
   }
 
 LABEL_9:
-  *(a3 + 9) = self->_reason;
-  *(a3 + 44) |= 8u;
+  *(to + 9) = self->_reason;
+  *(to + 44) |= 8u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -288,7 +288,7 @@ LABEL_9:
     *(v5 + 44) |= 1u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_eventId copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_eventId copyWithZone:zone];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -339,31 +339,31 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 44);
+  v7 = *(equal + 44);
   if (has)
   {
-    if ((*(a3 + 44) & 1) == 0 || self->_timestamp != *(a3 + 1))
+    if ((*(equal + 44) & 1) == 0 || self->_timestamp != *(equal + 1))
     {
       goto LABEL_32;
     }
   }
 
-  else if (*(a3 + 44))
+  else if (*(equal + 44))
   {
     goto LABEL_32;
   }
 
   eventId = self->_eventId;
-  if (eventId | *(a3 + 3))
+  if (eventId | *(equal + 3))
   {
     v5 = [(NSString *)eventId isEqual:?];
     if (!v5)
@@ -376,18 +376,18 @@ LABEL_7:
 
   if ((has & 0x10) != 0)
   {
-    if ((*(a3 + 44) & 0x10) != 0)
+    if ((*(equal + 44) & 0x10) != 0)
     {
-      v9 = *(a3 + 40);
+      v9 = *(equal + 40);
       if (self->_suggested)
       {
-        if ((*(a3 + 40) & 1) == 0)
+        if ((*(equal + 40) & 1) == 0)
         {
           goto LABEL_32;
         }
       }
 
-      else if (*(a3 + 40))
+      else if (*(equal + 40))
       {
         goto LABEL_32;
       }
@@ -400,7 +400,7 @@ LABEL_32:
     return v5;
   }
 
-  if ((*(a3 + 44) & 0x10) != 0)
+  if ((*(equal + 44) & 0x10) != 0)
   {
     goto LABEL_32;
   }
@@ -408,34 +408,34 @@ LABEL_32:
 LABEL_12:
   if ((has & 2) != 0)
   {
-    if ((*(a3 + 44) & 2) == 0 || self->_confidence != *(a3 + 4))
+    if ((*(equal + 44) & 2) == 0 || self->_confidence != *(equal + 4))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(a3 + 44) & 2) != 0)
+  else if ((*(equal + 44) & 2) != 0)
   {
     goto LABEL_32;
   }
 
   if ((has & 4) != 0)
   {
-    if ((*(a3 + 44) & 4) == 0 || self->_occurrences != *(a3 + 8))
+    if ((*(equal + 44) & 4) == 0 || self->_occurrences != *(equal + 8))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(a3 + 44) & 4) != 0)
+  else if ((*(equal + 44) & 4) != 0)
   {
     goto LABEL_32;
   }
 
-  LOBYTE(v5) = (*(a3 + 44) & 8) == 0;
+  LOBYTE(v5) = (*(equal + 44) & 8) == 0;
   if ((has & 8) != 0)
   {
-    if ((*(a3 + 44) & 8) == 0 || self->_reason != *(a3 + 9))
+    if ((*(equal + 44) & 8) == 0 || self->_reason != *(equal + 9))
     {
       goto LABEL_32;
     }
@@ -511,25 +511,25 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 44))
+  if (*(from + 44))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDCoreRoutineLMPRequestedInstance *)self setEventId:?];
   }
 
-  v5 = *(a3 + 44);
+  v5 = *(from + 44);
   if ((v5 & 0x10) != 0)
   {
-    self->_suggested = *(a3 + 40);
+    self->_suggested = *(from + 40);
     *&self->_has |= 0x10u;
-    v5 = *(a3 + 44);
+    v5 = *(from + 44);
     if ((v5 & 2) == 0)
     {
 LABEL_7:
@@ -542,14 +542,14 @@ LABEL_7:
     }
   }
 
-  else if ((*(a3 + 44) & 2) == 0)
+  else if ((*(from + 44) & 2) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_confidence = *(a3 + 4);
+  self->_confidence = *(from + 4);
   *&self->_has |= 2u;
-  v5 = *(a3 + 44);
+  v5 = *(from + 44);
   if ((v5 & 4) == 0)
   {
 LABEL_8:
@@ -562,15 +562,15 @@ LABEL_8:
   }
 
 LABEL_13:
-  self->_occurrences = *(a3 + 8);
+  self->_occurrences = *(from + 8);
   *&self->_has |= 4u;
-  if ((*(a3 + 44) & 8) == 0)
+  if ((*(from + 44) & 8) == 0)
   {
     return;
   }
 
 LABEL_9:
-  self->_reason = *(a3 + 9);
+  self->_reason = *(from + 9);
   *&self->_has |= 8u;
 }
 

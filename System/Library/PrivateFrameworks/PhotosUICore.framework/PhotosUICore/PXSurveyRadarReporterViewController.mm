@@ -1,16 +1,16 @@
 @interface PXSurveyRadarReporterViewController
-- (PXSurveyRadarReporterViewController)initWithConfiguration:(id)a3 completionHandler:(id)a4;
-- (PXSurveyRadarReporterViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5;
-- (PXSurveyRadarReporterViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
+- (PXSurveyRadarReporterViewController)initWithConfiguration:(id)configuration completionHandler:(id)handler;
+- (PXSurveyRadarReporterViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon;
+- (PXSurveyRadarReporterViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
 - (id)attributedDetailText;
 - (void)_didSelectReadReleaseAgreementButton;
-- (void)_handleAgreeButton:(id)a3;
-- (void)_handleNotNowButton:(id)a3;
+- (void)_handleAgreeButton:(id)button;
+- (void)_handleNotNowButton:(id)button;
 @end
 
 @implementation PXSurveyRadarReporterViewController
 
-- (void)_handleNotNowButton:(id)a3
+- (void)_handleNotNowButton:(id)button
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -31,7 +31,7 @@ uint64_t __59__PXSurveyRadarReporterViewController__handleNotNowButton___block_i
   return result;
 }
 
-- (void)_handleAgreeButton:(id)a3
+- (void)_handleAgreeButton:(id)button
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -121,36 +121,36 @@ uint64_t __58__PXSurveyRadarReporterViewController__handleAgreeButton___block_in
   return v21;
 }
 
-- (PXSurveyRadarReporterViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (PXSurveyRadarReporterViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:a2 object:self file:@"PXSurveyRadarReporterViewController.m" lineNumber:93 description:{@"%s is not available as initializer", "-[PXSurveyRadarReporterViewController initWithTitle:detailText:icon:contentLayout:]"}];
+  titleCopy = title;
+  textCopy = text;
+  iconCopy = icon;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyRadarReporterViewController.m" lineNumber:93 description:{@"%s is not available as initializer", "-[PXSurveyRadarReporterViewController initWithTitle:detailText:icon:contentLayout:]"}];
 
   abort();
 }
 
-- (PXSurveyRadarReporterViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5
+- (PXSurveyRadarReporterViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v12 handleFailureInMethod:a2 object:self file:@"PXSurveyRadarReporterViewController.m" lineNumber:89 description:{@"%s is not available as initializer", "-[PXSurveyRadarReporterViewController initWithTitle:detailText:icon:]"}];
+  titleCopy = title;
+  textCopy = text;
+  iconCopy = icon;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyRadarReporterViewController.m" lineNumber:89 description:{@"%s is not available as initializer", "-[PXSurveyRadarReporterViewController initWithTitle:detailText:icon:]"}];
 
   abort();
 }
 
-- (PXSurveyRadarReporterViewController)initWithConfiguration:(id)a3 completionHandler:(id)a4
+- (PXSurveyRadarReporterViewController)initWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  if (!configurationCopy)
   {
-    v58 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v58 handleFailureInMethod:a2 object:self file:@"PXSurveyRadarReporterViewController.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyRadarReporterViewController.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
   }
 
   v10 = PXLocalizedStringFromTable(@"PXInternalPhotosChallengeSubmissionTitle", @"PhotosUICore");
@@ -161,8 +161,8 @@ uint64_t __58__PXSurveyRadarReporterViewController__handleAgreeButton___block_in
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_configuration, a3);
-    v14 = _Block_copy(v9);
+    objc_storeStrong(&v12->_configuration, configuration);
+    v14 = _Block_copy(handlerCopy);
     completionHandler = v13->_completionHandler;
     v13->_completionHandler = v14;
 
@@ -172,23 +172,23 @@ uint64_t __58__PXSurveyRadarReporterViewController__handleAgreeButton___block_in
     v19 = *(MEMORY[0x1E695F058] + 16);
     v20 = *(MEMORY[0x1E695F058] + 24);
     v21 = [v16 initWithFrame:{*MEMORY[0x1E695F058], v18, v19, v20}];
-    v59 = v9;
+    v59 = handlerCopy;
     detailLabel = v13->_detailLabel;
     v13->_detailLabel = v21;
 
-    v23 = [(PXSurveyRadarReporterViewController *)v13 attributedDetailText];
-    [(UILabel *)v13->_detailLabel setAttributedText:v23];
+    attributedDetailText = [(PXSurveyRadarReporterViewController *)v13 attributedDetailText];
+    [(UILabel *)v13->_detailLabel setAttributedText:attributedDetailText];
 
     [(UILabel *)v13->_detailLabel setTextAlignment:1];
-    v24 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v13->_detailLabel setTextColor:v24];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v13->_detailLabel setTextColor:labelColor];
 
     [(UILabel *)v13->_detailLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)v13->_detailLabel setMinimumScaleFactor:0.75];
     [(UILabel *)v13->_detailLabel setNumberOfLines:0];
     [(UILabel *)v13->_detailLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v25 = [(PXSurveyRadarReporterViewController *)v13 contentView];
-    [v25 addSubview:v13->_detailLabel];
+    contentView = [(PXSurveyRadarReporterViewController *)v13 contentView];
+    [contentView addSubview:v13->_detailLabel];
 
     v26 = [objc_alloc(MEMORY[0x1E69DC738]) initWithFrame:{v17, v18, v19, v20}];
     readReleaseAgreementButton = v13->_readReleaseAgreementButton;
@@ -200,52 +200,52 @@ uint64_t __58__PXSurveyRadarReporterViewController__handleAgreeButton___block_in
 
     [(UIButton *)v13->_readReleaseAgreementButton addTarget:v13 action:sel__didSelectReadReleaseAgreementButton forControlEvents:64];
     v30 = v13->_readReleaseAgreementButton;
-    v31 = [(PXSurveyRadarReporterViewController *)v13 view];
-    v32 = [v31 tintColor];
-    [(UIButton *)v30 setTitleColor:v32 forState:0];
+    view = [(PXSurveyRadarReporterViewController *)v13 view];
+    tintColor = [view tintColor];
+    [(UIButton *)v30 setTitleColor:tintColor forState:0];
 
     [(UIButton *)v13->_readReleaseAgreementButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v33 = [(UIButton *)v13->_readReleaseAgreementButton titleLabel];
-    [v33 setNumberOfLines:0];
+    titleLabel = [(UIButton *)v13->_readReleaseAgreementButton titleLabel];
+    [titleLabel setNumberOfLines:0];
 
-    v34 = [(UIButton *)v13->_readReleaseAgreementButton titleLabel];
-    [v34 setLineBreakMode:0];
+    titleLabel2 = [(UIButton *)v13->_readReleaseAgreementButton titleLabel];
+    [titleLabel2 setLineBreakMode:0];
 
-    v35 = [(UIButton *)v13->_readReleaseAgreementButton titleLabel];
-    [v35 setTextAlignment:1];
+    titleLabel3 = [(UIButton *)v13->_readReleaseAgreementButton titleLabel];
+    [titleLabel3 setTextAlignment:1];
 
-    v36 = [(PXSurveyRadarReporterViewController *)v13 contentView];
-    [v36 addSubview:v13->_readReleaseAgreementButton];
+    contentView2 = [(PXSurveyRadarReporterViewController *)v13 contentView];
+    [contentView2 addSubview:v13->_readReleaseAgreementButton];
 
-    v60 = v8;
+    v60 = configurationCopy;
     v37 = v13->_detailLabel;
     v38 = v13->_readReleaseAgreementButton;
     v39 = v37;
     v40 = _NSDictionaryOfVariableBindings(&cfstr_DetaillabelRea.isa, v39, v38, 0);
-    v41 = [(PXSurveyRadarReporterViewController *)v13 contentView];
+    contentView3 = [(PXSurveyRadarReporterViewController *)v13 contentView];
     v42 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|[detailLabel]|" options:0 metrics:0 views:v40];
-    [v41 addConstraints:v42];
+    [contentView3 addConstraints:v42];
 
-    v43 = [(PXSurveyRadarReporterViewController *)v13 contentView];
+    contentView4 = [(PXSurveyRadarReporterViewController *)v13 contentView];
     v44 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-[readReleaseAgreementButton]-|" options:0 metrics:0 views:v40];
-    [v43 addConstraints:v44];
+    [contentView4 addConstraints:v44];
 
-    v45 = [(PXSurveyRadarReporterViewController *)v13 contentView];
+    contentView5 = [(PXSurveyRadarReporterViewController *)v13 contentView];
     v46 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|[detailLabel]-[readReleaseAgreementButton]|" options:0 metrics:0 views:v40];
-    [v45 addConstraints:v46];
+    [contentView5 addConstraints:v46];
 
-    v47 = [MEMORY[0x1E69B7D00] boldButton];
-    [v47 setTranslatesAutoresizingMaskIntoConstraints:0];
+    boldButton = [MEMORY[0x1E69B7D00] boldButton];
+    [boldButton setTranslatesAutoresizingMaskIntoConstraints:0];
     v48 = PXLocalizedStringFromTable(@"PXInternalPhotosChallengeSubmissionAgree", @"PhotosUICore");
-    [v47 setTitle:v48 forState:0];
+    [boldButton setTitle:v48 forState:0];
 
-    [v47 addTarget:v13 action:sel__handleAgreeButton_ forControlEvents:0x2000];
-    v49 = [(PXSurveyRadarReporterViewController *)v13 buttonTray];
-    [v49 addButton:v47];
+    [boldButton addTarget:v13 action:sel__handleAgreeButton_ forControlEvents:0x2000];
+    buttonTray = [(PXSurveyRadarReporterViewController *)v13 buttonTray];
+    [buttonTray addButton:boldButton];
 
-    v50 = [MEMORY[0x1E69B7D00] boldButton];
+    boldButton2 = [MEMORY[0x1E69B7D00] boldButton];
     notNowButton = v13->_notNowButton;
-    v13->_notNowButton = v50;
+    v13->_notNowButton = boldButton2;
 
     [(OBTrayButton *)v13->_notNowButton setTranslatesAutoresizingMaskIntoConstraints:0];
     v52 = v13->_notNowButton;
@@ -254,14 +254,14 @@ uint64_t __58__PXSurveyRadarReporterViewController__handleAgreeButton___block_in
 
     [(OBTrayButton *)v13->_notNowButton addTarget:v13 action:sel__handleNotNowButton_ forControlEvents:0x2000];
     v54 = v13->_notNowButton;
-    v55 = [MEMORY[0x1E69DC888] labelColor];
-    [(OBTrayButton *)v54 setTitleColor:v55 forState:0];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [(OBTrayButton *)v54 setTitleColor:labelColor2 forState:0];
 
-    v56 = [(PXSurveyRadarReporterViewController *)v13 buttonTray];
-    v8 = v60;
-    [v56 addButton:v13->_notNowButton];
+    buttonTray2 = [(PXSurveyRadarReporterViewController *)v13 buttonTray];
+    configurationCopy = v60;
+    [buttonTray2 addButton:v13->_notNowButton];
 
-    v9 = v59;
+    handlerCopy = v59;
     [(PXSurveyRadarReporterViewController *)v13 setModalPresentationStyle:2];
   }
 

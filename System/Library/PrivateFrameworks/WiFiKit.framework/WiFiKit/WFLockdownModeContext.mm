@@ -1,5 +1,5 @@
 @interface WFLockdownModeContext
-- (WFLockdownModeContext)initWithNetwork:(id)a3 securityType:(unint64_t)a4;
+- (WFLockdownModeContext)initWithNetwork:(id)network securityType:(unint64_t)type;
 - (WFNetworkView)provider;
 - (void)cancel;
 - (void)join;
@@ -7,13 +7,13 @@
 
 @implementation WFLockdownModeContext
 
-- (WFLockdownModeContext)initWithNetwork:(id)a3 securityType:(unint64_t)a4
+- (WFLockdownModeContext)initWithNetwork:(id)network securityType:(unint64_t)type
 {
-  v7 = a3;
-  if (v7)
+  networkCopy = network;
+  if (networkCopy)
   {
-    objc_storeStrong(&self->_network, a3);
-    self->_securityType = a4;
+    objc_storeStrong(&self->_network, network);
+    self->_securityType = type;
     self->_needsDismissal = 1;
   }
 
@@ -29,15 +29,15 @@
 - (void)cancel
 {
   self->_needsDismissal = 0;
-  v2 = [(WFLockdownModeContext *)self completionHandler];
-  v2[2](v2, 0);
+  completionHandler = [(WFLockdownModeContext *)self completionHandler];
+  completionHandler[2](completionHandler, 0);
 }
 
 - (void)join
 {
   self->_needsDismissal = 0;
-  v2 = [(WFLockdownModeContext *)self completionHandler];
-  v2[2](v2, 1);
+  completionHandler = [(WFLockdownModeContext *)self completionHandler];
+  completionHandler[2](completionHandler, 1);
 }
 
 - (WFNetworkView)provider

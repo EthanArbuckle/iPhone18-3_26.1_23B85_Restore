@@ -1,16 +1,16 @@
 @interface DOCUIFolderAnimationView
-- (_TtC21DocumentManagerUICore24DOCUIFolderAnimationView)initWithCoder:(id)a3;
-- (_TtC21DocumentManagerUICore24DOCUIFolderAnimationView)initWithFrame:(CGRect)a3;
+- (_TtC21DocumentManagerUICore24DOCUIFolderAnimationView)initWithCoder:(id)coder;
+- (_TtC21DocumentManagerUICore24DOCUIFolderAnimationView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation DOCUIFolderAnimationView
 
-- (_TtC21DocumentManagerUICore24DOCUIFolderAnimationView)initWithFrame:(CGRect)a3
+- (_TtC21DocumentManagerUICore24DOCUIFolderAnimationView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_249D04B2C();
   sub_249D04B1C();
   sub_249D04ADC();
@@ -21,12 +21,12 @@
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for DOCUIFolderAnimationView();
-  v8 = [(DOCUIFolderAnimationView *)&v10 initWithFrame:x, y, width, height];
+  height = [(DOCUIFolderAnimationView *)&v10 initWithFrame:x, y, width, height];
 
-  return v8;
+  return height;
 }
 
-- (_TtC21DocumentManagerUICore24DOCUIFolderAnimationView)initWithCoder:(id)a3
+- (_TtC21DocumentManagerUICore24DOCUIFolderAnimationView)initWithCoder:(id)coder
 {
   sub_249D04B2C();
   sub_249D04B1C();

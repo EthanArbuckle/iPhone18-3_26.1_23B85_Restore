@@ -1,33 +1,33 @@
 @interface CMLLocationPIRClient
-- (id)constructPIRRequestWithLatitude:(double)a3 longitude:(double)a4 error:(id *)a5;
-- (id)dataByLatitude:(double)a3 longitude:(double)a4 error:(id *)a5;
-- (id)decryptPIRResponse:(id)a3 latitude:(double)a4 longitude:(double)a5 error:(id *)a6;
-- (void)requestDataByLatitude:(double)a3 longitude:(double)a4 completionHandler:(id)a5;
+- (id)constructPIRRequestWithLatitude:(double)latitude longitude:(double)longitude error:(id *)error;
+- (id)dataByLatitude:(double)latitude longitude:(double)longitude error:(id *)error;
+- (id)decryptPIRResponse:(id)response latitude:(double)latitude longitude:(double)longitude error:(id *)error;
+- (void)requestDataByLatitude:(double)latitude longitude:(double)longitude completionHandler:(id)handler;
 @end
 
 @implementation CMLLocationPIRClient
 
-- (void)requestDataByLatitude:(double)a3 longitude:(double)a4 completionHandler:(id)a5
+- (void)requestDataByLatitude:(double)latitude longitude:(double)longitude completionHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a5;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __74__CMLLocationPIRClient_requestDataByLatitude_longitude_completionHandler___block_invoke;
   aBlock[3] = &unk_2785419B0;
-  v10 = v9;
+  v10 = handlerCopy;
   v29 = v10;
   v11 = _Block_copy(aBlock);
-  v12 = [(CMLPIRClient *)self connection];
-  v13 = [(CMLPIRClient *)self dispatchQueue];
-  v14 = [CMLXPC asyncProxyToConnection:v12 dispatchQueue:v13 errorHandler:v11];
+  connection = [(CMLPIRClient *)self connection];
+  dispatchQueue = [(CMLPIRClient *)self dispatchQueue];
+  v14 = [CMLXPC asyncProxyToConnection:connection dispatchQueue:dispatchQueue errorHandler:v11];
 
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __74__CMLLocationPIRClient_requestDataByLatitude_longitude_completionHandler___block_invoke_2;
   v24 = &unk_278541C08;
   v27 = a2;
-  v25 = self;
+  selfCopy = self;
   v15 = v10;
   v26 = v15;
   v16 = _Block_copy(&v21);
@@ -40,8 +40,8 @@
     _os_log_impl(&dword_224E26000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v19 = [(CMLPIRClient *)self clientConfig];
-  [v14 requestDataByLatitude:v19 longitude:v16 clientConfig:a3 reply:a4];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v14 requestDataByLatitude:clientConfig longitude:v16 clientConfig:latitude reply:longitude];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -90,12 +90,12 @@ void __74__CMLLocationPIRClient_requestDataByLatitude_longitude_completionHandle
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dataByLatitude:(double)a3 longitude:(double)a4 error:(id *)a5
+- (id)dataByLatitude:(double)latitude longitude:(double)longitude error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
   v33 = 0;
-  v10 = [(CMLPIRClient *)self connection];
-  v11 = [CMLXPC syncProxyToConnection:v10 error:&v33];
+  connection = [(CMLPIRClient *)self connection];
+  v11 = [CMLXPC syncProxyToConnection:connection error:&v33];
 
   v27 = 0;
   v28 = &v27;
@@ -126,10 +126,10 @@ void __74__CMLLocationPIRClient_requestDataByLatitude_longitude_completionHandle
     _os_log_impl(&dword_224E26000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v15 = [(CMLPIRClient *)self clientConfig];
-  [v11 requestDataByLatitude:v15 longitude:v12 clientConfig:a3 reply:a4];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v11 requestDataByLatitude:clientConfig longitude:v12 clientConfig:latitude reply:longitude];
 
-  if (a5)
+  if (error)
   {
     v16 = v33;
     if (!v33)
@@ -137,7 +137,7 @@ void __74__CMLLocationPIRClient_requestDataByLatitude_longitude_completionHandle
       v16 = v28[5];
     }
 
-    *a5 = v16;
+    *error = v16;
   }
 
   v17 = v22[5];
@@ -180,12 +180,12 @@ void __55__CMLLocationPIRClient_dataByLatitude_longitude_error___block_invoke(ui
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)constructPIRRequestWithLatitude:(double)a3 longitude:(double)a4 error:(id *)a5
+- (id)constructPIRRequestWithLatitude:(double)latitude longitude:(double)longitude error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
   v33 = 0;
-  v10 = [(CMLPIRClient *)self connection];
-  v11 = [CMLXPC syncProxyToConnection:v10 error:&v33];
+  connection = [(CMLPIRClient *)self connection];
+  v11 = [CMLXPC syncProxyToConnection:connection error:&v33];
 
   v27 = 0;
   v28 = &v27;
@@ -216,10 +216,10 @@ void __55__CMLLocationPIRClient_dataByLatitude_longitude_error___block_invoke(ui
     _os_log_impl(&dword_224E26000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v15 = [(CMLPIRClient *)self clientConfig];
-  [v11 constructPIRRequestWithLatitude:v15 longitude:v12 clientConfig:a3 reply:a4];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v11 constructPIRRequestWithLatitude:clientConfig longitude:v12 clientConfig:latitude reply:longitude];
 
-  if (a5)
+  if (error)
   {
     v16 = v33;
     if (!v33)
@@ -227,7 +227,7 @@ void __55__CMLLocationPIRClient_dataByLatitude_longitude_error___block_invoke(ui
       v16 = v28[5];
     }
 
-    *a5 = v16;
+    *error = v16;
   }
 
   v17 = v22[5];
@@ -282,13 +282,13 @@ LABEL_7:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)decryptPIRResponse:(id)a3 latitude:(double)a4 longitude:(double)a5 error:(id *)a6
+- (id)decryptPIRResponse:(id)response latitude:(double)latitude longitude:(double)longitude error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  responseCopy = response;
   v35 = 0;
-  v12 = [(CMLPIRClient *)self connection];
-  v13 = [CMLXPC syncProxyToConnection:v12 error:&v35];
+  connection = [(CMLPIRClient *)self connection];
+  v13 = [CMLXPC syncProxyToConnection:connection error:&v35];
 
   v29 = 0;
   v30 = &v29;
@@ -319,10 +319,10 @@ LABEL_7:
     _os_log_impl(&dword_224E26000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v17 = [(CMLPIRClient *)self clientConfig];
-  [v13 decryptPIRResponse:v11 latitude:v17 longitude:v14 clientConfig:a4 reply:a5];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v13 decryptPIRResponse:responseCopy latitude:clientConfig longitude:v14 clientConfig:latitude reply:longitude];
 
-  if (a6)
+  if (error)
   {
     v18 = v35;
     if (!v35)
@@ -330,7 +330,7 @@ LABEL_7:
       v18 = v30[5];
     }
 
-    *a6 = v18;
+    *error = v18;
   }
 
   v19 = v24[5];

@@ -1,10 +1,10 @@
 @interface IDSDeviceConnectionInfo
 - (IDSDeviceConnectionInfo)init;
 - (unsigned)nextAvailableLocalCID;
-- (void)addBlocksOnLinkConnect:(id)a3;
-- (void)cancelBlockOnLinkConnectWithID:(id)a3 cancelSucceeded:(BOOL *)a4;
+- (void)addBlocksOnLinkConnect:(id)connect;
+- (void)cancelBlockOnLinkConnectWithID:(id)d cancelSucceeded:(BOOL *)succeeded;
 - (void)cancelBlocksOnLinkConnect;
-- (void)clearLocalCID:(unsigned __int16)a3;
+- (void)clearLocalCID:(unsigned __int16)d;
 - (void)dealloc;
 - (void)invalidate;
 - (void)performBlocksOnLinkConnect;
@@ -188,21 +188,21 @@
   return v3;
 }
 
-- (void)clearLocalCID:(unsigned __int16)a3
+- (void)clearLocalCID:(unsigned __int16)d
 {
-  v3 = a3;
+  dCopy = d;
   v5 = +[IDSFoundationLog utunController];
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (dCopy)
   {
     if (v6)
     {
       v7[0] = 67109120;
-      v7[1] = v3;
+      v7[1] = dCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Clear localCID(%04x) from CID set", v7, 8u);
     }
 
-    sub_1004C6EE4(v3, self->_localCIDSet);
+    sub_1004C6EE4(dCopy, self->_localCIDSet);
   }
 
   else if (v6)
@@ -212,11 +212,11 @@
   }
 }
 
-- (void)addBlocksOnLinkConnect:(id)a3
+- (void)addBlocksOnLinkConnect:(id)connect
 {
-  if (a3)
+  if (connect)
   {
-    v4 = [a3 copy];
+    v4 = [connect copy];
     [(NSMutableArray *)self->_blocksOnLinkConnect addObject:v4];
   }
 }
@@ -269,12 +269,12 @@
   [(NSMutableArray *)self->_blocksOnLinkConnect removeAllObjects];
 }
 
-- (void)cancelBlockOnLinkConnectWithID:(id)a3 cancelSucceeded:(BOOL *)a4
+- (void)cancelBlockOnLinkConnectWithID:(id)d cancelSucceeded:(BOOL *)succeeded
 {
-  if (a3 && a4)
+  if (d && succeeded)
   {
     v7 = [(NSMutableArray *)self->_blocksOnLinkConnect count];
-    *a4 = 0;
+    *succeeded = 0;
     if (v7)
     {
       v8 = v7;
@@ -284,8 +284,8 @@
         v10 = [(NSMutableArray *)self->_blocksOnLinkConnect objectAtIndex:v9];
         if (v10)
         {
-          v10[2](v10, 0, a3, a4);
-          if (*a4)
+          v10[2](v10, 0, d, succeeded);
+          if (*succeeded)
           {
             break;
           }
@@ -302,7 +302,7 @@
       {
         cbuuid = self->_cbuuid;
         v14 = 138412546;
-        v15 = a3;
+        dCopy = d;
         v16 = 2112;
         v17 = cbuuid;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Cancel block by ID succeeded: %@ for %@", &v14, 0x16u);

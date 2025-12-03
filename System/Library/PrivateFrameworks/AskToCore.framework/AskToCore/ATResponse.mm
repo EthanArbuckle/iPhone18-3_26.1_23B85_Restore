@@ -3,10 +3,10 @@
 - (NSString)responderHandle;
 - (_TtC5AskTo10ATQuestion)originalQuestion;
 - (_TtC9AskToCore10ATResponse)init;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setOriginalQuestion:(id)a3;
-- (void)setResponderHandle:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setOriginalQuestion:(id)question;
+- (void)setResponderHandle:(id)handle;
 @end
 
 @implementation ATResponse
@@ -18,13 +18,13 @@
   return *(self + v3);
 }
 
-- (void)setOriginalQuestion:(id)a3
+- (void)setOriginalQuestion:(id)question
 {
   v5 = OBJC_IVAR____TtC9AskToCore10ATResponse_originalQuestion;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = question;
+  questionCopy = question;
 }
 
 - (NSString)responderHandle
@@ -39,7 +39,7 @@
   return v5;
 }
 
-- (void)setResponderHandle:(id)a3
+- (void)setResponderHandle:(id)handle
 {
   v4 = sub_2410DF0C0();
   v6 = v5;
@@ -50,18 +50,18 @@
   v7[1] = v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ATResponse.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ATResponse.encode(with:)(coderCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v4 = objc_allocWithZone(swift_getObjectType());
-  v5 = self;
-  v6 = sub_2410D4468(v5);
+  selfCopy = self;
+  v6 = sub_2410D4468(selfCopy);
 
   v7 = sub_2410DF8C0();
   return v7;
@@ -69,7 +69,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   ATResponse.description.getter();
 
   v3 = sub_2410DF0A0();

@@ -1,26 +1,26 @@
 @interface BKSMutableTouchAuthenticationSpecification
-- (void)setDisplays:(id)a3;
+- (void)setDisplays:(id)displays;
 @end
 
 @implementation BKSMutableTouchAuthenticationSpecification
 
-- (void)setDisplays:(id)a3
+- (void)setDisplays:(id)displays
 {
   v62 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  displaysCopy = displays;
+  if (displaysCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v36 = MEMORY[0x1E696AEC0];
-      v37 = [v5 classForCoder];
-      if (!v37)
+      classForCoder = [displaysCopy classForCoder];
+      if (!classForCoder)
       {
-        v37 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v38 = NSStringFromClass(v37);
+      v38 = NSStringFromClass(classForCoder);
       v39 = objc_opt_class();
       v40 = NSStringFromClass(v39);
       v41 = [v36 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"displays", v38, v40];
@@ -35,7 +35,7 @@
         v52 = 2114;
         v53 = v44;
         v54 = 2048;
-        v55 = self;
+        selfCopy3 = self;
         v56 = 2114;
         v57 = @"BKSTouchAuthenticationSpecification.m";
         v58 = 1024;
@@ -56,7 +56,7 @@
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v6 = v5;
+  v6 = displaysCopy;
   v7 = [v6 countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v7)
   {
@@ -90,7 +90,7 @@
             v52 = 2114;
             v53 = v26;
             v54 = 2048;
-            v55 = self;
+            selfCopy3 = self;
             v56 = 2114;
             v57 = @"BKSTouchAuthenticationSpecification.m";
             v58 = 1024;
@@ -111,13 +111,13 @@
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v27 = MEMORY[0x1E696AEC0];
-          v28 = [v12 classForCoder];
-          if (!v28)
+          classForCoder2 = [v12 classForCoder];
+          if (!classForCoder2)
           {
-            v28 = objc_opt_class();
+            classForCoder2 = objc_opt_class();
           }
 
-          v29 = NSStringFromClass(v28);
+          v29 = NSStringFromClass(classForCoder2);
           v30 = objc_opt_class();
           v31 = NSStringFromClass(v30);
           v32 = [v27 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"display", v29, v31];
@@ -132,7 +132,7 @@
             v52 = 2114;
             v53 = v35;
             v54 = 2048;
-            v55 = self;
+            selfCopy3 = self;
             v56 = 2114;
             v57 = @"BKSTouchAuthenticationSpecification.m";
             v58 = 1024;

@@ -1,30 +1,30 @@
 @interface RERelevanceCondition
-+ (id)conditionWithBlock:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (RERelevanceCondition)initWithCondtionBlock:(id)a3;
-- (float)_evaluateRelevanceWithEnvironment:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)conditionWithBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
+- (RERelevanceCondition)initWithCondtionBlock:(id)block;
+- (float)_evaluateRelevanceWithEnvironment:(id)environment;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RERelevanceCondition
 
-+ (id)conditionWithBlock:(id)a3
++ (id)conditionWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCondtionBlock:v4];
+  blockCopy = block;
+  v5 = [[self alloc] initWithCondtionBlock:blockCopy];
 
   return v5;
 }
 
-- (RERelevanceCondition)initWithCondtionBlock:(id)a3
+- (RERelevanceCondition)initWithCondtionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = RERelevanceCondition;
   v5 = [(RERelevanceCondition *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     condition = v5->_condition;
     v5->_condition = v6;
   }
@@ -32,18 +32,18 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [RERelevanceCondition allocWithZone:a3];
+  v4 = [RERelevanceCondition allocWithZone:zone];
   condition = self->_condition;
 
   return [(RERelevanceCondition *)v4 initWithCondtionBlock:condition];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -53,7 +53,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = MEMORY[0x22AABC5E0](self->_condition);
       v7 = MEMORY[0x22AABC5E0](v5->_condition);
       if (v6 == v7)
@@ -76,7 +76,7 @@
   return v8;
 }
 
-- (float)_evaluateRelevanceWithEnvironment:(id)a3
+- (float)_evaluateRelevanceWithEnvironment:(id)environment
 {
   condition = self->_condition;
   if (!condition)
@@ -84,7 +84,7 @@
     return 0.0;
   }
 
-  condition[2](condition, a3);
+  condition[2](condition, environment);
   return result;
 }
 

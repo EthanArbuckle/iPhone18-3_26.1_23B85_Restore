@@ -8,11 +8,11 @@
 + (id)lightStyle
 {
   v2 = objc_alloc_init(AVTUIStyle);
-  v3 = [MEMORY[0x1E69DC888] labelColor];
-  [(AVTUIStyle *)v2 setTextColor:v3];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(AVTUIStyle *)v2 setTextColor:labelColor];
 
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(AVTUIStyle *)v2 setBackgroundColor:v4];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(AVTUIStyle *)v2 setBackgroundColor:systemBackgroundColor];
 
   return v2;
 }
@@ -20,11 +20,11 @@
 + (id)darkStyle
 {
   v2 = objc_alloc_init(AVTUIStyle);
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [(AVTUIStyle *)v2 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(AVTUIStyle *)v2 setBackgroundColor:clearColor];
 
-  v4 = [MEMORY[0x1E69DC888] whiteColor];
-  [(AVTUIStyle *)v2 setTextColor:v4];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(AVTUIStyle *)v2 setTextColor:whiteColor];
 
   return v2;
 }

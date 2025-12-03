@@ -1,29 +1,29 @@
 @interface PKStackedLeadingTrailingLabelCell
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (double)_layoutLabelsSideBySide:(CGRect)a3 allocated:(CGRect *)a4 unallocated:(CGRect *)a5 isTemplateLayout:(BOOL)a6;
-- (double)_layoutLabelsStacked:(CGRect)a3 allocated:(CGRect *)a4 unallocated:(CGRect *)a5 isTemplateLayout:(BOOL)a6;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (double)_layoutLabelsSideBySide:(CGRect)side allocated:(CGRect *)allocated unallocated:(CGRect *)unallocated isTemplateLayout:(BOOL)layout;
+- (double)_layoutLabelsStacked:(CGRect)stacked allocated:(CGRect *)allocated unallocated:(CGRect *)unallocated isTemplateLayout:(BOOL)layout;
 - (void)_updateProgressBar;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setDetailText:(id)a3;
-- (void)setLeadingPrimaryText:(id)a3;
-- (void)setLeadingSecondaryText:(id)a3;
-- (void)setProgress:(double)a3;
-- (void)setProgressBarEndColor:(id)a3;
-- (void)setProgressBarStartColor:(id)a3;
-- (void)setShowProgressBar:(BOOL)a3;
-- (void)setTrailingPrimaryText:(id)a3;
-- (void)setTrailingSecondaryText:(id)a3;
+- (void)setDetailText:(id)text;
+- (void)setLeadingPrimaryText:(id)text;
+- (void)setLeadingSecondaryText:(id)text;
+- (void)setProgress:(double)progress;
+- (void)setProgressBarEndColor:(id)color;
+- (void)setProgressBarStartColor:(id)color;
+- (void)setShowProgressBar:(BOOL)bar;
+- (void)setTrailingPrimaryText:(id)text;
+- (void)setTrailingSecondaryText:(id)text;
 @end
 
 @implementation PKStackedLeadingTrailingLabelCell
 
-- (void)setLeadingPrimaryText:(id)a3
+- (void)setLeadingPrimaryText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   leadingPrimaryText = self->_leadingPrimaryText;
-  v20 = v5;
+  v20 = textCopy;
   v7 = leadingPrimaryText;
   if (v7 == v20)
   {
@@ -45,7 +45,7 @@ LABEL_16:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_leadingPrimaryText, a3);
+    objc_storeStrong(&self->_leadingPrimaryText, text);
     v10 = [(NSString *)self->_leadingPrimaryText length];
     leadingPrimaryLabel = self->_leadingPrimaryLabel;
     if (v10)
@@ -94,11 +94,11 @@ LABEL_8:
 LABEL_17:
 }
 
-- (void)setLeadingSecondaryText:(id)a3
+- (void)setLeadingSecondaryText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   leadingSecondaryText = self->_leadingSecondaryText;
-  v20 = v5;
+  v20 = textCopy;
   v7 = leadingSecondaryText;
   if (v7 == v20)
   {
@@ -120,7 +120,7 @@ LABEL_16:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_leadingSecondaryText, a3);
+    objc_storeStrong(&self->_leadingSecondaryText, text);
     v10 = [(NSString *)self->_leadingSecondaryText length];
     leadingSecondaryLabel = self->_leadingSecondaryLabel;
     if (v10)
@@ -169,11 +169,11 @@ LABEL_8:
 LABEL_17:
 }
 
-- (void)setTrailingPrimaryText:(id)a3
+- (void)setTrailingPrimaryText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   trailingPrimaryText = self->_trailingPrimaryText;
-  v20 = v5;
+  v20 = textCopy;
   v7 = trailingPrimaryText;
   if (v7 == v20)
   {
@@ -195,7 +195,7 @@ LABEL_16:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_trailingPrimaryText, a3);
+    objc_storeStrong(&self->_trailingPrimaryText, text);
     v10 = [(NSString *)self->_trailingPrimaryText length];
     trailingPrimaryLabel = self->_trailingPrimaryLabel;
     if (v10)
@@ -244,11 +244,11 @@ LABEL_8:
 LABEL_17:
 }
 
-- (void)setTrailingSecondaryText:(id)a3
+- (void)setTrailingSecondaryText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   trailingSecondaryText = self->_trailingSecondaryText;
-  v20 = v5;
+  v20 = textCopy;
   v7 = trailingSecondaryText;
   if (v7 == v20)
   {
@@ -270,7 +270,7 @@ LABEL_16:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_trailingSecondaryText, a3);
+    objc_storeStrong(&self->_trailingSecondaryText, text);
     v10 = [(NSString *)self->_trailingSecondaryText length];
     trailingSecondaryLabel = self->_trailingSecondaryLabel;
     if (v10)
@@ -319,11 +319,11 @@ LABEL_8:
 LABEL_17:
 }
 
-- (void)setDetailText:(id)a3
+- (void)setDetailText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   detailText = self->_detailText;
-  v22 = v5;
+  v22 = textCopy;
   v7 = detailText;
   if (v7 == v22)
   {
@@ -345,7 +345,7 @@ LABEL_16:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_detailText, a3);
+    objc_storeStrong(&self->_detailText, text);
     v10 = [(NSString *)self->_detailText length];
     detailLabel = self->_detailLabel;
     if (v10)
@@ -362,8 +362,8 @@ LABEL_8:
         [(UILabel *)v15 setFont:v16];
 
         v17 = self->_detailLabel;
-        v18 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-        [(UILabel *)v17 setTextColor:v18];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        [(UILabel *)v17 setTextColor:secondaryLabelColor];
 
         [(UILabel *)self->_detailLabel setNumberOfLines:0];
         v19 = self->_detailLabel;
@@ -398,45 +398,45 @@ LABEL_8:
 LABEL_17:
 }
 
-- (void)setShowProgressBar:(BOOL)a3
+- (void)setShowProgressBar:(BOOL)bar
 {
-  if (self->_showProgressBar != a3)
+  if (self->_showProgressBar != bar)
   {
-    self->_showProgressBar = a3;
+    self->_showProgressBar = bar;
     [(PKStackedLeadingTrailingLabelCell *)self _updateProgressBar];
 
     [(PKStackedLeadingTrailingLabelCell *)self setNeedsLayout];
   }
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  if (self->_progress != a3)
+  if (self->_progress != progress)
   {
-    self->_progress = a3;
+    self->_progress = progress;
     [(PKStackedLeadingTrailingLabelCell *)self _updateProgressBar];
 
     [(PKStackedLeadingTrailingLabelCell *)self setNeedsLayout];
   }
 }
 
-- (void)setProgressBarStartColor:(id)a3
+- (void)setProgressBarStartColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_progressBarStartColor, a3);
+    objc_storeStrong(&self->_progressBarStartColor, color);
     [(PKStackedLeadingTrailingLabelCell *)self _updateProgressBar];
     [(PKStackedLeadingTrailingLabelCell *)self setNeedsLayout];
   }
 }
 
-- (void)setProgressBarEndColor:(id)a3
+- (void)setProgressBarEndColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_progressBarEndColor, a3);
+    objc_storeStrong(&self->_progressBarEndColor, color);
     [(PKStackedLeadingTrailingLabelCell *)self _updateProgressBar];
     [(PKStackedLeadingTrailingLabelCell *)self setNeedsLayout];
   }
@@ -480,26 +480,26 @@ LABEL_17:
   v4.receiver = self;
   v4.super_class = PKStackedLeadingTrailingLabelCell;
   [(PKStackedLeadingTrailingLabelCell *)&v4 layoutSubviews];
-  v3 = [(PKStackedLeadingTrailingLabelCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKStackedLeadingTrailingLabelCell *)self contentView];
+  [contentView bounds];
   [(PKStackedLeadingTrailingLabelCell *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKStackedLeadingTrailingLabelCell *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKStackedLeadingTrailingLabelCell *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  layoutCopy = layout;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v10 = PKTableViewCellTextInset();
   v11 = x + v10;
   v12 = y + 15.0;
@@ -525,12 +525,12 @@ LABEL_17:
   v24 = v22 + v23;
   if (v18 + v20 <= v13 && v24 <= v13)
   {
-    [(PKStackedLeadingTrailingLabelCell *)self _layoutLabelsSideBySide:&slice allocated:&remainder unallocated:v4 isTemplateLayout:v11, v12, v13, v14];
+    [(PKStackedLeadingTrailingLabelCell *)self _layoutLabelsSideBySide:&slice allocated:&remainder unallocated:layoutCopy isTemplateLayout:v11, v12, v13, v14];
   }
 
   else
   {
-    [(PKStackedLeadingTrailingLabelCell *)self _layoutLabelsStacked:&slice allocated:&remainder unallocated:v4 isTemplateLayout:v11, v12, v13, v14];
+    [(PKStackedLeadingTrailingLabelCell *)self _layoutLabelsStacked:&slice allocated:&remainder unallocated:layoutCopy isTemplateLayout:v11, v12, v13, v14];
   }
 
   v27 = v26 + 0.0;
@@ -570,7 +570,7 @@ LABEL_17:
   CGRectDivide(remainder, &slice, &remainder, v35, CGRectMinYEdge);
   PKContentAlignmentMake();
   PKSizeAlignedInRect();
-  if (!v4)
+  if (!layoutCopy)
   {
     v41 = v37;
     v42 = v38;
@@ -587,12 +587,12 @@ LABEL_17:
   return result;
 }
 
-- (double)_layoutLabelsSideBySide:(CGRect)a3 allocated:(CGRect *)a4 unallocated:(CGRect *)a5 isTemplateLayout:(BOOL)a6
+- (double)_layoutLabelsSideBySide:(CGRect)side allocated:(CGRect *)allocated unallocated:(CGRect *)unallocated isTemplateLayout:(BOOL)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = side.size.height;
+  width = side.size.width;
+  y = side.origin.y;
+  x = side.origin.x;
   if ([(PKStackedLeadingTrailingLabelCell *)self _shouldReverseLayoutDirection])
   {
     v15 = CGRectMinXEdge;
@@ -648,7 +648,7 @@ LABEL_17:
   v55.size.height = v41;
   PKContentAlignmentMake();
   PKSizeAlignedInRect();
-  if (!a6)
+  if (!layout)
   {
     v46 = v42;
     v47 = v43;
@@ -660,29 +660,29 @@ LABEL_17:
     [(UILabel *)self->_trailingSecondaryLabel setFrame:v55.origin.x, v55.origin.y, v55.size.width, v55.size.height];
   }
 
-  if (a4)
+  if (allocated)
   {
     size = slice.size;
-    a4->origin = slice.origin;
-    a4->size = size;
+    allocated->origin = slice.origin;
+    allocated->size = size;
   }
 
-  if (a5)
+  if (unallocated)
   {
     v51 = remainder.size;
-    a5->origin = remainder.origin;
-    a5->size = v51;
+    unallocated->origin = remainder.origin;
+    unallocated->size = v51;
   }
 
   return v21 + 0.0 + v37;
 }
 
-- (double)_layoutLabelsStacked:(CGRect)a3 allocated:(CGRect *)a4 unallocated:(CGRect *)a5 isTemplateLayout:(BOOL)a6
+- (double)_layoutLabelsStacked:(CGRect)stacked allocated:(CGRect *)allocated unallocated:(CGRect *)unallocated isTemplateLayout:(BOOL)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = stacked.size.height;
+  width = stacked.size.width;
+  y = stacked.origin.y;
+  x = stacked.origin.x;
   [(PKStackedLeadingTrailingLabelCell *)self _shouldReverseLayoutDirection];
   memset(&slice, 0, sizeof(slice));
   remainder.origin.x = x;
@@ -723,7 +723,7 @@ LABEL_17:
   CGRectDivide(remainder, &slice, &remainder, v34, CGRectMinYEdge);
   PKContentAlignmentMake();
   PKSizeAlignedInRect();
-  if (!a6)
+  if (!layout)
   {
     v39 = v35;
     v40 = v36;
@@ -735,18 +735,18 @@ LABEL_17:
     [(UILabel *)self->_trailingSecondaryLabel setFrame:v39, v40, v41, v42];
   }
 
-  if (a4)
+  if (allocated)
   {
     size = slice.size;
-    a4->origin = slice.origin;
-    a4->size = size;
+    allocated->origin = slice.origin;
+    allocated->size = size;
   }
 
-  if (a5)
+  if (unallocated)
   {
     v44 = remainder.size;
-    a5->origin = remainder.origin;
-    a5->size = v44;
+    unallocated->origin = remainder.origin;
+    unallocated->size = v44;
   }
 
   return v25 + v53 + 0.0 + v25 + 10.0 + v33;

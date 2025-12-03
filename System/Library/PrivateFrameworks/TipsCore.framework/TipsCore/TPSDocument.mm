@@ -1,36 +1,36 @@
 @interface TPSDocument
-+ (id)URLWithTipIdentifier:(id)a3 collectionIdentifier:(id)a4 referrer:(id)a5;
-+ (id)contentDictionaryForDictionary:(id)a3 fromMatchingClientConditions:(id)a4;
-+ (void)getValuesFromOpenURLSchemeQueryItems:(id)a3 tipIdentifier:(id *)a4 collectionIdentifier:(id *)a5 referrer:(id *)a6;
++ (id)URLWithTipIdentifier:(id)identifier collectionIdentifier:(id)collectionIdentifier referrer:(id)referrer;
++ (id)contentDictionaryForDictionary:(id)dictionary fromMatchingClientConditions:(id)conditions;
++ (void)getValuesFromOpenURLSchemeQueryItems:(id)items tipIdentifier:(id *)identifier collectionIdentifier:(id *)collectionIdentifier referrer:(id *)referrer;
 - (BOOL)hasWidgetContent;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isWelcome;
 - (NSString)identifier;
-- (TPSDocument)initWithCoder:(id)a3;
-- (TPSDocument)initWithDictionary:(id)a3 metadata:(id)a4 identifierKey:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TPSDocument)initWithCoder:(id)coder;
+- (TPSDocument)initWithDictionary:(id)dictionary metadata:(id)metadata identifierKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithContentDictionary:(id)a3 metadata:(id)a4 clientConditionIdentifier:(id)a5 fileIdMap:(id)a6 clientConditions:(id)a7;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithContentDictionary:(id)dictionary metadata:(id)metadata clientConditionIdentifier:(id)identifier fileIdMap:(id)map clientConditions:(id)conditions;
 @end
 
 @implementation TPSDocument
 
-+ (id)contentDictionaryForDictionary:(id)a3 fromMatchingClientConditions:(id)a4
++ (id)contentDictionaryForDictionary:(id)dictionary fromMatchingClientConditions:(id)conditions
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  dictionaryCopy = dictionary;
+  conditionsCopy = conditions;
+  if ([conditionsCopy count])
   {
-    v7 = [v5 TPSSafeArrayForKey:@"conditions"];
+    v7 = [dictionaryCopy TPSSafeArrayForKey:@"conditions"];
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __75__TPSDocument_contentDictionaryForDictionary_fromMatchingClientConditions___block_invoke;
     v20 = &unk_1E8101FA0;
-    v21 = v6;
+    v21 = conditionsCopy;
     v8 = [v7 na_firstObjectPassingTest:&v17];
     v9 = v8;
     if (v8)
@@ -85,47 +85,47 @@ uint64_t __75__TPSDocument_contentDictionaryForDictionary_fromMatchingClientCond
   return v4;
 }
 
-+ (id)URLWithTipIdentifier:(id)a3 collectionIdentifier:(id)a4 referrer:(id)a5
++ (id)URLWithTipIdentifier:(id)identifier collectionIdentifier:(id)collectionIdentifier referrer:(id)referrer
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF70] array];
-  if (v7)
+  identifierCopy = identifier;
+  collectionIdentifierCopy = collectionIdentifier;
+  referrerCopy = referrer;
+  array = [MEMORY[0x1E695DF70] array];
+  if (identifierCopy)
   {
-    v11 = [MEMORY[0x1E696AF60] queryItemWithName:@"tip" value:v7];
-    [v10 addObject:v11];
+    v11 = [MEMORY[0x1E696AF60] queryItemWithName:@"tip" value:identifierCopy];
+    [array addObject:v11];
   }
 
-  if (v8)
+  if (collectionIdentifierCopy)
   {
-    v12 = [MEMORY[0x1E696AF60] queryItemWithName:@"collection" value:v8];
-    [v10 addObject:v12];
+    v12 = [MEMORY[0x1E696AF60] queryItemWithName:@"collection" value:collectionIdentifierCopy];
+    [array addObject:v12];
   }
 
-  if (v9)
+  if (referrerCopy)
   {
-    v13 = [MEMORY[0x1E696AF60] queryItemWithName:@"referrer" value:v9];
-    [v10 addObject:v13];
+    v13 = [MEMORY[0x1E696AF60] queryItemWithName:@"referrer" value:referrerCopy];
+    [array addObject:v13];
   }
 
   v14 = objc_alloc_init(MEMORY[0x1E696AF20]);
   [v14 setScheme:@"x-apple-tips"];
   [v14 setHost:@"open"];
-  [v14 setQueryItems:v10];
+  [v14 setQueryItems:array];
   v15 = [v14 URL];
 
   return v15;
 }
 
-+ (void)getValuesFromOpenURLSchemeQueryItems:(id)a3 tipIdentifier:(id *)a4 collectionIdentifier:(id *)a5 referrer:(id *)a6
++ (void)getValuesFromOpenURLSchemeQueryItems:(id)items tipIdentifier:(id *)identifier collectionIdentifier:(id *)collectionIdentifier referrer:(id *)referrer
 {
   v29 = *MEMORY[0x1E69E9840];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = a3;
+  obj = items;
   v8 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
@@ -142,28 +142,28 @@ uint64_t __75__TPSDocument_contentDictionaryForDictionary_fromMatchingClientCond
         }
 
         v12 = *(*(&v24 + 1) + 8 * v11);
-        if (!a4 || ([*(*(&v24 + 1) + 8 * v11) name], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", @"tip"), v13, v15 = a4, (v14 & 1) == 0))
+        if (!identifier || ([*(*(&v24 + 1) + 8 * v11) name], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", @"tip"), v13, referrerCopy2 = identifier, (v14 & 1) == 0))
         {
-          if (!a5 || ([v12 name], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", @"collection"), v16, v15 = a5, (v17 & 1) == 0))
+          if (!collectionIdentifier || ([v12 name], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", @"collection"), v16, referrerCopy2 = collectionIdentifier, (v17 & 1) == 0))
           {
-            if (!a6)
+            if (!referrer)
             {
               goto LABEL_15;
             }
 
-            v18 = [v12 name];
-            if ([v18 isEqualToString:@"referrer"])
+            name = [v12 name];
+            if ([name isEqualToString:@"referrer"])
             {
 
-              v15 = a6;
+              referrerCopy2 = referrer;
             }
 
             else
             {
-              v19 = [v12 name];
-              v20 = [v19 isEqualToString:@"launchSource"];
+              name2 = [v12 name];
+              v20 = [name2 isEqualToString:@"launchSource"];
 
-              v15 = a6;
+              referrerCopy2 = referrer;
               if (!v20)
               {
                 goto LABEL_15;
@@ -172,7 +172,7 @@ uint64_t __75__TPSDocument_contentDictionaryForDictionary_fromMatchingClientCond
           }
         }
 
-        *v15 = [v12 value];
+        *referrerCopy2 = [v12 value];
 LABEL_15:
         ++v11;
       }
@@ -187,17 +187,17 @@ LABEL_15:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (TPSDocument)initWithDictionary:(id)a3 metadata:(id)a4 identifierKey:(id)a5
+- (TPSDocument)initWithDictionary:(id)dictionary metadata:(id)metadata identifierKey:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  metadataCopy = metadata;
+  keyCopy = key;
   v33.receiver = self;
   v33.super_class = TPSDocument;
-  v11 = [(TPSSerializableObject *)&v33 initWithDictionary:v8];
+  v11 = [(TPSSerializableObject *)&v33 initWithDictionary:dictionaryCopy];
   if (v11)
   {
-    v12 = [v8 TPSSafeStringForKey:v10];
+    v12 = [dictionaryCopy TPSSafeStringForKey:keyCopy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
@@ -207,11 +207,11 @@ LABEL_15:
       goto LABEL_6;
     }
 
-    v14 = [v8 TPSSafeStringForKey:@"variantId"];
+    v14 = [dictionaryCopy TPSSafeStringForKey:@"variantId"];
     variantID = v11->_variantID;
     v11->_variantID = v14;
 
-    v16 = [v8 TPSSafeDictionaryForKey:@"relationships"];
+    v16 = [dictionaryCopy TPSSafeDictionaryForKey:@"relationships"];
     v17 = [v16 TPSSafeStringForKey:@"correlationId"];
     correlationID = v11->_correlationID;
     v11->_correlationID = v17;
@@ -224,22 +224,22 @@ LABEL_15:
     supportID = v11->_supportID;
     v11->_supportID = v21;
 
-    v23 = [v9 language];
+    language = [metadataCopy language];
     language = v11->_language;
-    v11->_language = v23;
+    v11->_language = language;
 
-    v25 = [MEMORY[0x1E695DF58] tps_userLanguageCode];
+    tps_userLanguageCode = [MEMORY[0x1E695DF58] tps_userLanguageCode];
     userLanguageCode = v11->_userLanguageCode;
-    v11->_userLanguageCode = v25;
+    v11->_userLanguageCode = tps_userLanguageCode;
 
-    v27 = [v8 TPSSafeArrayForKey:@"keywords"];
+    v27 = [dictionaryCopy TPSSafeArrayForKey:@"keywords"];
     keywords = v11->_keywords;
     v11->_keywords = v27;
 
-    v11->_lastModifiedDate = [v8 TPSSafeIntegerForKey:@"lastModified"];
-    v29 = [v8 TPSSafeDictionaryForKey:@"content"];
-    v30 = [TPSDocument fileIdMapForDictionary:v8];
-    [(TPSDocument *)v11 updateWithContentDictionary:v29 metadata:v9 clientConditionIdentifier:0 fileIdMap:v30 clientConditions:0];
+    v11->_lastModifiedDate = [dictionaryCopy TPSSafeIntegerForKey:@"lastModified"];
+    v29 = [dictionaryCopy TPSSafeDictionaryForKey:@"content"];
+    v30 = [TPSDocument fileIdMapForDictionary:dictionaryCopy];
+    [(TPSDocument *)v11 updateWithContentDictionary:v29 metadata:metadataCopy clientConditionIdentifier:0 fileIdMap:v30 clientConditions:0];
   }
 
   v31 = v11;
@@ -248,125 +248,125 @@ LABEL_6:
   return v31;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20.receiver = self;
   v20.super_class = TPSDocument;
-  v4 = [(TPSSerializableObject *)&v20 copyWithZone:a3];
-  v5 = [(TPSDocument *)self identifier];
-  [v4 setIdentifier:v5];
+  v4 = [(TPSSerializableObject *)&v20 copyWithZone:zone];
+  identifier = [(TPSDocument *)self identifier];
+  [v4 setIdentifier:identifier];
 
-  v6 = [(TPSDocument *)self variantID];
-  [v4 setVariantID:v6];
+  variantID = [(TPSDocument *)self variantID];
+  [v4 setVariantID:variantID];
 
-  v7 = [(TPSDocument *)self correlationID];
-  [v4 setCorrelationID:v7];
+  correlationID = [(TPSDocument *)self correlationID];
+  [v4 setCorrelationID:correlationID];
 
-  v8 = [(TPSDocument *)self clonedFromID];
-  [v4 setClonedFromID:v8];
+  clonedFromID = [(TPSDocument *)self clonedFromID];
+  [v4 setClonedFromID:clonedFromID];
 
-  v9 = [(TPSDocument *)self clientConditionID];
-  [v4 setClientConditionID:v9];
+  clientConditionID = [(TPSDocument *)self clientConditionID];
+  [v4 setClientConditionID:clientConditionID];
 
-  v10 = [(TPSDocument *)self supportID];
-  [v4 setSupportID:v10];
+  supportID = [(TPSDocument *)self supportID];
+  [v4 setSupportID:supportID];
 
-  v11 = [(TPSDocument *)self notification];
-  [v4 setNotification:v11];
+  notification = [(TPSDocument *)self notification];
+  [v4 setNotification:notification];
 
-  v12 = [(TPSDocument *)self widgetContent];
-  [v4 setWidgetContent:v12];
+  widgetContent = [(TPSDocument *)self widgetContent];
+  [v4 setWidgetContent:widgetContent];
 
-  v13 = [(TPSDocument *)self assetFileInfoManager];
-  [v4 setAssetFileInfoManager:v13];
+  assetFileInfoManager = [(TPSDocument *)self assetFileInfoManager];
+  [v4 setAssetFileInfoManager:assetFileInfoManager];
 
-  v14 = [(TPSDocument *)self language];
-  [v4 setLanguage:v14];
+  language = [(TPSDocument *)self language];
+  [v4 setLanguage:language];
 
-  v15 = [(TPSDocument *)self userLanguageCode];
-  [v4 setUserLanguageCode:v15];
+  userLanguageCode = [(TPSDocument *)self userLanguageCode];
+  [v4 setUserLanguageCode:userLanguageCode];
 
-  v16 = [(TPSDocument *)self keywords];
-  [v4 setKeywords:v16];
+  keywords = [(TPSDocument *)self keywords];
+  [v4 setKeywords:keywords];
 
   [v4 setLastModifiedDate:{-[TPSDocument lastModifiedDate](self, "lastModifiedDate")}];
-  v17 = [(TPSDocument *)self availabilityContent];
-  [v4 setAvailabilityContent:v17];
+  availabilityContent = [(TPSDocument *)self availabilityContent];
+  [v4 setAvailabilityContent:availabilityContent];
 
-  v18 = [(TPSDocument *)self linkedDocument];
-  [v4 setLinkedDocument:v18];
+  linkedDocument = [(TPSDocument *)self linkedDocument];
+  [v4 setLinkedDocument:linkedDocument];
 
   return v4;
 }
 
-- (TPSDocument)initWithCoder:(id)a3
+- (TPSDocument)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = TPSDocument;
-  v5 = [(TPSSerializableObject *)&v41 initWithCoder:v4];
+  v5 = [(TPSSerializableObject *)&v41 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"variantId"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"variantId"];
     variantID = v5->_variantID;
     v5->_variantID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"correlationId"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"correlationId"];
     correlationID = v5->_correlationID;
     v5->_correlationID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clonedFromId"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clonedFromId"];
     clonedFromID = v5->_clonedFromID;
     v5->_clonedFromID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientConditionId"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientConditionId"];
     clientConditionID = v5->_clientConditionID;
     v5->_clientConditionID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supportId"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportId"];
     supportID = v5->_supportID;
     v5->_supportID = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"language"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"language"];
     language = v5->_language;
     v5->_language = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"notification"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"notification"];
     notification = v5->_notification;
     v5->_notification = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"widget"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"widget"];
     widgetContent = v5->_widgetContent;
     v5->_widgetContent = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileIdMap"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileIdMap"];
     assetFileInfoManager = v5->_assetFileInfoManager;
     v5->_assetFileInfoManager = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userLanguageCode"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userLanguageCode"];
     userLanguageCode = v5->_userLanguageCode;
     v5->_userLanguageCode = v26;
 
-    v28 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"keywords"];
+    v28 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"keywords"];
     keywords = v5->_keywords;
     v5->_keywords = v28;
 
-    v5->_lastModifiedDate = [v4 decodeIntegerForKey:@"lastModified"];
+    v5->_lastModifiedDate = [coderCopy decodeIntegerForKey:@"lastModified"];
     v30 = MEMORY[0x1E695DFD8];
     v31 = objc_opt_class();
     v32 = objc_opt_class();
     v33 = objc_opt_class();
     v34 = objc_opt_class();
     v35 = [v30 setWithObjects:{v31, v32, v33, v34, objc_opt_class(), 0}];
-    v36 = [v4 decodeObjectOfClasses:v35 forKey:@"availabilityMessage"];
+    v36 = [coderCopy decodeObjectOfClasses:v35 forKey:@"availabilityMessage"];
     availabilityContent = v5->_availabilityContent;
     v5->_availabilityContent = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"linkedDocument"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"linkedDocument"];
     linkedDocument = v5->_linkedDocument;
     v5->_linkedDocument = v38;
   }
@@ -374,54 +374,54 @@ LABEL_6:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v19.receiver = self;
   v19.super_class = TPSDocument;
-  v4 = a3;
-  [(TPSSerializableObject *)&v19 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TPSSerializableObject *)&v19 encodeWithCoder:coderCopy];
   v5 = [(TPSDocument *)self identifier:v19.receiver];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  [coderCopy encodeObject:v5 forKey:@"identifier"];
 
-  v6 = [(TPSDocument *)self variantID];
-  [v4 encodeObject:v6 forKey:@"variantId"];
+  variantID = [(TPSDocument *)self variantID];
+  [coderCopy encodeObject:variantID forKey:@"variantId"];
 
-  v7 = [(TPSDocument *)self correlationID];
-  [v4 encodeObject:v7 forKey:@"correlationId"];
+  correlationID = [(TPSDocument *)self correlationID];
+  [coderCopy encodeObject:correlationID forKey:@"correlationId"];
 
-  v8 = [(TPSDocument *)self clonedFromID];
-  [v4 encodeObject:v8 forKey:@"clonedFromId"];
+  clonedFromID = [(TPSDocument *)self clonedFromID];
+  [coderCopy encodeObject:clonedFromID forKey:@"clonedFromId"];
 
-  v9 = [(TPSDocument *)self clientConditionID];
-  [v4 encodeObject:v9 forKey:@"clientConditionId"];
+  clientConditionID = [(TPSDocument *)self clientConditionID];
+  [coderCopy encodeObject:clientConditionID forKey:@"clientConditionId"];
 
-  v10 = [(TPSDocument *)self supportID];
-  [v4 encodeObject:v10 forKey:@"supportId"];
+  supportID = [(TPSDocument *)self supportID];
+  [coderCopy encodeObject:supportID forKey:@"supportId"];
 
-  v11 = [(TPSDocument *)self notification];
-  [v4 encodeObject:v11 forKey:@"notification"];
+  notification = [(TPSDocument *)self notification];
+  [coderCopy encodeObject:notification forKey:@"notification"];
 
-  v12 = [(TPSDocument *)self widgetContent];
-  [v4 encodeObject:v12 forKey:@"widget"];
+  widgetContent = [(TPSDocument *)self widgetContent];
+  [coderCopy encodeObject:widgetContent forKey:@"widget"];
 
-  v13 = [(TPSDocument *)self assetFileInfoManager];
-  [v4 encodeObject:v13 forKey:@"fileIdMap"];
+  assetFileInfoManager = [(TPSDocument *)self assetFileInfoManager];
+  [coderCopy encodeObject:assetFileInfoManager forKey:@"fileIdMap"];
 
-  v14 = [(TPSDocument *)self language];
-  [v4 encodeObject:v14 forKey:@"language"];
+  language = [(TPSDocument *)self language];
+  [coderCopy encodeObject:language forKey:@"language"];
 
-  v15 = [(TPSDocument *)self userLanguageCode];
-  [v4 encodeObject:v15 forKey:@"userLanguageCode"];
+  userLanguageCode = [(TPSDocument *)self userLanguageCode];
+  [coderCopy encodeObject:userLanguageCode forKey:@"userLanguageCode"];
 
-  v16 = [(TPSDocument *)self keywords];
-  [v4 encodeObject:v16 forKey:@"keywords"];
+  keywords = [(TPSDocument *)self keywords];
+  [coderCopy encodeObject:keywords forKey:@"keywords"];
 
-  [v4 encodeInteger:-[TPSDocument lastModifiedDate](self forKey:{"lastModifiedDate"), @"lastModified"}];
-  v17 = [(TPSDocument *)self availabilityContent];
-  [v4 encodeObject:v17 forKey:@"availabilityMessage"];
+  [coderCopy encodeInteger:-[TPSDocument lastModifiedDate](self forKey:{"lastModifiedDate"), @"lastModified"}];
+  availabilityContent = [(TPSDocument *)self availabilityContent];
+  [coderCopy encodeObject:availabilityContent forKey:@"availabilityMessage"];
 
-  v18 = [(TPSDocument *)self linkedDocument];
-  [v4 encodeObject:v18 forKey:@"linkedDocument"];
+  linkedDocument = [(TPSDocument *)self linkedDocument];
+  [coderCopy encodeObject:linkedDocument forKey:@"linkedDocument"];
 }
 
 - (NSString)identifier
@@ -429,42 +429,42 @@ LABEL_6:
   identifier = self->_identifier;
   if (identifier)
   {
-    v3 = identifier;
+    uUIDString = identifier;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AFB0] UUID];
-    v3 = [v4 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
   }
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)updateWithContentDictionary:(id)a3 metadata:(id)a4 clientConditionIdentifier:(id)a5 fileIdMap:(id)a6 clientConditions:(id)a7
+- (void)updateWithContentDictionary:(id)dictionary metadata:(id)metadata clientConditionIdentifier:(id)identifier fileIdMap:(id)map clientConditions:(id)conditions
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  [(TPSDocument *)self setClientConditionID:a5];
-  v25 = [TPSNotification notificationFromDictionary:v15];
+  conditionsCopy = conditions;
+  mapCopy = map;
+  metadataCopy = metadata;
+  dictionaryCopy = dictionary;
+  [(TPSDocument *)self setClientConditionID:identifier];
+  v25 = [TPSNotification notificationFromDictionary:dictionaryCopy];
   v16 = [[TPSNotification alloc] initWithDictionary:v25];
   [(TPSDocument *)self setNotification:v16];
 
-  v17 = [[TPSAssetFileInfoManager alloc] initWithDictionary:v13 clientConditions:v12];
+  v17 = [[TPSAssetFileInfoManager alloc] initWithDictionary:mapCopy clientConditions:conditionsCopy];
   [(TPSDocument *)self setAssetFileInfoManager:v17];
 
-  v18 = [v15 TPSSafeDictionaryForKey:@"widget"];
-  v19 = [[TPSWidgetContent alloc] initWithDictionary:v18 metadata:v14];
+  v18 = [dictionaryCopy TPSSafeDictionaryForKey:@"widget"];
+  v19 = [[TPSWidgetContent alloc] initWithDictionary:v18 metadata:metadataCopy];
 
   [(TPSDocument *)self setWidgetContent:v19];
-  v20 = [v15 TPSSafeDictionaryForKey:@"availabilityMessage"];
+  v20 = [dictionaryCopy TPSSafeDictionaryForKey:@"availabilityMessage"];
   v21 = [v20 TPSSafeArrayForKey:@"content"];
   availabilityContent = self->_availabilityContent;
   self->_availabilityContent = v21;
 
-  v23 = [TPSLinkedDocument linkedDocumentFromDictionary:v15];
+  v23 = [TPSLinkedDocument linkedDocumentFromDictionary:dictionaryCopy];
 
   v24 = [[TPSLinkedDocument alloc] initWithDictionary:v23];
   [(TPSDocument *)self setLinkedDocument:v24];
@@ -472,15 +472,15 @@ LABEL_6:
 
 - (BOOL)hasWidgetContent
 {
-  v3 = [(TPSDocument *)self widgetContent];
-  v4 = [v3 titleContent];
+  widgetContent = [(TPSDocument *)self widgetContent];
+  titleContent = [widgetContent titleContent];
 
-  v5 = [(TPSDocument *)self widgetContent];
-  v6 = [v5 bodyContent];
+  widgetContent2 = [(TPSDocument *)self widgetContent];
+  bodyContent = [widgetContent2 bodyContent];
 
-  if (v6)
+  if (bodyContent)
   {
-    v7 = v4 == 0;
+    v7 = titleContent == 0;
   }
 
   else
@@ -509,8 +509,8 @@ LABEL_6:
   v4 = [(TPSDocument *)&v8 description];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(TPSDocument *)self identifier];
-  [v5 appendFormat:@" %@ = %@", @"identifier", v6];
+  identifier = [(TPSDocument *)self identifier];
+  [v5 appendFormat:@" %@ = %@", @"identifier", identifier];
 
   return v5;
 }
@@ -523,81 +523,81 @@ LABEL_6:
   v4 = [(TPSSerializableObject *)&v31 debugDescription];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(TPSDocument *)self identifier];
-  [v5 appendFormat:@"\n%@ = %@\n", @"identifier", v6];
+  identifier = [(TPSDocument *)self identifier];
+  [v5 appendFormat:@"\n%@ = %@\n", @"identifier", identifier];
 
-  v7 = [(TPSDocument *)self variantID];
-  [v5 appendFormat:@"%@ = %@\n", @"variantId", v7];
+  variantID = [(TPSDocument *)self variantID];
+  [v5 appendFormat:@"%@ = %@\n", @"variantId", variantID];
 
-  v8 = [(TPSDocument *)self correlationID];
-  [v5 appendFormat:@"%@ = %@\n", @"correlationId", v8];
+  correlationID = [(TPSDocument *)self correlationID];
+  [v5 appendFormat:@"%@ = %@\n", @"correlationId", correlationID];
 
-  v9 = [(TPSDocument *)self clonedFromID];
-  [v5 appendFormat:@"%@ = %@\n", @"clonedFromId", v9];
+  clonedFromID = [(TPSDocument *)self clonedFromID];
+  [v5 appendFormat:@"%@ = %@\n", @"clonedFromId", clonedFromID];
 
-  v10 = [(TPSDocument *)self clientConditionID];
-  [v5 appendFormat:@"%@ = %@\n", @"clientConditionId", v10];
+  clientConditionID = [(TPSDocument *)self clientConditionID];
+  [v5 appendFormat:@"%@ = %@\n", @"clientConditionId", clientConditionID];
 
-  v11 = [(TPSDocument *)self language];
-  [v5 appendFormat:@"%@ = %@\n", @"language", v11];
+  language = [(TPSDocument *)self language];
+  [v5 appendFormat:@"%@ = %@\n", @"language", language];
 
-  v12 = [(TPSDocument *)self userLanguageCode];
-  [v5 appendFormat:@"%@ = %@\n", @"userLanguageCode", v12];
+  userLanguageCode = [(TPSDocument *)self userLanguageCode];
+  [v5 appendFormat:@"%@ = %@\n", @"userLanguageCode", userLanguageCode];
 
-  v13 = [(TPSDocument *)self keywords];
-  [v5 appendFormat:@"%@ = %@\n", @"keywords", v13];
+  keywords = [(TPSDocument *)self keywords];
+  [v5 appendFormat:@"%@ = %@\n", @"keywords", keywords];
 
   [v5 appendFormat:@"%@ = %ld\n", @"lastModified", -[TPSDocument lastModifiedDate](self, "lastModifiedDate")];
-  v14 = [(TPSDocument *)self notification];
+  notification = [(TPSDocument *)self notification];
 
-  if (v14)
+  if (notification)
   {
-    v15 = [(TPSDocument *)self notification];
-    v16 = [v15 debugDescription];
+    notification2 = [(TPSDocument *)self notification];
+    v16 = [notification2 debugDescription];
     [v5 appendFormat:@"%@ = %@\n", @"notification", v16];
   }
 
-  v17 = [(TPSDocument *)self widgetContent];
+  widgetContent = [(TPSDocument *)self widgetContent];
 
-  if (v17)
+  if (widgetContent)
   {
-    v18 = [(TPSDocument *)self widgetContent];
-    v19 = [v18 debugDescription];
+    widgetContent2 = [(TPSDocument *)self widgetContent];
+    v19 = [widgetContent2 debugDescription];
     [v5 appendFormat:@"%@ = %@\n", @"widget", v19];
   }
 
-  v20 = [(TPSDocument *)self assetFileInfoManager];
+  assetFileInfoManager = [(TPSDocument *)self assetFileInfoManager];
 
-  if (v20)
+  if (assetFileInfoManager)
   {
-    v21 = [(TPSDocument *)self assetFileInfoManager];
-    v22 = [v21 debugDescription];
+    assetFileInfoManager2 = [(TPSDocument *)self assetFileInfoManager];
+    v22 = [assetFileInfoManager2 debugDescription];
     [v5 appendFormat:@"%@ = %@\n", @"fileIdMap", v22];
   }
 
-  v23 = [(TPSDocument *)self availabilityContent];
+  availabilityContent = [(TPSDocument *)self availabilityContent];
 
-  if (v23)
+  if (availabilityContent)
   {
-    v24 = [(TPSDocument *)self availabilityContent];
-    [v5 appendFormat:@"%@ = %@\n", @"availabilityMessage", v24];
+    availabilityContent2 = [(TPSDocument *)self availabilityContent];
+    [v5 appendFormat:@"%@ = %@\n", @"availabilityMessage", availabilityContent2];
   }
 
-  v25 = [(TPSDocument *)self linkedDocument];
+  linkedDocument = [(TPSDocument *)self linkedDocument];
 
-  if (v25)
+  if (linkedDocument)
   {
-    v26 = [(TPSDocument *)self linkedDocument];
-    v27 = [v26 debugDescription];
+    linkedDocument2 = [(TPSDocument *)self linkedDocument];
+    v27 = [linkedDocument2 debugDescription];
     [v5 appendFormat:@"%@ = %@\n", @"linkedDocument", v27];
   }
 
-  v28 = [(TPSDocument *)self supportID];
+  supportID = [(TPSDocument *)self supportID];
 
-  if (v28)
+  if (supportID)
   {
-    v29 = [(TPSDocument *)self supportID];
-    [v5 appendFormat:@"%@ = %@\n", @"supportId", v29];
+    supportID2 = [(TPSDocument *)self supportID];
+    [v5 appendFormat:@"%@ = %@\n", @"supportId", supportID2];
   }
 
   return v5;
@@ -652,19 +652,19 @@ uint64_t __26__TPSDocument_na_identity__block_invoke_14(uint64_t a1, void *a2)
   return [v2 numberWithInteger:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

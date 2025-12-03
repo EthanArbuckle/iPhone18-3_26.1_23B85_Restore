@@ -1,19 +1,19 @@
 @interface RAPRecordReportStatus
-+ (signed)typeFromMapsSyncStatus:(signed __int16)a3;
++ (signed)typeFromMapsSyncStatus:(signed __int16)status;
 @end
 
 @implementation RAPRecordReportStatus
 
-+ (signed)typeFromMapsSyncStatus:(signed __int16)a3
++ (signed)typeFromMapsSyncStatus:(signed __int16)status
 {
-  if (a3 >= 3)
+  if (status >= 3)
   {
     return -1;
   }
 
   else
   {
-    return a3;
+    return status;
   }
 }
 

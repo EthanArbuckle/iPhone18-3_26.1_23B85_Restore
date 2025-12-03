@@ -13,17 +13,17 @@
 
 - (uint64_t)isHMError
 {
-  v1 = [a1 domain];
-  v2 = [v1 isEqualToString:@"HMErrorDomain"];
+  domain = [self domain];
+  v2 = [domain isEqualToString:@"HMErrorDomain"];
 
   return v2;
 }
 
 - (id)hmPublicError
 {
-  if ([a1 isHMError])
+  if ([self isHMError])
   {
-    switch([a1 code])
+    switch([self code])
     {
       case 1001:
       case 1002:
@@ -102,16 +102,16 @@
         goto LABEL_4;
     }
 
-    v4 = [v2 hmErrorWithCode:v3];
+    selfCopy = [v2 hmErrorWithCode:v3];
   }
 
   else
   {
 LABEL_4:
-    v4 = a1;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 + (id)hmPrivateErrorWithCode:()HMError description:underlyingError:
@@ -123,8 +123,8 @@ LABEL_4:
     v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
     if (v7)
     {
-      v10 = [MEMORY[0x1E696AAE8] mainBundle];
-      v11 = [v10 localizedStringForKey:v7 value:&stru_1F0E92498 table:0];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      v11 = [mainBundle localizedStringForKey:v7 value:&stru_1F0E92498 table:0];
       [v9 setObject:v11 forKeyedSubscript:*MEMORY[0x1E696A578]];
     }
 
@@ -193,40 +193,40 @@ LABEL_4:
   v13 = v12;
   if (v9 || v10 || v11 || v12)
   {
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     if (v9)
     {
-      v15 = [MEMORY[0x1E696AAE8] mainBundle];
-      v16 = [v15 localizedStringForKey:v9 value:&stru_1F0E92498 table:0];
-      [v14 setObject:v16 forKeyedSubscript:*MEMORY[0x1E696A578]];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      v16 = [mainBundle localizedStringForKey:v9 value:&stru_1F0E92498 table:0];
+      [dictionary setObject:v16 forKeyedSubscript:*MEMORY[0x1E696A578]];
     }
 
     if (v10)
     {
-      v17 = [MEMORY[0x1E696AAE8] mainBundle];
-      v18 = [v17 localizedStringForKey:v10 value:&stru_1F0E92498 table:0];
-      [v14 setObject:v18 forKeyedSubscript:*MEMORY[0x1E696A588]];
+      mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+      v18 = [mainBundle2 localizedStringForKey:v10 value:&stru_1F0E92498 table:0];
+      [dictionary setObject:v18 forKeyedSubscript:*MEMORY[0x1E696A588]];
     }
 
     if (v11)
     {
-      v19 = [MEMORY[0x1E696AAE8] mainBundle];
-      v20 = [v19 localizedStringForKey:v11 value:&stru_1F0E92498 table:0];
-      [v14 setObject:v20 forKeyedSubscript:*MEMORY[0x1E696A598]];
+      mainBundle3 = [MEMORY[0x1E696AAE8] mainBundle];
+      v20 = [mainBundle3 localizedStringForKey:v11 value:&stru_1F0E92498 table:0];
+      [dictionary setObject:v20 forKeyedSubscript:*MEMORY[0x1E696A598]];
     }
 
     if (v13)
     {
-      [v14 setObject:v13 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+      [dictionary setObject:v13 forKeyedSubscript:*MEMORY[0x1E696AA08]];
     }
   }
 
   else
   {
-    v14 = 0;
+    dictionary = 0;
   }
 
-  return v14;
+  return dictionary;
 }
 
 + (__CFString)hmStringFromErrorCode:()HMError

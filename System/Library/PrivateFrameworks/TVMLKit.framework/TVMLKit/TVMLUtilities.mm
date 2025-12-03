@@ -1,44 +1,44 @@
 @interface TVMLUtilities
-+ (BOOL)_cornerRadiiFromElement:(id)a3 cornerRadii:(TVCornerRadii *)a4 circle:(BOOL *)a5;
-+ (BOOL)_cornerRadiiFromImageLayout:(id)a3 cornerRadii:(TVCornerRadii *)a4 circle:(BOOL *)a5;
-+ (BOOL)_cornerRadiiFromImgTreatmentValue:(id)a3 width:(double)a4 cornerRadii:(TVCornerRadii *)a5 circle:(BOOL *)a6;
-+ (BOOL)_cornerRadiiWithBorderRadius:(id)a3 cornerRadii:(TVCornerRadii *)a4 imageWidth:(double)a5 imageTreatmentValue:(id)a6 circle:(BOOL *)a7;
-+ (BOOL)_isOSFeatureEnabled:(id)a3;
-+ (BOOL)cornerRadiiFromElement:(id)a3 cornerRadii:(TVCornerRadii *)a4 circle:(BOOL *)a5;
-+ (BOOL)isAXLargeEnabled:(id)a3;
-+ (BOOL)isAXSmallEnabled:(id)a3;
-+ (BOOL)isFlowcaseAtTopOfStackFromElement:(id)a3;
++ (BOOL)_cornerRadiiFromElement:(id)element cornerRadii:(TVCornerRadii *)radii circle:(BOOL *)circle;
++ (BOOL)_cornerRadiiFromImageLayout:(id)layout cornerRadii:(TVCornerRadii *)radii circle:(BOOL *)circle;
++ (BOOL)_cornerRadiiFromImgTreatmentValue:(id)value width:(double)width cornerRadii:(TVCornerRadii *)radii circle:(BOOL *)circle;
++ (BOOL)_cornerRadiiWithBorderRadius:(id)radius cornerRadii:(TVCornerRadii *)radii imageWidth:(double)width imageTreatmentValue:(id)value circle:(BOOL *)circle;
++ (BOOL)_isOSFeatureEnabled:(id)enabled;
++ (BOOL)cornerRadiiFromElement:(id)element cornerRadii:(TVCornerRadii *)radii circle:(BOOL *)circle;
++ (BOOL)isAXLargeEnabled:(id)enabled;
++ (BOOL)isAXSmallEnabled:(id)enabled;
++ (BOOL)isFlowcaseAtTopOfStackFromElement:(id)element;
 + (BOOL)mainBundleSupportsSFSymbols;
-+ (CGPath)shadowPathWithCornerRadii:(TVCornerRadii)a3 andScaledSize:(CGSize)a4;
-+ (CGRect)centerRect:(CGRect)result inRect:(CGRect)a4;
-+ (double)focusedSizeIncreaseForSize:(CGSize)a3 upscaleFactor:(double)a4;
-+ (double)focusedSizeIncreaseForSize:(CGSize)a3 upscaleFactor:(double)a4 useInSearchPartial:(BOOL)a5;
-+ (double)uiFontWeightFromCSSFontWeight:(id)a3;
++ (CGPath)shadowPathWithCornerRadii:(TVCornerRadii)radii andScaledSize:(CGSize)size;
++ (CGRect)centerRect:(CGRect)result inRect:(CGRect)rect;
++ (double)focusedSizeIncreaseForSize:(CGSize)size upscaleFactor:(double)factor;
++ (double)focusedSizeIncreaseForSize:(CGSize)size upscaleFactor:(double)factor useInSearchPartial:(BOOL)partial;
++ (double)uiFontWeightFromCSSFontWeight:(id)weight;
 + (id)TVKitBundle;
 + (id)TVMLKitBundle;
 + (id)TVUIKitBundle;
-+ (id)_bgImageElementForProductTemplate:(id)a3;
-+ (id)_defaultPlaceholderImageForUserInterfaceStyle:(int64_t)a3;
-+ (id)_defaultPlaceholderImageForUserInterfaceStyle:(int64_t)a3 withCornerRadii:(TVCornerRadii)a4 andSize:(CGSize)a5;
-+ (id)_mobileGestaltStringForKey:(__CFString *)a3;
-+ (id)_placeholderImageForValue:(id)a3 userInterfaceStyle:(int64_t)a4 withCornerRadii:(TVCornerRadii)a5 andScaledSize:(CGSize)a6;
-+ (id)_placeholderImageForViewElement:(id)a3 imageLayout:(id)a4;
-+ (id)_placeholderImageForViewElement:(id)a3 withImageLayout:(id)a4 cornerRadii:(TVCornerRadii)a5 andScaledSize:(CGSize)a6;
-+ (id)fontFromStyle:(id)a3;
-+ (id)imageWithRadialGradientOverlayFromImage:(id)a3;
-+ (id)indexPathForFirstItemAttributeValue:(id)a3;
-+ (id)placeholderImageForViewElement:(id)a3;
-+ (id)placeholderImageForViewElement:(id)a3 withCornerRadii:(TVCornerRadii)a4 andScaledSize:(CGSize)a5;
++ (id)_bgImageElementForProductTemplate:(id)template;
++ (id)_defaultPlaceholderImageForUserInterfaceStyle:(int64_t)style;
++ (id)_defaultPlaceholderImageForUserInterfaceStyle:(int64_t)style withCornerRadii:(TVCornerRadii)radii andSize:(CGSize)size;
++ (id)_mobileGestaltStringForKey:(__CFString *)key;
++ (id)_placeholderImageForValue:(id)value userInterfaceStyle:(int64_t)style withCornerRadii:(TVCornerRadii)radii andScaledSize:(CGSize)size;
++ (id)_placeholderImageForViewElement:(id)element imageLayout:(id)layout;
++ (id)_placeholderImageForViewElement:(id)element withImageLayout:(id)layout cornerRadii:(TVCornerRadii)radii andScaledSize:(CGSize)size;
++ (id)fontFromStyle:(id)style;
++ (id)imageWithRadialGradientOverlayFromImage:(id)image;
++ (id)indexPathForFirstItemAttributeValue:(id)value;
++ (id)placeholderImageForViewElement:(id)element;
++ (id)placeholderImageForViewElement:(id)element withCornerRadii:(TVCornerRadii)radii andScaledSize:(CGSize)size;
 + (id)randomColor;
-+ (id)rowSpacingMetricsForRowMetrics:(id)a3 forShowcase:(BOOL)a4;
-+ (int64_t)_interfaceStyleForElement:(id)a3;
-+ (int64_t)_overrideInterfaceStyleForElement:(id)a3;
-+ (int64_t)contentModeForPosition:(int64_t)a3 defaultMode:(int64_t)a4;
-+ (int64_t)semanticAlignmentForAlignment:(int64_t)a3 semanticContentAttribute:(int64_t)a4;
-+ (int64_t)semanticContentAttributeForTemplateElement:(id)a3;
-+ (int64_t)semanticPositionForPosition:(int64_t)a3 semanticContentAttribute:(int64_t)a4;
-+ (void)disassociateIKViewElementsRecursivelyFromView:(id)a3;
-+ (void)getValuesFromTransform:(CGAffineTransform *)a3 translation:(CGPoint *)a4 rotation:(CGPoint *)a5;
++ (id)rowSpacingMetricsForRowMetrics:(id)metrics forShowcase:(BOOL)showcase;
++ (int64_t)_interfaceStyleForElement:(id)element;
++ (int64_t)_overrideInterfaceStyleForElement:(id)element;
++ (int64_t)contentModeForPosition:(int64_t)position defaultMode:(int64_t)mode;
++ (int64_t)semanticAlignmentForAlignment:(int64_t)alignment semanticContentAttribute:(int64_t)attribute;
++ (int64_t)semanticContentAttributeForTemplateElement:(id)element;
++ (int64_t)semanticPositionForPosition:(int64_t)position semanticContentAttribute:(int64_t)attribute;
++ (void)disassociateIKViewElementsRecursivelyFromView:(id)view;
++ (void)getValuesFromTransform:(CGAffineTransform *)transform translation:(CGPoint *)translation rotation:(CGPoint *)rotation;
 @end
 
 @implementation TVMLUtilities
@@ -118,15 +118,15 @@ void __44__TVMLUtilities_mainBundleSupportsSFSymbols__block_invoke()
   mainBundleSupportsSFSymbols_supportsSFSymbols = [v1 BOOLValue];
 }
 
-+ (double)uiFontWeightFromCSSFontWeight:(id)a3
++ (double)uiFontWeightFromCSSFontWeight:(id)weight
 {
-  v3 = a3;
+  weightCopy = weight;
   if (uiFontWeightFromCSSFontWeight__onceToken != -1)
   {
     +[TVMLUtilities uiFontWeightFromCSSFontWeight:];
   }
 
-  if ([v3 length] && (v4 = uiFontWeightFromCSSFontWeight__sFontWeightMap, objc_msgSend(v3, "lowercaseString"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "objectForKeyedSubscript:", v5), v6 = objc_claimAutoreleasedReturnValue(), v5, v6))
+  if ([weightCopy length] && (v4 = uiFontWeightFromCSSFontWeight__sFontWeightMap, objc_msgSend(weightCopy, "lowercaseString"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "objectForKeyedSubscript:", v5), v6 = objc_claimAutoreleasedReturnValue(), v5, v6))
   {
     [v6 floatValue];
     v8 = v7;
@@ -175,23 +175,23 @@ void __47__TVMLUtilities_uiFontWeightFromCSSFontWeight___block_invoke()
   uiFontWeightFromCSSFontWeight__sFontWeightMap = v9;
 }
 
-+ (id)fontFromStyle:(id)a3
++ (id)fontFromStyle:(id)style
 {
   v45[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 tv_textStyle];
-  v6 = [v4 tv_fontWeight];
-  [v4 tv_fontSize];
+  styleCopy = style;
+  tv_textStyle = [styleCopy tv_textStyle];
+  tv_fontWeight = [styleCopy tv_fontWeight];
+  [styleCopy tv_fontSize];
   v8 = v7;
-  v9 = [v4 tv_fontStretch];
-  v10 = [objc_opt_class() fontFromTextStyle:v5 fontWeight:v6 fontSize:v9 symbolicTraits:v8];
+  tv_fontStretch = [styleCopy tv_fontStretch];
+  v10 = [objc_opt_class() fontFromTextStyle:tv_textStyle fontWeight:tv_fontWeight fontSize:tv_fontStretch symbolicTraits:v8];
   if (v10)
   {
     goto LABEL_20;
   }
 
-  v11 = [v4 tv_fontFamily];
-  [a1 uiFontWeightFromCSSFontWeight:v6];
+  tv_fontFamily = [styleCopy tv_fontFamily];
+  [self uiFontWeightFromCSSFontWeight:tv_fontWeight];
   v13 = v12;
   v14 = 0x277D74000uLL;
   if (v8 <= 0.0)
@@ -200,12 +200,12 @@ void __47__TVMLUtilities_uiFontWeightFromCSSFontWeight___block_invoke()
     v8 = v15;
   }
 
-  if ([v11 length])
+  if ([tv_fontFamily length])
   {
-    if (![v6 length] || v13 == *MEMORY[0x277D74418])
+    if (![tv_fontWeight length] || v13 == *MEMORY[0x277D74418])
     {
-      v20 = [MEMORY[0x277D74310] fontDescriptorWithName:v11 size:v8];
-      if (v20)
+      fontDescriptor = [MEMORY[0x277D74310] fontDescriptorWithName:tv_fontFamily size:v8];
+      if (fontDescriptor)
       {
         goto LABEL_11;
       }
@@ -221,12 +221,12 @@ void __47__TVMLUtilities_uiFontWeightFromCSSFontWeight___block_invoke()
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
       v44[1] = *MEMORY[0x277D74328];
       v45[0] = v18;
-      v45[1] = v11;
+      v45[1] = tv_fontFamily;
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:2];
-      v20 = [v16 initWithFontAttributes:v19];
+      fontDescriptor = [v16 initWithFontAttributes:v19];
 
       v14 = 0x277D74000;
-      if (v20)
+      if (fontDescriptor)
       {
         goto LABEL_11;
       }
@@ -234,14 +234,14 @@ void __47__TVMLUtilities_uiFontWeightFromCSSFontWeight___block_invoke()
   }
 
   v21 = [*(v14 + 768) systemFontOfSize:v8 weight:v13];
-  v20 = [v21 fontDescriptor];
+  fontDescriptor = [v21 fontDescriptor];
 
 LABEL_11:
-  v22 = [v4 valueForStyle:@"itml-text-caps"];
+  v22 = [styleCopy valueForStyle:@"itml-text-caps"];
   v23 = v22;
   if (v22 && [v22 isEqualToString:@"small"])
   {
-    v33 = [0 fontDescriptor];
+    fontDescriptor2 = [0 fontDescriptor];
     v40 = *MEMORY[0x277D74338];
     v25 = *MEMORY[0x277D74388];
     v37[0] = *MEMORY[0x277D74398];
@@ -256,29 +256,29 @@ LABEL_11:
     v36[0] = &unk_287E47D30;
     v36[1] = &unk_287E47D18;
     [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:2];
-    v26 = v34 = v11;
+    v26 = v34 = tv_fontFamily;
     v39[1] = v26;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:2];
     v41 = v27;
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-    v31 = [v33 fontDescriptorByAddingAttributes:v28];
+    v31 = [fontDescriptor2 fontDescriptorByAddingAttributes:v28];
 
     v14 = 0x277D74000uLL;
-    v11 = v34;
+    tv_fontFamily = v34;
 
-    v20 = v31;
+    fontDescriptor = v31;
   }
 
-  if (v9)
+  if (tv_fontStretch)
   {
-    v29 = [v20 fontDescriptorWithSymbolicTraits:{objc_msgSend(v20, "symbolicTraits") | v9}];
+    v29 = [fontDescriptor fontDescriptorWithSymbolicTraits:{objc_msgSend(fontDescriptor, "symbolicTraits") | tv_fontStretch}];
 
-    v20 = v29;
+    fontDescriptor = v29;
   }
 
-  if (v20)
+  if (fontDescriptor)
   {
-    v10 = [*(v14 + 768) fontWithDescriptor:v20 size:v8];
+    v10 = [*(v14 + 768) fontWithDescriptor:fontDescriptor size:v8];
   }
 
   else
@@ -301,48 +301,48 @@ LABEL_20:
   return [v5 colorWithRed:v2 green:v3 blue:v4 alpha:0.4];
 }
 
-+ (BOOL)_cornerRadiiFromImgTreatmentValue:(id)a3 width:(double)a4 cornerRadii:(TVCornerRadii *)a5 circle:(BOOL *)a6
++ (BOOL)_cornerRadiiFromImgTreatmentValue:(id)value width:(double)width cornerRadii:(TVCornerRadii *)radii circle:(BOOL *)circle
 {
-  v9 = a3;
-  if (![v9 length])
+  valueCopy = value;
+  if (![valueCopy length])
   {
     goto LABEL_16;
   }
 
   v10 = 4.0;
-  if ([v9 isEqualToString:@"small"])
+  if ([valueCopy isEqualToString:@"small"])
   {
     goto LABEL_13;
   }
 
-  if ([v9 isEqualToString:@"corner-small"])
+  if ([valueCopy isEqualToString:@"corner-small"])
   {
     goto LABEL_13;
   }
 
   v10 = 8.0;
-  if ([v9 isEqualToString:@"medium"])
+  if ([valueCopy isEqualToString:@"medium"])
   {
     goto LABEL_13;
   }
 
-  if ([v9 isEqualToString:@"corner-medium"])
+  if ([valueCopy isEqualToString:@"corner-medium"])
   {
     goto LABEL_13;
   }
 
   v10 = 12.0;
-  if ([v9 isEqualToString:@"large"] & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", @"corner-large"))
+  if ([valueCopy isEqualToString:@"large"] & 1) != 0 || (objc_msgSend(valueCopy, "isEqualToString:", @"corner-large"))
   {
     goto LABEL_13;
   }
 
-  if ([v9 isEqualToString:@"circle"])
+  if ([valueCopy isEqualToString:@"circle"])
   {
-    v10 = fabs(a4 * 0.5);
-    if (a6)
+    v10 = fabs(width * 0.5);
+    if (circle)
     {
-      *a6 = 1;
+      *circle = 1;
     }
 
     goto LABEL_13;
@@ -355,16 +355,16 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  [v9 floatValue];
+  [valueCopy floatValue];
   v10 = v11;
 LABEL_13:
-  if (a5)
+  if (radii)
   {
     [TVCornerUtilities radiiFromRadius:v10];
-    a5->topLeft = v12;
-    a5->topRight = v13;
-    a5->bottomLeft = v14;
-    a5->bottomRight = v15;
+    radii->topLeft = v12;
+    radii->topRight = v13;
+    radii->bottomLeft = v14;
+    radii->bottomRight = v15;
   }
 
   v16 = 1;
@@ -373,70 +373,70 @@ LABEL_17:
   return v16;
 }
 
-+ (BOOL)cornerRadiiFromElement:(id)a3 cornerRadii:(TVCornerRadii *)a4 circle:(BOOL *)a5
++ (BOOL)cornerRadiiFromElement:(id)element cornerRadii:(TVCornerRadii *)radii circle:(BOOL *)circle
 {
-  v8 = [a3 element];
-  LOBYTE(a5) = [a1 _cornerRadiiFromElement:v8 cornerRadii:a4 circle:a5];
+  element = [element element];
+  LOBYTE(circle) = [self _cornerRadiiFromElement:element cornerRadii:radii circle:circle];
 
-  return a5;
+  return circle;
 }
 
-+ (BOOL)_cornerRadiiFromImageLayout:(id)a3 cornerRadii:(TVCornerRadii *)a4 circle:(BOOL *)a5
++ (BOOL)_cornerRadiiFromImageLayout:(id)layout cornerRadii:(TVCornerRadii *)radii circle:(BOOL *)circle
 {
-  v8 = a3;
-  v9 = [v8 ikBorderRadius];
-  [v8 decoratorSize];
+  layoutCopy = layout;
+  ikBorderRadius = [layoutCopy ikBorderRadius];
+  [layoutCopy decoratorSize];
   v11 = v10;
-  v12 = [v8 imageTreatment];
+  imageTreatment = [layoutCopy imageTreatment];
 
-  LOBYTE(a5) = [a1 _cornerRadiiWithBorderRadius:v9 cornerRadii:a4 imageWidth:v12 imageTreatmentValue:a5 circle:v11];
-  return a5;
+  LOBYTE(circle) = [self _cornerRadiiWithBorderRadius:ikBorderRadius cornerRadii:radii imageWidth:imageTreatment imageTreatmentValue:circle circle:v11];
+  return circle;
 }
 
-+ (BOOL)_cornerRadiiFromElement:(id)a3 cornerRadii:(TVCornerRadii *)a4 circle:(BOOL *)a5
++ (BOOL)_cornerRadiiFromElement:(id)element cornerRadii:(TVCornerRadii *)radii circle:(BOOL *)circle
 {
-  v8 = a3;
-  v9 = [v8 style];
-  v10 = [v9 tv_borderRadius];
+  elementCopy = element;
+  style = [elementCopy style];
+  tv_borderRadius = [style tv_borderRadius];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 tv_imageScaleToSize];
+    [elementCopy tv_imageScaleToSize];
     v12 = v11;
   }
 
   else
   {
-    v13 = [v8 style];
-    [v13 tv_width];
+    style2 = [elementCopy style];
+    [style2 tv_width];
     v12 = v14;
   }
 
-  v15 = [v8 style];
-  v16 = [v15 tv_imageTreatment];
+  style3 = [elementCopy style];
+  tv_imageTreatment = [style3 tv_imageTreatment];
 
-  v17 = [a1 _cornerRadiiWithBorderRadius:v10 cornerRadii:a4 imageWidth:v16 imageTreatmentValue:a5 circle:v12];
+  v17 = [self _cornerRadiiWithBorderRadius:tv_borderRadius cornerRadii:radii imageWidth:tv_imageTreatment imageTreatmentValue:circle circle:v12];
   return v17;
 }
 
-+ (double)focusedSizeIncreaseForSize:(CGSize)a3 upscaleFactor:(double)a4
++ (double)focusedSizeIncreaseForSize:(CGSize)size upscaleFactor:(double)factor
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = objc_opt_class();
 
-  [v7 focusedSizeIncreaseForSize:0 upscaleFactor:width useInSearchPartial:{height, a4}];
+  [v7 focusedSizeIncreaseForSize:0 upscaleFactor:width useInSearchPartial:{height, factor}];
   return result;
 }
 
-+ (double)focusedSizeIncreaseForSize:(CGSize)a3 upscaleFactor:(double)a4 useInSearchPartial:(BOOL)a5
++ (double)focusedSizeIncreaseForSize:(CGSize)size upscaleFactor:(double)factor useInSearchPartial:(BOOL)partial
 {
-  v5 = a5;
-  height = a3.height;
-  width = a3.width;
+  partialCopy = partial;
+  height = size.height;
+  width = size.width;
   v9 = +[TVMLUtilities _isSolariumMetricsEnabled];
-  v10 = width < 180.0 || v5;
+  v10 = width < 180.0 || partialCopy;
   result = 70.0;
   if (v10)
   {
@@ -448,8 +448,8 @@ LABEL_17:
     result = 40.0;
   }
 
-  v12 = floor(fmax(width, height) * (a4 + -1.0)) + result;
-  if (a4 > 1.0)
+  v12 = floor(fmax(width, height) * (factor + -1.0)) + result;
+  if (factor > 1.0)
   {
     return v12;
   }
@@ -457,35 +457,35 @@ LABEL_17:
   return result;
 }
 
-+ (CGRect)centerRect:(CGRect)result inRect:(CGRect)a4
++ (CGRect)centerRect:(CGRect)result inRect:(CGRect)rect
 {
-  v4 = round(a4.origin.x + (a4.size.width - result.size.width) * 0.5);
-  v5 = round(a4.origin.y + (a4.size.height - result.size.height) * 0.5);
+  v4 = round(rect.origin.x + (rect.size.width - result.size.width) * 0.5);
+  v5 = round(rect.origin.y + (rect.size.height - result.size.height) * 0.5);
   result.origin.y = v5;
   result.origin.x = v4;
   return result;
 }
 
-+ (void)getValuesFromTransform:(CGAffineTransform *)a3 translation:(CGPoint *)a4 rotation:(CGPoint *)a5
++ (void)getValuesFromTransform:(CGAffineTransform *)transform translation:(CGPoint *)translation rotation:(CGPoint *)rotation
 {
-  if (a4)
+  if (translation)
   {
-    *a4 = *&a3->tx;
+    *translation = *&transform->tx;
   }
 
-  if (a5)
+  if (rotation)
   {
-    v6 = atan2(a3->b, a3->d);
-    a5->x = v6;
-    a5->y = v6;
+    v6 = atan2(transform->b, transform->d);
+    rotation->x = v6;
+    rotation->y = v6;
   }
 }
 
-+ (id)indexPathForFirstItemAttributeValue:(id)a3
++ (id)indexPathForFirstItemAttributeValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    v3 = [a3 componentsSeparatedByString:{@", "}];
+    v3 = [value componentsSeparatedByString:{@", "}];
     v4 = [v3 count];
     v5 = v4;
     if (v4)
@@ -526,12 +526,12 @@ uint64_t __53__TVMLUtilities_indexPathForFirstItemAttributeValue___block_invoke(
   return result;
 }
 
-+ (id)rowSpacingMetricsForRowMetrics:(id)a3 forShowcase:(BOOL)a4
++ (id)rowSpacingMetricsForRowMetrics:(id)metrics forShowcase:(BOOL)showcase
 {
-  v4 = a3;
-  if ([v4 count] >= 2)
+  metricsCopy = metrics;
+  if ([metricsCopy count] >= 2)
   {
-    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count") - 1}];
+    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(metricsCopy, "count") - 1}];
     v23[0] = 0;
     v23[1] = v23;
     v23[2] = 0x7010000000;
@@ -556,7 +556,7 @@ uint64_t __53__TVMLUtilities_indexPathForFirstItemAttributeValue___block_invoke(
     v12 = &unk_279D6E2D0;
     v15 = v23;
     v16 = v17;
-    v13 = v4;
+    v13 = metricsCopy;
     v7 = v6;
     v14 = v7;
     [v13 enumerateObjectsUsingBlock:&v9];
@@ -644,16 +644,16 @@ __n128 __60__TVMLUtilities_rowSpacingMetricsForRowMetrics_forShowcase___block_in
   return result;
 }
 
-+ (id)imageWithRadialGradientOverlayFromImage:(id)a3
++ (id)imageWithRadialGradientOverlayFromImage:(id)image
 {
   v3 = MEMORY[0x277D759A0];
-  v4 = a3;
-  v5 = [v3 mainScreen];
-  [v5 bounds];
+  imageCopy = image;
+  mainScreen = [v3 mainScreen];
+  [mainScreen bounds];
   v7 = v6;
   v9 = v8;
 
-  [v4 size];
+  [imageCopy size];
   v11 = v10;
   v13 = v12;
   v14 = MEMORY[0x277D755B8];
@@ -674,8 +674,8 @@ __n128 __60__TVMLUtilities_rowSpacingMetricsForRowMetrics_forShowcase___block_in
   v32 = CGRectApplyAffineTransform(v31, &v28);
   width = v32.size.width;
   height = v32.size.height;
-  v20 = [MEMORY[0x277D759A0] mainScreen];
-  [v20 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   v22 = v21;
   v30.width = v7;
   v30.height = v9;
@@ -685,7 +685,7 @@ __n128 __60__TVMLUtilities_rowSpacingMetricsForRowMetrics_forShowcase___block_in
   CGContextSaveGState(CurrentContext);
   v24 = round((v7 - width) * 0.5 + *MEMORY[0x277CBF348]);
   v25 = round((v9 - height) * 0.5 + *(MEMORY[0x277CBF348] + 8));
-  [v4 drawInRect:17 blendMode:v24 alpha:{v25, width, height, 1.0}];
+  [imageCopy drawInRect:17 blendMode:v24 alpha:{v25, width, height, 1.0}];
 
   [v16 drawInRect:0 blendMode:v24 alpha:{v25, width, height, 1.0}];
   CGContextRestoreGState(CurrentContext);
@@ -695,37 +695,37 @@ __n128 __60__TVMLUtilities_rowSpacingMetricsForRowMetrics_forShowcase___block_in
   return v26;
 }
 
-+ (id)placeholderImageForViewElement:(id)a3
++ (id)placeholderImageForViewElement:(id)element
 {
-  v4 = [a3 element];
-  v5 = [a1 _placeholderImageForViewElement:v4];
+  element = [element element];
+  v5 = [self _placeholderImageForViewElement:element];
 
   return v5;
 }
 
-+ (id)placeholderImageForViewElement:(id)a3 withCornerRadii:(TVCornerRadii)a4 andScaledSize:(CGSize)a5
++ (id)placeholderImageForViewElement:(id)element withCornerRadii:(TVCornerRadii)radii andScaledSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  bottomRight = a4.bottomRight;
-  bottomLeft = a4.bottomLeft;
-  topRight = a4.topRight;
-  topLeft = a4.topLeft;
-  v12 = [a3 element];
-  v13 = [a1 _placeholderImageForViewElement:v12 withCornerRadii:topLeft andScaledSize:{topRight, bottomLeft, bottomRight, width, height}];
+  height = size.height;
+  width = size.width;
+  bottomRight = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  topRight = radii.topRight;
+  topLeft = radii.topLeft;
+  element = [element element];
+  v13 = [self _placeholderImageForViewElement:element withCornerRadii:topLeft andScaledSize:{topRight, bottomLeft, bottomRight, width, height}];
 
   return v13;
 }
 
-+ (CGPath)shadowPathWithCornerRadii:(TVCornerRadii)a3 andScaledSize:(CGSize)a4
++ (CGPath)shadowPathWithCornerRadii:(TVCornerRadii)radii andScaledSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  bottomRight = a3.bottomRight;
-  bottomLeft = a3.bottomLeft;
-  topRight = a3.topRight;
-  topLeft = a3.topLeft;
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"{%.1lf, %.1lf}[%.1f %.1f %.1f %.1f]", *&a4.width, *&a4.height, *&a3.topLeft, *&a3.topRight, *&a3.bottomRight, *&a3.bottomLeft];
+  height = size.height;
+  width = size.width;
+  bottomRight = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  topRight = radii.topRight;
+  topLeft = radii.topLeft;
+  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"{%.1lf, %.1lf}[%.1f %.1f %.1f %.1f]", *&size.width, *&size.height, *&radii.topLeft, *&radii.topRight, *&radii.bottomRight, *&radii.bottomLeft];
   Mutable = [shadowPathWithCornerRadii_andScaledSize__pathsByShape objectForKeyedSubscript:v10];
 
   if (!Mutable)
@@ -773,20 +773,20 @@ __n128 __60__TVMLUtilities_rowSpacingMetricsForRowMetrics_forShowcase___block_in
   return Mutable;
 }
 
-+ (int64_t)semanticContentAttributeForTemplateElement:(id)a3
++ (int64_t)semanticContentAttributeForTemplateElement:(id)element
 {
-  v3 = [a3 attributes];
-  v4 = [v3 objectForKey:@"layoutDirection"];
-  v5 = [v4 lowercaseString];
+  attributes = [element attributes];
+  v4 = [attributes objectForKey:@"layoutDirection"];
+  lowercaseString = [v4 lowercaseString];
 
-  if ([v5 length])
+  if ([lowercaseString length])
   {
-    if ([v5 isEqualToString:@"ltr"])
+    if ([lowercaseString isEqualToString:@"ltr"])
     {
       v6 = 3;
     }
 
-    else if ([v5 isEqualToString:@"rtl"])
+    else if ([lowercaseString isEqualToString:@"rtl"])
     {
       v6 = 4;
     }
@@ -805,117 +805,117 @@ __n128 __60__TVMLUtilities_rowSpacingMetricsForRowMetrics_forShowcase___block_in
   return v6;
 }
 
-+ (int64_t)_interfaceStyleForElement:(id)a3
++ (int64_t)_interfaceStyleForElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 appDocument];
-  v6 = [v5 appContext];
-  v7 = [v6 app];
+  elementCopy = element;
+  appDocument = [elementCopy appDocument];
+  appContext = [appDocument appContext];
+  v7 = [appContext app];
   if ([v7 conformsToProtocol:&unk_287E5ED28])
   {
-    v8 = [v4 appDocument];
-    v9 = [v8 appContext];
-    v10 = [v9 app];
-    v11 = [v10 keyTraitEnvironment];
+    appDocument2 = [elementCopy appDocument];
+    appContext2 = [appDocument2 appContext];
+    v10 = [appContext2 app];
+    keyTraitEnvironment = [v10 keyTraitEnvironment];
   }
 
   else
   {
-    v11 = 0;
+    keyTraitEnvironment = 0;
   }
 
-  v12 = [v11 traitCollection];
-  if (v12)
+  traitCollection = [keyTraitEnvironment traitCollection];
+  if (traitCollection)
   {
-    v13 = [v11 traitCollection];
-    v14 = [v13 userInterfaceStyle];
+    traitCollection2 = [keyTraitEnvironment traitCollection];
+    userInterfaceStyle = [traitCollection2 userInterfaceStyle];
   }
 
   else
   {
-    v14 = 0;
+    userInterfaceStyle = 0;
   }
 
-  v15 = [a1 _overrideInterfaceStyleForElement:v4];
+  v15 = [self _overrideInterfaceStyleForElement:elementCopy];
   if (v15)
   {
-    v16 = v15;
+    userInterfaceStyle2 = v15;
   }
 
   else
   {
-    v16 = v14;
+    userInterfaceStyle2 = userInterfaceStyle;
   }
 
-  if (!v16)
+  if (!userInterfaceStyle2)
   {
-    v17 = [MEMORY[0x277D759A0] mainScreen];
-    v18 = [v17 traitCollection];
-    v16 = [v18 userInterfaceStyle];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    traitCollection3 = [mainScreen traitCollection];
+    userInterfaceStyle2 = [traitCollection3 userInterfaceStyle];
   }
 
-  return v16;
+  return userInterfaceStyle2;
 }
 
-+ (int64_t)_overrideInterfaceStyleForElement:(id)a3
++ (int64_t)_overrideInterfaceStyleForElement:(id)element
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  elementCopy = element;
+  v4 = elementCopy;
+  if (!elementCopy)
   {
 LABEL_11:
     v13 = 0;
     goto LABEL_18;
   }
 
-  v5 = v3;
+  v5 = elementCopy;
   while (1)
   {
-    v6 = [v5 elementType];
-    v7 = [v5 parent];
-    v8 = v7;
-    if (v6 == 35)
+    elementType = [v5 elementType];
+    parent = [v5 parent];
+    attributes2 = parent;
+    if (elementType == 35)
     {
-      v9 = [v7 attributes];
-      v10 = [v9 objectForKeyedSubscript:@"theme"];
-      v11 = [v10 lowercaseString];
+      attributes = [parent attributes];
+      v10 = [attributes objectForKeyedSubscript:@"theme"];
+      lowercaseString = [v10 lowercaseString];
     }
 
     else
     {
 
-      if (v8)
+      if (attributes2)
       {
-        v11 = 0;
+        lowercaseString = 0;
         goto LABEL_9;
       }
 
-      v8 = [v5 attributes];
-      v9 = [v8 objectForKeyedSubscript:@"theme"];
-      v11 = [v9 lowercaseString];
+      attributes2 = [v5 attributes];
+      attributes = [attributes2 objectForKeyedSubscript:@"theme"];
+      lowercaseString = [attributes lowercaseString];
     }
 
 LABEL_9:
-    if ([v11 length])
+    if ([lowercaseString length])
     {
       break;
     }
 
-    v12 = [v5 parent];
+    parent2 = [v5 parent];
 
-    v5 = v12;
-    if (!v12)
+    v5 = parent2;
+    if (!parent2)
     {
       goto LABEL_11;
     }
   }
 
-  if ([v11 isEqualToString:@"light"])
+  if ([lowercaseString isEqualToString:@"light"])
   {
     v13 = 1;
   }
 
-  else if ([v11 isEqualToString:@"dark"])
+  else if ([lowercaseString isEqualToString:@"dark"])
   {
     v13 = 2;
   }
@@ -929,15 +929,15 @@ LABEL_18:
   return v13;
 }
 
-+ (id)_bgImageElementForProductTemplate:(id)a3
++ (id)_bgImageElementForProductTemplate:(id)template
 {
   v50 = *MEMORY[0x277D85DE8];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v3 = [a3 unfilteredChildren];
-  v4 = [v3 countByEnumeratingWithState:&v42 objects:v49 count:16];
+  unfilteredChildren = [template unfilteredChildren];
+  v4 = [unfilteredChildren countByEnumeratingWithState:&v42 objects:v49 count:16];
   if (!v4)
   {
     goto LABEL_48;
@@ -946,7 +946,7 @@ LABEL_18:
   v5 = v4;
   v6 = *v43;
   v27 = *v43;
-  v28 = v3;
+  v28 = unfilteredChildren;
   do
   {
     v7 = 0;
@@ -955,7 +955,7 @@ LABEL_18:
     {
       if (*v43 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(unfilteredChildren);
       }
 
       v8 = *(*(&v42 + 1) + 8 * v7);
@@ -965,8 +965,8 @@ LABEL_18:
         v41 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v9 = [v8 unfilteredChildren];
-        v10 = [v9 countByEnumeratingWithState:&v38 objects:v48 count:16];
+        unfilteredChildren2 = [v8 unfilteredChildren];
+        v10 = [unfilteredChildren2 countByEnumeratingWithState:&v38 objects:v48 count:16];
         if (!v10)
         {
           goto LABEL_42;
@@ -980,7 +980,7 @@ LABEL_9:
         {
           if (*v39 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(unfilteredChildren2);
           }
 
           v14 = *(*(&v38 + 1) + 8 * v13);
@@ -991,7 +991,7 @@ LABEL_9:
 
           if (v11 == ++v13)
           {
-            v11 = [v9 countByEnumeratingWithState:&v38 objects:v48 count:16];
+            v11 = [unfilteredChildren2 countByEnumeratingWithState:&v38 objects:v48 count:16];
             if (v11)
             {
               goto LABEL_9;
@@ -1016,8 +1016,8 @@ LABEL_44:
         v37 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v9 = [v8 unfilteredChildren];
-        v15 = [v9 countByEnumeratingWithState:&v34 objects:v47 count:16];
+        unfilteredChildren2 = [v8 unfilteredChildren];
+        v15 = [unfilteredChildren2 countByEnumeratingWithState:&v34 objects:v47 count:16];
         if (!v15)
         {
 LABEL_42:
@@ -1033,14 +1033,14 @@ LABEL_42:
           {
             if (*v35 != v17)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(unfilteredChildren2);
             }
 
             v14 = *(*(&v34 + 1) + 8 * i);
             if ([v14 tv_elementType] == 16 && objc_msgSend(v14, "tv_imageType") == 3)
             {
               v6 = v27;
-              v3 = v28;
+              unfilteredChildren = v28;
               v5 = v29;
               goto LABEL_44;
             }
@@ -1051,8 +1051,8 @@ LABEL_42:
               v33 = 0u;
               v30 = 0u;
               v31 = 0u;
-              v19 = [v14 unfilteredChildren];
-              v20 = [v19 countByEnumeratingWithState:&v30 objects:v46 count:16];
+              unfilteredChildren3 = [v14 unfilteredChildren];
+              v20 = [unfilteredChildren3 countByEnumeratingWithState:&v30 objects:v46 count:16];
               if (v20)
               {
                 v21 = v20;
@@ -1063,7 +1063,7 @@ LABEL_29:
                 {
                   if (*v31 != v22)
                   {
-                    objc_enumerationMutation(v19);
+                    objc_enumerationMutation(unfilteredChildren3);
                   }
 
                   v24 = *(*(&v30 + 1) + 8 * v23);
@@ -1074,7 +1074,7 @@ LABEL_29:
 
                   if (v21 == ++v23)
                   {
-                    v21 = [v19 countByEnumeratingWithState:&v30 objects:v46 count:16];
+                    v21 = [unfilteredChildren3 countByEnumeratingWithState:&v30 objects:v46 count:16];
                     if (v21)
                     {
                       goto LABEL_29;
@@ -1099,7 +1099,7 @@ LABEL_36:
             }
           }
 
-          v16 = [v9 countByEnumeratingWithState:&v34 objects:v47 count:16];
+          v16 = [unfilteredChildren2 countByEnumeratingWithState:&v34 objects:v47 count:16];
           if (v16)
           {
             continue;
@@ -1111,7 +1111,7 @@ LABEL_36:
         v25 = 0;
 LABEL_41:
         v6 = v27;
-        v3 = v28;
+        unfilteredChildren = v28;
         v5 = v29;
       }
 
@@ -1127,7 +1127,7 @@ LABEL_46:
     }
 
     while (v7 != v5);
-    v5 = [v3 countByEnumeratingWithState:&v42 objects:v49 count:16];
+    v5 = [unfilteredChildren countByEnumeratingWithState:&v42 objects:v49 count:16];
   }
 
   while (v5);
@@ -1138,10 +1138,10 @@ LABEL_49:
   return v25;
 }
 
-+ (int64_t)semanticAlignmentForAlignment:(int64_t)a3 semanticContentAttribute:(int64_t)a4
++ (int64_t)semanticAlignmentForAlignment:(int64_t)alignment semanticContentAttribute:(int64_t)attribute
 {
-  v5 = [MEMORY[0x277D75D18] userInterfaceLayoutDirectionForSemanticContentAttribute:a4];
-  if (a3 == 5)
+  v5 = [MEMORY[0x277D75D18] userInterfaceLayoutDirectionForSemanticContentAttribute:attribute];
+  if (alignment == 5)
   {
     if (v5 == 1)
     {
@@ -1154,7 +1154,7 @@ LABEL_49:
     }
   }
 
-  else if (a3 == 4)
+  else if (alignment == 4)
   {
     if (v5 == 1)
     {
@@ -1167,12 +1167,12 @@ LABEL_49:
     }
   }
 
-  return a3;
+  return alignment;
 }
 
-+ (int64_t)semanticPositionForPosition:(int64_t)a3 semanticContentAttribute:(int64_t)a4
++ (int64_t)semanticPositionForPosition:(int64_t)position semanticContentAttribute:(int64_t)attribute
 {
-  v5 = [MEMORY[0x277D75D18] userInterfaceLayoutDirectionForSemanticContentAttribute:a4];
+  v5 = [MEMORY[0x277D75D18] userInterfaceLayoutDirectionForSemanticContentAttribute:attribute];
   v6 = 6;
   if (v5 != 1)
   {
@@ -1185,23 +1185,23 @@ LABEL_49:
     v7 = 9;
   }
 
-  v8 = 8;
+  positionCopy = 8;
   if (v5 != 1)
   {
-    v8 = 9;
+    positionCopy = 9;
   }
 
-  if (a3 != 17)
+  if (position != 17)
   {
-    v8 = a3;
+    positionCopy = position;
   }
 
-  if (a3 != 16)
+  if (position != 16)
   {
-    v7 = v8;
+    v7 = positionCopy;
   }
 
-  if (a3 != 15)
+  if (position != 15)
   {
     v6 = v7;
   }
@@ -1218,28 +1218,28 @@ LABEL_49:
     v10 = 5;
   }
 
-  v11 = 6;
+  positionCopy2 = 6;
   if (v5 == 1)
   {
-    v11 = 7;
+    positionCopy2 = 7;
   }
 
-  if (a3 != 14)
+  if (position != 14)
   {
-    v11 = a3;
+    positionCopy2 = position;
   }
 
-  if (a3 != 13)
+  if (position != 13)
   {
-    v10 = v11;
+    v10 = positionCopy2;
   }
 
-  if (a3 != 12)
+  if (position != 12)
   {
     v9 = v10;
   }
 
-  if (a3 <= 14)
+  if (position <= 14)
   {
     return v9;
   }
@@ -1250,35 +1250,35 @@ LABEL_49:
   }
 }
 
-+ (int64_t)contentModeForPosition:(int64_t)a3 defaultMode:(int64_t)a4
++ (int64_t)contentModeForPosition:(int64_t)position defaultMode:(int64_t)mode
 {
-  if ((a3 - 1) >= 9)
+  if ((position - 1) >= 9)
   {
-    return a4;
+    return mode;
   }
 
   else
   {
-    return a3 + 3;
+    return position + 3;
   }
 }
 
-+ (BOOL)_cornerRadiiWithBorderRadius:(id)a3 cornerRadii:(TVCornerRadii *)a4 imageWidth:(double)a5 imageTreatmentValue:(id)a6 circle:(BOOL *)a7
++ (BOOL)_cornerRadiiWithBorderRadius:(id)radius cornerRadii:(TVCornerRadii *)radii imageWidth:(double)width imageTreatmentValue:(id)value circle:(BOOL *)circle
 {
-  v12 = a3;
+  radiusCopy = radius;
   v25 = 0;
   v23 = 0u;
   v24 = 0u;
-  if (![a1 _cornerRadiiFromImgTreatmentValue:a6 width:&v23 cornerRadii:&v25 circle:a5] || v12 && !v25)
+  if (![self _cornerRadiiFromImgTreatmentValue:value width:&v23 cornerRadii:&v25 circle:width] || radiusCopy && !v25)
   {
-    v13 = [v12 namedStyle];
+    namedStyle = [radiusCopy namedStyle];
 
-    if (v13)
+    if (namedStyle)
     {
-      v14 = [v12 namedStyle];
-      v15 = [a1 _cornerRadiiFromImgTreatmentValue:v14 width:&v23 cornerRadii:&v25 circle:a5];
+      namedStyle2 = [radiusCopy namedStyle];
+      v15 = [self _cornerRadiiFromImgTreatmentValue:namedStyle2 width:&v23 cornerRadii:&v25 circle:width];
 
-      if (!a4)
+      if (!radii)
       {
         goto LABEL_12;
       }
@@ -1287,20 +1287,20 @@ LABEL_10:
       if (v15)
       {
         v20 = v24;
-        *&a4->topLeft = v23;
-        *&a4->bottomLeft = v20;
+        *&radii->topLeft = v23;
+        *&radii->bottomLeft = v20;
       }
 
       goto LABEL_12;
     }
 
-    if (!v12)
+    if (!radiusCopy)
     {
       LOBYTE(v15) = 0;
       goto LABEL_16;
     }
 
-    [v12 cornerRadiiValue];
+    [radiusCopy cornerRadiiValue];
     *&v23 = v16;
     *(&v23 + 1) = v17;
     *&v24 = v18;
@@ -1308,21 +1308,21 @@ LABEL_10:
   }
 
   v15 = 1;
-  if (a4)
+  if (radii)
   {
     goto LABEL_10;
   }
 
 LABEL_12:
   v21 = v15 ^ 1;
-  if (!a7)
+  if (!circle)
   {
     v21 = 1;
   }
 
   if ((v21 & 1) == 0)
   {
-    *a7 = v25;
+    *circle = v25;
     LOBYTE(v15) = 1;
   }
 
@@ -1331,64 +1331,64 @@ LABEL_16:
   return v15;
 }
 
-+ (id)_placeholderImageForValue:(id)a3 userInterfaceStyle:(int64_t)a4 withCornerRadii:(TVCornerRadii)a5 andScaledSize:(CGSize)a6
++ (id)_placeholderImageForValue:(id)value userInterfaceStyle:(int64_t)style withCornerRadii:(TVCornerRadii)radii andScaledSize:(CGSize)size
 {
-  v7 = [a3 lowercaseString];
-  if ([v7 isEqualToString:@"movie"])
+  lowercaseString = [value lowercaseString];
+  if ([lowercaseString isEqualToString:@"movie"])
   {
     v8 = @"PreloadAsset-Movie";
     v9 = @"PreloadAsset-Dark-Movie";
   }
 
-  else if ([v7 isEqualToString:@"tv"])
+  else if ([lowercaseString isEqualToString:@"tv"])
   {
     v8 = @"PreloadAsset-TV";
     v9 = @"PreloadAsset-Dark-TV";
   }
 
-  else if ([v7 isEqualToString:@"music"])
+  else if ([lowercaseString isEqualToString:@"music"])
   {
     v8 = @"PreloadAsset-Music";
     v9 = @"PreloadAsset-Dark-Music";
   }
 
-  else if ([v7 isEqualToString:@"podcast"])
+  else if ([lowercaseString isEqualToString:@"podcast"])
   {
     v8 = @"PreloadAsset-Podcast";
     v9 = @"PreloadAsset-Dark-Podcast";
   }
 
-  else if ([v7 isEqualToString:@"icloud"])
+  else if ([lowercaseString isEqualToString:@"icloud"])
   {
     v8 = @"PreloadAsset-iCloud";
     v9 = @"PreloadAsset-Dark-iCloud";
   }
 
-  else if ([v7 isEqualToString:@"monogram"])
+  else if ([lowercaseString isEqualToString:@"monogram"])
   {
     v8 = @"PreloadAsset-Monogram";
     v9 = @"PreloadAsset-Dark-Monogram";
   }
 
-  else if ([v7 isEqualToString:@"flowcase"])
+  else if ([lowercaseString isEqualToString:@"flowcase"])
   {
     v8 = @"PreloadAsset-GenericFlowcase";
     v9 = @"PreloadAsset-Dark-GenericFlowcase";
   }
 
-  else if ([v7 isEqualToString:@"16x9"])
+  else if ([lowercaseString isEqualToString:@"16x9"])
   {
     v8 = @"PreloadAsset-Generic16x9";
     v9 = @"PreloadAsset-Dark-Generic16x9";
   }
 
-  else if ([v7 isEqualToString:@"tv16x9"])
+  else if ([lowercaseString isEqualToString:@"tv16x9"])
   {
     v8 = @"PreloadAsset-TV16x9";
     v9 = @"PreloadAsset-Dark-TV16x9";
   }
 
-  else if ([v7 isEqualToString:@"movie16x9"])
+  else if ([lowercaseString isEqualToString:@"movie16x9"])
   {
     v8 = @"PreloadAsset-Movie16x9";
     v9 = @"PreloadAsset-Dark-Movie16x9";
@@ -1396,7 +1396,7 @@ LABEL_16:
 
   else
   {
-    if (![v7 isEqualToString:@"generic"])
+    if (![lowercaseString isEqualToString:@"generic"])
     {
       v12 = 0;
       goto LABEL_34;
@@ -1406,7 +1406,7 @@ LABEL_16:
     v9 = @"PreloadAsset-Dark-Generic";
   }
 
-  if (a4 == 2)
+  if (style == 2)
   {
     v8 = v9;
   }
@@ -1458,9 +1458,9 @@ uint64_t __92__TVMLUtilities__placeholderImageForValue_userInterfaceStyle_withCo
   return [v2 setCountLimit:15];
 }
 
-+ (id)_defaultPlaceholderImageForUserInterfaceStyle:(int64_t)a3
++ (id)_defaultPlaceholderImageForUserInterfaceStyle:(int64_t)style
 {
-  if (a3 == 2)
+  if (style == 2)
   {
     if (_defaultPlaceholderImageForUserInterfaceStyle____once != -1)
     {
@@ -1525,14 +1525,14 @@ void __63__TVMLUtilities__defaultPlaceholderImageForUserInterfaceStyle___block_i
   UIGraphicsEndImageContext();
 }
 
-+ (id)_defaultPlaceholderImageForUserInterfaceStyle:(int64_t)a3 withCornerRadii:(TVCornerRadii)a4 andSize:(CGSize)a5
++ (id)_defaultPlaceholderImageForUserInterfaceStyle:(int64_t)style withCornerRadii:(TVCornerRadii)radii andSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  bottomRight = a4.bottomRight;
-  bottomLeft = a4.bottomLeft;
-  topRight = a4.topRight;
-  topLeft = a4.topLeft;
+  height = size.height;
+  width = size.width;
+  bottomRight = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  topRight = radii.topRight;
+  topLeft = radii.topLeft;
   if (_defaultPlaceholderImageForUserInterfaceStyle_withCornerRadii_andSize____once != -1)
   {
     +[TVMLUtilities _defaultPlaceholderImageForUserInterfaceStyle:withCornerRadii:andSize:];
@@ -1543,18 +1543,18 @@ void __63__TVMLUtilities__defaultPlaceholderImageForUserInterfaceStyle___block_i
   v25.height = height;
   v13 = NSStringFromCGSize(v25);
   v14 = v13;
-  if (a3 != 2)
+  if (style != 2)
   {
     v15 = [v12 stringWithFormat:@"placeholder-light-%@-%0.2f-%0.2f-%0.2f-%0.2f", v13, *&topRight, *&bottomRight, *&bottomLeft, *&topLeft];
 
     v16 = [_defaultPlaceholderImageForUserInterfaceStyle_withCornerRadii_andSize____placeholderRounedImageCache objectForKey:v15];
     if (!v16)
     {
-      v17 = [TVCornerUtilities createPathForRadii:topLeft inRect:topRight, bottomLeft, bottomRight, 0.0, 0.0, width, height];
+      height = [TVCornerUtilities createPathForRadii:topLeft inRect:topRight, bottomLeft, bottomRight, 0.0, 0.0, width, height];
       v27.width = width;
       v27.height = height;
       UIGraphicsBeginImageContext(v27);
-      v18 = [MEMORY[0x277D75208] bezierPathWithCGPath:v17];
+      v18 = [MEMORY[0x277D75208] bezierPathWithCGPath:height];
       v19 = MEMORY[0x277D75348];
       v20 = 0.921568627;
       goto LABEL_9;
@@ -1573,11 +1573,11 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v17 = [TVCornerUtilities createPathForRadii:topLeft inRect:topRight, bottomLeft, bottomRight, 0.0, 0.0, width, height];
+  height = [TVCornerUtilities createPathForRadii:topLeft inRect:topRight, bottomLeft, bottomRight, 0.0, 0.0, width, height];
   v26.width = width;
   v26.height = height;
   UIGraphicsBeginImageContext(v26);
-  v18 = [MEMORY[0x277D75208] bezierPathWithCGPath:v17];
+  v18 = [MEMORY[0x277D75208] bezierPathWithCGPath:height];
   v19 = MEMORY[0x277D75348];
   v20 = 0.11372549;
 LABEL_9:
@@ -1587,7 +1587,7 @@ LABEL_9:
   [v18 fillWithBlendMode:17 alpha:1.0];
   v21 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  CGPathRelease(v17);
+  CGPathRelease(height);
   [_defaultPlaceholderImageForUserInterfaceStyle_withCornerRadii_andSize____placeholderRounedImageCache setObject:v21 forKey:v15];
 
 LABEL_10:
@@ -1606,18 +1606,18 @@ uint64_t __87__TVMLUtilities__defaultPlaceholderImageForUserInterfaceStyle_withC
   return [v2 setCountLimit:8];
 }
 
-+ (id)_placeholderImageForViewElement:(id)a3 imageLayout:(id)a4
++ (id)_placeholderImageForViewElement:(id)element imageLayout:(id)layout
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 style];
-  v9 = [v8 valueForStyle:@"tv-placeholder"];
+  layoutCopy = layout;
+  elementCopy = element;
+  style = [elementCopy style];
+  v9 = [style valueForStyle:@"tv-placeholder"];
 
-  v10 = [v7 appDocument];
+  appDocument = [elementCopy appDocument];
 
-  v11 = [v10 templateElement];
+  templateElement = [appDocument templateElement];
 
-  v12 = [a1 interfaceStyleForTemplateElement:v11];
+  v12 = [self interfaceStyleForTemplateElement:templateElement];
   if ([v9 isEqualToString:@"none"])
   {
     v13 = 0;
@@ -1626,7 +1626,7 @@ uint64_t __87__TVMLUtilities__defaultPlaceholderImageForUserInterfaceStyle_withC
 
   if ([v9 length])
   {
-    v13 = [a1 _placeholderImageForValue:v9 userInterfaceStyle:v12];
+    v13 = [self _placeholderImageForValue:v9 userInterfaceStyle:v12];
     if (v13)
     {
       goto LABEL_13;
@@ -1635,7 +1635,7 @@ uint64_t __87__TVMLUtilities__defaultPlaceholderImageForUserInterfaceStyle_withC
     v14 = +[TVInterfaceFactory sharedInterfaceFactory];
     v13 = [v14 imageForResource:v9];
 
-    if (!v6)
+    if (!layoutCopy)
     {
 LABEL_11:
       if (v13)
@@ -1650,7 +1650,7 @@ LABEL_11:
   else
   {
     v13 = 0;
-    if (!v6)
+    if (!layoutCopy)
     {
       goto LABEL_11;
     }
@@ -1661,41 +1661,41 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v15 = [v6 placeholderArtworkName];
+  placeholderArtworkName = [layoutCopy placeholderArtworkName];
 
-  if (v15)
+  if (placeholderArtworkName)
   {
-    v16 = [v6 placeholderArtworkName];
+    placeholderArtworkName2 = [layoutCopy placeholderArtworkName];
     v17 = +[TVInterfaceFactory sharedInterfaceFactory];
-    v13 = [v17 imageForResource:v16];
+    v13 = [v17 imageForResource:placeholderArtworkName2];
 
     goto LABEL_11;
   }
 
 LABEL_12:
-  v13 = [a1 _defaultPlaceholderImageForUserInterfaceStyle:v12];
+  v13 = [self _defaultPlaceholderImageForUserInterfaceStyle:v12];
 LABEL_13:
 
   return v13;
 }
 
-+ (id)_placeholderImageForViewElement:(id)a3 withImageLayout:(id)a4 cornerRadii:(TVCornerRadii)a5 andScaledSize:(CGSize)a6
++ (id)_placeholderImageForViewElement:(id)element withImageLayout:(id)layout cornerRadii:(TVCornerRadii)radii andScaledSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  bottomRight = a5.bottomRight;
-  bottomLeft = a5.bottomLeft;
-  topRight = a5.topRight;
-  topLeft = a5.topLeft;
-  v14 = a3;
-  v15 = a4;
-  v16 = [v14 style];
-  v17 = [v16 valueForStyle:@"tv-placeholder"];
+  height = size.height;
+  width = size.width;
+  bottomRight = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  topRight = radii.topRight;
+  topLeft = radii.topLeft;
+  elementCopy = element;
+  layoutCopy = layout;
+  style = [elementCopy style];
+  v17 = [style valueForStyle:@"tv-placeholder"];
 
-  v18 = [v14 appDocument];
-  v19 = [v18 templateElement];
+  appDocument = [elementCopy appDocument];
+  templateElement = [appDocument templateElement];
 
-  v20 = [a1 interfaceStyleForTemplateElement:v19];
+  v20 = [self interfaceStyleForTemplateElement:templateElement];
   if ([v17 isEqualToString:@"none"])
   {
     v21 = 0;
@@ -1704,8 +1704,8 @@ LABEL_13:
 
   if ([v17 length])
   {
-    v21 = [a1 _placeholderImageForValue:v17 userInterfaceStyle:v20 withCornerRadii:topLeft andScaledSize:{topRight, bottomLeft, bottomRight, width, height}];
-    if (!v15)
+    v21 = [self _placeholderImageForValue:v17 userInterfaceStyle:v20 withCornerRadii:topLeft andScaledSize:{topRight, bottomLeft, bottomRight, width, height}];
+    if (!layoutCopy)
     {
 LABEL_10:
       if (v21)
@@ -1720,7 +1720,7 @@ LABEL_10:
   else
   {
     v21 = 0;
-    if (!v15)
+    if (!layoutCopy)
     {
       goto LABEL_10;
     }
@@ -1731,32 +1731,32 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v22 = [v15 placeholderArtworkName];
+  placeholderArtworkName = [layoutCopy placeholderArtworkName];
 
-  if (v22)
+  if (placeholderArtworkName)
   {
-    v21 = [a1 _placeholderImageForViewElement:v14 imageLayout:v15];
+    v21 = [self _placeholderImageForViewElement:elementCopy imageLayout:layoutCopy];
     goto LABEL_10;
   }
 
 LABEL_11:
-  v21 = [a1 _defaultPlaceholderImageForUserInterfaceStyle:v20 withCornerRadii:topLeft andSize:{topRight, bottomLeft, bottomRight, width, height}];
+  v21 = [self _defaultPlaceholderImageForUserInterfaceStyle:v20 withCornerRadii:topLeft andSize:{topRight, bottomLeft, bottomRight, width, height}];
 LABEL_12:
 
   return v21;
 }
 
-+ (void)disassociateIKViewElementsRecursivelyFromView:(id)a3
++ (void)disassociateIKViewElementsRecursivelyFromView:(id)view
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 tv_setAssociatedIKViewElement:0];
+  viewCopy = view;
+  [viewCopy tv_setAssociatedIKViewElement:0];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [v4 subviews];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  subviews = [viewCopy subviews];
+  v6 = [subviews countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1768,14 +1768,14 @@ LABEL_12:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
-        [a1 disassociateIKViewElementsRecursivelyFromView:*(*(&v19 + 1) + 8 * v9++)];
+        [self disassociateIKViewElementsRecursivelyFromView:*(*(&v19 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v7);
@@ -1788,8 +1788,8 @@ LABEL_12:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v10 = [v4 components];
-    v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+    components = [viewCopy components];
+    v11 = [components countByEnumeratingWithState:&v15 objects:v23 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1801,14 +1801,14 @@ LABEL_12:
         {
           if (*v16 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(components);
           }
 
-          [a1 disassociateIKViewElementsRecursivelyFromView:*(*(&v15 + 1) + 8 * v14++)];
+          [self disassociateIKViewElementsRecursivelyFromView:*(*(&v15 + 1) + 8 * v14++)];
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+        v12 = [components countByEnumeratingWithState:&v15 objects:v23 count:16];
       }
 
       while (v12);
@@ -1816,25 +1816,25 @@ LABEL_12:
   }
 }
 
-+ (BOOL)isFlowcaseAtTopOfStackFromElement:(id)a3
++ (BOOL)isFlowcaseAtTopOfStackFromElement:(id)element
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 appDocument];
-  v5 = [v4 templateElement];
-  v6 = [v5 tv_elementType];
+  elementCopy = element;
+  appDocument = [elementCopy appDocument];
+  templateElement = [appDocument templateElement];
+  tv_elementType = [templateElement tv_elementType];
 
-  if (v6 == 74)
+  if (tv_elementType == 74)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = [v3 appDocument];
-    v8 = [v7 templateElement];
-    v9 = [v8 children];
+    appDocument2 = [elementCopy appDocument];
+    templateElement2 = [appDocument2 templateElement];
+    children = [templateElement2 children];
 
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v10 = [children countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1845,7 +1845,7 @@ LABEL_4:
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(children);
         }
 
         v14 = *(*(&v19 + 1) + 8 * v13);
@@ -1856,16 +1856,16 @@ LABEL_4:
 
         if ([v14 tv_elementType] == 10)
         {
-          v16 = [v14 children];
-          v17 = [v16 firstObject];
+          children2 = [v14 children];
+          firstObject = [children2 firstObject];
 
-          v15 = [v17 tv_elementType] == 9 || objc_msgSend(v17, "tv_elementType") == 12;
+          v15 = [firstObject tv_elementType] == 9 || objc_msgSend(firstObject, "tv_elementType") == 12;
           goto LABEL_18;
         }
 
         if (v11 == ++v13)
         {
-          v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v11 = [children countByEnumeratingWithState:&v19 objects:v23 count:16];
           v15 = 0;
           if (v11)
           {
@@ -1889,7 +1889,7 @@ LABEL_18:
   return v15;
 }
 
-+ (id)_mobileGestaltStringForKey:(__CFString *)a3
++ (id)_mobileGestaltStringForKey:(__CFString *)key
 {
   v3 = MGCopyAnswer();
   if (v3)
@@ -1917,17 +1917,17 @@ LABEL_18:
   return v6;
 }
 
-+ (BOOL)isAXSmallEnabled:(id)a3
++ (BOOL)isAXSmallEnabled:(id)enabled
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || [v3 isEqual:*MEMORY[0x277D76860]])
+  enabledCopy = enabled;
+  v4 = enabledCopy;
+  if (!enabledCopy || [enabledCopy isEqual:*MEMORY[0x277D76860]])
   {
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    v6 = [v5 traitCollection];
-    v7 = [v6 preferredContentSizeCategory];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-    v4 = v7;
+    v4 = preferredContentSizeCategory;
   }
 
   v8 = UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x277D76818]) == NSOrderedDescending && UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x277D767F8]) == NSOrderedAscending;
@@ -1935,17 +1935,17 @@ LABEL_18:
   return v8;
 }
 
-+ (BOOL)isAXLargeEnabled:(id)a3
++ (BOOL)isAXLargeEnabled:(id)enabled
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || [v3 isEqual:*MEMORY[0x277D76860]])
+  enabledCopy = enabled;
+  v4 = enabledCopy;
+  if (!enabledCopy || [enabledCopy isEqual:*MEMORY[0x277D76860]])
   {
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    v6 = [v5 traitCollection];
-    v7 = [v6 preferredContentSizeCategory];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-    v4 = v7;
+    v4 = preferredContentSizeCategory;
   }
 
   v8 = UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x277D76800]) == NSOrderedDescending;
@@ -1953,10 +1953,10 @@ LABEL_18:
   return v8;
 }
 
-+ (BOOL)_isOSFeatureEnabled:(id)a3
++ (BOOL)_isOSFeatureEnabled:(id)enabled
 {
-  v3 = a3;
-  if (![v3 containsString:@"solarium"])
+  enabledCopy = enabled;
+  if (![enabledCopy containsString:@"solarium"])
   {
     goto LABEL_7;
   }
@@ -1968,7 +1968,7 @@ LABEL_18:
 
   if (_isOSFeatureEnabled__isEntitled == 1)
   {
-    if ([v3 isEqualToString:@"solarium-metrics"])
+    if ([enabledCopy isEqualToString:@"solarium-metrics"])
     {
       v4 = _UISolariumMetricsEnabled();
     }

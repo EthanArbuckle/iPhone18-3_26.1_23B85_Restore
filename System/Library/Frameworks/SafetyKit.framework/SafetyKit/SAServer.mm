@@ -1,27 +1,27 @@
 @interface SAServer
 + (double)emergencyResponseVoiceCallTimeout;
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SACrashDetectionEvent)mostRecentCrashEvent;
 - (SAServer)init;
 - (int64_t)numberOfVoiceCallAttempts;
 - (void)checkAndResetClientState;
-- (void)dialVoiceCallToPhoneNumber:(id)a3 completionHandler:(id)a4;
+- (void)dialVoiceCallToPhoneNumber:(id)number completionHandler:(id)handler;
 - (void)init;
-- (void)iterateClientProxies:(id)a3;
-- (void)locationManager:(id)a3 didUpdateLocation:(id)a4;
+- (void)iterateClientProxies:(id)proxies;
+- (void)locationManager:(id)manager didUpdateLocation:(id)location;
 - (void)mostRecentCrashEvent;
-- (void)notifyCrashDetectedAt:(id)a3 resolvedAt:(id)a4 resolvedWithResponse:(int64_t)a5 completion:(id)a6;
+- (void)notifyCrashDetectedAt:(id)at resolvedAt:(id)resolvedAt resolvedWithResponse:(int64_t)response completion:(id)completion;
 - (void)numberOfVoiceCallAttempts;
 - (void)recoverMostRecentCrashEvent;
-- (void)requestCrashDetectionAuthorization:(id)a3;
+- (void)requestCrashDetectionAuthorization:(id)authorization;
 - (void)requestMostRecentCrashDetectionEvent;
 - (void)sendCrashEventToClients;
-- (void)setMostRecentCrashEvent:(id)a3;
-- (void)setNumberOfVoiceCallAttempts:(int64_t)a3;
-- (void)telephonyManager:(id)a3 didUpdateVoiceCallStatus:(int64_t)a4;
-- (void)updateMostRecentCrashDetectionEvent:(id)a3 completion:(id)a4;
-- (void)updateVoiceCallStatus:(int64_t)a3;
+- (void)setMostRecentCrashEvent:(id)event;
+- (void)setNumberOfVoiceCallAttempts:(int64_t)attempts;
+- (void)telephonyManager:(id)manager didUpdateVoiceCallStatus:(int64_t)status;
+- (void)updateMostRecentCrashDetectionEvent:(id)event completion:(id)completion;
+- (void)updateVoiceCallStatus:(int64_t)status;
 @end
 
 @implementation SAServer
@@ -32,7 +32,7 @@
   block[1] = 3221225472;
   block[2] = __26__SAServer_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -121,8 +121,8 @@ uint64_t __26__SAServer_sharedInstance__block_invoke(uint64_t a1)
     [SAServer mostRecentCrashEvent];
   }
 
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 objectForKey:@"SAMostRecentCrashDetectionEvent"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"SAMostRecentCrashDetectionEvent"];
   if (v4)
   {
     v10 = 0;
@@ -158,20 +158,20 @@ uint64_t __26__SAServer_sharedInstance__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setMostRecentCrashEvent:(id)a3
+- (void)setMostRecentCrashEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = sa_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [SAServer setMostRecentCrashEvent:];
   }
 
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  if (v3)
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  if (eventCopy)
   {
     v11 = 0;
-    v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v11];
+    v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:eventCopy requiringSecureCoding:1 error:&v11];
     v7 = v11;
     v8 = sa_default_log();
     v9 = v8;
@@ -182,8 +182,8 @@ uint64_t __26__SAServer_sharedInstance__block_invoke(uint64_t a1)
         [SAServer setMostRecentCrashEvent:];
       }
 
-      [v5 setObject:v6 forKey:@"SAMostRecentCrashDetectionEvent"];
-      [v5 synchronize];
+      [standardUserDefaults setObject:v6 forKey:@"SAMostRecentCrashDetectionEvent"];
+      [standardUserDefaults synchronize];
     }
 
     else
@@ -203,7 +203,7 @@ uint64_t __26__SAServer_sharedInstance__block_invoke(uint64_t a1)
       [SAServer setMostRecentCrashEvent:];
     }
 
-    [v5 removeObjectForKey:@"SAMostRecentCrashDetectionEvent"];
+    [standardUserDefaults removeObjectForKey:@"SAMostRecentCrashDetectionEvent"];
   }
 }
 
@@ -216,18 +216,18 @@ uint64_t __26__SAServer_sharedInstance__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateMostRecentCrashDetectionEvent:(id)a3 completion:(id)a4
+- (void)updateMostRecentCrashDetectionEvent:(id)event completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   v8 = sa_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [SAServer updateMostRecentCrashDetectionEvent:completion:];
   }
 
-  [(SAServer *)self setMostRecentCrashEvent:v6];
-  if (v6)
+  [(SAServer *)self setMostRecentCrashEvent:eventCopy];
+  if (eventCopy)
   {
     bundleManager = self->_bundleManager;
     v10[0] = MEMORY[0x277D85DD0];
@@ -235,7 +235,7 @@ uint64_t __26__SAServer_sharedInstance__block_invoke(uint64_t a1)
     v10[2] = __59__SAServer_updateMostRecentCrashDetectionEvent_completion___block_invoke;
     v10[3] = &unk_278B67E68;
     v10[4] = self;
-    v11 = v7;
+    v11 = completionCopy;
     [(SABundleManager *)bundleManager wakeApprovedAppsWithReason:0 completion:v10];
   }
 }
@@ -253,15 +253,15 @@ uint64_t __59__SAServer_updateMostRecentCrashDetectionEvent_completion___block_i
   return [v3 sendCrashEventToClients];
 }
 
-- (void)notifyCrashDetectedAt:(id)a3 resolvedAt:(id)a4 resolvedWithResponse:(int64_t)a5 completion:(id)a6
+- (void)notifyCrashDetectedAt:(id)at resolvedAt:(id)resolvedAt resolvedWithResponse:(int64_t)response completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  atCopy = at;
+  resolvedAtCopy = resolvedAt;
+  completionCopy = completion;
   [(SAServer *)self startMonitoringLocation];
-  v13 = self;
-  objc_sync_enter(v13);
-  if (v13->_locationAcquired)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_locationAcquired)
   {
     v14 = sa_default_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -270,7 +270,7 @@ uint64_t __59__SAServer_updateMostRecentCrashDetectionEvent_completion___block_i
       _os_log_impl(&dword_23AA4D000, v14, OS_LOG_TYPE_DEFAULT, "Reentrant notification, waiting for location on older semaphore", buf, 2u);
     }
 
-    locationAcquired = v13->_locationAcquired;
+    locationAcquired = selfCopy->_locationAcquired;
     v16 = dispatch_time(0, 5000000000);
     if (dispatch_semaphore_wait(locationAcquired, v16))
     {
@@ -281,32 +281,32 @@ uint64_t __59__SAServer_updateMostRecentCrashDetectionEvent_completion___block_i
       }
     }
 
-    v18 = v13->_locationAcquired;
-    v13->_locationAcquired = 0;
+    v18 = selfCopy->_locationAcquired;
+    selfCopy->_locationAcquired = 0;
   }
 
   else
   {
     v19 = dispatch_semaphore_create(0);
-    v18 = v13->_locationAcquired;
-    v13->_locationAcquired = v19;
+    v18 = selfCopy->_locationAcquired;
+    selfCopy->_locationAcquired = v19;
   }
 
-  objc_sync_exit(v13);
-  objc_initWeak(buf, v13);
-  messageQueue = v13->_messageQueue;
+  objc_sync_exit(selfCopy);
+  objc_initWeak(buf, selfCopy);
+  messageQueue = selfCopy->_messageQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__SAServer_notifyCrashDetectedAt_resolvedAt_resolvedWithResponse_completion___block_invoke;
   block[3] = &unk_278B67E90;
   objc_copyWeak(v28, buf);
-  v25 = v10;
-  v26 = v11;
-  v28[1] = a5;
-  v27 = v12;
-  v21 = v12;
-  v22 = v11;
-  v23 = v10;
+  v25 = atCopy;
+  v26 = resolvedAtCopy;
+  v28[1] = response;
+  v27 = completionCopy;
+  v21 = completionCopy;
+  v22 = resolvedAtCopy;
+  v23 = atCopy;
   dispatch_async(messageQueue, block);
 
   objc_destroyWeak(v28);
@@ -370,8 +370,8 @@ void __77__SAServer_notifyCrashDetectedAt_resolvedAt_resolvedWithResponse_comple
     [SAServer numberOfVoiceCallAttempts];
   }
 
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 objectForKey:@"SANumberOfVoiceCallAttempts"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"SANumberOfVoiceCallAttempts"];
   if (v4)
   {
     v11 = 0;
@@ -392,7 +392,7 @@ void __77__SAServer_notifyCrashDetectedAt_resolvedAt_resolvedWithResponse_comple
       [SAServer numberOfVoiceCallAttempts];
     }
 
-    v9 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
@@ -403,13 +403,13 @@ void __77__SAServer_notifyCrashDetectedAt_resolvedAt_resolvedWithResponse_comple
       [SAServer numberOfVoiceCallAttempts];
     }
 
-    v9 = 0;
+    integerValue = 0;
   }
 
-  return v9;
+  return integerValue;
 }
 
-- (void)setNumberOfVoiceCallAttempts:(int64_t)a3
+- (void)setNumberOfVoiceCallAttempts:(int64_t)attempts
 {
   v4 = sa_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -417,9 +417,9 @@ void __77__SAServer_notifyCrashDetectedAt_resolvedAt_resolvedWithResponse_comple
     [SAServer setNumberOfVoiceCallAttempts:];
   }
 
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v6 = MEMORY[0x277CCAAB0];
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:attempts];
   v12 = 0;
   v8 = [v6 archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v12];
   v9 = v12;
@@ -433,8 +433,8 @@ void __77__SAServer_notifyCrashDetectedAt_resolvedAt_resolvedWithResponse_comple
       [SAServer setNumberOfVoiceCallAttempts:];
     }
 
-    [v5 setObject:v8 forKey:@"SANumberOfVoiceCallAttempts"];
-    [v5 synchronize];
+    [standardUserDefaults setObject:v8 forKey:@"SANumberOfVoiceCallAttempts"];
+    [standardUserDefaults synchronize];
   }
 
   else
@@ -446,7 +446,7 @@ void __77__SAServer_notifyCrashDetectedAt_resolvedAt_resolvedWithResponse_comple
   }
 }
 
-- (void)updateVoiceCallStatus:(int64_t)a3
+- (void)updateVoiceCallStatus:(int64_t)status
 {
   v5 = sa_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -460,7 +460,7 @@ void __77__SAServer_notifyCrashDetectedAt_resolvedAt_resolvedWithResponse_comple
   v7[2] = __34__SAServer_updateVoiceCallStatus___block_invoke;
   v7[3] = &unk_278B67ED8;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = status;
   dispatch_async(messageQueue, v7);
 }
 
@@ -503,8 +503,8 @@ void __34__SAServer_updateVoiceCallStatus___block_invoke_2(uint64_t a1, void *a2
 
 + (double)emergencyResponseVoiceCallTimeout
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 valueForKey:@"SAEmergencyResponseVoiceCallTimeout"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults valueForKey:@"SAEmergencyResponseVoiceCallTimeout"];
 
   if (v3)
   {
@@ -599,9 +599,9 @@ void __35__SAServer_sendCrashEventToClients__block_invoke_24(uint64_t a1, void *
   }
 }
 
-- (void)iterateClientProxies:(id)a3
+- (void)iterateClientProxies:(id)proxies
 {
-  v4 = a3;
+  proxiesCopy = proxies;
   v5 = self->_clientConnections;
   objc_sync_enter(v5);
   clientConnections = self->_clientConnections;
@@ -610,7 +610,7 @@ void __35__SAServer_sendCrashEventToClients__block_invoke_24(uint64_t a1, void *
   v8[2] = __33__SAServer_iterateClientProxies___block_invoke;
   v8[3] = &unk_278B67F50;
   v8[4] = self;
-  v7 = v4;
+  v7 = proxiesCopy;
   v9 = v7;
   [(NSMutableArray *)clientConnections enumerateObjectsUsingBlock:v8];
 
@@ -644,12 +644,12 @@ void __33__SAServer_iterateClientProxies___block_invoke_2(uint64_t a1, void *a2)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestCrashDetectionAuthorization:(id)a3
+- (void)requestCrashDetectionAuthorization:(id)authorization
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  authorizationCopy = authorization;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = sa_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -668,14 +668,14 @@ void __33__SAServer_iterateClientProxies___block_invoke_2(uint64_t a1, void *a2)
       }
 
       v10 = [SAError errorWithCode:4];
-      v4[2](v4, v7, v10);
+      authorizationCopy[2](authorizationCopy, v7, v10);
       goto LABEL_18;
     }
 
     v10 = +[SABundleManager bundleURLForCurrentConnection];
     if (v10)
     {
-      if ([SAAuthorization startAuthorizationForBundleURL:v10 preflightAuthorizationStatus:v7 completionHandler:v4])
+      if ([SAAuthorization startAuthorizationForBundleURL:v10 preflightAuthorizationStatus:v7 completionHandler:authorizationCopy])
       {
 LABEL_18:
 
@@ -689,13 +689,13 @@ LABEL_18:
       }
 
       v12 = [SAError errorWithCode:4];
-      v4[2](v4, v7, v12);
+      authorizationCopy[2](authorizationCopy, v7, v12);
     }
 
     else
     {
       v12 = [SAError errorWithCode:4];
-      v4[2](v4, v7, v12);
+      authorizationCopy[2](authorizationCopy, v7, v12);
     }
 
     goto LABEL_18;
@@ -709,18 +709,18 @@ LABEL_18:
     _os_log_impl(&dword_23AA4D000, v8, OS_LOG_TYPE_DEFAULT, "%s - app requesting authorization has already been authorized", &v14, 0xCu);
   }
 
-  v4[2](v4, 2, 0);
+  authorizationCopy[2](authorizationCopy, 2, 0);
 LABEL_19:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dialVoiceCallToPhoneNumber:(id)a3 completionHandler:(id)a4
+- (void)dialVoiceCallToPhoneNumber:(id)number completionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  handlerCopy = handler;
   v8 = sa_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -742,16 +742,16 @@ LABEL_19:
   [(SAServer *)self checkAndResetClientState];
   if (![(SAServer *)self numberOfVoiceCallAttempts])
   {
-    v14 = [(SAServer *)self mostRecentCrashEvent];
-    if (!v14)
+    mostRecentCrashEvent = [(SAServer *)self mostRecentCrashEvent];
+    if (!mostRecentCrashEvent)
     {
       goto LABEL_18;
     }
 
-    v15 = v14;
-    v16 = [(SAServer *)self mostRecentCrashEvent];
-    v17 = [v16 timeOfResolution];
-    [v17 timeIntervalSinceNow];
+    v15 = mostRecentCrashEvent;
+    mostRecentCrashEvent2 = [(SAServer *)self mostRecentCrashEvent];
+    timeOfResolution = [mostRecentCrashEvent2 timeOfResolution];
+    [timeOfResolution timeIntervalSinceNow];
     v19 = -v18;
     [objc_opt_class() emergencyResponseVoiceCallTimeout];
     v21 = v20;
@@ -771,7 +771,7 @@ LABEL_21:
       v13 = 2;
 LABEL_22:
       v23 = [SAError errorWithCode:v13];
-      v7[2](v7, 0, v23);
+      handlerCopy[2](handlerCopy, 0, v23);
       goto LABEL_23;
     }
   }
@@ -784,7 +784,7 @@ LABEL_22:
       *buf = 136315394;
       v30 = "[SAServer dialVoiceCallToPhoneNumber:completionHandler:]";
       v31 = 2048;
-      v32 = [(SAServer *)self numberOfVoiceCallAttempts];
+      numberOfVoiceCallAttempts = [(SAServer *)self numberOfVoiceCallAttempts];
       _os_log_impl(&dword_23AA4D000, v11, OS_LOG_TYPE_DEFAULT, "%s - not placing voice call because number of call attempts have exceeded, attempts, %ld", buf, 0x16u);
     }
 
@@ -797,9 +797,9 @@ LABEL_22:
     *buf = 136315650;
     v30 = "[SAServer dialVoiceCallToPhoneNumber:completionHandler:]";
     v31 = 2112;
-    v32 = v6;
+    numberOfVoiceCallAttempts = numberCopy;
     v33 = 2048;
-    v34 = [(SAServer *)self numberOfVoiceCallAttempts];
+    numberOfVoiceCallAttempts2 = [(SAServer *)self numberOfVoiceCallAttempts];
     _os_log_impl(&dword_23AA4D000, v25, OS_LOG_TYPE_DEFAULT, "%s - attempting to place voice call, phoneNumber: %@, callAttempts: %ld", buf, 0x20u);
   }
 
@@ -808,8 +808,8 @@ LABEL_22:
   v27[1] = 3221225472;
   v27[2] = __57__SAServer_dialVoiceCallToPhoneNumber_completionHandler___block_invoke;
   v27[3] = &unk_278B67F78;
-  v28 = v7;
-  [(SATelephonyManager *)telephonyManager placeVoiceCall:v6 completionHandler:v27];
+  v28 = handlerCopy;
+  [(SATelephonyManager *)telephonyManager placeVoiceCall:numberCopy completionHandler:v27];
   v23 = v28;
 LABEL_23:
 
@@ -845,20 +845,20 @@ void __57__SAServer_dialVoiceCallToPhoneNumber_completionHandler___block_invoke(
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = sa_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [SAServer listener:shouldAcceptNewConnection:];
   }
 
-  v7 = [v5 valueForEntitlement:@"com.apple.developer.severe-vehicular-crash-event"];
-  v8 = [v7 BOOLValue];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.developer.severe-vehicular-crash-event"];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     objc_initWeak(&location, self);
     messageQueue = self->_messageQueue;
@@ -867,7 +867,7 @@ void __57__SAServer_dialVoiceCallToPhoneNumber_completionHandler___block_invoke(
     v14[2] = __47__SAServer_listener_shouldAcceptNewConnection___block_invoke;
     v14[3] = &unk_278B67F28;
     objc_copyWeak(&v16, &location);
-    v15 = v5;
+    v15 = connectionCopy;
     dispatch_async(messageQueue, v14);
 
     objc_destroyWeak(&v16);
@@ -880,7 +880,7 @@ void __57__SAServer_dialVoiceCallToPhoneNumber_completionHandler___block_invoke(
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       location = 138412546;
-      *location_4 = v5;
+      *location_4 = connectionCopy;
       *&location_4[8] = 2112;
       *&location_4[10] = @"com.apple.developer.severe-vehicular-crash-event";
       _os_log_impl(&dword_23AA4D000, v10, OS_LOG_TYPE_DEFAULT, "[WARN] New connection %@ missing entitlement: %@", &location, 0x16u);
@@ -891,14 +891,14 @@ void __57__SAServer_dialVoiceCallToPhoneNumber_completionHandler___block_invoke(
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     location = 67109378;
-    *location_4 = v8;
+    *location_4 = bOOLValue;
     *&location_4[4] = 2112;
-    *&location_4[6] = v5;
+    *&location_4[6] = connectionCopy;
     _os_log_impl(&dword_23AA4D000, v11, OS_LOG_TYPE_DEFAULT, "shouldAcceptNewConnection: %d for connection: %@", &location, 0x12u);
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v8;
+  return bOOLValue;
 }
 
 void __47__SAServer_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -961,7 +961,7 @@ void __47__SAServer_listener_shouldAcceptNewConnection___block_invoke_33(uint64_
   }
 }
 
-- (void)telephonyManager:(id)a3 didUpdateVoiceCallStatus:(int64_t)a4
+- (void)telephonyManager:(id)manager didUpdateVoiceCallStatus:(int64_t)status
 {
   objc_initWeak(&location, self);
   messageQueue = self->_messageQueue;
@@ -970,7 +970,7 @@ void __47__SAServer_listener_shouldAcceptNewConnection___block_invoke_33(uint64_
   block[2] = __54__SAServer_telephonyManager_didUpdateVoiceCallStatus___block_invoke;
   block[3] = &unk_278B67FC8;
   objc_copyWeak(v8, &location);
-  v8[1] = a4;
+  v8[1] = status;
   dispatch_async(messageQueue, block);
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
@@ -1023,20 +1023,20 @@ LABEL_8:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocation:(id)a4
+- (void)locationManager:(id)manager didUpdateLocation:(id)location
 {
-  v5 = self;
-  v7 = a4;
-  objc_sync_enter(v5);
-  locationAcquired = v5->_locationAcquired;
+  selfCopy = self;
+  locationCopy = location;
+  objc_sync_enter(selfCopy);
+  locationAcquired = selfCopy->_locationAcquired;
   if (locationAcquired)
   {
     dispatch_semaphore_signal(locationAcquired);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  [(SAServer *)v5 setMostRecentLocation:v7];
+  [(SAServer *)selfCopy setMostRecentLocation:locationCopy];
 }
 
 - (void)init

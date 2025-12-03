@@ -1,14 +1,14 @@
 @interface FaceTimeAccountFetcher
-- (BOOL)_aliasIsDevicePhoneNumber:(id)a3;
-- (BOOL)_aliasIsTemporaryDeviceAlias:(id)a3;
-- (BOOL)_shouldFilterOutAlias:(id)a3 onAccount:(id)a4;
+- (BOOL)_aliasIsDevicePhoneNumber:(id)number;
+- (BOOL)_aliasIsTemporaryDeviceAlias:(id)alias;
+- (BOOL)_shouldFilterOutAlias:(id)alias onAccount:(id)account;
 - (IDSPhoneSubscriptionSelector)phoneSubscriptionSelector;
 - (NSArray)accounts;
 - (NSArray)validCallerIDs;
 - (TUHandle)defaultSelectedCallerID;
-- (id)_aliasesForAccount:(id)a3;
+- (id)_aliasesForAccount:(id)account;
 - (id)_temporaryDeviceAliases;
-- (id)useableAliasesForAccounts:(id)a3;
+- (id)useableAliasesForAccounts:(id)accounts;
 @end
 
 @implementation FaceTimeAccountFetcher
@@ -16,10 +16,10 @@
 - (TUHandle)defaultSelectedCallerID
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69A5B50] sharedController];
-  [v3 blockUntilConnected];
+  mEMORY[0x1E69A5B50] = [MEMORY[0x1E69A5B50] sharedController];
+  [mEMORY[0x1E69A5B50] blockUntilConnected];
 
-  v4 = [MEMORY[0x1E69A5C90] facetimeService];
+  facetimeService = [MEMORY[0x1E69A5C90] facetimeService];
   v5 = IMPreferredAccountForService();
 
   v6 = ConversationKitLog();
@@ -41,21 +41,21 @@
       _os_log_impl(&dword_1BBC58000, v8, OS_LOG_TYPE_DEFAULT, "[FaceTimeAccountFetcher] Pulled out preferred aliases %@", &v11, 0xCu);
     }
 
-    v9 = [v7 firstObject];
+    firstObject = [v7 firstObject];
   }
 
   else
   {
-    v9 = 0;
+    firstObject = 0;
   }
 
-  return v9;
+  return firstObject;
 }
 
 - (NSArray)validCallerIDs
 {
-  v3 = [(FaceTimeAccountFetcher *)self accounts];
-  v4 = [(FaceTimeAccountFetcher *)self useableAliasesForAccounts:v3];
+  accounts = [(FaceTimeAccountFetcher *)self accounts];
+  v4 = [(FaceTimeAccountFetcher *)self useableAliasesForAccounts:accounts];
 
   return v4;
 }
@@ -66,15 +66,15 @@
   v2 = ConversationKitLog();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [MEMORY[0x1E69A5C90] facetimeService];
+    facetimeService = [MEMORY[0x1E69A5C90] facetimeService];
     *buf = 138412290;
-    v23 = v3;
+    v23 = facetimeService;
     _os_log_impl(&dword_1BBC58000, v2, OS_LOG_TYPE_DEFAULT, "[FaceTimeAccountFetcher] Reloading the account list for service: %@", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x1E69A5A80] sharedInstance];
-  v5 = [MEMORY[0x1E69A5C90] facetimeService];
-  v6 = [v4 accountsForService:v5];
+  mEMORY[0x1E69A5A80] = [MEMORY[0x1E69A5A80] sharedInstance];
+  facetimeService2 = [MEMORY[0x1E69A5C90] facetimeService];
+  v6 = [mEMORY[0x1E69A5A80] accountsForService:facetimeService2];
 
   if ([v6 count])
   {
@@ -131,16 +131,16 @@
   return v14;
 }
 
-- (id)useableAliasesForAccounts:(id)a3
+- (id)useableAliasesForAccounts:(id)accounts
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountsCopy = accounts;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = accountsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -168,17 +168,17 @@
   return v5;
 }
 
-- (id)_aliasesForAccount:(id)a3
+- (id)_aliasesForAccount:(id)account
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  accountCopy = account;
+  v5 = accountCopy;
+  if (!accountCopy)
   {
     goto LABEL_19;
   }
 
-  v6 = [v4 aliases];
+  aliases = [accountCopy aliases];
   v7 = _IDSCopyOrderedAliasStrings();
 
   if (!v7 || ![v7 count])
@@ -244,20 +244,20 @@ LABEL_20:
   return v8;
 }
 
-- (BOOL)_shouldFilterOutAlias:(id)a3 onAccount:(id)a4
+- (BOOL)_shouldFilterOutAlias:(id)alias onAccount:(id)account
 {
-  v6 = a3;
-  v10 = [v7 typeForAlias:v6] == 2 && objc_msgSend(v7, "accountType") != 2 && (objc_msgSend(MEMORY[0x1E699BE70], "sharedInstance"), v8 = v7 = a4;
+  aliasCopy = alias;
+  v10 = [v7 typeForAlias:aliasCopy] == 2 && objc_msgSend(v7, "accountType") != 2 && (objc_msgSend(MEMORY[0x1E699BE70], "sharedInstance"), v8 = v7 = account;
 
   return v10;
 }
 
-- (BOOL)_aliasIsDevicePhoneNumber:(id)a3
+- (BOOL)_aliasIsDevicePhoneNumber:(id)number
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 _appearsToBePhoneNumber])
+  numberCopy = number;
+  v4 = numberCopy;
+  if (numberCopy && [numberCopy _appearsToBePhoneNumber])
   {
     v5 = v4;
     v6 = _IDSCopyMyPhoneNumbers();
@@ -344,16 +344,16 @@ LABEL_21:
   return v17;
 }
 
-- (BOOL)_aliasIsTemporaryDeviceAlias:(id)a3
+- (BOOL)_aliasIsTemporaryDeviceAlias:(id)alias
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 _appearsToBePhoneNumber])
+  aliasCopy = alias;
+  v5 = aliasCopy;
+  if (aliasCopy && [aliasCopy _appearsToBePhoneNumber])
   {
     v6 = v5;
-    v7 = [(FaceTimeAccountFetcher *)self _temporaryDeviceAliases];
-    if ([v7 count])
+    _temporaryDeviceAliases = [(FaceTimeAccountFetcher *)self _temporaryDeviceAliases];
+    if ([_temporaryDeviceAliases count])
     {
       active = CPPhoneNumberCopyActiveCountryCode();
       v22 = v6;
@@ -362,8 +362,8 @@ LABEL_21:
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v21 = v7;
-      v10 = v7;
+      v21 = _temporaryDeviceAliases;
+      v10 = _temporaryDeviceAliases;
       v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v11)
       {
@@ -420,7 +420,7 @@ LABEL_21:
         CFRelease(active);
       }
 
-      v7 = v21;
+      _temporaryDeviceAliases = v21;
       v6 = v22;
     }
 
@@ -441,9 +441,9 @@ LABEL_21:
 - (id)_temporaryDeviceAliases
 {
   v10 = *MEMORY[0x1E69E9840];
-  v2 = [(FaceTimeAccountFetcher *)self phoneSubscriptionSelector];
+  phoneSubscriptionSelector = [(FaceTimeAccountFetcher *)self phoneSubscriptionSelector];
   v7 = 0;
-  v3 = [v2 unselectedTemporaryPhoneAliasesWithError:&v7];
+  v3 = [phoneSubscriptionSelector unselectedTemporaryPhoneAliasesWithError:&v7];
   v4 = v7;
 
   if (v4)

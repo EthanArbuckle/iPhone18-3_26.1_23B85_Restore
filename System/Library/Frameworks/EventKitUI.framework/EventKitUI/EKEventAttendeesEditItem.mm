@@ -1,15 +1,15 @@
 @interface EKEventAttendeesEditItem
 + (id)_noneInviteesLocalizedString;
-- (BOOL)canBeConfiguredForCalendarConstraints:(id)a3;
-- (BOOL)configureForCalendarConstraints:(id)a3;
-- (BOOL)editItemViewControllerSave:(id)a3;
+- (BOOL)canBeConfiguredForCalendarConstraints:(id)constraints;
+- (BOOL)configureForCalendarConstraints:(id)constraints;
+- (BOOL)editItemViewControllerSave:(id)save;
 - (BOOL)shouldAppear;
 - (EKEventAttendeesEditItem)init;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
-- (id)detailViewControllerWithFrame:(CGRect)a3 forSubitemAtIndex:(unint64_t)a4;
-- (id)injectableViewControllerWithFrame:(CGRect)a3 forSubitemAtIndex:(unint64_t)a4;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
+- (id)detailViewControllerWithFrame:(CGRect)frame forSubitemAtIndex:(unint64_t)index;
+- (id)injectableViewControllerWithFrame:(CGRect)frame forSubitemAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)editor:(id)a3 didSelectSubitem:(unint64_t)a4;
+- (void)editor:(id)editor didSelectSubitem:(unint64_t)subitem;
 - (void)refreshFromCalendarItemAndStore;
 @end
 
@@ -42,36 +42,36 @@
   [(EKEventAttendeesEditItem *)&v3 dealloc];
 }
 
-- (BOOL)canBeConfiguredForCalendarConstraints:(id)a3
+- (BOOL)canBeConfiguredForCalendarConstraints:(id)constraints
 {
-  v3 = [(EKEventEditItem *)self event];
-  v4 = [v3 allowsAttendeesModifications];
+  event = [(EKEventEditItem *)self event];
+  allowsAttendeesModifications = [event allowsAttendeesModifications];
 
-  return v4;
+  return allowsAttendeesModifications;
 }
 
-- (BOOL)configureForCalendarConstraints:(id)a3
+- (BOOL)configureForCalendarConstraints:(id)constraints
 {
-  v4 = a3;
-  v5 = [v4 source];
-  v6 = [v5 externalID];
+  constraintsCopy = constraints;
+  source = [constraintsCopy source];
+  externalID = [source externalID];
   searchAccountID = self->_searchAccountID;
-  self->_searchAccountID = v6;
+  self->_searchAccountID = externalID;
 
-  LOBYTE(self) = [(EKEventAttendeesEditItem *)self canBeConfiguredForCalendarConstraints:v4];
+  LOBYTE(self) = [(EKEventAttendeesEditItem *)self canBeConfiguredForCalendarConstraints:constraintsCopy];
   return self;
 }
 
 - (BOOL)shouldAppear
 {
   v57 = *MEMORY[0x1E69E9840];
-  v3 = [(EKEventEditItem *)self event];
-  v4 = [v3 calendar];
-  v5 = [v4 source];
-  v6 = [v5 constraints];
-  v7 = [v6 prohibitsPrivateEventsWithAttendees];
+  event = [(EKEventEditItem *)self event];
+  calendar = [event calendar];
+  source = [calendar source];
+  constraints = [source constraints];
+  prohibitsPrivateEventsWithAttendees = [constraints prohibitsPrivateEventsWithAttendees];
 
-  if (v7 && [v3 privacyLevel])
+  if (prohibitsPrivateEventsWithAttendees && [event privacyLevel])
   {
     v8 = kEKUILogHandle;
     v9 = 0;
@@ -79,7 +79,7 @@
     {
       v10 = v8;
       *buf = 134217984;
-      v50 = [v3 privacyLevel];
+      privacyLevel = [event privacyLevel];
       _os_log_impl(&dword_1D3400000, v10, OS_LOG_TYPE_DEFAULT, "MissingAttendees: Event is non-standard privacy level %ld", buf, 0xCu);
 
       v9 = 0;
@@ -91,30 +91,30 @@
     v9 = 1;
   }
 
-  v11 = [v3 calendar];
-  v12 = [(EKEventAttendeesEditItem *)self canBeConfiguredForCalendarConstraints:v11];
+  calendar2 = [event calendar];
+  v12 = [(EKEventAttendeesEditItem *)self canBeConfiguredForCalendarConstraints:calendar2];
 
   if (!v12)
   {
     v48 = v9;
-    v13 = [v3 calendar];
-    v14 = [v13 source];
+    calendar3 = [event calendar];
+    source2 = [calendar3 source];
     v15 = kEKUILogHandle;
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [v13 title];
-      v18 = [v13 calendarIdentifier];
-      v19 = [v14 title];
-      v20 = [v14 sourceIdentifier];
+      title = [calendar3 title];
+      calendarIdentifier = [calendar3 calendarIdentifier];
+      title2 = [source2 title];
+      sourceIdentifier = [source2 sourceIdentifier];
       *buf = 138413058;
-      v50 = v17;
+      privacyLevel = title;
       v51 = 2114;
-      v52 = v18;
+      v52 = calendarIdentifier;
       v53 = 2112;
-      v54 = v19;
+      v54 = title2;
       v55 = 2114;
-      v56 = v20;
+      v56 = sourceIdentifier;
       _os_log_impl(&dword_1D3400000, v16, OS_LOG_TYPE_DEFAULT, "MissingAttendees: Event calendar (%@ %{public}@) does not allow attendees (source %@ %{public}@)", buf, 0x2Au);
     }
 
@@ -123,9 +123,9 @@
     {
       v22 = MEMORY[0x1E696AD98];
       v23 = v21;
-      v24 = [v22 numberWithInt:{objc_msgSend(v3, "status") == 3}];
+      v24 = [v22 numberWithInt:{objc_msgSend(event, "status") == 3}];
       *buf = 138412290;
-      v50 = v24;
+      privacyLevel = v24;
       _os_log_impl(&dword_1D3400000, v23, OS_LOG_TYPE_DEFAULT, "MissingAttendees: Cancelled %@", buf, 0xCu);
     }
 
@@ -134,9 +134,9 @@
     {
       v26 = MEMORY[0x1E696AD98];
       v27 = v25;
-      v28 = [v26 numberWithBool:{objc_msgSend(v3, "isSelfOrganized")}];
+      v28 = [v26 numberWithBool:{objc_msgSend(event, "isSelfOrganized")}];
       *buf = 138412290;
-      v50 = v28;
+      privacyLevel = v28;
       _os_log_impl(&dword_1D3400000, v27, OS_LOG_TYPE_DEFAULT, "MissingAttendees: Self Organized %@", buf, 0xCu);
     }
 
@@ -145,9 +145,9 @@
     {
       v30 = MEMORY[0x1E696AD98];
       v31 = v29;
-      v32 = [v30 numberWithBool:{objc_msgSend(v13, "allowsScheduling")}];
+      v32 = [v30 numberWithBool:{objc_msgSend(calendar3, "allowsScheduling")}];
       *buf = 138412290;
-      v50 = v32;
+      privacyLevel = v32;
       _os_log_impl(&dword_1D3400000, v31, OS_LOG_TYPE_DEFAULT, "MissingAttendees: Calendar Allows Scheduling %@", buf, 0xCu);
     }
 
@@ -156,10 +156,10 @@
     {
       v34 = MEMORY[0x1E696AD98];
       v35 = v33;
-      v36 = [v14 constraints];
-      v37 = [v34 numberWithBool:{objc_msgSend(v36, "supportsOutgoingInvitations")}];
+      constraints2 = [source2 constraints];
+      v37 = [v34 numberWithBool:{objc_msgSend(constraints2, "supportsOutgoingInvitations")}];
       *buf = 138412290;
-      v50 = v37;
+      privacyLevel = v37;
       _os_log_impl(&dword_1D3400000, v35, OS_LOG_TYPE_DEFAULT, "MissingAttendees: Source Supports Outgoing Invitations %@", buf, 0xCu);
     }
 
@@ -168,10 +168,10 @@
     {
       v39 = MEMORY[0x1E696AD98];
       v40 = v38;
-      v41 = [v14 constraints];
-      v42 = [v39 numberWithBool:{objc_msgSend(v41, "requiresOutgoingInvitationsInDefaultCalendar")}];
+      constraints3 = [source2 constraints];
+      v42 = [v39 numberWithBool:{objc_msgSend(constraints3, "requiresOutgoingInvitationsInDefaultCalendar")}];
       *buf = 138412290;
-      v50 = v42;
+      privacyLevel = v42;
       _os_log_impl(&dword_1D3400000, v40, OS_LOG_TYPE_DEFAULT, "MissingAttendees: Source Requires Default Outgoing Invitations %@", buf, 0xCu);
     }
 
@@ -180,9 +180,9 @@
     {
       v44 = MEMORY[0x1E696AD98];
       v45 = v43;
-      v46 = [v44 numberWithBool:{objc_msgSend(v13, "isDefaultSchedulingCalendar")}];
+      v46 = [v44 numberWithBool:{objc_msgSend(calendar3, "isDefaultSchedulingCalendar")}];
       *buf = 138412290;
-      v50 = v46;
+      privacyLevel = v46;
       _os_log_impl(&dword_1D3400000, v45, OS_LOG_TYPE_DEFAULT, "MissingAttendees: Calendar is Default %@", buf, 0xCu);
     }
 
@@ -199,18 +199,18 @@
   v56.super_class = EKEventAttendeesEditItem;
   [(EKCalendarItemEditItem *)&v56 refreshFromCalendarItemAndStore];
   [(NSOperationQueue *)self->_availabilityQueue cancelAllOperations];
-  v41 = [(EKEventEditItem *)self event];
-  v2 = [v41 calendar];
-  v39 = [v2 source];
+  event = [(EKEventEditItem *)self event];
+  calendar = [event calendar];
+  source = [calendar source];
 
-  v3 = [v39 constraints];
-  v4 = [v3 supportsAvailabilityRequests];
+  constraints = [source constraints];
+  supportsAvailabilityRequests = [constraints supportsAvailabilityRequests];
 
-  v5 = [v41 attendees];
-  v38 = v5;
-  if (!v5)
+  attendees = [event attendees];
+  v38 = attendees;
+  if (!attendees)
   {
-    if (v4)
+    if (supportsAvailabilityRequests)
     {
 LABEL_9:
       v9 = kEKUILogHandle;
@@ -240,8 +240,8 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v6 = [v5 count];
-  if ((v4 & 1) == 0)
+  v6 = [attendees count];
+  if ((supportsAvailabilityRequests & 1) == 0)
   {
     goto LABEL_11;
   }
@@ -263,23 +263,23 @@ LABEL_14:
   v54 = 0x2020000000;
   v55 = 0;
   v43 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v41 isStartDateDirty])
+  if ([event isStartDateDirty])
   {
-    v8 = 1;
+    isEndDateDirty = 1;
   }
 
   else
   {
-    v8 = [v41 isEndDateDirty];
+    isEndDateDirty = [event isEndDateDirty];
   }
 
-  v11 = [v41 organizer];
+  organizer = [event organizer];
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v12 = [v41 attendees];
-  v13 = [v12 countByEnumeratingWithState:&v48 objects:v59 count:16];
+  attendees2 = [event attendees];
+  v13 = [attendees2 countByEnumeratingWithState:&v48 objects:v59 count:16];
   if (!v13)
   {
     v42 = 0;
@@ -295,7 +295,7 @@ LABEL_14:
     {
       if (*v49 != v14)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(attendees2);
       }
 
       v16 = *(*(&v48 + 1) + 8 * v15);
@@ -313,7 +313,7 @@ LABEL_14:
         goto LABEL_46;
       }
 
-      if (v11 && [v11 isEqualToParticipant:v16])
+      if (organizer && [organizer isEqualToParticipant:v16])
       {
         v17 = kEKUILogHandle;
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -329,30 +329,30 @@ LABEL_46:
         goto LABEL_42;
       }
 
-      if ((v8 & 1) != 0 || (EKUIAttendeeUtils_AttendeeHasResponded(v16) & 1) == 0)
+      if ((isEndDateDirty & 1) != 0 || (EKUIAttendeeUtils_AttendeeHasResponded(v16) & 1) == 0)
       {
         v23 = [v16 URL];
-        v24 = [v23 absoluteString];
+        absoluteString = [v23 absoluteString];
         v25 = kEKUILogHandle;
         if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEBUG))
         {
           *v57 = 138412290;
-          v58 = v24;
+          v58 = absoluteString;
           _os_log_impl(&dword_1D3400000, v25, OS_LOG_TYPE_DEBUG, "Attendee's conflict status is unknown.  Will issue availability request to determine if there is a conflict.  Attendee's address: [%@]", v57, 0xCu);
         }
 
-        if (v24)
+        if (absoluteString)
         {
-          [v43 addObject:v24];
+          [v43 addObject:absoluteString];
         }
       }
 
       else
       {
-        v20 = [v16 participantStatus];
+        participantStatus = [v16 participantStatus];
         v17 = kEKUILogHandle;
         v21 = os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG);
-        if (v20 != 3)
+        if (participantStatus != 3)
         {
           if (v21)
           {
@@ -381,7 +381,7 @@ LABEL_42:
     }
 
     while (v13 != v15);
-    v27 = [v12 countByEnumeratingWithState:&v48 objects:v59 count:16];
+    v27 = [attendees2 countByEnumeratingWithState:&v48 objects:v59 count:16];
     v13 = v27;
   }
 
@@ -406,9 +406,9 @@ LABEL_50:
     aBlock[4] = buf;
     v30 = _Block_copy(aBlock);
     v31 = objc_alloc(MEMORY[0x1E6966AE0]);
-    v32 = [v41 startDate];
-    v33 = [v41 endDateUnadjustedForLegacyClients];
-    v34 = [v31 initWithSource:v39 startDate:v32 endDate:v33 ignoredEvent:v41 addresses:v43 resultsBlock:v30];
+    startDate = [event startDate];
+    endDateUnadjustedForLegacyClients = [event endDateUnadjustedForLegacyClients];
+    v34 = [v31 initWithSource:source startDate:startDate endDate:endDateUnadjustedForLegacyClients ignoredEvent:event addresses:v43 resultsBlock:v30];
 
     objc_initWeak(&location, v34);
     v44[0] = MEMORY[0x1E69E9820];
@@ -601,21 +601,21 @@ LABEL_8:
   [v17 editItem:*(a1 + 48) wantsRowReload:v16];
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   v4 = [[EKUITableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
-  v5 = [(EKEventEditItem *)self event];
-  v6 = [v5 attendees];
-  v7 = [v6 count];
+  event = [(EKEventEditItem *)self event];
+  attendees = [event attendees];
+  v7 = [attendees count];
 
   if (v7)
   {
-    if ([MEMORY[0x1E6966988] availabilityPanelVisibilityForEvent:v5] || self->_numberOfConflicts < 1)
+    if ([MEMORY[0x1E6966988] availabilityPanelVisibilityForEvent:event] || self->_numberOfConflicts < 1)
     {
       v8 = MEMORY[0x1E6993398];
       selfOrganizer = self->_selfOrganizer;
       v9 = selfOrganizer;
-      v10 = [v8 attendeesWithoutSelfOrganizerAndLocationsWithEvent:v5 outSelfOrganizer:&selfOrganizer];
+      v10 = [v8 attendeesWithoutSelfOrganizerAndLocationsWithEvent:event outSelfOrganizer:&selfOrganizer];
       v11 = selfOrganizer;
       v12 = selfOrganizer;
 
@@ -630,7 +630,7 @@ LABEL_8:
       {
         [objc_opt_class() _noneInviteesLocalizedString];
       }
-      v14 = ;
+      _noneInviteesLocalizedString = ;
     }
 
     else
@@ -651,27 +651,27 @@ LABEL_8:
       }
 
       v20 = [v17 localizedStringForKey:v19 value:&stru_1F4EF6790 table:0];
-      v14 = [v16 localizedStringWithFormat:v20, v12];
+      _noneInviteesLocalizedString = [v16 localizedStringWithFormat:v20, v12];
 
-      v21 = [MEMORY[0x1E69DC888] systemRedColor];
-      v22 = [(EKUITableViewCell *)v4 detailTextLabel];
-      [v22 setTextColor:v21];
+      systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+      detailTextLabel = [(EKUITableViewCell *)v4 detailTextLabel];
+      [detailTextLabel setTextColor:systemRedColor];
     }
   }
 
   else
   {
-    v14 = [objc_opt_class() _noneInviteesLocalizedString];
+    _noneInviteesLocalizedString = [objc_opt_class() _noneInviteesLocalizedString];
   }
 
   [(EKUITableViewCell *)v4 setAccessoryType:1];
   v23 = EventKitUIBundle();
   v24 = [v23 localizedStringForKey:@"Invitees" value:&stru_1F4EF6790 table:0];
-  v25 = [(EKUITableViewCell *)v4 textLabel];
-  [v25 setText:v24];
+  textLabel = [(EKUITableViewCell *)v4 textLabel];
+  [textLabel setText:v24];
 
-  v26 = [(EKUITableViewCell *)v4 detailTextLabel];
-  [v26 setText:v14];
+  detailTextLabel2 = [(EKUITableViewCell *)v4 detailTextLabel];
+  [detailTextLabel2 setText:_noneInviteesLocalizedString];
 
   return v4;
 }
@@ -684,17 +684,17 @@ LABEL_8:
   return v3;
 }
 
-- (id)detailViewControllerWithFrame:(CGRect)a3 forSubitemAtIndex:(unint64_t)a4
+- (id)detailViewControllerWithFrame:(CGRect)frame forSubitemAtIndex:(unint64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(EKEventEditItem *)self event];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  event = [(EKEventEditItem *)self event];
   v10 = MEMORY[0x1E6993398];
   selfOrganizer = self->_selfOrganizer;
   v11 = selfOrganizer;
-  v12 = [v10 attendeesWithoutSelfOrganizerAndLocationsWithEvent:v9 outSelfOrganizer:&selfOrganizer];
+  v12 = [v10 attendeesWithoutSelfOrganizerAndLocationsWithEvent:event outSelfOrganizer:&selfOrganizer];
   v13 = selfOrganizer;
   v14 = selfOrganizer;
 
@@ -702,78 +702,78 @@ LABEL_8:
   if ([v12 count])
   {
     v15 = [EKUIEventInviteesEditViewController alloc];
-    v16 = [(EKEventEditItem *)self event];
-    v17 = [(EKUIEventInviteesEditViewController *)v15 initWithEvent:v16];
+    event2 = [(EKEventEditItem *)self event];
+    v17 = [(EKUIEventInviteesEditViewController *)v15 initWithEvent:event2];
   }
 
   else
   {
-    v18 = [[EKEventAttendeesEditViewController alloc] initWithFrame:v9 event:0 overriddenEventStartDate:0 overriddenEventEndDate:x, y, width, height];
-    v17 = v18;
+    height = [[EKEventAttendeesEditViewController alloc] initWithFrame:event event:0 overriddenEventStartDate:0 overriddenEventEndDate:x, y, width, height];
+    v17 = height;
     if (self->_searchAccountID)
     {
-      [(EKEventAttendeesEditViewController *)v18 setSearchAccountID:?];
+      [(EKEventAttendeesEditViewController *)height setSearchAccountID:?];
     }
   }
 
   return v17;
 }
 
-- (id)injectableViewControllerWithFrame:(CGRect)a3 forSubitemAtIndex:(unint64_t)a4
+- (id)injectableViewControllerWithFrame:(CGRect)frame forSubitemAtIndex:(unint64_t)index
 {
   v5 = [EKUIEventInviteesEditViewController alloc];
-  v6 = [(EKEventEditItem *)self event];
-  v7 = [(EKUIEventInviteesEditViewController *)v5 initWithEvent:v6];
+  event = [(EKEventEditItem *)self event];
+  v7 = [(EKUIEventInviteesEditViewController *)v5 initWithEvent:event];
 
   return v7;
 }
 
-- (void)editor:(id)a3 didSelectSubitem:(unint64_t)a4
+- (void)editor:(id)editor didSelectSubitem:(unint64_t)subitem
 {
-  v6 = a3;
-  [v6 setHasModifiedAttendeesFromSuggestion:0];
+  editorCopy = editor;
+  [editorCopy setHasModifiedAttendeesFromSuggestion:0];
   v7.receiver = self;
   v7.super_class = EKEventAttendeesEditItem;
-  [(EKCalendarItemEditItem *)&v7 editor:v6 didSelectSubitem:a4];
+  [(EKCalendarItemEditItem *)&v7 editor:editorCopy didSelectSubitem:subitem];
 }
 
-- (BOOL)editItemViewControllerSave:(id)a3
+- (BOOL)editItemViewControllerSave:(id)save
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  saveCopy = save;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(EKEventEditItem *)self event];
-    v6 = [v5 calendar];
+    event = [(EKEventEditItem *)self event];
+    calendar = [event calendar];
 
-    v7 = [v4 attendees];
-    v8 = [(EKEventEditItem *)self event];
-    v9 = [v8 attendees];
-    v10 = v9;
+    attendees = [saveCopy attendees];
+    event2 = [(EKEventEditItem *)self event];
+    attendees2 = [event2 attendees];
+    v10 = attendees2;
     v11 = MEMORY[0x1E695E0F0];
-    if (v9)
+    if (attendees2)
     {
-      v11 = v9;
+      v11 = attendees2;
     }
 
     v12 = v11;
 
-    v13 = [v7 count];
-    if (([v6 sharingStatus] != 2 || (-[EKEventEditItem event](self, "event"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "organizer"), v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15)) && self->_selfOrganizer && v13)
+    v13 = [attendees count];
+    if (([calendar sharingStatus] != 2 || (-[EKEventEditItem event](self, "event"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "organizer"), v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15)) && self->_selfOrganizer && v13)
     {
       v16 = [MEMORY[0x1E695DF70] arrayWithArray:v12];
       [v16 addObject:self->_selfOrganizer];
-      [v16 addObjectsFromArray:v7];
+      [v16 addObjectsFromArray:attendees];
     }
 
     else
     {
-      v16 = [v7 arrayByAddingObjectsFromArray:v12];
+      v16 = [attendees arrayByAddingObjectsFromArray:v12];
     }
 
-    v21 = [(EKEventEditItem *)self event];
-    [v21 setAttendees:v16];
+    event3 = [(EKEventEditItem *)self event];
+    [event3 setAttendees:v16];
   }
 
   else
@@ -781,13 +781,13 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = v4;
-      v18 = [v17 selectedStartDate];
-      v19 = [v17 selectedEndDate];
+      v17 = saveCopy;
+      selectedStartDate = [v17 selectedStartDate];
+      selectedEndDate = [v17 selectedEndDate];
 
-      v20 = [(EKEventEditItem *)self event];
-      [v20 setStartDate:v18];
-      [v20 setEndDateUnadjustedForLegacyClients:v19];
+      event4 = [(EKEventEditItem *)self event];
+      [event4 setStartDate:selectedStartDate];
+      [event4 setEndDateUnadjustedForLegacyClients:selectedEndDate];
     }
 
     else
@@ -799,7 +799,7 @@ LABEL_8:
         if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
         {
           v24 = 138412290;
-          v25 = v4;
+          v25 = saveCopy;
           _os_log_impl(&dword_1D3400000, v23, OS_LOG_TYPE_ERROR, "Unrecognized controller saved: [%@]", &v24, 0xCu);
         }
       }

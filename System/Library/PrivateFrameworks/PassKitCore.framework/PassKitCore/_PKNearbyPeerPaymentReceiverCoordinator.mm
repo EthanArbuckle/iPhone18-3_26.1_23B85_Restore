@@ -1,16 +1,16 @@
 @interface _PKNearbyPeerPaymentReceiverCoordinator
 - (_PKNearbyPeerPaymentReceiverCoordinator)init;
-- (_PKNearbyPeerPaymentReceiverCoordinator)initWithSenderMetadata:(id)a3;
-- (void)nearbyReceiverRequiresConfirmationWithContactID:(NSString *)a3 completionHandler:(id)a4;
-- (void)recipientMetadataWithAppearanceData:(PKPeerPaymentProfileAppearanceData *)a3 nonce:(NSString *)a4 completionHandler:(id)a5;
-- (void)validateTransactionWithResult:(NSData *)a3 completionHandler:(id)a4;
+- (_PKNearbyPeerPaymentReceiverCoordinator)initWithSenderMetadata:(id)metadata;
+- (void)nearbyReceiverRequiresConfirmationWithContactID:(NSString *)d completionHandler:(id)handler;
+- (void)recipientMetadataWithAppearanceData:(PKPeerPaymentProfileAppearanceData *)data nonce:(NSString *)nonce completionHandler:(id)handler;
+- (void)validateTransactionWithResult:(NSData *)result completionHandler:(id)handler;
 @end
 
 @implementation _PKNearbyPeerPaymentReceiverCoordinator
 
-- (_PKNearbyPeerPaymentReceiverCoordinator)initWithSenderMetadata:(id)a3
+- (_PKNearbyPeerPaymentReceiverCoordinator)initWithSenderMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = sub_1ADB05D70();
   v7 = v6;
 
@@ -19,9 +19,9 @@
   {
     v9 = result;
     v10 = OBJC_IVAR____PKNearbyPeerPaymentReceiverCoordinator_peerPaymentAccount;
-    v11 = [(_PKNearbyPeerPaymentReceiverCoordinator *)result account];
+    account = [(_PKNearbyPeerPaymentReceiverCoordinator *)result account];
 
-    *(&self->super.isa + v10) = v11;
+    *(&self->super.isa + v10) = account;
     *(&self->super.isa + OBJC_IVAR____PKNearbyPeerPaymentReceiverCoordinator____lazy_storage___amountFormatter) = 0;
     v12 = (self + OBJC_IVAR____PKNearbyPeerPaymentReceiverCoordinator_senderMetadata);
     *v12 = v5;
@@ -39,14 +39,14 @@
   return result;
 }
 
-- (void)nearbyReceiverRequiresConfirmationWithContactID:(NSString *)a3 completionHandler:(id)a4
+- (void)nearbyReceiverRequiresConfirmationWithContactID:(NSString *)d completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB598840);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = d;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1ADB06720();
@@ -61,20 +61,20 @@
   v14[3] = 0;
   v14[4] = &unk_1ADB83ED8;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  dCopy = d;
+  selfCopy = self;
   sub_1AD4BBDF0(0, 0, v9, &unk_1ADB83EE0, v14);
 }
 
-- (void)recipientMetadataWithAppearanceData:(PKPeerPaymentProfileAppearanceData *)a3 nonce:(NSString *)a4 completionHandler:(id)a5
+- (void)recipientMetadataWithAppearanceData:(PKPeerPaymentProfileAppearanceData *)data nonce:(NSString *)nonce completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB598840);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v11 = &v20 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = data;
+  v13[3] = nonce;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_1ADB06720();
@@ -89,20 +89,20 @@
   v16[3] = 0;
   v16[4] = &unk_1ADB83EB8;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
+  dataCopy = data;
+  nonceCopy = nonce;
+  selfCopy = self;
   sub_1AD4BBDF0(0, 0, v11, &unk_1ADB83EC0, v16);
 }
 
-- (void)validateTransactionWithResult:(NSData *)a3 completionHandler:(id)a4
+- (void)validateTransactionWithResult:(NSData *)result completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB598840);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = result;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1ADB06720();
@@ -117,8 +117,8 @@
   v14[3] = 0;
   v14[4] = &unk_1ADB78B48;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  resultCopy = result;
+  selfCopy = self;
   sub_1AD4BBDF0(0, 0, v9, &unk_1ADB78B50, v14);
 }
 

@@ -1,40 +1,40 @@
 @interface IDSTransactionLogMessage
-+ (id)transactionLogMessageFromDictionaryRepresentation:(id)a3;
-- (IDSTransactionLogMessage)initWithDictionaryRepresentation:(id)a3;
++ (id)transactionLogMessageFromDictionaryRepresentation:(id)representation;
+- (IDSTransactionLogMessage)initWithDictionaryRepresentation:(id)representation;
 - (id)_dictionaryRepresentation;
-- (id)_initWithAccountUniqueID:(id)a3 fromID:(id)a4 loginID:(id)a5 serviceName:(id)a6;
+- (id)_initWithAccountUniqueID:(id)d fromID:(id)iD loginID:(id)loginID serviceName:(id)name;
 @end
 
 @implementation IDSTransactionLogMessage
 
-- (id)_initWithAccountUniqueID:(id)a3 fromID:(id)a4 loginID:(id)a5 serviceName:(id)a6
+- (id)_initWithAccountUniqueID:(id)d fromID:(id)iD loginID:(id)loginID serviceName:(id)name
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  loginIDCopy = loginID;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = IDSTransactionLogMessage;
   v15 = [(IDSTransactionLogMessage *)&v18 init];
   p_isa = &v15->super.isa;
   if (v15)
   {
-    objc_storeStrong(&v15->_accountUniqueID, a3);
-    objc_storeStrong(p_isa + 1, a4);
-    objc_storeStrong(p_isa + 2, a5);
-    objc_storeStrong(p_isa + 4, a6);
+    objc_storeStrong(&v15->_accountUniqueID, d);
+    objc_storeStrong(p_isa + 1, iD);
+    objc_storeStrong(p_isa + 2, loginID);
+    objc_storeStrong(p_isa + 4, name);
   }
 
   return p_isa;
 }
 
-- (IDSTransactionLogMessage)initWithDictionaryRepresentation:(id)a3
+- (IDSTransactionLogMessage)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"IDSTransactionLogMessageAccountUniqueIDKey"];
-  v6 = [v4 objectForKeyedSubscript:@"IDSTransactionLogMessageFromIDKey"];
-  v7 = [v4 objectForKeyedSubscript:@"IDSTransactionLogMessageLoginIDKey"];
-  v8 = [v4 objectForKeyedSubscript:@"IDSTransactionLogMessageServiceNameKey"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"IDSTransactionLogMessageAccountUniqueIDKey"];
+  v6 = [representationCopy objectForKeyedSubscript:@"IDSTransactionLogMessageFromIDKey"];
+  v7 = [representationCopy objectForKeyedSubscript:@"IDSTransactionLogMessageLoginIDKey"];
+  v8 = [representationCopy objectForKeyedSubscript:@"IDSTransactionLogMessageServiceNameKey"];
 
   v9 = [(IDSTransactionLogMessage *)self _initWithAccountUniqueID:v5 fromID:v6 loginID:v7 serviceName:v8];
   return v9;
@@ -43,51 +43,51 @@
 - (id)_dictionaryRepresentation
 {
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:5];
-  v4 = [(IDSTransactionLogMessage *)self accountUniqueID];
+  accountUniqueID = [(IDSTransactionLogMessage *)self accountUniqueID];
 
-  if (v4)
+  if (accountUniqueID)
   {
-    v5 = [(IDSTransactionLogMessage *)self accountUniqueID];
-    [v3 setObject:v5 forKeyedSubscript:@"IDSTransactionLogMessageAccountUniqueIDKey"];
+    accountUniqueID2 = [(IDSTransactionLogMessage *)self accountUniqueID];
+    [v3 setObject:accountUniqueID2 forKeyedSubscript:@"IDSTransactionLogMessageAccountUniqueIDKey"];
   }
 
-  v6 = [(IDSTransactionLogMessage *)self fromID];
+  fromID = [(IDSTransactionLogMessage *)self fromID];
 
-  if (v6)
+  if (fromID)
   {
-    v7 = [(IDSTransactionLogMessage *)self fromID];
-    [v3 setObject:v7 forKeyedSubscript:@"IDSTransactionLogMessageFromIDKey"];
+    fromID2 = [(IDSTransactionLogMessage *)self fromID];
+    [v3 setObject:fromID2 forKeyedSubscript:@"IDSTransactionLogMessageFromIDKey"];
   }
 
-  v8 = [(IDSTransactionLogMessage *)self loginID];
+  loginID = [(IDSTransactionLogMessage *)self loginID];
 
-  if (v8)
+  if (loginID)
   {
-    v9 = [(IDSTransactionLogMessage *)self loginID];
-    [v3 setObject:v9 forKeyedSubscript:@"IDSTransactionLogMessageLoginIDKey"];
+    loginID2 = [(IDSTransactionLogMessage *)self loginID];
+    [v3 setObject:loginID2 forKeyedSubscript:@"IDSTransactionLogMessageLoginIDKey"];
   }
 
-  v10 = [(IDSTransactionLogMessage *)self serviceName];
+  serviceName = [(IDSTransactionLogMessage *)self serviceName];
 
-  if (v10)
+  if (serviceName)
   {
-    v11 = [(IDSTransactionLogMessage *)self serviceName];
-    [v3 setObject:v11 forKeyedSubscript:@"IDSTransactionLogMessageServiceNameKey"];
+    serviceName2 = [(IDSTransactionLogMessage *)self serviceName];
+    [v3 setObject:serviceName2 forKeyedSubscript:@"IDSTransactionLogMessageServiceNameKey"];
   }
 
   return v3;
 }
 
-+ (id)transactionLogMessageFromDictionaryRepresentation:(id)a3
++ (id)transactionLogMessageFromDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
-  if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  representationCopy = representation;
+  if (!representationCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v6 = 0;
     goto LABEL_9;
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"IDSTransactionLogMessageDictionaryValueKey"];
+  v4 = [representationCopy objectForKeyedSubscript:@"IDSTransactionLogMessageDictionaryValueKey"];
 
   if (v4)
   {
@@ -96,7 +96,7 @@
 
   else
   {
-    v6 = [v3 objectForKeyedSubscript:@"IDSTransactionLogMessageDataValueKey"];
+    v6 = [representationCopy objectForKeyedSubscript:@"IDSTransactionLogMessageDataValueKey"];
 
     if (!v6)
     {
@@ -106,7 +106,7 @@
     v5 = off_1E743D590;
   }
 
-  v6 = [objc_alloc(*v5) initWithDictionaryRepresentation:v3];
+  v6 = [objc_alloc(*v5) initWithDictionaryRepresentation:representationCopy];
 LABEL_9:
 
   return v6;

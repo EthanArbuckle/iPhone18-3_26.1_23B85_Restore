@@ -1,20 +1,20 @@
 @interface PhotosControlArbitraryPersistentContainer
-+ (void)setDefaultDirectoryURL:(id)a3;
++ (void)setDefaultDirectoryURL:(id)l;
 @end
 
 @implementation PhotosControlArbitraryPersistentContainer
 
-+ (void)setDefaultDirectoryURL:(id)a3
++ (void)setDefaultDirectoryURL:(id)l
 {
-  v5 = a3;
-  if (!v5)
+  lCopy = l;
+  if (!lCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"PhotosControlPhotoLibraryCommand.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"url"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PhotosControlPhotoLibraryCommand.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"url"}];
   }
 
   v6 = s_directoryURL;
-  s_directoryURL = v5;
+  s_directoryURL = lCopy;
 }
 
 @end

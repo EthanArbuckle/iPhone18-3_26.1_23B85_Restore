@@ -7,7 +7,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     LoadGameControllerUIFramework(1);

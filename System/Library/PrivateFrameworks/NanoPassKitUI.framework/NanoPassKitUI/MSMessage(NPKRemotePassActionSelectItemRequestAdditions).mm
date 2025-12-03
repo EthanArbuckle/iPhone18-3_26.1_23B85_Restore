@@ -6,7 +6,7 @@
 
 - (NPKRemotePassActionSelectItemRequest)selectItemRequest
 {
-  v1 = [[NPKRemotePassActionSelectItemRequest alloc] initWithUnderlyingMessage:a1];
+  v1 = [[NPKRemotePassActionSelectItemRequest alloc] initWithUnderlyingMessage:self];
 
   return v1;
 }

@@ -1,15 +1,15 @@
 @interface HFAnalyticsNetworkSymptomsSummaryEvent
-- (HFAnalyticsNetworkSymptomsSummaryEvent)initWithData:(id)a3;
+- (HFAnalyticsNetworkSymptomsSummaryEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsNetworkSymptomsSummaryEvent
 
-- (HFAnalyticsNetworkSymptomsSummaryEvent)initWithData:(id)a3
+- (HFAnalyticsNetworkSymptomsSummaryEvent)initWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v4 = [v3 objectForKeyedSubscript:@"anySymptom"];
+  v4 = [dataCopy objectForKeyedSubscript:@"anySymptom"];
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -28,7 +28,7 @@
   }
 
   objc_opt_class();
-  v7 = [v3 objectForKeyedSubscript:@"symptomMisconfigurationDoubleNAT"];
+  v7 = [dataCopy objectForKeyedSubscript:@"symptomMisconfigurationDoubleNAT"];
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -47,7 +47,7 @@
   }
 
   objc_opt_class();
-  v10 = [v3 objectForKeyedSubscript:@"symptomMisconfigurationPeerToPeer"];
+  v10 = [dataCopy objectForKeyedSubscript:@"symptomMisconfigurationPeerToPeer"];
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -66,7 +66,7 @@
   }
 
   objc_opt_class();
-  v13 = [v3 objectForKeyedSubscript:@"symptomMisconfigurationMultipleNetworks"];
+  v13 = [dataCopy objectForKeyedSubscript:@"symptomMisconfigurationMultipleNetworks"];
   if (objc_opt_isKindOfClass())
   {
     v14 = v13;
@@ -85,7 +85,7 @@
   }
 
   objc_opt_class();
-  v16 = [v3 objectForKeyedSubscript:@"symptomDHCPAcquisitionFailure"];
+  v16 = [dataCopy objectForKeyedSubscript:@"symptomDHCPAcquisitionFailure"];
   if (objc_opt_isKindOfClass())
   {
     v17 = v16;
@@ -104,7 +104,7 @@
   }
 
   objc_opt_class();
-  v19 = [v3 objectForKeyedSubscript:@"symptomDNSServerOutage"];
+  v19 = [dataCopy objectForKeyedSubscript:@"symptomDNSServerOutage"];
   if (objc_opt_isKindOfClass())
   {
     v20 = v19;
@@ -123,7 +123,7 @@
   }
 
   objc_opt_class();
-  v22 = [v3 objectForKeyedSubscript:@"symptomMisconfigurationUnknown"];
+  v22 = [dataCopy objectForKeyedSubscript:@"symptomMisconfigurationUnknown"];
   if (objc_opt_isKindOfClass())
   {
     v23 = v22;
@@ -142,7 +142,7 @@
   }
 
   objc_opt_class();
-  v25 = [v3 objectForKeyedSubscript:@"symptomWifiDisassociation"];
+  v25 = [dataCopy objectForKeyedSubscript:@"symptomWifiDisassociation"];
   if (objc_opt_isKindOfClass())
   {
     v26 = v25;
@@ -182,8 +182,8 @@
 {
   v14.receiver = self;
   v14.super_class = HFAnalyticsNetworkSymptomsSummaryEvent;
-  v3 = [(HFAnalyticsEvent *)&v14 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v14 payload];
+  v4 = [payload mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[HFAnalyticsNetworkSymptomsSummaryEvent anySymptom](self, "anySymptom")}];
   [v4 setObject:v5 forKeyedSubscript:@"anySymptom"];

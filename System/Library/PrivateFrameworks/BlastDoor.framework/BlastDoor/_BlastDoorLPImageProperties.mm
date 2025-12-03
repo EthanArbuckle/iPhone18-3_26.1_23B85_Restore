@@ -1,26 +1,26 @@
 @interface _BlastDoorLPImageProperties
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation _BlastDoorLPImageProperties
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_BlastDoorLPImageProperties allocWithZone:a3];
+  v4 = [_BlastDoorLPImageProperties allocWithZone:zone];
   if (v4)
   {
-    v5 = [(_BlastDoorLPImageProperties *)self accessibilityText];
-    v6 = [v5 copy];
+    accessibilityText = [(_BlastDoorLPImageProperties *)self accessibilityText];
+    v6 = [accessibilityText copy];
     [(_BlastDoorLPImageProperties *)v4 setAccessibilityText:v6];
 
     [(_BlastDoorLPImageProperties *)v4 setType:[(_BlastDoorLPImageProperties *)self type]];
-    v7 = [(_BlastDoorLPImageProperties *)self overlaidTextColor];
-    [(_BlastDoorLPImageProperties *)v4 setOverlaidTextColor:v7];
+    overlaidTextColor = [(_BlastDoorLPImageProperties *)self overlaidTextColor];
+    [(_BlastDoorLPImageProperties *)v4 setOverlaidTextColor:overlaidTextColor];
 
-    v8 = [(_BlastDoorLPImageProperties *)self dominantColor];
-    [(_BlastDoorLPImageProperties *)v4 setDominantColor:v8];
+    dominantColor = [(_BlastDoorLPImageProperties *)self dominantColor];
+    [(_BlastDoorLPImageProperties *)v4 setDominantColor:dominantColor];
 
     v9 = v4;
   }
@@ -28,13 +28,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = _BlastDoorLPImageProperties;
-  if ([(_BlastDoorLPImageProperties *)&v12 isEqual:v4])
+  if ([(_BlastDoorLPImageProperties *)&v12 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -44,7 +44,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6[1];
       if ((!(v7 | self->_accessibilityText) || [v7 isEqual:?]) && v6[2] == self->_type && ((v8 = v6[3], !(v8 | self->_overlaidTextColor)) || objc_msgSend(v8, "isEqual:")))
       {

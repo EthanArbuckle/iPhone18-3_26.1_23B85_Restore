@@ -1,8 +1,8 @@
 @interface SPCacheMessage
-+ (id)fromProto:(id)a3;
-+ (id)toProto:(id)a3;
++ (id)fromProto:(id)proto;
++ (id)toProto:(id)proto;
 - (SPCacheMessage)init;
-- (SPCacheMessage)initWithDictionary:(id)a3;
+- (SPCacheMessage)initWithDictionary:(id)dictionary;
 @end
 
 @implementation SPCacheMessage
@@ -14,71 +14,71 @@
   return [(SPCacheMessage *)&v3 init];
 }
 
-- (SPCacheMessage)initWithDictionary:(id)a3
+- (SPCacheMessage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = SPCacheMessage;
   v5 = [(SPCacheMessage *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"cmsg"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"cmsg"];
 
     if (v6)
     {
-      v7 = [v4 objectForKeyedSubscript:@"cmsg"];
+      v7 = [dictionaryCopy objectForKeyedSubscript:@"cmsg"];
       v5->_messageType = [v7 unsignedIntValue];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"t"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"t"];
 
     if (v8)
     {
-      v9 = [v4 objectForKeyedSubscript:@"t"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"t"];
       v5->_cacheType = [v9 unsignedIntValue];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"a"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"a"];
 
     if (v10)
     {
-      v11 = [v4 objectForKeyedSubscript:@"a"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"a"];
       assetKey = v5->_assetKey;
       v5->_assetKey = v11;
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"d"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"d"];
 
     if (v13)
     {
-      v14 = [v4 objectForKeyedSubscript:@"d"];
+      v14 = [dictionaryCopy objectForKeyedSubscript:@"d"];
       assetData = v5->_assetData;
       v5->_assetData = v14;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"i"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"i"];
 
     if (v16)
     {
-      v17 = [v4 objectForKeyedSubscript:@"i"];
+      v17 = [dictionaryCopy objectForKeyedSubscript:@"i"];
       gizmoCacheIdentifier = v5->_gizmoCacheIdentifier;
       v5->_gizmoCacheIdentifier = v17;
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"s"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"s"];
 
     if (v19)
     {
-      v20 = [v4 objectForKeyedSubscript:@"s"];
+      v20 = [dictionaryCopy objectForKeyedSubscript:@"s"];
       syncData = v5->_syncData;
       v5->_syncData = v20;
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"e"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"e"];
 
     if (v22)
     {
-      v23 = [v4 objectForKeyedSubscript:@"e"];
+      v23 = [dictionaryCopy objectForKeyedSubscript:@"e"];
       v5->_error = [v23 integerValue];
     }
   }
@@ -86,84 +86,84 @@
   return v5;
 }
 
-+ (id)toProto:(id)a3
++ (id)toProto:(id)proto
 {
-  v3 = a3;
+  protoCopy = proto;
   v4 = objc_alloc_init(SPProtoCacheMessage);
-  -[SPProtoCacheMessage setMessageType:](v4, "setMessageType:", [v3 messageType]);
-  -[SPProtoCacheMessage setCacheType:](v4, "setCacheType:", [v3 cacheType]);
-  v5 = [v3 assetKey];
+  -[SPProtoCacheMessage setMessageType:](v4, "setMessageType:", [protoCopy messageType]);
+  -[SPProtoCacheMessage setCacheType:](v4, "setCacheType:", [protoCopy cacheType]);
+  assetKey = [protoCopy assetKey];
 
-  if (v5)
+  if (assetKey)
   {
-    v6 = [v3 assetKey];
-    [(SPProtoCacheMessage *)v4 setAssetKey:v6];
+    assetKey2 = [protoCopy assetKey];
+    [(SPProtoCacheMessage *)v4 setAssetKey:assetKey2];
   }
 
-  v7 = [v3 gizmoCacheIdentifier];
+  gizmoCacheIdentifier = [protoCopy gizmoCacheIdentifier];
 
-  if (v7)
+  if (gizmoCacheIdentifier)
   {
-    v8 = [v3 gizmoCacheIdentifier];
-    [(SPProtoCacheMessage *)v4 setGizmoCacheIdentifier:v8];
+    gizmoCacheIdentifier2 = [protoCopy gizmoCacheIdentifier];
+    [(SPProtoCacheMessage *)v4 setGizmoCacheIdentifier:gizmoCacheIdentifier2];
   }
 
-  v9 = [v3 assetData];
+  assetData = [protoCopy assetData];
 
-  if (v9)
+  if (assetData)
   {
-    v10 = [v3 assetData];
-    [(SPProtoCacheMessage *)v4 setAssetData:v10];
+    assetData2 = [protoCopy assetData];
+    [(SPProtoCacheMessage *)v4 setAssetData:assetData2];
   }
 
-  v11 = [v3 syncData];
+  syncData = [protoCopy syncData];
 
-  if (v11)
+  if (syncData)
   {
-    v12 = [v3 syncData];
-    v13 = [SPAssetCacheSyncData toProto:v12];
+    syncData2 = [protoCopy syncData];
+    v13 = [SPAssetCacheSyncData toProto:syncData2];
     [(SPProtoCacheMessage *)v4 setSyncData:v13];
   }
 
   return v4;
 }
 
-+ (id)fromProto:(id)a3
++ (id)fromProto:(id)proto
 {
-  v3 = a3;
+  protoCopy = proto;
   v4 = objc_alloc_init(SPCacheMessage);
-  -[SPCacheMessage setMessageType:](v4, "setMessageType:", [v3 messageType]);
-  -[SPCacheMessage setCacheType:](v4, "setCacheType:", [v3 cacheType]);
-  v5 = [v3 assetKey];
+  -[SPCacheMessage setMessageType:](v4, "setMessageType:", [protoCopy messageType]);
+  -[SPCacheMessage setCacheType:](v4, "setCacheType:", [protoCopy cacheType]);
+  assetKey = [protoCopy assetKey];
 
-  if (v5)
+  if (assetKey)
   {
-    v6 = [v3 assetKey];
-    [(SPCacheMessage *)v4 setAssetKey:v6];
+    assetKey2 = [protoCopy assetKey];
+    [(SPCacheMessage *)v4 setAssetKey:assetKey2];
   }
 
-  v7 = [v3 gizmoCacheIdentifier];
+  gizmoCacheIdentifier = [protoCopy gizmoCacheIdentifier];
 
-  if (v7)
+  if (gizmoCacheIdentifier)
   {
-    v8 = [v3 gizmoCacheIdentifier];
-    [(SPCacheMessage *)v4 setGizmoCacheIdentifier:v8];
+    gizmoCacheIdentifier2 = [protoCopy gizmoCacheIdentifier];
+    [(SPCacheMessage *)v4 setGizmoCacheIdentifier:gizmoCacheIdentifier2];
   }
 
-  v9 = [v3 assetData];
+  assetData = [protoCopy assetData];
 
-  if (v9)
+  if (assetData)
   {
-    v10 = [v3 assetData];
-    [(SPCacheMessage *)v4 setAssetData:v10];
+    assetData2 = [protoCopy assetData];
+    [(SPCacheMessage *)v4 setAssetData:assetData2];
   }
 
-  v11 = [v3 syncData];
+  syncData = [protoCopy syncData];
 
-  if (v11)
+  if (syncData)
   {
-    v12 = [v3 syncData];
-    v13 = [SPAssetCacheSyncData fromProto:v12];
+    syncData2 = [protoCopy syncData];
+    v13 = [SPAssetCacheSyncData fromProto:syncData2];
     [(SPCacheMessage *)v4 setSyncData:v13];
   }
 

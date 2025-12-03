@@ -1,6 +1,6 @@
 @interface SCWDatabaseMemoryStore
 - (SCWDatabaseMemoryStore)init;
-- (id)zoneStoreForSchema:(id)a3;
+- (id)zoneStoreForSchema:(id)schema;
 @end
 
 @implementation SCWDatabaseMemoryStore
@@ -20,19 +20,19 @@
   return v2;
 }
 
-- (id)zoneStoreForSchema:(id)a3
+- (id)zoneStoreForSchema:(id)schema
 {
-  v4 = a3;
-  v5 = [(SCWDatabaseMemoryStore *)self zoneStoresByName];
-  v6 = [v4 zoneName];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  schemaCopy = schema;
+  zoneStoresByName = [(SCWDatabaseMemoryStore *)self zoneStoresByName];
+  zoneName = [schemaCopy zoneName];
+  v7 = [zoneStoresByName objectForKeyedSubscript:zoneName];
 
   if (!v7)
   {
     v7 = objc_alloc_init(SCWZoneMemoryStore);
-    v8 = [(SCWDatabaseMemoryStore *)self zoneStoresByName];
-    v9 = [v4 zoneName];
-    [v8 setObject:v7 forKeyedSubscript:v9];
+    zoneStoresByName2 = [(SCWDatabaseMemoryStore *)self zoneStoresByName];
+    zoneName2 = [schemaCopy zoneName];
+    [zoneStoresByName2 setObject:v7 forKeyedSubscript:zoneName2];
   }
 
   return v7;

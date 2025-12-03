@@ -1,6 +1,6 @@
 @interface ShareModelStoryActivity
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (NSString)activityTitle;
 - (NSString)activityType;
 - (_TtC5Music23ShareModelStoryActivity)init;
@@ -11,7 +11,7 @@
 
 - (NSString)activityType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = String._bridgeToObjectiveC()();
 
   return v3;
@@ -32,25 +32,25 @@
   return v2;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_100552BCC();
 
   return v4 & 1;
 }
 
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   if (v7)
   {
     *(swift_allocObject() + 16) = v7;
     v7 = sub_100115508;
   }
 
-  v8 = a3;
-  v9 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v10 = sub_100552D10();
   sub_100020438(v7);
 

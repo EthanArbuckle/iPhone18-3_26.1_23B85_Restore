@@ -1,37 +1,37 @@
 @interface EXReadState
-- (EXReadState)initWithWorkbookPart:(id)a3 cancelDelegate:(id)a4;
+- (EXReadState)initWithWorkbookPart:(id)part cancelDelegate:(id)delegate;
 - (id).cxx_construct;
-- (id)authorForReference:(id)a3;
+- (id)authorForReference:(id)reference;
 - (id)columnWidthConvertor;
-- (id)textBoxForReference:(id)a3;
-- (unint64_t)sharedBaseFormulaIndexWithIndex:(int64_t)a3;
-- (void)addSharedBaseFormulaIndex:(unint64_t)a3 withIndex:(int64_t)a4;
-- (void)reportWarning:(id)a3;
-- (void)reportWorksheetWarning:(id)a3;
+- (id)textBoxForReference:(id)reference;
+- (unint64_t)sharedBaseFormulaIndexWithIndex:(int64_t)index;
+- (void)addSharedBaseFormulaIndex:(unint64_t)index withIndex:(int64_t)withIndex;
+- (void)reportWarning:(id)warning;
+- (void)reportWorksheetWarning:(id)warning;
 - (void)resetForNewSheet;
-- (void)setCurrentPart:(id)a3;
-- (void)setCurrentSheet:(id)a3;
-- (void)setOfficeArtState:(id)a3;
-- (void)setSheetDimension:(id)a3;
-- (void)setTextBox:(id)a3 author:(id)a4 forReference:(id)a5;
-- (void)setWorkbook:(id)a3;
-- (void)setupNSForXMLFormat:(int)a3;
+- (void)setCurrentPart:(id)part;
+- (void)setCurrentSheet:(id)sheet;
+- (void)setOfficeArtState:(id)state;
+- (void)setSheetDimension:(id)dimension;
+- (void)setTextBox:(id)box author:(id)author forReference:(id)reference;
+- (void)setWorkbook:(id)workbook;
+- (void)setupNSForXMLFormat:(int)format;
 @end
 
 @implementation EXReadState
 
-- (EXReadState)initWithWorkbookPart:(id)a3 cancelDelegate:(id)a4
+- (EXReadState)initWithWorkbookPart:(id)part cancelDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  partCopy = part;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = EXReadState;
   v9 = [(OCXState *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mWorkbookPart, a3);
-    objc_storeStrong(&v10->mCancelDelegate, a4);
+    objc_storeStrong(&v9->mWorkbookPart, part);
+    objc_storeStrong(&v10->mCancelDelegate, delegate);
     v10->mCurrentSheetIndex = 0;
     v10->mCellStyleXfsOffset = 0;
     v10->mDefaultColumnWidth = -1.0;
@@ -69,47 +69,47 @@
   return v10;
 }
 
-- (void)setWorkbook:(id)a3
+- (void)setWorkbook:(id)workbook
 {
-  v9 = a3;
-  objc_storeStrong(&self->mWorkbook, a3);
+  workbookCopy = workbook;
+  objc_storeStrong(&self->mWorkbook, workbook);
   mOfficeArtState = self->mOfficeArtState;
-  v6 = [v9 blips];
-  [(OAXDrawingState *)mOfficeArtState setTargetBlipCollection:v6];
+  blips = [workbookCopy blips];
+  [(OAXDrawingState *)mOfficeArtState setTargetBlipCollection:blips];
 
   v7 = self->mOfficeArtState;
-  v8 = [v9 bulletBlips];
-  [(OAXDrawingState *)v7 setTargetBulletBlipArray:v8];
+  bulletBlips = [workbookCopy bulletBlips];
+  [(OAXDrawingState *)v7 setTargetBulletBlipArray:bulletBlips];
 }
 
-- (void)setCurrentSheet:(id)a3
+- (void)setCurrentSheet:(id)sheet
 {
-  v5 = a3;
-  if (self->mCurrentSheet != v5)
+  sheetCopy = sheet;
+  if (self->mCurrentSheet != sheetCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->mCurrentSheet, a3);
+    v7 = sheetCopy;
+    objc_storeStrong(&self->mCurrentSheet, sheet);
     p_mSharedFormulasMap = &self->mSharedFormulasMap;
     std::__tree<TSUFlushableObjectInfo *,TSUFlushableObjectInfoPointerFlushingOrderLess,std::allocator<TSUFlushableObjectInfo *>>::destroy(p_mSharedFormulasMap, p_mSharedFormulasMap->__tree_.__end_node_.__left_);
-    v5 = v7;
+    sheetCopy = v7;
     p_mSharedFormulasMap->__tree_.__begin_node_ = &p_mSharedFormulasMap->__tree_.__end_node_;
     p_mSharedFormulasMap->__tree_.__size_ = 0;
     p_mSharedFormulasMap->__tree_.__end_node_.__left_ = 0;
   }
 }
 
-- (void)setCurrentPart:(id)a3
+- (void)setCurrentPart:(id)part
 {
-  v5 = a3;
-  if (self->mCurrentPart != v5)
+  partCopy = part;
+  if (self->mCurrentPart != partCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mCurrentPart, a3);
-    v5 = v6;
+    v6 = partCopy;
+    objc_storeStrong(&self->mCurrentPart, part);
+    partCopy = v6;
   }
 }
 
-- (unint64_t)sharedBaseFormulaIndexWithIndex:(int64_t)a3
+- (unint64_t)sharedBaseFormulaIndexWithIndex:(int64_t)index
 {
   left = self->mSharedFormulasMap.__tree_.__end_node_.__left_;
   if (!left)
@@ -120,16 +120,16 @@
   p_end_node = &self->mSharedFormulasMap.__tree_.__end_node_;
   do
   {
-    if (left[4].__left_ >= a3)
+    if (left[4].__left_ >= index)
     {
       p_end_node = left;
     }
 
-    left = left[left[4].__left_ < a3].__left_;
+    left = left[left[4].__left_ < index].__left_;
   }
 
   while (left);
-  if (p_end_node != &self->mSharedFormulasMap.__tree_.__end_node_ && p_end_node[4].__left_ <= a3)
+  if (p_end_node != &self->mSharedFormulasMap.__tree_.__end_node_ && p_end_node[4].__left_ <= index)
   {
     return p_end_node[5].__left_;
   }
@@ -140,58 +140,58 @@
   }
 }
 
-- (void)addSharedBaseFormulaIndex:(unint64_t)a3 withIndex:(int64_t)a4
+- (void)addSharedBaseFormulaIndex:(unint64_t)index withIndex:(int64_t)withIndex
 {
-  v4[0] = a4;
+  v4[0] = withIndex;
   v4[2] = v4;
-  std::__tree<std::__value_type<long,unsigned long>,std::__map_value_compare<long,std::__value_type<long,unsigned long>,std::less<long>,true>,std::allocator<std::__value_type<long,unsigned long>>>::__emplace_unique_key_args<long,std::piecewise_construct_t const&,std::tuple<long const&>,std::tuple<>>(&self->mSharedFormulasMap, v4)[5] = a3;
+  std::__tree<std::__value_type<long,unsigned long>,std::__map_value_compare<long,std::__value_type<long,unsigned long>,std::less<long>,true>,std::allocator<std::__value_type<long,unsigned long>>>::__emplace_unique_key_args<long,std::piecewise_construct_t const&,std::tuple<long const&>,std::tuple<>>(&self->mSharedFormulasMap, v4)[5] = index;
 }
 
-- (void)setSheetDimension:(id)a3
+- (void)setSheetDimension:(id)dimension
 {
-  v5 = a3;
-  if (self->mSheetDimension != v5)
+  dimensionCopy = dimension;
+  if (self->mSheetDimension != dimensionCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mSheetDimension, a3);
-    v5 = v6;
+    v6 = dimensionCopy;
+    objc_storeStrong(&self->mSheetDimension, dimension);
+    dimensionCopy = v6;
   }
 }
 
-- (void)setOfficeArtState:(id)a3
+- (void)setOfficeArtState:(id)state
 {
-  v5 = a3;
-  if (self->mOfficeArtState != v5)
+  stateCopy = state;
+  if (self->mOfficeArtState != stateCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mOfficeArtState, a3);
-    v5 = v6;
+    v6 = stateCopy;
+    objc_storeStrong(&self->mOfficeArtState, state);
+    stateCopy = v6;
   }
 }
 
-- (void)setTextBox:(id)a3 author:(id)a4 forReference:(id)a5
+- (void)setTextBox:(id)box author:(id)author forReference:(id)reference
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[OITSUPair alloc] initWithFirst:v11 second:v8];
-  [(NSMutableDictionary *)self->mReferenceForCommentTextBox setObject:v10 forKey:v9];
+  boxCopy = box;
+  authorCopy = author;
+  referenceCopy = reference;
+  v10 = [[OITSUPair alloc] initWithFirst:boxCopy second:authorCopy];
+  [(NSMutableDictionary *)self->mReferenceForCommentTextBox setObject:v10 forKey:referenceCopy];
 }
 
-- (id)textBoxForReference:(id)a3
+- (id)textBoxForReference:(id)reference
 {
-  v3 = [(NSMutableDictionary *)self->mReferenceForCommentTextBox objectForKey:a3];
-  v4 = [v3 first];
+  v3 = [(NSMutableDictionary *)self->mReferenceForCommentTextBox objectForKey:reference];
+  first = [v3 first];
 
-  return v4;
+  return first;
 }
 
-- (id)authorForReference:(id)a3
+- (id)authorForReference:(id)reference
 {
-  v3 = [(NSMutableDictionary *)self->mReferenceForCommentTextBox objectForKey:a3];
-  v4 = [v3 second];
+  v3 = [(NSMutableDictionary *)self->mReferenceForCommentTextBox objectForKey:reference];
+  second = [v3 second];
 
-  return v4;
+  return second;
 }
 
 - (void)resetForNewSheet
@@ -214,10 +214,10 @@
     self->mColumnWidthConvertor = v4;
 
     v6 = self->mColumnWidthConvertor;
-    v7 = [(EDResources *)self->mResources styles];
-    v8 = [v7 defaultWorkbookStyle];
-    v9 = [v8 font];
-    [(ECColumnWidthConvertor *)v6 setupWithEDFont:v9 state:0];
+    styles = [(EDResources *)self->mResources styles];
+    defaultWorkbookStyle = [styles defaultWorkbookStyle];
+    font = [defaultWorkbookStyle font];
+    [(ECColumnWidthConvertor *)v6 setupWithEDFont:font state:0];
 
     mColumnWidthConvertor = self->mColumnWidthConvertor;
   }
@@ -225,9 +225,9 @@
   return mColumnWidthConvertor;
 }
 
-- (void)reportWarning:(id)a3
+- (void)reportWarning:(id)warning
 {
-  v6 = a3;
+  warningCopy = warning;
   mCurrentSheet = self->mCurrentSheet;
   if (mCurrentSheet)
   {
@@ -239,29 +239,29 @@
     [(EDWorkbook *)self->mWorkbook warnings];
   }
   v5 = ;
-  [v5 addWarning:v6];
+  [v5 addWarning:warningCopy];
 }
 
-- (void)reportWorksheetWarning:(id)a3
+- (void)reportWorksheetWarning:(id)warning
 {
-  v6 = a3;
+  warningCopy = warning;
   if (self->mCurrentSheet && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [(EDSheet *)self->mCurrentSheet worksheetWarnings];
+    worksheetWarnings = [(EDSheet *)self->mCurrentSheet worksheetWarnings];
   }
 
   else
   {
-    v4 = [(EDWorkbook *)self->mWorkbook warnings];
+    worksheetWarnings = [(EDWorkbook *)self->mWorkbook warnings];
   }
 
-  v5 = v4;
-  [v4 addWarning:v6];
+  v5 = worksheetWarnings;
+  [worksheetWarnings addWarning:warningCopy];
 }
 
-- (void)setupNSForXMLFormat:(int)a3
+- (void)setupNSForXMLFormat:(int)format
 {
-  v3 = *&a3;
+  v3 = *&format;
   v17.receiver = self;
   v17.super_class = EXReadState;
   [(OCXState *)&v17 setupNSForXMLFormat:?];

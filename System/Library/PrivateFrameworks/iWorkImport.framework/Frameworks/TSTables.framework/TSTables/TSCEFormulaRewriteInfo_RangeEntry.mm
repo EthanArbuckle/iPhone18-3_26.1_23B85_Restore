@@ -1,17 +1,17 @@
 @interface TSCEFormulaRewriteInfo_RangeEntry
-- (TSCEFormulaRewriteInfo_RangeEntry)initWithRange:(_NSRange)a3 orderedUuids:(const void *)a4 offset:(unsigned int)a5;
+- (TSCEFormulaRewriteInfo_RangeEntry)initWithRange:(_NSRange)range orderedUuids:(const void *)uuids offset:(unsigned int)offset;
 - (_NSRange)range;
 - (id).cxx_construct;
-- (id)initFromMessage:(const void *)a3;
-- (void)saveToMessage:(void *)a3;
+- (id)initFromMessage:(const void *)message;
+- (void)saveToMessage:(void *)message;
 @end
 
 @implementation TSCEFormulaRewriteInfo_RangeEntry
 
-- (TSCEFormulaRewriteInfo_RangeEntry)initWithRange:(_NSRange)a3 orderedUuids:(const void *)a4 offset:(unsigned int)a5
+- (TSCEFormulaRewriteInfo_RangeEntry)initWithRange:(_NSRange)range orderedUuids:(const void *)uuids offset:(unsigned int)offset
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v13.receiver = self;
   v13.super_class = TSCEFormulaRewriteInfo_RangeEntry;
   v9 = [(TSCEFormulaRewriteInfo_RangeEntry *)&v13 init];
@@ -21,23 +21,23 @@
     v9->_range.location = location;
     v9->_range.length = length;
     p_orderedUuids = &v9->_orderedUuids;
-    if (&v10->_orderedUuids != a4)
+    if (&v10->_orderedUuids != uuids)
     {
-      sub_2210BD068(p_orderedUuids, *a4, *(a4 + 1), (*(a4 + 1) - *a4) >> 4);
+      sub_2210BD068(p_orderedUuids, *uuids, *(uuids + 1), (*(uuids + 1) - *uuids) >> 4);
     }
 
-    v10->_offset = a5;
+    v10->_offset = offset;
   }
 
   return v10;
 }
 
-- (id)initFromMessage:(const void *)a3
+- (id)initFromMessage:(const void *)message
 {
-  v4 = *(a3 + 12);
-  v5 = *(a3 + 13);
-  v6 = *(a3 + 14);
-  sub_22123EA84(__p, a3 + 24);
+  v4 = *(message + 12);
+  v5 = *(message + 13);
+  v6 = *(message + 14);
+  sub_22123EA84(__p, message + 24);
   v8 = objc_msgSend_initWithRange_orderedUuids_offset_(self, v7, v4, v5, __p, v6);
   if (__p[0])
   {
@@ -48,15 +48,15 @@
   return v8;
 }
 
-- (void)saveToMessage:(void *)a3
+- (void)saveToMessage:(void *)message
 {
-  v3 = *(a3 + 4);
-  *(a3 + 4) = v3 | 3;
-  *(a3 + 6) = vmovn_s64(self->_range);
+  v3 = *(message + 4);
+  *(message + 4) = v3 | 3;
+  *(message + 6) = vmovn_s64(self->_range);
   offset = self->_offset;
-  *(a3 + 4) = v3 | 7;
-  *(a3 + 14) = offset;
-  sub_22123ACF4(&self->_orderedUuids.__begin_, a3 + 3);
+  *(message + 4) = v3 | 7;
+  *(message + 14) = offset;
+  sub_22123ACF4(&self->_orderedUuids.__begin_, message + 3);
 }
 
 - (_NSRange)range

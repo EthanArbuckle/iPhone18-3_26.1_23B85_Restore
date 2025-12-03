@@ -1,25 +1,25 @@
 @interface TSCH3DRayPickPipelineDelegate
-- (BOOL)willSubmitElement:(id)a3 sceneObject:(id)a4;
-- (BOOL)willSubmitLabelType:(int)a3 boundsIndex:(int64_t)a4 alignment:(unint64_t)a5 elementIndex:(unint64_t)a6 forSceneObject:(id)a7;
+- (BOOL)willSubmitElement:(id)element sceneObject:(id)object;
+- (BOOL)willSubmitLabelType:(int)type boundsIndex:(int64_t)index alignment:(unint64_t)alignment elementIndex:(unint64_t)elementIndex forSceneObject:(id)object;
 @end
 
 @implementation TSCH3DRayPickPipelineDelegate
 
-- (BOOL)willSubmitLabelType:(int)a3 boundsIndex:(int64_t)a4 alignment:(unint64_t)a5 elementIndex:(unint64_t)a6 forSceneObject:(id)a7
+- (BOOL)willSubmitLabelType:(int)type boundsIndex:(int64_t)index alignment:(unint64_t)alignment elementIndex:(unint64_t)elementIndex forSceneObject:(id)object
 {
-  v11[0] = a3;
-  v11[1] = a6;
-  objc_msgSend_setCurrentElement_(self, a2, v7, v8, v9, v11, a4, a5, a6, a7);
+  v11[0] = type;
+  v11[1] = elementIndex;
+  objc_msgSend_setCurrentElement_(self, a2, v7, v8, v9, v11, index, alignment, elementIndex, object);
   return 0;
 }
 
-- (BOOL)willSubmitElement:(id)a3 sceneObject:(id)a4
+- (BOOL)willSubmitElement:(id)element sceneObject:(id)object
 {
-  v6 = a3;
-  v8 = a4;
-  if (v6)
+  elementCopy = element;
+  objectCopy = object;
+  if (elementCopy)
   {
-    objc_msgSend_index(v6, v7, v9, v10, v11);
+    objc_msgSend_index(elementCopy, v7, v9, v10, v11);
   }
 
   else
@@ -28,7 +28,7 @@
   }
 
   objc_msgSend_setCurrentElement_(self, v7, v9, v10, v11, &v17);
-  objc_msgSend_setCurrentSceneObject_(self, v12, v13, v14, v15, v8);
+  objc_msgSend_setCurrentSceneObject_(self, v12, v13, v14, v15, objectCopy);
 
   return 0;
 }

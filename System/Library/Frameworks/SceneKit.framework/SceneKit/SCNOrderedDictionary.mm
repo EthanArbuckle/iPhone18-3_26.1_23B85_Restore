@@ -2,12 +2,12 @@
 - (id)allKeys;
 - (id)copy;
 - (id)description;
-- (id)objectAtIndex:(int64_t)a3;
-- (void)applyBlock:(id)a3;
-- (void)applyFunction:(void *)a3 withContext:(void *)a4;
+- (id)objectAtIndex:(int64_t)index;
+- (void)applyBlock:(id)block;
+- (void)applyFunction:(void *)function withContext:(void *)context;
 - (void)dealloc;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation SCNOrderedDictionary
@@ -19,10 +19,10 @@
   [(SCNOrderedDictionary *)&v3 dealloc];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  [(SCNOrderedDictionary *)self removeObjectForKey:a4];
-  if (a3)
+  [(SCNOrderedDictionary *)self removeObjectForKey:key];
+  if (object)
   {
     keys = self->_keys;
     if (!keys)
@@ -32,21 +32,21 @@
       keys = self->_keys;
     }
 
-    [(NSMutableArray *)keys addObject:a4];
+    [(NSMutableArray *)keys addObject:key];
     keyValues = self->_keyValues;
 
-    [(NSMutableDictionary *)keyValues setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)keyValues setObject:object forKey:key];
   }
 }
 
-- (id)objectAtIndex:(int64_t)a3
+- (id)objectAtIndex:(int64_t)index
 {
-  v4 = [(NSMutableArray *)self->_keys objectAtIndex:a3];
+  v4 = [(NSMutableArray *)self->_keys objectAtIndex:index];
 
   return [(SCNOrderedDictionary *)self objectForKey:v4];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   if ([(NSMutableDictionary *)self->_keyValues objectForKey:?])
   {
@@ -58,10 +58,10 @@
 
     else
     {
-      [(NSMutableArray *)self->_keys removeObject:a3];
+      [(NSMutableArray *)self->_keys removeObject:key];
       keyValues = self->_keyValues;
 
-      [(NSMutableDictionary *)keyValues removeObjectForKey:a3];
+      [(NSMutableDictionary *)keyValues removeObjectForKey:key];
     }
   }
 }
@@ -73,7 +73,7 @@
   return v2;
 }
 
-- (void)applyFunction:(void *)a3 withContext:(void *)a4
+- (void)applyFunction:(void *)function withContext:(void *)context
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -95,7 +95,7 @@
           objc_enumerationMutation(keys);
         }
 
-        (a3)(*(*(&v12 + 1) + 8 * i), [(NSMutableDictionary *)self->_keyValues objectForKey:*(*(&v12 + 1) + 8 * i)], a4);
+        (function)(*(*(&v12 + 1) + 8 * i), [(NSMutableDictionary *)self->_keyValues objectForKey:*(*(&v12 + 1) + 8 * i)], context);
       }
 
       v9 = [(NSMutableArray *)keys countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -105,7 +105,7 @@
   }
 }
 
-- (void)applyBlock:(id)a3
+- (void)applyBlock:(id)block
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
@@ -127,7 +127,7 @@
           objc_enumerationMutation(keys);
         }
 
-        (*(a3 + 2))(a3, *(*(&v10 + 1) + 8 * i), [(NSMutableDictionary *)self->_keyValues objectForKey:*(*(&v10 + 1) + 8 * i)]);
+        (*(block + 2))(block, *(*(&v10 + 1) + 8 * i), [(NSMutableDictionary *)self->_keyValues objectForKey:*(*(&v10 + 1) + 8 * i)]);
       }
 
       v7 = [(NSMutableArray *)keys countByEnumeratingWithState:&v10 objects:v14 count:16];

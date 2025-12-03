@@ -1,15 +1,15 @@
 @interface HotspotReceiver
 - (_TtC15WiFiSettingsKit15HotspotReceiver)init;
-- (void)session:(id)a3 updatedFoundDevices:(id)a4;
+- (void)session:(id)session updatedFoundDevices:(id)devices;
 @end
 
 @implementation HotspotReceiver
 
-- (void)session:(id)a3 updatedFoundDevices:(id)a4
+- (void)session:(id)session updatedFoundDevices:(id)devices
 {
   v6 = sub_2741C7FEC();
-  v7 = a3;
-  v8 = self;
+  sessionCopy = session;
+  selfCopy = self;
   sub_2740BA558(v6);
 }
 

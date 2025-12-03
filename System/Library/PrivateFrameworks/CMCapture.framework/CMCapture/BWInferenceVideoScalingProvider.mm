@@ -1,17 +1,17 @@
 @interface BWInferenceVideoScalingProvider
-- (BWInferenceVideoScalingProvider)initWithInputRequirement:(id)a3 derivedFromRequirement:(id)a4 outputRequirements:(id)a5 enableFencing:(BOOL)a6 filterType:(int)a7;
+- (BWInferenceVideoScalingProvider)initWithInputRequirement:(id)requirement derivedFromRequirement:(id)fromRequirement outputRequirements:(id)requirements enableFencing:(BOOL)fencing filterType:(int)type;
 - (NSArray)inputVideoRequirements;
 - (NSString)description;
-- (id)bindOutputByCloningInputRequirement:(id)a3 toAttachedMediaUsingKey:(id)a4;
+- (id)bindOutputByCloningInputRequirement:(id)requirement toAttachedMediaUsingKey:(id)key;
 - (id)newStorage;
-- (id)preventionReasonWithSampleBuffer:(opaqueCMSampleBuffer *)a3 executionTime:(id *)a4;
-- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withExecutionTime:(id *)a5 completionHandler:(id)a6;
+- (id)preventionReasonWithSampleBuffer:(opaqueCMSampleBuffer *)buffer executionTime:(id *)time;
+- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withExecutionTime:(id *)time completionHandler:(id)handler;
 - (int)prepareForExecution;
-- (uint64_t)_configureCustomFiltersForScalingFromSourceWidth:(unint64_t)a3 sourceHeight:(unint64_t)a4 destinationWidth:(unint64_t)a5 destinationHeight:(int)a6 pixelFormat:;
+- (uint64_t)_configureCustomFiltersForScalingFromSourceWidth:(unint64_t)width sourceHeight:(unint64_t)height destinationWidth:(unint64_t)destinationWidth destinationHeight:(int)destinationHeight pixelFormat:;
 - (uint64_t)prepareForExecution;
 - (void)dealloc;
-- (void)propagateInferenceResultsToInferenceDictionary:(id)a3 usingStorage:(id)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 propagationSampleBuffer:(opaqueCMSampleBuffer *)a6;
-- (void)setCustomInferenceIdentifier:(id)a3;
+- (void)propagateInferenceResultsToInferenceDictionary:(id)dictionary usingStorage:(id)storage inputSampleBuffer:(opaqueCMSampleBuffer *)buffer propagationSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer;
+- (void)setCustomInferenceIdentifier:(id)identifier;
 @end
 
 @implementation BWInferenceVideoScalingProvider
@@ -38,19 +38,19 @@
   return [v4 arrayWithObjects:p_inputRequirement count:v6];
 }
 
-- (BWInferenceVideoScalingProvider)initWithInputRequirement:(id)a3 derivedFromRequirement:(id)a4 outputRequirements:(id)a5 enableFencing:(BOOL)a6 filterType:(int)a7
+- (BWInferenceVideoScalingProvider)initWithInputRequirement:(id)requirement derivedFromRequirement:(id)fromRequirement outputRequirements:(id)requirements enableFencing:(BOOL)fencing filterType:(int)type
 {
   v14.receiver = self;
   v14.super_class = BWInferenceVideoScalingProvider;
   v12 = [(BWInferenceVideoScalingProvider *)&v14 init];
   if (v12)
   {
-    v12->_inputRequirement = a3;
-    v12->_outputRequirements = a5;
-    v12->_derivedFromRequirement = a4;
+    v12->_inputRequirement = requirement;
+    v12->_outputRequirements = requirements;
+    v12->_derivedFromRequirement = fromRequirement;
     v12->_cloneVideoRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v12->_enableFencing = a6;
-    v12->_filterType = a7;
+    v12->_enableFencing = fencing;
+    v12->_filterType = type;
     v12->_disableRotationInLandscapeAspectRatio = 1;
   }
 
@@ -71,13 +71,13 @@
   return [(NSString *)[(BWInferenceVideoScalingProvider *)&v3 description] stringByAppendingFormat:@" applyUprightExifOrientation:%d applyValidBufferRect:%d computeAndApplyAspectRatioCrop:%d rotation:%d", self->_applyUprightExifOrientation, self->_applyValidBufferRect, self->_computeAndApplyAspectRatioCrop, self->_offsetRotationDegrees];
 }
 
-- (void)setCustomInferenceIdentifier:(id)a3
+- (void)setCustomInferenceIdentifier:(id)identifier
 {
   customInferenceIdentifier = self->_customInferenceIdentifier;
-  if (customInferenceIdentifier != a3)
+  if (customInferenceIdentifier != identifier)
   {
 
-    self->_customInferenceIdentifier = a3;
+    self->_customInferenceIdentifier = identifier;
   }
 }
 
@@ -95,12 +95,12 @@
     kdebug_trace();
   }
 
-  v3 = [(BWInferenceVideoRequirement *)self->_inputRequirement videoFormat];
+  videoFormat = [(BWInferenceVideoRequirement *)self->_inputRequirement videoFormat];
   v4 = [-[NSArray firstObject](self->_outputRequirements "firstObject")];
-  v5 = [(BWInferenceVideoFormat *)v3 rotationDegrees];
-  v6 = [v4 rotationDegrees];
-  self->_offsetRotationDegrees = v5 - v6;
-  if (((v5 - v6) / 90.0) != ((v5 - v6) / 90.0))
+  rotationDegrees = [(BWInferenceVideoFormat *)videoFormat rotationDegrees];
+  rotationDegrees2 = [v4 rotationDegrees];
+  self->_offsetRotationDegrees = rotationDegrees - rotationDegrees2;
+  if (((rotationDegrees - rotationDegrees2) / 90.0) != ((rotationDegrees - rotationDegrees2) / 90.0))
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"Rotations must be a multiple of 90" userInfo:0]);
   }
@@ -109,17 +109,17 @@
   return 0;
 }
 
-- (id)preventionReasonWithSampleBuffer:(opaqueCMSampleBuffer *)a3 executionTime:(id *)a4
+- (id)preventionReasonWithSampleBuffer:(opaqueCMSampleBuffer *)buffer executionTime:(id *)time
 {
-  if (self->_applyUprightExifOrientation && !CMGetAttachment(a3, @"UprightExifOrientation", 0) && ![CMGetAttachment(a3 *off_1E798A3C8])
+  if (self->_applyUprightExifOrientation && !CMGetAttachment(buffer, @"UprightExifOrientation", 0) && ![CMGetAttachment(buffer *off_1E798A3C8])
   {
     return @"MissingOrientationInformation";
   }
 
   if (self->_applyCustomCrop)
   {
-    v6 = [(NSArray *)self->_outputRequirements firstObject];
-    if (![objc_msgSend(objc_msgSend(v6 "videoFormat")])
+    firstObject = [(NSArray *)self->_outputRequirements firstObject];
+    if (![objc_msgSend(objc_msgSend(firstObject "videoFormat")])
     {
       return @"CropNotApplicable";
     }
@@ -128,7 +128,7 @@
   return 0;
 }
 
-- (void)propagateInferenceResultsToInferenceDictionary:(id)a3 usingStorage:(id)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 propagationSampleBuffer:(opaqueCMSampleBuffer *)a6
+- (void)propagateInferenceResultsToInferenceDictionary:(id)dictionary usingStorage:(id)storage inputSampleBuffer:(opaqueCMSampleBuffer *)buffer propagationSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer
 {
   v32 = 0u;
   v33 = 0u;
@@ -150,8 +150,8 @@
         }
 
         v14 = *(*(&v30 + 1) + 8 * i);
-        v15 = [a4 newSampleBufferSatisfyingCloneRequirement:v14];
-        BWSampleBufferSetAttachedMedia(a6, [v14 attachedMediaKey], v15);
+        v15 = [storage newSampleBufferSatisfyingCloneRequirement:v14];
+        BWSampleBufferSetAttachedMedia(sampleBuffer, [v14 attachedMediaKey], v15);
         if (v15)
         {
           CFRelease(v15);
@@ -184,13 +184,13 @@
           objc_enumerationMutation(outputRequirements);
         }
 
-        v22 = [a4 pixelBufferForRequirement:*(*(&v25 + 1) + 8 * j)];
+        v22 = [storage pixelBufferForRequirement:*(*(&v25 + 1) + 8 * j)];
         v23 = CMGetAttachment(v22, @"InferenceHistogramData", 0);
         if (v23)
         {
           if ((v19 & 1) == 0)
           {
-            CMSetAttachment(a6, @"InferenceHistogramData", v23, 1u);
+            CMSetAttachment(sampleBuffer, @"InferenceHistogramData", v23, 1u);
           }
 
           CMRemoveAttachment(v22, @"InferenceHistogramData");
@@ -205,15 +205,15 @@
   }
 }
 
-- (id)bindOutputByCloningInputRequirement:(id)a3 toAttachedMediaUsingKey:(id)a4
+- (id)bindOutputByCloningInputRequirement:(id)requirement toAttachedMediaUsingKey:(id)key
 {
-  v5 = [[BWInferenceCloneVideoRequirement alloc] initWithAttachedMediaKey:a4 sourceVideoRequirement:a3];
+  v5 = [[BWInferenceCloneVideoRequirement alloc] initWithAttachedMediaKey:key sourceVideoRequirement:requirement];
   [(NSMutableArray *)self->_cloneVideoRequirements addObject:v5];
 
   return v5;
 }
 
-- (uint64_t)_configureCustomFiltersForScalingFromSourceWidth:(unint64_t)a3 sourceHeight:(unint64_t)a4 destinationWidth:(unint64_t)a5 destinationHeight:(int)a6 pixelFormat:
+- (uint64_t)_configureCustomFiltersForScalingFromSourceWidth:(unint64_t)width sourceHeight:(unint64_t)height destinationWidth:(unint64_t)destinationWidth destinationHeight:(int)destinationHeight pixelFormat:
 {
   if (!result)
   {
@@ -221,46 +221,46 @@
   }
 
   v11 = result;
-  if (FigCapturePixelFormatIs420(a6))
+  if (FigCapturePixelFormatIs420(destinationHeight))
   {
-    result = FigCapturePixelFormatIs420(a6);
+    result = FigCapturePixelFormatIs420(destinationHeight);
   }
 
   else
   {
-    v14 = FigCapturePixelFormatIs422(a6);
-    result = FigCapturePixelFormatIs420(a6);
+    v14 = FigCapturePixelFormatIs422(destinationHeight);
+    result = FigCapturePixelFormatIs420(destinationHeight);
     if (!v14)
     {
       goto LABEL_6;
     }
   }
 
-  a4 &= ~1uLL;
+  height &= ~1uLL;
   a2 &= ~1uLL;
 LABEL_6:
   if (result)
   {
-    v15 = a5 & 0xFFFFFFFFFFFFFFFELL;
+    destinationWidthCopy = destinationWidth & 0xFFFFFFFFFFFFFFFELL;
   }
 
   else
   {
-    v15 = a5;
+    destinationWidthCopy = destinationWidth;
   }
 
   if (result)
   {
-    v16 = a3 & 0xFFFFFFFFFFFFFFFELL;
+    widthCopy = width & 0xFFFFFFFFFFFFFFFELL;
   }
 
   else
   {
-    v16 = a3;
+    widthCopy = width;
   }
 
-  v17 = v15 / v16;
-  v18 = a4 / a2;
+  v17 = destinationWidthCopy / widthCopy;
+  v18 = height / a2;
   if (v17 != *(v11 + 80) || v18 != *(v11 + 76))
   {
     v19 = *(v11 + 72);
@@ -284,14 +284,14 @@ LABEL_6:
   return result;
 }
 
-- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withExecutionTime:(id *)a5 completionHandler:(id)a6
+- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withExecutionTime:(id *)time completionHandler:(id)handler
 {
-  v10 = [a4 pixelBufferForRequirement:self->_inputRequirement];
-  v168 = [objc_msgSend(a4 "inputSampleBufferAttachments")];
-  v11 = [(NSArray *)self->_outputRequirements firstObject];
-  v12 = [objc_msgSend(a4 pixelBufferPoolForRequirement:{v11), "newPixelBuffer"}];
-  v13 = [objc_msgSend(v11 "videoFormat")];
-  v14 = [objc_msgSend(v11 "videoFormat")];
+  v10 = [storage pixelBufferForRequirement:self->_inputRequirement];
+  v168 = [objc_msgSend(storage "inputSampleBufferAttachments")];
+  firstObject = [(NSArray *)self->_outputRequirements firstObject];
+  v12 = [objc_msgSend(storage pixelBufferPoolForRequirement:{firstObject), "newPixelBuffer"}];
+  v13 = [objc_msgSend(firstObject "videoFormat")];
+  v14 = [objc_msgSend(firstObject "videoFormat")];
   v15 = MEMORY[0x1E695FF58];
   if (v12)
   {
@@ -305,7 +305,7 @@ LABEL_6:
 
     v141 = v14;
     v143 = v13;
-    v151 = [(BWInferenceVideoRequirement *)self->_inputRequirement videoFormat];
+    videoFormat = [(BWInferenceVideoRequirement *)self->_inputRequirement videoFormat];
     v16 = [-[NSArray firstObject](self->_outputRequirements "firstObject")];
     Width = CVPixelBufferGetWidth(v10);
     v153 = v10;
@@ -338,12 +338,12 @@ LABEL_6:
       *&v208[0].duration.value = *MEMORY[0x1E6960C70];
       pixelBuffer_8 = *&v208[0].duration.timescale;
       v208[0].duration.epoch = *(MEMORY[0x1E6960C70] + 16);
-      CMSampleBufferGetPresentationTimeStamp(&v208[0].presentationTimeStamp, a3);
+      CMSampleBufferGetPresentationTimeStamp(&v208[0].presentationTimeStamp, buffer);
       v208[0].decodeTimeStamp = v208[0].duration;
       CMSampleBufferCreate(*MEMORY[0x1E695E480], 0, 1u, 0, 0, 0, 0, 1, v208, 0, 0, v210);
-      CMSetAttachments(*&v210[0], [a4 inputSampleBufferAttachments], 1u);
-      v27 = [v16 cropDescriptor];
-      [v27 rectForSampleBuffer:*&v210[0]];
+      CMSetAttachments(*&v210[0], [storage inputSampleBufferAttachments], 1u);
+      cropDescriptor = [v16 cropDescriptor];
+      [cropDescriptor rectForSampleBuffer:*&v210[0]];
       OUTLINED_FUNCTION_3_11();
       if (*&v210[0])
       {
@@ -361,8 +361,8 @@ LABEL_6:
       if (derivedFromRequirement)
       {
         v30 = applyUprightExifOrientation;
-        v31 = [(BWInferenceVideoRequirement *)derivedFromRequirement videoFormat];
-        v32 = [a4 pixelBufferForRequirement:self->_derivedFromRequirement];
+        videoFormat2 = [(BWInferenceVideoRequirement *)derivedFromRequirement videoFormat];
+        v32 = [storage pixelBufferForRequirement:self->_derivedFromRequirement];
         if (v32)
         {
           v33 = v32;
@@ -373,15 +373,15 @@ LABEL_6:
             if (v34)
             {
               pixelBuffer = v33;
-              v36 = [(BWInferenceVideoFormat *)v31 rotationDegrees];
-              if (v36 - [v16 rotationDegrees] == offsetRotationDegrees)
+              rotationDegrees = [(BWInferenceVideoFormat *)videoFormat2 rotationDegrees];
+              if (rotationDegrees - [v16 rotationDegrees] == offsetRotationDegrees)
               {
                 v37 = pixelBuffer;
                 v38 = CVPixelBufferGetWidth(pixelBuffer);
                 v39 = CVPixelBufferGetHeight(pixelBuffer);
                 if ([v16 deviceOriented])
                 {
-                  v40 = ![(BWInferenceVideoFormat *)v31 deviceOriented];
+                  v40 = ![(BWInferenceVideoFormat *)videoFormat2 deviceOriented];
                 }
 
                 else
@@ -389,12 +389,12 @@ LABEL_6:
                   v40 = 0;
                 }
 
-                HIDWORD(v160) = [v16 videoContentMode] == 1 && -[BWInferenceVideoFormat videoContentMode](v31, "videoContentMode") != 1;
+                HIDWORD(v160) = [v16 videoContentMode] == 1 && -[BWInferenceVideoFormat videoContentMode](videoFormat2, "videoContentMode") != 1;
                 v28 = v38;
                 r1_8 = v39;
                 if (([v16 includesInvalidContent] & 1) == 0)
                 {
-                  LODWORD(v160) = [(BWInferenceVideoFormat *)v31 includesInvalidContent];
+                  LODWORD(v160) = [(BWInferenceVideoFormat *)videoFormat2 includesInvalidContent];
                   if ((v40 & 1) == 0)
                   {
                     goto LABEL_121;
@@ -413,24 +413,24 @@ LABEL_6:
 LABEL_20:
                 v37 = v153;
 LABEL_21:
-                v41 = [objc_msgSend(a4 "inputSampleBufferAttachments")];
+                v41 = [objc_msgSend(storage "inputSampleBufferAttachments")];
                 pixelBuffer = v37;
                 if (v41 || (v41 = [v168 objectForKeyedSubscript:*off_1E798A5B0]) != 0)
                 {
-                  v42 = [v41 intValue];
+                  intValue = [v41 intValue];
                   v211 = 0;
-                  v43 = FigCaptureRotationDegreesAndMirroringFromExifOrientation(v42, &v211);
+                  v43 = FigCaptureRotationDegreesAndMirroringFromExifOrientation(intValue, &v211);
                   v44 = v43;
                   HIDWORD(v149) = 0;
-                  LODWORD(v151) = 0;
+                  LODWORD(videoFormat) = 0;
                   if (v211)
                   {
                     HIDWORD(v149) = 0;
-                    LODWORD(v151) = 1;
+                    LODWORD(videoFormat) = 1;
                     if (v43 != 90 && v43 != 270)
                     {
                       HIDWORD(v149) = 1;
-                      LODWORD(v151) = 0;
+                      LODWORD(videoFormat) = 0;
                     }
                   }
 
@@ -438,7 +438,7 @@ LABEL_21:
                   if (!CGRectIsNull(v213))
                   {
                     memset(v208, 0, 48);
-                    FigCaptureExifOrientationGetAffineTransform(v42, 0x100000001uLL, v208);
+                    FigCaptureExifOrientationGetAffineTransform(intValue, 0x100000001uLL, v208);
                     v210[0] = *&v208[0].duration.value;
                     v210[1] = *&v208[0].duration.epoch;
                     v210[2] = *&v208[0].presentationTimeStamp.timescale;
@@ -448,13 +448,13 @@ LABEL_21:
                   }
 
 LABEL_36:
-                  if (self->_disableRotationInLandscapeAspectRatio && ((v46 = -[BWInferenceVideoFormat cropDescriptor](v31, "cropDescriptor"), v47 = [v16 cropDescriptor], objc_msgSend(v47, "identifier") == 4) || objc_msgSend(v47, "identifier") == 2))
+                  if (self->_disableRotationInLandscapeAspectRatio && ((v46 = -[BWInferenceVideoFormat cropDescriptor](videoFormat2, "cropDescriptor"), v47 = [v16 cropDescriptor], objc_msgSend(v47, "identifier") == 4) || objc_msgSend(v47, "identifier") == 2))
                   {
                     v48 = v26;
-                    v49 = [(BWInferenceCropDescriptor *)v46 identifier];
-                    if (v49 != [v47 identifier])
+                    identifier = [(BWInferenceCropDescriptor *)v46 identifier];
+                    if (identifier != [v47 identifier])
                     {
-                      v50 = [objc_msgSend(a4 "inputSampleBufferAttachments")];
+                      v50 = [objc_msgSend(storage "inputSampleBufferAttachments")];
                       if (v50)
                       {
                         if ([v50 BOOLValue])
@@ -478,21 +478,21 @@ LABEL_36:
                   }
 
                   v52 = v25;
-                  v53 = a6;
-                  v54 = [(BWInferenceVideoFormat *)v31 width];
-                  v55 = [(BWInferenceVideoFormat *)v31 height];
+                  handlerCopy = handler;
+                  width = [(BWInferenceVideoFormat *)videoFormat2 width];
+                  height = [(BWInferenceVideoFormat *)videoFormat2 height];
                   v56 = v23;
                   if ([v16 landscapeOriented])
                   {
-                    v57 = [(BWInferenceVideoFormat *)v31 landscapeOriented];
+                    landscapeOriented = [(BWInferenceVideoFormat *)videoFormat2 landscapeOriented];
                     v58 = r1;
                     v59 = r1 - 90;
-                    if (v54 > v55)
+                    if (width > height)
                     {
                       v59 = r1;
                     }
 
-                    if (!v57)
+                    if (!landscapeOriented)
                     {
                       v58 = v59;
                     }
@@ -507,7 +507,7 @@ LABEL_36:
                   v135 = *&v23;
                   v139 = v22;
                   v154 = v16;
-                  if (([v16 landscapeOriented] & (v54 > v55)) != 0)
+                  if (([v16 landscapeOriented] & (width > height)) != 0)
                   {
                     v61 = 0;
                   }
@@ -528,10 +528,10 @@ LABEL_36:
                     v63 = v62 + 360;
                   }
 
-                  v64 = [(BWInferenceVideoFormat *)v31 width];
-                  if (v64 == CVPixelBufferGetWidth(pixelBuffer))
+                  width2 = [(BWInferenceVideoFormat *)videoFormat2 width];
+                  if (width2 == CVPixelBufferGetWidth(pixelBuffer))
                   {
-                    [(BWInferenceVideoFormat *)v31 height];
+                    [(BWInferenceVideoFormat *)videoFormat2 height];
                     CVPixelBufferGetHeight(pixelBuffer);
                   }
 
@@ -550,7 +550,7 @@ LABEL_36:
                   y = 0.0;
                   v70 = v28;
                   v71 = r1_8;
-                  a6 = v53;
+                  handler = handlerCopy;
                   if (v67 == 1)
                   {
                     r1a = 0.0;
@@ -691,17 +691,17 @@ LABEL_90:
                     v94 = 1;
                   }
 
-                  if (!-[BWInferenceVideoFormat landscapeOriented](v31, "landscapeOriented") && [v154 landscapeOriented])
+                  if (!-[BWInferenceVideoFormat landscapeOriented](videoFormat2, "landscapeOriented") && [v154 landscapeOriented])
                   {
-                    v95 = [(BWInferenceVideoFormat *)v31 rotationDegrees];
-                    [objc_msgSend(a4 "mutableInferenceMetadata")];
+                    rotationDegrees2 = [(BWInferenceVideoFormat *)videoFormat2 rotationDegrees];
+                    [objc_msgSend(storage "mutableInferenceMetadata")];
                   }
 
-                  [(BWInferenceVideoScalingProvider *)self _configureCustomFiltersForScalingFromSourceWidth:v85 sourceHeight:v90 destinationWidth:v143 destinationHeight:v141 pixelFormat:[(BWInferenceVideoFormat *)v31 pixelFormat]];
-                  v96 = [v154 histogramRequest];
-                  if (v96)
+                  [(BWInferenceVideoScalingProvider *)self _configureCustomFiltersForScalingFromSourceWidth:v85 sourceHeight:v90 destinationWidth:v143 destinationHeight:v141 pixelFormat:[(BWInferenceVideoFormat *)videoFormat2 pixelFormat]];
+                  histogramRequest = [v154 histogramRequest];
+                  if (histogramRequest)
                   {
-                    v97 = (*(v96 + 16))(v96, v154);
+                    v97 = (*(histogramRequest + 16))(histogramRequest, v154);
                     v15 = MEMORY[0x1E695FF58];
                     if (v97)
                     {
@@ -722,8 +722,8 @@ LABEL_90:
                   }
 
                   v99 = OUTLINED_FUNCTION_0_20();
-                  v101 = [v100 transform:pixelBuffer srcRect:v12 dst:v94 dstRect:v99 rotate:? flipX:? flipY:? sync_m2m:?];
-                  if (v101)
+                  clearHistorgramMode = [v100 transform:pixelBuffer srcRect:v12 dst:v94 dstRect:v99 rotate:? flipX:? flipY:? sync_m2m:?];
+                  if (clearHistorgramMode)
                   {
                     v92 = 4294935556;
                   }
@@ -738,15 +738,15 @@ LABEL_90:
                       v110 = [v109 initWithBytes:&v208[0].duration.value + 4 length:4 * (3 * LODWORD(v208[0].duration.value))];
                       CMSetAttachment(v12, @"InferenceHistogramData", v110, 1u);
 
-                      v101 = [(FigM2MController *)self->_scalerController clearHistorgramMode];
+                      clearHistorgramMode = [(FigM2MController *)self->_scalerController clearHistorgramMode];
                     }
 
                     outputRequirements = self->_outputRequirements;
-                    v112 = OUTLINED_FUNCTION_6_11(v101, v102, v103, v104, v105, v106, v107, v108, sampleTimingArray, v127, sampleSizeArray, v131, v133, v135, v137, v139, v141, v143, v145, v147, v149, v151, v154, v156, v158, v160, pixelBuffer, pixelBuffer_8, v166, v168, *&r1a, *&r1_8, r1_16, r1_24, v179, v181, v183, v185, v187, v189, v191, v193, v195, v197, v199, v201, v203, v205, 0);
+                    v112 = OUTLINED_FUNCTION_6_11(clearHistorgramMode, v102, v103, v104, v105, v106, v107, v108, sampleTimingArray, v127, sampleSizeArray, v131, v133, v135, v137, v139, v141, v143, v145, v147, v149, videoFormat, v154, v156, v158, v160, pixelBuffer, pixelBuffer_8, v166, v168, *&r1a, *&r1_8, r1_16, r1_24, v179, v181, v183, v185, v187, v189, v191, v193, v195, v197, v199, v201, v203, v205, 0);
                     if (v112)
                     {
                       v113 = v112;
-                      v114 = a6;
+                      handlerCopy2 = handler;
                       v115 = MEMORY[0];
                       do
                       {
@@ -757,7 +757,7 @@ LABEL_90:
                             objc_enumerationMutation(outputRequirements);
                           }
 
-                          v117 = [a4 setPixelBuffer:v12 forRequirement:*(8 * i)];
+                          v117 = [storage setPixelBuffer:v12 forRequirement:*(8 * i)];
                         }
 
                         v113 = OUTLINED_FUNCTION_6_11(v117, v118, v119, v120, v121, v122, v123, v124, sampleTimingArraya, v128, sampleSizeArraya, v132, v134, v136, v138, v140, v142, v144, v146, v148, v150, v152, v155, v157, v159, v161, pixelBuffera, pixelBuffer_8a, v167, v169, r1b, r1_8a, r1_16a, r1_24a, v180, v182, v184, v186, v188, v190, v192, v194, v196, v198, v200, v202, v204, v206, v207);
@@ -765,7 +765,7 @@ LABEL_90:
 
                       while (v113);
                       v92 = 0;
-                      a6 = v114;
+                      handler = handlerCopy2;
                     }
 
                     else
@@ -779,7 +779,7 @@ LABEL_90:
 
 LABEL_121:
                 HIDWORD(v149) = 0;
-                LODWORD(v151) = 0;
+                LODWORD(videoFormat) = 0;
                 v44 = 0;
                 goto LABEL_36;
               }
@@ -791,12 +791,12 @@ LABEL_121:
       }
     }
 
-    v31 = v151;
+    videoFormat2 = videoFormat;
     if (!applyUprightExifOrientation)
     {
 LABEL_35:
       HIDWORD(v149) = 0;
-      LODWORD(v151) = 0;
+      LODWORD(videoFormat) = 0;
       v44 = 0;
       pixelBuffer = v153;
       goto LABEL_36;
@@ -812,9 +812,9 @@ LABEL_91:
     kdebug_trace();
   }
 
-  if (a6)
+  if (handler)
   {
-    (*(a6 + 2))(a6, v92, self);
+    (*(handler + 2))(handler, v92, self);
   }
 
   return v92;
@@ -822,7 +822,7 @@ LABEL_91:
 
 - (uint64_t)prepareForExecution
 {
-  if ([a1 deviceOriented])
+  if ([self deviceOriented])
   {
     v6 = [a2 deviceOriented] ^ 1;
   }
@@ -833,22 +833,22 @@ LABEL_91:
   }
 
   *(a3 + 48) = v6;
-  v7 = [a1 videoContentMode] == 1 && objc_msgSend(a2, "videoContentMode") != 1;
+  v7 = [self videoContentMode] == 1 && objc_msgSend(a2, "videoContentMode") != 1;
   *(a3 + 58) = v7;
-  if ([a1 includesInvalidContent])
+  if ([self includesInvalidContent])
   {
-    v8 = 0;
+    includesInvalidContent = 0;
   }
 
   else
   {
-    v8 = [a2 includesInvalidContent];
+    includesInvalidContent = [a2 includesInvalidContent];
   }
 
-  *(a3 + 56) = v8;
-  v9 = [objc_msgSend(a1 "cropDescriptor")];
+  *(a3 + 56) = includesInvalidContent;
+  v9 = [objc_msgSend(self "cropDescriptor")];
   *(a3 + 57) = v9 != [objc_msgSend(a2 "cropDescriptor")];
-  if ([a1 applyHorizontalFlip])
+  if ([self applyHorizontalFlip])
   {
     v10 = [a2 applyHorizontalFlip] ^ 1;
   }
@@ -859,11 +859,11 @@ LABEL_91:
   }
 
   *(a3 + 59) = v10;
-  v11 = [a1 width];
-  *(a3 + 88) = v11 / [a1 height];
-  *(a3 + 40) = +[BWVideoFormat pixelBufferAttachmentsForColorSpaceProperties:](BWVideoFormat, "pixelBufferAttachmentsForColorSpaceProperties:", [a1 colorSpaceProperties]);
+  width = [self width];
+  *(a3 + 88) = width / [self height];
+  *(a3 + 40) = +[BWVideoFormat pixelBufferAttachmentsForColorSpaceProperties:](BWVideoFormat, "pixelBufferAttachmentsForColorSpaceProperties:", [self colorSpaceProperties]);
   *(a3 + 64) = objc_alloc_init(MEMORY[0x1E6991748]);
-  result = -[BWInferenceVideoScalingProvider _configureCustomFiltersForScalingFromSourceWidth:sourceHeight:destinationWidth:destinationHeight:pixelFormat:](a3, [a2 width], objc_msgSend(a2, "height"), objc_msgSend(a1, "width"), objc_msgSend(a1, "height"), objc_msgSend(a2, "pixelFormat"));
+  result = -[BWInferenceVideoScalingProvider _configureCustomFiltersForScalingFromSourceWidth:sourceHeight:destinationWidth:destinationHeight:pixelFormat:](a3, [a2 width], objc_msgSend(a2, "height"), objc_msgSend(self, "width"), objc_msgSend(self, "height"), objc_msgSend(a2, "pixelFormat"));
   if (*MEMORY[0x1E695FF58] == 1)
   {
 

@@ -1,7 +1,7 @@
 @interface ContinueOnCommandHandler
 - (_TtC4Siri24ContinueOnCommandHandler)init;
 - (void)cancelActiveRequests;
-- (void)handle:(SABaseClientBoundCommand *)a3 completionHandler:(id)a4;
+- (void)handle:(SABaseClientBoundCommand *)handle completionHandler:(id)handler;
 @end
 
 @implementation ContinueOnCommandHandler
@@ -17,14 +17,14 @@
   return [(ContinueOnCommandHandler *)&v6 init];
 }
 
-- (void)handle:(SABaseClientBoundCommand *)a3 completionHandler:(id)a4
+- (void)handle:(SABaseClientBoundCommand *)handle completionHandler:(id)handler
 {
   v7 = sub_100093B6C(&qword_10018DFE0);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = handle;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -39,8 +39,8 @@
   v14[3] = 0;
   v14[4] = &unk_1000F7160;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  handleCopy = handle;
+  selfCopy = self;
   sub_1000A80AC(0, 0, v9, &unk_1000F7550, v14);
 }
 
@@ -49,7 +49,7 @@
   v2 = *(&self->super.isa + OBJC_IVAR____TtC4Siri24ContinueOnCommandHandler_activeTask);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     sub_10009682C(v2);
     v4 = v2;
     sub_10009686C(v2);

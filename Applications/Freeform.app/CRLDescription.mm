@@ -1,30 +1,30 @@
 @interface CRLDescription
-+ (id)descriptionWithCFType:(void *)a3 format:(id)a4;
-+ (id)descriptionWithObject:(id)a3 class:(Class)a4;
-+ (id)descriptionWithObject:(id)a3 class:(Class)a4 format:(id)a5;
-+ (id)descriptionWithObject:(id)a3 format:(id)a4;
++ (id)descriptionWithCFType:(void *)type format:(id)format;
++ (id)descriptionWithObject:(id)object class:(Class)class;
++ (id)descriptionWithObject:(id)object class:(Class)class format:(id)format;
++ (id)descriptionWithObject:(id)object format:(id)format;
 + (unint64_t)peekDescriptionDepth;
 + (unint64_t)popDescriptionDepth;
 + (unint64_t)pushDescriptionDepth;
-- (CRLDescription)initWithCFType:(void *)a3 header:(id)a4;
-- (CRLDescription)initWithObject:(id)a3;
-- (CRLDescription)initWithObject:(id)a3 class:(Class)a4 format:(id)a5 arguments:(char *)a6;
-- (CRLDescription)initWithObject:(id)a3 class:(Class)a4 header:(id)a5;
-- (CRLDescription)initWithObject:(id)a3 format:(id)a4;
+- (CRLDescription)initWithCFType:(void *)type header:(id)header;
+- (CRLDescription)initWithObject:(id)object;
+- (CRLDescription)initWithObject:(id)object class:(Class)class format:(id)format arguments:(char *)arguments;
+- (CRLDescription)initWithObject:(id)object class:(Class)class header:(id)header;
+- (CRLDescription)initWithObject:(id)object format:(id)format;
 - (NSString)descriptionString;
 - (id)p_header;
-- (void)addField:(id)a3 format:(id)a4;
-- (void)addField:(id)a3 value:(id)a4;
-- (void)addFieldWithFormat:(id)a3;
+- (void)addField:(id)field format:(id)format;
+- (void)addField:(id)field value:(id)value;
+- (void)addFieldWithFormat:(id)format;
 - (void)addSuperDescription;
 @end
 
 @implementation CRLDescription
 
-- (CRLDescription)initWithObject:(id)a3 class:(Class)a4 header:(id)a5
+- (CRLDescription)initWithObject:(id)object class:(Class)class header:(id)header
 {
-  v8 = a3;
-  v9 = a5;
+  objectCopy = object;
+  headerCopy = header;
   +[CRLDescription pushDescriptionDepth];
   v15.receiver = self;
   v15.super_class = CRLDescription;
@@ -32,9 +32,9 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_object, v8);
-    v11->_class = a4;
-    v12 = [v9 copy];
+    objc_storeWeak(&v10->_object, objectCopy);
+    v11->_class = class;
+    v12 = [headerCopy copy];
     header = v11->_header;
     v11->_header = v12;
   }
@@ -42,9 +42,9 @@
   return v11;
 }
 
-- (CRLDescription)initWithCFType:(void *)a3 header:(id)a4
+- (CRLDescription)initWithCFType:(void *)type header:(id)header
 {
-  v6 = a4;
+  headerCopy = header;
   +[CRLDescription pushDescriptionDepth];
   v12.receiver = self;
   v12.super_class = CRLDescription;
@@ -52,8 +52,8 @@
   v8 = v7;
   if (v7)
   {
-    v7->_cfType = a3;
-    v9 = [v6 copy];
+    v7->_cfType = type;
+    v9 = [headerCopy copy];
     header = v8->_header;
     v8->_header = v9;
   }
@@ -61,65 +61,65 @@
   return v8;
 }
 
-- (CRLDescription)initWithObject:(id)a3 class:(Class)a4 format:(id)a5 arguments:(char *)a6
+- (CRLDescription)initWithObject:(id)object class:(Class)class format:(id)format arguments:(char *)arguments
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [[NSString alloc] initWithFormat:v10 arguments:a6];
+  formatCopy = format;
+  objectCopy = object;
+  v12 = [[NSString alloc] initWithFormat:formatCopy arguments:arguments];
 
-  v13 = [(CRLDescription *)self initWithObject:v11 class:a4 header:v12];
+  v13 = [(CRLDescription *)self initWithObject:objectCopy class:class header:v12];
   return v13;
 }
 
-- (CRLDescription)initWithObject:(id)a3 format:(id)a4
+- (CRLDescription)initWithObject:(id)object format:(id)format
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRLDescription *)self initWithObject:v7 class:object_getClass(v7) format:v6 arguments:&v10];
+  formatCopy = format;
+  objectCopy = object;
+  v8 = [(CRLDescription *)self initWithObject:objectCopy class:object_getClass(objectCopy) format:formatCopy arguments:&v10];
 
   return v8;
 }
 
-- (CRLDescription)initWithObject:(id)a3
+- (CRLDescription)initWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [(CRLDescription *)self initWithObject:v4 class:object_getClass(v4) format:&stru_1018BCA28];
+  objectCopy = object;
+  v5 = [(CRLDescription *)self initWithObject:objectCopy class:object_getClass(objectCopy) format:&stru_1018BCA28];
 
   return v5;
 }
 
-+ (id)descriptionWithObject:(id)a3 class:(Class)a4 format:(id)a5
++ (id)descriptionWithObject:(id)object class:(Class)class format:(id)format
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[CRLDescription alloc] initWithObject:v8 class:a4 format:v7 arguments:&v12];
+  formatCopy = format;
+  objectCopy = object;
+  v9 = [[CRLDescription alloc] initWithObject:objectCopy class:class format:formatCopy arguments:&v12];
 
   return v9;
 }
 
-+ (id)descriptionWithObject:(id)a3 class:(Class)a4
++ (id)descriptionWithObject:(id)object class:(Class)class
 {
-  v5 = a3;
-  v6 = [[CRLDescription alloc] initWithObject:v5 class:a4 format:&stru_1018BCA28];
+  objectCopy = object;
+  v6 = [[CRLDescription alloc] initWithObject:objectCopy class:class format:&stru_1018BCA28];
 
   return v6;
 }
 
-+ (id)descriptionWithObject:(id)a3 format:(id)a4
++ (id)descriptionWithObject:(id)object format:(id)format
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CRLDescription alloc] initWithObject:v6 class:object_getClass(v6) format:v5 arguments:&v10];
+  formatCopy = format;
+  objectCopy = object;
+  v7 = [[CRLDescription alloc] initWithObject:objectCopy class:object_getClass(objectCopy) format:formatCopy arguments:&v10];
 
   return v7;
 }
 
-+ (id)descriptionWithCFType:(void *)a3 format:(id)a4
++ (id)descriptionWithCFType:(void *)type format:(id)format
 {
-  v5 = a4;
-  v6 = [[NSString alloc] initWithFormat:v5 arguments:&v10];
+  formatCopy = format;
+  v6 = [[NSString alloc] initWithFormat:formatCopy arguments:&v10];
 
-  v7 = [[CRLDescription alloc] initWithCFType:a3 header:v6];
+  v7 = [[CRLDescription alloc] initWithCFType:type header:v6];
 
   return v7;
 }
@@ -127,28 +127,28 @@
 + (unint64_t)pushDescriptionDepth
 {
   v2 = +[NSThread currentThread];
-  v3 = [v2 threadDictionary];
+  threadDictionary = [v2 threadDictionary];
 
-  v4 = [v3 objectForKeyedSubscript:@"CRLDescriptionDepthThreadLocalKey"];
-  v5 = [v4 unsignedIntegerValue];
+  v4 = [threadDictionary objectForKeyedSubscript:@"CRLDescriptionDepthThreadLocalKey"];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  v6 = [NSNumber numberWithUnsignedInteger:v5 + 1];
-  [v3 setObject:v6 forKeyedSubscript:@"CRLDescriptionDepthThreadLocalKey"];
+  v6 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue + 1];
+  [threadDictionary setObject:v6 forKeyedSubscript:@"CRLDescriptionDepthThreadLocalKey"];
 
-  return (v5 + 1);
+  return (unsignedIntegerValue + 1);
 }
 
 + (unint64_t)popDescriptionDepth
 {
   v2 = +[NSThread currentThread];
-  v3 = [v2 threadDictionary];
+  threadDictionary = [v2 threadDictionary];
 
-  v4 = [v3 objectForKeyedSubscript:@"CRLDescriptionDepthThreadLocalKey"];
-  v5 = [v4 unsignedIntegerValue];
+  v4 = [threadDictionary objectForKeyedSubscript:@"CRLDescriptionDepthThreadLocalKey"];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  if (v5)
+  if (unsignedIntegerValue)
   {
-    v6 = v5 - 1;
+    v6 = unsignedIntegerValue - 1;
   }
 
   else
@@ -157,7 +157,7 @@
   }
 
   v7 = [NSNumber numberWithUnsignedInteger:v6];
-  [v3 setObject:v7 forKeyedSubscript:@"CRLDescriptionDepthThreadLocalKey"];
+  [threadDictionary setObject:v7 forKeyedSubscript:@"CRLDescriptionDepthThreadLocalKey"];
 
   return v6;
 }
@@ -165,12 +165,12 @@
 + (unint64_t)peekDescriptionDepth
 {
   v2 = +[NSThread currentThread];
-  v3 = [v2 threadDictionary];
+  threadDictionary = [v2 threadDictionary];
 
-  v4 = [v3 objectForKeyedSubscript:@"CRLDescriptionDepthThreadLocalKey"];
-  v5 = [v4 unsignedIntegerValue];
+  v4 = [threadDictionary objectForKeyedSubscript:@"CRLDescriptionDepthThreadLocalKey"];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (id)p_header
@@ -204,10 +204,10 @@
   return v6;
 }
 
-- (void)addField:(id)a3 value:(id)a4
+- (void)addField:(id)field value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  fieldCopy = field;
+  valueCopy = value;
   if (!self->_fields)
   {
     v8 = objc_alloc_init(NSMutableDictionary);
@@ -219,14 +219,14 @@
     self->_fieldOrder = v10;
   }
 
-  if (!v7)
+  if (!valueCopy)
   {
-    v7 = @"nil";
+    valueCopy = @"nil";
   }
 
-  if (v6 && [v6 length])
+  if (fieldCopy && [fieldCopy length])
   {
-    [NSString stringWithFormat:@"%@: ", v6];
+    [NSString stringWithFormat:@"%@: ", fieldCopy];
   }
 
   else
@@ -236,7 +236,7 @@
   v13 = ;
 
   [(NSMutableArray *)self->_fieldOrder addObject:v13];
-  [(NSMutableDictionary *)self->_fields setObject:v7 forKey:v13];
+  [(NSMutableDictionary *)self->_fields setObject:valueCopy forKey:v13];
   if (([v13 hasPrefix:@"$$$"] & 1) == 0)
   {
     v12 = [v13 length];
@@ -247,19 +247,19 @@
   }
 }
 
-- (void)addField:(id)a3 format:(id)a4
+- (void)addField:(id)field format:(id)format
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[NSString alloc] initWithFormat:v6 arguments:&v9];
+  formatCopy = format;
+  fieldCopy = field;
+  v8 = [[NSString alloc] initWithFormat:formatCopy arguments:&v9];
 
-  [(CRLDescription *)self addField:v7 value:v8];
+  [(CRLDescription *)self addField:fieldCopy value:v8];
 }
 
-- (void)addFieldWithFormat:(id)a3
+- (void)addFieldWithFormat:(id)format
 {
-  v4 = a3;
-  v5 = [[NSString alloc] initWithFormat:v4 arguments:&v6];
+  formatCopy = format;
+  v5 = [[NSString alloc] initWithFormat:formatCopy arguments:&v6];
 
   [(CRLDescription *)self addField:0 value:v5];
 }
@@ -283,8 +283,8 @@
 
   if (+[CRLDescription peekDescriptionDepth]< 5)
   {
-    v8 = [(CRLDescription *)self p_header];
-    v7 = [NSMutableString stringWithFormat:@"%@ {", v8];
+    p_header = [(CRLDescription *)self p_header];
+    p_header2 = [NSMutableString stringWithFormat:@"%@ {", p_header];
 
     v31 = objc_alloc_init(NSMutableString);
     v32 = 0u;
@@ -296,7 +296,7 @@
     if (v10)
     {
       v11 = v10;
-      v27 = v7;
+      v27 = p_header2;
       v12 = 0;
       v13 = 0;
       v14 = &stru_1018BCA28;
@@ -376,7 +376,7 @@
       }
 
       p_cache = (CRLRangeList + 16);
-      v7 = v27;
+      p_header2 = v27;
     }
 
     else
@@ -392,7 +392,7 @@
 
     v6 = v31;
     [v31 crl_indentBy:2];
-    [v7 appendFormat:@"\n%@\n}", v31];
+    [p_header2 appendFormat:@"\n%@\n}", v31];
 
     goto LABEL_30;
   }
@@ -403,18 +403,18 @@
   if ((v5 & 1) == 0)
   {
 LABEL_5:
-    v7 = [(CRLDescription *)self p_header];
+    p_header2 = [(CRLDescription *)self p_header];
     goto LABEL_31;
   }
 
   v6 = objc_loadWeakRetained(&self->_object);
-  v7 = [v6 shortDescription];
+  p_header2 = [v6 shortDescription];
 LABEL_30:
 
 LABEL_31:
   [p_cache + 318 popDescriptionDepth];
 
-  return v7;
+  return p_header2;
 }
 
 @end

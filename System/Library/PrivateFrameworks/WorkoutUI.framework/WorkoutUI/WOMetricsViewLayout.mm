@@ -1,14 +1,14 @@
 @interface WOMetricsViewLayout
 - (WOMetricsViewLayout)init;
-- (void)setRingDiameter:(double)a3;
+- (void)setRingDiameter:(double)diameter;
 @end
 
 @implementation WOMetricsViewLayout
 
-- (void)setRingDiameter:(double)a3
+- (void)setRingDiameter:(double)diameter
 {
   v3 = (self + OBJC_IVAR___WOMetricsViewLayout____lazy_storage___ringDiameter);
-  *v3 = a3;
+  *v3 = diameter;
   *(v3 + 8) = 0;
 }
 

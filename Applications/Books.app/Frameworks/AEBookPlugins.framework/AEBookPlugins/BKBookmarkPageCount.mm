@@ -1,36 +1,36 @@
 @interface BKBookmarkPageCount
 - (id)annotationRects;
-- (void)setAnnotationRects:(id)a3;
+- (void)setAnnotationRects:(id)rects;
 @end
 
 @implementation BKBookmarkPageCount
 
-- (void)setAnnotationRects:(id)a3
+- (void)setAnnotationRects:(id)rects
 {
-  v7 = a3;
+  rectsCopy = rects;
   v4 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
   v5 = v4;
   if (v4)
   {
-    [v4 encodeObject:v7 forKey:@"annotationRects"];
-    v6 = [v5 encodedData];
+    [v4 encodeObject:rectsCopy forKey:@"annotationRects"];
+    encodedData = [v5 encodedData];
   }
 
   else
   {
-    v6 = 0;
+    encodedData = 0;
   }
 
-  [(BKBookmarkPageCount *)self setAnnotationRectsData:v6];
+  [(BKBookmarkPageCount *)self setAnnotationRectsData:encodedData];
 }
 
 - (id)annotationRects
 {
-  v2 = [(BKBookmarkPageCount *)self annotationRectsData];
-  if (v2)
+  annotationRectsData = [(BKBookmarkPageCount *)self annotationRectsData];
+  if (annotationRectsData)
   {
     v8 = 0;
-    v3 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v2 error:&v8];
+    v3 = [[NSKeyedUnarchiver alloc] initForReadingFromData:annotationRectsData error:&v8];
     v4 = 0;
     if (!v8)
     {

@@ -7,15 +7,15 @@
 
 - (BOOL)hmu_isPhoneNumber
 {
-  v2 = [MEMORY[0x277CCAB50] decimalDigitCharacterSet];
-  [v2 addCharactersInString:@"+()-"];
-  v3 = [MEMORY[0x277CCA900] controlCharacterSet];
-  [v2 formUnionWithCharacterSet:v3];
+  decimalDigitCharacterSet = [MEMORY[0x277CCAB50] decimalDigitCharacterSet];
+  [decimalDigitCharacterSet addCharactersInString:@"+()-"];
+  controlCharacterSet = [MEMORY[0x277CCA900] controlCharacterSet];
+  [decimalDigitCharacterSet formUnionWithCharacterSet:controlCharacterSet];
 
-  v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  [v2 formUnionWithCharacterSet:v4];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  [decimalDigitCharacterSet formUnionWithCharacterSet:whitespaceAndNewlineCharacterSet];
 
-  v5 = [a1 componentsSeparatedByCharactersInSet:v2];
+  v5 = [self componentsSeparatedByCharactersInSet:decimalDigitCharacterSet];
   v6 = [v5 componentsJoinedByString:&stru_28663F1E8];
 
   v7 = [v6 length] == 0;
@@ -31,7 +31,7 @@
 
   v2 = hmu_isEmail_emailPredicate;
 
-  return [v2 evaluateWithObject:a1];
+  return [v2 evaluateWithObject:self];
 }
 
 @end

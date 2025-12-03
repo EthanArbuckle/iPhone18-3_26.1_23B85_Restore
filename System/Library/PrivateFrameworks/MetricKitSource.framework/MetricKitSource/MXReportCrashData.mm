@@ -1,19 +1,19 @@
 @interface MXReportCrashData
-- (MXReportCrashData)initWithCoder:(id)a3;
-- (id)initPayloadDataWithDiagnostics:(id)a3;
+- (MXReportCrashData)initWithCoder:(id)coder;
+- (id)initPayloadDataWithDiagnostics:(id)diagnostics;
 @end
 
 @implementation MXReportCrashData
 
-- (id)initPayloadDataWithDiagnostics:(id)a3
+- (id)initPayloadDataWithDiagnostics:(id)diagnostics
 {
-  v4 = a3;
+  diagnosticsCopy = diagnostics;
   v9.receiver = self;
   v9.super_class = MXReportCrashData;
   v5 = [(MXSourceData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"crashDiagnostic"];
+    v6 = [diagnosticsCopy objectForKeyedSubscript:@"crashDiagnostic"];
     crashDiagnostic = v5->_crashDiagnostic;
     v5->_crashDiagnostic = v6;
   }
@@ -21,15 +21,15 @@
   return v5;
 }
 
-- (MXReportCrashData)initWithCoder:(id)a3
+- (MXReportCrashData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MXReportCrashData;
   v5 = [(MXSourceData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"crashDiagnostic"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"crashDiagnostic"];
     crashDiagnostic = v5->_crashDiagnostic;
     v5->_crashDiagnostic = v6;
   }

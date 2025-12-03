@@ -1,20 +1,20 @@
 @interface PXGHitInfoObject
 - (PXGHitInfoObject)init;
-- (PXGHitInfoObject)initWithHitInfo:(id *)a3;
-- (int64_t)compare:(id)a3;
+- (PXGHitInfoObject)initWithHitInfo:(id *)info;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation PXGHitInfoObject
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v5 = self;
-  v6 = a3;
-  v7 = [(PXGHitInfoObject *)self hitInfo];
-  v8 = [v6 hitInfo];
+  selfCopy = self;
+  compareCopy = compare;
+  hitInfo = [(PXGHitInfoObject *)self hitInfo];
+  hitInfo2 = [compareCopy hitInfo];
 
-  var1 = v7->var1;
-  v10 = *(v8 + 8);
+  var1 = hitInfo->var1;
+  v10 = *(hitInfo2 + 8);
   if (var1 < v10)
   {
     return -1;
@@ -25,8 +25,8 @@
     return 1;
   }
 
-  var2 = v7->var3.var0.var2;
-  v12 = *(v8 + 40);
+  var2 = hitInfo->var3.var0.var2;
+  v12 = *(hitInfo2 + 40);
   if (var2 < v12)
   {
     return -1;
@@ -37,8 +37,8 @@
     return 1;
   }
 
-  v13 = v7->var2;
-  v14 = *(v8 + 16);
+  v13 = hitInfo->var2;
+  v14 = *(hitInfo2 + 16);
   if (v13 < v14)
   {
     return -1;
@@ -49,15 +49,15 @@
     return 1;
   }
 
-  if (v7->var0 > *v8)
+  if (hitInfo->var0 > *hitInfo2)
   {
     return -1;
   }
 
-  return v7->var0 != *v8;
+  return hitInfo->var0 != *hitInfo2;
 }
 
-- (PXGHitInfoObject)initWithHitInfo:(id *)a3
+- (PXGHitInfoObject)initWithHitInfo:(id *)info
 {
   v4.receiver = self;
   v4.super_class = PXGHitInfoObject;

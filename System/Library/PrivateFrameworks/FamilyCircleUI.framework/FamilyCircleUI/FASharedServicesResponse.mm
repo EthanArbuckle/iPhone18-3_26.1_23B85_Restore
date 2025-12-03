@@ -1,40 +1,40 @@
 @interface FASharedServicesResponse
-- (FASharedServicesResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
-- (void)_initializeServicesMapWithGroups:(id)a3 andServices:(id)a4;
-- (void)_sharedServicesWithNoGrouping:(id)a3;
+- (FASharedServicesResponse)initWithHTTPResponse:(id)response data:(id)data;
+- (void)_initializeServicesMapWithGroups:(id)groups andServices:(id)services;
+- (void)_sharedServicesWithNoGrouping:(id)grouping;
 @end
 
 @implementation FASharedServicesResponse
 
-- (FASharedServicesResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (FASharedServicesResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v25 = *MEMORY[0x277D85DE8];
   v20.receiver = self;
   v20.super_class = FASharedServicesResponse;
-  v4 = [(AAResponse *)&v20 initWithHTTPResponse:a3 data:a4 bodyIsPlist:1];
+  v4 = [(AAResponse *)&v20 initWithHTTPResponse:response data:data bodyIsPlist:1];
   v5 = v4;
   if (v4)
   {
-    v6 = [(AAResponse *)v4 responseDictionary];
-    v7 = [v6 objectForKeyedSubscript:@"familySharedServicesGroups"];
+    responseDictionary = [(AAResponse *)v4 responseDictionary];
+    v7 = [responseDictionary objectForKeyedSubscript:@"familySharedServicesGroups"];
 
-    v8 = [(AAResponse *)v5 responseDictionary];
-    v9 = [v8 objectForKeyedSubscript:@"familySharedServices"];
+    responseDictionary2 = [(AAResponse *)v5 responseDictionary];
+    v9 = [responseDictionary2 objectForKeyedSubscript:@"familySharedServices"];
 
-    v10 = [(AAResponse *)v5 responseDictionary];
-    v11 = [v10 objectForKeyedSubscript:@"locationAllowed"];
+    responseDictionary3 = [(AAResponse *)v5 responseDictionary];
+    v11 = [responseDictionary3 objectForKeyedSubscript:@"locationAllowed"];
 
     if (v11)
     {
-      v12 = [v11 BOOLValue];
+      bOOLValue = [v11 BOOLValue];
     }
 
     else
     {
-      v12 = 1;
+      bOOLValue = 1;
     }
 
-    [(FASharedServicesResponse *)v5 _setLocationAllowedWithLocation:v12];
+    [(FASharedServicesResponse *)v5 _setLocationAllowedWithLocation:bOOLValue];
     if (v9)
     {
       [(FASharedServicesResponse *)v5 _sharedServicesWithNoGrouping:v9];
@@ -46,11 +46,11 @@
 
     else
     {
-      v13 = [(AAResponse *)v5 responseDictionary];
-      v14 = [v13 objectForKeyedSubscript:@"status"];
+      responseDictionary4 = [(AAResponse *)v5 responseDictionary];
+      v14 = [responseDictionary4 objectForKeyedSubscript:@"status"];
 
-      v15 = [(AAResponse *)v5 responseDictionary];
-      v16 = [v15 objectForKeyedSubscript:@"status-message"];
+      responseDictionary5 = [(AAResponse *)v5 responseDictionary];
+      v16 = [responseDictionary5 objectForKeyedSubscript:@"status-message"];
 
       v17 = _FALogSystem();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -68,19 +68,19 @@
   return v5;
 }
 
-- (void)_initializeServicesMapWithGroups:(id)a3 andServices:(id)a4
+- (void)_initializeServicesMapWithGroups:(id)groups andServices:(id)services
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupsCopy = groups;
   v45 = objc_opt_new();
-  if (v4)
+  if (groupsCopy)
   {
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v43 = v4;
-    v5 = v4;
+    v43 = groupsCopy;
+    v5 = groupsCopy;
     v6 = [v5 countByEnumeratingWithState:&v46 objects:v51 count:16];
     if (v6)
     {
@@ -99,8 +99,8 @@
           v10 = [objc_alloc(MEMORY[0x277D08340]) initWithServerResponse:*(*(&v46 + 1) + 8 * v9)];
           services = self->_services;
           v12 = MEMORY[0x277CCAC30];
-          v13 = [v10 groupID];
-          v14 = [v12 predicateWithFormat:@"SELF.groupID == %@", v13];
+          groupID = [v10 groupID];
+          v14 = [v12 predicateWithFormat:@"SELF.groupID == %@", groupID];
           v15 = [(NSArray *)services filteredArrayUsingPredicate:v14];
 
           [v10 setServices:v15];
@@ -135,15 +135,15 @@
         [(FASharedServicesResponse *)v23 _initializeServicesMapWithGroups:v24 andServices:v25, v26, v27, v28, v29, v30];
       }
 
-      v31 = [(NSArray *)self->_serviceGroups firstObject];
-      v32 = [v31 services];
-      v33 = [v22 arrayByAddingObjectsFromArray:v32];
+      firstObject = [(NSArray *)self->_serviceGroups firstObject];
+      services = [firstObject services];
+      v33 = [v22 arrayByAddingObjectsFromArray:services];
 
-      v34 = [(NSArray *)self->_serviceGroups firstObject];
-      [v34 setServices:v33];
+      firstObject2 = [(NSArray *)self->_serviceGroups firstObject];
+      [firstObject2 setServices:v33];
     }
 
-    v4 = v43;
+    groupsCopy = v43;
   }
 
   else
@@ -158,12 +158,12 @@
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sharedServicesWithNoGrouping:(id)a3
+- (void)_sharedServicesWithNoGrouping:(id)grouping
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (grouping)
   {
-    v4 = [a3 fa_map:&__block_literal_global_21];
+    v4 = [grouping fa_map:&__block_literal_global_21];
     v5 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"order" ascending:1];
     v17[0] = v5;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];

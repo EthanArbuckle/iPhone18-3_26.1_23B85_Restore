@@ -1,7 +1,7 @@
 @interface TKVibrationRecorderRippleRingLayer
 - (CGPoint)normalizedRingLocation;
 - (TKVibrationRecorderRippleRingLayer)init;
-- (void)configureWithTimeIntervalSinceCreation:(double)a3 normalizedRingLocation:(CGPoint)a4 ringSpeed:(double)a5;
+- (void)configureWithTimeIntervalSinceCreation:(double)creation normalizedRingLocation:(CGPoint)location ringSpeed:(double)speed;
 - (void)reset;
 @end
 
@@ -22,15 +22,15 @@
   return v3;
 }
 
-- (void)configureWithTimeIntervalSinceCreation:(double)a3 normalizedRingLocation:(CGPoint)a4 ringSpeed:(double)a5
+- (void)configureWithTimeIntervalSinceCreation:(double)creation normalizedRingLocation:(CGPoint)location ringSpeed:(double)speed
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-  self->_creationTimestamp = v10 - a3;
+  self->_creationTimestamp = v10 - creation;
   self->_normalizedRingLocation.x = x;
   self->_normalizedRingLocation.y = y;
-  self->_ringSpeed = a5;
+  self->_ringSpeed = speed;
 }
 
 - (void)reset

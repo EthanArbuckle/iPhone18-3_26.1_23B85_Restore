@@ -1,52 +1,52 @@
 @interface TUIButtonAttributes
-- (BOOL)isEqual:(id)a3;
-- (TUIButtonAttributes)initWithTitle:(id)a3 image:(id)a4;
-- (id)attributesForButtonType:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (TUIButtonAttributes)initWithTitle:(id)title image:(id)image;
+- (id)attributesForButtonType:(unint64_t)type;
 @end
 
 @implementation TUIButtonAttributes
 
-- (TUIButtonAttributes)initWithTitle:(id)a3 image:(id)a4
+- (TUIButtonAttributes)initWithTitle:(id)title image:(id)image
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  imageCopy = image;
   v12.receiver = self;
   v12.super_class = TUIButtonAttributes;
   v9 = [(TUIButtonAttributes *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_title, a3);
-    objc_storeStrong(&v10->_image, a4);
+    objc_storeStrong(&v9->_title, title);
+    objc_storeStrong(&v10->_image, image);
   }
 
   return v10;
 }
 
-- (id)attributesForButtonType:(unint64_t)a3
+- (id)attributesForButtonType:(unint64_t)type
 {
-  v4 = self;
-  v5 = [(NSAttributedString *)v4->_title tui_attributedTitleForButtonType:a3];
-  if (v5 != v4->_title)
+  selfCopy = self;
+  v5 = [(NSAttributedString *)selfCopy->_title tui_attributedTitleForButtonType:type];
+  if (v5 != selfCopy->_title)
   {
-    v6 = [[TUIButtonAttributes alloc] initWithTitle:v5 image:v4->_image];
+    v6 = [[TUIButtonAttributes alloc] initWithTitle:v5 image:selfCopy->_image];
 
-    v4 = v6;
+    selfCopy = v6;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self != a3)
+  if (self != equal)
   {
-    v5 = a3;
+    equalCopy = equal;
     v6 = objc_opt_class();
-    v7 = TUIDynamicCast(v6, v5);
+    v7 = TUIDynamicCast(v6, equalCopy);
   }
 
-  return self == a3;
+  return self == equal;
 }
 
 @end

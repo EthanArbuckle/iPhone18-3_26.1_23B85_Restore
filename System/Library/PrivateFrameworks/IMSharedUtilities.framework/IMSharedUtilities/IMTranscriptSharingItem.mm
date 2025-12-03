@@ -1,72 +1,72 @@
 @interface IMTranscriptSharingItem
-- (BOOL)isEqual:(id)a3;
-- (IMTranscriptSharingItem)initWithCoder:(id)a3;
-- (IMTranscriptSharingItem)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IMTranscriptSharingItem)initWithCoder:(id)coder;
+- (IMTranscriptSharingItem)initWithDictionary:(id)dictionary;
 - (id)copyDictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMTranscriptSharingItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = IMTranscriptSharingItem;
-  v4 = [(IMItem *)&v9 copyWithZone:a3];
-  v5 = [(IMTranscriptSharingItem *)self otherUnformattedID];
-  [v4 setOtherUnformattedID:v5];
+  v4 = [(IMItem *)&v9 copyWithZone:zone];
+  otherUnformattedID = [(IMTranscriptSharingItem *)self otherUnformattedID];
+  [v4 setOtherUnformattedID:otherUnformattedID];
 
-  v6 = [(IMTranscriptSharingItem *)self otherHandle];
-  [v4 setOtherHandle:v6];
+  otherHandle = [(IMTranscriptSharingItem *)self otherHandle];
+  [v4 setOtherHandle:otherHandle];
 
-  v7 = [(IMTranscriptSharingItem *)self otherCountryCode];
-  [v4 setOtherCountryCode:v7];
+  otherCountryCode = [(IMTranscriptSharingItem *)self otherCountryCode];
+  [v4 setOtherCountryCode:otherCountryCode];
 
   return v4;
 }
 
-- (IMTranscriptSharingItem)initWithCoder:(id)a3
+- (IMTranscriptSharingItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = IMTranscriptSharingItem;
-  v5 = [(IMItem *)&v10 initWithCoder:v4];
+  v5 = [(IMItem *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"otherCountryCode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"otherCountryCode"];
     [(IMTranscriptSharingItem *)v5 setOtherCountryCode:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"otherHandle"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"otherHandle"];
     [(IMTranscriptSharingItem *)v5 setOtherHandle:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"otherUnformattedID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"otherUnformattedID"];
     [(IMTranscriptSharingItem *)v5 setOtherUnformattedID:v8];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = IMTranscriptSharingItem;
-  v4 = a3;
-  [(IMItem *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(IMItem *)&v8 encodeWithCoder:coderCopy];
   v5 = [(IMTranscriptSharingItem *)self otherCountryCode:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"otherCountryCode"];
+  [coderCopy encodeObject:v5 forKey:@"otherCountryCode"];
 
-  v6 = [(IMTranscriptSharingItem *)self otherHandle];
-  [v4 encodeObject:v6 forKey:@"otherHandle"];
+  otherHandle = [(IMTranscriptSharingItem *)self otherHandle];
+  [coderCopy encodeObject:otherHandle forKey:@"otherHandle"];
 
-  v7 = [(IMTranscriptSharingItem *)self otherUnformattedID];
-  [v4 encodeObject:v7 forKey:@"otherUnformattedID"];
+  otherUnformattedID = [(IMTranscriptSharingItem *)self otherUnformattedID];
+  [coderCopy encodeObject:otherUnformattedID forKey:@"otherUnformattedID"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -76,7 +76,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v25.receiver = self;
       v25.super_class = IMTranscriptSharingItem;
       if (![(IMItem *)&v25 isEqual:v5])
@@ -88,39 +88,39 @@ LABEL_23:
       }
 
       otherCountryCode = self->_otherCountryCode;
-      v7 = [(IMTranscriptSharingItem *)v5 otherCountryCode];
-      if (otherCountryCode != v7)
+      otherCountryCode = [(IMTranscriptSharingItem *)v5 otherCountryCode];
+      if (otherCountryCode != otherCountryCode)
       {
         v8 = self->_otherCountryCode;
-        v9 = [(IMTranscriptSharingItem *)v5 otherCountryCode];
-        if (![(NSString *)v8 isEqualToString:v9])
+        otherCountryCode2 = [(IMTranscriptSharingItem *)v5 otherCountryCode];
+        if (![(NSString *)v8 isEqualToString:otherCountryCode2])
         {
           v10 = 0;
           goto LABEL_21;
         }
 
-        v23 = v9;
+        v23 = otherCountryCode2;
       }
 
       otherHandle = self->_otherHandle;
-      v12 = [(IMTranscriptSharingItem *)v5 otherHandle];
-      if (otherHandle != v12)
+      otherHandle = [(IMTranscriptSharingItem *)v5 otherHandle];
+      if (otherHandle != otherHandle)
       {
         v13 = self->_otherHandle;
-        v14 = [(IMTranscriptSharingItem *)v5 otherHandle];
-        if (![(NSString *)v13 isEqualToString:v14])
+        otherHandle2 = [(IMTranscriptSharingItem *)v5 otherHandle];
+        if (![(NSString *)v13 isEqualToString:otherHandle2])
         {
           v10 = 0;
           goto LABEL_19;
         }
 
-        v21 = v14;
+        v21 = otherHandle2;
       }
 
       otherUnformattedID = self->_otherUnformattedID;
-      v16 = [(IMTranscriptSharingItem *)v5 otherUnformattedID];
-      v17 = v16;
-      if (otherUnformattedID == v16)
+      otherUnformattedID = [(IMTranscriptSharingItem *)v5 otherUnformattedID];
+      v17 = otherUnformattedID;
+      if (otherUnformattedID == otherUnformattedID)
       {
 
         v10 = 1;
@@ -129,17 +129,17 @@ LABEL_23:
       else
       {
         v18 = self->_otherUnformattedID;
-        v19 = [(IMTranscriptSharingItem *)v5 otherUnformattedID];
-        v10 = [(NSString *)v18 isEqualToString:v19];
+        otherUnformattedID2 = [(IMTranscriptSharingItem *)v5 otherUnformattedID];
+        v10 = [(NSString *)v18 isEqualToString:otherUnformattedID2];
       }
 
-      v14 = v22;
-      if (otherHandle == v12)
+      otherHandle2 = v22;
+      if (otherHandle == otherHandle)
       {
 LABEL_20:
 
-        v9 = v23;
-        if (otherCountryCode == v7)
+        otherCountryCode2 = v23;
+        if (otherCountryCode == otherCountryCode)
         {
 LABEL_22:
 
@@ -158,7 +158,7 @@ LABEL_19:
 
     v24.receiver = self;
     v24.super_class = IMTranscriptSharingItem;
-    v10 = [(IMItem *)&v24 isEqual:v4];
+    v10 = [(IMItem *)&v24 isEqual:equalCopy];
   }
 
 LABEL_24:
@@ -166,21 +166,21 @@ LABEL_24:
   return v10;
 }
 
-- (IMTranscriptSharingItem)initWithDictionary:(id)a3
+- (IMTranscriptSharingItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = IMTranscriptSharingItem;
-  v5 = [(IMItem *)&v10 initWithDictionary:v4];
+  v5 = [(IMItem *)&v10 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"otherCountryCode"];
+    v6 = [dictionaryCopy objectForKey:@"otherCountryCode"];
     [(IMTranscriptSharingItem *)v5 setOtherCountryCode:v6];
 
-    v7 = [v4 objectForKey:@"otherHandle"];
+    v7 = [dictionaryCopy objectForKey:@"otherHandle"];
     [(IMTranscriptSharingItem *)v5 setOtherHandle:v7];
 
-    v8 = [v4 objectForKey:@"otherUnformattedID"];
+    v8 = [dictionaryCopy objectForKey:@"otherUnformattedID"];
     [(IMTranscriptSharingItem *)v5 setOtherUnformattedID:v8];
   }
 
@@ -191,28 +191,28 @@ LABEL_24:
 {
   v9.receiver = self;
   v9.super_class = IMTranscriptSharingItem;
-  v3 = [(IMItem *)&v9 copyDictionaryRepresentation];
+  copyDictionaryRepresentation = [(IMItem *)&v9 copyDictionaryRepresentation];
   v4 = objc_autoreleasePoolPush();
   otherCountryCode = self->_otherCountryCode;
   if (otherCountryCode)
   {
-    CFDictionarySetValue(v3, @"otherCountryCode", otherCountryCode);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"otherCountryCode", otherCountryCode);
   }
 
   otherHandle = self->_otherHandle;
   if (otherHandle)
   {
-    CFDictionarySetValue(v3, @"otherHandle", otherHandle);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"otherHandle", otherHandle);
   }
 
   otherUnformattedID = self->_otherUnformattedID;
   if (otherUnformattedID)
   {
-    CFDictionarySetValue(v3, @"otherUnformattedID", otherUnformattedID);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"otherUnformattedID", otherUnformattedID);
   }
 
   objc_autoreleasePoolPop(v4);
-  return v3;
+  return copyDictionaryRepresentation;
 }
 
 @end

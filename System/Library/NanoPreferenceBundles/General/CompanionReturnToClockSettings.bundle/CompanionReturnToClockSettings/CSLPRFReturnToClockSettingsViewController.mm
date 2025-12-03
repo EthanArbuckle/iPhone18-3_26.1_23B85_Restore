@@ -1,25 +1,25 @@
 @interface CSLPRFReturnToClockSettingsViewController
-- (BOOL)_isSessionCapable:(id)a3;
+- (BOOL)_isSessionCapable:(id)capable;
 - (CSLPRFReturnToClockSettingsViewController)init;
 - (NPSDomainAccessor)carouselDomainAccessor;
 - (NPSDomainAccessor)nanoDomainAccessor;
 - (id)_appSpecifiers;
-- (id)appStickinessIDForState:(int64_t)a3;
+- (id)appStickinessIDForState:(int64_t)state;
 - (id)currentAppTimeoutSetting;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (int64_t)appStickinessDuration;
 - (void)_loadApps;
-- (void)_setApps:(id)a3;
-- (void)_synchronizeDomainWithAccessor:(id)a3 keys:(id)a4 withCompletion:(id)a5;
+- (void)_setApps:(id)apps;
+- (void)_synchronizeDomainWithAccessor:(id)accessor keys:(id)keys withCompletion:(id)completion;
 - (void)dealloc;
 - (void)handleDidUnpair;
-- (void)registry:(id)a3 changed:(id)a4 properties:(id)a5;
+- (void)registry:(id)registry changed:(id)changed properties:(id)properties;
 - (void)reloadAll;
 - (void)reloadReturnToAppSettingsModel;
-- (void)setAppStickiness:(int64_t)a3;
-- (void)settingsChanged:(id)a3 forBundleID:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setAppStickiness:(int64_t)stickiness;
+- (void)settingsChanged:(id)changed forBundleID:(id)d;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation CSLPRFReturnToClockSettingsViewController
@@ -36,11 +36,11 @@
     v2->_syncManager = v3;
 
     v5 = +[PDRRegistry sharedInstance];
-    v6 = [v5 getActivePairedDevice];
+    getActivePairedDevice = [v5 getActivePairedDevice];
 
-    v2->_hasBacklightExtendCapability = [v6 supportsCapability:1655344837];
-    v2->_hasRotateToWakeCapability = [v6 supportsCapability:3089013743];
-    v2->_hasStickinessCapability = [v6 supportsCapability:3986076380];
+    v2->_hasBacklightExtendCapability = [getActivePairedDevice supportsCapability:1655344837];
+    v2->_hasRotateToWakeCapability = [getActivePairedDevice supportsCapability:3089013743];
+    v2->_hasStickinessCapability = [getActivePairedDevice supportsCapability:3986076380];
     v7 = cslprf_sessions_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -50,7 +50,7 @@
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "hasStickinessCapability = %{BOOL}u", buf, 8u);
     }
 
-    v2->_hasAutoLaunchCapability = [v6 supportsCapability:1091258998];
+    v2->_hasAutoLaunchCapability = [getActivePairedDevice supportsCapability:1091258998];
     v9 = cslprf_sessions_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -60,7 +60,7 @@
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "hasAutoLaunchCapability = %{BOOL}u", buf, 8u);
     }
 
-    v2->_hasStickinessSelectionCapability = [v6 supportsCapability:1519796464];
+    v2->_hasStickinessSelectionCapability = [getActivePairedDevice supportsCapability:1519796464];
     v11 = cslprf_sessions_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -70,8 +70,8 @@
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "hasStickinessSelectionCapability = %{BOOL}u", buf, 8u);
     }
 
-    v13 = [(CSLPRFReturnToClockSettingsViewController *)v2 carouselDomainAccessor];
-    v14 = [v13 objectForKey:@"ReturnToAppSettings"];
+    carouselDomainAccessor = [(CSLPRFReturnToClockSettingsViewController *)v2 carouselDomainAccessor];
+    v14 = [carouselDomainAccessor objectForKey:@"ReturnToAppSettings"];
 
     v15 = cslprf_sessions_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -104,11 +104,11 @@
       [(CSLPRFReturnToClockSettingsViewController *)v2 _loadApps];
     }
 
-    v20 = [(CSLPRFReturnToClockSettingsViewController *)v2 carouselDomainAccessor];
-    [(CSLPRFReturnToClockSettingsViewController *)v2 _synchronizeDomainWithAccessor:v20 keys:0 withCompletion:0];
+    carouselDomainAccessor2 = [(CSLPRFReturnToClockSettingsViewController *)v2 carouselDomainAccessor];
+    [(CSLPRFReturnToClockSettingsViewController *)v2 _synchronizeDomainWithAccessor:carouselDomainAccessor2 keys:0 withCompletion:0];
 
-    v21 = [(CSLPRFReturnToClockSettingsViewController *)v2 nanoDomainAccessor];
-    [(CSLPRFReturnToClockSettingsViewController *)v2 _synchronizeDomainWithAccessor:v21 keys:0 withCompletion:0];
+    nanoDomainAccessor = [(CSLPRFReturnToClockSettingsViewController *)v2 nanoDomainAccessor];
+    [(CSLPRFReturnToClockSettingsViewController *)v2 _synchronizeDomainWithAccessor:nanoDomainAccessor keys:0 withCompletion:0];
   }
 
   return v2;
@@ -116,13 +116,13 @@
 
 - (void)reloadAll
 {
-  v3 = [(CSLPRFReturnToClockSettingsViewController *)self carouselDomainAccessor];
+  carouselDomainAccessor = [(CSLPRFReturnToClockSettingsViewController *)self carouselDomainAccessor];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_260C;
   v4[3] = &unk_C358;
   v4[4] = self;
-  [(CSLPRFReturnToClockSettingsViewController *)self _synchronizeDomainWithAccessor:v3 keys:0 withCompletion:v4];
+  [(CSLPRFReturnToClockSettingsViewController *)self _synchronizeDomainWithAccessor:carouselDomainAccessor keys:0 withCompletion:v4];
 }
 
 - (void)reloadReturnToAppSettingsModel
@@ -137,74 +137,74 @@
   [(CSLPRFReturnToAppSettingsModel *)v5 addObserver:self];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSLPRFReturnToClockSettingsViewController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(CSLPRFReturnToClockSettingsViewController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
   if (![(CSLPRFReturnToClockSettingGroup *)self->_returnToClockGroup specifierIsWithinGroup:v9])
   {
-    v10 = [v9 identifier];
-    v11 = [v10 isEqualToString:@"APP_STICKS_IN_SESSION_ID"];
+    identifier = [v9 identifier];
+    v11 = [identifier isEqualToString:@"APP_STICKS_IN_SESSION_ID"];
 
     if (v11)
     {
-      v12 = self;
+      selfCopy5 = self;
       v13 = 30;
     }
 
     else
     {
-      v14 = [v9 identifier];
-      v15 = [v14 isEqualToString:@"TINY_WINDOW_ID"];
+      identifier2 = [v9 identifier];
+      v15 = [identifier2 isEqualToString:@"TINY_WINDOW_ID"];
 
       if (v15)
       {
-        v12 = self;
+        selfCopy5 = self;
         v13 = 5;
       }
 
       else
       {
-        v16 = [v9 identifier];
-        v17 = [v16 isEqualToString:@"TWO_MINUTE_WINDOW_ID"];
+        identifier3 = [v9 identifier];
+        v17 = [identifier3 isEqualToString:@"TWO_MINUTE_WINDOW_ID"];
 
         if (v17)
         {
-          v12 = self;
+          selfCopy5 = self;
           v13 = 120;
         }
 
         else
         {
-          v18 = [v9 identifier];
-          v19 = [v18 isEqualToString:@"ONE_HOUR_WINDOW_ID"];
+          identifier4 = [v9 identifier];
+          v19 = [identifier4 isEqualToString:@"ONE_HOUR_WINDOW_ID"];
 
           if (v19)
           {
-            v12 = self;
+            selfCopy5 = self;
             v13 = 3600;
           }
 
           else
           {
-            v20 = [v9 identifier];
-            v21 = [v20 isEqualToString:@"ALWAYS_SHOW_WATCH_FACE_NO_STICKINESS_ID"];
+            identifier5 = [v9 identifier];
+            v21 = [identifier5 isEqualToString:@"ALWAYS_SHOW_WATCH_FACE_NO_STICKINESS_ID"];
 
             if (!v21)
             {
               goto LABEL_14;
             }
 
-            v12 = self;
+            selfCopy5 = self;
             v13 = -1;
           }
         }
       }
     }
 
-    [(CSLPRFReturnToClockSettingsViewController *)v12 setAppStickiness:v13];
+    [(CSLPRFReturnToClockSettingsViewController *)selfCopy5 setAppStickiness:v13];
     goto LABEL_14;
   }
 
@@ -212,30 +212,30 @@
 LABEL_14:
   v22.receiver = self;
   v22.super_class = CSLPRFReturnToClockSettingsViewController;
-  [(CSLPRFReturnToClockSettingsViewController *)&v22 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(CSLPRFReturnToClockSettingsViewController *)&v22 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = CSLPRFReturnToClockSettingsViewController;
-  v7 = [(CSLPRFReturnToClockSettingsViewController *)&v17 tableView:a3 cellForRowAtIndexPath:v6];
+  v7 = [(CSLPRFReturnToClockSettingsViewController *)&v17 tableView:view cellForRowAtIndexPath:pathCopy];
   if (self->_hasPerAppStickinessCapability)
   {
-    v8 = [(CSLPRFReturnToClockSettingsViewController *)self indexForIndexPath:v6];
+    v8 = [(CSLPRFReturnToClockSettingsViewController *)self indexForIndexPath:pathCopy];
     v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
     v10 = [v9 propertyForKey:@"ReturnToAppAppSpecifier"];
     if ([v10 BOOLValue])
     {
-      v11 = [v9 identifier];
-      v12 = [(CSLPRFReturnToAppSettingsModel *)self->_returnToAppSettingsModel settingsForBundleID:v11];
+      identifier = [v9 identifier];
+      v12 = [(CSLPRFReturnToAppSettingsModel *)self->_returnToAppSettingsModel settingsForBundleID:identifier];
       if ([v12 hasCustomReturnToAppTimeout])
       {
         v13 = [NSBundle bundleForClass:objc_opt_class()];
         v14 = [v13 localizedStringForKey:@"RETURN_TO_CLOCK_CUSTOM" value:&stru_C5E8 table:@"CompanionReturnToClockSettings"];
-        v15 = [v7 detailTextLabel];
-        [v15 setText:v14];
+        detailTextLabel = [v7 detailTextLabel];
+        [detailTextLabel setText:v14];
       }
     }
   }
@@ -294,19 +294,19 @@ LABEL_14:
   return carouselDomainAccessor;
 }
 
-- (void)_synchronizeDomainWithAccessor:(id)a3 keys:(id)a4 withCompletion:(id)a5
+- (void)_synchronizeDomainWithAccessor:(id)accessor keys:(id)keys withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accessorCopy = accessor;
+  keysCopy = keys;
+  completionCopy = completion;
   v11 = cslprf_sessions_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v8 domain];
+    domain = [accessorCopy domain];
     *buf = 138412546;
-    v22 = v12;
+    v22 = domain;
     v23 = 2112;
-    v24 = v9;
+    v24 = keysCopy;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "synchronizing %@ %@", buf, 0x16u);
   }
 
@@ -316,11 +316,11 @@ LABEL_14:
   v16[2] = sub_2F70;
   v16[3] = &unk_C2C8;
   objc_copyWeak(&v20, buf);
-  v13 = v8;
+  v13 = accessorCopy;
   v17 = v13;
-  v14 = v9;
+  v14 = keysCopy;
   v18 = v14;
-  v15 = v10;
+  v15 = completionCopy;
   v19 = v15;
   [v13 synchronizeWithCompletionHandler:v16];
 
@@ -335,23 +335,23 @@ LABEL_14:
   if (!returnToClockGroup)
   {
     v5 = [CSLPRFReturnToClockSettingGroup alloc];
-    v6 = [(CSLPRFReturnToClockSettingsViewController *)self appStickinessDuration];
+    appStickinessDuration = [(CSLPRFReturnToClockSettingsViewController *)self appStickinessDuration];
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"RETURN_TO_CLOCK_HEADER" value:&stru_C5E8 table:@"CompanionReturnToClockSettings"];
-    v9 = [(CSLPRFReturnToClockSettingGroup *)v5 initWithDelegate:self returnToClockSetting:v6 header:v8 appSpecific:0];
+    v9 = [(CSLPRFReturnToClockSettingGroup *)v5 initWithDelegate:self returnToClockSetting:appStickinessDuration header:v8 appSpecific:0];
     v10 = self->_returnToClockGroup;
     self->_returnToClockGroup = v9;
 
     returnToClockGroup = self->_returnToClockGroup;
   }
 
-  v11 = [(CSLPRFReturnToClockSettingGroup *)returnToClockGroup specifiers];
-  [v3 addObjectsFromArray:v11];
+  specifiers = [(CSLPRFReturnToClockSettingGroup *)returnToClockGroup specifiers];
+  [v3 addObjectsFromArray:specifiers];
 
   if (self->_hasPerAppStickinessCapability)
   {
-    v12 = [(CSLPRFReturnToClockSettingsViewController *)self _appSpecifiers];
-    [v3 addObjectsFromArray:v12];
+    _appSpecifiers = [(CSLPRFReturnToClockSettingsViewController *)self _appSpecifiers];
+    [v3 addObjectsFromArray:_appSpecifiers];
   }
 
   v13 = [v3 copy];
@@ -363,17 +363,17 @@ LABEL_14:
 
 - (id)currentAppTimeoutSetting
 {
-  v2 = [(CSLPRFReturnToClockSettingsViewController *)self appStickinessDuration];
+  appStickinessDuration = [(CSLPRFReturnToClockSettingsViewController *)self appStickinessDuration];
 
-  return [NSNumber numberWithInteger:v2];
+  return [NSNumber numberWithInteger:appStickinessDuration];
 }
 
-- (BOOL)_isSessionCapable:(id)a3
+- (BOOL)_isSessionCapable:(id)capable
 {
-  v3 = [(CSLPRFReturnToAppSettingsModel *)self->_returnToAppSettingsModel settingsForBundleID:a3];
-  v4 = [v3 sessionCapable];
+  v3 = [(CSLPRFReturnToAppSettingsModel *)self->_returnToAppSettingsModel settingsForBundleID:capable];
+  sessionCapable = [v3 sessionCapable];
 
-  return v4;
+  return sessionCapable;
 }
 
 - (id)_appSpecifiers
@@ -391,7 +391,7 @@ LABEL_14:
   v13 = sub_3574;
   v14 = &unk_C380;
   objc_copyWeak(&v17, &location);
-  v15 = self;
+  selfCopy = self;
   v8 = v3;
   v16 = v8;
   [(NSArray *)sortedApps enumerateObjectsUsingBlock:&v11];
@@ -417,11 +417,11 @@ LABEL_14:
   objc_destroyWeak(&location);
 }
 
-- (void)_setApps:(id)a3
+- (void)_setApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v5 = [v4 sortedArrayUsingComparator:&stru_C3E8];
+  v5 = [appsCopy sortedArrayUsingComparator:&stru_C3E8];
 
   sortedApps = self->_sortedApps;
   self->_sortedApps = v5;
@@ -429,24 +429,24 @@ LABEL_14:
   [(CSLPRFReturnToClockSettingsViewController *)self reloadSpecifiers];
 }
 
-- (void)setAppStickiness:(int64_t)a3
+- (void)setAppStickiness:(int64_t)stickiness
 {
   v5 = [(CSLPRFReturnToClockSettingsViewController *)self specifierForID:@"APP_STICKINESS_GROUP_ID"];
-  v6 = [(CSLPRFReturnToClockSettingsViewController *)self appStickinessIDForState:a3];
+  v6 = [(CSLPRFReturnToClockSettingsViewController *)self appStickinessIDForState:stickiness];
   v7 = [(CSLPRFReturnToClockSettingsViewController *)self specifierForID:v6];
 
   [v5 setProperty:v7 forKey:PSRadioGroupCheckedSpecifierKey];
   v8 = 0;
-  if (a3 <= 29)
+  if (stickiness <= 29)
   {
-    if (a3 == -1)
+    if (stickiness == -1)
     {
       v9 = @"ALWAYS_FOOTER";
     }
 
     else
     {
-      if (a3 != 5)
+      if (stickiness != 5)
       {
         goto LABEL_13;
       }
@@ -457,7 +457,7 @@ LABEL_14:
 
   else
   {
-    switch(a3)
+    switch(stickiness)
     {
       case 30:
         v9 = @"WHILE_IN_SESSION_FOOTER";
@@ -482,8 +482,8 @@ LABEL_13:
   [v5 setProperty:v12 forKey:PSFooterTextGroupKey];
 
   [(CSLPRFReturnToClockSettingsViewController *)self reloadSpecifier:v5 animated:0];
-  v13 = [(CSLPRFReturnToClockSettingsViewController *)self nanoDomainAccessor];
-  [v13 setInteger:a3 forKey:@"OnWakeTimeoutSeconds"];
+  nanoDomainAccessor = [(CSLPRFReturnToClockSettingsViewController *)self nanoDomainAccessor];
+  [nanoDomainAccessor setInteger:stickiness forKey:@"OnWakeTimeoutSeconds"];
 
   v14 = cslprf_sessions_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -491,27 +491,27 @@ LABEL_13:
     v17 = 138412546;
     v18 = @"OnWakeTimeoutSeconds";
     v19 = 1024;
-    v20 = a3;
+    stickinessCopy = stickiness;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_INFO, "setAppStickiness key %@ = %d", &v17, 0x12u);
   }
 
-  v15 = [(CSLPRFReturnToClockSettingsViewController *)self nanoDomainAccessor];
+  nanoDomainAccessor2 = [(CSLPRFReturnToClockSettingsViewController *)self nanoDomainAccessor];
   v16 = [NSSet setWithObject:@"OnWakeTimeoutSeconds"];
-  [(CSLPRFReturnToClockSettingsViewController *)self _synchronizeDomainWithAccessor:v15 keys:v16 withCompletion:0];
+  [(CSLPRFReturnToClockSettingsViewController *)self _synchronizeDomainWithAccessor:nanoDomainAccessor2 keys:v16 withCompletion:0];
 }
 
-- (id)appStickinessIDForState:(int64_t)a3
+- (id)appStickinessIDForState:(int64_t)state
 {
-  if (a3 > 29)
+  if (state > 29)
   {
-    if (a3 == 3600)
+    if (state == 3600)
     {
       return @"ONE_HOUR_WINDOW_ID";
     }
 
     else
     {
-      if (a3 != 30)
+      if (state != 30)
       {
         return @"TWO_MINUTE_WINDOW_ID";
       }
@@ -530,9 +530,9 @@ LABEL_13:
 
   else
   {
-    if (a3 != -1)
+    if (state != -1)
     {
-      if (a3 == 5)
+      if (state == 5)
       {
         return @"TINY_WINDOW_ID";
       }
@@ -554,8 +554,8 @@ LABEL_13:
 
 - (int64_t)appStickinessDuration
 {
-  v2 = [(CSLPRFReturnToClockSettingsViewController *)self nanoDomainAccessor];
-  v3 = [v2 integerForKey:@"OnWakeTimeoutSeconds"];
+  nanoDomainAccessor = [(CSLPRFReturnToClockSettingsViewController *)self nanoDomainAccessor];
+  v3 = [nanoDomainAccessor integerForKey:@"OnWakeTimeoutSeconds"];
 
   if (v3 == -1)
   {
@@ -591,10 +591,10 @@ LABEL_13:
   }
 }
 
-- (void)settingsChanged:(id)a3 forBundleID:(id)a4
+- (void)settingsChanged:(id)changed forBundleID:(id)d
 {
-  v5 = a4;
-  v6 = v5;
+  dCopy = d;
+  v6 = dCopy;
   if (self->_hasPerAppStickinessCapability)
   {
     v7[0] = _NSConcreteStackBlock;
@@ -602,15 +602,15 @@ LABEL_13:
     v7[2] = sub_3E24;
     v7[3] = &unk_C438;
     v7[4] = self;
-    v8 = v5;
+    v8 = dCopy;
     dispatch_async(&_dispatch_main_q, v7);
   }
 }
 
-- (void)registry:(id)a3 changed:(id)a4 properties:(id)a5
+- (void)registry:(id)registry changed:(id)changed properties:(id)properties
 {
-  v7 = a4;
-  if ([a5 containsObject:PDRDevicePropertyKeyIsPaired] && (objc_msgSend(v7, "isPaired") & 1) == 0)
+  changedCopy = changed;
+  if ([properties containsObject:PDRDevicePropertyKeyIsPaired] && (objc_msgSend(changedCopy, "isPaired") & 1) == 0)
   {
     [(CSLPRFReturnToClockSettingsViewController *)self handleDidUnpair];
   }

@@ -1,28 +1,28 @@
 @interface DSP_HALBypass_IOProcessor
 - (DSP_HALBypass_IOProcessor)init;
-- (id)adaptToConfigurationChange:(id)a3 withCallbacks:(void *)a4 error:(id *)a5;
-- (id)negotiateConfigurationChange:(id)a3 error:(id *)a4;
-- (id)simulateConfigurationChange:(id)a3 error:(id *)a4;
+- (id)adaptToConfigurationChange:(id)change withCallbacks:(void *)callbacks error:(id *)error;
+- (id)negotiateConfigurationChange:(id)change error:(id *)error;
+- (id)simulateConfigurationChange:(id)change error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation DSP_HALBypass_IOProcessor
 
-- (id)adaptToConfigurationChange:(id)a3 withCallbacks:(void *)a4 error:(id *)a5
+- (id)adaptToConfigurationChange:(id)change withCallbacks:(void *)callbacks error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(DSP_HALBypass_IOProcessor *)self dspCallbacks];
-  v8 = v7;
-  if (v7)
+  changeCopy = change;
+  dspCallbacks = [(DSP_HALBypass_IOProcessor *)self dspCallbacks];
+  v8 = dspCallbacks;
+  if (dspCallbacks)
   {
-    v9 = atomic_load(v7 + 316);
+    v9 = atomic_load(dspCallbacks + 316);
     if (v9)
     {
       v10 = atomic_load(StaticContainer<AMCP::Log::AMCP_Scope_Registry_Statics>::s_statics_initialized);
       if ((v10 & 1) == 0)
       {
-        AMCP::Log::AMCP_Scope_Registry::initialize(v7);
+        AMCP::Log::AMCP_Scope_Registry::initialize(dspCallbacks);
       }
 
       v11 = **StaticContainer<AMCP::Log::AMCP_Scope_Registry_Statics>::s_statics;
@@ -60,14 +60,14 @@
   operator new();
 }
 
-- (id)negotiateConfigurationChange:(id)a3 error:(id *)a4
+- (id)negotiateConfigurationChange:(id)change error:(id *)error
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF18]);
 
   return v4;
 }
 
-- (id)simulateConfigurationChange:(id)a3 error:(id *)a4
+- (id)simulateConfigurationChange:(id)change error:(id *)error
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF18]);
 

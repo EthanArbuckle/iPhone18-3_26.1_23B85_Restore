@@ -1,5 +1,5 @@
 @interface PLPillViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)_accessibilitySupplementaryHeaderViews;
 - (id)accessibilityLabel;
@@ -9,18 +9,18 @@
 
 @implementation PLPillViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PLPillView" hasInstanceMethod:@"centerContentItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PLPillView" hasInstanceMethod:@"leadingAccessoryView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PLPillView" hasInstanceMethod:@"trailingAccessoryView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PLPillView" hasInstanceVariable:@"_materialView" withType:"MTMaterialView"];
-  [v3 validateClass:@"PLPillView" hasInstanceVariable:@"_contentView" withType:"PLPillContentView"];
-  [v3 validateClass:@"PLPillContentView" hasInstanceVariable:@"_leadingAccessoryView" withType:"UIView"];
-  [v3 validateClass:@"PLPillContentView" hasInstanceVariable:@"_trailingAccessoryView" withType:"UIView"];
-  [v3 validateClass:@"PLPillContentItem" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PLPillContentItem" hasInstanceMethod:@"attributedText" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PLPillView" hasInstanceMethod:@"centerContentItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PLPillView" hasInstanceMethod:@"leadingAccessoryView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PLPillView" hasInstanceMethod:@"trailingAccessoryView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PLPillView" hasInstanceVariable:@"_materialView" withType:"MTMaterialView"];
+  [validationsCopy validateClass:@"PLPillView" hasInstanceVariable:@"_contentView" withType:"PLPillContentView"];
+  [validationsCopy validateClass:@"PLPillContentView" hasInstanceVariable:@"_leadingAccessoryView" withType:"UIView"];
+  [validationsCopy validateClass:@"PLPillContentView" hasInstanceVariable:@"_trailingAccessoryView" withType:"UIView"];
+  [validationsCopy validateClass:@"PLPillContentItem" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PLPillContentItem" hasInstanceMethod:@"attributedText" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -49,17 +49,17 @@
         }
 
         v9 = *(*(&v17 + 1) + 8 * v7);
-        v10 = [v9 safeStringForKey:{@"text", v15, v16}];
-        if (!v10)
+        string = [v9 safeStringForKey:{@"text", v15, v16}];
+        if (!string)
         {
           objc_opt_class();
           v11 = [v9 safeValueForKey:@"attributedText"];
           v12 = __UIAccessibilityCastAsClass();
 
-          v10 = [v12 string];
+          string = [v12 string];
         }
 
-        v15 = v10;
+        v15 = string;
         v16 = @"__AXStringForVariablesSentinel";
         v5 = __UIAXStringForVariables();
 
@@ -68,7 +68,7 @@
       }
 
       while (v4 != v7);
-      v4 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:{16, v10, @"__AXStringForVariablesSentinel"}];
+      v4 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:{16, string, @"__AXStringForVariablesSentinel"}];
     }
 
     while (v4);
@@ -94,17 +94,17 @@
   if (v4)
   {
     v10[0] = v4;
-    v5 = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
+    _accessibilitySupplementaryHeaderViews = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = PLPillViewAccessibility;
-    v5 = [(PLPillViewAccessibility *)&v9 _accessibilitySupplementaryHeaderViews];
+    _accessibilitySupplementaryHeaderViews = [(PLPillViewAccessibility *)&v9 _accessibilitySupplementaryHeaderViews];
   }
 
-  v6 = v5;
+  v6 = _accessibilitySupplementaryHeaderViews;
 
   v7 = *MEMORY[0x29EDCA608];
 
@@ -121,17 +121,17 @@
   if (v4)
   {
     v10[0] = v4;
-    v5 = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
+    _accessibilitySupplementaryFooterViews = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = PLPillViewAccessibility;
-    v5 = [(PLPillViewAccessibility *)&v9 _accessibilitySupplementaryFooterViews];
+    _accessibilitySupplementaryFooterViews = [(PLPillViewAccessibility *)&v9 _accessibilitySupplementaryFooterViews];
   }
 
-  v6 = v5;
+  v6 = _accessibilitySupplementaryFooterViews;
 
   v7 = *MEMORY[0x29EDCA608];
 
@@ -141,9 +141,9 @@
 - (id)accessibilityPath
 {
   v2 = [(PLPillViewAccessibility *)self safeValueForKey:@"_materialView"];
-  v3 = [v2 accessibilityPath];
+  accessibilityPath = [v2 accessibilityPath];
 
-  return v3;
+  return accessibilityPath;
 }
 
 - (id)automationElements

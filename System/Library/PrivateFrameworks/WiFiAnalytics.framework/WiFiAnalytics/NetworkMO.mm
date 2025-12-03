@@ -1,36 +1,36 @@
 @interface NetworkMO
-+ (BOOL)coalesceSsidsIntoColocatedScope:(id)a3 moc:(id)a4;
-+ (BOOL)invalidateColocatedScopeForSsidArray:(id)a3 moc:(id)a4;
-+ (BOOL)removeNetwork:(id)a3 moc:(id)a4;
-+ (BOOL)setNetworkManagedObjectPropertyValueForKey:(id)a3 forKey:(id)a4 withValue:(id)a5;
-+ (BOOL)verifyConstraints:(id)a3 withError:(id *)a4;
-+ (id)allStoredSsids:(id)a3;
-+ (id)copyAllSsids:(id)a3;
-+ (id)copyAllSsidsWithColocatedScopeId:(id)a3 moc:(id)a4;
-+ (id)copyAllSsidsWithColocatedScopeIdStr:(id)a3 moc:(id)a4;
++ (BOOL)coalesceSsidsIntoColocatedScope:(id)scope moc:(id)moc;
++ (BOOL)invalidateColocatedScopeForSsidArray:(id)array moc:(id)moc;
++ (BOOL)removeNetwork:(id)network moc:(id)moc;
++ (BOOL)setNetworkManagedObjectPropertyValueForKey:(id)key forKey:(id)forKey withValue:(id)value;
++ (BOOL)verifyConstraints:(id)constraints withError:(id *)error;
++ (id)allStoredSsids:(id)ssids;
++ (id)copyAllSsids:(id)ssids;
++ (id)copyAllSsidsWithColocatedScopeId:(id)id moc:(id)moc;
++ (id)copyAllSsidsWithColocatedScopeIdStr:(id)str moc:(id)moc;
 + (id)defaultPropertiesToFetch;
-+ (id)getFirstColocatedScopeUuidForSsids:(id)a3 moc:(id)a4;
-+ (id)networkManagedObjectPropertyValue:(id)a3 forKey:(id)a4;
-+ (id)predicateForNetworkContainingBSSID:(id)a3;
-+ (id)predicateForNetworkWithTrait:(unint64_t)a3;
-+ (id)propertiesForTraits:(id)a3;
-- (BOOL)classifyTraitsWithDistanceFilter:(double)a3 container:(id)a4;
++ (id)getFirstColocatedScopeUuidForSsids:(id)ssids moc:(id)moc;
++ (id)networkManagedObjectPropertyValue:(id)value forKey:(id)key;
++ (id)predicateForNetworkContainingBSSID:(id)d;
++ (id)predicateForNetworkWithTrait:(unint64_t)trait;
++ (id)propertiesForTraits:(id)traits;
+- (BOOL)classifyTraitsWithDistanceFilter:(double)filter container:(id)container;
 @end
 
 @implementation NetworkMO
 
-+ (BOOL)verifyConstraints:(id)a3 withError:(id *)a4
++ (BOOL)verifyConstraints:(id)constraints withError:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"ssid"];
+  constraintsCopy = constraints;
+  v6 = [constraintsCopy objectForKeyedSubscript:@"ssid"];
 
   if (!v6)
   {
     v9 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      v10 = [v5 objectForKeyedSubscript:@"ssid"];
+      v10 = [constraintsCopy objectForKeyedSubscript:@"ssid"];
       *buf = 136446722;
       v16 = "+[NetworkMO verifyConstraints:withError:]";
       v17 = 1024;
@@ -40,13 +40,13 @@
       _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_FAULT, "%{public}s::%d:Invalid input. ssid:%@", buf, 0x1Cu);
     }
 
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x1E696ABC0];
       v13 = *MEMORY[0x1E696A588];
       v14 = @"WAErrorCodeLacksRequiredArgument";
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-      *a4 = [v11 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9010 userInfo:v12];
+      *error = [v11 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9010 userInfo:v12];
     }
   }
 
@@ -54,10 +54,10 @@
   return v6 != 0;
 }
 
-+ (id)predicateForNetworkContainingBSSID:(id)a3
++ (id)predicateForNetworkContainingBSSID:(id)d
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = [BSSMO formattedMACAddressNotation:a3 as:6];
+  v4 = [BSSMO formattedMACAddressNotation:d as:6];
   v5 = [v3 predicateWithFormat:@"SUBQUERY(bss, $b, $b.bssid == %@).@count > 0", v4];
 
   return v5;
@@ -69,7 +69,7 @@
   block[1] = 3221225472;
   block[2] = __37__NetworkMO_defaultPropertiesToFetch__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1EDE5CB38 != -1)
   {
     dispatch_once(&qword_1EDE5CB38, block);
@@ -93,11 +93,11 @@ void __37__NetworkMO_defaultPropertiesToFetch__block_invoke(uint64_t a1)
   [v3 minusSet:v4];
 }
 
-+ (BOOL)removeNetwork:(id)a3 moc:(id)a4
++ (BOOL)removeNetwork:(id)network moc:(id)moc
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  networkCopy = network;
+  mocCopy = moc;
   v7 = objc_alloc(MEMORY[0x1E695D538]);
   v8 = +[NetworkMO fetchRequest];
   v9 = [v7 initWithFetchRequest:v8];
@@ -112,7 +112,7 @@ void __37__NetworkMO_defaultPropertiesToFetch__block_invoke(uint64_t a1)
   v18[1] = 3221225472;
   v18[2] = __31__NetworkMO_removeNetwork_moc___block_invoke;
   v18[3] = &unk_1E830DAF8;
-  v10 = v6;
+  v10 = mocCopy;
   v19 = v10;
   v11 = v9;
   v20 = v11;
@@ -124,18 +124,18 @@ void __37__NetworkMO_defaultPropertiesToFetch__block_invoke(uint64_t a1)
     v15 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v23[5] localizedDescription];
-      v17 = [v23[5] userInfo];
+      localizedDescription = [v23[5] localizedDescription];
+      userInfo = [v23[5] userInfo];
       *buf = 136447234;
       v29 = "+[NetworkMO removeNetwork:moc:]";
       v30 = 1024;
       v31 = 77;
       v32 = 2112;
-      v33 = v5;
+      v33 = networkCopy;
       v34 = 2112;
-      v35 = v16;
+      v35 = localizedDescription;
       v36 = 2112;
-      v37 = v17;
+      v37 = userInfo;
       _os_log_impl(&dword_1C8460000, v15, OS_LOG_TYPE_ERROR, "%{public}s::%d:Error executing batch delete for network[%@]. %@ %@", buf, 0x30u);
     }
   }
@@ -155,18 +155,18 @@ void __31__NetworkMO_removeNetwork_moc___block_invoke(void *a1)
   objc_storeStrong((v3 + 40), obj);
 }
 
-+ (id)networkManagedObjectPropertyValue:(id)a3 forKey:(id)a4
++ (id)networkManagedObjectPropertyValue:(id)value forKey:(id)key
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = v5;
-  if (a3 && v5)
+  keyCopy = key;
+  v6 = keyCopy;
+  if (value && keyCopy)
   {
-    v7 = [a3 opaque];
-    v8 = v7;
-    if (v7)
+    opaque = [value opaque];
+    v8 = opaque;
+    if (opaque)
     {
-      v9 = [v7 valueForKey:v6];
+      v9 = [opaque valueForKey:v6];
     }
 
     else
@@ -197,16 +197,16 @@ void __31__NetworkMO_removeNetwork_moc___block_invoke(void *a1)
   return v9;
 }
 
-+ (BOOL)setNetworkManagedObjectPropertyValueForKey:(id)a3 forKey:(id)a4 withValue:(id)a5
++ (BOOL)setNetworkManagedObjectPropertyValueForKey:(id)key forKey:(id)forKey withValue:(id)value
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  keyCopy = key;
+  forKeyCopy = forKey;
+  valueCopy = value;
+  if (!keyCopy)
   {
-    v11 = WALogCategoryDeviceStoreHandle();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    dictionary = WALogCategoryDeviceStoreHandle();
+    if (os_log_type_enabled(dictionary, OS_LOG_TYPE_ERROR))
     {
       v16 = 136446466;
       v17 = "+[NetworkMO setNetworkManagedObjectPropertyValueForKey:forKey:withValue:]";
@@ -214,7 +214,7 @@ void __31__NetworkMO_removeNetwork_moc___block_invoke(void *a1)
       v19 = 103;
       v15 = "%{public}s::%d:networkMO nil";
 LABEL_12:
-      _os_log_impl(&dword_1C8460000, v11, OS_LOG_TYPE_ERROR, v15, &v16, 0x12u);
+      _os_log_impl(&dword_1C8460000, dictionary, OS_LOG_TYPE_ERROR, v15, &v16, 0x12u);
     }
 
 LABEL_13:
@@ -222,10 +222,10 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  if (!v8)
+  if (!forKeyCopy)
   {
-    v11 = WALogCategoryDeviceStoreHandle();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    dictionary = WALogCategoryDeviceStoreHandle();
+    if (os_log_type_enabled(dictionary, OS_LOG_TYPE_ERROR))
     {
       v16 = 136446466;
       v17 = "+[NetworkMO setNetworkManagedObjectPropertyValueForKey:forKey:withValue:]";
@@ -238,20 +238,20 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v10 = [v7 opaque];
-  if (v10)
+  opaque = [keyCopy opaque];
+  if (opaque)
   {
-    v11 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v10];
-    [v11 removeObjectForKey:v8];
+    dictionary = [MEMORY[0x1E695DF90] dictionaryWithDictionary:opaque];
+    [dictionary removeObjectForKey:forKeyCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  [v11 setObject:v9 forKey:v8];
-  [v7 setOpaque:v11];
+  [dictionary setObject:valueCopy forKey:forKeyCopy];
+  [keyCopy setOpaque:dictionary];
 
   v12 = 1;
 LABEL_7:
@@ -260,16 +260,16 @@ LABEL_7:
   return v12;
 }
 
-+ (id)allStoredSsids:(id)a3
++ (id)allStoredSsids:(id)ssids
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  ssidsCopy = ssids;
+  array = [MEMORY[0x1E695DF70] array];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObject:@"network.ssid"];
   v6 = +[NetworkMO entity];
-  v7 = [v6 name];
-  v8 = [AnalyticsStoreProxy fetchRequestForEntityWithBatchSize:v7 batchSize:100 prefetch:v5];
-  v9 = [AnalyticsStoreProxy fetch:v8 withPredicate:0 moc:v3];
+  name = [v6 name];
+  v8 = [AnalyticsStoreProxy fetchRequestForEntityWithBatchSize:name batchSize:100 prefetch:v5];
+  v9 = [AnalyticsStoreProxy fetch:v8 withPredicate:0 moc:ssidsCopy];
 
   v10 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -308,12 +308,12 @@ LABEL_7:
           v17 = v16;
           if (v16)
           {
-            v18 = [v16 ssid];
+            ssid = [v16 ssid];
 
-            if (v18)
+            if (ssid)
             {
-              v19 = [v17 ssid];
-              [v4 addObject:v19];
+              ssid2 = [v17 ssid];
+              [array addObject:ssid2];
             }
           }
         }
@@ -325,29 +325,29 @@ LABEL_7:
     }
   }
 
-  if (![v4 count])
+  if (![array count])
   {
 
-    v4 = 0;
+    array = 0;
   }
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return array;
 }
 
-- (BOOL)classifyTraitsWithDistanceFilter:(double)a3 container:(id)a4
+- (BOOL)classifyTraitsWithDistanceFilter:(double)filter container:(id)container
 {
   v67 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  containerCopy = container;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(NetworkMO *)self ssid];
-  v9 = [GeoTagMO geoTagsForNetwork:v8 container:v6];
+  ssid = [(NetworkMO *)self ssid];
+  v9 = [GeoTagMO geoTagsForNetwork:ssid container:containerCopy];
 
   v55 = v9;
   v51 = v7;
-  v52 = v6;
-  v50 = self;
+  v52 = containerCopy;
+  selfCopy = self;
   if (v9 && [v9 count])
   {
     LOBYTE(v10) = 0;
@@ -395,7 +395,7 @@ LABEL_17:
       [v16 longitude];
       v26 = [v22 initWithLatitude:v24 longitude:v25];
       [v21 distanceFromLocation:v26];
-      if (v27 < a3)
+      if (v27 < filter)
       {
         goto LABEL_15;
       }
@@ -411,18 +411,18 @@ LABEL_17:
       {
         [v15 bss];
         v29 = v56 = v11;
-        v30 = [v29 bssid];
+        bssid = [v29 bssid];
 
         v31 = [v16 bss];
-        v32 = [v31 bssid];
+        bssid2 = [v31 bssid];
 
-        v33 = [v15 date];
-        v34 = [v16 date];
-        [v33 timeIntervalSinceDate:v34];
+        date = [v15 date];
+        date2 = [v16 date];
+        [date timeIntervalSinceDate:date2];
         v36 = v35;
 
         v11 = v56;
-        v37 = [v30 isEqualToString:v32];
+        v37 = [bssid isEqualToString:bssid2];
         v38 = v36 > 0.0;
         if (v36 > 604800.0)
         {
@@ -463,12 +463,12 @@ LABEL_15:
   LOBYTE(v11) = 0;
   LOBYTE(v10) = 0;
 LABEL_20:
-  [(NetworkMO *)v50 setIsOmnipresent:v11 & 1];
+  [(NetworkMO *)selfCopy setIsOmnipresent:v11 & 1];
   v40 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
   {
-    v41 = [(NetworkMO *)v50 ssid];
-    v42 = v41;
+    ssid2 = [(NetworkMO *)selfCopy ssid];
+    v42 = ssid2;
     v43 = "NOT Omnipresent";
     *buf = 136446978;
     v60 = "[NetworkMO classifyTraitsWithDistanceFilter:container:]";
@@ -480,18 +480,18 @@ LABEL_20:
 
     v62 = 200;
     v63 = 2112;
-    v64 = v41;
+    v64 = ssid2;
     v65 = 2080;
     v66 = v43;
     _os_log_impl(&dword_1C8460000, v40, OS_LOG_TYPE_INFO, "%{public}s::%d:Marking network %@ as %s.", buf, 0x26u);
   }
 
-  [(NetworkMO *)v50 setIsMoving:v10 & 1];
+  [(NetworkMO *)selfCopy setIsMoving:v10 & 1];
   v44 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
   {
-    v45 = [(NetworkMO *)v50 ssid];
-    v46 = v45;
+    ssid3 = [(NetworkMO *)selfCopy ssid];
+    v46 = ssid3;
     v47 = "NOT Moving";
     *buf = 136446978;
     v60 = "[NetworkMO classifyTraitsWithDistanceFilter:container:]";
@@ -503,7 +503,7 @@ LABEL_20:
 
     v62 = 203;
     v63 = 2112;
-    v64 = v45;
+    v64 = ssid3;
     v65 = 2080;
     v66 = v47;
     _os_log_impl(&dword_1C8460000, v44, OS_LOG_TYPE_INFO, "%{public}s::%d:Marking network %@ as %s.", buf, 0x26u);
@@ -514,14 +514,14 @@ LABEL_20:
   return 1;
 }
 
-+ (id)predicateForNetworkWithTrait:(unint64_t)a3
++ (id)predicateForNetworkWithTrait:(unint64_t)trait
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3 <= 2)
+  if (trait <= 2)
   {
-    if (a3)
+    if (trait)
     {
-      if (a3 != 1)
+      if (trait != 1)
       {
         goto LABEL_17;
       }
@@ -541,7 +541,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  switch(a3)
+  switch(trait)
   {
     case 3uLL:
       v4 = MEMORY[0x1E696AE18];
@@ -565,7 +565,7 @@ LABEL_17:
     v13 = 1024;
     v14 = 218;
     v15 = 2048;
-    v16 = a3;
+    traitCopy = trait;
     _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_ERROR, "%{public}s::%d:unknown trait %lu", buf, 0x1Cu);
   }
 
@@ -576,16 +576,16 @@ LABEL_14:
   return v6;
 }
 
-+ (id)propertiesForTraits:(id)a3
++ (id)propertiesForTraits:(id)traits
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  traitsCopy = traits;
   v4 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v3;
+  v5 = traitsCopy;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v30 count:16];
   if (v6)
   {
@@ -603,18 +603,18 @@ LABEL_14:
           objc_enumerationMutation(v5);
         }
 
-        v11 = [*(*(&v20 + 1) + 8 * v10) unsignedIntegerValue];
-        v12 = v11;
-        if (v11 <= 2)
+        unsignedIntegerValue = [*(*(&v20 + 1) + 8 * v10) unsignedIntegerValue];
+        v12 = unsignedIntegerValue;
+        if (unsignedIntegerValue <= 2)
         {
-          if (!v11)
+          if (!unsignedIntegerValue)
           {
             v13 = v4;
             v14 = @"isMoving";
             goto LABEL_17;
           }
 
-          if (v11 == 1)
+          if (unsignedIntegerValue == 1)
           {
             v13 = v4;
             v14 = @"isOmnipresent";
@@ -624,7 +624,7 @@ LABEL_14:
 
         else
         {
-          switch(v11)
+          switch(unsignedIntegerValue)
           {
             case 3:
               v13 = v4;
@@ -672,13 +672,13 @@ LABEL_18:
   return v4;
 }
 
-+ (id)copyAllSsids:(id)a3
++ (id)copyAllSsids:(id)ssids
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  ssidsCopy = ssids;
   v4 = +[NetworkMO entity];
-  v5 = [v4 name];
-  v6 = [AnalyticsStoreProxy fetchPropertiesForEntity:v5 properties:&unk_1F483E638 predicate:0 moc:v3];
+  name = [v4 name];
+  v6 = [AnalyticsStoreProxy fetchPropertiesForEntity:name properties:&unk_1F483E638 predicate:0 moc:ssidsCopy];
 
   if (v6 && [v6 count])
   {
@@ -706,17 +706,17 @@ LABEL_18:
   return v8;
 }
 
-+ (id)copyAllSsidsWithColocatedScopeId:(id)a3 moc:(id)a4
++ (id)copyAllSsidsWithColocatedScopeId:(id)id moc:(id)moc
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  idCopy = id;
+  mocCopy = moc;
+  if (idCopy)
   {
     v7 = +[NetworkMO entity];
-    v8 = [v7 name];
-    v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"colocatedScopeId", v5];
-    v10 = [AnalyticsStoreProxy fetchPropertiesForEntity:v8 properties:&unk_1F483E650 predicate:v9 moc:v6];
+    name = [v7 name];
+    idCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"colocatedScopeId", idCopy];
+    v10 = [AnalyticsStoreProxy fetchPropertiesForEntity:name properties:&unk_1F483E650 predicate:idCopy moc:mocCopy];
 
     if (v10 && [v10 count])
     {
@@ -761,18 +761,18 @@ LABEL_18:
   return v12;
 }
 
-+ (id)copyAllSsidsWithColocatedScopeIdStr:(id)a3 moc:(id)a4
++ (id)copyAllSsidsWithColocatedScopeIdStr:(id)str moc:(id)moc
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AFB0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithUUIDString:v7];
+  mocCopy = moc;
+  strCopy = str;
+  v8 = [[v5 alloc] initWithUUIDString:strCopy];
 
   v9 = +[NetworkMO entity];
-  v10 = [v9 name];
+  name = [v9 name];
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"colocatedScopeId", v8];
-  v12 = [AnalyticsStoreProxy fetchPropertiesForEntity:v10 properties:&unk_1F483E668 predicate:v11 moc:v6];
+  v12 = [AnalyticsStoreProxy fetchPropertiesForEntity:name properties:&unk_1F483E668 predicate:v11 moc:mocCopy];
 
   if (v12 && [v12 count])
   {
@@ -800,17 +800,17 @@ LABEL_18:
   return v14;
 }
 
-+ (id)getFirstColocatedScopeUuidForSsids:(id)a3 moc:(id)a4
++ (id)getFirstColocatedScopeUuidForSsids:(id)ssids moc:(id)moc
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  ssidsCopy = ssids;
+  mocCopy = moc;
+  if (ssidsCopy)
   {
     v7 = +[NetworkMO entity];
-    v8 = [v7 name];
-    v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ssid IN %@", v5];
-    v10 = [AnalyticsStoreProxy fetchPropertiesForEntity:v8 properties:&unk_1F483E680 predicate:v9 moc:v6];
+    name = [v7 name];
+    ssidsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"ssid IN %@", ssidsCopy];
+    v10 = [AnalyticsStoreProxy fetchPropertiesForEntity:name properties:&unk_1F483E680 predicate:ssidsCopy moc:mocCopy];
 
     if (v10 && [v10 count])
     {
@@ -818,7 +818,7 @@ LABEL_18:
       if (![v11 count])
       {
 LABEL_11:
-        v18 = 0;
+        uUIDString2 = 0;
         goto LABEL_12;
       }
 
@@ -835,11 +835,11 @@ LABEL_11:
           v16 = v15;
           if (v15)
           {
-            v17 = [v15 UUIDString];
+            uUIDString = [v15 UUIDString];
 
-            if (v17)
+            if (uUIDString)
             {
-              v18 = [v16 UUIDString];
+              uUIDString2 = [v16 UUIDString];
 
               goto LABEL_12;
             }
@@ -863,7 +863,7 @@ LABEL_11:
       _os_log_impl(&dword_1C8460000, v21, OS_LOG_TYPE_ERROR, "%{public}s::%d:ssidArray nil", buf, 0x12u);
     }
 
-    v18 = 0;
+    uUIDString2 = 0;
     v11 = 0;
   }
 
@@ -879,7 +879,7 @@ LABEL_11:
       _os_log_impl(&dword_1C8460000, v22, OS_LOG_TYPE_ERROR, "%{public}s::%d:ssidArray nil", buf, 0x12u);
     }
 
-    v18 = 0;
+    uUIDString2 = 0;
     v11 = 0;
     v10 = 0;
   }
@@ -888,36 +888,36 @@ LABEL_12:
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v18;
+  return uUIDString2;
 }
 
-+ (BOOL)invalidateColocatedScopeForSsidArray:(id)a3 moc:(id)a4
++ (BOOL)invalidateColocatedScopeForSsidArray:(id)array moc:(id)moc
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  arrayCopy = array;
+  mocCopy = moc;
+  if (arrayCopy)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v8 = [MEMORY[0x1E696ABC8] expressionForConstantValue:0];
-    [v7 setValue:v8 forKey:@"colocatedScopeId"];
+    [dictionary setValue:v8 forKey:@"colocatedScopeId"];
 
     v9 = +[NetworkMO entity];
-    v10 = [v9 name];
-    v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ssid IN %@", v5];
-    v12 = [AnalyticsStoreProxy batchUpdate:v10 withPredicate:v11 propertiesToUpdate:v7 moc:v6];
+    name = [v9 name];
+    arrayCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"ssid IN %@", arrayCopy];
+    v12 = [AnalyticsStoreProxy batchUpdate:name withPredicate:arrayCopy propertiesToUpdate:dictionary moc:mocCopy];
   }
 
   else
   {
-    v7 = WALogCategoryDeviceStoreHandle();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    dictionary = WALogCategoryDeviceStoreHandle();
+    if (os_log_type_enabled(dictionary, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446466;
       v16 = "+[NetworkMO invalidateColocatedScopeForSsidArray:moc:]";
       v17 = 1024;
       v18 = 324;
-      _os_log_impl(&dword_1C8460000, v7, OS_LOG_TYPE_ERROR, "%{public}s::%d:ssidArray nil", buf, 0x12u);
+      _os_log_impl(&dword_1C8460000, dictionary, OS_LOG_TYPE_ERROR, "%{public}s::%d:ssidArray nil", buf, 0x12u);
     }
 
     v12 = 0;
@@ -927,27 +927,27 @@ LABEL_12:
   return v12;
 }
 
-+ (BOOL)coalesceSsidsIntoColocatedScope:(id)a3 moc:(id)a4
++ (BOOL)coalesceSsidsIntoColocatedScope:(id)scope moc:(id)moc
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  scopeCopy = scope;
+  mocCopy = moc;
+  if (scopeCopy)
   {
-    v7 = [NetworkMO getFirstColocatedScopeUuidForSsids:v5 moc:v6];
+    v7 = [NetworkMO getFirstColocatedScopeUuidForSsids:scopeCopy moc:mocCopy];
     if (v7)
     {
-      v8 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v7];
+      uUID = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v7];
       v9 = WALogCategoryDeviceStoreHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v10 = [v8 UUIDString];
+        uUIDString = [uUID UUIDString];
         *buf = 136446722;
         v22 = "+[NetworkMO coalesceSsidsIntoColocatedScope:moc:]";
         v23 = 1024;
         v24 = 347;
         v25 = 2112;
-        v26 = v10;
+        v26 = uUIDString;
         v11 = "%{public}s::%d:Existing ColocatedScope UUID %@";
 LABEL_7:
         _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_DEBUG, v11, buf, 0x1Cu);
@@ -956,17 +956,17 @@ LABEL_7:
 
     else
     {
-      v8 = [MEMORY[0x1E696AFB0] UUID];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
       v9 = WALogCategoryDeviceStoreHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v10 = [v8 UUIDString];
+        uUIDString = [uUID UUIDString];
         *buf = 136446722;
         v22 = "+[NetworkMO coalesceSsidsIntoColocatedScope:moc:]";
         v23 = 1024;
         v24 = 344;
         v25 = 2112;
-        v26 = v10;
+        v26 = uUIDString;
         v11 = "%{public}s::%d:Created ColocatedScope UUID %@";
         goto LABEL_7;
       }
@@ -975,24 +975,24 @@ LABEL_7:
     v12 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [v8 UUIDString];
+      uUIDString2 = [uUID UUIDString];
       *buf = 136446978;
       v22 = "+[NetworkMO coalesceSsidsIntoColocatedScope:moc:]";
       v23 = 1024;
       v24 = 349;
       v25 = 2112;
-      v26 = v13;
+      v26 = uUIDString2;
       v27 = 2112;
-      v28 = v5;
+      v28 = scopeCopy;
       _os_log_impl(&dword_1C8460000, v12, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Applying ColocatedScope UUID %@ to ssidArray %@", buf, 0x26u);
     }
 
-    v14 = [MEMORY[0x1E695DF90] dictionary];
-    [v14 setValue:v8 forKey:@"colocatedScopeId"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setValue:uUID forKey:@"colocatedScopeId"];
     v15 = +[NetworkMO entity];
-    v16 = [v15 name];
-    v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ssid IN %@", v5];
-    v18 = [AnalyticsStoreProxy batchUpdate:v16 withPredicate:v17 propertiesToUpdate:v14 moc:v6];
+    name = [v15 name];
+    scopeCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"ssid IN %@", scopeCopy];
+    v18 = [AnalyticsStoreProxy batchUpdate:name withPredicate:scopeCopy propertiesToUpdate:dictionary moc:mocCopy];
 
     goto LABEL_11;
   }

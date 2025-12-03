@@ -1,23 +1,23 @@
 @interface SKUIShelfCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setCollectionView:(id)a3;
+- (void)setCollectionView:(id)view;
 @end
 
 @implementation SKUIShelfCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIShelfCollectionViewCell" hasInstanceMethod:@"setCollectionView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SKUIShelfCollectionViewCell" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIShelfCollectionViewCell" hasInstanceMethod:@"setCollectionView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SKUIShelfCollectionViewCell" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
 }
 
-- (void)setCollectionView:(id)a3
+- (void)setCollectionView:(id)view
 {
   v4.receiver = self;
   v4.super_class = SKUIShelfCollectionViewCellAccessibility;
-  [(SKUIShelfCollectionViewCellAccessibility *)&v4 setCollectionView:a3];
+  [(SKUIShelfCollectionViewCellAccessibility *)&v4 setCollectionView:view];
   [(SKUIShelfCollectionViewCellAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
@@ -30,7 +30,7 @@
   v3 = [(SKUIShelfCollectionViewCellAccessibility *)self safeValueForKey:@"collectionView"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 collectionViewLayout];
+  collectionViewLayout = [v4 collectionViewLayout];
   NSClassFromString(&cfstr_Skuicarouselco.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 

@@ -1,16 +1,16 @@
 @interface SidebarListCell
-- (_TtC18HealthExperienceUI15SidebarListCell)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI15SidebarListCell)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI15SidebarListCell)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI15SidebarListCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SidebarListCell
 
-- (_TtC18HealthExperienceUI15SidebarListCell)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI15SidebarListCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = self + OBJC_IVAR____TtC18HealthExperienceUI15SidebarListCell_item;
   v9 = type metadata accessor for SidebarListCell();
   *v8 = 0u;
@@ -21,7 +21,7 @@
   return [(SidebarListCell *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC18HealthExperienceUI15SidebarListCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI15SidebarListCell)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC18HealthExperienceUI15SidebarListCell_item;
   *v4 = 0u;
@@ -29,8 +29,8 @@
   *(v4 + 4) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for SidebarListCell();
-  v5 = a3;
-  v6 = [(SidebarListCell *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(SidebarListCell *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

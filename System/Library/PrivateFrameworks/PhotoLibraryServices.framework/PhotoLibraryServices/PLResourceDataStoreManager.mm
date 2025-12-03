@@ -1,23 +1,23 @@
 @interface PLResourceDataStoreManager
-+ (id)storeExternalResources:(id)a3 forAsset:(id)a4 forLifecycleEvent:(unsigned int)a5 error:(id *)a6;
-+ (id)storeForExternalResource:(id)a3 inLibraryWithID:(id)a4;
-+ (id)storesForLibraryID:(id)a3;
-+ (id)updateDerivativeResourcesForAsset:(id)a3 forLifecycleEvent:(unsigned int)a4;
++ (id)storeExternalResources:(id)resources forAsset:(id)asset forLifecycleEvent:(unsigned int)event error:(id *)error;
++ (id)storeForExternalResource:(id)resource inLibraryWithID:(id)d;
++ (id)storesForLibraryID:(id)d;
++ (id)updateDerivativeResourcesForAsset:(id)asset forLifecycleEvent:(unsigned int)event;
 @end
 
 @implementation PLResourceDataStoreManager
 
-+ (id)storeExternalResources:(id)a3 forAsset:(id)a4 forLifecycleEvent:(unsigned int)a5 error:(id *)a6
++ (id)storeExternalResources:(id)resources forAsset:(id)asset forLifecycleEvent:(unsigned int)event error:(id *)error
 {
-  v7 = *&a5;
+  v7 = *&event;
   v89 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (!v10)
+  resourcesCopy = resources;
+  assetCopy = asset;
+  v12 = assetCopy;
+  if (!resourcesCopy)
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v55 handleFailureInMethod:a2 object:a1 file:@"PLResourceDataStoreManager.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"externalResources"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceDataStoreManager.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"externalResources"}];
 
     if (v12)
     {
@@ -25,29 +25,29 @@
     }
 
 LABEL_50:
-    v56 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v56 handleFailureInMethod:a2 object:a1 file:@"PLResourceDataStoreManager.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLResourceDataStoreManager.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
 
     goto LABEL_3;
   }
 
-  if (!v11)
+  if (!assetCopy)
   {
     goto LABEL_50;
   }
 
 LABEL_3:
   v13 = [MEMORY[0x1E695DFA8] set];
-  v14 = [v12 assetID];
-  v15 = [v14 libraryID];
+  assetID = [v12 assetID];
+  libraryID = [assetID libraryID];
 
   context = objc_autoreleasePoolPush();
   v16 = PLImageManagerGetLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [v12 uuid];
+    uuid = [v12 uuid];
     *buf = 138412290;
-    v85 = v17;
+    v85 = uuid;
     _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEBUG, "[RM]: Storing external resources for asset: %@", buf, 0xCu);
   }
 
@@ -55,10 +55,10 @@ LABEL_3:
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v18 = v10;
+  v18 = resourcesCopy;
   v19 = &OBJC_INSTANCE_METHODS_PLSyncContext;
   v63 = [v18 countByEnumeratingWithState:&v75 objects:v88 count:16];
-  v64 = v15;
+  v64 = libraryID;
   v61 = v18;
   if (!v63)
   {
@@ -66,7 +66,7 @@ LABEL_3:
     goto LABEL_33;
   }
 
-  v57 = a6;
+  errorCopy = error;
   v20 = 0;
   v62 = *v76;
   v60 = *MEMORY[0x1E69BFF70];
@@ -83,7 +83,7 @@ LABEL_3:
       }
 
       v23 = *(*(&v75 + 1) + 8 * i);
-      v24 = [a1 storeForExternalResource:v23 inLibraryWithID:v15];
+      v24 = [self storeForExternalResource:v23 inLibraryWithID:libraryID];
       if (!v24)
       {
         v41 = MEMORY[0x1E696ABC0];
@@ -138,7 +138,7 @@ LABEL_16:
 
         v27 = v32;
         v21 = v31;
-        v15 = v64;
+        libraryID = v64;
       }
 
       v73 = 0;
@@ -165,7 +165,7 @@ LABEL_16:
         v37 = v39;
         v21 = v61;
         v65 = v40;
-        v15 = v64;
+        libraryID = v64;
       }
 
       if (!v34)
@@ -191,11 +191,11 @@ LABEL_30:
   if (v20)
   {
     objc_autoreleasePoolPop(context);
-    if (v57)
+    if (errorCopy)
     {
       v44 = v20;
       v45 = 0;
-      *v57 = v20;
+      *errorCopy = v20;
     }
 
     else
@@ -211,7 +211,7 @@ LABEL_33:
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v46 = [a1 storesForLibraryID:v15];
+  v46 = [self storesForLibraryID:libraryID];
   v47 = [v46 countByEnumeratingWithState:&v69 objects:v79 count:16];
   if (v47)
   {
@@ -253,22 +253,22 @@ LABEL_33:
   objc_autoreleasePoolPop(context);
   v45 = v13;
   v20 = 0;
-  v15 = v64;
+  libraryID = v64;
   v21 = v61;
 LABEL_45:
 
   return v45;
 }
 
-+ (id)updateDerivativeResourcesForAsset:(id)a3 forLifecycleEvent:(unsigned int)a4
++ (id)updateDerivativeResourcesForAsset:(id)asset forLifecycleEvent:(unsigned int)event
 {
-  v4 = *&a4;
+  v4 = *&event;
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PLResourceDataStoreManager.m" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceDataStoreManager.m" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
   v8 = [MEMORY[0x1E695DFA8] set];
@@ -276,9 +276,9 @@ LABEL_45:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [v7 assetID];
-  v10 = [v9 libraryID];
-  v11 = [a1 storesForLibraryID:v10];
+  assetID = [assetCopy assetID];
+  libraryID = [assetID libraryID];
+  v11 = [self storesForLibraryID:libraryID];
 
   v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
@@ -294,7 +294,7 @@ LABEL_45:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v19 + 1) + 8 * i) updateDerivativeResourcesForAsset:v7 forLifecycleEvent:v4];
+        v16 = [*(*(&v19 + 1) + 8 * i) updateDerivativeResourcesForAsset:assetCopy forLifecycleEvent:v4];
         [v8 unionSet:v16];
       }
 
@@ -307,18 +307,18 @@ LABEL_45:
   return v8;
 }
 
-+ (id)storeForExternalResource:(id)a3 inLibraryWithID:(id)a4
++ (id)storeForExternalResource:(id)resource inLibraryWithID:(id)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  resourceCopy = resource;
+  dCopy = d;
+  if (!resourceCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PLResourceDataStoreManager.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"resource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceDataStoreManager.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"resource"}];
   }
 
-  [a1 storesForLibraryID:v8];
+  [self storesForLibraryID:dCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -337,7 +337,7 @@ LABEL_45:
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ([v13 canStoreExternalResource:v7])
+        if ([v13 canStoreExternalResource:resourceCopy])
         {
           v10 = v13;
           goto LABEL_13;
@@ -359,10 +359,10 @@ LABEL_13:
   return v10;
 }
 
-+ (id)storesForLibraryID:(id)a3
++ (id)storesForLibraryID:(id)d
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&s_lock);
   if (!storesForLibraryID__defaultStoreClassIDs)
   {
@@ -371,15 +371,15 @@ LABEL_13:
     storesForLibraryID__defaultStoreClassIDs = v4;
   }
 
-  v6 = [s_dataStoresByClassIDByLibraryID objectForKeyedSubscript:v3];
-  v7 = [v6 allValues];
+  v6 = [s_dataStoresByClassIDByLibraryID objectForKeyedSubscript:dCopy];
+  allValues = [v6 allValues];
   os_unfair_lock_unlock(&s_lock);
-  v8 = [v7 count];
+  v8 = [allValues count];
   if (v8 < [storesForLibraryID__defaultStoreClassIDs count])
   {
-    if (!v7)
+    if (!allValues)
     {
-      v7 = MEMORY[0x1E695E0F0];
+      allValues = MEMORY[0x1E695E0F0];
     }
 
     v9 = [storesForLibraryID__defaultStoreClassIDs mutableCopy];
@@ -387,8 +387,8 @@ LABEL_13:
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v7 = v7;
-    v10 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    allValues = allValues;
+    v10 = [allValues countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v10)
     {
       v11 = v10;
@@ -399,14 +399,14 @@ LABEL_13:
         {
           if (*v28 != v12)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           v14 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(objc_opt_class(), "storeClassID")}];
           [v9 removeObject:v14];
         }
 
-        v11 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v11 = [allValues countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v11);
@@ -431,12 +431,12 @@ LABEL_13:
             objc_enumerationMutation(v15);
           }
 
-          v20 = PLDataStoreForClassIDAndLibraryID([*(*(&v23 + 1) + 8 * j) integerValue], v3);
+          v20 = PLDataStoreForClassIDAndLibraryID([*(*(&v23 + 1) + 8 * j) integerValue], dCopy);
           if (v20)
           {
-            v21 = [v7 arrayByAddingObject:v20];
+            v21 = [allValues arrayByAddingObject:v20];
 
-            v7 = v21;
+            allValues = v21;
           }
         }
 
@@ -447,7 +447,7 @@ LABEL_13:
     }
   }
 
-  return v7;
+  return allValues;
 }
 
 @end

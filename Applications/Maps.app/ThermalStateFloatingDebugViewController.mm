@@ -10,7 +10,7 @@
 - (void)composeTTR;
 - (void)dealloc;
 - (void)detach;
-- (void)didUpdateThermalPressureLevel:(int)a3;
+- (void)didUpdateThermalPressureLevel:(int)level;
 - (void)startDebugInfoRefreshTimer;
 - (void)updateDebugText;
 - (void)updateViewForCurrentState;
@@ -19,15 +19,15 @@
 
 @implementation ThermalStateFloatingDebugViewController
 
-- (void)didUpdateThermalPressureLevel:(int)a3
+- (void)didUpdateThermalPressureLevel:(int)level
 {
   v5 = sub_100ACF1B0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349312;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = a3;
+    levelCopy = level;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Thermal state changed: %llu", buf, 0x16u);
   }
 
@@ -48,7 +48,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Launching TTR", buf, 0xCu);
   }
 
@@ -96,7 +96,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Starting periodic refresh timer", buf, 0xCu);
   }
 
@@ -116,12 +116,12 @@
 
 - (void)updateDebugText
 {
-  v3 = [(ThermalStateFloatingDebugViewController *)self view];
-  [v3 setHidden:0];
+  view = [(ThermalStateFloatingDebugViewController *)self view];
+  [view setHidden:0];
 
-  v5 = [(ThermalStateFloatingDebugViewController *)self debugText];
-  v4 = [(ThermalStateFloatingDebugViewController *)self debugLabel];
-  [v4 setAttributedText:v5];
+  debugText = [(ThermalStateFloatingDebugViewController *)self debugText];
+  debugLabel = [(ThermalStateFloatingDebugViewController *)self debugLabel];
+  [debugLabel setAttributedText:debugText];
 }
 
 - (void)updateViewForCurrentState
@@ -132,22 +132,22 @@
   v3 = sub_100ACF1B0();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(MapsFloatingDebugViewController *)self viewState];
+    viewState = [(MapsFloatingDebugViewController *)self viewState];
     *buf = 134349312;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
-    v10 = v4;
+    v10 = viewState;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Updating view for state: %ld", buf, 0x16u);
   }
 
-  v5 = [(MapsFloatingDebugViewController *)self viewState];
-  if (v5 == 1)
+  viewState2 = [(MapsFloatingDebugViewController *)self viewState];
+  if (viewState2 == 1)
   {
     [(ThermalStateFloatingDebugViewController *)self updateDebugText];
     [(ThermalStateFloatingDebugViewController *)self startDebugInfoRefreshTimer];
   }
 
-  else if (!v5)
+  else if (!viewState2)
   {
     [(ThermalStateFloatingDebugViewController *)self setDebugInfoRefreshTimer:0];
   }
@@ -200,13 +200,13 @@
   v44 = [NSDictionary dictionaryWithObjects:v52 forKeys:v51 count:2];
 
   v19 = +[UIApplication sharedApplication];
-  v20 = [v19 connectedScenes];
+  connectedScenes = [v19 connectedScenes];
 
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v21 = v20;
+  v21 = connectedScenes;
   v22 = [v21 countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v22)
   {
@@ -227,18 +227,18 @@
         if (objc_opt_isKindOfClass())
         {
           v27 = v26;
-          v28 = [v27 delegate];
+          delegate = [v27 delegate];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
-          v30 = [v27 delegate];
-          v31 = v30;
+          delegate2 = [v27 delegate];
+          delegate3 = delegate2;
           if (isKindOfClass)
           {
-            v32 = [v30 chromeViewController];
-            v33 = [v32 mapView];
+            chromeViewController = [delegate2 chromeViewController];
+            mapView = [chromeViewController mapView];
 
-            if (v33)
+            if (mapView)
             {
               v34 = @"\n\n📱VKMapView[%p]\nDisplay rate: %ld";
               goto LABEL_15;
@@ -252,17 +252,17 @@
 
           if (v35)
           {
-            v31 = [v27 delegate];
-            v36 = [v31 carChromeViewController];
-            v33 = [v36 mapView];
+            delegate3 = [v27 delegate];
+            carChromeViewController = [delegate3 carChromeViewController];
+            mapView = [carChromeViewController mapView];
 
-            if (v33)
+            if (mapView)
             {
               v34 = @"\n\n🚗VKMapView[%p]\nDisplay rate: %ld";
 LABEL_15:
-              v37 = [v33 _mapLayer];
+              _mapLayer = [mapView _mapLayer];
               v38 = [NSAttributedString alloc];
-              v39 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", v34, v37, [v37 displayRate]);
+              v39 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", v34, _mapLayer, [_mapLayer displayRate]);
               v40 = [v38 initWithString:v39 attributes:v44];
               [v45 appendAttributedString:v40];
 
@@ -296,19 +296,19 @@ LABEL_16:
 - (id)tintColor
 {
   v2 = +[MapsThermalPressureController sharedController];
-  v3 = [v2 currentThermalPressureLevel];
+  currentThermalPressureLevel = [v2 currentThermalPressureLevel];
 
-  if (v3 < 0x1E)
+  if (currentThermalPressureLevel < 0x1E)
   {
     v5 = +[MapsThermalPressureController sharedController];
-    v6 = [v5 currentThermalPressureLevel];
+    currentThermalPressureLevel2 = [v5 currentThermalPressureLevel];
 
-    if (v6 < 0x14)
+    if (currentThermalPressureLevel2 < 0x14)
     {
       v7 = +[MapsThermalPressureController sharedController];
-      v8 = [v7 currentThermalPressureLevel];
+      currentThermalPressureLevel3 = [v7 currentThermalPressureLevel];
 
-      if (v8 < 0xA)
+      if (currentThermalPressureLevel3 < 0xA)
       {
         +[UIColor greenColor];
       }
@@ -346,7 +346,7 @@ LABEL_16:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Detaching", buf, 0xCu);
   }
 
@@ -363,7 +363,7 @@ LABEL_16:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Attaching", buf, 0xCu);
   }
 
@@ -379,8 +379,8 @@ LABEL_16:
   v3 = [UIImageSymbolConfiguration configurationWithPointSize:7 weight:3 scale:35.0];
   v4 = [UIImage systemImageNamed:@"flame" withConfiguration:v3];
   v5 = [v4 imageWithRenderingMode:2];
-  v6 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-  [v6 setImage:v5];
+  thumbnailImageView = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+  [thumbnailImageView setImage:v5];
 
   v28 = +[NSMutableArray array];
   v7 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -392,28 +392,28 @@ LABEL_16:
   debugLabel = self->_debugLabel;
   self->_debugLabel = v7;
 
-  v10 = [(MapsFloatingDebugViewController *)self contentView];
-  [v10 addSubview:self->_debugLabel];
+  contentView = [(MapsFloatingDebugViewController *)self contentView];
+  [contentView addSubview:self->_debugLabel];
 
-  v26 = [(UILabel *)self->_debugLabel topAnchor];
-  v27 = [(MapsFloatingDebugViewController *)self contentView];
-  v25 = [v27 topAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25 constant:5.0];
+  topAnchor = [(UILabel *)self->_debugLabel topAnchor];
+  contentView2 = [(MapsFloatingDebugViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
   v30[0] = v24;
-  v22 = [(UILabel *)self->_debugLabel bottomAnchor];
-  v23 = [(MapsFloatingDebugViewController *)self contentView];
-  v21 = [v23 bottomAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21 constant:-5.0];
+  bottomAnchor = [(UILabel *)self->_debugLabel bottomAnchor];
+  contentView3 = [(MapsFloatingDebugViewController *)self contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
   v30[1] = v20;
-  v11 = [(UILabel *)self->_debugLabel leadingAnchor];
-  v12 = [(MapsFloatingDebugViewController *)self contentView];
-  v13 = [v12 leadingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:5.0];
+  leadingAnchor = [(UILabel *)self->_debugLabel leadingAnchor];
+  contentView4 = [(MapsFloatingDebugViewController *)self contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:5.0];
   v30[2] = v14;
-  v15 = [(UILabel *)self->_debugLabel trailingAnchor];
-  v16 = [(MapsFloatingDebugViewController *)self contentView];
-  v17 = [v16 trailingAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:-5.0];
+  trailingAnchor = [(UILabel *)self->_debugLabel trailingAnchor];
+  contentView5 = [(MapsFloatingDebugViewController *)self contentView];
+  trailingAnchor2 = [contentView5 trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-5.0];
   v30[3] = v18;
   v19 = [NSArray arrayWithObjects:v30 count:4];
   [v28 addObjectsFromArray:v19];
@@ -427,7 +427,7 @@ LABEL_16:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -450,11 +450,11 @@ LABEL_16:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v4 = +[MapsThermalPressureController sharedController];
-      v5 = [v4 currentThermalPressureLevel];
+      currentThermalPressureLevel = [v4 currentThermalPressureLevel];
       *buf = 134349312;
       v10 = v2;
       v11 = 1024;
-      v12 = v5;
+      v12 = currentThermalPressureLevel;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Initializing with thermal level: %d", buf, 0x12u);
     }
 

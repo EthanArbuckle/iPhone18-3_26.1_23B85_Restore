@@ -1,18 +1,18 @@
 @interface SBHCustomIconElement
-+ (Class)elementClassWithIdentifier:(id)a3;
++ (Class)elementClassWithIdentifier:(id)identifier;
 - (SBHCustomIconElement)init;
-- (SBHCustomIconElement)initWithUniqueIdentifier:(id)a3;
-- (id)copyWithSuggestionSource:(int64_t)a3;
+- (SBHCustomIconElement)initWithUniqueIdentifier:(id)identifier;
+- (id)copyWithSuggestionSource:(int64_t)source;
 - (id)copyWithUniqueIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBHCustomIconElement
 
-+ (Class)elementClassWithIdentifier:(id)a3
++ (Class)elementClassWithIdentifier:(id)identifier
 {
   v24[6] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_self();
   v24[0] = v4;
   v5 = objc_opt_self();
@@ -46,8 +46,8 @@
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
-        v16 = [v15 elementIdentifier];
-        v17 = [v3 isEqualToString:v16];
+        elementIdentifier = [v15 elementIdentifier];
+        v17 = [identifierCopy isEqualToString:elementIdentifier];
 
         if (v17)
         {
@@ -71,15 +71,15 @@ LABEL_11:
   return v12;
 }
 
-- (SBHCustomIconElement)initWithUniqueIdentifier:(id)a3
+- (SBHCustomIconElement)initWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SBHCustomIconElement;
   v5 = [(SBHCustomIconElement *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v6;
 
@@ -91,32 +91,32 @@ LABEL_11:
 
 - (SBHCustomIconElement)init
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
-  v5 = [(SBHCustomIconElement *)self initWithUniqueIdentifier:v4];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v5 = [(SBHCustomIconElement *)self initWithUniqueIdentifier:uUIDString];
 
   return v5;
 }
 
-- (id)copyWithSuggestionSource:(int64_t)a3
+- (id)copyWithSuggestionSource:(int64_t)source
 {
   result = [objc_alloc(objc_opt_class()) initWithUniqueIdentifier:self->_uniqueIdentifier];
-  *(result + 3) = a3;
+  *(result + 3) = source;
   return result;
 }
 
 - (id)copyWithUniqueIdentifier
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [MEMORY[0x1E696AFB0] UUID];
-  v5 = [v4 UUIDString];
-  v6 = [v3 initWithUniqueIdentifier:v5];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v6 = [v3 initWithUniqueIdentifier:uUIDString];
 
   v6[3] = self->_suggestionSource;
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [objc_alloc(objc_opt_class()) initWithUniqueIdentifier:self->_uniqueIdentifier];
   *(result + 3) = self->_suggestionSource;

@@ -3,16 +3,16 @@
 - (PKTextInputFeedbackController)init;
 - (PKTextInputFeedbackControllerDelegate)delegate;
 - (_NSRange)referenceTextRange;
-- (void)_placeholderChanged:(id)a3;
-- (void)_setShowingCustomFeedback:(BOOL)a3;
+- (void)_placeholderChanged:(id)changed;
+- (void)_setShowingCustomFeedback:(BOOL)feedback;
 - (void)_updateFeedbackState;
 - (void)_updateFeedbackView;
-- (void)beginDisplayForReserveSpacePlaceholder:(id)a3;
+- (void)beginDisplayForReserveSpacePlaceholder:(id)placeholder;
 - (void)cancelShowingReserveSpaceIntro;
 - (void)dealloc;
-- (void)endDisplayForReserveSpacePlaceholder:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setReferenceElementContent:(id)a3 referenceRange:(_NSRange)a4 feedbackType:(int64_t)a5;
+- (void)endDisplayForReserveSpacePlaceholder:(id)placeholder;
+- (void)setDelegate:(id)delegate;
+- (void)setReferenceElementContent:(id)content referenceRange:(_NSRange)range feedbackType:(int64_t)type;
 @end
 
 @implementation PKTextInputFeedbackController
@@ -26,8 +26,8 @@
   if (v2)
   {
     *(v2 + 56) = xmmword_1C801E6F0;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__placeholderChanged_ name:*MEMORY[0x1E69DE6C0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__placeholderChanged_ name:*MEMORY[0x1E69DE6C0] object:0];
   }
 
   return v3;
@@ -35,8 +35,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKTextInputFeedbackController;
@@ -45,58 +45,58 @@
 
 - (BOOL)_shouldShowCustomFeedback
 {
-  v3 = [(PKTextInputFeedbackController *)self feedbackType];
+  feedbackType = [(PKTextInputFeedbackController *)self feedbackType];
   v4 = 1;
-  if (v3 <= 1)
+  if (feedbackType <= 1)
   {
-    if (v3)
+    if (feedbackType)
     {
-      if (v3 != 1)
+      if (feedbackType != 1)
       {
         goto LABEL_17;
       }
 
-      v5 = [(PKTextInputFeedbackController *)self referenceElementContent];
+      referenceElementContent = [(PKTextInputFeedbackController *)self referenceElementContent];
 
-      if (!v5)
+      if (!referenceElementContent)
       {
         goto LABEL_17;
       }
 
-      v6 = [(PKTextInputFeedbackController *)self referenceElementContent];
-      v7 = [(PKTextInputElementContent *)v6 configureSelectionStyleForDeletionPreview];
+      referenceElementContent2 = [(PKTextInputFeedbackController *)self referenceElementContent];
+      configureSelectionStyleForDeletionPreview = [(PKTextInputElementContent *)referenceElementContent2 configureSelectionStyleForDeletionPreview];
     }
 
     else
     {
-      v9 = [(PKTextInputFeedbackController *)self referenceElementContent];
+      referenceElementContent3 = [(PKTextInputFeedbackController *)self referenceElementContent];
 
-      if (!v9)
+      if (!referenceElementContent3)
       {
         goto LABEL_17;
       }
 
-      v6 = [(PKTextInputFeedbackController *)self referenceElementContent];
-      v7 = [(PKTextInputElementContent *)v6 configureSelectionStyleForNormalSelection];
+      referenceElementContent2 = [(PKTextInputFeedbackController *)self referenceElementContent];
+      configureSelectionStyleForDeletionPreview = [(PKTextInputElementContent *)referenceElementContent2 configureSelectionStyleForNormalSelection];
     }
 
     goto LABEL_14;
   }
 
-  if (v3 != 2)
+  if (feedbackType != 2)
   {
-    v4 = v3 != 4 && v3 != 5;
+    v4 = feedbackType != 4 && feedbackType != 5;
     goto LABEL_17;
   }
 
-  v8 = [(PKTextInputFeedbackController *)self referenceElementContent];
+  referenceElementContent4 = [(PKTextInputFeedbackController *)self referenceElementContent];
 
-  if (v8)
+  if (referenceElementContent4)
   {
-    v6 = [(PKTextInputFeedbackController *)self referenceElementContent];
-    v7 = [(PKTextInputElementContent *)v6 configureSelectionStyleForHighlight];
+    referenceElementContent2 = [(PKTextInputFeedbackController *)self referenceElementContent];
+    configureSelectionStyleForDeletionPreview = [(PKTextInputElementContent *)referenceElementContent2 configureSelectionStyleForHighlight];
 LABEL_14:
-    v10 = v7;
+    v10 = configureSelectionStyleForDeletionPreview;
 
     if (v10)
     {
@@ -107,11 +107,11 @@ LABEL_14:
   }
 
 LABEL_17:
-  v12 = [(PKTextInputFeedbackController *)self referenceElementContent];
-  if (v12 && [(PKTextInputFeedbackController *)self feedbackType]&& (!v4 || [(PKTextInputFeedbackController *)self referenceTextRange]!= 0x7FFFFFFFFFFFFFFFLL))
+  referenceElementContent5 = [(PKTextInputFeedbackController *)self referenceElementContent];
+  if (referenceElementContent5 && [(PKTextInputFeedbackController *)self feedbackType]&& (!v4 || [(PKTextInputFeedbackController *)self referenceTextRange]!= 0x7FFFFFFFFFFFFFFFLL))
   {
-    v13 = [(PKTextInputFeedbackController *)self delegate];
-    v11 = v13 != 0;
+    delegate = [(PKTextInputFeedbackController *)self delegate];
+    v11 = delegate != 0;
   }
 
   else
@@ -129,27 +129,27 @@ LABEL_17:
   [(PKTextInputFeedbackController *)self _updateFeedbackView];
 }
 
-- (void)_setShowingCustomFeedback:(BOOL)a3
+- (void)_setShowingCustomFeedback:(BOOL)feedback
 {
-  if (self->_showingCustomFeedback != a3)
+  if (self->_showingCustomFeedback != feedback)
   {
-    self->_showingCustomFeedback = a3;
+    self->_showingCustomFeedback = feedback;
     [(PKTextInputFeedbackController *)self _updateFeedbackView];
-    v5 = [(PKTextInputFeedbackController *)self delegate];
-    [v5 feedbackControllerShowingCustomFeedbackDidChange:self];
+    delegate = [(PKTextInputFeedbackController *)self delegate];
+    [delegate feedbackControllerShowingCustomFeedbackDidChange:self];
   }
 }
 
 - (void)_updateFeedbackView
 {
-  v3 = [(PKTextInputFeedbackController *)self showingCustomFeedback];
-  v4 = [(PKTextInputFeedbackController *)self _feedbackView];
+  showingCustomFeedback = [(PKTextInputFeedbackController *)self showingCustomFeedback];
+  _feedbackView = [(PKTextInputFeedbackController *)self _feedbackView];
 
-  if (!v3 || v4)
+  if (!showingCustomFeedback || _feedbackView)
   {
-    if (v4)
+    if (_feedbackView)
     {
-      v14 = v3;
+      v14 = showingCustomFeedback;
     }
 
     else
@@ -159,8 +159,8 @@ LABEL_17:
 
     if ((v14 & 1) == 0)
     {
-      v15 = [(PKTextInputFeedbackController *)self _feedbackView];
-      [v15 removeFromSuperview];
+      _feedbackView2 = [(PKTextInputFeedbackController *)self _feedbackView];
+      [_feedbackView2 removeFromSuperview];
 
       [(PKTextInputFeedbackController *)self set_feedbackView:0];
     }
@@ -168,8 +168,8 @@ LABEL_17:
 
   else
   {
-    v5 = [(PKTextInputFeedbackController *)self delegate];
-    v6 = [v5 feedbackControllerContainerView:self];
+    delegate = [(PKTextInputFeedbackController *)self delegate];
+    v6 = [delegate feedbackControllerContainerView:self];
 
     if (v6)
     {
@@ -178,34 +178,34 @@ LABEL_17:
       v8 = [(PKTextInputGestureFeedbackView *)v7 initWithFrame:?];
       [(PKTextInputFeedbackController *)self set_feedbackView:v8];
 
-      v9 = [(PKTextInputFeedbackController *)self _feedbackView];
-      v10 = v9;
-      if (v9)
+      _feedbackView3 = [(PKTextInputFeedbackController *)self _feedbackView];
+      v10 = _feedbackView3;
+      if (_feedbackView3)
       {
-        objc_storeWeak((v9 + 416), self);
+        objc_storeWeak((_feedbackView3 + 416), self);
       }
 
-      v11 = [(PKTextInputFeedbackController *)self _feedbackView];
-      [v11 setAutoresizingMask:18];
+      _feedbackView4 = [(PKTextInputFeedbackController *)self _feedbackView];
+      [_feedbackView4 setAutoresizingMask:18];
 
-      v12 = [(PKTextInputFeedbackController *)self _feedbackView];
-      [v6 addSubview:v12];
+      _feedbackView5 = [(PKTextInputFeedbackController *)self _feedbackView];
+      [v6 addSubview:_feedbackView5];
 
-      v13 = [(PKTextInputFeedbackController *)self _feedbackView];
-      [v6 sendSubviewToBack:v13];
+      _feedbackView6 = [(PKTextInputFeedbackController *)self _feedbackView];
+      [v6 sendSubviewToBack:_feedbackView6];
     }
   }
 
-  if (v3)
+  if (showingCustomFeedback)
   {
-    v16 = [(PKTextInputFeedbackController *)self _feedbackView];
-    [(PKTextInputGestureFeedbackView *)v16 setNeedsRefreshFeedbackViews];
+    _feedbackView7 = [(PKTextInputFeedbackController *)self _feedbackView];
+    [(PKTextInputGestureFeedbackView *)_feedbackView7 setNeedsRefreshFeedbackViews];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -217,37 +217,37 @@ LABEL_17:
   }
 }
 
-- (void)setReferenceElementContent:(id)a3 referenceRange:(_NSRange)a4 feedbackType:(int64_t)a5
+- (void)setReferenceElementContent:(id)content referenceRange:(_NSRange)range feedbackType:(int64_t)type
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = a3;
+  length = range.length;
+  location = range.location;
+  contentCopy = content;
   p_referenceElementContent = &self->_referenceElementContent;
-  if (self->_referenceElementContent != v10 || (location == self->_referenceTextRange.location ? (v12 = length == self->_referenceTextRange.length) : (v12 = 0), !v12 || self->_feedbackType != a5))
+  if (self->_referenceElementContent != contentCopy || (location == self->_referenceTextRange.location ? (v12 = length == self->_referenceTextRange.length) : (v12 = 0), !v12 || self->_feedbackType != type))
   {
     self->_referenceTextRange.location = location;
     self->_referenceTextRange.length = length;
-    self->_feedbackType = a5;
-    v15 = v10;
-    if (v10)
+    self->_feedbackType = type;
+    v15 = contentCopy;
+    if (contentCopy)
     {
-      objc_storeStrong(&self->_referenceElementContent, a3);
+      objc_storeStrong(&self->_referenceElementContent, content);
     }
 
     [(PKTextInputFeedbackController *)self _updateFeedbackState];
-    if (a5 == 3)
+    if (type == 3)
     {
-      v13 = [(PKTextInputFeedbackController *)self _feedbackView];
-      [(PKTextInputGestureFeedbackView *)v13 beginShowingReserveSpaceIntro];
+      _feedbackView = [(PKTextInputFeedbackController *)self _feedbackView];
+      [(PKTextInputGestureFeedbackView *)_feedbackView beginShowingReserveSpaceIntro];
     }
 
-    v10 = v15;
+    contentCopy = v15;
     if (!v15)
     {
       v14 = *p_referenceElementContent;
       *p_referenceElementContent = 0;
 
-      v10 = 0;
+      contentCopy = 0;
     }
   }
 }
@@ -255,28 +255,28 @@ LABEL_17:
 - (void)cancelShowingReserveSpaceIntro
 {
   [(PKTextInputFeedbackController *)self setFeedbackType:4];
-  v3 = [(PKTextInputFeedbackController *)self _feedbackView];
-  [(PKTextInputGestureFeedbackView *)v3 cancelShowingReserveSpaceIntro];
+  _feedbackView = [(PKTextInputFeedbackController *)self _feedbackView];
+  [(PKTextInputGestureFeedbackView *)_feedbackView cancelShowingReserveSpaceIntro];
 
   [(PKTextInputFeedbackController *)self setFeedbackType:0];
 
   [(PKTextInputFeedbackController *)self _updateFeedbackState];
 }
 
-- (void)beginDisplayForReserveSpacePlaceholder:(id)a3
+- (void)beginDisplayForReserveSpacePlaceholder:(id)placeholder
 {
-  [(PKTextInputFeedbackController *)self setPlaceholder:a3];
+  [(PKTextInputFeedbackController *)self setPlaceholder:placeholder];
   [(PKTextInputFeedbackController *)self setFeedbackType:5];
 
   [(PKTextInputFeedbackController *)self _updateFeedbackState];
 }
 
-- (void)endDisplayForReserveSpacePlaceholder:(id)a3
+- (void)endDisplayForReserveSpacePlaceholder:(id)placeholder
 {
-  v4 = a3;
-  v5 = [(PKTextInputFeedbackController *)self placeholder];
+  placeholderCopy = placeholder;
+  placeholder = [(PKTextInputFeedbackController *)self placeholder];
 
-  if (v5 == v4)
+  if (placeholder == placeholderCopy)
   {
     [(PKTextInputFeedbackController *)self setPlaceholder:0];
     [(PKTextInputFeedbackController *)self setFeedbackType:0];
@@ -285,16 +285,16 @@ LABEL_17:
   }
 }
 
-- (void)_placeholderChanged:(id)a3
+- (void)_placeholderChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v8 = [v4 objectForKey:*MEMORY[0x1E69DE6C8]];
+  userInfo = [changed userInfo];
+  v8 = [userInfo objectForKey:*MEMORY[0x1E69DE6C8]];
 
-  v5 = [(PKTextInputFeedbackController *)self placeholder];
-  v6 = [v5 placeholder];
+  placeholder = [(PKTextInputFeedbackController *)self placeholder];
+  v5Placeholder = [placeholder placeholder];
 
   v7 = v8;
-  if (v8 == v6)
+  if (v8 == v5Placeholder)
   {
     [(PKTextInputFeedbackController *)self _updateFeedbackState];
     v7 = v8;

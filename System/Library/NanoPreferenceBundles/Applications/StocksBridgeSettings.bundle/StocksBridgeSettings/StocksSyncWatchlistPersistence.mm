@@ -1,11 +1,11 @@
 @interface StocksSyncWatchlistPersistence
 - (StocksSyncWatchlistPersistence)init;
-- (id)objectForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (int64_t)integerForKey:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setInteger:(int64_t)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (id)objectForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (int64_t)integerForKey:(id)key;
+- (void)removeObjectForKey:(id)key;
+- (void)setInteger:(int64_t)integer forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 - (void)synchronize;
 @end
 
@@ -37,80 +37,80 @@
   return v2;
 }
 
-- (int64_t)integerForKey:(id)a3
+- (int64_t)integerForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(StocksSyncWatchlistPersistence *)self companionDefaults];
-  v6 = [v5 integerForKey:v4];
+  keyCopy = key;
+  companionDefaults = [(StocksSyncWatchlistPersistence *)self companionDefaults];
+  v6 = [companionDefaults integerForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setInteger:(int64_t)a3 forKey:(id)a4
+- (void)setInteger:(int64_t)integer forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(StocksSyncWatchlistPersistence *)self companionDefaults];
-  [v7 setInteger:a3 forKey:v6];
+  keyCopy = key;
+  companionDefaults = [(StocksSyncWatchlistPersistence *)self companionDefaults];
+  [companionDefaults setInteger:integer forKey:keyCopy];
 
-  v8 = [(StocksSyncWatchlistPersistence *)self keysToSynchronize];
-  [v8 addObject:v6];
+  keysToSynchronize = [(StocksSyncWatchlistPersistence *)self keysToSynchronize];
+  [keysToSynchronize addObject:keyCopy];
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(StocksSyncWatchlistPersistence *)self companionDefaults];
-  v6 = [v5 stringForKey:v4];
+  keyCopy = key;
+  companionDefaults = [(StocksSyncWatchlistPersistence *)self companionDefaults];
+  v6 = [companionDefaults stringForKey:keyCopy];
 
   return v6;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(StocksSyncWatchlistPersistence *)self companionDefaults];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  companionDefaults = [(StocksSyncWatchlistPersistence *)self companionDefaults];
+  v6 = [companionDefaults objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(StocksSyncWatchlistPersistence *)self companionDefaults];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  companionDefaults = [(StocksSyncWatchlistPersistence *)self companionDefaults];
+  [companionDefaults removeObjectForKey:keyCopy];
 
-  v6 = [(StocksSyncWatchlistPersistence *)self keysToSynchronize];
-  [v6 addObject:v4];
+  keysToSynchronize = [(StocksSyncWatchlistPersistence *)self keysToSynchronize];
+  [keysToSynchronize addObject:keyCopy];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(StocksSyncWatchlistPersistence *)self companionDefaults];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  companionDefaults = [(StocksSyncWatchlistPersistence *)self companionDefaults];
+  [companionDefaults setObject:objectCopy forKey:keyCopy];
 
-  v9 = [(StocksSyncWatchlistPersistence *)self keysToSynchronize];
-  [v9 addObject:v6];
+  keysToSynchronize = [(StocksSyncWatchlistPersistence *)self keysToSynchronize];
+  [keysToSynchronize addObject:keyCopy];
 }
 
 - (void)synchronize
 {
-  v3 = [(StocksSyncWatchlistPersistence *)self companionDefaults];
-  [v3 synchronize];
+  companionDefaults = [(StocksSyncWatchlistPersistence *)self companionDefaults];
+  [companionDefaults synchronize];
 
-  v4 = [(StocksSyncWatchlistPersistence *)self keysToSynchronize];
-  v5 = [v4 count];
+  keysToSynchronize = [(StocksSyncWatchlistPersistence *)self keysToSynchronize];
+  v5 = [keysToSynchronize count];
 
   if (v5)
   {
-    v6 = [(StocksSyncWatchlistPersistence *)self syncManager];
-    v7 = [(StocksSyncWatchlistPersistence *)self keysToSynchronize];
-    [v6 synchronizeUserDefaultsDomain:@"group.com.apple.stocks" keys:v7 container:@"com.apple.stocks.watchapp" appGroupContainer:@"group.com.apple.stocks"];
+    syncManager = [(StocksSyncWatchlistPersistence *)self syncManager];
+    keysToSynchronize2 = [(StocksSyncWatchlistPersistence *)self keysToSynchronize];
+    [syncManager synchronizeUserDefaultsDomain:@"group.com.apple.stocks" keys:keysToSynchronize2 container:@"com.apple.stocks.watchapp" appGroupContainer:@"group.com.apple.stocks"];
 
-    v8 = [(StocksSyncWatchlistPersistence *)self keysToSynchronize];
-    [v8 removeAllObjects];
+    keysToSynchronize3 = [(StocksSyncWatchlistPersistence *)self keysToSynchronize];
+    [keysToSynchronize3 removeAllObjects];
   }
 }
 

@@ -1,25 +1,25 @@
 @interface CKContainerIDTableEntry
-- (BOOL)matchesContainerID:(id)a3;
-- (CKContainerIDTableEntry)initWithCKContainerID:(id)a3;
+- (BOOL)matchesContainerID:(id)d;
+- (CKContainerIDTableEntry)initWithCKContainerID:(id)d;
 - (id)containerID;
 @end
 
 @implementation CKContainerIDTableEntry
 
-- (CKContainerIDTableEntry)initWithCKContainerID:(id)a3
+- (CKContainerIDTableEntry)initWithCKContainerID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = CKContainerIDTableEntry;
   v8 = [(CKContainerIDTableEntry *)&v14 init];
   if (v8)
   {
-    v9 = objc_msgSend_containerIdentifier(v5, v6, v7);
+    v9 = objc_msgSend_containerIdentifier(dCopy, v6, v7);
     containerIdentifier = v8->_containerIdentifier;
     v8->_containerIdentifier = v9;
 
-    v8->_environment = objc_msgSend_environment(v5, v11, v12);
-    objc_storeStrong(&v8->_containerID, a3);
+    v8->_environment = objc_msgSend_environment(dCopy, v11, v12);
+    objc_storeStrong(&v8->_containerID, d);
   }
 
   return v8;
@@ -41,13 +41,13 @@
   return containerID;
 }
 
-- (BOOL)matchesContainerID:(id)a3
+- (BOOL)matchesContainerID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   environment = self->_environment;
-  if (environment == objc_msgSend_environment(v4, v6, v7))
+  if (environment == objc_msgSend_environment(dCopy, v6, v7))
   {
-    v11 = objc_msgSend_containerIdentifier(v4, v8, v9);
+    v11 = objc_msgSend_containerIdentifier(dCopy, v8, v9);
     containerIdentifier = self->_containerIdentifier;
     v13 = v11 == containerIdentifier || objc_msgSend_isEqualToString_(containerIdentifier, v10, v11);
   }

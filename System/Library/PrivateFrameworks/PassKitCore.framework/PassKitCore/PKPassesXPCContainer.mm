@@ -1,15 +1,15 @@
 @interface PKPassesXPCContainer
-- ($06E035DAA80D7DA92D7AC3530BEA5F2A)unarchivePassesWithBlock:(id)a3;
-- ($06E035DAA80D7DA92D7AC3530BEA5F2A)unarchivePassesWithOptions:(unint64_t)a3 usingBlock:(id)a4;
+- ($06E035DAA80D7DA92D7AC3530BEA5F2A)unarchivePassesWithBlock:(id)block;
+- ($06E035DAA80D7DA92D7AC3530BEA5F2A)unarchivePassesWithOptions:(unint64_t)options usingBlock:(id)block;
 - (BOOL)isInvalidated;
-- (PKPassesXPCContainer)initWithCoder:(id)a3;
-- (PKPassesXPCContainer)initWithFileDescriptor:(int)a3;
-- (PKPassesXPCContainer)initWithFileURL:(id)a3;
+- (PKPassesXPCContainer)initWithCoder:(id)coder;
+- (PKPassesXPCContainer)initWithFileDescriptor:(int)descriptor;
+- (PKPassesXPCContainer)initWithFileURL:(id)l;
 - (id)_init;
-- (id)_initWithFileDescriptorContainer:(id)a3;
+- (id)_initWithFileDescriptorContainer:(id)container;
 - (void)_unarchive;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 @end
 
@@ -29,83 +29,83 @@
   return result;
 }
 
-- (id)_initWithFileDescriptorContainer:(id)a3
+- (id)_initWithFileDescriptorContainer:(id)container
 {
-  v5 = a3;
-  if (v5)
+  containerCopy = container;
+  if (containerCopy)
   {
-    v6 = [(PKPassesXPCContainer *)self _init];
-    v7 = v6;
-    if (v6)
+    _init = [(PKPassesXPCContainer *)self _init];
+    v7 = _init;
+    if (_init)
     {
-      objc_storeStrong(v6 + 2, a3);
+      objc_storeStrong(_init + 2, container);
     }
 
     else
     {
-      [v5 invalidate];
+      [containerCopy invalidate];
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (PKPassesXPCContainer)initWithFileURL:(id)a3
+- (PKPassesXPCContainer)initWithFileURL:(id)l
 {
-  v4 = a3;
-  v5 = [[PKFileDescriptorXPCContainer alloc] initWithFileURL:v4];
+  lCopy = l;
+  v5 = [[PKFileDescriptorXPCContainer alloc] initWithFileURL:lCopy];
 
   v6 = [(PKPassesXPCContainer *)self _initWithFileDescriptorContainer:v5];
   return v6;
 }
 
-- (PKPassesXPCContainer)initWithFileDescriptor:(int)a3
+- (PKPassesXPCContainer)initWithFileDescriptor:(int)descriptor
 {
-  v4 = [[PKFileDescriptorXPCContainer alloc] initWithFileDescriptor:*&a3];
+  v4 = [[PKFileDescriptorXPCContainer alloc] initWithFileDescriptor:*&descriptor];
   v5 = [(PKPassesXPCContainer *)self _initWithFileDescriptorContainer:v4];
 
   return v5;
 }
 
-- (PKPassesXPCContainer)initWithCoder:(id)a3
+- (PKPassesXPCContainer)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PKPassesXPCContainer *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(PKPassesXPCContainer *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fd"];
-    fd = v5->_fd;
-    v5->_fd = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fd"];
+    fd = _init->_fd;
+    _init->_fd = v6;
 
     v8 = objc_alloc(MEMORY[0x1E695DFD8]);
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v8 initWithObjects:{v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"passFDs"];
-    passFDs = v5->_passFDs;
-    v5->_passFDs = v12;
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"passFDs"];
+    passFDs = _init->_passFDs;
+    _init->_passFDs = v12;
 
-    v5->_status = [v4 decodeIntegerForKey:@"status"];
+    _init->_status = [coderCopy decodeIntegerForKey:@"status"];
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock);
-  [v4 encodeObject:self->_fd forKey:@"fd"];
-  [v4 encodeObject:self->_passFDs forKey:@"passFDs"];
-  [v4 encodeInteger:self->_status forKey:@"status"];
+  [coderCopy encodeObject:self->_fd forKey:@"fd"];
+  [coderCopy encodeObject:self->_passFDs forKey:@"passFDs"];
+  [coderCopy encodeInteger:self->_status forKey:@"status"];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -146,24 +146,24 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- ($06E035DAA80D7DA92D7AC3530BEA5F2A)unarchivePassesWithBlock:(id)a3
+- ($06E035DAA80D7DA92D7AC3530BEA5F2A)unarchivePassesWithBlock:(id)block
 {
-  v3 = [(PKPassesXPCContainer *)self unarchivePassesWithOptions:0 usingBlock:a3];
+  v3 = [(PKPassesXPCContainer *)self unarchivePassesWithOptions:0 usingBlock:block];
   result.var1 = v4;
   result.var0 = v3;
   return result;
 }
 
-- ($06E035DAA80D7DA92D7AC3530BEA5F2A)unarchivePassesWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- ($06E035DAA80D7DA92D7AC3530BEA5F2A)unarchivePassesWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v29 = a3;
+  optionsCopy = options;
   v52 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
   [(PKPassesXPCContainer *)self _unarchive];
   status = self->_status;
   v25 = [(NSDictionary *)self->_passFDs count];
-  if (!v5 || status)
+  if (!blockCopy || status)
   {
     v26 = status;
     os_unfair_lock_unlock(&self->_lock);
@@ -177,8 +177,8 @@
     {
       v27 = v7;
       v28 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v25];
-      v8 = [v7 allKeys];
-      [v28 addObjectsFromArray:v8];
+      allKeys = [v7 allKeys];
+      [v28 addObjectsFromArray:allKeys];
 
       [v28 sortUsingComparator:&__block_literal_global_31_1];
       invalidated = 0;
@@ -195,7 +195,7 @@
       do
       {
         v12 = objc_autoreleasePoolPush();
-        if ((v29 & 2) != 0)
+        if ((optionsCopy & 2) != 0)
         {
           v13 = v11;
         }
@@ -259,7 +259,7 @@
             v19 = 0;
           }
 
-          v5[2](v5, v19, v10, v16, &invalidated);
+          blockCopy[2](blockCopy, v19, v10, v16, &invalidated);
           if (!invalidated)
           {
             os_unfair_lock_lock(&self->_lock);
@@ -375,8 +375,8 @@ void __62__PKPassesXPCContainer_unarchivePassesWithOptions_usingBlock___block_in
   }
 
   v35 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v33 = [MEMORY[0x1E696AC08] defaultManager];
-  [v33 contentsOfDirectoryAtURL:v44[5] includingPropertiesForKeys:MEMORY[0x1E695E0F0] options:4 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager contentsOfDirectoryAtURL:v44[5] includingPropertiesForKeys:MEMORY[0x1E695E0F0] options:4 error:0];
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
@@ -417,9 +417,9 @@ LABEL_7:
     }
 
     v9 = *(*(&v38 + 1) + 8 * v8);
-    v10 = [v9 lastPathComponent];
-    v11 = [v10 pathExtension];
-    if (([v11 isEqualToString:@"pkpass"] & 1) == 0)
+    lastPathComponent = [v9 lastPathComponent];
+    pathExtension = [lastPathComponent pathExtension];
+    if (([pathExtension isEqualToString:@"pkpass"] & 1) == 0)
     {
       goto LABEL_24;
     }
@@ -472,7 +472,7 @@ LABEL_21:
       v15 = [[PKFileDescriptorXPCContainer alloc] initWithFileDescriptor:v14];
       if (v15)
       {
-        [v35 setObject:v15 forKeyedSubscript:v10];
+        [v35 setObject:v15 forKeyedSubscript:lastPathComponent];
         v21 = 0;
         goto LABEL_23;
       }
@@ -563,7 +563,7 @@ LABEL_39:
   }
 
 LABEL_40:
-  [v33 removeItemAtURL:v44[5] error:0];
+  [defaultManager removeItemAtURL:v44[5] error:0];
 
 LABEL_41:
   _Block_object_dispose(&v43, 8);

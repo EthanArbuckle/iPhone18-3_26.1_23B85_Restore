@@ -1,7 +1,7 @@
 @interface CKModifyBadgeOperation
-- (BOOL)CKOperationShouldRun:(id *)a3;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (CKModifyBadgeOperation)initWithBadgeValue:(NSUInteger)badgeValue;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 @end
 
 @implementation CKModifyBadgeOperation
@@ -13,7 +13,7 @@
   return [(CKOperation *)&v4 init];
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
   v15 = *MEMORY[0x1E69E9840];
   if (ck_log_initialization_predicate != -1)
@@ -31,7 +31,7 @@
     v14 = v12;
     _os_log_fault_impl(&dword_1883EA000, v10, OS_LOG_TYPE_FAULT, "%{public}@ is deprecated, and will be removed in a future release.", buf, 0xCu);
 
-    if (!a3)
+    if (!run)
     {
       goto LABEL_6;
     }
@@ -39,12 +39,12 @@
     goto LABEL_5;
   }
 
-  if (a3)
+  if (run)
   {
 LABEL_5:
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    *a3 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v7, @"CKInternalErrorDomain", 1017, @"%@ is no longer supported", v6);
+    *run = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v7, @"CKInternalErrorDomain", 1017, @"%@ is no longer supported", v6);
   }
 
 LABEL_6:
@@ -52,15 +52,15 @@ LABEL_6:
   return 0;
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v7 = objc_msgSend_modifyBadgeCompletionBlock(self, v5, v6);
 
   if (v7)
   {
     v10 = objc_msgSend_modifyBadgeCompletionBlock(self, v8, v9);
-    v13 = objc_msgSend_CKClientSuitableError(v4, v11, v12);
+    v13 = objc_msgSend_CKClientSuitableError(errorCopy, v11, v12);
     (v10)[2](v10, v13);
 
     objc_msgSend_setModifyBadgeCompletionBlock_(self, v14, 0);
@@ -68,7 +68,7 @@ LABEL_6:
 
   v15.receiver = self;
   v15.super_class = CKModifyBadgeOperation;
-  [(CKOperation *)&v15 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v15 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 @end

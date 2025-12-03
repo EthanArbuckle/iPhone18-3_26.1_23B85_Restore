@@ -4,9 +4,9 @@
 - (NSString)description;
 - (NSString)state;
 - (_TtC13transparencyd25KTCloudRecordDeviceStatus)init;
-- (void)setState:(id)a3;
-- (void)setStateReady:(BOOL)a3;
-- (void)setUploadedToCKAt:(id)a3;
+- (void)setState:(id)state;
+- (void)setStateReady:(BOOL)ready;
+- (void)setUploadedToCKAt:(id)at;
 @end
 
 @implementation KTCloudRecordDeviceStatus
@@ -18,11 +18,11 @@
   return *(self + v3);
 }
 
-- (void)setStateReady:(BOOL)a3
+- (void)setStateReady:(BOOL)ready
 {
   v5 = OBJC_IVAR____TtC13transparencyd25KTCloudRecordDeviceStatus_stateReady;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ready;
 }
 
 - (NSString)state
@@ -44,9 +44,9 @@
   return v4;
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  if (a3)
+  if (state)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -88,13 +88,13 @@
   return v11;
 }
 
-- (void)setUploadedToCKAt:(id)a3
+- (void)setUploadedToCKAt:(id)at
 {
   v5 = sub_100095820(&qword_100383FB0, &unk_1002D6690);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (at)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for Date();
@@ -109,14 +109,14 @@
 
   v11 = OBJC_IVAR____TtC13transparencyd25KTCloudRecordDeviceStatus_uploadedToCKAt;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_1000BECD4(v8, self + v11);
   swift_endAccess();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000DF96C();
 
   v3 = String._bridgeToObjectiveC()();

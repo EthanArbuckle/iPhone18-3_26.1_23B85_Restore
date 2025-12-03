@@ -1,13 +1,13 @@
 @interface RTLearnedPlaceTypeInferenceWeeklyStats
-- (RTLearnedPlaceTypeInferenceWeeklyStats)initWithDailyStats:(id)a3;
+- (RTLearnedPlaceTypeInferenceWeeklyStats)initWithDailyStats:(id)stats;
 - (id)description;
 @end
 
 @implementation RTLearnedPlaceTypeInferenceWeeklyStats
 
-- (RTLearnedPlaceTypeInferenceWeeklyStats)initWithDailyStats:(id)a3
+- (RTLearnedPlaceTypeInferenceWeeklyStats)initWithDailyStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   v23.receiver = self;
   v23.super_class = RTLearnedPlaceTypeInferenceWeeklyStats;
   v5 = [(RTLearnedPlaceTypeInferenceWeeklyStats *)&v23 init];
@@ -16,7 +16,7 @@
   {
     v5->_dailyAggregateDwellTimeBetweenDateRangeAverage = 0.0;
     v5->_dailyAggregateDwellTimeBetweenDateRangeStandardDeviation = 0.0;
-    v7 = [v4 valueForKeyPath:@"@sum.visitCount"];
+    v7 = [statsCopy valueForKeyPath:@"@sum.visitCount"];
     v6->_totalDailyVisitCount = [v7 unsignedIntegerValue];
 
     v6->_daysWithNonZeroDwellTime = 0;
@@ -35,7 +35,7 @@
     v12 = v6;
     v13 = &v19;
     v14 = &v15;
-    [v4 enumerateObjectsUsingBlock:v11];
+    [statsCopy enumerateObjectsUsingBlock:v11];
     daysWithNonZeroDwellTime = v6->_daysWithNonZeroDwellTime;
     if (daysWithNonZeroDwellTime >= 1)
     {
@@ -70,12 +70,12 @@ void __61__RTLearnedPlaceTypeInferenceWeeklyStats_initWithDailyStats___block_inv
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTLearnedPlaceTypeInferenceWeeklyStats *)self daysWithNonZeroDwellTime];
-  v5 = [(RTLearnedPlaceTypeInferenceWeeklyStats *)self totalDailyVisitCount];
+  daysWithNonZeroDwellTime = [(RTLearnedPlaceTypeInferenceWeeklyStats *)self daysWithNonZeroDwellTime];
+  totalDailyVisitCount = [(RTLearnedPlaceTypeInferenceWeeklyStats *)self totalDailyVisitCount];
   [(RTLearnedPlaceTypeInferenceWeeklyStats *)self dailyAggregateDwellTimeBetweenDateRangeAverage];
   v7 = v6;
   [(RTLearnedPlaceTypeInferenceWeeklyStats *)self dailyAggregateDwellTimeBetweenDateRangeStandardDeviation];
-  return [v3 stringWithFormat:@"daysWithNonZeroDwellTime, %lu, totalDailyVisitCount, %lu, dailyAggregateDwellTimeBetweenDateRangeAverage, %.2f, dailyAggregateDwellTimeBetweenDateRangeStandardDeviation, %.2f", v4, v5, v7, v8];
+  return [v3 stringWithFormat:@"daysWithNonZeroDwellTime, %lu, totalDailyVisitCount, %lu, dailyAggregateDwellTimeBetweenDateRangeAverage, %.2f, dailyAggregateDwellTimeBetweenDateRangeStandardDeviation, %.2f", daysWithNonZeroDwellTime, totalDailyVisitCount, v7, v8];
 }
 
 @end

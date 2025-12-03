@@ -1,13 +1,13 @@
 @interface MusicKit_SoftLinking_MPModelLibraryEndCollaborationChangeRequest
-- (MusicKit_SoftLinking_MPModelLibraryEndCollaborationChangeRequest)initWithPlaylist:(id)a3;
-- (void)performWithCompletionHandler:(id)a3;
+- (MusicKit_SoftLinking_MPModelLibraryEndCollaborationChangeRequest)initWithPlaylist:(id)playlist;
+- (void)performWithCompletionHandler:(id)handler;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelLibraryEndCollaborationChangeRequest
 
-- (MusicKit_SoftLinking_MPModelLibraryEndCollaborationChangeRequest)initWithPlaylist:(id)a3
+- (MusicKit_SoftLinking_MPModelLibraryEndCollaborationChangeRequest)initWithPlaylist:(id)playlist
 {
-  v4 = a3;
+  playlistCopy = playlist;
   v13.receiver = self;
   v13.super_class = MusicKit_SoftLinking_MPModelLibraryEndCollaborationChangeRequest;
   v5 = [(MusicKit_SoftLinking_MPModelLibraryEndCollaborationChangeRequest *)&v13 init];
@@ -36,23 +36,23 @@
     v5->_underlyingEndCollaborationRequest = v8;
 
     v10 = v5->_underlyingEndCollaborationRequest;
-    v11 = [v4 _underlyingModelObject];
-    [(MPModelLibraryEndCollaborationChangeRequest *)v10 setCollaborationToEnd:v11];
+    _underlyingModelObject = [playlistCopy _underlyingModelObject];
+    [(MPModelLibraryEndCollaborationChangeRequest *)v10 setCollaborationToEnd:_underlyingModelObject];
   }
 
   return v5;
 }
 
-- (void)performWithCompletionHandler:(id)a3
+- (void)performWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   underlyingEndCollaborationRequest = self->_underlyingEndCollaborationRequest;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __97__MusicKit_SoftLinking_MPModelLibraryEndCollaborationChangeRequest_performWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E84C3A08;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(MPModelLibraryEndCollaborationChangeRequest *)underlyingEndCollaborationRequest performWithResponseHandler:v7];
 }
 

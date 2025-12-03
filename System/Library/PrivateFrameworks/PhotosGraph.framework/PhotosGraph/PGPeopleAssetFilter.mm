@@ -1,19 +1,19 @@
 @interface PGPeopleAssetFilter
-- (BOOL)asset:(id)a3 passesForPersonOrPetLocalIdentifier:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)asset:(id)asset passesForPersonOrPetLocalIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PGPeopleAssetFilter)initWithCoder:(id)a3;
-- (PGPeopleAssetFilter)initWithMaximumNumberOfOtherFacesPresent:(unint64_t)a3;
-- (id)filteredAssetsFromAssets:(id)a3 withPersonOrPetLocalIdentifier:(id)a4;
-- (id)initForPetWithMaximumNumberOfOtherFacesPresent:(unint64_t)a3;
+- (PGPeopleAssetFilter)initWithCoder:(id)coder;
+- (PGPeopleAssetFilter)initWithMaximumNumberOfOtherFacesPresent:(unint64_t)present;
+- (id)filteredAssetsFromAssets:(id)assets withPersonOrPetLocalIdentifier:(id)identifier;
+- (id)initForPetWithMaximumNumberOfOtherFacesPresent:(unint64_t)present;
 @end
 
 @implementation PGPeopleAssetFilter
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -24,7 +24,7 @@
     if (objc_opt_isKindOfClass())
     {
       maximumNumberOfOtherFacesPresent = self->_maximumNumberOfOtherFacesPresent;
-      v6 = maximumNumberOfOtherFacesPresent == [(PGPeopleAssetFilter *)v4 maximumNumberOfOtherFacesPresent];
+      v6 = maximumNumberOfOtherFacesPresent == [(PGPeopleAssetFilter *)equalCopy maximumNumberOfOtherFacesPresent];
     }
 
     else
@@ -47,21 +47,21 @@
   return v5;
 }
 
-- (PGPeopleAssetFilter)initWithCoder:(id)a3
+- (PGPeopleAssetFilter)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"maximumNumberOfOtherFacesPresent"];
+  v4 = [coder decodeIntegerForKey:@"maximumNumberOfOtherFacesPresent"];
 
   return [(PGPeopleAssetFilter *)self initWithMaximumNumberOfOtherFacesPresent:v4];
 }
 
-- (BOOL)asset:(id)a3 passesForPersonOrPetLocalIdentifier:(id)a4
+- (BOOL)asset:(id)asset passesForPersonOrPetLocalIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  identifierCopy = identifier;
   if (self->_petFilter)
   {
-    v8 = [v6 clsPetLocalIdentifiers];
-    v9 = [v8 containsObject:v7];
+    clsPetLocalIdentifiers = [assetCopy clsPetLocalIdentifiers];
+    v9 = [clsPetLocalIdentifiers containsObject:identifierCopy];
 
     if (!v9)
     {
@@ -73,8 +73,8 @@ LABEL_3:
 
   else
   {
-    v11 = [v6 clsConsolidatedPersonLocalIdentifiers];
-    v12 = [v11 containsObject:v7];
+    clsConsolidatedPersonLocalIdentifiers = [assetCopy clsConsolidatedPersonLocalIdentifiers];
+    v12 = [clsConsolidatedPersonLocalIdentifiers containsObject:identifierCopy];
 
     if ((v12 & 1) == 0)
     {
@@ -90,19 +90,19 @@ LABEL_3:
   else
   {
     petFilter = self->_petFilter;
-    v14 = [v6 clsFaceInformationSummary];
-    v15 = v14;
+    clsFaceInformationSummary = [assetCopy clsFaceInformationSummary];
+    v15 = clsFaceInformationSummary;
     if (petFilter)
     {
-      v16 = [v14 numberOfFacesIncludingPets];
+      numberOfFacesIncludingPets = [clsFaceInformationSummary numberOfFacesIncludingPets];
     }
 
     else
     {
-      v16 = [v14 numberOfFaces];
+      numberOfFacesIncludingPets = [clsFaceInformationSummary numberOfFaces];
     }
 
-    v17 = v16;
+    v17 = numberOfFacesIncludingPets;
 
     v10 = self->_maximumNumberOfOtherFacesPresent + 1 >= v17;
   }
@@ -112,17 +112,17 @@ LABEL_11:
   return v10;
 }
 
-- (id)filteredAssetsFromAssets:(id)a3 withPersonOrPetLocalIdentifier:(id)a4
+- (id)filteredAssetsFromAssets:(id)assets withPersonOrPetLocalIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  assetsCopy = assets;
+  identifierCopy = identifier;
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v6;
+  v9 = assetsCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -138,9 +138,9 @@ LABEL_11:
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
-        if ([(PGPeopleAssetFilter *)self asset:v14 passesForPersonOrPetLocalIdentifier:v7, v17])
+        if ([(PGPeopleAssetFilter *)self asset:v14 passesForPersonOrPetLocalIdentifier:identifierCopy, v17])
         {
-          [v8 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -152,12 +152,12 @@ LABEL_11:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return array;
 }
 
-- (id)initForPetWithMaximumNumberOfOtherFacesPresent:(unint64_t)a3
+- (id)initForPetWithMaximumNumberOfOtherFacesPresent:(unint64_t)present
 {
-  result = [(PGPeopleAssetFilter *)self initWithMaximumNumberOfOtherFacesPresent:a3];
+  result = [(PGPeopleAssetFilter *)self initWithMaximumNumberOfOtherFacesPresent:present];
   if (result)
   {
     *(result + 8) = 1;
@@ -166,14 +166,14 @@ LABEL_11:
   return result;
 }
 
-- (PGPeopleAssetFilter)initWithMaximumNumberOfOtherFacesPresent:(unint64_t)a3
+- (PGPeopleAssetFilter)initWithMaximumNumberOfOtherFacesPresent:(unint64_t)present
 {
   v5.receiver = self;
   v5.super_class = PGPeopleAssetFilter;
   result = [(PGPeopleAssetFilter *)&v5 init];
   if (result)
   {
-    result->_maximumNumberOfOtherFacesPresent = a3;
+    result->_maximumNumberOfOtherFacesPresent = present;
   }
 
   return result;

@@ -1,94 +1,94 @@
 @interface MGRemoteQueryClientManagerForwarder
 - (MGRemoteQueryClientManager)manager;
-- (MGRemoteQueryClientManagerForwarder)initWithClientManager:(id)a3;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (MGRemoteQueryClientManagerForwarder)initWithClientManager:(id)manager;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 @end
 
 @implementation MGRemoteQueryClientManagerForwarder
 
-- (MGRemoteQueryClientManagerForwarder)initWithClientManager:(id)a3
+- (MGRemoteQueryClientManagerForwarder)initWithClientManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v8.receiver = self;
   v8.super_class = MGRemoteQueryClientManagerForwarder;
   v5 = [(MGRemoteQueryClientManagerForwarder *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_manager, v4);
+    objc_storeWeak(&v5->_manager, managerCopy);
   }
 
   return v6;
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_manager);
   v11 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained URLSession:v12 didReceiveChallenge:v8 completionHandler:v9];
+    [WeakRetained URLSession:sessionCopy didReceiveChallenge:challengeCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v9[2](v9, 2, 0);
+    handlerCopy[2](handlerCopy, 2, 0);
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  sessionCopy = session;
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_manager);
   v14 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained URLSession:v15 dataTask:v10 didReceiveResponse:v11 completionHandler:v12];
+    [WeakRetained URLSession:sessionCopy dataTask:taskCopy didReceiveResponse:responseCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v12[2](v12, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = a4;
+  sessionCopy = session;
+  dataCopy = data;
+  taskCopy = task;
   WeakRetained = objc_loadWeakRetained(&self->_manager);
   v11 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained URLSession:v12 dataTask:v9 didReceiveData:v8];
+    [WeakRetained URLSession:sessionCopy dataTask:taskCopy didReceiveData:dataCopy];
   }
 
   else
   {
-    [v9 cancel];
+    [taskCopy cancel];
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_manager);
   v11 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained URLSession:v12 task:v8 didCompleteWithError:v9];
+    [WeakRetained URLSession:sessionCopy task:taskCopy didCompleteWithError:errorCopy];
   }
 }
 

@@ -7,18 +7,18 @@
 - (__CFString)_gkCommaSeparatedRecipientListWithWidth:()GKRecipientListStrings forTextStyle:usingSelector:
 {
   v41 = a4;
-  v8 = [a1 count];
+  v8 = [self count];
   if (v8)
   {
     v9 = v8;
-    v40 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v10 = 0;
     v11 = 0;
     v12 = a2;
     v13 = &stru_28612D290;
     do
     {
-      v14 = [a1 objectAtIndex:v10];
+      v14 = [self objectAtIndex:v10];
       v15 = [v14 _gkInvokeSelector:a5];
       if (v11 < 1)
       {
@@ -41,7 +41,7 @@
       if (v22 <= v12)
       {
         v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[__CFString length](v13, "length")}];
-        [v40 addObject:v23];
+        [array addObject:v23];
 
         v24 = v19;
         ++v11;
@@ -91,10 +91,10 @@ LABEL_18:
           }
 
           --v11;
-          v34 = [v40 objectAtIndex:v25];
-          v35 = [v34 intValue];
+          v34 = [array objectAtIndex:v25];
+          intValue = [v34 intValue];
 
-          v36 = [(__CFString *)v13 substringWithRange:0, v35];
+          v36 = [(__CFString *)v13 substringWithRange:0, intValue];
 
           ++v26;
           --v25;

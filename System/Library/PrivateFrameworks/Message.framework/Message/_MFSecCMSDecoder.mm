@@ -1,8 +1,8 @@
 @interface _MFSecCMSDecoder
-- (char)initWithPartData:(void *)a3 error:;
+- (char)initWithPartData:(void *)data error:;
 - (id)data;
-- (id)verifyAgainstSenders:(id *)a3 signingError:;
-- (int64_t)appendData:(id)a3;
+- (id)verifyAgainstSenders:(id *)senders signingError:;
+- (int64_t)appendData:(id)data;
 - (void)dealloc;
 - (void)done;
 - (void)signedData;
@@ -10,25 +10,25 @@
 
 @implementation _MFSecCMSDecoder
 
-- (char)initWithPartData:(void *)a3 error:
+- (char)initWithPartData:(void *)data error:
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    if (a3)
+    if (data)
     {
-      *a3 = 0;
+      *data = 0;
     }
 
-    v21.receiver = a1;
+    v21.receiver = self;
     v21.super_class = _MFSecCMSDecoder;
-    a1 = objc_msgSendSuper2(&v21, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v21, sel_init);
+    if (self)
     {
       v6 = SecCmsDecoderCreate();
-      *(a1 + 2) = v6;
-      v7 = (a1 + 8);
+      *(self + 2) = v6;
+      v7 = (self + 8);
       if (v6)
       {
         v8 = MFLogGeneral();
@@ -49,11 +49,11 @@
         {
           v14 = SecCmsDecoderFinish();
           *v7 = v14;
-          if (*(a1 + 2))
+          if (*(self + 2))
           {
-            v15 = *(a1 + 2);
-            a1[56] = SecCmsMessageIsEncrypted() != 0;
-            v14 = *(a1 + 2);
+            v15 = *(self + 2);
+            self[56] = SecCmsMessageIsEncrypted() != 0;
+            v14 = *(self + 2);
           }
 
           if (v14)
@@ -65,17 +65,17 @@
             }
           }
 
-          *(a1 + 6) = _ExtractContentWithTag(*(a1 + 2), 27);
-          ContentWithTag = _ExtractContentWithTag(*(a1 + 2), 26);
-          *(a1 + 5) = ContentWithTag;
+          *(self + 6) = _ExtractContentWithTag(*(self + 2), 27);
+          ContentWithTag = _ExtractContentWithTag(*(self + 2), 26);
+          *(self + 5) = ContentWithTag;
           if (ContentWithTag)
           {
             if (!SecCmsSignedDataHasDigests())
             {
-              v18 = *(a1 + 5);
+              v18 = *(self + 5);
               SecCmsSignedDataGetDigestAlgs();
               started = SecCmsDigestContextStartMultiple();
-              *(a1 + 3) = started;
+              *(self + 3) = started;
               if (!started)
               {
 
@@ -86,15 +86,15 @@
                   _os_log_impl(&dword_1B0389000, v20, OS_LOG_TYPE_INFO, "#SMIMEErrors SecCmsDigestContextStartMultiple failed", buf, 2u);
                 }
 
-                if (a3)
+                if (data)
                 {
                   [MFError errorWithDomain:*MEMORY[0x1E696A798] code:12 userInfo:0];
-                  *a3 = a1 = 0;
+                  *data = self = 0;
                 }
 
                 else
                 {
-                  a1 = 0;
+                  self = 0;
                 }
               }
             }
@@ -111,31 +111,31 @@
       }
 
 LABEL_13:
-      if (a1 && a3 && *(a1 + 2))
+      if (self && data && *(self + 2))
       {
         v11 = MFLookupLocalizedString(@"SMIME_UNREADABLE_SIG", @"There was a problem reading the digital signature for this message.", @"Delayed");
-        *a3 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:v11];
+        *data = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:v11];
       }
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
-- (id)verifyAgainstSenders:(id *)a3 signingError:
+- (id)verifyAgainstSenders:(id *)senders signingError:
 {
   v57 = *MEMORY[0x1E69E9840];
   v46 = a2;
-  if (a1)
+  if (self)
   {
-    if (a3)
+    if (senders)
     {
-      *a3 = 0;
+      *senders = 0;
     }
 
-    v5 = (a1 + 8);
-    if (*(a1 + 8))
+    v5 = (self + 8);
+    if (*(self + 8))
     {
       v6 = MFLookupLocalizedString(@"SMIME_UNREADABLE_SIG", @"There was a problem reading the digital signature for this message.", @"Delayed");
       v47 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:v6];
@@ -159,7 +159,7 @@ LABEL_13:
       v7 = 0;
     }
 
-    v8 = *(a1 + 40);
+    v8 = *(self + 40);
     if (SecCmsSignedDataHasDigests())
     {
       if (!v7)
@@ -177,7 +177,7 @@ LABEL_13:
         goto LABEL_63;
       }
 
-      v9 = *(a1 + 40);
+      v9 = *(self + 40);
       v10 = SecCmsSignedDataSignerInfoCount();
       v43 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v10];
       if (v10)
@@ -192,9 +192,9 @@ LABEL_13:
           v42 = v11;
           while (1)
           {
-            v13 = *(a1 + 40);
+            v13 = *(self + 40);
             SignerInfo = SecCmsSignedDataGetSignerInfo();
-            v15 = *(a1 + 40);
+            v15 = *(self + 40);
             v16 = SecCmsSignedDataVerifySignerInfo();
             *v5 = v16;
             if (!v16)
@@ -294,16 +294,16 @@ LABEL_35:
                   CFRelease(v26);
                 }
 
-                if (a3)
+                if (senders)
                 {
-                  v32 = [(MFMessageSigner *)SignerEmailAddress error];
-                  *a3 = v32;
-                  if (v32)
+                  error = [(MFMessageSigner *)SignerEmailAddress error];
+                  *senders = error;
+                  if (error)
                   {
                     v33 = MFLogGeneral();
                     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
                     {
-                      [*a3 ef_publicDescription];
+                      [*senders ef_publicDescription];
                       objc_claimAutoreleasedReturnValue();
                       [_MFSecCMSDecoder verifyAgainstSenders:signingError:];
                     }
@@ -368,8 +368,8 @@ LABEL_60:
         v47 = 0;
       }
 
-      v39 = *(a1 + 32);
-      *(a1 + 32) = v43;
+      v39 = *(self + 32);
+      *(self + 32) = v43;
     }
 
     else
@@ -412,10 +412,10 @@ LABEL_64:
   [(_MFSecCMSDecoder *)&v4 dealloc];
 }
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
+  dataCopy = data;
+  v5 = dataCopy;
   if (self->_SecCMSError)
   {
     v6 = MFLogGeneral();
@@ -434,7 +434,7 @@ LABEL_4:
   {
     if (self->_envelopedData)
     {
-      v7 = [v4 length];
+      v7 = [dataCopy length];
       goto LABEL_5;
     }
 
@@ -448,7 +448,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v7 = [v4 length];
+  v7 = [dataCopy length];
   if (self->_digest)
   {
     [v5 bytes];
@@ -462,7 +462,7 @@ LABEL_5:
 
 - (void)done
 {
-  OUTLINED_FUNCTION_7_0(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_7_0(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_3_1();
   OUTLINED_FUNCTION_1_2(&dword_1B0389000, v1, v2, "#SMIMEErrors SecCmsSignedDataSetDigestContext on -done returned %ld", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];

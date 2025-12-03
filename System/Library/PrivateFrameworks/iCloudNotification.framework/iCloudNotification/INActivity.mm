@@ -1,11 +1,11 @@
 @interface INActivity
-- (BOOL)setActivityState:(int64_t)a3;
-- (INActivity)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)_configureXPCActivityWithCriteria:(id)a3;
-- (void)_scheduleNextFireForDate:(id)a3;
+- (BOOL)setActivityState:(int64_t)state;
+- (INActivity)initWithTarget:(id)target action:(SEL)action;
+- (void)_configureXPCActivityWithCriteria:(id)criteria;
+- (void)_scheduleNextFireForDate:(id)date;
 - (void)checkIn;
-- (void)ensureNextActivityWillOccurBeforeDate:(id)a3;
-- (void)setNextActivityDate:(id)a3;
+- (void)ensureNextActivityWillOccurBeforeDate:(id)date;
+- (void)setNextActivityDate:(id)date;
 - (void)stop;
 @end
 
@@ -22,9 +22,9 @@
   dispatch_async(activityQueue, block);
 }
 
-- (INActivity)initWithTarget:(id)a3 action:(SEL)a4
+- (INActivity)initWithTarget:(id)target action:(SEL)action
 {
-  v7 = a3;
+  targetCopy = target;
   v15.receiver = self;
   v15.super_class = INActivity;
   v8 = [(INActivity *)&v15 init];
@@ -32,18 +32,18 @@
   if (v8)
   {
     [(INActivity *)v8 setIsRepeating:1];
-    objc_storeStrong(&v9->_target, a3);
-    if (a4)
+    objc_storeStrong(&v9->_target, target);
+    if (action)
     {
-      v10 = a4;
+      actionCopy = action;
     }
 
     else
     {
-      v10 = 0;
+      actionCopy = 0;
     }
 
-    v9->_action = v10;
+    v9->_action = actionCopy;
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.ind.activity", v11);
     activityQueue = v9->_activityQueue;
@@ -64,67 +64,67 @@
   dispatch_async(activityQueue, block);
 }
 
-- (BOOL)setActivityState:(int64_t)a3
+- (BOOL)setActivityState:(int64_t)state
 {
   xpcActivity = self->_xpcActivity;
   if (xpcActivity)
   {
-    LOBYTE(xpcActivity) = xpc_activity_set_state(xpcActivity, a3);
+    LOBYTE(xpcActivity) = xpc_activity_set_state(xpcActivity, state);
   }
 
   return xpcActivity;
 }
 
-- (void)setNextActivityDate:(id)a3
+- (void)setNextActivityDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = _INLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_100034B88(v4, self);
+    sub_100034B88(dateCopy, self);
   }
 
-  [(INActivity *)self _scheduleNextFireForDate:v4];
+  [(INActivity *)self _scheduleNextFireForDate:dateCopy];
 }
 
-- (void)ensureNextActivityWillOccurBeforeDate:(id)a3
+- (void)ensureNextActivityWillOccurBeforeDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   activityQueue = self->_activityQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006A38;
   v7[3] = &unk_100055340;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_async(activityQueue, v7);
 }
 
-- (void)_configureXPCActivityWithCriteria:(id)a3
+- (void)_configureXPCActivityWithCriteria:(id)criteria
 {
-  v4 = a3;
+  criteriaCopy = criteria;
   v5 = _INLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_100034D90(self);
   }
 
-  if (v4)
+  if (criteriaCopy)
   {
     if (self->_xpcActivity)
     {
-      v6 = [(INActivity *)self isRepeating];
+      isRepeating = [(INActivity *)self isRepeating];
       v7 = _INLogSystem();
       v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-      if (v6)
+      if (isRepeating)
       {
         if (v8)
         {
-          sub_100034E90(v4, self);
+          sub_100034E90(criteriaCopy, self);
         }
 
-        xpc_activity_set_criteria(self->_xpcActivity, v4);
+        xpc_activity_set_criteria(self->_xpcActivity, criteriaCopy);
         goto LABEL_17;
       }
 
@@ -150,32 +150,32 @@
     sub_100034F98(self);
   }
 
-  v10 = [(INActivity *)self activityID];
+  activityID = [(INActivity *)self activityID];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100006E48;
   v11[3] = &unk_100055390;
   v11[4] = self;
-  v12 = v4;
-  xpc_activity_register(v10, XPC_ACTIVITY_CHECK_IN, v11);
+  v12 = criteriaCopy;
+  xpc_activity_register(activityID, XPC_ACTIVITY_CHECK_IN, v11);
 
 LABEL_17:
 }
 
-- (void)_scheduleNextFireForDate:(id)a3
+- (void)_scheduleNextFireForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = _INLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412546;
-    v18 = v4;
+    v18 = dateCopy;
     v19 = 2080;
-    v20 = [(INActivity *)self activityID];
+    activityID = [(INActivity *)self activityID];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Requested date %@ for %s", &v17, 0x16u);
   }
 
-  [v4 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   v7 = v6;
   v8 = _INLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -229,12 +229,12 @@ LABEL_17:
 
     xpc_dictionary_set_int64(v9, XPC_ACTIVITY_DELAY, v7);
     [(INActivity *)self _configureXPCActivityWithCriteria:v9];
-    [v4 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v13 = v12;
     v14 = +[INManagedDefaults sharedInstance];
     v15 = [NSNumber numberWithDouble:v13];
-    v16 = [(INActivity *)self activityNextFireDateKey];
-    [v14 setValue:v15 forManagedDefault:v16];
+    activityNextFireDateKey = [(INActivity *)self activityNextFireDateKey];
+    [v14 setValue:v15 forManagedDefault:activityNextFireDateKey];
   }
 }
 

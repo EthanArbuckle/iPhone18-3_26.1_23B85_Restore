@@ -1,26 +1,26 @@
 @interface TSUZipReadChannel
-- (BOOL)processData:(id)a3 CRC:(unsigned int *)a4 isDone:(BOOL)a5 queue:(id)a6 handler:(id)a7;
-- (BOOL)readFileHeaderFromData:(id)a3 headerLength:(unint64_t *)a4;
-- (TSUZipReadChannel)initWithEntry:(id)a3 archiveReadChannel:(id)a4;
-- (void)handleFailureWithQueue:(id)a3 handler:(id)a4 error:(id)a5;
-- (void)readWithHeaderLength:(unint64_t)a3 queue:(id)a4 handler:(id)a5;
-- (void)readWithQueue:(id)a3 handler:(id)a4;
+- (BOOL)processData:(id)data CRC:(unsigned int *)c isDone:(BOOL)done queue:(id)queue handler:(id)handler;
+- (BOOL)readFileHeaderFromData:(id)data headerLength:(unint64_t *)length;
+- (TSUZipReadChannel)initWithEntry:(id)entry archiveReadChannel:(id)channel;
+- (void)handleFailureWithQueue:(id)queue handler:(id)handler error:(id)error;
+- (void)readWithHeaderLength:(unint64_t)length queue:(id)queue handler:(id)handler;
+- (void)readWithQueue:(id)queue handler:(id)handler;
 @end
 
 @implementation TSUZipReadChannel
 
-- (TSUZipReadChannel)initWithEntry:(id)a3 archiveReadChannel:(id)a4
+- (TSUZipReadChannel)initWithEntry:(id)entry archiveReadChannel:(id)channel
 {
-  v7 = a3;
-  v8 = a4;
+  entryCopy = entry;
+  channelCopy = channel;
   v15.receiver = self;
   v15.super_class = TSUZipReadChannel;
   v9 = [(TSUZipReadChannel *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_entry, a3);
-    objc_storeStrong(&v10->_archiveReadChannel, a4);
+    objc_storeStrong(&v9->_entry, entry);
+    objc_storeStrong(&v10->_archiveReadChannel, channel);
     v11 = dispatch_queue_create("TSUZipReadChannel.Read", 0);
     readQueue = v10->_readQueue;
     v10->_readQueue = v11;
@@ -31,10 +31,10 @@
   return v10;
 }
 
-- (void)readWithQueue:(id)a3 handler:(id)a4
+- (void)readWithQueue:(id)queue handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (self->_archiveReadChannel)
   {
     if ([(TSUZipEntry *)self->_entry compressedSize]>= 0xFFFFFFFF)
@@ -45,9 +45,9 @@
       [v8 handleFailureInFunction:v9 file:v10 lineNumber:51 description:@"No support for Zip 64"];
     }
 
-    v11 = [(TSUZipEntry *)self->_entry nameLength];
-    v12 = [(TSUZipEntry *)self->_entry extraFieldLength];
-    v13 = [(TSUZipEntry *)self->_entry compressedSize];
+    nameLength = [(TSUZipEntry *)self->_entry nameLength];
+    extraFieldLength = [(TSUZipEntry *)self->_entry extraFieldLength];
+    compressedSize = [(TSUZipEntry *)self->_entry compressedSize];
     v35[0] = 0;
     v35[1] = v35;
     v35[2] = 0x2020000000;
@@ -65,8 +65,8 @@
     v29[2] = 0x2020000000;
     v30 = crc32(0, 0, 0);
     archiveReadChannel = self->_archiveReadChannel;
-    v15 = [(TSUZipEntry *)self->_entry offset];
-    v16 = v11 + v12 + 30;
+    offset = [(TSUZipEntry *)self->_entry offset];
+    v16 = nameLength + extraFieldLength + 30;
     readQueue = self->_readQueue;
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -74,13 +74,13 @@
     v21[3] = &unk_279D666C8;
     v24 = v31;
     v21[4] = self;
-    v22 = v6;
-    v23 = v7;
+    v22 = queueCopy;
+    v23 = handlerCopy;
     v25 = v35;
     v26 = v33;
     v27 = v29;
     v28 = v16;
-    [(TSUReadChannel *)archiveReadChannel readFromOffset:v15 length:v16 + v13 queue:readQueue handler:v21];
+    [(TSUReadChannel *)archiveReadChannel readFromOffset:offset length:v16 + compressedSize queue:readQueue handler:v21];
 
     _Block_object_dispose(v29, 8);
     _Block_object_dispose(v31, 8);
@@ -95,7 +95,7 @@
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipReadChannel.m"];
     [v18 handleFailureInFunction:v19 file:v20 lineNumber:45 description:@"Already closed"];
 
-    [(TSUZipReadChannel *)self handleFailureWithQueue:v6 handler:v7 error:0];
+    [(TSUZipReadChannel *)self handleFailureWithQueue:queueCopy handler:handlerCopy error:0];
   }
 }
 
@@ -170,11 +170,11 @@ LABEL_15:
 LABEL_17:
 }
 
-- (BOOL)readFileHeaderFromData:(id)a3 headerLength:(unint64_t *)a4
+- (BOOL)readFileHeaderFromData:(id)data headerLength:(unint64_t *)length
 {
-  if (dispatch_data_get_size(a3) > 0x1D)
+  if (dispatch_data_get_size(data) > 0x1D)
   {
-    subrange = dispatch_data_create_subrange(a3, 0, 0x1EuLL);
+    subrange = dispatch_data_create_subrange(data, 0, 0x1EuLL);
     size_ptr = 0;
     buffer_ptr = 0;
     v14 = dispatch_data_create_map(subrange, &buffer_ptr, &size_ptr);
@@ -190,7 +190,7 @@ LABEL_17:
           v18 = *(v15 + 22);
           if ([(TSUZipEntry *)self->_entry size]== v18)
           {
-            *a4 = *(v15 + 13) + *(v15 + 14) + 30;
+            *length = *(v15 + 13) + *(v15 + 14) + 30;
             v12 = 1;
 LABEL_11:
 
@@ -199,30 +199,30 @@ LABEL_11:
         }
       }
 
-      v19 = [(TSUZipEntry *)self->_entry name];
-      TSULogErrorInFunction("[TSUZipReadChannel readFileHeaderFromData:headerLength:]", "/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipReadChannel.m", 153, @"Local file header doesn't match central directory file header for entry %@", v24, v25, v26, v27, v19);
+      name = [(TSUZipEntry *)self->_entry name];
+      TSULogErrorInFunction("[TSUZipReadChannel readFileHeaderFromData:headerLength:]", "/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipReadChannel.m", 153, @"Local file header doesn't match central directory file header for entry %@", v24, v25, v26, v27, name);
     }
 
     else
     {
-      v19 = [(TSUZipEntry *)self->_entry name];
-      TSULogErrorInFunction("[TSUZipReadChannel readFileHeaderFromData:headerLength:]", "/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipReadChannel.m", 147, @"Local file header has bad signature for entry %@", v20, v21, v22, v23, v19);
+      name = [(TSUZipEntry *)self->_entry name];
+      TSULogErrorInFunction("[TSUZipReadChannel readFileHeaderFromData:headerLength:]", "/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipReadChannel.m", 147, @"Local file header has bad signature for entry %@", v20, v21, v22, v23, name);
     }
 
     v12 = 0;
     goto LABEL_11;
   }
 
-  v7 = [(TSUZipEntry *)self->_entry name];
-  TSULogErrorInFunction("[TSUZipReadChannel readFileHeaderFromData:headerLength:]", "/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipReadChannel.m", 124, @"Read was less than record size for entry %@", v8, v9, v10, v11, v7);
+  name2 = [(TSUZipEntry *)self->_entry name];
+  TSULogErrorInFunction("[TSUZipReadChannel readFileHeaderFromData:headerLength:]", "/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipReadChannel.m", 124, @"Read was less than record size for entry %@", v8, v9, v10, v11, name2);
 
   return 0;
 }
 
-- (void)readWithHeaderLength:(unint64_t)a3 queue:(id)a4 handler:(id)a5
+- (void)readWithHeaderLength:(unint64_t)length queue:(id)queue handler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (!self->_archiveReadChannel)
   {
     v10 = +[TSUAssertionHandler currentHandler];
@@ -248,8 +248,8 @@ LABEL_11:
   v27[2] = 0x2020000000;
   v28 = crc32(0, 0, 0);
   archiveReadChannel = self->_archiveReadChannel;
-  v17 = [(TSUZipEntry *)self->_entry offset];
-  v18 = [(TSUZipEntry *)self->_entry compressedSize];
+  offset = [(TSUZipEntry *)self->_entry offset];
+  compressedSize = [(TSUZipEntry *)self->_entry compressedSize];
   readQueue = self->_readQueue;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -257,12 +257,12 @@ LABEL_11:
   v22[3] = &unk_279D666F0;
   v25 = v29;
   v22[4] = self;
-  v20 = v8;
+  v20 = queueCopy;
   v23 = v20;
-  v21 = v9;
+  v21 = handlerCopy;
   v24 = v21;
   v26 = v27;
-  [(TSUReadChannel *)archiveReadChannel readFromOffset:v17 + a3 length:v18 queue:readQueue handler:v22];
+  [(TSUReadChannel *)archiveReadChannel readFromOffset:offset + length length:compressedSize queue:readQueue handler:v22];
 
   _Block_object_dispose(v27, 8);
   _Block_object_dispose(v29, 8);
@@ -294,18 +294,18 @@ LABEL_6:
 LABEL_7:
 }
 
-- (BOOL)processData:(id)a3 CRC:(unsigned int *)a4 isDone:(BOOL)a5 queue:(id)a6 handler:(id)a7
+- (BOOL)processData:(id)data CRC:(unsigned int *)c isDone:(BOOL)done queue:(id)queue handler:(id)handler
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  if (a4 && (applier[0] = MEMORY[0x277D85DD0], applier[1] = 3221225472, applier[2] = __58__TSUZipReadChannel_processData_CRC_isDone_queue_handler___block_invoke, applier[3] = &__block_descriptor_40_e47_B40__0__NSObject_OS_dispatch_data__8Q16r_v24Q32l, applier[4] = a4, dispatch_data_apply(v12, applier), v9) && [(TSUZipEntry *)self->_entry CRC]!= *a4)
+  doneCopy = done;
+  dataCopy = data;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (c && (applier[0] = MEMORY[0x277D85DD0], applier[1] = 3221225472, applier[2] = __58__TSUZipReadChannel_processData_CRC_isDone_queue_handler___block_invoke, applier[3] = &__block_descriptor_40_e47_B40__0__NSObject_OS_dispatch_data__8Q16r_v24Q32l, applier[4] = c, dispatch_data_apply(dataCopy, applier), doneCopy) && [(TSUZipEntry *)self->_entry CRC]!= *c)
   {
-    v17 = [(TSUZipEntry *)self->_entry name];
-    TSULogErrorInFunction("[TSUZipReadChannel processData:CRC:isDone:queue:handler:]", "/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipReadChannel.m", 208, @"CRC does not match for entry %@", v18, v19, v20, v21, v17);
+    name = [(TSUZipEntry *)self->_entry name];
+    TSULogErrorInFunction("[TSUZipReadChannel processData:CRC:isDone:queue:handler:]", "/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipReadChannel.m", 208, @"CRC does not match for entry %@", v18, v19, v20, v21, name);
 
-    [(TSUZipReadChannel *)self handleFailureWithQueue:v13 handler:v14 error:0];
+    [(TSUZipReadChannel *)self handleFailureWithQueue:queueCopy handler:handlerCopy error:0];
     v15 = 0;
   }
 
@@ -315,10 +315,10 @@ LABEL_7:
     block[1] = 3221225472;
     block[2] = __58__TSUZipReadChannel_processData_CRC_isDone_queue_handler___block_invoke_2;
     block[3] = &unk_279D66738;
-    v24 = v14;
-    v25 = v9;
-    v23 = v12;
-    dispatch_async(v13, block);
+    v24 = handlerCopy;
+    v25 = doneCopy;
+    v23 = dataCopy;
+    dispatch_async(queueCopy, block);
 
     v15 = 1;
   }
@@ -344,25 +344,25 @@ uint64_t __58__TSUZipReadChannel_processData_CRC_isDone_queue_handler___block_in
   return 1;
 }
 
-- (void)handleFailureWithQueue:(id)a3 handler:(id)a4 error:(id)a5
+- (void)handleFailureWithQueue:(id)queue handler:(id)handler error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v9)
+  queueCopy = queue;
+  handlerCopy = handler;
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v9 = [MEMORY[0x277CCA9B8] tsu_IOErrorWithCode:0];
+    errorCopy = [MEMORY[0x277CCA9B8] tsu_IOErrorWithCode:0];
   }
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__TSUZipReadChannel_handleFailureWithQueue_handler_error___block_invoke;
   v12[3] = &unk_279D66388;
-  v13 = v9;
-  v14 = v8;
-  v10 = v9;
-  v11 = v8;
-  dispatch_async(v7, v12);
+  v13 = errorCopy;
+  v14 = handlerCopy;
+  v10 = errorCopy;
+  v11 = handlerCopy;
+  dispatch_async(queueCopy, v12);
 }
 
 void __58__TSUZipReadChannel_processData_CRC_isDone_queue_handler___block_invoke_cold_1()

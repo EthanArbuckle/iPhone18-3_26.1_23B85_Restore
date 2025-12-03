@@ -3,14 +3,14 @@
 - (BOOL)requireOpenInPlace;
 - (BOOL)showAppStoreMenuItem;
 - (CSUIOpenWithMenuConfiguration)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (unint64_t)bindingPreferenceDisplayStyle;
 - (unint64_t)representativeBundlePolicy;
-- (void)setAllowMenuWithNoApplications:(BOOL)a3;
-- (void)setBindingPreferenceDisplayStyle:(unint64_t)a3;
-- (void)setRepresentativeBundlePolicy:(unint64_t)a3;
-- (void)setRequireOpenInPlace:(BOOL)a3;
-- (void)setShowAppStoreMenuItem:(BOOL)a3;
+- (void)setAllowMenuWithNoApplications:(BOOL)applications;
+- (void)setBindingPreferenceDisplayStyle:(unint64_t)style;
+- (void)setRepresentativeBundlePolicy:(unint64_t)policy;
+- (void)setRequireOpenInPlace:(BOOL)place;
+- (void)setShowAppStoreMenuItem:(BOOL)item;
 @end
 
 @implementation CSUIOpenWithMenuConfiguration
@@ -18,7 +18,7 @@
 - (BOOL)showAppStoreMenuItem
 {
   v2 = *(&self->super.isa + OBJC_IVAR___CSUIOpenWithMenuConfiguration_state);
-  v3 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v2 + 40));
   v4 = *(v2 + 16);
@@ -27,20 +27,20 @@
   return v4;
 }
 
-- (void)setShowAppStoreMenuItem:(BOOL)a3
+- (void)setShowAppStoreMenuItem:(BOOL)item
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CSUIOpenWithMenuConfiguration_state);
-  v5 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v4 + 40));
-  *(v4 + 16) = a3;
+  *(v4 + 16) = item;
   os_unfair_lock_unlock((v4 + 40));
 }
 
 - (BOOL)allowMenuWithNoApplications
 {
   v2 = *(&self->super.isa + OBJC_IVAR___CSUIOpenWithMenuConfiguration_state);
-  v3 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v2 + 40));
   v4 = *(v2 + 17);
@@ -49,20 +49,20 @@
   return v4;
 }
 
-- (void)setAllowMenuWithNoApplications:(BOOL)a3
+- (void)setAllowMenuWithNoApplications:(BOOL)applications
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CSUIOpenWithMenuConfiguration_state);
-  v5 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v4 + 40));
-  *(v4 + 17) = a3;
+  *(v4 + 17) = applications;
   os_unfair_lock_unlock((v4 + 40));
 }
 
 - (BOOL)requireOpenInPlace
 {
   v2 = *(&self->super.isa + OBJC_IVAR___CSUIOpenWithMenuConfiguration_state);
-  v3 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v2 + 40));
   v4 = *(v2 + 19);
@@ -71,20 +71,20 @@
   return v4;
 }
 
-- (void)setRequireOpenInPlace:(BOOL)a3
+- (void)setRequireOpenInPlace:(BOOL)place
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CSUIOpenWithMenuConfiguration_state);
-  v5 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v4 + 40));
-  *(v4 + 19) = a3;
+  *(v4 + 19) = place;
   os_unfair_lock_unlock((v4 + 40));
 }
 
 - (unint64_t)bindingPreferenceDisplayStyle
 {
   v2 = *(&self->super.isa + OBJC_IVAR___CSUIOpenWithMenuConfiguration_state);
-  v3 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v2 + 40));
   v4 = *(v2 + 24);
@@ -93,20 +93,20 @@
   return v4;
 }
 
-- (void)setBindingPreferenceDisplayStyle:(unint64_t)a3
+- (void)setBindingPreferenceDisplayStyle:(unint64_t)style
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CSUIOpenWithMenuConfiguration_state);
-  v5 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v4 + 40));
-  *(v4 + 24) = a3;
+  *(v4 + 24) = style;
   os_unfair_lock_unlock((v4 + 40));
 }
 
 - (unint64_t)representativeBundlePolicy
 {
   v2 = *(&self->super.isa + OBJC_IVAR___CSUIOpenWithMenuConfiguration_state);
-  v3 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v2 + 40));
   v4 = *(v2 + 32);
@@ -115,13 +115,13 @@
   return v4;
 }
 
-- (void)setRepresentativeBundlePolicy:(unint64_t)a3
+- (void)setRepresentativeBundlePolicy:(unint64_t)policy
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CSUIOpenWithMenuConfiguration_state);
-  v5 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v4 + 40));
-  *(v4 + 32) = a3;
+  *(v4 + 32) = policy;
   os_unfair_lock_unlock((v4 + 40));
 }
 
@@ -139,9 +139,9 @@
   return [(CSUIOpenWithMenuConfiguration *)&v5 init];
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_2478C6F54(v6);
 
   __swift_project_boxed_opaque_existential_0Tm(v6, v6[3]);

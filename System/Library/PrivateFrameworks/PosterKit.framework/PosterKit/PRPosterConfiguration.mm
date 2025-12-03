@@ -1,23 +1,23 @@
 @interface PRPosterConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSString)displayNameLocalizationKey;
 - (PRPosterConfiguration)init;
-- (id)_initWithPath:(id)a3;
-- (id)loadAmbientConfigurationWithError:(id *)a3;
-- (id)loadAmbientWidgetLayoutWithError:(id *)a1;
-- (id)loadColorVariationsConfigurationWithError:(id *)a1;
-- (id)loadComplicationLayoutWithError:(id *)a3;
-- (id)loadConfigurableOptionsWithError:(id *)a3;
-- (id)loadConfiguredPropertiesWithError:(id *)a3;
-- (id)loadFocusConfigurationWithError:(id *)a3;
-- (id)loadHomeScreenConfigurationWithError:(id *)a3;
-- (id)loadOtherMetadataWithError:(id *)a3;
-- (id)loadQuickActionsConfigurationWithError:(id *)a3;
-- (id)loadSuggestionMetadataWithError:(id *)a3;
-- (id)loadTitleStyleConfigurationWithError:(id *)a3;
-- (id)loadUserInfoWithError:(id *)a3;
-- (id)objectForUserInfoKey:(id)a3;
+- (id)_initWithPath:(id)path;
+- (id)loadAmbientConfigurationWithError:(id *)error;
+- (id)loadAmbientWidgetLayoutWithError:(id *)error;
+- (id)loadColorVariationsConfigurationWithError:(id *)error;
+- (id)loadComplicationLayoutWithError:(id *)error;
+- (id)loadConfigurableOptionsWithError:(id *)error;
+- (id)loadConfiguredPropertiesWithError:(id *)error;
+- (id)loadFocusConfigurationWithError:(id *)error;
+- (id)loadHomeScreenConfigurationWithError:(id *)error;
+- (id)loadOtherMetadataWithError:(id *)error;
+- (id)loadQuickActionsConfigurationWithError:(id *)error;
+- (id)loadSuggestionMetadataWithError:(id *)error;
+- (id)loadTitleStyleConfigurationWithError:(id *)error;
+- (id)loadUserInfoWithError:(id *)error;
+- (id)objectForUserInfoKey:(id)key;
 - (id)pr_posterProvider;
 - (id)pr_posterUUID;
 - (unint64_t)hash;
@@ -29,20 +29,20 @@
 
 - (id)pr_posterUUID
 {
-  v2 = [(PRPosterConfiguration *)self _path];
-  v3 = [v2 serverIdentity];
-  v4 = [v3 posterUUID];
+  _path = [(PRPosterConfiguration *)self _path];
+  serverIdentity = [_path serverIdentity];
+  posterUUID = [serverIdentity posterUUID];
 
-  return v4;
+  return posterUUID;
 }
 
 - (id)pr_posterProvider
 {
-  v2 = [(PRPosterConfiguration *)self _path];
-  v3 = [v2 serverIdentity];
-  v4 = [v3 provider];
+  _path = [(PRPosterConfiguration *)self _path];
+  serverIdentity = [_path serverIdentity];
+  provider = [serverIdentity provider];
 
-  return v4;
+  return provider;
 }
 
 - (PRPosterConfiguration)init
@@ -63,7 +63,7 @@
     v15 = 2114;
     v16 = v11;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = @"PRPosterConfiguration.m";
     v21 = 1024;
@@ -87,22 +87,22 @@
   [(PRPosterConfiguration *)&v3 dealloc];
 }
 
-- (id)_initWithPath:(id)a3
+- (id)_initWithPath:(id)path
 {
-  v6 = a3;
-  if (!v6)
+  pathCopy = path;
+  if (!pathCopy)
   {
     [PRPosterConfiguration _initWithPath:a2];
   }
 
-  v7 = v6;
+  v7 = pathCopy;
   v17.receiver = self;
   v17.super_class = PRPosterConfiguration;
   v8 = [(PRPosterConfiguration *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_path, a3);
+    objc_storeStrong(&v8->_path, path);
     path = v9->_path;
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
@@ -135,16 +135,16 @@
 - (NSString)displayNameLocalizationKey
 {
   v2 = [(PRPosterConfiguration *)self loadOtherMetadataWithError:0];
-  v3 = [v2 displayNameLocalizationKey];
+  displayNameLocalizationKey = [v2 displayNameLocalizationKey];
 
-  return v3;
+  return displayNameLocalizationKey;
 }
 
-- (id)objectForUserInfoKey:(id)a3
+- (id)objectForUserInfoKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v5)
+  if (!keyCopy)
   {
     [PRPosterConfiguration objectForUserInfoKey:a2];
   }
@@ -155,24 +155,24 @@
   }
 
   v6 = [(PRPosterConfiguration *)self loadUserInfoWithError:0];
-  v7 = [v6 objectForKey:v5];
+  v7 = [v6 objectForKey:keyCopy];
 
   return v7;
 }
 
-- (id)loadUserInfoWithError:(id *)a3
+- (id)loadUserInfoWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_cache);
-  v6 = [WeakRetained userInfo];
-  v7 = v6;
-  if (v6)
+  userInfo = [WeakRetained userInfo];
+  v7 = userInfo;
+  if (userInfo)
   {
-    v8 = v6;
+    v8 = userInfo;
   }
 
   else
   {
-    v8 = [(PFPosterPath *)self->_path loadUserInfoWithError:a3];
+    v8 = [(PFPosterPath *)self->_path loadUserInfoWithError:error];
   }
 
   v9 = v8;
@@ -180,191 +180,191 @@
   return v9;
 }
 
-- (id)loadConfigurableOptionsWithError:(id *)a3
+- (id)loadConfigurableOptionsWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_cache);
-  v6 = [WeakRetained configurableOptions];
-  v7 = v6;
-  if (v6)
+  configurableOptions = [WeakRetained configurableOptions];
+  v7 = configurableOptions;
+  if (configurableOptions)
   {
-    v8 = v6;
+    v8 = configurableOptions;
   }
 
   else
   {
-    v9 = [(PRPosterConfiguration *)self _path];
-    v8 = [PRPosterPathUtilities loadConfigurableOptionsForPath:v9 error:a3];
+    _path = [(PRPosterConfiguration *)self _path];
+    v8 = [PRPosterPathUtilities loadConfigurableOptionsForPath:_path error:error];
   }
 
   return v8;
 }
 
-- (id)loadConfiguredPropertiesWithError:(id *)a3
+- (id)loadConfiguredPropertiesWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_cache);
-  v6 = [WeakRetained configuredProperties];
-  v7 = v6;
-  if (v6)
+  configuredProperties = [WeakRetained configuredProperties];
+  v7 = configuredProperties;
+  if (configuredProperties)
   {
-    v8 = v6;
+    v8 = configuredProperties;
   }
 
   else
   {
-    v9 = [(PRPosterConfiguration *)self _path];
-    v8 = [PRPosterPathUtilities loadConfiguredPropertiesForPath:v9 error:a3];
+    _path = [(PRPosterConfiguration *)self _path];
+    v8 = [PRPosterPathUtilities loadConfiguredPropertiesForPath:_path error:error];
   }
 
   return v8;
 }
 
-- (id)loadFocusConfigurationWithError:(id *)a3
+- (id)loadFocusConfigurationWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_cache);
-  v6 = [WeakRetained focusConfiguration];
-  v7 = v6;
-  if (v6)
+  focusConfiguration = [WeakRetained focusConfiguration];
+  v7 = focusConfiguration;
+  if (focusConfiguration)
   {
-    v8 = v6;
+    v8 = focusConfiguration;
   }
 
   else
   {
-    v9 = [(PRPosterConfiguration *)self _path];
-    v8 = [PRPosterPathUtilities loadFocusConfigurationForPath:v9 error:a3];
+    _path = [(PRPosterConfiguration *)self _path];
+    v8 = [PRPosterPathUtilities loadFocusConfigurationForPath:_path error:error];
   }
 
   return v8;
 }
 
-- (id)loadHomeScreenConfigurationWithError:(id *)a3
+- (id)loadHomeScreenConfigurationWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_cache);
-  v6 = [WeakRetained homeScreenConfiguration];
-  v7 = v6;
-  if (v6)
+  homeScreenConfiguration = [WeakRetained homeScreenConfiguration];
+  v7 = homeScreenConfiguration;
+  if (homeScreenConfiguration)
   {
-    v8 = v6;
+    v8 = homeScreenConfiguration;
   }
 
   else
   {
-    v9 = [(PRPosterConfiguration *)self _path];
-    v8 = [PRPosterPathUtilities loadHomeScreenConfigurationForPath:v9 error:a3];
+    _path = [(PRPosterConfiguration *)self _path];
+    v8 = [PRPosterPathUtilities loadHomeScreenConfigurationForPath:_path error:error];
   }
 
   return v8;
 }
 
-- (id)loadTitleStyleConfigurationWithError:(id *)a3
+- (id)loadTitleStyleConfigurationWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_cache);
-  v6 = [WeakRetained titleStyleConfiguration];
-  v7 = v6;
-  if (v6)
+  titleStyleConfiguration = [WeakRetained titleStyleConfiguration];
+  v7 = titleStyleConfiguration;
+  if (titleStyleConfiguration)
   {
-    v8 = v6;
+    v8 = titleStyleConfiguration;
   }
 
   else
   {
-    v9 = [(PRPosterConfiguration *)self _path];
-    v8 = [PRPosterPathUtilities loadTitleStyleConfigurationForPath:v9 error:a3];
+    _path = [(PRPosterConfiguration *)self _path];
+    v8 = [PRPosterPathUtilities loadTitleStyleConfigurationForPath:_path error:error];
   }
 
   return v8;
 }
 
-- (id)loadComplicationLayoutWithError:(id *)a3
+- (id)loadComplicationLayoutWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_cache);
-  v6 = [WeakRetained complicationLayout];
-  v7 = v6;
-  if (v6)
+  complicationLayout = [WeakRetained complicationLayout];
+  v7 = complicationLayout;
+  if (complicationLayout)
   {
-    v8 = v6;
+    v8 = complicationLayout;
   }
 
   else
   {
-    v9 = [(PRPosterConfiguration *)self _path];
-    v8 = [PRPosterPathUtilities loadComplicationLayoutForPath:v9 error:a3];
+    _path = [(PRPosterConfiguration *)self _path];
+    v8 = [PRPosterPathUtilities loadComplicationLayoutForPath:_path error:error];
   }
 
   return v8;
 }
 
-- (id)loadQuickActionsConfigurationWithError:(id *)a3
+- (id)loadQuickActionsConfigurationWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_cache);
-  v6 = [WeakRetained quickActionsConfiguration];
-  v7 = v6;
-  if (v6)
+  quickActionsConfiguration = [WeakRetained quickActionsConfiguration];
+  v7 = quickActionsConfiguration;
+  if (quickActionsConfiguration)
   {
-    v8 = v6;
+    v8 = quickActionsConfiguration;
   }
 
   else
   {
-    v9 = [(PRPosterConfiguration *)self _path];
-    v8 = [PRPosterPathUtilities loadQuickActionsConfigurationForPath:v9 error:a3];
+    _path = [(PRPosterConfiguration *)self _path];
+    v8 = [PRPosterPathUtilities loadQuickActionsConfigurationForPath:_path error:error];
   }
 
   return v8;
 }
 
-- (id)loadSuggestionMetadataWithError:(id *)a3
+- (id)loadSuggestionMetadataWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_cache);
-  v6 = [WeakRetained suggestionMetadata];
-  v7 = v6;
-  if (v6)
+  suggestionMetadata = [WeakRetained suggestionMetadata];
+  v7 = suggestionMetadata;
+  if (suggestionMetadata)
   {
-    v8 = v6;
+    v8 = suggestionMetadata;
   }
 
   else
   {
-    v9 = [(PRPosterConfiguration *)self _path];
-    v8 = [PRPosterPathUtilities loadSuggestionMetadataForPath:v9 error:a3];
+    _path = [(PRPosterConfiguration *)self _path];
+    v8 = [PRPosterPathUtilities loadSuggestionMetadataForPath:_path error:error];
   }
 
   return v8;
 }
 
-- (id)loadOtherMetadataWithError:(id *)a3
+- (id)loadOtherMetadataWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_cache);
-  v6 = [WeakRetained otherMetadata];
-  v7 = v6;
-  if (v6)
+  otherMetadata = [WeakRetained otherMetadata];
+  v7 = otherMetadata;
+  if (otherMetadata)
   {
-    v8 = v6;
+    v8 = otherMetadata;
   }
 
   else
   {
-    v9 = [(PRPosterConfiguration *)self _path];
-    v8 = [PRPosterPathUtilities loadOtherMetadataForPath:v9 error:a3];
+    _path = [(PRPosterConfiguration *)self _path];
+    v8 = [PRPosterPathUtilities loadOtherMetadataForPath:_path error:error];
   }
 
   return v8;
 }
 
-- (id)loadAmbientConfigurationWithError:(id *)a3
+- (id)loadAmbientConfigurationWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_cache);
-  v6 = [WeakRetained ambientConfiguration];
-  v7 = v6;
-  if (v6)
+  ambientConfiguration = [WeakRetained ambientConfiguration];
+  v7 = ambientConfiguration;
+  if (ambientConfiguration)
   {
-    v8 = v6;
+    v8 = ambientConfiguration;
   }
 
   else
   {
-    v9 = [(PRPosterConfiguration *)self _path];
-    v8 = [PRPosterPathUtilities loadAmbientConfigurationForPath:v9 error:a3];
+    _path = [(PRPosterConfiguration *)self _path];
+    v8 = [PRPosterPathUtilities loadAmbientConfigurationForPath:_path error:error];
   }
 
   return v8;
@@ -372,26 +372,26 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PFPosterPath *)self->_path serverIdentity];
-  v4 = v3;
-  if (v3)
+  serverIdentity = [(PFPosterPath *)self->_path serverIdentity];
+  v4 = serverIdentity;
+  if (serverIdentity)
   {
-    v5 = [v3 hash];
+    v5 = [serverIdentity hash];
   }
 
   else
   {
-    v6 = [(PFPosterPath *)self->_path contentsURL];
-    v5 = [v6 hash];
+    contentsURL = [(PFPosterPath *)self->_path contentsURL];
+    v5 = [contentsURL hash];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -401,16 +401,16 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = [(PFPosterPath *)self->_path serverIdentity];
-      if (v7)
+      serverIdentity = [(PFPosterPath *)self->_path serverIdentity];
+      if (serverIdentity)
       {
-        v8 = [(PFPosterPath *)v4->_path serverIdentity];
+        serverIdentity2 = [(PFPosterPath *)equalCopy->_path serverIdentity];
         v6 = BSEqualObjects();
       }
 
       else
       {
-        v6 = [(PFPosterPath *)self->_path isEqual:v4->_path];
+        v6 = [(PFPosterPath *)self->_path isEqual:equalCopy->_path];
       }
     }
 
@@ -430,7 +430,7 @@
   v8 = 3221225472;
   v9 = __36__PRPosterConfiguration_description__block_invoke;
   v10 = &unk_1E7843070;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -439,21 +439,21 @@
   return v5;
 }
 
-- (id)loadColorVariationsConfigurationWithError:(id *)a1
+- (id)loadColorVariationsConfigurationWithError:(id *)error
 {
-  if (a1)
+  if (error)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 2);
-    v3 = [WeakRetained colorVariationsConfiguration];
-    v4 = v3;
-    if (v3)
+    WeakRetained = objc_loadWeakRetained(error + 2);
+    colorVariationsConfiguration = [WeakRetained colorVariationsConfiguration];
+    v4 = colorVariationsConfiguration;
+    if (colorVariationsConfiguration)
     {
-      v5 = v3;
+      v5 = colorVariationsConfiguration;
     }
 
     else
     {
-      [a1 _path];
+      [error _path];
       objc_claimAutoreleasedReturnValue();
       v5 = [OUTLINED_FUNCTION_3_1() loadColorVariationsConfigurationForPath:? error:?];
     }
@@ -467,21 +467,21 @@
   return v5;
 }
 
-- (id)loadAmbientWidgetLayoutWithError:(id *)a1
+- (id)loadAmbientWidgetLayoutWithError:(id *)error
 {
-  if (a1)
+  if (error)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 2);
-    v3 = [WeakRetained ambientWidgetLayout];
-    v4 = v3;
-    if (v3)
+    WeakRetained = objc_loadWeakRetained(error + 2);
+    ambientWidgetLayout = [WeakRetained ambientWidgetLayout];
+    v4 = ambientWidgetLayout;
+    if (ambientWidgetLayout)
     {
-      v5 = v3;
+      v5 = ambientWidgetLayout;
     }
 
     else
     {
-      [a1 _path];
+      [error _path];
       objc_claimAutoreleasedReturnValue();
       v5 = [OUTLINED_FUNCTION_3_1() loadAmbientWidgetLayoutForPath:? error:?];
     }

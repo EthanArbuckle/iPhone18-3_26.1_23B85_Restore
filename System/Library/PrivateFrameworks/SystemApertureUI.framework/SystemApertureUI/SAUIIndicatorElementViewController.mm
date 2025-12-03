@@ -2,25 +2,25 @@
 + (void)initialize;
 - (CGAffineTransform)fixedIndicatorViewTransform;
 - (CGAffineTransform)indicatorViewTransform;
-- (SAUIIndicatorElementViewController)initWithIndicatorElementViewProvider:(id)a3;
+- (SAUIIndicatorElementViewController)initWithIndicatorElementViewProvider:(id)provider;
 - (SAUIIndicatorLayoutHosting)layoutHost;
-- (int64_t)handleElementTap:(id)a3;
-- (void)_enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4;
-- (void)addElementViewControllingObserver:(id)a3;
-- (void)indicatorNeedsDisplayWellKnownLocationDidInvalidateForLayoutSpecifier:(id)a3;
-- (void)removeElementViewControllingObserver:(id)a3;
-- (void)setFixedIndicatorViewAlpha:(double)a3;
-- (void)setFixedIndicatorViewBlurProgress:(double)a3;
-- (void)setFixedIndicatorViewTransform:(CGAffineTransform *)a3;
-- (void)setIndicatorViewAlpha:(double)a3;
-- (void)setIndicatorViewBlurProgress:(double)a3;
-- (void)setIndicatorViewTransform:(CGAffineTransform *)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (int64_t)handleElementTap:(id)tap;
+- (void)_enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block;
+- (void)addElementViewControllingObserver:(id)observer;
+- (void)indicatorNeedsDisplayWellKnownLocationDidInvalidateForLayoutSpecifier:(id)specifier;
+- (void)removeElementViewControllingObserver:(id)observer;
+- (void)setFixedIndicatorViewAlpha:(double)alpha;
+- (void)setFixedIndicatorViewBlurProgress:(double)progress;
+- (void)setFixedIndicatorViewTransform:(CGAffineTransform *)transform;
+- (void)setIndicatorViewAlpha:(double)alpha;
+- (void)setIndicatorViewBlurProgress:(double)progress;
+- (void)setIndicatorViewTransform:(CGAffineTransform *)transform;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SAUIIndicatorElementViewController
@@ -30,18 +30,18 @@
   v8.receiver = self;
   v8.super_class = SAUIIndicatorElementViewController;
   [(SAUIIndicatorElementViewController *)&v8 viewDidLoad];
-  v3 = [(SAUIIndicatorElementViewController *)self view];
-  v4 = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider indicatorView];
-  [v3 addSubview:v4];
+  view = [(SAUIIndicatorElementViewController *)self view];
+  indicatorView = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider indicatorView];
+  [view addSubview:indicatorView];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider fixedIndicatorView];
-    if (v5)
+    fixedIndicatorView = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider fixedIndicatorView];
+    if (fixedIndicatorView)
     {
-      v6 = v5;
-      v7 = [(SAUIIndicatorElementViewController *)self view];
-      [v7 addSubview:v6];
+      v6 = fixedIndicatorView;
+      view2 = [(SAUIIndicatorElementViewController *)self view];
+      [view2 addSubview:v6];
     }
   }
 }
@@ -53,17 +53,17 @@
   [(SAUIIndicatorElementViewController *)&v41 viewDidLayoutSubviews];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider fixedIndicatorView];
+    fixedIndicatorView = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider fixedIndicatorView];
   }
 
   else
   {
-    v3 = 0;
+    fixedIndicatorView = 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
-  v5 = [(SAUIIndicatorElementViewController *)self view];
-  [WeakRetained interSensorRegionInContentView:v5];
+  view = [(SAUIIndicatorElementViewController *)self view];
+  [WeakRetained interSensorRegionInContentView:view];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -81,25 +81,25 @@
   if (objc_opt_respondsToSelector())
   {
     v26 = self->_elementViewProvider;
-    v27 = [(SAUIIndicatorElementViewController *)self view];
-    v28 = [v27 window];
-    [WeakRetained interSensorRegionInContentView:v28];
+    view2 = [(SAUIIndicatorElementViewController *)self view];
+    window = [view2 window];
+    [WeakRetained interSensorRegionInContentView:window];
     [(SAUIIndicatorElementViewProviding *)v26 didUpdateInterSensorRegionFrameInScreenSpace:?];
   }
 
-  if (v3)
+  if (fixedIndicatorView)
   {
-    [v3 setBounds:{v15, v17, v19, v21}];
-    [v3 setCenter:{v23, v25}];
-    v29 = [(SAUIIndicatorElementViewController *)self view];
-    [v29 bounds];
+    [fixedIndicatorView setBounds:{v15, v17, v19, v21}];
+    [fixedIndicatorView setCenter:{v23, v25}];
+    view3 = [(SAUIIndicatorElementViewController *)self view];
+    [view3 bounds];
     v31 = v30;
     v33 = v32;
     v35 = v34;
     v37 = v36;
 
-    v38 = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider indicatorView];
-    [v38 setBounds:{v31, v33, v35, v37}];
+    indicatorView = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider indicatorView];
+    [indicatorView setBounds:{v31, v33, v35, v37}];
     UIRectGetCenter();
     v23 = v39;
     v25 = v40;
@@ -107,11 +107,11 @@
 
   else
   {
-    v38 = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider indicatorView];
-    [v38 setBounds:{v15, v17, v19, v21}];
+    indicatorView = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider indicatorView];
+    [indicatorView setBounds:{v15, v17, v19, v21}];
   }
 
-  [v38 setCenter:{v23, v25}];
+  [indicatorView setCenter:{v23, v25}];
 }
 
 - (CGAffineTransform)indicatorViewTransform
@@ -134,17 +134,17 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     SAUIRegisterSystemApertureLogging();
   }
 }
 
-- (SAUIIndicatorElementViewController)initWithIndicatorElementViewProvider:(id)a3
+- (SAUIIndicatorElementViewController)initWithIndicatorElementViewProvider:(id)provider
 {
-  v6 = a3;
-  if (!v6)
+  providerCopy = provider;
+  if (!providerCopy)
   {
     [(SAUIIndicatorElementViewController *)a2 initWithIndicatorElementViewProvider:?];
   }
@@ -155,7 +155,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_elementViewProvider, a3);
+    objc_storeStrong(&v7->_elementViewProvider, provider);
     if (objc_opt_respondsToSelector())
     {
       [(SAUIIndicatorElementViewProviding *)v8->_elementViewProvider setLayoutHost:v8];
@@ -183,11 +183,11 @@
   return v8;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SAUIIndicatorElementViewController;
-  [(SAUIIndicatorElementViewController *)&v5 viewWillAppear:a3];
+  [(SAUIIndicatorElementViewController *)&v5 viewWillAppear:appear];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __53__SAUIIndicatorElementViewController_viewWillAppear___block_invoke;
@@ -196,11 +196,11 @@
   [(SAUIIndicatorElementViewController *)self _enumerateObserversRespondingToSelector:sel_elementViewControllingWillAppear_ usingBlock:v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SAUIIndicatorElementViewController;
-  [(SAUIIndicatorElementViewController *)&v5 viewDidAppear:a3];
+  [(SAUIIndicatorElementViewController *)&v5 viewDidAppear:appear];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __52__SAUIIndicatorElementViewController_viewDidAppear___block_invoke;
@@ -209,11 +209,11 @@
   [(SAUIIndicatorElementViewController *)self _enumerateObserversRespondingToSelector:sel_elementViewControllingDidAppear_ usingBlock:v4];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SAUIIndicatorElementViewController;
-  [(SAUIIndicatorElementViewController *)&v5 viewWillDisappear:a3];
+  [(SAUIIndicatorElementViewController *)&v5 viewWillDisappear:disappear];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __56__SAUIIndicatorElementViewController_viewWillDisappear___block_invoke;
@@ -222,11 +222,11 @@
   [(SAUIIndicatorElementViewController *)self _enumerateObserversRespondingToSelector:sel_elementViewControllingWillDisappear_ usingBlock:v4];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SAUIIndicatorElementViewController;
-  [(SAUIIndicatorElementViewController *)&v5 viewDidDisappear:a3];
+  [(SAUIIndicatorElementViewController *)&v5 viewDidDisappear:disappear];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __55__SAUIIndicatorElementViewController_viewDidDisappear___block_invoke;
@@ -235,7 +235,7 @@
   [(SAUIIndicatorElementViewController *)self _enumerateObserversRespondingToSelector:sel_elementViewControllingDidDisappear_ usingBlock:v4];
 }
 
-- (int64_t)handleElementTap:(id)a3
+- (int64_t)handleElementTap:(id)tap
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -250,139 +250,139 @@
   return 0;
 }
 
-- (void)addElementViewControllingObserver:(id)a3
+- (void)addElementViewControllingObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v6 = v4;
+    v6 = observerCopy;
     v5 = self->_observers;
     objc_sync_enter(v5);
     [(NSHashTable *)self->_observers addObject:v6];
     objc_sync_exit(v5);
 
-    v4 = v6;
+    observerCopy = v6;
   }
 }
 
-- (void)removeElementViewControllingObserver:(id)a3
+- (void)removeElementViewControllingObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v6 = v4;
+    v6 = observerCopy;
     v5 = self->_observers;
     objc_sync_enter(v5);
     [(NSHashTable *)self->_observers removeObject:v6];
     objc_sync_exit(v5);
 
-    v4 = v6;
+    observerCopy = v6;
   }
 }
 
-- (void)indicatorNeedsDisplayWellKnownLocationDidInvalidateForLayoutSpecifier:(id)a3
+- (void)indicatorNeedsDisplayWellKnownLocationDidInvalidateForLayoutSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
-  [WeakRetained indicatorNeedsDisplayWellKnownLocationDidInvalidateForLayoutSpecifier:v4];
+  [WeakRetained indicatorNeedsDisplayWellKnownLocationDidInvalidateForLayoutSpecifier:specifierCopy];
 }
 
-- (void)setIndicatorViewBlurProgress:(double)a3
+- (void)setIndicatorViewBlurProgress:(double)progress
 {
-  if (self->_indicatorViewBlurProgress != a3)
+  if (self->_indicatorViewBlurProgress != progress)
   {
-    self->_indicatorViewBlurProgress = a3;
-    v5 = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider indicatorView];
+    self->_indicatorViewBlurProgress = progress;
+    indicatorView = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider indicatorView];
     if (objc_opt_respondsToSelector())
     {
-      [v5 setBlurRadius:a3 * 4.5];
+      [indicatorView setBlurRadius:progress * 4.5];
     }
 
     else
     {
-      [v5 setSauiBlurRadius:a3 * 4.5];
+      [indicatorView setSauiBlurRadius:progress * 4.5];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider didUpdateIndicatorViewBlurProgress:a3];
+      [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider didUpdateIndicatorViewBlurProgress:progress];
     }
   }
 }
 
-- (void)setIndicatorViewAlpha:(double)a3
+- (void)setIndicatorViewAlpha:(double)alpha
 {
-  if (self->_indicatorViewAlpha != a3)
+  if (self->_indicatorViewAlpha != alpha)
   {
-    self->_indicatorViewAlpha = a3;
-    v5 = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider indicatorView];
-    [v5 setAlpha:a3];
+    self->_indicatorViewAlpha = alpha;
+    indicatorView = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider indicatorView];
+    [indicatorView setAlpha:alpha];
 
     if (objc_opt_respondsToSelector())
     {
       elementViewProvider = self->_elementViewProvider;
 
-      [(SAUIIndicatorElementViewProviding *)elementViewProvider didUpdateIndicatorViewAlpha:a3];
+      [(SAUIIndicatorElementViewProviding *)elementViewProvider didUpdateIndicatorViewAlpha:alpha];
     }
   }
 }
 
-- (void)setIndicatorViewTransform:(CGAffineTransform *)a3
+- (void)setIndicatorViewTransform:(CGAffineTransform *)transform
 {
   p_indicatorViewTransform = &self->_indicatorViewTransform;
   v6 = *&self->_indicatorViewTransform.c;
   *&t1.a = *&self->_indicatorViewTransform.a;
   *&t1.c = v6;
   *&t1.tx = *&self->_indicatorViewTransform.tx;
-  v7 = *&a3->c;
-  *&v14.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v14.a = *&transform->a;
   *&v14.c = v7;
-  *&v14.tx = *&a3->tx;
+  *&v14.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v14))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_indicatorViewTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_indicatorViewTransform->c = *&transform->c;
     *&p_indicatorViewTransform->tx = v9;
     *&p_indicatorViewTransform->a = v8;
-    v10 = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider indicatorView];
-    v11 = *&a3->c;
-    *&t1.a = *&a3->a;
+    indicatorView = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider indicatorView];
+    v11 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v11;
-    *&t1.tx = *&a3->tx;
-    [v10 setTransform:&t1];
+    *&t1.tx = *&transform->tx;
+    [indicatorView setTransform:&t1];
 
     if (objc_opt_respondsToSelector())
     {
       elementViewProvider = self->_elementViewProvider;
-      v13 = *&a3->c;
-      *&t1.a = *&a3->a;
+      v13 = *&transform->c;
+      *&t1.a = *&transform->a;
       *&t1.c = v13;
-      *&t1.tx = *&a3->tx;
+      *&t1.tx = *&transform->tx;
       [(SAUIIndicatorElementViewProviding *)elementViewProvider didUpdateIndicatorViewTransform:&t1];
     }
   }
 }
 
-- (void)setFixedIndicatorViewBlurProgress:(double)a3
+- (void)setFixedIndicatorViewBlurProgress:(double)progress
 {
-  if (self->_fixedIndicatorViewBlurProgress != a3)
+  if (self->_fixedIndicatorViewBlurProgress != progress)
   {
-    self->_fixedIndicatorViewBlurProgress = a3;
+    self->_fixedIndicatorViewBlurProgress = progress;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider fixedIndicatorView];
-      if (v5)
+      fixedIndicatorView = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider fixedIndicatorView];
+      if (fixedIndicatorView)
       {
-        v6 = v5;
+        v6 = fixedIndicatorView;
         if (objc_opt_respondsToSelector())
         {
-          [v6 setBlurRadius:a3 * 4.5];
+          [v6 setBlurRadius:progress * 4.5];
         }
 
         else
         {
-          [v6 setSauiBlurRadius:a3 * 4.5];
+          [v6 setSauiBlurRadius:progress * 4.5];
         }
       }
     }
@@ -391,85 +391,85 @@
     {
       elementViewProvider = self->_elementViewProvider;
 
-      [(SAUIIndicatorElementViewProviding *)elementViewProvider didUpdateFixedIndicatorViewBlurProgress:a3];
+      [(SAUIIndicatorElementViewProviding *)elementViewProvider didUpdateFixedIndicatorViewBlurProgress:progress];
     }
   }
 }
 
-- (void)setFixedIndicatorViewAlpha:(double)a3
+- (void)setFixedIndicatorViewAlpha:(double)alpha
 {
-  if (self->_fixedIndicatorViewAlpha != a3)
+  if (self->_fixedIndicatorViewAlpha != alpha)
   {
-    self->_fixedIndicatorViewAlpha = a3;
+    self->_fixedIndicatorViewAlpha = alpha;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider fixedIndicatorView];
+      fixedIndicatorView = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider fixedIndicatorView];
     }
 
     else
     {
-      v5 = 0;
+      fixedIndicatorView = 0;
     }
 
-    v6 = v5;
-    [v5 setAlpha:a3];
+    v6 = fixedIndicatorView;
+    [fixedIndicatorView setAlpha:alpha];
     if (objc_opt_respondsToSelector())
     {
-      [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider didUpdateFixedIndicatorViewAlpha:a3];
+      [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider didUpdateFixedIndicatorViewAlpha:alpha];
     }
   }
 }
 
-- (void)setFixedIndicatorViewTransform:(CGAffineTransform *)a3
+- (void)setFixedIndicatorViewTransform:(CGAffineTransform *)transform
 {
   p_fixedIndicatorViewTransform = &self->_fixedIndicatorViewTransform;
   v6 = *&self->_fixedIndicatorViewTransform.c;
   *&t1.a = *&self->_fixedIndicatorViewTransform.a;
   *&t1.c = v6;
   *&t1.tx = *&self->_fixedIndicatorViewTransform.tx;
-  v7 = *&a3->c;
-  *&v14.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v14.a = *&transform->a;
   *&v14.c = v7;
-  *&v14.tx = *&a3->tx;
+  *&v14.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v14))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_fixedIndicatorViewTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_fixedIndicatorViewTransform->c = *&transform->c;
     *&p_fixedIndicatorViewTransform->tx = v9;
     *&p_fixedIndicatorViewTransform->a = v8;
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider fixedIndicatorView];
+      fixedIndicatorView = [(SAUIIndicatorElementViewProviding *)self->_elementViewProvider fixedIndicatorView];
     }
 
     else
     {
-      v10 = 0;
+      fixedIndicatorView = 0;
     }
 
-    v11 = *&a3->c;
-    *&t1.a = *&a3->a;
+    v11 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v11;
-    *&t1.tx = *&a3->tx;
-    [v10 setTransform:&t1];
+    *&t1.tx = *&transform->tx;
+    [fixedIndicatorView setTransform:&t1];
     if (objc_opt_respondsToSelector())
     {
       elementViewProvider = self->_elementViewProvider;
-      v13 = *&a3->c;
-      *&t1.a = *&a3->a;
+      v13 = *&transform->c;
+      *&t1.a = *&transform->a;
       *&t1.c = v13;
-      *&t1.tx = *&a3->tx;
+      *&t1.tx = *&transform->tx;
       [(SAUIIndicatorElementViewProviding *)elementViewProvider didUpdateFixedIndicatorViewTransform:&t1];
     }
   }
 }
 
-- (void)_enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4
+- (void)_enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (v5)
+  blockCopy = block;
+  if (blockCopy)
   {
     v6 = self->_observers;
     objc_sync_enter(v6);
@@ -496,7 +496,7 @@
           v12 = *(*(&v13 + 1) + 8 * v11);
           if (objc_opt_respondsToSelector())
           {
-            v5[2](v5, v12);
+            blockCopy[2](blockCopy, v12);
           }
 
           ++v11;

@@ -1,9 +1,9 @@
 @interface PBSecurePasteAuthenticationMessageGenerator
 + (id)sharedInstance;
-- (BOOL)_isRequester:(id)a3 allowedToRequestAuthenticationMessageWithContext:(unint64_t)a4;
-- (BOOL)validateAuthenticationMessage:(id)a3;
+- (BOOL)_isRequester:(id)requester allowedToRequestAuthenticationMessageWithContext:(unint64_t)context;
+- (BOOL)validateAuthenticationMessage:(id)message;
 - (PBSecurePasteAuthenticationMessageGenerator)init;
-- (id)generateAuthenticationMessageWithContext:(unint64_t)a3 forClientVersionedPID:(int64_t)a4 requesterAuditTokenInfo:(id)a5 error:(id *)a6;
+- (id)generateAuthenticationMessageWithContext:(unint64_t)context forClientVersionedPID:(int64_t)d requesterAuditTokenInfo:(id)info error:(id *)error;
 @end
 
 @implementation PBSecurePasteAuthenticationMessageGenerator
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000EB3C;
   block[3] = &unk_100030D20;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000392B8 != -1)
   {
     dispatch_once(&qword_1000392B8, block);
@@ -44,9 +44,9 @@
   return v2;
 }
 
-- (id)generateAuthenticationMessageWithContext:(unint64_t)a3 forClientVersionedPID:(int64_t)a4 requesterAuditTokenInfo:(id)a5 error:(id *)a6
+- (id)generateAuthenticationMessageWithContext:(unint64_t)context forClientVersionedPID:(int64_t)d requesterAuditTokenInfo:(id)info error:(id *)error
 {
-  v10 = a5;
+  infoCopy = info;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -64,17 +64,17 @@
   v15[1] = 3221225472;
   v15[2] = sub_10000EDA8;
   v15[3] = &unk_1000316B0;
-  v12 = v10;
+  v12 = infoCopy;
   v16 = v12;
-  v17 = self;
+  selfCopy = self;
   v18 = &v22;
   v19 = &v28;
-  v20 = a3;
-  v21 = a4;
+  contextCopy = context;
+  dCopy = d;
   dispatch_sync(authenticationMessageQueue, v15);
-  if (a6)
+  if (error)
   {
-    *a6 = v23[5];
+    *error = v23[5];
   }
 
   v13 = v29[5];
@@ -85,9 +85,9 @@
   return v13;
 }
 
-- (BOOL)validateAuthenticationMessage:(id)a3
+- (BOOL)validateAuthenticationMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -98,9 +98,9 @@
   block[2] = sub_10000F4F4;
   block[3] = &unk_1000316D8;
   block[4] = self;
-  v9 = v4;
+  v9 = messageCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = messageCopy;
   dispatch_sync(authenticationMessageQueue, block);
   LOBYTE(authenticationMessageQueue) = *(v12 + 24);
 
@@ -108,13 +108,13 @@
   return authenticationMessageQueue;
 }
 
-- (BOOL)_isRequester:(id)a3 allowedToRequestAuthenticationMessageWithContext:(unint64_t)a4
+- (BOOL)_isRequester:(id)requester allowedToRequestAuthenticationMessageWithContext:(unint64_t)context
 {
-  v5 = a3;
-  v6 = [v5 bundleID];
-  v7 = [&off_100033B50 objectForKeyedSubscript:v6];
+  requesterCopy = requester;
+  bundleID = [requesterCopy bundleID];
+  v7 = [&off_100033B50 objectForKeyedSubscript:bundleID];
 
-  v8 = [NSNumber numberWithUnsignedLongLong:a4];
+  v8 = [NSNumber numberWithUnsignedLongLong:context];
   v9 = [v7 containsObject:v8];
 
   if ((v9 & 1) == 0)
@@ -122,9 +122,9 @@
     v10 = _PBLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v5 bundleID];
+      bundleID2 = [requesterCopy bundleID];
       v13 = 138543362;
-      v14 = v11;
+      v14 = bundleID2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ requested an authentication message with context ID that it's not allowed to request", &v13, 0xCu);
     }
   }

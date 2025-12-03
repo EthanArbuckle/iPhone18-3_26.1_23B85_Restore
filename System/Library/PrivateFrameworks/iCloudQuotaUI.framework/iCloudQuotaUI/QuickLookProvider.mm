@@ -1,25 +1,25 @@
 @interface QuickLookProvider
 - (_TtC13iCloudQuotaUI17QuickLookProvider)init;
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
-- (void)previewControllerDidDismiss:(id)a3;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
+- (void)previewControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation QuickLookProvider
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
   v4 = *((*MEMORY[0x277D85000] & self->super.isa) + 0x60);
-  v5 = self;
+  selfCopy = self;
   v6 = v4();
-  v7 = [objc_allocWithZone(MEMORY[0x277CDAA48]) initWithFPItem_];
+  initWithFPItem_ = [objc_allocWithZone(MEMORY[0x277CDAA48]) initWithFPItem_];
 
-  return v7;
+  return initWithFPItem_;
 }
 
-- (void)previewControllerDidDismiss:(id)a3
+- (void)previewControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_27578A870();
 }
 

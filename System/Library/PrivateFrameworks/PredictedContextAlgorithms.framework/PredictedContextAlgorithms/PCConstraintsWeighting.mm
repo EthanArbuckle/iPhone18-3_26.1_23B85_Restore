@@ -1,37 +1,37 @@
 @interface PCConstraintsWeighting
-+ (void)modifyCandidateVisitProbabilities:(id)a3 transitProbabilities:(id)a4 atTime:(double)a5 withVisitHistory:(id)a6 transitionHistory:(id)a7;
++ (void)modifyCandidateVisitProbabilities:(id)probabilities transitProbabilities:(id)transitProbabilities atTime:(double)time withVisitHistory:(id)history transitionHistory:(id)transitionHistory;
 @end
 
 @implementation PCConstraintsWeighting
 
-+ (void)modifyCandidateVisitProbabilities:(id)a3 transitProbabilities:(id)a4 atTime:(double)a5 withVisitHistory:(id)a6 transitionHistory:(id)a7
++ (void)modifyCandidateVisitProbabilities:(id)probabilities transitProbabilities:(id)transitProbabilities atTime:(double)time withVisitHistory:(id)history transitionHistory:(id)transitionHistory
 {
   v163 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v121 = a6;
-  v13 = a7;
+  probabilitiesCopy = probabilities;
+  transitProbabilitiesCopy = transitProbabilities;
+  historyCopy = history;
+  transitionHistoryCopy = transitionHistory;
   v14 = _plc_log_get_normal_handle(PCLogCategoryConstraintsWeighting);
   v15 = v14;
-  if (v11 && v12)
+  if (probabilitiesCopy && transitProbabilitiesCopy)
   {
-    v118 = v13;
+    v118 = transitionHistoryCopy;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
       _os_log_impl(&dword_1CEE74000, v15, OS_LOG_TYPE_INFO, "predictions before apply constraints weighting", buf, 2u);
     }
 
-    v16 = [v11 count];
+    v16 = [probabilitiesCopy count];
     v17 = _plc_log_get_normal_handle(PCLogCategoryConstraintsWeighting);
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_INFO);
-    v119 = v12;
-    v120 = v11;
+    v119 = transitProbabilitiesCopy;
+    v120 = probabilitiesCopy;
     if (v16)
     {
       if (v18)
       {
-        v19 = [v11 count];
+        v19 = [probabilitiesCopy count];
         *buf = 134217984;
         v162 = v19;
         _os_log_impl(&dword_1CEE74000, v17, OS_LOG_TYPE_INFO, "--- Location Predictions (%lu) ---", buf, 0xCu);
@@ -41,7 +41,7 @@
       v153 = 0u;
       v150 = 0u;
       v151 = 0u;
-      v17 = v11;
+      v17 = probabilitiesCopy;
       v20 = [v17 countByEnumeratingWithState:&v150 objects:v160 count:16];
       if (v20)
       {
@@ -70,7 +70,7 @@
         }
 
         while (v21);
-        v12 = v119;
+        transitProbabilitiesCopy = v119;
       }
     }
 
@@ -80,14 +80,14 @@
       _os_log_impl(&dword_1CEE74000, v17, OS_LOG_TYPE_INFO, "No Location Predictions to log", buf, 2u);
     }
 
-    v26 = [v12 count];
+    v26 = [transitProbabilitiesCopy count];
     v27 = _plc_log_get_normal_handle(PCLogCategoryConstraintsWeighting);
     v28 = os_log_type_enabled(v27, OS_LOG_TYPE_INFO);
     if (v26)
     {
       if (v28)
       {
-        v29 = [v12 count];
+        v29 = [transitProbabilitiesCopy count];
         *buf = 134217984;
         v162 = v29;
         _os_log_impl(&dword_1CEE74000, v27, OS_LOG_TYPE_INFO, "--- Transition Predictions (%lu) ---", buf, 0xCu);
@@ -97,7 +97,7 @@
       v149 = 0u;
       v146 = 0u;
       v147 = 0u;
-      v27 = v12;
+      v27 = transitProbabilitiesCopy;
       v30 = [v27 countByEnumeratingWithState:&v146 objects:v159 count:16];
       if (v30)
       {
@@ -126,7 +126,7 @@
         }
 
         while (v31);
-        v12 = v119;
+        transitProbabilitiesCopy = v119;
       }
     }
 
@@ -137,12 +137,12 @@
     }
 
     v36 = 0x1E695D000uLL;
-    v37 = [MEMORY[0x1E695DF70] array];
-    v38 = [MEMORY[0x1E695DF70] array];
-    [PCConstraintsWeightingUtils validateCandidateVisits:v11 validVisits:v37 invalidVisits:v38];
-    v116 = v38;
-    v117 = v37;
-    if ([v38 count])
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    [PCConstraintsWeightingUtils validateCandidateVisits:probabilitiesCopy validVisits:array invalidVisits:array2];
+    v116 = array2;
+    v117 = array;
+    if ([array2 count])
     {
       v39 = _plc_log_get_normal_handle(PCLogCategoryConstraintsWeighting);
       if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
@@ -151,12 +151,12 @@
         _os_log_impl(&dword_1CEE74000, v39, OS_LOG_TYPE_INFO, "Invalid visit predictions", buf, 2u);
       }
 
-      if (v38 && [v38 count])
+      if (array2 && [array2 count])
       {
         v40 = _plc_log_get_normal_handle(PCLogCategoryConstraintsWeighting);
         if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
         {
-          v41 = [v38 count];
+          v41 = [array2 count];
           *buf = 134217984;
           v162 = v41;
           _os_log_impl(&dword_1CEE74000, v40, OS_LOG_TYPE_INFO, "--- Location Predictions (%lu) ---", buf, 0xCu);
@@ -166,7 +166,7 @@
         v145 = 0u;
         v142 = 0u;
         v143 = 0u;
-        v42 = v38;
+        v42 = array2;
         v43 = [v42 countByEnumeratingWithState:&v142 objects:v158 count:16];
         if (v43)
         {
@@ -195,14 +195,14 @@
           }
 
           while (v44);
-          v12 = v119;
-          v11 = v120;
+          transitProbabilitiesCopy = v119;
+          probabilitiesCopy = v120;
           v36 = 0x1E695D000;
         }
 
         else
         {
-          v12 = v119;
+          transitProbabilitiesCopy = v119;
         }
       }
 
@@ -217,12 +217,12 @@
       }
     }
 
-    v49 = [*(v36 + 3952) array];
-    v50 = [*(v36 + 3952) array];
-    [PCConstraintsWeightingUtils validateCandidateTransitions:v12 validTransitions:v49 invalidTransitions:v50];
-    v114 = v49;
-    v115 = v50;
-    if ([v50 count])
+    array3 = [*(v36 + 3952) array];
+    array4 = [*(v36 + 3952) array];
+    [PCConstraintsWeightingUtils validateCandidateTransitions:transitProbabilitiesCopy validTransitions:array3 invalidTransitions:array4];
+    v114 = array3;
+    v115 = array4;
+    if ([array4 count])
     {
       v51 = _plc_log_get_normal_handle(PCLogCategoryConstraintsWeighting);
       if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
@@ -231,12 +231,12 @@
         _os_log_impl(&dword_1CEE74000, v51, OS_LOG_TYPE_INFO, "Invalid transition predictions", buf, 2u);
       }
 
-      if (v50 && [v50 count])
+      if (array4 && [array4 count])
       {
         v52 = _plc_log_get_normal_handle(PCLogCategoryConstraintsWeighting);
         if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
         {
-          v53 = [v50 count];
+          v53 = [array4 count];
           *buf = 134217984;
           v162 = v53;
           _os_log_impl(&dword_1CEE74000, v52, OS_LOG_TYPE_INFO, "--- Transition Predictions (%lu) ---", buf, 0xCu);
@@ -246,7 +246,7 @@
         v141 = 0u;
         v138 = 0u;
         v139 = 0u;
-        v54 = v50;
+        v54 = array4;
         v55 = [v54 countByEnumeratingWithState:&v138 objects:v157 count:16];
         if (v55)
         {
@@ -275,14 +275,14 @@
           }
 
           while (v56);
-          v12 = v119;
-          v11 = v120;
+          transitProbabilitiesCopy = v119;
+          probabilitiesCopy = v120;
         }
 
         else
         {
-          v12 = v119;
-          v11 = v120;
+          transitProbabilitiesCopy = v119;
+          probabilitiesCopy = v120;
         }
       }
 
@@ -297,29 +297,29 @@
       }
     }
 
-    v61 = [PCConstraintsWeightingUtils loiIdOfCurrentContextFromVisitHistory:v121 transitionHistory:v118 currentTime:a5];
-    v62 = [PCConstraintsWeightingUtils mapLOIToLocationsFromPredictedVisits:v37 currentLoiIdentifier:v61 visitHistory:v121];
-    v112 = [PCConstraintsWeightingUtils rasterizeCandidateVisitPredictions:v37 transitPredictions:v49 currentTimeInSec:a5 windowInHours:24.0 binSizeMin:5.0];
+    v61 = [PCConstraintsWeightingUtils loiIdOfCurrentContextFromVisitHistory:historyCopy transitionHistory:v118 currentTime:time];
+    v62 = [PCConstraintsWeightingUtils mapLOIToLocationsFromPredictedVisits:array currentLoiIdentifier:v61 visitHistory:historyCopy];
+    v112 = [PCConstraintsWeightingUtils rasterizeCandidateVisitPredictions:array transitPredictions:array3 currentTimeInSec:time windowInHours:24.0 binSizeMin:5.0];
     v111 = [PCConstraintsWeightingUtils applyMovingAverage:"applyMovingAverage:windowSize:currentContextId:" windowSize:? currentContextId:?];
     v63 = [PCConstraintsWeightingUtils normalizeBins:?];
-    v64 = [MEMORY[0x1E695DF90] dictionary];
-    v65 = [PCConstraintsWeightingUtils convertBinsToPredSample:v63 loiToColMap:v64];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v65 = [PCConstraintsWeightingUtils convertBinsToPredSample:v63 loiToColMap:dictionary];
     v66 = [v65 mutableCopy];
 
     LODWORD(v67) = 1034147594;
     LODWORD(v68) = 1061997773;
     v108 = v66;
-    v107 = [PCNeuralNetworkUtilities createPredictedContextFromPredSequence:v66 timestepSize:1 currentTime:v67 preds:5.0 probabilityCalculationMode:a5 probabilityPercentile:v68];
-    v109 = v64;
+    v107 = [PCNeuralNetworkUtilities createPredictedContextFromPredSequence:v66 timestepSize:1 currentTime:v67 preds:5.0 probabilityCalculationMode:time probabilityPercentile:v68];
+    v109 = dictionary;
     v110 = v63;
     v69 = [PCConstraintsWeightingUtils adaptMergedClusters:"adaptMergedClusters:bins:loiToColMap:" bins:? loiToColMap:?];
     v70 = [v69 mutableCopy];
 
     v113 = v61;
     v122 = v62;
-    [PCConstraintsWeightingUtils postprocessMergeResults:v70 currentLoiIdentifier:v61 currentTime:v118 windowEndTime:v62 transitionHistory:a5 loiToLocation:a5 + 86400.0];
-    v124 = [MEMORY[0x1E695DF70] array];
-    v123 = [MEMORY[0x1E695DF70] array];
+    [PCConstraintsWeightingUtils postprocessMergeResults:v70 currentLoiIdentifier:v61 currentTime:v118 windowEndTime:v62 transitionHistory:time loiToLocation:time + 86400.0];
+    array5 = [MEMORY[0x1E695DF70] array];
+    array6 = [MEMORY[0x1E695DF70] array];
     v134 = 0u;
     v135 = 0u;
     v136 = 0u;
@@ -340,20 +340,20 @@
           }
 
           v75 = *(*(&v134 + 1) + 8 * n);
-          v76 = [v75 loiId];
+          loiId = [v75 loiId];
           v77 = +[PCConstraintsWeightingUtils transitionDummyLOI];
-          v78 = [v76 isEqualToData:v77];
+          v78 = [loiId isEqualToData:v77];
 
           if (v78)
           {
             v79 = [PCConstraintsWeightingUtils convertMergeResultToTransition:v75];
-            v80 = v123;
+            v80 = array6;
           }
 
           else
           {
             v79 = [PCConstraintsWeightingUtils convertMergeResultToLocation:v75 withLocationMap:v122];
-            v80 = v124;
+            v80 = array5;
           }
 
           [v80 addObject:v79];
@@ -365,15 +365,15 @@
       while (v72);
     }
 
-    [v11 removeAllObjects];
+    [probabilitiesCopy removeAllObjects];
     v81 = v116;
-    v82 = [v124 arrayByAddingObjectsFromArray:v116];
-    [v11 addObjectsFromArray:v82];
+    v82 = [array5 arrayByAddingObjectsFromArray:v116];
+    [probabilitiesCopy addObjectsFromArray:v82];
 
-    [v12 removeAllObjects];
+    [transitProbabilitiesCopy removeAllObjects];
     v83 = v115;
-    v84 = [v123 arrayByAddingObjectsFromArray:v115];
-    [v12 addObjectsFromArray:v84];
+    v84 = [array6 arrayByAddingObjectsFromArray:v115];
+    [transitProbabilitiesCopy addObjectsFromArray:v84];
 
     v85 = _plc_log_get_normal_handle(PCLogCategoryConstraintsWeighting);
     if (os_log_type_enabled(v85, OS_LOG_TYPE_INFO))
@@ -382,14 +382,14 @@
       _os_log_impl(&dword_1CEE74000, v85, OS_LOG_TYPE_INFO, "predictions after apply constraints weighting", buf, 2u);
     }
 
-    v86 = [v11 count];
+    v86 = [probabilitiesCopy count];
     v87 = _plc_log_get_normal_handle(PCLogCategoryConstraintsWeighting);
     v88 = os_log_type_enabled(v87, OS_LOG_TYPE_INFO);
     if (v86)
     {
       if (v88)
       {
-        v89 = [v11 count];
+        v89 = [probabilitiesCopy count];
         *buf = 134217984;
         v162 = v89;
         _os_log_impl(&dword_1CEE74000, v87, OS_LOG_TYPE_INFO, "--- Location Predictions (%lu) ---", buf, 0xCu);
@@ -399,7 +399,7 @@
       v133 = 0u;
       v130 = 0u;
       v131 = 0u;
-      v87 = v11;
+      v87 = probabilitiesCopy;
       v90 = [v87 countByEnumeratingWithState:&v130 objects:v155 count:16];
       if (v90)
       {
@@ -428,21 +428,21 @@
         }
 
         while (v91);
-        v12 = v119;
-        v11 = v120;
+        transitProbabilitiesCopy = v119;
+        probabilitiesCopy = v120;
         v81 = v116;
         v15 = v117;
         v83 = v115;
 LABEL_107:
 
-        v96 = [v12 count];
+        v96 = [transitProbabilitiesCopy count];
         v97 = _plc_log_get_normal_handle(PCLogCategoryConstraintsWeighting);
         v98 = os_log_type_enabled(v97, OS_LOG_TYPE_INFO);
         if (v96)
         {
           if (v98)
           {
-            v99 = [v12 count];
+            v99 = [transitProbabilitiesCopy count];
             *buf = 134217984;
             v162 = v99;
             _os_log_impl(&dword_1CEE74000, v97, OS_LOG_TYPE_INFO, "--- Transition Predictions (%lu) ---", buf, 0xCu);
@@ -452,7 +452,7 @@ LABEL_107:
           v129 = 0u;
           v126 = 0u;
           v127 = 0u;
-          v97 = v12;
+          v97 = transitProbabilitiesCopy;
           v100 = [v97 countByEnumeratingWithState:&v126 objects:v154 count:16];
           if (v100)
           {
@@ -481,10 +481,10 @@ LABEL_107:
             }
 
             while (v101);
-            v12 = v119;
-            v11 = v120;
+            transitProbabilitiesCopy = v119;
+            probabilitiesCopy = v120;
             v15 = v117;
-            v13 = v118;
+            transitionHistoryCopy = v118;
             v83 = v115;
             v81 = v116;
             goto LABEL_123;
@@ -497,7 +497,7 @@ LABEL_107:
           _os_log_impl(&dword_1CEE74000, v97, OS_LOG_TYPE_INFO, "No Transition Predictions to log", buf, 2u);
         }
 
-        v13 = v118;
+        transitionHistoryCopy = v118;
 LABEL_123:
 
         goto LABEL_124;

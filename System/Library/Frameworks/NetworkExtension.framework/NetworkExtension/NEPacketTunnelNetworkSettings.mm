@@ -1,20 +1,20 @@
 @interface NEPacketTunnelNetworkSettings
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
-- (NEPacketTunnelNetworkSettings)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
+- (NEPacketTunnelNetworkSettings)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initFromLegacyDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)initFromLegacyDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEPacketTunnelNetworkSettings
 
-- (id)initFromLegacyDictionary:(id)a3
+- (id)initFromLegacyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = NEPacketTunnelNetworkSettings;
-  v5 = [(NETunnelNetworkSettings *)&v29 initFromLegacyDictionary:v4];
+  v5 = [(NETunnelNetworkSettings *)&v29 initFromLegacyDictionary:dictionaryCopy];
   if (!v5)
   {
 LABEL_13:
@@ -22,7 +22,7 @@ LABEL_13:
     goto LABEL_22;
   }
 
-  v6 = NEGetValueWithType(v4, *MEMORY[0x1E6982368], CFDICTIONARY_TYPE);
+  v6 = NEGetValueWithType(dictionaryCopy, *MEMORY[0x1E6982368], CFDICTIONARY_TYPE);
   if (!v6)
   {
     v17 = ne_log_obj();
@@ -44,7 +44,7 @@ LABEL_13:
     v5[7] = v9;
   }
 
-  v11 = NEGetValueWithType(v4, *MEMORY[0x1E6982338], CFDICTIONARY_TYPE);
+  v11 = NEGetValueWithType(dictionaryCopy, *MEMORY[0x1E6982338], CFDICTIONARY_TYPE);
   if (v11)
   {
     v12 = v11;
@@ -73,7 +73,7 @@ LABEL_13:
     }
   }
 
-  v20 = NEGetValueWithType(v4, *MEMORY[0x1E6982340], CFDICTIONARY_TYPE);
+  v20 = NEGetValueWithType(dictionaryCopy, *MEMORY[0x1E6982340], CFDICTIONARY_TYPE);
   if (v20)
   {
     v21 = v20;
@@ -120,28 +120,28 @@ LABEL_22:
   return v3;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
-  v4 = a3;
+  errorsCopy = errors;
   v15.receiver = self;
   v15.super_class = NEPacketTunnelNetworkSettings;
-  v5 = [(NETunnelNetworkSettings *)&v15 checkValidityAndCollectErrors:v4];
-  v6 = [(NEPacketTunnelNetworkSettings *)self IPv4Settings];
-  if (v6)
+  v5 = [(NETunnelNetworkSettings *)&v15 checkValidityAndCollectErrors:errorsCopy];
+  iPv4Settings = [(NEPacketTunnelNetworkSettings *)self IPv4Settings];
+  if (iPv4Settings)
   {
-    v7 = v6;
-    v8 = [(NEPacketTunnelNetworkSettings *)self IPv4Settings];
-    v9 = [v8 checkValidityAndCollectErrors:v4];
+    v7 = iPv4Settings;
+    iPv4Settings2 = [(NEPacketTunnelNetworkSettings *)self IPv4Settings];
+    v9 = [iPv4Settings2 checkValidityAndCollectErrors:errorsCopy];
 
     v5 &= v9;
   }
 
-  v10 = [(NEPacketTunnelNetworkSettings *)self IPv6Settings];
-  if (v10)
+  iPv6Settings = [(NEPacketTunnelNetworkSettings *)self IPv6Settings];
+  if (iPv6Settings)
   {
-    v11 = v10;
-    v12 = [(NEPacketTunnelNetworkSettings *)self IPv6Settings];
-    v13 = [v12 checkValidityAndCollectErrors:v4];
+    v11 = iPv6Settings;
+    iPv6Settings2 = [(NEPacketTunnelNetworkSettings *)self IPv6Settings];
+    v13 = [iPv6Settings2 checkValidityAndCollectErrors:errorsCopy];
 
     v5 &= v13;
   }
@@ -149,19 +149,19 @@ LABEL_22:
   return v5 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = NEPacketTunnelNetworkSettings;
-  v4 = [(NETunnelNetworkSettings *)&v10 copyWithZone:a3];
-  v5 = [(NEPacketTunnelNetworkSettings *)self IPv4Settings];
-  [v4 setIPv4Settings:v5];
+  v4 = [(NETunnelNetworkSettings *)&v10 copyWithZone:zone];
+  iPv4Settings = [(NEPacketTunnelNetworkSettings *)self IPv4Settings];
+  [v4 setIPv4Settings:iPv4Settings];
 
-  v6 = [(NEPacketTunnelNetworkSettings *)self IPv6Settings];
-  [v4 setIPv6Settings:v6];
+  iPv6Settings = [(NEPacketTunnelNetworkSettings *)self IPv6Settings];
+  [v4 setIPv6Settings:iPv6Settings];
 
-  v7 = [(NEPacketTunnelNetworkSettings *)self tunnelOverheadBytes];
-  [v4 setTunnelOverheadBytes:v7];
+  tunnelOverheadBytes = [(NEPacketTunnelNetworkSettings *)self tunnelOverheadBytes];
+  [v4 setTunnelOverheadBytes:tunnelOverheadBytes];
 
   v8 = [(NEPacketTunnelNetworkSettings *)self MTU];
   [v4 setMTU:v8];
@@ -169,46 +169,46 @@ LABEL_22:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = NEPacketTunnelNetworkSettings;
-  v4 = a3;
-  [(NETunnelNetworkSettings *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(NETunnelNetworkSettings *)&v9 encodeWithCoder:coderCopy];
   v5 = [(NEPacketTunnelNetworkSettings *)self IPv4Settings:v9.receiver];
-  [v4 encodeObject:v5 forKey:@"IPv4Settings"];
+  [coderCopy encodeObject:v5 forKey:@"IPv4Settings"];
 
-  v6 = [(NEPacketTunnelNetworkSettings *)self IPv6Settings];
-  [v4 encodeObject:v6 forKey:@"IPv6Settings"];
+  iPv6Settings = [(NEPacketTunnelNetworkSettings *)self IPv6Settings];
+  [coderCopy encodeObject:iPv6Settings forKey:@"IPv6Settings"];
 
-  v7 = [(NEPacketTunnelNetworkSettings *)self tunnelOverheadBytes];
-  [v4 encodeObject:v7 forKey:@"TunnelOverheadBytes"];
+  tunnelOverheadBytes = [(NEPacketTunnelNetworkSettings *)self tunnelOverheadBytes];
+  [coderCopy encodeObject:tunnelOverheadBytes forKey:@"TunnelOverheadBytes"];
 
   v8 = [(NEPacketTunnelNetworkSettings *)self MTU];
-  [v4 encodeObject:v8 forKey:@"MTU"];
+  [coderCopy encodeObject:v8 forKey:@"MTU"];
 }
 
-- (NEPacketTunnelNetworkSettings)initWithCoder:(id)a3
+- (NEPacketTunnelNetworkSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = NEPacketTunnelNetworkSettings;
-  v5 = [(NETunnelNetworkSettings *)&v15 initWithCoder:v4];
+  v5 = [(NETunnelNetworkSettings *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IPv4Settings"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IPv4Settings"];
     IPv4Settings = v5->_IPv4Settings;
     v5->_IPv4Settings = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IPv6Settings"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IPv6Settings"];
     IPv6Settings = v5->_IPv6Settings;
     v5->_IPv6Settings = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TunnelOverheadBytes"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TunnelOverheadBytes"];
     tunnelOverheadBytes = v5->_tunnelOverheadBytes;
     v5->_tunnelOverheadBytes = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTU"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTU"];
     MTU = v5->_MTU;
     v5->_MTU = v12;
   }

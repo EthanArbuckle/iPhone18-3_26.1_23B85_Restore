@@ -4,7 +4,7 @@
 - (NSString)type;
 - (int)start;
 - (void)setCompact:(BOOL)compact;
-- (void)setReversed:(BOOL)a3;
+- (void)setReversed:(BOOL)reversed;
 - (void)setStart:(int)start;
 - (void)setType:(NSString *)type;
 @end
@@ -157,7 +157,7 @@ LABEL_13:
   return v12;
 }
 
-- (void)setReversed:(BOOL)a3
+- (void)setReversed:(BOOL)reversed
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v4);
   WebCore::Element::setBooleanAttribute();

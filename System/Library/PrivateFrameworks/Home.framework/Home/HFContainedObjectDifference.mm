@@ -1,22 +1,22 @@
 @interface HFContainedObjectDifference
-+ (id)containedObjectDifferenceWithKey:(id)a3 comparisonResult:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)containedObjectDifferenceWithKey:(id)key comparisonResult:(id)result;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionBuilder;
 @end
 
 @implementation HFContainedObjectDifference
 
-+ (id)containedObjectDifferenceWithKey:(id)a3 comparisonResult:(id)a4
++ (id)containedObjectDifferenceWithKey:(id)key comparisonResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 differences];
-  v9 = [v8 na_any:&__block_literal_global_105_0];
+  keyCopy = key;
+  resultCopy = result;
+  differences = [resultCopy differences];
+  v9 = [differences na_any:&__block_literal_global_105_0];
 
   if (v9)
   {
-    v10 = [[a1 alloc] initWithKey:v6 priority:2];
-    [v10 setContainedObjectResult:v7];
+    v10 = [[self alloc] initWithKey:keyCopy priority:2];
+    [v10 setContainedObjectResult:resultCopy];
   }
 
   else
@@ -27,11 +27,11 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = HFContainedObjectDifference;
-  v4 = [(HFDifference *)&v11 copyWithZone:a3];
+  v4 = [(HFDifference *)&v11 copyWithZone:zone];
   objc_opt_class();
   v5 = v4;
   if (objc_opt_isKindOfClass())
@@ -46,8 +46,8 @@
 
   v7 = v6;
 
-  v8 = [(HFContainedObjectDifference *)self containedObjectResult];
-  v9 = [v8 copy];
+  containedObjectResult = [(HFContainedObjectDifference *)self containedObjectResult];
+  v9 = [containedObjectResult copy];
   [v7 setContainedObjectResult:v9];
 
   return v7;
@@ -57,11 +57,11 @@
 {
   v7.receiver = self;
   v7.super_class = HFContainedObjectDifference;
-  v3 = [(HFDifference *)&v7 descriptionBuilder];
-  v4 = [(HFContainedObjectDifference *)self containedObjectResult];
-  v5 = [v3 appendObject:v4 withName:@"result"];
+  descriptionBuilder = [(HFDifference *)&v7 descriptionBuilder];
+  containedObjectResult = [(HFContainedObjectDifference *)self containedObjectResult];
+  v5 = [descriptionBuilder appendObject:containedObjectResult withName:@"result"];
 
-  return v3;
+  return descriptionBuilder;
 }
 
 @end

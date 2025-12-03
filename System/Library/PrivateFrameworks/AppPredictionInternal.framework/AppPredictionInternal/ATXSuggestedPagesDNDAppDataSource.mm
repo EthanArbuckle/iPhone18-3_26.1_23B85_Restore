@@ -1,16 +1,16 @@
 @interface ATXSuggestedPagesDNDAppDataSource
-- (id)provideAppsForSuggestedPageType:(int64_t)a3 environment:(id)a4;
+- (id)provideAppsForSuggestedPageType:(int64_t)type environment:(id)environment;
 @end
 
 @implementation ATXSuggestedPagesDNDAppDataSource
 
-- (id)provideAppsForSuggestedPageType:(int64_t)a3 environment:(id)a4
+- (id)provideAppsForSuggestedPageType:(int64_t)type environment:(id)environment
 {
-  v4 = [ATXSuggestedPagesUtils semanticTypeForSuggestedPageType:a3, a4];
-  if (v4)
+  environment = [ATXSuggestedPagesUtils semanticTypeForSuggestedPageType:type, environment];
+  if (environment)
   {
-    v5 = [MEMORY[0x277CEB440] sharedInstance];
-    v6 = [v5 iOSAppAllowListForMode:{objc_msgSend(v4, "integerValue")}];
+    mEMORY[0x277CEB440] = [MEMORY[0x277CEB440] sharedInstance];
+    v6 = [mEMORY[0x277CEB440] iOSAppAllowListForMode:{objc_msgSend(environment, "integerValue")}];
 
     v7 = [v6 _pas_mappedArrayWithTransform:&__block_literal_global_144];
   }

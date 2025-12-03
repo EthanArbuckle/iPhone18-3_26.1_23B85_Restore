@@ -1,10 +1,10 @@
 @interface ATXERMEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXERMEvent)initWithEventDate:(id)a3 eventType:(unint64_t)a4 recordEntry:(id)a5 clientModelIds:(id)a6;
-- (ATXERMEvent)initWithProto:(id)a3;
-- (ATXERMEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXERMEvent:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXERMEvent)initWithEventDate:(id)date eventType:(unint64_t)type recordEntry:(id)entry clientModelIds:(id)ids;
+- (ATXERMEvent)initWithProto:(id)proto;
+- (ATXERMEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXERMEvent:(id)event;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
@@ -13,21 +13,21 @@
 
 @implementation ATXERMEvent
 
-- (ATXERMEvent)initWithEventDate:(id)a3 eventType:(unint64_t)a4 recordEntry:(id)a5 clientModelIds:(id)a6
+- (ATXERMEvent)initWithEventDate:(id)date eventType:(unint64_t)type recordEntry:(id)entry clientModelIds:(id)ids
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  dateCopy = date;
+  entryCopy = entry;
+  idsCopy = ids;
   v19.receiver = self;
   v19.super_class = ATXERMEvent;
   v14 = [(ATXERMEvent *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_eventDate, a3);
-    v15->_eventType = a4;
-    objc_storeStrong(&v15->_entry, a5);
-    v16 = [v13 copy];
+    objc_storeStrong(&v14->_eventDate, date);
+    v15->_eventType = type;
+    objc_storeStrong(&v15->_entry, entry);
+    v16 = [idsCopy copy];
     clientModelIds = v15->_clientModelIds;
     v15->_clientModelIds = v16;
   }
@@ -35,29 +35,29 @@
   return v15;
 }
 
-- (ATXERMEvent)initWithProtoData:(id)a3
+- (ATXERMEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBERMEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBERMEvent alloc] initWithData:dataCopy];
 
     self = [(ATXERMEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXERMEvent)initWithProto:(id)a3
+- (ATXERMEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -68,11 +68,11 @@
         [(ATXERMEvent *)self initWithProto:v5];
       }
 
-      v13 = 0;
+      selfCopy = 0;
       goto LABEL_25;
     }
 
-    v5 = v4;
+    v5 = protoCopy;
     if (([(ATXPBERMEvent *)v5 hasEventDate]& 1) != 0)
     {
       if ([(ATXPBERMEvent *)v5 eventType])
@@ -83,21 +83,21 @@
           {
             v6 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:-[ATXPBERMEvent eventDate](v5)];
             v7 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:-[ATXPBERMEvent dateEngaged](v5)];
-            v8 = [(ATXPBERMEvent *)v5 engagementType];
-            v9 = [(ATXPBERMEvent *)v5 executable];
-            v10 = [(ATXPBERMEvent *)v5 executableType];
-            if (v10 > 2)
+            engagementType = [(ATXPBERMEvent *)v5 engagementType];
+            executable = [(ATXPBERMEvent *)v5 executable];
+            executableType = [(ATXPBERMEvent *)v5 executableType];
+            if (executableType > 2)
             {
-              if (v10 == 3)
+              if (executableType == 3)
               {
-                v11 = [objc_alloc(MEMORY[0x1E69A45D0]) initWithProtoData:v9];
+                v11 = [objc_alloc(MEMORY[0x1E69A45D0]) initWithProtoData:executable];
                 v12 = [[ATXExecutableIdentifier alloc] initWithHeroAppPrediction:v11];
                 goto LABEL_35;
               }
 
-              if (v10 == 4)
+              if (executableType == 4)
               {
-                v11 = [objc_alloc(MEMORY[0x1E69C5B88]) initWithProtoData:v9];
+                v11 = [objc_alloc(MEMORY[0x1E69C5B88]) initWithProtoData:executable];
                 v12 = [[ATXExecutableIdentifier alloc] initWithInfoSuggestion:v11];
                 goto LABEL_35;
               }
@@ -105,26 +105,26 @@
 
             else
             {
-              if (v10 == 1)
+              if (executableType == 1)
               {
-                v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v9 encoding:4];
+                v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:executable encoding:4];
                 v12 = [[ATXExecutableIdentifier alloc] initWithString:v11];
                 goto LABEL_35;
               }
 
-              if (v10 == 2)
+              if (executableType == 2)
               {
-                v11 = [[ATXAction alloc] initWithProtoData:v9];
+                v11 = [[ATXAction alloc] initWithProtoData:executable];
                 v12 = [[ATXExecutableIdentifier alloc] initWithAction:v11];
 LABEL_35:
                 p_super = &v12->super;
 
-                v16 = [[ATXEngagementRecordEntry alloc] initWithExecutable:p_super dateEngaged:v7 engagementRecordType:v8];
-                v17 = [(ATXPBERMEvent *)v5 eventType];
-                v18 = [(ATXPBERMEvent *)v5 clientModelIds];
-                self = [(ATXERMEvent *)self initWithEventDate:v6 eventType:v17 recordEntry:v16 clientModelIds:v18];
+                v16 = [[ATXEngagementRecordEntry alloc] initWithExecutable:p_super dateEngaged:v7 engagementRecordType:engagementType];
+                eventType = [(ATXPBERMEvent *)v5 eventType];
+                clientModelIds = [(ATXPBERMEvent *)v5 clientModelIds];
+                self = [(ATXERMEvent *)self initWithEventDate:v6 eventType:eventType recordEntry:v16 clientModelIds:clientModelIds];
 
-                v13 = self;
+                selfCopy = self;
 LABEL_36:
 
                 goto LABEL_24;
@@ -137,7 +137,7 @@ LABEL_36:
               [(ATXERMEvent *)v5 initWithProto:?];
             }
 
-            v13 = 0;
+            selfCopy = 0;
             goto LABEL_36;
           }
 
@@ -177,17 +177,17 @@ LABEL_36:
       }
     }
 
-    v13 = 0;
+    selfCopy = 0;
 LABEL_24:
 
 LABEL_25:
     goto LABEL_26;
   }
 
-  v13 = 0;
+  selfCopy = 0;
 LABEL_26:
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)proto
@@ -196,29 +196,29 @@ LABEL_26:
   v4 = [(NSArray *)self->_clientModelIds mutableCopy];
   [(ATXPBERMEvent *)v3 setClientModelIds:v4];
 
-  v5 = [(ATXEngagementRecordEntry *)self->_entry dateEngaged];
-  [v5 timeIntervalSinceReferenceDate];
+  dateEngaged = [(ATXEngagementRecordEntry *)self->_entry dateEngaged];
+  [dateEngaged timeIntervalSinceReferenceDate];
   [(ATXPBERMEvent *)v3 setDateEngaged:v6];
 
   [(ATXPBERMEvent *)v3 setEngagementType:?];
   [(NSDate *)self->_eventDate timeIntervalSinceReferenceDate];
   [(ATXPBERMEvent *)v3 setEventDate:v7];
   [(ATXPBERMEvent *)v3 setEventType:?];
-  v8 = [(ATXEngagementRecordEntry *)self->_entry executable];
-  v9 = [v8 type];
+  executable = [(ATXEngagementRecordEntry *)self->_entry executable];
+  type = [executable type];
 
-  if (v9 <= 1)
+  if (type <= 1)
   {
-    if (!v9)
+    if (!type)
     {
       [(ATXPBERMEvent *)v3 setExecutableType:?];
-      v12 = [(ATXEngagementRecordEntry *)self->_entry executable];
-      v13 = [v12 object];
-      v14 = [v13 dataUsingEncoding:4];
+      executable2 = [(ATXEngagementRecordEntry *)self->_entry executable];
+      object = [executable2 object];
+      encodeAsProto = [object dataUsingEncoding:4];
       goto LABEL_12;
     }
 
-    if (v9 != 1)
+    if (type != 1)
     {
       goto LABEL_13;
     }
@@ -229,7 +229,7 @@ LABEL_26:
 
   else
   {
-    switch(v9)
+    switch(type)
     {
       case 2:
         v10 = v3;
@@ -249,12 +249,12 @@ LABEL_26:
   }
 
   [(ATXPBERMEvent *)v10 setExecutableType:v11];
-  v12 = [(ATXEngagementRecordEntry *)self->_entry executable];
-  v13 = [v12 object];
-  v14 = [v13 encodeAsProto];
+  executable2 = [(ATXEngagementRecordEntry *)self->_entry executable];
+  object = [executable2 object];
+  encodeAsProto = [object encodeAsProto];
 LABEL_12:
-  v15 = v14;
-  [(ATXPBERMEvent *)v3 setExecutable:v14];
+  v15 = encodeAsProto;
+  [(ATXPBERMEvent *)v3 setExecutable:encodeAsProto];
 
 LABEL_13:
 
@@ -263,18 +263,18 @@ LABEL_13:
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXERMEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXERMEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    v5 = a3;
-    v6 = [[a1 alloc] initWithProtoData:v5];
+    dataCopy = data;
+    v6 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -287,8 +287,8 @@ LABEL_13:
 
 - (id)jsonDict
 {
-  v3 = [(ATXEngagementRecordEntry *)self->_entry jsonDict];
-  v4 = [v3 mutableCopy];
+  jsonDict = [(ATXEngagementRecordEntry *)self->_entry jsonDict];
+  v4 = [jsonDict mutableCopy];
 
   v5 = [(NSDate *)self->_eventDate description];
   [v4 setObject:v5 forKeyedSubscript:@"eventDate"];
@@ -312,42 +312,42 @@ LABEL_13:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXERMEvent *)self jsonDict];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonDict = [(ATXERMEvent *)self jsonDict];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:0];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXERMEvent *)self isEqualToATXERMEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXERMEvent *)self isEqualToATXERMEvent:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXERMEvent:(id)a3
+- (BOOL)isEqualToATXERMEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   eventType = self->_eventType;
-  if (eventType == [v4 eventType])
+  if (eventType == [eventCopy eventType])
   {
     entry = self->_entry;
-    v7 = [v4 entry];
-    if ([(ATXEngagementRecordEntry *)entry isEqual:v7])
+    entry = [eventCopy entry];
+    if ([(ATXEngagementRecordEntry *)entry isEqual:entry])
     {
       clientModelIds = self->_clientModelIds;
-      v9 = [v4 clientModelIds];
-      v10 = [(NSArray *)clientModelIds isEqualToArray:v9];
+      clientModelIds = [eventCopy clientModelIds];
+      v10 = [(NSArray *)clientModelIds isEqualToArray:clientModelIds];
     }
 
     else

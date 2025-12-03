@@ -1,14 +1,14 @@
 @interface _NTKUserOverrideSession
-- (_NTKUserOverrideSession)initWithEditedAsset:(id)a3;
-- (id)previewModelForDevice:(id)a3 subsampleFactor:(double)a4;
+- (_NTKUserOverrideSession)initWithEditedAsset:(id)asset;
+- (id)previewModelForDevice:(id)device subsampleFactor:(double)factor;
 @end
 
 @implementation _NTKUserOverrideSession
 
-- (_NTKUserOverrideSession)initWithEditedAsset:(id)a3
+- (_NTKUserOverrideSession)initWithEditedAsset:(id)asset
 {
   v157 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   v155.receiver = self;
   v155.super_class = _NTKUserOverrideSession;
   v8 = [(_NTKUserOverrideSession *)&v155 init];
@@ -17,7 +17,7 @@
     goto LABEL_33;
   }
 
-  v9 = objc_msgSend_phAsset(v4, v5, v6, v7);
+  v9 = objc_msgSend_phAsset(assetCopy, v5, v6, v7);
   v13 = objc_msgSend_ntk_getFullSizePHAssetData(v9, v10, v11, v12);
 
   if (!v13)
@@ -26,21 +26,21 @@
   }
 
   v14 = sub_23BF2AF68(v13);
-  if (!objc_msgSend_addOriginalAssetAndMaskData(v4, v15, v16, v17))
+  if (!objc_msgSend_addOriginalAssetAndMaskData(assetCopy, v15, v16, v17))
   {
     goto LABEL_37;
   }
 
   v18 = NTKCGImagePropertyOrientationToUIImageOrientation();
   v19 = MEMORY[0x277D2BFA8];
-  v23 = objc_msgSend_subsampleFactor(v4, v20, v21, v22);
+  v23 = objc_msgSend_subsampleFactor(assetCopy, v20, v21, v22);
   v25 = objc_msgSend__subsampledImageWithData_orientation_subsampleFactor_(v19, v24, v13, v18, v23);
   photoImage = v8->_photoImage;
   v8->_photoImage = v25;
 
-  v30 = objc_msgSend_fullSizeMaskData(v4, v27, v28, v29);
+  v30 = objc_msgSend_fullSizeMaskData(assetCopy, v27, v28, v29);
 
-  if (v30 && (objc_msgSend_fullSizeMaskData(v4, v31, v32, v33), v34 = objc_claimAutoreleasedReturnValue(), v35 = sub_23BF2B03C(v34), v34, v35))
+  if (v30 && (objc_msgSend_fullSizeMaskData(assetCopy, v31, v32, v33), v34 = objc_claimAutoreleasedReturnValue(), v35 = sub_23BF2B03C(v34), v34, v35))
   {
     v36 = objc_alloc(MEMORY[0x277D3B3D0]);
     v37 = 1;
@@ -65,7 +65,7 @@
     v37 = 0;
   }
 
-  v53 = objc_msgSend_userOverrides(v4, v31, v32, v33);
+  v53 = objc_msgSend_userOverrides(assetCopy, v31, v32, v33);
   v57 = objc_msgSend_count(v53, v54, v55, v56);
 
   if (v57)
@@ -79,7 +79,7 @@
     v154 = 0u;
     v151 = 0u;
     v152 = 0u;
-    v62 = objc_msgSend_asset(v4, v58, v59, v60, 0);
+    v62 = objc_msgSend_asset(assetCopy, v58, v59, v60, 0);
     v66 = objc_msgSend_layouts(v62, v63, v64, v65);
     v70 = objc_msgSend_allValues(v66, v67, v68, v69);
 
@@ -117,15 +117,15 @@ LABEL_20:
   }
 
   v8->_canRevert = v61;
-  v77 = objc_msgSend_userOverrides(v4, v58, v59, v60);
+  v77 = objc_msgSend_userOverrides(assetCopy, v58, v59, v60);
   v81 = objc_msgSend_count(v77, v78, v79, v80);
 
   if (!v81)
   {
-    v102 = objc_msgSend_asset(v4, v82, v83, v84);
+    v102 = objc_msgSend_asset(assetCopy, v82, v83, v84);
     v101 = objc_msgSend_preferredLayout(v102, v103, v104, v105);
 
-    if (v101 || (objc_msgSend_originalAsset(v4, v106, v107, v108), v109 = objc_claimAutoreleasedReturnValue(), objc_msgSend_preferredLayout(v109, v110, v111, v112), v101 = objc_claimAutoreleasedReturnValue(), v109, v101))
+    if (v101 || (objc_msgSend_originalAsset(assetCopy, v106, v107, v108), v109 = objc_claimAutoreleasedReturnValue(), objc_msgSend_preferredLayout(v109, v110, v111, v112), v101 = objc_claimAutoreleasedReturnValue(), v109, v101))
     {
       v116 = objc_alloc_init(NTKParmesanLayoutUserOverride);
       p_currentOverride = &v8->_currentOverride;
@@ -153,7 +153,7 @@ LABEL_20:
       v144 = objc_msgSend_logObject(NTKParmesanFaceBundle, v141, v142, v143);
       if (os_log_type_enabled(v144, OS_LOG_TYPE_DEBUG))
       {
-        sub_23BFF7650(v4, &v8->_currentOverride, v144, v145);
+        sub_23BFF7650(assetCopy, &v8->_currentOverride, v144, v145);
       }
 
       goto LABEL_32;
@@ -162,7 +162,7 @@ LABEL_20:
     v147 = objc_msgSend_logObject(NTKParmesanFaceBundle, v113, v114, v115);
     if (os_log_type_enabled(v147, OS_LOG_TYPE_ERROR))
     {
-      sub_23BFF771C(v4, v147, v148, v149);
+      sub_23BFF771C(assetCopy, v147, v148, v149);
     }
 
 LABEL_37:
@@ -170,9 +170,9 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  v85 = objc_msgSend_userOverrides(v4, v82, v83, v84);
+  v85 = objc_msgSend_userOverrides(assetCopy, v82, v83, v84);
   v86 = MEMORY[0x277CCABB0];
-  EditedUserOverride = objc_msgSend_lastEditedUserOverride(v4, v87, v88, v89);
+  EditedUserOverride = objc_msgSend_lastEditedUserOverride(assetCopy, v87, v88, v89);
   v93 = objc_msgSend_numberWithInteger_(v86, v91, EditedUserOverride, v92);
   v96 = objc_msgSend_objectForKeyedSubscript_(v85, v94, v93, v95);
   v97 = v8->_currentOverride;
@@ -193,15 +193,15 @@ LABEL_38:
   return v146;
 }
 
-- (id)previewModelForDevice:(id)a3 subsampleFactor:(double)a4
+- (id)previewModelForDevice:(id)device subsampleFactor:(double)factor
 {
-  v7 = objc_msgSend_currentOverride(self, a2, a3, v4);
+  v7 = objc_msgSend_currentOverride(self, a2, device, v4);
   objc_msgSend_crop(v7, v8, v9, v10);
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  CGAffineTransformMakeScale(&v64, 1.0 / a4, 1.0 / a4);
+  CGAffineTransformMakeScale(&v64, 1.0 / factor, 1.0 / factor);
   v66.origin.x = v12;
   v66.origin.y = v14;
   v66.size.width = v16;

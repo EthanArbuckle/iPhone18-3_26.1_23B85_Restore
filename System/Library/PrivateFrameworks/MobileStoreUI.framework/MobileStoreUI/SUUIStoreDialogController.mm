@@ -1,10 +1,10 @@
 @interface SUUIStoreDialogController
 - (SUUIStoreDialogController)init;
-- (void)_performActionForDialog:(id)a3 buttonIndex:(int64_t)a4;
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4;
-- (void)alertViewCancel:(id)a3;
-- (void)presentDialog:(id)a3;
-- (void)presentDialog:(id)a3 fromViewController:(id)a4;
+- (void)_performActionForDialog:(id)dialog buttonIndex:(int64_t)index;
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index;
+- (void)alertViewCancel:(id)cancel;
+- (void)presentDialog:(id)dialog;
+- (void)presentDialog:(id)dialog fromViewController:(id)controller;
 @end
 
 @implementation SUUIStoreDialogController
@@ -28,26 +28,26 @@
   return v2;
 }
 
-- (void)presentDialog:(id)a3
+- (void)presentDialog:(id)dialog
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 buttons];
-  if ([v5 count])
+  dialogCopy = dialog;
+  buttons = [dialogCopy buttons];
+  if ([buttons count])
   {
     v6 = objc_alloc_init(MEMORY[0x277D75118]);
     [v6 setDelegate:self];
-    v7 = [v4 message];
-    [v6 setMessage:v7];
+    message = [dialogCopy message];
+    [v6 setMessage:message];
 
-    v8 = [v4 title];
-    [v6 setTitle:v8];
+    title = [dialogCopy title];
+    [v6 setTitle:title];
 
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v9 = v5;
+    v9 = buttons;
     v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
@@ -63,8 +63,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v15 + 1) + 8 * v13) title];
-          [v6 addButtonWithTitle:v14];
+          title2 = [*(*(&v15 + 1) + 8 * v13) title];
+          [v6 addButtonWithTitle:title2];
 
           ++v13;
         }
@@ -77,22 +77,22 @@
     }
 
     [(NSMutableArray *)self->_alerts addObject:v6];
-    [(NSMutableArray *)self->_dialogs addObject:v4];
+    [(NSMutableArray *)self->_dialogs addObject:dialogCopy];
     [v6 show];
   }
 }
 
-- (void)presentDialog:(id)a3 fromViewController:(id)a4
+- (void)presentDialog:(id)dialog fromViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 buttons];
-  if ([v8 count])
+  dialogCopy = dialog;
+  controllerCopy = controller;
+  buttons = [dialogCopy buttons];
+  if ([buttons count])
   {
     v9 = MEMORY[0x277D75110];
-    v10 = [v6 title];
-    v11 = [v6 message];
-    v12 = [v9 alertControllerWithTitle:v10 message:v11 preferredStyle:1];
+    title = [dialogCopy title];
+    message = [dialogCopy message];
+    v12 = [v9 alertControllerWithTitle:title message:message preferredStyle:1];
 
     objc_initWeak(&location, self);
     v15[0] = MEMORY[0x277D85DD0];
@@ -102,13 +102,13 @@
     v13 = v12;
     v16 = v13;
     objc_copyWeak(&v19, &location);
-    v17 = self;
-    v14 = v6;
+    selfCopy = self;
+    v14 = dialogCopy;
     v18 = v14;
-    [v8 enumerateObjectsUsingBlock:v15];
+    [buttons enumerateObjectsUsingBlock:v15];
     [(NSMutableArray *)self->_alerts addObject:v13];
     [(NSMutableArray *)self->_dialogs addObject:v14];
-    [v7 presentViewController:v13 animated:1 completion:0];
+    [controllerCopy presentViewController:v13 animated:1 completion:0];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -145,45 +145,45 @@ void __62__SUUIStoreDialogController_presentDialog_fromViewController___block_in
   [WeakRetained _performActionForDialog:*(a1 + 48) buttonIndex:*(a1 + 64)];
 }
 
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index
 {
-  v6 = [(NSMutableArray *)self->_alerts indexOfObjectIdenticalTo:a3];
+  v6 = [(NSMutableArray *)self->_alerts indexOfObjectIdenticalTo:view];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = v6;
     v8 = [(NSMutableArray *)self->_dialogs objectAtIndex:v6];
     [(NSMutableArray *)self->_alerts removeObjectAtIndex:v7];
     [(NSMutableArray *)self->_dialogs removeObjectAtIndex:v7];
-    [(SUUIStoreDialogController *)self _performActionForDialog:v8 buttonIndex:a4];
+    [(SUUIStoreDialogController *)self _performActionForDialog:v8 buttonIndex:index];
   }
 }
 
-- (void)alertViewCancel:(id)a3
+- (void)alertViewCancel:(id)cancel
 {
-  v5 = a3;
-  v4 = [v5 cancelButtonIndex];
-  [v5 dismissWithClickedButtonIndex:v4 animated:0];
-  [(SUUIStoreDialogController *)self alertView:v5 didDismissWithButtonIndex:v4];
+  cancelCopy = cancel;
+  cancelButtonIndex = [cancelCopy cancelButtonIndex];
+  [cancelCopy dismissWithClickedButtonIndex:cancelButtonIndex animated:0];
+  [(SUUIStoreDialogController *)self alertView:cancelCopy didDismissWithButtonIndex:cancelButtonIndex];
 }
 
-- (void)_performActionForDialog:(id)a3 buttonIndex:(int64_t)a4
+- (void)_performActionForDialog:(id)dialog buttonIndex:(int64_t)index
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = [a3 buttons];
-  if ([v6 count] > a4)
+  buttons = [dialog buttons];
+  if ([buttons count] > index)
   {
-    v7 = [v6 objectAtIndex:a4];
-    v8 = [v7 actionType];
-    if (v8 == 9)
+    v7 = [buttons objectAtIndex:index];
+    actionType = [v7 actionType];
+    if (actionType == 9)
     {
       [MEMORY[0x277D69AB8] retryAllRestoreDownloads];
     }
 
-    else if (v8 == 3)
+    else if (actionType == 3)
     {
-      v9 = [v7 parameter];
+      parameter = [v7 parameter];
       v10 = objc_alloc_init(MEMORY[0x277D69C10]);
-      [v10 setBuyParameters:v9];
+      [v10 setBuyParameters:parameter];
       v11 = objc_alloc(MEMORY[0x277D69C20]);
       v15[0] = v10;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];

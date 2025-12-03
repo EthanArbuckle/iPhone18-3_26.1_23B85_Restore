@@ -1,11 +1,11 @@
 @interface AVCMediaAnalyzerResult
-- (AVCMediaAnalyzerResult)initWithInternalResult:(id)a3 analysisType:(int64_t)a4;
+- (AVCMediaAnalyzerResult)initWithInternalResult:(id)result analysisType:(int64_t)type;
 - (void)dealloc;
 @end
 
 @implementation AVCMediaAnalyzerResult
 
-- (AVCMediaAnalyzerResult)initWithInternalResult:(id)a3 analysisType:(int64_t)a4
+- (AVCMediaAnalyzerResult)initWithInternalResult:(id)result analysisType:(int64_t)type
 {
   v25 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
@@ -16,22 +16,22 @@
   {
     *(v6 + 8) = vdupq_n_s64(0x7FF8000000000000uLL);
     *(v6 + 3) = 0;
-    *(v6 + 4) = a4;
-    v8 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69DF650]];
+    *(v6 + 4) = type;
+    v8 = [result objectForKeyedSubscript:*MEMORY[0x1E69DF650]];
     if (v8)
     {
       memset(&v17, 170, sizeof(v17));
       CMTimeMakeFromDictionary(&v17, v8);
       time = v17;
       v7->_analysisStartTimestamp = CMTimeGetSeconds(&time);
-      v9 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69DF648]];
+      v9 = [result objectForKeyedSubscript:*MEMORY[0x1E69DF648]];
       if (v9)
       {
         memset(&v16, 170, sizeof(v16));
         CMTimeMakeFromDictionary(&v16, v9);
         time = v16;
         v7->_analysisDuration = CMTimeGetSeconds(&time);
-        v10 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69AE250]];
+        v10 = [result objectForKeyedSubscript:*MEMORY[0x1E69AE250]];
         if (v10)
         {
           v7->_analysisResult = [v10 copy];

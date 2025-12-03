@@ -1,11 +1,11 @@
 @interface DMDUserNotificationManager
 + (DMDUserNotificationManager)sharedManager;
 - (DMDUserNotificationManager)init;
-- (void)cancelNotificationEntriesMatchingPredicate:(id)a3 completionBlock:(id)a4;
+- (void)cancelNotificationEntriesMatchingPredicate:(id)predicate completionBlock:(id)block;
 - (void)dealloc;
-- (void)displayUserNotificationWithIdentifier:(id)a3 title:(id)a4 message:(id)a5 defaultButtonText:(id)a6 alternateButtonText:(id)a7 otherButtonText:(id)a8 displayOnLockScreen:(BOOL)a9 displayInAppWhitelistModes:(BOOL)a10 dismissAfterTimeInterval:(double)a11 assertion:(id)a12 completionBlock:(id)a13;
+- (void)displayUserNotificationWithIdentifier:(id)identifier title:(id)title message:(id)message defaultButtonText:(id)text alternateButtonText:(id)buttonText otherButtonText:(id)otherButtonText displayOnLockScreen:(BOOL)screen displayInAppWhitelistModes:(BOOL)self0 dismissAfterTimeInterval:(double)self1 assertion:(id)self2 completionBlock:(id)self3;
 - (void)mainQueueDidReceiveAppWhitelistChangedNotification;
-- (void)promptUserToLogIntoiTunesWithTitle:(id)a3 message:(id)a4 assertion:(id)a5 completionBlock:(id)a6;
+- (void)promptUserToLogIntoiTunesWithTitle:(id)title message:(id)message assertion:(id)assertion completionBlock:(id)block;
 @end
 
 @implementation DMDUserNotificationManager
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_100077504;
   block[3] = &unk_1000CE018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000FF328 != -1)
   {
     dispatch_once(&qword_1000FF328, block);
@@ -65,60 +65,60 @@
   dispatch_barrier_sync(v2, &stru_1000D0008);
 }
 
-- (void)cancelNotificationEntriesMatchingPredicate:(id)a3 completionBlock:(id)a4
+- (void)cancelNotificationEntriesMatchingPredicate:(id)predicate completionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  predicateCopy = predicate;
+  blockCopy = block;
+  if (predicateCopy)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100077CD8;
     v7[3] = &unk_1000D0098;
-    v8 = v5;
-    v9 = v6;
+    v8 = predicateCopy;
+    v9 = blockCopy;
     dispatch_async(&_dispatch_main_q, v7);
   }
 }
 
-- (void)displayUserNotificationWithIdentifier:(id)a3 title:(id)a4 message:(id)a5 defaultButtonText:(id)a6 alternateButtonText:(id)a7 otherButtonText:(id)a8 displayOnLockScreen:(BOOL)a9 displayInAppWhitelistModes:(BOOL)a10 dismissAfterTimeInterval:(double)a11 assertion:(id)a12 completionBlock:(id)a13
+- (void)displayUserNotificationWithIdentifier:(id)identifier title:(id)title message:(id)message defaultButtonText:(id)text alternateButtonText:(id)buttonText otherButtonText:(id)otherButtonText displayOnLockScreen:(BOOL)screen displayInAppWhitelistModes:(BOOL)self0 dismissAfterTimeInterval:(double)self1 assertion:(id)self2 completionBlock:(id)self3
 {
-  v40 = a3;
-  v19 = a4;
-  v38 = a5;
-  v39 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a12;
-  v23 = a13;
+  identifierCopy = identifier;
+  titleCopy = title;
+  messageCopy = message;
+  textCopy = text;
+  buttonTextCopy = buttonText;
+  otherButtonTextCopy = otherButtonText;
+  assertionCopy = assertion;
+  blockCopy = block;
   v24 = +[MCProfileConnection sharedConnection];
-  v25 = [v24 appWhitelistState];
+  appWhitelistState = [v24 appWhitelistState];
 
-  if (a10 || !v25 || v25 == 6)
+  if (modes || !appWhitelistState || appWhitelistState == 6)
   {
     v26 = objc_opt_new();
-    [v26 setTitle:v19];
-    [v26 setMessage:v38];
-    v37 = v22;
-    v27 = v21;
-    [v26 setDefaultButtonText:v39];
-    [v26 setAlternateButtonText:v20];
-    [v26 setOtherButtonText:v21];
-    [v26 setDisplayOnLockScreen:a9];
-    [v26 setDisplayInAppWhitelistModes:a10];
-    [v26 setDismissAfterTimeInterval:a11];
+    [v26 setTitle:titleCopy];
+    [v26 setMessage:messageCopy];
+    v37 = assertionCopy;
+    v27 = otherButtonTextCopy;
+    [v26 setDefaultButtonText:textCopy];
+    [v26 setAlternateButtonText:buttonTextCopy];
+    [v26 setOtherButtonText:otherButtonTextCopy];
+    [v26 setDisplayOnLockScreen:screen];
+    [v26 setDisplayInAppWhitelistModes:modes];
+    [v26 setDismissAfterTimeInterval:interval];
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
     v43[2] = sub_1000783D0;
     v43[3] = &unk_1000CF948;
-    v28 = v22;
+    v28 = assertionCopy;
     v44 = v28;
-    v45 = v23;
+    v45 = blockCopy;
     [v26 setCompletionBlock:v43];
-    v29 = v23;
-    v30 = v19;
-    v31 = v40;
-    [v26 setIdentifier:v40];
+    v29 = blockCopy;
+    v30 = titleCopy;
+    v31 = identifierCopy;
+    [v26 setIdentifier:identifierCopy];
     [v28 park];
     v32 = sub_100077780();
     block[0] = _NSConcreteStackBlock;
@@ -129,26 +129,26 @@
     v33 = v26;
     dispatch_barrier_async(v32, block);
 
-    v34 = v38;
+    v34 = messageCopy;
     v35 = v30;
-    v36 = v39;
-    v22 = v37;
+    v36 = textCopy;
+    assertionCopy = v37;
   }
 
   else
   {
-    v29 = v23;
-    v27 = v21;
-    v34 = v38;
-    v36 = v39;
-    v35 = v19;
+    v29 = blockCopy;
+    v27 = otherButtonTextCopy;
+    v34 = messageCopy;
+    v36 = textCopy;
+    v35 = titleCopy;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Not displaying notification in limited apps mode.", buf, 2u);
     }
 
-    v31 = v40;
+    v31 = identifierCopy;
     if (v29)
     {
       v29[2](v29, 3);
@@ -156,25 +156,25 @@
   }
 }
 
-- (void)promptUserToLogIntoiTunesWithTitle:(id)a3 message:(id)a4 assertion:(id)a5 completionBlock:(id)a6
+- (void)promptUserToLogIntoiTunesWithTitle:(id)title message:(id)message assertion:(id)assertion completionBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  titleCopy = title;
+  messageCopy = message;
+  assertionCopy = assertion;
+  blockCopy = block;
   v13 = sub_100077780();
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100078B30;
   v18[3] = &unk_1000CF5C8;
-  v19 = v9;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v14 = v11;
-  v15 = v10;
-  v16 = v9;
-  v17 = v12;
+  v19 = titleCopy;
+  v20 = messageCopy;
+  v21 = assertionCopy;
+  v22 = blockCopy;
+  v14 = assertionCopy;
+  v15 = messageCopy;
+  v16 = titleCopy;
+  v17 = blockCopy;
   dispatch_async(v13, v18);
 }
 

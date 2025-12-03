@@ -1,10 +1,10 @@
 @interface ICTTZoomController
 - (ICTTZoomController)init;
-- (id)reallyZoomAttributedString:(id)a3 zoomDirection:(BOOL)a4;
-- (id)reallyZoomAttributes:(id)a3 zoomDirection:(BOOL)a4;
-- (id)reallyZoomFontInAttributes:(id)a3 zoomDirection:(BOOL)a4;
-- (id)unzoomFont:(id)a3;
-- (id)zoomFont:(id)a3;
+- (id)reallyZoomAttributedString:(id)string zoomDirection:(BOOL)direction;
+- (id)reallyZoomAttributes:(id)attributes zoomDirection:(BOOL)direction;
+- (id)reallyZoomFontInAttributes:(id)attributes zoomDirection:(BOOL)direction;
+- (id)unzoomFont:(id)font;
+- (id)zoomFont:(id)font;
 @end
 
 @implementation ICTTZoomController
@@ -24,17 +24,17 @@
   return result;
 }
 
-- (id)reallyZoomFontInAttributes:(id)a3 zoomDirection:(BOOL)a4
+- (id)reallyZoomFontInAttributes:(id)attributes zoomDirection:(BOOL)direction
 {
-  v4 = a4;
-  v6 = [a3 mutableCopy];
+  directionCopy = direction;
+  v6 = [attributes mutableCopy];
   v7 = *MEMORY[0x1E69DB648];
   v8 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
 
   if (v8)
   {
     v9 = [v6 objectForKeyedSubscript:v7];
-    if (v4)
+    if (directionCopy)
     {
       [(ICTTZoomController *)self zoomFont:v9];
     }
@@ -50,17 +50,17 @@
   return v6;
 }
 
-- (id)reallyZoomAttributes:(id)a3 zoomDirection:(BOOL)a4
+- (id)reallyZoomAttributes:(id)attributes zoomDirection:(BOOL)direction
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 mutableCopy];
+  directionCopy = direction;
+  attributesCopy = attributes;
+  v7 = [attributesCopy mutableCopy];
   v8 = *MEMORY[0x1E69DB648];
   v9 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
   if (v9)
   {
     v10 = v9;
-    v11 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69B75E0]];
+    v11 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69B75E0]];
     v12 = v11;
     if (v11)
     {
@@ -70,7 +70,7 @@
 
     else
     {
-      v15 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69B7600]];
+      v15 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69B7600]];
       v16 = v15;
       if (v15)
       {
@@ -103,7 +103,7 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      if (v4)
+      if (directionCopy)
       {
         [(ICTTZoomController *)self zoomFactor];
         v14 = v14 * v22;
@@ -114,7 +114,7 @@ LABEL_22:
 
     else
     {
-      if (v4)
+      if (directionCopy)
       {
         [(ICTTZoomController *)self zoomFont:v10];
       }
@@ -138,9 +138,9 @@ LABEL_23:
   return v7;
 }
 
-- (id)reallyZoomAttributedString:(id)a3 zoomDirection:(BOOL)a4
+- (id)reallyZoomAttributedString:(id)string zoomDirection:(BOOL)direction
 {
-  v6 = [a3 mutableCopy];
+  v6 = [string mutableCopy];
   v7 = [v6 length];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -148,8 +148,8 @@ LABEL_23:
   v11[3] = &unk_1E846D698;
   v8 = v6;
   v12 = v8;
-  v13 = self;
-  v14 = a4;
+  selfCopy = self;
+  directionCopy = direction;
   [v8 enumerateAttributesInRange:0 options:v7 usingBlock:{0, v11}];
   v9 = v8;
 
@@ -168,21 +168,21 @@ void __63__ICTTZoomController_reallyZoomAttributedString_zoomDirection___block_i
   }
 }
 
-- (id)zoomFont:(id)a3
+- (id)zoomFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   [(ICTTZoomController *)self zoomFactor];
   if (v5 == 1.0)
   {
-    v9 = [v4 copy];
+    v9 = [fontCopy copy];
   }
 
   else
   {
-    [v4 pointSize];
+    [fontCopy pointSize];
     v7 = v6;
     [(ICTTZoomController *)self zoomFactor];
-    v9 = [v4 ic_fontConvertedToSize:v7 * v8];
+    v9 = [fontCopy ic_fontConvertedToSize:v7 * v8];
   }
 
   v10 = v9;
@@ -190,21 +190,21 @@ void __63__ICTTZoomController_reallyZoomAttributedString_zoomDirection___block_i
   return v10;
 }
 
-- (id)unzoomFont:(id)a3
+- (id)unzoomFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   [(ICTTZoomController *)self zoomFactor];
   if (v5 == 1.0)
   {
-    v9 = [v4 copy];
+    v9 = [fontCopy copy];
   }
 
   else
   {
-    [v4 pointSize];
+    [fontCopy pointSize];
     v7 = v6;
     [(ICTTZoomController *)self zoomFactor];
-    v9 = [v4 ic_fontConvertedToSize:v7 / v8];
+    v9 = [fontCopy ic_fontConvertedToSize:v7 / v8];
   }
 
   v10 = v9;

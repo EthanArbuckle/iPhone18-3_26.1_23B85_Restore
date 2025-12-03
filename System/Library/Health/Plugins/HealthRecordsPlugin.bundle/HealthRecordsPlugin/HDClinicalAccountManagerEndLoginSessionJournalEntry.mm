@@ -1,26 +1,26 @@
 @interface HDClinicalAccountManagerEndLoginSessionJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (HDClinicalAccountManagerEndLoginSessionJournalEntry)initWithCode:(id)a3 state:(id)a4;
-- (HDClinicalAccountManagerEndLoginSessionJournalEntry)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (HDClinicalAccountManagerEndLoginSessionJournalEntry)initWithCode:(id)code state:(id)state;
+- (HDClinicalAccountManagerEndLoginSessionJournalEntry)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDClinicalAccountManagerEndLoginSessionJournalEntry
 
-- (HDClinicalAccountManagerEndLoginSessionJournalEntry)initWithCode:(id)a3 state:(id)a4
+- (HDClinicalAccountManagerEndLoginSessionJournalEntry)initWithCode:(id)code state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  stateCopy = state;
   v14.receiver = self;
   v14.super_class = HDClinicalAccountManagerEndLoginSessionJournalEntry;
   v8 = [(HDClinicalAccountManagerEndLoginSessionJournalEntry *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [codeCopy copy];
     code = v8->_code;
     v8->_code = v9;
 
-    v11 = [v7 copy];
+    v11 = [stateCopy copy];
     state = v8->_state;
     v8->_state = v11;
   }
@@ -28,21 +28,21 @@
   return v8;
 }
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 healthRecordsExtension];
-  v8 = [v7 accountManager];
+  entriesCopy = entries;
+  profileCopy = profile;
+  healthRecordsExtension = [profileCopy healthRecordsExtension];
+  accountManager = [healthRecordsExtension accountManager];
 
-  if (v8)
+  if (accountManager)
   {
-    v18 = v6;
+    v18 = profileCopy;
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = v5;
+    v9 = entriesCopy;
     v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
@@ -58,15 +58,15 @@
           }
 
           v14 = *(*(&v21 + 1) + 8 * i);
-          v15 = [v14 state];
-          v16 = [v14 code];
+          state = [v14 state];
+          code = [v14 code];
           v19[0] = _NSConcreteStackBlock;
           v19[1] = 3221225472;
           v19[2] = sub_360B8;
           v19[3] = &unk_1070A0;
-          v20 = v15;
-          v17 = v15;
-          [v8 endLoginSessionWithState:v17 code:v16 completion:v19];
+          v20 = state;
+          v17 = state;
+          [accountManager endLoginSessionWithState:v17 code:code completion:v19];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -75,7 +75,7 @@
       while (v11);
     }
 
-    v6 = v18;
+    profileCopy = v18;
   }
 
   else
@@ -88,18 +88,18 @@
   }
 }
 
-- (HDClinicalAccountManagerEndLoginSessionJournalEntry)initWithCoder:(id)a3
+- (HDClinicalAccountManagerEndLoginSessionJournalEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"code"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"code"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
     if (v6)
     {
       v14.receiver = self;
       v14.super_class = HDClinicalAccountManagerEndLoginSessionJournalEntry;
-      v7 = [(HDClinicalAccountManagerEndLoginSessionJournalEntry *)&v14 initWithCoder:v4];
+      v7 = [(HDClinicalAccountManagerEndLoginSessionJournalEntry *)&v14 initWithCoder:coderCopy];
       if (v7)
       {
         v8 = [v5 copy];
@@ -112,37 +112,37 @@
       }
 
       self = v7;
-      v12 = self;
+      selfCopy = self;
     }
 
     else
     {
-      [v4 hrs_failWithCocoaValueNotFoundError];
-      v12 = 0;
+      [coderCopy hrs_failWithCocoaValueNotFoundError];
+      selfCopy = 0;
     }
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v12 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HDClinicalAccountManagerEndLoginSessionJournalEntry *)self code];
-  [v4 encodeObject:v5 forKey:@"code"];
+  coderCopy = coder;
+  code = [(HDClinicalAccountManagerEndLoginSessionJournalEntry *)self code];
+  [coderCopy encodeObject:code forKey:@"code"];
 
-  v6 = [(HDClinicalAccountManagerEndLoginSessionJournalEntry *)self state];
-  [v4 encodeObject:v6 forKey:@"state"];
+  state = [(HDClinicalAccountManagerEndLoginSessionJournalEntry *)self state];
+  [coderCopy encodeObject:state forKey:@"state"];
 
   v7.receiver = self;
   v7.super_class = HDClinicalAccountManagerEndLoginSessionJournalEntry;
-  [(HDClinicalAccountManagerEndLoginSessionJournalEntry *)&v7 encodeWithCoder:v4];
+  [(HDClinicalAccountManagerEndLoginSessionJournalEntry *)&v7 encodeWithCoder:coderCopy];
 }
 
 @end

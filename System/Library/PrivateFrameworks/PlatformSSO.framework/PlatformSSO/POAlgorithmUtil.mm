@@ -1,25 +1,25 @@
 @interface POAlgorithmUtil
-+ (id)bestEncryptionAlgorithm:(id)a3 or:(id)a4;
-+ (id)bestSigningAlgorithm:(id)a3 or:(id)a4;
-+ (id)deviceEncryptionAlgorithmToUse:(id)a3 deviceConfiguration:(id)a4;
-+ (id)deviceSigningAlgorithmToUse:(id)a3 deviceConfiguration:(id)a4;
-+ (id)userSigningAlgorithmToUse:(id)a3 userConfiguration:(id)a4;
++ (id)bestEncryptionAlgorithm:(id)algorithm or:(id)or;
++ (id)bestSigningAlgorithm:(id)algorithm or:(id)or;
++ (id)deviceEncryptionAlgorithmToUse:(id)use deviceConfiguration:(id)configuration;
++ (id)deviceSigningAlgorithmToUse:(id)use deviceConfiguration:(id)configuration;
++ (id)userSigningAlgorithmToUse:(id)use userConfiguration:(id)configuration;
 @end
 
 @implementation POAlgorithmUtil
 
-+ (id)deviceSigningAlgorithmToUse:(id)a3 deviceConfiguration:(id)a4
++ (id)deviceSigningAlgorithmToUse:(id)use deviceConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = [a3 supportedDeviceSigningAlgorithms];
-  if (![v7 count])
+  configurationCopy = configuration;
+  supportedDeviceSigningAlgorithms = [use supportedDeviceSigningAlgorithms];
+  if (![supportedDeviceSigningAlgorithms count])
   {
-    v11 = [v6 signingAlgorithm];
-    v12 = v11;
+    signingAlgorithm = [configurationCopy signingAlgorithm];
+    signingAlgorithm3 = signingAlgorithm;
     v13 = *MEMORY[0x277D3D278];
-    if (v11)
+    if (signingAlgorithm)
     {
-      v13 = v11;
+      v13 = signingAlgorithm;
     }
 
     v14 = v13;
@@ -27,19 +27,19 @@
   }
 
   v8 = *MEMORY[0x277D3D280];
-  if ([v7 containsObject:*MEMORY[0x277D3D280]] || (v8 = *MEMORY[0x277D3D278], objc_msgSend(v7, "containsObject:", *MEMORY[0x277D3D278])))
+  if ([supportedDeviceSigningAlgorithms containsObject:*MEMORY[0x277D3D280]] || (v8 = *MEMORY[0x277D3D278], objc_msgSend(supportedDeviceSigningAlgorithms, "containsObject:", *MEMORY[0x277D3D278])))
   {
-    v9 = [v6 signingAlgorithm];
-    v10 = [a1 bestSigningAlgorithm:v8 or:v9];
+    signingAlgorithm2 = [configurationCopy signingAlgorithm];
+    v10 = [self bestSigningAlgorithm:v8 or:signingAlgorithm2];
 
     goto LABEL_9;
   }
 
   v16 = *MEMORY[0x277D3D288];
-  if ([v7 containsObject:*MEMORY[0x277D3D288]])
+  if ([supportedDeviceSigningAlgorithms containsObject:*MEMORY[0x277D3D288]])
   {
-    v12 = [v6 signingAlgorithm];
-    v14 = [a1 bestSigningAlgorithm:v16 or:v12];
+    signingAlgorithm3 = [configurationCopy signingAlgorithm];
+    v14 = [self bestSigningAlgorithm:v16 or:signingAlgorithm3];
 LABEL_8:
     v10 = v14;
 
@@ -52,31 +52,31 @@ LABEL_9:
   return v10;
 }
 
-+ (id)bestSigningAlgorithm:(id)a3 or:(id)a4
++ (id)bestSigningAlgorithm:(id)algorithm or:(id)or
 {
-  v5 = a3;
-  v6 = a4;
+  algorithmCopy = algorithm;
+  orCopy = or;
   v7 = *MEMORY[0x277D3D280];
-  v8 = v5;
-  if (([v5 isEqualToNumber:*MEMORY[0x277D3D280]] & 1) == 0)
+  v8 = algorithmCopy;
+  if (([algorithmCopy isEqualToNumber:*MEMORY[0x277D3D280]] & 1) == 0)
   {
-    v8 = v6;
-    if (([v6 isEqualToNumber:v7] & 1) == 0)
+    v8 = orCopy;
+    if (([orCopy isEqualToNumber:v7] & 1) == 0)
     {
       v9 = *MEMORY[0x277D3D278];
-      v8 = v5;
-      if (([v5 isEqualToNumber:*MEMORY[0x277D3D278]] & 1) == 0)
+      v8 = algorithmCopy;
+      if (([algorithmCopy isEqualToNumber:*MEMORY[0x277D3D278]] & 1) == 0)
       {
-        v8 = v6;
-        if (([v6 isEqualToNumber:v9] & 1) == 0)
+        v8 = orCopy;
+        if (([orCopy isEqualToNumber:v9] & 1) == 0)
         {
           v10 = *MEMORY[0x277D3D288];
-          v8 = v5;
-          if (([v5 isEqualToNumber:*MEMORY[0x277D3D288]] & 1) == 0)
+          v8 = algorithmCopy;
+          if (([algorithmCopy isEqualToNumber:*MEMORY[0x277D3D288]] & 1) == 0)
           {
-            if ([v6 isEqualToNumber:v10])
+            if ([orCopy isEqualToNumber:v10])
             {
-              v8 = v6;
+              v8 = orCopy;
             }
 
             else
@@ -94,17 +94,17 @@ LABEL_9:
   return v8;
 }
 
-+ (id)deviceEncryptionAlgorithmToUse:(id)a3 deviceConfiguration:(id)a4
++ (id)deviceEncryptionAlgorithmToUse:(id)use deviceConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = [a3 supportedDeviceEncryptionAlgorithms];
-  if ([v7 count])
+  configurationCopy = configuration;
+  supportedDeviceEncryptionAlgorithms = [use supportedDeviceEncryptionAlgorithms];
+  if ([supportedDeviceEncryptionAlgorithms count])
   {
     v8 = *MEMORY[0x277D3D270];
-    if ([v7 containsObject:*MEMORY[0x277D3D270]] || (v8 = *MEMORY[0x277D3D268], objc_msgSend(v7, "containsObject:", *MEMORY[0x277D3D268])) || (v8 = *MEMORY[0x277D3D260], objc_msgSend(v7, "containsObject:", *MEMORY[0x277D3D260])) || (v8 = *MEMORY[0x277D3D258], objc_msgSend(v7, "containsObject:", *MEMORY[0x277D3D258])))
+    if ([supportedDeviceEncryptionAlgorithms containsObject:*MEMORY[0x277D3D270]] || (v8 = *MEMORY[0x277D3D268], objc_msgSend(supportedDeviceEncryptionAlgorithms, "containsObject:", *MEMORY[0x277D3D268])) || (v8 = *MEMORY[0x277D3D260], objc_msgSend(supportedDeviceEncryptionAlgorithms, "containsObject:", *MEMORY[0x277D3D260])) || (v8 = *MEMORY[0x277D3D258], objc_msgSend(supportedDeviceEncryptionAlgorithms, "containsObject:", *MEMORY[0x277D3D258])))
     {
-      v9 = [v6 encryptionAlgorithm];
-      v10 = [a1 bestEncryptionAlgorithm:v8 or:v9];
+      encryptionAlgorithm = [configurationCopy encryptionAlgorithm];
+      v10 = [self bestEncryptionAlgorithm:v8 or:encryptionAlgorithm];
     }
 
     else
@@ -115,12 +115,12 @@ LABEL_9:
 
   else
   {
-    v11 = [v6 encryptionAlgorithm];
-    v12 = v11;
+    encryptionAlgorithm2 = [configurationCopy encryptionAlgorithm];
+    v12 = encryptionAlgorithm2;
     v13 = *MEMORY[0x277D3D258];
-    if (v11)
+    if (encryptionAlgorithm2)
     {
-      v13 = v11;
+      v13 = encryptionAlgorithm2;
     }
 
     v10 = v13;
@@ -129,38 +129,38 @@ LABEL_9:
   return v10;
 }
 
-+ (id)bestEncryptionAlgorithm:(id)a3 or:(id)a4
++ (id)bestEncryptionAlgorithm:(id)algorithm or:(id)or
 {
-  v5 = a3;
-  v6 = a4;
+  algorithmCopy = algorithm;
+  orCopy = or;
   v7 = *MEMORY[0x277D3D270];
-  v8 = v5;
-  if (([v5 isEqualToNumber:*MEMORY[0x277D3D270]] & 1) == 0)
+  v8 = algorithmCopy;
+  if (([algorithmCopy isEqualToNumber:*MEMORY[0x277D3D270]] & 1) == 0)
   {
-    v8 = v6;
-    if (([v6 isEqualToNumber:v7] & 1) == 0)
+    v8 = orCopy;
+    if (([orCopy isEqualToNumber:v7] & 1) == 0)
     {
       v9 = *MEMORY[0x277D3D268];
-      v8 = v5;
-      if (([v5 isEqualToNumber:*MEMORY[0x277D3D268]] & 1) == 0)
+      v8 = algorithmCopy;
+      if (([algorithmCopy isEqualToNumber:*MEMORY[0x277D3D268]] & 1) == 0)
       {
-        v8 = v6;
-        if (([v6 isEqualToNumber:v9] & 1) == 0)
+        v8 = orCopy;
+        if (([orCopy isEqualToNumber:v9] & 1) == 0)
         {
           v10 = *MEMORY[0x277D3D260];
-          v8 = v5;
-          if (([v5 isEqualToNumber:*MEMORY[0x277D3D260]] & 1) == 0)
+          v8 = algorithmCopy;
+          if (([algorithmCopy isEqualToNumber:*MEMORY[0x277D3D260]] & 1) == 0)
           {
-            v8 = v6;
-            if (([v6 isEqualToNumber:v10] & 1) == 0)
+            v8 = orCopy;
+            if (([orCopy isEqualToNumber:v10] & 1) == 0)
             {
               v11 = *MEMORY[0x277D3D258];
-              v8 = v5;
-              if (([v5 isEqualToNumber:*MEMORY[0x277D3D258]] & 1) == 0)
+              v8 = algorithmCopy;
+              if (([algorithmCopy isEqualToNumber:*MEMORY[0x277D3D258]] & 1) == 0)
               {
-                if ([v6 isEqualToNumber:v11])
+                if ([orCopy isEqualToNumber:v11])
                 {
-                  v8 = v6;
+                  v8 = orCopy;
                 }
 
                 else
@@ -180,18 +180,18 @@ LABEL_9:
   return v8;
 }
 
-+ (id)userSigningAlgorithmToUse:(id)a3 userConfiguration:(id)a4
++ (id)userSigningAlgorithmToUse:(id)use userConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = [a3 supportedUserSecureEnclaveKeySigningAlgorithms];
-  if (![v7 count])
+  configurationCopy = configuration;
+  supportedUserSecureEnclaveKeySigningAlgorithms = [use supportedUserSecureEnclaveKeySigningAlgorithms];
+  if (![supportedUserSecureEnclaveKeySigningAlgorithms count])
   {
-    v11 = [v6 signingAlgorithm];
-    v12 = v11;
+    signingAlgorithm = [configurationCopy signingAlgorithm];
+    signingAlgorithm3 = signingAlgorithm;
     v13 = *MEMORY[0x277D3D278];
-    if (v11)
+    if (signingAlgorithm)
     {
-      v13 = v11;
+      v13 = signingAlgorithm;
     }
 
     v14 = v13;
@@ -199,19 +199,19 @@ LABEL_9:
   }
 
   v8 = *MEMORY[0x277D3D280];
-  if ([v7 containsObject:*MEMORY[0x277D3D280]] || (v8 = *MEMORY[0x277D3D278], objc_msgSend(v7, "containsObject:", *MEMORY[0x277D3D278])))
+  if ([supportedUserSecureEnclaveKeySigningAlgorithms containsObject:*MEMORY[0x277D3D280]] || (v8 = *MEMORY[0x277D3D278], objc_msgSend(supportedUserSecureEnclaveKeySigningAlgorithms, "containsObject:", *MEMORY[0x277D3D278])))
   {
-    v9 = [v6 signingAlgorithm];
-    v10 = [a1 bestSigningAlgorithm:v8 or:v9];
+    signingAlgorithm2 = [configurationCopy signingAlgorithm];
+    v10 = [self bestSigningAlgorithm:v8 or:signingAlgorithm2];
 
     goto LABEL_9;
   }
 
   v16 = *MEMORY[0x277D3D288];
-  if ([v7 containsObject:*MEMORY[0x277D3D288]])
+  if ([supportedUserSecureEnclaveKeySigningAlgorithms containsObject:*MEMORY[0x277D3D288]])
   {
-    v12 = [v6 signingAlgorithm];
-    v14 = [a1 bestSigningAlgorithm:v16 or:v12];
+    signingAlgorithm3 = [configurationCopy signingAlgorithm];
+    v14 = [self bestSigningAlgorithm:v16 or:signingAlgorithm3];
 LABEL_8:
     v10 = v14;
 

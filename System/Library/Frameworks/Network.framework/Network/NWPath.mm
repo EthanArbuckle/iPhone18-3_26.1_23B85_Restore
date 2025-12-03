@@ -1,9 +1,9 @@
 @interface NWPath
-+ (NWPath)pathWithProtocolBufferData:(id)a3;
++ (NWPath)pathWithProtocolBufferData:(id)data;
 + (id)allClientIDs;
-+ (id)createStringFromStatus:(int64_t)a3;
-+ (id)pathForClientID:(id)a3;
-+ (id)pathForClientID:(id)a3 parametersTLV:(id)a4 pathResultTLV:(id)a5;
++ (id)createStringFromStatus:(int64_t)status;
++ (id)pathForClientID:(id)d;
++ (id)pathForClientID:(id)d parametersTLV:(id)v pathResultTLV:(id)lV;
 - (BOOL)fallbackEligible;
 - (BOOL)fallbackIsPreferred;
 - (BOOL)fallbackIsWeak;
@@ -34,11 +34,11 @@
 - (BOOL)supportsDNS;
 - (BOOL)supportsIPv4;
 - (BOOL)supportsIPv6;
-- (BOOL)unsatisfiedVoluntaryAgentMatchesAddress:(id)a3 triggerImmediately:(BOOL *)a4;
+- (BOOL)unsatisfiedVoluntaryAgentMatchesAddress:(id)address triggerImmediately:(BOOL *)immediately;
 - (BOOL)usesCompanion;
-- (BOOL)usesInterfaceType:(int64_t)a3;
-- (BOOL)usesNetworkAgent:(id)a3;
-- (BOOL)usesNetworkAgentType:(Class)a3;
+- (BOOL)usesInterfaceType:(int64_t)type;
+- (BOOL)usesNetworkAgent:(id)agent;
+- (BOOL)usesNetworkAgentType:(Class)type;
 - (NSArray)dnsSearchDomains;
 - (NSArray)dnsServers;
 - (NSArray)dnsServersAsStrings;
@@ -65,20 +65,20 @@
 - (NWParameters)derivedParameters;
 - (NWParameters)parameters;
 - (NWPath)init;
-- (NWPath)initWithPath:(id)a3;
+- (NWPath)initWithPath:(id)path;
 - (NWPathStatus)status;
-- (id)copyDNSSearchDomains:(BOOL)a3;
-- (id)copyDNSServerEndpoints:(BOOL)a3;
-- (id)copyDNSServersStrings:(id)a3;
-- (id)copyDataFromNetworkAgentWithDomain:(id)a3 type:(id)a4;
+- (id)copyDNSSearchDomains:(BOOL)domains;
+- (id)copyDNSServerEndpoints:(BOOL)endpoints;
+- (id)copyDNSServersStrings:(id)strings;
+- (id)copyDataFromNetworkAgentWithDomain:(id)domain type:(id)type;
 - (id)copyFlowDivertToken;
 - (id)createProtocolBufferObject;
 - (id)delegateInterface;
 - (id)description;
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4;
-- (id)genericNetworkAgentsWithDomain:(id)a3 type:(id)a4;
-- (id)inactiveNetworkAgentUUIDsOnlyVoluntary:(BOOL)a3;
-- (id)networkAgentsOfType:(Class)a3;
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content;
+- (id)genericNetworkAgentsWithDomain:(id)domain type:(id)type;
+- (id)inactiveNetworkAgentUUIDsOnlyVoluntary:(BOOL)voluntary;
+- (id)networkAgentsOfType:(Class)type;
 - (int)dnsServiceID;
 - (int64_t)maximumDatagramSize;
 - (int64_t)mtu;
@@ -95,32 +95,32 @@
 
 - (NWPathStatus)status
 {
-  v2 = [(NWPath *)self internalPath];
-  status = nw_path_get_status(v2);
+  internalPath = [(NWPath *)self internalPath];
+  status = nw_path_get_status(internalPath);
 
   return status;
 }
 
 - (BOOL)isConstrained
 {
-  v2 = [(NWPath *)self internalPath];
-  is_constrained = _nw_path_is_constrained(v2);
+  internalPath = [(NWPath *)self internalPath];
+  is_constrained = _nw_path_is_constrained(internalPath);
 
   return is_constrained;
 }
 
 - (BOOL)isExpensive
 {
-  v2 = [(NWPath *)self internalPath];
-  is_expensive = _nw_path_is_expensive(v2);
+  internalPath = [(NWPath *)self internalPath];
+  is_expensive = _nw_path_is_expensive(internalPath);
 
   return is_expensive;
 }
 
 - (NWInterface)interface
 {
-  v3 = [(NWPath *)self internalPath];
-  v4 = nw_path_copy_direct_interface(v3);
+  internalPath = [(NWPath *)self internalPath];
+  v4 = nw_path_copy_direct_interface(internalPath);
 
   if (v4)
   {
@@ -130,8 +130,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v6 = [(NWPath *)self internalPath];
-  interface_index = nw_path_get_interface_index(v6);
+  internalPath2 = [(NWPath *)self internalPath];
+  interface_index = nw_path_get_interface_index(internalPath2);
 
   if (interface_index)
   {
@@ -154,39 +154,39 @@ LABEL_6:
 
 - (NSString)statusAsString
 {
-  v2 = [(NWPath *)self status];
+  status = [(NWPath *)self status];
 
-  return [NWPath createStringFromStatus:v2];
+  return [NWPath createStringFromStatus:status];
 }
 
 - (int64_t)reason
 {
-  v2 = [(NWPath *)self internalPath];
-  reason = nw_path_get_reason(v2);
+  internalPath = [(NWPath *)self internalPath];
+  reason = nw_path_get_reason(internalPath);
 
   return reason;
 }
 
 - (BOOL)supportsIPv4
 {
-  v2 = [(NWPath *)self internalPath];
-  has_ipv4 = nw_path_has_ipv4(v2);
+  internalPath = [(NWPath *)self internalPath];
+  has_ipv4 = nw_path_has_ipv4(internalPath);
 
   return has_ipv4;
 }
 
 - (BOOL)supportsIPv6
 {
-  v2 = [(NWPath *)self internalPath];
-  has_ipv6 = nw_path_has_ipv6(v2);
+  internalPath = [(NWPath *)self internalPath];
+  has_ipv6 = nw_path_has_ipv6(internalPath);
 
   return has_ipv6;
 }
 
 - (NSString)reasonDescription
 {
-  v2 = [(NWPath *)self internalPath];
-  reason_description = nw_path_get_reason_description(v2);
+  internalPath = [(NWPath *)self internalPath];
+  reason_description = nw_path_get_reason_description(internalPath);
 
   if (reason_description)
   {
@@ -203,24 +203,24 @@ LABEL_6:
 
 - (BOOL)isViable
 {
-  v2 = [(NWPath *)self internalPath];
-  is_viable = nw_path_is_viable(v2);
+  internalPath = [(NWPath *)self internalPath];
+  is_viable = nw_path_is_viable(internalPath);
 
   return is_viable;
 }
 
 - (BOOL)isUltraConstrained
 {
-  v2 = [(NWPath *)self internalPath];
-  is_ultra_constrained = _nw_path_is_ultra_constrained(v2);
+  internalPath = [(NWPath *)self internalPath];
+  is_ultra_constrained = _nw_path_is_ultra_constrained(internalPath);
 
   return is_ultra_constrained;
 }
 
 - (BOOL)usesCompanion
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_uses_companion(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_uses_companion(internalPath);
 
   return v3;
 }
@@ -230,8 +230,8 @@ LABEL_6:
   v8 = *MEMORY[0x1E69E9840];
   memset(uu, 0, sizeof(uu));
   uuid_clear(uu);
-  v3 = [(NWPath *)self internalPath];
-  if (nw_path_get_client_id(v3, uu))
+  internalPath = [(NWPath *)self internalPath];
+  if (nw_path_get_client_id(internalPath, uu))
   {
     is_null = uuid_is_null(uu);
 
@@ -257,65 +257,65 @@ LABEL_6:
 
 - (int64_t)mtu
 {
-  v2 = [(NWPath *)self internalPath];
-  mtu = nw_path_get_mtu(v2);
+  internalPath = [(NWPath *)self internalPath];
+  mtu = nw_path_get_mtu(internalPath);
 
   return mtu;
 }
 
 - (unsigned)fallbackInterfaceIndex
 {
-  v2 = [(NWPath *)self internalPath];
-  fallback_interface_index = nw_path_get_fallback_interface_index(v2);
+  internalPath = [(NWPath *)self internalPath];
+  fallback_interface_index = nw_path_get_fallback_interface_index(internalPath);
 
   return fallback_interface_index;
 }
 
 - (BOOL)fallbackIsWeak
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_fallback_is_weak(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_fallback_is_weak(internalPath);
 
   return v3;
 }
 
 - (BOOL)fallbackEligible
 {
-  v2 = [(NWPath *)self internalPath];
-  should_fallback = nw_path_should_fallback(v2, 0);
+  internalPath = [(NWPath *)self internalPath];
+  should_fallback = nw_path_should_fallback(internalPath, 0);
 
   return should_fallback;
 }
 
 - (int64_t)maximumDatagramSize
 {
-  v2 = [(NWPath *)self internalPath];
-  maximum_datagram_size = nw_path_get_maximum_datagram_size(v2);
+  internalPath = [(NWPath *)self internalPath];
+  maximum_datagram_size = nw_path_get_maximum_datagram_size(internalPath);
 
   return maximum_datagram_size;
 }
 
 - (unint64_t)secondsSinceInterfaceChange
 {
-  v2 = [(NWPath *)self internalPath];
-  interface_time_delta = nw_path_get_interface_time_delta(v2);
+  internalPath = [(NWPath *)self internalPath];
+  interface_time_delta = nw_path_get_interface_time_delta(internalPath);
 
   return interface_time_delta;
 }
 
 - (NSArray)groupMembers
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_copy_group_members(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_copy_group_members(internalPath);
 
   if (v3 && _nw_array_get_count(v3))
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __22__NWPath_groupMembers__block_invoke;
     aBlock[3] = &unk_1E6A3CCB8;
-    v5 = v4;
+    v5 = array;
     v8 = v5;
     _nw_array_apply(v3, aBlock);
   }
@@ -330,25 +330,25 @@ LABEL_6:
 
 - (BOOL)fallbackIsPreferred
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_fallback_is_preferred(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_fallback_is_preferred(internalPath);
 
   return v3;
 }
 
 - (NSArray)flows
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = _nw_path_copy_flows(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = _nw_path_copy_flows(internalPath);
 
   if (v3 && _nw_array_get_count(v3))
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __15__NWPath_flows__block_invoke;
     aBlock[3] = &unk_1E6A3CCB8;
-    v5 = v4;
+    v5 = array;
     v8 = v5;
     _nw_array_apply(v3, aBlock);
   }
@@ -370,17 +370,17 @@ LABEL_6:
 
 - (NSArray)gateways
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_copy_gateways(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_copy_gateways(internalPath);
 
   if (v3 && _nw_array_get_count(v3))
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __18__NWPath_gateways__block_invoke;
     aBlock[3] = &unk_1E6A3CCB8;
-    v5 = v4;
+    v5 = array;
     v8 = v5;
     _nw_array_apply(v3, aBlock);
   }
@@ -395,24 +395,24 @@ LABEL_6:
 
 - (BOOL)isDirect
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_is_direct(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_is_direct(internalPath);
 
   return v3;
 }
 
 - (BOOL)isLocal
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_is_local(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_is_local(internalPath);
 
   return v3;
 }
 
 - (NWEndpoint)effectiveLocalEndpoint
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_copy_effective_local_endpoint(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_copy_effective_local_endpoint(internalPath);
 
   if (v3)
   {
@@ -429,8 +429,8 @@ LABEL_6:
 
 - (NWEndpoint)effectiveRemoteEndpoint
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_copy_effective_remote_endpoint(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_copy_effective_remote_endpoint(internalPath);
 
   if (v3)
   {
@@ -447,8 +447,8 @@ LABEL_6:
 
 - (NWInterface)scopedInterface
 {
-  v2 = [(NWPath *)self internalPath];
-  scoped_interface_index = nw_path_get_scoped_interface_index(v2);
+  internalPath = [(NWPath *)self internalPath];
+  scoped_interface_index = nw_path_get_scoped_interface_index(internalPath);
 
   if (scoped_interface_index)
   {
@@ -497,8 +497,8 @@ uint64_t __18__NWPath_gateways__block_invoke(uint64_t a1)
 
 - (NSArray)proxySettings
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_copy_legacy_proxy_settings(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_copy_legacy_proxy_settings(internalPath);
 
   if (v3 && object_getClass(v3) == MEMORY[0x1E69E9E50])
   {
@@ -515,11 +515,11 @@ uint64_t __18__NWPath_gateways__block_invoke(uint64_t a1)
 
 - (BOOL)isFlowDivert
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = v2;
-  if (v2)
+  internalPath = [(NWPath *)self internalPath];
+  v3 = internalPath;
+  if (internalPath)
   {
-    v4 = _nw_path_is_flow_divert(v2);
+    v4 = _nw_path_is_flow_divert(internalPath);
   }
 
   else
@@ -532,11 +532,11 @@ uint64_t __18__NWPath_gateways__block_invoke(uint64_t a1)
 
 - (BOOL)isFiltered
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = v2;
-  if (v2)
+  internalPath = [(NWPath *)self internalPath];
+  v3 = internalPath;
+  if (internalPath)
   {
-    filter_unit = _nw_path_get_filter_unit(v2);
+    filter_unit = _nw_path_get_filter_unit(internalPath);
   }
 
   else
@@ -549,96 +549,96 @@ uint64_t __18__NWPath_gateways__block_invoke(uint64_t a1)
 
 - (BOOL)isListener
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_is_listener(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_is_listener(internalPath);
 
   return v3;
 }
 
 - (BOOL)isRoaming
 {
-  v2 = [(NWPath *)self internalPath];
-  is_roaming = nw_path_is_roaming(v2);
+  internalPath = [(NWPath *)self internalPath];
+  is_roaming = nw_path_is_roaming(internalPath);
 
   return is_roaming;
 }
 
 - (BOOL)shouldProbeConnectivity
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_should_probe_connectivity(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_should_probe_connectivity(internalPath);
 
   return v3;
 }
 
 - (BOOL)isLinkQualityAbort
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_link_quality_abort(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_link_quality_abort(internalPath);
 
   return v3;
 }
 
 - (BOOL)isListenerInterfaceSpecific
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_listener_is_interface_specific(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_listener_is_interface_specific(internalPath);
 
   return v3;
 }
 
 - (BOOL)supportsDNS
 {
-  v2 = [(NWPath *)self internalPath];
-  has_dns = nw_path_has_dns(v2);
+  internalPath = [(NWPath *)self internalPath];
+  has_dns = nw_path_has_dns(internalPath);
 
   return has_dns;
 }
 
 - (BOOL)hasProxySettings
 {
-  v2 = [(NWPath *)self internalPath];
-  has_proxy_settings = nw_path_has_proxy_settings(v2);
+  internalPath = [(NWPath *)self internalPath];
+  has_proxy_settings = nw_path_has_proxy_settings(internalPath);
 
   return has_proxy_settings;
 }
 
 - (BOOL)isPerAppVPN
 {
-  v2 = [(NWPath *)self internalPath];
-  is_per_app_vpn = nw_path_is_per_app_vpn(v2);
+  internalPath = [(NWPath *)self internalPath];
+  is_per_app_vpn = nw_path_is_per_app_vpn(internalPath);
 
   return is_per_app_vpn;
 }
 
 - (BOOL)hasKernelExtensionFilter
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_has_kernel_extension_filter(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_has_kernel_extension_filter(internalPath);
 
   return v3;
 }
 
 - (BOOL)hasCustomPFRules
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_has_custom_pf_rules(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_has_custom_pf_rules(internalPath);
 
   return v3;
 }
 
 - (BOOL)hasApplicationLevelFirewall
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_has_application_level_firewall(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_has_application_level_firewall(internalPath);
 
   return v3;
 }
 
 - (BOOL)hasParentalControls
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_has_parental_controls(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_has_parental_controls(internalPath);
 
   return v3;
 }
@@ -646,62 +646,62 @@ uint64_t __18__NWPath_gateways__block_invoke(uint64_t a1)
 - (id)createProtocolBufferObject
 {
   v3 = objc_alloc_init(NWPBPath);
-  v4 = [(NWPath *)self endpoint];
-  v5 = [v4 createProtocolBufferObject];
+  endpoint = [(NWPath *)self endpoint];
+  createProtocolBufferObject = [endpoint createProtocolBufferObject];
   if (v3)
   {
-    objc_storeStrong(&v3->_endpoint, v5);
+    objc_storeStrong(&v3->_endpoint, createProtocolBufferObject);
   }
 
-  v6 = [(NWPath *)self parameters];
-  v7 = [v6 createProtocolBufferObject];
+  parameters = [(NWPath *)self parameters];
+  createProtocolBufferObject2 = [parameters createProtocolBufferObject];
   if (v3)
   {
-    objc_storeStrong(&v3->_parameters, v7);
+    objc_storeStrong(&v3->_parameters, createProtocolBufferObject2);
   }
 
-  v8 = [(NWPath *)self status];
+  status = [(NWPath *)self status];
   if (v3)
   {
     *&v3->_has |= 1u;
-    v3->_status = v8;
+    v3->_status = status;
   }
 
-  v9 = [(NWPath *)self clientID];
-  v10 = [v9 UUIDString];
+  clientID = [(NWPath *)self clientID];
+  uUIDString = [clientID UUIDString];
   if (v3)
   {
-    objc_storeStrong(&v3->_clientUUID, v10);
+    objc_storeStrong(&v3->_clientUUID, uUIDString);
   }
 
-  v11 = [(NWPath *)self interface];
-  v12 = [v11 createProtocolBufferObject];
+  interface = [(NWPath *)self interface];
+  createProtocolBufferObject3 = [interface createProtocolBufferObject];
   if (v3)
   {
-    objc_storeStrong(&v3->_directInterface, v12);
+    objc_storeStrong(&v3->_directInterface, createProtocolBufferObject3);
   }
 
-  v13 = [(NWPath *)self delegateInterface];
-  v14 = [v13 createProtocolBufferObject];
+  delegateInterface = [(NWPath *)self delegateInterface];
+  createProtocolBufferObject4 = [delegateInterface createProtocolBufferObject];
   if (v3)
   {
-    objc_storeStrong(&v3->_delegateInterface, v14);
+    objc_storeStrong(&v3->_delegateInterface, createProtocolBufferObject4);
   }
 
-  v15 = [(NWPath *)self isDirect];
+  isDirect = [(NWPath *)self isDirect];
   if (v3)
   {
     *&v3->_has |= 2u;
-    v3->_direct = v15;
-    v16 = [(NWPath *)self isLocal];
+    v3->_direct = isDirect;
+    isLocal = [(NWPath *)self isLocal];
     *&v3->_has |= 0x10u;
-    v3->_local = v16;
-    v17 = [(NWPath *)self supportsIPv4];
+    v3->_local = isLocal;
+    supportsIPv4 = [(NWPath *)self supportsIPv4];
     *&v3->_has |= 4u;
-    v3->_ipv4 = v17;
-    v18 = [(NWPath *)self supportsIPv6];
+    v3->_ipv4 = supportsIPv4;
+    supportsIPv6 = [(NWPath *)self supportsIPv6];
     *&v3->_has |= 8u;
-    v3->_ipv6 = v18;
+    v3->_ipv6 = supportsIPv6;
   }
 
   else
@@ -716,8 +716,8 @@ uint64_t __18__NWPath_gateways__block_invoke(uint64_t a1)
 
 - (BOOL)isEligibleForCrazyIvan46
 {
-  v2 = [(NWPath *)self internalPath];
-  is_eligible_for_CrazyIvan46 = nw_path_is_eligible_for_CrazyIvan46(v2);
+  internalPath = [(NWPath *)self internalPath];
+  is_eligible_for_CrazyIvan46 = nw_path_is_eligible_for_CrazyIvan46(internalPath);
 
   return is_eligible_for_CrazyIvan46;
 }
@@ -725,8 +725,8 @@ uint64_t __18__NWPath_gateways__block_invoke(uint64_t a1)
 - (NWParameters)derivedParameters
 {
   v3 = [NWParameters alloc];
-  v4 = [(NWPath *)self internalPath];
-  v5 = nw_path_copy_derived_parameters(v4);
+  internalPath = [(NWPath *)self internalPath];
+  v5 = nw_path_copy_derived_parameters(internalPath);
   v6 = [(NWParameters *)v3 initWithParameters:v5];
 
   return v6;
@@ -734,8 +734,8 @@ uint64_t __18__NWPath_gateways__block_invoke(uint64_t a1)
 
 - (NWAdvertiseDescriptor)advertiseDescriptor
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_copy_advertise_descriptor(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_copy_advertise_descriptor(internalPath);
 
   if (v3)
   {
@@ -752,16 +752,16 @@ uint64_t __18__NWPath_gateways__block_invoke(uint64_t a1)
 
 - (BOOL)hasAdvertiseDescriptor
 {
-  v2 = [(NWPath *)self internalPath];
-  has_advertise_descriptor = nw_path_has_advertise_descriptor(v2);
+  internalPath = [(NWPath *)self internalPath];
+  has_advertise_descriptor = nw_path_has_advertise_descriptor(internalPath);
 
   return has_advertise_descriptor;
 }
 
 - (NWBrowseDescriptor)browseDescriptor
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_copy_browse_descriptor(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_copy_browse_descriptor(internalPath);
 
   if (v3)
   {
@@ -778,16 +778,16 @@ uint64_t __18__NWPath_gateways__block_invoke(uint64_t a1)
 
 - (BOOL)hasBrowseDescriptor
 {
-  v2 = [(NWPath *)self internalPath];
-  has_browse_descriptor = nw_path_has_browse_descriptor(v2);
+  internalPath = [(NWPath *)self internalPath];
+  has_browse_descriptor = nw_path_has_browse_descriptor(internalPath);
 
   return has_browse_descriptor;
 }
 
 - (NWInterface)connectedInterface
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_copy_connected_interface(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_copy_connected_interface(internalPath);
 
   if (v3)
   {
@@ -804,8 +804,8 @@ uint64_t __18__NWPath_gateways__block_invoke(uint64_t a1)
 
 - (NWEndpoint)endpoint
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_copy_endpoint(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_copy_endpoint(internalPath);
 
   if (v3)
   {
@@ -823,8 +823,8 @@ uint64_t __18__NWPath_gateways__block_invoke(uint64_t a1)
 - (NWParameters)parameters
 {
   v3 = [NWParameters alloc];
-  v4 = [(NWPath *)self internalPath];
-  v5 = nw_path_copy_parameters(v4);
+  internalPath = [(NWPath *)self internalPath];
+  v5 = nw_path_copy_parameters(internalPath);
   v6 = [(NWParameters *)v3 initWithParameters:v5];
 
   return v6;
@@ -832,19 +832,19 @@ uint64_t __18__NWPath_gateways__block_invoke(uint64_t a1)
 
 - (unsigned)policyID
 {
-  v2 = [(NWPath *)self internalPath];
-  policy_id = nw_path_get_policy_id(v2);
+  internalPath = [(NWPath *)self internalPath];
+  policy_id = nw_path_get_policy_id(internalPath);
 
   return policy_id;
 }
 
 - (unsigned)filterControlUnit
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = v2;
-  if (v2)
+  internalPath = [(NWPath *)self internalPath];
+  v3 = internalPath;
+  if (internalPath)
   {
-    filter_unit = _nw_path_get_filter_unit(v2);
+    filter_unit = _nw_path_get_filter_unit(internalPath);
   }
 
   else
@@ -857,8 +857,8 @@ uint64_t __18__NWPath_gateways__block_invoke(uint64_t a1)
 
 - (int)dnsServiceID
 {
-  v2 = [(NWPath *)self internalPath];
-  dns_service_id = nw_path_get_dns_service_id(v2, 1);
+  internalPath = [(NWPath *)self internalPath];
+  dns_service_id = nw_path_get_dns_service_id(internalPath, 1);
 
   return dns_service_id;
 }
@@ -866,39 +866,39 @@ uint64_t __18__NWPath_gateways__block_invoke(uint64_t a1)
 - (BOOL)hasUnsatisfiedFallbackAgent
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(NWPath *)self internalPath];
+  internalPath = [(NWPath *)self internalPath];
   v5 = 0;
   memset(v6, 0, sizeof(v6));
-  vpn_config_uuid = nw_path_get_vpn_config_uuid(v2, v6, &v5, 1, 1);
+  vpn_config_uuid = nw_path_get_vpn_config_uuid(internalPath, v6, &v5, 1, 1);
 
   return vpn_config_uuid;
 }
 
-- (BOOL)unsatisfiedVoluntaryAgentMatchesAddress:(id)a3 triggerImmediately:(BOOL *)a4
+- (BOOL)unsatisfiedVoluntaryAgentMatchesAddress:(id)address triggerImmediately:(BOOL *)immediately
 {
-  v5 = a3;
-  v6 = [(NWPath *)self internalPath];
-  v7 = [v5 address];
+  addressCopy = address;
+  internalPath = [(NWPath *)self internalPath];
+  address = [addressCopy address];
 
-  v8 = nw_path_voluntary_agent_matches_address(v6, v7);
+  v8 = nw_path_voluntary_agent_matches_address(internalPath, address);
   return v8;
 }
 
 - (id)copyFlowDivertToken
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_copy_flow_divert_token(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_copy_flow_divert_token(internalPath);
 
   return v3;
 }
 
 - (unsigned)flowDivertAggregateUnit
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = v2;
-  if (v2)
+  internalPath = [(NWPath *)self internalPath];
+  v3 = internalPath;
+  if (internalPath)
   {
-    flow_divert_aggregate_unit = _nw_path_get_flow_divert_aggregate_unit(v2);
+    flow_divert_aggregate_unit = _nw_path_get_flow_divert_aggregate_unit(internalPath);
   }
 
   else
@@ -911,11 +911,11 @@ uint64_t __18__NWPath_gateways__block_invoke(uint64_t a1)
 
 - (unsigned)flowDivertControlUnit
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = v2;
-  if (v2)
+  internalPath = [(NWPath *)self internalPath];
+  v3 = internalPath;
+  if (internalPath)
   {
-    flow_divert_unit = _nw_path_get_flow_divert_unit(v2);
+    flow_divert_unit = _nw_path_get_flow_divert_unit(internalPath);
   }
 
   else
@@ -937,31 +937,31 @@ uint64_t __22__NWPath_groupMembers__block_invoke(uint64_t a1)
   return 1;
 }
 
-- (id)copyDNSSearchDomains:(BOOL)a3
+- (id)copyDNSSearchDomains:(BOOL)domains
 {
-  v3 = a3;
-  v4 = [(NWPath *)self internalPath];
-  v5 = v4;
-  if (v3)
+  domainsCopy = domains;
+  internalPath = [(NWPath *)self internalPath];
+  v5 = internalPath;
+  if (domainsCopy)
   {
-    v6 = nw_path_copy_override_resolver_configs(v4);
+    v6 = nw_path_copy_override_resolver_configs(internalPath);
   }
 
   else
   {
-    v6 = nw_path_copy_resolver_configs(v4);
+    v6 = nw_path_copy_resolver_configs(internalPath);
   }
 
   v7 = v6;
 
   if (v7 && _nw_array_get_count(v7))
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __31__NWPath_copyDNSSearchDomains___block_invoke;
     aBlock[3] = &unk_1E6A3CCB8;
-    v9 = v8;
+    v9 = array;
     v12 = v9;
     _nw_array_apply(v7, aBlock);
   }
@@ -999,8 +999,8 @@ uint64_t __31__NWPath_copyDNSSearchDomains___block_invoke_2(uint64_t a1, uint64_
 
 - (NSArray)overrideDNSServersAsStrings
 {
-  v3 = [(NWPath *)self overrideDNSServers];
-  v4 = [(NWPath *)self copyDNSServersStrings:v3];
+  overrideDNSServers = [(NWPath *)self overrideDNSServers];
+  v4 = [(NWPath *)self copyDNSServersStrings:overrideDNSServers];
 
   return v4;
 }
@@ -1014,24 +1014,24 @@ uint64_t __31__NWPath_copyDNSSearchDomains___block_invoke_2(uint64_t a1, uint64_
 
 - (NSArray)dnsServersAsStrings
 {
-  v3 = [(NWPath *)self dnsServers];
-  v4 = [(NWPath *)self copyDNSServersStrings:v3];
+  dnsServers = [(NWPath *)self dnsServers];
+  v4 = [(NWPath *)self copyDNSServersStrings:dnsServers];
 
   return v4;
 }
 
-- (id)copyDNSServersStrings:(id)a3
+- (id)copyDNSServersStrings:(id)strings
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  stringsCopy = strings;
+  if (stringsCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v3;
+    v5 = stringsCopy;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
@@ -1046,8 +1046,8 @@ uint64_t __31__NWPath_copyDNSSearchDomains___block_invoke_2(uint64_t a1, uint64_
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) addressStringNoPort];
-          [v4 addObject:v10];
+          addressStringNoPort = [*(*(&v12 + 1) + 8 * i) addressStringNoPort];
+          [v4 addObject:addressStringNoPort];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -1065,31 +1065,31 @@ uint64_t __31__NWPath_copyDNSSearchDomains___block_invoke_2(uint64_t a1, uint64_
   return v4;
 }
 
-- (id)copyDNSServerEndpoints:(BOOL)a3
+- (id)copyDNSServerEndpoints:(BOOL)endpoints
 {
-  v3 = a3;
-  v4 = [(NWPath *)self internalPath];
-  v5 = v4;
-  if (v3)
+  endpointsCopy = endpoints;
+  internalPath = [(NWPath *)self internalPath];
+  v5 = internalPath;
+  if (endpointsCopy)
   {
-    v6 = nw_path_copy_override_resolver_configs(v4);
+    v6 = nw_path_copy_override_resolver_configs(internalPath);
   }
 
   else
   {
-    v6 = nw_path_copy_resolver_configs(v4);
+    v6 = nw_path_copy_resolver_configs(internalPath);
   }
 
   v7 = v6;
 
   if (v7 && _nw_array_get_count(v7))
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __33__NWPath_copyDNSServerEndpoints___block_invoke;
     aBlock[3] = &unk_1E6A3CCB8;
-    v9 = v8;
+    v9 = array;
     v12 = v9;
     _nw_array_apply(v7, aBlock);
   }
@@ -1141,8 +1141,8 @@ uint64_t __15__NWPath_flows__block_invoke(uint64_t a1, uint64_t a2, void *a3)
 
 - (NWInterface)fallbackInterface
 {
-  v2 = [(NWPath *)self internalPath];
-  fallback_interface_index = nw_path_get_fallback_interface_index(v2);
+  internalPath = [(NWPath *)self internalPath];
+  fallback_interface_index = nw_path_get_fallback_interface_index(internalPath);
 
   if (fallback_interface_index)
   {
@@ -1159,8 +1159,8 @@ uint64_t __15__NWPath_flows__block_invoke(uint64_t a1, uint64_t a2, void *a3)
 
 - (id)delegateInterface
 {
-  v2 = [(NWPath *)self internalPath];
-  v3 = nw_path_copy_delegate_interface(v2);
+  internalPath = [(NWPath *)self internalPath];
+  v3 = nw_path_copy_delegate_interface(internalPath);
 
   if (v3)
   {
@@ -1175,20 +1175,20 @@ uint64_t __15__NWPath_flows__block_invoke(uint64_t a1, uint64_t a2, void *a3)
   return v4;
 }
 
-- (id)inactiveNetworkAgentUUIDsOnlyVoluntary:(BOOL)a3
+- (id)inactiveNetworkAgentUUIDsOnlyVoluntary:(BOOL)voluntary
 {
   if ([(NWPath *)self status])
   {
     v5 = [MEMORY[0x1E695DFA8] set];
-    v6 = [(NWPath *)self internalPath];
+    internalPath = [(NWPath *)self internalPath];
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __49__NWPath_inactiveNetworkAgentUUIDsOnlyVoluntary___block_invoke;
     v13 = &unk_1E6A34178;
-    v15 = a3;
+    voluntaryCopy = voluntary;
     v7 = v5;
     v14 = v7;
-    _nw_path_enumerate_network_agents(v6, &v10);
+    _nw_path_enumerate_network_agents(internalPath, &v10);
 
     if ([v7 count])
     {
@@ -1224,23 +1224,23 @@ uint64_t __49__NWPath_inactiveNetworkAgentUUIDsOnlyVoluntary___block_invoke(uint
   return 1;
 }
 
-- (id)genericNetworkAgentsWithDomain:(id)a3 type:(id)a4
+- (id)genericNetworkAgentsWithDomain:(id)domain type:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  typeCopy = type;
   if ([(NWPath *)self status])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
-    v9 = [(NWPath *)self internalPath];
+    array = [MEMORY[0x1E695DF70] array];
+    internalPath = [(NWPath *)self internalPath];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __46__NWPath_genericNetworkAgentsWithDomain_type___block_invoke;
     v13[3] = &unk_1E6A34150;
-    v14 = v6;
-    v15 = v7;
-    v10 = v8;
+    v14 = domainCopy;
+    v15 = typeCopy;
+    v10 = array;
     v16 = v10;
-    _nw_path_enumerate_network_agents(v9, v13);
+    _nw_path_enumerate_network_agents(internalPath, v13);
 
     if ([v10 count])
     {
@@ -1320,23 +1320,23 @@ LABEL_10:
   return 1;
 }
 
-- (id)networkAgentsOfType:(Class)a3
+- (id)networkAgentsOfType:(Class)type
 {
-  if (a3)
+  if (type)
   {
-    v6 = [(NWPath *)self status];
-    if (v6)
+    status = [(NWPath *)self status];
+    if (status)
     {
-      v7 = [MEMORY[0x1E695DF70] array];
-      v8 = [(NWPath *)self internalPath];
+      array = [MEMORY[0x1E695DF70] array];
+      internalPath = [(NWPath *)self internalPath];
       v12 = MEMORY[0x1E69E9820];
       v13 = 3221225472;
       v14 = __30__NWPath_networkAgentsOfType___block_invoke;
       v15 = &unk_1E6A34128;
-      v17 = a3;
-      v9 = v7;
+      typeCopy = type;
+      v9 = array;
       v16 = v9;
-      _nw_path_enumerate_network_agents(v8, &v12);
+      _nw_path_enumerate_network_agents(internalPath, &v12);
 
       if ([v9 count])
       {
@@ -1348,16 +1348,16 @@ LABEL_10:
         v10 = 0;
       }
 
-      v6 = v10;
+      status = v10;
     }
   }
 
   else
   {
-    v6 = 0;
+    status = 0;
   }
 
-  return v6;
+  return status;
 }
 
 uint64_t __30__NWPath_networkAgentsOfType___block_invoke(uint64_t a1, uint64_t a2)
@@ -1463,27 +1463,27 @@ LABEL_20:
   return 1;
 }
 
-- (id)copyDataFromNetworkAgentWithDomain:(id)a3 type:(id)a4
+- (id)copyDataFromNetworkAgentWithDomain:(id)domain type:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  typeCopy = type;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__50000;
   v21 = __Block_byref_object_dispose__50001;
   v22 = 0;
-  v8 = [(NWPath *)self internalPath];
+  internalPath = [(NWPath *)self internalPath];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __50__NWPath_copyDataFromNetworkAgentWithDomain_type___block_invoke;
   v13[3] = &unk_1E6A34100;
-  v9 = v6;
+  v9 = domainCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = typeCopy;
   v15 = v10;
   v16 = &v17;
-  _nw_path_enumerate_network_agents(v8, v13);
+  _nw_path_enumerate_network_agents(internalPath, v13);
 
   v11 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -1518,29 +1518,29 @@ uint64_t __50__NWPath_copyDataFromNetworkAgentWithDomain_type___block_invoke(voi
   return v11;
 }
 
-- (BOOL)usesNetworkAgent:(id)a3
+- (BOOL)usesNetworkAgent:(id)agent
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  agentCopy = agent;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
   v16[0] = 0;
   v16[1] = 0;
-  if (v4 && [(NWPath *)self status])
+  if (agentCopy && [(NWPath *)self status])
   {
-    v5 = [v4 agentUUID];
-    [v5 getUUIDBytes:v16];
+    agentUUID = [agentCopy agentUUID];
+    [agentUUID getUUIDBytes:v16];
 
-    v6 = [(NWPath *)self internalPath];
+    internalPath = [(NWPath *)self internalPath];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __27__NWPath_usesNetworkAgent___block_invoke;
     aBlock[3] = &unk_1E6A340D8;
-    v10 = v4;
+    v10 = agentCopy;
     v11 = &v12;
-    _nw_path_access_network_agent(v6, v16, aBlock);
+    _nw_path_access_network_agent(internalPath, v16, aBlock);
 
     v7 = *(v13 + 24);
   }
@@ -1576,37 +1576,37 @@ void __27__NWPath_usesNetworkAgent___block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (BOOL)usesNetworkAgentType:(Class)a3
+- (BOOL)usesNetworkAgentType:(Class)type
 {
-  v3 = a3;
+  typeCopy = type;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  if (a3)
+  if (type)
   {
     if ([(NWPath *)self status])
     {
-      v5 = [(NWPath *)self internalPath];
+      internalPath = [(NWPath *)self internalPath];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __31__NWPath_usesNetworkAgentType___block_invoke;
       v7[3] = &unk_1E6A340B0;
       v7[4] = &v8;
-      v7[5] = v3;
-      _nw_path_enumerate_network_agents(v5, v7);
+      v7[5] = typeCopy;
+      _nw_path_enumerate_network_agents(internalPath, v7);
 
-      LOBYTE(v3) = *(v9 + 24);
+      LOBYTE(typeCopy) = *(v9 + 24);
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(typeCopy) = 0;
     }
   }
 
   _Block_object_dispose(&v8, 8);
-  return v3 & 1;
+  return typeCopy & 1;
 }
 
 BOOL __31__NWPath_usesNetworkAgentType___block_invoke(uint64_t a1, uint64_t a2)
@@ -1632,36 +1632,36 @@ BOOL __31__NWPath_usesNetworkAgentType___block_invoke(uint64_t a1, uint64_t a2)
   return (*(*(*(a1 + 32) + 8) + 24) & 1) == 0;
 }
 
-- (BOOL)usesInterfaceType:(int64_t)a3
+- (BOOL)usesInterfaceType:(int64_t)type
 {
-  v3 = a3;
-  v4 = [(NWPath *)self internalPath];
-  LOBYTE(v3) = _nw_path_uses_interface_type(v4, v3);
+  typeCopy = type;
+  internalPath = [(NWPath *)self internalPath];
+  LOBYTE(typeCopy) = _nw_path_uses_interface_type(internalPath, typeCopy);
 
-  return v3;
+  return typeCopy;
 }
 
 - (BOOL)isEqualToPath:(NWPath *)path
 {
   v4 = path;
-  v5 = [(NWPath *)self internalPath];
-  v6 = [(NWPath *)v4 internalPath];
+  internalPath = [(NWPath *)self internalPath];
+  internalPath2 = [(NWPath *)v4 internalPath];
 
-  LOBYTE(v4) = _nw_path_is_equal_inner(v5, v6, 0);
+  LOBYTE(v4) = _nw_path_is_equal_inner(internalPath, internalPath2, 0);
   return v4;
 }
 
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = *&a3;
+  contentCopy = content;
+  v5 = *&indent;
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v8 = [(NWPath *)self statusAsString];
-  [v7 appendPrettyObject:v8 withName:@"status" indent:v5 showFullContent:1];
+  statusAsString = [(NWPath *)self statusAsString];
+  [v7 appendPrettyObject:statusAsString withName:@"status" indent:v5 showFullContent:1];
 
   [v7 appendPrettyInt:-[NWPath reason](self withName:"reason") indent:{@"reasonCode", v5}];
-  v9 = [(NWPath *)self reasonDescription];
-  [v7 appendPrettyObject:v9 withName:@"reason" indent:v5 showFullContent:1];
+  reasonDescription = [(NWPath *)self reasonDescription];
+  [v7 appendPrettyObject:reasonDescription withName:@"reason" indent:v5 showFullContent:1];
 
   [v7 appendPrettyBOOL:-[NWPath isViable](self withName:"isViable") indent:{@"isViable", v5}];
   [v7 appendPrettyBOOL:-[NWPath isExpensive](self withName:"isExpensive") indent:{@"isExpensive", v5}];
@@ -1676,10 +1676,10 @@ BOOL __31__NWPath_usesNetworkAgentType___block_invoke(uint64_t a1, uint64_t a2)
     [v7 appendPrettyBOOL:-[NWPath usesCompanion](self withName:"usesCompanion") indent:{@"usesCompanion", v5}];
   }
 
-  v10 = [(NWPath *)self clientID];
-  [v7 appendPrettyObject:v10 withName:@"clientID" indent:v5 showFullContent:1];
+  clientID = [(NWPath *)self clientID];
+  [v7 appendPrettyObject:clientID withName:@"clientID" indent:v5 showFullContent:1];
 
-  if (!v4)
+  if (!contentCopy)
   {
     [v7 appendPrettyInt:-[NWPath mtu](self withName:"mtu") indent:{@"mtu", v5}];
     return v7;
@@ -1735,13 +1735,13 @@ LABEL_16:
   [v7 appendPrettyInt:-[NWPath mtu](self withName:"mtu") indent:{@"mtu", v5}];
   [v7 appendPrettyInt:-[NWPath maximumDatagramSize](self withName:"maximumDatagramSize") indent:{@"maximumDatagramSize", v5}];
   [v7 appendPrettyInt:-[NWPath secondsSinceInterfaceChange](self withName:"secondsSinceInterfaceChange") indent:{@"secondsSinceInterfaceChange", v5}];
-  v12 = [(NWPath *)self flows];
-  [v7 appendPrettyObject:v12 withName:@"flows" indent:v5 showFullContent:1];
+  flows = [(NWPath *)self flows];
+  [v7 appendPrettyObject:flows withName:@"flows" indent:v5 showFullContent:1];
 
-  v13 = [(NWPath *)self groupMembers];
-  [v7 appendPrettyObject:v13 withName:@"groupMembers" indent:v5 showFullContent:1];
+  groupMembers = [(NWPath *)self groupMembers];
+  [v7 appendPrettyObject:groupMembers withName:@"groupMembers" indent:v5 showFullContent:1];
 
-  v14 = [(NWPath *)self internalPath];
+  internalPath = [(NWPath *)self internalPath];
   v33 = MEMORY[0x1E69E9820];
   v34 = 3221225472;
   v35 = __48__NWPath_descriptionWithIndent_showFullContent___block_invoke;
@@ -1749,43 +1749,43 @@ LABEL_16:
   v15 = v7;
   v37 = v15;
   v38 = v5;
-  v39 = v4;
-  nw_path_enumerate_interface_options(v14, &v33);
+  v39 = contentCopy;
+  nw_path_enumerate_interface_options(internalPath, &v33);
 
   v16 = [(NWPath *)self effectiveLocalEndpoint:v33];
   [v15 appendPrettyObject:v16 withName:@"effectiveLocalEndpoint" indent:v5 showFullContent:1];
 
-  v17 = [(NWPath *)self effectiveRemoteEndpoint];
-  [v15 appendPrettyObject:v17 withName:@"effectiveRemoteEndpoint" indent:v5 showFullContent:1];
+  effectiveRemoteEndpoint = [(NWPath *)self effectiveRemoteEndpoint];
+  [v15 appendPrettyObject:effectiveRemoteEndpoint withName:@"effectiveRemoteEndpoint" indent:v5 showFullContent:1];
 
-  v18 = [(NWPath *)self interface];
-  [v15 appendPrettyObject:v18 withName:@"interface" indent:v5 showFullContent:1];
+  interface = [(NWPath *)self interface];
+  [v15 appendPrettyObject:interface withName:@"interface" indent:v5 showFullContent:1];
 
-  v19 = [(NWPath *)self scopedInterface];
-  [v15 appendPrettyObject:v19 withName:@"scopedInterface" indent:v5 showFullContent:1];
+  scopedInterface = [(NWPath *)self scopedInterface];
+  [v15 appendPrettyObject:scopedInterface withName:@"scopedInterface" indent:v5 showFullContent:1];
 
-  v20 = [(NWPath *)self dnsServers];
-  [v15 appendPrettyObject:v20 withName:@"dnsServers" indent:v5 showFullContent:1];
+  dnsServers = [(NWPath *)self dnsServers];
+  [v15 appendPrettyObject:dnsServers withName:@"dnsServers" indent:v5 showFullContent:1];
 
-  v21 = [(NWPath *)self internalPath];
-  v22 = nw_path_copy_resolver_configs(v21);
+  internalPath2 = [(NWPath *)self internalPath];
+  v22 = nw_path_copy_resolver_configs(internalPath2);
   [v15 appendPrettyObject:v22 withName:@"resolvers" indent:v5 showFullContent:1];
 
-  v23 = [(NWPath *)self dnsSearchDomains];
-  [v15 appendPrettyObject:v23 withName:@"dnsSearchDomains" indent:v5 showFullContent:1];
+  dnsSearchDomains = [(NWPath *)self dnsSearchDomains];
+  [v15 appendPrettyObject:dnsSearchDomains withName:@"dnsSearchDomains" indent:v5 showFullContent:1];
 
-  v24 = [(NWPath *)self internalPath];
-  v25 = nw_path_copy_override_resolver_configs(v24);
+  internalPath3 = [(NWPath *)self internalPath];
+  v25 = nw_path_copy_override_resolver_configs(internalPath3);
   [v15 appendPrettyObject:v25 withName:@"override-resolvers" indent:v5 showFullContent:1];
 
-  v26 = [(NWPath *)self overrideDNSSearchDomains];
-  [v15 appendPrettyObject:v26 withName:@"override-dnsSearchDomains" indent:v5 showFullContent:1];
+  overrideDNSSearchDomains = [(NWPath *)self overrideDNSSearchDomains];
+  [v15 appendPrettyObject:overrideDNSSearchDomains withName:@"override-dnsSearchDomains" indent:v5 showFullContent:1];
 
-  v27 = [(NWPath *)self gateways];
-  [v15 appendPrettyObject:v27 withName:@"gateways" indent:v5 showFullContent:1];
+  gateways = [(NWPath *)self gateways];
+  [v15 appendPrettyObject:gateways withName:@"gateways" indent:v5 showFullContent:1];
 
-  v28 = [(NWPath *)self proxySettings];
-  [v15 appendPrettyObject:v28 withName:@"proxySettings" indent:v5 showFullContent:1];
+  proxySettings = [(NWPath *)self proxySettings];
+  [v15 appendPrettyObject:proxySettings withName:@"proxySettings" indent:v5 showFullContent:1];
 
   v29 = [(NWPath *)self genericNetworkAgentsWithDomain:0 type:0];
   [v15 appendPrettyObject:v29 withName:@"agents" indent:v5 showFullContent:1];
@@ -1839,8 +1839,8 @@ LABEL_16:
   [v15 appendPrettyBOOL:-[NWPath supportsIPv4](self withName:"supportsIPv4") indent:{@"supportsIPv4", v5}];
   [v15 appendPrettyBOOL:-[NWPath supportsIPv6](self withName:"supportsIPv6") indent:{@"supportsIPv6", v5}];
   [v15 appendPrettyBOOL:-[NWPath supportsDNS](self withName:"supportsDNS") indent:{@"supportsDNS", v5}];
-  v30 = [(NWPath *)self internalPath];
-  v31 = nw_path_has_nat64_prefixes(v30);
+  internalPath4 = [(NWPath *)self internalPath];
+  v31 = nw_path_has_nat64_prefixes(internalPath4);
 
   if (v31)
   {
@@ -1886,11 +1886,11 @@ void __48__NWPath_descriptionWithIndent_showFullContent___block_invoke(uint64_t 
   [*(a1 + 32) appendPrettyObject:v7 withName:@"interfaceOption" indent:*(a1 + 40) showFullContent:*(a1 + 44)];
 }
 
-- (NWPath)initWithPath:(id)a3
+- (NWPath)initWithPath:(id)path
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  pathCopy = path;
+  if (pathCopy)
   {
     v23.receiver = self;
     v23.super_class = NWPath;
@@ -1898,7 +1898,7 @@ void __48__NWPath_descriptionWithIndent_showFullContent___block_invoke(uint64_t 
     if (v6)
     {
       v7 = v6;
-      objc_storeStrong(&v6->_internalPath, a3);
+      objc_storeStrong(&v6->_internalPath, path);
       goto LABEL_4;
     }
 
@@ -2159,11 +2159,11 @@ LABEL_3:
   return v3;
 }
 
-+ (NWPath)pathWithProtocolBufferData:(id)a3
++ (NWPath)pathWithProtocolBufferData:(id)data
 {
   v166 = *MEMORY[0x1E69E9840];
-  v145 = a3;
-  v3 = [[NWPBPath alloc] initWithData:v145];
+  dataCopy = data;
+  v3 = [[NWPBPath alloc] initWithData:dataCopy];
   v146 = v3;
   if (!v3)
   {
@@ -2271,8 +2271,8 @@ LABEL_12:
   if (directInterface)
   {
     v7 = directInterface;
-    v8 = [(NWPBInterface *)v7 data];
-    v144 = [NWInterface interfaceWithProtocolBufferData:v8];
+    data = [(NWPBInterface *)v7 data];
+    v144 = [NWInterface interfaceWithProtocolBufferData:data];
 
     v3 = v146;
   }
@@ -2286,8 +2286,8 @@ LABEL_12:
   if (delegateInterface)
   {
     v16 = delegateInterface;
-    v17 = [(NWPBInterface *)v16 data];
-    v143 = [NWInterface interfaceWithProtocolBufferData:v17];
+    data2 = [(NWPBInterface *)v16 data];
+    v143 = [NWInterface interfaceWithProtocolBufferData:data2];
 
     v3 = v146;
   }
@@ -2405,8 +2405,8 @@ LABEL_12:
 
         if ([v33 UTF8String])
         {
-          v34 = [v33 UTF8String];
-          if (!v34)
+          uTF8String = [v33 UTF8String];
+          if (!uTF8String)
           {
             pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
             networkd_settings_init();
@@ -2424,130 +2424,130 @@ LABEL_12:
             }
 
             free(v112);
-            v34 = 0;
+            uTF8String = 0;
           }
 
-          v35 = *v34;
+          v35 = *uTF8String;
           v24[16] = v35;
           if (v35)
           {
-            v36 = v34[1];
+            v36 = uTF8String[1];
             v24[17] = v36;
             if (v36)
             {
-              v37 = v34[2];
+              v37 = uTF8String[2];
               v24[18] = v37;
               if (v37)
               {
-                v38 = v34[3];
+                v38 = uTF8String[3];
                 v24[19] = v38;
                 if (v38)
                 {
-                  v39 = v34[4];
+                  v39 = uTF8String[4];
                   v24[20] = v39;
                   if (v39)
                   {
-                    v40 = v34[5];
+                    v40 = uTF8String[5];
                     v24[21] = v40;
                     if (v40)
                     {
-                      v41 = v34[6];
+                      v41 = uTF8String[6];
                       v24[22] = v41;
                       if (v41)
                       {
-                        v42 = v34[7];
+                        v42 = uTF8String[7];
                         v24[23] = v42;
                         if (v42)
                         {
-                          v43 = v34[8];
+                          v43 = uTF8String[8];
                           v24[24] = v43;
                           if (v43)
                           {
-                            v44 = v34[9];
+                            v44 = uTF8String[9];
                             v24[25] = v44;
                             if (v44)
                             {
-                              v45 = v34[10];
+                              v45 = uTF8String[10];
                               v24[26] = v45;
                               if (v45)
                               {
-                                v46 = v34[11];
+                                v46 = uTF8String[11];
                                 v24[27] = v46;
                                 if (v46)
                                 {
-                                  v47 = v34[12];
+                                  v47 = uTF8String[12];
                                   v24[28] = v47;
                                   if (v47)
                                   {
-                                    v48 = v34[13];
+                                    v48 = uTF8String[13];
                                     v24[29] = v48;
                                     if (v48)
                                     {
-                                      v49 = v34[14];
+                                      v49 = uTF8String[14];
                                       v24[30] = v49;
                                       if (v49)
                                       {
-                                        v50 = v34[15];
+                                        v50 = uTF8String[15];
                                         v24[31] = v50;
                                         if (v50)
                                         {
-                                          v51 = v34[16];
+                                          v51 = uTF8String[16];
                                           v24[32] = v51;
                                           if (v51)
                                           {
-                                            v52 = v34[17];
+                                            v52 = uTF8String[17];
                                             v24[33] = v52;
                                             if (v52)
                                             {
-                                              v53 = v34[18];
+                                              v53 = uTF8String[18];
                                               v24[34] = v53;
                                               if (v53)
                                               {
-                                                v54 = v34[19];
+                                                v54 = uTF8String[19];
                                                 v24[35] = v54;
                                                 if (v54)
                                                 {
-                                                  v55 = v34[20];
+                                                  v55 = uTF8String[20];
                                                   v24[36] = v55;
                                                   if (v55)
                                                   {
-                                                    v56 = v34[21];
+                                                    v56 = uTF8String[21];
                                                     v24[37] = v56;
                                                     if (v56)
                                                     {
-                                                      v57 = v34[22];
+                                                      v57 = uTF8String[22];
                                                       v24[38] = v57;
                                                       if (v57)
                                                       {
-                                                        v58 = v34[23];
+                                                        v58 = uTF8String[23];
                                                         v24[39] = v58;
                                                         if (v58)
                                                         {
-                                                          v59 = v34[24];
+                                                          v59 = uTF8String[24];
                                                           v24[40] = v59;
                                                           if (v59)
                                                           {
-                                                            v60 = v34[25];
+                                                            v60 = uTF8String[25];
                                                             v24[41] = v60;
                                                             if (v60)
                                                             {
-                                                              v61 = v34[26];
+                                                              v61 = uTF8String[26];
                                                               v24[42] = v61;
                                                               if (v61)
                                                               {
-                                                                v62 = v34[27];
+                                                                v62 = uTF8String[27];
                                                                 v24[43] = v62;
                                                                 if (v62)
                                                                 {
-                                                                  v63 = v34[28];
+                                                                  v63 = uTF8String[28];
                                                                   v24[44] = v63;
                                                                   if (v63)
                                                                   {
-                                                                    v64 = v34[29];
+                                                                    v64 = uTF8String[29];
                                                                     v24[45] = v64;
                                                                     if (v64)
                                                                     {
-                                                                      v65 = v34[30];
+                                                                      v65 = uTF8String[30];
                                                                       v24[46] = v65;
                                                                       if (v65)
                                                                       {
@@ -2610,8 +2610,8 @@ LABEL_12:
 
         if ([v69 UTF8String])
         {
-          v70 = [v69 UTF8String];
-          if (!v70)
+          uTF8String2 = [v69 UTF8String];
+          if (!uTF8String2)
           {
             pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
             networkd_settings_init();
@@ -2629,130 +2629,130 @@ LABEL_12:
             }
 
             free(v114);
-            v70 = 0;
+            uTF8String2 = 0;
           }
 
-          v71 = *v70;
+          v71 = *uTF8String2;
           v24[48] = v71;
           if (v71)
           {
-            v72 = v70[1];
+            v72 = uTF8String2[1];
             v24[49] = v72;
             if (v72)
             {
-              v73 = v70[2];
+              v73 = uTF8String2[2];
               v24[50] = v73;
               if (v73)
               {
-                v74 = v70[3];
+                v74 = uTF8String2[3];
                 v24[51] = v74;
                 if (v74)
                 {
-                  v75 = v70[4];
+                  v75 = uTF8String2[4];
                   v24[52] = v75;
                   if (v75)
                   {
-                    v76 = v70[5];
+                    v76 = uTF8String2[5];
                     v24[53] = v76;
                     if (v76)
                     {
-                      v77 = v70[6];
+                      v77 = uTF8String2[6];
                       v24[54] = v77;
                       if (v77)
                       {
-                        v78 = v70[7];
+                        v78 = uTF8String2[7];
                         v24[55] = v78;
                         if (v78)
                         {
-                          v79 = v70[8];
+                          v79 = uTF8String2[8];
                           v24[56] = v79;
                           if (v79)
                           {
-                            v80 = v70[9];
+                            v80 = uTF8String2[9];
                             v24[57] = v80;
                             if (v80)
                             {
-                              v81 = v70[10];
+                              v81 = uTF8String2[10];
                               v24[58] = v81;
                               if (v81)
                               {
-                                v82 = v70[11];
+                                v82 = uTF8String2[11];
                                 v24[59] = v82;
                                 if (v82)
                                 {
-                                  v83 = v70[12];
+                                  v83 = uTF8String2[12];
                                   v24[60] = v83;
                                   if (v83)
                                   {
-                                    v84 = v70[13];
+                                    v84 = uTF8String2[13];
                                     v24[61] = v84;
                                     if (v84)
                                     {
-                                      v85 = v70[14];
+                                      v85 = uTF8String2[14];
                                       v24[62] = v85;
                                       if (v85)
                                       {
-                                        v86 = v70[15];
+                                        v86 = uTF8String2[15];
                                         v24[63] = v86;
                                         if (v86)
                                         {
-                                          v87 = v70[16];
+                                          v87 = uTF8String2[16];
                                           v24[64] = v87;
                                           if (v87)
                                           {
-                                            v88 = v70[17];
+                                            v88 = uTF8String2[17];
                                             v24[65] = v88;
                                             if (v88)
                                             {
-                                              v89 = v70[18];
+                                              v89 = uTF8String2[18];
                                               v24[66] = v89;
                                               if (v89)
                                               {
-                                                v90 = v70[19];
+                                                v90 = uTF8String2[19];
                                                 v24[67] = v90;
                                                 if (v90)
                                                 {
-                                                  v91 = v70[20];
+                                                  v91 = uTF8String2[20];
                                                   v24[68] = v91;
                                                   if (v91)
                                                   {
-                                                    v92 = v70[21];
+                                                    v92 = uTF8String2[21];
                                                     v24[69] = v92;
                                                     if (v92)
                                                     {
-                                                      v93 = v70[22];
+                                                      v93 = uTF8String2[22];
                                                       v24[70] = v93;
                                                       if (v93)
                                                       {
-                                                        v94 = v70[23];
+                                                        v94 = uTF8String2[23];
                                                         v24[71] = v94;
                                                         if (v94)
                                                         {
-                                                          v95 = v70[24];
+                                                          v95 = uTF8String2[24];
                                                           v24[72] = v95;
                                                           if (v95)
                                                           {
-                                                            v96 = v70[25];
+                                                            v96 = uTF8String2[25];
                                                             v24[73] = v96;
                                                             if (v96)
                                                             {
-                                                              v97 = v70[26];
+                                                              v97 = uTF8String2[26];
                                                               v24[74] = v97;
                                                               if (v97)
                                                               {
-                                                                v98 = v70[27];
+                                                                v98 = uTF8String2[27];
                                                                 v24[75] = v98;
                                                                 if (v98)
                                                                 {
-                                                                  v99 = v70[28];
+                                                                  v99 = uTF8String2[28];
                                                                   v24[76] = v99;
                                                                   if (v99)
                                                                   {
-                                                                    v100 = v70[29];
+                                                                    v100 = uTF8String2[29];
                                                                     v24[77] = v100;
                                                                     if (v100)
                                                                     {
-                                                                      v101 = v70[30];
+                                                                      v101 = uTF8String2[30];
                                                                       v24[78] = v101;
                                                                       if (v101)
                                                                       {
@@ -2803,8 +2803,8 @@ LABEL_12:
         v103 = v102;
         if ([v103 UTF8String])
         {
-          v104 = [v103 UTF8String];
-          if (!v104)
+          uTF8String3 = [v103 UTF8String];
+          if (!uTF8String3)
           {
             pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
             networkd_settings_init();
@@ -2829,7 +2829,7 @@ LABEL_175:
           v106 = 128;
           while (1)
           {
-            v107 = *v104;
+            v107 = *uTF8String3;
             *v105 = v107;
             if (!v107)
             {
@@ -2837,7 +2837,7 @@ LABEL_175:
             }
 
             ++v105;
-            ++v104;
+            ++uTF8String3;
             if (--v106 <= 1)
             {
               *v105 = 0;
@@ -2895,10 +2895,10 @@ LABEL_127:
 
         xpc_dictionary_set_data(v29, "data", v24, v23);
         free(v24);
-        v110 = [v28 UTF8String];
-        if (v110)
+        uTF8String4 = [v28 UTF8String];
+        if (uTF8String4)
         {
-          xpc_dictionary_set_value(xdict, v110, v29);
+          xpc_dictionary_set_value(xdict, uTF8String4, v29);
         }
 
         ++v18;
@@ -2923,8 +2923,8 @@ LABEL_150:
   if (endpoint)
   {
     v118 = endpoint;
-    v119 = [(NWPBEndpoint *)v118 data];
-    v152 = [NWEndpoint endpointWithProtocolBufferData:v119];
+    data3 = [(NWPBEndpoint *)v118 data];
+    v152 = [NWEndpoint endpointWithProtocolBufferData:data3];
 
     v116 = v146;
   }
@@ -2938,8 +2938,8 @@ LABEL_150:
   if (parameters)
   {
     v121 = parameters;
-    v122 = [(NWPBParameters *)v121 data];
-    v123 = [NWParameters parametersWithProtocolBufferData:v122];
+    data4 = [(NWPBParameters *)v121 data];
+    v123 = [NWParameters parametersWithProtocolBufferData:data4];
   }
 
   else
@@ -2947,8 +2947,8 @@ LABEL_150:
     v123 = 0;
   }
 
-  v124 = [v152 internalEndpoint];
-  v125 = [v123 internalParameters];
+  internalEndpoint = [v152 internalEndpoint];
+  internalParameters = [v123 internalParameters];
   if (*&v146->_has)
   {
     status = v146->_status;
@@ -2963,9 +2963,9 @@ LABEL_150:
   local = v146->_local;
   ipv4 = v146->_ipv4;
   ipv6 = v146->_ipv6;
-  v131 = [v144 internalInterface];
-  v132 = [v143 internalInterface];
-  v133 = _nw_path_create_static(v124, v125, status, uu, direct, local, ipv4, ipv6, v131, v132, xdict);
+  internalInterface = [v144 internalInterface];
+  internalInterface2 = [v143 internalInterface];
+  v133 = _nw_path_create_static(internalEndpoint, internalParameters, status, uu, direct, local, ipv4, ipv6, internalInterface, internalInterface2, xdict);
 
   v14 = [[NWPath alloc] initWithPath:v133];
   v13 = v146;
@@ -2974,30 +2974,30 @@ LABEL_160:
   return v14;
 }
 
-+ (id)createStringFromStatus:(int64_t)a3
++ (id)createStringFromStatus:(int64_t)status
 {
-  if (a3 >= 4)
+  if (status >= 4)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown(%ld)", a3];
+    status = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown(%ld)", status];
   }
 
   else
   {
-    v4 = off_1E6A34198[a3];
+    status = off_1E6A34198[status];
   }
 
-  return v4;
+  return status;
 }
 
-+ (id)pathForClientID:(id)a3 parametersTLV:(id)a4 pathResultTLV:(id)a5
++ (id)pathForClientID:(id)d parametersTLV:(id)v pathResultTLV:(id)lV
 {
   v15 = *MEMORY[0x1E69E9840];
   memset(uu, 0, sizeof(uu));
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  lVCopy = lV;
+  vCopy = v;
+  dCopy = d;
   uuid_clear(uu);
-  [v9 getUUIDBytes:uu];
+  [dCopy getUUIDBytes:uu];
 
   if (nw_context_copy_implicit_context::onceToken[0] != -1)
   {
@@ -3005,7 +3005,7 @@ LABEL_160:
   }
 
   v10 = nw_context_copy_implicit_context::implicit_context;
-  v11 = nw_path_copy_path_for_tlv(uu, v10, [v8 bytes], objc_msgSend(v8, "length"), objc_msgSend(v7, "bytes"), objc_msgSend(v7, "length"));
+  v11 = nw_path_copy_path_for_tlv(uu, v10, [vCopy bytes], objc_msgSend(vCopy, "length"), objc_msgSend(lVCopy, "bytes"), objc_msgSend(lVCopy, "length"));
 
   if (v11)
   {
@@ -3020,13 +3020,13 @@ LABEL_160:
   return v12;
 }
 
-+ (id)pathForClientID:(id)a3
++ (id)pathForClientID:(id)d
 {
   v9 = *MEMORY[0x1E69E9840];
   memset(uu, 0, sizeof(uu));
-  v3 = a3;
+  dCopy = d;
   uuid_clear(uu);
-  [v3 getUUIDBytes:uu];
+  [dCopy getUUIDBytes:uu];
 
   if (nw_context_copy_implicit_context::onceToken[0] != -1)
   {
@@ -3054,7 +3054,7 @@ LABEL_160:
   v2 = nw_path_copy_all_client_ids();
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     count = xpc_array_get_count(v2);
     if (count)
     {
@@ -3064,7 +3064,7 @@ LABEL_160:
         v7 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:{xpc_array_get_uuid(v2, i)}];
         if (v7)
         {
-          [v3 addObject:v7];
+          [array addObject:v7];
         }
       }
     }
@@ -3072,10 +3072,10 @@ LABEL_160:
 
   else
   {
-    v3 = 0;
+    array = 0;
   }
 
-  return v3;
+  return array;
 }
 
 @end

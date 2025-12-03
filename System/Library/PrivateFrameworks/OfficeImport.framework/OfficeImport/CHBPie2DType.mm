@@ -1,34 +1,34 @@
 @interface CHBPie2DType
-+ (id)chdChartTypeWithState:(id)a3;
-+ (void)readWithState:(id)a3 chartType:(id)a4;
++ (id)chdChartTypeWithState:(id)state;
++ (void)readWithState:(id)state chartType:(id)type;
 @end
 
 @implementation CHBPie2DType
 
-+ (id)chdChartTypeWithState:(id)a3
++ (id)chdChartTypeWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = [CHDPie2DType alloc];
-  v6 = [v4 chart];
-  v7 = [(CHDPie2DType *)v5 initWithChart:v6];
+  chart = [stateCopy chart];
+  v7 = [(CHDPie2DType *)v5 initWithChart:chart];
 
-  [a1 readWithState:v4 chartType:v7];
+  [self readWithState:stateCopy chartType:v7];
 
   return v7;
 }
 
-+ (void)readWithState:(id)a3 chartType:(id)a4
++ (void)readWithState:(id)state chartType:(id)type
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v9 xlCurrentPlot];
-  v7 = v6;
-  if (v6)
+  stateCopy = state;
+  typeCopy = type;
+  xlCurrentPlot = [stateCopy xlCurrentPlot];
+  v7 = xlCurrentPlot;
+  if (xlCurrentPlot)
   {
-    [v5 setFirstSliceAngle:*(v6 + 162)];
+    [typeCopy setFirstSliceAngle:*(xlCurrentPlot + 162)];
     if (*(v7 + 160))
     {
-      [v5 setDoughnutType:1];
+      [typeCopy setDoughnutType:1];
     }
 
     if ((*(*v7 + 16))(v7) == 3)
@@ -36,13 +36,13 @@
       v8 = *(v7 + 164);
       if (v8 == 1)
       {
-        [v5 setPieOfPieType:1];
+        [typeCopy setPieOfPieType:1];
         v8 = *(v7 + 164);
       }
 
       if (v8 == 2)
       {
-        [v5 setBarOfPieType:1];
+        [typeCopy setBarOfPieType:1];
       }
     }
   }

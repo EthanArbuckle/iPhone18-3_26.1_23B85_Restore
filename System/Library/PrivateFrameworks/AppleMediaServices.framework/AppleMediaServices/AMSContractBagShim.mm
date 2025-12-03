@@ -1,55 +1,55 @@
 @interface AMSContractBagShim
-+ (id)_callSelector:(SEL)a3 onBagContract:(id)a4;
-- (AMSContractBagShim)initWithBagContract:(id)a3;
-- (SEL)_selectorForBagKey:(id)a3;
-- (id)_bagValueForBagKey:(id)a3 bagValueType:(unint64_t)a4;
-- (void)createSnapshotWithCompletion:(id)a3;
++ (id)_callSelector:(SEL)selector onBagContract:(id)contract;
+- (AMSContractBagShim)initWithBagContract:(id)contract;
+- (SEL)_selectorForBagKey:(id)key;
+- (id)_bagValueForBagKey:(id)key bagValueType:(unint64_t)type;
+- (void)createSnapshotWithCompletion:(id)completion;
 @end
 
 @implementation AMSContractBagShim
 
-- (AMSContractBagShim)initWithBagContract:(id)a3
+- (AMSContractBagShim)initWithBagContract:(id)contract
 {
-  v5 = a3;
+  contractCopy = contract;
   v9.receiver = self;
   v9.super_class = AMSContractBagShim;
   v6 = [(AMSContractBagShim *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bagContract, a3);
+    objc_storeStrong(&v6->_bagContract, contract);
   }
 
   return v7;
 }
 
-- (void)createSnapshotWithCompletion:(id)a3
+- (void)createSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AMSError(205, @"Not Supported", @"AMSContractBagShim doesn't support creating a snapshot.", 0);
-  (*(a3 + 2))(v4, 0, v5);
+  (*(completion + 2))(completionCopy, 0, v5);
 }
 
-- (id)_bagValueForBagKey:(id)a3 bagValueType:(unint64_t)a4
+- (id)_bagValueForBagKey:(id)key bagValueType:(unint64_t)type
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  keyCopy = key;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [(AMSContractBagShim *)self bagContract];
+  bagContract = [(AMSContractBagShim *)self bagContract];
 
-  if (v8)
+  if (bagContract)
   {
-    v9 = [(AMSContractBagShim *)self bagContract];
-    [v7 addObject:v9];
+    bagContract2 = [(AMSContractBagShim *)self bagContract];
+    [v7 addObject:bagContract2];
   }
 
   v10 = NSSelectorFromString(&cfstr_Mescalcontract.isa);
-  v11 = [(AMSContractBagShim *)self bagContract];
+  bagContract3 = [(AMSContractBagShim *)self bagContract];
   if (objc_opt_respondsToSelector())
   {
     v12 = objc_opt_class();
-    v13 = [(AMSContractBagShim *)self bagContract];
-    v14 = [v12 _callSelector:v10 onBagContract:v13];
+    bagContract4 = [(AMSContractBagShim *)self bagContract];
+    v14 = [v12 _callSelector:v10 onBagContract:bagContract4];
 
     if (v14)
     {
@@ -64,14 +64,14 @@
   }
 
   v15 = NSSelectorFromString(&cfstr_Metricscontrac.isa);
-  v16 = [(AMSContractBagShim *)self bagContract];
-  v31 = a4;
+  bagContract5 = [(AMSContractBagShim *)self bagContract];
+  typeCopy = type;
   v33 = v14;
   if (objc_opt_respondsToSelector())
   {
     v17 = objc_opt_class();
-    v18 = [(AMSContractBagShim *)self bagContract];
-    v19 = [v17 _callSelector:v15 onBagContract:v18];
+    bagContract6 = [(AMSContractBagShim *)self bagContract];
+    v19 = [v17 _callSelector:v15 onBagContract:bagContract6];
 
     if (v19)
     {
@@ -87,7 +87,7 @@
 
   v32 = 0;
 LABEL_12:
-  v20 = [(AMSContractBagShim *)self _selectorForBagKey:v6];
+  v20 = [(AMSContractBagShim *)self _selectorForBagKey:keyCopy];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -110,7 +110,7 @@ LABEL_12:
         v26 = *(*(&v34 + 1) + 8 * i);
         if (!v20 || (objc_opt_respondsToSelector() & 1) == 0)
         {
-          if (![v6 isEqualToString:@"metrics/metricsUrl"])
+          if (![keyCopy isEqualToString:@"metrics/metricsUrl"])
           {
             continue;
           }
@@ -142,146 +142,146 @@ LABEL_12:
   }
 
   v28 = AMSError(204, @"Bag Value Missing", @"The underlying bag contract returned nil instead of an AMSBagValue instance.", 0);
-  v29 = [AMSBagValue failingBagValueWithKey:v6 valueType:v31 error:v28];
+  v29 = [AMSBagValue failingBagValueWithKey:keyCopy valueType:typeCopy error:v28];
 LABEL_27:
 
   return v29;
 }
 
-+ (id)_callSelector:(SEL)a3 onBagContract:(id)a4
++ (id)_callSelector:(SEL)selector onBagContract:(id)contract
 {
-  v5 = a4;
-  v6 = ([v5 methodForSelector:a3])(v5, a3);
+  contractCopy = contract;
+  v6 = ([contractCopy methodForSelector:selector])(contractCopy, selector);
 
   return v6;
 }
 
-- (SEL)_selectorForBagKey:(id)a3
+- (SEL)_selectorForBagKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"appleMusicDeviceOfferDeepLink"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"appleMusicDeviceOfferDeepLink"])
   {
     v4 = @"appleMusicDeviceOfferDeepLink";
   }
 
-  else if ([v3 isEqualToString:@"iCloudDeviceOfferDeepLink"])
+  else if ([keyCopy isEqualToString:@"iCloudDeviceOfferDeepLink"])
   {
     v4 = @"iCloudDeviceOfferDeepLink";
   }
 
-  else if ([v3 isEqualToString:@"family-info"])
+  else if ([keyCopy isEqualToString:@"family-info"])
   {
     v4 = @"familyInfoURL";
   }
 
-  else if ([v3 isEqualToString:@"storeplatform-lookup-url"])
+  else if ([keyCopy isEqualToString:@"storeplatform-lookup-url"])
   {
     v4 = @"personalizedLookupURL";
   }
 
-  else if ([v3 isEqualToString:@"storeplatform-lookup-url-unpersonalized"])
+  else if ([keyCopy isEqualToString:@"storeplatform-lookup-url-unpersonalized"])
   {
     v4 = @"unpersonalizedLookupURL";
   }
 
-  else if ([v3 isEqualToString:@"sign-sap-setup-cert"])
+  else if ([keyCopy isEqualToString:@"sign-sap-setup-cert"])
   {
     v4 = @"mescalCertificateURL";
   }
 
-  else if ([v3 isEqualToString:@"primeUrl"])
+  else if ([keyCopy isEqualToString:@"primeUrl"])
   {
     v4 = @"mescalPrimingURL";
   }
 
-  else if ([v3 isEqualToString:@"sign-sap-setup"])
+  else if ([keyCopy isEqualToString:@"sign-sap-setup"])
   {
     v4 = @"mescalSetupURL";
   }
 
-  else if ([v3 isEqualToString:@"signed-actions"])
+  else if ([keyCopy isEqualToString:@"signed-actions"])
   {
     v4 = @"mescalSignedActions";
   }
 
-  else if ([v3 isEqualToString:@"sign-sap-request"])
+  else if ([keyCopy isEqualToString:@"sign-sap-request"])
   {
     v4 = @"mescalSignSapRequests";
   }
 
-  else if ([v3 isEqualToString:@"sign-sap-response"])
+  else if ([keyCopy isEqualToString:@"sign-sap-response"])
   {
     v4 = @"mescalSignSapResponses";
   }
 
-  else if ([v3 isEqualToString:@"metrics"])
+  else if ([keyCopy isEqualToString:@"metrics"])
   {
     v4 = @"metricsDictionary";
   }
 
-  else if ([v3 isEqualToString:@"metrics/metricsUrl"])
+  else if ([keyCopy isEqualToString:@"metrics/metricsUrl"])
   {
     v4 = @"metricsURL";
   }
 
-  else if ([v3 isEqualToString:@"aps-enabled-patterns"])
+  else if ([keyCopy isEqualToString:@"aps-enabled-patterns"])
   {
     v4 = @"apsEnabledPatterns";
   }
 
-  else if ([v3 isEqualToString:@"aps-sampling-percentage"])
+  else if ([keyCopy isEqualToString:@"aps-sampling-percentage"])
   {
     v4 = @"apsSamplingPercent";
   }
 
-  else if ([v3 isEqualToString:@"aps-allowed-product-type"])
+  else if ([keyCopy isEqualToString:@"aps-allowed-product-type"])
   {
     v4 = @"apsAllowedProductTypes";
   }
 
-  else if ([v3 isEqualToString:@"guid-urls/regex"])
+  else if ([keyCopy isEqualToString:@"guid-urls/regex"])
   {
     v4 = @"guidRegexes";
   }
 
-  else if ([v3 isEqualToString:@"guid-urls/schemes"])
+  else if ([keyCopy isEqualToString:@"guid-urls/schemes"])
   {
     v4 = @"guidSchemes";
   }
 
-  else if ([v3 isEqualToString:@"storefront-header-suffix"])
+  else if ([keyCopy isEqualToString:@"storefront-header-suffix"])
   {
     v4 = @"storefrontSuffix";
   }
 
-  else if ([v3 isEqualToString:@"TLSSamplingPercentage"])
+  else if ([keyCopy isEqualToString:@"TLSSamplingPercentage"])
   {
     v4 = @"TLSSamplingPercentage";
   }
 
-  else if ([v3 isEqualToString:@"TLSSamplingSessionDuration"])
+  else if ([keyCopy isEqualToString:@"TLSSamplingSessionDuration"])
   {
     v4 = @"TLSSamplingSessionDuration";
   }
 
-  else if ([v3 isEqualToString:@"TFOSamplingPercentage"])
+  else if ([keyCopy isEqualToString:@"TFOSamplingPercentage"])
   {
     v4 = @"TFOSamplingPercentage";
   }
 
-  else if ([v3 isEqualToString:@"TFOSamplingSessionDuration"])
+  else if ([keyCopy isEqualToString:@"TFOSamplingSessionDuration"])
   {
     v4 = @"TFOSamplingSessionDuration";
   }
 
-  else if ([v3 isEqualToString:@"schemesThatOverrideTrustedDomains"])
+  else if ([keyCopy isEqualToString:@"schemesThatOverrideTrustedDomains"])
   {
     v4 = @"schemesThatOverrideTrustedDomains";
   }
 
   else
   {
-    if (![v3 isEqualToString:@"trustedDomains"])
+    if (![keyCopy isEqualToString:@"trustedDomains"])
     {
       v5 = 0;
       goto LABEL_52;

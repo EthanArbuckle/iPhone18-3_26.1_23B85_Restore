@@ -1,20 +1,20 @@
 @interface AVCaptureEventInteraction
-- (AVCaptureEventInteraction)initWithPrimaryEventHandler:(id)a3 secondaryEventHandler:(id)a4;
+- (AVCaptureEventInteraction)initWithPrimaryEventHandler:(id)handler secondaryEventHandler:(id)eventHandler;
 - (UIView)view;
-- (id)_actionForPhysicalButton:(uint64_t)a1;
+- (id)_actionForPhysicalButton:(uint64_t)button;
 - (id)_configuration;
-- (void)_physicalButtonInteraction:(id)a3 handleAction:(id)a4 withActiveActions:(id)a5;
+- (void)_physicalButtonInteraction:(id)interaction handleAction:(id)action withActiveActions:(id)actions;
 - (void)_playDefaultSystemSound;
-- (void)_playSound:(id)a3;
-- (void)_playSystemSoundForCaptureType:(int64_t)a3;
+- (void)_playSound:(id)sound;
+- (void)_playSystemSoundForCaptureType:(int64_t)type;
 - (void)_setUpPhysicalButtonInteractionIfNeeded;
 - (void)_updatePhysicalButtonInteractionEnabled;
 - (void)_updatePhysicalButtonInteractionViewIfNeeded;
 - (void)dealloc;
-- (void)didMoveToView:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)set_configuration:(id)a3;
-- (void)set_defaultCaptureSoundDisabled:(BOOL)a3;
+- (void)didMoveToView:(id)view;
+- (void)setEnabled:(BOOL)enabled;
+- (void)set_configuration:(id)set_configuration;
+- (void)set_defaultCaptureSoundDisabled:(BOOL)disabled;
 @end
 
 @implementation AVCaptureEventInteraction
@@ -28,24 +28,24 @@
 
 - (void)_setUpPhysicalButtonInteractionIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 32))
+    if (!*(self + 32))
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
+      WeakRetained = objc_loadWeakRetained((self + 8));
       if (WeakRetained)
       {
-        v3 = *(a1 + 84);
+        v3 = *(self + 84);
 
         if (v3 == 1)
         {
           v6 = +[AVCaptureEventInteraction _captureButtonsConfigurationSet];
-          v4 = [objc_alloc(MEMORY[0x1E69DD638]) initWithConfigurations:v6 delegate:a1];
-          v5 = *(a1 + 32);
-          *(a1 + 32) = v4;
+          v4 = [objc_alloc(MEMORY[0x1E69DD638]) initWithConfigurations:v6 delegate:self];
+          v5 = *(self + 32);
+          *(self + 32) = v4;
 
-          [a1 _updatePhysicalButtonInteractionEnabled];
-          [a1 _updatePhysicalButtonInteractionViewIfNeeded];
+          [self _updatePhysicalButtonInteractionEnabled];
+          [self _updatePhysicalButtonInteractionViewIfNeeded];
         }
       }
     }
@@ -79,11 +79,11 @@
   if (v3)
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v5 = [(_UIPhysicalButtonInteraction *)v3 view];
-    v6 = v5;
-    if (v5 != WeakRetained)
+    view = [(_UIPhysicalButtonInteraction *)v3 view];
+    v6 = view;
+    if (view != WeakRetained)
     {
-      [v5 removeInteraction:v3];
+      [view removeInteraction:v3];
       [WeakRetained addInteraction:v3];
       v7 = _AVLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -100,28 +100,28 @@
   }
 }
 
-- (void)_playSound:(id)a3
+- (void)_playSound:(id)sound
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  soundCopy = sound;
   [MEMORY[0x1E69870F0] temporarilySuppressShutterSoundForAirpodStemClick];
-  [v3 _identifier];
+  [soundCopy _identifier];
   AudioServicesPlaySystemSoundWithOptions();
   v4 = _AVLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5[0] = 67109120;
-    v5[1] = [v3 _identifier];
+    v5[1] = [soundCopy _identifier];
     _os_log_impl(&dword_18B49C000, v4, OS_LOG_TYPE_DEFAULT, "[AVCaptureEventInteraction] Playing a capture sound through AirPods with SSID: %u", v5, 8u);
   }
 }
 
-- (void)_playSystemSoundForCaptureType:(int64_t)a3
+- (void)_playSystemSoundForCaptureType:(int64_t)type
 {
   v12 = *MEMORY[0x1E69E9840];
   AudioServicesStopSystemSound();
   defaultSoundsByCaptureType = self->_defaultSoundsByCaptureType;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v7 = [(NSDictionary *)defaultSoundsByCaptureType objectForKeyedSubscript:v6];
 
   v8 = _AVLog();
@@ -131,7 +131,7 @@
     if (v9)
     {
       v10 = 134217984;
-      v11 = a3;
+      typeCopy2 = type;
       _os_log_impl(&dword_18B49C000, v8, OS_LOG_TYPE_DEFAULT, "[AVCaptureEventInteraction] Playing the system sound for capture type: %ld", &v10, 0xCu);
     }
 
@@ -145,7 +145,7 @@
     if (v9)
     {
       v10 = 134217984;
-      v11 = a3;
+      typeCopy2 = type;
       _os_log_impl(&dword_18B49C000, v8, OS_LOG_TYPE_DEFAULT, "[AVCaptureEventInteraction] An error occurred when trying to play the system sound for capture: %ld", &v10, 0xCu);
     }
 
@@ -168,18 +168,18 @@
   AudioServicesPlaySystemSoundWithOptions();
 }
 
-- (void)_physicalButtonInteraction:(id)a3 handleAction:(id)a4 withActiveActions:(id)a5
+- (void)_physicalButtonInteraction:(id)interaction handleAction:(id)action withActiveActions:(id)actions
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [v6 _button];
-  v8 = v6;
+  actionCopy = action;
+  _button = [actionCopy _button];
+  v8 = actionCopy;
   v26 = v8;
-  if (v7 == 5)
+  if (_button == 5)
   {
     if (self && self->_enabled)
     {
-      v9 = [v8 _stagePhase];
+      _stagePhase = [v8 _stagePhase];
       if ([v26 _numberOfStages] < 2)
       {
         v12 = 0;
@@ -187,55 +187,55 @@
 
       else
       {
-        v10 = [v26 _stage];
-        v11 = v10 != [v26 _numberOfStages] - 1 || v9 == 1;
+        _stage = [v26 _stage];
+        v11 = _stage != [v26 _numberOfStages] - 1 || _stagePhase == 1;
         v12 = !v11;
       }
 
-      v22 = [v26 _state];
-      v23 = [v26 _numberOfStages];
+      _state = [v26 _state];
+      _numberOfStages = [v26 _numberOfStages];
       if (v12)
       {
-        if (v9)
+        if (_stagePhase)
         {
-          if (v9 == 3)
+          if (_stagePhase == 3)
           {
-            v9 = 2;
+            _stagePhase = 2;
           }
 
           else
           {
-            if (v9 != 2)
+            if (_stagePhase != 2)
             {
               v25 = _AVLog();
               if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 134217984;
-                *&buf[4] = v9;
+                *&buf[4] = _stagePhase;
                 _os_log_impl(&dword_18B49C000, v25, OS_LOG_TYPE_DEFAULT, "Invalid _UIPhysicalButtonStagePhase %ld. Cannot be converted to AVCaptureEventPhase.", buf, 0xCu);
               }
 
               __assert_rtn("AVCaptureEventPhaseFromPhysicalButtonStagePhase", "AVCaptureEvent.m", 181, "NO");
             }
 
-            v9 = 1;
+            _stagePhase = 1;
           }
         }
 
         goto LABEL_29;
       }
 
-      v11 = v23 == 1;
+      v11 = _numberOfStages == 1;
       v8 = v26;
-      if (v11 && v22 != 1)
+      if (v11 && _state != 1)
       {
-        v9 = AVCaptureEventPhaseFromPhysicalButtonState(v22);
+        _stagePhase = AVCaptureEventPhaseFromPhysicalButtonState(_state);
 LABEL_29:
-        v24 = [v26 _button];
-        v19 = [(AVCaptureEventInteraction *)self _actionForPhysicalButton:v24];
+        _button2 = [v26 _button];
+        v19 = [(AVCaptureEventInteraction *)self _actionForPhysicalButton:_button2];
         v18 = v19;
-        v20 = v9;
-        v21 = v24;
+        v20 = _stagePhase;
+        v21 = _button2;
 LABEL_30:
         [v19 sendPhaseUpdate:v20 physicalButton:v21 interaction:self];
 
@@ -246,39 +246,39 @@ LABEL_30:
 
   else if (self)
   {
-    v13 = [v8 _state];
+    _state2 = [v8 _state];
     v8 = v26;
-    if (self->_enabled && v13 != 1)
+    if (self->_enabled && _state2 != 1)
     {
-      v14 = [v26 _button];
-      v15 = AVCaptureEventPhaseFromPhysicalButtonState(v13);
-      if ((v14 & 0xFFFFFFFFFFFFFFFELL) == 6)
+      _button3 = [v26 _button];
+      v15 = AVCaptureEventPhaseFromPhysicalButtonState(_state2);
+      if ((_button3 & 0xFFFFFFFFFFFFFFFELL) == 6)
       {
         v16 = +[AVKitGlobalSettings shared];
-        v17 = [v16 cameraControlWithAirPodsEnabled];
+        cameraControlWithAirPodsEnabled = [v16 cameraControlWithAirPodsEnabled];
 
-        if (v17)
+        if (cameraControlWithAirPodsEnabled)
         {
           os_eligibility_get_domain_answer();
-          v14 = 2;
+          _button3 = 2;
         }
       }
 
-      v18 = [(AVCaptureEventInteraction *)self _actionForPhysicalButton:v14];
+      v18 = [(AVCaptureEventInteraction *)self _actionForPhysicalButton:_button3];
       v19 = v18;
       v20 = v15;
-      v21 = v14;
+      v21 = _button3;
       goto LABEL_30;
     }
   }
 }
 
-- (id)_actionForPhysicalButton:(uint64_t)a1
+- (id)_actionForPhysicalButton:(uint64_t)button
 {
   v3 = a2 - 1;
   if (a2 - 1) <= 6 && ((0x77u >> v3))
   {
-    v4 = *(a1 + qword_18B6EC698[v3]);
+    v4 = *(button + qword_18B6EC698[v3]);
   }
 
   else
@@ -289,13 +289,13 @@ LABEL_30:
   return v4;
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
+  viewCopy = view;
+  v5 = viewCopy;
   if (self)
   {
-    obj = v4;
+    obj = viewCopy;
     WeakRetained = objc_loadWeakRetained(&self->_view);
 
     v5 = obj;
@@ -303,19 +303,19 @@ LABEL_30:
     {
       objc_storeWeak(&self->_view, obj);
       [(AVCaptureEventInteraction *)self _setUpPhysicalButtonInteractionIfNeeded];
-      v4 = [(AVCaptureEventInteraction *)self _updatePhysicalButtonInteractionViewIfNeeded];
+      viewCopy = [(AVCaptureEventInteraction *)self _updatePhysicalButtonInteractionViewIfNeeded];
       v5 = obj;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](viewCopy, v5);
 }
 
-- (void)set_defaultCaptureSoundDisabled:(BOOL)a3
+- (void)set_defaultCaptureSoundDisabled:(BOOL)disabled
 {
-  if (AVCaptureEventInteractionDefaultSoundDisabled != a3)
+  if (AVCaptureEventInteractionDefaultSoundDisabled != disabled)
   {
-    AVCaptureEventInteractionDefaultSoundDisabled = a3;
+    AVCaptureEventInteractionDefaultSoundDisabled = disabled;
   }
 }
 
@@ -334,24 +334,24 @@ LABEL_30:
   return configuration;
 }
 
-- (void)set_configuration:(id)a3
+- (void)set_configuration:(id)set_configuration
 {
-  v5 = a3;
+  set_configurationCopy = set_configuration;
   configuration = self->__configuration;
   p_configuration = &self->__configuration;
-  if (configuration != v5)
+  if (configuration != set_configurationCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_configuration, a3);
-    v5 = v8;
+    v8 = set_configurationCopy;
+    objc_storeStrong(p_configuration, set_configuration);
+    set_configurationCopy = v8;
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(AVCaptureEventInteraction *)self _setUpPhysicalButtonInteractionIfNeeded];
 
     [(AVCaptureEventInteraction *)self _updatePhysicalButtonInteractionEnabled];
@@ -366,18 +366,18 @@ LABEL_30:
   [(AVCaptureEventInteraction *)&v3 dealloc];
 }
 
-- (AVCaptureEventInteraction)initWithPrimaryEventHandler:(id)a3 secondaryEventHandler:(id)a4
+- (AVCaptureEventInteraction)initWithPrimaryEventHandler:(id)handler secondaryEventHandler:(id)eventHandler
 {
   v25[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  eventHandlerCopy = eventHandler;
   v21.receiver = self;
   v21.super_class = AVCaptureEventInteraction;
   v8 = [(AVCaptureEventInteraction *)&v21 init];
   if (v8)
   {
-    v9 = [[AVCaptureEventAction alloc] initWithSource:0 eventHandler:v6];
-    v10 = [[AVCaptureEventAction alloc] initWithSource:1 eventHandler:v7];
+    v9 = [[AVCaptureEventAction alloc] initWithSource:0 eventHandler:handlerCopy];
+    v10 = [[AVCaptureEventAction alloc] initWithSource:1 eventHandler:eventHandlerCopy];
     primaryAction = v8->_primaryAction;
     v8->_primaryAction = v9;
     v12 = v9;

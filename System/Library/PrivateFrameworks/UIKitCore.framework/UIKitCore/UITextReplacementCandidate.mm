@@ -1,28 +1,28 @@
 @interface UITextReplacementCandidate
-+ (id)textReplacementCandidateForTextReplacement:(id)a3;
-- (id)_initWithTextReplacement:(id)a3;
++ (id)textReplacementCandidateForTextReplacement:(id)replacement;
+- (id)_initWithTextReplacement:(id)replacement;
 @end
 
 @implementation UITextReplacementCandidate
 
-+ (id)textReplacementCandidateForTextReplacement:(id)a3
++ (id)textReplacementCandidateForTextReplacement:(id)replacement
 {
-  v3 = a3;
-  v4 = [[UITextReplacementCandidate alloc] _initWithTextReplacement:v3];
+  replacementCopy = replacement;
+  v4 = [[UITextReplacementCandidate alloc] _initWithTextReplacement:replacementCopy];
 
   return v4;
 }
 
-- (id)_initWithTextReplacement:(id)a3
+- (id)_initWithTextReplacement:(id)replacement
 {
-  v5 = a3;
+  replacementCopy = replacement;
   v9.receiver = self;
   v9.super_class = UITextReplacementCandidate;
   v6 = [(UITextReplacementCandidate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_replacement, a3);
+    objc_storeStrong(&v6->_replacement, replacement);
   }
 
   return v7;

@@ -1,32 +1,32 @@
 @interface _UIWTCProofreadingDecorationView
-- (_UIWTCProofreadingDecorationView)initWithFrame:(CGRect)a3;
-- (void)addDecorationInfo:(id)a3;
+- (_UIWTCProofreadingDecorationView)initWithFrame:(CGRect)frame;
+- (void)addDecorationInfo:(id)info;
 - (void)clearAllDecorations;
-- (void)clearAllDecorationsOfType:(int64_t)a3;
+- (void)clearAllDecorationsOfType:(int64_t)type;
 - (void)clearAllHighlights;
 - (void)clearAllUnderlines;
 - (void)layoutSubviews;
-- (void)removeDecorationInfo:(id)a3;
+- (void)removeDecorationInfo:(id)info;
 @end
 
 @implementation _UIWTCProofreadingDecorationView
 
-- (_UIWTCProofreadingDecorationView)initWithFrame:(CGRect)a3
+- (_UIWTCProofreadingDecorationView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = _UIWTCProofreadingDecorationView;
-  v3 = [(UIView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(UIView *)v3 setUserInteractionEnabled:0];
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     underlineDecorations = v4->_underlineDecorations;
-    v4->_underlineDecorations = v5;
+    v4->_underlineDecorations = dictionary;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     underlineSubviews = v4->_underlineSubviews;
-    v4->_underlineSubviews = v7;
+    v4->_underlineSubviews = dictionary2;
 
     v9 = [_UIWTCHighlightContainerView alloc];
     [(UIView *)v4 bounds];
@@ -46,24 +46,24 @@
   v102 = *MEMORY[0x1E69E9840];
   if (self->_needsLayoutForUnderlines)
   {
-    v2 = self;
+    selfCopy = self;
     if (!self->_underlineEffectView)
     {
       v3 = [UIVisualEffectView alloc];
       v4 = _UIWritingToolsProofreadingUnderlineEffect();
       v5 = [(UIVisualEffectView *)v3 initWithEffect:v4];
-      underlineEffectView = v2->_underlineEffectView;
-      v2->_underlineEffectView = v5;
+      underlineEffectView = selfCopy->_underlineEffectView;
+      selfCopy->_underlineEffectView = v5;
 
-      [(UIView *)v2 bounds];
-      [(UIView *)v2->_underlineEffectView setFrame:?];
-      [(UIView *)v2->_underlineEffectView setAutoresizingMask:18];
-      [(UIView *)v2 addSubview:v2->_underlineEffectView];
+      [(UIView *)selfCopy bounds];
+      [(UIView *)selfCopy->_underlineEffectView setFrame:?];
+      [(UIView *)selfCopy->_underlineEffectView setAutoresizingMask:18];
+      [(UIView *)selfCopy addSubview:selfCopy->_underlineEffectView];
     }
 
-    v7 = v2->_underlineDecorations;
-    v8 = v2->_underlineSubviews;
-    v9 = [(UIVisualEffectView *)v2->_underlineEffectView contentView];
+    v7 = selfCopy->_underlineDecorations;
+    v8 = selfCopy->_underlineSubviews;
+    contentView = [(UIVisualEffectView *)selfCopy->_underlineEffectView contentView];
     v94 = 0u;
     v95 = 0u;
     v96 = 0u;
@@ -95,8 +95,8 @@
             v93 = 0u;
             v90 = 0u;
             v91 = 0u;
-            v14 = v13;
-            v15 = [v14 countByEnumeratingWithState:&v90 objects:v100 count:16];
+            array = v13;
+            v15 = [array countByEnumeratingWithState:&v90 objects:v100 count:16];
             if (v15)
             {
               v16 = v15;
@@ -107,33 +107,33 @@
                 {
                   if (*v91 != v17)
                   {
-                    objc_enumerationMutation(v14);
+                    objc_enumerationMutation(array);
                   }
 
                   [*(*(&v90 + 1) + 8 * i) removeFromSuperview];
                 }
 
-                v16 = [v14 countByEnumeratingWithState:&v90 objects:v100 count:16];
+                v16 = [array countByEnumeratingWithState:&v90 objects:v100 count:16];
               }
 
               while (v16);
             }
 
-            [v14 removeAllObjects];
+            [array removeAllObjects];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DF70] array];
-            [(NSMutableDictionary *)v8 setObject:v14 forKeyedSubscript:v11];
+            array = [MEMORY[0x1E695DF70] array];
+            [(NSMutableDictionary *)v8 setObject:array forKeyedSubscript:v11];
           }
 
           v88 = 0u;
           v89 = 0u;
           v86 = 0u;
           v87 = 0u;
-          v73 = [v12 ranges];
-          v19 = [v73 countByEnumeratingWithState:&v86 objects:v99 count:16];
+          ranges = [v12 ranges];
+          v19 = [ranges countByEnumeratingWithState:&v86 objects:v99 count:16];
           if (v19)
           {
             v20 = v19;
@@ -148,21 +148,21 @@
               {
                 if (*v87 != v21)
                 {
-                  objc_enumerationMutation(v73);
+                  objc_enumerationMutation(ranges);
                 }
 
                 v23 = *(*(&v86 + 1) + 8 * v22);
-                v24 = [v12 containers];
-                v25 = [v24 objectForKey:v23];
+                containers = [v12 containers];
+                v25 = [containers objectForKey:v23];
 
-                v26 = [(UIView *)v2 superview];
+                superview = [(UIView *)selfCopy superview];
 
-                if (v25 == v26)
+                if (v25 == superview)
                 {
                   v74 = v22;
-                  v27 = v2;
-                  v28 = [v12 paths];
-                  v29 = [v28 objectForKeyedSubscript:v23];
+                  v27 = selfCopy;
+                  paths = [v12 paths];
+                  v29 = [paths objectForKeyedSubscript:v23];
 
                   v84 = 0u;
                   v85 = 0u;
@@ -185,14 +185,14 @@
 
                         v34 = *(*(&v82 + 1) + 8 * j);
                         v35 = objc_alloc_init(_UIWTCUnderlineDrawingView);
-                        [v14 addObject:v35];
-                        [v9 addSubview:v35];
+                        [array addObject:v35];
+                        [contentView addSubview:v35];
                         [v34 bounds];
                         v37 = v36;
                         v39 = v38;
                         v41 = v40;
                         v43 = v42;
-                        [v9 convertRect:v25 fromView:?];
+                        [contentView convertRect:v25 fromView:?];
                         [(UIView *)v35 setFrame:?];
                         [(UIView *)v35 convertRect:v25 fromView:v37, v39, v41, v43];
                         v45 = v44;
@@ -272,8 +272,8 @@
                         v80 = v81;
                         [v52 applyTransform:&v80];
                         [(_UIWTCUnderlineDrawingView *)v35 setPath:v52];
-                        v63 = [(UIView *)v27 tintColor];
-                        [(_UIWTCUnderlineDrawingView *)v35 setColor:v63];
+                        tintColor = [(UIView *)v27 tintColor];
+                        [(_UIWTCUnderlineDrawingView *)v35 setColor:tintColor];
                       }
 
                       v31 = [v76 countByEnumeratingWithState:&v82 objects:v98 count:16];
@@ -282,7 +282,7 @@
                     while (v31);
                   }
 
-                  v2 = v27;
+                  selfCopy = v27;
                   v21 = v70;
                   v12 = v71;
                   v20 = v72;
@@ -293,7 +293,7 @@
               }
 
               while (v22 != v20);
-              v20 = [v73 countByEnumeratingWithState:&v86 objects:v99 count:16];
+              v20 = [ranges countByEnumeratingWithState:&v86 objects:v99 count:16];
             }
 
             while (v20);
@@ -310,33 +310,33 @@
       while (v68);
     }
 
-    v2->_needsLayoutForUnderlines = 0;
+    selfCopy->_needsLayoutForUnderlines = 0;
   }
 }
 
-- (void)addDecorationInfo:(id)a3
+- (void)addDecorationInfo:(id)info
 {
   v85 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (!infoCopy)
   {
     goto LABEL_41;
   }
 
-  if ([v4 type])
+  if ([infoCopy type])
   {
-    v6 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
     v79 = 0u;
     v80 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v7 = [v5 ranges];
-    v8 = [v7 countByEnumeratingWithState:&v79 objects:v84 count:16];
+    ranges = [v5 ranges];
+    v8 = [ranges countByEnumeratingWithState:&v79 objects:v84 count:16];
     if (v8)
     {
       v9 = v8;
-      v65 = self;
+      selfCopy = self;
       v10 = 0;
       v11 = *v80;
       v66 = *v80;
@@ -348,20 +348,20 @@
         {
           if (*v80 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(ranges);
           }
 
           v13 = *(*(&v79 + 1) + 8 * v12);
-          v14 = [v5 containers];
-          v15 = [v14 objectForKey:v13];
+          containers = [v5 containers];
+          v15 = [containers objectForKey:v13];
 
-          if (v6 == v15)
+          if (superview == v15)
           {
-            v16 = v7;
-            v17 = v6;
+            v16 = ranges;
+            v17 = superview;
             v18 = v5;
-            v19 = [v5 paths];
-            v20 = [v19 objectForKeyedSubscript:v13];
+            paths = [v5 paths];
+            v20 = [paths objectForKeyedSubscript:v13];
 
             v77 = 0u;
             v78 = 0u;
@@ -401,8 +401,8 @@
             }
 
             v5 = v18;
-            v6 = v17;
-            v7 = v16;
+            superview = v17;
+            ranges = v16;
             v11 = v66;
             v9 = sx;
           }
@@ -411,22 +411,22 @@
         }
 
         while (v12 != v9);
-        v9 = [v7 countByEnumeratingWithState:&v79 objects:v84 count:16];
+        v9 = [ranges countByEnumeratingWithState:&v79 objects:v84 count:16];
       }
 
       while (v9);
 
-      self = v65;
+      self = selfCopy;
       if (v10)
       {
         v27 = v5;
-        v28 = [(_UIWTCHighlightContainerView *)v65->_highlightContainer highlightSubview];
+        highlightSubview = [(_UIWTCHighlightContainerView *)selfCopy->_highlightContainer highlightSubview];
         [v10 bounds];
         v30 = v29;
         v32 = v31;
         v34 = v33;
         v36 = v35;
-        [v28 convertRect:v6 fromView:?];
+        [highlightSubview convertRect:superview fromView:?];
         v38 = v37;
         v40 = v39;
         v42 = v41;
@@ -502,13 +502,13 @@
         CGAffineTransformMakeTranslation(&v74, v52, MidY - v54);
         v73 = v74;
         [v10 applyTransform:&v73];
-        [v28 setPath:{objc_msgSend(v10, "CGPath")}];
-        v55 = [(UIView *)v65->_highlightContainer tintColor];
-        v56 = [v55 colorWithAlphaComponent:0.2];
-        [v28 setSelectionColor:v56];
+        [highlightSubview setPath:{objc_msgSend(v10, "CGPath")}];
+        tintColor = [(UIView *)selfCopy->_highlightContainer tintColor];
+        v56 = [tintColor colorWithAlphaComponent:0.2];
+        [highlightSubview setSelectionColor:v56];
 
-        v57 = [v27 identifier];
-        [(_UIWTCHighlightContainerView *)v65->_highlightContainer setHighlightedSuggestionIdentifier:v57];
+        identifier = [v27 identifier];
+        [(_UIWTCHighlightContainerView *)selfCopy->_highlightContainer setHighlightedSuggestionIdentifier:identifier];
 
         v5 = v27;
 LABEL_37:
@@ -546,16 +546,16 @@ LABEL_37:
   }
 
   v58 = self->_underlineDecorations;
-  v59 = [v5 identifier];
-  [(NSMutableDictionary *)v58 setObject:v5 forKeyedSubscript:v59];
+  identifier2 = [v5 identifier];
+  [(NSMutableDictionary *)v58 setObject:v5 forKeyedSubscript:identifier2];
 
   self->_needsLayoutForUnderlines = 1;
 LABEL_38:
   [(UIView *)self setNeedsLayout];
-  v61 = [(UIView *)self window];
-  if (v61)
+  window = [(UIView *)self window];
+  if (window)
   {
-    v62 = v61;
+    v62 = window;
     v63 = +[UIView _isInAnimationBlockWithAnimationsEnabled];
 
     if (v63)
@@ -572,24 +572,24 @@ LABEL_38:
 LABEL_41:
 }
 
-- (void)removeDecorationInfo:(id)a3
+- (void)removeDecorationInfo:(id)info
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
-    v6 = [v4 identifier];
+    identifier = [infoCopy identifier];
     if ([v5 type])
     {
-      v7 = [(_UIWTCHighlightContainerView *)self->_highlightContainer highlightedSuggestionIdentifier];
-      v8 = [v5 identifier];
-      v9 = [v7 isEqual:v8];
+      highlightedSuggestionIdentifier = [(_UIWTCHighlightContainerView *)self->_highlightContainer highlightedSuggestionIdentifier];
+      identifier2 = [v5 identifier];
+      v9 = [highlightedSuggestionIdentifier isEqual:identifier2];
 
       if (v9)
       {
-        v10 = [(_UIWTCHighlightContainerView *)self->_highlightContainer highlightSubview];
-        [v10 setPath:0];
+        highlightSubview = [(_UIWTCHighlightContainerView *)self->_highlightContainer highlightSubview];
+        [highlightSubview setPath:0];
 
         [(_UIWTCHighlightContainerView *)self->_highlightContainer setHighlightedSuggestionIdentifier:0];
       }
@@ -599,8 +599,8 @@ LABEL_41:
     {
       v11 = self->_underlineDecorations;
       v12 = self->_underlineSubviews;
-      [(NSMutableDictionary *)v11 removeObjectForKey:v6];
-      v13 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:v6];
+      [(NSMutableDictionary *)v11 removeObjectForKey:identifier];
+      v13 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:identifier];
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
@@ -635,7 +635,7 @@ LABEL_41:
   }
 }
 
-- (void)clearAllDecorationsOfType:(int64_t)a3
+- (void)clearAllDecorationsOfType:(int64_t)type
 {
   v16 = *MEMORY[0x1E69E9840];
   v4 = self->_underlineDecorations;
@@ -644,8 +644,8 @@ LABEL_41:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v5 objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [v5 objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -657,14 +657,14 @@ LABEL_41:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [(_UIWTCProofreadingDecorationView *)self removeDecorationInfo:*(*(&v11 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -679,8 +679,8 @@ LABEL_41:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  objectEnumerator = [v3 objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -692,14 +692,14 @@ LABEL_41:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [(_UIWTCProofreadingDecorationView *)self removeDecorationInfo:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -708,8 +708,8 @@ LABEL_41:
 
 - (void)clearAllHighlights
 {
-  v2 = [(_UIWTCHighlightContainerView *)self->_highlightContainer highlightSubview];
-  [v2 setPath:0];
+  highlightSubview = [(_UIWTCHighlightContainerView *)self->_highlightContainer highlightSubview];
+  [highlightSubview setPath:0];
 }
 
 - (void)clearAllDecorations

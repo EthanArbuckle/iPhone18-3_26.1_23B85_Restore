@@ -1,5 +1,5 @@
 @interface HMDSiriAccessoryInfo
-+ (id)infoWithTargetableAccessory:(id)a3;
++ (id)infoWithTargetableAccessory:(id)accessory;
 - (BOOL)isActiveAndSupportsDragonSiri;
 - (id)targetsAccessory;
 @end
@@ -15,28 +15,28 @@
 
 - (BOOL)isActiveAndSupportsDragonSiri
 {
-  v3 = [(HMDSiriAccessoryInfo *)self targetsAccessory];
-  if (v3)
+  targetsAccessory = [(HMDSiriAccessoryInfo *)self targetsAccessory];
+  if (targetsAccessory)
   {
-    v4 = [(HMDSiriAccessoryInfo *)self supportsDragonSiri];
+    supportsDragonSiri = [(HMDSiriAccessoryInfo *)self supportsDragonSiri];
   }
 
   else
   {
-    v4 = 0;
+    supportsDragonSiri = 0;
   }
 
-  return v4;
+  return supportsDragonSiri;
 }
 
-+ (id)infoWithTargetableAccessory:(id)a3
++ (id)infoWithTargetableAccessory:(id)accessory
 {
-  v3 = a3;
+  accessoryCopy = accessory;
   v4 = objc_alloc_init(HMDSiriAccessoryInfo);
   v5 = v4;
   if (v4)
   {
-    [(HMDSiriAccessoryInfo *)v4 setTargetsAccessory:v3];
+    [(HMDSiriAccessoryInfo *)v4 setTargetsAccessory:accessoryCopy];
   }
 
   return v5;

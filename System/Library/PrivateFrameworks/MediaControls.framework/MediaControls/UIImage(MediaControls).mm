@@ -7,9 +7,9 @@
 - (UIImage)mru_imageFittingSize:()MediaControls
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  if ([(UIImage *)a1 isSymbolImage])
+  if ([(UIImage *)self isSymbolImage])
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
   else
@@ -19,11 +19,11 @@
       a2 = a3;
     }
 
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v9 = v8;
 
-    v10 = UIImagePNGRepresentation(a1);
+    v10 = UIImagePNGRepresentation(self);
     v21 = *MEMORY[0x1E696E0A8];
     v22[0] = MEMORY[0x1E695E110];
     v11 = CGImageSourceCreateWithData(v10, [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1]);
@@ -42,12 +42,12 @@
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:4];
 
     ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(v11, 0, v16);
-    v6 = [MEMORY[0x1E69DCAB8] imageWithCGImage:ThumbnailAtIndex];
+    selfCopy = [MEMORY[0x1E69DCAB8] imageWithCGImage:ThumbnailAtIndex];
     CGImageRelease(ThumbnailAtIndex);
     CFRelease(v11);
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

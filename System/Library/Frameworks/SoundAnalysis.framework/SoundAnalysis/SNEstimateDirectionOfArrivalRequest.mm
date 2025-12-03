@@ -1,9 +1,9 @@
 @interface SNEstimateDirectionOfArrivalRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)spatialSpectrum;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SNEstimateDirectionOfArrivalRequest
@@ -15,9 +15,9 @@
   return v2;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   SNEstimateDirectionOfArrivalRequest.copy(with:)(v6);
 
   sub_1C97A5A8C(v6, v6[3]);
@@ -28,17 +28,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SNEstimateDirectionOfArrivalRequest.hash.getter();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C9A93318();
     swift_unknownObjectRelease();
@@ -47,7 +47,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = SNEstimateDirectionOfArrivalRequest.isEqual(_:)();
@@ -56,11 +56,11 @@
   return v6 & 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SNEstimateDirectionOfArrivalRequest.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SNEstimateDirectionOfArrivalRequest.encode(with:)(coderCopy);
 }
 
 @end

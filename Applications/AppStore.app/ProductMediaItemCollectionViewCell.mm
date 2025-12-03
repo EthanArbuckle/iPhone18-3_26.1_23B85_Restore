@@ -1,12 +1,12 @@
 @interface ProductMediaItemCollectionViewCell
-- (_TtC8AppStore34ProductMediaItemCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore34ProductMediaItemCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation ProductMediaItemCollectionViewCell
 
-- (_TtC8AppStore34ProductMediaItemCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore34ProductMediaItemCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore34ProductMediaItemCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -25,13 +25,13 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007183B0();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007185A4();
 }
 

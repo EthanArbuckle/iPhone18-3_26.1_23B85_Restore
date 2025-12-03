@@ -1,45 +1,45 @@
 @interface CarMapsSuggestionsObserver_LowFuel
 - (BOOL)hasLowFuelSuggestion;
-- (BOOL)updateShownFuelAlerts:(id)a3;
+- (BOOL)updateShownFuelAlerts:(id)alerts;
 - (CarMapsSuggestionsController)controller;
 - (CarMapsSuggestionsObserver_LowFuel)init;
 - (id)lowFuelSuggestions;
-- (id)unshownFuelAlerts:(id)a3;
-- (void)addShownFuelAlert:(id)a3;
-- (void)carMapsSuggestionControllerDidRefresh:(id)a3;
+- (id)unshownFuelAlerts:(id)alerts;
+- (void)addShownFuelAlert:(id)alert;
+- (void)carMapsSuggestionControllerDidRefresh:(id)refresh;
 - (void)removeAllShownFuelAlerts;
-- (void)setActive:(BOOL)a3;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation CarMapsSuggestionsObserver_LowFuel
 
-- (void)carMapsSuggestionControllerDidRefresh:(id)a3
+- (void)carMapsSuggestionControllerDidRefresh:(id)refresh
 {
-  v4 = a3;
+  refreshCopy = refresh;
   if ([(CarMapsSuggestionsObserver_LowFuel *)self hasLowFuelSuggestion])
   {
-    v5 = [(CarMapsSuggestionsObserver_LowFuel *)self controller];
-    v6 = [v5 allowLowFuelAlert];
+    controller = [(CarMapsSuggestionsObserver_LowFuel *)self controller];
+    allowLowFuelAlert = [controller allowLowFuelAlert];
 
-    if (v6)
+    if (allowLowFuelAlert)
     {
-      v7 = [(CarMapsSuggestionsObserver_LowFuel *)self lowFuelSuggestions];
-      if ([(CarMapsSuggestionsObserver_LowFuel *)self updateShownFuelAlerts:v7])
+      lowFuelSuggestions = [(CarMapsSuggestionsObserver_LowFuel *)self lowFuelSuggestions];
+      if ([(CarMapsSuggestionsObserver_LowFuel *)self updateShownFuelAlerts:lowFuelSuggestions])
       {
         v8 = +[MSPMapsPushDaemonRemoteProxy sharedInstance];
         [v8 clearLowFuelAlertBulletin];
       }
 
-      v9 = [(CarMapsSuggestionsObserver_LowFuel *)self unshownFuelAlerts:v7];
-      if ([v9 count])
+      controller2 = [(CarMapsSuggestionsObserver_LowFuel *)self unshownFuelAlerts:lowFuelSuggestions];
+      if ([controller2 count])
       {
-        v10 = [v9 firstObject];
-        v11 = [[MSPLowFuelDetails alloc] initWithMapsSuggestionsEntry:v10];
+        firstObject = [controller2 firstObject];
+        v11 = [[MSPLowFuelDetails alloc] initWithMapsSuggestionsEntry:firstObject];
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v12 = v9;
+        v12 = controller2;
         v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v13)
         {
@@ -70,7 +70,7 @@
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v27 = v12;
+          allowLowFuelAlert2 = v12;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Sending low fuel details to MSPMapsPushDaemon. Unshown Fuel Alert Details: %@", buf, 0xCu);
         }
 
@@ -80,31 +80,31 @@
 
       else
       {
-        v10 = sub_100006E1C();
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+        firstObject = sub_100006E1C();
+        if (os_log_type_enabled(firstObject, OS_LOG_TYPE_INFO))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "There are no unshown fuel alerts to display", buf, 2u);
+          _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_INFO, "There are no unshown fuel alerts to display", buf, 2u);
         }
       }
 
-      [v4 setHoldProcessAssertion:0];
+      [refreshCopy setHoldProcessAssertion:0];
     }
 
     else
     {
-      v7 = sub_100006E1C();
-      if (!os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+      lowFuelSuggestions = sub_100006E1C();
+      if (!os_log_type_enabled(lowFuelSuggestions, OS_LOG_TYPE_INFO))
       {
 LABEL_23:
 
         goto LABEL_24;
       }
 
-      v9 = [(CarMapsSuggestionsObserver_LowFuel *)self controller];
+      controller2 = [(CarMapsSuggestionsObserver_LowFuel *)self controller];
       *buf = 134217984;
-      v27 = [v9 allowLowFuelAlert];
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "CarMapsSuggestionController Did Refresh with allowLowFuelAlert as :%ld", buf, 0xCu);
+      allowLowFuelAlert2 = [controller2 allowLowFuelAlert];
+      _os_log_impl(&_mh_execute_header, lowFuelSuggestions, OS_LOG_TYPE_INFO, "CarMapsSuggestionController Did Refresh with allowLowFuelAlert as :%ld", buf, 0xCu);
     }
 
     goto LABEL_23;
@@ -113,8 +113,8 @@ LABEL_23:
   v19 = +[MSPMapsPushDaemonRemoteProxy sharedInstance];
   [v19 clearLowFuelAlertBulletin];
 
-  v20 = [(CarMapsSuggestionsObserver_LowFuel *)self controller];
-  [v20 setAllowLowFuelAlert:1];
+  controller3 = [(CarMapsSuggestionsObserver_LowFuel *)self controller];
+  [controller3 setAllowLowFuelAlert:1];
 
   [(CarMapsSuggestionsObserver_LowFuel *)self removeAllShownFuelAlerts];
 LABEL_24:
@@ -127,10 +127,10 @@ LABEL_24:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CarMapsSuggestionsObserver_LowFuel *)self controller];
-  v5 = [v4 suggestions];
+  controller = [(CarMapsSuggestionsObserver_LowFuel *)self controller];
+  suggestions = [controller suggestions];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [suggestions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -141,7 +141,7 @@ LABEL_24:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(suggestions);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -151,7 +151,7 @@ LABEL_24:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [suggestions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -162,8 +162,8 @@ LABEL_24:
 
 - (BOOL)hasLowFuelSuggestion
 {
-  v2 = [(CarMapsSuggestionsObserver_LowFuel *)self lowFuelSuggestions];
-  v3 = [v2 count] != 0;
+  lowFuelSuggestions = [(CarMapsSuggestionsObserver_LowFuel *)self lowFuelSuggestions];
+  v3 = [lowFuelSuggestions count] != 0;
 
   return v3;
 }
@@ -171,16 +171,16 @@ LABEL_24:
 - (CarMapsSuggestionsController)controller
 {
   v2 = +[CarDisplayController sharedInstance];
-  v3 = [v2 mapsSuggestionsController];
+  mapsSuggestionsController = [v2 mapsSuggestionsController];
 
-  return v3;
+  return mapsSuggestionsController;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
+    activeCopy = active;
     v5 = sub_100006E1C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -195,7 +195,7 @@ LABEL_24:
       }
 
       v7 = v6;
-      if (v3)
+      if (activeCopy)
       {
         v8 = @"YES";
       }
@@ -213,20 +213,20 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[CarMapsSuggestionsController] LowFuel monitor _active=%{public}@ active=%{public}@", buf, 0x16u);
     }
 
-    self->_active = v3;
+    self->_active = activeCopy;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100C7DD38;
     v10[3] = &unk_101661AE0;
-    v11 = v3;
+    v11 = activeCopy;
     v10[4] = self;
     dispatch_async(&_dispatch_main_q, v10);
   }
 }
 
-- (id)unshownFuelAlerts:(id)a3
+- (id)unshownFuelAlerts:(id)alerts
 {
-  v4 = a3;
+  alertsCopy = alerts;
   obj = [(CarMapsSuggestionsObserver_LowFuel *)self shownFuelAlerts];
   objc_sync_enter(obj);
   v5 = objc_opt_new();
@@ -234,7 +234,7 @@ LABEL_24:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = alertsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -249,9 +249,9 @@ LABEL_24:
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [(CarMapsSuggestionsObserver_LowFuel *)self shownFuelAlerts];
-        v12 = [v10 uniqueIdentifier];
-        v13 = [v11 objectForKeyedSubscript:v12];
+        shownFuelAlerts = [(CarMapsSuggestionsObserver_LowFuel *)self shownFuelAlerts];
+        uniqueIdentifier = [v10 uniqueIdentifier];
+        v13 = [shownFuelAlerts objectForKeyedSubscript:uniqueIdentifier];
         v14 = v13 == 0;
 
         if (v14)
@@ -271,20 +271,20 @@ LABEL_24:
   return v5;
 }
 
-- (BOOL)updateShownFuelAlerts:(id)a3
+- (BOOL)updateShownFuelAlerts:(id)alerts
 {
-  v4 = a3;
+  alertsCopy = alerts;
   obj = [(CarMapsSuggestionsObserver_LowFuel *)self shownFuelAlerts];
   objc_sync_enter(obj);
-  v5 = [(CarMapsSuggestionsObserver_LowFuel *)self shownFuelAlerts];
-  v6 = [v5 allKeys];
-  v7 = [NSMutableSet setWithArray:v6];
+  shownFuelAlerts = [(CarMapsSuggestionsObserver_LowFuel *)self shownFuelAlerts];
+  allKeys = [shownFuelAlerts allKeys];
+  v7 = [NSMutableSet setWithArray:allKeys];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = v4;
+  v8 = alertsCopy;
   v9 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v9)
   {
@@ -299,8 +299,8 @@ LABEL_24:
           objc_enumerationMutation(v8);
         }
 
-        v12 = [*(*(&v28 + 1) + 8 * v11) uniqueIdentifier];
-        [v7 removeObject:v12];
+        uniqueIdentifier = [*(*(&v28 + 1) + 8 * v11) uniqueIdentifier];
+        [v7 removeObject:uniqueIdentifier];
 
         v11 = v11 + 1;
       }
@@ -333,13 +333,13 @@ LABEL_24:
         }
 
         v18 = *(*(&v24 + 1) + 8 * v17);
-        v19 = [(CarMapsSuggestionsObserver_LowFuel *)self shownFuelAlerts];
-        v20 = [v19 objectForKeyedSubscript:v18];
+        shownFuelAlerts2 = [(CarMapsSuggestionsObserver_LowFuel *)self shownFuelAlerts];
+        v20 = [shownFuelAlerts2 objectForKeyedSubscript:v18];
 
         if (v20)
         {
-          v21 = [(CarMapsSuggestionsObserver_LowFuel *)self shownFuelAlerts];
-          [v21 removeObjectForKey:v18];
+          shownFuelAlerts3 = [(CarMapsSuggestionsObserver_LowFuel *)self shownFuelAlerts];
+          [shownFuelAlerts3 removeObjectForKey:v18];
 
           v14 = 1;
         }
@@ -358,24 +358,24 @@ LABEL_24:
   return v14 & 1;
 }
 
-- (void)addShownFuelAlert:(id)a3
+- (void)addShownFuelAlert:(id)alert
 {
-  v7 = a3;
-  v4 = [(CarMapsSuggestionsObserver_LowFuel *)self shownFuelAlerts];
-  objc_sync_enter(v4);
-  v5 = [(CarMapsSuggestionsObserver_LowFuel *)self shownFuelAlerts];
-  v6 = [v7 uniqueIdentifier];
-  [v5 setObject:v7 forKeyedSubscript:v6];
+  alertCopy = alert;
+  shownFuelAlerts = [(CarMapsSuggestionsObserver_LowFuel *)self shownFuelAlerts];
+  objc_sync_enter(shownFuelAlerts);
+  shownFuelAlerts2 = [(CarMapsSuggestionsObserver_LowFuel *)self shownFuelAlerts];
+  uniqueIdentifier = [alertCopy uniqueIdentifier];
+  [shownFuelAlerts2 setObject:alertCopy forKeyedSubscript:uniqueIdentifier];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(shownFuelAlerts);
 }
 
 - (void)removeAllShownFuelAlerts
 {
   obj = [(CarMapsSuggestionsObserver_LowFuel *)self shownFuelAlerts];
   objc_sync_enter(obj);
-  v3 = [(CarMapsSuggestionsObserver_LowFuel *)self shownFuelAlerts];
-  [v3 removeAllObjects];
+  shownFuelAlerts = [(CarMapsSuggestionsObserver_LowFuel *)self shownFuelAlerts];
+  [shownFuelAlerts removeAllObjects];
 
   objc_sync_exit(obj);
 }

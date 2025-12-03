@@ -1,7 +1,7 @@
 @interface MTLArchitecture
-- (MTLArchitecture)initWithCPUType:(int)a3 cpuSubtype:(int)a4;
-- (MTLArchitecture)initWithCPUType:(int)a3 cpuSubtype:(int)a4 revision:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTLArchitecture)initWithCPUType:(int)type cpuSubtype:(int)subtype;
+- (MTLArchitecture)initWithCPUType:(int)type cpuSubtype:(int)subtype revision:(id)revision;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -14,7 +14,7 @@
   [(MTLArchitecture *)&v3 dealloc];
 }
 
-- (MTLArchitecture)initWithCPUType:(int)a3 cpuSubtype:(int)a4
+- (MTLArchitecture)initWithCPUType:(int)type cpuSubtype:(int)subtype
 {
   v9.receiver = self;
   v9.super_class = MTLArchitecture;
@@ -22,15 +22,15 @@
   v7 = v6;
   if (v6)
   {
-    v6->_cpuType = a3;
-    v6->_cpuSubtype = a4;
-    v6->_name = newArchitectureNameString(a3, a4);
+    v6->_cpuType = type;
+    v6->_cpuSubtype = subtype;
+    v6->_name = newArchitectureNameString(type, subtype);
   }
 
   return v7;
 }
 
-- (MTLArchitecture)initWithCPUType:(int)a3 cpuSubtype:(int)a4 revision:(id)a5
+- (MTLArchitecture)initWithCPUType:(int)type cpuSubtype:(int)subtype revision:(id)revision
 {
   v11.receiver = self;
   v11.super_class = MTLArchitecture;
@@ -38,16 +38,16 @@
   v9 = v8;
   if (v8)
   {
-    v8->_cpuType = a3;
-    v8->_cpuSubtype = a4;
-    v8->_name = newArchitectureNameString(a3, a4);
-    v9->_revision = [a5 copy];
+    v8->_cpuType = type;
+    v8->_cpuSubtype = subtype;
+    v8->_name = newArchitectureNameString(type, subtype);
+    v9->_revision = [revision copy];
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   *(result + 1) = self->_name;

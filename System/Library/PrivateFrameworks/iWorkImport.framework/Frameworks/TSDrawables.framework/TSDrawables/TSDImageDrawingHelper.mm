@@ -3,34 +3,34 @@
 - (BOOL)drawsError;
 - (BOOL)p_canDrawThumbnailAsSizedImage;
 - (BOOL)shouldShowCheckerboard;
-- (CGRect)imageRectInContext:(CGContext *)a3;
-- (CGRect)p_antialiasingDefeatedRectForRect:(CGRect)a3 inContext:(CGContext *)a4;
+- (CGRect)imageRectInContext:(CGContext *)context;
+- (CGRect)p_antialiasingDefeatedRectForRect:(CGRect)rect inContext:(CGContext *)context;
 - (CGSize)p_desiredSizedImageSize;
 - (CGSize)p_imagePixelSize;
 - (TSDImageDrawingDataSource)rep;
-- (TSDImageDrawingHelper)initWithRep:(id)a3;
+- (TSDImageDrawingHelper)initWithRep:(id)rep;
 - (TSPData)imageDataForDrawing;
 - (id)p_imageProvider;
 - (id)p_validatedBitmapImageProvider;
 - (id)p_validatedImageProvider;
 - (id)p_validatedThumbnailImageProvider;
-- (void)addBitmapsToRenderingQualityInfo:(id)a3 inContext:(CGContext *)a4;
+- (void)addBitmapsToRenderingQualityInfo:(id)info inContext:(CGContext *)context;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3 forLayer:(BOOL)a4 forShadowOrHitTest:(BOOL)a5;
+- (void)drawInContext:(CGContext *)context forLayer:(BOOL)layer forShadowOrHitTest:(BOOL)test;
 @end
 
 @implementation TSDImageDrawingHelper
 
-- (TSDImageDrawingHelper)initWithRep:(id)a3
+- (TSDImageDrawingHelper)initWithRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   v8.receiver = self;
   v8.super_class = TSDImageDrawingHelper;
   v5 = [(TSDImageDrawingHelper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_rep, v4);
+    objc_storeWeak(&v5->_rep, repCopy);
   }
 
   return v6;
@@ -43,9 +43,9 @@
   [(TSDImageDrawingHelper *)&v2 dealloc];
 }
 
-- (CGRect)imageRectInContext:(CGContext *)a3
+- (CGRect)imageRectInContext:(CGContext *)context
 {
-  v5 = objc_msgSend_rep(self, a2, a3);
+  v5 = objc_msgSend_rep(self, a2, context);
   v7 = v5;
   if (v5)
   {
@@ -68,7 +68,7 @@
 
       if ((isPrinting & 1) == 0)
       {
-        objc_msgSend_p_antialiasingDefeatedRectForRect_inContext_(self, v40, a3, v9, v11, v13, v15);
+        objc_msgSend_p_antialiasingDefeatedRectForRect_inContext_(self, v40, context, v9, v11, v13, v15);
         v9 = v41;
         v11 = v42;
         v13 = v43;
@@ -102,28 +102,28 @@
   return result;
 }
 
-- (void)drawInContext:(CGContext *)a3 forLayer:(BOOL)a4 forShadowOrHitTest:(BOOL)a5
+- (void)drawInContext:(CGContext *)context forLayer:(BOOL)layer forShadowOrHitTest:(BOOL)test
 {
-  v5 = a5;
-  v38 = objc_msgSend_rep(self, a2, a3, a4);
+  testCopy = test;
+  v38 = objc_msgSend_rep(self, a2, context, layer);
   if (v38)
   {
-    objc_msgSend_imageRectInContext_(self, v8, a3);
+    objc_msgSend_imageRectInContext_(self, v8, context);
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    if (v5 && (objc_msgSend_imageDrawingHelperImageHasAlpha_(v38, v9, self) & 1) == 0)
+    if (testCopy && (objc_msgSend_imageDrawingHelperImageHasAlpha_(v38, v9, self) & 1) == 0)
     {
       v34 = objc_msgSend_blackColor(MEMORY[0x277D81180], v9, v10);
       v37 = objc_msgSend_CGColor(v34, v35, v36);
-      CGContextSetFillColorWithColor(a3, v37);
+      CGContextSetFillColorWithColor(context, v37);
 
       v40.origin.x = v12;
       v40.origin.y = v14;
       v40.size.width = v16;
       v40.size.height = v18;
-      CGContextFillRect(a3, v40);
+      CGContextFillRect(context, v40);
     }
 
     else
@@ -141,7 +141,7 @@
         }
       }
 
-      objc_msgSend_drawImageInContext_rect_(v19, v22, a3, v12, v14, v16, v18);
+      objc_msgSend_drawImageInContext_rect_(v19, v22, context, v12, v14, v16, v18);
     }
 
     CGImageRelease(0);
@@ -158,13 +158,13 @@
   }
 }
 
-- (CGRect)p_antialiasingDefeatedRectForRect:(CGRect)a3 inContext:(CGContext *)a4
+- (CGRect)p_antialiasingDefeatedRectForRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = objc_msgSend_rep(self, a2, a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = objc_msgSend_rep(self, a2, context);
   v12 = v10;
   if (v10)
   {
@@ -192,7 +192,7 @@
     v40.size.width = width;
     v40.size.height = height;
     CGRectApplyAffineTransform(v40, &v38);
-    TSDCGContextAssociatedScreenScale(a4);
+    TSDCGContextAssociatedScreenScale(context);
     v22 = objc_msgSend_canvas(v12, v20, v21);
     objc_msgSend_viewScale(v22, v23, v24);
 
@@ -371,14 +371,14 @@ LABEL_6:
   return v8;
 }
 
-- (void)addBitmapsToRenderingQualityInfo:(id)a3 inContext:(CGContext *)a4
+- (void)addBitmapsToRenderingQualityInfo:(id)info inContext:(CGContext *)context
 {
-  v11 = a3;
+  infoCopy = info;
   v9 = objc_msgSend_p_validatedBitmapImageProvider(self, v5, v6);
   if (v9)
   {
     objc_msgSend_p_desiredSizedImageSize(self, v7, v8);
-    objc_msgSend_cacheProvider_ofSize_(v11, v10, v9);
+    objc_msgSend_cacheProvider_ofSize_(infoCopy, v10, v9);
   }
 }
 

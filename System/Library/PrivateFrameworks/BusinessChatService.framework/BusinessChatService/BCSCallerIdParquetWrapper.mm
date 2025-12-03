@@ -1,12 +1,12 @@
 @interface BCSCallerIdParquetWrapper
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BCSCallerIdParquetWrapper
@@ -17,33 +17,33 @@
   v8.receiver = self;
   v8.super_class = BCSCallerIdParquetWrapper;
   v4 = [(BCSCallerIdParquetWrapper *)&v8 description];
-  v5 = [(BCSCallerIdParquetWrapper *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BCSCallerIdParquetWrapper *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   message = self->_message;
   if (message)
   {
-    [v3 setObject:message forKey:@"message"];
+    [dictionary setObject:message forKey:@"message"];
   }
 
   return v4;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -54,18 +54,18 @@
       while (1)
       {
         v19 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v19 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v19 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v19 & 0x7F) << v6;
@@ -82,9 +82,9 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -105,17 +105,17 @@ LABEL_15:
         }
       }
 
-      v17 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v17 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v16) = [a3 hasError] ^ 1;
+  LOBYTE(v16) = [from hasError] ^ 1;
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_message)
   {
@@ -123,32 +123,32 @@ LABEL_15:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   message = self->_message;
   if (message)
   {
-    [a3 setMessage:message];
+    [to setMessage:message];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_message copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_message copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     message = self->_message;
-    if (message | v4[1])
+    if (message | equalCopy[1])
     {
       v6 = [(NSData *)message isEqual:?];
     }
@@ -167,9 +167,9 @@ LABEL_15:
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(BCSCallerIdParquetWrapper *)self setMessage:?];
   }

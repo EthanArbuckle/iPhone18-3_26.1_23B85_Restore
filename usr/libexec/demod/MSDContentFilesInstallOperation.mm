@@ -5,36 +5,36 @@
 - (BOOL)_moveFilesFromStagingToSecondaryStaging;
 - (BOOL)_patchBackupFolderIfNeeded;
 - (BOOL)rollback;
-- (MSDContentFilesInstallOperation)initWithContext:(id)a3;
-- (MSDContentFilesInstallOperation)initWithContext:(id)a3 andContentCacheManager:(id)a4 andTargetDevice:(id)a5;
+- (MSDContentFilesInstallOperation)initWithContext:(id)context;
+- (MSDContentFilesInstallOperation)initWithContext:(id)context andContentCacheManager:(id)manager andTargetDevice:(id)device;
 - (id)_retrieveContentRootPath;
 - (id)methodSelectors;
 @end
 
 @implementation MSDContentFilesInstallOperation
 
-- (MSDContentFilesInstallOperation)initWithContext:(id)a3
+- (MSDContentFilesInstallOperation)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[MSDContentCacheManager sharedInstance];
   v6 = +[MSDTargetDevice sharedInstance];
-  v7 = [(MSDContentFilesInstallOperation *)self initWithContext:v4 andContentCacheManager:v5 andTargetDevice:v6];
+  v7 = [(MSDContentFilesInstallOperation *)self initWithContext:contextCopy andContentCacheManager:v5 andTargetDevice:v6];
 
   return v7;
 }
 
-- (MSDContentFilesInstallOperation)initWithContext:(id)a3 andContentCacheManager:(id)a4 andTargetDevice:(id)a5
+- (MSDContentFilesInstallOperation)initWithContext:(id)context andContentCacheManager:(id)manager andTargetDevice:(id)device
 {
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = MSDContentFilesInstallOperation;
-  v10 = [(MSDOperation *)&v13 initWithContext:a3];
+  v10 = [(MSDOperation *)&v13 initWithContext:context];
   v11 = v10;
   if (v10)
   {
-    [(MSDContentFilesInstallOperation *)v10 setContentCacheProtocol:v8];
-    [(MSDContentFilesInstallOperation *)v11 setTargetDeviceDelegate:v9];
+    [(MSDContentFilesInstallOperation *)v10 setContentCacheProtocol:managerCopy];
+    [(MSDContentFilesInstallOperation *)v11 setTargetDeviceDelegate:deviceCopy];
   }
 
   return v11;
@@ -54,14 +54,14 @@
 
 - (BOOL)rollback
 {
-  v3 = [(MSDOperation *)self context];
-  v4 = [v3 stagingRootPath];
+  context = [(MSDOperation *)self context];
+  stagingRootPath = [context stagingRootPath];
 
-  v5 = [(MSDOperation *)self context];
-  v6 = [v5 secondaryStagingRootPath];
+  context2 = [(MSDOperation *)self context];
+  secondaryStagingRootPath = [context2 secondaryStagingRootPath];
 
   v7 = +[MSDHelperAgent sharedInstance];
-  v8 = [v7 removeWorkDirectory:v4];
+  v8 = [v7 removeWorkDirectory:stagingRootPath];
 
   if ((v8 & 1) == 0)
   {
@@ -75,7 +75,7 @@
   }
 
   v9 = +[MSDHelperAgent sharedInstance];
-  v10 = [v9 removeWorkDirectory:v6];
+  v10 = [v9 removeWorkDirectory:secondaryStagingRootPath];
 
   if ((v10 & 1) == 0)
   {
@@ -101,12 +101,12 @@ LABEL_4:
 - (BOOL)_createWormholeInStagingToUserHome
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(MSDContentFilesInstallOperation *)self targetDeviceDelegate];
-  v5 = [v4 demoUserHomePath];
+  targetDeviceDelegate = [(MSDContentFilesInstallOperation *)self targetDeviceDelegate];
+  demoUserHomePath = [targetDeviceDelegate demoUserHomePath];
 
-  v6 = [(MSDOperation *)self context];
-  v7 = [v6 stagingRootPath];
-  v8 = [v7 stringByAppendingPathComponent:v5];
+  context = [(MSDOperation *)self context];
+  stagingRootPath = [context stagingRootPath];
+  v8 = [stagingRootPath stringByAppendingPathComponent:demoUserHomePath];
 
   if (+[MSDOperationContext downloadOnly])
   {
@@ -115,19 +115,19 @@ LABEL_4:
 
   else
   {
-    v9 = v5;
+    v9 = demoUserHomePath;
   }
 
   v10 = [(__CFString *)v9 stringByAppendingPathComponent:@"/.MSDWorkContainer"];
   v11 = [v10 stringByAppendingPathComponent:@"/MSD_staging"];
-  v12 = [(MSDOperation *)self context];
-  v13 = [v12 uniqueName];
-  v14 = [v11 stringByAppendingPathComponent:v13];
+  context2 = [(MSDOperation *)self context];
+  uniqueName = [context2 uniqueName];
+  v14 = [v11 stringByAppendingPathComponent:uniqueName];
 
   v15 = [v10 stringByAppendingPathComponent:@"/MSD_secondary_staging"];
-  v16 = [(MSDOperation *)self context];
-  v17 = [v16 uniqueName];
-  v18 = [v15 stringByAppendingPathComponent:v17];
+  context3 = [(MSDOperation *)self context];
+  uniqueName2 = [context3 uniqueName];
+  v18 = [v15 stringByAppendingPathComponent:uniqueName2];
 
   v19 = sub_100063A54();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -139,9 +139,9 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Creating wormhole in staging from %{public}@ to %{public}@...", buf, 0x16u);
   }
 
-  v20 = [v8 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [v8 stringByDeletingLastPathComponent];
   v37 = 0;
-  v21 = [v3 createDirectoryAtPath:v20 withIntermediateDirectories:1 attributes:0 error:&v37];
+  v21 = [v3 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v37];
   v22 = v37;
 
   if ((v21 & 1) == 0)
@@ -238,25 +238,25 @@ LABEL_14:
 
 - (BOOL)_constructStagingArea
 {
-  v2 = [(MSDOperation *)self context];
-  v61 = [v2 stagingRootPath];
+  context = [(MSDOperation *)self context];
+  stagingRootPath = [context stagingRootPath];
 
-  v60 = [(MSDContentFilesInstallOperation *)self _retrieveContentRootPath];
-  v66 = [v61 stringByAppendingPathComponent:v60];
-  v3 = [(MSDOperation *)self context];
-  v4 = [v3 masterManifest];
-  v5 = [v4 dict];
-  v6 = [v5 allKeys];
+  _retrieveContentRootPath = [(MSDContentFilesInstallOperation *)self _retrieveContentRootPath];
+  v66 = [stagingRootPath stringByAppendingPathComponent:_retrieveContentRootPath];
+  context2 = [(MSDOperation *)self context];
+  masterManifest = [context2 masterManifest];
+  dict = [masterManifest dict];
+  allKeys = [dict allKeys];
 
-  v7 = [(MSDOperation *)self context];
-  v65 = [v7 masterManifest];
+  context3 = [(MSDOperation *)self context];
+  masterManifest2 = [context3 masterManifest];
 
   v121[0] = 0;
   v121[1] = v121;
   v121[2] = 0x3032000000;
   v121[3] = sub_10005D2B4;
   v121[4] = sub_10005D2C4;
-  v122 = [(MSDContentFilesInstallOperation *)self contentCacheProtocol];
+  contentCacheProtocol = [(MSDContentFilesInstallOperation *)self contentCacheProtocol];
   v115 = 0;
   v116 = &v115;
   v117 = 0x3032000000;
@@ -266,10 +266,10 @@ LABEL_14:
   v113[0] = 0;
   v113[1] = v113;
   v113[2] = 0x2020000000;
-  v8 = [(MSDOperation *)self context];
-  LOBYTE(v4) = [v8 verifyFileHash];
+  context4 = [(MSDOperation *)self context];
+  LOBYTE(masterManifest) = [context4 verifyFileHash];
 
-  v114 = v4;
+  v114 = masterManifest;
   v109 = 0;
   v110 = &v109;
   v111 = 0x2020000000;
@@ -309,7 +309,7 @@ LABEL_14:
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  obj = v6;
+  obj = allKeys;
   v9 = [obj countByEnumeratingWithState:&v75 objects:v127 count:16];
   if (v9)
   {
@@ -328,42 +328,42 @@ LABEL_3:
       v12 = *(*(&v75 + 1) + 8 * v11);
       v13 = objc_autoreleasePoolPush();
       v14 = [v66 stringByAppendingPathComponent:v12];
-      v15 = [v14 stringByDeletingLastPathComponent];
-      v16 = [v65 metadataForFile:v12];
+      stringByDeletingLastPathComponent = [v14 stringByDeletingLastPathComponent];
+      v16 = [masterManifest2 metadataForFile:v12];
       v17 = v16;
       if (!v16)
       {
         break;
       }
 
-      v18 = [v16 getFileType];
-      [v67 addObject:v15];
-      if ([v18 isEqualToString:NSFileTypeDirectory])
+      getFileType = [v16 getFileType];
+      [v67 addObject:stringByDeletingLastPathComponent];
+      if ([getFileType isEqualToString:NSFileTypeDirectory])
       {
         [v67 addObject:v14];
       }
 
       else
       {
-        if ([v18 isEqualToString:NSFileTypeSymbolicLink])
+        if ([getFileType isEqualToString:NSFileTypeSymbolicLink])
         {
           [v86[5] addObject:v14];
           v20 = v80[5];
-          v21 = [v17 getTargetFile];
-          [v20 setObject:v21 forKey:v14];
+          getTargetFile = [v17 getTargetFile];
+          [v20 setObject:getTargetFile forKey:v14];
           goto LABEL_17;
         }
 
-        if (![v18 isEqualToString:NSFileTypeRegular])
+        if (![getFileType isEqualToString:NSFileTypeRegular])
         {
-          v21 = sub_100063A54();
-          if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+          getTargetFile = sub_100063A54();
+          if (os_log_type_enabled(getTargetFile, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
             *&buf[4] = v12;
             v125 = 2114;
-            v126 = v18;
-            _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Ignore path %{public}@ of unexpected file type %{public}@", buf, 0x16u);
+            v126 = getFileType;
+            _os_log_impl(&_mh_execute_header, getTargetFile, OS_LOG_TYPE_DEFAULT, "Ignore path %{public}@ of unexpected file type %{public}@", buf, 0x16u);
           }
 
 LABEL_17:
@@ -374,13 +374,13 @@ LABEL_18:
         }
 
         [v98[5] addObject:v14];
-        v22 = [v17 getFileSize];
+        getFileSize = [v17 getFileSize];
         v23 = v92[5];
-        if (v22)
+        if (getFileSize)
         {
-          v21 = [v17 getHash];
-          v24 = [v21 hexStringRepresentation];
-          [v23 setObject:v24 forKey:v14];
+          getTargetFile = [v17 getHash];
+          hexStringRepresentation = [getTargetFile hexStringRepresentation];
+          [v23 setObject:hexStringRepresentation forKey:v14];
 
           goto LABEL_17;
         }
@@ -416,15 +416,15 @@ LABEL_19:
       }
     }
 
-    v21 = sub_100063A54();
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    getTargetFile = sub_100063A54();
+    if (os_log_type_enabled(getTargetFile, OS_LOG_TYPE_ERROR))
     {
       *buf = v59;
       *&buf[4] = v12;
-      _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Cannot find metadata for path %{public}@", buf, 0xCu);
+      _os_log_error_impl(&_mh_execute_header, getTargetFile, OS_LOG_TYPE_ERROR, "Cannot find metadata for path %{public}@", buf, 0xCu);
     }
 
-    v18 = 0;
+    getFileType = 0;
     v19 = 6;
     goto LABEL_18;
   }
@@ -464,11 +464,11 @@ LABEL_29:
           v37 = sub_100063A54();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
           {
-            v38 = [v104[5] localizedDescription];
+            localizedDescription = [v104[5] localizedDescription];
             *buf = 138543618;
             *&buf[4] = v30;
             v125 = 2114;
-            v126 = v38;
+            v126 = localizedDescription;
             _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Could not create directory at %{public}@ - %{public}@", buf, 0x16u);
           }
 
@@ -546,25 +546,25 @@ LABEL_58:
 
   if (!+[MSDOperationContext downloadOnly])
   {
-    v42 = [(MSDOperation *)self context];
-    v43 = [v42 containerType];
-    v44 = [v43 isEqualToString:@"BackupData"];
+    context5 = [(MSDOperation *)self context];
+    containerType = [context5 containerType];
+    v44 = [containerType isEqualToString:@"BackupData"];
 
     v45 = +[MSDHelperAgent sharedInstance];
     [(MSDOperation *)self context];
     if (v44)
       v46 = {;
-      v47 = [v46 contentBeingInstalled];
-      v49 = [v45 restoreBackupAttributesUnder:v66 range:v47 manifestUID:v48 deviceUID:{&off_10017B0E0, &off_10017B0E0}];
+      contentBeingInstalled = [v46 contentBeingInstalled];
+      v49 = [v45 restoreBackupAttributesUnder:v66 range:contentBeingInstalled manifestUID:v48 deviceUID:{&off_10017B0E0, &off_10017B0E0}];
       *(v110 + 24) = v49;
     }
 
     else
       v46 = {;
-      v50 = [v46 containerType];
-      v51 = [(MSDOperation *)self context];
-      v52 = [v51 identifier];
-      v53 = [v45 restoreAppDataAttributesUnder:v66 containerType:v50 identifier:v52 manifestUID:&off_10017B0E0 deviceUID:&off_10017B0E0];
+      containerType2 = [v46 containerType];
+      context6 = [(MSDOperation *)self context];
+      identifier = [context6 identifier];
+      v53 = [v45 restoreAppDataAttributesUnder:v66 containerType:containerType2 identifier:identifier manifestUID:&off_10017B0E0 deviceUID:&off_10017B0E0];
       *(v110 + 24) = v53;
     }
   }
@@ -596,21 +596,21 @@ LABEL_54:
 
 - (BOOL)_patchBackupFolderIfNeeded
 {
-  v3 = [(MSDOperation *)self context];
-  v4 = [v3 identifier];
+  context = [(MSDOperation *)self context];
+  identifier = [context identifier];
 
-  v5 = [(MSDOperation *)self context];
-  v6 = [v5 containerType];
+  context2 = [(MSDOperation *)self context];
+  containerType = [context2 containerType];
 
-  if ([v6 isEqualToString:@"BackupData"] && objc_msgSend(v4, "hasSuffix:", @"baseBackup"))
+  if ([containerType isEqualToString:@"BackupData"] && objc_msgSend(identifier, "hasSuffix:", @"baseBackup"))
   {
-    v7 = [(MSDContentFilesInstallOperation *)self targetDeviceDelegate];
-    v8 = [(MSDOperation *)self context];
-    v9 = [v8 stagingRootPath];
-    [v7 patchBackupFolderInStaging:v9];
+    targetDeviceDelegate = [(MSDContentFilesInstallOperation *)self targetDeviceDelegate];
+    context3 = [(MSDOperation *)self context];
+    stagingRootPath = [context3 stagingRootPath];
+    [targetDeviceDelegate patchBackupFolderInStaging:stagingRootPath];
   }
 
-  if (!+[MSDOperationContext downloadOnly](MSDOperationContext, "downloadOnly") && [v6 isEqualToString:@"BackupData"] && objc_msgSend(v4, "hasSuffix:", @"greyMatter"))
+  if (!+[MSDOperationContext downloadOnly](MSDOperationContext, "downloadOnly") && [containerType isEqualToString:@"BackupData"] && objc_msgSend(identifier, "hasSuffix:", @"greyMatter"))
   {
     +[MSDGreyMatterHelper purgeExistingAssets];
   }
@@ -620,24 +620,24 @@ LABEL_54:
 
 - (BOOL)_moveFilesFromStagingToSecondaryStaging
 {
-  v3 = [(MSDOperation *)self context];
-  v4 = [v3 stagingRootPath];
+  context = [(MSDOperation *)self context];
+  stagingRootPath = [context stagingRootPath];
 
-  v5 = [(MSDOperation *)self context];
-  v6 = [v5 secondaryStagingRootPath];
+  context2 = [(MSDOperation *)self context];
+  secondaryStagingRootPath = [context2 secondaryStagingRootPath];
 
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
-    v12 = v4;
+    v12 = stagingRootPath;
     v13 = 2114;
-    v14 = v6;
+    v14 = secondaryStagingRootPath;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Moving files from %{public}@ to %{public}@.", &v11, 0x16u);
   }
 
-  v8 = [(MSDContentFilesInstallOperation *)self targetDeviceDelegate];
-  v9 = [v8 moveFilesToFinalDst:v4 finalPath:v6];
+  targetDeviceDelegate = [(MSDContentFilesInstallOperation *)self targetDeviceDelegate];
+  v9 = [targetDeviceDelegate moveFilesToFinalDst:stagingRootPath finalPath:secondaryStagingRootPath];
 
   return v9;
 }
@@ -645,20 +645,20 @@ LABEL_54:
 - (BOOL)_addToProcessedContainersIfNeeded
 {
   v3 = +[MSDContentFilesContext processedContainers];
-  v4 = [(MSDOperation *)self context];
-  v5 = [v4 uniqueName];
+  context = [(MSDOperation *)self context];
+  uniqueName = [context uniqueName];
 
-  if (([v3 containsObject:v5] & 1) == 0)
+  if (([v3 containsObject:uniqueName] & 1) == 0)
   {
     v6 = sub_100063A54();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543362;
-      v9 = v5;
+      v9 = uniqueName;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Adding to processed containers: %{public}@", &v8, 0xCu);
     }
 
-    [v3 addObject:v5];
+    [v3 addObject:uniqueName];
   }
 
   return 1;
@@ -666,16 +666,16 @@ LABEL_54:
 
 - (id)_retrieveContentRootPath
 {
-  v3 = [(MSDOperation *)self context];
-  v4 = [v3 contentRootPath];
+  context = [(MSDOperation *)self context];
+  contentRootPath = [context contentRootPath];
 
-  if (!v4)
+  if (!contentRootPath)
   {
-    v5 = [(MSDOperation *)self context];
-    v4 = [v5 pseudoContentRootPath];
+    context2 = [(MSDOperation *)self context];
+    contentRootPath = [context2 pseudoContentRootPath];
   }
 
-  return v4;
+  return contentRootPath;
 }
 
 @end

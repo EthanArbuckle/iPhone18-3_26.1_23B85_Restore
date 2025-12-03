@@ -1,22 +1,22 @@
 @interface SAFileDownloaderDelegate
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation SAFileDownloaderDelegate
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v18 = a4;
-  v9 = a6;
-  v10 = a7;
-  v11 = [v18 originalRequest];
-  v12 = [v11 URL];
-  v13 = [v12 scheme];
-  if ([v13 isEqualToString:@"https"])
+  taskCopy = task;
+  requestCopy = request;
+  handlerCopy = handler;
+  originalRequest = [taskCopy originalRequest];
+  v12 = [originalRequest URL];
+  scheme = [v12 scheme];
+  if ([scheme isEqualToString:@"https"])
   {
-    v14 = [v9 URL];
-    v15 = [v14 scheme];
-    v16 = [v15 isEqualToString:@"http"];
+    v14 = [requestCopy URL];
+    scheme2 = [v14 scheme];
+    v16 = [scheme2 isEqualToString:@"http"];
 
     if (v16)
     {
@@ -29,9 +29,9 @@
   {
   }
 
-  v17 = v9;
+  v17 = requestCopy;
 LABEL_6:
-  (v10)[2](v10, v17);
+  (handlerCopy)[2](handlerCopy, v17);
 }
 
 @end

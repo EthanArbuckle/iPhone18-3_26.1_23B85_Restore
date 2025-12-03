@@ -1,5 +1,5 @@
 @interface HMDCameraRecordingReachabilityLogEvent
-- (HMDCameraRecordingReachabilityLogEvent)initWithReachability:(BOOL)a3 didCreateEventModel:(BOOL)a4 reachabilityChangeDebounceCount:(unint64_t)a5 offlineDuration:(double)a6 hapAccessory:(id)a7;
+- (HMDCameraRecordingReachabilityLogEvent)initWithReachability:(BOOL)reachability didCreateEventModel:(BOOL)model reachabilityChangeDebounceCount:(unint64_t)count offlineDuration:(double)duration hapAccessory:(id)accessory;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -49,22 +49,22 @@
   return v11;
 }
 
-- (HMDCameraRecordingReachabilityLogEvent)initWithReachability:(BOOL)a3 didCreateEventModel:(BOOL)a4 reachabilityChangeDebounceCount:(unint64_t)a5 offlineDuration:(double)a6 hapAccessory:(id)a7
+- (HMDCameraRecordingReachabilityLogEvent)initWithReachability:(BOOL)reachability didCreateEventModel:(BOOL)model reachabilityChangeDebounceCount:(unint64_t)count offlineDuration:(double)duration hapAccessory:(id)accessory
 {
-  v12 = a7;
+  accessoryCopy = accessory;
   v18.receiver = self;
   v18.super_class = HMDCameraRecordingReachabilityLogEvent;
   v13 = [(HMMLogEvent *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    v13->_reachable = a3;
-    v13->_didCreateEventModel = a4;
-    v13->_reachabilityChangeDebounceCount = a5;
-    v13->_offlineDuration = a6;
-    v15 = [v12 identifier];
+    v13->_reachable = reachability;
+    v13->_didCreateEventModel = model;
+    v13->_reachabilityChangeDebounceCount = count;
+    v13->_offlineDuration = duration;
+    identifier = [accessoryCopy identifier];
     accessoryIdentifier = v14->_accessoryIdentifier;
-    v14->_accessoryIdentifier = v15;
+    v14->_accessoryIdentifier = identifier;
   }
 
   return v14;

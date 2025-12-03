@@ -1,9 +1,9 @@
 @interface TRIArchiveExtractor
-+ ($A5A652246548B43F8BC05201A1C72A70)_compressFilesInCurrentDirectoryWithLockWitness:(TRIFlockWitness_ *)a3 shouldDefer:(id)a4;
-+ ($A5A652246548B43F8BC05201A1C72A70)_copyDataFromReadArchive:(archive *)a3 toWriteDiskArchive:(archive *)a4 remainingQuota:(unint64_t *)a5 archiveIdentifier:(id)a6 shouldDefer:(id)a7;
-+ ($A5A652246548B43F8BC05201A1C72A70)_withLockWitness:(TRIFlockWitness_ *)a3 performExtractionIntoCurrentDirectoryFromArchive:(archive *)a4 maxUnarchivedSize:(unint64_t)a5 archiveIdentifier:(id)a6 shouldDefer:(id)a7;
-+ ($A5A652246548B43F8BC05201A1C72A70)extractArchiveFromHandle:(id)a3 toDestinationDirectoryURL:(id)a4 maxUnarchivedSize:(unint64_t)a5 archiveIdentifier:(id)a6 postExtractionCompression:(id)a7 shouldDefer:(id)a8;
-+ (BOOL)_withLockAndDirectoryChangedToURL:(id)a3 runBlock:(id)a4;
++ ($A5A652246548B43F8BC05201A1C72A70)_compressFilesInCurrentDirectoryWithLockWitness:(TRIFlockWitness_ *)witness shouldDefer:(id)defer;
++ ($A5A652246548B43F8BC05201A1C72A70)_copyDataFromReadArchive:(archive *)archive toWriteDiskArchive:(archive *)diskArchive remainingQuota:(unint64_t *)quota archiveIdentifier:(id)identifier shouldDefer:(id)defer;
++ ($A5A652246548B43F8BC05201A1C72A70)_withLockWitness:(TRIFlockWitness_ *)witness performExtractionIntoCurrentDirectoryFromArchive:(archive *)archive maxUnarchivedSize:(unint64_t)size archiveIdentifier:(id)identifier shouldDefer:(id)defer;
++ ($A5A652246548B43F8BC05201A1C72A70)extractArchiveFromHandle:(id)handle toDestinationDirectoryURL:(id)l maxUnarchivedSize:(unint64_t)size archiveIdentifier:(id)identifier postExtractionCompression:(id)compression shouldDefer:(id)defer;
++ (BOOL)_withLockAndDirectoryChangedToURL:(id)l runBlock:(id)block;
 + (archive)_createReadArchive;
 + (archive)_createWriteDiskArchive;
 @end
@@ -109,11 +109,11 @@ LABEL_7:
   return 0;
 }
 
-+ ($A5A652246548B43F8BC05201A1C72A70)_copyDataFromReadArchive:(archive *)a3 toWriteDiskArchive:(archive *)a4 remainingQuota:(unint64_t *)a5 archiveIdentifier:(id)a6 shouldDefer:(id)a7
++ ($A5A652246548B43F8BC05201A1C72A70)_copyDataFromReadArchive:(archive *)archive toWriteDiskArchive:(archive *)diskArchive remainingQuota:(unint64_t *)quota archiveIdentifier:(id)identifier shouldDefer:(id)defer
 {
-  v9 = a6;
-  v10 = a7;
-  for (i = v10[2]; (i() & 1) == 0; i = v10[2])
+  identifierCopy = identifier;
+  deferCopy = defer;
+  for (i = deferCopy[2]; (i() & 1) == 0; i = deferCopy[2])
   {
     data_block = archive_read_data_block();
     if (data_block)
@@ -136,7 +136,7 @@ LABEL_7:
       goto LABEL_17;
     }
 
-    *a5 = *a5;
+    *quota = *quota;
     if (archive_write_data_block() < 0)
     {
       v15 = TRILogCategory_Archiving();
@@ -170,14 +170,14 @@ LABEL_15:
   return v14;
 }
 
-+ (BOOL)_withLockAndDirectoryChangedToURL:(id)a3 runBlock:(id)a4
++ (BOOL)_withLockAndDirectoryChangedToURL:(id)l runBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = +[NSFileManager defaultManager];
   v36 = 0;
-  v9 = [v8 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v36];
+  v9 = [v8 createDirectoryAtURL:lCopy withIntermediateDirectories:1 attributes:0 error:&v36];
   v10 = v36;
 
   if ((v9 & 1) == 0)
@@ -186,7 +186,7 @@ LABEL_15:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v44 = v5;
+      v44 = lCopy;
       v45 = 2112;
       v46 = v10;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "failed to create directory at %@ - %@.", buf, 0x16u);
@@ -195,9 +195,9 @@ LABEL_15:
     goto LABEL_13;
   }
 
-  v11 = v5;
-  v12 = [v5 fileSystemRepresentation];
-  v13 = open(v12, 0x100000);
+  v11 = lCopy;
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
+  v13 = open(fileSystemRepresentation, 0x100000);
   if (v13 < 0)
   {
     v18 = TRILogCategory_Server();
@@ -207,7 +207,7 @@ LABEL_15:
       v28 = strerror(*v27);
       v29 = *__error();
       *buf = 136315650;
-      v44 = v12;
+      v44 = fileSystemRepresentation;
       v45 = 2080;
       v46 = v28;
       v47 = 1024;
@@ -231,7 +231,7 @@ LABEL_13:
       v25 = strerror(*v24);
       v26 = *__error();
       *v37 = 136315650;
-      v38 = v12;
+      v38 = fileSystemRepresentation;
       v39 = 2080;
       v40 = v25;
       v41 = 1024;
@@ -246,7 +246,7 @@ LABEL_18:
   }
 
   v16 = 1;
-  if (chdir(v12))
+  if (chdir(fileSystemRepresentation))
   {
     v20 = TRILogCategory_Server();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -255,7 +255,7 @@ LABEL_18:
       v34 = strerror(*v33);
       v35 = *__error();
       *v37 = 136315650;
-      v38 = v12;
+      v38 = fileSystemRepresentation;
       v39 = 2080;
       v40 = v34;
       v41 = 1024;
@@ -268,7 +268,7 @@ LABEL_18:
 
   v23 = objc_autoreleasePoolPush();
   *v37 = v13;
-  v6[2](v6, v37);
+  blockCopy[2](blockCopy, v37);
   objc_autoreleasePoolPop(v23);
   v19 = 1;
 LABEL_19:
@@ -282,7 +282,7 @@ LABEL_19:
       v31 = strerror(*v30);
       v32 = *__error();
       *v37 = 136315650;
-      v38 = v12;
+      v38 = fileSystemRepresentation;
       v39 = 2080;
       v40 = v31;
       v41 = 1024;
@@ -298,25 +298,25 @@ LABEL_25:
   return v19 & 1;
 }
 
-+ ($A5A652246548B43F8BC05201A1C72A70)_compressFilesInCurrentDirectoryWithLockWitness:(TRIFlockWitness_ *)a3 shouldDefer:(id)a4
++ ($A5A652246548B43F8BC05201A1C72A70)_compressFilesInCurrentDirectoryWithLockWitness:(TRIFlockWitness_ *)witness shouldDefer:(id)defer
 {
-  v4 = a4;
+  deferCopy = defer;
   v5 = +[NSFileManager defaultManager];
-  v6 = [v5 currentDirectoryPath];
+  currentDirectoryPath = [v5 currentDirectoryPath];
 
   v7 = objc_opt_new();
-  v8 = [v7 inPlaceCompressDirectory:v6 shouldDefer:v4];
+  v8 = [v7 inPlaceCompressDirectory:currentDirectoryPath shouldDefer:deferCopy];
 
   return v8;
 }
 
-+ ($A5A652246548B43F8BC05201A1C72A70)_withLockWitness:(TRIFlockWitness_ *)a3 performExtractionIntoCurrentDirectoryFromArchive:(archive *)a4 maxUnarchivedSize:(unint64_t)a5 archiveIdentifier:(id)a6 shouldDefer:(id)a7
++ ($A5A652246548B43F8BC05201A1C72A70)_withLockWitness:(TRIFlockWitness_ *)witness performExtractionIntoCurrentDirectoryFromArchive:(archive *)archive maxUnarchivedSize:(unint64_t)size archiveIdentifier:(id)identifier shouldDefer:(id)defer
 {
-  v10 = a6;
-  v11 = a7;
-  v88 = a1;
-  v12 = [a1 _createWriteDiskArchive];
-  if (!v12)
+  identifierCopy = identifier;
+  deferCopy = defer;
+  selfCopy = self;
+  _createWriteDiskArchive = [self _createWriteDiskArchive];
+  if (!_createWriteDiskArchive)
   {
     v63 = TRILogCategory_Archiving();
     if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
@@ -329,8 +329,8 @@ LABEL_25:
     goto LABEL_102;
   }
 
-  v89 = v12;
-  v91 = a5;
+  v89 = _createWriteDiskArchive;
+  sizeCopy = size;
   while (1)
   {
     do
@@ -361,7 +361,7 @@ LABEL_80:
         goto LABEL_93;
       }
 
-      v14 = v10;
+      v14 = identifierCopy;
       v15 = archive_entry_filetype();
       v16 = v15;
       if (v15 != 0x4000 && v15 != 0x8000)
@@ -375,7 +375,7 @@ LABEL_80:
           v106 = 1024;
           *v107 = v16;
           *&v107[4] = 2112;
-          *&v107[6] = v10;
+          *&v107[6] = identifierCopy;
           _os_log_error_impl(&_mh_execute_header, v69, OS_LOG_TYPE_ERROR, "found file that is neither directory nor regular file. Aborting. Offending file: %s, file type: 0x%x, archive identifier: %@", buf, 0x1Cu);
         }
 
@@ -425,12 +425,12 @@ LABEL_74:
       v25 = v24;
       if (!v24)
       {
-        v28 = TRILogCategory_Archiving();
-        if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+        lastPathComponent = TRILogCategory_Archiving();
+        if (os_log_type_enabled(lastPathComponent, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315138;
           v105 = &v19[v20];
-          v29 = v28;
+          v29 = lastPathComponent;
           v30 = "Unable to initialize entry path with string %s";
           v31 = 12;
           goto LABEL_63;
@@ -446,11 +446,11 @@ LABEL_19:
       v27 = v26 == 0;
       if (v16 != 0x4000 && !v26)
       {
-        v28 = TRILogCategory_Archiving();
-        if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+        lastPathComponent = TRILogCategory_Archiving();
+        if (os_log_type_enabled(lastPathComponent, OS_LOG_TYPE_ERROR))
         {
           *buf = 0;
-          v29 = v28;
+          v29 = lastPathComponent;
           v30 = "archive_entry with no path after sanitization encountered.";
           v31 = 2;
 LABEL_63:
@@ -461,8 +461,8 @@ LABEL_63:
         goto LABEL_19;
       }
 
-      v28 = [v25 lastPathComponent];
-      if ([v28 length]>= 0x81)
+      lastPathComponent = [v25 lastPathComponent];
+      if ([lastPathComponent length]>= 0x81)
       {
         v33 = TRILogCategory_Archiving();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -470,9 +470,9 @@ LABEL_63:
           *buf = 134218498;
           v105 = 128;
           v106 = 2112;
-          *v107 = v28;
+          *v107 = lastPathComponent;
           *&v107[8] = 2112;
-          *&v107[10] = v10;
+          *&v107[10] = identifierCopy;
           _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "Encountered fileName greater that %ld characters. Offending fileName: %@, archive identifier: %@", buf, 0x20u);
         }
 
@@ -481,14 +481,14 @@ LABEL_39:
         goto LABEL_40;
       }
 
-      v85 = v11;
-      v86 = v10;
-      v34 = [v25 pathComponents];
+      v85 = deferCopy;
+      v86 = identifierCopy;
+      pathComponents = [v25 pathComponents];
       v92 = 0u;
       v93 = 0u;
       v94 = 0u;
       v95 = 0u;
-      v33 = v34;
+      v33 = pathComponents;
       v35 = [v33 countByEnumeratingWithState:&v92 objects:v96 count:16];
       if (v35)
       {
@@ -513,8 +513,8 @@ LABEL_39:
               }
 
               v40 = v33;
-              v11 = v85;
-              v10 = v86;
+              deferCopy = v85;
+              identifierCopy = v86;
               goto LABEL_38;
             }
           }
@@ -532,8 +532,8 @@ LABEL_39:
       if ([v33 count]>= 0x11)
       {
         v40 = TRILogCategory_Archiving();
-        v11 = v85;
-        v10 = v86;
+        deferCopy = v85;
+        identifierCopy = v86;
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
@@ -549,8 +549,8 @@ LABEL_38:
       }
 
       v32 = 1;
-      v11 = v85;
-      v10 = v86;
+      deferCopy = v85;
+      identifierCopy = v86;
 LABEL_40:
 
 LABEL_41:
@@ -571,7 +571,7 @@ LABEL_41:
     if (!v42)
     {
       v62 = +[NSAssertionHandler currentHandler];
-      [v62 handleFailureInMethod:a2 object:v88 file:@"TRIArchiveExtractor.m" lineNumber:350 description:{@"Expression was unexpectedly nil/false: %@", @"archive_entry_pathname_utf8(entry)"}];
+      [v62 handleFailureInMethod:a2 object:selfCopy file:@"TRIArchiveExtractor.m" lineNumber:350 description:{@"Expression was unexpectedly nil/false: %@", @"archive_entry_pathname_utf8(entry)"}];
     }
 
     v43 = [v41 initWithUTF8String:v42];
@@ -593,8 +593,8 @@ LABEL_104:
     }
 
     v44 = v43;
-    v45 = [v44 lastPathComponent];
-    v46 = [v45 hasPrefix:@"._"];
+    lastPathComponent2 = [v44 lastPathComponent];
+    v46 = [lastPathComponent2 hasPrefix:@"._"];
     v47 = v44;
     if (v16 != 0x4000)
     {
@@ -602,11 +602,11 @@ LABEL_104:
       if (v46)
       {
         v48 = objc_opt_new();
-        v49 = [v48 UUIDString];
-        v50 = [v49 stringByAppendingString:v45];
+        uUIDString = [v48 UUIDString];
+        v50 = [uUIDString stringByAppendingString:lastPathComponent2];
 
-        v51 = [v44 stringByDeletingLastPathComponent];
-        v47 = [v51 stringByAppendingPathComponent:v50];
+        stringByDeletingLastPathComponent = [v44 stringByDeletingLastPathComponent];
+        v47 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v50];
 
         [v47 fileSystemRepresentation];
         archive_entry_set_pathname_utf8();
@@ -627,7 +627,7 @@ LABEL_104:
 
     if (!archive_entry_size_is_set() || archive_entry_size() >= 1)
     {
-      v53 = [v88 _copyDataFromReadArchive:a4 toWriteDiskArchive:v89 remainingQuota:&v91 archiveIdentifier:v14 shouldDefer:v11];
+      v53 = [selfCopy _copyDataFromReadArchive:archive toWriteDiskArchive:v89 remainingQuota:&sizeCopy archiveIdentifier:v14 shouldDefer:deferCopy];
       if (v53 == 2)
       {
         v64.var0 = v53;
@@ -682,9 +682,9 @@ LABEL_89:
 
     if (([v47 isEqualToString:v44] & 1) == 0)
     {
-      v58 = [v47 fileSystemRepresentation];
-      v59 = [v44 fileSystemRepresentation];
-      rename(v58, v59, v60);
+      fileSystemRepresentation = [v47 fileSystemRepresentation];
+      fileSystemRepresentation2 = [v44 fileSystemRepresentation];
+      rename(fileSystemRepresentation, fileSystemRepresentation2, v60);
       if (v61)
       {
         v56 = TRILogCategory_Archiving();
@@ -756,15 +756,15 @@ LABEL_102:
   return v64;
 }
 
-+ ($A5A652246548B43F8BC05201A1C72A70)extractArchiveFromHandle:(id)a3 toDestinationDirectoryURL:(id)a4 maxUnarchivedSize:(unint64_t)a5 archiveIdentifier:(id)a6 postExtractionCompression:(id)a7 shouldDefer:(id)a8
++ ($A5A652246548B43F8BC05201A1C72A70)extractArchiveFromHandle:(id)handle toDestinationDirectoryURL:(id)l maxUnarchivedSize:(unint64_t)size archiveIdentifier:(id)identifier postExtractionCompression:(id)compression shouldDefer:(id)defer
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a8;
-  if (v15)
+  handleCopy = handle;
+  lCopy = l;
+  identifierCopy = identifier;
+  deferCopy = defer;
+  if (handleCopy)
   {
-    if (v16)
+    if (lCopy)
     {
       goto LABEL_3;
     }
@@ -773,21 +773,21 @@ LABEL_102:
   else
   {
     v26 = +[NSAssertionHandler currentHandler];
-    [v26 handleFailureInMethod:a2 object:a1 file:@"TRIArchiveExtractor.m" lineNumber:427 description:{@"Invalid parameter not satisfying: %@", @"archiveHandle"}];
+    [v26 handleFailureInMethod:a2 object:self file:@"TRIArchiveExtractor.m" lineNumber:427 description:{@"Invalid parameter not satisfying: %@", @"archiveHandle"}];
 
-    if (v16)
+    if (lCopy)
     {
       goto LABEL_3;
     }
   }
 
   v27 = +[NSAssertionHandler currentHandler];
-  [v27 handleFailureInMethod:a2 object:a1 file:@"TRIArchiveExtractor.m" lineNumber:428 description:{@"Invalid parameter not satisfying: %@", @"destinationURL"}];
+  [v27 handleFailureInMethod:a2 object:self file:@"TRIArchiveExtractor.m" lineNumber:428 description:{@"Invalid parameter not satisfying: %@", @"destinationURL"}];
 
 LABEL_3:
-  if (v18)
+  if (deferCopy)
   {
-    v19 = v18;
+    v19 = deferCopy;
   }
 
   else
@@ -807,16 +807,16 @@ LABEL_3:
   v28[2] = sub_100005C8C;
   v28[3] = &unk_1000105D0;
   v32 = &v36;
-  v33 = a1;
-  v21 = v15;
+  selfCopy = self;
+  v21 = handleCopy;
   v29 = v21;
-  v34 = a5;
-  v22 = v17;
+  sizeCopy = size;
+  v22 = identifierCopy;
   v30 = v22;
   v23 = v20;
   v31 = v23;
-  var0 = a7.var0;
-  [TRIArchiveExtractor _withLockAndDirectoryChangedToURL:v16 runBlock:v28];
+  var0 = compression.var0;
+  [TRIArchiveExtractor _withLockAndDirectoryChangedToURL:lCopy runBlock:v28];
   v24.var0 = *(v37 + 32);
 
   _Block_object_dispose(&v36, 8);

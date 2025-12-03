@@ -1,18 +1,18 @@
 @interface TSTCellUIDLookupListWrapper
-- (TSTCellUIDLookupListWrapper)initWithCellUIDList:(id)a3;
+- (TSTCellUIDLookupListWrapper)initWithCellUIDList:(id)list;
 - (id).cxx_construct;
-- (id)copyByPruningAgainstTable:(id)a3 behavior:(unint64_t)a4 usingBlock:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyByPruningAgainstTable:(id)table behavior:(unint64_t)behavior usingBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSTCellUIDLookupListWrapper
 
-- (id)copyByPruningAgainstTable:(id)a3 behavior:(unint64_t)a4 usingBlock:(id)a5
+- (id)copyByPruningAgainstTable:(id)table behavior:(unint64_t)behavior usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  tableCopy = table;
+  blockCopy = block;
   v10 = objc_opt_new();
-  sub_22137AD84(v12, &self->_UIDLookupList._columnUidLookupList._uids.__begin_, v8, a4, v9);
+  sub_22137AD84(v12, &self->_UIDLookupList._columnUidLookupList._uids.__begin_, tableCopy, behavior, blockCopy);
   sub_22137A8B0(v10 + 8, v12);
   if (__p)
   {
@@ -39,15 +39,15 @@
   return v10;
 }
 
-- (TSTCellUIDLookupListWrapper)initWithCellUIDList:(id)a3
+- (TSTCellUIDLookupListWrapper)initWithCellUIDList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v20.receiver = self;
   v20.super_class = TSTCellUIDLookupListWrapper;
   v9 = [(TSTCellUIDLookupListWrapper *)&v20 init];
   if (v9)
   {
-    v10 = objc_msgSend_iterator(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend_iterator(listCopy, v5, v6, v7, v8);
     __p = 0;
     v18 = 0;
     v19 = 0;
@@ -79,7 +79,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   sub_22137A8B0(v4 + 8, &self->_UIDLookupList);

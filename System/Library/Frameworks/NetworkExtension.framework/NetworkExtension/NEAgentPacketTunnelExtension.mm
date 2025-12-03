@@ -1,46 +1,46 @@
 @interface NEAgentPacketTunnelExtension
-- (void)extension:(id)a3 didSetTunnelConfiguration:(id)a4 completionHandler:(id)a5;
-- (void)handleExtensionStartedWithCompletionHandler:(id)a3;
-- (void)setAppUUIDMap:(id)a3;
+- (void)extension:(id)extension didSetTunnelConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)handleExtensionStartedWithCompletionHandler:(id)handler;
+- (void)setAppUUIDMap:(id)map;
 @end
 
 @implementation NEAgentPacketTunnelExtension
 
-- (void)setAppUUIDMap:(id)a3
+- (void)setAppUUIDMap:(id)map
 {
-  v4 = a3;
-  v5 = [(NEAgentExtension *)self sessionContext];
-  [v5 setAppUUIDMap:v4];
+  mapCopy = map;
+  sessionContext = [(NEAgentExtension *)self sessionContext];
+  [sessionContext setAppUUIDMap:mapCopy];
 }
 
-- (void)extension:(id)a3 didSetTunnelConfiguration:(id)a4 completionHandler:(id)a5
+- (void)extension:(id)extension didSetTunnelConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  extensionCopy = extension;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   if (self && self->_interfaceType == 3 && !self->_isUserEthernetInterfaceCreated)
   {
-    v11 = v9;
+    v11 = configurationCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v11 ethernetAddress];
-      v13 = createEthernetAddressFromString(v12);
+      ethernetAddress = [v11 ethernetAddress];
+      v13 = createEthernetAddressFromString(ethernetAddress);
 
       v14 = [NEVirtualInterfaceParameters alloc];
       interfaceType = self->_interfaceType;
       v16 = [v11 MTU];
       v17 = [(NEVirtualInterfaceParameters *)v14 initWithType:interfaceType maxPendingPackets:64 ethernetAddress:v13 mtu:v16];
 
-      v18 = [(NEAgentExtension *)self managerObjectFactory];
+      managerObjectFactory = [(NEAgentExtension *)self managerObjectFactory];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __86__NEAgentPacketTunnelExtension_extension_didSetTunnelConfiguration_completionHandler___block_invoke;
       v25[3] = &unk_1E7F0B628;
       v25[4] = self;
-      v19 = v10;
+      v19 = handlerCopy;
       v26 = v19;
-      v20 = [v18 managerObjectWithErrorHandler:v25];
+      v20 = [managerObjectFactory managerObjectWithErrorHandler:v25];
 
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
@@ -48,7 +48,7 @@
       v21[3] = &unk_1E7F092F8;
       v21[4] = self;
       v24 = v19;
-      v22 = v8;
+      v22 = extensionCopy;
       v23 = v11;
       [v20 createVirtualInterfaceWithParameters:v17 completionHandler:v21];
     }
@@ -57,7 +57,7 @@
     {
       v27.receiver = self;
       v27.super_class = NEAgentPacketTunnelExtension;
-      [(NEAgentTunnelExtension *)&v27 extension:v8 didSetTunnelConfiguration:v11 completionHandler:v10];
+      [(NEAgentTunnelExtension *)&v27 extension:extensionCopy didSetTunnelConfiguration:v11 completionHandler:handlerCopy];
     }
   }
 
@@ -65,7 +65,7 @@
   {
     v28.receiver = self;
     v28.super_class = NEAgentPacketTunnelExtension;
-    [(NEAgentTunnelExtension *)&v28 extension:v8 didSetTunnelConfiguration:v9 completionHandler:v10];
+    [(NEAgentTunnelExtension *)&v28 extension:extensionCopy didSetTunnelConfiguration:configurationCopy completionHandler:handlerCopy];
   }
 }
 
@@ -158,18 +158,18 @@ void __86__NEAgentPacketTunnelExtension_extension_didSetTunnelConfiguration_comp
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleExtensionStartedWithCompletionHandler:(id)a3
+- (void)handleExtensionStartedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NEAgentExtension *)self sessionContext];
+  handlerCopy = handler;
+  sessionContext = [(NEAgentExtension *)self sessionContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__NEAgentPacketTunnelExtension_handleExtensionStartedWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7F092D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchVirtualInterfaceTypeWithCompletionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [sessionContext fetchVirtualInterfaceTypeWithCompletionHandler:v7];
 }
 
 void __76__NEAgentPacketTunnelExtension_handleExtensionStartedWithCompletionHandler___block_invoke(uint64_t a1, uint64_t a2)

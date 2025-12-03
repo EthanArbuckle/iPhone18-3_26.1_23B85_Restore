@@ -1,18 +1,18 @@
 @interface MSDProvisioningProfileUtils
-+ (BOOL)installProvisioningProfile:(id)a3;
-+ (BOOL)isProvisioningProfileInstalled:(id)a3;
-+ (BOOL)uninstallProvisioningProfileByFileName:(id)a3;
-+ (BOOL)uninstallProvisioningProfileByUUID:(id)a3;
-+ (id)getUUIDFromProvisioningProfileRef:(void *)a3;
++ (BOOL)installProvisioningProfile:(id)profile;
++ (BOOL)isProvisioningProfileInstalled:(id)installed;
++ (BOOL)uninstallProvisioningProfileByFileName:(id)name;
++ (BOOL)uninstallProvisioningProfileByUUID:(id)d;
++ (id)getUUIDFromProvisioningProfileRef:(void *)ref;
 + (id)getUUIDsOfInstalledProvisioningProfiles;
-+ (void)loadProvisioningProfileFromFile:(id)a3;
++ (void)loadProvisioningProfileFromFile:(id)file;
 @end
 
 @implementation MSDProvisioningProfileUtils
 
-+ (BOOL)uninstallProvisioningProfileByUUID:(id)a3
++ (BOOL)uninstallProvisioningProfileByUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = MISRemoveProvisioningProfile();
   if (v4)
   {
@@ -21,7 +21,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543618;
-      v9 = v3;
+      v9 = dCopy;
       v10 = 2114;
       v11 = v5;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ERROR - Failed to uninstall provisioning profile with UUID:  %{public}@ - Error:  %{public}@", &v8, 0x16u);
@@ -69,18 +69,18 @@
   return v7;
 }
 
-+ (void)loadProvisioningProfileFromFile:(id)a3
++ (void)loadProvisioningProfileFromFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  v5 = [v4 fileExistsAtPath:fileCopy];
 
   if ((v5 & 1) == 0)
   {
     v8 = sub_100063A54();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_1000C6C1C(v3, v8);
+      sub_1000C6C1C(fileCopy, v8);
     }
 
     goto LABEL_8;
@@ -92,7 +92,7 @@
     v8 = sub_100063A54();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_1000C6C94(v3, v8);
+      sub_1000C6C94(fileCopy, v8);
     }
 
 LABEL_8:
@@ -103,10 +103,10 @@ LABEL_8:
   return v6;
 }
 
-+ (BOOL)installProvisioningProfile:(id)a3
++ (BOOL)installProvisioningProfile:(id)profile
 {
-  v3 = a3;
-  v4 = [MSDProvisioningProfileUtils loadProvisioningProfileFromFile:v3];
+  profileCopy = profile;
+  v4 = [MSDProvisioningProfileUtils loadProvisioningProfileFromFile:profileCopy];
   if (v4)
   {
     v5 = v4;
@@ -119,7 +119,7 @@ LABEL_8:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138543618;
-        v12 = v3;
+        v12 = profileCopy;
         v13 = 2114;
         v14 = v8;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "ERROR - Failed to install provisioning profile:  %{public}@) with error %{public}@", &v11, 0x16u);
@@ -137,10 +137,10 @@ LABEL_8:
   return v7;
 }
 
-+ (BOOL)uninstallProvisioningProfileByFileName:(id)a3
++ (BOOL)uninstallProvisioningProfileByFileName:(id)name
 {
-  v3 = a3;
-  v4 = [MSDProvisioningProfileUtils loadProvisioningProfileFromFile:v3];
+  nameCopy = name;
+  v4 = [MSDProvisioningProfileUtils loadProvisioningProfileFromFile:nameCopy];
   if (v4)
   {
     v5 = v4;
@@ -156,7 +156,7 @@ LABEL_8:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         v10 = 138543362;
-        v11 = v3;
+        v11 = nameCopy;
         _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "ERROR - Failed to extract UUID from provisioning profile:  %{public}@", &v10, 0xCu);
       }
 
@@ -174,14 +174,14 @@ LABEL_8:
   return v7;
 }
 
-+ (BOOL)isProvisioningProfileInstalled:(id)a3
++ (BOOL)isProvisioningProfileInstalled:(id)installed
 {
-  v3 = a3;
+  installedCopy = installed;
   v4 = +[MSDProvisioningProfileUtils getUUIDsOfInstalledProvisioningProfiles];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 containsObject:v3];
+    v6 = [v4 containsObject:installedCopy];
   }
 
   else
@@ -192,7 +192,7 @@ LABEL_8:
   return v6;
 }
 
-+ (id)getUUIDFromProvisioningProfileRef:(void *)a3
++ (id)getUUIDFromProvisioningProfileRef:(void *)ref
 {
   Value = MISProfileGetValue();
   if (Value)

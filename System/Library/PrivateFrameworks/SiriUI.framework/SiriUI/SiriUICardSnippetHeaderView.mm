@@ -1,7 +1,7 @@
 @interface SiriUICardSnippetHeaderView
 - (CGSize)sizeThatFits:(CGSize)result;
 - (UIEdgeInsets)_edgeInsets;
-- (void)configureWithTitle:(id)a3;
+- (void)configureWithTitle:(id)title;
 - (void)layoutSubviews;
 @end
 
@@ -39,38 +39,38 @@
   return result;
 }
 
-- (void)configureWithTitle:(id)a3
+- (void)configureWithTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (titleCopy)
   {
     titleLabel = self->_titleLabel;
     v13 = v5;
     if (!titleLabel)
     {
-      v7 = [MEMORY[0x277D60108] label];
+      label = [MEMORY[0x277D60108] label];
       v8 = self->_titleLabel;
-      self->_titleLabel = v7;
+      self->_titleLabel = label;
 
       v9 = self->_titleLabel;
       v10 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
       [(SiriSharedUIContentLabel *)v9 setFont:v10];
 
       v11 = self->_titleLabel;
-      v12 = [MEMORY[0x277D75348] siriui_blendEffectColor];
-      [(SiriSharedUIContentLabel *)v11 setTextColor:v12];
+      siriui_blendEffectColor = [MEMORY[0x277D75348] siriui_blendEffectColor];
+      [(SiriSharedUIContentLabel *)v11 setTextColor:siriui_blendEffectColor];
 
       [(SiriUICardSnippetHeaderView *)self addSubview:self->_titleLabel];
       [(UIView *)self siriui_setBlendEffectEnabled:1];
       titleLabel = self->_titleLabel;
     }
 
-    v4 = [(SiriSharedUIContentLabel *)titleLabel setText:v13];
+    titleCopy = [(SiriSharedUIContentLabel *)titleLabel setText:v13];
     v5 = v13;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](titleCopy, v5);
 }
 
 - (CGSize)sizeThatFits:(CGSize)result

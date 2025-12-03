@@ -1,49 +1,49 @@
 @interface AVTStickerViewController
-+ (double)headerEdgeMarginForEnvironment:(id)a3;
-+ (double)headerHeightForWidth:(double)a3 interitemSpacing:(double)a4 environment:(id)a5;
++ (double)headerEdgeMarginForEnvironment:(id)environment;
++ (double)headerHeightForWidth:(double)width interitemSpacing:(double)spacing environment:(id)environment;
 + (id)inUseStickerPack;
-+ (id)stickerViewControllerForStore:(id)a3 allowEditing:(BOOL)a4 allowPeel:(BOOL)a5;
-+ (id)stickerViewControllerForStore:(id)a3 fetchRequest:(id)a4 stickerPacks:(id)a5 stickerConfigurationNames:(id)a6 avtViewSessionProvider:(id)a7 allowEditing:(BOOL)a8 allowPeel:(BOOL)a9;
++ (id)stickerViewControllerForStore:(id)store allowEditing:(BOOL)editing allowPeel:(BOOL)peel;
++ (id)stickerViewControllerForStore:(id)store fetchRequest:(id)request stickerPacks:(id)packs stickerConfigurationNames:(id)names avtViewSessionProvider:(id)provider allowEditing:(BOOL)editing allowPeel:(BOOL)peel;
 + (id)stickersAvatarsFetchRequest;
-+ (unint64_t)minimumNumberOfVisibleItemForWidth:(double)a3 environment:(id)a4;
++ (unint64_t)minimumNumberOfVisibleItemForWidth:(double)width environment:(id)environment;
 - (AVTPresenterDelegate)presenterDelegate;
 - (AVTStickerDisclosureValidationDelegate)disclosureValidationDelegate;
 - (AVTStickerSelectionDelegate)stickerSelectionDelegate;
 - (AVTStickerSheetControllerProvider)stickerSheetControllerProvider;
-- (AVTStickerViewController)initWithStore:(id)a3 fetchRequest:(id)a4 stickerPacks:(id)a5 stickerConfigurationNames:(id)a6 selectedRecordIdentifier:(id)a7 allowEditing:(BOOL)a8 allowPeel:(BOOL)a9 environment:(id)a10;
+- (AVTStickerViewController)initWithStore:(id)store fetchRequest:(id)request stickerPacks:(id)packs stickerConfigurationNames:(id)names selectedRecordIdentifier:(id)identifier allowEditing:(BOOL)editing allowPeel:(BOOL)peel environment:(id)self0;
 - (AVTStickerViewControllerImageDelegate)imageDelegate;
-- (BOOL)avatarPicker:(id)a3 shouldPresentMemojiEditorForAvatarRecord:(id)a4;
+- (BOOL)avatarPicker:(id)picker shouldPresentMemojiEditorForAvatarRecord:(id)record;
 - (BOOL)shouldPresentPaddleView;
 - (double)headerMaxY;
-- (void)avatarPicker:(id)a3 didSelectAvatarRecord:(id)a4;
+- (void)avatarPicker:(id)picker didSelectAvatarRecord:(id)record;
 - (void)clearStickerSelection;
-- (void)dataSource:(id)a3 didAddRecord:(id)a4 atIndex:(unint64_t)a5;
-- (void)dataSource:(id)a3 didEditRecord:(id)a4 atIndex:(unint64_t)a5;
-- (void)dataSource:(id)a3 didRemoveRecord:(id)a4 atIndex:(unint64_t)a5;
-- (void)dismissAvatarUIControllerAnimated:(BOOL)a3;
+- (void)dataSource:(id)source didAddRecord:(id)record atIndex:(unint64_t)index;
+- (void)dataSource:(id)source didEditRecord:(id)record atIndex:(unint64_t)index;
+- (void)dataSource:(id)source didRemoveRecord:(id)record atIndex:(unint64_t)index;
+- (void)dismissAvatarUIControllerAnimated:(BOOL)animated;
 - (void)dismissPaddleViewIfNecessary;
 - (void)editCurrentMemoji;
-- (void)paddleViewTapped:(id)a3;
-- (void)presentAvatarUIController:(id)a3 animated:(BOOL)a4;
+- (void)paddleViewTapped:(id)tapped;
+- (void)presentAvatarUIController:(id)controller animated:(BOOL)animated;
 - (void)presentMemojiEditorForCreation;
 - (void)presentPaddleViewIfNeeded;
 - (void)reloadData;
 - (void)reloadPickerView;
-- (void)selectAvatarRecordAtIndex:(int64_t)a3 hideHeader:(BOOL)a4;
+- (void)selectAvatarRecordAtIndex:(int64_t)index hideHeader:(BOOL)header;
 - (void)selectDefaultAvatarIfNeeded;
-- (void)selectRecordForIdentifier:(id)a3;
-- (void)setAllowEditing:(BOOL)a3;
-- (void)snapshotInBlock:(id)a3;
+- (void)selectRecordForIdentifier:(id)identifier;
+- (void)setAllowEditing:(BOOL)editing;
+- (void)snapshotInBlock:(id)block;
 - (void)stickerControllerDidEnterBackground;
 - (void)stickerControllerWillEnterForeground;
-- (void)swipeLeftWithDelay:(int64_t)a3 forCompletionHandler:(id)a4;
-- (void)swipeRightWithDelay:(int64_t)a3 forCompletionHandler:(id)a4;
-- (void)updateHeaderPositionWithContentOffset:(CGPoint)a3;
+- (void)swipeLeftWithDelay:(int64_t)delay forCompletionHandler:(id)handler;
+- (void)swipeRightWithDelay:(int64_t)delay forCompletionHandler:(id)handler;
+- (void)updateHeaderPositionWithContentOffset:(CGPoint)offset;
 - (void)updateHeaderSize;
 - (void)updatePaddleViewLayoutIfNecessary;
 - (void)updatePagingControllerInsets;
-- (void)updateScrollToShowAvatarPicker:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateScrollToShowAvatarPicker:(BOOL)picker;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -51,11 +51,11 @@
 
 @implementation AVTStickerViewController
 
-+ (id)stickerViewControllerForStore:(id)a3 allowEditing:(BOOL)a4 allowPeel:(BOOL)a5
++ (id)stickerViewControllerForStore:(id)store allowEditing:(BOOL)editing allowPeel:(BOOL)peel
 {
-  v6 = a4;
+  editingCopy = editing;
   v17[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  storeCopy = store;
   v8 = +[AVTUIEnvironment defaultEnvironment];
   v9 = AVTUIStickersLastSelected();
   v10 = [AVTStickerViewController alloc];
@@ -63,37 +63,37 @@
   v12 = +[AVTStickerViewController inUseStickerPack];
   v17[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-  LOBYTE(v16) = a5;
-  v14 = [(AVTStickerViewController *)v10 initWithStore:v7 fetchRequest:v11 stickerPacks:v13 stickerConfigurationNames:0 selectedRecordIdentifier:v9 allowEditing:v6 allowPeel:v16 environment:v8];
+  LOBYTE(v16) = peel;
+  v14 = [(AVTStickerViewController *)v10 initWithStore:storeCopy fetchRequest:v11 stickerPacks:v13 stickerConfigurationNames:0 selectedRecordIdentifier:v9 allowEditing:editingCopy allowPeel:v16 environment:v8];
 
   return v14;
 }
 
-+ (id)stickerViewControllerForStore:(id)a3 fetchRequest:(id)a4 stickerPacks:(id)a5 stickerConfigurationNames:(id)a6 avtViewSessionProvider:(id)a7 allowEditing:(BOOL)a8 allowPeel:(BOOL)a9
++ (id)stickerViewControllerForStore:(id)store fetchRequest:(id)request stickerPacks:(id)packs stickerConfigurationNames:(id)names avtViewSessionProvider:(id)provider allowEditing:(BOOL)editing allowPeel:(BOOL)peel
 {
-  v9 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  editingCopy = editing;
+  providerCopy = provider;
+  namesCopy = names;
+  packsCopy = packs;
+  requestCopy = request;
+  storeCopy = store;
   v19 = +[AVTUIEnvironment defaultEnvironment];
   v20 = AVTUIStickersLastSelected();
-  LOBYTE(v23) = a9;
-  v21 = [[AVTStickerViewController alloc] initWithStore:v18 fetchRequest:v17 stickerPacks:v16 stickerConfigurationNames:v15 selectedRecordIdentifier:v20 allowEditing:v9 allowPeel:v23 environment:v19];
+  LOBYTE(v23) = peel;
+  v21 = [[AVTStickerViewController alloc] initWithStore:storeCopy fetchRequest:requestCopy stickerPacks:packsCopy stickerConfigurationNames:namesCopy selectedRecordIdentifier:v20 allowEditing:editingCopy allowPeel:v23 environment:v19];
 
-  [(AVTStickerViewController *)v21 setViewSessionProvider:v14];
+  [(AVTStickerViewController *)v21 setViewSessionProvider:providerCopy];
 
   return v21;
 }
 
-+ (double)headerEdgeMarginForEnvironment:(id)a3
++ (double)headerEdgeMarginForEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   v4 = 10.0;
-  if (([v3 deviceIsMac] & 1) == 0 && (objc_msgSend(v3, "deviceIsPad") & 1) == 0)
+  if (([environmentCopy deviceIsMac] & 1) == 0 && (objc_msgSend(environmentCopy, "deviceIsPad") & 1) == 0)
   {
-    if ([v3 deviceIsVision])
+    if ([environmentCopy deviceIsVision])
     {
       v4 = 24.0;
     }
@@ -107,14 +107,14 @@
   return v4;
 }
 
-+ (unint64_t)minimumNumberOfVisibleItemForWidth:(double)a3 environment:(id)a4
++ (unint64_t)minimumNumberOfVisibleItemForWidth:(double)width environment:(id)environment
 {
-  if ([a4 deviceIsMac])
+  if ([environment deviceIsMac])
   {
     v5 = 56.0;
   }
 
-  else if (a3 <= 490.0)
+  else if (width <= 490.0)
   {
     v5 = 62.5;
   }
@@ -124,24 +124,24 @@
     v5 = 70.2352941;
   }
 
-  return vcvtmd_u64_f64(a3 / v5);
+  return vcvtmd_u64_f64(width / v5);
 }
 
-+ (double)headerHeightForWidth:(double)a3 interitemSpacing:(double)a4 environment:(id)a5
++ (double)headerHeightForWidth:(double)width interitemSpacing:(double)spacing environment:(id)environment
 {
-  v8 = a5;
-  v9 = [a1 minimumNumberOfVisibleItemForWidth:v8 environment:a3];
-  [a1 headerEdgeMarginForEnvironment:v8];
+  environmentCopy = environment;
+  v9 = [self minimumNumberOfVisibleItemForWidth:environmentCopy environment:width];
+  [self headerEdgeMarginForEnvironment:environmentCopy];
   v11 = v10;
 
-  return fmin((a3 - a4 * v9 + v11 * -2.0) / (v9 + 0.5), 70.0);
+  return fmin((width - spacing * v9 + v11 * -2.0) / (v9 + 0.5), 70.0);
 }
 
 + (id)stickersAvatarsFetchRequest
 {
   v2 = MEMORY[0x1E698E2C0];
-  v3 = [a1 inUseStickerPack];
-  v4 = [v2 unavailableAnimojiNamesForStickerPack:v3];
+  inUseStickerPack = [self inUseStickerPack];
+  v4 = [v2 unavailableAnimojiNamesForStickerPack:inUseStickerPack];
 
   v5 = [MEMORY[0x1E698E310] requestForAllAvatarsExcluding:v4];
 
@@ -171,35 +171,35 @@
   return v6;
 }
 
-- (AVTStickerViewController)initWithStore:(id)a3 fetchRequest:(id)a4 stickerPacks:(id)a5 stickerConfigurationNames:(id)a6 selectedRecordIdentifier:(id)a7 allowEditing:(BOOL)a8 allowPeel:(BOOL)a9 environment:(id)a10
+- (AVTStickerViewController)initWithStore:(id)store fetchRequest:(id)request stickerPacks:(id)packs stickerConfigurationNames:(id)names selectedRecordIdentifier:(id)identifier allowEditing:(BOOL)editing allowPeel:(BOOL)peel environment:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v29 = a5;
-  v28 = a6;
-  v18 = a7;
-  v19 = a10;
+  storeCopy = store;
+  requestCopy = request;
+  packsCopy = packs;
+  namesCopy = names;
+  identifierCopy = identifier;
+  environmentCopy = environment;
   v30.receiver = self;
   v30.super_class = AVTStickerViewController;
   v20 = [(AVTStickerViewController *)&v30 initWithNibName:0 bundle:0];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_store, a3);
-    v22 = [[AVTAvatarRecordDataSource alloc] initWithRecordStore:v16 fetchRequest:v17 environment:v19];
+    objc_storeStrong(&v20->_store, store);
+    v22 = [[AVTAvatarRecordDataSource alloc] initWithRecordStore:storeCopy fetchRequest:requestCopy environment:environmentCopy];
     recordDataSource = v21->_recordDataSource;
     v21->_recordDataSource = v22;
 
-    objc_storeStrong(&v21->_stickerPacks, a5);
-    objc_storeStrong(&v21->_stickerConfigurationNames, a6);
-    v24 = [v19 logger];
+    objc_storeStrong(&v21->_stickerPacks, packs);
+    objc_storeStrong(&v21->_stickerConfigurationNames, names);
+    logger = [environmentCopy logger];
     logger = v21->_logger;
-    v21->_logger = v24;
+    v21->_logger = logger;
 
-    objc_storeStrong(&v21->_environment, a10);
-    v21->_allowEditing = a8;
-    v21->_allowPeel = a9;
-    objc_storeStrong(&v21->_selectedRecordIdentifier, a7);
+    objc_storeStrong(&v21->_environment, environment);
+    v21->_allowEditing = editing;
+    v21->_allowPeel = peel;
+    objc_storeStrong(&v21->_selectedRecordIdentifier, identifier);
   }
 
   return v21;
@@ -210,107 +210,107 @@
   v71.receiver = self;
   v71.super_class = AVTStickerViewController;
   [(AVTStickerViewController *)&v71 viewDidLoad];
-  v3 = [(AVTStickerViewController *)self view];
-  [v3 setClipsToBounds:1];
+  view = [(AVTStickerViewController *)self view];
+  [view setClipsToBounds:1];
 
   v4 = [AVTAvatarPickerDataSource alloc];
-  v5 = [(AVTStickerViewController *)self recordDataSource];
-  v6 = [(AVTStickerViewController *)self environment];
-  v7 = [(AVTAvatarPickerDataSource *)v4 initWithRecordDataSource:v5 environment:v6 allowAddItem:0];
+  recordDataSource = [(AVTStickerViewController *)self recordDataSource];
+  environment = [(AVTStickerViewController *)self environment];
+  v7 = [(AVTAvatarPickerDataSource *)v4 initWithRecordDataSource:recordDataSource environment:environment allowAddItem:0];
   [(AVTStickerViewController *)self setAvatarPickerDataSource:v7];
 
-  v8 = [(AVTStickerViewController *)self avatarPickerDataSource];
-  [v8 reloadModel];
+  avatarPickerDataSource = [(AVTStickerViewController *)self avatarPickerDataSource];
+  [avatarPickerDataSource reloadModel];
 
-  v9 = [(AVTStickerViewController *)self recordDataSource];
-  [v9 addObserver:self];
+  recordDataSource2 = [(AVTStickerViewController *)self recordDataSource];
+  [recordDataSource2 addObserver:self];
 
-  v10 = [(AVTStickerViewController *)self recordDataSource];
-  v11 = [AVTStickerTaskScheduler schedulerWithRecordDataSource:v10];
+  recordDataSource3 = [(AVTStickerViewController *)self recordDataSource];
+  v11 = [AVTStickerTaskScheduler schedulerWithRecordDataSource:recordDataSource3];
   [(AVTStickerViewController *)self setTaskScheduler:v11];
 
   v12 = [_AVTAvatarRecordImageProvider alloc];
-  v13 = [(AVTStickerViewController *)self environment];
-  v14 = [(_AVTAvatarRecordImageProvider *)v12 initWithEnvironment:v13 taskScheduler:0];
+  environment2 = [(AVTStickerViewController *)self environment];
+  v14 = [(_AVTAvatarRecordImageProvider *)v12 initWithEnvironment:environment2 taskScheduler:0];
 
   v15 = [AVTStickerConfigurationProvider alloc];
-  v16 = [(AVTStickerViewController *)self environment];
+  environment3 = [(AVTStickerViewController *)self environment];
   stickerPacks = self->_stickerPacks;
-  v18 = [(AVTStickerViewController *)self stickerConfigurationNames];
-  v19 = [(AVTStickerConfigurationProvider *)v15 initWithEnvironment:v16 forStickerPacks:stickerPacks stickerConfigurationNames:v18];
+  stickerConfigurationNames = [(AVTStickerViewController *)self stickerConfigurationNames];
+  v19 = [(AVTStickerConfigurationProvider *)v15 initWithEnvironment:environment3 forStickerPacks:stickerPacks stickerConfigurationNames:stickerConfigurationNames];
 
   v20 = [AVTStickerPagingController alloc];
-  v21 = [(AVTStickerViewController *)self recordDataSource];
-  v22 = [(AVTStickerViewController *)self taskScheduler];
-  v23 = [(AVTStickerViewController *)self environment];
-  v24 = [(AVTStickerPagingController *)v20 initWithRecordDataSource:v21 recordImageProvider:v14 stickerConfigurationProvider:v19 taskScheduler:v22 environment:v23 allowsPeel:[(AVTStickerViewController *)self allowPeel]];
+  recordDataSource4 = [(AVTStickerViewController *)self recordDataSource];
+  taskScheduler = [(AVTStickerViewController *)self taskScheduler];
+  environment4 = [(AVTStickerViewController *)self environment];
+  v24 = [(AVTStickerPagingController *)v20 initWithRecordDataSource:recordDataSource4 recordImageProvider:v14 stickerConfigurationProvider:v19 taskScheduler:taskScheduler environment:environment4 allowsPeel:[(AVTStickerViewController *)self allowPeel]];
 
   [(AVTStickerPagingController *)v24 setAvatarPickerDelegate:self];
   [(AVTStickerPagingController *)v24 setPresenterDelegate:self];
   [(AVTStickerPagingController *)v24 setDelegate:self];
-  v25 = [(AVTStickerViewController *)self disclosureValidationDelegate];
-  [(AVTStickerPagingController *)v24 setDisclosureValidationDelegate:v25];
+  disclosureValidationDelegate = [(AVTStickerViewController *)self disclosureValidationDelegate];
+  [(AVTStickerPagingController *)v24 setDisclosureValidationDelegate:disclosureValidationDelegate];
 
-  v26 = [(AVTStickerViewController *)self stickerSelectionDelegate];
-  [(AVTStickerPagingController *)v24 setStickerSelectionDelegate:v26];
+  stickerSelectionDelegate = [(AVTStickerViewController *)self stickerSelectionDelegate];
+  [(AVTStickerPagingController *)v24 setStickerSelectionDelegate:stickerSelectionDelegate];
 
-  v27 = [(AVTStickerViewController *)self stickerSheetControllerProvider];
-  [(AVTStickerPagingController *)v24 setStickerSheetControllerProvider:v27];
+  stickerSheetControllerProvider = [(AVTStickerViewController *)self stickerSheetControllerProvider];
+  [(AVTStickerPagingController *)v24 setStickerSheetControllerProvider:stickerSheetControllerProvider];
 
-  v28 = [MEMORY[0x1E69DC888] clearColor];
-  v29 = [(AVTStickerPagingController *)v24 view];
-  [v29 setBackgroundColor:v28];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view2 = [(AVTStickerPagingController *)v24 view];
+  [view2 setBackgroundColor:clearColor];
 
-  v30 = [(AVTStickerViewController *)self view];
-  [v30 bounds];
+  view3 = [(AVTStickerViewController *)self view];
+  [view3 bounds];
   v32 = v31;
   v34 = v33;
   v36 = v35;
   v38 = v37;
-  v39 = [(AVTStickerPagingController *)v24 view];
-  [v39 setFrame:{v32, v34, v36, v38}];
+  view4 = [(AVTStickerPagingController *)v24 view];
+  [view4 setFrame:{v32, v34, v36, v38}];
 
-  v40 = [(AVTStickerPagingController *)v24 view];
-  [v40 setAutoresizingMask:18];
+  view5 = [(AVTStickerPagingController *)v24 view];
+  [view5 setAutoresizingMask:18];
 
-  v41 = [(AVTStickerViewController *)self view];
-  v42 = [(AVTStickerPagingController *)v24 view];
-  [v41 addSubview:v42];
+  view6 = [(AVTStickerViewController *)self view];
+  view7 = [(AVTStickerPagingController *)v24 view];
+  [view6 addSubview:view7];
 
   [(AVTStickerViewController *)self setPagingController:v24];
-  v43 = [(AVTStickerViewController *)self viewSessionProvider];
-  if (!v43)
+  viewSessionProvider = [(AVTStickerViewController *)self viewSessionProvider];
+  if (!viewSessionProvider)
   {
     v44 = [AVTViewSessionProvider alloc];
-    v45 = [(AVTStickerViewController *)self avatarPickerDataSource];
-    v46 = [v45 environment];
-    [AVTViewSessionProvider backingSizeForEnvironment:v46];
+    avatarPickerDataSource2 = [(AVTStickerViewController *)self avatarPickerDataSource];
+    environment5 = [avatarPickerDataSource2 environment];
+    [AVTViewSessionProvider backingSizeForEnvironment:environment5];
     v48 = v47;
     v50 = v49;
     v51 = +[AVTViewSessionProvider creatorForAVTView];
-    v52 = [(AVTStickerViewController *)self avatarPickerDataSource];
-    v53 = [v52 environment];
-    v43 = [(AVTViewSessionProvider *)v44 initWithAVTViewBackingSize:v51 viewCreator:v53 environment:v48, v50];
+    avatarPickerDataSource3 = [(AVTStickerViewController *)self avatarPickerDataSource];
+    environment6 = [avatarPickerDataSource3 environment];
+    viewSessionProvider = [(AVTViewSessionProvider *)v44 initWithAVTViewBackingSize:v51 viewCreator:environment6 environment:v48, v50];
   }
 
   v54 = [AVTSimpleAvatarPicker alloc];
-  v55 = [(AVTStickerViewController *)self avatarPickerDataSource];
-  v56 = [(AVTStickerViewController *)self taskScheduler];
-  v57 = [(AVTSimpleAvatarPicker *)v54 initWithDataSource:v55 recordImageProvider:v14 avtViewSessionProvider:v43 taskScheduler:v56 allowEditing:[(AVTStickerViewController *)self allowEditing]];
+  avatarPickerDataSource4 = [(AVTStickerViewController *)self avatarPickerDataSource];
+  taskScheduler2 = [(AVTStickerViewController *)self taskScheduler];
+  v57 = [(AVTSimpleAvatarPicker *)v54 initWithDataSource:avatarPickerDataSource4 recordImageProvider:v14 avtViewSessionProvider:viewSessionProvider taskScheduler:taskScheduler2 allowEditing:[(AVTStickerViewController *)self allowEditing]];
 
   [(AVTSimpleAvatarPicker *)v57 setAvatarPickerDelegate:self];
   [(AVTSimpleAvatarPicker *)v57 setPresenterDelegate:self];
-  v58 = [(AVTStickerViewController *)self imageDelegate];
-  [(AVTSimpleAvatarPicker *)v57 setImageDelegate:v58];
+  imageDelegate = [(AVTStickerViewController *)self imageDelegate];
+  [(AVTSimpleAvatarPicker *)v57 setImageDelegate:imageDelegate];
 
   [(AVTSimpleAvatarPicker *)v57 setShouldHideUserInfoView:[(AVTStickerViewController *)self shouldHideUserInfoView]];
   v59 = objc_opt_class();
-  v60 = [(AVTStickerViewController *)self environment];
-  [v59 headerEdgeMarginForEnvironment:v60];
+  environment7 = [(AVTStickerViewController *)self environment];
+  [v59 headerEdgeMarginForEnvironment:environment7];
   v62 = v61;
 
-  v63 = [(AVTStickerViewController *)self environment];
-  if ([v63 deviceIsMac])
+  environment8 = [(AVTStickerViewController *)self environment];
+  if ([environment8 deviceIsMac])
   {
     v64 = 10.0;
   }
@@ -321,22 +321,22 @@
   }
 
   [(AVTSimpleAvatarPicker *)v57 setContentInset:0.0, v62, v64, v62];
-  v65 = [MEMORY[0x1E69DC888] clearColor];
-  v66 = [(AVTSimpleAvatarPicker *)v57 view];
-  [v66 setBackgroundColor:v65];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  view8 = [(AVTSimpleAvatarPicker *)v57 view];
+  [view8 setBackgroundColor:clearColor2];
 
-  v67 = [(AVTSimpleAvatarPicker *)v57 view];
-  [v67 setAutoresizingMask:34];
+  view9 = [(AVTSimpleAvatarPicker *)v57 view];
+  [view9 setAutoresizingMask:34];
 
-  v68 = [(AVTStickerViewController *)self view];
-  v69 = [(AVTSimpleAvatarPicker *)v57 view];
-  [v68 addSubview:v69];
+  view10 = [(AVTStickerViewController *)self view];
+  view11 = [(AVTSimpleAvatarPicker *)v57 view];
+  [view10 addSubview:view11];
 
   [(AVTStickerViewController *)self setAvatarPicker:v57];
   [(AVTStickerViewController *)self updateHeaderSize];
   [(AVTStickerViewController *)self updatePagingControllerInsets];
-  v70 = [(AVTStickerViewController *)self paddleView];
-  if (v70)
+  paddleView = [(AVTStickerViewController *)self paddleView];
+  if (paddleView)
   {
   }
 
@@ -350,11 +350,11 @@
 LABEL_10:
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AVTStickerViewController;
-  [(AVTStickerViewController *)&v4 viewDidAppear:a3];
+  [(AVTStickerViewController *)&v4 viewDidAppear:appear];
   [(AVTStickerViewController *)self presentPaddleViewIfNeeded];
 }
 
@@ -363,19 +363,19 @@ LABEL_10:
   v10.receiver = self;
   v10.super_class = AVTStickerViewController;
   [(AVTStickerViewController *)&v10 viewWillLayoutSubviews];
-  v3 = [(AVTStickerViewController *)self environment];
-  v4 = [v3 deviceIsVision];
+  environment = [(AVTStickerViewController *)self environment];
+  deviceIsVision = [environment deviceIsVision];
 
-  if (v4)
+  if (deviceIsVision)
   {
-    v5 = [(AVTStickerViewController *)self avatarPicker];
-    [v5 setMinimumInteritemSpacing:12.0];
+    avatarPicker = [(AVTStickerViewController *)self avatarPicker];
+    [avatarPicker setMinimumInteritemSpacing:12.0];
   }
 
   else
   {
-    v5 = [(AVTStickerViewController *)self view];
-    [v5 bounds];
+    avatarPicker = [(AVTStickerViewController *)self view];
+    [avatarPicker bounds];
     if (v6 <= 490.0)
     {
       v7 = 8.0;
@@ -386,14 +386,14 @@ LABEL_10:
       v7 = 16.0;
     }
 
-    v8 = [(AVTStickerViewController *)self avatarPicker];
-    [v8 setMinimumInteritemSpacing:v7];
+    avatarPicker2 = [(AVTStickerViewController *)self avatarPicker];
+    [avatarPicker2 setMinimumInteritemSpacing:v7];
   }
 
   [(AVTStickerViewController *)self updateHeaderSize];
   [(AVTStickerViewController *)self updatePagingControllerInsets];
-  v9 = [(AVTStickerViewController *)self pagingController];
-  [v9 pageContentOffset];
+  pagingController = [(AVTStickerViewController *)self pagingController];
+  [pagingController pageContentOffset];
   [(AVTStickerViewController *)self updateHeaderPositionWithContentOffset:?];
 }
 
@@ -405,60 +405,60 @@ LABEL_10:
   [(AVTStickerViewController *)self updatePaddleViewLayoutIfNecessary];
 }
 
-- (void)setAllowEditing:(BOOL)a3
+- (void)setAllowEditing:(BOOL)editing
 {
-  if (self->_allowEditing != a3)
+  if (self->_allowEditing != editing)
   {
-    v4 = a3;
-    self->_allowEditing = a3;
-    v5 = [(AVTStickerViewController *)self avatarPicker];
-    [v5 setAllowEditing:v4];
+    editingCopy = editing;
+    self->_allowEditing = editing;
+    avatarPicker = [(AVTStickerViewController *)self avatarPicker];
+    [avatarPicker setAllowEditing:editingCopy];
   }
 }
 
 - (void)reloadPickerView
 {
-  v3 = [(AVTStickerViewController *)self avatarPickerDataSource];
-  [v3 reloadModel];
+  avatarPickerDataSource = [(AVTStickerViewController *)self avatarPickerDataSource];
+  [avatarPickerDataSource reloadModel];
 
-  v4 = [(AVTStickerViewController *)self taskScheduler];
-  [v4 reloadData];
+  taskScheduler = [(AVTStickerViewController *)self taskScheduler];
+  [taskScheduler reloadData];
 
-  v5 = [(AVTStickerViewController *)self avatarPicker];
-  if (v5)
+  avatarPicker = [(AVTStickerViewController *)self avatarPicker];
+  if (avatarPicker)
   {
-    v6 = v5;
-    v7 = [(AVTStickerViewController *)self pagingController];
+    v6 = avatarPicker;
+    pagingController = [(AVTStickerViewController *)self pagingController];
 
-    if (v7)
+    if (pagingController)
     {
-      v8 = [(AVTStickerViewController *)self avatarPicker];
-      [v8 reloadData];
+      avatarPicker2 = [(AVTStickerViewController *)self avatarPicker];
+      [avatarPicker2 reloadData];
     }
   }
 }
 
 - (void)reloadData
 {
-  v3 = [(AVTStickerViewController *)self avatarPickerDataSource];
-  [v3 reloadModel];
+  avatarPickerDataSource = [(AVTStickerViewController *)self avatarPickerDataSource];
+  [avatarPickerDataSource reloadModel];
 
-  v4 = [(AVTStickerViewController *)self taskScheduler];
-  [v4 reloadData];
+  taskScheduler = [(AVTStickerViewController *)self taskScheduler];
+  [taskScheduler reloadData];
 
-  v5 = [(AVTStickerViewController *)self avatarPicker];
-  if (v5)
+  avatarPicker = [(AVTStickerViewController *)self avatarPicker];
+  if (avatarPicker)
   {
-    v6 = v5;
-    v7 = [(AVTStickerViewController *)self pagingController];
+    v6 = avatarPicker;
+    pagingController = [(AVTStickerViewController *)self pagingController];
 
-    if (v7)
+    if (pagingController)
     {
-      v8 = [(AVTStickerViewController *)self avatarPicker];
-      [v8 reloadData];
+      avatarPicker2 = [(AVTStickerViewController *)self avatarPicker];
+      [avatarPicker2 reloadData];
 
-      v9 = [(AVTStickerViewController *)self pagingController];
-      [v9 reloadData];
+      pagingController2 = [(AVTStickerViewController *)self pagingController];
+      [pagingController2 reloadData];
 
       [(AVTStickerViewController *)self selectDefaultAvatarIfNeeded];
     }
@@ -467,24 +467,24 @@ LABEL_10:
 
 - (void)selectDefaultAvatarIfNeeded
 {
-  v3 = [(AVTStickerViewController *)self avatarPicker];
-  if ([v3 indexForSelectedAvatar] == 0x7FFFFFFFFFFFFFFFLL)
+  avatarPicker = [(AVTStickerViewController *)self avatarPicker];
+  if ([avatarPicker indexForSelectedAvatar] == 0x7FFFFFFFFFFFFFFFLL)
   {
   }
 
   else
   {
-    v4 = [(AVTStickerViewController *)self recordDataSource];
-    v5 = [v4 numberOfRecords];
+    recordDataSource = [(AVTStickerViewController *)self recordDataSource];
+    numberOfRecords = [recordDataSource numberOfRecords];
 
-    if (!v5)
+    if (!numberOfRecords)
     {
       return;
     }
   }
 
-  v6 = [(AVTStickerViewController *)self selectedRecordIdentifier];
-  if (!v6 || (-[AVTStickerViewController recordDataSource](self, "recordDataSource"), v7 = objc_claimAutoreleasedReturnValue(), v9[0] = MEMORY[0x1E69E9820], v9[1] = 3221225472, v9[2] = __55__AVTStickerViewController_selectDefaultAvatarIfNeeded__block_invoke, v9[3] = &unk_1E7F3B3B0, v10 = v6, v8 = [v7 indexOfRecordPassingTest:v9], v7, v10, v8 == 0x7FFFFFFFFFFFFFFFLL))
+  selectedRecordIdentifier = [(AVTStickerViewController *)self selectedRecordIdentifier];
+  if (!selectedRecordIdentifier || (-[AVTStickerViewController recordDataSource](self, "recordDataSource"), v7 = objc_claimAutoreleasedReturnValue(), v9[0] = MEMORY[0x1E69E9820], v9[1] = 3221225472, v9[2] = __55__AVTStickerViewController_selectDefaultAvatarIfNeeded__block_invoke, v9[3] = &unk_1E7F3B3B0, v10 = selectedRecordIdentifier, v8 = [v7 indexOfRecordPassingTest:v9], v7, v10, v8 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v8 = 0;
   }
@@ -500,65 +500,65 @@ uint64_t __55__AVTStickerViewController_selectDefaultAvatarIfNeeded__block_invok
   return v4;
 }
 
-- (void)selectAvatarRecordAtIndex:(int64_t)a3 hideHeader:(BOOL)a4
+- (void)selectAvatarRecordAtIndex:(int64_t)index hideHeader:(BOOL)header
 {
-  v4 = a4;
-  v7 = [(AVTStickerViewController *)self recordDataSource];
-  v9 = [v7 recordAtIndex:a3];
+  headerCopy = header;
+  recordDataSource = [(AVTStickerViewController *)self recordDataSource];
+  v9 = [recordDataSource recordAtIndex:index];
 
-  v8 = [v9 identifier];
-  if (v8)
+  identifier = [v9 identifier];
+  if (identifier)
   {
-    [(AVTStickerViewController *)self selectRecordForIdentifier:v8];
-    if (v4)
+    [(AVTStickerViewController *)self selectRecordForIdentifier:identifier];
+    if (headerCopy)
     {
       [(AVTStickerViewController *)self updateScrollToShowAvatarPicker:0];
     }
   }
 }
 
-- (void)selectRecordForIdentifier:(id)a3
+- (void)selectRecordForIdentifier:(id)identifier
 {
-  v7 = a3;
-  v4 = [(AVTStickerViewController *)self pagingController];
-  [v4 selectAvatarRecordWithIdentifier:v7 animated:0];
+  identifierCopy = identifier;
+  pagingController = [(AVTStickerViewController *)self pagingController];
+  [pagingController selectAvatarRecordWithIdentifier:identifierCopy animated:0];
 
-  v5 = [(AVTStickerViewController *)self avatarPicker];
-  [v5 selectAvatarRecordWithIdentifier:v7 animated:0];
+  avatarPicker = [(AVTStickerViewController *)self avatarPicker];
+  [avatarPicker selectAvatarRecordWithIdentifier:identifierCopy animated:0];
 
-  v6 = [(AVTStickerViewController *)self taskScheduler];
-  [v6 setSelectedAvatarRecordIdentifier:v7];
+  taskScheduler = [(AVTStickerViewController *)self taskScheduler];
+  [taskScheduler setSelectedAvatarRecordIdentifier:identifierCopy];
 
-  [(AVTStickerViewController *)self setSelectedRecordIdentifier:v7];
+  [(AVTStickerViewController *)self setSelectedRecordIdentifier:identifierCopy];
 }
 
 - (void)updateHeaderSize
 {
-  v3 = [(AVTStickerViewController *)self environment];
-  v4 = [v3 deviceIsVision];
+  environment = [(AVTStickerViewController *)self environment];
+  deviceIsVision = [environment deviceIsVision];
 
-  if (v4)
+  if (deviceIsVision)
   {
     v5 = 64.0;
   }
 
   else
   {
-    v6 = [(AVTStickerViewController *)self view];
-    [v6 bounds];
+    view = [(AVTStickerViewController *)self view];
+    [view bounds];
     v8 = v7;
 
     v9 = objc_opt_class();
-    v10 = [(AVTStickerViewController *)self avatarPicker];
-    [v10 minimumInteritemSpacing];
+    avatarPicker = [(AVTStickerViewController *)self avatarPicker];
+    [avatarPicker minimumInteritemSpacing];
     v12 = v11;
-    v13 = [(AVTStickerViewController *)self environment];
-    [v9 headerHeightForWidth:v13 interitemSpacing:v8 environment:v12];
+    environment2 = [(AVTStickerViewController *)self environment];
+    [v9 headerHeightForWidth:environment2 interitemSpacing:v8 environment:v12];
     v5 = v14;
   }
 
-  v15 = [(AVTStickerViewController *)self environment];
-  if ([v15 deviceIsVision])
+  environment3 = [(AVTStickerViewController *)self environment];
+  if ([environment3 deviceIsVision])
   {
     v16 = 0.0;
   }
@@ -568,26 +568,26 @@ uint64_t __55__AVTStickerViewController_selectDefaultAvatarIfNeeded__block_invok
     v16 = 10.0;
   }
 
-  v17 = [(AVTStickerViewController *)self avatarPicker];
-  [v17 contentInset];
+  avatarPicker2 = [(AVTStickerViewController *)self avatarPicker];
+  [avatarPicker2 contentInset];
   v19 = v18;
-  v20 = [(AVTStickerViewController *)self avatarPicker];
-  [v20 contentInset];
+  avatarPicker3 = [(AVTStickerViewController *)self avatarPicker];
+  [avatarPicker3 contentInset];
   v22 = v5 + v19 + v21;
 
-  v27 = [(AVTStickerViewController *)self view];
-  [v27 bounds];
+  view2 = [(AVTStickerViewController *)self view];
+  [view2 bounds];
   v24 = v23;
-  v25 = [(AVTStickerViewController *)self avatarPicker];
-  v26 = [v25 view];
-  [v26 setFrame:{0.0, v16, v24, v22}];
+  avatarPicker4 = [(AVTStickerViewController *)self avatarPicker];
+  view3 = [avatarPicker4 view];
+  [view3 setFrame:{0.0, v16, v24, v22}];
 }
 
-- (void)updateHeaderPositionWithContentOffset:(CGPoint)a3
+- (void)updateHeaderPositionWithContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  v5 = [(AVTStickerViewController *)self environment];
-  if ([v5 deviceIsVision])
+  y = offset.y;
+  environment = [(AVTStickerViewController *)self environment];
+  if ([environment deviceIsVision])
   {
     v6 = 0.0;
   }
@@ -597,13 +597,13 @@ uint64_t __55__AVTStickerViewController_selectDefaultAvatarIfNeeded__block_invok
     v6 = 10.0;
   }
 
-  v7 = [(AVTStickerViewController *)self view];
-  [v7 safeAreaInsets];
+  view = [(AVTStickerViewController *)self view];
+  [view safeAreaInsets];
   v9 = v6 + v8 - y;
 
-  v10 = [(AVTStickerViewController *)self avatarPicker];
-  v11 = [v10 view];
-  [v11 frame];
+  avatarPicker = [(AVTStickerViewController *)self avatarPicker];
+  view2 = [avatarPicker view];
+  [view2 frame];
   v12 = -CGRectGetHeight(v24);
 
   if (v9 < v12)
@@ -611,22 +611,22 @@ uint64_t __55__AVTStickerViewController_selectDefaultAvatarIfNeeded__block_invok
     v9 = v12;
   }
 
-  v13 = [(AVTStickerViewController *)self avatarPicker];
-  v14 = [v13 view];
-  [v14 frame];
+  avatarPicker2 = [(AVTStickerViewController *)self avatarPicker];
+  view3 = [avatarPicker2 view];
+  [view3 frame];
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  v22 = [(AVTStickerViewController *)self avatarPicker];
-  v21 = [v22 view];
-  [v21 setFrame:{v16, v9, v18, v20}];
+  avatarPicker3 = [(AVTStickerViewController *)self avatarPicker];
+  view4 = [avatarPicker3 view];
+  [view4 setFrame:{v16, v9, v18, v20}];
 }
 
 - (double)headerMaxY
 {
-  v3 = [(AVTStickerViewController *)self environment];
-  if ([v3 deviceIsVision])
+  environment = [(AVTStickerViewController *)self environment];
+  if ([environment deviceIsVision])
   {
     v4 = 0.0;
   }
@@ -636,15 +636,15 @@ uint64_t __55__AVTStickerViewController_selectDefaultAvatarIfNeeded__block_invok
     v4 = 10.0;
   }
 
-  v5 = [(AVTStickerViewController *)self avatarPicker];
-  v6 = [v5 view];
-  [v6 frame];
+  avatarPicker = [(AVTStickerViewController *)self avatarPicker];
+  view = [avatarPicker view];
+  [view frame];
   v8 = v4 + v7;
-  v9 = [(AVTStickerViewController *)self view];
-  [v9 safeAreaInsets];
+  view2 = [(AVTStickerViewController *)self view];
+  [view2 safeAreaInsets];
   v11 = v8 + v10;
-  v12 = [(AVTStickerViewController *)self avatarPicker];
-  [v12 contentInset];
+  avatarPicker2 = [(AVTStickerViewController *)self avatarPicker];
+  [avatarPicker2 contentInset];
   v14 = v11 - v13;
 
   return v14;
@@ -654,103 +654,103 @@ uint64_t __55__AVTStickerViewController_selectDefaultAvatarIfNeeded__block_invok
 {
   [(AVTStickerViewController *)self headerMaxY];
   v4 = v3;
-  v5 = [(AVTStickerViewController *)self pagingController];
-  [v5 setPageContentInsets:{v4, 0.0, 0.0, 0.0}];
+  pagingController = [(AVTStickerViewController *)self pagingController];
+  [pagingController setPageContentInsets:{v4, 0.0, 0.0, 0.0}];
 }
 
-- (void)updateScrollToShowAvatarPicker:(BOOL)a3
+- (void)updateScrollToShowAvatarPicker:(BOOL)picker
 {
-  if (a3)
+  if (picker)
   {
-    v4 = [(AVTStickerViewController *)self pagingController];
+    pagingController = [(AVTStickerViewController *)self pagingController];
     v5 = *MEMORY[0x1E695EFF8];
     v6 = *(MEMORY[0x1E695EFF8] + 8);
-    v9 = v4;
+    v9 = pagingController;
   }
 
   else
   {
     [(AVTStickerViewController *)self headerMaxY];
     v8 = v7;
-    v4 = [(AVTStickerViewController *)self pagingController];
+    pagingController = [(AVTStickerViewController *)self pagingController];
     v5 = 0.0;
-    v9 = v4;
+    v9 = pagingController;
     v6 = v8;
   }
 
-  [v4 setPageContentOffset:{v5, v6}];
+  [pagingController setPageContentOffset:{v5, v6}];
 }
 
 - (void)presentMemojiEditorForCreation
 {
-  v2 = [(AVTStickerViewController *)self avatarPicker];
-  [v2 presentMemojiEditorForCreation];
+  avatarPicker = [(AVTStickerViewController *)self avatarPicker];
+  [avatarPicker presentMemojiEditorForCreation];
 }
 
 - (void)stickerControllerDidEnterBackground
 {
-  v3 = [(AVTStickerViewController *)self paddleView];
+  paddleView = [(AVTStickerViewController *)self paddleView];
 
-  if (v3)
+  if (paddleView)
   {
-    v4 = [(AVTStickerViewController *)self paddleView];
-    [v4 pauseVideo];
+    paddleView2 = [(AVTStickerViewController *)self paddleView];
+    [paddleView2 pauseVideo];
   }
 }
 
 - (void)stickerControllerWillEnterForeground
 {
-  v3 = [(AVTStickerViewController *)self paddleView];
+  paddleView = [(AVTStickerViewController *)self paddleView];
 
-  if (v3)
+  if (paddleView)
   {
-    v4 = [(AVTStickerViewController *)self paddleView];
-    [v4 playVideo];
+    paddleView2 = [(AVTStickerViewController *)self paddleView];
+    [paddleView2 playVideo];
   }
 }
 
-- (void)snapshotInBlock:(id)a3
+- (void)snapshotInBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AVTStickerViewController *)self pagingController];
-  [v5 pageContentOffset];
+  blockCopy = block;
+  pagingController = [(AVTStickerViewController *)self pagingController];
+  [pagingController pageContentOffset];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(AVTStickerViewController *)self logger];
-  v11 = [(AVTStickerViewController *)self view];
-  [v11 bounds];
+  logger = [(AVTStickerViewController *)self logger];
+  view = [(AVTStickerViewController *)self view];
+  [view bounds];
   v12 = NSStringFromCGRect(v17);
-  [v10 logStickerViewSnapshotForBounds:v12 offset:{v7, v9}];
+  [logger logStickerViewSnapshotForBounds:v12 offset:{v7, v9}];
 
   if (v9 > 0.0)
   {
-    v13 = [(AVTStickerViewController *)self pagingController];
-    [v13 setPageContentOffset:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+    pagingController2 = [(AVTStickerViewController *)self pagingController];
+    [pagingController2 setPageContentOffset:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
   }
 
-  v14 = [(AVTStickerViewController *)self view];
-  v4[2](v4, v14);
+  view2 = [(AVTStickerViewController *)self view];
+  blockCopy[2](blockCopy, view2);
 
-  v15 = [(AVTStickerViewController *)self pagingController];
-  [v15 setPageContentOffset:{v7, v9}];
+  pagingController3 = [(AVTStickerViewController *)self pagingController];
+  [pagingController3 setPageContentOffset:{v7, v9}];
 }
 
 - (void)clearStickerSelection
 {
-  v2 = [(AVTStickerViewController *)self pagingController];
-  [v2 clearStickerSelection];
+  pagingController = [(AVTStickerViewController *)self pagingController];
+  [pagingController clearStickerSelection];
 }
 
-- (void)presentAvatarUIController:(id)a3 animated:(BOOL)a4
+- (void)presentAvatarUIController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(AVTStickerViewController *)self pagingController];
-  [v7 willEndDisplaying];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  pagingController = [(AVTStickerViewController *)self pagingController];
+  [pagingController willEndDisplaying];
 
-  v8 = [(AVTStickerViewController *)self presenterDelegate];
-  [v8 presentAvatarUIController:v6 animated:v4];
+  presenterDelegate = [(AVTStickerViewController *)self presenterDelegate];
+  [presenterDelegate presentAvatarUIController:controllerCopy animated:animatedCopy];
 
   v9 = dispatch_time(0, 500000000);
   block[0] = MEMORY[0x1E69E9820];
@@ -767,37 +767,37 @@ void __63__AVTStickerViewController_presentAvatarUIController_animated___block_i
   [v1 didEndDisplaying];
 }
 
-- (void)dismissAvatarUIControllerAnimated:(BOOL)a3
+- (void)dismissAvatarUIControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(AVTStickerViewController *)self pagingController];
-  [v5 willStartDisplaying];
+  animatedCopy = animated;
+  pagingController = [(AVTStickerViewController *)self pagingController];
+  [pagingController willStartDisplaying];
 
-  v6 = [(AVTStickerViewController *)self presenterDelegate];
-  [v6 dismissAvatarUIControllerAnimated:v3];
+  presenterDelegate = [(AVTStickerViewController *)self presenterDelegate];
+  [presenterDelegate dismissAvatarUIControllerAnimated:animatedCopy];
 }
 
-- (void)avatarPicker:(id)a3 didSelectAvatarRecord:(id)a4
+- (void)avatarPicker:(id)picker didSelectAvatarRecord:(id)record
 {
-  v17 = a4;
-  v6 = a3;
-  v7 = [v17 identifier];
-  [(AVTStickerViewController *)self setSelectedRecordIdentifier:v7];
+  recordCopy = record;
+  pickerCopy = picker;
+  identifier = [recordCopy identifier];
+  [(AVTStickerViewController *)self setSelectedRecordIdentifier:identifier];
 
-  v8 = [(AVTStickerViewController *)self taskScheduler];
-  v9 = [(AVTStickerViewController *)self selectedRecordIdentifier];
-  [v8 setSelectedAvatarRecordIdentifier:v9];
+  taskScheduler = [(AVTStickerViewController *)self taskScheduler];
+  selectedRecordIdentifier = [(AVTStickerViewController *)self selectedRecordIdentifier];
+  [taskScheduler setSelectedAvatarRecordIdentifier:selectedRecordIdentifier];
 
-  v10 = [(AVTStickerViewController *)self selectedRecordIdentifier];
+  selectedRecordIdentifier2 = [(AVTStickerViewController *)self selectedRecordIdentifier];
   AVTUISetStickersLastSelected();
 
-  v11 = [(AVTStickerViewController *)self environment];
-  v12 = [v11 usageTrackingSession];
-  [v12 didChangeCurrentAvatarInStickers:v17];
+  environment = [(AVTStickerViewController *)self environment];
+  usageTrackingSession = [environment usageTrackingSession];
+  [usageTrackingSession didChangeCurrentAvatarInStickers:recordCopy];
 
-  v13 = [(AVTStickerViewController *)self avatarPicker];
+  avatarPicker = [(AVTStickerViewController *)self avatarPicker];
 
-  if (v13 == v6)
+  if (avatarPicker == pickerCopy)
   {
     [(AVTStickerViewController *)self pagingController];
   }
@@ -807,21 +807,21 @@ void __63__AVTStickerViewController_presentAvatarUIController_animated___block_i
     [(AVTStickerViewController *)self avatarPicker];
   }
   v14 = ;
-  v15 = v13 != v6;
-  v16 = [v17 identifier];
-  [v14 selectAvatarRecordWithIdentifier:v16 animated:v15];
+  v15 = avatarPicker != pickerCopy;
+  identifier2 = [recordCopy identifier];
+  [v14 selectAvatarRecordWithIdentifier:identifier2 animated:v15];
 }
 
-- (BOOL)avatarPicker:(id)a3 shouldPresentMemojiEditorForAvatarRecord:(id)a4
+- (BOOL)avatarPicker:(id)picker shouldPresentMemojiEditorForAvatarRecord:(id)record
 {
-  v5 = a4;
-  v6 = [(AVTStickerViewController *)self stickerSelectionDelegate];
+  recordCopy = record;
+  stickerSelectionDelegate = [(AVTStickerViewController *)self stickerSelectionDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(AVTStickerViewController *)self stickerSelectionDelegate];
-    v9 = [v8 stickerViewController:self shouldPresentMemojiEditorForSelectedAvatar:v5];
+    stickerSelectionDelegate2 = [(AVTStickerViewController *)self stickerSelectionDelegate];
+    v9 = [stickerSelectionDelegate2 stickerViewController:self shouldPresentMemojiEditorForSelectedAvatar:recordCopy];
   }
 
   else
@@ -832,51 +832,51 @@ void __63__AVTStickerViewController_presentAvatarUIController_animated___block_i
   return v9;
 }
 
-- (void)dataSource:(id)a3 didAddRecord:(id)a4 atIndex:(unint64_t)a5
+- (void)dataSource:(id)source didAddRecord:(id)record atIndex:(unint64_t)index
 {
-  v7 = a4;
-  v8 = [(AVTStickerViewController *)self pagingController];
-  [v8 insertPageForRecord:v7 atIndex:a5];
+  recordCopy = record;
+  pagingController = [(AVTStickerViewController *)self pagingController];
+  [pagingController insertPageForRecord:recordCopy atIndex:index];
 
   [(AVTStickerViewController *)self reloadPickerView];
-  v9 = [v7 identifier];
+  identifier = [recordCopy identifier];
 
-  [(AVTStickerViewController *)self selectRecordForIdentifier:v9];
+  [(AVTStickerViewController *)self selectRecordForIdentifier:identifier];
   [(AVTStickerViewController *)self updateScrollToShowAvatarPicker:0];
-  v10 = [(AVTStickerViewController *)self selectedRecordIdentifier];
+  selectedRecordIdentifier = [(AVTStickerViewController *)self selectedRecordIdentifier];
   AVTUISetStickersLastSelected();
 }
 
-- (void)dataSource:(id)a3 didEditRecord:(id)a4 atIndex:(unint64_t)a5
+- (void)dataSource:(id)source didEditRecord:(id)record atIndex:(unint64_t)index
 {
-  v7 = a4;
-  v8 = [(AVTStickerViewController *)self pagingController];
-  [v8 reloadPageForRecord:v7 atIndex:a5];
+  recordCopy = record;
+  pagingController = [(AVTStickerViewController *)self pagingController];
+  [pagingController reloadPageForRecord:recordCopy atIndex:index];
 
   [(AVTStickerViewController *)self updateScrollToShowAvatarPicker:0];
 
   [(AVTStickerViewController *)self reloadPickerView];
 }
 
-- (void)dataSource:(id)a3 didRemoveRecord:(id)a4 atIndex:(unint64_t)a5
+- (void)dataSource:(id)source didRemoveRecord:(id)record atIndex:(unint64_t)index
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = [(AVTStickerViewController *)self pagingController];
-  [v9 deletePageForRecord:v8 atIndex:a5];
+  sourceCopy = source;
+  recordCopy = record;
+  pagingController = [(AVTStickerViewController *)self pagingController];
+  [pagingController deletePageForRecord:recordCopy atIndex:index];
 
   [(AVTStickerViewController *)self reloadPickerView];
-  v10 = [v14 indexSetForEditableRecords];
-  if (![v10 count])
+  indexSetForEditableRecords = [sourceCopy indexSetForEditableRecords];
+  if (![indexSetForEditableRecords count])
   {
     v11 = [MEMORY[0x1E696AC90] indexSetWithIndex:0];
 
-    v10 = v11;
+    indexSetForEditableRecords = v11;
   }
 
-  v12 = [v14 recordAtIndex:{objc_msgSend(v10, "closestIndexToIndex:greaterIndexesFirst:", a5, 1)}];
-  v13 = [v12 identifier];
-  [(AVTStickerViewController *)self selectRecordForIdentifier:v13];
+  v12 = [sourceCopy recordAtIndex:{objc_msgSend(indexSetForEditableRecords, "closestIndexToIndex:greaterIndexesFirst:", index, 1)}];
+  identifier = [v12 identifier];
+  [(AVTStickerViewController *)self selectRecordForIdentifier:identifier];
 
   [(AVTStickerViewController *)self updateScrollToShowAvatarPicker:0];
 }
@@ -888,8 +888,8 @@ void __63__AVTStickerViewController_presentAvatarUIController_animated___block_i
     return 0;
   }
 
-  v3 = [(AVTStickerViewController *)self paddleView];
-  v4 = v3 == 0;
+  paddleView = [(AVTStickerViewController *)self paddleView];
+  v4 = paddleView == 0;
 
   return v4;
 }
@@ -901,19 +901,19 @@ void __63__AVTStickerViewController_presentAvatarUIController_animated___block_i
     v3 = [[AVTPaddleView alloc] initWithLayoutDirection:1];
     [(AVTStickerViewController *)self setPaddleView:v3];
 
-    v4 = [(AVTStickerViewController *)self paddleView];
-    [v4 setDelegate:self];
+    paddleView = [(AVTStickerViewController *)self paddleView];
+    [paddleView setDelegate:self];
 
-    v5 = [(AVTStickerViewController *)self view];
-    v6 = [(AVTStickerViewController *)self paddleView];
-    [v5 addSubview:v6];
+    view = [(AVTStickerViewController *)self view];
+    paddleView2 = [(AVTStickerViewController *)self paddleView];
+    [view addSubview:paddleView2];
 
     [(AVTStickerViewController *)self updatePaddleViewLayoutIfNecessary];
-    v7 = [(AVTStickerViewController *)self paddleView];
-    [v7 setAlpha:0.0];
+    paddleView3 = [(AVTStickerViewController *)self paddleView];
+    [paddleView3 setAlpha:0.0];
 
-    v8 = [(AVTStickerViewController *)self paddleView];
-    [v8 showAnimated:1];
+    paddleView4 = [(AVTStickerViewController *)self paddleView];
+    [paddleView4 showAnimated:1];
 
     MEMORY[0x1EEDEFCF0](1);
   }
@@ -921,55 +921,55 @@ void __63__AVTStickerViewController_presentAvatarUIController_animated___block_i
 
 - (void)updatePaddleViewLayoutIfNecessary
 {
-  v3 = [(AVTStickerViewController *)self paddleView];
+  paddleView = [(AVTStickerViewController *)self paddleView];
 
-  if (v3)
+  if (paddleView)
   {
-    v4 = [(AVTStickerViewController *)self pagingController];
-    v5 = [v4 view];
-    [v5 layoutIfNeeded];
+    pagingController = [(AVTStickerViewController *)self pagingController];
+    view = [pagingController view];
+    [view layoutIfNeeded];
 
-    v6 = [(AVTStickerViewController *)self avatarPicker];
-    v7 = [v6 view];
-    [v7 layoutIfNeeded];
+    avatarPicker = [(AVTStickerViewController *)self avatarPicker];
+    view2 = [avatarPicker view];
+    [view2 layoutIfNeeded];
 
-    v8 = [(AVTStickerViewController *)self avatarPicker];
-    v17 = [v8 viewForAddItem];
+    avatarPicker2 = [(AVTStickerViewController *)self avatarPicker];
+    viewForAddItem = [avatarPicker2 viewForAddItem];
 
-    if (v17)
+    if (viewForAddItem)
     {
-      [v17 bounds];
+      [viewForAddItem bounds];
       Width = CGRectGetWidth(v19);
-      v10 = [v17 button];
-      [v10 bounds];
+      button = [viewForAddItem button];
+      [button bounds];
       v11 = (Width - CGRectGetWidth(v20)) * 0.5;
-      v12 = [(AVTStickerViewController *)self paddleView];
-      [v12 setPadding:v11];
+      paddleView2 = [(AVTStickerViewController *)self paddleView];
+      [paddleView2 setPadding:v11];
 
-      v13 = [(AVTStickerViewController *)self pagingController];
-      v14 = [v13 firstPageItemView];
+      pagingController2 = [(AVTStickerViewController *)self pagingController];
+      firstPageItemView = [pagingController2 firstPageItemView];
 
-      v15 = [(AVTStickerViewController *)self paddleView];
-      v16 = [v17 button];
-      [v15 updateLayoutFromPlusButtonView:v16 videoView:v14];
+      paddleView3 = [(AVTStickerViewController *)self paddleView];
+      button2 = [viewForAddItem button];
+      [paddleView3 updateLayoutFromPlusButtonView:button2 videoView:firstPageItemView];
     }
   }
 }
 
 - (void)dismissPaddleViewIfNecessary
 {
-  v3 = [(AVTStickerViewController *)self paddleView];
+  paddleView = [(AVTStickerViewController *)self paddleView];
 
-  if (v3)
+  if (paddleView)
   {
-    v4 = [(AVTStickerViewController *)self paddleView];
-    [v4 dismissAnimated:1];
+    paddleView2 = [(AVTStickerViewController *)self paddleView];
+    [paddleView2 dismissAnimated:1];
 
     [(AVTStickerViewController *)self setPaddleView:0];
   }
 }
 
-- (void)paddleViewTapped:(id)a3
+- (void)paddleViewTapped:(id)tapped
 {
   [(AVTStickerViewController *)self dismissPaddleViewIfNecessary];
 
@@ -1013,85 +1013,85 @@ void __63__AVTStickerViewController_presentAvatarUIController_animated___block_i
 
 - (void)editCurrentMemoji
 {
-  v3 = [(AVTStickerViewController *)self pagingController];
-  v4 = [(AVTStickerViewController *)self selectedRecordIdentifier];
-  v5 = [v3 pageIndexForAvatarRecordIdentifierForPPT:v4];
+  pagingController = [(AVTStickerViewController *)self pagingController];
+  selectedRecordIdentifier = [(AVTStickerViewController *)self selectedRecordIdentifier];
+  v5 = [pagingController pageIndexForAvatarRecordIdentifierForPPT:selectedRecordIdentifier];
 
-  v8 = [(AVTStickerViewController *)self avatarPicker];
-  v6 = [(AVTStickerViewController *)self recordDataSource];
-  v7 = [v6 recordAtIndex:v5];
-  [v8 presentActionsForAvatarForPPT:v7];
+  avatarPicker = [(AVTStickerViewController *)self avatarPicker];
+  recordDataSource = [(AVTStickerViewController *)self recordDataSource];
+  v7 = [recordDataSource recordAtIndex:v5];
+  [avatarPicker presentActionsForAvatarForPPT:v7];
 }
 
-- (void)swipeRightWithDelay:(int64_t)a3 forCompletionHandler:(id)a4
+- (void)swipeRightWithDelay:(int64_t)delay forCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(AVTStickerViewController *)self pagingController];
-  v8 = [(AVTStickerViewController *)self selectedRecordIdentifier];
-  v9 = [v7 pageIndexForAvatarRecordIdentifierForPPT:v8];
+  handlerCopy = handler;
+  pagingController = [(AVTStickerViewController *)self pagingController];
+  selectedRecordIdentifier = [(AVTStickerViewController *)self selectedRecordIdentifier];
+  v9 = [pagingController pageIndexForAvatarRecordIdentifierForPPT:selectedRecordIdentifier];
 
   v10 = v9 + 1;
-  v11 = [(AVTStickerViewController *)self recordDataSource];
-  v12 = [v11 numberOfRecords];
+  recordDataSource = [(AVTStickerViewController *)self recordDataSource];
+  numberOfRecords = [recordDataSource numberOfRecords];
 
-  if (v10 < v12)
+  if (v10 < numberOfRecords)
   {
     v13 = [MEMORY[0x1E696AC88] indexPathForItem:v10 inSection:0];
-    v14 = [(AVTStickerViewController *)self pagingController];
-    v15 = [v14 collectionViewForPPT];
-    [v15 scrollToItemAtIndexPath:v13 atScrollPosition:8 animated:1];
+    pagingController2 = [(AVTStickerViewController *)self pagingController];
+    collectionViewForPPT = [pagingController2 collectionViewForPPT];
+    [collectionViewForPPT scrollToItemAtIndexPath:v13 atScrollPosition:8 animated:1];
   }
 
-  if (v6)
+  if (handlerCopy)
   {
-    if (a3 < 1)
+    if (delay < 1)
     {
-      v6[2](v6);
+      handlerCopy[2](handlerCopy);
     }
 
     else
     {
-      v16 = dispatch_time(0, 1000000000 * a3);
+      v16 = dispatch_time(0, 1000000000 * delay);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __74__AVTStickerViewController_PPT__swipeRightWithDelay_forCompletionHandler___block_invoke;
       block[3] = &unk_1E7F3AFF8;
-      v18 = v6;
+      v18 = handlerCopy;
       dispatch_after(v16, MEMORY[0x1E69E96A0], block);
     }
   }
 }
 
-- (void)swipeLeftWithDelay:(int64_t)a3 forCompletionHandler:(id)a4
+- (void)swipeLeftWithDelay:(int64_t)delay forCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(AVTStickerViewController *)self pagingController];
-  v8 = [(AVTStickerViewController *)self selectedRecordIdentifier];
-  v9 = [v7 pageIndexForAvatarRecordIdentifierForPPT:v8];
+  handlerCopy = handler;
+  pagingController = [(AVTStickerViewController *)self pagingController];
+  selectedRecordIdentifier = [(AVTStickerViewController *)self selectedRecordIdentifier];
+  v9 = [pagingController pageIndexForAvatarRecordIdentifierForPPT:selectedRecordIdentifier];
 
   if (v9 >= 1)
   {
     v10 = [MEMORY[0x1E696AC88] indexPathForItem:v9 - 1 inSection:0];
-    v11 = [(AVTStickerViewController *)self pagingController];
-    v12 = [v11 collectionViewForPPT];
-    [v12 scrollToItemAtIndexPath:v10 atScrollPosition:8 animated:1];
+    pagingController2 = [(AVTStickerViewController *)self pagingController];
+    collectionViewForPPT = [pagingController2 collectionViewForPPT];
+    [collectionViewForPPT scrollToItemAtIndexPath:v10 atScrollPosition:8 animated:1];
   }
 
-  if (v6)
+  if (handlerCopy)
   {
-    if (a3 < 1)
+    if (delay < 1)
     {
-      v6[2](v6);
+      handlerCopy[2](handlerCopy);
     }
 
     else
     {
-      v13 = dispatch_time(0, 1000000000 * a3);
+      v13 = dispatch_time(0, 1000000000 * delay);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __73__AVTStickerViewController_PPT__swipeLeftWithDelay_forCompletionHandler___block_invoke;
       block[3] = &unk_1E7F3AFF8;
-      v15 = v6;
+      v15 = handlerCopy;
       dispatch_after(v13, MEMORY[0x1E69E96A0], block);
     }
   }

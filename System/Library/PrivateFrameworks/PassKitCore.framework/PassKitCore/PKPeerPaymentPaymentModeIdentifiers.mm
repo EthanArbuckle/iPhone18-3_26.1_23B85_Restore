@@ -1,24 +1,24 @@
 @interface PKPeerPaymentPaymentModeIdentifiers
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentPaymentModeIdentifiers)initWithCoder:(id)a3;
-- (PKPeerPaymentPaymentModeIdentifiers)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentPaymentModeIdentifiers)initWithCoder:(id)coder;
+- (PKPeerPaymentPaymentModeIdentifiers)initWithDictionary:(id)dictionary;
 - (id)description;
-- (id)identifierForPaymentMode:(unint64_t)a3;
+- (id)identifierForPaymentMode:(unint64_t)mode;
 - (unint64_t)hash;
 @end
 
 @implementation PKPeerPaymentPaymentModeIdentifiers
 
-- (PKPeerPaymentPaymentModeIdentifiers)initWithDictionary:(id)a3
+- (PKPeerPaymentPaymentModeIdentifiers)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = PKPeerPaymentPaymentModeIdentifiers;
   v5 = [(PKPeerPaymentPaymentModeIdentifiers *)&v10 init];
   if (v5)
   {
     v6 = PKPeerPaymentPaymentModeToString(2);
-    v7 = [v4 PKStringForKey:v6];
+    v7 = [dictionaryCopy PKStringForKey:v6];
     deviceTap = v5->_deviceTap;
     v5->_deviceTap = v7;
   }
@@ -26,9 +26,9 @@
   return v5;
 }
 
-- (id)identifierForPaymentMode:(unint64_t)a3
+- (id)identifierForPaymentMode:(unint64_t)mode
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
     v4 = self->_deviceTap;
   }
@@ -41,15 +41,15 @@
   return v4;
 }
 
-- (PKPeerPaymentPaymentModeIdentifiers)initWithCoder:(id)a3
+- (PKPeerPaymentPaymentModeIdentifiers)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPeerPaymentPaymentModeIdentifiers;
   v5 = [(PKPeerPaymentPaymentModeIdentifiers *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceTap"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceTap"];
     deviceTap = v5->_deviceTap;
     v5->_deviceTap = v6;
   }
@@ -59,21 +59,21 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_deviceTap];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_deviceTap];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     deviceTap = self->_deviceTap;
-    v6 = v4[1];
+    v6 = equalCopy[1];
     if (deviceTap && v6)
     {
       v7 = [(NSString *)deviceTap isEqual:?];

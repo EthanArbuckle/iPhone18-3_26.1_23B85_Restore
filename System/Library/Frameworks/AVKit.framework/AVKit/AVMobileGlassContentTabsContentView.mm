@@ -1,29 +1,29 @@
 @interface AVMobileGlassContentTabsContentView
 - (AVMobileGlassContentTabsContentView)init;
-- (double)_contentOffsetForTab:(id *)a1;
+- (double)_contentOffsetForTab:(id *)tab;
 - (id)_updateContentSize;
-- (uint64_t)_indexForContentTab:(id *)a1;
-- (void)_attachViewForContentTab:(id *)a1;
-- (void)_updateActiveContentTabFrom:(void *)a3 to:(uint64_t)a4 withChangingReason:;
-- (void)_updateContentTabViewFrame:(id *)a1;
+- (uint64_t)_indexForContentTab:(id *)tab;
+- (void)_attachViewForContentTab:(id *)tab;
+- (void)_updateActiveContentTabFrom:(void *)from to:(uint64_t)to withChangingReason:;
+- (void)_updateContentTabViewFrame:(id *)frame;
 - (void)_updateContentTabViewFrameHeight;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
-- (void)setActiveTabContentTab:(id)a3 withChangingReason:(unint64_t)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentTabs:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setUpcomingContentTab:(id)a3;
+- (void)setActiveTabContentTab:(id)tab withChangingReason:(unint64_t)reason;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentTabs:(id)tabs;
+- (void)setFrame:(CGRect)frame;
+- (void)setUpcomingContentTab:(id)tab;
 @end
 
 @implementation AVMobileGlassContentTabsContentView
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v14.receiver = self;
   v14.super_class = AVMobileGlassContentTabsContentView;
   [(AVMobileGlassContentTabsContentView *)&v14 frame];
@@ -47,35 +47,35 @@
 
 - (void)_updateContentTabViewFrameHeight
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[62];
+    v2 = self[62];
     if (v2)
     {
-      v3 = [v2 viewController];
-      v11 = [v3 view];
+      viewController = [v2 viewController];
+      view = [viewController view];
 
-      [v11 frame];
+      [view frame];
       v5 = v4;
       v7 = v6;
       v9 = v8;
-      [a1 bounds];
+      [self bounds];
       if (v9 >= v10)
       {
         v10 = v9;
       }
 
-      [v11 setFrame:{v5, 0.0, v7, v10}];
+      [view setFrame:{v5, 0.0, v7, v10}];
     }
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v14.receiver = self;
   v14.super_class = AVMobileGlassContentTabsContentView;
   [(AVMobileGlassContentTabsContentView *)&v14 bounds];
@@ -104,8 +104,8 @@
   [(AVMobileGlassContentTabsContentView *)&v8 didMoveToSuperview];
   if (self)
   {
-    v3 = [(AVMobileGlassContentTabsContentView *)self window];
-    if (v3)
+    window = [(AVMobileGlassContentTabsContentView *)self window];
+    if (window)
     {
       scrollView = self->_scrollView;
 
@@ -159,37 +159,37 @@
   [(UIScrollView *)self->_scrollView setFrame:?];
 }
 
-- (void)_updateContentTabViewFrame:(id *)a1
+- (void)_updateContentTabViewFrame:(id *)frame
 {
-  if (a1 && a2)
+  if (frame && a2)
   {
     v3 = a2;
-    v4 = [(AVMobileGlassContentTabsContentView *)a1 _indexForContentTab:v3];
-    [a1 bounds];
+    v4 = [(AVMobileGlassContentTabsContentView *)frame _indexForContentTab:v3];
+    [frame bounds];
     v6 = v5;
     v8 = v7;
-    [a1 layoutMargins];
+    [frame layoutMargins];
     v10 = v9 + v6 * v4;
     v12 = v6 - (v9 + v11);
-    v13 = [v3 viewController];
+    viewController = [v3 viewController];
 
-    v14 = [v13 view];
+    view = [viewController view];
 
-    [v14 setFrame:{v10, 0.0, v12, v8}];
+    [view setFrame:{v10, 0.0, v12, v8}];
   }
 }
 
-- (double)_contentOffsetForTab:(id *)a1
+- (double)_contentOffsetForTab:(id *)tab
 {
   v3 = a2;
   v4 = *MEMORY[0x1E695EFF8];
   if (v3)
   {
-    v5 = [(AVMobileGlassContentTabsContentView *)a1 _indexForContentTab:v3];
+    v5 = [(AVMobileGlassContentTabsContentView *)tab _indexForContentTab:v3];
     if (v5)
     {
       v6 = v5;
-      [a1[63] bounds];
+      [tab[63] bounds];
       v4 = v7 * v6;
     }
   }
@@ -197,24 +197,24 @@
   return v4;
 }
 
-- (uint64_t)_indexForContentTab:(id *)a1
+- (uint64_t)_indexForContentTab:(id *)tab
 {
   v3 = a2;
-  v4 = [a1[61] indexOfObject:v3];
-  if ([a1 effectiveUserInterfaceLayoutDirection] == 1)
+  v4 = [tab[61] indexOfObject:v3];
+  if ([tab effectiveUserInterfaceLayoutDirection] == 1)
   {
-    v4 = [a1[61] count] + ~v4;
+    v4 = [tab[61] count] + ~v4;
   }
 
   return v4;
 }
 
-- (void)setContentTabs:(id)a3
+- (void)setContentTabs:(id)tabs
 {
-  v6 = a3;
+  tabsCopy = tabs;
   if (![(NSArray *)self->_contentTabs isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [tabsCopy copy];
     contentTabs = self->_contentTabs;
     self->_contentTabs = v4;
 
@@ -222,17 +222,17 @@
   }
 }
 
-- (void)setUpcomingContentTab:(id)a3
+- (void)setUpcomingContentTab:(id)tab
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_upcomingContentTab != v5)
+  tabCopy = tab;
+  v6 = tabCopy;
+  if (self->_upcomingContentTab != tabCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_upcomingContentTab, a3);
-    v5 = [(UIScrollView *)self->_scrollView isTracking];
+    v7 = tabCopy;
+    objc_storeStrong(&self->_upcomingContentTab, tab);
+    tabCopy = [(UIScrollView *)self->_scrollView isTracking];
     v6 = v7;
-    if (v5)
+    if (tabCopy)
     {
       [(AVMobileGlassContentTabsContentView *)&self->super.super.super.super.isa _updateContentSize];
       [(AVMobileGlassContentTabsContentView *)&self->super.super.super.super.isa _updateContentTabViewFrame:?];
@@ -242,53 +242,53 @@
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](tabCopy, v6);
 }
 
-- (void)_attachViewForContentTab:(id *)a1
+- (void)_attachViewForContentTab:(id *)tab
 {
   v3 = a2;
-  if (a1)
+  if (tab)
   {
     v8 = v3;
-    v4 = [v3 viewController];
-    v5 = [v4 view];
+    viewController = [v3 viewController];
+    view = [viewController view];
 
-    v6 = [a1[63] subviews];
-    v7 = [v6 containsObject:v5];
+    subviews = [tab[63] subviews];
+    v7 = [subviews containsObject:view];
 
     if ((v7 & 1) == 0)
     {
-      [v5 setAutoresizingMask:0];
-      [a1[63] addSubview:v5];
+      [view setAutoresizingMask:0];
+      [tab[63] addSubview:view];
     }
 
-    [(AVMobileGlassContentTabsContentView *)a1 _updateContentTabViewFrame:v8];
-    if (([a1[63] isTracking] & 1) == 0)
+    [(AVMobileGlassContentTabsContentView *)tab _updateContentTabViewFrame:v8];
+    if (([tab[63] isTracking] & 1) == 0)
     {
-      [a1[63] setContentOffset:{-[AVMobileGlassContentTabsContentView _contentOffsetForTab:](a1, a1[62])}];
+      [tab[63] setContentOffset:{-[AVMobileGlassContentTabsContentView _contentOffsetForTab:](tab, tab[62])}];
     }
 
     v3 = v8;
   }
 }
 
-- (void)setActiveTabContentTab:(id)a3 withChangingReason:(unint64_t)a4
+- (void)setActiveTabContentTab:(id)tab withChangingReason:(unint64_t)reason
 {
-  v7 = a3;
-  if (v7 && ![(NSArray *)self->_contentTabs containsObject:v7])
+  tabCopy = tab;
+  if (tabCopy && ![(NSArray *)self->_contentTabs containsObject:tabCopy])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Error: Internal inconsistency. The provided AVMobileContentTab does not exist."];
   }
 
   activeContentTab = self->_activeContentTab;
-  if (activeContentTab != v7)
+  if (activeContentTab != tabCopy)
   {
     v9 = activeContentTab;
-    objc_storeStrong(&self->_activeContentTab, a3);
+    objc_storeStrong(&self->_activeContentTab, tab);
     if (v9)
     {
-      v10 = self;
+      selfCopy2 = self;
       v11 = v9;
     }
 
@@ -305,11 +305,11 @@
       [v12 performWithoutAnimation:v13];
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
-      v10 = self;
+      selfCopy2 = self;
       v11 = 0;
     }
 
-    [(AVMobileGlassContentTabsContentView *)&v10->super.super.super.super.isa _updateActiveContentTabFrom:v11 to:v7 withChangingReason:a4];
+    [(AVMobileGlassContentTabsContentView *)&selfCopy2->super.super.super.super.isa _updateActiveContentTabFrom:v11 to:tabCopy withChangingReason:reason];
   }
 }
 
@@ -325,35 +325,35 @@ void __81__AVMobileGlassContentTabsContentView_setActiveTabContentTab_withChangi
   }
 }
 
-- (void)_updateActiveContentTabFrom:(void *)a3 to:(uint64_t)a4 withChangingReason:
+- (void)_updateActiveContentTabFrom:(void *)from to:(uint64_t)to withChangingReason:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = v8;
-  if (a1)
+  fromCopy = from;
+  v9 = fromCopy;
+  if (self)
   {
-    if (a4)
+    if (to)
     {
-      [(AVMobileGlassContentTabsContentView *)a1 _updateContentSize];
-      [(AVMobileGlassContentTabsContentView *)a1 _updateContentTabViewFrame:?];
-      [(AVMobileGlassContentTabsContentView *)a1 _attachViewForContentTab:?];
+      [(AVMobileGlassContentTabsContentView *)self _updateContentSize];
+      [(AVMobileGlassContentTabsContentView *)self _updateContentTabViewFrame:?];
+      [(AVMobileGlassContentTabsContentView *)self _attachViewForContentTab:?];
     }
 
     else
     {
-      v10 = [v8 viewController];
-      v11 = [v10 view];
+      viewController = [fromCopy viewController];
+      view = [viewController view];
 
-      v12 = [a1[63] subviews];
-      v13 = [v12 containsObject:v11];
+      subviews = [self[63] subviews];
+      v13 = [subviews containsObject:view];
 
       if ((v13 & 1) == 0)
       {
-        [v11 setAutoresizingMask:0];
-        [a1[63] addSubview:v11];
+        [view setAutoresizingMask:0];
+        [self[63] addSubview:view];
       }
 
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       v14 = MEMORY[0x1E69DD250];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
@@ -368,7 +368,7 @@ void __81__AVMobileGlassContentTabsContentView_setActiveTabContentTab_withChangi
       v18 = v17;
       if (v16 && v17)
       {
-        objc_initWeak(&from, a1);
+        objc_initWeak(&from, self);
         v19 = MEMORY[0x1E69DD250];
         v31[0] = MEMORY[0x1E69E9820];
         v31[1] = 3221225472;
@@ -379,14 +379,14 @@ void __81__AVMobileGlassContentTabsContentView_setActiveTabContentTab_withChangi
         v32 = v20;
         v33 = v18;
         [v19 performWithoutAnimation:v31];
-        v21 = [v20 viewController];
-        v22 = [v21 view];
-        [v22 frame];
+        viewController2 = [v20 viewController];
+        view2 = [viewController2 view];
+        [view2 frame];
         v24 = v23;
-        [a1 layoutMargins];
+        [self layoutMargins];
         v26 = v24 - v25;
 
-        [a1[63] setContentOffset:{v26, 0.0}];
+        [self[63] setContentOffset:{v26, 0.0}];
         objc_destroyWeak(&v34);
         objc_destroyWeak(&from);
       }

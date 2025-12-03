@@ -1,25 +1,25 @@
 @interface CRLCanvasConnectionKnobConnectionActionTemplate
-- (CRLCanvasConnectionKnobConnectionActionTemplate)initWithRepForConnecting:(id)a3 andRepsForDragging:(id)a4;
+- (CRLCanvasConnectionKnobConnectionActionTemplate)initWithRepForConnecting:(id)connecting andRepsForDragging:(id)dragging;
 @end
 
 @implementation CRLCanvasConnectionKnobConnectionActionTemplate
 
-- (CRLCanvasConnectionKnobConnectionActionTemplate)initWithRepForConnecting:(id)a3 andRepsForDragging:(id)a4
+- (CRLCanvasConnectionKnobConnectionActionTemplate)initWithRepForConnecting:(id)connecting andRepsForDragging:(id)dragging
 {
-  v7 = a3;
-  v8 = a4;
+  connectingCopy = connecting;
+  draggingCopy = dragging;
   v31.receiver = self;
   v31.super_class = CRLCanvasConnectionKnobConnectionActionTemplate;
   v9 = [(CRLCanvasConnectionKnobConnectionActionTemplate *)&v31 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_repAXForConnecting, a3);
-    v25 = v8;
-    v26 = v7;
-    if (v8)
+    objc_storeStrong(&v9->_repAXForConnecting, connecting);
+    v25 = draggingCopy;
+    v26 = connectingCopy;
+    if (draggingCopy)
     {
-      v11 = v8;
+      v11 = draggingCopy;
     }
 
     else
@@ -53,9 +53,9 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v27 + 1) + 8 * i) crlaxTarget];
-          v21 = [v20 layout];
-          v22 = [CRLCanvasRepAccessibility crlaxBoardItemIDForLayout:v21];
+          crlaxTarget = [*(*(&v27 + 1) + 8 * i) crlaxTarget];
+          layout = [crlaxTarget layout];
+          v22 = [CRLCanvasRepAccessibility crlaxBoardItemIDForLayout:layout];
 
           if (v22)
           {
@@ -70,8 +70,8 @@
       while (v17);
     }
 
-    v8 = v25;
-    v7 = v26;
+    draggingCopy = v25;
+    connectingCopy = v26;
   }
 
   return v10;

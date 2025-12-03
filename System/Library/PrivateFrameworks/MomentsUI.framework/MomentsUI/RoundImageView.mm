@@ -1,12 +1,12 @@
 @interface RoundImageView
-- (_TtC9MomentsUI14RoundImageView)initWithCoder:(id)a3;
-- (_TtC9MomentsUI14RoundImageView)initWithFrame:(CGRect)a3;
+- (_TtC9MomentsUI14RoundImageView)initWithCoder:(id)coder;
+- (_TtC9MomentsUI14RoundImageView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation RoundImageView
 
-- (_TtC9MomentsUI14RoundImageView)initWithCoder:(id)a3
+- (_TtC9MomentsUI14RoundImageView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC9MomentsUI14RoundImageView_imageView;
   *(&self->super.super.super.super.isa + v3) = [objc_allocWithZone(MEMORY[0x277D755E8]) init];
@@ -26,7 +26,7 @@
   [v3 setFrame_];
 }
 
-- (_TtC9MomentsUI14RoundImageView)initWithFrame:(CGRect)a3
+- (_TtC9MomentsUI14RoundImageView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

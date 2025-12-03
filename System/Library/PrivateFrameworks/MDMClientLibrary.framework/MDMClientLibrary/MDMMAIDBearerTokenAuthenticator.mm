@@ -3,48 +3,48 @@
 + (id)_createGeneralServerError;
 + (id)_createManagedAppleAccountInvalidatedError;
 + (id)_createMissingBearerTokenError;
-+ (id)authenticatorWithAnchorCertificateRefs:(id)a3;
-- (BOOL)authenticateRequest:(id)a3 error:(id *)a4;
-- (BOOL)validAuthParams:(id)a3;
-- (MDMMAIDBearerTokenAuthenticator)initWithRMAccountID:(id)a3;
-- (MDMMAIDBearerTokenAuthenticator)initWithTokens:(id)a3;
-- (id)prepareForReauthenticationWithAuthParams:(id)a3 accountID:(id)a4 error:(id *)a5;
-- (void)_executeExchangeRequestWithURL:(id)a3 accountID:(id)a4 completionHandler:(id)a5;
-- (void)_processTokenResponse:(id)a3 data:(id)a4 error:(id)a5 completionHandler:(id)a6;
-- (void)fetchTokenWithAuthParams:(id)a3 accountID:(id)a4 completionHandler:(id)a5;
-- (void)refreshTokenWithAuthParams:(id)a3 accountID:(id)a4 completionHandler:(id)a5;
++ (id)authenticatorWithAnchorCertificateRefs:(id)refs;
+- (BOOL)authenticateRequest:(id)request error:(id *)error;
+- (BOOL)validAuthParams:(id)params;
+- (MDMMAIDBearerTokenAuthenticator)initWithRMAccountID:(id)d;
+- (MDMMAIDBearerTokenAuthenticator)initWithTokens:(id)tokens;
+- (id)prepareForReauthenticationWithAuthParams:(id)params accountID:(id)d error:(id *)error;
+- (void)_executeExchangeRequestWithURL:(id)l accountID:(id)d completionHandler:(id)handler;
+- (void)_processTokenResponse:(id)response data:(id)data error:(id)error completionHandler:(id)handler;
+- (void)fetchTokenWithAuthParams:(id)params accountID:(id)d completionHandler:(id)handler;
+- (void)refreshTokenWithAuthParams:(id)params accountID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation MDMMAIDBearerTokenAuthenticator
 
-+ (id)authenticatorWithAnchorCertificateRefs:(id)a3
++ (id)authenticatorWithAnchorCertificateRefs:(id)refs
 {
-  v3 = a3;
+  refsCopy = refs;
   v4 = objc_opt_new();
-  [v4 setAnchorCertificateRefs:v3];
+  [v4 setAnchorCertificateRefs:refsCopy];
 
   return v4;
 }
 
-- (MDMMAIDBearerTokenAuthenticator)initWithRMAccountID:(id)a3
+- (MDMMAIDBearerTokenAuthenticator)initWithRMAccountID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = MDMMAIDBearerTokenAuthenticator;
   v5 = [(MDMMAIDBearerTokenAuthenticator *)&v17 init];
   if (v5)
   {
     v16 = 0;
-    v6 = [MDMAccountUtilities rmAccountWithIdentifier:v4 fromStore:0 error:&v16];
+    v6 = [MDMAccountUtilities rmAccountWithIdentifier:dCopy fromStore:0 error:&v16];
     v7 = v16;
     if (v6)
     {
-      v8 = [v6 dmc_bearerToken];
+      dmc_bearerToken = [v6 dmc_bearerToken];
       token = v5->_token;
-      v5->_token = v8;
+      v5->_token = dmc_bearerToken;
 
-      v10 = [v6 dmc_personaIdentifier];
+      dmc_personaIdentifier = [v6 dmc_personaIdentifier];
     }
 
     else
@@ -60,26 +60,26 @@
       v12 = v5->_token;
       v5->_token = 0;
 
-      v10 = 0;
+      dmc_personaIdentifier = 0;
     }
 
     personaID = v5->_personaID;
-    v5->_personaID = v10;
+    v5->_personaID = dmc_personaIdentifier;
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (MDMMAIDBearerTokenAuthenticator)initWithTokens:(id)a3
+- (MDMMAIDBearerTokenAuthenticator)initWithTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   v10.receiver = self;
   v10.super_class = MDMMAIDBearerTokenAuthenticator;
   v5 = [(MDMMAIDBearerTokenAuthenticator *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"token"];
+    v6 = [tokensCopy objectForKeyedSubscript:@"token"];
     token = v5->_token;
     v5->_token = v6;
 
@@ -90,14 +90,14 @@
   return v5;
 }
 
-- (BOOL)validAuthParams:(id)a3
+- (BOOL)validAuthParams:(id)params
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"method"];
+  paramsCopy = params;
+  v4 = [paramsCopy objectForKeyedSubscript:@"method"];
   v5 = +[MDMMAIDBearerTokenAuthenticator authenticationMethod];
   if ([v4 isEqualToString:v5])
   {
-    v6 = [v3 objectForKeyedSubscript:@"url"];
+    v6 = [paramsCopy objectForKeyedSubscript:@"url"];
     v7 = v6 != 0;
   }
 
@@ -109,24 +109,24 @@
   return v7;
 }
 
-- (BOOL)authenticateRequest:(id)a3 error:(id *)a4
+- (BOOL)authenticateRequest:(id)request error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MDMMAIDBearerTokenAuthenticator *)self token];
+  requestCopy = request;
+  token = [(MDMMAIDBearerTokenAuthenticator *)self token];
 
-  if (v6)
+  if (token)
   {
-    v7 = [(MDMMAIDBearerTokenAuthenticator *)self token];
+    token2 = [(MDMMAIDBearerTokenAuthenticator *)self token];
     v8 = DMCHTTPAuthStringWithAuthToken();
-    [v5 addValue:v8 forHTTPHeaderField:*MEMORY[0x277D03358]];
+    [requestCopy addValue:v8 forHTTPHeaderField:*MEMORY[0x277D03358]];
   }
 
-  return v6 != 0;
+  return token != 0;
 }
 
-- (id)prepareForReauthenticationWithAuthParams:(id)a3 accountID:(id)a4 error:(id *)a5
+- (id)prepareForReauthenticationWithAuthParams:(id)params accountID:(id)d error:(id *)error
 {
-  v5 = [a3 objectForKeyedSubscript:{@"url", a4, a5}];
+  v5 = [params objectForKeyedSubscript:{@"url", d, error}];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEBC0] URLWithString:v5];
@@ -140,15 +140,15 @@
   return v6;
 }
 
-- (void)fetchTokenWithAuthParams:(id)a3 accountID:(id)a4 completionHandler:(id)a5
+- (void)fetchTokenWithAuthParams:(id)params accountID:(id)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(MDMMAIDBearerTokenAuthenticator *)self validAuthParams:v8])
+  paramsCopy = params;
+  dCopy = d;
+  handlerCopy = handler;
+  if ([(MDMMAIDBearerTokenAuthenticator *)self validAuthParams:paramsCopy])
   {
     v11 = MEMORY[0x277CBEBC0];
-    v12 = [v8 objectForKeyedSubscript:@"url"];
+    v12 = [paramsCopy objectForKeyedSubscript:@"url"];
     v13 = [v11 URLWithString:v12];
 
     v15[0] = MEMORY[0x277D85DD0];
@@ -156,14 +156,14 @@
     v15[2] = __88__MDMMAIDBearerTokenAuthenticator_fetchTokenWithAuthParams_accountID_completionHandler___block_invoke;
     v15[3] = &unk_2788570F0;
     v15[4] = self;
-    v16 = v10;
-    [(MDMMAIDBearerTokenAuthenticator *)self _executeExchangeRequestWithURL:v13 accountID:v9 completionHandler:v15];
+    v16 = handlerCopy;
+    [(MDMMAIDBearerTokenAuthenticator *)self _executeExchangeRequestWithURL:v13 accountID:dCopy completionHandler:v15];
   }
 
   else
   {
     v14 = +[MDMMAIDBearerTokenAuthenticator _createAuthInvalidError];
-    (*(v10 + 2))(v10, 0, v14);
+    (*(handlerCopy + 2))(handlerCopy, 0, v14);
   }
 }
 
@@ -205,20 +205,20 @@ void __88__MDMMAIDBearerTokenAuthenticator_fetchTokenWithAuthParams_accountID_co
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)refreshTokenWithAuthParams:(id)a3 accountID:(id)a4 completionHandler:(id)a5
+- (void)refreshTokenWithAuthParams:(id)params accountID:(id)d completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __90__MDMMAIDBearerTokenAuthenticator_refreshTokenWithAuthParams_accountID_completionHandler___block_invoke;
   v12[3] = &unk_278857140;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(MDMMAIDBearerTokenAuthenticator *)self fetchTokenWithAuthParams:a3 accountID:v11 completionHandler:v12];
+  v13 = dCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = dCopy;
+  [(MDMMAIDBearerTokenAuthenticator *)self fetchTokenWithAuthParams:params accountID:v11 completionHandler:v12];
 }
 
 void __90__MDMMAIDBearerTokenAuthenticator_refreshTokenWithAuthParams_accountID_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -317,17 +317,17 @@ void __90__MDMMAIDBearerTokenAuthenticator_refreshTokenWithAuthParams_accountID_
   [v3 dmc_setBearerToken:v4];
 }
 
-- (void)_executeExchangeRequestWithURL:(id)a3 accountID:(id)a4 completionHandler:(id)a5
+- (void)_executeExchangeRequestWithURL:(id)l accountID:(id)d completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCAB70];
-  v10 = a4;
-  v11 = [v9 requestWithURL:a3];
+  dCopy = d;
+  v11 = [v9 requestWithURL:l];
   [v11 setAttribution:1];
   [v11 setHTTPMethod:*MEMORY[0x277D03398]];
   [v11 setTimeoutInterval:90.0];
   v12 = objc_alloc_init(MEMORY[0x277D03508]);
-  v13 = [[MDMMAIDAuthenticator alloc] initWithRMAccountID:v10];
+  v13 = [[MDMMAIDAuthenticator alloc] initWithRMAccountID:dCopy];
 
   [v12 setAuthenticator:v13];
   v14 = *DMCLogObjects();
@@ -337,55 +337,55 @@ void __90__MDMMAIDBearerTokenAuthenticator_refreshTokenWithAuthParams_accountID_
     _os_log_impl(&dword_22E997000, v14, OS_LOG_TYPE_INFO, "Exchanging MAID for bearer token...", buf, 2u);
   }
 
-  v15 = [(MDMMAIDBearerTokenAuthenticator *)self anchorCertificateRefs];
+  anchorCertificateRefs = [(MDMMAIDBearerTokenAuthenticator *)self anchorCertificateRefs];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __94__MDMMAIDBearerTokenAuthenticator__executeExchangeRequestWithURL_accountID_completionHandler___block_invoke;
   v17[3] = &unk_278857168;
   v17[4] = self;
-  v18 = v8;
-  v16 = v8;
-  [v12 startWithRequest:v11 username:0 password:0 anchorCertificateRefs:v15 completionBlock:v17];
+  v18 = handlerCopy;
+  v16 = handlerCopy;
+  [v12 startWithRequest:v11 username:0 password:0 anchorCertificateRefs:anchorCertificateRefs completionBlock:v17];
 }
 
-- (void)_processTokenResponse:(id)a3 data:(id)a4 error:(id)a5 completionHandler:(id)a6
+- (void)_processTokenResponse:(id)response data:(id)data error:(id)error completionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  responseCopy = response;
+  dataCopy = data;
+  errorCopy = error;
+  handlerCopy = handler;
   v13 = *DMCLogObjects();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
     *buf = 134218242;
-    v30 = [v10 length];
+    v30 = [dataCopy length];
     v31 = 2114;
-    v32 = v9;
+    v32 = responseCopy;
     _os_log_impl(&dword_22E997000, v14, OS_LOG_TYPE_DEFAULT, "Exchange MAID for bearer token finished with data: %lu bytes, response: %{public}@", buf, 0x16u);
   }
 
-  if (v11)
+  if (errorCopy)
   {
     v15 = *DMCLogObjects();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v30 = v11;
+      v30 = errorCopy;
       _os_log_impl(&dword_22E997000, v15, OS_LOG_TYPE_ERROR, "Failed to exchange for bearer token with error: %{public}@", buf, 0xCu);
     }
 
-    v12[2](v12, 0, v11);
+    handlerCopy[2](handlerCopy, 0, errorCopy);
   }
 
   else
   {
-    v16 = [v9 statusCode];
-    if (v16 == 200)
+    statusCode = [responseCopy statusCode];
+    if (statusCode == 200)
     {
       v26 = 0;
-      v17 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v10 options:0 error:&v26];
+      v17 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v26];
       v18 = v26;
       if (v18)
       {
@@ -397,7 +397,7 @@ void __90__MDMMAIDBearerTokenAuthenticator_refreshTokenWithAuthParams_accountID_
           _os_log_impl(&dword_22E997000, v19, OS_LOG_TYPE_ERROR, "Failed to deserialize server's response with error: %{public}@", buf, 0xCu);
         }
 
-        v12[2](v12, 0, v18);
+        handlerCopy[2](handlerCopy, 0, v18);
       }
 
       else
@@ -419,7 +419,7 @@ void __90__MDMMAIDBearerTokenAuthenticator_refreshTokenWithAuthParams_accountID_
           v27 = @"token";
           v28 = v21;
           v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-          (v12)[2](v12, v24, 0);
+          (handlerCopy)[2](handlerCopy, v24, 0);
         }
 
         else
@@ -431,14 +431,14 @@ void __90__MDMMAIDBearerTokenAuthenticator_refreshTokenWithAuthParams_accountID_
           }
 
           v24 = +[MDMMAIDBearerTokenAuthenticator _createMissingBearerTokenError];
-          v12[2](v12, 0, v24);
+          handlerCopy[2](handlerCopy, 0, v24);
         }
       }
     }
 
     else
     {
-      if (v16 == 401)
+      if (statusCode == 401)
       {
         +[MDMMAIDBearerTokenAuthenticator _createManagedAppleAccountInvalidatedError];
       }
@@ -448,7 +448,7 @@ void __90__MDMMAIDBearerTokenAuthenticator_refreshTokenWithAuthParams_accountID_
         +[MDMMAIDBearerTokenAuthenticator _createGeneralServerError];
       }
       v20 = ;
-      v12[2](v12, 0, v20);
+      handlerCopy[2](handlerCopy, 0, v20);
     }
   }
 

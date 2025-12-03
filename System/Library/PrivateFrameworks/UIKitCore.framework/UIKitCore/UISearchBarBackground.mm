@@ -1,22 +1,22 @@
 @interface UISearchBarBackground
 - (BOOL)isTranslucent;
-- (UISearchBarBackground)initWithFrame:(CGRect)a3;
-- (id)_backgroundImageForBarPosition:(int64_t)a3 barMetrics:(int64_t)a4;
-- (id)_createBackgroundImageForBarStyle:(int64_t)a3 alpha:(double)a4;
+- (UISearchBarBackground)initWithFrame:(CGRect)frame;
+- (id)_backgroundImageForBarPosition:(int64_t)position barMetrics:(int64_t)metrics;
+- (id)_createBackgroundImageForBarStyle:(int64_t)style alpha:(double)alpha;
 - (void)_dynamicUserInterfaceTraitDidChange;
-- (void)_setBackgroundImage:(id)a3 forBarPosition:(int64_t)a4 barMetrics:(int64_t)a5;
-- (void)_setBarPosition:(int64_t)a3;
+- (void)_setBackgroundImage:(id)image forBarPosition:(int64_t)position barMetrics:(int64_t)metrics;
+- (void)_setBarPosition:(int64_t)position;
 - (void)_updateBackgroundImage;
 - (void)_updateBackgroundImageIfPossible;
 - (void)didMoveToWindow;
-- (void)setBarStyle:(int64_t)a3;
-- (void)setBarTintColor:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setSearchBarStyle:(unint64_t)a3;
-- (void)setTranslucent:(BOOL)a3;
-- (void)setUsesContiguousBarBackground:(BOOL)a3;
-- (void)setUsesEmbeddedAppearance:(BOOL)a3;
+- (void)setBarStyle:(int64_t)style;
+- (void)setBarTintColor:(id)color;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setSearchBarStyle:(unint64_t)style;
+- (void)setTranslucent:(BOOL)translucent;
+- (void)setUsesContiguousBarBackground:(BOOL)background;
+- (void)setUsesEmbeddedAppearance:(BOOL)appearance;
 @end
 
 @implementation UISearchBarBackground
@@ -29,9 +29,9 @@
     [(UIView *)self bounds];
     if (v4 != 0.0)
     {
-      v5 = [(UIView *)self window];
+      window = [(UIView *)self window];
 
-      if (v5)
+      if (window)
       {
 
         [(UISearchBarBackground *)self _updateBackgroundImage];
@@ -129,9 +129,9 @@ LABEL_22:
   else
   {
     barStyle = self->_barStyle;
-    v11 = [(UISearchBarBackground *)self isTranslucent];
+    isTranslucent = [(UISearchBarBackground *)self isTranslucent];
     v12 = 0.96;
-    if (!v11)
+    if (!isTranslucent)
     {
       v12 = 1.0;
     }
@@ -154,20 +154,20 @@ LABEL_29:
   [(UISearchBarBackground *)self _updateBackgroundImageIfPossible];
 }
 
-- (void)_setBarPosition:(int64_t)a3
+- (void)_setBarPosition:(int64_t)position
 {
-  if (self->_barPosition != a3)
+  if (self->_barPosition != position)
   {
-    self->_barPosition = a3;
+    self->_barPosition = position;
     [(UISearchBarBackground *)self _updateBackgroundImageIfPossible];
   }
 }
 
-- (UISearchBarBackground)initWithFrame:(CGRect)a3
+- (UISearchBarBackground)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UISearchBarBackground;
-  v3 = [(UIImageView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIImageView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -178,22 +178,22 @@ LABEL_29:
   return v4;
 }
 
-- (void)setBarTintColor:(id)a3
+- (void)setBarTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_barTintColor != v5)
+  colorCopy = color;
+  if (self->_barTintColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_barTintColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_barTintColor, color);
     [(UISearchBarBackground *)self _updateBackgroundImageIfPossible];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setTranslucent:(BOOL)a3
+- (void)setTranslucent:(BOOL)translucent
 {
   v3 = 1;
-  if (!a3)
+  if (!translucent)
   {
     v3 = 2;
   }
@@ -209,8 +209,8 @@ LABEL_29:
 {
   barStyle = self->_barStyle;
   barTintColor = self->_barTintColor;
-  v5 = [(UIView *)self _screen];
-  IsTranslucentOnScreen = _UIBarStyleWithTintColorIsTranslucentOnScreen(barStyle, barTintColor, v5);
+  _screen = [(UIView *)self _screen];
+  IsTranslucentOnScreen = _UIBarStyleWithTintColorIsTranslucentOnScreen(barStyle, barTintColor, _screen);
 
   v10 = IsTranslucentOnScreen;
   barTranslucence = self->_barTranslucence;
@@ -230,20 +230,20 @@ LABEL_29:
   return IsTranslucentOnScreen;
 }
 
-- (void)setUsesEmbeddedAppearance:(BOOL)a3
+- (void)setUsesEmbeddedAppearance:(BOOL)appearance
 {
-  if (self->_usesEmbeddedAppearance != a3)
+  if (self->_usesEmbeddedAppearance != appearance)
   {
-    self->_usesEmbeddedAppearance = a3;
+    self->_usesEmbeddedAppearance = appearance;
     [(UISearchBarBackground *)self _updateBackgroundImageIfPossible];
   }
 }
 
-- (void)setBarStyle:(int64_t)a3
+- (void)setBarStyle:(int64_t)style
 {
-  if (self->_barStyle != a3)
+  if (self->_barStyle != style)
   {
-    self->_barStyle = a3;
+    self->_barStyle = style;
     if (!self->_barTintColor)
     {
       [(UISearchBarBackground *)self _updateBackgroundImageIfPossible];
@@ -251,18 +251,18 @@ LABEL_29:
   }
 }
 
-- (void)setSearchBarStyle:(unint64_t)a3
+- (void)setSearchBarStyle:(unint64_t)style
 {
-  if (self->_searchBarStyle != a3)
+  if (self->_searchBarStyle != style)
   {
-    self->_searchBarStyle = a3;
+    self->_searchBarStyle = style;
     [(_UIBarBackgroundImageView *)self setImage:0];
 
     [(UISearchBarBackground *)self _updateBackgroundImageIfPossible];
   }
 }
 
-- (id)_createBackgroundImageForBarStyle:(int64_t)a3 alpha:(double)a4
+- (id)_createBackgroundImageForBarStyle:(int64_t)style alpha:(double)alpha
 {
   if (!_MergedGlobals_21_0)
   {
@@ -295,16 +295,16 @@ LABEL_29:
   }
 
   v9 = +[UITraitCollection _currentTraitCollectionIfExists];
-  v10 = [(UIView *)self traitCollection];
-  [UITraitCollection setCurrentTraitCollection:v10];
+  traitCollection = [(UIView *)self traitCollection];
+  [UITraitCollection setCurrentTraitCollection:traitCollection];
 
   v11 = _UISetCurrentFallbackEnvironment(self);
-  v12 = _UISearchBarBackgroundFillColor(a3, self->_barTintColor);
+  v12 = _UISearchBarBackgroundFillColor(style, self->_barTintColor);
   v13 = self->_barTintColor;
   v14 = v13;
-  if (a3 || v13)
+  if (style || v13)
   {
-    v16 = _UISearchBarBackgroundFillColor(a3, v13);
+    v16 = _UISearchBarBackgroundFillColor(style, v13);
     v17 = v16;
     if (v16)
     {
@@ -354,13 +354,13 @@ LABEL_18:
   v25 = 0.0;
   if (barPosition == 3)
   {
-    v26 = [(UIView *)self window];
-    v27 = __UIStatusBarManagerForWindow(v26);
+    window = [(UIView *)self window];
+    v27 = __UIStatusBarManagerForWindow(window);
     [v27 statusBarHeight];
     v25 = v28;
   }
 
-  v29 = -[_UISearchBarBackgroundCacheKey initWithBarPosition:usesContiguousBarBackground:scale:alpha:height:statusBarHeight:backgroundColor:strokeColor:]([_UISearchBarBackgroundCacheKey alloc], "initWithBarPosition:usesContiguousBarBackground:scale:alpha:height:statusBarHeight:backgroundColor:strokeColor:", barPosition, usesContiguousBarBackground, [v12 CGColor], objc_msgSend(v15, "CGColor"), v22, a4, v24, v25);
+  v29 = -[_UISearchBarBackgroundCacheKey initWithBarPosition:usesContiguousBarBackground:scale:alpha:height:statusBarHeight:backgroundColor:strokeColor:]([_UISearchBarBackgroundCacheKey alloc], "initWithBarPosition:usesContiguousBarBackground:scale:alpha:height:statusBarHeight:backgroundColor:strokeColor:", barPosition, usesContiguousBarBackground, [v12 CGColor], objc_msgSend(v15, "CGColor"), v22, alpha, v24, v25);
   v30 = [_MergedGlobals_21_0 objectForKey:v29];
   if (!v30)
   {
@@ -426,7 +426,7 @@ LABEL_18:
       v38 = ContextStack[3 * (*ContextStack - 1) + 1];
     }
 
-    CGContextSetAlpha(v38, a4);
+    CGContextSetAlpha(v38, alpha);
     [v12 set];
     UIRectFillUsingOperation(1, 0.0, v25, 1.0 / v22, v34);
     if (barPosition == 3)
@@ -461,34 +461,34 @@ LABEL_18:
   return v30;
 }
 
-- (void)_setBackgroundImage:(id)a3 forBarPosition:(int64_t)a4 barMetrics:(int64_t)a5
+- (void)_setBackgroundImage:(id)image forBarPosition:(int64_t)position barMetrics:(int64_t)metrics
 {
-  v19 = a3;
-  if (a4)
+  imageCopy = image;
+  if (position)
   {
-    v8 = a4;
+    positionCopy = position;
   }
 
   else
   {
-    v8 = 2;
+    positionCopy = 2;
   }
 
-  v9 = _UIBarAppearanceStorageKeyForBarPositionAndMetrics(v8, a5);
-  if (a4)
+  v9 = _UIBarAppearanceStorageKeyForBarPositionAndMetrics(positionCopy, metrics);
+  if (position)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = _UIBarAppearanceStorageKeyForBarPositionAndMetrics(3, a5);
+    v10 = _UIBarAppearanceStorageKeyForBarPositionAndMetrics(3, metrics);
   }
 
-  v11 = [(UISearchBarBackground *)self _backgroundImageForBarPosition:a4 barMetrics:a5];
-  if (v11 != v19)
+  v11 = [(UISearchBarBackground *)self _backgroundImageForBarPosition:position barMetrics:metrics];
+  if (v11 != imageCopy)
   {
-    v12 = v19;
+    v12 = imageCopy;
     if (v12)
     {
       v13 = v12;
@@ -539,30 +539,30 @@ LABEL_20:
   }
 }
 
-- (id)_backgroundImageForBarPosition:(int64_t)a3 barMetrics:(int64_t)a4
+- (id)_backgroundImageForBarPosition:(int64_t)position barMetrics:(int64_t)metrics
 {
-  if (a3)
+  if (position)
   {
-    v5 = a3;
+    positionCopy = position;
   }
 
   else
   {
-    v5 = 2;
+    positionCopy = 2;
   }
 
-  v6 = _UIBarAppearanceStorageKeyForBarPositionAndMetrics(v5, a4);
+  v6 = _UIBarAppearanceStorageKeyForBarPositionAndMetrics(positionCopy, metrics);
   v7 = [(NSMutableDictionary *)self->_customBackgroundImages objectForKey:v6];
 
   return v7;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -576,12 +576,12 @@ LABEL_20:
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -595,11 +595,11 @@ LABEL_20:
   }
 }
 
-- (void)setUsesContiguousBarBackground:(BOOL)a3
+- (void)setUsesContiguousBarBackground:(BOOL)background
 {
-  if (self->_usesContiguousBarBackground != a3)
+  if (self->_usesContiguousBarBackground != background)
   {
-    self->_usesContiguousBarBackground = a3;
+    self->_usesContiguousBarBackground = background;
     [(UISearchBarBackground *)self _updateBackgroundImageIfPossible];
   }
 }

@@ -6,13 +6,13 @@
 
 - (uint64_t)Int)
 {
-  v1 = *a1;
-  v2 = a1[1];
-  v3 = a1[2];
-  v4 = a1[3];
-  v5 = a1[4];
+  v1 = *self;
+  v2 = self[1];
+  v3 = self[2];
+  v4 = self[3];
+  v5 = self[4];
   outlined consume of [String? : (scheduleDate: Date?, medID: String, count: Int)].Iterator._Variant();
-  return a1;
+  return self;
 }
 
 @end

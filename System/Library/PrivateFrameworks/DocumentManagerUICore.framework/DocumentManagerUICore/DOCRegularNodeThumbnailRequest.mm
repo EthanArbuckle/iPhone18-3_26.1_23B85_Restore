@@ -1,27 +1,27 @@
 @interface DOCRegularNodeThumbnailRequest
-- (DOCRegularNodeThumbnailRequest)initWithNode:(id)a3 descriptor:(id)a4 thumbnailGenerator:(id)a5;
+- (DOCRegularNodeThumbnailRequest)initWithNode:(id)node descriptor:(id)descriptor thumbnailGenerator:(id)generator;
 - (void)cancel;
-- (void)generateThumbnailWithCompletionHandler:(id)a3;
+- (void)generateThumbnailWithCompletionHandler:(id)handler;
 @end
 
 @implementation DOCRegularNodeThumbnailRequest
 
-- (DOCRegularNodeThumbnailRequest)initWithNode:(id)a3 descriptor:(id)a4 thumbnailGenerator:(id)a5
+- (DOCRegularNodeThumbnailRequest)initWithNode:(id)node descriptor:(id)descriptor thumbnailGenerator:(id)generator
 {
   v52 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  nodeCopy = node;
+  descriptorCopy = descriptor;
+  generatorCopy = generator;
+  if (nodeCopy)
   {
-    if (v10)
+    if (descriptorCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_28:
     [DOCRegularNodeThumbnailRequest initWithNode:descriptor:thumbnailGenerator:];
-    if (v11)
+    if (generatorCopy)
     {
       goto LABEL_4;
     }
@@ -30,13 +30,13 @@ LABEL_28:
   }
 
   [DOCRegularNodeThumbnailRequest initWithNode:descriptor:thumbnailGenerator:];
-  if (!v10)
+  if (!descriptorCopy)
   {
     goto LABEL_28;
   }
 
 LABEL_3:
-  if (v11)
+  if (generatorCopy)
   {
     goto LABEL_4;
   }
@@ -52,8 +52,8 @@ LABEL_4:
     goto LABEL_25;
   }
 
-  v13 = [MEMORY[0x277D06208] disableIconThumbnails];
-  if ([v13 isEnabled])
+  disableIconThumbnails = [MEMORY[0x277D06208] disableIconThumbnails];
+  if ([disableIconThumbnails isEnabled])
   {
     v14 = 1;
   }
@@ -63,9 +63,9 @@ LABEL_4:
     v14 = 4;
   }
 
-  v15 = [v9 fpfs_fpItem];
+  fpfs_fpItem = [nodeCopy fpfs_fpItem];
 
-  if (v15)
+  if (fpfs_fpItem)
   {
     v16 = MEMORY[0x277D062B8];
     v17 = *MEMORY[0x277D062B8];
@@ -78,32 +78,32 @@ LABEL_4:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [v9 displayName];
-      v20 = [v9 fpfs_fpItem];
+      displayName = [nodeCopy displayName];
+      fpfs_fpItem2 = [nodeCopy fpfs_fpItem];
       *buf = 138412546;
-      v49 = v19;
+      v49 = displayName;
       v50 = 2112;
-      v51 = v20;
+      v51 = fpfs_fpItem2;
       _os_log_impl(&dword_249CE0000, v18, OS_LOG_TYPE_DEFAULT, "DOCRegularNodeThumbnailRequest: requesting thumbnail from FPItem for %@: %@", buf, 0x16u);
     }
 
     v21 = objc_alloc(MEMORY[0x277CDAAD8]);
-    v22 = [v9 fpfs_fpItem];
-    [v10 size];
+    fpfs_fpItem3 = [nodeCopy fpfs_fpItem];
+    [descriptorCopy size];
     v24 = v23;
     v26 = v25;
-    [v10 scale];
-    v28 = [v21 initWithFPItem:v22 size:v14 scale:v24 representationTypes:{v26, v27}];
+    [descriptorCopy scale];
+    v28 = [v21 initWithFPItem:fpfs_fpItem3 size:v14 scale:v24 representationTypes:{v26, v27}];
   }
 
   else
   {
-    v29 = [v9 nodeURL];
+    nodeURL = [nodeCopy nodeURL];
 
-    if (!v29)
+    if (!nodeURL)
     {
-      v22 = [MEMORY[0x277CCA890] currentHandler];
-      [v22 handleFailureInMethod:a2 object:v12 file:@"DOCThumbnailRequest.m" lineNumber:180 description:@"Attempting to generate a thumbnail request for a node that has no FPItem and no URL"];
+      fpfs_fpItem3 = [MEMORY[0x277CCA890] currentHandler];
+      [fpfs_fpItem3 handleFailureInMethod:a2 object:v12 file:@"DOCThumbnailRequest.m" lineNumber:180 description:@"Attempting to generate a thumbnail request for a node that has no FPItem and no URL"];
       goto LABEL_21;
     }
 
@@ -118,37 +118,37 @@ LABEL_4:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
       v32 = v31;
-      v33 = [v9 displayName];
-      v34 = [v9 nodeURL];
+      displayName2 = [nodeCopy displayName];
+      nodeURL2 = [nodeCopy nodeURL];
       *buf = 138412546;
-      v49 = v33;
+      v49 = displayName2;
       v50 = 2112;
-      v51 = v34;
+      v51 = nodeURL2;
       _os_log_impl(&dword_249CE0000, v32, OS_LOG_TYPE_DEFAULT, "DOCRegularNodeThumbnailRequest: requesting thumbnail from URL for %@: %@", buf, 0x16u);
     }
 
     v35 = objc_alloc(MEMORY[0x277CDAAD8]);
-    v22 = [v9 nodeURL];
-    [v10 size];
+    fpfs_fpItem3 = [nodeCopy nodeURL];
+    [descriptorCopy size];
     v37 = v36;
     v39 = v38;
-    [v10 scale];
-    v28 = [v35 initWithFileAtURL:v22 size:v14 scale:v37 representationTypes:{v39, v40}];
+    [descriptorCopy scale];
+    v28 = [v35 initWithFileAtURL:fpfs_fpItem3 size:v14 scale:v37 representationTypes:{v39, v40}];
   }
 
   thumbnailRequest = v12->_thumbnailRequest;
   v12->_thumbnailRequest = v28;
 
 LABEL_21:
-  [v10 minimumSize];
+  [descriptorCopy minimumSize];
   [(QLThumbnailGenerationRequest *)v12->_thumbnailRequest setMinimumDimension:?];
-  v42 = [MEMORY[0x277D06208] useBlastDoorThumbnails];
-  -[QLThumbnailGenerationRequest setShouldUseRestrictedExtension:](v12->_thumbnailRequest, "setShouldUseRestrictedExtension:", [v42 isEnabled]);
+  useBlastDoorThumbnails = [MEMORY[0x277D06208] useBlastDoorThumbnails];
+  -[QLThumbnailGenerationRequest setShouldUseRestrictedExtension:](v12->_thumbnailRequest, "setShouldUseRestrictedExtension:", [useBlastDoorThumbnails isEnabled]);
 
-  objc_storeWeak(&v12->_thumbnailGenerator, v11);
-  if ([v9 isFolder])
+  objc_storeWeak(&v12->_thumbnailGenerator, generatorCopy);
+  if ([nodeCopy isFolder])
   {
-    v43 = [DOCThumbnailFolderIcon folderIconForDescriptor:v10];
+    v43 = [DOCThumbnailFolderIcon folderIconForDescriptor:descriptorCopy];
     folderIcon = v12->_folderIcon;
     v12->_folderIcon = v43;
   }
@@ -159,16 +159,16 @@ LABEL_21:
     [(QLThumbnailGenerationRequest *)v12->_thumbnailRequest setIconVariant:2];
   }
 
-  v12->_style = [v10 style];
+  v12->_style = [descriptorCopy style];
 LABEL_25:
 
   v45 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (void)generateThumbnailWithCompletionHandler:(id)a3
+- (void)generateThumbnailWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailGenerator);
   thumbnailRequest = self->_thumbnailRequest;
   v10[0] = MEMORY[0x277D85DD0];
@@ -181,8 +181,8 @@ LABEL_25:
   v8[2] = __73__DOCRegularNodeThumbnailRequest_generateThumbnailWithCompletionHandler___block_invoke_2;
   v8[3] = &unk_278FB3A40;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [WeakRetained generateThumbnailForRequest:thumbnailRequest updateHandler:0 statusHandler:v10 completionHandler:v8];
 }
 

@@ -24,12 +24,12 @@
 
 - (uint64_t)PanEvent
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     a2(255);
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;
@@ -72,12 +72,12 @@
 
 - (uint64_t)TouchEvent
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     a2(255);
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;

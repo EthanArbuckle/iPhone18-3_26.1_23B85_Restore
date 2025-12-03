@@ -3,12 +3,12 @@
 - (MCMDoublyLinkedListNode)tail;
 - (id)removeFromHead;
 - (unint64_t)count;
-- (void)addToTail:(id)a3;
+- (void)addToTail:(id)tail;
 - (void)removeAllObjects;
-- (void)removeNodeAndAddToTail:(id)a3;
-- (void)setCount:(unint64_t)a3;
-- (void)setHead:(id)a3;
-- (void)setTail:(id)a3;
+- (void)removeNodeAndAddToTail:(id)tail;
+- (void)setCount:(unint64_t)count;
+- (void)setHead:(id)head;
+- (void)setTail:(id)tail;
 @end
 
 @implementation MCMDoublyLinkedList
@@ -40,19 +40,19 @@
 - (id)removeFromHead
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMDoublyLinkedList *)self head];
-  v4 = v3;
-  if (v3)
+  head = [(MCMDoublyLinkedList *)self head];
+  v4 = head;
+  if (head)
   {
-    v5 = [v3 next];
-    [(MCMDoublyLinkedList *)self setHead:v5];
+    next = [head next];
+    [(MCMDoublyLinkedList *)self setHead:next];
 
-    v6 = [v4 next];
-    [v6 setPrev:0];
+    next2 = [v4 next];
+    [next2 setPrev:0];
 
-    v7 = [(MCMDoublyLinkedList *)self tail];
+    tail = [(MCMDoublyLinkedList *)self tail];
 
-    if (v4 == v7)
+    if (v4 == tail)
     {
       [(MCMDoublyLinkedList *)self setTail:0];
     }
@@ -67,28 +67,28 @@
   return v4;
 }
 
-- (void)setTail:(id)a3
+- (void)setTail:(id)tail
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_tail = &self->_tail;
 
-  objc_storeStrong(p_tail, a3);
+  objc_storeStrong(p_tail, tail);
 }
 
-- (void)setHead:(id)a3
+- (void)setHead:(id)head
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_head = &self->_head;
 
-  objc_storeStrong(p_head, a3);
+  objc_storeStrong(p_head, head);
 }
 
-- (void)setCount:(unint64_t)a3
+- (void)setCount:(unint64_t)count
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_count = a3;
+  self->_count = count;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -97,74 +97,74 @@
   v5 = *MEMORY[0x1E69E9840];
   do
   {
-    v3 = [(MCMDoublyLinkedList *)self removeFromHead];
+    removeFromHead = [(MCMDoublyLinkedList *)self removeFromHead];
   }
 
-  while (v3);
+  while (removeFromHead);
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeNodeAndAddToTail:(id)a3
+- (void)removeNodeAndAddToTail:(id)tail
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v4 = [v12 prev];
-  v5 = [v12 next];
-  [v5 setPrev:v4];
+  tailCopy = tail;
+  prev = [tailCopy prev];
+  next = [tailCopy next];
+  [next setPrev:prev];
 
-  v6 = [v12 next];
-  [v4 setNext:v6];
+  next2 = [tailCopy next];
+  [prev setNext:next2];
 
-  v7 = [(MCMDoublyLinkedList *)self head];
+  head = [(MCMDoublyLinkedList *)self head];
 
-  if (v7 == v12)
+  if (head == tailCopy)
   {
-    v8 = [v12 next];
-    [(MCMDoublyLinkedList *)self setHead:v8];
+    next3 = [tailCopy next];
+    [(MCMDoublyLinkedList *)self setHead:next3];
   }
 
-  v9 = [(MCMDoublyLinkedList *)self tail];
+  tail = [(MCMDoublyLinkedList *)self tail];
 
-  v10 = v12;
-  if (v9 == v12)
+  v10 = tailCopy;
+  if (tail == tailCopy)
   {
-    [(MCMDoublyLinkedList *)self setTail:v4];
-    v10 = v12;
+    [(MCMDoublyLinkedList *)self setTail:prev];
+    v10 = tailCopy;
   }
 
   [v10 setPrev:0];
-  [v12 setNext:0];
+  [tailCopy setNext:0];
   [(MCMDoublyLinkedList *)self setCount:[(MCMDoublyLinkedList *)self count]- 1];
-  [(MCMDoublyLinkedList *)self addToTail:v12];
+  [(MCMDoublyLinkedList *)self addToTail:tailCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addToTail:(id)a3
+- (void)addToTail:(id)tail
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MCMDoublyLinkedList *)self tail];
+  tailCopy = tail;
+  tail = [(MCMDoublyLinkedList *)self tail];
 
-  if (v5)
+  if (tail)
   {
-    v6 = [(MCMDoublyLinkedList *)self tail];
-    [v6 setNext:v4];
+    tail2 = [(MCMDoublyLinkedList *)self tail];
+    [tail2 setNext:tailCopy];
 
-    v7 = [(MCMDoublyLinkedList *)self tail];
-    [v4 setPrev:v7];
+    tail3 = [(MCMDoublyLinkedList *)self tail];
+    [tailCopy setPrev:tail3];
 
-    [v4 setNext:0];
+    [tailCopy setNext:0];
   }
 
   else
   {
-    [v4 setPrev:0];
-    [v4 setNext:0];
-    [(MCMDoublyLinkedList *)self setHead:v4];
+    [tailCopy setPrev:0];
+    [tailCopy setNext:0];
+    [(MCMDoublyLinkedList *)self setHead:tailCopy];
   }
 
-  [(MCMDoublyLinkedList *)self setTail:v4];
+  [(MCMDoublyLinkedList *)self setTail:tailCopy];
 
   v8 = [(MCMDoublyLinkedList *)self count];
   v9 = *MEMORY[0x1E69E9840];

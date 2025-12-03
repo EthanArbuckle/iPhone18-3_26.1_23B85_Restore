@@ -1,19 +1,19 @@
 @interface CNComposeRecipient
-+ (CNComposeRecipient)composeRecipientWithAutocompleteResult:(id)a3;
++ (CNComposeRecipient)composeRecipientWithAutocompleteResult:(id)result;
 + (NSArray)readableTypeIdentifiersForItemProvider;
 + (NSArray)writableTypeIdentifiersForItemProvider;
 + (OS_os_log)namingLog;
 + (OS_os_log)os_log;
 + (id)descriptorsForRequiredKeysForContact;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentAddressToRecipient:(id)a3;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentAddressToRecipient:(id)recipient;
 - (BOOL)isRemovableFromSearchResults;
 - (BOOL)showsAccessoryButton;
 - (BOOL)supportsPasteboardUnarchiving;
 - (BOOL)wasCompleteMatch;
-- (CNComposeRecipient)initWithCoder:(id)a3;
-- (CNComposeRecipient)initWithContact:(id)a3 address:(id)a4 displayString:(id)a5 kind:(unint64_t)a6;
+- (CNComposeRecipient)initWithCoder:(id)coder;
+- (CNComposeRecipient)initWithContact:(id)contact address:(id)address displayString:(id)string kind:(unint64_t)kind;
 - (CNContact)contact;
 - (NSPersonNameComponents)nameComponents;
 - (NSString)commentedAddress;
@@ -31,19 +31,19 @@
 - (id)_unformattedAddress;
 - (id)associatedHandles;
 - (id)completelyMatchedAttributedStrings;
-- (id)contactWithKeysToFetch:(id)a3;
-- (id)fetchContactWithKeys:(id)a3;
+- (id)contactWithKeysToFetch:(id)fetch;
+- (id)fetchContactWithKeys:(id)keys;
 - (id)labeledValueIdentifier;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
 - (id)nameComponentsFromAddress;
 - (id)nameComponentsFromContact;
 - (id)unifiedHandles;
 - (unint64_t)hash;
 - (unint64_t)sourceType;
-- (void)addRecipientToPasteboard:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAddress:(id)a3;
-- (void)setDisplayString:(id)a3;
+- (void)addRecipientToPasteboard:(id)pasteboard;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAddress:(id)address;
+- (void)setDisplayString:(id)string;
 @end
 
 @implementation CNComposeRecipient
@@ -96,8 +96,8 @@ uint64_t __31__CNComposeRecipient_namingLog__block_invoke()
   v2 = *MEMORY[0x1E695C330];
   v7[0] = *MEMORY[0x1E695C208];
   v7[1] = v2;
-  v3 = [MEMORY[0x1E695D148] descriptorForRequiredKeys];
-  v7[2] = v3;
+  descriptorForRequiredKeys = [MEMORY[0x1E695D148] descriptorForRequiredKeys];
+  v7[2] = descriptorForRequiredKeys;
   v4 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:0];
   v7[3] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:4];
@@ -105,19 +105,19 @@ uint64_t __31__CNComposeRecipient_namingLog__block_invoke()
   return v5;
 }
 
-- (CNComposeRecipient)initWithContact:(id)a3 address:(id)a4 displayString:(id)a5 kind:(unint64_t)a6
+- (CNComposeRecipient)initWithContact:(id)contact address:(id)address displayString:(id)string kind:(unint64_t)kind
 {
   v37 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  contactCopy = contact;
+  addressCopy = address;
+  stringCopy = string;
   v26.receiver = self;
   v26.super_class = CNComposeRecipient;
   v14 = [(CNComposeRecipient *)&v26 init];
   if (v14)
   {
-    v15 = [objc_opt_class() namingLog];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+    namingLog = [objc_opt_class() namingLog];
+    if (os_log_type_enabled(namingLog, OS_LOG_TYPE_DEBUG))
     {
       v24 = objc_opt_class();
       v25 = NSStringFromClass(v24);
@@ -126,26 +126,26 @@ uint64_t __31__CNComposeRecipient_namingLog__block_invoke()
       v29 = 2048;
       v30 = v14;
       v31 = 2113;
-      v32 = v13;
+      v32 = stringCopy;
       v33 = 2113;
-      v34 = v12;
+      v34 = addressCopy;
       v35 = 2048;
-      v36 = a6;
-      _os_log_debug_impl(&dword_1B8106000, v15, OS_LOG_TYPE_DEBUG, "Initializing %{public}@ %p with displayString '%{private}@', address '%{private}@' (%lu)", buf, 0x34u);
+      kindCopy = kind;
+      _os_log_debug_impl(&dword_1B8106000, namingLog, OS_LOG_TYPE_DEBUG, "Initializing %{public}@ %p with displayString '%{private}@', address '%{private}@' (%lu)", buf, 0x34u);
     }
 
-    objc_storeStrong(&v14->_contact, a3);
-    v16 = [v12 copy];
+    objc_storeStrong(&v14->_contact, contact);
+    v16 = [addressCopy copy];
     inputAddress = v14->_inputAddress;
     v14->_inputAddress = v16;
 
-    v18 = _displayableAddressOfKind(v12, a6);
+    v18 = _displayableAddressOfKind(addressCopy, kind);
     address = v14->_address;
     v14->_address = v18;
 
-    if (v13)
+    if (stringCopy)
     {
-      v20 = [v13 copy];
+      v20 = [stringCopy copy];
     }
 
     else
@@ -156,58 +156,58 @@ uint64_t __31__CNComposeRecipient_namingLog__block_invoke()
     displayString = v14->_displayString;
     v14->_displayString = &v20->isa;
 
-    v14->_kind = a6;
+    v14->_kind = kind;
     v22 = v14;
   }
 
   return v14;
 }
 
-+ (CNComposeRecipient)composeRecipientWithAutocompleteResult:(id)a3
++ (CNComposeRecipient)composeRecipientWithAutocompleteResult:(id)result
 {
-  v3 = a3;
-  if (![v3 resultType])
+  resultCopy = result;
+  if (![resultCopy resultType])
   {
-    v7 = [v3 value];
-    v8 = [v7 addressType];
+    value = [resultCopy value];
+    addressType = [value addressType];
 
-    if ((v8 - 1) > 4)
+    if ((addressType - 1) > 4)
     {
       v9 = 5;
     }
 
     else
     {
-      v9 = qword_1B8155608[v8 - 1];
+      v9 = qword_1B8155608[addressType - 1];
     }
 
-    v10 = [v3 value];
-    v11 = [v10 address];
+    value2 = [resultCopy value];
+    address = [value2 address];
 
-    if (!v11 || ([v11 ea_isLegalEmailAddress] & 1) != 0)
+    if (!address || ([address ea_isLegalEmailAddress] & 1) != 0)
     {
 LABEL_19:
-      if ([v11 length])
+      if ([address length])
       {
-        v6 = [[CNComposeRecipient alloc] initWithContact:0 address:v11 kind:v9];
-        [(CNComposeRecipient *)v6 setAutocompleteResult:v3];
-        v15 = [v3 displayName];
-        [(CNComposeRecipient *)v6 setDisplayString:v15];
+        v6 = [[CNComposeRecipient alloc] initWithContact:0 address:address kind:v9];
+        [(CNComposeRecipient *)v6 setAutocompleteResult:resultCopy];
+        displayName = [resultCopy displayName];
+        [(CNComposeRecipient *)v6 setDisplayString:displayName];
 
-        v16 = [v3 value];
-        v17 = [v16 identifier];
-        [(CNComposeRecipient *)v6 setValueIdentifier:v17];
+        value3 = [resultCopy value];
+        identifier = [value3 identifier];
+        [(CNComposeRecipient *)v6 setValueIdentifier:identifier];
 
-        v18 = [v3 value];
-        v19 = [v18 label];
-        [(CNComposeRecipient *)v6 setUnlocalizedLabel:v19];
+        value4 = [resultCopy value];
+        label = [value4 label];
+        [(CNComposeRecipient *)v6 setUnlocalizedLabel:label];
 
-        v20 = [v3 identifier];
+        identifier2 = [resultCopy identifier];
 
-        if (v20)
+        if (identifier2)
         {
-          v21 = [v3 identifier];
-          [(CNComposeRecipient *)v6 setContactIdentifier:v21];
+          identifier3 = [resultCopy identifier];
+          [(CNComposeRecipient *)v6 setContactIdentifier:identifier3];
         }
       }
 
@@ -216,30 +216,30 @@ LABEL_19:
         v6 = 0;
       }
 
-      v22 = [v3 nameComponents];
-      if (v22)
+      nameComponents = [resultCopy nameComponents];
+      if (nameComponents)
       {
-        v23 = objc_opt_new();
-        v24 = [v22 firstName];
-        [v23 setGivenName:v24];
+        displayName3 = objc_opt_new();
+        firstName = [nameComponents firstName];
+        [displayName3 setGivenName:firstName];
 
-        v25 = [v22 lastName];
-        [v23 setFamilyName:v25];
+        lastName = [nameComponents lastName];
+        [displayName3 setFamilyName:lastName];
 
-        v26 = [v22 nickname];
-        [v23 setNickname:v26];
+        nickname = [nameComponents nickname];
+        [displayName3 setNickname:nickname];
 
-        v27 = [v22 nameSuffix];
-        [v23 setNameSuffix:v27];
+        nameSuffix = [nameComponents nameSuffix];
+        [displayName3 setNameSuffix:nameSuffix];
 
-        [(CNComposeRecipient *)v6 setNameComponents:v23];
+        [(CNComposeRecipient *)v6 setNameComponents:displayName3];
       }
 
       else
       {
-        v28 = [v3 displayName];
-        v29 = _normalizeAddressOfKind(v28, 1);
-        v30 = [v11 isEqualToString:v29];
+        displayName2 = [resultCopy displayName];
+        v29 = _normalizeAddressOfKind(displayName2, 1);
+        v30 = [address isEqualToString:v29];
 
         if (v30)
         {
@@ -249,30 +249,30 @@ LABEL_28:
         }
 
         v31 = MEMORY[0x1E6996790];
-        v23 = [v3 displayName];
-        v32 = [v31 componentsFromString:v23];
+        displayName3 = [resultCopy displayName];
+        v32 = [v31 componentsFromString:displayName3];
         [(CNComposeRecipient *)v6 setNameComponents:v32];
       }
 
       goto LABEL_28;
     }
 
-    v12 = [MEMORY[0x1E695DFF8] URLWithString:v11];
-    v13 = [v12 scheme];
-    if ([v13 length])
+    v12 = [MEMORY[0x1E695DFF8] URLWithString:address];
+    scheme = [v12 scheme];
+    if ([scheme length])
     {
-      if ([@"mailto" isEqualToString:v13])
+      if ([@"mailto" isEqualToString:scheme])
       {
-        v14 = [v12 resourceSpecifier];
+        resourceSpecifier = [v12 resourceSpecifier];
 
         v9 = 0;
       }
 
       else
       {
-        if (![@"tel" isEqualToString:v13])
+        if (![@"tel" isEqualToString:scheme])
         {
-          if ([@"urn" isEqualToString:v13])
+          if ([@"urn" isEqualToString:scheme])
           {
             v9 = 4;
           }
@@ -280,12 +280,12 @@ LABEL_28:
           goto LABEL_18;
         }
 
-        v14 = [v12 resourceSpecifier];
+        resourceSpecifier = [v12 resourceSpecifier];
 
         v9 = 1;
       }
 
-      v11 = v14;
+      address = resourceSpecifier;
     }
 
 LABEL_18:
@@ -293,13 +293,13 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ([v3 resultType] == 1)
+  if ([resultCopy resultType] == 1)
   {
     v4 = [CNComposeRecipientGroup alloc];
-    v5 = [v3 displayName];
-    v6 = [(CNComposeRecipientGroup *)v4 initWithChildren:0 displayString:v5];
+    displayName4 = [resultCopy displayName];
+    v6 = [(CNComposeRecipientGroup *)v4 initWithChildren:0 displayString:displayName4];
 
-    [(CNComposeRecipient *)v6 setAutocompleteResult:v3];
+    [(CNComposeRecipient *)v6 setAutocompleteResult:resultCopy];
   }
 
   else
@@ -312,13 +312,13 @@ LABEL_29:
   return v6;
 }
 
-- (CNComposeRecipient)initWithCoder:(id)a3
+- (CNComposeRecipient)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contact"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"address"];
-  v8 = [v4 decodeIntegerForKey:@"kind"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contact"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"address"];
+  v8 = [coderCopy decodeIntegerForKey:@"kind"];
 
   v9 = [(CNComposeRecipient *)self initWithContact:v5 address:v7 kind:v8];
   [(CNComposeRecipient *)v9 setContactIdentifier:v6];
@@ -326,21 +326,21 @@ LABEL_29:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v9 = v4;
+  coderCopy = coder;
+  v9 = coderCopy;
   if (self->_contact || self->_contactIdentifier)
   {
-    [v4 encodeObject:? forKey:?];
+    [coderCopy encodeObject:? forKey:?];
   }
 
-  v5 = [(CNComposeRecipient *)self inputAddress];
+  inputAddress = [(CNComposeRecipient *)self inputAddress];
 
-  if (v5)
+  if (inputAddress)
   {
-    v6 = [(CNComposeRecipient *)self inputAddress];
-    [v9 encodeObject:v6 forKey:@"address"];
+    inputAddress2 = [(CNComposeRecipient *)self inputAddress];
+    [v9 encodeObject:inputAddress2 forKey:@"address"];
   }
 
   kind = self->_kind;
@@ -352,10 +352,10 @@ LABEL_29:
   }
 }
 
-- (void)addRecipientToPasteboard:(id)a3
+- (void)addRecipientToPasteboard:(id)pasteboard
 {
   v4 = MEMORY[0x1E696ACC8];
-  v5 = a3;
+  pasteboardCopy = pasteboard;
   v6 = [v4 archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
   v7 = objc_alloc_init(MEMORY[0x1E696ACA0]);
   v9[0] = MEMORY[0x1E69E9820];
@@ -365,15 +365,15 @@ LABEL_29:
   v10 = v6;
   v8 = v6;
   [v7 registerDataRepresentationForTypeIdentifier:@"kCNPasteboardTypeComposeRecipient" visibility:0 loadHandler:v9];
-  [v5 addObject:v7];
+  [pasteboardCopy addObject:v7];
 }
 
-- (id)contactWithKeysToFetch:(id)a3
+- (id)contactWithKeysToFetch:(id)fetch
 {
-  v4 = a3;
-  if (![(CNContact *)self->_contact areKeysAvailable:v4])
+  fetchCopy = fetch;
+  if (![(CNContact *)self->_contact areKeysAvailable:fetchCopy])
   {
-    v5 = [(CNComposeRecipient *)self fetchContactWithKeys:v4];
+    v5 = [(CNComposeRecipient *)self fetchContactWithKeys:fetchCopy];
     contact = self->_contact;
     self->_contact = v5;
   }
@@ -400,15 +400,15 @@ LABEL_29:
   return v9;
 }
 
-- (id)fetchContactWithKeys:(id)a3
+- (id)fetchContactWithKeys:(id)keys
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   autocompleteResult = self->_autocompleteResult;
   if (autocompleteResult)
   {
     v17 = 0;
-    v6 = [(CNAutocompleteResult *)autocompleteResult contactWithKeysToFetch:v4 error:&v17];
+    v6 = [(CNAutocompleteResult *)autocompleteResult contactWithKeysToFetch:keysCopy error:&v17];
     v7 = v17;
     if (v6)
     {
@@ -440,7 +440,7 @@ LABEL_29:
   v9 = v8;
   v10 = CNAutocompleteSharedContactStore();
   v16 = v7;
-  v6 = [v10 unifiedContactWithIdentifier:v9 keysToFetch:v4 error:&v16];
+  v6 = [v10 unifiedContactWithIdentifier:v9 keysToFetch:keysCopy error:&v16];
   v11 = v16;
 
   v7 = v11;
@@ -451,15 +451,15 @@ LABEL_7:
   }
 
 LABEL_8:
-  v12 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v7 localizedDescription];
+    localizedDescription = [v7 localizedDescription];
     *buf = 134218242;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
-    v21 = v13;
-    _os_log_impl(&dword_1B8106000, v12, OS_LOG_TYPE_DEFAULT, "Error fetching contact for recipient: %p, %@", buf, 0x16u);
+    v21 = localizedDescription;
+    _os_log_impl(&dword_1B8106000, os_log, OS_LOG_TYPE_DEFAULT, "Error fetching contact for recipient: %p, %@", buf, 0x16u);
   }
 
 LABEL_11:
@@ -469,10 +469,10 @@ LABEL_11:
 
 - (unint64_t)sourceType
 {
-  v2 = [(CNComposeRecipient *)self autocompleteResult];
-  v3 = [v2 sourceType];
+  autocompleteResult = [(CNComposeRecipient *)self autocompleteResult];
+  sourceType = [autocompleteResult sourceType];
 
-  return v3;
+  return sourceType;
 }
 
 - (NSString)displayString
@@ -488,29 +488,29 @@ LABEL_11:
   }
 }
 
-- (void)setDisplayString:(id)a3
+- (void)setDisplayString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v3 = a3;
+    stringCopy = string;
   }
 
   else
   {
-    v3 = &stru_1F3002C60;
+    stringCopy = &stru_1F3002C60;
   }
 
-  objc_storeStrong(&self->_displayString, v3);
+  objc_storeStrong(&self->_displayString, stringCopy);
 }
 
 - (BOOL)isRemovableFromSearchResults
 {
   v3 = [(CNComposeRecipient *)self sourceType]& 5;
-  v4 = [(CNComposeRecipient *)self sourceType];
+  sourceType = [(CNComposeRecipient *)self sourceType];
   result = 0;
   if (v3)
   {
-    if ((v4 & 2) == 0)
+    if ((sourceType & 2) == 0)
     {
       return ![(CNComposeRecipient *)self isMemberOfGroup];
     }
@@ -531,15 +531,15 @@ LABEL_11:
 
 - (BOOL)wasCompleteMatch
 {
-  v2 = self;
+  selfCopy = self;
   v7[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNComposeRecipientOriginContext *)self->_originContext searchTerm];
-  v7[0] = v2;
+  searchTerm = [(CNComposeRecipientOriginContext *)self->_originContext searchTerm];
+  v7[0] = selfCopy;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   v6 = 0;
-  LOBYTE(v2) = _fastCountOfCompleteMatches(v3, v4, &v6) != 0;
+  LOBYTE(selfCopy) = _fastCountOfCompleteMatches(searchTerm, v4, &v6) != 0;
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)completelyMatchedAttributedStrings
@@ -548,12 +548,12 @@ LABEL_11:
   cachedMatchedStrings = self->_cachedMatchedStrings;
   if (!cachedMatchedStrings)
   {
-    v4 = [(CNComposeRecipientOriginContext *)self->_originContext searchTerm];
+    searchTerm = [(CNComposeRecipientOriginContext *)self->_originContext searchTerm];
     v13[0] = self;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
     v11 = 0;
     v12 = 0;
-    v6 = _sortedArrayByRelevancy(v4, v5, &v12, &v11);
+    v6 = _sortedArrayByRelevancy(searchTerm, v5, &v12, &v11);
     v7 = v12;
     v8 = v11;
 
@@ -566,14 +566,14 @@ LABEL_11:
   return cachedMatchedStrings;
 }
 
-- (void)setAddress:(id)a3
+- (void)setAddress:(id)address
 {
-  v4 = [a3 copy];
+  v4 = [address copy];
   inputAddress = self->_inputAddress;
   self->_inputAddress = v4;
 
-  v6 = [(CNComposeRecipient *)self uncommentedAddress];
-  v7 = _displayableAddressOfKind(v6, self->_kind);
+  uncommentedAddress = [(CNComposeRecipient *)self uncommentedAddress];
+  v7 = _displayableAddressOfKind(uncommentedAddress, self->_kind);
   address = self->_address;
   self->_address = v7;
 
@@ -586,8 +586,8 @@ LABEL_11:
 
 - (NSString)normalizedAddress
 {
-  v3 = [(CNComposeRecipient *)self uncommentedAddress];
-  v4 = _normalizeAddressOfKind(v3, self->_kind);
+  uncommentedAddress = [(CNComposeRecipient *)self uncommentedAddress];
+  v4 = _normalizeAddressOfKind(uncommentedAddress, self->_kind);
 
   return v4;
 }
@@ -598,8 +598,8 @@ LABEL_11:
   if (!cachedHandles)
   {
     v4 = objc_alloc(MEMORY[0x1E695DFD8]);
-    v5 = [(CNComposeRecipient *)self associatedHandles];
-    v6 = [v4 initWithArray:v5];
+    associatedHandles = [(CNComposeRecipient *)self associatedHandles];
+    v6 = [v4 initWithArray:associatedHandles];
     v7 = self->_cachedHandles;
     self->_cachedHandles = v6;
 
@@ -620,23 +620,23 @@ LABEL_11:
 
   if (v5)
   {
-    v6 = [v5 emailAddresses];
-    v7 = [v6 _cn_map:&__block_literal_global_79];
+    emailAddresses = [v5 emailAddresses];
+    normalizedAddress2 = [emailAddresses _cn_map:&__block_literal_global_79];
 
-    v8 = [v5 phoneNumbers];
-    v9 = [v8 _cn_map:&__block_literal_global_81];
+    phoneNumbers = [v5 phoneNumbers];
+    v9 = [phoneNumbers _cn_map:&__block_literal_global_81];
 
-    v10 = [(CNComposeRecipient *)self normalizedAddress];
-    v15 = v10;
+    normalizedAddress = [(CNComposeRecipient *)self normalizedAddress];
+    v15 = normalizedAddress;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
-    v12 = [v7 arrayByAddingObjectsFromArray:v9];
+    v12 = [normalizedAddress2 arrayByAddingObjectsFromArray:v9];
     v13 = [v11 arrayByAddingObjectsFromArray:v12];
   }
 
   else
   {
-    v7 = [(CNComposeRecipient *)self normalizedAddress];
-    v16 = v7;
+    normalizedAddress2 = [(CNComposeRecipient *)self normalizedAddress];
+    v16 = normalizedAddress2;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
   }
 
@@ -647,42 +647,42 @@ LABEL_11:
 {
   if (self->_kind)
   {
-    v3 = [(CNComposeRecipient *)self address];
+    address = [(CNComposeRecipient *)self address];
   }
 
   else
   {
-    v4 = [(CNComposeRecipient *)self uncommentedAddress];
+    uncommentedAddress = [(CNComposeRecipient *)self uncommentedAddress];
     v5 = [CNComposeRecipientNamer nameForComposeRecipient:2147483615 sources:?];
-    if (v4 && [v4 length] && v5 && objc_msgSend(v5, "length"))
+    if (uncommentedAddress && [uncommentedAddress length] && v5 && objc_msgSend(v5, "length"))
     {
-      v6 = [MEMORY[0x1E699AFC0] formattedAddressWithName:v5 email:v4 useQuotes:1];
+      v6 = [MEMORY[0x1E699AFC0] formattedAddressWithName:v5 email:uncommentedAddress useQuotes:1];
     }
 
     else
     {
-      v6 = v4;
+      v6 = uncommentedAddress;
     }
 
-    v3 = v6;
+    address = v6;
     if (!v6)
     {
-      v3 = [(CNComposeRecipient *)self inputAddress];
+      address = [(CNComposeRecipient *)self inputAddress];
 
-      if (v3)
+      if (address)
       {
-        v7 = [(CNComposeRecipient *)self inputAddress];
-        v8 = [v7 ea_uncommentedAddress];
+        inputAddress = [(CNComposeRecipient *)self inputAddress];
+        ea_uncommentedAddress = [inputAddress ea_uncommentedAddress];
 
-        v9 = [(CNComposeRecipient *)self inputAddress];
-        v10 = [v9 ea_addressComment];
+        inputAddress2 = [(CNComposeRecipient *)self inputAddress];
+        ea_addressComment = [inputAddress2 ea_addressComment];
 
-        v3 = [MEMORY[0x1E699AFC0] formattedAddressWithName:v10 email:v8 useQuotes:1];
+        address = [MEMORY[0x1E699AFC0] formattedAddressWithName:ea_addressComment email:ea_uncommentedAddress useQuotes:1];
       }
     }
   }
 
-  return v3;
+  return address;
 }
 
 - (NSString)label
@@ -690,14 +690,14 @@ LABEL_11:
   label = self->_label;
   if (!label)
   {
-    v4 = [(CNComposeRecipient *)self unlocalizedLabel];
-    if (v4)
+    unlocalizedLabel = [(CNComposeRecipient *)self unlocalizedLabel];
+    if (unlocalizedLabel)
     {
-      v5 = [(CNComposeRecipient *)self contact];
+      contact = [(CNComposeRecipient *)self contact];
 
-      if (v5)
+      if (contact)
       {
-        v6 = [MEMORY[0x1E695CEE0] localizedStringForLabel:v4];
+        v6 = [MEMORY[0x1E695CEE0] localizedStringForLabel:unlocalizedLabel];
         v7 = self->_label;
         self->_label = v6;
       }
@@ -711,9 +711,9 @@ LABEL_11:
 
 - (NSString)unlocalizedLabel
 {
-  v3 = [(CNComposeRecipient *)self contact];
+  contact = [(CNComposeRecipient *)self contact];
 
-  if (v3)
+  if (contact)
   {
     v4 = self->_unlocalizedLabel;
   }
@@ -756,10 +756,10 @@ LABEL_11:
 
 - (NSString)placeholderName
 {
-  v2 = [(CNComposeRecipient *)self sourceType];
+  sourceType = [(CNComposeRecipient *)self sourceType];
   v3 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2 == 1)
+  if (sourceType == 1)
   {
     v5 = @"RECENT_PLACEHOLDER_NAME";
   }
@@ -784,11 +784,11 @@ LABEL_11:
 
   else
   {
-    v6 = [(CNComposeRecipient *)self nameComponentsFromAddress];
-    v4 = v6;
-    if (v6)
+    nameComponentsFromAddress = [(CNComposeRecipient *)self nameComponentsFromAddress];
+    v4 = nameComponentsFromAddress;
+    if (nameComponentsFromAddress)
     {
-      v7 = v6;
+      v7 = nameComponentsFromAddress;
     }
   }
 
@@ -815,9 +815,9 @@ LABEL_11:
   address = self->_address;
   if (address && !self->_kind)
   {
-    v5 = [(NSString *)address ea_addressComment];
-    v6 = v5;
-    if (v5 && ([v5 isEqualToString:self->_address] & 1) == 0)
+    ea_addressComment = [(NSString *)address ea_addressComment];
+    v6 = ea_addressComment;
+    if (ea_addressComment && ([ea_addressComment isEqualToString:self->_address] & 1) == 0)
     {
       v7 = objc_alloc_init(MEMORY[0x1E696ADF8]);
       v4 = [v7 personNameComponentsFromString:v6];
@@ -840,18 +840,18 @@ LABEL_11:
 - (NSString)uncommentedAddress
 {
   v38[2] = *MEMORY[0x1E69E9840];
-  v3 = [(CNComposeRecipient *)self inputAddress];
+  inputAddress = [(CNComposeRecipient *)self inputAddress];
 
-  if (v3)
+  if (inputAddress)
   {
     kind = self->_kind;
-    v5 = [(CNComposeRecipient *)self inputAddress];
-    v6 = v5;
+    inputAddress2 = [(CNComposeRecipient *)self inputAddress];
+    stringValue = inputAddress2;
     if (!kind)
     {
-      v7 = [v5 ea_uncommentedAddress];
+      ea_uncommentedAddress = [inputAddress2 ea_uncommentedAddress];
 
-      v6 = v7;
+      stringValue = ea_uncommentedAddress;
     }
   }
 
@@ -871,8 +871,8 @@ LABEL_11:
         v35 = 0uLL;
         v32 = 0uLL;
         v33 = 0uLL;
-        v11 = [v10 phoneNumbers];
-        v12 = [v11 countByEnumeratingWithState:&v32 objects:v37 count:16];
+        phoneNumbers = [v10 phoneNumbers];
+        v12 = [phoneNumbers countByEnumeratingWithState:&v32 objects:v37 count:16];
         if (v12)
         {
           v13 = v12;
@@ -883,23 +883,23 @@ LABEL_11:
             {
               if (*v33 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(phoneNumbers);
               }
 
               v16 = *(*(&v32 + 1) + 8 * i);
-              v17 = [v16 identifier];
-              v18 = [v17 isEqualToString:self->_valueIdentifier];
+              identifier = [v16 identifier];
+              v18 = [identifier isEqualToString:self->_valueIdentifier];
 
               if (v18)
               {
-                v26 = [v16 value];
-                v6 = [v26 stringValue];
+                value = [v16 value];
+                stringValue = [value stringValue];
 
                 goto LABEL_27;
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v32 objects:v37 count:16];
+            v13 = [phoneNumbers countByEnumeratingWithState:&v32 objects:v37 count:16];
             if (v13)
             {
               continue;
@@ -916,8 +916,8 @@ LABEL_11:
         v31 = 0uLL;
         *(&v28 + 1) = 0;
         v29 = 0uLL;
-        v11 = [v10 emailAddresses];
-        v19 = [v11 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        phoneNumbers = [v10 emailAddresses];
+        v19 = [phoneNumbers countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v19)
         {
           v20 = v19;
@@ -928,21 +928,21 @@ LABEL_11:
             {
               if (*v29 != v21)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(phoneNumbers);
               }
 
               v23 = *(*(&v28 + 1) + 8 * j);
-              v24 = [v23 identifier];
-              v25 = [v24 isEqualToString:self->_valueIdentifier];
+              identifier2 = [v23 identifier];
+              v25 = [identifier2 isEqualToString:self->_valueIdentifier];
 
               if (v25)
               {
-                v6 = [v23 value];
+                stringValue = [v23 value];
                 goto LABEL_27;
               }
             }
 
-            v20 = [v11 countByEnumeratingWithState:&v28 objects:v36 count:16];
+            v20 = [phoneNumbers countByEnumeratingWithState:&v28 objects:v36 count:16];
             if (v20)
             {
               continue;
@@ -953,83 +953,83 @@ LABEL_11:
         }
       }
 
-      v6 = 0;
+      stringValue = 0;
 LABEL_27:
     }
 
     else
     {
-      v6 = 0;
+      stringValue = 0;
     }
   }
 
-  return v6;
+  return stringValue;
 }
 
 - (NSString)stringForEqualityTesting
 {
-  v3 = [(CNComposeRecipient *)self address];
+  address = [(CNComposeRecipient *)self address];
   if ((*(*MEMORY[0x1E6996568] + 16))())
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", self];
 
-    v3 = v4;
+    address = v4;
   }
 
-  return v3;
+  return address;
 }
 
 - (NSString)pasteboardString
 {
-  v3 = [(CNComposeRecipient *)self uncommentedAddress];
-  if (!v3)
+  uncommentedAddress = [(CNComposeRecipient *)self uncommentedAddress];
+  if (!uncommentedAddress)
   {
-    v3 = [(CNComposeRecipient *)self address];
-    if (!v3)
+    uncommentedAddress = [(CNComposeRecipient *)self address];
+    if (!uncommentedAddress)
     {
-      v3 = [(CNComposeRecipient *)self compositeName];
+      uncommentedAddress = [(CNComposeRecipient *)self compositeName];
     }
   }
 
-  return v3;
+  return uncommentedAddress;
 }
 
 - (BOOL)supportsPasteboardUnarchiving
 {
-  v3 = [(CNComposeRecipient *)self contact];
-  if (v3)
+  contact = [(CNComposeRecipient *)self contact];
+  if (contact)
   {
-    v4 = 1;
+    isGroup = 1;
   }
 
   else
   {
-    v5 = [(CNComposeRecipient *)self inputAddress];
-    if (v5)
+    inputAddress = [(CNComposeRecipient *)self inputAddress];
+    if (inputAddress)
     {
-      v4 = 1;
+      isGroup = 1;
     }
 
     else
     {
-      v4 = [(CNComposeRecipient *)self isGroup];
+      isGroup = [(CNComposeRecipient *)self isGroup];
     }
   }
 
-  return v4;
+  return isGroup;
 }
 
 - (id)_unformattedAddress
 {
-  v3 = [(CNComposeRecipient *)self uncommentedAddress];
+  uncommentedAddress = [(CNComposeRecipient *)self uncommentedAddress];
   if (self->_kind == 1)
   {
     v4 = UIUnformattedPhoneNumberFromString();
 
-    v3 = v4;
+    uncommentedAddress = v4;
   }
 
-  return v3;
+  return uncommentedAddress;
 }
 
 - (id)labeledValueIdentifier
@@ -1047,19 +1047,19 @@ LABEL_27:
 
   if (v4)
   {
-    v5 = [(CNComposeRecipient *)self inputAddress];
-    v6 = v5 == 0;
+    inputAddress = [(CNComposeRecipient *)self inputAddress];
+    v6 = inputAddress == 0;
 
     if (!v6)
     {
-      v7 = [v4 emailAddresses];
+      emailAddresses = [v4 emailAddresses];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __44__CNComposeRecipient_labeledValueIdentifier__block_invoke;
       v10[3] = &unk_1E7CD2550;
       v10[4] = self;
       v10[5] = &v11;
-      [v7 enumerateObjectsUsingBlock:v10];
+      [emailAddresses enumerateObjectsUsingBlock:v10];
     }
   }
 
@@ -1088,13 +1088,13 @@ void __44__CNComposeRecipient_labeledValueIdentifier__block_invoke(uint64_t a1, 
   }
 }
 
-- (BOOL)isEquivalentAddressToRecipient:(id)a3
+- (BOOL)isEquivalentAddressToRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [(CNComposeRecipient *)self kind];
-  if (v5 == [(CNComposeRecipient *)v4 kind])
+  recipientCopy = recipient;
+  kind = [(CNComposeRecipient *)self kind];
+  if (kind == [(CNComposeRecipient *)recipientCopy kind])
   {
-    if (self == v4)
+    if (self == recipientCopy)
     {
       v13 = 1;
     }
@@ -1106,29 +1106,29 @@ void __44__CNComposeRecipient_labeledValueIdentifier__block_invoke(uint64_t a1, 
         if ([(CNComposeRecipient *)self kind]== 1)
         {
           v6 = MEMORY[0x1E695CF50];
-          v7 = [(CNComposeRecipient *)self address];
-          v8 = [v6 phoneNumberWithStringValue:v7];
+          address = [(CNComposeRecipient *)self address];
+          normalizedAddress = [v6 phoneNumberWithStringValue:address];
 
           v9 = MEMORY[0x1E695CF50];
-          v10 = [(CNComposeRecipient *)v4 address];
-          v11 = [v9 phoneNumberWithStringValue:v10];
+          address2 = [(CNComposeRecipient *)recipientCopy address];
+          normalizedAddress2 = [v9 phoneNumberWithStringValue:address2];
 
-          v12 = [v8 isEqual:v11];
+          v12 = [normalizedAddress isEqual:normalizedAddress2];
         }
 
         else
         {
-          v8 = [(CNComposeRecipient *)v4 normalizedAddress];
-          v11 = [(CNComposeRecipient *)self normalizedAddress];
-          v12 = [v8 isEqualToString:v11];
+          normalizedAddress = [(CNComposeRecipient *)recipientCopy normalizedAddress];
+          normalizedAddress2 = [(CNComposeRecipient *)self normalizedAddress];
+          v12 = [normalizedAddress isEqualToString:normalizedAddress2];
         }
       }
 
       else
       {
-        v8 = [(CNComposeRecipient *)self address];
-        v11 = [(CNComposeRecipient *)v4 address];
-        v12 = [v8 _cn_caseInsensitiveIsEqual:v11];
+        normalizedAddress = [(CNComposeRecipient *)self address];
+        normalizedAddress2 = [(CNComposeRecipient *)recipientCopy address];
+        v12 = [normalizedAddress _cn_caseInsensitiveIsEqual:normalizedAddress2];
       }
 
       v13 = v12;
@@ -1143,10 +1143,10 @@ void __44__CNComposeRecipient_labeledValueIdentifier__block_invoke(uint64_t a1, 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -1154,11 +1154,11 @@ void __44__CNComposeRecipient_labeledValueIdentifier__block_invoke(uint64_t a1, 
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 && ([(CNComposeRecipient *)self address], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, [(CNComposeRecipient *)v4 address], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+    if ((objc_opt_isKindOfClass() & 1) == 0 && ([(CNComposeRecipient *)self address], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, [(CNComposeRecipient *)equalCopy address], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
     {
-      v8 = [(CNComposeRecipient *)v4 address];
-      v9 = [(CNComposeRecipient *)self address];
-      v10 = [v9 ea_isEqualToEmailAddress:v8];
+      address = [(CNComposeRecipient *)equalCopy address];
+      address2 = [(CNComposeRecipient *)self address];
+      v10 = [address2 ea_isEqualToEmailAddress:address];
     }
 
     else
@@ -1172,12 +1172,12 @@ void __44__CNComposeRecipient_labeledValueIdentifier__block_invoke(uint64_t a1, 
 
 - (unint64_t)hash
 {
-  v3 = [(CNComposeRecipient *)self address];
+  address = [(CNComposeRecipient *)self address];
 
-  if (v3)
+  if (address)
   {
-    v4 = [(CNComposeRecipient *)self address];
-    v5 = [v4 hash];
+    address2 = [(CNComposeRecipient *)self address];
+    v5 = [address2 hash];
 
     return v5;
   }
@@ -1192,44 +1192,44 @@ void __44__CNComposeRecipient_labeledValueIdentifier__block_invoke(uint64_t a1, 
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (([(CNComposeRecipient *)self sourceType]& 2) != 0)
   {
-    [v3 addObject:@"Contact"];
+    [array addObject:@"Contact"];
   }
 
   if (([(CNComposeRecipient *)self sourceType]& 0x10) != 0)
   {
-    [v3 addObject:@"Prediction"];
+    [array addObject:@"Prediction"];
   }
 
   if (([(CNComposeRecipient *)self sourceType]& 1) != 0)
   {
-    [v3 addObject:@"Recent"];
+    [array addObject:@"Recent"];
   }
 
   if (([(CNComposeRecipient *)self sourceType]& 0x48) != 0)
   {
-    [v3 addObject:@"Server"];
+    [array addObject:@"Server"];
   }
 
   if (([(CNComposeRecipient *)self sourceType]& 4) != 0)
   {
-    [v3 addObject:@"Suggestion"];
+    [array addObject:@"Suggestion"];
   }
 
   if (![(CNComposeRecipient *)self sourceType])
   {
-    [v3 addObject:@"<undefined>"];
+    [array addObject:@"<undefined>"];
   }
 
-  v4 = [v3 componentsJoinedByString:@"+"];
+  v4 = [array componentsJoinedByString:@"+"];
   v5 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(CNComposeRecipient *)self displayString];
-  v9 = [(CNComposeRecipient *)self address];
-  v10 = [v5 stringWithFormat:@"<%@: %p displayString: %@; address: %@; autocompleteSource: %@>", v7, self, v8, v9, v4];;
+  displayString = [(CNComposeRecipient *)self displayString];
+  address = [(CNComposeRecipient *)self address];
+  v10 = [v5 stringWithFormat:@"<%@: %p displayString: %@; address: %@; autocompleteSource: %@>", v7, self, displayString, address, v4];;
 
   return v10;
 }
@@ -1243,13 +1243,13 @@ void __44__CNComposeRecipient_labeledValueIdentifier__block_invoke(uint64_t a1, 
   return v2;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
-  if (!UTTypeConformsTo(a4, @"com.apple.contactsui.composerecipient"))
+  dataCopy = data;
+  if (!UTTypeConformsTo(identifier, @"com.apple.contactsui.composerecipient"))
   {
     v8 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -1258,23 +1258,23 @@ void __44__CNComposeRecipient_labeledValueIdentifier__block_invoke(uint64_t a1, 
   }
 
   v12 = 0;
-  v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v7 error:&v12];
+  v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v12];
   v9 = v12;
   if (v9)
   {
-    v10 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      [CNComposeRecipient(NSItemProvider) objectWithItemProviderData:v9 typeIdentifier:v10 error:?];
+      [CNComposeRecipient(NSItemProvider) objectWithItemProviderData:v9 typeIdentifier:os_log error:?];
     }
   }
 
-  if (a5)
+  if (error)
   {
 LABEL_9:
     if (!v8)
     {
-      *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
     }
   }
 
@@ -1285,47 +1285,47 @@ LABEL_11:
 
 + (NSArray)writableTypeIdentifiersForItemProvider
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  [v2 addObject:@"com.apple.contactsui.composerecipient"];
-  [v2 addObject:*MEMORY[0x1E69638D8]];
-  v3 = [MEMORY[0x1E696AEC0] writableTypeIdentifiersForItemProvider];
-  [v2 addObjectsFromArray:v3];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:@"com.apple.contactsui.composerecipient"];
+  [array addObject:*MEMORY[0x1E69638D8]];
+  writableTypeIdentifiersForItemProvider = [MEMORY[0x1E696AEC0] writableTypeIdentifiersForItemProvider];
+  [array addObjectsFromArray:writableTypeIdentifiersForItemProvider];
 
-  return v2;
+  return array;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([(__CFString *)v6 isEqualToString:@"com.apple.contactsui.composerecipient"])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if ([(__CFString *)identifierCopy isEqualToString:@"com.apple.contactsui.composerecipient"])
   {
     v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
-    v7[2](v7, v8, 0);
+    handlerCopy[2](handlerCopy, v8, 0);
     goto LABEL_3;
   }
 
-  if (!UTTypeConformsTo(v6, *MEMORY[0x1E6963870]))
+  if (!UTTypeConformsTo(identifierCopy, *MEMORY[0x1E6963870]))
   {
-    if (!UTTypeConformsTo(v6, *MEMORY[0x1E69638D8]))
+    if (!UTTypeConformsTo(identifierCopy, *MEMORY[0x1E69638D8]))
     {
-      v7[2](v7, 0, 0);
+      handlerCopy[2](handlerCopy, 0, 0);
       goto LABEL_4;
     }
 
-    v12 = [(CNComposeRecipient *)self contact];
-    v13 = v12;
-    if (v12)
+    contact = [(CNComposeRecipient *)self contact];
+    v13 = contact;
+    if (contact)
     {
-      v8 = v12;
+      v8 = contact;
     }
 
     else
     {
       v14 = MEMORY[0x1E695CD58];
-      v15 = [(CNComposeRecipient *)self commentedAddress];
-      v8 = [v14 em_contactFromEmailAddress:v15];
+      commentedAddress = [(CNComposeRecipient *)self commentedAddress];
+      v8 = [v14 em_contactFromEmailAddress:commentedAddress];
     }
 
     v16 = MEMORY[0x1E695CE30];
@@ -1335,7 +1335,7 @@ LABEL_11:
     v18 = [v16 dataWithContacts:v17 error:&v20];
     v19 = v20;
 
-    (v7)[2](v7, v18, v19);
+    (handlerCopy)[2](handlerCopy, v18, v19);
 LABEL_3:
 
 LABEL_4:
@@ -1343,8 +1343,8 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  v10 = [(CNComposeRecipient *)self commentedAddress];
-  v9 = [v10 loadDataWithTypeIdentifier:v6 forItemProviderCompletionHandler:v7];
+  commentedAddress2 = [(CNComposeRecipient *)self commentedAddress];
+  v9 = [commentedAddress2 loadDataWithTypeIdentifier:identifierCopy forItemProviderCompletionHandler:handlerCopy];
 
 LABEL_7:
 

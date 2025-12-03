@@ -14,9 +14,9 @@
     return 0;
   }
 
-  v4 = [(SDAirDropHandler *)self bundleProxy];
+  bundleProxy = [(SDAirDropHandler *)self bundleProxy];
 
-  if (v4)
+  if (bundleProxy)
   {
     return 1;
   }
@@ -25,10 +25,10 @@
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = [(SDAirDropHandler *)self transfer];
-  v7 = [v6 completedURLs];
+  transfer = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer completedURLs];
 
-  v26 = [v7 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  v26 = [completedURLs countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v26)
   {
     v8 = *v32;
@@ -39,14 +39,14 @@ LABEL_7:
     {
       if (*v32 != v8)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(completedURLs);
       }
 
       v10 = *(*(&v31 + 1) + 8 * v9);
-      v11 = [v10 scheme];
-      v12 = [v11 lowercaseString];
+      scheme = [v10 scheme];
+      lowercaseString = [scheme lowercaseString];
 
-      if (([v12 isEqual:@"http"] & 1) != 0 || objc_msgSend(v12, "isEqual:", @"https"))
+      if (([lowercaseString isEqual:@"http"] & 1) != 0 || objc_msgSend(lowercaseString, "isEqual:", @"https"))
       {
         v13 = dispatch_semaphore_create(0);
         v27[0] = _NSConcreteStackBlock;
@@ -61,7 +61,7 @@ LABEL_7:
         [LSAppLink getAppLinkWithURL:v10 completionHandler:v27];
         v15 = dispatch_time(0, 1000000000);
         dispatch_semaphore_wait(v14, v15);
-        v16 = [(SDAirDropHandlerGenericLinks *)self appLink];
+        appLink = [(SDAirDropHandlerGenericLinks *)self appLink];
       }
 
       else
@@ -74,24 +74,24 @@ LABEL_7:
         [v19 firstObject];
         v20 = v8;
         v21 = a2;
-        v23 = v22 = v7;
+        v23 = v22 = completedURLs;
         [(SDAirDropHandler *)self setBundleProxy:v23];
 
-        v7 = v22;
+        completedURLs = v22;
         a2 = v21;
         v8 = v20;
 
-        v16 = [(SDAirDropHandler *)self bundleProxy];
+        appLink = [(SDAirDropHandler *)self bundleProxy];
       }
 
-      if (!v16)
+      if (!appLink)
       {
         break;
       }
 
       if (v26 == ++v9)
       {
-        v26 = [v7 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v26 = [completedURLs countByEnumeratingWithState:&v31 objects:v35 count:16];
         if (v26)
         {
           goto LABEL_7;
@@ -118,26 +118,26 @@ LABEL_19:
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
-  v4 = [(SDAirDropHandlerGenericLinks *)self appLink];
-  v5 = [v4 targetApplicationProxy];
-  v6 = v5;
-  if (v5)
+  senderName = [(SDAirDropHandler *)self senderName];
+  appLink = [(SDAirDropHandlerGenericLinks *)self appLink];
+  targetApplicationProxy = [appLink targetApplicationProxy];
+  v6 = targetApplicationProxy;
+  if (targetApplicationProxy)
   {
-    v7 = v5;
+    bundleProxy = targetApplicationProxy;
   }
 
   else
   {
-    v7 = [(SDAirDropHandler *)self bundleProxy];
+    bundleProxy = [(SDAirDropHandler *)self bundleProxy];
   }
 
-  v8 = v7;
+  v8 = bundleProxy;
 
-  v9 = [v8 localizedName];
-  v10 = [(SDAirDropHandler *)self totalSharedItemsCount];
+  localizedName = [v8 localizedName];
+  totalSharedItemsCount = [(SDAirDropHandler *)self totalSharedItemsCount];
   v19 = @"GENERIC_LINK";
-  v11 = [NSNumber numberWithInteger:v10];
+  v11 = [NSNumber numberWithInteger:totalSharedItemsCount];
   v20 = v11;
   v12 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
   v21 = v12;
@@ -145,14 +145,14 @@ LABEL_19:
   v14 = [(SDAirDropHandler *)self alertMessageLocalizedKeyForTypeDicts:v13];
 
   v15 = SFLocalizedStringForKey();
-  if (v10 == 1)
+  if (totalSharedItemsCount == 1)
   {
-    [NSString stringWithFormat:v15, v3, v9, v18];
+    [NSString stringWithFormat:v15, senderName, localizedName, v18];
   }
 
   else
   {
-    [NSString stringWithFormat:v15, v3, v10, v9];
+    [NSString stringWithFormat:v15, senderName, totalSharedItemsCount, localizedName];
   }
   v16 = ;
 
@@ -164,23 +164,23 @@ LABEL_19:
   v14.receiver = self;
   v14.super_class = SDAirDropHandlerGenericLinks;
   [(SDAirDropHandler *)&v14 updatePossibleActions];
-  v3 = [(SDAirDropHandlerGenericLinks *)self appLink];
-  v4 = [v3 targetApplicationProxy];
-  if (v4)
+  appLink = [(SDAirDropHandlerGenericLinks *)self appLink];
+  targetApplicationProxy = [appLink targetApplicationProxy];
+  if (targetApplicationProxy)
   {
   }
 
   else
   {
-    v4 = [(SDAirDropHandler *)self bundleProxy];
+    targetApplicationProxy = [(SDAirDropHandler *)self bundleProxy];
 
-    if (!v4)
+    if (!targetApplicationProxy)
     {
       return;
     }
   }
 
-  v5 = [(SDAirDropHandler *)self defaultActionForBundleProxy:v4];
+  v5 = [(SDAirDropHandler *)self defaultActionForBundleProxy:targetApplicationProxy];
   objc_initWeak(&location, self);
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
@@ -190,8 +190,8 @@ LABEL_19:
   [v5 setActionHandler:&v8];
   v15 = v5;
   v6 = [NSArray arrayWithObjects:&v15 count:1, v8, v9, v10, v11];
-  v7 = [(SDAirDropHandler *)self transfer];
-  [v7 setPossibleActions:v6];
+  transfer = [(SDAirDropHandler *)self transfer];
+  [transfer setPossibleActions:v6];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);

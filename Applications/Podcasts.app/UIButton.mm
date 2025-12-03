@@ -6,8 +6,8 @@
 
 - (double)mt_firstBaselineOffsetFromTop
 {
-  v2 = [(UIButton *)self titleLabel];
-  [v2 mt_baselineOriginY];
+  titleLabel = [(UIButton *)self titleLabel];
+  [titleLabel mt_baselineOriginY];
   v4 = v3;
 
   return v4;

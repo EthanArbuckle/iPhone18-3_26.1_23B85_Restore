@@ -1,10 +1,10 @@
 @interface NWConcrete_nw_ethernet_channel
 - (uint64_t)createChannel;
-- (unsigned)initWithEtherType:(void *)a3 interface:(void *)a4 parameters:;
+- (unsigned)initWithEtherType:(void *)type interface:(void *)interface parameters:;
 - (void)close;
-- (void)closeChannel:(uint64_t)a1;
+- (void)closeChannel:(uint64_t)channel;
 - (void)dealloc;
-- (void)updateClientState:(void *)a3 error:;
+- (void)updateClientState:(void *)state error:;
 @end
 
 @implementation NWConcrete_nw_ethernet_channel
@@ -24,7 +24,7 @@
       *buf = 136447234;
       v11 = "[NWConcrete_nw_ethernet_channel dealloc]";
       v12 = 2080;
-      v13 = v4;
+      selfCopy = v4;
       v14 = 1042;
       v15 = 16;
       v16 = 2098;
@@ -49,7 +49,7 @@ LABEL_7:
       *buf = 136446466;
       v11 = "[NWConcrete_nw_ethernet_channel dealloc]";
       v12 = 2114;
-      v13 = self;
+      selfCopy = self;
       v6 = "%{public}s [%{public}@] dealloc";
       v7 = v3;
       v8 = 22;
@@ -66,12 +66,12 @@ LABEL_7:
 - (void)close
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = *(a1 + 152);
+  v2 = *(self + 152);
   pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
   networkd_settings_init();
   v3 = gLogObj;
@@ -80,16 +80,16 @@ LABEL_7:
   {
     if (v4)
     {
-      v5 = *(a1 + 24);
-      v6 = *(a1 + 168);
+      v5 = *(self + 24);
+      v6 = *(self + 168);
       v17 = 136447234;
       v18 = "[NWConcrete_nw_ethernet_channel close]";
       v19 = 2080;
-      v20 = v5;
+      selfCopy = v5;
       v21 = 1042;
       v22 = 16;
       v23 = 2098;
-      v24 = a1 + 115;
+      v24 = self + 115;
       v25 = 1024;
       v26 = v6;
       v7 = "%{public}s [%s: nexus instance %{public,uuid_t}.16P <fd %d>] close";
@@ -105,49 +105,49 @@ LABEL_7:
     v17 = 136446466;
     v18 = "[NWConcrete_nw_ethernet_channel close]";
     v19 = 2114;
-    v20 = a1;
+    selfCopy = self;
     v7 = "%{public}s [%{public}@] close";
     v8 = v3;
     v9 = 22;
     goto LABEL_7;
   }
 
-  v10 = *(a1 + 40);
-  *(a1 + 40) = 0;
+  v10 = *(self + 40);
+  *(self + 40) = 0;
 
-  v11 = *(a1 + 56);
-  *(a1 + 56) = 0;
+  v11 = *(self + 56);
+  *(self + 56) = 0;
 
-  v12 = *(a1 + 64);
-  *(a1 + 64) = 0;
+  v12 = *(self + 64);
+  *(self + 64) = 0;
 
-  [(NWConcrete_nw_ethernet_channel *)a1 closeChannel:?];
-  v13 = *(a1 + 72);
+  [(NWConcrete_nw_ethernet_channel *)self closeChannel:?];
+  v13 = *(self + 72);
   if (v13)
   {
     nw_path_evaluator_cancel(v13);
-    v14 = *(a1 + 72);
-    *(a1 + 72) = 0;
+    v14 = *(self + 72);
+    *(self + 72) = 0;
   }
 
-  v15 = *(a1 + 80);
+  v15 = *(self + 80);
   if (v15)
   {
     nw_path_flow_registration_close(v15);
-    v16 = *(a1 + 80);
-    *(a1 + 80) = 0;
+    v16 = *(self + 80);
+    *(self + 80) = 0;
   }
 }
 
-- (void)closeChannel:(uint64_t)a1
+- (void)closeChannel:(uint64_t)channel
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!channel)
   {
     return;
   }
 
-  v4 = *(a1 + 152);
+  v4 = *(channel + 152);
   pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
   networkd_settings_init();
   v5 = gLogObj;
@@ -159,16 +159,16 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    v7 = *(a1 + 24);
-    v8 = *(a1 + 168);
+    v7 = *(channel + 24);
+    v8 = *(channel + 168);
     v27 = 136447234;
     v28 = "[NWConcrete_nw_ethernet_channel closeChannel:]";
     v29 = 2080;
-    v30 = v7;
+    channelCopy2 = v7;
     v31 = 1042;
     v32 = 16;
     v33 = 2098;
-    v34 = a1 + 115;
+    v34 = channel + 115;
     v35 = 1024;
     v36 = v8;
     v9 = "%{public}s [%s: nexus instance %{public,uuid_t}.16P <fd %d>] closeChannel";
@@ -186,7 +186,7 @@ LABEL_7:
     v27 = 136446466;
     v28 = "[NWConcrete_nw_ethernet_channel closeChannel:]";
     v29 = 2114;
-    v30 = a1;
+    channelCopy2 = channel;
     v9 = "%{public}s [%{public}@] closeChannel";
     v10 = v5;
     v11 = 22;
@@ -195,7 +195,7 @@ LABEL_7:
   _os_log_impl(&dword_181A37000, v10, OS_LOG_TYPE_DEBUG, v9, &v27, v11);
 LABEL_8:
 
-  if ((*(a1 + 113) & 1) == 0)
+  if ((*(channel + 113) & 1) == 0)
   {
     if (a2)
     {
@@ -207,15 +207,15 @@ LABEL_8:
       posix_error = 0;
     }
 
-    [(NWConcrete_nw_ethernet_channel *)a1 updateClientState:posix_error error:?];
+    [(NWConcrete_nw_ethernet_channel *)channel updateClientState:posix_error error:?];
   }
 
-  if (!*(a1 + 104))
+  if (!*(channel + 104))
   {
     goto LABEL_21;
   }
 
-  v13 = *(a1 + 152);
+  v13 = *(channel + 152);
   pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
   networkd_settings_init();
   v14 = gLogObj;
@@ -224,16 +224,16 @@ LABEL_8:
   {
     if (v15)
     {
-      v16 = *(a1 + 24);
-      v17 = *(a1 + 168);
+      v16 = *(channel + 24);
+      v17 = *(channel + 168);
       v27 = 136447234;
       v28 = "[NWConcrete_nw_ethernet_channel closeChannel:]";
       v29 = 2080;
-      v30 = v16;
+      channelCopy2 = v16;
       v31 = 1042;
       v32 = 16;
       v33 = 2098;
-      v34 = a1 + 115;
+      v34 = channel + 115;
       v35 = 1024;
       v36 = v17;
       v18 = "%{public}s [%s: nexus instance %{public,uuid_t}.16P <fd %d>] close: cancel input";
@@ -249,70 +249,70 @@ LABEL_19:
     v27 = 136446466;
     v28 = "[NWConcrete_nw_ethernet_channel closeChannel:]";
     v29 = 2114;
-    v30 = a1;
+    channelCopy2 = channel;
     v18 = "%{public}s [%{public}@] close: cancel input";
     v19 = v14;
     v20 = 22;
     goto LABEL_19;
   }
 
-  nw_queue_cancel_source(*(a1 + 104), v21);
-  *(a1 + 104) = 0;
-  *(a1 + 112) = 0;
+  nw_queue_cancel_source(*(channel + 104), v21);
+  *(channel + 104) = 0;
+  *(channel + 112) = 0;
 LABEL_21:
-  if (*(a1 + 152))
+  if (*(channel + 152))
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
     v22 = gLogObj;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
-      v23 = *(a1 + 24);
-      v24 = *(a1 + 168);
+      v23 = *(channel + 24);
+      v24 = *(channel + 168);
       v27 = 136447234;
       v28 = "[NWConcrete_nw_ethernet_channel closeChannel:]";
       v29 = 2080;
-      v30 = v23;
+      channelCopy2 = v23;
       v31 = 1042;
       v32 = 16;
       v33 = 2098;
-      v34 = a1 + 115;
+      v34 = channel + 115;
       v35 = 1024;
       v36 = v24;
       _os_log_impl(&dword_181A37000, v22, OS_LOG_TYPE_DEBUG, "%{public}s [%s: nexus instance %{public,uuid_t}.16P <fd %d>] close: cancel channel", &v27, 0x2Cu);
     }
 
     os_channel_destroy();
-    *(a1 + 152) = 0;
+    *(channel + 152) = 0;
   }
 
-  *(a1 + 168) = -1;
-  *(a1 + 176) = 0;
-  *(a1 + 184) = 0;
-  if (*(a1 + 160))
+  *(channel + 168) = -1;
+  *(channel + 176) = 0;
+  *(channel + 184) = 0;
+  if (*(channel + 160))
   {
     os_channel_attr_destroy();
-    *(a1 + 160) = 0;
+    *(channel + 160) = 0;
   }
 
-  v25 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  v25 = *(channel + 16);
+  *(channel + 16) = 0;
 
-  *(a1 + 132) = 0;
-  uuid_clear((a1 + 115));
-  uuid_clear((a1 + 136));
-  v26 = *(a1 + 88);
-  *(a1 + 88) = 0;
+  *(channel + 132) = 0;
+  uuid_clear((channel + 115));
+  uuid_clear((channel + 136));
+  v26 = *(channel + 88);
+  *(channel + 88) = 0;
 
-  *(a1 + 100) = 0;
-  *(a1 + 96) = 0;
+  *(channel + 100) = 0;
+  *(channel + 96) = 0;
 }
 
-- (void)updateClientState:(void *)a3 error:
+- (void)updateClientState:(void *)state error:
 {
-  v5 = a3;
-  v6 = *(a1 + 48);
-  if (v6 && *(a1 + 40))
+  stateCopy = state;
+  v6 = *(self + 48);
+  if (v6 && *(self + 40))
   {
     v12[0] = 0;
     v12[1] = v12;
@@ -320,31 +320,31 @@ LABEL_21:
     v12[3] = __Block_byref_object_copy__2559;
     v12[4] = __Block_byref_object_dispose__2560;
     v13 = _Block_copy(v6);
-    v7 = *(a1 + 40);
+    v7 = *(self + 40);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __58__NWConcrete_nw_ethernet_channel_updateClientState_error___block_invoke;
     block[3] = &unk_1E6A3C060;
     v10 = v12;
     v11 = a2;
-    v9 = v5;
+    v9 = stateCopy;
     dispatch_async(v7, block);
 
     _Block_object_dispose(v12, 8);
   }
 }
 
-- (unsigned)initWithEtherType:(void *)a3 interface:(void *)a4 parameters:
+- (unsigned)initWithEtherType:(void *)type interface:(void *)interface parameters:
 {
   v69 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a1)
+  typeCopy = type;
+  interfaceCopy = interface;
+  if (!self)
   {
     goto LABEL_18;
   }
 
-  v54.receiver = a1;
+  v54.receiver = self;
   v54.super_class = NWConcrete_nw_ethernet_channel;
   v10 = objc_msgSendSuper2(&v54, sel_init);
   v11 = v10;
@@ -362,12 +362,12 @@ LABEL_21:
       if (type == OS_LOG_TYPE_FAULT)
       {
         v38 = __nwlog_obj();
-        v39 = type;
+        typeCopy2 = type;
         if (os_log_type_enabled(v38, type))
         {
           *buf = 136446210;
           v56 = "[NWConcrete_nw_ethernet_channel initWithEtherType:interface:parameters:]";
-          _os_log_impl(&dword_181A37000, v38, v39, "%{public}s [super init] failed", buf, 0xCu);
+          _os_log_impl(&dword_181A37000, v38, typeCopy2, "%{public}s [super init] failed", buf, 0xCu);
         }
       }
 
@@ -375,7 +375,7 @@ LABEL_21:
       {
         backtrace_string = __nw_create_backtrace_string();
         v38 = __nwlog_obj();
-        v41 = type;
+        typeCopy3 = type;
         v42 = os_log_type_enabled(v38, type);
         if (backtrace_string)
         {
@@ -385,7 +385,7 @@ LABEL_21:
             v56 = "[NWConcrete_nw_ethernet_channel initWithEtherType:interface:parameters:]";
             v57 = 2082;
             v58 = backtrace_string;
-            _os_log_impl(&dword_181A37000, v38, v41, "%{public}s [super init] failed, dumping backtrace:%{public}s", buf, 0x16u);
+            _os_log_impl(&dword_181A37000, v38, typeCopy3, "%{public}s [super init] failed, dumping backtrace:%{public}s", buf, 0x16u);
           }
 
           free(backtrace_string);
@@ -396,19 +396,19 @@ LABEL_21:
         {
           *buf = 136446210;
           v56 = "[NWConcrete_nw_ethernet_channel initWithEtherType:interface:parameters:]";
-          _os_log_impl(&dword_181A37000, v38, v41, "%{public}s [super init] failed, no backtrace", buf, 0xCu);
+          _os_log_impl(&dword_181A37000, v38, typeCopy3, "%{public}s [super init] failed, no backtrace", buf, 0xCu);
         }
       }
 
       else
       {
         v38 = __nwlog_obj();
-        v47 = type;
+        typeCopy4 = type;
         if (os_log_type_enabled(v38, type))
         {
           *buf = 136446210;
           v56 = "[NWConcrete_nw_ethernet_channel initWithEtherType:interface:parameters:]";
-          _os_log_impl(&dword_181A37000, v38, v47, "%{public}s [super init] failed, backtrace limit exceeded", buf, 0xCu);
+          _os_log_impl(&dword_181A37000, v38, typeCopy4, "%{public}s [super init] failed, backtrace limit exceeded", buf, 0xCu);
         }
       }
     }
@@ -423,10 +423,10 @@ LABEL_65:
   }
 
   *(v10 + 6) = a2;
-  objc_storeStrong(v10 + 2, a3);
-  if (v8)
+  objc_storeStrong(v10 + 2, type);
+  if (typeCopy)
   {
-    name = _nw_interface_get_name(v8);
+    name = _nw_interface_get_name(typeCopy);
   }
 
   else
@@ -444,9 +444,9 @@ LABEL_65:
   *(v11 + 113) = 0;
   if (*(v11 + 6) && v11[2])
   {
-    if (v9)
+    if (interfaceCopy)
     {
-      v15 = _nw_parameters_copy_context(v9);
+      v15 = _nw_parameters_copy_context(interfaceCopy);
       v16 = v11[8];
       v11[8] = v15;
 
@@ -459,7 +459,7 @@ LABEL_65:
 
     else
     {
-      v9 = _nw_parameters_create();
+      interfaceCopy = _nw_parameters_create();
     }
 
     if (nw_context_copy_implicit_context::onceToken[0] != -1)
@@ -468,12 +468,12 @@ LABEL_65:
     }
 
     v17 = nw_context_copy_implicit_context::implicit_context;
-    nw_parameters_set_context(v9, v17);
+    nw_parameters_set_context(interfaceCopy, v17);
 LABEL_23:
     if (!nw_context_is_inline(v17))
     {
-      nw_parameters_require_interface(v9, v11[2]);
-      evaluator_for_custom_ether = nw_path_create_evaluator_for_custom_ether(v9, *(v11 + 6));
+      nw_parameters_require_interface(interfaceCopy, v11[2]);
+      evaluator_for_custom_ether = nw_path_create_evaluator_for_custom_ether(interfaceCopy, *(v11 + 6));
       v25 = v11[9];
       v11[9] = evaluator_for_custom_ether;
 
@@ -548,12 +548,12 @@ LABEL_33:
       if (type == OS_LOG_TYPE_FAULT)
       {
         v45 = __nwlog_obj();
-        v46 = type;
+        typeCopy5 = type;
         if (os_log_type_enabled(v45, type))
         {
           *buf = 136446210;
           v56 = "[NWConcrete_nw_ethernet_channel initWithEtherType:interface:parameters:]";
-          _os_log_impl(&dword_181A37000, v45, v46, "%{public}s Cannot use nw_ethernet_channel on inline contexts", buf, 0xCu);
+          _os_log_impl(&dword_181A37000, v45, typeCopy5, "%{public}s Cannot use nw_ethernet_channel on inline contexts", buf, 0xCu);
         }
       }
 
@@ -561,7 +561,7 @@ LABEL_33:
       {
         v48 = __nw_create_backtrace_string();
         v45 = __nwlog_obj();
-        v49 = type;
+        typeCopy6 = type;
         v50 = os_log_type_enabled(v45, type);
         if (v48)
         {
@@ -571,7 +571,7 @@ LABEL_33:
             v56 = "[NWConcrete_nw_ethernet_channel initWithEtherType:interface:parameters:]";
             v57 = 2082;
             v58 = v48;
-            _os_log_impl(&dword_181A37000, v45, v49, "%{public}s Cannot use nw_ethernet_channel on inline contexts, dumping backtrace:%{public}s", buf, 0x16u);
+            _os_log_impl(&dword_181A37000, v45, typeCopy6, "%{public}s Cannot use nw_ethernet_channel on inline contexts, dumping backtrace:%{public}s", buf, 0x16u);
           }
 
           free(v48);
@@ -582,19 +582,19 @@ LABEL_33:
         {
           *buf = 136446210;
           v56 = "[NWConcrete_nw_ethernet_channel initWithEtherType:interface:parameters:]";
-          _os_log_impl(&dword_181A37000, v45, v49, "%{public}s Cannot use nw_ethernet_channel on inline contexts, no backtrace", buf, 0xCu);
+          _os_log_impl(&dword_181A37000, v45, typeCopy6, "%{public}s Cannot use nw_ethernet_channel on inline contexts, no backtrace", buf, 0xCu);
         }
       }
 
       else
       {
         v45 = __nwlog_obj();
-        v51 = type;
+        typeCopy7 = type;
         if (os_log_type_enabled(v45, type))
         {
           *buf = 136446210;
           v56 = "[NWConcrete_nw_ethernet_channel initWithEtherType:interface:parameters:]";
-          _os_log_impl(&dword_181A37000, v45, v51, "%{public}s Cannot use nw_ethernet_channel on inline contexts, backtrace limit exceeded", buf, 0xCu);
+          _os_log_impl(&dword_181A37000, v45, typeCopy7, "%{public}s Cannot use nw_ethernet_channel on inline contexts, backtrace limit exceeded", buf, 0xCu);
         }
       }
     }
@@ -653,9 +653,9 @@ LABEL_35:
 {
   v139 = *MEMORY[0x1E69E9840];
   v129 = 0;
-  if (!*(a1 + 152))
+  if (!*(self + 152))
   {
-    v6 = *(a1 + 88);
+    v6 = *(self + 88);
     if (!v6)
     {
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
@@ -666,7 +666,7 @@ LABEL_35:
         *buf = 136446466;
         v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
         v132 = 2114;
-        *v133 = a1;
+        *v133 = self;
         _os_log_impl(&dword_181A37000, v21, OS_LOG_TYPE_ERROR, "%{public}s [%{public}@] createChannel: no flow", buf, 0x16u);
       }
 
@@ -674,15 +674,15 @@ LABEL_35:
     }
 
     v7 = v6;
-    nexus_instance = _nw_path_flow_get_nexus_instance(v7, (a1 + 115), (a1 + 132));
+    nexus_instance = _nw_path_flow_get_nexus_instance(v7, (self + 115), (self + 132));
 
     if (nexus_instance)
     {
-      if (nw_path_flow_get_id(*(a1 + 88), (a1 + 136)))
+      if (nw_path_flow_get_id(*(self + 88), (self + 136)))
       {
-        nexus_key = nw_path_flow_get_nexus_key(*(a1 + 88), &v129);
+        nexus_key = nw_path_flow_get_nexus_key(*(self + 88), &v129);
         v10 = v129;
-        v11 = *(a1 + 152);
+        v11 = *(self + 152);
         pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
         networkd_settings_init();
         v12 = gLogObj;
@@ -694,8 +694,8 @@ LABEL_35:
           {
             if (v31)
             {
-              v32 = *(a1 + 24);
-              v33 = *(a1 + 168);
+              v32 = *(self + 24);
+              v33 = *(self + 168);
               *buf = 136447234;
               v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
               v132 = 2080;
@@ -703,7 +703,7 @@ LABEL_35:
               *&v133[8] = 1042;
               *&v133[10] = 16;
               *&v133[14] = 2098;
-              *&v133[16] = a1 + 115;
+              *&v133[16] = self + 115;
               *&v133[24] = 1024;
               *&v133[26] = v33;
               _os_log_impl(&dword_181A37000, v13, OS_LOG_TYPE_ERROR, "%{public}s [%s: nexus instance %{public,uuid_t}.16P <fd %d>] createChannel: no flow key or key length", buf, 0x2Cu);
@@ -715,7 +715,7 @@ LABEL_35:
             *buf = 136446466;
             v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
             v132 = 2114;
-            *v133 = a1;
+            *v133 = self;
             _os_log_impl(&dword_181A37000, v13, OS_LOG_TYPE_ERROR, "%{public}s [%{public}@] createChannel: no flow key or key length", buf, 0x16u);
           }
 
@@ -730,9 +730,9 @@ LABEL_35:
             goto LABEL_40;
           }
 
-          v15 = *(a1 + 24);
-          v16 = *(a1 + 168);
-          v17 = *(a1 + 132);
+          v15 = *(self + 24);
+          v16 = *(self + 168);
+          v17 = *(self + 132);
           *buf = 136448514;
           v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
           v132 = 2080;
@@ -740,17 +740,17 @@ LABEL_35:
           *&v133[8] = 1042;
           *&v133[10] = 16;
           *&v133[14] = 2098;
-          *&v133[16] = a1 + 115;
+          *&v133[16] = self + 115;
           *&v133[24] = 1024;
           *&v133[26] = v16;
           LOWORD(v134) = 1042;
           *(&v134 + 2) = 16;
           WORD3(v134) = 2098;
-          *(&v134 + 1) = a1 + 136;
+          *(&v134 + 1) = self + 136;
           v135 = 1042;
           *v136 = 16;
           *&v136[4] = 2098;
-          *&v136[6] = a1 + 115;
+          *&v136[6] = self + 115;
           v137 = 1024;
           v138 = v17;
           v18 = "%{public}s [%s: nexus instance %{public,uuid_t}.16P <fd %d>] Establishing channel for flow id %{public, uuid_t}.16P nexus instance %{public, uuid_t}.16P port %u";
@@ -765,19 +765,19 @@ LABEL_35:
             goto LABEL_40;
           }
 
-          v34 = *(a1 + 132);
+          v34 = *(self + 132);
           *buf = 136447746;
           v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
           v132 = 2114;
-          *v133 = a1;
+          *v133 = self;
           *&v133[8] = 1042;
           *&v133[10] = 16;
           *&v133[14] = 2098;
-          *&v133[16] = a1 + 136;
+          *&v133[16] = self + 136;
           *&v133[24] = 1042;
           *&v133[26] = 16;
           LOWORD(v134) = 2098;
-          *(&v134 + 2) = a1 + 115;
+          *(&v134 + 2) = self + 115;
           WORD5(v134) = 1024;
           HIDWORD(v134) = v34;
           v18 = "%{public}s [%{public}@] Establishing channel for flow id %{public, uuid_t}.16P nexus instance %{public, uuid_t}.16P port %u";
@@ -789,7 +789,7 @@ LABEL_35:
 LABEL_40:
 
         v35 = os_channel_attr_create();
-        *(a1 + 160) = v35;
+        *(self + 160) = v35;
         if (v35)
         {
           v36 = os_channel_attr_set_key();
@@ -799,7 +799,7 @@ LABEL_40:
             *buf = 136446722;
             v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
             v132 = 2112;
-            *v133 = a1;
+            *v133 = self;
             *&v133[8] = 1024;
             *&v133[10] = v36;
             v38 = _os_log_send_and_compose_impl();
@@ -820,7 +820,7 @@ LABEL_40:
                 *buf = 136446722;
                 v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                 v132 = 2112;
-                *v133 = a1;
+                *v133 = self;
                 *&v133[8] = 1024;
                 *&v133[10] = v36;
                 _os_log_impl(&dword_181A37000, v39, v40, "%{public}s %@: createChannel failed to set key <err %d> ", buf, 0x1Cu);
@@ -840,7 +840,7 @@ LABEL_111:
                 *buf = 136446722;
                 v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                 v132 = 2112;
-                *v133 = a1;
+                *v133 = self;
                 *&v133[8] = 1024;
                 *&v133[10] = v36;
                 _os_log_impl(&dword_181A37000, v39, v52, "%{public}s %@: createChannel failed to set key <err %d> , backtrace limit exceeded", buf, 0x1Cu);
@@ -860,7 +860,7 @@ LABEL_111:
                 *buf = 136446722;
                 v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                 v132 = 2112;
-                *v133 = a1;
+                *v133 = self;
                 *&v133[8] = 1024;
                 *&v133[10] = v36;
                 _os_log_impl(&dword_181A37000, v39, v47, "%{public}s %@: createChannel failed to set key <err %d> , no backtrace", buf, 0x1Cu);
@@ -874,7 +874,7 @@ LABEL_111:
               *buf = 136446978;
               v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
               v132 = 2112;
-              *v133 = a1;
+              *v133 = self;
               *&v133[8] = 1024;
               *&v133[10] = v36;
               *&v133[14] = 2082;
@@ -895,7 +895,7 @@ LABEL_84:
             *buf = 136446722;
             v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
             v132 = 2112;
-            *v133 = a1;
+            *v133 = self;
             *&v133[8] = 1024;
             *&v133[10] = v43;
             v38 = _os_log_send_and_compose_impl();
@@ -916,7 +916,7 @@ LABEL_84:
                 *buf = 136446722;
                 v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                 v132 = 2112;
-                *v133 = a1;
+                *v133 = self;
                 *&v133[8] = 1024;
                 *&v133[10] = v43;
                 _os_log_impl(&dword_181A37000, v39, v45, "%{public}s %@: createChannel failed to set user-packet-pool attribute <err %d> ", buf, 0x1Cu);
@@ -934,7 +934,7 @@ LABEL_84:
                 *buf = 136446722;
                 v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                 v132 = 2112;
-                *v133 = a1;
+                *v133 = self;
                 *&v133[8] = 1024;
                 *&v133[10] = v43;
                 _os_log_impl(&dword_181A37000, v39, v66, "%{public}s %@: createChannel failed to set user-packet-pool attribute <err %d> , backtrace limit exceeded", buf, 0x1Cu);
@@ -954,7 +954,7 @@ LABEL_84:
                 *buf = 136446722;
                 v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                 v132 = 2112;
-                *v133 = a1;
+                *v133 = self;
                 *&v133[8] = 1024;
                 *&v133[10] = v43;
                 _os_log_impl(&dword_181A37000, v39, v64, "%{public}s %@: createChannel failed to set user-packet-pool attribute <err %d> , no backtrace", buf, 0x1Cu);
@@ -968,7 +968,7 @@ LABEL_84:
               *buf = 136446978;
               v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
               v132 = 2112;
-              *v133 = a1;
+              *v133 = self;
               *&v133[8] = 1024;
               *&v133[10] = v43;
               *&v133[14] = 2082;
@@ -979,25 +979,25 @@ LABEL_84:
             goto LABEL_84;
           }
 
-          if (*(a1 + 132) < 0x10000u)
+          if (*(self + 132) < 0x10000u)
           {
             extended = os_channel_create_extended();
-            *(a1 + 152) = extended;
+            *(self + 152) = extended;
             if (extended)
             {
               fd = os_channel_get_fd();
-              *(a1 + 168) = fd;
+              *(self + 168) = fd;
               if ((fd & 0x80000000) == 0)
               {
-                v56 = *(a1 + 152);
+                v56 = *(self + 152);
                 v57 = __nwlog_obj();
                 v58 = os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG);
                 if (v56)
                 {
                   if (v58)
                   {
-                    v59 = *(a1 + 24);
-                    v60 = *(a1 + 168);
+                    v59 = *(self + 24);
+                    v60 = *(self + 168);
                     *buf = 136447234;
                     v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                     v132 = 2080;
@@ -1005,7 +1005,7 @@ LABEL_84:
                     *&v133[8] = 1042;
                     *&v133[10] = 16;
                     *&v133[14] = 2098;
-                    *&v133[16] = a1 + 115;
+                    *&v133[16] = self + 115;
                     *&v133[24] = 1024;
                     *&v133[26] = v60;
                     v61 = "%{public}s [%s: nexus instance %{public,uuid_t}.16P <fd %d>] createChannel: created channel";
@@ -1021,27 +1021,27 @@ LABEL_118:
                   *buf = 136446466;
                   v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                   v132 = 2114;
-                  *v133 = a1;
+                  *v133 = self;
                   v61 = "%{public}s [%{public}@] createChannel: created channel";
                   v62 = v57;
                   v63 = 22;
                   goto LABEL_118;
                 }
 
-                *(a1 + 176) = os_channel_rx_ring();
+                *(self + 176) = os_channel_rx_ring();
                 v82 = os_channel_tx_ring();
-                *(a1 + 184) = v82;
-                if (*(a1 + 176) && v82)
+                *(self + 184) = v82;
+                if (*(self + 176) && v82)
                 {
                   os_channel_read_attr();
                   *type = 0;
                   os_channel_attr_get();
-                  *(a1 + 172) = 0;
+                  *(self + 172) = 0;
                   v101 = __nwlog_obj();
                   *buf = 136446466;
                   v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                   v132 = 2112;
-                  *v133 = a1;
+                  *v133 = self;
                   v102 = _os_log_send_and_compose_impl();
 
                   v128 = OS_LOG_TYPE_ERROR;
@@ -1057,7 +1057,7 @@ LABEL_118:
                         *buf = 136446466;
                         v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                         v132 = 2112;
-                        *v133 = a1;
+                        *v133 = self;
                         _os_log_impl(&dword_181A37000, v103, v104, "%{public}s %@: createChannel: channel slot size 0, clean up channel", buf, 0x16u);
                       }
                     }
@@ -1075,7 +1075,7 @@ LABEL_118:
                           *buf = 136446722;
                           v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                           v132 = 2112;
-                          *v133 = a1;
+                          *v133 = self;
                           *&v133[8] = 2082;
                           *&v133[10] = v109;
                           _os_log_impl(&dword_181A37000, v103, v110, "%{public}s %@: createChannel: channel slot size 0, clean up channel, dumping backtrace:%{public}s", buf, 0x20u);
@@ -1090,7 +1090,7 @@ LABEL_118:
                         *buf = 136446466;
                         v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                         v132 = 2112;
-                        *v133 = a1;
+                        *v133 = self;
                         _os_log_impl(&dword_181A37000, v103, v110, "%{public}s %@: createChannel: channel slot size 0, clean up channel, no backtrace", buf, 0x16u);
                       }
                     }
@@ -1104,7 +1104,7 @@ LABEL_118:
                         *buf = 136446466;
                         v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                         v132 = 2112;
-                        *v133 = a1;
+                        *v133 = self;
                         _os_log_impl(&dword_181A37000, v103, v115, "%{public}s %@: createChannel: channel slot size 0, clean up channel, backtrace limit exceeded", buf, 0x16u);
                       }
                     }
@@ -1116,17 +1116,17 @@ LABEL_180:
                     free(v102);
                   }
 
-                  [(NWConcrete_nw_ethernet_channel *)a1 closeChannel:?];
+                  [(NWConcrete_nw_ethernet_channel *)self closeChannel:?];
                   return 0;
                 }
 
                 v83 = __nwlog_obj();
-                v84 = *(a1 + 176);
-                v85 = *(a1 + 184);
+                v84 = *(self + 176);
+                v85 = *(self + 184);
                 *buf = 136446978;
                 v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                 v132 = 2112;
-                *v133 = a1;
+                *v133 = self;
                 *&v133[8] = 2048;
                 *&v133[10] = v84;
                 *&v133[18] = 2048;
@@ -1146,12 +1146,12 @@ LABEL_180:
                   v88 = type[0];
                   if (os_log_type_enabled(v87, type[0]))
                   {
-                    v89 = *(a1 + 176);
-                    v90 = *(a1 + 184);
+                    v89 = *(self + 176);
+                    v90 = *(self + 184);
                     *buf = 136446978;
                     v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                     v132 = 2112;
-                    *v133 = a1;
+                    *v133 = self;
                     *&v133[8] = 2048;
                     *&v133[10] = v89;
                     *&v133[18] = 2048;
@@ -1170,12 +1170,12 @@ LABEL_180:
                   {
                     if (v96)
                     {
-                      v97 = *(a1 + 176);
-                      v98 = *(a1 + 184);
+                      v97 = *(self + 176);
+                      v98 = *(self + 184);
                       *buf = 136447234;
                       v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                       v132 = 2112;
-                      *v133 = a1;
+                      *v133 = self;
                       *&v133[8] = 2048;
                       *&v133[10] = v97;
                       *&v133[18] = 2048;
@@ -1191,12 +1191,12 @@ LABEL_180:
 
                   if (v96)
                   {
-                    v113 = *(a1 + 176);
-                    v114 = *(a1 + 184);
+                    v113 = *(self + 176);
+                    v114 = *(self + 184);
                     *buf = 136446978;
                     v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                     v132 = 2112;
-                    *v133 = a1;
+                    *v133 = self;
                     *&v133[8] = 2048;
                     *&v133[10] = v113;
                     *&v133[18] = 2048;
@@ -1211,12 +1211,12 @@ LABEL_180:
                   v106 = type[0];
                   if (os_log_type_enabled(v87, type[0]))
                   {
-                    v107 = *(a1 + 176);
-                    v108 = *(a1 + 184);
+                    v107 = *(self + 176);
+                    v108 = *(self + 184);
                     *buf = 136446978;
                     v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                     v132 = 2112;
-                    *v133 = a1;
+                    *v133 = self;
                     *&v133[8] = 2048;
                     *&v133[10] = v107;
                     *&v133[18] = 2048;
@@ -1232,7 +1232,7 @@ LABEL_171:
                 }
 
 LABEL_173:
-                [(NWConcrete_nw_ethernet_channel *)a1 closeChannel:?];
+                [(NWConcrete_nw_ethernet_channel *)self closeChannel:?];
                 return 0;
               }
 
@@ -1240,7 +1240,7 @@ LABEL_173:
               *buf = 136446466;
               v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
               v132 = 2112;
-              *v133 = a1;
+              *v133 = self;
               v74 = _os_log_send_and_compose_impl();
 
               type[0] = OS_LOG_TYPE_ERROR;
@@ -1256,7 +1256,7 @@ LABEL_173:
                     *buf = 136446466;
                     v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                     v132 = 2112;
-                    *v133 = a1;
+                    *v133 = self;
                     _os_log_impl(&dword_181A37000, v75, v76, "%{public}s %@: createChannel failed to get channel fd", buf, 0x16u);
                   }
                 }
@@ -1274,7 +1274,7 @@ LABEL_173:
                       *buf = 136446722;
                       v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                       v132 = 2112;
-                      *v133 = a1;
+                      *v133 = self;
                       *&v133[8] = 2082;
                       *&v133[10] = v91;
                       _os_log_impl(&dword_181A37000, v75, v92, "%{public}s %@: createChannel failed to get channel fd, dumping backtrace:%{public}s", buf, 0x20u);
@@ -1289,7 +1289,7 @@ LABEL_173:
                     *buf = 136446466;
                     v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                     v132 = 2112;
-                    *v133 = a1;
+                    *v133 = self;
                     _os_log_impl(&dword_181A37000, v75, v92, "%{public}s %@: createChannel failed to get channel fd, no backtrace", buf, 0x16u);
                   }
                 }
@@ -1303,7 +1303,7 @@ LABEL_173:
                     *buf = 136446466;
                     v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                     v132 = 2112;
-                    *v133 = a1;
+                    *v133 = self;
                     _os_log_impl(&dword_181A37000, v75, v105, "%{public}s %@: createChannel failed to get channel fd, backtrace limit exceeded", buf, 0x16u);
                   }
                 }
@@ -1319,19 +1319,19 @@ LABEL_165:
             }
 
             v67 = __nwlog_obj();
-            v68 = *(a1 + 132);
+            v68 = *(self + 132);
             *buf = 136447746;
             v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
             v132 = 2112;
-            *v133 = a1;
+            *v133 = self;
             *&v133[8] = 1042;
             *&v133[10] = 16;
             *&v133[14] = 2098;
-            *&v133[16] = a1 + 136;
+            *&v133[16] = self + 136;
             *&v133[24] = 1042;
             *&v133[26] = 16;
             LOWORD(v134) = 2098;
-            *(&v134 + 2) = a1 + 115;
+            *(&v134 + 2) = self + 115;
             WORD5(v134) = 1024;
             HIDWORD(v134) = v68;
             v69 = _os_log_send_and_compose_impl();
@@ -1346,19 +1346,19 @@ LABEL_165:
                 v71 = type[0];
                 if (os_log_type_enabled(v70, type[0]))
                 {
-                  v72 = *(a1 + 132);
+                  v72 = *(self + 132);
                   *buf = 136447746;
                   v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                   v132 = 2112;
-                  *v133 = a1;
+                  *v133 = self;
                   *&v133[8] = 1042;
                   *&v133[10] = 16;
                   *&v133[14] = 2098;
-                  *&v133[16] = a1 + 136;
+                  *&v133[16] = self + 136;
                   *&v133[24] = 1042;
                   *&v133[26] = 16;
                   LOWORD(v134) = 2098;
-                  *(&v134 + 2) = a1 + 115;
+                  *(&v134 + 2) = self + 115;
                   WORD5(v134) = 1024;
                   HIDWORD(v134) = v72;
                   _os_log_impl(&dword_181A37000, v70, v71, "%{public}s %@: Failed to create channel for flow id %{public, uuid_t}.16P nexus instance %{public, uuid_t}.16P port %u", buf, 0x3Cu);
@@ -1375,19 +1375,19 @@ LABEL_165:
                 {
                   if (v79)
                   {
-                    v80 = *(a1 + 132);
+                    v80 = *(self + 132);
                     *buf = 136448002;
                     v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                     v132 = 2112;
-                    *v133 = a1;
+                    *v133 = self;
                     *&v133[8] = 1042;
                     *&v133[10] = 16;
                     *&v133[14] = 2098;
-                    *&v133[16] = a1 + 136;
+                    *&v133[16] = self + 136;
                     *&v133[24] = 1042;
                     *&v133[26] = 16;
                     LOWORD(v134) = 2098;
-                    *(&v134 + 2) = a1 + 115;
+                    *(&v134 + 2) = self + 115;
                     WORD5(v134) = 1024;
                     HIDWORD(v134) = v80;
                     v135 = 2082;
@@ -1401,19 +1401,19 @@ LABEL_165:
 
                 if (v79)
                 {
-                  v112 = *(a1 + 132);
+                  v112 = *(self + 132);
                   *buf = 136447746;
                   v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                   v132 = 2112;
-                  *v133 = a1;
+                  *v133 = self;
                   *&v133[8] = 1042;
                   *&v133[10] = 16;
                   *&v133[14] = 2098;
-                  *&v133[16] = a1 + 136;
+                  *&v133[16] = self + 136;
                   *&v133[24] = 1042;
                   *&v133[26] = 16;
                   LOWORD(v134) = 2098;
-                  *(&v134 + 2) = a1 + 115;
+                  *(&v134 + 2) = self + 115;
                   WORD5(v134) = 1024;
                   HIDWORD(v134) = v112;
                   _os_log_impl(&dword_181A37000, v70, v78, "%{public}s %@: Failed to create channel for flow id %{public, uuid_t}.16P nexus instance %{public, uuid_t}.16P port %u, no backtrace", buf, 0x3Cu);
@@ -1426,19 +1426,19 @@ LABEL_165:
                 v99 = type[0];
                 if (os_log_type_enabled(v70, type[0]))
                 {
-                  v100 = *(a1 + 132);
+                  v100 = *(self + 132);
                   *buf = 136447746;
                   v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
                   v132 = 2112;
-                  *v133 = a1;
+                  *v133 = self;
                   *&v133[8] = 1042;
                   *&v133[10] = 16;
                   *&v133[14] = 2098;
-                  *&v133[16] = a1 + 136;
+                  *&v133[16] = self + 136;
                   *&v133[24] = 1042;
                   *&v133[26] = 16;
                   LOWORD(v134) = 2098;
-                  *(&v134 + 2) = a1 + 115;
+                  *(&v134 + 2) = self + 115;
                   WORD5(v134) = 1024;
                   HIDWORD(v134) = v100;
                   _os_log_impl(&dword_181A37000, v70, v99, "%{public}s %@: Failed to create channel for flow id %{public, uuid_t}.16P nexus instance %{public, uuid_t}.16P port %u, backtrace limit exceeded", buf, 0x3Cu);
@@ -1456,7 +1456,7 @@ LABEL_159:
           }
 
           v116 = __nwlog_obj();
-          v117 = *(a1 + 132);
+          v117 = *(self + 132);
           *buf = 136446466;
           v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
           v132 = 1024;
@@ -1482,7 +1482,7 @@ LABEL_112:
             v118 = type[0];
             if (os_log_type_enabled(v39, type[0]))
             {
-              v119 = *(a1 + 132);
+              v119 = *(self + 132);
               *buf = 136446466;
               v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
               v132 = 1024;
@@ -1499,7 +1499,7 @@ LABEL_112:
             v123 = type[0];
             if (os_log_type_enabled(v39, type[0]))
             {
-              v124 = *(a1 + 132);
+              v124 = *(self + 132);
               *buf = 136446466;
               v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
               v132 = 1024;
@@ -1518,7 +1518,7 @@ LABEL_112:
           {
             if (v121)
             {
-              v125 = *(a1 + 132);
+              v125 = *(self + 132);
               *buf = 136446466;
               v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
               v132 = 1024;
@@ -1531,7 +1531,7 @@ LABEL_112:
 
           if (v121)
           {
-            v122 = *(a1 + 132);
+            v122 = *(self + 132);
             *buf = 136446722;
             v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
             v132 = 1024;
@@ -1548,7 +1548,7 @@ LABEL_112:
           *buf = 136446466;
           v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
           v132 = 2112;
-          *v133 = a1;
+          *v133 = self;
           v38 = _os_log_send_and_compose_impl();
 
           type[0] = OS_LOG_TYPE_ERROR;
@@ -1567,7 +1567,7 @@ LABEL_112:
               *buf = 136446466;
               v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
               v132 = 2112;
-              *v133 = a1;
+              *v133 = self;
               _os_log_impl(&dword_181A37000, v39, v42, "%{public}s %@: createChannel failed to create channel attributes", buf, 0x16u);
             }
 
@@ -1583,7 +1583,7 @@ LABEL_112:
               *buf = 136446466;
               v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
               v132 = 2112;
-              *v133 = a1;
+              *v133 = self;
               _os_log_impl(&dword_181A37000, v39, v53, "%{public}s %@: createChannel failed to create channel attributes, backtrace limit exceeded", buf, 0x16u);
             }
 
@@ -1601,7 +1601,7 @@ LABEL_112:
               *buf = 136446466;
               v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
               v132 = 2112;
-              *v133 = a1;
+              *v133 = self;
               _os_log_impl(&dword_181A37000, v39, v50, "%{public}s %@: createChannel failed to create channel attributes, no backtrace", buf, 0x16u);
             }
 
@@ -1613,7 +1613,7 @@ LABEL_112:
             *buf = 136446722;
             v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
             v132 = 2112;
-            *v133 = a1;
+            *v133 = self;
             *&v133[8] = 2082;
             *&v133[10] = v49;
             _os_log_impl(&dword_181A37000, v39, v50, "%{public}s %@: createChannel failed to create channel attributes, dumping backtrace:%{public}s", buf, 0x20u);
@@ -1624,7 +1624,7 @@ LABEL_112:
         goto LABEL_112;
       }
 
-      v27 = *(a1 + 152);
+      v27 = *(self + 152);
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
       v23 = gLogObj;
@@ -1633,8 +1633,8 @@ LABEL_112:
       {
         if (v28)
         {
-          v29 = *(a1 + 24);
-          v30 = *(a1 + 168);
+          v29 = *(self + 24);
+          v30 = *(self + 168);
           *buf = 136447234;
           v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
           v132 = 2080;
@@ -1642,7 +1642,7 @@ LABEL_112:
           *&v133[8] = 1042;
           *&v133[10] = 16;
           *&v133[14] = 2098;
-          *&v133[16] = a1 + 115;
+          *&v133[16] = self + 115;
           *&v133[24] = 1024;
           *&v133[26] = v30;
           _os_log_impl(&dword_181A37000, v23, OS_LOG_TYPE_ERROR, "%{public}s [%s: nexus instance %{public,uuid_t}.16P <fd %d>] createChannel: no flow id", buf, 0x2Cu);
@@ -1654,14 +1654,14 @@ LABEL_112:
         *buf = 136446466;
         v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
         v132 = 2114;
-        *v133 = a1;
+        *v133 = self;
         _os_log_impl(&dword_181A37000, v23, OS_LOG_TYPE_ERROR, "%{public}s [%{public}@] createChannel: no flow id", buf, 0x16u);
       }
     }
 
     else
     {
-      v22 = *(a1 + 152);
+      v22 = *(self + 152);
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
       v23 = gLogObj;
@@ -1670,8 +1670,8 @@ LABEL_112:
       {
         if (v24)
         {
-          v25 = *(a1 + 24);
-          v26 = *(a1 + 168);
+          v25 = *(self + 24);
+          v26 = *(self + 168);
           *buf = 136447234;
           v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
           v132 = 2080;
@@ -1679,7 +1679,7 @@ LABEL_112:
           *&v133[8] = 1042;
           *&v133[10] = 16;
           *&v133[14] = 2098;
-          *&v133[16] = a1 + 115;
+          *&v133[16] = self + 115;
           *&v133[24] = 1024;
           *&v133[26] = v26;
           _os_log_impl(&dword_181A37000, v23, OS_LOG_TYPE_ERROR, "%{public}s [%s: nexus instance %{public,uuid_t}.16P <fd %d>] createChannel: no nexus instance / port", buf, 0x2Cu);
@@ -1691,7 +1691,7 @@ LABEL_112:
         *buf = 136446466;
         v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
         v132 = 2114;
-        *v133 = a1;
+        *v133 = self;
         _os_log_impl(&dword_181A37000, v23, OS_LOG_TYPE_ERROR, "%{public}s [%{public}@] createChannel: no nexus instance / port", buf, 0x16u);
       }
     }
@@ -1704,8 +1704,8 @@ LABEL_112:
   v2 = gLogObj;
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
   {
-    v3 = *(a1 + 24);
-    v4 = *(a1 + 168);
+    v3 = *(self + 24);
+    v4 = *(self + 168);
     *buf = 136447234;
     v131 = "[NWConcrete_nw_ethernet_channel createChannel]";
     v132 = 2080;
@@ -1713,7 +1713,7 @@ LABEL_112:
     *&v133[8] = 1042;
     *&v133[10] = 16;
     *&v133[14] = 2098;
-    *&v133[16] = a1 + 115;
+    *&v133[16] = self + 115;
     *&v133[24] = 1024;
     *&v133[26] = v4;
     _os_log_impl(&dword_181A37000, v2, OS_LOG_TYPE_DEBUG, "%{public}s [%s: nexus instance %{public,uuid_t}.16P <fd %d>] createChannel: channel already exists", buf, 0x2Cu);

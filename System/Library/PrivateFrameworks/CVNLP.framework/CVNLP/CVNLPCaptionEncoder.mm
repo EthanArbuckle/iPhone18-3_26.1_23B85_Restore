@@ -1,12 +1,12 @@
 @interface CVNLPCaptionEncoder
-- (void)computeCaptionForImage:(vImage_Buffer *)a3 outputs:(id *)a4;
-- (void)computeCaptionForPixelBuffer:(__CVBuffer *)a3 outputs:(id *)a4;
-- (void)computeCaptionForVideoPixelBuffer:(void *)a3 outputs:(id *)a4;
+- (void)computeCaptionForImage:(vImage_Buffer *)image outputs:(id *)outputs;
+- (void)computeCaptionForPixelBuffer:(__CVBuffer *)buffer outputs:(id *)outputs;
+- (void)computeCaptionForVideoPixelBuffer:(void *)buffer outputs:(id *)outputs;
 @end
 
 @implementation CVNLPCaptionEncoder
 
-- (void)computeCaptionForVideoPixelBuffer:(void *)a3 outputs:(id *)a4
+- (void)computeCaptionForVideoPixelBuffer:(void *)buffer outputs:(id *)outputs
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = MEMORY[0x1E696AEC0];
@@ -18,7 +18,7 @@
   objc_exception_throw(v11);
 }
 
-- (void)computeCaptionForPixelBuffer:(__CVBuffer *)a3 outputs:(id *)a4
+- (void)computeCaptionForPixelBuffer:(__CVBuffer *)buffer outputs:(id *)outputs
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = MEMORY[0x1E696AEC0];
@@ -30,7 +30,7 @@
   objc_exception_throw(v11);
 }
 
-- (void)computeCaptionForImage:(vImage_Buffer *)a3 outputs:(id *)a4
+- (void)computeCaptionForImage:(vImage_Buffer *)image outputs:(id *)outputs
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = MEMORY[0x1E696AEC0];

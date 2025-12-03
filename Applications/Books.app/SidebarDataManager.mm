@@ -9,13 +9,13 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 sharedProvider];
-  [v6 removeObserver:v5 accountTypes:1];
+  selfCopy = self;
+  sharedProvider = [v4 sharedProvider];
+  [sharedProvider removeObserver:selfCopy accountTypes:1];
 
   sub_10079AE34();
   v7 = sub_10079AE04();
-  v8 = v5;
+  v8 = selfCopy;
   sub_10079ADF4();
 
   v9.receiver = v8;

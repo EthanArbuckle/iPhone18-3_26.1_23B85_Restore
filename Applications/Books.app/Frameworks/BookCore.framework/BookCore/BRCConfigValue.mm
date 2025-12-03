@@ -1,7 +1,7 @@
 @interface BRCConfigValue
 - (BOOL)BOOLValue;
-- (BOOL)isEqual:(id)a3;
-- (BRCConfigValue)initWithObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BRCConfigValue)initWithObject:(id)object;
 - (NSArray)arrayValue;
 - (NSDictionary)dictionaryValue;
 - (NSNumber)numberValue;
@@ -18,22 +18,22 @@
 
 @implementation BRCConfigValue
 
-- (BRCConfigValue)initWithObject:(id)a3
+- (BRCConfigValue)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = BRCConfigValue;
   v5 = [(BRCConfigValue *)&v8 init];
   object = v5->_object;
-  v5->_object = v4;
+  v5->_object = objectCopy;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -43,13 +43,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(BRCConfigValue *)v5 object];
-      if (v6 && (v7 = v6, [(BRCConfigValue *)self object], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8) && ([(BRCConfigValue *)v5 object], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_opt_respondsToSelector(), v9, (v10 & 1) != 0))
+      v5 = equalCopy;
+      object = [(BRCConfigValue *)v5 object];
+      if (object && (v7 = object, [(BRCConfigValue *)self object], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8) && ([(BRCConfigValue *)v5 object], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_opt_respondsToSelector(), v9, (v10 & 1) != 0))
       {
-        v11 = [(BRCConfigValue *)v5 object];
-        v12 = [(BRCConfigValue *)self object];
-        v13 = [v11 isEqual:v12];
+        object2 = [(BRCConfigValue *)v5 object];
+        object3 = [(BRCConfigValue *)self object];
+        v13 = [object2 isEqual:object3];
       }
 
       else
@@ -69,27 +69,27 @@
 
 - (id)description
 {
-  v2 = [(BRCConfigValue *)self object];
-  v3 = [v2 description];
+  object = [(BRCConfigValue *)self object];
+  v3 = [object description];
 
   return v3;
 }
 
 - (id)debugDescription
 {
-  v2 = [(BRCConfigValue *)self object];
-  v3 = [v2 debugDescription];
+  object = [(BRCConfigValue *)self object];
+  v3 = [object debugDescription];
 
   return v3;
 }
 
 - (double)doubleValue
 {
-  v2 = [(BRCConfigValue *)self numberValue];
-  v3 = v2;
-  if (v2)
+  numberValue = [(BRCConfigValue *)self numberValue];
+  v3 = numberValue;
+  if (numberValue)
   {
-    [v2 doubleValue];
+    [numberValue doubleValue];
     v5 = v4;
   }
 
@@ -103,11 +103,11 @@
 
 - (float)floatValue
 {
-  v2 = [(BRCConfigValue *)self numberValue];
-  v3 = v2;
-  if (v2)
+  numberValue = [(BRCConfigValue *)self numberValue];
+  v3 = numberValue;
+  if (numberValue)
   {
-    [v2 floatValue];
+    [numberValue floatValue];
     v5 = v4;
   }
 
@@ -121,96 +121,96 @@
 
 - (int64_t)longLongValue
 {
-  v2 = [(BRCConfigValue *)self numberValue];
-  v3 = v2;
-  if (v2)
+  numberValue = [(BRCConfigValue *)self numberValue];
+  v3 = numberValue;
+  if (numberValue)
   {
-    v4 = [v2 longLongValue];
+    longLongValue = [numberValue longLongValue];
   }
 
   else
   {
-    v4 = 0;
+    longLongValue = 0;
   }
 
-  return v4;
+  return longLongValue;
 }
 
 - (unint64_t)unsignedLongLongValue
 {
-  v2 = [(BRCConfigValue *)self numberValue];
-  v3 = v2;
-  if (v2)
+  numberValue = [(BRCConfigValue *)self numberValue];
+  v3 = numberValue;
+  if (numberValue)
   {
-    v4 = [v2 unsignedLongLongValue];
+    unsignedLongLongValue = [numberValue unsignedLongLongValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (int64_t)integerValue
 {
-  v2 = [(BRCConfigValue *)self numberValue];
-  v3 = v2;
-  if (v2)
+  numberValue = [(BRCConfigValue *)self numberValue];
+  v3 = numberValue;
+  if (numberValue)
   {
-    v4 = [v2 integerValue];
+    integerValue = [numberValue integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)BOOLValue
 {
-  v2 = [(BRCConfigValue *)self numberValue];
-  v3 = v2;
-  if (v2)
+  numberValue = [(BRCConfigValue *)self numberValue];
+  v3 = numberValue;
+  if (numberValue)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [numberValue BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (unint64_t)unsignedIntegerValue
 {
-  v2 = [(BRCConfigValue *)self numberValue];
-  v3 = v2;
-  if (v2)
+  numberValue = [(BRCConfigValue *)self numberValue];
+  v3 = numberValue;
+  if (numberValue)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [numberValue unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (NSString)stringValue
 {
-  v3 = [(BRCConfigValue *)self object];
+  object = [(BRCConfigValue *)self object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v5 = [(BRCConfigValue *)self object];
+  object2 = [(BRCConfigValue *)self object];
   if ((isKindOfClass & 1) == 0)
   {
     objc_opt_class();
@@ -218,55 +218,55 @@
 
     if (v6)
     {
-      v7 = [(BRCConfigValue *)self object];
-      v5 = [v7 stringValue];
+      object3 = [(BRCConfigValue *)self object];
+      object2 = [object3 stringValue];
     }
 
     else
     {
-      v5 = 0;
+      object2 = 0;
     }
   }
 
-  return v5;
+  return object2;
 }
 
 - (NSNumber)numberValue
 {
-  v3 = [(BRCConfigValue *)self object];
+  object = [(BRCConfigValue *)self object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(BRCConfigValue *)self object];
-    v6 = [NSDecimalNumber decimalNumberWithString:v5];
+    object2 = [(BRCConfigValue *)self object];
+    object4 = [NSDecimalNumber decimalNumberWithString:object2];
   }
 
   else
   {
-    v7 = [(BRCConfigValue *)self object];
+    object3 = [(BRCConfigValue *)self object];
     objc_opt_class();
     v8 = objc_opt_isKindOfClass();
 
     if (v8)
     {
-      v6 = [(BRCConfigValue *)self object];
+      object4 = [(BRCConfigValue *)self object];
     }
 
     else
     {
-      v6 = 0;
+      object4 = 0;
     }
   }
 
-  return v6;
+  return object4;
 }
 
 - (NSArray)arrayValue
 {
   objc_opt_class();
-  v3 = [(BRCConfigValue *)self object];
+  object = [(BRCConfigValue *)self object];
   v4 = BUDynamicCast();
 
   return v4;
@@ -275,7 +275,7 @@
 - (NSDictionary)dictionaryValue
 {
   objc_opt_class();
-  v3 = [(BRCConfigValue *)self object];
+  object = [(BRCConfigValue *)self object];
   v4 = BUDynamicCast();
 
   return v4;

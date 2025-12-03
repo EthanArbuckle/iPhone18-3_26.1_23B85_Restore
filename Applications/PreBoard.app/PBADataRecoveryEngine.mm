@@ -2,16 +2,16 @@
 - (BOOL)dataRecoveryPossible;
 - (BOOL)requiresDataRecovery;
 - (PBADataRecoveryEngine)init;
-- (PBADataRecoveryEngine)initWithMobileKeyBag:(id)a3;
-- (void)_queue_performDataRecoveryWithPasscode:(id)a3 progressHandler:(id)a4 completion:(id)a5;
-- (void)performDataRecoveryWithPasscode:(id)a3 progressHandler:(id)a4 completion:(id)a5;
+- (PBADataRecoveryEngine)initWithMobileKeyBag:(id)bag;
+- (void)_queue_performDataRecoveryWithPasscode:(id)passcode progressHandler:(id)handler completion:(id)completion;
+- (void)performDataRecoveryWithPasscode:(id)passcode progressHandler:(id)handler completion:(id)completion;
 @end
 
 @implementation PBADataRecoveryEngine
 
-- (PBADataRecoveryEngine)initWithMobileKeyBag:(id)a3
+- (PBADataRecoveryEngine)initWithMobileKeyBag:(id)bag
 {
-  v5 = a3;
+  bagCopy = bag;
   v12.receiver = self;
   v12.super_class = PBADataRecoveryEngine;
   v6 = [(PBADataRecoveryEngine *)&v12 init];
@@ -25,7 +25,7 @@
     calloutQueue = v6->_calloutQueue;
     v6->_calloutQueue = v9;
 
-    objc_storeStrong(&v6->_queue_mobileKeyBag, a3);
+    objc_storeStrong(&v6->_queue_mobileKeyBag, bag);
   }
 
   return v6;
@@ -77,40 +77,40 @@
   return v3;
 }
 
-- (void)performDataRecoveryWithPasscode:(id)a3 progressHandler:(id)a4 completion:(id)a5
+- (void)performDataRecoveryWithPasscode:(id)passcode progressHandler:(id)handler completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  passcodeCopy = passcode;
+  handlerCopy = handler;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000080C8;
   v15[3] = &unk_10001C900;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = passcodeCopy;
+  v17 = handlerCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = handlerCopy;
+  v14 = passcodeCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)_queue_performDataRecoveryWithPasscode:(id)a3 progressHandler:(id)a4 completion:(id)a5
+- (void)_queue_performDataRecoveryWithPasscode:(id)passcode progressHandler:(id)handler completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  passcodeCopy = passcode;
+  handlerCopy = handler;
+  completionCopy = completion;
   queue_mobileKeyBag = self->_queue_mobileKeyBag;
   v34 = 0;
-  v12 = [(SBFMobileKeyBag *)queue_mobileKeyBag beginRecovery:v8 error:&v34];
+  v12 = [(SBFMobileKeyBag *)queue_mobileKeyBag beginRecovery:passcodeCopy error:&v34];
   v13 = v34;
   v14 = v13;
   if (!v12)
   {
     v23 = v13;
-    if (!v10)
+    if (!completionCopy)
     {
       goto LABEL_19;
     }
@@ -118,26 +118,26 @@
     goto LABEL_18;
   }
 
-  v15 = [(SBFMobileKeyBag *)self->_queue_mobileKeyBag state];
-  v16 = [v15 escrowCount];
-  if (v16 <= 1)
+  state = [(SBFMobileKeyBag *)self->_queue_mobileKeyBag state];
+  escrowCount = [state escrowCount];
+  if (escrowCount <= 1)
   {
     v18 = 1;
   }
 
   else
   {
-    v18 = v16;
+    v18 = escrowCount;
   }
 
   if (v18 >= 1)
   {
     while (1)
     {
-      v19 = [(SBFMobileKeyBag *)self->_queue_mobileKeyBag state];
-      v20 = [v19 escrowCount];
-      v21 = v20;
-      if (v9)
+      state2 = [(SBFMobileKeyBag *)self->_queue_mobileKeyBag state];
+      escrowCount2 = [state2 escrowCount];
+      v21 = escrowCount2;
+      if (handlerCopy)
       {
         calloutQueue = self->_calloutQueue;
         block[0] = _NSConcreteStackBlock;
@@ -145,8 +145,8 @@
         block[2] = sub_1000083B0;
         block[3] = &unk_10001C928;
         v32 = v18;
-        v33 = v20;
-        v31 = v9;
+        v33 = escrowCount2;
+        v31 = handlerCopy;
         dispatch_async(calloutQueue, block);
       }
 
@@ -161,8 +161,8 @@
 
   LODWORD(v17) = 10.0;
   [(SBFMobileKeyBag *)self->_queue_mobileKeyBag waitForUnlockWithTimeout:v17];
-  v24 = [(SBFMobileKeyBag *)self->_queue_mobileKeyBag state];
-  if ([v24 lockState] && objc_msgSend(v24, "recoveryRequired"))
+  state3 = [(SBFMobileKeyBag *)self->_queue_mobileKeyBag state];
+  if ([state3 lockState] && objc_msgSend(state3, "recoveryRequired"))
   {
     v35 = NSLocalizedDescriptionKey;
     v36 = @"Data recovery failed";
@@ -175,7 +175,7 @@
     v23 = 0;
   }
 
-  if (v10)
+  if (completionCopy)
   {
 LABEL_18:
     v26 = self->_calloutQueue;
@@ -183,7 +183,7 @@ LABEL_18:
     v27[1] = 3221225472;
     v27[2] = sub_1000083D4;
     v27[3] = &unk_10001C950;
-    v29 = v10;
+    v29 = completionCopy;
     v28 = v23;
     dispatch_async(v26, v27);
   }

@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (RTTNanoSettings)init;
 - (id)currentLocale;
-- (id)valueForPreferenceKey:(id)a3 andContext:(id)a4;
-- (void)_setValue:(id)a3 forPreferenceKey:(id)a4;
+- (id)valueForPreferenceKey:(id)key andContext:(id)context;
+- (void)_setValue:(id)value forPreferenceKey:(id)key;
 @end
 
 @implementation RTTNanoSettings
@@ -54,33 +54,33 @@ uint64_t __33__RTTNanoSettings_sharedInstance__block_invoke()
 
 - (id)currentLocale
 {
-  v3 = [(NPSDomainAccessor *)self->_globalDomainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_globalDomainAccessor synchronize];
   globalDomainAccessor = self->_globalDomainAccessor;
 
   return [(NPSDomainAccessor *)globalDomainAccessor objectForKey:@"AppleLocale"];
 }
 
-- (void)_setValue:(id)a3 forPreferenceKey:(id)a4
+- (void)_setValue:(id)value forPreferenceKey:(id)key
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v8 = AXLogRTT();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v18 = v6;
+    v18 = valueCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = keyCopy;
     _os_log_impl(&dword_261754000, v8, OS_LOG_TYPE_INFO, "Setting value '%@' for key: '%@'", buf, 0x16u);
   }
 
-  [(NPSDomainAccessor *)self->_domainAccessor setObject:v6 forKey:v7];
-  v9 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  [(NPSDomainAccessor *)self->_domainAccessor setObject:valueCopy forKey:keyCopy];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
   v10 = objc_opt_new();
   v11 = *MEMORY[0x277D81E48];
   v12 = MEMORY[0x277CBEB98];
-  v16 = v7;
+  v16 = keyCopy;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
   v14 = [v12 setWithArray:v13];
   [v10 synchronizeNanoDomain:v11 keys:v14];
@@ -88,19 +88,19 @@ uint64_t __33__RTTNanoSettings_sharedInstance__block_invoke()
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)valueForPreferenceKey:(id)a3 andContext:(id)a4
+- (id)valueForPreferenceKey:(id)key andContext:(id)context
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
-  v7 = [(NPSDomainAccessor *)self->_domainAccessor objectForKey:v5];
+  keyCopy = key;
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  v7 = [(NPSDomainAccessor *)self->_domainAccessor objectForKey:keyCopy];
   v8 = AXLogRTT();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v11 = 138412546;
     v12 = v7;
     v13 = 2112;
-    v14 = v5;
+    v14 = keyCopy;
     _os_log_impl(&dword_261754000, v8, OS_LOG_TYPE_INFO, "Retrieved value '%@' for key: '%@'", &v11, 0x16u);
   }
 

@@ -1,13 +1,13 @@
 @interface AccessoryRegisterAction
-+ (id)contextKeyForAccessory:(id)a3;
++ (id)contextKeyForAccessory:(id)accessory;
 + (id)sharedAccessoryRegisterDigestSerialQueue;
-+ (void)cleanupContextForAccessory:(id)a3;
-+ (void)saveAccessoryRegisterDigest:(id)a3 forKey:(id)a4;
-- (BOOL)_registerDeviceWithCause:(id)a3;
-- (BOOL)shouldCancelAction:(id)a3;
++ (void)cleanupContextForAccessory:(id)accessory;
++ (void)saveAccessoryRegisterDigest:(id)digest forKey:(id)key;
+- (BOOL)_registerDeviceWithCause:(id)cause;
+- (BOOL)shouldCancelAction:(id)action;
 - (FMDServerInteractionController)serverInteractionController;
-- (id)digestWithDeviceInfo:(id)a3;
-- (void)runWithCompletion:(id)a3;
+- (id)digestWithDeviceInfo:(id)info;
+- (void)runWithCompletion:(id)completion;
 - (void)terminate;
 @end
 
@@ -25,44 +25,44 @@
   return v3;
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
-  v7 = a3;
-  [(AccessoryRegisterAction *)self setCompletion:v7];
-  v4 = [(AccessoryRegisterAction *)self cause];
-  v5 = [(AccessoryRegisterAction *)self _registerDeviceWithCause:v4];
+  completionCopy = completion;
+  [(AccessoryRegisterAction *)self setCompletion:completionCopy];
+  cause = [(AccessoryRegisterAction *)self cause];
+  v5 = [(AccessoryRegisterAction *)self _registerDeviceWithCause:cause];
 
-  v6 = v7;
-  if (v7 && (v5 & 1) == 0)
+  v6 = completionCopy;
+  if (completionCopy && (v5 & 1) == 0)
   {
-    (*(v7 + 2))(v7);
-    v6 = v7;
+    (*(completionCopy + 2))(completionCopy);
+    v6 = completionCopy;
   }
 }
 
 - (void)terminate
 {
-  v4 = [(AccessoryRegisterAction *)self completion];
+  completion = [(AccessoryRegisterAction *)self completion];
   [(AccessoryRegisterAction *)self setCompletion:0];
-  v3 = v4;
-  if (v4)
+  v3 = completion;
+  if (completion)
   {
-    (*(v4 + 16))(v4);
-    v3 = v4;
+    (*(completion + 16))(completion);
+    v3 = completion;
   }
 }
 
-- (BOOL)shouldCancelAction:(id)a3
+- (BOOL)shouldCancelAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(AccessoryRegisterAction *)self accessory];
-    v6 = [v5 accessoryIdentifier];
-    v7 = [v4 accessory];
-    v8 = [v7 accessoryIdentifier];
-    v9 = [v6 isEqual:v8];
+    accessory = [(AccessoryRegisterAction *)self accessory];
+    accessoryIdentifier = [accessory accessoryIdentifier];
+    accessory2 = [actionCopy accessory];
+    accessoryIdentifier2 = [accessory2 accessoryIdentifier];
+    v9 = [accessoryIdentifier isEqual:accessoryIdentifier2];
   }
 
   else
@@ -73,11 +73,11 @@
   return v9;
 }
 
-- (BOOL)_registerDeviceWithCause:(id)a3
+- (BOOL)_registerDeviceWithCause:(id)cause
 {
-  v4 = a3;
-  v5 = [(AccessoryRegisterAction *)self accessory];
-  v6 = [(AccessoryRegisterAction *)self account];
+  causeCopy = cause;
+  accessory = [(AccessoryRegisterAction *)self accessory];
+  account = [(AccessoryRegisterAction *)self account];
   v52[0] = 0;
   v52[1] = v52;
   v52[2] = 0x3032000000;
@@ -101,19 +101,19 @@
   block[3] = &unk_1002CDF88;
   v39 = v52;
   block[4] = self;
-  v8 = v6;
+  v8 = account;
   v36 = v8;
-  v9 = v5;
+  v9 = accessory;
   v37 = v9;
   v40 = &v42;
-  v10 = v4;
+  v10 = causeCopy;
   v38 = v10;
   v41 = &v48;
   dispatch_sync(v7, block);
 
   if (*(v49 + 24))
   {
-    v11 = [(AccessoryRegisterAction *)self serverInteractionController];
+    serverInteractionController = [(AccessoryRegisterAction *)self serverInteractionController];
     v12 = [FMDActingRequestDecorator alloc];
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
@@ -147,7 +147,7 @@
     objc_copyWeak(&v27, &location);
     v24 = v9;
     v25 = v13;
-    v17 = v11;
+    v17 = serverInteractionController;
     v26 = v17;
     [(FMDRequest *)v15 setCompletionHandler:&v20];
     [(AccessoryRegisterAction *)self setRequest:v15, v20, v21, v22, v23];
@@ -169,30 +169,30 @@
   return v18;
 }
 
-+ (id)contextKeyForAccessory:(id)a3
++ (id)contextKeyForAccessory:(id)accessory
 {
-  v3 = [a3 accessoryIdentifier];
-  v4 = [NSString stringWithFormat:@"%@:%@", @"AccessoryRegisterAction", v3];
+  accessoryIdentifier = [accessory accessoryIdentifier];
+  v4 = [NSString stringWithFormat:@"%@:%@", @"AccessoryRegisterAction", accessoryIdentifier];
 
   return v4;
 }
 
-+ (void)cleanupContextForAccessory:(id)a3
++ (void)cleanupContextForAccessory:(id)accessory
 {
-  v3 = a3;
+  accessoryCopy = accessory;
   v4 = +[AccessoryRegisterAction sharedAccessoryRegisterDigestSerialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10014495C;
   block[3] = &unk_1002CD4C8;
-  v7 = v3;
-  v5 = v3;
+  v7 = accessoryCopy;
+  v5 = accessoryCopy;
   dispatch_async(v4, block);
 }
 
-- (id)digestWithDeviceInfo:(id)a3
+- (id)digestWithDeviceInfo:(id)info
 {
-  v4 = [a3 fm_flattenedArrayWithParentIndices:&off_1002E88D0];
+  v4 = [info fm_flattenedArrayWithParentIndices:&off_1002E88D0];
   if ([v4 count])
   {
     v11 = 0;
@@ -224,10 +224,10 @@
   return v8;
 }
 
-+ (void)saveAccessoryRegisterDigest:(id)a3 forKey:(id)a4
++ (void)saveAccessoryRegisterDigest:(id)digest forKey:(id)key
 {
-  v9 = a3;
-  v5 = a4;
+  digestCopy = digest;
+  keyCopy = key;
   v6 = qword_1003145B8;
   if (!qword_1003145B8)
   {
@@ -238,7 +238,7 @@
     v6 = qword_1003145B8;
   }
 
-  [v6 setObject:v9 forKeyedSubscript:v5];
+  [v6 setObject:digestCopy forKeyedSubscript:keyCopy];
 }
 
 - (FMDServerInteractionController)serverInteractionController

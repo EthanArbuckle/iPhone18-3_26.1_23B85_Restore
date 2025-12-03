@@ -39,13 +39,13 @@
     _os_log_impl(&dword_18B49C000, v9, OS_LOG_TYPE_DEFAULT, "%s Refresh: %.f HDRMode: %@ overscanCompensation: %@", &v13, 0x2Au);
   }
 
-  return [a1 _setAVKitRequestedRefreshRate:a4 HDRMode:a5 overscanCompensation:a2];
+  return [self _setAVKitRequestedRefreshRate:a4 HDRMode:a5 overscanCompensation:a2];
 }
 
 - (BOOL)avkit_screenHasWindowsExcludingWindow:()AVSecondScreenAdditions
 {
   v4 = a3;
-  v5 = [a1 windows];
+  windows = [self windows];
   v6 = MEMORY[0x1E696AE18];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -54,7 +54,7 @@
   v13 = v4;
   v7 = v4;
   v8 = [v6 predicateWithBlock:v12];
-  v9 = [v5 filteredArrayUsingPredicate:v8];
+  v9 = [windows filteredArrayUsingPredicate:v8];
   v10 = [v9 count] != 0;
 
   return v10;
@@ -62,22 +62,22 @@
 
 - (uint64_t)avkit_screenType
 {
-  v2 = [a1 avkit_asWindowScene];
-  v3 = [v2 screen];
-  v4 = [v3 displayConfiguration];
-  v5 = [v4 name];
+  avkit_asWindowScene = [self avkit_asWindowScene];
+  screen = [avkit_asWindowScene screen];
+  displayConfiguration = [screen displayConfiguration];
+  name = [displayConfiguration name];
 
-  v6 = [a1 avkit_asWindowScene];
-  v7 = [v6 screen];
-  v8 = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
-  v9 = v8;
-  if (v7 == v8)
+  avkit_asWindowScene2 = [self avkit_asWindowScene];
+  screen2 = [avkit_asWindowScene2 screen];
+  avkit_mainScreen = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
+  v9 = avkit_mainScreen;
+  if (screen2 == avkit_mainScreen)
   {
 
     goto LABEL_6;
   }
 
-  v10 = [v5 hasPrefix:@"LCD"];
+  v10 = [name hasPrefix:@"LCD"];
 
   if (v10)
   {
@@ -86,26 +86,26 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v11 = [a1 avkit_asWindowScene];
-  v12 = [v11 screen];
-  v13 = [v12 _isCarScreen];
+  avkit_asWindowScene3 = [self avkit_asWindowScene];
+  screen3 = [avkit_asWindowScene3 screen];
+  _isCarScreen = [screen3 _isCarScreen];
 
-  if (v13)
+  if (_isCarScreen)
   {
     v14 = 1;
   }
 
   else
   {
-    v16 = [v5 lowercaseString];
-    v17 = [v16 hasPrefix:@"wireless"];
+    lowercaseString = [name lowercaseString];
+    v17 = [lowercaseString hasPrefix:@"wireless"];
 
     if (v17)
     {
       v14 = 4;
     }
 
-    else if ([v5 hasPrefix:@"TVOut"])
+    else if ([name hasPrefix:@"TVOut"])
     {
       v14 = 3;
     }

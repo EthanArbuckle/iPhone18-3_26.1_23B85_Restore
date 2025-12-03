@@ -1,21 +1,21 @@
 @interface SCDaemonError
-+ (id)errorWithCode:(int64_t)a3 underlyingErrors:(id)a4;
++ (id)errorWithCode:(int64_t)code underlyingErrors:(id)errors;
 - (SCDaemonError)init;
 - (id)toError;
 @end
 
 @implementation SCDaemonError
 
-+ (id)errorWithCode:(int64_t)a3 underlyingErrors:(id)a4
++ (id)errorWithCode:(int64_t)code underlyingErrors:(id)errors
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  if ([v5 count])
+  errorsCopy = errors;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if ([errorsCopy count])
   {
-    [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x277CCA578]];
+    [dictionary setObject:errorsCopy forKeyedSubscript:*MEMORY[0x277CCA578]];
   }
 
-  v7 = [MEMORY[0x277CCA9B8] errorWithDomain:SCDaemonErrorDomain code:a3 userInfo:v6];
+  v7 = [MEMORY[0x277CCA9B8] errorWithDomain:SCDaemonErrorDomain code:code userInfo:dictionary];
 
   return v7;
 }
@@ -29,8 +29,8 @@
   if (v2)
   {
     [(SCDaemonError *)v2 setCode:0];
-    v4 = [MEMORY[0x277CBEB18] array];
-    [(SCDaemonError *)v3 setUnderlyingErrors:v4];
+    array = [MEMORY[0x277CBEB18] array];
+    [(SCDaemonError *)v3 setUnderlyingErrors:array];
   }
 
   return v3;
@@ -40,9 +40,9 @@
 {
   if (-[SCDaemonError code](self, "code") || (-[SCDaemonError underlyingErrors](self, "underlyingErrors"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 count], v3, v4))
   {
-    v5 = [(SCDaemonError *)self code];
-    v6 = [(SCDaemonError *)self underlyingErrors];
-    v7 = [SCDaemonError errorWithCode:v5 underlyingErrors:v6];
+    code = [(SCDaemonError *)self code];
+    underlyingErrors = [(SCDaemonError *)self underlyingErrors];
+    v7 = [SCDaemonError errorWithCode:code underlyingErrors:underlyingErrors];
   }
 
   else

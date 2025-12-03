@@ -1,18 +1,18 @@
 @interface VUIMPMediaEntityIdentifier
-+ (id)mediaItemIdentifierWithMediaItem:(id)a3;
-+ (id)showIdentifierWithMediaItem:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)mediaItemIdentifierWithMediaItem:(id)item;
++ (id)showIdentifierWithMediaItem:(id)item;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (VUIMPMediaEntityIdentifier)init;
-- (VUIMPMediaEntityIdentifier)initWithPersistentID:(id)a3 mediaEntityType:(id)a4;
+- (VUIMPMediaEntityIdentifier)initWithPersistentID:(id)d mediaEntityType:(id)type;
 - (unint64_t)hash;
 @end
 
 @implementation VUIMPMediaEntityIdentifier
 
-+ (id)showIdentifierWithMediaItem:(id)a3
++ (id)showIdentifierWithMediaItem:(id)item
 {
-  v3 = [a3 valueForProperty:*MEMORY[0x1E696F938]];
+  v3 = [item valueForProperty:*MEMORY[0x1E696F938]];
   if (v3)
   {
     v4 = [VUIMPMediaEntityIdentifier alloc];
@@ -28,16 +28,16 @@
   return v6;
 }
 
-+ (id)mediaItemIdentifierWithMediaItem:(id)a3
++ (id)mediaItemIdentifierWithMediaItem:(id)item
 {
   v3 = *MEMORY[0x1E696FA98];
-  v4 = a3;
-  v5 = [v4 valueForProperty:v3];
-  v6 = [v4 vui_mediaEntityType];
+  itemCopy = item;
+  v5 = [itemCopy valueForProperty:v3];
+  vui_mediaEntityType = [itemCopy vui_mediaEntityType];
 
   if (v5)
   {
-    v7 = v6 == 0;
+    v7 = vui_mediaEntityType == 0;
   }
 
   else
@@ -52,7 +52,7 @@
 
   else
   {
-    v8 = [[VUIMPMediaEntityIdentifier alloc] initWithPersistentID:v5 mediaEntityType:v6];
+    v8 = [[VUIMPMediaEntityIdentifier alloc] initWithPersistentID:v5 mediaEntityType:vui_mediaEntityType];
   }
 
   return v8;
@@ -68,11 +68,11 @@
   return 0;
 }
 
-- (VUIMPMediaEntityIdentifier)initWithPersistentID:(id)a3 mediaEntityType:(id)a4
+- (VUIMPMediaEntityIdentifier)initWithPersistentID:(id)d mediaEntityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  typeCopy = type;
+  if (!dCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"persistentID"}];
   }
@@ -82,11 +82,11 @@
   v8 = [(VUIMPMediaEntityIdentifier *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     persistentID = v8->_persistentID;
     v8->_persistentID = v9;
 
-    v11 = [v7 copy];
+    v11 = [typeCopy copy];
     mediaEntityType = v8->_mediaEntityType;
     v8->_mediaEntityType = v11;
   }
@@ -96,36 +96,36 @@
 
 - (unint64_t)hash
 {
-  v3 = [(VUIMPMediaEntityIdentifier *)self persistentID];
-  v4 = [v3 hash];
+  persistentID = [(VUIMPMediaEntityIdentifier *)self persistentID];
+  v4 = [persistentID hash];
 
-  v5 = [(VUIMPMediaEntityIdentifier *)self mediaEntityType];
-  v6 = [v5 hash];
+  mediaEntityType = [(VUIMPMediaEntityIdentifier *)self mediaEntityType];
+  v6 = [mediaEntityType hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v6 = v5;
-        v7 = [(VUIMPMediaEntityIdentifier *)self persistentID];
-        v8 = [(VUIMPMediaEntityIdentifier *)v6 persistentID];
-        v9 = v7;
-        v10 = v8;
+        persistentID = [(VUIMPMediaEntityIdentifier *)self persistentID];
+        persistentID2 = [(VUIMPMediaEntityIdentifier *)v6 persistentID];
+        v9 = persistentID;
+        v10 = persistentID2;
         v11 = v10;
         if (v9 == v10)
         {
@@ -152,10 +152,10 @@ LABEL_18:
           }
         }
 
-        v14 = [(VUIMPMediaEntityIdentifier *)self mediaEntityType];
-        v15 = [(VUIMPMediaEntityIdentifier *)v6 mediaEntityType];
-        v9 = v14;
-        v16 = v15;
+        mediaEntityType = [(VUIMPMediaEntityIdentifier *)self mediaEntityType];
+        mediaEntityType2 = [(VUIMPMediaEntityIdentifier *)v6 mediaEntityType];
+        v9 = mediaEntityType;
+        v16 = mediaEntityType2;
         v11 = v16;
         if (v9 == v16)
         {
@@ -192,13 +192,13 @@ LABEL_19:
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIMPMediaEntityIdentifier *)self persistentID];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"persistentID", v6];
+  persistentID = [(VUIMPMediaEntityIdentifier *)self persistentID];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"persistentID", persistentID];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(VUIMPMediaEntityIdentifier *)self mediaEntityType];
-  v10 = [v8 stringWithFormat:@"%@=%@", @"mediaEntityType", v9];
+  mediaEntityType = [(VUIMPMediaEntityIdentifier *)self mediaEntityType];
+  v10 = [v8 stringWithFormat:@"%@=%@", @"mediaEntityType", mediaEntityType];
   [v3 addObject:v10];
 
   v11 = MEMORY[0x1E696AEC0];

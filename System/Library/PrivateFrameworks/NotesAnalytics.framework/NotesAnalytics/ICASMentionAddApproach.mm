@@ -1,33 +1,33 @@
 @interface ICASMentionAddApproach
-- (ICASMentionAddApproach)initWithMentionAddApproach:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASMentionAddApproach)initWithMentionAddApproach:(int64_t)approach;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASMentionAddApproach
 
-- (ICASMentionAddApproach)initWithMentionAddApproach:(int64_t)a3
+- (ICASMentionAddApproach)initWithMentionAddApproach:(int64_t)approach
 {
   v5.receiver = self;
   v5.super_class = ICASMentionAddApproach;
   result = [(ICASMentionAddApproach *)&v5 init];
   if (result)
   {
-    result->_mentionAddApproach = a3;
+    result->_mentionAddApproach = approach;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASMentionAddApproach *)self mentionAddApproach];
+  mentionAddApproach = [(ICASMentionAddApproach *)self mentionAddApproach];
   v4 = @"unknown";
-  if (v3 == 1)
+  if (mentionAddApproach == 1)
   {
     v4 = @"text";
   }
 
-  if (v3 == 2)
+  if (mentionAddApproach == 2)
   {
     return @"menuSelection";
   }

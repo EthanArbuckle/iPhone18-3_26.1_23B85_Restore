@@ -1,16 +1,16 @@
 @interface CACVocabularyEntriesController
-- (BOOL)_isTextValidForVocabulary:(id)a3;
+- (BOOL)_isTextValidForVocabulary:(id)vocabulary;
 - (CACVocabularyEntriesController)init;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)textForItem:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)textForItem:(id)item;
 - (void)addButtonTapped;
 - (void)dealloc;
-- (void)deleteItem:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidChange:(id)a3;
-- (void)vocabularyListCellDidTapReRecord:(id)a3;
-- (void)vocabularyListCellDidTapRecord:(id)a3;
-- (void)vocabularyListCellDidTapRemovePronunciation:(id)a3;
+- (void)deleteItem:(id)item;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidChange:(id)change;
+- (void)vocabularyListCellDidTapReRecord:(id)record;
+- (void)vocabularyListCellDidTapRecord:(id)record;
+- (void)vocabularyListCellDidTapRemovePronunciation:(id)pronunciation;
 @end
 
 @implementation CACVocabularyEntriesController
@@ -38,11 +38,11 @@
   [(CACVocabularyEntriesController *)&v4 dealloc];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = CACVocabularyEntriesController;
-  v5 = [(CACVocabularyEntriesController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(CACVocabularyEntriesController *)&v7 tableView:view cellForRowAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -52,22 +52,22 @@
   return v5;
 }
 
-- (id)textForItem:(id)a3
+- (id)textForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = +[VCVocabularyObjC textKey];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [itemCopy objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)deleteItem:(id)a3
+- (void)deleteItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v7 = +[VCVocabularyObjC textKey];
-  v4 = [v3 objectForKeyedSubscript:v7];
+  v4 = [itemCopy objectForKeyedSubscript:v7];
   v5 = +[VCVocabularyObjC localeIdentifierKey];
-  v6 = [v3 objectForKeyedSubscript:v5];
+  v6 = [itemCopy objectForKeyedSubscript:v5];
 
   [VCVocabularyObjC removeVocabularyEntryWithText:v4 localeIdentifier:v6];
 }
@@ -76,20 +76,20 @@
 {
   [(CACVocabularyEntriesController *)self setEditing:0 animated:1];
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 bestLocaleIdentifier];
-  v5 = [v4 hasPrefix:@"en"];
+  bestLocaleIdentifier = [v3 bestLocaleIdentifier];
+  v5 = [bestLocaleIdentifier hasPrefix:@"en"];
 
   if (v5)
   {
     v6 = +[CACPreferences sharedPreferences];
-    v7 = [v6 bestLocaleIdentifier];
+    bestLocaleIdentifier2 = [v6 bestLocaleIdentifier];
 
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_2374;
     v22[3] = &unk_28DE8;
     v22[4] = self;
-    v8 = [VCUIPhoneticVocabularyNavigationViewWrapper createTypeAndRecordViewWithVoiceControlLocaleIdentifier:v7 completionHandler:v22];
+    v8 = [VCUIPhoneticVocabularyNavigationViewWrapper createTypeAndRecordViewWithVoiceControlLocaleIdentifier:bestLocaleIdentifier2 completionHandler:v22];
     [(CACVocabularyEntriesController *)self presentViewController:v8 animated:1 completion:0];
   }
 
@@ -116,89 +116,89 @@
     v17 = sub_24A4;
     v18 = &unk_28E38;
     v19 = v11;
-    v20 = self;
-    v7 = v11;
+    selfCopy = self;
+    bestLocaleIdentifier2 = v11;
     v14 = [UIAlertAction actionWithTitle:v13 style:0 handler:&v15];
 
     [(CACVocabularyEntriesController *)self setSaveAction:v14, v15, v16, v17, v18];
-    [v7 addAction:v14];
-    [(CACVocabularyEntriesController *)self presentViewController:v7 animated:1 completion:0];
+    [bestLocaleIdentifier2 addAction:v14];
+    [(CACVocabularyEntriesController *)self presentViewController:bestLocaleIdentifier2 animated:1 completion:0];
   }
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v6 = [a3 text];
-  v4 = [(CACVocabularyEntriesController *)self _isTextValidForVocabulary:v6];
-  v5 = [(CACVocabularyEntriesController *)self saveAction];
-  [v5 setEnabled:v4];
+  text = [editing text];
+  v4 = [(CACVocabularyEntriesController *)self _isTextValidForVocabulary:text];
+  saveAction = [(CACVocabularyEntriesController *)self saveAction];
+  [saveAction setEnabled:v4];
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v6 = [a3 text];
-  v4 = [(CACVocabularyEntriesController *)self _isTextValidForVocabulary:v6];
-  v5 = [(CACVocabularyEntriesController *)self saveAction];
-  [v5 setEnabled:v4];
+  text = [change text];
+  v4 = [(CACVocabularyEntriesController *)self _isTextValidForVocabulary:text];
+  saveAction = [(CACVocabularyEntriesController *)self saveAction];
+  [saveAction setEnabled:v4];
 }
 
-- (BOOL)_isTextValidForVocabulary:(id)a3
+- (BOOL)_isTextValidForVocabulary:(id)vocabulary
 {
-  if (!a3)
+  if (!vocabulary)
   {
     return 0;
   }
 
-  v3 = a3;
+  vocabularyCopy = vocabulary;
   v4 = +[NSCharacterSet whitespaceCharacterSet];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  v5 = [vocabularyCopy stringByTrimmingCharactersInSet:v4];
 
-  LOBYTE(v3) = [v5 isEqualToString:&stru_29500];
-  return v3 ^ 1;
+  LOBYTE(vocabularyCopy) = [v5 isEqualToString:&stru_29500];
+  return vocabularyCopy ^ 1;
 }
 
-- (void)vocabularyListCellDidTapRecord:(id)a3
+- (void)vocabularyListCellDidTapRecord:(id)record
 {
-  v4 = [a3 specifier];
-  v5 = [v4 propertyForKey:@"CACVocabularyListItem"];
+  specifier = [record specifier];
+  v5 = [specifier propertyForKey:@"CACVocabularyListItem"];
   v6 = +[VCVocabularyObjC textKey];
   v7 = [v5 objectForKeyedSubscript:v6];
 
   v8 = +[CACPreferences sharedPreferences];
-  v9 = [v8 bestLocaleIdentifier];
+  bestLocaleIdentifier = [v8 bestLocaleIdentifier];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_2804;
   v11[3] = &unk_28DE8;
   v11[4] = self;
-  v10 = [VCUIPhoneticVocabularyNavigationViewWrapper createRecordOnlyViewWithVoiceControlLocaleIdentifier:v9 text:v7 completionHandler:v11];
+  v10 = [VCUIPhoneticVocabularyNavigationViewWrapper createRecordOnlyViewWithVoiceControlLocaleIdentifier:bestLocaleIdentifier text:v7 completionHandler:v11];
   [(CACVocabularyEntriesController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)vocabularyListCellDidTapReRecord:(id)a3
+- (void)vocabularyListCellDidTapReRecord:(id)record
 {
-  v4 = [a3 specifier];
-  v5 = [v4 propertyForKey:@"CACVocabularyListItem"];
+  specifier = [record specifier];
+  v5 = [specifier propertyForKey:@"CACVocabularyListItem"];
   v6 = +[VCVocabularyObjC textKey];
   v7 = [v5 objectForKeyedSubscript:v6];
 
   v8 = +[CACPreferences sharedPreferences];
-  v9 = [v8 bestLocaleIdentifier];
+  bestLocaleIdentifier = [v8 bestLocaleIdentifier];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_29CC;
   v11[3] = &unk_28DE8;
   v11[4] = self;
-  v10 = [VCUIPhoneticVocabularyNavigationViewWrapper createRecordOnlyViewWithVoiceControlLocaleIdentifier:v9 text:v7 completionHandler:v11];
+  v10 = [VCUIPhoneticVocabularyNavigationViewWrapper createRecordOnlyViewWithVoiceControlLocaleIdentifier:bestLocaleIdentifier text:v7 completionHandler:v11];
   [(CACVocabularyEntriesController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)vocabularyListCellDidTapRemovePronunciation:(id)a3
+- (void)vocabularyListCellDidTapRemovePronunciation:(id)pronunciation
 {
-  v6 = [a3 specifier];
-  v3 = [v6 propertyForKey:@"CACVocabularyListItem"];
+  specifier = [pronunciation specifier];
+  v3 = [specifier propertyForKey:@"CACVocabularyListItem"];
   v4 = +[VCVocabularyObjC textKey];
   v5 = [v3 objectForKeyedSubscript:v4];
 

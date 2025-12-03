@@ -8,7 +8,7 @@
 - (id)ef_SQLExpression
 {
   v2 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  [a1 ef_renderSQLExpressionInto:v2];
+  [self ef_renderSQLExpressionInto:v2];
 
   return v2;
 }
@@ -16,7 +16,7 @@
 - (void)ef_renderSQLExpressionInto:()EFSQLExpressable
 {
   v5 = a3;
-  [a1 timeIntervalSince1970];
+  [self timeIntervalSince1970];
   [v5 appendFormat:@"%lld", vcvtmd_s64_f64(v4)];
 }
 

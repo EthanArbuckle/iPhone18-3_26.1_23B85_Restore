@@ -1,11 +1,11 @@
 @interface CLKUITexture
 + (id)nullTexture2D;
 + (id)nullTextureCube;
-+ (id)textureWithProviderDelegate:(id)a3 uuid:(id)a4;
-+ (id)textureWithProviderDelegate:(id)a3 uuid:(id)a4 rect:;
-+ (id)textureWithProviderDelegate:(id)a3 uuid:(id)a4 rect:(id)a5 nullTexture:(BOOL)a6 streaming:;
-+ (id)textureWithProviderDelegate:(id)a3 uuid:(id)a4 streaming:(BOOL)a5;
-- (CLKUITexture)initWithAtlas:(id)a3 rect:;
++ (id)textureWithProviderDelegate:(id)delegate uuid:(id)uuid;
++ (id)textureWithProviderDelegate:(id)delegate uuid:(id)uuid rect:;
++ (id)textureWithProviderDelegate:(id)delegate uuid:(id)uuid rect:(id)rect nullTexture:(BOOL)texture streaming:;
++ (id)textureWithProviderDelegate:(id)delegate uuid:(id)uuid streaming:(BOOL)streaming;
+- (CLKUITexture)initWithAtlas:(id)atlas rect:;
 - (void)dealloc;
 @end
 
@@ -59,64 +59,64 @@ void __31__CLKUITexture_nullTextureCube__block_invoke()
   __nullTextureCube = v3;
 }
 
-+ (id)textureWithProviderDelegate:(id)a3 uuid:(id)a4
++ (id)textureWithProviderDelegate:(id)delegate uuid:(id)uuid
 {
-  v6 = a4;
-  v7 = a3;
+  uuidCopy = uuid;
+  delegateCopy = delegate;
   v8 = +[CLKUITexture nullTexture2D];
-  v9 = [a1 textureWithProviderDelegate:v7 uuid:v6 rect:v8 nullTexture:0 streaming:0.0];
+  v9 = [self textureWithProviderDelegate:delegateCopy uuid:uuidCopy rect:v8 nullTexture:0 streaming:0.0];
 
   return v9;
 }
 
-+ (id)textureWithProviderDelegate:(id)a3 uuid:(id)a4 rect:
++ (id)textureWithProviderDelegate:(id)delegate uuid:(id)uuid rect:
 {
   v12 = v4;
-  v7 = a4;
-  v8 = a3;
+  uuidCopy = uuid;
+  delegateCopy = delegate;
   v9 = +[CLKUITexture nullTexture2D];
-  v10 = [a1 textureWithProviderDelegate:v8 uuid:v7 rect:v9 nullTexture:0 streaming:v12];
+  v10 = [self textureWithProviderDelegate:delegateCopy uuid:uuidCopy rect:v9 nullTexture:0 streaming:v12];
 
   return v10;
 }
 
-+ (id)textureWithProviderDelegate:(id)a3 uuid:(id)a4 streaming:(BOOL)a5
++ (id)textureWithProviderDelegate:(id)delegate uuid:(id)uuid streaming:(BOOL)streaming
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  streamingCopy = streaming;
+  uuidCopy = uuid;
+  delegateCopy = delegate;
   v10 = +[CLKUITexture nullTexture2D];
-  v11 = [a1 textureWithProviderDelegate:v9 uuid:v8 rect:v10 nullTexture:v5 streaming:0.0];
+  v11 = [self textureWithProviderDelegate:delegateCopy uuid:uuidCopy rect:v10 nullTexture:streamingCopy streaming:0.0];
 
   return v11;
 }
 
-+ (id)textureWithProviderDelegate:(id)a3 uuid:(id)a4 rect:(id)a5 nullTexture:(BOOL)a6 streaming:
++ (id)textureWithProviderDelegate:(id)delegate uuid:(id)uuid rect:(id)rect nullTexture:(BOOL)texture streaming:
 {
-  v7 = a6;
+  textureCopy = texture;
   v16 = v6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  rectCopy = rect;
+  uuidCopy = uuid;
+  delegateCopy = delegate;
   v13 = +[CLKUIResourceManager sharedInstance];
-  v14 = [v13 textureForUuid:v11 delegate:v12 rect:v10 nullTexture:v7 streaming:v16];
+  v14 = [v13 textureForUuid:uuidCopy delegate:delegateCopy rect:rectCopy nullTexture:textureCopy streaming:v16];
 
   return v14;
 }
 
-- (CLKUITexture)initWithAtlas:(id)a3 rect:
+- (CLKUITexture)initWithAtlas:(id)atlas rect:
 {
   v10 = v3;
-  v6 = a3;
+  atlasCopy = atlas;
   v11.receiver = self;
   v11.super_class = CLKUITexture;
   v7 = [(CLKUITexture *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_atlas, a3);
+    objc_storeStrong(&v7->_atlas, atlas);
     *v8->_rect = v10;
-    [v6 incrementInstanceCount];
+    [atlasCopy incrementInstanceCount];
     v8->_null = v8->_atlas == 0;
   }
 

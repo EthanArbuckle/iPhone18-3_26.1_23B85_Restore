@@ -11,8 +11,8 @@
   [(AAUIViewServiceRootViewController *)self setView:v3];
 
   v5 = +[UIColor clearColor];
-  v4 = [(AAUIViewServiceRootViewController *)self view];
-  [v4 setBackgroundColor:v5];
+  view = [(AAUIViewServiceRootViewController *)self view];
+  [view setBackgroundColor:v5];
 }
 
 - (void)viewDidLoad

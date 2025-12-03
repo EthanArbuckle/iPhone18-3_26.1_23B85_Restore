@@ -1,84 +1,84 @@
 @interface CNContactPoster
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CNContactImage)pairedImage;
-- (CNContactPoster)initWithCoder:(id)a3;
-- (CNContactPoster)initWithIdentifier:(id)a3 posterData:(id)a4 posterMetadata:(id)a5 watchPosterData:(id)a6 lastUsedDate:(id)a7;
-- (CNContactPoster)initWithManagedObject:(id)a3;
-- (CNContactPoster)initWithManagedObject:(id)a3 image:(id)a4;
-- (CNContactPoster)initWithPosterData:(id)a3 lastUsedDate:(id)a4;
-- (CNContactPoster)initWithPosterData:(id)a3 posterMetadata:(id)a4 lastUsedDate:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPairedImage:(id)a3;
+- (CNContactPoster)initWithCoder:(id)coder;
+- (CNContactPoster)initWithIdentifier:(id)identifier posterData:(id)data posterMetadata:(id)metadata watchPosterData:(id)posterData lastUsedDate:(id)date;
+- (CNContactPoster)initWithManagedObject:(id)object;
+- (CNContactPoster)initWithManagedObject:(id)object image:(id)image;
+- (CNContactPoster)initWithPosterData:(id)data lastUsedDate:(id)date;
+- (CNContactPoster)initWithPosterData:(id)data posterMetadata:(id)metadata lastUsedDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPairedImage:(id)image;
 @end
 
 @implementation CNContactPoster
 
-- (CNContactPoster)initWithPosterData:(id)a3 lastUsedDate:(id)a4
+- (CNContactPoster)initWithPosterData:(id)data lastUsedDate:(id)date
 {
   v6 = MEMORY[0x1E696AFB0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 UUID];
-  v10 = [v9 UUIDString];
+  dateCopy = date;
+  dataCopy = data;
+  uUID = [v6 UUID];
+  uUIDString = [uUID UUIDString];
 
-  v11 = [(CNContactPoster *)self initWithIdentifier:v10 posterData:v8 lastUsedDate:v7];
+  v11 = [(CNContactPoster *)self initWithIdentifier:uUIDString posterData:dataCopy lastUsedDate:dateCopy];
   return v11;
 }
 
-- (CNContactPoster)initWithPosterData:(id)a3 posterMetadata:(id)a4 lastUsedDate:(id)a5
+- (CNContactPoster)initWithPosterData:(id)data posterMetadata:(id)metadata lastUsedDate:(id)date
 {
   v8 = MEMORY[0x1E696AFB0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 UUID];
-  v13 = [v12 UUIDString];
+  dateCopy = date;
+  metadataCopy = metadata;
+  dataCopy = data;
+  uUID = [v8 UUID];
+  uUIDString = [uUID UUIDString];
 
-  v14 = [(CNContactPoster *)self initWithIdentifier:v13 posterData:v11 posterMetadata:v10 watchPosterData:0 lastUsedDate:v9];
+  v14 = [(CNContactPoster *)self initWithIdentifier:uUIDString posterData:dataCopy posterMetadata:metadataCopy watchPosterData:0 lastUsedDate:dateCopy];
   return v14;
 }
 
-- (CNContactPoster)initWithIdentifier:(id)a3 posterData:(id)a4 posterMetadata:(id)a5 watchPosterData:(id)a6 lastUsedDate:(id)a7
+- (CNContactPoster)initWithIdentifier:(id)identifier posterData:(id)data posterMetadata:(id)metadata watchPosterData:(id)posterData lastUsedDate:(id)date
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  dataCopy = data;
+  metadataCopy = metadata;
+  posterDataCopy = posterData;
+  dateCopy = date;
   v24.receiver = self;
   v24.super_class = CNContactPoster;
   v17 = [(CNContactPoster *)&v24 init];
   if (v17)
   {
-    v23 = v13;
-    v18 = [v12 length];
-    v19 = v12;
+    v23 = dataCopy;
+    v18 = [identifierCopy length];
+    uUIDString = identifierCopy;
     if (!v18)
     {
-      v22 = [MEMORY[0x1E696AFB0] UUID];
-      v19 = [v22 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
     }
 
-    objc_storeStrong(&v17->_identifier, v19);
+    objc_storeStrong(&v17->_identifier, uUIDString);
     if (!v18)
     {
     }
 
-    objc_storeStrong(&v17->_posterData, a4);
-    objc_storeStrong(&v17->_posterMetadata, a5);
-    [(CNContactPosterDataItem *)v17 setLastUsedDate:v16];
-    objc_storeStrong(&v17->_watchPosterImageData, a6);
+    objc_storeStrong(&v17->_posterData, data);
+    objc_storeStrong(&v17->_posterMetadata, metadata);
+    [(CNContactPosterDataItem *)v17 setLastUsedDate:dateCopy];
+    objc_storeStrong(&v17->_watchPosterImageData, posterData);
     v20 = v17;
-    v13 = v23;
+    dataCopy = v23;
   }
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -86,10 +86,10 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ((identifier = self->_identifier, !(identifier | v4->_identifier)) || -[NSString isEqual:](identifier, "isEqual:")) && ((posterData = self->_posterData, !(posterData | v4->_posterData)) || -[NSData isEqual:](posterData, "isEqual:")) && ((posterMetadata = self->_posterMetadata, !(posterMetadata | v4->_posterMetadata)) || -[NSData isEqual:](posterMetadata, "isEqual:")) && ((v8 = -[CNContactPosterDataItem lastUsedDate](self, "lastUsedDate"), v9 = -[CNContactPosterDataItem lastUsedDate](v4, "lastUsedDate"), !(v8 | v9)) || [v8 isEqual:v9]) && ((WeakRetained = objc_loadWeakRetained(&self->_pairedImage), WeakRetained, v11 = objc_loadWeakRetained(&v4->_pairedImage), v11, !(WeakRetained | v11)) || objc_msgSend(WeakRetained, "isEqual:", v11)) && ((watchPosterImageData = self->_watchPosterImageData, !(watchPosterImageData | v4->_watchPosterImageData)) || -[NSData isEqual:](watchPosterImageData, "isEqual:")))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ((identifier = self->_identifier, !(identifier | equalCopy->_identifier)) || -[NSString isEqual:](identifier, "isEqual:")) && ((posterData = self->_posterData, !(posterData | equalCopy->_posterData)) || -[NSData isEqual:](posterData, "isEqual:")) && ((posterMetadata = self->_posterMetadata, !(posterMetadata | equalCopy->_posterMetadata)) || -[NSData isEqual:](posterMetadata, "isEqual:")) && ((v8 = -[CNContactPosterDataItem lastUsedDate](self, "lastUsedDate"), v9 = -[CNContactPosterDataItem lastUsedDate](equalCopy, "lastUsedDate"), !(v8 | v9)) || [v8 isEqual:v9]) && ((WeakRetained = objc_loadWeakRetained(&self->_pairedImage), WeakRetained, v11 = objc_loadWeakRetained(&equalCopy->_pairedImage), v11, !(WeakRetained | v11)) || objc_msgSend(WeakRetained, "isEqual:", v11)) && ((watchPosterImageData = self->_watchPosterImageData, !(watchPosterImageData | equalCopy->_watchPosterImageData)) || -[NSData isEqual:](watchPosterImageData, "isEqual:")))
     {
-      v13 = [(CNContactPosterDataItem *)self itemDetails];
-      v14 = v13 == [(CNContactPosterDataItem *)v4 itemDetails];
+      itemDetails = [(CNContactPosterDataItem *)self itemDetails];
+      v14 = itemDetails == [(CNContactPosterDataItem *)equalCopy itemDetails];
     }
 
     else
@@ -101,62 +101,62 @@
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  [v8 encodeObject:self->_identifier forKey:@"identifier"];
-  [v8 encodeObject:self->_posterData forKey:@"posterData"];
-  [v8 encodeObject:self->_posterMetadata forKey:@"posterMetadata"];
-  v4 = [(CNContactPosterDataItem *)self lastUsedDate];
-  [v8 encodeObject:v4 forKey:@"lastUsedDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_posterData forKey:@"posterData"];
+  [coderCopy encodeObject:self->_posterMetadata forKey:@"posterMetadata"];
+  lastUsedDate = [(CNContactPosterDataItem *)self lastUsedDate];
+  [coderCopy encodeObject:lastUsedDate forKey:@"lastUsedDate"];
 
-  [v8 encodeBool:-[CNContactPosterDataItem ignoredForRevert](self forKey:{"ignoredForRevert"), @"ignoredForRevert"}];
-  [v8 encodeBool:self->_contentIsSensitive forKey:@"isContentSensitive"];
-  [v8 encodeObject:self->_watchPosterImageData forKey:@"watchPosterImageData"];
-  v5 = [(CNContactPosterDataItem *)self contactIdentifier];
-  [v8 encodeObject:v5 forKey:@"contactIdentifier"];
+  [coderCopy encodeBool:-[CNContactPosterDataItem ignoredForRevert](self forKey:{"ignoredForRevert"), @"ignoredForRevert"}];
+  [coderCopy encodeBool:self->_contentIsSensitive forKey:@"isContentSensitive"];
+  [coderCopy encodeObject:self->_watchPosterImageData forKey:@"watchPosterImageData"];
+  contactIdentifier = [(CNContactPosterDataItem *)self contactIdentifier];
+  [coderCopy encodeObject:contactIdentifier forKey:@"contactIdentifier"];
 
-  [v8 encodeInteger:-[CNContactPosterDataItem itemDetails](self forKey:{"itemDetails"), @"itemDetails"}];
+  [coderCopy encodeInteger:-[CNContactPosterDataItem itemDetails](self forKey:{"itemDetails"), @"itemDetails"}];
   if (![(CNContactPosterDataItem *)self avoidCircularEncoding])
   {
     WeakRetained = objc_loadWeakRetained(&self->_pairedImage);
     [WeakRetained setAvoidCircularEncoding:1];
 
     v7 = objc_loadWeakRetained(&self->_pairedImage);
-    [v8 encodeObject:v7 forKey:@"pairedImage"];
+    [coderCopy encodeObject:v7 forKey:@"pairedImage"];
   }
 }
 
-- (CNContactPoster)initWithCoder:(id)a3
+- (CNContactPoster)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"posterData"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"posterMetadata"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"watchPosterImageData"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUsedDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"posterData"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"posterMetadata"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"watchPosterImageData"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUsedDate"];
   v10 = [(CNContactPoster *)self initWithIdentifier:v5 posterData:v6 posterMetadata:v7 watchPosterData:v8 lastUsedDate:v9];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pairedImage"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pairedImage"];
   objc_storeWeak(&v10->_pairedImage, v11);
 
-  -[CNContactPosterDataItem setIgnoredForRevert:](v10, "setIgnoredForRevert:", [v4 decodeBoolForKey:@"ignoredForRevert"]);
-  v10->_contentIsSensitive = [v4 decodeBoolForKey:@"isContentSensitive"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"watchPosterImageData"];
+  -[CNContactPosterDataItem setIgnoredForRevert:](v10, "setIgnoredForRevert:", [coderCopy decodeBoolForKey:@"ignoredForRevert"]);
+  v10->_contentIsSensitive = [coderCopy decodeBoolForKey:@"isContentSensitive"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"watchPosterImageData"];
   watchPosterImageData = v10->_watchPosterImageData;
   v10->_watchPosterImageData = v12;
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
   [(CNContactPosterDataItem *)v10 setContactIdentifier:v14];
 
-  v15 = [v4 decodeIntegerForKey:@"itemDetails"];
+  v15 = [coderCopy decodeIntegerForKey:@"itemDetails"];
   [(CNContactPosterDataItem *)v10 setItemDetails:v15];
 
   return v10;
 }
 
-- (void)setPairedImage:(id)a3
+- (void)setPairedImage:(id)image
 {
-  obj = a3;
+  obj = image;
   [(CNContactPosterDataItem *)self _updateStrongForImpendingPairedItem:obj];
   objc_storeWeak(&self->_pairedImage, obj);
 }
@@ -168,57 +168,57 @@
   return WeakRetained;
 }
 
-- (CNContactPoster)initWithManagedObject:(id)a3
+- (CNContactPoster)initWithManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = [CNContactImage alloc];
-  v6 = [v4 pairedImage];
-  v7 = [(CNContactImage *)v5 initWithManagedObject:v6 poster:self];
+  pairedImage = [objectCopy pairedImage];
+  v7 = [(CNContactImage *)v5 initWithManagedObject:pairedImage poster:self];
 
-  v8 = [(CNContactPoster *)self initWithManagedObject:v4 image:v7];
+  v8 = [(CNContactPoster *)self initWithManagedObject:objectCopy image:v7];
   return v8;
 }
 
-- (CNContactPoster)initWithManagedObject:(id)a3 image:(id)a4
+- (CNContactPoster)initWithManagedObject:(id)object image:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  objectCopy = object;
+  imageCopy = image;
+  if (objectCopy)
   {
-    v8 = [v6 identifier];
-    v9 = [v6 posterData];
-    v10 = [v6 posterMetadata];
-    v11 = [v6 lastUsedDate];
-    v12 = v11;
-    v13 = 0;
-    if (v8)
+    identifier = [objectCopy identifier];
+    posterData = [objectCopy posterData];
+    posterMetadata = [objectCopy posterMetadata];
+    lastUsedDate = [objectCopy lastUsedDate];
+    v12 = lastUsedDate;
+    selfCopy = 0;
+    if (identifier)
     {
-      if (v9)
+      if (posterData)
       {
-        if (v11)
+        if (lastUsedDate)
         {
-          v13 = [v6 contactIdentifier];
+          selfCopy = [objectCopy contactIdentifier];
 
-          if (v13)
+          if (selfCopy)
           {
-            v14 = [v8 UUIDString];
-            v15 = [v6 watchPosterImageData];
-            v16 = [(CNContactPoster *)self initWithIdentifier:v14 posterData:v9 posterMetadata:v10 watchPosterData:v15 lastUsedDate:v12];
+            uUIDString = [identifier UUIDString];
+            watchPosterImageData = [objectCopy watchPosterImageData];
+            v16 = [(CNContactPoster *)self initWithIdentifier:uUIDString posterData:posterData posterMetadata:posterMetadata watchPosterData:watchPosterImageData lastUsedDate:v12];
 
-            -[CNContactPosterDataItem setIgnoredForRevert:](v16, "setIgnoredForRevert:", [v6 ignoredForRevert]);
-            -[CNContactPoster setContentIsSensitive:](v16, "setContentIsSensitive:", [v6 contentIsSensitive]);
-            [(CNContactPoster *)v16 setPairedImage:v7];
-            v17 = [v6 contactIdentifier];
-            [(CNContactPosterDataItem *)v16 setContactIdentifier:v17];
+            -[CNContactPosterDataItem setIgnoredForRevert:](v16, "setIgnoredForRevert:", [objectCopy ignoredForRevert]);
+            -[CNContactPoster setContentIsSensitive:](v16, "setContentIsSensitive:", [objectCopy contentIsSensitive]);
+            [(CNContactPoster *)v16 setPairedImage:imageCopy];
+            contactIdentifier = [objectCopy contactIdentifier];
+            [(CNContactPosterDataItem *)v16 setContactIdentifier:contactIdentifier];
 
-            v18 = [v6 watchPosterImageData];
-            [(CNContactPoster *)v16 setWatchPosterImageData:v18];
+            watchPosterImageData2 = [objectCopy watchPosterImageData];
+            [(CNContactPoster *)v16 setWatchPosterImageData:watchPosterImageData2];
 
-            v19 = [v6 itemDetailsNumber];
-            -[CNContactPosterDataItem setItemDetails:](v16, "setItemDetails:", [v19 integerValue]);
+            itemDetailsNumber = [objectCopy itemDetailsNumber];
+            -[CNContactPosterDataItem setItemDetails:](v16, "setItemDetails:", [itemDetailsNumber integerValue]);
 
             self = v16;
-            v13 = self;
+            selfCopy = self;
           }
         }
       }
@@ -227,10 +227,10 @@
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 @end

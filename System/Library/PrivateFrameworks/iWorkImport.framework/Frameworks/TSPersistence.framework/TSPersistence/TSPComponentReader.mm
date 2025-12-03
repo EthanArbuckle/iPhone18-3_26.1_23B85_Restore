@@ -1,24 +1,24 @@
 @interface TSPComponentReader
-- (BOOL)componentParser:(id)a3 didReadArchiveInfo:(const void *)a4 stream:(DispatchDataInputStream *)a5 error:(id *)a6;
-- (TSPComponentReader)initWithComponent:(id)a3 finalizeHandlerQueue:(id)a4 delegate:(id)a5;
-- (TSPComponentReader)initWithComponent:(id)a3 finalizeHandlerQueue:(id)a4 delegate:(id)a5 readChannel:(id)a6;
-- (TSPComponentReader)initWithComponent:(id)a3 finalizeHandlerQueue:(id)a4 delegate:(id)a5 readChannel:(id)a6 ignoreUnknownContent:(BOOL)a7 ignoreVersionChecking:(BOOL)a8;
+- (BOOL)componentParser:(id)parser didReadArchiveInfo:(const void *)info stream:(DispatchDataInputStream *)stream error:(id *)error;
+- (TSPComponentReader)initWithComponent:(id)component finalizeHandlerQueue:(id)queue delegate:(id)delegate;
+- (TSPComponentReader)initWithComponent:(id)component finalizeHandlerQueue:(id)queue delegate:(id)delegate readChannel:(id)channel;
+- (TSPComponentReader)initWithComponent:(id)component finalizeHandlerQueue:(id)queue delegate:(id)delegate readChannel:(id)channel ignoreUnknownContent:(BOOL)content ignoreVersionChecking:(BOOL)checking;
 - (const)unknownObjectMessageInfo;
-- (id)newUnarchiverWithArchiveInfo:(const void *)a3 stream:(DispatchDataInputStream *)a4 isUnknownObject:(BOOL *)a5;
-- (id)newUnarchiverWithObjectIdentifier:(int64_t)a3 messageInfo:(const void *)a4 unarchiveClass:(Class)a5 message:(void *)a6 messageVersion:(unint64_t)a7 strongReferences:()unique_ptr<TSP:(std:(id)a9 :(BOOL)a10 default_delete<TSP::IdentifierMap<BOOL>>>)a8 :IdentifierMap<BOOL> unknownContent:hasAlternateMessages:;
-- (id)unknownMessageFromMessageInfo:(const void *)a3 stream:(DispatchDataInputStream *)a4;
-- (id)unknownObjectUnarchiverWithArchiveInfo:(const void *)a3 stream:(DispatchDataInputStream *)a4 ignoreMessageData:(BOOL)a5 hasAlternateMessages:(BOOL)a6;
-- (void)beginReadingWithCompletionQueue:(id)a3 completion:(id)a4;
+- (id)newUnarchiverWithArchiveInfo:(const void *)info stream:(DispatchDataInputStream *)stream isUnknownObject:(BOOL *)object;
+- (id)newUnarchiverWithObjectIdentifier:(int64_t)identifier messageInfo:(const void *)info unarchiveClass:(Class)class message:(void *)message messageVersion:(unint64_t)version strongReferences:()unique_ptr<TSP:(std:(id)p :(BOOL)self0 default_delete<TSP::IdentifierMap<BOOL>>>)a8 :IdentifierMap<BOOL> unknownContent:hasAlternateMessages:;
+- (id)unknownMessageFromMessageInfo:(const void *)info stream:(DispatchDataInputStream *)stream;
+- (id)unknownObjectUnarchiverWithArchiveInfo:(const void *)info stream:(DispatchDataInputStream *)stream ignoreMessageData:(BOOL)data hasAlternateMessages:(BOOL)messages;
+- (void)beginReadingWithCompletionQueue:(id)queue completion:(id)completion;
 - (void)dealloc;
 @end
 
 @implementation TSPComponentReader
 
-- (TSPComponentReader)initWithComponent:(id)a3 finalizeHandlerQueue:(id)a4 delegate:(id)a5
+- (TSPComponentReader)initWithComponent:(id)component finalizeHandlerQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  componentCopy = component;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v10 = MEMORY[0x277D81150];
   v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSPComponentReader initWithComponent:finalizeHandlerQueue:delegate:]");
   v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPComponentReader.mm");
@@ -33,37 +33,37 @@
   objc_exception_throw(v22);
 }
 
-- (TSPComponentReader)initWithComponent:(id)a3 finalizeHandlerQueue:(id)a4 delegate:(id)a5 readChannel:(id)a6
+- (TSPComponentReader)initWithComponent:(id)component finalizeHandlerQueue:(id)queue delegate:(id)delegate readChannel:(id)channel
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v15 = objc_msgSend_contextForReader_(v12, v14, self);
+  componentCopy = component;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  channelCopy = channel;
+  v15 = objc_msgSend_contextForReader_(delegateCopy, v14, self);
   v18 = objc_msgSend_ignoreUnknownContentWhileReading(v15, v16, v17);
   v21 = objc_msgSend_ignoreVersionCheckingWhileReading(v15, v19, v20);
-  Channel_ignoreUnknownContent_ignoreVersionChecking = objc_msgSend_initWithComponent_finalizeHandlerQueue_delegate_readChannel_ignoreUnknownContent_ignoreVersionChecking_(self, v22, v10, v11, v12, v13, v18, v21);
+  Channel_ignoreUnknownContent_ignoreVersionChecking = objc_msgSend_initWithComponent_finalizeHandlerQueue_delegate_readChannel_ignoreUnknownContent_ignoreVersionChecking_(self, v22, componentCopy, queueCopy, delegateCopy, channelCopy, v18, v21);
 
   return Channel_ignoreUnknownContent_ignoreVersionChecking;
 }
 
-- (TSPComponentReader)initWithComponent:(id)a3 finalizeHandlerQueue:(id)a4 delegate:(id)a5 readChannel:(id)a6 ignoreUnknownContent:(BOOL)a7 ignoreVersionChecking:(BOOL)a8
+- (TSPComponentReader)initWithComponent:(id)component finalizeHandlerQueue:(id)queue delegate:(id)delegate readChannel:(id)channel ignoreUnknownContent:(BOOL)content ignoreVersionChecking:(BOOL)checking
 {
-  v8 = a8;
-  v9 = a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  checkingCopy = checking;
+  contentCopy = content;
+  componentCopy = component;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  channelCopy = channel;
   v29.receiver = self;
   v29.super_class = TSPComponentReader;
-  v18 = [(TSPReader *)&v29 initWithComponent:v14 finalizeHandlerQueue:v15 delegate:v16];
+  v18 = [(TSPReader *)&v29 initWithComponent:componentCopy finalizeHandlerQueue:queueCopy delegate:delegateCopy];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_readChannel, a6);
-    isReadingFromDocument = objc_msgSend_isReadingFromDocument(v16, v20, v21);
-    if (v9)
+    objc_storeStrong(&v18->_readChannel, channel);
+    isReadingFromDocument = objc_msgSend_isReadingFromDocument(delegateCopy, v20, v21);
+    if (contentCopy)
     {
       v25 = 2;
     }
@@ -73,7 +73,7 @@
       v25 = 0;
     }
 
-    if (v8)
+    if (checkingCopy)
     {
       v26 = 4;
     }
@@ -84,7 +84,7 @@
     }
 
     *&v19->_flags = v26 | v25 | isReadingFromDocument | *&v19->_flags & 0xF8;
-    if (objc_msgSend_incompatibleVersion(v14, v23, v24))
+    if (objc_msgSend_incompatibleVersion(componentCopy, v23, v24))
     {
       v27 = 8;
     }
@@ -108,10 +108,10 @@
   [(TSPComponentReader *)&v4 dealloc];
 }
 
-- (void)beginReadingWithCompletionQueue:(id)a3 completion:(id)a4
+- (void)beginReadingWithCompletionQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v8 = [TSPComponentParser alloc];
   v10 = objc_msgSend_initWithDelegate_(v8, v9, self);
   if (v10)
@@ -122,8 +122,8 @@
     v14[2] = sub_276A73AAC;
     v14[3] = &unk_27A6E58D0;
     v14[4] = self;
-    v15 = v7;
-    objc_msgSend_readWithChannel_completionQueue_completion_(v10, v12, readChannel, v6, v14);
+    v15 = completionCopy;
+    objc_msgSend_readWithChannel_completionQueue_completion_(v10, v12, readChannel, queueCopy, v14);
     v13 = v15;
   }
 
@@ -133,28 +133,28 @@
     block[1] = 3221225472;
     block[2] = sub_276A73A94;
     block[3] = &unk_27A6E3480;
-    v17 = v7;
-    dispatch_async(v6, block);
+    v17 = completionCopy;
+    dispatch_async(queueCopy, block);
     v13 = v17;
   }
 }
 
-- (BOOL)componentParser:(id)a3 didReadArchiveInfo:(const void *)a4 stream:(DispatchDataInputStream *)a5 error:(id *)a6
+- (BOOL)componentParser:(id)parser didReadArchiveInfo:(const void *)info stream:(DispatchDataInputStream *)stream error:(id *)error
 {
-  v10 = a3;
+  parserCopy = parser;
   if ((objc_msgSend_hasReadFailure(self, v11, v12) & 1) == 0)
   {
-    if ((*&self->_flags & 1) != 0 && (v27 = *(a4 + 6), objc_msgSend_context(self, v13, v14), v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForIdentifier_(v28, v29, v27), v30 = objc_claimAutoreleasedReturnValue(), v28, v30))
+    if ((*&self->_flags & 1) != 0 && (v27 = *(info + 6), objc_msgSend_context(self, v13, v14), v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForIdentifier_(v28, v29, v27), v30 = objc_claimAutoreleasedReturnValue(), v28, v30))
     {
       objc_msgSend_attemptedToReadInMemoryObject_objectIdentifier_(self, v13, v30, v27);
-      v31 = sub_276A764C4(a4);
-      (*(a5->var0 + 4))(a5, v31);
+      v31 = sub_276A764C4(info);
+      (*(stream->var0 + 4))(stream, v31);
     }
 
     else
     {
       v35 = 0;
-      isUnknownObject = objc_msgSend_newUnarchiverWithArchiveInfo_stream_isUnknownObject_(self, v13, a4, a5, &v35);
+      isUnknownObject = objc_msgSend_newUnarchiverWithArchiveInfo_stream_isUnknownObject_(self, v13, info, stream, &v35);
       if (isUnknownObject)
       {
         objc_msgSend_unarchiveObjectWithUnarchiver_(self, v16, isUnknownObject);
@@ -170,12 +170,12 @@
     goto LABEL_22;
   }
 
-  v15 = sub_276A764C4(a4);
-  (*(a5->var0 + 4))(a5, v15);
+  v15 = sub_276A764C4(info);
+  (*(stream->var0 + 4))(stream, v15);
 LABEL_3:
   shouldProceedParsingOnFailure = objc_msgSend_shouldProceedParsingOnFailure(self, v16, v17);
   v21 = shouldProceedParsingOnFailure;
-  if (a6)
+  if (error)
   {
     v22 = shouldProceedParsingOnFailure;
   }
@@ -187,20 +187,20 @@ LABEL_3:
 
   if ((v22 & 1) == 0)
   {
-    if (!*a6)
+    if (!*error)
     {
       v23 = objc_msgSend_error(self, v19, v20);
       v25 = v23;
       if (v23)
       {
         v26 = v23;
-        *a6 = v25;
+        *error = v25;
       }
 
       else
       {
         v33 = objc_msgSend_tsp_readCorruptedDocumentErrorWithUserInfo_(MEMORY[0x277CCA9B8], v24, 0);
-        *a6 = v33;
+        *error = v33;
       }
     }
 
@@ -212,15 +212,15 @@ LABEL_22:
   return v21;
 }
 
-- (id)newUnarchiverWithArchiveInfo:(const void *)a3 stream:(DispatchDataInputStream *)a4 isUnknownObject:(BOOL *)a5
+- (id)newUnarchiverWithArchiveInfo:(const void *)info stream:(DispatchDataInputStream *)stream isUnknownObject:(BOOL *)object
 {
-  v7 = objc_msgSend_context(self, a2, a3);
+  v7 = objc_msgSend_context(self, a2, info);
   v162 = objc_msgSend_registry(v7, v8, v9);
-  v172 = self;
+  selfCopy = self;
 
-  v12 = *(a3 + 8);
+  v12 = *(info + 8);
   v176 = v12;
-  v177 = a3;
+  infoCopy = info;
   if (v12 >= 1)
   {
     v13 = 0;
@@ -230,7 +230,7 @@ LABEL_22:
     v17 = -1;
     while (1)
     {
-      v18 = *(v177[5] + 8 * v13 + 8);
+      v18 = *(infoCopy[5] + 8 * v13 + 8);
       v19 = *(v18 + 200);
       v20 = UnsafePointer(v18 + 24, v10);
       if (!v19)
@@ -254,7 +254,7 @@ LABEL_22:
           goto LABEL_16;
         }
 
-        if ((*&v172->_flags & 4) != 0 && v22 >= v15 && objc_msgSend_messagePrototypeForMessageType_(v162, v10, v19))
+        if ((*&selfCopy->_flags & 4) != 0 && v22 >= v15 && objc_msgSend_messagePrototypeForMessageType_(v162, v10, v19))
         {
           v15 = v22;
           v17 = v13;
@@ -279,7 +279,7 @@ LABEL_17:
   v17 = -1;
   v16 = -1;
 LABEL_20:
-  if ((*&v172->_flags & 4) != 0)
+  if ((*&selfCopy->_flags & 4) != 0)
   {
     if (v16 == -1)
     {
@@ -287,18 +287,18 @@ LABEL_20:
       v16 = v17;
     }
 
-    v23 = v177;
+    v23 = infoCopy;
   }
 
   else
   {
-    v23 = v177;
-    if ((*&v172->_flags & 8) != 0)
+    v23 = infoCopy;
+    if ((*&selfCopy->_flags & 8) != 0)
     {
       v22 = 0;
 LABEL_29:
       v156 = *(v23 + 48);
-      v26 = objc_msgSend_unknownObjectMessageInfo(v172, v10, v11);
+      v26 = objc_msgSend_unknownObjectMessageInfo(selfCopy, v10, v11);
       v157 = v22;
       v27 = 0;
       v166 = -1;
@@ -351,7 +351,7 @@ LABEL_37:
     aBlock[1] = 3221225472;
     aBlock[2] = sub_276A753D8;
     aBlock[3] = &unk_27A6E58F8;
-    aBlock[4] = v172;
+    aBlock[4] = selfCopy;
     aBlock[5] = v157;
     v174 = _Block_copy(aBlock);
     if (v166 < 1)
@@ -366,10 +366,10 @@ LABEL_37:
       v35 = v166;
       do
       {
-        v36 = *(v177[5] + v34);
+        v36 = *(infoCopy[5] + v34);
         if (v174[2](v174, v36))
         {
-          v39 = objc_msgSend_unknownMessageFromMessageInfo_stream_(v172, v37, v36, a4);
+          v39 = objc_msgSend_unknownMessageFromMessageInfo_stream_(selfCopy, v37, v36, stream);
           if (v171)
           {
             objc_msgSend_addObject_(v171, v38, v39);
@@ -384,7 +384,7 @@ LABEL_37:
 
         else
         {
-          (*(a4->var0 + 4))(a4, *(v36 + 204));
+          (*(stream->var0 + 4))(stream, *(v36 + 204));
         }
 
         v34 += 8;
@@ -399,7 +399,7 @@ LABEL_37:
     if (*(v161 + 204))
     {
       v205 = 0uLL;
-      v206 = a4;
+      streamCopy2 = stream;
       v207[0] = 0;
       *(v207 + 6) = 0;
       v208 = 0x7FFFFFFFLL;
@@ -433,7 +433,7 @@ LABEL_37:
     v198 = 0;
     if (v46)
     {
-      if ((*&v172->_flags & 2) != 0 || (v47 = sub_276A7545C(v161 + 48), (v48 = v47) == 0))
+      if ((*&selfCopy->_flags & 2) != 0 || (v47 = sub_276A7545C(v161 + 48), (v48 = v47) == 0))
       {
         v55 = 1;
       }
@@ -449,7 +449,7 @@ LABEL_37:
         sub_276AD117C(v47, v45, 0, &obj, &v191, &v205);
         objc_storeStrong(v50, obj);
         objc_storeStrong(v51, v191);
-        if (v205 != 1 || (*&v172->_flags & 4) != 0)
+        if (v205 != 1 || (*&selfCopy->_flags & 4) != 0)
         {
           v55 = 1;
         }
@@ -457,7 +457,7 @@ LABEL_37:
         else
         {
           v53 = objc_msgSend_tsp_errorWithCode_(MEMORY[0x277CCA9B8], v52, 7);
-          objc_msgSend_setError_(v172, v54, v53);
+          objc_msgSend_setError_(selfCopy, v54, v53);
 
           v55 = 0;
         }
@@ -505,7 +505,7 @@ LABEL_37:
       v167 = v12;
       while (1)
       {
-        v61 = *(v177[5] + 8 * v60 + 8);
+        v61 = *(infoCopy[5] + 8 * v60 + 8);
         v62 = v170;
         if (v60 < v167)
         {
@@ -517,9 +517,9 @@ LABEL_37:
           break;
         }
 
-        if ((v169 & 1) == 0 && v174[2](v174, *(v177[5] + 8 * v60 + 8)))
+        if ((v169 & 1) == 0 && v174[2](v174, *(infoCopy[5] + 8 * v60 + 8)))
         {
-          v168 = objc_msgSend_unknownMessageFromMessageInfo_stream_(v172, v73, v61, a4);
+          v168 = objc_msgSend_unknownMessageFromMessageInfo_stream_(selfCopy, v73, v61, stream);
           if (v171)
           {
             objc_msgSend_addObject_(v171, v74, v168);
@@ -536,7 +536,7 @@ LABEL_37:
           goto LABEL_177;
         }
 
-        (*(a4->var0 + 4))(a4, v61[51]);
+        (*(stream->var0 + 4))(stream, v61[51]);
 LABEL_178:
         if (v176 == ++v60)
         {
@@ -544,12 +544,12 @@ LABEL_178:
         }
       }
 
-      v173 = *(v177[5] + 8 * v60 + 8);
+      v173 = *(infoCopy[5] + 8 * v60 + 8);
       v63 = UnsafePointer((v61 + 30), v58);
       if (v55)
       {
         v66 = v63;
-        if ((*&v172->_flags & 2) != 0)
+        if ((*&selfCopy->_flags & 2) != 0)
         {
           goto LABEL_105;
         }
@@ -590,7 +590,7 @@ LABEL_105:
             objc_msgSend_removeAllObjects(v171, v64, v65);
           }
 
-          v168 = objc_msgSend_unknownMessageFromMessageInfo_stream_(v172, v64, v173, a4);
+          v168 = objc_msgSend_unknownMessageFromMessageInfo_stream_(selfCopy, v64, v173, stream);
           if (v171)
           {
             objc_msgSend_addObject_(v171, v72, v168);
@@ -612,7 +612,7 @@ LABEL_105:
         if (v76)
         {
           v77 = v214;
-          if ((*&v172->_flags & 2) != 0)
+          if ((*&selfCopy->_flags & 2) != 0)
           {
             v155 = 0;
           }
@@ -804,7 +804,7 @@ LABEL_114:
                   sub_276A01048(v181, v100);
 
                   v205 = 0u;
-                  v206 = v181;
+                  streamCopy2 = v181;
                   v207[0] = 0;
                   *(v207 + 6) = 0;
                   v208 = 0x7FFFFFFFLL;
@@ -822,7 +822,7 @@ LABEL_114:
                 else
                 {
                   v205 = 0u;
-                  v206 = a4;
+                  streamCopy2 = stream;
                   v207[0] = 0;
                   *(v207 + 6) = 0;
                   v208 = 0x7FFFFFFFLL;
@@ -898,7 +898,7 @@ LABEL_114:
         v75 = v173;
       }
 
-      (*(a4->var0 + 4))(a4, *(v75 + 204));
+      (*(stream->var0 + 4))(stream, *(v75 + 204));
 LABEL_177:
 
       goto LABEL_178;
@@ -922,7 +922,7 @@ LABEL_182:
         }
 
         v178 = 0;
-        hasAlternateMessages = objc_msgSend_newUnarchiverWithObjectIdentifier_messageInfo_unarchiveClass_message_messageVersion_strongReferences_unknownContent_hasAlternateMessages_(v172, v138, v156, v161, v154, &v214, v157, &v178, v141, v176 > 1);
+        hasAlternateMessages = objc_msgSend_newUnarchiverWithObjectIdentifier_messageInfo_unarchiveClass_message_messageVersion_strongReferences_unknownContent_hasAlternateMessages_(selfCopy, v138, v156, v161, v154, &v214, v157, &v178, v141, v176 > 1);
         sub_276A519D8(&v178);
 
         goto LABEL_195;
@@ -934,10 +934,10 @@ LABEL_182:
       }
     }
 
-    if ((*&v172->_flags & 2) != 0)
+    if ((*&selfCopy->_flags & 2) != 0)
     {
       v143 = 1;
-      hasAlternateMessages = objc_msgSend_unknownObjectUnarchiverWithArchiveInfo_stream_ignoreMessageData_hasAlternateMessages_(v172, v58, v177, 0, 1, v176 > 1);
+      hasAlternateMessages = objc_msgSend_unknownObjectUnarchiverWithArchiveInfo_stream_ignoreMessageData_hasAlternateMessages_(selfCopy, v58, infoCopy, 0, 1, v176 > 1);
       goto LABEL_197;
     }
 
@@ -957,9 +957,9 @@ LABEL_197:
       MEMORY[0x277C9F670](v145, 0x10A0C408EF24B1CLL);
     }
 
-    if (a5)
+    if (object)
     {
-      *a5 = v143;
+      *object = v143;
     }
 
     v56 = hasAlternateMessages;
@@ -978,27 +978,27 @@ LABEL_197:
     goto LABEL_204;
   }
 
-  if (((v27 ^ 1 | ((*&v172->_flags & 2) >> 1)) & 1) == 0 && (objc_msgSend_isCrossAppPaste(v172, v32, v33) & 1) == 0 && v154 != objc_opt_class() && UnsafePointer != -1)
+  if (((v27 ^ 1 | ((*&selfCopy->_flags & 2) >> 1)) & 1) == 0 && (objc_msgSend_isCrossAppPaste(selfCopy, v32, v33) & 1) == 0 && v154 != objc_opt_class() && UnsafePointer != -1)
   {
     sub_276BD5AAC();
   }
 
-  flags = v172->_flags;
+  flags = selfCopy->_flags;
   if (v156 != 1 || (*&flags & 0x10) != 0)
   {
-    v44 = objc_msgSend_unknownObjectUnarchiverWithArchiveInfo_stream_ignoreMessageData_hasAlternateMessages_(v172, v32, v23, a4, (*&flags >> 1) & 1, v176 > 1);
+    v44 = objc_msgSend_unknownObjectUnarchiverWithArchiveInfo_stream_ignoreMessageData_hasAlternateMessages_(selfCopy, v32, v23, stream, (*&flags >> 1) & 1, v176 > 1);
   }
 
   else
   {
     v43 = sub_276A764C4(v23);
-    (*(a4->var0 + 4))(a4, v43);
+    (*(stream->var0 + 4))(stream, v43);
     v44 = 0;
   }
 
-  if (a5)
+  if (object)
   {
-    *a5 = 1;
+    *object = 1;
   }
 
   v56 = v44;
@@ -1007,20 +1007,20 @@ LABEL_204:
   return v56;
 }
 
-- (id)newUnarchiverWithObjectIdentifier:(int64_t)a3 messageInfo:(const void *)a4 unarchiveClass:(Class)a5 message:(void *)a6 messageVersion:(unint64_t)a7 strongReferences:()unique_ptr<TSP:(std:(id)a9 :(BOOL)a10 default_delete<TSP::IdentifierMap<BOOL>>>)a8 :IdentifierMap<BOOL> unknownContent:hasAlternateMessages:
+- (id)newUnarchiverWithObjectIdentifier:(int64_t)identifier messageInfo:(const void *)info unarchiveClass:(Class)class message:(void *)message messageVersion:(unint64_t)version strongReferences:()unique_ptr<TSP:(std:(id)p :(BOOL)self0 default_delete<TSP::IdentifierMap<BOOL>>>)a8 :IdentifierMap<BOOL> unknownContent:hasAlternateMessages:
 {
-  v17 = a9;
+  pCopy = p;
   v18 = [TSPUnarchiver alloc];
-  v19 = *(a4 + 50);
-  v20 = *a6;
-  *a6 = 0;
+  v19 = *(info + 50);
+  v20 = *message;
+  *message = 0;
   v21 = *a8.__ptr_;
   *a8.__ptr_ = 0;
   v32 = v21;
   v33 = v20;
   v24 = objc_msgSend_delegate(self, v22, v23);
   v26 = objc_msgSend_lazyReferenceDelegateForReader_(v24, v25, self);
-  hasAlternateMessages_objectDelegate_lazyReferenceDelegate_delegate = objc_msgSend_initWithMessageType_unarchiveClass_message_identifier_strongReferences_messageVersion_unknownContent_hasAlternateMessages_objectDelegate_lazyReferenceDelegate_delegate_(v18, v27, v19, a5, &v33, a3, &v32, a7, v17, a10, self, v26, self);
+  hasAlternateMessages_objectDelegate_lazyReferenceDelegate_delegate = objc_msgSend_initWithMessageType_unarchiveClass_message_identifier_strongReferences_messageVersion_unknownContent_hasAlternateMessages_objectDelegate_lazyReferenceDelegate_delegate_(v18, v27, v19, class, &v33, identifier, &v32, version, pCopy, a10, self, v26, self);
 
   sub_276A519D8(&v32);
   v29 = v33;
@@ -1043,20 +1043,20 @@ LABEL_204:
   return qword_280A529F0;
 }
 
-- (id)unknownMessageFromMessageInfo:(const void *)a3 stream:(DispatchDataInputStream *)a4
+- (id)unknownMessageFromMessageInfo:(const void *)info stream:(DispatchDataInputStream *)stream
 {
-  v5 = sub_276A010BC(a4, *(a3 + 51));
+  v5 = sub_276A010BC(stream, *(info + 51));
   v6 = [TSPUnknownMessage alloc];
-  v8 = objc_msgSend_initWithMessageInfo_data_(v6, v7, a3, v5);
+  v8 = objc_msgSend_initWithMessageInfo_data_(v6, v7, info, v5);
 
   return v8;
 }
 
-- (id)unknownObjectUnarchiverWithArchiveInfo:(const void *)a3 stream:(DispatchDataInputStream *)a4 ignoreMessageData:(BOOL)a5 hasAlternateMessages:(BOOL)a6
+- (id)unknownObjectUnarchiverWithArchiveInfo:(const void *)info stream:(DispatchDataInputStream *)stream ignoreMessageData:(BOOL)data hasAlternateMessages:(BOOL)messages
 {
-  v6 = a5;
-  v10 = *(a3 + 6);
-  v11 = objc_msgSend_component(self, a2, a3);
+  dataCopy = data;
+  v10 = *(info + 6);
+  v11 = objc_msgSend_component(self, a2, info);
   if (v10 == objc_msgSend_identifier(v11, v12, v13))
   {
     v16 = objc_msgSend_component(self, v14, v15);
@@ -1064,19 +1064,19 @@ LABEL_204:
     objc_claimAutoreleasedReturnValue();
   }
 
-  if (a4)
+  if (stream)
   {
-    if (v6)
+    if (dataCopy)
     {
       v19 = MEMORY[0x277D85CC8];
-      v20 = sub_276A764C4(a3);
-      (*(a4->var0 + 4))(a4, v20);
+      v20 = sub_276A764C4(info);
+      (*(stream->var0 + 4))(stream, v20);
     }
 
     else
     {
-      v22 = sub_276A764C4(a3);
-      sub_276A010BC(a4, v22);
+      v22 = sub_276A764C4(info);
+      sub_276A010BC(stream, v22);
       objc_claimAutoreleasedReturnValue();
     }
   }

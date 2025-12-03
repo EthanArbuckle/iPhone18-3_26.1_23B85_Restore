@@ -1,28 +1,28 @@
 @interface _UILabelLayer
-- (BOOL)_glyphPathBoundsExceedsLayers:(CGRect)a3 drawableGlyphPathBounds:(CGRect *)a4 edgesClipped:(unint64_t *)a5;
+- (BOOL)_glyphPathBoundsExceedsLayers:(CGRect)layers drawableGlyphPathBounds:(CGRect *)bounds edgesClipped:(unint64_t *)clipped;
 - (UIEdgeInsets)letterformAwareInsets;
 - (id)_labelLayerToClipDuringBoundsSizeAnimation;
 - (uint64_t)_configureSublayers:(uint64_t)result;
 - (void)_clearContents;
 - (void)_removeSublayers;
-- (void)_setFrameOrBounds:(uint64_t)a1 settingAction:(void *)a2;
-- (void)_setLabelMasksToBoundsForAnimation:(BOOL)a3;
-- (void)_updateLayers:(void *)a1;
+- (void)_setFrameOrBounds:(uint64_t)bounds settingAction:(void *)action;
+- (void)_setLabelMasksToBoundsForAnimation:(BOOL)animation;
+- (void)_updateLayers:(void *)layers;
 - (void)_updateSublayers;
 - (void)invalidateContentInsets;
 - (void)layoutSublayers;
 - (void)reactToLightChanged;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentsFormat:(id)a3;
-- (void)setContentsGravity:(id)a3;
-- (void)setContentsMultiplyColor:(CGColor *)a3;
-- (void)setContentsScale:(double)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setMasksToBounds:(BOOL)a3;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
-- (void)setNeedsDisplayOnBoundsChange:(BOOL)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentsFormat:(id)format;
+- (void)setContentsGravity:(id)gravity;
+- (void)setContentsMultiplyColor:(CGColor *)color;
+- (void)setContentsScale:(double)scale;
+- (void)setFrame:(CGRect)frame;
+- (void)setMasksToBounds:(BOOL)bounds;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
+- (void)setNeedsDisplayOnBoundsChange:(BOOL)change;
 - (void)updateContentInsets;
-- (void)updateContentLayerSizeAllowingUpdateContentInsets:(uint64_t)a1;
+- (void)updateContentLayerSizeAllowingUpdateContentInsets:(uint64_t)insets;
 @end
 
 @implementation _UILabelLayer
@@ -38,9 +38,9 @@
   {
     if (self->_contentLayer || ([(_UILabelLayer *)self lightContainerView], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
     {
-      v5 = [(_UILabelLayer *)self lightContainerView];
+      lightContainerView = [(_UILabelLayer *)self lightContainerView];
 
-      if (!v5 || self->_lightReactiveLayer || self->_lightInertLayer)
+      if (!lightContainerView || self->_lightReactiveLayer || self->_lightInertLayer)
       {
         goto LABEL_18;
       }
@@ -99,15 +99,15 @@ LABEL_18:
 
 - (void)updateContentInsets
 {
-  v3 = [(_UILabelLayer *)self delegate];
+  delegate = [(_UILabelLayer *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(_UILabelLayer *)self delegate];
+    delegate2 = [(_UILabelLayer *)self delegate];
     v9 = *&self->_contentInsets.bottom;
     v10 = *&self->_contentInsets.top;
-    v11 = v4;
-    [v4 _contentInsetsFromFonts];
+    v11 = delegate2;
+    [delegate2 _contentInsetsFromFonts];
     self->_contentInsets.top = v5;
     self->_contentInsets.left = v6;
     self->_contentInsets.bottom = v7;
@@ -142,25 +142,25 @@ LABEL_18:
   return result;
 }
 
-- (void)_updateLayers:(void *)a1
+- (void)_updateLayers:(void *)layers
 {
   v3 = a2;
-  if (a1)
+  if (layers)
   {
     v4 = v3;
-    if (a1[6])
+    if (layers[6])
     {
       v3[2](v3);
       v3 = v4;
     }
 
-    if (a1[7])
+    if (layers[7])
     {
       v3[2](v4);
       v3 = v4;
     }
 
-    if (a1[8])
+    if (layers[8])
     {
       v3[2](v4);
       v3 = v4;
@@ -168,43 +168,43 @@ LABEL_18:
   }
 }
 
-- (void)updateContentLayerSizeAllowingUpdateContentInsets:(uint64_t)a1
+- (void)updateContentLayerSizeAllowingUpdateContentInsets:(uint64_t)insets
 {
-  if (a1)
+  if (insets)
   {
-    if (a2 && (*(a1 + 72) & 1) == 0)
+    if (a2 && (*(insets + 72) & 1) == 0)
     {
-      [a1 updateContentInsets];
+      [insets updateContentInsets];
     }
 
-    if (*(a1 + 48) || *(a1 + 56) || *(a1 + 64))
+    if (*(insets + 48) || *(insets + 56) || *(insets + 64))
     {
-      [a1 bounds];
+      [insets bounds];
       v4 = v3;
       v6 = v5;
       v8 = v7;
       v10 = v9;
-      v11 = [a1 oversizeEdgesIncludedInLabelLayer];
-      v12 = *(a1 + 80) + 0.0;
-      if (v11)
+      oversizeEdgesIncludedInLabelLayer = [insets oversizeEdgesIncludedInLabelLayer];
+      v12 = *(insets + 80) + 0.0;
+      if (oversizeEdgesIncludedInLabelLayer)
       {
         v12 = 0.0;
       }
 
-      v13 = *(a1 + 88) + 0.0;
-      if ((~v11 & 2) == 0)
+      v13 = *(insets + 88) + 0.0;
+      if ((~oversizeEdgesIncludedInLabelLayer & 2) == 0)
       {
         v13 = 0.0;
       }
 
-      v14 = *(a1 + 96) + 0.0;
-      if ((~v11 & 4) == 0)
+      v14 = *(insets + 96) + 0.0;
+      if ((~oversizeEdgesIncludedInLabelLayer & 4) == 0)
       {
         v14 = 0.0;
       }
 
-      v15 = *(a1 + 104) + 0.0;
-      if ((~v11 & 8) == 0)
+      v15 = *(insets + 104) + 0.0;
+      if ((~oversizeEdgesIncludedInLabelLayer & 8) == 0)
       {
         v15 = 0.0;
       }
@@ -236,14 +236,14 @@ LABEL_18:
         v19 = v17;
       }
 
-      [*(a1 + 48) frame];
+      [*(insets + 48) frame];
       if (_UIRectEquivalentToRectWithAccuracy(v20, v21, v22, v23, v24, v16, v19, v18, 0.0001))
       {
         v27[0] = MEMORY[0x1E69E9820];
         v27[1] = 3221225472;
         v27[2] = __67___UILabelLayer_updateContentLayerSizeAllowingUpdateContentInsets___block_invoke;
         v27[3] = &unk_1E70F3B20;
-        v27[4] = a1;
+        v27[4] = insets;
         *&v27[5] = v24;
         *&v27[6] = v16;
         *&v27[7] = v19;
@@ -261,76 +261,76 @@ LABEL_18:
         *&v26[5] = v16;
         *&v26[6] = v19;
         *&v26[7] = v18;
-        [(_UILabelLayer *)a1 _updateLayers:v26];
+        [(_UILabelLayer *)insets _updateLayers:v26];
       }
 
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __67___UILabelLayer_updateContentLayerSizeAllowingUpdateContentInsets___block_invoke_4;
       v25[3] = &unk_1E712A230;
-      v25[4] = a1;
-      [(_UILabelLayer *)a1 _updateLayers:v25];
+      v25[4] = insets;
+      [(_UILabelLayer *)insets _updateLayers:v25];
     }
   }
 }
 
-- (void)_setFrameOrBounds:(uint64_t)a1 settingAction:(void *)a2
+- (void)_setFrameOrBounds:(uint64_t)bounds settingAction:(void *)action
 {
-  v5 = a2;
-  if (a1)
+  actionCopy = action;
+  if (bounds)
   {
-    v5[2]();
-    if (*(a1 + 48) || *(a1 + 56) || *(a1 + 64))
+    actionCopy[2]();
+    if (*(bounds + 48) || *(bounds + 56) || *(bounds + 64))
     {
       if (dyld_program_sdk_at_least())
       {
-        [(_UILabelLayer *)a1 updateContentLayerSizeAllowingUpdateContentInsets:?];
+        [(_UILabelLayer *)bounds updateContentLayerSizeAllowingUpdateContentInsets:?];
       }
 
-      [a1 setNeedsLayout];
+      [bounds setNeedsLayout];
       if (+[UIView _isInAnimationBlockWithAnimationsEnabled])
       {
-        v3 = *(a1 + 48);
+        v3 = *(bounds + 48);
         if (v3)
         {
-          v4 = [v3 wantsAnimation];
-          [*(a1 + 48) setWantsAnimation:1];
-          [a1 layoutBelowIfNeeded];
-          [*(a1 + 48) setWantsAnimation:v4];
+          wantsAnimation = [v3 wantsAnimation];
+          [*(bounds + 48) setWantsAnimation:1];
+          [bounds layoutBelowIfNeeded];
+          [*(bounds + 48) setWantsAnimation:wantsAnimation];
         }
       }
     }
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __26___UILabelLayer_setFrame___block_invoke;
   v3[3] = &unk_1E70F3B20;
-  v4 = a3;
+  frameCopy = frame;
   v3[4] = self;
   [_UILabelLayer _setFrameOrBounds:v3 settingAction:?];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __27___UILabelLayer_setBounds___block_invoke;
   v3[3] = &unk_1E70F3B20;
-  v4 = a3;
+  boundsCopy = bounds;
   v3[4] = self;
   [_UILabelLayer _setFrameOrBounds:v3 settingAction:?];
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(_UILabelLayer *)self _updateSublayers];
   if (self && (self->_contentLayer || self->_lightReactiveLayer || self->_lightInertLayer))
   {
@@ -348,19 +348,19 @@ LABEL_18:
 
 - (void)_removeSublayers
 {
-  if (a1)
+  if (self)
   {
-    [a1[6] removeFromSuperlayer];
-    [a1[7] removeFromSuperlayer];
-    [a1[8] removeFromSuperlayer];
-    v2 = a1[6];
-    a1[6] = 0;
+    [self[6] removeFromSuperlayer];
+    [self[7] removeFromSuperlayer];
+    [self[8] removeFromSuperlayer];
+    v2 = self[6];
+    self[6] = 0;
 
-    v3 = a1[7];
-    a1[7] = 0;
+    v3 = self[7];
+    self[7] = 0;
 
-    v4 = a1[8];
-    a1[8] = 0;
+    v4 = self[8];
+    self[8] = 0;
   }
 }
 
@@ -393,19 +393,19 @@ LABEL_18:
   [(_UILabelLayer *)self setNeedsDisplay];
 }
 
-- (BOOL)_glyphPathBoundsExceedsLayers:(CGRect)a3 drawableGlyphPathBounds:(CGRect *)a4 edgesClipped:(unint64_t *)a5
+- (BOOL)_glyphPathBoundsExceedsLayers:(CGRect)layers drawableGlyphPathBounds:(CGRect *)bounds edgesClipped:(unint64_t *)clipped
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = [(_UILabelLayer *)self delegate];
-  v13 = [v12 window];
+  height = layers.size.height;
+  width = layers.size.width;
+  y = layers.origin.y;
+  x = layers.origin.x;
+  delegate = [(_UILabelLayer *)self delegate];
+  window = [delegate window];
   v76 = x;
   v77 = y;
   r1 = width;
   v83 = height;
-  [v12 convertRect:v13 toView:{x, y, width, height}];
+  [delegate convertRect:window toView:{x, y, width, height}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -426,12 +426,12 @@ LABEL_18:
   v28 = v24;
   v29 = v25;
   v30 = v26;
-  v31 = [v12 window];
+  window2 = [delegate window];
   v81 = v28;
   v82 = v27;
   r2 = v30;
   v80 = v29;
-  [v12 convertRect:v31 toView:{v27, v28, v29, v30}];
+  [delegate convertRect:window2 toView:{v27, v28, v29, v30}];
   v33 = v32;
   v35 = v34;
   v37 = v36;
@@ -463,7 +463,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  [v12 _currentScreenScale];
+  [delegate _currentScreenScale];
   rect_24 = v37;
   v41 = v40;
   v86.origin.x = v15;
@@ -542,9 +542,9 @@ LABEL_18:
 
   if (v60)
   {
-    if (a5)
+    if (clipped)
     {
-      *a5 = v60;
+      *clipped = v60;
     }
 
     v63 = v82;
@@ -552,12 +552,12 @@ LABEL_18:
     v65 = v80;
     v64 = v81;
     v66 = r2;
-    if (a4)
+    if (bounds)
     {
       v67 = v76;
       v68 = v77;
       v69 = r1;
-      *a4 = CGRectIntersection(*(&v62 - 3), *&v63);
+      *bounds = CGRectIntersection(*(&v62 - 3), *&v63);
     }
 
     v70 = 1;
@@ -579,43 +579,43 @@ LABEL_19:
   [(_UILabelLayer *)self _updateLayers:?];
 }
 
-- (void)setMasksToBounds:(BOOL)a3
+- (void)setMasksToBounds:(BOOL)bounds
 {
-  v3 = a3;
-  if ([(_UILabelLayer *)self masksToBounds]!= a3)
+  boundsCopy = bounds;
+  if ([(_UILabelLayer *)self masksToBounds]!= bounds)
   {
     v5.receiver = self;
     v5.super_class = _UILabelLayer;
-    [(_UILabelLayer *)&v5 setMasksToBounds:v3];
+    [(_UILabelLayer *)&v5 setMasksToBounds:boundsCopy];
     [(_UILabelLayer *)self _updateSublayers];
     [(_UILabelLayer *)self setNeedsLayout];
     [(_UILabelLayer *)self setNeedsDisplay];
   }
 }
 
-- (void)_setLabelMasksToBoundsForAnimation:(BOOL)a3
+- (void)_setLabelMasksToBoundsForAnimation:(BOOL)animation
 {
   v3.receiver = self;
   v3.super_class = _UILabelLayer;
-  [(_UILabelLayer *)&v3 setMasksToBounds:a3];
+  [(_UILabelLayer *)&v3 setMasksToBounds:animation];
 }
 
-- (void)setContentsGravity:(id)a3
+- (void)setContentsGravity:(id)gravity
 {
-  v4 = a3;
+  gravityCopy = gravity;
   v8.receiver = self;
   v8.super_class = _UILabelLayer;
-  [(_UILabelLayer *)&v8 setContentsGravity:v4];
+  [(_UILabelLayer *)&v8 setContentsGravity:gravityCopy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36___UILabelLayer_setContentsGravity___block_invoke;
   v6[3] = &unk_1E712A230;
-  v7 = v4;
-  v5 = v4;
+  v7 = gravityCopy;
+  v5 = gravityCopy;
   [(_UILabelLayer *)self _updateLayers:v6];
 }
 
-- (void)setNeedsDisplayOnBoundsChange:(BOOL)a3
+- (void)setNeedsDisplayOnBoundsChange:(BOOL)change
 {
   v7.receiver = self;
   v7.super_class = _UILabelLayer;
@@ -624,26 +624,26 @@ LABEL_19:
   v5[1] = 3221225472;
   v5[2] = __47___UILabelLayer_setNeedsDisplayOnBoundsChange___block_invoke;
   v5[3] = &__block_descriptor_33_e17_v16__0__CALayer_8l;
-  v6 = a3;
+  changeCopy = change;
   [(_UILabelLayer *)self _updateLayers:v5];
 }
 
-- (void)setContentsFormat:(id)a3
+- (void)setContentsFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   v8.receiver = self;
   v8.super_class = _UILabelLayer;
-  [(_UILabelLayer *)&v8 setContentsFormat:v4];
+  [(_UILabelLayer *)&v8 setContentsFormat:formatCopy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35___UILabelLayer_setContentsFormat___block_invoke;
   v6[3] = &unk_1E712A230;
-  v7 = v4;
-  v5 = v4;
+  v7 = formatCopy;
+  v5 = formatCopy;
   [(_UILabelLayer *)self _updateLayers:v6];
 }
 
-- (void)setContentsMultiplyColor:(CGColor *)a3
+- (void)setContentsMultiplyColor:(CGColor *)color
 {
   v6.receiver = self;
   v6.super_class = _UILabelLayer;
@@ -652,11 +652,11 @@ LABEL_19:
   v5[1] = 3221225472;
   v5[2] = __42___UILabelLayer_setContentsMultiplyColor___block_invoke;
   v5[3] = &__block_descriptor_40_e17_v16__0__CALayer_8l;
-  v5[4] = a3;
+  v5[4] = color;
   [(_UILabelLayer *)self _updateLayers:v5];
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
   v6.receiver = self;
   v6.super_class = _UILabelLayer;
@@ -665,7 +665,7 @@ LABEL_19:
   v5[1] = 3221225472;
   v5[2] = __34___UILabelLayer_setContentsScale___block_invoke;
   v5[3] = &__block_descriptor_40_e17_v16__0__CALayer_8l;
-  *&v5[4] = a3;
+  *&v5[4] = scale;
   [(_UILabelLayer *)self _updateLayers:v5];
 }
 

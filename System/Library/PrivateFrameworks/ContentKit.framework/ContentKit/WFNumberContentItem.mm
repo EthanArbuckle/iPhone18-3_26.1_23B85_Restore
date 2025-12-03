@@ -1,41 +1,41 @@
 @interface WFNumberContentItem
 + (id)coercions;
 + (id)contentCategories;
-+ (id)itemWithNumber:(id)a3 maximumFractionDigitsForDisplay:(id)a4;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)itemWithNumber:(id)number maximumFractionDigitsForDisplay:(id)display;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)ownedTypes;
-- (BOOL)getListSubtitle:(id)a3;
+- (BOOL)getListSubtitle:(id)subtitle;
 - (NSNumber)number;
-- (WFNumberContentItem)initWithCoder:(id)a3;
+- (WFNumberContentItem)initWithCoder:(id)coder;
 - (id)roundedName;
-- (void)copyStateToItem:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)copyStateToItem:(id)item;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFNumberContentItem
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFNumberContentItem;
-  v4 = a3;
-  [(WFContentItem *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFContentItem *)&v7 encodeWithCoder:coderCopy];
   v5 = [@"WFNumberContentItem" stringByAppendingString:{@"maximumFractionDigitsForDisplay", v7.receiver, v7.super_class}];
-  v6 = [(WFNumberContentItem *)self maximumFractionDigitsForDisplay];
-  [v4 encodeObject:v6 forKey:v5];
+  maximumFractionDigitsForDisplay = [(WFNumberContentItem *)self maximumFractionDigitsForDisplay];
+  [coderCopy encodeObject:maximumFractionDigitsForDisplay forKey:v5];
 }
 
-- (WFNumberContentItem)initWithCoder:(id)a3
+- (WFNumberContentItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = WFNumberContentItem;
-  v5 = [(WFContentItem *)&v11 initWithCoder:v4];
+  v5 = [(WFContentItem *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [@"WFNumberContentItem" stringByAppendingString:@"maximumFractionDigitsForDisplay"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:v6];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:v6];
     maximumFractionDigitsForDisplay = v5->_maximumFractionDigitsForDisplay;
     v5->_maximumFractionDigitsForDisplay = v7;
 
@@ -45,15 +45,15 @@
   return v5;
 }
 
-- (void)copyStateToItem:(id)a3
+- (void)copyStateToItem:(id)item
 {
-  v7 = a3;
-  if (v7)
+  itemCopy = item;
+  if (itemCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v7;
+      v4 = itemCopy;
     }
 
     else
@@ -68,16 +68,16 @@
   }
 
   v5 = v4;
-  v6 = [(WFNumberContentItem *)self maximumFractionDigitsForDisplay];
-  [v5 setMaximumFractionDigitsForDisplay:v6];
+  maximumFractionDigitsForDisplay = [(WFNumberContentItem *)self maximumFractionDigitsForDisplay];
+  [v5 setMaximumFractionDigitsForDisplay:maximumFractionDigitsForDisplay];
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(WFContentItem *)self name];
-  v6 = [(WFNumberContentItem *)self roundedName];
-  v7 = [v5 isEqualToString:v6];
+  subtitleCopy = subtitle;
+  name = [(WFContentItem *)self name];
+  roundedName = [(WFNumberContentItem *)self roundedName];
+  v7 = [name isEqualToString:roundedName];
 
   if (v7)
   {
@@ -90,10 +90,10 @@
     v12.super_class = WFNumberContentItem;
     v9 = [(WFContentItem *)&v12 getListSubtitle:0];
     v8 = v9;
-    if (v4 && v9)
+    if (subtitleCopy && v9)
     {
-      v10 = [(WFNumberContentItem *)self roundedName];
-      v4[2](v4, v10);
+      roundedName2 = [(WFNumberContentItem *)self roundedName];
+      subtitleCopy[2](subtitleCopy, roundedName2);
 
       v8 = 1;
     }
@@ -104,9 +104,9 @@
 
 - (id)roundedName
 {
-  v3 = [(WFNumberContentItem *)self number];
-  v4 = [(WFNumberContentItem *)self maximumFractionDigitsForDisplay];
-  v5 = [v3 wfNameWithMaximumFractionDigits:v4];
+  number = [(WFNumberContentItem *)self number];
+  maximumFractionDigitsForDisplay = [(WFNumberContentItem *)self maximumFractionDigitsForDisplay];
+  v5 = [number wfNameWithMaximumFractionDigits:maximumFractionDigitsForDisplay];
 
   return v5;
 }
@@ -118,20 +118,20 @@
   return [(WFContentItem *)self objectForClass:v3];
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Numbers", @"Numbers");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Number", @"Number");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -155,19 +155,19 @@
   return v5;
 }
 
-+ (id)itemWithNumber:(id)a3 maximumFractionDigitsForDisplay:(id)a4
++ (id)itemWithNumber:(id)number maximumFractionDigitsForDisplay:(id)display
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  numberCopy = number;
+  displayCopy = display;
+  if (!numberCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"WFNumberContentItem.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"number"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFNumberContentItem.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"number"}];
   }
 
-  v9 = [v7 wfNameWithMaximumFractionDigits:v8];
-  v10 = [a1 itemWithObject:v7 named:v9];
-  [v10 setMaximumFractionDigitsForDisplay:v8];
+  v9 = [numberCopy wfNameWithMaximumFractionDigits:displayCopy];
+  v10 = [self itemWithObject:numberCopy named:v9];
+  [v10 setMaximumFractionDigitsForDisplay:displayCopy];
 
   return v10;
 }

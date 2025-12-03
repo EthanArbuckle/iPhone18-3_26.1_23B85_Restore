@@ -1,45 +1,45 @@
 @interface LNAssistantContext
-- (LNAssistantContext)initWithCoder:(id)a3;
-- (LNAssistantContext)initWithSessionIdentifier:(id)a3 requestIdentifier:(id)a4 locale:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (LNAssistantContext)initWithCoder:(id)coder;
+- (LNAssistantContext)initWithSessionIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier locale:(id)locale;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNAssistantContext
 
-- (LNAssistantContext)initWithCoder:(id)a3
+- (LNAssistantContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestIdentifier"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
     self = [(LNAssistantContext *)self initWithSessionIdentifier:v5 requestIdentifier:v6 locale:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAssistantContext *)self sessionIdentifier];
-  [v4 encodeObject:v5 forKey:@"sessionIdentifier"];
+  coderCopy = coder;
+  sessionIdentifier = [(LNAssistantContext *)self sessionIdentifier];
+  [coderCopy encodeObject:sessionIdentifier forKey:@"sessionIdentifier"];
 
-  v6 = [(LNAssistantContext *)self requestIdentifier];
-  [v4 encodeObject:v6 forKey:@"requestIdentifier"];
+  requestIdentifier = [(LNAssistantContext *)self requestIdentifier];
+  [coderCopy encodeObject:requestIdentifier forKey:@"requestIdentifier"];
 
-  v7 = [(LNAssistantContext *)self locale];
-  [v4 encodeObject:v7 forKey:@"locale"];
+  locale = [(LNAssistantContext *)self locale];
+  [coderCopy encodeObject:locale forKey:@"locale"];
 }
 
 - (id)description
@@ -47,41 +47,41 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNAssistantContext *)self sessionIdentifier];
-  v7 = [(LNAssistantContext *)self requestIdentifier];
-  v8 = [(LNAssistantContext *)self locale];
-  v9 = [v3 stringWithFormat:@"<%@: %p, sessionIdentifier: %@, requestIdentifier: %@, locale: %@>", v5, self, v6, v7, v8];
+  sessionIdentifier = [(LNAssistantContext *)self sessionIdentifier];
+  requestIdentifier = [(LNAssistantContext *)self requestIdentifier];
+  locale = [(LNAssistantContext *)self locale];
+  v9 = [v3 stringWithFormat:@"<%@: %p, sessionIdentifier: %@, requestIdentifier: %@, locale: %@>", v5, self, sessionIdentifier, requestIdentifier, locale];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(LNAssistantContext *)self sessionIdentifier];
-  v6 = [v5 copy];
+  sessionIdentifier = [(LNAssistantContext *)self sessionIdentifier];
+  v6 = [sessionIdentifier copy];
   [v4 setSessionIdentifier:v6];
 
-  v7 = [(LNAssistantContext *)self requestIdentifier];
-  v8 = [v7 copy];
+  requestIdentifier = [(LNAssistantContext *)self requestIdentifier];
+  v8 = [requestIdentifier copy];
   [v4 setRequestIdentifier:v8];
 
-  v9 = [(LNAssistantContext *)self locale];
-  v10 = [v9 copy];
+  locale = [(LNAssistantContext *)self locale];
+  v10 = [locale copy];
   [v4 setLocale:v10];
 
   return v4;
 }
 
-- (LNAssistantContext)initWithSessionIdentifier:(id)a3 requestIdentifier:(id)a4 locale:(id)a5
+- (LNAssistantContext)initWithSessionIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier locale:(id)locale
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  identifierCopy = identifier;
+  requestIdentifierCopy = requestIdentifier;
+  localeCopy = locale;
+  if (!identifierCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"LNAssistantContext.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"sessionIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAssistantContext.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"sessionIdentifier"}];
   }
 
   v22.receiver = self;
@@ -89,15 +89,15 @@
   v12 = [(LNAssistantContext *)&v22 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [identifierCopy copy];
     sessionIdentifier = v12->_sessionIdentifier;
     v12->_sessionIdentifier = v13;
 
-    v15 = [v10 copy];
+    v15 = [requestIdentifierCopy copy];
     requestIdentifier = v12->_requestIdentifier;
     v12->_requestIdentifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [localeCopy copy];
     locale = v12->_locale;
     v12->_locale = v17;
 

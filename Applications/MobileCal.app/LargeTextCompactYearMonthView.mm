@@ -1,9 +1,9 @@
 @interface LargeTextCompactYearMonthView
-+ (double)heightForInterfaceOrientation:(int64_t)a3 windowSize:(CGSize)a4 heightSizeClass:(int64_t)a5;
-+ (double)leftMarginForWindowSize:(CGSize)a3;
-- (CGRect)frameForGridOfDays:(BOOL)a3;
-- (CGSize)roundedRectSizeForDayNumberString:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (double)heightForInterfaceOrientation:(int64_t)orientation windowSize:(CGSize)size heightSizeClass:(int64_t)class;
++ (double)leftMarginForWindowSize:(CGSize)size;
+- (CGRect)frameForGridOfDays:(BOOL)days;
+- (CGSize)roundedRectSizeForDayNumberString:(id)string;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)circleSize;
 - (double)dayTextSize;
 - (double)daysYAdjustTop;
@@ -16,9 +16,9 @@
 
 @implementation LargeTextCompactYearMonthView
 
-+ (double)leftMarginForWindowSize:(CGSize)a3
++ (double)leftMarginForWindowSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   if (qword_1002517B0 != -1)
   {
     sub_10016F934();
@@ -30,7 +30,7 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (qword_1002517C0 != -1)
   {
@@ -52,9 +52,9 @@
   return result;
 }
 
-+ (double)heightForInterfaceOrientation:(int64_t)a3 windowSize:(CGSize)a4 heightSizeClass:(int64_t)a5
++ (double)heightForInterfaceOrientation:(int64_t)orientation windowSize:(CGSize)size heightSizeClass:(int64_t)class
 {
-  width = a4.width;
+  width = size.width;
   if (qword_1002517D0 != -1)
   {
     sub_10016F95C();
@@ -68,8 +68,8 @@
 
 - (double)headerFontMaxSize
 {
-  v2 = [(LargeTextCompactYearMonthView *)self headerFont];
-  [v2 pointSize];
+  headerFont = [(LargeTextCompactYearMonthView *)self headerFont];
+  [headerFont pointSize];
   v4 = v3;
 
   return v4;
@@ -166,19 +166,19 @@
   return result;
 }
 
-- (CGSize)roundedRectSizeForDayNumberString:(id)a3
+- (CGSize)roundedRectSizeForDayNumberString:(id)string
 {
   v16.receiver = self;
   v16.super_class = LargeTextCompactYearMonthView;
-  v4 = a3;
-  [(LargeTextCompactYearMonthView *)&v16 roundedRectSizeForDayNumberString:v4];
+  stringCopy = string;
+  [(LargeTextCompactYearMonthView *)&v16 roundedRectSizeForDayNumberString:stringCopy];
   v6 = v5;
   v8 = v7;
   v17 = NSFontAttributeName;
-  v9 = [(LargeTextCompactYearMonthView *)self dayNumberFont];
-  v18 = v9;
+  dayNumberFont = [(LargeTextCompactYearMonthView *)self dayNumberFont];
+  v18 = dayNumberFont;
   v10 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-  [v4 sizeWithAttributes:v10];
+  [stringCopy sizeWithAttributes:v10];
   v12 = v11;
 
   v13 = v12 + 4.0;
@@ -198,7 +198,7 @@
   return result;
 }
 
-- (CGRect)frameForGridOfDays:(BOOL)a3
+- (CGRect)frameForGridOfDays:(BOOL)days
 {
   [(LargeTextCompactYearMonthView *)self bounds];
   v5 = v4;
@@ -208,13 +208,13 @@
   v11 = v10;
   [(LargeTextCompactYearMonthView *)self yInset];
   v13 = v7 + v11 + v12;
-  v14 = [(LargeTextCompactYearMonthView *)self calendar];
-  v15 = [v14 copy];
+  calendar = [(LargeTextCompactYearMonthView *)self calendar];
+  v15 = [calendar copy];
 
   [v15 setFirstWeekday:CUIKOneIndexedWeekStart()];
-  v16 = [(LargeTextCompactYearMonthView *)self calendarDate];
-  v17 = [v16 date];
-  [v15 rangeOfUnit:4096 inUnit:8 forDate:v17];
+  calendarDate = [(LargeTextCompactYearMonthView *)self calendarDate];
+  date = [calendarDate date];
+  [v15 rangeOfUnit:4096 inUnit:8 forDate:date];
   v19 = v18;
 
   [(LargeTextCompactYearMonthView *)self ySpacing];

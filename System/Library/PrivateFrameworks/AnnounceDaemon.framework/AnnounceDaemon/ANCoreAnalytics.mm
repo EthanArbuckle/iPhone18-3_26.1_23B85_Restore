@@ -1,21 +1,21 @@
 @interface ANCoreAnalytics
-- (void)send:(id)a3 withPayload:(id)a4;
+- (void)send:(id)send withPayload:(id)payload;
 @end
 
 @implementation ANCoreAnalytics
 
-- (void)send:(id)a3 withPayload:(id)a4
+- (void)send:(id)send withPayload:(id)payload
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CEAB80] sharedInstance];
-  v8 = [v7 BOOLForDefault:*MEMORY[0x277CEA950]];
+  sendCopy = send;
+  payloadCopy = payload;
+  mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+  v8 = [mEMORY[0x277CEAB80] BOOLForDefault:*MEMORY[0x277CEA950]];
 
   if (v8)
   {
-    v9 = [@"com.apple.announce." stringByAppendingString:v5];
-    v12 = v6;
+    v9 = [@"com.apple.announce." stringByAppendingString:sendCopy];
+    v12 = payloadCopy;
     AnalyticsSendEventLazy();
   }
 
@@ -39,9 +39,9 @@
       v15 = 2080;
       v16 = "[ANCoreAnalytics send:withPayload:]";
       v17 = 2112;
-      v18 = v5;
+      v18 = sendCopy;
       v19 = 2112;
-      v20 = v6;
+      v20 = payloadCopy;
       _os_log_impl(&dword_23F525000, v9, OS_LOG_TYPE_DEBUG, "%@%s CA Ignored event name: %@, event payload: %@", buf, 0x2Au);
     }
   }

@@ -16,58 +16,58 @@
 
 - (id)sts_badge
 {
-  v1 = [a1 _sts_cardSectionWithClass:objc_opt_class()];
-  v2 = [v1 badge];
+  v1 = [self _sts_cardSectionWithClass:objc_opt_class()];
+  badge = [v1 badge];
 
-  return v2;
+  return badge;
 }
 
 - (id)sts_searchProviderImage
 {
-  v1 = [a1 _sts_cardSectionWithClass:objc_opt_class()];
-  v2 = [v1 image];
+  v1 = [self _sts_cardSectionWithClass:objc_opt_class()];
+  image = [v1 image];
 
-  return v2;
+  return image;
 }
 
 - (id)sts_videoDuration
 {
-  v1 = [a1 _sts_cardSectionWithClass:objc_opt_class()];
-  v2 = [v1 descriptionText];
-  v3 = [v2 text];
+  v1 = [self _sts_cardSectionWithClass:objc_opt_class()];
+  descriptionText = [v1 descriptionText];
+  text = [descriptionText text];
 
-  return v3;
+  return text;
 }
 
 - (id)sts_providerName
 {
-  v1 = [a1 _sts_cardSectionWithClass:objc_opt_class()];
-  v2 = [v1 title];
+  v1 = [self _sts_cardSectionWithClass:objc_opt_class()];
+  title = [v1 title];
 
-  return v2;
+  return title;
 }
 
 - (id)sts_appProviderName
 {
-  v1 = [a1 punchout];
-  v2 = [v1 label];
+  punchout = [self punchout];
+  label = [punchout label];
 
-  return v2;
+  return label;
 }
 
 - (id)sts_providerHostPageURL
 {
-  v1 = [a1 _sts_cardSectionWithClass:objc_opt_class()];
-  v2 = [v1 hostPageURL];
+  v1 = [self _sts_cardSectionWithClass:objc_opt_class()];
+  hostPageURL = [v1 hostPageURL];
 
-  return v2;
+  return hostPageURL;
 }
 
 - (double)sts_providerIconSize
 {
-  v1 = [a1 _sts_cardSectionWithClass:objc_opt_class()];
-  v2 = [v1 image];
-  [v2 size];
+  v1 = [self _sts_cardSectionWithClass:objc_opt_class()];
+  image = [v1 image];
+  [image size];
   v4 = v3;
 
   return v4;
@@ -75,20 +75,20 @@
 
 - (id)sts_userReportRequest
 {
-  v1 = [a1 _sts_cardSectionWithClass:objc_opt_class()];
-  v2 = [v1 userReportRequest];
+  v1 = [self _sts_cardSectionWithClass:objc_opt_class()];
+  userReportRequest = [v1 userReportRequest];
 
-  return v2;
+  return userReportRequest;
 }
 
 - (void)sts_providerIconWithScale:()SearchToShare completion:
 {
   v6 = a4;
-  v7 = [a1 _sts_cardSectionWithClass:objc_opt_class()];
+  v7 = [self _sts_cardSectionWithClass:objc_opt_class()];
   v8 = MEMORY[0x277D755B8];
-  v9 = [v7 image];
-  v10 = [v9 imageData];
-  v11 = [v8 imageWithData:v10 scale:a2];
+  image = [v7 image];
+  imageData = [image imageData];
+  v11 = [v8 imageWithData:imageData scale:a2];
 
   if (v11)
   {
@@ -100,33 +100,33 @@
 
   else
   {
-    v12 = [v7 image];
+    image2 = [v7 image];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __70__SFSearchResult_SearchToShare__sts_providerIconWithScale_completion___block_invoke;
     v13[3] = &unk_279B8AD90;
     v15 = a2;
     v14 = v6;
-    [v12 loadImageDataWithCompletionHandler:v13];
+    [image2 loadImageDataWithCompletionHandler:v13];
   }
 }
 
 - (id)sts_descriptionText
 {
-  v1 = [a1 _sts_cardSectionWithClass:objc_opt_class()];
-  v2 = [v1 descriptionText];
-  v3 = [v2 text];
+  v1 = [self _sts_cardSectionWithClass:objc_opt_class()];
+  descriptionText = [v1 descriptionText];
+  text = [descriptionText text];
 
-  return v3;
+  return text;
 }
 
 - (id)_sts_cardSectionWithClass:()SearchToShare
 {
-  if (a3 && ([a1 inlineCard], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "cardSections"), v6 = objc_claimAutoreleasedReturnValue(), v12[0] = MEMORY[0x277D85DD0], v12[1] = 3221225472, v12[2] = __59__SFSearchResult_SearchToShare___sts_cardSectionWithClass___block_invoke, v12[3] = &__block_descriptor_40_e30_B32__0__SFCardSection_8Q16_B24lu32l8, v12[4] = a3, v7 = objc_msgSend(v6, "indexOfObjectPassingTest:", v12), v6, v5, v7 != 0x7FFFFFFFFFFFFFFFLL))
+  if (a3 && ([self inlineCard], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "cardSections"), v6 = objc_claimAutoreleasedReturnValue(), v12[0] = MEMORY[0x277D85DD0], v12[1] = 3221225472, v12[2] = __59__SFSearchResult_SearchToShare___sts_cardSectionWithClass___block_invoke, v12[3] = &__block_descriptor_40_e30_B32__0__SFCardSection_8Q16_B24lu32l8, v12[4] = a3, v7 = objc_msgSend(v6, "indexOfObjectPassingTest:", v12), v6, v5, v7 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v9 = [a1 inlineCard];
-    v10 = [v9 cardSections];
-    v8 = [v10 objectAtIndexedSubscript:v7];
+    inlineCard = [self inlineCard];
+    cardSections = [inlineCard cardSections];
+    v8 = [cardSections objectAtIndexedSubscript:v7];
   }
 
   else

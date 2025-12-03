@@ -1,46 +1,46 @@
 @interface CRLZipWriter
 - (BOOL)isClosed;
-- (CRLZipWriter)initWithOptions:(unint64_t)a3;
+- (CRLZipWriter)initWithOptions:(unint64_t)options;
 - (NSArray)sortedEntries;
-- (id)entryWithName:(id)a3;
-- (id)localFileHeaderDataForEntry:(id)a3;
+- (id)entryWithName:(id)name;
+- (id)localFileHeaderDataForEntry:(id)entry;
 - (id)p_writeChannel;
-- (id)prepareWriteChannelWithCloseCompletionHandler:(id)a3;
+- (id)prepareWriteChannelWithCloseCompletionHandler:(id)handler;
 - (id)sortedEntriesImpl;
 - (unint64_t)archiveLength;
 - (unint64_t)entriesCount;
-- (void)addBarrier:(id)a3;
-- (void)addData:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)addDataImpl:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)addExistingEntry:(id)a3;
-- (void)addExistingEntryImpl:(id)a3;
-- (void)beginEntryWithName:(id)a3 force32BitSize:(BOOL)a4 lastModificationDate:(id)a5 size:(unint64_t)a6 CRC:(unsigned int)a7 forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)a8;
-- (void)beginEntryWithNameImpl:(id)a3 force32BitSize:(BOOL)a4 lastModificationDate:(id)a5 size:(unint64_t)a6 CRC:(unsigned int)a7 forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)a8;
-- (void)closeWithQueue:(id)a3 completion:(id)a4;
-- (void)enumerateEntriesUsingBlock:(id)a3;
+- (void)addBarrier:(id)barrier;
+- (void)addData:(id)data queue:(id)queue completion:(id)completion;
+- (void)addDataImpl:(id)impl queue:(id)queue completion:(id)completion;
+- (void)addExistingEntry:(id)entry;
+- (void)addExistingEntryImpl:(id)impl;
+- (void)beginEntryWithName:(id)name force32BitSize:(BOOL)size lastModificationDate:(id)date size:(unint64_t)a6 CRC:(unsigned int)c forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)modificationDate;
+- (void)beginEntryWithNameImpl:(id)impl force32BitSize:(BOOL)size lastModificationDate:(id)date size:(unint64_t)a6 CRC:(unsigned int)c forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)modificationDate;
+- (void)closeWithQueue:(id)queue completion:(id)completion;
+- (void)enumerateEntriesUsingBlock:(id)block;
 - (void)finishEntry;
-- (void)flushCurrentEntryWithQueue:(id)a3 completion:(id)a4;
+- (void)flushCurrentEntryWithQueue:(id)queue completion:(id)completion;
 - (void)flushEntryData;
-- (void)handleWriteError:(id)a3;
-- (void)p_writeData:(id)a3 offset:(int64_t)a4 completion:(id)a5;
-- (void)setEntryInsertionOffset:(int64_t)a3;
-- (void)truncateToNumberOfEntries:(unint64_t)a3 completion:(id)a4;
-- (void)truncateToNumberOfEntriesImpl:(unint64_t)a3 completion:(id)a4;
-- (void)truncateToOffset:(int64_t)a3 completion:(id)a4;
-- (void)truncateToOffsetImpl:(int64_t)a3 completion:(id)a4;
+- (void)handleWriteError:(id)error;
+- (void)p_writeData:(id)data offset:(int64_t)offset completion:(id)completion;
+- (void)setEntryInsertionOffset:(int64_t)offset;
+- (void)truncateToNumberOfEntries:(unint64_t)entries completion:(id)completion;
+- (void)truncateToNumberOfEntriesImpl:(unint64_t)impl completion:(id)completion;
+- (void)truncateToOffset:(int64_t)offset completion:(id)completion;
+- (void)truncateToOffsetImpl:(int64_t)impl completion:(id)completion;
 - (void)writeCentralDirectory;
-- (void)writeCentralFileHeaderDataForEntry:(id)a3;
-- (void)writeData:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)writeEndOfCentralDirectoryDataWithOffset:(int64_t)a3 size:(int64_t)a4 entryCount:(unint64_t)a5;
-- (void)writeEntryWithName:(id)a3 force32BitSize:(BOOL)a4 lastModificationDate:(id)a5 size:(unint64_t)a6 CRC:(unsigned int)a7 fromReadChannel:(id)a8 completion:(id)a9;
-- (void)writeEntryWithName:(id)a3 force32BitSize:(BOOL)a4 lastModificationDate:(id)a5 size:(unint64_t)a6 CRC:(unsigned int)a7 fromReadChannel:(id)a8 writeHandler:(id)a9;
-- (void)writeZip64EndOfCentralDirectoryLocatorWithOffset:(int64_t)a3;
-- (void)writeZip64EndOfCentralDirectoryWithOffset:(int64_t)a3 size:(int64_t)a4 entryCount:(unint64_t)a5;
+- (void)writeCentralFileHeaderDataForEntry:(id)entry;
+- (void)writeData:(id)data queue:(id)queue completion:(id)completion;
+- (void)writeEndOfCentralDirectoryDataWithOffset:(int64_t)offset size:(int64_t)size entryCount:(unint64_t)count;
+- (void)writeEntryWithName:(id)name force32BitSize:(BOOL)size lastModificationDate:(id)date size:(unint64_t)a6 CRC:(unsigned int)c fromReadChannel:(id)channel completion:(id)completion;
+- (void)writeEntryWithName:(id)name force32BitSize:(BOOL)size lastModificationDate:(id)date size:(unint64_t)a6 CRC:(unsigned int)c fromReadChannel:(id)channel writeHandler:(id)handler;
+- (void)writeZip64EndOfCentralDirectoryLocatorWithOffset:(int64_t)offset;
+- (void)writeZip64EndOfCentralDirectoryWithOffset:(int64_t)offset size:(int64_t)size entryCount:(unint64_t)count;
 @end
 
 @implementation CRLZipWriter
 
-- (CRLZipWriter)initWithOptions:(unint64_t)a3
+- (CRLZipWriter)initWithOptions:(unint64_t)options
 {
   v19.receiver = self;
   v19.super_class = CRLZipWriter;
@@ -48,7 +48,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_options = a3;
+    v4->_options = options;
     v6 = objc_opt_new();
     entries = v5->_entries;
     v5->_entries = v6;
@@ -160,33 +160,33 @@
   return writeChannel;
 }
 
-- (void)beginEntryWithName:(id)a3 force32BitSize:(BOOL)a4 lastModificationDate:(id)a5 size:(unint64_t)a6 CRC:(unsigned int)a7 forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)a8
+- (void)beginEntryWithName:(id)name force32BitSize:(BOOL)size lastModificationDate:(id)date size:(unint64_t)a6 CRC:(unsigned int)c forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)modificationDate
 {
-  v14 = a3;
-  v15 = a5;
+  nameCopy = name;
+  dateCopy = date;
   writeQueue = self->_writeQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100563988;
   block[3] = &unk_10186F2D8;
   block[4] = self;
-  v20 = v14;
-  v24 = a4;
-  v21 = v15;
+  v20 = nameCopy;
+  sizeCopy = size;
+  v21 = dateCopy;
   v22 = a6;
-  v23 = a7;
-  v25 = a8;
-  v17 = v15;
-  v18 = v14;
+  cCopy = c;
+  modificationDateCopy = modificationDate;
+  v17 = dateCopy;
+  v18 = nameCopy;
   dispatch_async(writeQueue, block);
 }
 
-- (void)beginEntryWithNameImpl:(id)a3 force32BitSize:(BOOL)a4 lastModificationDate:(id)a5 size:(unint64_t)a6 CRC:(unsigned int)a7 forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)a8
+- (void)beginEntryWithNameImpl:(id)impl force32BitSize:(BOOL)size lastModificationDate:(id)date size:(unint64_t)a6 CRC:(unsigned int)c forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)modificationDate
 {
-  v8 = a8;
-  v9 = *&a7;
-  v14 = a3;
-  v15 = a5;
+  modificationDateCopy = modificationDate;
+  v9 = *&c;
+  implCopy = impl;
+  dateCopy = date;
   if (self->_isClosed)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -220,11 +220,11 @@
     abort();
   }
 
-  v16 = v15;
+  v16 = dateCopy;
   if (!self->_error)
   {
     [(CRLZipWriter *)self finishEntry];
-    v17 = [(NSMutableDictionary *)self->_entriesMap objectForKeyedSubscript:v14];
+    v17 = [(NSMutableDictionary *)self->_entriesMap objectForKeyedSubscript:implCopy];
 
     if (v17)
     {
@@ -237,7 +237,7 @@
       v19 = off_1019EDA68;
       if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
       {
-        sub_1013938F8(v14, v18, v19);
+        sub_1013938F8(implCopy, v18, v19);
       }
 
       if (qword_101AD5A10 != -1)
@@ -253,7 +253,7 @@
 
       v21 = [NSString stringWithUTF8String:"[CRLZipWriter beginEntryWithNameImpl:force32BitSize:lastModificationDate:size:CRC:forceCalculatingSizeAndCRCForPreservingLastModificationDate:]"];
       v22 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/Zip/CRLZipWriter.m"];
-      [CRLAssertionHandler handleFailureInFunction:v21 file:v22 lineNumber:166 isFatal:0 description:"Already have an entry with name: %@", v14];
+      [CRLAssertionHandler handleFailureInFunction:v21 file:v22 lineNumber:166 isFatal:0 description:"Already have an entry with name: %@", implCopy];
     }
 
     else
@@ -262,11 +262,11 @@
       currentEntry = self->_currentEntry;
       self->_currentEntry = v23;
 
-      [(CRLZipWriterEntry *)self->_currentEntry setName:v14];
+      [(CRLZipWriterEntry *)self->_currentEntry setName:implCopy];
       [(CRLZipWriterEntry *)self->_currentEntry setOffset:self->_currentOffset];
       if (a6)
       {
-        v25 = v8;
+        v25 = modificationDateCopy;
       }
 
       else
@@ -275,7 +275,7 @@
       }
 
       self->_calculateSize = v25;
-      if (v8)
+      if (modificationDateCopy)
       {
         v26 = 0;
       }
@@ -286,10 +286,10 @@
       }
 
       [(CRLZipWriterEntry *)self->_currentEntry setSize:v26];
-      self->_force32BitSize = self->_calculateSize && a4;
+      self->_force32BitSize = self->_calculateSize && size;
       if (v9)
       {
-        v27 = v8;
+        v27 = modificationDateCopy;
       }
 
       else
@@ -305,7 +305,7 @@
       }
 
       [(CRLZipWriterEntry *)self->_currentEntry setCRC:v28];
-      if (v8)
+      if (modificationDateCopy)
       {
         [(CRLZipWriterEntry *)self->_currentEntry setLastModificationDate:self->_newEntryLastModificationDate];
         self->_sizeToMatch = a6;
@@ -354,31 +354,31 @@
   }
 }
 
-- (void)addData:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)addData:(id)data queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  queueCopy = queue;
+  completionCopy = completion;
   writeQueue = self->_writeQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100563FA4;
   v15[3] = &unk_101842D00;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dataCopy;
+  v17 = queueCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = queueCopy;
+  v14 = dataCopy;
   dispatch_async(writeQueue, v15);
 }
 
-- (void)addDataImpl:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)addDataImpl:(id)impl queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  implCopy = impl;
+  queueCopy = queue;
+  completionCopy = completion;
   if (self->_isClosed)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -412,13 +412,13 @@
     abort();
   }
 
-  v11 = v10;
+  v11 = completionCopy;
   v12 = self->_error;
   if (v12)
   {
     if (v11)
     {
-      if (v9)
+      if (queueCopy)
       {
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
@@ -426,7 +426,7 @@
         block[3] = &unk_101839D68;
         v34 = v11;
         v33 = v12;
-        dispatch_async(v9, block);
+        dispatch_async(queueCopy, block);
       }
 
       else
@@ -438,25 +438,25 @@
     goto LABEL_15;
   }
 
-  size = dispatch_data_get_size(v8);
+  size = dispatch_data_get_size(implCopy);
   entryDatas = self->_entryDatas;
   if (entryDatas)
   {
     localFileHeaderData = self->_localFileHeaderData;
     if (dispatch_data_get_size(localFileHeaderData) + size + self->_entryDataSize < 0x40000)
     {
-      [(NSMutableArray *)entryDatas addObject:v8];
+      [(NSMutableArray *)entryDatas addObject:implCopy];
       self->_entryDataSize += size;
       if (v11)
       {
-        if (v9)
+        if (queueCopy)
         {
           v30[0] = _NSConcreteStackBlock;
           v30[1] = 3221225472;
           v30[2] = sub_100564408;
           v30[3] = &unk_10183B230;
           v31 = v11;
-          dispatch_async(v9, v30);
+          dispatch_async(queueCopy, v30);
         }
 
         else
@@ -475,7 +475,7 @@
     [(CRLZipWriter *)self flushEntryData];
   }
 
-  [(CRLZipWriter *)self writeData:v8 queue:v9 completion:v11];
+  [(CRLZipWriter *)self writeData:implCopy queue:queueCopy completion:v11];
 LABEL_10:
   if (self->_calculateSize)
   {
@@ -489,7 +489,7 @@ LABEL_10:
     applier[2] = sub_10056441C;
     applier[3] = &unk_10186F400;
     applier[4] = self;
-    dispatch_data_apply(v8, applier);
+    dispatch_data_apply(implCopy, applier);
   }
 
 LABEL_15:
@@ -534,20 +534,20 @@ LABEL_15:
   self->_entryDataSize = 0;
 }
 
-- (void)flushCurrentEntryWithQueue:(id)a3 completion:(id)a4
+- (void)flushCurrentEntryWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   writeQueue = self->_writeQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1005646E4;
   block[3] = &unk_101842CD8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = queueCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = queueCopy;
   dispatch_async(writeQueue, block);
 }
 
@@ -621,8 +621,8 @@ LABEL_15:
   [(NSMutableArray *)self->_entries addObject:currentEntry];
   entriesMap = self->_entriesMap;
   v9 = self->_currentEntry;
-  v11 = [(CRLZipWriterEntry *)v9 name];
-  [(NSMutableDictionary *)entriesMap setObject:v9 forKeyedSubscript:v11];
+  name = [(CRLZipWriterEntry *)v9 name];
+  [(NSMutableDictionary *)entriesMap setObject:v9 forKeyedSubscript:name];
 
   sortedEntries = self->_sortedEntries;
   self->_sortedEntries = 0;
@@ -631,26 +631,26 @@ LABEL_15:
   self->_currentEntry = 0;
 }
 
-- (void)writeEntryWithName:(id)a3 force32BitSize:(BOOL)a4 lastModificationDate:(id)a5 size:(unint64_t)a6 CRC:(unsigned int)a7 fromReadChannel:(id)a8 completion:(id)a9
+- (void)writeEntryWithName:(id)name force32BitSize:(BOOL)size lastModificationDate:(id)date size:(unint64_t)a6 CRC:(unsigned int)c fromReadChannel:(id)channel completion:(id)completion
 {
-  v10 = *&a7;
-  v13 = a4;
+  v10 = *&c;
+  sizeCopy = size;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100564ECC;
   v17[3] = &unk_10186F4B0;
-  v18 = a9;
-  v16 = v18;
-  [(CRLZipWriter *)self writeEntryWithName:a3 force32BitSize:v13 lastModificationDate:a5 size:a6 CRC:v10 fromReadChannel:a8 writeHandler:v17];
+  completionCopy = completion;
+  v16 = completionCopy;
+  [(CRLZipWriter *)self writeEntryWithName:name force32BitSize:sizeCopy lastModificationDate:date size:a6 CRC:v10 fromReadChannel:channel writeHandler:v17];
 }
 
-- (void)writeEntryWithName:(id)a3 force32BitSize:(BOOL)a4 lastModificationDate:(id)a5 size:(unint64_t)a6 CRC:(unsigned int)a7 fromReadChannel:(id)a8 writeHandler:(id)a9
+- (void)writeEntryWithName:(id)name force32BitSize:(BOOL)size lastModificationDate:(id)date size:(unint64_t)a6 CRC:(unsigned int)c fromReadChannel:(id)channel writeHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a8;
-  v18 = a9;
-  if (!v17)
+  nameCopy = name;
+  dateCopy = date;
+  channelCopy = channel;
+  handlerCopy = handler;
+  if (!channelCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -685,67 +685,67 @@ LABEL_15:
   block[2] = sub_10056521C;
   block[3] = &unk_10186F580;
   block[4] = self;
-  v28 = v15;
-  v34 = a4;
-  v33 = a7;
-  v29 = v16;
-  v30 = v17;
-  v31 = v18;
+  v28 = nameCopy;
+  sizeCopy = size;
+  cCopy = c;
+  v29 = dateCopy;
+  v30 = channelCopy;
+  v31 = handlerCopy;
   v32 = a6;
-  v23 = v18;
-  v24 = v17;
-  v25 = v16;
-  v26 = v15;
+  v23 = handlerCopy;
+  v24 = channelCopy;
+  v25 = dateCopy;
+  v26 = nameCopy;
   dispatch_async(writeQueue, block);
 }
 
-- (void)addExistingEntry:(id)a3
+- (void)addExistingEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   writeQueue = self->_writeQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100565654;
   v7[3] = &unk_10183AE28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = entryCopy;
+  v6 = entryCopy;
   dispatch_sync(writeQueue, v7);
 }
 
-- (void)addExistingEntryImpl:(id)a3
+- (void)addExistingEntryImpl:(id)impl
 {
-  v11 = a3;
+  implCopy = impl;
   v4 = objc_alloc_init(CRLZipWriterEntry);
-  v5 = [v11 name];
-  [(CRLZipWriterEntry *)v4 setName:v5];
+  name = [implCopy name];
+  [(CRLZipWriterEntry *)v4 setName:name];
 
-  v6 = [v11 lastModificationDate];
-  [(CRLZipWriterEntry *)v4 setLastModificationDate:v6];
+  lastModificationDate = [implCopy lastModificationDate];
+  [(CRLZipWriterEntry *)v4 setLastModificationDate:lastModificationDate];
 
-  if ([v11 isCompressed])
+  if ([implCopy isCompressed])
   {
-    v7 = [v11 compressedSize];
+    compressedSize = [implCopy compressedSize];
   }
 
   else
   {
-    v7 = [v11 size];
+    compressedSize = [implCopy size];
   }
 
-  [(CRLZipWriterEntry *)v4 setSize:v7];
-  -[CRLZipWriterEntry setOffset:](v4, "setOffset:", [v11 offset]);
-  -[CRLZipWriterEntry setCRC:](v4, "setCRC:", [v11 CRC]);
+  [(CRLZipWriterEntry *)v4 setSize:compressedSize];
+  -[CRLZipWriterEntry setOffset:](v4, "setOffset:", [implCopy offset]);
+  -[CRLZipWriterEntry setCRC:](v4, "setCRC:", [implCopy CRC]);
   [(NSMutableArray *)self->_entries addObject:v4];
   entriesMap = self->_entriesMap;
-  v9 = [v11 name];
-  [(NSMutableDictionary *)entriesMap setObject:v4 forKeyedSubscript:v9];
+  name2 = [implCopy name];
+  [(NSMutableDictionary *)entriesMap setObject:v4 forKeyedSubscript:name2];
 
   sortedEntries = self->_sortedEntries;
   self->_sortedEntries = 0;
 }
 
-- (void)setEntryInsertionOffset:(int64_t)a3
+- (void)setEntryInsertionOffset:(int64_t)offset
 {
   writeQueue = self->_writeQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -753,15 +753,15 @@ LABEL_15:
   v4[2] = sub_100565808;
   v4[3] = &unk_10183B720;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = offset;
   dispatch_sync(writeQueue, v4);
 }
 
-- (void)addBarrier:(id)a3
+- (void)addBarrier:(id)barrier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  barrierCopy = barrier;
+  v5 = barrierCopy;
+  if (barrierCopy)
   {
     writeQueue = self->_writeQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -769,25 +769,25 @@ LABEL_15:
     v7[2] = sub_1005658C8;
     v7[3] = &unk_10183FC10;
     v7[4] = self;
-    v8 = v4;
+    v8 = barrierCopy;
     dispatch_async(writeQueue, v7);
   }
 }
 
-- (void)closeWithQueue:(id)a3 completion:(id)a4
+- (void)closeWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   writeQueue = self->_writeQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100565B30;
   block[3] = &unk_101842CD8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = queueCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = queueCopy;
   dispatch_async(writeQueue, block);
 }
 
@@ -828,14 +828,14 @@ LABEL_15:
   [(CRLZipWriter *)self writeEndOfCentralDirectoryDataWithOffset:currentOffset size:self->_currentOffset - currentOffset entryCount:[(NSMutableArray *)self->_entries count]];
 }
 
-- (id)localFileHeaderDataForEntry:(id)a3
+- (id)localFileHeaderDataForEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 UTF8String];
+  entryCopy = entry;
+  name = [entryCopy name];
+  uTF8String = [name UTF8String];
 
-  __src = v6;
-  v7 = strlen(v6);
+  __src = uTF8String;
+  v7 = strlen(uTF8String);
   if (v7 >= 0x10000)
   {
     if (qword_101AD5A08 != -1)
@@ -852,7 +852,7 @@ LABEL_15:
   }
 
   v8 = self->_options & 1;
-  v9 = v8 | ([v4 size] >> 32);
+  v9 = v8 | ([entryCopy size] >> 32);
   v10 = v9 != 0;
   if (v9 || self->_calculateSize)
   {
@@ -880,24 +880,24 @@ LABEL_15:
   *v13 = 67324752;
   v13[1] = 20;
   *(v13 + 4) = 0;
-  v15 = [v4 lastModificationDate];
-  v16 = [v15 crl_DOSTime];
+  lastModificationDate = [entryCopy lastModificationDate];
+  crl_DOSTime = [lastModificationDate crl_DOSTime];
 
-  HIDWORD(v17) = v16;
-  LODWORD(v17) = v16;
+  HIDWORD(v17) = crl_DOSTime;
+  LODWORD(v17) = crl_DOSTime;
   *(v13 + 10) = v17 >> 16;
-  *(v13 + 14) = [v4 CRC];
+  *(v13 + 14) = [entryCopy CRC];
   if (!v10)
   {
-    *(v13 + 18) = [v4 size];
+    *(v13 + 18) = [entryCopy size];
 LABEL_18:
-    v20 = [v4 size];
+    v20 = [entryCopy size];
     goto LABEL_20;
   }
 
   if (self->_force32BitSize)
   {
-    v18 = [v4 size];
+    v18 = [entryCopy size];
     force32BitSize = self->_force32BitSize;
     *(v13 + 18) = v18;
     if (!force32BitSize)
@@ -921,7 +921,7 @@ LABEL_20:
     v21 = &v14[v7];
     *v21 = 1;
     *(v21 + 1) = 16;
-    v22 = [v4 size];
+    v22 = [entryCopy size];
     *(v21 + 4) = v22;
     *(v21 + 12) = v22;
   }
@@ -931,14 +931,14 @@ LABEL_20:
   return v23;
 }
 
-- (void)writeCentralFileHeaderDataForEntry:(id)a3
+- (void)writeCentralFileHeaderDataForEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 UTF8String];
+  entryCopy = entry;
+  name = [entryCopy name];
+  uTF8String = [name UTF8String];
 
-  __src = v6;
-  v7 = strlen(v6);
+  __src = uTF8String;
+  v7 = strlen(uTF8String);
   if (v7 >= 0x10000)
   {
     if (qword_101AD5A08 != -1)
@@ -954,10 +954,10 @@ LABEL_20:
     v7 = 0xFFFFLL;
   }
 
-  v27 = self;
+  selfCopy = self;
   v8 = self->_options & 2;
-  v9 = v8 | ([v4 size] >> 32);
-  v10 = v8 | ([v4 offset] >> 32);
+  v9 = v8 | ([entryCopy size] >> 32);
+  v10 = v8 | ([entryCopy offset] >> 32);
   v11 = 4 * ((v9 | v10) != 0);
   if (v9)
   {
@@ -980,13 +980,13 @@ LABEL_20:
   v16 = v15 + 46;
   *v15 = 33639248;
   *(v15 + 4) = 1310782;
-  v17 = [v4 lastModificationDate];
-  v18 = [v17 crl_DOSTime];
+  lastModificationDate = [entryCopy lastModificationDate];
+  crl_DOSTime = [lastModificationDate crl_DOSTime];
 
-  HIDWORD(v19) = v18;
-  LODWORD(v19) = v18;
+  HIDWORD(v19) = crl_DOSTime;
+  LODWORD(v19) = crl_DOSTime;
   *(v15 + 3) = v19 >> 16;
-  *(v15 + 4) = [v4 CRC];
+  *(v15 + 4) = [entryCopy CRC];
   if (v9)
   {
     v20 = -1;
@@ -995,8 +995,8 @@ LABEL_20:
 
   else
   {
-    *(v15 + 5) = [v4 size];
-    v20 = [v4 size];
+    *(v15 + 5) = [entryCopy size];
+    v20 = [entryCopy size];
   }
 
   *(v15 + 6) = v20;
@@ -1021,7 +1021,7 @@ LABEL_20:
 
   else
   {
-    *(v15 + 42) = [v4 offset];
+    *(v15 + 42) = [entryCopy offset];
     memcpy(v16, __src, v7);
     if (!v9)
     {
@@ -1035,27 +1035,27 @@ LABEL_20:
 
   v24 = &v16[v7];
   *v23 = 16;
-  *v22 = [v4 size];
-  *(v24 + 12) = [v4 size];
+  *v22 = [entryCopy size];
+  *(v24 + 12) = [entryCopy size];
   if (v21)
   {
     v22 = v24 + 20;
 LABEL_22:
     *v23 += 8;
-    *v22 = [v4 offset];
+    *v22 = [entryCopy offset];
   }
 
 LABEL_23:
   v25 = dispatch_data_create(v15, v14 + 46, 0, _dispatch_data_destructor_free);
-  [(CRLZipWriter *)v27 writeData:v25];
+  [(CRLZipWriter *)selfCopy writeData:v25];
 }
 
-- (void)writeEndOfCentralDirectoryDataWithOffset:(int64_t)a3 size:(int64_t)a4 entryCount:(unint64_t)a5
+- (void)writeEndOfCentralDirectoryDataWithOffset:(int64_t)offset size:(int64_t)size entryCount:(unint64_t)count
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  if (a5 > 0xFFFE)
+  countCopy = count;
+  sizeCopy = size;
+  offsetCopy = offset;
+  if (count > 0xFFFE)
   {
     v9 = 1;
   }
@@ -1065,7 +1065,7 @@ LABEL_23:
     v9 = (LOBYTE(self->_options) >> 2) & 1;
   }
 
-  if (a4 > 4294967294)
+  if (size > 4294967294)
   {
     v10 = 1;
   }
@@ -1075,7 +1075,7 @@ LABEL_23:
     v10 = (LOBYTE(self->_options) >> 2) & 1;
   }
 
-  if (a3 > 4294967294)
+  if (offset > 4294967294)
   {
     v11 = 1;
   }
@@ -1088,7 +1088,7 @@ LABEL_23:
   if ((v9 & 1) != 0 || (v10 & 1) != 0 || v11)
   {
     currentOffset = self->_currentOffset;
-    [(CRLZipWriter *)self writeZip64EndOfCentralDirectoryWithOffset:a3 size:a4 entryCount:a5];
+    [(CRLZipWriter *)self writeZip64EndOfCentralDirectoryWithOffset:offset size:size entryCount:count];
     [(CRLZipWriter *)self writeZip64EndOfCentralDirectoryLocatorWithOffset:currentOffset];
   }
 
@@ -1101,7 +1101,7 @@ LABEL_23:
 
   else
   {
-    v14 = v5;
+    v14 = countCopy;
   }
 
   v13[4] = v14;
@@ -1113,7 +1113,7 @@ LABEL_23:
 
   else
   {
-    v15 = v6;
+    v15 = sizeCopy;
   }
 
   if (v11)
@@ -1123,7 +1123,7 @@ LABEL_23:
 
   else
   {
-    v16 = v7;
+    v16 = offsetCopy;
   }
 
   *(v13 + 3) = v15;
@@ -1133,72 +1133,72 @@ LABEL_23:
   [(CRLZipWriter *)self writeData:v17];
 }
 
-- (void)writeZip64EndOfCentralDirectoryWithOffset:(int64_t)a3 size:(int64_t)a4 entryCount:(unint64_t)a5
+- (void)writeZip64EndOfCentralDirectoryWithOffset:(int64_t)offset size:(int64_t)size entryCount:(unint64_t)count
 {
   v9 = malloc_type_malloc(0x38uLL, 0xB0DA3BCEuLL);
   *v9 = 101075792;
   *(v9 + 4) = 44;
   v9[2] = 0;
-  v9[3] = a5;
+  v9[3] = count;
   *(v9 + 3) = 1310782;
-  v9[4] = a5;
-  v9[5] = a4;
-  v9[6] = a3;
+  v9[4] = count;
+  v9[5] = size;
+  v9[6] = offset;
   v10 = dispatch_data_create(v9, 0x38uLL, 0, _dispatch_data_destructor_free);
   [(CRLZipWriter *)self writeData:v10];
 }
 
-- (void)writeZip64EndOfCentralDirectoryLocatorWithOffset:(int64_t)a3
+- (void)writeZip64EndOfCentralDirectoryLocatorWithOffset:(int64_t)offset
 {
   v5 = malloc_type_malloc(0x14uLL, 0x9D4DBAB6uLL);
   *v5 = 117853008;
   v5[1] = 0;
-  *(v5 + 1) = a3;
+  *(v5 + 1) = offset;
   v5[4] = 1;
   v6 = dispatch_data_create(v5, 0x14uLL, 0, _dispatch_data_destructor_free);
   [(CRLZipWriter *)self writeData:v6];
 }
 
-- (void)writeData:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)writeData:(id)data queue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  size = dispatch_data_get_size(a3);
+  queueCopy = queue;
+  completionCopy = completion;
+  size = dispatch_data_get_size(data);
   self->_currentOffset += size;
   writtenOffset = self->_writtenOffset;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100566D24;
   v14[3] = &unk_10186F690;
-  v15 = v8;
-  v16 = v9;
-  v12 = v8;
-  v13 = v9;
-  [(CRLZipWriter *)self p_writeData:a3 offset:writtenOffset completion:v14];
+  v15 = queueCopy;
+  v16 = completionCopy;
+  v12 = queueCopy;
+  v13 = completionCopy;
+  [(CRLZipWriter *)self p_writeData:data offset:writtenOffset completion:v14];
   self->_writtenOffset += size;
 }
 
-- (void)p_writeData:(id)a3 offset:(int64_t)a4 completion:(id)a5
+- (void)p_writeData:(id)data offset:(int64_t)offset completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   channelQueue = self->_channelQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100566ED0;
   v13[3] = &unk_10185CC98;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = dataCopy;
+  v15 = completionCopy;
+  offsetCopy = offset;
+  v11 = completionCopy;
+  v12 = dataCopy;
   dispatch_async(channelQueue, v13);
 }
 
-- (id)prepareWriteChannelWithCloseCompletionHandler:(id)a3
+- (id)prepareWriteChannelWithCloseCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -1275,13 +1275,13 @@ LABEL_23:
   return v3;
 }
 
-- (void)handleWriteError:(id)a3
+- (void)handleWriteError:(id)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (errorCopy)
   {
-    if ([v5 code] != 3072 || (objc_msgSend(v6, "domain"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", NSCocoaErrorDomain), v7, (v8 & 1) == 0))
+    if ([errorCopy code] != 3072 || (objc_msgSend(v6, "domain"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", NSCocoaErrorDomain), v7, (v8 & 1) == 0))
     {
       if (qword_101AD5A08 != -1)
       {
@@ -1297,7 +1297,7 @@ LABEL_23:
 
     if (!self->_error)
     {
-      objc_storeStrong(&self->_error, a3);
+      objc_storeStrong(&self->_error, error);
       channelQueue = self->_channelQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -1309,17 +1309,17 @@ LABEL_23:
   }
 }
 
-- (void)enumerateEntriesUsingBlock:(id)a3
+- (void)enumerateEntriesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   writeQueue = self->_writeQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10056778C;
   v7[3] = &unk_10183FC10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(writeQueue, v7);
 }
 
@@ -1379,9 +1379,9 @@ LABEL_23:
   return v3;
 }
 
-- (id)entryWithName:(id)a3
+- (id)entryWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1393,10 +1393,10 @@ LABEL_23:
   block[1] = 3221225472;
   block[2] = sub_100567D40;
   block[3] = &unk_10183DE60;
-  v10 = v4;
+  v10 = nameCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = nameCopy;
   dispatch_sync(writeQueue, block);
   v7 = v13[5];
 
@@ -1405,82 +1405,82 @@ LABEL_23:
   return v7;
 }
 
-- (void)truncateToNumberOfEntries:(unint64_t)a3 completion:(id)a4
+- (void)truncateToNumberOfEntries:(unint64_t)entries completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   writeQueue = self->_writeQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100567E38;
   block[3] = &unk_10183F0D0;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  entriesCopy = entries;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(writeQueue, block);
 }
 
-- (void)truncateToNumberOfEntriesImpl:(unint64_t)a3 completion:(id)a4
+- (void)truncateToNumberOfEntriesImpl:(unint64_t)impl completion:(id)completion
 {
-  v13 = a4;
-  if ([(CRLZipWriter *)self entriesCountImpl]<= a3)
+  completionCopy = completion;
+  if ([(CRLZipWriter *)self entriesCountImpl]<= impl)
   {
-    v12 = v13;
-    if (!v13)
+    v12 = completionCopy;
+    if (!completionCopy)
     {
       goto LABEL_9;
     }
 
-    (*(v13 + 2))(v13, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   else
   {
-    v6 = [(CRLZipWriter *)self sortedEntriesImpl];
-    if ([v6 count] > a3)
+    sortedEntriesImpl = [(CRLZipWriter *)self sortedEntriesImpl];
+    if ([sortedEntriesImpl count] > impl)
     {
-      v7 = a3;
+      implCopy = impl;
       do
       {
-        v8 = [v6 objectAtIndexedSubscript:v7];
+        v8 = [sortedEntriesImpl objectAtIndexedSubscript:implCopy];
         [(NSMutableArray *)self->_entries removeObject:v8];
         entriesMap = self->_entriesMap;
-        v10 = [v8 name];
-        [(NSMutableDictionary *)entriesMap removeObjectForKey:v10];
+        name = [v8 name];
+        [(NSMutableDictionary *)entriesMap removeObjectForKey:name];
 
-        ++v7;
+        ++implCopy;
       }
 
-      while (v7 < [v6 count]);
+      while (implCopy < [sortedEntriesImpl count]);
     }
 
-    v11 = [v6 objectAtIndexedSubscript:a3];
+    v11 = [sortedEntriesImpl objectAtIndexedSubscript:impl];
     -[CRLZipWriter setEntryInsertionOffsetImpl:](self, "setEntryInsertionOffsetImpl:", [v11 offset]);
-    -[CRLZipWriter truncateToOffsetImpl:completion:](self, "truncateToOffsetImpl:completion:", [v11 offset], v13);
+    -[CRLZipWriter truncateToOffsetImpl:completion:](self, "truncateToOffsetImpl:completion:", [v11 offset], completionCopy);
   }
 
-  v12 = v13;
+  v12 = completionCopy;
 LABEL_9:
 }
 
-- (void)truncateToOffset:(int64_t)a3 completion:(id)a4
+- (void)truncateToOffset:(int64_t)offset completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   writeQueue = self->_writeQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10056803C;
   block[3] = &unk_10183F0D0;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  offsetCopy = offset;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(writeQueue, block);
 }
 
-- (void)truncateToOffsetImpl:(int64_t)a3 completion:(id)a4
+- (void)truncateToOffsetImpl:(int64_t)impl completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {

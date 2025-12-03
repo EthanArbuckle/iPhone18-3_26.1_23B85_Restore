@@ -1,39 +1,39 @@
 @interface GKActivity
-+ (id)currentOrNewNamed:(id)a3;
-+ (id)detachedNamed:(id)a3;
-+ (id)named:(id)a3;
-+ (void)named:(id)a3 execute:(id)a4;
-- (id)childNamed:(id)a3;
-- (void)childNamed:(id)a3 execute:(id)a4;
++ (id)currentOrNewNamed:(id)named;
++ (id)detachedNamed:(id)named;
++ (id)named:(id)named;
++ (void)named:(id)named execute:(id)execute;
+- (id)childNamed:(id)named;
+- (void)childNamed:(id)named execute:(id)execute;
 - (void)createActivity;
-- (void)execute:(id)a3;
+- (void)execute:(id)execute;
 @end
 
 @implementation GKActivity
 
-+ (id)named:(id)a3
++ (id)named:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = [GKActivity alloc];
-  v5 = [(GKActivity *)v4 initWithName:v3 parent:MEMORY[0x277D86210] mode:2];
+  v5 = [(GKActivity *)v4 initWithName:namedCopy parent:MEMORY[0x277D86210] mode:2];
 
   return v5;
 }
 
-+ (id)detachedNamed:(id)a3
++ (id)detachedNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = [GKActivity alloc];
-  v5 = [(GKActivity *)v4 initWithName:v3 parent:MEMORY[0x277D86210] mode:1];
+  v5 = [(GKActivity *)v4 initWithName:namedCopy parent:MEMORY[0x277D86210] mode:1];
 
   return v5;
 }
 
-+ (id)currentOrNewNamed:(id)a3
++ (id)currentOrNewNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = [GKActivity alloc];
-  v5 = [(GKActivity *)v4 initWithName:v3 parent:MEMORY[0x277D86210] mode:2];
+  v5 = [(GKActivity *)v4 initWithName:namedCopy parent:MEMORY[0x277D86210] mode:2];
 
   return v5;
 }
@@ -44,36 +44,36 @@
   [(GKActivity *)self setActivity:v3];
 }
 
-- (id)childNamed:(id)a3
+- (id)childNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   if (!self->_activity)
   {
     [(GKActivity *)self createActivity];
   }
 
-  v5 = [[GKActivity alloc] initWithName:v4 parent:self->_activity mode:0];
+  v5 = [[GKActivity alloc] initWithName:namedCopy parent:self->_activity mode:0];
 
   return v5;
 }
 
-- (void)childNamed:(id)a3 execute:(id)a4
+- (void)childNamed:(id)named execute:(id)execute
 {
-  v6 = a4;
-  v7 = [(GKActivity *)self childNamed:a3];
-  [v7 execute:v6];
+  executeCopy = execute;
+  v7 = [(GKActivity *)self childNamed:named];
+  [v7 execute:executeCopy];
 }
 
-+ (void)named:(id)a3 execute:(id)a4
++ (void)named:(id)named execute:(id)execute
 {
-  v5 = a4;
-  v6 = [GKActivity named:a3];
-  [v6 execute:v5];
+  executeCopy = execute;
+  v6 = [GKActivity named:named];
+  [v6 execute:executeCopy];
 }
 
-- (void)execute:(id)a3
+- (void)execute:(id)execute
 {
-  v4 = a3;
+  executeCopy = execute;
   activity = self->_activity;
   if (!activity)
   {
@@ -85,8 +85,8 @@
   block[1] = 3221225472;
   block[2] = __22__GKActivity_execute___block_invoke;
   block[3] = &unk_2785DD710;
-  v8 = v4;
-  v6 = v4;
+  v8 = executeCopy;
+  v6 = executeCopy;
   os_activity_apply(activity, block);
 }
 

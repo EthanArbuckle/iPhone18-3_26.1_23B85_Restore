@@ -1,12 +1,12 @@
 @interface TRIFBMutableBoxedInt64
-- (TRIFBMutableBoxedInt64)initWithVal:(int64_t)a3;
+- (TRIFBMutableBoxedInt64)initWithVal:(int64_t)val;
 - (void)dealloc;
-- (void)setVal:(int64_t)a3;
+- (void)setVal:(int64_t)val;
 @end
 
 @implementation TRIFBMutableBoxedInt64
 
-- (void)setVal:(int64_t)a3
+- (void)setVal:(int64_t)val
 {
   if (self && !self->_allowMutation)
   {
@@ -18,7 +18,7 @@
     objc_exception_throw(v7);
   }
 
-  self->_ptr->var0 = a3;
+  self->_ptr->var0 = val;
 }
 
 - (void)dealloc
@@ -37,13 +37,13 @@
   [(TRIFBMutableBoxedInt64 *)&v4 dealloc];
 }
 
-- (TRIFBMutableBoxedInt64)initWithVal:(int64_t)a3
+- (TRIFBMutableBoxedInt64)initWithVal:(int64_t)val
 {
   v4 = [(TRIFBMutableBoxedInt64 *)self init];
   v5 = v4;
   if (v4)
   {
-    [(TRIFBMutableBoxedInt64 *)v4 setVal:a3];
+    [(TRIFBMutableBoxedInt64 *)v4 setVal:val];
   }
 
   return v5;

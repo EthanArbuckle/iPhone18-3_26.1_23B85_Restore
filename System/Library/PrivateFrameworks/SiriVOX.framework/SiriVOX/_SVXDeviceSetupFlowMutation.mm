@@ -1,5 +1,5 @@
 @interface _SVXDeviceSetupFlowMutation
-- (_SVXDeviceSetupFlowMutation)initWithBaseModel:(id)a3;
+- (_SVXDeviceSetupFlowMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -14,27 +14,27 @@
     {
       if ((*&self->_mutationFlags & 2) != 0)
       {
-        v6 = self->_identifier;
+        identifier = self->_identifier;
       }
 
       else
       {
-        v6 = [(SVXDeviceSetupFlow *)baseModel identifier];
+        identifier = [(SVXDeviceSetupFlow *)baseModel identifier];
       }
 
-      v7 = v6;
+      v7 = identifier;
       if ((*&self->_mutationFlags & 4) != 0)
       {
-        v8 = self->_scenes;
+        scenes = self->_scenes;
       }
 
       else
       {
-        v8 = [(SVXDeviceSetupFlow *)self->_baseModel scenes];
+        scenes = [(SVXDeviceSetupFlow *)self->_baseModel scenes];
       }
 
-      v9 = v8;
-      v5 = [[SVXDeviceSetupFlow alloc] initWithIdentifier:v7 scenes:v8];
+      v9 = scenes;
+      v5 = [[SVXDeviceSetupFlow alloc] initWithIdentifier:v7 scenes:scenes];
 
       goto LABEL_13;
     }
@@ -53,16 +53,16 @@ LABEL_13:
   return v5;
 }
 
-- (_SVXDeviceSetupFlowMutation)initWithBaseModel:(id)a3
+- (_SVXDeviceSetupFlowMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXDeviceSetupFlowMutation;
   v6 = [(_SVXDeviceSetupFlowMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

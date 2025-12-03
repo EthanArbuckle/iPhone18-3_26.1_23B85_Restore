@@ -1,5 +1,5 @@
 @interface WFContactComposeRecipient
-- (WFContactComposeRecipient)initWithWFContact:(id)a3;
+- (WFContactComposeRecipient)initWithWFContact:(id)contact;
 - (id)displayString;
 - (id)wf_contactFieldEntry;
 @end
@@ -12,48 +12,48 @@
   v3 = getWFWFContactComposeRecipientLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(WFContactComposeRecipient *)self wfContact];
+    wfContact = [(WFContactComposeRecipient *)self wfContact];
     v9 = 136315394;
     v10 = "[WFContactComposeRecipient wf_contactFieldEntry]";
     v11 = 2112;
-    v12 = v4;
+    v12 = wfContact;
     _os_log_impl(&dword_2743F0000, v3, OS_LOG_TYPE_INFO, "%s Returning underlying contact: %@", &v9, 0x16u);
   }
 
   v5 = objc_alloc(MEMORY[0x277CFC2C0]);
-  v6 = [(WFContactComposeRecipient *)self wfContact];
-  v7 = [v5 initWithContact:v6];
+  wfContact2 = [(WFContactComposeRecipient *)self wfContact];
+  v7 = [v5 initWithContact:wfContact2];
 
   return v7;
 }
 
 - (id)displayString
 {
-  v2 = [(WFContactComposeRecipient *)self wfContact];
-  v3 = [v2 wfName];
+  wfContact = [(WFContactComposeRecipient *)self wfContact];
+  wfName = [wfContact wfName];
 
-  return v3;
+  return wfName;
 }
 
-- (WFContactComposeRecipient)initWithWFContact:(id)a3
+- (WFContactComposeRecipient)initWithWFContact:(id)contact
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contactCopy = contact;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [v6 propertyID];
-    v8 = [v6 multivalueIndex];
-    if (v7 == -1 || v8 == -1)
+    v6 = contactCopy;
+    propertyID = [v6 propertyID];
+    multivalueIndex = [v6 multivalueIndex];
+    if (propertyID == -1 || multivalueIndex == -1)
     {
-      v16 = [v6 contact];
-      v17 = [v16 isKeyAvailable:*MEMORY[0x277CBD098]];
+      contact = [v6 contact];
+      v17 = [contact isKeyAvailable:*MEMORY[0x277CBD098]];
 
       if (!v17)
       {
-        v21 = [v6 contact];
-        v22 = [v21 isKeyAvailable:*MEMORY[0x277CBCFC0]];
+        contact2 = [v6 contact];
+        v22 = [contact2 isKeyAvailable:*MEMORY[0x277CBCFC0]];
 
         if (!v22)
         {
@@ -69,38 +69,38 @@
         }
 
 LABEL_20:
-        v23 = [v6 emailAddresses];
-        v24 = [v23 firstObject];
-        v25 = [v24 value];
-        v14 = [v25 address];
+        emailAddresses = [v6 emailAddresses];
+        firstObject = [emailAddresses firstObject];
+        value = [firstObject value];
+        address = [value address];
 
         v13 = 0;
         goto LABEL_26;
       }
     }
 
-    else if (v7 != 3)
+    else if (propertyID != 3)
     {
-      if (v7 == 13)
+      if (propertyID == 13)
       {
-        v26 = [v6 instantMessageAddresses];
-        v27 = [v26 firstObject];
-        v28 = [v27 value];
-        v14 = [v28 username];
+        instantMessageAddresses = [v6 instantMessageAddresses];
+        firstObject2 = [instantMessageAddresses firstObject];
+        value2 = [firstObject2 value];
+        address = [value2 username];
 
         v13 = 2;
         goto LABEL_26;
       }
 
-      if (v7 != 4)
+      if (propertyID != 4)
       {
 LABEL_25:
-        v14 = 0;
+        address = 0;
         v13 = 5;
 LABEL_26:
 
-        v15 = [v6 contact];
-        if (v14)
+        contact3 = [v6 contact];
+        if (address)
         {
           goto LABEL_28;
         }
@@ -111,10 +111,10 @@ LABEL_26:
       goto LABEL_20;
     }
 
-    v18 = [v6 phoneNumbers];
-    v19 = [v18 firstObject];
-    v20 = [v19 value];
-    v14 = [v20 string];
+    phoneNumbers = [v6 phoneNumbers];
+    firstObject3 = [phoneNumbers firstObject];
+    value3 = [firstObject3 value];
+    address = [value3 string];
 
     v13 = 1;
     goto LABEL_26;
@@ -123,24 +123,24 @@ LABEL_26:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v15 = 0;
+    contact3 = 0;
 LABEL_27:
-    v14 = 0;
+    address = 0;
     v13 = 5;
     goto LABEL_28;
   }
 
-  v9 = [v5 person];
-  v10 = [v9 personHandle];
+  person = [contactCopy person];
+  personHandle = [person personHandle];
 
-  v11 = [v10 type];
+  type = [personHandle type];
   v12 = 5;
-  if (v11 == 2)
+  if (type == 2)
   {
     v12 = 1;
   }
 
-  if (v11 == 1)
+  if (type == 1)
   {
     v13 = 0;
   }
@@ -150,10 +150,10 @@ LABEL_27:
     v13 = v12;
   }
 
-  v14 = [v10 value];
+  address = [personHandle value];
 
-  v15 = 0;
-  if (!v14)
+  contact3 = 0;
+  if (!address)
   {
     goto LABEL_27;
   }
@@ -165,19 +165,19 @@ LABEL_28:
     *buf = 136315650;
     v37 = "[WFContactComposeRecipient initWithWFContact:]";
     v38 = 2112;
-    v39 = v5;
+    v39 = contactCopy;
     v40 = 2112;
-    v41 = v14;
+    v41 = address;
     _os_log_impl(&dword_2743F0000, v30, OS_LOG_TYPE_INFO, "%s Initializing with contact %@; identified handle %@", buf, 0x20u);
   }
 
   v35.receiver = self;
   v35.super_class = WFContactComposeRecipient;
-  v31 = [(WFContactComposeRecipient *)&v35 initWithContact:v15 address:v14 kind:v13];
+  v31 = [(WFContactComposeRecipient *)&v35 initWithContact:contact3 address:address kind:v13];
   v32 = v31;
   if (v31)
   {
-    objc_storeStrong(&v31->_wfContact, a3);
+    objc_storeStrong(&v31->_wfContact, contact);
     v33 = v32;
   }
 

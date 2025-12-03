@@ -1,11 +1,11 @@
 @interface UpstreamAction
 - (_TtC24FaceTimeNotificationCore14UpstreamAction)init;
-- (_TtC24FaceTimeNotificationCore14UpstreamAction)initWithCoder:(id)a3;
+- (_TtC24FaceTimeNotificationCore14UpstreamAction)initWithCoder:(id)coder;
 @end
 
 @implementation UpstreamAction
 
-- (_TtC24FaceTimeNotificationCore14UpstreamAction)initWithCoder:(id)a3
+- (_TtC24FaceTimeNotificationCore14UpstreamAction)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for UpstreamAction();

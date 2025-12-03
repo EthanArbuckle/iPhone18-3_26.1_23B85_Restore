@@ -1,53 +1,53 @@
 @interface PKPaymentHeroImageManifest
-+ (BOOL)manifestFileExistsForRegion:(id)a3;
-+ (id)manifestFileForRegion:(id)a3 planningToWrite:(BOOL)a4;
-+ (id)manifestForRegion:(id)a3;
-+ (void)downloadManifestForRegion:(id)a3 url:(id)a4 fileDownloader:(id)a5 completion:(id)a6;
-+ (void)removeManifestFileForRegion:(id)a3;
-+ (void)saveManifestDataToDeviceForRegion:(id)a3 data:(id)a4;
-- (PKPaymentHeroImageManifest)initWithDictionary:(id)a3;
++ (BOOL)manifestFileExistsForRegion:(id)region;
++ (id)manifestFileForRegion:(id)region planningToWrite:(BOOL)write;
++ (id)manifestForRegion:(id)region;
++ (void)downloadManifestForRegion:(id)region url:(id)url fileDownloader:(id)downloader completion:(id)completion;
++ (void)removeManifestFileForRegion:(id)region;
++ (void)saveManifestDataToDeviceForRegion:(id)region data:(id)data;
+- (PKPaymentHeroImageManifest)initWithDictionary:(id)dictionary;
 @end
 
 @implementation PKPaymentHeroImageManifest
 
-+ (BOOL)manifestFileExistsForRegion:(id)a3
++ (BOOL)manifestFileExistsForRegion:(id)region
 {
-  v3 = [a1 manifestFileForRegion:a3 planningToWrite:0];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  v3 = [self manifestFileForRegion:region planningToWrite:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v3 path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   return v6;
 }
 
-+ (void)removeManifestFileForRegion:(id)a3
++ (void)removeManifestFileForRegion:(id)region
 {
-  v8 = [a1 manifestFileForRegion:a3 planningToWrite:1];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v8 path];
-  v5 = [v3 fileExistsAtPath:v4];
+  v8 = [self manifestFileForRegion:region planningToWrite:1];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v8 path];
+  v5 = [defaultManager fileExistsAtPath:path];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v7 = [v8 path];
-    [v6 removeItemAtPath:v7 error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    path2 = [v8 path];
+    [defaultManager2 removeItemAtPath:path2 error:0];
   }
 }
 
-- (PKPaymentHeroImageManifest)initWithDictionary:(id)a3
+- (PKPaymentHeroImageManifest)initWithDictionary:(id)dictionary
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(PKPaymentHeroImageManifest *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"cards"];
+    v6 = [dictionaryCopy objectForKey:@"cards"];
 
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
     if (v6)
     {
-      v8 = [v4 PKArrayContaining:objc_opt_class() forKey:@"cards"];
+      v8 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"cards"];
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
@@ -67,11 +67,11 @@
             }
 
             v13 = [[PKPaymentHeroImage alloc] initWithDictionary:*(*(&v31 + 1) + 8 * i)];
-            v14 = [(PKPaymentHeroImage *)v13 identifier];
-            v15 = v14;
+            identifier = [(PKPaymentHeroImage *)v13 identifier];
+            v15 = identifier;
             if (v13)
             {
-              v16 = v14 == 0;
+              v16 = identifier == 0;
             }
 
             else
@@ -81,7 +81,7 @@
 
             if (!v16)
             {
-              [v7 setValue:v13 forKey:v14];
+              [v7 setValue:v13 forKey:identifier];
             }
           }
 
@@ -98,7 +98,7 @@
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v8 = v4;
+      v8 = dictionaryCopy;
       v17 = [v8 countByEnumeratingWithState:&v35 objects:v40 count:16];
       if (v17)
       {
@@ -118,11 +118,11 @@
             v23 = [v8 PKDictionaryForKey:v21];
             v24 = [(PKPaymentHeroImage *)v22 initWithLegacyDictionary:v23 identifier:v21];
 
-            v25 = [(PKPaymentHeroImage *)v24 identifier];
-            v26 = v25;
+            identifier2 = [(PKPaymentHeroImage *)v24 identifier];
+            v26 = identifier2;
             if (v24)
             {
-              v27 = v25 == 0;
+              v27 = identifier2 == 0;
             }
 
             else
@@ -132,7 +132,7 @@
 
             if (!v27)
             {
-              [v7 setValue:v24 forKey:v25];
+              [v7 setValue:v24 forKey:identifier2];
             }
           }
 
@@ -151,14 +151,14 @@
   return v5;
 }
 
-+ (id)manifestForRegion:(id)a3
++ (id)manifestForRegion:(id)region
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 manifestFileForRegion:v4 planningToWrite:0];
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7];
+  regionCopy = region;
+  v5 = [self manifestFileForRegion:regionCopy planningToWrite:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v5 path];
+  v8 = [defaultManager fileExistsAtPath:path];
 
   if (v8)
   {
@@ -182,7 +182,7 @@
           *buf = 138412546;
           v18 = v12;
           v19 = 2112;
-          v20 = v4;
+          v20 = regionCopy;
           _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "Unable to parse hero manifest (%@) for region %@", buf, 0x16u);
         }
 
@@ -196,7 +196,7 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v18 = v4;
+        v18 = regionCopy;
         _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "Unable to read hero manifest file for region %@", buf, 0xCu);
       }
 
@@ -210,7 +210,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v4;
+      v18 = regionCopy;
       _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Unable to find hero manifest file for region %@", buf, 0xCu);
     }
 
@@ -220,20 +220,20 @@
   return v13;
 }
 
-+ (void)downloadManifestForRegion:(id)a3 url:(id)a4 fileDownloader:(id)a5 completion:(id)a6
++ (void)downloadManifestForRegion:(id)region url:(id)url fileDownloader:(id)downloader completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  regionCopy = region;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __86__PKPaymentHeroImageManifest_downloadManifestForRegion_url_fileDownloader_completion___block_invoke;
   v14[3] = &unk_1E79CD798;
-  v16 = v11;
-  v17 = a1;
-  v15 = v10;
-  v12 = v10;
-  v13 = v11;
-  [a5 downloadFromUrl:a4 completionHandler:v14];
+  v16 = completionCopy;
+  selfCopy = self;
+  v15 = regionCopy;
+  v12 = regionCopy;
+  v13 = completionCopy;
+  [downloader downloadFromUrl:url completionHandler:v14];
 }
 
 void __86__PKPaymentHeroImageManifest_downloadManifestForRegion_url_fileDownloader_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -303,14 +303,14 @@ void __86__PKPaymentHeroImageManifest_downloadManifestForRegion_url_fileDownload
   }
 }
 
-+ (void)saveManifestDataToDeviceForRegion:(id)a3 data:(id)a4
++ (void)saveManifestDataToDeviceForRegion:(id)region data:(id)data
 {
-  v6 = a4;
-  v7 = a3;
+  dataCopy = data;
+  regionCopy = region;
   PKPassAssetDownloadCacheCreateDirectory(0, &__block_literal_global_49);
-  v8 = [a1 manifestFileForRegion:v7 planningToWrite:1];
+  v8 = [self manifestFileForRegion:regionCopy planningToWrite:1];
 
-  [v6 writeToURL:v8 atomically:1];
+  [dataCopy writeToURL:v8 atomically:1];
 }
 
 void __69__PKPaymentHeroImageManifest_saveManifestDataToDeviceForRegion_data___block_invoke(uint64_t a1, char a2, void *a3, void *a4)
@@ -330,25 +330,25 @@ void __69__PKPaymentHeroImageManifest_saveManifestDataToDeviceForRegion_data___b
   }
 }
 
-+ (id)manifestFileForRegion:(id)a3 planningToWrite:(BOOL)a4
++ (id)manifestFileForRegion:(id)region planningToWrite:(BOOL)write
 {
-  v4 = a4;
-  v5 = a3;
+  writeCopy = write;
+  regionCopy = region;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__16;
   v15 = __Block_byref_object_dispose__16;
   v16 = 0;
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hero_image_manifest_%@.json", v5];
-  if (v4)
+  regionCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"hero_image_manifest_%@.json", regionCopy];
+  if (writeCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __68__PKPaymentHeroImageManifest_manifestFileForRegion_planningToWrite___block_invoke;
     v10[3] = &unk_1E79C88C0;
     v10[4] = &v11;
-    PKPassAssetDownloadCacheCreateFileURLForWriting(0, v6, v10);
+    PKPassAssetDownloadCacheCreateFileURLForWriting(0, regionCopy, v10);
   }
 
   else
@@ -358,7 +358,7 @@ void __69__PKPaymentHeroImageManifest_saveManifestDataToDeviceForRegion_data___b
     v9[2] = __68__PKPaymentHeroImageManifest_manifestFileForRegion_planningToWrite___block_invoke_2;
     v9[3] = &unk_1E79C88C0;
     v9[4] = &v11;
-    PKPassAssetDownloadCacheCreateFileURLReadOnly(0, v6, v9);
+    PKPassAssetDownloadCacheCreateFileURLReadOnly(0, regionCopy, v9);
   }
 
   v7 = v12[5];

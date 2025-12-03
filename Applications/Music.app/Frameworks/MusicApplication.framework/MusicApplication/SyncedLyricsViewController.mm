@@ -1,19 +1,19 @@
 @interface SyncedLyricsViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (_TtC7LyricsX26SyncedLyricsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)displayLinkFired:(id)a3;
-- (void)menuHandler:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)shareGestureHandler:(id)a3;
-- (void)tapHandler:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (_TtC7LyricsX26SyncedLyricsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)displayLinkFired:(id)fired;
+- (void)menuHandler:(id)handler;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)shareGestureHandler:(id)handler;
+- (void)tapHandler:(id)handler;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
@@ -23,65 +23,65 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   SyncedLyricsViewController.viewDidLoad()();
 }
 
-- (void)tapHandler:(id)a3
+- (void)tapHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  sub_9819CC(v4);
+  handlerCopy = handler;
+  selfCopy = self;
+  sub_9819CC(handlerCopy);
 }
 
-- (void)menuHandler:(id)a3
+- (void)menuHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
+  handlerCopy = handler;
+  selfCopy = self;
   sub_996BD4();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  SyncedLyricsViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  SyncedLyricsViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  SyncedLyricsViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  SyncedLyricsViewController.viewDidDisappear(_:)(disappear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SyncedLyricsViewController.viewDidLayoutSubviews()();
 }
 
 - (void)viewLayoutMarginsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   SyncedLyricsViewController.viewLayoutMarginsDidChange()();
 }
 
-- (void)displayLinkFired:(id)a3
+- (void)displayLinkFired:(id)fired
 {
-  v4 = a3;
-  v5 = self;
+  firedCopy = fired;
+  selfCopy = self;
   sub_997018();
 }
 
-- (void)shareGestureHandler:(id)a3
+- (void)shareGestureHandler:(id)handler
 {
-  v4 = a3;
-  v9 = self;
-  if ([(SyncedLyricsViewController *)v4 state]== &dword_0 + 1)
+  handlerCopy = handler;
+  selfCopy = self;
+  if ([(SyncedLyricsViewController *)handlerCopy state]== &dword_0 + 1)
   {
-    v5 = [(SyncedLyricsViewController *)v4 view];
-    if (v5)
+    view = [(SyncedLyricsViewController *)handlerCopy view];
+    if (view)
     {
-      v6 = v5;
+      v6 = view;
       type metadata accessor for SyncedLyricsLineView();
       v7 = swift_dynamicCastClass();
       if (v7)
@@ -92,25 +92,25 @@
 
       else
       {
-        v8 = v4;
-        v4 = v9;
-        v9 = v6;
+        v8 = handlerCopy;
+        handlerCopy = selfCopy;
+        selfCopy = v6;
       }
     }
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  SyncedLyricsViewController.didUpdateFocus(in:with:)(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  SyncedLyricsViewController.didUpdateFocus(in:with:)(contextCopy, coordinatorCopy);
 }
 
-- (_TtC7LyricsX26SyncedLyricsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7LyricsX26SyncedLyricsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_AB92A0();
     v7 = v6;
@@ -122,71 +122,71 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return SyncedLyricsViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return SyncedLyricsViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = SyncedLyricsViewController.gestureRecognizer(_:shouldRecognizeSimultaneouslyWith:)(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = SyncedLyricsViewController.gestureRecognizer(_:shouldRecognizeSimultaneouslyWith:)(recognizerCopy, gestureRecognizerCopy);
 
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_9974B8(v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_9974B8(touchCopy);
 
   return v9 & 1;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = SyncedLyricsViewController.gestureRecognizerShouldBegin(_:)(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = SyncedLyricsViewController.gestureRecognizerShouldBegin(_:)(beginCopy);
 
   return self & 1;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC7LyricsX26SyncedLyricsViewController_timestampLabel);
   if (v3)
   {
     v5 = v3;
-    v6 = self;
+    selfCopy = self;
     sub_987C98();
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
+  draggingCopy = dragging;
+  selfCopy = self;
   _s7LyricsX06SyncedA14ViewControllerC06scrollC17WillBeginDraggingyySo08UIScrollC0CF_0();
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v5 = a3;
-  v6 = self;
+  draggingCopy = dragging;
+  selfCopy = self;
   _s7LyricsX06SyncedA14ViewControllerC06scrollC14DidEndDragging_14willDecelerateySo08UIScrollC0C_SbtF_0();
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = self;
-  sub_997D28(a5, x, y);
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_997D28(offset, x, y);
 }
 
 @end

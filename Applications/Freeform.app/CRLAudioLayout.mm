@@ -1,23 +1,23 @@
 @interface CRLAudioLayout
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3;
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root;
 - (CGSize)minimumSize;
-- (CRLAudioLayout)initWithInfo:(id)a3;
+- (CRLAudioLayout)initWithInfo:(id)info;
 - (_TtC8Freeform12CRLMovieItem)movieInfo;
 - (id)computeLayoutGeometry;
 @end
 
 @implementation CRLAudioLayout
 
-- (CRLAudioLayout)initWithInfo:(id)a3
+- (CRLAudioLayout)initWithInfo:(id)info
 {
   v7.receiver = self;
   v7.super_class = CRLAudioLayout;
-  v3 = [(CRLMediaLayout *)&v7 initWithInfo:a3];
+  v3 = [(CRLMediaLayout *)&v7 initWithInfo:info];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CRLAudioLayout *)v3 movieInfo];
-    if (!v5)
+    movieInfo = [(CRLAudioLayout *)v3 movieInfo];
+    if (!movieInfo)
     {
 
       v4 = 0;
@@ -29,15 +29,15 @@
   return v4;
 }
 
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root
 {
-  v3 = a3;
+  rootCopy = root;
   memset(&v13, 0, sizeof(v13));
-  v5 = [(CRLCanvasAbstractLayout *)self geometry];
-  v6 = v5;
-  if (v5)
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v6 = geometry;
+  if (geometry)
   {
-    [v5 fullTransform];
+    [geometry fullTransform];
   }
 
   else
@@ -45,17 +45,17 @@
     memset(&v13, 0, sizeof(v13));
   }
 
-  if (v3)
+  if (rootCopy)
   {
-    v7 = [(CRLCanvasAbstractLayout *)self parent];
+    parent = [(CRLCanvasAbstractLayout *)self parent];
 
-    if (v7)
+    if (parent)
     {
-      v8 = [(CRLCanvasAbstractLayout *)self parent];
-      v9 = v8;
-      if (v8)
+      parent2 = [(CRLCanvasAbstractLayout *)self parent];
+      v9 = parent2;
+      if (parent2)
       {
-        [v8 transformInRoot];
+        [parent2 transformInRoot];
       }
 
       else
@@ -88,31 +88,31 @@
 - (_TtC8Freeform12CRLMovieItem)movieInfo
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasLayout *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasLayout *)self info];
+  v5 = sub_100014370(v3, info);
 
   return v5;
 }
 
 - (id)computeLayoutGeometry
 {
-  v3 = [(CRLBoardItemLayout *)self layoutGeometryFromInfo];
+  layoutGeometryFromInfo = [(CRLBoardItemLayout *)self layoutGeometryFromInfo];
   v4 = objc_opt_class();
-  v5 = [(CRLMediaLayout *)self stroke];
-  v6 = sub_100014370(v4, v5);
+  stroke = [(CRLMediaLayout *)self stroke];
+  v6 = sub_100014370(v4, stroke);
 
   if (v6 && [v6 shouldRender])
   {
     [v6 renderedWidth];
-    v8 = [v3 geometryByOutsettingBy:{v7 * 0.5, v7 * 0.5}];
+    v8 = [layoutGeometryFromInfo geometryByOutsettingBy:{v7 * 0.5, v7 * 0.5}];
 
-    v3 = v8;
+    layoutGeometryFromInfo = v8;
   }
 
-  [v3 size];
+  [layoutGeometryFromInfo size];
   [(CRLMediaLayout *)self setBoundsForStandardKnobs:sub_10011ECB4()];
 
-  return v3;
+  return layoutGeometryFromInfo;
 }
 
 @end

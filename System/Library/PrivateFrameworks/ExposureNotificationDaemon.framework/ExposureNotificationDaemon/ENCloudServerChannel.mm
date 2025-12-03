@@ -2,7 +2,7 @@
 - (ENCloudServerChannel)init;
 - (NSHTTPCookieStorage)cookieStorage;
 - (void)dealloc;
-- (void)enqueueRequest:(id)a3 withCompletion:(id)a4;
+- (void)enqueueRequest:(id)request withCompletion:(id)completion;
 @end
 
 @implementation ENCloudServerChannel
@@ -17,45 +17,45 @@
     v3 = objc_alloc_init(MEMORY[0x277CCABE0]);
     [(ENCloudServerChannel *)v2 setQueue:v3];
 
-    v4 = [(ENCloudServerChannel *)v2 queue];
-    [v4 setMaxConcurrentOperationCount:1];
+    queue = [(ENCloudServerChannel *)v2 queue];
+    [queue setMaxConcurrentOperationCount:1];
 
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v6 = dispatch_queue_create("com.apple.bluetooth.serverChannel", v5);
     [(ENCloudServerChannel *)v2 setSerialQueue:v6];
 
-    v7 = [MEMORY[0x277CBABC0] defaultSessionConfiguration];
-    [(ENCloudServerChannel *)v2 setSessionConfig:v7];
+    defaultSessionConfiguration = [MEMORY[0x277CBABC0] defaultSessionConfiguration];
+    [(ENCloudServerChannel *)v2 setSessionConfig:defaultSessionConfiguration];
 
-    v8 = [(ENCloudServerChannel *)v2 sessionConfig];
-    [v8 setURLCache:0];
+    sessionConfig = [(ENCloudServerChannel *)v2 sessionConfig];
+    [sessionConfig setURLCache:0];
 
-    v9 = [(ENCloudServerChannel *)v2 sessionConfig];
-    [v9 setRequestCachePolicy:1];
+    sessionConfig2 = [(ENCloudServerChannel *)v2 sessionConfig];
+    [sessionConfig2 setRequestCachePolicy:1];
 
-    v10 = [(ENCloudServerChannel *)v2 cookieStorage];
-    v11 = [(ENCloudServerChannel *)v2 sessionConfig];
-    [v11 setHTTPCookieStorage:v10];
+    cookieStorage = [(ENCloudServerChannel *)v2 cookieStorage];
+    sessionConfig3 = [(ENCloudServerChannel *)v2 sessionConfig];
+    [sessionConfig3 setHTTPCookieStorage:cookieStorage];
 
-    v12 = [(ENCloudServerChannel *)v2 sessionConfig];
-    [v12 setWaitsForConnectivity:1];
+    sessionConfig4 = [(ENCloudServerChannel *)v2 sessionConfig];
+    [sessionConfig4 setWaitsForConnectivity:1];
 
     v13 = ENBundleIdentifierForURLSessions();
-    v14 = [(ENCloudServerChannel *)v2 sessionConfig];
-    [v14 set_sourceApplicationBundleIdentifier:v13];
+    sessionConfig5 = [(ENCloudServerChannel *)v2 sessionConfig];
+    [sessionConfig5 set_sourceApplicationBundleIdentifier:v13];
 
     v15 = MEMORY[0x277CBABB0];
-    v16 = [(ENCloudServerChannel *)v2 sessionConfig];
-    v17 = [v15 sessionWithConfiguration:v16];
+    sessionConfig6 = [(ENCloudServerChannel *)v2 sessionConfig];
+    v17 = [v15 sessionWithConfiguration:sessionConfig6];
     [(ENCloudServerChannel *)v2 setSession:v17];
 
-    v18 = [(ENCloudServerChannel *)v2 serialQueue];
-    v19 = [(ENCloudServerChannel *)v2 session];
-    v20 = [v19 delegateQueue];
-    [v20 setUnderlyingQueue:v18];
+    serialQueue = [(ENCloudServerChannel *)v2 serialQueue];
+    session = [(ENCloudServerChannel *)v2 session];
+    delegateQueue = [session delegateQueue];
+    [delegateQueue setUnderlyingQueue:serialQueue];
 
-    v21 = [MEMORY[0x277CBEB30] dictionary];
-    [(ENCloudServerChannel *)v2 setRequests:v21];
+    dictionary = [MEMORY[0x277CBEB30] dictionary];
+    [(ENCloudServerChannel *)v2 setRequests:dictionary];
   }
 
   return v2;
@@ -63,35 +63,35 @@
 
 - (void)dealloc
 {
-  v3 = [(ENCloudServerChannel *)self requests];
-  [v3 removeAllObjects];
+  requests = [(ENCloudServerChannel *)self requests];
+  [requests removeAllObjects];
 
   v4.receiver = self;
   v4.super_class = ENCloudServerChannel;
   [(ENCloudServerChannel *)&v4 dealloc];
 }
 
-- (void)enqueueRequest:(id)a3 withCompletion:(id)a4
+- (void)enqueueRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   if (gLogCategory_ENCloudServerChannel <= 30 && (gLogCategory_ENCloudServerChannel != -1 || _LogCategory_Initialize()))
   {
     [ENCloudServerChannel enqueueRequest:withCompletion:];
   }
 
-  v8 = v6;
+  v8 = requestCopy;
   if (v8)
   {
-    v9 = [(ENCloudServerChannel *)self serialQueue];
+    serialQueue = [(ENCloudServerChannel *)self serialQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __54__ENCloudServerChannel_enqueueRequest_withCompletion___block_invoke;
     block[3] = &unk_278FD1080;
     block[4] = v8;
     block[5] = self;
-    v11 = v7;
-    dispatch_async(v9, block);
+    v11 = completionCopy;
+    dispatch_async(serialQueue, block);
   }
 }
 
@@ -271,9 +271,9 @@ void __54__ENCloudServerChannel_enqueueRequest_withCompletion___block_invoke_3(u
     v6 = [v5 stringByAppendingPathComponent:@"com.apple.bluetooth.serverChannel"];
     v7 = [v6 stringByAppendingPathComponent:@"cookies"];
 
-    v8 = [v7 UTF8String];
-    v9 = strlen(v8);
-    v10 = CFURLCreateFromFileSystemRepresentation(*MEMORY[0x277CBECE0], v8, v9, 1u);
+    uTF8String = [v7 UTF8String];
+    v9 = strlen(uTF8String);
+    v10 = CFURLCreateFromFileSystemRepresentation(*MEMORY[0x277CBECE0], uTF8String, v9, 1u);
     v11 = CFHTTPCookieStorageCreateFromFile();
     CFRunLoopGetMain();
     v12 = *MEMORY[0x277CBF050];

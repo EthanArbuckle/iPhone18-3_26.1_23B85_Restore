@@ -1,16 +1,16 @@
 @interface LastSyncedDateFormatter
 - (_TtC18HealthExperienceUI23LastSyncedDateFormatter)init;
-- (_TtC18HealthExperienceUI23LastSyncedDateFormatter)initWithCoder:(id)a3;
-- (id)stringForObjectValue:(id)a3;
+- (_TtC18HealthExperienceUI23LastSyncedDateFormatter)initWithCoder:(id)coder;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation LastSyncedDateFormatter
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1BA4A7BF8();
     swift_unknownObjectRelease();
@@ -19,7 +19,7 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1BA0A5CE0(v10);
@@ -47,13 +47,13 @@
   return [(LastSyncedDateFormatter *)&v4 init];
 }
 
-- (_TtC18HealthExperienceUI23LastSyncedDateFormatter)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI23LastSyncedDateFormatter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   sub_1BA4A1878();
   v7.receiver = self;
   v7.super_class = type metadata accessor for LastSyncedDateFormatter();
-  v5 = [(LastSyncedDateFormatter *)&v7 initWithCoder:v4];
+  v5 = [(LastSyncedDateFormatter *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

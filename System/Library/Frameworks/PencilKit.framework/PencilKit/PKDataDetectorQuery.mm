@@ -1,61 +1,61 @@
 @interface PKDataDetectorQuery
-- (PKDataDetectorQuery)initWithRecognitionSessionManager:(id)a3;
-- (void)queryDidUpdateResult:(id)a3;
+- (PKDataDetectorQuery)initWithRecognitionSessionManager:(id)manager;
+- (void)queryDidUpdateResult:(id)result;
 @end
 
 @implementation PKDataDetectorQuery
 
-- (PKDataDetectorQuery)initWithRecognitionSessionManager:(id)a3
+- (PKDataDetectorQuery)initWithRecognitionSessionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = PKDataDetectorQuery;
-  v5 = [(PKQuery *)&v11 initWithRecognitionSessionManager:v4];
+  v5 = [(PKQuery *)&v11 initWithRecognitionSessionManager:managerCopy];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E6997B48]);
-    v7 = [(PKRecognitionSessionManager *)v4 session];
-    v8 = [v6 initWithRecognitionSession:v7];
+    session = [(PKRecognitionSessionManager *)managerCopy session];
+    v8 = [v6 initWithRecognitionSession:session];
     [(PKDetectionQuery *)v5 setQuery:v8];
 
-    v9 = [(PKDetectionQuery *)v5 query];
-    [v9 setDelegate:v5];
+    query = [(PKDetectionQuery *)v5 query];
+    [query setDelegate:v5];
   }
 
   return v5;
 }
 
-- (void)queryDidUpdateResult:(id)a3
+- (void)queryDidUpdateResult:(id)result
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 foundItems];
+    foundItems = [resultCopy foundItems];
     v40 = 0;
     v41 = &v40;
     v42 = 0x3032000000;
     v43 = __Block_byref_object_copy__12;
     v44 = __Block_byref_object_dispose__12;
-    v45 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    v45 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(foundItems, "count")}];
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __FilteredFoundItems_block_invoke;
     v39[3] = &unk_1E82D8D90;
     v39[4] = &v40;
-    [v5 enumerateObjectsUsingBlock:v39];
+    [foundItems enumerateObjectsUsingBlock:v39];
     DDDetectionControllerClass = getDDDetectionControllerClass();
     v7 = v41[5];
-    v8 = [getDDDetectionControllerClass() allPublicTypes];
-    v9 = [MEMORY[0x1E695DF00] date];
-    v10 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-    v11 = [DDDetectionControllerClass filterResults:v7 forTypes:v8 referenceDate:v9 referenceTimeZone:v10];
+    allPublicTypes = [getDDDetectionControllerClass() allPublicTypes];
+    date = [MEMORY[0x1E695DF00] date];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    v11 = [DDDetectionControllerClass filterResults:v7 forTypes:allPublicTypes referenceDate:date referenceTimeZone:defaultTimeZone];
 
     v12 = [v11 count];
     if (v12 >= [v41[5] count])
     {
-      v13 = v5;
+      v13 = foundItems;
     }
 
     else
@@ -72,7 +72,7 @@
       v30[3] = &unk_1E82D8DB8;
       v31 = v11;
       v32 = &v33;
-      [v5 enumerateObjectsUsingBlock:v30];
+      [foundItems enumerateObjectsUsingBlock:v30];
       v13 = v34[5];
 
       _Block_object_dispose(&v33, 8);
@@ -114,14 +114,14 @@
       while (v16);
     }
 
-    v22 = [(PKQuery *)self delegate];
+    delegate = [(PKQuery *)self delegate];
     v23 = objc_opt_respondsToSelector();
 
     if (v23)
     {
-      v24 = [(PKQuery *)self delegate];
+      delegate2 = [(PKQuery *)self delegate];
       v25 = [v14 copy];
-      [v24 dataDetectorQuery:self foundItems:v25];
+      [delegate2 dataDetectorQuery:self foundItems:v25];
     }
   }
 }

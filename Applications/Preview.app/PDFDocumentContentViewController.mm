@@ -1,9 +1,9 @@
 @interface PDFDocumentContentViewController
 - (BOOL)isEditing;
 - (_TtC7Preview32PDFDocumentContentViewController)init;
-- (void)setEditing:(BOOL)a3;
+- (void)setEditing:(BOOL)editing;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PDFDocumentContentViewController
@@ -20,14 +20,14 @@
 
   v5.receiver = self;
   v5.super_class = type metadata accessor for PDFDocumentContentViewController(0);
-  v3 = [(PDFDocumentContentViewController *)&v5 isEditing];
+  isEditing = [(PDFDocumentContentViewController *)&v5 isEditing];
 
-  return v3;
+  return isEditing;
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  v3 = a3;
+  editingCopy = editing;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -38,8 +38,8 @@
 
   v6.receiver = self;
   v6.super_class = type metadata accessor for PDFDocumentContentViewController(0);
-  v5 = self;
-  [(PDFDocumentContentViewController *)&v6 setEditing:v3];
+  selfCopy = self;
+  [(PDFDocumentContentViewController *)&v6 setEditing:editingCopy];
   sub_100017F94();
 }
 
@@ -53,14 +53,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_100018944();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -70,8 +70,8 @@
   }
 
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_10001A028(a4, width, height);
+  selfCopy = self;
+  sub_10001A028(coordinator, width, height);
 
   swift_unknownObjectRelease();
 }

@@ -1,25 +1,25 @@
 @interface RecipeBoxViewController
-- (_TtC7NewsUI223RecipeBoxViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7NewsUI223RecipeBoxViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)cancelSearch;
-- (void)scrollToTopAnimated:(BOOL)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarTextDidEndEditing:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scrollToTopAnimated:(BOOL)animated;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarTextDidEndEditing:(id)editing;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)willDismissSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)willDismissSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation RecipeBoxViewController
 
-- (_TtC7NewsUI223RecipeBoxViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI223RecipeBoxViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -28,41 +28,41 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_21918A524();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21918ADC4();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21918B060();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_21918B498(a3);
+  selfCopy = self;
+  sub_21918B498(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_21918B5A0(a3);
+  selfCopy = self;
+  sub_21918B5A0(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(RecipeBoxViewController *)&v7 viewDidDisappear:v3];
+  [(RecipeBoxViewController *)&v7 viewDidDisappear:disappearCopy];
   v5 = swift_allocObject();
   *(v5 + 16) = 0;
   v6 = v5 | 0x7000000000000006;
@@ -70,59 +70,59 @@
   sub_218932F9C(v6);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_21918B7CC(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_21918B7CC(change);
 }
 
 - (void)viewSafeAreaInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_21918BB18();
 }
 
 - (void)cancelSearch
 {
-  v2 = self;
+  selfCopy = self;
   sub_21918CF58();
 }
 
-- (void)scrollToTopAnimated:(BOOL)a3
+- (void)scrollToTopAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = self;
+  animatedCopy = animated;
+  selfCopy = self;
   sub_219BE8664();
   v4 = sub_219BE7BC4();
 
-  [v4 ts:v3 scrollToTop:?];
+  [v4 ts:animatedCopy scrollToTop:?];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_21918E6F4(v5);
+  barCopy = bar;
+  selfCopy = self;
+  sub_21918E6F4(barCopy);
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   sub_21918E9F4();
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7NewsUI223RecipeBoxViewController_showCancelButton) = 1;
-  v3 = self;
+  selfCopy = self;
   sub_219189EBC();
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
-  v9 = self;
+  selfCopy = self;
   v3 = sub_21918A07C();
   if (v5)
   {
@@ -135,20 +135,20 @@
 
   else
   {
-    *(&v9->super.super.super.isa + OBJC_IVAR____TtC7NewsUI223RecipeBoxViewController_showCancelButton) = 0;
+    *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC7NewsUI223RecipeBoxViewController_showCancelButton) = 0;
     sub_219189EBC();
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v5 = self;
+  selfCopy = self;
   v3 = sub_219BF65B4();
-  v4 = [v3 searchController];
+  searchController = [v3 searchController];
 
-  if (v4)
+  if (searchController)
   {
-    [v4 resignFirstResponder];
+    [searchController resignFirstResponder];
   }
 
   sub_219BE86D4();

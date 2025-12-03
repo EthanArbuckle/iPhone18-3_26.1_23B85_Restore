@@ -1,16 +1,16 @@
 @interface SUGradientButton
-- (SUGradientButton)initWithFrame:(CGRect)a3;
-- (void)sendAction:(SEL)a3 to:(id)a4 forEvent:(id)a5;
+- (SUGradientButton)initWithFrame:(CGRect)frame;
+- (void)sendAction:(SEL)action to:(id)to forEvent:(id)event;
 - (void)sizeToFit;
 @end
 
 @implementation SUGradientButton
 
-- (SUGradientButton)initWithFrame:(CGRect)a3
+- (SUGradientButton)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SUGradientButton;
-  v3 = [(SUGradientButton *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUGradientButton *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -21,11 +21,11 @@
     [(SUGradientButton *)v3 setBackgroundImage:v5 forState:4];
     -[SUGradientButton setTitleColor:forState:](v3, "setTitleColor:forState:", [MEMORY[0x1E69DC888] whiteColor], 1);
     -[SUGradientButton setTitleColor:forState:](v3, "setTitleColor:forState:", [MEMORY[0x1E69DC888] whiteColor], 4);
-    v6 = [(SUGradientButton *)v3 titleLabel];
-    [v6 setTextAlignment:1];
-    [v6 setFont:{objc_msgSend(MEMORY[0x1E69DB878], "boldSystemFontOfSize:", 15.0)}];
-    [v6 setLineBreakMode:0];
-    [v6 setNumberOfLines:2];
+    titleLabel = [(SUGradientButton *)v3 titleLabel];
+    [titleLabel setTextAlignment:1];
+    [titleLabel setFont:{objc_msgSend(MEMORY[0x1E69DB878], "boldSystemFontOfSize:", 15.0)}];
+    [titleLabel setLineBreakMode:0];
+    [titleLabel setNumberOfLines:2];
     [(SUGradientButton *)v3 contentEdgeInsets];
     [(SUGradientButton *)v3 setContentEdgeInsets:5.0, 7.0, 5.0, 7.0];
   }
@@ -33,12 +33,12 @@
   return v3;
 }
 
-- (void)sendAction:(SEL)a3 to:(id)a4 forEvent:(id)a5
+- (void)sendAction:(SEL)action to:(id)to forEvent:(id)event
 {
   [(SUGradientButton *)self setSelected:1];
   v9.receiver = self;
   v9.super_class = SUGradientButton;
-  [(SUGradientButton *)&v9 sendAction:a3 to:a4 forEvent:a5];
+  [(SUGradientButton *)&v9 sendAction:action to:to forEvent:event];
 }
 
 - (void)sizeToFit

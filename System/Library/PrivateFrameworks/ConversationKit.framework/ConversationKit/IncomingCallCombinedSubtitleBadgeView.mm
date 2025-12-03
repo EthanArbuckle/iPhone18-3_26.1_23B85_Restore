@@ -1,15 +1,15 @@
 @interface IncomingCallCombinedSubtitleBadgeView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
 @implementation IncomingCallCombinedSubtitleBadgeView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = IncomingCallCombinedSubtitleBadgeView.sizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;
@@ -21,7 +21,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   IncomingCallCombinedSubtitleBadgeView.layoutSubviews()();
 }
 

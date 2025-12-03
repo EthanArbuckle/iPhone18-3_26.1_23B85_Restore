@@ -1,28 +1,28 @@
 @interface HDHeadphoneAudioExposureStatisticsCalculator
-- (id)_initWithProfile:(id)a3 keyValueStore:(id)a4 daemonDidBecomeReadyHandler:(id)a5;
-- (id)_loadBucketsFromProfile:(id)a3 needsRebuild:(BOOL *)a4 error:(id *)a5;
-- (id)_loadCacheWithError:(id *)a3;
-- (id)_rebuildWithAssertion:(id)a3 allowInitialQueriesToFail:(BOOL)a4 resetDoseToZero:(BOOL)a5 error:(id *)a6;
-- (id)_rebuildWithAssertionFromHAENFireDateUpdate:(int64_t)a3 assertion:(id)a4 error:(id *)a5;
-- (id)_setupWithAssertion:(id)a3 error:(id *)a4;
-- (id)_updateWithExposure:(id)a3 replaying:(BOOL)a4 error:(id *)a5;
-- (id)pruneWithNowDate:(id)a3 limit:(unint64_t)a4 error:(id *)a5;
-- (id)rebuildWithAssertion:(id)a3 error:(id *)a4;
+- (id)_initWithProfile:(id)profile keyValueStore:(id)store daemonDidBecomeReadyHandler:(id)handler;
+- (id)_loadBucketsFromProfile:(id)profile needsRebuild:(BOOL *)rebuild error:(id *)error;
+- (id)_loadCacheWithError:(id *)error;
+- (id)_rebuildWithAssertion:(id)assertion allowInitialQueriesToFail:(BOOL)fail resetDoseToZero:(BOOL)zero error:(id *)error;
+- (id)_rebuildWithAssertionFromHAENFireDateUpdate:(int64_t)update assertion:(id)assertion error:(id *)error;
+- (id)_setupWithAssertion:(id)assertion error:(id *)error;
+- (id)_updateWithExposure:(id)exposure replaying:(BOOL)replaying error:(id *)error;
+- (id)pruneWithNowDate:(id)date limit:(unint64_t)limit error:(id *)error;
+- (id)rebuildWithAssertion:(id)assertion error:(id *)error;
 - (id)unitTesting_pendingSamples;
-- (id)updateWithNotifications:(id)a3 assertion:(id)a4 error:(id *)a5;
-- (id)updateWithRemoteNotificationDismissalFireDate:(id)a3 assertion:(id)a4 error:(id *)a5;
-- (void)_setNeedsRebuild:(BOOL)a3;
+- (id)updateWithNotifications:(id)notifications assertion:(id)assertion error:(id *)error;
+- (id)updateWithRemoteNotificationDismissalFireDate:(id)date assertion:(id)assertion error:(id *)error;
+- (void)_setNeedsRebuild:(BOOL)rebuild;
 @end
 
 @implementation HDHeadphoneAudioExposureStatisticsCalculator
 
-- (id)_initWithProfile:(id)a3 keyValueStore:(id)a4 daemonDidBecomeReadyHandler:(id)a5
+- (id)_initWithProfile:(id)profile keyValueStore:(id)store daemonDidBecomeReadyHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 profileIdentifier];
-  v10 = [v8 _profileIdentifier];
-  v11 = [v9 isEqual:v10];
+  profileCopy = profile;
+  storeCopy = store;
+  profileIdentifier = [profileCopy profileIdentifier];
+  _profileIdentifier = [storeCopy _profileIdentifier];
+  v11 = [profileIdentifier isEqual:_profileIdentifier];
 
   if ((v11 & 1) == 0)
   {
@@ -35,8 +35,8 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_profile, v7);
-    objc_storeStrong(&v13->_keyValueStore, a4);
+    objc_storeWeak(&v12->_profile, profileCopy);
+    objc_storeStrong(&v13->_keyValueStore, store);
     v14 = HKCreateSerialDispatchQueue();
     queue = v13->_queue;
     v13->_queue = v14;
@@ -55,27 +55,27 @@
   return v13;
 }
 
-- (id)rebuildWithAssertion:(id)a3 error:(id *)a4
+- (id)rebuildWithAssertion:(id)assertion error:(id *)error
 {
   if (self->_setup)
   {
-    [(HDHeadphoneAudioExposureStatisticsCalculator *)self _rebuildWithAssertion:a3 allowInitialQueriesToFail:0 resetDoseToZero:0 error:a4];
+    [(HDHeadphoneAudioExposureStatisticsCalculator *)self _rebuildWithAssertion:assertion allowInitialQueriesToFail:0 resetDoseToZero:0 error:error];
   }
 
   else
   {
-    [(HDHeadphoneAudioExposureStatisticsCalculator *)self _setupWithAssertion:a3 error:a4];
+    [(HDHeadphoneAudioExposureStatisticsCalculator *)self _setupWithAssertion:assertion error:error];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)updateWithNotifications:(id)a3 assertion:(id)a4 error:(id *)a5
+- (id)updateWithNotifications:(id)notifications assertion:(id)assertion error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  notificationsCopy = notifications;
+  assertionCopy = assertion;
   _HKInitializeLogging();
   v10 = *MEMORY[0x277CCC2C8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2C8], OS_LOG_TYPE_DEFAULT))
@@ -84,24 +84,24 @@
     *buf = 138543618;
     v18 = objc_opt_class();
     v19 = 2048;
-    v20 = [v8 count];
+    v20 = [notificationsCopy count];
     _os_log_impl(&dword_251764000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Processing %lu HAEN sample(s)", buf, 0x16u);
   }
 
   keyValueStore = self->_keyValueStore;
   v16 = 0;
-  v13 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self _rebuildWithAssertionFromHAENFireDateUpdate:[(HDHeadphoneDoseMetadataStore *)keyValueStore updatePreviousSevenDayLocalNotificationFireDateWithSamplesInserted:v8 error:&v16] assertion:v9 error:a5];
+  v13 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self _rebuildWithAssertionFromHAENFireDateUpdate:[(HDHeadphoneDoseMetadataStore *)keyValueStore updatePreviousSevenDayLocalNotificationFireDateWithSamplesInserted:notificationsCopy error:&v16] assertion:assertionCopy error:error];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-- (id)updateWithRemoteNotificationDismissalFireDate:(id)a3 assertion:(id)a4 error:(id *)a5
+- (id)updateWithRemoteNotificationDismissalFireDate:(id)date assertion:(id)assertion error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a3;
+  assertionCopy = assertion;
+  dateCopy = date;
   _HKInitializeLogging();
   v10 = *MEMORY[0x277CCC2C8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2C8], OS_LOG_TYPE_DEFAULT))
@@ -112,20 +112,20 @@
     _os_log_impl(&dword_251764000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Updating last HAE notification fired received", &v16, 0xCu);
   }
 
-  v12 = [(HDHeadphoneDoseMetadataStore *)self->_keyValueStore updatePreviousSevenDayRemoteNotificationFireDateWith:v9 error:a5];
+  v12 = [(HDHeadphoneDoseMetadataStore *)self->_keyValueStore updatePreviousSevenDayRemoteNotificationFireDateWith:dateCopy error:error];
 
-  v13 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self _rebuildWithAssertionFromHAENFireDateUpdate:v12 assertion:v8 error:a5];
+  v13 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self _rebuildWithAssertionFromHAENFireDateUpdate:v12 assertion:assertionCopy error:error];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-- (id)_rebuildWithAssertionFromHAENFireDateUpdate:(int64_t)a3 assertion:(id)a4 error:(id *)a5
+- (id)_rebuildWithAssertionFromHAENFireDateUpdate:(int64_t)update assertion:(id)assertion error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if (a3)
+  assertionCopy = assertion;
+  if (update)
   {
     v9 = MEMORY[0x253081C40](self->_unitTesting_didUpdatePreviousSevenDayNotificationFireDate);
     v10 = v9;
@@ -134,7 +134,7 @@
       (*(v9 + 16))(v9);
     }
 
-    if (a3 == 1)
+    if (update == 1)
     {
       v11 = +[HDHeadphoneExposureUpdateDoseResult resultForNoChange];
     }
@@ -152,7 +152,7 @@
       }
 
       [(HDHeadphoneAudioExposureStatisticsCalculator *)self setNeedsRebuild];
-      v14 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self _rebuildWithAssertion:v8 allowInitialQueriesToFail:1 resetDoseToZero:a3 == 3 error:a5];
+      v14 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self _rebuildWithAssertion:assertionCopy allowInitialQueriesToFail:1 resetDoseToZero:update == 3 error:error];
       if (v14)
       {
         v11 = [HDHeadphoneExposureUpdateDoseResult resultForUpdate:v14];
@@ -168,7 +168,7 @@
   else
   {
     [(HDHeadphoneAudioExposureStatisticsCalculator *)self setNeedsRebuild];
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 description:@"Process HAEN Failed" underlyingError:0];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"Process HAEN Failed" underlyingError:0];
     v11 = 0;
   }
 
@@ -177,13 +177,13 @@
   return v11;
 }
 
-- (id)pruneWithNowDate:(id)a3 limit:(unint64_t)a4 error:(id *)a5
+- (id)pruneWithNowDate:(id)date limit:(unint64_t)limit error:(id *)error
 {
   memoryCache = self->_memoryCache;
-  v9 = a3;
-  [(HDHeadphoneAudioExposureBucketCollection *)memoryCache pruneWithNowDate:v9];
+  dateCopy = date;
+  [(HDHeadphoneAudioExposureBucketCollection *)memoryCache pruneWithNowDate:dateCopy];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [HDHeadphoneAudioExposureStatisticsEntity _pruneWithNowDate:v9 limit:a4 profile:WeakRetained error:a5];
+  v11 = [HDHeadphoneAudioExposureStatisticsEntity _pruneWithNowDate:dateCopy limit:limit profile:WeakRetained error:error];
 
   v12 = [HDHeadphoneExposureStatisticsResult resultWithCache:self->_memoryCache prunedCount:v11];
 
@@ -197,10 +197,10 @@
   return v2;
 }
 
-- (id)_setupWithAssertion:(id)a3 error:(id *)a4
+- (id)_setupWithAssertion:(id)assertion error:(id *)error
 {
   v102 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  assertionCopy = assertion;
   if ([(HDHeadphoneAudioExposureStatisticsCalculator *)self isSetup])
   {
     [HDHeadphoneAudioExposureStatisticsCalculator _setupWithAssertion:error:];
@@ -227,11 +227,11 @@
   {
     if ([v13 hk_isHealthStoreUnavailableError])
     {
-      if (a4)
+      if (error)
       {
         v15 = v14;
         v16 = 0;
-        *a4 = v14;
+        *error = v14;
         goto LABEL_94;
       }
 
@@ -249,9 +249,9 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v18 = [WeakRetained database];
-  v19 = [v18 isProtectedDataAvailable];
-  if (!v19)
+  database = [WeakRetained database];
+  isProtectedDataAvailable = [database isProtectedDataAvailable];
+  if (!isProtectedDataAvailable)
   {
 
 LABEL_19:
@@ -274,12 +274,12 @@ LABEL_19:
     }
 
     v91 = 0;
-    v16 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self _rebuildWithAssertion:v7 allowInitialQueriesToFail:0 resetDoseToZero:0 error:&v91];
+    v16 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self _rebuildWithAssertion:assertionCopy allowInitialQueriesToFail:0 resetDoseToZero:0 error:&v91];
     v24 = v91;
     WeakRetained = v24;
     if (v16)
     {
-      v19 = 1;
+      isProtectedDataAvailable = 1;
       goto LABEL_24;
     }
 
@@ -288,10 +288,10 @@ LABEL_19:
       v29 = WeakRetained;
       if (v29)
       {
-        if (a4)
+        if (error)
         {
           v31 = v29;
-          *a4 = v29;
+          *error = v29;
         }
 
         else
@@ -312,7 +312,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v19 = 0;
+  isProtectedDataAvailable = 0;
 LABEL_21:
   _HKInitializeLogging();
   v25 = *MEMORY[0x277CCC2C8];
@@ -334,10 +334,10 @@ LABEL_21:
     v29 = v28;
     if (v29)
     {
-      if (a4)
+      if (error)
       {
         v30 = v29;
-        *a4 = v29;
+        *error = v29;
       }
 
       else
@@ -372,10 +372,10 @@ LABEL_24:
 
 LABEL_40:
   v32 = objc_loadWeakRetained(&self->_profile);
-  v33 = [v32 database];
-  v34 = [v33 isProtectedDataAvailable];
+  database2 = [v32 database];
+  isProtectedDataAvailable2 = [database2 isProtectedDataAvailable];
 
-  if (v34 && !v19)
+  if (isProtectedDataAvailable2 && !isProtectedDataAvailable)
   {
     v35 = v16;
     _HKInitializeLogging();
@@ -391,7 +391,7 @@ LABEL_40:
     }
 
     v89 = 0;
-    v40 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self _rebuildWithAssertion:v7 allowInitialQueriesToFail:0 resetDoseToZero:0 error:&v89];
+    v40 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self _rebuildWithAssertion:assertionCopy allowInitialQueriesToFail:0 resetDoseToZero:0 error:&v89];
     v41 = v89;
 
     if (!v40)
@@ -399,10 +399,10 @@ LABEL_40:
       v42 = v41;
       if (v42)
       {
-        if (a4)
+        if (error)
         {
           v43 = v42;
-          *a4 = v42;
+          *error = v42;
         }
 
         else
@@ -478,7 +478,7 @@ LABEL_57:
     v49 = 0;
     v50 = 0;
     v82 = *v86;
-    v80 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v83; ++i)
@@ -500,7 +500,7 @@ LABEL_57:
           v57 = v16;
           v58 = [(NSMutableArray *)self->_pendingSamples count];
           [v52 samples];
-          v60 = v59 = v7;
+          v60 = v59 = assertionCopy;
           v61 = [v60 count];
           *buf = 138544130;
           v94 = v55;
@@ -514,21 +514,21 @@ LABEL_57:
           v100 = v61;
           _os_log_impl(&dword_251764000, v54, OS_LOG_TYPE_DEFAULT, "[%{public}@] Replaying HAE batch (%lu of %lu) containing %lu samples.", buf, 0x2Au);
 
-          v7 = v59;
-          self = v80;
+          assertionCopy = v59;
+          self = selfCopy;
           v44 = MEMORY[0x277CCC2C8];
         }
 
         v84 = 0;
-        v62 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self _updateWithExposure:v52 replaying:1 assertion:v7 error:&v84, v77];
+        v62 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self _updateWithExposure:v52 replaying:1 assertion:assertionCopy error:&v84, v77];
         v63 = v84;
         if (v62)
         {
           v64 = v62;
 
-          v65 = [v64 cache];
+          cache = [v64 cache];
 
-          if (!v65)
+          if (!cache)
           {
             [HDHeadphoneAudioExposureStatisticsCalculator _setupWithAssertion:error:];
           }
@@ -606,13 +606,13 @@ LABEL_94:
   return v16;
 }
 
-- (id)_rebuildWithAssertion:(id)a3 allowInitialQueriesToFail:(BOOL)a4 resetDoseToZero:(BOOL)a5 error:(id *)a6
+- (id)_rebuildWithAssertion:(id)assertion allowInitialQueriesToFail:(BOOL)fail resetDoseToZero:(BOOL)zero error:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
+  zeroCopy = zero;
+  failCopy = fail;
   v71 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  if (!v8 && v7)
+  assertionCopy = assertion;
+  if (!failCopy && zeroCopy)
   {
     [HDHeadphoneAudioExposureStatisticsCalculator _rebuildWithAssertion:allowInitialQueriesToFail:resetDoseToZero:error:];
   }
@@ -644,11 +644,11 @@ LABEL_13:
     if (!v22 && v23)
     {
       [(HDHeadphoneAudioExposureStatisticsCalculator *)self setNeedsRebuild];
-      if (a6)
+      if (error)
       {
         v24 = v18;
         v20 = 0;
-        *a6 = v18;
+        *error = v18;
       }
 
       else
@@ -660,17 +660,17 @@ LABEL_13:
       goto LABEL_48;
     }
 
-    v55 = v7;
+    v55 = zeroCopy;
     WeakRetained = objc_loadWeakRetained(&self->_profile);
     v26 = [HDHeadphoneAudioExposureStatisticsBucket makeBucketsForProfile:WeakRetained earliestStartDate:v22];
 
-    v57 = v10;
-    v27 = [MEMORY[0x277D106B8] contextForAccessibilityAssertion:v10];
+    v57 = assertionCopy;
+    v27 = [MEMORY[0x277D106B8] contextForAccessibilityAssertion:assertionCopy];
     v28 = [v27 mutableCopy];
 
     [v28 setCacheScope:1];
     v29 = objc_loadWeakRetained(&self->_profile);
-    v30 = [v29 database];
+    database = [v29 database];
     v62 = 0;
     v60[0] = MEMORY[0x277D85DD0];
     v60[1] = 3221225472;
@@ -679,28 +679,28 @@ LABEL_13:
     v31 = v26;
     v61 = v31;
     v56 = v28;
-    LOBYTE(v28) = [v30 performWithTransactionContext:v28 error:&v62 block:v60];
+    LOBYTE(v28) = [database performWithTransactionContext:v28 error:&v62 block:v60];
     v58 = v62;
 
     if (v28)
     {
-      v32 = a6;
+      errorCopy2 = error;
     }
 
     else
     {
-      if (!v8)
+      if (!failCopy)
       {
         [(HDHeadphoneAudioExposureStatisticsCalculator *)self setNeedsRebuild];
         v40 = v58;
         v41 = v58;
-        v10 = v57;
+        assertionCopy = v57;
         if (v41)
         {
-          if (a6)
+          if (error)
           {
             v42 = v41;
-            *a6 = v41;
+            *error = v41;
           }
 
           else
@@ -715,7 +715,7 @@ LABEL_13:
 
       _HKInitializeLogging();
       v33 = *MEMORY[0x277CCC2C8];
-      v32 = a6;
+      errorCopy2 = error;
       if (os_log_type_enabled(*MEMORY[0x277CCC2C8], OS_LOG_TYPE_ERROR))
       {
         v52 = v33;
@@ -777,7 +777,7 @@ LABEL_13:
     }
 
     v46 = objc_loadWeakRetained(&self->_profile);
-    v47 = [HDHeadphoneAudioExposureStatisticsEntity _replaceExistingWithBuckets:v31 profile:v46 error:v32];
+    v47 = [HDHeadphoneAudioExposureStatisticsEntity _replaceExistingWithBuckets:v31 profile:v46 error:errorCopy2];
 
     if (v47)
     {
@@ -795,7 +795,7 @@ LABEL_13:
       v20 = 0;
     }
 
-    v10 = v57;
+    assertionCopy = v57;
     v40 = v58;
 LABEL_47:
 
@@ -817,11 +817,11 @@ LABEL_48:
   v18 = v17;
   if (v18)
   {
-    if (a6)
+    if (error)
     {
       v19 = v18;
       v20 = 0;
-      *a6 = v18;
+      *error = v18;
       goto LABEL_49;
     }
 
@@ -888,9 +888,9 @@ LABEL_11:
   return v9;
 }
 
-- (id)_loadBucketsFromProfile:(id)a3 needsRebuild:(BOOL *)a4 error:(id *)a5
+- (id)_loadBucketsFromProfile:(id)profile needsRebuild:(BOOL *)rebuild error:(id *)error
 {
-  v8 = a3;
+  profileCopy = profile;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v10 = self->_keyValueStore;
   v22 = 0;
@@ -899,7 +899,7 @@ LABEL_11:
   v25 = __Block_byref_object_copy__2;
   v26 = __Block_byref_object_dispose__2;
   v27 = 0;
-  v11 = [WeakRetained database];
+  database = [WeakRetained database];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __91__HDHeadphoneAudioExposureStatisticsCalculator__loadBucketsFromProfile_needsRebuild_error___block_invoke;
@@ -909,10 +909,10 @@ LABEL_11:
   v18 = v12;
   v13 = v10;
   v19 = v13;
-  v21 = a4;
-  LODWORD(a5) = [(HDHealthEntity *)HDHeadphoneAudioExposureStatisticsEntity performWriteTransactionWithHealthDatabase:v11 error:a5 block:v17];
+  rebuildCopy = rebuild;
+  LODWORD(error) = [(HDHealthEntity *)HDHeadphoneAudioExposureStatisticsEntity performWriteTransactionWithHealthDatabase:database error:error block:v17];
 
-  if (a5)
+  if (error)
   {
     v14 = v23[5];
   }
@@ -1029,11 +1029,11 @@ void *__91__HDHeadphoneAudioExposureStatisticsCalculator__loadBucketsFromProfile
   return v4;
 }
 
-- (id)_loadCacheWithError:(id *)a3
+- (id)_loadCacheWithError:(id *)error
 {
   v11 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self _loadBucketsFromProfile:WeakRetained needsRebuild:&v11 error:a3];
+  v6 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self _loadBucketsFromProfile:WeakRetained needsRebuild:&v11 error:error];
 
   if ([v6 count])
   {
@@ -1063,11 +1063,11 @@ BOOL __94__HDHeadphoneAudioExposureStatisticsCalculator__updateWithExposure_repl
   return *(*(*(a1 + 48) + 8) + 40) != 0;
 }
 
-- (id)_updateWithExposure:(id)a3 replaying:(BOOL)a4 error:(id *)a5
+- (id)_updateWithExposure:(id)exposure replaying:(BOOL)replaying error:(id *)error
 {
-  v6 = a4;
+  replayingCopy = replaying;
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  exposureCopy = exposure;
   memoryCache = self->_memoryCache;
   _HKInitializeLogging();
   v10 = MEMORY[0x277CCC2C8];
@@ -1079,16 +1079,16 @@ BOOL __94__HDHeadphoneAudioExposureStatisticsCalculator__updateWithExposure_repl
     {
       v13 = v11;
       v14 = objc_opt_class();
-      v15 = [v8 samples];
+      samples = [exposureCopy samples];
       *buf = 138543618;
       v34 = v14;
       v35 = 2048;
-      v36 = [v15 count];
+      v36 = [samples count];
       _os_log_impl(&dword_251764000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] Processing HAE sample batch (%lu).", buf, 0x16u);
     }
 
     buf[0] = 0;
-    v16 = [(HDHeadphoneAudioExposureBucketCollection *)self->_memoryCache _updateWithSampleBatch:v8 needsRebuild:buf error:a5];
+    v16 = [(HDHeadphoneAudioExposureBucketCollection *)self->_memoryCache _updateWithSampleBatch:exposureCopy needsRebuild:buf error:error];
     if (buf[0] == 1)
     {
       keyValueStore = self->_keyValueStore;
@@ -1117,12 +1117,12 @@ BOOL __94__HDHeadphoneAudioExposureStatisticsCalculator__updateWithExposure_repl
       v31[6] = v21;
       v31[4] = v16;
       v22 = MEMORY[0x253081C40](v31);
-      v23 = [WeakRetained database];
-      v24 = [v21 performWriteTransactionWithHealthDatabase:v23 error:a5 block:v22];
+      database = [WeakRetained database];
+      v24 = [v21 performWriteTransactionWithHealthDatabase:database error:error block:v22];
 
       if (v24)
       {
-        v25 = +[HDHeadphoneExposureStatisticsResult resultWithCache:eligbleForUserNotification:](HDHeadphoneExposureStatisticsResult, "resultWithCache:eligbleForUserNotification:", self->_memoryCache, [v8 canTriggerUserNotification]);
+        v25 = +[HDHeadphoneExposureStatisticsResult resultWithCache:eligbleForUserNotification:](HDHeadphoneExposureStatisticsResult, "resultWithCache:eligbleForUserNotification:", self->_memoryCache, [exposureCopy canTriggerUserNotification]);
       }
 
       else
@@ -1138,14 +1138,14 @@ BOOL __94__HDHeadphoneAudioExposureStatisticsCalculator__updateWithExposure_repl
     }
   }
 
-  else if (v6)
+  else if (replayingCopy)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
     {
       [HDHeadphoneAudioExposureStatisticsCalculator _updateWithExposure:replaying:error:];
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 description:@"cannot flush pending samples without memory cache."];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"cannot flush pending samples without memory cache."];
     v25 = 0;
   }
 
@@ -1155,15 +1155,15 @@ BOOL __94__HDHeadphoneAudioExposureStatisticsCalculator__updateWithExposure_repl
     {
       v26 = v11;
       v27 = objc_opt_class();
-      v28 = [v8 samples];
+      samples2 = [exposureCopy samples];
       *buf = 138543618;
       v34 = v27;
       v35 = 2048;
-      v36 = [v28 count];
+      v36 = [samples2 count];
       _os_log_impl(&dword_251764000, v26, OS_LOG_TYPE_DEFAULT, "[%{public}@] Caching HAE sample batch (%lu) for replay after initial rebuild.", buf, 0x16u);
     }
 
-    [(NSMutableArray *)self->_pendingSamples addObject:v8];
+    [(NSMutableArray *)self->_pendingSamples addObject:exposureCopy];
     v25 = +[HDHeadphoneExposureStatisticsResult resultForAppendedSamplesDuringStartup];
   }
 
@@ -1172,10 +1172,10 @@ BOOL __94__HDHeadphoneAudioExposureStatisticsCalculator__updateWithExposure_repl
   return v25;
 }
 
-- (void)_setNeedsRebuild:(BOOL)a3
+- (void)_setNeedsRebuild:(BOOL)rebuild
 {
-  v3 = a3;
-  self->_needsRebuild = a3;
+  rebuildCopy = rebuild;
+  self->_needsRebuild = rebuild;
   keyValueStore = self->_keyValueStore;
   v12 = 0;
   v6 = [HDHeadphoneDoseMetadataStore _setShouldRebuildSevenDayStatistics:"_setShouldRebuildSevenDayStatistics:error:" error:?];
@@ -1186,7 +1186,7 @@ BOOL __94__HDHeadphoneAudioExposureStatisticsCalculator__updateWithExposure_repl
     if (os_log_type_enabled(*MEMORY[0x277CCC2C8], OS_LOG_TYPE_ERROR))
     {
       [HDHeadphoneAudioExposureStatisticsCalculator _setNeedsRebuild:];
-      if (v3)
+      if (rebuildCopy)
       {
         goto LABEL_4;
       }
@@ -1197,7 +1197,7 @@ LABEL_8:
     }
   }
 
-  if (!v3)
+  if (!rebuildCopy)
   {
     goto LABEL_8;
   }

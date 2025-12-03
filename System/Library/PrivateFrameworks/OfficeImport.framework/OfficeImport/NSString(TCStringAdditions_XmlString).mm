@@ -14,16 +14,16 @@
 
 + (id)tc_stringWithXmlString:()TCStringAdditions_XmlString
 {
-  v3 = [[a1 alloc] tc_initWithXmlString:a3];
+  v3 = [[self alloc] tc_initWithXmlString:a3];
 
   return v3;
 }
 
 - (uint64_t)tc_xmlString
 {
-  v1 = a1;
+  selfCopy = self;
 
-  return [v1 UTF8String];
+  return [selfCopy UTF8String];
 }
 
 - (uint64_t)tc_initWithValueOfXmlAttribute:()TCStringAdditions_XmlString
@@ -41,11 +41,11 @@
     String = *(v4 + 80);
   }
 
-  v7 = a1;
-  v8 = v7;
+  selfCopy = self;
+  v8 = selfCopy;
   if (String)
   {
-    v9 = [v7 tc_initWithXmlString:String];
+    v9 = [selfCopy tc_initWithXmlString:String];
 
     if (v5)
     {
@@ -55,7 +55,7 @@
 
   else
   {
-    v9 = [v7 init];
+    v9 = [selfCopy init];
   }
 
   return v9;
@@ -64,18 +64,18 @@
 - (uint64_t)tc_initWithContentOfXmlNode:()TCStringAdditions_XmlString
 {
   Content = xmlNodeGetContent(cur);
-  v5 = a1;
-  v6 = v5;
+  selfCopy = self;
+  v6 = selfCopy;
   if (Content)
   {
-    v7 = [v5 tc_initWithXmlString:Content];
+    v7 = [selfCopy tc_initWithXmlString:Content];
 
     free(Content);
   }
 
   else
   {
-    v7 = [v5 init];
+    v7 = [selfCopy init];
   }
 
   return v7;
@@ -86,8 +86,8 @@
   NsProp = xmlGetNsProp(node, name, nameSpace);
   if (NsProp)
   {
-    v7 = a1;
-    v8 = [v7 tc_initWithXmlString:NsProp];
+    selfCopy = self;
+    v8 = [selfCopy tc_initWithXmlString:NsProp];
 
     free(NsProp);
   }
@@ -104,17 +104,17 @@
 - (uint64_t)tc_initFromXmlNode:()TCStringAdditions_XmlString nsWithFallbackNs:attributeName:
 {
   v8 = a4;
-  v9 = a1;
-  v10 = [v9 tc_initFromXmlNode:a3 ns:objc_msgSend(v8 attributeName:{"uri"), a5}];
+  selfCopy = self;
+  v10 = [selfCopy tc_initFromXmlNode:a3 ns:objc_msgSend(v8 attributeName:{"uri"), a5}];
 
   if (!v10)
   {
-    v11 = [v8 fallbackNamespace];
+    fallbackNamespace = [v8 fallbackNamespace];
 
-    if (v11)
+    if (fallbackNamespace)
     {
-      v12 = [v8 fallbackNamespace];
-      v10 = [0 tc_initFromXmlNode:a3 nsWithFallbackNs:v12 attributeName:a5];
+      fallbackNamespace2 = [v8 fallbackNamespace];
+      v10 = [0 tc_initFromXmlNode:a3 nsWithFallbackNs:fallbackNamespace2 attributeName:a5];
     }
 
     else
@@ -128,15 +128,15 @@
 
 - (id)tc_componentsSeparatedByWhitespace
 {
-  v2 = [MEMORY[0x277CBEB18] array];
-  v3 = [a1 length];
+  array = [MEMORY[0x277CBEB18] array];
+  v3 = [self length];
   v4 = MEMORY[0x277D85DE0];
   v5 = 0;
   if (v3)
   {
     while (1)
     {
-      v6 = [a1 characterAtIndex:v5];
+      v6 = [self characterAtIndex:v5];
       if (v6 <= 0x7F)
       {
         if ((*(v4 + 4 * v6 + 60) & 0x4000) == 0)
@@ -160,7 +160,7 @@ LABEL_8:
       {
         v5 = v3;
 LABEL_9:
-        [v2 addObject:&stru_286EE1130];
+        [array addObject:&stru_286EE1130];
         break;
       }
     }
@@ -178,21 +178,21 @@ LABEL_10:
         break;
       }
 
-      v9 = [a1 characterAtIndex:?];
+      v9 = [self characterAtIndex:?];
       v10 = v9 <= 0x7F ? *(v4 + 4 * v9 + 60) & 0x4000 : __maskrune(v9, 0x4000uLL);
       v7 = v8 + 1;
     }
 
     while (!v10);
-    v11 = [a1 substringWithRange:{v5, v8 + 1}];
-    [v2 addObject:v11];
+    v11 = [self substringWithRange:{v5, v8 + 1}];
+    [array addObject:v11];
 
     v5 += v8 + 2;
     if (v5 < v3)
     {
       do
       {
-        v12 = [a1 characterAtIndex:v5];
+        v12 = [self characterAtIndex:v5];
         if (v12 <= 0x7F)
         {
           if ((*(v4 + 4 * v12 + 60) & 0x4000) == 0)
@@ -220,16 +220,16 @@ LABEL_10:
   }
 
 LABEL_25:
-  [v2 addObject:&stru_286EE1130];
+  [array addObject:&stru_286EE1130];
 LABEL_26:
 
-  return v2;
+  return array;
 }
 
 - (uint64_t)tc_isEqualToXmlString:()TCStringAdditions_XmlString
 {
   v2 = [MEMORY[0x277CCACA8] stringWithUTF8String:?];
-  v3 = [a1 isEqualToString:v2];
+  v3 = [self isEqualToString:v2];
 
   return v3;
 }
@@ -237,18 +237,18 @@ LABEL_26:
 - (id)tc_stringByRemovingInvalidXmlChars
 {
   v2 = TCInvalidXmlCharacterSet();
-  v3 = a1;
-  if ([v3 rangeOfCharacterFromSet:v2] != 0x7FFFFFFFFFFFFFFFLL)
+  selfCopy = self;
+  if ([selfCopy rangeOfCharacterFromSet:v2] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [v3 componentsSeparatedByCharactersInSet:v2];
+    v4 = [selfCopy componentsSeparatedByCharactersInSet:v2];
     v5 = [v4 componentsJoinedByString:&stru_286EE1130];
 
-    v3 = v5;
+    selfCopy = v5;
   }
 
-  v6 = [v3 tsu_stringByFixingBrokenSurrogatePairs];
+  tsu_stringByFixingBrokenSurrogatePairs = [selfCopy tsu_stringByFixingBrokenSurrogatePairs];
 
-  return v6;
+  return tsu_stringByFixingBrokenSurrogatePairs;
 }
 
 @end

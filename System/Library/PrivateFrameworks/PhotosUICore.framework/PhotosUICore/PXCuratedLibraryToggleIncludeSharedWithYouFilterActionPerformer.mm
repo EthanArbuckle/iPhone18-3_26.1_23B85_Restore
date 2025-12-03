@@ -1,6 +1,6 @@
 @interface PXCuratedLibraryToggleIncludeSharedWithYouFilterActionPerformer
-- (PXCuratedLibraryToggleIncludeSharedWithYouFilterActionPerformer)initWithViewModel:(id)a3;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
+- (PXCuratedLibraryToggleIncludeSharedWithYouFilterActionPerformer)initWithViewModel:(id)model;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (int64_t)menuElementState;
 - (void)performUserInteractionTask;
 @end
@@ -9,21 +9,21 @@
 
 - (void)performUserInteractionTask
 {
-  v5 = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
-  [v5 setIncludeSharedWithYou:{objc_msgSend(v5, "includeSharedWithYou") ^ 1}];
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "includeSharedWithYou")}];
-  v4 = [off_1E7721948 standardUserDefaults];
-  [v4 setIncludeSharedWithYou:v3];
+  currentContentFilterState = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
+  [currentContentFilterState setIncludeSharedWithYou:{objc_msgSend(currentContentFilterState, "includeSharedWithYou") ^ 1}];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(currentContentFilterState, "includeSharedWithYou")}];
+  standardUserDefaults = [off_1E7721948 standardUserDefaults];
+  [standardUserDefaults setIncludeSharedWithYou:v3];
 
-  [(PXCuratedLibraryToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:v5];
+  [(PXCuratedLibraryToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:currentContentFilterState];
 }
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
-  if (a3 == 1)
+  if (case == 1)
   {
-    v3 = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
-    if ([v3 includeSharedWithYou])
+    currentContentFilterState = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
+    if ([currentContentFilterState includeSharedWithYou])
     {
       v4 = @"DISABLE_INCLUDE_SWY_FILTER_SHORTCUT";
     }
@@ -46,17 +46,17 @@
 
 - (int64_t)menuElementState
 {
-  v2 = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
-  v3 = [v2 isContentFilterActive:3];
+  currentContentFilterState = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
+  v3 = [currentContentFilterState isContentFilterActive:3];
 
   return v3;
 }
 
-- (PXCuratedLibraryToggleIncludeSharedWithYouFilterActionPerformer)initWithViewModel:(id)a3
+- (PXCuratedLibraryToggleIncludeSharedWithYouFilterActionPerformer)initWithViewModel:(id)model
 {
   v4.receiver = self;
   v4.super_class = PXCuratedLibraryToggleIncludeSharedWithYouFilterActionPerformer;
-  return [(PXCuratedLibraryActionPerformer *)&v4 initWithActionType:@"PXCuratedLibraryActionToggleIncludeSharedWithYouFilter" viewModel:a3];
+  return [(PXCuratedLibraryActionPerformer *)&v4 initWithActionType:@"PXCuratedLibraryActionToggleIncludeSharedWithYouFilter" viewModel:model];
 }
 
 @end

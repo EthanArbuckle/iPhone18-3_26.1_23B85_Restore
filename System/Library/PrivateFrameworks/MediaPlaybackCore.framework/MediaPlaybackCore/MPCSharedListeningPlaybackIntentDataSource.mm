@@ -1,32 +1,32 @@
 @interface MPCSharedListeningPlaybackIntentDataSource
-+ (BOOL)isValidReplaceIntent:(id)a3 forDestination:(int64_t)a4 supportedQueueTypes:(unint64_t)a5 supportedCustomDataQueueIdentifiers:(id)a6;
-- (void)_transitionToBuildState:(int64_t)a3 intent:(id)a4 error:(id)a5;
-- (void)_transitionToLiveLinkState:(int64_t)a3 error:(id)a4;
-- (void)_transitionToSourceState:(int64_t)a3 error:(id)a4;
-- (void)buildSharedSessionIntentWithIntent:(id)a3 identity:(id)a4 completion:(id)a5;
-- (void)didStartLiveLink:(id)a3;
-- (void)getRemotePlaybackQueueFromIntent:(id)a3 destination:(int64_t)a4 completion:(id)a5;
-- (void)getRepresentativeObjectFromIntent:(id)a3 properties:(id)a4 completion:(id)a5;
-- (void)getSharedListeningTracklistFromIntent:(id)a3 withCompletion:(id)a4;
-- (void)liveLink:(id)a3 didEncounterError:(id)a4 willRetry:(BOOL)a5;
-- (void)liveLink:(id)a3 didUpdateQueue:(id)a4;
++ (BOOL)isValidReplaceIntent:(id)intent forDestination:(int64_t)destination supportedQueueTypes:(unint64_t)types supportedCustomDataQueueIdentifiers:(id)identifiers;
+- (void)_transitionToBuildState:(int64_t)state intent:(id)intent error:(id)error;
+- (void)_transitionToLiveLinkState:(int64_t)state error:(id)error;
+- (void)_transitionToSourceState:(int64_t)state error:(id)error;
+- (void)buildSharedSessionIntentWithIntent:(id)intent identity:(id)identity completion:(id)completion;
+- (void)didStartLiveLink:(id)link;
+- (void)getRemotePlaybackQueueFromIntent:(id)intent destination:(int64_t)destination completion:(id)completion;
+- (void)getRepresentativeObjectFromIntent:(id)intent properties:(id)properties completion:(id)completion;
+- (void)getSharedListeningTracklistFromIntent:(id)intent withCompletion:(id)completion;
+- (void)liveLink:(id)link didEncounterError:(id)error willRetry:(BOOL)retry;
+- (void)liveLink:(id)link didUpdateQueue:(id)queue;
 @end
 
 @implementation MPCSharedListeningPlaybackIntentDataSource
 
-+ (BOOL)isValidReplaceIntent:(id)a3 forDestination:(int64_t)a4 supportedQueueTypes:(unint64_t)a5 supportedCustomDataQueueIdentifiers:(id)a6
++ (BOOL)isValidReplaceIntent:(id)intent forDestination:(int64_t)destination supportedQueueTypes:(unint64_t)types supportedCustomDataQueueIdentifiers:(id)identifiers
 {
-  v6 = a5;
-  v8 = a6;
-  v9 = v8;
-  if (a4 == 1)
+  typesCopy = types;
+  identifiersCopy = identifiers;
+  v9 = identifiersCopy;
+  if (destination == 1)
   {
     v10 = 1;
   }
 
-  else if (v6 < 0)
+  else if (typesCopy < 0)
   {
-    v10 = [v8 containsObject:@"com.apple.music.playbackqueue.sharedlistening"];
+    v10 = [identifiersCopy containsObject:@"com.apple.music.playbackqueue.sharedlistening"];
   }
 
   else
@@ -37,10 +37,10 @@
   return v10;
 }
 
-- (void)_transitionToLiveLinkState:(int64_t)a3 error:(id)a4
+- (void)_transitionToLiveLinkState:(int64_t)state error:(id)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   if (self->_buildState == 7)
   {
@@ -60,14 +60,14 @@
       }
 
       v17 = v11;
-      if (a3 >= 5)
+      if (state >= 5)
       {
-        v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/state=%ld", a3];
+        state = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/state=%ld", state];
       }
 
       else
       {
-        v18 = off_1E8237C38[a3];
+        state = off_1E8237C38[state];
       }
 
       *buf = 138543874;
@@ -75,7 +75,7 @@
       v44 = 2114;
       v45 = v17;
       v46 = 2114;
-      v47 = v18;
+      v47 = state;
       _os_log_impl(&dword_1C5C61000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ _transitionToLiveLinkState [ignoring] %{public}@ -> %{public}@", buf, 0x20u);
     }
 
@@ -83,7 +83,7 @@
     goto LABEL_48;
   }
 
-  v12 = a3 | (self->_linkState << 16);
+  v12 = state | (self->_linkState << 16);
   if (v12 <= 65538)
   {
     if (v12 == 1)
@@ -117,7 +117,7 @@
       }
 
 LABEL_20:
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v20 = self->_linkState;
       if (v20 >= 5)
       {
@@ -129,17 +129,17 @@ LABEL_20:
         v21 = off_1E8237C38[v20];
       }
 
-      if (a3 >= 5)
+      if (state >= 5)
       {
-        v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/state=%ld", a3];
+        state2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/state=%ld", state];
       }
 
       else
       {
-        v22 = off_1E8237C38[a3];
+        state2 = off_1E8237C38[state];
       }
 
-      [v19 handleFailureInMethod:a2 object:self file:@"MPCSharedListeningPlaybackIntentDataSource.m" lineNumber:489 description:{@"Unexpected state transition %@ -> %@", v21, v22}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPCSharedListeningPlaybackIntentDataSource.m" lineNumber:489 description:{@"Unexpected state transition %@ -> %@", v21, state2}];
 
       goto LABEL_27;
     }
@@ -161,7 +161,7 @@ LABEL_28:
   v23 = os_log_create("com.apple.amp.mediaplaybackcore", "SharedSession");
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v41 = v7;
+    v41 = errorCopy;
     v24 = v13;
     v25 = v14;
     v26 = v16;
@@ -178,14 +178,14 @@ LABEL_28:
     }
 
     v30 = v29;
-    if (a3 >= 5)
+    if (state >= 5)
     {
-      v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/state=%ld", a3];
+      state3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/state=%ld", state];
     }
 
     else
     {
-      v31 = off_1E8237C38[a3];
+      state3 = off_1E8237C38[state];
     }
 
     *buf = 138543874;
@@ -193,16 +193,16 @@ LABEL_28:
     v44 = 2114;
     v45 = v30;
     v46 = 2114;
-    v47 = v31;
+    v47 = state3;
     _os_log_impl(&dword_1C5C61000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ _transitionToLiveLinkState %{public}@ -> %{public}@", buf, 0x20u);
 
     v16 = v26;
     v14 = v25;
     v13 = v24;
-    v7 = v41;
+    errorCopy = v41;
   }
 
-  self->_linkState = a3;
+  self->_linkState = state;
   os_unfair_lock_unlock(&self->_lock);
   if (v15)
   {
@@ -228,39 +228,39 @@ LABEL_28:
   if ((v13 & 1) == 0)
   {
     os_unfair_lock_lock(&self->_lock);
-    v37 = [(MPCSharedListeningPlaybackIntentDataSource *)self buildState];
-    v38 = [(MPCSharedListeningPlaybackIntentDataSource *)self sourceState];
+    buildState = [(MPCSharedListeningPlaybackIntentDataSource *)self buildState];
+    sourceState = [(MPCSharedListeningPlaybackIntentDataSource *)self sourceState];
     os_unfair_lock_unlock(&self->_lock);
-    if (v37 == 1)
+    if (buildState == 1)
     {
       if (v14)
       {
-        v39 = self;
+        selfCopy2 = self;
         v40 = 3;
       }
 
       else
       {
-        if (v38 != 3)
+        if (sourceState != 3)
         {
           goto LABEL_48;
         }
 
-        v39 = self;
+        selfCopy2 = self;
         v40 = v16;
       }
 
-      [(MPCSharedListeningPlaybackIntentDataSource *)v39 _transitionToBuildState:v40 intent:0 error:v7];
+      [(MPCSharedListeningPlaybackIntentDataSource *)selfCopy2 _transitionToBuildState:v40 intent:0 error:errorCopy];
     }
   }
 
 LABEL_48:
 }
 
-- (void)_transitionToSourceState:(int64_t)a3 error:(id)a4
+- (void)_transitionToSourceState:(int64_t)state error:(id)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   if (self->_buildState == 7)
   {
@@ -280,14 +280,14 @@ LABEL_48:
       }
 
       v16 = v11;
-      if (a3 >= 4)
+      if (state >= 4)
       {
-        v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/state=%ld", a3];
+        state = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/state=%ld", state];
       }
 
       else
       {
-        v17 = off_1E8237C18[a3];
+        state = off_1E8237C18[state];
       }
 
       *buf = 138543874;
@@ -295,7 +295,7 @@ LABEL_48:
       v43 = 2114;
       v44 = v16;
       v45 = 2114;
-      v46 = v17;
+      v46 = state;
       _os_log_impl(&dword_1C5C61000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ _transitionToSourceState [ignoring] %{public}@ -> %{public}@", buf, 0x20u);
     }
 
@@ -304,7 +304,7 @@ LABEL_48:
 
   else
   {
-    v12 = a3 | (self->_sourceState << 16);
+    v12 = state | (self->_sourceState << 16);
     switch(v12)
     {
       case 1:
@@ -326,7 +326,7 @@ LABEL_48:
         v15 = 4;
         break;
       default:
-        v18 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v19 = self->_sourceState;
         if (v19 >= 4)
         {
@@ -338,17 +338,17 @@ LABEL_48:
           v20 = off_1E8237C18[v19];
         }
 
-        if (a3 >= 4)
+        if (state >= 4)
         {
-          v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/state=%ld", a3];
+          state2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/state=%ld", state];
         }
 
         else
         {
-          v21 = off_1E8237C18[a3];
+          state2 = off_1E8237C18[state];
         }
 
-        [v18 handleFailureInMethod:a2 object:self file:@"MPCSharedListeningPlaybackIntentDataSource.m" lineNumber:407 description:{@"Unexpected state transition %@ -> %@", v20, v21}];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"MPCSharedListeningPlaybackIntentDataSource.m" lineNumber:407 description:{@"Unexpected state transition %@ -> %@", v20, state2}];
 
         v13 = 0;
         v15 = 0;
@@ -360,7 +360,7 @@ LABEL_48:
     v22 = os_log_create("com.apple.amp.mediaplaybackcore", "SharedSession");
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v38 = v7;
+      v38 = errorCopy;
       v23 = v15;
       v24 = a2;
       v25 = v13;
@@ -377,14 +377,14 @@ LABEL_48:
       }
 
       v29 = v28;
-      if (a3 >= 4)
+      if (state >= 4)
       {
-        v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/state=%ld", a3];
+        state3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/state=%ld", state];
       }
 
       else
       {
-        v30 = off_1E8237C18[a3];
+        state3 = off_1E8237C18[state];
       }
 
       *buf = 138543874;
@@ -392,16 +392,16 @@ LABEL_48:
       v43 = 2114;
       v44 = v29;
       v45 = 2114;
-      v46 = v30;
+      v46 = state3;
       _os_log_impl(&dword_1C5C61000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ _transitionToSourceState %{public}@ -> %{public}@", buf, 0x20u);
 
       v13 = v25;
       a2 = v24;
       v15 = v23;
-      v7 = v38;
+      errorCopy = v38;
     }
 
-    self->_sourceState = a3;
+    self->_sourceState = state;
     os_unfair_lock_unlock(&self->_lock);
     if (v14)
     {
@@ -429,17 +429,17 @@ LABEL_48:
     if ((v39 & 1) == 0)
     {
       os_unfair_lock_lock(&self->_lock);
-      v36 = [(MPCSharedListeningPlaybackIntentDataSource *)self buildState];
-      v37 = [(MPCSharedListeningPlaybackIntentDataSource *)self linkState];
+      buildState = [(MPCSharedListeningPlaybackIntentDataSource *)self buildState];
+      linkState = [(MPCSharedListeningPlaybackIntentDataSource *)self linkState];
       os_unfair_lock_unlock(&self->_lock);
-      if (v36 == 1)
+      if (buildState == 1)
       {
         if (v13)
         {
-          [(MPCSharedListeningPlaybackIntentDataSource *)self _transitionToBuildState:2 intent:0 error:v7];
+          [(MPCSharedListeningPlaybackIntentDataSource *)self _transitionToBuildState:2 intent:0 error:errorCopy];
         }
 
-        else if (v37 == 4)
+        else if (linkState == 4)
         {
           [(MPCSharedListeningPlaybackIntentDataSource *)self _transitionToBuildState:v15];
         }
@@ -475,22 +475,22 @@ void __77__MPCSharedListeningPlaybackIntentDataSource__transitionToSourceState_e
   }
 }
 
-- (void)_transitionToBuildState:(int64_t)a3 intent:(id)a4 error:(id)a5
+- (void)_transitionToBuildState:(int64_t)state intent:(id)intent error:(id)error
 {
   v59 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  intentCopy = intent;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   buildState = self->_buildState;
-  v12 = a3 | (buildState << 16);
-  v51 = v9;
+  v12 = state | (buildState << 16);
+  v51 = intentCopy;
   if (v12 > 65539)
   {
     if ((v12 - 262149) >= 2)
     {
       if (v12 == 65540)
       {
-        v13 = v10;
+        v13 = errorCopy;
         v14 = 0;
         v16 = 0;
         v15 = 1;
@@ -501,7 +501,7 @@ void __77__MPCSharedListeningPlaybackIntentDataSource__transitionToSourceState_e
     }
 
 LABEL_6:
-    v13 = v10;
+    v13 = errorCopy;
     v15 = 0;
     v16 = 0;
     v14 = 1;
@@ -515,7 +515,7 @@ LABEL_6:
 
   if (v12 == 1)
   {
-    v13 = v10;
+    v13 = errorCopy;
     v14 = 0;
     v15 = 0;
     v16 = 1;
@@ -536,14 +536,14 @@ LABEL_7:
       }
 
       v21 = v20;
-      if (a3 >= 8)
+      if (state >= 8)
       {
-        v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/state=%ld", a3];
+        state = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/state=%ld", state];
       }
 
       else
       {
-        v22 = off_1E8237BD8[a3];
+        state = off_1E8237BD8[state];
       }
 
       *buf = 138543874;
@@ -551,11 +551,11 @@ LABEL_7:
       v55 = 2114;
       v56 = v21;
       v57 = 2114;
-      v58 = v22;
+      v58 = state;
       _os_log_impl(&dword_1C5C61000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ _transitionToBuildState %{public}@ -> %{public}@", buf, 0x20u);
     }
 
-    self->_buildState = a3;
+    self->_buildState = state;
     os_unfair_lock_unlock(&self->_lock);
     if (v16)
     {
@@ -566,9 +566,9 @@ LABEL_7:
     if (v15)
     {
       os_unfair_lock_lock(&self->_lock);
-      v23 = [(ICLiveLink *)self->_liveLink queue];
-      v24 = [(MPCSharedListeningPlaybackIntentDataSource *)self initialTracklist];
-      v25 = [(MPCSharedListeningPlaybackIntentDataSource *)self startIndexPath];
+      queue = [(ICLiveLink *)self->_liveLink queue];
+      initialTracklist = [(MPCSharedListeningPlaybackIntentDataSource *)self initialTracklist];
+      startIndexPath = [(MPCSharedListeningPlaybackIntentDataSource *)self startIndexPath];
       os_unfair_lock_unlock(&self->_lock);
       v26 = os_log_create("com.apple.amp.mediaplaybackcore", "SharedSession");
       v27 = os_signpost_id_make_with_pointer(v26, self->_initialIntent);
@@ -587,19 +587,19 @@ LABEL_7:
       v52[3] = &unk_1E8237B58;
       v52[4] = self;
       v52[5] = v27;
-      [v23 replaceTracklist:v24 preferredStartIndexPath:v25 completion:v52];
+      [queue replaceTracklist:initialTracklist preferredStartIndexPath:startIndexPath completion:v52];
     }
 
-    v10 = v13;
-    v9 = v51;
+    errorCopy = v13;
+    intentCopy = v51;
     if (v14)
     {
-      v30 = [(MPCSharedListeningPlaybackIntentDataSource *)self guard];
-      [v30 disarm];
+      guard = [(MPCSharedListeningPlaybackIntentDataSource *)self guard];
+      [guard disarm];
 
       v31 = [MPCPlayerCommandStatus alloc];
-      v32 = [v10 mpc_remoteCommandStatus];
-      v33 = [(MPCPlayerCommandStatus *)v31 initWithMPStatus:v32 request:0];
+      mpc_remoteCommandStatus = [errorCopy mpc_remoteCommandStatus];
+      v33 = [(MPCPlayerCommandStatus *)v31 initWithMPStatus:mpc_remoteCommandStatus request:0];
 
       v34 = os_log_create("com.apple.amp.mediaplaybackcore", "SharedSession");
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -628,8 +628,8 @@ LABEL_7:
         _os_signpost_emit_with_name_impl(&dword_1C5C61000, v39, OS_SIGNPOST_INTERVAL_END, v37, "build", "intent=%{public}@ status=%{public}@", buf, 0x16u);
       }
 
-      v40 = [(MPCSharedListeningPlaybackIntentDataSource *)self completion];
-      (v40)[2](v40, v51, v33);
+      completion = [(MPCSharedListeningPlaybackIntentDataSource *)self completion];
+      (completion)[2](completion, v51, v33);
 
       [(MPCSharedListeningPlaybackIntentDataSource *)self setCompletion:0];
       [(MPCSharedListeningPlaybackIntentDataSource *)self setStrongSelf:0];
@@ -641,9 +641,9 @@ LABEL_7:
 LABEL_32:
   if (buildState != 7)
   {
-    if (a3 != 7)
+    if (state != 7)
     {
-      v45 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v46 = self->_buildState;
       if (v46 >= 8)
       {
@@ -655,18 +655,18 @@ LABEL_32:
         v47 = off_1E8237BD8[v46];
       }
 
-      v13 = v10;
-      if (a3 >= 7)
+      v13 = errorCopy;
+      if (state >= 7)
       {
-        v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/state=%ld", a3];
+        state2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/state=%ld", state];
       }
 
       else
       {
-        v50 = off_1E8237BA0[a3];
+        state2 = off_1E8237BA0[state];
       }
 
-      [v45 handleFailureInMethod:a2 object:self file:@"MPCSharedListeningPlaybackIntentDataSource.m" lineNumber:325 description:{@"Unexpected state transition %@ -> %@", v47, v50}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPCSharedListeningPlaybackIntentDataSource.m" lineNumber:325 description:{@"Unexpected state transition %@ -> %@", v47, state2}];
 
       v14 = 0;
       v15 = 0;
@@ -693,14 +693,14 @@ LABEL_32:
     }
 
     v48 = v44;
-    if (a3 >= 8)
+    if (state >= 8)
     {
-      v49 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/state=%ld", a3];
+      state3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/state=%ld", state];
     }
 
     else
     {
-      v49 = off_1E8237BD8[a3];
+      state3 = off_1E8237BD8[state];
     }
 
     *buf = 138543874;
@@ -708,7 +708,7 @@ LABEL_32:
     v55 = 2114;
     v56 = v48;
     v57 = 2114;
-    v58 = v49;
+    v58 = state3;
     _os_log_impl(&dword_1C5C61000, v41, OS_LOG_TYPE_DEFAULT, "%{public}@ _transitionToBuildState [ignoring] %{public}@ -> %{public}@", buf, 0x20u);
   }
 
@@ -752,23 +752,23 @@ void __83__MPCSharedListeningPlaybackIntentDataSource__transitionToBuildState_in
   }
 }
 
-- (void)liveLink:(id)a3 didUpdateQueue:(id)a4
+- (void)liveLink:(id)link didUpdateQueue:(id)queue
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  queueCopy = queue;
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(MPCSharedListeningPlaybackIntentDataSource *)self linkState];
+  linkState = [(MPCSharedListeningPlaybackIntentDataSource *)self linkState];
   os_unfair_lock_unlock(&self->_lock);
-  if (v6 == 3)
+  if (linkState == 3)
   {
-    v7 = [v5 items];
-    v8 = [v7 count];
+    items = [queueCopy items];
+    v8 = [items count];
 
     if (v8)
     {
       v9 = MEMORY[0x1E696ABC0];
-      v10 = [v5 items];
-      v11 = [v9 msv_errorWithDomain:@"MPCError" code:28 debugDescription:{@"Canceling intent loading because live link already had content %@", v10}];
+      items2 = [queueCopy items];
+      v11 = [v9 msv_errorWithDomain:@"MPCError" code:28 debugDescription:{@"Canceling intent loading because live link already had content %@", items2}];
 
       [(MPCSharedListeningPlaybackIntentDataSource *)self _transitionToLiveLinkState:2 error:v11];
     }
@@ -783,23 +783,23 @@ void __83__MPCSharedListeningPlaybackIntentDataSource__transitionToBuildState_in
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C5C61000, v12, OS_LOG_TYPE_INFO, "%{public}@ didUpdateQueue:", buf, 0xCu);
   }
 }
 
-- (void)liveLink:(id)a3 didEncounterError:(id)a4 willRetry:(BOOL)a5
+- (void)liveLink:(id)link didEncounterError:(id)error willRetry:(BOOL)retry
 {
-  if (!a5)
+  if (!retry)
   {
-    v7 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:1 underlyingError:a4 debugDescription:@"Live link connection failed"];
+    v7 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:1 underlyingError:error debugDescription:@"Live link connection failed"];
     [(MPCSharedListeningPlaybackIntentDataSource *)self _transitionToLiveLinkState:2 error:v7];
   }
 }
 
-- (void)didStartLiveLink:(id)a3
+- (void)didStartLiveLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   v5 = os_log_create("com.apple.amp.mediaplaybackcore", "SharedSession");
   v6 = os_signpost_id_make_with_pointer(v5, self->_initialIntent);
 
@@ -813,77 +813,77 @@ void __83__MPCSharedListeningPlaybackIntentDataSource__transitionToBuildState_in
 
   [(MPCSharedListeningPlaybackIntentDataSource *)self _transitionToLiveLinkState:3];
   v9 = +[MPCSharedListeningLiveLinkReusePool sharedReusePool];
-  v10 = [v4 identifier];
-  [v9 storeLiveLink:v4 forSessionID:v10];
+  identifier = [linkCopy identifier];
+  [v9 storeLiveLink:linkCopy forSessionID:identifier];
 }
 
-- (void)getSharedListeningTracklistFromIntent:(id)a3 withCompletion:(id)a4
+- (void)getSharedListeningTracklistFromIntent:(id)intent withCompletion:(id)completion
 {
   v5 = MEMORY[0x1E696ABC0];
-  v6 = a4;
+  completionCopy = completion;
   v7 = [v5 msv_errorWithDomain:@"MPCError" code:58 debugDescription:@"Cannot create a shared tracklist from shared listening intent"];
-  (*(a4 + 2))(v6, 0, 0, v7);
+  (*(completion + 2))(completionCopy, 0, 0, v7);
 }
 
-- (void)getRemotePlaybackQueueFromIntent:(id)a3 destination:(int64_t)a4 completion:(id)a5
+- (void)getRemotePlaybackQueueFromIntent:(id)intent destination:(int64_t)destination completion:(id)completion
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if ((a4 - 2) < 2)
+  intentCopy = intent;
+  completionCopy = completion;
+  if ((destination - 2) < 2)
   {
     goto LABEL_4;
   }
 
-  if (a4 == 1)
+  if (destination == 1)
   {
-    v9 = [v7 tracklistToken];
-    v10 = [v7 actionAfterQueueLoad] == 20;
+    tracklistToken = [intentCopy tracklistToken];
+    v10 = [intentCopy actionAfterQueueLoad] == 20;
     v11 = objc_alloc(MEMORY[0x1E6970510]);
-    v12 = [MEMORY[0x1E695DEF0] data];
-    v19[0] = v9;
+    data = [MEMORY[0x1E695DEF0] data];
+    v19[0] = tracklistToken;
     v13 = *MEMORY[0x1E69B10E8];
     v18[0] = @"sharedListeningToken";
     v18[1] = v13;
-    v14 = [v9 sharedListeningProperties];
-    v15 = [v14 sessionIdentifier];
-    v19[1] = v15;
+    sharedListeningProperties = [tracklistToken sharedListeningProperties];
+    sessionIdentifier = [sharedListeningProperties sessionIdentifier];
+    v19[1] = sessionIdentifier;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:2];
-    v17 = [v11 initWithIdentifier:@"InProcess-com.apple.music.playbackqueue.sharedlistening" data:v12 options:v16];
+    v17 = [v11 initWithIdentifier:@"InProcess-com.apple.music.playbackqueue.sharedlistening" data:data options:v16];
 
     [v17 setRequestingImmediatePlayback:v10];
-    v8[2](v8, v17, 0);
+    completionCopy[2](completionCopy, v17, 0);
 
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!destination)
   {
 LABEL_4:
-    v9 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:58 debugDescription:{@"Cannot create a remote queue for destination: %ld", a4}];
-    (v8)[2](v8, 0, v9);
+    tracklistToken = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:58 debugDescription:{@"Cannot create a remote queue for destination: %ld", destination}];
+    (completionCopy)[2](completionCopy, 0, tracklistToken);
 LABEL_6:
   }
 }
 
-- (void)getRepresentativeObjectFromIntent:(id)a3 properties:(id)a4 completion:(id)a5
+- (void)getRepresentativeObjectFromIntent:(id)intent properties:(id)properties completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  intentCopy = intent;
+  propertiesCopy = properties;
+  completionCopy = completion;
   v10 = [[_MPCQueueControllerBehaviorMusicSharePlay alloc] initWithSessionID:0];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __102__MPCSharedListeningPlaybackIntentDataSource_getRepresentativeObjectFromIntent_properties_completion___block_invoke;
   v15[3] = &unk_1E8237B30;
-  v16 = v7;
+  v16 = intentCopy;
   v17 = v10;
-  v18 = v8;
-  v19 = v9;
-  v11 = v8;
+  v18 = propertiesCopy;
+  v19 = completionCopy;
+  v11 = propertiesCopy;
   v12 = v10;
-  v13 = v7;
-  v14 = v9;
+  v13 = intentCopy;
+  v14 = completionCopy;
   [v13 getRemotePlaybackQueueWithDestination:1 completion:v15];
 }
 
@@ -944,18 +944,18 @@ void __102__MPCSharedListeningPlaybackIntentDataSource_getRepresentativeObjectFr
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)buildSharedSessionIntentWithIntent:(id)a3 identity:(id)a4 completion:(id)a5
+- (void)buildSharedSessionIntentWithIntent:(id)intent identity:(id)identity completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  intentCopy = intent;
+  identityCopy = identity;
+  completionCopy = completion;
   [(MPCSharedListeningPlaybackIntentDataSource *)self setStrongSelf:self];
-  [(MPCSharedListeningPlaybackIntentDataSource *)self setInitialIntent:v9];
-  -[MPCSharedListeningPlaybackIntentDataSource setShuffleMode:](self, "setShuffleMode:", [v9 shuffleMode]);
-  [(MPCSharedListeningPlaybackIntentDataSource *)self setIdentity:v10];
-  [(MPCSharedListeningPlaybackIntentDataSource *)self setCompletion:v11];
+  [(MPCSharedListeningPlaybackIntentDataSource *)self setInitialIntent:intentCopy];
+  -[MPCSharedListeningPlaybackIntentDataSource setShuffleMode:](self, "setShuffleMode:", [intentCopy shuffleMode]);
+  [(MPCSharedListeningPlaybackIntentDataSource *)self setIdentity:identityCopy];
+  [(MPCSharedListeningPlaybackIntentDataSource *)self setCompletion:completionCopy];
   v12 = os_log_create("com.apple.amp.mediaplaybackcore", "SharedSession");
-  v13 = os_signpost_id_make_with_pointer(v12, v9);
+  v13 = os_signpost_id_make_with_pointer(v12, intentCopy);
 
   v14 = os_log_create("com.apple.amp.mediaplaybackcore", "SharedSession");
   v15 = v14;

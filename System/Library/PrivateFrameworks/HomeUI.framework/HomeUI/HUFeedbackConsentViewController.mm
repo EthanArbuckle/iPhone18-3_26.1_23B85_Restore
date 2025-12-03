@@ -1,28 +1,28 @@
 @interface HUFeedbackConsentViewController
-- (HUFeedbackConsentViewController)initWithConsentDelegate:(id)a3;
+- (HUFeedbackConsentViewController)initWithConsentDelegate:(id)delegate;
 - (WKWebView)consentView;
 - (id)htmlString;
 - (void)dealloc;
 - (void)didAcceptConsent;
 - (void)didDeclineConsent;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)updateViewConstraints;
 - (void)viewDidLoad;
 @end
 
 @implementation HUFeedbackConsentViewController
 
-- (HUFeedbackConsentViewController)initWithConsentDelegate:(id)a3
+- (HUFeedbackConsentViewController)initWithConsentDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = HUFeedbackConsentViewController;
   v6 = [(HUFeedbackConsentViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_consentDelegate, a3);
+    objc_storeStrong(&v6->_consentDelegate, delegate);
     [(HUFeedbackConsentViewController *)v7 setModalInPresentation:1];
   }
 
@@ -35,16 +35,16 @@
   v4 = [v3 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(HUFeedbackConsentViewController *)self setView:v4];
 
-  v5 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v6 = [(HUFeedbackConsentViewController *)self view];
-  [v6 setBackgroundColor:v5];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(HUFeedbackConsentViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v7 = [(HUFeedbackConsentViewController *)self view];
-  v8 = [(HUFeedbackConsentViewController *)self consentView];
-  [v7 addSubview:v8];
+  view2 = [(HUFeedbackConsentViewController *)self view];
+  consentView = [(HUFeedbackConsentViewController *)self consentView];
+  [view2 addSubview:consentView];
 
-  v9 = [(HUFeedbackConsentViewController *)self consentView];
-  [v9 addObserver:self forKeyPath:@"loading" options:1 context:HUFeedbackConsentViewControllerContext];
+  consentView2 = [(HUFeedbackConsentViewController *)self consentView];
+  [consentView2 addObserver:self forKeyPath:@"loading" options:1 context:HUFeedbackConsentViewControllerContext];
 
   [(HUFeedbackConsentViewController *)self setIsObservingConsentViewLoading:1];
 }
@@ -55,9 +55,9 @@
   v20.receiver = self;
   v20.super_class = HUFeedbackConsentViewController;
   [(HUFeedbackConsentViewController *)&v20 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(HUFeedbackConsentViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(HUFeedbackConsentViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
   v5 = objc_alloc(MEMORY[0x277D751E0]);
   v6 = _HULocalizedStringWithDefaultValue(@"HUCameraFeedbackDisagreeTitle", @"HUCameraFeedbackDisagreeTitle", 1);
@@ -73,8 +73,8 @@
   v21[2] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:3];
   [(HUFeedbackConsentViewController *)self setToolbarItems:v12];
-  v13 = [(HUFeedbackConsentViewController *)self navigationController];
-  [v13 setToolbarHidden:0];
+  navigationController = [(HUFeedbackConsentViewController *)self navigationController];
+  [navigationController setToolbarHidden:0];
 
   v14 = objc_alloc(MEMORY[0x277D751E0]);
   v15 = _HULocalizedStringWithDefaultValue(@"HUCameraFeedbackCancelTitle", @"HUCameraFeedbackCancelTitle", 1);
@@ -83,49 +83,49 @@
   v17 = _HULocalizedStringWithDefaultValue(@"HUCameraFeedbackConsentTitle", @"HUCameraFeedbackConsentTitle", 1);
   [(HUFeedbackConsentViewController *)self setTitle:v17];
 
-  v18 = [(HUFeedbackConsentViewController *)self navigationItem];
-  [v18 setLeftBarButtonItem:v16];
+  navigationItem = [(HUFeedbackConsentViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v16];
 
-  v19 = [(HUFeedbackConsentViewController *)self view];
-  [v19 setNeedsUpdateConstraints];
+  view2 = [(HUFeedbackConsentViewController *)self view];
+  [view2 setNeedsUpdateConstraints];
 }
 
 - (void)updateViewConstraints
 {
   v29[4] = *MEMORY[0x277D85DE8];
-  v3 = [(HUFeedbackConsentViewController *)self consentView];
-  v4 = [v3 translatesAutoresizingMaskIntoConstraints];
+  consentView = [(HUFeedbackConsentViewController *)self consentView];
+  translatesAutoresizingMaskIntoConstraints = [consentView translatesAutoresizingMaskIntoConstraints];
 
-  if (v4)
+  if (translatesAutoresizingMaskIntoConstraints)
   {
-    v5 = [(HUFeedbackConsentViewController *)self consentView];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    consentView2 = [(HUFeedbackConsentViewController *)self consentView];
+    [consentView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v27 = [(HUFeedbackConsentViewController *)self consentView];
-    v25 = [v27 topAnchor];
-    v26 = [(HUFeedbackConsentViewController *)self view];
-    v23 = [v26 topAnchor];
-    v24 = [(HUFeedbackConsentViewController *)self view];
-    [v24 layoutMargins];
-    v22 = [v25 constraintEqualToAnchor:v23 constant:?];
+    consentView3 = [(HUFeedbackConsentViewController *)self consentView];
+    topAnchor = [consentView3 topAnchor];
+    view = [(HUFeedbackConsentViewController *)self view];
+    topAnchor2 = [view topAnchor];
+    view2 = [(HUFeedbackConsentViewController *)self view];
+    [view2 layoutMargins];
+    v22 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
     v29[0] = v22;
-    v21 = [(HUFeedbackConsentViewController *)self consentView];
-    v19 = [v21 leadingAnchor];
-    v20 = [(HUFeedbackConsentViewController *)self view];
-    v18 = [v20 leadingAnchor];
-    v17 = [v19 constraintEqualToAnchor:v18];
+    consentView4 = [(HUFeedbackConsentViewController *)self consentView];
+    leadingAnchor = [consentView4 leadingAnchor];
+    view3 = [(HUFeedbackConsentViewController *)self view];
+    leadingAnchor2 = [view3 leadingAnchor];
+    v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v29[1] = v17;
-    v16 = [(HUFeedbackConsentViewController *)self consentView];
-    v6 = [v16 trailingAnchor];
-    v7 = [(HUFeedbackConsentViewController *)self view];
-    v8 = [v7 trailingAnchor];
-    v9 = [v6 constraintEqualToAnchor:v8];
+    consentView5 = [(HUFeedbackConsentViewController *)self consentView];
+    trailingAnchor = [consentView5 trailingAnchor];
+    view4 = [(HUFeedbackConsentViewController *)self view];
+    trailingAnchor2 = [view4 trailingAnchor];
+    v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v29[2] = v9;
-    v10 = [(HUFeedbackConsentViewController *)self consentView];
-    v11 = [v10 bottomAnchor];
-    v12 = [(HUFeedbackConsentViewController *)self view];
-    v13 = [v12 bottomAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13];
+    consentView6 = [(HUFeedbackConsentViewController *)self consentView];
+    bottomAnchor = [consentView6 bottomAnchor];
+    view5 = [(HUFeedbackConsentViewController *)self view];
+    bottomAnchor2 = [view5 bottomAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v29[3] = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:4];
 
@@ -140,16 +140,16 @@
 - (void)didAcceptConsent
 {
   [MEMORY[0x277D14500] acceptEmployeeCameraFeedbackConsent];
-  v3 = [(HUFeedbackConsentViewController *)self consentDelegate];
-  [v3 consentController:self didFinishConsentWithAnswer:1];
+  consentDelegate = [(HUFeedbackConsentViewController *)self consentDelegate];
+  [consentDelegate consentController:self didFinishConsentWithAnswer:1];
 
   [(HUFeedbackConsentViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)didDeclineConsent
 {
-  v3 = [(HUFeedbackConsentViewController *)self consentDelegate];
-  [v3 consentController:self didFinishConsentWithAnswer:0];
+  consentDelegate = [(HUFeedbackConsentViewController *)self consentDelegate];
+  [consentDelegate consentController:self didFinishConsentWithAnswer:0];
 
   [(HUFeedbackConsentViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
@@ -161,18 +161,18 @@
   {
     v4 = objc_alloc_init(MEMORY[0x277CE3858]);
     v5 = objc_alloc(MEMORY[0x277CE3850]);
-    v6 = [(HUFeedbackConsentViewController *)self view];
-    [v6 bounds];
+    view = [(HUFeedbackConsentViewController *)self view];
+    [view bounds];
     v7 = [v5 initWithFrame:v4 configuration:?];
 
-    v8 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(WKWebView *)v7 setBackgroundColor:v8];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(WKWebView *)v7 setBackgroundColor:systemBackgroundColor];
 
-    v9 = [(WKWebView *)v7 layer];
-    [v9 setOpacity:0.0];
+    layer = [(WKWebView *)v7 layer];
+    [layer setOpacity:0.0];
 
-    v10 = [(HUFeedbackConsentViewController *)self htmlString];
-    v11 = [(WKWebView *)v7 loadHTMLString:v10 baseURL:0];
+    htmlString = [(HUFeedbackConsentViewController *)self htmlString];
+    v11 = [(WKWebView *)v7 loadHTMLString:htmlString baseURL:0];
     v12 = self->_consentView;
     self->_consentView = v7;
 
@@ -182,12 +182,12 @@
   return consentView;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqual:@"loading"] && HUFeedbackConsentViewControllerContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqual:@"loading"] && HUFeedbackConsentViewControllerContext == context)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -201,7 +201,7 @@
   {
     v13.receiver = self;
     v13.super_class = HUFeedbackConsentViewController;
-    [(HUFeedbackConsentViewController *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(HUFeedbackConsentViewController *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -217,8 +217,8 @@ void __82__HUFeedbackConsentViewController_observeValueForKeyPath_ofObject_chang
 {
   v14 = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [(HUFeedbackConsentViewController *)self consentFormFilePath];
-  v4 = [v2 fileURLWithPath:v3 isDirectory:0];
+  consentFormFilePath = [(HUFeedbackConsentViewController *)self consentFormFilePath];
+  v4 = [v2 fileURLWithPath:consentFormFilePath isDirectory:0];
 
   v9 = 0;
   v5 = [MEMORY[0x277CCACA8] stringWithContentsOfURL:v4 encoding:4 error:&v9];
@@ -243,8 +243,8 @@ void __82__HUFeedbackConsentViewController_observeValueForKeyPath_ofObject_chang
 {
   if ([(HUFeedbackConsentViewController *)self isObservingConsentViewLoading])
   {
-    v3 = [(HUFeedbackConsentViewController *)self consentView];
-    [v3 removeObserver:self forKeyPath:@"loading"];
+    consentView = [(HUFeedbackConsentViewController *)self consentView];
+    [consentView removeObserver:self forKeyPath:@"loading"];
   }
 
   v4.receiver = self;

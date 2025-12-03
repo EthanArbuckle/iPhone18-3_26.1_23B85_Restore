@@ -1,6 +1,6 @@
 @interface BKAssetPresentingViewControllerAccessibility
 - (id)bkaxView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -11,15 +11,15 @@
   v4.receiver = self;
   v4.super_class = BKAssetPresentingViewControllerAccessibility;
   [(BKAssetPresentingViewControllerAccessibility *)&v4 viewDidLoad];
-  v3 = [(BKAssetPresentingViewControllerAccessibility *)self bkaxView];
-  [v3 setAccessibilityViewIsModal:1];
+  bkaxView = [(BKAssetPresentingViewControllerAccessibility *)self bkaxView];
+  [bkaxView setAccessibilityViewIsModal:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = BKAssetPresentingViewControllerAccessibility;
-  [(BKAssetPresentingViewControllerAccessibility *)&v3 viewDidAppear:a3];
+  [(BKAssetPresentingViewControllerAccessibility *)&v3 viewDidAppear:appear];
   UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, 0);
 }
 

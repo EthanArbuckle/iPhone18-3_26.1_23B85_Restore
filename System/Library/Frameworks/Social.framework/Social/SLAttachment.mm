@@ -1,34 +1,34 @@
 @interface SLAttachment
-- (SLAttachment)initWithCoder:(id)a3;
-- (SLAttachment)initWithPayload:(id)a3 type:(int64_t)a4 previewImage:(id)a5;
+- (SLAttachment)initWithCoder:(id)coder;
+- (SLAttachment)initWithPayload:(id)payload type:(int64_t)type previewImage:(id)image;
 - (id)_uniqueIdentifier;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setItemProvider:(id)a3;
-- (void)setPayload:(id)a3;
-- (void)setPayloadUpdateObserverWithBlock:(id)a3;
-- (void)setPreviewImage:(id)a3;
-- (void)setPreviewUpdateObserverWithBlock:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setItemProvider:(id)provider;
+- (void)setPayload:(id)payload;
+- (void)setPayloadUpdateObserverWithBlock:(id)block;
+- (void)setPreviewImage:(id)image;
+- (void)setPreviewUpdateObserverWithBlock:(id)block;
 @end
 
 @implementation SLAttachment
 
-- (SLAttachment)initWithPayload:(id)a3 type:(int64_t)a4 previewImage:(id)a5
+- (SLAttachment)initWithPayload:(id)payload type:(int64_t)type previewImage:(id)image
 {
-  v9 = a3;
-  v10 = a5;
+  payloadCopy = payload;
+  imageCopy = image;
   v16.receiver = self;
   v16.super_class = SLAttachment;
   v11 = [(SLAttachment *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_payload, a3);
-    v12->_type = a4;
-    objc_storeStrong(&v12->_previewImage, a5);
-    v13 = [(SLAttachment *)v12 _uniqueIdentifier];
+    objc_storeStrong(&v11->_payload, payload);
+    v12->_type = type;
+    objc_storeStrong(&v12->_previewImage, image);
+    _uniqueIdentifier = [(SLAttachment *)v12 _uniqueIdentifier];
     identifier = v12->_identifier;
-    v12->_identifier = v13;
+    v12->_identifier = _uniqueIdentifier;
   }
 
   return v12;
@@ -44,16 +44,16 @@
   return v4;
 }
 
-- (SLAttachment)initWithCoder:(id)a3
+- (SLAttachment)initWithCoder:(id)coder
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = SLAttachment;
   v5 = [(SLAttachment *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
@@ -63,25 +63,25 @@
     v16[2] = objc_opt_class();
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:3];
     v10 = [v8 setWithArray:v9];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"payload"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"payload"];
     [(SLAttachment *)v5 setPayload:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previewImage"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previewImage"];
     [(SLAttachment *)v5 setPreviewImage:v12];
 
-    -[SLAttachment setType:](v5, "setType:", [v4 decodeIntegerForKey:@"type"]);
-    -[SLAttachment setPreviewType:](v5, "setPreviewType:", [v4 decodeIntegerForKey:@"previewType"]);
-    -[SLAttachment setDownsampleStatus:](v5, "setDownsampleStatus:", [v4 decodeIntegerForKey:@"downsampleStatus"]);
+    -[SLAttachment setType:](v5, "setType:", [coderCopy decodeIntegerForKey:@"type"]);
+    -[SLAttachment setPreviewType:](v5, "setPreviewType:", [coderCopy decodeIntegerForKey:@"previewType"]);
+    -[SLAttachment setDownsampleStatus:](v5, "setDownsampleStatus:", [coderCopy decodeIntegerForKey:@"downsampleStatus"]);
     v13 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -102,7 +102,7 @@
 
         v9 = *(*(&v11 + 1) + 8 * i);
         v10 = [(SLAttachment *)self valueForKey:v9];
-        [v4 encodeObject:v10 forKey:v9];
+        [coderCopy encodeObject:v10 forKey:v9];
       }
 
       v6 = [&unk_1F4202B68 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -111,15 +111,15 @@
     while (v6);
   }
 
-  [v4 encodeInteger:-[SLAttachment type](self forKey:{"type"), @"type"}];
-  [v4 encodeInteger:-[SLAttachment previewType](self forKey:{"previewType"), @"previewType"}];
-  [v4 encodeInteger:-[SLAttachment downsampleStatus](self forKey:{"downsampleStatus"), @"downsampleStatus"}];
+  [coderCopy encodeInteger:-[SLAttachment type](self forKey:{"type"), @"type"}];
+  [coderCopy encodeInteger:-[SLAttachment previewType](self forKey:{"previewType"), @"previewType"}];
+  [coderCopy encodeInteger:-[SLAttachment downsampleStatus](self forKey:{"downsampleStatus"), @"downsampleStatus"}];
 }
 
-- (void)setPreviewImage:(id)a3
+- (void)setPreviewImage:(id)image
 {
-  v6 = a3;
-  objc_storeStrong(&self->_previewImage, a3);
+  imageCopy = image;
+  objc_storeStrong(&self->_previewImage, image);
   previewUpdateObserver = self->_previewUpdateObserver;
   if (previewUpdateObserver)
   {
@@ -127,10 +127,10 @@
   }
 }
 
-- (void)setPayload:(id)a3
+- (void)setPayload:(id)payload
 {
-  v6 = a3;
-  objc_storeStrong(&self->_payload, a3);
+  payloadCopy = payload;
+  objc_storeStrong(&self->_payload, payload);
   payloadUpdateObserver = self->_payloadUpdateObserver;
   if (payloadUpdateObserver)
   {
@@ -138,36 +138,36 @@
   }
 }
 
-- (void)setPreviewUpdateObserverWithBlock:(id)a3
+- (void)setPreviewUpdateObserverWithBlock:(id)block
 {
-  self->_previewUpdateObserver = MEMORY[0x1C6917BF0](a3, a2);
+  self->_previewUpdateObserver = MEMORY[0x1C6917BF0](block, a2);
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPayloadUpdateObserverWithBlock:(id)a3
+- (void)setPayloadUpdateObserverWithBlock:(id)block
 {
-  self->_payloadUpdateObserver = MEMORY[0x1C6917BF0](a3, a2);
+  self->_payloadUpdateObserver = MEMORY[0x1C6917BF0](block, a2);
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setItemProvider:(id)a3
+- (void)setItemProvider:(id)provider
 {
-  objc_storeStrong(&self->_itemProvider, a3);
+  objc_storeStrong(&self->_itemProvider, provider);
   self->_itemProviderPreviewType = 0;
   if (self->_itemProvider)
   {
-    v5 = [(SLAttachment *)self itemProvider];
-    v6 = [v5 userInfo];
-    v9 = [v6 objectForKeyedSubscript:@"SLItemProviderHasPreview"];
+    itemProvider = [(SLAttachment *)self itemProvider];
+    userInfo = [itemProvider userInfo];
+    v9 = [userInfo objectForKeyedSubscript:@"SLItemProviderHasPreview"];
 
     if (v9)
     {
       _SLLog(v3, 7, @"SLAttachment assigned itemProvider with SLItemProviderHasPreview %@");
-      v7 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
       v8 = 1;
-      if (!v7)
+      if (!bOOLValue)
       {
         v8 = 2;
       }
@@ -185,13 +185,13 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SLAttachment *)self identifier];
+  identifier = [(SLAttachment *)self identifier];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[SLAttachment type](self, "type")}];
-  v6 = [(SLAttachment *)self payload];
-  v7 = [(SLAttachment *)self previewImage];
+  payload = [(SLAttachment *)self payload];
+  previewImage = [(SLAttachment *)self previewImage];
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:{-[SLAttachment downsampleStatus](self, "downsampleStatus")}];
-  v9 = [(SLAttachment *)self payloadSourceFileURL];
-  v10 = [v3 stringWithFormat:@"attachment %p { \n\t identifier=%@, \n\t type=%@, \n\t payload=%p, \n\t previewImage=%@, \n\t downsampleStatus=%@, \n\t payloadSourceFileURL=%@, \n", self, v4, v5, v6, v7, v8, v9];
+  payloadSourceFileURL = [(SLAttachment *)self payloadSourceFileURL];
+  v10 = [v3 stringWithFormat:@"attachment %p { \n\t identifier=%@, \n\t type=%@, \n\t payload=%p, \n\t previewImage=%@, \n\t downsampleStatus=%@, \n\t payloadSourceFileURL=%@, \n", self, identifier, v5, payload, previewImage, v8, payloadSourceFileURL];
 
   return v10;
 }

@@ -1,47 +1,47 @@
 @interface HFNamingComponents
-+ (id)namingComponentFromAccessory:(id)a3;
-+ (id)namingComponentFromDiscoveredAccessory:(id)a3;
-+ (id)namingComponentFromHomeKitObject:(id)a3;
-+ (id)namingComponentFromMediaProfile:(id)a3;
-+ (id)namingComponentFromMediaSystem:(id)a3;
-+ (id)namingComponentFromService:(id)a3;
-+ (id)namingComponentFromServiceGroup:(id)a3;
-- (HFNamingComponents)initWithHomeKitObject:(id)a3;
++ (id)namingComponentFromAccessory:(id)accessory;
++ (id)namingComponentFromDiscoveredAccessory:(id)accessory;
++ (id)namingComponentFromHomeKitObject:(id)object;
++ (id)namingComponentFromMediaProfile:(id)profile;
++ (id)namingComponentFromMediaSystem:(id)system;
++ (id)namingComponentFromService:(id)service;
++ (id)namingComponentFromServiceGroup:(id)group;
+- (HFNamingComponents)initWithHomeKitObject:(id)object;
 - (NSString)defaultName;
 - (NSString)name;
 - (NSString)placeholderText;
 - (NSString)textFieldDisplayText;
 - (id)categoryName;
-- (id)commitableNameForString:(id)a3;
+- (id)commitableNameForString:(id)string;
 - (id)configuredName;
 - (id)description;
-- (id)homeKitSafeStringForString:(id)a3;
+- (id)homeKitSafeStringForString:(id)string;
 - (id)roomName;
 @end
 
 @implementation HFNamingComponents
 
-+ (id)namingComponentFromService:(id)a3
++ (id)namingComponentFromService:(id)service
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithHomeKitObject:v3];
+  serviceCopy = service;
+  v4 = [objc_alloc(objc_opt_class()) initWithHomeKitObject:serviceCopy];
   [v4 setIsService:1];
-  v5 = [v3 hf_parentService];
-  [v4 setIsChildService:v5 != 0];
+  hf_parentService = [serviceCopy hf_parentService];
+  [v4 setIsChildService:hf_parentService != 0];
 
   [v4 setAllowsNullResettableName:0];
-  [v4 setIsTelevision:{objc_msgSend(v3, "hf_isTelevision")}];
-  v6 = [v3 hf_isTelevision];
+  [v4 setIsTelevision:{objc_msgSend(serviceCopy, "hf_isTelevision")}];
+  hf_isTelevision = [serviceCopy hf_isTelevision];
 
-  [v4 setAllowsEmptyNameTextField:v6];
+  [v4 setAllowsEmptyNameTextField:hf_isTelevision];
 
   return v4;
 }
 
-+ (id)namingComponentFromServiceGroup:(id)a3
++ (id)namingComponentFromServiceGroup:(id)group
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithHomeKitObject:v3];
+  groupCopy = group;
+  v4 = [objc_alloc(objc_opt_class()) initWithHomeKitObject:groupCopy];
 
   [v4 setIsServiceGroup:1];
   [v4 setAllowsNullResettableName:0];
@@ -49,32 +49,32 @@
   return v4;
 }
 
-+ (id)namingComponentFromAccessory:(id)a3
++ (id)namingComponentFromAccessory:(id)accessory
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithHomeKitObject:v3];
-  v5 = 1;
+  accessoryCopy = accessory;
+  v4 = [objc_alloc(objc_opt_class()) initWithHomeKitObject:accessoryCopy];
+  hf_isTelevision = 1;
   [v4 setIsAccessory:1];
-  [v4 setIsMediaAccessoryOrStereoPair:{objc_msgSend(v3, "hf_isMediaAccessory")}];
-  [v4 setIsTelevision:{objc_msgSend(v3, "hf_isTelevision")}];
-  [v4 setAllowsNullResettableName:{objc_msgSend(v3, "hf_isMediaAccessory")}];
-  if (([v3 hf_isMediaAccessory] & 1) == 0)
+  [v4 setIsMediaAccessoryOrStereoPair:{objc_msgSend(accessoryCopy, "hf_isMediaAccessory")}];
+  [v4 setIsTelevision:{objc_msgSend(accessoryCopy, "hf_isTelevision")}];
+  [v4 setAllowsNullResettableName:{objc_msgSend(accessoryCopy, "hf_isMediaAccessory")}];
+  if (([accessoryCopy hf_isMediaAccessory] & 1) == 0)
   {
-    v5 = [v3 hf_isTelevision];
+    hf_isTelevision = [accessoryCopy hf_isTelevision];
   }
 
-  [v4 setAllowsEmptyNameTextField:v5];
+  [v4 setAllowsEmptyNameTextField:hf_isTelevision];
 
   return v4;
 }
 
-+ (id)namingComponentFromMediaProfile:(id)a3
++ (id)namingComponentFromMediaProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v4 = objc_alloc(objc_opt_class());
-  v5 = [v3 accessory];
+  accessory = [profileCopy accessory];
 
-  v6 = [v4 initWithHomeKitObject:v5];
+  v6 = [v4 initWithHomeKitObject:accessory];
   [v6 setIsAccessory:1];
   [v6 setIsMediaAccessoryOrStereoPair:1];
   [v6 setIsTelevision:0];
@@ -84,10 +84,10 @@
   return v6;
 }
 
-+ (id)namingComponentFromMediaSystem:(id)a3
++ (id)namingComponentFromMediaSystem:(id)system
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithHomeKitObject:v3];
+  systemCopy = system;
+  v4 = [objc_alloc(objc_opt_class()) initWithHomeKitObject:systemCopy];
 
   [v4 setIsMediaAccessoryOrStereoPair:1];
   [v4 setAllowsNullResettableName:1];
@@ -96,28 +96,28 @@
   return v4;
 }
 
-+ (id)namingComponentFromDiscoveredAccessory:(id)a3
++ (id)namingComponentFromDiscoveredAccessory:(id)accessory
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithHomeKitObject:v3];
+  accessoryCopy = accessory;
+  v4 = [objc_alloc(objc_opt_class()) initWithHomeKitObject:accessoryCopy];
   [v4 setIsDiscoveredAccessory:1];
-  v5 = [v3 accessory];
-  [v4 setIsMediaAccessoryOrStereoPair:{objc_msgSend(v5, "hf_isMediaAccessory")}];
+  accessory = [accessoryCopy accessory];
+  [v4 setIsMediaAccessoryOrStereoPair:{objc_msgSend(accessory, "hf_isMediaAccessory")}];
 
-  v6 = [v3 accessory];
+  accessory2 = [accessoryCopy accessory];
 
-  [v4 setIsTelevision:{objc_msgSend(v6, "hf_isTelevision")}];
+  [v4 setIsTelevision:{objc_msgSend(accessory2, "hf_isTelevision")}];
 
   return v4;
 }
 
-+ (id)namingComponentFromHomeKitObject:(id)a3
++ (id)namingComponentFromHomeKitObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [objc_opt_class() namingComponentFromService:v3];
+    v4 = [objc_opt_class() namingComponentFromService:objectCopy];
   }
 
   else
@@ -125,7 +125,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [objc_opt_class() namingComponentFromAccessory:v3];
+      v4 = [objc_opt_class() namingComponentFromAccessory:objectCopy];
     }
 
     else
@@ -133,7 +133,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v4 = [objc_opt_class() namingComponentFromMediaProfile:v3];
+        v4 = [objc_opt_class() namingComponentFromMediaProfile:objectCopy];
       }
 
       else
@@ -141,7 +141,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v4 = [objc_opt_class() namingComponentFromMediaSystem:v3];
+          v4 = [objc_opt_class() namingComponentFromMediaSystem:objectCopy];
         }
 
         else
@@ -151,12 +151,12 @@
           v6 = objc_opt_class();
           if (isKindOfClass)
           {
-            v4 = [v6 namingComponentFromServiceGroup:v3];
+            v4 = [v6 namingComponentFromServiceGroup:objectCopy];
           }
 
           else
           {
-            v4 = [[v6 alloc] initWithHomeKitObject:v3];
+            v4 = [[v6 alloc] initWithHomeKitObject:objectCopy];
           }
         }
       }
@@ -168,16 +168,16 @@
   return v7;
 }
 
-- (HFNamingComponents)initWithHomeKitObject:(id)a3
+- (HFNamingComponents)initWithHomeKitObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = HFNamingComponents;
   v6 = [(HFNamingComponents *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_homeKitObject, a3);
+    objc_storeStrong(&v6->_homeKitObject, object);
     [(HFNamingComponents *)v7 setAllowsEmptyNameTextField:0];
     [(HFNamingComponents *)v7 setAllowsNullResettableName:0];
     [(HFNamingComponents *)v7 setIsAccessory:0];
@@ -195,18 +195,18 @@
 - (id)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFNamingComponents *)self name];
-  v5 = [v3 appendObject:v4 withName:@"name"];
+  name = [(HFNamingComponents *)self name];
+  v5 = [v3 appendObject:name withName:@"name"];
 
-  v6 = [(HFNamingComponents *)self placeholderText];
-  v7 = [v3 appendObject:v6 withName:@"placeholder text"];
+  placeholderText = [(HFNamingComponents *)self placeholderText];
+  v7 = [v3 appendObject:placeholderText withName:@"placeholder text"];
 
-  v8 = [(HFNamingComponents *)self textFieldDisplayText];
-  v9 = [v3 appendObject:v8 withName:@"text field text"];
+  textFieldDisplayText = [(HFNamingComponents *)self textFieldDisplayText];
+  v9 = [v3 appendObject:textFieldDisplayText withName:@"text field text"];
 
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 - (NSString)name
@@ -214,16 +214,16 @@
   if ([(HFNamingComponents *)self isMediaAccessoryOrStereoPair])
   {
 LABEL_2:
-    v3 = [(HFNamingComponents *)self configuredName];
-    v4 = v3;
-    if (v3)
+    configuredName = [(HFNamingComponents *)self configuredName];
+    homeKitObject3 = configuredName;
+    if (configuredName)
     {
-      v5 = v3;
+      categoryName = configuredName;
     }
 
     else
     {
-      v5 = [(HFNamingComponents *)self categoryName];
+      categoryName = [(HFNamingComponents *)self categoryName];
     }
 
     goto LABEL_10;
@@ -231,29 +231,29 @@ LABEL_2:
 
   if ([(HFNamingComponents *)self isTelevision])
   {
-    v6 = [(HFNamingComponents *)self defaultName];
-    v7 = [(HFNamingComponents *)self configuredName];
-    v8 = [v6 isEqualToString:v7];
+    defaultName = [(HFNamingComponents *)self defaultName];
+    configuredName2 = [(HFNamingComponents *)self configuredName];
+    v8 = [defaultName isEqualToString:configuredName2];
 
     if (v8)
     {
-      v9 = [(HFNamingComponents *)self categoryName];
+      categoryName2 = [(HFNamingComponents *)self categoryName];
       goto LABEL_12;
     }
 
     goto LABEL_2;
   }
 
-  v10 = [(HFNamingComponents *)self homeKitObject];
+  homeKitObject = [(HFNamingComponents *)self homeKitObject];
   v11 = objc_opt_respondsToSelector();
 
   if ((v11 & 1) == 0)
   {
     objc_opt_class();
-    v13 = [(HFNamingComponents *)self homeKitObject];
+    homeKitObject2 = [(HFNamingComponents *)self homeKitObject];
     if (objc_opt_isKindOfClass())
     {
-      v14 = v13;
+      v14 = homeKitObject2;
     }
 
     else
@@ -261,60 +261,60 @@ LABEL_2:
       v14 = 0;
     }
 
-    v4 = v14;
+    homeKitObject3 = v14;
 
-    if (v4)
+    if (homeKitObject3)
     {
-      v15 = [v4 accessory];
-      v9 = [v15 name];
+      accessory = [homeKitObject3 accessory];
+      categoryName2 = [accessory name];
     }
 
     else
     {
-      v15 = [(HFNamingComponents *)self homeKitObject];
-      NSLog(&cfstr_CouldNotDeterm.isa, v15);
-      v9 = 0;
+      accessory = [(HFNamingComponents *)self homeKitObject];
+      NSLog(&cfstr_CouldNotDeterm.isa, accessory);
+      categoryName2 = 0;
     }
 
     goto LABEL_11;
   }
 
-  v4 = [(HFNamingComponents *)self homeKitObject];
-  v5 = [v4 name];
+  homeKitObject3 = [(HFNamingComponents *)self homeKitObject];
+  categoryName = [homeKitObject3 name];
 LABEL_10:
-  v9 = v5;
+  categoryName2 = categoryName;
 LABEL_11:
 
 LABEL_12:
 
-  return v9;
+  return categoryName2;
 }
 
 - (NSString)placeholderText
 {
   if ([(HFNamingComponents *)self isTelevision])
   {
-    v3 = [(HFNamingComponents *)self categoryName];
+    categoryName = [(HFNamingComponents *)self categoryName];
   }
 
   else
   {
-    v4 = [(HFNamingComponents *)self defaultName];
-    v5 = v4;
-    if (v4)
+    defaultName = [(HFNamingComponents *)self defaultName];
+    v5 = defaultName;
+    if (defaultName)
     {
-      v6 = v4;
+      name = defaultName;
     }
 
     else
     {
-      v6 = [(HFNamingComponents *)self name];
+      name = [(HFNamingComponents *)self name];
     }
 
-    v3 = v6;
+    categoryName = name;
   }
 
-  return v3;
+  return categoryName;
 }
 
 - (NSString)textFieldDisplayText
@@ -323,156 +323,156 @@ LABEL_12:
   {
     if ([(HFNamingComponents *)self isMediaAccessoryOrStereoPair])
     {
-      v3 = [(HFNamingComponents *)self defaultName];
+      defaultName = [(HFNamingComponents *)self defaultName];
 
-      v4 = [(HFNamingComponents *)self name];
-      v5 = self;
-      if (!v3)
+      name = [(HFNamingComponents *)self name];
+      selfCopy2 = self;
+      if (!defaultName)
       {
-        v6 = [(HFNamingComponents *)self roomName];
+        roomName = [(HFNamingComponents *)self roomName];
 LABEL_9:
-        v8 = v6;
-        if ([v4 isEqualToString:v6])
+        v8 = roomName;
+        if ([name isEqualToString:roomName])
         {
-          v9 = 0;
+          name2 = 0;
         }
 
         else
         {
-          v9 = [(HFNamingComponents *)self name];
+          name2 = [(HFNamingComponents *)self name];
         }
 
         goto LABEL_14;
       }
 
 LABEL_8:
-      v6 = [(HFNamingComponents *)v5 defaultName];
+      roomName = [(HFNamingComponents *)selfCopy2 defaultName];
       goto LABEL_9;
     }
 
     if ([(HFNamingComponents *)self isTelevision])
     {
-      v7 = [(HFNamingComponents *)self defaultName];
+      defaultName2 = [(HFNamingComponents *)self defaultName];
 
-      if (v7)
+      if (defaultName2)
       {
-        v4 = [(HFNamingComponents *)self configuredName];
-        v5 = self;
+        name = [(HFNamingComponents *)self configuredName];
+        selfCopy2 = self;
         goto LABEL_8;
       }
     }
   }
 
-  v9 = [(HFNamingComponents *)self name];
+  name2 = [(HFNamingComponents *)self name];
 LABEL_14:
 
-  return v9;
+  return name2;
 }
 
-- (id)homeKitSafeStringForString:(id)a3
+- (id)homeKitSafeStringForString:(id)string
 {
-  v4 = a3;
-  if (!v4)
+  stringCopy = string;
+  if (!stringCopy)
   {
-    v7 = [(HFNamingComponents *)self textFieldDisplayText];
+    textFieldDisplayText = [(HFNamingComponents *)self textFieldDisplayText];
     goto LABEL_15;
   }
 
-  v5 = [HFUtilities sanitizeUserEnteredHomeKitName:v4];
-  if ([v4 length])
+  v5 = [HFUtilities sanitizeUserEnteredHomeKitName:stringCopy];
+  if ([stringCopy length])
   {
-    v6 = v5;
+    textFieldDisplayText2 = v5;
   }
 
   else
   {
     if ([(HFNamingComponents *)self allowsEmptyNameTextField])
     {
-      v7 = 0;
+      textFieldDisplayText = 0;
       goto LABEL_14;
     }
 
     if ([(HFNamingComponents *)self isChildService])
     {
-      v8 = [(HFNamingComponents *)self defaultName];
-      v9 = v8;
-      if (v8)
+      defaultName = [(HFNamingComponents *)self defaultName];
+      v9 = defaultName;
+      if (defaultName)
       {
-        v10 = v8;
+        name = defaultName;
       }
 
       else
       {
-        v10 = [(HFNamingComponents *)self name];
+        name = [(HFNamingComponents *)self name];
       }
 
-      v7 = v10;
+      textFieldDisplayText = name;
 
       goto LABEL_14;
     }
 
-    v6 = [(HFNamingComponents *)self textFieldDisplayText];
+    textFieldDisplayText2 = [(HFNamingComponents *)self textFieldDisplayText];
   }
 
-  v7 = v6;
+  textFieldDisplayText = textFieldDisplayText2;
 LABEL_14:
 
 LABEL_15:
 
-  return v7;
+  return textFieldDisplayText;
 }
 
-- (id)commitableNameForString:(id)a3
+- (id)commitableNameForString:(id)string
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     goto LABEL_2;
   }
 
   if ([(HFNamingComponents *)self allowsNullResettableName])
   {
-    v5 = v4;
+    defaultName2 = stringCopy;
   }
 
   else
   {
-    v6 = [(HFNamingComponents *)self defaultName];
+    defaultName = [(HFNamingComponents *)self defaultName];
 
-    if (!v6)
+    if (!defaultName)
     {
 LABEL_2:
-      v5 = [(HFNamingComponents *)self homeKitSafeStringForString:v4];
+      defaultName2 = [(HFNamingComponents *)self homeKitSafeStringForString:stringCopy];
       goto LABEL_7;
     }
 
-    v5 = [(HFNamingComponents *)self defaultName];
+    defaultName2 = [(HFNamingComponents *)self defaultName];
   }
 
 LABEL_7:
-  v7 = v5;
+  v7 = defaultName2;
 
   return v7;
 }
 
 - (id)roomName
 {
-  v3 = [(HFNamingComponents *)self homeKitObject];
-  v4 = [v3 conformsToProtocol:&unk_282562B78];
+  homeKitObject = [(HFNamingComponents *)self homeKitObject];
+  v4 = [homeKitObject conformsToProtocol:&unk_282562B78];
 
   if (v4)
   {
-    v5 = [(HFNamingComponents *)self homeKitObject];
-    v6 = [v5 hf_parentRoom];
-    v7 = [v6 name];
+    homeKitObject2 = [(HFNamingComponents *)self homeKitObject];
+    hf_parentRoom = [homeKitObject2 hf_parentRoom];
+    name = [hf_parentRoom name];
   }
 
   else
   {
-    v7 = 0;
+    name = 0;
   }
 
-  return v7;
+  return name;
 }
 
 - (NSString)defaultName
@@ -480,10 +480,10 @@ LABEL_7:
   if ([(HFNamingComponents *)self isService])
   {
     objc_opt_class();
-    v3 = [(HFNamingComponents *)self homeKitObject];
+    homeKitObject = [(HFNamingComponents *)self homeKitObject];
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = homeKitObject;
     }
 
     else
@@ -491,28 +491,28 @@ LABEL_7:
       v4 = 0;
     }
 
-    v5 = v4;
+    hf_primaryService = v4;
 
 LABEL_6:
-    v6 = [v5 defaultName];
+    defaultName = [hf_primaryService defaultName];
 LABEL_7:
-    v7 = v6;
+    v7 = defaultName;
 
     goto LABEL_8;
   }
 
   if ([(HFNamingComponents *)self isMediaAccessoryOrStereoPair])
   {
-    v9 = [(HFNamingComponents *)self categoryName];
-    v5 = v9;
-    if (v9)
+    categoryName = [(HFNamingComponents *)self categoryName];
+    hf_primaryService = categoryName;
+    if (categoryName)
     {
-      v6 = v9;
+      defaultName = categoryName;
     }
 
     else
     {
-      v6 = [(HFNamingComponents *)self roomName];
+      defaultName = [(HFNamingComponents *)self roomName];
     }
 
     goto LABEL_7;
@@ -521,10 +521,10 @@ LABEL_7:
   if ([(HFNamingComponents *)self isTelevision])
   {
     objc_opt_class();
-    v10 = [(HFNamingComponents *)self homeKitObject];
+    homeKitObject2 = [(HFNamingComponents *)self homeKitObject];
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = homeKitObject2;
     }
 
     else
@@ -534,7 +534,7 @@ LABEL_7:
 
     v12 = v11;
 
-    v5 = [v12 hf_primaryService];
+    hf_primaryService = [v12 hf_primaryService];
 
     goto LABEL_6;
   }
@@ -547,21 +547,21 @@ LABEL_8:
 
 - (id)configuredName
 {
-  v3 = [(HFNamingComponents *)self homeKitObject];
+  homeKitObject = [(HFNamingComponents *)self homeKitObject];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(HFNamingComponents *)self homeKitObject];
-    v6 = [v5 configuredName];
+    homeKitObject2 = [(HFNamingComponents *)self homeKitObject];
+    configuredName = [homeKitObject2 configuredName];
   }
 
   else
   {
-    v6 = 0;
+    configuredName = 0;
   }
 
-  return v6;
+  return configuredName;
 }
 
 - (id)categoryName
@@ -569,10 +569,10 @@ LABEL_8:
   if ([(HFNamingComponents *)self isAccessory])
   {
     objc_opt_class();
-    v3 = [(HFNamingComponents *)self homeKitObject];
+    homeKitObject = [(HFNamingComponents *)self homeKitObject];
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = homeKitObject;
     }
 
     else
@@ -580,10 +580,10 @@ LABEL_8:
       v4 = 0;
     }
 
-    v5 = v4;
+    accessory = v4;
 
 LABEL_6:
-    v6 = [v5 hf_userFriendlyLocalizedCapitalizedDescription];
+    hf_userFriendlyLocalizedCapitalizedDescription = [accessory hf_userFriendlyLocalizedCapitalizedDescription];
 LABEL_12:
 
     goto LABEL_13;
@@ -597,10 +597,10 @@ LABEL_12:
   if ([(HFNamingComponents *)self isService])
   {
     objc_opt_class();
-    v13 = [(HFNamingComponents *)self homeKitObject];
+    homeKitObject2 = [(HFNamingComponents *)self homeKitObject];
     if (objc_opt_isKindOfClass())
     {
-      v14 = v13;
+      v14 = homeKitObject2;
     }
 
     else
@@ -610,7 +610,7 @@ LABEL_12:
 
     v15 = v14;
 
-    v5 = [v15 accessory];
+    accessory = [v15 accessory];
 
     goto LABEL_6;
   }
@@ -619,10 +619,10 @@ LABEL_12:
   {
 LABEL_8:
     objc_opt_class();
-    v7 = [(HFNamingComponents *)self homeKitObject];
+    homeKitObject3 = [(HFNamingComponents *)self homeKitObject];
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = homeKitObject3;
     }
 
     else
@@ -633,18 +633,18 @@ LABEL_8:
     v9 = v8;
 
     v10 = MEMORY[0x277CD1650];
-    v5 = [v9 category];
+    accessory = [v9 category];
 
-    v11 = [v5 categoryType];
-    v6 = [v10 hf_userFriendlyLocalizedCapitalizedDescription:v11];
+    categoryType = [accessory categoryType];
+    hf_userFriendlyLocalizedCapitalizedDescription = [v10 hf_userFriendlyLocalizedCapitalizedDescription:categoryType];
 
     goto LABEL_12;
   }
 
-  v6 = 0;
+  hf_userFriendlyLocalizedCapitalizedDescription = 0;
 LABEL_13:
 
-  return v6;
+  return hf_userFriendlyLocalizedCapitalizedDescription;
 }
 
 @end

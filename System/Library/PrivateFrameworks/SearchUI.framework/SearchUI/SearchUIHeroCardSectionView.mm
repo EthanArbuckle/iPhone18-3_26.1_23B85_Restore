@@ -1,52 +1,52 @@
 @interface SearchUIHeroCardSectionView
-+ (BOOL)fillsBackgroundWithContentForRowModel:(id)a3;
-+ (BOOL)showsBackgroundImageViewForRowModel:(id)a3;
++ (BOOL)fillsBackgroundWithContentForRowModel:(id)model;
++ (BOOL)showsBackgroundImageViewForRowModel:(id)model;
 - (BOOL)hasBackground;
 - (BOOL)showBackgroundImageView;
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5;
-- (SearchUIHeroCardSectionView)initWithRowModel:(id)a3 feedbackDelegate:(id)a4;
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview;
+- (SearchUIHeroCardSectionView)initWithRowModel:(id)model feedbackDelegate:(id)delegate;
 - (id)highlightReferenceView;
 - (id)setupContentView;
-- (void)buttonPressed:(id)a3;
-- (void)didUpdateWithImage:(id)a3;
-- (void)showGradientAnimated:(BOOL)a3;
-- (void)updateButtonsForCardSection:(id)a3;
-- (void)updatePunchoutIconForRowModel:(id)a3;
-- (void)updatePunchoutImageWithBundleIdentifier:(id)a3;
-- (void)updateWithButtonViews:(id)a3 visible:(BOOL)a4 addBackground:(BOOL)a5 animate:(BOOL)a6;
-- (void)updateWithPunchoutImage:(id)a3;
-- (void)updateWithRowModel:(id)a3;
+- (void)buttonPressed:(id)pressed;
+- (void)didUpdateWithImage:(id)image;
+- (void)showGradientAnimated:(BOOL)animated;
+- (void)updateButtonsForCardSection:(id)section;
+- (void)updatePunchoutIconForRowModel:(id)model;
+- (void)updatePunchoutImageWithBundleIdentifier:(id)identifier;
+- (void)updateWithButtonViews:(id)views visible:(BOOL)visible addBackground:(BOOL)background animate:(BOOL)animate;
+- (void)updateWithPunchoutImage:(id)image;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIHeroCardSectionView
 
-+ (BOOL)fillsBackgroundWithContentForRowModel:(id)a3
++ (BOOL)fillsBackgroundWithContentForRowModel:(id)model
 {
-  v4 = a3;
-  v7.receiver = a1;
+  modelCopy = model;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___SearchUIHeroCardSectionView;
-  if (objc_msgSendSuper2(&v7, sel_fillsBackgroundWithContentForRowModel_, v4))
+  if (objc_msgSendSuper2(&v7, sel_fillsBackgroundWithContentForRowModel_, modelCopy))
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [a1 showsBackgroundImageViewForRowModel:v4];
+    v5 = [self showsBackgroundImageViewForRowModel:modelCopy];
   }
 
   return v5;
 }
 
-+ (BOOL)showsBackgroundImageViewForRowModel:(id)a3
++ (BOOL)showsBackgroundImageViewForRowModel:(id)model
 {
-  v3 = a3;
-  v4 = [v3 cardSection];
-  v5 = [v4 image];
-  if (v5 && [v4 imageAlign] == 4)
+  modelCopy = model;
+  cardSection = [modelCopy cardSection];
+  image = [cardSection image];
+  if (image && [cardSection imageAlign] == 4)
   {
-    v6 = [v3 backgroundColor];
-    v7 = v6 == 0;
+    backgroundColor = [modelCopy backgroundColor];
+    v7 = backgroundColor == 0;
   }
 
   else
@@ -57,11 +57,11 @@
   return v7;
 }
 
-- (SearchUIHeroCardSectionView)initWithRowModel:(id)a3 feedbackDelegate:(id)a4
+- (SearchUIHeroCardSectionView)initWithRowModel:(id)model feedbackDelegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = SearchUIHeroCardSectionView;
-  v4 = [(SearchUICardSectionView *)&v7 initWithRowModel:a3 feedbackDelegate:a4];
+  v4 = [(SearchUICardSectionView *)&v7 initWithRowModel:model feedbackDelegate:delegate];
   if (v4)
   {
     if (initWithRowModel_feedbackDelegate__onceToken != -1)
@@ -69,8 +69,8 @@
       [SearchUIHeroCardSectionView initWithRowModel:feedbackDelegate:];
     }
 
-    v5 = [(SearchUIHeroCardSectionView *)v4 layer];
-    [v5 setShadowPathIsBounds:1];
+    layer = [(SearchUIHeroCardSectionView *)v4 layer];
+    [layer setShadowPathIsBounds:1];
   }
 
   return v4;
@@ -97,24 +97,24 @@
   [v47 setSymbolWeight:7];
   [(SearchUIHeroCardSectionView *)self setPunchoutIndicatorImageView:v47];
   v5 = objc_opt_new();
-  v6 = [v5 layer];
-  [v6 setMasksToBounds:1];
+  layer = [v5 layer];
+  [layer setMasksToBounds:1];
 
   [MEMORY[0x1E69D9240] appIconCornerRadiusRatio];
   v8 = v7 * 24.0;
-  v9 = [v5 layer];
-  [v9 setCornerRadius:v8];
+  layer2 = [v5 layer];
+  [layer2 setCornerRadius:v8];
 
   v10 = *MEMORY[0x1E69796E8];
-  v11 = [v5 layer];
-  [v11 setCornerCurve:v10];
+  layer3 = [v5 layer];
+  [layer3 setCornerCurve:v10];
 
   LODWORD(v12) = 1148846080;
   [v5 setLayoutSize:24.0 withContentPriority:{24.0, v12}];
   v46 = v3;
   [v3 addArrangedSubview:v5];
-  v13 = [MEMORY[0x1E69D9240] isSiri];
-  if (v13)
+  isSiri = [MEMORY[0x1E69D9240] isSiri];
+  if (isSiri)
   {
     v14 = 4;
   }
@@ -124,7 +124,7 @@
     v14 = 1;
   }
 
-  if (v13)
+  if (isSiri)
   {
     v15 = 1;
   }
@@ -137,16 +137,16 @@
   [v3 setAlignment:v15 forView:v5 inAxis:0];
   [v3 setAlignment:v14 forView:v5 inAxis:1];
   v16 = objc_alloc(MEMORY[0x1E698B718]);
-  v17 = [(SearchUIHeroCardSectionView *)self punchoutIndicatorImageView];
-  v52[0] = v17;
+  punchoutIndicatorImageView = [(SearchUIHeroCardSectionView *)self punchoutIndicatorImageView];
+  v52[0] = punchoutIndicatorImageView;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:1];
   v19 = [v16 initWithArrangedSubviews:v18];
 
   [v19 setHorizontalAlignment:3];
   v45 = v19;
   [v19 setVerticalAlignment:3];
-  v20 = [v5 contentView];
-  [v20 addSubview:v19];
+  contentView = [v5 contentView];
+  [contentView addSubview:v19];
 
   [SearchUIAutoLayout fillContainerWithView:v19];
   [(SearchUIHeroCardSectionView *)self setPunchoutIndicatorBackgroundBlurView:v5];
@@ -168,14 +168,14 @@
   v26 = objc_opt_new();
   [(SearchUIHeroCardSectionView *)self setButtonStackView:v26];
 
-  v27 = [(SearchUIHeroCardSectionView *)self buttonStackView];
-  [v27 setDistribution:1];
+  buttonStackView = [(SearchUIHeroCardSectionView *)self buttonStackView];
+  [buttonStackView setDistribution:1];
 
-  v28 = [(SearchUIHeroCardSectionView *)self buttonStackView];
-  [v28 setSpacing:8.0];
+  buttonStackView2 = [(SearchUIHeroCardSectionView *)self buttonStackView];
+  [buttonStackView2 setSpacing:8.0];
 
-  v29 = [(SearchUIHeroCardSectionView *)self buttonStackView];
-  [SearchUIAutoLayout requireIntrinsicSizeForView:v29];
+  buttonStackView3 = [(SearchUIHeroCardSectionView *)self buttonStackView];
+  [SearchUIAutoLayout requireIntrinsicSizeForView:buttonStackView3];
 
   v30 = objc_alloc(MEMORY[0x1E698B730]);
   v51[0] = v44;
@@ -202,8 +202,8 @@
   [(SearchUIHeroCardSectionView *)self setThumbnailAndLabelsStackView:v37];
   v38 = objc_alloc(MEMORY[0x1E698B730]);
   v49[0] = v37;
-  v39 = [(SearchUIHeroCardSectionView *)self buttonStackView];
-  v49[1] = v39;
+  buttonStackView4 = [(SearchUIHeroCardSectionView *)self buttonStackView];
+  v49[1] = buttonStackView4;
   v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:2];
   v41 = [v38 initWithArrangedSubviews:v40];
 
@@ -215,13 +215,13 @@
   return v46;
 }
 
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview
 {
-  width = a4.width;
-  v7 = a5;
-  v8 = [(SearchUICardSectionView *)self contentView];
+  width = size.width;
+  subviewCopy = subview;
+  contentView = [(SearchUICardSectionView *)self contentView];
 
-  if (v8 != v7)
+  if (contentView != subviewCopy)
   {
 
 LABEL_5:
@@ -230,9 +230,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [(SearchUIHeroCardSectionView *)self hasBackground];
+  hasBackground = [(SearchUIHeroCardSectionView *)self hasBackground];
 
-  if (!v9)
+  if (!hasBackground)
   {
     goto LABEL_5;
   }
@@ -245,27 +245,27 @@ LABEL_6:
   return result;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v83.receiver = self;
   v83.super_class = SearchUIHeroCardSectionView;
-  [(SearchUICardSectionView *)&v83 updateWithRowModel:v4];
+  [(SearchUICardSectionView *)&v83 updateWithRowModel:modelCopy];
   [MEMORY[0x1E69D9248] enableShadow:0 forView:self];
-  v5 = [v4 cardSection];
-  v82 = [v5 image];
-  v6 = [(SearchUIHeroCardSectionView *)self hasBackground];
-  if (v6)
+  cardSection = [modelCopy cardSection];
+  image = [cardSection image];
+  hasBackground = [(SearchUIHeroCardSectionView *)self hasBackground];
+  if (hasBackground)
   {
-    v7 = [v5 title];
-    [v7 setMaxLines:1];
+    title = [cardSection title];
+    [title setMaxLines:1];
 
-    v8 = [v5 subtitle];
-    [v8 setMaxLines:1];
+    subtitle = [cardSection subtitle];
+    [subtitle setMaxLines:1];
   }
 
   v9 = MEMORY[0x1E69D9138];
-  if (v82 && [v5 imageAlign] != 1)
+  if (image && [cardSection imageAlign] != 1)
   {
     v10 = MEMORY[0x1E69DDDC0];
   }
@@ -276,67 +276,67 @@ LABEL_6:
   }
 
   v11 = [v9 cachedFontForTextStyle:*v10 isShort:0 isBold:1];
-  v12 = [(SearchUIHeroCardSectionView *)self titleLabel];
-  [v12 setFont:v11];
+  titleLabel = [(SearchUIHeroCardSectionView *)self titleLabel];
+  [titleLabel setFont:v11];
 
-  v13 = [v5 title];
-  v14 = [(SearchUIHeroCardSectionView *)self titleLabel];
-  [v14 setSfText:v13];
+  title2 = [cardSection title];
+  titleLabel2 = [(SearchUIHeroCardSectionView *)self titleLabel];
+  [titleLabel2 setSfText:title2];
 
-  v15 = [(SearchUIHeroCardSectionView *)self titleLabel];
-  v16 = [v15 richText];
-  v17 = [v16 hasContent];
-  v18 = [(SearchUIHeroCardSectionView *)self titleLabel];
-  [v18 setHidden:v17 ^ 1u];
+  titleLabel3 = [(SearchUIHeroCardSectionView *)self titleLabel];
+  richText = [titleLabel3 richText];
+  hasContent = [richText hasContent];
+  titleLabel4 = [(SearchUIHeroCardSectionView *)self titleLabel];
+  [titleLabel4 setHidden:hasContent ^ 1u];
 
-  v19 = [v5 subtitle];
-  v20 = [(SearchUIHeroCardSectionView *)self subtitleLabel];
-  [v20 setSfText:v19];
+  subtitle2 = [cardSection subtitle];
+  subtitleLabel = [(SearchUIHeroCardSectionView *)self subtitleLabel];
+  [subtitleLabel setSfText:subtitle2];
 
-  v21 = [(SearchUIHeroCardSectionView *)self subtitleLabel];
-  v22 = [v21 richText];
-  v23 = [v22 hasContent];
-  v24 = [(SearchUIHeroCardSectionView *)self subtitleLabel];
-  [v24 setHidden:v23 ^ 1];
+  subtitleLabel2 = [(SearchUIHeroCardSectionView *)self subtitleLabel];
+  richText2 = [subtitleLabel2 richText];
+  hasContent2 = [richText2 hasContent];
+  subtitleLabel3 = [(SearchUIHeroCardSectionView *)self subtitleLabel];
+  [subtitleLabel3 setHidden:hasContent2 ^ 1];
 
-  v25 = [(SearchUIHeroCardSectionView *)self titleLabel];
-  v26 = [v25 isHidden];
-  if (v26)
+  titleLabel5 = [(SearchUIHeroCardSectionView *)self titleLabel];
+  isHidden = [titleLabel5 isHidden];
+  if (isHidden)
   {
-    v23 = [(SearchUIHeroCardSectionView *)self subtitleLabel];
-    v27 = [v23 isHidden];
+    hasContent2 = [(SearchUIHeroCardSectionView *)self subtitleLabel];
+    isHidden2 = [hasContent2 isHidden];
   }
 
   else
   {
-    v27 = 0;
+    isHidden2 = 0;
   }
 
-  v28 = [(SearchUIHeroCardSectionView *)self labelsStackView];
-  [v28 setHidden:v27];
+  labelsStackView = [(SearchUIHeroCardSectionView *)self labelsStackView];
+  [labelsStackView setHidden:isHidden2];
 
-  if (v26)
+  if (isHidden)
   {
   }
 
   v29 = MEMORY[0x1E69D9108];
-  v30 = [(SearchUIHeroCardSectionView *)self containerStackView];
-  [v29 disableAppearanceOverrideForView:v30];
+  containerStackView = [(SearchUIHeroCardSectionView *)self containerStackView];
+  [v29 disableAppearanceOverrideForView:containerStackView];
 
   v31 = MEMORY[0x1E69D9108];
-  v32 = [(SearchUIHeroCardSectionView *)self punchoutIndicatorImageView];
-  [v31 disableAppearanceOverrideForView:v32];
+  punchoutIndicatorImageView = [(SearchUIHeroCardSectionView *)self punchoutIndicatorImageView];
+  [v31 disableAppearanceOverrideForView:punchoutIndicatorImageView];
 
   v33 = MEMORY[0x1E69D9108];
-  v34 = [(SearchUIHeroCardSectionView *)self punchoutIndicatorBackgroundBlurView];
-  [v33 disableAppearanceOverrideForView:v34];
+  punchoutIndicatorBackgroundBlurView = [(SearchUIHeroCardSectionView *)self punchoutIndicatorBackgroundBlurView];
+  [v33 disableAppearanceOverrideForView:punchoutIndicatorBackgroundBlurView];
 
-  v35 = [v5 imageAlign];
-  v36 = [(SearchUIHeroCardSectionView *)self showBackgroundImageView];
-  v37 = v36;
-  if (v82)
+  imageAlign = [cardSection imageAlign];
+  showBackgroundImageView = [(SearchUIHeroCardSectionView *)self showBackgroundImageView];
+  v37 = showBackgroundImageView;
+  if (image)
   {
-    v38 = v35 == 0;
+    v38 = imageAlign == 0;
   }
 
   else
@@ -345,9 +345,9 @@ LABEL_6:
   }
 
   v39 = !v38;
-  v40 = !v36;
-  v41 = v35 == 1 || v35 == 4 && !v36;
-  if (v82)
+  v40 = !showBackgroundImageView;
+  v41 = imageAlign == 1 || imageAlign == 4 && !showBackgroundImageView;
+  if (image)
   {
     v42 = v41;
   }
@@ -357,48 +357,48 @@ LABEL_6:
     v42 = 0;
   }
 
-  if (v36)
+  if (showBackgroundImageView)
   {
-    v43 = [(SearchUIHeroCardSectionView *)self backgroundImageView];
-    [v43 updateWithImage:v82];
+    backgroundImageView = [(SearchUIHeroCardSectionView *)self backgroundImageView];
+    [backgroundImageView updateWithImage:image];
 
-    v44 = [(SearchUIHeroCardSectionView *)self backgroundImageView];
-    v45 = [v44 imageView];
-    v46 = [v45 image];
+    backgroundImageView2 = [(SearchUIHeroCardSectionView *)self backgroundImageView];
+    imageView = [backgroundImageView2 imageView];
+    image2 = [imageView image];
 
-    if (v46)
+    if (image2)
     {
       [(SearchUIHeroCardSectionView *)self showGradientAnimated:0];
     }
   }
 
-  v47 = [(SearchUICardSectionView *)self contentView];
-  v48 = [v47 layer];
-  [v48 setMasksToBounds:v6];
+  contentView = [(SearchUICardSectionView *)self contentView];
+  layer = [contentView layer];
+  [layer setMasksToBounds:hasBackground];
 
-  v49 = [(SearchUIHeroCardSectionView *)self backgroundImageView];
-  [v49 setHidden:v40];
+  backgroundImageView3 = [(SearchUIHeroCardSectionView *)self backgroundImageView];
+  [backgroundImageView3 setHidden:v40];
 
   if (v42 & 1 | ((v39 & 1) == 0))
   {
-    v50 = [(SearchUIHeroCardSectionView *)self thumbnailImageView];
-    [v50 updateWithImage:v82];
+    thumbnailImageView = [(SearchUIHeroCardSectionView *)self thumbnailImageView];
+    [thumbnailImageView updateWithImage:image];
   }
 
-  v51 = [(SearchUIHeroCardSectionView *)self thumbnailImageView];
-  [v51 setHidden:v39 & (v42 ^ 1)];
+  thumbnailImageView2 = [(SearchUIHeroCardSectionView *)self thumbnailImageView];
+  [thumbnailImageView2 setHidden:v39 & (v42 ^ 1)];
 
-  v52 = [v81 backgroundColor];
+  backgroundColor = [v81 backgroundColor];
 
-  if (v52)
+  if (backgroundColor)
   {
     [(SearchUIHeroCardSectionView *)self showGradientAnimated:0];
   }
 
-  [(SearchUIHeroCardSectionView *)self updateButtonsForCardSection:v5];
+  [(SearchUIHeroCardSectionView *)self updateButtonsForCardSection:cardSection];
   [(SearchUIHeroCardSectionView *)self updatePunchoutIconForRowModel:v81];
-  v53 = [(SearchUIHeroCardSectionView *)self thumbnailAndLabelsStackView];
-  [v53 setAxis:v42];
+  thumbnailAndLabelsStackView = [(SearchUIHeroCardSectionView *)self thumbnailAndLabelsStackView];
+  [thumbnailAndLabelsStackView setAxis:v42];
 
   if (v42)
   {
@@ -410,10 +410,10 @@ LABEL_6:
     v54 = 3;
   }
 
-  v55 = [(SearchUIHeroCardSectionView *)self thumbnailAndLabelsStackView];
-  [v55 setAlignment:v54];
+  thumbnailAndLabelsStackView2 = [(SearchUIHeroCardSectionView *)self thumbnailAndLabelsStackView];
+  [thumbnailAndLabelsStackView2 setAlignment:v54];
 
-  if (v42 & !v6)
+  if (v42 & !hasBackground)
   {
     v56 = 1;
   }
@@ -423,14 +423,14 @@ LABEL_6:
     v56 = 4;
   }
 
-  v57 = [(SearchUIHeroCardSectionView *)self titleLabel];
-  [v57 setTextAlignment:v56];
+  titleLabel6 = [(SearchUIHeroCardSectionView *)self titleLabel];
+  [titleLabel6 setTextAlignment:v56];
 
-  v58 = [(SearchUIHeroCardSectionView *)self subtitleLabel];
-  [v58 setTextAlignment:v56];
+  subtitleLabel4 = [(SearchUIHeroCardSectionView *)self subtitleLabel];
+  [subtitleLabel4 setTextAlignment:v56];
 
   v59 = 4.0;
-  if (v6)
+  if (hasBackground)
   {
     v59 = 16.0;
   }
@@ -445,10 +445,10 @@ LABEL_6:
     v60 = 12.0;
   }
 
-  v61 = [(SearchUIHeroCardSectionView *)self thumbnailAndLabelsStackView];
-  [v61 setSpacing:v60];
+  thumbnailAndLabelsStackView3 = [(SearchUIHeroCardSectionView *)self thumbnailAndLabelsStackView];
+  [thumbnailAndLabelsStackView3 setSpacing:v60];
 
-  v62 = [(SearchUICardSectionView *)self contentView];
+  contentView2 = [(SearchUICardSectionView *)self contentView];
   if (v37)
   {
     v63 = 4;
@@ -459,16 +459,16 @@ LABEL_6:
     v63 = 3;
   }
 
-  v64 = [(SearchUIHeroCardSectionView *)self containerStackView];
-  [v62 setAlignment:v63 forView:v64 inAxis:1];
+  containerStackView2 = [(SearchUIHeroCardSectionView *)self containerStackView];
+  [contentView2 setAlignment:v63 forView:containerStackView2 inAxis:1];
 
-  v65 = [(SearchUICardSectionView *)self rowModel];
-  v66 = [v65 shouldFillAvailableSpace];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  shouldFillAvailableSpace = [rowModel shouldFillAvailableSpace];
 
   v68 = *MEMORY[0x1E69DDCE0];
   v67 = *(MEMORY[0x1E69DDCE0] + 8);
   v69 = *(MEMORY[0x1E69DDCE0] + 24);
-  if (v66)
+  if (shouldFillAvailableSpace)
   {
     v70 = *(MEMORY[0x1E69DDCE0] + 16);
   }
@@ -486,8 +486,8 @@ LABEL_6:
     v70 = -12.0;
   }
 
-  v73 = [(SearchUICardSectionView *)self contentView];
-  [v73 setCustomAlignmentRectInsets:{v68, v67, v70, v69}];
+  contentView3 = [(SearchUICardSectionView *)self contentView];
+  [contentView3 setCustomAlignmentRectInsets:{v68, v67, v70, v69}];
 
   if ([MEMORY[0x1E69D9240] isSiri])
   {
@@ -496,7 +496,7 @@ LABEL_6:
 
   else
   {
-    if (v66)
+    if (shouldFillAvailableSpace)
     {
       v75 = &SearchUIHeroCardSectionViewCornerRadiusForLeadingTrailingView;
     }
@@ -509,8 +509,8 @@ LABEL_6:
     v74 = *v75;
   }
 
-  v76 = [(SearchUICardSectionView *)self contentView];
-  [v76 tlks_setCornerRadius:*MEMORY[0x1E69796E8] withStyle:v74];
+  contentView4 = [(SearchUICardSectionView *)self contentView];
+  [contentView4 tlks_setCornerRadius:*MEMORY[0x1E69796E8] withStyle:v74];
 
   if (v74 + -12.0 >= 7.0)
   {
@@ -522,8 +522,8 @@ LABEL_6:
     v77 = -7.0;
   }
 
-  v78 = [MEMORY[0x1E69D9240] isSiri];
-  if (v78)
+  isSiri = [MEMORY[0x1E69D9240] isSiri];
+  if (isSiri)
   {
     v79 = v77;
   }
@@ -533,20 +533,20 @@ LABEL_6:
     v79 = 0.0;
   }
 
-  if (v78)
+  if (isSiri)
   {
     v77 = 0.0;
   }
 
-  v80 = [(SearchUIHeroCardSectionView *)self punchoutIndicatorBackgroundBlurView];
-  [v80 setCustomAlignmentRectInsets:{v77, v79, v79, v77}];
+  punchoutIndicatorBackgroundBlurView2 = [(SearchUIHeroCardSectionView *)self punchoutIndicatorBackgroundBlurView];
+  [punchoutIndicatorBackgroundBlurView2 setCustomAlignmentRectInsets:{v77, v79, v79, v77}];
 }
 
 - (BOOL)hasBackground
 {
   v3 = objc_opt_class();
-  v4 = [(SearchUICardSectionView *)self rowModel];
-  LOBYTE(v3) = [v3 fillsBackgroundWithContentForRowModel:v4];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  LOBYTE(v3) = [v3 fillsBackgroundWithContentForRowModel:rowModel];
 
   return v3;
 }
@@ -554,76 +554,76 @@ LABEL_6:
 - (BOOL)showBackgroundImageView
 {
   v3 = objc_opt_class();
-  v4 = [(SearchUICardSectionView *)self rowModel];
-  LOBYTE(v3) = [v3 showsBackgroundImageViewForRowModel:v4];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  LOBYTE(v3) = [v3 showsBackgroundImageViewForRowModel:rowModel];
 
   return v3;
 }
 
-- (void)updatePunchoutIconForRowModel:(id)a3
+- (void)updatePunchoutIconForRowModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 cardSection];
-  v6 = [(SearchUIHeroCardSectionView *)self punchoutIndicatorBackgroundBlurView];
-  [v6 setAlpha:0.0];
+  modelCopy = model;
+  cardSection = [modelCopy cardSection];
+  punchoutIndicatorBackgroundBlurView = [(SearchUIHeroCardSectionView *)self punchoutIndicatorBackgroundBlurView];
+  [punchoutIndicatorBackgroundBlurView setAlpha:0.0];
 
-  v7 = [(SearchUIHeroCardSectionView *)self punchoutIndicatorBackgroundBlurView];
-  [v7 setEffect:0];
+  punchoutIndicatorBackgroundBlurView2 = [(SearchUIHeroCardSectionView *)self punchoutIndicatorBackgroundBlurView];
+  [punchoutIndicatorBackgroundBlurView2 setEffect:0];
 
-  v8 = [v5 command];
+  command = [cardSection command];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
-    v10 = [v9 mediaMetadata];
+    v9 = command;
+    mediaMetadata = [v9 mediaMetadata];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __61__SearchUIHeroCardSectionView_updatePunchoutIconForRowModel___block_invoke;
     v24[3] = &unk_1E85B32F8;
-    v25 = v5;
-    v26 = self;
-    v27 = v10;
+    v25 = cardSection;
+    selfCopy = self;
+    v27 = mediaMetadata;
     v28 = v9;
     v11 = v9;
-    v12 = v10;
-    [SearchUIMediaUtilities predictionForMediaMetadata:v12 completion:v24];
+    firstObject = mediaMetadata;
+    [SearchUIMediaUtilities predictionForMediaMetadata:firstObject completion:v24];
 
 LABEL_15:
     goto LABEL_16;
   }
 
-  v13 = [v4 punchouts];
-  v12 = [v13 firstObject];
+  punchouts = [modelCopy punchouts];
+  firstObject = [punchouts firstObject];
 
-  if (v12)
+  if (firstObject)
   {
 LABEL_4:
-    v14 = [v12 bundleIdentifier];
+    bundleIdentifier = [firstObject bundleIdentifier];
 
-    if (v14)
+    if (bundleIdentifier)
     {
-      v15 = [v12 bundleIdentifier];
-      [(SearchUIHeroCardSectionView *)self updatePunchoutImageWithBundleIdentifier:v15];
+      bundleIdentifier2 = [firstObject bundleIdentifier];
+      [(SearchUIHeroCardSectionView *)self updatePunchoutImageWithBundleIdentifier:bundleIdentifier2];
     }
 
     else
     {
-      v17 = [v12 preferredOpenableURL];
-      v15 = v17;
-      if (v17)
+      preferredOpenableURL = [firstObject preferredOpenableURL];
+      bundleIdentifier2 = preferredOpenableURL;
+      if (preferredOpenableURL)
       {
-        v18 = [v17 scheme];
-        v19 = [v18 lowercaseString];
+        scheme = [preferredOpenableURL scheme];
+        lowercaseString = [scheme lowercaseString];
 
-        if (([v19 isEqualToString:@"http"] & 1) == 0 && (objc_msgSend(v19, "isEqualToString:", @"https") & 1) == 0)
+        if (([lowercaseString isEqualToString:@"http"] & 1) == 0 && (objc_msgSend(lowercaseString, "isEqualToString:", @"https") & 1) == 0)
         {
           v20[0] = MEMORY[0x1E69E9820];
           v20[1] = 3221225472;
           v20[2] = __61__SearchUIHeroCardSectionView_updatePunchoutIconForRowModel___block_invoke_3;
           v20[3] = &unk_1E85B26A8;
-          v21 = v15;
-          v22 = v5;
-          v23 = self;
+          v21 = bundleIdentifier2;
+          v22 = cardSection;
+          selfCopy2 = self;
           [SearchUIUtilities dispatchAsyncIfNecessary:v20];
         }
       }
@@ -635,10 +635,10 @@ LABEL_4:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v8 punchout];
-    if (v16)
+    punchout = [command punchout];
+    if (punchout)
     {
-      v12 = v16;
+      firstObject = punchout;
       goto LABEL_4;
     }
   }
@@ -728,38 +728,38 @@ void __61__SearchUIHeroCardSectionView_updatePunchoutIconForRowModel___block_inv
   }
 }
 
-- (void)updatePunchoutImageWithBundleIdentifier:(id)a3
+- (void)updatePunchoutImageWithBundleIdentifier:(id)identifier
 {
-  v4 = [SearchUIAppIconImage appIconForBundleIdentifier:a3 variant:5];
+  v4 = [SearchUIAppIconImage appIconForBundleIdentifier:identifier variant:5];
   [(SearchUIHeroCardSectionView *)self updateWithPunchoutImage:v4];
 }
 
-- (void)updateWithPunchoutImage:(id)a3
+- (void)updateWithPunchoutImage:(id)image
 {
-  v4 = a3;
-  v5 = [(SearchUICardSectionView *)self section];
-  v6 = [v5 image];
-  v7 = [(SearchUIHeroCardSectionView *)self punchoutIndicatorImageView];
-  [v7 setHidden:v6 == 0];
+  imageCopy = image;
+  section = [(SearchUICardSectionView *)self section];
+  image = [section image];
+  punchoutIndicatorImageView = [(SearchUIHeroCardSectionView *)self punchoutIndicatorImageView];
+  [punchoutIndicatorImageView setHidden:image == 0];
 
-  v8 = [(SearchUIHeroCardSectionView *)self punchoutIndicatorImageView];
-  LOBYTE(v6) = [v8 isHidden];
+  punchoutIndicatorImageView2 = [(SearchUIHeroCardSectionView *)self punchoutIndicatorImageView];
+  LOBYTE(image) = [punchoutIndicatorImageView2 isHidden];
 
-  if ((v6 & 1) == 0)
+  if ((image & 1) == 0)
   {
-    v9 = [(SearchUIHeroCardSectionView *)self punchoutIndicatorImageView];
-    [v9 updateWithImage:v4];
+    punchoutIndicatorImageView3 = [(SearchUIHeroCardSectionView *)self punchoutIndicatorImageView];
+    [punchoutIndicatorImageView3 updateWithImage:imageCopy];
   }
 
-  v10 = [(SearchUICardSectionView *)self section];
-  v11 = [v10 image];
-  v12 = [(SearchUIHeroCardSectionView *)self punchoutIndicatorBackgroundBlurView];
-  [v12 setHidden:v11 == 0];
+  section2 = [(SearchUICardSectionView *)self section];
+  image2 = [section2 image];
+  punchoutIndicatorBackgroundBlurView = [(SearchUIHeroCardSectionView *)self punchoutIndicatorBackgroundBlurView];
+  [punchoutIndicatorBackgroundBlurView setHidden:image2 == 0];
 
-  v13 = [(SearchUIHeroCardSectionView *)self punchoutIndicatorBackgroundBlurView];
-  LOBYTE(v11) = [v13 isHidden];
+  punchoutIndicatorBackgroundBlurView2 = [(SearchUIHeroCardSectionView *)self punchoutIndicatorBackgroundBlurView];
+  LOBYTE(image2) = [punchoutIndicatorBackgroundBlurView2 isHidden];
 
-  if ((v11 & 1) == 0)
+  if ((image2 & 1) == 0)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -776,36 +776,36 @@ void __55__SearchUIHeroCardSectionView_updateWithPunchoutImage___block_invoke(ui
   [v1 setAlpha:1.0];
 }
 
-- (void)updateButtonsForCardSection:(id)a3
+- (void)updateButtonsForCardSection:(id)section
 {
   v78[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v62 = self;
-  v5 = [(SearchUIHeroCardSectionView *)self buttonStackView];
+  sectionCopy = section;
+  selfCopy = self;
+  buttonStackView = [(SearchUIHeroCardSectionView *)self buttonStackView];
   v6 = 1;
-  [v5 setHidden:1];
+  [buttonStackView setHidden:1];
 
-  v7 = [v4 buttonItems];
-  v8 = [v4 image];
-  if (v8)
+  buttonItems = [sectionCopy buttonItems];
+  image = [sectionCopy image];
+  if (image)
   {
-    v6 = [v4 imageAlign] == 0;
+    v6 = [sectionCopy imageAlign] == 0;
   }
 
-  v9 = [(SearchUIHeroCardSectionView *)v62 buttonItemStackView];
+  buttonItemStackView = [(SearchUIHeroCardSectionView *)selfCopy buttonItemStackView];
   if (v6)
   {
-    v10 = [v4 buttonItems];
+    buttonItems2 = [sectionCopy buttonItems];
   }
 
   else
   {
-    v10 = MEMORY[0x1E695E0F0];
+    buttonItems2 = MEMORY[0x1E695E0F0];
   }
 
-  v11 = [(SearchUICardSectionView *)v62 rowModel];
-  v12 = [(SearchUICardSectionView *)v62 feedbackDelegate];
-  [v9 updateWithButtonItems:v10 maxButtonItems:2 buttonItemViewType:1 rowModel:v11 feedbackDelegate:v12];
+  rowModel = [(SearchUICardSectionView *)selfCopy rowModel];
+  feedbackDelegate = [(SearchUICardSectionView *)selfCopy feedbackDelegate];
+  [buttonItemStackView updateWithButtonItems:buttonItems2 maxButtonItems:2 buttonItemViewType:1 rowModel:rowModel feedbackDelegate:feedbackDelegate];
 
   if (v6)
   {
@@ -815,7 +815,7 @@ LABEL_10:
     goto LABEL_35;
   }
 
-  v13 = [v7 firstObject];
+  firstObject = [buttonItems firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -824,33 +824,33 @@ LABEL_10:
     v15 = objc_opt_new();
     v78[0] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v78 count:1];
-    [(SearchUIHeroCardSectionView *)v62 updateWithButtonViews:v16 visible:0 addBackground:1 animate:0];
+    [(SearchUIHeroCardSectionView *)selfCopy updateWithButtonViews:v16 visible:0 addBackground:1 animate:0];
 
-    v17 = [v7 firstObject];
-    v9 = [v17 watchListItem];
+    firstObject2 = [buttonItems firstObject];
+    buttonItemStackView = [firstObject2 watchListItem];
 
-    v18 = +[SearchUIWatchListUtilities watchListTypeForType:isMediaContainer:](SearchUIWatchListUtilities, "watchListTypeForType:isMediaContainer:", [v9 type], objc_msgSend(v9, "isMediaContainer"));
-    v19 = [v9 watchListIdentifier];
+    v18 = +[SearchUIWatchListUtilities watchListTypeForType:isMediaContainer:](SearchUIWatchListUtilities, "watchListTypeForType:isMediaContainer:", [buttonItemStackView type], objc_msgSend(buttonItemStackView, "isMediaContainer"));
+    watchListIdentifier = [buttonItemStackView watchListIdentifier];
     v72[0] = MEMORY[0x1E69E9820];
     v72[1] = 3221225472;
     v72[2] = __59__SearchUIHeroCardSectionView_updateButtonsForCardSection___block_invoke;
     v72[3] = &unk_1E85B3348;
-    v73 = v4;
-    v74 = v62;
-    v75 = v7;
-    [SearchUIWatchListUtilities fetchWatchListStateForWatchListIdentifier:v19 type:v18 completion:v72];
+    v73 = sectionCopy;
+    v74 = selfCopy;
+    v75 = buttonItems;
+    [SearchUIWatchListUtilities fetchWatchListStateForWatchListIdentifier:watchListIdentifier type:v18 completion:v72];
 
     goto LABEL_10;
   }
 
-  v60 = v4;
+  v60 = sectionCopy;
   v21 = objc_opt_new();
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v59 = v7;
-  v22 = v7;
+  v59 = buttonItems;
+  v22 = buttonItems;
   v23 = [v22 countByEnumeratingWithState:&v68 objects:v77 count:16];
   if (v23)
   {
@@ -872,9 +872,9 @@ LABEL_10:
         {
           v28 = v27;
           [v21 addObject:v28];
-          v29 = [v28 title];
+          title = [v28 title];
 
-          v30 = [v29 length];
+          v30 = [title length];
           v20 |= v30 != 0;
         }
       }
@@ -914,29 +914,29 @@ LABEL_10:
         v36 = *(*(&v64 + 1) + 8 * j);
         if (v20)
         {
-          v37 = [*(*(&v64 + 1) + 8 * j) image];
-          v38 = [SearchUIImage imageWithSFImage:v37];
-          [(SearchUIHeroCardSectionView *)v62 effectiveScreenScale];
+          image2 = [*(*(&v64 + 1) + 8 * j) image];
+          v38 = [SearchUIImage imageWithSFImage:image2];
+          [(SearchUIHeroCardSectionView *)selfCopy effectiveScreenScale];
           v40 = v39;
-          v41 = [MEMORY[0x1E69D9108] bestAppearanceForView:v62];
+          v41 = [MEMORY[0x1E69D9108] bestAppearanceForView:selfCopy];
           v42 = [v38 loadImageWithScale:objc_msgSend(v41 isDarkStyle:{"isDark"), v40}];
 
           v43 = [SearchUIHeroButton alloc];
-          v44 = [v36 title];
-          v45 = [v36 command];
-          v46 = [(SearchUIHeroButton *)v43 initWithTitle:v44 image:v42 command:v45];
+          title2 = [v36 title];
+          command = [v36 command];
+          v46 = [(SearchUIHeroButton *)v43 initWithTitle:title2 image:v42 command:command];
         }
 
         else
         {
           v46 = objc_opt_new();
-          v47 = [v36 image];
-          v42 = [SearchUITLKImageConverter imageForSFImage:v47];
+          image3 = [v36 image];
+          v42 = [SearchUITLKImageConverter imageForSFImage:image3];
 
           [(SearchUIHeroButton *)v46 setTlkImage:v42];
-          v44 = [MEMORY[0x1E69D9138] cachedFontForTextStyle:v61];
-          v45 = [(SearchUIHeroButton *)v46 tlkImageView];
-          [v45 setSymbolFont:v44];
+          title2 = [MEMORY[0x1E69D9138] cachedFontForTextStyle:v61];
+          command = [(SearchUIHeroButton *)v46 tlkImageView];
+          [command setSymbolFont:title2];
         }
 
         [(SearchUIHeroButton *)v46 setButtonItem:v36];
@@ -951,14 +951,14 @@ LABEL_10:
 
   if ([v31 count])
   {
-    [(SearchUIHeroCardSectionView *)v62 updateWithButtonViews:v31 visible:1 addBackground:0 animate:0];
+    [(SearchUIHeroCardSectionView *)selfCopy updateWithButtonViews:v31 visible:1 addBackground:0 animate:0];
   }
 
-  v7 = v59;
-  v4 = v60;
+  buttonItems = v59;
+  sectionCopy = v60;
 LABEL_35:
   +[SearchUIUtilities standardTableCellContentInset];
-  if ([(SearchUIHeroCardSectionView *)v62 hasBackground])
+  if ([(SearchUIHeroCardSectionView *)selfCopy hasBackground])
   {
     v48 = 12.0;
   }
@@ -969,7 +969,7 @@ LABEL_35:
     v48 = v49;
   }
 
-  if ([(SearchUIHeroCardSectionView *)v62 hasBackground])
+  if ([(SearchUIHeroCardSectionView *)selfCopy hasBackground])
   {
     v50 = v48;
   }
@@ -979,15 +979,15 @@ LABEL_35:
     v50 = 0.0;
   }
 
-  v51 = [(SearchUIHeroCardSectionView *)v62 containerStackView];
-  [v51 setLayoutMargins:{v48, v48, v50, v48}];
+  containerStackView = [(SearchUIHeroCardSectionView *)selfCopy containerStackView];
+  [containerStackView setLayoutMargins:{v48, v48, v50, v48}];
 
-  v52 = [(SearchUIHeroCardSectionView *)v62 containerStackView];
-  [v52 setAxis:v20 & 1];
+  containerStackView2 = [(SearchUIHeroCardSectionView *)selfCopy containerStackView];
+  [containerStackView2 setAxis:v20 & 1];
 
   v53 = *MEMORY[0x1E69D9260];
-  v54 = [(SearchUIHeroCardSectionView *)v62 containerStackView];
-  v55 = v54;
+  containerStackView3 = [(SearchUIHeroCardSectionView *)selfCopy containerStackView];
+  v55 = containerStackView3;
   v56 = 16.0;
   if (v20)
   {
@@ -1000,10 +1000,10 @@ LABEL_35:
     v57 = 4;
   }
 
-  [v54 setSpacing:v56];
+  [containerStackView3 setSpacing:v56];
 
-  v58 = [(SearchUIHeroCardSectionView *)v62 containerStackView];
-  [v58 setAlignment:v57];
+  containerStackView4 = [(SearchUIHeroCardSectionView *)selfCopy containerStackView];
+  [containerStackView4 setAlignment:v57];
 }
 
 void __59__SearchUIHeroCardSectionView_updateButtonsForCardSection___block_invoke(uint64_t a1, void *a2)
@@ -1057,21 +1057,21 @@ void __59__SearchUIHeroCardSectionView_updateButtonsForCardSection___block_invok
   }
 }
 
-- (void)updateWithButtonViews:(id)a3 visible:(BOOL)a4 addBackground:(BOOL)a5 animate:(BOOL)a6
+- (void)updateWithButtonViews:(id)views visible:(BOOL)visible addBackground:(BOOL)background animate:(BOOL)animate
 {
-  v28 = a6;
-  v6 = a5;
+  animateCopy = animate;
+  backgroundCopy = background;
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(SearchUIHeroCardSectionView *)self buttonStackView];
-  [v9 setHidden:0];
+  viewsCopy = views;
+  buttonStackView = [(SearchUIHeroCardSectionView *)self buttonStackView];
+  [buttonStackView setHidden:0];
 
   v10 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v8;
+  obj = viewsCopy;
   v11 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v11)
   {
@@ -1089,12 +1089,12 @@ void __59__SearchUIHeroCardSectionView_updateButtonsForCardSection___block_invok
         v15 = *(*(&v32 + 1) + 8 * i);
         [v15 addTarget:self action:sel_buttonPressed_];
         v16 = v15;
-        if (v6)
+        if (backgroundCopy)
         {
           v17 = objc_opt_new();
           [v17 _setCornerRadius:18.0];
           v18 = v13;
-          v19 = v6;
+          v19 = backgroundCopy;
           v20 = objc_alloc(MEMORY[0x1E698B718]);
           v36[0] = v17;
           v36[1] = v16;
@@ -1111,7 +1111,7 @@ void __59__SearchUIHeroCardSectionView_updateButtonsForCardSection___block_invok
           [v24 setAlignment:3 forView:v16 inAxis:1];
 
           v16 = v24;
-          v6 = v19;
+          backgroundCopy = v19;
           v13 = v18;
         }
 
@@ -1124,16 +1124,16 @@ void __59__SearchUIHeroCardSectionView_updateButtonsForCardSection___block_invok
     while (v12);
   }
 
-  v26 = [(SearchUIHeroCardSectionView *)self buttonStackView];
-  [v26 setArrangedSubviews:v10];
+  buttonStackView2 = [(SearchUIHeroCardSectionView *)self buttonStackView];
+  [buttonStackView2 setArrangedSubviews:v10];
 
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __83__SearchUIHeroCardSectionView_updateWithButtonViews_visible_addBackground_animate___block_invoke;
   v30[3] = &unk_1E85B25B8;
   v30[4] = self;
-  v31 = a4;
-  [SearchUIUtilities performAnimatableChanges:v30 animated:v28];
+  visibleCopy = visible;
+  [SearchUIUtilities performAnimatableChanges:v30 animated:animateCopy];
 }
 
 void __83__SearchUIHeroCardSectionView_updateWithButtonViews_visible_addBackground_animate___block_invoke(uint64_t a1, double a2)
@@ -1144,24 +1144,24 @@ void __83__SearchUIHeroCardSectionView_updateWithButtonViews_visible_addBackgrou
   [v3 setAlpha:v2];
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
-  v9 = a3;
-  v4 = [(SearchUICardSectionView *)self feedbackDelegate];
-  v5 = [SearchUIUtilities environmentForDelegate:v4];
+  pressedCopy = pressed;
+  feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
+  v5 = [SearchUIUtilities environmentForDelegate:feedbackDelegate];
 
-  if ([v9 conformsToProtocol:&unk_1F56338D8])
+  if ([pressedCopy conformsToProtocol:&unk_1F56338D8])
   {
-    [v5 setWatchListDelegate:v9];
+    [v5 setWatchListDelegate:pressedCopy];
   }
 
-  v6 = [v9 buttonItem];
-  v7 = [(SearchUICardSectionView *)self rowModel];
-  v8 = [SearchUICommandHandler handlerForButton:v6 rowModel:v7 environment:v5];
+  buttonItem = [pressedCopy buttonItem];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  v8 = [SearchUICommandHandler handlerForButton:buttonItem rowModel:rowModel environment:v5];
   [v8 executeWithTriggerEvent:2];
 }
 
-- (void)didUpdateWithImage:(id)a3
+- (void)didUpdateWithImage:(id)image
 {
   if ([(SearchUIHeroCardSectionView *)self showBackgroundImageView])
   {
@@ -1170,16 +1170,16 @@ void __83__SearchUIHeroCardSectionView_updateWithButtonViews_visible_addBackgrou
   }
 }
 
-- (void)showGradientAnimated:(BOOL)a3
+- (void)showGradientAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [MEMORY[0x1E69D9248] enableShadow:1 forView:self];
-  v5 = [(SearchUIHeroCardSectionView *)self layer];
-  [v5 shadowOpacity];
+  layer = [(SearchUIHeroCardSectionView *)self layer];
+  [layer shadowOpacity];
   v7 = v6;
 
-  v8 = [(SearchUIHeroCardSectionView *)self layer];
-  [v8 setShadowOpacity:0.0];
+  layer2 = [(SearchUIHeroCardSectionView *)self layer];
+  [layer2 setShadowOpacity:0.0];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -1187,7 +1187,7 @@ void __83__SearchUIHeroCardSectionView_updateWithButtonViews_visible_addBackgrou
   v9[3] = &unk_1E85B2CC0;
   v9[4] = self;
   v10 = v7;
-  [MEMORY[0x1E69D9240] performAnimatableChanges:v9 animated:v3];
+  [MEMORY[0x1E69D9240] performAnimatableChanges:v9 animated:animatedCopy];
 }
 
 void __52__SearchUIHeroCardSectionView_showGradientAnimated___block_invoke(uint64_t a1)
@@ -1213,15 +1213,15 @@ void __52__SearchUIHeroCardSectionView_showGradientAnimated___block_invoke(uint6
 {
   if ([(SearchUIHeroCardSectionView *)self hasBackground])
   {
-    v3 = [(SearchUICardSectionView *)self contentView];
+    contentView = [(SearchUICardSectionView *)self contentView];
   }
 
   else
   {
-    v3 = 0;
+    contentView = 0;
   }
 
-  return v3;
+  return contentView;
 }
 
 @end

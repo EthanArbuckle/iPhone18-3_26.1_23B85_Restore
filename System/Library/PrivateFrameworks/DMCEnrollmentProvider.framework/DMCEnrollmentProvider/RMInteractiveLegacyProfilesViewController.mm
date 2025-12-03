@@ -1,12 +1,12 @@
 @interface RMInteractiveLegacyProfilesViewController
-- (id)_isActivatedProfile:(id)a3;
+- (id)_isActivatedProfile:(id)profile;
 - (id)_specifiersForProfile;
 - (id)specifiers;
-- (void)_activateProfile:(id)a3 specifier:(id)a4;
-- (void)_presentAlertForErrorModel:(id)a3;
+- (void)_activateProfile:(id)profile specifier:(id)specifier;
+- (void)_presentAlertForErrorModel:(id)model;
 - (void)_processUserInfoDictionary;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation RMInteractiveLegacyProfilesViewController
@@ -17,21 +17,21 @@
   v6.receiver = self;
   v6.super_class = RMInteractiveLegacyProfilesViewController;
   [(RMInteractiveLegacyProfilesViewController *)&v6 viewDidLoad];
-  v3 = [(RMInteractiveLegacyProfilesViewController *)self navigationItem];
-  [v3 setLeftBarButtonItem:0];
+  navigationItem = [(RMInteractiveLegacyProfilesViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
 
-  v4 = [(RMInteractiveLegacyProfilesViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:0];
+  navigationItem2 = [(RMInteractiveLegacyProfilesViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:0];
 
-  v5 = [(RMInteractiveLegacyProfilesViewController *)self navigationItem];
-  DMCSendNavUIUpdatedNotification(v5);
+  navigationItem3 = [(RMInteractiveLegacyProfilesViewController *)self navigationItem];
+  DMCSendNavUIUpdatedNotification(navigationItem3);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = RMInteractiveLegacyProfilesViewController;
-  [(RMInteractiveLegacyProfilesViewController *)&v4 viewWillAppear:a3];
+  [(RMInteractiveLegacyProfilesViewController *)&v4 viewWillAppear:appear];
   if (([(RMInteractiveLegacyProfilesViewController *)self isMovingToParentViewController]& 1) == 0)
   {
     [(RMInteractiveLegacyProfilesViewController *)self reloadSpecifiers];
@@ -44,9 +44,9 @@
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [(RMInteractiveLegacyProfilesViewController *)self _specifiersForProfile];
+    _specifiersForProfile = [(RMInteractiveLegacyProfilesViewController *)self _specifiersForProfile];
     v6 = *(&self->super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.isa + v3) = _specifiersForProfile;
 
     v4 = *(&self->super.super.super.super.super.isa + v3);
   }
@@ -56,11 +56,11 @@
 
 - (void)_processUserInfoDictionary
 {
-  v5 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
-  v3 = [v5 objectForKeyedSubscript:@"RMConfigurationViewModelKey"];
+  userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"RMConfigurationViewModelKey"];
   [(RMInteractiveLegacyProfilesViewController *)self setProfileModel:v3];
 
-  v4 = [v5 objectForKeyedSubscript:@"RMConfigurationDataProviderKey"];
+  v4 = [userInfo objectForKeyedSubscript:@"RMConfigurationDataProviderKey"];
   [(RMInteractiveLegacyProfilesViewController *)self setRmDataProvider:v4];
 }
 
@@ -69,39 +69,39 @@
   v21[1] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
   v4 = MEMORY[0x277D3FAD8];
-  v5 = [(RMInteractiveLegacyProfilesViewController *)self profileModel];
-  v6 = [v5 title];
-  v7 = [v4 preferenceSpecifierNamed:v6 target:self set:sel__activateProfile_specifier_ get:sel__isActivatedProfile_ detail:0 cell:6 edit:0];
+  profileModel = [(RMInteractiveLegacyProfilesViewController *)self profileModel];
+  title = [profileModel title];
+  v7 = [v4 preferenceSpecifierNamed:title target:self set:sel__activateProfile_specifier_ get:sel__isActivatedProfile_ detail:0 cell:6 edit:0];
 
   [v3 addObject:v7];
-  v8 = [(RMInteractiveLegacyProfilesViewController *)self profileModel];
-  v9 = [v8 toggleViewModel];
-  LODWORD(v6) = [v9 toggleState];
+  profileModel2 = [(RMInteractiveLegacyProfilesViewController *)self profileModel];
+  toggleViewModel = [profileModel2 toggleViewModel];
+  LODWORD(title) = [toggleViewModel toggleState];
 
   v10 = MEMORY[0x277D3FAD8];
-  if (v6)
+  if (title)
   {
-    v11 = [(RMInteractiveLegacyProfilesViewController *)self profileModel];
-    v12 = [v11 interactiveDetailsText];
-    v13 = [v10 preferenceSpecifierNamed:v12 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+    profileModel3 = [(RMInteractiveLegacyProfilesViewController *)self profileModel];
+    interactiveDetailsText = [profileModel3 interactiveDetailsText];
+    v13 = [v10 preferenceSpecifierNamed:interactiveDetailsText target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
     v20 = @"RMConfigurationViewModelKey";
-    v14 = [(RMInteractiveLegacyProfilesViewController *)self profileModel];
-    v21[0] = v14;
-    v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-    [v13 setUserInfo:v15];
+    profileModel4 = [(RMInteractiveLegacyProfilesViewController *)self profileModel];
+    v21[0] = profileModel4;
+    footerViewModel = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
+    [v13 setUserInfo:footerViewModel];
   }
 
   else
   {
     v16 = objc_opt_new();
-    v17 = [v16 UUIDString];
-    v13 = [v10 groupSpecifierWithID:v17];
+    uUIDString = [v16 UUIDString];
+    v13 = [v10 groupSpecifierWithID:uUIDString];
 
-    v14 = [(RMInteractiveLegacyProfilesViewController *)self profileModel];
-    v15 = [v14 footerViewModel];
-    v18 = [v15 title];
-    [v13 setObject:v18 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    profileModel4 = [(RMInteractiveLegacyProfilesViewController *)self profileModel];
+    footerViewModel = [profileModel4 footerViewModel];
+    title2 = [footerViewModel title];
+    [v13 setObject:title2 forKeyedSubscript:*MEMORY[0x277D3FF88]];
   }
 
   [v3 addObject:v13];
@@ -109,37 +109,37 @@
   return v3;
 }
 
-- (id)_isActivatedProfile:(id)a3
+- (id)_isActivatedProfile:(id)profile
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(RMInteractiveLegacyProfilesViewController *)self profileModel];
-  v5 = [v4 toggleViewModel];
-  v6 = [v3 numberWithBool:{objc_msgSend(v5, "toggleState")}];
+  profileModel = [(RMInteractiveLegacyProfilesViewController *)self profileModel];
+  toggleViewModel = [profileModel toggleViewModel];
+  v6 = [v3 numberWithBool:{objc_msgSend(toggleViewModel, "toggleState")}];
 
   return v6;
 }
 
-- (void)_activateProfile:(id)a3 specifier:(id)a4
+- (void)_activateProfile:(id)profile specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-  v9 = [(RMInteractiveLegacyProfilesViewController *)self navigationItem];
-  [v8 startAnimatingInNavItem:v9 forIdentifier:@"com.apple.RemoteManagement.InteractiveLegacyProfilesViewController"];
+  profileCopy = profile;
+  specifierCopy = specifier;
+  mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+  navigationItem = [(RMInteractiveLegacyProfilesViewController *)self navigationItem];
+  [mEMORY[0x277D3FA90] startAnimatingInNavItem:navigationItem forIdentifier:@"com.apple.RemoteManagement.InteractiveLegacyProfilesViewController"];
 
-  v10 = [(RMInteractiveLegacyProfilesViewController *)self navigationItem];
-  DMCSendNavUIUpdatedNotification(v10);
+  navigationItem2 = [(RMInteractiveLegacyProfilesViewController *)self navigationItem];
+  DMCSendNavUIUpdatedNotification(navigationItem2);
 
   objc_initWeak(&location, self);
-  v11 = [(RMInteractiveLegacyProfilesViewController *)self rmDataProvider];
-  v12 = [v6 BOOLValue];
-  v13 = [(RMInteractiveLegacyProfilesViewController *)self profileModel];
+  rmDataProvider = [(RMInteractiveLegacyProfilesViewController *)self rmDataProvider];
+  bOOLValue = [profileCopy BOOLValue];
+  profileModel = [(RMInteractiveLegacyProfilesViewController *)self profileModel];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __72__RMInteractiveLegacyProfilesViewController__activateProfile_specifier___block_invoke;
   v14[3] = &unk_278EE82A0;
   objc_copyWeak(&v15, &location);
-  [v11 setConfigurationActivated:v12 forViewModel:v13 completionHandler:v14];
+  [rmDataProvider setConfigurationActivated:bOOLValue forViewModel:profileModel completionHandler:v14];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -167,18 +167,18 @@ void __72__RMInteractiveLegacyProfilesViewController__activateProfile_specifier_
   }
 }
 
-- (void)_presentAlertForErrorModel:(id)a3
+- (void)_presentAlertForErrorModel:(id)model
 {
   v4 = MEMORY[0x277D75110];
-  v5 = a3;
-  v6 = [v5 title];
-  v7 = [v5 message];
-  v11 = [v4 alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+  modelCopy = model;
+  title = [modelCopy title];
+  message = [modelCopy message];
+  v11 = [v4 alertControllerWithTitle:title message:message preferredStyle:1];
 
   v8 = MEMORY[0x277D750F8];
-  v9 = [v5 okText];
+  okText = [modelCopy okText];
 
-  v10 = [v8 actionWithTitle:v9 style:0 handler:0];
+  v10 = [v8 actionWithTitle:okText style:0 handler:0];
   [v11 addAction:v10];
 
   [(UIViewController *)self dmc_presentAlert:v11 completion:0];

@@ -3,15 +3,15 @@
 + (CRLColor)blueColor;
 + (CRLColor)brownColor;
 + (CRLColor)clearColor;
-+ (CRLColor)colorWithCGColor:(CGColor *)a3;
-+ (CRLColor)colorWithHexString:(id)a3;
-+ (CRLColor)colorWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6;
-+ (CRLColor)colorWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6 targetRGBSpace:(unint64_t)a7;
-+ (CRLColor)colorWithPatternImage:(id)a3;
-+ (CRLColor)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-+ (CRLColor)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 targetRGBSpace:(unint64_t)a7;
-+ (CRLColor)colorWithUIColor:(id)a3;
-+ (CRLColor)colorWithWhite:(double)a3 alpha:(double)a4;
++ (CRLColor)colorWithCGColor:(CGColor *)color;
++ (CRLColor)colorWithHexString:(id)string;
++ (CRLColor)colorWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha;
++ (CRLColor)colorWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha targetRGBSpace:(unint64_t)space;
++ (CRLColor)colorWithPatternImage:(id)image;
++ (CRLColor)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
++ (CRLColor)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha targetRGBSpace:(unint64_t)space;
++ (CRLColor)colorWithUIColor:(id)color;
++ (CRLColor)colorWithWhite:(double)white alpha:(double)alpha;
 + (CRLColor)cyanColor;
 + (CRLColor)grayColor;
 + (CRLColor)greenColor;
@@ -23,46 +23,46 @@
 + (CRLColor)redColor;
 + (CRLColor)whiteColor;
 + (CRLColor)yellowColor;
-+ (id)colorNamed:(id)a3 fallbackColor:(id)a4;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)improvesContrastWhenDisplayedOverAlternateBackgroundColor:(id)a3 ratherThanStandardBackgroundColor:(id)a4 inScenario:(unint64_t)a5;
-- (BOOL)isEqualWithTolerance:(id)a3;
++ (id)colorNamed:(id)named fallbackColor:(id)color;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
+- (BOOL)improvesContrastWhenDisplayedOverAlternateBackgroundColor:(id)color ratherThanStandardBackgroundColor:(id)backgroundColor inScenario:(unint64_t)scenario;
+- (BOOL)isEqualWithTolerance:(id)tolerance;
 - (BOOL)isNearlyWhite;
-- (BOOL)p_colorIsEqualToColor:(id)a3 inColorRGBSpace:(unint64_t)a4 withTolerance:(double)a5;
-- (BOOL)p_isEqualToColor:(id)a3 withTolerance:(double)a4;
-- (BOOL)requiresOutlineOnBackgroundWithAppearance:(unint64_t)a3;
+- (BOOL)p_colorIsEqualToColor:(id)color inColorRGBSpace:(unint64_t)space withTolerance:(double)tolerance;
+- (BOOL)p_isEqualToColor:(id)color withTolerance:(double)tolerance;
+- (BOOL)requiresOutlineOnBackgroundWithAppearance:(unint64_t)appearance;
 - (CGColor)CGColor;
 - (CIColor)CIColor;
-- (CRLColor)colorWithAlphaComponent:(double)a3;
+- (CRLColor)colorWithAlphaComponent:(double)component;
 - (CRLColor)grayscaleColor;
-- (CRLColor)initWithCGColor:(CGColor *)a3 colorSpace:(unint64_t)a4;
-- (CRLColor)initWithCoder:(id)a3;
-- (CRLColor)initWithCyan:(double)a3 magenta:(double)a4 yellow:(double)a5 black:(double)a6 alpha:(double)a7;
-- (CRLColor)initWithHexString:(id)a3;
-- (CRLColor)initWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6 targetRGBSpace:(unint64_t)a7;
-- (CRLColor)initWithPatternImage:(id)a3;
-- (CRLColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 colorSpace:(unint64_t)a7;
-- (CRLColor)initWithUIColor:(id)a3;
+- (CRLColor)initWithCGColor:(CGColor *)color colorSpace:(unint64_t)space;
+- (CRLColor)initWithCoder:(id)coder;
+- (CRLColor)initWithCyan:(double)cyan magenta:(double)magenta yellow:(double)yellow black:(double)black alpha:(double)alpha;
+- (CRLColor)initWithHexString:(id)string;
+- (CRLColor)initWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha targetRGBSpace:(unint64_t)space;
+- (CRLColor)initWithPatternImage:(id)image;
+- (CRLColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha colorSpace:(unint64_t)space;
+- (CRLColor)initWithUIColor:(id)color;
 - (CRLColor)invertedColor;
 - (NSString)hexString;
 - (UIColor)UIColor;
 - (double)alphaComponent;
 - (double)brightnessComponent;
-- (double)contrastRatioWithColor:(id)a3;
+- (double)contrastRatioWithColor:(id)color;
 - (double)hueComponent;
 - (double)luminance;
-- (double)p_rgbComponentWithIndex:(unsigned __int8)a3;
+- (double)p_rgbComponentWithIndex:(unsigned __int8)index;
 - (double)relativeLuminance;
 - (double)saturationComponent;
-- (id)blendedColorWithFraction:(double)a3 ofColor:(id)a4;
-- (id)colorByCompositingSourceOverDestinationColor:(id)a3;
-- (id)newBlendedColorWithFraction:(double)a3 ofColor:(id)a4;
-- (id)p_colorForComparingWithColor:(id)a3;
+- (id)blendedColorWithFraction:(double)fraction ofColor:(id)color;
+- (id)colorByCompositingSourceOverDestinationColor:(id)color;
+- (id)newBlendedColorWithFraction:(double)fraction ofColor:(id)color;
+- (id)p_colorForComparingWithColor:(id)color;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)getRGBAComponents:(double *)a3;
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4;
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)getRGBAComponents:(double *)components;
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context;
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context;
 @end
 
 @implementation CRLColor
@@ -74,77 +74,77 @@
   return CFAutorelease(v2);
 }
 
-+ (CRLColor)colorWithCGColor:(CGColor *)a3
++ (CRLColor)colorWithCGColor:(CGColor *)color
 {
-  v3 = [[a1 alloc] initWithCGColor:a3];
+  v3 = [[self alloc] initWithCGColor:color];
 
   return v3;
 }
 
-+ (CRLColor)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
++ (CRLColor)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
-  v6 = [[a1 alloc] initWithRed:a3 green:a4 blue:a5 alpha:a6];
+  v6 = [[self alloc] initWithRed:red green:green blue:blue alpha:alpha];
 
   return v6;
 }
 
-+ (CRLColor)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 targetRGBSpace:(unint64_t)a7
++ (CRLColor)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha targetRGBSpace:(unint64_t)space
 {
-  v7 = [[a1 alloc] initWithRed:a7 green:a3 blue:a4 alpha:a5 colorSpace:a6];
+  v7 = [[self alloc] initWithRed:space green:red blue:green alpha:blue colorSpace:alpha];
 
   return v7;
 }
 
-+ (CRLColor)colorWithWhite:(double)a3 alpha:(double)a4
++ (CRLColor)colorWithWhite:(double)white alpha:(double)alpha
 {
-  v4 = [[a1 alloc] initWithWhite:a3 alpha:a4];
+  v4 = [[self alloc] initWithWhite:white alpha:alpha];
 
   return v4;
 }
 
-+ (CRLColor)colorWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6
++ (CRLColor)colorWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha
 {
-  v6 = [[a1 alloc] initWithHue:a3 saturation:a4 brightness:a5 alpha:a6];
+  v6 = [[self alloc] initWithHue:hue saturation:saturation brightness:brightness alpha:alpha];
 
   return v6;
 }
 
-+ (CRLColor)colorWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6 targetRGBSpace:(unint64_t)a7
++ (CRLColor)colorWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha targetRGBSpace:(unint64_t)space
 {
-  v7 = [[a1 alloc] initWithHue:a7 saturation:a3 brightness:a4 alpha:a5 targetRGBSpace:a6];
+  v7 = [[self alloc] initWithHue:space saturation:hue brightness:saturation alpha:brightness targetRGBSpace:alpha];
 
   return v7;
 }
 
-+ (CRLColor)colorWithPatternImage:(id)a3
++ (CRLColor)colorWithPatternImage:(id)image
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPatternImage:v4];
+  imageCopy = image;
+  v5 = [[self alloc] initWithPatternImage:imageCopy];
 
   return v5;
 }
 
-+ (CRLColor)colorWithHexString:(id)a3
++ (CRLColor)colorWithHexString:(id)string
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithHexString:v4];
+  stringCopy = string;
+  v5 = [[self alloc] initWithHexString:stringCopy];
 
   return v5;
 }
 
-+ (CRLColor)colorWithUIColor:(id)a3
++ (CRLColor)colorWithUIColor:(id)color
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithUIColor:v4];
+  colorCopy = color;
+  v5 = [[self alloc] initWithUIColor:colorCopy];
 
   return v5;
 }
 
-+ (id)colorNamed:(id)a3 fallbackColor:(id)a4
++ (id)colorNamed:(id)named fallbackColor:(id)color
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [UIColor colorNamed:v5];
+  namedCopy = named;
+  colorCopy = color;
+  v7 = [UIColor colorNamed:namedCopy];
   if (v7)
   {
     v8 = [CRLColor colorWithUIColor:v7];
@@ -152,7 +152,7 @@
 
   else
   {
-    v8 = v6;
+    v8 = colorCopy;
     v9 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
     {
@@ -161,7 +161,7 @@
 
     if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
     {
-      sub_101372F64(v5, v9);
+      sub_101372F64(namedCopy, v9);
     }
 
     if (qword_101AD5A10 != -1)
@@ -177,7 +177,7 @@
 
     v11 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[CRLColor colorNamed:fallbackColor:]");
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/CRLColor.m"];
-    [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:113 isFatal:0 description:"Catalog color (named %@) is missing.", v5];
+    [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:113 isFatal:0 description:"Catalog color (named %@) is missing.", namedCopy];
   }
 
   return v8;
@@ -194,105 +194,105 @@
 
 + (CRLColor)clearColor
 {
-  v2 = [[a1 alloc] initWithWhite:0.0 alpha:0.0];
+  v2 = [[self alloc] initWithWhite:0.0 alpha:0.0];
 
   return v2;
 }
 
 + (CRLColor)blackColor
 {
-  v2 = [[a1 alloc] initWithWhite:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithWhite:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (CRLColor)whiteColor
 {
-  v2 = [[a1 alloc] initWithWhite:1.0 alpha:1.0];
+  v2 = [[self alloc] initWithWhite:1.0 alpha:1.0];
 
   return v2;
 }
 
 + (CRLColor)grayColor
 {
-  v2 = [[a1 alloc] initWithWhite:0.5 alpha:1.0];
+  v2 = [[self alloc] initWithWhite:0.5 alpha:1.0];
 
   return v2;
 }
 
 + (CRLColor)lightGrayColor
 {
-  v2 = [[a1 alloc] initWithWhite:0.667 alpha:1.0];
+  v2 = [[self alloc] initWithWhite:0.667 alpha:1.0];
 
   return v2;
 }
 
 + (CRLColor)redColor
 {
-  v2 = [[a1 alloc] initWithRed:1.0 green:0.0 blue:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:1.0 green:0.0 blue:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (CRLColor)greenColor
 {
-  v2 = [[a1 alloc] initWithRed:0.0 green:1.0 blue:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.0 green:1.0 blue:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (CRLColor)blueColor
 {
-  v2 = [[a1 alloc] initWithRed:0.0 green:0.0 blue:1.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.0 green:0.0 blue:1.0 alpha:1.0];
 
   return v2;
 }
 
 + (CRLColor)cyanColor
 {
-  v2 = [[a1 alloc] initWithRed:0.0 green:1.0 blue:1.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.0 green:1.0 blue:1.0 alpha:1.0];
 
   return v2;
 }
 
 + (CRLColor)yellowColor
 {
-  v2 = [[a1 alloc] initWithRed:1.0 green:1.0 blue:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:1.0 green:1.0 blue:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (CRLColor)magentaColor
 {
-  v2 = [[a1 alloc] initWithRed:1.0 green:0.0 blue:1.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:1.0 green:0.0 blue:1.0 alpha:1.0];
 
   return v2;
 }
 
 + (CRLColor)orangeColor
 {
-  v2 = [[a1 alloc] initWithRed:1.0 green:0.5 blue:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:1.0 green:0.5 blue:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (CRLColor)purpleColor
 {
-  v2 = [[a1 alloc] initWithRed:0.5 green:0.0 blue:0.5 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.5 green:0.0 blue:0.5 alpha:1.0];
 
   return v2;
 }
 
 + (CRLColor)brownColor
 {
-  v2 = [[a1 alloc] initWithRed:0.6 green:0.4 blue:0.2 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.6 green:0.4 blue:0.2 alpha:1.0];
 
   return v2;
 }
 
-- (CRLColor)initWithCGColor:(CGColor *)a3 colorSpace:(unint64_t)a4
+- (CRLColor)initWithCGColor:(CGColor *)color colorSpace:(unint64_t)space
 {
-  if (!a3)
+  if (!color)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -326,9 +326,9 @@
   v10 = [(CRLColor *)&v50 init];
   if (v10)
   {
-    if (CGColorGetPattern(a3))
+    if (CGColorGetPattern(color))
     {
-      if (a4 != 2)
+      if (space != 2)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -359,17 +359,17 @@ LABEL_23:
       }
 
 LABEL_65:
-      Copy = CGColorCreateCopy(a3);
+      Copy = CGColorCreateCopy(color);
       goto LABEL_66;
     }
 
-    ColorSpace = CGColorGetColorSpace(a3);
+    ColorSpace = CGColorGetColorSpace(color);
     Model = CGColorSpaceGetModel(ColorSpace);
-    if (a4)
+    if (space)
     {
-      if (a4 != 2)
+      if (space != 2)
       {
-        if (a4 != 1)
+        if (space != 1)
         {
           goto LABEL_65;
         }
@@ -403,7 +403,7 @@ LABEL_65:
           [CRLAssertionHandler handleFailureInFunction:v17 file:v18 lineNumber:212 isFatal:0 description:"Color specified as P3 isn't even RGB!"];
         }
 
-        v19 = CGColorGetColorSpace(a3);
+        v19 = CGColorGetColorSpace(color);
         v20 = sub_1000CCD4C();
         if (!CFEqual(v19, v20))
         {
@@ -438,7 +438,7 @@ LABEL_65:
               v12 = [NSString stringWithUTF8String:"[CRLColor initWithCGColor:colorSpace:]"];
               v13 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/CRLColor.m"];
               [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:217 isFatal:0 description:"Color specified as P3 isn't P3, sRGB or Device RGB"];
-              a4 = 1;
+              space = 1;
               goto LABEL_23;
             }
           }
@@ -447,32 +447,32 @@ LABEL_65:
         goto LABEL_51;
       }
 
-      v24 = CGColorGetColorSpace(a3);
+      v24 = CGColorGetColorSpace(color);
       v25 = sub_1000CCD4C();
       if (!CFEqual(v24, v25))
       {
         v26 = sub_1000CCE28();
         if (!CFEqual(v24, v26))
         {
-          v46 = CGColorGetColorSpace(a3);
+          v46 = CGColorGetColorSpace(color);
           if (CGColorSpaceGetModel(v46) == kCGColorSpaceModelRGB && CGColorSpaceIsWideGamutRGB(v46))
           {
-            a4 = 1;
+            space = 1;
             v47 = sub_1000CCE28();
           }
 
           else
           {
             v47 = sub_1000CCD4C();
-            a4 = 0;
+            space = 0;
           }
 
-          Copy = CGColorCreateCopyByMatchingToColorSpace(v47, kCGRenderingIntentDefault, a3, 0);
+          Copy = CGColorCreateCopyByMatchingToColorSpace(v47, kCGRenderingIntentDefault, color, 0);
           if (Copy)
           {
 LABEL_66:
             v10->mCGColor = Copy;
-            v10->mColorRGBSpace = a4;
+            v10->mColorRGBSpace = space;
             if (!CGColorGetPattern(Copy))
             {
               Components = CGColorGetComponents(v10->mCGColor);
@@ -507,7 +507,7 @@ LABEL_66:
         }
 
 LABEL_51:
-        a4 = 1;
+        space = 1;
         goto LABEL_65;
       }
     }
@@ -543,7 +543,7 @@ LABEL_51:
         [CRLAssertionHandler handleFailureInFunction:v28 file:v29 lineNumber:223 isFatal:0 description:"Color specified as sRGB isn't even RGB!"];
       }
 
-      v30 = CGColorGetColorSpace(a3);
+      v30 = CGColorGetColorSpace(color);
       v31 = sub_1000CCD4C();
       if (!CFEqual(v30, v31))
       {
@@ -575,27 +575,27 @@ LABEL_51:
           v12 = [NSString stringWithUTF8String:"[CRLColor initWithCGColor:colorSpace:]"];
           v13 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/CRLColor.m"];
           [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:227 isFatal:0 description:"Color specified as sRGB isn't sRGB or Device RGB"];
-          a4 = 0;
+          space = 0;
           goto LABEL_23;
         }
       }
     }
 
-    a4 = 0;
+    space = 0;
     goto LABEL_65;
   }
 
   return v10;
 }
 
-- (CRLColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 colorSpace:(unint64_t)a7
+- (CRLColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha colorSpace:(unint64_t)space
 {
-  if (!a7 || a7 == 2)
+  if (!space || space == 2)
   {
     v13 = sub_1000CCD4C();
   }
 
-  else if (a7 == 1)
+  else if (space == 1)
   {
     v13 = sub_1000CCE28();
   }
@@ -605,21 +605,21 @@ LABEL_51:
     v13 = 0;
   }
 
-  components[0] = a3;
-  components[1] = a4;
-  components[2] = a5;
-  components[3] = a6;
+  components[0] = red;
+  components[1] = green;
+  components[2] = blue;
+  components[3] = alpha;
   v14 = CGColorCreate(v13, components);
-  v15 = [(CRLColor *)self initWithCGColor:v14 colorSpace:a7];
+  v15 = [(CRLColor *)self initWithCGColor:v14 colorSpace:space];
   CGColorRelease(v14);
   return v15;
 }
 
-- (CRLColor)initWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6 targetRGBSpace:(unint64_t)a7
+- (CRLColor)initWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha targetRGBSpace:(unint64_t)space
 {
-  if (a7)
+  if (space)
   {
-    if (a7 == 1)
+    if (space == 1)
     {
       v12 = sub_1000CCE28();
     }
@@ -635,34 +635,34 @@ LABEL_51:
     v12 = sub_1000CCD4C();
   }
 
-  v13 = sub_1000CD2D8(v12, a3, a4, a5, a6);
+  v13 = sub_1000CD2D8(v12, hue, saturation, brightness, alpha);
   v14 = [(CRLColor *)self initWithCGColor:v13];
   CGColorRelease(v13);
   return v14;
 }
 
-- (CRLColor)initWithCyan:(double)a3 magenta:(double)a4 yellow:(double)a5 black:(double)a6 alpha:(double)a7
+- (CRLColor)initWithCyan:(double)cyan magenta:(double)magenta yellow:(double)yellow black:(double)black alpha:(double)alpha
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  cyanCopy = cyan;
+  magentaCopy = magenta;
+  yellowCopy = yellow;
+  blackCopy = black;
+  alphaCopy = alpha;
   v8 = sub_1000CCC9C();
-  v9 = CGColorCreate(v8, &v12);
-  v10 = [(CRLColor *)self initWithCGColor:v9, *&v12, *&v13, *&v14, *&v15, *&v16];
+  v9 = CGColorCreate(v8, &cyanCopy);
+  v10 = [(CRLColor *)self initWithCGColor:v9, *&cyanCopy, *&magentaCopy, *&yellowCopy, *&blackCopy, *&alphaCopy];
   CGColorRelease(v9);
   return v10;
 }
 
-- (CRLColor)initWithPatternImage:(id)a3
+- (CRLColor)initWithPatternImage:(id)image
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  imageCopy = image;
+  v5 = imageCopy;
+  if (imageCopy)
   {
     memset(&v15, 0, sizeof(v15));
-    [v4 scale];
+    [imageCopy scale];
     v7 = 1.0 / v6;
     [v5 scale];
     CGAffineTransformMakeScale(&v15, v7, 1.0 / v8);
@@ -705,10 +705,10 @@ LABEL_51:
   return v10;
 }
 
-- (CRLColor)initWithHexString:(id)a3
+- (CRLColor)initWithHexString:(id)string
 {
-  v4 = [a3 uppercaseString];
-  if ([v4 rangeOfString:@"#[\\dA-F]{6}" options:1024] || v5 != objc_msgSend(v4, "length"))
+  uppercaseString = [string uppercaseString];
+  if ([uppercaseString rangeOfString:@"#[\\dA-F]{6}" options:1024] || v5 != objc_msgSend(uppercaseString, "length"))
   {
     v13 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -718,7 +718,7 @@ LABEL_51:
 
     if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
     {
-      sub_101373640(v4, v13);
+      sub_101373640(uppercaseString, v13);
     }
 
     if (qword_101AD5A10 != -1)
@@ -734,20 +734,20 @@ LABEL_51:
 
     v15 = [NSString stringWithUTF8String:"[CRLColor initWithHexString:]"];
     v16 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/CRLColor.m"];
-    [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:384 isFatal:0 description:"Invalid hex string: %@", v4];
+    [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:384 isFatal:0 description:"Invalid hex string: %@", uppercaseString];
 
     v12 = 0;
   }
 
   else
   {
-    v6 = [v4 substringWithRange:{1, 2}];
+    v6 = [uppercaseString substringWithRange:{1, 2}];
     v7 = sub_100435F04(v6, v6);
 
-    v8 = [v4 substringWithRange:{3, 2}];
+    v8 = [uppercaseString substringWithRange:{3, 2}];
     v9 = sub_100435F04(v8, v8);
 
-    v10 = [v4 substringWithRange:{5, 2}];
+    v10 = [uppercaseString substringWithRange:{5, 2}];
     v11 = sub_100435F04(v10, v10);
 
     v12 = [(CRLColor *)self initWithRed:(v7 / 255.0) green:(v9 / 255.0) blue:(v11 / 255.0) alpha:1.0];
@@ -756,10 +756,10 @@ LABEL_51:
   return v12;
 }
 
-- (CRLColor)initWithUIColor:(id)a3
+- (CRLColor)initWithUIColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -788,16 +788,16 @@ LABEL_51:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:403 isFatal:0 description:"invalid nil value for '%{public}s'", "uiColor"];
   }
 
-  v8 = [v4 CGColor];
-  if (CGColorGetPattern(v8))
+  cGColor = [colorCopy CGColor];
+  if (CGColorGetPattern(cGColor))
   {
-    v9 = [(CRLColor *)self initWithCGColor:v8];
+    v9 = [(CRLColor *)self initWithCGColor:cGColor];
   }
 
   else
   {
     v10 = sub_1000CCE28();
-    CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v10, kCGRenderingIntentDefault, v8, 0);
+    CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v10, kCGRenderingIntentDefault, cGColor, 0);
     v12 = sub_1000CCD4C();
     v13 = CGColorCreateCopyByMatchingToColorSpace(v12, kCGRenderingIntentDefault, CopyByMatchingToColorSpace, 0);
     v14 = sub_1000CCE28();
@@ -806,12 +806,12 @@ LABEL_51:
     v17 = [CRLColor colorWithCGColor:v15];
     if ([v16 isEqualWithTolerance:v17])
     {
-      ColorSpace = CGColorGetColorSpace(v8);
+      ColorSpace = CGColorGetColorSpace(cGColor);
       v19 = sub_1000CCDC4();
-      if (CFEqual(ColorSpace, v19) || (v20 = CGColorGetColorSpace(v8), v21 = sub_1000CCD4C(), CFEqual(v20, v21)))
+      if (CFEqual(ColorSpace, v19) || (v20 = CGColorGetColorSpace(cGColor), v21 = sub_1000CCD4C(), CFEqual(v20, v21)))
       {
         v22 = sub_1000CCD4C();
-        Components = CGColorGetComponents(v8);
+        Components = CGColorGetComponents(cGColor);
         v24 = CGColorCreate(v22, Components);
         v25 = v24;
       }
@@ -852,11 +852,11 @@ LABEL_51:
   [(CRLColor *)&v3 dealloc];
 }
 
-- (BOOL)isEqualWithTolerance:(id)a3
+- (BOOL)isEqualWithTolerance:(id)tolerance
 {
-  v4 = a3;
+  toleranceCopy = tolerance;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, toleranceCopy);
 
   LOBYTE(self) = [(CRLColor *)self p_isEqualToColor:v6 withTolerance:0.001953125];
   return self;
@@ -864,23 +864,23 @@ LABEL_51:
 
 - (double)alphaComponent
 {
-  v2 = [(CRLColor *)self CGColor];
+  cGColor = [(CRLColor *)self CGColor];
 
-  return CGColorGetAlpha(v2);
+  return CGColorGetAlpha(cGColor);
 }
 
-- (void)getRGBAComponents:(double *)a3
+- (void)getRGBAComponents:(double *)components
 {
-  if (a3)
+  if (components)
   {
     [(CRLColor *)self redComponent];
-    *a3 = v5;
+    *components = v5;
     [(CRLColor *)self greenComponent];
-    *(a3 + 1) = v6;
+    *(components + 1) = v6;
     [(CRLColor *)self blueComponent];
-    *(a3 + 2) = v7;
+    *(components + 2) = v7;
     [(CRLColor *)self alphaComponent];
-    *(a3 + 3) = v8;
+    *(components + 3) = v8;
   }
 
   else
@@ -957,16 +957,16 @@ LABEL_51:
 
 - (UIColor)UIColor
 {
-  v2 = [(CRLColor *)self CGColor];
+  cGColor = [(CRLColor *)self CGColor];
 
-  return [UIColor colorWithCGColor:v2];
+  return [UIColor colorWithCGColor:cGColor];
 }
 
 - (CIColor)CIColor
 {
   v3 = [CIColor alloc];
-  v4 = [(CRLColor *)self UIColor];
-  v5 = [v3 initWithColor:v4];
+  uIColor = [(CRLColor *)self UIColor];
+  v5 = [v3 initWithColor:uIColor];
 
   return v5;
 }
@@ -980,8 +980,8 @@ LABEL_51:
   {
     if (Model == kCGColorSpaceModelRGB)
     {
-      v6 = [CRLColor colorWithWhite:Components[1] * 0.59 + *Components * 0.3 + Components[2] * 0.11 alpha:Components[3]];
-      if (v6)
+      selfCopy = [CRLColor colorWithWhite:Components[1] * 0.59 + *Components * 0.3 + Components[2] * 0.11 alpha:Components[3]];
+      if (selfCopy)
       {
         goto LABEL_15;
       }
@@ -990,8 +990,8 @@ LABEL_51:
 
   else
   {
-    v6 = self;
-    if (v6)
+    selfCopy = self;
+    if (selfCopy)
     {
       goto LABEL_15;
     }
@@ -1023,10 +1023,10 @@ LABEL_51:
   v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/CRLColor.m"];
   [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:588 isFatal:0 description:"invalid nil value for '%{public}s'", "grayscale"];
 
-  v6 = 0;
+  selfCopy = 0;
 LABEL_15:
 
-  return v6;
+  return selfCopy;
 }
 
 - (CRLColor)invertedColor
@@ -1067,9 +1067,9 @@ LABEL_15:
   return v8;
 }
 
-- (CRLColor)colorWithAlphaComponent:(double)a3
+- (CRLColor)colorWithAlphaComponent:(double)component
 {
-  CopyWithAlpha = CGColorCreateCopyWithAlpha(self->mCGColor, a3);
+  CopyWithAlpha = CGColorCreateCopyWithAlpha(self->mCGColor, component);
   v4 = [CRLColor colorWithCGColor:CopyWithAlpha];
   CGColorRelease(CopyWithAlpha);
 
@@ -1201,7 +1201,7 @@ LABEL_15:
   return v9 < 0.1 && v10 > 0.9;
 }
 
-- (BOOL)requiresOutlineOnBackgroundWithAppearance:(unint64_t)a3
+- (BOOL)requiresOutlineOnBackgroundWithAppearance:(unint64_t)appearance
 {
   v14 = 0.0;
   v15 = 0;
@@ -1212,7 +1212,7 @@ LABEL_15:
   v8 = v7;
   [(CRLColor *)self blueComponent];
   v10 = sub_1000CD450(&v15, &v13, &v14, v6, v8, v9);
-  switch(a3)
+  switch(appearance)
   {
     case 1uLL:
       return v13 < 0.200000003 && v14 > 0.899999976;
@@ -1226,12 +1226,12 @@ LABEL_15:
   }
 }
 
-- (double)contrastRatioWithColor:(id)a3
+- (double)contrastRatioWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(CRLColor *)self relativeLuminance];
   v6 = v5;
-  [v4 relativeLuminance];
+  [colorCopy relativeLuminance];
   v8 = v7;
 
   if (v8 >= v6)
@@ -1257,11 +1257,11 @@ LABEL_15:
   return (v9 + 0.05) / (v10 + 0.05);
 }
 
-- (BOOL)improvesContrastWhenDisplayedOverAlternateBackgroundColor:(id)a3 ratherThanStandardBackgroundColor:(id)a4 inScenario:(unint64_t)a5
+- (BOOL)improvesContrastWhenDisplayedOverAlternateBackgroundColor:(id)color ratherThanStandardBackgroundColor:(id)backgroundColor inScenario:(unint64_t)scenario
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5 >= 4)
+  colorCopy = color;
+  backgroundColorCopy = backgroundColor;
+  if (scenario >= 4)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1287,7 +1287,7 @@ LABEL_15:
 
     v13 = [NSString stringWithUTF8String:"[CRLColor improvesContrastWhenDisplayedOverAlternateBackgroundColor:ratherThanStandardBackgroundColor:inScenario:]"];
     v14 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/CRLColor.m"];
-    [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:718 isFatal:0 description:"Unhandled contrast scenario (%zu).", a5];
+    [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:718 isFatal:0 description:"Unhandled contrast scenario (%zu).", scenario];
 
     v10 = 0.0;
     v11 = 0.0;
@@ -1295,12 +1295,12 @@ LABEL_15:
 
   else
   {
-    v10 = dbl_101465B78[a5];
-    v11 = dbl_101465B98[a5];
+    v10 = dbl_101465B78[scenario];
+    v11 = dbl_101465B98[scenario];
   }
 
-  v15 = [(CRLColor *)self colorByCompositingSourceOverDestinationColor:v9];
-  [v15 contrastRatioWithColor:v9];
+  v15 = [(CRLColor *)self colorByCompositingSourceOverDestinationColor:backgroundColorCopy];
+  [v15 contrastRatioWithColor:backgroundColorCopy];
   if (v16 >= v10)
   {
     v22 = 0;
@@ -1309,8 +1309,8 @@ LABEL_15:
   else
   {
     v17 = v16;
-    v18 = [(CRLColor *)self colorByCompositingSourceOverDestinationColor:v8];
-    [v18 contrastRatioWithColor:v8];
+    v18 = [(CRLColor *)self colorByCompositingSourceOverDestinationColor:colorCopy];
+    [v18 contrastRatioWithColor:colorCopy];
     if (v19 <= v17)
     {
       v22 = 0;
@@ -1324,7 +1324,7 @@ LABEL_15:
     else
     {
       v20 = [(CRLColor *)self colorWithAlphaComponent:1.0];
-      v21 = [v9 colorWithAlphaComponent:1.0];
+      v21 = [backgroundColorCopy colorWithAlphaComponent:1.0];
       v22 = [v20 isAlmostEqualToColor:v21];
     }
   }
@@ -1332,25 +1332,25 @@ LABEL_15:
   return v22;
 }
 
-- (id)blendedColorWithFraction:(double)a3 ofColor:(id)a4
+- (id)blendedColorWithFraction:(double)fraction ofColor:(id)color
 {
-  v4 = [(CRLColor *)self newBlendedColorWithFraction:a4 ofColor:a3];
+  v4 = [(CRLColor *)self newBlendedColorWithFraction:color ofColor:fraction];
 
   return v4;
 }
 
-- (id)newBlendedColorWithFraction:(double)a3 ofColor:(id)a4
+- (id)newBlendedColorWithFraction:(double)fraction ofColor:(id)color
 {
-  v6 = a4;
-  v7 = v6;
+  colorCopy = color;
+  v7 = colorCopy;
   if (self->mColorRGBSpace == 2)
   {
     goto LABEL_2;
   }
 
-  if ([v6 colorRGBSpace] == 2)
+  if ([colorCopy colorRGBSpace] == 2)
   {
-    v8 = v7;
+    selfCopy = v7;
     goto LABEL_18;
   }
 
@@ -1364,19 +1364,19 @@ LABEL_15:
       [(CRLColor *)self redComponent];
       v58 = v57;
       [v7 redComponent];
-      v60 = sub_1004C3260(v58, v59, a3);
+      v60 = sub_1004C3260(v58, v59, fraction);
       [(CRLColor *)self greenComponent];
       v62 = v61;
       [v7 greenComponent];
-      v64 = sub_1004C3260(v62, v63, a3);
+      v64 = sub_1004C3260(v62, v63, fraction);
       [(CRLColor *)self blueComponent];
       v66 = v65;
       [v7 blueComponent];
-      v68 = sub_1004C3260(v66, v67, a3);
+      v68 = sub_1004C3260(v66, v67, fraction);
       [(CRLColor *)self alphaComponent];
       v70 = v69;
       [v7 alphaComponent];
-      v27 = sub_1004C3260(v70, v71, a3);
+      v27 = sub_1004C3260(v70, v71, fraction);
       v28 = v56;
       v29 = v60;
       v30 = v64;
@@ -1389,9 +1389,9 @@ LABEL_15:
       if (v10)
       {
 LABEL_2:
-        v8 = self;
+        selfCopy = self;
 LABEL_18:
-        v55 = v8;
+        v55 = selfCopy;
         goto LABEL_19;
       }
 
@@ -1399,19 +1399,19 @@ LABEL_18:
       [(CRLColor *)self redComponent];
       v13 = v12;
       [v7 redComponent];
-      v15 = sub_1004C3260(v13, v14, a3);
+      v15 = sub_1004C3260(v13, v14, fraction);
       [(CRLColor *)self greenComponent];
       v17 = v16;
       [v7 greenComponent];
-      v19 = sub_1004C3260(v17, v18, a3);
+      v19 = sub_1004C3260(v17, v18, fraction);
       [(CRLColor *)self blueComponent];
       v21 = v20;
       [v7 blueComponent];
-      v23 = sub_1004C3260(v21, v22, a3);
+      v23 = sub_1004C3260(v21, v22, fraction);
       [(CRLColor *)self alphaComponent];
       v25 = v24;
       [v7 alphaComponent];
-      v27 = sub_1004C3260(v25, v26, a3);
+      v27 = sub_1004C3260(v25, v26, fraction);
       v28 = v11;
       v29 = v15;
       v30 = v19;
@@ -1419,20 +1419,20 @@ LABEL_18:
       v32 = 0;
     }
 
-    v8 = [(CRLColor *)v28 initWithRed:v32 green:v29 blue:v30 alpha:v31 colorSpace:v27];
+    selfCopy = [(CRLColor *)v28 initWithRed:v32 green:v29 blue:v30 alpha:v31 colorSpace:v27];
     goto LABEL_18;
   }
 
   if ([(CRLColor *)self colorRGBSpace]== 1)
   {
-    v33 = self;
+    selfCopy2 = self;
   }
 
   else
   {
     v34 = sub_1000CCE28();
     CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v34, kCGRenderingIntentDefault, [(CRLColor *)self CGColor], 0);
-    v33 = [[CRLColor alloc] initWithCGColor:CopyByMatchingToColorSpace colorSpace:1];
+    selfCopy2 = [[CRLColor alloc] initWithCGColor:CopyByMatchingToColorSpace colorSpace:1];
     CGColorRelease(CopyByMatchingToColorSpace);
   }
 
@@ -1450,40 +1450,40 @@ LABEL_18:
   }
 
   v39 = [CRLColor alloc];
-  [(CRLColor *)v33 redComponent];
+  [(CRLColor *)selfCopy2 redComponent];
   v41 = v40;
   [(CRLColor *)v36 redComponent];
-  v43 = sub_1004C3260(v41, v42, a3);
-  [(CRLColor *)v33 greenComponent];
+  v43 = sub_1004C3260(v41, v42, fraction);
+  [(CRLColor *)selfCopy2 greenComponent];
   v45 = v44;
   [(CRLColor *)v36 greenComponent];
-  v47 = sub_1004C3260(v45, v46, a3);
-  [(CRLColor *)v33 blueComponent];
+  v47 = sub_1004C3260(v45, v46, fraction);
+  [(CRLColor *)selfCopy2 blueComponent];
   v49 = v48;
   [(CRLColor *)v36 blueComponent];
-  v51 = sub_1004C3260(v49, v50, a3);
-  [(CRLColor *)v33 alphaComponent];
+  v51 = sub_1004C3260(v49, v50, fraction);
+  [(CRLColor *)selfCopy2 alphaComponent];
   v53 = v52;
   [(CRLColor *)v36 alphaComponent];
-  v55 = [(CRLColor *)v39 initWithRed:1 green:v43 blue:v47 alpha:v51 colorSpace:sub_1004C3260(v53, v54, a3)];
+  v55 = [(CRLColor *)v39 initWithRed:1 green:v43 blue:v47 alpha:v51 colorSpace:sub_1004C3260(v53, v54, fraction)];
 
 LABEL_19:
   return v55;
 }
 
-- (id)colorByCompositingSourceOverDestinationColor:(id)a3
+- (id)colorByCompositingSourceOverDestinationColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(CRLColor *)self alphaComponent];
   if (v5 == 1.0)
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = [(CRLColor *)self p_colorForComparingWithColor:v4];
-    v8 = [v4 p_colorForComparingWithColor:self];
+    v7 = [(CRLColor *)self p_colorForComparingWithColor:colorCopy];
+    v8 = [colorCopy p_colorForComparingWithColor:self];
 
     [v7 getRGBAComponents:v17];
     [v8 getRGBAComponents:v15];
@@ -1492,39 +1492,39 @@ LABEL_19:
     v11 = 1.0 - v18;
     v12 = v18 + v16 * (1.0 - v18);
     v13 = [CRLColor alloc];
-    v6 = -[CRLColor initWithRed:green:blue:alpha:colorSpace:](v13, "initWithRed:green:blue:alpha:colorSpace:", [v7 colorRGBSpace], (v11 * (v10 * v15[0]) + v17[0] * v9) / v12, (v11 * (v10 * v15[1]) + v17[1] * v9) / v12, (v11 * (v10 * v15[2]) + v17[2] * v9) / v12, v12);
+    selfCopy = -[CRLColor initWithRed:green:blue:alpha:colorSpace:](v13, "initWithRed:green:blue:alpha:colorSpace:", [v7 colorRGBSpace], (v11 * (v10 * v15[0]) + v17[0] * v9) / v12, (v11 * (v10 * v15[1]) + v17[1] * v9) / v12, (v11 * (v10 * v15[2]) + v17[2] * v9) / v12, v12);
 
-    v4 = v8;
+    colorCopy = v8;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  CGContextSaveGState(a4);
-  CGContextSetFillColorWithColor(a4, self->mCGColor);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGContextSaveGState(context);
+  CGContextSetFillColorWithColor(context, self->mCGColor);
   v11.origin.x = x;
   v11.origin.y = y;
   v11.size.width = width;
   v11.size.height = height;
-  CGContextFillRect(a4, v11);
+  CGContextFillRect(context, v11);
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context
 {
-  CGContextSaveGState(a4);
-  CGContextSetFillColorWithColor(a4, self->mCGColor);
-  CGContextAddPath(a4, a3);
-  CGContextFillPath(a4);
+  CGContextSaveGState(context);
+  CGContextSetFillColorWithColor(context, self->mCGColor);
+  CGContextAddPath(context, path);
+  CGContextFillPath(context);
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
 - (NSString)hexString
@@ -1537,9 +1537,9 @@ LABEL_19:
   return [NSString stringWithFormat:@"#%02X%02X%02X", v4, v6, (v7 * 255.0)];
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v5 = [UIColor objectWithItemProviderData:a3 typeIdentifier:a4 error:a5];
+  v5 = [UIColor objectWithItemProviderData:data typeIdentifier:identifier error:error];
   v6 = v5;
   if (v5)
   {
@@ -1561,29 +1561,29 @@ LABEL_19:
   return v8;
 }
 
-- (BOOL)p_isEqualToColor:(id)a3 withTolerance:(double)a4
+- (BOOL)p_isEqualToColor:(id)color withTolerance:(double)tolerance
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && (mColorRGBSpace = self->mColorRGBSpace, mColorRGBSpace == [v6 colorRGBSpace]) && objc_msgSend(v7, "CGColor"))
+  colorCopy = color;
+  v7 = colorCopy;
+  if (colorCopy && (mColorRGBSpace = self->mColorRGBSpace, mColorRGBSpace == [colorCopy colorRGBSpace]) && objc_msgSend(v7, "CGColor"))
   {
-    v9 = [(CRLColor *)self CGColor];
-    v10 = [v7 CGColor];
-    if (v9 == v10)
+    cGColor = [(CRLColor *)self CGColor];
+    cGColor2 = [v7 CGColor];
+    if (cGColor == cGColor2)
     {
       v19 = 1;
     }
 
     else
     {
-      v11 = v10;
+      v11 = cGColor2;
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_1004380CC;
       v21[3] = &unk_101862C60;
-      *&v21[4] = a4;
+      *&v21[4] = tolerance;
       v12 = objc_retainBlock(v21);
-      ColorSpace = CGColorGetColorSpace(v9);
+      ColorSpace = CGColorGetColorSpace(cGColor);
       Model = CGColorSpaceGetModel(ColorSpace);
       v15 = CGColorGetColorSpace(v11);
       if (Model != CGColorSpaceGetModel(v15))
@@ -1617,7 +1617,7 @@ LABEL_19:
 
       if (CFEqual(ColorSpace, v15))
       {
-        v19 = (v12[2])(v12, v9, v11);
+        v19 = (v12[2])(v12, cGColor, v11);
       }
 
       else
@@ -1635,9 +1635,9 @@ LABEL_19:
   return v19;
 }
 
-- (double)p_rgbComponentWithIndex:(unsigned __int8)a3
+- (double)p_rgbComponentWithIndex:(unsigned __int8)index
 {
-  v3 = a3;
+  indexCopy = index;
   Components = CGColorGetComponents([(CRLColor *)self CGColor]);
   ColorSpace = CGColorGetColorSpace([(CRLColor *)self CGColor]);
   Model = CGColorSpaceGetModel(ColorSpace);
@@ -1648,70 +1648,70 @@ LABEL_19:
 
   if (Model == kCGColorSpaceModelCMYK)
   {
-    return 1.0 - fmin(Components[3] + Components[v3] * (1.0 - Components[3]), 1.0);
+    return 1.0 - fmin(Components[3] + Components[indexCopy] * (1.0 - Components[3]), 1.0);
   }
 
   result = 0.0;
   if (Model == kCGColorSpaceModelRGB)
   {
-    return Components[v3];
+    return Components[indexCopy];
   }
 
   return result;
 }
 
-- (id)p_colorForComparingWithColor:(id)a3
+- (id)p_colorForComparingWithColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CRLColor *)self colorRGBSpace];
-  v6 = [v4 colorRGBSpace];
+  colorCopy = color;
+  colorRGBSpace = [(CRLColor *)self colorRGBSpace];
+  colorRGBSpace2 = [colorCopy colorRGBSpace];
 
-  v7 = self;
-  if (!v5 && v6 == 1)
+  selfCopy = self;
+  if (!colorRGBSpace && colorRGBSpace2 == 1)
   {
     v8 = sub_1000CCE28();
-    CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v8, kCGRenderingIntentDefault, v7->mCGColor, 0);
+    CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v8, kCGRenderingIntentDefault, selfCopy->mCGColor, 0);
     v10 = [[CRLColor alloc] initWithCGColor:CopyByMatchingToColorSpace colorSpace:1];
 
     CGColorRelease(CopyByMatchingToColorSpace);
-    v7 = v10;
+    selfCopy = v10;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (BOOL)p_colorIsEqualToColor:(id)a3 inColorRGBSpace:(unint64_t)a4 withTolerance:(double)a5
+- (BOOL)p_colorIsEqualToColor:(id)color inColorRGBSpace:(unint64_t)space withTolerance:(double)tolerance
 {
-  v8 = a3;
-  v9 = self;
-  v10 = sub_100438648(a4);
-  if ([(CRLColor *)v9 colorRGBSpace]!= a4)
+  colorCopy = color;
+  selfCopy = self;
+  v10 = sub_100438648(space);
+  if ([(CRLColor *)selfCopy colorRGBSpace]!= space)
   {
-    CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v10, kCGRenderingIntentDefault, v9->mCGColor, 0);
-    v12 = [[CRLColor alloc] initWithCGColor:CopyByMatchingToColorSpace colorSpace:a4];
+    CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v10, kCGRenderingIntentDefault, selfCopy->mCGColor, 0);
+    v12 = [[CRLColor alloc] initWithCGColor:CopyByMatchingToColorSpace colorSpace:space];
 
     CGColorRelease(CopyByMatchingToColorSpace);
-    v9 = v12;
+    selfCopy = v12;
   }
 
-  v13 = v8;
+  v13 = colorCopy;
   v14 = v13;
-  if ([(CRLColor *)v13 colorRGBSpace]!= a4)
+  if ([(CRLColor *)v13 colorRGBSpace]!= space)
   {
     v15 = CGColorCreateCopyByMatchingToColorSpace(v10, kCGRenderingIntentDefault, [(CRLColor *)v13 CGColor], 0);
-    v14 = [[CRLColor alloc] initWithCGColor:v15 colorSpace:a4];
+    v14 = [[CRLColor alloc] initWithCGColor:v15 colorSpace:space];
 
     CGColorRelease(v15);
   }
 
-  v16 = [(CRLColor *)v9 p_isEqualToColor:v14 withTolerance:a5];
+  v16 = [(CRLColor *)selfCopy p_isEqualToColor:v14 withTolerance:tolerance];
 
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (CGColorGetPattern([(CRLColor *)self CGColor]))
   {
     +[UIColor blackColor];
@@ -1722,13 +1722,13 @@ LABEL_19:
     [(CRLColor *)self UIColor];
   }
   v5 = ;
-  [v4 encodeObject:v5 forKey:@"UIColor"];
+  [coderCopy encodeObject:v5 forKey:@"UIColor"];
 }
 
-- (CRLColor)initWithCoder:(id)a3
+- (CRLColor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIColor"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIColor"];
 
   v6 = [(CRLColor *)self initWithUIColor:v5];
   return v6;

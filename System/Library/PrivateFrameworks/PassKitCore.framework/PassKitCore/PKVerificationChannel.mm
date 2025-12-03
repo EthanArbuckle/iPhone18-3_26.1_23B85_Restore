@@ -1,42 +1,42 @@
 @interface PKVerificationChannel
-+ (id)verificationChannelWithDictionary:(id)a3 andOrganizationName:(id)a4;
++ (id)verificationChannelWithDictionary:(id)dictionary andOrganizationName:(id)name;
 - (NSString)typeDescription;
 - (NSString)typeDescriptionUnlocalized;
-- (PKVerificationChannel)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKVerificationChannel)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKVerificationChannel
 
-+ (id)verificationChannelWithDictionary:(id)a3 andOrganizationName:(id)a4
++ (id)verificationChannelWithDictionary:(id)dictionary andOrganizationName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"type"];
-  v9 = [v8 unsignedIntegerValue];
+  dictionaryCopy = dictionary;
+  nameCopy = name;
+  v8 = [dictionaryCopy objectForKey:@"type"];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  if (v9 <= 0xA)
+  if (unsignedIntegerValue <= 0xA)
   {
-    v10 = objc_alloc_init(a1);
+    v10 = objc_alloc_init(self);
     if (v10)
     {
-      v11 = [v6 objectForKey:@"identifier"];
+      v11 = [dictionaryCopy objectForKey:@"identifier"];
       [v10 setIdentifier:v11];
 
-      [v10 setType:v9];
-      v12 = [v6 objectForKey:@"typeDescription"];
+      [v10 setType:unsignedIntegerValue];
+      v12 = [dictionaryCopy objectForKey:@"typeDescription"];
       [v10 setTypeDescription:v12];
 
-      [v10 setOrganizationName:v7];
-      v13 = [v6 objectForKey:@"requiresUserInteraction"];
+      [v10 setOrganizationName:nameCopy];
+      v13 = [dictionaryCopy objectForKey:@"requiresUserInteraction"];
       [v10 setRequiresUserInteraction:{objc_msgSend(v13, "BOOLValue")}];
 
-      v14 = [v6 objectForKey:@"contactPoint"];
+      v14 = [dictionaryCopy objectForKey:@"contactPoint"];
       [v10 setContactPoint:v14];
 
-      v15 = [v6 objectForKey:@"sourceAddress"];
+      v15 = [dictionaryCopy objectForKey:@"sourceAddress"];
       [v10 setSourceAddress:v15];
     }
   }
@@ -49,72 +49,72 @@
   return v10;
 }
 
-- (PKVerificationChannel)initWithCoder:(id)a3
+- (PKVerificationChannel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKVerificationChannel;
   v5 = [(PKVerificationChannel *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [(PKVerificationChannel *)v5 setIdentifier:v6];
 
-    -[PKVerificationChannel setType:](v5, "setType:", [v4 decodeIntegerForKey:@"type"]);
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"organizationName"];
+    -[PKVerificationChannel setType:](v5, "setType:", [coderCopy decodeIntegerForKey:@"type"]);
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"organizationName"];
     [(PKVerificationChannel *)v5 setOrganizationName:v7];
 
-    -[PKVerificationChannel setRequiresUserInteraction:](v5, "setRequiresUserInteraction:", [v4 decodeIntegerForKey:@"requiresUserInteraction"] != 0);
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contactPoint"];
+    -[PKVerificationChannel setRequiresUserInteraction:](v5, "setRequiresUserInteraction:", [coderCopy decodeIntegerForKey:@"requiresUserInteraction"] != 0);
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactPoint"];
     [(PKVerificationChannel *)v5 setContactPoint:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceAddress"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceAddress"];
     [(PKVerificationChannel *)v5 setSourceAddress:v9];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PKVerificationChannel *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(PKVerificationChannel *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  [v4 encodeInteger:-[PKVerificationChannel type](self forKey:{"type"), @"type"}];
-  v6 = [(PKVerificationChannel *)self organizationName];
-  [v4 encodeObject:v6 forKey:@"organizationName"];
+  [coderCopy encodeInteger:-[PKVerificationChannel type](self forKey:{"type"), @"type"}];
+  organizationName = [(PKVerificationChannel *)self organizationName];
+  [coderCopy encodeObject:organizationName forKey:@"organizationName"];
 
-  [v4 encodeInteger:-[PKVerificationChannel requiresUserInteraction](self forKey:{"requiresUserInteraction"), @"requiresUserInteraction"}];
-  v7 = [(PKVerificationChannel *)self contactPoint];
-  [v4 encodeObject:v7 forKey:@"contactPoint"];
+  [coderCopy encodeInteger:-[PKVerificationChannel requiresUserInteraction](self forKey:{"requiresUserInteraction"), @"requiresUserInteraction"}];
+  contactPoint = [(PKVerificationChannel *)self contactPoint];
+  [coderCopy encodeObject:contactPoint forKey:@"contactPoint"];
 
-  v8 = [(PKVerificationChannel *)self sourceAddress];
-  [v4 encodeObject:v8 forKey:@"sourceAddress"];
+  sourceAddress = [(PKVerificationChannel *)self sourceAddress];
+  [coderCopy encodeObject:sourceAddress forKey:@"sourceAddress"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
   *(v5 + 24) = self->_type;
-  v8 = [(NSString *)self->_typeDescription copyWithZone:a3];
+  v8 = [(NSString *)self->_typeDescription copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSString *)self->_organizationName copyWithZone:a3];
+  v10 = [(NSString *)self->_organizationName copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
   *(v5 + 8) = self->_requiresUserInteraction;
-  v12 = [(NSString *)self->_contactPoint copyWithZone:a3];
+  v12 = [(NSString *)self->_contactPoint copyWithZone:zone];
   v13 = *(v5 + 48);
   *(v5 + 48) = v12;
 
-  v14 = [(NSString *)self->_sourceAddress copyWithZone:a3];
+  v14 = [(NSString *)self->_sourceAddress copyWithZone:zone];
   v15 = *(v5 + 56);
   *(v5 + 56) = v14;
 
@@ -203,13 +203,13 @@ LABEL_19:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PKVerificationChannel *)self identifier];
-  v5 = [(PKVerificationChannel *)self typeDescriptionUnlocalized];
-  v6 = [(PKVerificationChannel *)self organizationName];
-  v7 = [(PKVerificationChannel *)self requiresUserInteraction];
-  v8 = [(PKVerificationChannel *)self contactPoint];
-  v9 = [(PKVerificationChannel *)self sourceAddress];
-  v10 = [v3 stringWithFormat:@"identifier: %@, typeDescription: %@, organizationName:%@ requiresUserInteraction: %d, contactPoint: %@, sourceAddress: %@", v4, v5, v6, v7, v8, v9];
+  identifier = [(PKVerificationChannel *)self identifier];
+  typeDescriptionUnlocalized = [(PKVerificationChannel *)self typeDescriptionUnlocalized];
+  organizationName = [(PKVerificationChannel *)self organizationName];
+  requiresUserInteraction = [(PKVerificationChannel *)self requiresUserInteraction];
+  contactPoint = [(PKVerificationChannel *)self contactPoint];
+  sourceAddress = [(PKVerificationChannel *)self sourceAddress];
+  v10 = [v3 stringWithFormat:@"identifier: %@, typeDescription: %@, organizationName:%@ requiresUserInteraction: %d, contactPoint: %@, sourceAddress: %@", identifier, typeDescriptionUnlocalized, organizationName, requiresUserInteraction, contactPoint, sourceAddress];
 
   return v10;
 }

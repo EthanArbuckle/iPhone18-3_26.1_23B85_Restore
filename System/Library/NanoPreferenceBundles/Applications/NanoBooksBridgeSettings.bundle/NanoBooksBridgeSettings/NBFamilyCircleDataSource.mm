@@ -3,14 +3,14 @@
 - (NBFamilyCircleDataSource)init;
 - (NSArray)familyMemberDSIDs;
 - (NSArray)familyMembers;
-- (id)_profileImageForFamilyMember:(id)a3;
+- (id)_profileImageForFamilyMember:(id)member;
 - (void)_notifyDidFetchFamilyCircle;
 - (void)_notifyProfileImagesDidChange;
 - (void)_updateProfilePictures;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)refresh;
-- (void)removeObserver:(id)a3;
-- (void)setFamilyMembers:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)setFamilyMembers:(id)members;
 @end
 
 @implementation NBFamilyCircleDataSource
@@ -53,7 +53,7 @@
   block[1] = 3221225472;
   block[2] = sub_3C40;
   block[3] = &unk_208D8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_27CA0 != -1)
   {
     dispatch_once(&qword_27CA0, block);
@@ -85,7 +85,7 @@
   v6[1] = 3221225472;
   v7 = sub_3E1C;
   v8 = &unk_20900;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_accessLock);
@@ -98,11 +98,11 @@
   return v4;
 }
 
-- (void)setFamilyMembers:(id)a3
+- (void)setFamilyMembers:(id)members
 {
-  v4 = a3;
+  membersCopy = members;
   os_unfair_lock_lock(&self->_accessLock);
-  v5 = [v4 copy];
+  v5 = [membersCopy copy];
 
   familyMembers = self->_familyMembers;
   self->_familyMembers = v5;
@@ -118,11 +118,11 @@
   {
     objc_sync_exit(v3);
 
-    v4 = NBDefaultLog();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+    activeStoreAccount = NBDefaultLog();
+    if (os_log_type_enabled(activeStoreAccount, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_0, v4, OS_LOG_TYPE_INFO, "Already refreshing the family circle data source", buf, 2u);
+      _os_log_impl(&dword_0, activeStoreAccount, OS_LOG_TYPE_INFO, "Already refreshing the family circle data source", buf, 2u);
     }
   }
 
@@ -133,17 +133,17 @@
 
     objc_sync_exit(v3);
     v6 = +[BUAccountsProvider sharedProvider];
-    v4 = [v6 activeStoreAccount];
+    activeStoreAccount = [v6 activeStoreAccount];
 
     v7 = +[BUBag defaultBag];
-    v8 = [[AMSFamilyInfoLookupTask alloc] initWithAccount:v4 bag:v7];
-    v9 = [v8 performFamilyInfoLookup];
+    v8 = [[AMSFamilyInfoLookupTask alloc] initWithAccount:activeStoreAccount bag:v7];
+    performFamilyInfoLookup = [v8 performFamilyInfoLookup];
     v10 = NBDefaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v4 ams_DSID];
+      ams_DSID = [activeStoreAccount ams_DSID];
       *buf = 138412290;
-      v15 = v11;
+      v15 = ams_DSID;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Starting family Circle lookup request for (%@)", buf, 0xCu);
     }
 
@@ -153,26 +153,26 @@
     v12[2] = sub_42C0;
     v12[3] = &unk_20950;
     objc_copyWeak(&v13, buf);
-    [v9 addFinishBlock:v12];
+    [performFamilyInfoLookup addFinishBlock:v12];
     objc_destroyWeak(&v13);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerLock);
-  [(NSMutableArray *)self->_observers addObject:v4];
+  [(NSMutableArray *)self->_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observerLock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerLock);
-  [(NSMutableArray *)self->_observers removeObject:v4];
+  [(NSMutableArray *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observerLock);
 }
@@ -203,8 +203,8 @@
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        v10 = [(NBFamilyCircleDataSource *)self familyMembers];
-        [v9 familyCircleDataSource:self didFetchFamilyCircle:v10];
+        familyMembers = [(NBFamilyCircleDataSource *)self familyMembers];
+        [v9 familyCircleDataSource:self didFetchFamilyCircle:familyMembers];
 
         v8 = v8 + 1;
       }
@@ -254,14 +254,14 @@
   }
 }
 
-- (id)_profileImageForFamilyMember:(id)a3
+- (id)_profileImageForFamilyMember:(id)member
 {
-  v4 = a3;
-  v5 = [v4 firstName];
-  if (v5)
+  memberCopy = member;
+  firstName = [memberCopy firstName];
+  if (firstName)
   {
-    v6 = [v4 lastName];
-    if (v6)
+    lastName = [memberCopy lastName];
+    if (lastName)
     {
 
 LABEL_6:
@@ -269,11 +269,11 @@ LABEL_6:
     }
   }
 
-  v7 = [v4 iCloudUsername];
-  if (v7)
+  iCloudUsername = [memberCopy iCloudUsername];
+  if (iCloudUsername)
   {
 
-    if (!v5)
+    if (!firstName)
     {
       goto LABEL_7;
     }
@@ -281,54 +281,54 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v22 = [v4 iCloudDSID];
+  iCloudDSID = [memberCopy iCloudDSID];
 
-  if (v5)
+  if (firstName)
   {
   }
 
-  if (v22)
+  if (iCloudDSID)
   {
 LABEL_7:
     v8 = objc_alloc_init(AAFamilyMember);
-    v9 = [v4 firstName];
-    [v8 setFirstName:v9];
+    firstName2 = [memberCopy firstName];
+    [v8 setFirstName:firstName2];
 
-    v10 = [v4 lastName];
-    [v8 setLastName:v10];
+    lastName2 = [memberCopy lastName];
+    [v8 setLastName:lastName2];
 
-    v11 = [v4 iCloudDSID];
-    [v8 setPersonID:v11];
+    iCloudDSID2 = [memberCopy iCloudDSID];
+    [v8 setPersonID:iCloudDSID2];
 
-    v12 = [v4 iCloudUsername];
-    [v8 setAppleID:v12];
+    iCloudUsername2 = [memberCopy iCloudUsername];
+    [v8 setAppleID:iCloudUsername2];
 
-    v13 = [(NBFamilyCircleDataSource *)self profilePictureStore];
-    v14 = [v13 profilePictureForFamilyMember:v8];
+    profilePictureStore = [(NBFamilyCircleDataSource *)self profilePictureStore];
+    silhouetteMonogram = [profilePictureStore profilePictureForFamilyMember:v8];
 
-    if (v14)
+    if (silhouetteMonogram)
     {
       goto LABEL_13;
     }
   }
 
   v15 = [[CNMonogrammer alloc] initWithStyle:0 diameter:50.0];
-  v16 = [v4 firstName];
-  if (v16 && (v17 = v16, [v4 lastName], v18 = objc_claimAutoreleasedReturnValue(), v18, v17, v18))
+  firstName3 = [memberCopy firstName];
+  if (firstName3 && (v17 = firstName3, [memberCopy lastName], v18 = objc_claimAutoreleasedReturnValue(), v18, v17, v18))
   {
-    v19 = [v4 firstName];
-    v20 = [v4 lastName];
-    v14 = [v15 monogramForPersonWithFirstName:v19 lastName:v20];
+    firstName4 = [memberCopy firstName];
+    lastName3 = [memberCopy lastName];
+    silhouetteMonogram = [v15 monogramForPersonWithFirstName:firstName4 lastName:lastName3];
   }
 
   else
   {
-    v14 = [v15 silhouetteMonogram];
+    silhouetteMonogram = [v15 silhouetteMonogram];
   }
 
 LABEL_13:
 
-  return v14;
+  return silhouetteMonogram;
 }
 
 - (void)_updateProfilePictures

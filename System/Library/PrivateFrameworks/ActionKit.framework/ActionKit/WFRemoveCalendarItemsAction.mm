@@ -2,16 +2,16 @@
 - (Class)contentItemClass;
 - (id)accessResource;
 - (unint64_t)entityType;
-- (void)deleteItems:(id)a3;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)deleteItems:(id)items;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFRemoveCalendarItemsAction
 
-- (void)deleteItems:(id)a3
+- (void)deleteItems:(id)items
 {
   v45 = *MEMORY[0x277D85DE8];
-  v27 = a3;
+  itemsCopy = items;
   if ([(WFRemoveCalendarItemsAction *)self entityType])
   {
     v4 = WFGetWorkflowReminderStore();
@@ -38,7 +38,7 @@
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v8 = v27;
+    v8 = itemsCopy;
     v9 = [v8 countByEnumeratingWithState:&v29 objects:v43 count:16];
     if (v9)
     {
@@ -52,8 +52,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v12 = [*(*(&v29 + 1) + 8 * i) reminder];
-          v13 = [v7 updateReminder:v12];
+          reminder = [*(*(&v29 + 1) + 8 * i) reminder];
+          v13 = [v7 updateReminder:reminder];
 
           [v13 removeFromList];
         }
@@ -76,13 +76,13 @@
   else
   {
     v15 = [(WFRemoveCalendarItemsAction *)self parameterValueForKey:@"WFCalendarIncludeFutureEvents" ofClass:objc_opt_class()];
-    v16 = [v15 BOOLValue];
+    bOOLValue = [v15 BOOLValue];
 
     v36 = 0u;
     v37 = 0u;
     v35 = 0u;
     v34 = 0u;
-    v17 = v27;
+    v17 = itemsCopy;
     v18 = [v17 countByEnumeratingWithState:&v34 objects:v44 count:16];
     if (v18)
     {
@@ -97,10 +97,10 @@
           }
 
           v21 = *(*(&v34 + 1) + 8 * j);
-          v22 = [v21 eventStore];
-          v23 = [v21 event];
+          eventStore = [v21 eventStore];
+          event = [v21 event];
           v33 = 0;
-          v24 = [v22 removeEvent:v23 span:v16 commit:1 error:&v33];
+          v24 = [eventStore removeEvent:event span:bOOLValue commit:1 error:&v33];
           v25 = v33;
 
           if ((v24 & 1) == 0)
@@ -129,33 +129,33 @@ LABEL_22:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFRemoveCalendarItemsAction *)self accessResource];
-  if ([v5 status] == 4)
+  inputCopy = input;
+  accessResource = [(WFRemoveCalendarItemsAction *)self accessResource];
+  if ([accessResource status] == 4)
   {
-    v6 = [(WFRemoveCalendarItemsAction *)self entityType];
+    entityType = [(WFRemoveCalendarItemsAction *)self entityType];
     v7 = 0x277CFC288;
-    if (v6)
+    if (entityType)
     {
       v7 = 0x277CFC4E8;
     }
 
     v8 = *v7;
     v26 = 0;
-    v9 = [v4 collectionByFilteringToItemClass:objc_opt_class() excludedItems:&v26];
+    v9 = [inputCopy collectionByFilteringToItemClass:objc_opt_class() excludedItems:&v26];
     v10 = v26;
-    v11 = [v9 items];
+    items = [v9 items];
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
     v21 = v10;
-    v12 = [v10 items];
-    v13 = [v12 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    items2 = [v10 items];
+    v13 = [items2 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v13)
     {
       v14 = v13;
@@ -167,26 +167,26 @@ LABEL_22:
         {
           if (*v23 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(items2);
           }
 
           v17 = *(*(&v22 + 1) + 8 * v16);
-          v18 = [(WFRemoveCalendarItemsAction *)self output];
-          [v18 addItem:v17];
+          output = [(WFRemoveCalendarItemsAction *)self output];
+          [output addItem:v17];
 
           ++v16;
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v14 = [items2 countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v14);
     }
 
-    if ([v11 count])
+    if ([items count])
     {
-      [(WFRemoveCalendarItemsAction *)self deleteItems:v11];
+      [(WFRemoveCalendarItemsAction *)self deleteItems:items];
     }
 
     else
@@ -197,8 +197,8 @@ LABEL_22:
 
   else
   {
-    v19 = [v5 availabilityError];
-    [(WFRemoveCalendarItemsAction *)self finishRunningWithError:v19];
+    availabilityError = [accessResource availabilityError];
+    [(WFRemoveCalendarItemsAction *)self finishRunningWithError:availabilityError];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -206,25 +206,25 @@ LABEL_22:
 
 - (id)accessResource
 {
-  v3 = [(WFRemoveCalendarItemsAction *)self resourceManager];
-  v4 = [(WFRemoveCalendarItemsAction *)self entityType];
+  resourceManager = [(WFRemoveCalendarItemsAction *)self resourceManager];
+  entityType = [(WFRemoveCalendarItemsAction *)self entityType];
   v5 = off_278C013C0;
-  if (v4)
+  if (entityType)
   {
     v5 = off_278C01728;
   }
 
   v6 = *v5;
-  v7 = [v3 resourceObjectsOfClass:objc_opt_class()];
-  v8 = [v7 anyObject];
+  v7 = [resourceManager resourceObjectsOfClass:objc_opt_class()];
+  anyObject = [v7 anyObject];
 
-  return v8;
+  return anyObject;
 }
 
 - (Class)contentItemClass
 {
-  v2 = [(WFRemoveCalendarItemsAction *)self definition];
-  v3 = [v2 objectForKey:@"WFCalendarItemEntityType"];
+  definition = [(WFRemoveCalendarItemsAction *)self definition];
+  v3 = [definition objectForKey:@"WFCalendarItemEntityType"];
   v4 = [v3 isEqualToString:@"Event"];
 
   v5 = 0x277CFC288;
@@ -241,8 +241,8 @@ LABEL_22:
 
 - (unint64_t)entityType
 {
-  v2 = [(WFRemoveCalendarItemsAction *)self definition];
-  v3 = [v2 objectForKey:@"WFCalendarItemEntityType"];
+  definition = [(WFRemoveCalendarItemsAction *)self definition];
+  v3 = [definition objectForKey:@"WFCalendarItemEntityType"];
   v4 = [v3 isEqualToString:@"Event"];
 
   return v4 ^ 1u;

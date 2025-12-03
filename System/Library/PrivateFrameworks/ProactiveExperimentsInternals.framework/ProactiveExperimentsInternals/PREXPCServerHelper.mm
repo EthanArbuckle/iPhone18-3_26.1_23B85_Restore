@@ -1,22 +1,22 @@
 @interface PREXPCServerHelper
-+ (BOOL)checkForAndLogTrueBooleanEntitlement:(id)a3 connection:(id)a4 serviceName:(id)a5;
-+ (BOOL)hasTrueBooleanEntitlement:(id)a3 connection:(id)a4;
-+ (BOOL)shouldAcceptConnection:(id)a3 serviceName:(id)a4 whitelistedServerInterface:(id)a5 requestHandler:(id)a6 validateConnection:(id)a7 setupClientProxy:(id)a8 interruptionHandler:(id)a9 invalidationHandler:(id)a10;
++ (BOOL)checkForAndLogTrueBooleanEntitlement:(id)entitlement connection:(id)connection serviceName:(id)name;
++ (BOOL)hasTrueBooleanEntitlement:(id)entitlement connection:(id)connection;
++ (BOOL)shouldAcceptConnection:(id)connection serviceName:(id)name whitelistedServerInterface:(id)interface requestHandler:(id)handler validateConnection:(id)validateConnection setupClientProxy:(id)proxy interruptionHandler:(id)interruptionHandler invalidationHandler:(id)self0;
 @end
 
 @implementation PREXPCServerHelper
 
-+ (BOOL)checkForAndLogTrueBooleanEntitlement:(id)a3 connection:(id)a4 serviceName:(id)a5
++ (BOOL)checkForAndLogTrueBooleanEntitlement:(id)entitlement connection:(id)connection serviceName:(id)name
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [PREXPCServerHelper hasTrueBooleanEntitlement:v7 connection:v8];
+  entitlementCopy = entitlement;
+  connectionCopy = connection;
+  nameCopy = name;
+  v10 = [PREXPCServerHelper hasTrueBooleanEntitlement:entitlementCopy connection:connectionCopy];
   if (!v10)
   {
     __errnum = 0;
-    v11 = procNameForPid([v8 processIdentifier], &__errnum);
+    v11 = procNameForPid([connectionCopy processIdentifier], &__errnum);
     if ([v11 length])
     {
       v12 = pre_sv_xpc_handle();
@@ -25,9 +25,9 @@
         *buf = 138412802;
         *v25 = v11;
         *&v25[8] = 2112;
-        *&v25[10] = v9;
+        *&v25[10] = nameCopy;
         *&v25[18] = 2112;
-        *&v25[20] = v7;
+        *&v25[20] = entitlementCopy;
         v13 = "Connection from %@ to %@ is missing entitlement: %@";
         v14 = v12;
         v15 = 32;
@@ -45,12 +45,12 @@ LABEL_10:
       {
         if (v17)
         {
-          v18 = [v8 processIdentifier];
+          processIdentifier = [connectionCopy processIdentifier];
           v19 = strerror(__errnum);
           *buf = 67109634;
-          *v25 = v18;
+          *v25 = processIdentifier;
           *&v25[4] = 2112;
-          *&v25[6] = v9;
+          *&v25[6] = nameCopy;
           *&v25[14] = 2080;
           *&v25[16] = v19;
           v13 = "Connection from %d to %@ failed entitlement check (proc_name error: %s).";
@@ -62,11 +62,11 @@ LABEL_10:
 
       else if (v17)
       {
-        v20 = [v8 processIdentifier];
+        processIdentifier2 = [connectionCopy processIdentifier];
         *buf = 67109378;
-        *v25 = v20;
+        *v25 = processIdentifier2;
         *&v25[4] = 2112;
-        *&v25[6] = v9;
+        *&v25[6] = nameCopy;
         v13 = "Connection from %d to %@ failed entitlement check.";
         v14 = v12;
         v15 = 18;
@@ -79,35 +79,35 @@ LABEL_10:
   return v10;
 }
 
-+ (BOOL)hasTrueBooleanEntitlement:(id)a3 connection:(id)a4
++ (BOOL)hasTrueBooleanEntitlement:(id)entitlement connection:(id)connection
 {
-  v4 = [a4 valueForEntitlement:a3];
+  v4 = [connection valueForEntitlement:entitlement];
   if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (BOOL)shouldAcceptConnection:(id)a3 serviceName:(id)a4 whitelistedServerInterface:(id)a5 requestHandler:(id)a6 validateConnection:(id)a7 setupClientProxy:(id)a8 interruptionHandler:(id)a9 invalidationHandler:(id)a10
++ (BOOL)shouldAcceptConnection:(id)connection serviceName:(id)name whitelistedServerInterface:(id)interface requestHandler:(id)handler validateConnection:(id)validateConnection setupClientProxy:(id)proxy interruptionHandler:(id)interruptionHandler invalidationHandler:(id)self0
 {
   v56 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v35 = a5;
-  v36 = a6;
-  v17 = a7;
-  v34 = a8;
-  v38 = a9;
-  v37 = a10;
+  connectionCopy = connection;
+  nameCopy = name;
+  interfaceCopy = interface;
+  handlerCopy = handler;
+  validateConnectionCopy = validateConnection;
+  proxyCopy = proxy;
+  interruptionHandlerCopy = interruptionHandler;
+  invalidationHandlerCopy = invalidationHandler;
   v49 = 0;
-  v18 = procNameForPid([v15 processIdentifier], &v49);
+  v18 = procNameForPid([connectionCopy processIdentifier], &v49);
   if ([v18 length])
   {
     v19 = pre_sv_xpc_handle();
@@ -116,13 +116,13 @@ LABEL_10:
       goto LABEL_9;
     }
 
-    v20 = [v15 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     *buf = 138412802;
-    v51 = v16;
+    v51 = nameCopy;
     v52 = 2112;
     v53 = v18;
     v54 = 2048;
-    v55 = v20;
+    v55 = processIdentifier;
     v21 = "New connection to %@ from %@ (%lu).";
 LABEL_7:
     v26 = v19;
@@ -142,12 +142,12 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v24 = [v15 processIdentifier];
+    processIdentifier2 = [connectionCopy processIdentifier];
     v25 = strerror(v49);
     *buf = 138412802;
-    v51 = v16;
+    v51 = nameCopy;
     v52 = 2048;
-    v53 = v24;
+    v53 = processIdentifier2;
     v54 = 2080;
     v55 = v25;
     v21 = "New connection to %@ from unknown process (%lu) (proc_name error: %s).";
@@ -156,11 +156,11 @@ LABEL_8:
 
   if (v23)
   {
-    v33 = [v15 processIdentifier];
+    processIdentifier3 = [connectionCopy processIdentifier];
     *buf = 138412546;
-    v51 = v16;
+    v51 = nameCopy;
     v52 = 2048;
-    v53 = v33;
+    v53 = processIdentifier3;
     v21 = "New connection to %@ from unknown process (%lu).";
     v26 = v19;
     v27 = 22;
@@ -169,23 +169,23 @@ LABEL_8:
 
 LABEL_9:
 
-  v28 = v17[2](v17, v15, v18);
+  v28 = validateConnectionCopy[2](validateConnectionCopy, connectionCopy, v18);
   if (v28)
   {
-    [v15 setExportedInterface:v35];
-    [v15 setExportedObject:v36];
-    objc_initWeak(buf, v15);
+    [connectionCopy setExportedInterface:interfaceCopy];
+    [connectionCopy setExportedObject:handlerCopy];
+    objc_initWeak(buf, connectionCopy);
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __175__PREXPCServerHelper_shouldAcceptConnection_serviceName_whitelistedServerInterface_requestHandler_validateConnection_setupClientProxy_interruptionHandler_invalidationHandler___block_invoke;
     v44[3] = &unk_279ABC688;
     objc_copyWeak(&v48, buf);
-    v29 = v16;
+    v29 = nameCopy;
     v45 = v29;
     v30 = v18;
     v46 = v30;
-    v47 = v38;
-    [v15 setInterruptionHandler:v44];
+    v47 = interruptionHandlerCopy;
+    [connectionCopy setInterruptionHandler:v44];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __175__PREXPCServerHelper_shouldAcceptConnection_serviceName_whitelistedServerInterface_requestHandler_validateConnection_setupClientProxy_interruptionHandler_invalidationHandler___block_invoke_11;
@@ -193,9 +193,9 @@ LABEL_9:
     objc_copyWeak(&v43, buf);
     v40 = v29;
     v41 = v30;
-    v42 = v37;
-    [v15 setInvalidationHandler:v39];
-    [v15 resume];
+    v42 = invalidationHandlerCopy;
+    [connectionCopy setInvalidationHandler:v39];
+    [connectionCopy resume];
 
     objc_destroyWeak(&v43);
     objc_destroyWeak(&v48);

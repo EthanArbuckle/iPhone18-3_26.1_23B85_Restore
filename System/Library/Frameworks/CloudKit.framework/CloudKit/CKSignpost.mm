@@ -1,7 +1,7 @@
 @interface CKSignpost
 + (id)signpost;
 - (CKSignpost)init;
-- (CKSignpost)initWithLog:(id)a3;
+- (CKSignpost)initWithLog:(id)log;
 @end
 
 @implementation CKSignpost
@@ -21,17 +21,17 @@
   return v2;
 }
 
-- (CKSignpost)initWithLog:(id)a3
+- (CKSignpost)initWithLog:(id)log
 {
-  v5 = a3;
+  logCopy = log;
   v9.receiver = self;
   v9.super_class = CKSignpost;
   v6 = [(CKSignpost *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_log, a3);
-    v7->_identifier = os_signpost_id_generate(v5);
+    objc_storeStrong(&v6->_log, log);
+    v7->_identifier = os_signpost_id_generate(logCopy);
   }
 
   return v7;

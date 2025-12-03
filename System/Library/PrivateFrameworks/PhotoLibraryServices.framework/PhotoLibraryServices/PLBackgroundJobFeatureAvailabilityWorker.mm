@@ -1,61 +1,61 @@
 @interface PLBackgroundJobFeatureAvailabilityWorker
-- (BOOL)_featureAvailabilityIsStale:(id)a3 inLibrary:(id)a4;
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4;
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5;
-- (void)stopWorkingOnItem:(id)a3;
+- (BOOL)_featureAvailabilityIsStale:(id)stale inLibrary:(id)library;
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias;
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion;
+- (void)stopWorkingOnItem:(id)item;
 @end
 
 @implementation PLBackgroundJobFeatureAvailabilityWorker
 
-- (void)stopWorkingOnItem:(id)a3
+- (void)stopWorkingOnItem:(id)item
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 progress];
-    [v4 cancel];
+    progress = [itemCopy progress];
+    [progress cancel];
   }
 
   else
   {
-    v4 = PLBackendGetLog();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    progress = PLBackendGetLog();
+    if (os_log_type_enabled(progress, OS_LOG_TYPE_ERROR))
     {
       v5 = 138412290;
-      v6 = v3;
-      _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_ERROR, "Unable to stop working on item %@ because it is not a known work item class", &v5, 0xCu);
+      v6 = itemCopy;
+      _os_log_impl(&dword_19BF1F000, progress, OS_LOG_TYPE_ERROR, "Unable to stop working on item %@ because it is not a known work item class", &v5, 0xCu);
     }
   }
 }
 
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
+  itemCopy = item;
+  libraryCopy = library;
+  completionCopy = completion;
+  v12 = itemCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobFeatureAvailabilityWorker.m" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"[workItem isKindOfClass:PLBackgroundJobFeatureAvailabilityWorkItem.class]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobFeatureAvailabilityWorker.m" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"[workItem isKindOfClass:PLBackgroundJobFeatureAvailabilityWorkItem.class]"}];
   }
 
-  v13 = [v12 progress];
-  v14 = [v13 isCancelled];
+  progress = [v12 progress];
+  isCancelled = [progress isCancelled];
 
-  if (v14)
+  if (isCancelled)
   {
     v15 = MEMORY[0x1E696ABC0];
     v16 = *MEMORY[0x1E69BFF48];
     v29 = *MEMORY[0x1E696A278];
     v30[0] = @"Feature Availability worker cancelled";
-    v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-    v18 = [v15 errorWithDomain:v16 code:41031 userInfo:v17];
-    v11[2](v11, v18);
+    availabilityComputer = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
+    v18 = [v15 errorWithDomain:v16 code:41031 userInfo:availabilityComputer];
+    completionCopy[2](completionCopy, v18);
   }
 
   else
@@ -67,19 +67,19 @@
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "PLBackgroundJobFeatureAvailabilityWorker - starting feature availability computation", buf, 2u);
     }
 
-    v20 = [v10 libraryServicesManager];
-    v17 = [v20 availabilityComputer];
+    libraryServicesManager = [libraryCopy libraryServicesManager];
+    availabilityComputer = [libraryServicesManager availabilityComputer];
 
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __83__PLBackgroundJobFeatureAvailabilityWorker_performWorkOnItem_inLibrary_completion___block_invoke;
     v25[3] = &unk_1E756E010;
-    v26 = v10;
-    v27 = v11;
-    v21 = [v17 computeAvailabilityForPhotoLibrary:v26 shouldPersist:1 completionHandler:v25];
-    v22 = [v12 progress];
-    v23 = [v12 progress];
-    [v22 addChild:v21 withPendingUnitCount:{objc_msgSend(v23, "totalUnitCount")}];
+    v26 = libraryCopy;
+    v27 = completionCopy;
+    v21 = [availabilityComputer computeAvailabilityForPhotoLibrary:v26 shouldPersist:1 completionHandler:v25];
+    progress2 = [v12 progress];
+    progress3 = [v12 progress];
+    [progress2 addChild:v21 withPendingUnitCount:{objc_msgSend(progress3, "totalUnitCount")}];
 
     v18 = v26;
   }
@@ -166,45 +166,45 @@ void __83__PLBackgroundJobFeatureAvailabilityWorker_performWorkOnItem_inLibrary_
   (*(v6 + 16))(v6, v7);
 }
 
-- (BOOL)_featureAvailabilityIsStale:(id)a3 inLibrary:(id)a4
+- (BOOL)_featureAvailabilityIsStale:(id)stale inLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 processingSnapshot];
-  v8 = [v7 hasConsistentMediaAnalysisImageVersion];
+  staleCopy = stale;
+  libraryCopy = library;
+  processingSnapshot = [staleCopy processingSnapshot];
+  hasConsistentMediaAnalysisImageVersion = [processingSnapshot hasConsistentMediaAnalysisImageVersion];
 
-  if (v8)
+  if (hasConsistentMediaAnalysisImageVersion)
   {
-    v9 = [v5 processingSnapshot];
-    v10 = [v9 dateComputed];
+    processingSnapshot2 = [staleCopy processingSnapshot];
+    dateComputed = [processingSnapshot2 dateComputed];
 
-    if (!v10)
+    if (!dateComputed)
     {
-      v11 = PLBackendGetLog();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      globalValues = PLBackendGetLog();
+      if (os_log_type_enabled(globalValues, OS_LOG_TYPE_ERROR))
       {
         *v27 = 0;
-        _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "PLBackgroundJobFeatureAvailabilityWorker - Processing snapshot is missing dateComputed", v27, 2u);
+        _os_log_impl(&dword_19BF1F000, globalValues, OS_LOG_TYPE_ERROR, "PLBackgroundJobFeatureAvailabilityWorker - Processing snapshot is missing dateComputed", v27, 2u);
       }
 
       v21 = 1;
       goto LABEL_27;
     }
 
-    v11 = [v6 globalValues];
-    v12 = [v11 searchIndexRebuildStartDate];
-    if (v12)
+    globalValues = [libraryCopy globalValues];
+    searchIndexRebuildStartDate = [globalValues searchIndexRebuildStartDate];
+    if (searchIndexRebuildStartDate)
     {
-      v13 = [v11 searchIndexRebuildStartDate];
-      v14 = [v10 compare:v13];
+      searchIndexRebuildStartDate2 = [globalValues searchIndexRebuildStartDate];
+      v14 = [dateComputed compare:searchIndexRebuildStartDate2];
 
       if (v14 == -1)
       {
-        v15 = PLBackendGetLog();
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+        searchIndexRebuildEndDate = PLBackendGetLog();
+        if (os_log_type_enabled(searchIndexRebuildEndDate, OS_LOG_TYPE_DEFAULT))
         {
           *v26 = 0;
-          _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "PLBackgroundJobFeatureAvailabilityWorker - searchIndexRebuildStartDate, reporting stale FA", v26, 2u);
+          _os_log_impl(&dword_19BF1F000, searchIndexRebuildEndDate, OS_LOG_TYPE_DEFAULT, "PLBackgroundJobFeatureAvailabilityWorker - searchIndexRebuildStartDate, reporting stale FA", v26, 2u);
         }
 
         v21 = 1;
@@ -212,21 +212,21 @@ void __83__PLBackgroundJobFeatureAvailabilityWorker_performWorkOnItem_inLibrary_
       }
     }
 
-    v15 = [v11 searchIndexRebuildEndDate];
-    if (v15 && ([v11 searchIndexRebuildEndDate], v16 = objc_claimAutoreleasedReturnValue(), v17 = [v10 compare:v16], v16, v17 == -1))
+    searchIndexRebuildEndDate = [globalValues searchIndexRebuildEndDate];
+    if (searchIndexRebuildEndDate && ([globalValues searchIndexRebuildEndDate], v16 = objc_claimAutoreleasedReturnValue(), v17 = [dateComputed compare:v16], v16, v17 == -1))
     {
-      v18 = PLBackendGetLog();
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+      dateOfLastExternalAvailabilitySignal = PLBackendGetLog();
+      if (os_log_type_enabled(dateOfLastExternalAvailabilitySignal, OS_LOG_TYPE_DEFAULT))
       {
         *v25 = 0;
-        _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "PLBackgroundJobFeatureAvailabilityWorker - searchIndexRebuildEndDate, reporting stale FA", v25, 2u);
+        _os_log_impl(&dword_19BF1F000, dateOfLastExternalAvailabilitySignal, OS_LOG_TYPE_DEFAULT, "PLBackgroundJobFeatureAvailabilityWorker - searchIndexRebuildEndDate, reporting stale FA", v25, 2u);
       }
     }
 
     else
     {
-      v18 = [v11 dateOfLastExternalAvailabilitySignal];
-      if (!v18 || ([v11 dateOfLastExternalAvailabilitySignal], v19 = objc_claimAutoreleasedReturnValue(), v20 = [v10 compare:v19], v19, v20 != -1))
+      dateOfLastExternalAvailabilitySignal = [globalValues dateOfLastExternalAvailabilitySignal];
+      if (!dateOfLastExternalAvailabilitySignal || ([globalValues dateOfLastExternalAvailabilitySignal], v19 = objc_claimAutoreleasedReturnValue(), v20 = [dateComputed compare:v19], v19, v20 != -1))
       {
         v21 = 0;
 LABEL_25:
@@ -249,11 +249,11 @@ LABEL_27:
     goto LABEL_25;
   }
 
-  v10 = PLBackendGetLog();
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  dateComputed = PLBackendGetLog();
+  if (os_log_type_enabled(dateComputed, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEFAULT, "PLBackgroundJobFeatureAvailabilityWorker - mediaAnalysisImageVersion isn't current, reporting stale FA", buf, 2u);
+    _os_log_impl(&dword_19BF1F000, dateComputed, OS_LOG_TYPE_DEFAULT, "PLBackgroundJobFeatureAvailabilityWorker - mediaAnalysisImageVersion isn't current, reporting stale FA", buf, 2u);
   }
 
   v21 = 1;
@@ -262,34 +262,34 @@ LABEL_28:
   return v21;
 }
 
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  criteriasCopy = criterias;
   v8 = +[PLBackgroundJobCriteria criteriaForFeatureAvailabilityWorker];
-  v9 = [v7 containsObject:v8];
+  v9 = [criteriasCopy containsObject:v8];
 
   if ((v9 & 1) == 0)
   {
-    v24 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
+    initWithZeroWorkItemsForValidCriteria = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
     goto LABEL_24;
   }
 
-  v10 = [v6 globalValues];
-  v11 = [v10 timeOfLastFeatureAvailabilityJob];
-  v12 = [v10 featureAvailabilityJobDidFail];
-  if (v12)
+  globalValues = [libraryCopy globalValues];
+  timeOfLastFeatureAvailabilityJob = [globalValues timeOfLastFeatureAvailabilityJob];
+  featureAvailabilityJobDidFail = [globalValues featureAvailabilityJobDidFail];
+  if (featureAvailabilityJobDidFail)
   {
-    v13 = v12;
-    v14 = [v10 featureAvailabilityJobDidFail];
-    v15 = [v14 BOOLValue];
+    v13 = featureAvailabilityJobDidFail;
+    featureAvailabilityJobDidFail2 = [globalValues featureAvailabilityJobDidFail];
+    bOOLValue = [featureAvailabilityJobDidFail2 BOOLValue];
 
-    v16 = v11 != 0;
-    if (v15 && v11)
+    v16 = timeOfLastFeatureAvailabilityJob != 0;
+    if (bOOLValue && timeOfLastFeatureAvailabilityJob)
     {
-      v17 = [MEMORY[0x1E695DF00] now];
-      [v17 timeIntervalSinceDate:v11];
+      featureAvailability = [MEMORY[0x1E695DF00] now];
+      [featureAvailability timeIntervalSinceDate:timeOfLastFeatureAvailabilityJob];
       v19 = v18;
       [objc_opt_class() minimumSecondsBetweenJobs];
       v21 = v20;
@@ -304,7 +304,7 @@ LABEL_28:
           _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_DEFAULT, "PLBackgroundJobFeatureAvailabilityWorker - Previous job failed (%f seconds ago), throttling to avoid failure loop", buf, 0xCu);
         }
 
-        v24 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItems];
+        initWithZeroWorkItemsForValidCriteria = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItems];
         goto LABEL_23;
       }
 
@@ -326,19 +326,19 @@ LABEL_28:
 
   else
   {
-    v16 = v11 != 0;
+    v16 = timeOfLastFeatureAvailabilityJob != 0;
   }
 
-  v25 = [v6 globalValues];
-  v17 = [v25 featureAvailability];
+  globalValues2 = [libraryCopy globalValues];
+  featureAvailability = [globalValues2 featureAvailability];
 
-  if (v17 && v16)
+  if (featureAvailability && v16)
   {
-    v26 = [[PLFeatureAvailability alloc] initWithDictionary:v17];
-    if (![(PLBackgroundJobFeatureAvailabilityWorker *)self _featureAvailabilityIsStale:v26 inLibrary:v6])
+    v26 = [[PLFeatureAvailability alloc] initWithDictionary:featureAvailability];
+    if (![(PLBackgroundJobFeatureAvailabilityWorker *)self _featureAvailabilityIsStale:v26 inLibrary:libraryCopy])
     {
       v27 = [MEMORY[0x1E695DF00] now];
-      [v27 timeIntervalSinceDate:v11];
+      [v27 timeIntervalSinceDate:timeOfLastFeatureAvailabilityJob];
       v29 = v28;
       [objc_opt_class() minimumSecondsBetweenJobs];
       if (v29 < v30)
@@ -351,7 +351,7 @@ LABEL_28:
           _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_DEFAULT, "PLBackgroundJobFeatureAvailabilityWorker - Job ran recently (%f seconds ago), no need to run again", buf, 0xCu);
         }
 
-        v34 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItems];
+        initWithZeroWorkItems = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItems];
         goto LABEL_22;
       }
     }
@@ -364,14 +364,14 @@ LABEL_28:
   v33 = &v37;
 LABEL_21:
   v27 = [v32 arrayWithObjects:v33 count:{1, v37, v38}];
-  v34 = [(PLBackgroundJobWorkerPendingWorkItems *)v31 initWithCriteria:v8 workItemsNeedingProcessing:v27];
+  initWithZeroWorkItems = [(PLBackgroundJobWorkerPendingWorkItems *)v31 initWithCriteria:v8 workItemsNeedingProcessing:v27];
 LABEL_22:
-  v24 = v34;
+  initWithZeroWorkItemsForValidCriteria = initWithZeroWorkItems;
 
 LABEL_23:
 LABEL_24:
 
-  return v24;
+  return initWithZeroWorkItemsForValidCriteria;
 }
 
 @end

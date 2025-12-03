@@ -1,26 +1,26 @@
 @interface HMPBActionContainer
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMPBActionContainer
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 44))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 44))
   {
-    self->_type = *(v4 + 10);
+    self->_type = *(fromCopy + 10);
     *&self->_has |= 1u;
   }
 
@@ -195,24 +195,24 @@ LABEL_42:
   return v6 ^ [(HMPBMatterCommandAction *)self->_matterCommandAction hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(equalCopy + 44);
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_type != *(v4 + 10))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_type != *(equalCopy + 10))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
 LABEL_15:
     v10 = 0;
@@ -220,13 +220,13 @@ LABEL_15:
   }
 
   characteristicWriteAction = self->_characteristicWriteAction;
-  if (characteristicWriteAction | *(v4 + 1) && ![(HMPBCharacteristicWriteAction *)characteristicWriteAction isEqual:?])
+  if (characteristicWriteAction | *(equalCopy + 1) && ![(HMPBCharacteristicWriteAction *)characteristicWriteAction isEqual:?])
   {
     goto LABEL_15;
   }
 
   mediaPlaybackAction = self->_mediaPlaybackAction;
-  if (mediaPlaybackAction | *(v4 + 2))
+  if (mediaPlaybackAction | *(equalCopy + 2))
   {
     if (![(HMPBMediaPlaybackAction *)mediaPlaybackAction isEqual:?])
     {
@@ -235,7 +235,7 @@ LABEL_15:
   }
 
   naturalLightingAction = self->_naturalLightingAction;
-  if (naturalLightingAction | *(v4 + 4))
+  if (naturalLightingAction | *(equalCopy + 4))
   {
     if (![(HMPBNaturalLightingAction *)naturalLightingAction isEqual:?])
     {
@@ -244,7 +244,7 @@ LABEL_15:
   }
 
   matterCommandAction = self->_matterCommandAction;
-  if (matterCommandAction | *(v4 + 3))
+  if (matterCommandAction | *(equalCopy + 3))
   {
     v10 = [(HMPBMatterCommandAction *)matterCommandAction isEqual:?];
   }
@@ -259,9 +259,9 @@ LABEL_16:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -269,99 +269,99 @@ LABEL_16:
     *(v5 + 44) |= 1u;
   }
 
-  v7 = [(HMPBCharacteristicWriteAction *)self->_characteristicWriteAction copyWithZone:a3];
+  v7 = [(HMPBCharacteristicWriteAction *)self->_characteristicWriteAction copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
-  v9 = [(HMPBMediaPlaybackAction *)self->_mediaPlaybackAction copyWithZone:a3];
+  v9 = [(HMPBMediaPlaybackAction *)self->_mediaPlaybackAction copyWithZone:zone];
   v10 = v6[2];
   v6[2] = v9;
 
-  v11 = [(HMPBNaturalLightingAction *)self->_naturalLightingAction copyWithZone:a3];
+  v11 = [(HMPBNaturalLightingAction *)self->_naturalLightingAction copyWithZone:zone];
   v12 = v6[4];
   v6[4] = v11;
 
-  v13 = [(HMPBMatterCommandAction *)self->_matterCommandAction copyWithZone:a3];
+  v13 = [(HMPBMatterCommandAction *)self->_matterCommandAction copyWithZone:zone];
   v14 = v6[3];
   v6[3] = v13;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[10] = self->_type;
-    *(v4 + 44) |= 1u;
+    toCopy[10] = self->_type;
+    *(toCopy + 44) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_characteristicWriteAction)
   {
-    [v4 setCharacteristicWriteAction:?];
-    v4 = v5;
+    [toCopy setCharacteristicWriteAction:?];
+    toCopy = v5;
   }
 
   if (self->_mediaPlaybackAction)
   {
     [v5 setMediaPlaybackAction:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_naturalLightingAction)
   {
     [v5 setNaturalLightingAction:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_matterCommandAction)
   {
     [v5 setMatterCommandAction:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_characteristicWriteAction)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_mediaPlaybackAction)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_naturalLightingAction)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_matterCommandAction)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = self->_type - 1;
@@ -375,38 +375,38 @@ LABEL_16:
       v5 = off_1E754DE50[v4];
     }
 
-    [v3 setObject:v5 forKey:@"type"];
+    [dictionary setObject:v5 forKey:@"type"];
   }
 
   characteristicWriteAction = self->_characteristicWriteAction;
   if (characteristicWriteAction)
   {
-    v7 = [(HMPBCharacteristicWriteAction *)characteristicWriteAction dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"characteristicWriteAction"];
+    dictionaryRepresentation = [(HMPBCharacteristicWriteAction *)characteristicWriteAction dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"characteristicWriteAction"];
   }
 
   mediaPlaybackAction = self->_mediaPlaybackAction;
   if (mediaPlaybackAction)
   {
-    v9 = [(HMPBMediaPlaybackAction *)mediaPlaybackAction dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"mediaPlaybackAction"];
+    dictionaryRepresentation2 = [(HMPBMediaPlaybackAction *)mediaPlaybackAction dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"mediaPlaybackAction"];
   }
 
   naturalLightingAction = self->_naturalLightingAction;
   if (naturalLightingAction)
   {
-    v11 = [(HMPBNaturalLightingAction *)naturalLightingAction dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"naturalLightingAction"];
+    dictionaryRepresentation3 = [(HMPBNaturalLightingAction *)naturalLightingAction dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"naturalLightingAction"];
   }
 
   matterCommandAction = self->_matterCommandAction;
   if (matterCommandAction)
   {
-    v13 = [(HMPBMatterCommandAction *)matterCommandAction dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"matterCommandAction"];
+    dictionaryRepresentation4 = [(HMPBMatterCommandAction *)matterCommandAction dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"matterCommandAction"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -415,31 +415,31 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = HMPBActionContainer;
   v4 = [(HMPBActionContainer *)&v8 description];
-  v5 = [(HMPBActionContainer *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMPBActionContainer *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CharacteristicWriteAction"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"CharacteristicWriteAction"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MediaPlaybackAction"])
+  else if ([typeCopy isEqualToString:@"MediaPlaybackAction"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NaturalLightingAction"])
+  else if ([typeCopy isEqualToString:@"NaturalLightingAction"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MatterCommandAction"])
+  else if ([typeCopy isEqualToString:@"MatterCommandAction"])
   {
     v4 = 4;
   }

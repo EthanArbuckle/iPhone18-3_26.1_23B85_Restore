@@ -1,5 +1,5 @@
 @interface MDLObject
-- (MDLAxisAlignedBoundingBox)boundingBoxAtTime:(SEL)a3;
+- (MDLAxisAlignedBoundingBox)boundingBoxAtTime:(SEL)time;
 - (MDLObject)init;
 - (MDLObject)objectAtPath:(NSString *)path;
 - (MDLObject)parent;
@@ -387,7 +387,7 @@ LABEL_6:
     v11 = v8;
     if (v8 && objc_msgSend_count(v8, v9, v10))
     {
-      v12 = self;
+      selfCopy = self;
       v15 = 0;
       while (1)
       {
@@ -395,8 +395,8 @@ LABEL_6:
         v38 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v34 = v12;
-        v16 = objc_msgSend_children(v12, v13, v14, v33);
+        v34 = selfCopy;
+        v16 = objc_msgSend_children(selfCopy, v13, v14, v33);
         v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v16, v17, &v35, v39, 16);
         if (!v19)
         {
@@ -443,7 +443,7 @@ LABEL_8:
         }
 
         ++v15;
-        v12 = v19;
+        selfCopy = v19;
         if (!v19)
         {
           goto LABEL_21;
@@ -493,13 +493,13 @@ LABEL_21:
 
 - (id)description
 {
-  v17 = self;
+  selfCopy = self;
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = objc_opt_class();
   v7 = objc_msgSend_name(self, v5, v6);
-  v10 = objc_msgSend_children(v17, v8, v9);
+  v10 = objc_msgSend_children(selfCopy, v8, v9);
   v13 = objc_msgSend_count(v10, v11, v12);
-  v15 = objc_msgSend_initWithFormat_(v3, v14, @"<<%@: 0x%lx>, Name: %@, Children: %d>", v4, &v17, v7, v13);
+  v15 = objc_msgSend_initWithFormat_(v3, v14, @"<<%@: 0x%lx>, Name: %@, Children: %d>", v4, &selfCopy, v7, v13);
 
   return v15;
 }
@@ -569,7 +569,7 @@ LABEL_21:
   return v4;
 }
 
-- (MDLAxisAlignedBoundingBox)boundingBoxAtTime:(SEL)a3
+- (MDLAxisAlignedBoundingBox)boundingBoxAtTime:(SEL)time
 {
   v4 = *(MEMORY[0x277D860B8] + 16);
   v8[0] = *MEMORY[0x277D860B8];

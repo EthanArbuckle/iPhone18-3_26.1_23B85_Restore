@@ -3,7 +3,7 @@
 + (id)easeQuadInOutTimingFunction;
 + (id)easeQuadInTimingFunction;
 + (id)easeQuadOutTimingFunction;
-+ (id)factoryWithTimingFunction:(id)a3;
++ (id)factoryWithTimingFunction:(id)function;
 @end
 
 @implementation SKUISimpleAnimationFactory
@@ -96,9 +96,9 @@
   return v14;
 }
 
-+ (id)factoryWithTimingFunction:(id)a3
++ (id)factoryWithTimingFunction:(id)function
 {
-  v4 = a3;
+  functionCopy = function;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -111,9 +111,9 @@
     }
   }
 
-  v13 = objc_alloc_init(a1);
+  v13 = objc_alloc_init(self);
   v14 = v13[1];
-  v13[1] = v4;
+  v13[1] = functionCopy;
 
   return v13;
 }

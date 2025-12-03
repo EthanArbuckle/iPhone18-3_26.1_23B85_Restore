@@ -1,13 +1,13 @@
 @interface INTimer
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INTimer)initWithCoder:(id)a3;
-- (INTimer)initWithLabel:(id)a3 duration:(double)a4 remainingTime:(double)a5 identifier:(id)a6 state:(int64_t)a7 type:(int64_t)a8;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INTimer)initWithCoder:(id)coder;
+- (INTimer)initWithLabel:(id)label duration:(double)duration remainingTime:(double)time identifier:(id)identifier state:(int64_t)state type:(int64_t)type;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INTimer
@@ -17,13 +17,13 @@
   v15[6] = *MEMORY[0x1E69E9840];
   v14[0] = @"label";
   label = self->_label;
-  v4 = label;
+  null = label;
   if (!label)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v4;
+  v15[0] = null;
   v14[1] = @"duration";
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_duration];
   v15[1] = v5;
@@ -32,13 +32,13 @@
   v15[2] = v6;
   v14[3] = @"identifier";
   identifier = self->_identifier;
-  v8 = identifier;
+  null2 = identifier;
   if (!identifier)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[3] = v8;
+  v15[3] = null2;
   v14[4] = @"state";
   v9 = [MEMORY[0x1E696AD98] numberWithInteger:self->_state];
   v15[4] = v9;
@@ -60,36 +60,36 @@
   return v11;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INTimer;
   v6 = [(INTimer *)&v11 description];
-  v7 = [(INTimer *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INTimer *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_label];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"label"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_label];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"label"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_duration];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"duration"];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"duration"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithDouble:self->_remainingTime];
-  [v7 if_setObjectIfNonNil:v10 forKey:@"remainingTime"];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"remainingTime"];
 
-  v11 = [v6 encodeObject:self->_identifier];
+  v11 = [encoderCopy encodeObject:self->_identifier];
 
-  [v7 if_setObjectIfNonNil:v11 forKey:@"identifier"];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"identifier"];
   state = self->_state;
   v13 = @"unknown";
   if (state == 2)
@@ -108,7 +108,7 @@
   }
 
   v15 = v14;
-  [v7 if_setObjectIfNonNil:v15 forKey:@"state"];
+  [dictionary if_setObjectIfNonNil:v15 forKey:@"state"];
 
   type = self->_type;
   v17 = @"unknown";
@@ -128,47 +128,47 @@
   }
 
   v19 = v18;
-  [v7 if_setObjectIfNonNil:v19 forKey:@"type"];
+  [dictionary if_setObjectIfNonNil:v19 forKey:@"type"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   label = self->_label;
-  v5 = a3;
-  [v5 encodeObject:label forKey:@"label"];
-  [v5 encodeDouble:@"duration" forKey:self->_duration];
-  [v5 encodeDouble:@"remainingTime" forKey:self->_remainingTime];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeInteger:self->_state forKey:@"state"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:label forKey:@"label"];
+  [coderCopy encodeDouble:@"duration" forKey:self->_duration];
+  [coderCopy encodeDouble:@"remainingTime" forKey:self->_remainingTime];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
 }
 
-- (INTimer)initWithCoder:(id)a3
+- (INTimer)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
-  [v4 decodeDoubleForKey:@"duration"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+  [coderCopy decodeDoubleForKey:@"duration"];
   v7 = v6;
-  [v4 decodeDoubleForKey:@"remainingTime"];
+  [coderCopy decodeDoubleForKey:@"remainingTime"];
   v9 = v8;
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"identifier"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"identifier"];
 
-  v14 = [v4 decodeIntegerForKey:@"state"];
-  v15 = [v4 decodeIntegerForKey:@"type"];
+  v14 = [coderCopy decodeIntegerForKey:@"state"];
+  v15 = [coderCopy decodeIntegerForKey:@"type"];
 
   v16 = [(INTimer *)self initWithLabel:v5 duration:v13 remainingTime:v14 identifier:v15 state:v7 type:v9];
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -178,7 +178,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       label = self->_label;
       v7 = (label == v5->_label || [(INSpeakableString *)label isEqual:?]) && self->_duration == v5->_duration && self->_remainingTime == v5->_remainingTime && ((identifier = self->_identifier, identifier == v5->_identifier) || [(NSString *)identifier isEqual:?]) && self->_state == v5->_state && self->_type == v5->_type;
     }
@@ -208,59 +208,59 @@
   return v8 ^ v12;
 }
 
-- (INTimer)initWithLabel:(id)a3 duration:(double)a4 remainingTime:(double)a5 identifier:(id)a6 state:(int64_t)a7 type:(int64_t)a8
+- (INTimer)initWithLabel:(id)label duration:(double)duration remainingTime:(double)time identifier:(id)identifier state:(int64_t)state type:(int64_t)type
 {
-  v14 = a3;
-  v15 = a6;
+  labelCopy = label;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = INTimer;
   v16 = [(INTimer *)&v22 init];
   if (v16)
   {
-    v17 = [v14 copy];
+    v17 = [labelCopy copy];
     label = v16->_label;
     v16->_label = v17;
 
-    v16->_duration = a4;
-    v16->_remainingTime = a5;
-    v19 = [v15 copy];
+    v16->_duration = duration;
+    v16->_remainingTime = time;
+    v19 = [identifierCopy copy];
     identifier = v16->_identifier;
     v16->_identifier = v19;
 
-    v16->_state = a7;
-    v16->_type = a8;
+    v16->_state = state;
+    v16->_type = type;
   }
 
   return v16;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"label"];
-    v11 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"label"];
+    v11 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
-    v12 = [v8 objectForKeyedSubscript:@"duration"];
+    v12 = [fromCopy objectForKeyedSubscript:@"duration"];
     [v12 doubleValue];
     v14 = v13;
 
-    v15 = [v8 objectForKeyedSubscript:@"remainingTime"];
+    v15 = [fromCopy objectForKeyedSubscript:@"remainingTime"];
     [v15 doubleValue];
     v17 = v16;
 
-    v18 = [v8 objectForKeyedSubscript:@"identifier"];
-    v19 = [v8 objectForKeyedSubscript:@"state"];
+    v18 = [fromCopy objectForKeyedSubscript:@"identifier"];
+    v19 = [fromCopy objectForKeyedSubscript:@"state"];
     v20 = INTimerStateWithString(v19);
 
-    v21 = [v8 objectForKeyedSubscript:@"type"];
+    v21 = [fromCopy objectForKeyedSubscript:@"type"];
     v22 = INTimerTypeWithString(v21);
 
-    v23 = [[a1 alloc] initWithLabel:v11 duration:v18 remainingTime:v20 identifier:v22 state:v14 type:v17];
+    v23 = [[self alloc] initWithLabel:v11 duration:v18 remainingTime:v20 identifier:v22 state:v14 type:v17];
   }
 
   else

@@ -1,7 +1,7 @@
 @interface DMDUserNotification
 - (DMDUserNotification)init;
 - (void)dealloc;
-- (void)setNotificationRef:(__CFUserNotification *)a3;
+- (void)setNotificationRef:(__CFUserNotification *)ref;
 @end
 
 @implementation DMDUserNotification
@@ -37,19 +37,19 @@
   [(DMDUserNotification *)&v4 dealloc];
 }
 
-- (void)setNotificationRef:(__CFUserNotification *)a3
+- (void)setNotificationRef:(__CFUserNotification *)ref
 {
   notificationRef = self->_notificationRef;
-  if (notificationRef != a3)
+  if (notificationRef != ref)
   {
     if (notificationRef)
     {
       CFRelease(notificationRef);
     }
 
-    if (a3)
+    if (ref)
     {
-      v6 = CFRetain(a3);
+      v6 = CFRetain(ref);
     }
 
     else

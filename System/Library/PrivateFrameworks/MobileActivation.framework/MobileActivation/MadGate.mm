@@ -1,35 +1,35 @@
 @interface MadGate
-- (BOOL)deactivateDevice:(id *)a3;
-- (BOOL)deleteLegacyDeviceIdentity:(id *)a3;
-- (BOOL)handleActivationInfo:(id)a3 withError:(id *)a4;
-- (BOOL)handleActivationInfoWithSession:(id)a3 activationSignature:(id)a4 error:(id *)a5;
-- (BOOL)isDeviceABrick:(id *)a3;
-- (BOOL)isInFieldCollected:(id *)a3;
-- (BOOL)isUCRTAvailable:(id *)a3;
-- (BOOL)issueUCRT:(id)a3 withError:(id *)a4;
-- (BOOL)reactivateDevice:(id *)a3;
-- (BOOL)recertifyDeviceWithError:(id *)a3;
-- (BOOL)ucrtUpgradeRequired:(id *)a3;
-- (BOOL)unbrickDevice:(id *)a3;
+- (BOOL)deactivateDevice:(id *)device;
+- (BOOL)deleteLegacyDeviceIdentity:(id *)identity;
+- (BOOL)handleActivationInfo:(id)info withError:(id *)error;
+- (BOOL)handleActivationInfoWithSession:(id)session activationSignature:(id)signature error:(id *)error;
+- (BOOL)isDeviceABrick:(id *)brick;
+- (BOOL)isInFieldCollected:(id *)collected;
+- (BOOL)isUCRTAvailable:(id *)available;
+- (BOOL)issueUCRT:(id)t withError:(id *)error;
+- (BOOL)reactivateDevice:(id *)device;
+- (BOOL)recertifyDeviceWithError:(id *)error;
+- (BOOL)ucrtUpgradeRequired:(id *)required;
+- (BOOL)unbrickDevice:(id *)device;
 - (MadGate)init;
-- (__SecIdentity)copyLegacyDeviceIdentity:(id *)a3;
-- (id)copyActivationRecord:(id *)a3;
-- (id)copyDCRT:(id)a3 withError:(id *)a4;
-- (id)copyPCRTToken:(id *)a3;
-- (id)copyRegionDataForGestalt:(id *)a3;
-- (id)copyUCRTVersionInfo:(id *)a3;
-- (id)createActivationInfo:(id *)a3;
-- (id)createTunnel1ActivationInfo:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)createTunnel1SessionInfo:(id *)a3;
-- (id)getActivationBuild:(id *)a3;
-- (id)getActivationState:(id *)a3;
-- (id)getDCRTState:(id)a3 withError:(id *)a4;
-- (id)getUCRTActivationLockState:(id *)a3;
-- (id)issueClientCertificateLegacy:(id)a3 error:(id *)a4;
+- (__SecIdentity)copyLegacyDeviceIdentity:(id *)identity;
+- (id)copyActivationRecord:(id *)record;
+- (id)copyDCRT:(id)t withError:(id *)error;
+- (id)copyPCRTToken:(id *)token;
+- (id)copyRegionDataForGestalt:(id *)gestalt;
+- (id)copyUCRTVersionInfo:(id *)info;
+- (id)createActivationInfo:(id *)info;
+- (id)createTunnel1ActivationInfo:(id)info options:(id)options error:(id *)error;
+- (id)createTunnel1SessionInfo:(id *)info;
+- (id)getActivationBuild:(id *)build;
+- (id)getActivationState:(id *)state;
+- (id)getDCRTState:(id)state withError:(id *)error;
+- (id)getUCRTActivationLockState:(id *)state;
+- (id)issueClientCertificateLegacy:(id)legacy error:(id *)error;
 - (void)dealloc;
-- (void)issueCollection:(id)a3 withCompletion:(id)a4;
-- (void)issueDCRT:(id)a3 withCompletion:(id)a4;
-- (void)updateBasebandTicket:(__SecKey *)a3 baaCert:(__SecCertificate *)a4 baaIntermediateCert:(__SecCertificate *)a5 options:(id)a6 withCompletion:(id)a7;
+- (void)issueCollection:(id)collection withCompletion:(id)completion;
+- (void)issueDCRT:(id)t withCompletion:(id)completion;
+- (void)updateBasebandTicket:(__SecKey *)ticket baaCert:(__SecCertificate *)cert baaIntermediateCert:(__SecCertificate *)intermediateCert options:(id)options withCompletion:(id)completion;
 @end
 
 @implementation MadGate
@@ -55,15 +55,15 @@
 
 - (void)dealloc
 {
-  v3 = [(MadGate *)self connection];
-  [(NSXPCConnection *)v3 invalidate];
+  connection = [(MadGate *)self connection];
+  [(NSXPCConnection *)connection invalidate];
 
   v4.receiver = self;
   v4.super_class = MadGate;
   [(MadGate *)&v4 dealloc];
 }
 
-- (id)getUCRTActivationLockState:(id *)a3
+- (id)getUCRTActivationLockState:(id *)state
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = createMobileActivationError("[MadGate getUCRTActivationLockState:]", 59, @"com.apple.MobileActivation.ErrorDomain", -3, 0, @"SPI not supported on iOS.");
@@ -74,17 +74,17 @@
     _os_log_impl(&dword_259A60000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@", &v8, 0xCu);
   }
 
-  if (a3)
+  if (state)
   {
     v5 = v4;
-    *a3 = v4;
+    *state = v4;
   }
 
   v6 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (id)getActivationState:(id *)a3
+- (id)getActivationState:(id *)state
 {
   v27 = *MEMORY[0x277D85DE8];
   v19 = 0;
@@ -99,13 +99,13 @@
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v4 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3254779904;
   v12[2] = __30__MadGate_getActivationState___block_invoke;
   v12[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v12[4] = &v13;
-  v5 = [(NSXPCConnection *)v4 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3254779904;
@@ -123,9 +123,9 @@
   }
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (state && !v7)
   {
-    *a3 = v14[5];
+    *state = v14[5];
     v7 = v20[5];
   }
 
@@ -168,7 +168,7 @@ void __30__MadGate_getActivationState___block_invoke_93(uint64_t a1, id a2, void
   *(v13 + 40) = v6;
 }
 
-- (id)getActivationBuild:(id *)a3
+- (id)getActivationBuild:(id *)build
 {
   v27 = *MEMORY[0x277D85DE8];
   v19 = 0;
@@ -183,13 +183,13 @@ void __30__MadGate_getActivationState___block_invoke_93(uint64_t a1, id a2, void
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v4 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3254779904;
   v12[2] = __30__MadGate_getActivationBuild___block_invoke;
   v12[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v12[4] = &v13;
-  v5 = [(NSXPCConnection *)v4 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3254779904;
@@ -207,9 +207,9 @@ void __30__MadGate_getActivationState___block_invoke_93(uint64_t a1, id a2, void
   }
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (build && !v7)
   {
-    *a3 = v14[5];
+    *build = v14[5];
     v7 = v20[5];
   }
 
@@ -252,7 +252,7 @@ void __30__MadGate_getActivationBuild___block_invoke_2(uint64_t a1, id a2, void 
   *(v13 + 40) = v6;
 }
 
-- (BOOL)isUCRTAvailable:(id *)a3
+- (BOOL)isUCRTAvailable:(id *)available
 {
   v24 = *MEMORY[0x277D85DE8];
   v18 = 0;
@@ -265,13 +265,13 @@ void __30__MadGate_getActivationBuild___block_invoke_2(uint64_t a1, id a2, void 
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v4 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3254779904;
   v11[2] = __27__MadGate_isUCRTAvailable___block_invoke;
   v11[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v11[4] = &v12;
-  v5 = [(NSXPCConnection *)v4 synchronousRemoteObjectProxyWithErrorHandler:v11];
+  v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v11];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3254779904;
@@ -289,9 +289,9 @@ void __30__MadGate_getActivationBuild___block_invoke_2(uint64_t a1, id a2, void 
   }
 
   v7 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) == 0)
+  if (available && (v19[3] & 1) == 0)
   {
-    *a3 = v13[5];
+    *available = v13[5];
     v7 = *(v19 + 24);
   }
 
@@ -325,7 +325,7 @@ void __27__MadGate_isUCRTAvailable___block_invoke_2(uint64_t a1, void *a2, id a3
   *(v8 + 40) = v5;
 }
 
-- (id)copyPCRTToken:(id *)a3
+- (id)copyPCRTToken:(id *)token
 {
   v27 = *MEMORY[0x277D85DE8];
   v19 = 0;
@@ -340,13 +340,13 @@ void __27__MadGate_isUCRTAvailable___block_invoke_2(uint64_t a1, void *a2, id a3
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v4 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3254779904;
   v12[2] = __25__MadGate_copyPCRTToken___block_invoke;
   v12[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v12[4] = &v13;
-  v5 = [(NSXPCConnection *)v4 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3254779904;
@@ -364,9 +364,9 @@ void __27__MadGate_isUCRTAvailable___block_invoke_2(uint64_t a1, void *a2, id a3
   }
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (token && !v7)
   {
-    *a3 = v14[5];
+    *token = v14[5];
     v7 = v20[5];
   }
 
@@ -408,7 +408,7 @@ void __25__MadGate_copyPCRTToken___block_invoke_2(uint64_t a1, id a2, void *a3)
   *(v13 + 40) = v6;
 }
 
-- (BOOL)isDeviceABrick:(id *)a3
+- (BOOL)isDeviceABrick:(id *)brick
 {
   v24 = *MEMORY[0x277D85DE8];
   v18 = 0;
@@ -421,13 +421,13 @@ void __25__MadGate_copyPCRTToken___block_invoke_2(uint64_t a1, id a2, void *a3)
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v4 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3254779904;
   v11[2] = __26__MadGate_isDeviceABrick___block_invoke;
   v11[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v11[4] = &v12;
-  v5 = [(NSXPCConnection *)v4 synchronousRemoteObjectProxyWithErrorHandler:v11];
+  v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v11];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3254779904;
@@ -445,9 +445,9 @@ void __25__MadGate_copyPCRTToken___block_invoke_2(uint64_t a1, id a2, void *a3)
   }
 
   v7 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) != 0)
+  if (brick && (v19[3] & 1) != 0)
   {
-    *a3 = v13[5];
+    *brick = v13[5];
     v7 = *(v19 + 24);
   }
 
@@ -483,7 +483,7 @@ void __26__MadGate_isDeviceABrick___block_invoke_2(uint64_t a1, id a2, void *a3)
   *(v10 + 40) = v6;
 }
 
-- (id)createTunnel1SessionInfo:(id *)a3
+- (id)createTunnel1SessionInfo:(id *)info
 {
   v27 = *MEMORY[0x277D85DE8];
   v19 = 0;
@@ -498,13 +498,13 @@ void __26__MadGate_isDeviceABrick___block_invoke_2(uint64_t a1, id a2, void *a3)
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v4 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3254779904;
   v12[2] = __36__MadGate_createTunnel1SessionInfo___block_invoke;
   v12[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v12[4] = &v13;
-  v5 = [(NSXPCConnection *)v4 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3254779904;
@@ -522,9 +522,9 @@ void __26__MadGate_isDeviceABrick___block_invoke_2(uint64_t a1, id a2, void *a3)
   }
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (info && !v7)
   {
-    *a3 = v14[5];
+    *info = v14[5];
     v7 = v20[5];
   }
 
@@ -559,11 +559,11 @@ void __36__MadGate_createTunnel1SessionInfo___block_invoke_2(uint64_t a1, void *
   *(v9 + 40) = v5;
 }
 
-- (id)createTunnel1ActivationInfo:(id)a3 options:(id)a4 error:(id *)a5
+- (id)createTunnel1ActivationInfo:(id)info options:(id)options error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  infoCopy = info;
+  optionsCopy = options;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -576,13 +576,13 @@ void __36__MadGate_createTunnel1SessionInfo___block_invoke_2(uint64_t a1, void *
   v22 = __Block_byref_object_copy_;
   v23 = __Block_byref_object_dispose_;
   v24 = 0;
-  v10 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3254779904;
   v18[2] = __53__MadGate_createTunnel1ActivationInfo_options_error___block_invoke;
   v18[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v18[4] = &v19;
-  v11 = [(NSXPCConnection *)v10 synchronousRemoteObjectProxyWithErrorHandler:v18];
+  v11 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v18];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3254779904;
@@ -590,7 +590,7 @@ void __36__MadGate_createTunnel1SessionInfo___block_invoke_2(uint64_t a1, void *
   v17[3] = &__block_descriptor_48_e8_32r40r_e34_v24__0__NSDictionary_8__NSError_16l;
   v17[4] = &v25;
   v17[5] = &v19;
-  [v11 createTunnel1ActivationInfo:v8 options:v9 withCompletionBlock:v17];
+  [v11 createTunnel1ActivationInfo:infoCopy options:optionsCopy withCompletionBlock:v17];
   if (v20[5] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v12 = v20[5];
@@ -600,9 +600,9 @@ void __36__MadGate_createTunnel1SessionInfo___block_invoke_2(uint64_t a1, void *
   }
 
   v13 = v26[5];
-  if (a5 && !v13)
+  if (error && !v13)
   {
-    *a5 = v20[5];
+    *error = v20[5];
     v13 = v26[5];
   }
 
@@ -637,7 +637,7 @@ void __53__MadGate_createTunnel1ActivationInfo_options_error___block_invoke_2(ui
   *(v9 + 40) = v5;
 }
 
-- (id)createActivationInfo:(id *)a3
+- (id)createActivationInfo:(id *)info
 {
   v27 = *MEMORY[0x277D85DE8];
   v19 = 0;
@@ -652,13 +652,13 @@ void __53__MadGate_createTunnel1ActivationInfo_options_error___block_invoke_2(ui
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v4 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3254779904;
   v12[2] = __32__MadGate_createActivationInfo___block_invoke;
   v12[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v12[4] = &v13;
-  v5 = [(NSXPCConnection *)v4 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3254779904;
@@ -676,9 +676,9 @@ void __53__MadGate_createTunnel1ActivationInfo_options_error___block_invoke_2(ui
   }
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (info && !v7)
   {
-    *a3 = v14[5];
+    *info = v14[5];
     v7 = v20[5];
   }
 
@@ -713,30 +713,30 @@ void __32__MadGate_createActivationInfo___block_invoke_2(uint64_t a1, void *a2, 
   *(v9 + 40) = v5;
 }
 
-- (BOOL)handleActivationInfo:(id)a3 withError:(id *)a4
+- (BOOL)handleActivationInfo:(id)info withError:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  infoCopy = info;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy_;
   v19 = __Block_byref_object_dispose_;
   v20 = 0;
-  v7 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3254779904;
   v14[2] = __42__MadGate_handleActivationInfo_withError___block_invoke;
   v14[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v14[4] = &v15;
-  v8 = [(NSXPCConnection *)v7 synchronousRemoteObjectProxyWithErrorHandler:v14];
+  v8 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v14];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3254779904;
   v13[2] = __42__MadGate_handleActivationInfo_withError___block_invoke_2;
   v13[3] = &__block_descriptor_40_e8_32r_e34_v24__0__NSDictionary_8__NSError_16l;
   v13[4] = &v15;
-  [v8 handleActivationInfo:v6 withCompletionBlock:v13];
+  [v8 handleActivationInfo:infoCopy withCompletionBlock:v13];
   v9 = v16[5];
   if (v9)
   {
@@ -748,9 +748,9 @@ void __32__MadGate_createActivationInfo___block_invoke_2(uint64_t a1, void *a2, 
       _os_log_impl(&dword_259A60000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = v16[5];
+      *error = v16[5];
     }
   }
 
@@ -767,31 +767,31 @@ void __42__MadGate_handleActivationInfo_withError___block_invoke(uint64_t a1, vo
   *(v4 + 40) = v3;
 }
 
-- (BOOL)handleActivationInfoWithSession:(id)a3 activationSignature:(id)a4 error:(id *)a5
+- (BOOL)handleActivationInfoWithSession:(id)session activationSignature:(id)signature error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  sessionCopy = session;
+  signatureCopy = signature;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy_;
   v22 = __Block_byref_object_dispose_;
   v23 = 0;
-  v10 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3254779904;
   v17[2] = __69__MadGate_handleActivationInfoWithSession_activationSignature_error___block_invoke;
   v17[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v17[4] = &v18;
-  v11 = [(NSXPCConnection *)v10 synchronousRemoteObjectProxyWithErrorHandler:v17];
+  v11 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v17];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3254779904;
   v16[2] = __69__MadGate_handleActivationInfoWithSession_activationSignature_error___block_invoke_2;
   v16[3] = &__block_descriptor_40_e8_32r_e34_v24__0__NSDictionary_8__NSError_16l;
   v16[4] = &v18;
-  [v11 handleActivationInfoWithSession:v8 activationSignature:v9 completionBlock:v16];
+  [v11 handleActivationInfoWithSession:sessionCopy activationSignature:signatureCopy completionBlock:v16];
   v12 = v19[5];
   if (v12)
   {
@@ -803,9 +803,9 @@ void __42__MadGate_handleActivationInfo_withError___block_invoke(uint64_t a1, vo
       _os_log_impl(&dword_259A60000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = v19[5];
+      *error = v19[5];
     }
   }
 
@@ -822,7 +822,7 @@ void __69__MadGate_handleActivationInfoWithSession_activationSignature_error___b
   *(v4 + 40) = v3;
 }
 
-- (BOOL)deactivateDevice:(id *)a3
+- (BOOL)deactivateDevice:(id *)device
 {
   v20 = *MEMORY[0x277D85DE8];
   v12 = 0;
@@ -831,13 +831,13 @@ void __69__MadGate_handleActivationInfoWithSession_activationSignature_error___b
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v4 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3254779904;
   v11[2] = __28__MadGate_deactivateDevice___block_invoke;
   v11[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v11[4] = &v12;
-  v5 = [(NSXPCConnection *)v4 synchronousRemoteObjectProxyWithErrorHandler:v11];
+  v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v11];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3254779904;
@@ -856,9 +856,9 @@ void __69__MadGate_handleActivationInfoWithSession_activationSignature_error___b
       _os_log_impl(&dword_259A60000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
 
-    if (a3)
+    if (device)
     {
-      *a3 = v13[5];
+      *device = v13[5];
     }
   }
 
@@ -875,7 +875,7 @@ void __28__MadGate_deactivateDevice___block_invoke(uint64_t a1, void *a2)
   *(v4 + 40) = v3;
 }
 
-- (BOOL)reactivateDevice:(id *)a3
+- (BOOL)reactivateDevice:(id *)device
 {
   v20 = *MEMORY[0x277D85DE8];
   v12 = 0;
@@ -884,13 +884,13 @@ void __28__MadGate_deactivateDevice___block_invoke(uint64_t a1, void *a2)
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v4 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3254779904;
   v11[2] = __28__MadGate_reactivateDevice___block_invoke;
   v11[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v11[4] = &v12;
-  v5 = [(NSXPCConnection *)v4 synchronousRemoteObjectProxyWithErrorHandler:v11];
+  v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v11];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3254779904;
@@ -909,9 +909,9 @@ void __28__MadGate_deactivateDevice___block_invoke(uint64_t a1, void *a2)
       _os_log_impl(&dword_259A60000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
 
-    if (a3)
+    if (device)
     {
-      *a3 = v13[5];
+      *device = v13[5];
     }
   }
 
@@ -928,7 +928,7 @@ void __28__MadGate_reactivateDevice___block_invoke(uint64_t a1, void *a2)
   *(v4 + 40) = v3;
 }
 
-- (id)copyActivationRecord:(id *)a3
+- (id)copyActivationRecord:(id *)record
 {
   v27 = *MEMORY[0x277D85DE8];
   v19 = 0;
@@ -943,13 +943,13 @@ void __28__MadGate_reactivateDevice___block_invoke(uint64_t a1, void *a2)
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v4 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3254779904;
   v12[2] = __32__MadGate_copyActivationRecord___block_invoke;
   v12[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v12[4] = &v13;
-  v5 = [(NSXPCConnection *)v4 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3254779904;
@@ -967,9 +967,9 @@ void __28__MadGate_reactivateDevice___block_invoke(uint64_t a1, void *a2)
   }
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (record && !v7)
   {
-    *a3 = v14[5];
+    *record = v14[5];
     v7 = v20[5];
   }
 
@@ -1003,7 +1003,7 @@ void __32__MadGate_copyActivationRecord___block_invoke_2(uint64_t a1, void *a2, 
   *(v9 + 40) = v5;
 }
 
-- (id)copyRegionDataForGestalt:(id *)a3
+- (id)copyRegionDataForGestalt:(id *)gestalt
 {
   v27 = *MEMORY[0x277D85DE8];
   v19 = 0;
@@ -1018,13 +1018,13 @@ void __32__MadGate_copyActivationRecord___block_invoke_2(uint64_t a1, void *a2, 
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v4 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3254779904;
   v12[2] = __36__MadGate_copyRegionDataForGestalt___block_invoke;
   v12[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v12[4] = &v13;
-  v5 = [(NSXPCConnection *)v4 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3254779904;
@@ -1042,9 +1042,9 @@ void __32__MadGate_copyActivationRecord___block_invoke_2(uint64_t a1, void *a2, 
   }
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (gestalt && !v7)
   {
-    *a3 = v14[5];
+    *gestalt = v14[5];
     v7 = v20[5];
   }
 
@@ -1078,7 +1078,7 @@ void __36__MadGate_copyRegionDataForGestalt___block_invoke_2(uint64_t a1, void *
   *(v9 + 40) = v5;
 }
 
-- (BOOL)unbrickDevice:(id *)a3
+- (BOOL)unbrickDevice:(id *)device
 {
   v20 = *MEMORY[0x277D85DE8];
   v12 = 0;
@@ -1087,13 +1087,13 @@ void __36__MadGate_copyRegionDataForGestalt___block_invoke_2(uint64_t a1, void *
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v4 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3254779904;
   v11[2] = __25__MadGate_unbrickDevice___block_invoke;
   v11[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v11[4] = &v12;
-  v5 = [(NSXPCConnection *)v4 synchronousRemoteObjectProxyWithErrorHandler:v11];
+  v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v11];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3254779904;
@@ -1112,9 +1112,9 @@ void __36__MadGate_copyRegionDataForGestalt___block_invoke_2(uint64_t a1, void *
       _os_log_impl(&dword_259A60000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
 
-    if (a3)
+    if (device)
     {
-      *a3 = v13[5];
+      *device = v13[5];
     }
   }
 
@@ -1131,7 +1131,7 @@ void __25__MadGate_unbrickDevice___block_invoke(uint64_t a1, void *a2)
   *(v4 + 40) = v3;
 }
 
-- (BOOL)recertifyDeviceWithError:(id *)a3
+- (BOOL)recertifyDeviceWithError:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
   v12 = 0;
@@ -1140,13 +1140,13 @@ void __25__MadGate_unbrickDevice___block_invoke(uint64_t a1, void *a2)
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v4 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3254779904;
   v11[2] = __36__MadGate_recertifyDeviceWithError___block_invoke;
   v11[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v11[4] = &v12;
-  v5 = [(NSXPCConnection *)v4 synchronousRemoteObjectProxyWithErrorHandler:v11];
+  v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v11];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3254779904;
@@ -1165,9 +1165,9 @@ void __25__MadGate_unbrickDevice___block_invoke(uint64_t a1, void *a2)
       _os_log_impl(&dword_259A60000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = v13[5];
+      *error = v13[5];
     }
   }
 
@@ -1184,10 +1184,10 @@ void __36__MadGate_recertifyDeviceWithError___block_invoke(uint64_t a1, void *a2
   *(v4 + 40) = v3;
 }
 
-- (id)issueClientCertificateLegacy:(id)a3 error:(id *)a4
+- (id)issueClientCertificateLegacy:(id)legacy error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  legacyCopy = legacy;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1200,13 +1200,13 @@ void __36__MadGate_recertifyDeviceWithError___block_invoke(uint64_t a1, void *a2
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
-  v7 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3254779904;
   v15[2] = __46__MadGate_issueClientCertificateLegacy_error___block_invoke;
   v15[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v15[4] = &v16;
-  v8 = [(NSXPCConnection *)v7 synchronousRemoteObjectProxyWithErrorHandler:v15];
+  v8 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v15];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3254779904;
@@ -1214,7 +1214,7 @@ void __36__MadGate_recertifyDeviceWithError___block_invoke(uint64_t a1, void *a2
   v14[3] = &__block_descriptor_48_e8_32r40r_e34_v24__0__NSDictionary_8__NSError_16l;
   v14[4] = &v22;
   v14[5] = &v16;
-  [v8 issueClientCertificateLegacy:v6 WithCompletionBlock:v14];
+  [v8 issueClientCertificateLegacy:legacyCopy WithCompletionBlock:v14];
   if (v17[5] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v17[5];
@@ -1224,9 +1224,9 @@ void __36__MadGate_recertifyDeviceWithError___block_invoke(uint64_t a1, void *a2
   }
 
   v10 = v23[5];
-  if (a4 && !v10)
+  if (error && !v10)
   {
-    *a4 = v17[5];
+    *error = v17[5];
     v10 = v23[5];
   }
 
@@ -1262,7 +1262,7 @@ void __46__MadGate_issueClientCertificateLegacy_error___block_invoke_2(uint64_t 
   *(v10 + 40) = v5;
 }
 
-- (BOOL)isInFieldCollected:(id *)a3
+- (BOOL)isInFieldCollected:(id *)collected
 {
   v24 = *MEMORY[0x277D85DE8];
   v18 = 0;
@@ -1275,13 +1275,13 @@ void __46__MadGate_issueClientCertificateLegacy_error___block_invoke_2(uint64_t 
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v4 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3254779904;
   v11[2] = __30__MadGate_isInFieldCollected___block_invoke;
   v11[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v11[4] = &v12;
-  v5 = [(NSXPCConnection *)v4 synchronousRemoteObjectProxyWithErrorHandler:v11];
+  v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v11];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3254779904;
@@ -1299,9 +1299,9 @@ void __46__MadGate_issueClientCertificateLegacy_error___block_invoke_2(uint64_t 
   }
 
   v7 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) == 0)
+  if (collected && (v19[3] & 1) == 0)
   {
-    *a3 = v13[5];
+    *collected = v13[5];
     v7 = *(v19 + 24);
   }
 
@@ -1337,44 +1337,44 @@ void __30__MadGate_isInFieldCollected___block_invoke_2(uint64_t a1, id a2, void 
   *(v10 + 40) = v6;
 }
 
-- (void)updateBasebandTicket:(__SecKey *)a3 baaCert:(__SecCertificate *)a4 baaIntermediateCert:(__SecCertificate *)a5 options:(id)a6 withCompletion:(id)a7
+- (void)updateBasebandTicket:(__SecKey *)ticket baaCert:(__SecCertificate *)cert baaIntermediateCert:(__SecCertificate *)intermediateCert options:(id)options withCompletion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v12 = a6;
-  v13 = a7;
+  optionsCopy = options;
+  completionCopy = completion;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
   v38 = __Block_byref_object_copy_;
   v39 = __Block_byref_object_dispose_;
   v40 = 0;
-  if (a3 && a4 && a5)
+  if (ticket && cert && intermediateCert)
   {
-    v14 = [v12 mutableCopy];
+    v14 = [optionsCopy mutableCopy];
     v15 = (v36 + 5);
     obj = v36[5];
     v34 = 0;
-    v16 = security_create_external_representation(a3, &v34, &obj);
+    v16 = security_create_external_representation(ticket, &v34, &obj);
     v17 = v34;
     objc_storeStrong(v15, obj);
     if (v16)
     {
       [v14 setObject:v17 forKeyedSubscript:@"SigningKeyAttributes"];
-      v18 = SecCertificateCopyData(a4);
+      v18 = SecCertificateCopyData(cert);
       if (v18)
       {
-        v19 = SecCertificateCopyData(a5);
+        v19 = SecCertificateCopyData(intermediateCert);
         if (v19)
         {
-          v20 = [(MadGate *)self connection];
+          connection = [(MadGate *)self connection];
           v30[0] = MEMORY[0x277D85DD0];
           v30[1] = 3254779904;
           v30[2] = __83__MadGate_updateBasebandTicket_baaCert_baaIntermediateCert_options_withCompletion___block_invoke;
           v30[3] = &__block_descriptor_48_e8_32bs40r_e17_v16__0__NSError_8l;
           v32 = &v35;
-          v21 = v13;
+          v21 = completionCopy;
           v31 = v21;
-          v26 = [(NSXPCConnection *)v20 remoteObjectProxyWithErrorHandler:v30];
+          v26 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v30];
 
           v27[0] = MEMORY[0x277D85DD0];
           v27[1] = 3254779904;
@@ -1426,9 +1426,9 @@ void __30__MadGate_isInFieldCollected___block_invoke_2(uint64_t a1, id a2, void 
     _os_log_impl(&dword_259A60000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
-  if (v13)
+  if (completionCopy)
   {
-    (*(v13 + 2))(v13, 0, v36[5]);
+    (*(completionCopy + 2))(completionCopy, 0, v36[5]);
   }
 
 LABEL_17:
@@ -1488,10 +1488,10 @@ void __83__MadGate_updateBasebandTicket_baaCert_baaIntermediateCert_options_with
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getDCRTState:(id)a3 withError:(id *)a4
+- (id)getDCRTState:(id)state withError:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  stateCopy = state;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1504,13 +1504,13 @@ void __83__MadGate_updateBasebandTicket_baaCert_baaIntermediateCert_options_with
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
-  v7 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3254779904;
   v15[2] = __34__MadGate_getDCRTState_withError___block_invoke;
   v15[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v15[4] = &v16;
-  v8 = [(NSXPCConnection *)v7 synchronousRemoteObjectProxyWithErrorHandler:v15];
+  v8 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v15];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3254779904;
@@ -1518,7 +1518,7 @@ void __83__MadGate_updateBasebandTicket_baaCert_baaIntermediateCert_options_with
   v14[3] = &__block_descriptor_48_e8_32r40r_e34_v24__0__NSDictionary_8__NSError_16l;
   v14[4] = &v22;
   v14[5] = &v16;
-  [v8 getDCRTStateWithCompletionBlock:v6 withCompletion:v14];
+  [v8 getDCRTStateWithCompletionBlock:stateCopy withCompletion:v14];
   if (v17[5] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v17[5];
@@ -1528,9 +1528,9 @@ void __83__MadGate_updateBasebandTicket_baaCert_baaIntermediateCert_options_with
   }
 
   v10 = v23[5];
-  if (a4 && !v10)
+  if (error && !v10)
   {
-    *a4 = v17[5];
+    *error = v17[5];
     v10 = v23[5];
   }
 
@@ -1572,10 +1572,10 @@ void __34__MadGate_getDCRTState_withError___block_invoke_2(uint64_t a1, id a2, v
   *(v12 + 40) = v6;
 }
 
-- (id)copyDCRT:(id)a3 withError:(id *)a4
+- (id)copyDCRT:(id)t withError:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  tCopy = t;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1588,13 +1588,13 @@ void __34__MadGate_getDCRTState_withError___block_invoke_2(uint64_t a1, id a2, v
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
-  v7 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3254779904;
   v15[2] = __30__MadGate_copyDCRT_withError___block_invoke;
   v15[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v15[4] = &v16;
-  v8 = [(NSXPCConnection *)v7 synchronousRemoteObjectProxyWithErrorHandler:v15];
+  v8 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v15];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3254779904;
@@ -1602,7 +1602,7 @@ void __34__MadGate_getDCRTState_withError___block_invoke_2(uint64_t a1, id a2, v
   v14[3] = &__block_descriptor_48_e8_32r40r_e34_v24__0__NSDictionary_8__NSError_16l;
   v14[4] = &v22;
   v14[5] = &v16;
-  [v8 copyDCRTWithCompletionBlock:v6 withCompletion:v14];
+  [v8 copyDCRTWithCompletionBlock:tCopy withCompletion:v14];
   if (v17[5] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v17[5];
@@ -1612,9 +1612,9 @@ void __34__MadGate_getDCRTState_withError___block_invoke_2(uint64_t a1, id a2, v
   }
 
   v10 = v23[5];
-  if (a4 && !v10)
+  if (error && !v10)
   {
-    *a4 = v17[5];
+    *error = v17[5];
     v10 = v23[5];
   }
 
@@ -1656,10 +1656,10 @@ void __30__MadGate_copyDCRT_withError___block_invoke_2(uint64_t a1, id a2, void 
   *(v13 + 40) = v6;
 }
 
-- (void)issueDCRT:(id)a3 withCompletion:(id)a4
+- (void)issueDCRT:(id)t withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  tCopy = t;
+  completionCopy = completion;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
@@ -1672,15 +1672,15 @@ void __30__MadGate_copyDCRT_withError___block_invoke_2(uint64_t a1, id a2, void 
   v19[3] = __Block_byref_object_copy_;
   v19[4] = __Block_byref_object_dispose_;
   v20 = 0;
-  v8 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3254779904;
   v16[2] = __36__MadGate_issueDCRT_withCompletion___block_invoke;
   v16[3] = &__block_descriptor_48_e8_32bs40r_e17_v16__0__NSError_8l;
   v18 = v19;
-  v9 = v7;
+  v9 = completionCopy;
   v17 = v9;
-  v10 = [(NSXPCConnection *)v8 remoteObjectProxyWithErrorHandler:v16];
+  v10 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v16];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3254779904;
@@ -1691,7 +1691,7 @@ void __30__MadGate_copyDCRT_withError___block_invoke_2(uint64_t a1, id a2, void 
   v11 = v9;
   v12[4] = self;
   v13 = v11;
-  [v10 issueDCRT:v6 withCompletionBlock:v12];
+  [v10 issueDCRT:tCopy withCompletionBlock:v12];
 
   _Block_object_dispose(v19, 8);
   _Block_object_dispose(v21, 8);
@@ -1757,30 +1757,30 @@ void __36__MadGate_issueDCRT_withCompletion___block_invoke_107(uint64_t a1, id a
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)issueUCRT:(id)a3 withError:(id *)a4
+- (BOOL)issueUCRT:(id)t withError:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  tCopy = t;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy_;
   v19 = __Block_byref_object_dispose_;
   v20 = 0;
-  v7 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3254779904;
   v14[2] = __31__MadGate_issueUCRT_withError___block_invoke;
   v14[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v14[4] = &v15;
-  v8 = [(NSXPCConnection *)v7 synchronousRemoteObjectProxyWithErrorHandler:v14];
+  v8 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v14];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3254779904;
   v13[2] = __31__MadGate_issueUCRT_withError___block_invoke_2;
   v13[3] = &__block_descriptor_40_e8_32r_e34_v24__0__NSDictionary_8__NSError_16l;
   v13[4] = &v15;
-  [v8 issueUCRT:v6 withCompletionBlock:v13];
+  [v8 issueUCRT:tCopy withCompletionBlock:v13];
   v9 = v16[5];
   if (v9)
   {
@@ -1792,9 +1792,9 @@ void __36__MadGate_issueDCRT_withCompletion___block_invoke_107(uint64_t a1, id a
       _os_log_impl(&dword_259A60000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = v16[5];
+      *error = v16[5];
     }
   }
 
@@ -1811,31 +1811,31 @@ void __31__MadGate_issueUCRT_withError___block_invoke(uint64_t a1, void *a2)
   *(v4 + 40) = v3;
 }
 
-- (void)issueCollection:(id)a3 withCompletion:(id)a4
+- (void)issueCollection:(id)collection withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  completionCopy = completion;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v8 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3254779904;
   v11[2] = __42__MadGate_issueCollection_withCompletion___block_invoke;
   v11[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v11[4] = &v12;
-  v9 = [(NSXPCConnection *)v8 synchronousRemoteObjectProxyWithErrorHandler:v11];
+  v9 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v11];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3254779904;
   v10[2] = __42__MadGate_issueCollection_withCompletion___block_invoke_2;
   v10[3] = &__block_descriptor_40_e8_32r_e34_v24__0__NSDictionary_8__NSError_16l;
   v10[4] = &v12;
-  [v9 issueCollection:v6 withCompletionBlock:v10];
-  v7[2](v7, v13[5]);
+  [v9 issueCollection:collectionCopy withCompletionBlock:v10];
+  completionCopy[2](completionCopy, v13[5]);
 
   _Block_object_dispose(&v12, 8);
 }
@@ -1848,7 +1848,7 @@ void __42__MadGate_issueCollection_withCompletion___block_invoke(uint64_t a1, vo
   *(v4 + 40) = v3;
 }
 
-- (BOOL)ucrtUpgradeRequired:(id *)a3
+- (BOOL)ucrtUpgradeRequired:(id *)required
 {
   v24 = *MEMORY[0x277D85DE8];
   v18 = 0;
@@ -1861,13 +1861,13 @@ void __42__MadGate_issueCollection_withCompletion___block_invoke(uint64_t a1, vo
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v4 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3254779904;
   v11[2] = __31__MadGate_ucrtUpgradeRequired___block_invoke;
   v11[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v11[4] = &v12;
-  v5 = [(NSXPCConnection *)v4 synchronousRemoteObjectProxyWithErrorHandler:v11];
+  v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v11];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3254779904;
@@ -1885,9 +1885,9 @@ void __42__MadGate_issueCollection_withCompletion___block_invoke(uint64_t a1, vo
   }
 
   v7 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) == 0)
+  if (required && (v19[3] & 1) == 0)
   {
-    *a3 = v13[5];
+    *required = v13[5];
     v7 = *(v19 + 24);
   }
 
@@ -1923,7 +1923,7 @@ void __31__MadGate_ucrtUpgradeRequired___block_invoke_2(uint64_t a1, id a2, void
   *(v10 + 40) = v6;
 }
 
-- (__SecIdentity)copyLegacyDeviceIdentity:(id *)a3
+- (__SecIdentity)copyLegacyDeviceIdentity:(id *)identity
 {
   v44[2] = *MEMORY[0x277D85DE8];
   v35 = 0;
@@ -1945,13 +1945,13 @@ void __31__MadGate_ucrtUpgradeRequired___block_invoke_2(uint64_t a1, id a2, void
   v27 = __Block_byref_object_dispose_;
   v28 = 0;
   error = 0;
-  v4 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3254779904;
   v21[2] = __36__MadGate_copyLegacyDeviceIdentity___block_invoke;
   v21[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v21[4] = &v35;
-  v5 = [(NSXPCConnection *)v4 synchronousRemoteObjectProxyWithErrorHandler:v21];
+  v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v21];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3254779904;
@@ -2031,9 +2031,9 @@ LABEL_12:
     _os_log_impl(&dword_259A60000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
-  if (a3 && !v6)
+  if (identity && !v6)
   {
-    *a3 = v36[5];
+    *identity = v36[5];
   }
 
   if (v8)
@@ -2102,7 +2102,7 @@ void __36__MadGate_copyLegacyDeviceIdentity___block_invoke_2(void *a1, id a2, vo
   *(v19 + 40) = v6;
 }
 
-- (BOOL)deleteLegacyDeviceIdentity:(id *)a3
+- (BOOL)deleteLegacyDeviceIdentity:(id *)identity
 {
   v20 = *MEMORY[0x277D85DE8];
   v12 = 0;
@@ -2111,13 +2111,13 @@ void __36__MadGate_copyLegacyDeviceIdentity___block_invoke_2(void *a1, id a2, vo
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v4 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3254779904;
   v11[2] = __38__MadGate_deleteLegacyDeviceIdentity___block_invoke;
   v11[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v11[4] = &v12;
-  v5 = [(NSXPCConnection *)v4 synchronousRemoteObjectProxyWithErrorHandler:v11];
+  v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v11];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3254779904;
@@ -2136,9 +2136,9 @@ void __36__MadGate_copyLegacyDeviceIdentity___block_invoke_2(void *a1, id a2, vo
       _os_log_impl(&dword_259A60000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
 
-    if (a3)
+    if (identity)
     {
-      *a3 = v13[5];
+      *identity = v13[5];
     }
   }
 
@@ -2155,7 +2155,7 @@ void __38__MadGate_deleteLegacyDeviceIdentity___block_invoke(uint64_t a1, void *
   *(v4 + 40) = v3;
 }
 
-- (id)copyUCRTVersionInfo:(id *)a3
+- (id)copyUCRTVersionInfo:(id *)info
 {
   v27 = *MEMORY[0x277D85DE8];
   v19 = 0;
@@ -2170,13 +2170,13 @@ void __38__MadGate_deleteLegacyDeviceIdentity___block_invoke(uint64_t a1, void *
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v4 = [(MadGate *)self connection];
+  connection = [(MadGate *)self connection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3254779904;
   v12[2] = __31__MadGate_copyUCRTVersionInfo___block_invoke;
   v12[3] = &__block_descriptor_40_e8_32r_e17_v16__0__NSError_8l;
   v12[4] = &v13;
-  v5 = [(NSXPCConnection *)v4 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3254779904;
@@ -2194,9 +2194,9 @@ void __38__MadGate_deleteLegacyDeviceIdentity___block_invoke(uint64_t a1, void *
   }
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (info && !v7)
   {
-    *a3 = v14[5];
+    *info = v14[5];
     v7 = v20[5];
   }
 

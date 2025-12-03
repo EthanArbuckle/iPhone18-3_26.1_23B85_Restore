@@ -9,13 +9,13 @@
   v6.receiver = self;
   v6.super_class = TintColorUpdateView;
   [(TintColorUpdateView *)&v6 tintColorDidChange];
-  v3 = [(TintColorUpdateView *)self tintColorUpdateDelegate];
+  tintColorUpdateDelegate = [(TintColorUpdateView *)self tintColorUpdateDelegate];
 
-  if (v3)
+  if (tintColorUpdateDelegate)
   {
-    v4 = [(TintColorUpdateView *)self tintColorUpdateDelegate];
-    v5 = [(TintColorUpdateView *)self tintColor];
-    [v4 viewTintColorDidChangeForView:self toColor:v5];
+    tintColorUpdateDelegate2 = [(TintColorUpdateView *)self tintColorUpdateDelegate];
+    tintColor = [(TintColorUpdateView *)self tintColor];
+    [tintColorUpdateDelegate2 viewTintColorDidChangeForView:self toColor:tintColor];
   }
 }
 

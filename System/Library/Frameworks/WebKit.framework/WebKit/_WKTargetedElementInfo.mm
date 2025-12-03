@@ -10,14 +10,14 @@
 - (NSString)screenReaderText;
 - (NSString)searchableText;
 - (int64_t)positionType;
-- (uint64_t)getChildFrames:(const void *)a1;
-- (uint64_t)getChildFrames:(uint64_t)a1;
-- (uint64_t)takeSnapshotWithCompletionHandler:(const void *)a1;
-- (uint64_t)takeSnapshotWithCompletionHandler:(uint64_t)a1;
+- (uint64_t)getChildFrames:(const void *)frames;
+- (uint64_t)getChildFrames:(uint64_t)frames;
+- (uint64_t)takeSnapshotWithCompletionHandler:(const void *)handler;
+- (uint64_t)takeSnapshotWithCompletionHandler:(uint64_t)handler;
 - (unint64_t)offsetEdges;
 - (void)dealloc;
-- (void)getChildFrames:(id)a3;
-- (void)takeSnapshotWithCompletionHandler:(id)a3;
+- (void)getChildFrames:(id)frames;
+- (void)takeSnapshotWithCompletionHandler:(id)handler;
 @end
 
 @implementation _WKTargetedElementInfo
@@ -335,9 +335,9 @@ LABEL_7:
   return v3 & 0xFFFFFFFFFFFFFFFELL | (v2 >> 24) & 1 | (v2 >> 13) & 8 | (v2 >> 6) & 4;
 }
 
-- (void)getChildFrames:(id)a3
+- (void)getChildFrames:(id)frames
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(frames);
   v5 = WTF::fastMalloc(0x10);
   *v5 = &unk_1F10FBB60;
   v5[1] = v4;
@@ -411,9 +411,9 @@ LABEL_7:
   return v3;
 }
 
-- (void)takeSnapshotWithCompletionHandler:(id)a3
+- (void)takeSnapshotWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = WTF::fastMalloc(0x10);
   *v5 = &unk_1F10FBB88;
   v5[1] = v4;
@@ -483,7 +483,7 @@ LABEL_7:
   return v15;
 }
 
-- (uint64_t)getChildFrames:(uint64_t)a1
+- (uint64_t)getChildFrames:(uint64_t)frames
 {
   v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:*(a2 + 3)];
   v5 = *(a2 + 3);
@@ -515,20 +515,20 @@ LABEL_7:
     v9 = v4;
   }
 
-  v10 = *(*(a1 + 8) + 16);
+  v10 = *(*(frames + 8) + 16);
 
   return v10();
 }
 
-- (uint64_t)getChildFrames:(const void *)a1
+- (uint64_t)getChildFrames:(const void *)frames
 {
-  *a1 = &unk_1F10FBB60;
-  _Block_release(a1[1]);
+  *frames = &unk_1F10FBB60;
+  _Block_release(frames[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(frames, v2);
 }
 
-- (uint64_t)takeSnapshotWithCompletionHandler:(uint64_t)a1
+- (uint64_t)takeSnapshotWithCompletionHandler:(uint64_t)handler
 {
   if (*(a2 + 80))
   {
@@ -536,7 +536,7 @@ LABEL_7:
     if (v7)
     {
       WebCore::ShareableBitmap::makeCGImage();
-      (*(*(a1 + 8) + 16))();
+      (*(*(handler + 8) + 16))();
       if (cf)
       {
         CFRelease(cf);
@@ -547,24 +547,24 @@ LABEL_7:
 
     else
     {
-      return (*(*(a1 + 8) + 16))();
+      return (*(*(handler + 8) + 16))();
     }
   }
 
   else
   {
-    v5 = *(*(a1 + 8) + 16);
+    v5 = *(*(handler + 8) + 16);
 
     return v5();
   }
 }
 
-- (uint64_t)takeSnapshotWithCompletionHandler:(const void *)a1
+- (uint64_t)takeSnapshotWithCompletionHandler:(const void *)handler
 {
-  *a1 = &unk_1F10FBB88;
-  _Block_release(a1[1]);
+  *handler = &unk_1F10FBB88;
+  _Block_release(handler[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(handler, v2);
 }
 
 @end

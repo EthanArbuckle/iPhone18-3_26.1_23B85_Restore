@@ -1,8 +1,8 @@
 @interface AAUIWalletCardListModel
 - (AAUIWalletCardListModel)init;
 - (CGSize)setupAssistantCredentialCardArtSize;
-- (void)fetchWalletCardsWithCompletion:(id)a3;
-- (void)setupAssistantCredentialUpdatedCardArt:(id)a3;
+- (void)fetchWalletCardsWithCompletion:(id)completion;
+- (void)setupAssistantCredentialUpdatedCardArt:(id)art;
 @end
 
 @implementation AAUIWalletCardListModel
@@ -14,9 +14,9 @@
   v2 = [(AAUIWalletCardListModel *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     cards = v2->_cards;
-    v2->_cards = v3;
+    v2->_cards = array;
 
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v6 = dispatch_queue_create("com.apple.appleaccountui.card.update", v5);
@@ -27,10 +27,10 @@
   return v2;
 }
 
-- (void)fetchWalletCardsWithCompletion:(id)a3
+- (void)fetchWalletCardsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  completionCopy = completion;
+  array = [MEMORY[0x1E695DF70] array];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -76,9 +76,9 @@
   v14[3] = &unk_1E820D470;
   v14[4] = self;
   objc_copyWeak(&v17, &location);
-  v12 = v4;
+  v12 = completionCopy;
   v16 = v12;
-  v13 = v5;
+  v13 = array;
   v15 = v13;
   [v11 expressResetCardsWithCompletion:v14];
 
@@ -204,17 +204,17 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)setupAssistantCredentialUpdatedCardArt:(id)a3
+- (void)setupAssistantCredentialUpdatedCardArt:(id)art
 {
-  v4 = a3;
+  artCopy = art;
   walletCardQueue = self->_walletCardQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__AAUIWalletCardListModel_setupAssistantCredentialUpdatedCardArt___block_invoke;
   v7[3] = &unk_1E820BEB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = artCopy;
+  v6 = artCopy;
   dispatch_async(walletCardQueue, v7);
 }
 

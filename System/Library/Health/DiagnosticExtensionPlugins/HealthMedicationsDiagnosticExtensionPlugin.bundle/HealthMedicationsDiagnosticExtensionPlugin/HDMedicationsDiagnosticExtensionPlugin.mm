@@ -1,12 +1,12 @@
 @interface HDMedicationsDiagnosticExtensionPlugin
-- (id)diagnosticOperationsWithAttachmentDirectoryURL:(id)a3;
+- (id)diagnosticOperationsWithAttachmentDirectoryURL:(id)l;
 @end
 
 @implementation HDMedicationsDiagnosticExtensionPlugin
 
-- (id)diagnosticOperationsWithAttachmentDirectoryURL:(id)a3
+- (id)diagnosticOperationsWithAttachmentDirectoryURL:(id)l
 {
-  v3 = [HDMedicationsDiagnosticOperation operationWithAttachmentDirectoryURL:a3];
+  v3 = [HDMedicationsDiagnosticOperation operationWithAttachmentDirectoryURL:l];
   v6 = v3;
   v4 = [NSArray arrayWithObjects:&v6 count:1];
 

@@ -1,91 +1,91 @@
 @interface SCDAFDevice
-+ (id)arrayDictionaryRepresentation:(id)a3;
-+ (id)devicesArrayWithDictionaryRepresentation:(id)a3;
-+ (unint64_t)deviceClassFromProductTypeString:(id)a3;
-- (SCDAFDevice)initWithCoder:(id)a3;
-- (SCDAFDevice)initWithDictionaryRepresentation:(id)a3;
++ (id)arrayDictionaryRepresentation:(id)representation;
++ (id)devicesArrayWithDictionaryRepresentation:(id)representation;
++ (unint64_t)deviceClassFromProductTypeString:(id)string;
+- (SCDAFDevice)initWithCoder:(id)coder;
+- (SCDAFDevice)initWithDictionaryRepresentation:(id)representation;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCDAFDevice
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSString *)self->_idsIdentifier length])
   {
-    [v3 setObject:self->_idsIdentifier forKeyedSubscript:@"idsIdentifier"];
+    [dictionary setObject:self->_idsIdentifier forKeyedSubscript:@"idsIdentifier"];
   }
 
   if ([(NSString *)self->_build length])
   {
-    [v3 setObject:self->_build forKeyedSubscript:@"build"];
+    [dictionary setObject:self->_build forKeyedSubscript:@"build"];
   }
 
   if ([(NSString *)self->_enclosureColor length])
   {
-    [v3 setObject:self->_enclosureColor forKeyedSubscript:@"enclosureColor"];
+    [dictionary setObject:self->_enclosureColor forKeyedSubscript:@"enclosureColor"];
   }
 
   if ([(NSString *)self->_locale length])
   {
-    [v3 setObject:self->_locale forKeyedSubscript:@"locale"];
+    [dictionary setObject:self->_locale forKeyedSubscript:@"locale"];
   }
 
   if ([(NSString *)self->_name length])
   {
-    [v3 setObject:self->_name forKeyedSubscript:@"name"];
+    [dictionary setObject:self->_name forKeyedSubscript:@"name"];
   }
 
   if ([(NSArray *)self->_productTypes count])
   {
-    [v3 setObject:self->_productTypes forKeyedSubscript:@"productTypes"];
+    [dictionary setObject:self->_productTypes forKeyedSubscript:@"productTypes"];
   }
 
   if ([(NSArray *)self->_deviceClass count])
   {
-    [v3 setObject:self->_deviceClass forKeyedSubscript:@"deviceClass"];
+    [dictionary setObject:self->_deviceClass forKeyedSubscript:@"deviceClass"];
   }
 
   if ([(NSString *)self->_assistantId length])
   {
-    [v3 setObject:self->_assistantId forKeyedSubscript:@"assistantId"];
+    [dictionary setObject:self->_assistantId forKeyedSubscript:@"assistantId"];
   }
 
   if ([(NSString *)self->_speechId length])
   {
-    [v3 setObject:self->_speechId forKeyedSubscript:@"speechId"];
+    [dictionary setObject:self->_speechId forKeyedSubscript:@"speechId"];
   }
 
-  v4 = [(SCDAFDevice *)self roomName];
-  v5 = [v4 length];
+  roomName = [(SCDAFDevice *)self roomName];
+  v5 = [roomName length];
 
   if (v5)
   {
-    v6 = [(SCDAFDevice *)self roomName];
-    [v3 setObject:v6 forKeyedSubscript:@"roomName"];
+    roomName2 = [(SCDAFDevice *)self roomName];
+    [dictionary setObject:roomName2 forKeyedSubscript:@"roomName"];
   }
 
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v3];
+  v7 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
 
   return v7;
 }
 
-- (SCDAFDevice)initWithCoder:(id)a3
+- (SCDAFDevice)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"idsIdentifier"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"build"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"enclosureColor"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v8 = [v3 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"productTypes"];
-  v9 = [v3 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"deviceClass"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"assistantId"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"speechId"];
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"roomName"];
+  coderCopy = coder;
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idsIdentifier"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"build"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enclosureColor"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"productTypes"];
+  v9 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"deviceClass"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assistantId"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"speechId"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"roomName"];
 
   v13 = objc_alloc_init(SCDAFDevice);
   [(SCDAFDevice *)v13 setIdsIdentifier:v16];
@@ -102,40 +102,40 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   idsIdentifier = self->_idsIdentifier;
-  v5 = a3;
-  [v5 encodeObject:idsIdentifier forKey:@"idsIdentifier"];
-  [v5 encodeObject:self->_build forKey:@"build"];
-  [v5 encodeObject:self->_enclosureColor forKey:@"enclosureColor"];
-  [v5 encodeObject:self->_locale forKey:@"locale"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_productTypes forKey:@"productTypes"];
-  [v5 encodeObject:self->_deviceClass forKey:@"deviceClass"];
-  [v5 encodeObject:self->_assistantId forKey:@"assistantId"];
-  [v5 encodeObject:self->_speechId forKey:@"speechId"];
-  [v5 encodeObject:self->_roomName forKey:@"roomName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:idsIdentifier forKey:@"idsIdentifier"];
+  [coderCopy encodeObject:self->_build forKey:@"build"];
+  [coderCopy encodeObject:self->_enclosureColor forKey:@"enclosureColor"];
+  [coderCopy encodeObject:self->_locale forKey:@"locale"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_productTypes forKey:@"productTypes"];
+  [coderCopy encodeObject:self->_deviceClass forKey:@"deviceClass"];
+  [coderCopy encodeObject:self->_assistantId forKey:@"assistantId"];
+  [coderCopy encodeObject:self->_speechId forKey:@"speechId"];
+  [coderCopy encodeObject:self->_roomName forKey:@"roomName"];
 }
 
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SCDAFDevice *)self dictionaryRepresentation];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  dictionaryRepresentation = [(SCDAFDevice *)self dictionaryRepresentation];
+  v4 = [v2 stringWithFormat:@"%@", dictionaryRepresentation];
 
   return v4;
 }
 
-- (SCDAFDevice)initWithDictionaryRepresentation:(id)a3
+- (SCDAFDevice)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v52.receiver = self;
   v52.super_class = SCDAFDevice;
   v5 = [(SCDAFDevice *)&v52 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"idsIdentifier"];
+    v6 = [representationCopy objectForKeyedSubscript:@"idsIdentifier"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 length])
     {
@@ -144,7 +144,7 @@
       v5->_idsIdentifier = v7;
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"build"];
+    v9 = [representationCopy objectForKeyedSubscript:@"build"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 length])
     {
@@ -153,7 +153,7 @@
       v5->_build = v10;
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"enclosureColor"];
+    v12 = [representationCopy objectForKeyedSubscript:@"enclosureColor"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v12 length])
     {
@@ -162,7 +162,7 @@
       v5->_enclosureColor = v13;
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"locale"];
+    v15 = [representationCopy objectForKeyedSubscript:@"locale"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v15 length])
     {
@@ -175,7 +175,7 @@
     v45 = v12;
     v46 = v9;
     v47 = v6;
-    v18 = [v4 objectForKeyedSubscript:@"name"];
+    v18 = [representationCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v18 length])
     {
@@ -184,13 +184,13 @@
       v5->_name = v19;
     }
 
-    v21 = [MEMORY[0x277CBEB18] array];
-    v22 = [v4 objectForKeyedSubscript:@"productTypes"];
+    array = [MEMORY[0x277CBEB18] array];
+    v22 = [representationCopy objectForKeyedSubscript:@"productTypes"];
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = __48__SCDAFDevice_initWithDictionaryRepresentation___block_invoke;
     v50[3] = &unk_279BD9DB8;
-    v23 = v21;
+    v23 = array;
     v51 = v23;
     v43 = v22;
     [v22 enumerateObjectsUsingBlock:v50];
@@ -198,20 +198,20 @@
     productTypes = v5->_productTypes;
     v5->_productTypes = v24;
 
-    v26 = [MEMORY[0x277CBEB18] array];
-    v27 = [v4 objectForKeyedSubscript:@"deviceClass"];
+    array2 = [MEMORY[0x277CBEB18] array];
+    v27 = [representationCopy objectForKeyedSubscript:@"deviceClass"];
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __48__SCDAFDevice_initWithDictionaryRepresentation___block_invoke_2;
     v48[3] = &unk_279BD9DB8;
-    v28 = v26;
+    v28 = array2;
     v49 = v28;
     [v27 enumerateObjectsUsingBlock:v48];
     v29 = [MEMORY[0x277CBEA60] arrayWithArray:v28];
     deviceClass = v5->_deviceClass;
     v5->_deviceClass = v29;
 
-    v31 = [v4 objectForKeyedSubscript:@"speechId"];
+    v31 = [representationCopy objectForKeyedSubscript:@"speechId"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v31 length])
     {
@@ -220,7 +220,7 @@
       v5->_speechId = v32;
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"assistantId"];
+    v34 = [representationCopy objectForKeyedSubscript:@"assistantId"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v34 length])
     {
@@ -229,13 +229,13 @@
       v5->_assistantId = v35;
     }
 
-    v37 = [v4 objectForKeyedSubscript:@"roomName"];
+    v37 = [representationCopy objectForKeyedSubscript:@"roomName"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v39 = [v4 objectForKeyedSubscript:@"roomName"];
+      v39 = [representationCopy objectForKeyedSubscript:@"roomName"];
       v40 = [v39 copy];
       roomName = v5->_roomName;
       v5->_roomName = v40;
@@ -265,18 +265,18 @@ void __48__SCDAFDevice_initWithDictionaryRepresentation___block_invoke_2(uint64_
   }
 }
 
-+ (id)arrayDictionaryRepresentation:(id)a3
++ (id)arrayDictionaryRepresentation:(id)representation
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 array];
+  representationCopy = representation;
+  array = [v3 array];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__SCDAFDevice_arrayDictionaryRepresentation___block_invoke;
   v9[3] = &unk_279BD9D90;
-  v10 = v5;
-  v6 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  v10 = array;
+  v6 = array;
+  [representationCopy enumerateObjectsUsingBlock:v9];
 
   v7 = [MEMORY[0x277CBEA60] arrayWithArray:v6];
 
@@ -294,35 +294,35 @@ uint64_t __45__SCDAFDevice_arrayDictionaryRepresentation___block_invoke(uint64_t
   return MEMORY[0x2821F96F8]();
 }
 
-+ (unint64_t)deviceClassFromProductTypeString:(id)a3
++ (unint64_t)deviceClassFromProductTypeString:(id)string
 {
-  v3 = a3;
-  if ([v3 containsString:@"iPhone"])
+  stringCopy = string;
+  if ([stringCopy containsString:@"iPhone"])
   {
     v4 = 1;
   }
 
-  else if ([v3 containsString:@"iPad"])
+  else if ([stringCopy containsString:@"iPad"])
   {
     v4 = 2;
   }
 
-  else if ([v3 containsString:@"Watch"])
+  else if ([stringCopy containsString:@"Watch"])
   {
     v4 = 3;
   }
 
-  else if ([v3 containsString:@"AudioAccessory"])
+  else if ([stringCopy containsString:@"AudioAccessory"])
   {
     v4 = 5;
   }
 
-  else if ([v3 containsString:@"AppleTV"])
+  else if ([stringCopy containsString:@"AppleTV"])
   {
     v4 = 4;
   }
 
-  else if ([v3 containsString:@"mac"])
+  else if ([stringCopy containsString:@"mac"])
   {
     v4 = 6;
   }
@@ -335,18 +335,18 @@ uint64_t __45__SCDAFDevice_arrayDictionaryRepresentation___block_invoke(uint64_t
   return v4;
 }
 
-+ (id)devicesArrayWithDictionaryRepresentation:(id)a3
++ (id)devicesArrayWithDictionaryRepresentation:(id)representation
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 array];
+  representationCopy = representation;
+  array = [v3 array];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__SCDAFDevice_devicesArrayWithDictionaryRepresentation___block_invoke;
   v8[3] = &unk_279BD9E30;
-  v6 = v5;
+  v6 = array;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [representationCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }

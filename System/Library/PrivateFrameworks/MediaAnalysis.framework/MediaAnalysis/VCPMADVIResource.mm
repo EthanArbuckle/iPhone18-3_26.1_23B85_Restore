@@ -115,8 +115,8 @@ void __27__VCPMADVIResource_service__block_invoke(uint64_t a1)
   block[3] = &unk_1E834C010;
   block[4] = self;
   dispatch_sync(queue, block);
-  v3 = [MEMORY[0x1E6984688] globalSession];
-  [v3 releaseCachedResources];
+  globalSession = [MEMORY[0x1E6984688] globalSession];
+  [globalSession releaseCachedResources];
 }
 
 void __25__VCPMADVIResource_purge__block_invoke(uint64_t a1)

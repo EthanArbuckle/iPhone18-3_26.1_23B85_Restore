@@ -1,37 +1,37 @@
 @interface AcmeCertRequest
-- (AcmeCertRequest)initWithSubject:(id)a3 parameters:(id)a4;
+- (AcmeCertRequest)initWithSubject:(id)subject parameters:(id)parameters;
 - (BOOL)deviceAttestationSupported;
-- (BOOL)valueForBooleanDefault:(id)a3;
-- (__SecIdentity)identityWithError:(id *)a3;
+- (BOOL)valueForBooleanDefault:(id)default;
+- (__SecIdentity)identityWithError:(id *)error;
 - (id)acmeRequest;
 - (id)attestationChainPEMRepresentation;
-- (id)attestationObjectWithCertificates:(id)a3;
+- (id)attestationObjectWithCertificates:(id)certificates;
 - (id)createCSR;
 - (id)createCertificate;
 - (id)createKeyPair;
 - (id)executeRequest;
-- (id)hardwareAttestationWithError:(id *)a3;
-- (id)pollForStatus:(id)a3 until:(id)a4;
-- (id)processReply:(id)a3;
-- (id)requestAttestationChainWithError:(id *)a3;
+- (id)hardwareAttestationWithError:(id *)error;
+- (id)pollForStatus:(id)status until:(id)until;
+- (id)processReply:(id)reply;
+- (id)requestAttestationChainWithError:(id *)error;
 - (id)sanitizeParameters;
 - (id)sanitizeSubject;
-- (id)sendRequestToXPCService:(id)a3 response:(id *)a4;
+- (id)sendRequestToXPCService:(id)service response:(id *)response;
 - (id)serialNumber;
-- (int)errorStatusWithHTTPErrorCode:(int)a3;
+- (int)errorStatusWithHTTPErrorCode:(int)code;
 - (void)dealloc;
 @end
 
 @implementation AcmeCertRequest
 
-- (__SecIdentity)identityWithError:(id *)a3
+- (__SecIdentity)identityWithError:(id *)error
 {
   v29[1] = *MEMORY[0x1E69E9840];
   self->_identity = 0;
-  v5 = [(AcmeCertRequest *)self executeRequest];
-  if (v5)
+  executeRequest = [(AcmeCertRequest *)self executeRequest];
+  if (executeRequest)
   {
-    v6 = v5;
+    v6 = executeRequest;
     if (self->_identity)
     {
       goto LABEL_12;
@@ -104,10 +104,10 @@ LABEL_12:
     }
   }
 
-  if (a3)
+  if (error)
   {
     v19 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
   result = self->_identity;
@@ -121,7 +121,7 @@ LABEL_12:
   state = self->_state;
   if (state > 0)
   {
-    v4 = 0;
+    createCertificate = 0;
     goto LABEL_3;
   }
 
@@ -132,40 +132,40 @@ LABEL_12:
   block[3] = &unk_1E70E4300;
   block[4] = self;
   dispatch_sync(queue, block);
-  v10 = [(AcmeCertRequest *)self createKeyPair];
-  if (v10 || ([(AcmeCertRequest *)self createCSR], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  createKeyPair = [(AcmeCertRequest *)self createKeyPair];
+  if (createKeyPair || ([(AcmeCertRequest *)self createCSR], (createKeyPair = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = v10;
+    createCertificate = createKeyPair;
     goto LABEL_12;
   }
 
   v19 = [(NSDictionary *)self->_parameters objectForKeyedSubscript:@"acmeDirectory"];
-  v20 = [v19 absoluteString];
+  absoluteString = [v19 absoluteString];
   nextMessageURL = self->_nextMessageURL;
-  self->_nextMessageURL = v20;
+  self->_nextMessageURL = absoluteString;
 
   if (self->_nextMessageURL)
   {
-    v4 = 0;
+    createCertificate = 0;
     v22 = 1;
   }
 
   else
   {
     v23 = [(NSDictionary *)self->_parameters objectForKeyedSubscript:@"acmeServerURL"];
-    v24 = [v23 absoluteString];
+    absoluteString2 = [v23 absoluteString];
     v25 = self->_nextMessageURL;
-    self->_nextMessageURL = v24;
+    self->_nextMessageURL = absoluteString2;
 
     v26 = self->_nextMessageURL;
     self->_state = 1;
     if (v26)
     {
-      v4 = 0;
+      createCertificate = 0;
       goto LABEL_34;
     }
 
-    v4 = [(AcmeCertRequest *)self createCertificate];
+    createCertificate = [(AcmeCertRequest *)self createCertificate];
     v22 = 10;
   }
 
@@ -186,12 +186,12 @@ LABEL_12:
   while (1)
   {
 
-    v7 = [(AcmeCertRequest *)self acmeRequest];
+    acmeRequest = [(AcmeCertRequest *)self acmeRequest];
     v27 = 0;
-    v4 = [(AcmeCertRequest *)self sendRequestToXPCService:v7 response:&v27];
+    createCertificate = [(AcmeCertRequest *)self sendRequestToXPCService:acmeRequest response:&v27];
     v6 = v27;
 
-    if (v4)
+    if (createCertificate)
     {
       break;
     }
@@ -199,13 +199,13 @@ LABEL_12:
     v8 = [(AcmeCertRequest *)self processReply:v6];
     if (v8)
     {
-      v4 = v8;
+      createCertificate = v8;
       break;
     }
 
     if (self->_state >= 10)
     {
-      v4 = 0;
+      createCertificate = 0;
       goto LABEL_26;
     }
   }
@@ -217,7 +217,7 @@ LABEL_12:
     *buf = 134218242;
     v30 = v12;
     v31 = 2112;
-    v32 = v4;
+    v32 = createCertificate;
     _os_log_impl(&dword_1887D2000, v11, OS_LOG_TYPE_DEFAULT, "ACME request flow failed at step %lld: %@", buf, 0x16u);
   }
 
@@ -241,9 +241,9 @@ LABEL_12:
     goto LABEL_25;
   }
 
-  v16 = [(AcmeCertRequest *)self createCertificate];
+  createCertificate2 = [(AcmeCertRequest *)self createCertificate];
 
-  v4 = v16;
+  createCertificate = createCertificate2;
   if (v14)
   {
 LABEL_24:
@@ -256,7 +256,7 @@ LABEL_26:
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return createCertificate;
 }
 
 void __33__AcmeCertRequest_executeRequest__block_invoke(uint64_t a1)
@@ -293,9 +293,9 @@ void __33__AcmeCertRequest_executeRequest__block_invoke(uint64_t a1)
   *(*(a1 + 32) + 10) = [*(a1 + 32) valueForBooleanDefault:@"RequireAttestation"];
 }
 
-- (BOOL)valueForBooleanDefault:(id)a3
+- (BOOL)valueForBooleanDefault:(id)default
 {
-  v3 = CFPreferencesCopyValue(a3, @"com.apple.security", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
+  v3 = CFPreferencesCopyValue(default, @"com.apple.security", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
   if (!v3)
   {
     return 0;
@@ -308,11 +308,11 @@ void __33__AcmeCertRequest_executeRequest__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (id)processReply:(id)a3
+- (id)processReply:(id)reply
 {
   v111[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  replyCopy = reply;
+  v5 = replyCopy;
   state = self->_state;
   if (state > 5)
   {
@@ -332,7 +332,7 @@ void __33__AcmeCertRequest_executeRequest__block_invoke(uint64_t a1)
           goto LABEL_47;
         }
 
-        v22 = [v4 objectForKey:@"certificate"];
+        v22 = [replyCopy objectForKey:@"certificate"];
         NSLog(&cfstr_GotCertificate.isa, v22);
         v57 = SecCertificateCreateWithPEM(v56, v22);
         self->_certificate = v57;
@@ -367,7 +367,7 @@ LABEL_75:
         goto LABEL_76;
       }
 
-      v38 = [v4 objectForKey:@"certificate"];
+      v38 = [replyCopy objectForKey:@"certificate"];
       certificateURL = self->_certificateURL;
       self->_certificateURL = v38;
 
@@ -405,7 +405,7 @@ LABEL_76:
 
     if (state == 6)
     {
-      v22 = [v4 objectForKey:@"status"];
+      v22 = [replyCopy objectForKey:@"status"];
       if ([(__CFData *)v22 isEqualToString:@"invalid"])
       {
         v33 = MEMORY[0x1E696ABC0];
@@ -443,7 +443,7 @@ LABEL_76:
       goto LABEL_75;
     }
 
-    v22 = [v4 objectForKey:@"status"];
+    v22 = [replyCopy objectForKey:@"status"];
     if ([(__CFData *)v22 isEqualToString:@"invalid"])
     {
       v23 = MEMORY[0x1E696ABC0];
@@ -485,7 +485,7 @@ LABEL_76:
   {
     if (state == 1)
     {
-      v26 = [v4 objectForKey:@"newAccount"];
+      v26 = [replyCopy objectForKey:@"newAccount"];
       acmeNewAccountURL = self->_acmeNewAccountURL;
       self->_acmeNewAccountURL = v26;
 
@@ -527,7 +527,7 @@ LABEL_76:
 
     if (state == 2)
     {
-      v19 = [v4 objectForKey:@"Replay-Nonce"];
+      v19 = [replyCopy objectForKey:@"Replay-Nonce"];
       nonce = self->_nonce;
       self->_nonce = v19;
 
@@ -571,7 +571,7 @@ LABEL_59:
 
   if (state == 3)
   {
-    v22 = [v4 objectForKey:@"orders"];
+    v22 = [replyCopy objectForKey:@"orders"];
     v36 = [v5 objectForKey:@"status"];
     v37 = [v36 isEqualToString:@"valid"];
     objc_storeStrong(&self->_account, self->_location);
@@ -599,7 +599,7 @@ LABEL_59:
 
   if (state == 4)
   {
-    v91 = [v4 objectForKey:@"status"];
+    v91 = [replyCopy objectForKey:@"status"];
     v89 = [v91 isEqualToString:@"pending"];
     v42 = [v5 objectForKey:@"authorizations"];
     authorizations = self->_authorizations;
@@ -672,7 +672,7 @@ LABEL_59:
 
   else
   {
-    v90 = [v4 objectForKey:@"status"];
+    v90 = [replyCopy objectForKey:@"status"];
     v88 = [v90 isEqualToString:@"pending"];
     v7 = [v5 objectForKey:@"challenges"];
     v8 = [v7 count];
@@ -739,7 +739,7 @@ LABEL_77:
 - (id)acmeRequest
 {
   v66[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   state = self->_state;
   v5 = @"{}";
   if (state <= 5)
@@ -754,12 +754,12 @@ LABEL_77:
           self->_encoder = v20;
         }
 
-        [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"termsOfServiceAgreed"];
+        [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"termsOfServiceAgreed"];
         v22 = self->_encoder;
         nonce = self->_nonce;
         acmeNewAccountURL = self->_acmeNewAccountURL;
         v61 = 0;
-        v5 = [(SecJWSEncoder *)v22 encodedJWSWithPayload:v3 kid:0 nonce:nonce url:acmeNewAccountURL error:&v61];
+        v5 = [(SecJWSEncoder *)v22 encodedJWSWithPayload:dictionary kid:0 nonce:nonce url:acmeNewAccountURL error:&v61];
         v10 = v61;
         break;
       case 4:
@@ -781,14 +781,14 @@ LABEL_77:
         v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v65 forKeys:v64 count:2];
         v66[0] = v28;
         v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:1];
-        [v3 setObject:v29 forKeyedSubscript:@"identifiers"];
+        [dictionary setObject:v29 forKeyedSubscript:@"identifiers"];
 
         v30 = self->_encoder;
         account = self->_account;
         v32 = self->_nonce;
         nextMessageURL = self->_nextMessageURL;
         v60 = 0;
-        v5 = [(SecJWSEncoder *)v30 encodedJWSWithPayload:v3 kid:account nonce:v32 url:nextMessageURL error:&v60];
+        v5 = [(SecJWSEncoder *)v30 encodedJWSWithPayload:dictionary kid:account nonce:v32 url:nextMessageURL error:&v60];
         v25 = v60;
 
         goto LABEL_39;
@@ -818,14 +818,14 @@ LABEL_77:
       }
 
       v11 = [(SecJWSEncoder *)self->_encoder base64URLEncodedStringRepresentationWithData:self->_csr];
-      [v3 setObject:v11 forKeyedSubscript:@"csr"];
+      [dictionary setObject:v11 forKeyedSubscript:@"csr"];
 
       v12 = self->_encoder;
       v13 = self->_account;
       v14 = self->_nonce;
       v15 = self->_nextMessageURL;
       v55 = 0;
-      v5 = [(SecJWSEncoder *)v12 encodedJWSWithPayload:v3 kid:v13 nonce:v14 url:v15 error:&v55];
+      v5 = [(SecJWSEncoder *)v12 encodedJWSWithPayload:dictionary kid:v13 nonce:v14 url:v15 error:&v55];
       v10 = v55;
       goto LABEL_14;
     }
@@ -839,7 +839,7 @@ LABEL_38:
       v49 = self->_nonce;
       v50 = self->_nextMessageURL;
       v56 = v35;
-      v5 = [(SecJWSEncoder *)v47 encodedJWSWithPayload:v3 kid:v48 nonce:v49 url:v50 error:&v56];
+      v5 = [(SecJWSEncoder *)v47 encodedJWSWithPayload:dictionary kid:v48 nonce:v49 url:v50 error:&v56];
       v25 = v56;
 
       goto LABEL_39;
@@ -876,8 +876,8 @@ LABEL_23:
         _os_log_impl(&dword_1887D2000, v39, OS_LOG_TYPE_DEFAULT, "attestation request failed with error %@", buf, 0xCu);
       }
 
-      v40 = [v35 localizedDescription];
-      [v3 setObject:v40 forKeyedSubscript:@"error"];
+      localizedDescription = [v35 localizedDescription];
+      [dictionary setObject:localizedDescription forKeyedSubscript:@"error"];
 
       requireAttestation = self->_requireAttestation;
       v42 = secLogObjForScope("acme");
@@ -921,7 +921,7 @@ LABEL_35:
     if (v45)
     {
       v46 = [(SecJWSEncoder *)self->_encoder base64URLEncodedStringRepresentationWithData:v45];
-      [v3 setObject:v46 forKeyedSubscript:@"attObj"];
+      [dictionary setObject:v46 forKeyedSubscript:@"attObj"];
     }
 
     goto LABEL_38;
@@ -946,7 +946,7 @@ LABEL_40:
   return v51;
 }
 
-- (id)pollForStatus:(id)a3 until:(id)a4
+- (id)pollForStatus:(id)status until:(id)until
 {
   v4 = dispatch_semaphore_create(0);
   v5 = dispatch_time(0, 5000000000);
@@ -955,7 +955,7 @@ LABEL_40:
   return 0;
 }
 
-- (id)sendRequestToXPCService:(id)a3 response:(id *)a4
+- (id)sendRequestToXPCService:(id)service response:(id *)response
 {
   v65 = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -964,7 +964,7 @@ LABEL_40:
   block[2] = __52__AcmeCertRequest_sendRequestToXPCService_response___block_invoke;
   block[3] = &unk_1E70E4300;
   block[4] = self;
-  v7 = a3;
+  serviceCopy = service;
   dispatch_sync(queue, block);
   state = self->_state;
   v9 = "POST";
@@ -984,18 +984,18 @@ LABEL_40:
   }
 
   v11 = xpc_string_create(v10);
-  v12 = [(NSString *)self->_nextMessageURL UTF8String];
-  if (!v12)
+  uTF8String = [(NSString *)self->_nextMessageURL UTF8String];
+  if (!uTF8String)
   {
-    v12 = &unk_188967DD7;
+    uTF8String = &unk_188967DD7;
   }
 
-  v13 = xpc_string_create(v12);
+  v13 = xpc_string_create(uTF8String);
   v14 = self->_state;
-  v15 = [v7 bytes];
-  v16 = [v7 length];
+  bytes = [serviceCopy bytes];
+  v16 = [serviceCopy length];
 
-  v17 = xpc_data_create(v15, v16);
+  v17 = xpc_data_create(bytes, v16);
   v51 = v11;
   v52 = v17;
   v49 = v14;
@@ -1027,14 +1027,14 @@ LABEL_16:
     CFErrorWithXPCObject = 0;
     v28 = 0;
     v30 = 0;
-    if (!a4)
+    if (!response)
     {
       goto LABEL_23;
     }
 
 LABEL_22:
     v31 = v28;
-    *a4 = v28;
+    *response = v28;
     v30 = v28;
     goto LABEL_23;
   }
@@ -1170,7 +1170,7 @@ LABEL_15:
   }
 
 LABEL_17:
-  if (a4)
+  if (response)
   {
     goto LABEL_22;
   }
@@ -1246,40 +1246,40 @@ LABEL_6:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (int)errorStatusWithHTTPErrorCode:(int)a3
+- (int)errorStatusWithHTTPErrorCode:(int)code
 {
-  if (a3 > 399)
+  if (code > 399)
   {
-    if ((a3 - 400) > 0x11)
+    if ((code - 400) > 0x11)
     {
       goto LABEL_11;
     }
 
-    if (((1 << (a3 + 112)) & 0x2021A) == 0)
+    if (((1 << (code + 112)) & 0x2021A) == 0)
     {
-      if (a3 == 400)
+      if (code == 400)
       {
         return -67847;
       }
 
 LABEL_11:
-      if ((a3 - 500) <= 7 && ((1 << (a3 + 12)) & 0x89) != 0)
+      if ((code - 500) <= 7 && ((1 << (code + 12)) & 0x89) != 0)
       {
         return -67585;
       }
 
-      return a3;
+      return code;
     }
 
     return -67585;
   }
 
   result = 0;
-  if ((a3 - 200) >= 2 && a3 != 100)
+  if ((code - 200) >= 2 && code != 100)
   {
-    if (a3 != 204)
+    if (code != 204)
     {
-      return a3;
+      return code;
     }
 
     return -67585;
@@ -1344,7 +1344,7 @@ LABEL_11:
   return v5;
 }
 
-- (id)hardwareAttestationWithError:(id *)a3
+- (id)hardwareAttestationWithError:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
   v24 = 0;
@@ -1415,9 +1415,9 @@ LABEL_11:
     v10 = v24;
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v10;
+    *error = v10;
   }
 
   else if (v10)
@@ -1432,18 +1432,18 @@ LABEL_11:
   return v21;
 }
 
-- (id)attestationObjectWithCertificates:(id)a3
+- (id)attestationObjectWithCertificates:(id)certificates
 {
-  v4 = a3;
+  certificatesCopy = certificates;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc_init(SecCBORArray);
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 count] == 2 && objc_msgSend(v4, "count"))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [certificatesCopy count] == 2 && objc_msgSend(certificatesCopy, "count"))
   {
     v7 = 0;
     while (1)
     {
-      v8 = [v4 objectAtIndexedSubscript:v7];
+      v8 = [certificatesCopy objectAtIndexedSubscript:v7];
       if (v8)
       {
         v9 = v8;
@@ -1470,7 +1470,7 @@ LABEL_11:
       }
 
 LABEL_11:
-      if (++v7 >= [v4 count])
+      if (++v7 >= [certificatesCopy count])
       {
         goto LABEL_12;
       }
@@ -1513,7 +1513,7 @@ LABEL_12:
   return v21;
 }
 
-- (id)requestAttestationChainWithError:(id *)a3
+- (id)requestAttestationChainWithError:(id *)error
 {
   v62 = *MEMORY[0x1E69E9840];
   v49 = 0;
@@ -1524,9 +1524,9 @@ LABEL_12:
   v54 = 0;
   if (![(AcmeCertRequest *)self deviceAttestationSupported])
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-67849 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-67849 userInfo:0];
     }
 
     v26 = v50[5];
@@ -1578,10 +1578,10 @@ LABEL_12:
       _os_log_impl(&dword_1887D2000, v27, OS_LOG_TYPE_DEFAULT, "Failed to obtain public key for attestation key, skipping attestation", &md, 2u);
     }
 
-    if (a3)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-67811 userInfo:0];
-      *a3 = v26 = 0;
+      *error = v26 = 0;
       goto LABEL_57;
     }
 
@@ -1601,9 +1601,9 @@ LABEL_12:
     }
 
     v31 = md;
-    if (a3)
+    if (error)
     {
-      *a3 = md;
+      *error = md;
     }
 
     else if (md)
@@ -1622,7 +1622,7 @@ LABEL_56:
 LABEL_13:
   if (self->_attestationCRChain)
   {
-    v12 = [MEMORY[0x1E695DF88] data];
+    data = [MEMORY[0x1E695DF88] data];
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
@@ -1642,7 +1642,7 @@ LABEL_13:
           }
 
           v17 = SecCertificateCopyData(*(*(&v45 + 1) + 8 * i));
-          [v12 appendData:v17];
+          [data appendData:v17];
         }
 
         v14 = [(NSArray *)v13 countByEnumeratingWithState:&v45 objects:v61 count:16];
@@ -1651,7 +1651,7 @@ LABEL_13:
       while (v14);
     }
 
-    [v37 setObject:v12 forKeyedSubscript:@"ClientDirectAttestationCertificate"];
+    [v37 setObject:data forKeyedSubscript:@"ClientDirectAttestationCertificate"];
     v4 = v37;
   }
 
@@ -1701,9 +1701,9 @@ LABEL_47:
       v32 = secLogObjForScope("acme");
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [*(*(&md + 1) + 40) code];
+        code = [*(*(&md + 1) + 40) code];
         *buf = 134217984;
-        v56 = v33;
+        v56 = code;
         _os_log_impl(&dword_1887D2000, v32, OS_LOG_TYPE_DEFAULT, "Attempt to fetch attestation certificate failed (error %lld)", buf, 0xCu);
       }
 
@@ -1737,9 +1737,9 @@ LABEL_47:
 LABEL_49:
 
   v34 = *(*(&md + 1) + 40);
-  if (a3)
+  if (error)
   {
-    *a3 = v34;
+    *error = v34;
   }
 
   else
@@ -1820,14 +1820,14 @@ uint64_t __45__AcmeCertRequest_deviceAttestationSupported__block_invoke()
   v10 = __Block_byref_object_copy__15916;
   v11 = __Block_byref_object_dispose__15917;
   v12 = 0;
-  v3 = [(AcmeCertRequest *)self queue];
+  queue = [(AcmeCertRequest *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __28__AcmeCertRequest_createCSR__block_invoke;
   v6[3] = &unk_1E70E41D0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1873,14 +1873,14 @@ void __28__AcmeCertRequest_createCSR__block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(AcmeCertRequest *)self queue];
+  queue = [(AcmeCertRequest *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __32__AcmeCertRequest_createKeyPair__block_invoke;
   v6[3] = &unk_1E70E41D0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -1947,21 +1947,21 @@ void __32__AcmeCertRequest_createKeyPair__block_invoke(uint64_t a1)
   v13 = __Block_byref_object_copy__15916;
   v14 = __Block_byref_object_dispose__15917;
   v15 = 0;
-  v3 = [(AcmeCertRequest *)self queue];
+  queue = [(AcmeCertRequest *)self queue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __37__AcmeCertRequest_sanitizeParameters__block_invoke;
   v9[3] = &unk_1E70E41D0;
   v9[4] = self;
   v9[5] = &v10;
-  dispatch_sync(v3, v9);
+  dispatch_sync(queue, v9);
 
   v4 = v11[5];
   if (!v4)
   {
-    v5 = [(AcmeCertRequest *)self sanitizeSubject];
+    sanitizeSubject = [(AcmeCertRequest *)self sanitizeSubject];
     v6 = v11[5];
-    v11[5] = v5;
+    v11[5] = sanitizeSubject;
 
     v4 = v11[5];
   }
@@ -2487,14 +2487,14 @@ LABEL_86:
   v10 = __Block_byref_object_copy__15916;
   v11 = __Block_byref_object_dispose__15917;
   v12 = 0;
-  v3 = [(AcmeCertRequest *)self queue];
+  queue = [(AcmeCertRequest *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__AcmeCertRequest_sanitizeSubject__block_invoke;
   v6[3] = &unk_1E70E41D0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -2727,18 +2727,18 @@ LABEL_23:
   [(AcmeCertRequest *)&v7 dealloc];
 }
 
-- (AcmeCertRequest)initWithSubject:(id)a3 parameters:(id)a4
+- (AcmeCertRequest)initWithSubject:(id)subject parameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  subjectCopy = subject;
+  parametersCopy = parameters;
   v12.receiver = self;
   v12.super_class = AcmeCertRequest;
   v8 = [(AcmeCertRequest *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    [(AcmeCertRequest *)v8 setSubject:v6];
-    [(AcmeCertRequest *)v9 setParameters:v7];
+    [(AcmeCertRequest *)v8 setSubject:subjectCopy];
+    [(AcmeCertRequest *)v9 setParameters:parametersCopy];
     v10 = dispatch_queue_create("com.apple.certrequest", 0);
     [(AcmeCertRequest *)v9 setQueue:v10];
   }

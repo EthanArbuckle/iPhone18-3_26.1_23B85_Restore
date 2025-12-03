@@ -1,20 +1,20 @@
 @interface ServiceTouchIDAlertHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setImage:(id)image;
+- (void)setMessage:(id)message;
+- (void)setTitle:(id)title;
 - (void)shakeTitleView;
 @end
 
 @implementation ServiceTouchIDAlertHeaderView
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   imageView = self->_imageView;
-  v8 = v4;
-  if (v4)
+  v8 = imageCopy;
+  if (imageCopy)
   {
     if (!imageView)
     {
@@ -38,12 +38,12 @@
   }
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   messageLabel = self->_messageLabel;
-  v15 = v4;
-  if (v4)
+  v15 = messageCopy;
+  if (messageCopy)
   {
     if (!messageLabel)
     {
@@ -81,12 +81,12 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   titleLabel = self->_titleLabel;
-  v16 = v4;
-  if (v4)
+  v16 = titleCopy;
+  if (titleCopy)
   {
     if (!titleLabel)
     {
@@ -128,8 +128,8 @@
 
 - (void)shakeTitleView
 {
-  v20 = [(UILabel *)self->_titleLabel layer];
-  [v20 removeAllAnimations];
+  layer = [(UILabel *)self->_titleLabel layer];
+  [layer removeAllAnimations];
   v2 = [CASpringAnimation animationWithKeyPath:@"position.x"];
   [v2 setMass:1.20000005];
   [v2 setStiffness:1200.0];
@@ -144,13 +144,13 @@
   [v2 setDuration:0.860000014];
   [v2 setVelocity:0.0];
   [v2 setFillMode:kCAFillModeBackwards];
-  [v20 position];
+  [layer position];
   v9 = v8 + 60.0;
   *&v9 = v9;
   v10 = [NSNumber numberWithFloat:v9];
   [v2 setFromValue:v10];
 
-  [v20 addAnimation:v2 forKey:@"position"];
+  [layer addAnimation:v2 forKey:@"position"];
   v11 = [CABasicAnimation animationWithKeyPath:@"position.x"];
   LODWORD(v12) = 1036831949;
   LODWORD(v13) = 0.25;
@@ -161,13 +161,13 @@
 
   [v11 setDuration:0.0700000003];
   [v11 setFillMode:kCAFillModeBackwards];
-  [v20 position];
+  [layer position];
   v18 = v17 + -60.0;
   *&v18 = v18;
   v19 = [NSNumber numberWithFloat:v18];
   [v11 setFromValue:v19];
 
-  [v20 addAnimation:v11 forKey:@"force"];
+  [layer addAnimation:v11 forKey:@"force"];
 }
 
 - (void)layoutSubviews
@@ -226,15 +226,15 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   imageView = self->_imageView;
   v6 = 0.0;
-  if (imageView && ([(UIImageView *)imageView isHidden:a3.width]& 1) == 0)
+  if (imageView && ([(UIImageView *)imageView isHidden:fits.width]& 1) == 0)
   {
     [(UIImageView *)self->_imageView frame];
-    a3.width = 36.0;
+    fits.width = 36.0;
     v7 = v8 + 36.0;
     v6 = 9.0;
   }
@@ -245,16 +245,16 @@
   }
 
   titleLabel = self->_titleLabel;
-  if (titleLabel && ([(UILabel *)titleLabel isHidden:a3.width]& 1) == 0)
+  if (titleLabel && ([(UILabel *)titleLabel isHidden:fits.width]& 1) == 0)
   {
     [(UILabel *)self->_titleLabel sizeThatFits:width + -30.0, 1.79769313e308];
-    a3.width = v6 + a3.height;
-    v7 = v7 + v6 + a3.height;
+    fits.width = v6 + fits.height;
+    v7 = v7 + v6 + fits.height;
     v6 = 4.0;
   }
 
   messageLabel = self->_messageLabel;
-  if (messageLabel && ([(UILabel *)messageLabel isHidden:a3.width]& 1) == 0)
+  if (messageLabel && ([(UILabel *)messageLabel isHidden:fits.width]& 1) == 0)
   {
     [(UILabel *)self->_messageLabel sizeThatFits:width + -30.0, 1.79769313e308];
     v7 = v7 + v6 + v11;

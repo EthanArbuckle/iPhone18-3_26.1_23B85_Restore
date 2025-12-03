@@ -1,29 +1,29 @@
 @interface PKMessageTableCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKMessageTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKMessageTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_dismissButtonPressed;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setActionOnDismiss:(id)a3;
-- (void)setContent:(id)a3;
+- (void)setActionOnDismiss:(id)dismiss;
+- (void)setContent:(id)content;
 @end
 
 @implementation PKMessageTableCell
 
-- (PKMessageTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKMessageTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v32.receiver = self;
   v32.super_class = PKMessageTableCell;
-  v7 = [(PKMessageTableCell *)&v32 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(PKMessageTableCell *)&v32 initWithStyle:style reuseIdentifier:identifierCopy];
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x1E69DCC30]);
-    v9 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
-    v10 = [v8 initWithConfiguration:v9];
+    subtitleCellConfiguration = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
+    v10 = [v8 initWithConfiguration:subtitleCellConfiguration];
 
-    v11 = [(PKMessageTableCell *)v7 contentView];
-    [v11 addSubview:v10];
+    contentView = [(PKMessageTableCell *)v7 contentView];
+    [contentView addSubview:v10];
 
     objc_storeStrong(&v7->_listContentView, v10);
     v12 = MEMORY[0x1E69DC740];
@@ -31,8 +31,8 @@
     v14 = MEMORY[0x1E69DCAD8];
     v15 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0 weight:*MEMORY[0x1E69DB950]];
     v16 = [v14 configurationWithFont:v15];
-    v17 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v18 = [v12 pkui_plainConfigurationWithImage:v13 imageConfiguration:v16 foregroundColor:v17];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v18 = [v12 pkui_plainConfigurationWithImage:v13 imageConfiguration:v16 foregroundColor:secondaryLabelColor];
 
     objc_initWeak(&location, v7);
     v19 = MEMORY[0x1E69DC738];
@@ -49,8 +49,8 @@
 
     [(UIButton *)v7->_dismissButton setHidden:1];
     [(UIButton *)v7->_dismissButton setAccessibilityIdentifier:*MEMORY[0x1E69B9708]];
-    v24 = [(PKMessageTableCell *)v7 contentView];
-    [v24 addSubview:v7->_dismissButton];
+    contentView2 = [(PKMessageTableCell *)v7 contentView];
+    [contentView2 addSubview:v7->_dismissButton];
 
     objc_destroyWeak(&v30);
     objc_destroyWeak(&location);
@@ -74,41 +74,41 @@ void __52__PKMessageTableCell_initWithStyle_reuseIdentifier___block_invoke(uint6
   }
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v8 = a3;
-  v4 = [(UIListContentView *)self->_listContentView configuration];
-  v5 = [v8 isEqual:v4];
+  contentCopy = content;
+  configuration = [(UIListContentView *)self->_listContentView configuration];
+  v5 = [contentCopy isEqual:configuration];
 
   if ((v5 & 1) == 0)
   {
     listContentView = self->_listContentView;
-    if (v8)
+    if (contentCopy)
     {
-      [(UIListContentView *)listContentView setConfiguration:v8];
+      [(UIListContentView *)listContentView setConfiguration:contentCopy];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
-      [(UIListContentView *)listContentView setConfiguration:v7];
+      subtitleCellConfiguration = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
+      [(UIListContentView *)listContentView setConfiguration:subtitleCellConfiguration];
     }
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UIListContentView *)self->_listContentView sizeThatFits:a3.width + -20.0 + -20.0, 3.40282347e38];
+  width = fits.width;
+  [(UIListContentView *)self->_listContentView sizeThatFits:fits.width + -20.0 + -20.0, 3.40282347e38];
   v5 = width;
   result.height = v4;
   result.width = v5;
   return result;
 }
 
-- (void)setActionOnDismiss:(id)a3
+- (void)setActionOnDismiss:(id)dismiss
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(dismiss);
   actionOnDismiss = self->_actionOnDismiss;
   self->_actionOnDismiss = v4;
 
@@ -124,8 +124,8 @@ void __52__PKMessageTableCell_initWithStyle_reuseIdentifier___block_invoke(uint6
   v4.super_class = PKMessageTableCell;
   [(PKTableViewCell *)&v4 prepareForReuse];
   [(PKMessageTableCell *)self setActionOnDismiss:0];
-  v3 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
-  [(PKMessageTableCell *)self setContent:v3];
+  subtitleCellConfiguration = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
+  [(PKMessageTableCell *)self setContent:subtitleCellConfiguration];
 }
 
 - (void)layoutSubviews
@@ -133,14 +133,14 @@ void __52__PKMessageTableCell_initWithStyle_reuseIdentifier___block_invoke(uint6
   v11.receiver = self;
   v11.super_class = PKMessageTableCell;
   [(PKMessageTableCell *)&v11 layoutSubviews];
-  v3 = [(PKMessageTableCell *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKMessageTableCell *)self _shouldReverseLayoutDirection];
   [(PKMessageTableCell *)self bounds];
   remainder.origin.x = v4;
   remainder.origin.y = v5;
   remainder.size.width = v6;
   remainder.size.height = v7;
   memset(&v9, 0, sizeof(v9));
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     v8 = CGRectMaxXEdge;
   }

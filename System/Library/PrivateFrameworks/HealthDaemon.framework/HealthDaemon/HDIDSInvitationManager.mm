@@ -1,30 +1,30 @@
 @interface HDIDSInvitationManager
-- (HDIDSInvitationManager)initWithServiceIdentifier:(id)a3 messageClass:(Class)a4 schema:(id)a5;
+- (HDIDSInvitationManager)initWithServiceIdentifier:(id)identifier messageClass:(Class)class schema:(id)schema;
 - (HDIDSInvitationManagerDelegate)delegate;
-- (void)acceptInvitationWithUUID:(id)a3 codableObject:(id)a4 serverAcknowledgedBlock:(id)a5;
-- (void)declineInvitationWithUUID:(id)a3 serverAcknowledgedBlock:(id)a4;
-- (void)manager:(id)a3 incomingInvitation:(id)a4;
-- (void)manager:(id)a3 receiverDidAcceptInvitation:(id)a4;
-- (void)manager:(id)a3 receiverDidDeclineInvitation:(id)a4;
-- (void)manager:(id)a3 senderDidCancelInvitation:(id)a4;
-- (void)rescindInvitationWithUUID:(id)a3 serverAcknowledgedBlock:(id)a4;
-- (void)sendInvitationToIdentifier:(id)a3 expirationDate:(id)a4 codableObject:(id)a5 serverAcknowledgedBlock:(id)a6;
+- (void)acceptInvitationWithUUID:(id)d codableObject:(id)object serverAcknowledgedBlock:(id)block;
+- (void)declineInvitationWithUUID:(id)d serverAcknowledgedBlock:(id)block;
+- (void)manager:(id)manager incomingInvitation:(id)invitation;
+- (void)manager:(id)manager receiverDidAcceptInvitation:(id)invitation;
+- (void)manager:(id)manager receiverDidDeclineInvitation:(id)invitation;
+- (void)manager:(id)manager senderDidCancelInvitation:(id)invitation;
+- (void)rescindInvitationWithUUID:(id)d serverAcknowledgedBlock:(id)block;
+- (void)sendInvitationToIdentifier:(id)identifier expirationDate:(id)date codableObject:(id)object serverAcknowledgedBlock:(id)block;
 @end
 
 @implementation HDIDSInvitationManager
 
-- (HDIDSInvitationManager)initWithServiceIdentifier:(id)a3 messageClass:(Class)a4 schema:(id)a5
+- (HDIDSInvitationManager)initWithServiceIdentifier:(id)identifier messageClass:(Class)class schema:(id)schema
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  schemaCopy = schema;
   v21.receiver = self;
   v21.super_class = HDIDSInvitationManager;
   v10 = [(HDIDSInvitationManager *)&v21 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_messageClass, a4);
-    v12 = [v9 copy];
+    objc_storeStrong(&v10->_messageClass, class);
+    v12 = [schemaCopy copy];
     schema = v11->_schema;
     v11->_schema = v12;
 
@@ -38,37 +38,37 @@
 
     if ((HKIsUnitTesting() & 1) == 0)
     {
-      v18 = [objc_alloc(MEMORY[0x277D18730]) initWithServiceIdentifier:v8];
+      v18 = [objc_alloc(MEMORY[0x277D18730]) initWithServiceIdentifier:identifierCopy];
       [(HDIDSInvitationManager *)v11 setInvitationManager:v18];
 
-      v19 = [(HDIDSInvitationManager *)v11 invitationManager];
-      [v19 setDelegate:v11 queue:v11->_IDSDelegateQueue];
+      invitationManager = [(HDIDSInvitationManager *)v11 invitationManager];
+      [invitationManager setDelegate:v11 queue:v11->_IDSDelegateQueue];
     }
   }
 
   return v11;
 }
 
-- (void)sendInvitationToIdentifier:(id)a3 expirationDate:(id)a4 codableObject:(id)a5 serverAcknowledgedBlock:(id)a6
+- (void)sendInvitationToIdentifier:(id)identifier expirationDate:(id)date codableObject:(id)object serverAcknowledgedBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  dateCopy = date;
+  objectCopy = object;
+  blockCopy = block;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __106__HDIDSInvitationManager_sendInvitationToIdentifier_expirationDate_codableObject_serverAcknowledgedBlock___block_invoke;
   block[3] = &unk_27861F9C0;
-  v20 = v12;
-  v21 = self;
-  v22 = v10;
-  v23 = v11;
-  v24 = v13;
-  v15 = v13;
-  v16 = v11;
-  v17 = v10;
-  v18 = v12;
+  v20 = objectCopy;
+  selfCopy = self;
+  v22 = identifierCopy;
+  v23 = dateCopy;
+  v24 = blockCopy;
+  v15 = blockCopy;
+  v16 = dateCopy;
+  v17 = identifierCopy;
+  v18 = objectCopy;
   dispatch_sync(queue, block);
 }
 
@@ -87,20 +87,20 @@ void __106__HDIDSInvitationManager_sendInvitationToIdentifier_expirationDate_cod
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)rescindInvitationWithUUID:(id)a3 serverAcknowledgedBlock:(id)a4
+- (void)rescindInvitationWithUUID:(id)d serverAcknowledgedBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  blockCopy = block;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__HDIDSInvitationManager_rescindInvitationWithUUID_serverAcknowledgedBlock___block_invoke;
   block[3] = &unk_278614160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = dCopy;
   dispatch_sync(queue, block);
 }
 
@@ -143,23 +143,23 @@ uint64_t __76__HDIDSInvitationManager_rescindInvitationWithUUID_serverAcknowledg
   return v4;
 }
 
-- (void)acceptInvitationWithUUID:(id)a3 codableObject:(id)a4 serverAcknowledgedBlock:(id)a5
+- (void)acceptInvitationWithUUID:(id)d codableObject:(id)object serverAcknowledgedBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  objectCopy = object;
+  blockCopy = block;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __89__HDIDSInvitationManager_acceptInvitationWithUUID_codableObject_serverAcknowledgedBlock___block_invoke;
   v15[3] = &unk_278617468;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = dCopy;
+  v17 = objectCopy;
+  v18 = blockCopy;
+  v12 = objectCopy;
+  v13 = blockCopy;
+  v14 = dCopy;
   dispatch_sync(queue, v15);
 }
 
@@ -209,20 +209,20 @@ uint64_t __89__HDIDSInvitationManager_acceptInvitationWithUUID_codableObject_ser
   return v4;
 }
 
-- (void)declineInvitationWithUUID:(id)a3 serverAcknowledgedBlock:(id)a4
+- (void)declineInvitationWithUUID:(id)d serverAcknowledgedBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  blockCopy = block;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__HDIDSInvitationManager_declineInvitationWithUUID_serverAcknowledgedBlock___block_invoke;
   block[3] = &unk_278614160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = dCopy;
   dispatch_sync(queue, block);
 }
 
@@ -265,74 +265,74 @@ uint64_t __76__HDIDSInvitationManager_declineInvitationWithUUID_serverAcknowledg
   return v4;
 }
 
-- (void)manager:(id)a3 incomingInvitation:(id)a4
+- (void)manager:(id)manager incomingInvitation:(id)invitation
 {
-  v5 = a4;
-  v16 = [v5 context];
-  v6 = [v16 dictionary];
-  v7 = [v6 objectForKeyedSubscript:@"ObjectDataKey"];
+  invitationCopy = invitation;
+  context = [invitationCopy context];
+  dictionary = [context dictionary];
+  v7 = [dictionary objectForKeyedSubscript:@"ObjectDataKey"];
 
   v8 = [objc_alloc(self->_messageClass) initWithData:v7];
-  v9 = [v5 fromID];
-  v10 = [v9 _stripPotentialTokenURIWithToken:0];
-  v11 = [v10 _stripFZIDPrefix];
+  fromID = [invitationCopy fromID];
+  v10 = [fromID _stripPotentialTokenURIWithToken:0];
+  _stripFZIDPrefix = [v10 _stripFZIDPrefix];
 
   v12 = [HDIDSInvitation alloc];
-  v13 = [v5 uniqueID];
+  uniqueID = [invitationCopy uniqueID];
 
-  v14 = [(HDIDSInvitation *)v12 initWithUUID:v13 fromID:v11 codableObject:v8];
+  v14 = [(HDIDSInvitation *)v12 initWithUUID:uniqueID fromID:_stripFZIDPrefix codableObject:v8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained invitationManager:self didReceiveInvitation:v14];
 }
 
-- (void)manager:(id)a3 senderDidCancelInvitation:(id)a4
+- (void)manager:(id)manager senderDidCancelInvitation:(id)invitation
 {
-  v5 = a4;
-  v16 = [v5 context];
-  v6 = [v16 dictionary];
-  v7 = [v6 objectForKeyedSubscript:@"ObjectDataKey"];
+  invitationCopy = invitation;
+  context = [invitationCopy context];
+  dictionary = [context dictionary];
+  v7 = [dictionary objectForKeyedSubscript:@"ObjectDataKey"];
 
   v8 = [objc_alloc(self->_messageClass) initWithData:v7];
-  v9 = [v5 fromID];
-  v10 = [v9 _stripPotentialTokenURIWithToken:0];
-  v11 = [v10 _stripFZIDPrefix];
+  fromID = [invitationCopy fromID];
+  v10 = [fromID _stripPotentialTokenURIWithToken:0];
+  _stripFZIDPrefix = [v10 _stripFZIDPrefix];
 
   v12 = [HDIDSInvitation alloc];
-  v13 = [v5 uniqueID];
+  uniqueID = [invitationCopy uniqueID];
 
-  v14 = [(HDIDSInvitation *)v12 initWithUUID:v13 fromID:v11 codableObject:v8];
+  v14 = [(HDIDSInvitation *)v12 initWithUUID:uniqueID fromID:_stripFZIDPrefix codableObject:v8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained invitationManager:self didRescindInvitation:v14];
 }
 
-- (void)manager:(id)a3 receiverDidAcceptInvitation:(id)a4
+- (void)manager:(id)manager receiverDidAcceptInvitation:(id)invitation
 {
-  v5 = a4;
-  v13 = [v5 context];
-  v6 = [v13 dictionary];
-  v7 = [v6 objectForKeyedSubscript:@"ObjectDataKey"];
+  invitationCopy = invitation;
+  context = [invitationCopy context];
+  dictionary = [context dictionary];
+  v7 = [dictionary objectForKeyedSubscript:@"ObjectDataKey"];
 
   v8 = [objc_alloc(self->_messageClass) initWithData:v7];
   v9 = [HDIDSInvitation alloc];
-  v10 = [v5 uniqueID];
+  uniqueID = [invitationCopy uniqueID];
 
-  v11 = [(HDIDSInvitation *)v9 initWithUUID:v10 fromID:0 codableObject:v8];
+  v11 = [(HDIDSInvitation *)v9 initWithUUID:uniqueID fromID:0 codableObject:v8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained invitationManager:self didAcceptInvitation:v11];
 }
 
-- (void)manager:(id)a3 receiverDidDeclineInvitation:(id)a4
+- (void)manager:(id)manager receiverDidDeclineInvitation:(id)invitation
 {
-  v5 = a4;
-  v13 = [v5 context];
-  v6 = [v13 dictionary];
-  v7 = [v6 objectForKeyedSubscript:@"ObjectDataKey"];
+  invitationCopy = invitation;
+  context = [invitationCopy context];
+  dictionary = [context dictionary];
+  v7 = [dictionary objectForKeyedSubscript:@"ObjectDataKey"];
 
   v8 = [objc_alloc(self->_messageClass) initWithData:v7];
   v9 = [HDIDSInvitation alloc];
-  v10 = [v5 uniqueID];
+  uniqueID = [invitationCopy uniqueID];
 
-  v11 = [(HDIDSInvitation *)v9 initWithUUID:v10 fromID:0 codableObject:v8];
+  v11 = [(HDIDSInvitation *)v9 initWithUUID:uniqueID fromID:0 codableObject:v8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained invitationManager:self didDeclineInvitation:v11];
 }

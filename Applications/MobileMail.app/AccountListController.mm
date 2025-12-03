@@ -1,37 +1,37 @@
 @interface AccountListController
-- (AccountListController)initWithScene:(id)a3;
+- (AccountListController)initWithScene:(id)scene;
 - (AccountListControllerDelegate)accountListDelegate;
-- (BOOL)_enableAccount:(id)a3;
+- (BOOL)_enableAccount:(id)account;
 - (BOOL)containsMultipleAccounts;
 - (MailScene)scene;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_indexPathForSelectedAccount;
 - (id)accounts;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_updateBarButtonItems;
 - (void)cancelButtonClicked;
-- (void)selectAccount:(id)a3 mailbox:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)selectAccount:(id)account mailbox:(id)mailbox;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AccountListController
 
-- (AccountListController)initWithScene:(id)a3
+- (AccountListController)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = AccountListController;
   v5 = [(AccountListController *)&v8 initWithStyle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
+    objc_storeWeak(&v5->_scene, sceneCopy);
   }
 
   return v6;
@@ -40,37 +40,37 @@
 - (id)accounts
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 accountsProvider];
-  v4 = [v3 orderedAccounts];
+  accountsProvider = [v2 accountsProvider];
+  orderedAccounts = [accountsProvider orderedAccounts];
 
-  return v4;
+  return orderedAccounts;
 }
 
 - (BOOL)containsMultipleAccounts
 {
-  v2 = [(AccountListController *)self accounts];
-  v3 = [v2 count] > 1;
+  accounts = [(AccountListController *)self accounts];
+  v3 = [accounts count] > 1;
 
   return v3;
 }
 
-- (void)selectAccount:(id)a3 mailbox:(id)a4
+- (void)selectAccount:(id)account mailbox:(id)mailbox
 {
-  v9 = a3;
+  accountCopy = account;
   v6 = +[LocalAccount localAccount];
 
-  v7 = v9;
-  if (v6 != v9)
+  v7 = accountCopy;
+  if (v6 != accountCopy)
   {
-    if (self->_selectedAccount != v9)
+    if (self->_selectedAccount != accountCopy)
     {
-      objc_storeStrong(&self->_selectedAccount, a3);
+      objc_storeStrong(&self->_selectedAccount, account);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_accountListDelegate);
     [WeakRetained accountList:self didSelectAccount:self->_selectedAccount];
 
-    v7 = v9;
+    v7 = accountCopy;
   }
 }
 
@@ -89,27 +89,27 @@
   v4 = [v3 localizedStringForKey:@"ACCOUNTS" value:&stru_100662A88 table:@"Main"];
   [(AccountListController *)self setTitle:v4];
 
-  v5 = [(AccountListController *)self tableView];
+  tableView = [(AccountListController *)self tableView];
   +[MailboxTableCell defaultRowHeight];
-  [v5 setEstimatedRowHeight:?];
-  [v5 setSeparatorStyle:1];
+  [tableView setEstimatedRowHeight:?];
+  [tableView setSeparatorStyle:1];
   v6 = +[UIColor tableBackgroundColor];
-  [v5 setBackgroundColor:v6];
+  [tableView setBackgroundColor:v6];
 
-  [v5 setContentInset:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
-  [v5 setAccessibilityIdentifier:MSAccessibilityIdentifierMailMoveMessageViewAccountsTable];
+  [tableView setContentInset:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
+  [tableView setAccessibilityIdentifier:MSAccessibilityIdentifierMailMoveMessageViewAccountsTable];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v10.receiver = self;
   v10.super_class = AccountListController;
   [(AccountListController *)&v10 viewWillAppear:?];
-  v5 = [(AccountListController *)self _indexPathForSelectedAccount];
-  if (v5)
+  _indexPathForSelectedAccount = [(AccountListController *)self _indexPathForSelectedAccount];
+  if (_indexPathForSelectedAccount)
   {
-    v6 = [(AccountListController *)self tableView];
+    tableView = [(AccountListController *)self tableView];
     if (+[UIDevice mf_isPadIdiom])
     {
       v7 = 0;
@@ -120,48 +120,48 @@
       v7 = 2;
     }
 
-    [v6 selectRowAtIndexPath:v5 animated:0 scrollPosition:v7];
-    v8 = [(AccountListController *)self splitViewController];
-    v9 = [v8 isCollapsed];
+    [tableView selectRowAtIndexPath:_indexPathForSelectedAccount animated:0 scrollPosition:v7];
+    splitViewController = [(AccountListController *)self splitViewController];
+    isCollapsed = [splitViewController isCollapsed];
 
-    if (v9)
+    if (isCollapsed)
     {
-      [v6 deselectRowAtIndexPath:v5 animated:v3];
+      [tableView deselectRowAtIndexPath:_indexPathForSelectedAccount animated:appearCopy];
     }
   }
 
   [(AccountListController *)self _updateBarButtonItems];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = AccountListController;
   [(AccountListController *)&v5 viewDidDisappear:0];
-  v4 = [(AccountListController *)self parentViewController];
+  parentViewController = [(AccountListController *)self parentViewController];
 
-  if (!v4)
+  if (!parentViewController)
   {
     [(AccountListController *)self unloadViewIfReloadable];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5.receiver = self;
   v5.super_class = AccountListController;
-  [(AccountListController *)&v5 traitCollectionDidChange:v4];
+  [(AccountListController *)&v5 traitCollectionDidChange:changeCopy];
   [(AccountListController *)self _updateBarButtonItems];
 }
 
 - (void)_updateBarButtonItems
 {
-  v9 = [(AccountListController *)self navigationItem];
-  v3 = [(AccountListController *)self splitViewController];
-  v4 = [v3 isCollapsed];
+  navigationItem = [(AccountListController *)self navigationItem];
+  splitViewController = [(AccountListController *)self splitViewController];
+  isCollapsed = [splitViewController isCollapsed];
 
-  if (v4)
+  if (isCollapsed)
   {
     v5 = [UIBarButtonItem alloc];
     v6 = +[NSBundle mainBundle];
@@ -169,12 +169,12 @@
     v8 = [v5 initWithTitle:v7 style:0 target:self action:"cancelButtonClicked"];
 
     [v8 setAccessibilityIdentifier:MSAccessibilityIdentifierMailMoveMessageViewCancelButton];
-    [v9 setRightBarButtonItem:v8];
+    [navigationItem setRightBarButtonItem:v8];
   }
 
   else
   {
-    [v9 setRightBarButtonItem:0];
+    [navigationItem setRightBarButtonItem:0];
   }
 }
 
@@ -193,45 +193,45 @@
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(AccountListController *)self accounts:a3];
+  v4 = [(AccountListController *)self accounts:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"AccountListTableCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"AccountListTableCell"];
   if (!v7)
   {
     v7 = [[MailboxTableCell alloc] initWithStyle:1 reuseIdentifier:@"AccountListTableCell"];
   }
 
-  v8 = [(AccountListController *)self accounts];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v6, "row")}];
+  accounts = [(AccountListController *)self accounts];
+  v9 = [accounts objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-  v10 = [v9 displayName];
-  [(MailboxTableCell *)v7 setTitle:v10];
+  displayName = [v9 displayName];
+  [(MailboxTableCell *)v7 setTitle:displayName];
   [(MailboxTableCell *)v7 setCellEnabled:[(AccountListController *)self _enableAccount:v9]];
   [(MailboxTableCell *)v7 setIcon:0];
-  v11 = [NSString stringWithFormat:@"Mail.moveMessagePopover.accountsTable.%@Cell", v10];
+  v11 = [NSString stringWithFormat:@"Mail.moveMessagePopover.accountsTable.%@Cell", displayName];
   [(MailboxTableCell *)v7 setAccessibilityIdentifier:v11];
 
-  v12 = [(AccountListController *)self splitViewController];
-  v13 = [v12 isCollapsed];
+  splitViewController = [(AccountListController *)self splitViewController];
+  isCollapsed = [splitViewController isCollapsed];
 
-  [(MailboxTableCell *)v7 setAccessoryType:v13];
+  [(MailboxTableCell *)v7 setAccessoryType:isCollapsed];
 
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -248,15 +248,15 @@
   return result;
 }
 
-- (BOOL)_enableAccount:(id)a3
+- (BOOL)_enableAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 canPerformNetworkOperationOnAccount:v4];
+  v6 = [v5 canPerformNetworkOperationOnAccount:accountCopy];
 
   if (v6)
   {
-    v7 = ![(NSSet *)self->_disabledAccounts containsObject:v4];
+    v7 = ![(NSSet *)self->_disabledAccounts containsObject:accountCopy];
   }
 
   else
@@ -267,15 +267,15 @@
   return v7;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(AccountListController *)self accounts];
-  v7 = [v6 objectAtIndex:{objc_msgSend(v5, "row")}];
+  pathCopy = path;
+  accounts = [(AccountListController *)self accounts];
+  v7 = [accounts objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   if (v7 && ![(NSSet *)self->_disabledAccounts containsObject:v7])
   {
-    v8 = v5;
+    v8 = pathCopy;
   }
 
   else
@@ -286,15 +286,15 @@
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && [v6 row] != 0x7FFFFFFFFFFFFFFFLL)
+  viewCopy = view;
+  pathCopy = path;
+  v7 = pathCopy;
+  if (pathCopy && [pathCopy row] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(AccountListController *)self accounts];
-    v9 = [v8 objectAtIndex:{objc_msgSend(v7, "row")}];
+    accounts = [(AccountListController *)self accounts];
+    v9 = [accounts objectAtIndex:{objc_msgSend(v7, "row")}];
 
     [(AccountListController *)self selectAccount:v9 mailbox:0];
   }

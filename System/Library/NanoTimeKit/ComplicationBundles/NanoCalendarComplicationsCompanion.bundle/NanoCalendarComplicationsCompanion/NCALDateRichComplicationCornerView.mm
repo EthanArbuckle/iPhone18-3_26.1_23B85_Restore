@@ -1,17 +1,17 @@
 @interface NCALDateRichComplicationCornerView
 - (NCALDateRichComplicationCornerView)init;
-- (id)_createAndAddColoringLabelWithFontSize:(double)a3 dayOffset:(int64_t)a4;
-- (id)_createAndAddLabelPlatterWithAngularWidth:(double)a3 color:(id)a4;
-- (void)_enumerateLabelsWithBlock:(id)a3;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
-- (void)_timeChanged:(id)a3;
+- (id)_createAndAddColoringLabelWithFontSize:(double)size dayOffset:(int64_t)offset;
+- (id)_createAndAddLabelPlatterWithAngularWidth:(double)width color:(id)color;
+- (void)_enumerateLabelsWithBlock:(id)block;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
+- (void)_timeChanged:(id)changed;
 - (void)_updateDate;
-- (void)_updateFiltersShouldUseFraction:(BOOL)a3 fraction:(double)a4;
+- (void)_updateFiltersShouldUseFraction:(BOOL)fraction fraction:(double)a4;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
-- (void)updateMonochromeFiltersWithAccentFilters:(id)a3 noAccentFilters:(id)a4;
+- (void)updateMonochromeFiltersWithAccentFilters:(id)filters noAccentFilters:(id)accentFilters;
 @end
 
 @implementation NCALDateRichComplicationCornerView
@@ -24,8 +24,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(NCALDateRichComplicationCornerView *)v2 device];
-    sub_11164(v4, v4);
+    device = [(NCALDateRichComplicationCornerView *)v2 device];
+    sub_11164(device, device);
     v5 = xmmword_28278;
 
     v6 = [UIColor colorWithWhite:0.2 alpha:1.0];
@@ -56,8 +56,8 @@
     dateLabel = v3->_dateLabel;
     v3->_dateLabel = v20;
 
-    v22 = [(CLKUICurvedColoringLabel *)v3->_dateLabel layer];
-    [v22 setCompositingFilter:kCAFilterSubtractS];
+    layer = [(CLKUICurvedColoringLabel *)v3->_dateLabel layer];
+    [layer setCompositingFilter:kCAFilterSubtractS];
 
     v23 = [(NCALDateRichComplicationCornerView *)v3 _createAndAddColoringLabelWithFontSize:1 dayOffset:*(&v5 + 1)];
     nextDateLabel = v3->_nextDateLabel;
@@ -84,14 +84,14 @@
   [(NCALDateRichComplicationCornerView *)&v4 dealloc];
 }
 
-- (id)_createAndAddColoringLabelWithFontSize:(double)a3 dayOffset:(int64_t)a4
+- (id)_createAndAddColoringLabelWithFontSize:(double)size dayOffset:(int64_t)offset
 {
   v7 = [[CLKUICurvedColoringLabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v7 setAlpha:1.0];
   v8 = +[UIColor whiteColor];
   [v7 setColor:v8];
 
-  v9 = [CLKFont systemFontOfSize:CLKRoundedFontDesignName weight:a3 design:UIFontWeightSemibold];
+  v9 = [CLKFont systemFontOfSize:CLKRoundedFontDesignName weight:size design:UIFontWeightSemibold];
   [v7 setFont:v9];
 
   [v7 setInterior:0];
@@ -108,7 +108,7 @@
   v12 = 3221225472;
   v13 = sub_10118;
   v14 = &unk_20CC0;
-  v15[1] = a4;
+  v15[1] = offset;
   objc_copyWeak(v15, &location);
   [v7 setNowProvider:&v11];
   [(NCALDateRichComplicationCornerView *)self addSubview:v7, v11, v12, v13, v14];
@@ -119,16 +119,16 @@
   return v7;
 }
 
-- (id)_createAndAddLabelPlatterWithAngularWidth:(double)a3 color:(id)a4
+- (id)_createAndAddLabelPlatterWithAngularWidth:(double)width color:(id)color
 {
-  v6 = a4;
+  colorCopy = color;
   if (qword_28270 != -1)
   {
     sub_13204();
   }
 
-  v7 = [(NCALDateRichComplicationCornerView *)self device];
-  sub_11164(v7, v7);
+  device = [(NCALDateRichComplicationCornerView *)self device];
+  sub_11164(device, device);
   v8 = *&qword_28288;
   v9 = *&qword_28290;
   v10 = xmmword_28298;
@@ -136,11 +136,11 @@
   v12 = *&qword_282C8;
   v13 = *&qword_282D0;
 
-  v14 = [(NCALDateRichComplicationCornerView *)self cornerComplicationPosition];
+  cornerComplicationPosition = [(NCALDateRichComplicationCornerView *)self cornerComplicationPosition];
   v15 = 0.0;
-  v16 = v14 - 2;
+  v16 = cornerComplicationPosition - 2;
   v17 = v8 - v12;
-  if (v14 <= 1)
+  if (cornerComplicationPosition <= 1)
   {
     v15 = *&v10 - v11;
   }
@@ -170,11 +170,11 @@
     v19 = *(&v10 + 1) - v11;
   }
 
-  v20 = [[CDCurvedRoundedRectShapeLayer alloc] initWithAngularWidth:a3 innerRadius:v19 outerRadius:v18 cornerRadius:v13];
+  v20 = [[CDCurvedRoundedRectShapeLayer alloc] initWithAngularWidth:width innerRadius:v19 outerRadius:v18 cornerRadius:v13];
   [v20 setActions:qword_28268];
-  [v20 setFillColor:{objc_msgSend(v6, "CGColor")}];
-  v21 = [(NCALDateRichComplicationCornerView *)self layer];
-  [v21 addSublayer:v20];
+  [v20 setFillColor:{objc_msgSend(colorCopy, "CGColor")}];
+  layer = [(NCALDateRichComplicationCornerView *)self layer];
+  [layer addSublayer:v20];
 
   return v20;
 }
@@ -184,9 +184,9 @@
   v62.receiver = self;
   v62.super_class = NCALDateRichComplicationCornerView;
   [(NCALDateRichComplicationCornerView *)&v62 layoutSubviews];
-  v3 = [(NCALDateRichComplicationCornerView *)self cornerComplicationPosition];
-  v4 = [(NCALDateRichComplicationCornerView *)self device];
-  sub_11164(v4, v4);
+  cornerComplicationPosition = [(NCALDateRichComplicationCornerView *)self cornerComplicationPosition];
+  device = [(NCALDateRichComplicationCornerView *)self device];
+  sub_11164(device, device);
   v59 = xmmword_28278;
   v60 = *&qword_28288;
   v61 = xmmword_28298;
@@ -203,7 +203,7 @@
   v46[3] = &unk_20D08;
   v8 = v7;
   v47 = v8;
-  v48 = v3;
+  v48 = cornerComplicationPosition;
   v49 = v59;
   v50 = v60;
   v51 = v61;
@@ -214,8 +214,8 @@
   v54 = v57;
   v55 = v58;
   [(NCALDateRichComplicationCornerView *)self _enumerateLabelsWithBlock:v46];
-  v9 = [(NCALDateRichComplicationCornerView *)self device];
-  [v9 screenBounds];
+  device2 = [(NCALDateRichComplicationCornerView *)self device];
+  [device2 screenBounds];
   v11 = v10;
   v13 = v12;
 
@@ -223,16 +223,16 @@
   v15 = v14;
   v42 = v16;
   v17 = objc_opt_class();
-  v18 = [(NCALDateRichComplicationCornerView *)self device];
-  [v17 viewSizeForDevice:v18];
+  device3 = [(NCALDateRichComplicationCornerView *)self device];
+  [v17 viewSizeForDevice:device3];
   v20 = v19;
   v22 = v21;
 
   x = CGPointZero.x;
   y = CGPointZero.y;
-  if (v3 > 1)
+  if (cornerComplicationPosition > 1)
   {
-    if (v3 == 2)
+    if (cornerComplicationPosition == 2)
     {
       y = v42 - v13 + v22;
       v25 = v44;
@@ -242,7 +242,7 @@
     else
     {
       v25 = v44;
-      if (v3 == 3)
+      if (cornerComplicationPosition == 3)
       {
         x = v15 - v11 + v20;
         y = v42 - v13 + v22;
@@ -252,10 +252,10 @@
 
   else
   {
-    if (v3)
+    if (cornerComplicationPosition)
     {
       v25 = v44;
-      if (v3 != 1)
+      if (cornerComplicationPosition != 1)
       {
         goto LABEL_11;
       }
@@ -275,7 +275,7 @@
 LABEL_11:
   v26 = v25;
   [(NCALDateRichComplicationCornerView *)self innerComponentRotationInDegree];
-  if ((v3 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  if ((cornerComplicationPosition & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     v27 = -1.0;
   }
@@ -319,17 +319,17 @@ LABEL_11:
   [(NCALDateRichComplicationCornerView *)self _layoutCurvedLabel:nextDateLabel centerAngleInDegree:v26 - v27 * v43 editingRotationInDegree:v41];
 }
 
-- (void)_timeChanged:(id)a3
+- (void)_timeChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = ncs_log_complication();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 name];
+    name = [changedCopy name];
     *buf = 136315394;
     v9 = "[NCALDateRichComplicationCornerView _timeChanged:]";
     v10 = 2112;
-    v11 = v6;
+    v11 = name;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "%s - Received %@", buf, 0x16u);
   }
 
@@ -373,29 +373,29 @@ LABEL_11:
   [(CLKUICurvedColoringLabel *)nextDateLabel setTextProvider:v13];
 }
 
-- (void)_enumerateLabelsWithBlock:(id)a3
+- (void)_enumerateLabelsWithBlock:(id)block
 {
   weekdayLabel = self->_weekdayLabel;
-  v5 = (a3 + 16);
-  v6 = *(a3 + 2);
-  v7 = a3;
+  v5 = (block + 16);
+  v6 = *(block + 2);
+  blockCopy = block;
   v6();
-  (*v5)(v7, self->_previousDateLabel);
-  (*v5)(v7, self->_dateLabel);
-  (*v5)(v7, self->_nextDateLabel);
+  (*v5)(blockCopy, self->_previousDateLabel);
+  (*v5)(blockCopy, self->_dateLabel);
+  (*v5)(blockCopy, self->_nextDateLabel);
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v5 = [a3 metadata];
-  v6 = [v5 objectForKeyedSubscript:NCALDateComplicationOverrideMetadataKey];
+  metadata = [template metadata];
+  v6 = [metadata objectForKeyedSubscript:NCALDateComplicationOverrideMetadataKey];
   overrideDate = self->_overrideDate;
   self->_overrideDate = v6;
 
   [(NCALDateRichComplicationCornerView *)self _updateDate];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   [(NCALDateRichComplicationCornerView *)self _updateFiltersWithFraction:?];
   previousDatePlatter = self->_previousDatePlatter;
@@ -420,50 +420,50 @@ LABEL_11:
   [(CDCurvedRoundedRectShapeLayer *)nextDatePlatter setOpacity:v5];
 }
 
-- (void)_updateFiltersShouldUseFraction:(BOOL)a3 fraction:(double)a4
+- (void)_updateFiltersShouldUseFraction:(BOOL)fraction fraction:(double)a4
 {
-  v5 = a3;
-  v7 = [(NCALDateRichComplicationCornerView *)self filterProvider];
-  v8 = v7;
-  if (v5)
+  fractionCopy = fraction;
+  filterProvider = [(NCALDateRichComplicationCornerView *)self filterProvider];
+  v8 = filterProvider;
+  if (fractionCopy)
   {
-    v11 = [v7 filtersForView:self style:2 fraction:a4];
+    v11 = [filterProvider filtersForView:self style:2 fraction:a4];
 
-    v9 = [(NCALDateRichComplicationCornerView *)self filterProvider];
-    [v9 filtersForView:self style:0 fraction:a4];
+    filterProvider2 = [(NCALDateRichComplicationCornerView *)self filterProvider];
+    [filterProvider2 filtersForView:self style:0 fraction:a4];
   }
 
   else
   {
-    v11 = [v7 filtersForView:self style:2];
+    v11 = [filterProvider filtersForView:self style:2];
 
-    v9 = [(NCALDateRichComplicationCornerView *)self filterProvider];
-    [v9 filtersForView:self style:0];
+    filterProvider2 = [(NCALDateRichComplicationCornerView *)self filterProvider];
+    [filterProvider2 filtersForView:self style:0];
   }
   v10 = ;
 
   [(NCALDateRichComplicationCornerView *)self updateMonochromeFiltersWithAccentFilters:v11 noAccentFilters:v10];
 }
 
-- (void)updateMonochromeFiltersWithAccentFilters:(id)a3 noAccentFilters:(id)a4
+- (void)updateMonochromeFiltersWithAccentFilters:(id)filters noAccentFilters:(id)accentFilters
 {
   previousDatePlatter = self->_previousDatePlatter;
-  v7 = a4;
-  v8 = a3;
-  [(CDCurvedRoundedRectShapeLayer *)previousDatePlatter setFilters:v8];
-  [(CDCurvedRoundedRectShapeLayer *)self->_nextDatePlatter setFilters:v8];
-  v9 = [(CLKUICurvedColoringLabel *)self->_previousDateLabel layer];
-  [v9 setFilters:v8];
+  accentFiltersCopy = accentFilters;
+  filtersCopy = filters;
+  [(CDCurvedRoundedRectShapeLayer *)previousDatePlatter setFilters:filtersCopy];
+  [(CDCurvedRoundedRectShapeLayer *)self->_nextDatePlatter setFilters:filtersCopy];
+  layer = [(CLKUICurvedColoringLabel *)self->_previousDateLabel layer];
+  [layer setFilters:filtersCopy];
 
-  v10 = [(CLKUICurvedColoringLabel *)self->_nextDateLabel layer];
-  [v10 setFilters:v8];
+  layer2 = [(CLKUICurvedColoringLabel *)self->_nextDateLabel layer];
+  [layer2 setFilters:filtersCopy];
 
-  [(CDCurvedRoundedRectShapeLayer *)self->_datePlatter setFilters:v8];
-  v11 = [(CLKUICurvedColoringLabel *)self->_dateLabel layer];
-  [v11 setFilters:v8];
+  [(CDCurvedRoundedRectShapeLayer *)self->_datePlatter setFilters:filtersCopy];
+  layer3 = [(CLKUICurvedColoringLabel *)self->_dateLabel layer];
+  [layer3 setFilters:filtersCopy];
 
-  v12 = [(CLKUICurvedColoringLabel *)self->_weekdayLabel layer];
-  [v12 setFilters:v7];
+  layer4 = [(CLKUICurvedColoringLabel *)self->_weekdayLabel layer];
+  [layer4 setFilters:accentFiltersCopy];
 }
 
 @end

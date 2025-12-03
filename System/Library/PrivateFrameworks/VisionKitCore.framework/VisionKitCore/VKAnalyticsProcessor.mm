@@ -1,30 +1,30 @@
 @interface VKAnalyticsProcessor
-- (void)processAndSendEvent:(id)a3;
-- (void)processAndSendSession:(id)a3;
-- (void)sendCoreAnalyticsEvent:(id)a3 block:(id)a4;
+- (void)processAndSendEvent:(id)event;
+- (void)processAndSendSession:(id)session;
+- (void)sendCoreAnalyticsEvent:(id)event block:(id)block;
 @end
 
 @implementation VKAnalyticsProcessor
 
-- (void)processAndSendEvent:(id)a3
+- (void)processAndSendEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 eventKey];
+  eventCopy = event;
+  eventKey = [eventCopy eventKey];
 
-  if (v5)
+  if (eventKey)
   {
-    v6 = [v4 coreAnalyticsDictionary];
-    if (v6)
+    coreAnalyticsDictionary = [eventCopy coreAnalyticsDictionary];
+    if (coreAnalyticsDictionary)
     {
-      v7 = [(VKAnalyticsProcessor *)self isPublicAPI];
-      v8 = [v4 eventKey];
+      isPublicAPI = [(VKAnalyticsProcessor *)self isPublicAPI];
+      eventKey2 = [eventCopy eventKey];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __44__VKAnalyticsProcessor_processAndSendEvent___block_invoke;
       v9[3] = &unk_1E7BE72E0;
-      v10 = v6;
-      v11 = v7;
-      [(VKAnalyticsProcessor *)self sendCoreAnalyticsEvent:v8 block:v9];
+      v10 = coreAnalyticsDictionary;
+      v11 = isPublicAPI;
+      [(VKAnalyticsProcessor *)self sendCoreAnalyticsEvent:eventKey2 block:v9];
     }
   }
 }
@@ -40,17 +40,17 @@ id __44__VKAnalyticsProcessor_processAndSendEvent___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)processAndSendSession:(id)a3
+- (void)processAndSendSession:(id)session
 {
-  v4 = a3;
-  v5 = [(VKAnalyticsProcessor *)self isPublicAPI];
+  sessionCopy = session;
+  isPublicAPI = [(VKAnalyticsProcessor *)self isPublicAPI];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__VKAnalyticsProcessor_processAndSendSession___block_invoke;
   v7[3] = &unk_1E7BE72E0;
-  v8 = v4;
-  v9 = v5;
-  v6 = v4;
+  v8 = sessionCopy;
+  v9 = isPublicAPI;
+  v6 = sessionCopy;
   [(VKAnalyticsProcessor *)self sendCoreAnalyticsEvent:@"InteractionSessionEnded" block:v7];
 }
 
@@ -65,11 +65,11 @@ void *__46__VKAnalyticsProcessor_processAndSendSession___block_invoke(uint64_t a
   return v3;
 }
 
-- (void)sendCoreAnalyticsEvent:(id)a3 block:(id)a4
+- (void)sendCoreAnalyticsEvent:(id)event block:(id)block
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v7 = [v5 stringWithFormat:@"com.apple.VisionKit.%@", a3];
+  blockCopy = block;
+  event = [v5 stringWithFormat:@"com.apple.VisionKit.%@", event];
   AnalyticsSendEventLazy();
 }
 

@@ -1,15 +1,15 @@
 @interface VNDetectRectanglesRequestConfiguration
-- (VNDetectRectanglesRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNDetectRectanglesRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VNDetectRectanglesRequestConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = VNDetectRectanglesRequestConfiguration;
-  v4 = [(VNImageBasedRequestConfiguration *)&v12 copyWithZone:a3];
+  v4 = [(VNImageBasedRequestConfiguration *)&v12 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -30,11 +30,11 @@
   return v5;
 }
 
-- (VNDetectRectanglesRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNDetectRectanglesRequestConfiguration)initWithRequestClass:(Class)class
 {
   v4.receiver = self;
   v4.super_class = VNDetectRectanglesRequestConfiguration;
-  result = [(VNImageBasedRequestConfiguration *)&v4 initWithRequestClass:a3];
+  result = [(VNImageBasedRequestConfiguration *)&v4 initWithRequestClass:class];
   if (result)
   {
     result->_requiredVersion = 2;

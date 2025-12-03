@@ -1,44 +1,44 @@
 @interface AXSiriSettingsController
 - (BOOL)_alwaysAllowVoiceActivation;
 - (BOOL)_alwaysPrintSiriResponse;
-- (BOOL)_updateFooterForSpecifier:(id)a3;
-- (double)_speechRateFromValue:(double)a3;
-- (id)_siriCallHangup:(id)a3;
+- (BOOL)_updateFooterForSpecifier:(id)specifier;
+- (double)_speechRateFromValue:(double)value;
+- (id)_siriCallHangup:(id)hangup;
 - (id)_typeToSiriFooterString;
 - (id)_voiceActivationFooterString;
-- (id)announceNotificationsOnBuiltInSpeaker:(id)a3;
+- (id)announceNotificationsOnBuiltInSpeaker:(id)speaker;
 - (id)footerVariant;
-- (id)isAlwaysAllowVoiceActivationEnabled:(id)a3;
-- (id)isTypeToSiriEnabled:(id)a3;
-- (id)showApps:(id)a3;
-- (id)siriRequiredForInterruptions:(id)a3;
-- (id)sliderValueForSpeechRate:(id)a3;
+- (id)isAlwaysAllowVoiceActivationEnabled:(id)enabled;
+- (id)isTypeToSiriEnabled:(id)enabled;
+- (id)showApps:(id)apps;
+- (id)siriRequiredForInterruptions:(id)interruptions;
+- (id)sliderValueForSpeechRate:(id)rate;
 - (id)specifiers;
 - (id)speechRate;
-- (id)speechVarianceEnabled:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
+- (id)speechVarianceEnabled:(id)enabled;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
 - (int64_t)_typeToSiriTTSDevice;
 - (void)_handleSpeechEventCondition;
-- (void)_reloadAnnounceNotificationSettingsGroupForAnnounceOnSpeakerEnabled:(BOOL)a3;
-- (void)_setAlwaysAllowVoiceActivation:(BOOL)a3;
-- (void)_setAlwaysPrintSiriResponse:(BOOL)a3;
-- (void)_setTypeToSiriEnabled:(BOOL)a3;
-- (void)_setUseDeviceSpeakerForTTS:(int64_t)a3;
+- (void)_reloadAnnounceNotificationSettingsGroupForAnnounceOnSpeakerEnabled:(BOOL)enabled;
+- (void)_setAlwaysAllowVoiceActivation:(BOOL)activation;
+- (void)_setAlwaysPrintSiriResponse:(BOOL)response;
+- (void)_setTypeToSiriEnabled:(BOOL)enabled;
+- (void)_setUseDeviceSpeakerForTTS:(int64_t)s;
 - (void)_updateSpecifiersFromPreferences;
 - (void)dealloc;
-- (void)preferencesDidChange:(id)a3;
+- (void)preferencesDidChange:(id)change;
 - (void)reloadSpecifiers;
-- (void)setAlwaysAllowVoiceActivationEnabled:(id)a3 specifier:(id)a4;
-- (void)setAnnounceNotificationsOnBuiltInSpeaker:(id)a3 specifier:(id)a4;
-- (void)setShowApps:(id)a3 specifier:(id)a4;
-- (void)setSiriRequiredForInterruptionsEnabled:(id)a3 specifier:(id)a4;
-- (void)setSpeechVarianceEnabled:(id)a3 specifier:(id)a4;
-- (void)setTypeToSiriEnabled:(id)a3 specifier:(id)a4;
-- (void)setupSiriSpeechRateSlider:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setAlwaysAllowVoiceActivationEnabled:(id)enabled specifier:(id)specifier;
+- (void)setAnnounceNotificationsOnBuiltInSpeaker:(id)speaker specifier:(id)specifier;
+- (void)setShowApps:(id)apps specifier:(id)specifier;
+- (void)setSiriRequiredForInterruptionsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSpeechVarianceEnabled:(id)enabled specifier:(id)specifier;
+- (void)setTypeToSiriEnabled:(id)enabled specifier:(id)specifier;
+- (void)setupSiriSpeechRateSlider:(id)slider;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willBecomeActive;
 @end
 
@@ -109,9 +109,9 @@
       self->_typeToSiriGroupSpecifier = v14;
 
       v16 = self->_typeToSiriGroupSpecifier;
-      v17 = [(AXSiriSettingsController *)self _typeToSiriFooterString];
+      _typeToSiriFooterString = [(AXSiriSettingsController *)self _typeToSiriFooterString];
       v18 = PSFooterTextGroupKey;
-      [(PSSpecifier *)v16 setProperty:v17 forKey:PSFooterTextGroupKey];
+      [(PSSpecifier *)v16 setProperty:_typeToSiriFooterString forKey:PSFooterTextGroupKey];
 
       [(PSSpecifier *)self->_typeToSiriGroupSpecifier setIdentifier:@"TYPE_TO_SIRI_GROUP_ID"];
       [v5 addObject:self->_typeToSiriGroupSpecifier];
@@ -161,9 +161,9 @@
 
     v63 = v5;
     v35 = [v6 specifierForID:@"SIRI_SETTINGS_VOICE_ACTIVATION_GROUP_ID"];
-    v36 = [(AXSiriSettingsController *)self _voiceActivationFooterString];
+    _voiceActivationFooterString = [(AXSiriSettingsController *)self _voiceActivationFooterString];
     v37 = PSFooterTextGroupKey;
-    [v35 setProperty:v36 forKey:PSFooterTextGroupKey];
+    [v35 setProperty:_voiceActivationFooterString forKey:PSFooterTextGroupKey];
 
     v38 = [v6 specifierForID:@"SIRI_SETTINGS_VOICE_ACTIVATION_ALWAYS_ALLOW"];
     v39 = [(AXSiriSettingsController *)self _localizeTriggerString:@"SIRI_SETTINGS_VOICE_ACTIVATION_ALWAYS_ALLOW"];
@@ -265,30 +265,30 @@
   [(AXSiriSettingsController *)self _updateSpecifiersFromPreferences];
 }
 
-- (void)setSiriRequiredForInterruptionsEnabled:(id)a3 specifier:(id)a4
+- (void)setSiriRequiredForInterruptionsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  _AXSetSiriRequireSiriForInterruptionsInValue(v4);
+  _AXSetSiriRequireSiriForInterruptionsInValue(bOOLValue);
 }
 
-- (id)siriRequiredForInterruptions:(id)a3
+- (id)siriRequiredForInterruptions:(id)interruptions
 {
   v3 = AXGetSiriRequireSiriForInterruptionsInValue();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setSpeechVarianceEnabled:(id)a3 specifier:(id)a4
+- (void)setSpeechVarianceEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[AFPreferences sharedPreferences];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setUseAtypicalSpeechModel:v5];
+  [v6 setUseAtypicalSpeechModel:bOOLValue];
 }
 
-- (id)speechVarianceEnabled:(id)a3
+- (id)speechVarianceEnabled:(id)enabled
 {
   v3 = +[AFPreferences sharedPreferences];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 useAtypicalSpeechModel]);
@@ -296,7 +296,7 @@
   return v4;
 }
 
-- (id)_siriCallHangup:(id)a3
+- (id)_siriCallHangup:(id)hangup
 {
   v3 = +[VTPreferences sharedPreferences];
   if ([v3 canUseVoiceTriggerDuringPhoneCall])
@@ -314,14 +314,14 @@
   return v5;
 }
 
-- (void)setShowApps:(id)a3 specifier:(id)a4
+- (void)setShowApps:(id)apps specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [apps BOOLValue];
   v5 = +[AFPreferences sharedPreferences];
-  [v5 setAlwaysObscureBackgroundContentWhenActive:v4 ^ 1];
+  [v5 setAlwaysObscureBackgroundContentWhenActive:bOOLValue ^ 1];
 }
 
-- (id)showApps:(id)a3
+- (id)showApps:(id)apps
 {
   v3 = +[AFPreferences sharedPreferences];
   v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v3 alwaysObscureBackgroundContentWhenActive] ^ 1);
@@ -329,7 +329,7 @@
   return v4;
 }
 
-- (id)announceNotificationsOnBuiltInSpeaker:(id)a3
+- (id)announceNotificationsOnBuiltInSpeaker:(id)speaker
 {
   v3 = +[AFPreferences sharedPreferences];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 announceNotificationsOnBuiltInSpeakerEnabled]);
@@ -337,15 +337,15 @@
   return v4;
 }
 
-- (void)setAnnounceNotificationsOnBuiltInSpeaker:(id)a3 specifier:(id)a4
+- (void)setAnnounceNotificationsOnBuiltInSpeaker:(id)speaker specifier:(id)specifier
 {
-  v6 = a3;
+  speakerCopy = speaker;
   if (_os_feature_enabled_impl())
   {
     v5 = +[AFPreferences sharedPreferences];
-    [v5 setAnnounceNotificationsOnBuiltInSpeakerEnabled:{objc_msgSend(v6, "BOOLValue")}];
+    [v5 setAnnounceNotificationsOnBuiltInSpeakerEnabled:{objc_msgSend(speakerCopy, "BOOLValue")}];
 
-    if ([v6 BOOLValue])
+    if ([speakerCopy BOOLValue])
     {
       if ([(BBSettingsGateway *)self->_bbSettingsGateway effectiveGlobalAnnounceSetting]== &dword_0 + 1)
       {
@@ -355,15 +355,15 @@
   }
 }
 
-- (void)_reloadAnnounceNotificationSettingsGroupForAnnounceOnSpeakerEnabled:(BOOL)a3
+- (void)_reloadAnnounceNotificationSettingsGroupForAnnounceOnSpeakerEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if (_os_feature_enabled_impl())
   {
     v5 = [(AXSiriSettingsController *)self containsSpecifier:self->_announceNotificationsSpecifier];
-    if (!v3 || (v5 & 1) != 0)
+    if (!enabledCopy || (v5 & 1) != 0)
     {
-      if (!v3 && ((v5 ^ 1) & 1) == 0)
+      if (!enabledCopy && ((v5 ^ 1) & 1) == 0)
       {
         [(AXSiriSettingsController *)self removeSpecifierID:@"ANNOUNCE_NOTIFICATIONS_SETTINGS_ID"];
       }
@@ -378,116 +378,116 @@
   }
 }
 
-- (id)isTypeToSiriEnabled:(id)a3
+- (id)isTypeToSiriEnabled:(id)enabled
 {
-  v3 = [(AXSiriSettingsController *)self _typeToSiriEnabled];
+  _typeToSiriEnabled = [(AXSiriSettingsController *)self _typeToSiriEnabled];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:_typeToSiriEnabled];
 }
 
-- (void)setTypeToSiriEnabled:(id)a3 specifier:(id)a4
+- (void)setTypeToSiriEnabled:(id)enabled specifier:(id)specifier
 {
-  -[AXSiriSettingsController _setTypeToSiriEnabled:](self, "_setTypeToSiriEnabled:", [a3 BOOLValue]);
+  -[AXSiriSettingsController _setTypeToSiriEnabled:](self, "_setTypeToSiriEnabled:", [enabled BOOLValue]);
   typeToSiriGroupSpecifier = self->_typeToSiriGroupSpecifier;
-  v6 = [(AXSiriSettingsController *)self _typeToSiriFooterString];
-  [(PSSpecifier *)typeToSiriGroupSpecifier setProperty:v6 forKey:PSFooterTextGroupKey];
+  _typeToSiriFooterString = [(AXSiriSettingsController *)self _typeToSiriFooterString];
+  [(PSSpecifier *)typeToSiriGroupSpecifier setProperty:_typeToSiriFooterString forKey:PSFooterTextGroupKey];
 
   v7 = self->_typeToSiriGroupSpecifier;
 
   [(AXSiriSettingsController *)self reloadSpecifier:v7 animated:0];
 }
 
-- (id)isAlwaysAllowVoiceActivationEnabled:(id)a3
+- (id)isAlwaysAllowVoiceActivationEnabled:(id)enabled
 {
-  v3 = [(AXSiriSettingsController *)self _alwaysAllowVoiceActivation];
+  _alwaysAllowVoiceActivation = [(AXSiriSettingsController *)self _alwaysAllowVoiceActivation];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:_alwaysAllowVoiceActivation];
 }
 
-- (void)setAlwaysAllowVoiceActivationEnabled:(id)a3 specifier:(id)a4
+- (void)setAlwaysAllowVoiceActivationEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  [(AXSiriSettingsController *)self _setAlwaysAllowVoiceActivation:v5];
+  [(AXSiriSettingsController *)self _setAlwaysAllowVoiceActivation:bOOLValue];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = AXSiriSettingsController;
-  v4 = [(AXSiriSettingsController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 textLabel];
-  [v5 setNumberOfLines:0];
+  v4 = [(AXSiriSettingsController *)&v7 tableView:view cellForRowAtIndexPath:path];
+  textLabel = [v4 textLabel];
+  [textLabel setNumberOfLines:0];
 
   return v4;
 }
 
-- (void)preferencesDidChange:(id)a3
+- (void)preferencesDidChange:(id)change
 {
   v4 = +[AFPreferences sharedPreferences];
-  v5 = [v4 useDeviceSpeakerForTTS];
+  useDeviceSpeakerForTTS = [v4 useDeviceSpeakerForTTS];
 
-  if (v5 != self->_useDeviceSpeakerForTTSPreference)
+  if (useDeviceSpeakerForTTS != self->_useDeviceSpeakerForTTSPreference)
   {
-    self->_useDeviceSpeakerForTTSPreference = v5;
+    self->_useDeviceSpeakerForTTSPreference = useDeviceSpeakerForTTS;
     AXPerformBlockOnMainThread();
   }
 
   v6 = +[AFPreferences sharedPreferences];
-  v7 = [v6 announceNotificationsOnBuiltInSpeakerEnabled];
+  announceNotificationsOnBuiltInSpeakerEnabled = [v6 announceNotificationsOnBuiltInSpeakerEnabled];
 
-  [(AXSiriSettingsController *)self _reloadAnnounceNotificationSettingsGroupForAnnounceOnSpeakerEnabled:v7];
+  [(AXSiriSettingsController *)self _reloadAnnounceNotificationSettingsGroupForAnnounceOnSpeakerEnabled:announceNotificationsOnBuiltInSpeakerEnabled];
 }
 
-- (void)_setTypeToSiriEnabled:(BOOL)a3
+- (void)_setTypeToSiriEnabled:(BOOL)enabled
 {
   AFPreferencesSetTypeToSiriEnabled();
 
   [(AXSiriSettingsController *)self _updateSpecifiersFromPreferences];
 }
 
-- (void)_setUseDeviceSpeakerForTTS:(int64_t)a3
+- (void)_setUseDeviceSpeakerForTTS:(int64_t)s
 {
   v4 = +[AFPreferences sharedPreferences];
-  [v4 setUseDeviceSpeakerForTTS:a3];
+  [v4 setUseDeviceSpeakerForTTS:s];
 }
 
 - (int64_t)_typeToSiriTTSDevice
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 useDeviceSpeakerForTTS];
+  useDeviceSpeakerForTTS = [v2 useDeviceSpeakerForTTS];
 
-  return v3;
+  return useDeviceSpeakerForTTS;
 }
 
 - (BOOL)_alwaysPrintSiriResponse
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 siriResponseShouldAlwaysPrint];
+  siriResponseShouldAlwaysPrint = [v2 siriResponseShouldAlwaysPrint];
 
-  return v3;
+  return siriResponseShouldAlwaysPrint;
 }
 
-- (void)_setAlwaysPrintSiriResponse:(BOOL)a3
+- (void)_setAlwaysPrintSiriResponse:(BOOL)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = +[AFPreferences sharedPreferences];
-  [v4 setSiriResponseShouldAlwaysPrint:v3];
+  [v4 setSiriResponseShouldAlwaysPrint:responseCopy];
 }
 
 - (BOOL)_alwaysAllowVoiceActivation
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 alwaysAllowVoiceActivation];
+  alwaysAllowVoiceActivation = [v2 alwaysAllowVoiceActivation];
 
-  return v3;
+  return alwaysAllowVoiceActivation;
 }
 
-- (void)_setAlwaysAllowVoiceActivation:(BOOL)a3
+- (void)_setAlwaysAllowVoiceActivation:(BOOL)activation
 {
-  v3 = a3;
+  activationCopy = activation;
   v4 = +[AFPreferences sharedPreferences];
-  [v4 setAlwaysAllowVoiceActivation:v3];
+  [v4 setAlwaysAllowVoiceActivation:activationCopy];
 }
 
 - (id)_typeToSiriFooterString
@@ -499,11 +499,11 @@
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AXSiriSettingsController;
-  [(AXSiriSettingsController *)&v4 viewWillAppear:a3];
+  [(AXSiriSettingsController *)&v4 viewWillAppear:appear];
   [(AXSiriSettingsController *)self _updateSpecifiersFromPreferences];
 }
 
@@ -550,15 +550,15 @@
 
   v8 = [(AXSiriSettingsController *)self specifierForID:@"ENDPOINTER"];
   v9 = +[AFPreferences sharedPreferences];
-  v10 = [v9 accessibleEndpointerThreshold];
+  accessibleEndpointerThreshold = [v9 accessibleEndpointerThreshold];
 
   v11 = @"ENDPOINTER_DEFAULT";
-  if (v10 == &dword_0 + 2)
+  if (accessibleEndpointerThreshold == &dword_0 + 2)
   {
     v11 = @"ENDPOINTER_EXTENDED";
   }
 
-  if (v10 == &dword_0 + 3)
+  if (accessibleEndpointerThreshold == &dword_0 + 3)
   {
     v12 = @"ENDPOINTER_MAXIMUM";
   }
@@ -580,21 +580,21 @@
   [(AXSiriSettingsController *)self endUpdates];
 }
 
-- (BOOL)_updateFooterForSpecifier:(id)a3
+- (BOOL)_updateFooterForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_automaticSpecifier == v4)
+  specifierCopy = specifier;
+  v5 = specifierCopy;
+  if (self->_automaticSpecifier == specifierCopy)
   {
     v6 = @"VOICE_FEEDBACK_FOOTER_TEXT_AUTOMATIC";
   }
 
-  else if (self->_preferSpokenSpecifier == v4)
+  else if (self->_preferSpokenSpecifier == specifierCopy)
   {
     v6 = @"VOICE_FEEDBACK_FOOTER_PREFER_SPOKEN";
   }
 
-  else if (self->_neverSpecifier == v4)
+  else if (self->_neverSpecifier == specifierCopy)
   {
     v6 = AXLocStringKeyForModel();
   }
@@ -640,10 +640,10 @@
   return v2;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(AXSiriSettingsController *)self specifierAtIndex:[(AXSiriSettingsController *)self indexForIndexPath:v5]];
+  pathCopy = path;
+  v6 = [(AXSiriSettingsController *)self specifierAtIndex:[(AXSiriSettingsController *)self indexForIndexPath:pathCopy]];
   if (v6 == self->_groupSpecifier)
   {
     v7 = 0;
@@ -651,24 +651,24 @@
 
   else
   {
-    v7 = v5;
+    v7 = pathCopy;
   }
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v15.receiver = self;
   v15.super_class = AXSiriSettingsController;
-  v6 = a4;
-  [(AXSiriSettingsController *)&v15 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(AXSiriSettingsController *)self specifierForIndexPath:v6, v15.receiver, v15.super_class];
+  pathCopy = path;
+  [(AXSiriSettingsController *)&v15 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(AXSiriSettingsController *)self specifierForIndexPath:pathCopy, v15.receiver, v15.super_class];
 
   v8 = [(PSSpecifier *)v7 propertyForKey:@"groupKey"];
-  LODWORD(v6) = [v8 isEqualToString:@"VOICE_FEEDBACK"];
+  LODWORD(pathCopy) = [v8 isEqualToString:@"VOICE_FEEDBACK"];
 
-  if (v6)
+  if (pathCopy)
   {
     if (v7 == self->_preferSpokenSpecifier)
     {
@@ -735,7 +735,7 @@ LABEL_19:
 LABEL_20:
 }
 
-- (double)_speechRateFromValue:(double)a3
+- (double)_speechRateFromValue:(double)value
 {
   v5 = [(PSSpecifier *)self->_speechRateSpecifier propertyForKey:@"SRSliderMinimumSpeechRate"];
   [v5 floatValue];
@@ -745,12 +745,12 @@ LABEL_20:
   [v8 floatValue];
   v10 = v9;
 
-  return v7 + a3 * (v10 - v7);
+  return v7 + value * (v10 - v7);
 }
 
-- (void)setupSiriSpeechRateSlider:(id)a3
+- (void)setupSiriSpeechRateSlider:(id)slider
 {
-  v4 = a3;
+  sliderCopy = slider;
   v5 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:"setSpeechRateFromSliderValue:specifier:" get:"sliderValueForSpeechRate:" detail:0 cell:5 edit:0];
   speechRateSpecifier = self->_speechRateSpecifier;
   self->_speechRateSpecifier = v5;
@@ -820,7 +820,7 @@ LABEL_20:
   v19 = settingsLocString(@"SPEECH_RATE_SPECIFIER_ACCESSIBILITY_LABEL", @"SiriSettings");
   [(PSSpecifier *)self->_speechRateSpecifier setAccessibilityLabel:v19];
 
-  [v4 insertObject:self->_speechRateSpecifier atIndex:{objc_msgSend(v4, "indexOfSpecifierWithID:", @"SPEECH_RATE"}];
+  [sliderCopy insertObject:self->_speechRateSpecifier atIndex:{objc_msgSend(sliderCopy, "indexOfSpecifierWithID:", @"SPEECH_RATE"}];
   objc_destroyWeak(&v21);
   objc_destroyWeak(&v23);
   objc_destroyWeak(&v25);
@@ -937,17 +937,17 @@ double __54__AXSiriSettingsController_setupSiriSpeechRateSlider___block_invoke_6
 
     v5 = +[AFConnection outputVoice];
     v6 = [SiriTTSSynthesisVoice alloc];
-    v7 = [v5 languageCode];
-    v8 = [v5 name];
-    v9 = [v6 initWithLanguage:v7 name:v8];
+    languageCode = [v5 languageCode];
+    name = [v5 name];
+    v9 = [v6 initWithLanguage:languageCode name:name];
 
-    v10 = [(AXSiriSettingsController *)self speechRate];
-    [v10 doubleValue];
+    speechRate = [(AXSiriSettingsController *)self speechRate];
+    [speechRate doubleValue];
     v12 = v11;
 
     v13 = [SiriTTSSpeechRequest alloc];
-    v14 = [v5 languageCode];
-    v15 = siriSpeakingSampleLocString(v14, v12);
+    languageCode2 = [v5 languageCode];
+    v15 = siriSpeakingSampleLocString(languageCode2, v12);
     v16 = [v13 initWithText:v15 voice:v9];
 
     *&v17 = v12;
@@ -1031,9 +1031,9 @@ LABEL_11:
 - (id)speechRate
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 siriSpeechRate];
+  siriSpeechRate = [v2 siriSpeechRate];
 
-  [v3 floatValue];
+  [siriSpeechRate floatValue];
   if (v4 <= 0.0)
   {
     v5 = &off_27D160;
@@ -1041,7 +1041,7 @@ LABEL_11:
 
   else
   {
-    v5 = v3;
+    v5 = siriSpeechRate;
   }
 
   v6 = v5;
@@ -1049,9 +1049,9 @@ LABEL_11:
   return v5;
 }
 
-- (id)sliderValueForSpeechRate:(id)a3
+- (id)sliderValueForSpeechRate:(id)rate
 {
-  v3 = [a3 propertyForKey:@"SpeechRateProperty"];
+  v3 = [rate propertyForKey:@"SpeechRateProperty"];
   v3[2]();
   v4 = [NSNumber numberWithDouble:?];
 

@@ -1,19 +1,19 @@
 @interface VNTrackHomographicImageRegistrationRequest
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
 - (VNTrackHomographicImageRegistrationRequest)initWithCompletionHandler:(VNRequestCompletionHandler)completionHandler;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
 @end
 
 @implementation VNTrackHomographicImageRegistrationRequest
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = [(VNTrackHomographicImageRegistrationRequest *)self applicableDetectorTypeForRevision:a3 error:a5];
+  contextCopy = context;
+  v9 = [(VNTrackHomographicImageRegistrationRequest *)self applicableDetectorTypeForRevision:revision error:error];
 
   if (v9)
   {
-    v10 = [v8 imageBufferAndReturnError:a5];
+    v10 = [contextCopy imageBufferAndReturnError:error];
     if (!v10)
     {
       v29 = 0;
@@ -27,7 +27,7 @@ LABEL_19:
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [(VNImageSignature *)[VNImageRegistrationSignature alloc] initWithImageBuffer:v10 regionOfInterest:a5 error:v11, v13, v15, v17];
+    v19 = [(VNImageSignature *)[VNImageRegistrationSignature alloc] initWithImageBuffer:v10 regionOfInterest:error error:v11, v13, v15, v17];
     if (!v19)
     {
       v29 = 0;
@@ -38,7 +38,7 @@ LABEL_18:
 
     v20 = &OBJC_IVAR___VNImageAnalyzerCompoundRequestGroupingConfigurations__detectorModel;
     v21 = &OBJC_IVAR___VNImageAnalyzerCompoundRequestGroupingConfigurations__detectorModel;
-    if (self->_previousRequestRevision != a3)
+    if (self->_previousRequestRevision != revision)
     {
       self->_previousRequestRevision = 0;
       v22 = *(MEMORY[0x1E695F058] + 16);
@@ -53,9 +53,9 @@ LABEL_18:
 
     if (self->_previousImageBuffer)
     {
-      v32 = [v8 session];
+      session = [contextCopy session];
       v33 = 0;
-      v25 = [(VNRequest *)self applicableDetectorAndOptions:&v33 forRevision:a3 loadedInSession:v32 error:a5];
+      v25 = [(VNRequest *)self applicableDetectorAndOptions:&v33 forRevision:revision loadedInSession:session error:error];
       v26 = v33;
       v27 = v26;
       if (!v25)
@@ -71,7 +71,7 @@ LABEL_16:
       [v27 setObject:self->_previousImageRegistrationSignature forKeyedSubscript:@"VNHomographicImageRegistrationDetectorProcessOption_ReferenceImageRegistrationSignature"];
       [v27 setObject:v10 forKeyedSubscript:@"VNHomographicImageRegistrationDetectorProcessOption_FloatingImageBuffer"];
       [v27 setObject:v19 forKeyedSubscript:@"VNHomographicImageRegistrationDetectorProcessOption_FloatingImageRegistrationSignature"];
-      v28 = [v25 processUsingQualityOfServiceClass:objc_msgSend(v8 options:"qosClass") regionOfInterest:v27 warningRecorder:self error:a5 progressHandler:{0, v12, v14, v16, v18}];
+      v28 = [v25 processUsingQualityOfServiceClass:objc_msgSend(contextCopy options:"qosClass") regionOfInterest:v27 warningRecorder:self error:error progressHandler:{0, v12, v14, v16, v18}];
 
       v21 = &OBJC_IVAR___VNImageAnalyzerCompoundRequestGroupingConfigurations__detectorModel;
       v20 = &OBJC_IVAR___VNImageAnalyzerCompoundRequestGroupingConfigurations__detectorModel;
@@ -86,7 +86,7 @@ LABEL_16:
       v28 = MEMORY[0x1E695E0F0];
     }
 
-    self->_previousRequestRevision = a3;
+    self->_previousRequestRevision = revision;
     v30 = (self + v20[339]);
     *v30 = v12;
     v30[1] = v14;
@@ -107,18 +107,18 @@ LABEL_20:
   return v29;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 1)
+  if (revision == 1)
   {
     v4 = @"VNHomographicImageRegistrationDetectorType";
     v5 = @"VNHomographicImageRegistrationDetectorType";
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-    *a4 = v4 = 0;
+    *error = v4 = 0;
   }
 
   else

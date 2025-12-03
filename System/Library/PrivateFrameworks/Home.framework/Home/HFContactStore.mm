@@ -1,11 +1,11 @@
 @interface HFContactStore
 + (HFContactStore)defaultStore;
 - (HFContactStore)init;
-- (id)_fallbackContactWithEmailAddress:(id)a3 phoneNumber:(id)a4;
-- (id)_meContactWithEmailAddress:(id)a3 keys:(id)a4;
-- (id)contactForEmailAddress:(id)a3 withKeys:(id)a4;
-- (id)contactForPhoneNumber:(id)a3 withKeys:(id)a4;
-- (id)contactForUserHandle:(id)a3 withKeys:(id)a4;
+- (id)_fallbackContactWithEmailAddress:(id)address phoneNumber:(id)number;
+- (id)_meContactWithEmailAddress:(id)address keys:(id)keys;
+- (id)contactForEmailAddress:(id)address withKeys:(id)keys;
+- (id)contactForPhoneNumber:(id)number withKeys:(id)keys;
+- (id)contactForUserHandle:(id)handle withKeys:(id)keys;
 @end
 
 @implementation HFContactStore
@@ -44,24 +44,24 @@ void __30__HFContactStore_defaultStore__block_invoke_2()
   return v2;
 }
 
-- (id)contactForUserHandle:(id)a3 withKeys:(id)a4
+- (id)contactForUserHandle:(id)handle withKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  handleCopy = handle;
+  keysCopy = keys;
+  if (handleCopy)
   {
-    v8 = [v6 type];
-    if (v8 == 1)
+    type = [handleCopy type];
+    if (type == 1)
     {
-      v9 = [v6 userID];
-      v10 = [(HFContactStore *)self contactForEmailAddress:v9 withKeys:v7];
+      userID = [handleCopy userID];
+      v10 = [(HFContactStore *)self contactForEmailAddress:userID withKeys:keysCopy];
       goto LABEL_9;
     }
 
-    if (!v8)
+    if (!type)
     {
-      v9 = [v6 userID];
-      v10 = [(HFContactStore *)self _meContactWithEmailAddress:v9 keys:v7];
+      userID = [handleCopy userID];
+      v10 = [(HFContactStore *)self _meContactWithEmailAddress:userID keys:keysCopy];
 LABEL_9:
       v12 = v10;
 
@@ -82,19 +82,19 @@ LABEL_10:
   return v12;
 }
 
-- (id)_meContactWithEmailAddress:(id)a3 keys:(id)a4
+- (id)_meContactWithEmailAddress:(id)address keys:(id)keys
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  addressCopy = address;
+  keysCopy = keys;
+  v8 = keysCopy;
+  if (addressCopy)
   {
-    v9 = [v7 arrayByAddingObject:*MEMORY[0x277CBCFC0]];
+    v9 = [keysCopy arrayByAddingObject:*MEMORY[0x277CBCFC0]];
 
-    v10 = [(HFContactStore *)self contactStore];
+    contactStore = [(HFContactStore *)self contactStore];
     v21 = 0;
-    v11 = [v10 unifiedMeContactMatchingEmailAddress:v6 keysToFetch:v9 error:&v21];
+    v11 = [contactStore unifiedMeContactMatchingEmailAddress:addressCopy keysToFetch:v9 error:&v21];
     v12 = v21;
 
     v8 = v9;
@@ -126,12 +126,12 @@ LABEL_8:
   else
   {
     v12 = 0;
-    v9 = v7;
+    v9 = keysCopy;
   }
 
-  v14 = [(HFContactStore *)self contactStore];
+  contactStore2 = [(HFContactStore *)self contactStore];
   v20 = v12;
-  v11 = [v14 _ios_meContactWithKeysToFetch:v8 error:&v20];
+  v11 = [contactStore2 _ios_meContactWithKeysToFetch:v8 error:&v20];
   v15 = v20;
 
   v12 = v15;
@@ -149,7 +149,7 @@ LABEL_5:
   }
 
 LABEL_11:
-  v13 = [(HFContactStore *)self _fallbackContactWithEmailAddress:v6 phoneNumber:0];
+  v13 = [(HFContactStore *)self _fallbackContactWithEmailAddress:addressCopy phoneNumber:0];
 LABEL_12:
   v17 = v13;
 
@@ -158,19 +158,19 @@ LABEL_12:
   return v17;
 }
 
-- (id)contactForEmailAddress:(id)a3 withKeys:(id)a4
+- (id)contactForEmailAddress:(id)address withKeys:(id)keys
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  addressCopy = address;
+  keysCopy = keys;
+  if (addressCopy)
   {
-    v8 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:v6];
-    v9 = [(HFContactStore *)self contactStore];
+    v8 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:addressCopy];
+    contactStore = [(HFContactStore *)self contactStore];
     v21 = 0;
-    v10 = [v9 unifiedContactsMatchingPredicate:v8 keysToFetch:v7 error:&v21];
+    v10 = [contactStore unifiedContactsMatchingPredicate:v8 keysToFetch:keysCopy error:&v21];
     v11 = v21;
-    v12 = [v10 firstObject];
+    firstObject = [v10 firstObject];
 
     if (v11)
     {
@@ -178,7 +178,7 @@ LABEL_12:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v23 = v6;
+        v23 = addressCopy;
         v24 = 2112;
         v25 = v11;
         _os_log_error_impl(&dword_20D9BF000, v13, OS_LOG_TYPE_ERROR, "Error fetching contact with email %@: %@", buf, 0x16u);
@@ -194,14 +194,14 @@ LABEL_12:
       }
     }
 
-    if (v12)
+    if (firstObject)
     {
-      v15 = v12;
+      v15 = firstObject;
     }
 
     else
     {
-      v15 = [(HFContactStore *)self _fallbackContactWithEmailAddress:v6 phoneNumber:0];
+      v15 = [(HFContactStore *)self _fallbackContactWithEmailAddress:addressCopy phoneNumber:0];
     }
 
     v17 = v15;
@@ -224,24 +224,24 @@ LABEL_12:
   return v17;
 }
 
-- (id)contactForPhoneNumber:(id)a3 withKeys:(id)a4
+- (id)contactForPhoneNumber:(id)number withKeys:(id)keys
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  numberCopy = number;
+  keysCopy = keys;
+  if (!numberCopy)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"HFContactStore.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"phoneNumberString"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFContactStore.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"phoneNumberString"}];
   }
 
-  v9 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:v7];
+  v9 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:numberCopy];
   v10 = [MEMORY[0x277CBDA58] predicateForContactsMatchingPhoneNumber:v9];
-  v11 = [(HFContactStore *)self contactStore];
+  contactStore = [(HFContactStore *)self contactStore];
   v23 = 0;
-  v12 = [v11 unifiedContactsMatchingPredicate:v10 keysToFetch:v8 error:&v23];
+  v12 = [contactStore unifiedContactsMatchingPredicate:v10 keysToFetch:keysCopy error:&v23];
   v13 = v23;
-  v14 = [v12 firstObject];
+  firstObject = [v12 firstObject];
 
   if (v13)
   {
@@ -249,7 +249,7 @@ LABEL_12:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v25 = v7;
+      v25 = numberCopy;
       v26 = 2112;
       v27 = v13;
       _os_log_error_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_ERROR, "Error fetching contact with phone number %@: %@", buf, 0x16u);
@@ -265,9 +265,9 @@ LABEL_12:
     }
   }
 
-  if (v14)
+  if (firstObject)
   {
-    v17 = v14;
+    v17 = firstObject;
   }
 
   else
@@ -282,31 +282,31 @@ LABEL_12:
   return v18;
 }
 
-- (id)_fallbackContactWithEmailAddress:(id)a3 phoneNumber:(id)a4
+- (id)_fallbackContactWithEmailAddress:(id)address phoneNumber:(id)number
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  addressCopy = address;
+  numberCopy = number;
   v7 = objc_alloc_init(MEMORY[0x277CBDB38]);
   v8 = v7;
-  if (v5)
+  if (addressCopy)
   {
-    [v7 setGivenName:v5];
-    v9 = [MEMORY[0x277CBDB20] labeledValueWithLabel:0 value:v5];
-    v17[0] = v9;
+    [v7 setGivenName:addressCopy];
+    stringValue = [MEMORY[0x277CBDB20] labeledValueWithLabel:0 value:addressCopy];
+    v17[0] = stringValue;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
     [v8 setEmailAddresses:v10];
   }
 
   else
   {
-    v9 = [v6 stringValue];
-    [v8 setGivenName:v9];
+    stringValue = [numberCopy stringValue];
+    [v8 setGivenName:stringValue];
   }
 
-  if (v6)
+  if (numberCopy)
   {
-    v11 = [MEMORY[0x277CBDB20] labeledValueWithLabel:0 value:v6];
+    v11 = [MEMORY[0x277CBDB20] labeledValueWithLabel:0 value:numberCopy];
     v16 = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
     [v8 setPhoneNumbers:v12];

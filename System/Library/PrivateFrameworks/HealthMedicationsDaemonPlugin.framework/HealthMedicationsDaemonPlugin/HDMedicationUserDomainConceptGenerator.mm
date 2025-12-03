@@ -1,59 +1,59 @@
 @interface HDMedicationUserDomainConceptGenerator
-+ (id)propertyCollectionWithOntologyConcept:(id)a3 ontologyTransaction:(id)a4 error:(id *)a5;
++ (id)propertyCollectionWithOntologyConcept:(id)concept ontologyTransaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDMedicationUserDomainConceptGenerator
 
-+ (id)propertyCollectionWithOntologyConcept:(id)a3 ontologyTransaction:(id)a4 error:(id *)a5
++ (id)propertyCollectionWithOntologyConcept:(id)concept ontologyTransaction:(id)transaction error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  conceptCopy = concept;
+  transactionCopy = transaction;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [MEMORY[0x277D107D0] localizedOntologyPreferredNamesForConcept:v7 withUserDomainConceptPropertyType:160012];
+  v10 = [MEMORY[0x277D107D0] localizedOntologyPreferredNamesForConcept:conceptCopy withUserDomainConceptPropertyType:160012];
   if (v10)
   {
     [v9 addObjectsFromArray:v10];
-    v11 = [MEMORY[0x277D107C8] basicAttributesForConcept:v7 ofTypes:&unk_2863C2CD8];
+    v11 = [MEMORY[0x277D107C8] basicAttributesForConcept:conceptCopy ofTypes:&unk_2863C2CD8];
     if (v11)
     {
       [v9 addObjectsFromArray:v11];
-      v12 = [v7 identifier];
-      v13 = [HDOntologyBrandNameProvider brandNamesForConceptWithIdentifier:v12 ontologyTransaction:v8 error:a5];
+      identifier = [conceptCopy identifier];
+      v13 = [HDOntologyBrandNameProvider brandNamesForConceptWithIdentifier:identifier ontologyTransaction:transactionCopy error:error];
 
       if (v13)
       {
         [v9 addObjectsFromArray:v13];
-        v14 = [v7 identifier];
-        v15 = [HDOntologyGenericMedicationContentProvider genericMedicationContentForConceptWithIdentifier:v14 ontologyTransaction:v8 error:a5];
+        identifier2 = [conceptCopy identifier];
+        v15 = [HDOntologyGenericMedicationContentProvider genericMedicationContentForConceptWithIdentifier:identifier2 ontologyTransaction:transactionCopy error:error];
 
         if (v15)
         {
           [v9 addObjectsFromArray:v15];
-          v16 = [v7 identifier];
-          v17 = [HDOntologyManufacturedDoseFormProvider manufacturedDoseFormsForConceptWithIdentifier:v16 ontologyTransaction:v8 error:a5];
+          identifier3 = [conceptCopy identifier];
+          v17 = [HDOntologyManufacturedDoseFormProvider manufacturedDoseFormsForConceptWithIdentifier:identifier3 ontologyTransaction:transactionCopy error:error];
 
           if (v17)
           {
             v33 = v17;
             [v9 addObjectsFromArray:v17];
-            v18 = [v7 identifier];
-            v19 = [HDOntologyBasicDoseFormProvider basicDoseFormsForConceptWithIdentifier:v18 ontologyTransaction:v8 error:a5];
+            identifier4 = [conceptCopy identifier];
+            v19 = [HDOntologyBasicDoseFormProvider basicDoseFormsForConceptWithIdentifier:identifier4 ontologyTransaction:transactionCopy error:error];
 
             v32 = v19;
             if (v19)
             {
               [v9 addObjectsFromArray:v19];
-              v20 = [v7 identifier];
-              v21 = [HDOntologyLoggingUnitProvider loggingUnitsForConceptWithIdentifier:v20 ontologyTransaction:v8 error:a5];
+              identifier5 = [conceptCopy identifier];
+              v21 = [HDOntologyLoggingUnitProvider loggingUnitsForConceptWithIdentifier:identifier5 ontologyTransaction:transactionCopy error:error];
 
               if (v21)
               {
                 v31 = v21;
                 [v9 addObjectsFromArray:v21];
                 v22 = MEMORY[0x277D103C8];
-                v23 = [v7 identifier];
+                identifier6 = [conceptCopy identifier];
                 v34 = 0;
-                v29 = [v22 localizedEducationContentForConceptWithIdentifier:v23 ontologyTransaction:v8 localizedEducationContentOut:&v34 error:a5];
+                v29 = [v22 localizedEducationContentForConceptWithIdentifier:identifier6 ontologyTransaction:transactionCopy localizedEducationContentOut:&v34 error:error];
                 v24 = v34;
 
                 v19 = 0;
@@ -61,13 +61,13 @@
                 {
                   v30 = v24;
                   [v9 hk_addNonNilObject:v24];
-                  v25 = [v7 identifier];
-                  v26 = [HDOntologyComponentNameProvider componentNamesForConceptWithIdentifier:v25 ontologyTransaction:v8 error:a5];
+                  identifier7 = [conceptCopy identifier];
+                  v26 = [HDOntologyComponentNameProvider componentNamesForConceptWithIdentifier:identifier7 ontologyTransaction:transactionCopy error:error];
 
                   if (v26)
                   {
                     [v9 addObjectsFromArray:v26];
-                    v27 = [HDOntologyPregnancyTrimesterLactationRatingsProvider pregnancyTrimesterLactationRatingsForConcept:v7];
+                    v27 = [HDOntologyPregnancyTrimesterLactationRatingsProvider pregnancyTrimesterLactationRatingsForConcept:conceptCopy];
                     [v9 hk_addNonNilObject:v27];
                     v19 = [objc_alloc(MEMORY[0x277CCDB28]) initWithProperties:v9];
                   }

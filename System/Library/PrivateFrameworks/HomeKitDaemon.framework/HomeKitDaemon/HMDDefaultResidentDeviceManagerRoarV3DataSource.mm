@@ -3,26 +3,26 @@
 - (HMDDefaultResidentDeviceManagerRoarV3DataSource)init;
 - (NSNumber)primaryResidentPeriodicReassertDurationSeconds;
 - (NSNumber)primaryResidentPeriodicReassertSlopDurationSeconds;
-- (id)createBackingStoreForHome:(id)a3;
-- (id)createElectionAddOnWithContext:(id)a3;
-- (id)createPrimaryResidentDiscoveryManagerWithQueue:(id)a3;
-- (id)createResidentLocationHandlerForHome:(id)a3 queue:(id)a4 messageDispatcher:(id)a5;
-- (id)createResidentSelectionManagerWithContext:(id)a3;
-- (id)createResidentStatusChannelForHome:(id)a3 queue:(id)a4;
+- (id)createBackingStoreForHome:(id)home;
+- (id)createElectionAddOnWithContext:(id)context;
+- (id)createPrimaryResidentDiscoveryManagerWithQueue:(id)queue;
+- (id)createResidentLocationHandlerForHome:(id)home queue:(id)queue messageDispatcher:(id)dispatcher;
+- (id)createResidentSelectionManagerWithContext:(id)context;
+- (id)createResidentStatusChannelForHome:(id)home queue:(id)queue;
 - (id)firstCloudKitImportFuture;
-- (id)idsServerBagForHome:(id)a3;
-- (id)logIdentifierForHome:(id)a3;
+- (id)idsServerBagForHome:(id)home;
+- (id)logIdentifierForHome:(id)home;
 - (id)timerProvider;
 @end
 
 @implementation HMDDefaultResidentDeviceManagerRoarV3DataSource
 
-- (id)logIdentifierForHome:(id)a3
+- (id)logIdentifierForHome:(id)home
 {
-  v3 = [a3 uuid];
-  v4 = [v3 UUIDString];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 - (NSNumber)primaryResidentPeriodicReassertSlopDurationSeconds
@@ -74,65 +74,65 @@
   return v2;
 }
 
-- (id)idsServerBagForHome:(id)a3
+- (id)idsServerBagForHome:(id)home
 {
-  v3 = [a3 homeManager];
-  v4 = [v3 idsServerBag];
+  homeManager = [home homeManager];
+  idsServerBag = [homeManager idsServerBag];
 
-  return v4;
+  return idsServerBag;
 }
 
-- (id)createResidentLocationHandlerForHome:(id)a3 queue:(id)a4 messageDispatcher:(id)a5
+- (id)createResidentLocationHandlerForHome:(id)home queue:(id)queue messageDispatcher:(id)dispatcher
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[HMDResidentLocationHandler alloc] initWithHome:v9 queue:v8 messageDispatcher:v7];
+  dispatcherCopy = dispatcher;
+  queueCopy = queue;
+  homeCopy = home;
+  v10 = [[HMDResidentLocationHandler alloc] initWithHome:homeCopy queue:queueCopy messageDispatcher:dispatcherCopy];
 
   return v10;
 }
 
-- (id)createResidentStatusChannelForHome:(id)a3 queue:(id)a4
+- (id)createResidentStatusChannelForHome:(id)home queue:(id)queue
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HMDResidentStatusChannel alloc] initWithHome:v6 queue:v5];
+  queueCopy = queue;
+  homeCopy = home;
+  v7 = [[HMDResidentStatusChannel alloc] initWithHome:homeCopy queue:queueCopy];
 
   return v7;
 }
 
-- (id)createBackingStoreForHome:(id)a3
+- (id)createBackingStoreForHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = [HMDDefaultResidentDeviceManagerRoarBackingStore alloc];
-  v6 = [(HMDDefaultResidentDeviceManagerRoarV3DataSource *)self appleAccountManager];
-  v7 = [(HMDDefaultResidentDeviceManagerRoarBackingStore *)v5 initWithHome:v4 appleAccountManager:v6];
+  appleAccountManager = [(HMDDefaultResidentDeviceManagerRoarV3DataSource *)self appleAccountManager];
+  v7 = [(HMDDefaultResidentDeviceManagerRoarBackingStore *)v5 initWithHome:homeCopy appleAccountManager:appleAccountManager];
 
   return v7;
 }
 
-- (id)createPrimaryResidentDiscoveryManagerWithQueue:(id)a3
+- (id)createPrimaryResidentDiscoveryManagerWithQueue:(id)queue
 {
-  v3 = a3;
-  v4 = [[HMDPrimaryResidentDiscoveryManager alloc] initWithQueue:v3];
+  queueCopy = queue;
+  v4 = [[HMDPrimaryResidentDiscoveryManager alloc] initWithQueue:queueCopy];
 
   return v4;
 }
 
-- (id)createResidentSelectionManagerWithContext:(id)a3
+- (id)createResidentSelectionManagerWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [[HMDResidentSelectionManager alloc] initWithContext:v3];
+  contextCopy = context;
+  v4 = [[HMDResidentSelectionManager alloc] initWithContext:contextCopy];
 
   return v4;
 }
 
-- (id)createElectionAddOnWithContext:(id)a3
+- (id)createElectionAddOnWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ([(HMDDefaultResidentDeviceManagerRoarV3DataSource *)self isResidentCapable])
   {
-    v5 = [[HMDPrimaryElectionCoordinationAddOn alloc] initWithContext:v4];
+    v5 = [[HMDPrimaryElectionCoordinationAddOn alloc] initWithContext:contextCopy];
   }
 
   else
@@ -146,17 +146,17 @@
 - (id)firstCloudKitImportFuture
 {
   v2 = +[HMDCoreData sharedInstance];
-  v3 = [v2 firstCloudKitImportFuture];
+  firstCloudKitImportFuture = [v2 firstCloudKitImportFuture];
 
-  return v3;
+  return firstCloudKitImportFuture;
 }
 
 - (BOOL)isResidentCapable
 {
   v2 = +[HMDDeviceCapabilities deviceCapabilities];
-  v3 = [v2 isResidentCapable];
+  isResidentCapable = [v2 isResidentCapable];
 
-  return v3;
+  return isResidentCapable;
 }
 
 - (HMDDefaultResidentDeviceManagerRoarV3DataSource)init
@@ -167,9 +167,9 @@
   if (v2)
   {
     v3 = HMDispatchQueueNameString();
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     queue = v2->_queue;
     v2->_queue = v6;
   }

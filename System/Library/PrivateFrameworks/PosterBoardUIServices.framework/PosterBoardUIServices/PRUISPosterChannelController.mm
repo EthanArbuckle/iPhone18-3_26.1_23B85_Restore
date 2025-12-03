@@ -1,64 +1,64 @@
 @interface PRUISPosterChannelController
 - (NSSet)channels;
 - (PRUISPosterChannelController)init;
-- (PRUISPosterChannelController)initWithConfiguration:(id)a3;
-- (id)channelForIdentifier:(id)a3;
-- (id)channelForIdentifierIfImmediatelyAvailable:(id)a3;
-- (id)channelForIdentifierIfImmediatelyAvailable:(id)a3 error:(id *)a4;
-- (id)channelFutureForIdentifier:(id)a3;
+- (PRUISPosterChannelController)initWithConfiguration:(id)configuration;
+- (id)channelForIdentifier:(id)identifier;
+- (id)channelForIdentifierIfImmediatelyAvailable:(id)available;
+- (id)channelForIdentifierIfImmediatelyAvailable:(id)available error:(id *)error;
+- (id)channelFutureForIdentifier:(id)identifier;
 - (id)channelsFuture;
-- (id)channelsIfImmediatelyAvailableWithError:(id *)a3;
-- (id)createChannelWithIdentifier:(id)a3 updater:(id)a4;
-- (id)reapEverythingForChannel:(id)a3;
-- (id)reapStaleSnapshotsForChannel:(id)a3;
-- (id)reapStaleStateForChannel:(id)a3 omittingLast:(unint64_t)a4;
-- (id)removeChannelWithFuture:(id)a3;
-- (id)updateChannel:(id)a3 updater:(id)a4;
-- (void)_fireObserversRespondingToSelector:(SEL)a3 handler:(id)a4;
-- (void)addChannelControllerObserver:(id)a3;
-- (void)channel:(id)a3 didUpdateGallery:(id)a4;
-- (void)channelForIdentifier:(id)a3 completion:(id)a4;
-- (void)channelsWithCompletion:(id)a3;
-- (void)createChannelWithIdentifier:(id)a3 updater:(id)a4 completion:(id)a5;
-- (void)handleDidAddChannel:(id)a3;
-- (void)handleDidRemoveChannel:(id)a3;
-- (void)handleDidUpdateChannel:(id)a3;
-- (void)handleWillAddChannel:(id)a3;
-- (void)handleWillRemoveChannel:(id)a3;
-- (void)handleWillUpdateChannel:(id)a3;
-- (void)reapEverythingForChannel:(id)a3 completion:(id)a4;
-- (void)reapStaleSnapshotsForChannel:(id)a3 completion:(id)a4;
-- (void)reapStaleStateForChannel:(id)a3 omittingLast:(unint64_t)a4 completion:(id)a5;
-- (void)removeChannel:(id)a3 completion:(id)a4;
-- (void)removeChannelControllerObserver:(id)a3;
-- (void)updateChannel:(id)a3 updater:(id)a4 completion:(id)a5;
+- (id)channelsIfImmediatelyAvailableWithError:(id *)error;
+- (id)createChannelWithIdentifier:(id)identifier updater:(id)updater;
+- (id)reapEverythingForChannel:(id)channel;
+- (id)reapStaleSnapshotsForChannel:(id)channel;
+- (id)reapStaleStateForChannel:(id)channel omittingLast:(unint64_t)last;
+- (id)removeChannelWithFuture:(id)future;
+- (id)updateChannel:(id)channel updater:(id)updater;
+- (void)_fireObserversRespondingToSelector:(SEL)selector handler:(id)handler;
+- (void)addChannelControllerObserver:(id)observer;
+- (void)channel:(id)channel didUpdateGallery:(id)gallery;
+- (void)channelForIdentifier:(id)identifier completion:(id)completion;
+- (void)channelsWithCompletion:(id)completion;
+- (void)createChannelWithIdentifier:(id)identifier updater:(id)updater completion:(id)completion;
+- (void)handleDidAddChannel:(id)channel;
+- (void)handleDidRemoveChannel:(id)channel;
+- (void)handleDidUpdateChannel:(id)channel;
+- (void)handleWillAddChannel:(id)channel;
+- (void)handleWillRemoveChannel:(id)channel;
+- (void)handleWillUpdateChannel:(id)channel;
+- (void)reapEverythingForChannel:(id)channel completion:(id)completion;
+- (void)reapStaleSnapshotsForChannel:(id)channel completion:(id)completion;
+- (void)reapStaleStateForChannel:(id)channel omittingLast:(unint64_t)last completion:(id)completion;
+- (void)removeChannel:(id)channel completion:(id)completion;
+- (void)removeChannelControllerObserver:(id)observer;
+- (void)updateChannel:(id)channel updater:(id)updater completion:(id)completion;
 @end
 
 @implementation PRUISPosterChannelController
 
-- (PRUISPosterChannelController)initWithConfiguration:(id)a3
+- (PRUISPosterChannelController)initWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  if (!v6)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     [PRUISPosterChannelController initWithConfiguration:a2];
   }
 
-  v7 = v6;
+  v7 = configurationCopy;
   v62.receiver = self;
   v62.super_class = PRUISPosterChannelController;
   v8 = [(PRUISPosterChannelController *)&v62 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_configuration, a3);
+    objc_storeStrong(&v8->_configuration, configuration);
     v10 = objc_alloc(MEMORY[0x1E69C5170]);
     v11 = MEMORY[0x1E696AFB0];
     v12 = MEMORY[0x1E696AEC0];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    v15 = [v7 role];
-    v16 = [v12 stringWithFormat:@"%@-%@", v14, v15];
+    role = [v7 role];
+    v16 = [v12 stringWithFormat:@"%@-%@", v14, role];
     v17 = [v11 pf_UUIDFromArbitraryString:v16];
     v18 = [v10 initWithDefaultInstanceIdentifier:v17];
 
@@ -91,14 +91,14 @@
     v9->_observerQueue = Serial;
 
     v36 = objc_alloc(MEMORY[0x1E69C5140]);
-    v37 = [(PRUISPosterChannelModelCoordinator *)v9->_modelCoordinator logPrefix];
-    v38 = [v36 initWithLockIdentifier:v37];
+    logPrefix = [(PRUISPosterChannelModelCoordinator *)v9->_modelCoordinator logPrefix];
+    v38 = [v36 initWithLockIdentifier:logPrefix];
     lock = v9->_lock;
     v9->_lock = v38;
 
-    v40 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     lock_observers = v9->_lock_observers;
-    v9->_lock_observers = v40;
+    v9->_lock_observers = weakObjectsHashTable;
 
     v9->_reapOptions = [v7 reapOptions];
     v42 = v9->_modelCoordinator;
@@ -127,13 +127,13 @@
     [(PFTScheduler *)v48 performBlock:v55];
     if ((v9->_reapOptions & 2) != 0)
     {
-      v50 = [(PRUISPosterChannelController *)v45 channelForUUIDFuture];
+      channelForUUIDFuture = [(PRUISPosterChannelController *)v45 channelForUUIDFuture];
       v53[0] = MEMORY[0x1E69E9820];
       v53[1] = 3221225472;
       v53[2] = __54__PRUISPosterChannelController_initWithConfiguration___block_invoke_3;
       v53[3] = &unk_1E83A8290;
       v54 = v45;
-      v51 = [v50 flatMap:v53 continuationScheduler:v9->_reapScheduler];
+      v51 = [channelForUUIDFuture flatMap:v53 continuationScheduler:v9->_reapScheduler];
     }
 
     objc_destroyWeak(&v60);
@@ -282,20 +282,20 @@ void __54__PRUISPosterChannelController_initWithConfiguration___block_invoke_4(u
 
 - (NSSet)channels
 {
-  v2 = [(PRUISPosterChannelController *)self channelsFuture];
-  v3 = [v2 result:0];
+  channelsFuture = [(PRUISPosterChannelController *)self channelsFuture];
+  v3 = [channelsFuture result:0];
 
   return v3;
 }
 
-- (id)channelsIfImmediatelyAvailableWithError:(id *)a3
+- (id)channelsIfImmediatelyAvailableWithError:(id *)error
 {
-  v4 = [(PRUISPosterChannelController *)self channelsFuture];
-  if (![v4 isFinished])
+  channelsFuture = [(PRUISPosterChannelController *)self channelsFuture];
+  if (![channelsFuture isFinished])
   {
     v5 = 0;
     v6 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -304,13 +304,13 @@ void __54__PRUISPosterChannelController_initWithConfiguration___block_invoke_4(u
   }
 
   v9 = 0;
-  v5 = [v4 result:&v9];
+  v5 = [channelsFuture result:&v9];
   v6 = v9;
-  if (a3)
+  if (error)
   {
 LABEL_5:
     v7 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
 LABEL_6:
@@ -318,32 +318,32 @@ LABEL_6:
   return v5;
 }
 
-- (void)channelsWithCompletion:(id)a3
+- (void)channelsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [(PRUISPosterChannelController *)self channelsFuture];
+    channelsFuture = [(PRUISPosterChannelController *)self channelsFuture];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __55__PRUISPosterChannelController_channelsWithCompletion___block_invoke;
     v6[3] = &unk_1E83A82B8;
-    v7 = v4;
-    [v5 addCompletionBlock:v6 scheduler:self->_completionScheduler];
+    v7 = completionCopy;
+    [channelsFuture addCompletionBlock:v6 scheduler:self->_completionScheduler];
   }
 }
 
-- (id)channelForIdentifier:(id)a3
+- (id)channelForIdentifier:(id)identifier
 {
-  v3 = [(PRUISPosterChannelController *)self channelFutureForIdentifier:a3];
+  v3 = [(PRUISPosterChannelController *)self channelFutureForIdentifier:identifier];
   v4 = [v3 result:0];
 
   return v4;
 }
 
-- (id)channelForIdentifierIfImmediatelyAvailable:(id)a3
+- (id)channelForIdentifierIfImmediatelyAvailable:(id)available
 {
-  v3 = [(PRUISPosterChannelController *)self channelFutureForIdentifier:a3];
+  v3 = [(PRUISPosterChannelController *)self channelFutureForIdentifier:available];
   if ([v3 isFinished])
   {
     v4 = [v3 result:0];
@@ -357,14 +357,14 @@ LABEL_6:
   return v4;
 }
 
-- (id)channelForIdentifierIfImmediatelyAvailable:(id)a3 error:(id *)a4
+- (id)channelForIdentifierIfImmediatelyAvailable:(id)available error:(id *)error
 {
-  v5 = [(PRUISPosterChannelController *)self channelFutureForIdentifier:a3];
+  v5 = [(PRUISPosterChannelController *)self channelFutureForIdentifier:available];
   if (![v5 isFinished])
   {
     v6 = 0;
     v7 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -375,11 +375,11 @@ LABEL_6:
   v10 = 0;
   v6 = [v5 result:&v10];
   v7 = v10;
-  if (a4)
+  if (error)
   {
 LABEL_5:
     v8 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
 LABEL_6:
@@ -387,129 +387,129 @@ LABEL_6:
   return v6;
 }
 
-- (void)channelForIdentifier:(id)a3 completion:(id)a4
+- (void)channelForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = [(PRUISPosterChannelController *)self channelFutureForIdentifier:a3];
+    v7 = [(PRUISPosterChannelController *)self channelFutureForIdentifier:identifier];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __64__PRUISPosterChannelController_channelForIdentifier_completion___block_invoke;
     v8[3] = &unk_1E83A82E0;
-    v9 = v6;
+    v9 = completionCopy;
     [v7 addCompletionBlock:v8 scheduler:self->_completionScheduler];
   }
 }
 
-- (void)createChannelWithIdentifier:(id)a3 updater:(id)a4 completion:(id)a5
+- (void)createChannelWithIdentifier:(id)identifier updater:(id)updater completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(PRUISPosterChannelController *)self createChannelWithIdentifier:a3 updater:a4];
-  if (v8)
+  completionCopy = completion;
+  v9 = [(PRUISPosterChannelController *)self createChannelWithIdentifier:identifier updater:updater];
+  if (completionCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __79__PRUISPosterChannelController_createChannelWithIdentifier_updater_completion___block_invoke;
     v10[3] = &unk_1E83A82E0;
-    v11 = v8;
+    v11 = completionCopy;
     [v9 addCompletionBlock:v10 scheduler:self->_completionScheduler];
   }
 }
 
-- (void)removeChannel:(id)a3 completion:(id)a4
+- (void)removeChannel:(id)channel completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PRUISPosterChannelController *)self removeChannelWithFuture:a3];
-  if (v6)
+  completionCopy = completion;
+  v7 = [(PRUISPosterChannelController *)self removeChannelWithFuture:channel];
+  if (completionCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __57__PRUISPosterChannelController_removeChannel_completion___block_invoke;
     v8[3] = &unk_1E83A8308;
-    v9 = v6;
+    v9 = completionCopy;
     [v7 addCompletionBlock:v8 scheduler:self->_completionScheduler];
   }
 }
 
-- (void)updateChannel:(id)a3 updater:(id)a4 completion:(id)a5
+- (void)updateChannel:(id)channel updater:(id)updater completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(PRUISPosterChannelController *)self updateChannel:a3 updater:a4];
-  if (v8)
+  completionCopy = completion;
+  v9 = [(PRUISPosterChannelController *)self updateChannel:channel updater:updater];
+  if (completionCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __65__PRUISPosterChannelController_updateChannel_updater_completion___block_invoke;
     v10[3] = &unk_1E83A82E0;
-    v11 = v8;
+    v11 = completionCopy;
     [v9 addCompletionBlock:v10 scheduler:self->_completionScheduler];
   }
 }
 
-- (void)reapStaleStateForChannel:(id)a3 omittingLast:(unint64_t)a4 completion:(id)a5
+- (void)reapStaleStateForChannel:(id)channel omittingLast:(unint64_t)last completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(PRUISPosterChannelController *)self reapStaleStateForChannel:a3 omittingLast:a4];
-  if (v8)
+  completionCopy = completion;
+  v9 = [(PRUISPosterChannelController *)self reapStaleStateForChannel:channel omittingLast:last];
+  if (completionCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __81__PRUISPosterChannelController_reapStaleStateForChannel_omittingLast_completion___block_invoke;
     v10[3] = &unk_1E83A8308;
-    v11 = v8;
+    v11 = completionCopy;
     [v9 addCompletionBlock:v10 scheduler:self->_completionScheduler];
   }
 }
 
-- (void)reapStaleSnapshotsForChannel:(id)a3 completion:(id)a4
+- (void)reapStaleSnapshotsForChannel:(id)channel completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PRUISPosterChannelController *)self reapStaleSnapshotsForChannel:a3];
-  if (v6)
+  completionCopy = completion;
+  v7 = [(PRUISPosterChannelController *)self reapStaleSnapshotsForChannel:channel];
+  if (completionCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __72__PRUISPosterChannelController_reapStaleSnapshotsForChannel_completion___block_invoke;
     v8[3] = &unk_1E83A8308;
-    v9 = v6;
+    v9 = completionCopy;
     [v7 addCompletionBlock:v8 scheduler:self->_completionScheduler];
   }
 }
 
-- (void)reapEverythingForChannel:(id)a3 completion:(id)a4
+- (void)reapEverythingForChannel:(id)channel completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PRUISPosterChannelController *)self reapEverythingForChannel:a3];
-  if (v6)
+  completionCopy = completion;
+  v7 = [(PRUISPosterChannelController *)self reapEverythingForChannel:channel];
+  if (completionCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __68__PRUISPosterChannelController_reapEverythingForChannel_completion___block_invoke;
     v8[3] = &unk_1E83A8308;
-    v9 = v6;
+    v9 = completionCopy;
     [v7 addCompletionBlock:v8 scheduler:self->_completionScheduler];
   }
 }
 
-- (id)channelFutureForIdentifier:(id)a3
+- (id)channelFutureForIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [PRUISPosterChannelController channelFutureForIdentifier:a2];
   }
 
-  v6 = v5;
-  v7 = [(PRUISPosterChannelController *)self channelForUUIDFuture];
+  v6 = identifierCopy;
+  channelForUUIDFuture = [(PRUISPosterChannelController *)self channelForUUIDFuture];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__PRUISPosterChannelController_channelFutureForIdentifier___block_invoke;
   v11[3] = &unk_1E83A8330;
   v12 = v6;
-  v13 = self;
+  selfCopy = self;
   v8 = v6;
-  v9 = [v7 flatMap:v11];
+  v9 = [channelForUUIDFuture flatMap:v11];
 
   return v9;
 }
@@ -536,8 +536,8 @@ id __59__PRUISPosterChannelController_channelFutureForIdentifier___block_invoke(
 
 - (id)channelsFuture
 {
-  v2 = [(PRUISPosterChannelController *)self channelForUUIDFuture];
-  v3 = [v2 flatMap:&__block_literal_global_17];
+  channelForUUIDFuture = [(PRUISPosterChannelController *)self channelForUUIDFuture];
+  v3 = [channelForUUIDFuture flatMap:&__block_literal_global_17];
 
   return v3;
 }
@@ -553,25 +553,25 @@ id __46__PRUISPosterChannelController_channelsFuture__block_invoke(uint64_t a1, 
   return v6;
 }
 
-- (id)createChannelWithIdentifier:(id)a3 updater:(id)a4
+- (id)createChannelWithIdentifier:(id)identifier updater:(id)updater
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  updaterCopy = updater;
+  if (!identifierCopy)
   {
     [PRUISPosterChannelController createChannelWithIdentifier:a2 updater:?];
   }
 
-  v9 = v8;
+  v9 = updaterCopy;
   v10 = self->_modelCoordinator;
-  v11 = [(PRUISPosterChannelModelCoordinator *)v10 fileSystemEndpointForChannelIdentifier:v7];
-  v12 = [(PRUISPosterChannelController *)self channelForUUIDFuture];
+  v11 = [(PRUISPosterChannelModelCoordinator *)v10 fileSystemEndpointForChannelIdentifier:identifierCopy];
+  channelForUUIDFuture = [(PRUISPosterChannelController *)self channelForUUIDFuture];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __68__PRUISPosterChannelController_createChannelWithIdentifier_updater___block_invoke;
   v20[3] = &unk_1E83A8378;
   v20[4] = self;
-  v21 = v7;
+  v21 = identifierCopy;
   v23 = v11;
   v24 = v9;
   v22 = v10;
@@ -579,8 +579,8 @@ id __46__PRUISPosterChannelController_channelsFuture__block_invoke(uint64_t a1, 
   v14 = v11;
   v15 = v10;
   v16 = v9;
-  v17 = v7;
-  v18 = [v12 flatMap:v20 continuationScheduler:modelCoordinatorScheduler];
+  v17 = identifierCopy;
+  v18 = [channelForUUIDFuture flatMap:v20 continuationScheduler:modelCoordinatorScheduler];
 
   return v18;
 }
@@ -667,34 +667,34 @@ uint64_t __68__PRUISPosterChannelController_createChannelWithIdentifier_updater_
   return MEMORY[0x1EEE66BB8](v4);
 }
 
-- (id)removeChannelWithFuture:(id)a3
+- (id)removeChannelWithFuture:(id)future
 {
-  v5 = a3;
-  if (!v5)
+  futureCopy = future;
+  if (!futureCopy)
   {
     [PRUISPosterChannelController removeChannelWithFuture:a2];
   }
 
-  v6 = v5;
+  v6 = futureCopy;
   v7 = self->_modelCoordinatorScheduler_channelForUUID;
   v8 = self->_modelCoordinator;
-  v9 = [v6 channelIdentifier];
-  v10 = [(PRUISPosterChannelController *)self channelForUUIDFuture];
+  channelIdentifier = [v6 channelIdentifier];
+  channelForUUIDFuture = [(PRUISPosterChannelController *)self channelForUUIDFuture];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __56__PRUISPosterChannelController_removeChannelWithFuture___block_invoke;
   v18[3] = &unk_1E83A83F0;
-  v19 = v9;
+  v19 = channelIdentifier;
   v20 = v6;
-  v21 = self;
+  selfCopy = self;
   v22 = v8;
   v23 = v7;
   modelCoordinatorScheduler = self->_modelCoordinatorScheduler;
   v12 = v7;
   v13 = v8;
   v14 = v6;
-  v15 = v9;
-  v16 = [v10 flatMap:v18 continuationScheduler:modelCoordinatorScheduler];
+  v15 = channelIdentifier;
+  v16 = [channelForUUIDFuture flatMap:v18 continuationScheduler:modelCoordinatorScheduler];
 
   return v16;
 }
@@ -764,47 +764,47 @@ id __56__PRUISPosterChannelController_removeChannelWithFuture___block_invoke_2(u
   return v4;
 }
 
-- (id)updateChannel:(id)a3 updater:(id)a4
+- (id)updateChannel:(id)channel updater:(id)updater
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  channelCopy = channel;
+  updaterCopy = updater;
+  if (!updaterCopy)
   {
     [PRUISPosterChannelController updateChannel:a2 updater:?];
   }
 
-  if (!v7)
+  if (!channelCopy)
   {
     [PRUISPosterChannelController updateChannel:a2 updater:?];
   }
 
-  v9 = v8;
-  v10 = [(PRUISPosterChannelController *)self channelForUUIDFuture];
-  v11 = [v7 channelIdentifier];
+  v9 = updaterCopy;
+  channelForUUIDFuture = [(PRUISPosterChannelController *)self channelForUUIDFuture];
+  channelIdentifier = [channelCopy channelIdentifier];
   v12 = self->_modelCoordinator;
   v13 = objc_opt_new();
-  v14 = [v7 posterConfiguration];
-  [v13 setPosterConfiguration:v14];
+  posterConfiguration = [channelCopy posterConfiguration];
+  [v13 setPosterConfiguration:posterConfiguration];
 
-  v15 = [v7 channelContext];
-  [v13 setChannelContext:v15];
+  channelContext = [channelCopy channelContext];
+  [v13 setChannelContext:channelContext];
 
   (v9)[2](v9, v13);
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __54__PRUISPosterChannelController_updateChannel_updater___block_invoke;
   v23[3] = &unk_1E83A83F0;
-  v24 = v11;
-  v25 = v7;
-  v26 = self;
+  v24 = channelIdentifier;
+  v25 = channelCopy;
+  selfCopy = self;
   v27 = v12;
   v28 = v13;
   modelCoordinatorScheduler = self->_modelCoordinatorScheduler;
   v17 = v13;
   v18 = v12;
-  v19 = v7;
-  v20 = v11;
-  v21 = [v10 flatMap:v23 continuationScheduler:modelCoordinatorScheduler];
+  v19 = channelCopy;
+  v20 = channelIdentifier;
+  v21 = [channelForUUIDFuture flatMap:v23 continuationScheduler:modelCoordinatorScheduler];
 
   return v21;
 }
@@ -851,32 +851,32 @@ id __54__PRUISPosterChannelController_updateChannel_updater___block_invoke(uint6
   return v7;
 }
 
-- (id)reapStaleStateForChannel:(id)a3 omittingLast:(unint64_t)a4
+- (id)reapStaleStateForChannel:(id)channel omittingLast:(unint64_t)last
 {
-  v7 = a3;
-  if (!v7)
+  channelCopy = channel;
+  if (!channelCopy)
   {
     [PRUISPosterChannelController reapStaleStateForChannel:a2 omittingLast:?];
   }
 
-  v8 = v7;
+  v8 = channelCopy;
   v9 = self->_modelCoordinator;
-  v10 = [v8 channelIdentifier];
-  v11 = [(PRUISPosterChannelController *)self channelForUUIDFuture];
+  channelIdentifier = [v8 channelIdentifier];
+  channelForUUIDFuture = [(PRUISPosterChannelController *)self channelForUUIDFuture];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __70__PRUISPosterChannelController_reapStaleStateForChannel_omittingLast___block_invoke;
   v18[3] = &unk_1E83A8468;
-  v19 = v10;
+  v19 = channelIdentifier;
   v20 = v8;
-  v21 = self;
+  selfCopy = self;
   v22 = v9;
-  v23 = a4;
+  lastCopy = last;
   reapScheduler = self->_reapScheduler;
   v13 = v9;
   v14 = v8;
-  v15 = v10;
-  v16 = [v11 flatMap:v18 continuationScheduler:reapScheduler];
+  v15 = channelIdentifier;
+  v16 = [channelForUUIDFuture flatMap:v18 continuationScheduler:reapScheduler];
 
   return v16;
 }
@@ -926,31 +926,31 @@ id __70__PRUISPosterChannelController_reapStaleStateForChannel_omittingLast___bl
   return v8;
 }
 
-- (id)reapStaleSnapshotsForChannel:(id)a3
+- (id)reapStaleSnapshotsForChannel:(id)channel
 {
-  v5 = a3;
-  if (!v5)
+  channelCopy = channel;
+  if (!channelCopy)
   {
     [PRUISPosterChannelController reapStaleSnapshotsForChannel:a2];
   }
 
-  v6 = v5;
+  v6 = channelCopy;
   v7 = self->_modelCoordinator;
-  v8 = [v6 channelIdentifier];
-  v9 = [(PRUISPosterChannelController *)self channelForUUIDFuture];
+  channelIdentifier = [v6 channelIdentifier];
+  channelForUUIDFuture = [(PRUISPosterChannelController *)self channelForUUIDFuture];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __61__PRUISPosterChannelController_reapStaleSnapshotsForChannel___block_invoke;
   v16[3] = &unk_1E83A84B8;
-  v17 = v8;
+  v17 = channelIdentifier;
   v18 = v6;
-  v19 = self;
+  selfCopy = self;
   v20 = v7;
   reapScheduler = self->_reapScheduler;
   v11 = v7;
   v12 = v6;
-  v13 = v8;
-  v14 = [v9 flatMap:v16 continuationScheduler:reapScheduler];
+  v13 = channelIdentifier;
+  v14 = [channelForUUIDFuture flatMap:v16 continuationScheduler:reapScheduler];
 
   return v14;
 }
@@ -1013,31 +1013,31 @@ uint64_t __61__PRUISPosterChannelController_reapStaleSnapshotsForChannel___block
   return MEMORY[0x1EEE66BB8](v3);
 }
 
-- (id)reapEverythingForChannel:(id)a3
+- (id)reapEverythingForChannel:(id)channel
 {
-  v5 = a3;
-  if (!v5)
+  channelCopy = channel;
+  if (!channelCopy)
   {
     [PRUISPosterChannelController reapEverythingForChannel:a2];
   }
 
-  v6 = v5;
+  v6 = channelCopy;
   v7 = self->_modelCoordinator;
-  v8 = [v6 channelIdentifier];
-  v9 = [(PRUISPosterChannelController *)self channelForUUIDFuture];
+  channelIdentifier = [v6 channelIdentifier];
+  channelForUUIDFuture = [(PRUISPosterChannelController *)self channelForUUIDFuture];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __57__PRUISPosterChannelController_reapEverythingForChannel___block_invoke;
   v16[3] = &unk_1E83A84B8;
-  v17 = v8;
+  v17 = channelIdentifier;
   v18 = v6;
-  v19 = self;
+  selfCopy = self;
   v20 = v7;
   reapScheduler = self->_reapScheduler;
   v11 = v7;
   v12 = v6;
-  v13 = v8;
-  v14 = [v9 flatMap:v16 continuationScheduler:reapScheduler];
+  v13 = channelIdentifier;
+  v14 = [channelForUUIDFuture flatMap:v16 continuationScheduler:reapScheduler];
 
   return v14;
 }
@@ -1100,10 +1100,10 @@ uint64_t __57__PRUISPosterChannelController_reapEverythingForChannel___block_inv
   return MEMORY[0x1EEE66BB8](v3);
 }
 
-- (void)addChannelControllerObserver:(id)a3
+- (void)addChannelControllerObserver:(id)observer
 {
-  v5 = a3;
-  if (!v5)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [PRUISPosterChannelController addChannelControllerObserver:a2];
   }
@@ -1113,15 +1113,15 @@ uint64_t __57__PRUISPosterChannelController_reapEverythingForChannel___block_inv
   v8[1] = 3221225472;
   v8[2] = __61__PRUISPosterChannelController_addChannelControllerObserver___block_invoke;
   v8[3] = &unk_1E83A84E0;
-  v9 = v5;
-  v7 = v5;
+  v9 = observerCopy;
+  v7 = observerCopy;
   [(PFOSUnfairLock *)lock performBlockWhileCapturingWeak:self performBlock:v8];
 }
 
-- (void)removeChannelControllerObserver:(id)a3
+- (void)removeChannelControllerObserver:(id)observer
 {
-  v5 = a3;
-  if (!v5)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [PRUISPosterChannelController removeChannelControllerObserver:a2];
   }
@@ -1131,68 +1131,68 @@ uint64_t __57__PRUISPosterChannelController_reapEverythingForChannel___block_inv
   v8[1] = 3221225472;
   v8[2] = __64__PRUISPosterChannelController_removeChannelControllerObserver___block_invoke;
   v8[3] = &unk_1E83A84E0;
-  v9 = v5;
-  v7 = v5;
+  v9 = observerCopy;
+  v7 = observerCopy;
   [(PFOSUnfairLock *)lock performBlockWhileCapturingWeak:self performBlock:v8];
 }
 
-- (void)handleWillAddChannel:(id)a3
+- (void)handleWillAddChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__PRUISPosterChannelController_handleWillAddChannel___block_invoke;
   v6[3] = &unk_1E83A8508;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = channelCopy;
+  v5 = channelCopy;
   [(PRUISPosterChannelController *)self _fireObserversRespondingToSelector:sel_channelController_willAddChannel_ handler:v6];
 }
 
-- (void)handleDidAddChannel:(id)a3
+- (void)handleDidAddChannel:(id)channel
 {
-  v4 = a3;
-  [v4 addChannelObserver:self];
+  channelCopy = channel;
+  [channelCopy addChannelObserver:self];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__PRUISPosterChannelController_handleDidAddChannel___block_invoke;
   v6[3] = &unk_1E83A8508;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = channelCopy;
+  v5 = channelCopy;
   [(PRUISPosterChannelController *)self _fireObserversRespondingToSelector:sel_channelController_didAddChannel_ handler:v6];
 }
 
-- (void)handleWillUpdateChannel:(id)a3
+- (void)handleWillUpdateChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__PRUISPosterChannelController_handleWillUpdateChannel___block_invoke;
   v6[3] = &unk_1E83A8508;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = channelCopy;
+  v5 = channelCopy;
   [(PRUISPosterChannelController *)self _fireObserversRespondingToSelector:sel_channelController_willUpdateChannel_ handler:v6];
 }
 
-- (void)handleDidUpdateChannel:(id)a3
+- (void)handleDidUpdateChannel:(id)channel
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  channelCopy = channel;
   if ((self->_reapOptions & 4) != 0)
   {
     v5 = PRUISLogChannels();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 channelIdentifier];
-      v7 = [v6 UUIDString];
+      channelIdentifier = [channelCopy channelIdentifier];
+      uUIDString = [channelIdentifier UUIDString];
       *buf = 138543362;
-      v13 = v7;
+      v13 = uUIDString;
       _os_log_impl(&dword_1CAE63000, v5, OS_LOG_TYPE_DEFAULT, "[ReapOnChannelUpdate][StateUpdate] Reaping stale data from channel identifier %{public}@", buf, 0xCu);
     }
 
-    v8 = [(PRUISPosterChannelController *)self reapEverythingForChannel:v4];
+    v8 = [(PRUISPosterChannelController *)self reapEverythingForChannel:channelCopy];
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -1200,43 +1200,43 @@ uint64_t __57__PRUISPosterChannelController_reapEverythingForChannel___block_inv
   v10[2] = __55__PRUISPosterChannelController_handleDidUpdateChannel___block_invoke;
   v10[3] = &unk_1E83A8508;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = channelCopy;
+  v9 = channelCopy;
   [(PRUISPosterChannelController *)self _fireObserversRespondingToSelector:sel_channelController_didUpdateChannel_ handler:v10];
 }
 
-- (void)handleWillRemoveChannel:(id)a3
+- (void)handleWillRemoveChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__PRUISPosterChannelController_handleWillRemoveChannel___block_invoke;
   v6[3] = &unk_1E83A8508;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = channelCopy;
+  v5 = channelCopy;
   [(PRUISPosterChannelController *)self _fireObserversRespondingToSelector:sel_channelController_willRemoveChannel_ handler:v6];
 }
 
-- (void)handleDidRemoveChannel:(id)a3
+- (void)handleDidRemoveChannel:(id)channel
 {
-  v4 = a3;
-  [v4 removeChannelObserver:self];
+  channelCopy = channel;
+  [channelCopy removeChannelObserver:self];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__PRUISPosterChannelController_handleDidRemoveChannel___block_invoke;
   v6[3] = &unk_1E83A8508;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = channelCopy;
+  v5 = channelCopy;
   [(PRUISPosterChannelController *)self _fireObserversRespondingToSelector:sel_channelController_didRemoveChannel_ handler:v6];
 }
 
-- (void)_fireObserversRespondingToSelector:(SEL)a3 handler:(id)a4
+- (void)_fireObserversRespondingToSelector:(SEL)selector handler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v7 = objc_opt_new();
     lock = self->_lock;
@@ -1244,7 +1244,7 @@ uint64_t __57__PRUISPosterChannelController_reapEverythingForChannel___block_inv
     v24[1] = 3221225472;
     v24[2] = __75__PRUISPosterChannelController__fireObserversRespondingToSelector_handler___block_invoke;
     v24[3] = &unk_1E83A8530;
-    v26 = a3;
+    selectorCopy = selector;
     v9 = v7;
     v25 = v9;
     [(PFOSUnfairLock *)lock performBlockWhileCapturingWeak:self performBlock:v24];
@@ -1274,7 +1274,7 @@ uint64_t __57__PRUISPosterChannelController_reapEverythingForChannel___block_inv
           block[1] = 3221225472;
           block[2] = __75__PRUISPosterChannelController__fireObserversRespondingToSelector_handler___block_invoke_2;
           block[3] = &unk_1E83A8558;
-          v16 = v6;
+          v16 = handlerCopy;
           block[4] = v14;
           v19 = v16;
           dispatch_async(observerQueue, block);
@@ -1331,23 +1331,23 @@ void __75__PRUISPosterChannelController__fireObserversRespondingToSelector_handl
   }
 }
 
-- (void)channel:(id)a3 didUpdateGallery:(id)a4
+- (void)channel:(id)channel didUpdateGallery:(id)gallery
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  channelCopy = channel;
   if ((self->_reapOptions & 4) != 0)
   {
     v6 = PRUISLogChannels();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 channelIdentifier];
-      v8 = [v7 UUIDString];
+      channelIdentifier = [channelCopy channelIdentifier];
+      uUIDString = [channelIdentifier UUIDString];
       v10 = 138543362;
-      v11 = v8;
+      v11 = uUIDString;
       _os_log_impl(&dword_1CAE63000, v6, OS_LOG_TYPE_DEFAULT, "[ReapOnChannelUpdate][GalleryUpdate] Reaping stale data from channel identifier %{public}@", &v10, 0xCu);
     }
 
-    v9 = [(PRUISPosterChannelController *)self reapEverythingForChannel:v5];
+    v9 = [(PRUISPosterChannelController *)self reapEverythingForChannel:channelCopy];
   }
 }
 

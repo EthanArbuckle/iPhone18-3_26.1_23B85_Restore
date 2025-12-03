@@ -1,5 +1,5 @@
 @interface RTSCAutocovarianceDynamicsAnalyzer4DOF
-- (RTSCAutocovarianceDynamicsAnalyzer4DOF)initWithTimeConstant:(float)a3 initialCovariance:;
+- (RTSCAutocovarianceDynamicsAnalyzer4DOF)initWithTimeConstant:(float)constant initialCovariance:;
 - (__n128)residualCovariance;
 - (void)_initializeCovariances;
 - (void)reset;
@@ -7,7 +7,7 @@
 
 @implementation RTSCAutocovarianceDynamicsAnalyzer4DOF
 
-- (RTSCAutocovarianceDynamicsAnalyzer4DOF)initWithTimeConstant:(float)a3 initialCovariance:
+- (RTSCAutocovarianceDynamicsAnalyzer4DOF)initWithTimeConstant:(float)constant initialCovariance:
 {
   v9 = v3;
   v10.receiver = self;
@@ -16,7 +16,7 @@
   v6 = v5;
   if (v5)
   {
-    v5->_timeConstant = a3;
+    v5->_timeConstant = constant;
     *&v5->_initialCovariance[4] = v9;
     [(RTSCAutocovarianceDynamicsAnalyzer4DOF *)v5 reset];
     v7 = v6;
@@ -86,10 +86,10 @@
 
 - (__n128)residualCovariance
 {
-  result = *(a1 + 272);
-  v2 = *(a1 + 288);
-  v3 = *(a1 + 304);
-  v4 = *(a1 + 320);
+  result = *(self + 272);
+  v2 = *(self + 288);
+  v3 = *(self + 304);
+  v4 = *(self + 320);
   return result;
 }
 

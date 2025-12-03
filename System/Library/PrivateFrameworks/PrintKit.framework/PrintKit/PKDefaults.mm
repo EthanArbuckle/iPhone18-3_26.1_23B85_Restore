@@ -3,38 +3,38 @@
 + (BOOL)ippsIsRequired;
 + (BOOL)mcProfilePrintersOnlyAllowed;
 + (BOOL)urfIsOptional;
-+ (BOOL)uriMatchesMCProfileAdded:(id)a3;
++ (BOOL)uriMatchesMCProfileAdded:(id)added;
 + (NSArray)iCloudPrinters;
 + (NSArray)iCloudPrintersSync;
 + (id)absoluteSpoolDirectory;
 + (id)lastUsedPrinters;
-+ (id)lastUsedPrintersForPhoto:(BOOL)a3;
++ (id)lastUsedPrintersForPhoto:(BOOL)photo;
 + (id)requiredPDL;
-+ (void)addLastUsedPrinter:(id)a3 duplexMode:(id)a4 lastUsedSize:(CGSize)a5 forPhoto:(BOOL)a6;
-+ (void)addPrinterToiCloud:(id)a3 displayName:(id)a4 location:(id)a5;
++ (void)addLastUsedPrinter:(id)printer duplexMode:(id)mode lastUsedSize:(CGSize)size forPhoto:(BOOL)photo;
++ (void)addPrinterToiCloud:(id)cloud displayName:(id)name location:(id)location;
 + (void)getUpdatediCloudPrintersFromPrinterTool;
-+ (void)lastUsedPrintersCompletionHandler:(id)a3;
-+ (void)lastUsedPrintersForPhoto:(BOOL)a3 completionHandler:(id)a4;
-+ (void)removePrinterFromiCloud:(id)a3;
++ (void)lastUsedPrintersCompletionHandler:(id)handler;
++ (void)lastUsedPrintersForPhoto:(BOOL)photo completionHandler:(id)handler;
++ (void)removePrinterFromiCloud:(id)cloud;
 + (void)resetPKCloudData;
-+ (void)seenPrintersCompletionHandler:(id)a3;
-+ (void)setICloudPrinters:(id)a3;
++ (void)seenPrintersCompletionHandler:(id)handler;
++ (void)setICloudPrinters:(id)printers;
 + (void)startiCloudListening;
-+ (void)updateiCloudPrinterCustomLocation:(id)a3 customLocation:(id)a4;
-+ (void)updateiCloudPrinterCustomName:(id)a3 customName:(id)a4;
++ (void)updateiCloudPrinterCustomLocation:(id)location customLocation:(id)customLocation;
++ (void)updateiCloudPrinterCustomName:(id)name customName:(id)customName;
 @end
 
 @implementation PKDefaults
 
-+ (void)lastUsedPrintersCompletionHandler:(id)a3
++ (void)lastUsedPrintersCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[PKPrinterTool_Client sharedClient];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__PKDefaults_lastUsedPrintersCompletionHandler___block_invoke;
   v6[3] = &unk_279A91D68;
-  v5 = v3;
+  v5 = handlerCopy;
   v7 = v5;
   [v4 getLastUsedPrintersForCurrentNetworkCompletionHandler:v6];
 }
@@ -123,15 +123,15 @@ LABEL_13:
 
 + (id)lastUsedPrinters
 {
-  v2 = a1;
-  if (object_isClass(v2))
+  selfCopy = self;
+  if (object_isClass(selfCopy))
   {
     [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PKDefaults lastUsedPrinters]"];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), v2, "+[PKDefaults lastUsedPrinters]"];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), selfCopy, "+[PKDefaults lastUsedPrinters]"];
   }
   v3 = ;
 
@@ -139,17 +139,17 @@ LABEL_13:
   v6[1] = 3221225472;
   v6[2] = __30__PKDefaults_lastUsedPrinters__block_invoke;
   v6[3] = &__block_descriptor_40_e24_v16__0___v____NSArray__8l;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v4 = withDebuggableSemaphore<NSArray * {__strong}>(v3, v6, 3.0);
 
   return v4;
 }
 
-+ (void)lastUsedPrintersForPhoto:(BOOL)a3 completionHandler:(id)a4
++ (void)lastUsedPrintersForPhoto:(BOOL)photo completionHandler:(id)handler
 {
-  v4 = a3;
+  photoCopy = photo;
   v48 = *MEMORY[0x277D85DE8];
-  v30 = a4;
+  handlerCopy = handler;
   v32 = objc_opt_new();
   +[PKDefaults lastUsedPrinters];
   v43 = 0u;
@@ -161,7 +161,7 @@ LABEL_13:
   {
     v6 = *v42;
     v7 = PKPrinterWasLastUsedPrinterForDocumentKey;
-    if (v4)
+    if (photoCopy)
     {
       v7 = PKPrinterWasLastUsedPrinterForPhotoKey;
     }
@@ -252,7 +252,7 @@ LABEL_23:
         }
 
         v21 = *(*(&v33 + 1) + 8 * k);
-        if (v4)
+        if (photoCopy)
         {
           v22 = [*(*(&v33 + 1) + 8 * k) objectForKeyedSubscript:@"com.apple.last-used-photo-size"];
           v23 = v22 == 0;
@@ -300,20 +300,20 @@ LABEL_23:
 
   v29 = v28;
 
-  v30[2](v30, v29);
+  handlerCopy[2](handlerCopy, v29);
 }
 
-+ (id)lastUsedPrintersForPhoto:(BOOL)a3
++ (id)lastUsedPrintersForPhoto:(BOOL)photo
 {
-  v4 = a1;
-  if (object_isClass(v4))
+  selfCopy = self;
+  if (object_isClass(selfCopy))
   {
     [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PKDefaults lastUsedPrintersForPhoto:]"];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), v4, "+[PKDefaults lastUsedPrintersForPhoto:]"];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), selfCopy, "+[PKDefaults lastUsedPrintersForPhoto:]"];
   }
   v5 = ;
 
@@ -321,25 +321,25 @@ LABEL_23:
   v8[1] = 3221225472;
   v8[2] = __39__PKDefaults_lastUsedPrintersForPhoto___block_invoke;
   v8[3] = &__block_descriptor_41_e24_v16__0___v____NSArray__8l;
-  v8[4] = v4;
-  v9 = a3;
+  v8[4] = selfCopy;
+  photoCopy = photo;
   v6 = withDebuggableSemaphore<NSArray * {__strong}>(v5, v8, 3.0);
 
   return v6;
 }
 
-+ (void)addLastUsedPrinter:(id)a3 duplexMode:(id)a4 lastUsedSize:(CGSize)a5 forPhoto:(BOOL)a6
++ (void)addLastUsedPrinter:(id)printer duplexMode:(id)mode lastUsedSize:(CGSize)size forPhoto:(BOOL)photo
 {
-  v6 = a6;
-  height = a5.height;
-  width = a5.width;
+  photoCopy = photo;
+  height = size.height;
+  width = size.width;
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 browseInfo];
-  v13 = [v12 isEphemeral];
+  printerCopy = printer;
+  modeCopy = mode;
+  browseInfo = [printerCopy browseInfo];
+  isEphemeral = [browseInfo isEphemeral];
 
-  if (v13)
+  if (isEphemeral)
   {
     v14 = _PKLogCategory(PKLogCategoryDiscovery[0]);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -352,66 +352,66 @@ LABEL_23:
   else
   {
     v14 = objc_opt_new();
-    v15 = [v10 uuid];
+    uuid = [printerCopy uuid];
 
-    if (v15)
+    if (uuid)
     {
-      v16 = [v10 uuid];
-      [v14 setObject:v16 forKeyedSubscript:@"printer-uuid"];
+      uuid2 = [printerCopy uuid];
+      [v14 setObject:uuid2 forKeyedSubscript:@"printer-uuid"];
     }
 
-    v17 = [v10 name];
-    v39 = v17;
-    if (v17)
+    name = [printerCopy name];
+    v39 = name;
+    if (name)
     {
-      [v14 setObject:v17 forKeyedSubscript:@"printer-dns-sd-name"];
+      [v14 setObject:name forKeyedSubscript:@"printer-dns-sd-name"];
     }
 
-    v18 = [v10 browseInfo];
-    v19 = [v18 bonjourName];
-    v20 = [v19 dataRepresentation];
+    browseInfo2 = [printerCopy browseInfo];
+    bonjourName = [browseInfo2 bonjourName];
+    dataRepresentation = [bonjourName dataRepresentation];
 
-    v37 = v20;
-    if (v20)
+    v37 = dataRepresentation;
+    if (dataRepresentation)
     {
-      [v14 setObject:v20 forKeyedSubscript:@"com.apple.printer-endpoint-data"];
+      [v14 setObject:dataRepresentation forKeyedSubscript:@"com.apple.printer-endpoint-data"];
     }
 
-    v21 = [v10 displayName];
-    v38 = v21;
-    if (v21)
+    displayName = [printerCopy displayName];
+    v38 = displayName;
+    if (displayName)
     {
-      [v14 setObject:v21 forKeyedSubscript:@"com.apple.printkit.printer-display-name"];
+      [v14 setObject:displayName forKeyedSubscript:@"com.apple.printkit.printer-display-name"];
     }
 
-    v22 = [v10 location];
-    if (v22)
+    location = [printerCopy location];
+    if (location)
     {
-      [v14 setObject:v22 forKeyedSubscript:@"com.apple.printkit.printer-location"];
+      [v14 setObject:location forKeyedSubscript:@"com.apple.printkit.printer-location"];
     }
 
-    v23 = [v10 printerURL];
-    v24 = v23;
-    if (v23)
+    printerURL = [printerCopy printerURL];
+    v24 = printerURL;
+    if (printerURL)
     {
-      v25 = [v23 absoluteString];
-      [v14 setObject:v25 forKeyedSubscript:@"com.apple.printer-url"];
+      absoluteString = [printerURL absoluteString];
+      [v14 setObject:absoluteString forKeyedSubscript:@"com.apple.printer-url"];
     }
 
-    v26 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "type")}];
+    v26 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(printerCopy, "type")}];
     [v14 setObject:v26 forKeyedSubscript:@"com.apple.printer-type"];
 
-    if (v11 && (@"one-sided" == v11 || @"two-sided-long-edge" == v11 || @"two-sided-short-edge" == v11))
+    if (modeCopy && (@"one-sided" == modeCopy || @"two-sided-long-edge" == modeCopy || @"two-sided-short-edge" == modeCopy))
     {
-      [v14 setObject:v11 forKeyedSubscript:@"sides"];
+      [v14 setObject:modeCopy forKeyedSubscript:@"sides"];
     }
 
-    if ([v10 isFromMCProfile])
+    if ([printerCopy isFromMCProfile])
     {
       [v14 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"com.apple.mcprofile-added"];
     }
 
-    if (v6)
+    if (photoCopy)
     {
       [v14 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"com.apple.was-last-used-printer-for-photo"];
       v27 = PKPrinterLastUsedPhotoSizeKey;
@@ -467,15 +467,15 @@ LABEL_23:
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = +[PKPrinterTool_Client sharedClient];
-  v4 = a1;
-  if (object_isClass(v4))
+  selfCopy = self;
+  if (object_isClass(selfCopy))
   {
     [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PKDefaults iCloudPrintersSync]"];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), v4, "+[PKDefaults iCloudPrintersSync]"];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), selfCopy, "+[PKDefaults iCloudPrintersSync]"];
   }
   v5 = ;
 
@@ -614,57 +614,57 @@ void __34__PKDefaults_startiCloudListening__block_invoke()
   v1 = [v2 addObserverForName:@"com.apple.printerTool.iCloud-printers-changed" object:0 queue:0 usingBlock:&__block_literal_global_24];
 }
 
-+ (void)setICloudPrinters:(id)a3
++ (void)setICloudPrinters:(id)printers
 {
-  v5 = a3;
+  printersCopy = printers;
   +[PKDefaults startiCloudListening];
-  objc_storeStrong(&_iCloudPrinters, a3);
+  objc_storeStrong(&_iCloudPrinters, printers);
   v4 = +[PKPrinterTool_Client sharedClient];
-  [v4 setiCloudPrinters:v5];
+  [v4 setiCloudPrinters:printersCopy];
 }
 
-+ (void)addPrinterToiCloud:(id)a3 displayName:(id)a4 location:(id)a5
++ (void)addPrinterToiCloud:(id)cloud displayName:(id)name location:(id)location
 {
-  v7 = [PKiCloudPrinter PKiCloudPrinterWithPKPrinter:a3 displayName:a4 location:a5];
+  v7 = [PKiCloudPrinter PKiCloudPrinterWithPKPrinter:cloud displayName:name location:location];
   v5 = +[PKPrinterTool_Client sharedClient];
   [v5 addPrinterToiCloud:v7];
   v6 = _iCloudPrinters;
   _iCloudPrinters = 0;
 }
 
-+ (void)removePrinterFromiCloud:(id)a3
++ (void)removePrinterFromiCloud:(id)cloud
 {
-  v5 = a3;
+  cloudCopy = cloud;
   +[PKDefaults startiCloudListening];
   v3 = +[PKPrinterTool_Client sharedClient];
-  [v3 removePrinterFromiCloud:v5];
+  [v3 removePrinterFromiCloud:cloudCopy];
   v4 = _iCloudPrinters;
   _iCloudPrinters = 0;
 }
 
-+ (void)updateiCloudPrinterCustomName:(id)a3 customName:(id)a4
++ (void)updateiCloudPrinterCustomName:(id)name customName:(id)customName
 {
-  v8 = a3;
-  v5 = a4;
+  nameCopy = name;
+  customNameCopy = customName;
   +[PKDefaults startiCloudListening];
-  if (v8)
+  if (nameCopy)
   {
     v6 = +[PKPrinterTool_Client sharedClient];
-    [v6 updateiCloudPrinter:v8 withInfo:v5 forInfoKey:@"com.apple.printkit.printer-custom-name"];
+    [v6 updateiCloudPrinter:nameCopy withInfo:customNameCopy forInfoKey:@"com.apple.printkit.printer-custom-name"];
     v7 = _iCloudPrinters;
     _iCloudPrinters = 0;
   }
 }
 
-+ (void)updateiCloudPrinterCustomLocation:(id)a3 customLocation:(id)a4
++ (void)updateiCloudPrinterCustomLocation:(id)location customLocation:(id)customLocation
 {
-  v8 = a3;
-  v5 = a4;
+  locationCopy = location;
+  customLocationCopy = customLocation;
   +[PKDefaults startiCloudListening];
-  if (v8)
+  if (locationCopy)
   {
     v6 = +[PKPrinterTool_Client sharedClient];
-    [v6 updateiCloudPrinter:v8 withInfo:v5 forInfoKey:@"com.apple.printkit.printer-custom-location"];
+    [v6 updateiCloudPrinter:locationCopy withInfo:customLocationCopy forInfoKey:@"com.apple.printkit.printer-custom-location"];
     v7 = _iCloudPrinters;
     _iCloudPrinters = 0;
   }
@@ -678,15 +678,15 @@ void __34__PKDefaults_startiCloudListening__block_invoke()
   v2 = _iCloudPrinters;
   _iCloudPrinters = 0;
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"com.apple.printkit.iCloudPrintersChanged.notification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.printkit.iCloudPrintersChanged.notification" object:0];
 }
 
-+ (void)seenPrintersCompletionHandler:(id)a3
++ (void)seenPrintersCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v3 = +[PKPrinterTool_Client sharedClient];
-  [v3 getLastUsedPrintersForCurrentNetworkCompletionHandler:v4];
+  [v3 getLastUsedPrintersForCurrentNetworkCompletionHandler:handlerCopy];
 }
 
 + (BOOL)urfIsOptional
@@ -771,19 +771,19 @@ void __61__PKDefaults_PrintKitPrivate__airPrintBeaconDiscoveryAllowed__block_inv
   +[PKDefaults(PrintKitPrivate) airPrintBeaconDiscoveryAllowed]::allowed = [v0 isAirPrintiBeaconDiscoveryAllowed];
 }
 
-+ (BOOL)uriMatchesMCProfileAdded:(id)a3
++ (BOOL)uriMatchesMCProfileAdded:(id)added
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  addedCopy = added;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [getMCProfileConnectionClass() sharedConnection];
-  v5 = [v4 knownAirPrintIPPURLStrings];
+  sharedConnection = [getMCProfileConnectionClass() sharedConnection];
+  knownAirPrintIPPURLStrings = [sharedConnection knownAirPrintIPPURLStrings];
 
   v6 = 0;
-  v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [knownAirPrintIPPURLStrings countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -793,10 +793,10 @@ void __61__PKDefaults_PrintKitPrivate__airPrintBeaconDiscoveryAllowed__block_inv
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(knownAirPrintIPPURLStrings);
         }
 
-        if (v6 || (v10 = *(*(&v13 + 1) + 8 * i), ![v10 caseInsensitiveCompare:v3]))
+        if (v6 || (v10 = *(*(&v13 + 1) + 8 * i), ![v10 caseInsensitiveCompare:addedCopy]))
         {
           v6 = 1;
         }
@@ -804,11 +804,11 @@ void __61__PKDefaults_PrintKitPrivate__airPrintBeaconDiscoveryAllowed__block_inv
         else
         {
           v11 = [v10 stringByReplacingOccurrencesOfString:@"ipp://" withString:@"ipps://"];
-          v6 = [v11 caseInsensitiveCompare:v3] == 0;
+          v6 = [v11 caseInsensitiveCompare:addedCopy] == 0;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [knownAirPrintIPPURLStrings countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -820,15 +820,15 @@ void __61__PKDefaults_PrintKitPrivate__airPrintBeaconDiscoveryAllowed__block_inv
 + (id)absoluteSpoolDirectory
 {
   v3 = +[PKPrinterTool_Client sharedClient];
-  v4 = a1;
-  if (object_isClass(v4))
+  selfCopy = self;
+  if (object_isClass(selfCopy))
   {
     [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PKDefaults(PrintKitPrivate) absoluteSpoolDirectory]"];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), v4, "+[PKDefaults(PrintKitPrivate) absoluteSpoolDirectory]"];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), selfCopy, "+[PKDefaults(PrintKitPrivate) absoluteSpoolDirectory]"];
   }
   v5 = ;
 

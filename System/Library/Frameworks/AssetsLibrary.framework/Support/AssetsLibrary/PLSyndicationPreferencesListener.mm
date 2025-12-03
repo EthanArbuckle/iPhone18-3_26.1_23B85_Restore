@@ -20,21 +20,21 @@
   v4 = [PLPhotoLibraryPathManager wellKnownPhotoLibraryURLForIdentifier:1];
   v5 = [v3 openBundleAtLibraryURL:v4];
 
-  v6 = [v5 libraryServicesManager];
+  libraryServicesManager = [v5 libraryServicesManager];
   if ((PLSyndicationPreferencesEnabled() & 1) == 0)
   {
-    v7 = [v6 databaseContext];
-    v8 = [v7 newShortLivedLibraryWithName:"-[PLSyndicationPreferencesListener _triggerGuestAssetSyncUpdate]"];
+    databaseContext = [libraryServicesManager databaseContext];
+    v8 = [databaseContext newShortLivedLibraryWithName:"-[PLSyndicationPreferencesListener _triggerGuestAssetSyncUpdate]"];
 
-    v9 = [v8 managedObjectContext];
-    v10 = v9;
-    if (v9)
+    managedObjectContext = [v8 managedObjectContext];
+    v10 = managedObjectContext;
+    if (managedObjectContext)
     {
       v14 = _NSConcreteStackBlock;
       v15 = 3221225472;
       v16 = sub_1000181A4;
       v17 = &unk_10002D9D8;
-      v18 = v9;
+      v18 = managedObjectContext;
       v19 = v8;
       [v19 performBlockAndWait:&v14];
 
@@ -52,9 +52,9 @@
     }
   }
 
-  v12 = [v6 backgroundJobService];
+  backgroundJobService = [libraryServicesManager backgroundJobService];
   v13 = +[PLBackgroundJobWorkerTypes maskForGuestAssetSync];
-  [v12 signalBackgroundProcessingNeededOnBundle:v5 workerTypes:v13];
+  [backgroundJobService signalBackgroundProcessingNeededOnBundle:v5 workerTypes:v13];
 }
 
 - (void)start

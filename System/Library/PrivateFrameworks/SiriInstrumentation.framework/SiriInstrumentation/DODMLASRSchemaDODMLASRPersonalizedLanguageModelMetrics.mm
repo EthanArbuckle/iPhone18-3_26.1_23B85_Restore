@@ -1,33 +1,33 @@
 @interface DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics
 
-- (DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics;
   v5 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"userLocale"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"userLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics setUserLocale:](v5, "setUserLocale:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"transcriptionMetrics"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"transcriptionMetrics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)v5 setTranscriptionMetrics:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"modelMetrics"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"modelMetrics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)v5 setModelMetrics:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"evaluationMetrics"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"evaluationMetrics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,52 +93,52 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_evaluationMetrics)
   {
-    v4 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self evaluationMetrics];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    evaluationMetrics = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self evaluationMetrics];
+    dictionaryRepresentation = [evaluationMetrics dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"evaluationMetrics"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"evaluationMetrics"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"evaluationMetrics"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"evaluationMetrics"];
     }
   }
 
   if (self->_modelMetrics)
   {
-    v7 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self modelMetrics];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    modelMetrics = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self modelMetrics];
+    dictionaryRepresentation2 = [modelMetrics dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"modelMetrics"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"modelMetrics"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"modelMetrics"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"modelMetrics"];
     }
   }
 
   if (self->_transcriptionMetrics)
   {
-    v10 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self transcriptionMetrics];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    transcriptionMetrics = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self transcriptionMetrics];
+    dictionaryRepresentation3 = [transcriptionMetrics dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"transcriptionMetrics"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"transcriptionMetrics"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"transcriptionMetrics"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"transcriptionMetrics"];
     }
   }
 
@@ -155,12 +155,12 @@
       v14 = off_1E78D4250[v13];
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"userLocale"];
+    [dictionary setObject:v14 forKeyedSubscript:@"userLocale"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -180,15 +180,15 @@
   return v4 ^ v5 ^ [(DODMLASRSchemaDODMLASREvaluationMetrics *)self->_evaluationMetrics hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  if ((*&self->_has & 1) != (v4[40] & 1))
+  if ((*&self->_has & 1) != (equalCopy[40] & 1))
   {
     goto LABEL_20;
   }
@@ -196,26 +196,26 @@
   if (*&self->_has)
   {
     userLocale = self->_userLocale;
-    if (userLocale != [v4 userLocale])
+    if (userLocale != [equalCopy userLocale])
     {
       goto LABEL_20;
     }
   }
 
-  v6 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self transcriptionMetrics];
-  v7 = [v4 transcriptionMetrics];
-  if ((v6 != 0) == (v7 == 0))
+  transcriptionMetrics = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self transcriptionMetrics];
+  transcriptionMetrics2 = [equalCopy transcriptionMetrics];
+  if ((transcriptionMetrics != 0) == (transcriptionMetrics2 == 0))
   {
     goto LABEL_19;
   }
 
-  v8 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self transcriptionMetrics];
-  if (v8)
+  transcriptionMetrics3 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self transcriptionMetrics];
+  if (transcriptionMetrics3)
   {
-    v9 = v8;
-    v10 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self transcriptionMetrics];
-    v11 = [v4 transcriptionMetrics];
-    v12 = [v10 isEqual:v11];
+    v9 = transcriptionMetrics3;
+    transcriptionMetrics4 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self transcriptionMetrics];
+    transcriptionMetrics5 = [equalCopy transcriptionMetrics];
+    v12 = [transcriptionMetrics4 isEqual:transcriptionMetrics5];
 
     if (!v12)
     {
@@ -227,20 +227,20 @@
   {
   }
 
-  v6 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self modelMetrics];
-  v7 = [v4 modelMetrics];
-  if ((v6 != 0) == (v7 == 0))
+  transcriptionMetrics = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self modelMetrics];
+  transcriptionMetrics2 = [equalCopy modelMetrics];
+  if ((transcriptionMetrics != 0) == (transcriptionMetrics2 == 0))
   {
     goto LABEL_19;
   }
 
-  v13 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self modelMetrics];
-  if (v13)
+  modelMetrics = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self modelMetrics];
+  if (modelMetrics)
   {
-    v14 = v13;
-    v15 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self modelMetrics];
-    v16 = [v4 modelMetrics];
-    v17 = [v15 isEqual:v16];
+    v14 = modelMetrics;
+    modelMetrics2 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self modelMetrics];
+    modelMetrics3 = [equalCopy modelMetrics];
+    v17 = [modelMetrics2 isEqual:modelMetrics3];
 
     if (!v17)
     {
@@ -252,12 +252,12 @@
   {
   }
 
-  v6 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self evaluationMetrics];
-  v7 = [v4 evaluationMetrics];
-  if ((v6 != 0) != (v7 == 0))
+  transcriptionMetrics = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self evaluationMetrics];
+  transcriptionMetrics2 = [equalCopy evaluationMetrics];
+  if ((transcriptionMetrics != 0) != (transcriptionMetrics2 == 0))
   {
-    v18 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self evaluationMetrics];
-    if (!v18)
+    evaluationMetrics = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self evaluationMetrics];
+    if (!evaluationMetrics)
     {
 
 LABEL_23:
@@ -265,10 +265,10 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v19 = v18;
-    v20 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self evaluationMetrics];
-    v21 = [v4 evaluationMetrics];
-    v22 = [v20 isEqual:v21];
+    v19 = evaluationMetrics;
+    evaluationMetrics2 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self evaluationMetrics];
+    evaluationMetrics3 = [equalCopy evaluationMetrics];
+    v22 = [evaluationMetrics2 isEqual:evaluationMetrics3];
 
     if (v22)
     {
@@ -288,71 +288,71 @@ LABEL_21:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self transcriptionMetrics];
+  transcriptionMetrics = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self transcriptionMetrics];
 
-  if (v4)
+  if (transcriptionMetrics)
   {
-    v5 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self transcriptionMetrics];
+    transcriptionMetrics2 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self transcriptionMetrics];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self modelMetrics];
+  modelMetrics = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self modelMetrics];
 
-  if (v6)
+  if (modelMetrics)
   {
-    v7 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self modelMetrics];
+    modelMetrics2 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self modelMetrics];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self evaluationMetrics];
+  evaluationMetrics = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self evaluationMetrics];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (evaluationMetrics)
   {
-    v10 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self evaluationMetrics];
+    evaluationMetrics2 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self evaluationMetrics];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self transcriptionMetrics];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  transcriptionMetrics = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self transcriptionMetrics];
+  v7 = [transcriptionMetrics applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self deleteTranscriptionMetrics];
   }
 
-  v9 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self modelMetrics];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  modelMetrics = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self modelMetrics];
+  v10 = [modelMetrics applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self deleteModelMetrics];
   }
 
-  v12 = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self evaluationMetrics];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  evaluationMetrics = [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self evaluationMetrics];
+  v13 = [evaluationMetrics applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics *)self deleteEvaluationMetrics];
   }

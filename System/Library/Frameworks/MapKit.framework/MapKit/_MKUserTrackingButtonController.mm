@@ -1,24 +1,24 @@
 @interface _MKUserTrackingButtonController
-- (BOOL)_shouldAnimateFromState:(int64_t)a3 toState:(int64_t)a4;
+- (BOOL)_shouldAnimateFromState:(int64_t)state toState:(int64_t)toState;
 - (MKUserTrackingView)userTrackingView;
-- (_MKUserTrackingButtonController)initWithTarget:(id)a3 userTrackingView:(id)a4 imageView:(id)a5 button:(id)a6;
+- (_MKUserTrackingButtonController)initWithTarget:(id)target userTrackingView:(id)view imageView:(id)imageView button:(id)button;
 - (double)_symbolPointSize;
 - (id)_activityIndicatorView;
 - (id)_contentAnimation;
 - (id)_expandAnimation;
-- (id)_imageForState:(int64_t)a3 controlState:(unint64_t)a4;
+- (id)_imageForState:(int64_t)state controlState:(unint64_t)controlState;
 - (id)_shrinkAnimation;
-- (void)_authorizationStatusChanged:(id)a3;
-- (void)_goToNextMode:(id)a3;
+- (void)_authorizationStatusChanged:(id)changed;
+- (void)_goToNextMode:(id)mode;
 - (void)_reloadState;
 - (void)_updateLoading;
 - (void)_updatePreferredSymbolConfiguration;
 - (void)_updateState;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
-- (void)setControlSize:(unint64_t)a3;
-- (void)setState:(int64_t)a3;
-- (void)setUserTrackingView:(id)a3;
+- (void)setControlSize:(unint64_t)size;
+- (void)setState:(int64_t)state;
+- (void)setUserTrackingView:(id)view;
 @end
 
 @implementation _MKUserTrackingButtonController
@@ -26,18 +26,18 @@
 - (void)_updatePreferredSymbolConfiguration
 {
   v3 = +[MKSystemController sharedInstance];
-  v4 = [v3 isGlassEnabled];
+  isGlassEnabled = [v3 isGlassEnabled];
 
   v5 = MEMORY[0x1E69DCAD8];
   WeakRetained = objc_loadWeakRetained(&self->_button);
-  v7 = [WeakRetained inMiniBar];
+  inMiniBar = [WeakRetained inMiniBar];
   v8 = 15.0;
-  if ((v7 & 1) == 0)
+  if ((inMiniBar & 1) == 0)
   {
     [(_MKUserTrackingButtonController *)self _symbolPointSize];
   }
 
-  if (v4)
+  if (isGlassEnabled)
   {
     v9 = 5;
   }
@@ -96,16 +96,16 @@
 - (void)_updateState
 {
   WeakRetained = objc_loadWeakRetained(&self->_userTrackingView);
-  v4 = [WeakRetained userTrackingMode];
+  userTrackingMode = [WeakRetained userTrackingMode];
 
   v5 = 2;
-  if (v4 != 1)
+  if (userTrackingMode != 1)
   {
     v5 = 0;
   }
 
-  v6 = v4 != 2 && v4 != 1;
-  if (v4 == 2)
+  v6 = userTrackingMode != 2 && userTrackingMode != 1;
+  if (userTrackingMode == 2)
   {
     v7 = 3;
   }
@@ -116,9 +116,9 @@
   }
 
   v8 = objc_loadWeakRetained(&self->_userTrackingView);
-  v9 = [v8 hasUserLocation];
+  hasUserLocation = [v8 hasUserLocation];
 
-  if (v9)
+  if (hasUserLocation)
   {
     v10 = v7;
   }
@@ -169,28 +169,28 @@
 {
   if (self->_state == 1)
   {
-    v11 = [(_MKUserTrackingButtonController *)self _activityIndicatorView];
+    _activityIndicatorView = [(_MKUserTrackingButtonController *)self _activityIndicatorView];
     WeakRetained = objc_loadWeakRetained(&self->_target);
-    -[UIActivityIndicatorView setActivityIndicatorViewStyle:](v11, "setActivityIndicatorViewStyle:", [WeakRetained _activityIndicatorStyle]);
+    -[UIActivityIndicatorView setActivityIndicatorViewStyle:](_activityIndicatorView, "setActivityIndicatorViewStyle:", [WeakRetained _activityIndicatorStyle]);
 
     v4 = objc_loadWeakRetained(&self->_button);
-    [v4 addSubview:v11];
+    [v4 addSubview:_activityIndicatorView];
 
-    v5 = [(UIActivityIndicatorView *)v11 superview];
-    [v5 setClipsToBounds:0];
+    superview = [(UIActivityIndicatorView *)_activityIndicatorView superview];
+    [superview setClipsToBounds:0];
 
-    [(UIActivityIndicatorView *)v11 startAnimating];
+    [(UIActivityIndicatorView *)_activityIndicatorView startAnimating];
     v6 = objc_loadWeakRetained(&self->_button);
     [v6 bounds];
     MidX = CGRectGetMidX(v13);
     v8 = objc_loadWeakRetained(&self->_button);
     [v8 bounds];
-    [(UIActivityIndicatorView *)v11 setCenter:MidX, CGRectGetMidY(v14)];
+    [(UIActivityIndicatorView *)_activityIndicatorView setCenter:MidX, CGRectGetMidY(v14)];
 
     v9 = objc_loadWeakRetained(&self->_button);
     [v9 layoutIfNeeded];
 
-    activityIndicatorView = v11;
+    activityIndicatorView = _activityIndicatorView;
   }
 
   else
@@ -222,31 +222,31 @@
 
 - (id)_contentAnimation
 {
-  v2 = [(UIImageView *)self->_imageView layer];
-  v3 = [v2 animationForKey:@"contents"];
+  layer = [(UIImageView *)self->_imageView layer];
+  v3 = [layer animationForKey:@"contents"];
 
   if (v3)
   {
-    v4 = 0;
+    contents = 0;
   }
 
   else
   {
-    v4 = [v2 contents];
+    contents = [layer contents];
 
-    if (v4)
+    if (contents)
     {
-      v4 = [MEMORY[0x1E6979390] animationWithKeyPath:@"contents"];
+      contents = [MEMORY[0x1E6979390] animationWithKeyPath:@"contents"];
       v5 = MEMORY[0x1E695DEC8];
-      v6 = [v2 contents];
-      v7 = [v5 arrayWithObject:v6];
-      [v4 setValues:v7];
+      contents2 = [layer contents];
+      v7 = [v5 arrayWithObject:contents2];
+      [contents setValues:v7];
 
-      [v4 setCalculationMode:*MEMORY[0x1E69795A0]];
+      [contents setCalculationMode:*MEMORY[0x1E69795A0]];
     }
   }
 
-  return v4;
+  return contents;
 }
 
 - (id)_expandAnimation
@@ -272,48 +272,48 @@
   return WeakRetained;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if ([a3 _mapkit_ID] == 7)
+  if ([stop _mapkit_ID] == 7)
   {
-    v7 = [(UIImageView *)self->_imageView layer];
-    [v7 removeAnimationForKey:@"contents"];
-    v5 = [(_MKUserTrackingButtonController *)self _expandAnimation];
-    [v7 removeAnimationForKey:@"shrink"];
+    layer = [(UIImageView *)self->_imageView layer];
+    [layer removeAnimationForKey:@"contents"];
+    _expandAnimation = [(_MKUserTrackingButtonController *)self _expandAnimation];
+    [layer removeAnimationForKey:@"shrink"];
     WeakRetained = objc_loadWeakRetained(&self->_target);
     [WeakRetained _updateForState:self->_state];
 
     [(_MKUserTrackingButtonController *)self _reloadState];
     [(_MKUserTrackingButtonController *)self _updateLoading];
-    [v7 addAnimation:v5 forKey:@"expand"];
+    [layer addAnimation:_expandAnimation forKey:@"expand"];
   }
 }
 
-- (void)_goToNextMode:(id)a3
+- (void)_goToNextMode:(id)mode
 {
   WeakRetained = objc_loadWeakRetained(&self->_userTrackingView);
-  v5 = [WeakRetained userTrackingMode];
+  userTrackingMode = [WeakRetained userTrackingMode];
 
-  v6 = [(_MKUserTrackingButtonController *)self buttonBehavior];
-  v7 = [(_MKUserTrackingButtonController *)self buttonBehavior];
-  if (self->_state == 1 && v6 != 1)
+  buttonBehavior = [(_MKUserTrackingButtonController *)self buttonBehavior];
+  buttonBehavior2 = [(_MKUserTrackingButtonController *)self buttonBehavior];
+  if (self->_state == 1 && buttonBehavior != 1)
   {
     v9 = 0;
     goto LABEL_9;
   }
 
-  if (!v5 && v7 != 1)
+  if (!userTrackingMode && buttonBehavior2 != 1)
   {
     v9 = 1;
     goto LABEL_9;
   }
 
-  if (!v5 && v7 == 1)
+  if (!userTrackingMode && buttonBehavior2 == 1)
   {
     v10 = objc_loadWeakRetained(&self->_userTrackingView);
-    v11 = [v10 isCurrentlyRotated];
+    isCurrentlyRotated = [v10 isCurrentlyRotated];
 
-    if (v11)
+    if (isCurrentlyRotated)
     {
       v9 = 2;
       goto LABEL_9;
@@ -322,18 +322,18 @@
     goto LABEL_20;
   }
 
-  if (v5 != 1)
+  if (userTrackingMode != 1)
   {
 LABEL_20:
-    v9 = v6 == 1;
+    v9 = buttonBehavior == 1;
     goto LABEL_9;
   }
 
-  v12 = v6 == 1;
+  v12 = buttonBehavior == 1;
   v13 = objc_loadWeakRetained(&self->_userTrackingView);
-  v14 = [v13 canRotateForHeading];
+  canRotateForHeading = [v13 canRotateForHeading];
 
-  if (v14)
+  if (canRotateForHeading)
   {
     v9 = 2;
   }
@@ -348,69 +348,69 @@ LABEL_9:
   [v15 _setUserTrackingMode:v9 animated:1 fromTrackingButton:1];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   state = self->_state;
-  if (state != a3)
+  if (state != state)
   {
-    v6 = [(_MKUserTrackingButtonController *)self _shouldAnimateFromState:state toState:a3];
-    self->_state = a3;
+    v6 = [(_MKUserTrackingButtonController *)self _shouldAnimateFromState:state toState:state];
+    self->_state = state;
     if (v6)
     {
-      v7 = [(UIImageView *)self->_imageView layer];
-      v8 = [(_MKUserTrackingButtonController *)self _shrinkAnimation];
-      [v8 set_mapkit_ID:7];
-      [v8 setDelegate:self];
-      v9 = [(_MKUserTrackingButtonController *)self _contentAnimation];
-      [v8 duration];
-      [v9 setDuration:?];
-      [v7 addAnimation:v8 forKey:@"shrink"];
-      if (v9)
+      layer = [(UIImageView *)self->_imageView layer];
+      _shrinkAnimation = [(_MKUserTrackingButtonController *)self _shrinkAnimation];
+      [_shrinkAnimation set_mapkit_ID:7];
+      [_shrinkAnimation setDelegate:self];
+      _contentAnimation = [(_MKUserTrackingButtonController *)self _contentAnimation];
+      [_shrinkAnimation duration];
+      [_contentAnimation setDuration:?];
+      [layer addAnimation:_shrinkAnimation forKey:@"shrink"];
+      if (_contentAnimation)
       {
-        [v7 addAnimation:v9 forKey:@"contents"];
+        [layer addAnimation:_contentAnimation forKey:@"contents"];
       }
     }
 
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_target);
-      [WeakRetained _updateForState:a3];
+      [WeakRetained _updateForState:state];
 
       [(_MKUserTrackingButtonController *)self _reloadState];
       [(_MKUserTrackingButtonController *)self _updateLoading];
     }
 
     v13 = objc_loadWeakRetained(&self->_target);
-    v11 = [v13 _isHighlightedForState:a3];
+    v11 = [v13 _isHighlightedForState:state];
     v12 = objc_loadWeakRetained(&self->_button);
     [v12 setSelected:v11];
   }
 }
 
-- (id)_imageForState:(int64_t)a3 controlState:(unint64_t)a4
+- (id)_imageForState:(int64_t)state controlState:(unint64_t)controlState
 {
   WeakRetained = objc_loadWeakRetained(&self->_target);
-  v7 = [WeakRetained _imageForState:a3 controlState:a4];
+  v7 = [WeakRetained _imageForState:state controlState:controlState];
 
   return v7;
 }
 
-- (BOOL)_shouldAnimateFromState:(int64_t)a3 toState:(int64_t)a4
+- (BOOL)_shouldAnimateFromState:(int64_t)state toState:(int64_t)toState
 {
-  if (!a3 && a4 == 2)
+  if (!state && toState == 2)
   {
     return 0;
   }
 
-  return (a3 != 2 || a4 != 0) && a3 != -1 && a4 != -1;
+  return (state != 2 || toState != 0) && state != -1 && toState != -1;
 }
 
-- (void)setUserTrackingView:(id)a3
+- (void)setUserTrackingView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_userTrackingView);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != viewCopy)
   {
     v6 = objc_loadWeakRetained(&self->_userTrackingView);
 
@@ -419,56 +419,56 @@ LABEL_9:
       goto LABEL_8;
     }
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v8 = objc_loadWeakRetained(&self->_userTrackingView);
-    [v7 removeObserver:self name:@"MKUserTrackingViewModeDidChangeNotification" object:v8];
+    [defaultCenter removeObserver:self name:@"MKUserTrackingViewModeDidChangeNotification" object:v8];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v10 = objc_loadWeakRetained(&self->_userTrackingView);
-    [v9 removeObserver:self name:@"MKUserTrackingViewDidUpdateUserLocationNotification" object:v10];
+    [defaultCenter2 removeObserver:self name:@"MKUserTrackingViewDidUpdateUserLocationNotification" object:v10];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
     v12 = objc_loadWeakRetained(&self->_userTrackingView);
-    [v11 removeObserver:self name:@"MKUserTrackingViewDidResetUserLocationNotification" object:v12];
+    [defaultCenter3 removeObserver:self name:@"MKUserTrackingViewDidResetUserLocationNotification" object:v12];
 
-    v13 = objc_loadWeakRetained(&self->_userTrackingView);
+    defaultCenter8 = objc_loadWeakRetained(&self->_userTrackingView);
     if (objc_opt_respondsToSelector())
     {
       v14 = objc_loadWeakRetained(&self->_userTrackingView);
-      v15 = [v14 postsMapViewInitialRenderingNotification];
+      postsMapViewInitialRenderingNotification = [v14 postsMapViewInitialRenderingNotification];
 
-      if (!v15)
+      if (!postsMapViewInitialRenderingNotification)
       {
 LABEL_7:
         objc_storeWeak(&self->_userTrackingView, 0);
 LABEL_8:
-        if (!v4)
+        if (!viewCopy)
         {
           v29 = objc_loadWeakRetained(&self->_target);
           [v29 _setInternallyEnabled:0];
           goto LABEL_15;
         }
 
-        objc_storeWeak(&self->_userTrackingView, v4);
-        v17 = [MEMORY[0x1E696AD88] defaultCenter];
+        objc_storeWeak(&self->_userTrackingView, viewCopy);
+        defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
         v18 = objc_loadWeakRetained(&self->_userTrackingView);
-        [v17 addObserver:self selector:sel__updateState name:@"MKUserTrackingViewModeDidChangeNotification" object:v18];
+        [defaultCenter4 addObserver:self selector:sel__updateState name:@"MKUserTrackingViewModeDidChangeNotification" object:v18];
 
-        v19 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
         v20 = objc_loadWeakRetained(&self->_userTrackingView);
-        [v19 addObserver:self selector:sel__updateState name:@"MKUserTrackingViewDidUpdateUserLocationNotification" object:v20];
+        [defaultCenter5 addObserver:self selector:sel__updateState name:@"MKUserTrackingViewDidUpdateUserLocationNotification" object:v20];
 
-        v21 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
         v22 = objc_loadWeakRetained(&self->_userTrackingView);
-        [v21 addObserver:self selector:sel__updateState name:@"MKUserTrackingViewDidResetUserLocationNotification" object:v22];
+        [defaultCenter6 addObserver:self selector:sel__updateState name:@"MKUserTrackingViewDidResetUserLocationNotification" object:v22];
 
-        v23 = objc_loadWeakRetained(&self->_userTrackingView);
+        defaultCenter7 = objc_loadWeakRetained(&self->_userTrackingView);
         if (objc_opt_respondsToSelector())
         {
           v24 = objc_loadWeakRetained(&self->_userTrackingView);
-          v25 = [v24 postsMapViewInitialRenderingNotification];
+          postsMapViewInitialRenderingNotification2 = [v24 postsMapViewInitialRenderingNotification];
 
-          if (!v25)
+          if (!postsMapViewInitialRenderingNotification2)
           {
 LABEL_13:
             v27 = +[MKLocationManager sharedLocationManager];
@@ -478,7 +478,7 @@ LABEL_13:
             v30[2] = __55___MKUserTrackingButtonController_setUserTrackingView___block_invoke;
             v30[3] = &unk_1E76CD810;
             v31 = v27;
-            v32 = self;
+            selfCopy = self;
             v29 = v27;
             dispatch_async(v28, v30);
 
@@ -487,17 +487,17 @@ LABEL_15:
             goto LABEL_16;
           }
 
-          v23 = [MEMORY[0x1E696AD88] defaultCenter];
+          defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
           v26 = objc_loadWeakRetained(&self->_userTrackingView);
-          [v23 addObserver:self selector:sel__updateState name:@"MKMapViewDidFinishInitialRenderNotification" object:v26];
+          [defaultCenter7 addObserver:self selector:sel__updateState name:@"MKMapViewDidFinishInitialRenderNotification" object:v26];
         }
 
         goto LABEL_13;
       }
 
-      v13 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter8 = [MEMORY[0x1E696AD88] defaultCenter];
       v16 = objc_loadWeakRetained(&self->_userTrackingView);
-      [v13 removeObserver:self name:@"MKMapViewDidFinishInitialRenderNotification" object:v16];
+      [defaultCenter8 removeObserver:self name:@"MKMapViewDidFinishInitialRenderNotification" object:v16];
     }
 
     goto LABEL_7;
@@ -506,7 +506,7 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)_authorizationStatusChanged:(id)a3
+- (void)_authorizationStatusChanged:(id)changed
 {
   WeakRetained = objc_loadWeakRetained(&self->_target);
   v4 = +[MKLocationManager sharedLocationManager];
@@ -542,29 +542,29 @@ LABEL_16:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _MKUserTrackingButtonController;
   [(_MKUserTrackingButtonController *)&v4 dealloc];
 }
 
-- (void)setControlSize:(unint64_t)a3
+- (void)setControlSize:(unint64_t)size
 {
-  if (self->_controlSize != a3)
+  if (self->_controlSize != size)
   {
-    self->_controlSize = a3;
+    self->_controlSize = size;
     [(_MKUserTrackingButtonController *)self _updatePreferredSymbolConfiguration];
   }
 }
 
-- (_MKUserTrackingButtonController)initWithTarget:(id)a3 userTrackingView:(id)a4 imageView:(id)a5 button:(id)a6
+- (_MKUserTrackingButtonController)initWithTarget:(id)target userTrackingView:(id)view imageView:(id)imageView button:(id)button
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  targetCopy = target;
+  viewCopy = view;
+  imageViewCopy = imageView;
+  buttonCopy = button;
   v21.receiver = self;
   v21.super_class = _MKUserTrackingButtonController;
   v14 = [(_MKUserTrackingButtonController *)&v21 init];
@@ -572,18 +572,18 @@ LABEL_16:
   if (v14)
   {
     v14->_state = -1;
-    objc_storeWeak(&v14->_target, v10);
-    objc_storeStrong(&v15->_imageView, a5);
+    objc_storeWeak(&v14->_target, targetCopy);
+    objc_storeStrong(&v15->_imageView, imageView);
     v16 = *MEMORY[0x1E6979DD0];
-    v17 = [(UIImageView *)v15->_imageView layer];
-    [v17 setContentsGravity:v16];
+    layer = [(UIImageView *)v15->_imageView layer];
+    [layer setContentsGravity:v16];
 
-    objc_storeWeak(&v15->_button, v13);
+    objc_storeWeak(&v15->_button, buttonCopy);
     v15->_controlSize = 1;
     [(_MKUserTrackingButtonController *)v15 _updatePreferredSymbolConfiguration];
-    [(_MKUserTrackingButtonController *)v15 setUserTrackingView:v11];
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v15 selector:sel__authorizationStatusChanged_ name:MKLocationManagerApprovalDidChangeNotification object:0];
+    [(_MKUserTrackingButtonController *)v15 setUserTrackingView:viewCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel__authorizationStatusChanged_ name:MKLocationManagerApprovalDidChangeNotification object:0];
 
     v19 = v15;
   }

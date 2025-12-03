@@ -1,8 +1,8 @@
 @interface IMDCKBackupControllerProxy
 + (id)sharedInstance;
-- (void)sendDeviceIDToCloudKitWithCompletion:(id)a3;
+- (void)sendDeviceIDToCloudKitWithCompletion:(id)completion;
 - (void)setFirstSyncDateToNow;
-- (void)toggleiCloudBackupsIfNeeded:(id)a3;
+- (void)toggleiCloudBackupsIfNeeded:(id)needed;
 @end
 
 @implementation IMDCKBackupControllerProxy
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_22B5A74F8;
   block[3] = &unk_278702AF8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_2814210B8 != -1)
   {
     dispatch_once(&qword_2814210B8, block);
@@ -30,18 +30,18 @@
   [v2 setFirstSyncDateToNow];
 }
 
-- (void)toggleiCloudBackupsIfNeeded:(id)a3
+- (void)toggleiCloudBackupsIfNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v4 = +[IMDCKBackupController sharedInstance];
-  [v4 toggleiCloudBackupsIfNeeded:v3];
+  [v4 toggleiCloudBackupsIfNeeded:neededCopy];
 }
 
-- (void)sendDeviceIDToCloudKitWithCompletion:(id)a3
+- (void)sendDeviceIDToCloudKitWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[IMDCKBackupController sharedInstance];
-  [v4 sendDeviceIDToCloudKitWithCompletion:v3];
+  [v4 sendDeviceIDToCloudKitWithCompletion:completionCopy];
 }
 
 @end

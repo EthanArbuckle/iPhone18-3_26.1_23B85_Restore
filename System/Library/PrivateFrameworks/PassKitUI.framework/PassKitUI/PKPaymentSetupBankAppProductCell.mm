@@ -7,16 +7,16 @@
 
 - (PKPaymentSetupBankAppProductCell)init
 {
-  v3 = [objc_opt_class() reuseIdentifier];
+  reuseIdentifier = [objc_opt_class() reuseIdentifier];
   v8.receiver = self;
   v8.super_class = PKPaymentSetupBankAppProductCell;
-  v4 = [(PKPaymentSetupBankAppProductCell *)&v8 initWithStyle:3 reuseIdentifier:v3];
+  v4 = [(PKPaymentSetupBankAppProductCell *)&v8 initWithStyle:3 reuseIdentifier:reuseIdentifier];
 
   if (v4)
   {
-    v5 = [(PKPaymentSetupBankAppProductCell *)v4 detailTextLabel];
-    v6 = [MEMORY[0x1E69DC888] separatorColor];
-    [v5 setTextColor:v6];
+    detailTextLabel = [(PKPaymentSetupBankAppProductCell *)v4 detailTextLabel];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+    [detailTextLabel setTextColor:separatorColor];
   }
 
   return v4;
@@ -29,28 +29,28 @@
   [(PKPaymentSetupProductCell *)&v23 layoutSubviews];
   [(PKPaymentSetupProductCell *)self textLabelOffset];
   v4 = v3;
-  v5 = [(PKPaymentSetupBankAppProductCell *)self detailTextLabel];
-  v6 = [(PKPaymentSetupBankAppProductCell *)self textLabel];
-  v7 = [v5 text];
-  v8 = [v7 length];
+  detailTextLabel = [(PKPaymentSetupBankAppProductCell *)self detailTextLabel];
+  textLabel = [(PKPaymentSetupBankAppProductCell *)self textLabel];
+  text = [detailTextLabel text];
+  v8 = [text length];
 
   if (!v8)
   {
-    [v6 frame];
-    v9 = [(PKPaymentSetupBankAppProductCell *)self contentView];
-    [v9 bounds];
+    [textLabel frame];
+    contentView = [(PKPaymentSetupBankAppProductCell *)self contentView];
+    [contentView bounds];
     UIRectCenteredYInRect();
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
 
-    [v6 setFrame:{v11, v13, v15, v17}];
+    [textLabel setFrame:{v11, v13, v15, v17}];
   }
 
   if (v4 > 0.0)
   {
-    [v5 frame];
+    [detailTextLabel frame];
     y = v24.origin.y;
     width = v24.size.width;
     height = v24.size.height;
@@ -72,7 +72,7 @@
       v22 = CGRectGetWidth(v26);
     }
 
-    [v5 setFrame:{v4, y, v22, height}];
+    [detailTextLabel setFrame:{v4, y, v22, height}];
   }
 }
 

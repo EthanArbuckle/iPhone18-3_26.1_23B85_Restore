@@ -1,46 +1,46 @@
 @interface SBVolumeControl
-+ (BOOL)_isVolumeChangeAllowedForState:(id)a3 error:(id *)a4;
-+ (BOOL)_isVolumeManagedForCategory:(id)a3;
-- (BOOL)_displaysVolumeForCategory:(id)a3;
-- (BOOL)_isCategoryAlwaysHidden:(id)a3;
-- (BOOL)_isHUDDisplayableForCategory:(id)a3 outReason:(id *)a4;
-- (BOOL)_isHUDDisplayableWithReason:(id *)a3;
++ (BOOL)_isVolumeChangeAllowedForState:(id)state error:(id *)error;
++ (BOOL)_isVolumeManagedForCategory:(id)category;
+- (BOOL)_displaysVolumeForCategory:(id)category;
+- (BOOL)_isCategoryAlwaysHidden:(id)hidden;
+- (BOOL)_isHUDDisplayableForCategory:(id)category outReason:(id *)reason;
+- (BOOL)_isHUDDisplayableWithReason:(id *)reason;
 - (BOOL)_isVolumeHUDVisible;
-- (BOOL)_isVolumeHUDVisibleOnWindowScene:(id)a3;
-- (BOOL)canChangeVolumeForActiveCategory:(id)a3 isAudioSessionPlaying:(BOOL)a4;
+- (BOOL)_isVolumeHUDVisibleOnWindowScene:(id)scene;
+- (BOOL)canChangeVolumeForActiveCategory:(id)category isAudioSessionPlaying:(BOOL)playing;
 - (SBControlCenterCoordinator)controlCenterCoordinator;
-- (SBVolumeControl)initWithHUDController:(id)a3 ringerControl:(id)a4 telephonyManager:(id)a5 conferenceManager:(id)a6;
+- (SBVolumeControl)initWithHUDController:(id)controller ringerControl:(id)control telephonyManager:(id)manager conferenceManager:(id)conferenceManager;
 - (float)_buttonRepeatDelay;
 - (float)_effectiveVolume;
 - (float)_getMediaVolumeForIAP;
 - (id)_avscOperationsQueue;
-- (id)acquireVolumeHUDHiddenAssertionForReason:(id)a3;
+- (id)acquireVolumeHUDHiddenAssertionForReason:(id)reason;
 - (id)existingVolumeHUDViewController;
 - (id)presentedVolumeHUDViewController;
 - (void)_avscOperationsQueue;
-- (void)_configureVolumeStepDeltaForVolumeHUDViewController:(id)a3;
-- (void)_dispatchAVSystemControllerAsync:(id)a3;
-- (void)_dispatchAVSystemControllerSync:(id)a3;
-- (void)_effectiveVolumeChanged:(id)a3;
-- (void)_presentVolumeHUDWithVolume:(float)a3;
-- (void)_processZStackParticipantSettings:(id)a3;
+- (void)_configureVolumeStepDeltaForVolumeHUDViewController:(id)controller;
+- (void)_dispatchAVSystemControllerAsync:(id)async;
+- (void)_dispatchAVSystemControllerSync:(id)sync;
+- (void)_effectiveVolumeChanged:(id)changed;
+- (void)_presentVolumeHUDWithVolume:(float)volume;
+- (void)_processZStackParticipantSettings:(id)settings;
 - (void)_resetMediaServerConnection;
-- (void)_setMediaVolumeForIAP:(float)a3;
-- (void)_someSceneWillConnect:(id)a3;
-- (void)_updateEffectiveVolume:(float)a3;
-- (void)addAlwaysHiddenCategory:(id)a3;
+- (void)_setMediaVolumeForIAP:(float)p;
+- (void)_someSceneWillConnect:(id)connect;
+- (void)_updateEffectiveVolume:(float)volume;
+- (void)addAlwaysHiddenCategory:(id)category;
 - (void)cancelVolumeEvent;
-- (void)changeVolumeByDelta:(float)a3;
-- (void)controlCenter:(id)a3 willPresentOnWindowScene:(id)a4;
+- (void)changeVolumeByDelta:(float)delta;
+- (void)controlCenter:(id)center willPresentOnWindowScene:(id)scene;
 - (void)decreaseVolume;
-- (void)elasticHUDViewControllerRequestsDismissal:(id)a3;
-- (void)handleVolumeButtonWithType:(int64_t)a3 down:(BOOL)a4;
+- (void)elasticHUDViewControllerRequestsDismissal:(id)dismissal;
+- (void)handleVolumeButtonWithType:(int64_t)type down:(BOOL)down;
 - (void)hideVolumeHUDIfVisible;
 - (void)increaseVolume;
-- (void)removeAlwaysHiddenCategory:(id)a3;
-- (void)setActiveCategoryVolume:(float)a3;
-- (void)setControlCenterCoordinator:(id)a3;
-- (void)setVolume:(float)a3 forCategory:(id)a4;
+- (void)removeAlwaysHiddenCategory:(id)category;
+- (void)setActiveCategoryVolume:(float)volume;
+- (void)setControlCenterCoordinator:(id)coordinator;
+- (void)setVolume:(float)volume forCategory:(id)category;
 - (void)toggleMute;
 @end
 
@@ -56,20 +56,20 @@
 - (id)presentedVolumeHUDViewController
 {
   v2 = [(SBHUDController *)self->_hudController presentedHUDControllerForIdentifier:*MEMORY[0x277D67040]];
-  v3 = [v2 HUDViewController];
+  hUDViewController = [v2 HUDViewController];
 
-  return v3;
+  return hUDViewController;
 }
 
-- (SBVolumeControl)initWithHUDController:(id)a3 ringerControl:(id)a4 telephonyManager:(id)a5 conferenceManager:(id)a6
+- (SBVolumeControl)initWithHUDController:(id)controller ringerControl:(id)control telephonyManager:(id)manager conferenceManager:(id)conferenceManager
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  controllerCopy = controller;
+  controlCopy = control;
+  managerCopy = manager;
+  conferenceManagerCopy = conferenceManager;
+  if (controllerCopy)
   {
-    if (v12)
+    if (controlCopy)
     {
       goto LABEL_3;
     }
@@ -78,17 +78,17 @@
   else
   {
     [SBVolumeControl initWithHUDController:ringerControl:telephonyManager:conferenceManager:];
-    if (v12)
+    if (controlCopy)
     {
 LABEL_3:
-      if (v13)
+      if (managerCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
       [SBVolumeControl initWithHUDController:ringerControl:telephonyManager:conferenceManager:];
-      if (v14)
+      if (conferenceManagerCopy)
       {
         goto LABEL_5;
       }
@@ -98,13 +98,13 @@ LABEL_10:
   }
 
   [SBVolumeControl initWithHUDController:ringerControl:telephonyManager:conferenceManager:];
-  if (!v13)
+  if (!managerCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v14)
+  if (conferenceManagerCopy)
   {
     goto LABEL_5;
   }
@@ -122,10 +122,10 @@ LABEL_5:
     v15->_elasticHUDSettings = v16;
 
     [(PTSettings *)v15->_elasticHUDSettings addKeyObserver:v15];
-    objc_storeStrong(&v15->_hudController, a3);
-    objc_storeStrong(&v15->_ringerControl, a4);
-    objc_storeStrong(&v15->_telephonyManager, a5);
-    objc_storeStrong(&v15->_conferenceManager, a6);
+    objc_storeStrong(&v15->_hudController, controller);
+    objc_storeStrong(&v15->_ringerControl, control);
+    objc_storeStrong(&v15->_telephonyManager, manager);
+    objc_storeStrong(&v15->_conferenceManager, conferenceManager);
     v15->_mode = 0;
     v18 = +[SBAVSystemControllerCache sharedInstance];
     avCache = v15->_avCache;
@@ -134,36 +134,36 @@ LABEL_5:
     *&v15->_volumeDownButtonIsDown = 0;
     [(SBVolumeControl *)v15 _resetMediaServerConnection];
     v15->_effectiveVolumeLock._os_unfair_lock_opaque = 0;
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 addObserver:v15 selector:sel__effectiveVolumeChanged_ name:*MEMORY[0x277D26BA8] object:0];
-    [v20 addObserver:v15 selector:sel__serverConnectionDied_ name:*MEMORY[0x277D26D40] object:0];
-    [v20 addObserver:v15 selector:sel__someSceneWillConnect_ name:*MEMORY[0x277D76E70] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel__effectiveVolumeChanged_ name:*MEMORY[0x277D26BA8] object:0];
+    [defaultCenter addObserver:v15 selector:sel__serverConnectionDied_ name:*MEMORY[0x277D26D40] object:0];
+    [defaultCenter addObserver:v15 selector:sel__someSceneWillConnect_ name:*MEMORY[0x277D76E70] object:0];
   }
 
   return v15;
 }
 
-- (BOOL)canChangeVolumeForActiveCategory:(id)a3 isAudioSessionPlaying:(BOOL)a4
+- (BOOL)canChangeVolumeForActiveCategory:(id)category isAudioSessionPlaying:(BOOL)playing
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"FindMyPhone"])
+  categoryCopy = category;
+  if ([categoryCopy isEqualToString:@"FindMyPhone"])
   {
-    v6 = !a4;
+    v6 = !playing;
   }
 
   else
   {
-    v6 = [objc_opt_class() _isVolumeManagedForCategory:v5];
+    v6 = [objc_opt_class() _isVolumeManagedForCategory:categoryCopy];
   }
 
   return v6;
 }
 
-- (void)addAlwaysHiddenCategory:(id)a3
+- (void)addAlwaysHiddenCategory:(id)category
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || (v10 = v4, v6 = [(__CFString *)v4 length], v5 = v10, !v6))
+  categoryCopy = category;
+  v5 = categoryCopy;
+  if (!categoryCopy || (v10 = categoryCopy, v6 = [(__CFString *)categoryCopy length], v5 = v10, !v6))
   {
 
     v5 = @"com.apple.springboard.volumeControl.HUDCategories.all";
@@ -190,12 +190,12 @@ LABEL_5:
   {
     MGGetBoolAnswer();
 LABEL_3:
-    v3 = [(SBAVSystemControllerCache *)self->_avCache isFullyMuted];
+    isFullyMuted = [(SBAVSystemControllerCache *)self->_avCache isFullyMuted];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __29__SBVolumeControl_toggleMute__block_invoke;
     v5[3] = &__block_descriptor_33_e28_v16__0__AVSystemController_8l;
-    v6 = !v3;
+    v6 = !isFullyMuted;
     [(SBVolumeControl *)self _dispatchAVSystemControllerAsync:v5];
     return;
   }
@@ -224,18 +224,18 @@ void __29__SBVolumeControl_toggleMute__block_invoke(uint64_t a1, void *a2)
   return effectiveVolume;
 }
 
-- (void)_updateEffectiveVolume:(float)a3
+- (void)_updateEffectiveVolume:(float)volume
 {
   os_unfair_lock_lock(&self->_effectiveVolumeLock);
-  self->_effectiveVolume = a3;
+  self->_effectiveVolume = volume;
 
   os_unfair_lock_unlock(&self->_effectiveVolumeLock);
 }
 
-- (void)setVolume:(float)a3 forCategory:(id)a4
+- (void)setVolume:(float)volume forCategory:(id)category
 {
-  v6 = a4;
-  if (!v6)
+  categoryCopy = category;
+  if (!categoryCopy)
   {
     [SBVolumeControl setVolume:forCategory:];
   }
@@ -244,9 +244,9 @@ void __29__SBVolumeControl_toggleMute__block_invoke(uint64_t a1, void *a2)
   v8[1] = 3221225472;
   v8[2] = __41__SBVolumeControl_setVolume_forCategory___block_invoke;
   v8[3] = &unk_2783AC000;
-  v10 = a3;
-  v9 = v6;
-  v7 = v6;
+  volumeCopy = volume;
+  v9 = categoryCopy;
+  v7 = categoryCopy;
   [(SBVolumeControl *)self _dispatchAVSystemControllerAsync:v8];
 }
 
@@ -281,21 +281,21 @@ void __29__SBVolumeControl_toggleMute__block_invoke(uint64_t a1, void *a2)
   self->_debounce = 0;
 }
 
-- (void)handleVolumeButtonWithType:(int64_t)a3 down:(BOOL)a4
+- (void)handleVolumeButtonWithType:(int64_t)type down:(BOOL)down
 {
-  v4 = a4;
+  downCopy = down;
   v27 = *MEMORY[0x277D85DE8];
   v7 = +[SBLockScreenManager sharedInstance];
-  v8 = [v7 isUILocked];
-  v9 = [(SBVolumeControl *)self presentedVolumeHUDViewController];
+  isUILocked = [v7 isUILocked];
+  presentedVolumeHUDViewController = [(SBVolumeControl *)self presentedVolumeHUDViewController];
   v10 = SBLogButtonsVolume();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (a3 == 103)
+  if (type == 103)
   {
     if (v11)
     {
       v13 = "up";
-      if (v4)
+      if (downCopy)
       {
         v13 = "down";
       }
@@ -305,7 +305,7 @@ void __29__SBVolumeControl_toggleMute__block_invoke(uint64_t a1, void *a2)
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "SBVolumeControl -- volume decrement -- button state: %{public}s", buf, 0xCu);
     }
 
-    if (v4)
+    if (downCopy)
     {
       [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_increaseVolume object:0];
       self->_volumeDownButtonIsDown = 1;
@@ -334,16 +334,16 @@ void __29__SBVolumeControl_toggleMute__block_invoke(uint64_t a1, void *a2)
       volumeDownButtonIsDown = 0;
     }
 
-    [v9 noteButtonDownWasHit:volumeDownButtonIsDown];
+    [presentedVolumeHUDViewController noteButtonDownWasHit:volumeDownButtonIsDown];
     goto LABEL_30;
   }
 
-  if (a3 == 102)
+  if (type == 102)
   {
     if (v11)
     {
       v12 = "up";
-      if (v4)
+      if (downCopy)
       {
         v12 = "down";
       }
@@ -353,7 +353,7 @@ void __29__SBVolumeControl_toggleMute__block_invoke(uint64_t a1, void *a2)
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "SBVolumeControl -- volume increment -- button state: %{public}s", buf, 0xCu);
     }
 
-    if (v4)
+    if (downCopy)
     {
       [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_decreaseVolume object:0];
       self->_volumeUpButtonIsDown = 1;
@@ -377,7 +377,7 @@ void __29__SBVolumeControl_toggleMute__block_invoke(uint64_t a1, void *a2)
     {
       volumeUpButtonIsDown = self->_volumeUpButtonIsDown;
 LABEL_23:
-      [v9 noteButtonUpWasHit:volumeUpButtonIsDown];
+      [presentedVolumeHUDViewController noteButtonUpWasHit:volumeUpButtonIsDown];
     }
   }
 
@@ -393,13 +393,13 @@ LABEL_23:
   }
 
 LABEL_30:
-  if (v8)
+  if (isUILocked)
   {
-    v17 = [v7 lockScreenEnvironment];
-    v18 = [v17 backlightController];
-    v19 = [v18 isInScreenOffMode];
+    lockScreenEnvironment = [v7 lockScreenEnvironment];
+    backlightController = [lockScreenEnvironment backlightController];
+    isInScreenOffMode = [backlightController isInScreenOffMode];
 
-    if ((v19 & 1) == 0)
+    if ((isInScreenOffMode & 1) == 0)
     {
       v20 = +[SBIdleTimerGlobalCoordinator sharedInstance];
       v21 = MEMORY[0x277CCACA8];
@@ -409,7 +409,7 @@ LABEL_30:
     }
   }
 
-  if (!v4)
+  if (!downCopy)
   {
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
@@ -438,11 +438,11 @@ void __51__SBVolumeControl_handleVolumeButtonWithType_down___block_invoke(uint64
   [v3 cancelPreviousPerformRequestsWithTarget:self selector:sel_decreaseVolume object:0];
 }
 
-- (void)removeAlwaysHiddenCategory:(id)a3
+- (void)removeAlwaysHiddenCategory:(id)category
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || (v7 = v4, v6 = [(__CFString *)v4 length], v5 = v7, !v6))
+  categoryCopy = category;
+  v5 = categoryCopy;
+  if (!categoryCopy || (v7 = categoryCopy, v6 = [(__CFString *)categoryCopy length], v5 = v7, !v6))
   {
 
     v5 = @"com.apple.springboard.volumeControl.HUDCategories.all";
@@ -455,9 +455,9 @@ void __51__SBVolumeControl_handleVolumeButtonWithType_down___block_invoke(uint64
 - (id)existingVolumeHUDViewController
 {
   v2 = [(SBHUDController *)self->_hudController knownHUDControllerForIdentifier:*MEMORY[0x277D67040]];
-  v3 = [v2 HUDViewController];
+  hUDViewController = [v2 HUDViewController];
 
-  return v3;
+  return hUDViewController;
 }
 
 - (void)hideVolumeHUDIfVisible
@@ -466,28 +466,28 @@ void __51__SBVolumeControl_handleVolumeButtonWithType_down___block_invoke(uint64
   [v2 dismiss];
 }
 
-- (id)acquireVolumeHUDHiddenAssertionForReason:(id)a3
+- (id)acquireVolumeHUDHiddenAssertionForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   [(SBVolumeControl *)self cancelVolumeEvent];
-  v5 = [(SBHUDController *)self->_hudController acquireHUDHiddenAssertionForIdentifier:*MEMORY[0x277D67040] withReason:v4];
+  v5 = [(SBHUDController *)self->_hudController acquireHUDHiddenAssertionForIdentifier:*MEMORY[0x277D67040] withReason:reasonCopy];
 
   return v5;
 }
 
-- (void)setActiveCategoryVolume:(float)a3
+- (void)setActiveCategoryVolume:(float)volume
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __43__SBVolumeControl_setActiveCategoryVolume___block_invoke;
   v3[3] = &__block_descriptor_36_e28_v16__0__AVSystemController_8l;
-  v4 = a3;
+  volumeCopy = volume;
   [(SBVolumeControl *)self _dispatchAVSystemControllerAsync:v3];
 }
 
-- (void)setControlCenterCoordinator:(id)a3
+- (void)setControlCenterCoordinator:(id)coordinator
 {
-  obj = a3;
+  obj = coordinator;
   WeakRetained = objc_loadWeakRetained(&self->_controlCenterCoordinator);
   if (WeakRetained != obj)
   {
@@ -497,13 +497,13 @@ void __51__SBVolumeControl_handleVolumeButtonWithType_down___block_invoke(uint64
   }
 }
 
-- (void)_setMediaVolumeForIAP:(float)a3
+- (void)_setMediaVolumeForIAP:(float)p
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __41__SBVolumeControl__setMediaVolumeForIAP___block_invoke;
   v3[3] = &__block_descriptor_36_e28_v16__0__AVSystemController_8l;
-  v4 = a3;
+  pCopy = p;
   [(SBVolumeControl *)self _dispatchAVSystemControllerAsync:v3];
 }
 
@@ -539,9 +539,9 @@ void __40__SBVolumeControl__getMediaVolumeForIAP__block_invoke(uint64_t a1, void
   [v3 getVolume:*(*(a1 + 32) + 8) + 24 forCategory:v4];
 }
 
-- (BOOL)_isCategoryAlwaysHidden:(id)a3
+- (BOOL)_isCategoryAlwaysHidden:(id)hidden
 {
-  if (([(NSMutableSet *)self->_alwaysHiddenCategories containsObject:a3]& 1) != 0)
+  if (([(NSMutableSet *)self->_alwaysHiddenCategories containsObject:hidden]& 1) != 0)
   {
     return 1;
   }
@@ -551,12 +551,12 @@ void __40__SBVolumeControl__getMediaVolumeForIAP__block_invoke(uint64_t a1, void
   return [(NSMutableSet *)alwaysHiddenCategories containsObject:@"com.apple.springboard.volumeControl.HUDCategories.all"];
 }
 
-- (BOOL)_isHUDDisplayableWithReason:(id *)a3
+- (BOOL)_isHUDDisplayableWithReason:(id *)reason
 {
-  v5 = [(SBVolumeControl *)self controlCenterCoordinator];
-  v6 = [v5 isVisible];
-  v7 = v6;
-  if (v6)
+  controlCenterCoordinator = [(SBVolumeControl *)self controlCenterCoordinator];
+  isVisible = [controlCenterCoordinator isVisible];
+  v7 = isVisible;
+  if (isVisible)
   {
     v8 = @"Control Center is visible";
   }
@@ -572,19 +572,19 @@ void __40__SBVolumeControl__getMediaVolumeForIAP__block_invoke(uint64_t a1, void
   {
     if ([v9 isUILocked])
     {
-      v12 = [v10 lockScreenEnvironment];
-      v13 = [v12 backlightController];
-      v14 = [v13 backlightLuminance];
+      lockScreenEnvironment = [v10 lockScreenEnvironment];
+      backlightController = [lockScreenEnvironment backlightController];
+      backlightLuminance = [backlightController backlightLuminance];
 
-      if (!v14)
+      if (!backlightLuminance)
       {
         v8 = @"UI Locked and backlight is fully off";
         goto LABEL_5;
       }
 
-      v15 = [v10 lockScreenEnvironment];
-      v16 = [v15 mediaControlsPresenter];
-      [v16 isShowingMediaControls];
+      lockScreenEnvironment2 = [v10 lockScreenEnvironment];
+      mediaControlsPresenter = [lockScreenEnvironment2 mediaControlsPresenter];
+      [mediaControlsPresenter isShowingMediaControls];
 
       if (![(SBTelephonyManager *)self->_telephonyManager inCall])
       {
@@ -592,15 +592,15 @@ void __40__SBVolumeControl__getMediaVolumeForIAP__block_invoke(uint64_t a1, void
       }
     }
 
-    v11 = [(SBVolumeControl *)self _isHUDDisplayableForLastEventCategoryWithReason:a3];
+    v11 = [(SBVolumeControl *)self _isHUDDisplayableForLastEventCategoryWithReason:reason];
     goto LABEL_12;
   }
 
 LABEL_5:
   v11 = 0;
-  if (a3)
+  if (reason)
   {
-    *a3 = v8;
+    *reason = v8;
   }
 
 LABEL_12:
@@ -608,13 +608,13 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)_isHUDDisplayableForCategory:(id)a3 outReason:(id *)a4
+- (BOOL)_isHUDDisplayableForCategory:(id)category outReason:(id *)reason
 {
-  v6 = a3;
+  categoryCopy = category;
   if (SBFAudioCategoriesDisablingVolumeHUDIncludesCategory())
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Z-stack participant is suppressing the HUD for category '%@'", v6];
-    if (v7)
+    categoryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Z-stack participant is suppressing the HUD for category '%@'", categoryCopy];
+    if (categoryCopy)
     {
       goto LABEL_11;
     }
@@ -622,11 +622,11 @@ LABEL_12:
 
   v8 = +[SBAssistantController sharedInstanceIfExists];
   v9 = v8;
-  if (v8 && [v8 isVisible] && !objc_msgSend(v9, "shouldShowSystemVolumeHUDForCategory:", v6))
+  if (v8 && [v8 isVisible] && !objc_msgSend(v9, "shouldShowSystemVolumeHUDForCategory:", categoryCopy))
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Siri is visible and is suppressing the HUD for category '%@'", v6];
+    categoryCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Siri is visible and is suppressing the HUD for category '%@'", categoryCopy];
 
-    if (v13)
+    if (categoryCopy2)
     {
       goto LABEL_14;
     }
@@ -637,50 +637,50 @@ LABEL_12:
   }
 
   v10 = +[SBWorkspace mainWorkspace];
-  v11 = [v10 inCallPresentationManager];
-  v12 = [v11 disablesSystemVolumeHUDForCategory:v6];
+  inCallPresentationManager = [v10 inCallPresentationManager];
+  v12 = [inCallPresentationManager disablesSystemVolumeHUDForCategory:categoryCopy];
 
   if (v12)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"SBInCallPresentationManager is suppressing the HUD for category '%@'", v6];
-    if (v7)
+    categoryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"SBInCallPresentationManager is suppressing the HUD for category '%@'", categoryCopy];
+    if (categoryCopy)
     {
       goto LABEL_11;
     }
   }
 
-  if ([(SBVolumeControl *)self _isCategoryAlwaysHidden:v6])
+  if ([(SBVolumeControl *)self _isCategoryAlwaysHidden:categoryCopy])
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"category '%@' is always hidden", v6];
+    categoryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"category '%@' is always hidden", categoryCopy];
 LABEL_11:
-    v13 = v7;
+    categoryCopy2 = categoryCopy;
     goto LABEL_14;
   }
 
-  v13 = 0;
+  categoryCopy2 = 0;
 LABEL_14:
-  if (a4)
+  if (reason)
   {
-    v14 = v13;
-    *a4 = v13;
+    v14 = categoryCopy2;
+    *reason = categoryCopy2;
   }
 
-  return v13 == 0;
+  return categoryCopy2 == 0;
 }
 
-+ (BOOL)_isVolumeChangeAllowedForState:(id)a3 error:(id *)a4
++ (BOOL)_isVolumeChangeAllowedForState:(id)state error:(id *)error
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  stateCopy = state;
+  v7 = stateCopy;
+  if (!stateCopy)
   {
     goto LABEL_13;
   }
 
-  if ([v6 isLocked] && (objc_msgSend(v7, "isHostingAppOnLockScreen") & 1) == 0 && (objc_msgSend(v7, "isAudioPlayingSomewhere") & 1) == 0 && (objc_msgSend(v7, "isCallOrFaceTimeActive") & 1) == 0 && (objc_msgSend(v7, "isShowingLockScreenMediaControls") & 1) == 0)
+  if ([stateCopy isLocked] && (objc_msgSend(v7, "isHostingAppOnLockScreen") & 1) == 0 && (objc_msgSend(v7, "isAudioPlayingSomewhere") & 1) == 0 && (objc_msgSend(v7, "isCallOrFaceTimeActive") & 1) == 0 && (objc_msgSend(v7, "isShowingLockScreenMediaControls") & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -695,7 +695,7 @@ LABEL_14:
     v13 = v16;
     v14 = 1;
 LABEL_12:
-    *a4 = [v13 errorWithDomain:@"com.apple.springboard.volumeControl.state" code:v14 userInfo:v12];
+    *error = [v13 errorWithDomain:@"com.apple.springboard.volumeControl.state" code:v14 userInfo:v12];
 
 LABEL_13:
     v8 = 0;
@@ -708,15 +708,15 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v9 = [v7 isFullyMuted];
-  v8 = v9;
-  if (a4 && (v9 & 1) == 0)
+  isFullyMuted = [v7 isFullyMuted];
+  v8 = isFullyMuted;
+  if (error && (isFullyMuted & 1) == 0)
   {
     v10 = MEMORY[0x277CCA9B8];
     v11 = *MEMORY[0x277CCA450];
     v18[0] = @"state";
     v18[1] = v11;
-    v19[0] = a1;
+    v19[0] = self;
     v19[1] = @"SpringBoard can change the volume only if the current route has volume control, or if we're fully muted..";
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
     v13 = v10;
@@ -729,13 +729,13 @@ LABEL_14:
   return v8;
 }
 
-+ (BOOL)_isVolumeManagedForCategory:(id)a3
++ (BOOL)_isVolumeManagedForCategory:(id)category
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  categoryCopy = category;
+  v4 = categoryCopy;
+  if (categoryCopy)
   {
-    if ([v3 isEqualToString:@"Audio/Video"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"Alarm") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"Ringtone") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"PhoneCall"))
+    if ([categoryCopy isEqualToString:@"Audio/Video"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"Alarm") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"Ringtone") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"PhoneCall"))
     {
       v5 = 1;
     }
@@ -754,15 +754,15 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)_displaysVolumeForCategory:(id)a3
+- (BOOL)_displaysVolumeForCategory:(id)category
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _isVolumeManagedForCategory:v3];
+  categoryCopy = category;
+  v4 = [objc_opt_class() _isVolumeManagedForCategory:categoryCopy];
 
   return v4;
 }
 
-- (void)changeVolumeByDelta:(float)a3
+- (void)changeVolumeByDelta:(float)delta
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -777,28 +777,28 @@ LABEL_14:
   if (v7)
   {
     v8 = +[SBCoverSheetPresentationManager sharedInstance];
-    v9 = [SBApp authenticationController];
+    authenticationController = [SBApp authenticationController];
     [(SBVolumeControl *)self _effectiveVolume];
     if (!self->_debounce)
     {
       v11 = v10;
       if ((BSFloatLessThanOrEqualToFloat() & 1) == 0 && (BSFloatGreaterThanOrEqualToFloat() & 1) == 0)
       {
-        v12 = [(SBVolumeControl *)self presentedVolumeHUDViewController];
-        *&v13 = fminf(fmaxf(v11 + a3, 0.0), 1.0);
-        [v12 noteValueWillDeltaStepToValue:v13];
+        presentedVolumeHUDViewController = [(SBVolumeControl *)self presentedVolumeHUDViewController];
+        *&v13 = fminf(fmaxf(v11 + delta, 0.0), 1.0);
+        [presentedVolumeHUDViewController noteValueWillDeltaStepToValue:v13];
       }
     }
 
     if ([v7 isUILocked])
     {
-      if (![v9 isAuthenticated])
+      if (![authenticationController isAuthenticated])
       {
         v14 = 1;
         goto LABEL_16;
       }
 
-      if (([v9 hasPasscodeSet] & 1) == 0)
+      if (([authenticationController hasPasscodeSet] & 1) == 0)
       {
         v14 = [v8 hasBeenDismissedSinceKeybagLock]^ 1;
         goto LABEL_16;
@@ -807,26 +807,26 @@ LABEL_14:
 
     v14 = 0;
 LABEL_16:
-    v15 = [v7 lockScreenEnvironment];
-    v16 = [v15 applicationHoster];
-    v17 = [v16 isHostingAnApp];
+    lockScreenEnvironment = [v7 lockScreenEnvironment];
+    applicationHoster = [lockScreenEnvironment applicationHoster];
+    isHostingAnApp = [applicationHoster isHostingAnApp];
 
-    v18 = [v7 lockScreenEnvironment];
-    v19 = [v18 mediaControlsPresenter];
-    v20 = [v19 isShowingMediaControls];
+    lockScreenEnvironment2 = [v7 lockScreenEnvironment];
+    mediaControlsPresenter = [lockScreenEnvironment2 mediaControlsPresenter];
+    isShowingMediaControls = [mediaControlsPresenter isShowingMediaControls];
 
-    v21 = [(SBTelephonyManager *)self->_telephonyManager inCall]|| [(SBConferenceManager *)self->_conferenceManager inFaceTime];
+    inFaceTime = [(SBTelephonyManager *)self->_telephonyManager inCall]|| [(SBConferenceManager *)self->_conferenceManager inFaceTime];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __39__SBVolumeControl_changeVolumeByDelta___block_invoke;
     v22[3] = &unk_2783AC0C0;
     v22[4] = self;
     v23 = v6;
-    v24 = a3;
-    v25 = v21;
+    deltaCopy = delta;
+    v25 = inFaceTime;
     v26 = v14;
-    v27 = v17;
-    v28 = v20;
+    v27 = isHostingAnApp;
+    v28 = isShowingMediaControls;
     [(SBVolumeControl *)self _dispatchAVSystemControllerAsync:v22];
 
     goto LABEL_20;
@@ -835,7 +835,7 @@ LABEL_16:
   v8 = SBLogAudioControl();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [(SBVolumeControl *)v6 changeVolumeByDelta:v8, a3];
+    [(SBVolumeControl *)v6 changeVolumeByDelta:v8, delta];
   }
 
 LABEL_20:
@@ -975,7 +975,7 @@ LABEL_23:
   return result;
 }
 
-- (void)_presentVolumeHUDWithVolume:(float)a3
+- (void)_presentVolumeHUDWithVolume:(float)volume
 {
   if (self->_mode == 3)
   {
@@ -984,7 +984,7 @@ LABEL_23:
 
   v6 = *MEMORY[0x277D67040];
   v7 = [(SBHUDController *)self->_hudController knownHUDControllerForIdentifier:*MEMORY[0x277D67040]];
-  v8 = [v7 HUDViewController];
+  hUDViewController = [v7 HUDViewController];
   if (v7)
   {
     v9 = v7;
@@ -1000,13 +1000,13 @@ LABEL_23:
     v13 = [(SBHUDController *)self->_hudController HUDSessionForViewController:v11 identifier:v6];
 
     v9 = v13;
-    v8 = v11;
+    hUDViewController = v11;
   }
 
   v14 = v9;
   [v9 presentWithDismissalInterval:0 animated:60.0];
-  *&v12 = a3;
-  [v8 noteValueDidChange:v12];
+  *&v12 = volume;
+  [hUDViewController noteValueDidChange:v12];
   if (!v7)
   {
     if (self->_volumeUpButtonIsDown)
@@ -1022,25 +1022,25 @@ LABEL_23:
       goto LABEL_12;
     }
 
-    [v8 noteButtonDownWasHit:1];
+    [hUDViewController noteButtonDownWasHit:1];
     if (self->_volumeUpButtonIsDown)
     {
 LABEL_11:
-      [v8 noteButtonUpWasHit:1];
+      [hUDViewController noteButtonUpWasHit:1];
     }
   }
 
 LABEL_12:
 }
 
-- (void)_configureVolumeStepDeltaForVolumeHUDViewController:(id)a3
+- (void)_configureVolumeStepDeltaForVolumeHUDViewController:(id)controller
 {
   v15 = *MEMORY[0x277D85DE8];
   v12 = 0.0;
   v4 = MEMORY[0x277D26E58];
-  v5 = a3;
-  v6 = [v4 sharedInstance];
-  v7 = [v6 getVolumeButtonDelta:0 outVolumeDelta:&v12];
+  controllerCopy = controller;
+  sharedInstance = [v4 sharedInstance];
+  v7 = [sharedInstance getVolumeButtonDelta:0 outVolumeDelta:&v12];
 
   v8 = v12;
   v9 = SBLogAudioControl();
@@ -1068,7 +1068,7 @@ LABEL_12:
     v11 = v12;
   }
 
-  [v5 setButtonStepCount:vcvtas_u32_f32(1.0 / v11)];
+  [controllerCopy setButtonStepCount:vcvtas_u32_f32(1.0 / v11)];
 }
 
 - (BOOL)_isVolumeHUDVisible
@@ -1077,24 +1077,24 @@ LABEL_12:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 isVisible];
+    isVisible = [v2 isVisible];
   }
 
   else
   {
-    v4 = 0;
+    isVisible = 0;
   }
 
-  return v4;
+  return isVisible;
 }
 
-- (BOOL)_isVolumeHUDVisibleOnWindowScene:(id)a3
+- (BOOL)_isVolumeHUDVisibleOnWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   if ([(SBVolumeControl *)self _isVolumeHUDVisible])
   {
-    v5 = [(SBHUDController *)self->_hudController windowScene];
-    v6 = v5 == v4;
+    windowScene = [(SBHUDController *)self->_hudController windowScene];
+    v6 = windowScene == sceneCopy;
   }
 
   else
@@ -1105,45 +1105,45 @@ LABEL_12:
   return v6;
 }
 
-- (void)_someSceneWillConnect:(id)a3
+- (void)_someSceneWillConnect:(id)connect
 {
-  v11 = a3;
-  v5 = [v11 object];
-  v6 = [(SBHUDController *)self->_hudController windowScene];
-  v7 = v6;
-  if (v5 && v5 == v6)
+  connectCopy = connect;
+  object = [connectCopy object];
+  windowScene = [(SBHUDController *)self->_hudController windowScene];
+  v7 = windowScene;
+  if (object && object == windowScene)
   {
-    v8 = [v6 zStackResolver];
-    if (!v8)
+    zStackResolver = [windowScene zStackResolver];
+    if (!zStackResolver)
     {
       [(SBVolumeControl *)a2 _someSceneWillConnect:?];
     }
 
-    v9 = v8;
-    v10 = [v8 addObserver:self ofParticipantWithIdentifier:29];
+    v9 = zStackResolver;
+    v10 = [zStackResolver addObserver:self ofParticipantWithIdentifier:29];
     [(SBVolumeControl *)self _processZStackParticipantSettings:v10];
   }
 }
 
-- (void)_processZStackParticipantSettings:(id)a3
+- (void)_processZStackParticipantSettings:(id)settings
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [a3 audioCategoriesDisablingVolumeHUD];
+  audioCategoriesDisablingVolumeHUD = [settings audioCategoriesDisablingVolumeHUD];
   if ((BSEqualSets() & 1) == 0)
   {
-    objc_storeStrong(&self->_audioCategoriesDisablingVolumeHUD, v4);
-    v5 = [(SBVolumeControl *)self lastDisplayedCategory];
+    objc_storeStrong(&self->_audioCategoriesDisablingVolumeHUD, audioCategoriesDisablingVolumeHUD);
+    lastDisplayedCategory = [(SBVolumeControl *)self lastDisplayedCategory];
     if (SBFAudioCategoriesDisablingVolumeHUDIncludesCategory())
     {
       v6 = SBLogAudioControl();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v7 = 138412802;
-        v8 = self;
+        selfCopy = self;
         v9 = 2114;
-        v10 = v5;
+        v10 = lastDisplayedCategory;
         v11 = 2114;
-        v12 = v4;
+        v12 = audioCategoriesDisablingVolumeHUD;
         _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "%@ Hiding Volume HUD if visible; lastDisplayedCategory='%{public}@', audioCategoriesDisablingVolumeHUD=%{public}@", &v7, 0x20u);
       }
 
@@ -1152,16 +1152,16 @@ LABEL_12:
   }
 }
 
-- (void)_effectiveVolumeChanged:(id)a3
+- (void)_effectiveVolumeChanged:(id)changed
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  [v5 objectForKey:*MEMORY[0x277D26BB8]];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  [userInfo objectForKey:*MEMORY[0x277D26BB8]];
   v6 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
   if ([(SBVolumeControl *)self _displaysVolumeForCategory:*&v6])
   {
-    v7 = [v5 objectForKey:*MEMORY[0x277D26BD0]];
+    v7 = [userInfo objectForKey:*MEMORY[0x277D26BD0]];
     v8 = SBLogAudioControl();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -1170,7 +1170,7 @@ LABEL_12:
       v48 = 2114;
       v49 = v7;
       v50 = 2048;
-      v51 = v4;
+      v51 = changedCopy;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "_effectiveVolumeChanged for '%{public}@' for reason: %{public}@/%p", buf, 0x20u);
     }
 
@@ -1190,7 +1190,7 @@ LABEL_12:
     if ((v10 & 1) != 0 || (v11 & 1) != 0 || v12)
     {
       v41 = v9;
-      v13 = [v5 objectForKey:*MEMORY[0x277D26BC8]];
+      v13 = [userInfo objectForKey:*MEMORY[0x277D26BC8]];
       [v13 floatValue];
       v15 = v14;
 
@@ -1282,10 +1282,10 @@ LABEL_12:
         }
       }
 
-      v30 = [v5 objectForKey:*MEMORY[0x277D26BC0]];
-      v31 = [v30 BOOLValue];
+      v30 = [userInfo objectForKey:*MEMORY[0x277D26BC0]];
+      bOOLValue = [v30 BOOLValue];
 
-      if ((v43 & v31) == 1)
+      if ((v43 & bOOLValue) == 1)
       {
         v32 = SBLogAudioControl();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -1295,10 +1295,10 @@ LABEL_12:
         }
       }
 
-      if (((v43 ^ 1 | v31) & 1) != 0 || !v27)
+      if (((v43 ^ 1 | bOOLValue) & 1) != 0 || !v27)
       {
-        v36 = [(SBVolumeControl *)self presentedVolumeHUDViewController];
-        if (v36)
+        presentedVolumeHUDViewController = [(SBVolumeControl *)self presentedVolumeHUDViewController];
+        if (presentedVolumeHUDViewController)
         {
           v37 = v27;
         }
@@ -1315,7 +1315,7 @@ LABEL_12:
           self->_lastDisplayedCategory = v38;
 
           *&v40 = v15;
-          [v36 noteValueDidChange:v40];
+          [presentedVolumeHUDViewController noteValueDidChange:v40];
         }
       }
 
@@ -1387,15 +1387,15 @@ void __46__SBVolumeControl__resetMediaServerConnection__block_invoke(uint64_t a1
   avscOperationsQueue = self->_avscOperationsQueue;
   if (!avscOperationsQueue)
   {
-    v4 = [(SBAVSystemControllerCache *)self->_avCache avscOperationsWorkloop];
-    if (!v4)
+    avscOperationsWorkloop = [(SBAVSystemControllerCache *)self->_avCache avscOperationsWorkloop];
+    if (!avscOperationsWorkloop)
     {
       [SBVolumeControl _avscOperationsQueue];
     }
 
-    v5 = [MEMORY[0x277CF0C18] serial];
-    v6 = [v5 serviceClass:25 relativePriority:1];
-    v7 = [v6 targetQueue:v4];
+    serial = [MEMORY[0x277CF0C18] serial];
+    v6 = [serial serviceClass:25 relativePriority:1];
+    v7 = [v6 targetQueue:avscOperationsWorkloop];
 
     v8 = BSDispatchQueueCreate();
     v9 = self->_avscOperationsQueue;
@@ -1407,22 +1407,22 @@ void __46__SBVolumeControl__resetMediaServerConnection__block_invoke(uint64_t a1
   return avscOperationsQueue;
 }
 
-- (void)_dispatchAVSystemControllerAsync:(id)a3
+- (void)_dispatchAVSystemControllerAsync:(id)async
 {
-  v4 = a3;
-  if (!v4)
+  asyncCopy = async;
+  if (!asyncCopy)
   {
     [SBVolumeControl _dispatchAVSystemControllerAsync:];
   }
 
-  v5 = [(SBVolumeControl *)self _avscOperationsQueue];
+  _avscOperationsQueue = [(SBVolumeControl *)self _avscOperationsQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__SBVolumeControl__dispatchAVSystemControllerAsync___block_invoke;
   block[3] = &unk_2783A9348;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = asyncCopy;
+  v6 = asyncCopy;
+  dispatch_async(_avscOperationsQueue, block);
 }
 
 void __52__SBVolumeControl__dispatchAVSystemControllerAsync___block_invoke(uint64_t a1)
@@ -1432,22 +1432,22 @@ void __52__SBVolumeControl__dispatchAVSystemControllerAsync___block_invoke(uint6
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)_dispatchAVSystemControllerSync:(id)a3
+- (void)_dispatchAVSystemControllerSync:(id)sync
 {
-  v4 = a3;
-  if (!v4)
+  syncCopy = sync;
+  if (!syncCopy)
   {
     [SBVolumeControl _dispatchAVSystemControllerSync:];
   }
 
-  v5 = [(SBVolumeControl *)self _avscOperationsQueue];
+  _avscOperationsQueue = [(SBVolumeControl *)self _avscOperationsQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__SBVolumeControl__dispatchAVSystemControllerSync___block_invoke;
   block[3] = &unk_2783A9348;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async_and_wait(v5, block);
+  v8 = syncCopy;
+  v6 = syncCopy;
+  dispatch_async_and_wait(_avscOperationsQueue, block);
 }
 
 void __51__SBVolumeControl__dispatchAVSystemControllerSync___block_invoke(uint64_t a1)
@@ -1457,16 +1457,16 @@ void __51__SBVolumeControl__dispatchAVSystemControllerSync___block_invoke(uint64
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)controlCenter:(id)a3 willPresentOnWindowScene:(id)a4
+- (void)controlCenter:(id)center willPresentOnWindowScene:(id)scene
 {
-  if ([(SBVolumeControl *)self _isVolumeHUDVisibleOnWindowScene:a4])
+  if ([(SBVolumeControl *)self _isVolumeHUDVisibleOnWindowScene:scene])
   {
     v5 = [(SBHUDController *)self->_hudController knownHUDControllerForIdentifier:*MEMORY[0x277D67040]];
     [v5 dismiss];
   }
 }
 
-- (void)elasticHUDViewControllerRequestsDismissal:(id)a3
+- (void)elasticHUDViewControllerRequestsDismissal:(id)dismissal
 {
   v3 = [(SBHUDController *)self->_hudController presentedHUDControllerForIdentifier:*MEMORY[0x277D67040]];
   [v3 dismissAnimated:0];
@@ -1587,7 +1587,7 @@ double __39__SBVolumeControl_changeVolumeByDelta___block_invoke_cold_1(uint64_t 
 - (void)_avscOperationsQueue
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

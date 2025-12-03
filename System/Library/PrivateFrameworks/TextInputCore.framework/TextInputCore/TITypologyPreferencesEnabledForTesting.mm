@@ -1,7 +1,7 @@
 @interface TITypologyPreferencesEnabledForTesting
 - (BOOL)isInternalDeviceWithForcedTypologyLoggingForTesting;
 - (BOOL)typologyLoggingEnabled;
-- (TITypologyPreferencesEnabledForTesting)initWithOutputPath:(id)a3;
+- (TITypologyPreferencesEnabledForTesting)initWithOutputPath:(id)path;
 - (id)typologyDirectoryURL;
 @end
 
@@ -27,8 +27,8 @@
   if (TI_IS_INTERNAL_INSTALL::is_internal_install == 1)
   {
     v3 = MEMORY[0x277CBEBC0];
-    v4 = [(TITypologyPreferencesEnabledForTesting *)self outpath];
-    v5 = [v3 fileURLWithPath:v4];
+    outpath = [(TITypologyPreferencesEnabledForTesting *)self outpath];
+    v5 = [v3 fileURLWithPath:outpath];
   }
 
   else
@@ -49,16 +49,16 @@
   return TI_IS_INTERNAL_INSTALL::is_internal_install;
 }
 
-- (TITypologyPreferencesEnabledForTesting)initWithOutputPath:(id)a3
+- (TITypologyPreferencesEnabledForTesting)initWithOutputPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = TITypologyPreferencesEnabledForTesting;
   v6 = [(TITypologyPreferencesEnabledForTesting *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_outpath, a3);
+    objc_storeStrong(&v6->_outpath, path);
   }
 
   return v7;

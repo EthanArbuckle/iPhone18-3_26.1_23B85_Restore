@@ -1,10 +1,10 @@
 @interface DebugIncomingMessageViewController
-- (_TtC7Weather34DebugIncomingMessageViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (_TtC7Weather34DebugIncomingMessageViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -12,81 +12,81 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003B0ED4();
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1003B11C4(v7, a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_1003B11C4(selfCopy, section);
 
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   v12 = sub_1003B1270();
 
   (*(v7 + 8))(v9, v6);
   return v12;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_1003B13B8(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_1003B13B8(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1003B1880();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (_TtC7Weather34DebugIncomingMessageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Weather34DebugIncomingMessageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1003B2F54();
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_1003B31BC(v7, a4);
+  selfCopy = self;
+  v8 = sub_1003B31BC(selfCopy, overlay);
 
   swift_unknownObjectRelease();
 

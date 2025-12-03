@@ -1,7 +1,7 @@
 @interface AXBHapticMusicManager
 + (void)initializeMonitor;
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3;
-- (void)setHapticMusicEnabled:(BOOL)a3;
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client;
+- (void)setHapticMusicEnabled:(BOOL)enabled;
 - (void)updateSettings;
 @end
 
@@ -36,13 +36,13 @@ void __42__AXBHapticMusicManager_initializeMonitor__block_invoke()
   v6 = [v3 addObserverForName:v4 object:0 queue:v5 usingBlock:&__block_literal_global_286];
 }
 
-- (void)setHapticMusicEnabled:(BOOL)a3
+- (void)setHapticMusicEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v16 = *MEMORY[0x29EDCA608];
   if (_os_feature_enabled_impl())
   {
-    if (v3)
+    if (enabledCopy)
     {
       v5 = AXLogHapticMusic();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -56,8 +56,8 @@ void __42__AXBHapticMusicManager_initializeMonitor__block_invoke()
       if (!self->_client)
       {
         v7 = objc_alloc(MEMORY[0x29EDBDDD0]);
-        v8 = [(AXBHapticMusicManager *)self _serviceName];
-        v9 = [v7 initWithIdentifier:@"HapticMusicClient-Backboard" serviceBundleName:v8];
+        _serviceName = [(AXBHapticMusicManager *)self _serviceName];
+        v9 = [v7 initWithIdentifier:@"HapticMusicClient-Backboard" serviceBundleName:_serviceName];
         client = self->_client;
         self->_client = v9;
 
@@ -66,16 +66,16 @@ void __42__AXBHapticMusicManager_initializeMonitor__block_invoke()
     }
 
     v11 = self->_client;
-    v12 = [MEMORY[0x29EDBD688] mainAccessQueue];
-    [(AXUIClient *)v11 sendAsynchronousMessage:MEMORY[0x29EDB8EA0] withIdentifier:1 targetAccessQueue:v12 completion:&__block_literal_global_302];
+    mainAccessQueue = [MEMORY[0x29EDBD688] mainAccessQueue];
+    [(AXUIClient *)v11 sendAsynchronousMessage:MEMORY[0x29EDB8EA0] withIdentifier:1 targetAccessQueue:mainAccessQueue completion:&__block_literal_global_302];
   }
 
   else
   {
-    v12 = AXLogHapticMusic();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    mainAccessQueue = AXLogHapticMusic();
+    if (os_log_type_enabled(mainAccessQueue, OS_LOG_TYPE_ERROR))
     {
-      [AXBHapticMusicManager setHapticMusicEnabled:v12];
+      [AXBHapticMusicManager setHapticMusicEnabled:mainAccessQueue];
     }
   }
 
@@ -95,16 +95,16 @@ void __47__AXBHapticMusicManager_setHapticMusicEnabled___block_invoke(uint64_t a
   }
 }
 
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client
 {
-  v3 = a3;
+  clientCopy = client;
   v4 = AXLogHapticMusic();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    [(AXBHapticMusicManager *)v3 connectionWithServiceWasInterruptedForUserInterfaceClient:v4];
+    [(AXBHapticMusicManager *)clientCopy connectionWithServiceWasInterruptedForUserInterfaceClient:v4];
   }
 
-  v5 = v3;
+  v5 = clientCopy;
   AXPerformBlockAsynchronouslyOnMainThread();
 }
 

@@ -1,15 +1,15 @@
 @interface HMDMediaDestinationMessageHandler
 + (id)logCategory;
-- (HMDMediaDestinationMessageHandler)initWithDestination:(id)a3 messageDispatcher:(id)a4 notificationCenter:(id)a5 notifications:(id)a6 dataSource:(id)a7 delegate:(id)a8;
+- (HMDMediaDestinationMessageHandler)initWithDestination:(id)destination messageDispatcher:(id)dispatcher notificationCenter:(id)center notifications:(id)notifications dataSource:(id)source delegate:(id)delegate;
 - (HMDMediaDestinationMessageHandlerDataSource)dataSource;
 - (HMDMediaDestinationMessageHandlerDelegate)delegate;
-- (id)audioGroupIdentifierInMessage:(id)a3 error:(id *)a4;
-- (unint64_t)supportedOptionsInMessage:(id)a3 error:(id *)a4;
-- (void)handleMediaDestinationUpdateAudioGroupIdentifierRequestMessage:(id)a3;
-- (void)handleMediaDestinationUpdateSupportedOptionsRequestMessage:(id)a3;
-- (void)handleUpdatedDestination:(id)a3;
-- (void)sendRequestToUpdateAudioGroupIdentifier:(id)a3 completion:(id)a4;
-- (void)sendRequestToUpdateSupportOptions:(unint64_t)a3 completion:(id)a4;
+- (id)audioGroupIdentifierInMessage:(id)message error:(id *)error;
+- (unint64_t)supportedOptionsInMessage:(id)message error:(id *)error;
+- (void)handleMediaDestinationUpdateAudioGroupIdentifierRequestMessage:(id)message;
+- (void)handleMediaDestinationUpdateSupportedOptionsRequestMessage:(id)message;
+- (void)handleUpdatedDestination:(id)destination;
+- (void)sendRequestToUpdateAudioGroupIdentifier:(id)identifier completion:(id)completion;
+- (void)sendRequestToUpdateSupportOptions:(unint64_t)options completion:(id)completion;
 @end
 
 @implementation HMDMediaDestinationMessageHandler
@@ -28,12 +28,12 @@
   return WeakRetained;
 }
 
-- (void)handleMediaDestinationUpdateSupportedOptionsRequestMessage:(id)a3
+- (void)handleMediaDestinationUpdateSupportedOptionsRequestMessage:(id)message
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -44,12 +44,12 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [v4 responseHandler];
+  responseHandler = [messageCopy responseHandler];
 
-  if (!v9)
+  if (!responseHandler)
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = v6;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -57,7 +57,7 @@
       *buf = 138543618;
       v31 = v20;
       v32 = 2112;
-      v33 = v4;
+      v33 = messageCopy;
       _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@Failed to get response handler from update destination supported options request message: %@", buf, 0x16u);
     }
 
@@ -67,13 +67,13 @@
   }
 
   v29 = 0;
-  v10 = [(HMDMediaDestinationMessageHandler *)v6 supportedOptionsInMessage:v4 error:&v29];
+  v10 = [(HMDMediaDestinationMessageHandler *)selfCopy supportedOptionsInMessage:messageCopy error:&v29];
   v11 = v29;
   if (v11)
   {
     v12 = v11;
     v13 = objc_autoreleasePoolPush();
-    v14 = v6;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -81,27 +81,27 @@
       *buf = 138543618;
       v31 = v16;
       v32 = 2112;
-      v33 = v4;
+      v33 = messageCopy;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_ERROR, "%{public}@Failed to get supported options from update destination supported options request message: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v13);
 LABEL_11:
-    [v4 respondWithError:v12];
+    [messageCopy respondWithError:v12];
     goto LABEL_18;
   }
 
-  v21 = [(HMDMediaDestinationMessageHandler *)v6 delegate];
-  v22 = v21;
-  if (v21)
+  delegate = [(HMDMediaDestinationMessageHandler *)selfCopy delegate];
+  v22 = delegate;
+  if (delegate)
   {
-    [v21 mediaDestinationMessageHandler:v6 didReceiveUpdateSupportedOptionsRequestMessage:v4 supportOptions:v10];
+    [delegate mediaDestinationMessageHandler:selfCopy didReceiveUpdateSupportedOptionsRequestMessage:messageCopy supportOptions:v10];
   }
 
   else
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = v6;
+    v24 = selfCopy;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
@@ -113,7 +113,7 @@ LABEL_11:
 
     objc_autoreleasePoolPop(v23);
     v27 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    [v4 respondWithError:v27];
+    [messageCopy respondWithError:v27];
   }
 
   v12 = 0;
@@ -122,12 +122,12 @@ LABEL_18:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleMediaDestinationUpdateAudioGroupIdentifierRequestMessage:(id)a3
+- (void)handleMediaDestinationUpdateAudioGroupIdentifierRequestMessage:(id)message
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -138,17 +138,17 @@ LABEL_18:
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [v4 responseHandler];
+  responseHandler = [messageCopy responseHandler];
 
-  if (v9)
+  if (responseHandler)
   {
     v28 = 0;
-    v10 = [(HMDMediaDestinationMessageHandler *)v6 audioGroupIdentifierInMessage:v4 error:&v28];
+    v10 = [(HMDMediaDestinationMessageHandler *)selfCopy audioGroupIdentifierInMessage:messageCopy error:&v28];
     v11 = v28;
     if (v11)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = v6;
+      v13 = selfCopy;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
@@ -156,27 +156,27 @@ LABEL_18:
         *buf = 138543618;
         v30 = v15;
         v31 = 2112;
-        v32 = v4;
+        v32 = messageCopy;
         _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_ERROR, "%{public}@Failed to get audio group identifier from update audio group identifier request message: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v12);
-      [v4 respondWithError:v11];
+      [messageCopy respondWithError:v11];
     }
 
     else
     {
-      v20 = [(HMDMediaDestinationMessageHandler *)v6 delegate];
-      v21 = v20;
-      if (v20)
+      delegate = [(HMDMediaDestinationMessageHandler *)selfCopy delegate];
+      v21 = delegate;
+      if (delegate)
       {
-        [v20 mediaDestinationMessageHandler:v6 didReceiveUpdateAudioGroupIdentifierRequestMessage:v4 audioGroupIdentifier:v10];
+        [delegate mediaDestinationMessageHandler:selfCopy didReceiveUpdateAudioGroupIdentifierRequestMessage:messageCopy audioGroupIdentifier:v10];
       }
 
       else
       {
         v22 = objc_autoreleasePoolPush();
-        v23 = v6;
+        v23 = selfCopy;
         v24 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
         {
@@ -188,7 +188,7 @@ LABEL_18:
 
         objc_autoreleasePoolPop(v22);
         v26 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-        [v4 respondWithError:v26];
+        [messageCopy respondWithError:v26];
       }
     }
   }
@@ -196,7 +196,7 @@ LABEL_18:
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = v6;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -204,37 +204,37 @@ LABEL_18:
       *buf = 138543618;
       v30 = v19;
       v31 = 2112;
-      v32 = v4;
+      v32 = messageCopy;
       _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_ERROR, "%{public}@Failed to get response handler from update destination audio group identifier request message: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v16);
     v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    [v4 respondWithError:v11];
+    [messageCopy respondWithError:v11];
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)supportedOptionsInMessage:(id)a3 error:(id *)a4
+- (unint64_t)supportedOptionsInMessage:(id)message error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 messagePayload];
-  v8 = v7;
-  if (v7)
+  messageCopy = message;
+  messagePayload = [messageCopy messagePayload];
+  v8 = messagePayload;
+  if (messagePayload)
   {
-    v9 = [v7 hmf_numberForKey:*MEMORY[0x277CD0868]];
+    v9 = [messagePayload hmf_numberForKey:*MEMORY[0x277CD0868]];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 unsignedIntegerValue];
+      unsignedIntegerValue = [v9 unsignedIntegerValue];
     }
 
     else
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -247,23 +247,23 @@ LABEL_18:
       }
 
       objc_autoreleasePoolPop(v16);
-      if (a4)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-        *a4 = v11 = 0;
+        *error = unsignedIntegerValue = 0;
       }
 
       else
       {
-        v11 = 0;
+        unsignedIntegerValue = 0;
       }
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -271,33 +271,33 @@ LABEL_18:
       v22 = 138543618;
       v23 = v15;
       v24 = 2112;
-      v25 = v6;
+      v25 = messageCopy;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_ERROR, "%{public}@Failed to get payload from message: %@", &v22, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
     [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    *a4 = v11 = 0;
+    *error = unsignedIntegerValue = 0;
   }
 
   else
   {
-    v11 = 0;
+    unsignedIntegerValue = 0;
   }
 
   v20 = *MEMORY[0x277D85DE8];
-  return v11;
+  return unsignedIntegerValue;
 }
 
-- (id)audioGroupIdentifierInMessage:(id)a3 error:(id *)a4
+- (id)audioGroupIdentifierInMessage:(id)message error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 messagePayload];
-  v8 = v7;
-  if (v7)
+  messageCopy = message;
+  messagePayload = [messageCopy messagePayload];
+  v8 = messagePayload;
+  if (messagePayload)
   {
-    v9 = [v7 hmf_stringForKey:*MEMORY[0x277CD0838]];
+    v9 = [messagePayload hmf_stringForKey:*MEMORY[0x277CD0838]];
     v10 = v9;
     if (v9)
     {
@@ -315,17 +315,17 @@ LABEL_17:
       }
 
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy2 = self;
       v14 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
 LABEL_14:
 
         objc_autoreleasePoolPop(v12);
-        if (a4)
+        if (error)
         {
           [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-          *a4 = v11 = 0;
+          *error = v11 = 0;
           goto LABEL_17;
         }
 
@@ -345,7 +345,7 @@ LABEL_16:
     else
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy2 = self;
       v14 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
@@ -365,10 +365,10 @@ LABEL_16:
     goto LABEL_14;
   }
 
-  if (a4)
+  if (error)
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy3 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -376,13 +376,13 @@ LABEL_16:
       v23 = 138543618;
       v24 = v20;
       v25 = 2112;
-      v26 = v6;
+      v26 = messageCopy;
       _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@Failed to get payload from message: %@", &v23, 0x16u);
     }
 
     objc_autoreleasePoolPop(v17);
     [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -397,12 +397,12 @@ LABEL_18:
   return v11;
 }
 
-- (void)handleUpdatedDestination:(id)a3
+- (void)handleUpdatedDestination:(id)destination
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  destinationCopy = destination;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -410,23 +410,23 @@ LABEL_18:
     v11 = 138543618;
     v12 = v8;
     v13 = 2112;
-    v14 = v4;
+    v14 = destinationCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Handling updated destination: %@", &v11, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDMessageHandler *)v6 notificationCenter];
-  [v9 postNotificationName:*MEMORY[0x277CD0880] object:v4];
+  notificationCenter = [(HMDMessageHandler *)selfCopy notificationCenter];
+  [notificationCenter postNotificationName:*MEMORY[0x277CD0880] object:destinationCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendRequestToUpdateSupportOptions:(unint64_t)a3 completion:(id)a4
+- (void)sendRequestToUpdateSupportOptions:(unint64_t)options completion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -440,16 +440,16 @@ LABEL_18:
   }
 
   objc_autoreleasePoolPop(v7);
-  if (v6)
+  if (completionCopy)
   {
     v31 = *MEMORY[0x277CD0868];
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:options];
     v32 = v12;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
 
     v14 = objc_alloc(MEMORY[0x277D0F820]);
-    v15 = [(HMDMessageHandler *)v8 messageTargetUUID];
-    v16 = [v14 initWithTarget:v15];
+    messageTargetUUID = [(HMDMessageHandler *)selfCopy messageTargetUUID];
+    v16 = [v14 initWithTarget:messageTargetUUID];
 
     v17 = objc_alloc(MEMORY[0x277D0F848]);
     v18 = [v17 initWithName:*MEMORY[0x277CD0878] destination:v16 payload:v13];
@@ -457,17 +457,17 @@ LABEL_18:
     v26 = 3221225472;
     v27 = __82__HMDMediaDestinationMessageHandler_sendRequestToUpdateSupportOptions_completion___block_invoke;
     v28 = &unk_278685AF8;
-    v29 = v8;
-    v30 = v6;
+    v29 = selfCopy;
+    v30 = completionCopy;
     [v18 setResponseHandler:&v25];
     v19 = [v18 copy];
-    [(HMDMessageHandler *)v8 routeMessage:v19];
+    [(HMDMessageHandler *)selfCopy routeMessage:v19];
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = v8;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -517,13 +517,13 @@ void __82__HMDMediaDestinationMessageHandler_sendRequestToUpdateSupportOptions_c
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendRequestToUpdateAudioGroupIdentifier:(id)a3 completion:(id)a4
+- (void)sendRequestToUpdateAudioGroupIdentifier:(id)identifier completion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -531,28 +531,28 @@ void __82__HMDMediaDestinationMessageHandler_sendRequestToUpdateSupportOptions_c
     *buf = 138543618;
     v36 = v11;
     v37 = 2112;
-    v38 = v6;
+    v38 = identifierCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Sending request to update audio group identifier: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  if (v7)
+  if (completionCopy)
   {
     v33 = *MEMORY[0x277CD0838];
-    v12 = [v6 UUIDString];
-    v13 = v12;
+    uUIDString = [identifierCopy UUIDString];
+    v13 = uUIDString;
     v14 = *MEMORY[0x277CD0860];
-    if (v12)
+    if (uUIDString)
     {
-      v14 = v12;
+      v14 = uUIDString;
     }
 
     v34 = v14;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
 
     v16 = objc_alloc(MEMORY[0x277D0F820]);
-    v17 = [(HMDMessageHandler *)v9 messageTargetUUID];
-    v18 = [v16 initWithTarget:v17];
+    messageTargetUUID = [(HMDMessageHandler *)selfCopy messageTargetUUID];
+    v18 = [v16 initWithTarget:messageTargetUUID];
 
     v19 = objc_alloc(MEMORY[0x277D0F848]);
     v20 = [v19 initWithName:*MEMORY[0x277CD0870] destination:v18 payload:v15];
@@ -561,17 +561,17 @@ void __82__HMDMediaDestinationMessageHandler_sendRequestToUpdateSupportOptions_c
     v28 = 3221225472;
     v29 = __88__HMDMediaDestinationMessageHandler_sendRequestToUpdateAudioGroupIdentifier_completion___block_invoke;
     v30 = &unk_278685AF8;
-    v31 = v9;
-    v32 = v7;
+    v31 = selfCopy;
+    v32 = completionCopy;
     [v20 setResponseHandler:&v27];
     v21 = [v20 copy];
-    [(HMDMessageHandler *)v9 routeMessage:v21];
+    [(HMDMessageHandler *)selfCopy routeMessage:v21];
   }
 
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v9;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -621,29 +621,29 @@ void __88__HMDMediaDestinationMessageHandler_sendRequestToUpdateAudioGroupIdenti
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMediaDestinationMessageHandler)initWithDestination:(id)a3 messageDispatcher:(id)a4 notificationCenter:(id)a5 notifications:(id)a6 dataSource:(id)a7 delegate:(id)a8
+- (HMDMediaDestinationMessageHandler)initWithDestination:(id)destination messageDispatcher:(id)dispatcher notificationCenter:(id)center notifications:(id)notifications dataSource:(id)source delegate:(id)delegate
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (!v14)
+  destinationCopy = destination;
+  dispatcherCopy = dispatcher;
+  centerCopy = center;
+  notificationsCopy = notifications;
+  sourceCopy = source;
+  delegateCopy = delegate;
+  if (!destinationCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v15)
+  if (!dispatcherCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v16)
+  if (!centerCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
@@ -651,24 +651,24 @@ LABEL_11:
     _HMFPreconditionFailure();
   }
 
-  if (!v17)
+  if (!notificationsCopy)
   {
     goto LABEL_11;
   }
 
-  v20 = v19;
+  v20 = delegateCopy;
   v29[0] = *MEMORY[0x277CD0870];
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
   v28 = *MEMORY[0x277CD0878];
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
-  v23 = [v14 uniqueIdentifier];
+  uniqueIdentifier = [destinationCopy uniqueIdentifier];
   v27.receiver = self;
   v27.super_class = HMDMediaDestinationMessageHandler;
-  v24 = [(HMDAppleMediaAccessoryMessageHandler *)&v27 initWithMessageTargetUUID:v23 messageDispatcher:v15 notificationCenter:v16 ownerPrivateRemoteMessages:MEMORY[0x277CBEBF8] adminPrivateRemoteMessages:v21 internalMessages:v22 notifications:v17 notificationsToObject:MEMORY[0x277CBEC10]];
+  v24 = [(HMDAppleMediaAccessoryMessageHandler *)&v27 initWithMessageTargetUUID:uniqueIdentifier messageDispatcher:dispatcherCopy notificationCenter:centerCopy ownerPrivateRemoteMessages:MEMORY[0x277CBEBF8] adminPrivateRemoteMessages:v21 internalMessages:v22 notifications:notificationsCopy notificationsToObject:MEMORY[0x277CBEC10]];
 
   if (v24)
   {
-    [(HMDMediaDestinationMessageHandler *)v24 setDataSource:v18];
+    [(HMDMediaDestinationMessageHandler *)v24 setDataSource:sourceCopy];
     [(HMDMediaDestinationMessageHandler *)v24 setDelegate:v20];
   }
 

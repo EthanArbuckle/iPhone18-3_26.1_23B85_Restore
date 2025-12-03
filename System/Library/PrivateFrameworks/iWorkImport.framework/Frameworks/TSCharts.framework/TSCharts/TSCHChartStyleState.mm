@@ -1,6 +1,6 @@
 @interface TSCHChartStyleState
 + (id)styleState;
-- (BOOL)otherStateIsEquivalent:(id)a3 ignoringSeriesThemeStyles:(BOOL)a4;
+- (BOOL)otherStateIsEquivalent:(id)equivalent ignoringSeriesThemeStyles:(BOOL)styles;
 - (BOOL)paragraphStyleIndexesAreValid;
 - (NSArray)allStyles;
 - (NSDictionary)semanticTagToStyleMap;
@@ -10,69 +10,69 @@
 - (TSCHReferenceLineStyle)referenceLineThemeStyle;
 - (TSSStylesheet)stylesheet;
 - (TSURetainedPointerKeyDictionary)styleToSemanticTagsMap;
-- (id)applyStyleSwapTuple:(id)a3 ignoringBeforeValues:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)applyStyleSwapTuple:(id)tuple ignoringBeforeValues:(BOOL)values;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)fallbackSemanticTagForSemanticTag:(id)a3;
-- (id)fallbackSemanticUsageForSemanticUsage:(id)a3;
+- (id)fallbackSemanticTagForSemanticTag:(id)tag;
+- (id)fallbackSemanticUsageForSemanticUsage:(id)usage;
 - (id)listOfStyles;
-- (id)p_formatSemanticTag:(id)a3;
-- (id)p_locationOfStyleInNetwork:(id)a3;
-- (id)p_propertySetWithPropertySetType:(int64_t)a3 forStyle:(id)a4;
-- (id)semanticUsagesOfParagraphStylePropertiesWithPropertySetType:(int64_t)a3;
-- (id)semanticUsagesToParagraphStyleMapWithPropertySetType:(int64_t)a3 filteredBySemanticUsages:(id)a4;
-- (id)stateByAdoptingStylesheet:(id)a3 withMapper:(id)a4;
-- (id)stateByExpandingForSeriesCount:(unint64_t)a3 andReferenceLineCount:(unint64_t)a4;
-- (id)stateByExpandingReferenceLineStylesForCount:(unint64_t)a3;
-- (id)stateByExpandingSeriesStylesForSeriesCount:(unint64_t)a3;
-- (id)stateByOptimizingParagraphStyleTableWithStylesheet:(id)a3 withMapper:(id)a4;
+- (id)p_formatSemanticTag:(id)tag;
+- (id)p_locationOfStyleInNetwork:(id)network;
+- (id)p_propertySetWithPropertySetType:(int64_t)type forStyle:(id)style;
+- (id)semanticUsagesOfParagraphStylePropertiesWithPropertySetType:(int64_t)type;
+- (id)semanticUsagesToParagraphStyleMapWithPropertySetType:(int64_t)type filteredBySemanticUsages:(id)usages;
+- (id)stateByAdoptingStylesheet:(id)stylesheet withMapper:(id)mapper;
+- (id)stateByExpandingForSeriesCount:(unint64_t)count andReferenceLineCount:(unint64_t)lineCount;
+- (id)stateByExpandingReferenceLineStylesForCount:(unint64_t)count;
+- (id)stateByExpandingSeriesStylesForSeriesCount:(unint64_t)count;
+- (id)stateByOptimizingParagraphStyleTableWithStylesheet:(id)stylesheet withMapper:(id)mapper;
 - (id)stateByReducingReferenceLineStyles;
 - (id)stateByReducingSeriesPrivateStyles;
 - (id)stateByReducingSeriesPrivateStylesAndReferenceLineStyles;
-- (id)styleForSemanticTag:(id)a3;
-- (id)styleLookupSemanticTagForSemanticTag:(id)a3;
+- (id)styleForSemanticTag:(id)tag;
+- (id)styleLookupSemanticTagForSemanticTag:(id)tag;
 - (id)styleNetworkDescription;
-- (id)styleToUseForSemanticTag:(id)a3;
-- (id)usesOfParagraphStylePropertiesWithPropertySetType:(int64_t)a3;
+- (id)styleToUseForSemanticTag:(id)tag;
+- (id)usesOfParagraphStylePropertiesWithPropertySetType:(int64_t)type;
 - (void)checkParagraphStyleIndicies;
-- (void)enumerateSemanticTagsAndUsagesWithPropertySetType:(int64_t)a3 usingBlock:(id)a4;
-- (void)p_addParagraphStyleForSemanticUsage:(id)a3 mappedStyle:(id)a4 mappedState:(id)a5 fromPriorStyle:(id)a6 andPriorState:(id)a7 maintainPriorIndex:(BOOL)a8 withStyleMapper:(id)a9 withStylesheet:(id)a10 toNewParagraphStylesTable:(id)a11 andStyleMap:(id)a12;
-- (void)replaceAllInstancesOfStyle:(id)a3 withStyle:(id)a4;
-- (void)replaceStylesUsingBlock:(id)a3;
-- (void)setCategoryAxisStyles:(id)a3;
-- (void)setParagraphStyles:(id)a3;
-- (void)setReferenceLineStyles:(id)a3;
-- (void)setSeriesPrivateStyles:(id)a3;
-- (void)setSeriesThemeStyles:(id)a3;
-- (void)setStyle:(id)a3 withSemanticTag:(id)a4;
-- (void)setValueAxisStyles:(id)a3;
+- (void)enumerateSemanticTagsAndUsagesWithPropertySetType:(int64_t)type usingBlock:(id)block;
+- (void)p_addParagraphStyleForSemanticUsage:(id)usage mappedStyle:(id)style mappedState:(id)state fromPriorStyle:(id)priorStyle andPriorState:(id)priorState maintainPriorIndex:(BOOL)index withStyleMapper:(id)mapper withStylesheet:(id)self0 toNewParagraphStylesTable:(id)self1 andStyleMap:(id)self2;
+- (void)replaceAllInstancesOfStyle:(id)style withStyle:(id)withStyle;
+- (void)replaceStylesUsingBlock:(id)block;
+- (void)setCategoryAxisStyles:(id)styles;
+- (void)setParagraphStyles:(id)styles;
+- (void)setReferenceLineStyles:(id)styles;
+- (void)setSeriesPrivateStyles:(id)styles;
+- (void)setSeriesThemeStyles:(id)styles;
+- (void)setStyle:(id)style withSemanticTag:(id)tag;
+- (void)setValueAxisStyles:(id)styles;
 @end
 
 @implementation TSCHChartStyleState
 
-- (void)p_addParagraphStyleForSemanticUsage:(id)a3 mappedStyle:(id)a4 mappedState:(id)a5 fromPriorStyle:(id)a6 andPriorState:(id)a7 maintainPriorIndex:(BOOL)a8 withStyleMapper:(id)a9 withStylesheet:(id)a10 toNewParagraphStylesTable:(id)a11 andStyleMap:(id)a12
+- (void)p_addParagraphStyleForSemanticUsage:(id)usage mappedStyle:(id)style mappedState:(id)state fromPriorStyle:(id)priorStyle andPriorState:(id)priorState maintainPriorIndex:(BOOL)index withStyleMapper:(id)mapper withStylesheet:(id)self0 toNewParagraphStylesTable:(id)self1 andStyleMap:(id)self2
 {
-  v220 = a8;
-  v230 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
-  v28 = objc_msgSend_property(v230, v24, v25, v26, v27);
-  v34 = objc_msgSend_intValueForMUXedProperty_(v18, v29, v30, v31, v32, v28);
-  if (v34 != 0x80000000 || (v38 = objc_msgSend_property(v230, v33, v35, v36, v37), objc_msgSend_intValueForMUXedProperty_(v16, v39, v40, v41, v42, v38) != 0x80000000))
+  indexCopy = index;
+  usageCopy = usage;
+  styleCopy = style;
+  stateCopy = state;
+  priorStyleCopy = priorStyle;
+  priorStateCopy = priorState;
+  mapperCopy = mapper;
+  stylesheetCopy = stylesheet;
+  tableCopy = table;
+  mapCopy = map;
+  v28 = objc_msgSend_property(usageCopy, v24, v25, v26, v27);
+  v34 = objc_msgSend_intValueForMUXedProperty_(priorStyleCopy, v29, v30, v31, v32, v28);
+  if (v34 != 0x80000000 || (v38 = objc_msgSend_property(usageCopy, v33, v35, v36, v37), objc_msgSend_intValueForMUXedProperty_(styleCopy, v39, v40, v41, v42, v38) != 0x80000000))
   {
-    v229 = v23;
-    v227 = v16;
-    v228 = v22;
-    v43 = objc_msgSend_property(v230, v33, v35, v36, v37);
-    v225 = v19;
-    v226 = v18;
-    v45 = sub_27632ED04(v19, v18, v43, v21);
+    v229 = mapCopy;
+    v227 = styleCopy;
+    v228 = tableCopy;
+    v43 = objc_msgSend_property(usageCopy, v33, v35, v36, v37);
+    v225 = priorStateCopy;
+    v226 = priorStyleCopy;
+    v45 = sub_27632ED04(priorStateCopy, priorStyleCopy, v43, stylesheetCopy);
     if (!v45)
     {
       v49 = MEMORY[0x277D81150];
@@ -83,16 +83,16 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v60, v61, v62, v63);
     }
 
-    v64 = objc_msgSend_stateForParentStyleLookup(v17, v44, v46, v47, v48);
-    v69 = objc_msgSend_semanticTag(v230, v65, v66, v67, v68);
+    v64 = objc_msgSend_stateForParentStyleLookup(stateCopy, v44, v46, v47, v48);
+    v69 = objc_msgSend_semanticTag(usageCopy, v65, v66, v67, v68);
     v74 = objc_msgSend_styleToUseForSemanticTag_(v64, v70, v71, v72, v73, v69);
 
-    v79 = objc_msgSend_property(v230, v75, v76, v77, v78);
+    v79 = objc_msgSend_property(usageCopy, v75, v76, v77, v78);
     v222 = v74;
     v223 = v64;
-    v80 = sub_27632ED04(v64, v74, v79, v21);
-    objc_msgSend_mappedStyleWithMapper_forStyle_bakeComputable_(TSCHStyleMapper, v81, v82, v83, v84, v20, v80, 0);
-    v86 = v85 = v20;
+    v80 = sub_27632ED04(v64, v74, v79, stylesheetCopy);
+    objc_msgSend_mappedStyleWithMapper_forStyle_bakeComputable_(TSCHStyleMapper, v81, v82, v83, v84, mapperCopy, v80, 0);
+    v86 = v85 = mapperCopy;
 
     if (!v86)
     {
@@ -110,7 +110,7 @@
 
     v224 = v85;
     objc_msgSend_replaceReferencedStylesInMap_(v85, v117, v118, v119, v120, v116);
-    v126 = objc_msgSend_variationOfStyle_propertyMap_(v21, v121, v122, v123, v124, v86, v116);
+    v126 = objc_msgSend_variationOfStyle_propertyMap_(stylesheetCopy, v121, v122, v123, v124, v86, v116);
     if (!v126)
     {
       v130 = MEMORY[0x277D81150];
@@ -131,14 +131,14 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v156, v157, v158, v159);
     }
 
-    v22 = v228;
-    v23 = v229;
+    tableCopy = v228;
+    mapCopy = v229;
     if (!v126)
     {
       goto LABEL_27;
     }
 
-    if (v34 == 0x80000000 || !v220)
+    if (v34 == 0x80000000 || !indexCopy)
     {
       v195 = v126;
       v196 = v228;
@@ -197,28 +197,28 @@
       objc_msgSend_replaceObjectAtIndex_withObject_(v161, v177, v178, v179, v180, v160, v221);
     }
 
-    v22 = v228;
+    tableCopy = v228;
 LABEL_26:
 
-    v23 = v229;
-    objc_msgSend_setObject_forKeyedSubscript_(v229, v215, v216, v217, v218, v126, v230);
+    mapCopy = v229;
+    objc_msgSend_setObject_forKeyedSubscript_(v229, v215, v216, v217, v218, v126, usageCopy);
 LABEL_27:
 
-    v18 = v226;
-    v16 = v227;
-    v20 = v224;
-    v19 = v225;
+    priorStyleCopy = v226;
+    styleCopy = v227;
+    mapperCopy = v224;
+    priorStateCopy = v225;
   }
 }
 
-- (id)stateByOptimizingParagraphStyleTableWithStylesheet:(id)a3 withMapper:(id)a4
+- (id)stateByOptimizingParagraphStyleTableWithStylesheet:(id)stylesheet withMapper:(id)mapper
 {
   v546 = *MEMORY[0x277D85DE8];
-  v510 = a3;
-  v10 = objc_msgSend_mapperWithMapper_(TSCHStyleMapper, v6, v7, v8, v9, a4);
-  v11 = self;
+  stylesheetCopy = stylesheet;
+  v10 = objc_msgSend_mapperWithMapper_(TSCHStyleMapper, v6, v7, v8, v9, mapper);
+  selfCopy = self;
   v535 = 0;
-  v12 = sub_2763300D8(v11, v10, 1, &v535);
+  v12 = sub_2763300D8(selfCopy, v10, 1, &v535);
   v499 = v535;
   if (!v499)
   {
@@ -230,8 +230,8 @@ LABEL_27:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29, v30, v31);
   }
 
-  v500 = v11;
-  v32 = objc_msgSend_themeChartStyleState(v11, v13, v14, v15, v16);
+  v500 = selfCopy;
+  v32 = objc_msgSend_themeChartStyleState(selfCopy, v13, v14, v15, v16);
   v37 = objc_msgSend_copy(v32, v33, v34, v35, v36);
   objc_msgSend_setThemeChartStyleState_(v12, v38, v39, v40, v41, v37);
 
@@ -305,7 +305,7 @@ LABEL_27:
             objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v130, v131, v132, v133);
           }
 
-          objc_msgSend_p_addParagraphStyleForSemanticUsage_mappedStyle_mappedState_fromPriorStyle_andPriorState_maintainPriorIndex_withStyleMapper_withStylesheet_toNewParagraphStylesTable_andStyleMap_(v500, v114, v116, v117, v118, v81, v94, v12, v115, v500, 1, v498, v510, v508, v512);
+          objc_msgSend_p_addParagraphStyleForSemanticUsage_mappedStyle_mappedState_fromPriorStyle_andPriorState_maintainPriorIndex_withStyleMapper_withStylesheet_toNewParagraphStylesTable_andStyleMap_(v500, v114, v116, v117, v118, v81, v94, v12, v115, v500, 1, v498, stylesheetCopy, v508, v512);
         }
 
         ++v80;
@@ -371,7 +371,7 @@ LABEL_27:
             objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v196, v197, v198, v199);
           }
 
-          objc_msgSend_p_addParagraphStyleForSemanticUsage_mappedStyle_mappedState_fromPriorStyle_andPriorState_maintainPriorIndex_withStyleMapper_withStylesheet_toNewParagraphStylesTable_andStyleMap_(v500, v179, v181, v182, v183, v146, v159, v184, v180, v500, 0, v498, v510, v508, v512);
+          objc_msgSend_p_addParagraphStyleForSemanticUsage_mappedStyle_mappedState_fromPriorStyle_andPriorState_maintainPriorIndex_withStyleMapper_withStylesheet_toNewParagraphStylesTable_andStyleMap_(v500, v179, v181, v182, v183, v146, v159, v184, v180, v500, 0, v498, stylesheetCopy, v508, v512);
         }
       }
 
@@ -382,7 +382,7 @@ LABEL_27:
   }
 
   v200 = v508;
-  v201 = v510;
+  v201 = stylesheetCopy;
   v536 = 0u;
   v537 = 0u;
   v538 = 0u;
@@ -691,21 +691,21 @@ LABEL_67:
   return v490;
 }
 
-- (id)stateByAdoptingStylesheet:(id)a3 withMapper:(id)a4
+- (id)stateByAdoptingStylesheet:(id)stylesheet withMapper:(id)mapper
 {
-  v8 = objc_msgSend_mapperWithMapper_(TSCHStyleMapper, a2, v4, v5, v6, a4);
+  v8 = objc_msgSend_mapperWithMapper_(TSCHStyleMapper, a2, v4, v5, v6, mapper);
   v9 = sub_2763300D8(self, v8, 0, 0);
 
   return v9;
 }
 
-- (id)p_locationOfStyleInNetwork:(id)a3
+- (id)p_locationOfStyleInNetwork:(id)network
 {
   v118 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  networkCopy = network;
   v9 = objc_msgSend_chartStyle(self, v5, v6, v7, v8);
 
-  if (v9 == v4)
+  if (v9 == networkCopy)
   {
     v104 = @"         Chart Style()";
     goto LABEL_28;
@@ -713,7 +713,7 @@ LABEL_67:
 
   v14 = objc_msgSend_legendStyle(self, v10, v11, v12, v13);
 
-  if (v14 == v4)
+  if (v14 == networkCopy)
   {
     v104 = @"        Legend Style()";
     goto LABEL_28;
@@ -722,7 +722,7 @@ LABEL_67:
   v19 = objc_msgSend_valueAxisStyles(self, v15, v16, v17, v18);
   objc_opt_class();
   v20 = TSUCheckedDynamicCast();
-  v25 = objc_msgSend_indexOfObject_(v20, v21, v22, v23, v24, v4);
+  v25 = objc_msgSend_indexOfObject_(v20, v21, v22, v23, v24, networkCopy);
 
   if (v25 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -734,7 +734,7 @@ LABEL_67:
   v30 = objc_msgSend_categoryAxisStyles(self, v26, v27, v28, v29);
   objc_opt_class();
   v31 = TSUCheckedDynamicCast();
-  v36 = objc_msgSend_indexOfObject_(v31, v32, v33, v34, v35, v4);
+  v36 = objc_msgSend_indexOfObject_(v31, v32, v33, v34, v35, networkCopy);
 
   if (v36 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -745,7 +745,7 @@ LABEL_67:
   v41 = objc_msgSend_seriesThemeStyles(self, v37, v38, v39, v40);
   objc_opt_class();
   v42 = TSUCheckedDynamicCast();
-  v47 = objc_msgSend_indexOfObject_(v42, v43, v44, v45, v46, v4);
+  v47 = objc_msgSend_indexOfObject_(v42, v43, v44, v45, v46, networkCopy);
 
   if (v47 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -756,7 +756,7 @@ LABEL_67:
   v52 = objc_msgSend_seriesPrivateStyles(self, v48, v49, v50, v51);
   objc_opt_class();
   v53 = TSUCheckedDynamicCast();
-  v58 = objc_msgSend_indexOfObject_(v53, v54, v55, v56, v57, v4);
+  v58 = objc_msgSend_indexOfObject_(v53, v54, v55, v56, v57, networkCopy);
 
   if (v58 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -767,7 +767,7 @@ LABEL_67:
   v63 = objc_msgSend_paragraphStyles(self, v59, v60, v61, v62);
   objc_opt_class();
   v64 = TSUCheckedDynamicCast();
-  v69 = objc_msgSend_indexOfObject_(v64, v65, v66, v67, v68, v4);
+  v69 = objc_msgSend_indexOfObject_(v64, v65, v66, v67, v68, networkCopy);
 
   if (v69 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -777,7 +777,7 @@ LABEL_67:
 
   v74 = objc_msgSend_referenceLineThemeStyle(self, v70, v71, v72, v73);
 
-  if (v74 == v4)
+  if (v74 == networkCopy)
   {
     objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v75, v76, v77, v78, @" RefLine Theme Style()");
     goto LABEL_27;
@@ -807,7 +807,7 @@ LABEL_67:
         v97 = objc_msgSend_objectForKeyedSubscript_(v92, v93, v94, v95, v96, v91);
         objc_opt_class();
         v98 = TSUCheckedDynamicCast();
-        v103 = objc_msgSend_indexOfObject_(v98, v99, v100, v101, v102, v4);
+        v103 = objc_msgSend_indexOfObject_(v98, v99, v100, v101, v102, networkCopy);
 
         if (v103 != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -835,10 +835,10 @@ LABEL_28:
   return v104;
 }
 
-- (id)p_formatSemanticTag:(id)a3
+- (id)p_formatSemanticTag:(id)tag
 {
-  v3 = a3;
-  v8 = objc_msgSend_type(v3, v4, v5, v6, v7);
+  tagCopy = tag;
+  v8 = objc_msgSend_type(tagCopy, v4, v5, v6, v7);
   v13 = 0;
   if (v8 <= 8)
   {
@@ -866,7 +866,7 @@ LABEL_28:
     if (v8 == 5)
     {
       v15 = MEMORY[0x277CCACA8];
-      v48 = objc_msgSend_index(v3, v9, v10, v11, v12);
+      v48 = objc_msgSend_index(tagCopy, v9, v10, v11, v12);
       v20 = @"    Value Axis Style (%2lu)";
     }
 
@@ -878,7 +878,7 @@ LABEL_28:
       }
 
       v15 = MEMORY[0x277CCACA8];
-      v48 = objc_msgSend_index(v3, v9, v10, v11, v12);
+      v48 = objc_msgSend_index(tagCopy, v9, v10, v11, v12);
       v20 = @" Category Axis Style (%2lu)";
     }
 
@@ -893,7 +893,7 @@ LABEL_22:
     if (v8 == 9)
     {
       v15 = MEMORY[0x277CCACA8];
-      v48 = objc_msgSend_index(v3, v9, v10, v11, v12);
+      v48 = objc_msgSend_index(tagCopy, v9, v10, v11, v12);
       v20 = @"  Theme Series Style (%2lu)";
     }
 
@@ -905,7 +905,7 @@ LABEL_22:
       }
 
       v15 = MEMORY[0x277CCACA8];
-      v48 = objc_msgSend_index(v3, v9, v10, v11, v12);
+      v48 = objc_msgSend_index(tagCopy, v9, v10, v11, v12);
       v20 = @"Private Series Style (%2lu)";
     }
 
@@ -915,7 +915,7 @@ LABEL_22:
   if (v8 == 12)
   {
     v15 = MEMORY[0x277CCACA8];
-    v48 = objc_msgSend_index(v3, v9, v10, v11, v12);
+    v48 = objc_msgSend_index(tagCopy, v9, v10, v11, v12);
     v20 = @"     Paragraph Style (%2lu)";
     goto LABEL_22;
   }
@@ -931,9 +931,9 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v22 = objc_msgSend_index(v3, v9, v10, v11, v12);
+  v22 = objc_msgSend_index(tagCopy, v9, v10, v11, v12);
   v27 = objc_msgSend_axisIDFromStyleSwapOrStyleOwnerIndex_(TSCHReferenceLine, v23, v24, v25, v26, v22);
-  v32 = objc_msgSend_index(v3, v28, v29, v30, v31);
+  v32 = objc_msgSend_index(tagCopy, v28, v29, v30, v31);
   v37 = objc_msgSend_refLineIndexFromStyleSwapOrStyleOwnerIndex_(TSCHReferenceLine, v33, v34, v35, v36, v32);
   v38 = MEMORY[0x277CCACA8];
   v43 = objc_msgSend_debuggingName(v27, v39, v40, v41, v42);
@@ -962,7 +962,7 @@ LABEL_24:
   v84[3] = &unk_27A6B9B28;
   v74 = v11;
   v85 = v74;
-  v86 = self;
+  selfCopy = self;
   v73 = v6;
   v87 = v73;
   v36 = MEMORY[0x277C98B30](v84);
@@ -1160,12 +1160,12 @@ LABEL_24:
 
 + (id)styleState
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8 = objc_msgSend_allocWithZone_(TSCHChartStyleState, a2, v3, v4, v5);
   v13 = objc_msgSend_init(v8, v9, v10, v11, v12);
@@ -1201,7 +1201,7 @@ LABEL_24:
   v133 = sub_276365000;
   v134 = &unk_27A6B9E40;
   v135 = v92;
-  v136 = a3;
+  zoneCopy = zone;
   v98 = v92;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v97, v99, v100, v101, v102, &v131);
 
@@ -1210,7 +1210,7 @@ LABEL_24:
   objc_msgSend_setReferenceLineThemeStyle_(v13, v112, v113, v114, v115, v111);
 
   v120 = objc_msgSend_themeChartStyleState(self, v116, v117, v118, v119);
-  v125 = objc_msgSend_copyWithZone_(v120, v121, v122, v123, v124, a3);
+  v125 = objc_msgSend_copyWithZone_(v120, v121, v122, v123, v124, zone);
   objc_msgSend_setThemeChartStyleState_(v13, v126, v127, v128, v129, v125);
 
   return v13;
@@ -1273,44 +1273,44 @@ LABEL_24:
   return sub_2762CD788(v3, legendStyle);
 }
 
-- (void)setValueAxisStyles:(id)a3
+- (void)setValueAxisStyles:(id)styles
 {
-  v7 = objc_msgSend_mutableCopy(a3, a2, v3, v4, v5);
+  v7 = objc_msgSend_mutableCopy(styles, a2, v3, v4, v5);
   valueAxisStyles = self->super._valueAxisStyles;
   self->super._valueAxisStyles = v7;
 }
 
-- (void)setCategoryAxisStyles:(id)a3
+- (void)setCategoryAxisStyles:(id)styles
 {
-  v7 = objc_msgSend_mutableCopy(a3, a2, v3, v4, v5);
+  v7 = objc_msgSend_mutableCopy(styles, a2, v3, v4, v5);
   categoryAxisStyles = self->super._categoryAxisStyles;
   self->super._categoryAxisStyles = v7;
 }
 
-- (void)setSeriesThemeStyles:(id)a3
+- (void)setSeriesThemeStyles:(id)styles
 {
-  v7 = objc_msgSend_mutableCopy(a3, a2, v3, v4, v5);
+  v7 = objc_msgSend_mutableCopy(styles, a2, v3, v4, v5);
   seriesThemeStyles = self->super._seriesThemeStyles;
   self->super._seriesThemeStyles = v7;
 }
 
-- (void)setSeriesPrivateStyles:(id)a3
+- (void)setSeriesPrivateStyles:(id)styles
 {
-  v7 = objc_msgSend_mutableCopy(a3, a2, v3, v4, v5);
+  v7 = objc_msgSend_mutableCopy(styles, a2, v3, v4, v5);
   seriesPrivateStyles = self->super._seriesPrivateStyles;
   self->super._seriesPrivateStyles = v7;
 }
 
-- (void)setParagraphStyles:(id)a3
+- (void)setParagraphStyles:(id)styles
 {
-  v7 = objc_msgSend_mutableCopy(a3, a2, v3, v4, v5);
+  v7 = objc_msgSend_mutableCopy(styles, a2, v3, v4, v5);
   paragraphStyles = self->super._paragraphStyles;
   self->super._paragraphStyles = v7;
 }
 
-- (void)setReferenceLineStyles:(id)a3
+- (void)setReferenceLineStyles:(id)styles
 {
-  v7 = objc_msgSend_mutableCopy(a3, a2, v3, v4, v5);
+  v7 = objc_msgSend_mutableCopy(styles, a2, v3, v4, v5);
   referenceLineStyles = self->super._referenceLineStyles;
   self->super._referenceLineStyles = v7;
 }
@@ -1325,17 +1325,17 @@ LABEL_24:
 
 - (TSCHChartStyleState)stateForParentStyleLookup
 {
-  v5 = self;
+  selfCopy = self;
   v6 = objc_msgSend_themeChartStyleState(self, a2, v2, v3, v4);
   v7 = v6;
   if (v6)
   {
-    v5 = v6;
+    selfCopy = v6;
   }
 
-  v8 = v5;
+  v8 = selfCopy;
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSArray)allStyles
@@ -1447,24 +1447,24 @@ LABEL_24:
   return v10;
 }
 
-- (id)p_propertySetWithPropertySetType:(int64_t)a3 forStyle:(id)a4
+- (id)p_propertySetWithPropertySetType:(int64_t)type forStyle:(id)style
 {
-  v5 = a4;
-  v10 = v5;
-  if (a3 == 1)
+  styleCopy = style;
+  v10 = styleCopy;
+  if (type == 1)
   {
-    v32 = objc_msgSend_propertyMap(v5, v6, v7, v8, v9);
+    v32 = objc_msgSend_propertyMap(styleCopy, v6, v7, v8, v9);
     v31 = objc_msgSend_allProperties(v32, v33, v34, v35, v36);
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       v11 = MEMORY[0x277D81150];
       v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v7, v8, v9, "[TSCHChartStyleState p_propertySetWithPropertySetType:forStyle:]");
       v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, v14, v15, v16, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartStyleState.m");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v18, v19, v20, v21, v12, v17, 216, 0, "Invalid property set type %ld", a3);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v18, v19, v20, v21, v12, v17, 216, 0, "Invalid property set type %ld", type);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
     }
@@ -1476,7 +1476,7 @@ LABEL_24:
   return v31;
 }
 
-- (id)usesOfParagraphStylePropertiesWithPropertySetType:(int64_t)a3
+- (id)usesOfParagraphStylePropertiesWithPropertySetType:(int64_t)type
 {
   v60 = *MEMORY[0x277D85DE8];
   v7 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, v3, v4, v5);
@@ -1501,7 +1501,7 @@ LABEL_24:
         }
 
         v28 = *(*(&v55 + 1) + 8 * i);
-        v29 = objc_msgSend_p_propertySetWithPropertySetType_forStyle_(self, v21, v22, v23, v24, a3, v28);
+        v29 = objc_msgSend_p_propertySetWithPropertySetType_forStyle_(self, v21, v22, v23, v24, type, v28);
         v34 = objc_msgSend_mutableCopy(v29, v30, v31, v32, v33);
 
         objc_msgSend_intersectPropertySet_(v34, v35, v36, v37, v38, v12);
@@ -1590,21 +1590,21 @@ LABEL_15:
   return v56;
 }
 
-- (id)applyStyleSwapTuple:(id)a3 ignoringBeforeValues:(BOOL)a4
+- (id)applyStyleSwapTuple:(id)tuple ignoringBeforeValues:(BOOL)values
 {
-  v6 = a3;
-  v11 = objc_msgSend_inverse(v6, v7, v8, v9, v10);
-  v16 = objc_msgSend_swapType(v6, v12, v13, v14, v15);
+  tupleCopy = tuple;
+  v11 = objc_msgSend_inverse(tupleCopy, v7, v8, v9, v10);
+  v16 = objc_msgSend_swapType(tupleCopy, v12, v13, v14, v15);
   if (v16 <= 8)
   {
     if (v16 <= 4)
     {
       if (v16 == 1)
       {
-        if (!a4)
+        if (!values)
         {
           v158 = objc_msgSend_chartStyle(self, v17, v18, v19, v20);
-          v163 = objc_msgSend_beforeValue(v6, v159, v160, v161, v162);
+          v163 = objc_msgSend_beforeValue(tupleCopy, v159, v160, v161, v162);
 
           if (v158 != v163)
           {
@@ -1618,7 +1618,7 @@ LABEL_15:
         }
 
         objc_opt_class();
-        v50 = objc_msgSend_afterValue(v6, v183, v184, v185, v186);
+        v50 = objc_msgSend_afterValue(tupleCopy, v183, v184, v185, v186);
         v51 = TSUCheckedDynamicCast();
         objc_msgSend_setChartStyle_(self, v187, v188, v189, v190, v51);
         goto LABEL_33;
@@ -1626,10 +1626,10 @@ LABEL_15:
 
       if (v16 == 3)
       {
-        if (!a4)
+        if (!values)
         {
           v56 = objc_msgSend_legendStyle(self, v17, v18, v19, v20);
-          v61 = objc_msgSend_beforeValue(v6, v57, v58, v59, v60);
+          v61 = objc_msgSend_beforeValue(tupleCopy, v57, v58, v59, v60);
 
           if (v56 != v61)
           {
@@ -1643,7 +1643,7 @@ LABEL_15:
         }
 
         objc_opt_class();
-        v50 = objc_msgSend_afterValue(v6, v81, v82, v83, v84);
+        v50 = objc_msgSend_afterValue(tupleCopy, v81, v82, v83, v84);
         v51 = TSUCheckedDynamicCast();
         objc_msgSend_setLegendStyle_(self, v85, v86, v87, v88, v51);
         goto LABEL_33;
@@ -1654,11 +1654,11 @@ LABEL_15:
 
     if (v16 == 5)
     {
-      if (!a4)
+      if (!values)
       {
-        v191 = objc_msgSend_beforeValue(v6, v17, v18, v19, v20);
+        v191 = objc_msgSend_beforeValue(tupleCopy, v17, v18, v19, v20);
         v196 = objc_msgSend_valueAxisStyles(self, v192, v193, v194, v195);
-        v201 = objc_msgSend_index(v6, v197, v198, v199, v200);
+        v201 = objc_msgSend_index(tupleCopy, v197, v198, v199, v200);
         v202 = sub_27626B504(v191, v196, v201, 0);
 
         if ((v202 & 1) == 0)
@@ -1672,7 +1672,7 @@ LABEL_15:
         }
       }
 
-      v117 = objc_msgSend_afterValue(v6, v17, v18, v19, v20);
+      v117 = objc_msgSend_afterValue(tupleCopy, v17, v18, v19, v20);
       v121 = &OBJC_IVAR___TSCHPropertyValueStorageContainer__valueAxisStyles;
     }
 
@@ -1683,11 +1683,11 @@ LABEL_15:
         goto LABEL_56;
       }
 
-      if (!a4)
+      if (!values)
       {
-        v89 = objc_msgSend_beforeValue(v6, v17, v18, v19, v20);
+        v89 = objc_msgSend_beforeValue(tupleCopy, v17, v18, v19, v20);
         v94 = objc_msgSend_categoryAxisStyles(self, v90, v91, v92, v93);
-        v99 = objc_msgSend_index(v6, v95, v96, v97, v98);
+        v99 = objc_msgSend_index(tupleCopy, v95, v96, v97, v98);
         v100 = sub_27626B504(v89, v94, v99, 0);
 
         if ((v100 & 1) == 0)
@@ -1701,13 +1701,13 @@ LABEL_15:
         }
       }
 
-      v117 = objc_msgSend_afterValue(v6, v17, v18, v19, v20);
+      v117 = objc_msgSend_afterValue(tupleCopy, v17, v18, v19, v20);
       v121 = &OBJC_IVAR___TSCHPropertyValueStorageContainer__categoryAxisStyles;
     }
 
 LABEL_46:
     v272 = *(&self->super.super.isa + *v121);
-    v154 = objc_msgSend_index(v6, v116, v118, v119, v120);
+    v154 = objc_msgSend_index(tupleCopy, v116, v118, v119, v120);
     v155 = v117;
     v156 = v272;
     v157 = 0;
@@ -1724,10 +1724,10 @@ LABEL_47:
       {
         if (v16 == 15)
         {
-          if (!a4)
+          if (!values)
           {
             v21 = objc_msgSend_referenceLineThemeStyle(self, v17, v18, v19, v20);
-            v26 = objc_msgSend_beforeValue(v6, v22, v23, v24, v25);
+            v26 = objc_msgSend_beforeValue(tupleCopy, v22, v23, v24, v25);
 
             if (v21 != v26)
             {
@@ -1741,7 +1741,7 @@ LABEL_47:
           }
 
           objc_opt_class();
-          v50 = objc_msgSend_afterValue(v6, v46, v47, v48, v49);
+          v50 = objc_msgSend_afterValue(tupleCopy, v46, v47, v48, v49);
           v51 = TSUCheckedDynamicCast();
           objc_msgSend_setReferenceLineThemeStyle_(self, v52, v53, v54, v55, v51);
 LABEL_33:
@@ -1752,9 +1752,9 @@ LABEL_33:
         goto LABEL_56;
       }
 
-      v274 = objc_msgSend_index(v6, v17, v18, v19, v20);
+      v274 = objc_msgSend_index(tupleCopy, v17, v18, v19, v20);
       v117 = objc_msgSend_axisIDFromStyleSwapOrStyleOwnerIndex_(TSCHReferenceLine, v275, v276, v277, v278, v274);
-      v283 = objc_msgSend_index(v6, v279, v280, v281, v282);
+      v283 = objc_msgSend_index(tupleCopy, v279, v280, v281, v282);
       v288 = objc_msgSend_refLineIndexFromStyleSwapOrStyleOwnerIndex_(TSCHReferenceLine, v284, v285, v286, v287, v283);
       objc_opt_class();
       referenceLineStyles = self->super._referenceLineStyles;
@@ -1762,9 +1762,9 @@ LABEL_33:
       v295 = objc_msgSend_tsu_objectForKey_withDefaultOfClass_(referenceLineStyles, v291, v292, v293, v294, v117, v290);
       v296 = TSUCheckedDynamicCast();
 
-      if (!a4)
+      if (!values)
       {
-        v301 = objc_msgSend_beforeValue(v6, v297, v298, v299, v300);
+        v301 = objc_msgSend_beforeValue(tupleCopy, v297, v298, v299, v300);
         v302 = sub_27626B504(v301, v296, v288, 1);
 
         if ((v302 & 1) == 0)
@@ -1778,18 +1778,18 @@ LABEL_33:
         }
       }
 
-      v318 = objc_msgSend_afterValue(v6, v297, v298, v299, v300);
+      v318 = objc_msgSend_afterValue(tupleCopy, v297, v298, v299, v300);
       sub_27626B5EC(v318, v296, v288, 1);
 
 LABEL_48:
       goto LABEL_49;
     }
 
-    if (!a4)
+    if (!values)
     {
-      v218 = objc_msgSend_beforeValue(v6, v17, v18, v19, v20);
+      v218 = objc_msgSend_beforeValue(tupleCopy, v17, v18, v19, v20);
       v223 = objc_msgSend_paragraphStyles(self, v219, v220, v221, v222);
-      v228 = objc_msgSend_index(v6, v224, v225, v226, v227);
+      v228 = objc_msgSend_index(tupleCopy, v224, v225, v226, v227);
       v229 = sub_27626B504(v218, v223, v228, 0);
 
       if ((v229 & 1) == 0)
@@ -1803,18 +1803,18 @@ LABEL_48:
       }
     }
 
-    v117 = objc_msgSend_afterValue(v6, v17, v18, v19, v20);
+    v117 = objc_msgSend_afterValue(tupleCopy, v17, v18, v19, v20);
     v121 = &OBJC_IVAR___TSCHPropertyValueStorageContainer__paragraphStyles;
     goto LABEL_46;
   }
 
   if (v16 == 9)
   {
-    if (!a4)
+    if (!values)
     {
-      v245 = objc_msgSend_beforeValue(v6, v17, v18, v19, v20);
+      v245 = objc_msgSend_beforeValue(tupleCopy, v17, v18, v19, v20);
       v250 = objc_msgSend_seriesThemeStyles(self, v246, v247, v248, v249);
-      v255 = objc_msgSend_index(v6, v251, v252, v253, v254);
+      v255 = objc_msgSend_index(tupleCopy, v251, v252, v253, v254);
       v256 = sub_27626B504(v245, v250, v255, 0);
 
       if ((v256 & 1) == 0)
@@ -1828,18 +1828,18 @@ LABEL_48:
       }
     }
 
-    v117 = objc_msgSend_afterValue(v6, v17, v18, v19, v20);
+    v117 = objc_msgSend_afterValue(tupleCopy, v17, v18, v19, v20);
     v121 = &OBJC_IVAR___TSCHPropertyValueStorageContainer__seriesThemeStyles;
     goto LABEL_46;
   }
 
   if (v16 == 10)
   {
-    if (!a4)
+    if (!values)
     {
-      v122 = objc_msgSend_beforeValue(v6, v17, v18, v19, v20);
+      v122 = objc_msgSend_beforeValue(tupleCopy, v17, v18, v19, v20);
       v127 = objc_msgSend_seriesPrivateStyles(self, v123, v124, v125, v126);
-      v132 = objc_msgSend_index(v6, v128, v129, v130, v131);
+      v132 = objc_msgSend_index(tupleCopy, v128, v129, v130, v131);
       v133 = sub_27626B504(v122, v127, v132, 0);
 
       if ((v133 & 1) == 0)
@@ -1853,9 +1853,9 @@ LABEL_48:
       }
     }
 
-    v117 = objc_msgSend_afterValue(v6, v17, v18, v19, v20);
+    v117 = objc_msgSend_afterValue(tupleCopy, v17, v18, v19, v20);
     seriesPrivateStyles = self->super._seriesPrivateStyles;
-    v154 = objc_msgSend_index(v6, v150, v151, v152, v153);
+    v154 = objc_msgSend_index(tupleCopy, v150, v151, v152, v153);
     v155 = v117;
     v156 = seriesPrivateStyles;
     v157 = 1;
@@ -1866,7 +1866,7 @@ LABEL_56:
   v319 = MEMORY[0x277D81150];
   v320 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, v18, v19, v20, "[TSCHChartStyleState applyStyleSwapTuple:ignoringBeforeValues:]");
   v325 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v321, v322, v323, v324, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartStyleState.m");
-  v330 = objc_msgSend_swapType(v6, v326, v327, v328, v329);
+  v330 = objc_msgSend_swapType(tupleCopy, v326, v327, v328, v329);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v319, v331, v332, v333, v334, v320, v325, 312, 0, "Unexpected swap type %ld", v330);
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v335, v336, v337, v338);
@@ -1875,30 +1875,30 @@ LABEL_49:
   return v11;
 }
 
-- (void)replaceAllInstancesOfStyle:(id)a3 withStyle:(id)a4
+- (void)replaceAllInstancesOfStyle:(id)style withStyle:(id)withStyle
 {
   v193 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v8 = a4;
-  if (!v8)
+  styleCopy = style;
+  withStyleCopy = withStyle;
+  if (!withStyleCopy)
   {
-    v8 = objc_msgSend_null(MEMORY[0x277CBEB68], v7, v9, v10, v11);
+    withStyleCopy = objc_msgSend_null(MEMORY[0x277CBEB68], v7, v9, v10, v11);
   }
 
-  if (v8 != v6)
+  if (withStyleCopy != styleCopy)
   {
     v12 = objc_msgSend_chartStyle(self, v7, v9, v10, v11);
 
-    if (v12 == v6)
+    if (v12 == styleCopy)
     {
-      objc_msgSend_setChartStyle_(self, v13, v14, v15, v16, v8);
+      objc_msgSend_setChartStyle_(self, v13, v14, v15, v16, withStyleCopy);
     }
 
     v17 = objc_msgSend_legendStyle(self, v13, v14, v15, v16);
 
-    if (v17 == v6)
+    if (v17 == styleCopy)
     {
-      objc_msgSend_setLegendStyle_(self, v18, v19, v20, v21, v8);
+      objc_msgSend_setLegendStyle_(self, v18, v19, v20, v21, withStyleCopy);
     }
 
     v22 = objc_msgSend_valueAxisStyles(self, v18, v19, v20, v21);
@@ -1910,7 +1910,7 @@ LABEL_49:
         v28 = objc_msgSend_valueAxisStyles(self, v23, v24, v25, v26);
         objc_opt_class();
         v29 = TSUCheckedDynamicCast();
-        v34 = objc_msgSend_indexOfObjectIdenticalTo_(v29, v30, v31, v32, v33, v6);
+        v34 = objc_msgSend_indexOfObjectIdenticalTo_(v29, v30, v31, v32, v33, styleCopy);
 
         if (v34 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -1920,7 +1920,7 @@ LABEL_49:
         v35 = objc_msgSend_valueAxisStyles(self, v23, v24, v25, v26);
         objc_opt_class();
         v36 = TSUCheckedDynamicCast();
-        objc_msgSend_replaceObjectAtIndex_withObject_(v36, v37, v38, v39, v40, v34, v8);
+        objc_msgSend_replaceObjectAtIndex_withObject_(v36, v37, v38, v39, v40, v34, withStyleCopy);
 
         v27 = objc_msgSend_valueAxisStyles(self, v41, v42, v43, v44);
       }
@@ -1937,7 +1937,7 @@ LABEL_49:
         v51 = objc_msgSend_categoryAxisStyles(self, v46, v47, v48, v49);
         objc_opt_class();
         v52 = TSUCheckedDynamicCast();
-        v57 = objc_msgSend_indexOfObjectIdenticalTo_(v52, v53, v54, v55, v56, v6);
+        v57 = objc_msgSend_indexOfObjectIdenticalTo_(v52, v53, v54, v55, v56, styleCopy);
 
         if (v57 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -1947,7 +1947,7 @@ LABEL_49:
         v58 = objc_msgSend_categoryAxisStyles(self, v46, v47, v48, v49);
         objc_opt_class();
         v59 = TSUCheckedDynamicCast();
-        objc_msgSend_replaceObjectAtIndex_withObject_(v59, v60, v61, v62, v63, v57, v8);
+        objc_msgSend_replaceObjectAtIndex_withObject_(v59, v60, v61, v62, v63, v57, withStyleCopy);
 
         v50 = objc_msgSend_categoryAxisStyles(self, v64, v65, v66, v67);
       }
@@ -1964,7 +1964,7 @@ LABEL_49:
         v74 = objc_msgSend_seriesThemeStyles(self, v69, v70, v71, v72);
         objc_opt_class();
         v75 = TSUCheckedDynamicCast();
-        v80 = objc_msgSend_indexOfObjectIdenticalTo_(v75, v76, v77, v78, v79, v6);
+        v80 = objc_msgSend_indexOfObjectIdenticalTo_(v75, v76, v77, v78, v79, styleCopy);
 
         if (v80 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -1974,7 +1974,7 @@ LABEL_49:
         v81 = objc_msgSend_seriesThemeStyles(self, v69, v70, v71, v72);
         objc_opt_class();
         v82 = TSUCheckedDynamicCast();
-        objc_msgSend_replaceObjectAtIndex_withObject_(v82, v83, v84, v85, v86, v80, v8);
+        objc_msgSend_replaceObjectAtIndex_withObject_(v82, v83, v84, v85, v86, v80, withStyleCopy);
 
         v73 = objc_msgSend_seriesThemeStyles(self, v87, v88, v89, v90);
       }
@@ -1991,7 +1991,7 @@ LABEL_49:
         v97 = objc_msgSend_seriesPrivateStyles(self, v92, v93, v94, v95);
         objc_opt_class();
         v98 = TSUCheckedDynamicCast();
-        v103 = objc_msgSend_indexOfObjectIdenticalTo_(v98, v99, v100, v101, v102, v6);
+        v103 = objc_msgSend_indexOfObjectIdenticalTo_(v98, v99, v100, v101, v102, styleCopy);
 
         if (v103 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -2001,7 +2001,7 @@ LABEL_49:
         v104 = objc_msgSend_seriesPrivateStyles(self, v92, v93, v94, v95);
         objc_opt_class();
         v105 = TSUCheckedDynamicCast();
-        objc_msgSend_replaceObjectAtIndex_withObject_(v105, v106, v107, v108, v109, v103, v8);
+        objc_msgSend_replaceObjectAtIndex_withObject_(v105, v106, v107, v108, v109, v103, withStyleCopy);
 
         v96 = objc_msgSend_seriesPrivateStyles(self, v110, v111, v112, v113);
       }
@@ -2018,7 +2018,7 @@ LABEL_49:
         v120 = objc_msgSend_paragraphStyles(self, v115, v116, v117, v118);
         objc_opt_class();
         v121 = TSUCheckedDynamicCast();
-        v126 = objc_msgSend_indexOfObjectIdenticalTo_(v121, v122, v123, v124, v125, v6);
+        v126 = objc_msgSend_indexOfObjectIdenticalTo_(v121, v122, v123, v124, v125, styleCopy);
 
         if (v126 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -2028,7 +2028,7 @@ LABEL_49:
         v127 = objc_msgSend_paragraphStyles(self, v115, v116, v117, v118);
         objc_opt_class();
         v128 = TSUCheckedDynamicCast();
-        objc_msgSend_replaceObjectAtIndex_withObject_(v128, v129, v130, v131, v132, v126, v8);
+        objc_msgSend_replaceObjectAtIndex_withObject_(v128, v129, v130, v131, v132, v126, withStyleCopy);
 
         v119 = objc_msgSend_paragraphStyles(self, v133, v134, v135, v136);
       }
@@ -2038,9 +2038,9 @@ LABEL_49:
 
     v137 = objc_msgSend_referenceLineThemeStyle(self, v115, v116, v117, v118);
 
-    if (v137 == v6)
+    if (v137 == styleCopy)
     {
-      objc_msgSend_setReferenceLineThemeStyle_(self, v138, v139, v140, v141, v8);
+      objc_msgSend_setReferenceLineThemeStyle_(self, v138, v139, v140, v141, withStyleCopy);
     }
 
     v190 = 0u;
@@ -2065,25 +2065,25 @@ LABEL_49:
           }
 
           v159 = *(*(&v188 + 1) + 8 * i);
-          v160 = self;
+          selfCopy = self;
           v161 = objc_msgSend_referenceLineStyles(self, v153, v154, v155, v156);
           v166 = objc_msgSend_objectForKeyedSubscript_(v161, v162, v163, v164, v165, v159);
           v171 = objc_msgSend_mutableCopy(v166, v167, v168, v169, v170);
 
           if (v171)
           {
-            v176 = objc_msgSend_indexOfObjectIdenticalTo_(v171, v172, v173, v174, v175, v6);
+            v176 = objc_msgSend_indexOfObjectIdenticalTo_(v171, v172, v173, v174, v175, styleCopy);
             if (v176 != 0x7FFFFFFFFFFFFFFFLL)
             {
-              for (j = v176; j != 0x7FFFFFFFFFFFFFFFLL; j = objc_msgSend_indexOfObjectIdenticalTo_(v171, v178, v179, v180, v181, v6))
+              for (j = v176; j != 0x7FFFFFFFFFFFFFFFLL; j = objc_msgSend_indexOfObjectIdenticalTo_(v171, v178, v179, v180, v181, styleCopy))
               {
-                objc_msgSend_replaceObjectAtIndex_withObject_(v171, v172, v173, v174, v175, j, v8);
+                objc_msgSend_replaceObjectAtIndex_withObject_(v171, v172, v173, v174, v175, j, withStyleCopy);
               }
             }
           }
 
-          self = v160;
-          v182 = objc_msgSend_referenceLineStyles(v160, v172, v173, v174, v175);
+          self = selfCopy;
+          v182 = objc_msgSend_referenceLineStyles(selfCopy, v172, v173, v174, v175);
           objc_msgSend_setObject_forKeyedSubscript_(v182, v183, v184, v185, v186, v171, v159);
         }
 
@@ -2095,16 +2095,16 @@ LABEL_49:
   }
 }
 
-- (BOOL)otherStateIsEquivalent:(id)a3 ignoringSeriesThemeStyles:(BOOL)a4
+- (BOOL)otherStateIsEquivalent:(id)equivalent ignoringSeriesThemeStyles:(BOOL)styles
 {
-  v4 = a4;
+  stylesCopy = styles;
   v399 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = self;
-  v381 = v7;
-  if (v4)
+  equivalentCopy = equivalent;
+  selfCopy = self;
+  v381 = selfCopy;
+  if (stylesCopy)
   {
-    v12 = objc_msgSend_seriesThemeStyles(v7, v8, v9, v10, v11);
+    v12 = objc_msgSend_seriesThemeStyles(selfCopy, v8, v9, v10, v11);
     v17 = objc_msgSend_count(v12, v13, v14, v15, v16);
 
     v22 = objc_msgSend_seriesPrivateStyles(v381, v18, v19, v20, v21);
@@ -2120,10 +2120,10 @@ LABEL_49:
       v32 = v17;
     }
 
-    v33 = objc_msgSend_seriesThemeStyles(v6, v28, v29, v30, v31);
+    v33 = objc_msgSend_seriesThemeStyles(equivalentCopy, v28, v29, v30, v31);
     v38 = objc_msgSend_count(v33, v34, v35, v36, v37);
 
-    v43 = objc_msgSend_seriesPrivateStyles(v6, v39, v40, v41, v42);
+    v43 = objc_msgSend_seriesPrivateStyles(equivalentCopy, v39, v40, v41, v42);
     v48 = objc_msgSend_count(v43, v44, v45, v46, v47);
 
     if (v38 <= v48)
@@ -2152,7 +2152,7 @@ LABEL_49:
     v60 = objc_msgSend_seriesThemeStyles(v55, v56, v57, v58, v59);
     objc_msgSend_removeAllObjects(v60, v61, v62, v63, v64);
 
-    v69 = objc_msgSend_stateByExpandingSeriesStylesForSeriesCount_(v6, v65, v66, v67, v68, v54);
+    v69 = objc_msgSend_stateByExpandingSeriesStylesForSeriesCount_(equivalentCopy, v65, v66, v67, v68, v54);
 
     v74 = objc_msgSend_seriesThemeStyles(v69, v70, v71, v72, v73);
     objc_msgSend_removeAllObjects(v74, v75, v76, v77, v78);
@@ -2160,8 +2160,8 @@ LABEL_49:
 
   else
   {
-    v55 = v7;
-    v69 = v6;
+    v55 = selfCopy;
+    v69 = equivalentCopy;
   }
 
   v79 = objc_msgSend_valueAxisStyles(v55, v8, v9, v10, v11);
@@ -2377,13 +2377,13 @@ LABEL_50:
   return v300;
 }
 
-- (id)stateByExpandingSeriesStylesForSeriesCount:(unint64_t)a3
+- (id)stateByExpandingSeriesStylesForSeriesCount:(unint64_t)count
 {
   v8 = objc_msgSend_seriesThemeStyles(self, a2, v3, v4, v5);
   v13 = objc_msgSend_count(v8, v9, v10, v11, v12);
   if (!v13)
   {
-    v81 = self;
+    selfCopy = self;
     goto LABEL_19;
   }
 
@@ -2416,7 +2416,7 @@ LABEL_50:
   }
 
   v54 = objc_msgSend_count(v23, v28, v30, v31, v32);
-  if (v18 < a3)
+  if (v18 < count)
   {
     v59 = v54;
     v60 = v18;
@@ -2433,7 +2433,7 @@ LABEL_50:
 LABEL_15:
       }
 
-      if (a3 == ++v60)
+      if (count == ++v60)
       {
         goto LABEL_17;
       }
@@ -2446,31 +2446,31 @@ LABEL_15:
 
 LABEL_17:
 
-  v81 = v83;
+  selfCopy = v83;
 LABEL_19:
 
-  return v81;
+  return selfCopy;
 }
 
 - (id)stateByReducingSeriesPrivateStyles
 {
-  v2 = self;
-  v7 = objc_msgSend_seriesThemeStyles(v2, v3, v4, v5, v6);
+  selfCopy = self;
+  v7 = objc_msgSend_seriesThemeStyles(selfCopy, v3, v4, v5, v6);
   if (objc_msgSend_count(v7, v8, v9, v10, v11))
   {
-    objc_msgSend_seriesThemeStyles(v2, v12, v13, v14, v15);
+    objc_msgSend_seriesThemeStyles(selfCopy, v12, v13, v14, v15);
   }
 
   else
   {
-    objc_msgSend_seriesPrivateStyles(v2, v12, v13, v14, v15);
+    objc_msgSend_seriesPrivateStyles(selfCopy, v12, v13, v14, v15);
   }
   v16 = ;
   v21 = objc_msgSend_count(v16, v17, v18, v19, v20);
 
   if (v21)
   {
-    v26 = objc_msgSend_seriesPrivateStyles(v2, v22, v23, v24, v25);
+    v26 = objc_msgSend_seriesPrivateStyles(selfCopy, v22, v23, v24, v25);
     v31 = objc_msgSend_count(v26, v27, v28, v29, v30);
 
     if (v31 - 1 < 0)
@@ -2484,18 +2484,18 @@ LABEL_19:
       do
       {
         --v31;
-        v37 = objc_msgSend_seriesThemeStyles(v2, v32, v33, v34, v35);
-        v42 = objc_msgSend_seriesPrivateStyles(v2, v38, v39, v40, v41);
+        v37 = objc_msgSend_seriesThemeStyles(selfCopy, v32, v33, v34, v35);
+        v42 = objc_msgSend_seriesPrivateStyles(selfCopy, v38, v39, v40, v41);
         v43 = sub_276269510(v37, v42, v31);
 
-        v48 = objc_msgSend_seriesThemeStyles(v2, v44, v45, v46, v47);
+        v48 = objc_msgSend_seriesThemeStyles(selfCopy, v44, v45, v46, v47);
         v49 = sub_276269510(v48, 0, v31);
 
         if (v43 == v49 || (objc_msgSend_propertyMap(v43, v50, v51, v52, v53), v54 = objc_claimAutoreleasedReturnValue(), objc_msgSend_propertyMap(v49, v55, v56, v57, v58), v59 = objc_claimAutoreleasedReturnValue(), !(v54 | v59)) || (v60 = v59, isEqual = objc_msgSend_isEqual_(v54, v50, v51, v52, v53, v59), v60, v54, isEqual))
         {
           if (!v36)
           {
-            v62 = objc_msgSend_seriesPrivateStyles(v2, v50, v51, v52, v53);
+            v62 = objc_msgSend_seriesPrivateStyles(selfCopy, v50, v51, v52, v53);
             v36 = objc_msgSend_mutableCopy(v62, v63, v64, v65, v66);
           }
 
@@ -2507,7 +2507,7 @@ LABEL_19:
       while (v31 > 0);
       if (v36)
       {
-        v72 = objc_msgSend_seriesPrivateStyles(v2, v32, v33, v34, v35);
+        v72 = objc_msgSend_seriesPrivateStyles(selfCopy, v32, v33, v34, v35);
         v77 = objc_msgSend_isEqual_(v36, v73, v74, v75, v76, v72);
 
         if ((v77 & 1) == 0)
@@ -2530,28 +2530,28 @@ LABEL_19:
             objc_msgSend_removeLastObject(v36, v88, v89, v90, v91);
           }
 
-          v95 = objc_msgSend_copy(v2, v88, v89, v90, v91);
+          v95 = objc_msgSend_copy(selfCopy, v88, v89, v90, v91);
 
           v100 = objc_msgSend_seriesPrivateStyles(v95, v96, v97, v98, v99);
           objc_msgSend_setArray_(v100, v101, v102, v103, v104, v36);
 
-          v2 = v95;
+          selfCopy = v95;
         }
       }
     }
 
-    v94 = v2;
+    v94 = selfCopy;
   }
 
   else
   {
-    v94 = v2;
+    v94 = selfCopy;
   }
 
   return v94;
 }
 
-- (id)stateByExpandingReferenceLineStylesForCount:(unint64_t)a3
+- (id)stateByExpandingReferenceLineStylesForCount:(unint64_t)count
 {
   v7 = objc_msgSend_copy(self, a2, v3, v4, v5);
   v12 = objc_msgSend_referenceLineStyles(v7, v8, v9, v10, v11);
@@ -2562,7 +2562,7 @@ LABEL_19:
   v24[3] = &unk_27A6B9E90;
   v18 = v7;
   v25 = v18;
-  v26 = a3;
+  countCopy = count;
   objc_msgSend_enumerateObjectsUsingBlock_(v17, v19, v20, v21, v22, v24);
 
   return v18;
@@ -2570,7 +2570,7 @@ LABEL_19:
 
 - (id)stateByReducingReferenceLineStyles
 {
-  v5 = self;
+  selfCopy = self;
   v150 = *MEMORY[0x277D85DE8];
   v6 = objc_msgSend_referenceLineStyles(self, a2, v2, v3, v4);
   v11 = objc_msgSend_count(v6, v7, v8, v9, v10);
@@ -2581,7 +2581,7 @@ LABEL_19:
     v147 = 0u;
     v144 = 0u;
     v145 = 0u;
-    v15 = objc_msgSend_referenceLineStyles(v5, v12, 0.0, v13, v14);
+    v15 = objc_msgSend_referenceLineStyles(selfCopy, v12, 0.0, v13, v14);
     v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v16, v17, v18, v19, &v144, v149, 16);
     if (v20)
     {
@@ -2597,7 +2597,7 @@ LABEL_19:
           }
 
           v28 = *(*(&v144 + 1) + 8 * i);
-          v29 = objc_msgSend_referenceLineStyles(v5, v21, v22, v23, v24);
+          v29 = objc_msgSend_referenceLineStyles(selfCopy, v21, v22, v23, v24);
           v34 = objc_msgSend_objectForKeyedSubscript_(v29, v30, v31, v32, v33, v28);
 
           v39 = objc_msgSend_count(v34, v35, v36, v37, v38);
@@ -2608,7 +2608,7 @@ LABEL_19:
             v143 = 0u;
             v140 = 0u;
             v141 = 0u;
-            v44 = objc_msgSend_referenceLineStyles(v5, v41, 0.0, v42, v43);
+            v44 = objc_msgSend_referenceLineStyles(selfCopy, v41, 0.0, v42, v43);
             v49 = objc_msgSend_allKeys(v44, v45, v46, v47, v48);
 
             obj = v49;
@@ -2617,7 +2617,7 @@ LABEL_19:
             if (v136)
             {
               v135 = *v141;
-              v134 = v5;
+              v134 = selfCopy;
               do
               {
                 for (j = 0; j != v136; ++j)
@@ -2628,20 +2628,20 @@ LABEL_19:
                   }
 
                   v60 = *(*(&v140 + 1) + 8 * j);
-                  v61 = objc_msgSend_referenceLineStyles(v5, v54, v55, v56, v57);
+                  v61 = objc_msgSend_referenceLineStyles(selfCopy, v54, v55, v56, v57);
                   v66 = objc_msgSend_objectForKeyedSubscript_(v61, v62, v63, v64, v65, v60);
 
                   v139[0] = MEMORY[0x277D85DD0];
                   v139[1] = 3221225472;
                   v139[2] = sub_27636877C;
                   v139[3] = &unk_27A6B9EB8;
-                  v139[4] = v5;
+                  v139[4] = selfCopy;
                   v71 = objc_msgSend_indexesOfObjectsPassingTest_(v66, v67, v68, v69, v70, v139);
                   if (objc_msgSend_count(v71, v72, v73, v74, v75))
                   {
                     if (!v58)
                     {
-                      v58 = objc_msgSend_copy(v5, v76, v77, v78, v79);
+                      v58 = objc_msgSend_copy(selfCopy, v76, v77, v78, v79);
                     }
 
                     v80 = objc_msgSend_mutableCopy(v66, v76, v77, v78, v79);
@@ -2682,7 +2682,7 @@ LABEL_19:
                       objc_msgSend_removeObjectForKey_(v125, v126, v127, v128, v129, v60);
                     }
 
-                    v5 = v134;
+                    selfCopy = v134;
                   }
                 }
 
@@ -2699,7 +2699,7 @@ LABEL_19:
 
             else
             {
-              v131 = v5;
+              v131 = selfCopy;
             }
 
             v40 = v131;
@@ -2719,26 +2719,26 @@ LABEL_19:
     }
   }
 
-  v40 = v5;
+  v40 = selfCopy;
 LABEL_32:
 
   return v40;
 }
 
-- (id)stateByExpandingForSeriesCount:(unint64_t)a3 andReferenceLineCount:(unint64_t)a4
+- (id)stateByExpandingForSeriesCount:(unint64_t)count andReferenceLineCount:(unint64_t)lineCount
 {
-  v6 = self;
-  v11 = v6;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  selfCopy = self;
+  v11 = selfCopy;
+  if (count != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = objc_msgSend_stateByExpandingSeriesStylesForSeriesCount_(v6, v7, v8, v9, v10, a3);
+    v12 = objc_msgSend_stateByExpandingSeriesStylesForSeriesCount_(selfCopy, v7, v8, v9, v10, count);
 
     v11 = v12;
   }
 
-  if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+  if (lineCount != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v13 = objc_msgSend_stateByExpandingReferenceLineStylesForCount_(v11, v7, v8, v9, v10, a4);
+    v13 = objc_msgSend_stateByExpandingReferenceLineStylesForCount_(v11, v7, v8, v9, v10, lineCount);
 
     v11 = v13;
   }
@@ -2840,10 +2840,10 @@ LABEL_32:
   return v9;
 }
 
-- (void)enumerateSemanticTagsAndUsagesWithPropertySetType:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateSemanticTagsAndUsagesWithPropertySetType:(int64_t)type usingBlock:(id)block
 {
   v67 = *MEMORY[0x277D85DE8];
-  v51 = a4;
+  blockCopy = block;
   v52 = objc_msgSend_paragraphStyleIndexProperties(TSCHChartInfo, v5, v6, v7, v8);
   v62 = 0;
   v63 = &v62;
@@ -2877,7 +2877,7 @@ LABEL_3:
       v25 = objc_msgSend_objectForKey_(v12, v21, v22, v23, v24, v20);
       v26 = TSUCheckedDynamicCast();
 
-      v31 = objc_msgSend_p_propertySetWithPropertySetType_forStyle_(self, v27, v28, v29, v30, a3, v26);
+      v31 = objc_msgSend_p_propertySetWithPropertySetType_forStyle_(self, v27, v28, v29, v30, type, v26);
       v36 = objc_msgSend_mutableCopy(v31, v32, v33, v34, v35);
 
       objc_msgSend_intersectPropertySet_(v36, v37, v38, v39, v40, v52);
@@ -2888,7 +2888,7 @@ LABEL_3:
       v41 = v26;
       v54 = v41;
       v55 = v20;
-      v56 = v51;
+      v56 = blockCopy;
       v57 = &v62;
       objc_msgSend_enumeratePropertiesUsingBlock_(v36, v42, v43, v44, v45, v53);
 
@@ -2908,26 +2908,26 @@ LABEL_3:
   _Block_object_dispose(&v62, 8);
 }
 
-- (id)semanticUsagesToParagraphStyleMapWithPropertySetType:(int64_t)a3 filteredBySemanticUsages:(id)a4
+- (id)semanticUsagesToParagraphStyleMapWithPropertySetType:(int64_t)type filteredBySemanticUsages:(id)usages
 {
-  v6 = a4;
+  usagesCopy = usages;
   v11 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v7, v8, v9, v10);
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = sub_2763695C0;
   v24[3] = &unk_27A6B9FA8;
-  v25 = v6;
-  v26 = self;
+  v25 = usagesCopy;
+  selfCopy = self;
   v27 = v11;
   v12 = v11;
-  v13 = v6;
-  objc_msgSend_enumerateSemanticTagsAndUsagesWithPropertySetType_usingBlock_(self, v14, v15, v16, v17, a3, v24);
+  v13 = usagesCopy;
+  objc_msgSend_enumerateSemanticTagsAndUsagesWithPropertySetType_usingBlock_(self, v14, v15, v16, v17, type, v24);
   v22 = objc_msgSend_copy(v12, v18, v19, v20, v21);
 
   return v22;
 }
 
-- (id)semanticUsagesOfParagraphStylePropertiesWithPropertySetType:(int64_t)a3
+- (id)semanticUsagesOfParagraphStylePropertiesWithPropertySetType:(int64_t)type
 {
   v8 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, v3, v4, v5);
   v20[0] = MEMORY[0x277D85DD0];
@@ -2936,18 +2936,18 @@ LABEL_3:
   v20[3] = &unk_27A6B9FD0;
   v21 = v8;
   v9 = v8;
-  objc_msgSend_enumerateSemanticTagsAndUsagesWithPropertySetType_usingBlock_(self, v10, v11, v12, v13, a3, v20);
+  objc_msgSend_enumerateSemanticTagsAndUsagesWithPropertySetType_usingBlock_(self, v10, v11, v12, v13, type, v20);
   v18 = objc_msgSend_copy(v9, v14, v15, v16, v17);
 
   return v18;
 }
 
-- (id)styleLookupSemanticTagForSemanticTag:(id)a3
+- (id)styleLookupSemanticTagForSemanticTag:(id)tag
 {
-  v4 = a3;
-  if (objc_msgSend_type(v4, v5, v6, v7, v8) == 10)
+  tagCopy = tag;
+  if (objc_msgSend_type(tagCopy, v5, v6, v7, v8) == 10)
   {
-    v13 = objc_msgSend_index(v4, v9, v10, v11, v12);
+    v13 = objc_msgSend_index(tagCopy, v9, v10, v11, v12);
 
     v18 = objc_msgSend_seriesThemeStyles(self, v14, v15, v16, v17);
     v23 = objc_msgSend_count(v18, v19, v20, v21, v22);
@@ -2956,7 +2956,7 @@ LABEL_3:
 
   else
   {
-    v29 = objc_msgSend_type(v4, v9, v10, v11, v12);
+    v29 = objc_msgSend_type(tagCopy, v9, v10, v11, v12);
 
     if (v29 == 13)
     {
@@ -2972,19 +2972,19 @@ LABEL_3:
   return v28;
 }
 
-- (id)styleForSemanticTag:(id)a3
+- (id)styleForSemanticTag:(id)tag
 {
-  v4 = a3;
-  v9 = objc_msgSend_type(v4, v5, v6, v7, v8);
+  tagCopy = tag;
+  v9 = objc_msgSend_type(tagCopy, v5, v6, v7, v8);
   if (v9 > 8)
   {
     if (v9 > 12)
     {
       if (v9 == 13)
       {
-        v102 = objc_msgSend_index(v4, v10, v11, v12, v13);
+        v102 = objc_msgSend_index(tagCopy, v10, v11, v12, v13);
         v93 = objc_msgSend_axisIDFromStyleSwapOrStyleOwnerIndex_(TSCHReferenceLine, v103, v104, v105, v106, v102);
-        v111 = objc_msgSend_index(v4, v107, v108, v109, v110);
+        v111 = objc_msgSend_index(tagCopy, v107, v108, v109, v110);
         v116 = objc_msgSend_refLineIndexFromStyleSwapOrStyleOwnerIndex_(TSCHReferenceLine, v112, v113, v114, v115, v111);
         objc_opt_class();
         v121 = objc_msgSend_referenceLineStyles(self, v117, v118, v119, v120);
@@ -2998,12 +2998,12 @@ LABEL_3:
 
       if (v9 == 15)
       {
-        if (objc_msgSend_index(v4, v10, v11, v12, v13))
+        if (objc_msgSend_index(tagCopy, v10, v11, v12, v13))
         {
           v48 = MEMORY[0x277D81150];
           v49 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v44, v45, v46, v47, "[TSCHChartStyleState styleForSemanticTag:]");
           v54 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v50, v51, v52, v53, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartStyleState.m");
-          v59 = objc_msgSend_index(v4, v55, v56, v57, v58);
+          v59 = objc_msgSend_index(tagCopy, v55, v56, v57, v58);
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v48, v60, v61, v62, v63, v49, v54, 847, 0, "Index mismatch expects 0 got %lu", v59);
 
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v64, v65, v66, v67);
@@ -3027,7 +3027,7 @@ LABEL_3:
         v39 = objc_msgSend_seriesPrivateStyles(self, v10, v11, v12, v13);
 LABEL_26:
         v93 = v39;
-        v94 = objc_msgSend_index(v4, v40, v41, v42, v43);
+        v94 = objc_msgSend_index(tagCopy, v40, v41, v42, v43);
         v92 = objc_msgSend_tsu_rangeCheckedObjectAtIndex_(v93, v95, v96, v97, v98, v94);
 LABEL_27:
 
@@ -3042,12 +3042,12 @@ LABEL_27:
     {
       if (v9 == 1)
       {
-        if (objc_msgSend_index(v4, v10, v11, v12, v13))
+        if (objc_msgSend_index(tagCopy, v10, v11, v12, v13))
         {
           v72 = MEMORY[0x277D81150];
           v73 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v68, v69, v70, v71, "[TSCHChartStyleState styleForSemanticTag:]");
           v78 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v74, v75, v76, v77, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartStyleState.m");
-          v83 = objc_msgSend_index(v4, v79, v80, v81, v82);
+          v83 = objc_msgSend_index(tagCopy, v79, v80, v81, v82);
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v72, v84, v85, v86, v87, v73, v78, 821, 0, "Index mismatch expects 0 got %lu", v83);
 
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v88, v89, v90, v91);
@@ -3059,12 +3059,12 @@ LABEL_27:
 
       if (v9 == 3)
       {
-        if (objc_msgSend_index(v4, v10, v11, v12, v13))
+        if (objc_msgSend_index(tagCopy, v10, v11, v12, v13))
         {
           v18 = MEMORY[0x277D81150];
           v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "[TSCHChartStyleState styleForSemanticTag:]");
           v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, v21, v22, v23, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartStyleState.m");
-          v29 = objc_msgSend_index(v4, v25, v26, v27, v28);
+          v29 = objc_msgSend_index(tagCopy, v25, v26, v27, v28);
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v18, v30, v31, v32, v33, v19, v24, 826, 0, "Index mismatch expects 0 got %lu", v29);
 
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v34, v35, v36, v37);
@@ -3096,7 +3096,7 @@ LABEL_32:
   v132 = MEMORY[0x277D81150];
   v133 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "[TSCHChartStyleState styleForSemanticTag:]");
   v138 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v134, v135, v136, v137, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartStyleState.m");
-  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v132, v139, v140, v141, v142, v133, v138, 860, 0, "Invalid semantic type from tag %@", v4);
+  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v132, v139, v140, v141, v142, v133, v138, 860, 0, "Invalid semantic type from tag %@", tagCopy);
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v143, v144, v145, v146);
   v92 = 0;
@@ -3107,10 +3107,10 @@ LABEL_28:
   return v100;
 }
 
-- (id)styleToUseForSemanticTag:(id)a3
+- (id)styleToUseForSemanticTag:(id)tag
 {
-  v4 = a3;
-  v9 = objc_msgSend_styleForSemanticTag_(self, v5, v6, v7, v8, v4);
+  tagCopy = tag;
+  v9 = objc_msgSend_styleForSemanticTag_(self, v5, v6, v7, v8, tagCopy);
   if (v9)
   {
     v14 = v9;
@@ -3118,8 +3118,8 @@ LABEL_28:
 
   else
   {
-    v15 = objc_msgSend_styleLookupSemanticTagForSemanticTag_(self, v10, v11, v12, v13, v4);
-    if (v15 || (objc_msgSend_fallbackSemanticTagForSemanticTag_(self, v16, v17, v18, v19, v4), (v15 = objc_claimAutoreleasedReturnValue()) != 0))
+    v15 = objc_msgSend_styleLookupSemanticTagForSemanticTag_(self, v10, v11, v12, v13, tagCopy);
+    if (v15 || (objc_msgSend_fallbackSemanticTagForSemanticTag_(self, v16, v17, v18, v19, tagCopy), (v15 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v20 = v15;
       objc_msgSend_styleForSemanticTag_(self, v16, v17, v18, v19, v15);
@@ -3130,7 +3130,7 @@ LABEL_28:
       v41 = MEMORY[0x277D81150];
       v42 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, v17, v18, v19, "[TSCHChartStyleState styleToUseForSemanticTag:]");
       v47 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v43, v44, v45, v46, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartStyleState.m");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v41, v48, v49, v50, v51, v42, v47, 876, 0, "No styleLookupSemanticTag found for tag %@", v4);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v41, v48, v49, v50, v51, v42, v47, 876, 0, "No styleLookupSemanticTag found for tag %@", tagCopy);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v52, v53, v54, v55);
       v20 = 0;
@@ -3143,7 +3143,7 @@ LABEL_28:
       v25 = MEMORY[0x277D81150];
       v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v21, v22, v23, v24, "[TSCHChartStyleState styleToUseForSemanticTag:]");
       v31 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, v28, v29, v30, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartStyleState.m");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v25, v32, v33, v34, v35, v26, v31, 879, 0, "style not found for tag %@", v4);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v25, v32, v33, v34, v35, v26, v31, 879, 0, "style not found for tag %@", tagCopy);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v36, v37, v38, v39);
       v14 = 0;
@@ -3153,11 +3153,11 @@ LABEL_28:
   return v14;
 }
 
-- (void)setStyle:(id)a3 withSemanticTag:(id)a4
+- (void)setStyle:(id)style withSemanticTag:(id)tag
 {
-  v170 = a3;
-  v6 = a4;
-  switch(objc_msgSend_type(v6, v7, v8, v9, v10))
+  styleCopy = style;
+  tagCopy = tag;
+  switch(objc_msgSend_type(tagCopy, v7, v8, v9, v10))
   {
     case 0u:
       v107 = MEMORY[0x277D81150];
@@ -3166,7 +3166,7 @@ LABEL_28:
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v107, v112, v113, v114, v115, v16, v21, 929, 0, "unknown or unimplemented swap type");
       goto LABEL_3;
     case 1u:
-      if (objc_msgSend_index(v6, v11, v12, v13, v14))
+      if (objc_msgSend_index(tagCopy, v11, v12, v13, v14))
       {
         v120 = MEMORY[0x277D81150];
         v121 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v116, v117, v118, v119, "[TSCHChartStyleState setStyle:withSemanticTag:]");
@@ -3195,7 +3195,7 @@ LABEL_3:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27, v28, v29);
       break;
     case 3u:
-      if (objc_msgSend_index(v6, v11, v12, v13, v14))
+      if (objc_msgSend_index(tagCopy, v11, v12, v13, v14))
       {
         v151 = MEMORY[0x277D81150];
         v152 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v147, v148, v149, v150, "[TSCHChartStyleState setStyle:withSemanticTag:]");
@@ -3228,7 +3228,7 @@ LABEL_3:
       objc_opt_class();
       v35 = TSUCheckedDynamicCast();
       v71 = objc_msgSend_seriesPrivateStyles(self, v67, v68, v69, v70);
-      v76 = objc_msgSend_index(v6, v72, v73, v74, v75);
+      v76 = objc_msgSend_index(tagCopy, v72, v73, v74, v75);
       v77 = v35;
       v78 = v71;
       v79 = 1;
@@ -3239,7 +3239,7 @@ LABEL_3:
       v62 = objc_msgSend_paragraphStyles(self, v139, v140, v141, v142);
 LABEL_17:
       v71 = v62;
-      v76 = objc_msgSend_index(v6, v63, v64, v65, v66);
+      v76 = objc_msgSend_index(tagCopy, v63, v64, v65, v66);
       v77 = v35;
       v78 = v71;
       v79 = 0;
@@ -3248,9 +3248,9 @@ LABEL_18:
 
       goto LABEL_19;
     case 0xDu:
-      v30 = objc_msgSend_index(v6, v11, v12, v13, v14);
+      v30 = objc_msgSend_index(tagCopy, v11, v12, v13, v14);
       v35 = objc_msgSend_axisIDFromStyleSwapOrStyleOwnerIndex_(TSCHReferenceLine, v31, v32, v33, v34, v30);
-      v40 = objc_msgSend_index(v6, v36, v37, v38, v39);
+      v40 = objc_msgSend_index(tagCopy, v36, v37, v38, v39);
       v45 = objc_msgSend_refLineIndexFromStyleSwapOrStyleOwnerIndex_(TSCHReferenceLine, v41, v42, v43, v44, v40);
       objc_opt_class();
       v50 = objc_msgSend_referenceLineStyles(self, v46, v47, v48, v49);
@@ -3258,10 +3258,10 @@ LABEL_18:
       v56 = objc_msgSend_tsu_objectForKey_withDefaultOfClass_(v50, v52, v53, v54, v55, v35, v51);
       v57 = TSUCheckedDynamicCast();
 
-      sub_27626B5EC(v170, v57, v45, 1);
+      sub_27626B5EC(styleCopy, v57, v45, 1);
       goto LABEL_19;
     case 0xFu:
-      if (objc_msgSend_index(v6, v11, v12, v13, v14))
+      if (objc_msgSend_index(tagCopy, v11, v12, v13, v14))
       {
         v88 = MEMORY[0x277D81150];
         v89 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v84, v85, v86, v87, "[TSCHChartStyleState setStyle:withSemanticTag:]");
@@ -3282,11 +3282,11 @@ LABEL_19:
   }
 }
 
-- (void)replaceStylesUsingBlock:(id)a3
+- (void)replaceStylesUsingBlock:(id)block
 {
   v126 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, v6, v7, v8, "[TSCHChartStyleState replaceStylesUsingBlock:]");
@@ -3303,13 +3303,13 @@ LABEL_19:
   v123 = 0u;
   v28 = objc_msgSend_countByEnumeratingWithState_objects_count_(v24, v25, 0.0, v26, v27, &v120, v125, 16);
   v113 = v24;
-  v114 = self;
+  selfCopy = self;
   if (v28)
   {
     v33 = v28;
     v34 = *v121;
-    v35 = (v5 + 2);
-    v112 = v5;
+    v35 = (blockCopy + 2);
+    v112 = blockCopy;
     do
     {
       for (i = 0; i != v33; ++i)
@@ -3324,7 +3324,7 @@ LABEL_19:
         v42 = objc_msgSend_objectForKeyedSubscript_(v24, v38, v39, v40, v41, v37);
         v43 = TSUCheckedDynamicCast();
 
-        v45 = v5[2](v5, v43);
+        v45 = blockCopy[2](blockCopy, v43);
         if (!v45)
         {
           v49 = v35;
@@ -3338,9 +3338,9 @@ LABEL_19:
           v35 = v49;
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v59, v60, v61, v62, v63, v53, v58, 941, 0, "invalid nil value for '%{public}s'", "replacement");
 
-          self = v114;
+          self = selfCopy;
           v33 = v52;
-          v5 = v112;
+          blockCopy = v112;
           v24 = v113;
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v64, v65, v66, v67);
         }
@@ -3374,7 +3374,7 @@ LABEL_19:
           objc_enumerationMutation(obj);
         }
 
-        v85 = v5[2](v5, *(*(&v116 + 1) + 8 * j));
+        v85 = blockCopy[2](blockCopy, *(*(&v116 + 1) + 8 * j));
         if (!v85)
         {
           v89 = MEMORY[0x277D81150];
@@ -3394,19 +3394,19 @@ LABEL_19:
     while (v81);
   }
 
-  objc_msgSend_setParagraphStyles_(v114, v108, v109, v110, v111, v72);
+  objc_msgSend_setParagraphStyles_(selfCopy, v108, v109, v110, v111, v72);
 }
 
-- (id)fallbackSemanticTagForSemanticTag:(id)a3
+- (id)fallbackSemanticTagForSemanticTag:(id)tag
 {
-  v4 = a3;
-  v9 = objc_msgSend_type(v4, v5, v6, v7, v8);
+  tagCopy = tag;
+  v9 = objc_msgSend_type(tagCopy, v5, v6, v7, v8);
   if (v9 > 8)
   {
     if ((v9 - 9) < 2)
     {
-      v14 = objc_msgSend_type(v4, v10, v11, v12, v13);
-      v19 = objc_msgSend_index(v4, v15, v16, v17, v18);
+      v14 = objc_msgSend_type(tagCopy, v10, v11, v12, v13);
+      v19 = objc_msgSend_index(tagCopy, v15, v16, v17, v18);
       v24 = objc_msgSend_seriesThemeStyles(self, v20, v21, v22, v23);
       v29 = objc_msgSend_count(v24, v25, v26, v27, v28);
       v34 = objc_msgSend_styleSemanticTagWithType_index_(TSCHStyleSemanticTag, v30, v31, v32, v33, v14, v19 % v29);
@@ -3425,14 +3425,14 @@ LABEL_19:
 
   if (v9 == 5)
   {
-    v35 = objc_msgSend_type(v4, v10, v11, v12, v13);
+    v35 = objc_msgSend_type(tagCopy, v10, v11, v12, v13);
     v40 = objc_msgSend_valueAxisStyles(self, v45, v46, v47, v48);
     goto LABEL_10;
   }
 
   if (v9 == 7)
   {
-    v35 = objc_msgSend_type(v4, v10, v11, v12, v13);
+    v35 = objc_msgSend_type(tagCopy, v10, v11, v12, v13);
     v40 = objc_msgSend_categoryAxisStyles(self, v36, v37, v38, v39);
 LABEL_10:
     v49 = v40;
@@ -3455,13 +3455,13 @@ LABEL_12:
   return v34;
 }
 
-- (id)fallbackSemanticUsageForSemanticUsage:(id)a3
+- (id)fallbackSemanticUsageForSemanticUsage:(id)usage
 {
-  v4 = a3;
-  v9 = objc_msgSend_semanticTag(v4, v5, v6, v7, v8);
+  usageCopy = usage;
+  v9 = objc_msgSend_semanticTag(usageCopy, v5, v6, v7, v8);
   v14 = objc_msgSend_fallbackSemanticTagForSemanticTag_(self, v10, v11, v12, v13, v9);
 
-  v19 = objc_msgSend_property(v4, v15, v16, v17, v18);
+  v19 = objc_msgSend_property(usageCopy, v15, v16, v17, v18);
   v24 = objc_msgSend_pairWithSemanticTag_property_(TSCHSemanticTagAndPropertyPair, v20, v21, v22, v23, v14, v19);
 
   return v24;

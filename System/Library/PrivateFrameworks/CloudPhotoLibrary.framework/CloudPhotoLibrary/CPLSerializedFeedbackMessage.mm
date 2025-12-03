@@ -1,8 +1,8 @@
 @interface CPLSerializedFeedbackMessage
-+ (id)messagesForPlistRepresentation:(id)a3;
-+ (id)plistRepresentationForMessages:(id)a3;
-- (CPLSerializedFeedbackMessage)initWithDictionaryRepresentation:(id)a3;
-- (CPLSerializedFeedbackMessage)initWithMessage:(id)a3;
++ (id)messagesForPlistRepresentation:(id)representation;
++ (id)plistRepresentationForMessages:(id)messages;
+- (CPLSerializedFeedbackMessage)initWithDictionaryRepresentation:(id)representation;
+- (CPLSerializedFeedbackMessage)initWithMessage:(id)message;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
@@ -12,18 +12,18 @@
 - (id)description
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@ [", objc_opt_class()];
-  v4 = [(CPLServerFeedbackMessage *)self->_serverMessage keysAndValuesCount];
-  if (v4)
+  keysAndValuesCount = [(CPLServerFeedbackMessage *)self->_serverMessage keysAndValuesCount];
+  if (keysAndValuesCount)
   {
-    v5 = v4;
+    v5 = keysAndValuesCount;
     v6 = 0;
     v7 = @"%@='%@'";
     do
     {
       v8 = [(CPLServerFeedbackMessage *)self->_serverMessage keysAndValuesAtIndex:v6];
       v9 = [v8 key];
-      v10 = [v8 value];
-      [v3 appendFormat:v7, v9, v10];
+      value = [v8 value];
+      [v3 appendFormat:v7, v9, value];
 
       ++v6;
       v7 = @", %@='%@'";
@@ -41,11 +41,11 @@
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v8[0] = @"uuid";
-  v3 = [(NSUUID *)self->_uuid UUIDString];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
   v8[1] = @"msg";
-  v9[0] = v3;
-  v4 = [(CPLServerFeedbackMessage *)self->_serverMessage data];
-  v9[1] = v4;
+  v9[0] = uUIDString;
+  data = [(CPLServerFeedbackMessage *)self->_serverMessage data];
+  v9[1] = data;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x1E69E9840];
@@ -53,14 +53,14 @@
   return v5;
 }
 
-- (CPLSerializedFeedbackMessage)initWithDictionaryRepresentation:(id)a3
+- (CPLSerializedFeedbackMessage)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 objectForKeyedSubscript:@"uuid"];
-    v6 = [v4 objectForKeyedSubscript:@"msg"];
+    v5 = [representationCopy objectForKeyedSubscript:@"uuid"];
+    v6 = [representationCopy objectForKeyedSubscript:@"msg"];
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
@@ -81,87 +81,87 @@
             if (v13)
             {
               objc_storeStrong(&v13->_uuid, v7);
-              v15 = [v10 value];
+              value = [v10 value];
               feedbackType = v14->_feedbackType;
-              v14->_feedbackType = v15;
+              v14->_feedbackType = value;
 
               objc_storeStrong(&v14->_serverMessage, v9);
             }
 
             self = v14;
-            v17 = self;
+            selfCopy = self;
           }
 
           else
           {
-            v17 = 0;
+            selfCopy = 0;
           }
         }
 
         else
         {
-          v17 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v17 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v17 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (CPLSerializedFeedbackMessage)initWithMessage:(id)a3
+- (CPLSerializedFeedbackMessage)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v14.receiver = self;
   v14.super_class = CPLSerializedFeedbackMessage;
   v5 = [(CPLSerializedFeedbackMessage *)&v14 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     uuid = v5->_uuid;
-    v5->_uuid = v6;
+    v5->_uuid = uUID;
 
-    v8 = [v4 feedbackType];
-    v9 = [v8 copy];
+    feedbackType = [messageCopy feedbackType];
+    v9 = [feedbackType copy];
     feedbackType = v5->_feedbackType;
     v5->_feedbackType = v9;
 
-    v11 = [v4 serverMessage];
+    serverMessage = [messageCopy serverMessage];
     serverMessage = v5->_serverMessage;
-    v5->_serverMessage = v11;
+    v5->_serverMessage = serverMessage;
   }
 
   return v5;
 }
 
-+ (id)messagesForPlistRepresentation:(id)a3
++ (id)messagesForPlistRepresentation:(id)representation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    array = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(representationCopy, "count")}];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = v3;
+    v5 = representationCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -181,7 +181,7 @@
           v12 = [(CPLSerializedFeedbackMessage *)v11 initWithDictionaryRepresentation:v10, v15];
           if (v12)
           {
-            [v4 addObject:v12];
+            [array addObject:v12];
           }
         }
 
@@ -194,24 +194,24 @@
 
   else
   {
-    v4 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return array;
 }
 
-+ (id)plistRepresentationForMessages:(id)a3
++ (id)plistRepresentationForMessages:(id)messages
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  messagesCopy = messages;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(messagesCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = messagesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -226,8 +226,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-        [v4 addObject:v10];
+        dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+        [v4 addObject:dictionaryRepresentation];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];

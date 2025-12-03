@@ -1,41 +1,41 @@
 @interface VOTGesturedTextInputManager
-- (BOOL)_isInHomeScreen:(id)a3;
-- (BOOL)_performWordBackspaceForElement:(id)a3;
-- (BOOL)_processRawInputEvent:(id)a3 forElement:(id)a4 withAttributes:(id)a5;
-- (BOOL)_processRotorEvent:(id)a3;
-- (BOOL)_processSearchEvent:(id)a3 forElement:(id)a4;
-- (BOOL)_processWebRotorEvent:(id)a3;
-- (BOOL)isBackspaceEvent:(id)a3;
-- (BOOL)isNextBrailleTableEvent:(id)a3;
-- (BOOL)isNextKeyboardLanguageEvent:(id)a3;
-- (BOOL)isNextSuggestionEvent:(id)a3;
-- (BOOL)isPreviousSuggestionEvent:(id)a3;
-- (BOOL)isReturnKeyEvent:(id)a3;
-- (BOOL)isSelectItemEvent:(id)a3;
-- (BOOL)isSpaceEvent:(id)a3;
-- (BOOL)isWordBackspaceEvent:(id)a3;
-- (BOOL)processEvent:(id)a3;
-- (BOOL)processTapWithFingerCount:(unint64_t)a3;
+- (BOOL)_isInHomeScreen:(id)screen;
+- (BOOL)_performWordBackspaceForElement:(id)element;
+- (BOOL)_processRawInputEvent:(id)event forElement:(id)element withAttributes:(id)attributes;
+- (BOOL)_processRotorEvent:(id)event;
+- (BOOL)_processSearchEvent:(id)event forElement:(id)element;
+- (BOOL)_processWebRotorEvent:(id)event;
+- (BOOL)isBackspaceEvent:(id)event;
+- (BOOL)isNextBrailleTableEvent:(id)event;
+- (BOOL)isNextKeyboardLanguageEvent:(id)event;
+- (BOOL)isNextSuggestionEvent:(id)event;
+- (BOOL)isPreviousSuggestionEvent:(id)event;
+- (BOOL)isReturnKeyEvent:(id)event;
+- (BOOL)isSelectItemEvent:(id)event;
+- (BOOL)isSpaceEvent:(id)event;
+- (BOOL)isWordBackspaceEvent:(id)event;
+- (BOOL)processEvent:(id)event;
+- (BOOL)processTapWithFingerCount:(unint64_t)count;
 - (VOTGesturedTextInputManager)init;
 - (VOTGesturedTextInputManagerDelegate)delegate;
 - (id)_stringByDeletingFromCurrentInputStringIfNeeded;
 - (id)currentElementAttributes;
-- (id)nameSearcherEntriesPassingSearchFrom:(id)a3;
+- (id)nameSearcherEntriesPassingSearchFrom:(id)from;
 - (int64_t)valueChangeOriginator;
-- (unint64_t)_numberOfCharactersToDeleteStartingAtIndex:(unint64_t)a3 toDesiredLength:(unint64_t)a4 fromString:(id)a5;
-- (unint64_t)_numberOfCharactersToDeleteToDesiredLength:(unint64_t)a3 fromString:(id)a4;
+- (unint64_t)_numberOfCharactersToDeleteStartingAtIndex:(unint64_t)index toDesiredLength:(unint64_t)length fromString:(id)string;
+- (unint64_t)_numberOfCharactersToDeleteToDesiredLength:(unint64_t)length fromString:(id)string;
 - (void)_deleteFromCurrentInputStringIfNeeded;
-- (void)_prepareNameSearcherForElement:(id)a3;
+- (void)_prepareNameSearcherForElement:(id)element;
 - (void)_updateLocalizedResources;
-- (void)appendString:(id)a3;
-- (void)applyNextSuggestionToElement:(id)a3;
-- (void)applyPreviousSuggestionToElement:(id)a3;
-- (void)inputSpaceForElement:(id)a3;
-- (void)itemSource:(id)a3 didFilter:(id)a4 didSwitchFocus:(id)a5 focusedValue:(id)a6;
-- (void)itemSource:(id)a3 didSelect:(id)a4;
-- (void)pressReturnKeyForElement:(id)a3;
-- (void)sendCarriageReturnForElement:(id)a3;
-- (void)updateWithString:(id)a3;
+- (void)appendString:(id)string;
+- (void)applyNextSuggestionToElement:(id)element;
+- (void)applyPreviousSuggestionToElement:(id)element;
+- (void)inputSpaceForElement:(id)element;
+- (void)itemSource:(id)source didFilter:(id)filter didSwitchFocus:(id)focus focusedValue:(id)value;
+- (void)itemSource:(id)source didSelect:(id)select;
+- (void)pressReturnKeyForElement:(id)element;
+- (void)sendCarriageReturnForElement:(id)element;
+- (void)updateWithString:(id)string;
 @end
 
 @implementation VOTGesturedTextInputManager
@@ -56,56 +56,56 @@
   return v3;
 }
 
-- (BOOL)processTapWithFingerCount:(unint64_t)a3
+- (BOOL)processTapWithFingerCount:(unint64_t)count
 {
-  v3 = [(VOTGesturedTextInputManager *)self nameSearcherMonitorElement];
-  if ([v3 doesHaveTraits:kAXLaunchIconTrait])
+  nameSearcherMonitorElement = [(VOTGesturedTextInputManager *)self nameSearcherMonitorElement];
+  if ([nameSearcherMonitorElement doesHaveTraits:kAXLaunchIconTrait])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 doesHaveTraits:kAXFolderIconTrait] ^ 1;
+    v4 = [nameSearcherMonitorElement doesHaveTraits:kAXFolderIconTrait] ^ 1;
   }
 
   return v4;
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v6 = a3;
-  if ([v6 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v4 = [(VOTGesturedTextInputManager *)self currentInputString];
-    v5 = [v4 stringByAppendingString:v6];
+    currentInputString = [(VOTGesturedTextInputManager *)self currentInputString];
+    v5 = [currentInputString stringByAppendingString:stringCopy];
     [(VOTGesturedTextInputManager *)self updateWithString:v5];
   }
 }
 
-- (void)updateWithString:(id)a3
+- (void)updateWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = VOTLogHandwriting();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = stringCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Update string: %@", buf, 0xCu);
   }
 
   v6 = +[VOTUserEventManager sharedInstance];
   [v6 userEventOccurred];
 
-  v7 = [(VOTGesturedTextInputManager *)self delegate];
+  delegate = [(VOTGesturedTextInputManager *)self delegate];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100055260;
   v9[3] = &unk_1001C8BF8;
-  v10 = v4;
-  v11 = self;
-  v8 = v4;
-  [v7 gesturedTextInputManager:self accessCurrentGesturedTextInputElement:v9];
+  v10 = stringCopy;
+  selfCopy = self;
+  v8 = stringCopy;
+  [delegate gesturedTextInputManager:self accessCurrentGesturedTextInputElement:v9];
 }
 
 - (id)currentElementAttributes
@@ -116,13 +116,13 @@
   v10 = sub_100055880;
   v11 = sub_100055890;
   v12 = 0;
-  v3 = [(VOTGesturedTextInputManager *)self delegate];
+  delegate = [(VOTGesturedTextInputManager *)self delegate];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100055898;
   v6[3] = &unk_1001C8C20;
   v6[4] = &v7;
-  [v3 gesturedTextInputManager:self accessCurrentGesturedTextInputElement:v6];
+  [delegate gesturedTextInputManager:self accessCurrentGesturedTextInputElement:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -130,22 +130,22 @@
   return v4;
 }
 
-- (BOOL)processEvent:(id)a3
+- (BOOL)processEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v5 = [v4 command];
-  if ([v5 isEqualToString:kVOTEventCommandSearchRotorLeft])
+  command = [eventCopy command];
+  if ([command isEqualToString:kVOTEventCommandSearchRotorLeft])
   {
 
     goto LABEL_4;
   }
 
-  v6 = [v4 command];
-  v7 = [v6 isEqualToString:kVOTEventCommandSearchRotorRight];
+  command2 = [eventCopy command];
+  v7 = [command2 isEqualToString:kVOTEventCommandSearchRotorRight];
 
   if (v7)
   {
@@ -158,27 +158,27 @@ LABEL_4:
     goto LABEL_10;
   }
 
-  v8 = [v4 command];
-  if ([v8 isEqualToString:kVOTEventCommandEscape])
+  command3 = [eventCopy command];
+  if ([command3 isEqualToString:kVOTEventCommandEscape])
   {
   }
 
   else
   {
-    v9 = [v4 command];
-    v10 = [v9 isEqualToString:kVOTEventCommandBSIExit];
+    command4 = [eventCopy command];
+    v10 = [command4 isEqualToString:kVOTEventCommandBSIExit];
 
     if ((v10 & 1) == 0)
     {
-      v11 = [(VOTGesturedTextInputManager *)self delegate];
+      delegate = [(VOTGesturedTextInputManager *)self delegate];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_100055AC0;
       v14[3] = &unk_1001C8C48;
       v14[4] = self;
-      v15 = v4;
+      v15 = eventCopy;
       v16 = &v17;
-      [v11 gesturedTextInputManager:self accessCurrentGesturedTextInputElement:v14];
+      [delegate gesturedTextInputManager:self accessCurrentGesturedTextInputElement:v14];
     }
   }
 
@@ -189,39 +189,39 @@ LABEL_10:
   return v12;
 }
 
-- (void)inputSpaceForElement:(id)a3
+- (void)inputSpaceForElement:(id)element
 {
-  v4 = a3;
-  [v4 insertText:@" " source:{-[VOTGesturedTextInputManager valueChangeOriginator](self, "valueChangeOriginator")}];
+  elementCopy = element;
+  [elementCopy insertText:@" " source:{-[VOTGesturedTextInputManager valueChangeOriginator](self, "valueChangeOriginator")}];
 
   [(VOTGesturedTextInputManager *)self clearCurrentString];
 }
 
-- (void)pressReturnKeyForElement:(id)a3
+- (void)pressReturnKeyForElement:(id)element
 {
-  [a3 activateKeyboardReturnKey];
+  [element activateKeyboardReturnKey];
 
   [(VOTGesturedTextInputManager *)self clearCurrentString];
 }
 
-- (void)sendCarriageReturnForElement:(id)a3
+- (void)sendCarriageReturnForElement:(id)element
 {
-  [a3 handwritingSendCarriageReturn];
+  [element handwritingSendCarriageReturn];
 
   [(VOTGesturedTextInputManager *)self clearCurrentString];
 }
 
-- (BOOL)_processWebRotorEvent:(id)a3
+- (BOOL)_processWebRotorEvent:(id)event
 {
-  v4 = a3;
-  if ([(VOTGesturedTextInputManager *)self isNextSuggestionEvent:v4])
+  eventCopy = event;
+  if ([(VOTGesturedTextInputManager *)self isNextSuggestionEvent:eventCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    if (![(VOTGesturedTextInputManager *)self isPreviousSuggestionEvent:v4])
+    if (![(VOTGesturedTextInputManager *)self isPreviousSuggestionEvent:eventCopy])
     {
       v7 = 0;
       goto LABEL_7;
@@ -230,8 +230,8 @@ LABEL_10:
     v5 = 2;
   }
 
-  v6 = [(VOTGesturedTextInputManager *)self delegate];
-  [v6 gesturedTextInputManager:self moveToElementMatchingRotorType:-[VOTGesturedTextInputManager rotorType](self inDirection:{"rotorType"), v5}];
+  delegate = [(VOTGesturedTextInputManager *)self delegate];
+  [delegate gesturedTextInputManager:self moveToElementMatchingRotorType:-[VOTGesturedTextInputManager rotorType](self inDirection:{"rotorType"), v5}];
 
   v7 = 1;
 LABEL_7:
@@ -241,27 +241,27 @@ LABEL_7:
 
 - (void)_deleteFromCurrentInputStringIfNeeded
 {
-  v3 = [(VOTGesturedTextInputManager *)self currentInputString];
-  v4 = [v3 length];
+  currentInputString = [(VOTGesturedTextInputManager *)self currentInputString];
+  v4 = [currentInputString length];
 
   if (v4)
   {
-    v5 = [(VOTGesturedTextInputManager *)self _stringByDeletingFromCurrentInputStringIfNeeded];
-    [(VOTGesturedTextInputManager *)self setCurrentInputString:v5];
+    _stringByDeletingFromCurrentInputStringIfNeeded = [(VOTGesturedTextInputManager *)self _stringByDeletingFromCurrentInputStringIfNeeded];
+    [(VOTGesturedTextInputManager *)self setCurrentInputString:_stringByDeletingFromCurrentInputStringIfNeeded];
   }
 }
 
 - (id)_stringByDeletingFromCurrentInputStringIfNeeded
 {
-  v3 = [(VOTGesturedTextInputManager *)self currentInputString];
-  v4 = [v3 length];
+  currentInputString = [(VOTGesturedTextInputManager *)self currentInputString];
+  v4 = [currentInputString length];
 
   if (v4)
   {
-    v5 = [(VOTGesturedTextInputManager *)self currentInputString];
-    v6 = [(VOTGesturedTextInputManager *)self currentInputString];
-    v7 = [(VOTGesturedTextInputManager *)self currentInputString];
-    v8 = [v5 substringToIndex:{objc_msgSend(v6, "rangeOfComposedCharacterSequenceAtIndex:", objc_msgSend(v7, "length") - 1)}];
+    currentInputString2 = [(VOTGesturedTextInputManager *)self currentInputString];
+    currentInputString3 = [(VOTGesturedTextInputManager *)self currentInputString];
+    currentInputString4 = [(VOTGesturedTextInputManager *)self currentInputString];
+    v8 = [currentInputString2 substringToIndex:{objc_msgSend(currentInputString3, "rangeOfComposedCharacterSequenceAtIndex:", objc_msgSend(currentInputString4, "length") - 1)}];
   }
 
   else
@@ -272,32 +272,32 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)_performWordBackspaceForElement:(id)a3
+- (BOOL)_performWordBackspaceForElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 selectedTextRange];
-  if (v5 == 0x7FFFFFFF || v6 != 0)
+  elementCopy = element;
+  selectedTextRange = [elementCopy selectedTextRange];
+  if (selectedTextRange == 0x7FFFFFFF || v6 != 0)
   {
     goto LABEL_10;
   }
 
-  v8 = v5;
-  [v4 updateValue];
-  v9 = [v4 value];
-  v10 = [v9 ax_wordFromPosition:v8 inDirection:1];
+  v8 = selectedTextRange;
+  [elementCopy updateValue];
+  value = [elementCopy value];
+  v10 = [value ax_wordFromPosition:v8 inDirection:1];
   if (v10 == 0x7FFFFFFF || !v11)
   {
 
 LABEL_10:
-    v9 = +[VOTOutputManager outputManager];
+    value = +[VOTOutputManager outputManager];
     v13 = +[VOSOutputEvent BoundaryEncountered];
-    [v9 sendEvent:v13];
+    [value sendEvent:v13];
 
     v12 = 0;
     goto LABEL_11;
   }
 
-  [v4 replaceCharactersAtCursor:-[VOTGesturedTextInputManager _numberOfCharactersToDeleteStartingAtIndex:toDesiredLength:fromString:](self withString:"_numberOfCharactersToDeleteStartingAtIndex:toDesiredLength:fromString:" source:{v8, v10, v9), &stru_1001CBF90, -[VOTGesturedTextInputManager valueChangeOriginator](self, "valueChangeOriginator")}];
+  [elementCopy replaceCharactersAtCursor:-[VOTGesturedTextInputManager _numberOfCharactersToDeleteStartingAtIndex:toDesiredLength:fromString:](self withString:"_numberOfCharactersToDeleteStartingAtIndex:toDesiredLength:fromString:" source:{v8, v10, value), &stru_1001CBF90, -[VOTGesturedTextInputManager valueChangeOriginator](self, "valueChangeOriginator")}];
   [(VOTGesturedTextInputManager *)self clearCurrentString];
   v12 = 1;
 LABEL_11:
@@ -305,27 +305,27 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)_processRawInputEvent:(id)a3 forElement:(id)a4 withAttributes:(id)a5
+- (BOOL)_processRawInputEvent:(id)event forElement:(id)element withAttributes:(id)attributes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(VOTGesturedTextInputManager *)self isReturnKeyEvent:v8])
+  eventCopy = event;
+  elementCopy = element;
+  attributesCopy = attributes;
+  if ([(VOTGesturedTextInputManager *)self isReturnKeyEvent:eventCopy])
   {
-    [(VOTGesturedTextInputManager *)self pressReturnKeyForElement:v9];
+    [(VOTGesturedTextInputManager *)self pressReturnKeyForElement:elementCopy];
   }
 
   else
   {
-    if (![(VOTGesturedTextInputManager *)self isSpaceEvent:v8])
+    if (![(VOTGesturedTextInputManager *)self isSpaceEvent:eventCopy])
     {
-      if ([(VOTGesturedTextInputManager *)self isBackspaceEvent:v8])
+      if ([(VOTGesturedTextInputManager *)self isBackspaceEvent:eventCopy])
       {
         if (![(VOTGesturedTextInputManager *)self performCustomBackspace])
         {
-          if ([v10 canDeleteCharacter])
+          if ([attributesCopy canDeleteCharacter])
           {
-            [v9 deleteCharacterAtCursorWithSource:{-[VOTGesturedTextInputManager valueChangeOriginator](self, "valueChangeOriginator")}];
+            [elementCopy deleteCharacterAtCursorWithSource:{-[VOTGesturedTextInputManager valueChangeOriginator](self, "valueChangeOriginator")}];
             [(VOTGesturedTextInputManager *)self _deleteFromCurrentInputStringIfNeeded];
             [(VOTGesturedTextInputManager *)self didInputBackspace];
           }
@@ -341,9 +341,9 @@ LABEL_11:
         goto LABEL_5;
       }
 
-      if ([(VOTGesturedTextInputManager *)self isWordBackspaceEvent:v8])
+      if ([(VOTGesturedTextInputManager *)self isWordBackspaceEvent:eventCopy])
       {
-        if ([(VOTGesturedTextInputManager *)self performCustomWordBackspace]|| [(VOTGesturedTextInputManager *)self _performWordBackspaceForElement:v9])
+        if ([(VOTGesturedTextInputManager *)self performCustomWordBackspace]|| [(VOTGesturedTextInputManager *)self _performWordBackspaceForElement:elementCopy])
         {
           [(VOTGesturedTextInputManager *)self didInputWordBackspace];
           goto LABEL_5;
@@ -352,49 +352,49 @@ LABEL_11:
 
       else
       {
-        if ([(VOTGesturedTextInputManager *)self isPreviousSuggestionEvent:v8])
+        if ([(VOTGesturedTextInputManager *)self isPreviousSuggestionEvent:eventCopy])
         {
-          [(VOTGesturedTextInputManager *)self applyPreviousSuggestionToElement:v9];
+          [(VOTGesturedTextInputManager *)self applyPreviousSuggestionToElement:elementCopy];
           goto LABEL_5;
         }
 
-        if ([(VOTGesturedTextInputManager *)self isNextSuggestionEvent:v8])
+        if ([(VOTGesturedTextInputManager *)self isNextSuggestionEvent:eventCopy])
         {
-          [(VOTGesturedTextInputManager *)self applyNextSuggestionToElement:v9];
+          [(VOTGesturedTextInputManager *)self applyNextSuggestionToElement:elementCopy];
           goto LABEL_5;
         }
 
-        if ([(VOTGesturedTextInputManager *)self isNextKeyboardLanguageEvent:v8])
+        if ([(VOTGesturedTextInputManager *)self isNextKeyboardLanguageEvent:eventCopy])
         {
-          v11 = [(VOTGesturedTextInputManager *)self performNextKeyboardLanguage];
+          performNextKeyboardLanguage = [(VOTGesturedTextInputManager *)self performNextKeyboardLanguage];
           goto LABEL_6;
         }
       }
 
-      v11 = 0;
+      performNextKeyboardLanguage = 0;
       goto LABEL_6;
     }
 
-    [(VOTGesturedTextInputManager *)self inputSpaceForElement:v9];
+    [(VOTGesturedTextInputManager *)self inputSpaceForElement:elementCopy];
   }
 
 LABEL_5:
-  v11 = 1;
+  performNextKeyboardLanguage = 1;
 LABEL_6:
 
-  return v11;
+  return performNextKeyboardLanguage;
 }
 
-- (void)_prepareNameSearcherForElement:(id)a3
+- (void)_prepareNameSearcherForElement:(id)element
 {
-  v9 = a3;
-  v4 = [(VOTGesturedTextInputManager *)self nameSearcher];
+  elementCopy = element;
+  nameSearcher = [(VOTGesturedTextInputManager *)self nameSearcher];
 
-  if (!v4)
+  if (!nameSearcher)
   {
-    if ([(VOTGesturedTextInputManager *)self _isInHomeScreen:v9])
+    if ([(VOTGesturedTextInputManager *)self _isInHomeScreen:elementCopy])
     {
-      v5 = -[VOTNameSearcherAppSource initWithLaunchContext:]([VOTNameSearcherAppSource alloc], "initWithLaunchContext:", [v9 isInAppSwitcher]);
+      v5 = -[VOTNameSearcherAppSource initWithLaunchContext:]([VOTNameSearcherAppSource alloc], "initWithLaunchContext:", [elementCopy isInAppSwitcher]);
       v6 = [[VOTNameSearcher alloc] initWithDelegate:self itemSource:v5 filter:self];
       [(VOTGesturedTextInputManager *)self setNameSearcher:v6];
 
@@ -403,7 +403,7 @@ LABEL_6:
 
     else
     {
-      v5 = [[VOTNameSearcherElementSource alloc] initWithElement:v9];
+      v5 = [[VOTNameSearcherElementSource alloc] initWithElement:elementCopy];
       v7 = [[VOTNameSearcher alloc] initWithDelegate:self itemSource:v5 filter:self];
       [(VOTGesturedTextInputManager *)self setNameSearcher:v7];
 
@@ -414,55 +414,55 @@ LABEL_6:
   }
 }
 
-- (BOOL)_isInHomeScreen:(id)a3
+- (BOOL)_isInHomeScreen:(id)screen
 {
-  v3 = a3;
-  v4 = [v3 application];
-  if ([v4 isSpringBoard])
+  screenCopy = screen;
+  application = [screenCopy application];
+  if ([application isSpringBoard])
   {
-    v5 = 1;
+    isSpringBoard = 1;
   }
 
   else
   {
-    v6 = [v3 immediateRemoteParent];
-    v7 = [v6 application];
-    v5 = [v7 isSpringBoard];
+    immediateRemoteParent = [screenCopy immediateRemoteParent];
+    application2 = [immediateRemoteParent application];
+    isSpringBoard = [application2 isSpringBoard];
   }
 
   v8 = +[AXSpringBoardServer server];
   v9 = [v8 isScreenLockedWithPasscode:0];
 
-  return v5 & (v9 ^ 1);
+  return isSpringBoard & (v9 ^ 1);
 }
 
-- (BOOL)_processSearchEvent:(id)a3 forElement:(id)a4
+- (BOOL)_processSearchEvent:(id)event forElement:(id)element
 {
-  v5 = a3;
-  if (![(VOTGesturedTextInputManager *)self isNextSuggestionEvent:v5])
+  eventCopy = event;
+  if (![(VOTGesturedTextInputManager *)self isNextSuggestionEvent:eventCopy])
   {
-    if ([(VOTGesturedTextInputManager *)self isPreviousSuggestionEvent:v5])
+    if ([(VOTGesturedTextInputManager *)self isPreviousSuggestionEvent:eventCopy])
     {
-      v6 = [(VOTGesturedTextInputManager *)self nameSearcher];
-      [v6 focusOnPreviousMatchingItem];
+      nameSearcher = [(VOTGesturedTextInputManager *)self nameSearcher];
+      [nameSearcher focusOnPreviousMatchingItem];
       goto LABEL_5;
     }
 
-    if ([(VOTGesturedTextInputManager *)self isSpaceEvent:v5])
+    if ([(VOTGesturedTextInputManager *)self isSpaceEvent:eventCopy])
     {
       [(VOTGesturedTextInputManager *)self flushCharacterBuffer];
       goto LABEL_6;
     }
 
-    if ([(VOTGesturedTextInputManager *)self isBackspaceEvent:v5])
+    if ([(VOTGesturedTextInputManager *)self isBackspaceEvent:eventCopy])
     {
       if (![(VOTGesturedTextInputManager *)self performCustomBackspace])
       {
-        v9 = [(VOTGesturedTextInputManager *)self _stringByDeletingFromCurrentInputStringIfNeeded];
-        [(VOTGesturedTextInputManager *)self setPendingInputString:v9];
+        _stringByDeletingFromCurrentInputStringIfNeeded = [(VOTGesturedTextInputManager *)self _stringByDeletingFromCurrentInputStringIfNeeded];
+        [(VOTGesturedTextInputManager *)self setPendingInputString:_stringByDeletingFromCurrentInputStringIfNeeded];
 
-        v10 = [(VOTGesturedTextInputManager *)self nameSearcher];
-        [v10 updateMatchingItems];
+        nameSearcher2 = [(VOTGesturedTextInputManager *)self nameSearcher];
+        [nameSearcher2 updateMatchingItems];
 
         [(VOTGesturedTextInputManager *)self _deleteFromCurrentInputStringIfNeeded];
       }
@@ -470,53 +470,53 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    if ([(VOTGesturedTextInputManager *)self isSelectItemEvent:v5])
+    if ([(VOTGesturedTextInputManager *)self isSelectItemEvent:eventCopy])
     {
-      v11 = [(VOTGesturedTextInputManager *)self nameSearcher];
-      [v11 selectFocusedItem];
+      nameSearcher3 = [(VOTGesturedTextInputManager *)self nameSearcher];
+      [nameSearcher3 selectFocusedItem];
 
       [(VOTGesturedTextInputManager *)self clearCurrentString];
       goto LABEL_6;
     }
 
-    if ([(VOTGesturedTextInputManager *)self isNextKeyboardLanguageEvent:v5])
+    if ([(VOTGesturedTextInputManager *)self isNextKeyboardLanguageEvent:eventCopy])
     {
-      v7 = [(VOTGesturedTextInputManager *)self performNextKeyboardLanguage];
+      performNextKeyboardLanguage = [(VOTGesturedTextInputManager *)self performNextKeyboardLanguage];
       goto LABEL_7;
     }
 
-    v12 = [v5 command];
-    if (([v12 isEqualToString:kVOTEventCommandSearchRotorLeft] & 1) == 0)
+    command = [eventCopy command];
+    if (([command isEqualToString:kVOTEventCommandSearchRotorLeft] & 1) == 0)
     {
-      v13 = [v5 command];
-      if (([v13 isEqualToString:kVOTEventCommandSearchRotorRight] & 1) == 0)
+      command2 = [eventCopy command];
+      if (([command2 isEqualToString:kVOTEventCommandSearchRotorRight] & 1) == 0)
       {
-        v14 = [v5 command];
-        if (([v14 isEqualToString:kVOTEventCommandEscape] & 1) == 0)
+        command3 = [eventCopy command];
+        if (([command3 isEqualToString:kVOTEventCommandEscape] & 1) == 0)
         {
-          v15 = [v5 command];
-          if (([v15 isEqualToString:kVOTEventCommandNextTextSegment] & 1) == 0)
+          command4 = [eventCopy command];
+          if (([command4 isEqualToString:kVOTEventCommandNextTextSegment] & 1) == 0)
           {
-            v16 = [v5 command];
-            if (([v16 isEqualToString:kVOTEventCommandPreviousTextSegment] & 1) == 0)
+            command5 = [eventCopy command];
+            if (([command5 isEqualToString:kVOTEventCommandPreviousTextSegment] & 1) == 0)
             {
-              v17 = [v5 command];
-              if (([v17 isEqualToString:kVOTEventCommandSelectRight] & 1) == 0)
+              command6 = [eventCopy command];
+              if (([command6 isEqualToString:kVOTEventCommandSelectRight] & 1) == 0)
               {
-                v18 = [v5 command];
-                if (([v18 isEqualToString:kVOTEventCommandSelectLeft] & 1) == 0)
+                command7 = [eventCopy command];
+                if (([command7 isEqualToString:kVOTEventCommandSelectLeft] & 1) == 0)
                 {
-                  v19 = [v5 command];
-                  if (([v19 isEqualToString:kVOTEventCommandBSIExit] & 1) == 0)
+                  command8 = [eventCopy command];
+                  if (([command8 isEqualToString:kVOTEventCommandBSIExit] & 1) == 0)
                   {
-                    v20 = [v5 command];
-                    if (([v20 isEqualToString:kVOTEventCommandBSIPreviousRotor] & 1) == 0)
+                    command9 = [eventCopy command];
+                    if (([command9 isEqualToString:kVOTEventCommandBSIPreviousRotor] & 1) == 0)
                     {
-                      v23 = [v5 command];
-                      if (([v23 isEqualToString:kVOTEventCommandBSINextRotor] & 1) == 0)
+                      command10 = [eventCopy command];
+                      if (([command10 isEqualToString:kVOTEventCommandBSINextRotor] & 1) == 0)
                       {
-                        v21 = [v5 command];
-                        v22 = [v21 isEqualToString:kVOTEventCommandBSIEscape];
+                        command11 = [eventCopy command];
+                        v22 = [command11 isEqualToString:kVOTEventCommandBSIEscape];
 
                         if ((v22 & 1) == 0)
                         {
@@ -524,7 +524,7 @@ LABEL_6:
                         }
 
 LABEL_37:
-                        v7 = 0;
+                        performNextKeyboardLanguage = 0;
                         goto LABEL_7;
                       }
                     }
@@ -540,21 +540,21 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  v6 = [(VOTGesturedTextInputManager *)self nameSearcher];
-  [v6 focusOnNextMatchingItem];
+  nameSearcher = [(VOTGesturedTextInputManager *)self nameSearcher];
+  [nameSearcher focusOnNextMatchingItem];
 LABEL_5:
 
 LABEL_6:
-  v7 = 1;
+  performNextKeyboardLanguage = 1;
 LABEL_7:
 
-  return v7;
+  return performNextKeyboardLanguage;
 }
 
-- (BOOL)_processRotorEvent:(id)a3
+- (BOOL)_processRotorEvent:(id)event
 {
-  v4 = a3;
-  if ([(VOTGesturedTextInputManager *)self isRotorLeftEvent:v4])
+  eventCopy = event;
+  if ([(VOTGesturedTextInputManager *)self isRotorLeftEvent:eventCopy])
   {
     v5 = VOTSharedWorkspace;
     v6 = &kVOTEventCommandSearchRotorLeft;
@@ -566,14 +566,14 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([(VOTGesturedTextInputManager *)self isRotorRightEvent:v4])
+  if ([(VOTGesturedTextInputManager *)self isRotorRightEvent:eventCopy])
   {
     v5 = VOTSharedWorkspace;
     v6 = &kVOTEventCommandSearchRotorRight;
     goto LABEL_5;
   }
 
-  if ([(VOTGesturedTextInputManager *)self isRotorDownEvent:v4])
+  if ([(VOTGesturedTextInputManager *)self isRotorDownEvent:eventCopy])
   {
     v8 = VOTSharedWorkspace;
     v9 = &kVOTEventCommandSearchRotorDown;
@@ -583,21 +583,21 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([(VOTGesturedTextInputManager *)self isRotorUpEvent:v4])
+  if ([(VOTGesturedTextInputManager *)self isRotorUpEvent:eventCopy])
   {
     v8 = VOTSharedWorkspace;
     v9 = &kVOTEventCommandSearchRotorUp;
     goto LABEL_12;
   }
 
-  if ([(VOTGesturedTextInputManager *)self isTextSelectionForwardEvent:v4])
+  if ([(VOTGesturedTextInputManager *)self isTextSelectionForwardEvent:eventCopy])
   {
     v8 = VOTSharedWorkspace;
     v9 = &kVOTEventCommandSimpleTap;
     goto LABEL_12;
   }
 
-  if (![(VOTGesturedTextInputManager *)self isTextSelectionBackwardEvent:v4])
+  if (![(VOTGesturedTextInputManager *)self isTextSelectionBackwardEvent:eventCopy])
   {
     v10 = 0;
     goto LABEL_15;
@@ -625,16 +625,16 @@ LABEL_4:
       v6 = [v3[448] numberWithInteger:v4];
       [v15 setObject:v6 forKey:v5];
 
-      v7 = v5;
+      lowercaseString = v5;
 LABEL_10:
 
       goto LABEL_11;
     }
 
     v8 = [VOTRotor stringForRotorType:qword_10017E250[v2]];
-    v7 = [v8 lowercaseString];
+    lowercaseString = [v8 lowercaseString];
 
-    v9 = [v7 length];
+    v9 = [lowercaseString length];
     if (v9 < 1)
     {
       goto LABEL_10;
@@ -644,9 +644,9 @@ LABEL_10:
     v11 = 0;
     while (1)
     {
-      v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%C", [v7 characterAtIndex:v11]);
-      v12 = [v15 allKeys];
-      v13 = [v12 containsObject:0];
+      v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%C", [lowercaseString characterAtIndex:v11]);
+      allKeys = [v15 allKeys];
+      v13 = [allKeys containsObject:0];
 
       if (!v13)
       {
@@ -674,18 +674,18 @@ LABEL_11:
   [(VOTGesturedTextInputManager *)self setLocalizedWebRotorMap:v15];
 }
 
-- (unint64_t)_numberOfCharactersToDeleteToDesiredLength:(unint64_t)a3 fromString:(id)a4
+- (unint64_t)_numberOfCharactersToDeleteToDesiredLength:(unint64_t)length fromString:(id)string
 {
-  v6 = a4;
-  v7 = -[VOTGesturedTextInputManager _numberOfCharactersToDeleteStartingAtIndex:toDesiredLength:fromString:](self, "_numberOfCharactersToDeleteStartingAtIndex:toDesiredLength:fromString:", [v6 length], a3, v6);
+  stringCopy = string;
+  v7 = -[VOTGesturedTextInputManager _numberOfCharactersToDeleteStartingAtIndex:toDesiredLength:fromString:](self, "_numberOfCharactersToDeleteStartingAtIndex:toDesiredLength:fromString:", [stringCopy length], length, stringCopy);
 
   return v7;
 }
 
-- (unint64_t)_numberOfCharactersToDeleteStartingAtIndex:(unint64_t)a3 toDesiredLength:(unint64_t)a4 fromString:(id)a5
+- (unint64_t)_numberOfCharactersToDeleteStartingAtIndex:(unint64_t)index toDesiredLength:(unint64_t)length fromString:(id)string
 {
-  v7 = a5;
-  if (a4 >= a3)
+  stringCopy = string;
+  if (length >= index)
   {
     v8 = 0;
   }
@@ -695,61 +695,61 @@ LABEL_11:
     v8 = 0;
     do
     {
-      v9 = [v7 rangeOfComposedCharacterSequenceAtIndex:{a4, v14, v15, v16}];
+      v9 = [stringCopy rangeOfComposedCharacterSequenceAtIndex:{length, v14, v15, v16}];
       v11 = v10;
-      if (v9 != a4)
+      if (v9 != length)
       {
-        v12 = [NSNumber numberWithUnsignedInteger:a4];
+        v12 = [NSNumber numberWithUnsignedInteger:length];
         v17.location = v9;
         v17.length = v11;
         NSStringFromRange(v17);
         v16 = v15 = v12;
-        v14 = v7;
+        v14 = stringCopy;
         _AXAssert();
       }
 
-      a4 = v9 + v11;
+      length = v9 + v11;
       ++v8;
     }
 
-    while (v9 + v11 < a3);
+    while (v9 + v11 < index);
   }
 
   return v8;
 }
 
-- (void)itemSource:(id)a3 didFilter:(id)a4 didSwitchFocus:(id)a5 focusedValue:(id)a6
+- (void)itemSource:(id)source didFilter:(id)filter didSwitchFocus:(id)focus focusedValue:(id)value
 {
-  v28 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(VOTGesturedTextInputManager *)self pendingInputString];
+  sourceCopy = source;
+  filterCopy = filter;
+  focusCopy = focus;
+  valueCopy = value;
+  pendingInputString = [(VOTGesturedTextInputManager *)self pendingInputString];
   v14 = objc_alloc_init(VOTOutputRequest);
-  v15 = [(VOTGesturedTextInputManager *)self currentInputString];
-  v16 = [(VOTGesturedTextInputManager *)self outputForLatestInput];
-  v17 = v16;
-  if (v16)
+  currentInputString = [(VOTGesturedTextInputManager *)self currentInputString];
+  outputForLatestInput = [(VOTGesturedTextInputManager *)self outputForLatestInput];
+  v17 = outputForLatestInput;
+  if (outputForLatestInput)
   {
     v18 = v14;
-    v14 = v16;
+    v14 = outputForLatestInput;
   }
 
   else
   {
-    if ([v15 length] && !objc_msgSend(v13, "hasPrefix:", v15))
+    if ([currentInputString length] && !objc_msgSend(pendingInputString, "hasPrefix:", currentInputString))
     {
-      if (![v13 length])
+      if (![pendingInputString length])
       {
         goto LABEL_10;
       }
 
-      v19 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%C", [v13 characterAtIndex:{objc_msgSend(v13, "length") - 1}]);
+      v19 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%C", [pendingInputString characterAtIndex:{objc_msgSend(pendingInputString, "length") - 1}]);
     }
 
     else
     {
-      v19 = [v13 substringFromIndex:{objc_msgSend(v15, "length")}];
+      v19 = [pendingInputString substringFromIndex:{objc_msgSend(currentInputString, "length")}];
     }
 
     v18 = v19;
@@ -757,28 +757,28 @@ LABEL_11:
   }
 
 LABEL_10:
-  if (v10)
+  if (filterCopy)
   {
-    v21 = [v28 messageForMatchingItemsCount:{objc_msgSend(v10, "integerValue")}];
+    v21 = [sourceCopy messageForMatchingItemsCount:{objc_msgSend(filterCopy, "integerValue")}];
     v22 = [(VOTOutputRequest *)v14 addString:v21];
   }
 
-  if (v11)
+  if (focusCopy)
   {
-    v23 = [(VOTOutputRequest *)v14 addString:v11];
-    if (v12)
+    v23 = [(VOTOutputRequest *)v14 addString:focusCopy];
+    if (valueCopy)
     {
-      v24 = [(VOTOutputRequest *)v14 addString:v12];
+      v24 = [(VOTOutputRequest *)v14 addString:valueCopy];
     }
 
     if ([VOTSharedWorkspace hintsEnabled])
     {
-      v25 = [(VOTGesturedTextInputManager *)self nameSearcherHint];
-      if ([v25 length])
+      nameSearcherHint = [(VOTGesturedTextInputManager *)self nameSearcherHint];
+      if ([nameSearcherHint length])
       {
         LODWORD(v26) = 1061997773;
         [(VOTOutputRequest *)v14 addPause:v26];
-        v27 = [(VOTOutputRequest *)v14 addString:v25];
+        v27 = [(VOTOutputRequest *)v14 addString:nameSearcherHint];
       }
     }
   }
@@ -786,48 +786,48 @@ LABEL_10:
   [(VOTOutputRequest *)v14 send];
 }
 
-- (void)itemSource:(id)a3 didSelect:(id)a4
+- (void)itemSource:(id)source didSelect:(id)select
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  sourceCopy = source;
+  selectCopy = select;
+  if (selectCopy)
   {
-    [v5 selectSpeechDelay];
-    v10 = v5;
-    v11 = v6;
+    [sourceCopy selectSpeechDelay];
+    v10 = sourceCopy;
+    v11 = selectCopy;
     AXPerformBlockOnMainThreadAfterDelay();
   }
 
   else
   {
-    v7 = [v5 messageForNoMatchingItems];
-    v8 = [VOTSharedWorkspace selectedLanguage];
-    v9 = sub_1000095FC(v7, 1, v8);
+    messageForNoMatchingItems = [sourceCopy messageForNoMatchingItems];
+    selectedLanguage = [VOTSharedWorkspace selectedLanguage];
+    v9 = sub_1000095FC(messageForNoMatchingItems, 1, selectedLanguage);
   }
 }
 
-- (id)nameSearcherEntriesPassingSearchFrom:(id)a3
+- (id)nameSearcherEntriesPassingSearchFrom:(id)from
 {
-  v4 = a3;
-  v5 = [(VOTGesturedTextInputManager *)self pendingInputString];
-  v6 = [(VOTGesturedTextInputManager *)self pendingInputString];
+  fromCopy = from;
+  pendingInputString = [(VOTGesturedTextInputManager *)self pendingInputString];
+  pendingInputString2 = [(VOTGesturedTextInputManager *)self pendingInputString];
 
-  if (!v6)
+  if (!pendingInputString2)
   {
-    v7 = [(VOTGesturedTextInputManager *)self currentInputString];
+    currentInputString = [(VOTGesturedTextInputManager *)self currentInputString];
 
-    v5 = v7;
+    pendingInputString = currentInputString;
   }
 
-  if ([v5 length])
+  if ([pendingInputString length])
   {
-    v19 = v4;
+    v19 = fromCopy;
     v20 = objc_opt_new();
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = v4;
+    v8 = fromCopy;
     v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v9)
     {
@@ -843,10 +843,10 @@ LABEL_10:
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
-          v14 = [v13 name];
-          v15 = [v14 lowercaseString];
-          v16 = [v5 lowercaseString];
-          v17 = [v15 hasPrefix:v16];
+          name = [v13 name];
+          lowercaseString = [name lowercaseString];
+          lowercaseString2 = [pendingInputString lowercaseString];
+          v17 = [lowercaseString hasPrefix:lowercaseString2];
 
           if (v17)
           {
@@ -860,12 +860,12 @@ LABEL_10:
       while (v10);
     }
 
-    v4 = v19;
+    fromCopy = v19;
   }
 
   else
   {
-    v20 = v4;
+    v20 = fromCopy;
   }
 
   return v20;
@@ -887,7 +887,7 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)isSpaceEvent:(id)a3
+- (BOOL)isSpaceEvent:(id)event
 {
   sub_100057B64();
   objc_opt_class();
@@ -896,7 +896,7 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)isBackspaceEvent:(id)a3
+- (BOOL)isBackspaceEvent:(id)event
 {
   sub_100057B64();
   objc_opt_class();
@@ -905,7 +905,7 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)isWordBackspaceEvent:(id)a3
+- (BOOL)isWordBackspaceEvent:(id)event
 {
   sub_100057B64();
   objc_opt_class();
@@ -914,7 +914,7 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)isReturnKeyEvent:(id)a3
+- (BOOL)isReturnKeyEvent:(id)event
 {
   sub_100057B64();
   objc_opt_class();
@@ -923,7 +923,7 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)isNextSuggestionEvent:(id)a3
+- (BOOL)isNextSuggestionEvent:(id)event
 {
   sub_100057B64();
   objc_opt_class();
@@ -932,7 +932,7 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)isPreviousSuggestionEvent:(id)a3
+- (BOOL)isPreviousSuggestionEvent:(id)event
 {
   sub_100057B64();
   objc_opt_class();
@@ -941,7 +941,7 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)isSelectItemEvent:(id)a3
+- (BOOL)isSelectItemEvent:(id)event
 {
   sub_100057B64();
   objc_opt_class();
@@ -950,7 +950,7 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)isNextKeyboardLanguageEvent:(id)a3
+- (BOOL)isNextKeyboardLanguageEvent:(id)event
 {
   sub_100057B64();
   objc_opt_class();
@@ -959,7 +959,7 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)isNextBrailleTableEvent:(id)a3
+- (BOOL)isNextBrailleTableEvent:(id)event
 {
   sub_100057B64();
   objc_opt_class();
@@ -968,7 +968,7 @@ LABEL_10:
   return 0;
 }
 
-- (void)applyNextSuggestionToElement:(id)a3
+- (void)applyNextSuggestionToElement:(id)element
 {
   sub_100057B64();
   objc_opt_class();
@@ -977,7 +977,7 @@ LABEL_10:
   NSRequestConcreteImplementation();
 }
 
-- (void)applyPreviousSuggestionToElement:(id)a3
+- (void)applyPreviousSuggestionToElement:(id)element
 {
   sub_100057B64();
   objc_opt_class();

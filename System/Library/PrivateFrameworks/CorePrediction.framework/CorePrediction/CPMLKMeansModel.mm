@@ -90,12 +90,12 @@
 - (id)totalWithinss
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(CPMLKMeansModel *)self withinss];
+  withinss = [(CPMLKMeansModel *)self withinss];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v3 = [withinss countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -107,14 +107,14 @@
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(withinss);
         }
 
         [*(*(&v12 + 1) + 8 * i) doubleValue];
         v6 = v6 + v8;
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [withinss countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);
@@ -134,11 +134,11 @@
 
 - (id)betweenss
 {
-  v3 = [(CPMLKMeansModel *)self totss];
-  [v3 doubleValue];
+  totss = [(CPMLKMeansModel *)self totss];
+  [totss doubleValue];
   v5 = v4;
-  v6 = [(CPMLKMeansModel *)self totalWithinss];
-  [v6 doubleValue];
+  totalWithinss = [(CPMLKMeansModel *)self totalWithinss];
+  [totalWithinss doubleValue];
   v8 = v5 - v7;
 
   v9 = MEMORY[0x277CCABB0];

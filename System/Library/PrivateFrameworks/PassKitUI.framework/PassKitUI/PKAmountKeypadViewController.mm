@@ -1,8 +1,8 @@
 @interface PKAmountKeypadViewController
 - ($85E40A55691FE2F31975A98F57E3065D)pkui_navigationStatusBarStyleDescriptor;
-- (PKAmountKeypadViewController)initWithRemoteMessagesComposer:(id)a3 recipient:(id)a4 sendFlowType:(int64_t)a5 familyCollection:(id)a6;
-- (PKAmountKeypadViewController)initWithRemoteMessagesComposer:(id)a3 recipientAddress:(id)a4 sendFlowType:(int64_t)a5 familyCollection:(id)a6;
-- (id)_composeRecipientForAddress:(id)a3;
+- (PKAmountKeypadViewController)initWithRemoteMessagesComposer:(id)composer recipient:(id)recipient sendFlowType:(int64_t)type familyCollection:(id)collection;
+- (PKAmountKeypadViewController)initWithRemoteMessagesComposer:(id)composer recipientAddress:(id)address sendFlowType:(int64_t)type familyCollection:(id)collection;
+- (id)_composeRecipientForAddress:(id)address;
 - (id)currentBalance;
 - (id)maximumTransferAmount;
 - (id)minimumTransferAmount;
@@ -12,53 +12,53 @@
 - (void)_presentPeerPaymentAddDebitFlow;
 - (void)_presentRecurringDetailViewController;
 - (void)dealloc;
-- (void)handleAction:(unint64_t)a3 completion:(id)a4;
+- (void)handleAction:(unint64_t)action completion:(id)completion;
 - (void)loadView;
-- (void)setRecurringPeerPayment:(id)a3;
-- (void)setShowCancelButton:(BOOL)a3;
+- (void)setRecurringPeerPayment:(id)payment;
+- (void)setShowCancelButton:(BOOL)button;
 - (void)setUpContainerView;
 - (void)setUpNavigationBar;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKAmountKeypadViewController
 
-- (PKAmountKeypadViewController)initWithRemoteMessagesComposer:(id)a3 recipientAddress:(id)a4 sendFlowType:(int64_t)a5 familyCollection:(id)a6
+- (PKAmountKeypadViewController)initWithRemoteMessagesComposer:(id)composer recipientAddress:(id)address sendFlowType:(int64_t)type familyCollection:(id)collection
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [(PKAmountKeypadViewController *)self _composeRecipientForAddress:a4];
-  v13 = [(PKAmountKeypadViewController *)self initWithRemoteMessagesComposer:v11 recipient:v12 sendFlowType:a5 familyCollection:v10];
+  collectionCopy = collection;
+  composerCopy = composer;
+  v12 = [(PKAmountKeypadViewController *)self _composeRecipientForAddress:address];
+  v13 = [(PKAmountKeypadViewController *)self initWithRemoteMessagesComposer:composerCopy recipient:v12 sendFlowType:type familyCollection:collectionCopy];
 
   return v13;
 }
 
-- (PKAmountKeypadViewController)initWithRemoteMessagesComposer:(id)a3 recipient:(id)a4 sendFlowType:(int64_t)a5 familyCollection:(id)a6
+- (PKAmountKeypadViewController)initWithRemoteMessagesComposer:(id)composer recipient:(id)recipient sendFlowType:(int64_t)type familyCollection:(id)collection
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  composerCopy = composer;
+  recipientCopy = recipient;
+  collectionCopy = collection;
   v35.receiver = self;
   v35.super_class = PKAmountKeypadViewController;
   v14 = [(PKAmountKeypadViewController *)&v35 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_recipient, a4);
-    v15->_sendFlowType = a5;
-    objc_storeStrong(&v15->_remoteMessagesComposer, a3);
+    objc_storeStrong(&v14->_recipient, recipient);
+    v15->_sendFlowType = type;
+    objc_storeStrong(&v15->_remoteMessagesComposer, composer);
     v16 = objc_alloc_init(PKPeerPaymentMessagesContentAmountEntryViewController);
     amountEntryViewController = v15->_amountEntryViewController;
     v15->_amountEntryViewController = v16;
 
     [(PKPeerPaymentMessagesContentAmountEntryViewController *)v15->_amountEntryViewController setSourceType:1];
     [(PKPeerPaymentMessagesContentAmountEntryViewController *)v15->_amountEntryViewController setDelegate:v15];
-    if (a5 >= 2)
+    if (type >= 2)
     {
-      if (a5 == 2)
+      if (type == 2)
       {
         v22 = v15->_amountEntryViewController;
         if (_UISolariumFeatureFlagEnabled())
@@ -81,13 +81,13 @@
     {
       [(PKPeerPaymentMessagesContentAmountEntryViewController *)v15->_amountEntryViewController setLeadingAction:2];
       [(PKPeerPaymentMessagesContentAmountEntryViewController *)v15->_amountEntryViewController setTrailingAction:1];
-      v18 = [(PKAmountKeypadViewController *)v15 _peerPaymentController];
-      v19 = [v18 account];
+      _peerPaymentController = [(PKAmountKeypadViewController *)v15 _peerPaymentController];
+      account = [_peerPaymentController account];
 
-      if ([v19 supportsRecurringPayments])
+      if ([account supportsRecurringPayments])
       {
-        v20 = [v13 currentUser];
-        if ([v19 isEligibleForRecurringPaymentsForUser:v20])
+        currentUser = [collectionCopy currentUser];
+        if ([account isEligibleForRecurringPaymentsForUser:currentUser])
         {
           v21 = PKIsVision();
 
@@ -103,7 +103,7 @@
       }
     }
 
-    objc_storeStrong(&v15->_familyCollection, a6);
+    objc_storeStrong(&v15->_familyCollection, collection);
     v24 = objc_alloc_init(MEMORY[0x1E69DD250]);
     containerView = v15->_containerView;
     v15->_containerView = v24;
@@ -117,23 +117,23 @@
       [(PKAvatarView *)v15->_avatarView setDiameter:44.0];
     }
 
-    v28 = [(CNComposeRecipient *)v15->_recipient address];
-    v29 = [(PKAmountKeypadViewController *)v15 _peerPaymentController];
-    v30 = [v29 messagesContext];
+    address = [(CNComposeRecipient *)v15->_recipient address];
+    _peerPaymentController2 = [(PKAmountKeypadViewController *)v15 _peerPaymentController];
+    messagesContext = [_peerPaymentController2 messagesContext];
 
-    v31 = [MEMORY[0x1E69B9020] sharedService];
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
     v32 = objc_alloc_init(MEMORY[0x1E69B8F40]);
     [v32 setEndpoint:5];
-    [v32 setRecipientAddress:v28];
+    [v32 setRecipientAddress:address];
     [v32 setQuoteRequestDestination:1];
-    [v32 setMessagesContext:v30];
-    [v31 prewarmDeviceScoreForAttributes:v32];
+    [v32 setMessagesContext:messagesContext];
+    [mEMORY[0x1E69B9020] prewarmDeviceScoreForAttributes:v32];
     v33 = objc_alloc_init(MEMORY[0x1E69B8F40]);
     [v33 setEndpoint:3];
-    [v33 setRecipientAddress:v28];
+    [v33 setRecipientAddress:address];
     [v33 setQuoteRequestDestination:1];
-    [v33 setMessagesContext:v30];
-    [v31 prewarmDeviceScoreForAttributes:v33];
+    [v33 setMessagesContext:messagesContext];
+    [mEMORY[0x1E69B9020] prewarmDeviceScoreForAttributes:v33];
   }
 
   return v15;
@@ -141,77 +141,77 @@
 
 - (void)dealloc
 {
-  v3 = [(CNComposeRecipient *)self->_recipient address];
-  v4 = [(PKAmountKeypadViewController *)self _peerPaymentController];
-  v5 = [v4 messagesContext];
+  address = [(CNComposeRecipient *)self->_recipient address];
+  _peerPaymentController = [(PKAmountKeypadViewController *)self _peerPaymentController];
+  messagesContext = [_peerPaymentController messagesContext];
 
-  v6 = [MEMORY[0x1E69B9020] sharedService];
+  mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
   v7 = objc_alloc_init(MEMORY[0x1E69B8F40]);
   [v7 setEndpoint:5];
-  [v7 setRecipientAddress:v3];
+  [v7 setRecipientAddress:address];
   [v7 setQuoteRequestDestination:1];
-  [v7 setMessagesContext:v5];
-  [v6 unloadDeviceScoreForAttributes:v7];
+  [v7 setMessagesContext:messagesContext];
+  [mEMORY[0x1E69B9020] unloadDeviceScoreForAttributes:v7];
   v8 = objc_alloc_init(MEMORY[0x1E69B8F40]);
   [v8 setEndpoint:3];
-  [v8 setRecipientAddress:v3];
+  [v8 setRecipientAddress:address];
   [v8 setQuoteRequestDestination:1];
-  [v8 setMessagesContext:v5];
-  [v6 unloadDeviceScoreForAttributes:v8];
+  [v8 setMessagesContext:messagesContext];
+  [mEMORY[0x1E69B9020] unloadDeviceScoreForAttributes:v8];
 
   v9.receiver = self;
   v9.super_class = PKAmountKeypadViewController;
   [(PKAmountKeypadViewController *)&v9 dealloc];
 }
 
-- (void)setRecurringPeerPayment:(id)a3
+- (void)setRecurringPeerPayment:(id)payment
 {
-  objc_storeStrong(&self->_recurringPayment, a3);
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  objc_storeStrong(&self->_recurringPayment, payment);
+  paymentCopy = payment;
+  v6 = paymentCopy;
+  if (paymentCopy)
   {
-    v7 = [v5 amount];
-    v8 = [v6 currency];
+    amount = [paymentCopy amount];
+    currency = [v6 currency];
     v12 = PKCurrencyAmountMake();
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AB90] zero];
-    v8 = [(PKAmountKeypadViewController *)self _peerPaymentController];
-    v9 = [v8 account];
-    v10 = [v9 currentBalance];
-    v11 = [v10 currency];
+    amount = [MEMORY[0x1E696AB90] zero];
+    currency = [(PKAmountKeypadViewController *)self _peerPaymentController];
+    account = [currency account];
+    currentBalance = [account currentBalance];
+    currency2 = [currentBalance currency];
     v12 = PKCurrencyAmountMake();
   }
 
   [(PKPeerPaymentMessagesContentAmountEntryViewController *)self->_amountEntryViewController setAmount:v12];
 }
 
-- (void)setShowCancelButton:(BOOL)a3
+- (void)setShowCancelButton:(BOOL)button
 {
-  if (self->_showCancelButton != a3)
+  if (self->_showCancelButton != button)
   {
-    self->_showCancelButton = a3;
+    self->_showCancelButton = button;
     [(PKAmountKeypadViewController *)self setUpNavigationBar];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKAmountKeypadViewController;
-  [(PKAmountKeypadViewController *)&v4 viewWillAppear:a3];
+  [(PKAmountKeypadViewController *)&v4 viewWillAppear:appear];
   [(PKAmountKeypadViewController *)self setUpNavigationBar];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v14[5] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = PKAmountKeypadViewController;
-  [(PKAmountKeypadViewController *)&v12 viewDidAppear:a3];
+  [(PKAmountKeypadViewController *)&v12 viewDidAppear:appear];
   v3 = MEMORY[0x1E69B8540];
   v4 = *MEMORY[0x1E69BB6A8];
   v5 = *MEMORY[0x1E69BAEE8];
@@ -234,12 +234,12 @@
   [v3 subject:v4 sendEvent:v11];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v14[5] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = PKAmountKeypadViewController;
-  [(PKAmountKeypadViewController *)&v12 viewDidDisappear:a3];
+  [(PKAmountKeypadViewController *)&v12 viewDidDisappear:disappear];
   v3 = MEMORY[0x1E69B8540];
   v4 = *MEMORY[0x1E69BB6A8];
   v5 = *MEMORY[0x1E69BAEE8];
@@ -267,9 +267,9 @@
   v5.receiver = self;
   v5.super_class = PKAmountKeypadViewController;
   [(PKAmountKeypadViewController *)&v5 loadView];
-  v3 = [(PKAmountKeypadViewController *)self view];
+  view = [(PKAmountKeypadViewController *)self view];
   v4 = +[PKPeerPaymentTheme backgroundColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   [(PKAmountKeypadViewController *)self _configureAvatarView];
   [(PKAmountKeypadViewController *)self setUpContainerView];
@@ -277,29 +277,29 @@
 
 - (void)setUpContainerView
 {
-  v3 = [(PKAmountKeypadViewController *)self view];
-  [v3 addSubview:self->_containerView];
+  view = [(PKAmountKeypadViewController *)self view];
+  [view addSubview:self->_containerView];
 
   [(UIView *)self->_containerView setPreservesSuperviewLayoutMargins:1];
   [(UIView *)self->_containerView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(PKAmountKeypadViewController *)self addChildViewController:self->_amountEntryViewController];
   containerView = self->_containerView;
-  v5 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self->_amountEntryViewController view];
-  [(UIView *)containerView addSubview:v5];
+  view2 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self->_amountEntryViewController view];
+  [(UIView *)containerView addSubview:view2];
 }
 
 - (void)viewDidLayoutSubviews
 {
   containerView = self->_containerView;
-  v4 = [(PKAmountKeypadViewController *)self view];
-  [v4 bounds];
+  view = [(PKAmountKeypadViewController *)self view];
+  [view bounds];
   [(UIView *)containerView setFrame:?];
 
-  v5 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self->_amountEntryViewController view];
+  view2 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self->_amountEntryViewController view];
   [(UIView *)self->_containerView bounds];
   v7 = v6;
   [(UIView *)self->_containerView bounds];
-  [v5 setFrame:{0.0, 0.0, v7}];
+  [view2 setFrame:{0.0, 0.0, v7}];
 
   v8.receiver = self;
   v8.super_class = PKAmountKeypadViewController;
@@ -308,8 +308,8 @@
 
 - (void)setUpNavigationBar
 {
-  v3 = [(PKAmountKeypadViewController *)self navigationItem];
-  [v3 setBackButtonDisplayMode:2];
+  navigationItem = [(PKAmountKeypadViewController *)self navigationItem];
+  [navigationItem setBackButtonDisplayMode:2];
   objc_initWeak(&location, self);
   v4 = MEMORY[0x1E69DC628];
   v16 = MEMORY[0x1E69E9820];
@@ -335,7 +335,7 @@
       v9 = 0;
     }
 
-    [v3 setLeftBarButtonItem:v9];
+    [navigationItem setLeftBarButtonItem:v9];
     nextButton = self->_nextButton;
     if (self->_sendFlowType == 2)
     {
@@ -365,13 +365,13 @@
       v15 = 0;
     }
 
-    [v3 setRightBarButtonItem:v15];
+    [navigationItem setRightBarButtonItem:v15];
     goto LABEL_12;
   }
 
-  [v3 setLeftBarButtonItem:v7];
+  [navigationItem setLeftBarButtonItem:v7];
 LABEL_12:
-  [v3 setTitleView:self->_avatarView];
+  [navigationItem setTitleView:self->_avatarView];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
@@ -385,11 +385,11 @@ void __50__PKAmountKeypadViewController_setUpNavigationBar__block_invoke(uint64_
 
 - (void)_configureAvatarView
 {
-  v3 = [(CNComposeRecipient *)self->_recipient contact];
-  v5 = v3;
-  if (v3)
+  contact = [(CNComposeRecipient *)self->_recipient contact];
+  v5 = contact;
+  if (contact)
   {
-    [(PKAvatarView *)self->_avatarView setContact:v3];
+    [(PKAvatarView *)self->_avatarView setContact:contact];
   }
 
   else
@@ -428,8 +428,8 @@ void __50__PKAmountKeypadViewController_setUpNavigationBar__block_invoke(uint64_
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:6];
   [v3 subject:v4 sendEvent:v13];
 
-  v14 = [(PKAmountKeypadViewController *)self presentingViewController];
-  [v14 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PKAmountKeypadViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)_nextButtonPressed
@@ -463,44 +463,44 @@ void __50__PKAmountKeypadViewController_setUpNavigationBar__block_invoke(uint64_
   [(PKAmountKeypadViewController *)self _presentRecurringDetailViewController];
 }
 
-- (id)_composeRecipientForAddress:(id)a3
+- (id)_composeRecipientForAddress:(id)address
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  addressCopy = address;
+  if (addressCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695CE18]);
-    v6 = [MEMORY[0x1E695DF70] array];
-    v7 = [(PKAvatarView *)self->_avatarView descriptorForRequiredKeys];
-    v8 = v7;
-    if (v7)
+    array = [MEMORY[0x1E695DF70] array];
+    descriptorForRequiredKeys = [(PKAvatarView *)self->_avatarView descriptorForRequiredKeys];
+    v8 = descriptorForRequiredKeys;
+    if (descriptorForRequiredKeys)
     {
-      v27[0] = v7;
+      v27[0] = descriptorForRequiredKeys;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
-      [v6 addObjectsFromArray:v9];
+      [array addObjectsFromArray:v9];
     }
 
-    v10 = [objc_alloc(MEMORY[0x1E69B8740]) initWithContactStore:v5 keysToFetch:v6];
-    v11 = [v10 contactForHandle:v4];
-    v12 = [MEMORY[0x1E69B8EF8] sharedService];
-    v13 = [v12 context];
-    v14 = [v13 configuration];
-    v15 = [v14 contactFormatConfiguration];
+    v10 = [objc_alloc(MEMORY[0x1E69B8740]) initWithContactStore:v5 keysToFetch:array];
+    v11 = [v10 contactForHandle:addressCopy];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    context = [mEMORY[0x1E69B8EF8] context];
+    configuration = [context configuration];
+    contactFormatConfiguration = [configuration contactFormatConfiguration];
 
-    v16 = [objc_alloc(MEMORY[0x1E69B8730]) initWithConfiguration:v15];
-    if ([v16 emailAddressIsValid:v4])
+    v16 = [objc_alloc(MEMORY[0x1E69B8730]) initWithConfiguration:contactFormatConfiguration];
+    if ([v16 emailAddressIsValid:addressCopy])
     {
       v17 = 0;
     }
 
     else
     {
-      [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v4];
-      v26 = v12;
+      [MEMORY[0x1E695CF50] phoneNumberWithStringValue:addressCopy];
+      v26 = mEMORY[0x1E69B8EF8];
       v19 = v11;
       v20 = v10;
       v21 = v8;
-      v22 = v6;
+      v22 = array;
       v24 = v23 = v5;
       if ([v16 phoneNumberIsValid:v24 forCountryCode:0])
       {
@@ -513,14 +513,14 @@ void __50__PKAmountKeypadViewController_setUpNavigationBar__block_invoke(uint64_
       }
 
       v5 = v23;
-      v6 = v22;
+      array = v22;
       v8 = v21;
       v10 = v20;
       v11 = v19;
-      v12 = v26;
+      mEMORY[0x1E69B8EF8] = v26;
     }
 
-    v18 = [objc_alloc(MEMORY[0x1E6996408]) initWithContact:v11 address:v4 kind:v17];
+    v18 = [objc_alloc(MEMORY[0x1E6996408]) initWithContact:v11 address:addressCopy kind:v17];
   }
 
   else
@@ -533,11 +533,11 @@ void __50__PKAmountKeypadViewController_setUpNavigationBar__block_invoke(uint64_
 
 - (void)_presentRecurringDetailViewController
 {
-  v3 = [(PKAmountKeypadViewController *)self _peerPaymentController];
-  v4 = [v3 account];
+  _peerPaymentController = [(PKAmountKeypadViewController *)self _peerPaymentController];
+  account = [_peerPaymentController account];
   v31 = 0;
   v32 = 0;
-  v5 = [PKPeerPaymentActionController canPerformPeerPaymentAction:3 account:v4 unableReason:&v32 displayableError:&v31];
+  v5 = [PKPeerPaymentActionController canPerformPeerPaymentAction:3 account:account unableReason:&v32 displayableError:&v31];
   v6 = v31;
   if (v5)
   {
@@ -549,38 +549,38 @@ void __50__PKAmountKeypadViewController_setUpNavigationBar__block_invoke(uint64_
 
       [(PKPeerPaymentRecurringPayment *)self->_recurringPayment setType:1];
       v9 = self->_recurringPayment;
-      v10 = [(CNComposeRecipient *)self->_recipient address];
-      [(PKPeerPaymentRecurringPayment *)v9 setRecipientAddress:v10];
+      address = [(CNComposeRecipient *)self->_recipient address];
+      [(PKPeerPaymentRecurringPayment *)v9 setRecipientAddress:address];
 
       [(PKPeerPaymentRecurringPayment *)self->_recurringPayment setFrequency:1];
       v11 = self->_recurringPayment;
-      v12 = [MEMORY[0x1E695DF00] date];
-      [(PKPeerPaymentRecurringPayment *)v11 setStartDate:v12];
+      date = [MEMORY[0x1E695DF00] date];
+      [(PKPeerPaymentRecurringPayment *)v11 setStartDate:date];
 
       [(PKPeerPaymentRecurringPayment *)self->_recurringPayment setSentByMe:1];
     }
 
-    v13 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self->_amountEntryViewController amount];
+    amount = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self->_amountEntryViewController amount];
     v14 = self->_recurringPayment;
-    v15 = [v13 currency];
-    [(PKPeerPaymentRecurringPayment *)v14 setCurrency:v15];
+    currency = [amount currency];
+    [(PKPeerPaymentRecurringPayment *)v14 setCurrency:currency];
 
     v16 = self->_recurringPayment;
-    v17 = [v13 amount];
-    [(PKPeerPaymentRecurringPayment *)v16 setAmount:v17];
+    v13Amount = [amount amount];
+    [(PKPeerPaymentRecurringPayment *)v16 setAmount:v13Amount];
 
-    v18 = [v4 recurringPaymentsFeatureDescriptor];
-    v19 = [[PKPeerPaymentRecurringPaymentDetailViewController alloc] initWithRecurringPayment:self->_recurringPayment recipient:self->_recipient mode:1 context:0 peerPaymentController:v3 remoteMessagesComposer:self->_remoteMessagesComposer];
+    recurringPaymentsFeatureDescriptor = [account recurringPaymentsFeatureDescriptor];
+    v19 = [[PKPeerPaymentRecurringPaymentDetailViewController alloc] initWithRecurringPayment:self->_recurringPayment recipient:self->_recipient mode:1 context:0 peerPaymentController:_peerPaymentController remoteMessagesComposer:self->_remoteMessagesComposer];
     [(PKPeerPaymentRecurringPaymentDetailViewController *)v19 setDelegate:self];
-    v20 = [v18 minimumAmount];
-    [(PKPeerPaymentRecurringPaymentDetailViewController *)v19 setMinimumAmount:v20];
+    minimumAmount = [recurringPaymentsFeatureDescriptor minimumAmount];
+    [(PKPeerPaymentRecurringPaymentDetailViewController *)v19 setMinimumAmount:minimumAmount];
 
-    v21 = [v18 maximumAmount];
-    [(PKPeerPaymentRecurringPaymentDetailViewController *)v19 setMaximumAmount:v21];
+    maximumAmount = [recurringPaymentsFeatureDescriptor maximumAmount];
+    [(PKPeerPaymentRecurringPaymentDetailViewController *)v19 setMaximumAmount:maximumAmount];
 
     [(PKPeerPaymentRecurringPaymentDetailViewController *)v19 setOverrideUserInterfaceStyle:2];
-    v22 = [(PKAmountKeypadViewController *)self navigationController];
-    [v22 pushViewController:v19 animated:1];
+    navigationController = [(PKAmountKeypadViewController *)self navigationController];
+    [navigationController pushViewController:v19 animated:1];
   }
 
   else
@@ -612,55 +612,55 @@ void __69__PKAmountKeypadViewController__presentRecurringDetailViewController__b
   [(PKAmountKeypadViewController *)self presentViewController:v3 animated:1 completion:0];
 }
 
-- (void)handleAction:(unint64_t)a3 completion:(id)a4
+- (void)handleAction:(unint64_t)action completion:(id)completion
 {
   v24[6] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3 <= 6)
+  completionCopy = completion;
+  if (action <= 6)
   {
-    if (a3 == 1)
+    if (action == 1)
     {
 LABEL_10:
       objc_initWeak(&location, self);
-      [(PKPeerPaymentRemoteMessagesComposer *)self->_remoteMessagesComposer setActionType:a3];
+      [(PKPeerPaymentRemoteMessagesComposer *)self->_remoteMessagesComposer setActionType:action];
       remoteMessagesComposer = self->_remoteMessagesComposer;
-      v18 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self->_amountEntryViewController amount];
+      amount = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self->_amountEntryViewController amount];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __56__PKAmountKeypadViewController_handleAction_completion___block_invoke;
       v19[3] = &unk_1E80110B8;
       objc_copyWeak(&v21, &location);
-      v20 = v6;
-      [(PKPeerPaymentRemoteMessagesComposer *)remoteMessagesComposer presentRemoteMessageComposerWithAmount:v18 requestToken:0 memo:0 sessionID:0 overViewController:self completion:v19];
+      v20 = completionCopy;
+      [(PKPeerPaymentRemoteMessagesComposer *)remoteMessagesComposer presentRemoteMessageComposerWithAmount:amount requestToken:0 memo:0 sessionID:0 overViewController:self completion:v19];
 
       objc_destroyWeak(&v21);
       objc_destroyWeak(&location);
       goto LABEL_11;
     }
 
-    if (a3 == 2)
+    if (action == 2)
     {
-      a3 = 0;
+      action = 0;
       goto LABEL_10;
     }
 
 LABEL_9:
-    a3 = 3;
+    action = 3;
     goto LABEL_10;
   }
 
-  if (a3 == 7)
+  if (action == 7)
   {
     [(PKAmountKeypadViewController *)self _presentRecurringDetailViewController];
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
   }
 
   else
   {
-    if (a3 != 12)
+    if (action != 12)
     {
       goto LABEL_9;
     }
@@ -690,9 +690,9 @@ LABEL_9:
     [v7 subject:*MEMORY[0x1E69BB6A8] sendEvent:v16];
 
     [(PKAmountKeypadViewController *)self _presentRecurringDetailViewController];
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
   }
 
@@ -722,31 +722,31 @@ void __56__PKAmountKeypadViewController_handleAction_completion___block_invoke(u
 
 - (id)minimumTransferAmount
 {
-  v2 = [(PKAmountKeypadViewController *)self _peerPaymentController];
-  v3 = [v2 account];
-  v4 = [v3 sendToUserFeatureDescriptor];
-  v5 = [v4 minimumAmount];
+  _peerPaymentController = [(PKAmountKeypadViewController *)self _peerPaymentController];
+  account = [_peerPaymentController account];
+  sendToUserFeatureDescriptor = [account sendToUserFeatureDescriptor];
+  minimumAmount = [sendToUserFeatureDescriptor minimumAmount];
 
-  return v5;
+  return minimumAmount;
 }
 
 - (id)maximumTransferAmount
 {
-  v2 = [(PKAmountKeypadViewController *)self _peerPaymentController];
-  v3 = [v2 account];
-  v4 = [v3 sendToUserFeatureDescriptor];
-  v5 = [v4 maximumAmount];
+  _peerPaymentController = [(PKAmountKeypadViewController *)self _peerPaymentController];
+  account = [_peerPaymentController account];
+  sendToUserFeatureDescriptor = [account sendToUserFeatureDescriptor];
+  maximumAmount = [sendToUserFeatureDescriptor maximumAmount];
 
-  return v5;
+  return maximumAmount;
 }
 
 - (id)currentBalance
 {
-  v2 = [(PKAmountKeypadViewController *)self _peerPaymentController];
-  v3 = [v2 account];
-  v4 = [v3 currentBalance];
+  _peerPaymentController = [(PKAmountKeypadViewController *)self _peerPaymentController];
+  account = [_peerPaymentController account];
+  currentBalance = [account currentBalance];
 
-  return v4;
+  return currentBalance;
 }
 
 - ($85E40A55691FE2F31975A98F57E3065D)pkui_navigationStatusBarStyleDescriptor

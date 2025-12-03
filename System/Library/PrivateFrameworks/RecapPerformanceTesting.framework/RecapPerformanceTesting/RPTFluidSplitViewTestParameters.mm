@@ -1,39 +1,39 @@
 @interface RPTFluidSplitViewTestParameters
-- (RPTFluidSplitViewTestParameters)initWithTestName:(id)a3 splitViewController:(id)a4 completionHandler:(id)a5;
+- (RPTFluidSplitViewTestParameters)initWithTestName:(id)name splitViewController:(id)controller completionHandler:(id)handler;
 - (id)composerBlock;
 @end
 
 @implementation RPTFluidSplitViewTestParameters
 
-- (RPTFluidSplitViewTestParameters)initWithTestName:(id)a3 splitViewController:(id)a4 completionHandler:(id)a5
+- (RPTFluidSplitViewTestParameters)initWithTestName:(id)name splitViewController:(id)controller completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v26.receiver = self;
   v26.super_class = RPTFluidSplitViewTestParameters;
   v10 = [(RPTFluidSplitViewTestParameters *)&v26 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_splitViewController, a4);
-    v12 = [v8 viewControllerForColumn:0];
+    objc_storeStrong(&v10->_splitViewController, controller);
+    v12 = [controllerCopy viewControllerForColumn:0];
     primaryController = v11->_primaryController;
     v11->_primaryController = v12;
 
-    v14 = [v8 viewControllerForColumn:1];
+    v14 = [controllerCopy viewControllerForColumn:1];
     supplementalController = v11->_supplementalController;
     v11->_supplementalController = v14;
 
-    v16 = [v8 view];
-    v17 = [v16 window];
-    v18 = [v8 view];
-    v19 = [v18 window];
-    v20 = [v19 screen];
-    v21 = [RPTCoordinateSpaceConverter converterFromWindow:v17 toScreen:v20];
+    view = [controllerCopy view];
+    window = [view window];
+    view2 = [controllerCopy view];
+    window2 = [view2 window];
+    screen = [window2 screen];
+    v21 = [RPTCoordinateSpaceConverter converterFromWindow:window toScreen:screen];
     conversion = v11->_conversion;
     v11->_conversion = v21;
 
-    v23 = MEMORY[0x2667162B0](v9);
+    v23 = MEMORY[0x2667162B0](handlerCopy);
     completionHandler = v11->_completionHandler;
     v11->_completionHandler = v23;
   }
@@ -43,19 +43,19 @@
 
 - (id)composerBlock
 {
-  v3 = [(UIViewController *)self->_supplementalController view];
-  v4 = RPTGetBoundsForView(v3);
+  view = [(UIViewController *)self->_supplementalController view];
+  v4 = RPTGetBoundsForView(view);
   v6 = v5;
   v8 = v7;
   v10 = v9;
 
-  v11 = [(RPTFluidSplitViewTestParameters *)self conversion];
-  [v11 convertPoint:{RPTCGRectGetMidpointAlongSide(0, v4, v6, v8, v10)}];
+  conversion = [(RPTFluidSplitViewTestParameters *)self conversion];
+  [conversion convertPoint:{RPTCGRectGetMidpointAlongSide(0, v4, v6, v8, v10)}];
   v13 = v12;
   v15 = v14;
 
-  v16 = [(RPTFluidSplitViewTestParameters *)self conversion];
-  [v16 convertPoint:{RPTCGRectGetMidpointAlongSide(2, v4, v6, v8, v10)}];
+  conversion2 = [(RPTFluidSplitViewTestParameters *)self conversion];
+  [conversion2 convertPoint:{RPTCGRectGetMidpointAlongSide(2, v4, v6, v8, v10)}];
   v18 = v17;
   v20 = v19;
 

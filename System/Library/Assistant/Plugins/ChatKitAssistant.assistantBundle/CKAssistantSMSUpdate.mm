@@ -1,28 +1,28 @@
 @interface CKAssistantSMSUpdate
 - (id)_updateSMS;
 - (id)_validateUpdate;
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation CKAssistantSMSUpdate
 
 - (id)_updateSMS
 {
-  v3 = [(CKAssistantSMSUpdate *)self identifier];
-  v4 = [v3 identifier];
+  identifier = [(CKAssistantSMSUpdate *)self identifier];
+  v3Identifier = [identifier identifier];
   v5 = CKAssistantGetDraftForIdentifier();
 
   if (v5)
   {
-    v6 = [(CKAssistantSMSUpdate *)self setFields];
-    v7 = [(CKAssistantSMSUpdate *)self addFields];
-    v8 = [(CKAssistantSMSUpdate *)self removeFields];
-    [v5 updateUsingSet:v6 add:v7 remove:v8];
+    setFields = [(CKAssistantSMSUpdate *)self setFields];
+    addFields = [(CKAssistantSMSUpdate *)self addFields];
+    removeFields = [(CKAssistantSMSUpdate *)self removeFields];
+    [v5 updateUsingSet:setFields add:addFields remove:removeFields];
 
     CKAssistantUpdateStoreDraftWithSMS();
     v9 = objc_alloc_init(SADomainObjectUpdateCompleted);
-    v10 = [v5 identifier];
-    [v9 setIdentifier:v10];
+    identifier2 = [v5 identifier];
+    [v9 setIdentifier:identifier2];
   }
 
   else
@@ -35,15 +35,15 @@
 
 - (id)_validateUpdate
 {
-  v3 = [(CKAssistantSMSUpdate *)self identifier];
+  identifier = [(CKAssistantSMSUpdate *)self identifier];
 
-  if (!v3)
+  if (!identifier)
   {
     v17 = [[SACommandFailed alloc] initWithReason:@"Expected identifier to be set"];
     goto LABEL_19;
   }
 
-  v4 = [(CKAssistantSMSUpdate *)self identifier];
+  identifier2 = [(CKAssistantSMSUpdate *)self identifier];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -53,9 +53,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v5 = [v4 identifier];
-  v6 = [v5 absoluteString];
-  v7 = [v6 length];
+  v4Identifier = [identifier2 identifier];
+  absoluteString = [v4Identifier absoluteString];
+  v7 = [absoluteString length];
 
   if (!v7)
   {
@@ -63,11 +63,11 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v8 = [(CKAssistantSMSUpdate *)self setFields];
+  setFields = [(CKAssistantSMSUpdate *)self setFields];
 
-  if (v8)
+  if (setFields)
   {
-    v9 = [(CKAssistantSMSUpdate *)self setFields];
+    setFields2 = [(CKAssistantSMSUpdate *)self setFields];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -78,11 +78,11 @@ LABEL_17:
     }
   }
 
-  v11 = [(CKAssistantSMSUpdate *)self addFields];
+  addFields = [(CKAssistantSMSUpdate *)self addFields];
 
-  if (v11)
+  if (addFields)
   {
-    v12 = [(CKAssistantSMSUpdate *)self addFields];
+    addFields2 = [(CKAssistantSMSUpdate *)self addFields];
     objc_opt_class();
     v13 = objc_opt_isKindOfClass();
 
@@ -93,11 +93,11 @@ LABEL_17:
     }
   }
 
-  v14 = [(CKAssistantSMSUpdate *)self removeFields];
+  removeFields = [(CKAssistantSMSUpdate *)self removeFields];
 
-  if (v14)
+  if (removeFields)
   {
-    v15 = [(CKAssistantSMSUpdate *)self removeFields];
+    removeFields2 = [(CKAssistantSMSUpdate *)self removeFields];
     objc_opt_class();
     v16 = objc_opt_isKindOfClass();
 
@@ -116,9 +116,9 @@ LABEL_19:
   return v17;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -129,14 +129,14 @@ LABEL_19:
     }
   }
 
-  v6 = [(CKAssistantSMSUpdate *)self _validateUpdate];
-  if (!v6)
+  _validateUpdate = [(CKAssistantSMSUpdate *)self _validateUpdate];
+  if (!_validateUpdate)
   {
-    v6 = [(CKAssistantSMSUpdate *)self _updateSMS];
+    _validateUpdate = [(CKAssistantSMSUpdate *)self _updateSMS];
   }
 
-  v7 = [v6 dictionary];
-  v4[2](v4, v7);
+  dictionary = [_validateUpdate dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

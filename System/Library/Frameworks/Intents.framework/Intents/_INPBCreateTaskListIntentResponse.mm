@@ -1,36 +1,36 @@
 @interface _INPBCreateTaskListIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBCreateTaskListIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBCreateTaskListIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBCreateTaskListIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBCreateTaskListIntentResponse *)self createdTaskList];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"createdTaskList"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  createdTaskList = [(_INPBCreateTaskListIntentResponse *)self createdTaskList];
+  dictionaryRepresentation = [createdTaskList dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"createdTaskList"];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBCreateTaskListIntentResponse *)self createdTaskList];
-    v6 = [v4 createdTaskList];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    createdTaskList = [(_INPBCreateTaskListIntentResponse *)self createdTaskList];
+    createdTaskList2 = [equalCopy createdTaskList];
+    v7 = createdTaskList2;
+    if ((createdTaskList != 0) != (createdTaskList2 == 0))
     {
-      v8 = [(_INPBCreateTaskListIntentResponse *)self createdTaskList];
-      if (!v8)
+      createdTaskList3 = [(_INPBCreateTaskListIntentResponse *)self createdTaskList];
+      if (!createdTaskList3)
       {
 
 LABEL_10:
@@ -38,10 +38,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_INPBCreateTaskListIntentResponse *)self createdTaskList];
-      v11 = [v4 createdTaskList];
-      v12 = [v10 isEqual:v11];
+      v9 = createdTaskList3;
+      createdTaskList4 = [(_INPBCreateTaskListIntentResponse *)self createdTaskList];
+      createdTaskList5 = [equalCopy createdTaskList];
+      v12 = [createdTaskList4 isEqual:createdTaskList5];
 
       if (v12)
       {
@@ -60,47 +60,47 @@ LABEL_8:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBCreateTaskListIntentResponse allocWithZone:](_INPBCreateTaskListIntentResponse init];
-  v6 = [(_INPBTaskList *)self->_createdTaskList copyWithZone:a3];
+  v6 = [(_INPBTaskList *)self->_createdTaskList copyWithZone:zone];
   [(_INPBCreateTaskListIntentResponse *)v5 setCreatedTaskList:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBCreateTaskListIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBCreateTaskListIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBCreateTaskListIntentResponse)initWithCoder:(id)a3
+- (_INPBCreateTaskListIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBCreateTaskListIntentResponse *)self initWithData:v6];
+    self = [(_INPBCreateTaskListIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_INPBCreateTaskListIntentResponse *)self createdTaskList];
+  toCopy = to;
+  createdTaskList = [(_INPBCreateTaskListIntentResponse *)self createdTaskList];
 
-  if (v4)
+  if (createdTaskList)
   {
-    v5 = [(_INPBCreateTaskListIntentResponse *)self createdTaskList];
+    createdTaskList2 = [(_INPBCreateTaskListIntentResponse *)self createdTaskList];
     PBDataWriterWriteSubmessage();
   }
 }

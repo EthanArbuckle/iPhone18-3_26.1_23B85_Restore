@@ -1,6 +1,6 @@
 @interface _ATXCoreAnalyticsMetric
 - (_ATXCoreAnalyticsMetric)init;
-- (_ATXCoreAnalyticsMetric)initWithDimensions:(id)a3;
+- (_ATXCoreAnalyticsMetric)initWithDimensions:(id)dimensions;
 - (id)coreAnalyticsDictionary;
 - (id)coreAnalyticsDictionaryWithDimensions;
 - (id)metricName;
@@ -36,16 +36,16 @@
   return v4;
 }
 
-- (_ATXCoreAnalyticsMetric)initWithDimensions:(id)a3
+- (_ATXCoreAnalyticsMetric)initWithDimensions:(id)dimensions
 {
-  v5 = a3;
+  dimensionsCopy = dimensions;
   v9.receiver = self;
   v9.super_class = _ATXCoreAnalyticsMetric;
   v6 = [(_ATXCoreAnalyticsMetric *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dimensionSet, a3);
+    objc_storeStrong(&v6->_dimensionSet, dimensions);
   }
 
   return v7;
@@ -71,19 +71,19 @@
 - (id)coreAnalyticsDictionaryWithDimensions
 {
   v3 = objc_opt_new();
-  v4 = [(_ATXCoreAnalyticsDimensionSet *)self->_dimensionSet coreAnalyticsDictionary];
-  [v3 addEntriesFromDictionary:v4];
+  coreAnalyticsDictionary = [(_ATXCoreAnalyticsDimensionSet *)self->_dimensionSet coreAnalyticsDictionary];
+  [v3 addEntriesFromDictionary:coreAnalyticsDictionary];
 
-  v5 = [(_ATXCoreAnalyticsMetric *)self coreAnalyticsDictionary];
-  [v3 addEntriesFromDictionary:v5];
+  coreAnalyticsDictionary2 = [(_ATXCoreAnalyticsMetric *)self coreAnalyticsDictionary];
+  [v3 addEntriesFromDictionary:coreAnalyticsDictionary2];
 
   return v3;
 }
 
 - (void)logToCoreAnalytics
 {
-  v4 = [(_ATXCoreAnalyticsMetric *)self metricName];
-  v3 = [(_ATXCoreAnalyticsMetric *)self coreAnalyticsDictionaryWithDimensions];
+  metricName = [(_ATXCoreAnalyticsMetric *)self metricName];
+  coreAnalyticsDictionaryWithDimensions = [(_ATXCoreAnalyticsMetric *)self coreAnalyticsDictionaryWithDimensions];
   AnalyticsSendEvent();
 }
 

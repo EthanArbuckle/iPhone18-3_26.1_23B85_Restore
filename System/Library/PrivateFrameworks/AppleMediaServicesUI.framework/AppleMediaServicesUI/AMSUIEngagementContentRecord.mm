@@ -1,6 +1,6 @@
 @interface AMSUIEngagementContentRecord
-+ (BOOL)isURLEngagementContent:(id)a3;
-- (AMSUIEngagementContentRecord)initWithURL:(id)a3;
++ (BOOL)isURLEngagementContent:(id)content;
+- (AMSUIEngagementContentRecord)initWithURL:(id)l;
 - (NSURL)fallbackURL;
 @end
 
@@ -24,7 +24,7 @@
   return v7;
 }
 
-+ (BOOL)isURLEngagementContent:(id)a3
++ (BOOL)isURLEngagementContent:(id)content
 {
   v3 = sub_1BB1DB398();
   v4 = *(v3 - 8);
@@ -37,7 +37,7 @@
   return v8 & 1;
 }
 
-- (AMSUIEngagementContentRecord)initWithURL:(id)a3
+- (AMSUIEngagementContentRecord)initWithURL:(id)l
 {
   v3 = sub_1BB1DB398();
   v4 = *(*(v3 - 8) + 64);

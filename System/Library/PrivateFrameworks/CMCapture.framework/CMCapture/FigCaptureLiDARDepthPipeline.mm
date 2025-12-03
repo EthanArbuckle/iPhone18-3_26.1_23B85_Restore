@@ -1,27 +1,27 @@
 @interface FigCaptureLiDARDepthPipeline
 - (BWNodeOutput)depthDataSinkOutput;
-- (FigCaptureLiDARDepthPipeline)initWithCaptureDevice:(id)a3 cameraInfoByPortType:(id)a4 sensorIDStringsByPortType:(id)a5 timeOfFlightCameraType:(int)a6 depthDataCaptureConnectionConfiguration:(id)a7 videoSourceCaptureOutput:(id)a8 pointCloudOutput:(id)a9 graph:(id)a10 name:(id)a11 rgbCameraSourceID:(id)a12 errorOut:(int *)a13;
-- (int)_buildLiDARDepthPipelineWithVideoSourceCaptureOutput:(id)a3 pointCloudOutput:(id)a4 graph:(id)a5 timeOfFlightCameraType:(int)a6;
+- (FigCaptureLiDARDepthPipeline)initWithCaptureDevice:(id)device cameraInfoByPortType:(id)type sensorIDStringsByPortType:(id)portType timeOfFlightCameraType:(int)cameraType depthDataCaptureConnectionConfiguration:(id)configuration videoSourceCaptureOutput:(id)output pointCloudOutput:(id)cloudOutput graph:(id)self0 name:(id)self1 rgbCameraSourceID:(id)self2 errorOut:(int *)self3;
+- (int)_buildLiDARDepthPipelineWithVideoSourceCaptureOutput:(id)output pointCloudOutput:(id)cloudOutput graph:(id)graph timeOfFlightCameraType:(int)type;
 - (void)dealloc;
 @end
 
 @implementation FigCaptureLiDARDepthPipeline
 
-- (FigCaptureLiDARDepthPipeline)initWithCaptureDevice:(id)a3 cameraInfoByPortType:(id)a4 sensorIDStringsByPortType:(id)a5 timeOfFlightCameraType:(int)a6 depthDataCaptureConnectionConfiguration:(id)a7 videoSourceCaptureOutput:(id)a8 pointCloudOutput:(id)a9 graph:(id)a10 name:(id)a11 rgbCameraSourceID:(id)a12 errorOut:(int *)a13
+- (FigCaptureLiDARDepthPipeline)initWithCaptureDevice:(id)device cameraInfoByPortType:(id)type sensorIDStringsByPortType:(id)portType timeOfFlightCameraType:(int)cameraType depthDataCaptureConnectionConfiguration:(id)configuration videoSourceCaptureOutput:(id)output pointCloudOutput:(id)cloudOutput graph:(id)self0 name:(id)self1 rgbCameraSourceID:(id)self2 errorOut:(int *)self3
 {
-  v15 = *&a6;
+  v15 = *&cameraType;
   v22.receiver = self;
   v22.super_class = FigCaptureLiDARDepthPipeline;
-  v19 = [(FigCapturePipeline *)&v22 initWithGraph:a10 name:a11];
-  if (v19 && (v19->_captureDevice = a3, v19->_cameraInfoByPortType = a4, v19->_sensorIDStringsByPortType = a5, v19->_rgbCameraHorizontalSensorBinningFactor = [objc_msgSend(objc_msgSend(a7 "sourceConfiguration")], v19->_rgbCameraVerticalSensorBinningFactor = objc_msgSend(objc_msgSend(objc_msgSend(a7, "sourceConfiguration"), "requiredFormat"), "verticalSensorBinningFactor"), v19->_depthPixelFormat = objc_msgSend(objc_msgSend(objc_msgSend(a7, "sourceConfiguration"), "depthDataFormat"), "format"), v19->_depthDataFilteringEnabled = objc_msgSend(objc_msgSend(a7, "depthDataSinkConfiguration"), "filteringEnabled"), v19->_depthOutputDimensions = objc_msgSend(objc_msgSend(objc_msgSend(a7, "sourceConfiguration"), "depthDataFormat"), "dimensions"), v19->_depthDataCaptureConnectionConfiguration = a7, v19->_rgbCameraSourceID = a12, (v20 = -[FigCaptureLiDARDepthPipeline _buildLiDARDepthPipelineWithVideoSourceCaptureOutput:pointCloudOutput:graph:timeOfFlightCameraType:](v19, "_buildLiDARDepthPipelineWithVideoSourceCaptureOutput:pointCloudOutput:graph:timeOfFlightCameraType:", a8, a9, a10, v15)) != 0))
+  v19 = [(FigCapturePipeline *)&v22 initWithGraph:graph name:name];
+  if (v19 && (v19->_captureDevice = device, v19->_cameraInfoByPortType = type, v19->_sensorIDStringsByPortType = portType, v19->_rgbCameraHorizontalSensorBinningFactor = [objc_msgSend(objc_msgSend(configuration "sourceConfiguration")], v19->_rgbCameraVerticalSensorBinningFactor = objc_msgSend(objc_msgSend(objc_msgSend(configuration, "sourceConfiguration"), "requiredFormat"), "verticalSensorBinningFactor"), v19->_depthPixelFormat = objc_msgSend(objc_msgSend(objc_msgSend(configuration, "sourceConfiguration"), "depthDataFormat"), "format"), v19->_depthDataFilteringEnabled = objc_msgSend(objc_msgSend(configuration, "depthDataSinkConfiguration"), "filteringEnabled"), v19->_depthOutputDimensions = objc_msgSend(objc_msgSend(objc_msgSend(configuration, "sourceConfiguration"), "depthDataFormat"), "dimensions"), v19->_depthDataCaptureConnectionConfiguration = configuration, v19->_rgbCameraSourceID = d, (v20 = -[FigCaptureLiDARDepthPipeline _buildLiDARDepthPipelineWithVideoSourceCaptureOutput:pointCloudOutput:graph:timeOfFlightCameraType:](v19, "_buildLiDARDepthPipelineWithVideoSourceCaptureOutput:pointCloudOutput:graph:timeOfFlightCameraType:", output, cloudOutput, graph, v15)) != 0))
   {
-    [FigCaptureLiDARDepthPipeline initWithCaptureDevice:v20 cameraInfoByPortType:a13 sensorIDStringsByPortType:v19 timeOfFlightCameraType:? depthDataCaptureConnectionConfiguration:? videoSourceCaptureOutput:? pointCloudOutput:? graph:? name:? rgbCameraSourceID:? errorOut:?];
+    [FigCaptureLiDARDepthPipeline initWithCaptureDevice:v20 cameraInfoByPortType:out sensorIDStringsByPortType:v19 timeOfFlightCameraType:? depthDataCaptureConnectionConfiguration:? videoSourceCaptureOutput:? pointCloudOutput:? graph:? name:? rgbCameraSourceID:? errorOut:?];
     return 0;
   }
 
   else
   {
-    *a13 = 0;
+    *out = 0;
   }
 
   return v19;
@@ -49,16 +49,16 @@
   return [depthRotatorNode output];
 }
 
-- (int)_buildLiDARDepthPipelineWithVideoSourceCaptureOutput:(id)a3 pointCloudOutput:(id)a4 graph:(id)a5 timeOfFlightCameraType:(int)a6
+- (int)_buildLiDARDepthPipelineWithVideoSourceCaptureOutput:(id)output pointCloudOutput:(id)cloudOutput graph:(id)graph timeOfFlightCameraType:(int)type
 {
   v29 = 0;
-  v11 = [[BWVideoPointCloudSynchronizerNode alloc] initWithCaptureDevice:self->_captureDevice timeOfFlightCameraType:*&a6];
+  v11 = [[BWVideoPointCloudSynchronizerNode alloc] initWithCaptureDevice:self->_captureDevice timeOfFlightCameraType:*&type];
   self->_synchronizerNode = v11;
   if ([(FigCapturePipeline *)self addNode:v11 error:&v29])
   {
-    if ([a5 connectOutput:a3 toInput:-[BWVideoPointCloudSynchronizerNode imageInput](self->_synchronizerNode pipelineStage:{"imageInput"), 0}])
+    if ([graph connectOutput:output toInput:-[BWVideoPointCloudSynchronizerNode imageInput](self->_synchronizerNode pipelineStage:{"imageInput"), 0}])
     {
-      if ([a5 connectOutput:a4 toInput:-[BWVideoPointCloudSynchronizerNode pointCloudInput](self->_synchronizerNode pipelineStage:{"pointCloudInput"), 0}])
+      if ([graph connectOutput:cloudOutput toInput:-[BWVideoPointCloudSynchronizerNode pointCloudInput](self->_synchronizerNode pipelineStage:{"pointCloudInput"), 0}])
       {
         v12 = *off_1E798A0C0;
         v13 = [(NSDictionary *)self->_sensorIDStringsByPortType objectForKeyedSubscript:*off_1E798A0C0];
@@ -74,16 +74,16 @@
             if (v18)
             {
               v19 = v18;
-              v27 = a5;
+              graphCopy = graph;
               v20 = [(NSDictionary *)self->_cameraInfoByPortType objectForKeyedSubscript:v17];
-              v28 = a6;
+              typeCopy = type;
               v21 = +[FigCaptureCameraParameters sharedInstance];
-              LODWORD(v26) = v28;
+              LODWORD(v26) = typeCopy;
               self->_pointCloudDensificationNode = [[BWPointCloudDensificationNode alloc] initWithConfiguration:[[BWPointCloudDensificationNodeConfiguration alloc] initWithRGBSensorConfiguration:[[BWSensorConfiguration alloc] initWithPortType:v12 sensorIDString:v14 sensorIDDictionary:[(FigCaptureCameraParameters *)v21 sensorIDDictionaryForPortType:v12 sensorIDString:v14] cameraInfo:v16] timeOfFlightSensorConfiguration:[[BWSensorConfiguration alloc] initWithPortType:v17 sensorIDString:v19 sensorIDDictionary:[(FigCaptureCameraParameters *)v21 sensorIDDictionaryForPortType:v17 sensorIDString:v19] cameraInfo:v20] rgbCameraHorizontalSensorBinningFactor:self->_rgbCameraHorizontalSensorBinningFactor rgbCameraVerticalSensorBinningFactor:self->_rgbCameraVerticalSensorBinningFactor filteringEnabled:self->_depthDataFilteringEnabled depthPixelFormat:self->_depthPixelFormat depthOutputDimensions:*&self->_depthOutputDimensions timeOfFlightCameraType:v26]];
               v22 = [BWPipelineStage pipelineStageWithName:@"com.apple.coremedia.capture.pointcloud.densification" priority:13];
               if ([(FigCapturePipeline *)self addNode:self->_pointCloudDensificationNode error:&v29])
               {
-                if ([v27 connectOutput:-[BWNode output](self->_synchronizerNode toInput:"output") pipelineStage:{-[BWNode input](self->_pointCloudDensificationNode, "input"), v22}])
+                if ([graphCopy connectOutput:-[BWNode output](self->_synchronizerNode toInput:"output") pipelineStage:{-[BWNode input](self->_pointCloudDensificationNode, "input"), v22}])
                 {
                   v23 = FigCaptureRotationDegreesWithMirroring([(FigVideoCaptureConnectionConfiguration *)self->_depthDataCaptureConnectionConfiguration rotationDegrees], [(FigVideoCaptureConnectionConfiguration *)self->_depthDataCaptureConnectionConfiguration mirroringEnabled]);
                   if (v23)
@@ -92,7 +92,7 @@
                     self->_depthRotatorNode = v24;
                     if ([(FigCapturePipeline *)self addNode:v24 error:&v29])
                     {
-                      [v27 connectOutput:-[BWNode output](self->_pointCloudDensificationNode toInput:"output") pipelineStage:{-[BWNode input](self->_depthRotatorNode, "input"), v22}];
+                      [graphCopy connectOutput:-[BWNode output](self->_pointCloudDensificationNode toInput:"output") pipelineStage:{-[BWNode input](self->_depthRotatorNode, "input"), v22}];
                     }
 
                     else

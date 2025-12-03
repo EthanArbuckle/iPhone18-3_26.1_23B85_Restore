@@ -1,12 +1,12 @@
 @interface ASTMousePointerCustomizationController
-- (id)assistiveTouchMousePointerSizeMultiplier:(id)a3;
-- (id)mousePointerColorDescription:(id)a3;
-- (id)mousePointerTimeoutDescription:(id)a3;
-- (id)selectSpecifier:(id)a3;
+- (id)assistiveTouchMousePointerSizeMultiplier:(id)multiplier;
+- (id)mousePointerColorDescription:(id)description;
+- (id)mousePointerTimeoutDescription:(id)description;
+- (id)selectSpecifier:(id)specifier;
 - (id)specifiers;
-- (int64_t)selectedColorForSelectionController:(id)a3;
-- (void)cursorColorSelectionController:(id)a3 selectedCursorColor:(int64_t)a4;
-- (void)setAssistiveTouchMousePointerSizeMultiplier:(id)a3 specifier:(id)a4;
+- (int64_t)selectedColorForSelectionController:(id)controller;
+- (void)cursorColorSelectionController:(id)controller selectedCursorColor:(int64_t)color;
+- (void)setAssistiveTouchMousePointerSizeMultiplier:(id)multiplier specifier:(id)specifier;
 @end
 
 @implementation ASTMousePointerCustomizationController
@@ -114,11 +114,11 @@ void __52__ASTMousePointerCustomizationController_specifiers__block_invoke_3(uin
   [WeakRetained reloadSpecifier:*(a1 + 32) animated:0];
 }
 
-- (id)selectSpecifier:(id)a3
+- (id)selectSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = ASTMousePointerCustomizationController;
-  v4 = [(ASTMousePointerCustomizationController *)&v6 selectSpecifier:a3];
+  v4 = [(ASTMousePointerCustomizationController *)&v6 selectSpecifier:specifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -128,7 +128,7 @@ void __52__ASTMousePointerCustomizationController_specifiers__block_invoke_3(uin
   return v4;
 }
 
-- (id)assistiveTouchMousePointerSizeMultiplier:(id)a3
+- (id)assistiveTouchMousePointerSizeMultiplier:(id)multiplier
 {
   v3 = +[AXSettings sharedInstance];
   [v3 assistiveTouchMousePointerSizeMultiplier];
@@ -137,15 +137,15 @@ void __52__ASTMousePointerCustomizationController_specifiers__block_invoke_3(uin
   return v4;
 }
 
-- (void)setAssistiveTouchMousePointerSizeMultiplier:(id)a3 specifier:(id)a4
+- (void)setAssistiveTouchMousePointerSizeMultiplier:(id)multiplier specifier:(id)specifier
 {
-  [a3 floatValue];
+  [multiplier floatValue];
   v5 = v4;
   v6 = +[AXSettings sharedInstance];
   [v6 setAssistiveTouchMousePointerSizeMultiplier:v5];
 }
 
-- (id)mousePointerColorDescription:(id)a3
+- (id)mousePointerColorDescription:(id)description
 {
   v3 = +[AXSettings sharedInstance];
   [v3 assistiveTouchMousePointerColor];
@@ -154,12 +154,12 @@ void __52__ASTMousePointerCustomizationController_specifiers__block_invoke_3(uin
   return v4;
 }
 
-- (id)mousePointerTimeoutDescription:(id)a3
+- (id)mousePointerTimeoutDescription:(id)description
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchMousePointerTimeoutEnabled];
+  assistiveTouchMousePointerTimeoutEnabled = [v3 assistiveTouchMousePointerTimeoutEnabled];
 
-  if (v4)
+  if (assistiveTouchMousePointerTimeoutEnabled)
   {
     v5 = +[AXSettings sharedInstance];
     [v5 assistiveTouchMousePointerTimeout];
@@ -174,18 +174,18 @@ void __52__ASTMousePointerCustomizationController_specifiers__block_invoke_3(uin
   return v6;
 }
 
-- (void)cursorColorSelectionController:(id)a3 selectedCursorColor:(int64_t)a4
+- (void)cursorColorSelectionController:(id)controller selectedCursorColor:(int64_t)color
 {
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchMousePointerColor:a4];
+  [v5 setAssistiveTouchMousePointerColor:color];
 }
 
-- (int64_t)selectedColorForSelectionController:(id)a3
+- (int64_t)selectedColorForSelectionController:(id)controller
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchMousePointerColor];
+  assistiveTouchMousePointerColor = [v3 assistiveTouchMousePointerColor];
 
-  return v4;
+  return assistiveTouchMousePointerColor;
 }
 
 @end

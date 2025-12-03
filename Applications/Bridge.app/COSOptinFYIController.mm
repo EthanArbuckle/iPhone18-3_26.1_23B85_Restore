@@ -154,17 +154,17 @@ LABEL_11:
         v9 = [(objc_class *)v8 conformsToProtocol:&OBJC_PROTOCOL___BPSUnifiedFYIOptinController];
         if (v9)
         {
-          v10 = [(objc_class *)v8 wantsUnifiedFYI];
+          wantsUnifiedFYI = [(objc_class *)v8 wantsUnifiedFYI];
         }
 
         else
         {
-          v10 = 0;
+          wantsUnifiedFYI = 0;
         }
 
         v11 = objc_opt_respondsToSelector();
         v12 = [NSNumber numberWithBool:v9];
-        v13 = [NSNumber numberWithBool:v10];
+        v13 = [NSNumber numberWithBool:wantsUnifiedFYI];
         v14 = [NSNumber numberWithBool:v11 & 1];
         [v2 appendFormat:@"\n#### %@ -> (Conforms to Protocol: %@) (Wants FYI: %@) (Has Work: %@)", v7, v12, v13, v14];
       }

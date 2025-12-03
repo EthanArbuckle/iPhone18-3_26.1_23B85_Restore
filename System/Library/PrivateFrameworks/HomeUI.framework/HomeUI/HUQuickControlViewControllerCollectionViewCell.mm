@@ -1,64 +1,64 @@
 @interface HUQuickControlViewControllerCollectionViewCell
-+ (unint64_t)quickControlSizeForItemSize:(unint64_t)a3;
++ (unint64_t)quickControlSizeForItemSize:(unint64_t)size;
 - (void)_updateContentViewControllerForActiveLayoutAttributes;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)setActiveLayoutAttributes:(id)a3;
-- (void)setViewController:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)setActiveLayoutAttributes:(id)attributes;
+- (void)setViewController:(id)controller;
 @end
 
 @implementation HUQuickControlViewControllerCollectionViewCell
 
-+ (unint64_t)quickControlSizeForItemSize:(unint64_t)a3
++ (unint64_t)quickControlSizeForItemSize:(unint64_t)size
 {
-  if (a3 - 1 >= 3)
+  if (size - 1 >= 3)
   {
     return 3;
   }
 
   else
   {
-    return 3 - a3;
+    return 3 - size;
   }
 }
 
 - (void)_updateContentViewControllerForActiveLayoutAttributes
 {
   v3 = objc_opt_class();
-  v4 = [(HUQuickControlViewControllerCollectionViewCell *)self activeLayoutAttributes];
-  v5 = [v3 quickControlSizeForItemSize:{objc_msgSend(v4, "itemSize")}];
-  v6 = [(HUViewControllerCollectionViewCell *)self viewController];
-  v7 = [v6 contentViewController];
-  [v7 setControlSize:v5];
+  activeLayoutAttributes = [(HUQuickControlViewControllerCollectionViewCell *)self activeLayoutAttributes];
+  v5 = [v3 quickControlSizeForItemSize:{objc_msgSend(activeLayoutAttributes, "itemSize")}];
+  viewController = [(HUViewControllerCollectionViewCell *)self viewController];
+  contentViewController = [viewController contentViewController];
+  [contentViewController setControlSize:v5];
 
-  v10 = [(HUQuickControlViewControllerCollectionViewCell *)self activeLayoutAttributes];
-  v8 = [v10 titlePosition];
-  v9 = [(HUViewControllerCollectionViewCell *)self viewController];
-  [v9 setTitlePosition:v8];
+  activeLayoutAttributes2 = [(HUQuickControlViewControllerCollectionViewCell *)self activeLayoutAttributes];
+  titlePosition = [activeLayoutAttributes2 titlePosition];
+  viewController2 = [(HUViewControllerCollectionViewCell *)self viewController];
+  [viewController2 setTitlePosition:titlePosition];
 }
 
-- (void)setActiveLayoutAttributes:(id)a3
+- (void)setActiveLayoutAttributes:(id)attributes
 {
-  objc_storeStrong(&self->_activeLayoutAttributes, a3);
+  objc_storeStrong(&self->_activeLayoutAttributes, attributes);
 
   [(HUQuickControlViewControllerCollectionViewCell *)self _updateContentViewControllerForActiveLayoutAttributes];
 }
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = HUQuickControlViewControllerCollectionViewCell;
-  [(HUViewControllerCollectionViewCell *)&v4 setViewController:a3];
+  [(HUViewControllerCollectionViewCell *)&v4 setViewController:controller];
   [(HUQuickControlViewControllerCollectionViewCell *)self _updateContentViewControllerForActiveLayoutAttributes];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v8.receiver = self;
   v8.super_class = HUQuickControlViewControllerCollectionViewCell;
-  [(HUQuickControlViewControllerCollectionViewCell *)&v8 applyLayoutAttributes:v4];
+  [(HUQuickControlViewControllerCollectionViewCell *)&v8 applyLayoutAttributes:attributesCopy];
   objc_opt_class();
-  v5 = v4;
+  v5 = attributesCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;

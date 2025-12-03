@@ -1,34 +1,34 @@
 @interface BYDeviceMigrationManager
 - (BOOL)_hasAssertions;
 - (BOOL)takeAssertions;
-- (BYDeviceMigrationManager)initWithFileTranferSession:(id)a3;
+- (BYDeviceMigrationManager)initWithFileTranferSession:(id)session;
 - (__MKBAssertion)acquireDeviceLockAssertion;
 - (void)_reacquireDeviceLockAssertion;
-- (void)addDelegate:(id)a3;
-- (void)cancelWithCause:(int64_t)a3;
+- (void)addDelegate:(id)delegate;
+- (void)cancelWithCause:(int64_t)cause;
 - (void)dealloc;
 - (void)releaseAssertions;
-- (void)removeDelegate:(id)a3;
-- (void)restartDeviceTransferTask:(id)a3;
+- (void)removeDelegate:(id)delegate;
+- (void)restartDeviceTransferTask:(id)task;
 - (void)start;
 - (void)takeAssertions;
 @end
 
 @implementation BYDeviceMigrationManager
 
-- (BYDeviceMigrationManager)initWithFileTranferSession:(id)a3
+- (BYDeviceMigrationManager)initWithFileTranferSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v13.receiver = self;
   v13.super_class = BYDeviceMigrationManager;
   v6 = [(BYDeviceMigrationManager *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fileTransferSession, a3);
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeStrong(&v6->_fileTransferSession, session);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     delegates = v7->_delegates;
-    v7->_delegates = v8;
+    v7->_delegates = weakObjectsHashTable;
 
     v10 = dispatch_queue_create("Device Migration Queue", 0);
     migrationQueue = v7->_migrationQueue;
@@ -55,13 +55,13 @@
 
 - (void)start
 {
-  v3 = [(BYDeviceMigrationManager *)self migrationQueue];
+  migrationQueue = [(BYDeviceMigrationManager *)self migrationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__BYDeviceMigrationManager_start__block_invoke;
   block[3] = &unk_1E7D027A8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(migrationQueue, block);
 }
 
 void __33__BYDeviceMigrationManager_start__block_invoke(uint64_t a1)
@@ -304,16 +304,16 @@ void __33__BYDeviceMigrationManager_start__block_invoke_2(uint64_t a1, void *a2)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelWithCause:(int64_t)a3
+- (void)cancelWithCause:(int64_t)cause
 {
-  v5 = [(BYDeviceMigrationManager *)self migrationQueue];
+  migrationQueue = [(BYDeviceMigrationManager *)self migrationQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__BYDeviceMigrationManager_cancelWithCause___block_invoke;
   v6[3] = &unk_1E7D03650;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = cause;
+  dispatch_sync(migrationQueue, v6);
 }
 
 uint64_t __44__BYDeviceMigrationManager_cancelWithCause___block_invoke(uint64_t a1)
@@ -344,18 +344,18 @@ uint64_t __44__BYDeviceMigrationManager_cancelWithCause___block_invoke(uint64_t 
   return result;
 }
 
-- (void)restartDeviceTransferTask:(id)a3
+- (void)restartDeviceTransferTask:(id)task
 {
-  v4 = a3;
-  v5 = [(BYDeviceMigrationManager *)self migrationQueue];
+  taskCopy = task;
+  migrationQueue = [(BYDeviceMigrationManager *)self migrationQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__BYDeviceMigrationManager_restartDeviceTransferTask___block_invoke;
   v7[3] = &unk_1E7D03330;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = taskCopy;
+  v6 = taskCopy;
+  dispatch_sync(migrationQueue, v7);
 }
 
 void __54__BYDeviceMigrationManager_restartDeviceTransferTask___block_invoke(uint64_t a1)
@@ -416,18 +416,18 @@ LABEL_9:
   [WeakRetained start];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(BYDeviceMigrationManager *)self migrationQueue];
+  delegateCopy = delegate;
+  migrationQueue = [(BYDeviceMigrationManager *)self migrationQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__BYDeviceMigrationManager_addDelegate___block_invoke;
   v7[3] = &unk_1E7D03330;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_async(migrationQueue, v7);
 }
 
 void __40__BYDeviceMigrationManager_addDelegate___block_invoke(uint64_t a1)
@@ -465,18 +465,18 @@ void __40__BYDeviceMigrationManager_addDelegate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(BYDeviceMigrationManager *)self migrationQueue];
+  delegateCopy = delegate;
+  migrationQueue = [(BYDeviceMigrationManager *)self migrationQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__BYDeviceMigrationManager_removeDelegate___block_invoke;
   v7[3] = &unk_1E7D03330;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_async(migrationQueue, v7);
 }
 
 void __43__BYDeviceMigrationManager_removeDelegate___block_invoke(uint64_t a1)
@@ -487,8 +487,8 @@ void __43__BYDeviceMigrationManager_removeDelegate___block_invoke(uint64_t a1)
 
 - (BOOL)_hasAssertions
 {
-  v3 = [(BYDeviceMigrationManager *)self processAssertion];
-  if (v3)
+  processAssertion = [(BYDeviceMigrationManager *)self processAssertion];
+  if (processAssertion)
   {
     v4 = [(BYDeviceMigrationManager *)self deviceLockAssertion]!= 0;
   }
@@ -504,8 +504,8 @@ void __43__BYDeviceMigrationManager_removeDelegate___block_invoke(uint64_t a1)
 - (BOOL)takeAssertions
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v3 = [(BYDeviceMigrationManager *)self migrationQueue];
-  dispatch_assert_queue_V2(v3);
+  migrationQueue = [(BYDeviceMigrationManager *)self migrationQueue];
+  dispatch_assert_queue_V2(migrationQueue);
 
   v4 = voucher_copy();
   [(BYDeviceMigrationManager *)self setClientVoucher:v4];
@@ -515,13 +515,13 @@ void __43__BYDeviceMigrationManager_removeDelegate___block_invoke(uint64_t a1)
 LABEL_6:
     [(BYDeviceMigrationManager *)self setDeviceLockAssertion:[(BYDeviceMigrationManager *)self acquireDeviceLockAssertion]];
     v16 = [*MEMORY[0x1E69ADFA0] cStringUsingEncoding:4];
-    v17 = [(BYDeviceMigrationManager *)self migrationQueue];
+    migrationQueue2 = [(BYDeviceMigrationManager *)self migrationQueue];
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __42__BYDeviceMigrationManager_takeAssertions__block_invoke;
     handler[3] = &unk_1E7D03678;
     handler[4] = self;
-    v18 = notify_register_dispatch(v16, &self->_passcodeChangeNotificationToken, v17, handler);
+    v18 = notify_register_dispatch(v16, &self->_passcodeChangeNotificationToken, migrationQueue2, handler);
 
     if (v18)
     {
@@ -538,8 +538,8 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  v5 = [(BYDeviceMigrationManager *)self processAssertion];
-  [v5 invalidate];
+  processAssertion = [(BYDeviceMigrationManager *)self processAssertion];
+  [processAssertion invalidate];
 
   v6 = objc_alloc(MEMORY[0x1E69C7548]);
   v7 = [MEMORY[0x1E69C7640] targetWithPid:getpid()];
@@ -549,14 +549,14 @@ LABEL_6:
   v10 = [v6 initWithExplanation:@"Device-to-Device Migration" target:v7 attributes:v9];
   [(BYDeviceMigrationManager *)self setProcessAssertion:v10];
 
-  v11 = [(BYDeviceMigrationManager *)self processAssertion];
+  processAssertion2 = [(BYDeviceMigrationManager *)self processAssertion];
   v26 = 0;
-  v12 = [v11 acquireWithError:&v26];
+  domain = [processAssertion2 acquireWithError:&v26];
   v13 = v26;
 
   v14 = _BYLoggingFacility();
   v15 = v14;
-  if (v12)
+  if (domain)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -578,8 +578,8 @@ LABEL_6:
     else if (v13)
     {
       v24 = MEMORY[0x1E696AEC0];
-      v12 = [v13 domain];
-      v23 = [v24 stringWithFormat:@"<Error domain: %@, code %ld>", v12, objc_msgSend(v13, "code")];
+      domain = [v13 domain];
+      v23 = [v24 stringWithFormat:@"<Error domain: %@, code %ld>", domain, objc_msgSend(v13, "code")];
       v22 = 1;
     }
 
@@ -641,12 +641,12 @@ LABEL_13:
 
 - (void)releaseAssertions
 {
-  v3 = [(BYDeviceMigrationManager *)self migrationQueue];
-  dispatch_assert_queue_V2(v3);
+  migrationQueue = [(BYDeviceMigrationManager *)self migrationQueue];
+  dispatch_assert_queue_V2(migrationQueue);
 
-  v4 = [(BYDeviceMigrationManager *)self processAssertion];
+  processAssertion = [(BYDeviceMigrationManager *)self processAssertion];
 
-  if (v4)
+  if (processAssertion)
   {
     v5 = _BYLoggingFacility();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -655,8 +655,8 @@ LABEL_13:
       _os_log_impl(&dword_1B862F000, v5, OS_LOG_TYPE_DEFAULT, "Releasing process assertion", buf, 2u);
     }
 
-    v6 = [(BYDeviceMigrationManager *)self processAssertion];
-    [v6 invalidate];
+    processAssertion2 = [(BYDeviceMigrationManager *)self processAssertion];
+    [processAssertion2 invalidate];
 
     [(BYDeviceMigrationManager *)self setProcessAssertion:0];
   }
@@ -725,7 +725,7 @@ void __54__BYDeviceMigrationManager_restartDeviceTransferTask___block_invoke_10_
 {
   v4 = *MEMORY[0x1E69E9840];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_1B862F000, a2, OS_LOG_TYPE_ERROR, "Failed to register for passcode change notification to refresh device lock assertion: %d", v3, 8u);
   v2 = *MEMORY[0x1E69E9840];
 }

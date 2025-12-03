@@ -1,6 +1,6 @@
 @interface KeepAliveManager
-- (BOOL)isNextKeepAliveWithinThreshold:(double)a3;
-- (KeepAliveManager)initWithIdentifier:(KeepAliveManager *)self minInterval:(SEL)a2 maxInterval:()basic_string<char enableWakeUp:()std:(std::allocator<char>> *)a3 :char_traits<char> delegate:;
+- (BOOL)isNextKeepAliveWithinThreshold:(double)threshold;
+- (KeepAliveManager)initWithIdentifier:(KeepAliveManager *)self minInterval:(SEL)interval maxInterval:()basic_string<char enableWakeUp:()std:(std::allocator<char>> *)std :char_traits<char> delegate:;
 - (id).cxx_construct;
 - (void)dealloc;
 - (void)growKeepAliveInterval;
@@ -13,7 +13,7 @@
 
 @implementation KeepAliveManager
 
-- (KeepAliveManager)initWithIdentifier:(KeepAliveManager *)self minInterval:(SEL)a2 maxInterval:()basic_string<char enableWakeUp:()std:(std::allocator<char>> *)a3 :char_traits<char> delegate:
+- (KeepAliveManager)initWithIdentifier:(KeepAliveManager *)self minInterval:(SEL)interval maxInterval:()basic_string<char enableWakeUp:()std:(std::allocator<char>> *)std :char_traits<char> delegate:
 {
   v7 = v4;
   v8 = v3;
@@ -350,7 +350,7 @@ LABEL_28:
   [(PCConnectionManager *)self->_manager resumeManagerWithAction:1];
 }
 
-- (BOOL)isNextKeepAliveWithinThreshold:(double)a3
+- (BOOL)isNextKeepAliveWithinThreshold:(double)threshold
 {
   [(PCConnectionManager *)self->_manager lastScheduledIntervalTime];
   v6 = v5;
@@ -370,7 +370,7 @@ LABEL_28:
   v16 = v24;
   (*(*v8 + 32))(v8, v15);
   std::__put_character_sequence[abi:ne200100]<char,std::char_traits<char>>(*(v8 + 8), ", next event - cushion ", 23);
-  v10 = v6 - a3;
+  v10 = v6 - threshold;
   *(v8 + 17) = 0;
   v11 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v10];
   KAStringFromDate(v11);

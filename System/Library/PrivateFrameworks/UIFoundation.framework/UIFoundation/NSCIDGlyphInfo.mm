@@ -1,50 +1,50 @@
 @interface NSCIDGlyphInfo
-+ (id)glyphInfoWithCharacterIdentifier:(unint64_t)a3 collection:(unint64_t)a4 baseString:(id)a5;
++ (id)glyphInfoWithCharacterIdentifier:(unint64_t)identifier collection:(unint64_t)collection baseString:(id)string;
 + (void)initialize;
-- (NSCIDGlyphInfo)initWithCharacterIdentifier:(unint64_t)a3 collection:(unint64_t)a4 baseString:(id)a5;
-- (NSCIDGlyphInfo)initWithCoder:(id)a3;
+- (NSCIDGlyphInfo)initWithCharacterIdentifier:(unint64_t)identifier collection:(unint64_t)collection baseString:(id)string;
+- (NSCIDGlyphInfo)initWithCoder:(id)coder;
 - (id)description;
-- (unsigned)_glyphForFont:(id)a3 baseString:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (unsigned)_glyphForFont:(id)font baseString:(id)string;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSCIDGlyphInfo
 
-+ (id)glyphInfoWithCharacterIdentifier:(unint64_t)a3 collection:(unint64_t)a4 baseString:(id)a5
++ (id)glyphInfoWithCharacterIdentifier:(unint64_t)identifier collection:(unint64_t)collection baseString:(id)string
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithCharacterIdentifier:a3 collection:a4 baseString:a5];
+  v5 = [objc_alloc(objc_opt_class()) initWithCharacterIdentifier:identifier collection:collection baseString:string];
 
   return v5;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 setVersion:1];
+    [self setVersion:1];
   }
 }
 
-- (NSCIDGlyphInfo)initWithCharacterIdentifier:(unint64_t)a3 collection:(unint64_t)a4 baseString:(id)a5
+- (NSCIDGlyphInfo)initWithCharacterIdentifier:(unint64_t)identifier collection:(unint64_t)collection baseString:(id)string
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v8.receiver = self;
   v8.super_class = NSCIDGlyphInfo;
-  result = [(NSGlyphInfo *)&v8 initWithBaseString:a5];
-  result->_cid = v6;
-  result->_collection = a4;
+  result = [(NSGlyphInfo *)&v8 initWithBaseString:string];
+  result->_cid = identifierCopy;
+  result->_collection = collection;
   return result;
 }
 
-- (unsigned)_glyphForFont:(id)a3 baseString:(id)a4
+- (unsigned)_glyphForFont:(id)font baseString:(id)string
 {
-  LODWORD(v6) = [a4 isEqualToString:self->super._baseString];
+  LODWORD(v6) = [string isEqualToString:self->super._baseString];
   if (v6)
   {
-    if (self->_collection || (cid = self->_cid, [a3 numberOfGlyphs] <= cid))
+    if (self->_collection || (cid = self->_cid, [font numberOfGlyphs] <= cid))
     {
-      v6 = CTFontCopyGraphicsFont(a3, 0);
+      v6 = CTFontCopyGraphicsFont(font, 0);
       if (v6)
       {
         v8 = v6;
@@ -67,45 +67,45 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = self->_cid | (LODWORD(self->_collection) << 24);
   v6 = self->_cid | (LODWORD(self->_collection) << 24);
   v5.receiver = self;
   v5.super_class = NSCIDGlyphInfo;
   [(NSGlyphInfo *)&v5 encodeWithCoder:?];
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
     if (v4)
     {
-      [a3 encodeInt32:v4 forKey:@"NSCID_RO"];
+      [coder encodeInt32:v4 forKey:@"NSCID_RO"];
     }
   }
 
   else
   {
-    [a3 encodeValueOfObjCType:"i" at:&v6];
+    [coder encodeValueOfObjCType:"i" at:&v6];
   }
 }
 
-- (NSCIDGlyphInfo)initWithCoder:(id)a3
+- (NSCIDGlyphInfo)initWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
     v14.receiver = self;
     v14.super_class = NSCIDGlyphInfo;
-    return [(NSGlyphInfo *)&v14 initWithCoder:a3];
+    return [(NSGlyphInfo *)&v14 initWithCoder:coder];
   }
 
-  v6 = [a3 versionForClassName:@"NSCIDGlyphInfo"];
+  v6 = [coder versionForClassName:@"NSCIDGlyphInfo"];
   v7 = objc_opt_class();
   if (v7 != objc_opt_class() || v6 != 0)
   {
     v13.receiver = self;
     v13.super_class = NSCIDGlyphInfo;
-    v5 = [(NSGlyphInfo *)&v13 initWithCoder:a3];
+    v5 = [(NSGlyphInfo *)&v13 initWithCoder:coder];
     v12 = 0;
-    [a3 decodeValueOfObjCType:"i" at:&v12 size:4];
+    [coder decodeValueOfObjCType:"i" at:&v12 size:4];
     v9 = v12;
     if (v12)
     {

@@ -1,7 +1,7 @@
 @interface NFSecureXPCEventPublisher
-- (NFSecureXPCEventPublisher)initWithMachPort:(id)a3 queue:(id)a4;
+- (NFSecureXPCEventPublisher)initWithMachPort:(id)port queue:(id)queue;
 - (void)dealloc;
-- (void)sendEvent:(id)a3;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation NFSecureXPCEventPublisher
@@ -10,8 +10,8 @@
 {
   if ([(NFSecureXPCEventPublisher *)self available])
   {
-    v3 = [(NFSecureXPCEventPublisher *)self connection];
-    xpc_connection_cancel(v3);
+    connection = [(NFSecureXPCEventPublisher *)self connection];
+    xpc_connection_cancel(connection);
   }
 
   v4.receiver = self;
@@ -19,21 +19,21 @@
   [(NFSecureXPCEventPublisher *)&v4 dealloc];
 }
 
-- (NFSecureXPCEventPublisher)initWithMachPort:(id)a3 queue:(id)a4
+- (NFSecureXPCEventPublisher)initWithMachPort:(id)port queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  portCopy = port;
+  queueCopy = queue;
   v24.receiver = self;
   v24.super_class = NFSecureXPCEventPublisher;
   v9 = [(NFSecureXPCEventPublisher *)&v24 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_serviceName, a3);
-    v11 = [v7 UTF8String];
-    if (v8)
+    objc_storeStrong(&v9->_serviceName, port);
+    uTF8String = [portCopy UTF8String];
+    if (queueCopy)
     {
-      v12 = v8;
+      v12 = queueCopy;
       queue = v10->_queue;
       v10->_queue = v12;
     }
@@ -41,12 +41,12 @@
     else
     {
       queue = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v14 = dispatch_queue_create(v11, queue);
+      v14 = dispatch_queue_create(uTF8String, queue);
       v15 = v10->_queue;
       v10->_queue = v14;
     }
 
-    mach_service = xpc_connection_create_mach_service(v11, v10->_queue, 2uLL);
+    mach_service = xpc_connection_create_mach_service(uTF8String, v10->_queue, 2uLL);
     connection = v10->_connection;
     v10->_connection = mach_service;
 
@@ -57,7 +57,7 @@
     handler[2] = sub_100054D34;
     handler[3] = &unk_1004C2D30;
     objc_copyWeak(&v22, &location);
-    v21 = v7;
+    v21 = portCopy;
     xpc_connection_set_event_handler(v18, handler);
     v10->_available = 1;
     xpc_connection_activate(v10->_connection);
@@ -69,40 +69,40 @@
   return v10;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(NFSecureXPCEventPublisher *)self available])
   {
-    type = xpc_get_type(v4);
+    type = xpc_get_type(eventCopy);
     if (type == &_xpc_type_dictionary)
     {
-      v7 = [(NFSecureXPCEventPublisher *)self connection];
+      connection = [(NFSecureXPCEventPublisher *)self connection];
       xpc_connection_send_notification();
     }
 
     else
     {
       v6 = type;
-      v7 = SESDefaultLogObject();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      connection = SESDefaultLogObject();
+      if (os_log_type_enabled(connection, OS_LOG_TYPE_ERROR))
       {
         v9 = 136315138;
         name = xpc_type_get_name(v6);
-        _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Invalid event type: %s", &v9, 0xCu);
+        _os_log_impl(&_mh_execute_header, connection, OS_LOG_TYPE_ERROR, "Invalid event type: %s", &v9, 0xCu);
       }
     }
   }
 
   else
   {
-    v7 = SESDefaultLogObject();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    connection = SESDefaultLogObject();
+    if (os_log_type_enabled(connection, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(NFSecureXPCEventPublisher *)self serviceName];
+      serviceName = [(NFSecureXPCEventPublisher *)self serviceName];
       v9 = 138412290;
-      name = v8;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Service unavailable: %@", &v9, 0xCu);
+      name = serviceName;
+      _os_log_impl(&_mh_execute_header, connection, OS_LOG_TYPE_ERROR, "Service unavailable: %@", &v9, 0xCu);
     }
   }
 }

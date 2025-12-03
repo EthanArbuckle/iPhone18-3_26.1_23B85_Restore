@@ -1,10 +1,10 @@
 @interface CarSpinnerGuidanceSign
 - (CarGuidanceCardSizeProviding)sizeProvider;
-- (CarSpinnerGuidanceSign)initWithDestination:(unint64_t)a3;
+- (CarSpinnerGuidanceSign)initWithDestination:(unint64_t)destination;
 - (void)_updateStyling;
-- (void)setMessageString:(id)a3;
-- (void)setPrimaryString:(id)a3;
-- (void)setShowMessage:(BOOL)a3 animated:(BOOL)a4;
+- (void)setMessageString:(id)string;
+- (void)setPrimaryString:(id)string;
+- (void)setShowMessage:(BOOL)message animated:(BOOL)animated;
 - (void)updateConstraints;
 @end
 
@@ -19,39 +19,39 @@
 
 - (void)updateConstraints
 {
-  v3 = [(CarSpinnerGuidanceSign *)self dynamicConstraints];
-  v4 = [v3 count];
+  dynamicConstraints = [(CarSpinnerGuidanceSign *)self dynamicConstraints];
+  v4 = [dynamicConstraints count];
 
   if (v4)
   {
-    v5 = [(CarSpinnerGuidanceSign *)self dynamicConstraints];
-    [NSLayoutConstraint deactivateConstraints:v5];
+    dynamicConstraints2 = [(CarSpinnerGuidanceSign *)self dynamicConstraints];
+    [NSLayoutConstraint deactivateConstraints:dynamicConstraints2];
   }
 
   v6 = objc_opt_new();
   if ([(CarSpinnerGuidanceSign *)self showsMessage])
   {
-    v7 = [(UILabel *)self->_messageLabel topAnchor];
-    v8 = [(UIActivityIndicatorView *)self->_activityIndicator bottomAnchor];
+    topAnchor = [(UILabel *)self->_messageLabel topAnchor];
+    bottomAnchor = [(UIActivityIndicatorView *)self->_activityIndicator bottomAnchor];
     LODWORD(v9) = 1148829696;
-    v10 = [v7 constraintEqualToAnchor:v8 constant:7.0 priority:v9];
+    v10 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:7.0 priority:v9];
     v17[0] = v10;
-    v11 = [(CarSpinnerGuidanceSign *)self bottomAnchor];
-    v12 = [(UILabel *)self->_messageLabel bottomAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:10.0];
+    bottomAnchor2 = [(CarSpinnerGuidanceSign *)self bottomAnchor];
+    bottomAnchor3 = [(UILabel *)self->_messageLabel bottomAnchor];
+    v13 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:10.0];
     v17[1] = v13;
     v14 = v17;
   }
 
   else
   {
-    v7 = [(CarSpinnerGuidanceSign *)self bottomAnchor];
-    v8 = [(UIActivityIndicatorView *)self->_activityIndicator bottomAnchor];
-    v10 = [v7 constraintEqualToAnchor:v8 constant:10.0];
+    topAnchor = [(CarSpinnerGuidanceSign *)self bottomAnchor];
+    bottomAnchor = [(UIActivityIndicatorView *)self->_activityIndicator bottomAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:10.0];
     v18[0] = v10;
-    v11 = [(UILabel *)self->_messageLabel topAnchor];
-    v12 = [(CarSpinnerGuidanceSign *)self bottomAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    bottomAnchor2 = [(UILabel *)self->_messageLabel topAnchor];
+    bottomAnchor3 = [(CarSpinnerGuidanceSign *)self bottomAnchor];
+    v13 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v18[1] = v13;
     v14 = v18;
   }
@@ -66,20 +66,20 @@
   [(CarSpinnerGuidanceSign *)&v16 updateConstraints];
 }
 
-- (void)setShowMessage:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowMessage:(BOOL)message animated:(BOOL)animated
 {
-  if (self->_showMessage != a3)
+  if (self->_showMessage != message)
   {
-    v4 = a4;
-    v7 = [(CarSpinnerGuidanceSign *)self messageString];
+    animatedCopy = animated;
+    messageString = [(CarSpinnerGuidanceSign *)self messageString];
 
-    if (v7)
+    if (messageString)
     {
-      self->_showMessage = a3;
+      self->_showMessage = message;
       [(CarSpinnerGuidanceSign *)self setNeedsUpdateConstraints];
       [(CarSpinnerGuidanceSign *)self setNeedsLayout];
       v8 = 0.300000012;
-      if (!v4)
+      if (!animatedCopy)
       {
         v8 = 0.0;
       }
@@ -89,13 +89,13 @@
       v11[2] = sub_100BCAC04;
       v11[3] = &unk_101661AE0;
       v11[4] = self;
-      v12 = a3;
+      messageCopy = message;
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_100BCAC54;
       v9[3] = &unk_1016574C0;
       v9[4] = self;
-      v10 = a3;
+      messageCopy2 = message;
       [UIView animateWithDuration:v11 animations:v9 completion:v8];
     }
   }
@@ -106,8 +106,8 @@
   v3 = [UIFont systemFontOfSize:16.0];
   [(UILabel *)self->_primaryLabel setFont:v3];
 
-  v4 = [(CarSpinnerGuidanceSign *)self primaryString];
-  [(UILabel *)self->_primaryLabel setText:v4];
+  primaryString = [(CarSpinnerGuidanceSign *)self primaryString];
+  [(UILabel *)self->_primaryLabel setText:primaryString];
 
   destination = self->_destination;
   v7 = destination == 4 || destination - 1 < 2;
@@ -119,8 +119,8 @@
   [(UILabel *)self->_primaryLabel setTextAlignment:1];
   [(UILabel *)self->_primaryLabel setLineBreakMode:0];
   [(UILabel *)self->_primaryLabel setAdjustsFontSizeToFitWidth:1];
-  v9 = [(CarSpinnerGuidanceSign *)self messageString];
-  [(UILabel *)self->_messageLabel setText:v9];
+  messageString = [(CarSpinnerGuidanceSign *)self messageString];
+  [(UILabel *)self->_messageLabel setText:messageString];
 
   v10 = [UIFont systemFontOfSize:12.0];
   [(UILabel *)self->_messageLabel setFont:v10];
@@ -143,17 +143,17 @@
 
   [(UILabel *)self->_messageLabel setAlpha:v15];
   [(UILabel *)self->_messageLabel setHidden:!self->_showMessage];
-  v16 = [(UILabel *)self->_primaryLabel textColor];
-  [(UIActivityIndicatorView *)self->_activityIndicator setColor:v16];
+  textColor = [(UILabel *)self->_primaryLabel textColor];
+  [(UIActivityIndicatorView *)self->_activityIndicator setColor:textColor];
 
   activityIndicator = self->_activityIndicator;
 
   [(UIActivityIndicatorView *)activityIndicator startAnimating];
 }
 
-- (void)setMessageString:(id)a3
+- (void)setMessageString:(id)string
 {
-  v4 = [a3 copy];
+  v4 = [string copy];
   messageString = self->_messageString;
   self->_messageString = v4;
 
@@ -163,9 +163,9 @@
   [(UILabel *)messageLabel setText:v6];
 }
 
-- (void)setPrimaryString:(id)a3
+- (void)setPrimaryString:(id)string
 {
-  v4 = [a3 copy];
+  v4 = [string copy];
   primaryString = self->_primaryString;
   self->_primaryString = v4;
 
@@ -175,19 +175,19 @@
   [(UILabel *)primaryLabel setText:v6];
 }
 
-- (CarSpinnerGuidanceSign)initWithDestination:(unint64_t)a3
+- (CarSpinnerGuidanceSign)initWithDestination:(unint64_t)destination
 {
   v42.receiver = self;
   v42.super_class = CarSpinnerGuidanceSign;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v7 = [(CarSpinnerGuidanceSign *)&v42 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v8 = v7;
-  if (v7)
+  height = [(CarSpinnerGuidanceSign *)&v42 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v8 = height;
+  if (height)
   {
-    [(CarSpinnerGuidanceSign *)v7 setAccessibilityIdentifier:@"CarSpinnerGuidanceSign"];
-    v8->_destination = a3;
+    [(CarSpinnerGuidanceSign *)height setAccessibilityIdentifier:@"CarSpinnerGuidanceSign"];
+    v8->_destination = destination;
     v9 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
     activityIndicator = v8->_activityIndicator;
     v8->_activityIndicator = v9;
@@ -211,38 +211,38 @@
     [(CarSpinnerGuidanceSign *)v8 addSubview:v8->_messageLabel];
     v8->_showMessage = 0;
     [(CarSpinnerGuidanceSign *)v8 _updateStyling];
-    v41 = [(UILabel *)v8->_primaryLabel topAnchor];
-    v40 = [(CarSpinnerGuidanceSign *)v8 topAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40 constant:10.0];
+    topAnchor = [(UILabel *)v8->_primaryLabel topAnchor];
+    topAnchor2 = [(CarSpinnerGuidanceSign *)v8 topAnchor];
+    v39 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
     v43[0] = v39;
-    v38 = [(UILabel *)v8->_primaryLabel leadingAnchor];
-    v37 = [(CarSpinnerGuidanceSign *)v8 leadingAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37 constant:10.0];
+    leadingAnchor = [(UILabel *)v8->_primaryLabel leadingAnchor];
+    leadingAnchor2 = [(CarSpinnerGuidanceSign *)v8 leadingAnchor];
+    v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
     v43[1] = v36;
-    v35 = [(CarSpinnerGuidanceSign *)v8 trailingAnchor];
-    v34 = [(UILabel *)v8->_primaryLabel trailingAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34 constant:10.0];
+    trailingAnchor = [(CarSpinnerGuidanceSign *)v8 trailingAnchor];
+    trailingAnchor2 = [(UILabel *)v8->_primaryLabel trailingAnchor];
+    v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:10.0];
     v43[2] = v33;
-    v32 = [(UIActivityIndicatorView *)v8->_activityIndicator topAnchor];
-    v31 = [(UILabel *)v8->_primaryLabel bottomAnchor];
+    topAnchor3 = [(UIActivityIndicatorView *)v8->_activityIndicator topAnchor];
+    bottomAnchor = [(UILabel *)v8->_primaryLabel bottomAnchor];
     LODWORD(v15) = 1148829696;
-    v30 = [v32 constraintEqualToAnchor:v31 constant:7.0 priority:v15];
+    v30 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:7.0 priority:v15];
     v43[3] = v30;
-    v29 = [(UIActivityIndicatorView *)v8->_activityIndicator topAnchor];
-    v28 = [(UILabel *)v8->_primaryLabel bottomAnchor];
-    v27 = [v29 constraintGreaterThanOrEqualToAnchor:v28];
+    topAnchor4 = [(UIActivityIndicatorView *)v8->_activityIndicator topAnchor];
+    bottomAnchor2 = [(UILabel *)v8->_primaryLabel bottomAnchor];
+    v27 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
     v43[4] = v27;
-    v26 = [(UIActivityIndicatorView *)v8->_activityIndicator centerXAnchor];
-    v16 = [(CarSpinnerGuidanceSign *)v8 centerXAnchor];
-    v17 = [v26 constraintEqualToAnchor:v16];
+    centerXAnchor = [(UIActivityIndicatorView *)v8->_activityIndicator centerXAnchor];
+    centerXAnchor2 = [(CarSpinnerGuidanceSign *)v8 centerXAnchor];
+    v17 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v43[5] = v17;
-    v18 = [(UILabel *)v8->_messageLabel leadingAnchor];
-    v19 = [(UILabel *)v8->_primaryLabel leadingAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    leadingAnchor3 = [(UILabel *)v8->_messageLabel leadingAnchor];
+    leadingAnchor4 = [(UILabel *)v8->_primaryLabel leadingAnchor];
+    v20 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v43[6] = v20;
-    v21 = [(UILabel *)v8->_primaryLabel trailingAnchor];
-    v22 = [(UILabel *)v8->_messageLabel trailingAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    trailingAnchor3 = [(UILabel *)v8->_primaryLabel trailingAnchor];
+    trailingAnchor4 = [(UILabel *)v8->_messageLabel trailingAnchor];
+    v23 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v43[7] = v23;
     v24 = [NSArray arrayWithObjects:v43 count:8];
     [NSLayoutConstraint activateConstraints:v24];

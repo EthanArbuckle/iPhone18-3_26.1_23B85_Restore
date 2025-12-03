@@ -1,7 +1,7 @@
 @interface TUIPageControlBox
 - (BOOL)hiddenWhenUnavailable;
 - (_TtC10TemplateUI17TUIPageControlBox)init;
-- (void)setHiddenWhenUnavailable:(BOOL)a3;
+- (void)setHiddenWhenUnavailable:(BOOL)unavailable;
 @end
 
 @implementation TUIPageControlBox
@@ -13,11 +13,11 @@
   return *(&self->super.super.super.super.isa + v3);
 }
 
-- (void)setHiddenWhenUnavailable:(BOOL)a3
+- (void)setHiddenWhenUnavailable:(BOOL)unavailable
 {
   v5 = OBJC_IVAR____TtC10TemplateUI17TUIPageControlBox_hiddenWhenUnavailable;
   swift_beginAccess();
-  *(&self->super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.isa + v5) = unavailable;
 }
 
 - (_TtC10TemplateUI17TUIPageControlBox)init

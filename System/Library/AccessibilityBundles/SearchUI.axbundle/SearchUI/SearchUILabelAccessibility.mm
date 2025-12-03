@@ -1,6 +1,6 @@
 @interface SearchUILabelAccessibility
 - (BOOL)isAccessibilityElement;
-- (id)_axValidateString:(id)a3;
+- (id)_axValidateString:(id)string;
 - (id)accessibilityLabel;
 @end
 
@@ -10,9 +10,9 @@
 {
   v9.receiver = self;
   v9.super_class = SearchUILabelAccessibility;
-  v3 = [(SearchUILabelAccessibility *)&v9 accessibilityLabel];
-  v4 = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  accessibilityLabel = [(SearchUILabelAccessibility *)&v9 accessibilityLabel];
+  whitespaceCharacterSet = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
+  v5 = [accessibilityLabel stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   v6 = [v5 length];
 
   if (!v6)
@@ -29,20 +29,20 @@
 {
   v6.receiver = self;
   v6.super_class = SearchUILabelAccessibility;
-  v3 = [(SearchUILabelAccessibility *)&v6 accessibilityLabel];
-  v4 = [(SearchUILabelAccessibility *)self _axValidateString:v3];
+  accessibilityLabel = [(SearchUILabelAccessibility *)&v6 accessibilityLabel];
+  v4 = [(SearchUILabelAccessibility *)self _axValidateString:accessibilityLabel];
 
   return v4;
 }
 
-- (id)_axValidateString:(id)a3
+- (id)_axValidateString:(id)string
 {
   v3 = MEMORY[0x29EDB9F50];
-  v4 = a3;
-  v5 = [v3 whitespaceCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  stringCopy = string;
+  whitespaceCharacterSet = [v3 whitespaceCharacterSet];
+  v6 = [stringCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-  v7 = [v4 length];
+  v7 = [stringCopy length];
   if (v7)
   {
     v8 = [MEMORY[0x29EDBA0D0] regularExpressionWithPattern:@"(\\b\\d{4})(-)(\\d{4}\\b)" options:0 error:0];
@@ -56,13 +56,13 @@
     v15 = [v14 matchesInString:v13 options:0 range:{0, objc_msgSend(v13, "length")}];
     if ([v15 count])
     {
-      v16 = [v15 firstObject];
-      v17 = [v16 range];
+      firstObject = [v15 firstObject];
+      range = [firstObject range];
       v19 = v18;
-      v20 = [v16 range];
-      v22 = [v13 substringWithRange:{v20, v21}];
+      range2 = [firstObject range];
+      v22 = [v13 substringWithRange:{range2, v21}];
       v23 = AXLocalizeDurationTime();
-      v24 = [v13 stringByReplacingCharactersInRange:v17 withString:{v19, v23}];
+      v24 = [v13 stringByReplacingCharactersInRange:range withString:{v19, v23}];
 
       v13 = v24;
     }

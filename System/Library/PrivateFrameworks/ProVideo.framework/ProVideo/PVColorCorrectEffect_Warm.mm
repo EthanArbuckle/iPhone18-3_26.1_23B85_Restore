@@ -1,23 +1,23 @@
 @interface PVColorCorrectEffect_Warm
-+ (void)registerEffectWithID:(id)a3 displayName:(id)a4;
-- (PVColorCorrectEffect_Warm)initWithEffectID:(id)a3;
++ (void)registerEffectWithID:(id)d displayName:(id)name;
+- (PVColorCorrectEffect_Warm)initWithEffectID:(id)d;
 @end
 
 @implementation PVColorCorrectEffect_Warm
 
-+ (void)registerEffectWithID:(id)a3 displayName:(id)a4
++ (void)registerEffectWithID:(id)d displayName:(id)name
 {
-  v7 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v5, @"FFEffectProperty_DisplayName", @"Helium", @"FFEffectProperty_Category", @"effect.video.filter", @"FFEffectProperty_EffectType", 0}];
-  [PVEffect registerEffectClass:objc_opt_class() forEffectID:v7 withProperties:v6];
+  dCopy = d;
+  nameCopy = name;
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{nameCopy, @"FFEffectProperty_DisplayName", @"Helium", @"FFEffectProperty_Category", @"effect.video.filter", @"FFEffectProperty_EffectType", 0}];
+  [PVEffect registerEffectClass:objc_opt_class() forEffectID:dCopy withProperties:v6];
 }
 
-- (PVColorCorrectEffect_Warm)initWithEffectID:(id)a3
+- (PVColorCorrectEffect_Warm)initWithEffectID:(id)d
 {
   v4.receiver = self;
   v4.super_class = PVColorCorrectEffect_Warm;
-  result = [(PVEffect *)&v4 initWithEffectID:a3];
+  result = [(PVEffect *)&v4 initWithEffectID:d];
   if (result)
   {
     result->super._look = 3;

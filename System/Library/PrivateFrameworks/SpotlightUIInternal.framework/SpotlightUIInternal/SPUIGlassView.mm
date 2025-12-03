@@ -1,19 +1,19 @@
 @interface SPUIGlassView
-- (SPUIGlassView)initWithFrame:(CGRect)a3;
+- (SPUIGlassView)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SPUIGlassView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = SPUIGlassView;
-  [(SPUIGlassView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(SPUIGlassView *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(SPUIGlassView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SPUIGlassView *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -21,11 +21,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(SPUIGlassView *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(SPUIGlassView *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -41,11 +41,11 @@ LABEL_5:
   [(SPUIGlassView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (SPUIGlassView)initWithFrame:(CGRect)a3
+- (SPUIGlassView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = SPUIGlassView;
-  v3 = [(SPUIGlassView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SPUIGlassView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     [SPUIViewUtilities setGlassForView:v3 style:0];

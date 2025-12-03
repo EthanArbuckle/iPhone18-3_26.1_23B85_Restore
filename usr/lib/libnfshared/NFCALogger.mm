@@ -1,16 +1,16 @@
 @interface NFCALogger
 + (id)sharedCALogger;
-+ (unint64_t)roundToSignificantDigit:(unint64_t)a3 forValue:(unint64_t)a4;
++ (unint64_t)roundToSignificantDigit:(unint64_t)digit forValue:(unint64_t)value;
 - (BOOL)restrictedMode;
 - (NFCALogger)init;
 - (id)generateDailyUUIDForCA;
 - (id)generateUUID;
 - (id)getCALoggerUserDefaults;
 - (unint64_t)getMiddlewareExceptionCount;
-- (unsigned)getDurationFrom:(unint64_t)a3;
-- (unsigned)getHardwareTypeForCA:(unsigned int)a3;
-- (void)getCAUniversityCode:(id)a3 universityCodes:(unsigned int *)a4;
-- (void)postCAEventFor:(id)a3 eventInput:(id)a4;
+- (unsigned)getDurationFrom:(unint64_t)from;
+- (unsigned)getHardwareTypeForCA:(unsigned int)a;
+- (void)getCAUniversityCode:(id)code universityCodes:(unsigned int *)codes;
+- (void)postCAEventFor:(id)for eventInput:(id)input;
 - (void)removeRestrictedMode;
 @end
 
@@ -82,14 +82,14 @@
   return v6;
 }
 
-- (void)postCAEventFor:(id)a3 eventInput:(id)a4
+- (void)postCAEventFor:(id)for eventInput:(id)input
 {
-  v5 = a3;
-  v6 = a4;
+  forCopy = for;
+  inputCopy = input;
   v10 = sub_22EEE66C0(v7);
-  if (*(v11 + 872) && objc_msgSend_count(v6, v8, v9, v10))
+  if (*(v11 + 872) && objc_msgSend_count(inputCopy, v8, v9, v10))
   {
-    v13 = v6;
+    v13 = inputCopy;
     sub_22EEE6694(v12);
   }
 }
@@ -192,34 +192,34 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (unsigned)getDurationFrom:(unint64_t)a3
+- (unsigned)getDurationFrom:(unint64_t)from
 {
   v4 = mach_continuous_time();
   info = 0;
   mach_timebase_info(&info);
-  if ((v4 - a3) * info.numer / (1000000 * info.denom) >= 0xFFFFFFFF)
+  if ((v4 - from) * info.numer / (1000000 * info.denom) >= 0xFFFFFFFF)
   {
     LODWORD(v5) = -1;
   }
 
   else
   {
-    return (v4 - a3) * info.numer / (1000000 * info.denom);
+    return (v4 - from) * info.numer / (1000000 * info.denom);
   }
 
   return v5;
 }
 
-- (unsigned)getHardwareTypeForCA:(unsigned int)a3
+- (unsigned)getHardwareTypeForCA:(unsigned int)a
 {
-  if (a3 - 5 > 0x11)
+  if (a - 5 > 0x11)
   {
     return 0;
   }
 
   else
   {
-    return dword_22EEE8634[a3 - 5];
+    return dword_22EEE8634[a - 5];
   }
 }
 
@@ -238,33 +238,33 @@
   return v7;
 }
 
-+ (unint64_t)roundToSignificantDigit:(unint64_t)a3 forValue:(unint64_t)a4
++ (unint64_t)roundToSignificantDigit:(unint64_t)digit forValue:(unint64_t)value
 {
-  v4 = a4;
-  if (a3 <= 0xA)
+  valueCopy = value;
+  if (digit <= 0xA)
   {
-    if (a4)
+    if (value)
     {
-      v6 = log10(a4) + 1;
-      v7 = v6 > a3;
-      v8 = v6 - a3;
+      v6 = log10(value) + 1;
+      v7 = v6 > digit;
+      v8 = v6 - digit;
       if (v7)
       {
         v9 = __exp10(v8);
-        return v4 / v9 * v9;
+        return valueCopy / v9 * v9;
       }
     }
   }
 
-  return v4;
+  return valueCopy;
 }
 
-- (void)getCAUniversityCode:(id)a3 universityCodes:(unsigned int *)a4
+- (void)getCAUniversityCode:(id)code universityCodes:(unsigned int *)codes
 {
-  v5 = a3;
-  v8 = v5;
-  *a4 = 0;
-  if (v5 && objc_msgSend_count(v5, v6, v7))
+  codeCopy = code;
+  v8 = codeCopy;
+  *codes = 0;
+  if (codeCopy && objc_msgSend_count(codeCopy, v6, v7))
   {
     v19 = 0;
     v10 = objc_msgSend_objectAtIndexedSubscript_(v8, v9, 0);
@@ -282,7 +282,7 @@
       }
     }
 
-    *a4 = *v17;
+    *codes = *v17;
 LABEL_9:
   }
 }

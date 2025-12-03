@@ -1,32 +1,32 @@
 @interface HMDCoreDataCloudTransformableLocalGuestObject
-+ (void)_addGuestForObjectWithID:(void *)a3 additionalUpdates:(void *)a4 context:;
++ (void)_addGuestForObjectWithID:(void *)d additionalUpdates:(void *)updates context:;
 @end
 
 @implementation HMDCoreDataCloudTransformableLocalGuestObject
 
-+ (void)_addGuestForObjectWithID:(void *)a3 additionalUpdates:(void *)a4 context:
++ (void)_addGuestForObjectWithID:(void *)d additionalUpdates:(void *)updates context:
 {
   v126 = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v113 = a3;
-  v7 = a4;
+  dCopy = d;
+  updatesCopy = updates;
   v8 = objc_opt_self();
   v9 = +[_MKFGuest entity];
-  v10 = [v9 propertiesByName];
-  v11 = [v10 objectForKeyedSubscript:@"accessCode"];
+  propertiesByName = [v9 propertiesByName];
+  v11 = [propertiesByName objectForKeyedSubscript:@"accessCode"];
   v118 = v11;
   v112 = [MEMORY[0x277CBEA60] arrayWithObjects:&v118 count:1];
 
   v12 = v6;
-  v13 = v7;
+  v13 = updatesCopy;
   v111 = v8;
   v14 = objc_opt_self();
-  v15 = v12;
-  v16 = [(__CFString *)v15 entity];
+  objectID = v12;
+  entity = [(__CFString *)objectID entity];
   v17 = +[_MKFGuest entity];
-  LOBYTE(v8) = [v16 isKindOfEntity:v17];
+  LOBYTE(v8) = [entity isKindOfEntity:v17];
 
-  v114 = v15;
+  v114 = objectID;
   if (v8)
   {
     goto LABEL_2;
@@ -37,7 +37,7 @@
   p_cache = (&OBJC_METACLASS___HMDAccessCodeManagerUtilities + 16);
   while (1)
   {
-    v19 = v15;
+    v19 = objectID;
     v24 = v13;
     v25 = v13;
     v26 = objc_opt_self();
@@ -114,9 +114,9 @@ LABEL_8:
       }
     }
 
-    v56 = [v51 entity];
+    entity2 = [v51 entity];
     v57 = +[_MKFWeekDayScheduleRule entity];
-    v58 = [v56 isKindOfEntity:v57];
+    v58 = [entity2 isKindOfEntity:v57];
 
     if (v58)
     {
@@ -137,10 +137,10 @@ LABEL_8:
 
       if (isKindOfClass)
       {
-        v62 = [v27 invitation];
+        invitation = [v27 invitation];
 
         v34 = @"invitation";
-        if (v62 || ([v27 guest], v63 = objc_claimAutoreleasedReturnValue(), v63, v34 = @"guest", v63))
+        if (invitation || ([v27 guest], v63 = objc_claimAutoreleasedReturnValue(), v63, v34 = @"guest", v63))
         {
 LABEL_40:
 
@@ -151,9 +151,9 @@ LABEL_40:
       p_cache = (&OBJC_METACLASS___HMDAccessCodeManagerUtilities + 16);
     }
 
-    v64 = [v51 entity];
+    entity3 = [v51 entity];
     v65 = +[_MKFYearDayScheduleRule entity];
-    v66 = [v64 isKindOfEntity:v65];
+    v66 = [entity3 isKindOfEntity:v65];
 
     if (v66)
     {
@@ -174,18 +174,18 @@ LABEL_40:
 
       if (v67)
       {
-        v70 = [v27 invitation];
+        invitation2 = [v27 invitation];
 
         v34 = @"invitation";
-        if (v70)
+        if (invitation2)
         {
           goto LABEL_40;
         }
 
-        v71 = [v27 guest];
+        guest = [v27 guest];
 
         v34 = @"guest";
-        if (v71)
+        if (guest)
         {
           goto LABEL_40;
         }
@@ -194,9 +194,9 @@ LABEL_40:
       p_cache = &OBJC_METACLASS___HMDAccessCodeManagerUtilities.cache;
     }
 
-    v72 = [v51 entity];
-    v73 = [p_cache + 198 entity];
-    v74 = [v72 isKindOfEntity:v73];
+    entity4 = [v51 entity];
+    entity5 = [p_cache + 198 entity];
+    v74 = [entity4 isKindOfEntity:entity5];
 
     if (v74)
     {
@@ -251,7 +251,7 @@ LABEL_9:
 LABEL_69:
       v20 = 0;
       v22 = v112;
-      v21 = v113;
+      v21 = dCopy;
       goto LABEL_70;
     }
 
@@ -302,7 +302,7 @@ LABEL_69:
       v39 = 0;
 LABEL_61:
       v22 = v112;
-      v21 = v113;
+      v21 = dCopy;
 
       v20 = 0;
 LABEL_70:
@@ -370,21 +370,21 @@ LABEL_68:
       goto LABEL_68;
     }
 
-    v15 = [v41 objectID];
+    objectID = [v41 objectID];
 
-    v45 = [(__CFString *)v15 entity];
+    entity6 = [(__CFString *)objectID entity];
     p_cache = &OBJC_METACLASS___HMDAccessCodeManagerUtilities.cache;
     v46 = +[_MKFOutgoingInvitation entity];
-    v47 = [v45 isKindOfEntity:v46];
+    v47 = [entity6 isKindOfEntity:v46];
 
     if (v47)
     {
       break;
     }
 
-    v48 = [(__CFString *)v15 entity];
+    entity7 = [(__CFString *)objectID entity];
     v49 = +[_MKFGuest entity];
-    v50 = [v48 isKindOfEntity:v49];
+    v50 = [entity7 isKindOfEntity:v49];
 
     v13 = v24;
     if (v50)
@@ -395,10 +395,10 @@ LABEL_68:
 
   v13 = v24;
 LABEL_2:
-  v19 = v15;
+  v19 = objectID;
   v20 = v19;
   v22 = v112;
-  v21 = v113;
+  v21 = dCopy;
 LABEL_71:
 
   if (v20)

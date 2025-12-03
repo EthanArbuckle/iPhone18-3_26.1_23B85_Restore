@@ -1,25 +1,25 @@
 @interface HSPCSelectHomeViewController
-- (HSPCSelectHomeViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCSelectHomeViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)commitConfiguration;
 - (id)hu_preloadContent;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
 @end
 
 @implementation HSPCSelectHomeViewController
 
-- (HSPCSelectHomeViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCSelectHomeViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v14.receiver = self;
   v14.super_class = HSPCSelectHomeViewController;
   v9 = [(HSPCSelectHomeViewController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_config, a4);
-    objc_storeStrong(&v10->_coordinator, a3);
+    objc_storeStrong(&v9->_config, config);
+    objc_storeStrong(&v10->_coordinator, coordinator);
     v11 = HULocalizedString();
     [(HSPCSelectHomeViewController *)v10 setTitle:v11];
 
@@ -31,32 +31,32 @@
 
 - (id)commitConfiguration
 {
-  v3 = [(HSPCSelectHomeViewController *)self contentView];
-  v4 = [v3 pickerView];
-  v5 = [v4 selectedRowInComponent:0];
+  contentView = [(HSPCSelectHomeViewController *)self contentView];
+  pickerView = [contentView pickerView];
+  v5 = [pickerView selectedRowInComponent:0];
 
-  v6 = [(HSPCSelectHomeViewController *)self homeProvider];
-  v7 = [v6 items];
-  v8 = [v7 count];
+  homeProvider = [(HSPCSelectHomeViewController *)self homeProvider];
+  items = [homeProvider items];
+  v8 = [items count];
 
   if (v5 < v8)
   {
-    v9 = [(HSPCSelectHomeViewController *)self config];
-    v10 = [v9 isSetupInitiatedByOtherMatterEcosystem];
+    config = [(HSPCSelectHomeViewController *)self config];
+    isSetupInitiatedByOtherMatterEcosystem = [config isSetupInitiatedByOtherMatterEcosystem];
 
-    v11 = [(HSPCSelectHomeViewController *)self homeProvider];
-    v12 = [v11 items];
-    v13 = [v12 objectAtIndexedSubscript:v5];
-    if (v10)
+    homeProvider2 = [(HSPCSelectHomeViewController *)self homeProvider];
+    items2 = [homeProvider2 items];
+    v13 = [items2 objectAtIndexedSubscript:v5];
+    if (isSetupInitiatedByOtherMatterEcosystem)
     {
 
       v14 = objc_opt_class();
-      v15 = [(HSPCSelectHomeViewController *)self config];
-      if (v15)
+      config2 = [(HSPCSelectHomeViewController *)self config];
+      if (config2)
       {
         if (objc_opt_isKindOfClass())
         {
-          v16 = v15;
+          v16 = config2;
         }
 
         else
@@ -64,27 +64,27 @@
           v16 = 0;
         }
 
-        v12 = v16;
-        if (!v12)
+        items2 = v16;
+        if (!items2)
         {
-          sub_1000774F0(v15, v14);
+          sub_1000774F0(config2, v14);
         }
       }
 
       else
       {
-        v12 = 0;
+        items2 = 0;
       }
 
-      [v12 setSelectedPartnerHome:v13];
+      [items2 setSelectedPartnerHome:v13];
     }
 
     else
     {
-      v17 = [(HSPCSelectHomeViewController *)self config];
-      [v17 setHome:v13];
+      config3 = [(HSPCSelectHomeViewController *)self config];
+      [config3 setHome:v13];
 
-      v13 = v11;
+      v13 = homeProvider2;
     }
   }
 
@@ -93,16 +93,16 @@
   return v18;
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  v5 = [(HSPCSelectHomeViewController *)self coordinator:a3];
-  v6 = [v5 isUsingCHIPCommunicationProtocol];
+  v5 = [(HSPCSelectHomeViewController *)self coordinator:view];
+  isUsingCHIPCommunicationProtocol = [v5 isUsingCHIPCommunicationProtocol];
 
-  v7 = [(HSPCSelectHomeViewController *)self homeProvider];
-  v8 = [v7 items];
-  v9 = [v8 count];
+  homeProvider = [(HSPCSelectHomeViewController *)self homeProvider];
+  items = [homeProvider items];
+  v9 = [items count];
 
-  LODWORD(v10) = v6 ^ 1;
+  LODWORD(v10) = isUsingCHIPCommunicationProtocol ^ 1;
   if (v9)
   {
     v10 = v10;
@@ -116,22 +116,22 @@
   return v9 + v10;
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v7 = [(HSPCSelectHomeViewController *)self homeProvider:a3];
-  v8 = [v7 items];
-  if ([v8 count] <= a4)
+  v7 = [(HSPCSelectHomeViewController *)self homeProvider:view];
+  items = [v7 items];
+  if ([items count] <= row)
   {
     v13 = HULocalizedString();
   }
 
   else
   {
-    v9 = [(HSPCSelectHomeViewController *)self homeProvider];
-    v10 = [(HSPCSelectHomeViewController *)self homeProvider];
-    v11 = [v10 items];
-    v12 = [v11 objectAtIndexedSubscript:a4];
-    v13 = [v9 userFacingStringForItem:v12];
+    homeProvider = [(HSPCSelectHomeViewController *)self homeProvider];
+    homeProvider2 = [(HSPCSelectHomeViewController *)self homeProvider];
+    items2 = [homeProvider2 items];
+    v12 = [items2 objectAtIndexedSubscript:row];
+    v13 = [homeProvider userFacingStringForItem:v12];
   }
 
   return v13;
@@ -139,15 +139,15 @@
 
 - (id)hu_preloadContent
 {
-  v3 = [(HSPCSelectHomeViewController *)self coordinator];
-  v4 = [(HSPCSelectHomeViewController *)self config];
-  v5 = [HSPCHomeProviderFactory providerForCoordinator:v3 config:v4];
+  coordinator = [(HSPCSelectHomeViewController *)self coordinator];
+  config = [(HSPCSelectHomeViewController *)self config];
+  v5 = [HSPCHomeProviderFactory providerForCoordinator:coordinator config:config];
   [(HSPCSelectHomeViewController *)self setHomeProvider:v5];
 
-  v6 = [(HSPCSelectHomeViewController *)self homeProvider];
-  v7 = [v6 loadData];
+  homeProvider = [(HSPCSelectHomeViewController *)self homeProvider];
+  loadData = [homeProvider loadData];
   v8 = +[NAScheduler mainThreadScheduler];
-  v9 = [v7 reschedule:v8];
+  v9 = [loadData reschedule:v8];
 
   return v9;
 }

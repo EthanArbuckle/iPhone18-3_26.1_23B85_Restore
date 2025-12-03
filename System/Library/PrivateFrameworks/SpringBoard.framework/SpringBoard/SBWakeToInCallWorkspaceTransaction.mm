@@ -11,17 +11,17 @@
   v31.super_class = SBWakeToInCallWorkspaceTransaction;
   [(SBWakeToInCallWorkspaceTransaction *)&v31 _begin];
   [(SBWakeToInCallWorkspaceTransaction *)self addMilestone:@"_SBWakeToInCallWorkspaceTransactionMilestonePresentation"];
-  v3 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v24 = [v3 workspace];
-  v4 = [v24 inCallPresentationManager];
-  v25 = v3;
-  [v3 applicationContext];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  workspace = [transitionRequest workspace];
+  inCallPresentationManager = [workspace inCallPresentationManager];
+  v25 = transitionRequest;
+  [transitionRequest applicationContext];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v23 = v30 = 0u;
-  v5 = [v23 entities];
-  v6 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  entities = [v23 entities];
+  v6 = [entities countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v6)
   {
     v7 = v6;
@@ -33,16 +33,16 @@
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(entities);
         }
 
-        v10 = [*(*(&v27 + 1) + 8 * v9) deviceApplicationSceneEntity];
-        v11 = v10;
-        if (v10)
+        deviceApplicationSceneEntity = [*(*(&v27 + 1) + 8 * v9) deviceApplicationSceneEntity];
+        v11 = deviceApplicationSceneEntity;
+        if (deviceApplicationSceneEntity)
         {
-          v12 = [v10 sceneHandle];
-          v13 = [v12 sceneIdentifier];
-          v14 = [v4 _sessionForSceneWithIdentifier:v13];
+          sceneHandle = [deviceApplicationSceneEntity sceneHandle];
+          sceneIdentifier = [sceneHandle sceneIdentifier];
+          v14 = [inCallPresentationManager _sessionForSceneWithIdentifier:sceneIdentifier];
 
           if (v14)
           {
@@ -57,7 +57,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v7 = [entities countByEnumeratingWithState:&v27 objects:v32 count:16];
       if (v7)
       {
         continue;
@@ -67,13 +67,13 @@
     }
   }
 
-  v15 = [v4 _lastPresentationSession];
-  if (v15)
+  _lastPresentationSession = [inCallPresentationManager _lastPresentationSession];
+  if (_lastPresentationSession)
   {
-    v16 = v15;
+    v16 = _lastPresentationSession;
     v17 = 0;
 LABEL_13:
-    v19 = v24;
+    v19 = workspace;
     v18 = v25;
     v20 = v23;
     v21 = [SBInCallTransientOverlayPresentationWorkspaceTransaction alloc];
@@ -90,7 +90,7 @@ LABEL_13:
   else
   {
     [(SBWakeToInCallWorkspaceTransaction *)self removeMilestone:@"_SBWakeToInCallWorkspaceTransactionMilestonePresentation"];
-    v19 = v24;
+    v19 = workspace;
     v18 = v25;
     v20 = v23;
   }

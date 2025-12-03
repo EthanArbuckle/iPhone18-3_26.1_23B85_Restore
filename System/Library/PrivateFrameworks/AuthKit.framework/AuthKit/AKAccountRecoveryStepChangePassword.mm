@@ -1,57 +1,57 @@
 @interface AKAccountRecoveryStepChangePassword
-- (BOOL)_isAuthenticationFailureForData:(id)a3;
-- (BOOL)_isConfirmationField:(id)a3;
-- (BOOL)_isIncorrectCurrentPasswordErrorForData:(id)a3;
-- (BOOL)_isNewPasswordErrorForData:(id)a3;
-- (BOOL)canProcessResponse:(id)a3;
-- (id)_findConfirmRowIDForNewPasswordRowID:(id)a3 editableTextRows:(id)a4;
-- (id)_getPasswordFieldMappingFromResponse:(id)a3 editableTextRows:(id)a4;
-- (id)_matchingAttributeWithResponse:(id)a3;
-- (id)_promptForConfirmPasswordWithModel:(id)a3;
-- (id)_promptForNewPasswordWithModel:(id)a3;
-- (id)_tryClientInfoMappingFromResponse:(id)a3 editableTextRows:(id)a4;
-- (id)_tryPositionalMappingFromEditableTextRows:(id)a3;
-- (void)_beginChangePasswordWithResponse:(id)a3 model:(id)a4 completion:(id)a5;
-- (void)_verifyNewPasswordWithRowID:(id)a3 confirmRowID:(id)a4 model:(id)a5 completion:(id)a6;
-- (void)processResponse:(id)a3 model:(id)a4 withCompletion:(id)a5;
+- (BOOL)_isAuthenticationFailureForData:(id)data;
+- (BOOL)_isConfirmationField:(id)field;
+- (BOOL)_isIncorrectCurrentPasswordErrorForData:(id)data;
+- (BOOL)_isNewPasswordErrorForData:(id)data;
+- (BOOL)canProcessResponse:(id)response;
+- (id)_findConfirmRowIDForNewPasswordRowID:(id)d editableTextRows:(id)rows;
+- (id)_getPasswordFieldMappingFromResponse:(id)response editableTextRows:(id)rows;
+- (id)_matchingAttributeWithResponse:(id)response;
+- (id)_promptForConfirmPasswordWithModel:(id)model;
+- (id)_promptForNewPasswordWithModel:(id)model;
+- (id)_tryClientInfoMappingFromResponse:(id)response editableTextRows:(id)rows;
+- (id)_tryPositionalMappingFromEditableTextRows:(id)rows;
+- (void)_beginChangePasswordWithResponse:(id)response model:(id)model completion:(id)completion;
+- (void)_verifyNewPasswordWithRowID:(id)d confirmRowID:(id)iD model:(id)model completion:(id)completion;
+- (void)processResponse:(id)response model:(id)model withCompletion:(id)completion;
 @end
 
 @implementation AKAccountRecoveryStepChangePassword
 
-- (void)processResponse:(id)a3 model:(id)a4 withCompletion:(id)a5
+- (void)processResponse:(id)response model:(id)model withCompletion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, model);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
-  [(AKAccountRecoveryStepChangePassword *)v10 _beginChangePasswordWithResponse:location[0] model:v8 completion:v7];
+  objc_storeStrong(&v7, completion);
+  [(AKAccountRecoveryStepChangePassword *)selfCopy _beginChangePasswordWithResponse:location[0] model:v8 completion:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)canProcessResponse:(id)a3
+- (BOOL)canProcessResponse:(id)response
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [location[0] data];
+  objc_storeStrong(location, response);
+  data = [location[0] data];
   v12 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:"ruiElementsAttributesWithName:data:error:" data:@"navigationBar" error:?];
-  MEMORY[0x1E69E5920](v4);
-  v5 = [v12 firstObject];
-  v11 = [v5 objectForKeyedSubscript:@"title"];
-  MEMORY[0x1E69E5920](v5);
-  v6 = [v11 lowercaseString];
-  v7 = [v6 containsString:@"new password"];
-  MEMORY[0x1E69E5920](v6);
-  v8 = [v11 lowercaseString];
-  v9 = [v8 containsString:@"change password"];
-  MEMORY[0x1E69E5920](v8);
+  MEMORY[0x1E69E5920](data);
+  firstObject = [v12 firstObject];
+  v11 = [firstObject objectForKeyedSubscript:@"title"];
+  MEMORY[0x1E69E5920](firstObject);
+  lowercaseString = [v11 lowercaseString];
+  v7 = [lowercaseString containsString:@"new password"];
+  MEMORY[0x1E69E5920](lowercaseString);
+  lowercaseString2 = [v11 lowercaseString];
+  v9 = [lowercaseString2 containsString:@"change password"];
+  MEMORY[0x1E69E5920](lowercaseString2);
   v10 = 1;
   if ((v7 & 1) == 0)
   {
@@ -64,35 +64,35 @@
   return v10 & 1;
 }
 
-- (void)_beginChangePasswordWithResponse:(id)a3 model:(id)a4 completion:(id)a5
+- (void)_beginChangePasswordWithResponse:(id)response model:(id)model completion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, model);
   v21 = 0;
-  objc_storeStrong(&v21, a5);
-  v14 = [location[0] data];
+  objc_storeStrong(&v21, completion);
+  data = [location[0] data];
   v20 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:"ruiElementsAttributesWithName:data:error:" data:@"editableTextRow" error:?];
-  MEMORY[0x1E69E5920](v14);
+  MEMORY[0x1E69E5920](data);
   if ([v20 count] >= 2)
   {
-    v18 = [(AKAccountRecoveryStepChangePassword *)v24 _matchingAttributeWithResponse:location[0]];
+    v18 = [(AKAccountRecoveryStepChangePassword *)selfCopy _matchingAttributeWithResponse:location[0]];
     if (v18)
     {
-      v7 = [v22 cliUtilities];
-      v6 = [v22 configuration];
-      v5 = [location[0] httpResponse];
-      [v7 updateConfiguration:v6 fromXMLAttributes:v18 response:?];
-      MEMORY[0x1E69E5920](v5);
-      MEMORY[0x1E69E5920](v6);
-      MEMORY[0x1E69E5920](v7);
-      v17 = [(AKAccountRecoveryStepChangePassword *)v24 _getPasswordFieldMappingFromResponse:location[0] editableTextRows:v20];
+      cliUtilities = [v22 cliUtilities];
+      configuration = [v22 configuration];
+      httpResponse = [location[0] httpResponse];
+      [cliUtilities updateConfiguration:configuration fromXMLAttributes:v18 response:?];
+      MEMORY[0x1E69E5920](httpResponse);
+      MEMORY[0x1E69E5920](configuration);
+      MEMORY[0x1E69E5920](cliUtilities);
+      v17 = [(AKAccountRecoveryStepChangePassword *)selfCopy _getPasswordFieldMappingFromResponse:location[0] editableTextRows:v20];
       v16 = [v17 objectForKeyedSubscript:@"newPasswordRowId"];
       v15 = [v17 objectForKeyedSubscript:@"confirmRowId"];
-      [(AKAccountRecoveryStepChangePassword *)v24 _verifyNewPasswordWithRowID:v16 confirmRowID:v15 model:v22 completion:v21];
+      [(AKAccountRecoveryStepChangePassword *)selfCopy _verifyNewPasswordWithRowID:v16 confirmRowID:v15 model:v22 completion:v21];
       objc_storeStrong(&v15, 0);
       objc_storeStrong(&v16, 0);
       objc_storeStrong(&v17, 0);
@@ -136,16 +136,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_getPasswordFieldMappingFromResponse:(id)a3 editableTextRows:(id)a4
+- (id)_getPasswordFieldMappingFromResponse:(id)response editableTextRows:(id)rows
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v7 = [(AKAccountRecoveryStepChangePassword *)v10 _tryClientInfoMappingFromResponse:location[0] editableTextRows:v8];
-  if (v7 || (v7 = [(AKAccountRecoveryStepChangePassword *)v10 _tryPositionalMappingFromEditableTextRows:v8], MEMORY[0x1E69E5920](0), v7))
+  objc_storeStrong(&v8, rows);
+  v7 = [(AKAccountRecoveryStepChangePassword *)selfCopy _tryClientInfoMappingFromResponse:location[0] editableTextRows:v8];
+  if (v7 || (v7 = [(AKAccountRecoveryStepChangePassword *)selfCopy _tryPositionalMappingFromEditableTextRows:v8], MEMORY[0x1E69E5920](0), v7))
   {
     v11 = MEMORY[0x1E69E5928](v7);
   }
@@ -163,25 +163,25 @@
   return v4;
 }
 
-- (id)_tryClientInfoMappingFromResponse:(id)a3 editableTextRows:(id)a4
+- (id)_tryClientInfoMappingFromResponse:(id)response editableTextRows:(id)rows
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  v8 = [location[0] data];
+  objc_storeStrong(&v16, rows);
+  data = [location[0] data];
   v15 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:"ruiElementsAttributesWithName:data:error:" data:@"clientInfo" error:?];
-  MEMORY[0x1E69E5920](v8);
+  MEMORY[0x1E69E5920](data);
   if ([v15 count])
   {
-    v13 = [v15 firstObject];
-    v12 = [v13 objectForKeyedSubscript:@"newPasswordRowId"];
+    firstObject = [v15 firstObject];
+    v12 = [firstObject objectForKeyedSubscript:@"newPasswordRowId"];
     if (v12)
     {
-      v11 = [(AKAccountRecoveryStepChangePassword *)v18 _findConfirmRowIDForNewPasswordRowID:v12 editableTextRows:v16];
+      v11 = [(AKAccountRecoveryStepChangePassword *)selfCopy _findConfirmRowIDForNewPasswordRowID:v12 editableTextRows:v16];
       v9 = 0;
       if (v11)
       {
@@ -216,7 +216,7 @@
     }
 
     objc_storeStrong(&v12, 0);
-    objc_storeStrong(&v13, 0);
+    objc_storeStrong(&firstObject, 0);
   }
 
   else
@@ -234,15 +234,15 @@
   return v5;
 }
 
-- (id)_findConfirmRowIDForNewPasswordRowID:(id)a3 editableTextRows:(id)a4
+- (id)_findConfirmRowIDForNewPasswordRowID:(id)d editableTextRows:(id)rows
 {
   v21 = *MEMORY[0x1E69E9840];
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, rows);
   if ([location[0] containsString:@"newPassword.password"])
   {
     v19 = MEMORY[0x1E69E5928](@"newPassword.confirmedPassword");
@@ -268,7 +268,7 @@
         }
 
         v14 = *(__b[1] + 8 * v8);
-        if ([(AKAccountRecoveryStepChangePassword *)v18 _isConfirmationField:v14])
+        if ([(AKAccountRecoveryStepChangePassword *)selfCopy _isConfirmationField:v14])
         {
           break;
         }
@@ -311,12 +311,12 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)_isConfirmationField:(id)a3
+- (BOOL)_isConfirmationField:(id)field
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, field);
   v8 = [location[0] objectForKeyedSubscript:@"id"];
   if (v8)
   {
@@ -363,13 +363,13 @@ LABEL_11:
   return v6 & 1;
 }
 
-- (id)_tryPositionalMappingFromEditableTextRows:(id)a3
+- (id)_tryPositionalMappingFromEditableTextRows:(id)rows
 {
   v22[2] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, rows);
   if ([location[0] count] == 3)
   {
     v21[0] = @"newPasswordRowId";
@@ -456,50 +456,50 @@ LABEL_11:
   return v3;
 }
 
-- (id)_matchingAttributeWithResponse:(id)a3
+- (id)_matchingAttributeWithResponse:(id)response
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [location[0] data];
+  objc_storeStrong(location, response);
+  data = [location[0] data];
   v12 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:"ruiElementsAttributesWithName:data:error:" data:@"multiChoice" error:?];
-  MEMORY[0x1E69E5920](v7);
-  v8 = [location[0] data];
+  MEMORY[0x1E69E5920](data);
+  data2 = [location[0] data];
   v11 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:"ruiElementsAttributesWithName:data:error:" data:@"linkBarItem" error:?];
-  MEMORY[0x1E69E5920](v8);
-  v9 = [location[0] data];
+  MEMORY[0x1E69E5920](data2);
+  data3 = [location[0] data];
   v10 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:"ruiElementsAttributesWithName:data:error:" data:@"button" error:?];
-  MEMORY[0x1E69E5920](v9);
+  MEMORY[0x1E69E5920](data3);
   v3 = [v10 aaf_filter:&__block_literal_global_21];
   v4 = v10;
   v10 = v3;
   MEMORY[0x1E69E5920](v4);
   if ([v10 count] == 2)
   {
-    v14 = [v10 lastObject];
+    lastObject = [v10 lastObject];
   }
 
   else if ([v11 count] == 2)
   {
-    v14 = [v11 lastObject];
+    lastObject = [v11 lastObject];
   }
 
   else if ([v12 count] == 1)
   {
-    v14 = [v12 firstObject];
+    lastObject = [v12 firstObject];
   }
 
   else
   {
-    v14 = 0;
+    lastObject = 0;
   }
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
-  v5 = v14;
+  v5 = lastObject;
 
   return v5;
 }
@@ -516,45 +516,45 @@ uint64_t __70__AKAccountRecoveryStepChangePassword__matchingAttributeWithRespons
   return v4;
 }
 
-- (void)_verifyNewPasswordWithRowID:(id)a3 confirmRowID:(id)a4 model:(id)a5 completion:(id)a6
+- (void)_verifyNewPasswordWithRowID:(id)d confirmRowID:(id)iD model:(id)model completion:(id)completion
 {
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
+  objc_storeStrong(&v40, iD);
   v39 = 0;
-  objc_storeStrong(&v39, a5);
+  objc_storeStrong(&v39, model);
   v38 = 0;
-  objc_storeStrong(&v38, a6);
-  v37 = [(AKAccountRecoveryStepChangePassword *)v42 _promptForNewPasswordWithModel:v39];
-  v36 = [(AKAccountRecoveryStepChangePassword *)v42 _promptForConfirmPasswordWithModel:v39];
-  v18 = [v39 context];
-  v35 = [v18 currentPassword];
-  MEMORY[0x1E69E5920](v18);
-  v34 = [v39 configuration];
-  if (v34)
+  objc_storeStrong(&v38, completion);
+  v37 = [(AKAccountRecoveryStepChangePassword *)selfCopy _promptForNewPasswordWithModel:v39];
+  v36 = [(AKAccountRecoveryStepChangePassword *)selfCopy _promptForConfirmPasswordWithModel:v39];
+  context = [v39 context];
+  currentPassword = [context currentPassword];
+  MEMORY[0x1E69E5920](context);
+  configuration = [v39 configuration];
+  if (configuration)
   {
     v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v29 setObject:v37 forKeyedSubscript:location[0]];
     [v29 setObject:v36 forKeyedSubscript:v40];
-    if (v35)
+    if (currentPassword)
     {
-      [v29 setObject:v35 forKeyedSubscript:@"password"];
+      [v29 setObject:currentPassword forKeyedSubscript:@"password"];
     }
 
     [v29 setObject:&unk_1F07B51D8 forKeyedSubscript:@"serverInfo"];
-    v6 = [v34 request];
-    v28 = [v6 mutableCopy];
-    MEMORY[0x1E69E5920](v6);
-    v7 = [v39 cliUtilities];
-    [v7 signXMLRequest:v28 withPostbackDictionary:v29];
-    MEMORY[0x1E69E5920](v7);
-    v8 = [v34 resourceLoadDelegate];
-    [v8 signRequest:v28];
-    MEMORY[0x1E69E5920](v8);
-    v10 = [v39 cliUtilities];
+    request = [configuration request];
+    v28 = [request mutableCopy];
+    MEMORY[0x1E69E5920](request);
+    cliUtilities = [v39 cliUtilities];
+    [cliUtilities signXMLRequest:v28 withPostbackDictionary:v29];
+    MEMORY[0x1E69E5920](cliUtilities);
+    resourceLoadDelegate = [configuration resourceLoadDelegate];
+    [resourceLoadDelegate signRequest:v28];
+    MEMORY[0x1E69E5920](resourceLoadDelegate);
+    cliUtilities2 = [v39 cliUtilities];
     v9 = v28;
     v19 = MEMORY[0x1E69E9820];
     v20 = -1073741824;
@@ -562,11 +562,11 @@ uint64_t __70__AKAccountRecoveryStepChangePassword__matchingAttributeWithRespons
     v22 = __97__AKAccountRecoveryStepChangePassword__verifyNewPasswordWithRowID_confirmRowID_model_completion___block_invoke;
     v23 = &unk_1E73D4158;
     v27 = MEMORY[0x1E69E5928](v38);
-    v24 = MEMORY[0x1E69E5928](v42);
+    v24 = MEMORY[0x1E69E5928](selfCopy);
     v25 = MEMORY[0x1E69E5928](v39);
     v26 = MEMORY[0x1E69E5928](v37);
-    [v10 beginDataTaskWithRequest:v9 completionHandler:&v19];
-    MEMORY[0x1E69E5920](v10);
+    [cliUtilities2 beginDataTaskWithRequest:v9 completionHandler:&v19];
+    MEMORY[0x1E69E5920](cliUtilities2);
     objc_storeStrong(&v26, 0);
     objc_storeStrong(&v25, 0);
     objc_storeStrong(&v24, 0);
@@ -600,8 +600,8 @@ uint64_t __70__AKAccountRecoveryStepChangePassword__matchingAttributeWithRespons
     v30 = 1;
   }
 
-  objc_storeStrong(&v34, 0);
-  objc_storeStrong(&v35, 0);
+  objc_storeStrong(&configuration, 0);
+  objc_storeStrong(&currentPassword, 0);
   objc_storeStrong(&v36, 0);
   objc_storeStrong(&v37, 0);
   objc_storeStrong(&v38, 0);
@@ -707,37 +707,37 @@ void __97__AKAccountRecoveryStepChangePassword__verifyNewPasswordWithRowID_confi
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isNewPasswordErrorForData:(id)a3
+- (BOOL)_isNewPasswordErrorForData:(id)data
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v8 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:@"alert" data:location[0] error:0];
-  v6 = [v8 firstObject];
-  v5 = [v6 objectForKeyedSubscript:@"title"];
-  v4 = [v5 lowercaseString];
-  v7 = [v4 containsString:@"choose different password"];
-  MEMORY[0x1E69E5920](v4);
+  firstObject = [v8 firstObject];
+  v5 = [firstObject objectForKeyedSubscript:@"title"];
+  lowercaseString = [v5 lowercaseString];
+  v7 = [lowercaseString containsString:@"choose different password"];
+  MEMORY[0x1E69E5920](lowercaseString);
   MEMORY[0x1E69E5920](v5);
-  MEMORY[0x1E69E5920](v6);
+  MEMORY[0x1E69E5920](firstObject);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
   return v7 & 1;
 }
 
-- (BOOL)_isIncorrectCurrentPasswordErrorForData:(id)a3
+- (BOOL)_isIncorrectCurrentPasswordErrorForData:(id)data
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v13 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:@"alert" data:location[0] error:0];
   if ([v13 count])
   {
-    v12 = [v13 firstObject];
+    firstObject = [v13 firstObject];
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [v12 objectForKeyedSubscript:@"title"];
+    v10 = [firstObject objectForKeyedSubscript:@"title"];
     if (v10)
     {
       v8 = v10;
@@ -748,7 +748,7 @@ void __97__AKAccountRecoveryStepChangePassword__verifyNewPasswordWithRowID_confi
       v8 = &stru_1F0781300;
     }
 
-    v7 = [v12 objectForKeyedSubscript:@"message"];
+    v7 = [firstObject objectForKeyedSubscript:@"message"];
     if (v7)
     {
       v6 = v7;
@@ -760,27 +760,27 @@ void __97__AKAccountRecoveryStepChangePassword__verifyNewPasswordWithRowID_confi
     }
 
     v4 = [v9 stringWithFormat:@"%@ %@", v8, v6];
-    v11 = [v4 lowercaseString];
+    lowercaseString = [v4 lowercaseString];
     MEMORY[0x1E69E5920](v4);
     MEMORY[0x1E69E5920](v7);
     MEMORY[0x1E69E5920](v10);
     v5 = 1;
-    if (([v11 containsString:@"incorrect"] & 1) == 0)
+    if (([lowercaseString containsString:@"incorrect"] & 1) == 0)
     {
       v5 = 1;
-      if (([v11 containsString:@"invalid"] & 1) == 0)
+      if (([lowercaseString containsString:@"invalid"] & 1) == 0)
       {
         v5 = 1;
-        if (([v11 containsString:@"wrong"] & 1) == 0)
+        if (([lowercaseString containsString:@"wrong"] & 1) == 0)
         {
-          v5 = [v11 containsString:@"current password"];
+          v5 = [lowercaseString containsString:@"current password"];
         }
       }
     }
 
     v15 = v5 & 1;
-    objc_storeStrong(&v11, 0);
-    objc_storeStrong(&v12, 0);
+    objc_storeStrong(&lowercaseString, 0);
+    objc_storeStrong(&firstObject, 0);
   }
 
   else
@@ -793,18 +793,18 @@ void __97__AKAccountRecoveryStepChangePassword__verifyNewPasswordWithRowID_confi
   return v15 & 1;
 }
 
-- (BOOL)_isAuthenticationFailureForData:(id)a3
+- (BOOL)_isAuthenticationFailureForData:(id)data
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v13 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:@"alert" data:location[0] error:0];
   if ([v13 count])
   {
-    v12 = [v13 firstObject];
+    firstObject = [v13 firstObject];
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [v12 objectForKeyedSubscript:@"title"];
+    v10 = [firstObject objectForKeyedSubscript:@"title"];
     if (v10)
     {
       v8 = v10;
@@ -815,7 +815,7 @@ void __97__AKAccountRecoveryStepChangePassword__verifyNewPasswordWithRowID_confi
       v8 = &stru_1F0781300;
     }
 
-    v7 = [v12 objectForKeyedSubscript:@"message"];
+    v7 = [firstObject objectForKeyedSubscript:@"message"];
     if (v7)
     {
       v6 = v7;
@@ -827,27 +827,27 @@ void __97__AKAccountRecoveryStepChangePassword__verifyNewPasswordWithRowID_confi
     }
 
     v4 = [v9 stringWithFormat:@"%@ %@", v8, v6];
-    v11 = [v4 lowercaseString];
+    lowercaseString = [v4 lowercaseString];
     MEMORY[0x1E69E5920](v4);
     MEMORY[0x1E69E5920](v7);
     MEMORY[0x1E69E5920](v10);
     v5 = 1;
-    if (([v11 containsString:@"authentication failed"] & 1) == 0)
+    if (([lowercaseString containsString:@"authentication failed"] & 1) == 0)
     {
       v5 = 1;
-      if (([v11 containsString:@"unable to verify"] & 1) == 0)
+      if (([lowercaseString containsString:@"unable to verify"] & 1) == 0)
       {
         v5 = 1;
-        if (([v11 containsString:@"verification failed"] & 1) == 0)
+        if (([lowercaseString containsString:@"verification failed"] & 1) == 0)
         {
-          v5 = [v11 containsString:@"credentials"];
+          v5 = [lowercaseString containsString:@"credentials"];
         }
       }
     }
 
     v15 = v5 & 1;
-    objc_storeStrong(&v11, 0);
-    objc_storeStrong(&v12, 0);
+    objc_storeStrong(&lowercaseString, 0);
+    objc_storeStrong(&firstObject, 0);
   }
 
   else
@@ -860,51 +860,51 @@ void __97__AKAccountRecoveryStepChangePassword__verifyNewPasswordWithRowID_confi
   return v15 & 1;
 }
 
-- (id)_promptForNewPasswordWithModel:(id)a3
+- (id)_promptForNewPasswordWithModel:(id)model
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [location[0] context];
-  v8 = [v7 _password];
-  MEMORY[0x1E69E5920](v7);
-  if (![v8 length])
+  objc_storeStrong(location, model);
+  context = [location[0] context];
+  _password = [context _password];
+  MEMORY[0x1E69E5920](context);
+  if (![_password length])
   {
     AKPrint(@"Enter new password: ");
     v3 = AKReadLineSecure(1024);
-    v4 = v8;
-    v8 = v3;
+    v4 = _password;
+    _password = v3;
     MEMORY[0x1E69E5920](v4);
   }
 
-  v6 = MEMORY[0x1E69E5928](v8);
-  objc_storeStrong(&v8, 0);
+  v6 = MEMORY[0x1E69E5928](_password);
+  objc_storeStrong(&_password, 0);
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-- (id)_promptForConfirmPasswordWithModel:(id)a3
+- (id)_promptForConfirmPasswordWithModel:(id)model
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [location[0] context];
-  v8 = [v7 _password];
-  MEMORY[0x1E69E5920](v7);
-  if (![v8 length])
+  objc_storeStrong(location, model);
+  context = [location[0] context];
+  _password = [context _password];
+  MEMORY[0x1E69E5920](context);
+  if (![_password length])
   {
     AKPrint(@"Confirm new password: ");
     v3 = AKReadLineSecure(1024);
-    v4 = v8;
-    v8 = v3;
+    v4 = _password;
+    _password = v3;
     MEMORY[0x1E69E5920](v4);
   }
 
-  v6 = MEMORY[0x1E69E5928](v8);
-  objc_storeStrong(&v8, 0);
+  v6 = MEMORY[0x1E69E5928](_password);
+  objc_storeStrong(&_password, 0);
   objc_storeStrong(location, 0);
 
   return v6;

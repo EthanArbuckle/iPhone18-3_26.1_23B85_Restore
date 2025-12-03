@@ -1,26 +1,26 @@
 @interface FAFamilyMessageGroup
-- (id)contextPropertyWithName:(id)a3;
-- (void)performModalMessagePresentation:(id)a3 fromViewController:(id)a4;
+- (id)contextPropertyWithName:(id)name;
+- (void)performModalMessagePresentation:(id)presentation fromViewController:(id)controller;
 @end
 
 @implementation FAFamilyMessageGroup
 
-- (id)contextPropertyWithName:(id)a3
+- (id)contextPropertyWithName:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isEqualToString:@"familyClientBundleID"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"familyClientBundleID"])
   {
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
   }
 
   else
   {
     v6 = objc_alloc(MEMORY[0x277D08240]);
-    v7 = [MEMORY[0x277CCA8D8] mainBundle];
-    v8 = [v7 bundleIdentifier];
-    v9 = [v6 initWithPropertyName:v3 bundleID:v8];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+    v9 = [v6 initWithPropertyName:nameCopy bundleID:bundleIdentifier2];
 
     v17 = 0;
     v10 = [v9 fetchEligibilityWithError:&v17];
@@ -29,7 +29,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v19 = v3;
+      v19 = nameCopy;
       v20 = 2048;
       v21 = v10;
       _os_log_impl(&dword_21BB35000, v12, OS_LOG_TYPE_DEFAULT, "FAFamilyMessageGroup contextPropertyWithName: %@, response: %lu", buf, 0x16u);
@@ -40,7 +40,7 @@
       v13 = _FALogSystem();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [(FAFamilyMessageGroup *)v3 contextPropertyWithName:v11, v13];
+        [(FAFamilyMessageGroup *)nameCopy contextPropertyWithName:v11, v13];
       }
     }
 
@@ -52,40 +52,40 @@
 
     if (v10 == 2)
     {
-      v5 = MEMORY[0x277CBEC38];
+      bundleIdentifier = MEMORY[0x277CBEC38];
     }
 
     else
     {
-      v5 = v14;
+      bundleIdentifier = v14;
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return bundleIdentifier;
 }
 
-- (void)performModalMessagePresentation:(id)a3 fromViewController:(id)a4
+- (void)performModalMessagePresentation:(id)presentation fromViewController:(id)controller
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  presentationCopy = presentation;
+  controllerCopy = controller;
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v6;
+    v29 = presentationCopy;
     _os_log_impl(&dword_21BB35000, v8, OS_LOG_TYPE_DEFAULT, "FAFamilyMessageGroup will present message: %@", buf, 0xCu);
   }
 
   v9 = [[FACircleContext alloc] initWithEventType:@"FACircleEventTypeMercuryJourney"];
   [(FACircleContext *)v9 setActivityIndicatorStyle:0];
-  v10 = [v6 contentPages];
-  v11 = [v10 firstObject];
-  v12 = [v11 contentParameters];
+  contentPages = [presentationCopy contentPages];
+  firstObject = [contentPages firstObject];
+  contentParameters = [firstObject contentParameters];
 
-  v13 = [v12 objectForKeyedSubscript:@"type"];
+  v13 = [contentParameters objectForKeyedSubscript:@"type"];
   v14 = objc_alloc_init(MEMORY[0x277D08280]);
   [v14 setCachePolicy:0];
   v21[0] = MEMORY[0x277D85DD0];
@@ -93,15 +93,15 @@
   v21[2] = __75__FAFamilyMessageGroup_performModalMessagePresentation_fromViewController___block_invoke;
   v21[3] = &unk_2782F4528;
   v22 = v13;
-  v23 = v12;
+  v23 = contentParameters;
   v24 = v9;
-  v25 = v7;
-  v26 = self;
-  v27 = v6;
-  v15 = v6;
-  v16 = v7;
+  v25 = controllerCopy;
+  selfCopy = self;
+  v27 = presentationCopy;
+  v15 = presentationCopy;
+  v16 = controllerCopy;
   v17 = v9;
-  v18 = v12;
+  v18 = contentParameters;
   v19 = v13;
   [v14 startRequestWithCompletionHandler:v21];
 

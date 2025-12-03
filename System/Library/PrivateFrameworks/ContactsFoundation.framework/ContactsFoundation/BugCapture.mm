@@ -1,11 +1,11 @@
 @interface BugCapture
-+ (void)reportBugWithDomain:(id)a3 type:(id)a4 subType:(id)a5 name:(id)a6 value:(id)a7;
++ (void)reportBugWithDomain:(id)domain type:(id)type subType:(id)subType name:(id)name value:(id)value;
 - (_TtC18ContactsFoundation10BugCapture)init;
 @end
 
 @implementation BugCapture
 
-+ (void)reportBugWithDomain:(id)a3 type:(id)a4 subType:(id)a5 name:(id)a6 value:(id)a7
++ (void)reportBugWithDomain:(id)domain type:(id)type subType:(id)subType name:(id)name value:(id)value
 {
   v21 = sub_185A7E914();
   v8 = v7;

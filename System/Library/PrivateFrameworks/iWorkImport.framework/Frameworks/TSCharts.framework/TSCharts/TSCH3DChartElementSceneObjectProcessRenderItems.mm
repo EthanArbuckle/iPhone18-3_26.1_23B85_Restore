@@ -1,19 +1,19 @@
 @interface TSCH3DChartElementSceneObjectProcessRenderItems
-- (BOOL)processEnumeratorSeries:(id)a3;
-- (void)processElementInfo:(id)a3 eachValue:(BOOL)a4;
+- (BOOL)processEnumeratorSeries:(id)series;
+- (void)processElementInfo:(id)info eachValue:(BOOL)value;
 @end
 
 @implementation TSCH3DChartElementSceneObjectProcessRenderItems
 
-- (BOOL)processEnumeratorSeries:(id)a3
+- (BOOL)processEnumeratorSeries:(id)series
 {
-  v4 = a3;
+  seriesCopy = series;
   WeakRetained = objc_loadWeakRetained(&self->super._sceneObject);
   properties = self->super._properties;
-  v12 = objc_msgSend_series(v4, v7, v8, v9, v10);
-  if (v4)
+  v12 = objc_msgSend_series(seriesCopy, v7, v8, v9, v10);
+  if (seriesCopy)
   {
-    objc_msgSend_position(v4, v11, v13, v14, v15);
+    objc_msgSend_position(seriesCopy, v11, v13, v14, v15);
   }
 
   else
@@ -26,17 +26,17 @@
   return v16;
 }
 
-- (void)processElementInfo:(id)a3 eachValue:(BOOL)a4
+- (void)processElementInfo:(id)info eachValue:(BOOL)value
 {
-  v4 = a4;
-  v31 = a3;
+  valueCopy = value;
+  infoCopy = info;
   WeakRetained = objc_loadWeakRetained(&self->super._sceneObject);
-  v11 = objc_msgSend_render_pushMatrix_delayedPass_(WeakRetained, v7, v8, v9, v10, v31, v4, 0);
+  v11 = objc_msgSend_render_pushMatrix_delayedPass_(WeakRetained, v7, v8, v9, v10, infoCopy, valueCopy, 0);
 
   if (v11)
   {
     delayedItems = self->super._delayedItems;
-    v17 = objc_msgSend_copy(v31, v12, v13, v14, v15);
+    v17 = objc_msgSend_copy(infoCopy, v12, v13, v14, v15);
     objc_msgSend_addObject_(delayedItems, v18, v19, v20, v21, v17);
 
     if (v11 == 2)

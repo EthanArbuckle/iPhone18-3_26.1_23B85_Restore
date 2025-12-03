@@ -9,37 +9,37 @@
 
 - (SiriMapItemConvertible)selectedResult
 {
-  v2 = [(CarSiriContextProvider *)self _visuallySelectedResult];
-  v3 = v2;
-  if (v2)
+  _visuallySelectedResult = [(CarSiriContextProvider *)self _visuallySelectedResult];
+  v3 = _visuallySelectedResult;
+  if (_visuallySelectedResult)
   {
-    v4 = v2;
+    selectedResult = _visuallySelectedResult;
   }
 
   else
   {
     v5 = +[SearchSession currentSearchSession];
-    v6 = [v5 currentResultsSearchInfo];
-    v4 = [v6 selectedResult];
+    currentResultsSearchInfo = [v5 currentResultsSearchInfo];
+    selectedResult = [currentResultsSearchInfo selectedResult];
   }
 
-  return v4;
+  return selectedResult;
 }
 
 - (NSArray)searchResults
 {
   v3 = +[SearchSession currentSearchSession];
-  v4 = [v3 currentResults];
+  currentResults = [v3 currentResults];
 
-  v5 = [(CarSiriContextProvider *)self _visuallySelectedResult];
-  if (v5 && ![v4 containsObject:v5])
+  _visuallySelectedResult = [(CarSiriContextProvider *)self _visuallySelectedResult];
+  if (_visuallySelectedResult && ![currentResults containsObject:_visuallySelectedResult])
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = v4;
+    v6 = currentResults;
   }
 
   return v6;
@@ -48,19 +48,19 @@
 - (MKMapView)mapView
 {
   v2 = +[CarDisplayController sharedInstance];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 mapView];
+  chromeViewController = [v2 chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  return v4;
+  return mapView;
 }
 
 - (id)_visuallySelectedResult
 {
   v2 = +[CarDisplayController sharedInstance];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 visuallySelectedItem];
+  chromeViewController = [v2 chromeViewController];
+  visuallySelectedItem = [chromeViewController visuallySelectedItem];
 
-  v5 = v4;
+  v5 = visuallySelectedItem;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

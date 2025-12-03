@@ -4,42 +4,42 @@
 - (id)mesaSensorProvisioningState;
 - (id)mesaSensorSerialNumber;
 - (id)serialNumber;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentTouchID
 
 - (BOOL)isPresent
 {
-  v3 = [(ComponentTouchID *)self serialNumber];
-  if (findDeviceWithName("mesa") && isValidSerialNumber(v3))
+  serialNumber = [(ComponentTouchID *)self serialNumber];
+  if (findDeviceWithName("mesa") && isValidSerialNumber(serialNumber))
   {
     valid = 1;
   }
 
   else
   {
-    v5 = [(ComponentTouchID *)self mesaSensorSerialNumber];
-    valid = isValidSerialNumber(v5);
+    mesaSensorSerialNumber = [(ComponentTouchID *)self mesaSensorSerialNumber];
+    valid = isValidSerialNumber(mesaSensorSerialNumber);
   }
 
   return valid;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(ComponentTouchID *)self serialNumber];
-  [v4 setObject:v5 forKeyedSubscript:@"serialNumber"];
+  attributesCopy = attributes;
+  serialNumber = [(ComponentTouchID *)self serialNumber];
+  [attributesCopy setObject:serialNumber forKeyedSubscript:@"serialNumber"];
 
-  v6 = [(ComponentTouchID *)self mesaSensorProvisioningState];
-  [v4 setObject:v6 forKeyedSubscript:@"mesaSensorProvisioningState"];
+  mesaSensorProvisioningState = [(ComponentTouchID *)self mesaSensorProvisioningState];
+  [attributesCopy setObject:mesaSensorProvisioningState forKeyedSubscript:@"mesaSensorProvisioningState"];
 
-  v7 = [(ComponentTouchID *)self mesaSensorSerialNumber];
-  [v4 setObject:v7 forKeyedSubscript:@"mesaSensorSerialNumber"];
+  mesaSensorSerialNumber = [(ComponentTouchID *)self mesaSensorSerialNumber];
+  [attributesCopy setObject:mesaSensorSerialNumber forKeyedSubscript:@"mesaSensorSerialNumber"];
 
-  v8 = [(ComponentTouchID *)self mesaModuleSerialNumber];
-  [v4 setObject:v8 forKeyedSubscript:@"mesaModuleSerialNumber"];
+  mesaModuleSerialNumber = [(ComponentTouchID *)self mesaModuleSerialNumber];
+  [attributesCopy setObject:mesaModuleSerialNumber forKeyedSubscript:@"mesaModuleSerialNumber"];
 }
 
 - (id)serialNumber

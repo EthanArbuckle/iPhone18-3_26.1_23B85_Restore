@@ -1,21 +1,21 @@
 @interface THAssetHelper
 - (AEAsset)asset;
-- (THAssetHelper)initWithBookDescription:(id)a3 bookCoverDescription:(id)a4;
-- (id)coverArtForSize:(CGSize)a3 source:(int)a4 options:(int)a5;
+- (THAssetHelper)initWithBookDescription:(id)description bookCoverDescription:(id)coverDescription;
+- (id)coverArtForSize:(CGSize)size source:(int)source options:(int)options;
 - (void)dealloc;
 @end
 
 @implementation THAssetHelper
 
-- (THAssetHelper)initWithBookDescription:(id)a3 bookCoverDescription:(id)a4
+- (THAssetHelper)initWithBookDescription:(id)description bookCoverDescription:(id)coverDescription
 {
   v8.receiver = self;
   v8.super_class = THAssetHelper;
   v6 = [(THAssetHelper *)&v8 init];
   if (v6)
   {
-    v6->mBookDescription = a3;
-    v6->mBookCoverDescription = a4;
+    v6->mBookDescription = description;
+    v6->mBookCoverDescription = coverDescription;
   }
 
   return v6;
@@ -42,19 +42,19 @@
   return result;
 }
 
-- (id)coverArtForSize:(CGSize)a3 source:(int)a4 options:(int)a5
+- (id)coverArtForSize:(CGSize)size source:(int)source options:(int)options
 {
   result = self->mBookCoverDescription;
   if (result)
   {
-    v7 = [result embeddedArtURL];
-    result = +[UIImage imageWithContentsOfFile:](UIImage, "imageWithContentsOfFile:", [v7 path]);
+    embeddedArtURL = [result embeddedArtURL];
+    result = +[UIImage imageWithContentsOfFile:](UIImage, "imageWithContentsOfFile:", [embeddedArtURL path]);
     if (!result)
     {
       result = [(THBookCoverDescription *)self->mBookCoverDescription drmContext];
       if (result)
       {
-        result = -[PFDContext dataWithContentsOfFile:error:](-[THBookCoverDescription drmContext](self->mBookCoverDescription, "drmContext"), "dataWithContentsOfFile:error:", [v7 path], 0);
+        result = -[PFDContext dataWithContentsOfFile:error:](-[THBookCoverDescription drmContext](self->mBookCoverDescription, "drmContext"), "dataWithContentsOfFile:error:", [embeddedArtURL path], 0);
         if (result)
         {
 

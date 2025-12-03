@@ -1,13 +1,13 @@
 @interface BCSCoalesceHelper
-- (BCSCoalesceHelper)initWithQOSClass:(unsigned int)a3;
-- (BOOL)isDuplicateRequest:(id)a3;
-- (id)dequeueCoalesceObjectsForCoalesceKey:(id)a3;
-- (void)enqueueCoalesceObject:(id)a3 isDuplicateRequest:(BOOL *)a4;
+- (BCSCoalesceHelper)initWithQOSClass:(unsigned int)class;
+- (BOOL)isDuplicateRequest:(id)request;
+- (id)dequeueCoalesceObjectsForCoalesceKey:(id)key;
+- (void)enqueueCoalesceObject:(id)object isDuplicateRequest:(BOOL *)request;
 @end
 
 @implementation BCSCoalesceHelper
 
-- (BCSCoalesceHelper)initWithQOSClass:(unsigned int)a3
+- (BCSCoalesceHelper)initWithQOSClass:(unsigned int)class
 {
   v11.receiver = self;
   v11.super_class = BCSCoalesceHelper;
@@ -18,7 +18,7 @@
     coalesceObjectPool = v4->_coalesceObjectPool;
     v4->_coalesceObjectPool = v5;
 
-    v7 = dispatch_queue_attr_make_with_qos_class(0, a3, -1);
+    v7 = dispatch_queue_attr_make_with_qos_class(0, class, -1);
     v8 = dispatch_queue_create([@"com.apple.businessservicesd.CoalesceHelperCoalesceObjectDispatchQueue" UTF8String], v7);
     coalesceHelperDispatchQueue = v4->_coalesceHelperDispatchQueue;
     v4->_coalesceHelperDispatchQueue = v8;
@@ -27,9 +27,9 @@
   return v4;
 }
 
-- (void)enqueueCoalesceObject:(id)a3 isDuplicateRequest:(BOOL *)a4
+- (void)enqueueCoalesceObject:(id)object isDuplicateRequest:(BOOL *)request
 {
-  v6 = a3;
+  objectCopy = object;
   if (self)
   {
     coalesceHelperDispatchQueue = self->_coalesceHelperDispatchQueue;
@@ -45,9 +45,9 @@
   block[2] = __62__BCSCoalesceHelper_enqueueCoalesceObject_isDuplicateRequest___block_invoke;
   block[3] = &unk_278D389D0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = objectCopy;
+  requestCopy = request;
+  v8 = objectCopy;
   dispatch_sync(coalesceHelperDispatchQueue, block);
 }
 
@@ -122,9 +122,9 @@ LABEL_13:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dequeueCoalesceObjectsForCoalesceKey:(id)a3
+- (id)dequeueCoalesceObjectsForCoalesceKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -145,10 +145,10 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __58__BCSCoalesceHelper_dequeueCoalesceObjectsForCoalesceKey___block_invoke;
   block[3] = &unk_278D389F8;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(coalesceHelperDispatchQueue, block);
   v7 = v13[5];
 
@@ -210,9 +210,9 @@ void __58__BCSCoalesceHelper_dequeueCoalesceObjectsForCoalesceKey___block_invoke
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isDuplicateRequest:(id)a3
+- (BOOL)isDuplicateRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -231,10 +231,10 @@ void __58__BCSCoalesceHelper_dequeueCoalesceObjectsForCoalesceKey___block_invoke
   block[1] = 3221225472;
   block[2] = __40__BCSCoalesceHelper_isDuplicateRequest___block_invoke;
   block[3] = &unk_278D389F8;
-  v10 = v4;
+  v10 = requestCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = requestCopy;
   dispatch_sync(coalesceHelperDispatchQueue, block);
   v7 = *(v13 + 24);
 

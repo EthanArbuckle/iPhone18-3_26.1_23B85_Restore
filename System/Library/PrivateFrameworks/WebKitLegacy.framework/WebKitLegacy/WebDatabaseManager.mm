@@ -2,11 +2,11 @@
 + (id)sharedWebDatabaseManager;
 + (void)removeEmptyDatabaseFiles;
 + (void)scheduleEmptyDatabaseRemoval;
-- (BOOL)deleteDatabase:(id)a3 withOrigin:(id)a4;
-- (BOOL)deleteOrigin:(id)a3;
+- (BOOL)deleteDatabase:(id)database withOrigin:(id)origin;
+- (BOOL)deleteOrigin:(id)origin;
 - (WebDatabaseManager)init;
-- (id)databasesWithOrigin:(id)a3;
-- (id)detailsForDatabase:(id)a3 withOrigin:(id)a4;
+- (id)databasesWithOrigin:(id)origin;
+- (id)detailsForDatabase:(id)database withOrigin:(id)origin;
 - (id)origins;
 - (void)deleteAllDatabases;
 - (void)deleteAllIndexedDatabases;
@@ -16,7 +16,7 @@
 
 + (void)scheduleEmptyDatabaseRemoval
 {
-  WebCore::DatabaseTracker::emptyDatabaseFilesRemovalTaskWillBeScheduled(a1);
+  WebCore::DatabaseTracker::emptyDatabaseFilesRemovalTaskWillBeScheduled(self);
   global_queue = dispatch_get_global_queue(0, 0);
 
   dispatch_async(global_queue, &__block_literal_global_1);
@@ -31,16 +31,16 @@ uint64_t __50__WebDatabaseManager_scheduleEmptyDatabaseRemoval__block_invoke()
 
 + (void)removeEmptyDatabaseFiles
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:WebDatabaseDirectoryDefaultsKey];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:WebDatabaseDirectoryDefaultsKey];
   if (!v3 || (v4 = v3, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v4 = @"~/Library/WebKit/Databases";
   }
 
-  v5 = [(__CFString *)v4 stringByStandardizingPath];
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 contentsOfDirectoryAtPath:v5 error:0];
+  stringByStandardizingPath = [(__CFString *)v4 stringByStandardizingPath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [defaultManager contentsOfDirectoryAtPath:stringByStandardizingPath error:0];
   if (v7)
   {
     v8 = v7;
@@ -57,13 +57,13 @@ uint64_t __50__WebDatabaseManager_scheduleEmptyDatabaseRemoval__block_invoke()
         {
           if ([v13 characterAtIndex:0] != 46)
           {
-            v14 = [v5 stringByAppendingPathComponent:v13];
+            v14 = [stringByStandardizingPath stringByAppendingPathComponent:v13];
             v33 = 0;
-            if ([v6 fileExistsAtPath:v14 isDirectory:&v33])
+            if ([defaultManager fileExistsAtPath:v14 isDirectory:&v33])
             {
-              if (v33 == 1 && [objc_msgSend(v6 attributesOfItemAtPath:v14 error:{0), "fileType"}] != v12)
+              if (v33 == 1 && [objc_msgSend(defaultManager attributesOfItemAtPath:v14 error:{0), "fileType"}] != v12)
               {
-                v15 = [v6 contentsOfDirectoryAtPath:v14 error:0];
+                v15 = [defaultManager contentsOfDirectoryAtPath:v14 error:0];
                 v16 = [v15 count];
                 if (!v16)
                 {
@@ -72,7 +72,7 @@ uint64_t __50__WebDatabaseManager_scheduleEmptyDatabaseRemoval__block_invoke()
 
                 v17 = v16;
                 v28 = v12;
-                v30 = v5;
+                v30 = stringByStandardizingPath;
                 v18 = 0;
                 v19 = 0;
                 for (i = [v15 objectAtIndex:{0, v28, v30}]; ; i = objc_msgSend(v15, "objectAtIndex:", v19, v29, v31))
@@ -83,7 +83,7 @@ uint64_t __50__WebDatabaseManager_scheduleEmptyDatabaseRemoval__block_invoke()
                     if ([v21 characterAtIndex:0] != 46)
                     {
                       v22 = [v14 stringByAppendingPathComponent:v21];
-                      if ([v6 fileExistsAtPath:v22 isDirectory:&v33])
+                      if ([defaultManager fileExistsAtPath:v22 isDirectory:&v33])
                       {
                         if ((v33 & 1) == 0)
                         {
@@ -110,8 +110,8 @@ uint64_t __50__WebDatabaseManager_scheduleEmptyDatabaseRemoval__block_invoke()
 
                 v27 = v17 == v18;
                 v12 = v29;
-                v5 = v31;
-                if (v27 || ![objc_msgSend(v6 contentsOfDirectoryAtPath:v14 error:{0), "count"}])
+                stringByStandardizingPath = v31;
+                if (v27 || ![objc_msgSend(defaultManager contentsOfDirectoryAtPath:v14 error:{0), "count"}])
                 {
 LABEL_7:
                   rmdir([v14 fileSystemRepresentation]);
@@ -156,8 +156,8 @@ LABEL_7:
     }
 
     v4 = WebCore::DatabaseManager::singleton(result);
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v6 = [v5 objectForKey:WebDatabaseDirectoryDefaultsKey];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v6 = [standardUserDefaults objectForKey:WebDatabaseDirectoryDefaultsKey];
     if (!v6 || (v7 = v6, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v7 = @"~/Library/WebKit/Databases";
@@ -284,15 +284,15 @@ LABEL_10:
   return v5;
 }
 
-- (id)databasesWithOrigin:(id)a3
+- (id)databasesWithOrigin:(id)origin
 {
-  v3 = a3;
-  if (a3)
+  originCopy = origin;
+  if (origin)
   {
     WebCore::DatabaseTracker::singleton(self);
-    [v3 _core];
+    [originCopy _core];
     WebCore::DatabaseTracker::databaseNames();
-    v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v14];
+    originCopy = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v14];
     if (v14)
     {
       v5 = v13;
@@ -302,7 +302,7 @@ LABEL_10:
         WTF::makeNSArrayElement(&v15, v5, v4);
         if (v15)
         {
-          [v3 addObject:?];
+          [originCopy addObject:?];
           v7 = v15;
           v15 = 0;
           if (v7)
@@ -317,9 +317,9 @@ LABEL_10:
       while (v6);
     }
 
-    if (v3)
+    if (originCopy)
     {
-      v8 = v3;
+      v8 = originCopy;
     }
 
     v9 = v13;
@@ -349,20 +349,20 @@ LABEL_10:
     }
   }
 
-  return v3;
+  return originCopy;
 }
 
-- (id)detailsForDatabase:(id)a3 withOrigin:(id)a4
+- (id)detailsForDatabase:(id)database withOrigin:(id)origin
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!origin)
   {
     return 0;
   }
 
   v6 = WebCore::DatabaseManager::singleton(self);
-  MEMORY[0x1CCA63A40](&v17, a3);
-  WebCore::DatabaseManager::detailsForNameAndOrigin(&v18, v6, &v17, [a4 _core]);
+  MEMORY[0x1CCA63A40](&v17, database);
+  WebCore::DatabaseManager::detailsForNameAndOrigin(&v18, v6, &v17, [origin _core]);
   v8 = v17;
   v17 = 0;
   if (v8 && atomic_fetch_add_explicit(v8, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -384,7 +384,7 @@ LABEL_10:
       }
 
       v11 = 0;
-      a3 = v17;
+      database = v17;
     }
 
     else
@@ -392,7 +392,7 @@ LABEL_10:
       v11 = 1;
     }
 
-    v23[0] = a3;
+    v23[0] = database;
     v22[1] = WebDatabaseExpectedSizeKey;
     v23[1] = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{v20, v17}];
     v22[2] = WebDatabaseUsageKey;
@@ -434,42 +434,42 @@ LABEL_10:
 {
   v2 = WebCore::DatabaseTracker::singleton(self);
   WebCore::DatabaseTracker::deleteAllDatabasesImmediately(v2);
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 objectForKey:WebDatabaseDirectoryDefaultsKey];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults objectForKey:WebDatabaseDirectoryDefaultsKey];
   if (!v5 || (v6 = v5, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v6 = @"~/Library/WebKit/Databases";
   }
 
-  v7 = [(__CFString *)v6 stringByStandardizingPath];
+  stringByStandardizingPath = [(__CFString *)v6 stringByStandardizingPath];
 
-  [v3 removeItemAtPath:v7 error:0];
+  [defaultManager removeItemAtPath:stringByStandardizingPath error:0];
 }
 
-- (BOOL)deleteOrigin:(id)a3
+- (BOOL)deleteOrigin:(id)origin
 {
-  if (!a3)
+  if (!origin)
   {
     return 0;
   }
 
   v4 = WebCore::DatabaseTracker::singleton(self);
-  v5 = [a3 _core] + 8;
+  v5 = [origin _core] + 8;
 
   return MEMORY[0x1EEE55D78](v4, v5);
 }
 
-- (BOOL)deleteDatabase:(id)a3 withOrigin:(id)a4
+- (BOOL)deleteDatabase:(id)database withOrigin:(id)origin
 {
-  if (!a4)
+  if (!origin)
   {
     return 0;
   }
 
   WebCore::DatabaseTracker::singleton(self);
-  [a4 _core];
-  MEMORY[0x1CCA63A40](&v10, a3);
+  [origin _core];
+  MEMORY[0x1CCA63A40](&v10, database);
   result = WebCore::DatabaseTracker::deleteDatabase();
   v8 = v10;
   v10 = 0;

@@ -4,13 +4,13 @@
 - (AVDepthData)depthDataByApplyingExifOrientation:(CGImagePropertyOrientation)exifOrientation;
 - (AVDepthData)depthDataByConvertingToDepthDataType:(OSType)depthDataType;
 - (AVDepthData)depthDataByReplacingDepthDataMapWithPixelBuffer:(CVPixelBufferRef)pixelBuffer error:(NSError *)outError;
-- (AVDepthData)initWithPixelBuffer:(__CVBuffer *)a3 auxiliaryMetadata:(CGImageMetadata *)a4;
-- (AVDepthData)initWithPixelBuffer:(__CVBuffer *)a3 depthMetadataDictionary:(id)a4;
+- (AVDepthData)initWithPixelBuffer:(__CVBuffer *)buffer auxiliaryMetadata:(CGImageMetadata *)metadata;
+- (AVDepthData)initWithPixelBuffer:(__CVBuffer *)buffer depthMetadataDictionary:(id)dictionary;
 - (CGImageMetadata)copyAuxiliaryMetadata;
 - (NSDictionary)dictionaryRepresentationForAuxiliaryDataType:(NSString *)outAuxDataType;
 - (OSType)depthDataType;
 - (__CFString)auxiliaryImageType;
-- (__CVBuffer)_copyPixelBufferRepresentationWithPixelFormatType:(unsigned int)a3;
+- (__CVBuffer)_copyPixelBufferRepresentationWithPixelFormatType:(unsigned int)type;
 - (id)debugDescription;
 - (id)depthBlurEffectRenderingParameters;
 - (id)description;
@@ -163,8 +163,8 @@ LABEL_43:
   }
 
   v21 = v17;
-  v22 = [a1 _allSupportedDepthDataPixelFormatTypes];
-  if (([v22 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v14)}] & 1) == 0)
+  _allSupportedDepthDataPixelFormatTypes = [self _allSupportedDepthDataPixelFormatTypes];
+  if (([_allSupportedDepthDataPixelFormatTypes containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v14)}] & 1) == 0)
   {
     +[AVDepthData depthDataFromDictionaryRepresentation:error:];
     v38 = 0;
@@ -202,23 +202,23 @@ LABEL_43:
     v30 = BytesPerRow;
   }
 
-  v31 = [v7 bytes];
+  bytes = [v7 bytes];
   BaseAddress = CVPixelBufferGetBaseAddress(pixelBufferOut);
   v33 = [v7 length];
   if (v30 <= v33)
   {
-    v34 = &v31[v33];
+    v34 = &bytes[v33];
     v35 = 1;
     do
     {
-      memcpy(BaseAddress, v31, v30);
+      memcpy(BaseAddress, bytes, v30);
       if (v35 >= v23)
       {
         break;
       }
 
-      v36 = &v31[v30 + v21];
-      v31 += v21;
+      v36 = &bytes[v30 + v21];
+      bytes += v21;
       BaseAddress += v29;
       ++v35;
     }
@@ -329,8 +329,8 @@ LABEL_15:
 - (AVDepthData)depthDataByConvertingToDepthDataType:(OSType)depthDataType
 {
   v3 = *&depthDataType;
-  v5 = [(AVDepthData *)self availableDepthDataTypes];
-  if (-[NSArray containsObject:](v5, "containsObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3]))
+  availableDepthDataTypes = [(AVDepthData *)self availableDepthDataTypes];
+  if (-[NSArray containsObject:](availableDepthDataTypes, "containsObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3]))
   {
     v6 = [(AVDepthData *)self _copyPixelBufferRepresentationWithPixelFormatType:v3];
     v7 = [[AVDepthData alloc] initWithPixelBuffer:v6 depthMetadataDictionary:0];
@@ -369,8 +369,8 @@ LABEL_15:
 - (AVDepthData)depthDataByReplacingDepthDataMapWithPixelBuffer:(CVPixelBufferRef)pixelBuffer error:(NSError *)outError
 {
   PixelFormatType = CVPixelBufferGetPixelFormatType(pixelBuffer);
-  v8 = [(AVDepthData *)self availableDepthDataTypes];
-  if (-[NSArray containsObject:](v8, "containsObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:PixelFormatType]))
+  availableDepthDataTypes = [(AVDepthData *)self availableDepthDataTypes];
+  if (-[NSArray containsObject:](availableDepthDataTypes, "containsObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:PixelFormatType]))
   {
     v9 = [[AVDepthData alloc] initWithPixelBuffer:pixelBuffer depthMetadataDictionary:0];
     v9->_internal->quality = [(AVDepthData *)self depthDataQuality];
@@ -414,35 +414,35 @@ LABEL_15:
   return v2;
 }
 
-- (AVDepthData)initWithPixelBuffer:(__CVBuffer *)a3 auxiliaryMetadata:(CGImageMetadata *)a4
+- (AVDepthData)initWithPixelBuffer:(__CVBuffer *)buffer auxiliaryMetadata:(CGImageMetadata *)metadata
 {
-  v5 = [(AVDepthData *)self initWithPixelBuffer:a3 depthMetadataDictionary:0];
+  v5 = [(AVDepthData *)self initWithPixelBuffer:buffer depthMetadataDictionary:0];
   v6 = v5;
-  if (a4 && v5)
+  if (metadata && v5)
   {
     v7 = *MEMORY[0x1E6991340];
-    v5->_internal->version = [AVAuxiliaryMetadataStringTagWithPrefixedKey(a4 *MEMORY[0x1E6991340]];
-    v6->_internal->quality = [AVAuxiliaryMetadataStringTagWithPrefixedKey(a4 v7] ^ 1;
-    v6->_internal->filtered = [AVAuxiliaryMetadataStringTagWithPrefixedKey(a4 v7];
-    v6->_internal->accuracy = [AVAuxiliaryMetadataStringTagWithPrefixedKey(a4 v7];
-    v6->_internal->calibrationData = [[AVCameraCalibrationData alloc] initWithAuxiliaryMetadata:a4];
+    v5->_internal->version = [AVAuxiliaryMetadataStringTagWithPrefixedKey(metadata *MEMORY[0x1E6991340]];
+    v6->_internal->quality = [AVAuxiliaryMetadataStringTagWithPrefixedKey(metadata v7] ^ 1;
+    v6->_internal->filtered = [AVAuxiliaryMetadataStringTagWithPrefixedKey(metadata v7];
+    v6->_internal->accuracy = [AVAuxiliaryMetadataStringTagWithPrefixedKey(metadata v7];
+    v6->_internal->calibrationData = [[AVCameraCalibrationData alloc] initWithAuxiliaryMetadata:metadata];
     v8 = *MEMORY[0x1E6991320];
-    [AVAuxiliaryMetadataStringTagWithPrefixedKey(a4 *MEMORY[0x1E6991320]];
+    [AVAuxiliaryMetadataStringTagWithPrefixedKey(metadata *MEMORY[0x1E6991320]];
     v6->_internal->depthBlurEffectSimulatedAperture = v9;
-    v10 = AVAuxiliaryMetadataStringTagWithPrefixedKey(a4, v8, *MEMORY[0x1E6991328]);
+    v10 = AVAuxiliaryMetadataStringTagWithPrefixedKey(metadata, v8, *MEMORY[0x1E6991328]);
     if (v10)
     {
       v6->_internal->depthBlurEffectRenderingParameters = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v10 options:0];
     }
 
-    v11 = AVAuxiliaryMetadataStringTagWithPrefixedKey(a4, v7, *MEMORY[0x1E69913D0]);
+    v11 = AVAuxiliaryMetadataStringTagWithPrefixedKey(metadata, v7, *MEMORY[0x1E69913D0]);
     v12 = v11;
     if (v11)
     {
       v6->_internal->portraitScoreIsHigh = [v11 BOOLValue];
     }
 
-    v13 = AVAuxiliaryMetadataStringTagWithPrefixedKey(a4, v7, *MEMORY[0x1E69913C8]);
+    v13 = AVAuxiliaryMetadataStringTagWithPrefixedKey(metadata, v7, *MEMORY[0x1E69913C8]);
     LODWORD(v14) = 2143289344;
     if (v12 && v13)
     {
@@ -450,7 +450,7 @@ LABEL_15:
     }
 
     v6->_internal->portraitScore = *&v14;
-    v15 = AVAuxiliaryMetadataStringTagWithPrefixedKey(a4, *MEMORY[0x1E69913B0], *MEMORY[0x1E69913B8]);
+    v15 = AVAuxiliaryMetadataStringTagWithPrefixedKey(metadata, *MEMORY[0x1E69913B0], *MEMORY[0x1E69913B8]);
     if (v15)
     {
       [v15 floatValue];
@@ -467,7 +467,7 @@ LABEL_15:
   return v6;
 }
 
-- (AVDepthData)initWithPixelBuffer:(__CVBuffer *)a3 depthMetadataDictionary:(id)a4
+- (AVDepthData)initWithPixelBuffer:(__CVBuffer *)buffer depthMetadataDictionary:(id)dictionary
 {
   v18.receiver = self;
   v18.super_class = AVDepthData;
@@ -478,9 +478,9 @@ LABEL_15:
     v6->_internal = internal;
     if (internal)
     {
-      if (a3)
+      if (buffer)
       {
-        v8 = CFRetain(a3);
+        v8 = CFRetain(buffer);
         internal = v6->_internal;
       }
 
@@ -490,23 +490,23 @@ LABEL_15:
       }
 
       internal->pixelBuffer = v8;
-      if (a4)
+      if (dictionary)
       {
-        v6->_internal->version = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6991428]), "intValue"}];
-        v6->_internal->quality = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6991420]), "intValue"}];
-        v6->_internal->filtered = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E69913E8]), "BOOLValue"}];
-        v6->_internal->accuracy = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E69913D8]), "intValue"}];
-        v6->_internal->calibrationData = [[AVCameraCalibrationData alloc] initWithDepthMetadataDictionary:a4];
-        [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6991310]), "floatValue"}];
+        v6->_internal->version = [objc_msgSend(dictionary objectForKeyedSubscript:{*MEMORY[0x1E6991428]), "intValue"}];
+        v6->_internal->quality = [objc_msgSend(dictionary objectForKeyedSubscript:{*MEMORY[0x1E6991420]), "intValue"}];
+        v6->_internal->filtered = [objc_msgSend(dictionary objectForKeyedSubscript:{*MEMORY[0x1E69913E8]), "BOOLValue"}];
+        v6->_internal->accuracy = [objc_msgSend(dictionary objectForKeyedSubscript:{*MEMORY[0x1E69913D8]), "intValue"}];
+        v6->_internal->calibrationData = [[AVCameraCalibrationData alloc] initWithDepthMetadataDictionary:dictionary];
+        [objc_msgSend(dictionary objectForKeyedSubscript:{*MEMORY[0x1E6991310]), "floatValue"}];
         v6->_internal->depthBlurEffectSimulatedAperture = v9;
-        v10 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6991308]];
+        v10 = [dictionary objectForKeyedSubscript:*MEMORY[0x1E6991308]];
         if (v10)
         {
           v6->_internal->depthBlurEffectRenderingParameters = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v10 options:0];
         }
 
-        v11 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6991438]];
-        v12 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6991430]];
+        v11 = [dictionary objectForKeyedSubscript:*MEMORY[0x1E6991438]];
+        v12 = [dictionary objectForKeyedSubscript:*MEMORY[0x1E6991430]];
         LODWORD(v13) = 2143289344;
         if (v11)
         {
@@ -519,7 +519,7 @@ LABEL_15:
         }
 
         v6->_internal->portraitScore = *&v13;
-        v15 = [a4 objectForKeyedSubscript:*MEMORY[0x1E69914E8]];
+        v15 = [dictionary objectForKeyedSubscript:*MEMORY[0x1E69914E8]];
         if (v15)
         {
           [v15 floatValue];
@@ -545,10 +545,10 @@ LABEL_15:
 
 - (CGImageMetadata)copyAuxiliaryMetadata
 {
-  v3 = [(AVCameraCalibrationData *)self->_internal->calibrationData copyAuxiliaryMetadata];
-  if (v3)
+  copyAuxiliaryMetadata = [(AVCameraCalibrationData *)self->_internal->calibrationData copyAuxiliaryMetadata];
+  if (copyAuxiliaryMetadata)
   {
-    v4 = v3;
+    v4 = copyAuxiliaryMetadata;
     v5 = *MEMORY[0x1E6991338];
     v6 = *MEMORY[0x1E6991340];
   }
@@ -696,19 +696,19 @@ LABEL_39:
   return *v2;
 }
 
-- (__CVBuffer)_copyPixelBufferRepresentationWithPixelFormatType:(unsigned int)a3
+- (__CVBuffer)_copyPixelBufferRepresentationWithPixelFormatType:(unsigned int)type
 {
   pixelBufferOut = 0;
   Width = CVPixelBufferGetWidth(self->_internal->pixelBuffer);
   Height = CVPixelBufferGetHeight(self->_internal->pixelBuffer);
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{MEMORY[0x1E695E0F8], *MEMORY[0x1E69660D8], 0}];
-  v8 = [(AVDepthData *)self depthDataType];
-  if (!CVPixelBufferCreate(*MEMORY[0x1E695E480], Width, Height, a3, v7, &pixelBufferOut))
+  depthDataType = [(AVDepthData *)self depthDataType];
+  if (!CVPixelBufferCreate(*MEMORY[0x1E695E480], Width, Height, type, v7, &pixelBufferOut))
   {
     internal = self->_internal;
     pixelBuffer = internal->pixelBuffer;
     v11 = pixelBufferOut;
-    if (v8 == a3)
+    if (depthDataType == type)
     {
       if (CVPixelBufferLockBaseAddress(internal->pixelBuffer, 1uLL))
       {
@@ -771,11 +771,11 @@ LABEL_39:
 
 - (NSDictionary)dictionaryRepresentationForAuxiliaryDataType:(NSString *)outAuxDataType
 {
-  v5 = [(AVDepthData *)self depthDataType];
+  depthDataType = [(AVDepthData *)self depthDataType];
   Width = CVPixelBufferGetWidth([(AVDepthData *)self depthDataMap]);
   Height = CVPixelBufferGetHeight([(AVDepthData *)self depthDataMap]);
   BytesPerRow = CVPixelBufferGetBytesPerRow([(AVDepthData *)self depthDataMap]);
-  if (!v5 || !Width || !Height || (v9 = BytesPerRow) == 0 || (v10 = [MEMORY[0x1E695DF88] dataWithLength:BytesPerRow * Height]) == 0)
+  if (!depthDataType || !Width || !Height || (v9 = BytesPerRow) == 0 || (v10 = [MEMORY[0x1E695DF88] dataWithLength:BytesPerRow * Height]) == 0)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_1();
@@ -784,19 +784,19 @@ LABEL_39:
   }
 
   v11 = v10;
-  v12 = [(AVDepthData *)self depthDataMap];
-  if (CVPixelBufferLockBaseAddress(v12, 1uLL))
+  depthDataMap = [(AVDepthData *)self depthDataMap];
+  if (CVPixelBufferLockBaseAddress(depthDataMap, 1uLL))
   {
     return 0;
   }
 
-  BaseAddress = CVPixelBufferGetBaseAddress(v12);
+  BaseAddress = CVPixelBufferGetBaseAddress(depthDataMap);
   memcpy([v11 mutableBytes], BaseAddress, v9 * Height);
-  CVPixelBufferUnlockBaseAddress(v12, 1uLL);
-  v14 = [MEMORY[0x1E695DF90] dictionary];
-  [(NSDictionary *)v14 setObject:v11 forKeyedSubscript:*MEMORY[0x1E696D218]];
+  CVPixelBufferUnlockBaseAddress(depthDataMap, 1uLL);
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [(NSDictionary *)dictionary setObject:v11 forKeyedSubscript:*MEMORY[0x1E696D218]];
   v19[0] = *MEMORY[0x1E696DEC0];
-  v20[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v5];
+  v20[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:depthDataType];
   v19[1] = *MEMORY[0x1E696DFB8];
   v20[1] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:Width];
   v19[2] = *MEMORY[0x1E696DD58];
@@ -804,12 +804,12 @@ LABEL_39:
   v19[3] = *MEMORY[0x1E696D430];
   v20[3] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v9];
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:4];
-  [(NSDictionary *)v14 setObject:v15 forKeyedSubscript:*MEMORY[0x1E696D220]];
-  v16 = [(AVDepthData *)self copyAuxiliaryMetadata];
-  if (v16)
+  [(NSDictionary *)dictionary setObject:v15 forKeyedSubscript:*MEMORY[0x1E696D220]];
+  copyAuxiliaryMetadata = [(AVDepthData *)self copyAuxiliaryMetadata];
+  if (copyAuxiliaryMetadata)
   {
-    v17 = v16;
-    [(NSDictionary *)v14 setObject:v16 forKeyedSubscript:*MEMORY[0x1E696D228]];
+    v17 = copyAuxiliaryMetadata;
+    [(NSDictionary *)dictionary setObject:copyAuxiliaryMetadata forKeyedSubscript:*MEMORY[0x1E696D228]];
     CFRelease(v17);
   }
 
@@ -818,7 +818,7 @@ LABEL_39:
     *outAuxDataType = [(AVDepthData *)self auxiliaryImageType];
   }
 
-  return v14;
+  return dictionary;
 }
 
 + (uint64_t)depthDataFromDictionaryRepresentation:error:.cold.1()

@@ -1,8 +1,8 @@
 @interface CardShadowView
-- (CardShadowView)initWithFrame:(CGRect)a3;
+- (CardShadowView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setButtonCard:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setButtonCard:(BOOL)card;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CardShadowView
@@ -12,12 +12,12 @@
   if (self->_invalidatedShadow)
   {
     self->_invalidatedShadow = 0;
-    v3 = [(CardShadowView *)self traitCollection];
-    v4 = [CardShadowSettings settingsForTraitCollection:v3 button:[(CardShadowView *)self buttonCard]];
+    traitCollection = [(CardShadowView *)self traitCollection];
+    v4 = [CardShadowSettings settingsForTraitCollection:traitCollection button:[(CardShadowView *)self buttonCard]];
 
     objc_storeStrong(&self->_settings, v4);
-    v5 = [(CardShadowView *)self traitCollection];
-    [v5 displayScale];
+    traitCollection2 = [(CardShadowView *)self traitCollection];
+    [traitCollection2 displayScale];
     v7 = v6;
 
     [v4 cornerRadius];
@@ -30,26 +30,26 @@
     v15 = v14;
     if ([(CardShadowView *)self shouldCropBottomEdge])
     {
-      v16 = [(CardShadowView *)self layer];
-      [v16 setCornerRadius:0.0];
+      layer = [(CardShadowView *)self layer];
+      [layer setCornerRadius:0.0];
 
-      v17 = [(CardShadowView *)self layer];
-      [v17 setBorderColor:0];
+      layer2 = [(CardShadowView *)self layer];
+      [layer2 setBorderColor:0];
 
-      v18 = [(CardShadowView *)self layer];
-      [v18 setBorderWidth:0.0];
+      layer3 = [(CardShadowView *)self layer];
+      [layer3 setBorderWidth:0.0];
 
-      v19 = [(CardShadowView *)self layer];
-      [v19 setShadowRadius:0.0];
+      layer4 = [(CardShadowView *)self layer];
+      [layer4 setShadowRadius:0.0];
 
-      v20 = [(CardShadowView *)self layer];
-      [v20 setShadowOpacity:0.0];
+      layer5 = [(CardShadowView *)self layer];
+      [layer5 setShadowOpacity:0.0];
 
-      v21 = [(CardShadowView *)self layer];
-      [v21 setShadowColor:0];
+      layer6 = [(CardShadowView *)self layer];
+      [layer6 setShadowColor:0];
 
-      v22 = [(CardShadowView *)self layer];
-      [v22 setShadowPathIsBounds:0];
+      layer7 = [(CardShadowView *)self layer];
+      [layer7 setShadowPathIsBounds:0];
 
       if (!self->_shadowImageView)
       {
@@ -127,32 +127,32 @@
 
       v37 = [UIColor colorWithWhite:0.0 alpha:v11];
       v38 = [UIColor colorWithWhite:0.0 alpha:v13];
-      v39 = [(CardShadowView *)self layer];
-      [v39 setCornerRadius:v9];
+      layer8 = [(CardShadowView *)self layer];
+      [layer8 setCornerRadius:v9];
 
-      v40 = [v37 CGColor];
-      v41 = [(CardShadowView *)self layer];
-      [v41 setBorderColor:v40];
+      cGColor = [v37 CGColor];
+      layer9 = [(CardShadowView *)self layer];
+      [layer9 setBorderColor:cGColor];
 
-      v42 = [(CardShadowView *)self layer];
-      [v42 setBorderWidth:2.0 / v7];
+      layer10 = [(CardShadowView *)self layer];
+      [layer10 setBorderWidth:2.0 / v7];
 
-      v43 = [v38 CGColor];
-      v44 = [(CardShadowView *)self layer];
-      [v44 setShadowColor:v43];
+      cGColor2 = [v38 CGColor];
+      layer11 = [(CardShadowView *)self layer];
+      [layer11 setShadowColor:cGColor2];
 
-      v45 = [(CardShadowView *)self layer];
-      [v45 setShadowRadius:v15];
+      layer12 = [(CardShadowView *)self layer];
+      [layer12 setShadowRadius:v15];
 
-      v46 = [(CardShadowView *)self layer];
+      layer13 = [(CardShadowView *)self layer];
       LODWORD(v47) = 1.0;
-      [v46 setShadowOpacity:v47];
+      [layer13 setShadowOpacity:v47];
 
-      v48 = [(CardShadowView *)self layer];
-      [v48 setShadowOffset:{0.0, 1.0}];
+      layer14 = [(CardShadowView *)self layer];
+      [layer14 setShadowOffset:{0.0, 1.0}];
 
-      v49 = [(CardShadowView *)self layer];
-      [v49 setShadowPathIsBounds:1];
+      layer15 = [(CardShadowView *)self layer];
+      [layer15 setShadowPathIsBounds:1];
     }
   }
 
@@ -166,28 +166,28 @@
   }
 }
 
-- (void)setButtonCard:(BOOL)a3
+- (void)setButtonCard:(BOOL)card
 {
-  if (self->_buttonCard != a3)
+  if (self->_buttonCard != card)
   {
-    self->_buttonCard = a3;
+    self->_buttonCard = card;
     [(CardShadowView *)self invalidateCachedShadow];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CardShadowView;
-  [(CardShadowView *)&v4 traitCollectionDidChange:a3];
+  [(CardShadowView *)&v4 traitCollectionDidChange:change];
   [(CardShadowView *)self invalidateCachedShadow];
 }
 
-- (CardShadowView)initWithFrame:(CGRect)a3
+- (CardShadowView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CardShadowView;
-  v3 = [(CardShadowView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CardShadowView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

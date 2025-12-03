@@ -1,12 +1,12 @@
 @interface HUCameraRecordingSettingsModule
-- (HUCameraRecordingSettingsModule)initWithItemUpdater:(id)a3;
-- (HUCameraRecordingSettingsModule)initWithItemUpdater:(id)a3 cameraProfiles:(id)a4 displayStyle:(unint64_t)a5;
+- (HUCameraRecordingSettingsModule)initWithItemUpdater:(id)updater;
+- (HUCameraRecordingSettingsModule)initWithItemUpdater:(id)updater cameraProfiles:(id)profiles displayStyle:(unint64_t)style;
 - (HUCameraRecordingSettingsModuleDelegate)delegate;
 - (NSArray)presenceModules;
 - (id)_attributedFooterTitle;
-- (id)_expandingSectionModuleForPresenceType:(unint64_t)a3;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
-- (id)didSelectItem:(id)a3;
+- (id)_expandingSectionModuleForPresenceType:(unint64_t)type;
+- (id)buildSectionsWithDisplayedItems:(id)items;
+- (id)didSelectItem:(id)item;
 - (id)expandableModules;
 - (unint64_t)awayAccessModeSetting;
 - (unint64_t)presentAccessModeSetting;
@@ -15,26 +15,26 @@
 
 @implementation HUCameraRecordingSettingsModule
 
-- (HUCameraRecordingSettingsModule)initWithItemUpdater:(id)a3 cameraProfiles:(id)a4 displayStyle:(unint64_t)a5
+- (HUCameraRecordingSettingsModule)initWithItemUpdater:(id)updater cameraProfiles:(id)profiles displayStyle:(unint64_t)style
 {
-  v9 = a3;
-  v10 = a4;
-  if (![v10 count])
+  updaterCopy = updater;
+  profilesCopy = profiles;
+  if (![profilesCopy count])
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"HUCameraRecordingSettingsModule.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"cameraProfiles.count > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUCameraRecordingSettingsModule.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"cameraProfiles.count > 0"}];
   }
 
   v18.receiver = self;
   v18.super_class = HUCameraRecordingSettingsModule;
-  v11 = [(HFItemModule *)&v18 initWithItemUpdater:v9];
+  v11 = [(HFItemModule *)&v18 initWithItemUpdater:updaterCopy];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [profilesCopy copy];
     cameraProfiles = v11->_cameraProfiles;
     v11->_cameraProfiles = v12;
 
-    v11->_displayStyle = a5;
+    v11->_displayStyle = style;
     v14 = +[HULocationDeviceManager sharedInstance];
     locationDeviceManager = v11->_locationDeviceManager;
     v11->_locationDeviceManager = v14;
@@ -45,38 +45,38 @@
   return v11;
 }
 
-- (HUCameraRecordingSettingsModule)initWithItemUpdater:(id)a3
+- (HUCameraRecordingSettingsModule)initWithItemUpdater:(id)updater
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithItemUpdater_cameraProfiles_displayStyle_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUCameraRecordingSettingsModule.m" lineNumber:82 description:{@"%s is unavailable; use %@ instead", "-[HUCameraRecordingSettingsModule initWithItemUpdater:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCameraRecordingSettingsModule.m" lineNumber:82 description:{@"%s is unavailable; use %@ instead", "-[HUCameraRecordingSettingsModule initWithItemUpdater:]", v6}];
 
   return 0;
 }
 
 - (unint64_t)awayAccessModeSetting
 {
-  v2 = [(HUCameraRecordingSettingsModule *)self whenAwaySectionModule];
-  v3 = [v2 accessModeSetting];
+  whenAwaySectionModule = [(HUCameraRecordingSettingsModule *)self whenAwaySectionModule];
+  accessModeSetting = [whenAwaySectionModule accessModeSetting];
 
-  return v3;
+  return accessModeSetting;
 }
 
 - (unint64_t)presentAccessModeSetting
 {
-  v2 = [(HUCameraRecordingSettingsModule *)self whenHomeSectionModule];
-  v3 = [v2 accessModeSetting];
+  whenHomeSectionModule = [(HUCameraRecordingSettingsModule *)self whenHomeSectionModule];
+  accessModeSetting = [whenHomeSectionModule accessModeSetting];
 
-  return v3;
+  return accessModeSetting;
 }
 
 - (NSArray)presenceModules
 {
   v7[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HUCameraRecordingSettingsModule *)self whenAwaySectionModule];
-  v7[0] = v3;
-  v4 = [(HUCameraRecordingSettingsModule *)self whenHomeSectionModule];
-  v7[1] = v4;
+  whenAwaySectionModule = [(HUCameraRecordingSettingsModule *)self whenAwaySectionModule];
+  v7[0] = whenAwaySectionModule;
+  whenHomeSectionModule = [(HUCameraRecordingSettingsModule *)self whenHomeSectionModule];
+  v7[1] = whenHomeSectionModule;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:2];
 
   return v5;
@@ -86,43 +86,43 @@
 {
   v52[1] = *MEMORY[0x277D85DE8];
   objc_initWeak(&location, self);
-  v4 = [(HUCameraRecordingSettingsModule *)self locationDeviceManager];
-  v5 = [v4 activeLocationDeviceFuture];
+  locationDeviceManager = [(HUCameraRecordingSettingsModule *)self locationDeviceManager];
+  activeLocationDeviceFuture = [locationDeviceManager activeLocationDeviceFuture];
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = 3221225472;
   v49[2] = __54__HUCameraRecordingSettingsModule__buildItemProviders__block_invoke;
   v49[3] = &unk_277DC1A28;
   objc_copyWeak(v50, &location);
   v50[1] = a2;
-  v6 = [v5 flatMap:v49];
+  v6 = [activeLocationDeviceFuture flatMap:v49];
 
   v7 = [HUCameraRecordingOptionsItem alloc];
-  v8 = [(HUCameraRecordingSettingsModule *)self cameraProfiles];
-  v9 = [(HUCameraRecordingOptionsItem *)v7 initWithCameraProfiles:v8];
+  cameraProfiles = [(HUCameraRecordingSettingsModule *)self cameraProfiles];
+  v9 = [(HUCameraRecordingOptionsItem *)v7 initWithCameraProfiles:cameraProfiles];
   recordingOptionsItem = self->_recordingOptionsItem;
   self->_recordingOptionsItem = v9;
 
   v11 = objc_alloc(MEMORY[0x277D14B40]);
   v12 = MEMORY[0x277CBEB98];
-  v13 = [(HUCameraRecordingSettingsModule *)self recordingOptionsItem];
-  v14 = [v12 setWithObject:v13];
+  recordingOptionsItem = [(HUCameraRecordingSettingsModule *)self recordingOptionsItem];
+  v14 = [v12 setWithObject:recordingOptionsItem];
   v15 = [v11 initWithItems:v14];
 
   v16 = [HUCameraPresenceRecordingSettingsModule alloc];
-  v17 = [(HFItemModule *)self itemUpdater];
-  v18 = [(HUCameraRecordingSettingsModule *)self cameraProfiles];
-  v19 = [(HUCameraPresenceRecordingSettingsModule *)v16 initWithItemUpdater:v17 cameraProfiles:v18 presenceEventType:3];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  cameraProfiles2 = [(HUCameraRecordingSettingsModule *)self cameraProfiles];
+  v19 = [(HUCameraPresenceRecordingSettingsModule *)v16 initWithItemUpdater:itemUpdater cameraProfiles:cameraProfiles2 presenceEventType:3];
   [(HUCameraRecordingSettingsModule *)self setWhenHomeSectionModule:v19];
 
   v20 = [HUCameraPresenceRecordingSettingsModule alloc];
-  v21 = [(HFItemModule *)self itemUpdater];
-  v22 = [(HUCameraRecordingSettingsModule *)self cameraProfiles];
-  v23 = [(HUCameraPresenceRecordingSettingsModule *)v20 initWithItemUpdater:v21 cameraProfiles:v22 presenceEventType:4];
+  itemUpdater2 = [(HFItemModule *)self itemUpdater];
+  cameraProfiles3 = [(HUCameraRecordingSettingsModule *)self cameraProfiles];
+  v23 = [(HUCameraPresenceRecordingSettingsModule *)v20 initWithItemUpdater:itemUpdater2 cameraProfiles:cameraProfiles3 presenceEventType:4];
   [(HUCameraRecordingSettingsModule *)self setWhenAwaySectionModule:v23];
 
   v24 = MEMORY[0x277CBEB98];
-  v25 = [(HUCameraRecordingSettingsModule *)self expandableModules];
-  v26 = [v24 setWithArray:v25];
+  expandableModules = [(HUCameraRecordingSettingsModule *)self expandableModules];
+  v26 = [v24 setWithArray:expandableModules];
   v27 = [v26 na_flatMap:&__block_literal_global_44_0];
   v52[0] = v15;
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:1];
@@ -130,11 +130,11 @@
   [(HUCameraRecordingSettingsModule *)self setItemProviders:v29];
 
   v30 = MEMORY[0x277D14788];
-  v31 = [(HUCameraRecordingSettingsModule *)self itemProviders];
-  v32 = [v30 requestToReloadItemProviders:v31 senderSelector:a2];
+  itemProviders = [(HUCameraRecordingSettingsModule *)self itemProviders];
+  v32 = [v30 requestToReloadItemProviders:itemProviders senderSelector:a2];
 
-  v33 = [(HFItemModule *)self itemUpdater];
-  v34 = [v33 performItemUpdateRequest:v32];
+  itemUpdater3 = [(HFItemModule *)self itemUpdater];
+  v34 = [itemUpdater3 performItemUpdateRequest:v32];
 
   v43 = 0;
   v44 = &v43;
@@ -142,22 +142,22 @@
   v46 = __Block_byref_object_copy__25;
   v47 = __Block_byref_object_dispose__25;
   v48 = &stru_2823E0EE8;
-  v35 = [(HUCameraRecordingSettingsModule *)self presenceModules];
+  presenceModules = [(HUCameraRecordingSettingsModule *)self presenceModules];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __54__HUCameraRecordingSettingsModule__buildItemProviders__block_invoke_48;
   v42[3] = &unk_277DC1A50;
   v42[4] = &v43;
-  v36 = [v35 na_map:v42];
+  v36 = [presenceModules na_map:v42];
   cameraPresenceItems = self->_cameraPresenceItems;
   self->_cameraPresenceItems = v36;
 
   objc_storeStrong(&self->_longestCameraPresenceItemTitle, v44[5]);
-  v38 = [(HUCameraRecordingSettingsModule *)self presenceModules];
-  v39 = [v38 firstObject];
-  v40 = [v39 longestCameraUsageOptionItemTitle];
+  presenceModules2 = [(HUCameraRecordingSettingsModule *)self presenceModules];
+  firstObject = [presenceModules2 firstObject];
+  longestCameraUsageOptionItemTitle = [firstObject longestCameraUsageOptionItemTitle];
   longestCameraUsageOptionItemTitle = self->_longestCameraUsageOptionItemTitle;
-  self->_longestCameraUsageOptionItemTitle = v40;
+  self->_longestCameraUsageOptionItemTitle = longestCameraUsageOptionItemTitle;
 
   _Block_object_dispose(&v43, 8);
   objc_destroyWeak(v50);
@@ -209,49 +209,49 @@ id __54__HUCameraRecordingSettingsModule__buildItemProviders__block_invoke_48(ui
   return v8;
 }
 
-- (id)_expandingSectionModuleForPresenceType:(unint64_t)a3
+- (id)_expandingSectionModuleForPresenceType:(unint64_t)type
 {
-  if (a3 == 4)
+  if (type == 4)
   {
-    v3 = [(HUCameraRecordingSettingsModule *)self whenAwaySectionModule];
+    whenAwaySectionModule = [(HUCameraRecordingSettingsModule *)self whenAwaySectionModule];
   }
 
-  else if (a3 == 3)
+  else if (type == 3)
   {
-    v3 = [(HUCameraRecordingSettingsModule *)self whenHomeSectionModule];
+    whenAwaySectionModule = [(HUCameraRecordingSettingsModule *)self whenHomeSectionModule];
   }
 
   else
   {
-    v3 = 0;
+    whenAwaySectionModule = 0;
   }
 
-  return v3;
+  return whenAwaySectionModule;
 }
 
 - (id)expandableModules
 {
   v7[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HUCameraRecordingSettingsModule *)self whenHomeSectionModule];
-  v7[0] = v3;
-  v4 = [(HUCameraRecordingSettingsModule *)self whenAwaySectionModule];
-  v7[1] = v4;
+  whenHomeSectionModule = [(HUCameraRecordingSettingsModule *)self whenHomeSectionModule];
+  v7[0] = whenHomeSectionModule;
+  whenAwaySectionModule = [(HUCameraRecordingSettingsModule *)self whenAwaySectionModule];
+  v7[1] = whenAwaySectionModule;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:2];
 
   return v5;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [(HUCameraRecordingSettingsModule *)self expandableModules];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  expandableModules = [(HUCameraRecordingSettingsModule *)self expandableModules];
+  v7 = [expandableModules countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -262,15 +262,15 @@ id __54__HUCameraRecordingSettingsModule__buildItemProviders__block_invoke_48(ui
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(expandableModules);
         }
 
-        v11 = [*(*(&v21 + 1) + 8 * i) buildSectionsWithDisplayedItems:v4];
+        v11 = [*(*(&v21 + 1) + 8 * i) buildSectionsWithDisplayedItems:itemsCopy];
         v12 = [v11 na_flatMap:&__block_literal_global_53];
         [v5 addObjectsFromArray:v12];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v8 = [expandableModules countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v8);
@@ -278,8 +278,8 @@ id __54__HUCameraRecordingSettingsModule__buildItemProviders__block_invoke_48(ui
 
   if ([(HUCameraRecordingSettingsModule *)self displayStyle]== 3)
   {
-    v13 = [(HUCameraRecordingSettingsModule *)self recordingOptionsItem];
-    [v5 addObject:v13];
+    recordingOptionsItem = [(HUCameraRecordingSettingsModule *)self recordingOptionsItem];
+    [v5 addObject:recordingOptionsItem];
   }
 
   v14 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"RecordingSettings"];
@@ -287,13 +287,13 @@ id __54__HUCameraRecordingSettingsModule__buildItemProviders__block_invoke_48(ui
   v15 = _HULocalizedStringWithDefaultValue(@"HUCameraStreamingSettingsHeaderDisplayStyleServiceDetails_streaming-and-recording_Title", @"HUCameraStreamingSettingsHeaderDisplayStyleServiceDetails_streaming-and-recording_Title", 1);
   [v14 setHeaderTitle:v15];
 
-  v16 = [(HUCameraRecordingSettingsModule *)self _attributedFooterTitle];
-  [v14 setAttributedFooterTitle:v16];
+  _attributedFooterTitle = [(HUCameraRecordingSettingsModule *)self _attributedFooterTitle];
+  [v14 setAttributedFooterTitle:_attributedFooterTitle];
 
   v17 = MEMORY[0x277D14778];
   v25 = v14;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
-  v19 = [v17 filterSections:v18 toDisplayedItems:v4];
+  v19 = [v17 filterSections:v18 toDisplayedItems:itemsCopy];
 
   return v19;
 }
@@ -304,11 +304,11 @@ id __54__HUCameraRecordingSettingsModule__buildItemProviders__block_invoke_48(ui
   v4 = HFLocalizedString();
   if ([(HUCameraRecordingSettingsModule *)self displayStyle]== 2 || [(HUCameraRecordingSettingsModule *)self displayStyle]== 1)
   {
-    v11 = [(HUCameraRecordingSettingsModule *)self locationDeviceName];
-    if (v11)
+    locationDeviceName = [(HUCameraRecordingSettingsModule *)self locationDeviceName];
+    if (locationDeviceName)
     {
-      v12 = [(HUCameraRecordingSettingsModule *)self locationDeviceName];
-      v19 = HULocalizedStringWithFormat(@"HUCameraRecordingSetup_Footer", @"%@%@", v13, v14, v15, v16, v17, v18, v12);
+      locationDeviceName2 = [(HUCameraRecordingSettingsModule *)self locationDeviceName];
+      v19 = HULocalizedStringWithFormat(@"HUCameraRecordingSetup_Footer", @"%@%@", v13, v14, v15, v16, v17, v18, locationDeviceName2);
     }
 
     else
@@ -324,18 +324,18 @@ id __54__HUCameraRecordingSettingsModule__buildItemProviders__block_invoke_48(ui
     else
     {
       v20 = MEMORY[0x277CCA898];
-      v21 = [MEMORY[0x277CBEBC0] hf_locationDeviceSettingsURL];
-      v22 = [v20 hf_attributedLinkStringForString:v19 linkString:v3 linkURL:v21];
+      hf_locationDeviceSettingsURL = [MEMORY[0x277CBEBC0] hf_locationDeviceSettingsURL];
+      v22 = [v20 hf_attributedLinkStringForString:v19 linkString:v3 linkURL:hf_locationDeviceSettingsURL];
     }
   }
 
   else
   {
-    v29 = [(HUCameraRecordingSettingsModule *)self locationDeviceName];
-    if (v29)
+    locationDeviceName3 = [(HUCameraRecordingSettingsModule *)self locationDeviceName];
+    if (locationDeviceName3)
     {
-      v30 = [(HUCameraRecordingSettingsModule *)self locationDeviceName];
-      v19 = HULocalizedStringWithFormat(@"HUCameraStreamingSettingsFooterDisplayStyleServiceDetails_footer_Title", @"%@%@%@", v31, v32, v33, v34, v35, v36, v30);
+      locationDeviceName4 = [(HUCameraRecordingSettingsModule *)self locationDeviceName];
+      v19 = HULocalizedStringWithFormat(@"HUCameraStreamingSettingsFooterDisplayStyleServiceDetails_footer_Title", @"%@%@%@", v31, v32, v33, v34, v35, v36, locationDeviceName4);
     }
 
     else
@@ -351,32 +351,32 @@ id __54__HUCameraRecordingSettingsModule__buildItemProviders__block_invoke_48(ui
     else
     {
       v38 = MEMORY[0x277CCA898];
-      v39 = [MEMORY[0x277CBEBC0] hf_locationDeviceSettingsURL];
-      v37 = [v38 hf_attributedLinkStringForString:v19 linkString:v3 linkURL:v39];
+      hf_locationDeviceSettingsURL2 = [MEMORY[0x277CBEBC0] hf_locationDeviceSettingsURL];
+      v37 = [v38 hf_attributedLinkStringForString:v19 linkString:v3 linkURL:hf_locationDeviceSettingsURL2];
     }
 
     v40 = MEMORY[0x277CCA898];
-    v41 = [MEMORY[0x277CBEBC0] hf_cameraRecordingURL];
-    v22 = [v40 hf_attributedLinkStringForAttributedString:v37 linkString:v4 linkURL:v41];
+    hf_cameraRecordingURL = [MEMORY[0x277CBEBC0] hf_cameraRecordingURL];
+    v22 = [v40 hf_attributedLinkStringForAttributedString:v37 linkString:v4 linkURL:hf_cameraRecordingURL];
   }
 
   return v22;
 }
 
-- (id)didSelectItem:(id)a3
+- (id)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D2C900] futureWithNoResult];
-  v6 = [(HUExpandableItemContainerModule *)self expandableModuleForItem:v4];
+  itemCopy = item;
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
+  v6 = [(HUExpandableItemContainerModule *)self expandableModuleForItem:itemCopy];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 didSelectItem:v4];
+    v7 = [v6 didSelectItem:itemCopy];
 
-    v5 = v7;
+    futureWithNoResult = v7;
   }
 
   objc_opt_class();
-  v8 = v4;
+  v8 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -398,13 +398,13 @@ id __54__HUCameraRecordingSettingsModule__buildItemProviders__block_invoke_48(ui
     v13[3] = &unk_277DB8620;
     objc_copyWeak(&v15, &location);
     v14 = v8;
-    v11 = [v5 addCompletionBlock:v13];
+    v11 = [futureWithNoResult addCompletionBlock:v13];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 
-  return v5;
+  return futureWithNoResult;
 }
 
 void __49__HUCameraRecordingSettingsModule_didSelectItem___block_invoke(uint64_t a1)

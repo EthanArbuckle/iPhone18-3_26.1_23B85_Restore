@@ -1,28 +1,28 @@
 @interface FLOWSchemaFLOWHomeAutomationContext
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWHomeAutomationContext)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWHomeAutomationContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWHomeAutomationContext)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWHomeAutomationContext)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addHomeKitServiceResponse:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addHomeKitServiceResponse:(id)response;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWHomeAutomationContext
 
-- (FLOWSchemaFLOWHomeAutomationContext)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWHomeAutomationContext)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = FLOWSchemaFLOWHomeAutomationContext;
   v5 = [(FLOWSchemaFLOWHomeAutomationContext *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"homeKitServiceResponse"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"homeKitServiceResponse"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"homeContext", v21}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"homeContext", v21}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(FLOWSchemaFLOWHomeAutomationContext *)v5 setHomeContext:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"homeAutomationCommand"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"homeAutomationCommand"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,30 +88,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWHomeAutomationContext)initWithJSON:(id)a3
+- (FLOWSchemaFLOWHomeAutomationContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWHomeAutomationContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWHomeAutomationContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWHomeAutomationContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -125,42 +125,42 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_homeAutomationCommand)
   {
-    v4 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeAutomationCommand];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    homeAutomationCommand = [(FLOWSchemaFLOWHomeAutomationContext *)self homeAutomationCommand];
+    dictionaryRepresentation = [homeAutomationCommand dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"homeAutomationCommand"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"homeAutomationCommand"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"homeAutomationCommand"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"homeAutomationCommand"];
     }
   }
 
   if (self->_homeContext)
   {
-    v7 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    homeContext = [(FLOWSchemaFLOWHomeAutomationContext *)self homeContext];
+    dictionaryRepresentation2 = [homeContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"homeContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"homeContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"homeContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"homeContext"];
     }
   }
 
   if ([(NSArray *)self->_homeKitServiceResponses count])
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -180,16 +180,16 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          if (v16)
+          dictionaryRepresentation3 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v10 addObject:v16];
+            [array addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v17 = [MEMORY[0x1E695DFB0] null];
-            [v10 addObject:v17];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null3];
           }
         }
 
@@ -199,12 +199,12 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"homeKitServiceResponse"];
+    [dictionary setObject:array forKeyedSubscript:@"homeKitServiceResponse"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v19];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v19];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -214,28 +214,28 @@
   return v4 ^ [(FLOWSchemaFLOWHomeAutomationCommand *)self->_homeAutomationCommand hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeKitServiceResponses];
-  v6 = [v4 homeKitServiceResponses];
-  if ((v5 != 0) == (v6 == 0))
+  homeKitServiceResponses = [(FLOWSchemaFLOWHomeAutomationContext *)self homeKitServiceResponses];
+  homeKitServiceResponses2 = [equalCopy homeKitServiceResponses];
+  if ((homeKitServiceResponses != 0) == (homeKitServiceResponses2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeKitServiceResponses];
-  if (v7)
+  homeKitServiceResponses3 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeKitServiceResponses];
+  if (homeKitServiceResponses3)
   {
-    v8 = v7;
-    v9 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeKitServiceResponses];
-    v10 = [v4 homeKitServiceResponses];
-    v11 = [v9 isEqual:v10];
+    v8 = homeKitServiceResponses3;
+    homeKitServiceResponses4 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeKitServiceResponses];
+    homeKitServiceResponses5 = [equalCopy homeKitServiceResponses];
+    v11 = [homeKitServiceResponses4 isEqual:homeKitServiceResponses5];
 
     if (!v11)
     {
@@ -247,20 +247,20 @@
   {
   }
 
-  v5 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeContext];
-  v6 = [v4 homeContext];
-  if ((v5 != 0) == (v6 == 0))
+  homeKitServiceResponses = [(FLOWSchemaFLOWHomeAutomationContext *)self homeContext];
+  homeKitServiceResponses2 = [equalCopy homeContext];
+  if ((homeKitServiceResponses != 0) == (homeKitServiceResponses2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeContext];
-  if (v12)
+  homeContext = [(FLOWSchemaFLOWHomeAutomationContext *)self homeContext];
+  if (homeContext)
   {
-    v13 = v12;
-    v14 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeContext];
-    v15 = [v4 homeContext];
-    v16 = [v14 isEqual:v15];
+    v13 = homeContext;
+    homeContext2 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeContext];
+    homeContext3 = [equalCopy homeContext];
+    v16 = [homeContext2 isEqual:homeContext3];
 
     if (!v16)
     {
@@ -272,12 +272,12 @@
   {
   }
 
-  v5 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeAutomationCommand];
-  v6 = [v4 homeAutomationCommand];
-  if ((v5 != 0) != (v6 == 0))
+  homeKitServiceResponses = [(FLOWSchemaFLOWHomeAutomationContext *)self homeAutomationCommand];
+  homeKitServiceResponses2 = [equalCopy homeAutomationCommand];
+  if ((homeKitServiceResponses != 0) != (homeKitServiceResponses2 == 0))
   {
-    v17 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeAutomationCommand];
-    if (!v17)
+    homeAutomationCommand = [(FLOWSchemaFLOWHomeAutomationContext *)self homeAutomationCommand];
+    if (!homeAutomationCommand)
     {
 
 LABEL_20:
@@ -285,10 +285,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeAutomationCommand];
-    v20 = [v4 homeAutomationCommand];
-    v21 = [v19 isEqual:v20];
+    v18 = homeAutomationCommand;
+    homeAutomationCommand2 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeAutomationCommand];
+    homeAutomationCommand3 = [equalCopy homeAutomationCommand];
+    v21 = [homeAutomationCommand2 isEqual:homeAutomationCommand3];
 
     if (v21)
     {
@@ -308,10 +308,10 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -343,65 +343,65 @@ LABEL_18:
     while (v7);
   }
 
-  v10 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeContext];
+  homeContext = [(FLOWSchemaFLOWHomeAutomationContext *)self homeContext];
 
-  if (v10)
+  if (homeContext)
   {
-    v11 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeContext];
+    homeContext2 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeAutomationCommand];
+  homeAutomationCommand = [(FLOWSchemaFLOWHomeAutomationContext *)self homeAutomationCommand];
 
-  if (v12)
+  if (homeAutomationCommand)
   {
-    v13 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeAutomationCommand];
+    homeAutomationCommand2 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeAutomationCommand];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addHomeKitServiceResponse:(id)a3
+- (void)addHomeKitServiceResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   homeKitServiceResponses = self->_homeKitServiceResponses;
-  v8 = v4;
+  v8 = responseCopy;
   if (!homeKitServiceResponses)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_homeKitServiceResponses;
-    self->_homeKitServiceResponses = v6;
+    self->_homeKitServiceResponses = array;
 
-    v4 = v8;
+    responseCopy = v8;
     homeKitServiceResponses = self->_homeKitServiceResponses;
   }
 
-  [(NSArray *)homeKitServiceResponses addObject:v4];
+  [(NSArray *)homeKitServiceResponses addObject:responseCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v15.receiver = self;
   v15.super_class = FLOWSchemaFLOWHomeAutomationContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeKitServiceResponses];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:policyCopy];
+  homeKitServiceResponses = [(FLOWSchemaFLOWHomeAutomationContext *)self homeKitServiceResponses];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:homeKitServiceResponses underConditions:policyCopy];
   [(FLOWSchemaFLOWHomeAutomationContext *)self setHomeKitServiceResponses:v7];
 
-  v8 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeContext];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
-  v10 = [v9 suppressMessage];
+  homeContext = [(FLOWSchemaFLOWHomeAutomationContext *)self homeContext];
+  v9 = [homeContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v9 suppressMessage];
 
-  if (v10)
+  if (suppressMessage)
   {
     [(FLOWSchemaFLOWHomeAutomationContext *)self deleteHomeContext];
   }
 
-  v11 = [(FLOWSchemaFLOWHomeAutomationContext *)self homeAutomationCommand];
-  v12 = [v11 applySensitiveConditionsPolicy:v4];
-  v13 = [v12 suppressMessage];
+  homeAutomationCommand = [(FLOWSchemaFLOWHomeAutomationContext *)self homeAutomationCommand];
+  v12 = [homeAutomationCommand applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v12 suppressMessage];
 
-  if (v13)
+  if (suppressMessage2)
   {
     [(FLOWSchemaFLOWHomeAutomationContext *)self deleteHomeAutomationCommand];
   }

@@ -2,15 +2,15 @@
 - (BOOL)hasSourceItem;
 - (BOOL)isCompactSize;
 - (UIEdgeInsets)layoutMargins;
-- (_UIActivityViewControllerPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (_UIActivityViewControllerPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (void)_update;
 - (void)_updateCornerConfiguration;
 - (void)_updatePresentationDirection;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setCompactCornerRadius:(double)a3;
-- (void)setSourceItem:(id)a3;
-- (void)setSourceView:(id)a3;
-- (void)updateWithCompactSize:(BOOL)a3 applyImmediately:(BOOL)a4;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setCompactCornerRadius:(double)radius;
+- (void)setSourceItem:(id)item;
+- (void)setSourceView:(id)view;
+- (void)updateWithCompactSize:(BOOL)size applyImmediately:(BOOL)immediately;
 @end
 
 @implementation _UIActivityViewControllerPresentationController
@@ -28,12 +28,12 @@
   return result;
 }
 
-- (_UIActivityViewControllerPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_UIActivityViewControllerPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v22 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = _UIActivityViewControllerPresentationController;
-  v4 = [(_UIActivityViewControllerPresentationController *)&v15 initWithPresentedViewController:a3 presentingViewController:a4];
+  v4 = [(_UIActivityViewControllerPresentationController *)&v15 initWithPresentedViewController:controller presentingViewController:viewController];
   v5 = v4;
   if (v4)
   {
@@ -55,9 +55,9 @@
       [(_UIActivityViewControllerPresentationController *)v5 _setIgnoredEdgesForSafeArea:4];
     }
 
-    v6 = [(_UIActivityViewControllerPresentationController *)v5 hasSourceItem];
+    hasSourceItem = [(_UIActivityViewControllerPresentationController *)v5 hasSourceItem];
     v7 = 9.0;
-    if (!v6)
+    if (!hasSourceItem)
     {
       v7 = 0.0;
     }
@@ -66,8 +66,8 @@
     [(_UIActivityViewControllerPresentationController *)v5 layoutMargins];
     [(_UIActivityViewControllerPresentationController *)v5 setPopoverLayoutMargins:?];
     [(_UIActivityViewControllerPresentationController *)v5 setPresentationDirectionType:1];
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    [(_UIActivityViewControllerPresentationController *)v5 setPopoverBackgroundColor:v8];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(_UIActivityViewControllerPresentationController *)v5 setPopoverBackgroundColor:clearColor];
 
     [(_UIActivityViewControllerPresentationController *)v5 setCompactCornerRadius:-1.0];
     [(_UIActivityViewControllerPresentationController *)v5 setCornerRadius:-1.0];
@@ -78,39 +78,39 @@
   {
     v10 = objc_opt_class();
     v11 = v10;
-    v12 = [(_UIActivityViewControllerPresentationController *)v5 presentedViewController];
-    v13 = [(_UIActivityViewControllerPresentationController *)v5 presentingViewController];
+    presentedViewController = [(_UIActivityViewControllerPresentationController *)v5 presentedViewController];
+    presentingViewController = [(_UIActivityViewControllerPresentationController *)v5 presentingViewController];
     *buf = 138412802;
     v17 = v10;
     v18 = 2112;
-    v19 = v12;
+    v19 = presentedViewController;
     v20 = 2112;
-    v21 = v13;
+    v21 = presentingViewController;
     _os_log_impl(&dword_18B359000, v9, OS_LOG_TYPE_DEFAULT, "%@: initialized with presentedVC:%@ presentingVC:%@", buf, 0x20u);
   }
 
   return v5;
 }
 
-- (void)updateWithCompactSize:(BOOL)a3 applyImmediately:(BOOL)a4
+- (void)updateWithCompactSize:(BOOL)size applyImmediately:(BOOL)immediately
 {
-  v4 = a4;
-  if (!a3)
+  immediatelyCopy = immediately;
+  if (!size)
   {
-    v11 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(_UIActivityViewControllerPresentationController *)self setPopoverBackgroundColor:v11];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(_UIActivityViewControllerPresentationController *)self setPopoverBackgroundColor:systemBackgroundColor];
 
     [(_UIActivityViewControllerPresentationController *)self setLayoutMargins:1.0, 0.0, 0.0, 0.0];
     v10 = -1.0;
     goto LABEL_7;
   }
 
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [(_UIActivityViewControllerPresentationController *)self setPopoverBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(_UIActivityViewControllerPresentationController *)self setPopoverBackgroundColor:clearColor];
 
-  v7 = [(_UIActivityViewControllerPresentationController *)self hasSourceItem];
+  hasSourceItem = [(_UIActivityViewControllerPresentationController *)self hasSourceItem];
   v8 = 9.0;
-  if (!v7)
+  if (!hasSourceItem)
   {
     v8 = 0.0;
   }
@@ -124,7 +124,7 @@ LABEL_7:
     [(_UIActivityViewControllerPresentationController *)self setCornerRadius:v10];
   }
 
-  if (v4)
+  if (immediatelyCopy)
   {
 
     [(_UIActivityViewControllerPresentationController *)self _update];
@@ -146,10 +146,10 @@ LABEL_7:
     [(_UIActivityViewControllerPresentationController *)self _setCornerRadius:?];
   }
 
-  v5 = [(_UIActivityViewControllerPresentationController *)self popoverBackgroundColor];
-  v3 = [(_UIActivityViewControllerPresentationController *)self presentedViewController];
-  v4 = [v3 view];
-  [v4 setBackgroundColor:v5];
+  popoverBackgroundColor = [(_UIActivityViewControllerPresentationController *)self popoverBackgroundColor];
+  presentedViewController = [(_UIActivityViewControllerPresentationController *)self presentedViewController];
+  view = [presentedViewController view];
+  [view setBackgroundColor:popoverBackgroundColor];
 }
 
 - (BOOL)isCompactSize
@@ -170,7 +170,7 @@ LABEL_7:
   return v5 > 0.0;
 }
 
-- (void)setCompactCornerRadius:(double)a3
+- (void)setCompactCornerRadius:(double)radius
 {
   if (objc_opt_respondsToSelector())
   {
@@ -178,11 +178,11 @@ LABEL_7:
     [(_UIActivityViewControllerPresentationController *)self _updateCornerConfiguration];
   }
 
-  else if (a3 > 0.0)
+  else if (radius > 0.0)
   {
-    self->_compactCornerRadius = a3;
+    self->_compactCornerRadius = radius;
 
-    [(_UIActivityViewControllerPresentationController *)self setCornerRadius:a3];
+    [(_UIActivityViewControllerPresentationController *)self setCornerRadius:radius];
   }
 }
 
@@ -210,51 +210,51 @@ LABEL_7:
   [(_UIActivityViewControllerPresentationController *)self _setCornerConfiguration:v8];
 }
 
-- (void)setSourceView:(id)a3
+- (void)setSourceView:(id)view
 {
   v4.receiver = self;
   v4.super_class = _UIActivityViewControllerPresentationController;
-  [(_UIActivityViewControllerPresentationController *)&v4 setSourceView:a3];
+  [(_UIActivityViewControllerPresentationController *)&v4 setSourceView:view];
   [(_UIActivityViewControllerPresentationController *)self _updatePresentationDirection];
 }
 
-- (void)setSourceItem:(id)a3
+- (void)setSourceItem:(id)item
 {
   v4.receiver = self;
   v4.super_class = _UIActivityViewControllerPresentationController;
-  [(_UIActivityViewControllerPresentationController *)&v4 setSourceItem:a3];
+  [(_UIActivityViewControllerPresentationController *)&v4 setSourceItem:item];
   [(_UIActivityViewControllerPresentationController *)self _updatePresentationDirection];
 }
 
 - (void)_updatePresentationDirection
 {
   v53 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v5 = [(_UIActivityViewControllerPresentationController *)self sourceView];
-  if (!v5 || (v6 = v5, [(_UIActivityViewControllerPresentationController *)self sourceView], v7 = objc_claimAutoreleasedReturnValue(), [(_UIActivityViewControllerPresentationController *)self containerView], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v7 != v8))
+  sourceView = [(_UIActivityViewControllerPresentationController *)self sourceView];
+  if (!sourceView || (v6 = sourceView, [(_UIActivityViewControllerPresentationController *)self sourceView], v7 = objc_claimAutoreleasedReturnValue(), [(_UIActivityViewControllerPresentationController *)self containerView], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v7 != v8))
   {
-    if (v4 != 1)
+    if (userInterfaceIdiom != 1)
     {
-      v9 = [(_UIActivityViewControllerPresentationController *)self sourceView];
+      sourceView2 = [(_UIActivityViewControllerPresentationController *)self sourceView];
 
-      if (v9)
+      if (sourceView2)
       {
-        v10 = [(_UIActivityViewControllerPresentationController *)self sourceView];
-        v11 = [v10 window];
+        sourceView3 = [(_UIActivityViewControllerPresentationController *)self sourceView];
+        window = [sourceView3 window];
 
-        v12 = [(_UIActivityViewControllerPresentationController *)self sourceView];
+        sourceView4 = [(_UIActivityViewControllerPresentationController *)self sourceView];
 
-        if (!v12 || !v11)
+        if (!sourceView4 || !window)
         {
           goto LABEL_33;
         }
 
-        v13 = [(_UIActivityViewControllerPresentationController *)self sourceView];
-        v14 = [(_UIActivityViewControllerPresentationController *)self sourceView];
-        [v14 bounds];
-        [v13 convertRect:v11 toView:?];
+        sourceView5 = [(_UIActivityViewControllerPresentationController *)self sourceView];
+        sourceView6 = [(_UIActivityViewControllerPresentationController *)self sourceView];
+        [sourceView6 bounds];
+        [sourceView5 convertRect:window toView:?];
         v16 = v15;
         v18 = v17;
         v20 = v19;
@@ -263,37 +263,37 @@ LABEL_7:
 
       else
       {
-        v23 = [(_UIActivityViewControllerPresentationController *)self sourceItem];
+        sourceItem = [(_UIActivityViewControllerPresentationController *)self sourceItem];
 
-        if (!v23)
+        if (!sourceItem)
         {
           return;
         }
 
-        v24 = [(_UIActivityViewControllerPresentationController *)self sourceItem];
+        sourceItem2 = [(_UIActivityViewControllerPresentationController *)self sourceItem];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v26 = [(_UIActivityViewControllerPresentationController *)self sourceItem];
-          v11 = [v26 window];
+          sourceItem3 = [(_UIActivityViewControllerPresentationController *)self sourceItem];
+          window = [sourceItem3 window];
         }
 
         else
         {
-          v11 = _ShareSheetApplicationKeyWindow();
+          window = _ShareSheetApplicationKeyWindow();
         }
 
-        v13 = [(_UIActivityViewControllerPresentationController *)self sourceItem];
-        [v13 frameInView:v11];
+        sourceView5 = [(_UIActivityViewControllerPresentationController *)self sourceItem];
+        [sourceView5 frameInView:window];
         v16 = v27;
         v18 = v28;
         v20 = v29;
         v22 = v30;
       }
 
-      [v11 bounds];
+      [window bounds];
       Height = CGRectGetHeight(v54);
       v55.origin.x = v16;
       v55.origin.y = v18;
@@ -329,86 +329,86 @@ LABEL_7:
           v36 = 1;
         }
 
-        v37 = self;
+        selfCopy3 = self;
         goto LABEL_34;
       }
 
       v38 = share_sheet_log();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
-        v39 = [(_UIActivityViewControllerPresentationController *)self sourceView];
-        v40 = v39;
-        if (!v39)
+        sourceView7 = [(_UIActivityViewControllerPresentationController *)self sourceView];
+        sourceItem4 = sourceView7;
+        if (!sourceView7)
         {
-          v40 = [(_UIActivityViewControllerPresentationController *)self sourceItem];
+          sourceItem4 = [(_UIActivityViewControllerPresentationController *)self sourceItem];
         }
 
         v41 = NSStringFromBOOL();
         v42 = NSStringFromBOOL();
         v45 = 138413058;
-        v46 = v40;
+        v46 = sourceItem4;
         v47 = 2112;
-        v48 = self;
+        selfCopy2 = self;
         v49 = 2112;
         v50 = v41;
         v51 = 2112;
         v52 = v42;
         _os_log_impl(&dword_18B359000, v38, OS_LOG_TYPE_DEFAULT, "skipping anchor source:%@ noOverlap:%@ bothOverlap:%@ for presentationController:%@", &v45, 0x2Au);
-        if (!v39)
+        if (!sourceView7)
         {
         }
       }
 
-      v43 = [(_UIActivityViewControllerPresentationController *)self sourceView];
+      sourceView8 = [(_UIActivityViewControllerPresentationController *)self sourceView];
 
-      if (v43)
+      if (sourceView8)
       {
         [(_UIActivityViewControllerPresentationController *)self setSourceView:0];
       }
 
       else
       {
-        v44 = [(_UIActivityViewControllerPresentationController *)self sourceItem];
+        sourceItem5 = [(_UIActivityViewControllerPresentationController *)self sourceItem];
 
-        if (v44)
+        if (sourceItem5)
         {
           [(_UIActivityViewControllerPresentationController *)self setSourceItem:0];
         }
       }
 
 LABEL_33:
-      v37 = self;
+      selfCopy3 = self;
       v36 = 1;
 LABEL_34:
-      [(_UIActivityViewControllerPresentationController *)v37 setPresentationDirectionType:v36];
+      [(_UIActivityViewControllerPresentationController *)selfCopy3 setPresentationDirectionType:v36];
     }
   }
 }
 
 - (BOOL)hasSourceItem
 {
-  v3 = [(_UIActivityViewControllerPresentationController *)self sourceView];
-  if (v3)
+  sourceView = [(_UIActivityViewControllerPresentationController *)self sourceView];
+  if (sourceView)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(_UIActivityViewControllerPresentationController *)self sourceItem];
-    v4 = v5 != 0;
+    sourceItem = [(_UIActivityViewControllerPresentationController *)self sourceItem];
+    v4 = sourceItem != 0;
   }
 
   return v4;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   [(_UIActivityViewControllerPresentationController *)self _update];
   v5.receiver = self;
   v5.super_class = _UIActivityViewControllerPresentationController;
-  [(_UIActivityViewControllerPresentationController *)&v5 preferredContentSizeDidChangeForChildContentContainer:v4];
+  [(_UIActivityViewControllerPresentationController *)&v5 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
 }
 
 @end

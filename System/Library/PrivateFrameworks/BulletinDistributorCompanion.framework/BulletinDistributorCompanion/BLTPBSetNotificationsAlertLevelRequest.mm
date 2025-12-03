@@ -1,15 +1,15 @@
 @interface BLTPBSetNotificationsAlertLevelRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsLevel:(id)a3;
+- (int)StringAsLevel:(id)level;
 - (int)level;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMirror:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMirror:(BOOL)mirror;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BLTPBSetNotificationsAlertLevelRequest
@@ -27,25 +27,25 @@
   }
 }
 
-- (int)StringAsLevel:(id)a3
+- (int)StringAsLevel:(id)level
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Off"])
+  levelCopy = level;
+  if ([levelCopy isEqualToString:@"Off"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NotificationCenter"])
+  else if ([levelCopy isEqualToString:@"NotificationCenter"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"All"])
+  else if ([levelCopy isEqualToString:@"All"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NonCritical"])
+  else if ([levelCopy isEqualToString:@"NonCritical"])
   {
     v4 = 3;
   }
@@ -58,9 +58,9 @@
   return v4;
 }
 
-- (void)setHasMirror:(BOOL)a3
+- (void)setHasMirror:(BOOL)mirror
 {
-  if (a3)
+  if (mirror)
   {
     v3 = 2;
   }
@@ -79,15 +79,15 @@
   v8.receiver = self;
   v8.super_class = BLTPBSetNotificationsAlertLevelRequest;
   v4 = [(BLTPBSetNotificationsAlertLevelRequest *)&v8 description];
-  v5 = [(BLTPBSetNotificationsAlertLevelRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BLTPBSetNotificationsAlertLevelRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     level = self->_level;
@@ -101,75 +101,75 @@
       v5 = off_278D32038[level];
     }
 
-    [v3 setObject:v5 forKey:@"level"];
+    [dictionary setObject:v5 forKey:@"level"];
   }
 
   sectionID = self->_sectionID;
   if (sectionID)
   {
-    [v3 setObject:sectionID forKey:@"sectionID"];
+    [dictionary setObject:sectionID forKey:@"sectionID"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_mirror];
-    [v3 setObject:v7 forKey:@"mirror"];
+    [dictionary setObject:v7 forKey:@"mirror"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (*&self->_has)
   {
     level = self->_level;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_sectionID)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     mirror = self->_mirror;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_level;
-    *(v4 + 28) |= 1u;
+    toCopy[2] = self->_level;
+    *(toCopy + 28) |= 1u;
   }
 
   if (self->_sectionID)
   {
-    v5 = v4;
-    [v4 setSectionID:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setSectionID:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 24) = self->_mirror;
-    *(v4 + 28) |= 2u;
+    *(toCopy + 24) = self->_mirror;
+    *(toCopy + 28) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -177,7 +177,7 @@
     *(v5 + 28) |= 1u;
   }
 
-  v7 = [(NSString *)self->_sectionID copyWithZone:a3];
+  v7 = [(NSString *)self->_sectionID copyWithZone:zone];
   v8 = *(v6 + 16);
   *(v6 + 16) = v7;
 
@@ -190,31 +190,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   has = self->_has;
-  v6 = *(v4 + 28);
+  v6 = *(equalCopy + 28);
   if (has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_level != *(v4 + 2))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_level != *(equalCopy + 2))
     {
       goto LABEL_12;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_12;
   }
 
   sectionID = self->_sectionID;
-  if (sectionID | *(v4 + 2))
+  if (sectionID | *(equalCopy + 2))
   {
     if (![(NSString *)sectionID isEqual:?])
     {
@@ -224,20 +224,20 @@
     has = self->_has;
   }
 
-  v8 = (*(v4 + 28) & 2) == 0;
+  v8 = (*(equalCopy + 28) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) != 0)
+    if ((*(equalCopy + 28) & 2) != 0)
     {
       if (self->_mirror)
       {
-        if ((*(v4 + 24) & 1) == 0)
+        if ((*(equalCopy + 24) & 1) == 0)
         {
           goto LABEL_12;
         }
       }
 
-      else if (*(v4 + 24))
+      else if (*(equalCopy + 24))
       {
         goto LABEL_12;
       }
@@ -281,25 +281,25 @@ LABEL_13:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 28))
+  fromCopy = from;
+  if (*(fromCopy + 28))
   {
-    self->_level = *(v4 + 2);
+    self->_level = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(BLTPBSetNotificationsAlertLevelRequest *)self setSectionID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 28) & 2) != 0)
+  if ((*(fromCopy + 28) & 2) != 0)
   {
-    self->_mirror = *(v4 + 24);
+    self->_mirror = *(fromCopy + 24);
     *&self->_has |= 2u;
   }
 }

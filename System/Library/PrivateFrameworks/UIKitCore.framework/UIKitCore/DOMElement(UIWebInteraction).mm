@@ -7,30 +7,30 @@
 
 - (id)tapHighlightColor
 {
-  v2 = [a1 ownerDocument];
-  v3 = [v2 getComputedStyle:a1 pseudoElement:&stru_1EFB14550];
+  ownerDocument = [self ownerDocument];
+  v3 = [ownerDocument getComputedStyle:self pseudoElement:&stru_1EFB14550];
   v4 = [v3 getPropertyCSSValue:@"-webkit-tap-highlight-color"];
-  v5 = [v4 getRGBColorValue];
+  getRGBColorValue = [v4 getRGBColorValue];
 
-  if (v5)
+  if (getRGBColorValue)
   {
-    v6 = [v5 red];
+    v6 = [getRGBColorValue red];
     [v6 getFloatValue:1];
     v8 = v7 / 255.0;
-    v9 = [v5 green];
-    [v9 getFloatValue:1];
+    green = [getRGBColorValue green];
+    [green getFloatValue:1];
     v11 = v10 / 255.0;
-    v12 = [v5 blue];
-    [v12 getFloatValue:1];
+    blue = [getRGBColorValue blue];
+    [blue getFloatValue:1];
     v14 = v13 / 255.0;
-    v15 = [v5 alpha];
-    [v15 getFloatValue:1];
+    alpha = [getRGBColorValue alpha];
+    [alpha getFloatValue:1];
     v17 = [UIColor colorWithRed:v8 green:v11 blue:v14 alpha:v16];
   }
 
   else
   {
-    v19.receiver = a1;
+    v19.receiver = self;
     v19.super_class = &off_1F0124B80;
     v17 = objc_msgSendSuper2(&v19, sel_tapHighlightColor);
   }
@@ -40,14 +40,14 @@
 
 - (uint64_t)touchCalloutEnabled
 {
-  v2 = [a1 ownerDocument];
-  v3 = [v2 getComputedStyle:a1 pseudoElement:&stru_1EFB14550];
+  ownerDocument = [self ownerDocument];
+  v3 = [ownerDocument getComputedStyle:self pseudoElement:&stru_1EFB14550];
   v4 = [v3 getPropertyCSSValue:@"-webkit-touch-callout"];
-  v5 = [v4 getStringValue];
+  getStringValue = [v4 getStringValue];
 
-  if (v5)
+  if (getStringValue)
   {
-    v6 = [v5 isEqualToString:@"none"] ^ 1;
+    v6 = [getStringValue isEqualToString:@"none"] ^ 1;
   }
 
   else

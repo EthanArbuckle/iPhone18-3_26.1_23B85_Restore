@@ -1,6 +1,6 @@
 @interface GKDevice
 + (id)currentDevice;
-+ (id)zeroOutVersionWithDeviceType:(id)a3;
++ (id)zeroOutVersionWithDeviceType:(id)type;
 - (BOOL)isDevelopmentDevice;
 - (BOOL)isFocusDevice;
 - (GKDevice)init;
@@ -9,7 +9,7 @@
 - (id)buildVersionHeader;
 - (id)platformBuildVersion;
 - (id)processNameHeader;
-- (id)userAgentWithProcessName:(id)a3 protocolVersion:(id)a4;
+- (id)userAgentWithProcessName:(id)name protocolVersion:(id)version;
 - (void)_initPlatform;
 @end
 
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __25__GKDevice_currentDevice__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (currentDevice_sDispatchOnceToken != -1)
   {
     dispatch_once(&currentDevice_sDispatchOnceToken, block);
@@ -36,9 +36,9 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(GKDevice *)self _platformUDID];
+    _platformUDID = [(GKDevice *)self _platformUDID];
     udid = self->_udid;
-    self->_udid = v3;
+    self->_udid = _platformUDID;
   }
 
   v5 = self->_udid;
@@ -81,8 +81,8 @@ uint64_t __25__GKDevice_currentDevice__block_invoke(uint64_t a1)
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 infoDictionary];
-      v6 = [v5 objectForKey:*MEMORY[0x277CBED58]];
+      infoDictionary = [v3 infoDictionary];
+      v6 = [infoDictionary objectForKey:*MEMORY[0x277CBED58]];
 
       v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"GameKit-%@", v6];
       gameKitVersion = v2->_gameKitVersion;
@@ -119,32 +119,32 @@ uint64_t __25__GKDevice_currentDevice__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)userAgentWithProcessName:(id)a3 protocolVersion:(id)a4
+- (id)userAgentWithProcessName:(id)name protocolVersion:(id)version
 {
   v6 = MEMORY[0x277CCAB68];
-  v7 = a4;
-  v8 = a3;
+  versionCopy = version;
+  nameCopy = name;
   v9 = [[v6 alloc] initWithCapacity:256];
-  [v9 appendString:v8];
+  [v9 appendString:nameCopy];
 
   [v9 appendString:@"/"];
-  [v9 appendString:v7];
+  [v9 appendString:versionCopy];
 
   objc_msgSend(v9, "appendString:", @" (");
-  v10 = [(GKDevice *)self versionlessDeviceType];
-  [v9 appendString:v10];
+  versionlessDeviceType = [(GKDevice *)self versionlessDeviceType];
+  [v9 appendString:versionlessDeviceType];
 
   [v9 appendString:@"; "];
-  v11 = [(GKDevice *)self osVersion];
-  [v9 appendString:v11];
+  osVersion = [(GKDevice *)self osVersion];
+  [v9 appendString:osVersion];
 
   [v9 appendString:@"; "];
-  v12 = [(GKDevice *)self buildVersion];
-  [v9 appendString:v12];
+  buildVersion = [(GKDevice *)self buildVersion];
+  [v9 appendString:buildVersion];
 
   [v9 appendString:@"; "];
-  v13 = [(GKDevice *)self gameKitVersion];
-  [v9 appendString:v13];
+  gameKitVersion = [(GKDevice *)self gameKitVersion];
+  [v9 appendString:gameKitVersion];
 
   [v9 appendString:@""]);
 
@@ -153,13 +153,13 @@ uint64_t __25__GKDevice_currentDevice__block_invoke(uint64_t a1)
 
 - (id)processNameHeader
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = v2;
-  if (v2)
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = mainBundle;
+  if (mainBundle)
   {
-    v4 = [v2 infoDictionary];
-    v5 = [v4 objectForKey:*MEMORY[0x277CBED50]];
-    if (v5 || ([v4 objectForKey:*MEMORY[0x277CBEC40]], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+    infoDictionary = [mainBundle infoDictionary];
+    v5 = [infoDictionary objectForKey:*MEMORY[0x277CBED50]];
+    if (v5 || ([infoDictionary objectForKey:*MEMORY[0x277CBEC40]], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v6 = v5;
     }
@@ -181,16 +181,16 @@ uint64_t __25__GKDevice_currentDevice__block_invoke(uint64_t a1)
 - (id)buildVersionHeader
 {
   v3 = [MEMORY[0x277CCAB68] stringWithCapacity:256];
-  v4 = [(GKDevice *)self deviceType];
-  [v3 appendString:v4];
+  deviceType = [(GKDevice *)self deviceType];
+  [v3 appendString:deviceType];
 
   [v3 appendString:@"; "];
-  v5 = [(GKDevice *)self buildVersion];
-  [v3 appendString:v5];
+  buildVersion = [(GKDevice *)self buildVersion];
+  [v3 appendString:buildVersion];
 
   [v3 appendString:@"; "];
-  v6 = [(GKDevice *)self gameKitVersion];
-  [v3 appendString:v6];
+  gameKitVersion = [(GKDevice *)self gameKitVersion];
+  [v3 appendString:gameKitVersion];
 
   return v3;
 }
@@ -200,12 +200,12 @@ uint64_t __25__GKDevice_currentDevice__block_invoke(uint64_t a1)
   v3 = [MEMORY[0x277CCAB68] stringWithCapacity:256];
   [v3 appendString:@"iOS"];
   [v3 appendString:@"."];
-  v4 = [(GKDevice *)self osVersion];
-  [v3 appendString:v4];
+  osVersion = [(GKDevice *)self osVersion];
+  [v3 appendString:osVersion];
 
   [v3 appendString:@"."];
-  v5 = [(GKDevice *)self buildVersion];
-  [v3 appendString:v5];
+  buildVersion = [(GKDevice *)self buildVersion];
+  [v3 appendString:buildVersion];
 
   return v3;
 }
@@ -294,7 +294,7 @@ void __50__GKDevice_PlatformDependent__isDevelopmentDevice__block_invoke()
   return 0;
 }
 
-+ (id)zeroOutVersionWithDeviceType:(id)a3
++ (id)zeroOutVersionWithDeviceType:(id)type
 {
   v3 = sub_227A724EC();
   static GKDevice.zeroOutVersion(deviceType:)(v3);

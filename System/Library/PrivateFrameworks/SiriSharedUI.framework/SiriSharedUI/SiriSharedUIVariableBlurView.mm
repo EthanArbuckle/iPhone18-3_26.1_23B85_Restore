@@ -1,12 +1,12 @@
 @interface SiriSharedUIVariableBlurView
-- (_TtC12SiriSharedUI28SiriSharedUIVariableBlurView)initWithCoder:(id)a3;
-- (_TtC12SiriSharedUI28SiriSharedUIVariableBlurView)initWithFrame:(CGRect)a3;
+- (_TtC12SiriSharedUI28SiriSharedUIVariableBlurView)initWithCoder:(id)coder;
+- (_TtC12SiriSharedUI28SiriSharedUIVariableBlurView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SiriSharedUIVariableBlurView
 
-- (_TtC12SiriSharedUI28SiriSharedUIVariableBlurView)initWithCoder:(id)a3
+- (_TtC12SiriSharedUI28SiriSharedUIVariableBlurView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC12SiriSharedUI28SiriSharedUIVariableBlurView_backdropLayer;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(MEMORY[0x277CD9E08]) init];
@@ -26,7 +26,7 @@
   [v3 setFrame_];
 }
 
-- (_TtC12SiriSharedUI28SiriSharedUIVariableBlurView)initWithFrame:(CGRect)a3
+- (_TtC12SiriSharedUI28SiriSharedUIVariableBlurView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

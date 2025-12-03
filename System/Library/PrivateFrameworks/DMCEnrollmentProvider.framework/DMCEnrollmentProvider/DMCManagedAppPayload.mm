@@ -1,17 +1,17 @@
 @interface DMCManagedAppPayload
-- (DMCManagedAppPayload)initWithManagedAppID:(id)a3 profile:(id)a4;
+- (DMCManagedAppPayload)initWithManagedAppID:(id)d profile:(id)profile;
 @end
 
 @implementation DMCManagedAppPayload
 
-- (DMCManagedAppPayload)initWithManagedAppID:(id)a3 profile:(id)a4
+- (DMCManagedAppPayload)initWithManagedAppID:(id)d profile:(id)profile
 {
-  v6 = a3;
+  dCopy = d;
   v7 = [(DMCManagedAppPayload *)self init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_managedAppID, a3);
+    objc_storeStrong(&v7->_managedAppID, d);
   }
 
   return v8;

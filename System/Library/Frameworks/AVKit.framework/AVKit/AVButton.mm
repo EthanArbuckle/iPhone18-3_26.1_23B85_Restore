@@ -1,13 +1,13 @@
 @interface AVButton
-+ (id)buttonWithAccessibilityIdentifier:(id)a3 accessibilityLabel:(id)a4 isFirstGeneration:(BOOL)a5;
-+ (id)buttonWithAccessibilityIdentifier:(id)a3 isFirstGeneration:(BOOL)a4;
-+ (id)customHighlightedAnimationButtonWithAccessibilityIdentifier:(id)a3;
++ (id)buttonWithAccessibilityIdentifier:(id)identifier accessibilityLabel:(id)label isFirstGeneration:(BOOL)generation;
++ (id)buttonWithAccessibilityIdentifier:(id)identifier isFirstGeneration:(BOOL)generation;
++ (id)customHighlightedAnimationButtonWithAccessibilityIdentifier:(id)identifier;
 - (AVContentIntersectingDelegate)contentIntersectingDelegate;
 - (BOOL)_hasAnyTitle;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)isCollapsedOrExcluded;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)contentIntersection;
 - (CGRect)hitRect;
 - (CGSize)extrinsicContentSize;
@@ -21,40 +21,40 @@
 - (double)baselineOffsetFromBottom;
 - (id)_preferredFont;
 - (id)accessibilityLabel;
-- (void)_handleUserInteractionGestureRecognizer:(id)a3;
+- (void)_handleUserInteractionGestureRecognizer:(id)recognizer;
 - (void)_resetTrackedState;
 - (void)_updateBackgroundEffectViewIsHidden;
 - (void)_updateEdgeInsets;
 - (void)_updateImageIfNeeded;
 - (void)_updateLayoutItem;
 - (void)_updateTintColorIfNeeded;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)interruptActiveInteractions;
 - (void)layoutAttributesDidChange;
 - (void)layoutSubviews;
-- (void)setActiveImageName:(id)a3;
-- (void)setAlternateImageName:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCollapsed:(BOOL)a3;
-- (void)setContentIntersection:(CGRect)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setExtrinsicContentSize:(CGSize)a3;
-- (void)setForce:(double)a3;
-- (void)setHasAlternateAppearance:(BOOL)a3;
-- (void)setHasFullScreenAppearance:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3 forState:(unint64_t)a4;
-- (void)setImageName:(id)a3;
-- (void)setIncluded:(BOOL)a3;
-- (void)setMicaPackage:(id)a3;
-- (void)setMultipleTouchesEndsTracking:(BOOL)a3;
-- (void)setRemoved:(BOOL)a3;
-- (void)setTitle:(id)a3 forState:(unint64_t)a4;
-- (void)setUsesBackgroundEffectViewForTextOnlyButtons:(BOOL)a3;
-- (void)setWasLongPressed:(BOOL)a3;
+- (void)setActiveImageName:(id)name;
+- (void)setAlternateImageName:(id)name;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCollapsed:(BOOL)collapsed;
+- (void)setContentIntersection:(CGRect)intersection;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setExtrinsicContentSize:(CGSize)size;
+- (void)setForce:(double)force;
+- (void)setHasAlternateAppearance:(BOOL)appearance;
+- (void)setHasFullScreenAppearance:(BOOL)appearance;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image forState:(unint64_t)state;
+- (void)setImageName:(id)name;
+- (void)setIncluded:(BOOL)included;
+- (void)setMicaPackage:(id)package;
+- (void)setMultipleTouchesEndsTracking:(BOOL)tracking;
+- (void)setRemoved:(BOOL)removed;
+- (void)setTitle:(id)title forState:(unint64_t)state;
+- (void)setUsesBackgroundEffectViewForTextOnlyButtons:(BOOL)buttons;
+- (void)setWasLongPressed:(BOOL)pressed;
 - (void)updateForContentIntersection;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation AVButton
@@ -102,10 +102,10 @@
   return result;
 }
 
-- (void)_handleUserInteractionGestureRecognizer:(id)a3
+- (void)_handleUserInteractionGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  if (-[AVButton multipleTouchesEndsTracking](self, "multipleTouchesEndsTracking") && [v4 numberOfTouches] >= 2)
+  recognizerCopy = recognizer;
+  if (-[AVButton multipleTouchesEndsTracking](self, "multipleTouchesEndsTracking") && [recognizerCopy numberOfTouches] >= 2)
   {
     [(AVButton *)self setEnabled:0];
     [(AVButton *)self setEnabled:1];
@@ -118,8 +118,8 @@
   v9.super_class = AVButton;
   v3 = [(AVButton *)&v9 debugDescription];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(AVButton *)self accessibilityIdentifier];
-  v6 = [v4 stringWithFormat:@" %@", v5];
+  accessibilityIdentifier = [(AVButton *)self accessibilityIdentifier];
+  v6 = [v4 stringWithFormat:@" %@", accessibilityIdentifier];
   v7 = [v3 stringByAppendingString:v6];
 
   return v7;
@@ -127,8 +127,8 @@
 
 - (void)interruptActiveInteractions
 {
-  v2 = [(AVButton *)self contextMenuInteraction];
-  [v2 dismissMenu];
+  contextMenuInteraction = [(AVButton *)self contextMenuInteraction];
+  [contextMenuInteraction dismissMenu];
 }
 
 - (void)updateForContentIntersection
@@ -143,25 +143,25 @@
     if (self->_isOverVideo != v8)
     {
       self->_isOverVideo = v8;
-      v9 = [(AVButton *)self contentIntersectingDelegate];
-      if (v9)
+      contentIntersectingDelegate = [(AVButton *)self contentIntersectingDelegate];
+      if (contentIntersectingDelegate)
       {
-        v10 = v9;
-        [v9 viewIsOverVideoDidChange:self];
-        v9 = v10;
+        v10 = contentIntersectingDelegate;
+        [contentIntersectingDelegate viewIsOverVideoDidChange:self];
+        contentIntersectingDelegate = v10;
       }
     }
   }
 }
 
-- (void)setContentIntersection:(CGRect)a3
+- (void)setContentIntersection:(CGRect)intersection
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = intersection.size.height;
+  width = intersection.size.width;
+  y = intersection.origin.y;
+  x = intersection.origin.x;
   p_contentIntersection = &self->_contentIntersection;
-  if (!CGRectEqualToRect(a3, self->_contentIntersection))
+  if (!CGRectEqualToRect(intersection, self->_contentIntersection))
   {
     p_contentIntersection->origin.x = x;
     p_contentIntersection->origin.y = y;
@@ -174,8 +174,8 @@
 
 - (void)layoutAttributesDidChange
 {
-  v3 = [(AVButton *)self layoutAttributes];
-  -[AVButton setCollapsed:](self, "setCollapsed:", [v3 isCollapsed]);
+  layoutAttributes = [(AVButton *)self layoutAttributes];
+  -[AVButton setCollapsed:](self, "setCollapsed:", [layoutAttributes isCollapsed]);
 }
 
 - (void)layoutSubviews
@@ -183,8 +183,8 @@
   v5.receiver = self;
   v5.super_class = AVButton;
   [(AVButton *)&v5 layoutSubviews];
-  v3 = [(AVButton *)self backgroundEffectView];
-  if (v3)
+  backgroundEffectView = [(AVButton *)self backgroundEffectView];
+  if (backgroundEffectView)
   {
     if ([(AVButton *)self hasFullScreenAppearance])
     {
@@ -198,7 +198,7 @@
 
     [(AVButton *)self bounds];
     v7 = CGRectInset(v6, 0.0, v4);
-    [v3 setFrame:{v7.origin.x, v7.origin.y, v7.size.width, v7.size.height}];
+    [backgroundEffectView setFrame:{v7.origin.x, v7.origin.y, v7.size.width, v7.size.height}];
   }
 }
 
@@ -209,7 +209,7 @@
     if (![(AVButton *)self _hasAnyTitle])
     {
 LABEL_8:
-      v4 = [(AVButton *)self _preferredLayoutSize];
+      _preferredLayoutSize = [(AVButton *)self _preferredLayoutSize];
       goto LABEL_11;
     }
 
@@ -220,9 +220,9 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    v6 = [(AVButton *)self micaPackage];
+    micaPackage = [(AVButton *)self micaPackage];
 
-    if (v6)
+    if (micaPackage)
     {
       goto LABEL_8;
     }
@@ -237,59 +237,59 @@ LABEL_8:
 
 LABEL_11:
   result.height = v5;
-  result.width = v4;
+  result.width = _preferredLayoutSize;
   return result;
 }
 
 - (BOOL)_hasAnyTitle
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 titleForState:0];
+    v2 = [self titleForState:0];
     if ([v2 length])
     {
-      v1 = 1;
+      selfCopy = 1;
     }
 
     else
     {
-      v3 = [v1 attributedTitleForState:0];
-      v1 = [v3 length] != 0;
+      v3 = [selfCopy attributedTitleForState:0];
+      selfCopy = [v3 length] != 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (double)_preferredLayoutSize
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [a1 extrinsicContentSize];
+  [self extrinsicContentSize];
   v3 = v2;
   if (v4 > 0.0 && v2 <= 0.0)
   {
-    if ([a1 hasFullScreenAppearance])
+    if ([self hasFullScreenAppearance])
     {
-      [a1 fullscreenAlternateImagePadding];
+      [self fullscreenAlternateImagePadding];
     }
 
     else
     {
-      [a1 alternateImagePadding];
+      [self alternateImagePadding];
     }
 
     v6 = v5;
-    if (![a1 hasAlternateAppearance])
+    if (![self hasAlternateAppearance])
     {
       v6 = 0.0;
     }
 
-    v7 = [a1 imageForState:0];
+    v7 = [self imageForState:0];
     [v7 size];
     v3 = v6 + v8;
   }
@@ -297,10 +297,10 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(AVButton *)self hitRect];
   v10 = x;
   v11 = y;
@@ -343,22 +343,22 @@ LABEL_11:
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v19.receiver = self;
   v19.super_class = AVButton;
   [(AVButton *)&v19 setBounds:?];
-  v4 = [(AVButton *)self micaPackage];
-  v5 = [v4 rootLayer];
-  if (v5)
+  micaPackage = [(AVButton *)self micaPackage];
+  rootLayer = [micaPackage rootLayer];
+  if (rootLayer)
   {
-    v6 = v5;
+    v6 = rootLayer;
     UIRectGetCenter();
     v8 = v7;
     v10 = v9;
-    v11 = [(AVButton *)self micaPackage];
-    v12 = [v11 rootLayer];
-    [v12 position];
+    micaPackage2 = [(AVButton *)self micaPackage];
+    rootLayer2 = [micaPackage2 rootLayer];
+    [rootLayer2 position];
     v14 = v13;
     v16 = v15;
 
@@ -366,11 +366,11 @@ LABEL_11:
     {
       [MEMORY[0x1E6979518] begin];
       [MEMORY[0x1E6979518] setDisableActions:1];
-      v17 = [(AVButton *)self micaPackage];
-      v18 = [v17 rootLayer];
+      micaPackage3 = [(AVButton *)self micaPackage];
+      rootLayer3 = [micaPackage3 rootLayer];
       [(AVButton *)self bounds];
       UIRectGetCenter();
-      [v18 setPosition:?];
+      [rootLayer3 setPosition:?];
 
       [MEMORY[0x1E6979518] commit];
     }
@@ -383,62 +383,62 @@ LABEL_11:
 
 - (id)accessibilityLabel
 {
-  v3 = self->_accessibilityLabelOverride;
-  if (!v3)
+  accessibilityLabel = self->_accessibilityLabelOverride;
+  if (!accessibilityLabel)
   {
     v5.receiver = self;
     v5.super_class = AVButton;
-    v3 = [(AVButton *)&v5 accessibilityLabel];
+    accessibilityLabel = [(AVButton *)&v5 accessibilityLabel];
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
-- (void)setTitle:(id)a3 forState:(unint64_t)a4
+- (void)setTitle:(id)title forState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = [(AVButton *)self titleForState:a4];
+  titleCopy = title;
+  v7 = [(AVButton *)self titleForState:state];
   v12.receiver = self;
   v12.super_class = AVButton;
-  [(AVButton *)&v12 setTitle:v6 forState:a4];
-  LOBYTE(a4) = [v7 isEqualToString:v6];
+  [(AVButton *)&v12 setTitle:titleCopy forState:state];
+  LOBYTE(state) = [v7 isEqualToString:titleCopy];
 
-  if ((a4 & 1) == 0)
+  if ((state & 1) == 0)
   {
     [(AVButton *)self _updateBackgroundEffectViewIsHidden];
     [(AVButton *)self _updateEdgeInsets];
     [(AVButton *)self _updateLayoutItem];
     [(AVButton *)self invalidateIntrinsicContentSize];
-    v8 = [(AVButton *)self superview];
-    [v8 avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
+    superview = [(AVButton *)self superview];
+    [superview avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
   }
 
-  if (v6 && !v7)
+  if (titleCopy && !v7)
   {
-    v9 = [(AVButton *)self layer];
-    [v9 setCompositingFilter:0];
+    layer = [(AVButton *)self layer];
+    [layer setCompositingFilter:0];
 
-    v10 = [(AVButton *)self tintEffectStyle];
-    v11 = [(AVButton *)self titleLabel];
-    if (v10)
+    tintEffectStyle = [(AVButton *)self tintEffectStyle];
+    titleLabel = [(AVButton *)self titleLabel];
+    if (tintEffectStyle)
     {
-      [AVBackdropView applySecondaryGlyphTintToView:v11];
+      [AVBackdropView applySecondaryGlyphTintToView:titleLabel];
     }
 
     else
     {
-      [AVBackdropView applyPrimaryGlyphTintToView:v11];
+      [AVBackdropView applyPrimaryGlyphTintToView:titleLabel];
     }
   }
 }
 
 - (void)_updateBackgroundEffectViewIsHidden
 {
-  if (a1)
+  if (self)
   {
-    if ([(AVButton *)a1 _hasAnyTitle])
+    if ([(AVButton *)self _hasAnyTitle])
     {
-      v2 = [a1 imageForState:0];
+      v2 = [self imageForState:0];
       if (v2)
       {
         v3 = 1;
@@ -446,15 +446,15 @@ LABEL_11:
 
       else
       {
-        v4 = [a1 micaPackage];
-        if (v4)
+        micaPackage = [self micaPackage];
+        if (micaPackage)
         {
           v3 = 1;
         }
 
         else
         {
-          v3 = [a1 usesBackgroundEffectViewForTextOnlyButtons] ^ 1;
+          v3 = [self usesBackgroundEffectViewForTextOnlyButtons] ^ 1;
         }
       }
     }
@@ -464,8 +464,8 @@ LABEL_11:
       v3 = 1;
     }
 
-    v5 = [a1 backgroundEffectView];
-    [v5 setHidden:v3];
+    backgroundEffectView = [self backgroundEffectView];
+    [backgroundEffectView setHidden:v3];
   }
 }
 
@@ -483,8 +483,8 @@ LABEL_11:
     return result;
   }
 
-  v2 = [v1 usesBackgroundEffectViewForTextOnlyButtons];
-  v3 = [v1 usesBackgroundEffectViewForTextOnlyButtons];
+  usesBackgroundEffectViewForTextOnlyButtons = [v1 usesBackgroundEffectViewForTextOnlyButtons];
+  usesBackgroundEffectViewForTextOnlyButtons2 = [v1 usesBackgroundEffectViewForTextOnlyButtons];
   v4 = [v1 imageForState:0];
   if (v4)
   {
@@ -492,7 +492,7 @@ LABEL_11:
 
   else
   {
-    if (v3)
+    if (usesBackgroundEffectViewForTextOnlyButtons2)
     {
       v5 = 14.0;
     }
@@ -502,7 +502,7 @@ LABEL_11:
       v5 = 16.0;
     }
 
-    if (v2)
+    if (usesBackgroundEffectViewForTextOnlyButtons)
     {
       v6 = 4.0;
     }
@@ -512,9 +512,9 @@ LABEL_11:
       v6 = 16.0;
     }
 
-    v7 = [v1 micaPackage];
+    micaPackage = [v1 micaPackage];
 
-    if (!v7)
+    if (!micaPackage)
     {
       goto LABEL_14;
     }
@@ -529,16 +529,16 @@ LABEL_14:
 
 - (void)_updateLayoutItem
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 layoutAttributes];
-    [a1 intrinsicContentSize];
-    [v2 setMinimumSize:?];
+    layoutAttributes = [self layoutAttributes];
+    [self intrinsicContentSize];
+    [layoutAttributes setMinimumSize:?];
 
-    v3 = [a1 layoutAttributes];
-    if ([a1 isIncluded])
+    layoutAttributes2 = [self layoutAttributes];
+    if ([self isIncluded])
     {
-      v4 = [a1 isRemoved] ^ 1;
+      v4 = [self isRemoved] ^ 1;
     }
 
     else
@@ -546,37 +546,37 @@ LABEL_14:
       v4 = 0;
     }
 
-    [v3 setIncluded:v4];
+    [layoutAttributes2 setIncluded:v4];
 
-    v5 = [a1 layoutAttributes];
-    [v5 setCollapsed:{objc_msgSend(a1, "isCollapsed")}];
+    layoutAttributes3 = [self layoutAttributes];
+    [layoutAttributes3 setCollapsed:{objc_msgSend(self, "isCollapsed")}];
   }
 }
 
-- (void)setImage:(id)a3 forState:(unint64_t)a4
+- (void)setImage:(id)image forState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = [(AVButton *)self _preferredLayoutSize];
+  imageCopy = image;
+  _preferredLayoutSize = [(AVButton *)self _preferredLayoutSize];
   v9 = v8;
-  if (v6)
+  if (imageCopy)
   {
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    v10 = [(AVButton *)self micaPackage];
-    v11 = [v10 rootLayer];
-    [v11 setHidden:1];
+    micaPackage = [(AVButton *)self micaPackage];
+    rootLayer = [micaPackage rootLayer];
+    [rootLayer setHidden:1];
 
     if ([(AVButton *)self usesCustomBlendingEffects])
     {
       if ([(AVButton *)self isFirstGeneration])
       {
-        v12 = [(AVButton *)self layer];
-        v13 = [v12 compositingFilter];
+        layer = [(AVButton *)self layer];
+        compositingFilter = [layer compositingFilter];
 
-        if (!v13)
+        if (!compositingFilter)
         {
-          v14 = [(AVButton *)self layer];
-          [v14 setCompositingFilter:*MEMORY[0x1E6979CF8]];
+          layer2 = [(AVButton *)self layer];
+          [layer2 setCompositingFilter:*MEMORY[0x1E6979CF8]];
 
           v15 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:-[AVButton _imageViewAlpha](self)];
           [(AVButton *)self setTintColor:v15];
@@ -586,7 +586,7 @@ LABEL_14:
 
     v26.receiver = self;
     v26.super_class = AVButton;
-    [(AVButton *)&v26 setImage:v6 forState:a4];
+    [(AVButton *)&v26 setImage:imageCopy forState:state];
     [MEMORY[0x1E6979518] commit];
   }
 
@@ -594,38 +594,38 @@ LABEL_14:
   {
     v25.receiver = self;
     v25.super_class = AVButton;
-    [(AVButton *)&v25 setImage:0 forState:a4];
+    [(AVButton *)&v25 setImage:0 forState:state];
     [(AVButton *)self _updateTintColorIfNeeded];
   }
 
-  v16 = [(AVButton *)self isFirstGeneration];
-  if (v7 != [(AVButton *)self _preferredLayoutSize]|| v9 != v17 || !v16)
+  isFirstGeneration = [(AVButton *)self isFirstGeneration];
+  if (_preferredLayoutSize != [(AVButton *)self _preferredLayoutSize]|| v9 != v17 || !isFirstGeneration)
   {
     [(AVButton *)self invalidateIntrinsicContentSize];
-    v18 = [(AVButton *)self superview];
-    [v18 avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
+    superview = [(AVButton *)self superview];
+    [superview avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
   }
 
   [(AVButton *)self setContentEdgeInsets:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
   [(AVButton *)self _updateBackgroundEffectViewIsHidden];
   [(AVButton *)self _updateEdgeInsets];
   [(AVButton *)self _updateLayoutItem];
-  if (!v6)
+  if (!imageCopy)
   {
-    v19 = [(AVButton *)self micaPackage];
-    v20 = [v19 rootLayer];
-    v21 = [v20 isHidden];
+    micaPackage2 = [(AVButton *)self micaPackage];
+    rootLayer2 = [micaPackage2 rootLayer];
+    isHidden = [rootLayer2 isHidden];
 
-    if (v21)
+    if (isHidden)
     {
       [MEMORY[0x1E6979518] begin];
       [MEMORY[0x1E6979518] setDisableActions:1];
-      v22 = [(AVButton *)self layer];
-      [v22 setCompositingFilter:0];
+      layer3 = [(AVButton *)self layer];
+      [layer3 setCompositingFilter:0];
 
-      v23 = [(AVButton *)self micaPackage];
-      v24 = [v23 rootLayer];
-      [v24 setHidden:0];
+      micaPackage3 = [(AVButton *)self micaPackage];
+      rootLayer3 = [micaPackage3 rootLayer];
+      [rootLayer3 setHidden:0];
 
       [MEMORY[0x1E6979518] commit];
     }
@@ -634,12 +634,12 @@ LABEL_14:
 
 - (double)_imageViewAlpha
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  if ([a1 tintEffectStyle])
+  if ([self tintEffectStyle])
   {
     v2 = 0.55;
   }
@@ -649,15 +649,15 @@ LABEL_14:
     v2 = 0.75;
   }
 
-  if (![a1 usesCustomBlendingEffects])
+  if (![self usesCustomBlendingEffects])
   {
     v2 = 1.0;
   }
 
-  v3 = [a1 micaPackage];
-  if (v3)
+  micaPackage = [self micaPackage];
+  if (micaPackage)
   {
-    [a1 micaSnapshotAlpha];
+    [self micaSnapshotAlpha];
     v2 = v4;
   }
 
@@ -666,16 +666,16 @@ LABEL_14:
 
 - (void)_updateTintColorIfNeeded
 {
-  if (a1 && [a1 usesCustomBlendingEffects] && objc_msgSend(a1, "isFirstGeneration"))
+  if (self && [self usesCustomBlendingEffects] && objc_msgSend(self, "isFirstGeneration"))
   {
-    v2 = [a1 imageName];
-    if (v2)
+    imageName = [self imageName];
+    if (imageName)
     {
     }
 
     else
     {
-      v3 = [a1 imageForState:0];
+      v3 = [self imageForState:0];
 
       if (!v3)
       {
@@ -683,16 +683,16 @@ LABEL_14:
       }
     }
 
-    v4 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:-[AVButton _imageViewAlpha](a1)];
-    [a1 setTintColor:v4];
+    v4 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:-[AVButton _imageViewAlpha](self)];
+    [self setTintColor:v4];
   }
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = AVButton;
-  [(AVButton *)&v5 cancelTrackingWithEvent:a3];
+  [(AVButton *)&v5 cancelTrackingWithEvent:event];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __36__AVButton_cancelTrackingWithEvent___block_invoke;
@@ -706,8 +706,8 @@ LABEL_14:
   if (result)
   {
     v1 = result;
-    v2 = [result longPressTimer];
-    [v2 invalidate];
+    longPressTimer = [result longPressTimer];
+    [longPressTimer invalidate];
 
     [v1 setHorizontalTranslationOfLongPress:0.0];
     [v1 setPreviousHorizontalPositionOfLongPress:0];
@@ -721,11 +721,11 @@ LABEL_14:
   return result;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = AVButton;
-  [(AVButton *)&v6 endTrackingWithTouch:a3 withEvent:a4];
+  [(AVButton *)&v6 endTrackingWithTouch:touch withEvent:event];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__AVButton_endTrackingWithTouch_withEvent___block_invoke;
@@ -734,12 +734,12 @@ LABEL_14:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
+  touchCopy = touch;
   v30.receiver = self;
   v30.super_class = AVButton;
-  v7 = [(AVButton *)&v30 continueTrackingWithTouch:v6 withEvent:a4];
+  v7 = [(AVButton *)&v30 continueTrackingWithTouch:touchCopy withEvent:event];
   if (v7)
   {
     [(AVButton *)self maximumForceSinceTrackingBegan];
@@ -748,7 +748,7 @@ LABEL_14:
     v11 = v10;
     [(AVButton *)self maximumForceSinceTrackingBegan];
     v13 = v12;
-    [v6 force];
+    [touchCopy force];
     if (v13 >= v14)
     {
       v14 = v13;
@@ -774,10 +774,10 @@ LABEL_14:
         else
         {
           [(AVButton *)self setWasLongPressed:0];
-          v21 = [(AVButton *)self longPressTimer];
-          [v21 invalidate];
+          longPressTimer = [(AVButton *)self longPressTimer];
+          [longPressTimer invalidate];
 
-          [v6 force];
+          [touchCopy force];
           [(AVButton *)self setForce:?];
           if (v9 < v11)
           {
@@ -790,20 +790,20 @@ LABEL_14:
 
     if ([(AVButton *)self wasLongPressed])
     {
-      v22 = [(AVButton *)self previousHorizontalPositionOfLongPress];
+      previousHorizontalPositionOfLongPress = [(AVButton *)self previousHorizontalPositionOfLongPress];
 
-      if (v22)
+      if (previousHorizontalPositionOfLongPress)
       {
-        v23 = [(AVButton *)self previousHorizontalPositionOfLongPress];
-        [v23 doubleValue];
+        previousHorizontalPositionOfLongPress2 = [(AVButton *)self previousHorizontalPositionOfLongPress];
+        [previousHorizontalPositionOfLongPress2 doubleValue];
         v25 = v24;
 
-        [v6 locationInView:self];
+        [touchCopy locationInView:self];
         [(AVButton *)self setHorizontalTranslationOfLongPress:v26 - v25];
       }
 
       v27 = MEMORY[0x1E696AD98];
-      [v6 locationInView:self];
+      [touchCopy locationInView:self];
       v28 = [v27 numberWithDouble:?];
       [(AVButton *)self setPreviousHorizontalPositionOfLongPress:v28];
     }
@@ -812,13 +812,13 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   v19.receiver = self;
   v19.super_class = AVButton;
-  v8 = [(AVButton *)&v19 beginTrackingWithTouch:v6 withEvent:v7];
+  v8 = [(AVButton *)&v19 beginTrackingWithTouch:touchCopy withEvent:eventCopy];
   if (v8)
   {
     [(AVButton *)self setTrackingStartTime:CFAbsoluteTimeGetCurrent()];
@@ -831,10 +831,10 @@ LABEL_14:
     objc_copyWeak(&v17, &location);
     v10 = [v9 scheduledTimerWithTimeInterval:0 repeats:&v13 block:0.5];
     [(AVButton *)self setLongPressTimer:v10, v13, v14, v15, v16];
-    v11 = [(AVButton *)self longPressTimer];
-    [v11 setTolerance:0.05];
+    longPressTimer = [(AVButton *)self longPressTimer];
+    [longPressTimer setTolerance:0.05];
 
-    [v6 force];
+    [touchCopy force];
     [(AVButton *)self setForce:?];
 
     objc_destroyWeak(&v17);
@@ -865,33 +865,33 @@ void __45__AVButton_beginTrackingWithTouch_withEvent___block_invoke(uint64_t a1,
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   if ([(AVButton *)self wasLongPressed])
   {
-    v3 = v3 & ~[(AVButton *)self disablesHighlightWhenLongPressed];
+    highlightedCopy = highlightedCopy & ~[(AVButton *)self disablesHighlightWhenLongPressed];
   }
 
   v9.receiver = self;
   v9.super_class = AVButton;
-  if (v3 != [(AVButton *)&v9 isHighlighted])
+  if (highlightedCopy != [(AVButton *)&v9 isHighlighted])
   {
     v8.receiver = self;
     v8.super_class = AVButton;
-    [(AVButton *)&v8 setHighlighted:v3];
+    [(AVButton *)&v8 setHighlighted:highlightedCopy];
     if (!self->_disablesHighlightAnimation)
     {
-      v5 = [(AVButton *)self highlightAnimator];
-      if ([v5 isRunning] && objc_msgSend(v5, "isInterruptible"))
+      highlightAnimator = [(AVButton *)self highlightAnimator];
+      if ([highlightAnimator isRunning] && objc_msgSend(highlightAnimator, "isInterruptible"))
       {
-        [v5 stopAnimation:0];
-        [v5 finishAnimationAtPosition:2];
+        [highlightAnimator stopAnimation:0];
+        [highlightAnimator finishAnimationAtPosition:2];
       }
 
-      if ([v5 isRunning])
+      if ([highlightAnimator isRunning])
       {
-        v6 = v5;
+        v6 = highlightAnimator;
       }
 
       else
@@ -952,12 +952,12 @@ void __38__AVButton__performHighlightAnimation__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v6.receiver = self;
   v6.super_class = AVButton;
   [(AVButton *)&v6 setEnabled:?];
-  if ([(AVButton *)self isTracking]&& !a3)
+  if ([(AVButton *)self isTracking]&& !enabled)
   {
     [(AVButton *)self setTracking:0];
     [(AVButton *)self setHighlighted:0];
@@ -996,60 +996,60 @@ void __38__AVButton__performHighlightAnimation__block_invoke(uint64_t a1)
   return v12;
 }
 
-- (void)setUsesBackgroundEffectViewForTextOnlyButtons:(BOOL)a3
+- (void)setUsesBackgroundEffectViewForTextOnlyButtons:(BOOL)buttons
 {
-  if (self->_usesBackgroundEffectViewForTextOnlyButtons != a3)
+  if (self->_usesBackgroundEffectViewForTextOnlyButtons != buttons)
   {
-    v4 = a3;
-    self->_usesBackgroundEffectViewForTextOnlyButtons = a3;
-    v6 = [(AVButton *)self backgroundEffectView];
+    buttonsCopy = buttons;
+    self->_usesBackgroundEffectViewForTextOnlyButtons = buttons;
+    backgroundEffectView = [(AVButton *)self backgroundEffectView];
 
-    if (!v6 && v4)
+    if (!backgroundEffectView && buttonsCopy)
     {
       v7 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:0];
       [(AVButton *)self setBackgroundEffectView:v7];
 
-      v8 = [(AVButton *)self backgroundEffectView];
-      [(AVButton *)self insertSubview:v8 atIndex:0];
+      backgroundEffectView2 = [(AVButton *)self backgroundEffectView];
+      [(AVButton *)self insertSubview:backgroundEffectView2 atIndex:0];
 
-      v9 = [(AVButton *)self backgroundEffectView];
-      [v9 setUserInteractionEnabled:0];
+      backgroundEffectView3 = [(AVButton *)self backgroundEffectView];
+      [backgroundEffectView3 setUserInteractionEnabled:0];
 
-      v10 = [(AVButton *)self backgroundEffectView];
+      backgroundEffectView4 = [(AVButton *)self backgroundEffectView];
       v11 = MEMORY[0x1E69DD290];
-      v12 = [MEMORY[0x1E69DC888] whiteColor];
-      v13 = [v11 effectCompositingColor:v12 withMode:24 alpha:0.1];
-      [v10 setEffect:v13];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      v13 = [v11 effectCompositingColor:whiteColor withMode:24 alpha:0.1];
+      [backgroundEffectView4 setEffect:v13];
 
-      v14 = [(AVButton *)self backgroundEffectView];
-      [v14 _setContinuousCornerRadius:6.0];
+      backgroundEffectView5 = [(AVButton *)self backgroundEffectView];
+      [backgroundEffectView5 _setContinuousCornerRadius:6.0];
     }
 
-    v15 = [(AVButton *)self backgroundEffectView];
-    [v15 setHidden:!v4];
+    backgroundEffectView6 = [(AVButton *)self backgroundEffectView];
+    [backgroundEffectView6 setHidden:!buttonsCopy];
 
     [(AVButton *)self _updateEdgeInsets];
   }
 }
 
-- (void)setMultipleTouchesEndsTracking:(BOOL)a3
+- (void)setMultipleTouchesEndsTracking:(BOOL)tracking
 {
-  if (self->_multipleTouchesEndsTracking != a3)
+  if (self->_multipleTouchesEndsTracking != tracking)
   {
-    self->_multipleTouchesEndsTracking = a3;
-    if (a3)
+    self->_multipleTouchesEndsTracking = tracking;
+    if (tracking)
     {
       v4 = [[AVUserInteractionObserverGestureRecognizer alloc] initWithTarget:self action:sel__handleUserInteractionGestureRecognizer_];
       [(AVButton *)self setUserInteractionGestureRecognizer:v4];
 
-      v6 = [(AVButton *)self userInteractionGestureRecognizer];
-      [(AVButton *)self addGestureRecognizer:v6];
+      userInteractionGestureRecognizer = [(AVButton *)self userInteractionGestureRecognizer];
+      [(AVButton *)self addGestureRecognizer:userInteractionGestureRecognizer];
     }
 
     else
     {
-      v5 = [(AVButton *)self userInteractionGestureRecognizer];
-      [(AVButton *)self removeGestureRecognizer:v5];
+      userInteractionGestureRecognizer2 = [(AVButton *)self userInteractionGestureRecognizer];
+      [(AVButton *)self removeGestureRecognizer:userInteractionGestureRecognizer2];
 
       [(AVButton *)self setUserInteractionGestureRecognizer:0];
     }
@@ -1131,49 +1131,49 @@ BOOL __25__AVButton_hitRectInsets__block_invoke(uint64_t a1, void *a2)
   return v18;
 }
 
-- (void)setMicaPackage:(id)a3
+- (void)setMicaPackage:(id)package
 {
-  v5 = a3;
+  packageCopy = package;
   micaPackage = self->_micaPackage;
-  if (micaPackage != v5)
+  if (micaPackage != packageCopy)
   {
-    v29 = v5;
-    v7 = [(AVMicaPackage *)micaPackage rootLayer];
-    [v7 removeFromSuperlayer];
+    v29 = packageCopy;
+    rootLayer = [(AVMicaPackage *)micaPackage rootLayer];
+    [rootLayer removeFromSuperlayer];
 
-    objc_storeStrong(&self->_micaPackage, a3);
-    v8 = [(AVMicaPackage *)v29 rootLayer];
+    objc_storeStrong(&self->_micaPackage, package);
+    rootLayer2 = [(AVMicaPackage *)v29 rootLayer];
     v9 = [(AVButton *)self imageForState:0];
-    [v8 setHidden:v9 != 0];
+    [rootLayer2 setHidden:v9 != 0];
 
-    v10 = [(AVMicaPackage *)v29 rootLayer];
-    LOBYTE(v9) = [v10 isHidden];
+    rootLayer3 = [(AVMicaPackage *)v29 rootLayer];
+    LOBYTE(v9) = [rootLayer3 isHidden];
 
     if ((v9 & 1) == 0)
     {
-      v11 = [(AVButton *)self layer];
-      [v11 setCompositingFilter:0];
+      layer = [(AVButton *)self layer];
+      [layer setCompositingFilter:0];
     }
 
     if (v29)
     {
-      v12 = [(AVButton *)self layer];
-      v13 = [(AVMicaPackage *)v29 rootLayer];
-      [v12 addSublayer:v13];
+      layer2 = [(AVButton *)self layer];
+      rootLayer4 = [(AVMicaPackage *)v29 rootLayer];
+      [layer2 addSublayer:rootLayer4];
     }
 
-    v14 = [(AVButton *)self micaPackage];
-    v15 = [v14 rootLayer];
-    if (v15)
+    micaPackage = [(AVButton *)self micaPackage];
+    rootLayer5 = [micaPackage rootLayer];
+    if (rootLayer5)
     {
-      v16 = v15;
+      v16 = rootLayer5;
       [(AVButton *)self bounds];
       UIRectGetCenter();
       v18 = v17;
       v20 = v19;
-      v21 = [(AVButton *)self micaPackage];
-      v22 = [v21 rootLayer];
-      [v22 position];
+      micaPackage2 = [(AVButton *)self micaPackage];
+      rootLayer6 = [micaPackage2 rootLayer];
+      [rootLayer6 position];
       v24 = v23;
       v26 = v25;
 
@@ -1181,11 +1181,11 @@ BOOL __25__AVButton_hitRectInsets__block_invoke(uint64_t a1, void *a2)
       {
         [MEMORY[0x1E6979518] begin];
         [MEMORY[0x1E6979518] setDisableActions:1];
-        v27 = [(AVButton *)self micaPackage];
-        v28 = [v27 rootLayer];
+        micaPackage3 = [(AVButton *)self micaPackage];
+        rootLayer7 = [micaPackage3 rootLayer];
         [(AVButton *)self bounds];
         UIRectGetCenter();
-        [v28 setPosition:?];
+        [rootLayer7 setPosition:?];
 
         [MEMORY[0x1E6979518] commit];
       }
@@ -1197,17 +1197,17 @@ BOOL __25__AVButton_hitRectInsets__block_invoke(uint64_t a1, void *a2)
 
     [(AVButton *)self _updateEdgeInsets];
     [(AVButton *)self _updateLayoutItem];
-    v5 = v29;
+    packageCopy = v29;
   }
 
-  MEMORY[0x1EEE66BB8](micaPackage, v5);
+  MEMORY[0x1EEE66BB8](micaPackage, packageCopy);
 }
 
-- (void)setForce:(double)a3
+- (void)setForce:(double)force
 {
-  if (self->_force != a3)
+  if (self->_force != force)
   {
-    self->_force = a3;
+    self->_force = force;
     if (![(AVButton *)self treatsForcePressAsLongPress])
     {
 
@@ -1216,12 +1216,12 @@ BOOL __25__AVButton_hitRectInsets__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setWasLongPressed:(BOOL)a3
+- (void)setWasLongPressed:(BOOL)pressed
 {
-  if (self->_wasLongPressed != a3)
+  if (self->_wasLongPressed != pressed)
   {
-    self->_wasLongPressed = a3;
-    if (a3)
+    self->_wasLongPressed = pressed;
+    if (pressed)
     {
       v3 = 0x400000;
     }
@@ -1235,36 +1235,36 @@ BOOL __25__AVButton_hitRectInsets__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setExtrinsicContentSize:(CGSize)a3
+- (void)setExtrinsicContentSize:(CGSize)size
 {
-  if (a3.width != self->_extrinsicContentSize.width || a3.height != self->_extrinsicContentSize.height)
+  if (size.width != self->_extrinsicContentSize.width || size.height != self->_extrinsicContentSize.height)
   {
-    self->_extrinsicContentSize = a3;
+    self->_extrinsicContentSize = size;
     if ([(AVButton *)self isFirstGeneration])
     {
       [(AVButton *)self invalidateIntrinsicContentSize];
-      v6 = [(AVButton *)self superview];
-      [v6 avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
+      superview = [(AVButton *)self superview];
+      [superview avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
     }
 
     [(AVButton *)self _updateLayoutItem];
   }
 }
 
-- (void)setActiveImageName:(id)a3
+- (void)setActiveImageName:(id)name
 {
-  v4 = a3;
-  if ([(NSString *)self->_activeImageName isEqualToString:v4])
+  nameCopy = name;
+  if ([(NSString *)self->_activeImageName isEqualToString:nameCopy])
   {
-    v5 = [(AVButton *)self activeFont];
-    v6 = [(AVButton *)self _preferredFont];
-    if ([v5 isEqual:v6])
+    activeFont = [(AVButton *)self activeFont];
+    _preferredFont = [(AVButton *)self _preferredFont];
+    if ([activeFont isEqual:_preferredFont])
     {
 
       goto LABEL_20;
     }
 
-    if (v4)
+    if (nameCopy)
     {
 
       goto LABEL_9;
@@ -1280,7 +1280,7 @@ BOOL __25__AVButton_hitRectInsets__block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    if (v4)
+    if (nameCopy)
     {
 LABEL_9:
       if (!self->_activeImageName)
@@ -1308,15 +1308,15 @@ LABEL_9:
 
   v8 = 1;
 LABEL_16:
-  v9 = [v4 copy];
+  v9 = [nameCopy copy];
   v10 = self->_activeImageName;
   self->_activeImageName = v9;
 
-  v11 = [(AVButton *)self _preferredFont];
+  _preferredFont2 = [(AVButton *)self _preferredFont];
   activeFont = self->_activeFont;
-  self->_activeFont = v11;
+  self->_activeFont = _preferredFont2;
 
-  if (v8 & 1) != 0 || ([v4 isEqualToString:@"AVMobileImageNameNoImage"])
+  if (v8 & 1) != 0 || ([nameCopy isEqualToString:@"AVMobileImageNameNoImage"])
   {
     [(AVButton *)self setImage:0 forState:0];
   }
@@ -1325,14 +1325,14 @@ LABEL_16:
   {
     objc_initWeak(&location, self);
     v13 = MEMORY[0x1E69DCAB8];
-    v14 = [(AVButton *)self activeFont];
+    activeFont2 = [(AVButton *)self activeFont];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __31__AVButton_setActiveImageName___block_invoke;
     v15[3] = &unk_1E7209D60;
     objc_copyWeak(&v17, &location);
-    v16 = v4;
-    [v13 avkit_imageWithSymbolNamed:v16 font:v14 completion:v15];
+    v16 = nameCopy;
+    [v13 avkit_imageWithSymbolNamed:v16 font:activeFont2 completion:v15];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -1343,33 +1343,33 @@ LABEL_20:
 
 - (id)_preferredFont
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if ([a1 hasAlternateAppearance])
+    if ([self hasAlternateAppearance])
     {
-      [v1 alternateFullScreenFont];
+      [selfCopy alternateFullScreenFont];
     }
 
     else
     {
-      [v1 fullScreenFont];
+      [selfCopy fullScreenFont];
     }
     v2 = ;
-    if ([v1 hasFullScreenAppearance])
+    if ([selfCopy hasFullScreenAppearance])
     {
-      v3 = v2;
+      inlineFont = v2;
     }
 
     else
     {
-      v3 = [v1 inlineFont];
+      inlineFont = [selfCopy inlineFont];
     }
 
-    v1 = v3;
+    selfCopy = inlineFont;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __31__AVButton_setActiveImageName___block_invoke(uint64_t a1, void *a2)
@@ -1400,12 +1400,12 @@ void __31__AVButton_setActiveImageName___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setAlternateImageName:(id)a3
+- (void)setAlternateImageName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_alternateImageName isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [nameCopy copy];
     alternateImageName = self->_alternateImageName;
     self->_alternateImageName = v4;
 
@@ -1415,28 +1415,28 @@ void __31__AVButton_setActiveImageName___block_invoke(uint64_t a1, void *a2)
 
 - (void)_updateImageIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    if ([a1 hasAlternateAppearance])
+    if ([self hasAlternateAppearance])
     {
-      [a1 alternateImageName];
+      [self alternateImageName];
     }
 
     else
     {
-      [a1 imageName];
+      [self imageName];
     }
     v2 = ;
-    [a1 setActiveImageName:v2];
+    [self setActiveImageName:v2];
   }
 }
 
-- (void)setImageName:(id)a3
+- (void)setImageName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_imageName isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [nameCopy copy];
     imageName = self->_imageName;
     self->_imageName = v4;
 
@@ -1444,64 +1444,64 @@ void __31__AVButton_setActiveImageName___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setHasAlternateAppearance:(BOOL)a3
+- (void)setHasAlternateAppearance:(BOOL)appearance
 {
-  if (self->_hasAlternateAppearance != a3)
+  if (self->_hasAlternateAppearance != appearance)
   {
-    self->_hasAlternateAppearance = a3;
+    self->_hasAlternateAppearance = appearance;
     [(AVButton *)self _updateImageIfNeeded];
   }
 }
 
-- (void)setHasFullScreenAppearance:(BOOL)a3
+- (void)setHasFullScreenAppearance:(BOOL)appearance
 {
-  if (self->_hasFullScreenAppearance != a3)
+  if (self->_hasFullScreenAppearance != appearance)
   {
-    self->_hasFullScreenAppearance = a3;
+    self->_hasFullScreenAppearance = appearance;
     [(AVButton *)self _updateImageIfNeeded];
 
     [(AVButton *)self _updateEdgeInsets];
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = AVButton;
   [(AVButton *)&v5 willMoveToWindow:?];
-  if (a3)
+  if (window)
   {
     [(AVButton *)self _updateImageIfNeeded];
   }
 }
 
-- (void)setRemoved:(BOOL)a3
+- (void)setRemoved:(BOOL)removed
 {
-  if (self->_removed != a3)
+  if (self->_removed != removed)
   {
-    self->_removed = a3;
+    self->_removed = removed;
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
 
     [(AVButton *)self _updateLayoutItem];
   }
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
-  if (self->_collapsed != a3)
+  if (self->_collapsed != collapsed)
   {
-    self->_collapsed = a3;
+    self->_collapsed = collapsed;
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
 
     [(AVButton *)self _updateLayoutItem];
   }
 }
 
-- (void)setIncluded:(BOOL)a3
+- (void)setIncluded:(BOOL)included
 {
-  if (self->_included != a3)
+  if (self->_included != included)
   {
-    self->_included = a3;
+    self->_included = included;
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
 
     [(AVButton *)self _updateLayoutItem];
@@ -1518,18 +1518,18 @@ void __31__AVButton_setActiveImageName___block_invoke(uint64_t a1, void *a2)
   return [(AVButton *)self isRemoved];
 }
 
-+ (id)buttonWithAccessibilityIdentifier:(id)a3 accessibilityLabel:(id)a4 isFirstGeneration:(BOOL)a5
++ (id)buttonWithAccessibilityIdentifier:(id)identifier accessibilityLabel:(id)label isFirstGeneration:(BOOL)generation
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
+  generationCopy = generation;
+  labelCopy = label;
+  identifierCopy = identifier;
   v9 = [objc_opt_class() buttonWithType:0];
-  [v9 setFirstGeneration:v5];
+  [v9 setFirstGeneration:generationCopy];
   v10 = +[AVKitGlobalSettings shared];
   [v10 thirdGenerationControlsEnabled];
   [v9 setUsesCustomBlendingEffects:0];
 
-  if (!v5)
+  if (!generationCopy)
   {
     [v9 setPointerInteractionEnabled:1];
   }
@@ -1544,7 +1544,7 @@ void __31__AVButton_setActiveImageName___block_invoke(uint64_t a1, void *a2)
   LODWORD(v14) = 1148846080;
   [v9 setContentCompressionResistancePriority:1 forAxis:v14];
   [v9 setIncluded:1];
-  [v9 setAccessibilityIdentifier:v8];
+  [v9 setAccessibilityIdentifier:identifierCopy];
 
   [v9 setHitRectInsets:{-16.0, -16.0, -16.0, -16.0}];
   [v9 setForceThreshold:2.0];
@@ -1562,8 +1562,8 @@ void __31__AVButton_setActiveImageName___block_invoke(uint64_t a1, void *a2)
   [v9 setInlineFont:v18];
 
   v19 = *(v9 + 744);
-  *(v9 + 744) = v7;
-  v20 = v7;
+  *(v9 + 744) = labelCopy;
+  v20 = labelCopy;
 
   v21 = objc_alloc_init(AVLayoutItemAttributes);
   v22 = *(v9 + 784);
@@ -1576,25 +1576,25 @@ void __31__AVButton_setActiveImageName___block_invoke(uint64_t a1, void *a2)
   [*(v9 + 784) setIncluded:{objc_msgSend(v9, "isIncluded")}];
   [*(v9 + 784) setHasFlexibleContentSize:0];
   v24 = *(v9 + 784);
-  v25 = [v9 accessibilityIdentifier];
-  [v24 setAccessibilityIdentifier:v25];
+  accessibilityIdentifier = [v9 accessibilityIdentifier];
+  [v24 setAccessibilityIdentifier:accessibilityIdentifier];
 
   return v9;
 }
 
-+ (id)buttonWithAccessibilityIdentifier:(id)a3 isFirstGeneration:(BOOL)a4
++ (id)buttonWithAccessibilityIdentifier:(id)identifier isFirstGeneration:(BOOL)generation
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [objc_opt_class() buttonWithAccessibilityIdentifier:v5 accessibilityLabel:0 isFirstGeneration:v4];
+  generationCopy = generation;
+  identifierCopy = identifier;
+  v6 = [objc_opt_class() buttonWithAccessibilityIdentifier:identifierCopy accessibilityLabel:0 isFirstGeneration:generationCopy];
 
   return v6;
 }
 
-+ (id)customHighlightedAnimationButtonWithAccessibilityIdentifier:(id)a3
++ (id)customHighlightedAnimationButtonWithAccessibilityIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [objc_opt_class() buttonWithAccessibilityIdentifier:v3 isFirstGeneration:0];
+  identifierCopy = identifier;
+  v4 = [objc_opt_class() buttonWithAccessibilityIdentifier:identifierCopy isFirstGeneration:0];
 
   v4[752] = 1;
 

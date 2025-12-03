@@ -1,5 +1,5 @@
 @interface FUPlaneTrackerAnnotationView
-+ (CLLocationCoordinate2D)geodesicLocationForStartPosition:(CLLocationCoordinate2D)a3 endPosition:(CLLocationCoordinate2D)a4 positionPercentage:(double)a5;
++ (CLLocationCoordinate2D)geodesicLocationForStartPosition:(CLLocationCoordinate2D)position endPosition:(CLLocationCoordinate2D)endPosition positionPercentage:(double)percentage;
 + (id)defaultAnotation;
 - (CLLocationCoordinate2D)coordinate;
 - (CLLocationCoordinate2D)currentLocation;
@@ -8,43 +8,43 @@
 - (FUPlaneTrackerAnnotationView)init;
 - (double)currentProgress;
 - (void)didMoveToSuperview;
-- (void)notifyWhenIsVisibleWithBlock:(id)a3;
-- (void)setCurrentProgress:(double)a3;
-- (void)setEndLocation:(CLLocationCoordinate2D)a3;
-- (void)setPlaneImage:(id)a3;
-- (void)setShowsPlane:(BOOL)a3;
-- (void)setStartLatitude:(double)a3 startLongitude:(double)a4 endLatitude:(double)a5 endLongitude:(double)a6;
-- (void)setStartLocation:(CLLocationCoordinate2D)a3;
+- (void)notifyWhenIsVisibleWithBlock:(id)block;
+- (void)setCurrentProgress:(double)progress;
+- (void)setEndLocation:(CLLocationCoordinate2D)location;
+- (void)setPlaneImage:(id)image;
+- (void)setShowsPlane:(BOOL)plane;
+- (void)setStartLatitude:(double)latitude startLongitude:(double)longitude endLatitude:(double)endLatitude endLongitude:(double)endLongitude;
+- (void)setStartLocation:(CLLocationCoordinate2D)location;
 @end
 
 @implementation FUPlaneTrackerAnnotationView
 
-- (void)setCurrentProgress:(double)a3
+- (void)setCurrentProgress:(double)progress
 {
-  v4 = [(FUPlaneTrackerAnnotationView *)self planeLayer];
-  [v4 updatePlaneStateForProgress:a3];
+  planeLayer = [(FUPlaneTrackerAnnotationView *)self planeLayer];
+  [planeLayer updatePlaneStateForProgress:progress];
 }
 
-- (void)setStartLocation:(CLLocationCoordinate2D)a3
+- (void)setStartLocation:(CLLocationCoordinate2D)location
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v5 = [(FUPlaneTrackerAnnotationView *)self planeLayer];
-  [v5 setStartLocation:{latitude, longitude}];
+  longitude = location.longitude;
+  latitude = location.latitude;
+  planeLayer = [(FUPlaneTrackerAnnotationView *)self planeLayer];
+  [planeLayer setStartLocation:{latitude, longitude}];
 }
 
-- (void)setEndLocation:(CLLocationCoordinate2D)a3
+- (void)setEndLocation:(CLLocationCoordinate2D)location
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v5 = [(FUPlaneTrackerAnnotationView *)self planeLayer];
-  [v5 setEndLocation:{latitude, longitude}];
+  longitude = location.longitude;
+  latitude = location.latitude;
+  planeLayer = [(FUPlaneTrackerAnnotationView *)self planeLayer];
+  [planeLayer setEndLocation:{latitude, longitude}];
 }
 
 - (CLLocationCoordinate2D)startLocation
 {
-  v2 = [(FUPlaneTrackerAnnotationView *)self planeLayer];
-  [v2 startLocation];
+  planeLayer = [(FUPlaneTrackerAnnotationView *)self planeLayer];
+  [planeLayer startLocation];
   v4 = v3;
   v6 = v5;
 
@@ -57,8 +57,8 @@
 
 - (CLLocationCoordinate2D)endLocation
 {
-  v2 = [(FUPlaneTrackerAnnotationView *)self planeLayer];
-  [v2 endLocation];
+  planeLayer = [(FUPlaneTrackerAnnotationView *)self planeLayer];
+  [planeLayer endLocation];
   v4 = v3;
   v6 = v5;
 
@@ -71,8 +71,8 @@
 
 - (double)currentProgress
 {
-  v2 = [(FUPlaneTrackerAnnotationView *)self planeLayer];
-  [v2 currentProgress];
+  planeLayer = [(FUPlaneTrackerAnnotationView *)self planeLayer];
+  [planeLayer currentProgress];
   v4 = v3;
 
   return v4;
@@ -80,8 +80,8 @@
 
 - (CLLocationCoordinate2D)currentLocation
 {
-  v2 = [(FUPlaneTrackerAnnotationView *)self planeLayer];
-  [v2 currentLocation];
+  planeLayer = [(FUPlaneTrackerAnnotationView *)self planeLayer];
+  [planeLayer currentLocation];
   v4 = v3;
   v6 = v5;
 
@@ -92,12 +92,12 @@
   return result;
 }
 
-- (void)setStartLatitude:(double)a3 startLongitude:(double)a4 endLatitude:(double)a5 endLongitude:(double)a6
+- (void)setStartLatitude:(double)latitude startLongitude:(double)longitude endLatitude:(double)endLatitude endLongitude:(double)endLongitude
 {
-  [(FUPlaneTrackerAnnotationView *)self setStartLocation:a3, a4];
-  [(FUPlaneTrackerAnnotationView *)self setEndLocation:a5, a6];
-  v9 = [(FUPlaneTrackerAnnotationView *)self layer];
-  [v9 updatePlaneStateForProgress:0.0];
+  [(FUPlaneTrackerAnnotationView *)self setStartLocation:latitude, longitude];
+  [(FUPlaneTrackerAnnotationView *)self setEndLocation:endLatitude, endLongitude];
+  layer = [(FUPlaneTrackerAnnotationView *)self layer];
+  [layer updatePlaneStateForProgress:0.0];
 }
 
 - (FUPlaneTrackerAnnotationView)init
@@ -108,23 +108,23 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(FUPlaneTrackerAnnotationView *)v2 layer];
-    [v4 setAnchorPoint:{0.5, 0.5}];
+    layer = [(FUPlaneTrackerAnnotationView *)v2 layer];
+    [layer setAnchorPoint:{0.5, 0.5}];
 
-    v5 = [MEMORY[0x277D75348] blackColor];
-    v6 = [v5 CGColor];
-    v7 = [(FUPlaneTrackerAnnotationView *)v3 layer];
-    [v7 setShadowColor:v6];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    cGColor = [blackColor CGColor];
+    layer2 = [(FUPlaneTrackerAnnotationView *)v3 layer];
+    [layer2 setShadowColor:cGColor];
 
-    v8 = [(FUPlaneTrackerAnnotationView *)v3 layer];
+    layer3 = [(FUPlaneTrackerAnnotationView *)v3 layer];
     LODWORD(v9) = 1061997773;
-    [v8 setShadowOpacity:v9];
+    [layer3 setShadowOpacity:v9];
 
-    v10 = [(FUPlaneTrackerAnnotationView *)v3 layer];
-    [v10 setShadowRadius:2.0];
+    layer4 = [(FUPlaneTrackerAnnotationView *)v3 layer];
+    [layer4 setShadowRadius:2.0];
 
-    v11 = [(FUPlaneTrackerAnnotationView *)v3 layer];
-    [v11 setShadowOffset:{0.0, 0.0}];
+    layer5 = [(FUPlaneTrackerAnnotationView *)v3 layer];
+    [layer5 setShadowOffset:{0.0, 0.0}];
   }
 
   return v3;
@@ -137,20 +137,20 @@
   return v2;
 }
 
-+ (CLLocationCoordinate2D)geodesicLocationForStartPosition:(CLLocationCoordinate2D)a3 endPosition:(CLLocationCoordinate2D)a4 positionPercentage:(double)a5
++ (CLLocationCoordinate2D)geodesicLocationForStartPosition:(CLLocationCoordinate2D)position endPosition:(CLLocationCoordinate2D)endPosition positionPercentage:(double)percentage
 {
-  [FUPlaneTrackerAnnotationLayer geodesicLocationForStartPosition:a3.latitude endPosition:a3.longitude positionPercentage:a4.latitude, a4.longitude, a5];
+  [FUPlaneTrackerAnnotationLayer geodesicLocationForStartPosition:position.latitude endPosition:position.longitude positionPercentage:endPosition.latitude, endPosition.longitude, percentage];
   result.longitude = v6;
   result.latitude = v5;
   return result;
 }
 
-- (void)setShowsPlane:(BOOL)a3
+- (void)setShowsPlane:(BOOL)plane
 {
-  if (self->_showsPlane != a3)
+  if (self->_showsPlane != plane)
   {
-    self->_showsPlane = a3;
-    if (a3)
+    self->_showsPlane = plane;
+    if (plane)
     {
       v4 = [MEMORY[0x277D755B8] systemImageNamed:@"airplane"];
       [(FUPlaneTrackerAnnotationView *)self setPlaneImage:v4];
@@ -164,14 +164,14 @@
   }
 }
 
-- (void)setPlaneImage:(id)a3
+- (void)setPlaneImage:(id)image
 {
-  v4 = a3;
-  v5 = [(FUPlaneTrackerAnnotationView *)self planeLayer];
-  [v5 setPlaneImage:v4];
+  imageCopy = image;
+  planeLayer = [(FUPlaneTrackerAnnotationView *)self planeLayer];
+  [planeLayer setPlaneImage:imageCopy];
 
-  v6 = [(FUPlaneTrackerAnnotationView *)self layer];
-  [v6 bounds];
+  layer = [(FUPlaneTrackerAnnotationView *)self layer];
+  [layer bounds];
   [(FUPlaneTrackerAnnotationView *)self setFrame:?];
 }
 
@@ -185,8 +185,8 @@
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(FUPlaneTrackerAnnotationView *)self viewAddedBlock];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  viewAddedBlock = [(FUPlaneTrackerAnnotationView *)self viewAddedBlock];
+  v4 = [viewAddedBlock countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -198,14 +198,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(viewAddedBlock);
         }
 
         (*(*(*(&v9 + 1) + 8 * v7++) + 16))();
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v5 = [viewAddedBlock countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v5);
@@ -215,21 +215,21 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyWhenIsVisibleWithBlock:(id)a3
+- (void)notifyWhenIsVisibleWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(FUPlaneTrackerAnnotationView *)self viewAddedBlock];
+  blockCopy = block;
+  viewAddedBlock = [(FUPlaneTrackerAnnotationView *)self viewAddedBlock];
 
-  if (!v5)
+  if (!viewAddedBlock)
   {
     v6 = objc_opt_new();
     [(FUPlaneTrackerAnnotationView *)self setViewAddedBlock:v6];
   }
 
-  v8 = [(FUPlaneTrackerAnnotationView *)self viewAddedBlock];
-  v7 = MEMORY[0x24C24BAC0](v4);
+  viewAddedBlock2 = [(FUPlaneTrackerAnnotationView *)self viewAddedBlock];
+  v7 = MEMORY[0x24C24BAC0](blockCopy);
 
-  [v8 addObject:v7];
+  [viewAddedBlock2 addObject:v7];
 }
 
 - (CLLocationCoordinate2D)coordinate

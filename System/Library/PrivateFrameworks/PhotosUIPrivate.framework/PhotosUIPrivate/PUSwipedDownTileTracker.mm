@@ -1,5 +1,5 @@
 @interface PUSwipedDownTileTracker
-- (PUSwipedDownTileTracker)initWithPanGestureRecognizer:(id)a3 tilingView:(id)a4;
+- (PUSwipedDownTileTracker)initWithPanGestureRecognizer:(id)recognizer tilingView:(id)view;
 - (id)tileControllerToTrack;
 - (void)completeTracking;
 - (void)startTileControllerTracking;
@@ -11,18 +11,18 @@
 
 - (id)tileControllerToTrack
 {
-  v3 = [(PUSwipedDownTileTracker *)self designatedTileController];
-  if (!v3)
+  designatedTileController = [(PUSwipedDownTileTracker *)self designatedTileController];
+  if (!designatedTileController)
   {
-    v4 = [(PUSwipedDownTileTracker *)self panGestureRecognizer];
+    panGestureRecognizer = [(PUSwipedDownTileTracker *)self panGestureRecognizer];
     v11[0] = 0;
     v11[1] = v11;
     v11[2] = 0x3032000000;
     v11[3] = __Block_byref_object_copy__84178;
     v11[4] = __Block_byref_object_dispose__84179;
     v12 = 0;
-    v5 = [(PUInteractiveTileTracker *)self tilingView];
-    [v4 locationInView:v5];
+    tilingView = [(PUInteractiveTileTracker *)self tilingView];
+    [panGestureRecognizer locationInView:tilingView];
     v10[0] = 0;
     v10[1] = v10;
     v10[2] = 0x2020000000;
@@ -35,13 +35,13 @@
     *&v9[7] = v7;
     v9[4] = v10;
     v9[5] = v11;
-    [v5 enumeratePresentedTileControllersInRect:v9 usingBlock:{v6 + -50.0, v7 + -50.0, 100.0, 100.0}];
+    [tilingView enumeratePresentedTileControllersInRect:v9 usingBlock:{v6 + -50.0, v7 + -50.0, 100.0, 100.0}];
     _Block_object_dispose(v10, 8);
 
     _Block_object_dispose(v11, 8);
   }
 
-  return v3;
+  return designatedTileController;
 }
 
 void __48__PUSwipedDownTileTracker_tileControllerToTrack__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -78,30 +78,30 @@ void __48__PUSwipedDownTileTracker_tileControllerToTrack__block_invoke(uint64_t 
   v35.receiver = self;
   v35.super_class = PUSwipedDownTileTracker;
   [(PUInteractiveTileTracker *)&v35 updateTileControllerTracking];
-  v3 = [(PUSwipedDownTileTracker *)self panGestureRecognizer];
-  v4 = [(PUInteractiveTileTracker *)self tilingView];
-  [v3 translationInView:v4];
+  panGestureRecognizer = [(PUSwipedDownTileTracker *)self panGestureRecognizer];
+  tilingView = [(PUInteractiveTileTracker *)self tilingView];
+  [panGestureRecognizer translationInView:tilingView];
   v6 = v5;
   v8 = v7;
-  [v3 velocityInView:v4];
+  [panGestureRecognizer velocityInView:tilingView];
   v10 = v9;
   v12 = v11;
-  v13 = [(PUSwipedDownTileTracker *)self _swipeDownTracker];
-  [v13 trackGestureTranslation:v6 velocity:{v8, v10, v12}];
-  v14 = [(PUSwipedDownTileTracker *)self _trackedTileLayoutInfo];
-  [v13 trackedCenter];
-  [v13 trackedBounds];
+  _swipeDownTracker = [(PUSwipedDownTileTracker *)self _swipeDownTracker];
+  [_swipeDownTracker trackGestureTranslation:v6 velocity:{v8, v10, v12}];
+  _trackedTileLayoutInfo = [(PUSwipedDownTileTracker *)self _trackedTileLayoutInfo];
+  [_swipeDownTracker trackedCenter];
+  [_swipeDownTracker trackedBounds];
   PXRectWithCenterAndSize();
-  [v4 px_screenScale];
+  [tilingView px_screenScale];
   PXRectShrinkToPixel();
   v16 = v15;
   v18 = v17;
   PXRectGetCenter();
   v20 = v19;
   v22 = v21;
-  if (v13)
+  if (_swipeDownTracker)
   {
-    [v13 trackedTransform];
+    [_swipeDownTracker trackedTransform];
   }
 
   else
@@ -111,14 +111,14 @@ void __48__PUSwipedDownTileTracker_tileControllerToTrack__block_invoke(uint64_t 
     *buf = 0u;
   }
 
-  v23 = [v14 layoutInfoWithCenter:buf size:v20 transform:{v22, v16, v18}];
+  v23 = [_trackedTileLayoutInfo layoutInfoWithCenter:buf size:v20 transform:{v22, v16, v18}];
 
-  v24 = [(PUInteractiveTileTracker *)self trackedTileController];
-  [v24 applyLayoutInfo:v23];
+  trackedTileController = [(PUInteractiveTileTracker *)self trackedTileController];
+  [trackedTileController applyLayoutInfo:v23];
 
-  [v13 dismissalProgress];
+  [_swipeDownTracker dismissalProgress];
   [(PUInteractiveTileTracker *)self setProgress:?];
-  [v13 trackedVelocity];
+  [_swipeDownTracker trackedVelocity];
   v26 = v25;
   v28 = v27;
   v30 = v29;
@@ -140,34 +140,34 @@ void __48__PUSwipedDownTileTracker_tileControllerToTrack__block_invoke(uint64_t 
   v36.receiver = self;
   v36.super_class = PUSwipedDownTileTracker;
   [(PUInteractiveTileTracker *)&v36 startTileControllerTracking];
-  v4 = [(PUInteractiveTileTracker *)self trackedTileController];
-  v5 = [(PUInteractiveTileTracker *)self tilingView];
-  v6 = [v4 presentationLayoutInfo];
-  v7 = [v5 layout];
-  v8 = [v6 indexPath];
-  v9 = [v6 tileKind];
-  v10 = [v7 layoutInfoForTileWithIndexPath:v8 kind:v9];
+  trackedTileController = [(PUInteractiveTileTracker *)self trackedTileController];
+  tilingView = [(PUInteractiveTileTracker *)self tilingView];
+  presentationLayoutInfo = [trackedTileController presentationLayoutInfo];
+  layout = [tilingView layout];
+  indexPath = [presentationLayoutInfo indexPath];
+  tileKind = [presentationLayoutInfo tileKind];
+  v10 = [layout layoutInfoForTileWithIndexPath:indexPath kind:tileKind];
 
-  v11 = [(PUSwipedDownTileTracker *)self _swipeDownTracker];
-  if (!v11)
+  _swipeDownTracker = [(PUSwipedDownTileTracker *)self _swipeDownTracker];
+  if (!_swipeDownTracker)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"PUSwipedDownTileTracker.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"swipeDownTracker"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUSwipedDownTileTracker.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"swipeDownTracker"}];
   }
 
-  v12 = [(PUSwipedDownTileTracker *)self panGestureRecognizer];
-  [v12 locationInView:v5];
+  panGestureRecognizer = [(PUSwipedDownTileTracker *)self panGestureRecognizer];
+  [panGestureRecognizer locationInView:tilingView];
   v14 = v13;
   v16 = v15;
   if (v10)
   {
-    v17 = [v5 contentCoordinateSystem];
-    v18 = [v10 coordinateSystem];
-    v14 = PUConvertPointFromCoordinateSystemToCoordinateSystem(v17, v18, v14, v16);
+    contentCoordinateSystem = [tilingView contentCoordinateSystem];
+    coordinateSystem = [v10 coordinateSystem];
+    v14 = PUConvertPointFromCoordinateSystemToCoordinateSystem(contentCoordinateSystem, coordinateSystem, v14, v16);
     v16 = v19;
   }
 
-  [v12 translationInView:v5];
+  [panGestureRecognizer translationInView:tilingView];
   v21 = v20;
   v23 = v22;
   [v10 center];
@@ -188,7 +188,7 @@ void __48__PUSwipedDownTileTracker_tileControllerToTrack__block_invoke(uint64_t 
     memset(v35, 0, sizeof(v35));
   }
 
-  [v11 startTrackingCenter:v35 bounds:v34 transform:v33 withInitialGestureLocation:{v26, v27, v29, v31, v14 - v21, v16 - v23}];
+  [_swipeDownTracker startTrackingCenter:v35 bounds:v34 transform:v33 withInitialGestureLocation:{v26, v27, v29, v31, v14 - v21, v16 - v23}];
   [(PUSwipedDownTileTracker *)self _setTrackedTileLayoutInfo:v10];
 }
 
@@ -197,43 +197,43 @@ void __48__PUSwipedDownTileTracker_tileControllerToTrack__block_invoke(uint64_t 
   v14.receiver = self;
   v14.super_class = PUSwipedDownTileTracker;
   [(PUInteractiveTileTracker *)&v14 updateGestureRecognizerTracking];
-  v3 = [(PUSwipedDownTileTracker *)self panGestureRecognizer];
-  v4 = [(PUInteractiveTileTracker *)self tilingView];
-  [v3 translationInView:v4];
+  panGestureRecognizer = [(PUSwipedDownTileTracker *)self panGestureRecognizer];
+  tilingView = [(PUInteractiveTileTracker *)self tilingView];
+  [panGestureRecognizer translationInView:tilingView];
   v6 = v5;
   v8 = v7;
-  [v3 velocityInView:v4];
+  [panGestureRecognizer velocityInView:tilingView];
   v10 = v9;
   v12 = v11;
-  v13 = [(PUSwipedDownTileTracker *)self _swipeDownTracker];
-  if (!v13)
+  _swipeDownTracker = [(PUSwipedDownTileTracker *)self _swipeDownTracker];
+  if (!_swipeDownTracker)
   {
-    v13 = objc_alloc_init(PHSwipeDownTracker);
-    [(PUSwipedDownTileTracker *)self _setSwipeDownTracker:v13];
+    _swipeDownTracker = objc_alloc_init(PHSwipeDownTracker);
+    [(PUSwipedDownTileTracker *)self _setSwipeDownTracker:_swipeDownTracker];
   }
 
-  [(PHSwipeDownTracker *)v13 trackGestureTranslation:v6 velocity:v8, v10, v12];
-  -[PUInteractiveTileTracker setShouldEnd:](self, "setShouldEnd:", ([v3 state] - 3) < 2);
-  [(PUInteractiveTileTracker *)self setShouldFinish:[(PHSwipeDownTracker *)v13 shouldFinishDismissal]];
+  [(PHSwipeDownTracker *)_swipeDownTracker trackGestureTranslation:v6 velocity:v8, v10, v12];
+  -[PUInteractiveTileTracker setShouldEnd:](self, "setShouldEnd:", ([panGestureRecognizer state] - 3) < 2);
+  [(PUInteractiveTileTracker *)self setShouldFinish:[(PHSwipeDownTracker *)_swipeDownTracker shouldFinishDismissal]];
 }
 
-- (PUSwipedDownTileTracker)initWithPanGestureRecognizer:(id)a3 tilingView:(id)a4
+- (PUSwipedDownTileTracker)initWithPanGestureRecognizer:(id)recognizer tilingView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  recognizerCopy = recognizer;
+  viewCopy = view;
+  if (!recognizerCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PUSwipedDownTileTracker.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"panGestureRecognizer != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUSwipedDownTileTracker.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"panGestureRecognizer != nil"}];
   }
 
   v14.receiver = self;
   v14.super_class = PUSwipedDownTileTracker;
-  v10 = [(PUInteractiveTileTracker *)&v14 initWithTilingView:v9];
+  v10 = [(PUInteractiveTileTracker *)&v14 initWithTilingView:viewCopy];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_panGestureRecognizer, a3);
+    objc_storeStrong(&v10->_panGestureRecognizer, recognizer);
   }
 
   return v11;

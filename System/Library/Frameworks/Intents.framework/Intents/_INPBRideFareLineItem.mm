@@ -1,39 +1,39 @@
 @interface _INPBRideFareLineItem
-- (BOOL)isEqual:(id)a3;
-- (_INPBRideFareLineItem)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBRideFareLineItem)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCurrencyCode:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCurrencyCode:(id)code;
+- (void)setTitle:(id)title;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBRideFareLineItem
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_currencyCode)
   {
-    v4 = [(_INPBRideFareLineItem *)self currencyCode];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"currencyCode"];
+    currencyCode = [(_INPBRideFareLineItem *)self currencyCode];
+    v5 = [currencyCode copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"currencyCode"];
   }
 
-  v6 = [(_INPBRideFareLineItem *)self price];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"price"];
+  price = [(_INPBRideFareLineItem *)self price];
+  dictionaryRepresentation = [price dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"price"];
 
   if (self->_title)
   {
-    v8 = [(_INPBRideFareLineItem *)self title];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"title"];
+    title = [(_INPBRideFareLineItem *)self title];
+    v9 = [title copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"title"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -43,28 +43,28 @@
   return v4 ^ [(NSString *)self->_title hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBRideFareLineItem *)self currencyCode];
-  v6 = [v4 currencyCode];
-  if ((v5 != 0) == (v6 == 0))
+  currencyCode = [(_INPBRideFareLineItem *)self currencyCode];
+  currencyCode2 = [equalCopy currencyCode];
+  if ((currencyCode != 0) == (currencyCode2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBRideFareLineItem *)self currencyCode];
-  if (v7)
+  currencyCode3 = [(_INPBRideFareLineItem *)self currencyCode];
+  if (currencyCode3)
   {
-    v8 = v7;
-    v9 = [(_INPBRideFareLineItem *)self currencyCode];
-    v10 = [v4 currencyCode];
-    v11 = [v9 isEqual:v10];
+    v8 = currencyCode3;
+    currencyCode4 = [(_INPBRideFareLineItem *)self currencyCode];
+    currencyCode5 = [equalCopy currencyCode];
+    v11 = [currencyCode4 isEqual:currencyCode5];
 
     if (!v11)
     {
@@ -76,20 +76,20 @@
   {
   }
 
-  v5 = [(_INPBRideFareLineItem *)self price];
-  v6 = [v4 price];
-  if ((v5 != 0) == (v6 == 0))
+  currencyCode = [(_INPBRideFareLineItem *)self price];
+  currencyCode2 = [equalCopy price];
+  if ((currencyCode != 0) == (currencyCode2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBRideFareLineItem *)self price];
-  if (v12)
+  price = [(_INPBRideFareLineItem *)self price];
+  if (price)
   {
-    v13 = v12;
-    v14 = [(_INPBRideFareLineItem *)self price];
-    v15 = [v4 price];
-    v16 = [v14 isEqual:v15];
+    v13 = price;
+    price2 = [(_INPBRideFareLineItem *)self price];
+    price3 = [equalCopy price];
+    v16 = [price2 isEqual:price3];
 
     if (!v16)
     {
@@ -101,12 +101,12 @@
   {
   }
 
-  v5 = [(_INPBRideFareLineItem *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) != (v6 == 0))
+  currencyCode = [(_INPBRideFareLineItem *)self title];
+  currencyCode2 = [equalCopy title];
+  if ((currencyCode != 0) != (currencyCode2 == 0))
   {
-    v17 = [(_INPBRideFareLineItem *)self title];
-    if (!v17)
+    title = [(_INPBRideFareLineItem *)self title];
+    if (!title)
     {
 
 LABEL_20:
@@ -114,10 +114,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_INPBRideFareLineItem *)self title];
-    v20 = [v4 title];
-    v21 = [v19 isEqual:v20];
+    v18 = title;
+    title2 = [(_INPBRideFareLineItem *)self title];
+    title3 = [equalCopy title];
+    v21 = [title2 isEqual:title3];
 
     if (v21)
     {
@@ -137,87 +137,87 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBRideFareLineItem allocWithZone:](_INPBRideFareLineItem init];
-  v6 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v6 = [(NSString *)self->_currencyCode copyWithZone:zone];
   [(_INPBRideFareLineItem *)v5 setCurrencyCode:v6];
 
-  v7 = [(_INPBDecimalNumberValue *)self->_price copyWithZone:a3];
+  v7 = [(_INPBDecimalNumberValue *)self->_price copyWithZone:zone];
   [(_INPBRideFareLineItem *)v5 setPrice:v7];
 
-  v8 = [(NSString *)self->_title copyWithZone:a3];
+  v8 = [(NSString *)self->_title copyWithZone:zone];
   [(_INPBRideFareLineItem *)v5 setTitle:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBRideFareLineItem *)self data];
+  coderCopy = coder;
+  data = [(_INPBRideFareLineItem *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBRideFareLineItem)initWithCoder:(id)a3
+- (_INPBRideFareLineItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBRideFareLineItem *)self initWithData:v6];
+    self = [(_INPBRideFareLineItem *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(_INPBRideFareLineItem *)self currencyCode];
+  toCopy = to;
+  currencyCode = [(_INPBRideFareLineItem *)self currencyCode];
 
-  if (v4)
+  if (currencyCode)
   {
     currencyCode = self->_currencyCode;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_INPBRideFareLineItem *)self price];
+  price = [(_INPBRideFareLineItem *)self price];
 
-  if (v6)
+  if (price)
   {
-    v7 = [(_INPBRideFareLineItem *)self price];
+    price2 = [(_INPBRideFareLineItem *)self price];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBRideFareLineItem *)self title];
+  title = [(_INPBRideFareLineItem *)self title];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (title)
   {
     title = self->_title;
     PBDataWriterWriteStringField();
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 
   MEMORY[0x1EEE66BB8](v4, title);
 }
 
-- (void)setCurrencyCode:(id)a3
+- (void)setCurrencyCode:(id)code
 {
-  v4 = [a3 copy];
+  v4 = [code copy];
   currencyCode = self->_currencyCode;
   self->_currencyCode = v4;
 

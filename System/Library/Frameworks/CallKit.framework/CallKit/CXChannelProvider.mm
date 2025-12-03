@@ -1,59 +1,59 @@
 @interface CXChannelProvider
-+ (id)allocWithZone:(_NSZone *)a3;
-- (CXChannelProvider)initWithConfiguration:(id)a3;
++ (id)allocWithZone:(_NSZone *)zone;
+- (CXChannelProvider)initWithConfiguration:(id)configuration;
 - (CXChannelProviderConfiguration)configuration;
 - (CXChannelProviderDelegate)delegate;
 - (NSArray)pendingTransactions;
 - (id)channelProviderHostDelegate;
-- (void)_didReceivePushPayload:(id)a3;
-- (void)_didReceivePushPayload:(id)a3 channelUUID:(id)a4 reply:(id)a5 isServiceUpdateMessage:(BOOL)a6 isHighPriority:(BOOL)a7 remainingHighPriorityBudget:(int64_t)a8;
-- (void)_didReceivePushToken:(id)a3;
+- (void)_didReceivePushPayload:(id)payload;
+- (void)_didReceivePushPayload:(id)payload channelUUID:(id)d reply:(id)reply isServiceUpdateMessage:(BOOL)message isHighPriority:(BOOL)priority remainingHighPriorityBudget:(int64_t)budget;
+- (void)_didReceivePushToken:(id)token;
 - (void)_ensureApplicationControllerConnection;
-- (void)commitTransaction:(id)a3;
-- (void)handleActionTimeout:(id)a3;
-- (void)handleAudioSessionActivationStateChangedTo:(id)a3;
-- (void)handleMediaServicesWereResetNotification:(id)a3;
+- (void)commitTransaction:(id)transaction;
+- (void)handleActionTimeout:(id)timeout;
+- (void)handleAudioSessionActivationStateChangedTo:(id)to;
+- (void)handleMediaServicesWereResetNotification:(id)notification;
 - (void)invalidate;
-- (void)performAction:(id)a3;
+- (void)performAction:(id)action;
 - (void)registerCurrentConfiguration;
-- (void)reportChannelWithUUID:(id)a3 connectedAtDate:(id)a4;
-- (void)reportChannelWithUUID:(id)a3 disconnectedAtDate:(id)a4 disconnectedReason:(int64_t)a5;
-- (void)reportChannelWithUUID:(id)a3 updated:(id)a4 completionHandler:(id)a5;
-- (void)reportIncomingTransmissionEndedForChannelWithUUID:(id)a3 reason:(int64_t)a4 completionHandler:(id)a5;
-- (void)reportIncomingTransmissionStartedForChannelWithUUID:(id)a3 update:(id)a4 shouldReplaceOutgoingTransmission:(BOOL)a5 completionHandler:(id)a6;
+- (void)reportChannelWithUUID:(id)d connectedAtDate:(id)date;
+- (void)reportChannelWithUUID:(id)d disconnectedAtDate:(id)date disconnectedReason:(int64_t)reason;
+- (void)reportChannelWithUUID:(id)d updated:(id)updated completionHandler:(id)handler;
+- (void)reportIncomingTransmissionEndedForChannelWithUUID:(id)d reason:(int64_t)reason completionHandler:(id)handler;
+- (void)reportIncomingTransmissionStartedForChannelWithUUID:(id)d update:(id)update shouldReplaceOutgoingTransmission:(BOOL)transmission completionHandler:(id)handler;
 - (void)requestChannelPushToken;
-- (void)setConfiguration:(id)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
+- (void)setConfiguration:(id)configuration;
+- (void)setDelegate:(id)delegate queue:(id)queue;
 - (void)unregisterChannelPushToken;
 @end
 
 @implementation CXChannelProvider
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [(CXChannelProvider *)CXXPCChannelProvider allocWithZone:a3];
+    return [(CXChannelProvider *)CXXPCChannelProvider allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___CXChannelProvider;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
-- (CXChannelProvider)initWithConfiguration:(id)a3
+- (CXChannelProvider)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = CXChannelProvider;
   v5 = [(CXChannelProvider *)&v12 init];
   if (v5)
   {
-    if (!v4)
+    if (!configurationCopy)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXChannelProvider initWithConfiguration:]", @"configuration"}];
     }
@@ -64,14 +64,14 @@
 
     [(CXAbstractProvider *)v5->_abstractProvider setInternalActionDelegate:v5];
     [(CXAbstractProvider *)v5->_abstractProvider setConnectionInterruptionHandler:&__block_literal_global_14];
-    v8 = [v4 copy];
+    v8 = [configurationCopy copy];
     configuration = v5->_configuration;
     v5->_configuration = v8;
 
     if ([(CXChannelProvider *)v5 requiresProxyingAVAudioSessionState])
     {
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v10 addObserver:v5 selector:sel_handleMediaServicesWereResetNotification_ name:*MEMORY[0x1E6958128] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v5 selector:sel_handleMediaServicesWereResetNotification_ name:*MEMORY[0x1E6958128] object:0];
     }
   }
 
@@ -110,15 +110,15 @@ void __43__CXChannelProvider_initWithConfiguration___block_invoke()
   v11 = __Block_byref_object_copy__6;
   v12 = __Block_byref_object_dispose__6;
   v13 = 0;
-  v3 = [(CXChannelProvider *)self abstractProvider];
-  v4 = [v3 queue];
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
+  queue = [abstractProvider queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__CXChannelProvider_configuration__block_invoke;
   v7[3] = &unk_1E7C06E28;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(queue, v7);
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -136,19 +136,19 @@ uint64_t __34__CXChannelProvider_configuration__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CXChannelProvider *)self abstractProvider];
-  v6 = [v5 queue];
+  configurationCopy = configuration;
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
+  queue = [abstractProvider queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__CXChannelProvider_setConfiguration___block_invoke;
   v8[3] = &unk_1E7C06BE0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = configurationCopy;
+  v7 = configurationCopy;
+  dispatch_async(queue, v8);
 }
 
 uint64_t __38__CXChannelProvider_setConfiguration___block_invoke(uint64_t a1)
@@ -178,10 +178,10 @@ uint64_t __38__CXChannelProvider_setConfiguration___block_invoke(uint64_t a1)
 
 - (id)channelProviderHostDelegate
 {
-  v2 = [(CXChannelProvider *)self hostProtocolDelegate];
-  if ([v2 conformsToProtocol:&unk_1F2CB38E0])
+  hostProtocolDelegate = [(CXChannelProvider *)self hostProtocolDelegate];
+  if ([hostProtocolDelegate conformsToProtocol:&unk_1F2CB38E0])
   {
-    v3 = v2;
+    v3 = hostProtocolDelegate;
   }
 
   else
@@ -196,12 +196,12 @@ uint64_t __38__CXChannelProvider_setConfiguration___block_invoke(uint64_t a1)
 
 - (CXChannelProviderDelegate)delegate
 {
-  v2 = [(CXChannelProvider *)self abstractProvider];
-  v3 = [v2 delegate];
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
+  delegate = [abstractProvider delegate];
 
-  if ([v3 conformsToProtocol:&unk_1F2CB9B60])
+  if ([delegate conformsToProtocol:&unk_1F2CB9B60])
   {
-    v4 = v3;
+    v4 = delegate;
   }
 
   else
@@ -214,27 +214,27 @@ uint64_t __38__CXChannelProvider_setConfiguration___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)reportChannelWithUUID:(id)a3 connectedAtDate:(id)a4
+- (void)reportChannelWithUUID:(id)d connectedAtDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  dateCopy = date;
+  if (!dCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXChannelProvider reportChannelWithUUID:connectedAtDate:]", @"UUID"}];
   }
 
-  v8 = [(CXChannelProvider *)self abstractProvider];
-  v9 = [v8 queue];
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
+  queue = [abstractProvider queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__CXChannelProvider_reportChannelWithUUID_connectedAtDate___block_invoke;
   block[3] = &unk_1E7C06C80;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = dCopy;
+  v14 = dateCopy;
+  v10 = dateCopy;
+  v11 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __59__CXChannelProvider_reportChannelWithUUID_connectedAtDate___block_invoke(uint64_t a1)
@@ -279,28 +279,28 @@ void __59__CXChannelProvider_reportChannelWithUUID_connectedAtDate___block_invok
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportChannelWithUUID:(id)a3 disconnectedAtDate:(id)a4 disconnectedReason:(int64_t)a5
+- (void)reportChannelWithUUID:(id)d disconnectedAtDate:(id)date disconnectedReason:(int64_t)reason
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  dCopy = d;
+  dateCopy = date;
+  if (!dCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXChannelProvider reportChannelWithUUID:disconnectedAtDate:disconnectedReason:]", @"UUID"}];
   }
 
-  v10 = [(CXChannelProvider *)self abstractProvider];
-  v11 = [v10 queue];
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
+  queue = [abstractProvider queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __81__CXChannelProvider_reportChannelWithUUID_disconnectedAtDate_disconnectedReason___block_invoke;
   block[3] = &unk_1E7C07488;
   block[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a5;
-  v12 = v9;
-  v13 = v8;
-  dispatch_async(v11, block);
+  v15 = dCopy;
+  v16 = dateCopy;
+  reasonCopy = reason;
+  v12 = dateCopy;
+  v13 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __81__CXChannelProvider_reportChannelWithUUID_disconnectedAtDate_disconnectedReason___block_invoke(uint64_t a1)
@@ -351,15 +351,15 @@ void __81__CXChannelProvider_reportChannelWithUUID_disconnectedAtDate_disconnect
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportChannelWithUUID:(id)a3 updated:(id)a4 completionHandler:(id)a5
+- (void)reportChannelWithUUID:(id)d updated:(id)updated completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  dCopy = d;
+  updatedCopy = updated;
+  handlerCopy = handler;
+  if (!dCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXChannelProvider reportChannelWithUUID:updated:completionHandler:]", @"UUID"}];
-    if (v9)
+    if (updatedCopy)
     {
       goto LABEL_3;
     }
@@ -369,26 +369,26 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!updatedCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v11 = [(CXChannelProvider *)self abstractProvider];
-  v12 = [v11 queue];
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
+  queue = [abstractProvider queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__CXChannelProvider_reportChannelWithUUID_updated_completionHandler___block_invoke;
   block[3] = &unk_1E7C06DE0;
   block[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  dispatch_async(v12, block);
+  v17 = dCopy;
+  v18 = updatedCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = updatedCopy;
+  v15 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __69__CXChannelProvider_reportChannelWithUUID_updated_completionHandler___block_invoke(uint64_t a1)
@@ -454,28 +454,28 @@ void __69__CXChannelProvider_reportChannelWithUUID_updated_completionHandler___b
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportIncomingTransmissionEndedForChannelWithUUID:(id)a3 reason:(int64_t)a4 completionHandler:(id)a5
+- (void)reportIncomingTransmissionEndedForChannelWithUUID:(id)d reason:(int64_t)reason completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (!v8)
+  dCopy = d;
+  handlerCopy = handler;
+  if (!dCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXChannelProvider reportIncomingTransmissionEndedForChannelWithUUID:reason:completionHandler:]", @"UUID"}];
   }
 
-  v10 = [(CXChannelProvider *)self abstractProvider];
-  v11 = [v10 queue];
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
+  queue = [abstractProvider queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __96__CXChannelProvider_reportIncomingTransmissionEndedForChannelWithUUID_reason_completionHandler___block_invoke;
   block[3] = &unk_1E7C07820;
   block[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a4;
-  v12 = v9;
-  v13 = v8;
-  dispatch_async(v11, block);
+  v15 = dCopy;
+  v16 = handlerCopy;
+  reasonCopy = reason;
+  v12 = handlerCopy;
+  v13 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __96__CXChannelProvider_reportIncomingTransmissionEndedForChannelWithUUID_reason_completionHandler___block_invoke(uint64_t a1)
@@ -541,21 +541,21 @@ void __96__CXChannelProvider_reportIncomingTransmissionEndedForChannelWithUUID_r
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportIncomingTransmissionStartedForChannelWithUUID:(id)a3 update:(id)a4 shouldReplaceOutgoingTransmission:(BOOL)a5 completionHandler:(id)a6
+- (void)reportIncomingTransmissionStartedForChannelWithUUID:(id)d update:(id)update shouldReplaceOutgoingTransmission:(BOOL)transmission completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v10)
+  dCopy = d;
+  updateCopy = update;
+  handlerCopy = handler;
+  if (dCopy)
   {
-    if (v11)
+    if (updateCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXChannelProvider reportIncomingTransmissionStartedForChannelWithUUID:update:shouldReplaceOutgoingTransmission:completionHandler:]", @"update"}];
-    if (v12)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -566,33 +566,33 @@ LABEL_7:
   }
 
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXChannelProvider reportIncomingTransmissionStartedForChannelWithUUID:update:shouldReplaceOutgoingTransmission:completionHandler:]", @"UUID"}];
-  if (!v11)
+  if (!updateCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v12)
+  if (!handlerCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  v13 = [(CXChannelProvider *)self abstractProvider];
-  v14 = [v13 queue];
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
+  queue = [abstractProvider queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __132__CXChannelProvider_reportIncomingTransmissionStartedForChannelWithUUID_update_shouldReplaceOutgoingTransmission_completionHandler___block_invoke;
   block[3] = &unk_1E7C07848;
   block[4] = self;
-  v19 = v10;
-  v22 = a5;
-  v20 = v11;
-  v21 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  dispatch_async(v14, block);
+  v19 = dCopy;
+  transmissionCopy = transmission;
+  v20 = updateCopy;
+  v21 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = updateCopy;
+  v17 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __132__CXChannelProvider_reportIncomingTransmissionStartedForChannelWithUUID_update_shouldReplaceOutgoingTransmission_completionHandler___block_invoke(uint64_t a1)
@@ -659,15 +659,15 @@ void __132__CXChannelProvider_reportIncomingTransmissionStartedForChannelWithUUI
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleMediaServicesWereResetNotification:(id)a3
+- (void)handleMediaServicesWereResetNotification:(id)notification
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = notificationCopy;
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "%@", &v7, 0xCu);
   }
 
@@ -675,22 +675,22 @@ void __132__CXChannelProvider_reportIncomingTransmissionStartedForChannelWithUUI
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CXChannelProvider *)self abstractProvider];
-  v6 = [v5 delegateQueue];
-  dispatch_assert_queue_V2(v6);
+  actionCopy = action;
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
+  delegateQueue = [abstractProvider delegateQueue];
+  dispatch_assert_queue_V2(delegateQueue);
 
-  v7 = [(CXChannelProvider *)self delegate];
+  delegate = [(CXChannelProvider *)self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v4;
+    v8 = actionCopy;
     if (objc_opt_respondsToSelector())
     {
-      [v7 provider:self performChannelJoinAction:v8];
+      [delegate provider:self performChannelJoinAction:v8];
       goto LABEL_25;
     }
 
@@ -712,10 +712,10 @@ LABEL_23:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v4;
+    v8 = actionCopy;
     if (objc_opt_respondsToSelector())
     {
-      [v7 provider:self performChannelLeaveAction:v8];
+      [delegate provider:self performChannelLeaveAction:v8];
       goto LABEL_25;
     }
 
@@ -736,10 +736,10 @@ LABEL_24:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v4;
+    v8 = actionCopy;
     if (objc_opt_respondsToSelector())
     {
-      [v7 provider:self performChannelTransmitStartAction:v8];
+      [delegate provider:self performChannelTransmitStartAction:v8];
       goto LABEL_25;
     }
 
@@ -758,10 +758,10 @@ LABEL_24:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v4;
+    v8 = actionCopy;
     if (objc_opt_respondsToSelector())
     {
-      [v7 provider:self performChannelTransmitStopAction:v8];
+      [delegate provider:self performChannelTransmitStopAction:v8];
       goto LABEL_25;
     }
 
@@ -780,7 +780,7 @@ LABEL_24:
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [(CXProvider *)v4 performAction:v8];
+    [(CXProvider *)actionCopy performAction:v8];
   }
 
 LABEL_25:
@@ -788,23 +788,23 @@ LABEL_25:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CXChannelProvider *)self abstractProvider];
-  [v8 _syncSetDelegate:v7 queue:v6];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
+  [abstractProvider _syncSetDelegate:delegateCopy queue:queueCopy];
 
-  if (v7)
+  if (delegateCopy)
   {
     [(CXChannelProvider *)self _ensureApplicationControllerConnection];
-    v9 = [(CXChannelProvider *)self voipApplicationControllerConnection];
+    voipApplicationControllerConnection = [(CXChannelProvider *)self voipApplicationControllerConnection];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __39__CXChannelProvider_setDelegate_queue___block_invoke;
     v12[3] = &unk_1E7C076B8;
     v12[4] = self;
-    v10 = [v9 remoteObjectProxyWithErrorHandler:v12];
+    v10 = [voipApplicationControllerConnection remoteObjectProxyWithErrorHandler:v12];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __39__CXChannelProvider_setDelegate_queue___block_invoke_3;
@@ -867,44 +867,44 @@ void __39__CXChannelProvider_setDelegate_queue___block_invoke_4(uint64_t a1)
 
 - (NSArray)pendingTransactions
 {
-  v2 = [(CXChannelProvider *)self abstractProvider];
-  v3 = [v2 pendingTransactions];
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
+  pendingTransactions = [abstractProvider pendingTransactions];
 
-  return v3;
+  return pendingTransactions;
 }
 
 - (void)invalidate
 {
-  v2 = [(CXChannelProvider *)self abstractProvider];
-  [v2 invalidate];
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
+  [abstractProvider invalidate];
 }
 
-- (void)commitTransaction:(id)a3
+- (void)commitTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(CXChannelProvider *)self abstractProvider];
-  [v5 provider:self commitTransaction:v4];
+  transactionCopy = transaction;
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
+  [abstractProvider provider:self commitTransaction:transactionCopy];
 }
 
-- (void)handleActionTimeout:(id)a3
+- (void)handleActionTimeout:(id)timeout
 {
-  v4 = a3;
-  v5 = [(CXChannelProvider *)self abstractProvider];
-  [v5 provider:self handleTimeoutForAction:v4];
+  timeoutCopy = timeout;
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
+  [abstractProvider provider:self handleTimeoutForAction:timeoutCopy];
 }
 
-- (void)handleAudioSessionActivationStateChangedTo:(id)a3
+- (void)handleAudioSessionActivationStateChangedTo:(id)to
 {
-  v4 = a3;
-  v5 = [(CXChannelProvider *)self abstractProvider];
+  toCopy = to;
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__CXChannelProvider_handleAudioSessionActivationStateChangedTo___block_invoke;
   v7[3] = &unk_1E7C06BE0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 performDelegateCallback:v7];
+  v8 = toCopy;
+  selfCopy = self;
+  v6 = toCopy;
+  [abstractProvider performDelegateCallback:v7];
 }
 
 void __64__CXChannelProvider_handleAudioSessionActivationStateChangedTo___block_invoke(uint64_t a1)
@@ -966,14 +966,14 @@ LABEL_12:
 
 - (void)registerCurrentConfiguration
 {
-  v3 = [(CXChannelProvider *)self abstractProvider];
-  v4 = [v3 queue];
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
+  queue = [abstractProvider queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__CXChannelProvider_registerCurrentConfiguration__block_invoke;
   block[3] = &unk_1E7C06CA8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 void __49__CXChannelProvider_registerCurrentConfiguration__block_invoke(uint64_t a1)
@@ -1024,9 +1024,9 @@ void __49__CXChannelProvider_registerCurrentConfiguration__block_invoke_149(uint
 
 - (void)_ensureApplicationControllerConnection
 {
-  v3 = [(CXChannelProvider *)self voipApplicationControllerConnection];
+  voipApplicationControllerConnection = [(CXChannelProvider *)self voipApplicationControllerConnection];
 
-  if (!v3)
+  if (!voipApplicationControllerConnection)
   {
     v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.telephonyutilities.callservicesdaemon.ptt" options:4096];
     objc_initWeak(&location, self);
@@ -1084,33 +1084,33 @@ void __59__CXChannelProvider__ensureApplicationControllerConnection__block_invok
   [(CXChannelProvider *)self delegate];
 
   [(CXChannelProvider *)self _ensureApplicationControllerConnection];
-  v4 = [(CXChannelProvider *)self voipApplicationControllerConnection];
-  v3 = [v4 remoteObjectProxy];
-  [v3 pttRegister];
+  voipApplicationControllerConnection = [(CXChannelProvider *)self voipApplicationControllerConnection];
+  remoteObjectProxy = [voipApplicationControllerConnection remoteObjectProxy];
+  [remoteObjectProxy pttRegister];
 }
 
 - (void)unregisterChannelPushToken
 {
   [(CXChannelProvider *)self _ensureApplicationControllerConnection];
-  v4 = [(CXChannelProvider *)self voipApplicationControllerConnection];
-  v3 = [v4 remoteObjectProxy];
-  [v3 pttUnregister];
+  voipApplicationControllerConnection = [(CXChannelProvider *)self voipApplicationControllerConnection];
+  remoteObjectProxy = [voipApplicationControllerConnection remoteObjectProxy];
+  [remoteObjectProxy pttUnregister];
 }
 
-- (void)_didReceivePushToken:(id)a3
+- (void)_didReceivePushToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   [(CXChannelProvider *)self delegate];
 
-  v5 = [(CXChannelProvider *)self abstractProvider];
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__CXChannelProvider__didReceivePushToken___block_invoke;
   v7[3] = &unk_1E7C06BE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performDelegateCallback:v7];
+  v8 = tokenCopy;
+  v6 = tokenCopy;
+  [abstractProvider performDelegateCallback:v7];
 }
 
 void __42__CXChannelProvider__didReceivePushToken___block_invoke(uint64_t a1)
@@ -1125,20 +1125,20 @@ void __42__CXChannelProvider__didReceivePushToken___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_didReceivePushPayload:(id)a3
+- (void)_didReceivePushPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   [(CXChannelProvider *)self delegate];
 
-  v5 = [(CXChannelProvider *)self abstractProvider];
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__CXChannelProvider__didReceivePushPayload___block_invoke;
   v7[3] = &unk_1E7C06BE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performDelegateCallback:v7];
+  v8 = payloadCopy;
+  v6 = payloadCopy;
+  [abstractProvider performDelegateCallback:v7];
 }
 
 void __44__CXChannelProvider__didReceivePushPayload___block_invoke(uint64_t a1)
@@ -1153,29 +1153,29 @@ void __44__CXChannelProvider__didReceivePushPayload___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_didReceivePushPayload:(id)a3 channelUUID:(id)a4 reply:(id)a5 isServiceUpdateMessage:(BOOL)a6 isHighPriority:(BOOL)a7 remainingHighPriorityBudget:(int64_t)a8
+- (void)_didReceivePushPayload:(id)payload channelUUID:(id)d reply:(id)reply isServiceUpdateMessage:(BOOL)message isHighPriority:(BOOL)priority remainingHighPriorityBudget:(int64_t)budget
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  payloadCopy = payload;
+  dCopy = d;
+  replyCopy = reply;
   [(CXChannelProvider *)self delegate];
 
-  v17 = [(CXChannelProvider *)self abstractProvider];
+  abstractProvider = [(CXChannelProvider *)self abstractProvider];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __128__CXChannelProvider__didReceivePushPayload_channelUUID_reply_isServiceUpdateMessage_isHighPriority_remainingHighPriorityBudget___block_invoke;
   v21[3] = &unk_1E7C078C0;
   v21[4] = self;
-  v22 = v14;
-  v23 = v15;
-  v24 = v16;
-  v26 = a6;
-  v27 = a7;
-  v25 = a8;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  [v17 performDelegateCallback:v21];
+  v22 = payloadCopy;
+  v23 = dCopy;
+  v24 = replyCopy;
+  messageCopy = message;
+  priorityCopy = priority;
+  budgetCopy = budget;
+  v18 = replyCopy;
+  v19 = dCopy;
+  v20 = payloadCopy;
+  [abstractProvider performDelegateCallback:v21];
 }
 
 void __128__CXChannelProvider__didReceivePushPayload_channelUUID_reply_isServiceUpdateMessage_isHighPriority_remainingHighPriorityBudget___block_invoke(uint64_t a1)

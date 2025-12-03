@@ -1,16 +1,16 @@
 @interface RTAuthorizedLocationZDRLocationsMO
-+ (id)managedObjectWithAuthorizedZDRLocation:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithAuthorizedZDRLocation:(id)location inManagedObjectContext:(id)context;
 @end
 
 @implementation RTAuthorizedLocationZDRLocationsMO
 
-+ (id)managedObjectWithAuthorizedZDRLocation:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithAuthorizedZDRLocation:(id)location inManagedObjectContext:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  locationCopy = location;
+  contextCopy = context;
+  v8 = contextCopy;
+  if (!locationCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -22,7 +22,7 @@
     goto LABEL_13;
   }
 
-  if (!v7)
+  if (!contextCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -50,7 +50,7 @@ LABEL_13:
       *&buf[12] = 2112;
       *&buf[14] = v12;
       *&buf[22] = 2117;
-      v21 = v6;
+      v21 = locationCopy;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@:%@,%{sensitive}@", buf, 0x20u);
     }
   }
@@ -67,7 +67,7 @@ LABEL_13:
   v16[3] = &unk_2788C8DC8;
   v19 = buf;
   v17 = v8;
-  v18 = v6;
+  v18 = locationCopy;
   [v17 performBlockAndWait:v16];
   v13 = *(*&buf[8] + 40);
 

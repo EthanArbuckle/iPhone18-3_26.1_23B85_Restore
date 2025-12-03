@@ -1,8 +1,8 @@
 @interface CRLiOSFreehandDrawingStrokeAnimator
 - (NSSet)incomingShapeItemUUIDs;
 - (_TtC8Freeform35CRLiOSFreehandDrawingStrokeAnimator)init;
-- (void)runAnimationWithCompletionHandler:(id)a3;
-- (void)setIncomingShapeItemUUIDs:(id)a3;
+- (void)runAnimationWithCompletionHandler:(id)handler;
+- (void)setIncomingShapeItemUUIDs:(id)ds;
 @end
 
 @implementation CRLiOSFreehandDrawingStrokeAnimator
@@ -25,9 +25,9 @@
   return v2.super.isa;
 }
 
-- (void)setIncomingShapeItemUUIDs:(id)a3
+- (void)setIncomingShapeItemUUIDs:(id)ds
 {
-  if (a3)
+  if (ds)
   {
     type metadata accessor for UUID();
     sub_100068454(&qword_1019FB870, 255, &type metadata accessor for UUID);
@@ -41,16 +41,16 @@
 
   v5 = *(self + OBJC_IVAR____TtC8Freeform35CRLiOSFreehandDrawingStrokeAnimator_incomingShapeItemUUIDs);
   *(self + OBJC_IVAR____TtC8Freeform35CRLiOSFreehandDrawingStrokeAnimator_incomingShapeItemUUIDs) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_100C5B6C8(v5);
 }
 
-- (void)runAnimationWithCompletionHandler:(id)a3
+- (void)runAnimationWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   _Block_copy(v4);
-  v5 = self;
-  sub_100C5C1B0(v5, v4);
+  selfCopy = self;
+  sub_100C5C1B0(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }

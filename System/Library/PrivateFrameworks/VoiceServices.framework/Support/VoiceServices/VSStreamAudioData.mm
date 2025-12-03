@@ -1,10 +1,10 @@
 @interface VSStreamAudioData
 - (AudioStreamBasicDescription)asbd;
-- (BOOL)writeWaveToFilePath:(id)a3;
-- (VSStreamAudioData)initWithASBD:(AudioStreamBasicDescription *)a3;
+- (BOOL)writeWaveToFilePath:(id)path;
+- (VSStreamAudioData)initWithASBD:(AudioStreamBasicDescription *)d;
 - (double)duration;
-- (void)appendAudioData:(id)a3 packetCount:(unint64_t)a4 packetDescriptions:(id)a5;
-- (void)enumerateAudioWithBlock:(id)a3;
+- (void)appendAudioData:(id)data packetCount:(unint64_t)count packetDescriptions:(id)descriptions;
+- (void)enumerateAudioWithBlock:(id)block;
 @end
 
 @implementation VSStreamAudioData
@@ -18,15 +18,15 @@
   return self;
 }
 
-- (BOOL)writeWaveToFilePath:(id)a3
+- (BOOL)writeWaveToFilePath:(id)path
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   inFormat.mSampleRate = self->_asbd.mSampleRate;
   *&inFormat.mFormatID = xmmword_272832680;
   *&inFormat.mBytesPerFrame = xmmword_272832690;
   outAudioFile = 0;
-  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4];
+  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
   v6 = AudioFileCreateWithURL(v5, 0x57415645u, &inFormat, 1u, &outAudioFile);
   if (v6)
   {
@@ -36,7 +36,7 @@
     {
       v9 = [MEMORY[0x277CCACA8] vs_stringFrom4CC:v7];
       *buf = 138412546;
-      *&buf[4] = v4;
+      *&buf[4] = pathCopy;
       *&buf[12] = 2112;
       *&buf[14] = v9;
       _os_log_error_impl(&dword_2727E4000, v8, OS_LOG_TYPE_ERROR, "Error AudioFileCreateWithURL: '%@', code: %@", buf, 0x16u);
@@ -93,7 +93,7 @@ LABEL_36:
   v13 = 0;
   v46 = *v51;
   v42 = v5;
-  v43 = v4;
+  v43 = pathCopy;
   while (2)
   {
     for (i = 0; i != v44; ++i)
@@ -107,7 +107,7 @@ LABEL_36:
       inStartingByte = v13;
       if (v8)
       {
-        v16 = [MEMORY[0x277CBEB28] data];
+        data = [MEMORY[0x277CBEB28] data];
         if ([v15 packetCount])
         {
           v17 = 0;
@@ -126,14 +126,14 @@ LABEL_36:
               break;
             }
 
-            [v16 appendData:v23];
+            [data appendData:v23];
 
             ++v18;
             v17 += 16;
             if ([v15 packetCount] <= v18)
             {
               v5 = v42;
-              v4 = v43;
+              pathCopy = v43;
               goto LABEL_21;
             }
           }
@@ -148,7 +148,7 @@ LABEL_36:
           }
 
           v5 = v42;
-          v4 = v43;
+          pathCopy = v43;
           goto LABEL_35;
         }
       }
@@ -158,14 +158,14 @@ LABEL_36:
         v25 = -[VSMappedData bytesAtOffset:](self->_mappedData, "bytesAtOffset:", [v15 audioBytesRange]);
         v26 = MEMORY[0x277CBEA90];
         [v15 audioBytesRange];
-        v16 = [v26 dataWithBytesNoCopy:v25 length:v27 freeWhenDone:0];
+        data = [v26 dataWithBytesNoCopy:v25 length:v27 freeWhenDone:0];
       }
 
 LABEL_21:
-      if ([v16 length])
+      if ([data length])
       {
-        ioNumBytes = [v16 length];
-        v28 = AudioFileWriteBytes(outAudioFile, 0, inStartingByte, &ioNumBytes, [v16 bytes]);
+        ioNumBytes = [data length];
+        v28 = AudioFileWriteBytes(outAudioFile, 0, inStartingByte, &ioNumBytes, [data bytes]);
         if (v28)
         {
           v36 = v28;
@@ -174,7 +174,7 @@ LABEL_21:
           {
             v41 = [MEMORY[0x277CCACA8] vs_stringFrom4CC:v36];
             *buf = 138412546;
-            *&buf[4] = v4;
+            *&buf[4] = pathCopy;
             *&buf[12] = 2112;
             *&buf[14] = v41;
             _os_log_error_impl(&dword_2727E4000, v37, OS_LOG_TYPE_ERROR, "Error AudioFileWriteBytes: '%@', code: %@", buf, 0x16u);
@@ -223,7 +223,7 @@ LABEL_31:
 
     v12 = [MEMORY[0x277CCACA8] vs_stringFrom4CC:v30];
     *buf = 138412546;
-    *&buf[4] = v4;
+    *&buf[4] = pathCopy;
     *&buf[12] = 2112;
     *&buf[14] = v12;
     v38 = "Error AudioFileClose: '%@', code: %@";
@@ -309,10 +309,10 @@ LABEL_37:
   return v5;
 }
 
-- (void)enumerateAudioWithBlock:(id)a3
+- (void)enumerateAudioWithBlock:(id)block
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v24 = 0;
   v20 = 0u;
   v21 = 0u;
@@ -342,7 +342,7 @@ LABEL_3:
       v14 = MEMORY[0x277CBEA90];
       [v8 packetDescriptionsRange];
       v16 = [v14 dataWithBytesNoCopy:v13 length:v15 freeWhenDone:0];
-      v4[2](v4, v12, [v8 packetCount], v16, &v24);
+      blockCopy[2](blockCopy, v12, [v8 packetCount], v16, &v24);
       LOBYTE(v8) = v24;
 
       if (v8)
@@ -366,27 +366,27 @@ LABEL_3:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appendAudioData:(id)a3 packetCount:(unint64_t)a4 packetDescriptions:(id)a5
+- (void)appendAudioData:(id)data packetCount:(unint64_t)count packetDescriptions:(id)descriptions
 {
   mappedData = self->_mappedData;
-  v9 = a5;
-  v10 = a3;
-  [(VSMappedData *)mappedData appendData:v10];
-  [(VSMappedData *)self->_mappedData appendData:v9];
+  descriptionsCopy = descriptions;
+  dataCopy = data;
+  [(VSMappedData *)mappedData appendData:dataCopy];
+  [(VSMappedData *)self->_mappedData appendData:descriptionsCopy];
   v17 = objc_alloc_init(VSStreamAudioMappedInfo);
-  v11 = [(VSMappedData *)self->_mappedData appendData:v10];
+  v11 = [(VSMappedData *)self->_mappedData appendData:dataCopy];
   v13 = v12;
 
   [(VSStreamAudioMappedInfo *)v17 setAudioBytesRange:v11, v13];
-  [(VSStreamAudioMappedInfo *)v17 setPacketCount:a4];
-  v14 = [(VSMappedData *)self->_mappedData appendData:v9];
+  [(VSStreamAudioMappedInfo *)v17 setPacketCount:count];
+  v14 = [(VSMappedData *)self->_mappedData appendData:descriptionsCopy];
   v16 = v15;
 
   [(VSStreamAudioMappedInfo *)v17 setPacketDescriptionsRange:v14, v16];
   [(NSMutableArray *)self->_mappedAudioInfo addObject:v17];
 }
 
-- (VSStreamAudioData)initWithASBD:(AudioStreamBasicDescription *)a3
+- (VSStreamAudioData)initWithASBD:(AudioStreamBasicDescription *)d
 {
   v13.receiver = self;
   v13.super_class = VSStreamAudioData;
@@ -394,18 +394,18 @@ LABEL_3:
   v5 = v4;
   if (v4)
   {
-    v6 = *&a3->mSampleRate;
-    v7 = *&a3->mBytesPerPacket;
-    *(v4 + 7) = *&a3->mBitsPerChannel;
+    v6 = *&d->mSampleRate;
+    v7 = *&d->mBytesPerPacket;
+    *(v4 + 7) = *&d->mBitsPerChannel;
     *(v4 + 40) = v7;
     *(v4 + 24) = v6;
     v8 = objc_alloc_init(MEMORY[0x277D79948]);
     mappedData = v5->_mappedData;
     v5->_mappedData = v8;
 
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     mappedAudioInfo = v5->_mappedAudioInfo;
-    v5->_mappedAudioInfo = v10;
+    v5->_mappedAudioInfo = array;
   }
 
   return v5;

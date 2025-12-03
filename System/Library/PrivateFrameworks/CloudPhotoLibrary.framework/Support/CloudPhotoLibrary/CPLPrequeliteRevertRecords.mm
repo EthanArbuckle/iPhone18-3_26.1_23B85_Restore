@@ -1,12 +1,12 @@
 @interface CPLPrequeliteRevertRecords
 - (BOOL)_isEmpty;
-- (BOOL)addRecordsToRevertWithLocalScopedIdentifier:(id)a3 class:(Class)a4 error:(id *)a5;
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6;
-- (BOOL)deleteRecordsToRevertWithLocalScopedIdentifier:(id)a3 error:(id *)a4;
+- (BOOL)addRecordsToRevertWithLocalScopedIdentifier:(id)identifier class:(Class)class error:(id *)error;
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error;
+- (BOOL)deleteRecordsToRevertWithLocalScopedIdentifier:(id)identifier error:(id *)error;
 - (BOOL)initializeStorage;
-- (BOOL)shouldRevertRecordWithLocalScopedIdentifier:(id)a3;
-- (BOOL)upgradeStorageToVersion:(int64_t)a3;
-- (CPLPrequeliteRevertRecords)initWithAbstractObject:(id)a3;
+- (BOOL)shouldRevertRecordWithLocalScopedIdentifier:(id)identifier;
+- (BOOL)upgradeStorageToVersion:(int64_t)version;
+- (CPLPrequeliteRevertRecords)initWithAbstractObject:(id)object;
 - (id)revertedPlaceholderRecordsEnumerator;
 - (id)status;
 - (void)writeTransactionDidFail;
@@ -14,11 +14,11 @@
 
 @implementation CPLPrequeliteRevertRecords
 
-- (CPLPrequeliteRevertRecords)initWithAbstractObject:(id)a3
+- (CPLPrequeliteRevertRecords)initWithAbstractObject:(id)object
 {
   v8.receiver = self;
   v8.super_class = CPLPrequeliteRevertRecords;
-  v3 = [(CPLPrequeliteStorage *)&v8 initWithAbstractObject:a3];
+  v3 = [(CPLPrequeliteStorage *)&v8 initWithAbstractObject:object];
   if (v3)
   {
     v4 = +[CPLPrequeliteType integerType];
@@ -39,38 +39,38 @@
   v6[3] = &unk_10027BCC8;
   v6[4] = self;
   v3 = [v2 valueWithConstructor:v6];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)initializeStorage
 {
   v5.receiver = self;
   v5.super_class = CPLPrequeliteRevertRecords;
-  v3 = [(CPLPrequeliteStorage *)&v5 initializeStorage];
-  if (v3)
+  initializeStorage = [(CPLPrequeliteStorage *)&v5 initializeStorage];
+  if (initializeStorage)
   {
-    v3 = [(CPLPrequeliteStorage *)self createMainTableWithDefinition:@"scopeIndex INTEGER NOT NULL error:identifier TEXT NOT NULL, class TEXT NOT NULL", 0];
-    if (v3)
+    initializeStorage = [(CPLPrequeliteStorage *)self createMainTableWithDefinition:@"scopeIndex INTEGER NOT NULL error:identifier TEXT NOT NULL, class TEXT NOT NULL", 0];
+    if (initializeStorage)
     {
-      v3 = [(CPLPrequeliteStorage *)self createIndexOnColumn:@"scopeIndex" error:0];
-      if (v3)
+      initializeStorage = [(CPLPrequeliteStorage *)self createIndexOnColumn:@"scopeIndex" error:0];
+      if (initializeStorage)
       {
-        LOBYTE(v3) = [(CPLPrequeliteStorage *)self createIndexWithName:@"scopedIdentifier" withDefinition:@"scopeIndex unique:identifier" error:1, 0];
+        LOBYTE(initializeStorage) = [(CPLPrequeliteStorage *)self createIndexWithName:@"scopedIdentifier" withDefinition:@"scopeIndex unique:identifier" error:1, 0];
       }
     }
   }
 
-  return v3;
+  return initializeStorage;
 }
 
-- (BOOL)upgradeStorageToVersion:(int64_t)a3
+- (BOOL)upgradeStorageToVersion:(int64_t)version
 {
   v7.receiver = self;
   v7.super_class = CPLPrequeliteRevertRecords;
   v5 = [(CPLPrequeliteStorage *)&v7 upgradeStorageToVersion:?];
-  if (a3 == 81 && v5)
+  if (version == 81 && v5)
   {
     LOBYTE(v5) = [(CPLPrequeliteStorage *)self createStorage];
   }
@@ -78,18 +78,18 @@
   return v5;
 }
 
-- (BOOL)addRecordsToRevertWithLocalScopedIdentifier:(id)a3 class:(Class)a4 error:(id *)a5
+- (BOOL)addRecordsToRevertWithLocalScopedIdentifier:(id)identifier class:(Class)class error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 scopeIdentifier];
-  v10 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:v9];
+  identifierCopy = identifier;
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  v10 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:scopeIdentifier];
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a5)
+    if (error)
     {
-      v11 = [v8 scopeIdentifier];
-      *a5 = [CPLErrors invalidScopeErrorWithScopeIdentifier:v11];
+      scopeIdentifier2 = [identifierCopy scopeIdentifier];
+      *error = [CPLErrors invalidScopeErrorWithScopeIdentifier:scopeIdentifier2];
     }
 
     v12 = 0;
@@ -97,17 +97,17 @@
 
   else
   {
-    v13 = [(CPLPrequeliteStorage *)self pqStore];
-    v14 = [v13 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
-    v15 = [(CPLPrequeliteStorage *)self mainTable];
-    v16 = [v8 identifier];
-    v17 = NSStringFromClass(a4);
-    v12 = [v14 cplExecute:{@"INSERT OR IGNORE INTO %@ (scopeIndex, identifier, class) VALUES (%ld, %@, %@)", v15, v10, v16, v17}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [identifierCopy identifier];
+    v17 = NSStringFromClass(class);
+    v12 = [pqlConnection cplExecute:{@"INSERT OR IGNORE INTO %@ (scopeIndex, identifier, class) VALUES (%ld, %@, %@)", mainTable, v10, identifier, v17}];
 
     if (v12)
     {
-      if ([v14 changes] >= 1)
+      if ([pqlConnection changes] >= 1)
       {
         if ((_CPLSilentLogging & 1) == 0)
         {
@@ -120,9 +120,9 @@
           if (os_log_type_enabled(qword_1002D2CA0, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v21 = a4;
+            classCopy = class;
             v22 = 2112;
-            v23 = v8;
+            v23 = identifierCopy;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Scheduling <%@ %@> to be reverted by client", buf, 0x16u);
           }
         }
@@ -131,9 +131,9 @@
       }
     }
 
-    else if (a5)
+    else if (error)
     {
-      *a5 = [v14 lastError];
+      *error = [pqlConnection lastError];
     }
   }
 
@@ -163,21 +163,21 @@
     v19[1] = v19;
     v19[2] = 0x2020000000;
     v20 = 0;
-    v4 = [(CPLPrequeliteRevertRecords *)self abstractObject];
-    v5 = [v4 engineStore];
-    v6 = [v5 scopes];
+    abstractObject = [(CPLPrequeliteRevertRecords *)self abstractObject];
+    engineStore = [abstractObject engineStore];
+    scopes = [engineStore scopes];
 
-    v7 = [(CPLPrequeliteStorage *)self pqStore];
-    v8 = [v7 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
-    v9 = [(CPLPrequeliteStorage *)self mainTable];
-    v10 = [v8 cplFetch:{@"SELECT scopeIndex, identifier, class FROM %@", v9}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    v10 = [pqlConnection cplFetch:{@"SELECT scopeIndex, identifier, class FROM %@", mainTable}];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10017D0F8;
     v14[3] = &unk_10027BDF0;
     v16 = v23;
-    v11 = v6;
+    v11 = scopes;
     v15 = v11;
     v17 = v19;
     v18 = v21;
@@ -193,37 +193,37 @@
   return v3;
 }
 
-- (BOOL)deleteRecordsToRevertWithLocalScopedIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deleteRecordsToRevertWithLocalScopedIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 scopeIdentifier];
-  v8 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:v7];
+  identifierCopy = identifier;
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  v8 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:scopeIdentifier];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (!a4)
+    if (!error)
     {
       v10 = 0;
       goto LABEL_9;
     }
 
-    v9 = [v6 scopeIdentifier];
-    [CPLErrors invalidScopeErrorWithScopeIdentifier:v9];
-    *a4 = v10 = 0;
+    scopeIdentifier2 = [identifierCopy scopeIdentifier];
+    [CPLErrors invalidScopeErrorWithScopeIdentifier:scopeIdentifier2];
+    *error = v10 = 0;
   }
 
   else
   {
-    v11 = [(CPLPrequeliteStorage *)self pqStore];
-    v9 = [v11 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    scopeIdentifier2 = [pqStore pqlConnection];
 
-    v12 = [(CPLPrequeliteStorage *)self mainTable];
-    v13 = [v6 identifier];
-    v10 = [v9 cplExecute:{@"DELETE FROM %@ WHERE scopeIndex = %ld AND identifier = %@", v12, v8, v13}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [identifierCopy identifier];
+    v10 = [scopeIdentifier2 cplExecute:{@"DELETE FROM %@ WHERE scopeIndex = %ld AND identifier = %@", mainTable, v8, identifier}];
 
-    if (a4 && (v10 & 1) == 0)
+    if (error && (v10 & 1) == 0)
     {
-      *a4 = [v9 lastError];
+      *error = [scopeIdentifier2 lastError];
     }
 
     [*(&self->super._shouldUpgradeSchema + 1) discardCachedValue];
@@ -233,11 +233,11 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)shouldRevertRecordWithLocalScopedIdentifier:(id)a3
+- (BOOL)shouldRevertRecordWithLocalScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 scopeIdentifier];
-  v6 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:v5];
+  identifierCopy = identifier;
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  v6 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:scopeIdentifier];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -246,32 +246,32 @@ LABEL_9:
 
   else
   {
-    v8 = [(CPLPrequeliteStorage *)self pqStore];
-    v9 = [(CPLPrequeliteStorage *)self mainTable];
-    v10 = [v4 identifier];
-    v11 = [PQLFormatInjection formatInjection:@"scopeIndex = %ld AND identifier = %@", v6, v10];
-    v7 = [v8 table:v9 hasRecordsMatchingQuery:v11];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [identifierCopy identifier];
+    v11 = [PQLFormatInjection formatInjection:@"scopeIndex = %ld AND identifier = %@", v6, identifier];
+    v7 = [pqStore table:mainTable hasRecordsMatchingQuery:v11];
   }
 
   return v7;
 }
 
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error
 {
-  v11 = [(CPLPrequeliteStorage *)self pqStore];
-  v12 = [v11 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v13 = [(CPLPrequeliteStorage *)self mainTable];
-  v14 = [v12 cplExecute:{@"DELETE FROM %@ WHERE scopeIndex = %ld LIMIT %ld", v13, a3, a4}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v14 = [pqlConnection cplExecute:{@"DELETE FROM %@ WHERE scopeIndex = %ld LIMIT %ld", mainTable, index, count}];
 
   if (v14)
   {
-    *a5 = [v12 changes];
+    *deletedCount = [pqlConnection changes];
   }
 
-  else if (a6)
+  else if (error)
   {
-    *a6 = [v12 lastError];
+    *error = [pqlConnection lastError];
   }
 
   [*(&self->super._shouldUpgradeSchema + 1) discardCachedValue];
@@ -281,9 +281,9 @@ LABEL_9:
 
 - (id)status
 {
-  v3 = [(CPLPrequeliteStorage *)self pqStore];
-  v4 = [(CPLPrequeliteStorage *)self mainTable];
-  v5 = [v3 tableCountOfRecords:v4];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v5 = [pqStore tableCountOfRecords:mainTable];
 
   if (v5)
   {

@@ -1,27 +1,27 @@
 @interface PFAPreprocessorOrchestratorResultsStatsReported
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PFAPreprocessorOrchestratorResultsStatsReported)initWithDictionary:(id)a3;
-- (PFAPreprocessorOrchestratorResultsStatsReported)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PFAPreprocessorOrchestratorResultsStatsReported)initWithDictionary:(id)dictionary;
+- (PFAPreprocessorOrchestratorResultsStatsReported)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addOrchestratorStatistics:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addOrchestratorStatistics:(id)statistics;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PFAPreprocessorOrchestratorResultsStatsReported
 
-- (PFAPreprocessorOrchestratorResultsStatsReported)initWithDictionary:(id)a3
+- (PFAPreprocessorOrchestratorResultsStatsReported)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = PFAPreprocessorOrchestratorResultsStatsReported;
   v5 = [(PFAPreprocessorOrchestratorResultsStatsReported *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"contextId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"contextId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(PFAPreprocessorOrchestratorResultsStatsReported *)v5 setContextId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"orchestratorStatistics"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"orchestratorStatistics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (PFAPreprocessorOrchestratorResultsStatsReported)initWithJSON:(id)a3
+- (PFAPreprocessorOrchestratorResultsStatsReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PFAPreprocessorOrchestratorResultsStatsReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PFAPreprocessorOrchestratorResultsStatsReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PFAPreprocessorOrchestratorResultsStatsReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,26 +118,26 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_contextId)
   {
-    v4 = [(PFAPreprocessorOrchestratorResultsStatsReported *)self contextId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    contextId = [(PFAPreprocessorOrchestratorResultsStatsReported *)self contextId];
+    dictionaryRepresentation = [contextId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"contextId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"contextId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"contextId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"contextId"];
     }
   }
 
   if ([(NSArray *)self->_orchestratorStatistics count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -157,16 +157,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -176,36 +176,36 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"orchestratorStatistics"];
+    [dictionary setObject:array forKeyedSubscript:@"orchestratorStatistics"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(PFAPreprocessorOrchestratorResultsStatsReported *)self contextId];
-  v6 = [v4 contextId];
-  if ((v5 != 0) == (v6 == 0))
+  contextId = [(PFAPreprocessorOrchestratorResultsStatsReported *)self contextId];
+  contextId2 = [equalCopy contextId];
+  if ((contextId != 0) == (contextId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(PFAPreprocessorOrchestratorResultsStatsReported *)self contextId];
-  if (v7)
+  contextId3 = [(PFAPreprocessorOrchestratorResultsStatsReported *)self contextId];
+  if (contextId3)
   {
-    v8 = v7;
-    v9 = [(PFAPreprocessorOrchestratorResultsStatsReported *)self contextId];
-    v10 = [v4 contextId];
-    v11 = [v9 isEqual:v10];
+    v8 = contextId3;
+    contextId4 = [(PFAPreprocessorOrchestratorResultsStatsReported *)self contextId];
+    contextId5 = [equalCopy contextId];
+    v11 = [contextId4 isEqual:contextId5];
 
     if (!v11)
     {
@@ -217,12 +217,12 @@
   {
   }
 
-  v5 = [(PFAPreprocessorOrchestratorResultsStatsReported *)self orchestratorStatistics];
-  v6 = [v4 orchestratorStatistics];
-  if ((v5 != 0) != (v6 == 0))
+  contextId = [(PFAPreprocessorOrchestratorResultsStatsReported *)self orchestratorStatistics];
+  contextId2 = [equalCopy orchestratorStatistics];
+  if ((contextId != 0) != (contextId2 == 0))
   {
-    v12 = [(PFAPreprocessorOrchestratorResultsStatsReported *)self orchestratorStatistics];
-    if (!v12)
+    orchestratorStatistics = [(PFAPreprocessorOrchestratorResultsStatsReported *)self orchestratorStatistics];
+    if (!orchestratorStatistics)
     {
 
 LABEL_15:
@@ -230,10 +230,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(PFAPreprocessorOrchestratorResultsStatsReported *)self orchestratorStatistics];
-    v15 = [v4 orchestratorStatistics];
-    v16 = [v14 isEqual:v15];
+    v13 = orchestratorStatistics;
+    orchestratorStatistics2 = [(PFAPreprocessorOrchestratorResultsStatsReported *)self orchestratorStatistics];
+    orchestratorStatistics3 = [equalCopy orchestratorStatistics];
+    v16 = [orchestratorStatistics2 isEqual:orchestratorStatistics3];
 
     if (v16)
     {
@@ -253,15 +253,15 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PFAPreprocessorOrchestratorResultsStatsReported *)self contextId];
+  toCopy = to;
+  contextId = [(PFAPreprocessorOrchestratorResultsStatsReported *)self contextId];
 
-  if (v5)
+  if (contextId)
   {
-    v6 = [(PFAPreprocessorOrchestratorResultsStatsReported *)self contextId];
+    contextId2 = [(PFAPreprocessorOrchestratorResultsStatsReported *)self contextId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -297,41 +297,41 @@ LABEL_13:
   }
 }
 
-- (void)addOrchestratorStatistics:(id)a3
+- (void)addOrchestratorStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   orchestratorStatistics = self->_orchestratorStatistics;
-  v8 = v4;
+  v8 = statisticsCopy;
   if (!orchestratorStatistics)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_orchestratorStatistics;
-    self->_orchestratorStatistics = v6;
+    self->_orchestratorStatistics = array;
 
-    v4 = v8;
+    statisticsCopy = v8;
     orchestratorStatistics = self->_orchestratorStatistics;
   }
 
-  [(NSArray *)orchestratorStatistics addObject:v4];
+  [(NSArray *)orchestratorStatistics addObject:statisticsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = PFAPreprocessorOrchestratorResultsStatsReported;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(PFAPreprocessorOrchestratorResultsStatsReported *)self contextId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  contextId = [(PFAPreprocessorOrchestratorResultsStatsReported *)self contextId];
+  v7 = [contextId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PFAPreprocessorOrchestratorResultsStatsReported *)self deleteContextId];
   }
 
-  v9 = [(PFAPreprocessorOrchestratorResultsStatsReported *)self orchestratorStatistics];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  orchestratorStatistics = [(PFAPreprocessorOrchestratorResultsStatsReported *)self orchestratorStatistics];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:orchestratorStatistics underConditions:policyCopy];
   [(PFAPreprocessorOrchestratorResultsStatsReported *)self setOrchestratorStatistics:v10];
 
   return v5;

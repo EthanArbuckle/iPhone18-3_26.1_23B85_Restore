@@ -1,11 +1,11 @@
 @interface WKLayeredThumbnailWallpaperInput
 + (WKLayeredThumbnailWallpaperInput)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NADescriptionBuilder)wk_descriptionBuilder;
 - (NSString)description;
 - (WKLayeredThumbnailWallpaperInput)init;
-- (WKLayeredThumbnailWallpaperInput)initWithBackgroundThumbnailImageURL:(id)a3 foregroundThumbnailImageURL:(id)a4 floatingThumbnailImageURL:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WKLayeredThumbnailWallpaperInput)initWithBackgroundThumbnailImageURL:(id)l foregroundThumbnailImageURL:(id)rL floatingThumbnailImageURL:(id)uRL;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionBuilderBlock;
 - (unint64_t)hash;
 @end
@@ -40,25 +40,25 @@
   objc_exception_throw(v8);
 }
 
-- (WKLayeredThumbnailWallpaperInput)initWithBackgroundThumbnailImageURL:(id)a3 foregroundThumbnailImageURL:(id)a4 floatingThumbnailImageURL:(id)a5
+- (WKLayeredThumbnailWallpaperInput)initWithBackgroundThumbnailImageURL:(id)l foregroundThumbnailImageURL:(id)rL floatingThumbnailImageURL:(id)uRL
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
   v19.receiver = self;
   v19.super_class = WKLayeredThumbnailWallpaperInput;
   v11 = [(WKLayeredThumbnailWallpaperInput *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [lCopy copy];
     backgroundThumbnailImageURL = v11->_backgroundThumbnailImageURL;
     v11->_backgroundThumbnailImageURL = v12;
 
-    v14 = [v9 copy];
+    v14 = [rLCopy copy];
     foregroundThumbnailImageURL = v11->_foregroundThumbnailImageURL;
     v11->_foregroundThumbnailImageURL = v14;
 
-    v16 = [v10 copy];
+    v16 = [uRLCopy copy];
     floatingThumbnailImageURL = v11->_floatingThumbnailImageURL;
     v11->_floatingThumbnailImageURL = v16;
   }
@@ -66,13 +66,13 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(WKLayeredThumbnailWallpaperInput *)self backgroundThumbnailImageURL];
-  v6 = [(WKLayeredThumbnailWallpaperInput *)self foregroundThumbnailImageURL];
-  v7 = [(WKLayeredThumbnailWallpaperInput *)self floatingThumbnailImageURL];
-  v8 = [v4 initWithBackgroundThumbnailImageURL:v5 foregroundThumbnailImageURL:v6 floatingThumbnailImageURL:v7];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  backgroundThumbnailImageURL = [(WKLayeredThumbnailWallpaperInput *)self backgroundThumbnailImageURL];
+  foregroundThumbnailImageURL = [(WKLayeredThumbnailWallpaperInput *)self foregroundThumbnailImageURL];
+  floatingThumbnailImageURL = [(WKLayeredThumbnailWallpaperInput *)self floatingThumbnailImageURL];
+  v8 = [v4 initWithBackgroundThumbnailImageURL:backgroundThumbnailImageURL foregroundThumbnailImageURL:foregroundThumbnailImageURL floatingThumbnailImageURL:floatingThumbnailImageURL];
 
   return v8;
 }
@@ -107,19 +107,19 @@ id __47__WKLayeredThumbnailWallpaperInput_na_identity__block_invoke_3()
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
@@ -128,7 +128,7 @@ id __47__WKLayeredThumbnailWallpaperInput_na_identity__block_invoke_3()
 {
   v3 = [MEMORY[0x1E69B3778] builderWithObject:self];
   objc_initWeak(&location, self);
-  v4 = [v3 activeMultilinePrefix];
+  activeMultilinePrefix = [v3 activeMultilinePrefix];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__WKLayeredThumbnailWallpaperInput_wk_descriptionBuilder__block_invoke;
@@ -136,7 +136,7 @@ id __47__WKLayeredThumbnailWallpaperInput_na_identity__block_invoke_3()
   objc_copyWeak(&v9, &location);
   v5 = v3;
   v8 = v5;
-  [v5 appendBodySectionWithName:0 multilinePrefix:v4 block:v7];
+  [v5 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -153,10 +153,10 @@ void __57__WKLayeredThumbnailWallpaperInput_wk_descriptionBuilder__block_invoke(
 
 - (NSString)description
 {
-  v2 = [(WKLayeredThumbnailWallpaperInput *)self wk_descriptionBuilder];
-  v3 = [v2 build];
+  wk_descriptionBuilder = [(WKLayeredThumbnailWallpaperInput *)self wk_descriptionBuilder];
+  build = [wk_descriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)descriptionBuilderBlock

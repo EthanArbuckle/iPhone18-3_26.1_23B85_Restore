@@ -1,47 +1,47 @@
 @interface PIThumbnailGenerator
-+ ($3CC8671D27C23BF42ADDB32F2B5E48AE)referenceTimeForTimes:(SEL)a3;
-+ (id)_sourceFromResult:(id)a3;
-+ (id)pipelineFiltersForAdjustedThumbnailRenderWithSource:(id)a3;
++ ($3CC8671D27C23BF42ADDB32F2B5E48AE)referenceTimeForTimes:(SEL)times;
++ (id)_sourceFromResult:(id)result;
++ (id)pipelineFiltersForAdjustedThumbnailRenderWithSource:(id)source;
 + (id)pipelineFiltersForUnadjustedThumbnail;
-+ (id)referenceSourceForTime:(id *)a3 thumbnailTimes:(id)a4 unadjustedSources:(id)a5;
-+ (void)_generateAdjustedThumbnailsWithSnapshot:(id)a3;
-+ (void)_generateUnadjustedThumbnailsWithSnapshot:(id)a3 completion:(id)a4;
++ (id)referenceSourceForTime:(id *)time thumbnailTimes:(id)times unadjustedSources:(id)sources;
++ (void)_generateAdjustedThumbnailsWithSnapshot:(id)snapshot;
++ (void)_generateUnadjustedThumbnailsWithSnapshot:(id)snapshot completion:(id)completion;
 - (PIThumbnailGenerator)init;
-- (void)_generateThumbnailsWithPendingSnapshot:(id)a3;
-- (void)_generateThumbnailsWithSnapshot:(id)a3;
+- (void)_generateThumbnailsWithPendingSnapshot:(id)snapshot;
+- (void)_generateThumbnailsWithSnapshot:(id)snapshot;
 - (void)cancelThumbnailGeneration;
-- (void)generateThumbnailsWithCompletion:(id)a3;
-- (void)generateThumbnailsWithPendingSnapshot:(id)a3;
-- (void)setReferenceTime:(id *)a3;
-- (void)setThumbnailScalePolicy:(id)a3;
-- (void)setThumbnailTimes:(id)a3;
+- (void)generateThumbnailsWithCompletion:(id)completion;
+- (void)generateThumbnailsWithPendingSnapshot:(id)snapshot;
+- (void)setReferenceTime:(id *)time;
+- (void)setThumbnailScalePolicy:(id)policy;
+- (void)setThumbnailTimes:(id)times;
 @end
 
 @implementation PIThumbnailGenerator
 
-- (void)setReferenceTime:(id *)a3
+- (void)setReferenceTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_referenceTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_referenceTime.epoch = time->var3;
   *&self->_referenceTime.value = v3;
 }
 
-- (void)_generateThumbnailsWithSnapshot:(id)a3
+- (void)_generateThumbnailsWithSnapshot:(id)snapshot
 {
-  v5 = a3;
+  snapshotCopy = snapshot;
   if (self->_currentSnapshot)
   {
-    [(_PIThumbnailGeneratorSnapshot *)self->_currentSnapshot setPendingSnapshot:v5];
+    [(_PIThumbnailGeneratorSnapshot *)self->_currentSnapshot setPendingSnapshot:snapshotCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->_currentSnapshot, a3);
+    objc_storeStrong(&self->_currentSnapshot, snapshot);
     unadjustedThumbnails = self->_unadjustedThumbnails;
     if (unadjustedThumbnails && (v7 = [(NSArray *)unadjustedThumbnails count], v7 == [(NSArray *)self->_thumbnailTimes count]))
     {
-      [v5 setUnadjustedThumbnails:self->_unadjustedThumbnails];
-      [objc_opt_class() _generateAdjustedThumbnailsWithSnapshot:v5];
+      [snapshotCopy setUnadjustedThumbnails:self->_unadjustedThumbnails];
+      [objc_opt_class() _generateAdjustedThumbnailsWithSnapshot:snapshotCopy];
     }
 
     else
@@ -51,8 +51,8 @@
       v9[1] = 3221225472;
       v9[2] = __56__PIThumbnailGenerator__generateThumbnailsWithSnapshot___block_invoke;
       v9[3] = &unk_1E82AB860;
-      v10 = v5;
-      v11 = self;
+      v10 = snapshotCopy;
+      selfCopy = self;
       [v8 _generateUnadjustedThumbnailsWithSnapshot:v10 completion:v9];
     }
   }
@@ -93,38 +93,38 @@ void __56__PIThumbnailGenerator__generateThumbnailsWithSnapshot___block_invoke_2
   (*(v2 + 2))(v2, 0, *(a1 + 40));
 }
 
-- (void)_generateThumbnailsWithPendingSnapshot:(id)a3
+- (void)_generateThumbnailsWithPendingSnapshot:(id)snapshot
 {
-  v6 = a3;
+  snapshotCopy = snapshot;
   currentSnapshot = self->_currentSnapshot;
   self->_currentSnapshot = 0;
 
-  v5 = v6;
-  if (v6)
+  v5 = snapshotCopy;
+  if (snapshotCopy)
   {
-    [(PIThumbnailGenerator *)self _generateThumbnailsWithSnapshot:v6];
-    v5 = v6;
+    [(PIThumbnailGenerator *)self _generateThumbnailsWithSnapshot:snapshotCopy];
+    v5 = snapshotCopy;
   }
 }
 
-- (void)generateThumbnailsWithPendingSnapshot:(id)a3
+- (void)generateThumbnailsWithPendingSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__PIThumbnailGenerator_generateThumbnailsWithPendingSnapshot___block_invoke;
   v7[3] = &unk_1E82AC4E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = snapshotCopy;
+  v6 = snapshotCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)generateThumbnailsWithCompletion:(id)a3
+- (void)generateThumbnailsWithCompletion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   if (!self->_composition)
   {
     v21 = NUAssertLogger_19600();
@@ -136,7 +136,7 @@ void __56__PIThumbnailGenerator__generateThumbnailsWithSnapshot___block_invoke_2
       _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v23 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v25 = NUAssertLogger_19600();
     v26 = os_log_type_enabled(v25, OS_LOG_TYPE_ERROR);
@@ -144,11 +144,11 @@ void __56__PIThumbnailGenerator__generateThumbnailsWithSnapshot___block_invoke_2
     {
       if (v26)
       {
-        v34 = dispatch_get_specific(*v23);
+        v34 = dispatch_get_specific(*callStackSymbols);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v23 = [v35 callStackSymbols];
-        v37 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v35 callStackSymbols];
+        v37 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v34;
         *&buf[12] = 2114;
@@ -159,10 +159,10 @@ void __56__PIThumbnailGenerator__generateThumbnailsWithSnapshot___block_invoke_2
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      *&buf[4] = v23;
+      *&buf[4] = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -170,7 +170,7 @@ void __56__PIThumbnailGenerator__generateThumbnailsWithSnapshot___block_invoke_2
     goto LABEL_27;
   }
 
-  v5 = v4;
+  v5 = completionCopy;
   thumbnailTimes = self->_thumbnailTimes;
   if (!thumbnailTimes)
   {
@@ -183,7 +183,7 @@ void __56__PIThumbnailGenerator__generateThumbnailsWithSnapshot___block_invoke_2
       _os_log_error_impl(&dword_1C7694000, v28, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v23 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v30 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v25 = NUAssertLogger_19600();
     v31 = os_log_type_enabled(v25, OS_LOG_TYPE_ERROR);
@@ -191,8 +191,8 @@ void __56__PIThumbnailGenerator__generateThumbnailsWithSnapshot___block_invoke_2
     {
       if (v31)
       {
-        v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v33 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         *&buf[4] = v33;
         _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -204,11 +204,11 @@ void __56__PIThumbnailGenerator__generateThumbnailsWithSnapshot___block_invoke_2
 LABEL_27:
     if (v31)
     {
-      v38 = dispatch_get_specific(*v23);
+      v38 = dispatch_get_specific(*callStackSymbols);
       v39 = MEMORY[0x1E696AF00];
       v40 = v38;
-      v41 = [v39 callStackSymbols];
-      v42 = [v41 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v39 callStackSymbols];
+      v42 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       *&buf[4] = v38;
       *&buf[12] = 2114;
@@ -227,10 +227,10 @@ LABEL_29:
     [(_PIThumbnailGeneratorSnapshot *)v7 setCompletionHandler:v5];
     memset(buf, 0, sizeof(buf));
     v8 = objc_opt_class();
-    v9 = [(_PIThumbnailGeneratorSnapshot *)v7 thumbnailTimes];
+    thumbnailTimes = [(_PIThumbnailGeneratorSnapshot *)v7 thumbnailTimes];
     if (v8)
     {
-      [v8 referenceTimeForTimes:v9];
+      [v8 referenceTimeForTimes:thumbnailTimes];
     }
 
     else
@@ -245,13 +245,13 @@ LABEL_29:
     if (!renderRequest)
     {
       v11 = objc_alloc(MEMORY[0x1E69B3AD8]);
-      v12 = [(_PIThumbnailGeneratorSnapshot *)v7 composition];
-      v13 = [v11 initWithComposition:v12];
+      composition = [(_PIThumbnailGeneratorSnapshot *)v7 composition];
+      v13 = [v11 initWithComposition:composition];
       v14 = self->_renderRequest;
       self->_renderRequest = v13;
 
-      v15 = [MEMORY[0x1E69B3A10] displayP3ColorSpace];
-      [(NUImageBufferRenderRequest *)self->_renderRequest setColorSpace:v15];
+      displayP3ColorSpace = [MEMORY[0x1E69B3A10] displayP3ColorSpace];
+      [(NUImageBufferRenderRequest *)self->_renderRequest setColorSpace:displayP3ColorSpace];
 
       [(NUImageBufferRenderRequest *)self->_renderRequest setResponseQueue:self->_queue];
       renderRequest = self->_renderRequest;
@@ -266,9 +266,9 @@ LABEL_29:
     v16 = [(NUImageBufferRenderRequest *)renderRequest copy];
     [(_PIThumbnailGeneratorSnapshot *)v7 setRequest:v16];
 
-    v17 = [(_PIThumbnailGeneratorSnapshot *)v7 composition];
-    v18 = [(_PIThumbnailGeneratorSnapshot *)v7 request];
-    [v18 setComposition:v17];
+    composition2 = [(_PIThumbnailGeneratorSnapshot *)v7 composition];
+    request = [(_PIThumbnailGeneratorSnapshot *)v7 request];
+    [request setComposition:composition2];
 
     queue = self->_queue;
     v43[0] = MEMORY[0x1E69E9820];
@@ -289,29 +289,29 @@ LABEL_29:
 
 - (void)cancelThumbnailGeneration
 {
-  v3 = [(NUImageBufferRenderRequest *)self->_renderRequest renderContext];
-  [v3 cancelAllRequests];
+  renderContext = [(NUImageBufferRenderRequest *)self->_renderRequest renderContext];
+  [renderContext cancelAllRequests];
 
   currentSnapshot = self->_currentSnapshot;
   self->_currentSnapshot = 0;
 }
 
-- (void)setThumbnailScalePolicy:(id)a3
+- (void)setThumbnailScalePolicy:(id)policy
 {
-  v6 = a3;
+  policyCopy = policy;
   if (([(NUScalePolicy *)self->_thumbnailScalePolicy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_thumbnailScalePolicy, a3);
+    objc_storeStrong(&self->_thumbnailScalePolicy, policy);
     unadjustedThumbnails = self->_unadjustedThumbnails;
     self->_unadjustedThumbnails = 0;
   }
 }
 
-- (void)setThumbnailTimes:(id)a3
+- (void)setThumbnailTimes:(id)times
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  timesCopy = times;
+  if (!timesCopy)
   {
     v8 = NUAssertLogger_19600();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -333,8 +333,8 @@ LABEL_29:
         v16 = dispatch_get_specific(*v10);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v23 = v16;
         v24 = 2114;
@@ -345,8 +345,8 @@ LABEL_29:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v23 = v15;
       _os_log_error_impl(&dword_1C7694000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -355,8 +355,8 @@ LABEL_29:
     _NUAssertFailHandler();
   }
 
-  v21 = v4;
-  if (![(NSArray *)self->_thumbnailTimes isEqualToArray:v4])
+  v21 = timesCopy;
+  if (![(NSArray *)self->_thumbnailTimes isEqualToArray:timesCopy])
   {
     v5 = [v21 copy];
     thumbnailTimes = self->_thumbnailTimes;
@@ -384,17 +384,17 @@ LABEL_29:
   return v2;
 }
 
-+ (id)pipelineFiltersForAdjustedThumbnailRenderWithSource:(id)a3
++ (id)pipelineFiltersForAdjustedThumbnailRenderWithSource:(id)source
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  sourceCopy = source;
   v4 = objc_alloc(MEMORY[0x1E69B3C30]);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76__PIThumbnailGenerator_pipelineFiltersForAdjustedThumbnailRenderWithSource___block_invoke;
   v9[3] = &unk_1E82ACA50;
-  v10 = v3;
-  v5 = v3;
+  v10 = sourceCopy;
+  v5 = sourceCopy;
   v6 = [v4 initWithBlock:v9];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
@@ -510,15 +510,15 @@ id __61__PIThumbnailGenerator_pipelineFiltersForUnadjustedThumbnail__block_invok
   return v9;
 }
 
-+ (id)referenceSourceForTime:(id *)a3 thumbnailTimes:(id)a4 unadjustedSources:(id)a5
++ (id)referenceSourceForTime:(id *)time thumbnailTimes:(id)times unadjustedSources:(id)sources
 {
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __80__PIThumbnailGenerator_referenceSourceForTime_thumbnailTimes_unadjustedSources___block_invoke;
   v9[3] = &__block_descriptor_56_e24_B32__0__NSValue_8Q16_B24l;
-  v10 = *a3;
-  v6 = a5;
-  v7 = [v6 objectAtIndex:{objc_msgSend(a4, "indexOfObjectPassingTest:", v9)}];
+  v10 = *time;
+  sourcesCopy = sources;
+  v7 = [sourcesCopy objectAtIndex:{objc_msgSend(times, "indexOfObjectPassingTest:", v9)}];
 
   return v7;
 }
@@ -539,17 +539,17 @@ BOOL __80__PIThumbnailGenerator_referenceSourceForTime_thumbnailTimes_unadjusted
   return CMTimeCompare(&v4, &time2) == 0;
 }
 
-+ ($3CC8671D27C23BF42ADDB32F2B5E48AE)referenceTimeForTimes:(SEL)a3
++ ($3CC8671D27C23BF42ADDB32F2B5E48AE)referenceTimeForTimes:(SEL)times
 {
   retstr->var0 = 0;
   *&retstr->var1 = 0;
   retstr->var3 = 0;
-  v5 = [a4 firstObject];
-  if (v5)
+  firstObject = [a4 firstObject];
+  if (firstObject)
   {
-    v7 = v5;
-    [v5 CMTimeValue];
-    v5 = v7;
+    v7 = firstObject;
+    [firstObject CMTimeValue];
+    firstObject = v7;
   }
 
   else
@@ -562,22 +562,22 @@ BOOL __80__PIThumbnailGenerator_referenceSourceForTime_thumbnailTimes_unadjusted
   return result;
 }
 
-+ (void)_generateAdjustedThumbnailsWithSnapshot:(id)a3
++ (void)_generateAdjustedThumbnailsWithSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [v4 request];
-  v6 = [v4 thumbnailTimes];
-  v7 = [v4 unadjustedThumbnails];
+  snapshotCopy = snapshot;
+  request = [snapshotCopy request];
+  thumbnailTimes = [snapshotCopy thumbnailTimes];
+  unadjustedThumbnails = [snapshotCopy unadjustedThumbnails];
   v47 = 0uLL;
   v48 = 0;
-  if (v4)
+  if (snapshotCopy)
   {
-    [v4 referenceTime];
+    [snapshotCopy referenceTime];
   }
 
-  v8 = [v4 partialResultHandler];
-  v9 = [v5 composition];
-  v10 = [v9 objectForKeyedSubscript:@"semanticStyle"];
+  partialResultHandler = [snapshotCopy partialResultHandler];
+  composition = [request composition];
+  v10 = [composition objectForKeyedSubscript:@"semanticStyle"];
 
   v11 = MEMORY[0x1E6960C70];
   if (v10)
@@ -593,18 +593,18 @@ BOOL __80__PIThumbnailGenerator_referenceSourceForTime_thumbnailTimes_unadjusted
   }
 
   v41 = v12;
-  [v5 setTime:&v40];
-  v13 = [v5 composition];
-  v14 = [v13 objectForKeyedSubscript:@"livePhotoKeyFrame"];
+  [request setTime:&v40];
+  composition2 = [request composition];
+  v14 = [composition2 objectForKeyedSubscript:@"livePhotoKeyFrame"];
 
   if (v14)
   {
     v40 = *v11;
     v41 = *(v11 + 2);
-    [v5 setTime:&v40];
+    [request setTime:&v40];
   }
 
-  [v5 setName:@"PIThumbnailGenerator-AdjustedThumbnail"];
+  [request setName:@"PIThumbnailGenerator-AdjustedThumbnail"];
   v45[0] = 0;
   v45[1] = v45;
   v45[2] = 0x2020000000;
@@ -620,29 +620,29 @@ BOOL __80__PIThumbnailGenerator_referenceSourceForTime_thumbnailTimes_unadjusted
   v38[2] = 0x3032000000;
   v38[3] = __Block_byref_object_copy__19684;
   v38[4] = __Block_byref_object_dispose__19685;
-  v39 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  v39 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(unadjustedThumbnails, "count")}];
   [MEMORY[0x1E69B3C60] begin];
-  v15 = [v7 count];
+  v15 = [unadjustedThumbnails count];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __64__PIThumbnailGenerator__generateAdjustedThumbnailsWithSnapshot___block_invoke;
   v28[3] = &unk_1E82AB950;
-  v16 = v6;
+  v16 = thumbnailTimes;
   v29 = v16;
-  v17 = v5;
-  v36 = a1;
+  v17 = request;
+  selfCopy = self;
   v30 = v17;
   v33 = v38;
-  v18 = v8;
+  v18 = partialResultHandler;
   v32 = v18;
-  v19 = v4;
+  v19 = snapshotCopy;
   v31 = v19;
   v34 = &v40;
   v35 = v45;
   v37 = v15;
-  [v7 enumerateObjectsUsingBlock:v28];
+  [unadjustedThumbnails enumerateObjectsUsingBlock:v28];
   v20 = MEMORY[0x1E69B3C60];
-  v21 = [v19 resultQueue];
+  resultQueue = [v19 resultQueue];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __64__PIThumbnailGenerator__generateAdjustedThumbnailsWithSnapshot___block_invoke_4;
@@ -652,7 +652,7 @@ BOOL __80__PIThumbnailGenerator_referenceSourceForTime_thumbnailTimes_unadjusted
   v25 = v45;
   v26 = v38;
   v27 = &v40;
-  [v20 commitAndNotifyOnQueue:v21 withBlock:v23];
+  [v20 commitAndNotifyOnQueue:resultQueue withBlock:v23];
 
   _Block_object_dispose(v38, 8);
   _Block_object_dispose(&v40, 8);
@@ -787,25 +787,25 @@ uint64_t __64__PIThumbnailGenerator__generateAdjustedThumbnailsWithSnapshot___bl
   return v4(v2, v1, v3, &v6);
 }
 
-+ (id)_sourceFromResult:(id)a3
++ (id)_sourceFromResult:(id)result
 {
-  v3 = a3;
-  v4 = v3;
+  resultCopy = result;
+  v4 = resultCopy;
   v5 = MEMORY[0x1E695F658];
-  if (v3)
+  if (resultCopy)
   {
-    v6 = [v3 buffer];
-    v7 = [v5 imageWithCVPixelBuffer:{objc_msgSend(v6, "CVPixelBuffer")}];
+    buffer = [resultCopy buffer];
+    v7 = [v5 imageWithCVPixelBuffer:{objc_msgSend(buffer, "CVPixelBuffer")}];
 
-    v8 = [v4 geometry];
-    v9 = [v8 size];
+    geometry = [v4 geometry];
+    v9 = [geometry size];
     v11 = v10;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695F610] blackColor];
-    v12 = [v5 imageWithColor:v8];
+    geometry = [MEMORY[0x1E695F610] blackColor];
+    v12 = [v5 imageWithColor:geometry];
     v7 = [v12 imageByCroppingToRect:{0.0, 0.0, 100.0, 100.0}];
 
     v9 = 100;
@@ -818,31 +818,31 @@ uint64_t __64__PIThumbnailGenerator__generateAdjustedThumbnailsWithSnapshot___bl
   v16 = [objc_alloc(MEMORY[0x1E69B39B0]) initWithCIImage:v7 orientation:1];
   v17 = [objc_alloc(MEMORY[0x1E69B3C98]) initWithSourceDefinition:v16 sourceSize:v13 fullSize:{v15, v9, v11}];
   v18 = objc_alloc_init(MEMORY[0x1E69B3CB8]);
-  v19 = [MEMORY[0x1E696AFB0] UUID];
-  v20 = [v19 UUIDString];
-  [v18 setAssetIdentifier:v20];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [v18 setAssetIdentifier:uUIDString];
 
   [v18 setDefinition:v17];
 
   return v18;
 }
 
-+ (void)_generateUnadjustedThumbnailsWithSnapshot:(id)a3 completion:(id)a4
++ (void)_generateUnadjustedThumbnailsWithSnapshot:(id)snapshot completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 request];
-  v9 = [v6 thumbnailTimes];
-  v10 = [objc_opt_class() pipelineFiltersForUnadjustedThumbnail];
-  [v8 setPipelineFilters:v10];
+  snapshotCopy = snapshot;
+  completionCopy = completion;
+  request = [snapshotCopy request];
+  thumbnailTimes = [snapshotCopy thumbnailTimes];
+  pipelineFiltersForUnadjustedThumbnail = [objc_opt_class() pipelineFiltersForUnadjustedThumbnail];
+  [request setPipelineFilters:pipelineFiltersForUnadjustedThumbnail];
 
-  [v8 setName:@"PIThumbnailGenerator-UnadjustedThumbnail"];
+  [request setName:@"PIThumbnailGenerator-UnadjustedThumbnail"];
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x3032000000;
   v30[3] = __Block_byref_object_copy__19684;
   v30[4] = __Block_byref_object_dispose__19685;
-  v31 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  v31 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(thumbnailTimes, "count")}];
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x3032000000;
@@ -854,27 +854,27 @@ uint64_t __64__PIThumbnailGenerator__generateAdjustedThumbnailsWithSnapshot___bl
   v23[1] = 3221225472;
   v23[2] = __77__PIThumbnailGenerator__generateUnadjustedThumbnailsWithSnapshot_completion___block_invoke;
   v23[3] = &unk_1E82AB8B0;
-  v11 = v8;
+  v11 = request;
   v24 = v11;
   v25 = v28;
   v26 = v30;
-  v27 = a1;
-  [v9 enumerateObjectsUsingBlock:v23];
+  selfCopy = self;
+  [thumbnailTimes enumerateObjectsUsingBlock:v23];
   v12 = MEMORY[0x1E69B3C60];
-  v13 = [v11 responseQueue];
+  responseQueue = [v11 responseQueue];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __77__PIThumbnailGenerator__generateUnadjustedThumbnailsWithSnapshot_completion___block_invoke_3;
   v17[3] = &unk_1E82AB8D8;
   v21 = v28;
-  v14 = v9;
+  v14 = thumbnailTimes;
   v18 = v14;
-  v15 = v7;
+  v15 = completionCopy;
   v20 = v15;
-  v16 = v6;
+  v16 = snapshotCopy;
   v19 = v16;
   v22 = v30;
-  [v12 commitAndNotifyOnQueue:v13 withBlock:v17];
+  [v12 commitAndNotifyOnQueue:responseQueue withBlock:v17];
 
   _Block_object_dispose(v28, 8);
   _Block_object_dispose(v30, 8);

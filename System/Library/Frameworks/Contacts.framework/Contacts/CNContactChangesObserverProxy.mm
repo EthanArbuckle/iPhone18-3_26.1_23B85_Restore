@@ -1,23 +1,23 @@
 @interface CNContactChangesObserverProxy
-- (void)setContactSnapshot:(uint64_t)a1;
-- (void)setKeysToFetch:(uint64_t)a1;
+- (void)setContactSnapshot:(uint64_t)snapshot;
+- (void)setKeysToFetch:(uint64_t)fetch;
 @end
 
 @implementation CNContactChangesObserverProxy
 
-- (void)setKeysToFetch:(uint64_t)a1
+- (void)setKeysToFetch:(uint64_t)fetch
 {
-  if (a1)
+  if (fetch)
   {
-    OUTLINED_FUNCTION_2_7(a1, a2);
+    OUTLINED_FUNCTION_2_7(fetch, a2);
   }
 }
 
-- (void)setContactSnapshot:(uint64_t)a1
+- (void)setContactSnapshot:(uint64_t)snapshot
 {
-  if (a1)
+  if (snapshot)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((snapshot + 32), a2);
   }
 }
 

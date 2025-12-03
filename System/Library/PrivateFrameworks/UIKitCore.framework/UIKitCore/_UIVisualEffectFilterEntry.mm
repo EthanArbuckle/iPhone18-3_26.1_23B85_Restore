@@ -1,13 +1,13 @@
 @interface _UIVisualEffectFilterEntry
-- (BOOL)isSameTypeOfEffect:(id)a3;
+- (BOOL)isSameTypeOfEffect:(id)effect;
 - (CAFilter)filter;
 - (NSString)description;
-- (_UIVisualEffectFilterEntry)initWithFilterType:(id)a3 configurationValues:(id)a4 requestedValues:(id)a5 identityValues:(id)a6;
-- (double)scaleHintAsRequested:(BOOL)a3;
+- (_UIVisualEffectFilterEntry)initWithFilterType:(id)type configurationValues:(id)values requestedValues:(id)requestedValues identityValues:(id)identityValues;
+- (double)scaleHintAsRequested:(BOOL)requested;
 - (id)copyForTransitionOut;
-- (id)copyForTransitionToEffect:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)valueAsRequested:(BOOL)a3;
+- (id)copyForTransitionToEffect:(id)effect;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)valueAsRequested:(BOOL)requested;
 - (void)forceUniqueName;
 @end
 
@@ -36,31 +36,31 @@
   return filter;
 }
 
-- (_UIVisualEffectFilterEntry)initWithFilterType:(id)a3 configurationValues:(id)a4 requestedValues:(id)a5 identityValues:(id)a6
+- (_UIVisualEffectFilterEntry)initWithFilterType:(id)type configurationValues:(id)values requestedValues:(id)requestedValues identityValues:(id)identityValues
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  typeCopy = type;
+  valuesCopy = values;
+  requestedValuesCopy = requestedValues;
+  identityValuesCopy = identityValues;
   v24.receiver = self;
   v24.super_class = _UIVisualEffectFilterEntry;
   v14 = [(_UIVisualEffectFilterEntry *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [typeCopy copy];
     filterType = v14->_filterType;
     v14->_filterType = v15;
 
     objc_storeStrong(&v14->_filterName, v14->_filterType);
-    v17 = [v11 copy];
+    v17 = [valuesCopy copy];
     configurationValues = v14->_configurationValues;
     v14->_configurationValues = v17;
 
-    v19 = [v12 copy];
+    v19 = [requestedValuesCopy copy];
     requestedValues = v14->_requestedValues;
     v14->_requestedValues = v19;
 
-    v21 = [v13 copy];
+    v21 = [identityValuesCopy copy];
     identityValues = v14->_identityValues;
     v14->_identityValues = v21;
   }
@@ -68,10 +68,10 @@
   return v14;
 }
 
-- (id)valueAsRequested:(BOOL)a3
+- (id)valueAsRequested:(BOOL)requested
 {
   v3 = 48;
-  if (a3)
+  if (requested)
   {
     v3 = 40;
   }
@@ -79,10 +79,10 @@
   return *(&self->super.isa + v3);
 }
 
-- (double)scaleHintAsRequested:(BOOL)a3
+- (double)scaleHintAsRequested:(BOOL)requested
 {
   v3 = 64;
-  if (a3)
+  if (requested)
   {
     v3 = 56;
   }
@@ -90,7 +90,7 @@
   return *(&self->super.isa + v3);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithFilterType:self->_filterType configurationValues:self->_configurationValues requestedValues:self->_requestedValues identityValues:self->_identityValues];
   [v4 setRequestedScaleHint:self->_requestedScaleHint];
@@ -98,14 +98,14 @@
   return v4;
 }
 
-- (BOOL)isSameTypeOfEffect:(id)a3
+- (BOOL)isSameTypeOfEffect:(id)effect
 {
-  v4 = a3;
-  if (v4)
+  effectCopy = effect;
+  if (effectCopy)
   {
     v5 = self->_filterType;
-    v6 = v4[3];
-    if (self->_useRelaxedDiffingRule && (v4[2] & 1) != 0)
+    v6 = effectCopy[3];
+    if (self->_useRelaxedDiffingRule && (effectCopy[2] & 1) != 0)
     {
       v7 = 0;
       v8 = 0;
@@ -114,7 +114,7 @@
     else
     {
       v7 = self->_configurationValues;
-      v8 = v4[4];
+      v8 = effectCopy[4];
     }
 
     v9 = v8;
@@ -150,11 +150,11 @@
   return v12;
 }
 
-- (id)copyForTransitionToEffect:(id)a3
+- (id)copyForTransitionToEffect:(id)effect
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithFilterType:self->_filterType configurationValues:self->_configurationValues requestedValues:v4[5] identityValues:self->_requestedValues];
-  v6 = v4[7];
+  effectCopy = effect;
+  v5 = [objc_alloc(objc_opt_class()) initWithFilterType:self->_filterType configurationValues:self->_configurationValues requestedValues:effectCopy[5] identityValues:self->_requestedValues];
+  v6 = effectCopy[7];
 
   *(v5 + 56) = v6;
   *(v5 + 64) = self->_requestedScaleHint;
@@ -213,7 +213,7 @@
     v17 = v21;
     v11 = v9;
     v15 = v11;
-    v16 = self;
+    selfCopy = self;
     [(NSDictionary *)requestedValues enumerateKeysAndObjectsUsingBlock:v14];
     [v11 appendString:@"}"]);
 

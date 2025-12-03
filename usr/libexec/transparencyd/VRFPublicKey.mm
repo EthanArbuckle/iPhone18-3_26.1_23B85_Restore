@@ -22,9 +22,9 @@
 - (BOOL)needsRefresh
 {
   v2 = objc_getAssociatedObject(self, @"needsRefresh");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

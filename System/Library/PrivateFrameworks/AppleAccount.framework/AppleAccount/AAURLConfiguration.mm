@@ -1,13 +1,13 @@
 @interface AAURLConfiguration
 + (AARemoteServer)remoteServer;
-+ (id)_urlConfigurationWithError:(id *)a3;
-+ (id)itemForKey:(id)a3 error:(id *)a4;
++ (id)_urlConfigurationWithError:(id *)error;
++ (id)itemForKey:(id)key error:(id *)error;
 + (int64_t)beneficiaryDurationBeforeNotSetupCFU;
 + (int64_t)beneficiaryStaleInviteDuration;
-+ (void)setRemoteServer:(id)a3;
++ (void)setRemoteServer:(id)server;
 - (AAURLConfiguration)init;
-- (AAURLConfiguration)initWithCoder:(id)a3;
-- (AAURLConfiguration)initWithDictionary:(id)a3;
+- (AAURLConfiguration)initWithCoder:(id)coder;
+- (AAURLConfiguration)initWithDictionary:(id)dictionary;
 - (NSArray)urlsStoringCookies;
 - (NSNumber)absintheEnable;
 - (NSNumber)apsProdEnvironment;
@@ -15,10 +15,10 @@
 - (NSNumber)preProxTermsEnabled;
 - (NSNumber)termsUIType;
 - (NSNumber)usePDS;
-- (id)_envStringForKey:(id)a3;
-- (id)_urlStringForKey:(id)a3;
+- (id)_envStringForKey:(id)key;
+- (id)_urlStringForKey:(id)key;
 - (id)description;
-- (id)urlForEndpoint:(id)a3;
+- (id)urlForEndpoint:(id)endpoint;
 @end
 
 @implementation AAURLConfiguration
@@ -45,16 +45,16 @@ void __34__AAURLConfiguration_remoteServer__block_invoke()
   }
 }
 
-+ (void)setRemoteServer:(id)a3
++ (void)setRemoteServer:(id)server
 {
-  v5 = a3;
-  if (!v5)
+  serverCopy = server;
+  if (!serverCopy)
   {
-    [(AAURLConfiguration *)a2 setRemoteServer:a1];
+    [(AAURLConfiguration *)a2 setRemoteServer:self];
   }
 
   v6 = _AAURLConfigurationRemoteServer;
-  _AAURLConfigurationRemoteServer = v5;
+  _AAURLConfigurationRemoteServer = serverCopy;
 }
 
 - (AAURLConfiguration)init
@@ -64,10 +64,10 @@ void __34__AAURLConfiguration_remoteServer__block_invoke()
   return 0;
 }
 
-- (AAURLConfiguration)initWithDictionary:(id)a3
+- (AAURLConfiguration)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     [(AAURLConfiguration *)a2 initWithDictionary:?];
   }
@@ -77,7 +77,7 @@ void __34__AAURLConfiguration_remoteServer__block_invoke()
   v6 = [(AAURLConfiguration *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [dictionaryCopy copy];
     dictionary = v6->_dictionary;
     v6->_dictionary = v7;
   }
@@ -85,9 +85,9 @@ void __34__AAURLConfiguration_remoteServer__block_invoke()
   return v6;
 }
 
-- (AAURLConfiguration)initWithCoder:(id)a3
+- (AAURLConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = AAURLConfiguration;
   v5 = [(AAURLConfiguration *)&v15 init];
@@ -99,7 +99,7 @@ void __34__AAURLConfiguration_remoteServer__block_invoke()
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v6 setWithObjects:{v7, v8, v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"configuration-dictionary"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"configuration-dictionary"];
     dictionary = v5->_dictionary;
     v5->_dictionary = v12;
   }
@@ -107,12 +107,12 @@ void __34__AAURLConfiguration_remoteServer__block_invoke()
   return v5;
 }
 
-- (id)urlForEndpoint:(id)a3
+- (id)urlForEndpoint:(id)endpoint
 {
   dictionary = self->_dictionary;
-  v4 = a3;
+  endpointCopy = endpoint;
   v5 = [(NSDictionary *)dictionary objectForKeyedSubscript:@"urls"];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:endpointCopy];
 
   if (v6)
   {
@@ -227,8 +227,8 @@ void __34__AAURLConfiguration_remoteServer__block_invoke()
     objc_opt_class();
     v4 = MEMORY[0x1E696AD98];
     v5 = +[AADeviceInfo currentInfo];
-    v6 = [v5 osName];
-    v7 = [v4 numberWithBool:{objc_msgSend(v3, "containsObject:", v6)}];
+    osName = [v5 osName];
+    v7 = [v4 numberWithBool:{objc_msgSend(v3, "containsObject:", osName)}];
     if (objc_opt_isKindOfClass())
     {
       v8 = v7;
@@ -258,26 +258,26 @@ void __34__AAURLConfiguration_remoteServer__block_invoke()
   return v6;
 }
 
-+ (id)itemForKey:(id)a3 error:(id *)a4
++ (id)itemForKey:(id)key error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  keyCopy = key;
   v19 = 0;
-  v7 = [a1 _urlConfigurationWithError:&v19];
+  v7 = [self _urlConfigurationWithError:&v19];
   v8 = v19;
   v9 = v8;
-  if (a4 && v8)
+  if (error && v8)
   {
     v10 = v8;
     v11 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else
   {
-    v12 = [v7 _urlStringForKey:v6];
+    v12 = [v7 _urlStringForKey:keyCopy];
     v11 = v12;
-    if (a4 && !v12)
+    if (error && !v12)
     {
       v13 = MEMORY[0x1E696ABC0];
       v20 = *MEMORY[0x1E696A578];
@@ -285,7 +285,7 @@ void __34__AAURLConfiguration_remoteServer__block_invoke()
       v15 = [v14 localizedStringForKey:@"ICLOUD_CONFIG_ERROR" value:0 table:@"Localizable"];
       v21[0] = v15;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-      *a4 = [v13 errorWithDomain:@"com.apple.appleaccount" code:-2 userInfo:v16];
+      *error = [v13 errorWithDomain:@"com.apple.appleaccount" code:-2 userInfo:v16];
     }
   }
 
@@ -294,7 +294,7 @@ void __34__AAURLConfiguration_remoteServer__block_invoke()
   return v11;
 }
 
-+ (id)_urlConfigurationWithError:(id *)a3
++ (id)_urlConfigurationWithError:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -309,7 +309,7 @@ void __34__AAURLConfiguration_remoteServer__block_invoke()
   v18 = __Block_byref_object_dispose__7;
   v19 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [a1 remoteServer];
+  remoteServer = [self remoteServer];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__AAURLConfiguration_Deprecated___urlConfigurationWithError___block_invoke;
@@ -318,12 +318,12 @@ void __34__AAURLConfiguration_remoteServer__block_invoke()
   v13 = &v14;
   v7 = v5;
   v11 = v7;
-  [v6 configurationWithCompletion:v10];
+  [remoteServer configurationWithCompletion:v10];
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (error)
   {
-    *a3 = v15[5];
+    *error = v15[5];
   }
 
   v8 = v21[5];
@@ -368,9 +368,9 @@ void __61__AAURLConfiguration_Deprecated___urlConfigurationWithError___block_inv
   return v4;
 }
 
-- (id)_envStringForKey:(id)a3
+- (id)_envStringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_opt_class();
   v5 = [(NSDictionary *)self->_dictionary objectForKeyedSubscript:@"env"];
   if (objc_opt_isKindOfClass())
@@ -384,7 +384,7 @@ void __61__AAURLConfiguration_Deprecated___urlConfigurationWithError___block_inv
   }
 
   objc_opt_class();
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:keyCopy];
 
   v8 = v7;
   if (objc_opt_isKindOfClass())
@@ -400,9 +400,9 @@ void __61__AAURLConfiguration_Deprecated___urlConfigurationWithError___block_inv
   return v9;
 }
 
-- (id)_urlStringForKey:(id)a3
+- (id)_urlStringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_opt_class();
   v5 = [(NSDictionary *)self->_dictionary objectForKeyedSubscript:@"urls"];
   if (objc_opt_isKindOfClass())
@@ -416,7 +416,7 @@ void __61__AAURLConfiguration_Deprecated___urlConfigurationWithError___block_inv
   }
 
   objc_opt_class();
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:keyCopy];
 
   v8 = v7;
   if (objc_opt_isKindOfClass())
@@ -435,21 +435,21 @@ void __61__AAURLConfiguration_Deprecated___urlConfigurationWithError___block_inv
 + (int64_t)beneficiaryStaleInviteDuration
 {
   v2 = [MEMORY[0x1E698DDF8] bagForAltDSID:0];
-  v3 = [v2 inheritanceConfiguration];
+  inheritanceConfiguration = [v2 inheritanceConfiguration];
 
-  v4 = [v3 objectForKeyedSubscript:AAInheritanceConfigStaleInviteDurationKey[0]];
+  v4 = [inheritanceConfiguration objectForKeyedSubscript:AAInheritanceConfigStaleInviteDurationKey[0]];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
-    if (v6 >= 0)
+    integerValue = [v4 integerValue];
+    if (integerValue >= 0)
     {
-      v7 = v6;
+      v7 = integerValue;
     }
 
     else
     {
-      v7 = -v6;
+      v7 = -integerValue;
     }
   }
 
@@ -470,21 +470,21 @@ void __61__AAURLConfiguration_Deprecated___urlConfigurationWithError___block_inv
 + (int64_t)beneficiaryDurationBeforeNotSetupCFU
 {
   v2 = [MEMORY[0x1E698DDF8] bagForAltDSID:0];
-  v3 = [v2 inheritanceConfiguration];
+  inheritanceConfiguration = [v2 inheritanceConfiguration];
 
-  v4 = [v3 objectForKeyedSubscript:AAInheritanceConfigDurationBeforeNotSetupCFUKey];
+  v4 = [inheritanceConfiguration objectForKeyedSubscript:AAInheritanceConfigDurationBeforeNotSetupCFUKey];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
-    if (v6 >= 0)
+    integerValue = [v4 integerValue];
+    if (integerValue >= 0)
     {
-      v7 = v6;
+      v7 = integerValue;
     }
 
     else
     {
-      v7 = -v6;
+      v7 = -integerValue;
     }
   }
 

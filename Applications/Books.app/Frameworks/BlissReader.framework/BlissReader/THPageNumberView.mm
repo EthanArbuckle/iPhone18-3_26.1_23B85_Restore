@@ -1,31 +1,31 @@
 @interface THPageNumberView
 - (CGPoint)position;
-- (THPageNumberView)initWithPosition:(CGPoint)a3;
-- (double)p_pillWidthForText:(id)a3;
+- (THPageNumberView)initWithPosition:(CGPoint)position;
+- (double)p_pillWidthForText:(id)text;
 - (void)dealloc;
 - (void)p_updateBackgroundLayer;
 - (void)p_updateFrame;
 - (void)p_updatePageString;
-- (void)setBold:(BOOL)a3;
-- (void)setIsCurrentPage:(BOOL)a3;
-- (void)setMode:(int)a3;
-- (void)setPageCount:(unint64_t)a3;
-- (void)setPageNumber:(unint64_t)a3;
-- (void)setPageNumberColor:(id)a3 backgroundColor:(id)a4;
-- (void)setPageNumberText:(id)a3;
-- (void)updateMaxWidth:(double)a3;
-- (void)updatePosition:(CGPoint)a3;
+- (void)setBold:(BOOL)bold;
+- (void)setIsCurrentPage:(BOOL)page;
+- (void)setMode:(int)mode;
+- (void)setPageCount:(unint64_t)count;
+- (void)setPageNumber:(unint64_t)number;
+- (void)setPageNumberColor:(id)color backgroundColor:(id)backgroundColor;
+- (void)setPageNumberText:(id)text;
+- (void)updateMaxWidth:(double)width;
+- (void)updatePosition:(CGPoint)position;
 @end
 
 @implementation THPageNumberView
 
-- (THPageNumberView)initWithPosition:(CGPoint)a3
+- (THPageNumberView)initWithPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v9.receiver = self;
   v9.super_class = THPageNumberView;
-  v5 = [(THPageNumberView *)&v9 initWithFrame:a3.x + -40.0, a3.y + -23.0, 40.0, 23.0];
+  v5 = [(THPageNumberView *)&v9 initWithFrame:position.x + -40.0, position.y + -23.0, 40.0, 23.0];
   v6 = v5;
   if (v5)
   {
@@ -97,36 +97,36 @@
   {
     if ([(CALayer *)[(THPageNumberView *)self backgroundLayer] superlayer])
     {
-      v9 = [(THPageNumberView *)self backgroundLayer];
+      backgroundLayer = [(THPageNumberView *)self backgroundLayer];
 
-      [(CALayer *)v9 removeFromSuperlayer];
+      [(CALayer *)backgroundLayer removeFromSuperlayer];
     }
   }
 
   else
   {
-    v10 = [(THPageNumberView *)self layer];
-    v11 = [(THPageNumberView *)self backgroundLayer];
-    v12 = [(UILabel *)[(THPageNumberView *)self label] layer];
+    layer = [(THPageNumberView *)self layer];
+    backgroundLayer2 = [(THPageNumberView *)self backgroundLayer];
+    layer2 = [(UILabel *)[(THPageNumberView *)self label] layer];
 
-    [v10 insertSublayer:v11 below:v12];
+    [layer insertSublayer:backgroundLayer2 below:layer2];
   }
 }
 
-- (void)setMode:(int)a3
+- (void)setMode:(int)mode
 {
-  if ([(THPageNumberView *)self mode]!= a3)
+  if ([(THPageNumberView *)self mode]!= mode)
   {
-    self->_mode = a3;
+    self->_mode = mode;
     [(THPageNumberView *)self p_updateBackgroundLayer];
 
     [(THPageNumberView *)self p_updatePageString];
   }
 }
 
-- (void)setBold:(BOOL)a3
+- (void)setBold:(BOOL)bold
 {
-  if (a3)
+  if (bold)
   {
     v4 = [UIFont boldSystemFontOfSize:12.0];
   }
@@ -142,25 +142,25 @@
   [(UILabel *)label setFont:v5];
 }
 
-- (void)setPageNumberColor:(id)a3 backgroundColor:(id)a4
+- (void)setPageNumberColor:(id)color backgroundColor:(id)backgroundColor
 {
-  [(UILabel *)[(THPageNumberView *)self label] setTextColor:a3];
+  [(UILabel *)[(THPageNumberView *)self label] setTextColor:color];
   if ([(THPageNumberView *)self mode])
   {
     -[CALayer setBackgroundColor:]([(THPageNumberView *)self backgroundLayer], "setBackgroundColor:", [+[UIColor clearColor](UIColor CGColor]);
-    v7 = [+[UIColor clearColor](UIColor CGColor];
-    v8 = [(THPageNumberView *)self backgroundLayer];
+    cGColor = [+[UIColor clearColor](UIColor CGColor];
+    backgroundLayer = [(THPageNumberView *)self backgroundLayer];
 
-    [(CALayer *)v8 setBorderColor:v7];
+    [(CALayer *)backgroundLayer setBorderColor:cGColor];
   }
 
   else
   {
-    -[CALayer setBackgroundColor:](-[THPageNumberView backgroundLayer](self, "backgroundLayer"), "setBackgroundColor:", [a4 CGColor]);
+    -[CALayer setBackgroundColor:](-[THPageNumberView backgroundLayer](self, "backgroundLayer"), "setBackgroundColor:", [backgroundColor CGColor]);
     v10 = 0.0;
     v11 = 0.0;
     v9 = 0.0;
-    if ([a3 getRed:&v11 green:&v10 blue:&v9 alpha:0])
+    if ([color getRed:&v11 green:&v10 blue:&v9 alpha:0])
     {
       -[CALayer setBorderColor:]([(THPageNumberView *)self backgroundLayer], "setBorderColor:", [+[UIColor colorWithRed:green:blue:alpha:](UIColor CGColor:v11]);
     }
@@ -189,20 +189,20 @@
   [(THPageNumberView *)self p_updateFrame];
 }
 
-- (void)setPageNumber:(unint64_t)a3
+- (void)setPageNumber:(unint64_t)number
 {
-  if (self->_pageNumber != a3)
+  if (self->_pageNumber != number)
   {
-    self->_pageNumber = a3;
+    self->_pageNumber = number;
     [(THPageNumberView *)self p_updatePageString];
   }
 }
 
-- (void)setPageCount:(unint64_t)a3
+- (void)setPageCount:(unint64_t)count
 {
-  if (self->_pageCount != a3)
+  if (self->_pageCount != count)
   {
-    self->_pageCount = a3;
+    self->_pageCount = count;
     [(THPageNumberView *)self p_updatePageString];
   }
 }
@@ -241,7 +241,7 @@
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v25 = [(THPageNumberView *)self label];
+    label = [(THPageNumberView *)self label];
     v26 = v18;
     v27 = v20;
     v28 = v22;
@@ -258,37 +258,37 @@
     v34 = v33;
     v35 = 40.0 - v33;
     [(CALayer *)[(THPageNumberView *)self backgroundLayer] setFrame:40.0 - v33, 0.0, v33, 23.0];
-    v25 = [(THPageNumberView *)self label];
+    label = [(THPageNumberView *)self label];
     v27 = 0.0;
     v29 = 23.0;
     v26 = v35;
     v28 = v34;
   }
 
-  [(UILabel *)v25 setFrame:v26, v27, v28, v29];
+  [(UILabel *)label setFrame:v26, v27, v28, v29];
 }
 
-- (void)updatePosition:(CGPoint)a3
+- (void)updatePosition:(CGPoint)position
 {
-  [(THPageNumberView *)self setPosition:a3.x, a3.y];
+  [(THPageNumberView *)self setPosition:position.x, position.y];
 
   [(THPageNumberView *)self p_updateFrame];
 }
 
-- (void)updateMaxWidth:(double)a3
+- (void)updateMaxWidth:(double)width
 {
-  [(THPageNumberView *)self setMaxWidth:a3];
+  [(THPageNumberView *)self setMaxWidth:width];
 
   [(THPageNumberView *)self p_updateFrame];
 }
 
-- (void)setIsCurrentPage:(BOOL)a3
+- (void)setIsCurrentPage:(BOOL)page
 {
-  v3 = a3;
-  if ([(THPageNumberView *)self isCurrentPage]!= a3)
+  pageCopy = page;
+  if ([(THPageNumberView *)self isCurrentPage]!= page)
   {
-    self->_isCurrentPage = v3;
-    if (v3)
+    self->_isCurrentPage = pageCopy;
+    if (pageCopy)
     {
       -[CALayer setBackgroundColor:](self->_backgroundLayer, "setBackgroundColor:", [+[UIColor colorWithRed:green:blue:alpha:](UIColor CGColor:0.0]);
       v5 = +[UIColor whiteColor];
@@ -303,13 +303,13 @@
     [(UILabel *)self->_label setTextColor:v5];
     backgroundLayer = self->_backgroundLayer;
 
-    [(CALayer *)backgroundLayer setBorderWidth:!v3];
+    [(CALayer *)backgroundLayer setBorderWidth:!pageCopy];
   }
 }
 
-- (double)p_pillWidthForText:(id)a3
+- (double)p_pillWidthForText:(id)text
 {
-  v3 = [a3 length];
+  v3 = [text length];
   if ((v3 - 1) > 2)
   {
     return 40.0;
@@ -321,9 +321,9 @@
   }
 }
 
-- (void)setPageNumberText:(id)a3
+- (void)setPageNumberText:(id)text
 {
-  [(UILabel *)self->_label setText:a3];
+  [(UILabel *)self->_label setText:text];
   [(UILabel *)self->_label sizeToFit];
 
   [(THPageNumberView *)self p_updateFrame];

@@ -1,8 +1,8 @@
 @interface SiriUISelectionTemplateViewController
 - (BOOL)selected;
-- (void)_didSelectChoiceFromSender:(id)a3;
+- (void)_didSelectChoiceFromSender:(id)sender;
 - (void)loadView;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation SiriUISelectionTemplateViewController
@@ -12,32 +12,32 @@
   v4.receiver = self;
   v4.super_class = SiriUISelectionTemplateViewController;
   [(SiriUIBaseTemplateViewController *)&v4 loadView];
-  v3 = [(SiriUISelectionTemplateViewController *)self view];
-  [v3 addTargetForSelectionEvent:self action:sel__didSelectChoiceFromSender_];
+  view = [(SiriUISelectionTemplateViewController *)self view];
+  [view addTargetForSelectionEvent:self action:sel__didSelectChoiceFromSender_];
 }
 
-- (void)_didSelectChoiceFromSender:(id)a3
+- (void)_didSelectChoiceFromSender:(id)sender
 {
-  v4 = [(SiriUITemplateViewController *)self delegate];
-  [v4 selectionTemplateViewControllerWasSelected:self];
+  delegate = [(SiriUITemplateViewController *)self delegate];
+  [delegate selectionTemplateViewControllerWasSelected:self];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  v5 = [(SiriUITemplateViewController *)self templateModel];
-  [v5 setSelected:v3];
+  selectedCopy = selected;
+  templateModel = [(SiriUITemplateViewController *)self templateModel];
+  [templateModel setSelected:selectedCopy];
 
-  v6 = [(SiriUISelectionTemplateViewController *)self view];
-  [v6 reloadData];
+  view = [(SiriUISelectionTemplateViewController *)self view];
+  [view reloadData];
 }
 
 - (BOOL)selected
 {
-  v2 = [(SiriUITemplateViewController *)self templateModel];
-  v3 = [v2 selected];
+  templateModel = [(SiriUITemplateViewController *)self templateModel];
+  selected = [templateModel selected];
 
-  return v3;
+  return selected;
 }
 
 @end

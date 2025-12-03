@@ -1,37 +1,37 @@
 @interface SKUICommentDocumentViewController
-- (BOOL)_loadImageForURL:(id)a3 cacheKey:(id)a4 dataConsumer:(id)a5 reason:(int64_t)a6;
-- (SKUICommentDocumentViewController)initWithTemplateElement:(id)a3;
+- (BOOL)_loadImageForURL:(id)l cacheKey:(id)key dataConsumer:(id)consumer reason:(int64_t)reason;
+- (SKUICommentDocumentViewController)initWithTemplateElement:(id)element;
 - (id)_backgroundColor;
 - (id)_getSelectedCommenter;
 - (id)_layoutContext;
 - (void)_changeCommenter;
 - (void)_checkAdminStatus;
-- (void)_keyboardDidHideChangeNotification:(id)a3;
-- (void)_keyboardWillChangeNotification:(id)a3 accountForGuideLines:(BOOL)a4 applyKeyboardOffset:(BOOL)a5;
-- (void)_keyboardWillHideNotification:(id)a3;
-- (void)_keyboardWillShowNotification:(id)a3;
+- (void)_keyboardDidHideChangeNotification:(id)notification;
+- (void)_keyboardWillChangeNotification:(id)notification accountForGuideLines:(BOOL)lines applyKeyboardOffset:(BOOL)offset;
+- (void)_keyboardWillHideNotification:(id)notification;
+- (void)_keyboardWillShowNotification:(id)notification;
 - (void)_layoutKeyboard;
-- (void)_layoutScrollView:(double)a3;
+- (void)_layoutScrollView:(double)view;
 - (void)_preloadCommenterImages;
-- (void)_reloadContentSize:(double)a3;
-- (void)_setSelectedCommenter:(int64_t)a3;
-- (void)commentPostBarView:(id)a3 text:(id)a4 as:(id)a5;
+- (void)_reloadContentSize:(double)size;
+- (void)_setSelectedCommenter:(int64_t)commenter;
+- (void)commentPostBarView:(id)view text:(id)text as:(id)as;
 - (void)dealloc;
-- (void)documentDidUpdate:(id)a3;
+- (void)documentDidUpdate:(id)update;
 - (void)loadView;
-- (void)updateStackElement:(id)a3 withView:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)updateStackElement:(id)element withView:(id)view;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SKUICommentDocumentViewController
 
-- (SKUICommentDocumentViewController)initWithTemplateElement:(id)a3
+- (SKUICommentDocumentViewController)initWithTemplateElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -50,18 +50,18 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_templateElement, a3);
+    objc_storeStrong(&v14->_templateElement, element);
     v15->_scrollNewCommentToView = [(SKUICommentTemplateViewElement *)v15->_templateElement scrollNewCommentToView];
-    v16 = [v5 firstChildForElementType:132];
+    v16 = [elementCopy firstChildForElementType:132];
     stackTemplateElement = v15->_stackTemplateElement;
     v15->_stackTemplateElement = v16;
 
     [(SKUICommentDocumentViewController *)v15 setAutomaticallyAdjustsScrollViewInsets:0];
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v15 selector:sel__keyboardWillChangeFrameNotification_ name:*MEMORY[0x277D76C48] object:0];
-    [v18 addObserver:v15 selector:sel__keyboardDidHideChangeNotification_ name:*MEMORY[0x277D76BA0] object:0];
-    [v18 addObserver:v15 selector:sel__keyboardWillHideNotification_ name:*MEMORY[0x277D76C50] object:0];
-    [v18 addObserver:v15 selector:sel__keyboardWillShowNotification_ name:*MEMORY[0x277D76C60] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel__keyboardWillChangeFrameNotification_ name:*MEMORY[0x277D76C48] object:0];
+    [defaultCenter addObserver:v15 selector:sel__keyboardDidHideChangeNotification_ name:*MEMORY[0x277D76BA0] object:0];
+    [defaultCenter addObserver:v15 selector:sel__keyboardWillHideNotification_ name:*MEMORY[0x277D76C50] object:0];
+    [defaultCenter addObserver:v15 selector:sel__keyboardWillShowNotification_ name:*MEMORY[0x277D76C60] object:0];
     v19 = +[SKUIMediaSocialProfileCoordinator sharedCoordinator];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -105,11 +105,11 @@ void __61__SKUICommentDocumentViewController_initWithTemplateElement___block_inv
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C48] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C60] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C48] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C60] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C50] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
   [(SKUIViewElementLayoutContext *)self->_layoutContext setArtworkRequestDelegate:0];
   [(SKUIViewElementLayoutContext *)self->_layoutContext setParentViewController:0];
   [(SKUILayoutCache *)self->_textLayoutCache setDelegate:0];
@@ -139,21 +139,21 @@ void __61__SKUICommentDocumentViewController_initWithTemplateElement___block_inv
 
     [(SKUICommentPostBarView *)self->_postView setDelegate:self];
     v8 = self->_postView;
-    v9 = [(SKUICommentTemplateViewElement *)self->_templateElement postButtonText];
-    [(SKUICommentPostBarView *)v8 setPostButtonText:v9];
+    postButtonText = [(SKUICommentTemplateViewElement *)self->_templateElement postButtonText];
+    [(SKUICommentPostBarView *)v8 setPostButtonText:postButtonText];
 
     v10 = self->_postView;
-    v11 = [(SKUICommentTemplateViewElement *)self->_templateElement postPlaceholderText];
-    [(SKUICommentPostBarView *)v10 setPlaceholderText:v11];
+    postPlaceholderText = [(SKUICommentTemplateViewElement *)self->_templateElement postPlaceholderText];
+    [(SKUICommentPostBarView *)v10 setPlaceholderText:postPlaceholderText];
 
     [(SKUICommentPostBarView *)self->_postView setPostButtonVisible:0];
-    v12 = [(SKUICommentTemplateViewElement *)self->_templateElement asText];
+    asText = [(SKUICommentTemplateViewElement *)self->_templateElement asText];
 
-    if (v12)
+    if (asText)
     {
       v13 = self->_postView;
-      v14 = [(SKUICommentTemplateViewElement *)self->_templateElement asText];
-      [(SKUICommentPostBarView *)v13 setAsText:v14];
+      asText2 = [(SKUICommentTemplateViewElement *)self->_templateElement asText];
+      [(SKUICommentPostBarView *)v13 setAsText:asText2];
     }
 
     [v15 addSubview:self->_postView];
@@ -163,9 +163,9 @@ void __61__SKUICommentDocumentViewController_initWithTemplateElement___block_inv
   [(SKUICommentDocumentViewController *)self setView:v3];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   templateElement = self->_templateElement;
   if (templateElement && [(SKUICommentTemplateViewElement *)templateElement showKeyboard]&& !self->_didShowKeyboard)
   {
@@ -175,27 +175,27 @@ void __61__SKUICommentDocumentViewController_initWithTemplateElement___block_inv
 
   v6.receiver = self;
   v6.super_class = SKUICommentDocumentViewController;
-  [(SKUICommentDocumentViewController *)&v6 viewDidAppear:v3];
+  [(SKUICommentDocumentViewController *)&v6 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SKUICommentDocumentViewController *)self _layoutScrollView:0.0];
   v5.receiver = self;
   v5.super_class = SKUICommentDocumentViewController;
-  [(SKUIViewController *)&v5 viewWillAppear:v3];
+  [(SKUIViewController *)&v5 viewWillAppear:appearCopy];
   [(SKUICommentDocumentViewController *)self _checkAdminStatus];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(SKUIStackDocumentViewController *)self->_childViewController view];
-  [v5 resignFirstResponder];
+  disappearCopy = disappear;
+  view = [(SKUIStackDocumentViewController *)self->_childViewController view];
+  [view resignFirstResponder];
   v6.receiver = self;
   v6.super_class = SKUICommentDocumentViewController;
-  [(SKUICommentDocumentViewController *)&v6 viewWillDisappear:v3];
+  [(SKUICommentDocumentViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
 - (void)viewWillLayoutSubviews
@@ -212,50 +212,50 @@ void __61__SKUICommentDocumentViewController_initWithTemplateElement___block_inv
   [(SKUICommentDocumentViewController *)&v3 viewWillLayoutSubviews];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = SKUICommentDocumentViewController;
-  v7 = a4;
-  [(SKUICommentDocumentViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  [(SKUIStackDocumentViewController *)self->_childViewController viewWillTransitionToSize:v7 withTransitionCoordinator:width, height, v8.receiver, v8.super_class];
+  coordinatorCopy = coordinator;
+  [(SKUICommentDocumentViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  [(SKUIStackDocumentViewController *)self->_childViewController viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height, v8.receiver, v8.super_class];
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
-  v9 = a3;
-  v4 = [v9 templateElement];
+  updateCopy = update;
+  templateElement = [updateCopy templateElement];
   templateElement = self->_templateElement;
-  self->_templateElement = v4;
+  self->_templateElement = templateElement;
 
   v6 = [(SKUIViewElement *)self->_templateElement firstChildForElementType:132];
   childViewController = self->_childViewController;
   if (childViewController)
   {
-    [(SKUIStackDocumentViewController *)childViewController documentDidUpdate:v9 withTemplate:v6];
+    [(SKUIStackDocumentViewController *)childViewController documentDidUpdate:updateCopy withTemplate:v6];
   }
 
   else
   {
-    v8 = [(SKUICommentDocumentViewController *)self view];
-    [(SKUICommentDocumentViewController *)self updateStackElement:v6 withView:v8];
+    view = [(SKUICommentDocumentViewController *)self view];
+    [(SKUICommentDocumentViewController *)self updateStackElement:v6 withView:view];
 
     [(SKUICommentDocumentViewController *)self _reloadContentSize:0.0];
   }
 }
 
-- (void)updateStackElement:(id)a3 withView:(id)a4
+- (void)updateStackElement:(id)element withView:(id)view
 {
-  v18 = a3;
-  objc_storeStrong(&self->_stackTemplateElement, a3);
-  v7 = a4;
+  elementCopy = element;
+  objc_storeStrong(&self->_stackTemplateElement, element);
+  viewCopy = view;
   childViewController = self->_childViewController;
   if (childViewController)
   {
-    v9 = [(SKUIStackDocumentViewController *)childViewController view];
-    [v9 removeFromSuperview];
+    view = [(SKUIStackDocumentViewController *)childViewController view];
+    [view removeFromSuperview];
 
     [(SKUIStackDocumentViewController *)self->_childViewController removeFromParentViewController];
   }
@@ -265,75 +265,75 @@ void __61__SKUICommentDocumentViewController_initWithTemplateElement___block_inv
   self->_childViewController = v10;
 
   v12 = self->_childViewController;
-  v13 = [(SKUIViewController *)self clientContext];
-  [(SKUIViewController *)v12 setClientContext:v13];
+  clientContext = [(SKUIViewController *)self clientContext];
+  [(SKUIViewController *)v12 setClientContext:clientContext];
 
   v14 = self->_childViewController;
-  v15 = [(SKUIViewController *)self operationQueue];
-  [(SKUIViewController *)v14 setOperationQueue:v15];
+  operationQueue = [(SKUIViewController *)self operationQueue];
+  [(SKUIViewController *)v14 setOperationQueue:operationQueue];
 
-  v16 = [(SKUIStackDocumentViewController *)self->_childViewController view];
-  [v16 setAutoresizingMask:18];
-  v17 = [(SKUICommentDocumentViewController *)self _backgroundColor];
-  [v16 setBackgroundColor:v17];
+  view2 = [(SKUIStackDocumentViewController *)self->_childViewController view];
+  [view2 setAutoresizingMask:18];
+  _backgroundColor = [(SKUICommentDocumentViewController *)self _backgroundColor];
+  [view2 setBackgroundColor:_backgroundColor];
 
-  [v7 bounds];
-  [v16 setFrame:?];
+  [viewCopy bounds];
+  [view2 setFrame:?];
   [(SKUICommentDocumentViewController *)self addChildViewController:self->_childViewController];
   [(SKUIStackDocumentViewController *)self->_childViewController didMoveToParentViewController:self];
-  [v7 addSubview:v16];
-  [v7 sendSubviewToBack:v16];
+  [viewCopy addSubview:view2];
+  [viewCopy sendSubviewToBack:view2];
 }
 
-- (void)commentPostBarView:(id)a3 text:(id)a4 as:(id)a5
+- (void)commentPostBarView:(id)view text:(id)text as:(id)as
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  textCopy = text;
   if (self->_templateElement)
   {
-    v9 = [(SKUICommentDocumentViewController *)self _getSelectedCommenter];
-    v10 = [(SKUICommentDocumentViewController *)self _getSelectedCommenter];
-    v11 = [v10 identifier];
+    _getSelectedCommenter = [(SKUICommentDocumentViewController *)self _getSelectedCommenter];
+    _getSelectedCommenter2 = [(SKUICommentDocumentViewController *)self _getSelectedCommenter];
+    identifier = [_getSelectedCommenter2 identifier];
 
-    v12 = [v9 isAttributed];
+    isAttributed = [_getSelectedCommenter isAttributed];
     v13 = MEMORY[0x277CBEC28];
-    if (v12)
+    if (isAttributed)
     {
       v13 = MEMORY[0x277CBEC38];
     }
 
     v14 = v13;
-    v15 = [v9 authorType];
-    if (v15)
+    authorType = [_getSelectedCommenter authorType];
+    if (authorType)
     {
-      v16 = [v9 authorType];
+      authorType2 = [_getSelectedCommenter authorType];
     }
 
     else
     {
-      v16 = &stru_2827FFAC8;
+      authorType2 = &stru_2827FFAC8;
     }
 
     v17 = objc_opt_new();
     [v17 setObject:@"post" forKey:@"type"];
-    if (v8)
+    if (textCopy)
     {
-      [v17 setObject:v8 forKey:@"comment"];
+      [v17 setObject:textCopy forKey:@"comment"];
     }
 
-    if (v11)
+    if (identifier)
     {
-      [v17 setObject:v11 forKey:@"commenter"];
+      [v17 setObject:identifier forKey:@"commenter"];
     }
 
     [v17 setObject:v14 forKey:@"isAttributed"];
-    [v17 setObject:v16 forKey:@"authorType"];
+    [v17 setObject:authorType2 forKey:@"authorType"];
     templateElement = self->_templateElement;
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __64__SKUICommentDocumentViewController_commentPostBarView_text_as___block_invoke;
     v19[3] = &unk_2781FAF50;
-    v20 = v7;
+    v20 = viewCopy;
     [(SKUICommentTemplateViewElement *)templateElement dispatchEventOfType:15 canBubble:1 isCancelable:1 extraInfo:v17 completionBlock:v19];
   }
 }
@@ -356,57 +356,57 @@ uint64_t __64__SKUICommentDocumentViewController_commentPostBarView_text_as___bl
   return [v2 resignFirstResponder];
 }
 
-- (void)_keyboardWillShowNotification:(id)a3
+- (void)_keyboardWillShowNotification:(id)notification
 {
   self->_keyboardVisible = 1;
   selectedCommenter = self->_selectedCommenter;
-  v5 = a3;
+  notificationCopy = notification;
   [(SKUICommentDocumentViewController *)self _setSelectedCommenter:selectedCommenter];
   [(SKUICommentPostBarView *)self->_postView setPostButtonVisible:1];
   [(SKUICommentDocumentViewController *)self _layoutKeyboard];
-  [(SKUICommentDocumentViewController *)self _keyboardWillChangeNotification:v5 accountForGuideLines:0 applyKeyboardOffset:1];
+  [(SKUICommentDocumentViewController *)self _keyboardWillChangeNotification:notificationCopy accountForGuideLines:0 applyKeyboardOffset:1];
 }
 
-- (void)_keyboardWillHideNotification:(id)a3
+- (void)_keyboardWillHideNotification:(id)notification
 {
   postView = self->_postView;
-  v5 = a3;
+  notificationCopy = notification;
   [(SKUICommentPostBarView *)postView setCommenter:0];
   [(SKUICommentPostBarView *)self->_postView setPostButtonVisible:0];
   [(SKUICommentDocumentViewController *)self _layoutKeyboard];
-  [(SKUICommentDocumentViewController *)self _keyboardWillChangeNotification:v5 accountForGuideLines:1 applyKeyboardOffset:0];
+  [(SKUICommentDocumentViewController *)self _keyboardWillChangeNotification:notificationCopy accountForGuideLines:1 applyKeyboardOffset:0];
 }
 
-- (void)_keyboardDidHideChangeNotification:(id)a3
+- (void)_keyboardDidHideChangeNotification:(id)notification
 {
   self->_keyboardVisible = 0;
   if (self->_scrollNewCommentToView)
   {
-    v5 = [(SKUIStackDocumentViewController *)self->_childViewController sectionsViewController];
-    v14 = [v5 collectionView];
+    sectionsViewController = [(SKUIStackDocumentViewController *)self->_childViewController sectionsViewController];
+    collectionView = [sectionsViewController collectionView];
 
-    [v14 contentSize];
+    [collectionView contentSize];
     v7 = v6;
-    v8 = [(SKUICommentDocumentViewController *)self view];
-    [v8 bounds];
+    view = [(SKUICommentDocumentViewController *)self view];
+    [view bounds];
     v10 = v9;
 
     if (v7 >= v10)
     {
-      [v14 contentInset];
+      [collectionView contentInset];
       v12 = v11;
-      [v14 bounds];
-      [v14 setContentOffset:1 animated:{0.0, v12 + v7 - v13}];
+      [collectionView bounds];
+      [collectionView setContentOffset:1 animated:{0.0, v12 + v7 - v13}];
     }
   }
 }
 
-- (void)_keyboardWillChangeNotification:(id)a3 accountForGuideLines:(BOOL)a4 applyKeyboardOffset:(BOOL)a5
+- (void)_keyboardWillChangeNotification:(id)notification accountForGuideLines:(BOOL)lines applyKeyboardOffset:(BOOL)offset
 {
-  v5 = a5;
-  v6 = a4;
-  v38 = [a3 userInfo];
-  v8 = [v38 objectForKey:*MEMORY[0x277D76BB8]];
+  offsetCopy = offset;
+  linesCopy = lines;
+  userInfo = [notification userInfo];
+  v8 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
   v9 = v8;
   if (v8)
   {
@@ -415,15 +415,15 @@ uint64_t __64__SKUICommentDocumentViewController_commentPostBarView_text_as___bl
     self->_keyboardRect.origin.y = v11;
     self->_keyboardRect.size.width = v12;
     self->_keyboardRect.size.height = v13;
-    v14 = [v38 objectForKey:*MEMORY[0x277D76B78]];
+    v14 = [userInfo objectForKey:*MEMORY[0x277D76B78]];
     [v14 doubleValue];
     v16 = v15;
 
-    v17 = [v38 objectForKey:*MEMORY[0x277D76B70]];
-    v18 = [v17 unsignedIntegerValue];
+    v17 = [userInfo objectForKey:*MEMORY[0x277D76B70]];
+    unsignedIntegerValue = [v17 unsignedIntegerValue];
 
     [MEMORY[0x277D75D18] beginAnimations:0 context:0];
-    [MEMORY[0x277D75D18] setAnimationCurve:v18];
+    [MEMORY[0x277D75D18] setAnimationCurve:unsignedIntegerValue];
     [MEMORY[0x277D75D18] setAnimationDuration:v16];
     [(SKUICommentPostBarView *)self->_postView frame];
     v20 = v19;
@@ -431,28 +431,28 @@ uint64_t __64__SKUICommentDocumentViewController_commentPostBarView_text_as___bl
     v24 = v23;
     y = self->_keyboardRect.origin.y;
     [(SKUICommentPostBarView *)self->_postView bounds];
-    if (v6)
+    if (linesCopy)
     {
-      v27 = [(SKUICommentDocumentViewController *)self presentingViewController];
-      v28 = v27;
-      if (v27)
+      presentingViewController = [(SKUICommentDocumentViewController *)self presentingViewController];
+      v28 = presentingViewController;
+      if (presentingViewController)
       {
-        v29 = v27;
+        selfCopy = presentingViewController;
       }
 
       else
       {
-        v29 = self;
+        selfCopy = self;
       }
 
-      v30 = v29;
+      v30 = selfCopy;
 
-      v31 = [(SKUICommentDocumentViewController *)self view];
-      [v31 bounds];
+      view = [(SKUICommentDocumentViewController *)self view];
+      [view bounds];
       v33 = v32 - v24;
-      v34 = [(SKUICommentDocumentViewController *)v30 bottomLayoutGuide];
+      bottomLayoutGuide = [(SKUICommentDocumentViewController *)v30 bottomLayoutGuide];
 
-      [v34 length];
+      [bottomLayoutGuide length];
       v36 = v33 - v35;
     }
 
@@ -464,7 +464,7 @@ uint64_t __64__SKUICommentDocumentViewController_commentPostBarView_text_as___bl
     [(SKUICommentPostBarView *)self->_postView setFrame:v20, v36, v22, v24];
     [MEMORY[0x277D75D18] commitAnimations];
     height = 0.0;
-    if (v5)
+    if (offsetCopy)
     {
       height = self->_keyboardRect.size.height;
     }
@@ -475,21 +475,21 @@ uint64_t __64__SKUICommentDocumentViewController_commentPostBarView_text_as___bl
 
 - (id)_backgroundColor
 {
-  v2 = [(SKUICommentTemplateViewElement *)self->_templateElement style];
-  v3 = [v2 ikBackgroundColor];
-  v4 = [v3 color];
+  style = [(SKUICommentTemplateViewElement *)self->_templateElement style];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (v4)
+  if (color)
   {
-    v5 = v4;
+    whiteColor = color;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  v6 = v5;
+  v6 = whiteColor;
 
   return v6;
 }
@@ -498,12 +498,12 @@ uint64_t __64__SKUICommentDocumentViewController_commentPostBarView_text_as___bl
 {
   v34 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D75110];
-  v4 = [(SKUIViewController *)self clientContext];
-  v5 = [v3 alertControllerWithTitle:0 message:0 preferredStyle:SKUIUserInterfaceIdiom(v4) == 1];
+  clientContext = [(SKUIViewController *)self clientContext];
+  v5 = [v3 alertControllerWithTitle:0 message:0 preferredStyle:SKUIUserInterfaceIdiom(clientContext) == 1];
 
   [v5 setModalPresentationStyle:7];
-  v25 = [(SKUICommentTemplateViewElement *)self->_templateElement commentAsText];
-  v24 = [[SKUICommentHeaderViewController alloc] initWithTitle:v25];
+  commentAsText = [(SKUICommentTemplateViewElement *)self->_templateElement commentAsText];
+  v24 = [[SKUICommentHeaderViewController alloc] initWithTitle:commentAsText];
   v23 = [MEMORY[0x277D750F8] _actionWithContentViewController:? style:?];
   [v5 addAction:?];
   v31 = 0u;
@@ -531,9 +531,9 @@ uint64_t __64__SKUICommentDocumentViewController_commentPostBarView_text_as___bl
         if ([v11 isMySelf])
         {
           v12 = MEMORY[0x277CCACA8];
-          v13 = [v11 name];
-          v14 = [(SKUICommentTemplateViewElement *)self->_templateElement myselfText];
-          v15 = [v12 stringWithFormat:@"%@ (%@)", v13, v14];
+          name = [v11 name];
+          myselfText = [(SKUICommentTemplateViewElement *)self->_templateElement myselfText];
+          v15 = [v12 stringWithFormat:@"%@ (%@)", name, myselfText];
         }
 
         else
@@ -550,13 +550,13 @@ uint64_t __64__SKUICommentDocumentViewController_commentPostBarView_text_as___bl
           v15 = ;
         }
 
-        v16 = [v11 thumbnailImage];
+        thumbnailImage = [v11 thumbnailImage];
         v28[0] = MEMORY[0x277D85DD0];
         v28[1] = 3221225472;
         v28[2] = __53__SKUICommentDocumentViewController__changeCommenter__block_invoke;
         v28[3] = &unk_2781FBCE8;
         v28[4] = self;
-        v17 = [SKUICommenterAction _actionWithTitle:v15 image:v16 style:0 handler:v28 shouldDismissHandler:&__block_literal_global_50];
+        v17 = [SKUICommenterAction _actionWithTitle:v15 image:thumbnailImage style:0 handler:v28 shouldDismissHandler:&__block_literal_global_50];
         [v17 setIndex:v8];
         [v17 _setChecked:v8 == self->_selectedCommenter];
         [v17 _setTitleTextAlignment:4];
@@ -575,8 +575,8 @@ uint64_t __64__SKUICommentDocumentViewController_commentPostBarView_text_as___bl
   }
 
   v19 = MEMORY[0x277D750F8];
-  v20 = [MEMORY[0x277CCA8D8] mainBundle];
-  v21 = [v20 localizedStringForKey:@"CANCEL" value:&stru_2827FFAC8 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v21 = [mainBundle localizedStringForKey:@"CANCEL" value:&stru_2827FFAC8 table:0];
   v22 = [v19 actionWithTitle:v21 style:1 handler:&__block_literal_global_67];
 
   if (v22)
@@ -600,13 +600,13 @@ void __53__SKUICommentDocumentViewController__changeCommenter__block_invoke(uint
 
 - (void)_checkAdminStatus
 {
-  v3 = [MEMORY[0x277D69CE0] sharedCoordinator];
+  mEMORY[0x277D69CE0] = [MEMORY[0x277D69CE0] sharedCoordinator];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __54__SKUICommentDocumentViewController__checkAdminStatus__block_invoke;
   v4[3] = &unk_2781FB4C8;
   v4[4] = self;
-  [v3 getAdminStatusAndWaitWithOptions:0 resultBlock:v4];
+  [mEMORY[0x277D69CE0] getAdminStatusAndWaitWithOptions:0 resultBlock:v4];
 }
 
 void __54__SKUICommentDocumentViewController__checkAdminStatus__block_invoke(uint64_t a1, int a2)
@@ -776,8 +776,8 @@ void __54__SKUICommentDocumentViewController__checkAdminStatus__block_invoke_3(u
 
     [(SKUIViewElementLayoutContext *)self->_layoutContext setArtworkRequestDelegate:self];
     v6 = self->_layoutContext;
-    v7 = [(SKUIViewController *)self clientContext];
-    [(SKUIViewElementLayoutContext *)v6 setClientContext:v7];
+    clientContext = [(SKUIViewController *)self clientContext];
+    [(SKUIViewElementLayoutContext *)v6 setClientContext:clientContext];
 
     [(SKUIViewElementLayoutContext *)self->_layoutContext setContainerViewElementType:[(SKUICommentTemplateViewElement *)self->_templateElement elementType]];
     [(SKUIViewElementLayoutContext *)self->_layoutContext setParentViewController:self];
@@ -789,9 +789,9 @@ void __54__SKUICommentDocumentViewController__checkAdminStatus__block_invoke_3(u
     v10 = [[SKUIViewElementTextLayoutCache alloc] initWithLayoutCache:self->_textLayoutCache];
     [(SKUIViewElementLayoutContext *)self->_layoutContext setLabelLayoutCache:v10];
     v11 = [SKUIResourceLoader alloc];
-    v12 = [(SKUIViewController *)self operationQueue];
-    v13 = [(SKUIViewController *)self clientContext];
-    v14 = [(SKUIResourceLoader *)v11 initWithOperationQueue:v12 clientContext:v13];
+    operationQueue = [(SKUIViewController *)self operationQueue];
+    clientContext2 = [(SKUIViewController *)self clientContext];
+    v14 = [(SKUIResourceLoader *)v11 initWithOperationQueue:operationQueue clientContext:clientContext2];
 
     [(SKUIViewElementLayoutContext *)self->_layoutContext setResourceLoader:v14];
     layoutContext = self->_layoutContext;
@@ -800,47 +800,47 @@ void __54__SKUICommentDocumentViewController__checkAdminStatus__block_invoke_3(u
   return layoutContext;
 }
 
-- (void)_layoutScrollView:(double)a3
+- (void)_layoutScrollView:(double)view
 {
-  v5 = [(SKUICommentDocumentViewController *)self view];
-  [v5 bounds];
+  view = [(SKUICommentDocumentViewController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(SKUIStackDocumentViewController *)self->_childViewController view];
-  [v14 setFrame:{v7, v9, v11, v13 - a3}];
+  view2 = [(SKUIStackDocumentViewController *)self->_childViewController view];
+  [view2 setFrame:{v7, v9, v11, v13 - view}];
 }
 
 - (void)_layoutKeyboard
 {
-  v3 = [(SKUICommentDocumentViewController *)self presentingViewController];
-  v4 = v3;
-  if (v3)
+  presentingViewController = [(SKUICommentDocumentViewController *)self presentingViewController];
+  v4 = presentingViewController;
+  if (presentingViewController)
   {
-    v5 = v3;
+    selfCopy = presentingViewController;
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   postView = self->_postView;
-  v8 = [(SKUICommentDocumentViewController *)self view];
-  [v8 bounds];
+  view = [(SKUICommentDocumentViewController *)self view];
+  [view bounds];
   [(SKUICommentPostBarView *)postView sizeThatFits:v9, v10];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(SKUICommentDocumentViewController *)self view];
-  [v15 bounds];
+  view2 = [(SKUICommentDocumentViewController *)self view];
+  [view2 bounds];
   v17 = v16 - v14;
-  v18 = [(SKUICommentDocumentViewController *)v6 bottomLayoutGuide];
-  [v18 length];
+  bottomLayoutGuide = [(SKUICommentDocumentViewController *)v6 bottomLayoutGuide];
+  [bottomLayoutGuide length];
   v20 = v17 - v19;
 
   v21 = self->_postView;
@@ -848,22 +848,22 @@ void __54__SKUICommentDocumentViewController__checkAdminStatus__block_invoke_3(u
   [(SKUICommentPostBarView *)v21 setFrame:0.0, v20, v12, v14];
 }
 
-- (BOOL)_loadImageForURL:(id)a3 cacheKey:(id)a4 dataConsumer:(id)a5 reason:(int64_t)a6
+- (BOOL)_loadImageForURL:(id)l cacheKey:(id)key dataConsumer:(id)consumer reason:(int64_t)reason
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(SKUICommentDocumentViewController *)self _layoutContext];
-  v14 = [v13 resourceLoader];
+  consumerCopy = consumer;
+  keyCopy = key;
+  lCopy = l;
+  _layoutContext = [(SKUICommentDocumentViewController *)self _layoutContext];
+  resourceLoader = [_layoutContext resourceLoader];
 
   v15 = objc_alloc_init(SKUIArtworkRequest);
-  [(SKUIResourceRequest *)v15 setCacheKey:v11];
+  [(SKUIResourceRequest *)v15 setCacheKey:keyCopy];
 
-  [(SKUIArtworkRequest *)v15 setDataConsumer:v10];
-  [(SKUIArtworkRequest *)v15 setURL:v12];
+  [(SKUIArtworkRequest *)v15 setDataConsumer:consumerCopy];
+  [(SKUIArtworkRequest *)v15 setURL:lCopy];
 
-  LOBYTE(a6) = [v14 loadResourceWithRequest:v15 reason:a6];
-  return a6;
+  LOBYTE(reason) = [resourceLoader loadResourceWithRequest:v15 reason:reason];
+  return reason;
 }
 
 - (void)_preloadCommenterImages
@@ -888,9 +888,9 @@ void __54__SKUICommentDocumentViewController__checkAdminStatus__block_invoke_3(u
         }
 
         v7 = *(*(&v15 + 1) + 8 * i);
-        v8 = [v7 thumbnailImageURL];
+        thumbnailImageURL = [v7 thumbnailImageURL];
 
-        if (v8)
+        if (thumbnailImageURL)
         {
           v9 = objc_alloc_init(SKUICommentImageDataConsumer);
           [(SKUIStyledImageDataConsumer *)v9 setImageSize:25.0, 25.0];
@@ -901,9 +901,9 @@ void __54__SKUICommentDocumentViewController__checkAdminStatus__block_invoke_3(u
           v12[3] = &unk_2781FA1F8;
           objc_copyWeak(&v13, &location);
           [(SKUICommentImageDataConsumer *)v9 setCompletionBlock:v12];
-          v10 = [v7 thumbnailImageURL];
-          v11 = [v7 thumbnailImageURL];
-          [(SKUICommentDocumentViewController *)self _loadImageForURL:v10 cacheKey:v11 dataConsumer:v9 reason:1];
+          thumbnailImageURL2 = [v7 thumbnailImageURL];
+          thumbnailImageURL3 = [v7 thumbnailImageURL];
+          [(SKUICommentDocumentViewController *)self _loadImageForURL:thumbnailImageURL2 cacheKey:thumbnailImageURL3 dataConsumer:v9 reason:1];
 
           objc_destroyWeak(&v13);
           objc_destroyWeak(&location);
@@ -928,60 +928,60 @@ void __60__SKUICommentDocumentViewController__preloadCommenterImages__block_invo
   }
 }
 
-- (void)_reloadContentSize:(double)a3
+- (void)_reloadContentSize:(double)size
 {
-  v5 = [(SKUIStackDocumentViewController *)self->_childViewController sectionsViewController];
-  v24 = [v5 collectionView];
+  sectionsViewController = [(SKUIStackDocumentViewController *)self->_childViewController sectionsViewController];
+  collectionView = [sectionsViewController collectionView];
 
   v6 = *(MEMORY[0x277D768C8] + 8);
   v7 = *(MEMORY[0x277D768C8] + 16);
   v8 = *(MEMORY[0x277D768C8] + 24);
-  v9 = [(SKUICommentDocumentViewController *)self topLayoutGuide];
-  [v9 length];
+  topLayoutGuide = [(SKUICommentDocumentViewController *)self topLayoutGuide];
+  [topLayoutGuide length];
   v11 = v10;
 
-  if (a3 <= 0.0)
+  if (size <= 0.0)
   {
-    v12 = [(SKUICommentDocumentViewController *)self presentingViewController];
-    v13 = v12;
-    if (v12)
+    presentingViewController = [(SKUICommentDocumentViewController *)self presentingViewController];
+    v13 = presentingViewController;
+    if (presentingViewController)
     {
-      v14 = v12;
+      selfCopy = presentingViewController;
     }
 
     else
     {
-      v14 = self;
+      selfCopy = self;
     }
 
-    v15 = v14;
+    v15 = selfCopy;
 
-    v16 = [(SKUICommentDocumentViewController *)v15 bottomLayoutGuide];
+    bottomLayoutGuide = [(SKUICommentDocumentViewController *)v15 bottomLayoutGuide];
 
-    [v16 length];
-    a3 = v17;
+    [bottomLayoutGuide length];
+    size = v17;
   }
 
   else
   {
-    [v24 contentOffset];
-    [v24 setContentOffset:?];
+    [collectionView contentOffset];
+    [collectionView setContentOffset:?];
   }
 
   postView = self->_postView;
-  v19 = [(SKUICommentDocumentViewController *)self view];
-  [v19 bounds];
+  view = [(SKUICommentDocumentViewController *)self view];
+  [view bounds];
   [(SKUICommentPostBarView *)postView sizeThatFits:v20, v21];
-  v23 = v7 + a3 + v22;
+  v23 = v7 + size + v22;
 
-  [v24 setContentInset:{v11, v6, v23, v8}];
+  [collectionView setContentInset:{v11, v6, v23, v8}];
 }
 
-- (void)_setSelectedCommenter:(int64_t)a3
+- (void)_setSelectedCommenter:(int64_t)commenter
 {
   if ([(NSArray *)self->_commenters count]&& (selectedCommenter = self->_selectedCommenter, selectedCommenter < [(NSArray *)self->_commenters count]))
   {
-    if (a3 || ([(SKUICommentTemplateViewElement *)self->_templateElement myselfText], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
+    if (commenter || ([(SKUICommentTemplateViewElement *)self->_templateElement myselfText], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
     {
       v6 = [(NSArray *)self->_commenters objectAtIndex:self->_selectedCommenter];
       if ([v6 isAttributed])
@@ -995,19 +995,19 @@ void __60__SKUICommentDocumentViewController__preloadCommenterImages__block_invo
       }
       v11 = ;
 
-      v8 = v11;
+      myselfText = v11;
     }
 
     else
     {
-      v8 = [(SKUICommentTemplateViewElement *)self->_templateElement myselfText];
+      myselfText = [(SKUICommentTemplateViewElement *)self->_templateElement myselfText];
     }
 
     postView = self->_postView;
-    v12 = v8;
+    v12 = myselfText;
     if (self->_keyboardVisible)
     {
-      [(SKUICommentPostBarView *)postView setCommenter:v8];
+      [(SKUICommentPostBarView *)postView setCommenter:myselfText];
     }
 
     else

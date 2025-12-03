@@ -1,12 +1,12 @@
 @interface VABundleUtil
-+ (id)bundePathFallbackWithResource:(id)a3 type:(id)a4;
-+ (id)bundlePathFallbackWithPath:(id)a3 error:(id *)a4;
++ (id)bundePathFallbackWithResource:(id)resource type:(id)type;
++ (id)bundlePathFallbackWithPath:(id)path error:(id *)error;
 - (VABundleUtil)init;
 @end
 
 @implementation VABundleUtil
 
-+ (id)bundePathFallbackWithResource:(id)a3 type:(id)a4
++ (id)bundePathFallbackWithResource:(id)resource type:(id)type
 {
   sub_27237782C();
   sub_27237782C();
@@ -34,7 +34,7 @@ LABEL_5:
   return v7;
 }
 
-+ (id)bundlePathFallbackWithPath:(id)a3 error:(id *)a4
++ (id)bundlePathFallbackWithPath:(id)path error:(id *)error
 {
   v4 = sub_27237782C();
   sub_272258924(v4, v5);

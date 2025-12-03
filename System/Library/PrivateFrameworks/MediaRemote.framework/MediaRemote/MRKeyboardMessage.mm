@@ -1,46 +1,46 @@
 @interface MRKeyboardMessage
-+ (id)encryptedMessageWithState:(unint64_t)a3 text:(id)a4 attributes:(id)a5 usingCryptoSession:(id)a6;
-- (MRKeyboardMessage)initWithState:(unint64_t)a3 encryptedTextCyphertext:(id)a4 attributes:(id)a5;
++ (id)encryptedMessageWithState:(unint64_t)state text:(id)text attributes:(id)attributes usingCryptoSession:(id)session;
+- (MRKeyboardMessage)initWithState:(unint64_t)state encryptedTextCyphertext:(id)cyphertext attributes:(id)attributes;
 - (MRTextEditingAttributes)attributes;
 - (NSData)encryptedTextCyphertext;
-- (id)decryptedTextUsingCryptoSession:(id)a3;
+- (id)decryptedTextUsingCryptoSession:(id)session;
 - (unint64_t)state;
 @end
 
 @implementation MRKeyboardMessage
 
-+ (id)encryptedMessageWithState:(unint64_t)a3 text:(id)a4 attributes:(id)a5 usingCryptoSession:(id)a6
++ (id)encryptedMessageWithState:(unint64_t)state text:(id)text attributes:(id)attributes usingCryptoSession:(id)session
 {
-  v8 = a5;
-  v9 = [a4 dataUsingEncoding:4];
-  v10 = [[MRKeyboardMessage alloc] initWithState:a3 encryptedTextCyphertext:v9 attributes:v8];
+  attributesCopy = attributes;
+  v9 = [text dataUsingEncoding:4];
+  v10 = [[MRKeyboardMessage alloc] initWithState:state encryptedTextCyphertext:v9 attributes:attributesCopy];
 
   return v10;
 }
 
-- (MRKeyboardMessage)initWithState:(unint64_t)a3 encryptedTextCyphertext:(id)a4 attributes:(id)a5
+- (MRKeyboardMessage)initWithState:(unint64_t)state encryptedTextCyphertext:(id)cyphertext attributes:(id)attributes
 {
-  v8 = a4;
-  v9 = a5;
+  cyphertextCopy = cyphertext;
+  attributesCopy = attributes;
   v27.receiver = self;
   v27.super_class = MRKeyboardMessage;
   v10 = [(MRProtocolMessage *)&v27 init];
   if (v10)
   {
-    v11 = [v9 copy];
+    v11 = [attributesCopy copy];
     attributes = v10->_attributes;
     v10->_attributes = v11;
 
     v13 = objc_alloc_init(_MRKeyboardMessageProtobuf);
-    [(_MRKeyboardMessageProtobuf *)v13 setState:a3];
-    [(_MRKeyboardMessageProtobuf *)v13 setEncryptedTextCyphertext:v8];
-    v14 = v9;
+    [(_MRKeyboardMessageProtobuf *)v13 setState:state];
+    [(_MRKeyboardMessageProtobuf *)v13 setEncryptedTextCyphertext:cyphertextCopy];
+    v14 = attributesCopy;
     v15 = objc_alloc_init(_MRTextEditingAttributesProtobuf);
-    v16 = [v14 title];
-    [(_MRTextEditingAttributesProtobuf *)v15 setTitle:v16];
+    title = [v14 title];
+    [(_MRTextEditingAttributesProtobuf *)v15 setTitle:title];
 
-    v17 = [v14 prompt];
-    [(_MRTextEditingAttributesProtobuf *)v15 setPrompt:v17];
+    prompt = [v14 prompt];
+    [(_MRTextEditingAttributesProtobuf *)v15 setPrompt:prompt];
 
     if (v14)
     {
@@ -125,18 +125,18 @@
 
 - (unint64_t)state
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 state];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  state = [underlyingCodableMessage state];
 
-  return v3;
+  return state;
 }
 
 - (NSData)encryptedTextCyphertext
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 encryptedTextCyphertext];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  encryptedTextCyphertext = [underlyingCodableMessage encryptedTextCyphertext];
 
-  return v3;
+  return encryptedTextCyphertext;
 }
 
 - (MRTextEditingAttributes)attributes
@@ -144,56 +144,56 @@
   attributes = self->_attributes;
   if (!attributes)
   {
-    v27 = [(MRProtocolMessage *)self underlyingCodableMessage];
-    v4 = [v27 attributes];
+    underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+    attributes = [underlyingCodableMessage attributes];
     v5 = objc_alloc_init(MRMutableTextEditingAttributes);
-    v6 = [v4 title];
-    [(MRMutableTextEditingAttributes *)v5 setTitle:v6];
+    title = [attributes title];
+    [(MRMutableTextEditingAttributes *)v5 setTitle:title];
 
-    v7 = [v4 prompt];
-    [(MRMutableTextEditingAttributes *)v5 setPrompt:v7];
+    prompt = [attributes prompt];
+    [(MRMutableTextEditingAttributes *)v5 setPrompt:prompt];
 
-    v8 = [v4 inputTraits];
+    inputTraits = [attributes inputTraits];
     memset(v30 + 8, 0, 128);
-    v9 = [v8 autocapitalizationType];
-    if ((v9 - 1) >= 3)
+    autocapitalizationType = [inputTraits autocapitalizationType];
+    if ((autocapitalizationType - 1) >= 3)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = v9;
+      v10 = autocapitalizationType;
     }
 
     LODWORD(v30[0]) = v10;
-    v11 = [v8 keyboardType];
+    keyboardType = [inputTraits keyboardType];
     v12 = 0;
-    if ((v11 - 1) <= 0xB)
+    if ((keyboardType - 1) <= 0xB)
     {
-      v12 = dword_1A2B81134[v11 - 1];
+      v12 = dword_1A2B81134[keyboardType - 1];
     }
 
     HIDWORD(v30[0]) = v12;
-    v13 = [v8 returnKeyType];
-    if ((v13 - 1) >= 0xB)
+    returnKeyType = [inputTraits returnKeyType];
+    if ((returnKeyType - 1) >= 0xB)
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = v13;
+      v14 = returnKeyType;
     }
 
     LODWORD(v30[1]) = v14;
-    BYTE8(v30[2]) = [v8 enablesReturnKeyAutomatically];
-    BYTE9(v30[2]) = [v8 secureTextEntry];
-    v15 = [v8 hasAutocorrection];
+    BYTE8(v30[2]) = [inputTraits enablesReturnKeyAutomatically];
+    BYTE9(v30[2]) = [inputTraits secureTextEntry];
+    hasAutocorrection = [inputTraits hasAutocorrection];
     v16 = 0;
-    if (v15)
+    if (hasAutocorrection)
     {
-      if ([v8 autocorrection])
+      if ([inputTraits autocorrection])
       {
         v16 = 2;
       }
@@ -205,9 +205,9 @@
     }
 
     DWORD1(v30[0]) = v16;
-    if ([v8 hasSpellchecking])
+    if ([inputTraits hasSpellchecking])
     {
-      if ([v8 spellchecking])
+      if ([inputTraits spellchecking])
       {
         v17 = 2;
       }
@@ -224,30 +224,30 @@
     }
 
     DWORD2(v30[0]) = v17;
-    if ([v8 hasValidTextRangeLocation] && objc_msgSend(v8, "hasValidTextRangeLength"))
+    if ([inputTraits hasValidTextRangeLocation] && objc_msgSend(inputTraits, "hasValidTextRangeLength"))
     {
-      v18 = [v8 validTextRangeLocation];
-      v19 = [v8 validTextRangeLength];
-      *(&v30[1] + 1) = v18;
+      validTextRangeLocation = [inputTraits validTextRangeLocation];
+      validTextRangeLength = [inputTraits validTextRangeLength];
+      *(&v30[1] + 1) = validTextRangeLocation;
     }
 
     else
     {
       *(&v30[1] + 1) = 0;
-      v19 = -1;
+      validTextRangeLength = -1;
     }
 
-    *&v30[2] = v19;
-    v20 = [v8 pINEntrySeparatorIndexesCount];
-    *&v30[8] = v20;
-    if (v20)
+    *&v30[2] = validTextRangeLength;
+    pINEntrySeparatorIndexesCount = [inputTraits pINEntrySeparatorIndexesCount];
+    *&v30[8] = pINEntrySeparatorIndexesCount;
+    if (pINEntrySeparatorIndexesCount)
     {
-      v21 = v20;
+      v21 = pINEntrySeparatorIndexesCount;
       v22 = 0;
       v23 = 1;
       do
       {
-        *(&v30[3] + v22) = [v8 pINEntrySeparatorIndexesAtIndex:v22];
+        *(&v30[3] + v22) = [inputTraits pINEntrySeparatorIndexesAtIndex:v22];
         v22 = v23;
       }
 
@@ -274,10 +274,10 @@
   return attributes;
 }
 
-- (id)decryptedTextUsingCryptoSession:(id)a3
+- (id)decryptedTextUsingCryptoSession:(id)session
 {
-  v3 = [(MRKeyboardMessage *)self encryptedTextCyphertext];
-  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v3 encoding:4];
+  encryptedTextCyphertext = [(MRKeyboardMessage *)self encryptedTextCyphertext];
+  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:encryptedTextCyphertext encoding:4];
 
   return v4;
 }

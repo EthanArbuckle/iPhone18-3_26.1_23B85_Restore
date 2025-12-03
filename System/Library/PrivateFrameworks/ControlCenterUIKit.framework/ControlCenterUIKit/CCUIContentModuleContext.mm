@@ -1,26 +1,26 @@
 @interface CCUIContentModuleContext
-+ (BOOL)areAnimationsPermittedInWindow:(id)a3;
++ (BOOL)areAnimationsPermittedInWindow:(id)window;
 + (id)_sharedOpenAppService;
 + (id)_sharedOpenApplicationOptions;
 + (void)initialize;
-+ (void)performWithoutAnimationWhileHiddenInWindow:(id)a3 actions:(id)a4;
-+ (void)setAnimationsPermitted:(BOOL)a3 inWindow:(id)a4;
++ (void)performWithoutAnimationWhileHiddenInWindow:(id)window actions:(id)actions;
++ (void)setAnimationsPermitted:(BOOL)permitted inWindow:(id)window;
 - (BOOL)isDevicePasscodeLocked;
-- (CCUIContentModuleContext)initWithModuleIdentifier:(id)a3 uniqueIdentifier:(id)a4;
+- (CCUIContentModuleContext)initWithModuleIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier;
 - (CCUIContentModuleContextDelegate)delegate;
 - (CCUIDisplayLayoutContextProviding)displayLayoutContextProvider;
-- (CCUIModuleLayoutSize)moduleLayoutSizeForOrientation:(int64_t)a3;
+- (CCUIModuleLayoutSize)moduleLayoutSizeForOrientation:(int64_t)orientation;
 - (CCUISensorActivityData)mutedMicrophoneSensorActivityData;
 - (CCUISensorActivityData)sensorActivityDataEligibleForInactiveMicModeSelection;
-- (id)sensorActivityDataForActiveSensorType:(unint64_t)a3;
+- (id)sensorActivityDataForActiveSensorType:(unint64_t)type;
 - (void)dismissControlCenter;
 - (void)dismissModule;
-- (void)enqueueStatusUpdate:(id)a3;
+- (void)enqueueStatusUpdate:(id)update;
 - (void)invalidateContainerViewsForPlatterTreatment;
-- (void)openApplication:(id)a3 completionHandler:(id)a4;
-- (void)openApplication:(id)a3 withOptions:(id)a4 completionHandler:(id)a5;
-- (void)openURL:(id)a3 completionHandler:(id)a4;
-- (void)requestAuthenticationWithCompletionHandler:(id)a3;
+- (void)openApplication:(id)application completionHandler:(id)handler;
+- (void)openApplication:(id)application withOptions:(id)options completionHandler:(id)handler;
+- (void)openURL:(id)l completionHandler:(id)handler;
+- (void)requestAuthenticationWithCompletionHandler:(id)handler;
 - (void)requestExpandModule;
 - (void)requestLayoutSizeUpdate;
 @end
@@ -29,8 +29,8 @@
 
 - (void)invalidateContainerViewsForPlatterTreatment
 {
-  v3 = [(CCUIContentModuleContext *)self delegate];
-  [v3 invalidateContainerViewsForPlatterTreatmentForContentModuleContext:self];
+  delegate = [(CCUIContentModuleContext *)self delegate];
+  [delegate invalidateContainerViewsForPlatterTreatmentForContentModuleContext:self];
 }
 
 - (CCUIContentModuleContextDelegate)delegate
@@ -105,25 +105,25 @@ uint64_t __38__CCUIContentModuleContext_initialize__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CCUIContentModuleContext)initWithModuleIdentifier:(id)a3 uniqueIdentifier:(id)a4
+- (CCUIContentModuleContext)initWithModuleIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
   v19.receiver = self;
   v19.super_class = CCUIContentModuleContext;
   v8 = [(CCUIContentModuleContext *)&v19 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [uniqueIdentifierCopy copy];
     uniqueIdentifier = v8->_uniqueIdentifier;
     v8->_uniqueIdentifier = v9;
 
-    v11 = [v6 copy];
+    v11 = [identifierCopy copy];
     moduleIdentifier = v8->_moduleIdentifier;
     v8->_moduleIdentifier = v11;
 
-    v13 = [MEMORY[0x1E698E698] serial];
-    v14 = [v13 autoreleaseFrequency:1];
+    serial = [MEMORY[0x1E698E698] serial];
+    v14 = [serial autoreleaseFrequency:1];
     v15 = [v14 serviceClass:25];
     v16 = BSDispatchQueueCreate();
     queue = v8->_queue;
@@ -133,17 +133,17 @@ uint64_t __38__CCUIContentModuleContext_initialize__block_invoke()
   return v8;
 }
 
-- (void)requestAuthenticationWithCompletionHandler:(id)a3
+- (void)requestAuthenticationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CCUIContentModuleContext *)self queue];
+  handlerCopy = handler;
+  queue = [(CCUIContentModuleContext *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__CCUIContentModuleContext_requestAuthenticationWithCompletionHandler___block_invoke;
   block[3] = &unk_1E83EA950;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __71__CCUIContentModuleContext_requestAuthenticationWithCompletionHandler___block_invoke(uint64_t a1)
@@ -163,23 +163,23 @@ uint64_t __71__CCUIContentModuleContext_requestAuthenticationWithCompletionHandl
   return result;
 }
 
-- (void)openURL:(id)a3 completionHandler:(id)a4
+- (void)openURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() _sharedOpenApplicationOptions];
-  v9 = [(CCUIContentModuleContext *)self queue];
+  lCopy = l;
+  handlerCopy = handler;
+  _sharedOpenApplicationOptions = [objc_opt_class() _sharedOpenApplicationOptions];
+  queue = [(CCUIContentModuleContext *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__CCUIContentModuleContext_openURL_completionHandler___block_invoke;
   block[3] = &unk_1E83EA978;
-  v14 = v6;
-  v15 = v8;
-  v16 = v7;
-  v10 = v7;
-  v11 = v8;
-  v12 = v6;
-  dispatch_async(v9, block);
+  v14 = lCopy;
+  v15 = _sharedOpenApplicationOptions;
+  v16 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = _sharedOpenApplicationOptions;
+  v12 = lCopy;
+  dispatch_async(queue, block);
 }
 
 void __54__CCUIContentModuleContext_openURL_completionHandler___block_invoke(uint64_t *a1)
@@ -216,31 +216,31 @@ void __54__CCUIContentModuleContext_openURL_completionHandler___block_invoke(uin
   }
 }
 
-- (void)openApplication:(id)a3 completionHandler:(id)a4
+- (void)openApplication:(id)application completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() _sharedOpenApplicationOptions];
-  [(CCUIContentModuleContext *)self openApplication:v7 withOptions:v8 completionHandler:v6];
+  handlerCopy = handler;
+  applicationCopy = application;
+  _sharedOpenApplicationOptions = [objc_opt_class() _sharedOpenApplicationOptions];
+  [(CCUIContentModuleContext *)self openApplication:applicationCopy withOptions:_sharedOpenApplicationOptions completionHandler:handlerCopy];
 }
 
-- (void)openApplication:(id)a3 withOptions:(id)a4 completionHandler:(id)a5
+- (void)openApplication:(id)application withOptions:(id)options completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [objc_opt_class() _sharedOpenAppService];
-  v11 = [MEMORY[0x1E699FB70] optionsWithDictionary:v9];
+  applicationCopy = application;
+  handlerCopy = handler;
+  optionsCopy = options;
+  _sharedOpenAppService = [objc_opt_class() _sharedOpenAppService];
+  v11 = [MEMORY[0x1E699FB70] optionsWithDictionary:optionsCopy];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __74__CCUIContentModuleContext_openApplication_withOptions_completionHandler___block_invoke;
   v14[3] = &unk_1E83EA9A0;
-  v15 = v7;
-  v16 = v8;
-  v12 = v8;
-  v13 = v7;
-  [v10 openApplication:v13 withOptions:v11 completion:v14];
+  v15 = applicationCopy;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = applicationCopy;
+  [_sharedOpenAppService openApplication:v13 withOptions:v11 completion:v14];
 }
 
 void __74__CCUIContentModuleContext_openApplication_withOptions_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -272,16 +272,16 @@ void __74__CCUIContentModuleContext_openApplication_withOptions_completionHandle
   }
 }
 
-- (void)enqueueStatusUpdate:(id)a3
+- (void)enqueueStatusUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__CCUIContentModuleContext_enqueueStatusUpdate___block_invoke;
   v6[3] = &unk_1E83EA450;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updateCopy;
+  v5 = updateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -367,36 +367,36 @@ void __51__CCUIContentModuleContext_requestLayoutSizeUpdate__block_invoke(uint64
   }
 }
 
-- (id)sensorActivityDataForActiveSensorType:(unint64_t)a3
+- (id)sensorActivityDataForActiveSensorType:(unint64_t)type
 {
-  v5 = [(CCUIContentModuleContext *)self delegate];
-  v6 = [v5 contentModuleContext:self requestsSensorActivityDataForActiveSensorType:a3];
+  delegate = [(CCUIContentModuleContext *)self delegate];
+  v6 = [delegate contentModuleContext:self requestsSensorActivityDataForActiveSensorType:type];
 
   return v6;
 }
 
 - (CCUISensorActivityData)mutedMicrophoneSensorActivityData
 {
-  v3 = [(CCUIContentModuleContext *)self delegate];
-  v4 = [v3 contentModuleContextRequestsMutedMicrophoneSensorActivityData:self];
+  delegate = [(CCUIContentModuleContext *)self delegate];
+  v4 = [delegate contentModuleContextRequestsMutedMicrophoneSensorActivityData:self];
 
   return v4;
 }
 
 - (CCUISensorActivityData)sensorActivityDataEligibleForInactiveMicModeSelection
 {
-  v3 = [(CCUIContentModuleContext *)self delegate];
-  v4 = [v3 contentModuleContextRequestsSensorActivityDataEligibleForInactiveMicModeSelection:self];
+  delegate = [(CCUIContentModuleContext *)self delegate];
+  v4 = [delegate contentModuleContextRequestsSensorActivityDataEligibleForInactiveMicModeSelection:self];
 
   return v4;
 }
 
-- (CCUIModuleLayoutSize)moduleLayoutSizeForOrientation:(int64_t)a3
+- (CCUIModuleLayoutSize)moduleLayoutSizeForOrientation:(int64_t)orientation
 {
-  v5 = [(CCUIContentModuleContext *)self delegate];
+  delegate = [(CCUIContentModuleContext *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 moduleLayoutSizeForContentModuleContext:self forOrientation:a3];
+    v6 = [delegate moduleLayoutSizeForContentModuleContext:self forOrientation:orientation];
     v8 = v7;
   }
 
@@ -415,10 +415,10 @@ void __51__CCUIContentModuleContext_requestLayoutSizeUpdate__block_invoke(uint64
 
 - (BOOL)isDevicePasscodeLocked
 {
-  v3 = [(CCUIContentModuleContext *)self delegate];
+  delegate = [(CCUIContentModuleContext *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 isDevicePasscodeLockedForContentModuleContext:self];
+    v4 = [delegate isDevicePasscodeLockedForContentModuleContext:self];
   }
 
   else
@@ -429,14 +429,14 @@ void __51__CCUIContentModuleContext_requestLayoutSizeUpdate__block_invoke(uint64
   return v4;
 }
 
-+ (BOOL)areAnimationsPermittedInWindow:(id)a3
++ (BOOL)areAnimationsPermittedInWindow:(id)window
 {
-  v3 = a3;
+  windowCopy = window;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v3)
+  if (windowCopy)
   {
-    v4 = [v3 _contextId];
-    v5 = v4 != __animationsDisabledContextID;
+    _contextId = [windowCopy _contextId];
+    v5 = _contextId != __animationsDisabledContextID;
   }
 
   else
@@ -447,45 +447,45 @@ void __51__CCUIContentModuleContext_requestLayoutSizeUpdate__block_invoke(uint64
   return v5;
 }
 
-+ (void)setAnimationsPermitted:(BOOL)a3 inWindow:(id)a4
++ (void)setAnimationsPermitted:(BOOL)permitted inWindow:(id)window
 {
-  v8 = a4;
-  if (!v8 && !a3)
+  windowCopy = window;
+  if (!windowCopy && !permitted)
   {
-    [CCUIContentModuleContext setAnimationsPermitted:a2 inWindow:a1];
+    [CCUIContentModuleContext setAnimationsPermitted:a2 inWindow:self];
   }
 
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (a3)
+  if (permitted)
   {
-    v7 = 0;
+    _contextId = 0;
   }
 
   else
   {
-    v7 = [v8 _contextId];
+    _contextId = [windowCopy _contextId];
   }
 
-  __animationsDisabledContextID = v7;
+  __animationsDisabledContextID = _contextId;
 
-  MEMORY[0x1EEE66BB8](v7, v8);
+  MEMORY[0x1EEE66BB8](_contextId, windowCopy);
 }
 
-+ (void)performWithoutAnimationWhileHiddenInWindow:(id)a3 actions:(id)a4
++ (void)performWithoutAnimationWhileHiddenInWindow:(id)window actions:(id)actions
 {
-  v7 = a3;
-  v6 = a4;
-  if (v6)
+  windowCopy = window;
+  actionsCopy = actions;
+  if (actionsCopy)
   {
     dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-    if ([a1 areAnimationsPermittedInWindow:v7])
+    if ([self areAnimationsPermittedInWindow:windowCopy])
     {
-      v6[2](v6);
+      actionsCopy[2](actionsCopy);
     }
 
     else
     {
-      [MEMORY[0x1E69DD250] performWithoutAnimation:v6];
+      [MEMORY[0x1E69DD250] performWithoutAnimation:actionsCopy];
     }
   }
 }

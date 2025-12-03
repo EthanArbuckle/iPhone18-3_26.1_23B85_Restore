@@ -3,34 +3,34 @@
 - (AMSBagValue)changeLanguageURL;
 - (AMSBagValue)trustedDomains;
 - (Daemon)init;
-- (id)addObserverForBackgroundTaskWithIdentifierPrefix:(id)a3 withBlock:(id)a4;
-- (id)cachedObjectForKey:(id)a3;
-- (void)_expireCachedObjectForKey:(id)a3;
+- (id)addObserverForBackgroundTaskWithIdentifierPrefix:(id)prefix withBlock:(id)block;
+- (id)cachedObjectForKey:(id)key;
+- (void)_expireCachedObjectForKey:(id)key;
 - (void)_finishProtectionClassCMigrationIfNeeded;
-- (void)_getShowingDialogWithMessage:(id)a3 connection:(id)a4;
-- (void)_handleWakeWithName:(const char *)a3 job:(id)a4;
+- (void)_getShowingDialogWithMessage:(id)message connection:(id)connection;
+- (void)_handleWakeWithName:(const char *)name job:(id)job;
 - (void)_initBackgroundTaskAgent;
-- (void)_networkUsageStateChangeNotification:(id)a3;
+- (void)_networkUsageStateChangeNotification:(id)notification;
 - (void)_observeNotifications;
-- (void)_operationCountChanged:(id)a3;
+- (void)_operationCountChanged:(id)changed;
 - (void)_reloadOperationKeepAliveTransaction;
 - (void)_reloadWiFiManager;
 - (void)_setGlobalState;
-- (void)addBackgroundTaskWithRequest:(id)a3;
-- (void)addKeepAliveOperationQueue:(id)a3;
-- (void)batterySaverWatcherDidChangeState:(id)a3;
+- (void)addBackgroundTaskWithRequest:(id)request;
+- (void)addKeepAliveOperationQueue:(id)queue;
+- (void)batterySaverWatcherDidChangeState:(id)state;
 - (void)beginShowingDialog;
-- (void)cacheObject:(id)a3 withKey:(id)a4 expirationInterval:(double)a5;
-- (void)cancelBackgroundTaskWithIdentifier:(id)a3;
+- (void)cacheObject:(id)object withKey:(id)key expirationInterval:(double)interval;
+- (void)cancelBackgroundTaskWithIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)endShowingDialog;
-- (void)keepAliveWithAssertion:(id)a3 block:(id)a4;
-- (void)releaseKeepAliveAssertion:(id)a3;
-- (void)removeBackgroundTaskObserver:(id)a3;
-- (void)removeCachedObjectForKey:(id)a3;
-- (void)removeKeepAliveOperationQueue:(id)a3;
+- (void)keepAliveWithAssertion:(id)assertion block:(id)block;
+- (void)releaseKeepAliveAssertion:(id)assertion;
+- (void)removeBackgroundTaskObserver:(id)observer;
+- (void)removeCachedObjectForKey:(id)key;
+- (void)removeKeepAliveOperationQueue:(id)queue;
 - (void)start;
-- (void)takeKeepAliveAssertion:(id)a3;
+- (void)takeKeepAliveAssertion:(id)assertion;
 @end
 
 @implementation Daemon
@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001CD9F8;
   block[3] = &unk_100327378;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100384088 != -1)
   {
     dispatch_once(&qword_100384088, block);
@@ -165,15 +165,15 @@
         v10 = +[SSLogConfig sharedConfig];
       }
 
-      v11 = [v10 shouldLog];
+      shouldLog = [v10 shouldLog];
       if ([v10 shouldLogToDisk])
       {
-        v12 = v11 | 2;
+        v12 = shouldLog | 2;
       }
 
       else
       {
-        v12 = v11;
+        v12 = shouldLog;
       }
 
       if (os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -247,15 +247,15 @@
   [(Daemon *)&v8 dealloc];
 }
 
-- (void)addBackgroundTaskWithRequest:(id)a3
+- (void)addBackgroundTaskWithRequest:(id)request
 {
-  v5 = [a3 requestIdentifier];
-  if (v5)
+  requestIdentifier = [request requestIdentifier];
+  if (requestIdentifier)
   {
-    v6 = v5;
-    v7 = [v5 UTF8String];
-    v8 = [a3 copyBackgroundTaskAgentJob];
-    if (v8)
+    v6 = requestIdentifier;
+    uTF8String = [requestIdentifier UTF8String];
+    copyBackgroundTaskAgentJob = [request copyBackgroundTaskAgentJob];
+    if (copyBackgroundTaskAgentJob)
     {
       handler[0] = _NSConcreteStackBlock;
       handler[1] = 3221225472;
@@ -263,18 +263,18 @@
       handler[3] = &unk_10032BA20;
       handler[4] = self;
       handler[5] = v6;
-      handler[6] = v8;
-      xpc_activity_register(v7, v8, handler);
+      handler[6] = copyBackgroundTaskAgentJob;
+      xpc_activity_register(uTF8String, copyBackgroundTaskAgentJob, handler);
       v9 = +[SSLogConfig sharedConfig];
-      v10 = [v9 shouldLog];
+      shouldLog = [v9 shouldLog];
       if ([v9 shouldLogToDisk])
       {
-        v11 = v10 | 2;
+        v11 = shouldLog | 2;
       }
 
       else
       {
-        v11 = v10;
+        v11 = shouldLog;
       }
 
       if (os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -299,15 +299,15 @@
     else
     {
       v13 = +[SSLogConfig sharedConfig];
-      v14 = [v13 shouldLog];
+      shouldLog2 = [v13 shouldLog];
       if ([v13 shouldLogToDisk])
       {
-        v15 = v14 | 2;
+        v15 = shouldLog2 | 2;
       }
 
       else
       {
-        v15 = v14;
+        v15 = shouldLog2;
       }
 
       if (os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -339,7 +339,7 @@ LABEL_19:
   }
 }
 
-- (void)addKeepAliveOperationQueue:(id)a3
+- (void)addKeepAliveOperationQueue:(id)queue
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -347,20 +347,20 @@ LABEL_19:
   v4[2] = sub_1001CDD5C;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = queue;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (id)addObserverForBackgroundTaskWithIdentifierPrefix:(id)a3 withBlock:(id)a4
+- (id)addObserverForBackgroundTaskWithIdentifierPrefix:(id)prefix withBlock:(id)block
 {
-  v6 = [a4 copy];
+  v6 = [block copy];
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001CDE80;
   block[3] = &unk_10032AF90;
   block[4] = self;
-  block[5] = a3;
+  block[5] = prefix;
   block[6] = v6;
   dispatch_sync(dispatchQueue, block);
   return v6;
@@ -378,7 +378,7 @@ LABEL_19:
   dispatch_async(dispatchQueue, block);
 }
 
-- (id)cachedObjectForKey:(id)a3
+- (id)cachedObjectForKey:(id)key
 {
   v7 = 0;
   v8 = &v7;
@@ -392,7 +392,7 @@ LABEL_19:
   block[2] = sub_1001CE2F0;
   block[3] = &unk_10032AF40;
   block[4] = self;
-  block[5] = a3;
+  block[5] = key;
   block[6] = &v7;
   dispatch_sync(dispatchQueue, block);
   v4 = v8[5];
@@ -400,28 +400,28 @@ LABEL_19:
   return v4;
 }
 
-- (void)cacheObject:(id)a3 withKey:(id)a4 expirationInterval:(double)a5
+- (void)cacheObject:(id)object withKey:(id)key expirationInterval:(double)interval
 {
   dispatchQueue = self->_dispatchQueue;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001CE3AC;
   v6[3] = &unk_10032BA98;
-  v6[4] = a3;
+  v6[4] = object;
   v6[5] = self;
-  v6[6] = a4;
-  *&v6[7] = a5;
+  v6[6] = key;
+  *&v6[7] = interval;
   dispatch_async(dispatchQueue, v6);
 }
 
-- (void)cancelBackgroundTaskWithIdentifier:(id)a3
+- (void)cancelBackgroundTaskWithIdentifier:(id)identifier
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1001CE5FC;
   v4[3] = &unk_100327350;
-  v4[4] = a3;
+  v4[4] = identifier;
   v4[5] = self;
   dispatch_async(dispatchQueue, v4);
 }
@@ -438,7 +438,7 @@ LABEL_19:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)keepAliveWithAssertion:(id)a3 block:(id)a4
+- (void)keepAliveWithAssertion:(id)assertion block:(id)block
 {
   [(Daemon *)self takeKeepAliveAssertion:?];
   global_queue = dispatch_get_global_queue(0, 0);
@@ -446,13 +446,13 @@ LABEL_19:
   block[1] = 3221225472;
   block[2] = sub_1001CE8A0;
   block[3] = &unk_100327408;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = assertion;
+  block[6] = block;
   block[4] = self;
   dispatch_async(global_queue, block);
 }
 
-- (void)takeKeepAliveAssertion:(id)a3
+- (void)takeKeepAliveAssertion:(id)assertion
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -460,11 +460,11 @@ LABEL_19:
   v4[2] = sub_1001CE988;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = assertion;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)releaseKeepAliveAssertion:(id)a3
+- (void)releaseKeepAliveAssertion:(id)assertion
 {
   v5 = dispatch_time(0, 15000000000);
   dispatchQueue = self->_dispatchQueue;
@@ -473,13 +473,13 @@ LABEL_19:
   v7[2] = sub_1001CEAB8;
   v7[3] = &unk_100327350;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = assertion;
   dispatch_after(v5, dispatchQueue, v7);
 }
 
-- (void)removeBackgroundTaskObserver:(id)a3
+- (void)removeBackgroundTaskObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     dispatchQueue = self->_dispatchQueue;
     v4[0] = _NSConcreteStackBlock;
@@ -487,14 +487,14 @@ LABEL_19:
     v4[2] = sub_1001CEBA8;
     v4[3] = &unk_100327350;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = observer;
     dispatch_async(dispatchQueue, v4);
   }
 }
 
-- (void)removeCachedObjectForKey:(id)a3
+- (void)removeCachedObjectForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     dispatchQueue = self->_dispatchQueue;
     v4[0] = _NSConcreteStackBlock;
@@ -502,12 +502,12 @@ LABEL_19:
     v4[2] = sub_1001CED24;
     v4[3] = &unk_100327350;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = key;
     dispatch_async(dispatchQueue, v4);
   }
 }
 
-- (void)removeKeepAliveOperationQueue:(id)a3
+- (void)removeKeepAliveOperationQueue:(id)queue
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -515,7 +515,7 @@ LABEL_19:
   v4[2] = sub_1001CEDA4;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = queue;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -527,15 +527,15 @@ LABEL_19:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
   if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_INFO))
@@ -602,15 +602,15 @@ LABEL_19:
     v12 = +[SSLogConfig sharedConfig];
   }
 
-  v13 = [v12 shouldLog];
+  shouldLog2 = [v12 shouldLog];
   if ([v12 shouldLogToDisk])
   {
-    v14 = v13 | 2;
+    v14 = shouldLog2 | 2;
   }
 
   else
   {
-    v14 = v13;
+    v14 = shouldLog2;
   }
 
   if (!os_log_type_enabled([v12 OSLogObject], OS_LOG_TYPE_INFO))
@@ -695,15 +695,15 @@ LABEL_19:
     v28 = +[SSLogConfig sharedConfig];
   }
 
-  v29 = [v28 shouldLog];
+  shouldLog3 = [v28 shouldLog];
   if ([v28 shouldLogToDisk])
   {
-    v30 = v29 | 2;
+    v30 = shouldLog3 | 2;
   }
 
   else
   {
-    v30 = v29;
+    v30 = shouldLog3;
   }
 
   if (!os_log_type_enabled([v28 OSLogObject], OS_LOG_TYPE_INFO))
@@ -753,15 +753,15 @@ LABEL_19:
     v6 = +[SSLogConfig sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
+  shouldLog = [v6 shouldLog];
   if ([v6 shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog;
   }
 
   if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -818,15 +818,15 @@ LABEL_19:
     v6 = +[SSLogConfig sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
+  shouldLog = [v6 shouldLog];
   if ([v6 shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog;
   }
 
   if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -858,27 +858,27 @@ LABEL_19:
   return [AMSBagValue failingBagValueWithKey:@"trustedDomains" valueType:0 error:v16, v14];
 }
 
-- (void)batterySaverWatcherDidChangeState:(id)a3
+- (void)batterySaverWatcherDidChangeState:(id)state
 {
-  v3 = [a3 batterySaverEnabled];
+  batterySaverEnabled = [state batterySaverEnabled];
   v4 = +[SSLogConfig sharedDaemonConfig];
   v5 = v4;
-  if (v3)
+  if (batterySaverEnabled)
   {
     if (!v4)
     {
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_INFO))
@@ -913,15 +913,15 @@ LABEL_19:
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v11 = [v5 shouldLog];
+    shouldLog2 = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v12 = v11 | 2;
+      v12 = shouldLog2 | 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_INFO))
@@ -950,22 +950,22 @@ LABEL_19:
   }
 }
 
-- (void)_getShowingDialogWithMessage:(id)a3 connection:(id)a4
+- (void)_getShowingDialogWithMessage:(id)message connection:(id)connection
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001CFD58;
   block[3] = &unk_1003273E0;
-  block[4] = a3;
+  block[4] = message;
   block[5] = self;
-  block[6] = a4;
+  block[6] = connection;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_networkUsageStateChangeNotification:(id)a3
+- (void)_networkUsageStateChangeNotification:(id)notification
 {
-  if ([+[ISNetworkObserver isUsingNetwork:a3]])
+  if ([+[ISNetworkObserver isUsingNetwork:notification]])
   {
 
     [(Daemon *)self _reloadWiFiManager];
@@ -984,7 +984,7 @@ LABEL_19:
   }
 }
 
-- (void)_operationCountChanged:(id)a3
+- (void)_operationCountChanged:(id)changed
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -995,7 +995,7 @@ LABEL_19:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_expireCachedObjectForKey:(id)a3
+- (void)_expireCachedObjectForKey:(id)key
 {
   v5 = [(NSMutableDictionary *)self->_cachedObjects objectForKey:?];
   if (v5)
@@ -1003,28 +1003,28 @@ LABEL_19:
     [v5 setExpirationTimer:0];
     cachedObjects = self->_cachedObjects;
 
-    [(NSMutableDictionary *)cachedObjects removeObjectForKey:a3];
+    [(NSMutableDictionary *)cachedObjects removeObjectForKey:key];
   }
 }
 
-- (void)_handleWakeWithName:(const char *)a3 job:(id)a4
+- (void)_handleWakeWithName:(const char *)name job:(id)job
 {
-  v7 = [[NSString alloc] initWithUTF8String:a3];
+  v7 = [[NSString alloc] initWithUTF8String:name];
   v8 = +[SSLogConfig sharedDaemonConfig];
   if (!v8)
   {
     v8 = +[SSLogConfig sharedConfig];
   }
 
-  v9 = [v8 shouldLog];
+  shouldLog = [v8 shouldLog];
   if ([v8 shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog;
   }
 
   if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_INFO))
@@ -1037,7 +1037,7 @@ LABEL_19:
     v30 = 138412546;
     v31 = objc_opt_class();
     v32 = 2080;
-    v33 = a3;
+    nameCopy = name;
     LODWORD(v22) = 22;
     v21 = &v30;
     v11 = _os_log_send_and_compose_impl();
@@ -1092,12 +1092,12 @@ LABEL_19:
     block[3] = &unk_10032AE90;
     block[4] = v14;
     block[5] = v7;
-    block[6] = a4;
+    block[6] = job;
     v24 = dispatch_queue_create("com.apple.itunesstored.Daemon.observers", 0);
     dispatch_async(v24, block);
   }
 
-  xpc_dictionary_set_value(self->_satisfiedWakeRequests, a3, a4);
+  xpc_dictionary_set_value(self->_satisfiedWakeRequests, name, job);
 }
 
 - (void)_initBackgroundTaskAgent
@@ -1147,8 +1147,8 @@ LABEL_3:
         v3 = +[SSLogConfig sharedConfig];
       }
 
-      v4 = [v3 shouldLog];
-      v5 = [v3 shouldLogToDisk] ? v4 | 2 : v4;
+      shouldLog = [v3 shouldLog];
+      v5 = [v3 shouldLogToDisk] ? shouldLog | 2 : shouldLog;
       if (os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_ERROR) ? v5 : v5 & 2)
       {
         LOWORD(v20[0]) = 0;
@@ -1167,15 +1167,15 @@ LABEL_3:
     v10 = +[SSLogConfig sharedConfig];
   }
 
-  v11 = [v10 shouldLog];
+  shouldLog2 = [v10 shouldLog];
   if ([v10 shouldLogToDisk])
   {
-    v12 = v11 | 2;
+    v12 = shouldLog2 | 2;
   }
 
   else
   {
-    v12 = v11;
+    v12 = shouldLog2;
   }
 
   if (os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -1237,8 +1237,8 @@ LABEL_25:
   [v3 setLogDirectoryPath:{objc_msgSend(objc_msgSend(objc_msgSend(CPSharedResourcesDirectory(), "stringByAppendingPathComponent:", @"Library", "stringByAppendingPathComponent:", @"Logs", "stringByAppendingPathComponent:", @"com.apple.itunesstored"}];
   SSDebugSetFileLoggingOptions();
 
-  v4 = [+[ISDevice sharedInstance](ISDevice copyProtocolConditionalContext];
-  [SSProtocolConditionalEvaluator setDefaultConditionalContext:v4];
+  copyProtocolConditionalContext = [+[ISDevice sharedInstance](ISDevice copyProtocolConditionalContext];
+  [SSProtocolConditionalEvaluator setDefaultConditionalContext:copyProtocolConditionalContext];
 
   +[ISNetworkObserver sharedInstance];
 

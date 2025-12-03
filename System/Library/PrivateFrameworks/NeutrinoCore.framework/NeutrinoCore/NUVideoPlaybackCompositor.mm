@@ -1,26 +1,26 @@
 @interface NUVideoPlaybackCompositor
-- (void)fulfillVideoCompositionRequest:(id)a3;
+- (void)fulfillVideoCompositionRequest:(id)request;
 @end
 
 @implementation NUVideoPlaybackCompositor
 
-- (void)fulfillVideoCompositionRequest:(id)a3
+- (void)fulfillVideoCompositionRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 videoCompositionInstruction];
-  v6 = [v5 videoMedia];
+  requestCopy = request;
+  videoCompositionInstruction = [requestCopy videoCompositionInstruction];
+  videoMedia = [videoCompositionInstruction videoMedia];
 
   v7 = [NUVideoPlaybackFrameRequest alloc];
-  if (v6)
+  if (videoMedia)
   {
-    v8 = [v5 videoMedia];
-    v9 = [(NURenderRequest *)v7 initWithMedia:v8];
+    videoMedia2 = [videoCompositionInstruction videoMedia];
+    v9 = [(NURenderRequest *)v7 initWithMedia:videoMedia2];
   }
 
   else
   {
-    v8 = [v5 adjustmentComposition];
-    v9 = [(NURenderRequest *)v7 initWithComposition:v8];
+    videoMedia2 = [videoCompositionInstruction adjustmentComposition];
+    v9 = [(NURenderRequest *)v7 initWithComposition:videoMedia2];
   }
 
   v10 = v9;
@@ -28,11 +28,11 @@
   v11 = [[NUPriority alloc] initWithLevel:0];
   [v10 setPriority:v11];
 
-  v12 = [v5 renderContext];
+  renderContext = [videoCompositionInstruction renderContext];
 
-  if (v12)
+  if (renderContext)
   {
-    v13 = v5;
+    v13 = videoCompositionInstruction;
   }
 
   else
@@ -40,55 +40,55 @@
     v13 = v10;
   }
 
-  if (v12)
+  if (renderContext)
   {
     v14 = v10;
   }
 
   else
   {
-    v14 = v5;
+    v14 = videoCompositionInstruction;
   }
 
-  v15 = [v13 renderContext];
-  [v14 setRenderContext:v15];
+  renderContext2 = [v13 renderContext];
+  [v14 setRenderContext:renderContext2];
 
-  v16 = [v4 sourceTrackIDs];
-  v17 = [v16 count];
+  sourceTrackIDs = [requestCopy sourceTrackIDs];
+  v17 = [sourceTrackIDs count];
 
   if (!v17)
   {
     v21 = @"No sourceTrackIDs";
 LABEL_18:
     v22 = [NUError unknownError:v21 object:0];
-    [(NUVideoCompositor *)self failVideoCompositionRequest:v4 error:v22];
+    [(NUVideoCompositor *)self failVideoCompositionRequest:requestCopy error:v22];
 
     goto LABEL_31;
   }
 
-  v18 = [v4 renderContext];
-  v19 = [v18 newPixelBuffer];
+  renderContext3 = [requestCopy renderContext];
+  newPixelBuffer = [renderContext3 newPixelBuffer];
 
-  if (!v19)
+  if (!newPixelBuffer)
   {
     v21 = @"Unable to allocate destination buffer";
     goto LABEL_18;
   }
 
-  [(NUVideoCompositor *)self setColorSpaceOfDestinationBuffer:v19 fromPrimarySourceBufferOfRequest:v4];
+  [(NUVideoCompositor *)self setColorSpaceOfDestinationBuffer:newPixelBuffer fromPrimarySourceBufferOfRequest:requestCopy];
   if (+[NUGlobalSettings videoCompositorDebugMode]== 2)
   {
-    NUDebugWatermarkCVPixelBuffer(v19, 2);
+    NUDebugWatermarkCVPixelBuffer(newPixelBuffer, 2);
   }
 
-  v20 = [v5 videoRenderPrepareNode];
-  [v10 setVideoRenderPrepareNode:v20];
+  videoRenderPrepareNode = [videoCompositionInstruction videoRenderPrepareNode];
+  [v10 setVideoRenderPrepareNode:videoRenderPrepareNode];
 
-  [v10 setDestinationBuffer:v19];
-  cf = v19;
-  if (v4)
+  [v10 setDestinationBuffer:newPixelBuffer];
+  cf = newPixelBuffer;
+  if (requestCopy)
   {
-    [v4 compositionTime];
+    [requestCopy compositionTime];
   }
 
   else
@@ -100,32 +100,32 @@ LABEL_18:
   v58 = v60;
   v59 = v61;
   [v10 setEvaluationTime:&v58];
-  v23 = [v5 pipelineFilters];
-  [v10 setPipelineFilters:v23];
+  pipelineFilters = [videoCompositionInstruction pipelineFilters];
+  [v10 setPipelineFilters:pipelineFilters];
 
-  v24 = [(NUVideoCompositor *)self videoFramesFromRequest:v4];
+  v24 = [(NUVideoCompositor *)self videoFramesFromRequest:requestCopy];
   [v10 setVideoFrames:v24];
 
-  v25 = [(NUVideoCompositor *)self videoSampleSlicesFromRequest:v4];
+  v25 = [(NUVideoCompositor *)self videoSampleSlicesFromRequest:requestCopy];
   [v10 setVideoSampleSlices:v25];
 
-  v26 = [(NUVideoCompositor *)self videoMetadataSamplesFromRequest:v4];
+  v26 = [(NUVideoCompositor *)self videoMetadataSamplesFromRequest:requestCopy];
   [v10 setVideoMetadataSamples:v26];
 
-  v27 = [v5 renderScale];
-  [v10 setRenderScale:{v27, v28}];
-  v29 = [v5 colorSpace];
-  [v10 setColorSpace:v29];
+  renderScale = [videoCompositionInstruction renderScale];
+  [v10 setRenderScale:{renderScale, v28}];
+  colorSpace = [videoCompositionInstruction colorSpace];
+  [v10 setColorSpace:colorSpace];
 
-  [v10 setIsDolbyVision:{objc_msgSend(v5, "isDolbyVision")}];
-  [v5 playbackRate];
+  [v10 setIsDolbyVision:{objc_msgSend(videoCompositionInstruction, "isDolbyVision")}];
+  [videoCompositionInstruction playbackRate];
   [v10 setPlaybackRate:?];
-  v30 = [v4 renderContext];
-  v31 = [v30 videoComposition];
-  v32 = v31;
-  if (v31)
+  renderContext4 = [requestCopy renderContext];
+  videoComposition = [renderContext4 videoComposition];
+  v32 = videoComposition;
+  if (videoComposition)
   {
-    [v31 frameDuration];
+    [videoComposition frameDuration];
   }
 
   else
@@ -138,29 +138,29 @@ LABEL_18:
   v59 = v57;
   [v10 setFrameDuration:&v58];
 
-  [v10 setSampleMode:{objc_msgSend(v5, "sampleMode")}];
+  [v10 setSampleMode:{objc_msgSend(videoCompositionInstruction, "sampleMode")}];
   [v10 setPlaybackDirection:{-[NUVideoCompositor playbackDirection](self, "playbackDirection")}];
   v45 = MEMORY[0x1E696AEC0];
-  v33 = [(NUVideoPlaybackCompositor *)self label];
-  v34 = v33;
-  if (!v33)
+  label = [(NUVideoPlaybackCompositor *)self label];
+  name = label;
+  if (!label)
   {
-    v34 = [v5 name];
+    name = [videoCompositionInstruction name];
   }
 
-  v47 = self;
-  v35 = [v4 renderContext];
-  v36 = [v4 renderContext];
-  [v36 size];
+  selfCopy = self;
+  renderContext5 = [requestCopy renderContext];
+  renderContext6 = [requestCopy renderContext];
+  [renderContext6 size];
   v38 = v37;
-  v39 = [v4 renderContext];
-  [v39 size];
+  renderContext7 = [requestCopy renderContext];
+  [renderContext7 size];
   v41 = v40;
-  if (v4)
+  if (requestCopy)
   {
-    [v4 compositionTime];
+    [requestCopy compositionTime];
     v42 = v53;
-    [v4 compositionTime];
+    [requestCopy compositionTime];
     v43 = v51;
   }
 
@@ -176,10 +176,10 @@ LABEL_18:
     v50 = 0;
   }
 
-  v44 = [v45 stringWithFormat:@"%@-avcontext(%x)-%.0fx%.0f-playback-t=%lld-%d", v34, v35, v38, v41, v42, v43];
+  v44 = [v45 stringWithFormat:@"%@-avcontext(%x)-%.0fx%.0f-playback-t=%lld-%d", name, renderContext5, v38, v41, v42, v43];
   [v10 setName:v44];
 
-  if (!v33)
+  if (!label)
   {
   }
 
@@ -187,8 +187,8 @@ LABEL_18:
   v48[1] = 3221225472;
   v48[2] = __60__NUVideoPlaybackCompositor_fulfillVideoCompositionRequest___block_invoke;
   v48[3] = &unk_1E810A470;
-  v48[4] = v47;
-  v49 = v4;
+  v48[4] = selfCopy;
+  v49 = requestCopy;
   [v10 submit:v48];
   CFRelease(cf);
 

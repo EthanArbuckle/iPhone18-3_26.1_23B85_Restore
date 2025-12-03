@@ -1,7 +1,7 @@
 @interface HUCCLockStateHandler
 - (BOOL)_isAccessAllowedForCurrentLockState;
 - (BOOL)isDeviceUnlocked;
-- (HUCCLockStateHandler)initWithDelegate:(id)a3;
+- (HUCCLockStateHandler)initWithDelegate:(id)delegate;
 - (HUCCLockStateHandlerDelegate)delegate;
 - (void)_registerKeybagLockStatusNotifications;
 - (void)_unregisterKeybagLockStatusNotifications;
@@ -11,16 +11,16 @@
 
 @implementation HUCCLockStateHandler
 
-- (HUCCLockStateHandler)initWithDelegate:(id)a3
+- (HUCCLockStateHandler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = HUCCLockStateHandler;
   v5 = [(HUCCLockStateHandler *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_keybagLockStatusNotifyToken = -1;
     objc_msgSend__registerKeybagLockStatusNotifications(v6, v7, v8);
   }

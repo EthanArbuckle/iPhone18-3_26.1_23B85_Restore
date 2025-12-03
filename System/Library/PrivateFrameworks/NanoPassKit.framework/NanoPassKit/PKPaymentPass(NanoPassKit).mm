@@ -14,9 +14,9 @@
 
 - (id)npkSortedDeviceContactlessPaymentApplications
 {
-  v2 = [a1 deviceContactlessPaymentApplications];
-  v3 = [v2 allObjects];
-  v4 = [a1 sortedPaymentApplications:v3 ascending:1];
+  deviceContactlessPaymentApplications = [self deviceContactlessPaymentApplications];
+  allObjects = [deviceContactlessPaymentApplications allObjects];
+  v4 = [self sortedPaymentApplications:allObjects ascending:1];
 
   return v4;
 }
@@ -30,7 +30,7 @@
   v15 = __Block_byref_object_copy__0;
   v16 = __Block_byref_object_dispose__0;
   v17 = 0;
-  v5 = [a1 devicePaymentApplications];
+  devicePaymentApplications = [self devicePaymentApplications];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__PKPaymentPass_NanoPassKit__npkDevicePaymentApplicationForAID___block_invoke;
@@ -38,7 +38,7 @@
   v6 = v4;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [devicePaymentApplications enumerateObjectsUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -48,13 +48,13 @@
 
 - (BOOL)npkHasUserSelectableContactlessPaymentApplications
 {
-  if ([a1 contactlessActivationGroupingType] != 2)
+  if ([self contactlessActivationGroupingType] != 2)
   {
     return 0;
   }
 
-  v2 = [a1 deviceContactlessPaymentApplications];
-  v3 = [v2 count] > 1;
+  deviceContactlessPaymentApplications = [self deviceContactlessPaymentApplications];
+  v3 = [deviceContactlessPaymentApplications count] > 1;
 
   return v3;
 }
@@ -62,28 +62,28 @@
 - (id)npkUserSelectedPaymentApplication
 {
   v2 = objc_alloc_init(MEMORY[0x277D380F0]);
-  v3 = [a1 uniqueID];
-  v4 = [v2 defaultPaymentApplicationForPassUniqueIdentifier:v3];
+  uniqueID = [self uniqueID];
+  v4 = [v2 defaultPaymentApplicationForPassUniqueIdentifier:uniqueID];
 
   if (v4)
   {
-    v5 = v4;
+    devicePrimaryContactlessPaymentApplication = v4;
   }
 
   else
   {
-    v5 = [a1 devicePrimaryContactlessPaymentApplication];
+    devicePrimaryContactlessPaymentApplication = [self devicePrimaryContactlessPaymentApplication];
   }
 
-  v6 = v5;
+  v6 = devicePrimaryContactlessPaymentApplication;
 
   return v6;
 }
 
 - (BOOL)npkHasMultiplePaymentApplications
 {
-  v1 = [a1 devicePaymentApplications];
-  v2 = [v1 count] > 1;
+  devicePaymentApplications = [self devicePaymentApplications];
+  v2 = [devicePaymentApplications count] > 1;
 
   return v2;
 }
@@ -91,11 +91,11 @@
 - (id)npkPrimaryPaymentApplication
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v1 = [a1 devicePrimaryContactlessPaymentApplication];
-  v2 = v1;
-  if (v1)
+  devicePrimaryContactlessPaymentApplication = [self devicePrimaryContactlessPaymentApplication];
+  v2 = devicePrimaryContactlessPaymentApplication;
+  if (devicePrimaryContactlessPaymentApplication)
   {
-    v6[0] = v1;
+    v6[0] = devicePrimaryContactlessPaymentApplication;
     v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
   }
 
@@ -112,53 +112,53 @@
 - (id)npkPreferredContactlessPaymentApplications
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 contactlessActivationGroupingType];
-  switch(v2)
+  contactlessActivationGroupingType = [self contactlessActivationGroupingType];
+  switch(contactlessActivationGroupingType)
   {
     case 3:
-      v5 = [a1 deviceContactlessPaymentApplications];
-      v6 = [v5 allObjects];
+      deviceContactlessPaymentApplications = [self deviceContactlessPaymentApplications];
+      allObjects = [deviceContactlessPaymentApplications allObjects];
       goto LABEL_8;
     case 2:
-      v4 = [a1 npkUserSelectedPaymentApplication];
-      v5 = v4;
-      if (!v4)
+      npkUserSelectedPaymentApplication = [self npkUserSelectedPaymentApplication];
+      deviceContactlessPaymentApplications = npkUserSelectedPaymentApplication;
+      if (!npkUserSelectedPaymentApplication)
       {
-        v3 = MEMORY[0x277CBEBF8];
+        npkPrimaryPaymentApplication = MEMORY[0x277CBEBF8];
         goto LABEL_9;
       }
 
-      v9[0] = v4;
-      v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
+      v9[0] = npkUserSelectedPaymentApplication;
+      allObjects = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 LABEL_8:
-      v3 = v6;
+      npkPrimaryPaymentApplication = allObjects;
 LABEL_9:
 
       break;
     case 1:
-      v3 = [a1 npkPrimaryPaymentApplication];
+      npkPrimaryPaymentApplication = [self npkPrimaryPaymentApplication];
       break;
     default:
-      v3 = MEMORY[0x277CBEBF8];
+      npkPrimaryPaymentApplication = MEMORY[0x277CBEBF8];
       break;
   }
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return npkPrimaryPaymentApplication;
 }
 
 - (void)npkSetPreferredPaymentApplication:()NanoPassKit
 {
   v8 = a3;
-  v4 = [a1 devicePaymentApplications];
-  v5 = [v4 containsObject:v8];
+  devicePaymentApplications = [self devicePaymentApplications];
+  v5 = [devicePaymentApplications containsObject:v8];
 
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277D380F0]);
-    v7 = [a1 uniqueID];
-    [v6 setDefaultPaymentApplication:v8 forPassUniqueIdentifier:v7 completion:0];
+    uniqueID = [self uniqueID];
+    [v6 setDefaultPaymentApplication:v8 forPassUniqueIdentifier:uniqueID completion:0];
   }
 }
 
@@ -169,8 +169,8 @@ LABEL_9:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v1 = [a1 devicePaymentApplications];
-  v2 = [v1 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  devicePaymentApplications = [self devicePaymentApplications];
+  v2 = [devicePaymentApplications countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v2)
   {
     v3 = *v10;
@@ -180,11 +180,11 @@ LABEL_9:
       {
         if (*v10 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(devicePaymentApplications);
         }
 
-        v5 = [*(*(&v9 + 1) + 8 * i) supportedTransitNetworkIdentifiers];
-        v6 = [v5 count];
+        supportedTransitNetworkIdentifiers = [*(*(&v9 + 1) + 8 * i) supportedTransitNetworkIdentifiers];
+        v6 = [supportedTransitNetworkIdentifiers count];
 
         if (v6)
         {
@@ -193,7 +193,7 @@ LABEL_9:
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v2 = [devicePaymentApplications countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v2)
       {
         continue;

@@ -1,20 +1,20 @@
 @interface PGStashView
-- (PGStashView)initWithFrame:(CGRect)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (PGStashView)initWithFrame:(CGRect)frame;
+- (void)_setContinuousCornerRadius:(double)radius;
 - (void)layoutStashChevrons;
 - (void)layoutSubviews;
-- (void)setBlurProgress:(double)a3;
-- (void)setChevronHidden:(BOOL)a3 left:(BOOL)a4;
+- (void)setBlurProgress:(double)progress;
+- (void)setChevronHidden:(BOOL)hidden left:(BOOL)left;
 @end
 
 @implementation PGStashView
 
-- (PGStashView)initWithFrame:(CGRect)a3
+- (PGStashView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9 = PGLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -23,12 +23,12 @@
 
   v45.receiver = self;
   v45.super_class = PGStashView;
-  v10 = [(PGStashView *)&v45 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(PGStashView *)&v45 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    v10->_chevronsHidden = 1;
-    [(PGStashView *)v10 setOverrideUserInterfaceStyle:2];
+    height->_chevronsHidden = 1;
+    [(PGStashView *)height setOverrideUserInterfaceStyle:2];
     [(PGStashView *)v11 setAccessibilityIdentifier:@"PG-StashedView"];
     [(UIView *)v11 PG_recursivelyDisallowGroupBlending];
     [(UIView *)v11 PG_setAllowsEdgeAntialiasing:1];
@@ -41,9 +41,9 @@
     v17 = [(PGBackdropView *)v12 initWithFrame:*MEMORY[0x1E695F058], v14, v15, v16];
     [(UIView *)v17 PG_setAllowsEdgeAntialiasing:1];
     [(PGBackdropView *)v17 setGaussianBlurRadius:0.0];
-    v18 = [MEMORY[0x1E696AFB0] UUID];
-    v19 = [v18 UUIDString];
-    [(PGBackdropView *)v17 setGroupName:v19];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [(PGBackdropView *)v17 setGroupName:uUIDString];
 
     [(PGStashView *)v11 addSubview:v17];
     backdropView = v11->_backdropView;
@@ -78,8 +78,8 @@
     v29 = [v28 imageWithRenderingMode:2];
 
     v30 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v29];
-    v31 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UIImageView *)v30 setTintColor:v31];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UIImageView *)v30 setTintColor:secondaryLabelColor];
 
     [(UIImageView *)v30 setAlpha:0.0];
     [(PGStashView *)v11 addSubview:v30];
@@ -91,8 +91,8 @@
     v35 = [v34 imageWithRenderingMode:2];
 
     v36 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v35];
-    v37 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UIImageView *)v36 setTintColor:v37];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UIImageView *)v36 setTintColor:secondaryLabelColor2];
 
     [(UIImageView *)v36 setAlpha:0.0];
     [(PGStashView *)v11 addSubview:v36];
@@ -267,23 +267,23 @@
   [(UIImageView *)self->_rightChevron layoutIfNeeded];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = PGStashView;
   [(PGStashView *)&v5 _setContinuousCornerRadius:?];
-  [(PGBackdropView *)self->_backdropView _setContinuousCornerRadius:a3];
-  [(UIView *)self->_lightTintView _setContinuousCornerRadius:a3];
-  [(UIView *)self->_darkTintView _setContinuousCornerRadius:a3];
+  [(PGBackdropView *)self->_backdropView _setContinuousCornerRadius:radius];
+  [(UIView *)self->_lightTintView _setContinuousCornerRadius:radius];
+  [(UIView *)self->_darkTintView _setContinuousCornerRadius:radius];
 }
 
-- (void)setBlurProgress:(double)a3
+- (void)setBlurProgress:(double)progress
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (self->_blurProgress != a3)
+  if (self->_blurProgress != progress)
   {
-    self->_blurProgress = a3;
-    v4 = (a3 + -0.2) / 0.3;
+    self->_blurProgress = progress;
+    v4 = (progress + -0.2) / 0.3;
     v5 = 0.0;
     if (v4 <= 0.0)
     {
@@ -326,12 +326,12 @@
   }
 }
 
-- (void)setChevronHidden:(BOOL)a3 left:(BOOL)a4
+- (void)setChevronHidden:(BOOL)hidden left:(BOOL)left
 {
-  if (self->_chevronsHidden != a3 || self->_isChevronShownLeft != a4)
+  if (self->_chevronsHidden != hidden || self->_isChevronShownLeft != left)
   {
-    self->_chevronsHidden = a3;
-    self->_isChevronShownLeft = a4 & ~a3;
+    self->_chevronsHidden = hidden;
+    self->_isChevronShownLeft = left & ~hidden;
     [(PGStashView *)self layoutStashChevrons];
   }
 }

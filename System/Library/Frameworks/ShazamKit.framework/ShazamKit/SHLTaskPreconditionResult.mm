@@ -1,8 +1,8 @@
 @interface SHLTaskPreconditionResult
 + (id)failedResult;
 + (id)fulfilledResult;
-+ (id)resultWithError:(id)a3;
-- (SHLTaskPreconditionResult)initWithResult:(BOOL)a3 error:(id)a4;
++ (id)resultWithError:(id)error;
+- (SHLTaskPreconditionResult)initWithResult:(BOOL)result error:(id)error;
 @end
 
 @implementation SHLTaskPreconditionResult
@@ -21,25 +21,25 @@
   return v2;
 }
 
-+ (id)resultWithError:(id)a3
++ (id)resultWithError:(id)error
 {
-  v3 = a3;
-  v4 = [[SHLTaskPreconditionResult alloc] initWithResult:0 error:v3];
+  errorCopy = error;
+  v4 = [[SHLTaskPreconditionResult alloc] initWithResult:0 error:errorCopy];
 
   return v4;
 }
 
-- (SHLTaskPreconditionResult)initWithResult:(BOOL)a3 error:(id)a4
+- (SHLTaskPreconditionResult)initWithResult:(BOOL)result error:(id)error
 {
-  v7 = a4;
+  errorCopy = error;
   v11.receiver = self;
   v11.super_class = SHLTaskPreconditionResult;
   v8 = [(SHLTaskPreconditionResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_satisfied = a3;
-    objc_storeStrong(&v8->_error, a4);
+    v8->_satisfied = result;
+    objc_storeStrong(&v8->_error, error);
   }
 
   return v9;

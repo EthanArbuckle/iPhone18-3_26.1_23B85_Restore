@@ -1,10 +1,10 @@
 @interface EDTokenTreeNode
-+ (id)tokenTreeNodeWithIndexAndType:(unsigned int)a3 type:(int)a4;
++ (id)tokenTreeNodeWithIndexAndType:(unsigned int)type type:(int)a4;
 - (EDTokenTreeNode)init;
-- (EDTokenTreeNode)initWithIndexAndType:(unsigned int)a3 type:(int)a4;
+- (EDTokenTreeNode)initWithIndexAndType:(unsigned int)type type:(int)a4;
 - (id)description;
-- (void)setFirstChild:(id)a3;
-- (void)setSibling:(id)a3;
+- (void)setFirstChild:(id)child;
+- (void)setSibling:(id)sibling;
 @end
 
 @implementation EDTokenTreeNode
@@ -22,50 +22,50 @@
   return result;
 }
 
-- (EDTokenTreeNode)initWithIndexAndType:(unsigned int)a3 type:(int)a4
+- (EDTokenTreeNode)initWithIndexAndType:(unsigned int)type type:(int)a4
 {
   v7.receiver = self;
   v7.super_class = EDTokenTreeNode;
   result = [(EDTokenTreeNode *)&v7 init];
   if (result)
   {
-    result->mTokenIndex = a3;
+    result->mTokenIndex = type;
     result->mTokenType = a4;
   }
 
   return result;
 }
 
-+ (id)tokenTreeNodeWithIndexAndType:(unsigned int)a3 type:(int)a4
++ (id)tokenTreeNodeWithIndexAndType:(unsigned int)type type:(int)a4
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithIndexAndType:*&a3 type:*&a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithIndexAndType:*&type type:*&a4];
 
   return v4;
 }
 
-- (void)setFirstChild:(id)a3
+- (void)setFirstChild:(id)child
 {
-  v5 = a3;
+  childCopy = child;
   mFirstChild = self->mFirstChild;
   p_mFirstChild = &self->mFirstChild;
-  if (mFirstChild != v5)
+  if (mFirstChild != childCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mFirstChild, a3);
-    v5 = v8;
+    v8 = childCopy;
+    objc_storeStrong(p_mFirstChild, child);
+    childCopy = v8;
   }
 }
 
-- (void)setSibling:(id)a3
+- (void)setSibling:(id)sibling
 {
-  v5 = a3;
+  siblingCopy = sibling;
   mSibling = self->mSibling;
   p_mSibling = &self->mSibling;
-  if (mSibling != v5)
+  if (mSibling != siblingCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mSibling, a3);
-    v5 = v8;
+    v8 = siblingCopy;
+    objc_storeStrong(p_mSibling, sibling);
+    siblingCopy = v8;
   }
 }
 

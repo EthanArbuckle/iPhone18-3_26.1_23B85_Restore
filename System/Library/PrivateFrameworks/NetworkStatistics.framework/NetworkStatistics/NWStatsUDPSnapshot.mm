@@ -284,15 +284,15 @@
 
 - (id)descriptorDescription
 {
-  v3 = [(NWStatsProtocolSnapshot *)self _details_ptr];
+  _details_ptr = [(NWStatsProtocolSnapshot *)self _details_ptr];
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
-  traffic_mgt_flags = v3->var0.tcp.traffic_mgt_flags;
-  ifnet_properties = v3->var0.udp.ifnet_properties;
-  s_addr = v3->var0.tcp.local.v4.sin_addr.s_addr;
-  epid = v3->var0.udp.epid;
-  v9 = [(NWStatsProtocolSnapshot *)self _createNSUUIDForBytes:&v3->var0.conn + 1];
-  v10 = [(NWStatsProtocolSnapshot *)self _createNSUUIDForBytes:&v3->var0.conn + 216];
-  v11 = [v4 initWithFormat:@"desc  ifidx %d flags 0x%x pid %d epid %d uuid %@ euuid %@ pname %s", traffic_mgt_flags, ifnet_properties, s_addr, epid, v9, v10, &v3->var0.conn.euuid[8]];
+  traffic_mgt_flags = _details_ptr->var0.tcp.traffic_mgt_flags;
+  ifnet_properties = _details_ptr->var0.udp.ifnet_properties;
+  s_addr = _details_ptr->var0.tcp.local.v4.sin_addr.s_addr;
+  epid = _details_ptr->var0.udp.epid;
+  v9 = [(NWStatsProtocolSnapshot *)self _createNSUUIDForBytes:&_details_ptr->var0.conn + 1];
+  v10 = [(NWStatsProtocolSnapshot *)self _createNSUUIDForBytes:&_details_ptr->var0.conn + 216];
+  v11 = [v4 initWithFormat:@"desc  ifidx %d flags 0x%x pid %d epid %d uuid %@ euuid %@ pname %s", traffic_mgt_flags, ifnet_properties, s_addr, epid, v9, v10, &_details_ptr->var0.conn.euuid[8]];
 
   return v11;
 }

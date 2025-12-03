@@ -1,19 +1,19 @@
 @interface HDValueHistogramCollectionQueryServer
-- (HDValueHistogramCollectionQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDValueHistogramCollectionQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)_queue_start;
 @end
 
 @implementation HDValueHistogramCollectionQueryServer
 
-- (HDValueHistogramCollectionQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDValueHistogramCollectionQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = HDValueHistogramCollectionQueryServer;
-  v11 = [(HDQueryServer *)&v15 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDQueryServer *)&v15 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [configurationCopy copy];
     valueHistogramCollectionQueryServerConfiguration = v11->_valueHistogramCollectionQueryServerConfiguration;
     v11->_valueHistogramCollectionQueryServerConfiguration = v12;
   }
@@ -27,12 +27,12 @@
   v42.receiver = self;
   v42.super_class = HDValueHistogramCollectionQueryServer;
   [(HDQueryServer *)&v42 _queue_start];
-  v3 = [(HDQueryServer *)self clientProxy];
-  v4 = [v3 remoteObjectProxy];
+  clientProxy = [(HDQueryServer *)self clientProxy];
+  remoteObjectProxy = [clientProxy remoteObjectProxy];
 
-  v5 = [(HDQueryServer *)self quantityType];
+  quantityType = [(HDQueryServer *)self quantityType];
   v41 = 0;
-  v6 = [(HDQueryServer *)self authorizationStatusRecordForType:v5 error:&v41];
+  v6 = [(HDQueryServer *)self authorizationStatusRecordForType:quantityType error:&v41];
   v7 = v41;
 
   if (v6)
@@ -42,36 +42,36 @@
       v40 = v7;
       if (self)
       {
-        v37 = [(HKValueHistogramCollectionQueryServerConfiguration *)self->_valueHistogramCollectionQueryServerConfiguration quantityRanges];
-        v39 = [(HKValueHistogramCollectionQueryServerConfiguration *)self->_valueHistogramCollectionQueryServerConfiguration anchorDate];
-        v38 = [(HKValueHistogramCollectionQueryServerConfiguration *)self->_valueHistogramCollectionQueryServerConfiguration intervalComponents];
-        v36 = [objc_alloc(MEMORY[0x277CCDD78]) initWithAnchorDate:v39 intervalComponents:v38];
+        quantityRanges = [(HKValueHistogramCollectionQueryServerConfiguration *)self->_valueHistogramCollectionQueryServerConfiguration quantityRanges];
+        anchorDate = [(HKValueHistogramCollectionQueryServerConfiguration *)self->_valueHistogramCollectionQueryServerConfiguration anchorDate];
+        intervalComponents = [(HKValueHistogramCollectionQueryServerConfiguration *)self->_valueHistogramCollectionQueryServerConfiguration intervalComponents];
+        v36 = [objc_alloc(MEMORY[0x277CCDD78]) initWithAnchorDate:anchorDate intervalComponents:intervalComponents];
         v8 = [HDValueHistogramCollectionCalculator alloc];
-        v9 = [(HDQueryServer *)self quantityType];
-        v10 = [(HDValueHistogramCollectionCalculator *)v8 initWithQuantityType:v9 quantityRanges:v37 intervalCollection:v36];
+        quantityType2 = [(HDQueryServer *)self quantityType];
+        v10 = [(HDValueHistogramCollectionCalculator *)v8 initWithQuantityType:quantityType2 quantityRanges:quantityRanges intervalCollection:v36];
 
-        v11 = [(HDQueryServer *)self filter];
-        v12 = [(HDQueryServer *)self profile];
-        v35 = [v11 predicateWithProfile:v12];
+        filter = [(HDQueryServer *)self filter];
+        profile = [(HDQueryServer *)self profile];
+        v35 = [filter predicateWithProfile:profile];
 
-        v13 = [(HDQueryServer *)self objectType];
-        v14 = HDSampleEntityPredicateForDataType(v13);
+        objectType = [(HDQueryServer *)self objectType];
+        v14 = HDSampleEntityPredicateForDataType(objectType);
 
         v15 = [MEMORY[0x277D10B20] compoundPredicateWithPredicate:v35 otherPredicate:v14];
         v43 = 0;
         v44 = &v43;
         v45 = 0x2020000000;
         v46 = 0;
-        v16 = [(HDQueryServer *)self profile];
+        profile2 = [(HDQueryServer *)self profile];
         *buf = MEMORY[0x277D85DD0];
         *&buf[8] = 3221225472;
         *&buf[16] = __87__HDValueHistogramCollectionQueryServer__queue_fetchValueHistogramCollectionWithError___block_invoke;
         v48 = &unk_278622A70;
         v17 = v10;
         v49 = v17;
-        v50 = self;
+        selfCopy = self;
         v51 = &v43;
-        [HDQuantitySampleValueEnumerator orderedQuantityValuesForPredicate:v15 profile:v16 options:0 error:&v40 handler:buf];
+        [HDQuantitySampleValueEnumerator orderedQuantityValuesForPredicate:v15 profile:profile2 options:0 error:&v40 handler:buf];
 
         if (*(v44 + 24) == 1)
         {
@@ -83,12 +83,12 @@
             v40 = v19;
           }
 
-          v21 = 0;
+          result = 0;
         }
 
         else
         {
-          v21 = [(HDValueHistogramCollectionCalculator *)v17 result];
+          result = [(HDValueHistogramCollectionCalculator *)v17 result];
         }
 
         _Block_object_dispose(&v43, 8);
@@ -97,21 +97,21 @@
 
       else
       {
-        v21 = 0;
+        result = 0;
         v31 = v7;
       }
 
       v32 = v31;
 
-      v33 = [(HDQueryServer *)self queryUUID];
+      queryUUID = [(HDQueryServer *)self queryUUID];
       if (v32)
       {
-        [v4 client_deliverError:v32 forQuery:v33];
+        [remoteObjectProxy client_deliverError:v32 forQuery:queryUUID];
       }
 
       else
       {
-        [v4 client_deliverValueHistogramCollection:v21 forQuery:v33];
+        [remoteObjectProxy client_deliverValueHistogramCollection:result forQuery:queryUUID];
       }
 
       v7 = v32;
@@ -133,21 +133,21 @@
         _os_log_impl(&dword_228986000, v23, OS_LOG_TYPE_DEFAULT, "[%{public}@] Avoiding exposing health data due to missing authorization: %{public}@", buf, 0x16u);
       }
 
-      v21 = [(HKValueHistogramCollectionQueryServerConfiguration *)self->_valueHistogramCollectionQueryServerConfiguration quantityRanges];
+      result = [(HKValueHistogramCollectionQueryServerConfiguration *)self->_valueHistogramCollectionQueryServerConfiguration quantityRanges];
       v26 = objc_alloc(MEMORY[0x277CCDB90]);
-      v27 = [(HKValueHistogramCollectionQueryServerConfiguration *)self->_valueHistogramCollectionQueryServerConfiguration anchorDate];
-      v28 = [(HKValueHistogramCollectionQueryServerConfiguration *)self->_valueHistogramCollectionQueryServerConfiguration intervalComponents];
-      v29 = [v26 initWithQuantityRanges:v21 valueHistogramsByDateIntervalIndex:MEMORY[0x277CBEC10] anchorDate:v27 intervalComponents:v28];
+      anchorDate2 = [(HKValueHistogramCollectionQueryServerConfiguration *)self->_valueHistogramCollectionQueryServerConfiguration anchorDate];
+      intervalComponents2 = [(HKValueHistogramCollectionQueryServerConfiguration *)self->_valueHistogramCollectionQueryServerConfiguration intervalComponents];
+      v29 = [v26 initWithQuantityRanges:result valueHistogramsByDateIntervalIndex:MEMORY[0x277CBEC10] anchorDate:anchorDate2 intervalComponents:intervalComponents2];
 
-      v30 = [(HDQueryServer *)self queryUUID];
-      [v4 client_deliverValueHistogramCollection:v29 forQuery:v30];
+      queryUUID2 = [(HDQueryServer *)self queryUUID];
+      [remoteObjectProxy client_deliverValueHistogramCollection:v29 forQuery:queryUUID2];
     }
   }
 
   else
   {
-    v21 = [(HDQueryServer *)self queryUUID];
-    [v4 client_deliverError:v7 forQuery:v21];
+    result = [(HDQueryServer *)self queryUUID];
+    [remoteObjectProxy client_deliverError:v7 forQuery:result];
   }
 
   v34 = *MEMORY[0x277D85DE8];

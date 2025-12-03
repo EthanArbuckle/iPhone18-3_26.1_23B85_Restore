@@ -1,64 +1,64 @@
 @interface OneUpSharePlayDataSource
-- (PXSimpleIndexPath)indexPathForAssetReference:(SEL)a3;
+- (PXSimpleIndexPath)indexPathForAssetReference:(SEL)reference;
 - (_TtC12PhotosUICore24OneUpSharePlayDataSource)init;
-- (id)assetAtItemIndexPath:(PXSimpleIndexPath *)a3;
-- (id)assetReferenceAtItemIndexPath:(PXSimpleIndexPath *)a3;
-- (id)assetsInSectionIndexPath:(PXSimpleIndexPath *)a3;
-- (id)indexPathForDisplayAsset:(id)a3 hintIndexPath:(id)a4;
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3;
+- (id)assetAtItemIndexPath:(PXSimpleIndexPath *)path;
+- (id)assetReferenceAtItemIndexPath:(PXSimpleIndexPath *)path;
+- (id)assetsInSectionIndexPath:(PXSimpleIndexPath *)path;
+- (id)indexPathForDisplayAsset:(id)asset hintIndexPath:(id)path;
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path;
 @end
 
 @implementation OneUpSharePlayDataSource
 
-- (id)assetAtItemIndexPath:(PXSimpleIndexPath *)a3
+- (id)assetAtItemIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore24OneUpSharePlayDataSource_assets) objectAtIndexedSubscript_];
+  objectAtIndexedSubscript_ = [*(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore24OneUpSharePlayDataSource_assets) objectAtIndexedSubscript_];
 
-  return v3;
+  return objectAtIndexedSubscript_;
 }
 
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path
 {
-  dataSourceIdentifier = a3->dataSourceIdentifier;
-  section = a3->section;
-  item = a3->item;
-  v6 = self;
+  dataSourceIdentifier = path->dataSourceIdentifier;
+  section = path->section;
+  item = path->item;
+  selfCopy = self;
   v7 = OneUpSharePlayDataSource.object(at:)(dataSourceIdentifier, section, item);
 
   return v7;
 }
 
-- (id)assetReferenceAtItemIndexPath:(PXSimpleIndexPath *)a3
+- (id)assetReferenceAtItemIndexPath:(PXSimpleIndexPath *)path
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore24OneUpSharePlayDataSource_assets);
-  v5 = self;
-  v9 = *&a3->item;
-  v10 = *&a3->dataSourceIdentifier;
-  v6 = [v4 objectAtIndexedSubscript_];
+  selfCopy = self;
+  v9 = *&path->item;
+  v10 = *&path->dataSourceIdentifier;
+  objectAtIndexedSubscript_ = [v4 objectAtIndexedSubscript_];
   v11[0] = v10;
   v11[1] = v9;
-  v7 = [objc_allocWithZone(off_1E7721490) initWithSectionObject:0 itemObject:v6 subitemObject:0 indexPath:v11];
+  v7 = [objc_allocWithZone(off_1E7721490) initWithSectionObject:0 itemObject:objectAtIndexedSubscript_ subitemObject:0 indexPath:v11];
 
   swift_unknownObjectRelease();
 
   return v7;
 }
 
-- (id)assetsInSectionIndexPath:(PXSimpleIndexPath *)a3
+- (id)assetsInSectionIndexPath:(PXSimpleIndexPath *)path
 {
   v3 = swift_unknownObjectRetain();
 
   return v3;
 }
 
-- (id)indexPathForDisplayAsset:(id)a3 hintIndexPath:(id)a4
+- (id)indexPathForDisplayAsset:(id)asset hintIndexPath:(id)path
 {
   sub_1A4859428(0, &qword_1EB12AF30, MEMORY[0x1E6969C28]);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v24 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v10);
   v12 = &v24 - v11;
-  if (a4)
+  if (path)
   {
     sub_1A5241554();
     v13 = sub_1A5241574();
@@ -75,9 +75,9 @@
   if ([v15 respondsToSelector_])
   {
     swift_unknownObjectRetain();
-    v16 = self;
-    v17 = [v15 indexOfObject_];
-    if (v17 == sub_1A52403B4())
+    selfCopy = self;
+    indexOfObject_ = [v15 indexOfObject_];
+    if (indexOfObject_ == sub_1A52403B4())
     {
       v18 = sub_1A5241574();
       (*(*(v18 - 8) + 56))(v12, 1, 1, v18);
@@ -85,7 +85,7 @@
 
     else
     {
-      MEMORY[0x1A58FC8D0](v17, 0);
+      MEMORY[0x1A58FC8D0](indexOfObject_, 0);
       v18 = sub_1A5241574();
       (*(*(v18 - 8) + 56))(v12, 0, 1, v18);
     }
@@ -114,10 +114,10 @@
   return v21;
 }
 
-- (PXSimpleIndexPath)indexPathForAssetReference:(SEL)a3
+- (PXSimpleIndexPath)indexPathForAssetReference:(SEL)reference
 {
   v6 = a4;
-  v7 = self;
+  selfCopy = self;
   v8 = OneUpSharePlayDataSource.indexPath(for:)(v6);
   v10 = v9;
   v12 = v11;

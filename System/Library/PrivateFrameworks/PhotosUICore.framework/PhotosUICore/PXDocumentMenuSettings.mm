@@ -49,8 +49,8 @@
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:6];
   v14 = [v2 sectionWithRows:v13 title:@"Actions Settings"];
   v27[0] = v14;
-  v15 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
-  v27[1] = v15;
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  v27[1] = px_restoreDefaultsSection;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
   v17 = [v2 moduleWithTitle:@"In-App Actions" contents:v16];
 

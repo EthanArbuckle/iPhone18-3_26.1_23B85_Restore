@@ -1,11 +1,11 @@
 @interface DDAddToContactsViewController
-+ (id)alternateNameForContact:(id)a3;
++ (id)alternateNameForContact:(id)contact;
 - (CGSize)preferredContentSize;
-- (void)cancelPressed:(id)a3;
-- (void)contactViewControllerForUnknownContactDidEndAddingToContacts:(id)a3;
-- (void)prepareForAction:(id)a3;
-- (void)setCancelButtonVisible:(BOOL)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)cancelPressed:(id)pressed;
+- (void)contactViewControllerForUnknownContactDidEndAddingToContacts:(id)contacts;
+- (void)prepareForAction:(id)action;
+- (void)setCancelButtonVisible:(BOOL)visible;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation DDAddToContactsViewController
@@ -19,46 +19,46 @@
   return result;
 }
 
-- (void)prepareForAction:(id)a3
+- (void)prepareForAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = objc_alloc_init(CNMutableContact);
-  [(DDAddToContactsViewController *)self setAction:v4];
+  [(DDAddToContactsViewController *)self setAction:actionCopy];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    sub_10000BA00(v4);
+    sub_10000BA00(actionCopy);
   }
 
-  v6 = [v4 contact];
+  contact = [actionCopy contact];
 
-  if (v6)
+  if (contact)
   {
-    v7 = [v4 contact];
-    v8 = [v7 mutableCopy];
+    contact2 = [actionCopy contact];
+    v8 = [contact2 mutableCopy];
 
-    v9 = [v4 result];
-    if (v9)
+    result = [actionCopy result];
+    if (result)
     {
-      [v4 result];
-      v9 = sub_1000094C8();
+      [actionCopy result];
+      result = sub_1000094C8();
     }
 
     v5 = v8;
   }
 
-  else if ([v4 result])
+  else if ([actionCopy result])
   {
     DDAugmentContactWithResultsFromAction();
-    [v4 result];
-    v9 = sub_1000094C8();
+    [actionCopy result];
+    result = sub_1000094C8();
   }
 
   else
   {
-    v10 = [v4 url];
-    v11 = [v10 scheme];
-    v12 = [v11 lowercaseString];
-    v13 = [v12 isEqualToString:@"mailto"];
+    v10 = [actionCopy url];
+    scheme = [v10 scheme];
+    lowercaseString = [scheme lowercaseString];
+    v13 = [lowercaseString isEqualToString:@"mailto"];
 
     if (v13)
     {
@@ -68,7 +68,7 @@
         sub_10000BABC(v14, v15, v16, v17, v18, v19, v20, v21);
       }
 
-      v22 = [v4 url];
+      v22 = [actionCopy url];
       v23 = dd_userFriendlyEmailFromMailtoScheme();
 
       if (v23)
@@ -95,17 +95,17 @@
         v27 = 0;
       }
 
-      v9 = v27;
+      result = v27;
     }
 
     else
     {
-      v28 = [v4 url];
+      v28 = [actionCopy url];
       isAnySimpleTelephonyScheme = dd_isAnySimpleTelephonyScheme();
 
       if (isAnySimpleTelephonyScheme)
       {
-        v30 = [v4 url];
+        v30 = [actionCopy url];
         v31 = dd_phoneNumberFromTelScheme();
         v32 = DDPhoneLabeledValue();
 
@@ -123,7 +123,7 @@
           v34 = 0;
         }
 
-        v9 = v34;
+        result = v34;
       }
 
       else
@@ -134,7 +134,7 @@
           sub_10000BA80(v35, v36, v37, v38, v39, v40, v41, v42);
         }
 
-        v9 = 0;
+        result = 0;
       }
     }
   }
@@ -144,116 +144,116 @@
   v45[2] = sub_1000096C8;
   v45[3] = &unk_100018760;
   v46 = v5;
-  v47 = self;
-  v48 = v9;
-  v43 = v9;
+  selfCopy = self;
+  v48 = result;
+  v43 = result;
   v44 = v5;
   dispatch_async(&_dispatch_main_q, v45);
 }
 
-+ (id)alternateNameForContact:(id)a3
++ (id)alternateNameForContact:(id)contact
 {
-  v3 = a3;
-  v4 = [v3 emailAddresses];
-  v5 = [v4 count];
+  contactCopy = contact;
+  emailAddresses = [contactCopy emailAddresses];
+  v5 = [emailAddresses count];
 
   if (v5)
   {
-    v6 = [v3 emailAddresses];
-    v7 = [v6 objectAtIndex:0];
+    emailAddresses2 = [contactCopy emailAddresses];
+    v7 = [emailAddresses2 objectAtIndex:0];
 
-    v8 = [v7 value];
+    value = [v7 value];
 
     goto LABEL_10;
   }
 
-  v9 = [v3 familyName];
-  if ([v9 length])
+  familyName = [contactCopy familyName];
+  if ([familyName length])
   {
     goto LABEL_8;
   }
 
-  v10 = [v3 givenName];
-  if ([v10 length])
+  givenName = [contactCopy givenName];
+  if ([givenName length])
   {
 LABEL_7:
 
 LABEL_8:
 LABEL_9:
-    v8 = 0;
+    value = 0;
     goto LABEL_10;
   }
 
-  v11 = [v3 nickname];
-  if ([v11 length])
+  nickname = [contactCopy nickname];
+  if ([nickname length])
   {
 
     goto LABEL_7;
   }
 
-  v13 = [v3 organizationName];
-  v14 = [v13 length];
+  organizationName = [contactCopy organizationName];
+  v14 = [organizationName length];
 
   if (v14)
   {
     goto LABEL_9;
   }
 
-  v8 = DDLocalizedString();
+  value = DDLocalizedString();
 LABEL_10:
 
-  return v8;
+  return value;
 }
 
-- (void)setCancelButtonVisible:(BOOL)a3
+- (void)setCancelButtonVisible:(BOOL)visible
 {
-  v3 = a3;
-  v5 = [(CNContactViewController *)self->_personViewController navigationItem];
-  v8 = v5;
-  if (v3)
+  visibleCopy = visible;
+  navigationItem = [(CNContactViewController *)self->_personViewController navigationItem];
+  v8 = navigationItem;
+  if (visibleCopy)
   {
-    v6 = [v5 rightBarButtonItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-    if (v6)
+    if (rightBarButtonItem)
     {
       return;
     }
 
     v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"cancelPressed:"];
-    v7 = [(CNContactViewController *)self->_personViewController navigationItem];
-    [v7 setRightBarButtonItem:v8];
+    navigationItem2 = [(CNContactViewController *)self->_personViewController navigationItem];
+    [navigationItem2 setRightBarButtonItem:v8];
   }
 
   else
   {
-    [v5 setRightBarButtonItem:0];
+    [navigationItem setRightBarButtonItem:0];
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  coordinatorCopy = coordinator;
   v14.receiver = self;
   v14.super_class = DDAddToContactsViewController;
-  [(DDAddToContactsViewController *)&v14 willTransitionToTraitCollection:v6 withTransitionCoordinator:v7];
-  v8 = [v6 verticalSizeClass];
-  v9 = [(DDAddToContactsViewController *)self traitCollection];
-  v10 = [v9 verticalSizeClass];
+  [(DDAddToContactsViewController *)&v14 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
+  verticalSizeClass = [collectionCopy verticalSizeClass];
+  traitCollection = [(DDAddToContactsViewController *)self traitCollection];
+  verticalSizeClass2 = [traitCollection verticalSizeClass];
 
-  if (v8 != v10)
+  if (verticalSizeClass != verticalSizeClass2)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100009DD8;
     v11[3] = &unk_100018990;
-    v12 = v6;
-    v13 = v7;
+    v12 = collectionCopy;
+    v13 = coordinatorCopy;
     [v13 animateAlongsideTransition:v11 completion:0];
   }
 }
 
-- (void)cancelPressed:(id)a3
+- (void)cancelPressed:(id)pressed
 {
   if (!self->_contactBeingAdded)
   {
@@ -261,7 +261,7 @@ LABEL_10:
   }
 }
 
-- (void)contactViewControllerForUnknownContactDidEndAddingToContacts:(id)a3
+- (void)contactViewControllerForUnknownContactDidEndAddingToContacts:(id)contacts
 {
   self->_contactBeingAdded = 0;
   [(DDAddToContactsViewController *)self setCancellable:1];

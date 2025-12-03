@@ -1,15 +1,15 @@
 @interface SUICKPFeedbackAdapter
-- (BOOL)shouldHandleCardSectionEngagement:(id)a3;
+- (BOOL)shouldHandleCardSectionEngagement:(id)engagement;
 - (CRKFeedbackDelegate)feedbackDelegate;
 - (id)feedbackListener;
-- (void)cardSectionViewDidInvalidateSize:(id)a3 animate:(BOOL)a4;
-- (void)cardViewDidAppear:(id)a3;
-- (void)cardViewDidDisappear:(id)a3;
-- (void)didEngageCardSection:(id)a3;
-- (void)didPerformCommand:(id)a3;
-- (void)didReportUserResponseFeedback:(id)a3;
-- (void)presentViewController:(id)a3;
-- (void)willDismissViewController:(id)a3;
+- (void)cardSectionViewDidInvalidateSize:(id)size animate:(BOOL)animate;
+- (void)cardViewDidAppear:(id)appear;
+- (void)cardViewDidDisappear:(id)disappear;
+- (void)didEngageCardSection:(id)section;
+- (void)didPerformCommand:(id)command;
+- (void)didReportUserResponseFeedback:(id)feedback;
+- (void)presentViewController:(id)controller;
+- (void)willDismissViewController:(id)controller;
 @end
 
 @implementation SUICKPFeedbackAdapter
@@ -21,9 +21,9 @@
   return WeakRetained;
 }
 
-- (BOOL)shouldHandleCardSectionEngagement:(id)a3
+- (BOOL)shouldHandleCardSectionEngagement:(id)engagement
 {
-  v4 = a3;
+  engagementCopy = engagement;
   WeakRetained = objc_loadWeakRetained(&self->_feedbackDelegate);
   v6 = objc_opt_respondsToSelector();
 
@@ -31,9 +31,9 @@
   {
     v7 = objc_loadWeakRetained(&self->_feedbackDelegate);
     v8 = MEMORY[0x277CF9470];
-    v9 = [v4 cardSection];
-    v10 = [v8 cardSectionWithSFCardSection:v9];
-    v11 = [v7 shouldHandleEngagement:v4 forCardSection:v10];
+    cardSection = [engagementCopy cardSection];
+    v10 = [v8 cardSectionWithSFCardSection:cardSection];
+    v11 = [v7 shouldHandleEngagement:engagementCopy forCardSection:v10];
   }
 
   else
@@ -44,9 +44,9 @@
   return v11;
 }
 
-- (void)didEngageCardSection:(id)a3
+- (void)didEngageCardSection:(id)section
 {
-  v16 = a3;
+  sectionCopy = section;
   WeakRetained = objc_loadWeakRetained(&self->_feedbackDelegate);
   v5 = objc_opt_respondsToSelector();
 
@@ -54,9 +54,9 @@
   {
     v6 = objc_loadWeakRetained(&self->_feedbackDelegate);
     v7 = MEMORY[0x277CF9470];
-    v8 = [v16 cardSection];
-    v9 = [v7 cardSectionWithSFCardSection:v8];
-    [v6 cardSectionView:v9 willProcessEngagementFeedback:v16];
+    cardSection = [sectionCopy cardSection];
+    v9 = [v7 cardSectionWithSFCardSection:cardSection];
+    [v6 cardSectionView:v9 willProcessEngagementFeedback:sectionCopy];
   }
 
   v10 = objc_loadWeakRetained(&self->_feedbackDelegate);
@@ -66,68 +66,68 @@
   {
     v12 = objc_loadWeakRetained(&self->_feedbackDelegate);
     v13 = MEMORY[0x277CF9470];
-    v14 = [v16 cardSection];
-    v15 = [v13 cardSectionWithSFCardSection:v14];
-    [v12 userDidEngageCardSection:v15 withEngagementFeedback:v16];
+    cardSection2 = [sectionCopy cardSection];
+    v15 = [v13 cardSectionWithSFCardSection:cardSection2];
+    [v12 userDidEngageCardSection:v15 withEngagementFeedback:sectionCopy];
   }
 }
 
-- (void)didPerformCommand:(id)a3
+- (void)didPerformCommand:(id)command
 {
-  v7 = a3;
+  commandCopy = command;
   WeakRetained = objc_loadWeakRetained(&self->_feedbackDelegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_feedbackDelegate);
-    [v6 commandWasPerformed:v7];
+    [v6 commandWasPerformed:commandCopy];
   }
 }
 
-- (void)cardViewDidAppear:(id)a3
+- (void)cardViewDidAppear:(id)appear
 {
-  v8 = a3;
+  appearCopy = appear;
   WeakRetained = objc_loadWeakRetained(&self->_feedbackDelegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_feedbackDelegate);
-    v7 = [v8 card];
-    [v6 cardViewDidAppearForCard:v7 withAppearanceFeedback:v8];
+    card = [appearCopy card];
+    [v6 cardViewDidAppearForCard:card withAppearanceFeedback:appearCopy];
   }
 }
 
-- (void)cardViewDidDisappear:(id)a3
+- (void)cardViewDidDisappear:(id)disappear
 {
-  v8 = a3;
+  disappearCopy = disappear;
   WeakRetained = objc_loadWeakRetained(&self->_feedbackDelegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_feedbackDelegate);
-    v7 = [v8 card];
-    [v6 cardViewDidDisappearForCard:v7 withDisappearanceFeedback:v8];
+    card = [disappearCopy card];
+    [v6 cardViewDidDisappearForCard:card withDisappearanceFeedback:disappearCopy];
   }
 }
 
-- (void)didReportUserResponseFeedback:(id)a3
+- (void)didReportUserResponseFeedback:(id)feedback
 {
-  v8 = a3;
+  feedbackCopy = feedback;
   WeakRetained = objc_loadWeakRetained(&self->_feedbackDelegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_feedbackDelegate);
-    v7 = [v8 cardSection];
-    [v6 userDidReportFeedback:v8 fromCardSection:v7];
+    cardSection = [feedbackCopy cardSection];
+    [v6 userDidReportFeedback:feedbackCopy fromCardSection:cardSection];
   }
 }
 
-- (void)cardSectionViewDidInvalidateSize:(id)a3 animate:(BOOL)a4
+- (void)cardSectionViewDidInvalidateSize:(id)size animate:(BOOL)animate
 {
   WeakRetained = objc_loadWeakRetained(&self->_feedbackDelegate);
   v6 = objc_opt_respondsToSelector();
@@ -139,29 +139,29 @@
   }
 }
 
-- (void)presentViewController:(id)a3
+- (void)presentViewController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_feedbackDelegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_feedbackDelegate);
-    [v6 presentViewController:v7];
+    [v6 presentViewController:controllerCopy];
   }
 }
 
-- (void)willDismissViewController:(id)a3
+- (void)willDismissViewController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_feedbackDelegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_feedbackDelegate);
-    [v6 willDismissViewController:v7];
+    [v6 willDismissViewController:controllerCopy];
   }
 }
 

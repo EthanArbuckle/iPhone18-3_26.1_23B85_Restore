@@ -1,12 +1,12 @@
 @interface AMSStorageDataMigrator
-+ (void)_migrateDeviceOfferEligibilityWithDatabase:(id)a3;
-+ (void)_migrateSharedStoreReviewWithDatabase:(id)a3;
-+ (void)migrateStorageToDefaultsForNonAMSInternal:(id)a3;
++ (void)_migrateDeviceOfferEligibilityWithDatabase:(id)database;
++ (void)_migrateSharedStoreReviewWithDatabase:(id)database;
++ (void)migrateStorageToDefaultsForNonAMSInternal:(id)internal;
 @end
 
 @implementation AMSStorageDataMigrator
 
-+ (void)migrateStorageToDefaultsForNonAMSInternal:(id)a3
++ (void)migrateStorageToDefaultsForNonAMSInternal:(id)internal
 {
   v16 = *MEMORY[0x1E69E9840];
   if (+[AMSDefaults migratedStorageToDefaultsForNonAMSInternal])
@@ -17,8 +17,8 @@
       v4 = +[AMSLogConfig sharedConfig];
     }
 
-    v5 = [v4 OSLogObject];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+    oSLogObject = [v4 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v6 = objc_opt_class();
       v7 = AMSLogKey();
@@ -29,7 +29,7 @@
       v13 = v7;
       v14 = 2114;
       v15 = v8;
-      _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] %{public}@ skipping. We already migrated.", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] %{public}@ skipping. We already migrated.", buf, 0x20u);
     }
   }
 
@@ -42,12 +42,12 @@
   }
 }
 
-+ (void)_migrateDeviceOfferEligibilityWithDatabase:(id)a3
++ (void)_migrateDeviceOfferEligibilityWithDatabase:(id)database
 {
-  v3 = a3;
+  databaseCopy = database;
   v4 = +[AMSStorage deviceOfferEligibility];
-  v5 = [v4 allKeys];
-  v6 = [v5 count];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys count];
 
   if (v6)
   {
@@ -55,7 +55,7 @@
   }
 
   v14 = 0;
-  v7 = [v3 valueForKey:@"deviceGroups" error:&v14];
+  v7 = [databaseCopy valueForKey:@"deviceGroups" error:&v14];
   v8 = v14;
   if (!v8 && [v7 count])
   {
@@ -63,7 +63,7 @@
   }
 
   v13 = v8;
-  v9 = [v3 valueForKey:@"deviceRegistrationBlacklist" error:&v13];
+  v9 = [databaseCopy valueForKey:@"deviceRegistrationBlacklist" error:&v13];
   v10 = v13;
 
   if (!v10 && v9)
@@ -84,13 +84,13 @@
   }
 }
 
-+ (void)_migrateSharedStoreReviewWithDatabase:(id)a3
++ (void)_migrateSharedStoreReviewWithDatabase:(id)database
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 domain];
+  databaseCopy = database;
+  domain = [databaseCopy domain];
   v29 = 0;
-  v6 = [v4 allKeysForDomain:v5 withError:&v29];
+  v6 = [databaseCopy allKeysForDomain:domain withError:&v29];
   v7 = v29;
 
   if (v7)
@@ -101,8 +101,8 @@
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v10 = objc_opt_class();
       v11 = AMSLogKey();
@@ -113,7 +113,7 @@
       v34 = v11;
       v35 = 2114;
       v36 = v12;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] %{public}@ skipping. No keys to migrate.", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] %{public}@ skipping. No keys to migrate.", buf, 0x20u);
     }
   }
 
@@ -141,7 +141,7 @@
 
           v17 = *(*(&v25 + 1) + 8 * i);
           v24 = 0;
-          v18 = [v4 valueForKey:v17 error:&v24];
+          v18 = [databaseCopy valueForKey:v17 error:&v24];
           v19 = v24;
           if (v19)
           {
@@ -156,10 +156,10 @@
           if (!v20)
           {
             v21 = [v17 componentsSeparatedByString:@"-"];
-            v22 = [v21 lastObject];
+            lastObject = [v21 lastObject];
 
-            [AMSDefaults setSharedStoreReviewMetrics:v18 forProcess:v22];
-            [v4 deleteForKey:v17 error:0];
+            [AMSDefaults setSharedStoreReviewMetrics:v18 forProcess:lastObject];
+            [databaseCopy deleteForKey:v17 error:0];
           }
         }
 

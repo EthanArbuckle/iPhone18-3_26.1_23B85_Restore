@@ -1,22 +1,22 @@
 @interface RecipeViewerViewController
-- (_TtC12NewsArticles26RecipeViewerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12NewsArticles26RecipeViewerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)childViewControllerForStatusBarHidden;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation RecipeViewerViewController
 
 - (id)childViewControllerForStatusBarHidden
 {
-  v1 = a1;
+  selfCopy = self;
   v2 = RecipeViewerViewController.childForStatusBarStyle.getter();
 
   return v2;
 }
 
-- (_TtC12NewsArticles26RecipeViewerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles26RecipeViewerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -25,23 +25,23 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   RecipeViewerViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  RecipeViewerViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  RecipeViewerViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(RecipeViewerViewController *)&v5 viewWillDisappear:v3];
+  [(RecipeViewerViewController *)&v5 viewWillDisappear:disappearCopy];
   sub_1D7D2A4EC();
 }
 

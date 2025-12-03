@@ -1,25 +1,25 @@
 @interface DAAccount
-+ (id)daAccountSubclassWithBackingAccountInfo:(id)a3;
++ (id)daAccountSubclassWithBackingAccountInfo:(id)info;
 + (id)oneshotListOfAccountIDs;
-+ (void)reacquireClientRestrictions:(id)a3;
++ (void)reacquireClientRestrictions:(id)restrictions;
 - (BOOL)_isIdentityManagedByProfile;
-- (BOOL)accountBoolPropertyForKey:(id)a3;
-- (BOOL)accountContainsEmailAddress:(id)a3;
-- (BOOL)accountHasSignificantPropertyChangesFromOldAccountInfo:(id)a3;
-- (BOOL)accountHasSignificantPropertyChangesWithChangeInfo:(id)a3;
-- (BOOL)canSaveWithAccountProvider:(id)a3;
-- (BOOL)enabledForAnyDADataclasses:(int64_t)a3;
-- (BOOL)enabledForDADataclass:(int64_t)a3;
-- (BOOL)handleTrustChallenge:(id)a3;
-- (BOOL)handleTrustChallenge:(id)a3 completionHandler:(id)a4;
+- (BOOL)accountBoolPropertyForKey:(id)key;
+- (BOOL)accountContainsEmailAddress:(id)address;
+- (BOOL)accountHasSignificantPropertyChangesFromOldAccountInfo:(id)info;
+- (BOOL)accountHasSignificantPropertyChangesWithChangeInfo:(id)info;
+- (BOOL)canSaveWithAccountProvider:(id)provider;
+- (BOOL)enabledForAnyDADataclasses:(int64_t)dataclasses;
+- (BOOL)enabledForDADataclass:(int64_t)dataclass;
+- (BOOL)handleTrustChallenge:(id)challenge;
+- (BOOL)handleTrustChallenge:(id)challenge completionHandler:(id)handler;
 - (BOOL)isChildAccount;
 - (BOOL)isDisabled;
-- (BOOL)isEqualToAccount:(id)a3;
+- (BOOL)isEqualToAccount:(id)account;
 - (BOOL)isOofSupported;
-- (BOOL)monitorFolderWithID:(id)a3;
-- (BOOL)preflightSaveWithAccountProvider:(id)a3;
+- (BOOL)monitorFolderWithID:(id)d;
+- (BOOL)preflightSaveWithAccountProvider:(id)provider;
 - (BOOL)resetCertWarnings;
-- (BOOL)saveAccountPropertiesWithError:(id *)a3;
+- (BOOL)saveAccountPropertiesWithError:(id *)error;
 - (BOOL)searchQueriesRunning;
 - (BOOL)shouldAutodiscoverAccountProperties;
 - (BOOL)shouldCancelTaskDueToOnPowerFetchMode;
@@ -27,8 +27,8 @@
 - (BOOL)shouldRemoveDBSyncDataOnAccountChange;
 - (BOOL)upgradeAccount;
 - (BOOL)useSSL;
-- (BOOL)useSSLFromDataclassPropertiesForDataclass:(id)a3;
-- (DAAccount)initWithBackingAccountInfo:(id)a3;
+- (BOOL)useSSLFromDataclassPropertiesForDataclass:(id)dataclass;
+- (DAAccount)initWithBackingAccountInfo:(id)info;
 - (NSArray)emailAddresses;
 - (NSString)accountDescription;
 - (NSString)changeTrackingID;
@@ -41,99 +41,99 @@
 - (NSString)scheduleIdentifier;
 - (NSString)scheme;
 - (NSURL)principalURL;
-- (__CFData)exceptionsForDigest:(id)a3;
+- (__CFData)exceptionsForDigest:(id)digest;
 - (__CFURLStorageSession)copyStorageSession;
-- (id)accountPropertyForKey:(id)a3;
+- (id)accountPropertyForKey:(id)key;
 - (id)accountTypeIdentifier;
-- (id)accountsProviderWithDBHelper:(id)a3;
-- (id)addUsernameToURL:(id)a3;
+- (id)accountsProviderWithDBHelper:(id)helper;
+- (id)addUsernameToURL:(id)l;
 - (id)additionalHeaderValues;
-- (id)beginDownloadingAttachmentWithUUID:(id)a3 consumer:(id)a4;
-- (id)containerProviderWithDBHelper:(id)a3;
+- (id)beginDownloadingAttachmentWithUUID:(id)d consumer:(id)consumer;
+- (id)containerProviderWithDBHelper:(id)helper;
 - (id)customConnectionProperties;
 - (id)description;
-- (id)fetchOfficeHoursWithConsumer:(id)a3 error:(id *)a4;
+- (id)fetchOfficeHoursWithConsumer:(id)consumer error:(id *)error;
 - (id)getPendingQueryQueue;
-- (id)hostFromDataclassPropertiesForDataclass:(id)a3;
+- (id)hostFromDataclassPropertiesForDataclass:(id)dataclass;
 - (id)localizedIdenticalAccountFailureMessage;
 - (id)localizedInvalidPasswordMessage;
 - (id)oauth2Token;
-- (id)objectForKeyedSubscript:(id)a3;
-- (id)performCalendarDirectorySearchForTerms:(id)a3 recordTypes:(id)a4 resultLimit:(unint64_t)a5 consumer:(id)a6;
-- (id)reportShareRequestAsJunkForCalendar:(id)a3 consumer:(id)a4;
-- (id)requestCalendarAvailabilityForStartDate:(id)a3 endDate:(id)a4 ignoredEventID:(id)a5 addresses:(id)a6 consumer:(id)a7;
-- (id)requestGrantedDelegatesListWithConsumer:(id)a3;
-- (id)respondToShareRequestForCalendar:(id)a3 withResponse:(int64_t)a4 consumer:(id)a5;
-- (id)setOfficeHours:(id)a3 withConsumer:(id)a4 error:(id *)a5;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (id)performCalendarDirectorySearchForTerms:(id)terms recordTypes:(id)types resultLimit:(unint64_t)limit consumer:(id)consumer;
+- (id)reportShareRequestAsJunkForCalendar:(id)calendar consumer:(id)consumer;
+- (id)requestCalendarAvailabilityForStartDate:(id)date endDate:(id)endDate ignoredEventID:(id)d addresses:(id)addresses consumer:(id)consumer;
+- (id)requestGrantedDelegatesListWithConsumer:(id)consumer;
+- (id)respondToShareRequestForCalendar:(id)calendar withResponse:(int64_t)response consumer:(id)consumer;
+- (id)setOfficeHours:(id)hours withConsumer:(id)consumer error:(id *)error;
 - (id)spinnerIdentifiers;
 - (id)stateString;
-- (id)unactionableICSRepresentationForMetaData:(id)a3 inFolderWithId:(id)a4 outSummary:(id *)a5;
-- (id)updateGrantedDelegatePermission:(id)a3 consumer:(id)a4;
-- (id)urlFromDataclassPropertiesForDataclass:(id)a3;
-- (int)accountIntPropertyForKey:(id)a3;
+- (id)unactionableICSRepresentationForMetaData:(id)data inFolderWithId:(id)id outSummary:(id *)summary;
+- (id)updateGrantedDelegatePermission:(id)permission consumer:(id)consumer;
+- (id)urlFromDataclassPropertiesForDataclass:(id)dataclass;
+- (int)accountIntPropertyForKey:(id)key;
 - (int)daAccountVersion;
 - (int)keychainAccessibilityType;
 - (int64_t)enabledDataclassesBitmask;
 - (int64_t)port;
-- (int64_t)portFromDataclassPropertiesForDataclass:(id)a3;
+- (int64_t)portFromDataclassPropertiesForDataclass:(id)dataclass;
 - (void)_dequeueQuery;
-- (void)_handleSignificantPropertyChanges:(id)a3;
-- (void)_reallyPerformSearchQuery:(id)a3;
+- (void)_handleSignificantPropertyChanges:(id)changes;
+- (void)_reallyPerformSearchQuery:(id)query;
 - (void)_refreshCredential;
-- (void)_webLoginRequestedAtURL:(id)a3 reasonString:(id)a4 inQueue:(id)a5 completionBlock:(id)a6;
-- (void)accountDidChangeFromOldAccountInfo:(id)a3;
-- (void)accountDidChangeWithChangeInfo:(id)a3;
+- (void)_webLoginRequestedAtURL:(id)l reasonString:(id)string inQueue:(id)queue completionBlock:(id)block;
+- (void)accountDidChangeFromOldAccountInfo:(id)info;
+- (void)accountDidChangeWithChangeInfo:(id)info;
 - (void)cancelAllSearchQueries;
-- (void)cancelCalendarAvailabilityRequestWithID:(id)a3;
-- (void)cancelCalendarDirectorySearchWithID:(id)a3;
-- (void)cancelGrantedDelegatesListRequestWithID:(id)a3;
-- (void)cancelSearchQuery:(id)a3;
-- (void)cancelUpdateGrantedDelegatePermissionRequestWithID:(id)a3;
-- (void)checkValidityOnAccountStore:(id)a3 withConsumer:(id)a4;
-- (void)checkValidityOnAccountStore:(id)a3 withConsumer:(id)a4 inQueue:(id)a5;
+- (void)cancelCalendarAvailabilityRequestWithID:(id)d;
+- (void)cancelCalendarDirectorySearchWithID:(id)d;
+- (void)cancelGrantedDelegatesListRequestWithID:(id)d;
+- (void)cancelSearchQuery:(id)query;
+- (void)cancelUpdateGrantedDelegatePermissionRequestWithID:(id)d;
+- (void)checkValidityOnAccountStore:(id)store withConsumer:(id)consumer;
+- (void)checkValidityOnAccountStore:(id)store withConsumer:(id)consumer inQueue:(id)queue;
 - (void)cleanupAccountFiles;
 - (void)clientTokenRequestedByServer;
 - (void)dealloc;
 - (void)decrementXpcActivityContinueCount;
-- (void)discoverInitialPropertiesWithConsumer:(id)a3;
-- (void)dropAssertionsAndRenewCredentialsInQueue:(id)a3 withHandler:(id)a4;
-- (void)handleValidationError:(id)a3 completion:(id)a4;
+- (void)discoverInitialPropertiesWithConsumer:(id)consumer;
+- (void)dropAssertionsAndRenewCredentialsInQueue:(id)queue withHandler:(id)handler;
+- (void)handleValidationError:(id)error completion:(id)completion;
 - (void)incrementXpcActivityContinueCount;
-- (void)performGroupExpansionForPrincipalPath:(id)a3 consumer:(id)a4;
-- (void)performSearchQuery:(id)a3;
-- (void)performUsingAccountPersona:(id)a3;
+- (void)performGroupExpansionForPrincipalPath:(id)path consumer:(id)consumer;
+- (void)performSearchQuery:(id)query;
+- (void)performUsingAccountPersona:(id)persona;
 - (void)reload;
-- (void)removeAccountPropertyForKey:(id)a3;
+- (void)removeAccountPropertyForKey:(id)key;
 - (void)removeClientCertificateData;
-- (void)removeConsumerForTask:(id)a3;
-- (void)removeDBSyncDataForAccountChange:(id)a3;
+- (void)removeConsumerForTask:(id)task;
+- (void)removeDBSyncDataForAccountChange:(id)change;
 - (void)removeXpcActivity;
 - (void)resetAccountID;
 - (void)resetStatusReport;
-- (void)resumeMonitoringFoldersWithIDs:(id)a3;
-- (void)retrieveOofSettingsForConsumer:(id)a3;
-- (void)saveXpcActivity:(id)a3;
-- (void)setAccountDescription:(id)a3;
-- (void)setAccountProperty:(id)a3 forKey:(id)a4;
-- (void)setConsumer:(id)a3 forTask:(id)a4;
-- (void)setEmailAddress:(id)a3;
-- (void)setExceptions:(__CFData *)a3 forDigest:(id)a4;
-- (void)setHost:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
-- (void)setPassword:(id)a3;
-- (void)setPort:(int64_t)a3;
-- (void)setPrincipalPath:(id)a3;
-- (void)setPrincipalURL:(id)a3;
-- (void)setShouldDoInitialAutodiscovery:(BOOL)a3;
+- (void)resumeMonitoringFoldersWithIDs:(id)ds;
+- (void)retrieveOofSettingsForConsumer:(id)consumer;
+- (void)saveXpcActivity:(id)activity;
+- (void)setAccountDescription:(id)description;
+- (void)setAccountProperty:(id)property forKey:(id)key;
+- (void)setConsumer:(id)consumer forTask:(id)task;
+- (void)setEmailAddress:(id)address;
+- (void)setExceptions:(__CFData *)exceptions forDigest:(id)digest;
+- (void)setHost:(id)host;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
+- (void)setPassword:(id)password;
+- (void)setPort:(int64_t)port;
+- (void)setPrincipalPath:(id)path;
+- (void)setPrincipalURL:(id)l;
+- (void)setShouldDoInitialAutodiscovery:(BOOL)autodiscovery;
 - (void)shutdown;
-- (void)stopMonitoringFolderWithID:(id)a3;
+- (void)stopMonitoringFolderWithID:(id)d;
 - (void)stopMonitoringFolders;
-- (void)stopMonitoringFoldersWithIDs:(id)a3;
-- (void)suspendMonitoringFoldersWithIDs:(id)a3;
+- (void)stopMonitoringFoldersWithIDs:(id)ds;
+- (void)suspendMonitoringFoldersWithIDs:(id)ds;
 - (void)tearDown;
 - (void)updateExistingAccountProperties;
-- (void)updateOofSettingsWithParams:(id)a3 consumer:(id)a4;
-- (void)webLoginRequestedAtURL:(id)a3 reasonString:(id)a4 inQueue:(id)a5 completionBlock:(id)a6;
+- (void)updateOofSettingsWithParams:(id)params consumer:(id)consumer;
+- (void)webLoginRequestedAtURL:(id)l reasonString:(id)string inQueue:(id)queue completionBlock:(id)block;
 @end
 
 @implementation DAAccount
@@ -146,7 +146,7 @@
   if (os_log_type_enabled(v3, v4))
   {
     *buf = 134217984;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_24844D000, v3, v4, "DAAccount %p is going away...", buf, 0xCu);
   }
 
@@ -178,10 +178,10 @@
     v5 = v8;
     if (v8)
     {
-      v9 = [v8 intValue];
-      if (v9)
+      intValue = [v8 intValue];
+      if (intValue)
       {
-        v10 = v9;
+        v10 = intValue;
         v11 = DALoggingwithCategory();
         v12 = *(MEMORY[0x277D03988] + 5);
         v13 = os_log_type_enabled(v11, v12);
@@ -189,9 +189,9 @@
         {
           if (v13)
           {
-            v22 = [(DAAccount *)self accountID];
+            accountID = [(DAAccount *)self accountID];
             v23 = 138543618;
-            v24 = v22;
+            v24 = accountID;
             v25 = 2114;
             v26 = v5;
             _os_log_impl(&dword_24844D000, v11, v12, "Account %{public}@ has no DAAccountVersion, and the previous build version string (%{public}@) appears new enough not to force migration. Assuming DAAccountVersion 1.", &v23, 0x16u);
@@ -203,9 +203,9 @@
 
         if (v13)
         {
-          v14 = [(DAAccount *)self accountID];
+          accountID2 = [(DAAccount *)self accountID];
           v23 = 138543618;
-          v24 = v14;
+          v24 = accountID2;
           v25 = 2114;
           v26 = v5;
           v15 = "Account %{public}@ has no DAAccountVersion, and the previous build version string (%{public}@) appears old enough that we think we need to migrate. Forcing account migration.";
@@ -223,9 +223,9 @@ LABEL_13:
         v12 = *(MEMORY[0x277D03988] + 5);
         if (os_log_type_enabled(v11, v12))
         {
-          v14 = [(DAAccount *)self accountID];
+          accountID2 = [(DAAccount *)self accountID];
           v23 = 138543618;
-          v24 = v14;
+          v24 = accountID2;
           v25 = 2114;
           v26 = v5;
           v15 = "Account %{public}@ has no DAAccountVersion, and the previous build version string (%{public}@) could not be parsed. Forcing account migration.";
@@ -240,9 +240,9 @@ LABEL_13:
       v16 = *(MEMORY[0x277D03988] + 5);
       if (os_log_type_enabled(v11, v16))
       {
-        v14 = [(DAAccount *)self accountID];
+        accountID2 = [(DAAccount *)self accountID];
         v23 = 138543362;
-        v24 = v14;
+        v24 = accountID2;
         v15 = "Account %{public}@ has no DAAccountVersion, and we have no previous build version. Forcing account migration.";
         v17 = v11;
         v18 = v16;
@@ -263,9 +263,9 @@ LABEL_16:
   v6 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v5, v6))
   {
-    v7 = [(DAAccount *)self accountID];
+    accountID3 = [(DAAccount *)self accountID];
     v23 = 138543618;
-    v24 = v7;
+    v24 = accountID3;
     v25 = 1024;
     LODWORD(v26) = v4;
     _os_log_impl(&dword_24844D000, v5, v6, "Account %{public}@ has DAAccountVersion %d", &v23, 0x12u);
@@ -284,8 +284,8 @@ LABEL_17:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(ACAccount *)self->_backingAccountInfo enabledDataclasses];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  enabledDataclasses = [(ACAccount *)self->_backingAccountInfo enabledDataclasses];
+  v4 = [enabledDataclasses countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -296,7 +296,7 @@ LABEL_17:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(enabledDataclasses);
         }
 
         if (([(ACAccount *)self->_backingAccountInfo isEnabledToSyncDataclass:*(*(&v11 + 1) + 8 * i)]& 1) != 0)
@@ -306,7 +306,7 @@ LABEL_17:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [enabledDataclasses countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -325,31 +325,31 @@ LABEL_11:
 
 - (NSString)accountDescription
 {
-  v2 = [(ACAccount *)self->_backingAccountInfo displayAccount];
-  v3 = [v2 accountDescription];
+  displayAccount = [(ACAccount *)self->_backingAccountInfo displayAccount];
+  accountDescription = [displayAccount accountDescription];
 
-  return v3;
+  return accountDescription;
 }
 
-- (DAAccount)initWithBackingAccountInfo:(id)a3
+- (DAAccount)initWithBackingAccountInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = DAAccount;
   v6 = [(DAAccount *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backingAccountInfo, a3);
+    objc_storeStrong(&v6->_backingAccountInfo, info);
     [(DAAccount *)v7 _refreshCredential];
     v8 = [[DATrustHandler alloc] initWithDelegate:v7];
     trustHandler = v7->_trustHandler;
     v7->_trustHandler = v8;
 
     [(DAAccount *)v7 resetStatusReport];
-    v10 = [(DAAccount *)v7 persistentUUID];
+    persistentUUID = [(DAAccount *)v7 persistentUUID];
 
-    if (!v10)
+    if (!persistentUUID)
     {
       v11 = CFUUIDCreate(0);
       v12 = CFUUIDCreateString(0, v11);
@@ -376,9 +376,9 @@ LABEL_11:
     v4 = *(MEMORY[0x277D03988] + 6);
     if (os_log_type_enabled(v3, v4))
     {
-      v5 = [(ACAccount *)self->_backingAccountInfo identifier];
+      identifier = [(ACAccount *)self->_backingAccountInfo identifier];
       *buf = 138543362;
-      v9 = v5;
+      v9 = identifier;
       _os_log_impl(&dword_24844D000, v3, v4, "Not clearing/refreshing account credentials for account %{public}@ because the credentials have yet to be saved.", buf, 0xCu);
     }
   }
@@ -408,27 +408,27 @@ void *__31__DAAccount__refreshCredential__block_invoke(void *result, uint64_t a2
   return result;
 }
 
-+ (id)daAccountSubclassWithBackingAccountInfo:(id)a3
++ (id)daAccountSubclassWithBackingAccountInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 accountType];
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:*MEMORY[0x277CB8C00]])
+  infoCopy = info;
+  accountType = [infoCopy accountType];
+  identifier = [accountType identifier];
+  if ([identifier isEqualToString:*MEMORY[0x277CB8C00]])
   {
   }
 
   else
   {
-    v6 = [v3 accountType];
-    v7 = [v6 identifier];
-    v8 = [v7 isEqualToString:*MEMORY[0x277CB8C50]];
+    accountType2 = [infoCopy accountType];
+    identifier2 = [accountType2 identifier];
+    v8 = [identifier2 isEqualToString:*MEMORY[0x277CB8C50]];
 
     if (!v8)
     {
       v11 = +[DAAccountLoader sharedInstance];
-      v12 = [v11 daemonAppropriateAccountClassForACAccount:v3];
+      v12 = [v11 daemonAppropriateAccountClassForACAccount:infoCopy];
 
-      v9 = [[v12 alloc] initWithBackingAccountInfo:v3];
+      v9 = [[v12 alloc] initWithBackingAccountInfo:infoCopy];
       goto LABEL_8;
     }
   }
@@ -439,7 +439,7 @@ void *__31__DAAccount__refreshCredential__block_invoke(void *result, uint64_t a2
     goto LABEL_9;
   }
 
-  v9 = [getESAccountClass() esAccountSubclassWithBackingAccountInfo:v3];
+  v9 = [getESAccountClass() esAccountSubclassWithBackingAccountInfo:infoCopy];
 LABEL_8:
   v10 = v9;
 LABEL_9:
@@ -447,43 +447,43 @@ LABEL_9:
   return v10;
 }
 
-- (id)accountsProviderWithDBHelper:(id)a3
+- (id)accountsProviderWithDBHelper:(id)helper
 {
   v3 = MEMORY[0x277D03910];
-  v4 = a3;
+  helperCopy = helper;
   if ([v3 useContactsFramework])
   {
-    v5 = [v4 contactStore];
+    contactStore = [helperCopy contactStore];
 
-    v6 = [DAContactsAccountProvider providerWithContactStore:v5];
+    v6 = [DAContactsAccountProvider providerWithContactStore:contactStore];
   }
 
   else
   {
-    v7 = [v4 abDB];
+    abDB = [helperCopy abDB];
 
-    v6 = [DAContactsAccountProvider providerWithAddressBook:v7];
+    v6 = [DAContactsAccountProvider providerWithAddressBook:abDB];
   }
 
   return v6;
 }
 
-- (id)containerProviderWithDBHelper:(id)a3
+- (id)containerProviderWithDBHelper:(id)helper
 {
   v3 = MEMORY[0x277D03910];
-  v4 = a3;
+  helperCopy = helper;
   if ([v3 useContactsFramework])
   {
-    v5 = [v4 contactStore];
+    contactStore = [helperCopy contactStore];
 
-    v6 = [DAContainerProvider providerWithContactStore:v5];
+    v6 = [DAContainerProvider providerWithContactStore:contactStore];
   }
 
   else
   {
-    v7 = [v4 abDB];
+    abDB = [helperCopy abDB];
 
-    v6 = [DAContainerProvider providerWithAddressBook:v7];
+    v6 = [DAContainerProvider providerWithAddressBook:abDB];
   }
 
   return v6;
@@ -491,47 +491,47 @@ LABEL_9:
 
 - (BOOL)upgradeAccount
 {
-  v3 = [(DAAccount *)self daAccountVersion];
-  if (v3 <= 0)
+  daAccountVersion = [(DAAccount *)self daAccountVersion];
+  if (daAccountVersion <= 0)
   {
     [(DAAccount *)self setAccountProperty:MEMORY[0x277CBEC28] forKey:@"DAAccountUseTrustedSSLCertificate"];
     [(DAAccount *)self setDAAccountVersion:1];
   }
 
-  return v3 < 1;
+  return daAccountVersion < 1;
 }
 
 - (void)resetAccountID
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"DAAccount.m" lineNumber:324 description:{@"We shouldn't be resetting our account id, ever"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DAAccount.m" lineNumber:324 description:{@"We shouldn't be resetting our account id, ever"}];
 }
 
 - (NSString)scheduleIdentifier
 {
-  v3 = [(DAAccount *)self backingAccountInfo];
-  v4 = [v3 parentAccount];
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  parentAccount = [backingAccountInfo parentAccount];
 
-  if (v4)
+  if (parentAccount)
   {
-    v5 = [(DAAccount *)self backingAccountInfo];
-    v6 = [v5 parentAccount];
-    v7 = [v6 identifier];
+    backingAccountInfo2 = [(DAAccount *)self backingAccountInfo];
+    parentAccount2 = [backingAccountInfo2 parentAccount];
+    identifier = [parentAccount2 identifier];
   }
 
   else
   {
-    v7 = [(DAAccount *)self persistentUUID];
+    identifier = [(DAAccount *)self persistentUUID];
   }
 
-  return v7;
+  return identifier;
 }
 
 - (NSString)changeTrackingID
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(DAAccount *)self persistentUUID];
-  v4 = [v2 stringWithFormat:@"com.apple.dataaccessd-%@", v3];
+  persistentUUID = [(DAAccount *)self persistentUUID];
+  v4 = [v2 stringWithFormat:@"com.apple.dataaccessd-%@", persistentUUID];
 
   return v4;
 }
@@ -541,41 +541,41 @@ LABEL_9:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ACAccount *)self->_backingAccountInfo identifier];
-  v7 = [v3 stringWithFormat:@"%@ %@", v5, v6];
+  identifier = [(ACAccount *)self->_backingAccountInfo identifier];
+  v7 = [v3 stringWithFormat:@"%@ %@", v5, identifier];
 
   return v7;
 }
 
-- (void)setAccountDescription:(id)a3
+- (void)setAccountDescription:(id)description
 {
   backingAccountInfo = self->_backingAccountInfo;
-  v4 = a3;
-  v5 = [(ACAccount *)backingAccountInfo displayAccount];
-  [v5 setAccountDescription:v4];
+  descriptionCopy = description;
+  displayAccount = [(ACAccount *)backingAccountInfo displayAccount];
+  [displayAccount setAccountDescription:descriptionCopy];
 }
 
-- (BOOL)enabledForAnyDADataclasses:(int64_t)a3
+- (BOOL)enabledForAnyDADataclasses:(int64_t)dataclasses
 {
-  v3 = a3;
-  if ((a3 & 1) == 0)
+  dataclassesCopy = dataclasses;
+  if ((dataclasses & 1) == 0)
   {
-    return (v3 & 2) != 0 && [(DAAccount *)self enabledForDADataclass:2]|| (v3 & 4) != 0 && [(DAAccount *)self enabledForDADataclass:4]|| (v3 & 8) != 0 && [(DAAccount *)self enabledForDADataclass:8]|| (v3 & 0x10) != 0 && [(DAAccount *)self enabledForDADataclass:16]|| (v3 & 0x20) != 0 && [(DAAccount *)self enabledForDADataclass:32];
+    return (dataclassesCopy & 2) != 0 && [(DAAccount *)self enabledForDADataclass:2]|| (dataclassesCopy & 4) != 0 && [(DAAccount *)self enabledForDADataclass:4]|| (dataclassesCopy & 8) != 0 && [(DAAccount *)self enabledForDADataclass:8]|| (dataclassesCopy & 0x10) != 0 && [(DAAccount *)self enabledForDADataclass:16]|| (dataclassesCopy & 0x20) != 0 && [(DAAccount *)self enabledForDADataclass:32];
   }
 
   v5 = 1;
   if (![(DAAccount *)self enabledForDADataclass:1])
   {
-    return (v3 & 2) != 0 && [(DAAccount *)self enabledForDADataclass:2]|| (v3 & 4) != 0 && [(DAAccount *)self enabledForDADataclass:4]|| (v3 & 8) != 0 && [(DAAccount *)self enabledForDADataclass:8]|| (v3 & 0x10) != 0 && [(DAAccount *)self enabledForDADataclass:16]|| (v3 & 0x20) != 0 && [(DAAccount *)self enabledForDADataclass:32];
+    return (dataclassesCopy & 2) != 0 && [(DAAccount *)self enabledForDADataclass:2]|| (dataclassesCopy & 4) != 0 && [(DAAccount *)self enabledForDADataclass:4]|| (dataclassesCopy & 8) != 0 && [(DAAccount *)self enabledForDADataclass:8]|| (dataclassesCopy & 0x10) != 0 && [(DAAccount *)self enabledForDADataclass:16]|| (dataclassesCopy & 0x20) != 0 && [(DAAccount *)self enabledForDADataclass:32];
   }
 
   return v5;
 }
 
-- (BOOL)enabledForDADataclass:(int64_t)a3
+- (BOOL)enabledForDADataclass:(int64_t)dataclass
 {
   backingAccountInfo = self->_backingAccountInfo;
-  v4 = acDataclassForDADataclass(a3);
+  v4 = acDataclassForDADataclass(dataclass);
   LOBYTE(backingAccountInfo) = [(ACAccount *)backingAccountInfo isEnabledForDataclass:v4];
 
   return backingAccountInfo;
@@ -583,8 +583,8 @@ LABEL_9:
 
 - (int64_t)enabledDataclassesBitmask
 {
-  v2 = [(ACAccount *)self->_backingAccountInfo enabledDataclasses];
-  v3 = daDataclassesForACDataclasses(v2);
+  enabledDataclasses = [(ACAccount *)self->_backingAccountInfo enabledDataclasses];
+  v3 = daDataclassesForACDataclasses(enabledDataclasses);
 
   return v3;
 }
@@ -605,68 +605,68 @@ LABEL_9:
   return 0;
 }
 
-- (id)accountPropertyForKey:(id)a3
+- (id)accountPropertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(DAAccount *)self backingAccountInfo];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  v6 = [backingAccountInfo objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (void)setAccountProperty:(id)a3 forKey:(id)a4
+- (void)setAccountProperty:(id)property forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DAAccount *)self backingAccountInfo];
-  [v8 setAccountProperty:v7 forKey:v6];
+  keyCopy = key;
+  propertyCopy = property;
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  [backingAccountInfo setAccountProperty:propertyCopy forKey:keyCopy];
 }
 
-- (void)removeAccountPropertyForKey:(id)a3
+- (void)removeAccountPropertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(DAAccount *)self backingAccountInfo];
-  [v5 setAccountProperty:0 forKey:v4];
+  keyCopy = key;
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  [backingAccountInfo setAccountProperty:0 forKey:keyCopy];
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DAAccount *)self backingAccountInfo];
-  [v8 setAccountProperty:v7 forKey:v6];
+  subscriptCopy = subscript;
+  objectCopy = object;
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  [backingAccountInfo setAccountProperty:objectCopy forKey:subscriptCopy];
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
-  v5 = [(DAAccount *)self backingAccountInfo];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  subscriptCopy = subscript;
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  v6 = [backingAccountInfo objectForKeyedSubscript:subscriptCopy];
 
   return v6;
 }
 
-- (BOOL)accountBoolPropertyForKey:(id)a3
+- (BOOL)accountBoolPropertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(DAAccount *)self backingAccountInfo];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  v6 = [backingAccountInfo objectForKeyedSubscript:keyCopy];
 
-  LOBYTE(v4) = [v6 BOOLValue];
-  return v4;
+  LOBYTE(keyCopy) = [v6 BOOLValue];
+  return keyCopy;
 }
 
-- (int)accountIntPropertyForKey:(id)a3
+- (int)accountIntPropertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(DAAccount *)self backingAccountInfo];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  v6 = [backingAccountInfo objectForKeyedSubscript:keyCopy];
 
-  LODWORD(v4) = [v6 intValue];
-  return v4;
+  LODWORD(keyCopy) = [v6 intValue];
+  return keyCopy;
 }
 
-- (void)resumeMonitoringFoldersWithIDs:(id)a3
+- (void)resumeMonitoringFoldersWithIDs:(id)ds
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = DALoggingwithCategory();
@@ -681,7 +681,7 @@ LABEL_9:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)suspendMonitoringFoldersWithIDs:(id)a3
+- (void)suspendMonitoringFoldersWithIDs:(id)ds
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = DALoggingwithCategory();
@@ -699,7 +699,7 @@ LABEL_9:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopMonitoringFolderWithID:(id)a3
+- (void)stopMonitoringFolderWithID:(id)d
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = DALoggingwithCategory();
@@ -731,35 +731,35 @@ LABEL_9:
   v3 = ;
   v4 = +[DABabysitter sharedBabysitter];
   v5 = [v4 accountWithIDShouldContinue:v3];
-  v6 = [(DAAccount *)self statusReport];
-  [v6 setSyncingAllowed:v5];
+  statusReport = [(DAAccount *)self statusReport];
+  [statusReport setSyncingAllowed:v5];
 
-  v7 = [(DAAccount *)self protocolVersion];
-  v8 = [(DAAccount *)self statusReport];
-  [v8 setProtocolVersion:v7];
+  protocolVersion = [(DAAccount *)self protocolVersion];
+  statusReport2 = [(DAAccount *)self statusReport];
+  [statusReport2 setProtocolVersion:protocolVersion];
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [(DAAccount *)self accountID];
-  v11 = [(DAAccount *)self displayName];
-  v12 = [(DAAccount *)self statusReport];
-  v13 = [(DATaskManager *)self->_taskManager stateString];
-  v14 = v13;
+  accountID = [(DAAccount *)self accountID];
+  displayName = [(DAAccount *)self displayName];
+  statusReport3 = [(DAAccount *)self statusReport];
+  stateString = [(DATaskManager *)self->_taskManager stateString];
+  v14 = stateString;
   v15 = @"No Task Manager initted yet";
-  if (v13)
+  if (stateString)
   {
-    v15 = v13;
+    v15 = stateString;
   }
 
-  v16 = [v9 stringWithFormat:@"AccountID: %@ (\"%@\"", v10, v11, v12, v15];
+  v16 = [v9 stringWithFormat:@"AccountID: %@ (\"%@\"", accountID, displayName, statusReport3, v15];
 
   return v16;
 }
 
-- (void)setConsumer:(id)a3 forTask:(id)a4
+- (void)setConsumer:(id)consumer forTask:(id)task
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  consumerCopy = consumer;
+  taskCopy = task;
   consumers = self->_consumers;
   if (!consumers)
   {
@@ -770,18 +770,18 @@ LABEL_9:
     consumers = self->_consumers;
   }
 
-  [(NSMapTable *)consumers setObject:v6 forKey:v7];
+  [(NSMapTable *)consumers setObject:consumerCopy forKey:taskCopy];
   v11 = DALoggingwithCategory();
   v12 = *(MEMORY[0x277D03988] + 7);
   if (os_log_type_enabled(v11, v12))
   {
     v13 = [(NSMapTable *)self->_consumers count];
     v15 = 134218752;
-    v16 = v6;
+    v16 = consumerCopy;
     v17 = 2048;
-    v18 = v7;
+    v18 = taskCopy;
     v19 = 2048;
-    v20 = self;
+    selfCopy = self;
     v21 = 2048;
     v22 = v13;
     _os_log_impl(&dword_24844D000, v11, v12, "Added consumer %p for task %p to DAAccount %p, count: %lu", &v15, 0x2Au);
@@ -790,20 +790,20 @@ LABEL_9:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeConsumerForTask:(id)a3
+- (void)removeConsumerForTask:(id)task
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(NSMapTable *)self->_consumers removeObjectForKey:v4];
+  taskCopy = task;
+  [(NSMapTable *)self->_consumers removeObjectForKey:taskCopy];
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 7);
   if (os_log_type_enabled(v5, v6))
   {
     v7 = [(NSMapTable *)self->_consumers count];
     v9 = 134218496;
-    v10 = v4;
+    v10 = taskCopy;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
     v14 = v7;
     _os_log_impl(&dword_24844D000, v5, v6, "Removed consumer for task %p from DAAccount %p, count: %lu", &v9, 0x20u);
@@ -815,45 +815,45 @@ LABEL_9:
 - (NSString)clientToken
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(DAAccount *)self backingAccountInfo];
-  v4 = [v3 clientToken];
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  clientToken = [backingAccountInfo clientToken];
 
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 7);
   if (os_log_type_enabled(v5, v6))
   {
     v9 = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = clientToken;
     _os_log_impl(&dword_24844D000, v5, v6, "Account %p clientToken: %@", &v9, 0x16u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return clientToken;
 }
 
 - (void)clientTokenRequestedByServer
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(DAAccount *)self clientToken];
-  v4 = [v3 length];
+  clientToken = [(DAAccount *)self clientToken];
+  v4 = [clientToken length];
 
   if (!v4)
   {
-    v5 = [MEMORY[0x277CCACA8] da_newGUID];
-    v6 = [(DAAccount *)self backingAccountInfo];
-    [v6 addClientToken:v5];
+    da_newGUID = [MEMORY[0x277CCACA8] da_newGUID];
+    backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+    [backingAccountInfo addClientToken:da_newGUID];
 
     v7 = DALoggingwithCategory();
     v8 = *(MEMORY[0x277D03988] + 7);
     if (os_log_type_enabled(v7, v8))
     {
       v10 = 134218242;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
-      v13 = v5;
+      v13 = da_newGUID;
       _os_log_impl(&dword_24844D000, v7, v8, "Account %p clientTokenRequestedByServer, new token: %@", &v10, 0x16u);
     }
   }
@@ -863,29 +863,29 @@ LABEL_9:
 
 - (NSString)password
 {
-  v3 = [(DAAccount *)self identityPersist];
-  v4 = [(DAAccount *)self passwordWithExpected:v3 == 0];
+  identityPersist = [(DAAccount *)self identityPersist];
+  v4 = [(DAAccount *)self passwordWithExpected:identityPersist == 0];
 
   return v4;
 }
 
-- (void)setPassword:(id)a3
+- (void)setPassword:(id)password
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 length];
-  v6 = [(ACAccount *)self->_backingAccountInfo credential];
-  v7 = v6;
+  passwordCopy = password;
+  v5 = [passwordCopy length];
+  credential = [(ACAccount *)self->_backingAccountInfo credential];
+  v7 = credential;
   if (v5)
   {
-    if (v6)
+    if (credential)
     {
-      [v6 setPassword:v4];
+      [credential setPassword:passwordCopy];
     }
 
     else
     {
-      v7 = [objc_alloc(MEMORY[0x277CB8F38]) initWithPassword:v4];
+      v7 = [objc_alloc(MEMORY[0x277CB8F38]) initWithPassword:passwordCopy];
       [(ACAccount *)self->_backingAccountInfo setCredential:v7];
     }
 
@@ -893,12 +893,12 @@ LABEL_9:
     v10 = *(MEMORY[0x277D03988] + 4);
     if (os_log_type_enabled(v9, v10))
     {
-      v11 = [(ACAccount *)self->_backingAccountInfo identifier];
-      v12 = [(ACAccount *)self->_backingAccountInfo username];
+      identifier = [(ACAccount *)self->_backingAccountInfo identifier];
+      username = [(ACAccount *)self->_backingAccountInfo username];
       v14 = 138412546;
-      v15 = v11;
+      v15 = identifier;
       v16 = 2112;
-      v17 = v12;
+      v17 = username;
       _os_log_impl(&dword_24844D000, v9, v10, "Calling _backingAccountInfo.authenticated = YES for Account identifier %@ and username %@", &v14, 0x16u);
     }
 
@@ -907,7 +907,7 @@ LABEL_9:
 
   else
   {
-    [v6 setPassword:0];
+    [credential setPassword:0];
 
     v7 = DALoggingwithCategory();
     v8 = *(MEMORY[0x277D03988] + 4);
@@ -921,32 +921,32 @@ LABEL_9:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performUsingAccountPersona:(id)a3
+- (void)performUsingAccountPersona:(id)persona
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACAccount *)self->_backingAccountInfo cal_personaIdentifier];
-  v6 = v5;
-  if (v5 && [v5 length])
+  personaCopy = persona;
+  cal_personaIdentifier = [(ACAccount *)self->_backingAccountInfo cal_personaIdentifier];
+  v6 = cal_personaIdentifier;
+  if (cal_personaIdentifier && [cal_personaIdentifier length])
   {
-    v7 = [MEMORY[0x277D77BF8] sharedManager];
-    v8 = [v7 currentPersona];
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+    currentPersona = [mEMORY[0x277D77BF8] currentPersona];
 
     v21 = 0;
-    v9 = [v8 copyCurrentPersonaContextWithError:&v21];
+    v9 = [currentPersona copyCurrentPersonaContextWithError:&v21];
     v10 = v21;
     if (!v9)
     {
-      v15 = DALoggingwithCategory();
+      domain = DALoggingwithCategory();
       v17 = *(MEMORY[0x277D03988] + 3);
-      if (os_log_type_enabled(v15, v17))
+      if (os_log_type_enabled(domain, v17))
       {
-        v18 = [(ACAccount *)self->_backingAccountInfo identifier];
+        identifier = [(ACAccount *)self->_backingAccountInfo identifier];
         *buf = 138543618;
-        v23 = v18;
+        v23 = identifier;
         v24 = 2112;
         v25 = v10;
-        _os_log_impl(&dword_24844D000, v15, v17, "Could not get current persona context for account %{public}@, with error %@", buf, 0x16u);
+        _os_log_impl(&dword_24844D000, domain, v17, "Could not get current persona context for account %{public}@, with error %@", buf, 0x16u);
 
         v9 = 0;
       }
@@ -955,7 +955,7 @@ LABEL_9:
       goto LABEL_16;
     }
 
-    v11 = [v8 createPersonaContextForBackgroundProcessingWithPersonaUniqueString:v6];
+    v11 = [currentPersona createPersonaContextForBackgroundProcessingWithPersonaUniqueString:v6];
 
     if (v11)
     {
@@ -963,9 +963,9 @@ LABEL_9:
       v13 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v12, v13))
       {
-        v14 = [(ACAccount *)self->_backingAccountInfo identifier];
+        identifier2 = [(ACAccount *)self->_backingAccountInfo identifier];
         *buf = 138543874;
-        v23 = v14;
+        v23 = identifier2;
         v24 = 2112;
         v25 = v6;
         v26 = 2112;
@@ -974,22 +974,22 @@ LABEL_9:
       }
     }
 
-    v15 = [v11 domain];
-    if (![v15 isEqualToString:@"NSPOSIXErrorDomain"])
+    domain = [v11 domain];
+    if (![domain isEqualToString:@"NSPOSIXErrorDomain"])
     {
 LABEL_16:
 
       goto LABEL_17;
     }
 
-    v16 = [v11 code];
+    code = [v11 code];
 
-    if (v16 == 1)
+    if (code == 1)
     {
-      v15 = DALoggingwithCategory();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
+      domain = DALoggingwithCategory();
+      if (os_log_type_enabled(domain, OS_LOG_TYPE_FAULT))
       {
-        [DAAccount performUsingAccountPersona:v15];
+        [DAAccount performUsingAccountPersona:domain];
       }
 
       goto LABEL_16;
@@ -999,33 +999,33 @@ LABEL_16:
   else
   {
     v9 = 0;
-    v8 = 0;
+    currentPersona = 0;
     v11 = 0;
   }
 
 LABEL_17:
-  v4[2](v4, v6);
-  if (v8 && v9 && !v11)
+  personaCopy[2](personaCopy, v6);
+  if (currentPersona && v9 && !v11)
   {
-    v19 = [v8 restorePersonaWithSavedPersonaContext:v9];
+    v19 = [currentPersona restorePersonaWithSavedPersonaContext:v9];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)urlFromDataclassPropertiesForDataclass:(id)a3
+- (id)urlFromDataclassPropertiesForDataclass:(id)dataclass
 {
-  v4 = a3;
-  v5 = [(DAAccount *)self backingAccountInfo];
-  v6 = [v5 calTopLevelAccount];
+  dataclassCopy = dataclass;
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  calTopLevelAccount = [backingAccountInfo calTopLevelAccount];
 
-  v7 = [v6 dataclassProperties];
-  if ([v7 count])
+  dataclassProperties = [calTopLevelAccount dataclassProperties];
+  if ([dataclassProperties count])
   {
     if (!self->_dataclassPropertyURLsByDataclass)
     {
-      v8 = self;
-      objc_sync_enter(v8);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       if (!self->_dataclassPropertyURLsByDataclass)
       {
         v9 = objc_opt_new();
@@ -1033,99 +1033,99 @@ LABEL_17:
         self->_dataclassPropertyURLsByDataclass = v9;
       }
 
-      objc_sync_exit(v8);
+      objc_sync_exit(selfCopy);
     }
 
-    v11 = [(DAAccount *)self dataclassPropertyURLsByDataclass];
-    objc_sync_enter(v11);
-    v12 = [(DAAccount *)self dataclassPropertyURLsByDataclass];
-    v13 = [v12 objectForKeyedSubscript:v4];
+    dataclassPropertyURLsByDataclass = [(DAAccount *)self dataclassPropertyURLsByDataclass];
+    objc_sync_enter(dataclassPropertyURLsByDataclass);
+    dataclassPropertyURLsByDataclass2 = [(DAAccount *)self dataclassPropertyURLsByDataclass];
+    null = [dataclassPropertyURLsByDataclass2 objectForKeyedSubscript:dataclassCopy];
 
-    if (!v13)
+    if (!null)
     {
-      v14 = [v7 objectForKeyedSubscript:v4];
+      v14 = [dataclassProperties objectForKeyedSubscript:dataclassCopy];
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || ([v14 objectForKeyedSubscript:@"url"], (v15 = objc_claimAutoreleasedReturnValue()) == 0) || (objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v15), v13 = objc_claimAutoreleasedReturnValue(), v15, !v13))
+      if ((objc_opt_isKindOfClass() & 1) == 0 || ([v14 objectForKeyedSubscript:@"url"], (v15 = objc_claimAutoreleasedReturnValue()) == 0) || (objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v15), null = objc_claimAutoreleasedReturnValue(), v15, !null))
       {
-        v13 = [MEMORY[0x277CBEB68] null];
+        null = [MEMORY[0x277CBEB68] null];
       }
 
-      v16 = [(DAAccount *)self dataclassPropertyURLsByDataclass];
-      [v16 setObject:v13 forKeyedSubscript:v4];
+      dataclassPropertyURLsByDataclass3 = [(DAAccount *)self dataclassPropertyURLsByDataclass];
+      [dataclassPropertyURLsByDataclass3 setObject:null forKeyedSubscript:dataclassCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
 
-      v13 = 0;
+      null = 0;
     }
 
-    objc_sync_exit(v11);
+    objc_sync_exit(dataclassPropertyURLsByDataclass);
   }
 
   else
   {
-    v13 = 0;
+    null = 0;
   }
 
-  return v13;
+  return null;
 }
 
-- (id)hostFromDataclassPropertiesForDataclass:(id)a3
+- (id)hostFromDataclassPropertiesForDataclass:(id)dataclass
 {
-  v3 = [(DAAccount *)self urlFromDataclassPropertiesForDataclass:a3];
-  v4 = [v3 host];
+  v3 = [(DAAccount *)self urlFromDataclassPropertiesForDataclass:dataclass];
+  host = [v3 host];
 
-  return v4;
+  return host;
 }
 
-- (BOOL)useSSLFromDataclassPropertiesForDataclass:(id)a3
+- (BOOL)useSSLFromDataclassPropertiesForDataclass:(id)dataclass
 {
-  v3 = [(DAAccount *)self urlFromDataclassPropertiesForDataclass:a3];
-  v4 = [v3 scheme];
-  v5 = [v4 lowercaseString];
-  v6 = [v5 isEqualToString:@"https"];
+  v3 = [(DAAccount *)self urlFromDataclassPropertiesForDataclass:dataclass];
+  scheme = [v3 scheme];
+  lowercaseString = [scheme lowercaseString];
+  v6 = [lowercaseString isEqualToString:@"https"];
 
   return v6;
 }
 
-- (int64_t)portFromDataclassPropertiesForDataclass:(id)a3
+- (int64_t)portFromDataclassPropertiesForDataclass:(id)dataclass
 {
-  v3 = [(DAAccount *)self urlFromDataclassPropertiesForDataclass:a3];
-  v4 = [v3 port];
-  v5 = [v4 integerValue];
+  v3 = [(DAAccount *)self urlFromDataclassPropertiesForDataclass:dataclass];
+  port = [v3 port];
+  integerValue = [port integerValue];
 
-  return v5;
+  return integerValue;
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  hostCopy = host;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 5);
   if (os_log_type_enabled(v5, v6))
   {
-    v7 = [(DAAccount *)self host];
+    host = [(DAAccount *)self host];
     v9 = 138412546;
-    v10 = v7;
+    v10 = host;
     v11 = 2112;
-    v12 = v4;
+    v12 = hostCopy;
     _os_log_impl(&dword_24844D000, v5, v6, "Changing Host From %@ to %@", &v9, 0x16u);
   }
 
-  [(DAAccount *)self setObject:v4 forKeyedSubscript:@"DAAccountHost"];
+  [(DAAccount *)self setObject:hostCopy forKeyedSubscript:@"DAAccountHost"];
   v8 = *MEMORY[0x277D85DE8];
 }
 
 - (NSString)hostWithoutPath
 {
-  v2 = [(DAAccount *)self host];
-  v3 = v2;
-  if (v2)
+  host = [(DAAccount *)self host];
+  v3 = host;
+  if (host)
   {
-    v4 = [v2 rangeOfString:@"/"];
+    v4 = [host rangeOfString:@"/"];
     if (v4 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v5 = v3;
@@ -1153,29 +1153,29 @@ LABEL_17:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setEmailAddress:(id)a3
+- (void)setEmailAddress:(id)address
 {
-  v4 = a3;
-  [(DAAccount *)self setObject:v4 forKeyedSubscript:@"DAAccountEmailAddress"];
-  [(DAAccount *)self setObject:v4 forKeyedSubscript:@"ACUIDisplayUsername"];
+  addressCopy = address;
+  [(DAAccount *)self setObject:addressCopy forKeyedSubscript:@"DAAccountEmailAddress"];
+  [(DAAccount *)self setObject:addressCopy forKeyedSubscript:@"ACUIDisplayUsername"];
 }
 
 - (NSArray)emailAddresses
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v2 = [(DAAccount *)self emailAddress];
-  v6[0] = v2;
+  emailAddress = [(DAAccount *)self emailAddress];
+  v6[0] = emailAddress;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -1183,18 +1183,18 @@ LABEL_17:
   return v3;
 }
 
-- (BOOL)accountContainsEmailAddress:(id)a3
+- (BOOL)accountContainsEmailAddress:(id)address
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  addressCopy = address;
+  if (addressCopy)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(DAAccount *)self emailAddresses];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    emailAddresses = [(DAAccount *)self emailAddresses];
+    v6 = [emailAddresses countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = *v12;
@@ -1204,17 +1204,17 @@ LABEL_17:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(emailAddresses);
           }
 
-          if (![v4 caseInsensitiveCompare:*(*(&v11 + 1) + 8 * i)])
+          if (![addressCopy caseInsensitiveCompare:*(*(&v11 + 1) + 8 * i)])
           {
             LOBYTE(v6) = 1;
             goto LABEL_12;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [emailAddresses countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           continue;
@@ -1239,32 +1239,32 @@ LABEL_12:
 - (int64_t)port
 {
   v2 = [(DAAccount *)self objectForKeyedSubscript:@"DAAccountPort"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setPort:(int64_t)a3
+- (void)setPort:(int64_t)port
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:port];
   [(DAAccount *)self setObject:v4 forKeyedSubscript:@"DAAccountPort"];
 }
 
 - (NSString)principalPath
 {
-  v3 = [MEMORY[0x277D03970] DAAccountPrincipalPath];
-  v4 = [(DAAccount *)self objectForKeyedSubscript:v3];
-  v5 = [v4 da_appendSlashIfNeeded];
+  dAAccountPrincipalPath = [MEMORY[0x277D03970] DAAccountPrincipalPath];
+  v4 = [(DAAccount *)self objectForKeyedSubscript:dAAccountPrincipalPath];
+  da_appendSlashIfNeeded = [v4 da_appendSlashIfNeeded];
 
-  return v5;
+  return da_appendSlashIfNeeded;
 }
 
-- (void)setPrincipalPath:(id)a3
+- (void)setPrincipalPath:(id)path
 {
   v4 = MEMORY[0x277D03970];
-  v5 = a3;
-  v6 = [v4 DAAccountPrincipalPath];
-  [(DAAccount *)self setObject:v5 forKeyedSubscript:v6];
+  pathCopy = path;
+  dAAccountPrincipalPath = [v4 DAAccountPrincipalPath];
+  [(DAAccount *)self setObject:pathCopy forKeyedSubscript:dAAccountPrincipalPath];
 }
 
 - (NSString)scheme
@@ -1285,14 +1285,14 @@ LABEL_12:
 - (NSURL)principalURL
 {
   v3 = MEMORY[0x277CBEBC0];
-  v4 = [(DAAccount *)self scheme];
-  v5 = [(DAAccount *)self host];
-  v6 = [(DAAccount *)self port];
-  v7 = [(DAAccount *)self principalPath];
-  v8 = v7;
-  if (v7)
+  scheme = [(DAAccount *)self scheme];
+  host = [(DAAccount *)self host];
+  port = [(DAAccount *)self port];
+  principalPath = [(DAAccount *)self principalPath];
+  v8 = principalPath;
+  if (principalPath)
   {
-    v9 = v7;
+    v9 = principalPath;
   }
 
   else
@@ -1300,45 +1300,45 @@ LABEL_12:
     v9 = @"/";
   }
 
-  v10 = [v3 da_URLWithScheme:v4 host:v5 port:v6 uri:v9];
+  v10 = [v3 da_URLWithScheme:scheme host:host port:port uri:v9];
 
   return v10;
 }
 
-- (void)setPrincipalURL:(id)a3
+- (void)setPrincipalURL:(id)l
 {
-  v15 = a3;
-  v4 = [v15 scheme];
-  v5 = [v4 length];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  v5 = [scheme length];
 
   if (v5)
   {
-    v6 = [v15 scheme];
-    -[DAAccount setUseSSL:](self, "setUseSSL:", [v6 isEqualToString:@"http"] ^ 1);
+    scheme2 = [lCopy scheme];
+    -[DAAccount setUseSSL:](self, "setUseSSL:", [scheme2 isEqualToString:@"http"] ^ 1);
   }
 
-  v7 = [v15 host];
-  v8 = [v7 length];
+  host = [lCopy host];
+  v8 = [host length];
 
   if (v8)
   {
-    v9 = [v15 host];
-    [(DAAccount *)self setHost:v9];
+    host2 = [lCopy host];
+    [(DAAccount *)self setHost:host2];
   }
 
-  v10 = [v15 port];
+  port = [lCopy port];
 
-  if (v10)
+  if (port)
   {
-    v11 = [v15 port];
-    -[DAAccount setPort:](self, "setPort:", [v11 integerValue]);
+    port2 = [lCopy port];
+    -[DAAccount setPort:](self, "setPort:", [port2 integerValue]);
   }
 
-  v12 = [v15 path];
-  v13 = v12;
-  if (v12)
+  path = [lCopy path];
+  v13 = path;
+  if (path)
   {
-    v14 = v12;
+    v14 = path;
   }
 
   else
@@ -1349,31 +1349,31 @@ LABEL_12:
   [(DAAccount *)self setPrincipalPath:v14];
 }
 
-- (void)checkValidityOnAccountStore:(id)a3 withConsumer:(id)a4
+- (void)checkValidityOnAccountStore:(id)store withConsumer:(id)consumer
 {
-  v6 = a4;
-  v7 = a3;
+  consumerCopy = consumer;
+  storeCopy = store;
   v8 = dataaccess_get_global_queue();
-  [(DAAccount *)self checkValidityOnAccountStore:v7 withConsumer:v6 inQueue:v8];
+  [(DAAccount *)self checkValidityOnAccountStore:storeCopy withConsumer:consumerCopy inQueue:v8];
 }
 
-- (void)checkValidityOnAccountStore:(id)a3 withConsumer:(id)a4 inQueue:(id)a5
+- (void)checkValidityOnAccountStore:(id)store withConsumer:(id)consumer inQueue:(id)queue
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  consumerCopy = consumer;
+  queueCopy = queue;
+  storeCopy = store;
   [(DAAccount *)self setIsValidating:1];
-  v11 = [(DAAccount *)self backingAccountInfo];
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __62__DAAccount_checkValidityOnAccountStore_withConsumer_inQueue___block_invoke;
   v14[3] = &unk_278F13158;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v12 = v8;
-  v13 = v9;
-  [v10 verifyCredentialsForAccount:v11 saveWhenAuthorized:0 withHandler:v14];
+  v15 = queueCopy;
+  v16 = consumerCopy;
+  v12 = consumerCopy;
+  v13 = queueCopy;
+  [storeCopy verifyCredentialsForAccount:backingAccountInfo saveWhenAuthorized:0 withHandler:v14];
 }
 
 void __62__DAAccount_checkValidityOnAccountStore_withConsumer_inQueue___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1422,7 +1422,7 @@ void __62__DAAccount_checkValidityOnAccountStore_withConsumer_inQueue___block_in
   dispatch_async(v3, block);
 }
 
-- (void)discoverInitialPropertiesWithConsumer:(id)a3
+- (void)discoverInitialPropertiesWithConsumer:(id)consumer
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = DALoggingwithCategory();
@@ -1437,9 +1437,9 @@ void __62__DAAccount_checkValidityOnAccountStore_withConsumer_inQueue___block_in
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setShouldDoInitialAutodiscovery:(BOOL)a3
+- (void)setShouldDoInitialAutodiscovery:(BOOL)autodiscovery
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:!a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:!autodiscovery];
   [(DAAccount *)self setObject:v4 forKeyedSubscript:@"DAAccountDidAutodiscover"];
 }
 
@@ -1450,11 +1450,11 @@ void __62__DAAccount_checkValidityOnAccountStore_withConsumer_inQueue___block_in
     return 1;
   }
 
-  v4 = [(DAAccount *)self principalPath];
-  if ([v4 length])
+  principalPath = [(DAAccount *)self principalPath];
+  if ([principalPath length])
   {
-    v5 = [(DAAccount *)self principalPath];
-    v3 = [v5 isEqualToString:@"/"];
+    principalPath2 = [(DAAccount *)self principalPath];
+    v3 = [principalPath2 isEqualToString:@"/"];
   }
 
   else
@@ -1467,22 +1467,22 @@ void __62__DAAccount_checkValidityOnAccountStore_withConsumer_inQueue___block_in
 
 - (NSString)onBehalfOfBundleIdentifier
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   Name = sel_getName(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"DAAccount.m" lineNumber:878 description:{@"%s MUST be implemented in ALL DAAccount subclasses.  Looks like it's missing in %@", Name, objc_opt_class()}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DAAccount.m" lineNumber:878 description:{@"%s MUST be implemented in ALL DAAccount subclasses.  Looks like it's missing in %@", Name, objc_opt_class()}];
 
   return 0;
 }
 
 - (BOOL)shouldRemoveDBSyncDataOnAccountChange
 {
-  v2 = [(DAAccount *)self backingAccountInfo];
-  v3 = [v2 parentAccountIdentifier];
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  parentAccountIdentifier = [backingAccountInfo parentAccountIdentifier];
 
-  return v3 == 0;
+  return parentAccountIdentifier == 0;
 }
 
-- (void)removeDBSyncDataForAccountChange:(id)a3
+- (void)removeDBSyncDataForAccountChange:(id)change
 {
   v66 = *MEMORY[0x277D85DE8];
   if (![(DAAccount *)self shouldRemoveDBSyncDataOnAccountChange])
@@ -1504,31 +1504,31 @@ void __62__DAAccount_checkValidityOnAccountStore_withConsumer_inQueue___block_in
   if (os_log_type_enabled(v7, v8))
   {
     *buf = 138412290;
-    v65 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_24844D000, v7, v8, "Removing contacts data for account %@, because it has a significant change", buf, 0xCu);
   }
 
-  v9 = [(DAAccount *)self changeTrackingID];
-  [v4 abOpenDBWithClientIdentifier:v9];
+  changeTrackingID = [(DAAccount *)self changeTrackingID];
+  [v4 abOpenDBWithClientIdentifier:changeTrackingID];
 
   v10 = [(DAAccount *)self accountsProviderWithDBHelper:v4];
-  v11 = [(DAAccount *)self accountID];
-  v12 = [v10 fetchedAccountWithExternalIdentifier:v11];
+  accountID = [(DAAccount *)self accountID];
+  v12 = [v10 fetchedAccountWithExternalIdentifier:accountID];
 
   v13 = objc_alloc_init(MEMORY[0x277CBDBA0]);
   if (v12)
   {
     v14 = [(DAAccount *)self containerProviderWithDBHelper:v4];
     v57 = v12;
-    v15 = [v12 externalIdentifier];
-    v16 = [v14 allContainersForAccountWithExternalIdentifier:v15];
+    externalIdentifier = [v12 externalIdentifier];
+    v16 = [v14 allContainersForAccountWithExternalIdentifier:externalIdentifier];
 
     v17 = DALoggingwithCategory();
     if (os_log_type_enabled(v17, v8))
     {
       v18 = [v16 count];
       *buf = 134217984;
-      v65 = v18;
+      selfCopy3 = v18;
       _os_log_impl(&dword_24844D000, v17, v8, "Found %ld contacts sources to remove", buf, 0xCu);
     }
 
@@ -1567,10 +1567,10 @@ void __62__DAAccount_checkValidityOnAccountStore_withConsumer_inQueue___block_in
       while (v24);
     }
 
-    v27 = [MEMORY[0x277D03910] useContactsFramework];
+    useContactsFramework = [MEMORY[0x277D03910] useContactsFramework];
     v12 = v57;
     v6 = MEMORY[0x277D03988];
-    if (v27)
+    if (useContactsFramework)
     {
       if (v21)
       {
@@ -1609,16 +1609,16 @@ LABEL_24:
     if (os_log_type_enabled(v29, v30))
     {
       *buf = 138412290;
-      v65 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_24844D000, v29, v30, "Removing event / todo data for account %@, because it has a significant change", buf, 0xCu);
     }
 
-    v31 = [(DAAccount *)self accountID];
-    v32 = [(DAAccount *)self changeTrackingID];
-    [v4 calOpenDatabaseForAccountID:v31 clientID:v32];
+    accountID2 = [(DAAccount *)self accountID];
+    changeTrackingID2 = [(DAAccount *)self changeTrackingID];
+    [v4 calOpenDatabaseForAccountID:accountID2 clientID:changeTrackingID2];
 
-    v33 = [(DAAccount *)self accountID];
-    [v4 calDatabaseForAccountID:v33];
+    accountID3 = [(DAAccount *)self accountID];
+    [v4 calDatabaseForAccountID:accountID3];
 
     [(DAAccount *)self accountID];
     v34 = CalDatabaseCopyStoreWithExternalID();
@@ -1633,7 +1633,7 @@ LABEL_24:
         {
           v38 = [v36 count];
           *buf = 134217984;
-          v65 = v38;
+          selfCopy3 = v38;
           _os_log_impl(&dword_24844D000, v37, v30, "Found %ld calendars to remove", buf, 0xCu);
         }
 
@@ -1664,16 +1664,16 @@ LABEL_24:
       CFRelease(v35);
     }
 
-    v41 = [(DAAccount *)self accountID];
-    [v4 calCloseDatabaseForAccountID:v41 save:v28];
+    accountID4 = [(DAAccount *)self accountID];
+    [v4 calCloseDatabaseForAccountID:accountID4 save:v28];
   }
 
   if ([(DAAccount *)self enabledForDADataclass:32])
   {
-    v42 = [MEMORY[0x277D03910] completelyIgnoreNotes];
+    completelyIgnoreNotes = [MEMORY[0x277D03910] completelyIgnoreNotes];
     v43 = DALoggingwithCategory();
     v44 = v43;
-    if (v42)
+    if (completelyIgnoreNotes)
     {
       v45 = *(v6 + 3);
       if (os_log_type_enabled(v43, v45))
@@ -1689,14 +1689,14 @@ LABEL_24:
       if (os_log_type_enabled(v43, *(v6 + 6)))
       {
         *buf = 138412290;
-        v65 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_24844D000, v44, v46, "Removing notes data for account %@, because it has a significant change", buf, 0xCu);
       }
 
       v44 = objc_opt_new();
       [v44 enableChangeLogging:0];
-      v47 = [(DAAccount *)self accountID];
-      v48 = [v44 accountForAccountId:v47];
+      accountID5 = [(DAAccount *)self accountID];
+      v48 = [v44 accountForAccountId:accountID5];
 
       if (v48)
       {
@@ -1717,9 +1717,9 @@ LABEL_24:
           v53 = *(v6 + 3);
           if (os_log_type_enabled(v52, v53))
           {
-            v54 = [v51 DAExtendedDescription];
+            dAExtendedDescription = [v51 DAExtendedDescription];
             *buf = 138412290;
-            v65 = v54;
+            selfCopy3 = dAExtendedDescription;
             _os_log_impl(&dword_24844D000, v52, v53, "Failed to save: %@", buf, 0xCu);
           }
 
@@ -1741,11 +1741,11 @@ LABEL_60:
   v56 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountDidChangeWithChangeInfo:(id)a3
+- (void)accountDidChangeWithChangeInfo:(id)info
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(DAAccount *)self accountHasSignificantPropertyChangesWithChangeInfo:v4])
+  infoCopy = info;
+  if ([(DAAccount *)self accountHasSignificantPropertyChangesWithChangeInfo:infoCopy])
   {
     v5 = DALoggingwithCategory();
     v6 = *(MEMORY[0x277D03988] + 4);
@@ -1753,21 +1753,21 @@ LABEL_60:
     {
       backingAccountInfo = self->_backingAccountInfo;
       v9 = 138412546;
-      v10 = v4;
+      v10 = infoCopy;
       v11 = 2112;
       v12 = backingAccountInfo;
       _os_log_impl(&dword_24844D000, v5, v6, "Account had significant property change, going to flush local data.\n\nChangeInfo %@\n\nNewProperties %@", &v9, 0x16u);
     }
 
-    [(DAAccount *)self _handleSignificantPropertyChanges:v4];
+    [(DAAccount *)self _handleSignificantPropertyChanges:infoCopy];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSignificantPropertyChanges:(id)a3
+- (void)_handleSignificantPropertyChanges:(id)changes
 {
-  [(DAAccount *)self removeDBSyncDataForAccountChange:a3];
+  [(DAAccount *)self removeDBSyncDataForAccountChange:changes];
 
   [(DAAccount *)self cleanupAccountFiles];
 }
@@ -1775,11 +1775,11 @@ LABEL_60:
 - (id)additionalHeaderValues
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v2 = [(DAAccount *)self backingAccountInfo];
-  v3 = [v2 credential];
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  credential = [backingAccountInfo credential];
 
-  v4 = [v3 credentialType];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CB8DB0]];
+  credentialType = [credential credentialType];
+  v5 = [credentialType isEqualToString:*MEMORY[0x277CB8DB0]];
 
   if (!v5)
   {
@@ -1787,11 +1787,11 @@ LABEL_60:
     goto LABEL_12;
   }
 
-  v6 = [v3 credentialItemForKey:*MEMORY[0x277CB8F28]];
+  v6 = [credential credentialItemForKey:*MEMORY[0x277CB8F28]];
   if (v6)
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [v3 credentialItemForKey:*MEMORY[0x277CB8F20]];
+    v8 = [credential credentialItemForKey:*MEMORY[0x277CB8F20]];
     v9 = [v7 stringWithFormat:@"Y=%@ T=%@", v6, v8];;
 
     if (!v9)
@@ -1831,11 +1831,11 @@ LABEL_12:
   v12[1] = *MEMORY[0x277D85DE8];
   v11 = *MEMORY[0x277CBAEF8];
   v9[0] = *MEMORY[0x277CBAE78];
-  v3 = [(DAAccount *)self onBehalfOfBundleIdentifier];
-  v10[0] = v3;
+  onBehalfOfBundleIdentifier = [(DAAccount *)self onBehalfOfBundleIdentifier];
+  v10[0] = onBehalfOfBundleIdentifier;
   v9[1] = *MEMORY[0x277CBADA0];
-  v4 = [(DAAccount *)self accountID];
-  v10[1] = v4;
+  accountID = [(DAAccount *)self accountID];
+  v10[1] = accountID;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
   v12[0] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
@@ -1852,29 +1852,29 @@ LABEL_12:
   v4 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v3, v4))
   {
-    v5 = [(DAAccount *)self backingAccountInfo];
-    v6 = [v5 identifier];
+    backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+    identifier = [backingAccountInfo identifier];
     v19 = 138412290;
-    v20 = v6;
+    v20 = identifier;
     _os_log_impl(&dword_24844D000, v3, v4, "Fetching OAuth Credential for Backing Account %@", &v19, 0xCu);
   }
 
-  v7 = [(DAAccount *)self backingAccountInfo];
-  v8 = [v7 credential];
+  backingAccountInfo2 = [(DAAccount *)self backingAccountInfo];
+  credential = [backingAccountInfo2 credential];
 
-  if (v8)
+  if (credential)
   {
-    v9 = [v8 credentialType];
-    if ([v9 isEqualToString:*MEMORY[0x277CB8D98]])
+    credentialType = [credential credentialType];
+    if ([credentialType isEqualToString:*MEMORY[0x277CB8D98]])
     {
 
 LABEL_7:
-      v12 = [v8 oauthToken];
+      oauthToken = [credential oauthToken];
       goto LABEL_9;
     }
 
-    v10 = [v8 credentialType];
-    v11 = [v10 isEqualToString:*MEMORY[0x277CB8DA0]];
+    credentialType2 = [credential credentialType];
+    v11 = [credentialType2 isEqualToString:*MEMORY[0x277CB8DA0]];
 
     if (v11)
     {
@@ -1882,12 +1882,12 @@ LABEL_7:
     }
   }
 
-  v12 = 0;
+  oauthToken = 0;
 LABEL_9:
   v13 = DALoggingwithCategory();
   if (os_log_type_enabled(v13, v4))
   {
-    if (v12)
+    if (oauthToken)
     {
       v14 = @"Valid";
     }
@@ -1897,20 +1897,20 @@ LABEL_9:
       v14 = @"InValid";
     }
 
-    v15 = [(DAAccount *)self backingAccountInfo];
-    v16 = [v15 identifier];
+    backingAccountInfo3 = [(DAAccount *)self backingAccountInfo];
+    identifier2 = [backingAccountInfo3 identifier];
     v19 = 138412802;
     v20 = v14;
     v21 = 2112;
-    v22 = v8;
+    v22 = credential;
     v23 = 2114;
-    v24 = v16;
+    v24 = identifier2;
     _os_log_impl(&dword_24844D000, v13, v4, "Account Store Returned A %@ OAuth-token From Credential Object %@ AccountID: %{public}@", &v19, 0x20u);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return oauthToken;
 }
 
 - (void)tearDown
@@ -1931,20 +1931,20 @@ LABEL_9:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)monitorFolderWithID:(id)a3
+- (BOOL)monitorFolderWithID:(id)d
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  dCopy = d;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v9 count:1];
+  dCopy2 = d;
+  v6 = [v4 arrayWithObjects:&dCopy count:1];
 
-  LOBYTE(self) = [(DAAccount *)self monitorFoldersWithIDs:v6, v9, v10];
+  LOBYTE(self) = [(DAAccount *)self monitorFoldersWithIDs:v6, dCopy, v10];
   v7 = *MEMORY[0x277D85DE8];
   return self;
 }
 
-- (void)stopMonitoringFoldersWithIDs:(id)a3
+- (void)stopMonitoringFoldersWithIDs:(id)ds
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = DALoggingwithCategory();
@@ -1982,51 +1982,51 @@ LABEL_9:
 
 - (void)removeClientCertificateData
 {
-  v3 = [(DAAccount *)self identityPersist];
-  if (v3)
+  identityPersist = [(DAAccount *)self identityPersist];
+  if (identityPersist)
   {
-    v4 = v3;
+    v4 = identityPersist;
     if (![(DAAccount *)self _isIdentityManagedByProfile])
     {
       _DASecDeleteIdentityByPersistentRef(v4);
     }
 
     [(DAAccount *)self setIdentityCertificatePersistentID:0 managedByProfile:0];
-    v3 = v4;
+    identityPersist = v4;
   }
 }
 
-- (BOOL)saveAccountPropertiesWithError:(id *)a3
+- (BOOL)saveAccountPropertiesWithError:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 4);
   if (os_log_type_enabled(v5, v6))
   {
-    v7 = [(DAAccount *)self accountDescription];
-    v8 = [(DAAccount *)self publicDescription];
+    accountDescription = [(DAAccount *)self accountDescription];
+    publicDescription = [(DAAccount *)self publicDescription];
     *buf = 138412546;
-    *&buf[4] = v7;
+    *&buf[4] = accountDescription;
     *&buf[12] = 2114;
-    *&buf[14] = v8;
+    *&buf[14] = publicDescription;
     _os_log_impl(&dword_24844D000, v5, v6, "Saving account %@ (%{public}@)", buf, 0x16u);
   }
 
   v9 = DALoggingwithCategory();
   if (os_log_type_enabled(v9, v6))
   {
-    v10 = [(DAAccount *)self backingAccountInfo];
-    v11 = [v10 isAuthenticated];
-    v12 = [(DAAccount *)self backingAccountInfo];
-    v13 = [v12 identifier];
-    v14 = [(DAAccount *)self backingAccountInfo];
-    v15 = [v14 username];
+    backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+    isAuthenticated = [backingAccountInfo isAuthenticated];
+    backingAccountInfo2 = [(DAAccount *)self backingAccountInfo];
+    identifier = [backingAccountInfo2 identifier];
+    backingAccountInfo3 = [(DAAccount *)self backingAccountInfo];
+    username = [backingAccountInfo3 username];
     *buf = 67109634;
-    *&buf[4] = v11;
+    *&buf[4] = isAuthenticated;
     *&buf[8] = 2112;
-    *&buf[10] = v13;
+    *&buf[10] = identifier;
     *&buf[18] = 2112;
-    *&buf[20] = v15;
+    *&buf[20] = username;
     _os_log_impl(&dword_24844D000, v9, v6, " _backingAccountInfo.authenticated is %d for Account identifier %@ and username %@", buf, 0x1Cu);
   }
 
@@ -2064,9 +2064,9 @@ LABEL_9:
     }
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = *(*&buf[8] + 40);
+    *error = *(*&buf[8] + 40);
   }
 
   v20 = *(v25 + 24);
@@ -2095,9 +2095,9 @@ void __44__DAAccount_saveAccountPropertiesWithError___block_invoke(void *a1)
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = sharedDAAccountStore();
-  v4 = [(DAAccount *)self backingAccountInfo];
-  v5 = [v4 identifier];
-  v6 = [v3 accountWithIdentifier:v5];
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  identifier = [backingAccountInfo identifier];
+  v6 = [v3 accountWithIdentifier:identifier];
 
   if (v6)
   {
@@ -2124,38 +2124,38 @@ void __44__DAAccount_saveAccountPropertiesWithError___block_invoke(void *a1)
 
 - (int)keychainAccessibilityType
 {
-  v2 = [(ACAccount *)self->_backingAccountInfo accountType];
+  accountType = [(ACAccount *)self->_backingAccountInfo accountType];
   v3 = +[DAKeychain sharedKeychain];
-  v4 = [v2 credentialProtectionPolicy];
-  v5 = [v3 _daKeychainAccessibilityForSecAccessibility:v4];
+  credentialProtectionPolicy = [accountType credentialProtectionPolicy];
+  v5 = [v3 _daKeychainAccessibilityForSecAccessibility:credentialProtectionPolicy];
 
   return v5;
 }
 
-- (id)addUsernameToURL:(id)a3
+- (id)addUsernameToURL:(id)l
 {
-  v5 = a3;
-  v6 = [v5 user];
-  v7 = [v6 length];
+  lCopy = l;
+  user = [lCopy user];
+  v7 = [user length];
   if (!v7)
   {
-    v3 = [(DAAccount *)self username];
-    if ([v3 length])
+    username = [(DAAccount *)self username];
+    if ([username length])
     {
 
 LABEL_8:
-      v11 = [(DAAccount *)self username];
-      v12 = [v11 da_stringByAddingPercentEscapesForUsername];
-      v13 = [v5 da_urlBySettingUsername:v12];
+      username2 = [(DAAccount *)self username];
+      da_stringByAddingPercentEscapesForUsername = [username2 da_stringByAddingPercentEscapesForUsername];
+      v13 = [lCopy da_urlBySettingUsername:da_stringByAddingPercentEscapesForUsername];
 
-      v5 = v13;
+      lCopy = v13;
       goto LABEL_9;
     }
   }
 
-  v8 = [v5 user];
-  v9 = [(DAAccount *)self username];
-  v10 = [v8 isEqualToString:v9];
+  user2 = [lCopy user];
+  username3 = [(DAAccount *)self username];
+  v10 = [user2 isEqualToString:username3];
 
   if (!v7)
   {
@@ -2168,39 +2168,39 @@ LABEL_8:
 
 LABEL_9:
 
-  return v5;
+  return lCopy;
 }
 
-- (BOOL)preflightSaveWithAccountProvider:(id)a3
+- (BOOL)preflightSaveWithAccountProvider:(id)provider
 {
-  if ([(DAAccount *)self canSaveWithAccountProvider:a3])
+  if ([(DAAccount *)self canSaveWithAccountProvider:provider])
   {
-    v4 = [(DAAccount *)self backingAccountInfo];
-    v5 = [MEMORY[0x277D03970] DAAccountSavePreflighted];
-    [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v5];
+    backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+    dAAccountSavePreflighted = [MEMORY[0x277D03970] DAAccountSavePreflighted];
+    [backingAccountInfo setObject:MEMORY[0x277CBEC38] forKeyedSubscript:dAAccountSavePreflighted];
   }
 
   return 1;
 }
 
-- (BOOL)canSaveWithAccountProvider:(id)a3
+- (BOOL)canSaveWithAccountProvider:(id)provider
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v40 = self;
-  v39 = [(DAAccount *)self backingAccountInfo];
-  v5 = [v39 accountType];
-  v6 = [v5 identifier];
+  providerCopy = provider;
+  selfCopy = self;
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  accountType = [backingAccountInfo accountType];
+  identifier = [accountType identifier];
 
-  v7 = [MEMORY[0x277D03970] leafAccountTypesToCheckForEquality];
-  v8 = [v7 containsObject:v6];
+  leafAccountTypesToCheckForEquality = [MEMORY[0x277D03970] leafAccountTypesToCheckForEquality];
+  v8 = [leafAccountTypesToCheckForEquality containsObject:identifier];
 
   if (v8)
   {
-    v41 = v6;
-    v38 = v4;
-    v9 = v4[2](v4);
-    v10 = [v39 identifier];
+    v41 = identifier;
+    v38 = providerCopy;
+    v9 = providerCopy[2](providerCopy);
+    identifier2 = [backingAccountInfo identifier];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
@@ -2222,33 +2222,33 @@ LABEL_9:
           }
 
           v16 = *(*(&v43 + 1) + 8 * i);
-          v17 = [v16 backingAccountInfo];
-          v18 = [v17 identifier];
-          if (([v18 isEqualToString:v10] & 1) == 0)
+          backingAccountInfo2 = [v16 backingAccountInfo];
+          identifier3 = [backingAccountInfo2 identifier];
+          if (([identifier3 isEqualToString:identifier2] & 1) == 0)
           {
-            v19 = [v17 accountType];
-            v20 = [v19 identifier];
-            v21 = [v20 isEqualToString:v41];
+            accountType2 = [backingAccountInfo2 accountType];
+            identifier4 = [accountType2 identifier];
+            v21 = [identifier4 isEqualToString:v41];
 
             if (v21)
             {
-              if ([(DAAccount *)v40 isEqualToAccount:v16])
+              if ([(DAAccount *)selfCopy isEqualToAccount:v16])
               {
-                v22 = [v39 accountProperties];
-                v23 = [v22 count];
+                accountProperties = [backingAccountInfo accountProperties];
+                v23 = [accountProperties count];
 
                 if (v23)
                 {
-                  v24 = [MEMORY[0x277D03970] DAAccountIdentifiersToIgnoreForUniquenessCheck];
-                  v25 = [v39 objectForKeyedSubscript:v24];
-                  v26 = [v25 containsObject:v18];
+                  dAAccountIdentifiersToIgnoreForUniquenessCheck = [MEMORY[0x277D03970] DAAccountIdentifiersToIgnoreForUniquenessCheck];
+                  v25 = [backingAccountInfo objectForKeyedSubscript:dAAccountIdentifiersToIgnoreForUniquenessCheck];
+                  v26 = [v25 containsObject:identifier3];
 
                   if ((v26 & 1) == 0)
                   {
 
                     v31 = obj;
-                    v4 = v38;
-                    v6 = v41;
+                    providerCopy = v38;
+                    identifier = v41;
                     goto LABEL_21;
                   }
                 }
@@ -2268,21 +2268,21 @@ LABEL_9:
       }
     }
 
-    v4 = v38;
-    v6 = v41;
+    providerCopy = v38;
+    identifier = v41;
   }
 
-  v27 = [MEMORY[0x277D03970] leafAccountTypes];
-  v28 = [v27 containsObject:v6];
+  leafAccountTypes = [MEMORY[0x277D03970] leafAccountTypes];
+  v28 = [leafAccountTypes containsObject:identifier];
 
-  if (v28 && ([MEMORY[0x277D03970] DAAccountDoNotSaveReason], v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v39, "objectForKeyedSubscript:", v29), v30 = objc_claimAutoreleasedReturnValue(), v30, v29, v30))
+  if (v28 && ([MEMORY[0x277D03970] DAAccountDoNotSaveReason], v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(backingAccountInfo, "objectForKeyedSubscript:", v29), v30 = objc_claimAutoreleasedReturnValue(), v30, v29, v30))
   {
     v31 = DALoggingwithCategory();
     v32 = *(MEMORY[0x277D03988] + 5);
     if (os_log_type_enabled(v31, v32))
     {
-      v33 = [MEMORY[0x277D03970] DAAccountDoNotSaveReason];
-      v34 = [v39 objectForKeyedSubscript:v33];
+      dAAccountDoNotSaveReason = [MEMORY[0x277D03970] DAAccountDoNotSaveReason];
+      v34 = [backingAccountInfo objectForKeyedSubscript:dAAccountDoNotSaveReason];
       *buf = 138412290;
       v48 = v34;
       _os_log_impl(&dword_24844D000, v31, v32, "Refusing to save account because DAAccountDoNotSave is set to %@", buf, 0xCu);
@@ -2305,37 +2305,37 @@ LABEL_21:
 - (BOOL)_isIdentityManagedByProfile
 {
   v2 = [(DAAccount *)self objectForKeyedSubscript:@"DAIdentityPersistIsManagedByProfile"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (__CFData)exceptionsForDigest:(id)a3
+- (__CFData)exceptionsForDigest:(id)digest
 {
-  v4 = a3;
-  v5 = [(DAAccount *)self exceptionsDict];
-  v6 = [v4 da_hexString];
+  digestCopy = digest;
+  exceptionsDict = [(DAAccount *)self exceptionsDict];
+  da_hexString = [digestCopy da_hexString];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [exceptionsDict objectForKeyedSubscript:da_hexString];
 
   return v7;
 }
 
-- (void)setExceptions:(__CFData *)a3 forDigest:(id)a4
+- (void)setExceptions:(__CFData *)exceptions forDigest:(id)digest
 {
-  v10 = a4;
-  v6 = [(DAAccount *)self exceptionsDict];
-  v7 = [v6 mutableCopy];
+  digestCopy = digest;
+  exceptionsDict = [(DAAccount *)self exceptionsDict];
+  v7 = [exceptionsDict mutableCopy];
 
-  if (a3)
+  if (exceptions)
   {
     if (!v7)
     {
       v7 = objc_opt_new();
     }
 
-    v8 = [v10 da_hexString];
-    [v7 setObject:a3 forKeyedSubscript:v8];
+    da_hexString = [digestCopy da_hexString];
+    [v7 setObject:exceptions forKeyedSubscript:da_hexString];
   }
 
   else
@@ -2345,8 +2345,8 @@ LABEL_21:
       goto LABEL_8;
     }
 
-    v8 = [v10 da_hexString];
-    [v7 removeObjectForKey:v8];
+    da_hexString = [digestCopy da_hexString];
+    [v7 removeObjectForKey:da_hexString];
   }
 
 LABEL_8:
@@ -2366,10 +2366,10 @@ LABEL_8:
 
 - (void)cleanupAccountFiles
 {
-  v2 = [(DAAccount *)self copyStorageSession];
-  if (v2)
+  copyStorageSession = [(DAAccount *)self copyStorageSession];
+  if (copyStorageSession)
   {
-    v3 = v2;
+    v3 = copyStorageSession;
     v4 = *MEMORY[0x277CBECE8];
     v5 = _CFURLStorageSessionCopyCookieStorage();
     if (v5)
@@ -2394,19 +2394,19 @@ LABEL_8:
 
 - (BOOL)isChildAccount
 {
-  v2 = [(DAAccount *)self backingAccountInfo];
-  v3 = [v2 parentAccount];
-  v4 = v3 != 0;
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  parentAccount = [backingAccountInfo parentAccount];
+  v4 = parentAccount != 0;
 
   return v4;
 }
 
 - (BOOL)resetCertWarnings
 {
-  v2 = [(DAAccount *)self trustHandler];
-  v3 = [v2 resetCertWarnings];
+  trustHandler = [(DAAccount *)self trustHandler];
+  resetCertWarnings = [trustHandler resetCertWarnings];
 
-  return v3;
+  return resetCertWarnings;
 }
 
 - (void)resetStatusReport
@@ -2414,34 +2414,34 @@ LABEL_8:
   v3 = objc_opt_new();
   [(DAAccount *)self setStatusReport:v3];
 
-  v4 = [(DAAccount *)self persistentUUID];
-  [(DAStatusReport *)self->_statusReport setPersistentUUID:v4];
+  persistentUUID = [(DAAccount *)self persistentUUID];
+  [(DAStatusReport *)self->_statusReport setPersistentUUID:persistentUUID];
 
-  v5 = [(ACAccount *)self->_backingAccountInfo accountType];
-  v6 = [v5 identifier];
-  [(DAStatusReport *)self->_statusReport setAccountType:v6];
+  accountType = [(ACAccount *)self->_backingAccountInfo accountType];
+  identifier = [accountType identifier];
+  [(DAStatusReport *)self->_statusReport setAccountType:identifier];
 
-  v7 = [(DAAccount *)self accountDescription];
-  [(DAStatusReport *)self->_statusReport setDisplayName:v7];
+  accountDescription = [(DAAccount *)self accountDescription];
+  [(DAStatusReport *)self->_statusReport setDisplayName:accountDescription];
 
-  v8 = [(DAAccount *)self protocolVersion];
-  [(DAStatusReport *)self->_statusReport setProtocolVersion:v8];
+  protocolVersion = [(DAAccount *)self protocolVersion];
+  [(DAStatusReport *)self->_statusReport setProtocolVersion:protocolVersion];
 }
 
 - (BOOL)shouldFailAllTasks
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = [(DAAccount *)self backingAccountInfo];
-  if (([v3 supportsAuthentication] & 1) == 0)
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  if (([backingAccountInfo supportsAuthentication] & 1) == 0)
   {
 
     goto LABEL_10;
   }
 
-  v4 = [(DAAccount *)self backingAccountInfo];
-  v5 = [v4 isAuthenticated];
+  backingAccountInfo2 = [(DAAccount *)self backingAccountInfo];
+  isAuthenticated = [backingAccountInfo2 isAuthenticated];
 
-  if (v5)
+  if (isAuthenticated)
   {
     goto LABEL_10;
   }
@@ -2450,33 +2450,33 @@ LABEL_8:
   v7 = *(MEMORY[0x277D03988] + 4);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [(DAAccount *)self backingAccountInfo];
-    v9 = [v8 identifier];
+    backingAccountInfo3 = [(DAAccount *)self backingAccountInfo];
+    identifier = [backingAccountInfo3 identifier];
     *buf = 138412546;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v9;
+    *&buf[14] = identifier;
     _os_log_impl(&dword_24844D000, v6, v7, "Account %@ (%{public}@) says it is not authenticated. Refreshing to be sure.", buf, 0x16u);
   }
 
-  v10 = [(DAAccount *)self backingAccountInfo];
-  [v10 refresh];
+  backingAccountInfo4 = [(DAAccount *)self backingAccountInfo];
+  [backingAccountInfo4 refresh];
 
-  v11 = [(DAAccount *)self backingAccountInfo];
-  v12 = [v11 isAuthenticated];
+  backingAccountInfo5 = [(DAAccount *)self backingAccountInfo];
+  isAuthenticated2 = [backingAccountInfo5 isAuthenticated];
 
   v13 = DALoggingwithCategory();
   v14 = os_log_type_enabled(v13, v7);
-  if (v12)
+  if (isAuthenticated2)
   {
     if (v14)
     {
-      v15 = [(DAAccount *)self backingAccountInfo];
-      v16 = [v15 identifier];
+      backingAccountInfo6 = [(DAAccount *)self backingAccountInfo];
+      identifier2 = [backingAccountInfo6 identifier];
       *buf = 138412546;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v16;
+      *&buf[14] = identifier2;
       _os_log_impl(&dword_24844D000, v13, v7, "Good news! Account %@ (%{public}@) is now authenticated after refreshing.", buf, 0x16u);
     }
 
@@ -2485,21 +2485,21 @@ LABEL_8:
 
   if (v14)
   {
-    v33 = [(DAAccount *)self backingAccountInfo];
-    v34 = [v33 identifier];
+    backingAccountInfo7 = [(DAAccount *)self backingAccountInfo];
+    identifier3 = [backingAccountInfo7 identifier];
     *buf = 138412546;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v34;
+    *&buf[14] = identifier3;
     _os_log_impl(&dword_24844D000, v13, v7, "Account %@ (%{public}@) is still not authenticated after refreshing.", buf, 0x16u);
   }
 
-  v35 = [(DAAccount *)self backingAccountInfo];
-  v36 = [v35 accountProperties];
-  v37 = [v36 objectForKeyedSubscript:*MEMORY[0x277CF7930]];
-  v38 = [v37 BOOLValue];
+  backingAccountInfo8 = [(DAAccount *)self backingAccountInfo];
+  accountProperties = [backingAccountInfo8 accountProperties];
+  v37 = [accountProperties objectForKeyedSubscript:*MEMORY[0x277CF7930]];
+  bOOLValue = [v37 BOOLValue];
 
-  if (v38)
+  if (bOOLValue)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -2517,12 +2517,12 @@ LABEL_8:
       v39 = DALoggingwithCategory();
       if (os_log_type_enabled(v39, v7))
       {
-        v40 = [(DAAccount *)self backingAccountInfo];
-        v41 = [v40 identifier];
+        backingAccountInfo9 = [(DAAccount *)self backingAccountInfo];
+        identifier4 = [backingAccountInfo9 identifier];
         *v45 = 138412546;
-        v46 = self;
+        selfCopy = self;
         v47 = 2114;
-        v48 = v41;
+        v48 = identifier4;
         _os_log_impl(&dword_24844D000, v39, v7, "The account %@ (%{public}@) is not marked as authenticated, but it supports authentication, appears to have credentials, and is marked to ignore the isAuthenticated property. We will try to sync this account.", v45, 0x16u);
       }
 
@@ -2538,12 +2538,12 @@ LABEL_8:
     v19 = DALoggingwithCategory();
     if (os_log_type_enabled(v19, v7))
     {
-      v42 = [(DAAccount *)self backingAccountInfo];
-      v43 = [v42 identifier];
+      backingAccountInfo10 = [(DAAccount *)self backingAccountInfo];
+      identifier5 = [backingAccountInfo10 identifier];
       *buf = 138412546;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v43;
+      *&buf[14] = identifier5;
       _os_log_impl(&dword_24844D000, v19, v7, "Not attempting request for account %@ because the backing account credential isn't authed %{public}@", buf, 0x16u);
     }
 
@@ -2551,10 +2551,10 @@ LABEL_8:
   }
 
 LABEL_10:
-  v17 = [(DAAccount *)self backingAccountInfo];
-  v18 = [v17 aa_isSuspended];
+  backingAccountInfo11 = [(DAAccount *)self backingAccountInfo];
+  aa_isSuspended = [backingAccountInfo11 aa_isSuspended];
 
-  if (v18)
+  if (aa_isSuspended)
   {
     v19 = DALoggingwithCategory();
     v20 = *(MEMORY[0x277D03988] + 4);
@@ -2562,12 +2562,12 @@ LABEL_10:
     {
       v21 = objc_opt_class();
       v22 = NSStringFromClass(v21);
-      v23 = [(DAAccount *)self backingAccountInfo];
-      v24 = [v23 identifier];
+      backingAccountInfo12 = [(DAAccount *)self backingAccountInfo];
+      identifier6 = [backingAccountInfo12 identifier];
       *buf = 138543618;
       *&buf[4] = v22;
       *&buf[12] = 2114;
-      *&buf[14] = v24;
+      *&buf[14] = identifier6;
       _os_log_impl(&dword_24844D000, v19, v20, "Not attempting request for account %{public}@ because the backing account needs to verify terms or is suspended. %{public}@", buf, 0x16u);
     }
 
@@ -2588,11 +2588,11 @@ LABEL_17:
     {
       v29 = objc_opt_class();
       v30 = NSStringFromClass(v29);
-      v31 = [(DAAccount *)self keychainAccessibilityType];
+      keychainAccessibilityType = [(DAAccount *)self keychainAccessibilityType];
       *buf = 138543618;
       *&buf[4] = v30;
       *&buf[12] = 1024;
-      *&buf[14] = v31;
+      *&buf[14] = keychainAccessibilityType;
       _os_log_impl(&dword_24844D000, v19, v28, "Not attempting request for account %{public}@ because we don't have access to keychain items with accessibility %d right now", buf, 0x12u);
     }
 
@@ -2612,28 +2612,28 @@ void __31__DAAccount_shouldFailAllTasks__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = v2 != 0;
 }
 
-- (BOOL)isEqualToAccount:(id)a3
+- (BOOL)isEqualToAccount:(id)account
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   Name = sel_getName(a2);
-  [v5 handleFailureInMethod:a2 object:self file:@"DAAccount.m" lineNumber:1333 description:{@"%s MUST be implemented in ALL DAAccount subclasses.  Looks like it's missing in %@", Name, objc_opt_class()}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DAAccount.m" lineNumber:1333 description:{@"%s MUST be implemented in ALL DAAccount subclasses.  Looks like it's missing in %@", Name, objc_opt_class()}];
 
   return 0;
 }
 
-- (BOOL)accountHasSignificantPropertyChangesWithChangeInfo:(id)a3
+- (BOOL)accountHasSignificantPropertyChangesWithChangeInfo:(id)info
 {
   v47 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v40 = [v36 oldAccountProperties];
+  infoCopy = info;
+  oldAccountProperties = [infoCopy oldAccountProperties];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45[0] = @"DAAccountHost";
   v45[1] = @"DAAccountEmailAddress";
-  v5 = [MEMORY[0x277D03970] DAAccountPrincipalPath];
-  v45[2] = v5;
+  dAAccountPrincipalPath = [MEMORY[0x277D03970] DAAccountPrincipalPath];
+  v45[2] = dAAccountPrincipalPath;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:3];
 
   v39 = [v6 countByEnumeratingWithState:&v41 objects:v46 count:16];
@@ -2651,21 +2651,21 @@ void __31__DAAccount_shouldFailAllTasks__block_invoke(uint64_t a1)
         }
 
         v8 = *(*(&v41 + 1) + 8 * i);
-        v9 = [(DAAccount *)self backingAccountInfo];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+        v10 = [backingAccountInfo objectForKeyedSubscript:v8];
         v11 = [v10 length];
-        if (v11 || ([v40 objectForKeyedSubscript:v8], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "length")))
+        if (v11 || ([oldAccountProperties objectForKeyedSubscript:v8], oldUsername = objc_claimAutoreleasedReturnValue(), objc_msgSend(oldUsername, "length")))
         {
-          v12 = self;
-          v13 = [(DAAccount *)self backingAccountInfo];
-          v14 = [v13 objectForKeyedSubscript:v8];
-          v15 = [v40 objectForKeyedSubscript:v8];
+          selfCopy = self;
+          backingAccountInfo2 = [(DAAccount *)self backingAccountInfo];
+          v14 = [backingAccountInfo2 objectForKeyedSubscript:v8];
+          v15 = [oldAccountProperties objectForKeyedSubscript:v8];
           v16 = [v14 isEqualToString:v15];
 
           if (v11)
           {
 
-            self = v12;
+            self = selfCopy;
             if (!v16)
             {
               goto LABEL_21;
@@ -2675,12 +2675,12 @@ void __31__DAAccount_shouldFailAllTasks__block_invoke(uint64_t a1)
           else
           {
 
-            self = v12;
+            self = selfCopy;
             if ((v16 & 1) == 0)
             {
 LABEL_21:
               v26 = 1;
-              v20 = v36;
+              v20 = infoCopy;
               goto LABEL_22;
             }
           }
@@ -2702,26 +2702,26 @@ LABEL_21:
     }
   }
 
-  v17 = [(DAAccount *)self backingAccountInfo];
-  v18 = [v17 username];
-  v19 = [v18 length];
-  v20 = v36;
+  backingAccountInfo3 = [(DAAccount *)self backingAccountInfo];
+  username = [backingAccountInfo3 username];
+  v19 = [username length];
+  v20 = infoCopy;
   if (!v19)
   {
-    v3 = [v36 oldUsername];
-    if (![v3 length])
+    oldUsername = [infoCopy oldUsername];
+    if (![oldUsername length])
     {
-      v21 = self;
+      selfCopy3 = self;
 
       goto LABEL_27;
     }
   }
 
-  v21 = self;
-  v22 = [(DAAccount *)self backingAccountInfo];
-  v23 = [v22 username];
-  v24 = [v36 oldUsername];
-  v25 = [v23 isEqualToString:v24];
+  selfCopy3 = self;
+  backingAccountInfo4 = [(DAAccount *)self backingAccountInfo];
+  username2 = [backingAccountInfo4 username];
+  oldUsername2 = [infoCopy oldUsername];
+  v25 = [username2 isEqualToString:oldUsername2];
 
   if (!v19)
   {
@@ -2742,26 +2742,26 @@ LABEL_25:
   }
 
 LABEL_27:
-  v29 = [(DAAccount *)v21 useSSL];
-  v30 = [v40 objectForKeyedSubscript:@"DAAccountUseSSL"];
+  useSSL = [(DAAccount *)selfCopy3 useSSL];
+  v30 = [oldAccountProperties objectForKeyedSubscript:@"DAAccountUseSSL"];
   v31 = v30;
   if (v30)
   {
-    v32 = [v30 BOOLValue];
+    bOOLValue = [v30 BOOLValue];
   }
 
   else
   {
-    v32 = 1;
+    bOOLValue = 1;
   }
 
   obj = v31;
-  if (v32 == v29)
+  if (bOOLValue == useSSL)
   {
-    v33 = [(DAAccount *)v21 objectForKeyedSubscript:@"DAAccountPort"];
-    v34 = [v33 intValue];
-    v35 = [v40 objectForKeyedSubscript:@"DAAccountPort"];
-    v26 = v34 != [v35 intValue];
+    v33 = [(DAAccount *)selfCopy3 objectForKeyedSubscript:@"DAAccountPort"];
+    intValue = [v33 intValue];
+    v35 = [oldAccountProperties objectForKeyedSubscript:@"DAAccountPort"];
+    v26 = intValue != [v35 intValue];
   }
 
   else
@@ -2833,9 +2833,9 @@ void __31__DAAccount_copyStorageSession__block_invoke_2(uint64_t a1)
   v9.receiver = self;
   v9.super_class = DAAccount;
   v4 = [(DAAccount *)&v9 description];
-  v5 = [(DAAccount *)self accountID];
-  v6 = [(DAAccount *)self persistentUUID];
-  v7 = [v3 stringWithFormat:@"%@: accountID %@ persistentUUID %@", v4, v5, v6];
+  accountID = [(DAAccount *)self accountID];
+  persistentUUID = [(DAAccount *)self persistentUUID];
+  v7 = [v3 stringWithFormat:@"%@: accountID %@ persistentUUID %@", v4, accountID, persistentUUID];
 
   return v7;
 }
@@ -2855,11 +2855,11 @@ void __31__DAAccount_copyStorageSession__block_invoke_2(uint64_t a1)
 
 - (void)reload
 {
-  v3 = [(DAAccount *)self dataclassPropertyURLsByDataclass];
-  [v3 removeAllObjects];
+  dataclassPropertyURLsByDataclass = [(DAAccount *)self dataclassPropertyURLsByDataclass];
+  [dataclassPropertyURLsByDataclass removeAllObjects];
 
-  v4 = [(DAAccount *)self backingAccountInfo];
-  [v4 reload];
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  [backingAccountInfo reload];
 
   [(DAAccount *)self removeFromCoreDAVLoggingDelegates];
   [(DAAccount *)self ingestBackingAccountInfoProperties];
@@ -2869,10 +2869,10 @@ void __31__DAAccount_copyStorageSession__block_invoke_2(uint64_t a1)
 
 - (id)accountTypeIdentifier
 {
-  v2 = [(ACAccount *)self->_backingAccountInfo accountType];
-  v3 = [v2 identifier];
+  accountType = [(ACAccount *)self->_backingAccountInfo accountType];
+  identifier = [accountType identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (BOOL)shouldCancelTaskDueToOnPowerFetchMode
@@ -2898,22 +2898,22 @@ void __31__DAAccount_copyStorageSession__block_invoke_2(uint64_t a1)
   return xpcActivity;
 }
 
-- (void)saveXpcActivity:(id)a3
+- (void)saveXpcActivity:(id)activity
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activityCopy = activity;
   [(DAAccount *)self removeXpcActivity];
   xpcActivity = self->_xpcActivity;
-  self->_xpcActivity = v4;
+  self->_xpcActivity = activityCopy;
 
   self->_continueCount = 0;
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [(DAAccount *)self accountID];
+    accountID = [(DAAccount *)self accountID];
     v10 = 138543362;
-    v11 = v8;
+    v11 = accountID;
     _os_log_impl(&dword_24844D000, v6, v7, "XPC: Saved XPC activity for account %{public}@", &v10, 0xCu);
   }
 
@@ -2931,11 +2931,11 @@ void __31__DAAccount_copyStorageSession__block_invoke_2(uint64_t a1)
     if (os_log_type_enabled(v3, v4))
     {
       continueCount = self->_continueCount;
-      v6 = [(DAAccount *)self accountID];
+      accountID = [(DAAccount *)self accountID];
       v8[0] = 67109378;
       v8[1] = continueCount;
       v9 = 2114;
-      v10 = v6;
+      v10 = accountID;
       _os_log_impl(&dword_24844D000, v3, v4, "XPC: Increment XPC activity continue count to %d for account %{public}@", v8, 0x12u);
     }
   }
@@ -2954,11 +2954,11 @@ void __31__DAAccount_copyStorageSession__block_invoke_2(uint64_t a1)
     if (os_log_type_enabled(v3, v4))
     {
       continueCount = self->_continueCount;
-      v6 = [(DAAccount *)self accountID];
+      accountID = [(DAAccount *)self accountID];
       v8[0] = 67109378;
       v8[1] = continueCount;
       v9 = 2114;
-      v10 = v6;
+      v10 = accountID;
       _os_log_impl(&dword_24844D000, v3, v4, "XPC: Decrement XPC activity continue count to %d for account %{public}@", v8, 0x12u);
     }
 
@@ -2985,9 +2985,9 @@ void __31__DAAccount_copyStorageSession__block_invoke_2(uint64_t a1)
       LOBYTE(v7) = *(MEMORY[0x277D03988] + 6);
       if (os_log_type_enabled(v5, v7))
       {
-        v8 = [(DAAccount *)self accountID];
+        accountID = [(DAAccount *)self accountID];
         v12 = 138543362;
-        v13 = v8;
+        v13 = accountID;
         v9 = "XPC: Successfully set XPC activity state to XPC_ACTIVITY_STATE_DONE for account %{public}@";
 LABEL_7:
         _os_log_impl(&dword_24844D000, v6, v7, v9, &v12, 0xCu);
@@ -2999,9 +2999,9 @@ LABEL_7:
       v7 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v5, *(MEMORY[0x277D03988] + 3)))
       {
-        v8 = [(DAAccount *)self accountID];
+        accountID = [(DAAccount *)self accountID];
         v12 = 138543362;
-        v13 = v8;
+        v13 = accountID;
         v9 = "XPC: Failed to set XPC activity state to XPC_ACTIVITY_STATE_DONE for account %{public}@";
         goto LABEL_7;
       }
@@ -3016,16 +3016,16 @@ LABEL_7:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)webLoginRequestedAtURL:(id)a3 reasonString:(id)a4 inQueue:(id)a5 completionBlock:(id)a6
+- (void)webLoginRequestedAtURL:(id)l reasonString:(id)string inQueue:(id)queue completionBlock:(id)block
 {
-  v10 = a6;
+  blockCopy = block;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __73__DAAccount_webLoginRequestedAtURL_reasonString_inQueue_completionBlock___block_invoke;
   v12[3] = &unk_278F13218;
-  v13 = v10;
-  v11 = v10;
-  [(DAAccount *)self _webLoginRequestedAtURL:a3 reasonString:a4 inQueue:a5 completionBlock:v12];
+  v13 = blockCopy;
+  v11 = blockCopy;
+  [(DAAccount *)self _webLoginRequestedAtURL:l reasonString:string inQueue:queue completionBlock:v12];
 }
 
 void __73__DAAccount_webLoginRequestedAtURL_reasonString_inQueue_completionBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -3034,29 +3034,29 @@ void __73__DAAccount_webLoginRequestedAtURL_reasonString_inQueue_completionBlock
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_webLoginRequestedAtURL:(id)a3 reasonString:(id)a4 inQueue:(id)a5 completionBlock:(id)a6
+- (void)_webLoginRequestedAtURL:(id)l reasonString:(id)string inQueue:(id)queue completionBlock:(id)block
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = a3;
-  v12 = [(DAAccount *)self persistentUUID];
+  queueCopy = queue;
+  blockCopy = block;
+  lCopy = l;
+  persistentUUID = [(DAAccount *)self persistentUUID];
   v13 = +[DAPowerAssertionManager sharedPowerAssertionManager];
-  [v13 dropPowerAssertionsForGroupIdentifier:v12];
+  [v13 dropPowerAssertionsForGroupIdentifier:persistentUUID];
 
   v14 = sharedDAAccountStore();
-  v15 = [(DAAccount *)self backingAccountInfo];
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __74__DAAccount__webLoginRequestedAtURL_reasonString_inQueue_completionBlock___block_invoke;
   v19[3] = &unk_278F13268;
   v19[4] = self;
-  v20 = v9;
-  v21 = v12;
-  v22 = v10;
-  v16 = v10;
-  v17 = v12;
-  v18 = v9;
-  [v14 openAuthenticationURL:v11 forAccount:v15 shouldConfirm:1 completion:v19];
+  v20 = queueCopy;
+  v21 = persistentUUID;
+  v22 = blockCopy;
+  v16 = blockCopy;
+  v17 = persistentUUID;
+  v18 = queueCopy;
+  [v14 openAuthenticationURL:lCopy forAccount:backingAccountInfo shouldConfirm:1 completion:v19];
 }
 
 void __74__DAAccount__webLoginRequestedAtURL_reasonString_inQueue_completionBlock___block_invoke(uint64_t a1, char a2, void *a3)
@@ -3089,48 +3089,48 @@ uint64_t __74__DAAccount__webLoginRequestedAtURL_reasonString_inQueue_completion
   return v4();
 }
 
-- (BOOL)handleTrustChallenge:(id)a3
+- (BOOL)handleTrustChallenge:(id)challenge
 {
-  v4 = a3;
-  v5 = [(DAAccount *)self trustHandler];
-  LOBYTE(self) = [v5 handleTrustChallenge:v4 forAccount:self];
+  challengeCopy = challenge;
+  trustHandler = [(DAAccount *)self trustHandler];
+  LOBYTE(self) = [trustHandler handleTrustChallenge:challengeCopy forAccount:self];
 
   return self;
 }
 
-- (BOOL)handleTrustChallenge:(id)a3 completionHandler:(id)a4
+- (BOOL)handleTrustChallenge:(id)challenge completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DAAccount *)self trustHandler];
-  LOBYTE(self) = [v8 handleTrustChallenge:v7 forAccount:self completionHandler:v6];
+  handlerCopy = handler;
+  challengeCopy = challenge;
+  trustHandler = [(DAAccount *)self trustHandler];
+  LOBYTE(self) = [trustHandler handleTrustChallenge:challengeCopy forAccount:self completionHandler:handlerCopy];
 
   return self;
 }
 
 - (id)localizedIdenticalAccountFailureMessage
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
-  [v4 handleFailureInMethod:a2 object:self file:@"DAAccount.m" lineNumber:1588 description:{@"Account class %@ MUST implement %s", v5, sel_getName(a2)}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DAAccount.m" lineNumber:1588 description:{@"Account class %@ MUST implement %s", v5, sel_getName(a2)}];
 
   return 0;
 }
 
 - (id)localizedInvalidPasswordMessage
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
-  [v4 handleFailureInMethod:a2 object:self file:@"DAAccount.m" lineNumber:1593 description:{@"Account class %@ MUST implement %s", v5, sel_getName(a2)}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DAAccount.m" lineNumber:1593 description:{@"Account class %@ MUST implement %s", v5, sel_getName(a2)}];
 
   return 0;
 }
 
-- (void)dropAssertionsAndRenewCredentialsInQueue:(id)a3 withHandler:(id)a4
+- (void)dropAssertionsAndRenewCredentialsInQueue:(id)queue withHandler:(id)handler
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v8 = DALoggingwithCategory();
   v9 = MEMORY[0x277D03988];
   v10 = *(MEMORY[0x277D03988] + 5);
@@ -3138,9 +3138,9 @@ uint64_t __74__DAAccount__webLoginRequestedAtURL_reasonString_inQueue_completion
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [(DAAccount *)self wasUserInitiated];
+    wasUserInitiated = [(DAAccount *)self wasUserInitiated];
     v14 = @"NO";
-    if (v13)
+    if (wasUserInitiated)
     {
       v14 = @"YES";
     }
@@ -3152,20 +3152,20 @@ uint64_t __74__DAAccount__webLoginRequestedAtURL_reasonString_inQueue_completion
     _os_log_impl(&dword_24844D000, v8, v10, "DataAccess is renewing credentials for account %{public}@ by forcing-prompt: %{public}@", buf, 0x16u);
   }
 
-  v15 = [(DAAccount *)self backingAccountInfo];
-  v16 = [v15 accountProperties];
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  accountProperties = [backingAccountInfo accountProperties];
   v17 = *MEMORY[0x277CF7930];
-  v18 = [v16 objectForKeyedSubscript:*MEMORY[0x277CF7930]];
+  v18 = [accountProperties objectForKeyedSubscript:*MEMORY[0x277CF7930]];
 
   if (v18)
   {
-    v19 = [(DAAccount *)self backingAccountInfo];
-    [v19 setAccountProperty:0 forKey:v17];
+    backingAccountInfo2 = [(DAAccount *)self backingAccountInfo];
+    [backingAccountInfo2 setAccountProperty:0 forKey:v17];
 
     v20 = sharedDAAccountStore();
-    v21 = [(DAAccount *)self backingAccountInfo];
+    backingAccountInfo3 = [(DAAccount *)self backingAccountInfo];
     v41 = 0;
-    v22 = [v20 saveVerifiedAccount:v21 error:&v41];
+    v22 = [v20 saveVerifiedAccount:backingAccountInfo3 error:&v41];
     v23 = v41;
 
     if ((v22 & 1) == 0)
@@ -3181,9 +3181,9 @@ uint64_t __74__DAAccount__webLoginRequestedAtURL_reasonString_inQueue_completion
     }
   }
 
-  v26 = [(DAAccount *)self persistentUUID];
+  persistentUUID = [(DAAccount *)self persistentUUID];
   v27 = +[DAPowerAssertionManager sharedPowerAssertionManager];
-  [v27 dropPowerAssertionsForGroupIdentifier:v26];
+  [v27 dropPowerAssertionsForGroupIdentifier:persistentUUID];
 
   v42[0] = *MEMORY[0x277CB90A0];
   v28 = [MEMORY[0x277CCABB0] numberWithBool:{-[DAAccount wasUserInitiated](self, "wasUserInitiated")}];
@@ -3194,19 +3194,19 @@ uint64_t __74__DAAccount__webLoginRequestedAtURL_reasonString_inQueue_completion
   v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:2];
 
   v31 = sharedDAAccountStore();
-  v32 = [(DAAccount *)self backingAccountInfo];
+  backingAccountInfo4 = [(DAAccount *)self backingAccountInfo];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __92__DAAccount_AuthenticationExtensions__dropAssertionsAndRenewCredentialsInQueue_withHandler___block_invoke;
   v37[3] = &unk_278F132B8;
   v37[4] = self;
-  v38 = v6;
-  v39 = v26;
-  v40 = v7;
-  v33 = v7;
-  v34 = v26;
-  v35 = v6;
-  [v31 renewCredentialsForAccount:v32 options:v30 completion:v37];
+  v38 = queueCopy;
+  v39 = persistentUUID;
+  v40 = handlerCopy;
+  v33 = handlerCopy;
+  v34 = persistentUUID;
+  v35 = queueCopy;
+  [v31 renewCredentialsForAccount:backingAccountInfo4 options:v30 completion:v37];
 
   v36 = *MEMORY[0x277D85DE8];
 }
@@ -3302,31 +3302,31 @@ uint64_t __92__DAAccount_AuthenticationExtensions__dropAssertionsAndRenewCredent
   return result;
 }
 
-- (void)handleValidationError:(id)a3 completion:(id)a4
+- (void)handleValidationError:(id)error completion:(id)completion
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [v20 domain];
-  if (![v7 isEqualToString:@"DAAccountValidationDomain"])
+  errorCopy = error;
+  completionCopy = completion;
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:@"DAAccountValidationDomain"])
   {
 
     goto LABEL_8;
   }
 
-  v8 = [v20 code];
+  code = [errorCopy code];
 
-  if (v8 != 102)
+  if (code != 102)
   {
 LABEL_8:
-    v6[2](v6, 2, 0);
+    completionCopy[2](completionCopy, 2, 0);
     goto LABEL_12;
   }
 
-  v9 = [v20 userInfo];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  userInfo = [errorCopy userInfo];
+  v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-  v11 = [v10 userInfo];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CFDB78]];
+  userInfo2 = [v10 userInfo];
+  v12 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CFDB78]];
 
   v13 = [v12 CDVObjectForKeyCaseInsensitive:*MEMORY[0x277CFDB70]];
   if (![v13 length])
@@ -3335,7 +3335,7 @@ LABEL_8:
     v16 = 0;
 LABEL_10:
     v19 = dataaccess_get_global_queue();
-    [(DAAccount *)self dropAssertionsAndRenewCredentialsInQueue:v19 withHandler:v6];
+    [(DAAccount *)self dropAssertionsAndRenewCredentialsInQueue:v19 withHandler:completionCopy];
     goto LABEL_11;
   }
 
@@ -3348,8 +3348,8 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v17 = [(DAAccount *)self principalURL];
-  v18 = [v15 CDVIsSafeRedirectForRequestURL:v17];
+  principalURL = [(DAAccount *)self principalURL];
+  v18 = [v15 CDVIsSafeRedirectForRequestURL:principalURL];
 
   if (!v18)
   {
@@ -3357,7 +3357,7 @@ LABEL_10:
   }
 
   v19 = dataaccess_get_global_queue();
-  [(DAAccount *)self _webLoginRequestedAtURL:v15 reasonString:v16 inQueue:v19 completionBlock:v6];
+  [(DAAccount *)self _webLoginRequestedAtURL:v15 reasonString:v16 inQueue:v19 completionBlock:completionCopy];
 LABEL_11:
 
 LABEL_12:
@@ -3373,57 +3373,57 @@ uint64_t __56__DAAccount_AuthenticationExtensions___leafAccountTypes__block_invo
 
 + (id)oneshotListOfAccountIDs
 {
-  v2 = ExchangeSyncLibraryCore();
-  if (v2)
+  oneshotListOfAccountIDs = ExchangeSyncLibraryCore();
+  if (oneshotListOfAccountIDs)
   {
-    v2 = [getESAccountClass() oneshotListOfAccountIDs];
+    oneshotListOfAccountIDs = [getESAccountClass() oneshotListOfAccountIDs];
   }
 
-  return v2;
+  return oneshotListOfAccountIDs;
 }
 
-+ (void)reacquireClientRestrictions:(id)a3
++ (void)reacquireClientRestrictions:(id)restrictions
 {
-  v3 = a3;
+  restrictionsCopy = restrictions;
   if (ExchangeSyncLibraryCore())
   {
-    [getESAccountClass() reacquireClientRestrictions:v3];
+    [getESAccountClass() reacquireClientRestrictions:restrictionsCopy];
   }
 }
 
-- (BOOL)accountHasSignificantPropertyChangesFromOldAccountInfo:(id)a3
+- (BOOL)accountHasSignificantPropertyChangesFromOldAccountInfo:(id)info
 {
   v4 = MEMORY[0x277D03908];
-  v5 = a3;
+  infoCopy = info;
   v6 = [v4 alloc];
-  v24 = [(DAAccount *)self backingAccountInfo];
-  v7 = [v24 identifier];
-  v8 = self;
-  v20 = self;
-  v23 = [(DAAccount *)self backingAccountInfo];
-  v22 = [v23 accountType];
-  v9 = [v22 identifier];
-  v18 = [v5 accountProperties];
-  v21 = [(DAAccount *)self backingAccountInfo];
-  v10 = [v21 username];
-  v19 = [(DAAccount *)v8 backingAccountInfo];
-  v11 = [v19 credential];
-  v12 = [v11 password];
-  v13 = [v5 username];
-  v14 = [v5 credential];
+  backingAccountInfo = [(DAAccount *)self backingAccountInfo];
+  identifier = [backingAccountInfo identifier];
+  selfCopy = self;
+  selfCopy2 = self;
+  backingAccountInfo2 = [(DAAccount *)self backingAccountInfo];
+  accountType = [backingAccountInfo2 accountType];
+  identifier2 = [accountType identifier];
+  accountProperties = [infoCopy accountProperties];
+  backingAccountInfo3 = [(DAAccount *)self backingAccountInfo];
+  username = [backingAccountInfo3 username];
+  backingAccountInfo4 = [(DAAccount *)selfCopy backingAccountInfo];
+  credential = [backingAccountInfo4 credential];
+  password = [credential password];
+  username2 = [infoCopy username];
+  credential2 = [infoCopy credential];
 
-  v15 = [v14 password];
-  v16 = [v6 initWithChangeType:1 accountIdentifier:v7 accountTypeIdentifier:v9 oldAccountProperties:v18 username:v10 password:v12 oldUsername:v13 oldPassword:v15 modifiedDataClasses:0 clientName:0];
+  password2 = [credential2 password];
+  v16 = [v6 initWithChangeType:1 accountIdentifier:identifier accountTypeIdentifier:identifier2 oldAccountProperties:accountProperties username:username password:password oldUsername:username2 oldPassword:password2 modifiedDataClasses:0 clientName:0];
 
-  LOBYTE(v10) = [(DAAccount *)v20 accountHasSignificantPropertyChangesWithChangeInfo:v16];
-  return v10;
+  LOBYTE(username) = [(DAAccount *)selfCopy2 accountHasSignificantPropertyChangesWithChangeInfo:v16];
+  return username;
 }
 
-- (void)accountDidChangeFromOldAccountInfo:(id)a3
+- (void)accountDidChangeFromOldAccountInfo:(id)info
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(DAAccount *)self accountHasSignificantPropertyChangesFromOldAccountInfo:v4])
+  infoCopy = info;
+  if ([(DAAccount *)self accountHasSignificantPropertyChangesFromOldAccountInfo:infoCopy])
   {
     v5 = DALoggingwithCategory();
     v6 = *(MEMORY[0x277D03988] + 4);
@@ -3431,7 +3431,7 @@ uint64_t __56__DAAccount_AuthenticationExtensions___leafAccountTypes__block_invo
     {
       backingAccountInfo = self->_backingAccountInfo;
       v9 = 138412546;
-      v10 = v4;
+      v10 = infoCopy;
       v11 = 2112;
       v12 = backingAccountInfo;
       _os_log_impl(&dword_24844D000, v5, v6, "Account had significant property change, going to flush local data.\n\nOldProperties %@\n\nNewProperties %@", &v9, 0x16u);
@@ -3443,337 +3443,337 @@ uint64_t __56__DAAccount_AuthenticationExtensions___leafAccountTypes__block_invo
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)beginDownloadingAttachmentWithUUID:(id)a3 consumer:(id)a4
+- (id)beginDownloadingAttachmentWithUUID:(id)d consumer:(id)consumer
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  consumerCopy = consumer;
   v8 = DALoggingwithCategory();
   v9 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v8, v9))
   {
-    v10 = [(DAAccount *)self accountID];
+    accountID = [(DAAccount *)self accountID];
     v14 = 138412546;
-    v15 = v10;
+    v15 = accountID;
     v16 = 2112;
-    v17 = v6;
+    v17 = dCopy;
     _os_log_impl(&dword_24844D000, v8, v9, "Downloading attachments is not supported on account ID %@. AttachmentUUID: %@", &v14, 0x16u);
   }
 
   v11 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:70 userInfo:0];
-  [v7 downloadFinishedError:v11];
+  [consumerCopy downloadFinishedError:v11];
 
   v12 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (id)requestCalendarAvailabilityForStartDate:(id)a3 endDate:(id)a4 ignoredEventID:(id)a5 addresses:(id)a6 consumer:(id)a7
+- (id)requestCalendarAvailabilityForStartDate:(id)date endDate:(id)endDate ignoredEventID:(id)d addresses:(id)addresses consumer:(id)consumer
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a7;
+  consumerCopy = consumer;
   v9 = DALoggingwithCategory();
   v10 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v9, v10))
   {
-    v11 = [(DAAccount *)self accountID];
+    accountID = [(DAAccount *)self accountID];
     v15 = 138543362;
-    v16 = v11;
+    v16 = accountID;
     _os_log_impl(&dword_24844D000, v9, v10, "Requesting calendar availability is not supported on account with ID [%{public}@].", &v15, 0xCu);
   }
 
   v12 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:81 userInfo:0];
-  [v8 calendarAvailabilityRequestFinishedWithError:v12];
+  [consumerCopy calendarAvailabilityRequestFinishedWithError:v12];
 
   v13 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (void)cancelCalendarAvailabilityRequestWithID:(id)a3
+- (void)cancelCalendarAvailabilityRequestWithID:(id)d
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = DALoggingwithCategory();
   v5 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v4, v5))
   {
-    v6 = [(DAAccount *)self accountID];
+    accountID = [(DAAccount *)self accountID];
     v8 = 138543362;
-    v9 = v6;
+    v9 = accountID;
     _os_log_impl(&dword_24844D000, v4, v5, "Cancelling calendar availability requests is not supported on account with ID [%{public}@].", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)requestGrantedDelegatesListWithConsumer:(id)a3
+- (id)requestGrantedDelegatesListWithConsumer:(id)consumer
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  consumerCopy = consumer;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v5, v6))
   {
-    v7 = [(DAAccount *)self accountID];
+    accountID = [(DAAccount *)self accountID];
     v11 = 138543362;
-    v12 = v7;
+    v12 = accountID;
     _os_log_impl(&dword_24844D000, v5, v6, "Requesting granted delegates list is not supported on account with ID [%{public}@].", &v11, 0xCu);
   }
 
   v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:83 userInfo:0];
-  [v4 grantedDelegatesListRequestFinishedWithResults:0 error:v8];
+  [consumerCopy grantedDelegatesListRequestFinishedWithResults:0 error:v8];
 
   v9 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (void)cancelGrantedDelegatesListRequestWithID:(id)a3
+- (void)cancelGrantedDelegatesListRequestWithID:(id)d
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = DALoggingwithCategory();
   v5 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v4, v5))
   {
-    v6 = [(DAAccount *)self accountID];
+    accountID = [(DAAccount *)self accountID];
     v8 = 138543362;
-    v9 = v6;
+    v9 = accountID;
     _os_log_impl(&dword_24844D000, v4, v5, "Cancelling granted delegates list requests is not supported on account with ID [%{public}@].", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)updateGrantedDelegatePermission:(id)a3 consumer:(id)a4
+- (id)updateGrantedDelegatePermission:(id)permission consumer:(id)consumer
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  consumerCopy = consumer;
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [(DAAccount *)self accountID];
+    accountID = [(DAAccount *)self accountID];
     v12 = 138543362;
-    v13 = v8;
+    v13 = accountID;
     _os_log_impl(&dword_24844D000, v6, v7, "Update granted delegate permission is not supported on account with ID [%{public}@].", &v12, 0xCu);
   }
 
   v9 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:84 userInfo:0];
-  [v5 updateGrantedDelegatePermissionFinishedWithError:v9];
+  [consumerCopy updateGrantedDelegatePermissionFinishedWithError:v9];
 
   v10 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (void)cancelUpdateGrantedDelegatePermissionRequestWithID:(id)a3
+- (void)cancelUpdateGrantedDelegatePermissionRequestWithID:(id)d
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = DALoggingwithCategory();
   v5 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v4, v5))
   {
-    v6 = [(DAAccount *)self accountID];
+    accountID = [(DAAccount *)self accountID];
     v8 = 138543362;
-    v9 = v6;
+    v9 = accountID;
     _os_log_impl(&dword_24844D000, v4, v5, "Cancelling update granted delegate permission requests is not supported on account with ID [%{public}@].", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)performCalendarDirectorySearchForTerms:(id)a3 recordTypes:(id)a4 resultLimit:(unint64_t)a5 consumer:(id)a6
+- (id)performCalendarDirectorySearchForTerms:(id)terms recordTypes:(id)types resultLimit:(unint64_t)limit consumer:(id)consumer
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a6;
+  consumerCopy = consumer;
   v8 = DALoggingwithCategory();
   v9 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v8, v9))
   {
-    v10 = [(DAAccount *)self accountID];
+    accountID = [(DAAccount *)self accountID];
     v14 = 138543362;
-    v15 = v10;
+    v15 = accountID;
     _os_log_impl(&dword_24844D000, v8, v9, "Performing a calendar directory search is not supported on account with ID [%{public}@].", &v14, 0xCu);
   }
 
   v11 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:85 userInfo:0];
-  [v7 calendarDirectorySearchFinishedWithError:v11 exceededResultLimit:0];
+  [consumerCopy calendarDirectorySearchFinishedWithError:v11 exceededResultLimit:0];
 
   v12 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (void)performGroupExpansionForPrincipalPath:(id)a3 consumer:(id)a4
+- (void)performGroupExpansionForPrincipalPath:(id)path consumer:(id)consumer
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  consumerCopy = consumer;
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [(DAAccount *)self accountID];
+    accountID = [(DAAccount *)self accountID];
     v11 = 138543362;
-    v12 = v8;
+    v12 = accountID;
     _os_log_impl(&dword_24844D000, v6, v7, "Performing a calendar directory search is not supported on account with ID [%{public}@].", &v11, 0xCu);
   }
 
   v9 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:85 userInfo:0];
-  [v5 groupExpansionFinishedWithResults:0 error:v9];
+  [consumerCopy groupExpansionFinishedWithResults:0 error:v9];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelCalendarDirectorySearchWithID:(id)a3
+- (void)cancelCalendarDirectorySearchWithID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v5, v6))
   {
-    v7 = [(DAAccount *)self accountID];
+    accountID = [(DAAccount *)self accountID];
     v9 = 138543618;
-    v10 = v7;
+    v10 = accountID;
     v11 = 2112;
-    v12 = v4;
+    v12 = dCopy;
     _os_log_impl(&dword_24844D000, v5, v6, "Cancelling calendar directory searches is not supported on account with ID [%{public}@].  searchID: [%@]", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)respondToShareRequestForCalendar:(id)a3 withResponse:(int64_t)a4 consumer:(id)a5
+- (id)respondToShareRequestForCalendar:(id)calendar withResponse:(int64_t)response consumer:(id)consumer
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  calendarCopy = calendar;
+  consumerCopy = consumer;
   v9 = DALoggingwithCategory();
   v10 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v9, v10))
   {
-    v11 = [(DAAccount *)self accountID];
+    accountID = [(DAAccount *)self accountID];
     v15 = 138412546;
-    v16 = v11;
+    v16 = accountID;
     v17 = 2112;
-    v18 = v7;
+    v18 = calendarCopy;
     _os_log_impl(&dword_24844D000, v9, v10, "Responding to calendar shares is not supported on account ID %@. calendar ID: %@", &v15, 0x16u);
   }
 
   v12 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:76 userInfo:0];
-  [v8 shareResponseFinishedWithError:v12];
+  [consumerCopy shareResponseFinishedWithError:v12];
 
   v13 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (id)reportShareRequestAsJunkForCalendar:(id)a3 consumer:(id)a4
+- (id)reportShareRequestAsJunkForCalendar:(id)calendar consumer:(id)consumer
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  calendarCopy = calendar;
+  consumerCopy = consumer;
   v8 = DALoggingwithCategory();
   v9 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v8, v9))
   {
-    v10 = [(DAAccount *)self accountID];
+    accountID = [(DAAccount *)self accountID];
     v14 = 138412546;
-    v15 = v10;
+    v15 = accountID;
     v16 = 2112;
-    v17 = v6;
+    v17 = calendarCopy;
     _os_log_impl(&dword_24844D000, v8, v9, "Reporting calendar shares as junk is not supported on account ID %@. calendar ID: %@", &v14, 0x16u);
   }
 
   v11 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:76 userInfo:0];
-  [v7 shareResponseFinishedWithError:v11];
+  [consumerCopy shareResponseFinishedWithError:v11];
 
   v12 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (id)fetchOfficeHoursWithConsumer:(id)a3 error:(id *)a4
+- (id)fetchOfficeHoursWithConsumer:(id)consumer error:(id *)error
 {
   v13 = *MEMORY[0x277D85DE8];
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [(DAAccount *)self accountID];
+    accountID = [(DAAccount *)self accountID];
     v11 = 138543362;
-    v12 = v8;
+    v12 = accountID;
     _os_log_impl(&dword_24844D000, v6, v7, "Fetching office hours is not supported on account ID %{public}@", &v11, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:88 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:88 userInfo:0];
   }
 
   v9 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (id)setOfficeHours:(id)a3 withConsumer:(id)a4 error:(id *)a5
+- (id)setOfficeHours:(id)hours withConsumer:(id)consumer error:(id *)error
 {
   v14 = *MEMORY[0x277D85DE8];
   v7 = DALoggingwithCategory();
   v8 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v7, v8))
   {
-    v9 = [(DAAccount *)self accountID];
+    accountID = [(DAAccount *)self accountID];
     v12 = 138543362;
-    v13 = v9;
+    v13 = accountID;
     _os_log_impl(&dword_24844D000, v7, v8, "Setting office hours is not supported on account ID %{public}@", &v12, 0xCu);
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:88 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:88 userInfo:0];
   }
 
   v10 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (id)unactionableICSRepresentationForMetaData:(id)a3 inFolderWithId:(id)a4 outSummary:(id *)a5
+- (id)unactionableICSRepresentationForMetaData:(id)data inFolderWithId:(id)id outSummary:(id *)summary
 {
-  if (a5)
+  if (summary)
   {
-    *a5 = 0;
+    *summary = 0;
   }
 
   return 0;
 }
 
-- (void)updateOofSettingsWithParams:(id)a3 consumer:(id)a4
+- (void)updateOofSettingsWithParams:(id)params consumer:(id)consumer
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  consumerCopy = consumer;
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v6, v7))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_24844D000, v6, v7, "Updating oof settings requested on account %@, which does not support it", &v10, 0xCu);
   }
 
   v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:10 userInfo:0];
-  [v5 settingsRequestFinishedWithResults:0 status:10 error:v8];
+  [consumerCopy settingsRequestFinishedWithResults:0 status:10 error:v8];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrieveOofSettingsForConsumer:(id)a3
+- (void)retrieveOofSettingsForConsumer:(id)consumer
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  consumerCopy = consumer;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v5, v6))
   {
     v9 = 138412290;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_24844D000, v5, v6, "Retrieving oof settings requested on account %@, which does not support it", &v9, 0xCu);
   }
 
   v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:10 userInfo:0];
-  [v4 settingsRequestFinishedWithResults:0 status:10 error:v7];
+  [consumerCopy settingsRequestFinishedWithResults:0 status:10 error:v7];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -3786,7 +3786,7 @@ uint64_t __56__DAAccount_AuthenticationExtensions___leafAccountTypes__block_invo
   if (os_log_type_enabled(v3, v4))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_24844D000, v3, v4, "Checking if oof settings are supported on account %@, which does not support it", &v7, 0xCu);
   }
 
@@ -3796,43 +3796,43 @@ uint64_t __56__DAAccount_AuthenticationExtensions___leafAccountTypes__block_invo
 
 - (id)getPendingQueryQueue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(DAAccount *)v2 pendingQueries];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingQueries = [(DAAccount *)selfCopy pendingQueries];
 
-  if (!v3)
+  if (!pendingQueries)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [(DAAccount *)v2 setPendingQueries:v4];
+    [(DAAccount *)selfCopy setPendingQueries:v4];
 
     v5 = dispatch_queue_create("com.apple.dataaccess.queryqueue", 0);
-    [(DAAccount *)v2 setPendingQueryQueue:v5];
+    [(DAAccount *)selfCopy setPendingQueryQueue:v5];
 
     v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2.0];
-    [(DAAccount *)v2 setLastQueryStartedTime:v6];
+    [(DAAccount *)selfCopy setLastQueryStartedTime:v6];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return [(DAAccount *)v2 pendingQueryQueue];
+  return [(DAAccount *)selfCopy pendingQueryQueue];
 }
 
 - (void)_dequeueQuery
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(DAAccount *)self getPendingQueryQueue];
+  getPendingQueryQueue = [(DAAccount *)self getPendingQueryQueue];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v4 = [(DAAccount *)self pendingQueryQueue];
+  pendingQueryQueue = [(DAAccount *)self pendingQueryQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __37__DAAccount_Searching___dequeueQuery__block_invoke;
   v8[3] = &unk_278F13618;
   v8[4] = self;
   v8[5] = &v9;
-  dispatch_sync(v4, v8);
+  dispatch_sync(pendingQueryQueue, v8);
 
   if (*(v10 + 24) == 1)
   {
@@ -3906,30 +3906,30 @@ LABEL_9:
   }
 }
 
-- (void)performSearchQuery:(id)a3
+- (void)performSearchQuery:(id)query
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DAAccount *)self getPendingQueryQueue];
+  queryCopy = query;
+  getPendingQueryQueue = [(DAAccount *)self getPendingQueryQueue];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v6 = [(DAAccount *)self pendingQueryQueue];
+  pendingQueryQueue = [(DAAccount *)self pendingQueryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__DAAccount_Searching__performSearchQuery___block_invoke;
   block[3] = &unk_278F13640;
   block[4] = self;
   v18 = &v19;
-  v7 = v4;
+  v7 = queryCopy;
   v17 = v7;
-  dispatch_sync(v6, block);
+  dispatch_sync(pendingQueryQueue, block);
 
   if (*(v20 + 24) == 1)
   {
-    v8 = [(DAAccount *)self lastQueryStartedTime];
-    [v8 timeIntervalSinceNow];
+    lastQueryStartedTime = [(DAAccount *)self lastQueryStartedTime];
+    [lastQueryStartedTime timeIntervalSinceNow];
     v10 = v9;
 
     v11 = v10 + 2.0;
@@ -3973,24 +3973,24 @@ void __43__DAAccount_Searching__performSearchQuery___block_invoke(uint64_t a1)
   [v4 addObject:*(a1 + 40)];
 }
 
-- (void)cancelSearchQuery:(id)a3
+- (void)cancelSearchQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(DAAccount *)self getPendingQueryQueue];
+  queryCopy = query;
+  getPendingQueryQueue = [(DAAccount *)self getPendingQueryQueue];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v6 = [(DAAccount *)self pendingQueryQueue];
+  pendingQueryQueue = [(DAAccount *)self pendingQueryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__DAAccount_Searching__cancelSearchQuery___block_invoke;
   block[3] = &unk_278F13668;
   block[4] = self;
-  v7 = v4;
+  v7 = queryCopy;
   v9 = v7;
   v10 = &v11;
-  dispatch_sync(v6, block);
+  dispatch_sync(pendingQueryQueue, block);
 
   if (v12[3])
   {
@@ -4043,21 +4043,21 @@ void __42__DAAccount_Searching__cancelSearchQuery___block_invoke(uint64_t a1)
 - (void)cancelAllSearchQueries
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(DAAccount *)self getPendingQueryQueue];
+  getPendingQueryQueue = [(DAAccount *)self getPendingQueryQueue];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__2;
   v20 = __Block_byref_object_dispose__2;
   v21 = 0;
-  v4 = [(DAAccount *)self pendingQueryQueue];
+  pendingQueryQueue = [(DAAccount *)self pendingQueryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__DAAccount_Searching__cancelAllSearchQueries__block_invoke;
   block[3] = &unk_278F133A8;
   block[4] = self;
   block[5] = &v16;
-  dispatch_sync(v4, block);
+  dispatch_sync(pendingQueryQueue, block);
 
   v5 = v17[5];
   if (v5)
@@ -4117,14 +4117,14 @@ void __46__DAAccount_Searching__cancelAllSearchQueries__block_invoke(uint64_t a1
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(DAAccount *)self pendingQueryQueue];
+  pendingQueryQueue = [(DAAccount *)self pendingQueryQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__DAAccount_Searching__searchQueriesRunning__block_invoke;
   v6[3] = &unk_278F13618;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(pendingQueryQueue, v6);
 
   v4 = (v8[3] & 1) != 0 || [(DAAccount *)self _reallySearchQueriesRunning];
   _Block_object_dispose(&v7, 8);
@@ -4142,22 +4142,22 @@ void __44__DAAccount_Searching__searchQueriesRunning__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_reallyPerformSearchQuery:(id)a3
+- (void)_reallyPerformSearchQuery:(id)query
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queryCopy = query;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v5, v6))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_24844D000, v5, v6, "Search requested on account %@, which does not support it", &v10, 0xCu);
   }
 
-  v7 = [v4 consumer];
+  consumer = [queryCopy consumer];
   v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:10 userInfo:0];
-  [v7 searchQuery:v4 finishedWithError:v8];
+  [consumer searchQuery:queryCopy finishedWithError:v8];
 
   v9 = *MEMORY[0x277D85DE8];
 }

@@ -1,113 +1,113 @@
 @interface PTCinematographyScript
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_startTimeOfFixedTransitionToDecision:(SEL)a3;
-- ($69C59A32909E13F94AB58097350E6BB9)_timeRangeOfTransitionfromDecision:(SEL)a3 toDecision:(id)a4 didShortenTransition:(id)a5;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_startTimeOfFixedTransitionToDecision:(SEL)decision;
+- ($69C59A32909E13F94AB58097350E6BB9)_timeRangeOfTransitionfromDecision:(SEL)decision toDecision:(id)toDecision didShortenTransition:(id)transition;
 - ($69C59A32909E13F94AB58097350E6BB9)timeRange;
-- ($69C59A32909E13F94AB58097350E6BB9)timeRangeOfTransitionAfterDecision:(SEL)a3;
-- ($69C59A32909E13F94AB58097350E6BB9)timeRangeOfTransitionBeforeDecision:(SEL)a3;
-- (BOOL)_loadWithAsset:(id)a3 changesDictionary:(id)a4 error:(id *)a5;
-- (BOOL)_removeUserDecision:(id)a3;
-- (BOOL)_resolveIfGroupDecision:(id)a3;
-- (BOOL)_shouldAddTrackDecision:(id)a3 afterDecision:(id)a4;
+- ($69C59A32909E13F94AB58097350E6BB9)timeRangeOfTransitionAfterDecision:(SEL)decision;
+- ($69C59A32909E13F94AB58097350E6BB9)timeRangeOfTransitionBeforeDecision:(SEL)decision;
+- (BOOL)_loadWithAsset:(id)asset changesDictionary:(id)dictionary error:(id *)error;
+- (BOOL)_removeUserDecision:(id)decision;
+- (BOOL)_resolveIfGroupDecision:(id)decision;
+- (BOOL)_shouldAddTrackDecision:(id)decision afterDecision:(id)afterDecision;
 - (BOOL)_useFixedTransition;
-- (BOOL)addTrack:(id)a3;
-- (BOOL)addUserDecision:(id)a3;
-- (BOOL)focusOnDetection:(id)a3 strong:(BOOL)a4;
-- (BOOL)focusOnGroupIdentifier:(int64_t)a3 atTime:(id *)a4 strong:(BOOL)a5;
-- (BOOL)focusOnTrack:(id)a3 atTime:(id *)a4 strong:(BOOL)a5;
-- (BOOL)focusOnTrackIdentifier:(int64_t)a3 atTime:(id *)a4 strong:(BOOL)a5;
+- (BOOL)addTrack:(id)track;
+- (BOOL)addUserDecision:(id)decision;
+- (BOOL)focusOnDetection:(id)detection strong:(BOOL)strong;
+- (BOOL)focusOnGroupIdentifier:(int64_t)identifier atTime:(id *)time strong:(BOOL)strong;
+- (BOOL)focusOnTrack:(id)track atTime:(id *)time strong:(BOOL)strong;
+- (BOOL)focusOnTrackIdentifier:(int64_t)identifier atTime:(id *)time strong:(BOOL)strong;
 - (BOOL)removeAllUserDecisions;
-- (BOOL)removeTrack:(id)a3;
-- (BOOL)removeUserDecision:(id)a3;
+- (BOOL)removeTrack:(id)track;
+- (BOOL)removeUserDecision:(id)decision;
 - (NSArray)trackDecisions;
 - (NSArray)tracks;
 - (PTCinematographyScript)init;
 - (PTCinematographyScriptChanges)changesDelegate;
 - (float)userAperture;
-- (id)_bestDetectionForGroupIdentifier:(int64_t)a3 time:(id *)a4;
+- (id)_bestDetectionForGroupIdentifier:(int64_t)identifier time:(id *)time;
 - (id)_calculateTrackDecisions;
-- (id)_detectionWithGroupIdentifier:(int64_t)a3 atOrBeforeTime:(id *)a4;
-- (id)_detectionWithTrackIdentifier:(int64_t)a3 atOrBeforeTime:(id *)a4;
-- (id)_effectiveDecisionsFromBaseDecisionsRange:(_NSRange)a3 userDecisionsRange:(_NSRange)a4 endTime:(id *)a5;
-- (id)_effectiveDecisionsFromZippedDecisions:(id)a3 endTime:(id *)a4;
-- (id)_existingGroupTrackForGroupIdentifier:(int64_t)a3;
-- (id)_internalizeGroupTrackForDetection:(id)a3;
-- (id)_internalizeTrackForDetection:(id)a3;
-- (id)_internalizeTrackNumberForFocusIdentifier:(id)a3;
-- (id)_internalizeTrackWithGroupNumberFromDetection:(id)a3;
-- (id)_internalizeTrackWithNumberFromDetection:(id)a3;
-- (id)_latestDetectionOfGroupIdentifier:(int64_t)a3 atOrBeforeFrameIndex:(unint64_t)a4 timeLimit:(id *)a5;
-- (id)_latestDetectionOfTrackIdentifier:(int64_t)a3 atOrBeforeFrameIndex:(unint64_t)a4 timeLimit:(id *)a5;
-- (id)_trackDecisionsInTimeRange:(id *)a3;
+- (id)_detectionWithGroupIdentifier:(int64_t)identifier atOrBeforeTime:(id *)time;
+- (id)_detectionWithTrackIdentifier:(int64_t)identifier atOrBeforeTime:(id *)time;
+- (id)_effectiveDecisionsFromBaseDecisionsRange:(_NSRange)range userDecisionsRange:(_NSRange)decisionsRange endTime:(id *)time;
+- (id)_effectiveDecisionsFromZippedDecisions:(id)decisions endTime:(id *)time;
+- (id)_existingGroupTrackForGroupIdentifier:(int64_t)identifier;
+- (id)_internalizeGroupTrackForDetection:(id)detection;
+- (id)_internalizeTrackForDetection:(id)detection;
+- (id)_internalizeTrackNumberForFocusIdentifier:(id)identifier;
+- (id)_internalizeTrackWithGroupNumberFromDetection:(id)detection;
+- (id)_internalizeTrackWithNumberFromDetection:(id)detection;
+- (id)_latestDetectionOfGroupIdentifier:(int64_t)identifier atOrBeforeFrameIndex:(unint64_t)index timeLimit:(id *)limit;
+- (id)_latestDetectionOfTrackIdentifier:(int64_t)identifier atOrBeforeFrameIndex:(unint64_t)index timeLimit:(id *)limit;
+- (id)_trackDecisionsInTimeRange:(id *)range;
 - (id)_userCreatedTracks;
 - (id)_userDecisionDictionaries;
-- (id)_userDecisionDictionariesTrimmedByTimeRange:(id *)a3;
-- (id)_userDecisionToFocusOnDetection:(id)a3 time:(id *)a4 strong:(BOOL)a5 group:(BOOL)a6;
+- (id)_userDecisionDictionariesTrimmedByTimeRange:(id *)range;
+- (id)_userDecisionToFocusOnDetection:(id)detection time:(id *)time strong:(BOOL)strong group:(BOOL)group;
 - (id)_userTrackDictionaries;
-- (id)_userTrackDictionariesTrimmedByTimeRange:(id *)a3;
-- (id)_zipBaseDecisionsRange:(_NSRange)a3 userDecisionsRange:(_NSRange)a4;
-- (id)baseDecisionsInTimeRange:(id *)a3;
+- (id)_userTrackDictionariesTrimmedByTimeRange:(id *)range;
+- (id)_zipBaseDecisionsRange:(_NSRange)range userDecisionsRange:(_NSRange)decisionsRange;
+- (id)baseDecisionsInTimeRange:(id *)range;
 - (id)changesDictionary;
-- (id)changesDictionaryTrimmedByTimeRange:(id *)a3;
-- (id)decisionAfterTime:(id *)a3;
-- (id)decisionAtOrBeforeTime:(id *)a3;
-- (id)decisionBeforeTime:(id *)a3;
-- (id)decisionNearestTime:(id *)a3;
-- (id)decisionsInTimeRange:(id *)a3;
-- (id)frameAtTime:(id *)a3 tolerance:(id *)a4;
-- (id)frameNearestTime:(id *)a3;
-- (id)framesInTimeRange:(id *)a3;
-- (id)loadWithAsset:(id)a3 changesDictionary:(id)a4 completion:(id)a5;
-- (id)primaryDecisionAtTime:(id *)a3;
-- (id)secondaryDecisionAtTime:(id *)a3;
-- (id)trackForDecision:(id)a3;
-- (id)trackForGroupIdentifier:(int64_t)a3;
-- (id)trackForIdentifier:(int64_t)a3;
-- (id)userDecisionsInTimeRange:(id *)a3;
-- (void)_addDecision:(id)a3 toTrackDecisions:(id)a4;
-- (void)_addDecisions:(id)a3 toTrackDecisions:(id)a4;
-- (void)_addDetectionsFromCustomTrack:(id)a3;
-- (void)_addDetectionsFromFixedFocusTrack:(id)a3;
-- (void)_addGroupDecision:(id)a3 toTrackDecisions:(id)a4 nextDecision:(id)a5;
-- (void)_addGroupTrack:(id)a3;
-- (void)_addTrack:(id)a3 identifier:(int64_t)a4;
+- (id)changesDictionaryTrimmedByTimeRange:(id *)range;
+- (id)decisionAfterTime:(id *)time;
+- (id)decisionAtOrBeforeTime:(id *)time;
+- (id)decisionBeforeTime:(id *)time;
+- (id)decisionNearestTime:(id *)time;
+- (id)decisionsInTimeRange:(id *)range;
+- (id)frameAtTime:(id *)time tolerance:(id *)tolerance;
+- (id)frameNearestTime:(id *)time;
+- (id)framesInTimeRange:(id *)range;
+- (id)loadWithAsset:(id)asset changesDictionary:(id)dictionary completion:(id)completion;
+- (id)primaryDecisionAtTime:(id *)time;
+- (id)secondaryDecisionAtTime:(id *)time;
+- (id)trackForDecision:(id)decision;
+- (id)trackForGroupIdentifier:(int64_t)identifier;
+- (id)trackForIdentifier:(int64_t)identifier;
+- (id)userDecisionsInTimeRange:(id *)range;
+- (void)_addDecision:(id)decision toTrackDecisions:(id)decisions;
+- (void)_addDecisions:(id)decisions toTrackDecisions:(id)trackDecisions;
+- (void)_addDetectionsFromCustomTrack:(id)track;
+- (void)_addDetectionsFromFixedFocusTrack:(id)track;
+- (void)_addGroupDecision:(id)decision toTrackDecisions:(id)decisions nextDecision:(id)nextDecision;
+- (void)_addGroupTrack:(id)track;
+- (void)_addTrack:(id)track identifier:(int64_t)identifier;
 - (void)_addZeroDisparityTrack;
-- (void)_internalizeBaseDecisionsFromFrames:(id)a3;
-- (void)_internalizeDetectionsFromTrack:(id)a3;
-- (void)_internalizeFocusPullerFromFrames:(id)a3;
-- (void)_internalizeLoadedFrames:(id)a3 changesDictionary:(id)a4 reloading:(BOOL)a5;
-- (void)_internalizeTracksFromChangesDictionary:(id)a3;
-- (void)_internalizeTracksFromFrames:(id)a3;
-- (void)_internalizeUserApertureFromChangesDictionary:(id)a3;
-- (void)_internalizeUserDecisionsFromChangesDictionary:(id)a3;
-- (void)_internalizeUserDecisionsFromFrames:(id)a3;
-- (void)_notifyDelegateOfChangesToDecisionsInTimeRange:(id *)a3;
-- (void)_notifyDelegateOfChangesToFramesInTimeRange:(id *)a3;
+- (void)_internalizeBaseDecisionsFromFrames:(id)frames;
+- (void)_internalizeDetectionsFromTrack:(id)track;
+- (void)_internalizeFocusPullerFromFrames:(id)frames;
+- (void)_internalizeLoadedFrames:(id)frames changesDictionary:(id)dictionary reloading:(BOOL)reloading;
+- (void)_internalizeTracksFromChangesDictionary:(id)dictionary;
+- (void)_internalizeTracksFromFrames:(id)frames;
+- (void)_internalizeUserApertureFromChangesDictionary:(id)dictionary;
+- (void)_internalizeUserDecisionsFromChangesDictionary:(id)dictionary;
+- (void)_internalizeUserDecisionsFromFrames:(id)frames;
+- (void)_notifyDelegateOfChangesToDecisionsInTimeRange:(id *)range;
+- (void)_notifyDelegateOfChangesToFramesInTimeRange:(id *)range;
 - (void)_reloadTrackAllocator;
 - (void)_removeAllUserTracksForReloading;
-- (void)_removeDetectionsWithTrackIdentifier:(int64_t)a3;
-- (void)_removeTrack:(id)a3;
-- (void)_updateDecisionsAndFramesInTimeRange:(id *)a3;
-- (void)_updateEffectiveDecisionsInTimeRange:(id *)a3;
-- (void)_updateFramesForDecision:(id)a3 upToTime:(id *)a4;
-- (void)_updateFramesForDecisions:(id)a3 indexRange:(_NSRange)a4;
-- (void)_updateFramesForDecisions:(id)a3 timeRange:(id *)a4;
-- (void)_updateFramesForFinalDecision:(id)a3;
-- (void)_updateFramesForTransitionFromDecision:(id)a3 toDecision:(id)a4;
-- (void)_updateFramesForTransitionFromDecision:(id)a3 toDecision:(id)a4 timeRange:(id *)a5;
-- (void)_updateFramesFromDecision:(id)a3 toDecision:(id)a4;
-- (void)_updateFramesInIndexRange:(_NSRange)a3 forTransition:(id)a4 fromDetection:(id)a5 toDetection:(id)a6;
-- (void)_updateFramesInIndexRange:(_NSRange)a3 forTransition:(id)a4 fromDetection:(id)a5 toDetection:(id)a6 overTimeRange:(id *)a7;
-- (void)_updateFramesInIndexRange:(_NSRange)a3 toFocusOnDetection:(id)a4;
-- (void)_updateFramesInIndexRange:(_NSRange)a3 toFocusOnTrackIdentifier:(int64_t)a4;
-- (void)_updateFramesInTimeRange:(id *)a3 forTransition:(id)a4 fromDetection:(id)a5 toDetection:(id)a6;
-- (void)_updateFramesInTimeRange:(id *)a3 toFocusOnTrackIdentifier:(unint64_t)a4;
-- (void)addBaseDecision:(id)a3;
-- (void)addFrame:(id)a3;
-- (void)reloadWithChangesDictionary:(id)a3;
+- (void)_removeDetectionsWithTrackIdentifier:(int64_t)identifier;
+- (void)_removeTrack:(id)track;
+- (void)_updateDecisionsAndFramesInTimeRange:(id *)range;
+- (void)_updateEffectiveDecisionsInTimeRange:(id *)range;
+- (void)_updateFramesForDecision:(id)decision upToTime:(id *)time;
+- (void)_updateFramesForDecisions:(id)decisions indexRange:(_NSRange)range;
+- (void)_updateFramesForDecisions:(id)decisions timeRange:(id *)range;
+- (void)_updateFramesForFinalDecision:(id)decision;
+- (void)_updateFramesForTransitionFromDecision:(id)decision toDecision:(id)toDecision;
+- (void)_updateFramesForTransitionFromDecision:(id)decision toDecision:(id)toDecision timeRange:(id *)range;
+- (void)_updateFramesFromDecision:(id)decision toDecision:(id)toDecision;
+- (void)_updateFramesInIndexRange:(_NSRange)range forTransition:(id)transition fromDetection:(id)detection toDetection:(id)toDetection;
+- (void)_updateFramesInIndexRange:(_NSRange)range forTransition:(id)transition fromDetection:(id)detection toDetection:(id)toDetection overTimeRange:(id *)timeRange;
+- (void)_updateFramesInIndexRange:(_NSRange)range toFocusOnDetection:(id)detection;
+- (void)_updateFramesInIndexRange:(_NSRange)range toFocusOnTrackIdentifier:(int64_t)identifier;
+- (void)_updateFramesInTimeRange:(id *)range forTransition:(id)transition fromDetection:(id)detection toDetection:(id)toDetection;
+- (void)_updateFramesInTimeRange:(id *)range toFocusOnTrackIdentifier:(unint64_t)identifier;
+- (void)addBaseDecision:(id)decision;
+- (void)addFrame:(id)frame;
+- (void)reloadWithChangesDictionary:(id)dictionary;
 - (void)removeAllUserDecisions;
-- (void)setBaseDecisionsAreMutable:(BOOL)a3;
-- (void)setFramesAreMutable:(BOOL)a3;
-- (void)setUserAperture:(float)a3;
+- (void)setBaseDecisionsAreMutable:(BOOL)mutable;
+- (void)setFramesAreMutable:(BOOL)mutable;
+- (void)setUserAperture:(float)aperture;
 @end
 
 @implementation PTCinematographyScript
@@ -189,19 +189,19 @@
   return v3;
 }
 
-- (id)loadWithAsset:(id)a3 changesDictionary:(id)a4 completion:(id)a5
+- (id)loadWithAsset:(id)asset changesDictionary:(id)dictionary completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[PTAssetReader alloc] initWithAsset:v8];
+  assetCopy = asset;
+  dictionaryCopy = dictionary;
+  completionCopy = completion;
+  v11 = [[PTAssetReader alloc] initWithAsset:assetCopy];
   v12 = v11;
   if (v11)
   {
-    v13 = [(PTAssetReader *)v11 estimatedFrameCount];
-    if (v8)
+    estimatedFrameCount = [(PTAssetReader *)v11 estimatedFrameCount];
+    if (assetCopy)
     {
-      [v8 duration];
+      [assetCopy duration];
     }
 
     else
@@ -230,7 +230,7 @@
     duration.epoch = 0x3032000000;
     v45 = __Block_byref_object_copy__1;
     v46 = __Block_byref_object_dispose__1;
-    v47 = [MEMORY[0x277CCAC48] progressWithTotalUnitCount:v13];
+    v47 = [MEMORY[0x277CCAC48] progressWithTotalUnitCount:estimatedFrameCount];
     start.value = 0;
     *&start.timescale = &start;
     start.epoch = 0x3032000000;
@@ -242,7 +242,7 @@
     v38[2] = 0x3032000000;
     v38[3] = __Block_byref_object_copy__1;
     v38[4] = __Block_byref_object_dispose__1;
-    v39 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v13];
+    v39 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:estimatedFrameCount];
     v18 = dispatch_group_create();
     dispatch_group_enter(v18);
     v19 = dispatch_get_global_queue(0, 0);
@@ -254,11 +254,11 @@
     v33 = &v50;
     p_duration = &duration;
     v28 = v12;
-    v29 = self;
+    selfCopy = self;
     v35 = v38;
-    v37 = v13;
+    v37 = estimatedFrameCount;
     v36 = v48;
-    v30 = v9;
+    v30 = dictionaryCopy;
     v31 = v18;
     v20 = v18;
     dispatch_async(v19, v27);
@@ -268,10 +268,10 @@
     v23[2] = __69__PTCinematographyScript_loadWithAsset_changesDictionary_completion___block_invoke_2;
     v23[3] = &unk_278523628;
     v23[4] = self;
-    v24 = v10;
+    v24 = completionCopy;
     v25 = v48;
     v26 = &v50;
-    v21 = v10;
+    v21 = completionCopy;
     dispatch_group_notify(v20, v19, v23);
 
     v16 = *(*&duration.timescale + 40);
@@ -291,9 +291,9 @@
     block[1] = 3221225472;
     block[2] = __69__PTCinematographyScript_loadWithAsset_changesDictionary_completion___block_invoke;
     block[3] = &unk_278523588;
-    v53 = v10;
-    v52 = v8;
-    v15 = v10;
+    v53 = completionCopy;
+    v52 = assetCopy;
+    v15 = completionCopy;
     dispatch_async(serialQueue, block);
 
     v16 = 0;
@@ -522,10 +522,10 @@ void __69__PTCinematographyScript_loadWithAsset_changesDictionary_completion___b
   dispatch_async(v2, block);
 }
 
-- (BOOL)_loadWithAsset:(id)a3 changesDictionary:(id)a4 error:(id *)a5
+- (BOOL)_loadWithAsset:(id)asset changesDictionary:(id)dictionary error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  assetCopy = asset;
+  dictionaryCopy = dictionary;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -546,11 +546,11 @@ void __69__PTCinematographyScript_loadWithAsset_changesDictionary_completion___b
   v18 = &v19;
   v11 = v10;
   v16 = v11;
-  v12 = [(PTCinematographyScript *)self loadWithAsset:v8 changesDictionary:v9 completion:v15];
+  v12 = [(PTCinematographyScript *)self loadWithAsset:assetCopy changesDictionary:dictionaryCopy completion:v15];
   dispatch_group_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
-  if (a5)
+  if (error)
   {
-    *a5 = v20[5];
+    *error = v20[5];
   }
 
   v13 = *(v26 + 24);
@@ -569,58 +569,58 @@ void __65__PTCinematographyScript__loadWithAsset_changesDictionary_error___block
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)reloadWithChangesDictionary:(id)a3
+- (void)reloadWithChangesDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(PTCinematographyScript *)self changesDelegate];
+  dictionaryCopy = dictionary;
+  changesDelegate = [(PTCinematographyScript *)self changesDelegate];
   [(PTCinematographyScript *)self setChangesDelegate:0];
   [(PTCinematographyScript *)self removeAllUserDecisions];
   [(PTCinematographyScript *)self _removeAllUserTracksForReloading];
   [(PTCinematographyScript *)self loadedUserAperture];
   [(PTCinematographyScript *)self setUserAperture:?];
-  v6 = [(PTCinematographyScript *)self frames];
-  [(PTCinematographyScript *)self _internalizeLoadedFrames:v6 changesDictionary:v4 reloading:1];
+  frames = [(PTCinematographyScript *)self frames];
+  [(PTCinematographyScript *)self _internalizeLoadedFrames:frames changesDictionary:dictionaryCopy reloading:1];
 
-  [(PTCinematographyScript *)self setChangesDelegate:v5];
+  [(PTCinematographyScript *)self setChangesDelegate:changesDelegate];
   [(PTCinematographyScript *)self timeRange];
   [(PTCinematographyScript *)self _notifyDelegateOfChangesToDecisionsInTimeRange:v7];
   [(PTCinematographyScript *)self timeRange];
   [(PTCinematographyScript *)self _notifyDelegateOfChangesToFramesInTimeRange:v7];
 }
 
-- (void)_internalizeLoadedFrames:(id)a3 changesDictionary:(id)a4 reloading:(BOOL)a5
+- (void)_internalizeLoadedFrames:(id)frames changesDictionary:(id)dictionary reloading:(BOOL)reloading
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  [(PTCinematographyScript *)self setFrames:v8];
-  [(PTCinematographyScript *)self _internalizeUserApertureFromChangesDictionary:v9];
-  [(PTCinematographyScript *)self _internalizeFocusPullerFromFrames:v8];
+  reloadingCopy = reloading;
+  framesCopy = frames;
+  dictionaryCopy = dictionary;
+  [(PTCinematographyScript *)self setFrames:framesCopy];
+  [(PTCinematographyScript *)self _internalizeUserApertureFromChangesDictionary:dictionaryCopy];
+  [(PTCinematographyScript *)self _internalizeFocusPullerFromFrames:framesCopy];
   v10 = [[PTCinematographyFocusFramesOptions alloc] initWithGlobalMetadata:self->_globals];
   focusFramesOptions = self->_focusFramesOptions;
   self->_focusFramesOptions = v10;
 
-  if (v5)
+  if (reloadingCopy)
   {
     [(PTCinematographyScript *)self _reloadTrackAllocator];
-    [(PTCinematographyScript *)self _internalizeTracksFromChangesDictionary:v9];
+    [(PTCinematographyScript *)self _internalizeTracksFromChangesDictionary:dictionaryCopy];
   }
 
   else
   {
-    [(PTCinematographyScript *)self _internalizeTracksFromFrames:v8];
-    [(PTCinematographyScript *)self _internalizeTracksFromChangesDictionary:v9];
-    [(PTCinematographyScript *)self _internalizeBaseDecisionsFromFrames:v8];
+    [(PTCinematographyScript *)self _internalizeTracksFromFrames:framesCopy];
+    [(PTCinematographyScript *)self _internalizeTracksFromChangesDictionary:dictionaryCopy];
+    [(PTCinematographyScript *)self _internalizeBaseDecisionsFromFrames:framesCopy];
   }
 
-  if (v9)
+  if (dictionaryCopy)
   {
-    [(PTCinematographyScript *)self _internalizeUserDecisionsFromChangesDictionary:v9];
+    [(PTCinematographyScript *)self _internalizeUserDecisionsFromChangesDictionary:dictionaryCopy];
   }
 
   else
   {
-    [(PTCinematographyScript *)self _internalizeUserDecisionsFromFrames:v8];
+    [(PTCinematographyScript *)self _internalizeUserDecisionsFromFrames:framesCopy];
   }
 
   [(PTCinematographyScript *)self timeRange];
@@ -637,29 +637,29 @@ void __65__PTCinematographyScript__loadWithAsset_changesDictionary_error___block
     [PTCinematographyScript _internalizeLoadedFrames:? changesDictionary:? reloading:?];
   }
 
-  v14 = [(PTCinematographyScript *)self trackDecisions];
+  trackDecisions = [(PTCinematographyScript *)self trackDecisions];
   [(PTCinematographyScript *)self timeRange];
-  [(PTCinematographyScript *)self _updateFramesForDecisions:v14 timeRange:v15];
+  [(PTCinematographyScript *)self _updateFramesForDecisions:trackDecisions timeRange:v15];
 }
 
-- (void)_internalizeFocusPullerFromFrames:(id)a3
+- (void)_internalizeFocusPullerFromFrames:(id)frames
 {
-  v4 = a3;
-  v5 = [(PTCinematographyScript *)self globals];
+  framesCopy = frames;
+  globals = [(PTCinematographyScript *)self globals];
 
-  if (v5)
+  if (globals)
   {
-    v6 = [(PTCinematographyScript *)self globals];
-    v7 = [v6 majorVersion];
+    globals2 = [(PTCinematographyScript *)self globals];
+    majorVersion = [globals2 majorVersion];
 
-    if (v7 == 1)
+    if (majorVersion == 1)
     {
-      v8 = [(PTCinematographyScript *)self globals];
-      [v8 focusPullerAlpha];
+      globals3 = [(PTCinematographyScript *)self globals];
+      [globals3 focusPullerAlpha];
       v10 = v9;
-      [v8 focusPullerMaxV];
+      [globals3 focusPullerMaxV];
       v12 = v11;
-      [v8 focusPullerResistance];
+      [globals3 focusPullerResistance];
       v14 = v13;
 
       if (v12 > 0.0)
@@ -699,11 +699,11 @@ LABEL_15:
     goto LABEL_18;
   }
 
-  if ([v4 count])
+  if ([framesCopy count])
   {
-    v19 = [v4 objectAtIndexedSubscript:0];
-    v20 = [v19 _snapshot];
-    v21 = [v20 objectForKeyedSubscript:@"focus_puller"];
+    v19 = [framesCopy objectAtIndexedSubscript:0];
+    _snapshot = [v19 _snapshot];
+    v21 = [_snapshot objectForKeyedSubscript:@"focus_puller"];
 
     v22 = [PTCinematographyFocusPuller alloc];
     if (v21)
@@ -723,9 +723,9 @@ LABEL_15:
 LABEL_18:
 }
 
-- (void)_internalizeUserApertureFromChangesDictionary:(id)a3
+- (void)_internalizeUserApertureFromChangesDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"user_aperture"];
+  v4 = [dictionary objectForKeyedSubscript:@"user_aperture"];
   if (v4)
   {
     v5 = v4;
@@ -735,46 +735,46 @@ LABEL_18:
   }
 }
 
-- (void)_internalizeUserDecisionsFromChangesDictionary:(id)a3
+- (void)_internalizeUserDecisionsFromChangesDictionary:(id)dictionary
 {
-  v6 = [a3 objectForKeyedSubscript:@"user_decisions"];
+  v6 = [dictionary objectForKeyedSubscript:@"user_decisions"];
   v4 = [PTCinematographyDecision _mutableDecisionsWithCinematographyDictionaries:v6];
   userDecisions = self->_userDecisions;
   self->_userDecisions = v4;
 }
 
-- (void)_internalizeUserDecisionsFromFrames:(id)a3
+- (void)_internalizeUserDecisionsFromFrames:(id)frames
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  framesCopy = frames;
   v29 = objc_opt_new();
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v3;
+  obj = framesCopy;
   v4 = [obj countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (!v4)
   {
-    v9 = 0;
+    userFocusTrackNumber = 0;
     goto LABEL_62;
   }
 
   v6 = v4;
-  v7 = 0;
-  v8 = 0;
-  v9 = 0;
+  isUserFocusStrong = 0;
+  isUserFocusGroup = 0;
+  userFocusTrackNumber = 0;
   v31 = *v38;
-  v27 = -1;
+  groupIdentifier = -1;
   v28 = 1;
   *&v5 = 138412290;
   v25 = v5;
   do
   {
     v10 = 0;
-    v11 = v7;
-    v12 = v8;
-    v13 = v9;
+    v11 = isUserFocusStrong;
+    v12 = isUserFocusGroup;
+    v13 = userFocusTrackNumber;
     do
     {
       if (*v38 != v31)
@@ -783,23 +783,23 @@ LABEL_18:
       }
 
       v14 = *(*(&v37 + 1) + 8 * v10);
-      v15 = [v14 baseFocusTrackNumber];
+      baseFocusTrackNumber = [v14 baseFocusTrackNumber];
 
-      if (!v15)
+      if (!baseFocusTrackNumber)
       {
-        v7 = v11;
-        v8 = v12;
-        v9 = v13;
+        isUserFocusStrong = v11;
+        isUserFocusGroup = v12;
+        userFocusTrackNumber = v13;
         goto LABEL_46;
       }
 
-      v9 = [v14 userFocusTrackNumber];
-      v7 = [v14 isUserFocusStrong];
-      v8 = [v14 isUserFocusGroup];
+      userFocusTrackNumber = [v14 userFocusTrackNumber];
+      isUserFocusStrong = [v14 isUserFocusStrong];
+      isUserFocusGroup = [v14 isUserFocusGroup];
       if ([v14 isUserFocusEnd])
       {
-        v16 = [v29 lastObject];
-        if (v16)
+        lastObject = [v29 lastObject];
+        if (lastObject)
         {
           if (v14)
           {
@@ -811,10 +811,10 @@ LABEL_18:
             memset(&lhs, 0, sizeof(lhs));
           }
 
-          [v16 time];
+          [lastObject time];
           CMTimeSubtract(&v36, &lhs, &rhs);
           lhs = v36;
-          [v16 setMaximumDuration:&lhs];
+          [lastObject setMaximumDuration:&lhs];
           v18 = _PTLogSystem();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
           {
@@ -830,7 +830,7 @@ LABEL_18:
 
             v22 = NSStringFromCMTime(&lhs);
             LODWORD(lhs.value) = 138412546;
-            *(&lhs.value + 4) = v16;
+            *(&lhs.value + 4) = lastObject;
             LOWORD(lhs.flags) = 2112;
             *(&lhs.flags + 2) = v22;
             _os_log_debug_impl(&dword_2243FB000, v18, OS_LOG_TYPE_DEBUG, "internalizing user decision %@ end at %@", &lhs, 0x16u);
@@ -849,13 +849,13 @@ LABEL_18:
         goto LABEL_43;
       }
 
-      if (v9 && (!v13 || ![v9 isEqualToNumber:v13] || ((v11 ^ v7) & 1) != 0 || ((v12 ^ v8) & 1) != 0))
+      if (userFocusTrackNumber && (!v13 || ![userFocusTrackNumber isEqualToNumber:v13] || ((v11 ^ isUserFocusStrong) & 1) != 0 || ((v12 ^ isUserFocusGroup) & 1) != 0))
       {
-        v17 = [v14 detectionForTrackNumber:v9];
-        v16 = v17;
+        v17 = [v14 detectionForTrackNumber:userFocusTrackNumber];
+        lastObject = v17;
         if (v17)
         {
-          if ((v8 & v12) != 1 || [v17 groupIdentifier] != v27)
+          if ((isUserFocusGroup & v12) != 1 || [v17 groupIdentifier] != groupIdentifier)
           {
             if (v14)
             {
@@ -867,7 +867,7 @@ LABEL_18:
               memset(&lhs, 0, sizeof(lhs));
             }
 
-            v18 = [(PTCinematographyScript *)self _userDecisionToFocusOnDetection:v16 time:&lhs strong:v7 group:v8];
+            v18 = [(PTCinematographyScript *)self _userDecisionToFocusOnDetection:lastObject time:&lhs strong:isUserFocusStrong group:isUserFocusGroup];
             v21 = _PTLogSystem();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
             {
@@ -877,7 +877,7 @@ LABEL_18:
             }
 
             [v29 addObject:v18];
-            v27 = [v16 groupIdentifier];
+            groupIdentifier = [lastObject groupIdentifier];
             goto LABEL_43;
           }
         }
@@ -888,7 +888,7 @@ LABEL_18:
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
             LODWORD(lhs.value) = 138412546;
-            *(&lhs.value + 4) = v9;
+            *(&lhs.value + 4) = userFocusTrackNumber;
             LOWORD(lhs.flags) = 2112;
             *(&lhs.flags + 2) = v14;
             _os_log_error_impl(&dword_2243FB000, v18, OS_LOG_TYPE_ERROR, "userFocusTrackNumber %@ has no corresponding detection on frame %@. No user decision was added.", &lhs, 0x16u);
@@ -905,14 +905,14 @@ LABEL_44:
       if ((v28 & 1) != 0 && [v29 count] <= 1)
       {
         v19 = [v29 count];
-        if (v9 || v19 != 1)
+        if (userFocusTrackNumber || v19 != 1)
         {
           v28 = 1;
           goto LABEL_45;
         }
 
-        v16 = [v29 firstObject];
-        v20 = [v14 detectionForTrackIdentifier:{objc_msgSend(v16, "trackIdentifier")}];
+        lastObject = [v29 firstObject];
+        v20 = [v14 detectionForTrackIdentifier:{objc_msgSend(lastObject, "trackIdentifier")}];
 
         if (v20)
         {
@@ -920,7 +920,7 @@ LABEL_44:
           if (v14)
           {
             [v14 time];
-            if (v16)
+            if (lastObject)
             {
               goto LABEL_38;
             }
@@ -932,13 +932,13 @@ LABEL_52:
           else
           {
             memset(&rhs, 0, sizeof(rhs));
-            if (!v16)
+            if (!lastObject)
             {
               goto LABEL_52;
             }
 
 LABEL_38:
-            [v16 time];
+            [lastObject time];
           }
 
           CMTimeSubtract(&lhs, &rhs, &time1);
@@ -957,7 +957,7 @@ LABEL_38:
           if (CMTimeCompare(&time1, &rhs) < 0)
           {
             rhs = lhs;
-            [v16 setMinimumDuration:&rhs];
+            [lastObject setMinimumDuration:&rhs];
           }
         }
 
@@ -968,9 +968,9 @@ LABEL_38:
       v28 = 0;
 LABEL_45:
 
-      v11 = v7;
-      v12 = v8;
-      v13 = v9;
+      v11 = isUserFocusStrong;
+      v12 = isUserFocusGroup;
+      v13 = userFocusTrackNumber;
 LABEL_46:
       ++v10;
     }
@@ -986,27 +986,27 @@ LABEL_62:
   [(PTCinematographyScript *)self setUserDecisions:v29];
 }
 
-- (id)_userDecisionToFocusOnDetection:(id)a3 time:(id *)a4 strong:(BOOL)a5 group:(BOOL)a6
+- (id)_userDecisionToFocusOnDetection:(id)detection time:(id *)time strong:(BOOL)strong group:(BOOL)group
 {
-  if (a6)
+  if (group)
   {
-    v7 = a5 | 2;
+    strongCopy = strong | 2;
   }
 
   else
   {
-    v7 = a5;
+    strongCopy = strong;
   }
 
-  v8 = a3;
+  detectionCopy = detection;
   v9 = [PTCinematographyDecision alloc];
-  v10 = [v8 trackIdentifier];
-  v14 = *&a4->var0;
-  var3 = a4->var3;
-  v11 = [(PTCinematographyDecision *)v9 initWithTime:&v14 trackIdentifier:v10 options:v7];
-  v12 = [v8 groupIdentifier];
+  trackIdentifier = [detectionCopy trackIdentifier];
+  v14 = *&time->var0;
+  var3 = time->var3;
+  v11 = [(PTCinematographyDecision *)v9 initWithTime:&v14 trackIdentifier:trackIdentifier options:strongCopy];
+  groupIdentifier = [detectionCopy groupIdentifier];
 
-  [(PTCinematographyDecision *)v11 setGroupIdentifier:v12];
+  [(PTCinematographyDecision *)v11 setGroupIdentifier:groupIdentifier];
   [(PTCinematographyDecision *)v11 setType:1];
 
   return v11;
@@ -1014,21 +1014,21 @@ LABEL_62:
 
 - (float)userAperture
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  userAperture = v2->_userAperture;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  userAperture = selfCopy->_userAperture;
+  objc_sync_exit(selfCopy);
 
   return userAperture;
 }
 
-- (void)setUserAperture:(float)a3
+- (void)setUserAperture:(float)aperture
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a3 <= 0.0)
+  if (aperture <= 0.0)
   {
-    v4 = _PTLogSystem();
-    if (os_log_type_enabled(&v4->super, OS_LOG_TYPE_ERROR))
+    selfCopy = _PTLogSystem();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       [PTCinematographyScript setUserAperture:?];
     }
@@ -1036,17 +1036,17 @@ LABEL_62:
 
   else
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    if (v4->_userAperture != a3)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->_userAperture != aperture)
     {
-      v4->_userAperture = a3;
+      selfCopy->_userAperture = aperture;
       v12 = 0u;
       v13 = 0u;
       v10 = 0u;
       v11 = 0u;
-      v5 = [(PTCinematographyScript *)v4 frames];
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      frames = [(PTCinematographyScript *)selfCopy frames];
+      v6 = [frames countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         v8 = *v11;
@@ -1057,33 +1057,33 @@ LABEL_62:
           {
             if (*v11 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(frames);
             }
 
-            *&v7 = a3;
+            *&v7 = aperture;
             [*(*(&v10 + 1) + 8 * v9++) setAperture:v7];
           }
 
           while (v6 != v9);
-          v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+          v6 = [frames countByEnumeratingWithState:&v10 objects:v14 count:16];
         }
 
         while (v6);
       }
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (id)frameNearestTime:(id *)a3
+- (id)frameNearestTime:(id *)time
 {
-  v5 = [(PTCinematographyScript *)self frames];
-  v12 = *a3;
-  v6 = [v5 _indexNearestTime:&v12];
+  frames = [(PTCinematographyScript *)self frames];
+  v12 = *time;
+  v6 = [frames _indexNearestTime:&v12];
 
-  v7 = [(PTCinematographyScript *)self frames];
-  v8 = [v7 count];
+  frames2 = [(PTCinematographyScript *)self frames];
+  v8 = [frames2 count];
 
   if (v6 >= v8)
   {
@@ -1092,29 +1092,29 @@ LABEL_62:
 
   else
   {
-    v9 = [(PTCinematographyScript *)self frames];
-    v10 = [v9 objectAtIndexedSubscript:v6];
+    frames3 = [(PTCinematographyScript *)self frames];
+    v10 = [frames3 objectAtIndexedSubscript:v6];
   }
 
   return v10;
 }
 
-- (id)frameAtTime:(id *)a3 tolerance:(id *)a4
+- (id)frameAtTime:(id *)time tolerance:(id *)tolerance
 {
-  v12 = *a3;
+  v12 = *time;
   v6 = [(PTCinematographyScript *)self frameNearestTime:&v12];
   v7 = v6;
   if (v6)
   {
     memset(&v12, 0, sizeof(v12));
     [v6 time];
-    rhs = *a3;
+    rhs = *time;
     CMTimeSubtract(&v12, &lhs, &rhs);
     memset(&lhs, 0, sizeof(lhs));
     rhs = v12;
     CMTimeAbsoluteValue(&lhs, &rhs);
     rhs = lhs;
-    v9 = *a4;
+    v9 = *tolerance;
     if (CMTimeCompare(&rhs, &v9) >= 1)
     {
 
@@ -1125,20 +1125,20 @@ LABEL_62:
   return v7;
 }
 
-- (id)framesInTimeRange:(id *)a3
+- (id)framesInTimeRange:(id *)range
 {
-  v5 = [(PTCinematographyScript *)self frames];
-  v6 = *&a3->var0.var3;
-  v13[0] = *&a3->var0.var0;
+  frames = [(PTCinematographyScript *)self frames];
+  v6 = *&range->var0.var3;
+  v13[0] = *&range->var0.var0;
   v13[1] = v6;
-  v13[2] = *&a3->var1.var1;
-  v7 = [v5 _indexRangeOfTimeRange:v13];
+  v13[2] = *&range->var1.var1;
+  v7 = [frames _indexRangeOfTimeRange:v13];
   v9 = v8;
 
   if (v9)
   {
-    v10 = [(PTCinematographyScript *)self frames];
-    v11 = [v10 subarrayWithRange:{v7, v9}];
+    frames2 = [(PTCinematographyScript *)self frames];
+    v11 = [frames2 subarrayWithRange:{v7, v9}];
   }
 
   else
@@ -1149,11 +1149,11 @@ LABEL_62:
   return v11;
 }
 
-- (id)_detectionWithTrackIdentifier:(int64_t)a3 atOrBeforeTime:(id *)a4
+- (id)_detectionWithTrackIdentifier:(int64_t)identifier atOrBeforeTime:(id *)time
 {
-  v7 = [(PTCinematographyScript *)self frames];
-  v11 = *a4;
-  v8 = [v7 _indexAtOrBeforeTime:&v11];
+  frames = [(PTCinematographyScript *)self frames];
+  v11 = *time;
+  v8 = [frames _indexAtOrBeforeTime:&v11];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1163,17 +1163,17 @@ LABEL_62:
   else
   {
     v11 = **&MEMORY[0x277CC08B0];
-    v9 = [(PTCinematographyScript *)self _latestDetectionOfTrackIdentifier:a3 atOrBeforeFrameIndex:v8 timeLimit:&v11];
+    v9 = [(PTCinematographyScript *)self _latestDetectionOfTrackIdentifier:identifier atOrBeforeFrameIndex:v8 timeLimit:&v11];
   }
 
   return v9;
 }
 
-- (id)_detectionWithGroupIdentifier:(int64_t)a3 atOrBeforeTime:(id *)a4
+- (id)_detectionWithGroupIdentifier:(int64_t)identifier atOrBeforeTime:(id *)time
 {
-  v7 = [(PTCinematographyScript *)self frames];
-  v11 = *a4;
-  v8 = [v7 _indexAtOrBeforeTime:&v11];
+  frames = [(PTCinematographyScript *)self frames];
+  v11 = *time;
+  v8 = [frames _indexAtOrBeforeTime:&v11];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1183,30 +1183,30 @@ LABEL_62:
   else
   {
     v11 = **&MEMORY[0x277CC08B0];
-    v9 = [(PTCinematographyScript *)self _latestDetectionOfGroupIdentifier:a3 atOrBeforeFrameIndex:v8 timeLimit:&v11];
+    v9 = [(PTCinematographyScript *)self _latestDetectionOfGroupIdentifier:identifier atOrBeforeFrameIndex:v8 timeLimit:&v11];
   }
 
   return v9;
 }
 
-- (void)_updateFramesForDecisions:(id)a3 timeRange:(id *)a4
+- (void)_updateFramesForDecisions:(id)decisions timeRange:(id *)range
 {
-  v5 = *&a4->var0.var3;
-  v9 = *&a4->var0.var0;
+  v5 = *&range->var0.var3;
+  v9 = *&range->var0.var0;
   v10 = v5;
-  v11 = *&a4->var1.var1;
-  v6 = a3;
-  v7 = [v6 _indexRangeOfTimeRange:&v9];
-  [(PTCinematographyScript *)self _updateFramesForDecisions:v6 indexRange:v7, v8, v9, v10, v11];
+  v11 = *&range->var1.var1;
+  decisionsCopy = decisions;
+  v7 = [decisionsCopy _indexRangeOfTimeRange:&v9];
+  [(PTCinematographyScript *)self _updateFramesForDecisions:decisionsCopy indexRange:v7, v8, v9, v10, v11];
 }
 
-- (void)_updateFramesForDecisions:(id)a3 indexRange:(_NSRange)a4
+- (void)_updateFramesForDecisions:(id)decisions indexRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = v7;
-  if (location && location < [v7 count])
+  length = range.length;
+  location = range.location;
+  decisionsCopy = decisions;
+  v8 = decisionsCopy;
+  if (location && location < [decisionsCopy count])
   {
     v9 = [v8 objectAtIndexedSubscript:location - 1];
     v10 = [v8 objectAtIndexedSubscript:location];
@@ -1248,12 +1248,12 @@ LABEL_62:
   }
 }
 
-- (void)_updateFramesFromDecision:(id)a3 toDecision:(id)a4
+- (void)_updateFramesFromDecision:(id)decision toDecision:(id)toDecision
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 trackIdentifier];
-  if (v8 == [v7 trackIdentifier])
+  decisionCopy = decision;
+  toDecisionCopy = toDecision;
+  trackIdentifier = [decisionCopy trackIdentifier];
+  if (trackIdentifier == [toDecisionCopy trackIdentifier])
   {
     v9 = _PTLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1261,9 +1261,9 @@ LABEL_62:
       [PTCinematographyScript _updateFramesFromDecision:toDecision:];
     }
 
-    if (v7)
+    if (toDecisionCopy)
     {
-      [v7 time];
+      [toDecisionCopy time];
     }
 
     else
@@ -1272,7 +1272,7 @@ LABEL_62:
       *&v15 = 0;
     }
 
-    [(PTCinematographyScript *)self _updateFramesForDecision:v6 upToTime:&v14];
+    [(PTCinematographyScript *)self _updateFramesForDecision:decisionCopy upToTime:&v14];
   }
 
   else
@@ -1281,42 +1281,42 @@ LABEL_62:
     v15 = 0u;
     v16 = 0u;
     v14 = 0u;
-    [(PTCinematographyScript *)self _timeRangeOfTransitionfromDecision:v6 toDecision:v7 didShortenTransition:&v17];
+    [(PTCinematographyScript *)self _timeRangeOfTransitionfromDecision:decisionCopy toDecision:toDecisionCopy didShortenTransition:&v17];
     if (v17 == 1)
     {
       v10 = _PTLogSystem();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        [PTCinematographyScript _updateFramesFromDecision:v6 toDecision:v7];
+        [PTCinematographyScript _updateFramesFromDecision:decisionCopy toDecision:toDecisionCopy];
       }
     }
 
     v11 = v14;
     *&v12 = v15;
-    [(PTCinematographyScript *)self _updateFramesForDecision:v6 upToTime:&v11];
+    [(PTCinematographyScript *)self _updateFramesForDecision:decisionCopy upToTime:&v11];
     v11 = v14;
     v12 = v15;
     v13 = v16;
-    [(PTCinematographyScript *)self _updateFramesForTransitionFromDecision:v6 toDecision:v7 timeRange:&v11];
+    [(PTCinematographyScript *)self _updateFramesForTransitionFromDecision:decisionCopy toDecision:toDecisionCopy timeRange:&v11];
   }
 }
 
-- (void)_updateFramesForFinalDecision:(id)a3
+- (void)_updateFramesForFinalDecision:(id)decision
 {
-  v4 = a3;
+  decisionCopy = decision;
   [(PTCinematographyScript *)self timeRange];
   CMTimeRangeGetEnd(&v6, &range);
-  [(PTCinematographyScript *)self _updateFramesForDecision:v4 upToTime:&v6];
+  [(PTCinematographyScript *)self _updateFramesForDecision:decisionCopy upToTime:&v6];
 }
 
-- (void)_updateFramesForDecision:(id)a3 upToTime:(id *)a4
+- (void)_updateFramesForDecision:(id)decision upToTime:(id *)time
 {
-  v6 = a3;
-  v7 = v6;
+  decisionCopy = decision;
+  v7 = decisionCopy;
   memset(&v11, 0, sizeof(v11));
-  if (v6)
+  if (decisionCopy)
   {
-    [v6 time];
+    [decisionCopy time];
   }
 
   else
@@ -1324,62 +1324,62 @@ LABEL_62:
     memset(&v9, 0, 24);
   }
 
-  end = *a4;
+  end = *time;
   CMTimeRangeFromTimeToTime(&v11, &v9.start, &end);
-  v8 = [v7 trackIdentifier];
+  trackIdentifier = [v7 trackIdentifier];
   v9 = v11;
-  [(PTCinematographyScript *)self _updateFramesInTimeRange:&v9 toFocusOnTrackIdentifier:v8];
+  [(PTCinematographyScript *)self _updateFramesInTimeRange:&v9 toFocusOnTrackIdentifier:trackIdentifier];
 }
 
-- (void)_updateFramesForTransitionFromDecision:(id)a3 toDecision:(id)a4
+- (void)_updateFramesForTransitionFromDecision:(id)decision toDecision:(id)toDecision
 {
   v10 = 0u;
   v11 = 0u;
   v9 = 0u;
-  v6 = a4;
-  v7 = a3;
-  [(PTCinematographyScript *)self _timeRangeOfTransitionfromDecision:v7 toDecision:v6];
+  toDecisionCopy = toDecision;
+  decisionCopy = decision;
+  [(PTCinematographyScript *)self _timeRangeOfTransitionfromDecision:decisionCopy toDecision:toDecisionCopy];
   v8[0] = v9;
   v8[1] = v10;
   v8[2] = v11;
-  [(PTCinematographyScript *)self _updateFramesForTransitionFromDecision:v7 toDecision:v6 timeRange:v8];
+  [(PTCinematographyScript *)self _updateFramesForTransitionFromDecision:decisionCopy toDecision:toDecisionCopy timeRange:v8];
 }
 
-- (void)_updateFramesForTransitionFromDecision:(id)a3 toDecision:(id)a4 timeRange:(id *)a5
+- (void)_updateFramesForTransitionFromDecision:(id)decision toDecision:(id)toDecision timeRange:(id *)range
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 trackIdentifier];
-  v11 = [v9 trackIdentifier];
-  v12 = [(PTCinematographyScript *)self frames];
-  v13 = *&a5->var0.var3;
-  *&range.start.value = *&a5->var0.var0;
+  decisionCopy = decision;
+  toDecisionCopy = toDecision;
+  trackIdentifier = [decisionCopy trackIdentifier];
+  trackIdentifier2 = [toDecisionCopy trackIdentifier];
+  frames = [(PTCinematographyScript *)self frames];
+  v13 = *&range->var0.var3;
+  *&range.start.value = *&range->var0.var0;
   *&range.start.epoch = v13;
-  *&range.duration.timescale = *&a5->var1.var1;
-  v14 = [v12 _indexRangeOfTimeRange:&range];
+  *&range.duration.timescale = *&range->var1.var1;
+  v14 = [frames _indexRangeOfTimeRange:&range];
   v16 = v15;
 
   if (v16)
   {
     *&range.start.value = *MEMORY[0x277CC08B0];
     range.start.epoch = *(MEMORY[0x277CC08B0] + 16);
-    v17 = [(PTCinematographyScript *)self _latestDetectionOfTrackIdentifier:v10 atOrBeforeFrameIndex:v14 timeLimit:&range];
+    v17 = [(PTCinematographyScript *)self _latestDetectionOfTrackIdentifier:trackIdentifier atOrBeforeFrameIndex:v14 timeLimit:&range];
     if (v17)
     {
       v18 = v14 + v16;
-      v19 = [(PTCinematographyScript *)self frames];
-      v20 = [v19 count];
+      frames2 = [(PTCinematographyScript *)self frames];
+      v20 = [frames2 count];
 
       if (v18 >= v20)
       {
         v23 = _PTLogSystem();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
-          v29 = *&a5->var0.var3;
-          *&range.start.value = *&a5->var0.var0;
+          v29 = *&range->var0.var3;
+          *&range.start.value = *&range->var0.var0;
           *&range.start.epoch = v29;
-          *&range.duration.timescale = *&a5->var1.var1;
+          *&range.duration.timescale = *&range->var1.var1;
           CMTimeRangeGetEnd(&v36, &range);
           v30 = NSStringFromCMTime(&v36);
           v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v18];
@@ -1387,8 +1387,8 @@ LABEL_62:
           CMTimeRangeGetEnd(&v36, &range);
           v32 = NSStringFromCMTime(&v36);
           v33 = MEMORY[0x277CCABB0];
-          v34 = [(PTCinematographyScript *)self frames];
-          v35 = [v33 numberWithUnsignedInteger:{objc_msgSend(v34, "count")}];
+          frames3 = [(PTCinematographyScript *)self frames];
+          v35 = [v33 numberWithUnsignedInteger:{objc_msgSend(frames3, "count")}];
           LODWORD(range.start.value) = 138413058;
           *(&range.start.value + 4) = v30;
           LOWORD(range.start.flags) = 2112;
@@ -1403,16 +1403,16 @@ LABEL_62:
 
       else
       {
-        v21 = [(PTCinematographyScript *)self frames];
-        v22 = [v21 objectAtIndexedSubscript:v18];
-        v23 = [v22 detectionForTrackIdentifier:v11];
+        frames4 = [(PTCinematographyScript *)self frames];
+        v22 = [frames4 objectAtIndexedSubscript:v18];
+        v23 = [v22 detectionForTrackIdentifier:trackIdentifier2];
 
-        v24 = [v9 transition];
-        v25 = *&a5->var0.var3;
-        *&range.start.value = *&a5->var0.var0;
+        transition = [toDecisionCopy transition];
+        v25 = *&range->var0.var3;
+        *&range.start.value = *&range->var0.var0;
         *&range.start.epoch = v25;
-        *&range.duration.timescale = *&a5->var1.var1;
-        [(PTCinematographyScript *)self _updateFramesInTimeRange:&range forTransition:v24 fromDetection:v17 toDetection:v23];
+        *&range.duration.timescale = *&range->var1.var1;
+        [(PTCinematographyScript *)self _updateFramesInTimeRange:&range forTransition:transition fromDetection:v17 toDetection:v23];
       }
     }
 
@@ -1431,19 +1431,19 @@ LABEL_62:
     v17 = _PTLogSystem();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      *&range.start.value = *&a5->var0.var0;
-      range.start.epoch = a5->var0.var3;
+      *&range.start.value = *&range->var0.var0;
+      range.start.epoch = range->var0.var3;
       v26 = NSStringFromCMTime(&range.start);
-      v27 = *&a5->var0.var3;
-      *&range.start.value = *&a5->var0.var0;
+      v27 = *&range->var0.var3;
+      *&range.start.value = *&range->var0.var0;
       *&range.start.epoch = v27;
-      *&range.duration.timescale = *&a5->var1.var1;
+      *&range.duration.timescale = *&range->var1.var1;
       CMTimeRangeGetEnd(&v36, &range);
       v28 = NSStringFromCMTime(&v36);
       LODWORD(range.start.value) = 138413058;
-      *(&range.start.value + 4) = v8;
+      *(&range.start.value + 4) = decisionCopy;
       LOWORD(range.start.flags) = 2112;
-      *(&range.start.flags + 2) = v9;
+      *(&range.start.flags + 2) = toDecisionCopy;
       HIWORD(range.start.epoch) = 2112;
       range.duration.value = v26;
       LOWORD(range.duration.timescale) = 2112;
@@ -1453,15 +1453,15 @@ LABEL_62:
   }
 }
 
-- (id)_latestDetectionOfTrackIdentifier:(int64_t)a3 atOrBeforeFrameIndex:(unint64_t)a4 timeLimit:(id *)a5
+- (id)_latestDetectionOfTrackIdentifier:(int64_t)identifier atOrBeforeFrameIndex:(unint64_t)index timeLimit:(id *)limit
 {
-  v5 = a5;
+  limitCopy = limit;
   v31 = *MEMORY[0x277D85DE8];
-  var2 = a5->var2;
-  v10 = [(PTCinematographyScript *)self frames];
-  v11 = [v10 objectAtIndexedSubscript:a4];
+  var2 = limit->var2;
+  frames = [(PTCinematographyScript *)self frames];
+  v11 = [frames objectAtIndexedSubscript:index];
 
-  v12 = [v11 detectionForTrackIdentifier:a3];
+  v12 = [v11 detectionForTrackIdentifier:identifier];
   if (v12)
   {
     v13 = v12;
@@ -1472,7 +1472,7 @@ LABEL_62:
     v26 = var2 & 0x1D;
     if (v26 == 1)
     {
-      v14 = [(PTCinematographyScript *)self frames];
+      frames2 = [(PTCinematographyScript *)self frames];
       if (v11)
       {
         [v11 time];
@@ -1483,9 +1483,9 @@ LABEL_62:
         memset(&lhs, 0, sizeof(lhs));
       }
 
-      rhs = *v5;
+      rhs = *limitCopy;
       CMTimeSubtract(&v29, &lhs, &rhs);
-      v15 = [v14 _firstIndexAtOrAfterTime:&v29];
+      v15 = [frames2 _firstIndexAtOrAfterTime:&v29];
     }
 
     else
@@ -1493,12 +1493,12 @@ LABEL_62:
       v15 = 0;
     }
 
-    v16 = a4 - 1;
+    v16 = index - 1;
     while (v16 >= v15)
     {
-      v17 = [(PTCinematographyScript *)self frames];
-      v18 = [v17 objectAtIndexedSubscript:v16];
-      v13 = [v18 detectionForTrackIdentifier:a3];
+      frames3 = [(PTCinematographyScript *)self frames];
+      v18 = [frames3 objectAtIndexedSubscript:v16];
+      v13 = [v18 detectionForTrackIdentifier:identifier];
 
       --v16;
       if (v13)
@@ -1510,19 +1510,19 @@ LABEL_62:
     v19 = _PTLogSystem();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v22 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-      v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+      v22 = [MEMORY[0x277CCABB0] numberWithInteger:identifier];
+      v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
       if (v26 == 1)
       {
         v24 = MEMORY[0x277CCACA8];
-        v29 = *v5;
-        v5 = NSStringFromCMTime(&v29);
-        v25 = [v24 stringWithFormat:@" within %@", v5];
+        v29 = *limitCopy;
+        limitCopy = NSStringFromCMTime(&v29);
+        limitCopy = [v24 stringWithFormat:@" within %@", limitCopy];
       }
 
       else
       {
-        v25 = &stru_2837D16E8;
+        limitCopy = &stru_2837D16E8;
       }
 
       LODWORD(v29.value) = 138412802;
@@ -1530,7 +1530,7 @@ LABEL_62:
       LOWORD(v29.flags) = 2112;
       *(&v29.flags + 2) = v23;
       HIWORD(v29.epoch) = 2112;
-      v30 = v25;
+      v30 = limitCopy;
       _os_log_error_impl(&dword_2243FB000, v19, OS_LOG_TYPE_ERROR, "cannot find detections of track %@ at or before index %@%@", &v29, 0x20u);
       if (v26 == 1)
       {
@@ -1546,15 +1546,15 @@ LABEL_15:
   return v20;
 }
 
-- (id)_latestDetectionOfGroupIdentifier:(int64_t)a3 atOrBeforeFrameIndex:(unint64_t)a4 timeLimit:(id *)a5
+- (id)_latestDetectionOfGroupIdentifier:(int64_t)identifier atOrBeforeFrameIndex:(unint64_t)index timeLimit:(id *)limit
 {
-  v5 = a5;
+  limitCopy = limit;
   v31 = *MEMORY[0x277D85DE8];
-  var2 = a5->var2;
-  v10 = [(PTCinematographyScript *)self frames];
-  v11 = [v10 objectAtIndexedSubscript:a4];
+  var2 = limit->var2;
+  frames = [(PTCinematographyScript *)self frames];
+  v11 = [frames objectAtIndexedSubscript:index];
 
-  v12 = [v11 bestDetectionForGroupIdentifier:a3];
+  v12 = [v11 bestDetectionForGroupIdentifier:identifier];
   if (v12)
   {
     v13 = v12;
@@ -1565,7 +1565,7 @@ LABEL_15:
     v26 = var2 & 0x1D;
     if (v26 == 1)
     {
-      v14 = [(PTCinematographyScript *)self frames];
+      frames2 = [(PTCinematographyScript *)self frames];
       if (v11)
       {
         [v11 time];
@@ -1576,9 +1576,9 @@ LABEL_15:
         memset(&lhs, 0, sizeof(lhs));
       }
 
-      rhs = *v5;
+      rhs = *limitCopy;
       CMTimeSubtract(&v29, &lhs, &rhs);
-      v15 = [v14 _firstIndexAtOrAfterTime:&v29];
+      v15 = [frames2 _firstIndexAtOrAfterTime:&v29];
     }
 
     else
@@ -1586,12 +1586,12 @@ LABEL_15:
       v15 = 0;
     }
 
-    v16 = a4 - 1;
+    v16 = index - 1;
     while (v16 >= v15)
     {
-      v17 = [(PTCinematographyScript *)self frames];
-      v18 = [v17 objectAtIndexedSubscript:v16];
-      v13 = [v18 bestDetectionForGroupIdentifier:a3];
+      frames3 = [(PTCinematographyScript *)self frames];
+      v18 = [frames3 objectAtIndexedSubscript:v16];
+      v13 = [v18 bestDetectionForGroupIdentifier:identifier];
 
       --v16;
       if (v13)
@@ -1603,19 +1603,19 @@ LABEL_15:
     v19 = _PTLogSystem();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v22 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-      v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+      v22 = [MEMORY[0x277CCABB0] numberWithInteger:identifier];
+      v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
       if (v26 == 1)
       {
         v24 = MEMORY[0x277CCACA8];
-        v29 = *v5;
-        v5 = NSStringFromCMTime(&v29);
-        v25 = [v24 stringWithFormat:@" within %@", v5];
+        v29 = *limitCopy;
+        limitCopy = NSStringFromCMTime(&v29);
+        limitCopy = [v24 stringWithFormat:@" within %@", limitCopy];
       }
 
       else
       {
-        v25 = &stru_2837D16E8;
+        limitCopy = &stru_2837D16E8;
       }
 
       LODWORD(v29.value) = 138412802;
@@ -1623,7 +1623,7 @@ LABEL_15:
       LOWORD(v29.flags) = 2112;
       *(&v29.flags + 2) = v23;
       HIWORD(v29.epoch) = 2112;
-      v30 = v25;
+      v30 = limitCopy;
       _os_log_error_impl(&dword_2243FB000, v19, OS_LOG_TYPE_ERROR, "cannot find detections of group %@ at or before index %@%@", &v29, 0x20u);
       if (v26 == 1)
       {
@@ -1639,32 +1639,32 @@ LABEL_15:
   return v20;
 }
 
-- (void)_updateFramesInTimeRange:(id *)a3 toFocusOnTrackIdentifier:(unint64_t)a4
+- (void)_updateFramesInTimeRange:(id *)range toFocusOnTrackIdentifier:(unint64_t)identifier
 {
-  v7 = [(PTCinematographyScript *)self frames];
-  v8 = *&a3->var0.var3;
-  v12[0] = *&a3->var0.var0;
+  frames = [(PTCinematographyScript *)self frames];
+  v8 = *&range->var0.var3;
+  v12[0] = *&range->var0.var0;
   v12[1] = v8;
-  v12[2] = *&a3->var1.var1;
-  v9 = [v7 _indexRangeOfTimeRange:v12];
+  v12[2] = *&range->var1.var1;
+  v9 = [frames _indexRangeOfTimeRange:v12];
   v11 = v10;
 
-  [(PTCinematographyScript *)self _updateFramesInIndexRange:v9 toFocusOnTrackIdentifier:v11, a4];
+  [(PTCinematographyScript *)self _updateFramesInIndexRange:v9 toFocusOnTrackIdentifier:v11, identifier];
 }
 
-- (void)_updateFramesInIndexRange:(_NSRange)a3 forTransition:(id)a4 fromDetection:(id)a5 toDetection:(id)a6
+- (void)_updateFramesInIndexRange:(_NSRange)range forTransition:(id)transition fromDetection:(id)detection toDetection:(id)toDetection
 {
-  length = a3.length;
-  location = a3.location;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
+  length = range.length;
+  location = range.location;
+  transitionCopy = transition;
+  detectionCopy = detection;
+  toDetectionCopy = toDetection;
+  v14 = toDetectionCopy;
   memset(&v17, 0, sizeof(v17));
-  if (!v12)
+  if (!detectionCopy)
   {
     memset(&v15, 0, 24);
-    if (v13)
+    if (toDetectionCopy)
     {
       goto LABEL_3;
     }
@@ -1674,7 +1674,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [v12 time];
+  [detectionCopy time];
   if (!v14)
   {
     goto LABEL_5;
@@ -1685,33 +1685,33 @@ LABEL_3:
 LABEL_6:
   CMTimeRangeFromTimeToTime(&v17, &v15.start, &end);
   v15 = v17;
-  [(PTCinematographyScript *)self _updateFramesInIndexRange:location forTransition:length fromDetection:v11 toDetection:v12 overTimeRange:v14, &v15];
+  [(PTCinematographyScript *)self _updateFramesInIndexRange:location forTransition:length fromDetection:transitionCopy toDetection:detectionCopy overTimeRange:v14, &v15];
 }
 
-- (void)_updateFramesInTimeRange:(id *)a3 forTransition:(id)a4 fromDetection:(id)a5 toDetection:(id)a6
+- (void)_updateFramesInTimeRange:(id *)range forTransition:(id)transition fromDetection:(id)detection toDetection:(id)toDetection
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [(PTCinematographyScript *)self frames];
-  v14 = *&a3->var0.var3;
-  v19 = *&a3->var0.var0;
+  toDetectionCopy = toDetection;
+  detectionCopy = detection;
+  transitionCopy = transition;
+  frames = [(PTCinematographyScript *)self frames];
+  v14 = *&range->var0.var3;
+  v19 = *&range->var0.var0;
   v20 = v14;
-  v21 = *&a3->var1.var1;
-  v15 = [v13 _indexRangeOfTimeRange:&v19];
+  v21 = *&range->var1.var1;
+  v15 = [frames _indexRangeOfTimeRange:&v19];
   v17 = v16;
 
-  v18 = *&a3->var0.var3;
-  v19 = *&a3->var0.var0;
+  v18 = *&range->var0.var3;
+  v19 = *&range->var0.var0;
   v20 = v18;
-  v21 = *&a3->var1.var1;
-  [(PTCinematographyScript *)self _updateFramesInIndexRange:v15 forTransition:v17 fromDetection:v12 toDetection:v11 overTimeRange:v10, &v19];
+  v21 = *&range->var1.var1;
+  [(PTCinematographyScript *)self _updateFramesInIndexRange:v15 forTransition:v17 fromDetection:transitionCopy toDetection:detectionCopy overTimeRange:toDetectionCopy, &v19];
 }
 
-- (void)_updateFramesInIndexRange:(_NSRange)a3 toFocusOnTrackIdentifier:(int64_t)a4
+- (void)_updateFramesInIndexRange:(_NSRange)range toFocusOnTrackIdentifier:(int64_t)identifier
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v21 = *MEMORY[0x277D85DE8];
   v8 = _PTLogSystem();
   v9 = location + length;
@@ -1722,25 +1722,25 @@ LABEL_6:
     *&v19[12] = 2048;
     *&v19[14] = location + length;
     *&v19[22] = 2048;
-    v20 = a4;
+    identifierCopy = identifier;
     _os_log_debug_impl(&dword_2243FB000, v8, OS_LOG_TYPE_DEBUG, "updating frames %lu to %lu to focus on track %lu", v19, 0x20u);
   }
 
   *v19 = *MEMORY[0x277CC08B0];
   *&v19[16] = *(MEMORY[0x277CC08B0] + 16);
-  v10 = [(PTCinematographyScript *)self _latestDetectionOfTrackIdentifier:a4 atOrBeforeFrameIndex:location timeLimit:v19];
-  v11 = [(PTCinematographyScript *)self focusPuller];
-  [v11 reset];
+  v10 = [(PTCinematographyScript *)self _latestDetectionOfTrackIdentifier:identifier atOrBeforeFrameIndex:location timeLimit:v19];
+  focusPuller = [(PTCinematographyScript *)self focusPuller];
+  [focusPuller reset];
 
   if (location < v9)
   {
     v12 = location;
     do
     {
-      v13 = [(PTCinematographyScript *)self frames];
-      v14 = [v13 objectAtIndexedSubscript:v12];
+      frames = [(PTCinematographyScript *)self frames];
+      v14 = [frames objectAtIndexedSubscript:v12];
 
-      v15 = [v14 detectionForTrackIdentifier:a4];
+      v15 = [v14 detectionForTrackIdentifier:identifier];
       if (v15)
       {
         if (v10 && location + 1 < v12)
@@ -1749,8 +1749,8 @@ LABEL_6:
           [(PTCinematographyScript *)self _updateFramesInIndexRange:location forTransition:v12 - location fromDetection:v16 toDetection:v10, v15];
         }
 
-        v17 = [(PTCinematographyScript *)self focusPuller];
-        [v14 focusOnDetection:v15 focusPuller:v17];
+        focusPuller2 = [(PTCinematographyScript *)self focusPuller];
+        [v14 focusOnDetection:v15 focusPuller:focusPuller2];
 
         v18 = v15;
         location = v12;
@@ -1769,19 +1769,19 @@ LABEL_6:
   }
 }
 
-- (void)_updateFramesInIndexRange:(_NSRange)a3 toFocusOnDetection:(id)a4
+- (void)_updateFramesInIndexRange:(_NSRange)range toFocusOnDetection:(id)detection
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
+  length = range.length;
+  location = range.location;
+  detectionCopy = detection;
   if (location < location + length)
   {
     do
     {
-      v7 = [(PTCinematographyScript *)self frames];
-      v8 = [v7 objectAtIndexedSubscript:location];
+      frames = [(PTCinematographyScript *)self frames];
+      v8 = [frames objectAtIndexedSubscript:location];
 
-      [v8 focusOnDetection:v9];
+      [v8 focusOnDetection:detectionCopy];
       ++location;
       --length;
     }
@@ -1790,19 +1790,19 @@ LABEL_6:
   }
 }
 
-- (void)_updateFramesInIndexRange:(_NSRange)a3 forTransition:(id)a4 fromDetection:(id)a5 toDetection:(id)a6 overTimeRange:(id *)a7
+- (void)_updateFramesInIndexRange:(_NSRange)range forTransition:(id)transition fromDetection:(id)detection toDetection:(id)toDetection overTimeRange:(id *)timeRange
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v55 = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [v14 trackIdentifier];
-  v17 = [v15 trackIdentifier];
+  transitionCopy = transition;
+  detectionCopy = detection;
+  toDetectionCopy = toDetection;
+  trackIdentifier = [detectionCopy trackIdentifier];
+  trackIdentifier2 = [toDetectionCopy trackIdentifier];
   v18 = _PTLogSystem();
   v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG);
-  if (v16 == v17)
+  if (trackIdentifier == trackIdentifier2)
   {
     if (!v19)
     {
@@ -1814,7 +1814,7 @@ LABEL_6:
     LOWORD(time.flags) = 2048;
     *(&time.flags + 2) = length + location - 1;
     HIWORD(time.epoch) = 2048;
-    v52 = [v14 trackIdentifier];
+    trackIdentifier3 = [detectionCopy trackIdentifier];
     v20 = "updating frames %lu thru %lu to fill in gap in track %lu";
     v21 = v18;
     v22 = 32;
@@ -1832,9 +1832,9 @@ LABEL_6:
     LOWORD(time.flags) = 2048;
     *(&time.flags + 2) = length + location - 1;
     HIWORD(time.epoch) = 2048;
-    v52 = [v14 trackIdentifier];
+    trackIdentifier3 = [detectionCopy trackIdentifier];
     v53 = 2048;
-    v54 = [v15 trackIdentifier];
+    trackIdentifier4 = [toDetectionCopy trackIdentifier];
     v20 = "updating frames %lu thru %lu to rack focus from track %lu to track %lu";
     v21 = v18;
     v22 = 42;
@@ -1843,11 +1843,11 @@ LABEL_6:
   _os_log_debug_impl(&dword_2243FB000, v21, OS_LOG_TYPE_DEBUG, v20, &time, v22);
 LABEL_5:
 
-  [v14 focusDistance];
+  [detectionCopy focusDistance];
   v24 = v23;
-  [v15 focusDistance];
+  [toDetectionCopy focusDistance];
   v26 = v25;
-  time = a7->var1;
+  time = timeRange->var1;
   *&v27 = CMTimeGetSeconds(&time);
   if (location < location + length)
   {
@@ -1856,8 +1856,8 @@ LABEL_5:
     v47 = v27;
     do
     {
-      v29 = [(PTCinematographyScript *)self frames];
-      v30 = [v29 objectAtIndexedSubscript:location];
+      frames = [(PTCinematographyScript *)self frames];
+      v30 = [frames objectAtIndexedSubscript:location];
 
       if (v30)
       {
@@ -1869,7 +1869,7 @@ LABEL_5:
         memset(&lhs, 0, sizeof(lhs));
       }
 
-      rhs = a7->var0;
+      rhs = timeRange->var0;
       CMTimeSubtract(&time, &lhs, &rhs);
       Seconds = CMTimeGetSeconds(&time);
       v32 = _PTLogSystem();
@@ -1885,13 +1885,13 @@ LABEL_5:
       }
 
       *&v34 = Seconds / v28;
-      [v13 coefficientForNormalizedTime:v34];
+      [transitionCopy coefficientForNormalizedTime:v34];
       v36 = v35;
       v37 = (v26 * v35) + ((1.0 - v35) * v24);
-      v38 = [v14 trackIdentifier];
-      if (v38 == [v15 trackIdentifier])
+      trackIdentifier5 = [detectionCopy trackIdentifier];
+      if (trackIdentifier5 == [toDetectionCopy trackIdentifier])
       {
-        v44 = [v14 copy];
+        v44 = [detectionCopy copy];
         if (v30)
         {
           [v30 time];
@@ -1916,7 +1916,7 @@ LABEL_5:
         *&v41 = v36;
         *&v42 = Seconds;
         *&v43 = v28;
-        [v30 _focusFromDetection:v14 toDetection:v15 rawFocusDistance:v39 focusDistance:v40 transitionCoefficient:v41 elapsedTime:v42 duration:v43];
+        [v30 _focusFromDetection:detectionCopy toDetection:toDetectionCopy rawFocusDistance:v39 focusDistance:v40 transitionCoefficient:v41 elapsedTime:v42 duration:v43];
       }
 
       ++location;
@@ -1932,9 +1932,9 @@ LABEL_5:
   trackDecisions = self->_trackDecisions;
   if (!trackDecisions)
   {
-    v4 = [(PTCinematographyScript *)self _calculateTrackDecisions];
+    _calculateTrackDecisions = [(PTCinematographyScript *)self _calculateTrackDecisions];
     v5 = self->_trackDecisions;
-    self->_trackDecisions = v4;
+    self->_trackDecisions = _calculateTrackDecisions;
 
     trackDecisions = self->_trackDecisions;
   }
@@ -1942,20 +1942,20 @@ LABEL_5:
   return trackDecisions;
 }
 
-- (id)_trackDecisionsInTimeRange:(id *)a3
+- (id)_trackDecisionsInTimeRange:(id *)range
 {
-  v5 = [(PTCinematographyScript *)self trackDecisions];
-  v6 = *&a3->var0.var3;
-  v13[0] = *&a3->var0.var0;
+  trackDecisions = [(PTCinematographyScript *)self trackDecisions];
+  v6 = *&range->var0.var3;
+  v13[0] = *&range->var0.var0;
   v13[1] = v6;
-  v13[2] = *&a3->var1.var1;
-  v7 = [v5 _indexRangeOfTimeRange:v13];
+  v13[2] = *&range->var1.var1;
+  v7 = [trackDecisions _indexRangeOfTimeRange:v13];
   v9 = v8;
 
   if (v9)
   {
-    v10 = [(PTCinematographyScript *)self trackDecisions];
-    v11 = [v10 subarrayWithRange:{v7, v9}];
+    trackDecisions2 = [(PTCinematographyScript *)self trackDecisions];
+    v11 = [trackDecisions2 subarrayWithRange:{v7, v9}];
   }
 
   else
@@ -1969,29 +1969,29 @@ LABEL_5:
 - (id)_calculateTrackDecisions
 {
   v3 = objc_opt_new();
-  v4 = [(PTCinematographyScript *)self effectiveDecisions];
-  v5 = [v4 count];
+  effectiveDecisions = [(PTCinematographyScript *)self effectiveDecisions];
+  v5 = [effectiveDecisions count];
 
   if (v5)
   {
     v6 = 0;
     do
     {
-      v7 = [(PTCinematographyScript *)self effectiveDecisions];
-      v8 = [v7 objectAtIndexedSubscript:v6];
+      effectiveDecisions2 = [(PTCinematographyScript *)self effectiveDecisions];
+      v8 = [effectiveDecisions2 objectAtIndexedSubscript:v6];
 
       if ([v8 isGroupDecision])
       {
-        v9 = [(PTCinematographyScript *)self effectiveDecisions];
-        if (v6 >= [v9 count] - 1)
+        effectiveDecisions3 = [(PTCinematographyScript *)self effectiveDecisions];
+        if (v6 >= [effectiveDecisions3 count] - 1)
         {
           v11 = 0;
         }
 
         else
         {
-          v10 = [(PTCinematographyScript *)self effectiveDecisions];
-          v11 = [v10 objectAtIndexedSubscript:v6 + 1];
+          effectiveDecisions4 = [(PTCinematographyScript *)self effectiveDecisions];
+          v11 = [effectiveDecisions4 objectAtIndexedSubscript:v6 + 1];
         }
 
         [(PTCinematographyScript *)self _addGroupDecision:v8 toTrackDecisions:v3 nextDecision:v11];
@@ -2003,8 +2003,8 @@ LABEL_5:
       }
 
       ++v6;
-      v12 = [(PTCinematographyScript *)self effectiveDecisions];
-      v13 = [v12 count];
+      effectiveDecisions5 = [(PTCinematographyScript *)self effectiveDecisions];
+      v13 = [effectiveDecisions5 count];
     }
 
     while (v6 < v13);
@@ -2015,23 +2015,23 @@ LABEL_5:
   return v14;
 }
 
-- (void)_addGroupDecision:(id)a3 toTrackDecisions:(id)a4 nextDecision:(id)a5
+- (void)_addGroupDecision:(id)decision toTrackDecisions:(id)decisions nextDecision:(id)nextDecision
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = -[PTCinematographyScript _existingGroupTrackForGroupIdentifier:](self, "_existingGroupTrackForGroupIdentifier:", [v8 groupIdentifier]);
+  decisionCopy = decision;
+  decisionsCopy = decisions;
+  nextDecisionCopy = nextDecision;
+  v11 = -[PTCinematographyScript _existingGroupTrackForGroupIdentifier:](self, "_existingGroupTrackForGroupIdentifier:", [decisionCopy groupIdentifier]);
   v21 = 0uLL;
   v22 = 0;
-  if (v8)
+  if (decisionCopy)
   {
-    [v8 time];
+    [decisionCopy time];
   }
 
   memset(&v20, 0, sizeof(v20));
-  if (v10)
+  if (nextDecisionCopy)
   {
-    [v10 time];
+    [nextDecisionCopy time];
   }
 
   else
@@ -2052,9 +2052,9 @@ LABEL_5:
     goto LABEL_14;
   }
 
-  if (v8)
+  if (decisionCopy)
   {
-    [v8 time];
+    [decisionCopy time];
   }
 
   else
@@ -2079,74 +2079,74 @@ LABEL_5:
   if (v15 < 0)
   {
 LABEL_14:
-    v16 = [v8 _decisionByRemovingOptions:2];
-    [(PTCinematographyScript *)self _addDecision:v16 toTrackDecisions:v9];
+    v16 = [decisionCopy _decisionByRemovingOptions:2];
+    [(PTCinematographyScript *)self _addDecision:v16 toTrackDecisions:decisionsCopy];
   }
 
-  [(PTCinematographyScript *)self _addDecisions:v12 toTrackDecisions:v9];
+  [(PTCinematographyScript *)self _addDecisions:v12 toTrackDecisions:decisionsCopy];
 }
 
-- (void)_addDecision:(id)a3 toTrackDecisions:(id)a4
+- (void)_addDecision:(id)decision toTrackDecisions:(id)decisions
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [v6 lastObject];
-  LODWORD(self) = [(PTCinematographyScript *)self _shouldAddTrackDecision:v8 afterDecision:v7];
+  decisionCopy = decision;
+  decisionsCopy = decisions;
+  lastObject = [decisionsCopy lastObject];
+  LODWORD(self) = [(PTCinematographyScript *)self _shouldAddTrackDecision:decisionCopy afterDecision:lastObject];
 
   if (self)
   {
-    [v6 addObject:v8];
+    [decisionsCopy addObject:decisionCopy];
   }
 }
 
-- (void)_addDecisions:(id)a3 toTrackDecisions:(id)a4
+- (void)_addDecisions:(id)decisions toTrackDecisions:(id)trackDecisions
 {
-  v12 = a3;
-  v6 = a4;
-  if ([v12 count])
+  decisionsCopy = decisions;
+  trackDecisionsCopy = trackDecisions;
+  if ([decisionsCopy count])
   {
     v7 = 0;
     while (1)
     {
-      v8 = [v12 objectAtIndexedSubscript:v7];
-      v9 = [v6 lastObject];
-      v10 = [(PTCinematographyScript *)self _shouldAddTrackDecision:v8 afterDecision:v9];
+      v8 = [decisionsCopy objectAtIndexedSubscript:v7];
+      lastObject = [trackDecisionsCopy lastObject];
+      v10 = [(PTCinematographyScript *)self _shouldAddTrackDecision:v8 afterDecision:lastObject];
 
       if (v10)
       {
         break;
       }
 
-      if (++v7 >= [v12 count])
+      if (++v7 >= [decisionsCopy count])
       {
         goto LABEL_7;
       }
     }
 
-    v11 = [v12 subarrayWithRange:{v7, objc_msgSend(v12, "count") - v7}];
-    [v6 addObjectsFromArray:v11];
+    v11 = [decisionsCopy subarrayWithRange:{v7, objc_msgSend(decisionsCopy, "count") - v7}];
+    [trackDecisionsCopy addObjectsFromArray:v11];
   }
 
 LABEL_7:
 }
 
-- (BOOL)_shouldAddTrackDecision:(id)a3 afterDecision:(id)a4
+- (BOOL)_shouldAddTrackDecision:(id)decision afterDecision:(id)afterDecision
 {
-  if (!a4)
+  if (!afterDecision)
   {
     return 1;
   }
 
-  v5 = a4;
-  v6 = [a3 trackIdentifier];
-  v7 = [v5 trackIdentifier];
+  afterDecisionCopy = afterDecision;
+  trackIdentifier = [decision trackIdentifier];
+  trackIdentifier2 = [afterDecisionCopy trackIdentifier];
 
-  return v6 != v7;
+  return trackIdentifier != trackIdentifier2;
 }
 
-- (id)_existingGroupTrackForGroupIdentifier:(int64_t)a3
+- (id)_existingGroupTrackForGroupIdentifier:(int64_t)identifier
 {
-  v3 = [(PTCinematographyScript *)self trackForGroupIdentifier:a3];
+  v3 = [(PTCinematographyScript *)self trackForGroupIdentifier:identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2161,22 +2161,22 @@ LABEL_7:
   return v4;
 }
 
-- (id)decisionAfterTime:(id *)a3
+- (id)decisionAfterTime:(id *)time
 {
-  v5 = [(PTCinematographyScript *)self effectiveDecisions];
-  v6 = [v5 count];
+  effectiveDecisions = [(PTCinematographyScript *)self effectiveDecisions];
+  v6 = [effectiveDecisions count];
 
   if (!v6)
   {
     goto LABEL_10;
   }
 
-  v7 = [(PTCinematographyScript *)self effectiveDecisions];
-  time1 = *a3;
-  v8 = [v7 _indexNearestTime:&time1];
+  effectiveDecisions2 = [(PTCinematographyScript *)self effectiveDecisions];
+  time1 = *time;
+  v8 = [effectiveDecisions2 _indexNearestTime:&time1];
 
-  v9 = [(PTCinematographyScript *)self effectiveDecisions];
-  v10 = [v9 objectAtIndexedSubscript:v8];
+  effectiveDecisions3 = [(PTCinematographyScript *)self effectiveDecisions];
+  v10 = [effectiveDecisions3 objectAtIndexedSubscript:v8];
   v11 = v10;
   if (v10)
   {
@@ -2188,17 +2188,17 @@ LABEL_7:
     memset(&time1, 0, sizeof(time1));
   }
 
-  v19 = *a3;
+  v19 = *time;
   v12 = CMTimeCompare(&time1, &v19);
 
   v13 = v12 >= 1 ? v8 : v8 + 1;
-  v14 = [(PTCinematographyScript *)self effectiveDecisions];
-  v15 = [v14 count];
+  effectiveDecisions4 = [(PTCinematographyScript *)self effectiveDecisions];
+  v15 = [effectiveDecisions4 count];
 
   if (v13 < v15)
   {
-    v16 = [(PTCinematographyScript *)self effectiveDecisions];
-    v17 = [v16 objectAtIndexedSubscript:v13];
+    effectiveDecisions5 = [(PTCinematographyScript *)self effectiveDecisions];
+    v17 = [effectiveDecisions5 objectAtIndexedSubscript:v13];
   }
 
   else
@@ -2210,22 +2210,22 @@ LABEL_10:
   return v17;
 }
 
-- (id)decisionBeforeTime:(id *)a3
+- (id)decisionBeforeTime:(id *)time
 {
-  v5 = [(PTCinematographyScript *)self effectiveDecisions];
-  v6 = [v5 count];
+  effectiveDecisions = [(PTCinematographyScript *)self effectiveDecisions];
+  v6 = [effectiveDecisions count];
 
   if (!v6)
   {
     goto LABEL_7;
   }
 
-  v7 = [(PTCinematographyScript *)self effectiveDecisions];
-  time1 = *a3;
-  v8 = [v7 _indexNearestTime:&time1];
+  effectiveDecisions2 = [(PTCinematographyScript *)self effectiveDecisions];
+  time1 = *time;
+  v8 = [effectiveDecisions2 _indexNearestTime:&time1];
 
-  v9 = [(PTCinematographyScript *)self effectiveDecisions];
-  v10 = [v9 objectAtIndexedSubscript:v8];
+  effectiveDecisions3 = [(PTCinematographyScript *)self effectiveDecisions];
+  v10 = [effectiveDecisions3 objectAtIndexedSubscript:v8];
   v11 = v10;
   if (v10)
   {
@@ -2237,14 +2237,14 @@ LABEL_10:
     memset(&time1, 0, sizeof(time1));
   }
 
-  v17 = *a3;
+  v17 = *time;
   v12 = CMTimeCompare(&time1, &v17);
 
   v13 = v8 - (v12 >= 0);
   if (v13 >= 0)
   {
-    v14 = [(PTCinematographyScript *)self effectiveDecisions];
-    v15 = [v14 objectAtIndexedSubscript:v13];
+    effectiveDecisions4 = [(PTCinematographyScript *)self effectiveDecisions];
+    v15 = [effectiveDecisions4 objectAtIndexedSubscript:v13];
   }
 
   else
@@ -2256,14 +2256,14 @@ LABEL_7:
   return v15;
 }
 
-- (id)decisionNearestTime:(id *)a3
+- (id)decisionNearestTime:(id *)time
 {
-  v5 = [(PTCinematographyScript *)self effectiveDecisions];
-  v12 = *a3;
-  v6 = [v5 _indexNearestTime:&v12];
+  effectiveDecisions = [(PTCinematographyScript *)self effectiveDecisions];
+  v12 = *time;
+  v6 = [effectiveDecisions _indexNearestTime:&v12];
 
-  v7 = [(PTCinematographyScript *)self effectiveDecisions];
-  v8 = [v7 count];
+  effectiveDecisions2 = [(PTCinematographyScript *)self effectiveDecisions];
+  v8 = [effectiveDecisions2 count];
 
   if (v6 >= v8)
   {
@@ -2272,27 +2272,27 @@ LABEL_7:
 
   else
   {
-    v9 = [(PTCinematographyScript *)self effectiveDecisions];
-    v10 = [v9 objectAtIndexedSubscript:v6];
+    effectiveDecisions3 = [(PTCinematographyScript *)self effectiveDecisions];
+    v10 = [effectiveDecisions3 objectAtIndexedSubscript:v6];
   }
 
   return v10;
 }
 
-- (id)decisionsInTimeRange:(id *)a3
+- (id)decisionsInTimeRange:(id *)range
 {
-  v5 = [(PTCinematographyScript *)self effectiveDecisions];
-  v6 = *&a3->var0.var3;
-  v13[0] = *&a3->var0.var0;
+  effectiveDecisions = [(PTCinematographyScript *)self effectiveDecisions];
+  v6 = *&range->var0.var3;
+  v13[0] = *&range->var0.var0;
   v13[1] = v6;
-  v13[2] = *&a3->var1.var1;
-  v7 = [v5 _indexRangeOfTimeRange:v13];
+  v13[2] = *&range->var1.var1;
+  v7 = [effectiveDecisions _indexRangeOfTimeRange:v13];
   v9 = v8;
 
   if (v9)
   {
-    v10 = [(PTCinematographyScript *)self effectiveDecisions];
-    v11 = [v10 subarrayWithRange:{v7, v9}];
+    effectiveDecisions2 = [(PTCinematographyScript *)self effectiveDecisions];
+    v11 = [effectiveDecisions2 subarrayWithRange:{v7, v9}];
   }
 
   else
@@ -2303,18 +2303,18 @@ LABEL_7:
   return v11;
 }
 
-- (id)primaryDecisionAtTime:(id *)a3
+- (id)primaryDecisionAtTime:(id *)time
 {
-  v5 = *a3;
+  v5 = *time;
   v3 = [(PTCinematographyScript *)self decisionAtOrBeforeTime:&v5];
 
   return v3;
 }
 
-- (id)secondaryDecisionAtTime:(id *)a3
+- (id)secondaryDecisionAtTime:(id *)time
 {
-  v9 = *&a3->var0;
-  *&v10 = a3->var3;
+  v9 = *&time->var0;
+  *&v10 = time->var3;
   v5 = [(PTCinematographyScript *)self decisionAfterTime:&v9];
   if (v5)
   {
@@ -2322,7 +2322,7 @@ LABEL_7:
     v11 = 0u;
     v9 = 0u;
     [(PTCinematographyScript *)self timeRangeOfTransitionBeforeDecision:v5];
-    time1 = *a3;
+    time1 = *time;
     *&v7.value = v9;
     v7.epoch = v10;
     if (CMTimeCompare(&time1, &v7) <= 0)
@@ -2335,7 +2335,7 @@ LABEL_7:
   return v5;
 }
 
-- ($69C59A32909E13F94AB58097350E6BB9)timeRangeOfTransitionAfterDecision:(SEL)a3
+- ($69C59A32909E13F94AB58097350E6BB9)timeRangeOfTransitionAfterDecision:(SEL)decision
 {
   v5 = a4;
   v6 = v5;
@@ -2355,7 +2355,7 @@ LABEL_7:
   return result;
 }
 
-- ($69C59A32909E13F94AB58097350E6BB9)timeRangeOfTransitionBeforeDecision:(SEL)a3
+- ($69C59A32909E13F94AB58097350E6BB9)timeRangeOfTransitionBeforeDecision:(SEL)decision
 {
   v5 = a4;
   v6 = v5;
@@ -2375,18 +2375,18 @@ LABEL_7:
   return result;
 }
 
-- ($69C59A32909E13F94AB58097350E6BB9)_timeRangeOfTransitionfromDecision:(SEL)a3 toDecision:(id)a4 didShortenTransition:(id)a5
+- ($69C59A32909E13F94AB58097350E6BB9)_timeRangeOfTransitionfromDecision:(SEL)decision toDecision:(id)toDecision didShortenTransition:(id)transition
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
+  toDecisionCopy = toDecision;
+  transitionCopy = transition;
+  v12 = transitionCopy;
   LOBYTE(v13) = 0;
   v14 = MEMORY[0x277CC08E0];
   v15 = *(MEMORY[0x277CC08E0] + 16);
   *&retstr->var0.var0 = *MEMORY[0x277CC08E0];
   *&retstr->var0.var3 = v15;
   *&retstr->var1.var1 = *(v14 + 32);
-  if (v10 && v11)
+  if (toDecisionCopy && transitionCopy)
   {
     memset(&v27, 0, sizeof(v27));
     if ([(PTCinematographyScript *)self _useFixedTransition])
@@ -2397,13 +2397,13 @@ LABEL_7:
     else
     {
       v16 = [[PTCinematographyFocusFrames alloc] initWithFrames:self->_frames options:self->_focusFramesOptions];
-      v17 = [(PTCinematographyScript *)self frames];
+      frames = [(PTCinematographyScript *)self frames];
       [v12 time];
-      v18 = [v17 _indexNearestTime:&time2];
+      v18 = [frames _indexNearestTime:&time2];
 
       v19 = [(PTCinematographyFocusFrames *)v16 startIndexForLinearRackFocusPullToFrameAtIndex:v18];
-      v20 = [(PTCinematographyScript *)self frames];
-      v21 = [v20 objectAtIndexedSubscript:v19];
+      frames2 = [(PTCinematographyScript *)self frames];
+      v21 = [frames2 objectAtIndexedSubscript:v19];
       v22 = v21;
       if (v21)
       {
@@ -2418,13 +2418,13 @@ LABEL_7:
       v27 = time2;
     }
 
-    [v10 time];
+    [toDecisionCopy time];
     v25 = v27;
     v23 = CMTimeCompare(&v25, &time2);
     v13 = v23 >> 31;
     if ((v23 & 0x80000000) != 0)
     {
-      [v10 time];
+      [toDecisionCopy time];
       v27 = time2;
     }
 
@@ -2443,11 +2443,11 @@ LABEL_7:
 
 - (BOOL)_useFixedTransition
 {
-  v3 = [(PTCinematographyScript *)self focusFramesOptions];
-  v4 = v3;
-  if (v3)
+  focusFramesOptions = [(PTCinematographyScript *)self focusFramesOptions];
+  v4 = focusFramesOptions;
+  if (focusFramesOptions)
   {
-    [v3 minimumRackFocusPullTime];
+    [focusFramesOptions minimumRackFocusPullTime];
   }
 
   else
@@ -2455,11 +2455,11 @@ LABEL_7:
     memset(&time1, 0, sizeof(time1));
   }
 
-  v5 = [(PTCinematographyScript *)self focusFramesOptions];
-  v6 = v5;
-  if (v5)
+  focusFramesOptions2 = [(PTCinematographyScript *)self focusFramesOptions];
+  v6 = focusFramesOptions2;
+  if (focusFramesOptions2)
   {
-    [v5 maximumRackFocusPullTime];
+    [focusFramesOptions2 maximumRackFocusPullTime];
   }
 
   else
@@ -2472,15 +2472,15 @@ LABEL_7:
   return v7;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_startTimeOfFixedTransitionToDecision:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_startTimeOfFixedTransitionToDecision:(SEL)decision
 {
   v6 = a4;
   memset(&v12, 0, sizeof(v12));
-  v7 = [(PTCinematographyScript *)self focusFramesOptions];
-  v8 = v7;
-  if (v7)
+  focusFramesOptions = [(PTCinematographyScript *)self focusFramesOptions];
+  v8 = focusFramesOptions;
+  if (focusFramesOptions)
   {
-    [v7 minimumRackFocusPullTime];
+    [focusFramesOptions minimumRackFocusPullTime];
   }
 
   else
@@ -2507,15 +2507,15 @@ LABEL_7:
   return result;
 }
 
-- (id)decisionAtOrBeforeTime:(id *)a3
+- (id)decisionAtOrBeforeTime:(id *)time
 {
-  v5 = [(PTCinematographyScript *)self effectiveDecisions];
-  v6 = [v5 count];
+  effectiveDecisions = [(PTCinematographyScript *)self effectiveDecisions];
+  v6 = [effectiveDecisions count];
 
-  if (v6 && (-[PTCinematographyScript effectiveDecisions](self, "effectiveDecisions"), v7 = objc_claimAutoreleasedReturnValue(), v12 = *&a3->var0, var3 = a3->var3, v8 = [v7 _indexAtOrBeforeTime:&v12], v7, v8 != 0x7FFFFFFFFFFFFFFFLL))
+  if (v6 && (-[PTCinematographyScript effectiveDecisions](self, "effectiveDecisions"), v7 = objc_claimAutoreleasedReturnValue(), v12 = *&time->var0, var3 = time->var3, v8 = [v7 _indexAtOrBeforeTime:&v12], v7, v8 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v10 = [(PTCinematographyScript *)self effectiveDecisions];
-    v9 = [v10 objectAtIndexedSubscript:v8];
+    effectiveDecisions2 = [(PTCinematographyScript *)self effectiveDecisions];
+    v9 = [effectiveDecisions2 objectAtIndexedSubscript:v8];
   }
 
   else
@@ -2526,20 +2526,20 @@ LABEL_7:
   return v9;
 }
 
-- (id)userDecisionsInTimeRange:(id *)a3
+- (id)userDecisionsInTimeRange:(id *)range
 {
-  v5 = [(PTCinematographyScript *)self userDecisions];
-  v6 = *&a3->var0.var3;
-  v13[0] = *&a3->var0.var0;
+  userDecisions = [(PTCinematographyScript *)self userDecisions];
+  v6 = *&range->var0.var3;
+  v13[0] = *&range->var0.var0;
   v13[1] = v6;
-  v13[2] = *&a3->var1.var1;
-  v7 = [v5 _indexRangeOfTimeRange:v13];
+  v13[2] = *&range->var1.var1;
+  v7 = [userDecisions _indexRangeOfTimeRange:v13];
   v9 = v8;
 
   if (v9)
   {
-    v10 = [(PTCinematographyScript *)self userDecisions];
-    v11 = [v10 subarrayWithRange:{v7, v9}];
+    userDecisions2 = [(PTCinematographyScript *)self userDecisions];
+    v11 = [userDecisions2 subarrayWithRange:{v7, v9}];
   }
 
   else
@@ -2550,20 +2550,20 @@ LABEL_7:
   return v11;
 }
 
-- (id)baseDecisionsInTimeRange:(id *)a3
+- (id)baseDecisionsInTimeRange:(id *)range
 {
-  v5 = [(PTCinematographyScript *)self baseDecisions];
-  v6 = *&a3->var0.var3;
-  v13[0] = *&a3->var0.var0;
+  baseDecisions = [(PTCinematographyScript *)self baseDecisions];
+  v6 = *&range->var0.var3;
+  v13[0] = *&range->var0.var0;
   v13[1] = v6;
-  v13[2] = *&a3->var1.var1;
-  v7 = [v5 _indexRangeOfTimeRange:v13];
+  v13[2] = *&range->var1.var1;
+  v7 = [baseDecisions _indexRangeOfTimeRange:v13];
   v9 = v8;
 
   if (v9)
   {
-    v10 = [(PTCinematographyScript *)self baseDecisions];
-    v11 = [v10 subarrayWithRange:{v7, v9}];
+    baseDecisions2 = [(PTCinematographyScript *)self baseDecisions];
+    v11 = [baseDecisions2 subarrayWithRange:{v7, v9}];
   }
 
   else
@@ -2574,31 +2574,31 @@ LABEL_7:
   return v11;
 }
 
-- (void)_internalizeBaseDecisionsFromFrames:(id)a3
+- (void)_internalizeBaseDecisionsFromFrames:(id)frames
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  framesCopy = frames;
   v25 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v4;
+  obj = framesCopy;
   v5 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v5)
   {
     v6 = v5;
-    v24 = self;
+    selfCopy = self;
     v7 = 0;
     v8 = *v28;
-    v9 = 1;
-    v10 = -1;
+    isInTransition = 1;
+    integerValue = -1;
     while (1)
     {
       v11 = 0;
       do
       {
-        v12 = v9;
+        v12 = isInTransition;
         v13 = v7;
         if (*v28 != v8)
         {
@@ -2606,34 +2606,34 @@ LABEL_7:
         }
 
         v14 = *(*(&v27 + 1) + 8 * v11);
-        v9 = [v14 isInTransition];
-        v15 = [v14 focusTrackIdentifier];
-        v16 = [v14 baseFocusTrackNumber];
-        v7 = v16;
-        if (v16)
+        isInTransition = [v14 isInTransition];
+        focusTrackIdentifier = [v14 focusTrackIdentifier];
+        baseFocusTrackNumber = [v14 baseFocusTrackNumber];
+        v7 = baseFocusTrackNumber;
+        if (baseFocusTrackNumber)
         {
           if (v13)
           {
-            v10 = v15;
-            if ([v16 isEqualToNumber:v13])
+            integerValue = focusTrackIdentifier;
+            if ([baseFocusTrackNumber isEqualToNumber:v13])
             {
               goto LABEL_22;
             }
           }
 
-          v10 = [v7 integerValue];
+          integerValue = [v7 integerValue];
         }
 
         else
         {
-          v17 = v15 != v10;
-          if (v9)
+          v17 = focusTrackIdentifier != integerValue;
+          if (isInTransition)
           {
-            v10 = v15;
+            integerValue = focusTrackIdentifier;
             goto LABEL_22;
           }
 
-          v10 = v15;
+          integerValue = focusTrackIdentifier;
           if (((v12 | v17) & 1) == 0)
           {
             goto LABEL_22;
@@ -2654,7 +2654,7 @@ LABEL_7:
             memset(buf, 0, 24);
           }
 
-          v20 = [(PTCinematographyDecision *)v19 initWithTime:buf trackIdentifier:v10];
+          v20 = [(PTCinematographyDecision *)v19 initWithTime:buf trackIdentifier:integerValue];
           [v20 setType:0];
           -[NSObject setGroupIdentifier:](v20, "setGroupIdentifier:", [v18 groupIdentifier]);
           v21 = _PTLogSystem();
@@ -2691,7 +2691,7 @@ LABEL_22:
       if (!v22)
       {
 
-        self = v24;
+        self = selfCopy;
         break;
       }
     }
@@ -2703,45 +2703,45 @@ LABEL_22:
 
 - (NSArray)tracks
 {
-  v2 = [(PTCinematographyScript *)self mutableTracks];
-  v3 = [v2 copy];
+  mutableTracks = [(PTCinematographyScript *)self mutableTracks];
+  v3 = [mutableTracks copy];
 
   return v3;
 }
 
-- (id)trackForIdentifier:(int64_t)a3
+- (id)trackForIdentifier:(int64_t)identifier
 {
   trackForNumber = self->_trackForNumber;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:identifier];
   v5 = [(NSMutableDictionary *)trackForNumber objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (id)trackForGroupIdentifier:(int64_t)a3
+- (id)trackForGroupIdentifier:(int64_t)identifier
 {
   trackForGroupNumber = self->_trackForGroupNumber;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:identifier];
   v5 = [(NSMutableDictionary *)trackForGroupNumber objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (id)trackForDecision:(id)a3
+- (id)trackForDecision:(id)decision
 {
-  v4 = a3;
-  if ([v4 isGroupDecision])
+  decisionCopy = decision;
+  if ([decisionCopy isGroupDecision])
   {
-    v5 = [v4 groupIdentifier];
+    groupIdentifier = [decisionCopy groupIdentifier];
 
-    [(PTCinematographyScript *)self trackForGroupIdentifier:v5];
+    [(PTCinematographyScript *)self trackForGroupIdentifier:groupIdentifier];
   }
 
   else
   {
-    v7 = [v4 trackIdentifier];
+    trackIdentifier = [decisionCopy trackIdentifier];
 
-    [(PTCinematographyScript *)self trackForIdentifier:v7];
+    [(PTCinematographyScript *)self trackForIdentifier:trackIdentifier];
   }
   v6 = ;
 
@@ -2756,8 +2756,8 @@ LABEL_22:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PTCinematographyScript *)self mutableTracks];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  mutableTracks = [(PTCinematographyScript *)self mutableTracks];
+  v5 = [mutableTracks countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2768,7 +2768,7 @@ LABEL_22:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mutableTracks);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -2778,7 +2778,7 @@ LABEL_22:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [mutableTracks countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -2796,15 +2796,15 @@ LABEL_22:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_internalizeTracksFromFrames:(id)a3
+- (void)_internalizeTracksFromFrames:(id)frames
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  framesCopy = frames;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v5 = [framesCopy countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2815,7 +2815,7 @@ LABEL_22:
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(framesCopy);
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
@@ -2823,8 +2823,8 @@ LABEL_22:
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v10 = [v9 allDetections];
-        v11 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        allDetections = [v9 allDetections];
+        v11 = [allDetections countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v11)
         {
           v12 = v11;
@@ -2835,7 +2835,7 @@ LABEL_22:
             {
               if (*v19 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(allDetections);
               }
 
               v15 = *(*(&v18 + 1) + 8 * j);
@@ -2843,14 +2843,14 @@ LABEL_22:
               v17 = [(PTCinematographyScript *)self _internalizeGroupTrackForDetection:v15];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v12 = [allDetections countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v12);
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v6 = [framesCopy countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v6);
@@ -2860,11 +2860,11 @@ LABEL_22:
   self->_didInternalizeTracks = 1;
 }
 
-- (void)_internalizeTracksFromChangesDictionary:(id)a3
+- (void)_internalizeTracksFromChangesDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"user_tracks"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"user_tracks"];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -2898,7 +2898,7 @@ LABEL_22:
     while (v7);
   }
 
-  v11 = [v4 objectForKeyedSubscript:@"track_allocator"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"track_allocator"];
   if (v11)
   {
     v12 = [[PTCinematographyTrackAllocator alloc] _initWithCinematographyDictionary:v11];
@@ -2907,14 +2907,14 @@ LABEL_22:
   }
 }
 
-- (void)_internalizeDetectionsFromTrack:(id)a3
+- (void)_internalizeDetectionsFromTrack:(id)track
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  trackCopy = track;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(PTCinematographyScript *)self _addDetectionsFromCustomTrack:v4];
+    [(PTCinematographyScript *)self _addDetectionsFromCustomTrack:trackCopy];
   }
 
   else
@@ -2922,7 +2922,7 @@ LABEL_22:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(PTCinematographyScript *)self _addDetectionsFromFixedFocusTrack:v4];
+      [(PTCinematographyScript *)self _addDetectionsFromFixedFocusTrack:trackCopy];
     }
 
     else
@@ -2930,39 +2930,39 @@ LABEL_22:
       v5 = _PTLogSystem();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [v4 debugTrackIdentifierString];
+        debugTrackIdentifierString = [trackCopy debugTrackIdentifierString];
         v7 = 138412290;
-        v8 = v6;
+        v8 = debugTrackIdentifierString;
         _os_log_impl(&dword_2243FB000, v5, OS_LOG_TYPE_DEFAULT, "warning: unable to add detections from non-custom track %@", &v7, 0xCu);
       }
     }
   }
 }
 
-- (id)_internalizeTrackForDetection:(id)a3
+- (id)_internalizeTrackForDetection:(id)detection
 {
-  v4 = a3;
-  v5 = [v4 trackNumber];
+  detectionCopy = detection;
+  trackNumber = [detectionCopy trackNumber];
 
-  if (v5)
+  if (trackNumber)
   {
 LABEL_6:
-    v10 = [(PTCinematographyScript *)self _internalizeTrackWithNumberFromDetection:v4];
+    v10 = [(PTCinematographyScript *)self _internalizeTrackWithNumberFromDetection:detectionCopy];
     goto LABEL_7;
   }
 
-  v6 = [v4 focusIdentifier];
+  focusIdentifier = [detectionCopy focusIdentifier];
   v7 = _PTLogSystem();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
-  if (v6)
+  if (focusIdentifier)
   {
     if (v8)
     {
       [PTCinematographyScript _internalizeTrackForDetection:];
     }
 
-    v9 = [(PTCinematographyScript *)self _internalizeTrackNumberForFocusIdentifier:v6];
-    [v4 setTrackNumber:v9];
+    v9 = [(PTCinematographyScript *)self _internalizeTrackNumberForFocusIdentifier:focusIdentifier];
+    [detectionCopy setTrackNumber:v9];
 
     goto LABEL_6;
   }
@@ -2978,83 +2978,83 @@ LABEL_7:
   return v10;
 }
 
-- (id)_internalizeGroupTrackForDetection:(id)a3
+- (id)_internalizeGroupTrackForDetection:(id)detection
 {
-  v4 = a3;
-  if (PTGroupIDIsInvalid([v4 groupIdentifier]))
+  detectionCopy = detection;
+  if (PTGroupIDIsInvalid([detectionCopy groupIdentifier]))
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(PTCinematographyScript *)self _internalizeTrackWithGroupNumberFromDetection:v4];
+    v5 = [(PTCinematographyScript *)self _internalizeTrackWithGroupNumberFromDetection:detectionCopy];
   }
 
   return v5;
 }
 
-- (id)_internalizeTrackWithNumberFromDetection:(id)a3
+- (id)_internalizeTrackWithNumberFromDetection:(id)detection
 {
-  v4 = a3;
+  detectionCopy = detection;
   trackForNumber = self->_trackForNumber;
-  v6 = [v4 trackNumber];
-  v7 = [(NSMutableDictionary *)trackForNumber objectForKeyedSubscript:v6];
+  trackNumber = [detectionCopy trackNumber];
+  v7 = [(NSMutableDictionary *)trackForNumber objectForKeyedSubscript:trackNumber];
 
   if (!v7)
   {
-    if ([v4 isFixedFocusDetection])
+    if ([detectionCopy isFixedFocusDetection])
     {
-      v7 = [[PTCinematographyFixedFocusTrack alloc] initWithDetection:v4];
+      v7 = [[PTCinematographyFixedFocusTrack alloc] initWithDetection:detectionCopy];
       [(PTCinematographyTrack *)v7 setUserCreated:0];
     }
 
     else
     {
-      v7 = -[PTCinematographyExistingTrack initWithDetectionType:trackIdentifier:groupIdentifier:]([PTCinematographyExistingTrack alloc], "initWithDetectionType:trackIdentifier:groupIdentifier:", [v4 detectionType], objc_msgSend(v4, "trackIdentifier"), objc_msgSend(v4, "groupIdentifier"));
+      v7 = -[PTCinematographyExistingTrack initWithDetectionType:trackIdentifier:groupIdentifier:]([PTCinematographyExistingTrack alloc], "initWithDetectionType:trackIdentifier:groupIdentifier:", [detectionCopy detectionType], objc_msgSend(detectionCopy, "trackIdentifier"), objc_msgSend(detectionCopy, "groupIdentifier"));
     }
 
-    -[PTCinematographyScript _addTrack:identifier:](self, "_addTrack:identifier:", v7, [v4 trackIdentifier]);
+    -[PTCinematographyScript _addTrack:identifier:](self, "_addTrack:identifier:", v7, [detectionCopy trackIdentifier]);
   }
 
   return v7;
 }
 
-- (id)_internalizeTrackWithGroupNumberFromDetection:(id)a3
+- (id)_internalizeTrackWithGroupNumberFromDetection:(id)detection
 {
-  v4 = a3;
-  v5 = -[PTCinematographyScript trackForGroupIdentifier:](self, "trackForGroupIdentifier:", [v4 groupIdentifier]);
+  detectionCopy = detection;
+  v5 = -[PTCinematographyScript trackForGroupIdentifier:](self, "trackForGroupIdentifier:", [detectionCopy groupIdentifier]);
   if (!v5)
   {
-    v5 = -[PTCinematographyExistingGroupTrack initWithDetectionType:groupIdentifier:]([PTCinematographyExistingGroupTrack alloc], "initWithDetectionType:groupIdentifier:", PTDetectionTypeParent([v4 detectionType]), objc_msgSend(v4, "groupIdentifier"));
+    v5 = -[PTCinematographyExistingGroupTrack initWithDetectionType:groupIdentifier:]([PTCinematographyExistingGroupTrack alloc], "initWithDetectionType:groupIdentifier:", PTDetectionTypeParent([detectionCopy detectionType]), objc_msgSend(detectionCopy, "groupIdentifier"));
     [(PTCinematographyScript *)self _addGroupTrack:v5];
   }
 
   return v5;
 }
 
-- (id)_internalizeTrackNumberForFocusIdentifier:(id)a3
+- (id)_internalizeTrackNumberForFocusIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_trackNumberForFocusIdentifier objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_trackNumberForFocusIdentifier objectForKeyedSubscript:identifierCopy];
   if (!v5)
   {
-    v6 = [(PTCinematographyScript *)self trackAllocatorForFocusIdentifier];
-    v7 = [v6 nextTrackIdentifier];
+    trackAllocatorForFocusIdentifier = [(PTCinematographyScript *)self trackAllocatorForFocusIdentifier];
+    nextTrackIdentifier = [trackAllocatorForFocusIdentifier nextTrackIdentifier];
 
-    v5 = [MEMORY[0x277CCABB0] numberWithInteger:v7];
-    [(NSMutableDictionary *)self->_trackNumberForFocusIdentifier setObject:v5 forKeyedSubscript:v4];
+    v5 = [MEMORY[0x277CCABB0] numberWithInteger:nextTrackIdentifier];
+    [(NSMutableDictionary *)self->_trackNumberForFocusIdentifier setObject:v5 forKeyedSubscript:identifierCopy];
   }
 
   return v5;
 }
 
-- (void)setFramesAreMutable:(BOOL)a3
+- (void)setFramesAreMutable:(BOOL)mutable
 {
-  if (self->_framesAreMutable != a3)
+  if (self->_framesAreMutable != mutable)
   {
     frames = self->_frames;
-    if (a3)
+    if (mutable)
     {
       v6 = [(NSArray *)frames mutableCopy];
     }
@@ -3067,23 +3067,23 @@ LABEL_7:
     v7 = self->_frames;
     self->_frames = v6;
 
-    self->_framesAreMutable = a3;
+    self->_framesAreMutable = mutable;
   }
 }
 
-- (void)addFrame:(id)a3
+- (void)addFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   [(PTCinematographyScript *)self setFramesAreMutable:1];
-  [(NSArray *)self->_frames addObject:v4];
+  [(NSArray *)self->_frames addObject:frameCopy];
 }
 
-- (void)setBaseDecisionsAreMutable:(BOOL)a3
+- (void)setBaseDecisionsAreMutable:(BOOL)mutable
 {
-  if (self->_baseDecisionsAreMutable != a3)
+  if (self->_baseDecisionsAreMutable != mutable)
   {
     baseDecisions = self->_baseDecisions;
-    if (a3)
+    if (mutable)
     {
       v6 = [(NSArray *)baseDecisions mutableCopy];
     }
@@ -3096,32 +3096,32 @@ LABEL_7:
     v7 = self->_baseDecisions;
     self->_baseDecisions = v6;
 
-    self->_baseDecisionsAreMutable = a3;
+    self->_baseDecisionsAreMutable = mutable;
   }
 }
 
-- (void)addBaseDecision:(id)a3
+- (void)addBaseDecision:(id)decision
 {
-  v4 = a3;
-  [v4 setType:0];
+  decisionCopy = decision;
+  [decisionCopy setType:0];
   [(PTCinematographyScript *)self setBaseDecisionsAreMutable:1];
-  [(NSArray *)self->_baseDecisions addObject:v4];
+  [(NSArray *)self->_baseDecisions addObject:decisionCopy];
 }
 
-- (BOOL)focusOnTrackIdentifier:(int64_t)a3 atTime:(id *)a4 strong:(BOOL)a5
+- (BOOL)focusOnTrackIdentifier:(int64_t)identifier atTime:(id *)time strong:(BOOL)strong
 {
-  if ((a4->var2 & 0x1D) != 1)
+  if ((time->var2 & 0x1D) != 1)
   {
     v11 = _PTLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [PTCinematographyScript focusOnTrackIdentifier:a4 atTime:? strong:?];
+      [PTCinematographyScript focusOnTrackIdentifier:time atTime:? strong:?];
     }
 
     goto LABEL_8;
   }
 
-  v6 = a5;
+  strongCopy = strong;
   v9 = [(PTCinematographyScript *)self trackForIdentifier:?];
 
   if (!v9)
@@ -3138,10 +3138,10 @@ LABEL_8:
   }
 
   v10 = [PTCinematographyDecision alloc];
-  v15 = *&a4->var0;
-  var3 = a4->var3;
-  v11 = [(PTCinematographyDecision *)v10 initWithTime:&v15 trackIdentifier:a3 options:v6];
-  v12 = [(PTCinematographyScript *)self trackForIdentifier:a3];
+  v15 = *&time->var0;
+  var3 = time->var3;
+  v11 = [(PTCinematographyDecision *)v10 initWithTime:&v15 trackIdentifier:identifier options:strongCopy];
+  v12 = [(PTCinematographyScript *)self trackForIdentifier:identifier];
   -[NSObject setGroupIdentifier:](v11, "setGroupIdentifier:", [v12 groupIdentifier]);
 
   v13 = [(PTCinematographyScript *)self addUserDecision:v11];
@@ -3150,15 +3150,15 @@ LABEL_9:
   return v13;
 }
 
-- (BOOL)focusOnGroupIdentifier:(int64_t)a3 atTime:(id *)a4 strong:(BOOL)a5
+- (BOOL)focusOnGroupIdentifier:(int64_t)identifier atTime:(id *)time strong:(BOOL)strong
 {
-  if ((a4->var2 & 0x1D) == 1)
+  if ((time->var2 & 0x1D) == 1)
   {
-    v8 = a5;
+    strongCopy = strong;
     v9 = [PTCinematographyDecision alloc];
-    v13 = *&a4->var0;
-    var3 = a4->var3;
-    v10 = [(PTCinematographyDecision *)v9 initWithTime:&v13 groupIdentifier:a3 options:v8 | 2];
+    v13 = *&time->var0;
+    var3 = time->var3;
+    v10 = [(PTCinematographyDecision *)v9 initWithTime:&v13 groupIdentifier:identifier options:strongCopy | 2];
     v11 = [(PTCinematographyScript *)self addUserDecision:v10];
   }
 
@@ -3167,7 +3167,7 @@ LABEL_9:
     v10 = _PTLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [PTCinematographyScript focusOnGroupIdentifier:a4 atTime:? strong:?];
+      [PTCinematographyScript focusOnGroupIdentifier:time atTime:? strong:?];
     }
 
     v11 = 0;
@@ -3176,14 +3176,14 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)focusOnDetection:(id)a3 strong:(BOOL)a4
+- (BOOL)focusOnDetection:(id)detection strong:(BOOL)strong
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 trackIdentifier];
-  if (v6)
+  strongCopy = strong;
+  detectionCopy = detection;
+  trackIdentifier = [detectionCopy trackIdentifier];
+  if (detectionCopy)
   {
-    [v6 time];
+    [detectionCopy time];
   }
 
   else
@@ -3191,61 +3191,61 @@ LABEL_9:
     memset(v10, 0, sizeof(v10));
   }
 
-  v8 = [(PTCinematographyScript *)self focusOnTrackIdentifier:v7 atTime:v10 strong:v4];
+  v8 = [(PTCinematographyScript *)self focusOnTrackIdentifier:trackIdentifier atTime:v10 strong:strongCopy];
 
   return v8;
 }
 
-- (BOOL)focusOnTrack:(id)a3 atTime:(id *)a4 strong:(BOOL)a5
+- (BOOL)focusOnTrack:(id)track atTime:(id *)time strong:(BOOL)strong
 {
-  v5 = a5;
-  v8 = [a3 trackIdentifier];
-  v10 = *a4;
-  return [(PTCinematographyScript *)self focusOnTrackIdentifier:v8 atTime:&v10 strong:v5];
+  strongCopy = strong;
+  trackIdentifier = [track trackIdentifier];
+  v10 = *time;
+  return [(PTCinematographyScript *)self focusOnTrackIdentifier:trackIdentifier atTime:&v10 strong:strongCopy];
 }
 
-- (id)_bestDetectionForGroupIdentifier:(int64_t)a3 time:(id *)a4
+- (id)_bestDetectionForGroupIdentifier:(int64_t)identifier time:(id *)time
 {
-  v8 = *a4;
+  v8 = *time;
   v5 = [(PTCinematographyScript *)self frameNearestTime:&v8];
-  v6 = [v5 bestDetectionForGroupIdentifier:a3];
+  v6 = [v5 bestDetectionForGroupIdentifier:identifier];
 
   return v6;
 }
 
-- (BOOL)addUserDecision:(id)a3
+- (BOOL)addUserDecision:(id)decision
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  decisionCopy = decision;
   v5 = _PTLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf[0].value) = 138412290;
-    *(&buf[0].value + 4) = v4;
+    *(&buf[0].value + 4) = decisionCopy;
     _os_log_impl(&dword_2243FB000, v5, OS_LOG_TYPE_INFO, "adding user decision %@", buf, 0xCu);
   }
 
-  [v4 setType:1];
-  v6 = [(PTCinematographyScript *)self _resolveIfGroupDecision:v4];
+  [decisionCopy setType:1];
+  v6 = [(PTCinematographyScript *)self _resolveIfGroupDecision:decisionCopy];
   if (v6)
   {
-    v7 = [(PTCinematographyScript *)self userDecisions];
-    if (![v7 count])
+    userDecisions = [(PTCinematographyScript *)self userDecisions];
+    if (![userDecisions count])
     {
 
       goto LABEL_17;
     }
 
-    v8 = [(PTCinematographyScript *)self userDecisions];
-    v9 = [v8 lastObject];
-    v10 = v9;
-    if (v9)
+    userDecisions2 = [(PTCinematographyScript *)self userDecisions];
+    lastObject = [userDecisions2 lastObject];
+    v10 = lastObject;
+    if (lastObject)
     {
-      [v9 time];
-      if (v4)
+      [lastObject time];
+      if (decisionCopy)
       {
 LABEL_7:
-        [v4 time];
+        [decisionCopy time];
         goto LABEL_14;
       }
     }
@@ -3253,7 +3253,7 @@ LABEL_7:
     else
     {
       memset(buf, 0, 24);
-      if (v4)
+      if (decisionCopy)
       {
         goto LABEL_7;
       }
@@ -3265,10 +3265,10 @@ LABEL_14:
 
     if ((v12 & 0x80000000) == 0)
     {
-      v13 = [(PTCinematographyScript *)self userDecisions];
-      if (v4)
+      userDecisions3 = [(PTCinematographyScript *)self userDecisions];
+      if (decisionCopy)
       {
-        [v4 time];
+        [decisionCopy time];
       }
 
       else
@@ -3276,30 +3276,30 @@ LABEL_14:
         memset(buf, 0, 24);
       }
 
-      v15 = [v13 _firstIndexAtOrAfterTime:buf];
+      v15 = [userDecisions3 _firstIndexAtOrAfterTime:buf];
 
-      v16 = [(PTCinematographyScript *)self userDecisions];
-      v17 = [v16 objectAtIndexedSubscript:v15];
+      userDecisions4 = [(PTCinematographyScript *)self userDecisions];
+      v17 = [userDecisions4 objectAtIndexedSubscript:v15];
       v18 = v17;
       if (v17)
       {
         [v17 time];
-        if (v4)
+        if (decisionCopy)
         {
 LABEL_21:
-          [v4 time];
+          [decisionCopy time];
 LABEL_24:
           v19 = CMTimeCompare(buf, &time2);
 
           if (!v19)
           {
-            v20 = [(PTCinematographyScript *)self userDecisions];
-            v21 = [v20 objectAtIndexedSubscript:v15];
+            userDecisions5 = [(PTCinematographyScript *)self userDecisions];
+            v21 = [userDecisions5 objectAtIndexedSubscript:v15];
             [(PTCinematographyScript *)self _removeUserDecision:v21];
           }
 
-          v14 = [(PTCinematographyScript *)self userDecisions];
-          [v14 insertObject:v4 atIndex:v15];
+          userDecisions6 = [(PTCinematographyScript *)self userDecisions];
+          [userDecisions6 insertObject:decisionCopy atIndex:v15];
           goto LABEL_27;
         }
       }
@@ -3307,7 +3307,7 @@ LABEL_24:
       else
       {
         memset(buf, 0, 24);
-        if (v4)
+        if (decisionCopy)
         {
           goto LABEL_21;
         }
@@ -3318,8 +3318,8 @@ LABEL_24:
     }
 
 LABEL_17:
-    v14 = [(PTCinematographyScript *)self userDecisions];
-    [v14 addObject:v4];
+    userDecisions6 = [(PTCinematographyScript *)self userDecisions];
+    [userDecisions6 addObject:decisionCopy];
 LABEL_27:
 
     [(PTCinematographyScript *)self timeRange];
@@ -3337,9 +3337,9 @@ LABEL_28:
   return v6;
 }
 
-- (BOOL)removeUserDecision:(id)a3
+- (BOOL)removeUserDecision:(id)decision
 {
-  v4 = [(PTCinematographyScript *)self _removeUserDecision:a3];
+  v4 = [(PTCinematographyScript *)self _removeUserDecision:decision];
   if (v4)
   {
     [(PTCinematographyScript *)self timeRange];
@@ -3370,30 +3370,30 @@ LABEL_28:
     _os_log_impl(&dword_2243FB000, v6, OS_LOG_TYPE_INFO, "removing all user decisions", v9, 2u);
   }
 
-  v7 = [(PTCinematographyScript *)self userDecisions];
-  [v7 removeAllObjects];
+  userDecisions = [(PTCinematographyScript *)self userDecisions];
+  [userDecisions removeAllObjects];
 
   [(PTCinematographyScript *)self timeRange];
   [(PTCinematographyScript *)self _updateDecisionsAndFramesInTimeRange:v9];
   return 1;
 }
 
-- (BOOL)_removeUserDecision:(id)a3
+- (BOOL)_removeUserDecision:(id)decision
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  decisionCopy = decision;
   v5 = _PTLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     LODWORD(v15) = 138412290;
-    *(&v15 + 4) = v4;
+    *(&v15 + 4) = decisionCopy;
     _os_log_impl(&dword_2243FB000, v5, OS_LOG_TYPE_INFO, "removing user decision %@", &v15, 0xCu);
   }
 
-  if (([v4 isUserDecision] & 1) == 0)
+  if (([decisionCopy isUserDecision] & 1) == 0)
   {
-    v7 = _PTLogSystem();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    userDecisions4 = _PTLogSystem();
+    if (os_log_type_enabled(userDecisions4, OS_LOG_TYPE_ERROR))
     {
       [PTCinematographyScript _removeUserDecision:];
     }
@@ -3401,10 +3401,10 @@ LABEL_28:
     goto LABEL_15;
   }
 
-  v6 = [(PTCinematographyScript *)self userDecisions];
-  if (v4)
+  userDecisions = [(PTCinematographyScript *)self userDecisions];
+  if (decisionCopy)
   {
-    [v4 time];
+    [decisionCopy time];
   }
 
   else
@@ -3413,15 +3413,15 @@ LABEL_28:
     v16 = 0;
   }
 
-  v8 = [v6 _indexNearestTime:&v15];
+  v8 = [userDecisions _indexNearestTime:&v15];
 
-  v9 = [(PTCinematographyScript *)self userDecisions];
-  if (v8 >= [v9 count])
+  userDecisions2 = [(PTCinematographyScript *)self userDecisions];
+  if (v8 >= [userDecisions2 count])
   {
 
 LABEL_13:
-    v7 = _PTLogSystem();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    userDecisions4 = _PTLogSystem();
+    if (os_log_type_enabled(userDecisions4, OS_LOG_TYPE_ERROR))
     {
       [PTCinematographyScript _removeUserDecision:];
     }
@@ -3431,35 +3431,35 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v10 = [(PTCinematographyScript *)self userDecisions];
-  v11 = [v10 objectAtIndexedSubscript:v8];
-  v12 = [v11 isEqual:v4];
+  userDecisions3 = [(PTCinematographyScript *)self userDecisions];
+  v11 = [userDecisions3 objectAtIndexedSubscript:v8];
+  v12 = [v11 isEqual:decisionCopy];
 
   if ((v12 & 1) == 0)
   {
     goto LABEL_13;
   }
 
-  v7 = [(PTCinematographyScript *)self userDecisions];
-  [v7 removeObjectAtIndex:v8];
+  userDecisions4 = [(PTCinematographyScript *)self userDecisions];
+  [userDecisions4 removeObjectAtIndex:v8];
   v13 = 1;
 LABEL_16:
 
   return v13;
 }
 
-- (BOOL)_resolveIfGroupDecision:(id)a3
+- (BOOL)_resolveIfGroupDecision:(id)decision
 {
-  v4 = a3;
-  if (![v4 isGroupDecision] || (objc_msgSend(v4, "trackIdentifier") & 0x8000000000000000) == 0)
+  decisionCopy = decision;
+  if (![decisionCopy isGroupDecision] || (objc_msgSend(decisionCopy, "trackIdentifier") & 0x8000000000000000) == 0)
   {
     goto LABEL_8;
   }
 
-  v5 = [v4 groupIdentifier];
-  if (v4)
+  groupIdentifier = [decisionCopy groupIdentifier];
+  if (decisionCopy)
   {
-    [v4 time];
+    [decisionCopy time];
   }
 
   else
@@ -3467,11 +3467,11 @@ LABEL_16:
     memset(v9, 0, sizeof(v9));
   }
 
-  v6 = [(PTCinematographyScript *)self _bestDetectionForGroupIdentifier:v5 time:v9];
+  v6 = [(PTCinematographyScript *)self _bestDetectionForGroupIdentifier:groupIdentifier time:v9];
   v7 = v6;
   if (v6)
   {
-    [v4 setTrackIdentifier:{objc_msgSend(v6, "trackIdentifier")}];
+    [decisionCopy setTrackIdentifier:{objc_msgSend(v6, "trackIdentifier")}];
 
 LABEL_8:
     LOBYTE(v7) = 1;
@@ -3480,19 +3480,19 @@ LABEL_8:
   return v7;
 }
 
-- (void)_updateDecisionsAndFramesInTimeRange:(id *)a3
+- (void)_updateDecisionsAndFramesInTimeRange:(id *)range
 {
-  v5 = *&a3->var0.var3;
-  v8 = *&a3->var0.var0;
+  v5 = *&range->var0.var3;
+  v8 = *&range->var0.var0;
   v9 = v5;
-  v10 = *&a3->var1.var1;
+  v10 = *&range->var1.var1;
   [(PTCinematographyScript *)self _updateEffectiveDecisionsInTimeRange:&v8];
-  v6 = [(PTCinematographyScript *)self trackDecisions];
-  v7 = *&a3->var0.var3;
-  v8 = *&a3->var0.var0;
+  trackDecisions = [(PTCinematographyScript *)self trackDecisions];
+  v7 = *&range->var0.var3;
+  v8 = *&range->var0.var0;
   v9 = v7;
-  v10 = *&a3->var1.var1;
-  [(PTCinematographyScript *)self _updateFramesForDecisions:v6 timeRange:&v8];
+  v10 = *&range->var1.var1;
+  [(PTCinematographyScript *)self _updateFramesForDecisions:trackDecisions timeRange:&v8];
 
   [(PTCinematographyScript *)self timeRange];
   [(PTCinematographyScript *)self _notifyDelegateOfChangesToDecisionsInTimeRange:&v8];
@@ -3500,67 +3500,67 @@ LABEL_8:
   [(PTCinematographyScript *)self _notifyDelegateOfChangesToFramesInTimeRange:&v8];
 }
 
-- (void)_updateEffectiveDecisionsInTimeRange:(id *)a3
+- (void)_updateEffectiveDecisionsInTimeRange:(id *)range
 {
-  v5 = [(PTCinematographyScript *)self baseDecisions];
-  v6 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  baseDecisions = [(PTCinematographyScript *)self baseDecisions];
+  v6 = *&range->var0.var3;
+  *&range.start.value = *&range->var0.var0;
   *&range.start.epoch = v6;
-  *&range.duration.timescale = *&a3->var1.var1;
-  v7 = [v5 _indexRangeOfTimeRange:&range];
+  *&range.duration.timescale = *&range->var1.var1;
+  v7 = [baseDecisions _indexRangeOfTimeRange:&range];
   v9 = v8;
 
-  v10 = [(PTCinematographyScript *)self userDecisions];
-  v11 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  userDecisions = [(PTCinematographyScript *)self userDecisions];
+  v11 = *&range->var0.var3;
+  *&range.start.value = *&range->var0.var0;
   *&range.start.epoch = v11;
-  *&range.duration.timescale = *&a3->var1.var1;
-  v12 = [v10 _indexRangeOfTimeRange:&range];
+  *&range.duration.timescale = *&range->var1.var1;
+  v12 = [userDecisions _indexRangeOfTimeRange:&range];
   v14 = v13;
 
-  v15 = [(PTCinematographyScript *)self effectiveDecisions];
-  v16 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  effectiveDecisions = [(PTCinematographyScript *)self effectiveDecisions];
+  v16 = *&range->var0.var3;
+  *&range.start.value = *&range->var0.var0;
   *&range.start.epoch = v16;
-  *&range.duration.timescale = *&a3->var1.var1;
-  v17 = [v15 _indexRangeOfTimeRange:&range];
+  *&range.duration.timescale = *&range->var1.var1;
+  v17 = [effectiveDecisions _indexRangeOfTimeRange:&range];
   v19 = v18;
 
-  v20 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v20 = *&range->var0.var3;
+  *&range.start.value = *&range->var0.var0;
   *&range.start.epoch = v20;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&range->var1.var1;
   CMTimeRangeGetEnd(&v23, &range);
   v21 = [(PTCinematographyScript *)self _effectiveDecisionsFromBaseDecisionsRange:v7 userDecisionsRange:v9 endTime:v12, v14, &v23];
-  v22 = [(PTCinematographyScript *)self effectiveDecisions];
-  [v22 replaceObjectsInRange:v17 withObjectsFromArray:{v19, v21}];
+  effectiveDecisions2 = [(PTCinematographyScript *)self effectiveDecisions];
+  [effectiveDecisions2 replaceObjectsInRange:v17 withObjectsFromArray:{v19, v21}];
 
   [(PTCinematographyScript *)self _invalidateTrackDecisions];
 }
 
-- (id)_effectiveDecisionsFromBaseDecisionsRange:(_NSRange)a3 userDecisionsRange:(_NSRange)a4 endTime:(id *)a5
+- (id)_effectiveDecisionsFromBaseDecisionsRange:(_NSRange)range userDecisionsRange:(_NSRange)decisionsRange endTime:(id *)time
 {
-  v7 = [(PTCinematographyScript *)self _zipBaseDecisionsRange:a3.location userDecisionsRange:a3.length, a4.location, a4.length];
-  v10 = *a5;
+  v7 = [(PTCinematographyScript *)self _zipBaseDecisionsRange:range.location userDecisionsRange:range.length, decisionsRange.location, decisionsRange.length];
+  v10 = *time;
   v8 = [(PTCinematographyScript *)self _effectiveDecisionsFromZippedDecisions:v7 endTime:&v10];
 
   return v8;
 }
 
-- (id)_zipBaseDecisionsRange:(_NSRange)a3 userDecisionsRange:(_NSRange)a4
+- (id)_zipBaseDecisionsRange:(_NSRange)range userDecisionsRange:(_NSRange)decisionsRange
 {
-  location = a4.location;
-  v5 = a3.location;
-  v7 = a3.location + a3.length;
-  v8 = a4.location + a4.length;
+  location = decisionsRange.location;
+  v5 = range.location;
+  v7 = range.location + range.length;
+  v8 = decisionsRange.location + decisionsRange.length;
   v9 = objc_opt_new();
   while (v5 < v7 && location < v8)
   {
-    v10 = [(PTCinematographyScript *)self baseDecisions];
-    v11 = [v10 objectAtIndexedSubscript:v5];
+    baseDecisions = [(PTCinematographyScript *)self baseDecisions];
+    v11 = [baseDecisions objectAtIndexedSubscript:v5];
 
-    v12 = [(PTCinematographyScript *)self userDecisions];
-    v13 = [v12 objectAtIndexedSubscript:location];
+    userDecisions = [(PTCinematographyScript *)self userDecisions];
+    v13 = [userDecisions objectAtIndexedSubscript:location];
 
     if (v13)
     {
@@ -3632,9 +3632,9 @@ LABEL_9:
   return v20;
 }
 
-- (id)_effectiveDecisionsFromZippedDecisions:(id)a3 endTime:(id *)a4
+- (id)_effectiveDecisionsFromZippedDecisions:(id)decisions endTime:(id *)time
 {
-  v6 = a3;
+  decisionsCopy = decisions;
   memset(&v32, 0, sizeof(v32));
   v7 = objc_opt_class();
   if (v7)
@@ -3656,7 +3656,7 @@ LABEL_9:
   v30.epoch = v9;
   v10 = 0;
   v11 = 0;
-  if (![v6 count])
+  if (![decisionsCopy count])
   {
     goto LABEL_45;
   }
@@ -3664,7 +3664,7 @@ LABEL_9:
   v12 = 0;
   do
   {
-    v13 = [v6 objectAtIndexedSubscript:v12];
+    v13 = [decisionsCopy objectAtIndexedSubscript:v12];
     v14 = v13;
     if (!v10 || !v11)
     {
@@ -3830,13 +3830,13 @@ LABEL_40:
     ++v12;
   }
 
-  while (v12 < [v6 count]);
+  while (v12 < [decisionsCopy count]);
   if (v10)
   {
     if (v11)
     {
       time2 = v31;
-      time1 = *a4;
+      time1 = *time;
       if (CMTimeCompare(&time2, &time1) < 0)
       {
         time2 = v31;
@@ -3852,45 +3852,45 @@ LABEL_45:
   return v21;
 }
 
-- (BOOL)addTrack:(id)a3
+- (BOOL)addTrack:(id)track
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isUserCreated])
+  trackCopy = track;
+  if ([trackCopy isUserCreated])
   {
-    v5 = [v4 script];
+    script = [trackCopy script];
 
-    if (v5 == self)
+    if (script == self)
     {
       v9 = _PTLogSystem();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [v4 debugTrackIdentifierString];
+        debugTrackIdentifierString = [trackCopy debugTrackIdentifierString];
         v13 = 138412290;
-        v14 = v10;
+        v14 = debugTrackIdentifierString;
         _os_log_impl(&dword_2243FB000, v9, OS_LOG_TYPE_INFO, "track %@ already added", &v13, 0xCu);
       }
     }
 
     else
     {
-      v6 = [v4 script];
+      script2 = [trackCopy script];
 
-      if (v6)
+      if (script2)
       {
         v7 = _PTLogSystem();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
         {
-          [PTCinematographyScript addTrack:v4];
+          [PTCinematographyScript addTrack:trackCopy];
         }
 
         goto LABEL_7;
       }
 
-      v11 = [(PTCinematographyScript *)self trackAllocator];
-      -[PTCinematographyScript _addTrack:identifier:](self, "_addTrack:identifier:", v4, [v11 nextTrackIdentifier]);
+      trackAllocator = [(PTCinematographyScript *)self trackAllocator];
+      -[PTCinematographyScript _addTrack:identifier:](self, "_addTrack:identifier:", trackCopy, [trackAllocator nextTrackIdentifier]);
 
-      [(PTCinematographyScript *)self _internalizeDetectionsFromTrack:v4];
+      [(PTCinematographyScript *)self _internalizeDetectionsFromTrack:trackCopy];
     }
 
     v8 = 1;
@@ -3904,24 +3904,24 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)removeTrack:(id)a3
+- (BOOL)removeTrack:(id)track
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isUserCreated])
+  trackCopy = track;
+  if ([trackCopy isUserCreated])
   {
-    v5 = [v4 script];
+    script = [trackCopy script];
 
-    if (v5)
+    if (script)
     {
-      v6 = [v4 script];
+      script2 = [trackCopy script];
 
-      if (v6 != self)
+      if (script2 != self)
       {
         v7 = _PTLogSystem();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
         {
-          [PTCinematographyScript removeTrack:v4];
+          [PTCinematographyScript removeTrack:trackCopy];
         }
 
         goto LABEL_7;
@@ -3931,8 +3931,8 @@ LABEL_13:
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v11 = [(PTCinematographyScript *)self userDecisions];
-      v12 = [v11 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      userDecisions = [(PTCinematographyScript *)self userDecisions];
+      v12 = [userDecisions countByEnumeratingWithState:&v20 objects:v26 count:16];
       if (v12)
       {
         v13 = v12;
@@ -3944,18 +3944,18 @@ LABEL_13:
           {
             if (*v21 != v15)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(userDecisions);
             }
 
             v17 = *(*(&v20 + 1) + 8 * i);
-            v18 = [v17 trackIdentifier];
-            if (v18 == [v4 trackIdentifier])
+            trackIdentifier = [v17 trackIdentifier];
+            if (trackIdentifier == [trackCopy trackIdentifier])
             {
               v14 |= [(PTCinematographyScript *)self _removeUserDecision:v17];
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v20 objects:v26 count:16];
+          v13 = [userDecisions countByEnumeratingWithState:&v20 objects:v26 count:16];
         }
 
         while (v13);
@@ -3966,12 +3966,12 @@ LABEL_13:
         LOBYTE(v14) = 0;
       }
 
-      if ([v4 isUserCreated])
+      if ([trackCopy isUserCreated])
       {
-        -[PTCinematographyScript _removeDetectionsWithTrackIdentifier:](self, "_removeDetectionsWithTrackIdentifier:", [v4 trackIdentifier]);
+        -[PTCinematographyScript _removeDetectionsWithTrackIdentifier:](self, "_removeDetectionsWithTrackIdentifier:", [trackCopy trackIdentifier]);
       }
 
-      [(PTCinematographyScript *)self _removeTrack:v4];
+      [(PTCinematographyScript *)self _removeTrack:trackCopy];
       if (v14)
       {
         [(PTCinematographyScript *)self timeRange];
@@ -3984,9 +3984,9 @@ LABEL_13:
       v9 = _PTLogSystem();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [v4 debugTrackIdentifierString];
+        debugTrackIdentifierString = [trackCopy debugTrackIdentifierString];
         *buf = 138412290;
-        v25 = v10;
+        v25 = debugTrackIdentifierString;
         _os_log_impl(&dword_2243FB000, v9, OS_LOG_TYPE_INFO, "track %@ already removed", buf, 0xCu);
       }
     }
@@ -4017,57 +4017,57 @@ LABEL_27:
   }
 }
 
-- (void)_addTrack:(id)a3 identifier:(int64_t)a4
+- (void)_addTrack:(id)track identifier:(int64_t)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [v6 setTrackIdentifier:a4];
-  [v6 setScript:self];
+  trackCopy = track;
+  [trackCopy setTrackIdentifier:identifier];
+  [trackCopy setScript:self];
   v7 = _PTLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v13 = 138412546;
-    v14 = v6;
+    v14 = trackCopy;
     v15 = 2112;
     v16 = v9;
     _os_log_impl(&dword_2243FB000, v7, OS_LOG_TYPE_INFO, "Adding track %@ (%@)", &v13, 0x16u);
   }
 
-  v10 = [(PTCinematographyScript *)self mutableTracks];
-  [v10 addObject:v6];
+  mutableTracks = [(PTCinematographyScript *)self mutableTracks];
+  [mutableTracks addObject:trackCopy];
 
   trackForNumber = self->_trackForNumber;
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  [(NSMutableDictionary *)trackForNumber setObject:v6 forKeyedSubscript:v12];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:identifier];
+  [(NSMutableDictionary *)trackForNumber setObject:trackCopy forKeyedSubscript:v12];
 }
 
-- (void)_removeTrack:(id)a3
+- (void)_removeTrack:(id)track
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  trackCopy = track;
   v5 = _PTLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v11 = 138412546;
-    v12 = v4;
+    v12 = trackCopy;
     v13 = 2112;
     v14 = v7;
     _os_log_impl(&dword_2243FB000, v5, OS_LOG_TYPE_INFO, "Removing track %@ (%@)", &v11, 0x16u);
   }
 
   trackForNumber = self->_trackForNumber;
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "trackIdentifier")}];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(trackCopy, "trackIdentifier")}];
   [(NSMutableDictionary *)trackForNumber setObject:0 forKeyedSubscript:v9];
 
-  v10 = [(PTCinematographyScript *)self mutableTracks];
-  [v10 removeObject:v4];
+  mutableTracks = [(PTCinematographyScript *)self mutableTracks];
+  [mutableTracks removeObject:trackCopy];
 
-  [v4 setTrackIdentifier:0];
-  [v4 setScript:0];
+  [trackCopy setTrackIdentifier:0];
+  [trackCopy setScript:0];
 }
 
 - (void)_removeAllUserTracksForReloading
@@ -4077,8 +4077,8 @@ LABEL_27:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(PTCinematographyScript *)self tracks];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  tracks = [(PTCinematographyScript *)self tracks];
+  v4 = [tracks countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4089,7 +4089,7 @@ LABEL_27:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(tracks);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -4099,37 +4099,37 @@ LABEL_27:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [tracks countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_addGroupTrack:(id)a3
+- (void)_addGroupTrack:(id)track
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (PTGroupIDIsInvalid([v4 groupIdentifier]))
+  trackCopy = track;
+  if (PTGroupIDIsInvalid([trackCopy groupIdentifier]))
   {
     v5 = _PTLogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [PTCinematographyScript _addGroupTrack:v4];
+      [PTCinematographyScript _addGroupTrack:trackCopy];
     }
   }
 
   else
   {
-    [v4 setScript:self];
+    [trackCopy setScript:self];
     v6 = _PTLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "groupIdentifier")}];
+      v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(trackCopy, "groupIdentifier")}];
       v12 = 138412802;
-      v13 = v4;
+      v13 = trackCopy;
       v14 = 2112;
       v15 = v8;
       v16 = 2112;
@@ -4137,25 +4137,25 @@ LABEL_27:
       _os_log_impl(&dword_2243FB000, v6, OS_LOG_TYPE_INFO, "Adding group track %@ (%@) with group identifier %@", &v12, 0x20u);
     }
 
-    v10 = [(PTCinematographyScript *)self mutableGroupTracks];
-    [v10 addObject:v4];
+    mutableGroupTracks = [(PTCinematographyScript *)self mutableGroupTracks];
+    [mutableGroupTracks addObject:trackCopy];
 
     trackForGroupNumber = self->_trackForGroupNumber;
-    v5 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "groupIdentifier")}];
-    [(NSMutableDictionary *)trackForGroupNumber setObject:v4 forKeyedSubscript:v5];
+    v5 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(trackCopy, "groupIdentifier")}];
+    [(NSMutableDictionary *)trackForGroupNumber setObject:trackCopy forKeyedSubscript:v5];
   }
 }
 
-- (void)_addDetectionsFromCustomTrack:(id)a3
+- (void)_addDetectionsFromCustomTrack:(id)track
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  trackCopy = track;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [v4 allDetections];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  allDetections = [trackCopy allDetections];
+  v6 = [allDetections countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -4172,12 +4172,12 @@ LABEL_27:
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allDetections);
         }
 
         v12 = *(*(&v22 + 1) + 8 * v11);
-        [v12 setDetectionType:{objc_msgSend(v4, "detectionType", v18)}];
-        [v12 setTrackIdentifier:{objc_msgSend(v4, "trackIdentifier")}];
+        [v12 setDetectionType:{objc_msgSend(trackCopy, "detectionType", v18)}];
+        [v12 setTrackIdentifier:{objc_msgSend(trackCopy, "trackIdentifier")}];
         if (v12)
         {
           [v12 time];
@@ -4223,7 +4223,7 @@ LABEL_27:
       }
 
       while (v7 != v11);
-      v17 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v17 = [allDetections countByEnumeratingWithState:&v22 objects:v27 count:16];
       v7 = v17;
     }
 
@@ -4231,16 +4231,16 @@ LABEL_27:
   }
 }
 
-- (void)_addDetectionsFromFixedFocusTrack:(id)a3
+- (void)_addDetectionsFromFixedFocusTrack:(id)track
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  trackCopy = track;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(PTCinematographyScript *)self frames];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  frames = [(PTCinematographyScript *)self frames];
+  v6 = [frames countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -4251,7 +4251,7 @@ LABEL_27:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(frames);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -4265,27 +4265,27 @@ LABEL_27:
           memset(v12, 0, sizeof(v12));
         }
 
-        v11 = [v4 _fixedFocusDetectionAtTime:v12];
-        [v11 setTrackIdentifier:{objc_msgSend(v4, "trackIdentifier")}];
+        v11 = [trackCopy _fixedFocusDetectionAtTime:v12];
+        [v11 setTrackIdentifier:{objc_msgSend(trackCopy, "trackIdentifier")}];
         [v10 _addDetection:v11];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [frames countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_removeDetectionsWithTrackIdentifier:(int64_t)a3
+- (void)_removeDetectionsWithTrackIdentifier:(int64_t)identifier
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(PTCinematographyScript *)self frames];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  frames = [(PTCinematographyScript *)self frames];
+  v5 = [frames countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4297,49 +4297,49 @@ LABEL_27:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(frames);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) _removeDetectionWithTrackIdentifier:a3];
+        [*(*(&v9 + 1) + 8 * v8++) _removeDetectionWithTrackIdentifier:identifier];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [frames countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_notifyDelegateOfChangesToDecisionsInTimeRange:(id *)a3
+- (void)_notifyDelegateOfChangesToDecisionsInTimeRange:(id *)range
 {
-  v5 = [(PTCinematographyScript *)self changesDelegate];
+  changesDelegate = [(PTCinematographyScript *)self changesDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PTCinematographyScript *)self changesDelegate];
-    v8 = *&a3->var0.var3;
-    v9[0] = *&a3->var0.var0;
+    changesDelegate2 = [(PTCinematographyScript *)self changesDelegate];
+    v8 = *&range->var0.var3;
+    v9[0] = *&range->var0.var0;
     v9[1] = v8;
-    v9[2] = *&a3->var1.var1;
-    [v7 decisionsDidChangeInScript:self timeRange:v9];
+    v9[2] = *&range->var1.var1;
+    [changesDelegate2 decisionsDidChangeInScript:self timeRange:v9];
   }
 }
 
-- (void)_notifyDelegateOfChangesToFramesInTimeRange:(id *)a3
+- (void)_notifyDelegateOfChangesToFramesInTimeRange:(id *)range
 {
-  v5 = [(PTCinematographyScript *)self changesDelegate];
+  changesDelegate = [(PTCinematographyScript *)self changesDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PTCinematographyScript *)self changesDelegate];
-    v8 = *&a3->var0.var3;
-    v9[0] = *&a3->var0.var0;
+    changesDelegate2 = [(PTCinematographyScript *)self changesDelegate];
+    v8 = *&range->var0.var3;
+    v9[0] = *&range->var0.var0;
     v9[1] = v8;
-    v9[2] = *&a3->var1.var1;
-    [v7 framesDidChangeInScript:self timeRange:v9];
+    v9[2] = *&range->var1.var1;
+    [changesDelegate2 framesDidChangeInScript:self timeRange:v9];
   }
 }
 
@@ -4351,15 +4351,15 @@ LABEL_27:
   v5 = [v4 numberWithFloat:?];
   [v3 setObject:v5 forKeyedSubscript:@"user_aperture"];
 
-  v6 = [(PTCinematographyScript *)self _userDecisionDictionaries];
-  [v3 setObject:v6 forKeyedSubscript:@"user_decisions"];
+  _userDecisionDictionaries = [(PTCinematographyScript *)self _userDecisionDictionaries];
+  [v3 setObject:_userDecisionDictionaries forKeyedSubscript:@"user_decisions"];
 
-  v7 = [(PTCinematographyScript *)self _userTrackDictionaries];
-  [v3 setObject:v7 forKeyedSubscript:@"user_tracks"];
+  _userTrackDictionaries = [(PTCinematographyScript *)self _userTrackDictionaries];
+  [v3 setObject:_userTrackDictionaries forKeyedSubscript:@"user_tracks"];
 
-  v8 = [(PTCinematographyScript *)self trackAllocator];
-  v9 = [v8 _asCinematographyDictionary];
-  [v3 setObject:v9 forKeyedSubscript:@"track_allocator"];
+  trackAllocator = [(PTCinematographyScript *)self trackAllocator];
+  _asCinematographyDictionary = [trackAllocator _asCinematographyDictionary];
+  [v3 setObject:_asCinematographyDictionary forKeyedSubscript:@"track_allocator"];
 
   v10 = [v3 copy];
 
@@ -4374,8 +4374,8 @@ LABEL_27:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PTCinematographyScript *)self userDecisions];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  userDecisions = [(PTCinematographyScript *)self userDecisions];
+  v5 = [userDecisions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4386,14 +4386,14 @@ LABEL_27:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(userDecisions);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) _asCinematographyDictionary];
-        [v3 addObject:v9];
+        _asCinematographyDictionary = [*(*(&v12 + 1) + 8 * i) _asCinematographyDictionary];
+        [v3 addObject:_asCinematographyDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [userDecisions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -4412,8 +4412,8 @@ LABEL_27:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(PTCinematographyScript *)self tracks];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  tracks = [(PTCinematographyScript *)self tracks];
+  v5 = [tracks countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4424,18 +4424,18 @@ LABEL_27:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tracks);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
         if ([v9 isUserCreated])
         {
-          v10 = [v9 _asCinematographyDictionary];
-          [v3 addObject:v10];
+          _asCinematographyDictionary = [v9 _asCinematographyDictionary];
+          [v3 addObject:_asCinematographyDictionary];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [tracks countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -4446,7 +4446,7 @@ LABEL_27:
   return v11;
 }
 
-- (id)changesDictionaryTrimmedByTimeRange:(id *)a3
+- (id)changesDictionaryTrimmedByTimeRange:(id *)range
 {
   v5 = objc_opt_new();
   v6 = MEMORY[0x277CCABB0];
@@ -4454,48 +4454,48 @@ LABEL_27:
   v7 = [v6 numberWithFloat:?];
   [v5 setObject:v7 forKeyedSubscript:@"user_aperture"];
 
-  v8 = *&a3->var0.var3;
-  v16 = *&a3->var0.var0;
+  v8 = *&range->var0.var3;
+  v16 = *&range->var0.var0;
   v17 = v8;
-  v18 = *&a3->var1.var1;
+  v18 = *&range->var1.var1;
   v9 = [(PTCinematographyScript *)self _userDecisionDictionariesTrimmedByTimeRange:&v16];
   [v5 setObject:v9 forKeyedSubscript:@"user_decisions"];
 
-  v10 = *&a3->var0.var3;
-  v16 = *&a3->var0.var0;
+  v10 = *&range->var0.var3;
+  v16 = *&range->var0.var0;
   v17 = v10;
-  v18 = *&a3->var1.var1;
+  v18 = *&range->var1.var1;
   v11 = [(PTCinematographyScript *)self _userTrackDictionariesTrimmedByTimeRange:&v16];
   [v5 setObject:v11 forKeyedSubscript:@"user_tracks"];
 
-  v12 = [(PTCinematographyScript *)self trackAllocator];
-  v13 = [v12 _asCinematographyDictionary];
-  [v5 setObject:v13 forKeyedSubscript:@"track_allocator"];
+  trackAllocator = [(PTCinematographyScript *)self trackAllocator];
+  _asCinematographyDictionary = [trackAllocator _asCinematographyDictionary];
+  [v5 setObject:_asCinematographyDictionary forKeyedSubscript:@"track_allocator"];
 
   v14 = [v5 copy];
 
   return v14;
 }
 
-- (id)_userDecisionDictionariesTrimmedByTimeRange:(id *)a3
+- (id)_userDecisionDictionariesTrimmedByTimeRange:(id *)range
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = *&a3->var0.var3;
-  var0 = a3->var0;
+  array = [MEMORY[0x277CBEB18] array];
+  v6 = *&range->var0.var3;
+  var0 = range->var0;
   memset(&v35, 0, sizeof(v35));
-  v7 = *&a3->var1.var1;
-  *&range.start.value = *&a3->var0.var0;
+  v7 = *&range->var1.var1;
+  *&range.start.value = *&range->var0.var0;
   *&range.start.epoch = v6;
   *&range.duration.timescale = v7;
   CMTimeRangeGetEnd(&v35, &range);
-  v8 = [(PTCinematographyScript *)self userDecisions];
+  userDecisions = [(PTCinematographyScript *)self userDecisions];
   range.start = var0;
-  v9 = [v8 _firstIndexAtOrAfterTime:&range];
+  v9 = [userDecisions _firstIndexAtOrAfterTime:&range];
 
-  v10 = [(PTCinematographyScript *)self userDecisions];
+  userDecisions2 = [(PTCinematographyScript *)self userDecisions];
   range.start = v35;
-  v11 = [v10 _firstIndexAtOrAfterTime:&range];
+  v11 = [userDecisions2 _firstIndexAtOrAfterTime:&range];
 
   if (v9)
   {
@@ -4522,8 +4522,8 @@ LABEL_27:
       goto LABEL_25;
     }
 
-    v13 = [(PTCinematographyScript *)self userDecisions];
-    v14 = [v13 objectAtIndexedSubscript:v9 - 1];
+    userDecisions3 = [(PTCinematographyScript *)self userDecisions];
+    v14 = [userDecisions3 objectAtIndexedSubscript:v9 - 1];
 
     v28 = *MEMORY[0x277CC08F0];
     *&range.start.value = *MEMORY[0x277CC08F0];
@@ -4600,8 +4600,8 @@ LABEL_17:
       v30 = var0;
       if (CMTimeCompare(&range.start, &v30) < 1)
       {
-        v19 = _PTLogSystem();
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+        _asCinematographyDictionary = _PTLogSystem();
+        if (os_log_type_enabled(_asCinematographyDictionary, OS_LOG_TYPE_ERROR))
         {
           if (v18)
           {
@@ -4625,7 +4625,7 @@ LABEL_17:
           LOWORD(range.duration.timescale) = 2112;
           *(&range.duration.timescale + 2) = v26;
           v27 = v26;
-          _os_log_error_impl(&dword_2243FB000, v19, OS_LOG_TYPE_ERROR, "Primary decision %@ is user decision, but previous user decision %@ has maximum duration %@ that ends before trim starts %@", &range, 0x2Au);
+          _os_log_error_impl(&dword_2243FB000, _asCinematographyDictionary, OS_LOG_TYPE_ERROR, "Primary decision %@ is user decision, but previous user decision %@ has maximum duration %@ that ends before trim starts %@", &range, 0x2Au);
         }
 
         goto LABEL_24;
@@ -4638,8 +4638,8 @@ LABEL_17:
       [v16 setMaximumDuration:&range];
     }
 
-    v19 = [v16 _asCinematographyDictionary];
-    [v5 addObject:v19];
+    _asCinematographyDictionary = [v16 _asCinematographyDictionary];
+    [array addObject:_asCinematographyDictionary];
 LABEL_24:
 
 LABEL_25:
@@ -4649,8 +4649,8 @@ LABEL_25:
   {
     do
     {
-      v20 = [(PTCinematographyScript *)self userDecisions];
-      v21 = [v20 objectAtIndexedSubscript:v9];
+      userDecisions4 = [(PTCinematographyScript *)self userDecisions];
+      v21 = [userDecisions4 objectAtIndexedSubscript:v9];
 
       memset(&range, 0, 24);
       if (v21)
@@ -4667,8 +4667,8 @@ LABEL_25:
       CMTimeSubtract(&range.start, &time2, &v33);
       time2 = range.start;
       v22 = [v21 _decisionByChangingTime:&time2];
-      v23 = [v22 _asCinematographyDictionary];
-      [v5 addObject:v23];
+      _asCinematographyDictionary2 = [v22 _asCinematographyDictionary];
+      [array addObject:_asCinematographyDictionary2];
 
       ++v9;
     }
@@ -4676,21 +4676,21 @@ LABEL_25:
     while (v11 != v9);
   }
 
-  v24 = [v5 copy];
+  v24 = [array copy];
 
   return v24;
 }
 
-- (id)_userTrackDictionariesTrimmedByTimeRange:(id *)a3
+- (id)_userTrackDictionariesTrimmedByTimeRange:(id *)range
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [(PTCinematographyScript *)self mutableTracks];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  mutableTracks = [(PTCinematographyScript *)self mutableTracks];
+  v7 = [mutableTracks countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4701,31 +4701,31 @@ LABEL_25:
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(mutableTracks);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
         if ([v11 isUserCreated])
         {
-          v12 = *&a3->var0.var3;
-          v19[0] = *&a3->var0.var0;
+          v12 = *&range->var0.var3;
+          v19[0] = *&range->var0.var0;
           v19[1] = v12;
-          v19[2] = *&a3->var1.var1;
+          v19[2] = *&range->var1.var1;
           v17 = v19[0];
-          var3 = a3->var0.var3;
+          var3 = range->var0.var3;
           v13 = [v11 _trackByTrimmingToTimeRange:v19 subtracting:&v17];
-          v14 = [v13 _asCinematographyDictionary];
-          [v5 addObject:v14];
+          _asCinematographyDictionary = [v13 _asCinematographyDictionary];
+          [array addObject:_asCinematographyDictionary];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [mutableTracks countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v8);
   }
 
-  v15 = [v5 copy];
+  v15 = [array copy];
 
   return v15;
 }
@@ -4824,7 +4824,7 @@ LABEL_25:
 
 - (void)removeAllUserDecisions
 {
-  v1 = [a1 userDecisions];
+  userDecisions = [self userDecisions];
   OUTLINED_FUNCTION_4();
   OUTLINED_FUNCTION_1_3();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);

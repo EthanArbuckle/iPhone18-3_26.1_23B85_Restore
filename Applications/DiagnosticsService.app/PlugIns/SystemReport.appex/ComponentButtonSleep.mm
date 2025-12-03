@@ -6,8 +6,8 @@
 
 - (BOOL)isPresent
 {
-  v2 = [(ComponentButtonBase *)self buttonsDetected];
-  v3 = [v2 containsObject:@"hold"];
+  buttonsDetected = [(ComponentButtonBase *)self buttonsDetected];
+  v3 = [buttonsDetected containsObject:@"hold"];
 
   return v3;
 }

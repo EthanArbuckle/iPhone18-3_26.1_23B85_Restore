@@ -1,20 +1,20 @@
 @interface PRXIconContentViewController
-- (PRXIconContentViewController)initWithContentView:(id)a3;
+- (PRXIconContentViewController)initWithContentView:(id)view;
 - (void)_updateBodyLabel;
 - (void)_updateImageViews;
-- (void)setBodyText:(id)a3;
-- (void)setImageStyle:(int64_t)a3;
-- (void)setImages:(id)a3;
+- (void)setBodyText:(id)text;
+- (void)setImageStyle:(int64_t)style;
+- (void)setImages:(id)images;
 - (void)viewDidLoad;
 @end
 
 @implementation PRXIconContentViewController
 
-- (PRXIconContentViewController)initWithContentView:(id)a3
+- (PRXIconContentViewController)initWithContentView:(id)view
 {
   v9.receiver = self;
   v9.super_class = PRXIconContentViewController;
-  v3 = [(PRXCardContentViewController *)&v9 initWithContentView:a3];
+  v3 = [(PRXCardContentViewController *)&v9 initWithContentView:view];
   v4 = v3;
   if (v3)
   {
@@ -39,12 +39,12 @@
   [(PRXIconContentViewController *)self _updateBodyLabel];
 }
 
-- (void)setImages:(id)a3
+- (void)setImages:(id)images
 {
-  v6 = a3;
+  imagesCopy = images;
   if (![(NSArray *)self->_images isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [imagesCopy copy];
     images = self->_images;
     self->_images = v4;
 
@@ -52,11 +52,11 @@
   }
 }
 
-- (void)setImageStyle:(int64_t)a3
+- (void)setImageStyle:(int64_t)style
 {
-  if (self->_imageStyle != a3)
+  if (self->_imageStyle != style)
   {
-    self->_imageStyle = a3;
+    self->_imageStyle = style;
     [(PRXIconContentViewController *)self _updateImageViews];
   }
 }
@@ -102,17 +102,17 @@
       while (v6);
     }
 
-    v11 = [(PRXCardContentViewController *)self contentView];
-    [v11 setImageViews:v3];
+    contentView = [(PRXCardContentViewController *)self contentView];
+    [contentView setImageViews:v3];
   }
 }
 
-- (void)setBodyText:(id)a3
+- (void)setBodyText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if (![(NSString *)self->_bodyText isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     bodyText = self->_bodyText;
     self->_bodyText = v4;
 
@@ -126,16 +126,16 @@
   {
     if ([(NSString *)self->_bodyText length])
     {
-      v4 = [PRXLabel labelWithStyle:1];
-      [v4 setText:self->_bodyText];
-      v3 = [(PRXCardContentViewController *)self contentView];
-      [v3 setBodyLabel:v4];
+      contentView2 = [PRXLabel labelWithStyle:1];
+      [contentView2 setText:self->_bodyText];
+      contentView = [(PRXCardContentViewController *)self contentView];
+      [contentView setBodyLabel:contentView2];
     }
 
     else
     {
-      v4 = [(PRXCardContentViewController *)self contentView];
-      [v4 setBodyLabel:0];
+      contentView2 = [(PRXCardContentViewController *)self contentView];
+      [contentView2 setBodyLabel:0];
     }
   }
 }

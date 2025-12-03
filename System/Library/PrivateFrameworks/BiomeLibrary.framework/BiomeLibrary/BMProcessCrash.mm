@@ -1,15 +1,15 @@
 @interface BMProcessCrash
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMProcessCrash)initWithIncidentID:(id)a3 processName:(id)a4 bundleID:(id)a5 appVersion:(id)a6 bundleVersion:(id)a7 exception:(id)a8 terminationReason:(id)a9 responsibleApp:(id)a10 coalitionName:(id)a11 isFirstParty:(id)a12 isBeta:(id)a13;
-- (BMProcessCrash)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMProcessCrash)initWithIncidentID:(id)d processName:(id)name bundleID:(id)iD appVersion:(id)version bundleVersion:(id)bundleVersion exception:(id)exception terminationReason:(id)reason responsibleApp:(id)self0 coalitionName:(id)self1 isFirstParty:(id)self2 isBeta:(id)self3;
+- (BMProcessCrash)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMProcessCrash
@@ -50,30 +50,30 @@
 {
   v3 = objc_opt_new();
   [(BMProcessCrash *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMProcessCrash *)self incidentID];
-    v7 = [v5 incidentID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    incidentID = [(BMProcessCrash *)self incidentID];
+    incidentID2 = [v5 incidentID];
+    v8 = incidentID2;
+    if (incidentID == incidentID2)
     {
     }
 
     else
     {
-      v9 = [(BMProcessCrash *)self incidentID];
-      v10 = [v5 incidentID];
-      v11 = [v9 isEqual:v10];
+      incidentID3 = [(BMProcessCrash *)self incidentID];
+      incidentID4 = [v5 incidentID];
+      v11 = [incidentID3 isEqual:incidentID4];
 
       if (!v11)
       {
@@ -81,18 +81,18 @@
       }
     }
 
-    v13 = [(BMProcessCrash *)self processName];
-    v14 = [v5 processName];
-    v15 = v14;
-    if (v13 == v14)
+    processName = [(BMProcessCrash *)self processName];
+    processName2 = [v5 processName];
+    v15 = processName2;
+    if (processName == processName2)
     {
     }
 
     else
     {
-      v16 = [(BMProcessCrash *)self processName];
-      v17 = [v5 processName];
-      v18 = [v16 isEqual:v17];
+      processName3 = [(BMProcessCrash *)self processName];
+      processName4 = [v5 processName];
+      v18 = [processName3 isEqual:processName4];
 
       if (!v18)
       {
@@ -100,18 +100,18 @@
       }
     }
 
-    v19 = [(BMProcessCrash *)self bundleID];
-    v20 = [v5 bundleID];
-    v21 = v20;
-    if (v19 == v20)
+    bundleID = [(BMProcessCrash *)self bundleID];
+    bundleID2 = [v5 bundleID];
+    v21 = bundleID2;
+    if (bundleID == bundleID2)
     {
     }
 
     else
     {
-      v22 = [(BMProcessCrash *)self bundleID];
-      v23 = [v5 bundleID];
-      v24 = [v22 isEqual:v23];
+      bundleID3 = [(BMProcessCrash *)self bundleID];
+      bundleID4 = [v5 bundleID];
+      v24 = [bundleID3 isEqual:bundleID4];
 
       if (!v24)
       {
@@ -119,18 +119,18 @@
       }
     }
 
-    v25 = [(BMProcessCrash *)self appVersion];
-    v26 = [v5 appVersion];
-    v27 = v26;
-    if (v25 == v26)
+    appVersion = [(BMProcessCrash *)self appVersion];
+    appVersion2 = [v5 appVersion];
+    v27 = appVersion2;
+    if (appVersion == appVersion2)
     {
     }
 
     else
     {
-      v28 = [(BMProcessCrash *)self appVersion];
-      v29 = [v5 appVersion];
-      v30 = [v28 isEqual:v29];
+      appVersion3 = [(BMProcessCrash *)self appVersion];
+      appVersion4 = [v5 appVersion];
+      v30 = [appVersion3 isEqual:appVersion4];
 
       if (!v30)
       {
@@ -138,18 +138,18 @@
       }
     }
 
-    v31 = [(BMProcessCrash *)self bundleVersion];
-    v32 = [v5 bundleVersion];
-    v33 = v32;
-    if (v31 == v32)
+    bundleVersion = [(BMProcessCrash *)self bundleVersion];
+    bundleVersion2 = [v5 bundleVersion];
+    v33 = bundleVersion2;
+    if (bundleVersion == bundleVersion2)
     {
     }
 
     else
     {
-      v34 = [(BMProcessCrash *)self bundleVersion];
-      v35 = [v5 bundleVersion];
-      v36 = [v34 isEqual:v35];
+      bundleVersion3 = [(BMProcessCrash *)self bundleVersion];
+      bundleVersion4 = [v5 bundleVersion];
+      v36 = [bundleVersion3 isEqual:bundleVersion4];
 
       if (!v36)
       {
@@ -157,18 +157,18 @@
       }
     }
 
-    v37 = [(BMProcessCrash *)self exception];
-    v38 = [v5 exception];
-    v39 = v38;
-    if (v37 == v38)
+    exception = [(BMProcessCrash *)self exception];
+    exception2 = [v5 exception];
+    v39 = exception2;
+    if (exception == exception2)
     {
     }
 
     else
     {
-      v40 = [(BMProcessCrash *)self exception];
-      v41 = [v5 exception];
-      v42 = [v40 isEqual:v41];
+      exception3 = [(BMProcessCrash *)self exception];
+      exception4 = [v5 exception];
+      v42 = [exception3 isEqual:exception4];
 
       if (!v42)
       {
@@ -176,18 +176,18 @@
       }
     }
 
-    v43 = [(BMProcessCrash *)self terminationReason];
-    v44 = [v5 terminationReason];
-    v45 = v44;
-    if (v43 == v44)
+    terminationReason = [(BMProcessCrash *)self terminationReason];
+    terminationReason2 = [v5 terminationReason];
+    v45 = terminationReason2;
+    if (terminationReason == terminationReason2)
     {
     }
 
     else
     {
-      v46 = [(BMProcessCrash *)self terminationReason];
-      v47 = [v5 terminationReason];
-      v48 = [v46 isEqual:v47];
+      terminationReason3 = [(BMProcessCrash *)self terminationReason];
+      terminationReason4 = [v5 terminationReason];
+      v48 = [terminationReason3 isEqual:terminationReason4];
 
       if (!v48)
       {
@@ -195,18 +195,18 @@
       }
     }
 
-    v49 = [(BMProcessCrash *)self responsibleApp];
-    v50 = [v5 responsibleApp];
-    v51 = v50;
-    if (v49 == v50)
+    responsibleApp = [(BMProcessCrash *)self responsibleApp];
+    responsibleApp2 = [v5 responsibleApp];
+    v51 = responsibleApp2;
+    if (responsibleApp == responsibleApp2)
     {
     }
 
     else
     {
-      v52 = [(BMProcessCrash *)self responsibleApp];
-      v53 = [v5 responsibleApp];
-      v54 = [v52 isEqual:v53];
+      responsibleApp3 = [(BMProcessCrash *)self responsibleApp];
+      responsibleApp4 = [v5 responsibleApp];
+      v54 = [responsibleApp3 isEqual:responsibleApp4];
 
       if (!v54)
       {
@@ -214,18 +214,18 @@
       }
     }
 
-    v55 = [(BMProcessCrash *)self coalitionName];
-    v56 = [v5 coalitionName];
-    v57 = v56;
-    if (v55 == v56)
+    coalitionName = [(BMProcessCrash *)self coalitionName];
+    coalitionName2 = [v5 coalitionName];
+    v57 = coalitionName2;
+    if (coalitionName == coalitionName2)
     {
     }
 
     else
     {
-      v58 = [(BMProcessCrash *)self coalitionName];
-      v59 = [v5 coalitionName];
-      v60 = [v58 isEqual:v59];
+      coalitionName3 = [(BMProcessCrash *)self coalitionName];
+      coalitionName4 = [v5 coalitionName];
+      v60 = [coalitionName3 isEqual:coalitionName4];
 
       if (!v60)
       {
@@ -243,8 +243,8 @@
 
       if (-[BMProcessCrash hasIsBeta](self, "hasIsBeta") && [v5 hasIsBeta])
       {
-        v62 = [(BMProcessCrash *)self isBeta];
-        v12 = v62 ^ [v5 isBeta] ^ 1;
+        isBeta = [(BMProcessCrash *)self isBeta];
+        v12 = isBeta ^ [v5 isBeta] ^ 1;
 LABEL_50:
 
         goto LABEL_51;
@@ -265,19 +265,19 @@ LABEL_51:
 - (id)jsonDictionary
 {
   v43[11] = *MEMORY[0x1E69E9840];
-  v3 = [(BMProcessCrash *)self incidentID];
-  v4 = [(BMProcessCrash *)self processName];
-  v5 = [(BMProcessCrash *)self bundleID];
-  v6 = [(BMProcessCrash *)self appVersion];
-  v7 = [(BMProcessCrash *)self bundleVersion];
-  v8 = [(BMProcessCrash *)self exception];
-  v9 = [v8 jsonDictionary];
+  incidentID = [(BMProcessCrash *)self incidentID];
+  processName = [(BMProcessCrash *)self processName];
+  bundleID = [(BMProcessCrash *)self bundleID];
+  appVersion = [(BMProcessCrash *)self appVersion];
+  bundleVersion = [(BMProcessCrash *)self bundleVersion];
+  exception = [(BMProcessCrash *)self exception];
+  jsonDictionary = [exception jsonDictionary];
 
-  v10 = [(BMProcessCrash *)self terminationReason];
-  v11 = [v10 jsonDictionary];
+  terminationReason = [(BMProcessCrash *)self terminationReason];
+  jsonDictionary2 = [terminationReason jsonDictionary];
 
-  v41 = [(BMProcessCrash *)self responsibleApp];
-  v40 = [(BMProcessCrash *)self coalitionName];
+  responsibleApp = [(BMProcessCrash *)self responsibleApp];
+  coalitionName = [(BMProcessCrash *)self coalitionName];
   if ([(BMProcessCrash *)self hasIsFirstParty])
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMProcessCrash isFirstParty](self, "isFirstParty")}];
@@ -299,105 +299,105 @@ LABEL_51:
   }
 
   v42[0] = @"incidentID";
-  v14 = v3;
-  if (!v3)
+  null = incidentID;
+  if (!incidentID)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33 = v14;
-  v43[0] = v14;
+  v33 = null;
+  v43[0] = null;
   v42[1] = @"processName";
-  v15 = v4;
-  if (!v4)
+  null2 = processName;
+  if (!processName)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v15;
-  v43[1] = v15;
+  v32 = null2;
+  v43[1] = null2;
   v42[2] = @"bundleID";
-  v16 = v5;
-  if (!v5)
+  null3 = bundleID;
+  if (!bundleID)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38 = v4;
-  v39 = v3;
-  v31 = v16;
-  v43[2] = v16;
+  v38 = processName;
+  v39 = incidentID;
+  v31 = null3;
+  v43[2] = null3;
   v42[3] = @"appVersion";
-  v17 = v6;
-  if (!v6)
+  null4 = appVersion;
+  if (!appVersion)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v37 = v5;
-  v30 = v17;
-  v43[3] = v17;
+  v37 = bundleID;
+  v30 = null4;
+  v43[3] = null4;
   v42[4] = @"bundleVersion";
-  v18 = v7;
-  if (!v7)
+  null5 = bundleVersion;
+  if (!bundleVersion)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v36 = v6;
-  v29 = v18;
-  v43[4] = v18;
+  v36 = appVersion;
+  v29 = null5;
+  v43[4] = null5;
   v42[5] = @"exception";
-  v19 = v9;
-  if (!v9)
+  null6 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35 = v7;
-  v43[5] = v19;
+  v35 = bundleVersion;
+  v43[5] = null6;
   v42[6] = @"terminationReason";
-  v20 = v11;
-  if (!v11)
+  null7 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v9;
-  v43[6] = v20;
+  v21 = jsonDictionary;
+  v43[6] = null7;
   v42[7] = @"responsibleApp";
-  v22 = v41;
-  if (!v41)
+  null8 = responsibleApp;
+  if (!responsibleApp)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v11;
-  v43[7] = v22;
+  v23 = jsonDictionary2;
+  v43[7] = null8;
   v42[8] = @"coalitionName";
-  v24 = v40;
-  if (!v40)
+  null9 = coalitionName;
+  if (!coalitionName)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v43[8] = v24;
+  v43[8] = null9;
   v42[9] = @"isFirstParty";
-  v25 = v12;
+  null10 = v12;
   if (!v12)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v43[9] = v25;
+  v43[9] = null10;
   v42[10] = @"isBeta";
-  v26 = v13;
+  null11 = v13;
   if (!v13)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v43[10] = v26;
+  v43[10] = null11;
   v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:11];
   if (v13)
   {
@@ -417,11 +417,11 @@ LABEL_51:
   }
 
 LABEL_31:
-  if (!v40)
+  if (!coalitionName)
   {
   }
 
-  if (!v41)
+  if (!responsibleApp)
   {
   }
 
@@ -477,22 +477,22 @@ LABEL_46:
   return v34;
 }
 
-- (BMProcessCrash)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMProcessCrash)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v124[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"incidentID"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"incidentID"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"processName"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"processName"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v23 = 0;
           v25 = 0;
@@ -501,7 +501,7 @@ LABEL_4:
 
         v28 = v8;
         v29 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v97 = a4;
+        errorCopy = error;
         v30 = *MEMORY[0x1E698F240];
         v121 = *MEMORY[0x1E696A578];
         v31 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"processName"];
@@ -510,10 +510,10 @@ LABEL_4:
         v32 = v29;
         v8 = v28;
         v33 = v30;
-        a4 = v31;
+        error = v31;
         v23 = 0;
         v25 = 0;
-        *v97 = [v32 initWithDomain:v33 code:2 userInfo:v10];
+        *errorCopy = [v32 initWithDomain:v33 code:2 userInfo:v10];
         goto LABEL_83;
       }
 
@@ -525,14 +525,14 @@ LABEL_4:
       v99 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"bundleID"];
-    v100 = self;
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"bundleID"];
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v25 = 0;
           v23 = v99;
@@ -541,7 +541,7 @@ LABEL_4:
 
         v34 = v8;
         v35 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v36 = a4;
+        errorCopy2 = error;
         v37 = *MEMORY[0x1E698F240];
         v119 = *MEMORY[0x1E696A578];
         v98 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"bundleID"];
@@ -550,37 +550,37 @@ LABEL_4:
         v39 = v35;
         v8 = v34;
         v40 = [v39 initWithDomain:v37 code:2 userInfo:v38];
-        a4 = 0;
+        error = 0;
         v25 = 0;
-        *v36 = v40;
+        *errorCopy2 = v40;
         v11 = v38;
         v23 = v99;
 LABEL_82:
 
-        self = v100;
+        self = selfCopy;
 LABEL_83:
 
         goto LABEL_84;
       }
 
-      v96 = a4;
-      a4 = v10;
+      errorCopy4 = error;
+      error = v10;
     }
 
     else
     {
-      v96 = a4;
-      a4 = 0;
+      errorCopy4 = error;
+      error = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"appVersion"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"appVersion"];
     v95 = v8;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v96)
+        if (!errorCopy4)
         {
           v98 = 0;
           v25 = 0;
@@ -589,7 +589,7 @@ LABEL_83:
         }
 
         v44 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v45 = a4;
+        errorCopy5 = error;
         v46 = *MEMORY[0x1E698F240];
         v117 = *MEMORY[0x1E696A578];
         v93 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"appVersion"];
@@ -598,10 +598,10 @@ LABEL_83:
         v47 = v44;
         v8 = v95;
         v48 = v46;
-        a4 = v45;
+        error = errorCopy5;
         v98 = 0;
         v25 = 0;
-        *v96 = [v47 initWithDomain:v48 code:2 userInfo:v12];
+        *errorCopy4 = [v47 initWithDomain:v48 code:2 userInfo:v12];
         v23 = v99;
         goto LABEL_81;
       }
@@ -614,14 +614,14 @@ LABEL_83:
       v98 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"bundleVersion"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"bundleVersion"];
     v91 = v7;
     if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v96)
+        if (!errorCopy4)
         {
           v93 = 0;
           v25 = 0;
@@ -630,19 +630,19 @@ LABEL_83:
         }
 
         v94 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v56 = a4;
+        errorCopy6 = error;
         v57 = *MEMORY[0x1E698F240];
         v115 = *MEMORY[0x1E696A578];
         v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"bundleVersion"];
         v116 = v26;
         v58 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v116 forKeys:&v115 count:1];
         v59 = v57;
-        a4 = v56;
+        error = errorCopy6;
         v92 = v58;
         v60 = [v94 initWithDomain:v59 code:2 userInfo:?];
         v93 = 0;
         v25 = 0;
-        *v96 = v60;
+        *errorCopy4 = v60;
         goto LABEL_79;
       }
 
@@ -654,14 +654,14 @@ LABEL_83:
       v93 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"exception"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"exception"];
     v90 = v12;
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v96)
+        if (!errorCopy4)
         {
           v25 = 0;
           goto LABEL_80;
@@ -673,7 +673,7 @@ LABEL_83:
         v92 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"exception"];
         v114 = v92;
         v61 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v114 forKeys:&v113 count:1];
-        *v96 = [v87 initWithDomain:v84 code:2 userInfo:v61];
+        *errorCopy4 = [v87 initWithDomain:v84 code:2 userInfo:v61];
 
         v25 = 0;
         v26 = v13;
@@ -695,10 +695,10 @@ LABEL_81:
       v27 = v102;
       if (v27)
       {
-        if (v96)
+        if (errorCopy4)
         {
           v27 = v27;
-          *v96 = v27;
+          *errorCopy4 = v27;
         }
 
         v25 = 0;
@@ -716,14 +716,14 @@ LABEL_81:
       v92 = 0;
     }
 
-    v16 = [v6 objectForKeyedSubscript:@"terminationReason"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"terminationReason"];
     v81 = v16;
     if (v16 && (v17 = v16, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v96)
+        if (!errorCopy4)
         {
           v25 = 0;
           v26 = v15;
@@ -739,7 +739,7 @@ LABEL_81:
         v112 = v83;
         v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v112 forKeys:&v111 count:1];
         v25 = 0;
-        *v96 = [v88 initWithDomain:v79 code:2 userInfo:v43];
+        *errorCopy4 = [v88 initWithDomain:v79 code:2 userInfo:v43];
         v26 = v15;
         v9 = v14;
         v7 = v91;
@@ -756,10 +756,10 @@ LABEL_72:
       if (v42)
       {
         v86 = v41;
-        if (v96)
+        if (errorCopy4)
         {
           v42 = v42;
-          *v96 = v42;
+          *errorCopy4 = v42;
         }
 
         v25 = 0;
@@ -776,7 +776,7 @@ LABEL_72:
       v83 = 0;
     }
 
-    v18 = [v6 objectForKeyedSubscript:@"responsibleApp"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"responsibleApp"];
     v75 = v15;
     v76 = v18;
     if (v18)
@@ -790,7 +790,7 @@ LABEL_72:
         v7 = v91;
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v96)
+          if (!errorCopy4)
           {
             v43 = 0;
             v25 = 0;
@@ -806,7 +806,7 @@ LABEL_72:
           v65 = [v64 initWithDomain:v89 code:2 userInfo:v55];
           v43 = 0;
           v25 = 0;
-          *v96 = v65;
+          *errorCopy4 = v65;
 LABEL_69:
 
 LABEL_70:
@@ -817,15 +817,15 @@ LABEL_70:
 
         v85 = v19;
 LABEL_55:
-        v49 = [v6 objectForKeyedSubscript:@"coalitionName"];
-        v77 = a4;
+        v49 = [dictionaryCopy objectForKeyedSubscript:@"coalitionName"];
+        errorCopy7 = error;
         v74 = v49;
         if (v49 && (v50 = v49, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v96)
+            if (!errorCopy4)
             {
               v78 = 0;
               v25 = 0;
@@ -841,7 +841,7 @@ LABEL_55:
             v66 = [v82 initWithDomain:v80 code:2 userInfo:v51];
             v78 = 0;
             v25 = 0;
-            *v96 = v66;
+            *errorCopy4 = v66;
             goto LABEL_66;
           }
 
@@ -853,13 +853,13 @@ LABEL_55:
           v78 = 0;
         }
 
-        v51 = [v6 objectForKeyedSubscript:@"isFirstParty"];
+        v51 = [dictionaryCopy objectForKeyedSubscript:@"isFirstParty"];
         if (v51 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v96)
+            if (!errorCopy4)
             {
               v52 = 0;
               v25 = 0;
@@ -875,7 +875,7 @@ LABEL_55:
             v69 = [v67 initWithDomain:v68 code:2 userInfo:v53];
             v52 = 0;
             v25 = 0;
-            *v96 = v69;
+            *errorCopy4 = v69;
             goto LABEL_65;
           }
 
@@ -887,13 +887,13 @@ LABEL_55:
           v52 = 0;
         }
 
-        v53 = [v6 objectForKeyedSubscript:@"isBeta"];
+        v53 = [dictionaryCopy objectForKeyedSubscript:@"isBeta"];
         if (v53 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (v96)
+            if (errorCopy4)
             {
               v73 = objc_alloc(MEMORY[0x1E696ABC0]);
               v72 = *MEMORY[0x1E698F240];
@@ -901,7 +901,7 @@ LABEL_55:
               v70 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"isBeta"];
               v104 = v70;
               v71 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v104 forKeys:&v103 count:1];
-              *v96 = [v73 initWithDomain:v72 code:2 userInfo:v71];
+              *errorCopy4 = [v73 initWithDomain:v72 code:2 userInfo:v71];
             }
 
             v54 = 0;
@@ -917,15 +917,15 @@ LABEL_55:
           v54 = 0;
         }
 
-        v25 = [(BMProcessCrash *)v100 initWithIncidentID:v95 processName:v99 bundleID:v77 appVersion:v98 bundleVersion:v93 exception:v92 terminationReason:v83 responsibleApp:v85 coalitionName:v78 isFirstParty:v52 isBeta:v54];
-        v100 = v25;
+        v25 = [(BMProcessCrash *)selfCopy initWithIncidentID:v95 processName:v99 bundleID:errorCopy7 appVersion:v98 bundleVersion:v93 exception:v92 terminationReason:v83 responsibleApp:v85 coalitionName:v78 isFirstParty:v52 isBeta:v54];
+        selfCopy = v25;
 LABEL_65:
 
 LABEL_66:
         v12 = v90;
 LABEL_67:
 
-        a4 = v77;
+        error = errorCopy7;
 LABEL_68:
         v55 = v74;
         v43 = v85;
@@ -952,7 +952,7 @@ LABEL_68:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v25 = 0;
@@ -960,7 +960,7 @@ LABEL_68:
   }
 
   v20 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v21 = a4;
+  errorCopy8 = error;
   v22 = *MEMORY[0x1E698F240];
   v123 = *MEMORY[0x1E696A578];
   v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"incidentID"];
@@ -969,7 +969,7 @@ LABEL_68:
   v24 = [v20 initWithDomain:v22 code:2 userInfo:v9];
   v8 = 0;
   v25 = 0;
-  *v21 = v24;
+  *errorCopy8 = v24;
 LABEL_84:
 
 LABEL_85:
@@ -977,9 +977,9 @@ LABEL_85:
   return v25;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_incidentID)
   {
     PBDataWriterWriteStringField();
@@ -1008,14 +1008,14 @@ LABEL_85:
   if (self->_exception)
   {
     PBDataWriterPlaceMark();
-    [(BMProcessCrashException *)self->_exception writeTo:v4];
+    [(BMProcessCrashException *)self->_exception writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_terminationReason)
   {
     PBDataWriterPlaceMark();
-    [(BMProcessCrashTerminationReason *)self->_terminationReason writeTo:v4];
+    [(BMProcessCrashTerminationReason *)self->_terminationReason writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1042,9 +1042,9 @@ LABEL_85:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v39.receiver = self;
   v39.super_class = BMProcessCrash;
   v5 = [(BMEventBase *)&v39 init];
@@ -1053,12 +1053,12 @@ LABEL_85:
     goto LABEL_75;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1069,18 +1069,18 @@ LABEL_85:
       while (1)
       {
         LOBYTE(v40) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v40 & 0x7F) << v7;
@@ -1098,9 +1098,9 @@ LABEL_85:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -1178,18 +1178,18 @@ LABEL_64:
             while (1)
             {
               LOBYTE(v40) = 0;
-              v30 = [v4 position] + 1;
-              if (v30 >= [v4 position] && (v31 = objc_msgSend(v4, "position") + 1, v31 <= objc_msgSend(v4, "length")))
+              v30 = [fromCopy position] + 1;
+              if (v30 >= [fromCopy position] && (v31 = objc_msgSend(fromCopy, "position") + 1, v31 <= objc_msgSend(fromCopy, "length")))
               {
-                v32 = [v4 data];
-                [v32 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v29 |= (v40 & 0x7F) << v27;
@@ -1207,7 +1207,7 @@ LABEL_64:
               }
             }
 
-            v24 = (v29 != 0) & ~[v4 hasError];
+            v24 = (v29 != 0) & ~[fromCopy hasError];
 LABEL_68:
             v35 = 16;
             break;
@@ -1219,18 +1219,18 @@ LABEL_68:
             while (1)
             {
               LOBYTE(v40) = 0;
-              v21 = [v4 position] + 1;
-              if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+              v21 = [fromCopy position] + 1;
+              if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
               {
-                v23 = [v4 data];
-                [v23 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v20 |= (v40 & 0x7F) << v18;
@@ -1248,7 +1248,7 @@ LABEL_68:
               }
             }
 
-            v24 = (v20 != 0) & ~[v4 hasError];
+            v24 = (v20 != 0) & ~[fromCopy hasError];
 LABEL_70:
             v35 = 18;
             break;
@@ -1271,7 +1271,7 @@ LABEL_70:
               goto LABEL_74;
             }
 
-            v25 = [[BMProcessCrashException alloc] initByReadFrom:v4];
+            v25 = [[BMProcessCrashException alloc] initByReadFrom:fromCopy];
             if (!v25)
             {
               goto LABEL_74;
@@ -1287,7 +1287,7 @@ LABEL_70:
               goto LABEL_74;
             }
 
-            v25 = [[BMProcessCrashTerminationReason alloc] initByReadFrom:v4];
+            v25 = [[BMProcessCrashTerminationReason alloc] initByReadFrom:fromCopy];
             if (!v25)
             {
               goto LABEL_74;
@@ -1310,13 +1310,13 @@ LABEL_70:
       }
 
 LABEL_72:
-      v36 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v36 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_74:
     v37 = 0;
@@ -1334,55 +1334,55 @@ LABEL_75:
 - (NSString)description
 {
   v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v14 = [(BMProcessCrash *)self incidentID];
-  v12 = [(BMProcessCrash *)self processName];
-  v3 = [(BMProcessCrash *)self bundleID];
-  v4 = [(BMProcessCrash *)self appVersion];
-  v5 = [(BMProcessCrash *)self bundleVersion];
-  v13 = [(BMProcessCrash *)self exception];
-  v6 = [(BMProcessCrash *)self terminationReason];
-  v7 = [(BMProcessCrash *)self responsibleApp];
-  v8 = [(BMProcessCrash *)self coalitionName];
+  incidentID = [(BMProcessCrash *)self incidentID];
+  processName = [(BMProcessCrash *)self processName];
+  bundleID = [(BMProcessCrash *)self bundleID];
+  appVersion = [(BMProcessCrash *)self appVersion];
+  bundleVersion = [(BMProcessCrash *)self bundleVersion];
+  exception = [(BMProcessCrash *)self exception];
+  terminationReason = [(BMProcessCrash *)self terminationReason];
+  responsibleApp = [(BMProcessCrash *)self responsibleApp];
+  coalitionName = [(BMProcessCrash *)self coalitionName];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMProcessCrash isFirstParty](self, "isFirstParty")}];
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMProcessCrash isBeta](self, "isBeta")}];
-  v16 = [v15 initWithFormat:@"BMProcessCrash with incidentID: %@, processName: %@, bundleID: %@, appVersion: %@, bundleVersion: %@, exception: %@, terminationReason: %@, responsibleApp: %@, coalitionName: %@, isFirstParty: %@, isBeta: %@", v14, v12, v3, v4, v5, v13, v6, v7, v8, v9, v10];
+  v16 = [v15 initWithFormat:@"BMProcessCrash with incidentID: %@, processName: %@, bundleID: %@, appVersion: %@, bundleVersion: %@, exception: %@, terminationReason: %@, responsibleApp: %@, coalitionName: %@, isFirstParty: %@, isBeta: %@", incidentID, processName, bundleID, appVersion, bundleVersion, exception, terminationReason, responsibleApp, coalitionName, v9, v10];
 
   return v16;
 }
 
-- (BMProcessCrash)initWithIncidentID:(id)a3 processName:(id)a4 bundleID:(id)a5 appVersion:(id)a6 bundleVersion:(id)a7 exception:(id)a8 terminationReason:(id)a9 responsibleApp:(id)a10 coalitionName:(id)a11 isFirstParty:(id)a12 isBeta:(id)a13
+- (BMProcessCrash)initWithIncidentID:(id)d processName:(id)name bundleID:(id)iD appVersion:(id)version bundleVersion:(id)bundleVersion exception:(id)exception terminationReason:(id)reason responsibleApp:(id)self0 coalitionName:(id)self1 isFirstParty:(id)self2 isBeta:(id)self3
 {
-  v33 = a3;
-  v23 = a4;
-  v32 = a4;
-  v31 = a5;
-  v30 = a6;
-  v29 = a7;
-  v28 = a8;
-  v27 = a9;
-  v26 = a10;
-  v25 = a11;
-  v18 = a12;
-  v19 = a13;
+  dCopy = d;
+  nameCopy = name;
+  nameCopy2 = name;
+  iDCopy = iD;
+  versionCopy = version;
+  bundleVersionCopy = bundleVersion;
+  exceptionCopy = exception;
+  reasonCopy = reason;
+  appCopy = app;
+  coalitionNameCopy = coalitionName;
+  partyCopy = party;
+  betaCopy = beta;
   v34.receiver = self;
   v34.super_class = BMProcessCrash;
   v20 = [(BMEventBase *)&v34 init];
   if (v20)
   {
     v20->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v20->_incidentID, a3);
-    objc_storeStrong(&v20->_processName, v23);
-    objc_storeStrong(&v20->_bundleID, a5);
-    objc_storeStrong(&v20->_appVersion, a6);
-    objc_storeStrong(&v20->_bundleVersion, a7);
-    objc_storeStrong(&v20->_exception, a8);
-    objc_storeStrong(&v20->_terminationReason, a9);
-    objc_storeStrong(&v20->_responsibleApp, a10);
-    objc_storeStrong(&v20->_coalitionName, a11);
-    if (v18)
+    objc_storeStrong(&v20->_incidentID, d);
+    objc_storeStrong(&v20->_processName, nameCopy);
+    objc_storeStrong(&v20->_bundleID, iD);
+    objc_storeStrong(&v20->_appVersion, version);
+    objc_storeStrong(&v20->_bundleVersion, bundleVersion);
+    objc_storeStrong(&v20->_exception, exception);
+    objc_storeStrong(&v20->_terminationReason, reason);
+    objc_storeStrong(&v20->_responsibleApp, app);
+    objc_storeStrong(&v20->_coalitionName, coalitionName);
+    if (partyCopy)
     {
       v20->_hasIsFirstParty = 1;
-      v20->_isFirstParty = [v18 BOOLValue];
+      v20->_isFirstParty = [partyCopy BOOLValue];
     }
 
     else
@@ -1391,10 +1391,10 @@ LABEL_75:
       v20->_isFirstParty = 0;
     }
 
-    if (v19)
+    if (betaCopy)
     {
       v20->_hasIsBeta = 1;
-      v20->_isBeta = [v19 BOOLValue];
+      v20->_isBeta = [betaCopy BOOLValue];
     }
 
     else
@@ -1459,9 +1459,9 @@ id __25__BMProcessCrash_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1469,8 +1469,8 @@ id __25__BMProcessCrash_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMProcessCrash alloc] initByReadFrom:v7];
     v4 = v8;

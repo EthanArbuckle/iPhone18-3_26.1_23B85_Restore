@@ -1,47 +1,47 @@
 @interface RAWConvert
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (id)customAttributes;
 - (CCameraProfile)cameraProfile;
-- (CMatrix)matrixFromArray:(SEL)a3 rowCount:(id)a4 columnCount:(unint64_t)a5;
-- (CWhitePoint)neutralWhitePointWithProfile:(void *)a3;
+- (CMatrix)matrixFromArray:(SEL)array rowCount:(id)count columnCount:(unint64_t)columnCount;
+- (CWhitePoint)neutralWhitePointWithProfile:(void *)profile;
 - (id)blendFactor;
 - (id)customAttributes;
 - (id)inputNeutralXY;
 - (id)outputImage;
 - (id)outputMatrix;
-- (void)setInputNeutral:(id)a3;
+- (void)setInputNeutral:(id)neutral;
 @end
 
 @implementation RAWConvert
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
-  if (objc_msgSend_isEqualToString_(v4, v5, @"inputNeutral", v6, v7))
+  keyCopy = key;
+  if (objc_msgSend_isEqualToString_(keyCopy, v5, @"inputNeutral", v6, v7))
   {
     v8 = 0;
   }
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___RAWConvert;
-    v8 = objc_msgSendSuper2(&v10, sel_automaticallyNotifiesObserversForKey_, v4);
+    v8 = objc_msgSendSuper2(&v10, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v8;
 }
 
-- (void)setInputNeutral:(id)a3
+- (void)setInputNeutral:(id)neutral
 {
-  v11 = a3;
-  if (self->inputNeutral != v11)
+  neutralCopy = neutral;
+  if (self->inputNeutral != neutralCopy)
   {
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_msgSend_isEqualToArray_(v11, v5, self->inputNeutral, v6, v7) & 1) == 0)
+    if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_msgSend_isEqualToArray_(neutralCopy, v5, self->inputNeutral, v6, v7) & 1) == 0)
     {
       objc_msgSend_willChangeValueForKey_(self, v5, @"inputNeutral", v6, v7);
-      objc_storeStrong(&self->inputNeutral, a3);
+      objc_storeStrong(&self->inputNeutral, neutral);
       objc_msgSend_didChangeValueForKey_(self, v8, @"inputNeutral", v9, v10);
     }
   }
@@ -249,13 +249,13 @@
   return MEMORY[0x2821F9670](v2, sel_customAttributes, v3, v4, v5);
 }
 
-- (CMatrix)matrixFromArray:(SEL)a3 rowCount:(id)a4 columnCount:(unint64_t)a5
+- (CMatrix)matrixFromArray:(SEL)array rowCount:(id)count columnCount:(unint64_t)columnCount
 {
-  v9 = a4;
-  if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v14 = objc_msgSend_count(v9, v10, v11, v12, v13), a6 <= 0xA) && a5 <= 0xA && v14)
+  countCopy = count;
+  if (countCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v14 = objc_msgSend_count(countCopy, v10, v11, v12, v13), a6 <= 0xA) && columnCount <= 0xA && v14)
   {
-    sub_2337DF9C8(retstr, a5, a6);
-    if (a5)
+    sub_2337DF9C8(retstr, columnCount, a6);
+    if (columnCount)
     {
       v19 = 0;
       v20 = 0;
@@ -264,7 +264,7 @@
 LABEL_14:
         ++v20;
         v19 += a6;
-        if (v20 >= a5)
+        if (v20 >= columnCount)
         {
           goto LABEL_17;
         }
@@ -272,9 +272,9 @@ LABEL_14:
 
       v21 = 0;
       v22 = v19;
-      while (v22 < objc_msgSend_count(v9, v15, v16, v17, v18))
+      while (v22 < objc_msgSend_count(countCopy, v15, v16, v17, v18))
       {
-        v26 = objc_msgSend_objectAtIndexedSubscript_(v9, v23, v22, v24, v25);
+        v26 = objc_msgSend_objectAtIndexedSubscript_(countCopy, v23, v22, v24, v25);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -763,11 +763,11 @@ LABEL_17:
   return sub_2337D35EC(&v35);
 }
 
-- (CWhitePoint)neutralWhitePointWithProfile:(void *)a3
+- (CWhitePoint)neutralWhitePointWithProfile:(void *)profile
 {
   v50 = 0.0;
   v51 = 0.0;
-  v10 = objc_msgSend_count(self->inputNeutral, a2, a3, v3, v4);
+  v10 = objc_msgSend_count(self->inputNeutral, a2, profile, v3, v4);
   if (!v10)
   {
     v49 = 0.0;
@@ -831,7 +831,7 @@ LABEL_7:
         sub_2337F207C(&__p, &v49);
         sub_2337F207C(&__p, &v48);
         sub_2337F207C(&__p, &v47);
-        v17 = sub_23381B95C(a3, &__p);
+        v17 = sub_23381B95C(profile, &__p);
         v40 = v41;
         if (__p)
         {

@@ -1,44 +1,44 @@
 @interface TypistKeyplane
-- (TypistKeyplane)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (TypistKeyplane)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TypistKeyplane
 
-- (TypistKeyplane)initWithCoder:(id)a3
+- (TypistKeyplane)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TypistKeyplane;
   v5 = [(TypistKeyplane *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v5->_isLetters = [v4 decodeBoolForKey:@"isLetters"];
-    v5->_isAlphabeticPlane = [v4 decodeBoolForKey:@"isAlphabeticPlane"];
-    v5->_isShiftKeyplane = [v4 decodeBoolForKey:@"isShiftKeyplane"];
-    v5->_usesAutoShift = [v4 decodeBoolForKey:@"usesAutoShift"];
-    v5->_ignoresShiftState = [v4 decodeBoolForKey:@"ignoresShiftState"];
+    v5->_isLetters = [coderCopy decodeBoolForKey:@"isLetters"];
+    v5->_isAlphabeticPlane = [coderCopy decodeBoolForKey:@"isAlphabeticPlane"];
+    v5->_isShiftKeyplane = [coderCopy decodeBoolForKey:@"isShiftKeyplane"];
+    v5->_usesAutoShift = [coderCopy decodeBoolForKey:@"usesAutoShift"];
+    v5->_ignoresShiftState = [coderCopy decodeBoolForKey:@"ignoresShiftState"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   name = self->_name;
-  v6 = v4;
+  v6 = coderCopy;
   if (name)
   {
-    [v4 encodeObject:name forKey:@"name"];
-    v4 = v6;
+    [coderCopy encodeObject:name forKey:@"name"];
+    coderCopy = v6;
   }
 
-  [v4 encodeBool:self->_isLetters forKey:@"isLetters"];
+  [coderCopy encodeBool:self->_isLetters forKey:@"isLetters"];
   [v6 encodeBool:self->_isAlphabeticPlane forKey:@"isAlphabeticPlane"];
   [v6 encodeBool:self->_isShiftKeyplane forKey:@"isShiftKeyplane"];
   [v6 encodeBool:self->_usesAutoShift forKey:@"usesAutoShift"];

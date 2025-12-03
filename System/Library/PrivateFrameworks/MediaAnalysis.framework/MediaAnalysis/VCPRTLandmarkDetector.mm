@@ -1,15 +1,15 @@
 @interface VCPRTLandmarkDetector
-- (id)initFromConfigFile:(id)a3 numStage:(int)a4 numLandmarks:(int)a5 numTreePerStage:(int)a6 depthOfTree:(int)a7 numFeatures:(int)a8;
-- (void)calculateFaceRectFromPrevLM:(float *)a3 result:(float *)a4 numOfLandmarks:(int)a5;
+- (id)initFromConfigFile:(id)file numStage:(int)stage numLandmarks:(int)landmarks numTreePerStage:(int)perStage depthOfTree:(int)tree numFeatures:(int)features;
+- (void)calculateFaceRectFromPrevLM:(float *)m result:(float *)result numOfLandmarks:(int)landmarks;
 - (void)dealloc;
-- (void)detectLandmark:(char *)a3 width:(int)a4 height:(int)a5 stride:(int)a6 facerect:(float *)a7 prevResult:(float *)a8 result:(float *)a9;
+- (void)detectLandmark:(char *)landmark width:(int)width height:(int)height stride:(int)stride facerect:(float *)facerect prevResult:(float *)result result:(float *)a9;
 @end
 
 @implementation VCPRTLandmarkDetector
 
-- (id)initFromConfigFile:(id)a3 numStage:(int)a4 numLandmarks:(int)a5 numTreePerStage:(int)a6 depthOfTree:(int)a7 numFeatures:(int)a8
+- (id)initFromConfigFile:(id)file numStage:(int)stage numLandmarks:(int)landmarks numTreePerStage:(int)perStage depthOfTree:(int)tree numFeatures:(int)features
 {
-  v14 = a3;
+  fileCopy = file;
   v28.receiver = self;
   v28.super_class = VCPRTLandmarkDetector;
   v15 = [(VCPRTLandmarkDetector *)&v28 init];
@@ -23,8 +23,8 @@
     }
 
     v15->_internalLandmarkDetector = v18;
-    v19 = [v14 path];
-    v20 = fopen([v19 UTF8String], "rb");
+    path = [fileCopy path];
+    v20 = fopen([path UTF8String], "rb");
 
     internalLandmarkDetector = v15->_internalLandmarkDetector;
     if (internalLandmarkDetector)
@@ -49,8 +49,8 @@
 
     else
     {
-      v15->_numOfLandmarks = a5;
-      if (ma::LandmarkDetector::Initialize(internalLandmarkDetector, v20, a4, a5, a6, a7, a8))
+      v15->_numOfLandmarks = landmarks;
+      if (ma::LandmarkDetector::Initialize(internalLandmarkDetector, v20, stage, landmarks, perStage, tree, features))
       {
         v23 = 0;
       }
@@ -88,33 +88,33 @@ LABEL_17:
   [(VCPRTLandmarkDetector *)&v4 dealloc];
 }
 
-- (void)detectLandmark:(char *)a3 width:(int)a4 height:(int)a5 stride:(int)a6 facerect:(float *)a7 prevResult:(float *)a8 result:(float *)a9
+- (void)detectLandmark:(char *)landmark width:(int)width height:(int)height stride:(int)stride facerect:(float *)facerect prevResult:(float *)result result:(float *)a9
 {
   bzero(a9, 8 * self->_numOfLandmarks);
-  ma::LandmarkDetector::SetPreviousLandmarks(self->_internalLandmarkDetector, a8);
+  ma::LandmarkDetector::SetPreviousLandmarks(self->_internalLandmarkDetector, result);
   internalLandmarkDetector = self->_internalLandmarkDetector;
 
-  ma::LandmarkDetector::DetectLandmarks(internalLandmarkDetector, a3, a4, a5, a6, a7, a9);
+  ma::LandmarkDetector::DetectLandmarks(internalLandmarkDetector, landmark, width, height, stride, facerect, a9);
 }
 
-- (void)calculateFaceRectFromPrevLM:(float *)a3 result:(float *)a4 numOfLandmarks:(int)a5
+- (void)calculateFaceRectFromPrevLM:(float *)m result:(float *)result numOfLandmarks:(int)landmarks
 {
   v6 = vdup_n_s32(0xE0AD78EC);
   v7 = vdup_n_s32(0x60AD78ECu);
-  if (a5 >= 1)
+  if (landmarks >= 1)
   {
-    v8 = a5;
+    landmarksCopy = landmarks;
     do
     {
-      v9 = *a3;
-      a3 += 2;
+      v9 = *m;
+      m += 2;
       v5.i32[1] = v9.i32[1];
       v7 = vbsl_s8(vcgt_f32(v7, v9), v9, v7);
       v6 = vbsl_s8(vcgt_f32(v9, v6), v9, v6);
-      --v8;
+      --landmarksCopy;
     }
 
-    while (v8);
+    while (landmarksCopy);
   }
 
   v10 = vsub_f32(v6, v7);
@@ -131,7 +131,7 @@ LABEL_17:
   v13 = vdupq_lane_s32(v5, 0);
   v14.i64[0] = vsubq_f32(v12, v13).u64[0];
   v14.i64[1] = vaddq_f32(v12, v13).i64[1];
-  *a4 = vrndaq_f32(v14);
+  *result = vrndaq_f32(v14);
 }
 
 @end

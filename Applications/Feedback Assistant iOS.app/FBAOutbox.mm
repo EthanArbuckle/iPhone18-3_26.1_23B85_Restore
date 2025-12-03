@@ -1,6 +1,6 @@
 @interface FBAOutbox
 - (id)displayText;
-- (id)fetchRequesForInboxItemsInTeam:(id)a3;
+- (id)fetchRequesForInboxItemsInTeam:(id)team;
 @end
 
 @implementation FBAOutbox
@@ -13,11 +13,11 @@
   return v3;
 }
 
-- (id)fetchRequesForInboxItemsInTeam:(id)a3
+- (id)fetchRequesForInboxItemsInTeam:(id)team
 {
-  v4 = a3;
+  teamCopy = team;
   v5 = +[FBKContentItem fetchRequest];
-  v6 = [(FBAOutbox *)self predicateForTeam:v4];
+  v6 = [(FBAOutbox *)self predicateForTeam:teamCopy];
 
   [v5 setPredicate:v6];
 

@@ -1,27 +1,27 @@
 @interface DTLocationSimulationService
-+ (void)registerCapabilities:(id)a3;
-- (DTLocationSimulationService)initWithChannel:(id)a3;
-- (void)simulateLocationWithLatitude:(id)a3 longitude:(id)a4;
++ (void)registerCapabilities:(id)capabilities;
+- (DTLocationSimulationService)initWithChannel:(id)channel;
+- (void)simulateLocationWithLatitude:(id)latitude longitude:(id)longitude;
 - (void)stopLocationSimulation;
 @end
 
 @implementation DTLocationSimulationService
 
-+ (void)registerCapabilities:(id)a3
++ (void)registerCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   if (NSClassFromString(&cfstr_Clsimulationma.isa))
   {
-    [v4 publishCapability:@"com.apple.instruments.server.services.LocationSimulation" withVersion:1 forClass:a1];
+    [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.LocationSimulation" withVersion:1 forClass:self];
   }
 }
 
-- (DTLocationSimulationService)initWithChannel:(id)a3
+- (DTLocationSimulationService)initWithChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v10.receiver = self;
   v10.super_class = DTLocationSimulationService;
-  v5 = [(DTXService *)&v10 initWithChannel:v4];
+  v5 = [(DTXService *)&v10 initWithChannel:channelCopy];
   if (v5)
   {
     objc_initWeak(&location, v5);
@@ -30,7 +30,7 @@
     v7[2] = sub_247FD77E4;
     v7[3] = &unk_278EF1238;
     objc_copyWeak(&v8, &location);
-    [v4 registerDisconnectHandler:v7];
+    [channelCopy registerDisconnectHandler:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
@@ -38,16 +38,16 @@
   return v5;
 }
 
-- (void)simulateLocationWithLatitude:(id)a3 longitude:(id)a4
+- (void)simulateLocationWithLatitude:(id)latitude longitude:(id)longitude
 {
   v5 = MEMORY[0x277CE41F8];
-  v6 = a4;
-  v7 = a3;
+  longitudeCopy = longitude;
+  latitudeCopy = latitude;
   v8 = [v5 alloc];
-  [v7 doubleValue];
+  [latitudeCopy doubleValue];
   v10 = v9;
 
-  [v6 doubleValue];
+  [longitudeCopy doubleValue];
   v12 = v11;
 
   v14 = [v8 initWithLatitude:v10 longitude:v12];

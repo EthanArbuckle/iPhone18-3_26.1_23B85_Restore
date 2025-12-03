@@ -1,15 +1,15 @@
 @interface CNContainerDiffCalculator
-+ (id)diffContainer:(id)a3 to:(id)a4;
++ (id)diffContainer:(id)container to:(id)to;
 @end
 
 @implementation CNContainerDiffCalculator
 
-+ (id)diffContainer:(id)a3 to:(id)a4
++ (id)diffContainer:(id)container to:(id)to
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  containerCopy = container;
+  toCopy = to;
+  array = [MEMORY[0x1E695DF70] array];
   v8 = +[CN writableContainerProperties];
   v18 = 0u;
   v19 = 0u;
@@ -30,12 +30,12 @@
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 CNValueForContainer:v5];
-        v15 = [v13 CNValueForContainer:v6];
+        v14 = [v13 CNValueForContainer:containerCopy];
+        v15 = [v13 CNValueForContainer:toCopy];
         if (([v13 isValue:v14 equalToEmptyEquivalentOrValue:v15] & 1) == 0)
         {
           v16 = [CNContainerUpdate updateWithValue:v15 property:v13];
-          [v7 addObject:v16];
+          [array addObject:v16];
         }
       }
 
@@ -45,7 +45,7 @@
     while (v10);
   }
 
-  return v7;
+  return array;
 }
 
 @end

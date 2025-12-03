@@ -1,56 +1,56 @@
 @interface UIImage
-+ (CGRect)maps_collectionGlyphFractionalRectWithRTL:(BOOL)a3;
-+ (double)_maps_minSideLengthForShieldSize:(int64_t)a3;
-+ (id)_compositeImageFromImage:(id)a3 paddedToWidth:(double)a4 badge:(id)a5 badgeOffset:(CGPoint)a6;
++ (CGRect)maps_collectionGlyphFractionalRectWithRTL:(BOOL)l;
++ (double)_maps_minSideLengthForShieldSize:(int64_t)size;
++ (id)_compositeImageFromImage:(id)image paddedToWidth:(double)width badge:(id)badge badgeOffset:(CGPoint)offset;
 + (id)_imageProcessingQueue;
-+ (id)_mapsCar_privateSystemImageNamed:(id)a3 textStyle:(id)a4 scale:(int64_t)a5;
-+ (id)_mapsCar_systemImageNamed:(id)a3;
-+ (id)_mapsCar_systemImageNamed:(id)a3 pointSize:(double)a4;
-+ (id)_mapsCar_systemImageNamed:(id)a3 pointSize:(double)a4 weight:(int64_t)a5;
-+ (id)_mapsCar_systemImageNamed:(id)a3 pointSize:(double)a4 weight:(int64_t)a5 paletteColors:(id)a6;
-+ (id)_mapsCar_systemImageNamed:(id)a3 textStyle:(id)a4;
-+ (id)_mapsCar_systemImageNamed:(id)a3 textStyle:(id)a4 weight:(int64_t)a5;
-+ (id)_mapsCar_systemImageNamed:(id)a3 textStyle:(id)a4 weight:(int64_t)a5 paletteColors:(id)a6;
-+ (id)_maps_applicationIconWithBundleIdentifier:(id)a3;
-+ (id)_maps_circleImageWithDiameter:(double)a3 color:(id)a4;
-+ (id)_maps_imageWithColor:(id)a3;
-+ (id)_maps_maneuverImageForTransitArrivalInfo:(id)a3 shieldSize:(int64_t)a4 forDarkBackground:(BOOL)a5;
++ (id)_mapsCar_privateSystemImageNamed:(id)named textStyle:(id)style scale:(int64_t)scale;
++ (id)_mapsCar_systemImageNamed:(id)named;
++ (id)_mapsCar_systemImageNamed:(id)named pointSize:(double)size;
++ (id)_mapsCar_systemImageNamed:(id)named pointSize:(double)size weight:(int64_t)weight;
++ (id)_mapsCar_systemImageNamed:(id)named pointSize:(double)size weight:(int64_t)weight paletteColors:(id)colors;
++ (id)_mapsCar_systemImageNamed:(id)named textStyle:(id)style;
++ (id)_mapsCar_systemImageNamed:(id)named textStyle:(id)style weight:(int64_t)weight;
++ (id)_mapsCar_systemImageNamed:(id)named textStyle:(id)style weight:(int64_t)weight paletteColors:(id)colors;
++ (id)_maps_applicationIconWithBundleIdentifier:(id)identifier;
++ (id)_maps_circleImageWithDiameter:(double)diameter color:(id)color;
++ (id)_maps_imageWithColor:(id)color;
++ (id)_maps_maneuverImageForTransitArrivalInfo:(id)info shieldSize:(int64_t)size forDarkBackground:(BOOL)background;
 + (id)_maps_radar_symbolCircleFilled;
 + (id)_maps_radar_symbolCircleUnfilled;
 + (id)_maps_radar_symbolFilled;
 + (id)_maps_radar_symbolUnfilled;
-+ (id)chargeImageOfSize:(double)a3 batteryLevel:(unint64_t)a4;
-+ (id)imageNamed:(id)a3 ofSize:(double)a4 color:(id)a5;
-+ (id)interSystemTransferFromHexColor:(id)a3 toHexColor:(id)a4 imageWithSize:(int64_t)a5 scale:(double)a6 darkMode:(BOOL)a7;
-+ (id)maps_emptyImageScale:(double)a3;
-+ (id)maps_filledImageWithColor:(id)a3 scale:(double)a4;
-+ (id)warningImageOfSize:(double)a3;
-- (CGContext)_contextWithDiameter:(double)a3;
-- (CGImage)_cgImageFromContext:(CGContext *)a3 toFit:(CGSize)a4;
-- (id)_finaliseCircleImage:(id)a3 withContext:(CGContext *)a4;
-- (id)_maps_blurredImage:(id)a3 scale:(double)a4;
-- (id)_maps_colorMonochromeImageWithColor:(id)a3;
-- (id)_maps_colorizedImageWithColor:(id)a3;
-- (id)_maps_composedImageScale:(double)a3 isRTL:(BOOL)a4;
++ (id)chargeImageOfSize:(double)size batteryLevel:(unint64_t)level;
++ (id)imageNamed:(id)named ofSize:(double)size color:(id)color;
++ (id)interSystemTransferFromHexColor:(id)color toHexColor:(id)hexColor imageWithSize:(int64_t)size scale:(double)scale darkMode:(BOOL)mode;
++ (id)maps_emptyImageScale:(double)scale;
++ (id)maps_filledImageWithColor:(id)color scale:(double)scale;
++ (id)warningImageOfSize:(double)size;
+- (CGContext)_contextWithDiameter:(double)diameter;
+- (CGImage)_cgImageFromContext:(CGContext *)context toFit:(CGSize)fit;
+- (id)_finaliseCircleImage:(id)image withContext:(CGContext *)context;
+- (id)_maps_blurredImage:(id)image scale:(double)scale;
+- (id)_maps_colorMonochromeImageWithColor:(id)color;
+- (id)_maps_colorizedImageWithColor:(id)color;
+- (id)_maps_composedImageScale:(double)scale isRTL:(BOOL)l;
 - (id)_maps_horizontallyFlippedImage;
-- (id)_maps_imageIconWithBackgroundConfiguration:(id)a3;
-- (id)_maps_imageInOrientation:(int64_t)a3;
-- (id)_maps_imageWithAspectFitScalingForMaximumSize:(CGSize)a3;
+- (id)_maps_imageIconWithBackgroundConfiguration:(id)configuration;
+- (id)_maps_imageInOrientation:(int64_t)orientation;
+- (id)_maps_imageWithAspectFitScalingForMaximumSize:(CGSize)size;
 - (id)_maps_invertedImage;
 - (id)_maps_mostCommonColor;
-- (id)_maps_scaleToFill:(id)a3 size:(double)a4 scale:(double)a5;
-- (id)_maps_scaleToFillRoundedImage:(id)a3 size:(double)a4 scale:(double)a5;
-- (id)drawnInCircleWithDiameter:(double)a3 backgroundColor:(id)a4;
-- (id)imageScaledToSize:(CGSize)a3;
-- (void)_enumeratePixelsWithBlock:(id)a3;
-- (void)maps_blurredImageScale:(double)a3 isRTL:(BOOL)a4 completion:(id)a5;
+- (id)_maps_scaleToFill:(id)fill size:(double)size scale:(double)scale;
+- (id)_maps_scaleToFillRoundedImage:(id)image size:(double)size scale:(double)scale;
+- (id)drawnInCircleWithDiameter:(double)diameter backgroundColor:(id)color;
+- (id)imageScaledToSize:(CGSize)size;
+- (void)_enumeratePixelsWithBlock:(id)block;
+- (void)maps_blurredImageScale:(double)scale isRTL:(BOOL)l completion:(id)completion;
 @end
 
 @implementation UIImage
 
-- (id)_maps_colorMonochromeImageWithColor:(id)a3
+- (id)_maps_colorMonochromeImageWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = [CIImage imageWithCGImage:[(UIImage *)self CGImage]];
   v6 = v5;
   if (v5)
@@ -58,39 +58,39 @@
     v17[0] = v5;
     v16[0] = kCIInputImageKey;
     v16[1] = kCIInputColorKey;
-    v7 = [[CIColor alloc] initWithColor:v4];
+    v7 = [[CIColor alloc] initWithColor:colorCopy];
     v16[2] = kCIInputIntensityKey;
     v17[1] = v7;
     v17[2] = &off_1016EDCC8;
     v8 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:3];
     v9 = [CIFilter filterWithName:@"CIColorMonochrome" withInputParameters:v8];
 
-    v10 = [v9 outputImage];
-    if (v10)
+    outputImage = [v9 outputImage];
+    if (outputImage)
     {
       v11 = [CIContext contextWithOptions:0];
-      [v10 extent];
-      v12 = [v11 createCGImage:v10 fromRect:?];
+      [outputImage extent];
+      v12 = [v11 createCGImage:outputImage fromRect:?];
       [(UIImage *)self scale];
-      v14 = [UIImage imageWithCGImage:v12 scale:[(UIImage *)self imageOrientation] orientation:v13];
+      selfCopy2 = [UIImage imageWithCGImage:v12 scale:[(UIImage *)self imageOrientation] orientation:v13];
       CGImageRelease(v12);
     }
 
     else
     {
-      v14 = self;
+      selfCopy2 = self;
     }
   }
 
   else
   {
-    v14 = self;
+    selfCopy2 = self;
   }
 
-  return v14;
+  return selfCopy2;
 }
 
-- (id)_maps_imageInOrientation:(int64_t)a3
+- (id)_maps_imageInOrientation:(int64_t)orientation
 {
   [(UIImage *)self size];
   v6 = v5;
@@ -99,17 +99,17 @@
   *&v22.a = *&CGAffineTransformIdentity.a;
   *&v22.c = v9;
   *&v22.tx = *&CGAffineTransformIdentity.tx;
-  if (a3 <= 3)
+  if (orientation <= 3)
   {
-    if (a3 <= 1)
+    if (orientation <= 1)
     {
-      if (!a3)
+      if (!orientation)
       {
-        v13 = self;
+        selfCopy = self;
         goto LABEL_25;
       }
 
-      if (a3 != 1)
+      if (orientation != 1)
       {
         goto LABEL_19;
       }
@@ -120,7 +120,7 @@
       goto LABEL_18;
     }
 
-    if (a3 != 2)
+    if (orientation != 2)
     {
       CGAffineTransformMakeTranslation(&v22, v8, 0.0);
 LABEL_14:
@@ -144,9 +144,9 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (a3 <= 5)
+  if (orientation <= 5)
   {
-    if (a3 == 4)
+    if (orientation == 4)
     {
       CGAffineTransformMakeTranslation(&v22, v5, 0.0);
       v20 = v22;
@@ -168,7 +168,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (a3 == 6)
+  if (orientation == 6)
   {
     CGAffineTransformMakeTranslation(&v22, v8, v5);
     v20 = v22;
@@ -180,7 +180,7 @@ LABEL_18:
     goto LABEL_22;
   }
 
-  if (a3 == 7)
+  if (orientation == 7)
   {
     CGAffineTransformMakeScale(&v22, -1.0, 1.0);
     goto LABEL_14;
@@ -198,11 +198,11 @@ LABEL_24:
   transform = v22;
   CGContextConcatCTM(CurrentContext, &transform);
   [(UIImage *)self drawAtPoint:CGPointZero.x, CGPointZero.y];
-  v13 = UIGraphicsGetImageFromCurrentImageContext();
+  selfCopy = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 LABEL_25:
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)_maps_horizontallyFlippedImage
@@ -231,9 +231,9 @@ LABEL_25:
   return v11;
 }
 
-- (id)_maps_colorizedImageWithColor:(id)a3
+- (id)_maps_colorizedImageWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = objc_autoreleasePoolPush();
   [(UIImage *)self size];
   v7 = v6;
@@ -247,19 +247,19 @@ LABEL_25:
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextScaleCTM(CurrentContext, 1.0, -1.0);
   CGContextTranslateCTM(CurrentContext, 0.0, -v9);
-  CGContextSetFillColorWithColor(CurrentContext, [v4 CGColor]);
+  CGContextSetFillColorWithColor(CurrentContext, [colorCopy CGColor]);
   v19.origin.x = CGPointZero.x;
   v19.origin.y = y;
   v19.size.width = v7;
   v19.size.height = v9;
   CGContextFillRect(CurrentContext, v19);
   CGContextSetBlendMode(CurrentContext, kCGBlendModeDestinationAtop);
-  v14 = [(UIImage *)self CGImage];
+  cGImage = [(UIImage *)self CGImage];
   v20.origin.x = CGPointZero.x;
   v20.origin.y = y;
   v20.size.width = v7;
   v20.size.height = v9;
-  CGContextDrawImage(CurrentContext, v20, v14);
+  CGContextDrawImage(CurrentContext, v20, cGImage);
   v15 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   objc_autoreleasePoolPop(v5);
@@ -267,22 +267,22 @@ LABEL_25:
   return v15;
 }
 
-- (id)_maps_imageIconWithBackgroundConfiguration:(id)a3
+- (id)_maps_imageIconWithBackgroundConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [UIView alloc];
-  [v4 iconSize];
+  [configurationCopy iconSize];
   v7 = v6;
-  [v4 iconSize];
+  [configurationCopy iconSize];
   v9 = [v5 initWithFrame:{0.0, 0.0, v7, v8}];
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [v4 backgroundColor];
-  [v9 setBackgroundColor:v10];
+  backgroundColor = [configurationCopy backgroundColor];
+  [v9 setBackgroundColor:backgroundColor];
 
-  [v4 cornerRadius];
+  [configurationCopy cornerRadius];
   v12 = v11;
-  v13 = [v9 layer];
-  [v13 setCornerRadius:v12];
+  layer = [v9 layer];
+  [layer setCornerRadius:v12];
 
   v14 = [[UIImageView alloc] initWithImage:self];
   [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -306,9 +306,9 @@ LABEL_25:
   v24 = v20 - MidX + v23;
   [v9 center];
   [v14 setCenter:{v24, v22 - MidY + v25}];
-  v26 = [v4 tintColor];
+  tintColor = [configurationCopy tintColor];
 
-  [v14 setTintColor:v26];
+  [v14 setTintColor:tintColor];
   [v9 addSubview:v14];
   [v9 frame];
   v28 = v27;
@@ -320,8 +320,8 @@ LABEL_25:
   v38.height = v30;
   UIGraphicsBeginImageContextWithOptions(v38, 0, v33);
 
-  v34 = [v9 layer];
-  [v34 renderInContext:UIGraphicsGetCurrentContext()];
+  layer2 = [v9 layer];
+  [layer2 renderInContext:UIGraphicsGetCurrentContext()];
 
   v35 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -329,20 +329,20 @@ LABEL_25:
   return v35;
 }
 
-+ (id)_maps_circleImageWithDiameter:(double)a3 color:(id)a4
++ (id)_maps_circleImageWithDiameter:(double)diameter color:(id)color
 {
-  v5 = a4;
-  v11.width = a3;
-  v11.height = a3;
+  colorCopy = color;
+  v11.width = diameter;
+  v11.height = diameter;
   UIGraphicsBeginImageContext(v11);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v7 = [v5 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  CGContextSetFillColorWithColor(CurrentContext, v7);
+  CGContextSetFillColorWithColor(CurrentContext, cGColor);
   v12.origin.x = 0.0;
   v12.origin.y = 0.0;
-  v12.size.width = a3;
-  v12.size.height = a3;
+  v12.size.width = diameter;
+  v12.size.height = diameter;
   CGContextFillEllipseInRect(CurrentContext, v12);
   v8 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -350,16 +350,16 @@ LABEL_25:
   return v8;
 }
 
-+ (id)_maps_imageWithColor:(id)a3
++ (id)_maps_imageWithColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v9.width = 1.0;
   v9.height = 1.0;
   UIGraphicsBeginImageContext(v9);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v5 = [v3 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  CGContextSetFillColorWithColor(CurrentContext, v5);
+  CGContextSetFillColorWithColor(CurrentContext, cGColor);
   v10.origin.x = 0.0;
   v10.origin.y = 0.0;
   v10.size.width = 1.0;
@@ -395,53 +395,53 @@ LABEL_25:
   return v15;
 }
 
-+ (id)_compositeImageFromImage:(id)a3 paddedToWidth:(double)a4 badge:(id)a5 badgeOffset:(CGPoint)a6
++ (id)_compositeImageFromImage:(id)image paddedToWidth:(double)width badge:(id)badge badgeOffset:(CGPoint)offset
 {
-  y = a6.y;
-  x = a6.x;
-  v10 = a3;
-  v11 = a5;
-  [v10 size];
-  v13 = a4;
-  if (v12 + x > a4)
+  y = offset.y;
+  x = offset.x;
+  imageCopy = image;
+  badgeCopy = badge;
+  [imageCopy size];
+  widthCopy = width;
+  if (v12 + x > width)
   {
-    [v10 size];
-    v13 = v14 + x;
+    [imageCopy size];
+    widthCopy = v14 + x;
   }
 
-  [v10 size];
+  [imageCopy size];
   v16 = v15 + y * 2.0;
-  [v10 scale];
+  [imageCopy scale];
   v18 = v17;
-  v30.width = v13;
+  v30.width = widthCopy;
   v30.height = v16;
   UIGraphicsBeginImageContextWithOptions(v30, 0, v18);
   IsRightToLeft = MKApplicationLayoutDirectionIsRightToLeft();
   v20 = x;
   if ((IsRightToLeft & 1) == 0)
   {
-    [v10 size];
+    [imageCopy size];
     v22 = v21 + x;
     v20 = 0.0;
-    if (v22 <= a4)
+    if (v22 <= width)
     {
-      [v10 size];
-      v20 = a4 - (x + v23);
+      [imageCopy size];
+      v20 = width - (x + v23);
     }
   }
 
-  [v10 drawAtPoint:{v20, y}];
-  if (v11)
+  [imageCopy drawAtPoint:{v20, y}];
+  if (badgeCopy)
   {
     v24 = 0.0;
     if ((MKApplicationLayoutDirectionIsRightToLeft() & 1) == 0)
     {
-      [v11 size];
-      v24 = v13 - v25;
+      [badgeCopy size];
+      v24 = widthCopy - v25;
     }
 
-    [v11 size];
-    [v11 drawAtPoint:{v24, v16 - v26}];
+    [badgeCopy size];
+    [badgeCopy drawAtPoint:{v24, v16 - v26}];
   }
 
   v27 = UIGraphicsGetImageFromCurrentImageContext();
@@ -450,30 +450,30 @@ LABEL_25:
   return v27;
 }
 
-+ (id)_mapsCar_privateSystemImageNamed:(id)a3 textStyle:(id)a4 scale:(int64_t)a5
++ (id)_mapsCar_privateSystemImageNamed:(id)named textStyle:(id)style scale:(int64_t)scale
 {
-  v6 = a3;
+  namedCopy = named;
   v7 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle3];
-  v8 = [UIImageSymbolConfiguration configurationWithFont:v7 scale:a5];
-  v9 = [UIImage _systemImageNamed:v6 withConfiguration:v8];
+  v8 = [UIImageSymbolConfiguration configurationWithFont:v7 scale:scale];
+  v9 = [UIImage _systemImageNamed:namedCopy withConfiguration:v8];
 
   return v9;
 }
 
-+ (id)_mapsCar_systemImageNamed:(id)a3 textStyle:(id)a4 weight:(int64_t)a5 paletteColors:(id)a6
++ (id)_mapsCar_systemImageNamed:(id)named textStyle:(id)style weight:(int64_t)weight paletteColors:(id)colors
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [UIFont _mapsCar_fontForTextStyle:v10 weight:UIFontWeightForImageSymbolWeight(a5)];
+  colorsCopy = colors;
+  styleCopy = style;
+  namedCopy = named;
+  v12 = [UIFont _mapsCar_fontForTextStyle:styleCopy weight:UIFontWeightForImageSymbolWeight(weight)];
 
   v13 = [UIImageSymbolConfiguration configurationWithFont:v12];
-  v14 = [UIImageSymbolConfiguration configurationWithPaletteColors:v9];
+  v14 = [UIImageSymbolConfiguration configurationWithPaletteColors:colorsCopy];
 
   v15 = [v13 configurationByApplyingConfiguration:v14];
   v16 = +[CarDisplayController sharedInstance];
-  v17 = [v16 screenTraitCollection];
-  v18 = [UIImage systemImageNamed:v11 compatibleWithTraitCollection:v17];
+  screenTraitCollection = [v16 screenTraitCollection];
+  v18 = [UIImage systemImageNamed:namedCopy compatibleWithTraitCollection:screenTraitCollection];
 
   v19 = [v18 imageByApplyingSymbolConfiguration:v15];
   v20 = [v19 imageWithRenderingMode:0];
@@ -481,15 +481,15 @@ LABEL_25:
   return v20;
 }
 
-+ (id)_mapsCar_systemImageNamed:(id)a3 textStyle:(id)a4 weight:(int64_t)a5
++ (id)_mapsCar_systemImageNamed:(id)named textStyle:(id)style weight:(int64_t)weight
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [UIFont _mapsCar_fontForTextStyle:v7 weight:UIFontWeightForImageSymbolWeight(a5)];
+  styleCopy = style;
+  namedCopy = named;
+  v9 = [UIFont _mapsCar_fontForTextStyle:styleCopy weight:UIFontWeightForImageSymbolWeight(weight)];
 
   v10 = +[CarDisplayController sharedInstance];
-  v11 = [v10 screenTraitCollection];
-  v12 = [UIImage systemImageNamed:v8 compatibleWithTraitCollection:v11];
+  screenTraitCollection = [v10 screenTraitCollection];
+  v12 = [UIImage systemImageNamed:namedCopy compatibleWithTraitCollection:screenTraitCollection];
 
   v13 = [UIImageSymbolConfiguration configurationWithFont:v9];
   v14 = [v12 imageByApplyingSymbolConfiguration:v13];
@@ -497,32 +497,32 @@ LABEL_25:
   return v14;
 }
 
-+ (id)_mapsCar_systemImageNamed:(id)a3 textStyle:(id)a4
++ (id)_mapsCar_systemImageNamed:(id)named textStyle:(id)style
 {
-  v5 = a4;
-  v6 = a3;
+  styleCopy = style;
+  namedCopy = named;
   v7 = +[CarDisplayController sharedInstance];
-  v8 = [v7 screenTraitCollection];
-  v9 = [UIImage systemImageNamed:v6 compatibleWithTraitCollection:v8];
+  screenTraitCollection = [v7 screenTraitCollection];
+  v9 = [UIImage systemImageNamed:namedCopy compatibleWithTraitCollection:screenTraitCollection];
 
-  v10 = [UIImageSymbolConfiguration configurationWithTextStyle:v5];
+  v10 = [UIImageSymbolConfiguration configurationWithTextStyle:styleCopy];
 
   v11 = [v9 imageByApplyingSymbolConfiguration:v10];
 
   return v11;
 }
 
-+ (id)_mapsCar_systemImageNamed:(id)a3 pointSize:(double)a4 weight:(int64_t)a5 paletteColors:(id)a6
++ (id)_mapsCar_systemImageNamed:(id)named pointSize:(double)size weight:(int64_t)weight paletteColors:(id)colors
 {
-  v8 = a6;
-  v9 = a3;
-  v10 = [UIImageSymbolConfiguration configurationWithPointSize:a4];
-  v11 = [UIImageSymbolConfiguration configurationWithPaletteColors:v8];
+  colorsCopy = colors;
+  namedCopy = named;
+  v10 = [UIImageSymbolConfiguration configurationWithPointSize:size];
+  v11 = [UIImageSymbolConfiguration configurationWithPaletteColors:colorsCopy];
 
   v12 = [v10 configurationByApplyingConfiguration:v11];
   v13 = +[CarDisplayController sharedInstance];
-  v14 = [v13 screenTraitCollection];
-  v15 = [UIImage systemImageNamed:v9 compatibleWithTraitCollection:v14];
+  screenTraitCollection = [v13 screenTraitCollection];
+  v15 = [UIImage systemImageNamed:namedCopy compatibleWithTraitCollection:screenTraitCollection];
 
   v16 = [v15 imageByApplyingSymbolConfiguration:v12];
   v17 = [v16 imageWithRenderingMode:0];
@@ -530,47 +530,47 @@ LABEL_25:
   return v17;
 }
 
-+ (id)_mapsCar_systemImageNamed:(id)a3 pointSize:(double)a4 weight:(int64_t)a5
++ (id)_mapsCar_systemImageNamed:(id)named pointSize:(double)size weight:(int64_t)weight
 {
-  v7 = a3;
+  namedCopy = named;
   v8 = +[CarDisplayController sharedInstance];
-  v9 = [v8 screenTraitCollection];
-  v10 = [UIImage systemImageNamed:v7 compatibleWithTraitCollection:v9];
+  screenTraitCollection = [v8 screenTraitCollection];
+  v10 = [UIImage systemImageNamed:namedCopy compatibleWithTraitCollection:screenTraitCollection];
 
-  v11 = [UIImageSymbolConfiguration configurationWithPointSize:a5 weight:a4];
+  v11 = [UIImageSymbolConfiguration configurationWithPointSize:weight weight:size];
   v12 = [v10 imageByApplyingSymbolConfiguration:v11];
 
   return v12;
 }
 
-+ (id)_mapsCar_systemImageNamed:(id)a3 pointSize:(double)a4
++ (id)_mapsCar_systemImageNamed:(id)named pointSize:(double)size
 {
-  v5 = a3;
+  namedCopy = named;
   v6 = +[CarDisplayController sharedInstance];
-  v7 = [v6 screenTraitCollection];
-  v8 = [UIImage systemImageNamed:v5 compatibleWithTraitCollection:v7];
+  screenTraitCollection = [v6 screenTraitCollection];
+  v8 = [UIImage systemImageNamed:namedCopy compatibleWithTraitCollection:screenTraitCollection];
 
-  v9 = [UIImageSymbolConfiguration configurationWithPointSize:a4];
+  v9 = [UIImageSymbolConfiguration configurationWithPointSize:size];
   v10 = [v8 imageByApplyingSymbolConfiguration:v9];
 
   return v10;
 }
 
-+ (id)_mapsCar_systemImageNamed:(id)a3
++ (id)_mapsCar_systemImageNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = +[CarDisplayController sharedInstance];
-  v5 = [v4 screenTraitCollection];
-  v6 = [UIImage systemImageNamed:v3 compatibleWithTraitCollection:v5];
+  screenTraitCollection = [v4 screenTraitCollection];
+  v6 = [UIImage systemImageNamed:namedCopy compatibleWithTraitCollection:screenTraitCollection];
 
   return v6;
 }
 
-- (id)imageScaledToSize:(CGSize)a3
+- (id)imageScaledToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  UIGraphicsBeginImageContextWithOptions(a3, 0, 0.0);
+  height = size.height;
+  width = size.width;
+  UIGraphicsBeginImageContextWithOptions(size, 0, 0.0);
   [(UIImage *)self drawInRect:0.0, 0.0, width, height];
   v6 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -578,43 +578,43 @@ LABEL_25:
   return v6;
 }
 
-- (id)_finaliseCircleImage:(id)a3 withContext:(CGContext *)a4
+- (id)_finaliseCircleImage:(id)image withContext:(CGContext *)context
 {
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
   v4 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
   return v4;
 }
 
-- (CGImage)_cgImageFromContext:(CGContext *)a3 toFit:(CGSize)a4
+- (CGImage)_cgImageFromContext:(CGContext *)context toFit:(CGSize)fit
 {
-  CGContextTranslateCTM(a3, 0.0, a4.height);
-  CGContextScaleCTM(a3, 1.0, -1.0);
-  v6 = self;
+  CGContextTranslateCTM(context, 0.0, fit.height);
+  CGContextScaleCTM(context, 1.0, -1.0);
+  selfCopy = self;
 
-  return [(UIImage *)v6 CGImage];
+  return [(UIImage *)selfCopy CGImage];
 }
 
-- (CGContext)_contextWithDiameter:(double)a3
+- (CGContext)_contextWithDiameter:(double)diameter
 {
-  UIGraphicsBeginImageContextWithOptions(*&a3, 0, 0.0);
+  UIGraphicsBeginImageContextWithOptions(*&diameter, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
   return CurrentContext;
 }
 
-- (id)drawnInCircleWithDiameter:(double)a3 backgroundColor:(id)a4
+- (id)drawnInCircleWithDiameter:(double)diameter backgroundColor:(id)color
 {
-  v6 = a4;
-  v7 = [(UIImage *)self _contextWithDiameter:a3];
-  v8 = [v6 CGColor];
+  colorCopy = color;
+  v7 = [(UIImage *)self _contextWithDiameter:diameter];
+  cGColor = [colorCopy CGColor];
 
-  CGContextSetFillColorWithColor(v7, v8);
+  CGContextSetFillColorWithColor(v7, cGColor);
   v25.origin.x = 0.0;
   v25.origin.y = 0.0;
-  v25.size.width = a3;
-  v25.size.height = a3;
+  v25.size.width = diameter;
+  v25.size.height = diameter;
   CGContextFillEllipseInRect(v7, v25);
   v9 = +[UIColor whiteColor];
   [v9 setFill];
@@ -624,49 +624,49 @@ LABEL_25:
   [(UIImage *)self size];
   v13 = v12;
   [(UIImage *)self size];
-  v14 = a3;
-  if (v15 <= a3)
+  diameterCopy = diameter;
+  if (v15 <= diameter)
   {
     [(UIImage *)self size];
-    v14 = v16;
+    diameterCopy = v16;
   }
 
   [(UIImage *)self size];
-  v17 = a3;
-  if (v18 <= a3)
+  diameterCopy2 = diameter;
+  if (v18 <= diameter)
   {
     [(UIImage *)self size];
-    v17 = v19;
+    diameterCopy2 = v19;
   }
 
-  v20 = (a3 - v13) * 0.5;
-  v21 = (a3 - v11) * -0.5;
-  v22 = [(UIImage *)self _cgImageFromContext:v7 toFit:v14, v17];
+  v20 = (diameter - v13) * 0.5;
+  v21 = (diameter - v11) * -0.5;
+  diameterCopy2 = [(UIImage *)self _cgImageFromContext:v7 toFit:diameterCopy, diameterCopy2];
   v26.origin.x = v20;
   v26.origin.y = v21;
-  v26.size.width = v14;
-  v26.size.height = v17;
-  CGContextClipToMask(v7, v26, v22);
+  v26.size.width = diameterCopy;
+  v26.size.height = diameterCopy2;
+  CGContextClipToMask(v7, v26, diameterCopy2);
   v27.origin.x = v20;
   v27.origin.y = v21;
-  v27.size.width = v14;
-  v27.size.height = v17;
+  v27.size.width = diameterCopy;
+  v27.size.height = diameterCopy2;
   CGContextFillRect(v7, v27);
 
   return [(UIImage *)self _finaliseCircleImage:0 withContext:v7];
 }
 
-- (id)_maps_blurredImage:(id)a3 scale:(double)a4
+- (id)_maps_blurredImage:(id)image scale:(double)scale
 {
   memset(&buf, 0, sizeof(buf));
-  v5 = [a3 CGImage];
-  ColorSpace = CGImageGetColorSpace(v5);
+  cGImage = [image CGImage];
+  ColorSpace = CGImageGetColorSpace(cGImage);
   v7 = CGColorSpaceRetain(ColorSpace);
   *&format.renderingIntent = 0;
-  format.bitsPerComponent = CGImageGetBitsPerComponent(v5);
-  BitsPerComponent = CGImageGetBitsPerComponent(v5);
+  format.bitsPerComponent = CGImageGetBitsPerComponent(cGImage);
+  BitsPerComponent = CGImageGetBitsPerComponent(cGImage);
   NumberOfComponents = CGColorSpaceGetNumberOfComponents(v7);
-  if (CGImageGetAlphaInfo(v5))
+  if (CGImageGetAlphaInfo(cGImage))
   {
     v10 = NumberOfComponents + 1;
   }
@@ -678,9 +678,9 @@ LABEL_25:
 
   format.bitsPerPixel = v10 * BitsPerComponent;
   format.colorSpace = v7;
-  format.bitmapInfo = CGImageGetBitmapInfo(v5);
+  format.bitmapInfo = CGImageGetBitmapInfo(cGImage);
   *&format.version = 0uLL;
-  if (vImageBuffer_InitWithCGImage(&buf, &format, 0, v5, 0))
+  if (vImageBuffer_InitWithCGImage(&buf, &format, 0, cGImage, 0))
   {
     free(buf.data);
     v11 = 0;
@@ -688,19 +688,19 @@ LABEL_25:
 
   else
   {
-    BytesPerRow = CGImageGetBytesPerRow(v5);
-    Height = CGImageGetHeight(v5);
+    BytesPerRow = CGImageGetBytesPerRow(cGImage);
+    Height = CGImageGetHeight(cGImage);
     v14 = malloc_type_malloc(Height * BytesPerRow, 0x60346CC6uLL);
     dest.data = v14;
-    dest.height = CGImageGetHeight(v5);
-    dest.width = CGImageGetWidth(v5);
-    dest.rowBytes = CGImageGetBytesPerRow(v5);
+    dest.height = CGImageGetHeight(cGImage);
+    dest.width = CGImageGetWidth(cGImage);
+    dest.rowBytes = CGImageGetBytesPerRow(cGImage);
     *&v20.renderingIntent = 0;
-    error = vImageBoxConvolve_ARGB8888(&buf, &dest, 0, 0, 0, (a4 * 12.0) + 1, (a4 * 12.0) + 1, 0, 8u);
-    v20.bitsPerComponent = CGImageGetBitsPerComponent(v5);
-    v15 = CGImageGetBitsPerComponent(v5);
+    error = vImageBoxConvolve_ARGB8888(&buf, &dest, 0, 0, 0, (scale * 12.0) + 1, (scale * 12.0) + 1, 0, 8u);
+    v20.bitsPerComponent = CGImageGetBitsPerComponent(cGImage);
+    v15 = CGImageGetBitsPerComponent(cGImage);
     v16 = CGColorSpaceGetNumberOfComponents(v7);
-    if (CGImageGetAlphaInfo(v5))
+    if (CGImageGetAlphaInfo(cGImage))
     {
       v17 = v16 + 1;
     }
@@ -712,7 +712,7 @@ LABEL_25:
 
     v20.bitsPerPixel = v17 * v15;
     v20.colorSpace = v7;
-    v20.bitmapInfo = CGImageGetBitmapInfo(v5);
+    v20.bitmapInfo = CGImageGetBitmapInfo(cGImage);
     *&v20.version = 0uLL;
     v18 = vImageCreateCGImageFromBuffer(&dest, &v20, 0, 0, 0, &error);
     CGColorSpaceRelease(v7);
@@ -725,28 +725,28 @@ LABEL_25:
   return v11;
 }
 
-- (id)_maps_scaleToFillRoundedImage:(id)a3 size:(double)a4 scale:(double)a5
+- (id)_maps_scaleToFillRoundedImage:(id)image size:(double)size scale:(double)scale
 {
-  v7 = a3;
-  [v7 size];
+  imageCopy = image;
+  [imageCopy size];
   v9 = v8;
-  [v7 size];
-  v11 = a4 / fmin(v9, v10);
+  [imageCopy size];
+  v11 = size / fmin(v9, v10);
   v12 = v11 * v10;
   v13 = v11 * v9;
-  v14 = (a4 - v11 * v10) * 0.5;
-  v21.width = a4;
-  v21.height = a4;
-  UIGraphicsBeginImageContextWithOptions(v21, 0, a5);
+  v14 = (size - v11 * v10) * 0.5;
+  v21.width = size;
+  v21.height = size;
+  UIGraphicsBeginImageContextWithOptions(v21, 0, scale);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v16 = [UIBezierPath bezierPathWithRoundedRect:0.0 cornerRadius:0.0, a4, a4, 7.19999981];
-  v17 = [v16 CGPath];
+  v16 = [UIBezierPath bezierPathWithRoundedRect:0.0 cornerRadius:0.0, size, size, 7.19999981];
+  cGPath = [v16 CGPath];
 
   CGContextSaveGState(CurrentContext);
-  CGContextAddPath(CurrentContext, v17);
+  CGContextAddPath(CurrentContext, cGPath);
   CGContextClip(CurrentContext);
   CGContextClosePath(CurrentContext);
-  [v7 drawInRect:{(a4 - v13) * 0.5, v14, v13, v12}];
+  [imageCopy drawInRect:{(size - v13) * 0.5, v14, v13, v12}];
 
   CGContextRestoreGState(CurrentContext);
   v18 = UIGraphicsGetImageFromCurrentImageContext();
@@ -755,20 +755,20 @@ LABEL_25:
   return v18;
 }
 
-- (id)_maps_scaleToFill:(id)a3 size:(double)a4 scale:(double)a5
+- (id)_maps_scaleToFill:(id)fill size:(double)size scale:(double)scale
 {
-  v7 = a3;
-  [v7 size];
+  fillCopy = fill;
+  [fillCopy size];
   v9 = v8;
-  [v7 size];
-  v11 = a4 / fmin(v9, v10);
+  [fillCopy size];
+  v11 = size / fmin(v9, v10);
   v12 = v11 * v10;
   v13 = v11 * v9;
-  v14 = (a4 - v11 * v10) * 0.5;
-  v18.width = a4;
-  v18.height = a4;
-  UIGraphicsBeginImageContextWithOptions(v18, 0, a5);
-  [v7 drawInRect:{(a4 - v13) * 0.5, v14, v13, v12}];
+  v14 = (size - v11 * v10) * 0.5;
+  v18.width = size;
+  v18.height = size;
+  UIGraphicsBeginImageContextWithOptions(v18, 0, scale);
+  [fillCopy drawInRect:{(size - v13) * 0.5, v14, v13, v12}];
 
   v15 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -776,21 +776,21 @@ LABEL_25:
   return v15;
 }
 
-- (id)_maps_composedImageScale:(double)a3 isRTL:(BOOL)a4
+- (id)_maps_composedImageScale:(double)scale isRTL:(BOOL)l
 {
-  v4 = a4;
-  v7 = [(UIImage *)self _maps_scaleToFillRoundedImage:self size:64.0 scale:a3];
-  v8 = [(UIImage *)self _maps_scaleToFill:self size:61.0 scale:a3];
-  v9 = [(UIImage *)self _maps_blurredImage:v8 scale:a3];
-  v10 = [(UIImage *)self _maps_scaleToFillRoundedImage:v9 size:61.0 scale:a3];
+  lCopy = l;
+  v7 = [(UIImage *)self _maps_scaleToFillRoundedImage:self size:64.0 scale:scale];
+  v8 = [(UIImage *)self _maps_scaleToFill:self size:61.0 scale:scale];
+  v9 = [(UIImage *)self _maps_blurredImage:v8 scale:scale];
+  v10 = [(UIImage *)self _maps_scaleToFillRoundedImage:v9 size:61.0 scale:scale];
 
   if (v10)
   {
     v20.width = 72.0;
     v20.height = 72.0;
-    UIGraphicsBeginImageContextWithOptions(v20, 0, a3);
+    UIGraphicsBeginImageContextWithOptions(v20, 0, scale);
     CurrentContext = UIGraphicsGetCurrentContext();
-    if (v4)
+    if (lCopy)
     {
       v12 = 11.0;
     }
@@ -801,7 +801,7 @@ LABEL_25:
     }
 
     v13 = 5.0;
-    if (v4)
+    if (lCopy)
     {
       v13 = 0.0;
       v14 = 0.0;
@@ -813,7 +813,7 @@ LABEL_25:
     }
 
     v15 = [UIBezierPath bezierPathWithRoundedRect:v13 cornerRadius:5.0, 67.0, 67.0, 9.60000038];
-    v16 = [v15 CGPath];
+    cGPath = [v15 CGPath];
 
     CGContextSaveGState(CurrentContext);
     CGContextBeginPath(CurrentContext);
@@ -822,7 +822,7 @@ LABEL_25:
     v21.size.width = 61.0;
     v21.size.height = 61.0;
     CGContextAddRect(CurrentContext, v21);
-    CGContextAddPath(CurrentContext, v16);
+    CGContextAddPath(CurrentContext, cGPath);
     CGContextEOClip(CurrentContext);
     [v10 drawInRect:0 blendMode:v12 alpha:{0.0, 61.0, 61.0, 0.649999976}];
     CGContextRestoreGState(CurrentContext);
@@ -839,27 +839,27 @@ LABEL_25:
   return v17;
 }
 
-- (void)maps_blurredImageScale:(double)a3 isRTL:(BOOL)a4 completion:(id)a5
+- (void)maps_blurredImageScale:(double)scale isRTL:(BOOL)l completion:(id)completion
 {
-  v8 = a5;
-  v9 = [objc_opt_class() _imageProcessingQueue];
+  completionCopy = completion;
+  _imageProcessingQueue = [objc_opt_class() _imageProcessingQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10097D610;
   v11[3] = &unk_101630278;
-  v13 = a3;
-  v14 = a4;
+  scaleCopy = scale;
+  lCopy = l;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
-  [v9 addOperationWithBlock:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [_imageProcessingQueue addOperationWithBlock:v11];
 }
 
-+ (CGRect)maps_collectionGlyphFractionalRectWithRTL:(BOOL)a3
++ (CGRect)maps_collectionGlyphFractionalRectWithRTL:(BOOL)l
 {
   v3 = 0.111111112;
   v4 = 0.0;
-  if (!a3)
+  if (!l)
   {
     v4 = 0.111111112;
   }
@@ -885,28 +885,28 @@ LABEL_25:
   return v3;
 }
 
-+ (id)maps_filledImageWithColor:(id)a3 scale:(double)a4
++ (id)maps_filledImageWithColor:(id)color scale:(double)scale
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = objc_alloc_init(UIGraphicsImageRendererFormat);
-  [v6 setScale:a4];
+  [v6 setScale:scale];
   v7 = [[UIGraphicsImageRenderer alloc] initWithSize:v6 format:{72.0, 72.0}];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10097D864;
   v11[3] = &unk_101650960;
-  v12 = v5;
-  v8 = v5;
+  v12 = colorCopy;
+  v8 = colorCopy;
   v9 = [v7 imageWithActions:v11];
 
   return v9;
 }
 
-+ (id)maps_emptyImageScale:(double)a3
++ (id)maps_emptyImageScale:(double)scale
 {
   v8.width = 72.0;
   v8.height = 72.0;
-  UIGraphicsBeginImageContextWithOptions(v8, 1, a3);
+  UIGraphicsBeginImageContextWithOptions(v8, 1, scale);
   CurrentContext = UIGraphicsGetCurrentContext();
   v9.origin.x = 0.0;
   v9.origin.y = 0.0;
@@ -919,20 +919,20 @@ LABEL_25:
   return v5;
 }
 
-+ (double)_maps_minSideLengthForShieldSize:(int64_t)a3
++ (double)_maps_minSideLengthForShieldSize:(int64_t)size
 {
   result = 0.0;
-  if (a3 <= 7)
+  if (size <= 7)
   {
-    return dbl_1012155A8[a3];
+    return dbl_1012155A8[size];
   }
 
   return result;
 }
 
-+ (id)_maps_maneuverImageForTransitArrivalInfo:(id)a3 shieldSize:(int64_t)a4 forDarkBackground:(BOOL)a5
++ (id)_maps_maneuverImageForTransitArrivalInfo:(id)info shieldSize:(int64_t)size forDarkBackground:(BOOL)background
 {
-  v8 = a3;
+  infoCopy = info;
   v9 = [[GuidanceManeuverView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [SignStyle arrowMetricsForStyle:0];
   memcpy(__dst, __src, sizeof(__dst));
@@ -941,7 +941,7 @@ LABEL_25:
   memcpy(__dst, v20, sizeof(__dst));
   [(GuidanceManeuverView *)v9 setJunctionArrowMetrics:__dst];
   [(GuidanceManeuverView *)v9 setFraming:1];
-  if (a5)
+  if (background)
   {
     +[UIColor whiteColor];
   }
@@ -954,10 +954,10 @@ LABEL_25:
   [(GuidanceManeuverView *)v9 setArrowColor:v10];
 
   v11 = 18;
-  if (v8)
+  if (infoCopy)
   {
-    v12 = [v8 destinationLocation];
-    if (v12 == 2)
+    destinationLocation = [infoCopy destinationLocation];
+    if (destinationLocation == 2)
     {
       v13 = 34;
     }
@@ -967,7 +967,7 @@ LABEL_25:
       v13 = 18;
     }
 
-    if (v12 == 1)
+    if (destinationLocation == 1)
     {
       v11 = 33;
     }
@@ -982,33 +982,33 @@ LABEL_25:
   [(GuidanceManeuverView *)v9 setManeuverArtwork:v14];
 
   [(GuidanceManeuverView *)v9 intrinsicContentSize];
-  [a1 _maps_minSideLengthForShieldSize:a4];
+  [self _maps_minSideLengthForShieldSize:size];
   UIRoundToViewScale();
   v16 = v15;
   UIRoundToViewScale();
   [(GuidanceManeuverView *)v9 setBounds:0.0, 0.0, v16, v17];
-  v18 = [(GuidanceManeuverView *)v9 imageRepresentation];
+  imageRepresentation = [(GuidanceManeuverView *)v9 imageRepresentation];
 
-  return v18;
+  return imageRepresentation;
 }
 
-+ (id)interSystemTransferFromHexColor:(id)a3 toHexColor:(id)a4 imageWithSize:(int64_t)a5 scale:(double)a6 darkMode:(BOOL)a7
++ (id)interSystemTransferFromHexColor:(id)color toHexColor:(id)hexColor imageWithSize:(int64_t)size scale:(double)scale darkMode:(BOOL)mode
 {
-  v7 = a7;
-  v11 = a4;
-  v12 = [MKTransitArtwork stationNodeArtworkWithHexColor:a3];
-  v13 = [MKTransitArtwork stationNodeOutlinedArtworkWithHexColor:v11];
+  modeCopy = mode;
+  hexColorCopy = hexColor;
+  v12 = [MKTransitArtwork stationNodeArtworkWithHexColor:color];
+  v13 = [MKTransitArtwork stationNodeOutlinedArtworkWithHexColor:hexColorCopy];
 
-  v14 = [UIImage _mapkit_transitArtworkImageWithDataSource:v12 size:a5 scale:v7 nightMode:a6];
-  v15 = [UIImage _mapkit_transitArtworkImageWithDataSource:v13 size:a5 scale:v7 nightMode:a6];
-  v16 = [v14 CGImage];
-  v17 = [v15 CGImage];
-  Width = CGImageGetWidth(v16);
-  v19 = CGImageGetWidth(v17);
+  v14 = [UIImage _mapkit_transitArtworkImageWithDataSource:v12 size:size scale:modeCopy nightMode:scale];
+  v15 = [UIImage _mapkit_transitArtworkImageWithDataSource:v13 size:size scale:modeCopy nightMode:scale];
+  cGImage = [v14 CGImage];
+  cGImage2 = [v15 CGImage];
+  Width = CGImageGetWidth(cGImage);
+  v19 = CGImageGetWidth(cGImage2);
   v20 = fmax(Width, v19);
-  Height = CGImageGetHeight(v16);
+  Height = CGImageGetHeight(cGImage);
   [v14 scale];
-  v23 = Height + v22 * 4.0 + CGImageGetWidth(v17);
+  v23 = Height + v22 * 4.0 + CGImageGetWidth(cGImage2);
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   AlignedBytesPerRow = CGBitmapGetAlignedBytesPerRow();
   v26 = CGBitmapContextCreate(0, v20, v23, 8uLL, AlignedBytesPerRow, DeviceRGB, 0x2002u);
@@ -1023,20 +1023,20 @@ LABEL_25:
   v36.size.width = v20;
   v36.size.height = v23;
   CGContextClearRect(v26, v36);
-  v37.size.height = CGImageGetHeight(v16);
+  v37.size.height = CGImageGetHeight(cGImage);
   v37.origin.y = 0.0;
   v37.origin.x = (v20 - Width) * 0.5;
   v37.size.width = Width;
-  CGContextDrawImage(v26, v37, v16);
+  CGContextDrawImage(v26, v37, cGImage);
   v27 = (v20 - v19) * 0.5;
-  v28 = CGImageGetHeight(v16);
+  v28 = CGImageGetHeight(cGImage);
   [v14 scale];
   v30 = v28 + v29 * 4.0;
-  v38.size.height = CGImageGetHeight(v17);
+  v38.size.height = CGImageGetHeight(cGImage2);
   v38.origin.x = v27;
   v38.origin.y = v30;
   v38.size.width = v19;
-  CGContextDrawImage(v26, v38, v17);
+  CGContextDrawImage(v26, v38, cGImage2);
   Image = CGBitmapContextCreateImage(v26);
   [v14 scale];
   v32 = [UIImage imageWithCGImage:Image scale:0 orientation:?];
@@ -1203,14 +1203,14 @@ LABEL_25:
   return v6;
 }
 
-+ (id)_maps_applicationIconWithBundleIdentifier:(id)a3
++ (id)_maps_applicationIconWithBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     v4 = +[UIScreen mainScreen];
     [v4 scale];
-    v5 = [UIImage _applicationIconImageForBundleIdentifier:v3 format:2 scale:?];
+    v5 = [UIImage _applicationIconImageForBundleIdentifier:identifierCopy format:2 scale:?];
   }
 
   else
@@ -1221,22 +1221,22 @@ LABEL_25:
   return v5;
 }
 
-- (id)_maps_imageWithAspectFitScalingForMaximumSize:(CGSize)a3
+- (id)_maps_imageWithAspectFitScalingForMaximumSize:(CGSize)size
 {
-  width = a3.width;
-  v4 = a3.width <= 0.00000011920929 || a3.height <= 0.00000011920929;
+  width = size.width;
+  v4 = size.width <= 0.00000011920929 || size.height <= 0.00000011920929;
   if (v4)
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    height = a3.height;
+    height = size.height;
     [(UIImage *)self size];
     if (v8 <= width && v9 <= height)
     {
-      v5 = self;
+      selfCopy = self;
     }
 
     else
@@ -1260,20 +1260,20 @@ LABEL_25:
       v17.height = height;
       UIGraphicsBeginImageContextWithOptions(v17, 0, v14);
       [(UIImage *)self drawInRect:CGPointZero.x, CGPointZero.y, width, height];
-      v5 = UIGraphicsGetImageFromCurrentImageContext();
+      selfCopy = UIGraphicsGetImageFromCurrentImageContext();
       UIGraphicsEndImageContext();
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)_enumeratePixelsWithBlock:(id)a3
+- (void)_enumeratePixelsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(UIImage *)self CGImage];
-  Width = CGImageGetWidth(v5);
-  Height = CGImageGetHeight(v5);
+  blockCopy = block;
+  cGImage = [(UIImage *)self CGImage];
+  Width = CGImageGetWidth(cGImage);
+  Height = CGImageGetHeight(cGImage);
   v8 = malloc_type_calloc(4 * Width * Height, 1uLL, 0x100004077774924uLL);
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v23 = v8;
@@ -1284,7 +1284,7 @@ LABEL_25:
   v27.size.height = Height;
   v27.origin.x = 0.0;
   v27.origin.y = 0.0;
-  CGContextDrawImage(v10, v27, v5);
+  CGContextDrawImage(v10, v27, cGImage);
   CGContextRelease(v10);
   v11 = 0;
   v12 = 0;
@@ -1333,7 +1333,7 @@ LABEL_11:
     v19 = 2 * v14;
     while (1)
     {
-      v4[2](v4, v18, &v26);
+      blockCopy[2](blockCopy, v18, &v26);
       v15 = v26;
       if (v26)
       {
@@ -1412,33 +1412,33 @@ LABEL_16:
   return v12;
 }
 
-+ (id)imageNamed:(id)a3 ofSize:(double)a4 color:(id)a5
++ (id)imageNamed:(id)named ofSize:(double)size color:(id)color
 {
-  v7 = a5;
-  v8 = [UIImage systemImageNamed:a3];
-  v9 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:0 scale:a4];
+  colorCopy = color;
+  v8 = [UIImage systemImageNamed:named];
+  v9 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:0 scale:size];
   v10 = [v8 imageWithConfiguration:v9];
 
   v11 = [v10 imageWithRenderingMode:2];
-  v12 = [v11 _flatImageWithColor:v7];
+  v12 = [v11 _flatImageWithColor:colorCopy];
 
   v13 = [v12 imageWithRenderingMode:1];
 
   return v13;
 }
 
-+ (id)chargeImageOfSize:(double)a3 batteryLevel:(unint64_t)a4
++ (id)chargeImageOfSize:(double)size batteryLevel:(unint64_t)level
 {
-  v6 = [VehicleBatteryView colorForBatteryLevel:a4];
-  v7 = [a1 imageNamed:@"bolt.circle.fill" ofSize:v6 color:a3];
+  v6 = [VehicleBatteryView colorForBatteryLevel:level];
+  v7 = [self imageNamed:@"bolt.circle.fill" ofSize:v6 color:size];
 
   return v7;
 }
 
-+ (id)warningImageOfSize:(double)a3
++ (id)warningImageOfSize:(double)size
 {
   v5 = +[UIColor systemYellowColor];
-  v6 = [a1 imageNamed:@"exclamationmark.circle.fill" ofSize:v5 color:a3];
+  v6 = [self imageNamed:@"exclamationmark.circle.fill" ofSize:v5 color:size];
 
   return v6;
 }

@@ -1,17 +1,17 @@
 @interface DNDSModeResolutionService
-- (BOOL)_preferModeAssertion:(id)a3 toModeAssertion:(id)a4;
-- (id)recalculateModeForSnapshot:(id)a3;
-- (unint64_t)_priorityForModeAssertion:(id)a3;
+- (BOOL)_preferModeAssertion:(id)assertion toModeAssertion:(id)modeAssertion;
+- (id)recalculateModeForSnapshot:(id)snapshot;
+- (unint64_t)_priorityForModeAssertion:(id)assertion;
 @end
 
 @implementation DNDSModeResolutionService
 
-- (id)recalculateModeForSnapshot:(id)a3
+- (id)recalculateModeForSnapshot:(id)snapshot
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 assertions];
-  v5 = [v4 count];
+  snapshotCopy = snapshot;
+  assertions = [snapshotCopy assertions];
+  v5 = [assertions count];
 
   if (v5)
   {
@@ -19,8 +19,8 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v6 = [v3 assertions];
-    v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    assertions2 = [snapshotCopy assertions];
+    v7 = [assertions2 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v7)
     {
       v8 = v7;
@@ -32,13 +32,13 @@
         {
           if (*v23 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(assertions2);
           }
 
           v12 = *(*(&v22 + 1) + 8 * i);
-          v13 = [v3 activeAssertionUUIDs];
-          v14 = [v12 UUID];
-          v15 = [v13 containsObject:v14];
+          activeAssertionUUIDs = [snapshotCopy activeAssertionUUIDs];
+          uUID = [v12 UUID];
+          v15 = [activeAssertionUUIDs containsObject:uUID];
 
           if (v15 && [(DNDSModeResolutionService *)self _preferModeAssertion:v12 toModeAssertion:v9])
           {
@@ -48,7 +48,7 @@
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v8 = [assertions2 countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v8);
@@ -65,21 +65,21 @@
     v9 = 0;
   }
 
-  v17 = [v9 details];
-  v18 = [v17 modeIdentifier];
+  details = [v9 details];
+  modeIdentifier = [details modeIdentifier];
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return modeIdentifier;
 }
 
-- (BOOL)_preferModeAssertion:(id)a3 toModeAssertion:(id)a4
+- (BOOL)_preferModeAssertion:(id)assertion toModeAssertion:(id)modeAssertion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  assertionCopy = assertion;
+  modeAssertionCopy = modeAssertion;
+  if (modeAssertionCopy)
   {
-    v8 = [(DNDSModeResolutionService *)self _priorityForModeAssertion:v7];
+    v8 = [(DNDSModeResolutionService *)self _priorityForModeAssertion:modeAssertionCopy];
   }
 
   else
@@ -87,14 +87,14 @@
     v8 = 0;
   }
 
-  v9 = [(DNDSModeResolutionService *)self _priorityForModeAssertion:v6];
+  v9 = [(DNDSModeResolutionService *)self _priorityForModeAssertion:assertionCopy];
   if (v9 <= v8)
   {
     if (v9 == v8)
     {
-      v11 = [v7 startDate];
-      v12 = [v6 startDate];
-      v10 = [v11 compare:v12] == -1;
+      startDate = [modeAssertionCopy startDate];
+      startDate2 = [assertionCopy startDate];
+      v10 = [startDate compare:startDate2] == -1;
     }
 
     else
@@ -111,20 +111,20 @@
   return v10;
 }
 
-- (unint64_t)_priorityForModeAssertion:(id)a3
+- (unint64_t)_priorityForModeAssertion:(id)assertion
 {
-  v3 = a3;
-  v4 = [v3 source];
-  v5 = [v4 clientIdentifier];
+  assertionCopy = assertion;
+  source = [assertionCopy source];
+  clientIdentifier = [source clientIdentifier];
 
-  v6 = [v3 details];
+  details = [assertionCopy details];
 
-  v7 = [v6 modeIdentifier];
-  v8 = v7;
+  modeIdentifier = [details modeIdentifier];
+  v8 = modeIdentifier;
   v9 = @"*";
-  if (v7)
+  if (modeIdentifier)
   {
-    v9 = v7;
+    v9 = modeIdentifier;
   }
 
   v10 = v9;
@@ -135,7 +135,7 @@
   }
 
   v11 = _intersect_clientIdentifier_modeIdentifier_priority_dict;
-  v12 = v5;
+  v12 = clientIdentifier;
   v13 = v12;
   if ([(__CFString *)v12 hasSuffix:@".private.schedule"])
   {
@@ -160,9 +160,9 @@
     v15 = [v14 objectForKey:@"*"];
   }
 
-  v16 = [v15 unsignedIntegerValue];
+  unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-  return v16;
+  return unsignedIntegerValue;
 }
 
 @end

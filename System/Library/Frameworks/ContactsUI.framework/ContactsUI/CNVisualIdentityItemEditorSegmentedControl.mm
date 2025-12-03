@@ -1,6 +1,6 @@
 @interface CNVisualIdentityItemEditorSegmentedControl
-+ (id)segmentedControlForItemType:(unint64_t)a3;
-- (CNVisualIdentityItemEditorSegmentedControl)initWithItems:(id)a3;
++ (id)segmentedControlForItemType:(unint64_t)type;
+- (CNVisualIdentityItemEditorSegmentedControl)initWithItems:(id)items;
 - (void)setStyleOnlyMode;
 - (void)setTextAndStyleMode;
 @end
@@ -23,11 +23,11 @@
   [(CNVisualIdentityItemEditorSegmentedControl *)self selectTextSegment];
 }
 
-- (CNVisualIdentityItemEditorSegmentedControl)initWithItems:(id)a3
+- (CNVisualIdentityItemEditorSegmentedControl)initWithItems:(id)items
 {
   v7.receiver = self;
   v7.super_class = CNVisualIdentityItemEditorSegmentedControl;
-  v3 = [(CNVisualIdentityItemEditorSegmentedControl *)&v7 initWithItems:a3];
+  v3 = [(CNVisualIdentityItemEditorSegmentedControl *)&v7 initWithItems:items];
   v4 = v3;
   if (v3)
   {
@@ -39,12 +39,12 @@
   return v4;
 }
 
-+ (id)segmentedControlForItemType:(unint64_t)a3
++ (id)segmentedControlForItemType:(unint64_t)type
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v4 = CNContactsUIBundle();
   v5 = v4;
-  if (a3 == 4)
+  if (type == 4)
   {
     v6 = @"PHOTO_TEXT_STYLE_EDITOR_EMOJI_LABEL";
   }

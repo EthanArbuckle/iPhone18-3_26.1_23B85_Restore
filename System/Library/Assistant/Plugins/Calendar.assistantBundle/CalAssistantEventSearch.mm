@@ -2,8 +2,8 @@
 - (EKEventStore)eventStore;
 - (id)_validate;
 - (id)_visibleCalendars;
-- (void)performWithCompletion:(id)a3;
-- (void)setEventStore:(id)a3;
+- (void)performWithCompletion:(id)completion;
+- (void)setEventStore:(id)store;
 @end
 
 @implementation CalAssistantEventSearch
@@ -23,21 +23,21 @@
   return eventStore;
 }
 
-- (void)setEventStore:(id)a3
+- (void)setEventStore:(id)store
 {
-  v5 = a3;
-  if (self->_eventStore != v5)
+  storeCopy = store;
+  if (self->_eventStore != storeCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_eventStore, a3);
-    v5 = v6;
+    v6 = storeCopy;
+    objc_storeStrong(&self->_eventStore, store);
+    storeCopy = v6;
   }
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v198 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   sub_2334B11EC();
   sub_2334B11EC();
   v5 = qword_27DE0DD38;
@@ -126,7 +126,7 @@
           _os_log_debug_impl(&dword_2334AF000, log, OS_LOG_TYPE_DEBUG, "[%@] - Creating predicate for event search with timeZone %@, startDate %@, endDate %@, title %@, location %@, notes %@, visibleCalendars %@ participants %@ in store %@", buf, 0x66u);
         }
 
-        v161 = v4;
+        v161 = completionCopy;
         v163 = v15;
         v47 = *v6;
         if (os_log_type_enabled(*v6, OS_LOG_TYPE_DEBUG))
@@ -183,7 +183,7 @@
         {
           v75 = os_log_type_enabled(qword_27DE0DD38, OS_LOG_TYPE_DEBUG);
           v76 = MEMORY[0x277CEF0D8];
-          v4 = v161;
+          completionCopy = v161;
           if (v75)
           {
             v147 = v74;
@@ -278,7 +278,7 @@
         else
         {
           v94 = os_log_type_enabled(qword_27DE0DD38, OS_LOG_TYPE_ERROR);
-          v4 = v161;
+          completionCopy = v161;
           v15 = v163;
           v95 = MEMORY[0x277CEF0D8];
           if (v94)
@@ -325,7 +325,7 @@
   }
 
   v101 = objc_msgSend_dictionary(v14, v11, v12, v13);
-  v4[2](v4, v101);
+  completionCopy[2](completionCopy, v101);
 
   v102 = *MEMORY[0x277D85DE8];
 }

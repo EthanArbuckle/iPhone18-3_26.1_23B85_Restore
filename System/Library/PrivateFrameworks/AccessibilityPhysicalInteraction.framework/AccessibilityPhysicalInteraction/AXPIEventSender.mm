@@ -1,8 +1,8 @@
 @interface AXPIEventSender
 + (id)sharedInstance;
 - (AXPIEventSender)init;
-- (void)sendEventRepresentation:(id)a3;
-- (void)sendIOHIDEventRef:(__IOHIDEvent *)a3;
+- (void)sendEventRepresentation:(id)representation;
+- (void)sendIOHIDEventRef:(__IOHIDEvent *)ref;
 @end
 
 @implementation AXPIEventSender
@@ -43,17 +43,17 @@ uint64_t __33__AXPIEventSender_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)sendEventRepresentation:(id)a3
+- (void)sendEventRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   eventSendingQueue = self->_eventSendingQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__AXPIEventSender_sendEventRepresentation___block_invoke;
   v7[3] = &unk_278BE6330;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = representationCopy;
+  selfCopy = self;
+  v6 = representationCopy;
   dispatch_async(eventSendingQueue, v7);
 }
 
@@ -87,15 +87,15 @@ void __43__AXPIEventSender_sendEventRepresentation___block_invoke(uint64_t a1)
   }
 }
 
-- (void)sendIOHIDEventRef:(__IOHIDEvent *)a3
+- (void)sendIOHIDEventRef:(__IOHIDEvent *)ref
 {
   v7[0] = 0;
   v7[1] = v7;
   v7[2] = 0x2020000000;
-  v7[3] = a3;
-  if (a3)
+  v7[3] = ref;
+  if (ref)
   {
-    CFRetain(a3);
+    CFRetain(ref);
   }
 
   eventSendingQueue = self->_eventSendingQueue;
@@ -104,7 +104,7 @@ void __43__AXPIEventSender_sendEventRepresentation___block_invoke(uint64_t a1)
   block[2] = __37__AXPIEventSender_sendIOHIDEventRef___block_invoke;
   block[3] = &unk_278BE6358;
   block[5] = v7;
-  block[6] = a3;
+  block[6] = ref;
   block[4] = self;
   dispatch_async(eventSendingQueue, block);
   _Block_object_dispose(v7, 8);

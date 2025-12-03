@@ -1,7 +1,7 @@
 @interface VLFSessionUsageTracker
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (VLFSessionUsageTracker)sharedInstance;
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
 - (BOOL)hasUserEnteredVLF;
 - (BOOL)hasUserSeenVLFCallout;
 - (VLFSessionUsageTracker)init;
@@ -23,15 +23,15 @@
 - (void)registerUserEnteredVLF;
 - (void)registerUserTappedCallout;
 - (void)registerUserWasShownCallout;
-- (void)setNumberOfTimesVLFLocalized:(int64_t)a3;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)setNumberOfTimesVLFLocalized:(int64_t)localized;
+- (void)valueChangedForGEOConfigKey:(id)key;
 @end
 
 @implementation VLFSessionUsageTracker
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  if (a3.var0 == 220 && a3.var1 == &unk_10163E828)
+  if (key.var0 == 220 && key.var1 == &unk_10163E828)
   {
     v4 = NSStringFromSelector("isVLFCalloutEnabled");
     [(VLFSessionUsageTracker *)self willChangeValueForKey:v4];
@@ -526,25 +526,25 @@
 {
   v2 = +[NSUserDefaults standardUserDefaults];
   v3 = [v2 objectForKey:@"kVLFSessionUsageCalloutDismissalsKey"];
-  v4 = [v3 lastObject];
+  lastObject = [v3 lastObject];
 
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 objectForKey:@"kVLFSessionUsageCalloutTapsKey"];
-  v7 = [v6 lastObject];
+  lastObject2 = [v6 lastObject];
 
   v8 = +[NSUserDefaults standardUserDefaults];
   v9 = [v8 objectForKey:@"kVLFSessionUsageVLFWasEnteredKey"];
 
   v10 = +[NSMutableArray array];
   v11 = v10;
-  if (v4)
+  if (lastObject)
   {
-    [v10 addObject:v4];
+    [v10 addObject:lastObject];
   }
 
-  if (v7)
+  if (lastObject2)
   {
-    [v11 addObject:v7];
+    [v11 addObject:lastObject2];
   }
 
   if (v9)
@@ -554,8 +554,8 @@
 
   if ([v11 count])
   {
-    v24 = v7;
-    v25 = v4;
+    v24 = lastObject2;
+    v25 = lastObject;
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
@@ -598,8 +598,8 @@
       v16 = 1.79769313e308;
     }
 
-    v7 = v24;
-    v4 = v25;
+    lastObject2 = v24;
+    lastObject = v25;
   }
 
   else
@@ -628,10 +628,10 @@
   return v4;
 }
 
-- (void)setNumberOfTimesVLFLocalized:(int64_t)a3
+- (void)setNumberOfTimesVLFLocalized:(int64_t)localized
 {
   v4 = +[NSUserDefaults standardUserDefaults];
-  [v4 setInteger:a3 forKey:@"kVLFSessionUsageLocalizationSuccessCountKey"];
+  [v4 setInteger:localized forKey:@"kVLFSessionUsageLocalizationSuccessCountKey"];
 }
 
 - (int64_t)numberOfTimesVLFLocalized
@@ -698,11 +698,11 @@
   return v2;
 }
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = NSStringFromSelector("numberOfCalloutInteractions");
-  if ([v4 isEqualToString:v5])
+  if ([keyCopy isEqualToString:v5])
   {
 
 LABEL_4:
@@ -716,7 +716,7 @@ LABEL_5:
   }
 
   v6 = NSStringFromSelector("timeSinceLastVLFInteraction");
-  v7 = [v4 isEqualToString:v6];
+  v7 = [keyCopy isEqualToString:v6];
 
   if (v7)
   {
@@ -724,7 +724,7 @@ LABEL_5:
   }
 
   v13 = NSStringFromSelector("hasUserSeenVLFCallout");
-  v14 = [v4 isEqualToString:v13];
+  v14 = [keyCopy isEqualToString:v13];
 
   if (v14)
   {
@@ -736,7 +736,7 @@ LABEL_13:
   }
 
   v16 = NSStringFromSelector("hasVLFEverLocalized");
-  v17 = [v4 isEqualToString:v16];
+  v17 = [keyCopy isEqualToString:v16];
 
   if (v17)
   {
@@ -744,25 +744,25 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v18.receiver = a1;
+  v18.receiver = self;
   v18.super_class = &OBJC_METACLASS___VLFSessionUsageTracker;
-  v11 = objc_msgSendSuper2(&v18, "keyPathsForValuesAffectingValueForKey:", v4);
+  v11 = objc_msgSendSuper2(&v18, "keyPathsForValuesAffectingValueForKey:", keyCopy);
 LABEL_6:
 
   return v11;
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = NSStringFromSelector("numberOfCalloutDismissals");
-  if ([v4 isEqualToString:v5])
+  if ([keyCopy isEqualToString:v5])
   {
     goto LABEL_8;
   }
 
   v6 = NSStringFromSelector("numberOfCalloutTaps");
-  if ([v4 isEqualToString:v6])
+  if ([keyCopy isEqualToString:v6])
   {
 LABEL_7:
 
@@ -773,7 +773,7 @@ LABEL_9:
   }
 
   v7 = NSStringFromSelector("numberOfTimesVLFLocalized");
-  if ([v4 isEqualToString:v7])
+  if ([keyCopy isEqualToString:v7])
   {
 LABEL_6:
 
@@ -781,14 +781,14 @@ LABEL_6:
   }
 
   v8 = NSStringFromSelector("hasUserSeenVLFCallout");
-  if ([v4 isEqualToString:v8])
+  if ([keyCopy isEqualToString:v8])
   {
 
     goto LABEL_6;
   }
 
   v11 = NSStringFromSelector("isVLFCalloutEnabled");
-  v12 = [v4 isEqualToString:v11];
+  v12 = [keyCopy isEqualToString:v11];
 
   if (v12)
   {
@@ -796,7 +796,7 @@ LABEL_6:
   }
 
   v13 = NSStringFromSelector("hasVLFEverLocalized");
-  v14 = [v4 isEqualToString:v13];
+  v14 = [keyCopy isEqualToString:v13];
 
   if (v14)
   {
@@ -805,9 +805,9 @@ LABEL_6:
 
   else
   {
-    v15.receiver = a1;
+    v15.receiver = self;
     v15.super_class = &OBJC_METACLASS___VLFSessionUsageTracker;
-    v9 = objc_msgSendSuper2(&v15, "automaticallyNotifiesObserversForKey:", v4);
+    v9 = objc_msgSendSuper2(&v15, "automaticallyNotifiesObserversForKey:", keyCopy);
   }
 
 LABEL_10:

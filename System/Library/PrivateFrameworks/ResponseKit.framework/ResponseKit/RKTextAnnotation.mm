@@ -1,16 +1,16 @@
 @interface RKTextAnnotation
-- (BOOL)isEqual:(id)a3;
-- (RKTextAnnotation)initWithRange:(_NSRange)a3 andType:(unint64_t)a4 machineGenerated:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (RKTextAnnotation)initWithRange:(_NSRange)range andType:(unint64_t)type machineGenerated:(BOOL)generated;
 - (_NSRange)range;
 - (unint64_t)hash;
 @end
 
 @implementation RKTextAnnotation
 
-- (RKTextAnnotation)initWithRange:(_NSRange)a3 andType:(unint64_t)a4 machineGenerated:(BOOL)a5
+- (RKTextAnnotation)initWithRange:(_NSRange)range andType:(unint64_t)type machineGenerated:(BOOL)generated
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v10.receiver = self;
   v10.super_class = RKTextAnnotation;
   result = [(RKTextAnnotation *)&v10 init];
@@ -18,27 +18,27 @@
   {
     result->_range.location = location;
     result->_range.length = length;
-    result->_type = a4;
-    result->_machineGenerated = a5;
+    result->_type = type;
+    result->_machineGenerated = generated;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(RKTextAnnotation *)self range];
+    v5 = equalCopy;
+    range = [(RKTextAnnotation *)self range];
     v8 = v7;
     v10 = 0;
-    if (v6 == [v5 range] && v8 == v9)
+    if (range == [v5 range] && v8 == v9)
     {
-      v11 = [(RKTextAnnotation *)self type];
-      v10 = v11 == [v5 type];
+      type = [(RKTextAnnotation *)self type];
+      v10 = type == [v5 type];
     }
   }
 
@@ -52,9 +52,9 @@
 
 - (unint64_t)hash
 {
-  v3 = [(RKTextAnnotation *)self range];
+  range = [(RKTextAnnotation *)self range];
   [(RKTextAnnotation *)self range];
-  return v4 ^ v3 ^ [(RKTextAnnotation *)self type];
+  return v4 ^ range ^ [(RKTextAnnotation *)self type];
 }
 
 - (_NSRange)range

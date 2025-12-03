@@ -1,16 +1,16 @@
 @interface CRLiOSMiniFormatterPopoverContainerViewController
-- (_TtC8Freeform49CRLiOSMiniFormatterPopoverContainerViewController)initWithCoder:(id)a3;
-- (_TtC8Freeform49CRLiOSMiniFormatterPopoverContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8Freeform49CRLiOSMiniFormatterPopoverContainerViewController)initWithCoder:(id)coder;
+- (_TtC8Freeform49CRLiOSMiniFormatterPopoverContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CRLiOSMiniFormatterPopoverContainerViewController
 
-- (_TtC8Freeform49CRLiOSMiniFormatterPopoverContainerViewController)initWithCoder:(id)a3
+- (_TtC8Freeform49CRLiOSMiniFormatterPopoverContainerViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform49CRLiOSMiniFormatterPopoverContainerViewController_builder) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform49CRLiOSMiniFormatterPopoverContainerViewController_widthAnchorConstraint) = 0;
@@ -22,24 +22,24 @@
 - (void)loadView
 {
   v3 = objc_allocWithZone(UIView);
-  v5 = self;
+  selfCopy = self;
   v4 = [v3 init];
-  [(CRLiOSMiniFormatterPopoverContainerViewController *)v5 setView:v4];
+  [(CRLiOSMiniFormatterPopoverContainerViewController *)selfCopy setView:v4];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100715440();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v9.receiver = self;
   v9.super_class = type metadata accessor for CRLiOSMiniFormatterPopoverContainerViewController();
   v4 = v9.receiver;
-  [(CRLiOSMiniFormatterPopoverContainerViewController *)&v9 viewDidDisappear:v3];
+  [(CRLiOSMiniFormatterPopoverContainerViewController *)&v9 viewDidDisappear:disappearCopy];
   if (*&v4[OBJC_IVAR____TtC8Freeform49CRLiOSMiniFormatterPopoverContainerViewController_delegate])
   {
     v5 = *&v4[OBJC_IVAR____TtC8Freeform49CRLiOSMiniFormatterPopoverContainerViewController_delegate + 8];
@@ -52,20 +52,20 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = type metadata accessor for CRLiOSMiniFormatterPopoverContainerViewController();
   swift_unknownObjectRetain();
   v7 = v10.receiver;
-  [(CRLiOSMiniFormatterPopoverContainerViewController *)&v10 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
-  v8 = [v7 view];
-  if (v8)
+  [(CRLiOSMiniFormatterPopoverContainerViewController *)&v10 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
+  view = [v7 view];
+  if (view)
   {
-    v9 = v8;
-    [v8 setNeedsLayout];
+    v9 = view;
+    [view setNeedsLayout];
 
     swift_unknownObjectRelease();
   }
@@ -78,11 +78,11 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100715F20();
 }
 
-- (_TtC8Freeform49CRLiOSMiniFormatterPopoverContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8Freeform49CRLiOSMiniFormatterPopoverContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

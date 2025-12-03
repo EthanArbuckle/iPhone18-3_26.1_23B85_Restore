@@ -1,6 +1,6 @@
 @interface MTRBasicInformationClusterReachableChangedEvent
 - (MTRBasicInformationClusterReachableChangedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRBasicInformationClusterReachableChangedEvent);
-  v5 = [(MTRBasicInformationClusterReachableChangedEvent *)self reachableNewValue];
-  [(MTRBasicInformationClusterReachableChangedEvent *)v4 setReachableNewValue:v5];
+  reachableNewValue = [(MTRBasicInformationClusterReachableChangedEvent *)self reachableNewValue];
+  [(MTRBasicInformationClusterReachableChangedEvent *)v4 setReachableNewValue:reachableNewValue];
 
   return v4;
 }

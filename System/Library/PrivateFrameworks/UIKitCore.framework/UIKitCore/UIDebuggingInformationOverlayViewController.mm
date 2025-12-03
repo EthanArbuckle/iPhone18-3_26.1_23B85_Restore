@@ -1,18 +1,18 @@
 @interface UIDebuggingInformationOverlayViewController
 - (CGPoint)offset;
-- (UIDebuggingInformationOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didReceiveGesture:(id)a3;
+- (UIDebuggingInformationOverlayViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didReceiveGesture:(id)gesture;
 - (void)toggleFullscreen;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation UIDebuggingInformationOverlayViewController
 
-- (UIDebuggingInformationOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (UIDebuggingInformationOverlayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v24.receiver = self;
   v24.super_class = UIDebuggingInformationOverlayViewController;
-  v4 = [(UIViewController *)&v24 initWithNibName:a3 bundle:a4];
+  v4 = [(UIViewController *)&v24 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [[UIDebuggingInformationRootTableViewController alloc] initWithStyle:0];
@@ -20,42 +20,42 @@
     v4->_rootTableViewController = v5;
 
     v7 = [[UINavigationController alloc] initWithRootViewController:v4->_rootTableViewController];
-    v8 = [(UIViewController *)v7 view];
-    v9 = [v8 layer];
-    [v9 setCornerRadius:23.0];
+    view = [(UIViewController *)v7 view];
+    layer = [view layer];
+    [layer setCornerRadius:23.0];
 
-    v10 = [(UIViewController *)v7 view];
-    v11 = [v10 layer];
-    [v11 setMasksToBounds:1];
+    view2 = [(UIViewController *)v7 view];
+    layer2 = [view2 layer];
+    [layer2 setMasksToBounds:1];
 
     navController = v4->_navController;
     v4->_navController = v7;
     v13 = v7;
 
     v14 = objc_alloc_init(UIDebuggingInformationContainerView);
-    v15 = [(UIViewController *)v13 view];
-    [(UIView *)v14 addSubview:v15];
+    view3 = [(UIViewController *)v13 view];
+    [(UIView *)v14 addSubview:view3];
 
     shadowContainer = v4->_shadowContainer;
     v4->_shadowContainer = v14;
     v17 = v14;
 
     v18 = +[UIColor clearColor];
-    v19 = [(UIViewController *)v4 view];
-    [v19 setBackgroundColor:v18];
+    view4 = [(UIViewController *)v4 view];
+    [view4 setBackgroundColor:v18];
 
     [(UIViewController *)v4 addChildViewController:v13];
-    v20 = [(UIViewController *)v4 view];
-    [v20 addSubview:v17];
+    view5 = [(UIViewController *)v4 view];
+    [view5 addSubview:v17];
 
     [(UINavigationController *)v13 didMoveToParentViewController:v4];
     v21 = [[UIPanGestureRecognizer alloc] initWithTarget:v4 action:sel_didReceiveGesture_];
 
     [(UIPanGestureRecognizer *)v21 setMaximumNumberOfTouches:1];
     [(UIPanGestureRecognizer *)v21 setMinimumNumberOfTouches:1];
-    v22 = [(UINavigationController *)v13 navigationBar];
+    navigationBar = [(UINavigationController *)v13 navigationBar];
 
-    [v22 addGestureRecognizer:v21];
+    [navigationBar addGestureRecognizer:v21];
   }
 
   return v4;
@@ -66,12 +66,12 @@
   v34.receiver = self;
   v34.super_class = UIDebuggingInformationOverlayViewController;
   [(UIViewController *)&v34 viewDidLayoutSubviews];
-  v3 = [(UIDebuggingInformationOverlayViewController *)self isFullscreen];
-  v4 = [(UIViewController *)self view];
-  v5 = v4;
-  if (v3)
+  isFullscreen = [(UIDebuggingInformationOverlayViewController *)self isFullscreen];
+  view = [(UIViewController *)self view];
+  v5 = view;
+  if (isFullscreen)
   {
-    [v4 bounds];
+    [view bounds];
     x = v6;
     y = v8;
     v11 = v10;
@@ -85,25 +85,25 @@
 
   else
   {
-    [v4 safeAreaInsets];
+    [view safeAreaInsets];
     v17 = v18;
-    v19 = [(UIViewController *)self view];
-    [v19 bounds];
+    view2 = [(UIViewController *)self view];
+    [view2 bounds];
     MidY = CGRectGetMidY(v35);
-    v21 = [(UIViewController *)self view];
-    [v21 bounds];
+    view3 = [(UIViewController *)self view];
+    [view3 bounds];
     v16 = MidY + CGRectGetHeight(v36) * -0.25;
-    v22 = [(UIViewController *)self view];
-    [v22 bounds];
+    view4 = [(UIViewController *)self view];
+    [view4 bounds];
     Width = CGRectGetWidth(v37);
-    v24 = [(UIViewController *)self view];
-    [v24 safeAreaInsets];
+    view5 = [(UIViewController *)self view];
+    [view5 safeAreaInsets];
     v26 = Width - v25;
-    v27 = [(UIViewController *)self view];
-    [v27 safeAreaInsets];
+    view6 = [(UIViewController *)self view];
+    [view6 safeAreaInsets];
     v15 = v26 - v28;
-    v29 = [(UIViewController *)self view];
-    [v29 bounds];
+    view7 = [(UIViewController *)self view];
+    [view7 bounds];
     v14 = CGRectGetHeight(v38) * 0.5;
 
     v39.origin.x = *MEMORY[0x1E695EFF8];
@@ -118,8 +118,8 @@
   }
 
   [(UIView *)self->_shadowContainer setFrame:v17, v16, v15, v14];
-  v30 = [(UIViewController *)self->_navController view];
-  [v30 setFrame:{x, y, v11, height}];
+  view8 = [(UIViewController *)self->_navController view];
+  [view8 setFrame:{x, y, v11, height}];
 
   if ([(UIDebuggingInformationOverlayViewController *)self isFullscreen])
   {
@@ -131,16 +131,16 @@
     v31 = 23.0;
   }
 
-  v32 = [(UIViewController *)self->_navController view];
-  v33 = [v32 layer];
-  [v33 setCornerRadius:v31];
+  view9 = [(UIViewController *)self->_navController view];
+  layer = [view9 layer];
+  [layer setCornerRadius:v31];
 }
 
 - (void)toggleFullscreen
 {
   [(UIDebuggingInformationOverlayViewController *)self setIsFullscreen:[(UIDebuggingInformationOverlayViewController *)self isFullscreen]^ 1];
-  v3 = [(UIViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(UIViewController *)self view];
+  [view setNeedsLayout];
 
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
@@ -157,33 +157,33 @@ void __63__UIDebuggingInformationOverlayViewController_toggleFullscreen__block_i
   [v2 layoutIfNeeded];
 }
 
-- (void)didReceiveGesture:(id)a3
+- (void)didReceiveGesture:(id)gesture
 {
-  v31 = a3;
-  v4 = [(UIViewController *)self view];
-  [v31 locationInView:v4];
+  gestureCopy = gesture;
+  view = [(UIViewController *)self view];
+  [gestureCopy locationInView:view];
   v6 = v5;
   v8 = v7;
 
-  if ([v31 state] == 1)
+  if ([gestureCopy state] == 1)
   {
-    v9 = [(UIDebuggingInformationOverlayViewController *)self containerView];
-    [v9 center];
+    containerView = [(UIDebuggingInformationOverlayViewController *)self containerView];
+    [containerView center];
     v11 = v10;
     v13 = v12;
 
     [(UIDebuggingInformationOverlayViewController *)self setOffset:v6 - v11, v8 - v13];
   }
 
-  else if ([v31 state] == 2)
+  else if ([gestureCopy state] == 2)
   {
-    v14 = [(UIViewController *)self view];
-    [v14 bounds];
+    view2 = [(UIViewController *)self view];
+    [view2 bounds];
     v16 = v15;
     v18 = v17;
 
-    v19 = [(UIDebuggingInformationOverlayViewController *)self containerView];
-    [v19 bounds];
+    containerView2 = [(UIDebuggingInformationOverlayViewController *)self containerView];
+    [containerView2 bounds];
     v21 = v20;
     v23 = v22;
 
@@ -193,8 +193,8 @@ void __63__UIDebuggingInformationOverlayViewController_toggleFullscreen__block_i
     v27 = v8 - v26;
     v28 = fmin(v16 - v21 * 0.5, fmax(v21 * 0.5, v25));
     v29 = fmin(v18 - v23 * 0.5, fmax(v23 * 0.5, v27));
-    v30 = [(UIDebuggingInformationOverlayViewController *)self containerView];
-    [v30 setCenter:{v28, v29}];
+    containerView3 = [(UIDebuggingInformationOverlayViewController *)self containerView];
+    [containerView3 setCenter:{v28, v29}];
   }
 }
 

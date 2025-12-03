@@ -1,13 +1,13 @@
 @interface ATXMLBatchInferenceFeatureProvider
-- (ATXMLBatchInferenceFeatureProvider)initWithFeatureVectors:(void *)a3;
+- (ATXMLBatchInferenceFeatureProvider)initWithFeatureVectors:(void *)vectors;
 - (id).cxx_construct;
-- (id)featuresAtIndex:(int64_t)a3;
-- (void)setFeatureVectors:(void *)a3;
+- (id)featuresAtIndex:(int64_t)index;
+- (void)setFeatureVectors:(void *)vectors;
 @end
 
 @implementation ATXMLBatchInferenceFeatureProvider
 
-- (ATXMLBatchInferenceFeatureProvider)initWithFeatureVectors:(void *)a3
+- (ATXMLBatchInferenceFeatureProvider)initWithFeatureVectors:(void *)vectors
 {
   v7.receiver = self;
   v7.super_class = ATXMLBatchInferenceFeatureProvider;
@@ -15,25 +15,25 @@
   v5 = v4;
   if (v4)
   {
-    [(ATXMLBatchInferenceFeatureProvider *)v4 setFeatureVectors:a3];
+    [(ATXMLBatchInferenceFeatureProvider *)v4 setFeatureVectors:vectors];
   }
 
   return v5;
 }
 
-- (id)featuresAtIndex:(int64_t)a3
+- (id)featuresAtIndex:(int64_t)index
 {
-  v3 = [[ATXMLInferenceFeatureProvider alloc] initWithPredictionItem:*[(ATXMLBatchInferenceFeatureProvider *)self featureVectors]+ 3336 * a3];
+  index = [[ATXMLInferenceFeatureProvider alloc] initWithPredictionItem:*[(ATXMLBatchInferenceFeatureProvider *)self featureVectors]+ 3336 * index];
 
-  return v3;
+  return index;
 }
 
-- (void)setFeatureVectors:(void *)a3
+- (void)setFeatureVectors:(void *)vectors
 {
   p_featureVectors = &self->_featureVectors;
-  if (p_featureVectors != a3)
+  if (p_featureVectors != vectors)
   {
-    std::vector<ATXPredictionItem>::__assign_with_size[abi:ne200100]<ATXPredictionItem*,ATXPredictionItem*>(p_featureVectors, *a3, *(a3 + 1), 0x13A524387AC82261 * ((*(a3 + 1) - *a3) >> 3));
+    std::vector<ATXPredictionItem>::__assign_with_size[abi:ne200100]<ATXPredictionItem*,ATXPredictionItem*>(p_featureVectors, *vectors, *(vectors + 1), 0x13A524387AC82261 * ((*(vectors + 1) - *vectors) >> 3));
   }
 }
 

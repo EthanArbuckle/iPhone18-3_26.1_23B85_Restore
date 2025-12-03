@@ -2,16 +2,16 @@
 + (SiriUIHelpButton)buttonWithHelpImageMask;
 - (double)_targetAlpha;
 - (void)pulse;
-- (void)setEmphasized:(BOOL)a3;
+- (void)setEmphasized:(BOOL)emphasized;
 @end
 
 @implementation SiriUIHelpButton
 
 + (SiriUIHelpButton)buttonWithHelpImageMask
 {
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
-  v4 = [v3 languageCode];
-  v5 = [v4 hasPrefix:@"he"];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
+  v5 = [languageCode hasPrefix:@"he"];
 
   v6 = MEMORY[0x277D755B8];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -19,23 +19,23 @@
 
   if ((v5 & 1) == 0 && SiriLanguageIsRTL())
   {
-    v9 = [v8 imageWithHorizontallyFlippedOrientation];
+    imageWithHorizontallyFlippedOrientation = [v8 imageWithHorizontallyFlippedOrientation];
 
-    v8 = v9;
+    v8 = imageWithHorizontallyFlippedOrientation;
   }
 
-  v10 = [a1 buttonWithImageMask:v8 style:0];
+  v10 = [self buttonWithImageMask:v8 style:0];
 
   return v10;
 }
 
-- (void)setEmphasized:(BOOL)a3
+- (void)setEmphasized:(BOOL)emphasized
 {
-  if (self->_emphasized != a3)
+  if (self->_emphasized != emphasized)
   {
     v7[7] = v3;
     v7[8] = v4;
-    self->_emphasized = a3;
+    self->_emphasized = emphasized;
     if (([(SiriUIHelpButton *)self isHighlighted]& 1) == 0)
     {
       v7[0] = MEMORY[0x277D85DD0];

@@ -1,81 +1,81 @@
 @interface PKPaymentSetupCredentialsSectionController
 - ($96EE1C12479E9B303E9C2794B92A11A2)credentialSelectionState;
-- (BOOL)_canSelectedCredential:(id)a3;
-- (BOOL)_enumerateCredentials:(id)a3;
+- (BOOL)_canSelectedCredential:(id)credential;
+- (BOOL)_enumerateCredentials:(id)credentials;
 - (BOOL)_hasCredentialsToShow;
 - (BOOL)_isCarKeyProduct;
-- (BOOL)_setCredential:(id)a3 selected:(BOOL)a4 silently:(BOOL)a5;
+- (BOOL)_setCredential:(id)credential selected:(BOOL)selected silently:(BOOL)silently;
 - (BOOL)hasSelectedCredentials;
 - (BOOL)shouldShowEditButton;
 - (PKDynamicListDataChangeDelegate)dataChangeDelegate;
-- (PKPaymentSetupCredentialsSectionController)initWithCredentials:(id)a3 provisioningController:(id)a4 context:(int64_t)a5 product:(id)a6;
+- (PKPaymentSetupCredentialsSectionController)initWithCredentials:(id)credentials provisioningController:(id)controller context:(int64_t)context product:(id)product;
 - (PKPaymentSetupCredentialsSectionControllerDelegate)delegate;
-- (id)_cardArtForCredentialItem:(id)a3;
-- (id)_credentialItemForCredential:(id)a3;
-- (id)_credentialItemFromIndexPath:(id)a3;
-- (id)_detailTextForCredential:(id)a3;
+- (id)_cardArtForCredentialItem:(id)item;
+- (id)_credentialItemForCredential:(id)credential;
+- (id)_credentialItemFromIndexPath:(id)path;
+- (id)_detailTextForCredential:(id)credential;
 - (id)availableCredentialRequiringAction;
-- (id)decoratePaymentSetListCell:(id)a3 forItem:(id)a4 style:(unint64_t)a5;
-- (id)headerForSectionIdentifier:(id)a3;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
+- (id)decoratePaymentSetListCell:(id)cell forItem:(id)item style:(unint64_t)style;
+- (id)headerForSectionIdentifier:(id)identifier;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
 - (id)selectedCredentials;
-- (id)snapshotForSectionIdentifier:(id)a3;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
+- (id)snapshotForSectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
 - (id)unselectedCredentialRequiringAction;
 - (unint64_t)_numberOfSelectedCredentials;
 - (unint64_t)_numberOfSelectedPeerPaymentCredentials;
-- (void)_loadCredentials:(id)a3 create:(BOOL)a4;
-- (void)_primeItemSelectionAndReloadData:(BOOL)a3;
-- (void)_promptToDeleteItem:(id)a3 completion:(id)a4;
-- (void)_removeCredentialItem:(id)a3;
-- (void)_replaceAndReloadItem:(id)a3 withNewItem:(id)a4;
-- (void)_sortCredentialItems:(id)a3;
+- (void)_loadCredentials:(id)credentials create:(BOOL)create;
+- (void)_primeItemSelectionAndReloadData:(BOOL)data;
+- (void)_promptToDeleteItem:(id)item completion:(id)completion;
+- (void)_removeCredentialItem:(id)item;
+- (void)_replaceAndReloadItem:(id)item withNewItem:(id)newItem;
+- (void)_sortCredentialItems:(id)items;
 - (void)_updateMaximumSelectableCredentials;
 - (void)_updateRemoteCredentialCache;
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5;
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)deleteItem:(id)a3;
-- (void)didSelectItem:(id)a3;
-- (void)paymentPassUpdatedOnCredential:(id)a3;
+- (void)deleteItem:(id)item;
+- (void)didSelectItem:(id)item;
+- (void)paymentPassUpdatedOnCredential:(id)credential;
 - (void)reloadCredentialStores;
-- (void)setEditing:(BOOL)a3;
+- (void)setEditing:(BOOL)editing;
 @end
 
 @implementation PKPaymentSetupCredentialsSectionController
 
-- (PKPaymentSetupCredentialsSectionController)initWithCredentials:(id)a3 provisioningController:(id)a4 context:(int64_t)a5 product:(id)a6
+- (PKPaymentSetupCredentialsSectionController)initWithCredentials:(id)credentials provisioningController:(id)controller context:(int64_t)context product:(id)product
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  credentialsCopy = credentials;
+  controllerCopy = controller;
+  productCopy = product;
   v25.receiver = self;
   v25.super_class = PKPaymentSetupCredentialsSectionController;
   v13 = [(PKPaymentSetupListSectionController *)&v25 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_provisioningController, a4);
+    objc_storeStrong(&v13->_provisioningController, controller);
     v15 = PKLastBackedUpDefaultPaymentPassSerialNumber();
     lastBackedUpDefaultPaymentPassSerialNumber = v14->_lastBackedUpDefaultPaymentPassSerialNumber;
     v14->_lastBackedUpDefaultPaymentPassSerialNumber = v15;
 
-    v14->_setupContext = a5;
-    objc_storeStrong(&v14->_product, a6);
-    v17 = [(PKPaymentProvisioningController *)v14->_provisioningController webService];
-    v18 = [v17 targetDevice];
-    v19 = [v18 secureElementIdentifiers];
+    v14->_setupContext = context;
+    objc_storeStrong(&v14->_product, product);
+    webService = [(PKPaymentProvisioningController *)v14->_provisioningController webService];
+    targetDevice = [webService targetDevice];
+    secureElementIdentifiers = [targetDevice secureElementIdentifiers];
 
-    v20 = [[PKPassSnapshotCoordinator alloc] initWithSEIDs:v19];
+    v20 = [[PKPassSnapshotCoordinator alloc] initWithSEIDs:secureElementIdentifiers];
     snapshotCoordinator = v14->_snapshotCoordinator;
     v14->_snapshotCoordinator = v20;
 
-    v22 = [(PKPaymentProvisioningController *)v14->_provisioningController storageSnapshot];
+    storageSnapshot = [(PKPaymentProvisioningController *)v14->_provisioningController storageSnapshot];
     storageSnapshot = v14->_storageSnapshot;
-    v14->_storageSnapshot = v22;
+    v14->_storageSnapshot = storageSnapshot;
 
     [(PKProvisioningSEStorageSnapshot *)v14->_storageSnapshot reset];
     [(PKPaymentProvisioningController *)v14->_provisioningController addDelegate:v14];
-    [(PKPaymentSetupCredentialsSectionController *)v14 _loadCredentials:v10 create:1];
+    [(PKPaymentSetupCredentialsSectionController *)v14 _loadCredentials:credentialsCopy create:1];
     [(PKPaymentSetupCredentialsSectionController *)v14 _updateMaximumSelectableCredentials];
     [(PKPaymentSetupCredentialsSectionController *)v14 _primeItemSelectionAndReloadData:0];
   }
@@ -137,8 +137,8 @@
               v14 = *(*(&v19 + 1) + 8 * j);
               if ([v14 selected])
               {
-                v15 = [v14 credential];
-                [v3 addObject:v15];
+                credential = [v14 credential];
+                [v3 addObject:credential];
               }
             }
 
@@ -162,8 +162,8 @@
 
 - (BOOL)hasSelectedCredentials
 {
-  v2 = [(PKPaymentSetupCredentialsSectionController *)self selectedCredentials];
-  v3 = [v2 count] != 0;
+  selectedCredentials = [(PKPaymentSetupCredentialsSectionController *)self selectedCredentials];
+  v3 = [selectedCredentials count] != 0;
 
   return v3;
 }
@@ -379,24 +379,24 @@ uint64_t __68__PKPaymentSetupCredentialsSectionController_reloadCredentialStores
   return v5;
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (self->_isEditing == !a3)
+  if (self->_isEditing == !editing)
   {
-    self->_isEditing = a3;
-    if (a3)
+    self->_isEditing = editing;
+    if (editing)
     {
-      v5 = [MEMORY[0x1E696AC70] pk_hashTableUsingPointerPersonality];
+      pk_hashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_hashTableUsingPointerPersonality];
       selectedCredentialsBeforeEditing = self->_selectedCredentialsBeforeEditing;
-      self->_selectedCredentialsBeforeEditing = v5;
+      self->_selectedCredentialsBeforeEditing = pk_hashTableUsingPointerPersonality;
 
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v7 = [(PKPaymentSetupCredentialsSectionController *)self selectedCredentials];
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      selectedCredentials = [(PKPaymentSetupCredentialsSectionController *)self selectedCredentials];
+      v8 = [selectedCredentials countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         v9 = v8;
@@ -408,14 +408,14 @@ uint64_t __68__PKPaymentSetupCredentialsSectionController_reloadCredentialStores
           {
             if (*v17 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(selectedCredentials);
             }
 
             [(NSHashTable *)self->_selectedCredentialsBeforeEditing addObject:*(*(&v16 + 1) + 8 * v11++)];
           }
 
           while (v9 != v11);
-          v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v9 = [selectedCredentials countByEnumeratingWithState:&v16 objects:v20 count:16];
         }
 
         while (v9);
@@ -426,13 +426,13 @@ uint64_t __68__PKPaymentSetupCredentialsSectionController_reloadCredentialStores
     v14[1] = 3221225472;
     v14[2] = __57__PKPaymentSetupCredentialsSectionController_setEditing___block_invoke;
     v14[3] = &unk_1E801BD80;
-    v15 = a3;
+    editingCopy = editing;
     v14[4] = self;
     [(PKPaymentSetupCredentialsSectionController *)self _enumerateCredentials:v14];
     WeakRetained = objc_loadWeakRetained(&self->_dataChangeDelegate);
     [WeakRetained reloadAnimated:0];
 
-    if (!a3)
+    if (!editing)
     {
       v13 = self->_selectedCredentialsBeforeEditing;
       self->_selectedCredentialsBeforeEditing = 0;
@@ -505,9 +505,9 @@ uint64_t __66__PKPaymentSetupCredentialsSectionController_shouldShowEditButton__
   return 0;
 }
 
-- (id)snapshotForSectionIdentifier:(id)a3
+- (id)snapshotForSectionIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_allCredentials objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_allCredentials objectForKeyedSubscript:identifier];
   v4 = v3;
   if (v3)
   {
@@ -524,27 +524,27 @@ uint64_t __66__PKPaymentSetupCredentialsSectionController_shouldShowEditButton__
   return v5;
 }
 
-- (id)decoratePaymentSetListCell:(id)a3 forItem:(id)a4 style:(unint64_t)a5
+- (id)decoratePaymentSetListCell:(id)cell forItem:(id)item style:(unint64_t)style
 {
-  v7 = a3;
-  v8 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v26.receiver = self;
   v26.super_class = PKPaymentSetupCredentialsSectionController;
-  v9 = [(PKPaymentSetupListSectionController *)&v26 decoratePaymentSetListCell:v7 forItem:v8 style:1];
+  v9 = [(PKPaymentSetupListSectionController *)&v26 decoratePaymentSetListCell:cellCopy forItem:itemCopy style:1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v8;
-    v11 = [v9 textProperties];
-    [v11 setNumberOfLines:1];
-    v12 = [v9 secondaryTextProperties];
+    v10 = itemCopy;
+    textProperties = [v9 textProperties];
+    [textProperties setNumberOfLines:1];
+    secondaryTextProperties = [v9 secondaryTextProperties];
 
-    [v12 setLineBreakMode:4];
-    [v12 setNumberOfLines:2];
+    [secondaryTextProperties setLineBreakMode:4];
+    [secondaryTextProperties setNumberOfLines:2];
     v13 = [(PKPaymentSetupCredentialsSectionController *)self _cardArtForCredentialItem:v10];
     [v9 setImage:v13];
 
-    v14 = [v9 imageProperties];
+    imageProperties = [v9 imageProperties];
     v15 = _UISolariumFeatureFlagEnabled();
     if (v15)
     {
@@ -566,23 +566,23 @@ uint64_t __66__PKPaymentSetupCredentialsSectionController_shouldShowEditButton__
       v17 = 32.0;
     }
 
-    [v14 setMaximumSize:{v16, v17}];
-    [v14 setReservedLayoutSize:{v16, v17}];
-    [v14 setCornerRadius:3.0];
-    [v7 setContentConfiguration:v9];
+    [imageProperties setMaximumSize:{v16, v17}];
+    [imageProperties setReservedLayoutSize:{v16, v17}];
+    [imageProperties setCornerRadius:3.0];
+    [cellCopy setContentConfiguration:v9];
     if ([v10 isDeletable])
     {
-      v18 = [v7 accessories];
-      v19 = [v18 mutableCopy];
+      accessories = [cellCopy accessories];
+      v19 = [accessories mutableCopy];
 
       v20 = objc_alloc_init(MEMORY[0x1E69DC798]);
       [v20 setReservedLayoutWidth:50.0];
       [v19 addObject:v20];
-      [v7 setAccessories:v19];
+      [cellCopy setAccessories:v19];
       if (self->_isEditing)
       {
-        v21 = [v10 title];
-        v22 = PKLocalizedPaymentString(&cfstr_RemoveParkedPa.isa, &stru_1F3BD5BF0.isa, v21);
+        title = [v10 title];
+        v22 = PKLocalizedPaymentString(&cfstr_RemoveParkedPa.isa, &stru_1F3BD5BF0.isa, title);
       }
 
       else
@@ -596,7 +596,7 @@ uint64_t __66__PKPaymentSetupCredentialsSectionController_shouldShowEditButton__
       v22 = 0;
     }
 
-    [v7 setAccessibilityLabel:v22];
+    [cellCopy setAccessibilityLabel:v22];
     if ([v10 isCellDisabled])
     {
       v23 = 0.4;
@@ -607,40 +607,40 @@ uint64_t __66__PKPaymentSetupCredentialsSectionController_shouldShowEditButton__
       v23 = 1.0;
     }
 
-    v24 = [v7 contentView];
-    [v24 setAlpha:v23];
+    contentView = [cellCopy contentView];
+    [contentView setAlpha:v23];
   }
 
   return v9;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v5 = MEMORY[0x1E69DC5D0];
-  v6 = a4;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(v5);
-  v8 = [(PKPaymentSetupCredentialsSectionController *)self snapshotForSectionIdentifier:v6];
+  v8 = [(PKPaymentSetupCredentialsSectionController *)self snapshotForSectionIdentifier:identifierCopy];
 
   [v7 appendItems:v8];
 
   return v7;
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentSetupListSectionController *)self defaultListLayout];
-  [v8 setHeaderMode:1];
-  [v8 setFooterMode:1];
+  environmentCopy = environment;
+  identifierCopy = identifier;
+  defaultListLayout = [(PKPaymentSetupListSectionController *)self defaultListLayout];
+  [defaultListLayout setHeaderMode:1];
+  [defaultListLayout setFooterMode:1];
   objc_initWeak(&location, self);
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __92__PKPaymentSetupCredentialsSectionController_layoutWithLayoutEnvironment_sectionIdentifier___block_invoke;
   v15 = &unk_1E8013B50;
   objc_copyWeak(&v16, &location);
-  [v8 setTrailingSwipeActionsConfigurationProvider:&v12];
-  v9 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v8 layoutEnvironment:{v6, v12, v13, v14, v15}];
+  [defaultListLayout setTrailingSwipeActionsConfigurationProvider:&v12];
+  v9 = [MEMORY[0x1E6995580] sectionWithListConfiguration:defaultListLayout layoutEnvironment:{environmentCopy, v12, v13, v14, v15}];
   [v9 contentInsets];
   [v9 setContentInsets:PKSetupViewConstantsListSectionInset(v10)];
   objc_destroyWeak(&v16);
@@ -694,12 +694,12 @@ void __92__PKPaymentSetupCredentialsSectionController_layoutWithLayoutEnvironmen
   [WeakRetained _promptToDeleteItem:*(a1 + 32) completion:v5];
 }
 
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier
 {
   v54[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  registrationCopy = registration;
+  kindCopy = kind;
+  identifierCopy = identifier;
   v11 = PKSetupViewConstantsViewMargin();
   v12 = PKSetupListViewConstantsViewMargin();
   if (v12 <= v11)
@@ -713,7 +713,7 @@ void __92__PKPaymentSetupCredentialsSectionController_layoutWithLayoutEnvironmen
   }
 
   v14 = *MEMORY[0x1E69DDC08];
-  v15 = v9;
+  v15 = kindCopy;
   v16 = v15;
   if (v14 == v15)
   {
@@ -732,14 +732,14 @@ void __92__PKPaymentSetupCredentialsSectionController_layoutWithLayoutEnvironmen
     if (!v17)
     {
 LABEL_16:
-      v19 = [MEMORY[0x1E69DCC28] footerConfiguration];
+      footerConfiguration = [MEMORY[0x1E69DCC28] footerConfiguration];
       v46 = *MEMORY[0x1E69DB648];
       v27 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD28], *MEMORY[0x1E69DDC60]);
-      v28 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      v47[1] = v28;
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      v47[1] = secondaryLabelColor;
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:&v46 count:2];
 
-      v18 = [(NSDictionary *)self->_footerForSectionIdentifier objectForKeyedSubscript:v10];
+      v18 = [(NSDictionary *)self->_footerForSectionIdentifier objectForKeyedSubscript:identifierCopy];
       v13 = 0.0;
       v26 = 5.0;
       v29 = 5.0;
@@ -752,10 +752,10 @@ LABEL_16:
     }
   }
 
-  v18 = [(PKPaymentSetupCredentialsSectionController *)self headerForSectionIdentifier:v10];
-  v19 = [MEMORY[0x1E69DCC28] headerConfiguration];
-  [v19 setAxesPreservingSuperviewLayoutMargins:0];
-  v20 = v10;
+  v18 = [(PKPaymentSetupCredentialsSectionController *)self headerForSectionIdentifier:identifierCopy];
+  footerConfiguration = [MEMORY[0x1E69DCC28] headerConfiguration];
+  [footerConfiguration setAxesPreservingSuperviewLayoutMargins:0];
+  v20 = identifierCopy;
   v21 = v20;
   if (v20 == @"available")
   {
@@ -805,8 +805,8 @@ LABEL_29:
     v40 = PKOBKListHeaderFont();
     v50[0] = v40;
     v49[1] = *MEMORY[0x1E69DB650];
-    v41 = PKOBKListHeaderTextColor();
-    v50[1] = v41;
+    secondaryLabelColor2 = PKOBKListHeaderTextColor();
+    v50[1] = secondaryLabelColor2;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:v49 count:2];
   }
 
@@ -817,8 +817,8 @@ LABEL_26:
     v40 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD00], *MEMORY[0x1E69DDC60]);
     v54[0] = v40;
     v53[1] = *MEMORY[0x1E69DB650];
-    v41 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v54[1] = v41;
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v54[1] = secondaryLabelColor2;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:v53 count:2];
   }
 
@@ -829,7 +829,7 @@ LABEL_30:
     v43 = +[PKCellAccessoryLoadingIndicator accessory];
     v48 = v43;
     v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v48 count:1];
-    [v8 setAccessories:v44];
+    [registrationCopy setAccessories:v44];
 
     goto LABEL_32;
   }
@@ -840,38 +840,38 @@ LABEL_30:
   }
 
 LABEL_31:
-  [v8 setAccessories:MEMORY[0x1E695E0F0]];
+  [registrationCopy setAccessories:MEMORY[0x1E695E0F0]];
 LABEL_32:
   v29 = 10.0;
   if (v18)
   {
 LABEL_33:
-    [v19 setDirectionalLayoutMargins:{v29, v13, v26, v13}];
+    [footerConfiguration setDirectionalLayoutMargins:{v29, v13, v26, v13}];
     v45 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v18 attributes:v25];
-    [v19 setAttributedText:v45];
+    [footerConfiguration setAttributedText:v45];
   }
 
 LABEL_34:
-  [v8 setContentConfiguration:{v19, v29}];
+  [registrationCopy setContentConfiguration:{footerConfiguration, v29}];
 }
 
-- (id)headerForSectionIdentifier:(id)a3
+- (id)headerForSectionIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 == @"unavailable")
+  identifierCopy = identifier;
+  v4 = identifierCopy;
+  if (identifierCopy == @"unavailable")
   {
     goto LABEL_4;
   }
 
-  if (!v3)
+  if (!identifierCopy)
   {
 LABEL_15:
     v7 = v4;
     goto LABEL_16;
   }
 
-  v5 = [(__CFString *)v3 isEqualToString:@"unavailable"];
+  v5 = [(__CFString *)identifierCopy isEqualToString:@"unavailable"];
 
   if (!v5)
   {
@@ -910,31 +910,31 @@ LABEL_17:
   return v17;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v7 = a3;
-  if ([v7 isRefund])
+  itemCopy = item;
+  if ([itemCopy isRefund])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v5 = [v7 credential];
-    [WeakRetained presentRefundFlowForCredential:v5];
+    credential = [itemCopy credential];
+    [WeakRetained presentRefundFlowForCredential:credential];
 LABEL_5:
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v7 isUnavailable])
+  if ([itemCopy isUnavailable])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v5 = [v7 credential];
-    [WeakRetained presentUnavailableDetailsForCredential:v5];
+    credential = [itemCopy credential];
+    [WeakRetained presentUnavailableDetailsForCredential:credential];
     goto LABEL_5;
   }
 
   if (self->_isEditing)
   {
-    if (([v7 isDeletable] & 1) == 0)
+    if (([itemCopy isDeletable] & 1) == 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained showUnableToDeleteCredentialError];
@@ -943,14 +943,14 @@ LABEL_6:
 
     if (UIAccessibilityIsVoiceOverRunning())
     {
-      [(PKPaymentSetupCredentialsSectionController *)self _promptToDeleteItem:v7 completion:0];
+      [(PKPaymentSetupCredentialsSectionController *)self _promptToDeleteItem:itemCopy completion:0];
     }
   }
 
-  else if (([v7 isBeingProvisioned] & 1) == 0)
+  else if (([itemCopy isBeingProvisioned] & 1) == 0)
   {
-    WeakRetained = [v7 credential];
-    -[PKPaymentSetupCredentialsSectionController setCredential:selected:](self, "setCredential:selected:", WeakRetained, [v7 selected] ^ 1);
+    WeakRetained = [itemCopy credential];
+    -[PKPaymentSetupCredentialsSectionController setCredential:selected:](self, "setCredential:selected:", WeakRetained, [itemCopy selected] ^ 1);
     goto LABEL_6;
   }
 
@@ -959,16 +959,16 @@ LABEL_7:
   [v6 deselectCells];
 }
 
-- (void)paymentPassUpdatedOnCredential:(id)a3
+- (void)paymentPassUpdatedOnCredential:(id)credential
 {
-  v4 = a3;
+  credentialCopy = credential;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __77__PKPaymentSetupCredentialsSectionController_paymentPassUpdatedOnCredential___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = credentialCopy;
+  v5 = credentialCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -985,17 +985,17 @@ void __77__PKPaymentSetupCredentialsSectionController_paymentPassUpdatedOnCreden
   }
 }
 
-- (void)_loadCredentials:(id)a3 create:(BOOL)a4
+- (void)_loadCredentials:(id)credentials create:(BOOL)create
 {
-  v72 = a4;
+  createCopy = create;
   v103 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AD18] pk_weakPointerPersonalityToStrongObjectsMapTable];
+  credentialsCopy = credentials;
+  pk_weakPointerPersonalityToStrongObjectsMapTable = [MEMORY[0x1E696AD18] pk_weakPointerPersonalityToStrongObjectsMapTable];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __70__PKPaymentSetupCredentialsSectionController__loadCredentials_create___block_invoke;
   aBlock[3] = &unk_1E8014878;
-  v7 = v6;
+  v7 = pk_weakPointerPersonalityToStrongObjectsMapTable;
   v97 = v7;
   v81 = _Block_copy(aBlock);
   v92 = 0u;
@@ -1039,7 +1039,7 @@ void __77__PKPaymentSetupCredentialsSectionController_paymentPassUpdatedOnCreden
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
-  obj = v5;
+  obj = credentialsCopy;
   v17 = [obj countByEnumeratingWithState:&v88 objects:v101 count:16];
   v76 = v14;
   if (v17)
@@ -1048,7 +1048,7 @@ void __77__PKPaymentSetupCredentialsSectionController_paymentPassUpdatedOnCreden
     v19 = *v89;
     v73 = *v89;
     v74 = v7;
-    v83 = self;
+    selfCopy = self;
     do
     {
       v20 = 0;
@@ -1073,7 +1073,7 @@ void __77__PKPaymentSetupCredentialsSectionController_paymentPassUpdatedOnCreden
 
           else
           {
-            if (!v72)
+            if (!createCopy)
             {
               goto LABEL_54;
             }
@@ -1083,13 +1083,13 @@ void __77__PKPaymentSetupCredentialsSectionController_paymentPassUpdatedOnCreden
 
           if (IsSetupAssistant)
           {
-            v24 = [v21 remoteCredential];
+            remoteCredential = [v21 remoteCredential];
             goto LABEL_24;
           }
 
           v25 = [(PKPaymentProvisioningController *)self->_provisioningController pendingProvisioningForCredential:v21];
 
-          v24 = [v21 remoteCredential];
+          remoteCredential = [v21 remoteCredential];
           if (v25)
           {
             v79 = 0;
@@ -1098,11 +1098,11 @@ void __77__PKPaymentSetupCredentialsSectionController_paymentPassUpdatedOnCreden
             v27 = 1;
             v28 = @"background_provisioning";
 LABEL_40:
-            v43 = [(NSMutableDictionary *)v83->_allCredentials objectForKeyedSubscript:v28];
+            v43 = [(NSMutableDictionary *)selfCopy->_allCredentials objectForKeyedSubscript:v28];
             if (!v43)
             {
               v43 = objc_alloc_init(MEMORY[0x1E695DF70]);
-              [(NSMutableDictionary *)v83->_allCredentials setObject:v43 forKeyedSubscript:v28];
+              [(NSMutableDictionary *)selfCopy->_allCredentials setObject:v43 forKeyedSubscript:v28];
             }
 
             [v43 addObject:v22];
@@ -1110,10 +1110,10 @@ LABEL_40:
             v80 = v28;
             if ([(PKPaymentSetupCredentialListItem *)v22 lastCheckedCredentialHash]!= v44)
             {
-              v45 = [(PKPaymentSetupCredentialsSectionController *)v83 _titleTextForCredential:v21];
+              v45 = [(PKPaymentSetupCredentialsSectionController *)selfCopy _titleTextForCredential:v21];
               [(PKPaymentSetupListItem *)v22 setTitle:v45];
 
-              v46 = [(PKPaymentSetupCredentialsSectionController *)v83 _detailTextForCredential:v21];
+              v46 = [(PKPaymentSetupCredentialsSectionController *)selfCopy _detailTextForCredential:v21];
               [(PKPaymentSetupListItem *)v22 setSubtitle:v46];
 
               [(PKPaymentSetupCredentialListItem *)v22 setLastCheckedCredentialHash:v44];
@@ -1140,7 +1140,7 @@ LABEL_40:
 
             else
             {
-              v48 = v83->_isEditing & v47;
+              v48 = selfCopy->_isEditing & v47;
             }
 
             v18 = v77;
@@ -1158,15 +1158,15 @@ LABEL_40:
 
             v19 = v73;
             v7 = v74;
-            self = v83;
+            self = selfCopy;
             goto LABEL_53;
           }
 
 LABEL_24:
-          if (v24)
+          if (remoteCredential)
           {
-            v29 = [v24 status];
-            if (v29 == 3)
+            status = [remoteCredential status];
+            if (status == 3)
             {
               v82 = 0;
               v27 = 0;
@@ -1176,13 +1176,13 @@ LABEL_24:
               goto LABEL_40;
             }
 
-            if (v29 == 5)
+            if (status == 5)
             {
-              v30 = [v24 transferableFromDevices];
-              v31 = [v30 firstObject];
-              v32 = [v31 name];
+              transferableFromDevices = [remoteCredential transferableFromDevices];
+              firstObject = [transferableFromDevices firstObject];
+              name = [firstObject name];
 
-              [v24 transferType];
+              [remoteCredential transferType];
               IsCopyable = PKPRemoteCredentialTransferTypeIsCopyable();
               v34 = @"TRANSFERABLE_FROM_CARDS";
               if (IsCopyable)
@@ -1192,12 +1192,12 @@ LABEL_24:
 
               v35 = v34;
               p_isa = &v35->isa;
-              if (v32)
+              if (name)
               {
                 v37 = [(__CFString *)v35 stringByAppendingString:@"_DEVICE_NAME"];
 
-                v38 = PKLocalizedPaymentString(v37, &stru_1F3BD5BF0.isa, v32);
-                v39 = PKLocalizedPaymentString(&cfstr_TransferableFr_0.isa, &stru_1F3BD5BF0.isa, v32);
+                v38 = PKLocalizedPaymentString(v37, &stru_1F3BD5BF0.isa, name);
+                v39 = PKLocalizedPaymentString(&cfstr_TransferableFr_0.isa, &stru_1F3BD5BF0.isa, name);
                 [v70 setObject:v39 forKeyedSubscript:v38];
                 p_isa = v37;
               }
@@ -1228,15 +1228,15 @@ LABEL_24:
 
           else
           {
-            v40 = [v21 purchasedProductCredential];
-            v41 = [v40 purchase];
-            v42 = [v41 state];
+            purchasedProductCredential = [v21 purchasedProductCredential];
+            purchase = [purchasedProductCredential purchase];
+            state = [purchase state];
 
-            if (v42 == 3)
+            if (state == 3)
             {
               v79 = 0;
               v27 = 0;
-              v24 = 0;
+              remoteCredential = 0;
               v26 = 0;
               v82 = 1;
               v28 = @"refund";
@@ -1386,14 +1386,14 @@ void __70__PKPaymentSetupCredentialsSectionController__loadCredentials_create___
   }
 }
 
-- (void)_sortCredentialItems:(id)a3
+- (void)_sortCredentialItems:(id)items
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __67__PKPaymentSetupCredentialsSectionController__sortCredentialItems___block_invoke;
   v3[3] = &unk_1E801BDD0;
   v3[4] = self;
-  [a3 sortUsingComparator:v3];
+  [items sortUsingComparator:v3];
 }
 
 uint64_t __67__PKPaymentSetupCredentialsSectionController__sortCredentialItems___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1408,8 +1408,8 @@ uint64_t __67__PKPaymentSetupCredentialsSectionController__sortCredentialItems__
 
 - (void)_updateRemoteCredentialCache
 {
-  v3 = [(PKPaymentProvisioningController *)self->_provisioningController associatedCredentials];
-  v4 = [v3 mutableCopy];
+  associatedCredentials = [(PKPaymentProvisioningController *)self->_provisioningController associatedCredentials];
+  v4 = [associatedCredentials mutableCopy];
   v5 = v4;
   if (v4)
   {
@@ -1423,45 +1423,45 @@ uint64_t __67__PKPaymentSetupCredentialsSectionController__sortCredentialItems__
 
   v10 = v6;
 
-  v7 = [(PKPaymentProvisioningController *)self->_provisioningController purchaseCredentials];
-  [v10 pk_safelyAddObjectsFromArray:v7];
+  purchaseCredentials = [(PKPaymentProvisioningController *)self->_provisioningController purchaseCredentials];
+  [v10 pk_safelyAddObjectsFromArray:purchaseCredentials];
 
-  v8 = [(PKPaymentProvisioningController *)self->_provisioningController provisioningExtensionCredentials];
-  [v10 pk_safelyAddObjectsFromArray:v8];
+  provisioningExtensionCredentials = [(PKPaymentProvisioningController *)self->_provisioningController provisioningExtensionCredentials];
+  [v10 pk_safelyAddObjectsFromArray:provisioningExtensionCredentials];
 
-  v9 = [(PKPaymentProvisioningController *)self->_provisioningController pendingCarKeyCredentials];
-  [v10 pk_safelyAddObjectsFromArray:v9];
+  pendingCarKeyCredentials = [(PKPaymentProvisioningController *)self->_provisioningController pendingCarKeyCredentials];
+  [v10 pk_safelyAddObjectsFromArray:pendingCarKeyCredentials];
 
   [(PKPaymentSetupCredentialsSectionController *)self _loadCredentials:v10 create:0];
 }
 
 - (unint64_t)_numberOfSelectedCredentials
 {
-  v2 = [(PKPaymentSetupCredentialsSectionController *)self selectedCredentials];
-  v3 = [v2 pk_countObjectsPassingTest:&__block_literal_global_97];
+  selectedCredentials = [(PKPaymentSetupCredentialsSectionController *)self selectedCredentials];
+  v3 = [selectedCredentials pk_countObjectsPassingTest:&__block_literal_global_97];
 
   return v3;
 }
 
 - (unint64_t)_numberOfSelectedPeerPaymentCredentials
 {
-  v2 = [(PKPaymentSetupCredentialsSectionController *)self selectedCredentials];
-  v3 = [v2 pk_countObjectsPassingTest:&__block_literal_global_99];
+  selectedCredentials = [(PKPaymentSetupCredentialsSectionController *)self selectedCredentials];
+  v3 = [selectedCredentials pk_countObjectsPassingTest:&__block_literal_global_99];
 
   return v3;
 }
 
-- (BOOL)_canSelectedCredential:(id)a3
+- (BOOL)_canSelectedCredential:(id)credential
 {
-  v4 = a3;
-  v5 = v4;
+  credentialCopy = credential;
+  v5 = credentialCopy;
   if (self->_storageSnapshot)
   {
     if ([(PKPaymentSetupCredentialsSectionController *)self _numberOfSelectedCredentials]< self->_maximumNumberOfSelectableCredentials)
     {
-      v6 = [v5 appletTypes];
-      v7 = v6;
-      if (v6 && [v6 count])
+      appletTypes = [v5 appletTypes];
+      v7 = appletTypes;
+      if (appletTypes && [appletTypes count])
       {
         if (([(PKProvisioningSEStorageSnapshot *)self->_storageSnapshot addAppletTypesToSnapshot:v7]& 1) == 0)
         {
@@ -1491,7 +1491,7 @@ LABEL_14:
 
   else
   {
-    v8 = ([v4 isPeerPaymentCredential] & 1) != 0 || -[PKPaymentSetupCredentialsSectionController _numberOfSelectedCredentials](self, "_numberOfSelectedCredentials") < self->_maximumNumberOfSelectableCredentials;
+    v8 = ([credentialCopy isPeerPaymentCredential] & 1) != 0 || -[PKPaymentSetupCredentialsSectionController _numberOfSelectedCredentials](self, "_numberOfSelectedCredentials") < self->_maximumNumberOfSelectableCredentials;
   }
 
 LABEL_16:
@@ -1549,8 +1549,8 @@ LABEL_11:
 
 - (BOOL)_isCarKeyProduct
 {
-  v2 = [(PKPaymentSetupProduct *)self->_product productIdentifier];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E69BC2B8]];
+  productIdentifier = [(PKPaymentSetupProduct *)self->_product productIdentifier];
+  v3 = [productIdentifier isEqualToString:*MEMORY[0x1E69BC2B8]];
 
   return v3;
 }
@@ -1566,7 +1566,7 @@ LABEL_11:
   {
     if ((PKDisableDynamicSEAllocation() & 1) != 0 || !self->_storageSnapshot)
     {
-      v3 = [(PKPaymentProvisioningController *)self->_provisioningController availableSecureElementPassSpaces];
+      availableSecureElementPassSpaces = [(PKPaymentProvisioningController *)self->_provisioningController availableSecureElementPassSpaces];
       v8 = 0;
       v9 = &v8;
       v10 = 0x2020000000;
@@ -1577,7 +1577,7 @@ LABEL_11:
       v7[3] = &unk_1E801BD10;
       v7[4] = &v8;
       [(PKPaymentSetupCredentialsSectionController *)self _enumerateCredentials:v7];
-      if (v3 == 0x7FFFFFFFFFFFFFFFLL || v3 == 0)
+      if (availableSecureElementPassSpaces == 0x7FFFFFFFFFFFFFFFLL || availableSecureElementPassSpaces == 0)
       {
         v5 = v9[3];
       }
@@ -1585,9 +1585,9 @@ LABEL_11:
       else
       {
         v5 = v9[3];
-        if (v3 < v5)
+        if (availableSecureElementPassSpaces < v5)
         {
-          v5 = v3;
+          v5 = availableSecureElementPassSpaces;
         }
       }
 
@@ -1605,17 +1605,17 @@ LABEL_11:
   }
 }
 
-- (BOOL)_setCredential:(id)a3 selected:(BOOL)a4 silently:(BOOL)a5
+- (BOOL)_setCredential:(id)credential selected:(BOOL)selected silently:(BOOL)silently
 {
-  v5 = a5;
-  v6 = a4;
+  silentlyCopy = silently;
+  selectedCopy = selected;
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  credentialCopy = credential;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v32 = self;
+  selfCopy = self;
   WeakRetained = self->_sectionIdentifiers;
   v10 = [(NSArray *)WeakRetained countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (!v10)
@@ -1626,8 +1626,8 @@ LABEL_11:
   }
 
   v11 = v10;
-  v30 = v5;
-  v31 = v6;
+  v30 = silentlyCopy;
+  v31 = selectedCopy;
   v12 = 0;
   v13 = *v34;
 LABEL_3:
@@ -1639,7 +1639,7 @@ LABEL_3:
       objc_enumerationMutation(WeakRetained);
     }
 
-    v15 = [(NSMutableDictionary *)v32->_allCredentials objectForKeyedSubscript:*(*(&v33 + 1) + 8 * v14)];
+    v15 = [(NSMutableDictionary *)selfCopy->_allCredentials objectForKeyedSubscript:*(*(&v33 + 1) + 8 * v14)];
     v16 = [v15 count];
     if (v16)
     {
@@ -1670,9 +1670,9 @@ LABEL_12:
     v19 = v12;
     v12 = [v15 objectAtIndexedSubscript:v18];
 
-    v20 = [v12 credential];
+    credential = [v12 credential];
 
-    if (v20 == v8)
+    if (credential == credentialCopy)
     {
       break;
     }
@@ -1702,12 +1702,12 @@ LABEL_12:
   if (v31)
   {
     v22 = v30;
-    if ([(PKPaymentSetupCredentialsSectionController *)v32 _canSelectedCredential:v8])
+    if ([(PKPaymentSetupCredentialsSectionController *)selfCopy _canSelectedCredential:credentialCopy])
     {
       goto LABEL_33;
     }
 
-    if (v32->_maximumNumberOfSelectableCredentials == 1 && !v30)
+    if (selfCopy->_maximumNumberOfSelectableCredentials == 1 && !v30)
     {
       v23 = [v15 count];
       if (v23)
@@ -1716,8 +1716,8 @@ LABEL_12:
         v25 = 0;
         while (1)
         {
-          v26 = [v15 objectAtIndexedSubscript:v25];
-          if ([v26 selected])
+          appletTypes = [v15 objectAtIndexedSubscript:v25];
+          if ([appletTypes selected])
           {
             break;
           }
@@ -1728,9 +1728,9 @@ LABEL_12:
           }
         }
 
-        v29 = [v26 copy];
+        v29 = [appletTypes copy];
         [v29 setSelected:0];
-        [(PKPaymentSetupCredentialsSectionController *)v32 _replaceAndReloadItem:v26 withNewItem:v29];
+        [(PKPaymentSetupCredentialsSectionController *)selfCopy _replaceAndReloadItem:appletTypes withNewItem:v29];
 
 LABEL_32:
       }
@@ -1745,8 +1745,8 @@ LABEL_39:
       goto LABEL_40;
     }
 
-    WeakRetained = objc_loadWeakRetained(&v32->_delegate);
-    [(NSArray *)WeakRetained showMaxSelectionAlertForCredential:v8];
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+    [(NSArray *)WeakRetained showMaxSelectionAlertForCredential:credentialCopy];
 LABEL_27:
     v21 = 0;
   }
@@ -1754,12 +1754,12 @@ LABEL_27:
   else
   {
     v22 = v30;
-    if (v32->_storageSnapshot)
+    if (selfCopy->_storageSnapshot)
     {
-      v26 = [v8 appletTypes];
-      if ([v26 count])
+      appletTypes = [credentialCopy appletTypes];
+      if ([appletTypes count])
       {
-        [(PKProvisioningSEStorageSnapshot *)v32->_storageSnapshot removeAppletTypesFromSnapshot:v26];
+        [(PKProvisioningSEStorageSnapshot *)selfCopy->_storageSnapshot removeAppletTypesFromSnapshot:appletTypes];
       }
 
       goto LABEL_32;
@@ -1775,8 +1775,8 @@ LABEL_33:
 
     else
     {
-      [(PKPaymentSetupCredentialsSectionController *)v32 _replaceAndReloadItem:v12 withNewItem:WeakRetained];
-      v27 = objc_loadWeakRetained(&v32->_delegate);
+      [(PKPaymentSetupCredentialsSectionController *)selfCopy _replaceAndReloadItem:v12 withNewItem:WeakRetained];
+      v27 = objc_loadWeakRetained(&selfCopy->_delegate);
       [v27 credentialSelectionDidChange];
     }
 
@@ -1789,11 +1789,11 @@ LABEL_40:
   return v21;
 }
 
-- (void)_primeItemSelectionAndReloadData:(BOOL)a3
+- (void)_primeItemSelectionAndReloadData:(BOOL)data
 {
   if (!self->_isEditing)
   {
-    v3 = a3;
+    dataCopy = data;
     v23[0] = 0;
     v23[1] = v23;
     v23[2] = 0x2020000000;
@@ -1802,21 +1802,21 @@ LABEL_40:
     v20 = &v19;
     v21 = 0x2020000000;
     v22 = 0;
-    v5 = [(PKPaymentProvisioningController *)self->_provisioningController webService];
-    v6 = [v5 targetDevice];
-    v7 = [v6 deviceClass];
+    webService = [(PKPaymentProvisioningController *)self->_provisioningController webService];
+    targetDevice = [webService targetDevice];
+    deviceClass = [targetDevice deviceClass];
 
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
     v13 = __79__PKPaymentSetupCredentialsSectionController__primeItemSelectionAndReloadData___block_invoke;
     v14 = &unk_1E801BE18;
-    v8 = v7;
+    v8 = deviceClass;
     v15 = v8;
-    v16 = self;
+    selfCopy = self;
     v17 = v23;
     v18 = &v19;
     [(PKPaymentSetupCredentialsSectionController *)self _enumerateCredentials:&v11];
-    if (v3 && *(v20 + 24) == 1)
+    if (dataCopy && *(v20 + 24) == 1)
     {
       WeakRetained = objc_loadWeakRetained(&self->_dataChangeDelegate);
       [WeakRetained reloadAnimated:{0, v11, v12, v13, v14}];
@@ -1899,23 +1899,23 @@ LABEL_20:
   return 0;
 }
 
-- (void)_promptToDeleteItem:(id)a3 completion:(id)a4
+- (void)_promptToDeleteItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [v6 credential];
+  credential = [itemCopy credential];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __77__PKPaymentSetupCredentialsSectionController__promptToDeleteItem_completion___block_invoke;
   v12[3] = &unk_1E801BE40;
   objc_copyWeak(&v15, &location);
-  v10 = v6;
+  v10 = itemCopy;
   v13 = v10;
-  v11 = v7;
+  v11 = completionCopy;
   v14 = v11;
-  [WeakRetained showDeleteConfirmationWithCredential:v9 completion:v12];
+  [WeakRetained showDeleteConfirmationWithCredential:credential completion:v12];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -1940,19 +1940,19 @@ uint64_t __77__PKPaymentSetupCredentialsSectionController__promptToDeleteItem_co
   return result;
 }
 
-- (void)deleteItem:(id)a3
+- (void)deleteItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__34;
   v34 = __Block_byref_object_dispose__34;
-  v35 = [v4 copy];
+  v35 = [itemCopy copy];
   [v31[5] setSelected:0];
   [v31[5] setLoadingIndicatorVisible:1];
-  [(PKPaymentSetupCredentialsSectionController *)self _replaceAndReloadItem:v4 withNewItem:v31[5]];
-  if ([v4 selected])
+  [(PKPaymentSetupCredentialsSectionController *)self _replaceAndReloadItem:itemCopy withNewItem:v31[5]];
+  if ([itemCopy selected])
   {
     v5 = 1;
   }
@@ -1960,8 +1960,8 @@ uint64_t __77__PKPaymentSetupCredentialsSectionController__promptToDeleteItem_co
   else
   {
     selectedCredentialsBeforeEditing = self->_selectedCredentialsBeforeEditing;
-    v7 = [v4 credential];
-    v5 = [(NSHashTable *)selectedCredentialsBeforeEditing containsObject:v7];
+    credential = [itemCopy credential];
+    v5 = [(NSHashTable *)selectedCredentialsBeforeEditing containsObject:credential];
   }
 
   v8 = dispatch_group_create();
@@ -1973,7 +1973,7 @@ uint64_t __77__PKPaymentSetupCredentialsSectionController__promptToDeleteItem_co
   v28[4] = __Block_byref_object_dispose__34;
   v29 = 0;
   provisioningController = self->_provisioningController;
-  v10 = [v4 credential];
+  credential2 = [itemCopy credential];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __57__PKPaymentSetupCredentialsSectionController_deleteItem___block_invoke;
@@ -1981,7 +1981,7 @@ uint64_t __77__PKPaymentSetupCredentialsSectionController__promptToDeleteItem_co
   v27 = v28;
   v11 = v8;
   v26 = v11;
-  [(PKPaymentProvisioningController *)provisioningController deleteCredential:v10 completionHandler:v25];
+  [(PKPaymentProvisioningController *)provisioningController deleteCredential:credential2 completionHandler:v25];
 
   dispatch_group_enter(v11);
   v12 = dispatch_time(0, 1000000000);
@@ -2003,8 +2003,8 @@ uint64_t __77__PKPaymentSetupCredentialsSectionController__promptToDeleteItem_co
   v19 = v28;
   v21 = v5;
   v16[4] = self;
-  v17 = v4;
-  v15 = v4;
+  v17 = itemCopy;
+  v15 = itemCopy;
   dispatch_group_notify(v13, v14, v16);
 
   objc_destroyWeak(&v20);
@@ -2069,17 +2069,17 @@ void __57__PKPaymentSetupCredentialsSectionController_deleteItem___block_invoke_
   }
 }
 
-- (id)_detailTextForCredential:(id)a3
+- (id)_detailTextForCredential:(id)credential
 {
-  v3 = a3;
-  v4 = [v3 detailDescriptionWithEnvironment:PKPaymentSetupContextIsSetupAssistant()];
+  credentialCopy = credential;
+  v4 = [credentialCopy detailDescriptionWithEnvironment:PKPaymentSetupContextIsSetupAssistant()];
 
   return v4;
 }
 
-- (id)_cardArtForCredentialItem:(id)a3
+- (id)_cardArtForCredentialItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = _UISolariumFeatureFlagEnabled();
   if (v5)
   {
@@ -2107,8 +2107,8 @@ void __57__PKPaymentSetupCredentialsSectionController_deleteItem___block_invoke_
   }
 
   v12[4] = self;
-  v13 = v4;
-  v9 = v4;
+  v13 = itemCopy;
+  v9 = itemCopy;
   v10 = [(PKPassSnapshotCoordinator *)snapshotCoordinator cardSnapshotForSource:v9 withSize:v12 completion:v6, v8];
 
   return v10;
@@ -2126,18 +2126,18 @@ void __72__PKPaymentSetupCredentialsSectionController__cardArtForCredentialItem_
   [*(a1 + 32) _replaceAndReloadItem:*(a1 + 40) withNewItem:v7];
 }
 
-- (void)_replaceAndReloadItem:(id)a3 withNewItem:(id)a4
+- (void)_replaceAndReloadItem:(id)item withNewItem:(id)newItem
 {
-  v5 = a4;
-  v6 = [v5 credential];
+  newItemCopy = newItem;
+  credential = [newItemCopy credential];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __80__PKPaymentSetupCredentialsSectionController__replaceAndReloadItem_withNewItem___block_invoke;
   v13 = &unk_1E801BEE0;
-  v14 = v6;
-  v7 = v5;
+  v14 = credential;
+  v7 = newItemCopy;
   v15 = v7;
-  v8 = v6;
+  v8 = credential;
   if ([(PKPaymentSetupCredentialsSectionController *)self _enumerateCredentials:&v10])
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataChangeDelegate);
@@ -2164,9 +2164,9 @@ id __80__PKPaymentSetupCredentialsSectionController__replaceAndReloadItem_withNe
   return v8;
 }
 
-- (id)_credentialItemForCredential:(id)a3
+- (id)_credentialItemForCredential:(id)credential
 {
-  v4 = a3;
+  credentialCopy = credential;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -2177,7 +2177,7 @@ id __80__PKPaymentSetupCredentialsSectionController__replaceAndReloadItem_withNe
   v8[1] = 3221225472;
   v8[2] = __75__PKPaymentSetupCredentialsSectionController__credentialItemForCredential___block_invoke;
   v8[3] = &unk_1E801BF08;
-  v5 = v4;
+  v5 = credentialCopy;
   v9 = v5;
   v10 = &v11;
   [(PKPaymentSetupCredentialsSectionController *)self _enumerateCredentials:v8];
@@ -2203,16 +2203,16 @@ uint64_t __75__PKPaymentSetupCredentialsSectionController__credentialItemForCred
   return 0;
 }
 
-- (id)_credentialItemFromIndexPath:(id)a3
+- (id)_credentialItemFromIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_dataChangeDelegate);
-  v6 = [WeakRetained sectionIdentifierForIndex:{objc_msgSend(v4, "section")}];
+  v6 = [WeakRetained sectionIdentifierForIndex:{objc_msgSend(pathCopy, "section")}];
 
   if (v6)
   {
     v7 = [(NSMutableDictionary *)self->_allCredentials objectForKeyedSubscript:v6];
-    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
   else
@@ -2223,15 +2223,15 @@ uint64_t __75__PKPaymentSetupCredentialsSectionController__credentialItemForCred
   return v8;
 }
 
-- (void)_removeCredentialItem:(id)a3
+- (void)_removeCredentialItem:(id)item
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__PKPaymentSetupCredentialsSectionController__removeCredentialItem___block_invoke;
   aBlock[3] = &unk_1E801BF30;
-  v13 = v4;
+  v13 = itemCopy;
   v19 = v13;
   v5 = _Block_copy(aBlock);
   v14 = 0u;
@@ -2314,10 +2314,10 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)_enumerateCredentials:(id)a3
+- (BOOL)_enumerateCredentials:(id)credentials
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  credentialsCopy = credentials;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -2328,7 +2328,7 @@ LABEL_5:
   if (v21)
   {
     v19 = *v25;
-    v20 = self;
+    selfCopy = self;
 LABEL_3:
     v6 = 0;
     while (1)
@@ -2350,7 +2350,7 @@ LABEL_3:
         do
         {
           v12 = [v8 objectAtIndexedSubscript:v11 - 1];
-          v13 = v4[2](v4, v7, v12, &v23);
+          v13 = credentialsCopy[2](credentialsCopy, v7, v12, &v23);
 
           if (v13)
           {
@@ -2369,8 +2369,8 @@ LABEL_3:
         while (v11++ < v10);
       }
 
-      self = v20;
-      [(NSMutableDictionary *)v20->_allCredentials setObject:v8 forKeyedSubscript:v7];
+      self = selfCopy;
+      [(NSMutableDictionary *)selfCopy->_allCredentials setObject:v8 forKeyedSubscript:v7];
       v16 = v23;
 
       if (v16)

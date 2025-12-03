@@ -1,46 +1,46 @@
 @interface AMSFDSOptions
-- (AMSFDSOptions)initWithCoder:(id)a3;
+- (AMSFDSOptions)initWithCoder:(id)coder;
 - (NSString)bundleIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSFDSOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = self->_action;
-  v6 = [(AMSProcessInfo *)self->_clientInfo copyWithZone:a3];
+  v6 = [(AMSProcessInfo *)self->_clientInfo copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   action = self->_action;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:action];
-  [v7 encodeObject:v6 forKey:@"kCodingKeyAction"];
+  [coderCopy encodeObject:v6 forKey:@"kCodingKeyAction"];
 
-  [v7 encodeObject:self->_clientInfo forKey:@"kCodingKeyClientInfo"];
+  [coderCopy encodeObject:self->_clientInfo forKey:@"kCodingKeyClientInfo"];
 }
 
-- (AMSFDSOptions)initWithCoder:(id)a3
+- (AMSFDSOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = AMSFDSOptions;
   v5 = [(AMSFDSOptions *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyAction"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyAction"];
     v5->_action = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyClientInfo"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyClientInfo"];
     clientInfo = v5->_clientInfo;
     v5->_clientInfo = v7;
   }
@@ -50,21 +50,21 @@
 
 - (NSString)bundleIdentifier
 {
-  v3 = [(AMSFDSOptions *)self clientInfo];
-  v4 = [v3 proxyAppBundleID];
-  v5 = v4;
-  if (v4)
+  clientInfo = [(AMSFDSOptions *)self clientInfo];
+  proxyAppBundleID = [clientInfo proxyAppBundleID];
+  v5 = proxyAppBundleID;
+  if (proxyAppBundleID)
   {
-    v6 = v4;
+    bundleIdentifier = proxyAppBundleID;
   }
 
   else
   {
-    v7 = [(AMSFDSOptions *)self clientInfo];
-    v6 = [v7 bundleIdentifier];
+    clientInfo2 = [(AMSFDSOptions *)self clientInfo];
+    bundleIdentifier = [clientInfo2 bundleIdentifier];
   }
 
-  return v6;
+  return bundleIdentifier;
 }
 
 @end

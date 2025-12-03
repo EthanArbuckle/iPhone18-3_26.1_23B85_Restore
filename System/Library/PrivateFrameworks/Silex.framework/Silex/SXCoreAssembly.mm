@@ -1,101 +1,101 @@
 @interface SXCoreAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXCoreAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerClass:objc_opt_class() factory:&__block_literal_global_0];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerClass:objc_opt_class() factory:&__block_literal_global_0];
 
-  v6 = [v3 publicContainer];
-  v7 = [v6 registerProtocol:&unk_1F53E6C20 factory:&__block_literal_global_239];
+  publicContainer2 = [registryCopy publicContainer];
+  v7 = [publicContainer2 registerProtocol:&unk_1F53E6C20 factory:&__block_literal_global_239];
 
-  v8 = [v3 publicContainer];
-  v9 = [v8 registerClass:objc_opt_class() factory:&__block_literal_global_242];
+  publicContainer3 = [registryCopy publicContainer];
+  v9 = [publicContainer3 registerClass:objc_opt_class() factory:&__block_literal_global_242];
 
-  v10 = [v3 publicContainer];
-  v11 = [v10 registerProtocol:&unk_1F53E6D98 factory:&__block_literal_global_250];
+  publicContainer4 = [registryCopy publicContainer];
+  v11 = [publicContainer4 registerProtocol:&unk_1F53E6D98 factory:&__block_literal_global_250];
 
-  v12 = [v3 publicContainer];
-  v13 = [v12 registerClass:objc_opt_class() factory:&__block_literal_global_253];
+  publicContainer5 = [registryCopy publicContainer];
+  v13 = [publicContainer5 registerClass:objc_opt_class() factory:&__block_literal_global_253];
 
-  v14 = [v3 publicContainer];
-  v15 = [v14 registerProtocol:&unk_1F53E2118 factory:&__block_literal_global_256];
+  publicContainer6 = [registryCopy publicContainer];
+  v15 = [publicContainer6 registerProtocol:&unk_1F53E2118 factory:&__block_literal_global_256];
 
-  v16 = [v3 publicContainer];
-  v17 = [v16 registerProtocol:&unk_1F53E2198 factory:&__block_literal_global_259];
+  publicContainer7 = [registryCopy publicContainer];
+  v17 = [publicContainer7 registerProtocol:&unk_1F53E2198 factory:&__block_literal_global_259];
 
-  v18 = [v3 publicContainer];
-  v19 = [v18 registerProtocol:&unk_1F53E2E48 factory:&__block_literal_global_268];
+  publicContainer8 = [registryCopy publicContainer];
+  v19 = [publicContainer8 registerProtocol:&unk_1F53E2E48 factory:&__block_literal_global_268];
 
-  v20 = [v3 publicContainer];
-  v21 = [v20 registerProtocol:&unk_1F5423328 factory:&__block_literal_global_277];
+  publicContainer9 = [registryCopy publicContainer];
+  v21 = [publicContainer9 registerProtocol:&unk_1F5423328 factory:&__block_literal_global_277];
 
-  v22 = [v3 publicContainer];
-  v23 = [v22 registerProtocol:&unk_1F53A6760 factory:&__block_literal_global_281];
+  publicContainer10 = [registryCopy publicContainer];
+  v23 = [publicContainer10 registerProtocol:&unk_1F53A6760 factory:&__block_literal_global_281];
 
-  v24 = [v3 publicContainer];
-  v25 = [v24 registerProtocol:&unk_1F5410610 factory:&__block_literal_global_287];
+  publicContainer11 = [registryCopy publicContainer];
+  v25 = [publicContainer11 registerProtocol:&unk_1F5410610 factory:&__block_literal_global_287];
 
-  v26 = [v3 publicContainer];
-  v27 = [v26 registerProtocol:&unk_1F53E2F18 factory:&__block_literal_global_291];
+  publicContainer12 = [registryCopy publicContainer];
+  v27 = [publicContainer12 registerProtocol:&unk_1F53E2F18 factory:&__block_literal_global_291];
   v28 = [v27 inScope:3];
 
-  v29 = [v3 privateContainer];
-  v30 = [v29 registerProtocol:&unk_1F5405548 factory:&__block_literal_global_301];
+  privateContainer = [registryCopy privateContainer];
+  v30 = [privateContainer registerProtocol:&unk_1F5405548 factory:&__block_literal_global_301];
   v31 = [v30 inScope:3];
 
-  v32 = [v3 publicContainer];
-  v33 = [v32 registerProtocol:&unk_1F5417968 factory:&__block_literal_global_305];
+  publicContainer13 = [registryCopy publicContainer];
+  v33 = [publicContainer13 registerProtocol:&unk_1F5417968 factory:&__block_literal_global_305];
 
-  v34 = [v3 publicContainer];
-  v35 = [v34 registerProtocol:&unk_1F54179F0 factory:&__block_literal_global_308];
+  publicContainer14 = [registryCopy publicContainer];
+  v35 = [publicContainer14 registerProtocol:&unk_1F54179F0 factory:&__block_literal_global_308];
 
-  v36 = [v3 publicContainer];
-  v37 = [v36 registerProtocol:&unk_1F53FB398 factory:&__block_literal_global_312];
+  publicContainer15 = [registryCopy publicContainer];
+  v37 = [publicContainer15 registerProtocol:&unk_1F53FB398 factory:&__block_literal_global_312];
 
-  v38 = [v3 publicContainer];
-  v39 = [v38 registerProtocol:&unk_1F53FB420 factory:&__block_literal_global_315];
+  publicContainer16 = [registryCopy publicContainer];
+  v39 = [publicContainer16 registerProtocol:&unk_1F53FB420 factory:&__block_literal_global_315];
 
-  v40 = [v3 publicContainer];
-  v41 = [v40 registerProtocol:&unk_1F53F79A0 factory:&__block_literal_global_319];
+  publicContainer17 = [registryCopy publicContainer];
+  v41 = [publicContainer17 registerProtocol:&unk_1F53F79A0 factory:&__block_literal_global_319];
 
-  v42 = [v3 publicContainer];
-  v43 = [v42 registerProtocol:&unk_1F53F7A28 factory:&__block_literal_global_322];
+  publicContainer18 = [registryCopy publicContainer];
+  v43 = [publicContainer18 registerProtocol:&unk_1F53F7A28 factory:&__block_literal_global_322];
 
-  v44 = [v3 publicContainer];
-  v45 = [v44 registerProtocol:&unk_1F5416F50 factory:&__block_literal_global_326];
+  publicContainer19 = [registryCopy publicContainer];
+  v45 = [publicContainer19 registerProtocol:&unk_1F5416F50 factory:&__block_literal_global_326];
 
-  v46 = [v3 publicContainer];
-  v47 = [v46 registerProtocol:&unk_1F5416FD8 factory:&__block_literal_global_329];
+  publicContainer20 = [registryCopy publicContainer];
+  v47 = [publicContainer20 registerProtocol:&unk_1F5416FD8 factory:&__block_literal_global_329];
 
-  v48 = [v3 publicContainer];
-  v49 = [v48 registerProtocol:&unk_1F540FBD0 factory:&__block_literal_global_336];
+  publicContainer21 = [registryCopy publicContainer];
+  v49 = [publicContainer21 registerProtocol:&unk_1F540FBD0 factory:&__block_literal_global_336];
 
-  v50 = [v3 publicContainer];
-  v51 = [v50 registerProtocol:&unk_1F540E6A0 factory:&__block_literal_global_343];
+  publicContainer22 = [registryCopy publicContainer];
+  v51 = [publicContainer22 registerProtocol:&unk_1F540E6A0 factory:&__block_literal_global_343];
 
-  v52 = [v3 publicContainer];
-  v53 = [v52 registerProtocol:&unk_1F540E380 factory:&__block_literal_global_347];
+  publicContainer23 = [registryCopy publicContainer];
+  v53 = [publicContainer23 registerProtocol:&unk_1F540E380 factory:&__block_literal_global_347];
 
-  v54 = [v3 publicContainer];
-  v55 = [v54 registerProtocol:&unk_1F540E2E0 factory:&__block_literal_global_355];
+  publicContainer24 = [registryCopy publicContainer];
+  v55 = [publicContainer24 registerProtocol:&unk_1F540E2E0 factory:&__block_literal_global_355];
 
-  v56 = [v3 privateContainer];
-  v57 = [v56 registerClass:objc_opt_class() factory:&__block_literal_global_358];
+  privateContainer2 = [registryCopy privateContainer];
+  v57 = [privateContainer2 registerClass:objc_opt_class() factory:&__block_literal_global_358];
 
-  v58 = [v3 publicContainer];
-  v59 = [v58 registerProtocol:&unk_1F53E20B8 factory:&__block_literal_global_361];
+  publicContainer25 = [registryCopy publicContainer];
+  v59 = [publicContainer25 registerProtocol:&unk_1F53E20B8 factory:&__block_literal_global_361];
 
-  v60 = [v3 privateContainer];
-  v61 = [v60 registerProtocol:&unk_1F540FC88 factory:&__block_literal_global_365];
+  privateContainer3 = [registryCopy privateContainer];
+  v61 = [privateContainer3 registerProtocol:&unk_1F540FC88 factory:&__block_literal_global_365];
 
-  v63 = [v3 publicContainer];
+  publicContainer26 = [registryCopy publicContainer];
 
-  v62 = [v63 registerProtocol:&unk_1F53ACF80 factory:&__block_literal_global_384];
+  v62 = [publicContainer26 registerProtocol:&unk_1F53ACF80 factory:&__block_literal_global_384];
 }
 
 SXScrollViewController *__33__SXCoreAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2)

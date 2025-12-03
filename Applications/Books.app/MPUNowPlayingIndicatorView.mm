@@ -8,9 +8,9 @@
 {
   [(MPUNowPlayingIndicatorView *)self levelWidth];
   v4 = v3;
-  v5 = [(MPUNowPlayingIndicatorView *)self numberOfLevels];
+  numberOfLevels = [(MPUNowPlayingIndicatorView *)self numberOfLevels];
   [(MPUNowPlayingIndicatorView *)self interLevelSpacing];
-  return v6 * ([(MPUNowPlayingIndicatorView *)self numberOfLevels]- 1) + v4 * v5;
+  return v6 * ([(MPUNowPlayingIndicatorView *)self numberOfLevels]- 1) + v4 * numberOfLevels;
 }
 
 @end

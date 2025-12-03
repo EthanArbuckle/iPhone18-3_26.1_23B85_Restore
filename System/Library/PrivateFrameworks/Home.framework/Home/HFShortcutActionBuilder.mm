@@ -27,10 +27,10 @@ void __59__HFShortcutActionBuilder_containedAccessoryRepresentables__block_invok
 
 - (id)performValidation
 {
-  v2 = [(HFShortcutActionBuilder *)self validationError];
-  if (v2)
+  validationError = [(HFShortcutActionBuilder *)self validationError];
+  if (validationError)
   {
-    [MEMORY[0x277D2C900] futureWithError:v2];
+    [MEMORY[0x277D2C900] futureWithError:validationError];
   }
 
   else
@@ -46,10 +46,10 @@ void __59__HFShortcutActionBuilder_containedAccessoryRepresentables__block_invok
 {
   v10[1] = *MEMORY[0x277D85DE8];
   objc_opt_class();
-  v3 = [(HFActionBuilder *)self action];
+  action = [(HFActionBuilder *)self action];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = action;
   }
 
   else

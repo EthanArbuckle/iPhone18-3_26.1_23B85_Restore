@@ -1,7 +1,7 @@
 @interface UAPasteboardItem
 - (UAPasteboardItem)init;
 - (id)description;
-- (void)addType:(id)a3;
+- (void)addType:(id)type;
 @end
 
 @implementation UAPasteboardItem
@@ -20,32 +20,32 @@
   return v2;
 }
 
-- (void)addType:(id)a3
+- (void)addType:(id)type
 {
-  v17 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = 0;
   for (i = 0; ; ++i)
   {
-    v7 = [(UAPasteboardItem *)v4 types];
-    v8 = [v7 count];
+    types = [(UAPasteboardItem *)selfCopy types];
+    v8 = [types count];
 
     if (v8 <= i)
     {
-      v14 = [(UAPasteboardItem *)v4 types];
-      v15 = [v14 arrayByAddingObject:v17];
-      [(UAPasteboardItem *)v4 setTypes:v15];
+      types2 = [(UAPasteboardItem *)selfCopy types];
+      v15 = [types2 arrayByAddingObject:typeCopy];
+      [(UAPasteboardItem *)selfCopy setTypes:v15];
 
       goto LABEL_7;
     }
 
-    v9 = [(UAPasteboardItem *)v4 types];
-    v10 = [v9 objectAtIndexedSubscript:i];
+    types3 = [(UAPasteboardItem *)selfCopy types];
+    v10 = [types3 objectAtIndexedSubscript:i];
 
-    v11 = [v10 type];
-    v12 = [v17 type];
-    v13 = [v11 isEqualToString:v12];
+    type = [v10 type];
+    type2 = [typeCopy type];
+    v13 = [type isEqualToString:type2];
 
     if (v13)
     {
@@ -55,60 +55,60 @@
     v5 += 0x100000000;
   }
 
-  v16 = [(UAPasteboardItem *)v4 types];
-  v14 = [v16 mutableCopy];
+  types4 = [(UAPasteboardItem *)selfCopy types];
+  types2 = [types4 mutableCopy];
 
-  [v14 removeObjectAtIndex:v5 >> 32];
-  [v14 addObject:v17];
-  [(UAPasteboardItem *)v4 setTypes:v14];
+  [types2 removeObjectAtIndex:v5 >> 32];
+  [types2 addObject:typeCopy];
+  [(UAPasteboardItem *)selfCopy setTypes:types2];
 LABEL_7:
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   for (i = 0; ; ++i)
   {
-    v6 = [(UAPasteboardItem *)v4 types];
-    v7 = [v6 count];
+    types = [(UAPasteboardItem *)selfCopy types];
+    v7 = [types count];
 
     if (v7 <= i)
     {
       break;
     }
 
-    v8 = [(UAPasteboardItem *)v4 types];
-    v9 = [v8 objectAtIndexedSubscript:i];
+    types2 = [(UAPasteboardItem *)selfCopy types];
+    v9 = [types2 objectAtIndexedSubscript:i];
 
     if (i)
     {
-      v10 = [(UAPasteboardItem *)v4 types];
-      v11 = [v10 count] - 1;
+      types3 = [(UAPasteboardItem *)selfCopy types];
+      v11 = [types3 count] - 1;
 
-      v12 = [v9 type];
+      type = [v9 type];
       if (i == v11)
       {
-        [v3 appendFormat:@"%@"], v12);
+        [v3 appendFormat:@"%@"], type);
       }
 
       else
       {
-        [v3 appendFormat:@"%@, ", v12];
+        [v3 appendFormat:@"%@, ", type];
       }
     }
 
     else
     {
-      v12 = [v9 type];
-      objc_msgSend(v3, "appendFormat:", @"(%@, "), v12;
+      type = [v9 type];
+      objc_msgSend(v3, "appendFormat:", @"(%@, "), type;
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v13 = [v3 copy];
 

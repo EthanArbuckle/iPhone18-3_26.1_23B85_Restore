@@ -1,16 +1,16 @@
 @interface KNAnimationRegistry
-+ (id)categoryNameForPluginClass:(Class)a3;
++ (id)categoryNameForPluginClass:(Class)class;
 + (id)instance;
-+ (id)localizedCategoryNameForCategory:(int64_t)a3;
-+ (id)localizedNameForUnsupportedAnimation:(id)a3;
++ (id)localizedCategoryNameForCategory:(int64_t)category;
++ (id)localizedNameForUnsupportedAnimation:(id)animation;
 + (id)preferredCategoryOrder;
-- (BOOL)canMapEffectIdentifier:(id)a3 animationType:(int64_t)a4 toEffectIdentifier:(id)a5 includeObsoleteNames:(BOOL)a6 forDrawable:(id)a7;
+- (BOOL)canMapEffectIdentifier:(id)identifier animationType:(int64_t)type toEffectIdentifier:(id)effectIdentifier includeObsoleteNames:(BOOL)names forDrawable:(id)drawable;
 - (KNAnimationRegistry)init;
-- (id)animationInfoForEffectIdentifier:(id)a3 animationType:(int64_t)a4 includeObsoleteNames:(BOOL)a5;
-- (id)animationInfoForEffectIdentifier:(id)a3 animationType:(int64_t)a4 includeObsoleteNames:(BOOL)a5 drawable:(id)a6;
-- (id)animationInfosForAnimationType:(int64_t)a3 category:(id)a4;
-- (id)animationInfosForAnimationType:(int64_t)a3 filter:(id)a4;
-- (id)distinctCategoriesForType:(int64_t)a3;
+- (id)animationInfoForEffectIdentifier:(id)identifier animationType:(int64_t)type includeObsoleteNames:(BOOL)names;
+- (id)animationInfoForEffectIdentifier:(id)identifier animationType:(int64_t)type includeObsoleteNames:(BOOL)names drawable:(id)drawable;
+- (id)animationInfosForAnimationType:(int64_t)type category:(id)category;
+- (id)animationInfosForAnimationType:(int64_t)type filter:(id)filter;
+- (id)distinctCategoriesForType:(int64_t)type;
 - (id)p_buildAlternateFilterMap;
 @end
 
@@ -28,20 +28,20 @@
   return v3;
 }
 
-+ (id)categoryNameForPluginClass:(Class)a3
++ (id)categoryNameForPluginClass:(Class)class
 {
-  v4 = objc_msgSend_animationCategory(a3, a2, a3);
+  v4 = objc_msgSend_animationCategory(class, a2, class);
 
   return objc_msgSend_localizedCategoryNameForCategory_(KNAnimationRegistry, v3, v4);
 }
 
-+ (id)localizedCategoryNameForCategory:(int64_t)a3
++ (id)localizedCategoryNameForCategory:(int64_t)category
 {
-  if (a3 > 202)
+  if (category > 202)
   {
-    if (a3 > 300)
+    if (category > 300)
     {
-      switch(a3)
+      switch(category)
       {
         case 301:
           v3 = sub_275DC204C();
@@ -60,14 +60,14 @@
 
     else
     {
-      if (a3 == 203)
+      if (category == 203)
       {
         v3 = sub_275DC204C();
         objc_msgSend_localizedStringForKey_value_table_(v3, v8, @"Special Effects *AnimationRegistry*", @"Special Effects", @"Keynote");
         goto LABEL_23;
       }
 
-      if (a3 == 204)
+      if (category == 204)
       {
         v3 = sub_275DC204C();
         objc_msgSend_localizedStringForKey_value_table_(v3, v11, @"3D Charts Effects *AnimationRegistry*", @"3D Chart Effects", @"Keynote");
@@ -78,9 +78,9 @@
     goto LABEL_8;
   }
 
-  if (a3 > 102)
+  if (category > 102)
   {
-    switch(a3)
+    switch(category)
     {
       case 103:
         v3 = sub_275DC204C();
@@ -97,11 +97,11 @@
     }
 
 LABEL_8:
-    v5 = objc_msgSend_string(MEMORY[0x277CCACA8], a2, a3);
+    v5 = objc_msgSend_string(MEMORY[0x277CCACA8], a2, category);
     goto LABEL_24;
   }
 
-  if (a3 != 102)
+  if (category != 102)
   {
     goto LABEL_8;
   }
@@ -115,15 +115,15 @@ LABEL_24:
   return v5;
 }
 
-+ (id)localizedNameForUnsupportedAnimation:(id)a3
++ (id)localizedNameForUnsupportedAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   if (qword_280A3BF30 != -1)
   {
     sub_275E59D58();
   }
 
-  v5 = objc_msgSend_objectForKeyedSubscript_(qword_280A3BF38, v3, v4);
+  v5 = objc_msgSend_objectForKeyedSubscript_(qword_280A3BF38, v3, animationCopy);
   if (!v5)
   {
     v6 = sub_275DC204C();
@@ -413,7 +413,7 @@ LABEL_24:
   return v2;
 }
 
-- (id)distinctCategoriesForType:(int64_t)a3
+- (id)distinctCategoriesForType:(int64_t)type
 {
   v4 = KNAnimationTypeAsNumber();
   v6 = objc_msgSend_objectForKeyedSubscript_(self->_classesForTypeAndCategory, v5, v4);
@@ -423,24 +423,24 @@ LABEL_24:
   return v11;
 }
 
-- (id)animationInfosForAnimationType:(int64_t)a3 category:(id)a4
+- (id)animationInfosForAnimationType:(int64_t)type category:(id)category
 {
   classesForTypeAndCategory = self->_classesForTypeAndCategory;
-  v5 = a4;
+  categoryCopy = category;
   v6 = KNAnimationTypeAsNumber();
   v8 = objc_msgSend_objectForKeyedSubscript_(classesForTypeAndCategory, v7, v6);
-  v10 = objc_msgSend_objectForKeyedSubscript_(v8, v9, v5);
+  v10 = objc_msgSend_objectForKeyedSubscript_(v8, v9, categoryCopy);
 
   return v10;
 }
 
-- (id)animationInfoForEffectIdentifier:(id)a3 animationType:(int64_t)a4 includeObsoleteNames:(BOOL)a5
+- (id)animationInfoForEffectIdentifier:(id)identifier animationType:(int64_t)type includeObsoleteNames:(BOOL)names
 {
-  v5 = a5;
-  v8 = a3;
+  namesCopy = names;
+  identifierCopy = identifier;
   v9 = KNAnimationTypeAsNumber();
   v11 = objc_msgSend_objectForKeyedSubscript_(self->_classesForTypeAndName, v10, v9);
-  v14 = objc_msgSend_objectForKeyedSubscript_(v11, v12, v8);
+  v14 = objc_msgSend_objectForKeyedSubscript_(v11, v12, identifierCopy);
   if (v14)
   {
     v15 = 1;
@@ -448,25 +448,25 @@ LABEL_24:
 
   else
   {
-    v15 = !v5;
+    v15 = !namesCopy;
   }
 
   if (!v15)
   {
     v16 = objc_msgSend_objectForKeyedSubscript_(self->_classesForTypeAndObsoleteName, v13, v9);
-    v14 = objc_msgSend_objectForKeyedSubscript_(v16, v17, v8);
+    v14 = objc_msgSend_objectForKeyedSubscript_(v16, v17, identifierCopy);
   }
 
   if (!v14)
   {
     v18 = MEMORY[0x277D801A8];
     v19 = MEMORY[0x277D800D0];
-    if (a4 != 4)
+    if (type != 4)
     {
       v19 = MEMORY[0x277D80150];
     }
 
-    if (a4 != 5)
+    if (type != 5)
     {
       v18 = v19;
     }
@@ -477,13 +477,13 @@ LABEL_24:
   return v14;
 }
 
-- (id)animationInfoForEffectIdentifier:(id)a3 animationType:(int64_t)a4 includeObsoleteNames:(BOOL)a5 drawable:(id)a6
+- (id)animationInfoForEffectIdentifier:(id)identifier animationType:(int64_t)type includeObsoleteNames:(BOOL)names drawable:(id)drawable
 {
-  v6 = a5;
+  namesCopy = names;
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  v37 = a4;
-  v12 = objc_msgSend_animationInfoForEffectIdentifier_animationType_includeObsoleteNames_(self, v11, a3, a4, v6);
+  drawableCopy = drawable;
+  typeCopy = type;
+  v12 = objc_msgSend_animationInfoForEffectIdentifier_animationType_includeObsoleteNames_(self, v11, identifier, type, namesCopy);
   alternateEffectIdentifiersForEffectIdentifierAndFilter = self->_alternateEffectIdentifiersForEffectIdentifierAndFilter;
   v16 = objc_msgSend_effectIdentifier(v12, v14, v15);
   v18 = objc_msgSend_objectForKeyedSubscript_(alternateEffectIdentifiersForEffectIdentifierAndFilter, v17, v16);
@@ -511,13 +511,13 @@ LABEL_24:
           }
 
           v29 = *(*(&v38 + 1) + 8 * i);
-          v30 = objc_msgSend_animationFilters(v10, v24, v25, v36);
+          v30 = objc_msgSend_animationFilters(drawableCopy, v24, v25, v36);
           v32 = objc_msgSend_containsObject_(v30, v31, v29);
 
           if (v32)
           {
             v33 = objc_msgSend_objectForKeyedSubscript_(v18, v24, v29);
-            v12 = objc_msgSend_animationInfoForEffectIdentifier_animationType_(self, v34, v33, v37);
+            v12 = objc_msgSend_animationInfoForEffectIdentifier_animationType_(self, v34, v33, typeCopy);
 
             if (v12)
             {
@@ -545,27 +545,27 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)canMapEffectIdentifier:(id)a3 animationType:(int64_t)a4 toEffectIdentifier:(id)a5 includeObsoleteNames:(BOOL)a6 forDrawable:(id)a7
+- (BOOL)canMapEffectIdentifier:(id)identifier animationType:(int64_t)type toEffectIdentifier:(id)effectIdentifier includeObsoleteNames:(BOOL)names forDrawable:(id)drawable
 {
-  v8 = a6;
+  namesCopy = names;
   v46 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a7;
-  if (objc_msgSend_isEqualToString_(v11, v14, v12))
+  identifierCopy = identifier;
+  effectIdentifierCopy = effectIdentifier;
+  drawableCopy = drawable;
+  if (objc_msgSend_isEqualToString_(identifierCopy, v14, effectIdentifierCopy))
   {
     v16 = 1;
   }
 
   else
   {
-    v19 = objc_msgSend_objectForKeyedSubscript_(self->_alternateEffectIdentifiersForEffectIdentifierAndFilter, v15, v11);
+    v19 = objc_msgSend_objectForKeyedSubscript_(self->_alternateEffectIdentifiersForEffectIdentifierAndFilter, v15, identifierCopy);
     v16 = 0;
-    if (!v19 && v8)
+    if (!v19 && namesCopy)
     {
       v20 = KNAnimationTypeAsNumber();
       v22 = objc_msgSend_objectForKeyedSubscript_(self->_classesForTypeAndObsoleteName, v21, v20);
-      v24 = objc_msgSend_objectForKeyedSubscript_(v22, v23, v11);
+      v24 = objc_msgSend_objectForKeyedSubscript_(v22, v23, identifierCopy);
 
       v16 = v24 != 0;
       if (v24)
@@ -583,7 +583,7 @@ LABEL_13:
 
     if (v19)
     {
-      objc_msgSend_animationFilters(v13, v17, v18);
+      objc_msgSend_animationFilters(drawableCopy, v17, v18);
       v41 = 0u;
       v42 = 0u;
       v43 = 0u;
@@ -604,7 +604,7 @@ LABEL_13:
 
             v37 = objc_msgSend_objectForKeyedSubscript_(v19, v33, *(*(&v41 + 1) + 8 * i), v41);
             v39 = v37;
-            if (v37 && objc_msgSend_isEqualToString_(v37, v38, v12))
+            if (v37 && objc_msgSend_isEqualToString_(v37, v38, effectIdentifierCopy))
             {
 
               v16 = 1;
@@ -629,19 +629,19 @@ LABEL_21:
   return v16;
 }
 
-- (id)animationInfosForAnimationType:(int64_t)a3 filter:(id)a4
+- (id)animationInfosForAnimationType:(int64_t)type filter:(id)filter
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  filterCopy = filter;
   v8 = objc_msgSend_array(MEMORY[0x277CBEB18], v6, v7);
   v11 = KNAnimationTypeAsNumber();
-  if (v5 && objc_msgSend_count(v5, v9, v10))
+  if (filterCopy && objc_msgSend_count(filterCopy, v9, v10))
   {
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v12 = v5;
+    v12 = filterCopy;
     v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v32, v36, 16);
     if (v14)
     {

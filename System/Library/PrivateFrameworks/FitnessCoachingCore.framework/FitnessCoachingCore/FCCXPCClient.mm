@@ -1,13 +1,13 @@
 @interface FCCXPCClient
 - (FCCXPCClient)init;
-- (FCCXPCClient)initWithQueue:(id)a3;
-- (void)_remoteProxy:(id)a3 errorHandler:(id)a4;
+- (FCCXPCClient)initWithQueue:(id)queue;
+- (void)_remoteProxy:(id)proxy errorHandler:(id)handler;
 - (void)_setupXPCConnection;
-- (void)_transportMessage:(unint64_t)a3 data:(id)a4 completion:(id)a5;
-- (void)_transportRequest:(unint64_t)a3 data:(id)a4 completion:(id)a5;
+- (void)_transportMessage:(unint64_t)message data:(id)data completion:(id)completion;
+- (void)_transportRequest:(unint64_t)request data:(id)data completion:(id)completion;
 - (void)dealloc;
-- (void)transportMessage:(unint64_t)a3 data:(id)a4 completion:(id)a5;
-- (void)transportRequest:(unint64_t)a3 data:(id)a4 completion:(id)a5;
+- (void)transportMessage:(unint64_t)message data:(id)data completion:(id)completion;
+- (void)transportRequest:(unint64_t)request data:(id)data completion:(id)completion;
 @end
 
 @implementation FCCXPCClient
@@ -20,16 +20,16 @@
   return v4;
 }
 
-- (FCCXPCClient)initWithQueue:(id)a3
+- (FCCXPCClient)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = FCCXPCClient;
   v6 = [(FCCXPCClient *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatchQueue, a3);
+    objc_storeStrong(&v6->_dispatchQueue, queue);
   }
 
   [(FCCXPCClient *)v7 _setupXPCConnection];
@@ -83,20 +83,20 @@ void __35__FCCXPCClient__setupXPCConnection__block_invoke_298()
   }
 }
 
-- (void)_remoteProxy:(id)a3 errorHandler:(id)a4
+- (void)_remoteProxy:(id)proxy errorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  proxyCopy = proxy;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__FCCXPCClient__remoteProxy_errorHandler___block_invoke;
   block[3] = &unk_27900A220;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = handlerCopy;
+  v13 = proxyCopy;
+  v9 = proxyCopy;
+  v10 = handlerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -129,81 +129,81 @@ void __42__FCCXPCClient__remoteProxy_errorHandler___block_invoke_2(uint64_t a1, 
   }
 }
 
-- (void)transportMessage:(unint64_t)a3 data:(id)a4 completion:(id)a5
+- (void)transportMessage:(unint64_t)message data:(id)data completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __49__FCCXPCClient_transportMessage_data_completion___block_invoke;
   v13[3] = &unk_27900A188;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = dataCopy;
+  v15 = completionCopy;
+  messageCopy = message;
+  v11 = completionCopy;
+  v12 = dataCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)transportRequest:(unint64_t)a3 data:(id)a4 completion:(id)a5
+- (void)transportRequest:(unint64_t)request data:(id)data completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __49__FCCXPCClient_transportRequest_data_completion___block_invoke;
   v13[3] = &unk_27900A188;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = dataCopy;
+  v15 = completionCopy;
+  requestCopy = request;
+  v11 = completionCopy;
+  v12 = dataCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)_transportMessage:(unint64_t)a3 data:(id)a4 completion:(id)a5
+- (void)_transportMessage:(unint64_t)message data:(id)data completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __50__FCCXPCClient__transportMessage_data_completion___block_invoke;
   v14[3] = &unk_27900A248;
-  v17 = a3;
-  v15 = v8;
-  v16 = v9;
+  messageCopy = message;
+  v15 = dataCopy;
+  v16 = completionCopy;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __50__FCCXPCClient__transportMessage_data_completion___block_invoke_2;
   v12[3] = &unk_27900A1D8;
   v13 = v16;
   v10 = v16;
-  v11 = v8;
+  v11 = dataCopy;
   [(FCCXPCClient *)self _remoteProxy:v14 errorHandler:v12];
 }
 
-- (void)_transportRequest:(unint64_t)a3 data:(id)a4 completion:(id)a5
+- (void)_transportRequest:(unint64_t)request data:(id)data completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __50__FCCXPCClient__transportRequest_data_completion___block_invoke;
   v14[3] = &unk_27900A248;
-  v17 = a3;
-  v15 = v8;
-  v16 = v9;
+  requestCopy = request;
+  v15 = dataCopy;
+  v16 = completionCopy;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __50__FCCXPCClient__transportRequest_data_completion___block_invoke_2;
   v12[3] = &unk_27900A1D8;
   v13 = v16;
   v10 = v16;
-  v11 = v8;
+  v11 = dataCopy;
   [(FCCXPCClient *)self _remoteProxy:v14 errorHandler:v12];
 }
 

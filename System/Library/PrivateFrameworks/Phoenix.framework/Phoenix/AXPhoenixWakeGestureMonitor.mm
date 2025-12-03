@@ -4,9 +4,9 @@
 - (BOOL)isDeviceHandheld;
 - (void)_didReceiveSleepGesture;
 - (void)_didReceiveWakeGesture;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)wakeGestureManager:(id)a3 didUpdateWakeGesture:(int64_t)a4;
+- (void)wakeGestureManager:(id)manager didUpdateWakeGesture:(int64_t)gesture;
 @end
 
 @implementation AXPhoenixWakeGestureMonitor
@@ -46,9 +46,9 @@ uint64_t __45__AXPhoenixWakeGestureMonitor_sharedInstance__block_invoke()
   if (v8 && ([getCMWakeGestureManagerClass() isWakeGestureAvailable] & 1) != 0)
   {
     v4 = v8;
-    v5 = [getCMWakeGestureManagerClass() sharedManager];
+    sharedManager = [getCMWakeGestureManagerClass() sharedManager];
     [(AXPhoenixWakeGestureMonitor *)v4 setGestureManager:?];
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](sharedManager);
   }
 
   v3 = MEMORY[0x277D82BE0](v8);
@@ -56,19 +56,19 @@ uint64_t __45__AXPhoenixWakeGestureMonitor_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v9 = *MEMORY[0x277D85DE8];
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(AXPhoenixWakeGestureMonitor *)v7 gestureManager];
-  [(CMWakeGestureManager *)v3 setDelegate:v7];
-  MEMORY[0x277D82BD8](v3);
-  v4 = [(AXPhoenixWakeGestureMonitor *)v7 gestureManager];
-  [(CMWakeGestureManager *)v4 startWakeGestureUpdates];
-  MEMORY[0x277D82BD8](v4);
+  objc_storeStrong(location, queue);
+  gestureManager = [(AXPhoenixWakeGestureMonitor *)selfCopy gestureManager];
+  [(CMWakeGestureManager *)gestureManager setDelegate:selfCopy];
+  MEMORY[0x277D82BD8](gestureManager);
+  gestureManager2 = [(AXPhoenixWakeGestureMonitor *)selfCopy gestureManager];
+  [(CMWakeGestureManager *)gestureManager2 startWakeGestureUpdates];
+  MEMORY[0x277D82BD8](gestureManager2);
   oslog = AXLogBackTap();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -86,9 +86,9 @@ uint64_t __45__AXPhoenixWakeGestureMonitor_sharedInstance__block_invoke()
   v5 = *MEMORY[0x277D85DE8];
   oslog[2] = &self->super.super;
   oslog[1] = a2;
-  v2 = [(AXPhoenixWakeGestureMonitor *)self gestureManager];
-  [(CMWakeGestureManager *)v2 stopWakeGestureUpdates];
-  MEMORY[0x277D82BD8](v2);
+  gestureManager = [(AXPhoenixWakeGestureMonitor *)self gestureManager];
+  [(CMWakeGestureManager *)gestureManager stopWakeGestureUpdates];
+  MEMORY[0x277D82BD8](gestureManager);
   oslog[0] = AXLogBackTap();
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
   {
@@ -163,26 +163,26 @@ uint64_t __45__AXPhoenixWakeGestureMonitor_sharedInstance__block_invoke()
   return v7 & 1;
 }
 
-- (void)wakeGestureManager:(id)a3 didUpdateWakeGesture:(int64_t)a4
+- (void)wakeGestureManager:(id)manager didUpdateWakeGesture:(int64_t)gesture
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (a4 == 1)
+  objc_storeStrong(location, manager);
+  if (gesture == 1)
   {
-    v7 = v10;
+    v7 = selfCopy;
     v4 = mach_absolute_time();
     [(AXPhoenixWakeGestureMonitor *)v7 setWakeGestureTimestamp:MachAbsoluteTimeToTimeIntervalSinceBoot_0(v4)];
-    [(AXPhoenixWakeGestureMonitor *)v10 _didReceiveWakeGesture];
+    [(AXPhoenixWakeGestureMonitor *)selfCopy _didReceiveWakeGesture];
   }
 
-  else if (a4 == 3)
+  else if (gesture == 3)
   {
-    v6 = v10;
+    v6 = selfCopy;
     v5 = mach_absolute_time();
     [(AXPhoenixWakeGestureMonitor *)v6 setDismissalTimestamp:MachAbsoluteTimeToTimeIntervalSinceBoot_0(v5)];
-    [(AXPhoenixWakeGestureMonitor *)v10 _didReceiveSleepGesture];
+    [(AXPhoenixWakeGestureMonitor *)selfCopy _didReceiveSleepGesture];
   }
 
   objc_storeStrong(location, 0);
@@ -190,17 +190,17 @@ uint64_t __45__AXPhoenixWakeGestureMonitor_sharedInstance__block_invoke()
 
 - (void)_didReceiveWakeGesture
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   [(AXPhoenixWakeGestureMonitor *)self wakeGestureTimestamp];
   v11 = v2;
-  v3 = v13;
+  v3 = selfCopy;
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
   v8 = __53__AXPhoenixWakeGestureMonitor__didReceiveWakeGesture__block_invoke;
   v9 = &unk_279A20778;
-  v10[0] = MEMORY[0x277D82BE0](v13);
+  v10[0] = MEMORY[0x277D82BE0](selfCopy);
   v10[1] = v11;
   v4.receiver = v3;
   v4.super_class = AXPhoenixWakeGestureMonitor;
@@ -224,17 +224,17 @@ void __53__AXPhoenixWakeGestureMonitor__didReceiveWakeGesture__block_invoke(uint
 
 - (void)_didReceiveSleepGesture
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   [(AXPhoenixWakeGestureMonitor *)self dismissalTimestamp];
   v11 = v2;
-  v3 = v13;
+  v3 = selfCopy;
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
   v8 = __54__AXPhoenixWakeGestureMonitor__didReceiveSleepGesture__block_invoke;
   v9 = &unk_279A20778;
-  v10[0] = MEMORY[0x277D82BE0](v13);
+  v10[0] = MEMORY[0x277D82BE0](selfCopy);
   v10[1] = v11;
   v4.receiver = v3;
   v4.super_class = AXPhoenixWakeGestureMonitor;

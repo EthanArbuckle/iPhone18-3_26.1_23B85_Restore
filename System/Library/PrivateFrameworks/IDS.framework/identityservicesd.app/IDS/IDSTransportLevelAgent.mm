@@ -1,17 +1,17 @@
 @interface IDSTransportLevelAgent
 + (IDSTransportLevelAgent)sharedInstance;
-- (BOOL)assertAgentWithOptions:(id)a3;
-- (BOOL)requestNexusWithOptions:(id)a3;
-- (BOOL)startAgentWithOptions:(id)a3;
+- (BOOL)assertAgentWithOptions:(id)options;
+- (BOOL)requestNexusWithOptions:(id)options;
+- (BOOL)startAgentWithOptions:(id)options;
 - (IDSTransportLevelAgent)init;
 - (NSString)agentDescription;
 - (id)copyAgentData;
-- (void)closeNexusWithOptions:(id)a3;
-- (void)registerMultiplexer:(id)a3 forIdentifier:(id)a4;
-- (void)setClientMultiplexer:(id)a3 forIdentifier:(id)a4;
-- (void)setMultiplexer:(id)a3 forIdentifier:(id)a4;
-- (void)unassertAgentWithOptions:(id)a3;
-- (void)unregisterMultiplexerForIdentifier:(id)a3;
+- (void)closeNexusWithOptions:(id)options;
+- (void)registerMultiplexer:(id)multiplexer forIdentifier:(id)identifier;
+- (void)setClientMultiplexer:(id)multiplexer forIdentifier:(id)identifier;
+- (void)setMultiplexer:(id)multiplexer forIdentifier:(id)identifier;
+- (void)unassertAgentWithOptions:(id)options;
+- (void)unregisterMultiplexerForIdentifier:(id)identifier;
 @end
 
 @implementation IDSTransportLevelAgent
@@ -46,15 +46,15 @@
   return v3;
 }
 
-- (void)setMultiplexer:(id)a3 forIdentifier:(id)a4
+- (void)setMultiplexer:(id)multiplexer forIdentifier:(id)identifier
 {
-  v12 = a3;
-  v6 = a4;
-  if (v6)
+  multiplexerCopy = multiplexer;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     multiplexers = self->_multiplexers;
-    v8 = v12;
-    if (v12)
+    v8 = multiplexerCopy;
+    if (multiplexerCopy)
     {
       if (!multiplexers)
       {
@@ -62,16 +62,16 @@
         v10 = self->_multiplexers;
         self->_multiplexers = v9;
 
-        v8 = v12;
+        v8 = multiplexerCopy;
         multiplexers = self->_multiplexers;
       }
 
-      [(NSMutableDictionary *)multiplexers setObject:v8 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)multiplexers setObject:v8 forKeyedSubscript:identifierCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)multiplexers setObject:0 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)multiplexers setObject:0 forKeyedSubscript:identifierCopy];
       if (![(NSMutableDictionary *)self->_multiplexers count])
       {
         v11 = self->_multiplexers;
@@ -81,15 +81,15 @@
   }
 }
 
-- (void)setClientMultiplexer:(id)a3 forIdentifier:(id)a4
+- (void)setClientMultiplexer:(id)multiplexer forIdentifier:(id)identifier
 {
-  v12 = a3;
-  v6 = a4;
-  if (v6)
+  multiplexerCopy = multiplexer;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     clientMultiplexer = self->_clientMultiplexer;
-    v8 = v12;
-    if (v12)
+    v8 = multiplexerCopy;
+    if (multiplexerCopy)
     {
       if (!clientMultiplexer)
       {
@@ -97,16 +97,16 @@
         v10 = self->_clientMultiplexer;
         self->_clientMultiplexer = v9;
 
-        v8 = v12;
+        v8 = multiplexerCopy;
         clientMultiplexer = self->_clientMultiplexer;
       }
 
-      [(NSMutableDictionary *)clientMultiplexer setObject:v8 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)clientMultiplexer setObject:v8 forKeyedSubscript:identifierCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)clientMultiplexer setObject:0 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)clientMultiplexer setObject:0 forKeyedSubscript:identifierCopy];
       if (![(NSMutableDictionary *)self->_clientMultiplexer count])
       {
         v11 = self->_clientMultiplexer;
@@ -139,18 +139,18 @@
 
 - (NSString)agentDescription
 {
-  v2 = [objc_opt_class() agentDomain];
-  v3 = [objc_opt_class() agentType];
-  v4 = [NSString stringWithFormat:@"IDSTransportAgent %@ : %@", v2, v3];
+  agentDomain = [objc_opt_class() agentDomain];
+  agentType = [objc_opt_class() agentType];
+  v4 = [NSString stringWithFormat:@"IDSTransportAgent %@ : %@", agentDomain, agentType];
 
   return v4;
 }
 
-- (void)registerMultiplexer:(id)a3 forIdentifier:(id)a4
+- (void)registerMultiplexer:(id)multiplexer forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IDSTransportLevelAgent *)self multiplexerForIdentifier:v7];
+  multiplexerCopy = multiplexer;
+  identifierCopy = identifier;
+  v8 = [(IDSTransportLevelAgent *)self multiplexerForIdentifier:identifierCopy];
   v9 = +[IDSFoundationLog Multiplexer];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
   if (v8)
@@ -158,11 +158,11 @@
     if (v10)
     {
       v14 = 138412802;
-      v15 = v7;
+      v15 = identifierCopy;
       v16 = 2112;
       v17 = v8;
       v18 = 2112;
-      v19 = v6;
+      v19 = multiplexerCopy;
       v11 = "Multiplexer for identifier %@ already registered! Overriding %@ with %@\n";
       v12 = v9;
       v13 = 32;
@@ -174,22 +174,22 @@ LABEL_6:
   else if (v10)
   {
     v14 = 138412546;
-    v15 = v6;
+    v15 = multiplexerCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = identifierCopy;
     v11 = "Registering Multiplexer %@ for identifier %@";
     v12 = v9;
     v13 = 22;
     goto LABEL_6;
   }
 
-  [(IDSTransportLevelAgent *)self setMultiplexer:v6 forIdentifier:v7];
+  [(IDSTransportLevelAgent *)self setMultiplexer:multiplexerCopy forIdentifier:identifierCopy];
 }
 
-- (void)unregisterMultiplexerForIdentifier:(id)a3
+- (void)unregisterMultiplexerForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(IDSTransportLevelAgent *)self multiplexerForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(IDSTransportLevelAgent *)self multiplexerForIdentifier:identifierCopy];
   v6 = +[IDSFoundationLog Multiplexer];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
   if (v5)
@@ -199,11 +199,11 @@ LABEL_6:
       v8 = 138412546;
       v9 = v5;
       v10 = 2112;
-      v11 = v4;
+      v11 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Unregistering Multiplexer %@ for identifier %@", &v8, 0x16u);
     }
 
-    [(IDSTransportLevelAgent *)self setMultiplexer:0 forIdentifier:v4];
+    [(IDSTransportLevelAgent *)self setMultiplexer:0 forIdentifier:identifierCopy];
   }
 
   else
@@ -211,23 +211,23 @@ LABEL_6:
     if (v7)
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "No Multiplexer registered for identifier %@\n", &v8, 0xCu);
     }
   }
 }
 
-- (BOOL)requestNexusWithOptions:(id)a3
+- (BOOL)requestNexusWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
   v6 = +[IDSFoundationLog Multiplexer];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v35 = 138412546;
     *v36 = v5;
     *&v36[8] = 2112;
-    *&v36[10] = v4;
+    *&v36[10] = optionsCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "requestNexusWithOptions: Client requested nexus: %@ options: %@\n", &v35, 0x16u);
   }
 
@@ -235,9 +235,9 @@ LABEL_6:
   v8 = v7;
   if (v7)
   {
-    v9 = [(IDSTransportLevelAgentClientInfo *)v7 path];
+    path = [(IDSTransportLevelAgentClientInfo *)v7 path];
 
-    if (!v9)
+    if (!path)
     {
       v12 = +[IDSFoundationLog Multiplexer];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -250,24 +250,24 @@ LABEL_6:
       goto LABEL_18;
     }
 
-    v10 = [(IDSTransportLevelAgentClientInfo *)v8 multiplexerParams];
-    v11 = [v10 multiplexer];
-    v12 = [(IDSTransportLevelAgent *)self multiplexerForIdentifier:v11];
+    multiplexerParams = [(IDSTransportLevelAgentClientInfo *)v8 multiplexerParams];
+    multiplexer = [multiplexerParams multiplexer];
+    v12 = [(IDSTransportLevelAgent *)self multiplexerForIdentifier:multiplexer];
 
     if (v12)
     {
-      v13 = [(IDSTransportLevelAgentClientInfo *)v8 endpoint];
+      endpoint = [(IDSTransportLevelAgentClientInfo *)v8 endpoint];
 
-      if (v13)
+      if (endpoint)
       {
-        v14 = [(IDSTransportLevelAgentClientInfo *)v8 endpoint];
-        type = nw_endpoint_get_type(v14);
+        endpoint2 = [(IDSTransportLevelAgentClientInfo *)v8 endpoint];
+        type = nw_endpoint_get_type(endpoint2);
 
         if (type == nw_endpoint_type_host)
         {
-          v16 = [(IDSTransportLevelAgentClientInfo *)v8 multiplexerParams];
+          multiplexerParams2 = [(IDSTransportLevelAgentClientInfo *)v8 multiplexerParams];
 
-          if (!v16)
+          if (!multiplexerParams2)
           {
             v17 = +[IDSFoundationLog Multiplexer];
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -296,11 +296,11 @@ LABEL_31:
           }
         }
 
-        v27 = [(IDSTransportLevelAgentClientInfo *)v8 endpoint];
-        port = nw_endpoint_get_port(v27);
+        endpoint3 = [(IDSTransportLevelAgentClientInfo *)v8 endpoint];
+        port = nw_endpoint_get_port(endpoint3);
 
-        v29 = [(IDSTransportLevelAgentClientInfo *)v8 endpoint];
-        v30 = nw_endpoint_copy_port_string(v29);
+        endpoint4 = [(IDSTransportLevelAgentClientInfo *)v8 endpoint];
+        v30 = nw_endpoint_copy_port_string(endpoint4);
 
         v31 = +[IDSFoundationLog Multiplexer];
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -316,9 +316,9 @@ LABEL_31:
         v32 = +[IDSFoundationLog Multiplexer];
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
-          v33 = [(IDSTransportLevelAgentClientInfo *)v8 multiplexerParams];
+          multiplexerParams3 = [(IDSTransportLevelAgentClientInfo *)v8 multiplexerParams];
           v35 = 138412802;
-          *v36 = v33;
+          *v36 = multiplexerParams3;
           *&v36[8] = 2112;
           *&v36[10] = v5;
           v37 = 2112;
@@ -335,9 +335,9 @@ LABEL_31:
         v23 = +[IDSFoundationLog Multiplexer];
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [(IDSTransportLevelAgentClientInfo *)v8 multiplexerParams];
+          multiplexerParams4 = [(IDSTransportLevelAgentClientInfo *)v8 multiplexerParams];
           v35 = 138412802;
-          *v36 = v24;
+          *v36 = multiplexerParams4;
           *&v36[8] = 2112;
           *&v36[10] = v5;
           v37 = 2112;
@@ -356,11 +356,11 @@ LABEL_31:
     v19 = +[IDSFoundationLog Multiplexer];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(IDSTransportLevelAgentClientInfo *)v8 multiplexerParams];
-      v21 = [v20 multiplexer];
+      multiplexerParams5 = [(IDSTransportLevelAgentClientInfo *)v8 multiplexerParams];
+      multiplexer2 = [multiplexerParams5 multiplexer];
       multiplexers = self->_multiplexers;
       v35 = 138412802;
-      *v36 = v21;
+      *v36 = multiplexer2;
       *&v36[8] = 2112;
       *&v36[10] = v5;
       v37 = 2112;
@@ -377,17 +377,17 @@ LABEL_32:
   return v18;
 }
 
-- (void)closeNexusWithOptions:(id)a3
+- (void)closeNexusWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)v4 objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
+  optionsCopy = options;
+  v5 = [(NSMutableDictionary *)optionsCopy objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
   v6 = +[IDSFoundationLog Multiplexer];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
     v13 = v5;
     v14 = 2112;
-    v15 = v4;
+    v15 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "closeNexusWithOptions: Client closed nexus: %@ options: %@\n", &v12, 0x16u);
   }
 
@@ -427,9 +427,9 @@ LABEL_32:
   }
 }
 
-- (BOOL)startAgentWithOptions:(id)a3
+- (BOOL)startAgentWithOptions:(id)options
 {
-  v3 = [a3 objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
+  v3 = [options objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
   v4 = +[IDSFoundationLog Multiplexer];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -441,9 +441,9 @@ LABEL_32:
   return 1;
 }
 
-- (BOOL)assertAgentWithOptions:(id)a3
+- (BOOL)assertAgentWithOptions:(id)options
 {
-  v3 = [a3 objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
+  v3 = [options objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
   v4 = +[IDSFoundationLog Multiplexer];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -455,9 +455,9 @@ LABEL_32:
   return 1;
 }
 
-- (void)unassertAgentWithOptions:(id)a3
+- (void)unassertAgentWithOptions:(id)options
 {
-  v3 = [a3 objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
+  v3 = [options objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
   v4 = +[IDSFoundationLog Multiplexer];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {

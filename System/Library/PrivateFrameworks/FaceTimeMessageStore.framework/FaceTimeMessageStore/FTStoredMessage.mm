@@ -1,20 +1,20 @@
 @interface FTStoredMessage
-- (FTStoredMessage)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (FTStoredMessage)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (NSString)description;
 @end
 
 @implementation FTStoredMessage
 
-- (FTStoredMessage)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (FTStoredMessage)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  return FTStoredMessage.init(entity:insertInto:)(v5, a4);
+  entityCopy = entity;
+  contextCopy = context;
+  return FTStoredMessage.init(entity:insertInto:)(entityCopy, context);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   FTStoredMessage.description.getter();
 
   v3 = sub_1BC8F7BE4();

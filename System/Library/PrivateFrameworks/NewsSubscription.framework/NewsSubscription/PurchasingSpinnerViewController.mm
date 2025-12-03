@@ -1,13 +1,13 @@
 @interface PurchasingSpinnerViewController
-- (_TtC16NewsSubscription31PurchasingSpinnerViewController)initWithCoder:(id)a3;
-- (_TtC16NewsSubscription31PurchasingSpinnerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC16NewsSubscription31PurchasingSpinnerViewController)initWithCoder:(id)coder;
+- (_TtC16NewsSubscription31PurchasingSpinnerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PurchasingSpinnerViewController
 
-- (_TtC16NewsSubscription31PurchasingSpinnerViewController)initWithCoder:(id)a3
+- (_TtC16NewsSubscription31PurchasingSpinnerViewController)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC16NewsSubscription31PurchasingSpinnerViewController_spinnerView;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(type metadata accessor for PurchasingSpinnerView()) init];
@@ -16,13 +16,13 @@
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
   v4 = v6.receiver;
-  [(PurchasingSpinnerViewController *)&v6 viewDidAppear:v3];
+  [(PurchasingSpinnerViewController *)&v6 viewDidAppear:appearCopy];
   PurchasingSpinner.label.getter();
   v5 = sub_1D78B5C44();
 
@@ -35,16 +35,16 @@
   v10.super_class = swift_getObjectType();
   v2 = v10.receiver;
   [(PurchasingSpinnerViewController *)&v10 viewWillLayoutSubviews];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 bounds];
+    v4 = view;
+    [view bounds];
     v6 = v5;
     v8 = v7;
 
-    v9 = [v2 traitCollection];
-    sub_1D78136B8(v9, v6, v8);
+    traitCollection = [v2 traitCollection];
+    sub_1D78136B8(traitCollection, v6, v8);
   }
 
   else
@@ -53,7 +53,7 @@
   }
 }
 
-- (_TtC16NewsSubscription31PurchasingSpinnerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16NewsSubscription31PurchasingSpinnerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

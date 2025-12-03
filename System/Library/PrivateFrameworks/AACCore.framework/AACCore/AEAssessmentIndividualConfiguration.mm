@@ -1,12 +1,12 @@
 @interface AEAssessmentIndividualConfiguration
 - (AEAssessmentIndividualConfiguration)init;
-- (AEAssessmentIndividualConfiguration)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AEAssessmentIndividualConfiguration)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (uint64_t)isEqualToConfiguration:(uint64_t)a1;
+- (uint64_t)isEqualToConfiguration:(uint64_t)configuration;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AEAssessmentIndividualConfiguration
@@ -27,30 +27,30 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setAllowsNetworkAccess:{-[AEAssessmentIndividualConfiguration allowsNetworkAccess](self, "allowsNetworkAccess")}];
   [v4 setRequired:{-[AEAssessmentIndividualConfiguration isRequired](self, "isRequired")}];
-  v5 = [(AEAssessmentIndividualConfiguration *)self configurationInfo];
-  v6 = [v5 copy];
+  configurationInfo = [(AEAssessmentIndividualConfiguration *)self configurationInfo];
+  v6 = [configurationInfo copy];
   [v4 setConfigurationInfo:v6];
 
   return v4;
 }
 
-- (AEAssessmentIndividualConfiguration)initWithCoder:(id)a3
+- (AEAssessmentIndividualConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = AEAssessmentIndividualConfiguration;
   v5 = [(AEAssessmentIndividualConfiguration *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsNetworkAccess"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsNetworkAccess"];
     v5->_allowsNetworkAccess = [v6 BOOLValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"required"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"required"];
     v5->_required = [v7 BOOLValue];
 
     v8 = MEMORY[0x277CBEB98];
@@ -61,7 +61,7 @@
     v13 = objc_opt_class();
     v14 = objc_opt_class();
     v15 = [v8 setWithObjects:{v9, v10, v11, v12, v13, v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"configurationInfo"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"configurationInfo"];
     configurationInfo = v5->_configurationInfo;
     v5->_configurationInfo = v16;
   }
@@ -69,18 +69,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithBool:{-[AEAssessmentIndividualConfiguration allowsNetworkAccess](self, "allowsNetworkAccess")}];
-  [v5 encodeObject:v6 forKey:@"allowsNetworkAccess"];
+  [coderCopy encodeObject:v6 forKey:@"allowsNetworkAccess"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentIndividualConfiguration isRequired](self, "isRequired")}];
-  [v5 encodeObject:v7 forKey:@"required"];
+  [coderCopy encodeObject:v7 forKey:@"required"];
 
-  v8 = [(AEAssessmentIndividualConfiguration *)self configurationInfo];
-  [v5 encodeObject:v8 forKey:@"configurationInfo"];
+  configurationInfo = [(AEAssessmentIndividualConfiguration *)self configurationInfo];
+  [coderCopy encodeObject:configurationInfo forKey:@"configurationInfo"];
 }
 
 - (unint64_t)hash
@@ -89,25 +89,25 @@
   v4 = [v3 hash];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentIndividualConfiguration isRequired](self, "isRequired")}];
   v6 = [v5 hash] ^ v4;
-  v7 = [(AEAssessmentIndividualConfiguration *)self configurationInfo];
-  v8 = [v7 hash];
+  configurationInfo = [(AEAssessmentIndividualConfiguration *)self configurationInfo];
+  v8 = [configurationInfo hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v6 = 1;
       goto LABEL_6;
     }
 
-    if ([(AEAssessmentIndividualConfiguration *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(AEAssessmentIndividualConfiguration *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v6 = [(AEAssessmentIndividualConfiguration *)self isEqualToConfiguration:v5];
       goto LABEL_6;
@@ -140,32 +140,32 @@ LABEL_6:
     v5 = @"No";
   }
 
-  v7 = [(AEAssessmentIndividualConfiguration *)self configurationInfo];
-  v8 = [v3 stringWithFormat:@"<%@: %p { allowsNetworkAccess = %@, required = %@, configurationInfo = %@ }>", v4, self, v6, v5, v7];
+  configurationInfo = [(AEAssessmentIndividualConfiguration *)self configurationInfo];
+  v8 = [v3 stringWithFormat:@"<%@: %p { allowsNetworkAccess = %@, required = %@, configurationInfo = %@ }>", v4, self, v6, v5, configurationInfo];
 
   return v8;
 }
 
-- (uint64_t)isEqualToConfiguration:(uint64_t)a1
+- (uint64_t)isEqualToConfiguration:(uint64_t)configuration
 {
   v4 = a2;
-  if (a1)
+  if (configuration)
   {
-    v5 = [a1 allowsNetworkAccess];
-    if (v5 != [v4 allowsNetworkAccess] || (v6 = objc_msgSend(a1, "isRequired"), v6 != objc_msgSend(v4, "isRequired")))
+    allowsNetworkAccess = [configuration allowsNetworkAccess];
+    if (allowsNetworkAccess != [v4 allowsNetworkAccess] || (v6 = objc_msgSend(configuration, "isRequired"), v6 != objc_msgSend(v4, "isRequired")))
     {
-      a1 = 0;
+      configuration = 0;
       goto LABEL_12;
     }
 
-    v7 = [a1 configurationInfo];
-    if (v7 || ([v4 configurationInfo], (v2 = objc_claimAutoreleasedReturnValue()) != 0))
+    configurationInfo = [configuration configurationInfo];
+    if (configurationInfo || ([v4 configurationInfo], (v2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [a1 configurationInfo];
-      v9 = [v4 configurationInfo];
-      a1 = [v8 isEqual:v9];
+      configurationInfo2 = [configuration configurationInfo];
+      configurationInfo3 = [v4 configurationInfo];
+      configuration = [configurationInfo2 isEqual:configurationInfo3];
 
-      if (v7)
+      if (configurationInfo)
       {
 LABEL_11:
 
@@ -175,7 +175,7 @@ LABEL_11:
 
     else
     {
-      a1 = 1;
+      configuration = 1;
     }
 
     goto LABEL_11;
@@ -183,7 +183,7 @@ LABEL_11:
 
 LABEL_12:
 
-  return a1;
+  return configuration;
 }
 
 @end

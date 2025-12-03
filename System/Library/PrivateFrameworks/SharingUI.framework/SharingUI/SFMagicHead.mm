@@ -1,60 +1,60 @@
 @interface SFMagicHead
-- (SFMagicHead)initWithNode:(id)a3 slotNode:(id)a4 containerRadius:(double)a5 delegate:(id)a6 settings:(id)a7;
+- (SFMagicHead)initWithNode:(id)node slotNode:(id)slotNode containerRadius:(double)radius delegate:(id)delegate settings:(id)settings;
 - (SFMagicHeadDelegate)delegate;
-- (void)addObserverOfValuesForKeyPaths:(id)a3 ofObject:(id)a4;
+- (void)addObserverOfValuesForKeyPaths:(id)paths ofObject:(id)object;
 - (void)dealloc;
-- (void)handleKVOUpdateForProgress:(id)a3 keyPath:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeObserverOfValuesForKeyPaths:(id)a3 ofObject:(id)a4;
+- (void)handleKVOUpdateForProgress:(id)progress keyPath:(id)path;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeObserverOfValuesForKeyPaths:(id)paths ofObject:(id)object;
 - (void)resetTransferState;
-- (void)setCellState:(int64_t)a3 animated:(BOOL)a4 silent:(BOOL)a5;
-- (void)setPosition:(int64_t)a3 withOffset:(double)a4;
-- (void)setProgress:(id)a3;
-- (void)setSize:(int64_t)a3;
-- (void)triggerKVOForKeyPaths:(id)a3 ofObject:(id)a4;
+- (void)setCellState:(int64_t)state animated:(BOOL)animated silent:(BOOL)silent;
+- (void)setPosition:(int64_t)position withOffset:(double)offset;
+- (void)setProgress:(id)progress;
+- (void)setSize:(int64_t)size;
+- (void)triggerKVOForKeyPaths:(id)paths ofObject:(id)object;
 - (void)userDidCancel;
 - (void)userDidSelect;
 @end
 
 @implementation SFMagicHead
 
-- (SFMagicHead)initWithNode:(id)a3 slotNode:(id)a4 containerRadius:(double)a5 delegate:(id)a6 settings:(id)a7
+- (SFMagicHead)initWithNode:(id)node slotNode:(id)slotNode containerRadius:(double)radius delegate:(id)delegate settings:(id)settings
 {
-  v11 = a3;
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  if (v13 | v14)
+  nodeCopy = node;
+  nodeCopy2 = node;
+  slotNodeCopy = slotNode;
+  delegateCopy = delegate;
+  settingsCopy = settings;
+  if (nodeCopy2 | slotNodeCopy)
   {
     v56.receiver = self;
     v56.super_class = SFMagicHead;
     v17 = [(SFMagicHead *)&v56 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     if (v17)
     {
-      obj = v15;
-      v18 = [MEMORY[0x1E69DC888] clearColor];
-      [(SFMagicHead *)v17 setBackgroundColor:v18];
+      obj = delegateCopy;
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(SFMagicHead *)v17 setBackgroundColor:clearColor];
 
-      v17->_isMagicHead = v14 != 0;
-      objc_storeStrong(&v17->_node, v11);
-      objc_storeStrong(&v17->_slotNode, a4);
-      v19 = [(SFAirDropNode *)v17->_node nodeIdentifier];
-      v20 = v19;
-      if (v19)
+      v17->_isMagicHead = slotNodeCopy != 0;
+      objc_storeStrong(&v17->_node, nodeCopy);
+      objc_storeStrong(&v17->_slotNode, slotNode);
+      nodeIdentifier = [(SFAirDropNode *)v17->_node nodeIdentifier];
+      rootSettings = nodeIdentifier;
+      if (nodeIdentifier)
       {
         v21 = 0;
-        v22 = v19;
+        v22 = nodeIdentifier;
       }
 
       else
       {
-        v24 = [v14 identifier];
-        v11 = v24;
-        if (v24)
+        identifier = [slotNodeCopy identifier];
+        nodeCopy = identifier;
+        if (identifier)
         {
           v21 = 0;
-          v22 = v24;
+          v22 = identifier;
         }
 
         else
@@ -69,35 +69,35 @@
       {
       }
 
-      if (!v20)
+      if (!rootSettings)
       {
       }
 
-      v17->_containerRadius = a5;
+      v17->_containerRadius = radius;
       objc_storeWeak(&v17->_delegate, obj);
-      v25 = v16;
-      if (!v16)
+      magicHeadSettings = settingsCopy;
+      if (!settingsCopy)
       {
-        v20 = [MEMORY[0x1E69CDEB8] rootSettings];
-        v25 = [v20 magicHeadSettings];
+        rootSettings = [MEMORY[0x1E69CDEB8] rootSettings];
+        magicHeadSettings = [rootSettings magicHeadSettings];
       }
 
-      objc_storeStrong(&v17->_settings, v25);
-      if (!v16)
+      objc_storeStrong(&v17->_settings, magicHeadSettings);
+      if (!settingsCopy)
       {
       }
 
       v17->_pointedAt = 1;
       if (v17->_isMagicHead)
       {
-        v26 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v26 _referenceBounds];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen _referenceBounds];
         if (v27 >= 414.0)
         {
-          v29 = [MEMORY[0x1E69DC938] currentDevice];
-          v30 = [v29 userInterfaceIdiom];
+          currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+          userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-          if ((v30 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+          if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
           {
             v28 = 62.0;
           }
@@ -130,8 +130,8 @@
       v17->_contentView = v33;
 
       [(UIView *)v17->_contentView setClipsToBounds:0];
-      v35 = [MEMORY[0x1E69DC888] clearColor];
-      [(UIView *)v17->_contentView setBackgroundColor:v35];
+      clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+      [(UIView *)v17->_contentView setBackgroundColor:clearColor2];
 
       [(SFMagicHead *)v17 addSubview:v17->_contentView];
       if (v17->_isMagicHead)
@@ -142,7 +142,7 @@
 
         [(UIView *)v17->_contentView bounds];
         [(UIView *)v17->_imageSlotView setFrame:?];
-        v38 = [(UIAirDropNode *)v17->_slotNode avatarImageSlotID];
+        avatarImageSlotID = [(UIAirDropNode *)v17->_slotNode avatarImageSlotID];
         objc_initWeak(&location, v17);
         v39 = *MEMORY[0x1E69DDA98];
         v52[0] = MEMORY[0x1E69E9820];
@@ -150,7 +150,7 @@
         v52[2] = __71__SFMagicHead_initWithNode_slotNode_containerRadius_delegate_settings___block_invoke;
         v52[3] = &unk_1E7EE44C8;
         objc_copyWeak(&v53, &location);
-        v54 = v38;
+        v54 = avatarImageSlotID;
         [v39 _performBlockAfterCATransactionCommits:v52];
         [(UIView *)v17->_contentView addSubview:v17->_imageSlotView];
         objc_destroyWeak(&v53);
@@ -189,24 +189,24 @@
       [(SFCircleProgressView *)v17->_circleProgressView setProgressLineWidth:3.0];
       [(SFCircleProgressView *)v17->_circleProgressView setShowProgressTray:1];
       [(SFCircleProgressView *)v17->_circleProgressView setAlpha:0.0];
-      v49 = [MEMORY[0x1E69DC888] clearColor];
-      [(SFCircleProgressView *)v17->_circleProgressView setBackgroundColor:v49];
+      clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+      [(SFCircleProgressView *)v17->_circleProgressView setBackgroundColor:clearColor3];
 
       [(UIView *)v17->_contentView addSubview:v17->_circleProgressView];
       [(SFMagicHead *)v17 setCellState:0 animated:0 silent:1];
-      v15 = obj;
+      delegateCopy = obj;
     }
 
     self = v17;
-    v23 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v23 = 0;
+    selfCopy = 0;
   }
 
-  return v23;
+  return selfCopy;
 }
 
 void __71__SFMagicHead_initWithNode_slotNode_containerRadius_delegate_settings___block_invoke(uint64_t a1)
@@ -240,38 +240,38 @@ void __71__SFMagicHead_initWithNode_slotNode_containerRadius_delegate_settings__
   [(SFMagicHead *)&v3 dealloc];
 }
 
-- (void)setSize:(int64_t)a3
+- (void)setSize:(int64_t)size
 {
-  self->_size = a3;
-  if ((a3 - 1) > 2)
+  self->_size = size;
+  if ((size - 1) > 2)
   {
     v4 = 0.00000011920929;
   }
 
   else
   {
-    v4 = dbl_1B9EDEB80[a3 - 1];
+    v4 = dbl_1B9EDEB80[size - 1];
   }
 
-  [(SFMagicHeadShadowView *)self->_shadowView setVisible:a3 != 1];
+  [(SFMagicHeadShadowView *)self->_shadowView setVisible:size != 1];
   CGAffineTransformMakeScale(&v7, v4, v4);
   contentView = self->_contentView;
   v6 = v7;
   [(UIView *)contentView setTransform:&v6];
 }
 
-- (void)setPosition:(int64_t)a3 withOffset:(double)a4
+- (void)setPosition:(int64_t)position withOffset:(double)offset
 {
-  self->_position = a3;
-  self->_degreeOffset = a4;
+  self->_position = position;
+  self->_degreeOffset = offset;
   v5 = 0.0;
-  if (a3 != 1)
+  if (position != 1)
   {
     v5 = -self->_containerRadius;
   }
 
-  v6 = a4;
-  v7 = v6 * 0.0174532925;
+  offsetCopy = offset;
+  v7 = offsetCopy * 0.0174532925;
   v8 = v7;
   memset(&v16, 0, sizeof(v16));
   CGAffineTransformMakeRotation(&v16, v7);
@@ -302,8 +302,8 @@ void __71__SFMagicHead_initWithNode_slotNode_containerRadius_delegate_settings__
 - (void)resetTransferState
 {
   [(SFMagicHead *)self setCellState:0 animated:1 silent:1];
-  v3 = [(SFMagicHead *)self delegate];
-  [v3 magicHead:self requestingSubtitleTextChangeForState:self->_cellState];
+  delegate = [(SFMagicHead *)self delegate];
+  [delegate magicHead:self requestingSubtitleTextChangeForState:self->_cellState];
 }
 
 - (void)userDidSelect
@@ -319,37 +319,37 @@ void __71__SFMagicHead_initWithNode_slotNode_containerRadius_delegate_settings__
   {
     [(NSProgress *)self->_progress cancel];
     [(SFMagicHead *)self setCellState:0 animated:1 silent:1];
-    v3 = [(SFMagicHead *)self delegate];
-    [v3 magicHead:self requestingSubtitleTextChangeForState:self->_cellState];
+    delegate = [(SFMagicHead *)self delegate];
+    [delegate magicHead:self requestingSubtitleTextChangeForState:self->_cellState];
   }
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  v5 = a3;
-  if (self->_progress != v5)
+  progressCopy = progress;
+  if (self->_progress != progressCopy)
   {
-    v6 = v5;
+    v6 = progressCopy;
     [(SFMagicHead *)self removeObserverOfValuesForKeyPaths:self->_progressKeyPaths ofObject:?];
-    objc_storeStrong(&self->_progress, a3);
+    objc_storeStrong(&self->_progress, progress);
     [(SFMagicHead *)self addObserverOfValuesForKeyPaths:self->_progressKeyPaths ofObject:self->_progress];
     [(SFMagicHead *)self triggerKVOForKeyPaths:self->_progressKeyPaths ofObject:self->_progress];
-    v5 = v6;
+    progressCopy = v6;
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x1E696AF00] mainThread];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  mainThread = [MEMORY[0x1E696AF00] mainThread];
 
-  if (v13)
+  if (mainThread)
   {
-    if ([v11 isEqual:self->_progress])
+    if ([objectCopy isEqual:self->_progress])
     {
-      [(SFMagicHead *)self handleKVOUpdateForProgress:self->_progress keyPath:v10];
+      [(SFMagicHead *)self handleKVOUpdateForProgress:self->_progress keyPath:pathCopy];
     }
 
     else
@@ -357,7 +357,7 @@ void __71__SFMagicHead_initWithNode_slotNode_containerRadius_delegate_settings__
       v14 = airdrop_ui_log();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [SFMagicHead observeValueForKeyPath:v10 ofObject:v14 change:? context:?];
+        [SFMagicHead observeValueForKeyPath:pathCopy ofObject:v14 change:? context:?];
       }
     }
   }
@@ -369,26 +369,26 @@ void __71__SFMagicHead_initWithNode_slotNode_containerRadius_delegate_settings__
     block[2] = __62__SFMagicHead_observeValueForKeyPath_ofObject_change_context___block_invoke;
     block[3] = &unk_1E7EE43A0;
     block[4] = self;
-    v16 = v10;
-    v17 = v11;
-    v18 = v12;
-    v19 = a6;
+    v16 = pathCopy;
+    v17 = objectCopy;
+    v18 = changeCopy;
+    contextCopy = context;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
 
-- (void)addObserverOfValuesForKeyPaths:(id)a3 ofObject:(id)a4
+- (void)addObserverOfValuesForKeyPaths:(id)paths ofObject:(id)object
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  pathsCopy = paths;
+  objectCopy = object;
+  if (objectCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v8 = [pathsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -400,14 +400,14 @@ void __71__SFMagicHead_initWithNode_slotNode_containerRadius_delegate_settings__
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(pathsCopy);
           }
 
-          [v7 addObserver:self forKeyPath:*(*(&v12 + 1) + 8 * v11++) options:0 context:0];
+          [objectCopy addObserver:self forKeyPath:*(*(&v12 + 1) + 8 * v11++) options:0 context:0];
         }
 
         while (v9 != v11);
-        v9 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [pathsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -415,18 +415,18 @@ void __71__SFMagicHead_initWithNode_slotNode_containerRadius_delegate_settings__
   }
 }
 
-- (void)removeObserverOfValuesForKeyPaths:(id)a3 ofObject:(id)a4
+- (void)removeObserverOfValuesForKeyPaths:(id)paths ofObject:(id)object
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  pathsCopy = paths;
+  objectCopy = object;
+  if (objectCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v8 = [pathsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -438,14 +438,14 @@ void __71__SFMagicHead_initWithNode_slotNode_containerRadius_delegate_settings__
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(pathsCopy);
           }
 
-          [v7 removeObserver:self forKeyPath:*(*(&v12 + 1) + 8 * v11++)];
+          [objectCopy removeObserver:self forKeyPath:*(*(&v12 + 1) + 8 * v11++)];
         }
 
         while (v9 != v11);
-        v9 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [pathsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -453,18 +453,18 @@ void __71__SFMagicHead_initWithNode_slotNode_containerRadius_delegate_settings__
   }
 }
 
-- (void)triggerKVOForKeyPaths:(id)a3 ofObject:(id)a4
+- (void)triggerKVOForKeyPaths:(id)paths ofObject:(id)object
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  pathsCopy = paths;
+  objectCopy = object;
+  if (objectCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v8 = [pathsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -476,14 +476,14 @@ void __71__SFMagicHead_initWithNode_slotNode_containerRadius_delegate_settings__
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(pathsCopy);
           }
 
-          [(SFMagicHead *)self observeValueForKeyPath:*(*(&v12 + 1) + 8 * v11++) ofObject:v7 change:0 context:0];
+          [(SFMagicHead *)self observeValueForKeyPath:*(*(&v12 + 1) + 8 * v11++) ofObject:objectCopy change:0 context:0];
         }
 
         while (v9 != v11);
-        v9 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [pathsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -491,21 +491,21 @@ void __71__SFMagicHead_initWithNode_slotNode_containerRadius_delegate_settings__
   }
 }
 
-- (void)handleKVOUpdateForProgress:(id)a3 keyPath:(id)a4
+- (void)handleKVOUpdateForProgress:(id)progress keyPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   stateBeingRestored = self->_stateBeingRestored;
-  v17 = v5;
-  if ([v5 isEqualToString:@"userInfo.sendState"])
+  v17 = pathCopy;
+  if ([pathCopy isEqualToString:@"userInfo.sendState"])
   {
-    v7 = [(NSProgress *)self->_progress sf_transferState];
-    if (v7 > 2)
+    sf_transferState = [(NSProgress *)self->_progress sf_transferState];
+    if (sf_transferState > 2)
     {
-      if (v7 > 4)
+      if (sf_transferState > 4)
       {
-        if (v7 != 5)
+        if (sf_transferState != 5)
         {
-          if (v7 != 6)
+          if (sf_transferState != 6)
           {
             goto LABEL_23;
           }
@@ -517,10 +517,10 @@ void __71__SFMagicHead_initWithNode_slotNode_containerRadius_delegate_settings__
         }
 
         v8 = stateBeingRestored ^ 1;
-        v9 = self;
+        selfCopy2 = self;
         v10 = 6;
 LABEL_19:
-        [(SFMagicHead *)v9 setCellState:v10 animated:v8 silent:stateBeingRestored];
+        [(SFMagicHead *)selfCopy2 setCellState:v10 animated:v8 silent:stateBeingRestored];
         [(SFCircleProgressView *)self->_circleProgressView setProgress:stateBeingRestored ^ 1 animated:0 completion:0.0];
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         [WeakRetained magicHeadDidTerminateTransferForHead:self];
@@ -529,31 +529,31 @@ LABEL_20:
         goto LABEL_23;
       }
 
-      if (v7 != 3)
+      if (sf_transferState != 3)
       {
         v8 = stateBeingRestored ^ 1;
-        v9 = self;
+        selfCopy2 = self;
         v10 = 5;
         goto LABEL_19;
       }
 
       v14 = stateBeingRestored ^ 1;
-      v15 = self;
+      selfCopy5 = self;
       v16 = 3;
       goto LABEL_22;
     }
 
-    if (v7)
+    if (sf_transferState)
     {
-      if (v7 == 1)
+      if (sf_transferState == 1)
       {
         v14 = stateBeingRestored ^ 1;
-        v15 = self;
+        selfCopy5 = self;
         v16 = 1;
         goto LABEL_22;
       }
 
-      if (v7 != 2)
+      if (sf_transferState != 2)
       {
         goto LABEL_23;
       }
@@ -566,10 +566,10 @@ LABEL_20:
     }
 
     v14 = stateBeingRestored ^ 1;
-    v15 = self;
+    selfCopy5 = self;
     v16 = 2;
 LABEL_22:
-    [(SFMagicHead *)v15 setCellState:v16 animated:v14 silent:stateBeingRestored];
+    [(SFMagicHead *)selfCopy5 setCellState:v16 animated:v14 silent:stateBeingRestored];
     goto LABEL_23;
   }
 
@@ -583,18 +583,18 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)setCellState:(int64_t)a3 animated:(BOOL)a4 silent:(BOOL)a5
+- (void)setCellState:(int64_t)state animated:(BOOL)animated silent:(BOOL)silent
 {
   v32 = *MEMORY[0x1E69E9840];
   cellState = self->_cellState;
-  if (cellState != a3)
+  if (cellState != state)
   {
-    v6 = a4;
-    v9 = a3 - 2;
-    if (a3 >= 2 && cellState > a3)
+    animatedCopy = animated;
+    v9 = state - 2;
+    if (state >= 2 && cellState > state)
     {
-      v10 = airdrop_ui_log();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      delegate = airdrop_ui_log();
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
       {
         v11 = self->_cellState;
         if (v11 > 6)
@@ -617,14 +617,14 @@ LABEL_23:
           v20 = off_1E7EE44E8[v9];
         }
 
-        v21 = [(SFAirDropNode *)self->_node displayName];
+        displayName = [(SFAirDropNode *)self->_node displayName];
         *buf = 138412803;
         v27 = v12;
         v28 = 2112;
         v29 = v20;
         v30 = 2113;
-        v31 = v21;
-        _os_log_impl(&dword_1B9E4B000, v10, OS_LOG_TYPE_DEFAULT, "MagicHead: unsupported cell state transition %@ -> %@ for person %{private}@. Ignoring", buf, 0x20u);
+        v31 = displayName;
+        _os_log_impl(&dword_1B9E4B000, delegate, OS_LOG_TYPE_DEFAULT, "MagicHead: unsupported cell state transition %@ -> %@ for person %{private}@. Ignoring", buf, 0x20u);
       }
 
 LABEL_38:
@@ -637,12 +637,12 @@ LABEL_38:
     {
       v14 = 1;
 LABEL_13:
-      if (a3 > 3)
+      if (state > 3)
       {
-        if (a3 == 4)
+        if (state == 4)
         {
           circleProgressView = self->_circleProgressView;
-          if (v6)
+          if (animatedCopy)
           {
             v25[0] = MEMORY[0x1E69E9820];
             v25[1] = 3221225472;
@@ -661,7 +661,7 @@ LABEL_13:
           goto LABEL_24;
         }
 
-        if (a3 != 5 && a3 != 6)
+        if (state != 5 && state != 6)
         {
 LABEL_24:
           v17 = airdrop_ui_log();
@@ -678,41 +678,41 @@ LABEL_24:
               v19 = off_1E7EE4510[v18];
             }
 
-            if (a3 > 6)
+            if (state > 6)
             {
               v22 = @"?";
             }
 
             else
             {
-              v22 = off_1E7EE4510[a3];
+              v22 = off_1E7EE4510[state];
             }
 
-            v23 = [(SFAirDropNode *)self->_node displayName];
+            displayName2 = [(SFAirDropNode *)self->_node displayName];
             *buf = 138412803;
             v27 = v19;
             v28 = 2112;
             v29 = v22;
             v30 = 2113;
-            v31 = v23;
+            v31 = displayName2;
             _os_log_impl(&dword_1B9E4B000, v17, OS_LOG_TYPE_DEFAULT, "MagicHead: changing cell state %@ -> %@ for person %{private}@", buf, 0x20u);
           }
 
-          self->_cellState = a3;
-          v10 = [(SFMagicHead *)self delegate];
-          [v10 magicHead:self requestingSubtitleTextChangeForState:self->_cellState];
+          self->_cellState = state;
+          delegate = [(SFMagicHead *)self delegate];
+          [delegate magicHead:self requestingSubtitleTextChangeForState:self->_cellState];
           goto LABEL_38;
         }
       }
 
-      else if (a3)
+      else if (state)
       {
-        if (a3 != 1 && a3 != 3)
+        if (state != 1 && state != 3)
         {
           goto LABEL_24;
         }
 
-        [(SFCircleProgressView *)self->_circleProgressView setProgress:v6 animated:0 completion:0.0];
+        [(SFCircleProgressView *)self->_circleProgressView setProgress:animatedCopy animated:0 completion:0.0];
         if (!v14)
         {
           goto LABEL_24;
@@ -723,7 +723,7 @@ LABEL_24:
         goto LABEL_23;
       }
 
-      [(SFCircleProgressView *)self->_circleProgressView setProgress:v6 animated:0 completion:0.0];
+      [(SFCircleProgressView *)self->_circleProgressView setProgress:animatedCopy animated:0 completion:0.0];
       v15 = self->_circleProgressView;
       v16 = 0.0;
 LABEL_23:
@@ -731,7 +731,7 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    if ((a3 - 3) < 4 || !a3)
+    if ((state - 3) < 4 || !state)
     {
       [(SFCircleProgressView *)self->_circleProgressView setAlpha:0.0];
       v14 = 0;

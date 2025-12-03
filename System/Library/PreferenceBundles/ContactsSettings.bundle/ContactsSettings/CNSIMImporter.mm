@@ -1,27 +1,27 @@
 @interface CNSIMImporter
-+ (BOOL)isContact:(id)a3 presentInContainer:(id)a4 store:(id)a5;
-+ (id)importPhonebookEntry:(id)a3 intoContactStore:(id)a4 container:(id)a5;
++ (BOOL)isContact:(id)contact presentInContainer:(id)container store:(id)store;
++ (id)importPhonebookEntry:(id)entry intoContactStore:(id)store container:(id)container;
 + (id)log;
-+ (id)nameComponentsFromString:(id)a3;
-+ (id)prepareName:(id)a3;
-+ (void)setNameString:(id)a3 onContact:(id)a4;
++ (id)nameComponentsFromString:(id)string;
++ (id)prepareName:(id)name;
++ (void)setNameString:(id)string onContact:(id)contact;
 @end
 
 @implementation CNSIMImporter
 
-+ (id)importPhonebookEntry:(id)a3 intoContactStore:(id)a4 container:(id)a5
++ (id)importPhonebookEntry:(id)entry intoContactStore:(id)store container:(id)container
 {
-  v7 = a3;
-  v8 = a4;
-  v49 = a5;
+  entryCopy = entry;
+  storeCopy = store;
+  containerCopy = container;
   v50 = objc_alloc_init(CNSaveRequest);
   v73 = 0;
   v74 = &v73;
   v75 = 0x2020000000;
   v76 = 1;
   v9 = +[NSCharacterSet whitespaceCharacterSet];
-  v51 = v8;
-  v10 = [v7 objectForKey:kCTPhoneBookNameKey];
+  v51 = storeCopy;
+  v10 = [entryCopy objectForKey:kCTPhoneBookNameKey];
   if (v10)
   {
     v11 = v10;
@@ -32,8 +32,8 @@
     v11 = &stru_14F18;
   }
 
-  v48 = v7;
-  v12 = [v7 objectForKey:kCTPhoneBookNumberKey];
+  v48 = entryCopy;
+  v12 = [entryCopy objectForKey:kCTPhoneBookNumberKey];
   if (v12)
   {
     v13 = v12;
@@ -97,7 +97,7 @@
 
   if ((v16 & 1) == 0)
   {
-    [a1 setNameString:v14 onContact:v18];
+    [self setNameString:v14 onContact:v18];
     v28 = [CNContactFormatter stringFromContact:v18 style:0];
 
     v14 = v28;
@@ -122,8 +122,8 @@
     v65[1] = 3221225472;
     v65[2] = sub_2CB0;
     v65[3] = &unk_14A50;
-    v66 = v49;
-    v71 = a1;
+    v66 = containerCopy;
+    selfCopy = self;
     v67 = v51;
     v68 = v45;
     v72 = v31;
@@ -142,8 +142,8 @@
     }
 
 LABEL_29:
-    v42 = [v49 identifier];
-    [v50 addContact:v18 toContainerWithIdentifier:v42];
+    identifier = [containerCopy identifier];
+    [v50 addContact:v18 toContainerWithIdentifier:identifier];
     goto LABEL_30;
   }
 
@@ -158,8 +158,8 @@ LABEL_29:
   v54[1] = 3221225472;
   v54[2] = sub_2D6C;
   v54[3] = &unk_14A78;
-  v55 = v49;
-  v63 = a1;
+  v55 = containerCopy;
+  selfCopy2 = self;
   v56 = v51;
   v57 = v45;
   v58 = v14;
@@ -176,7 +176,7 @@ LABEL_29:
   }
 
 LABEL_27:
-  v42 = v18;
+  identifier = v18;
   v18 = 0;
 LABEL_30:
 
@@ -191,47 +191,47 @@ LABEL_31:
   return v18;
 }
 
-+ (BOOL)isContact:(id)a3 presentInContainer:(id)a4 store:(id)a5
++ (BOOL)isContact:(id)contact presentInContainer:(id)container store:(id)store
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [a3 identifier];
-  v10 = [CNContainer predicateForContainerOfContactWithIdentifier:v9];
+  storeCopy = store;
+  containerCopy = container;
+  identifier = [contact identifier];
+  v10 = [CNContainer predicateForContainerOfContactWithIdentifier:identifier];
 
-  v11 = [v7 containersMatchingPredicate:v10 error:0];
+  v11 = [storeCopy containersMatchingPredicate:v10 error:0];
 
-  v12 = [v11 firstObject];
-  v13 = [v12 identifier];
-  v14 = [v8 identifier];
+  firstObject = [v11 firstObject];
+  identifier2 = [firstObject identifier];
+  identifier3 = [containerCopy identifier];
 
-  LOBYTE(v8) = [v13 isEqualToString:v14];
-  return v8;
+  LOBYTE(containerCopy) = [identifier2 isEqualToString:identifier3];
+  return containerCopy;
 }
 
-+ (void)setNameString:(id)a3 onContact:(id)a4
++ (void)setNameString:(id)string onContact:(id)contact
 {
-  v9 = a3;
-  v6 = a4;
-  if (((*(CNIsStringEmpty + 16))(CNIsStringEmpty, v9) & 1) == 0)
+  stringCopy = string;
+  contactCopy = contact;
+  if (((*(CNIsStringEmpty + 16))(CNIsStringEmpty, stringCopy) & 1) == 0)
   {
-    v7 = [a1 nameComponentsFromString:v9];
+    v7 = [self nameComponentsFromString:stringCopy];
     v8 = v7;
     if (v7)
     {
-      [v7 overrideComponentsInContact:v6];
+      [v7 overrideComponentsInContact:contactCopy];
     }
 
     else
     {
-      [v6 setGivenName:v9];
+      [contactCopy setGivenName:stringCopy];
     }
   }
 }
 
-+ (id)nameComponentsFromString:(id)a3
++ (id)nameComponentsFromString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 prepareName:v4];
+  stringCopy = string;
+  v5 = [self prepareName:stringCopy];
   if (qword_195D8 != -1)
   {
     sub_AEF4();
@@ -243,11 +243,11 @@ LABEL_31:
   return v7;
 }
 
-+ (id)prepareName:(id)a3
++ (id)prepareName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = [NSCharacterSet characterSetWithCharactersInString:@">"];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  v5 = [nameCopy stringByTrimmingCharactersInSet:v4];
 
   return v5;
 }

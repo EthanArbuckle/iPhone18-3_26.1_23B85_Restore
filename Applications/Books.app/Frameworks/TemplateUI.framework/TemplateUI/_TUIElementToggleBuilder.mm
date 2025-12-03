@@ -1,14 +1,14 @@
 @interface _TUIElementToggleBuilder
 - (id)finalizeAnimationGroups;
-- (void)addAnimationGroup:(id)a3 withName:(id)a4;
+- (void)addAnimationGroup:(id)group withName:(id)name;
 @end
 
 @implementation _TUIElementToggleBuilder
 
-- (void)addAnimationGroup:(id)a3 withName:(id)a4
+- (void)addAnimationGroup:(id)group withName:(id)name
 {
-  v10 = a3;
-  v6 = a4;
+  groupCopy = group;
+  nameCopy = name;
   animations = self->_animations;
   if (!animations)
   {
@@ -19,7 +19,7 @@
     animations = self->_animations;
   }
 
-  [(NSMutableDictionary *)animations setObject:v10 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)animations setObject:groupCopy forKeyedSubscript:nameCopy];
 }
 
 - (id)finalizeAnimationGroups

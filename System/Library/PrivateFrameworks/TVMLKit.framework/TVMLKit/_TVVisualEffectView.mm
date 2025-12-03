@@ -1,11 +1,11 @@
 @interface _TVVisualEffectView
 + (id)hostViewDisablements;
-+ (void)addHostView:(id)a3;
-+ (void)disableForHostView:(id)a3;
-+ (void)enableForHostView:(id)a3;
-+ (void)removeHostView:(id)a3;
++ (void)addHostView:(id)view;
++ (void)disableForHostView:(id)view;
++ (void)enableForHostView:(id)view;
++ (void)removeHostView:(id)view;
 - (UIView)hostView;
-- (void)_disablement:(id)a3;
+- (void)_disablement:(id)_disablement;
 - (void)dealloc;
 - (void)didMoveToWindow;
 @end
@@ -14,22 +14,22 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"_TVVisualEffectsViewDisablementNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"_TVVisualEffectsViewDisablementNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = _TVVisualEffectView;
   [(_TVVisualEffectView *)&v4 dealloc];
 }
 
-- (void)_disablement:(id)a3
+- (void)_disablement:(id)_disablement
 {
-  v4 = [objc_opt_class() hostViewDisablements];
-  v5 = [(_TVVisualEffectView *)self hostView];
-  v6 = [v4 objectForKey:v5];
-  v7 = [v6 BOOLValue];
+  hostViewDisablements = [objc_opt_class() hostViewDisablements];
+  hostView = [(_TVVisualEffectView *)self hostView];
+  v6 = [hostViewDisablements objectForKey:hostView];
+  bOOLValue = [v6 BOOLValue];
 
-  [(_TVVisualEffectView *)self _setDisabled:v7];
+  [(_TVVisualEffectView *)self _setDisabled:bOOLValue];
 }
 
 - (void)didMoveToWindow
@@ -37,28 +37,28 @@
   v13.receiver = self;
   v13.super_class = _TVVisualEffectView;
   [(_TVVisualEffectView *)&v13 didMoveToWindow];
-  v3 = [(_TVVisualEffectView *)self window];
+  window = [(_TVVisualEffectView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(_TVVisualEffectView *)self superview];
-    if (v4)
+    superview = [(_TVVisualEffectView *)self superview];
+    if (superview)
     {
-      v5 = v4;
+      v5 = superview;
       while (1)
       {
-        v6 = [objc_opt_class() hostViewDisablements];
-        v7 = [v6 objectForKey:v5];
+        hostViewDisablements = [objc_opt_class() hostViewDisablements];
+        v7 = [hostViewDisablements objectForKey:v5];
 
         if (v7)
         {
           break;
         }
 
-        v8 = [v5 superview];
+        superview2 = [v5 superview];
 
-        v5 = v8;
-        if (!v8)
+        v5 = superview2;
+        if (!superview2)
         {
           return;
         }
@@ -66,20 +66,20 @@
 
       [(_TVVisualEffectView *)self setHostView:v5];
       -[_TVVisualEffectView _setDisabled:](self, "_setDisabled:", [v7 BOOLValue]);
-      v12 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v12 addObserver:self selector:sel__disablement_ name:@"_TVVisualEffectsViewDisablementNotification" object:v5];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__disablement_ name:@"_TVVisualEffectsViewDisablementNotification" object:v5];
     }
   }
 
   else
   {
-    v9 = [(_TVVisualEffectView *)self hostView];
+    hostView = [(_TVVisualEffectView *)self hostView];
 
-    if (v9)
+    if (hostView)
     {
-      v10 = [MEMORY[0x277CCAB98] defaultCenter];
-      v11 = [(_TVVisualEffectView *)self hostView];
-      [v10 removeObserver:self name:@"_TVVisualEffectsViewDisablementNotification" object:v11];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      hostView2 = [(_TVVisualEffectView *)self hostView];
+      [defaultCenter2 removeObserver:self name:@"_TVVisualEffectsViewDisablementNotification" object:hostView2];
 
       [(_TVVisualEffectView *)self setHostView:0];
     }
@@ -98,49 +98,49 @@
   return v3;
 }
 
-+ (void)addHostView:(id)a3
++ (void)addHostView:(id)view
 {
-  v4 = a3;
-  v5 = [a1 hostViewDisablements];
-  [v5 setObject:MEMORY[0x277CBEC28] forKey:v4];
+  viewCopy = view;
+  hostViewDisablements = [self hostViewDisablements];
+  [hostViewDisablements setObject:MEMORY[0x277CBEC28] forKey:viewCopy];
 }
 
-+ (void)removeHostView:(id)a3
++ (void)removeHostView:(id)view
 {
-  v4 = a3;
-  v5 = [a1 hostViewDisablements];
-  [v5 removeObjectForKey:v4];
+  viewCopy = view;
+  hostViewDisablements = [self hostViewDisablements];
+  [hostViewDisablements removeObjectForKey:viewCopy];
 }
 
-+ (void)enableForHostView:(id)a3
++ (void)enableForHostView:(id)view
 {
-  v8 = a3;
-  v4 = [a1 hostViewDisablements];
-  v5 = [v4 objectForKey:v8];
+  viewCopy = view;
+  hostViewDisablements = [self hostViewDisablements];
+  v5 = [hostViewDisablements objectForKey:viewCopy];
 
   if (v5)
   {
-    v6 = [a1 hostViewDisablements];
-    [v6 setObject:MEMORY[0x277CBEC28] forKey:v8];
+    hostViewDisablements2 = [self hostViewDisablements];
+    [hostViewDisablements2 setObject:MEMORY[0x277CBEC28] forKey:viewCopy];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:@"_TVVisualEffectsViewDisablementNotification" object:v8];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"_TVVisualEffectsViewDisablementNotification" object:viewCopy];
   }
 }
 
-+ (void)disableForHostView:(id)a3
++ (void)disableForHostView:(id)view
 {
-  v8 = a3;
-  v4 = [a1 hostViewDisablements];
-  v5 = [v4 objectForKey:v8];
+  viewCopy = view;
+  hostViewDisablements = [self hostViewDisablements];
+  v5 = [hostViewDisablements objectForKey:viewCopy];
 
   if (v5)
   {
-    v6 = [a1 hostViewDisablements];
-    [v6 setObject:MEMORY[0x277CBEC38] forKey:v8];
+    hostViewDisablements2 = [self hostViewDisablements];
+    [hostViewDisablements2 setObject:MEMORY[0x277CBEC38] forKey:viewCopy];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:@"_TVVisualEffectsViewDisablementNotification" object:v8];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"_TVVisualEffectsViewDisablementNotification" object:viewCopy];
   }
 }
 

@@ -1,23 +1,23 @@
 @interface PLHierarchicalClustering
 - (PLHierarchicalClustering)init;
-- (double)_createRelativeDistanceCacheForDataset:(id)a3;
-- (id)performWithDataset:(id)a3 progressBlock:(id)a4;
-- (unint64_t)_clustroidIndexForClusters:(unint64_t *)a3 numberOfObjects:(unint64_t)a4 distances:(double *)a5 relativeDistanceCache:(double *)a6;
+- (double)_createRelativeDistanceCacheForDataset:(id)dataset;
+- (id)performWithDataset:(id)dataset progressBlock:(id)block;
+- (unint64_t)_clustroidIndexForClusters:(unint64_t *)clusters numberOfObjects:(unint64_t)objects distances:(double *)distances relativeDistanceCache:(double *)cache;
 @end
 
 @implementation PLHierarchicalClustering
 
-- (id)performWithDataset:(id)a3 progressBlock:(id)a4
+- (id)performWithDataset:(id)dataset progressBlock:(id)block
 {
-  v6 = a3;
-  v185 = a4;
+  datasetCopy = dataset;
+  blockCopy = block;
   v204 = 0;
   v205 = &v204;
   v206 = 0x2020000000;
   v207 = 0;
   v7 = MEMORY[0x1E696AE38];
-  v200 = v6;
-  v8 = [v6 count];
+  v200 = datasetCopy;
+  v8 = [datasetCopy count];
   if (v8 - self->_k + 2 <= 1)
   {
     v9 = 1;
@@ -29,18 +29,18 @@
   }
 
   v189 = [v7 progressWithTotalUnitCount:v9];
-  v10 = [v189 totalUnitCount];
-  v187 = [(PLDataClustering *)self distanceBlock];
-  if (v185 && self->_reportsProgressInDistancesMatrixCalculation)
+  totalUnitCount = [v189 totalUnitCount];
+  distanceBlock = [(PLDataClustering *)self distanceBlock];
+  if (blockCopy && self->_reportsProgressInDistancesMatrixCalculation)
   {
-    v11 = 1.0 / v10;
+    v11 = 1.0 / totalUnitCount;
     v12 = v202;
     v202[0] = MEMORY[0x1E69E9820];
     v202[1] = 3221225472;
     v202[2] = __61__PLHierarchicalClustering_performWithDataset_progressBlock___block_invoke;
     v202[3] = &unk_1E7573D00;
     v181 = v203;
-    v13 = v185;
+    v13 = blockCopy;
     *&v203[2] = v11;
     v203[0] = v13;
     v203[1] = &v204;
@@ -54,7 +54,7 @@
   }
 
   v14 = _Block_copy(v12);
-  v188 = self;
+  selfCopy = self;
   usesSortedDataRelativeDistanceCache = self->_usesSortedDataRelativeDistanceCache;
   v182 = v14;
   if (!self->_usesSortedDataRelativeDistanceCache)
@@ -111,10 +111,10 @@ LABEL_17:
   v25 = malloc_type_calloc(1uLL, [v200 count], 0xAD614587uLL);
   v186 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v200];
   [v189 setCompletedUnitCount:{objc_msgSend(v189, "completedUnitCount") + 1}];
-  if (v185)
+  if (blockCopy)
   {
     [v189 fractionCompleted];
-    (*(v185 + 2))(v185, v205 + 3);
+    (*(blockCopy + 2))(blockCopy, v205 + 3);
   }
 
   if (v205[3])
@@ -171,9 +171,9 @@ LABEL_252:
   while (1)
   {
     v184 = v27;
-    v28 = v188;
+    v28 = selfCopy;
     v201 = v19;
-    v29 = v19 > v188->_k;
+    v29 = v19 > selfCopy->_k;
     v197 = v22;
     v198 = v18;
     v30 = v25;
@@ -182,7 +182,7 @@ LABEL_252:
       goto LABEL_286;
     }
 
-    linkage = v188->_linkage;
+    linkage = selfCopy->_linkage;
     if (linkage <= 2)
     {
       break;
@@ -303,10 +303,10 @@ LABEL_252:
       }
 
       v22 = v197;
-      v128 = [(PLHierarchicalClustering *)v188 _clustroidIndexForClusters:v127 numberOfObjects:v197[v64] + v197[v67] distances:v16 relativeDistanceCache:v15, v107];
-      if (v128 == 0x7FFFFFFF)
+      v107 = [(PLHierarchicalClustering *)selfCopy _clustroidIndexForClusters:v127 numberOfObjects:v197[v64] + v197[v67] distances:v16 relativeDistanceCache:v15, v107];
+      if (v107 == 0x7FFFFFFF)
       {
-        v28 = v188;
+        v28 = selfCopy;
         if (v127)
         {
           free(v127);
@@ -315,7 +315,7 @@ LABEL_252:
         goto LABEL_286;
       }
 
-      v190[v67] = v128;
+      v190[v67] = v107;
       if (v201 < 2)
       {
         v130 = 0;
@@ -367,11 +367,11 @@ LABEL_203:
     {
       if (linkage == 5)
       {
-        v50 = [(PLDataClustering *)v188 clusterKeyElementBlock];
+        clusterKeyElementBlock = [(PLDataClustering *)selfCopy clusterKeyElementBlock];
         v51 = 0;
         v52 = 0;
         v53 = 0;
-        v54 = v50 + 2;
+        v54 = clusterKeyElementBlock + 2;
         v55 = 3.40282347e38;
         v56 = v184;
         do
@@ -403,9 +403,9 @@ LABEL_203:
                   v195 = v51;
                   v196 = v52;
                   v61 = v54;
-                  v62 = (v50)[2](v50, v198, v57, v197[v57], v200);
+                  v62 = (clusterKeyElementBlock)[2](clusterKeyElementBlock, v198, v57, v197[v57], v200);
                   v63 = v61;
-                  v60 = v16[v62][(v50)[2](v50, v198, v58, v197[v58], v200)];
+                  v60 = v16[v62][(clusterKeyElementBlock)[2](clusterKeyElementBlock, v198, v58, v197[v58], v200)];
                   v30 = v193;
                   v57 = v194;
                   v51 = v195;
@@ -436,8 +436,8 @@ LABEL_203:
         while (v191 != v201);
         v64 = v52;
         v65 = v51;
-        v28 = v188;
-        threshold = v188->_threshold;
+        v28 = selfCopy;
+        threshold = selfCopy->_threshold;
 
         v22 = v197;
         if (v55 <= threshold)
@@ -481,8 +481,8 @@ LABEL_350:
       ++v84;
     }
 
-    v28 = v188;
-    if (v87 > v188->_threshold)
+    v28 = selfCopy;
+    if (v87 > selfCopy->_threshold)
     {
       goto LABEL_286;
     }
@@ -543,18 +543,18 @@ LABEL_213:
 LABEL_214:
     v18[v67] = v141;
     v22[v67] += v22[v64];
-    if (v188->_linkage == 4)
+    if (selfCopy->_linkage == 4)
     {
       v30[v64] = 1;
-      v142 = [(PLDataClustering *)v188 clusterConsolidationBlock];
-      v143 = (v142)[2](v142, v18, v67, v22[v67], v200);
+      clusterConsolidationBlock = [(PLDataClustering *)selfCopy clusterConsolidationBlock];
+      v143 = (clusterConsolidationBlock)[2](clusterConsolidationBlock, v18, v67, v22[v67], v200);
       [v186 setObject:v143 atIndexedSubscript:v67];
       for (n = 0; n < [v200 count]; ++n)
       {
         if (v67 != n && !(v30[n] | usesSortedDataRelativeDistanceCache))
         {
           v145 = [v186 objectAtIndexedSubscript:n];
-          v146 = (v187)[2](v187, v143, v145);
+          v146 = (distanceBlock)[2](distanceBlock, v143, v145);
           v16[v67][n] = v146;
           v16[n][v67] = v146;
         }
@@ -639,10 +639,10 @@ LABEL_240:
     v198 = v149;
 LABEL_241:
     [v189 setCompletedUnitCount:{objc_msgSend(v189, "completedUnitCount") + 1}];
-    if (v185)
+    if (blockCopy)
     {
       [v189 fractionCompleted];
-      (*(v185 + 2))(v185, v205 + 3);
+      (*(blockCopy + 2))(blockCopy, v205 + 3);
     }
 
     v25 = v30;
@@ -652,7 +652,7 @@ LABEL_241:
     v18 = v198;
     if (*(v205 + 24) == 1)
     {
-      if (v188->_linkage == 4)
+      if (selfCopy->_linkage == 4)
       {
         v156 = [v200 count];
         if (v156)
@@ -723,7 +723,7 @@ LABEL_274:
       if (!usesSortedDataRelativeDistanceCache)
       {
 LABEL_282:
-        [(PLDataClustering *)v188 freeDistancesMatrix:v16 forDataset:v200];
+        [(PLDataClustering *)selfCopy freeDistancesMatrix:v16 forDataset:v200];
       }
 
 LABEL_283:
@@ -1102,8 +1102,8 @@ LABEL_164:
   }
 
 LABEL_165:
-  v28 = v188;
-  if (v34 <= v188->_threshold)
+  v28 = selfCopy;
+  if (v34 <= selfCopy->_threshold)
   {
     v67 = linkage;
     v64 = v32;
@@ -1197,7 +1197,7 @@ LABEL_304:
     }
   }
 
-  if (v188->_linkage == 3)
+  if (selfCopy->_linkage == 3)
   {
     for (kk = 0; kk < [v17 count]; ++kk)
     {
@@ -1208,13 +1208,13 @@ LABEL_304:
   }
 
   [v189 setCompletedUnitCount:{objc_msgSend(v189, "totalUnitCount")}];
-  if (v185)
+  if (blockCopy)
   {
     [v189 fractionCompleted];
-    (*(v185 + 2))(v185, v205 + 3);
+    (*(blockCopy + 2))(blockCopy, v205 + 3);
   }
 
-  if (v188->_linkage == 4)
+  if (selfCopy->_linkage == 4)
   {
     v177 = [v200 count];
     if (v177)
@@ -1283,7 +1283,7 @@ LABEL_326:
 
   if (!usesSortedDataRelativeDistanceCache)
   {
-    [(PLDataClustering *)v188 freeDistancesMatrix:v16 forDataset:v200];
+    [(PLDataClustering *)selfCopy freeDistancesMatrix:v16 forDataset:v200];
   }
 
 LABEL_335:
@@ -1309,51 +1309,51 @@ uint64_t __61__PLHierarchicalClustering_performWithDataset_progressBlock___block
   return result;
 }
 
-- (double)_createRelativeDistanceCacheForDataset:(id)a3
+- (double)_createRelativeDistanceCacheForDataset:(id)dataset
 {
-  v4 = a3;
-  v5 = [v4 count];
+  datasetCopy = dataset;
+  v5 = [datasetCopy count];
   v6 = malloc_type_calloc(v5, 8uLL, 0x100004000313F17uLL);
   *v6 = 0.0;
   if (v5 >= 2)
   {
     for (i = 1; i != v5; ++i)
     {
-      v8 = [(PLDataClustering *)self distanceBlock];
-      v9 = [v4 objectAtIndexedSubscript:0];
-      v10 = [v4 objectAtIndexedSubscript:i];
-      v6[i] = (v8)[2](v8, v9, v10);
+      distanceBlock = [(PLDataClustering *)self distanceBlock];
+      v9 = [datasetCopy objectAtIndexedSubscript:0];
+      v10 = [datasetCopy objectAtIndexedSubscript:i];
+      v6[i] = (distanceBlock)[2](distanceBlock, v9, v10);
     }
   }
 
   return v6;
 }
 
-- (unint64_t)_clustroidIndexForClusters:(unint64_t *)a3 numberOfObjects:(unint64_t)a4 distances:(double *)a5 relativeDistanceCache:(double *)a6
+- (unint64_t)_clustroidIndexForClusters:(unint64_t *)clusters numberOfObjects:(unint64_t)objects distances:(double *)distances relativeDistanceCache:(double *)cache
 {
-  if (!a3)
+  if (!clusters)
   {
     return 0x7FFFFFFFLL;
   }
 
   v6 = 0;
-  if (a4)
+  if (objects)
   {
     v7 = 0;
     v8 = 0.0;
     v9 = 3.40282347e38;
     do
     {
-      v10 = a3[v7];
+      v10 = clusters[v7];
       if (self->_usesSortedDataRelativeDistanceCache)
       {
         v11 = 0.0;
-        v12 = a3;
-        v13 = a4;
+        clustersCopy = clusters;
+        objectsCopy = objects;
         do
         {
-          v14 = *v12++;
-          v15 = a6[v10] - a6[v14];
+          v14 = *clustersCopy++;
+          v15 = cache[v10] - cache[v14];
           if (v15 < 0.0)
           {
             v15 = -v15;
@@ -1365,44 +1365,44 @@ uint64_t __61__PLHierarchicalClustering_performWithDataset_progressBlock___block
           }
 
           v11 = v11 + v15;
-          --v13;
+          --objectsCopy;
         }
 
-        while (v13);
+        while (objectsCopy);
       }
 
       else
       {
         v11 = 0.0;
-        v16 = a3;
-        v17 = a4;
+        clustersCopy2 = clusters;
+        objectsCopy2 = objects;
         do
         {
-          v18 = *v16++;
-          v19 = a5[v10][v18];
+          v18 = *clustersCopy2++;
+          v19 = distances[v10][v18];
           if (v19 > v8)
           {
             v8 = v19;
           }
 
           v11 = v11 + v19;
-          --v17;
+          --objectsCopy2;
         }
 
-        while (v17);
+        while (objectsCopy2);
       }
 
-      v20 = v11 / a4;
+      v20 = v11 / objects;
       if (v20 < v9)
       {
         v9 = v20;
-        v6 = a3[v7];
+        v6 = clusters[v7];
       }
 
       ++v7;
     }
 
-    while (v7 != a4);
+    while (v7 != objects);
   }
 
   else

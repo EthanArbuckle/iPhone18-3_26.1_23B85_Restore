@@ -1,18 +1,18 @@
 @interface MFNanoAccountsSettingsDataSource
-- (BOOL)canMakeChanges:(id)a3;
-- (BOOL)isAccountActive:(id)a3;
-- (BOOL)isAccountDisabled:(id)a3;
-- (BOOL)isAccountRequiringAttention:(id)a3;
-- (BOOL)isGmailAccount:(id)a3;
-- (BOOL)isiCloudAccount:(id)a3;
+- (BOOL)canMakeChanges:(id)changes;
+- (BOOL)isAccountActive:(id)active;
+- (BOOL)isAccountDisabled:(id)disabled;
+- (BOOL)isAccountRequiringAttention:(id)attention;
+- (BOOL)isGmailAccount:(id)account;
+- (BOOL)isiCloudAccount:(id)account;
 - (MFNanoAccountsSettingsDataSource)init;
 - (unint64_t)activeAccountCount;
 - (unint64_t)numberOfAccountsRequiringAttention;
-- (void)_handleAccountAuthenticationFailed:(id)a3;
+- (void)_handleAccountAuthenticationFailed:(id)failed;
 - (void)_handleWatchAccountStatusChanged;
 - (void)dealloc;
 - (void)refreshAccounts;
-- (void)syncStandaloneAccountIdentity:(id)a3;
+- (void)syncStandaloneAccountIdentity:(id)identity;
 @end
 
 @implementation MFNanoAccountsSettingsDataSource
@@ -60,14 +60,14 @@
   }
 
   [(MFNanoBridgeSettingsManager *)self->_settingsManager reloadCachedAccounts];
-  v15 = [(MFNanoBridgeSettingsManager *)self->_settingsManager activeAccounts];
-  v3 = [(MFNanoBridgeSettingsManager *)self->_settingsManager standaloneAccountStateByAccountId];
+  activeAccounts = [(MFNanoBridgeSettingsManager *)self->_settingsManager activeAccounts];
+  standaloneAccountStateByAccountId = [(MFNanoBridgeSettingsManager *)self->_settingsManager standaloneAccountStateByAccountId];
   v4 = objc_alloc_init(NSMutableArray);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v15;
+  v5 = activeAccounts;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v6)
   {
@@ -81,24 +81,24 @@
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v17 + 1) + 8 * i) nano_account];
-        v10 = [v9 localId];
-        v11 = [v3 objectForKeyedSubscript:v10];
-        [v9 setStandaloneState:{objc_msgSend(v11, "unsignedIntegerValue")}];
+        nano_account = [*(*(&v17 + 1) + 8 * i) nano_account];
+        localId = [nano_account localId];
+        v11 = [standaloneAccountStateByAccountId objectForKeyedSubscript:localId];
+        [nano_account setStandaloneState:{objc_msgSend(v11, "unsignedIntegerValue")}];
 
         v12 = MFLogGeneral();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
-          v13 = [v9 username];
-          v14 = [v9 standaloneState];
+          username = [nano_account username];
+          standaloneState = [nano_account standaloneState];
           *buf = 138412546;
-          v22 = v13;
+          v22 = username;
           v23 = 2048;
-          v24 = v14;
+          v24 = standaloneState;
           _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "#Nano Account %@, State: %lu", buf, 0x16u);
         }
 
-        [v4 addObject:v9];
+        [v4 addObject:nano_account];
       }
 
       v6 = [v5 countByEnumeratingWithState:&v17 objects:v25 count:16];
@@ -110,15 +110,15 @@
   [(MFNanoAccountsSettingsDataSource *)self setAccounts:v4];
 }
 
-- (void)syncStandaloneAccountIdentity:(id)a3
+- (void)syncStandaloneAccountIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = +[MFNanoBridgeSettingsManager sharedInstance];
-  v6 = [v5 accountIdentities];
+  accountIdentities = [v5 accountIdentities];
 
-  if (v6)
+  if (accountIdentities)
   {
-    v7 = [v6 mutableCopy];
+    v7 = [accountIdentities mutableCopy];
   }
 
   else
@@ -127,7 +127,7 @@
   }
 
   v8 = v7;
-  [v7 addObject:v4];
+  [v7 addObject:identityCopy];
   [(MFNanoBridgeSettingsManager *)self->_settingsManager setAccountIdentities:v8];
   v9 = MFLogGeneral();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -190,17 +190,17 @@
   return v4;
 }
 
-- (BOOL)isAccountRequiringAttention:(id)a3
+- (BOOL)isAccountRequiringAttention:(id)attention
 {
-  v4 = a3;
-  if ([(MFNanoAccountsSettingsDataSource *)self isAccountActive:v4]|| [(MFNanoAccountsSettingsDataSource *)self isAccountDisabled:v4])
+  attentionCopy = attention;
+  if ([(MFNanoAccountsSettingsDataSource *)self isAccountActive:attentionCopy]|| [(MFNanoAccountsSettingsDataSource *)self isAccountDisabled:attentionCopy])
   {
     v5 = 0;
   }
 
-  else if ([v4 standaloneState])
+  else if ([attentionCopy standaloneState])
   {
-    v5 = [v4 standaloneState] == &dword_0 + 3;
+    v5 = [attentionCopy standaloneState] == &dword_0 + 3;
   }
 
   else
@@ -228,14 +228,14 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_handleAccountAuthenticationFailed:(id)a3
+- (void)_handleAccountAuthenticationFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   v5 = MFLogGeneral();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = failedCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "#Nano Received Darwin Notification Account Authentication Failed. %@", buf, 0xCu);
   }
 
@@ -243,70 +243,70 @@
   v7[1] = 3221225472;
   v7[2] = sub_6B6C;
   v7[3] = &unk_34A48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = failedCopy;
+  selfCopy = self;
+  v6 = failedCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-- (BOOL)isGmailAccount:(id)a3
+- (BOOL)isGmailAccount:(id)account
 {
-  v3 = [a3 localId];
-  v4 = [MailAccount accountWithUniqueId:v3];
+  localId = [account localId];
+  v4 = [MailAccount accountWithUniqueId:localId];
 
-  v5 = [v4 statisticsKind];
-  v6 = [v5 isEqualToString:MSMailAccountStatisticsKindGmail];
+  statisticsKind = [v4 statisticsKind];
+  v6 = [statisticsKind isEqualToString:MSMailAccountStatisticsKindGmail];
 
   return v6;
 }
 
-- (BOOL)isiCloudAccount:(id)a3
+- (BOOL)isiCloudAccount:(id)account
 {
-  v3 = [a3 localId];
-  v4 = [MailAccount accountWithUniqueId:v3];
+  localId = [account localId];
+  v4 = [MailAccount accountWithUniqueId:localId];
 
-  v5 = [v4 statisticsKind];
-  v6 = [v5 isEqualToString:MSMailAccountStatisticsKindICloud];
+  statisticsKind = [v4 statisticsKind];
+  v6 = [statisticsKind isEqualToString:MSMailAccountStatisticsKindICloud];
 
   return v6;
 }
 
-- (BOOL)isAccountDisabled:(id)a3
+- (BOOL)isAccountDisabled:(id)disabled
 {
-  v4 = a3;
-  if ([(MFNanoAccountsSettingsDataSource *)self isiCloudAccount:v4])
+  disabledCopy = disabled;
+  if ([(MFNanoAccountsSettingsDataSource *)self isiCloudAccount:disabledCopy])
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v5 = ![(MFNanoAccountsSettingsDataSource *)self isGmailAccount:v4];
+    v5 = ![(MFNanoAccountsSettingsDataSource *)self isGmailAccount:disabledCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isAccountActive:(id)a3
+- (BOOL)isAccountActive:(id)active
 {
-  v4 = a3;
-  if ([v4 standaloneState] == &dword_0 + 2)
+  activeCopy = active;
+  if ([activeCopy standaloneState] == &dword_0 + 2)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [(MFNanoAccountsSettingsDataSource *)self isiCloudAccount:v4];
+    v5 = [(MFNanoAccountsSettingsDataSource *)self isiCloudAccount:activeCopy];
   }
 
   return v5;
 }
 
-- (BOOL)canMakeChanges:(id)a3
+- (BOOL)canMakeChanges:(id)changes
 {
-  v4 = a3;
-  v5 = -[MFNanoAccountsSettingsDataSource isGmailAccount:](self, "isGmailAccount:", v4) && [v4 standaloneState] != &dword_0 + 2 && objc_msgSend(v4, "standaloneState") != &dword_0 + 1;
+  changesCopy = changes;
+  v5 = -[MFNanoAccountsSettingsDataSource isGmailAccount:](self, "isGmailAccount:", changesCopy) && [changesCopy standaloneState] != &dword_0 + 2 && objc_msgSend(changesCopy, "standaloneState") != &dword_0 + 1;
 
   return v5;
 }

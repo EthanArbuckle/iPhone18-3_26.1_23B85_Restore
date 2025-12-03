@@ -1,25 +1,25 @@
 @interface SBCenterWindowToNewSplitViewSwitcherModifier
-- (BOOL)_wasItemPreviouslyCenter:(id)a3;
-- (BOOL)_wasItemPreviouslyFullScreen:(id)a3;
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (SBCenterWindowToNewSplitViewSwitcherModifier)initWithTransitionID:(id)a3 fromFullScreenAppLayout:(id)a4 toSpaceAppLayout:(id)a5;
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (id)handleSceneReadyEvent:(id)a3;
-- (id)topMostLayoutRolesForAppLayout:(id)a3;
+- (BOOL)_wasItemPreviouslyCenter:(id)center;
+- (BOOL)_wasItemPreviouslyFullScreen:(id)screen;
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (SBCenterWindowToNewSplitViewSwitcherModifier)initWithTransitionID:(id)d fromFullScreenAppLayout:(id)layout toSpaceAppLayout:(id)appLayout;
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (id)handleSceneReadyEvent:(id)event;
+- (id)topMostLayoutRolesForAppLayout:(id)layout;
 @end
 
 @implementation SBCenterWindowToNewSplitViewSwitcherModifier
 
-- (SBCenterWindowToNewSplitViewSwitcherModifier)initWithTransitionID:(id)a3 fromFullScreenAppLayout:(id)a4 toSpaceAppLayout:(id)a5
+- (SBCenterWindowToNewSplitViewSwitcherModifier)initWithTransitionID:(id)d fromFullScreenAppLayout:(id)layout toSpaceAppLayout:(id)appLayout
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  dCopy = d;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
+  v12 = appLayoutCopy;
+  if (layoutCopy)
   {
-    if (v11)
+    if (appLayoutCopy)
     {
       goto LABEL_3;
     }
@@ -38,14 +38,14 @@
 LABEL_3:
   v20.receiver = self;
   v20.super_class = SBCenterWindowToNewSplitViewSwitcherModifier;
-  v13 = [(SBTransitionSwitcherModifier *)&v20 initWithTransitionID:v9];
+  v13 = [(SBTransitionSwitcherModifier *)&v20 initWithTransitionID:dCopy];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_fromFullScreenAppLayout, a4);
-    objc_storeStrong(&v14->_toSpaceAppLayout, a5);
+    objc_storeStrong(&v13->_fromFullScreenAppLayout, layout);
+    objc_storeStrong(&v14->_toSpaceAppLayout, appLayout);
     toSpaceAppLayout = v14->_toSpaceAppLayout;
-    v16 = [v10 itemForLayoutRole:1];
+    v16 = [layoutCopy itemForLayoutRole:1];
     v17 = [(SBAppLayout *)toSpaceAppLayout layoutRoleForItem:v16];
 
     if ((SBLayoutRoleIsValidForSplitView(v17) & 1) == 0)
@@ -65,59 +65,59 @@ LABEL_3:
   return v14;
 }
 
-- (id)handleSceneReadyEvent:(id)a3
+- (id)handleSceneReadyEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SBCenterWindowToNewSplitViewSwitcherModifier;
-  v3 = [(SBSwitcherModifier *)&v7 handleSceneReadyEvent:a3];
+  v3 = [(SBSwitcherModifier *)&v7 handleSceneReadyEvent:event];
   v4 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:64 updateMode:3];
   v5 = SBAppendSwitcherModifierResponse(v4, v3);
 
   return v5;
 }
 
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v10.receiver = self;
   v10.super_class = SBCenterWindowToNewSplitViewSwitcherModifier;
-  LOBYTE(v7) = [(SBCenterWindowToNewSplitViewSwitcherModifier *)&v10 isLayoutRoleBlurred:a3 inAppLayout:v6];
-  v8 = [v6 itemForLayoutRole:a3];
+  LOBYTE(v7) = [(SBCenterWindowToNewSplitViewSwitcherModifier *)&v10 isLayoutRoleBlurred:blurred inAppLayout:layoutCopy];
+  v8 = [layoutCopy itemForLayoutRole:blurred];
   if ([(SBCenterWindowToNewSplitViewSwitcherModifier *)self _wasItemPreviouslyFullScreen:v8]|| [(SBCenterWindowToNewSplitViewSwitcherModifier *)self _wasItemPreviouslyCenter:v8])
   {
-    v7 = [(SBCenterWindowToNewSplitViewSwitcherModifier *)self isLayoutRoleContentReady:a3 inAppLayout:v6]^ 1;
+    v7 = [(SBCenterWindowToNewSplitViewSwitcherModifier *)self isLayoutRoleContentReady:blurred inAppLayout:layoutCopy]^ 1;
   }
 
   return v7;
 }
 
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v14.receiver = self;
   v14.super_class = SBCenterWindowToNewSplitViewSwitcherModifier;
-  v6 = a4;
-  [(SBCenterWindowToNewSplitViewSwitcherModifier *)&v14 blurDelayForLayoutRole:a3 inAppLayout:v6];
+  layoutCopy = layout;
+  [(SBCenterWindowToNewSplitViewSwitcherModifier *)&v14 blurDelayForLayoutRole:role inAppLayout:layoutCopy];
   v8 = v7;
-  v9 = [v6 itemForLayoutRole:{a3, v14.receiver, v14.super_class}];
+  v9 = [layoutCopy itemForLayoutRole:{role, v14.receiver, v14.super_class}];
 
   if ([(SBCenterWindowToNewSplitViewSwitcherModifier *)self _wasItemPreviouslyFullScreen:v9]|| [(SBCenterWindowToNewSplitViewSwitcherModifier *)self _wasItemPreviouslyCenter:v9])
   {
-    v10 = [(SBCenterWindowToNewSplitViewSwitcherModifier *)self switcherSettings];
-    v11 = [v10 animationSettings];
-    [v11 resizeBlurDelay];
+    switcherSettings = [(SBCenterWindowToNewSplitViewSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings resizeBlurDelay];
     v8 = v12;
   }
 
   return v8;
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
   v10.receiver = self;
   v10.super_class = SBCenterWindowToNewSplitViewSwitcherModifier;
-  v6 = a4;
-  v7 = [(SBCenterWindowToNewSplitViewSwitcherModifier *)&v10 isLayoutRoleMatchMovedToScene:a3 inAppLayout:v6];
-  v8 = [v6 itemForLayoutRole:{a3, v10.receiver, v10.super_class}];
+  layoutCopy = layout;
+  v7 = [(SBCenterWindowToNewSplitViewSwitcherModifier *)&v10 isLayoutRoleMatchMovedToScene:scene inAppLayout:layoutCopy];
+  v8 = [layoutCopy itemForLayoutRole:{scene, v10.receiver, v10.super_class}];
 
   if ([(SBCenterWindowToNewSplitViewSwitcherModifier *)self _wasItemPreviouslyFullScreen:v8]|| [(SBCenterWindowToNewSplitViewSwitcherModifier *)self _wasItemPreviouslyCenter:v8])
   {
@@ -127,13 +127,13 @@ LABEL_3:
   return v7;
 }
 
-- (id)topMostLayoutRolesForAppLayout:(id)a3
+- (id)topMostLayoutRolesForAppLayout:(id)layout
 {
   v11.receiver = self;
   v11.super_class = SBCenterWindowToNewSplitViewSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBCenterWindowToNewSplitViewSwitcherModifier *)&v11 topMostLayoutRolesForAppLayout:v4];
-  v6 = [v4 isEqual:{self->_toSpaceAppLayout, v11.receiver, v11.super_class}];
+  layoutCopy = layout;
+  v5 = [(SBCenterWindowToNewSplitViewSwitcherModifier *)&v11 topMostLayoutRolesForAppLayout:layoutCopy];
+  v6 = [layoutCopy isEqual:{self->_toSpaceAppLayout, v11.receiver, v11.super_class}];
 
   if (v6)
   {
@@ -150,22 +150,22 @@ LABEL_3:
   return v5;
 }
 
-- (BOOL)_wasItemPreviouslyFullScreen:(id)a3
+- (BOOL)_wasItemPreviouslyFullScreen:(id)screen
 {
   fromFullScreenAppLayout = self->_fromFullScreenAppLayout;
-  v4 = a3;
+  screenCopy = screen;
   v5 = [(SBAppLayout *)fromFullScreenAppLayout itemForLayoutRole:1];
-  v6 = [(SBDisplayItem *)v5 isEqualToItem:v4];
+  v6 = [(SBDisplayItem *)v5 isEqualToItem:screenCopy];
 
   return v6;
 }
 
-- (BOOL)_wasItemPreviouslyCenter:(id)a3
+- (BOOL)_wasItemPreviouslyCenter:(id)center
 {
   fromFullScreenAppLayout = self->_fromFullScreenAppLayout;
-  v4 = a3;
+  centerCopy = center;
   v5 = [(SBAppLayout *)fromFullScreenAppLayout itemForLayoutRole:4];
-  v6 = [(SBDisplayItem *)v5 isEqualToItem:v4];
+  v6 = [(SBDisplayItem *)v5 isEqualToItem:centerCopy];
 
   return v6;
 }

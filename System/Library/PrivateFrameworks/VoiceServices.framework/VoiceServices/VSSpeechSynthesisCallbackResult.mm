@@ -1,13 +1,13 @@
 @interface VSSpeechSynthesisCallbackResult
 - (AudioStreamBasicDescription)asbd;
-- (VSSpeechSynthesisCallbackResult)initWithCallback:(id)a3;
+- (VSSpeechSynthesisCallbackResult)initWithCallback:(id)callback;
 - (id).cxx_construct;
 - (id)phonemes;
-- (int)synthesisCallback:(int)a3;
-- (unint64_t)utf16OffsetFromUTF8:(unint64_t)a3;
-- (unint64_t)utf8BytesForChar:(unsigned __int16)a3;
+- (int)synthesisCallback:(int)callback;
+- (unint64_t)utf16OffsetFromUTF8:(unint64_t)f8;
+- (unint64_t)utf8BytesForChar:(unsigned __int16)char;
 - (void)processMarkerBuffer;
-- (void)setAsbd:(AudioStreamBasicDescription *)a3;
+- (void)setAsbd:(AudioStreamBasicDescription *)asbd;
 @end
 
 @implementation VSSpeechSynthesisCallbackResult
@@ -22,11 +22,11 @@
   return self;
 }
 
-- (void)setAsbd:(AudioStreamBasicDescription *)a3
+- (void)setAsbd:(AudioStreamBasicDescription *)asbd
 {
-  v3 = *&a3->mSampleRate;
-  v4 = *&a3->mBytesPerPacket;
-  *&self->_asbd.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v3 = *&asbd->mSampleRate;
+  v4 = *&asbd->mBytesPerPacket;
+  *&self->_asbd.mBitsPerChannel = *&asbd->mBitsPerChannel;
   *&self->_asbd.mBytesPerPacket = v4;
   *&self->_asbd.mSampleRate = v3;
 }
@@ -42,7 +42,7 @@
 
 - (id)phonemes
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   begin = self->_phonemeBuffer.__begin_;
   for (i = self->_phonemeBuffer.__end_; begin != i; begin += 3)
   {
@@ -53,10 +53,10 @@
     }
 
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:v6];
-    [v3 addObject:v7];
+    [array addObject:v7];
   }
 
-  return v3;
+  return array;
 }
 
 - (void)processMarkerBuffer
@@ -108,11 +108,11 @@
   }
 }
 
-- (unint64_t)utf16OffsetFromUTF8:(unint64_t)a3
+- (unint64_t)utf16OffsetFromUTF8:(unint64_t)f8
 {
   lastUTF8Offset = self->_lastUTF8Offset;
-  v6 = lastUTF8Offset > a3;
-  if (lastUTF8Offset >= a3)
+  v6 = lastUTF8Offset > f8;
+  if (lastUTF8Offset >= f8)
   {
     while (v6)
     {
@@ -126,14 +126,14 @@
       self->_lastUTF16Offset = lastUTF16Offset - 1;
       v15 = self->_lastUTF8Offset - [(VSSpeechSynthesisCallbackResult *)self utf8BytesForChar:[(NSString *)text characterAtIndex:?]];
       self->_lastUTF8Offset = v15;
-      v6 = v15 > a3;
+      v6 = v15 > f8;
     }
   }
 
   else
   {
     v7 = [(NSString *)self->_text length];
-    if (self->_lastUTF8Offset < a3)
+    if (self->_lastUTF8Offset < f8)
     {
       v8 = v7;
       do
@@ -150,28 +150,28 @@
         self->_lastUTF8Offset = v11;
       }
 
-      while (v11 < a3);
+      while (v11 < f8);
     }
   }
 
   return self->_lastUTF16Offset;
 }
 
-- (unint64_t)utf8BytesForChar:(unsigned __int16)a3
+- (unint64_t)utf8BytesForChar:(unsigned __int16)char
 {
   v3 = 1;
   v4 = 2;
-  if (a3 >= 0x7FFu)
+  if (char >= 0x7FFu)
   {
     v4 = 3;
   }
 
-  if (a3 >= 0x7Fu)
+  if (char >= 0x7Fu)
   {
     v3 = v4;
   }
 
-  if ((a3 & 0xF800) == 0xD800)
+  if ((char & 0xF800) == 0xD800)
   {
     return 2;
   }
@@ -182,11 +182,11 @@
   }
 }
 
-- (int)synthesisCallback:(int)a3
+- (int)synthesisCallback:(int)callback
 {
-  if (a3 > 3)
+  if (callback > 3)
   {
-    if (a3 == 4)
+    if (callback == 4)
     {
       self->_state = 2;
       if (self->_stopMark == 1)
@@ -332,16 +332,16 @@
       self->_samples.__end_ = self->_samples.__begin_;
     }
 
-    else if (a3 == 5)
+    else if (callback == 5)
     {
       [(VSSpeechSynthesisCallbackResult *)self processMarkerBuffer];
       std::vector<TTSSynthesizer::Marker>::clear[abi:ne200100](&self->_markers);
     }
   }
 
-  else if (a3)
+  else if (callback)
   {
-    if (a3 == 1)
+    if (callback == 1)
     {
       self->_state = 3;
       callback = self->_callback;
@@ -371,15 +371,15 @@
   return self->_error != 0;
 }
 
-- (VSSpeechSynthesisCallbackResult)initWithCallback:(id)a3
+- (VSSpeechSynthesisCallbackResult)initWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v11.receiver = self;
   v11.super_class = VSSpeechSynthesisCallbackResult;
   v5 = [(VSSpeechSynthesisCallbackResult *)&v11 init];
   if (v5)
   {
-    v6 = MEMORY[0x2743CEF70](v4);
+    v6 = MEMORY[0x2743CEF70](callbackCopy);
     callback = v5->_callback;
     v5->_callback = v6;
 

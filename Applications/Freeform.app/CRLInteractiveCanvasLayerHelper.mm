@@ -1,15 +1,15 @@
 @interface CRLInteractiveCanvasLayerHelper
-- (BOOL)isCanvasContentLayer:(id)a3;
-- (CRLInteractiveCanvasLayerHelper)initWithInteractiveCanvasController:(id)a3;
+- (BOOL)isCanvasContentLayer:(id)layer;
+- (CRLInteractiveCanvasLayerHelper)initWithInteractiveCanvasController:(id)controller;
 - (id)viewWithTransferredLayers;
-- (void)beginSuppressingLayerUpdatesExceptForReps:(id)a3;
+- (void)beginSuppressingLayerUpdatesExceptForReps:(id)reps;
 - (void)dealloc;
 - (void)endSuppressingLayerUpdates;
-- (void)p_recursivelySetContentsFormatForLayer:(id)a3 toContentsFormat:(id)a4;
-- (void)p_recursivelyUpdateLayerEdgeAntialiasingForLayer:(id)a3;
+- (void)p_recursivelySetContentsFormatForLayer:(id)layer toContentsFormat:(id)format;
+- (void)p_recursivelyUpdateLayerEdgeAntialiasingForLayer:(id)layer;
 - (void)p_updateDecoratorOverlayContainer;
-- (void)p_updateLayersForcingUpdateOfValidLayers:(BOOL)a3;
-- (void)p_updateOverlayViewForReps:(id)a3 forcingUpdateOfValidLayers:(BOOL)a4;
+- (void)p_updateLayersForcingUpdateOfValidLayers:(BOOL)layers;
+- (void)p_updateOverlayViewForReps:(id)reps forcingUpdateOfValidLayers:(BOOL)layers;
 - (void)teardown;
 - (void)updateLayerContainerFrames;
 - (void)updateLayers;
@@ -17,16 +17,16 @@
 
 @implementation CRLInteractiveCanvasLayerHelper
 
-- (CRLInteractiveCanvasLayerHelper)initWithInteractiveCanvasController:(id)a3
+- (CRLInteractiveCanvasLayerHelper)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v25.receiver = self;
   v25.super_class = CRLInteractiveCanvasLayerHelper;
   v5 = [(CRLInteractiveCanvasLayerHelper *)&v25 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_interactiveCanvasController, v4);
+    objc_storeWeak(&v5->_interactiveCanvasController, controllerCopy);
     v7 = objc_alloc_init(CRLCanvasSubview);
     repContainerView = v6->_repContainerView;
     v6->_repContainerView = v7;
@@ -34,15 +34,15 @@
     WeakRetained = objc_loadWeakRetained(&v6->_interactiveCanvasController);
     [(CRLCanvasSubview *)v6->_repContainerView setLayerDelegate:WeakRetained];
 
-    v10 = [(CRLCanvasSubview *)v6->_repContainerView layer];
+    layer = [(CRLCanvasSubview *)v6->_repContainerView layer];
     repContainerLayer = v6->_repContainerLayer;
-    v6->_repContainerLayer = v10;
+    v6->_repContainerLayer = layer;
 
     v12 = [CRLInteractiveCanvasRepContentUpdater alloc];
     v13 = objc_loadWeakRetained(&v6->_interactiveCanvasController);
-    v14 = [v13 canvas];
+    canvas = [v13 canvas];
     v15 = objc_loadWeakRetained(&v6->_interactiveCanvasController);
-    v16 = [(CRLInteractiveCanvasRepContentUpdater *)v12 initWithCanvas:v14 layerDelegate:v15];
+    v16 = [(CRLInteractiveCanvasRepContentUpdater *)v12 initWithCanvas:canvas layerDelegate:v15];
     repContentUpdater = v6->_repContentUpdater;
     v6->_repContentUpdater = v16;
 
@@ -145,12 +145,12 @@
   if ([(CRLInteractiveCanvasLayerHelper *)self p_shouldPerformLayerTreeComparison])
   {
     WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v4 = [WeakRetained canvasView];
+    canvasView = [WeakRetained canvasView];
 
-    v5 = [v4 canvasLayer];
-    v6 = [(CRLInteractiveCanvasRepContentUpdater *)self->_repContentUpdater i_descriptionOfLayerTreeRootedAt:v5];
+    canvasLayer = [canvasView canvasLayer];
+    v6 = [(CRLInteractiveCanvasRepContentUpdater *)self->_repContentUpdater i_descriptionOfLayerTreeRootedAt:canvasLayer];
     [(CRLInteractiveCanvasLayerHelper *)self p_updateLayersForcingUpdateOfValidLayers:1];
-    v7 = [(CRLInteractiveCanvasRepContentUpdater *)self->_repContentUpdater i_descriptionOfLayerTreeRootedAt:v5];
+    v7 = [(CRLInteractiveCanvasRepContentUpdater *)self->_repContentUpdater i_descriptionOfLayerTreeRootedAt:canvasLayer];
     v8 = [(CRLInteractiveCanvasRepContentUpdater *)self->_repContentUpdater i_firstDifferenceBetweenLayerTreeDescription:v6 andDescription:v7];
     if ([v8 count])
     {
@@ -184,18 +184,18 @@
   }
 }
 
-- (void)p_updateLayersForcingUpdateOfValidLayers:(BOOL)a3
+- (void)p_updateLayersForcingUpdateOfValidLayers:(BOOL)layers
 {
-  v3 = a3;
+  layersCopy = layers;
   v5 = +[NSThread isMainThread];
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v7 = [WeakRetained canvasView];
+  canvasView = [WeakRetained canvasView];
 
-  v59 = v7;
-  v8 = [v7 canvasLayer];
+  v59 = canvasView;
+  canvasLayer = [canvasView canvasLayer];
   v9 = objc_alloc_init(NSMutableOrderedSet);
-  v58 = v8;
-  [v8 bounds];
+  v58 = canvasLayer;
+  [canvasLayer bounds];
   v14 = v10;
   v15 = v11;
   v16 = v12;
@@ -207,9 +207,9 @@
   }
 
   v18 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v19 = [v18 additionalLayersUnderRepLayers];
+  additionalLayersUnderRepLayers = [v18 additionalLayersUnderRepLayers];
 
-  if ([v19 count])
+  if ([additionalLayersUnderRepLayers count])
   {
     if (((self->_bottommostLayersContainerView == 0) & v5) == 1)
     {
@@ -220,9 +220,9 @@
       v22 = objc_loadWeakRetained(&self->_interactiveCanvasController);
       [(CRLCanvasSubview *)self->_bottommostLayersContainerView setLayerDelegate:v22];
 
-      v23 = [(CRLCanvasSubview *)self->_bottommostLayersContainerView layer];
+      layer = [(CRLCanvasSubview *)self->_bottommostLayersContainerView layer];
       bottommostLayersContainerLayer = self->_bottommostLayersContainerLayer;
-      self->_bottommostLayersContainerLayer = v23;
+      self->_bottommostLayersContainerLayer = layer;
     }
 
     if (!self->_bottommostLayersContainerLayer)
@@ -263,17 +263,17 @@
       [(CRLCanvasSubview *)self->_bottommostLayersContainerView setBounds:v14, v15, v16, v17];
     }
 
-    if (!v19)
+    if (!additionalLayersUnderRepLayers)
     {
-      v19 = &__NSArray0__struct;
+      additionalLayersUnderRepLayers = &__NSArray0__struct;
     }
 
-    v28 = [(CALayer *)self->_bottommostLayersContainerLayer sublayers];
-    v29 = [v19 isEqualToArray:v28];
+    sublayers = [(CALayer *)self->_bottommostLayersContainerLayer sublayers];
+    v29 = [additionalLayersUnderRepLayers isEqualToArray:sublayers];
 
     if ((v29 & 1) == 0)
     {
-      [(CALayer *)self->_bottommostLayersContainerLayer setSublayers:v19];
+      [(CALayer *)self->_bottommostLayersContainerLayer setSublayers:additionalLayersUnderRepLayers];
     }
 
     if (self->_bottommostLayersContainerView)
@@ -282,26 +282,26 @@
     }
   }
 
-  v30 = [(CRLInteractiveCanvasLayerHelper *)self currentlySuppressingLayerUpdates];
+  currentlySuppressingLayerUpdates = [(CRLInteractiveCanvasLayerHelper *)self currentlySuppressingLayerUpdates];
   repContentUpdater = self->_repContentUpdater;
-  if (v30)
+  if (currentlySuppressingLayerUpdates)
   {
     [(CRLInteractiveCanvasRepContentUpdater *)repContentUpdater updateLayerFramesOnlyForReps:self->_repsWhoseLayersAreAllowedToUpdate];
   }
 
   else
   {
-    [(CRLInteractiveCanvasRepContentUpdater *)repContentUpdater updateRepContentForcingUpdateOfValidLayers:v3];
-    v32 = [(CRLInteractiveCanvasRepContentUpdater *)self->_repContentUpdater repContentPiles];
-    v33 = [(CRLInteractiveCanvasRepContentUpdater *)self->_repContentUpdater allReps];
-    [(CRLInteractiveCanvasRepContentSubviewUpdater *)self->_repContentSubviewUpdater updateSubviewsFromRepContentPiles:v32];
+    [(CRLInteractiveCanvasRepContentUpdater *)repContentUpdater updateRepContentForcingUpdateOfValidLayers:layersCopy];
+    repContentPiles = [(CRLInteractiveCanvasRepContentUpdater *)self->_repContentUpdater repContentPiles];
+    allReps = [(CRLInteractiveCanvasRepContentUpdater *)self->_repContentUpdater allReps];
+    [(CRLInteractiveCanvasRepContentSubviewUpdater *)self->_repContentSubviewUpdater updateSubviewsFromRepContentPiles:repContentPiles];
     [v9 addObject:self->_repContainerView];
     v34 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v35 = [v34 overlayLayerSuppressed];
+    overlayLayerSuppressed = [v34 overlayLayerSuppressed];
 
-    if ((v35 & 1) == 0)
+    if ((overlayLayerSuppressed & 1) == 0)
     {
-      [(CRLInteractiveCanvasLayerHelper *)self p_updateOverlayViewForReps:v33 forcingUpdateOfValidLayers:v3];
+      [(CRLInteractiveCanvasLayerHelper *)self p_updateOverlayViewForReps:allReps forcingUpdateOfValidLayers:layersCopy];
       if (self->_overlayView)
       {
         [v9 addObject:?];
@@ -318,8 +318,8 @@
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v36 = [v59 subviews];
-    v37 = [v36 countByEnumeratingWithState:&v64 objects:v69 count:16];
+    subviews = [v59 subviews];
+    v37 = [subviews countByEnumeratingWithState:&v64 objects:v69 count:16];
     if (v37)
     {
       v38 = v37;
@@ -330,7 +330,7 @@
         {
           if (*v65 != v39)
           {
-            objc_enumerationMutation(v36);
+            objc_enumerationMutation(subviews);
           }
 
           v41 = *(*(&v64 + 1) + 8 * i);
@@ -340,7 +340,7 @@
           }
         }
 
-        v38 = [v36 countByEnumeratingWithState:&v64 objects:v69 count:16];
+        v38 = [subviews countByEnumeratingWithState:&v64 objects:v69 count:16];
       }
 
       while (v38);
@@ -348,22 +348,22 @@
 
     if (v5)
     {
-      v42 = [v9 array];
-      v43 = [v59 canvasSubviews];
-      v44 = [v42 isEqualToArray:v43];
+      array = [v9 array];
+      canvasSubviews = [v59 canvasSubviews];
+      v44 = [array isEqualToArray:canvasSubviews];
 
       if ((v44 & 1) == 0)
       {
-        [v59 setCanvasSubviews:v42];
+        [v59 setCanvasSubviews:array];
       }
     }
   }
 
   v45 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v46 = [v45 canvas];
-  v47 = [v46 canvasIsWideGamut];
+  canvas = [v45 canvas];
+  canvasIsWideGamut = [canvas canvasIsWideGamut];
   v48 = &kCAContentsFormatRGBA16Float;
-  if (!v47)
+  if (!canvasIsWideGamut)
   {
     v48 = &kCAContentsFormatRGBA8Uint;
   }
@@ -393,11 +393,11 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v56 = [v55 layer];
-          [(CRLInteractiveCanvasLayerHelper *)self p_recursivelyUpdateLayerEdgeAntialiasingForLayer:v56];
+          layer2 = [v55 layer];
+          [(CRLInteractiveCanvasLayerHelper *)self p_recursivelyUpdateLayerEdgeAntialiasingForLayer:layer2];
 
-          v57 = [v55 layer];
-          [(CRLInteractiveCanvasLayerHelper *)self p_recursivelySetContentsFormatForLayer:v57 toContentsFormat:v49];
+          layer3 = [v55 layer];
+          [(CRLInteractiveCanvasLayerHelper *)self p_recursivelySetContentsFormatForLayer:layer3 toContentsFormat:v49];
         }
       }
 
@@ -417,11 +417,11 @@
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v33 = self;
+    selfCopy = self;
     WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v5 = [WeakRetained i_decorators];
+    i_decorators = [WeakRetained i_decorators];
 
-    v6 = [v5 countByEnumeratingWithState:&v38 objects:v43 count:16];
+    v6 = [i_decorators countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v6)
     {
       v7 = v6;
@@ -432,18 +432,18 @@
         {
           if (*v39 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(i_decorators);
           }
 
           v10 = *(*(&v38 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            v11 = [v10 decoratorOverlayViews];
+            decoratorOverlayViews = [v10 decoratorOverlayViews];
             v34 = 0u;
             v35 = 0u;
             v36 = 0u;
             v37 = 0u;
-            v12 = [v11 countByEnumeratingWithState:&v34 objects:v42 count:16];
+            v12 = [decoratorOverlayViews countByEnumeratingWithState:&v34 objects:v42 count:16];
             if (v12)
             {
               v13 = v12;
@@ -454,13 +454,13 @@
                 {
                   if (*v35 != v14)
                   {
-                    objc_enumerationMutation(v11);
+                    objc_enumerationMutation(decoratorOverlayViews);
                   }
 
                   [v3 addObject:*(*(&v34 + 1) + 8 * j)];
                 }
 
-                v13 = [v11 countByEnumeratingWithState:&v34 objects:v42 count:16];
+                v13 = [decoratorOverlayViews countByEnumeratingWithState:&v34 objects:v42 count:16];
               }
 
               while (v13);
@@ -468,24 +468,24 @@
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v38 objects:v43 count:16];
+        v7 = [i_decorators countByEnumeratingWithState:&v38 objects:v43 count:16];
       }
 
       while (v7);
     }
 
     v16 = [v3 count];
-    decoratorOverlayContainerView = v33->_decoratorOverlayContainerView;
+    decoratorOverlayContainerView = selfCopy->_decoratorOverlayContainerView;
     if (v16)
     {
       if (!decoratorOverlayContainerView)
       {
         v18 = objc_alloc_init(CRLCanvasSubview);
-        v19 = v33->_decoratorOverlayContainerView;
-        v33->_decoratorOverlayContainerView = v18;
+        v19 = selfCopy->_decoratorOverlayContainerView;
+        selfCopy->_decoratorOverlayContainerView = v18;
 
-        v20 = objc_loadWeakRetained(&v33->_interactiveCanvasController);
-        [(CRLCanvasSubview *)v33->_decoratorOverlayContainerView setLayerDelegate:v20];
+        v20 = objc_loadWeakRetained(&selfCopy->_interactiveCanvasController);
+        [(CRLCanvasSubview *)selfCopy->_decoratorOverlayContainerView setLayerDelegate:v20];
       }
     }
 
@@ -496,63 +496,63 @@ LABEL_26:
       return;
     }
 
-    v21 = [v3 array];
-    [(CRLCanvasSubview *)v33->_decoratorOverlayContainerView setSubviews:v21];
+    array = [v3 array];
+    [(CRLCanvasSubview *)selfCopy->_decoratorOverlayContainerView setSubviews:array];
 
-    v22 = objc_loadWeakRetained(&v33->_interactiveCanvasController);
-    v23 = [v22 layerHost];
-    v24 = [v23 canvasLayer];
-    [v24 bounds];
+    v22 = objc_loadWeakRetained(&selfCopy->_interactiveCanvasController);
+    layerHost = [v22 layerHost];
+    canvasLayer = [layerHost canvasLayer];
+    [canvasLayer bounds];
     v26 = v25;
     v28 = v27;
     v30 = v29;
     v32 = v31;
 
-    [(CRLCanvasSubview *)v33->_decoratorOverlayContainerView frame];
+    [(CRLCanvasSubview *)selfCopy->_decoratorOverlayContainerView frame];
     v46.origin.x = v26;
     v46.origin.y = v28;
     v46.size.width = v30;
     v46.size.height = v32;
     if (!CGRectEqualToRect(v44, v46))
     {
-      [(CRLCanvasSubview *)v33->_decoratorOverlayContainerView setFrame:v26, v28, v30, v32];
+      [(CRLCanvasSubview *)selfCopy->_decoratorOverlayContainerView setFrame:v26, v28, v30, v32];
     }
 
-    [(CRLCanvasSubview *)v33->_decoratorOverlayContainerView bounds];
+    [(CRLCanvasSubview *)selfCopy->_decoratorOverlayContainerView bounds];
     v47.origin.x = v26;
     v47.origin.y = v28;
     v47.size.width = v30;
     v47.size.height = v32;
     if (!CGRectEqualToRect(v45, v47))
     {
-      [(CRLCanvasSubview *)v33->_decoratorOverlayContainerView setBounds:v26, v28, v30, v32];
+      [(CRLCanvasSubview *)selfCopy->_decoratorOverlayContainerView setBounds:v26, v28, v30, v32];
     }
 
     goto LABEL_26;
   }
 }
 
-- (void)p_recursivelyUpdateLayerEdgeAntialiasingForLayer:(id)a3
+- (void)p_recursivelyUpdateLayerEdgeAntialiasingForLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [v4 setAllowsEdgeAntialiasing:1];
+    [layerCopy setAllowsEdgeAntialiasing:1];
   }
 
-  v5 = [v4 mask];
-  if (v5)
+  mask = [layerCopy mask];
+  if (mask)
   {
-    [(CRLInteractiveCanvasLayerHelper *)self p_recursivelyUpdateLayerEdgeAntialiasingForLayer:v5];
+    [(CRLInteractiveCanvasLayerHelper *)self p_recursivelyUpdateLayerEdgeAntialiasingForLayer:mask];
   }
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [v4 sublayers];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  sublayers = [layerCopy sublayers];
+  v7 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -564,7 +564,7 @@ LABEL_26:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sublayers);
         }
 
         [(CRLInteractiveCanvasLayerHelper *)self p_recursivelyUpdateLayerEdgeAntialiasingForLayer:*(*(&v11 + 1) + 8 * v10)];
@@ -572,29 +572,29 @@ LABEL_26:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)p_recursivelySetContentsFormatForLayer:(id)a3 toContentsFormat:(id)a4
+- (void)p_recursivelySetContentsFormatForLayer:(id)layer toContentsFormat:(id)format
 {
-  v6 = a3;
-  v7 = a4;
+  layerCopy = layer;
+  formatCopy = format;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [v6 setContentsFormat:v7];
+    [layerCopy setContentsFormat:formatCopy];
   }
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = [v6 sublayers];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  sublayers = [layerCopy sublayers];
+  v9 = [sublayers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -606,36 +606,36 @@ LABEL_26:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(sublayers);
         }
 
-        [(CRLInteractiveCanvasLayerHelper *)self p_recursivelySetContentsFormatForLayer:*(*(&v13 + 1) + 8 * v12) toContentsFormat:v7];
+        [(CRLInteractiveCanvasLayerHelper *)self p_recursivelySetContentsFormatForLayer:*(*(&v13 + 1) + 8 * v12) toContentsFormat:formatCopy];
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [sublayers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)p_updateOverlayViewForReps:(id)a3 forcingUpdateOfValidLayers:(BOOL)a4
+- (void)p_updateOverlayViewForReps:(id)reps forcingUpdateOfValidLayers:(BOOL)layers
 {
-  v5 = a3;
+  repsCopy = reps;
   v61 = +[NSThread isMainThread];
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v62 = [WeakRetained canvas];
+  canvas = [WeakRetained canvas];
 
   v7 = objc_alloc_init(NSMutableArray);
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
-  obj = v5;
+  obj = repsCopy;
   v8 = [obj countByEnumeratingWithState:&v79 objects:v86 count:16];
-  v65 = self;
+  selfCopy = self;
   if (v8)
   {
     v9 = v8;
@@ -650,11 +650,11 @@ LABEL_26:
         }
 
         v12 = *(*(&v79 + 1) + 8 * i);
-        if (a4 || [v62 i_areOverlayLayersInvalidForRep:*(*(&v79 + 1) + 8 * i)])
+        if (layers || [canvas i_areOverlayLayersInvalidForRep:*(*(&v79 + 1) + 8 * i)])
         {
-          v13 = [v12 overlayRenderables];
-          [(NSMapTable *)self->_repOverlayRenderablesByRep setObject:v13 forKeyedSubscript:v12];
-          if (!v13)
+          overlayRenderables = [v12 overlayRenderables];
+          [(NSMapTable *)self->_repOverlayRenderablesByRep setObject:overlayRenderables forKeyedSubscript:v12];
+          if (!overlayRenderables)
           {
             goto LABEL_19;
           }
@@ -662,8 +662,8 @@ LABEL_26:
 
         else
         {
-          v13 = [(NSMapTable *)self->_repOverlayRenderablesByRep objectForKeyedSubscript:v12];
-          if (!v13)
+          overlayRenderables = [(NSMapTable *)self->_repOverlayRenderablesByRep objectForKeyedSubscript:v12];
+          if (!overlayRenderables)
           {
             goto LABEL_19;
           }
@@ -673,7 +673,7 @@ LABEL_26:
         v78 = 0u;
         v75 = 0u;
         v76 = 0u;
-        v14 = v13;
+        v14 = overlayRenderables;
         v15 = [v14 countByEnumeratingWithState:&v75 objects:v85 count:16];
         if (v15)
         {
@@ -688,8 +688,8 @@ LABEL_26:
                 objc_enumerationMutation(v14);
               }
 
-              v19 = [*(*(&v75 + 1) + 8 * j) layer];
-              [v7 addObject:v19];
+              layer = [*(*(&v75 + 1) + 8 * j) layer];
+              [v7 addObject:layer];
             }
 
             v16 = [v14 countByEnumeratingWithState:&v75 objects:v85 count:16];
@@ -698,7 +698,7 @@ LABEL_26:
           while (v16);
         }
 
-        self = v65;
+        self = selfCopy;
 LABEL_19:
       }
 
@@ -709,13 +709,13 @@ LABEL_19:
   }
 
   v20 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v21 = [v20 i_decorators];
+  i_decorators = [v20 i_decorators];
 
   v73 = 0u;
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v63 = v21;
+  v63 = i_decorators;
   v22 = [v63 countByEnumeratingWithState:&v71 objects:v84 count:16];
   if (!v22)
   {
@@ -734,11 +734,11 @@ LABEL_19:
       }
 
       v26 = *(*(&v71 + 1) + 8 * k);
-      if (a4 || (v27 = objc_loadWeakRetained(&self->_interactiveCanvasController), v28 = [v27 i_areLayersInvalidForDecorator:v26], v27, v28))
+      if (layers || (v27 = objc_loadWeakRetained(&self->_interactiveCanvasController), v28 = [v27 i_areLayersInvalidForDecorator:v26], v27, v28))
       {
-        v29 = [v26 decoratorOverlayRenderables];
-        [(NSMapTable *)self->_decoratorOverlayRenderablesByDecorator setObject:v29 forKeyedSubscript:v26];
-        if (!v29)
+        decoratorOverlayRenderables = [v26 decoratorOverlayRenderables];
+        [(NSMapTable *)self->_decoratorOverlayRenderablesByDecorator setObject:decoratorOverlayRenderables forKeyedSubscript:v26];
+        if (!decoratorOverlayRenderables)
         {
           goto LABEL_39;
         }
@@ -746,8 +746,8 @@ LABEL_19:
 
       else
       {
-        v29 = [(NSMapTable *)self->_decoratorOverlayRenderablesByDecorator objectForKeyedSubscript:v26];
-        if (!v29)
+        decoratorOverlayRenderables = [(NSMapTable *)self->_decoratorOverlayRenderablesByDecorator objectForKeyedSubscript:v26];
+        if (!decoratorOverlayRenderables)
         {
           goto LABEL_39;
         }
@@ -757,7 +757,7 @@ LABEL_19:
       v70 = 0u;
       v67 = 0u;
       v68 = 0u;
-      v30 = v29;
+      v30 = decoratorOverlayRenderables;
       v31 = [v30 countByEnumeratingWithState:&v67 objects:v83 count:16];
       if (v31)
       {
@@ -772,8 +772,8 @@ LABEL_19:
               objc_enumerationMutation(v30);
             }
 
-            v35 = [*(*(&v67 + 1) + 8 * m) layer];
-            [v7 addObject:v35];
+            layer2 = [*(*(&v67 + 1) + 8 * m) layer];
+            [v7 addObject:layer2];
           }
 
           v32 = [v30 countByEnumeratingWithState:&v67 objects:v83 count:16];
@@ -782,7 +782,7 @@ LABEL_19:
         while (v32);
       }
 
-      self = v65;
+      self = selfCopy;
 LABEL_39:
     }
 
@@ -801,9 +801,9 @@ LABEL_41:
     v38 = objc_loadWeakRetained(&self->_interactiveCanvasController);
     [(CRLCanvasSubview *)self->_overlayView setLayerDelegate:v38];
 
-    v39 = [(CRLCanvasSubview *)self->_overlayView layer];
+    layer3 = [(CRLCanvasSubview *)self->_overlayView layer];
     overlayLayer = self->_overlayLayer;
-    self->_overlayLayer = v39;
+    self->_overlayLayer = layer3;
   }
 
   v41 = self->_overlayLayer;
@@ -835,12 +835,12 @@ LABEL_41:
     v44 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLInteractiveCanvasLayerHelper.m"];
     [CRLAssertionHandler handleFailureInFunction:v43 file:v44 lineNumber:407 isFatal:0 description:"Layout with overlay layers should have run at least once on the main thread."];
 
-    self = v65;
-    v41 = v65->_overlayLayer;
+    self = selfCopy;
+    v41 = selfCopy->_overlayLayer;
   }
 
-  v45 = [(CALayer *)v41 sublayers];
-  v46 = [v45 isEqualToArray:v7];
+  sublayers = [(CALayer *)v41 sublayers];
+  v46 = [sublayers isEqualToArray:v7];
 
   if ((v46 & 1) == 0)
   {
@@ -848,9 +848,9 @@ LABEL_41:
   }
 
   v47 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v48 = [v47 showGrayOverlay];
+  showGrayOverlay = [v47 showGrayOverlay];
 
-  if (v48)
+  if (showGrayOverlay)
   {
     v49 = sub_1000CCEA0(0.0, 0.0, 0.0, 0.219600007);
     [(CALayer *)self->_overlayLayer setBackgroundColor:v49];
@@ -862,9 +862,9 @@ LABEL_41:
 
 LABEL_59:
     v50 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v51 = [v50 layerHost];
-    v52 = [v51 canvasLayer];
-    [v52 bounds];
+    layerHost = [v50 layerHost];
+    canvasLayer = [layerHost canvasLayer];
+    [canvasLayer bounds];
     v54 = v53;
     v56 = v55;
     v58 = v57;
@@ -906,22 +906,22 @@ LABEL_63:
 - (id)viewWithTransferredLayers
 {
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v4 = [WeakRetained canvasView];
+  canvasView = [WeakRetained canvasView];
 
   v5 = [CRLCanvasSubview alloc];
-  [v4 frame];
+  [canvasView frame];
   v6 = [(CRLCanvasSubview *)v5 initWithFrame:?];
-  v25 = v4;
-  [v4 bounds];
+  v25 = canvasView;
+  [canvasView bounds];
   v24 = v6;
   [(CRLCanvasSubview *)v6 setBounds:?];
-  v7 = [(CRLCanvasSubview *)self->_repContainerView subviews];
-  v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
+  subviews = [(CRLCanvasSubview *)self->_repContainerView subviews];
+  v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(subviews, "count")}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = v7;
+  v9 = subviews;
   v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v10)
   {
@@ -937,8 +937,8 @@ LABEL_63:
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
-        v15 = [v14 subviews];
-        v16 = [v15 count];
+        subviews2 = [v14 subviews];
+        v16 = [subviews2 count];
 
         if (!v16)
         {
@@ -947,12 +947,12 @@ LABEL_63:
           v18 = [(CRLCanvasSubview *)v17 initWithFrame:?];
           [v14 bounds];
           [(CRLCanvasSubview *)v18 setBounds:?];
-          v19 = [v14 layer];
-          v20 = [v19 sublayers];
-          v21 = [v20 copy];
+          layer = [v14 layer];
+          sublayers = [layer sublayers];
+          v21 = [sublayers copy];
 
-          v22 = [(CRLCanvasSubview *)v18 layer];
-          [v22 setSublayers:v21];
+          layer2 = [(CRLCanvasSubview *)v18 layer];
+          [layer2 setSublayers:v21];
 
           [v8 addObject:v18];
         }
@@ -969,34 +969,34 @@ LABEL_63:
   return v24;
 }
 
-- (BOOL)isCanvasContentLayer:(id)a3
+- (BOOL)isCanvasContentLayer:(id)layer
 {
-  v4 = a3;
-  if ([(CRLInteractiveCanvasRepContentUpdater *)self->_repContentUpdater isRepContentLayer:v4]|| [(CRLInteractiveCanvasRepContentUpdater *)self->_repContentUpdater isRepContainerLayer:v4]|| [(CRLInteractiveCanvasRepContentUpdater *)self->_repContentUpdater isChildWrapperLayer:v4]|| [(CRLInteractiveCanvasRepContentUpdater *)self->_repContentUpdater isClonedParentRepLayer:v4]|| self->_repContainerLayer == v4)
+  layerCopy = layer;
+  if ([(CRLInteractiveCanvasRepContentUpdater *)self->_repContentUpdater isRepContentLayer:layerCopy]|| [(CRLInteractiveCanvasRepContentUpdater *)self->_repContentUpdater isRepContainerLayer:layerCopy]|| [(CRLInteractiveCanvasRepContentUpdater *)self->_repContentUpdater isChildWrapperLayer:layerCopy]|| [(CRLInteractiveCanvasRepContentUpdater *)self->_repContentUpdater isClonedParentRepLayer:layerCopy]|| self->_repContainerLayer == layerCopy)
   {
     v8 = 1;
   }
 
   else
   {
-    v5 = [(CALayer *)v4 superlayer];
-    if (v5 == self->_repContainerLayer || self->_overlayLayer == v4)
+    superlayer = [(CALayer *)layerCopy superlayer];
+    if (superlayer == self->_repContainerLayer || self->_overlayLayer == layerCopy)
     {
       v8 = 1;
     }
 
     else
     {
-      v6 = [(CALayer *)v4 superlayer];
-      if (v6 == self->_overlayLayer || self->_bottommostLayersContainerLayer == v4)
+      superlayer2 = [(CALayer *)layerCopy superlayer];
+      if (superlayer2 == self->_overlayLayer || self->_bottommostLayersContainerLayer == layerCopy)
       {
         v8 = 1;
       }
 
       else
       {
-        v7 = [(CALayer *)v4 superlayer];
-        v8 = v7 == 0;
+        superlayer3 = [(CALayer *)layerCopy superlayer];
+        v8 = superlayer3 == 0;
       }
     }
   }
@@ -1004,9 +1004,9 @@ LABEL_63:
   return v8;
 }
 
-- (void)beginSuppressingLayerUpdatesExceptForReps:(id)a3
+- (void)beginSuppressingLayerUpdatesExceptForReps:(id)reps
 {
-  v4 = [a3 copy];
+  v4 = [reps copy];
   repsWhoseLayersAreAllowedToUpdate = self->_repsWhoseLayersAreAllowedToUpdate;
   self->_repsWhoseLayersAreAllowedToUpdate = v4;
 }
@@ -1080,9 +1080,9 @@ LABEL_63:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v7 = [WeakRetained canvasView];
-  v8 = [v7 canvasLayer];
-  [v8 bounds];
+  canvasView = [WeakRetained canvasView];
+  canvasLayer = [canvasView canvasLayer];
+  [canvasLayer bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;

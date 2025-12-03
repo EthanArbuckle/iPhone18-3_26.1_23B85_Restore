@@ -10,12 +10,12 @@
 - (id)_accessibilityIsBatteryItemVisible
 {
   v17 = *MEMORY[0x29EDCA608];
-  v14 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v7 = [v14 superview];
-    location = [v7 subviews];
-    MEMORY[0x29EDC9740](v7);
+    superview = [selfCopy superview];
+    location = [superview subviews];
+    MEMORY[0x29EDC9740](superview);
     memset(__b, 0, sizeof(__b));
     obj = MEMORY[0x29EDC9748](location);
     v9 = [obj countByEnumeratingWithState:__b objects:v16 count:16];
@@ -82,9 +82,9 @@ LABEL_11:
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(UIStatusBarBatteryPercentItemViewAccessibility *)self _accessibilityIsBatteryItemVisible];
-  v4 = v2 == 0;
-  MEMORY[0x29EDC9740](v2);
+  _accessibilityIsBatteryItemVisible = [(UIStatusBarBatteryPercentItemViewAccessibility *)self _accessibilityIsBatteryItemVisible];
+  v4 = _accessibilityIsBatteryItemVisible == 0;
+  MEMORY[0x29EDC9740](_accessibilityIsBatteryItemVisible);
   return v4;
 }
 
@@ -102,7 +102,7 @@ LABEL_11:
 
 - (unint64_t)accessibilityTraits
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = UIStatusBarBatteryPercentItemViewAccessibility;

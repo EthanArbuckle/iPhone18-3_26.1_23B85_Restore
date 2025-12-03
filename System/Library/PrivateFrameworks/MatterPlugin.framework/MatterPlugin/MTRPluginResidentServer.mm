@@ -1,17 +1,17 @@
 @interface MTRPluginResidentServer
 + (id)sharedInstance;
 - (MTRPluginResidentServer)init;
-- (id)_clientSessionForSessionID:(id)a3;
+- (id)_clientSessionForSessionID:(id)d;
 - (void)_checkForMaxSessionsLimit;
 - (void)_deregisterForSignificantTimeChangeNotifications;
 - (void)_registerForSignificantTimeChangeNotifications;
-- (void)_registerSessionForSessionID:(id)a3 incomingNewMessage:(id)a4;
-- (void)_unregisterSessionForSessionID:(id)a3;
-- (void)messageTransport:(id)a3 handleIncomingMessage:(id)a4;
-- (void)removeResidentClientSession:(id)a3;
+- (void)_registerSessionForSessionID:(id)d incomingNewMessage:(id)message;
+- (void)_unregisterSessionForSessionID:(id)d;
+- (void)messageTransport:(id)transport handleIncomingMessage:(id)message;
+- (void)removeResidentClientSession:(id)session;
 - (void)start;
 - (void)stop;
-- (void)timeZoneOrTimeChanged:(id)a3;
+- (void)timeZoneOrTimeChanged:(id)changed;
 @end
 
 @implementation MTRPluginResidentServer
@@ -49,8 +49,8 @@ uint64_t __41__MTRPluginResidentServer_sharedInstance__block_invoke()
     v5 = dispatch_queue_create("MTRPluginResidentServerQueue", v4);
     [(MTRPluginResidentServer *)v2 setWorkQueue:v5];
 
-    v6 = [MEMORY[0x277CBEB18] array];
-    [(MTRPluginResidentServer *)v2 setSessions:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    [(MTRPluginResidentServer *)v2 setSessions:array];
 
     [(MTRPluginResidentServer *)v2 setRunning:0];
     v7 = v2;
@@ -61,13 +61,13 @@ uint64_t __41__MTRPluginResidentServer_sharedInstance__block_invoke()
 
 - (void)start
 {
-  v3 = [(MTRPluginResidentServer *)self workQueue];
+  workQueue = [(MTRPluginResidentServer *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__MTRPluginResidentServer_start__block_invoke;
   block[3] = &unk_279893AA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __32__MTRPluginResidentServer_start__block_invoke(uint64_t a1)
@@ -109,13 +109,13 @@ uint64_t __32__MTRPluginResidentServer_start__block_invoke(uint64_t a1)
 
 - (void)stop
 {
-  v3 = [(MTRPluginResidentServer *)self workQueue];
+  workQueue = [(MTRPluginResidentServer *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__MTRPluginResidentServer_stop__block_invoke;
   block[3] = &unk_279893AA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __31__MTRPluginResidentServer_stop__block_invoke(uint64_t a1)
@@ -177,21 +177,21 @@ uint64_t __31__MTRPluginResidentServer_stop__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)_clientSessionForSessionID:(id)a3
+- (id)_clientSessionForSessionID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTRPluginResidentServer *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  workQueue = [(MTRPluginResidentServer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v4)
+  if (dCopy)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(MTRPluginResidentServer *)self sessions];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    sessions = [(MTRPluginResidentServer *)self sessions];
+    v7 = [sessions countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = *v16;
@@ -201,12 +201,12 @@ uint64_t __31__MTRPluginResidentServer_stop__block_invoke(uint64_t a1)
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(sessions);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 sessionID];
-          v12 = [v11 isEqual:v4];
+          sessionID = [v10 sessionID];
+          v12 = [sessionID isEqual:dCopy];
 
           if (v12)
           {
@@ -215,7 +215,7 @@ uint64_t __31__MTRPluginResidentServer_stop__block_invoke(uint64_t a1)
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [sessions countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v7)
         {
           continue;
@@ -238,26 +238,26 @@ LABEL_12:
   return v7;
 }
 
-- (void)_registerSessionForSessionID:(id)a3 incomingNewMessage:(id)a4
+- (void)_registerSessionForSessionID:(id)d incomingNewMessage:(id)message
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTRPluginResidentServer *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  dCopy = d;
+  messageCopy = message;
+  workQueue = [(MTRPluginResidentServer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v6 && v7 && ([v7 homeIdentifier], (v9 = objc_claimAutoreleasedReturnValue()) != 0) && (v10 = v9, objc_msgSend(v7, "sourceAddress"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
+  if (dCopy && messageCopy && ([messageCopy homeIdentifier], (v9 = objc_claimAutoreleasedReturnValue()) != 0) && (v10 = v9, objc_msgSend(messageCopy, "sourceAddress"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
   {
-    v12 = [(MTRPluginResidentServer *)self _clientSessionForSessionID:v6];
+    v12 = [(MTRPluginResidentServer *)self _clientSessionForSessionID:dCopy];
 
     if (!v12)
     {
       v13 = [MTRPluginResidentClientSession alloc];
-      v14 = [(MTRPluginResidentServer *)self transport];
-      v15 = [(MTRPluginResidentServer *)self workQueue];
-      v16 = [v7 homeIdentifier];
-      v17 = [v7 sourceAddress];
-      v18 = [(MTRPluginResidentClientSession *)v13 initWithTransport:v14 workQueue:v15 sessionID:v6 homeID:v16 peerAddress:v17];
+      transport = [(MTRPluginResidentServer *)self transport];
+      workQueue2 = [(MTRPluginResidentServer *)self workQueue];
+      homeIdentifier = [messageCopy homeIdentifier];
+      sourceAddress = [messageCopy sourceAddress];
+      v18 = [(MTRPluginResidentClientSession *)v13 initWithTransport:transport workQueue:workQueue2 sessionID:dCopy homeID:homeIdentifier peerAddress:sourceAddress];
 
       v19 = matterPluginLog_default;
       if (v18)
@@ -265,23 +265,23 @@ LABEL_12:
         if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
         {
           v20 = v19;
-          v21 = [v7 homeIdentifier];
-          v22 = [v7 homeIdentifier];
+          homeIdentifier2 = [messageCopy homeIdentifier];
+          homeIdentifier3 = [messageCopy homeIdentifier];
           v29 = 138413314;
-          v30 = self;
+          selfCopy2 = self;
           v31 = 2112;
           v32 = v18;
           v33 = 2112;
-          v34 = v6;
+          v34 = dCopy;
           v35 = 2112;
-          v36 = v21;
+          v36 = homeIdentifier2;
           v37 = 2112;
-          v38 = v22;
+          v38 = homeIdentifier3;
           _os_log_impl(&dword_25830F000, v20, OS_LOG_TYPE_DEFAULT, "%@ Registered session: %@ for sessionID : %@  controllerID: %@  homeID: %@", &v29, 0x34u);
         }
 
-        v23 = [(MTRPluginResidentServer *)self sessions];
-        [v23 addObject:v18];
+        sessions = [(MTRPluginResidentServer *)self sessions];
+        [sessions addObject:v18];
 
         [(MTRPluginResidentServer *)self _checkForMaxSessionsLimit];
       }
@@ -289,18 +289,18 @@ LABEL_12:
       else if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_ERROR))
       {
         v26 = v19;
-        v27 = [v7 homeIdentifier];
-        v28 = [v7 homeIdentifier];
+        homeIdentifier4 = [messageCopy homeIdentifier];
+        homeIdentifier5 = [messageCopy homeIdentifier];
         v29 = 138413314;
-        v30 = self;
+        selfCopy2 = self;
         v31 = 2112;
         v32 = 0;
         v33 = 2112;
-        v34 = v6;
+        v34 = dCopy;
         v35 = 2112;
-        v36 = v27;
+        v36 = homeIdentifier4;
         v37 = 2112;
-        v38 = v28;
+        v38 = homeIdentifier5;
         _os_log_error_impl(&dword_25830F000, v26, OS_LOG_TYPE_ERROR, "%@ ** Failed to create session: %@ for sessionID : %@  controllerID: %@  homeID: %@", &v29, 0x34u);
       }
     }
@@ -311,45 +311,45 @@ LABEL_12:
     v24 = matterPluginLog_default;
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_ERROR))
     {
-      [(MTRPluginResidentServer *)self _registerSessionForSessionID:v24 incomingNewMessage:v7];
+      [(MTRPluginResidentServer *)self _registerSessionForSessionID:v24 incomingNewMessage:messageCopy];
     }
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_unregisterSessionForSessionID:(id)a3
+- (void)_unregisterSessionForSessionID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTRPluginResidentServer *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  workQueue = [(MTRPluginResidentServer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v4)
+  if (dCopy)
   {
-    v6 = [(MTRPluginResidentServer *)self _clientSessionForSessionID:v4];
+    v6 = [(MTRPluginResidentServer *)self _clientSessionForSessionID:dCopy];
     v7 = matterPluginLog_default;
     if (v6)
     {
       if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412802;
-        v12 = self;
+        selfCopy = self;
         v13 = 2112;
         v14 = v6;
         v15 = 2112;
-        v16 = v4;
+        v16 = dCopy;
         _os_log_impl(&dword_25830F000, v7, OS_LOG_TYPE_DEFAULT, "%@ Found session to remove: %@ for sessionID : %@", &v11, 0x20u);
       }
 
       [v6 invalidate];
-      v8 = [(MTRPluginResidentServer *)self sessions];
-      [v8 removeObject:v6];
+      sessions = [(MTRPluginResidentServer *)self sessions];
+      [sessions removeObject:v6];
     }
 
     else if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_ERROR))
     {
-      [(MTRPluginResidentServer *)self _unregisterSessionForSessionID:v4, v7];
+      [(MTRPluginResidentServer *)self _unregisterSessionForSessionID:dCopy, v7];
     }
   }
 
@@ -368,22 +368,22 @@ LABEL_12:
 - (void)_registerForSignificantTimeChangeNotifications
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(MTRPluginResidentServer *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(MTRPluginResidentServer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25830F000, v4, OS_LOG_TYPE_INFO, "%@ Registering for signification time change notifications", &v9, 0xCu);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel_timeZoneOrTimeChanged_ name:*MEMORY[0x277CBE780] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_timeZoneOrTimeChanged_ name:*MEMORY[0x277CBE780] object:0];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel_timeZoneOrTimeChanged_ name:*MEMORY[0x277CBE778] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_timeZoneOrTimeChanged_ name:*MEMORY[0x277CBE778] object:0];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, significantTimeChangedNotification, @"SignificantTimeChangeNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -393,46 +393,46 @@ LABEL_12:
 - (void)_deregisterForSignificantTimeChangeNotifications
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(MTRPluginResidentServer *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(MTRPluginResidentServer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25830F000, v4, OS_LOG_TYPE_INFO, "%@ De-registering for signification time change notifications", &v9, 0xCu);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x277CBE780] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE780] object:0];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x277CBE778] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277CBE778] object:0];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"SignificantTimeChangeNotification", 0);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timeZoneOrTimeChanged:(id)a3
+- (void)timeZoneOrTimeChanged:(id)changed
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25830F000, v4, OS_LOG_TYPE_INFO, "%@ Received significant time changed notification, resetting all session times", buf, 0xCu);
   }
 
-  v5 = [(MTRPluginResidentServer *)self workQueue];
+  workQueue = [(MTRPluginResidentServer *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__MTRPluginResidentServer_timeZoneOrTimeChanged___block_invoke;
   block[3] = &unk_279893AA0;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(workQueue, block);
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -481,12 +481,12 @@ void __49__MTRPluginResidentServer_timeZoneOrTimeChanged___block_invoke(uint64_t
 - (void)_checkForMaxSessionsLimit
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [(MTRPluginResidentServer *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(MTRPluginResidentServer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   active = MTRPluginMaxActiveClientSessions();
-  v5 = [(MTRPluginResidentServer *)self sessions];
-  v6 = [v5 count];
+  sessions = [(MTRPluginResidentServer *)self sessions];
+  v6 = [sessions count];
 
   v7 = v6 - active;
   if (v6 > active)
@@ -495,7 +495,7 @@ void __49__MTRPluginResidentServer_timeZoneOrTimeChanged___block_invoke(uint64_t
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2048;
       v33 = v6;
       v34 = 2048;
@@ -503,20 +503,20 @@ void __49__MTRPluginResidentServer_timeZoneOrTimeChanged___block_invoke(uint64_t
       _os_log_impl(&dword_25830F000, v8, OS_LOG_TYPE_INFO, "%@ Total sessions %lu reached above limit of %lu, removing oldest session ", buf, 0x20u);
     }
 
-    v9 = [(MTRPluginResidentServer *)self sessions];
+    sessions2 = [(MTRPluginResidentServer *)self sessions];
     v10 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"timeOfLastActivity" ascending:0];
     v29 = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
-    [v9 sortUsingDescriptors:v11];
+    [sessions2 sortUsingDescriptors:v11];
 
     v12 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v6 - 1, v7}];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v13 = [(MTRPluginResidentServer *)self sessions];
+    sessions3 = [(MTRPluginResidentServer *)self sessions];
     v23 = v12;
-    v14 = [v13 objectsAtIndexes:v12];
+    v14 = [sessions3 objectsAtIndexes:v12];
 
     v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v15)
@@ -537,7 +537,7 @@ void __49__MTRPluginResidentServer_timeZoneOrTimeChanged___block_invoke(uint64_t
           if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v31 = self;
+            selfCopy2 = self;
             v32 = 2112;
             v33 = v19;
             _os_log_impl(&dword_25830F000, v20, OS_LOG_TYPE_INFO, "%@ Invalidating session %@", buf, 0x16u);
@@ -552,25 +552,25 @@ void __49__MTRPluginResidentServer_timeZoneOrTimeChanged___block_invoke(uint64_t
       while (v16);
     }
 
-    v21 = [(MTRPluginResidentServer *)self sessions];
-    [v21 removeObjectsAtIndexes:v23];
+    sessions4 = [(MTRPluginResidentServer *)self sessions];
+    [sessions4 removeObjectsAtIndexes:v23];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeResidentClientSession:(id)a3
+- (void)removeResidentClientSession:(id)session
 {
-  v4 = a3;
-  v5 = [(MTRPluginResidentServer *)self workQueue];
+  sessionCopy = session;
+  workQueue = [(MTRPluginResidentServer *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__MTRPluginResidentServer_removeResidentClientSession___block_invoke;
   v7[3] = &unk_279893AC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = sessionCopy;
+  v6 = sessionCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __55__MTRPluginResidentServer_removeResidentClientSession___block_invoke(uint64_t a1)
@@ -597,27 +597,27 @@ void __55__MTRPluginResidentServer_removeResidentClientSession___block_invoke(ui
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageTransport:(id)a3 handleIncomingMessage:(id)a4
+- (void)messageTransport:(id)transport handleIncomingMessage:(id)message
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(MTRPluginResidentServer *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  workQueue = [(MTRPluginResidentServer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v7 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [v5 sessionIdentifier];
+    sessionIdentifier = [messageCopy sessionIdentifier];
     v12 = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v9;
+    v15 = sessionIdentifier;
     _os_log_impl(&dword_25830F000, v8, OS_LOG_TYPE_DEFAULT, "%@ Received new session with identifier: %@", &v12, 0x16u);
   }
 
-  v10 = [v5 sessionIdentifier];
-  [(MTRPluginResidentServer *)self _registerSessionForSessionID:v10 incomingNewMessage:v5];
+  sessionIdentifier2 = [messageCopy sessionIdentifier];
+  [(MTRPluginResidentServer *)self _registerSessionForSessionID:sessionIdentifier2 incomingNewMessage:messageCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }

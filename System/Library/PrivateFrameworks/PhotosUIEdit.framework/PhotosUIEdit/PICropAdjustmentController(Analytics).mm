@@ -12,21 +12,21 @@
   v2 = objc_alloc_init(MEMORY[0x277CCABB8]);
   [v2 setMinimumFractionDigits:1];
   [v2 setMaximumFractionDigits:2];
-  v3 = [a1 adjustment];
-  if (v3)
+  adjustment = [self adjustment];
+  if (adjustment)
   {
-    v4 = v3;
-    v5 = [a1 enabled];
+    v4 = adjustment;
+    enabled = [self enabled];
 
-    if (v5)
+    if (enabled)
     {
-      v6 = [a1 visualInputKeys];
-      v7 = [a1 analyticsKeysBlocklist];
+      visualInputKeys = [self visualInputKeys];
+      analyticsKeysBlocklist = [self analyticsKeysBlocklist];
       v69 = 0u;
       v70 = 0u;
       v71 = 0u;
       v72 = 0u;
-      v8 = v6;
+      v8 = visualInputKeys;
       v9 = [v8 countByEnumeratingWithState:&v69 objects:v73 count:16];
       if (!v9)
       {
@@ -50,18 +50,18 @@
           }
 
           v14 = *(*(&v69 + 1) + 8 * v13);
-          if (([v7 containsObject:v14] & 1) == 0)
+          if (([analyticsKeysBlocklist containsObject:v14] & 1) == 0)
           {
-            v15 = [*(v11 + 2224) angleKey];
-            if ([v14 isEqualToString:v15])
+            angleKey = [*(v11 + 2224) angleKey];
+            if ([v14 isEqualToString:angleKey])
             {
-              [a1 angle];
+              [self angle];
               v17 = v16;
 
               if (v17 != 0.0)
               {
                 v18 = MEMORY[0x277CCABB0];
-                [a1 angle];
+                [self angle];
                 v19 = [v18 numberWithDouble:?];
                 v20 = [v2 stringFromNumber:v19];
                 v21 = v68;
@@ -77,16 +77,16 @@ LABEL_20:
             {
             }
 
-            v24 = [*(v11 + 2224) yawKey];
-            if ([v14 isEqualToString:v24])
+            yawKey = [*(v11 + 2224) yawKey];
+            if ([v14 isEqualToString:yawKey])
             {
-              [a1 yaw];
+              [self yaw];
               v26 = v25;
 
               if (v26 != 0.0)
               {
                 v27 = MEMORY[0x277CCABB0];
-                [a1 yaw];
+                [self yaw];
                 v19 = [v27 numberWithDouble:?];
                 v20 = [v2 stringFromNumber:v19];
                 v21 = v68;
@@ -100,16 +100,16 @@ LABEL_20:
             {
             }
 
-            v28 = [*(v11 + 2224) pitchKey];
-            if ([v14 isEqualToString:v28])
+            pitchKey = [*(v11 + 2224) pitchKey];
+            if ([v14 isEqualToString:pitchKey])
             {
-              [a1 pitch];
+              [self pitch];
               v30 = v29;
 
               if (v30 != 0.0)
               {
                 v31 = MEMORY[0x277CCABB0];
-                [a1 pitch];
+                [self pitch];
                 v19 = [v31 numberWithDouble:?];
                 v20 = [v2 stringFromNumber:v19];
                 v21 = v68;
@@ -124,29 +124,29 @@ LABEL_20:
             }
 
             v32 = v2;
-            v33 = [*(v11 + 2224) widthKey];
-            if ([v14 isEqualToString:v33])
+            widthKey = [*(v11 + 2224) widthKey];
+            if ([v14 isEqualToString:widthKey])
             {
             }
 
             else
             {
-              v34 = [*(v11 + 2224) heightKey];
-              v35 = [v14 isEqualToString:v34];
+              heightKey = [*(v11 + 2224) heightKey];
+              v35 = [v14 isEqualToString:heightKey];
 
               v11 = 0x277D3A000uLL;
               if (!v35)
               {
-                v45 = [MEMORY[0x277D3A8B0] xOriginKey];
-                if ([v14 isEqualToString:v45])
+                xOriginKey = [MEMORY[0x277D3A8B0] xOriginKey];
+                if ([v14 isEqualToString:xOriginKey])
                 {
 
                   v2 = v32;
                   goto LABEL_37;
                 }
 
-                v46 = [MEMORY[0x277D3A8B0] yOriginKey];
-                v47 = [v14 isEqualToString:v46];
+                yOriginKey = [MEMORY[0x277D3A8B0] yOriginKey];
+                v47 = [v14 isEqualToString:yOriginKey];
 
                 v2 = v32;
                 if (v47)
@@ -160,15 +160,15 @@ LABEL_37:
                   }
 
                   v48 = MEMORY[0x277CCABB0];
-                  v49 = [MEMORY[0x277D3A8B0] xOriginKey];
-                  v50 = [a1 valueForKey:v49];
+                  xOriginKey2 = [MEMORY[0x277D3A8B0] xOriginKey];
+                  v50 = [self valueForKey:xOriginKey2];
                   [v50 doubleValue];
                   v51 = [v48 numberWithDouble:?];
                   v19 = [v32 stringFromNumber:v51];
 
                   v52 = MEMORY[0x277CCABB0];
-                  v65 = [MEMORY[0x277D3A8B0] yOriginKey];
-                  v53 = [a1 valueForKey:v65];
+                  yOriginKey2 = [MEMORY[0x277D3A8B0] yOriginKey];
+                  v53 = [self valueForKey:yOriginKey2];
                   [v53 doubleValue];
                   v54 = [v52 numberWithDouble:?];
                   v20 = [v32 stringFromNumber:v54];
@@ -185,7 +185,7 @@ LABEL_21:
 
                 else
                 {
-                  v19 = [a1 valueForKey:v14];
+                  v19 = [self valueForKey:v14];
                   [v19 doubleValue];
                   if (v56 != 0.0)
                   {
@@ -209,13 +209,13 @@ LABEL_23:
 
             if ((v67 & 1) == 0)
             {
-              v36 = [*(v11 + 2224) widthKey];
-              v37 = [a1 valueForKey:v36];
+              widthKey2 = [*(v11 + 2224) widthKey];
+              v37 = [self valueForKey:widthKey2];
               [v37 floatValue];
               v39 = v38;
 
-              v40 = [*(v11 + 2224) heightKey];
-              v41 = [a1 valueForKey:v40];
+              heightKey2 = [*(v11 + 2224) heightKey];
+              v41 = [self valueForKey:heightKey2];
               [v41 floatValue];
               v43 = v42;
 
@@ -245,7 +245,7 @@ LABEL_24:
 LABEL_44:
 
           v60 = v8;
-          v61 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(a1, "isAuto")];
+          v61 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(self, "isAuto")];
           [v68 setObject:v61 forKeyedSubscript:@"crop_auto"];
 
           v62 = v68;
@@ -264,9 +264,9 @@ LABEL_46:
 - (id)analyticsKeysBlocklist
 {
   v0 = MEMORY[0x277CBEB98];
-  v1 = [MEMORY[0x277D3A8B0] constraintWidthKey];
-  v2 = [MEMORY[0x277D3A8B0] constraintHeightKey];
-  v3 = [v0 setWithObjects:{v1, v2, 0}];
+  constraintWidthKey = [MEMORY[0x277D3A8B0] constraintWidthKey];
+  constraintHeightKey = [MEMORY[0x277D3A8B0] constraintHeightKey];
+  v3 = [v0 setWithObjects:{constraintWidthKey, constraintHeightKey, 0}];
 
   return v3;
 }

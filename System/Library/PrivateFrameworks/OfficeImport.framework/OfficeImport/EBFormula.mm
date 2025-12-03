@@ -1,23 +1,23 @@
 @interface EBFormula
-+ (XlFormulaInfo)xlFormulaInfoFromEDFormula:(id)a3 state:(id)a4;
-+ (char)edFormulaToParsedExpression:(id)a3 tokenLength:(unsigned __int16 *)a4 formulaLength:(unsigned __int16 *)a5 state:(id)a6;
-+ (id)edFormulaFromXlFmlaDefinition:(const void *)a3 withFormulaLength:(int)a4 formulaClass:(Class)a5 state:(id)a6;
-+ (id)edFormulaFromXlFmlaDefinition:(const void *)a3 withFormulaLength:(int)a4 state:(id)a5;
-+ (id)edFormulaFromXlFmlaDefinition:(const void *)a3 withTokenLength:(int)a4 formulaLength:(int)a5 formulaClass:(Class)a6 edSheet:(id)a7 state:(id)a8;
-+ (unsigned)writeToken:(id)a3 tokenIndex:(unsigned int)a4 tokenStream:(XLFormulaStream *)a5 extendedStream:(XLFormulaStream *)a6 state:(id)a7;
-+ (void)readFormulaFromXlCell:(XlCell *)a3 edCell:(EDCellHeader *)a4 edRowBlocks:(id)a5 state:(id)a6;
-+ (void)setupTokensInEDFormulaFromXlFormulaProcessor:(void *)a3 length:(int)a4 edFormula:(id)a5 edSheet:(id)a6;
++ (XlFormulaInfo)xlFormulaInfoFromEDFormula:(id)formula state:(id)state;
++ (char)edFormulaToParsedExpression:(id)expression tokenLength:(unsigned __int16 *)length formulaLength:(unsigned __int16 *)formulaLength state:(id)state;
++ (id)edFormulaFromXlFmlaDefinition:(const void *)definition withFormulaLength:(int)length formulaClass:(Class)class state:(id)state;
++ (id)edFormulaFromXlFmlaDefinition:(const void *)definition withFormulaLength:(int)length state:(id)state;
++ (id)edFormulaFromXlFmlaDefinition:(const void *)definition withTokenLength:(int)length formulaLength:(int)formulaLength formulaClass:(Class)class edSheet:(id)sheet state:(id)state;
++ (unsigned)writeToken:(id)token tokenIndex:(unsigned int)index tokenStream:(XLFormulaStream *)stream extendedStream:(XLFormulaStream *)extendedStream state:(id)state;
++ (void)readFormulaFromXlCell:(XlCell *)cell edCell:(EDCellHeader *)edCell edRowBlocks:(id)blocks state:(id)state;
++ (void)setupTokensInEDFormulaFromXlFormulaProcessor:(void *)processor length:(int)length edFormula:(id)formula edSheet:(id)sheet;
 @end
 
 @implementation EBFormula
 
-+ (void)readFormulaFromXlCell:(XlCell *)a3 edCell:(EDCellHeader *)a4 edRowBlocks:(id)a5 state:(id)a6
++ (void)readFormulaFromXlCell:(XlCell *)cell edCell:(EDCellHeader *)edCell edRowBlocks:(id)blocks state:(id)state
 {
-  v9 = a5;
-  v10 = a6;
-  if (a3)
+  blocksCopy = blocks;
+  stateCopy = state;
+  if (cell)
   {
-    var8 = a3->var8;
+    var8 = cell->var8;
     if (var8)
     {
       var1 = var8->var1;
@@ -27,9 +27,9 @@
         v13 = objc_opt_class();
       }
 
-      v14 = [v13 formula];
-      v15 = [v10 readerState];
-      v16 = [v15 xlFormulaProcessor];
+      formula = [v13 formula];
+      readerState = [stateCopy readerState];
+      xlFormulaProcessor = [readerState xlFormulaProcessor];
 
       if (var8->var6)
       {
@@ -46,11 +46,11 @@
       if (var1 != 1)
       {
 LABEL_11:
-        XlFormulaProcessor::setFormula(v16, var8->var3, var8->var5, var8->var4);
+        XlFormulaProcessor::setFormula(xlFormulaProcessor, var8->var3, var8->var5, var8->var4);
       }
 
-      XlFormulaProcessor::getShareBase(v16, var8, &v22, &v21);
-      v18 = v14;
+      XlFormulaProcessor::getShareBase(xlFormulaProcessor, var8, &v22, &v21);
+      v18 = formula;
       v19 = v17;
       v20 = v18;
       if (v19)
@@ -61,65 +61,65 @@ LABEL_11:
         goto LABEL_11;
       }
 
-      -[EDFormula setBaseFormulaIndex:](v18, "setBaseFormulaIndex:", [v10 sharedFormulaIndexForRowCol:v21 | (v22 << 16)]);
-      [(EDFormula *)v20 setRowBaseOrOffset:a3->var1 - v22];
-      [(EDFormula *)v20 setColumnBaseOrOffset:(a3->var2 - v21)];
+      -[EDFormula setBaseFormulaIndex:](v18, "setBaseFormulaIndex:", [stateCopy sharedFormulaIndexForRowCol:v21 | (v22 << 16)]);
+      [(EDFormula *)v20 setRowBaseOrOffset:cell->var1 - v22];
+      [(EDFormula *)v20 setColumnBaseOrOffset:(cell->var2 - v21)];
 
-      setFormulaForEDCell(a4, v14, v9);
+      setFormulaForEDCell(edCell, formula, blocksCopy);
     }
   }
 }
 
-+ (id)edFormulaFromXlFmlaDefinition:(const void *)a3 withFormulaLength:(int)a4 state:(id)a5
++ (id)edFormulaFromXlFmlaDefinition:(const void *)definition withFormulaLength:(int)length state:(id)state
 {
-  v5 = *&a4;
-  v8 = a5;
-  v9 = [a1 edFormulaFromXlFmlaDefinition:a3 withFormulaLength:v5 formulaClass:objc_opt_class() state:v8];
+  v5 = *&length;
+  stateCopy = state;
+  v9 = [self edFormulaFromXlFmlaDefinition:definition withFormulaLength:v5 formulaClass:objc_opt_class() state:stateCopy];
 
   return v9;
 }
 
-+ (id)edFormulaFromXlFmlaDefinition:(const void *)a3 withFormulaLength:(int)a4 formulaClass:(Class)a5 state:(id)a6
++ (id)edFormulaFromXlFmlaDefinition:(const void *)definition withFormulaLength:(int)length formulaClass:(Class)class state:(id)state
 {
-  v7 = *&a4;
-  v10 = a6;
-  v11 = [v10 edSheet];
-  v12 = [v10 readerState];
-  v13 = [a1 edFormulaFromXlFmlaDefinition:a3 withTokenLength:v7 formulaLength:v7 formulaClass:a5 edSheet:v11 state:v12];
+  v7 = *&length;
+  stateCopy = state;
+  edSheet = [stateCopy edSheet];
+  readerState = [stateCopy readerState];
+  v13 = [self edFormulaFromXlFmlaDefinition:definition withTokenLength:v7 formulaLength:v7 formulaClass:class edSheet:edSheet state:readerState];
 
   return v13;
 }
 
-+ (id)edFormulaFromXlFmlaDefinition:(const void *)a3 withTokenLength:(int)a4 formulaLength:(int)a5 formulaClass:(Class)a6 edSheet:(id)a7 state:(id)a8
++ (id)edFormulaFromXlFmlaDefinition:(const void *)definition withTokenLength:(int)length formulaLength:(int)formulaLength formulaClass:(Class)class edSheet:(id)sheet state:(id)state
 {
-  v9 = *&a5;
-  v12 = a7;
-  v13 = a8;
-  if (v9 >= a4 && a3 && a4 >= 1 && v9 >= 1)
+  v9 = *&formulaLength;
+  sheetCopy = sheet;
+  stateCopy = state;
+  if (v9 >= length && definition && length >= 1 && v9 >= 1)
   {
-    XlFormulaProcessor::setFormula([v13 xlFormulaProcessor], a3, a4, v9);
+    XlFormulaProcessor::setFormula([stateCopy xlFormulaProcessor], definition, length, v9);
   }
 
   return 0;
 }
 
-+ (XlFormulaInfo)xlFormulaInfoFromEDFormula:(id)a3 state:(id)a4
++ (XlFormulaInfo)xlFormulaInfoFromEDFormula:(id)formula state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  formulaCopy = formula;
+  stateCopy = state;
+  if (!formulaCopy)
   {
 LABEL_10:
     v10 = 0;
     goto LABEL_11;
   }
 
-  v8 = [v6 warning];
+  warning = [formulaCopy warning];
 
-  if (v8)
+  if (warning)
   {
     v9 = &ECUnsupportedExportFormula;
-    if (!v7)
+    if (!stateCopy)
     {
       v9 = &ECUnsupportedImportFormula;
     }
@@ -130,7 +130,7 @@ LABEL_10:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if ([v6 tokenCount])
+    if ([formulaCopy tokenCount])
     {
       operator new();
     }
@@ -138,20 +138,20 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v10 = [a1 xlFormulaInfoFromEDSharedFormula:v6 state:v7];
+  v10 = [self xlFormulaInfoFromEDSharedFormula:formulaCopy state:stateCopy];
 LABEL_11:
 
   return v10;
 }
 
-+ (char)edFormulaToParsedExpression:(id)a3 tokenLength:(unsigned __int16 *)a4 formulaLength:(unsigned __int16 *)a5 state:(id)a6
++ (char)edFormulaToParsedExpression:(id)expression tokenLength:(unsigned __int16 *)length formulaLength:(unsigned __int16 *)formulaLength state:(id)state
 {
-  v10 = a3;
-  v11 = a6;
-  *a4 = 0;
-  *a5 = 0;
-  v12 = [v10 tokenCount];
-  if (v12)
+  expressionCopy = expression;
+  stateCopy = state;
+  *length = 0;
+  *formulaLength = 0;
+  tokenCount = [expressionCopy tokenCount];
+  if (tokenCount)
   {
     v13 = 0;
     v19 = &unk_286EC9CC0;
@@ -160,14 +160,14 @@ LABEL_11:
     v18 = 0;
     do
     {
-      LODWORD(v13) = v13 + [a1 writeToken:v10 tokenIndex:v13 tokenStream:&v19 extendedStream:&v17 state:v11] + 1;
+      LODWORD(v13) = v13 + [self writeToken:expressionCopy tokenIndex:v13 tokenStream:&v19 extendedStream:&v17 state:stateCopy] + 1;
     }
 
-    while (v13 < v12);
+    while (v13 < tokenCount);
     v14 = v20;
-    *a4 = v20;
+    *length = v20;
     v15 = v18 + v14;
-    *a5 = v15;
+    *formulaLength = v15;
     if (v15)
     {
       operator new[](v15);
@@ -177,12 +177,12 @@ LABEL_11:
   return 0;
 }
 
-+ (unsigned)writeToken:(id)a3 tokenIndex:(unsigned int)a4 tokenStream:(XLFormulaStream *)a5 extendedStream:(XLFormulaStream *)a6 state:(id)a7
++ (unsigned)writeToken:(id)token tokenIndex:(unsigned int)index tokenStream:(XLFormulaStream *)stream extendedStream:(XLFormulaStream *)extendedStream state:(id)state
 {
-  v10 = *&a4;
-  v12 = a3;
-  v13 = a7;
-  if ([v12 tokenCount] <= v10)
+  v10 = *&index;
+  tokenCopy = token;
+  stateCopy = state;
+  if ([tokenCopy tokenCount] <= v10)
   {
     v18 = 0;
   }
@@ -190,13 +190,13 @@ LABEL_11:
   else
   {
     XlPtg::XlPtg(&v23);
-    [v12 populateXlPtg:&v23 index:v10];
+    [tokenCopy populateXlPtg:&v23 index:v10];
     if (v23.var1 == 38 || v23.var1 == 102 || v23.var1 == 70)
     {
-      (*(a5->var0 + 2))(a5, 4);
+      (*(stream->var0 + 2))(stream, 4);
       LastExtendedData = XlPtg::getLastExtendedData(&v23);
-      v15 = (*(a5->var0 + 8))(a5);
-      (*(a5->var0 + 2))(a5, 2);
+      v15 = (*(stream->var0 + 8))(stream);
+      (*(stream->var0 + 2))(stream, 2);
       v16 = *LastExtendedData;
       if (*LastExtendedData)
       {
@@ -204,7 +204,7 @@ LABEL_11:
         do
         {
           v10 = (v10 + 1);
-          [a1 writeToken:v12 tokenIndex:v10 tokenStream:a5 extendedStream:a6 state:v13];
+          [self writeToken:tokenCopy tokenIndex:v10 tokenStream:stream extendedStream:extendedStream state:stateCopy];
           --v17;
         }
 
@@ -217,21 +217,21 @@ LABEL_11:
         v18 = 1;
       }
 
-      v19 = (*(*v15 + 72))(v15, a5);
+      v19 = (*(*v15 + 72))(v15, stream);
       (*(*v15 + 32))(v15, (v19 - 2));
       (*(*v15 + 8))(v15);
-      [a1 writeToken:v12 tokenIndex:(v10 + 1) tokenStream:a5 extendedStream:a6 state:v13];
+      [self writeToken:tokenCopy tokenIndex:(v10 + 1) tokenStream:stream extendedStream:extendedStream state:stateCopy];
       v20 = *(LastExtendedData + 1);
-      (*(a6->var0 + 4))(a6, v20);
+      (*(extendedStream->var0 + 4))(extendedStream, v20);
       if (v20)
       {
         v21 = (LastExtendedData + 10);
         do
         {
-          (*(a6->var0 + 4))(a6, *(v21 - 3));
-          (*(a6->var0 + 4))(a6, *(v21 - 2));
-          (*(a6->var0 + 4))(a6, *(v21 - 1));
-          (*(a6->var0 + 4))(a6, *v21);
+          (*(extendedStream->var0 + 4))(extendedStream, *(v21 - 3));
+          (*(extendedStream->var0 + 4))(extendedStream, *(v21 - 2));
+          (*(extendedStream->var0 + 4))(extendedStream, *(v21 - 1));
+          (*(extendedStream->var0 + 4))(extendedStream, *v21);
           v21 += 4;
           --v20;
         }
@@ -252,16 +252,16 @@ LABEL_11:
   return v18;
 }
 
-+ (void)setupTokensInEDFormulaFromXlFormulaProcessor:(void *)a3 length:(int)a4 edFormula:(id)a5 edSheet:(id)a6
++ (void)setupTokensInEDFormulaFromXlFormulaProcessor:(void *)processor length:(int)length edFormula:(id)formula edSheet:(id)sheet
 {
-  v7 = *&a4;
-  v12 = a5;
-  v9 = a6;
-  [v12 setupTokensWithTokensCount:1 tokensWithDataCount:1 extendedDataLength:v7 extendedDataCount:1];
-  XlFormulaProcessor::startTokenEnum(a3);
+  v7 = *&length;
+  formulaCopy = formula;
+  sheetCopy = sheet;
+  [formulaCopy setupTokensWithTokensCount:1 tokensWithDataCount:1 extendedDataLength:v7 extendedDataCount:1];
+  XlFormulaProcessor::startTokenEnum(processor);
   while (1)
   {
-    Token = XlFormulaProcessor::nextToken(a3);
+    Token = XlFormulaProcessor::nextToken(processor);
     v11 = Token;
     if (!Token)
     {
@@ -270,14 +270,14 @@ LABEL_11:
 
     if (Token->var1 == 28)
     {
-      [v12 setWarning:1];
-      [v12 removeAllTokens];
+      [formulaCopy setWarning:1];
+      [formulaCopy removeAllTokens];
       XlPtg::~XlPtg(v11);
       MEMORY[0x25F897000]();
       break;
     }
 
-    [v12 copyTokenFromXlPtg:Token];
+    [formulaCopy copyTokenFromXlPtg:Token];
     XlPtg::~XlPtg(v11);
     MEMORY[0x25F897000]();
   }

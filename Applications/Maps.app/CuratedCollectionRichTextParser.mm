@@ -1,47 +1,47 @@
 @interface CuratedCollectionRichTextParser
-- (BOOL)_mergeRichTextCollectionDescription:(id)a3 itemDescriptions:(id)a4;
-- (CuratedCollectionRichTextParser)initWithCollection:(id)a3 collectionItems:(id)a4 traitCollection:(id)a5;
+- (BOOL)_mergeRichTextCollectionDescription:(id)description itemDescriptions:(id)descriptions;
+- (CuratedCollectionRichTextParser)initWithCollection:(id)collection collectionItems:(id)items traitCollection:(id)traitCollection;
 - (id)_documentCSS;
-- (id)_documentHTMLWithInnerBodyHTML:(id)a3;
+- (id)_documentHTMLWithInnerBodyHTML:(id)l;
 - (void)_generatePlainTextDescriptions;
-- (void)_generateRichTextDescriptionsWithCompletion:(id)a3;
-- (void)_parseHTMLSnippet:(id)a3 group:(id)a4 completion:(id)a5;
-- (void)parseRichTextDescriptionsWithCompletion:(id)a3;
+- (void)_generateRichTextDescriptionsWithCompletion:(id)completion;
+- (void)_parseHTMLSnippet:(id)snippet group:(id)group completion:(id)completion;
+- (void)parseRichTextDescriptionsWithCompletion:(id)completion;
 @end
 
 @implementation CuratedCollectionRichTextParser
 
-- (void)_parseHTMLSnippet:(id)a3 group:(id)a4 completion:(id)a5
+- (void)_parseHTMLSnippet:(id)snippet group:(id)group completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 length])
+  snippetCopy = snippet;
+  groupCopy = group;
+  completionCopy = completion;
+  if ([snippetCopy length])
   {
-    dispatch_group_enter(v9);
-    v11 = [(CuratedCollectionRichTextParser *)self _documentHTMLWithInnerBodyHTML:v8];
+    dispatch_group_enter(groupCopy);
+    v11 = [(CuratedCollectionRichTextParser *)self _documentHTMLWithInnerBodyHTML:snippetCopy];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100BE8C3C;
     v12[3] = &unk_10164D4B8;
-    v13 = v9;
-    v14 = v10;
+    v13 = groupCopy;
+    v14 = completionCopy;
     [NSAttributedString loadFromHTMLWithString:v11 options:&__NSDictionary0__struct completionHandler:v12];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (id)_documentHTMLWithInnerBodyHTML:(id)a3
+- (id)_documentHTMLWithInnerBodyHTML:(id)l
 {
-  v4 = a3;
-  v5 = [(CuratedCollectionRichTextParser *)self _documentCSS];
-  v6 = [NSString stringWithFormat:@"<head><style type=text/css>%@</style></head><body>%@</body>", v5, v4];
+  lCopy = l;
+  _documentCSS = [(CuratedCollectionRichTextParser *)self _documentCSS];
+  lCopy = [NSString stringWithFormat:@"<head><style type=text/css>%@</style></head><body>%@</body>", _documentCSS, lCopy];
 
-  return v6;
+  return lCopy;
 }
 
 - (id)_documentCSS
@@ -49,13 +49,13 @@
   css = self->_css;
   if (!css)
   {
-    v4 = [(CuratedCollectionRichTextParser *)self _baseFont];
-    [v4 pointSize];
+    _baseFont = [(CuratedCollectionRichTextParser *)self _baseFont];
+    [_baseFont pointSize];
     v6 = v5;
 
     v7 = [NSNumber numberWithDouble:v6];
-    v8 = [v7 stringValue];
-    v9 = [NSString stringWithFormat:@"html { font-family: -apple-system -webkit-text-size-adjust: 100%%; font-size: %@px; }", v8];;
+    stringValue = [v7 stringValue];
+    v9 = [NSString stringWithFormat:@"html { font-family: -apple-system -webkit-text-size-adjust: 100%%; font-size: %@px; }", stringValue];;
     v10 = self->_css;
     self->_css = v9;
 
@@ -65,25 +65,25 @@
   return css;
 }
 
-- (void)parseRichTextDescriptionsWithCompletion:(id)a3
+- (void)parseRichTextDescriptionsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_didParseRichText)
   {
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
 
-    v6 = v4;
-    (*(v4 + 2))(v4, 0);
+    v6 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   else
   {
     self->_didParseRichText = 1;
-    v6 = v4;
+    v6 = completionCopy;
     [(CuratedCollectionRichTextParser *)self _generateRichTextDescriptionsWithCompletion:?];
   }
 
@@ -91,18 +91,18 @@
 LABEL_6:
 }
 
-- (BOOL)_mergeRichTextCollectionDescription:(id)a3 itemDescriptions:(id)a4
+- (BOOL)_mergeRichTextCollectionDescription:(id)description itemDescriptions:(id)descriptions
 {
-  collectionDescription = a3;
-  if (!a3)
+  collectionDescription = description;
+  if (!description)
   {
     collectionDescription = self->_collectionDescription;
   }
 
   v8 = collectionDescription;
   v9 = self->_collectionDescription;
-  v10 = a4;
-  v11 = a3;
+  descriptionsCopy = descriptions;
+  descriptionCopy = description;
   if (v9 == v8)
   {
     v12 = 1;
@@ -123,7 +123,7 @@ LABEL_6:
   v22[2] = sub_100BE9074;
   v23 = v22[3] = &unk_10164D490;
   v15 = v23;
-  [v10 enumerateKeysAndObjectsUsingBlock:v22];
+  [descriptionsCopy enumerateKeysAndObjectsUsingBlock:v22];
 
   collectionItemDescriptions = self->_collectionItemDescriptions;
   if (collectionItemDescriptions == v15)
@@ -144,9 +144,9 @@ LABEL_6:
   return v18 ^ 1;
 }
 
-- (void)_generateRichTextDescriptionsWithCompletion:(id)a3
+- (void)_generateRichTextDescriptionsWithCompletion:(id)completion
 {
-  v22 = a3;
+  completionCopy = completion;
   v4 = sub_1007982D8();
   v5 = os_signpost_id_generate(v4);
 
@@ -161,7 +161,7 @@ LABEL_6:
   v23 = v5;
 
   group = dispatch_group_create();
-  v24 = [(GEOPlaceCollection *)self->_collection collectionHTMLDescription];
+  collectionHTMLDescription = [(GEOPlaceCollection *)self->_collection collectionHTMLDescription];
   *buf = 0;
   v42 = buf;
   v43 = 0x3032000000;
@@ -173,7 +173,7 @@ LABEL_6:
   v40[2] = sub_100BE94F0;
   v40[3] = &unk_10164D418;
   v40[4] = buf;
-  [(CuratedCollectionRichTextParser *)self _parseHTMLSnippet:v24 group:group completion:v40];
+  [(CuratedCollectionRichTextParser *)self _parseHTMLSnippet:collectionHTMLDescription group:group completion:v40];
   v8 = [NSMutableDictionary dictionaryWithCapacity:[(NSArray *)self->_collectionItems count]];
   v38 = 0u;
   v39 = 0u;
@@ -196,12 +196,12 @@ LABEL_6:
 
         v12 = *(*(&v36 + 1) + 8 * v11);
         v13 = [MKMapItemIdentifier alloc];
-        v14 = [v12 placeCollectionItem];
-        v15 = [v14 itemIdentifier];
-        v16 = [v13 initWithGEOMapItemIdentifier:v15];
+        placeCollectionItem = [v12 placeCollectionItem];
+        itemIdentifier = [placeCollectionItem itemIdentifier];
+        v16 = [v13 initWithGEOMapItemIdentifier:itemIdentifier];
 
-        v17 = [v12 placeCollectionItem];
-        v18 = [v17 itemHTMLDescription];
+        placeCollectionItem2 = [v12 placeCollectionItem];
+        itemHTMLDescription = [placeCollectionItem2 itemHTMLDescription];
 
         v33[0] = _NSConcreteStackBlock;
         v33[1] = 3221225472;
@@ -210,7 +210,7 @@ LABEL_6:
         v34 = v8;
         v19 = v16;
         v35 = v19;
-        [(CuratedCollectionRichTextParser *)self _parseHTMLSnippet:v18 group:group completion:v33];
+        [(CuratedCollectionRichTextParser *)self _parseHTMLSnippet:itemHTMLDescription group:group completion:v33];
 
         v11 = v11 + 1;
       }
@@ -231,8 +231,8 @@ LABEL_6:
   objc_copyWeak(v31, &location);
   v30 = buf;
   v28 = v8;
-  v29 = v22;
-  v20 = v22;
+  v29 = completionCopy;
+  v20 = completionCopy;
   v21 = v8;
   dispatch_group_notify(group, &_dispatch_main_q, block);
 
@@ -243,22 +243,22 @@ LABEL_6:
 
 - (void)_generatePlainTextDescriptions
 {
-  v2 = self;
+  selfCopy = self;
   v43[0] = NSFontAttributeName;
-  v3 = [(CuratedCollectionRichTextParser *)self _baseFont];
-  v44[0] = v3;
+  _baseFont = [(CuratedCollectionRichTextParser *)self _baseFont];
+  v44[0] = _baseFont;
   v43[1] = NSForegroundColorAttributeName;
   v4 = +[UIColor labelColor];
   v44[1] = v4;
   v5 = [NSDictionary dictionaryWithObjects:v44 forKeys:v43 count:2];
 
-  v6 = [(GEOPlaceCollection *)v2->_collection collectionDescription];
-  v30 = v6;
-  if (v6)
+  collectionDescription = [(GEOPlaceCollection *)selfCopy->_collection collectionDescription];
+  v30 = collectionDescription;
+  if (collectionDescription)
   {
-    v7 = [[NSAttributedString alloc] initWithString:v6 attributes:v5];
-    p_super = &v2->_collectionDescription->super;
-    v2->_collectionDescription = v7;
+    v7 = [[NSAttributedString alloc] initWithString:collectionDescription attributes:v5];
+    p_super = &selfCopy->_collectionDescription->super;
+    selfCopy->_collectionDescription = v7;
   }
 
   else
@@ -266,21 +266,21 @@ LABEL_6:
     p_super = sub_1007982D8();
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(GEOPlaceCollection *)v2->_collection collectionTitle];
+      collectionTitle = [(GEOPlaceCollection *)selfCopy->_collection collectionTitle];
       *buf = 138412290;
-      v39 = v9;
+      v39 = collectionTitle;
       _os_log_impl(&_mh_execute_header, p_super, OS_LOG_TYPE_ERROR, "Missing collectionDescription for: %@", buf, 0xCu);
     }
   }
 
   v10 = v5;
 
-  v32 = [NSMutableDictionary dictionaryWithCapacity:[(NSArray *)v2->_collectionItems count]];
+  v32 = [NSMutableDictionary dictionaryWithCapacity:[(NSArray *)selfCopy->_collectionItems count]];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v2->_collectionItems;
+  obj = selfCopy->_collectionItems;
   v11 = [(NSArray *)obj countByEnumeratingWithState:&v34 objects:v42 count:16];
   v12 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
   if (v11)
@@ -298,16 +298,16 @@ LABEL_6:
 
         v15 = *(*(&v34 + 1) + 8 * i);
         v16 = [MKMapItemIdentifier alloc];
-        v17 = [v15 placeCollectionItem];
-        v18 = [v17 itemIdentifier];
-        v19 = [v16 initWithGEOMapItemIdentifier:v18];
+        placeCollectionItem = [v15 placeCollectionItem];
+        itemIdentifier = [placeCollectionItem itemIdentifier];
+        v19 = [v16 initWithGEOMapItemIdentifier:itemIdentifier];
 
-        v20 = [v15 placeCollectionItem];
-        v21 = [v20 itemDescription];
+        placeCollectionItem2 = [v15 placeCollectionItem];
+        itemDescription = [placeCollectionItem2 itemDescription];
 
-        if (v21)
+        if (itemDescription)
         {
-          v22 = [objc_alloc(v12[408]) initWithString:v21 attributes:v10];
+          v22 = [objc_alloc(v12[408]) initWithString:itemDescription attributes:v10];
           [v32 setObject:v22 forKeyedSubscript:v19];
         }
 
@@ -316,18 +316,18 @@ LABEL_6:
           v22 = sub_1007982D8();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
-            v23 = [v15 placeCollectionItem];
-            v24 = [v23 itemIdentifier];
-            [(GEOPlaceCollection *)v2->_collection collectionTitle];
+            placeCollectionItem3 = [v15 placeCollectionItem];
+            itemIdentifier2 = [placeCollectionItem3 itemIdentifier];
+            [(GEOPlaceCollection *)selfCopy->_collection collectionTitle];
             v25 = v10;
-            v27 = v26 = v2;
+            v27 = v26 = selfCopy;
             *buf = 138412546;
-            v39 = v24;
+            v39 = itemIdentifier2;
             v40 = 2112;
             v41 = v27;
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Missing itemDescription for: %@ in Collection: %@", buf, 0x16u);
 
-            v2 = v26;
+            selfCopy = v26;
             v10 = v25;
             v12 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
           }
@@ -341,27 +341,27 @@ LABEL_6:
   }
 
   v28 = [v32 copy];
-  collectionItemDescriptions = v2->_collectionItemDescriptions;
-  v2->_collectionItemDescriptions = v28;
+  collectionItemDescriptions = selfCopy->_collectionItemDescriptions;
+  selfCopy->_collectionItemDescriptions = v28;
 }
 
-- (CuratedCollectionRichTextParser)initWithCollection:(id)a3 collectionItems:(id)a4 traitCollection:(id)a5
+- (CuratedCollectionRichTextParser)initWithCollection:(id)collection collectionItems:(id)items traitCollection:(id)traitCollection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  collectionCopy = collection;
+  itemsCopy = items;
+  traitCollectionCopy = traitCollection;
   v17.receiver = self;
   v17.super_class = CuratedCollectionRichTextParser;
   v12 = [(CuratedCollectionRichTextParser *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_collection, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_collection, collection);
+    v14 = [itemsCopy copy];
     collectionItems = v13->_collectionItems;
     v13->_collectionItems = v14;
 
-    objc_storeStrong(&v13->_traitCollection, a5);
+    objc_storeStrong(&v13->_traitCollection, traitCollection);
     [(CuratedCollectionRichTextParser *)v13 _generatePlainTextDescriptions];
   }
 

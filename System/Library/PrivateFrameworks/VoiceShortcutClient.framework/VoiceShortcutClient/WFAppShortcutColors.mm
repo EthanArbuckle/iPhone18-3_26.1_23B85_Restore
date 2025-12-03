@@ -1,34 +1,34 @@
 @interface WFAppShortcutColors
-- (WFAppShortcutColors)initWithCoder:(id)a3;
-- (WFAppShortcutColors)initWithComplementingColors:(id)a3 tintColor:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (WFAppShortcutColors)initWithCoder:(id)coder;
+- (WFAppShortcutColors)initWithComplementingColors:(id)colors tintColor:(id)color;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFAppShortcutColors
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFAppShortcutColors *)self backgroundGradient];
-  [v4 encodeObject:v5 forKey:@"backgroundGradient"];
+  coderCopy = coder;
+  backgroundGradient = [(WFAppShortcutColors *)self backgroundGradient];
+  [coderCopy encodeObject:backgroundGradient forKey:@"backgroundGradient"];
 
-  v6 = [(WFAppShortcutColors *)self tintColor];
-  [v4 encodeObject:v6 forKey:@"tintColor"];
+  tintColor = [(WFAppShortcutColors *)self tintColor];
+  [coderCopy encodeObject:tintColor forKey:@"tintColor"];
 }
 
-- (WFAppShortcutColors)initWithCoder:(id)a3
+- (WFAppShortcutColors)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = WFAppShortcutColors;
   v5 = [(WFAppShortcutColors *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundGradient"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundGradient"];
     backgroundGradient = v5->_backgroundGradient;
     v5->_backgroundGradient = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
     tintColor = v5->_tintColor;
     v5->_tintColor = v8;
 
@@ -38,10 +38,10 @@
   return v5;
 }
 
-- (WFAppShortcutColors)initWithComplementingColors:(id)a3 tintColor:(id)a4
+- (WFAppShortcutColors)initWithComplementingColors:(id)colors tintColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
+  colorsCopy = colors;
+  colorCopy = color;
   v21.receiver = self;
   v21.super_class = WFAppShortcutColors;
   v8 = [(WFAppShortcutColors *)&v21 init];
@@ -50,13 +50,13 @@
     goto LABEL_11;
   }
 
-  if ([v6 count] == 1)
+  if ([colorsCopy count] == 1)
   {
     v9 = 0;
 LABEL_6:
     v10 = [WFGradient alloc];
-    v11 = [v6 objectAtIndexedSubscript:0];
-    v12 = [v6 objectAtIndexedSubscript:v9];
+    v11 = [colorsCopy objectAtIndexedSubscript:0];
+    v12 = [colorsCopy objectAtIndexedSubscript:v9];
     v13 = [(WFGradient *)v10 initWithStartColor:v11 endColor:v12];
     backgroundGradient = v8->_backgroundGradient;
     v8->_backgroundGradient = v13;
@@ -64,16 +64,16 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v6 count] >= 2)
+  if ([colorsCopy count] >= 2)
   {
     v9 = 1;
     goto LABEL_6;
   }
 
 LABEL_7:
-  if (v7)
+  if (colorCopy)
   {
-    v15 = v7;
+    v15 = colorCopy;
     v16 = 0;
     tintColor = v8->_tintColor;
     v8->_tintColor = v15;
@@ -81,9 +81,9 @@ LABEL_7:
 
   else
   {
-    v18 = [(WFGradient *)v8->_backgroundGradient baseColor];
+    baseColor = [(WFGradient *)v8->_backgroundGradient baseColor];
     tintColor = v8->_tintColor;
-    v8->_tintColor = v18;
+    v8->_tintColor = baseColor;
     v16 = 1;
   }
 

@@ -1,24 +1,24 @@
 @interface STGenesisStateReactorCoreComponent
-+ (id)updateExpiredAwaitingResponseFamilyMemberGenesisStateItemsToPending:(id)a3;
-+ (id)updateFamilyMemberGenesisStateItems:(id)a3 receivedMessage:(id)a4;
-+ (id)updateFamilyMemberGenesisStateItems:(id)a3 targetableFamilyMembers:(id)a4;
-+ (id)updatePendingFamilyMemberGenesisStateItemsToAwaitingResponse:(id)a3;
++ (id)updateExpiredAwaitingResponseFamilyMemberGenesisStateItemsToPending:(id)pending;
++ (id)updateFamilyMemberGenesisStateItems:(id)items receivedMessage:(id)message;
++ (id)updateFamilyMemberGenesisStateItems:(id)items targetableFamilyMembers:(id)members;
++ (id)updatePendingFamilyMemberGenesisStateItemsToAwaitingResponse:(id)response;
 @end
 
 @implementation STGenesisStateReactorCoreComponent
 
-+ (id)updateFamilyMemberGenesisStateItems:(id)a3 receivedMessage:(id)a4
++ (id)updateFamilyMemberGenesisStateItems:(id)items receivedMessage:(id)message
 {
-  v5 = a3;
-  v6 = [a4 returnAddress];
-  v7 = [v6 userDSID];
+  itemsCopy = items;
+  returnAddress = [message returnAddress];
+  userDSID = [returnAddress userDSID];
 
   v8 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v5;
+  v9 = itemsCopy;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -34,9 +34,9 @@
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v14 userID];
-        v16 = [v15 dsid];
-        v17 = [v16 isEqualToNumber:v7];
+        userID = [v14 userID];
+        dsid = [userID dsid];
+        v17 = [dsid isEqualToNumber:userDSID];
 
         if (v17)
         {
@@ -59,10 +59,10 @@
   return v19;
 }
 
-+ (id)updateFamilyMemberGenesisStateItems:(id)a3 targetableFamilyMembers:(id)a4
++ (id)updateFamilyMemberGenesisStateItems:(id)items targetableFamilyMembers:(id)members
 {
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  membersCopy = members;
   v7 = objc_opt_new();
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
@@ -70,12 +70,12 @@
   v26[3] = &unk_1001A40E8;
   v8 = objc_opt_new();
   v27 = v8;
-  [v5 enumerateObjectsUsingBlock:v26];
+  [itemsCopy enumerateObjectsUsingBlock:v26];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v6;
+  v9 = membersCopy;
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v10)
   {
@@ -93,14 +93,14 @@
         v14 = *(*(&v22 + 1) + 8 * i);
         if (([v14 isSignedInMember] & 1) == 0)
         {
-          v15 = [v14 dsid];
-          v16 = [v8 objectForKeyedSubscript:v15];
+          dsid = [v14 dsid];
+          v16 = [v8 objectForKeyedSubscript:dsid];
 
           if (!v16)
           {
             v17 = [STUserID alloc];
-            v18 = [v14 dsid];
-            v19 = [v17 initWithDSID:v18];
+            dsid2 = [v14 dsid];
+            v19 = [v17 initWithDSID:dsid2];
 
             v16 = [[STFamilyMemberGenesisStateItem alloc] initWithUserID:v19 genesisState:0];
           }
@@ -120,15 +120,15 @@
   return v20;
 }
 
-+ (id)updatePendingFamilyMemberGenesisStateItemsToAwaitingResponse:(id)a3
++ (id)updatePendingFamilyMemberGenesisStateItemsToAwaitingResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = responseCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -165,15 +165,15 @@
   return v12;
 }
 
-+ (id)updateExpiredAwaitingResponseFamilyMemberGenesisStateItemsToPending:(id)a3
++ (id)updateExpiredAwaitingResponseFamilyMemberGenesisStateItemsToPending:(id)pending
 {
-  v3 = a3;
+  pendingCopy = pending;
   v4 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v3;
+  v5 = pendingCopy;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v6)
   {
@@ -196,15 +196,15 @@
           v12 = +[STLog familyMemberGenesisStateStore];
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = [(STFamilyMemberGenesisStateItem *)v11 userID];
+            userID = [(STFamilyMemberGenesisStateItem *)v11 userID];
             *buf = v19;
-            v25 = v13;
+            v25 = userID;
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Resetting expired state to pending for user: %{public}@", buf, 0xCu);
           }
 
           v14 = [STFamilyMemberGenesisStateItem alloc];
-          v15 = [(STFamilyMemberGenesisStateItem *)v11 userID];
-          v16 = [(STFamilyMemberGenesisStateItem *)v14 initWithUserID:v15 genesisState:0];
+          userID2 = [(STFamilyMemberGenesisStateItem *)v11 userID];
+          v16 = [(STFamilyMemberGenesisStateItem *)v14 initWithUserID:userID2 genesisState:0];
 
           v11 = v16;
         }

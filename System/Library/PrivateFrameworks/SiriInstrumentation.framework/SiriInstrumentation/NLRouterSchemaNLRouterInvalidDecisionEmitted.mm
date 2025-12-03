@@ -1,27 +1,27 @@
 @interface NLRouterSchemaNLRouterInvalidDecisionEmitted
-- (BOOL)isEqual:(id)a3;
-- (NLRouterSchemaNLRouterInvalidDecisionEmitted)initWithDictionary:(id)a3;
-- (NLRouterSchemaNLRouterInvalidDecisionEmitted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLRouterSchemaNLRouterInvalidDecisionEmitted)initWithDictionary:(id)dictionary;
+- (NLRouterSchemaNLRouterInvalidDecisionEmitted)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasNlRouterInvalidDecisionReason:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasNlRouterInvalidDecisionReason:(BOOL)reason;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLRouterSchemaNLRouterInvalidDecisionEmitted
 
-- (NLRouterSchemaNLRouterInvalidDecisionEmitted)initWithDictionary:(id)a3
+- (NLRouterSchemaNLRouterInvalidDecisionEmitted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = NLRouterSchemaNLRouterInvalidDecisionEmitted;
   v5 = [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"traceId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"traceId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,14 +29,14 @@
       [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)v5 setTraceId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isSuppressed"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isSuppressed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLRouterSchemaNLRouterInvalidDecisionEmitted setIsSuppressed:](v5, "setIsSuppressed:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"nlRouterInvalidDecisionReason"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"nlRouterInvalidDecisionReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (NLRouterSchemaNLRouterInvalidDecisionEmitted)initWithJSON:(id)a3
+- (NLRouterSchemaNLRouterInvalidDecisionEmitted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,12 +85,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[NLRouterSchemaNLRouterInvalidDecisionEmitted isSuppressed](self, "isSuppressed")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isSuppressed"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isSuppressed"];
 
     has = self->_has;
   }
@@ -108,28 +108,28 @@
       v7 = off_1E78DB6D0[v6];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"nlRouterInvalidDecisionReason"];
+    [dictionary setObject:v7 forKeyedSubscript:@"nlRouterInvalidDecisionReason"];
   }
 
   if (self->_traceId)
   {
-    v8 = [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)self traceId];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    traceId = [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)self traceId];
+    dictionaryRepresentation = [traceId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"traceId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"traceId"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"traceId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"traceId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -159,30 +159,30 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)self traceId];
-  v6 = [v4 traceId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  traceId = [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)self traceId];
+  traceId2 = [equalCopy traceId];
+  v7 = traceId2;
+  if ((traceId != 0) == (traceId2 == 0))
   {
 
     goto LABEL_16;
   }
 
-  v8 = [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)self traceId];
-  if (v8)
+  traceId3 = [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)self traceId];
+  if (traceId3)
   {
-    v9 = v8;
-    v10 = [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)self traceId];
-    v11 = [v4 traceId];
-    v12 = [v10 isEqual:v11];
+    v9 = traceId3;
+    traceId4 = [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)self traceId];
+    traceId5 = [equalCopy traceId];
+    v12 = [traceId4 isEqual:traceId5];
 
     if (!v12)
     {
@@ -195,7 +195,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v14 = v4[24];
+  v14 = equalCopy[24];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_16:
@@ -206,10 +206,10 @@ LABEL_16:
   if (*&has)
   {
     isSuppressed = self->_isSuppressed;
-    if (isSuppressed == [v4 isSuppressed])
+    if (isSuppressed == [equalCopy isSuppressed])
     {
       has = self->_has;
-      v14 = v4[24];
+      v14 = equalCopy[24];
       goto LABEL_12;
     }
 
@@ -226,7 +226,7 @@ LABEL_12:
   if (v16)
   {
     nlRouterInvalidDecisionReason = self->_nlRouterInvalidDecisionReason;
-    if (nlRouterInvalidDecisionReason != [v4 nlRouterInvalidDecisionReason])
+    if (nlRouterInvalidDecisionReason != [equalCopy nlRouterInvalidDecisionReason])
     {
       goto LABEL_16;
     }
@@ -238,14 +238,14 @@ LABEL_17:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)self traceId];
+  toCopy = to;
+  traceId = [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)self traceId];
 
-  if (v4)
+  if (traceId)
   {
-    v5 = [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)self traceId];
+    traceId2 = [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)self traceId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -256,17 +256,17 @@ LABEL_17:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasNlRouterInvalidDecisionReason:(BOOL)a3
+- (void)setHasNlRouterInvalidDecisionReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 2;
   }
@@ -279,17 +279,17 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = NLRouterSchemaNLRouterInvalidDecisionEmitted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)self traceId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(NLRouterSchemaNLRouterInvalidDecisionEmitted *)self deleteTraceId];
   }

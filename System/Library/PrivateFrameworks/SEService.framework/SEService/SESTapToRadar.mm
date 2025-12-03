@@ -1,22 +1,22 @@
 @interface SESTapToRadar
-+ (BOOL)isAllowedForClient:(id)a3;
++ (BOOL)isAllowedForClient:(id)client;
 + (id)getInstance;
-+ (void)handleCallback:(unint64_t)a3;
-+ (void)requestTapToRadar:(id)a3 client:(id)a4 fullArchive:(BOOL)a5;
-+ (void)requestTapToRadarKML:(id)a3 client:(id)a4;
-- (BOOL)isAllowedForClient:(id)a3;
++ (void)handleCallback:(unint64_t)callback;
++ (void)requestTapToRadar:(id)radar client:(id)client fullArchive:(BOOL)archive;
++ (void)requestTapToRadarKML:(id)l client:(id)client;
+- (BOOL)isAllowedForClient:(id)client;
 - (SESTapToRadar)init;
-- (void)_handleCallbackSync:(unint64_t)a3;
-- (void)_requestTapToRadarSync:(id)a3 component:(id)a4 client:(id)a5 fullArchive:(BOOL)a6;
-- (void)setProhibitUntil:(id)a3 forClient:(id)a4;
+- (void)_handleCallbackSync:(unint64_t)sync;
+- (void)_requestTapToRadarSync:(id)sync component:(id)component client:(id)client fullArchive:(BOOL)archive;
+- (void)setProhibitUntil:(id)until forClient:(id)client;
 @end
 
 @implementation SESTapToRadar
 
-+ (void)requestTapToRadar:(id)a3 client:(id)a4 fullArchive:(BOOL)a5
++ (void)requestTapToRadar:(id)radar client:(id)client fullArchive:(BOOL)archive
 {
-  v7 = a3;
-  v8 = a4;
+  radarCopy = radar;
+  clientCopy = client;
   if (os_variant_has_internal_diagnostics())
   {
     v9 = +[SESTapToRadar getInstance];
@@ -29,18 +29,18 @@
       v12[2] = __54__SESTapToRadar_requestTapToRadar_client_fullArchive___block_invoke;
       v12[3] = &unk_1E82D0CD0;
       v13 = v9;
-      v14 = v7;
-      v15 = v8;
-      v16 = a5;
+      v14 = radarCopy;
+      v15 = clientCopy;
+      archiveCopy = archive;
       dispatch_async(v11, v12);
     }
   }
 }
 
-+ (void)requestTapToRadarKML:(id)a3 client:(id)a4
++ (void)requestTapToRadarKML:(id)l client:(id)client
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  clientCopy = client;
   if (os_variant_has_internal_diagnostics())
   {
     v7 = +[SESTapToRadar getInstance];
@@ -53,18 +53,18 @@
       block[2] = __45__SESTapToRadar_requestTapToRadarKML_client___block_invoke;
       block[3] = &unk_1E82D0CF8;
       v11 = v7;
-      v12 = v5;
-      v13 = v6;
+      v12 = lCopy;
+      v13 = clientCopy;
       dispatch_async(v9, block);
     }
   }
 }
 
-+ (BOOL)isAllowedForClient:(id)a3
++ (BOOL)isAllowedForClient:(id)client
 {
-  v3 = a3;
+  clientCopy = client;
   v4 = +[SESTapToRadar getInstance];
-  v5 = [v4 isAllowedForClient:v3];
+  v5 = [v4 isAllowedForClient:clientCopy];
 
   return v5;
 }
@@ -160,17 +160,17 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)isAllowedForClient:(id)a3
+- (BOOL)isAllowedForClient:(id)client
 {
   userDefaults = self->_userDefaults;
-  v4 = a3;
+  clientCopy = client;
   v5 = [(NSUserDefaults *)userDefaults objectForKey:@"TTR-Prohibit-Until-ByClient"];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:clientCopy];
 
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DF00] date];
-    v8 = [v6 compare:v7] != 1;
+    date = [MEMORY[0x1E695DF00] date];
+    v8 = [v6 compare:date] != 1;
   }
 
   else
@@ -181,13 +181,13 @@ LABEL_12:
   return v8;
 }
 
-- (void)_requestTapToRadarSync:(id)a3 component:(id)a4 client:(id)a5 fullArchive:(BOOL)a6
+- (void)_requestTapToRadarSync:(id)sync component:(id)component client:(id)client fullArchive:(BOOL)archive
 {
-  v6 = a6;
+  archiveCopy = archive;
   v45 = *MEMORY[0x1E69E9840];
-  v39 = a3;
-  v11 = a4;
-  v12 = a5;
+  syncCopy = sync;
+  componentCopy = component;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_pendingRequestReason)
   {
@@ -210,17 +210,17 @@ LABEL_13:
 
     if (v15)
     {
-      v35 = v6;
+      v35 = archiveCopy;
       v13 = [(NSUserDefaults *)self->_userDefaults objectForKey:@"TTR-Prohibit-Until-ByClient"];
-      v16 = [v13 objectForKeyedSubscript:v12];
+      v16 = [v13 objectForKeyedSubscript:clientCopy];
       if (v16)
       {
         [MEMORY[0x1E695DF00] date];
-        v17 = loga = v12;
+        v17 = loga = clientCopy;
         v18 = v16;
         v19 = [v16 compare:v17];
 
-        v12 = loga;
+        clientCopy = loga;
         v20 = v19 == 1;
         v16 = v18;
         if (v20)
@@ -292,13 +292,13 @@ LABEL_13:
           if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v44 = v12;
+            v44 = clientCopy;
             _os_log_impl(&dword_1C7B9A000, log, OS_LOG_TYPE_INFO, "TTR prompt created for %@", buf, 0xCu);
           }
 
-          objc_storeStrong(&self->_pendingRequestClient, a5);
-          objc_storeStrong(&self->_pendingRequestReason, a3);
-          objc_storeStrong(&self->_component, a4);
+          objc_storeStrong(&self->_pendingRequestClient, client);
+          objc_storeStrong(&self->_pendingRequestReason, sync);
+          objc_storeStrong(&self->_component, component);
           ttrOptions = self->_ttrOptions;
           if (v35)
           {
@@ -348,7 +348,7 @@ LABEL_33:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleCallbackSync:(unint64_t)a3
+- (void)_handleCallbackSync:(unint64_t)sync
 {
   v55 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
@@ -356,7 +356,7 @@ LABEL_33:
   dispatch_assert_queue_V2(self->_queue);
   if (self->_pendingRequestClient)
   {
-    if (a3 == 2)
+    if (sync == 2)
     {
       v7 = SESDefaultLogObject();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -370,8 +370,8 @@ LABEL_33:
         _os_log_impl(&dword_1C7B9A000, v7, OS_LOG_TYPE_INFO, "User canceled response for %@/%@", buf, 0x16u);
       }
 
-      v10 = [MEMORY[0x1E695DF00] distantFuture];
-      [(SESTapToRadar *)self setProhibitUntil:v10 forClient:self->_pendingRequestClient];
+      distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+      [(SESTapToRadar *)self setProhibitUntil:distantFuture forClient:self->_pendingRequestClient];
     }
 
     else
@@ -379,13 +379,13 @@ LABEL_33:
       v12 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:86400.0];
       [(SESTapToRadar *)self setProhibitUntil:v12 forClient:self->_pendingRequestClient];
 
-      if (a3 == 1)
+      if (sync == 1)
       {
-        v10 = SESDefaultLogObject();
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+        distantFuture = SESDefaultLogObject();
+        if (os_log_type_enabled(distantFuture, OS_LOG_TYPE_INFO))
         {
           *buf = 0;
-          _os_log_impl(&dword_1C7B9A000, v10, OS_LOG_TYPE_INFO, "NotNow response", buf, 2u);
+          _os_log_impl(&dword_1C7B9A000, distantFuture, OS_LOG_TYPE_INFO, "NotNow response", buf, 2u);
         }
       }
 
@@ -500,9 +500,9 @@ LABEL_33:
           _os_log_impl(&dword_1C7B9A000, v36, OS_LOG_TYPE_INFO, "URL: %{public}@", buf, 0xCu);
         }
 
-        v10 = [(objc_class *)self->_lsApplicationWorkspace defaultWorkspace];
+        distantFuture = [(objc_class *)self->_lsApplicationWorkspace defaultWorkspace];
         v37 = [v45 URL];
-        [v10 openURL:v37 configuration:0 completionHandler:0];
+        [distantFuture openURL:v37 configuration:0 completionHandler:0];
       }
     }
 
@@ -548,11 +548,11 @@ LABEL_33:
   v44 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setProhibitUntil:(id)a3 forClient:(id)a4
+- (void)setProhibitUntil:(id)until forClient:(id)client
 {
   userDefaults = self->_userDefaults;
-  v7 = a4;
-  v8 = a3;
+  clientCopy = client;
+  untilCopy = until;
   v9 = [(NSUserDefaults *)userDefaults objectForKey:@"TTR-Prohibit-Until-ByClient"];
   v10 = [v9 mutableCopy];
   v11 = v10;
@@ -568,12 +568,12 @@ LABEL_33:
 
   v13 = v12;
 
-  [v13 setObject:v8 forKeyedSubscript:v7];
+  [v13 setObject:untilCopy forKeyedSubscript:clientCopy];
   [(NSUserDefaults *)self->_userDefaults setObject:v13 forKey:@"TTR-Prohibit-Until-ByClient"];
   [(NSUserDefaults *)self->_userDefaults synchronize];
 }
 
-+ (void)handleCallback:(unint64_t)a3
++ (void)handleCallback:(unint64_t)callback
 {
   v4 = +[SESTapToRadar getInstance];
   v5 = v4;
@@ -585,7 +585,7 @@ LABEL_33:
     v7[2] = __32__SESTapToRadar_handleCallback___block_invoke;
     v7[3] = &unk_1E82D0D40;
     v8 = v4;
-    v9 = a3;
+    callbackCopy = callback;
     dispatch_async(v6, v7);
   }
 }

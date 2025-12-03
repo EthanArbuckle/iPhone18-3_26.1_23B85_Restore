@@ -1,19 +1,19 @@
 @interface HDTinkerProfile
-- (BOOL)setDSID:(id)a3 error:(id *)a4;
-- (BOOL)setPairedNRDeviceUUID:(id)a3 error:(id *)a4;
-- (HDTinkerProfile)initWithDirectoryPath:(id)a3 medicalIDDirectoryPath:(id)a4 daemon:(id)a5 profileIdentifier:(id)a6;
-- (id)dsidWithError:(id *)a3;
-- (id)pairedNRDeviceUUIDWithError:(id *)a3;
+- (BOOL)setDSID:(id)d error:(id *)error;
+- (BOOL)setPairedNRDeviceUUID:(id)d error:(id *)error;
+- (HDTinkerProfile)initWithDirectoryPath:(id)path medicalIDDirectoryPath:(id)directoryPath daemon:(id)daemon profileIdentifier:(id)identifier;
+- (id)dsidWithError:(id *)error;
+- (id)pairedNRDeviceUUIDWithError:(id *)error;
 - (void)awakeFromDisk;
 @end
 
 @implementation HDTinkerProfile
 
-- (HDTinkerProfile)initWithDirectoryPath:(id)a3 medicalIDDirectoryPath:(id)a4 daemon:(id)a5 profileIdentifier:(id)a6
+- (HDTinkerProfile)initWithDirectoryPath:(id)path medicalIDDirectoryPath:(id)directoryPath daemon:(id)daemon profileIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = HDTinkerProfile;
-  v6 = [(HDProfile *)&v10 initWithDirectoryPath:a3 medicalIDDirectoryPath:a4 daemon:a5 profileIdentifier:a6];
+  v6 = [(HDProfile *)&v10 initWithDirectoryPath:path medicalIDDirectoryPath:directoryPath daemon:daemon profileIdentifier:identifier];
   if (v6)
   {
     v7 = [[HDAttachmentManager alloc] initWithProfile:v6];
@@ -28,13 +28,13 @@
 {
   if (![(HDProfile *)self testModeEnabled])
   {
-    v3 = [(HDProfile *)self database];
+    database = [(HDProfile *)self database];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __32__HDTinkerProfile_awakeFromDisk__block_invoke;
     v5[3] = &unk_278613968;
     v5[4] = self;
-    [v3 performWhenDataProtectedByFirstUnlockIsAvailable:v5];
+    [database performWhenDataProtectedByFirstUnlockIsAvailable:v5];
 
     v4.receiver = self;
     v4.super_class = HDTinkerProfile;
@@ -83,13 +83,13 @@ void __32__HDTinkerProfile_awakeFromDisk__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)pairedNRDeviceUUIDWithError:(id *)a3
+- (id)pairedNRDeviceUUIDWithError:(id *)error
 {
   v4 = HDTinkerKeyValueDomainWithProfile(self);
-  v5 = [v4 dataForKey:@"TinkerNRDeviceUUIDKey" error:a3];
+  v5 = [v4 dataForKey:@"TinkerNRDeviceUUIDKey" error:error];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:a3];
+    v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:error];
   }
 
   else
@@ -100,15 +100,15 @@ void __32__HDTinkerProfile_awakeFromDisk__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (BOOL)setPairedNRDeviceUUID:(id)a3 error:(id *)a4
+- (BOOL)setPairedNRDeviceUUID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v7 = HDTinkerKeyValueDomainWithProfile(self);
-  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:a4];
+  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:dCopy requiringSecureCoding:1 error:error];
 
   if (v8)
   {
-    v9 = [v7 setData:v8 forKey:@"TinkerNRDeviceUUIDKey" error:a4];
+    v9 = [v7 setData:v8 forKey:@"TinkerNRDeviceUUIDKey" error:error];
   }
 
   else
@@ -119,21 +119,21 @@ void __32__HDTinkerProfile_awakeFromDisk__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (id)dsidWithError:(id *)a3
+- (id)dsidWithError:(id *)error
 {
   v4 = HDTinkerSyncedProtectedKeyValueDomainWithProfile(self);
-  v5 = [v4 numberForKey:@"TinkerDSIDKey" error:a3];
+  v5 = [v4 numberForKey:@"TinkerDSIDKey" error:error];
 
   return v5;
 }
 
-- (BOOL)setDSID:(id)a3 error:(id *)a4
+- (BOOL)setDSID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v7 = HDTinkerSyncedProtectedKeyValueDomainWithProfile(self);
-  LOBYTE(a4) = [v7 setNumber:v6 forKey:@"TinkerDSIDKey" error:a4];
+  LOBYTE(error) = [v7 setNumber:dCopy forKey:@"TinkerDSIDKey" error:error];
 
-  return a4;
+  return error;
 }
 
 @end

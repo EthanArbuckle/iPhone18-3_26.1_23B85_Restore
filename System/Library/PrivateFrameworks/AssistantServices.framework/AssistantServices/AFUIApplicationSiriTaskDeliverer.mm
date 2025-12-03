@@ -1,15 +1,15 @@
 @interface AFUIApplicationSiriTaskDeliverer
 - (AFSiriTaskmaster)taskmaster;
-- (AFUIApplicationSiriTaskDeliverer)initWithAppBundleIdentifier:(id)a3;
-- (void)_handleSuccessfulAppLaunchToBackground:(BOOL)a3 forRequest:(id)a4 completion:(id)a5;
+- (AFUIApplicationSiriTaskDeliverer)initWithAppBundleIdentifier:(id)identifier;
+- (void)_handleSuccessfulAppLaunchToBackground:(BOOL)background forRequest:(id)request completion:(id)completion;
 - (void)_invalidateAssertionTimer;
 - (void)_invalidateBackboardServices;
-- (void)_processAssertionWasAcquired:(BOOL)a3;
-- (void)_processAssertionWasInvalidatedForRequest:(id)a3;
-- (void)_startAppStateMonitoringForRequest:(id)a3;
+- (void)_processAssertionWasAcquired:(BOOL)acquired;
+- (void)_processAssertionWasInvalidatedForRequest:(id)request;
+- (void)_startAppStateMonitoringForRequest:(id)request;
 - (void)dealloc;
-- (void)deliverSiriTask:(id)a3 completionHandler:(id)a4;
-- (void)processAssertionWasInvalidatedForRequest:(id)a3;
+- (void)deliverSiriTask:(id)task completionHandler:(id)handler;
+- (void)processAssertionWasInvalidatedForRequest:(id)request;
 - (void)siriTaskDidFinish;
 @end
 
@@ -40,13 +40,13 @@
   self->_bKSAssertionForBgLaunch = 0;
 }
 
-- (void)_handleSuccessfulAppLaunchToBackground:(BOOL)a3 forRequest:(id)a4 completion:(id)a5
+- (void)_handleSuccessfulAppLaunchToBackground:(BOOL)background forRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
+  backgroundCopy = background;
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if (v6)
+  requestCopy = request;
+  completionCopy = completion;
+  if (backgroundCopy)
   {
     objc_initWeak(&location, self);
     v10 = objc_alloc(getBKSProcessAssertionClass());
@@ -56,7 +56,7 @@
     v26[2] = __97__AFUIApplicationSiriTaskDeliverer__handleSuccessfulAppLaunchToBackground_forRequest_completion___block_invoke;
     v26[3] = &unk_1E73477F0;
     v26[4] = self;
-    v27 = v9;
+    v27 = completionCopy;
     v12 = [v10 initWithBundleIdentifier:appBundleIdentifier flags:33 reason:4 name:@"SiriTaskDelivererBackground" withHandler:v26];
     bKSAssertionForBgLaunch = self->_bKSAssertionForBgLaunch;
     p_bKSAssertionForBgLaunch = &self->_bKSAssertionForBgLaunch;
@@ -70,7 +70,7 @@
       v23[2] = __97__AFUIApplicationSiriTaskDeliverer__handleSuccessfulAppLaunchToBackground_forRequest_completion___block_invoke_3;
       v23[3] = &unk_1E73470E0;
       objc_copyWeak(&v25, &location);
-      v24 = v8;
+      v24 = requestCopy;
       [(BKSProcessAssertion *)v15 setInvalidationHandler:v23];
 
       objc_destroyWeak(&v25);
@@ -84,7 +84,7 @@
         *buf = 136315394;
         v30 = "[AFUIApplicationSiriTaskDeliverer _handleSuccessfulAppLaunchToBackground:forRequest:completion:]";
         v31 = 2112;
-        v32 = v8;
+        v32 = requestCopy;
         _os_log_error_impl(&dword_1912FE000, v21, OS_LOG_TYPE_ERROR, "%s Unable to take process assertion for background launch because BKSProcessAssertion is nil %@", buf, 0x16u);
       }
     }
@@ -94,15 +94,15 @@
 
   else
   {
-    v16 = [v8 _refId];
-    v17 = [v16 copy];
+    _refId = [requestCopy _refId];
+    v17 = [_refId copy];
 
     WeakRetained = objc_loadWeakRetained(&self->_taskmaster);
-    v19 = [WeakRetained delegate];
+    delegate = [WeakRetained delegate];
     v20 = objc_loadWeakRetained(&self->_taskmaster);
-    [v19 taskmaster:v20 didLaunchApplicationForRequestWithId:v17];
+    [delegate taskmaster:v20 didLaunchApplicationForRequestWithId:v17];
 
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -167,18 +167,18 @@ uint64_t __53__AFUIApplicationSiriTaskDeliverer_siriTaskDidFinish__block_invoke(
   return [v2 _invalidateBackboardServices];
 }
 
-- (void)deliverSiriTask:(id)a3 completionHandler:(id)a4
+- (void)deliverSiriTask:(id)task completionHandler:(id)handler
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(getUISiriTaskActionClass()) initWithPayload:v6];
+  taskCopy = task;
+  handlerCopy = handler;
+  v8 = [objc_alloc(getUISiriTaskActionClass()) initWithPayload:taskCopy];
   if (v8)
   {
-    v32 = v6;
-    v9 = [v6 request];
-    [(AFUIApplicationSiriTaskDeliverer *)self _startAppStateMonitoringForRequest:v9];
-    v10 = [v9 _makeAppFrontmost] ^ 1;
+    v32 = taskCopy;
+    request = [taskCopy request];
+    [(AFUIApplicationSiriTaskDeliverer *)self _startAppStateMonitoringForRequest:request];
+    v10 = [request _makeAppFrontmost] ^ 1;
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v12 = getFBSOpenApplicationOptionKeyActions();
     if (v12)
@@ -209,16 +209,16 @@ uint64_t __53__AFUIApplicationSiriTaskDeliverer_siriTaskDidFinish__block_invoke(
     }
 
     dispatch_group_enter(self->_bKSAssertionSetupGroup);
-    v18 = [getFBSOpenApplicationServiceClass() serviceWithDefaultShellEndpoint];
+    serviceWithDefaultShellEndpoint = [getFBSOpenApplicationServiceClass() serviceWithDefaultShellEndpoint];
     v31 = v16;
-    if (v18)
+    if (serviceWithDefaultShellEndpoint)
     {
       appBundleIdentifier = self->_appBundleIdentifier;
       [getFBSOpenApplicationOptionsClass() optionsWithDictionary:v11];
       v19 = v14;
       v20 = v12;
       v21 = v8;
-      v23 = v22 = v7;
+      v23 = v22 = handlerCopy;
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
       v33[2] = __70__AFUIApplicationSiriTaskDeliverer_deliverSiriTask_completionHandler___block_invoke;
@@ -226,10 +226,10 @@ uint64_t __53__AFUIApplicationSiriTaskDeliverer_siriTaskDidFinish__block_invoke(
       v33[4] = self;
       v35 = v22;
       v36 = v30;
-      v34 = v9;
-      [v18 openApplication:appBundleIdentifier withOptions:v23 completion:v33];
+      v34 = request;
+      [serviceWithDefaultShellEndpoint openApplication:appBundleIdentifier withOptions:v23 completion:v33];
 
-      v7 = v22;
+      handlerCopy = v22;
       v8 = v21;
       v12 = v20;
       v14 = v19;
@@ -248,10 +248,10 @@ uint64_t __53__AFUIApplicationSiriTaskDeliverer_siriTaskDidFinish__block_invoke(
       }
 
       v26 = [AFError errorWithCode:13];
-      (*(v7 + 2))(v7, v26);
+      (*(handlerCopy + 2))(handlerCopy, v26);
     }
 
-    v6 = v32;
+    taskCopy = v32;
   }
 
   else
@@ -276,8 +276,8 @@ uint64_t __53__AFUIApplicationSiriTaskDeliverer_siriTaskDidFinish__block_invoke(
       v8 = 0;
     }
 
-    v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"kAFAssistantErrorDomain" code:705 userInfo:0];
-    (*(v7 + 2))(v7, v9);
+    request = [MEMORY[0x1E696ABC0] errorWithDomain:@"kAFAssistantErrorDomain" code:705 userInfo:0];
+    (*(handlerCopy + 2))(handlerCopy, request);
   }
 
   v27 = *MEMORY[0x1E69E9840];
@@ -356,10 +356,10 @@ uint64_t __70__AFUIApplicationSiriTaskDeliverer_deliverSiriTask_completionHandle
   }
 }
 
-- (void)_processAssertionWasAcquired:(BOOL)a3
+- (void)_processAssertionWasAcquired:(BOOL)acquired
 {
   location[3] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (acquired)
   {
     v4 = AFPreferencesSiriTaskBackgroundAssertionTimeout();
     v5 = self->_appBundleIdentifier;
@@ -455,24 +455,24 @@ void __65__AFUIApplicationSiriTaskDeliverer__processAssertionWasAcquired___block
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processAssertionWasInvalidatedForRequest:(id)a3
+- (void)processAssertionWasInvalidatedForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77__AFUIApplicationSiriTaskDeliverer_processAssertionWasInvalidatedForRequest___block_invoke;
   v7[3] = &unk_1E7349860;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_processAssertionWasInvalidatedForRequest:(id)a3
+- (void)_processAssertionWasInvalidatedForRequest:(id)request
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
   {
@@ -516,8 +516,8 @@ void __65__AFUIApplicationSiriTaskDeliverer__processAssertionWasAcquired___block
   v16[2] = __78__AFUIApplicationSiriTaskDeliverer__processAssertionWasInvalidatedForRequest___block_invoke;
   v16[3] = &unk_1E7347040;
   v16[4] = self;
-  v17 = v4;
-  v13 = v4;
+  v17 = requestCopy;
+  v13 = requestCopy;
   [(BKSApplicationStateMonitor *)appStateMonitor applicationInfoForApplication:v12 completion:v16];
   [(AFUIApplicationSiriTaskDeliverer *)self _invalidateAssertionTimer];
   bKSAssertionForBgLaunch = self->_bKSAssertionForBgLaunch;
@@ -556,10 +556,10 @@ void __78__AFUIApplicationSiriTaskDeliverer__processAssertionWasInvalidatedForRe
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startAppStateMonitoringForRequest:(id)a3
+- (void)_startAppStateMonitoringForRequest:(id)request
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = self->_appBundleIdentifier;
   v6 = objc_alloc(getBKSApplicationStateMonitorClass());
   v17[0] = v5;
@@ -574,7 +574,7 @@ void __78__AFUIApplicationSiriTaskDeliverer__processAssertionWasInvalidatedForRe
     v13[1] = 3221225472;
     v13[2] = __71__AFUIApplicationSiriTaskDeliverer__startAppStateMonitoringForRequest___block_invoke;
     v13[3] = &unk_1E7347018;
-    v14 = v4;
+    v14 = requestCopy;
     v10 = MEMORY[0x193AFB7B0](v13);
     [(BKSApplicationStateMonitor *)self->_appStateMonitor setHandler:v10];
     [(BKSApplicationStateMonitor *)self->_appStateMonitor applicationInfoForApplication:v5 completion:v10];
@@ -628,13 +628,13 @@ void __71__AFUIApplicationSiriTaskDeliverer__startAppStateMonitoringForRequest__
   [(AFUIApplicationSiriTaskDeliverer *)&v3 dealloc];
 }
 
-- (AFUIApplicationSiriTaskDeliverer)initWithAppBundleIdentifier:(id)a3
+- (AFUIApplicationSiriTaskDeliverer)initWithAppBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"AFUIApplicationSiriTaskDeliverer.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"appBundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AFUIApplicationSiriTaskDeliverer.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"appBundleIdentifier"}];
   }
 
   v16.receiver = self;
@@ -642,7 +642,7 @@ void __71__AFUIApplicationSiriTaskDeliverer__startAppStateMonitoringForRequest__
   v6 = [(AFUIApplicationSiriTaskDeliverer *)&v16 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [identifierCopy copy];
     appBundleIdentifier = v6->_appBundleIdentifier;
     v6->_appBundleIdentifier = v7;
 

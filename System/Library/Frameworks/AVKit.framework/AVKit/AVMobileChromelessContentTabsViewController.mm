@@ -2,25 +2,25 @@
 - (AVMobileChromelessContentTabsViewController)init;
 - (AVMobileChromelessContentTabsViewControllerDelegate)delegate;
 - (void)_activeContentTab;
-- (void)_detachViewControllerIfNeeded:(uint64_t)a1;
-- (void)_didChangeContentTabTo:(id)a3;
+- (void)_detachViewControllerIfNeeded:(uint64_t)needed;
+- (void)_didChangeContentTabTo:(id)to;
 - (void)_invalidateContentViewScrollViewAnimator;
-- (void)_setActiveCustomInfoViewControllerForContentTab:(uint64_t)a1;
-- (void)_setSelectedCustomInfoViewControllerForContentTab:(uint64_t)a3 withChangingReason:;
-- (void)_updateContentTabsPresentationWithTransitioningState:(void *)a3 from:(void *)a4 to:;
-- (void)contentTabsView:(id)a3 didChangeContentTab:(id)a4 withReason:(unint64_t)a5;
+- (void)_setActiveCustomInfoViewControllerForContentTab:(uint64_t)tab;
+- (void)_setSelectedCustomInfoViewControllerForContentTab:(uint64_t)tab withChangingReason:;
+- (void)_updateContentTabsPresentationWithTransitioningState:(void *)state from:(void *)from to:;
+- (void)contentTabsView:(id)view didChangeContentTab:(id)tab withReason:(unint64_t)reason;
 - (void)invalidateContentTabsSelection;
 - (void)loadView;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
 - (void)selectInitialCustomInfoViewController;
-- (void)setCurrentContentTabIndex:(int64_t)a3;
-- (void)setCustomInfoViewControllers:(id)a3;
-- (void)setTransitionState:(unint64_t)a3;
-- (void)setUpcomingContentTab:(id)a3;
+- (void)setCurrentContentTabIndex:(int64_t)index;
+- (void)setCustomInfoViewControllers:(id)controllers;
+- (void)setTransitionState:(unint64_t)state;
+- (void)setUpcomingContentTab:(id)tab;
 - (void)updateSelectedCustomInfoViewController;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AVMobileChromelessContentTabsViewController
@@ -32,29 +32,29 @@
   return WeakRetained;
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v26 = a3;
+  deceleratingCopy = decelerating;
   [(AVMobileChromelessContentTabsViewController *)self _invalidateContentViewScrollViewAnimator];
   [(AVMobileChromelessContentTabsView *)self->_view setNeedsLayout];
-  [v26 frame];
+  [deceleratingCopy frame];
   v5 = v4;
-  [v26 contentOffset];
+  [deceleratingCopy contentOffset];
   v7 = (v6 / v5);
   if ([(AVMobileChromelessContentTabsView *)self->_view effectiveUserInterfaceLayoutDirection]== 1)
   {
-    v8 = [(AVMobileChromelessContentTabsView *)self->_view contentTabs];
-    v7 = [v8 count] + ~v7;
+    contentTabs = [(AVMobileChromelessContentTabsView *)self->_view contentTabs];
+    v7 = [contentTabs count] + ~v7;
   }
 
-  v9 = [(AVMobileChromelessContentTabsView *)self->_view contentTabs];
-  v10 = [v9 count];
+  contentTabs2 = [(AVMobileChromelessContentTabsView *)self->_view contentTabs];
+  v10 = [contentTabs2 count];
 
-  v11 = [v26 panGestureRecognizer];
-  v12 = [v11 view];
+  panGestureRecognizer = [deceleratingCopy panGestureRecognizer];
+  view = [panGestureRecognizer view];
 
-  v13 = [v26 panGestureRecognizer];
-  [v13 locationInView:v12];
+  panGestureRecognizer2 = [deceleratingCopy panGestureRecognizer];
+  [panGestureRecognizer2 locationInView:view];
   v15 = v14;
   v16 = v14 - 1;
   v17 = ((v14 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53;
@@ -74,14 +74,14 @@
     [(AVMobileChromelessContentTabsViewController *)self setCurrentContentTabIndex:v20];
     [(AVMobileChromelessContentTabsViewController *)self setTransitionState:0];
     [(AVMobileChromelessContentTabsViewController *)self setUpcomingContentTab:0];
-    v21 = [(AVMobileChromelessContentTabsViewController *)&self->super.super.super.isa _activeContentTab];
-    v22 = v21;
+    _activeContentTab = [(AVMobileChromelessContentTabsViewController *)&self->super.super.super.isa _activeContentTab];
+    v22 = _activeContentTab;
     if (self->_upcomingCustomInfoViewController)
     {
-      v23 = [v21 viewController];
+      viewController = [_activeContentTab viewController];
       upcomingCustomInfoViewController = self->_upcomingCustomInfoViewController;
 
-      if (v23 != upcomingCustomInfoViewController)
+      if (viewController != upcomingCustomInfoViewController)
       {
         [(AVMobileChromelessContentTabsViewController *)self _detachViewControllerIfNeeded:?];
         v25 = self->_upcomingCustomInfoViewController;
@@ -95,52 +95,52 @@
 
 - (void)_invalidateContentViewScrollViewAnimator
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 1040);
+    v2 = *(self + 1040);
     if (v2)
     {
       [v2 stopAnimation:1];
-      [*(a1 + 1040) finishAnimationAtPosition:2];
-      v3 = *(a1 + 1040);
-      *(a1 + 1040) = 0;
+      [*(self + 1040) finishAnimationAtPosition:2];
+      v3 = *(self + 1040);
+      *(self + 1040) = 0;
 
-      v4 = *(a1 + 1032);
+      v4 = *(self + 1032);
 
-      [(AVMobileChromelessContentTabsViewController *)a1 _detachViewControllerIfNeeded:v4];
+      [(AVMobileChromelessContentTabsViewController *)self _detachViewControllerIfNeeded:v4];
     }
   }
 }
 
 - (void)_activeContentTab
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1[124] contentTabs];
-    if (![v2 count] || v1[136] == -1)
+    contentTabs = [self[124] contentTabs];
+    if (![contentTabs count] || selfCopy[136] == -1)
     {
-      v1 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v1 = [v2 objectAtIndex:?];
+      selfCopy = [contentTabs objectAtIndex:?];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)_detachViewControllerIfNeeded:(uint64_t)a1
+- (void)_detachViewControllerIfNeeded:(uint64_t)needed
 {
   v3 = a2;
-  if (a1 && v3)
+  if (needed && v3)
   {
     v5 = v3;
     [v3 willMoveToParentViewController:0];
-    v4 = [v5 view];
-    [v4 removeFromSuperview];
+    view = [v5 view];
+    [view removeFromSuperview];
 
     [v5 removeFromParentViewController];
     [v5 didMoveToParentViewController:0];
@@ -149,26 +149,26 @@
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v28 = a3;
-  if ([v28 isTracking])
+  scrollCopy = scroll;
+  if ([scrollCopy isTracking])
   {
     [(AVMobileChromelessContentTabsViewController *)self _invalidateContentViewScrollViewAnimator];
   }
 
   v4 = self->_upcomingContentTab;
-  v5 = [(AVMobileChromelessContentTabsView *)self->_view contentTabs];
-  if ([v28 isTracking] && objc_msgSend(v28, "isDragging"))
+  contentTabs = [(AVMobileChromelessContentTabsView *)self->_view contentTabs];
+  if ([scrollCopy isTracking] && objc_msgSend(scrollCopy, "isDragging"))
   {
-    v6 = [(AVMobileChromelessContentTabsView *)self->_view effectiveUserInterfaceLayoutDirection];
-    v7 = [v28 panGestureRecognizer];
-    [v7 translationInView:v28];
+    effectiveUserInterfaceLayoutDirection = [(AVMobileChromelessContentTabsView *)self->_view effectiveUserInterfaceLayoutDirection];
+    panGestureRecognizer = [scrollCopy panGestureRecognizer];
+    [panGestureRecognizer translationInView:scrollCopy];
     v9 = v8;
 
     if (v9 <= 0.0)
     {
-      if (v6 == 1)
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         currentContentTabIndex = self->_currentContentTabIndex;
         if (currentContentTabIndex <= 1)
@@ -181,7 +181,7 @@
 
       else
       {
-        v16 = [v5 count];
+        v16 = [contentTabs count];
         v17 = self->_currentContentTabIndex;
         if (v16 - 1 >= (v17 + 1))
         {
@@ -194,12 +194,12 @@
         }
       }
 
-      v6 = 2;
+      effectiveUserInterfaceLayoutDirection = 2;
     }
 
-    else if (v6 == 1)
+    else if (effectiveUserInterfaceLayoutDirection == 1)
     {
-      v10 = [v5 count];
+      v10 = [contentTabs count];
       v11 = self->_currentContentTabIndex;
       if (v10 - 1 >= (v11 + 1))
       {
@@ -221,30 +221,30 @@
       }
 
       v12 = v15 - 1;
-      v6 = 1;
+      effectiveUserInterfaceLayoutDirection = 1;
     }
 
-    v13 = [v5 objectAtIndex:v12];
+    v13 = [contentTabs objectAtIndex:v12];
 
-    v18 = [v28 panGestureRecognizer];
-    v19 = [v18 view];
+    panGestureRecognizer2 = [scrollCopy panGestureRecognizer];
+    view = [panGestureRecognizer2 view];
 
-    v20 = [v28 panGestureRecognizer];
-    [v20 locationInView:v19];
+    panGestureRecognizer3 = [scrollCopy panGestureRecognizer];
+    [panGestureRecognizer3 locationInView:view];
     v22 = v21;
     v23 = v21 - 1;
     v24 = ((v21 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53;
 
     if (v22 >= 0 && v24 <= 0x3FE || v23 <= 0xFFFFFFFFFFFFELL)
     {
-      v27 = [(AVMobileChromelessContentTabsViewController *)&self->super.super.super.isa _activeContentTab];
+      _activeContentTab = [(AVMobileChromelessContentTabsViewController *)&self->super.super.super.isa _activeContentTab];
 
-      if (v27 != v13)
+      if (_activeContentTab != v13)
       {
         [(AVMobileChromelessContentTabsViewController *)self setUpcomingContentTab:v13];
       }
 
-      [(AVMobileChromelessContentTabsViewController *)self setTransitionState:v6];
+      [(AVMobileChromelessContentTabsViewController *)self setTransitionState:effectiveUserInterfaceLayoutDirection];
     }
   }
 
@@ -254,15 +254,15 @@
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  if (([v4 isDecelerating] & 1) == 0)
+  draggingCopy = dragging;
+  if (([draggingCopy isDecelerating] & 1) == 0)
   {
     [(AVMobileChromelessContentTabsView *)self->_view setNeedsLayout];
   }
 
-  if ([v4 isTracking])
+  if ([draggingCopy isTracking])
   {
     [(AVMobileChromelessContentTabsViewController *)self _invalidateContentViewScrollViewAnimator];
   }
@@ -270,14 +270,14 @@
   [(AVMobileChromelessContentTabsViewController *)self setTransitionState:0];
 }
 
-- (void)_didChangeContentTabTo:(id)a3
+- (void)_didChangeContentTabTo:(id)to
 {
-  if (a3)
+  if (to)
   {
     view = self->_view;
-    v5 = a3;
-    v6 = [(AVMobileChromelessContentTabsView *)view contentTabs];
-    v7 = [v6 indexOfObject:v5];
+    toCopy = to;
+    contentTabs = [(AVMobileChromelessContentTabsView *)view contentTabs];
+    v7 = [contentTabs indexOfObject:toCopy];
 
     initialContentTabIndex = v7;
   }
@@ -293,32 +293,32 @@
   [(AVMobileChromelessContentTabsViewController *)self setCurrentContentTabIndex:v7];
 }
 
-- (void)contentTabsView:(id)a3 didChangeContentTab:(id)a4 withReason:(unint64_t)a5
+- (void)contentTabsView:(id)view didChangeContentTab:(id)tab withReason:(unint64_t)reason
 {
-  v26 = a3;
-  v8 = a4;
-  v9 = v8;
-  self->_selectionChangedReason = a5;
-  if (a5 == 2)
+  viewCopy = view;
+  tabCopy = tab;
+  v9 = tabCopy;
+  self->_selectionChangedReason = reason;
+  if (reason == 2)
   {
-    [(AVMobileChromelessContentTabsViewController *)self _didChangeContentTabTo:v8];
+    [(AVMobileChromelessContentTabsViewController *)self _didChangeContentTabTo:tabCopy];
   }
 
   else
   {
-    if (a5 == 1)
+    if (reason == 1)
     {
       goto LABEL_16;
     }
 
-    if (a5)
+    if (reason)
     {
       goto LABEL_21;
     }
 
-    if (v8)
+    if (tabCopy)
     {
-      v10 = v8;
+      v10 = tabCopy;
       contentViewScrollViewAnimator = self->_contentViewScrollViewAnimator;
       v12 = 1.0;
       if (contentViewScrollViewAnimator && [(UIViewPropertyAnimator *)contentViewScrollViewAnimator isRunning]&& [(UIViewPropertyAnimator *)self->_contentViewScrollViewAnimator isInterruptible])
@@ -346,7 +346,7 @@
         v17 = 1.0;
       }
 
-      v18 = [v16 initWithDuration:v15 timingParameters:{v17 * 0.3, v26}];
+      v18 = [v16 initWithDuration:v15 timingParameters:{v17 * 0.3, viewCopy}];
       v19 = self->_contentViewScrollViewAnimator;
       self->_contentViewScrollViewAnimator = v18;
 
@@ -379,12 +379,12 @@
     }
   }
 
-  a5 = 0;
+  reason = 0;
 LABEL_16:
-  v23 = [(AVMobileChromelessContentTabsView *)self->_view selectedContentTab:v26];
-  v24 = [v23 viewController];
-  v25 = v24;
-  if (v24 && ([v24 isViewLoaded] & 1) == 0)
+  v23 = [(AVMobileChromelessContentTabsView *)self->_view selectedContentTab:viewCopy];
+  viewController = [v23 viewController];
+  v25 = viewController;
+  if (viewController && ([viewController isViewLoaded] & 1) == 0)
   {
     objc_initWeak(&from, self);
     block = MEMORY[0x1E69E9820];
@@ -393,7 +393,7 @@ LABEL_16:
     v36 = &unk_1E7207468;
     objc_copyWeak(v38, &from);
     v37 = v25;
-    v38[1] = a5;
+    v38[1] = reason;
     dispatch_async(MEMORY[0x1E69E96A0], &block);
 
     objc_destroyWeak(v38);
@@ -402,7 +402,7 @@ LABEL_16:
 
   else
   {
-    [(AVMobileChromelessContentTabsViewController *)&self->super.super.super.isa _setSelectedCustomInfoViewControllerForContentTab:v23 withChangingReason:a5];
+    [(AVMobileChromelessContentTabsViewController *)&self->super.super.super.isa _setSelectedCustomInfoViewControllerForContentTab:v23 withChangingReason:reason];
   }
 
 LABEL_21:
@@ -427,25 +427,25 @@ void __105__AVMobileChromelessContentTabsViewController__updateSelectedCustomInf
   }
 }
 
-- (void)_setSelectedCustomInfoViewControllerForContentTab:(uint64_t)a3 withChangingReason:
+- (void)_setSelectedCustomInfoViewControllerForContentTab:(uint64_t)tab withChangingReason:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v11 = v5;
-    v6 = [v5 viewController];
-    if (a1[126] != v6)
+    viewController = [v5 viewController];
+    if (self[126] != viewController)
     {
-      objc_storeStrong(a1 + 126, v6);
-      [(AVMobileChromelessContentTabsViewController *)a1 _setActiveCustomInfoViewControllerForContentTab:v11];
-      v7 = [a1 delegate];
+      objc_storeStrong(self + 126, viewController);
+      [(AVMobileChromelessContentTabsViewController *)self _setActiveCustomInfoViewControllerForContentTab:v11];
+      delegate = [self delegate];
       v8 = objc_opt_respondsToSelector();
 
       if (v8)
       {
-        v9 = [a1 delegate];
-        v10 = [v11 viewController];
-        [v9 contentTabsViewController:a1 didChangeSelectedCustomInfoViewController:v10 withReason:a3];
+        delegate2 = [self delegate];
+        viewController2 = [v11 viewController];
+        [delegate2 contentTabsViewController:self didChangeSelectedCustomInfoViewController:viewController2 withReason:tab];
       }
     }
 
@@ -453,26 +453,26 @@ void __105__AVMobileChromelessContentTabsViewController__updateSelectedCustomInf
   }
 }
 
-- (void)_setActiveCustomInfoViewControllerForContentTab:(uint64_t)a1
+- (void)_setActiveCustomInfoViewControllerForContentTab:(uint64_t)tab
 {
   v3 = a2;
-  if (a1)
+  if (tab)
   {
     v16 = v3;
-    v4 = [v3 viewController];
-    v5 = v4;
-    if (*(a1 + 1016) != v4)
+    viewController = [v3 viewController];
+    v5 = viewController;
+    if (*(tab + 1016) != viewController)
     {
-      v6 = [v4 view];
+      view = [viewController view];
       if (v5 && ([v5 isViewLoaded] & 1) == 0)
       {
         [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Error: Internal inconsistency. The activeCustomInfoViewController's view has not been loaded yet."];
       }
 
-      v7 = [v5 parentViewController];
-      if (v7)
+      parentViewController = [v5 parentViewController];
+      if (parentViewController)
       {
-        v8 = *(a1 + 1024);
+        v8 = *(tab + 1024);
 
         if (v5 != v8)
         {
@@ -480,10 +480,10 @@ void __105__AVMobileChromelessContentTabsViewController__updateSelectedCustomInf
         }
       }
 
-      v9 = [v6 superview];
-      if (v9)
+      superview = [view superview];
+      if (superview)
       {
-        v10 = *(a1 + 1024);
+        v10 = *(tab + 1024);
 
         if (v5 != v10)
         {
@@ -491,51 +491,51 @@ void __105__AVMobileChromelessContentTabsViewController__updateSelectedCustomInf
         }
       }
 
-      v11 = *(a1 + 1016);
-      if (v11 && !*(a1 + 1040))
+      v11 = *(tab + 1016);
+      if (v11 && !*(tab + 1040))
       {
-        [(AVMobileChromelessContentTabsViewController *)a1 _detachViewControllerIfNeeded:v11];
+        [(AVMobileChromelessContentTabsViewController *)tab _detachViewControllerIfNeeded:v11];
       }
 
       else
       {
-        objc_storeStrong((a1 + 1032), v11);
+        objc_storeStrong((tab + 1032), v11);
       }
 
-      objc_storeStrong((a1 + 1016), v5);
-      v12 = *(a1 + 1024);
-      v13 = *(a1 + 1016);
+      objc_storeStrong((tab + 1016), v5);
+      v12 = *(tab + 1024);
+      v13 = *(tab + 1016);
       if (v12 && v12 == v13)
       {
-        *(a1 + 1024) = 0;
+        *(tab + 1024) = 0;
       }
 
       else if (v13)
       {
-        [v13 willMoveToParentViewController:a1];
-        [a1 addChildViewController:*(a1 + 1016)];
-        [*(a1 + 1016) didMoveToParentViewController:a1];
+        [v13 willMoveToParentViewController:tab];
+        [tab addChildViewController:*(tab + 1016)];
+        [*(tab + 1016) didMoveToParentViewController:tab];
       }
 
-      v14 = [a1 transitionState];
-      v15 = [*(a1 + 992) selectedContentTab];
-      [(AVMobileChromelessContentTabsViewController *)a1 _updateContentTabsPresentationWithTransitioningState:v14 from:v15 to:v16];
+      transitionState = [tab transitionState];
+      selectedContentTab = [*(tab + 992) selectedContentTab];
+      [(AVMobileChromelessContentTabsViewController *)tab _updateContentTabsPresentationWithTransitioningState:transitionState from:selectedContentTab to:v16];
     }
 
     v3 = v16;
   }
 }
 
-- (void)_updateContentTabsPresentationWithTransitioningState:(void *)a3 from:(void *)a4 to:
+- (void)_updateContentTabsPresentationWithTransitioningState:(void *)state from:(void *)from to:
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  stateCopy = state;
+  fromCopy = from;
+  if (self)
   {
-    v9 = v7;
-    v10 = v8;
-    v11 = *(a1 + 1048);
+    v9 = stateCopy;
+    v10 = fromCopy;
+    v11 = *(self + 1048);
     v12 = _AVLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -550,7 +550,7 @@ void __105__AVMobileChromelessContentTabsViewController__updateSelectedCustomInf
       _os_log_impl(&dword_18B49C000, v12, OS_LOG_TYPE_DEFAULT, "%s Transitioning content tabs from: %@ --> to: %@, with transitioning state: %ld", buf, 0x2Au);
     }
 
-    v13 = *(a1 + 992);
+    v13 = *(self + 992);
     v14 = v9;
     v16[0] = v14;
     v15 = v10;
@@ -588,55 +588,55 @@ void __97__AVMobileChromelessContentTabsViewController__performHorizontalTransit
   }
 }
 
-- (void)setCurrentContentTabIndex:(int64_t)a3
+- (void)setCurrentContentTabIndex:(int64_t)index
 {
-  if (self->_currentContentTabIndex != a3)
+  if (self->_currentContentTabIndex != index)
   {
-    self->_currentContentTabIndex = a3;
-    v5 = [(AVMobileChromelessContentTabsViewController *)&self->super.super.super.isa _activeContentTab];
-    [(AVMobileChromelessContentTabsViewController *)self _setActiveCustomInfoViewControllerForContentTab:v5];
+    self->_currentContentTabIndex = index;
+    _activeContentTab = [(AVMobileChromelessContentTabsViewController *)&self->super.super.super.isa _activeContentTab];
+    [(AVMobileChromelessContentTabsViewController *)self _setActiveCustomInfoViewControllerForContentTab:_activeContentTab];
   }
 }
 
-- (void)setTransitionState:(unint64_t)a3
+- (void)setTransitionState:(unint64_t)state
 {
-  if (self->_transitionState != a3)
+  if (self->_transitionState != state)
   {
-    self->_transitionState = a3;
-    v7 = [(AVMobileChromelessContentTabsViewController *)&self->super.super.super.isa _activeContentTab];
-    v6 = [(AVMobileChromelessContentTabsViewController *)self upcomingContentTab];
-    [(AVMobileChromelessContentTabsViewController *)self _updateContentTabsPresentationWithTransitioningState:a3 from:v7 to:v6];
+    self->_transitionState = state;
+    _activeContentTab = [(AVMobileChromelessContentTabsViewController *)&self->super.super.super.isa _activeContentTab];
+    upcomingContentTab = [(AVMobileChromelessContentTabsViewController *)self upcomingContentTab];
+    [(AVMobileChromelessContentTabsViewController *)self _updateContentTabsPresentationWithTransitioningState:state from:_activeContentTab to:upcomingContentTab];
   }
 }
 
-- (void)setUpcomingContentTab:(id)a3
+- (void)setUpcomingContentTab:(id)tab
 {
-  v5 = a3;
-  if (self->_upcomingContentTab != v5)
+  tabCopy = tab;
+  if (self->_upcomingContentTab != tabCopy)
   {
-    v16 = v5;
-    objc_storeStrong(&self->_upcomingContentTab, a3);
+    v16 = tabCopy;
+    objc_storeStrong(&self->_upcomingContentTab, tab);
     v6 = self->_upcomingContentTab;
-    v7 = [(AVMobileContentTab *)v6 viewController];
-    v8 = v7;
-    if (self->_upcomingCustomInfoViewController != v7)
+    viewController = [(AVMobileContentTab *)v6 viewController];
+    v8 = viewController;
+    if (self->_upcomingCustomInfoViewController != viewController)
     {
-      v9 = [(UIViewController *)v7 view];
+      view = [(UIViewController *)viewController view];
       if (v8 && ![(UIViewController *)v8 isViewLoaded])
       {
         [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Error: Internal inconsistency. The upcomingCustomInfoViewController's view has not been loaded yet."];
       }
 
-      v10 = [(UIViewController *)v8 parentViewController];
+      parentViewController = [(UIViewController *)v8 parentViewController];
 
-      if (v10)
+      if (parentViewController)
       {
         [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"A customInfoViewController already has a parent view controller: %@", v8}];
       }
 
-      v11 = [v9 superview];
+      superview = [view superview];
 
-      if (v11)
+      if (superview)
       {
         [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"A customInfoViewController's view already has a superview: %@", v8}];
       }
@@ -656,12 +656,12 @@ void __97__AVMobileChromelessContentTabsViewController__performHorizontalTransit
         [(UIViewController *)self->_upcomingCustomInfoViewController didMoveToParentViewController:self];
       }
 
-      v14 = [(AVMobileChromelessContentTabsViewController *)self transitionState];
-      v15 = [(AVMobileChromelessContentTabsViewController *)&self->super.super.super.isa _activeContentTab];
-      [(AVMobileChromelessContentTabsViewController *)self _updateContentTabsPresentationWithTransitioningState:v14 from:v15 to:v6];
+      transitionState = [(AVMobileChromelessContentTabsViewController *)self transitionState];
+      _activeContentTab = [(AVMobileChromelessContentTabsViewController *)&self->super.super.super.isa _activeContentTab];
+      [(AVMobileChromelessContentTabsViewController *)self _updateContentTabsPresentationWithTransitioningState:transitionState from:_activeContentTab to:v6];
     }
 
-    v5 = v16;
+    tabCopy = v16;
   }
 }
 
@@ -679,8 +679,8 @@ void __97__AVMobileChromelessContentTabsViewController__performHorizontalTransit
       v8 = initialContentTabIndex;
     }
 
-    v9 = [(AVMobileChromelessContentTabsView *)self->_view contentTabs];
-    v10 = [v9 objectAtIndex:v8];
+    contentTabs = [(AVMobileChromelessContentTabsView *)self->_view contentTabs];
+    v10 = [contentTabs objectAtIndex:v8];
   }
 
   else
@@ -703,16 +703,16 @@ void __97__AVMobileChromelessContentTabsViewController__performHorizontalTransit
 
 - (void)updateSelectedCustomInfoViewController
 {
-  v3 = [(AVMobileChromelessContentTabsView *)self->_view selectedContentTab];
-  [(AVMobileChromelessContentTabsViewController *)self _setActiveCustomInfoViewControllerForContentTab:v3];
+  selectedContentTab = [(AVMobileChromelessContentTabsView *)self->_view selectedContentTab];
+  [(AVMobileChromelessContentTabsViewController *)self _setActiveCustomInfoViewControllerForContentTab:selectedContentTab];
 }
 
-- (void)setCustomInfoViewControllers:(id)a3
+- (void)setCustomInfoViewControllers:(id)controllers
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (self->_customInfoViewControllers != a3)
+  if (self->_customInfoViewControllers != controllers)
   {
-    v4 = [a3 copy];
+    v4 = [controllers copy];
     customInfoViewControllers = self->_customInfoViewControllers;
     self->_customInfoViewControllers = v4;
 
@@ -760,21 +760,21 @@ void __97__AVMobileChromelessContentTabsViewController__performHorizontalTransit
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v11.receiver = self;
   v11.super_class = AVMobileChromelessContentTabsViewController;
-  [(AVMobileChromelessContentTabsViewController *)&v11 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(AVMobileChromelessContentTabsViewController *)&v11 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __98__AVMobileChromelessContentTabsViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E7209140;
   objc_copyWeak(&v9, &location);
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
@@ -812,10 +812,10 @@ void __98__AVMobileChromelessContentTabsViewController_viewWillTransitionToSize_
   v2 = [(AVMobileChromelessContentTabsViewController *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
-    v4 = [v3 traitCollection];
+    avkit_mainScreen = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
+    traitCollection = [avkit_mainScreen traitCollection];
 
-    v5 = [[AVMobileChromelessControlsStyleSheet alloc] initWithTraitCollection:v4];
+    v5 = [[AVMobileChromelessControlsStyleSheet alloc] initWithTraitCollection:traitCollection];
     styleSheet = v2->_styleSheet;
     v2->_styleSheet = v5;
 

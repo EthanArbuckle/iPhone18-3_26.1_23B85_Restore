@@ -1,27 +1,27 @@
 @interface LookAroundButtonContainerViewController
-+ (BOOL)isIncompleteMapItem:(id)a3;
-+ (CGSize)sizeForPreviewSize:(int64_t)a3;
-+ (int64_t)previewSizeWithContainerStyle:(unint64_t)a3;
++ (BOOL)isIncompleteMapItem:(id)item;
++ (CGSize)sizeForPreviewSize:(int64_t)size;
++ (int64_t)previewSizeWithContainerStyle:(unint64_t)style;
 - (CGAffineTransform)_collapsedPreviewTransform;
 - (CGAffineTransform)_expandedButtonTransform;
 - (CGSize)_buttonSize;
 - (CGSize)_previewSize;
 - (LookAroundButtonContainerViewControllerDelegate)delegate;
 - (double)_cornerRadius;
-- (id)_buttonTintColorForExpanded:(BOOL)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_applyViewPropertiesForState:(int64_t)a3;
+- (id)_buttonTintColorForExpanded:(BOOL)expanded;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_applyViewPropertiesForState:(int64_t)state;
 - (void)_invalidateConstraints;
 - (void)_loadLookAroundContainerView;
 - (void)_unloadLookAroundContainerView;
 - (void)_updateBadgeLayout;
 - (void)_updateConstraints;
-- (void)setContainerStyle:(unint64_t)a3;
-- (void)setMapItem:(id)a3 isMarkedLocation:(BOOL)a4 willChangeHidden:(BOOL)a5 animated:(BOOL)a6;
-- (void)tappedLookAroundButton:(id)a3;
-- (void)tappedLookAroundPreview:(id)a3;
-- (void)updateLookAroundViewWithMapItem:(id)a3 isMarkedLocation:(BOOL)a4 willChangeHidden:(BOOL)a5 animated:(BOOL)a6;
+- (void)setContainerStyle:(unint64_t)style;
+- (void)setMapItem:(id)item isMarkedLocation:(BOOL)location willChangeHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)tappedLookAroundButton:(id)button;
+- (void)tappedLookAroundPreview:(id)preview;
+- (void)updateLookAroundViewWithMapItem:(id)item isMarkedLocation:(BOOL)location willChangeHidden:(BOOL)hidden animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
@@ -38,8 +38,8 @@
 
   [self->_lookAroundButtonCardView setTranslatesAutoresizingMaskIntoConstraints:0];
   [self->_lookAroundButtonCardView setLayoutStyle:6];
-  v5 = [(LookAroundButtonContainerViewController *)self view];
-  [v5 addSubview:self->_lookAroundButtonCardView];
+  view = [(LookAroundButtonContainerViewController *)self view];
+  [view addSubview:self->_lookAroundButtonCardView];
 
   v6 = [MapsThemeButton buttonWithType:0];
   lookAroundButton = self->_lookAroundButton;
@@ -79,11 +79,11 @@
   [(UIButton *)self->_lookAroundButton setTintColor:v16];
 
   [(UIButton *)self->_lookAroundButton setAccessibilityIdentifier:@"LookAroundButton"];
-  v17 = [self->_lookAroundButtonCardView contentView];
-  [v17 addSubview:self->_lookAroundButton];
+  contentView = [self->_lookAroundButtonCardView contentView];
+  [contentView addSubview:self->_lookAroundButton];
 
-  v18 = [(LookAroundButtonContainerViewController *)self view];
-  [v18 _mapkit_addPointerInteractionWithDelegate:self];
+  view2 = [(LookAroundButtonContainerViewController *)self view];
+  [view2 _mapkit_addPointerInteractionWithDelegate:self];
 
   [(LookAroundButtonContainerViewController *)self _updateConstraints];
 }
@@ -120,25 +120,25 @@
 
     v13 = objc_alloc_init(NSMutableArray);
     lookAroundButtonCardView = self->_lookAroundButtonCardView;
-    v15 = [(LookAroundButtonContainerViewController *)self view];
+    view = [(LookAroundButtonContainerViewController *)self view];
     LODWORD(v16) = 1148846080;
-    v17 = [lookAroundButtonCardView _maps_constraintsEqualToEdgesOfView:v15 priority:v16];
-    v18 = [v17 allConstraints];
-    [v13 addObjectsFromArray:v18];
+    v17 = [lookAroundButtonCardView _maps_constraintsEqualToEdgesOfView:view priority:v16];
+    allConstraints = [v17 allConstraints];
+    [v13 addObjectsFromArray:allConstraints];
 
-    v60 = [(LookAroundButtonContainerViewController *)self view];
-    v59 = [v60 widthAnchor];
-    v58 = [v59 constraintEqualToConstant:v11];
+    view2 = [(LookAroundButtonContainerViewController *)self view];
+    widthAnchor = [view2 widthAnchor];
+    v58 = [widthAnchor constraintEqualToConstant:v11];
     v62[0] = v58;
-    v19 = [(LookAroundButtonContainerViewController *)self view];
-    v20 = [v19 heightAnchor];
-    v21 = [v20 constraintEqualToConstant:v12];
+    view3 = [(LookAroundButtonContainerViewController *)self view];
+    heightAnchor = [view3 heightAnchor];
+    v21 = [heightAnchor constraintEqualToConstant:v12];
     v62[1] = v21;
-    v22 = [(UIButton *)self->_lookAroundButton widthAnchor];
-    v23 = [v22 constraintEqualToConstant:v4];
+    widthAnchor2 = [(UIButton *)self->_lookAroundButton widthAnchor];
+    v23 = [widthAnchor2 constraintEqualToConstant:v4];
     v62[2] = v23;
-    v24 = [(UIButton *)self->_lookAroundButton heightAnchor];
-    v25 = [v24 constraintEqualToConstant:v6];
+    heightAnchor2 = [(UIButton *)self->_lookAroundButton heightAnchor];
+    v25 = [heightAnchor2 constraintEqualToConstant:v6];
     v62[3] = v25;
     v26 = [NSArray arrayWithObjects:v62 count:4];
     [v13 addObjectsFromArray:v26];
@@ -146,11 +146,11 @@
     lookAroundContainerView = self->_lookAroundContainerView;
     if (lookAroundContainerView)
     {
-      v28 = [(MKLookAroundContainerView *)lookAroundContainerView widthAnchor];
-      v29 = [v28 constraintEqualToConstant:v9];
+      widthAnchor3 = [(MKLookAroundContainerView *)lookAroundContainerView widthAnchor];
+      v29 = [widthAnchor3 constraintEqualToConstant:v9];
       v61[0] = v29;
-      v30 = [(MKLookAroundContainerView *)self->_lookAroundContainerView heightAnchor];
-      v31 = [v30 constraintEqualToConstant:v10];
+      heightAnchor3 = [(MKLookAroundContainerView *)self->_lookAroundContainerView heightAnchor];
+      v31 = [heightAnchor3 constraintEqualToConstant:v10];
       v61[1] = v31;
       v32 = [NSArray arrayWithObjects:v61 count:2];
       [v13 addObjectsFromArray:v32];
@@ -165,12 +165,12 @@
     else
     {
       v35 = +[UIDevice currentDevice];
-      v36 = [v35 userInterfaceIdiom];
+      userInterfaceIdiom = [v35 userInterfaceIdiom];
 
       if (_UISolariumEnabled())
       {
         LOBYTE(v34) = 1;
-        if ((v36 & 0xFFFFFFFFFFFFFFFBLL) != 1 && containerStyle < 8)
+        if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 && containerStyle < 8)
         {
           v34 = 0x5Cu >> containerStyle;
         }
@@ -178,59 +178,59 @@
 
       else
       {
-        LOBYTE(v34) = v36 != 5;
+        LOBYTE(v34) = userInterfaceIdiom != 5;
       }
     }
 
-    v37 = [(UIButton *)self->_lookAroundButton bottomAnchor];
-    v38 = [self->_lookAroundButtonCardView contentView];
-    v39 = [v38 bottomAnchor];
-    v40 = [v37 constraintEqualToAnchor:v39];
+    bottomAnchor = [(UIButton *)self->_lookAroundButton bottomAnchor];
+    contentView = [self->_lookAroundButtonCardView contentView];
+    bottomAnchor2 = [contentView bottomAnchor];
+    v40 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v13 addObject:v40];
 
     lookAroundButton = self->_lookAroundButton;
     if (v34)
     {
-      v42 = [(UIButton *)lookAroundButton leadingAnchor];
-      v43 = [self->_lookAroundButtonCardView contentView];
-      [v43 leadingAnchor];
+      leadingAnchor = [(UIButton *)lookAroundButton leadingAnchor];
+      contentView2 = [self->_lookAroundButtonCardView contentView];
+      [contentView2 leadingAnchor];
     }
 
     else
     {
-      v42 = [(UIButton *)lookAroundButton trailingAnchor];
-      v43 = [self->_lookAroundButtonCardView contentView];
-      [v43 trailingAnchor];
+      leadingAnchor = [(UIButton *)lookAroundButton trailingAnchor];
+      contentView2 = [self->_lookAroundButtonCardView contentView];
+      [contentView2 trailingAnchor];
     }
     v44 = ;
-    v45 = [v42 constraintEqualToAnchor:v44];
+    v45 = [leadingAnchor constraintEqualToAnchor:v44];
     [v13 addObject:v45];
 
     v46 = self->_lookAroundContainerView;
     if (v46)
     {
-      v47 = [(MKLookAroundContainerView *)v46 bottomAnchor];
-      v48 = [(LookAroundButtonContainerViewController *)self view];
-      v49 = [v48 bottomAnchor];
-      v50 = [v47 constraintEqualToAnchor:v49];
+      bottomAnchor3 = [(MKLookAroundContainerView *)v46 bottomAnchor];
+      view4 = [(LookAroundButtonContainerViewController *)self view];
+      bottomAnchor4 = [view4 bottomAnchor];
+      v50 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       [v13 addObject:v50];
 
       v51 = self->_lookAroundContainerView;
       if (v34)
       {
-        v52 = [(MKLookAroundContainerView *)v51 leadingAnchor];
-        v53 = [(LookAroundButtonContainerViewController *)self view];
-        [v53 leadingAnchor];
+        leadingAnchor2 = [(MKLookAroundContainerView *)v51 leadingAnchor];
+        view5 = [(LookAroundButtonContainerViewController *)self view];
+        [view5 leadingAnchor];
       }
 
       else
       {
-        v52 = [(MKLookAroundContainerView *)v51 trailingAnchor];
-        v53 = [(LookAroundButtonContainerViewController *)self view];
-        [v53 trailingAnchor];
+        leadingAnchor2 = [(MKLookAroundContainerView *)v51 trailingAnchor];
+        view5 = [(LookAroundButtonContainerViewController *)self view];
+        [view5 trailingAnchor];
       }
       v54 = ;
-      v55 = [v52 constraintEqualToAnchor:v54];
+      v55 = [leadingAnchor2 constraintEqualToAnchor:v54];
       [v13 addObject:v55];
     }
 
@@ -269,25 +269,25 @@
   return WeakRetained;
 }
 
-- (void)tappedLookAroundPreview:(id)a3
+- (void)tappedLookAroundPreview:(id)preview
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   mapItem = self->_mapItem;
   isMarkedLocation = self->_isMarkedLocation;
-  v6 = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
-  [WeakRetained enterLookAroundForMapItem:mapItem isMarkedLocation:isMarkedLocation lookAroundView:v6];
+  lookAroundViewIfPresent = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
+  [WeakRetained enterLookAroundForMapItem:mapItem isMarkedLocation:isMarkedLocation lookAroundView:lookAroundViewIfPresent];
 }
 
-- (void)tappedLookAroundButton:(id)a3
+- (void)tappedLookAroundButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained enterLookAroundPIP:v4];
+  [WeakRetained enterLookAroundPIP:buttonCopy];
 }
 
-- (id)_buttonTintColorForExpanded:(BOOL)a3
+- (id)_buttonTintColorForExpanded:(BOOL)expanded
 {
-  if (a3)
+  if (expanded)
   {
     v3 = +[UIColor whiteColor];
   }
@@ -320,10 +320,10 @@
   else
   {
     v7 = +[UIDevice currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    userInterfaceIdiom = [v7 userInterfaceIdiom];
 
     v9 = _UISolariumEnabled();
-    v10 = (v8 & 0xFFFFFFFFFFFFFFFBLL) == 1 || containerStyle >= 8;
+    v10 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 || containerStyle >= 8;
     v11 = 0x5Cu >> containerStyle;
     if (v10)
     {
@@ -337,12 +337,12 @@
 
     else
     {
-      v6 = v8 != 5;
+      v6 = userInterfaceIdiom != 5;
     }
   }
 
-  v12 = [(LookAroundButtonContainerViewController *)self view];
-  v13 = [v12 effectiveUserInterfaceLayoutDirection];
+  view = [(LookAroundButtonContainerViewController *)self view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
   [(LookAroundButtonContainerViewController *)self _buttonSize];
   v15 = v14;
@@ -357,7 +357,7 @@
   *&retstr->tx = v23;
   v24 = (v19 - v15) * 0.5;
   v25 = -v24;
-  if (((v6 ^ (v13 == 1)) & 1) == 0)
+  if (((v6 ^ (effectiveUserInterfaceLayoutDirection == 1)) & 1) == 0)
   {
     v25 = v24;
   }
@@ -389,10 +389,10 @@
   else
   {
     v7 = +[UIDevice currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    userInterfaceIdiom = [v7 userInterfaceIdiom];
 
     v9 = _UISolariumEnabled();
-    v10 = (v8 & 0xFFFFFFFFFFFFFFFBLL) == 1 || containerStyle >= 8;
+    v10 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 || containerStyle >= 8;
     v11 = 0x5Cu >> containerStyle;
     if (v10)
     {
@@ -406,12 +406,12 @@
 
     else
     {
-      v6 = v8 != 5;
+      v6 = userInterfaceIdiom != 5;
     }
   }
 
-  v12 = [(LookAroundButtonContainerViewController *)self view];
-  v13 = [v12 effectiveUserInterfaceLayoutDirection] == 1;
+  view = [(LookAroundButtonContainerViewController *)self view];
+  v13 = [view effectiveUserInterfaceLayoutDirection] == 1;
 
   v14 = *&CGAffineTransformIdentity.a;
   v15 = *&CGAffineTransformIdentity.c;
@@ -452,10 +452,10 @@
   else
   {
     v5 = +[UIDevice currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    userInterfaceIdiom = [v5 userInterfaceIdiom];
 
     v7 = _UISolariumEnabled();
-    v8 = (v6 & 0xFFFFFFFFFFFFFFFBLL) == 1 || containerStyle >= 8;
+    v8 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 || containerStyle >= 8;
     v9 = 0x5Cu >> containerStyle;
     if (v8)
     {
@@ -469,7 +469,7 @@
 
     else
     {
-      v4 = v6 != 5;
+      v4 = userInterfaceIdiom != 5;
     }
   }
 
@@ -478,11 +478,11 @@
   [(MKLookAroundContainerView *)lookAroundContainerView setBadgeOnLeadingEdge:v4];
 }
 
-- (void)_applyViewPropertiesForState:(int64_t)a3
+- (void)_applyViewPropertiesForState:(int64_t)state
 {
-  if (a3 > 1)
+  if (state > 1)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
       [self->_lookAroundButtonCardView setHidden:0];
       [self->_lookAroundButtonCardView setAlpha:1.0];
@@ -503,7 +503,7 @@
 
     else
     {
-      if (a3 != 3)
+      if (state != 3)
       {
         return;
       }
@@ -533,9 +533,9 @@
     v8 = *&CGAffineTransformIdentity.tx;
   }
 
-  else if (a3)
+  else if (state)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       return;
     }
@@ -647,16 +647,16 @@
     {
       [(LookAroundButtonContainerViewController *)self _cornerRadius];
       v11 = v10;
-      v12 = [(MKLookAroundContainerView *)self->_lookAroundContainerView layer];
-      [v12 setCornerRadius:v11];
+      layer = [(MKLookAroundContainerView *)self->_lookAroundContainerView layer];
+      [layer setCornerRadius:v11];
 
-      v13 = [(MKLookAroundContainerView *)self->_lookAroundContainerView layer];
-      [v13 setMasksToBounds:1];
+      layer2 = [(MKLookAroundContainerView *)self->_lookAroundContainerView layer];
+      [layer2 setMasksToBounds:1];
     }
 
     [(MKLookAroundContainerView *)self->_lookAroundContainerView setAccessibilityIdentifier:@"LookAroundPreview"];
-    v14 = [(LookAroundButtonContainerViewController *)self view];
-    [v14 insertSubview:self->_lookAroundContainerView aboveSubview:self->_lookAroundButtonCardView];
+    view = [(LookAroundButtonContainerViewController *)self view];
+    [view insertSubview:self->_lookAroundContainerView aboveSubview:self->_lookAroundButtonCardView];
 
     v15 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"tappedLookAroundPreview:"];
     [(MKLookAroundContainerView *)self->_lookAroundContainerView addGestureRecognizer:v15];
@@ -676,16 +676,16 @@
   return result;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = [UITargetedPreview alloc];
-  v6 = [(LookAroundButtonContainerViewController *)self view];
-  v7 = [v5 initWithView:v6];
+  view = [(LookAroundButtonContainerViewController *)self view];
+  v7 = [v5 initWithView:view];
 
   v8 = [UIPointerEffect effectWithPreview:v7];
   [(LookAroundButtonContainerViewController *)self _cornerRadius];
-  v9 = [(LookAroundButtonContainerViewController *)self view];
-  [v9 frame];
+  view2 = [(LookAroundButtonContainerViewController *)self view];
+  [view2 frame];
   v10 = [UIPointerShape shapeWithRoundedRect:"shapeWithRoundedRect:cornerRadius:" cornerRadius:?];
 
   v11 = [UIPointerStyle styleWithEffect:v8 shape:v10];
@@ -693,17 +693,17 @@
   return v11;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a4;
-  v7 = [(LookAroundButtonContainerViewController *)self view];
-  [v7 bounds];
+  requestCopy = request;
+  view = [(LookAroundButtonContainerViewController *)self view];
+  [view bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  [v6 location];
+  [requestCopy location];
   v17 = v16;
   v19 = v18;
 
@@ -726,11 +726,11 @@
   return v20;
 }
 
-- (void)setContainerStyle:(unint64_t)a3
+- (void)setContainerStyle:(unint64_t)style
 {
-  if (self->_containerStyle != a3)
+  if (self->_containerStyle != style)
   {
-    self->_containerStyle = a3;
+    self->_containerStyle = style;
     [(LookAroundButtonContainerViewController *)self _updateBadgeLayout];
     [(LookAroundButtonContainerViewController *)self _invalidateConstraints];
 
@@ -738,32 +738,32 @@
   }
 }
 
-- (void)updateLookAroundViewWithMapItem:(id)a3 isMarkedLocation:(BOOL)a4 willChangeHidden:(BOOL)a5 animated:(BOOL)a6
+- (void)updateLookAroundViewWithMapItem:(id)item isMarkedLocation:(BOOL)location willChangeHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = [v10 _hasLookAroundStorefront];
-  v12 = v11;
-  v13 = v7;
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  itemCopy = item;
+  _hasLookAroundStorefront = [itemCopy _hasLookAroundStorefront];
+  v12 = _hasLookAroundStorefront;
+  v13 = hiddenCopy;
   v14 = 2;
-  if (v7)
+  if (hiddenCopy)
   {
     v14 = 3;
   }
 
-  if (v11)
+  if (_hasLookAroundStorefront)
   {
     v15 = v14;
   }
 
   else
   {
-    v15 = v7;
+    v15 = hiddenCopy;
   }
 
   v16 = objc_alloc_init(GroupAnimation);
-  [(GroupAnimation *)v16 setAnimated:v6];
+  [(GroupAnimation *)v16 setAnimated:animatedCopy];
   [(GroupAnimation *)v16 setDuration:0.3];
   [(GroupAnimation *)v16 setOptions:4];
   [(GroupAnimation *)v16 setPreventsAnimationDuringPreparation:1];
@@ -774,9 +774,9 @@
   v28 = v12;
   v25[4] = self;
   v27 = v13;
-  v17 = v10;
+  v17 = itemCopy;
   v26 = v17;
-  v29 = a4;
+  locationCopy = location;
   [(GroupAnimation *)v16 addPreparation:v25];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
@@ -798,8 +798,8 @@
   {
     v18 = +[NSMutableDictionary dictionary];
     [v18 setObject:v17 forKeyedSubscript:@"PPTLookAroundChromeOverlayMapItemUserInfoKey"];
-    v19 = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
-    [v18 setObject:v19 forKeyedSubscript:@"PPTLookAroundChromeOverlayLookAroundViewUserInfoKey"];
+    lookAroundViewIfPresent = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
+    [v18 setObject:lookAroundViewIfPresent forKeyedSubscript:@"PPTLookAroundChromeOverlayLookAroundViewUserInfoKey"];
 
     [PPTNotificationCenter postNotificationIfNeededWithName:@"PPTLookAroundChromeOverlayDidShowLookAroundPreviewNotificationName" object:0 userInfo:v18];
   }
@@ -808,14 +808,14 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setMapItem:(id)a3 isMarkedLocation:(BOOL)a4 willChangeHidden:(BOOL)a5 animated:(BOOL)a6
+- (void)setMapItem:(id)item isMarkedLocation:(BOOL)location willChangeHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v12 = a3;
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  locationCopy = location;
+  itemCopy = item;
   mapItem = self->_mapItem;
-  if ((mapItem == v12 || [(MKMapItem *)mapItem isEqual:v12]) && self->_isMarkedLocation == v8)
+  if ((mapItem == itemCopy || [(MKMapItem *)mapItem isEqual:itemCopy]) && self->_isMarkedLocation == locationCopy)
   {
     goto LABEL_14;
   }
@@ -825,11 +825,11 @@
   {
     v15 = objc_opt_class();
     NSStringFromClass(v15);
-    v16 = v27 = v6;
+    v16 = v27 = animatedCopy;
     NSStringFromSelector(a2);
     v17 = v26 = a2;
     [(MKMapItem *)self->_mapItem _identifier];
-    v19 = v18 = v7;
+    v19 = v18 = hiddenCopy;
     *buf = 138412802;
     v29 = v16;
     v30 = 2112;
@@ -838,27 +838,27 @@
     v33 = v19;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%@ %@ %@", buf, 0x20u);
 
-    v7 = v18;
+    hiddenCopy = v18;
     a2 = v26;
 
-    v6 = v27;
+    animatedCopy = v27;
   }
 
-  objc_storeStrong(&self->_mapItem, a3);
-  self->_isMarkedLocation = v8;
-  if (!v12)
+  objc_storeStrong(&self->_mapItem, item);
+  self->_isMarkedLocation = locationCopy;
+  if (!itemCopy)
   {
-    v24 = self;
+    selfCopy2 = self;
     v25 = 0;
 LABEL_13:
-    [(LookAroundButtonContainerViewController *)v24 updateLookAroundViewWithMapItem:v25 isMarkedLocation:v8 willChangeHidden:v7 animated:v6];
+    [(LookAroundButtonContainerViewController *)selfCopy2 updateLookAroundViewWithMapItem:v25 isMarkedLocation:locationCopy willChangeHidden:hiddenCopy animated:animatedCopy];
     goto LABEL_14;
   }
 
-  if (![objc_opt_class() isIncompleteMapItem:v12])
+  if (![objc_opt_class() isIncompleteMapItem:itemCopy])
   {
-    v24 = self;
-    v25 = v12;
+    selfCopy2 = self;
+    v25 = itemCopy;
     goto LABEL_13;
   }
 
@@ -875,40 +875,40 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%@ %@, waiting for refreshed map item", buf, 0x16u);
   }
 
-  [(MKLookAroundContainerView *)self->_lookAroundContainerView setDimmingState:2 animated:v6];
+  [(MKLookAroundContainerView *)self->_lookAroundContainerView setDimmingState:2 animated:animatedCopy];
 LABEL_14:
 }
 
-+ (BOOL)isIncompleteMapItem:(id)a3
++ (BOOL)isIncompleteMapItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 _identifier];
-  if (v4)
+  itemCopy = item;
+  _identifier = [itemCopy _identifier];
+  if (_identifier)
   {
-    if ([v3 _hasResolvablePartialInformation])
+    if ([itemCopy _hasResolvablePartialInformation])
     {
-      v5 = 1;
+      hasExpiredComponents = 1;
     }
 
     else
     {
-      v6 = [v3 _geoMapItem];
-      v5 = [v6 hasExpiredComponents];
+      _geoMapItem = [itemCopy _geoMapItem];
+      hasExpiredComponents = [_geoMapItem hasExpiredComponents];
     }
   }
 
   else
   {
-    v5 = 0;
+    hasExpiredComponents = 0;
   }
 
-  return v5;
+  return hasExpiredComponents;
 }
 
-+ (CGSize)sizeForPreviewSize:(int64_t)a3
++ (CGSize)sizeForPreviewSize:(int64_t)size
 {
-  v3 = a3 - 1;
-  if ((a3 - 1) > 2)
+  v3 = size - 1;
+  if ((size - 1) > 2)
   {
     v5 = 66.0;
     v4 = 90.0;
@@ -925,9 +925,9 @@ LABEL_14:
   return result;
 }
 
-+ (int64_t)previewSizeWithContainerStyle:(unint64_t)a3
++ (int64_t)previewSizeWithContainerStyle:(unint64_t)style
 {
-  if (a3 == 6)
+  if (style == 6)
   {
     return 3;
   }

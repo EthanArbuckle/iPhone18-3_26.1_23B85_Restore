@@ -8,8 +8,8 @@
 
 - (id)wf_parameterDefinitions
 {
-  v1 = [a1 parameters];
-  v2 = [v1 if_compactMap:&__block_literal_global_55613];
+  parameters = [self parameters];
+  v2 = [parameters if_compactMap:&__block_literal_global_55613];
 
   return v2;
 }
@@ -19,32 +19,32 @@
   v4 = MEMORY[0x1E69AC670];
   v23 = a3;
   v26 = [v4 alloc];
-  v32 = [a1 identifier];
-  v28 = [a1 mangledTypeName];
-  v25 = [a1 mangledTypeNameByBundleIdentifier];
-  v24 = [a1 effectiveBundleIdentifiers];
-  v22 = [a1 bundleMetadataVersion];
-  v21 = [a1 title];
-  v31 = [a1 descriptionMetadata];
-  v30 = [a1 deprecationMetadata];
-  v20 = [a1 openAppWhenRun];
-  v19 = [a1 isDiscoverable];
-  v18 = [a1 authenticationPolicy];
-  v17 = [a1 outputFlags];
-  v29 = [a1 parameters];
-  v16 = [a1 systemProtocolMetadata];
-  v15 = [a1 actionConfiguration];
-  v14 = [a1 typeSpecificMetadata];
-  v13 = [a1 customIntentClassName];
-  v5 = [a1 availabilityAnnotations];
-  v6 = [a1 shortcutsMetadata];
-  v12 = [a1 requiredCapabilities];
-  v7 = [a1 attributionBundleIdentifier];
-  v8 = [a1 sideEffect];
-  v9 = [a1 assistantDefinedSchemas];
-  BYTE1(v11) = v19;
-  LOBYTE(v11) = v20;
-  v27 = [v26 initWithIdentifier:v32 mangledTypeName:v28 mangledTypeNameByBundleIdentifier:v25 effectiveBundleIdentifiers:v24 bundleMetadataVersion:v22 title:v21 descriptionMetadata:v31 deprecationMetadata:v30 openAppWhenRun:v11 discoverable:v18 authenticationPolicy:v23 outputType:v17 outputFlags:v29 parameters:v16 systemProtocolMetadata:v15 actionConfiguration:v14 typeSpecificMetadata:v13 customIntentClassName:v5 availabilityAnnotations:v6 shortcutsMetadata:v12 requiredCapabilities:v7 attributionBundleIdentifier:v8 sideEffect:v9 assistantDefinedSchemas:?];
+  identifier = [self identifier];
+  mangledTypeName = [self mangledTypeName];
+  mangledTypeNameByBundleIdentifier = [self mangledTypeNameByBundleIdentifier];
+  effectiveBundleIdentifiers = [self effectiveBundleIdentifiers];
+  bundleMetadataVersion = [self bundleMetadataVersion];
+  title = [self title];
+  descriptionMetadata = [self descriptionMetadata];
+  deprecationMetadata = [self deprecationMetadata];
+  openAppWhenRun = [self openAppWhenRun];
+  isDiscoverable = [self isDiscoverable];
+  authenticationPolicy = [self authenticationPolicy];
+  outputFlags = [self outputFlags];
+  parameters = [self parameters];
+  systemProtocolMetadata = [self systemProtocolMetadata];
+  actionConfiguration = [self actionConfiguration];
+  typeSpecificMetadata = [self typeSpecificMetadata];
+  customIntentClassName = [self customIntentClassName];
+  availabilityAnnotations = [self availabilityAnnotations];
+  shortcutsMetadata = [self shortcutsMetadata];
+  requiredCapabilities = [self requiredCapabilities];
+  attributionBundleIdentifier = [self attributionBundleIdentifier];
+  sideEffect = [self sideEffect];
+  assistantDefinedSchemas = [self assistantDefinedSchemas];
+  BYTE1(v11) = isDiscoverable;
+  LOBYTE(v11) = openAppWhenRun;
+  v27 = [v26 initWithIdentifier:identifier mangledTypeName:mangledTypeName mangledTypeNameByBundleIdentifier:mangledTypeNameByBundleIdentifier effectiveBundleIdentifiers:effectiveBundleIdentifiers bundleMetadataVersion:bundleMetadataVersion title:title descriptionMetadata:descriptionMetadata deprecationMetadata:deprecationMetadata openAppWhenRun:v11 discoverable:authenticationPolicy authenticationPolicy:v23 outputType:outputFlags outputFlags:parameters parameters:systemProtocolMetadata systemProtocolMetadata:actionConfiguration actionConfiguration:typeSpecificMetadata typeSpecificMetadata:customIntentClassName customIntentClassName:availabilityAnnotations availabilityAnnotations:shortcutsMetadata shortcutsMetadata:requiredCapabilities requiredCapabilities:attributionBundleIdentifier attributionBundleIdentifier:sideEffect sideEffect:assistantDefinedSchemas assistantDefinedSchemas:?];
 
   return v27;
 }
@@ -53,19 +53,19 @@
 {
   v30 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = [v6 parameters];
-  v8 = [v7 if_map:&__block_literal_global_163];
+  parameters = [v6 parameters];
+  v8 = [parameters if_map:&__block_literal_global_163];
 
   v9 = MEMORY[0x1E695DF20];
-  v10 = [v6 parameters];
-  v11 = [v9 dictionaryWithObjects:v10 forKeys:v8];
+  parameters2 = [v6 parameters];
+  v11 = [v9 dictionaryWithObjects:parameters2 forKeys:v8];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v12 = [a1 parameters];
-  v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  parameters3 = [self parameters];
+  v13 = [parameters3 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v13)
   {
     v14 = v13;
@@ -77,15 +77,15 @@
       {
         if (*v26 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(parameters3);
         }
 
         v17 = *(*(&v25 + 1) + 8 * i);
-        v18 = [v17 name];
-        v19 = [v11 objectForKeyedSubscript:v18];
+        name = [v17 name];
+        v19 = [v11 objectForKeyedSubscript:name];
 
-        v20 = [v19 value];
-        LODWORD(v17) = [v17 wf_validateParameterValue:v20 error:a4];
+        value = [v19 value];
+        LODWORD(v17) = [v17 wf_validateParameterValue:value error:a4];
 
         if (!v17)
         {
@@ -94,7 +94,7 @@
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v14 = [parameters3 countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v14)
       {
         continue;

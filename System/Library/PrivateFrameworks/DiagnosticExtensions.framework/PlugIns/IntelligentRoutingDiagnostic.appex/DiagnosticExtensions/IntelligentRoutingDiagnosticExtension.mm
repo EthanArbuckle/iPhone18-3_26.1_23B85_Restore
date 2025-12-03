@@ -1,22 +1,22 @@
 @interface IntelligentRoutingDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation IntelligentRoutingDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   IRSetupLogging();
   v4 = IRLogObject;
   if (os_log_type_enabled(IRLogObject, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v3;
+    *(&buf + 4) = parametersCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#diagnosticExtension, attachmentForParameters, called with parameters: %@", &buf, 0xCu);
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  v5 = [parametersCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
   if ([v5 isEqualToString:@"com.apple.taptoradard"])
   {
     v6 = 0;
@@ -27,10 +27,10 @@
     v6 = [v5 isEqualToString:@"com.apple.TapToRadar"] ^ 1;
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
-  v8 = [v7 BOOLValue];
+  v7 = [parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
+  bOOLValue = [v7 BOOLValue];
 
-  if ((v6 | v8))
+  if ((v6 | bOOLValue))
   {
     v9 = +[NSMutableArray array];
     *&buf = 0;

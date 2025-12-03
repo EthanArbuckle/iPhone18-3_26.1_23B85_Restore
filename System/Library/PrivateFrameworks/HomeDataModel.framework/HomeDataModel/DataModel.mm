@@ -1,120 +1,120 @@
 @interface DataModel
 + (_TtC13HomeDataModel9DataModel)shared;
 + (int64_t)context;
-+ (void)setContext:(int64_t)a3;
-+ (void)setHomeManagerConfiguration:(id)a3;
++ (void)setContext:(int64_t)context;
++ (void)setHomeManagerConfiguration:(id)configuration;
 - (HMHome)currentHome;
 - (HMHome)primaryHome;
 - (HMHomeManager)homeManager;
-- (id)accessoryFor:(id)a3;
-- (id)accessoryFor:(id)a3 homeID:(id)a4;
-- (id)accessoryFor:(id)a3 in:(id)a4;
-- (id)accessoryFromAnyHomeFor:(id)a3;
-- (id)actionSetFor:(id)a3;
-- (id)cameraProfileFor:(id)a3;
-- (id)characteristicFor:(id)a3;
-- (id)homeFor:(id)a3;
-- (id)mediaProfileFor:(id)a3;
-- (id)mediaSystemFor:(id)a3;
-- (id)residentFor:(id)a3;
-- (id)roomFor:(id)a3;
-- (id)serviceFor:(id)a3;
-- (id)serviceGroupFor:(id)a3;
-- (id)userFor:(id)a3;
-- (void)accessory:(id)a3 didAddProfile:(id)a4;
-- (void)accessory:(id)a3 didRemoveProfile:(id)a4;
-- (void)accessory:(id)a3 didUpdateApplicationDataForService:(id)a4;
-- (void)accessory:(id)a3 didUpdateAssociatedServiceTypeForService:(id)a4;
-- (void)accessory:(id)a3 didUpdateFirmwareVersion:(id)a4;
-- (void)accessory:(id)a3 didUpdateNameForService:(id)a4;
-- (void)accessory:(id)a3 service:(id)a4 didUpdateValueForCharacteristic:(id)a5;
-- (void)accessoryDidUpdateApplicationData:(id)a3;
-- (void)accessoryDidUpdateName:(id)a3;
-- (void)accessoryDidUpdateReachability:(id)a3;
-- (void)accessoryDidUpdateServices:(id)a3;
-- (void)accessorySettingsDataSource:(id)a3 didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)a4 settings:(id)a5;
-- (void)device:(id)a3 stateChanged:(unint64_t)a4;
-- (void)deviceBecameActive:(id)a3;
-- (void)deviceCachePrimed:(id)a3;
-- (void)deviceConfigurationChanged:(id)a3;
-- (void)didUpdateSupportedCapabilitiesForResidentDevice:(id)a3;
-- (void)home:(id)a3 didAddAccessory:(id)a4;
-- (void)home:(id)a3 didAddActionSet:(id)a4;
-- (void)home:(id)a3 didAddRoom:(id)a4;
-- (void)home:(id)a3 didAddRoom:(id)a4 toZone:(id)a5;
-- (void)home:(id)a3 didAddService:(id)a4 toServiceGroup:(id)a5;
-- (void)home:(id)a3 didAddServiceGroup:(id)a4;
-- (void)home:(id)a3 didAddTrigger:(id)a4;
-- (void)home:(id)a3 didAddZone:(id)a4;
-- (void)home:(id)a3 didEncounterError:(id)a4 forAccessory:(id)a5;
-- (void)home:(id)a3 didRemoveAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveActionSet:(id)a4;
-- (void)home:(id)a3 didRemoveRoom:(id)a4;
-- (void)home:(id)a3 didRemoveRoom:(id)a4 fromZone:(id)a5;
-- (void)home:(id)a3 didRemoveService:(id)a4 fromServiceGroup:(id)a5;
-- (void)home:(id)a3 didRemoveServiceGroup:(id)a4;
-- (void)home:(id)a3 didRemoveTrigger:(id)a4;
-- (void)home:(id)a3 didRemoveZone:(id)a4;
-- (void)home:(id)a3 didUnblockAccessory:(id)a4;
-- (void)home:(id)a3 didUpdateActionSet:(id)a4 isExecuting:(BOOL)a5;
-- (void)home:(id)a3 didUpdateActionsForActionSet:(id)a4;
-- (void)home:(id)a3 didUpdateApplicationDataForActionSet:(id)a4;
-- (void)home:(id)a3 didUpdateApplicationDataForRoom:(id)a4;
-- (void)home:(id)a3 didUpdateApplicationDataForServiceGroup:(id)a4;
-- (void)home:(id)a3 didUpdateAutomaticSoftwareUpdateEnabled:(BOOL)a4;
-- (void)home:(id)a3 didUpdateHomeHubState:(unint64_t)a4;
-- (void)home:(id)a3 didUpdateNameForActionSet:(id)a4;
-- (void)home:(id)a3 didUpdateNameForRoom:(id)a4;
-- (void)home:(id)a3 didUpdateNameForServiceGroup:(id)a4;
-- (void)home:(id)a3 didUpdateNameForTrigger:(id)a4;
-- (void)home:(id)a3 didUpdateNameForZone:(id)a4;
-- (void)home:(id)a3 didUpdateRoom:(id)a4 forAccessory:(id)a5;
-- (void)home:(id)a3 didUpdateTrigger:(id)a4;
-- (void)home:(void *)a3 didAddUser:(void *)a4;
-- (void)home:(void *)a3 didRemoveUser:(void *)a4;
-- (void)homeDidUpdateAccessControlForCurrentUser:(id)a3;
-- (void)homeDidUpdateApplicationData:(id)a3;
-- (void)homeDidUpdateName:(id)a3;
-- (void)homeDidUpdateSupportedFeatures:(id)a3;
-- (void)homeManager:(id)a3 didAddHome:(id)a4;
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4;
-- (void)homeManagerDidUpdateCurrentHome:(id)a3;
-- (void)homeManagerDidUpdateHomes:(id)a3;
-- (void)homeManagerDidUpdatePrimaryHome:(id)a3;
-- (void)residentDevice:(id)a3 didUpdateStatus:(unint64_t)a4;
-- (void)setCurrentHome:(id)a3;
-- (void)setHomeManager:(id)a3;
-- (void)set_currentHome:(id)a3;
-- (void)softwareUpdateController:(id)a3 accessory:(id)a4 didFailUpdate:(id)a5 withError:(id)a6 timestamp:(id)a7;
-- (void)softwareUpdateController:(id)a3 accessory:(id)a4 didReceiveUpdate:(id)a5;
-- (void)softwareUpdateController:(id)a3 accessory:(id)a4 didUpdateProgress:(id)a5;
-- (void)userActionPredictionController:(id)a3 didUpdatePredictions:(id)a4;
+- (id)accessoryFor:(id)for;
+- (id)accessoryFor:(id)for homeID:(id)d;
+- (id)accessoryFor:(id)for in:(id)in;
+- (id)accessoryFromAnyHomeFor:(id)for;
+- (id)actionSetFor:(id)for;
+- (id)cameraProfileFor:(id)for;
+- (id)characteristicFor:(id)for;
+- (id)homeFor:(id)for;
+- (id)mediaProfileFor:(id)for;
+- (id)mediaSystemFor:(id)for;
+- (id)residentFor:(id)for;
+- (id)roomFor:(id)for;
+- (id)serviceFor:(id)for;
+- (id)serviceGroupFor:(id)for;
+- (id)userFor:(id)for;
+- (void)accessory:(id)accessory didAddProfile:(id)profile;
+- (void)accessory:(id)accessory didRemoveProfile:(id)profile;
+- (void)accessory:(id)accessory didUpdateApplicationDataForService:(id)service;
+- (void)accessory:(id)accessory didUpdateAssociatedServiceTypeForService:(id)service;
+- (void)accessory:(id)accessory didUpdateFirmwareVersion:(id)version;
+- (void)accessory:(id)accessory didUpdateNameForService:(id)service;
+- (void)accessory:(id)accessory service:(id)service didUpdateValueForCharacteristic:(id)characteristic;
+- (void)accessoryDidUpdateApplicationData:(id)data;
+- (void)accessoryDidUpdateName:(id)name;
+- (void)accessoryDidUpdateReachability:(id)reachability;
+- (void)accessoryDidUpdateServices:(id)services;
+- (void)accessorySettingsDataSource:(id)source didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)identifier settings:(id)settings;
+- (void)device:(id)device stateChanged:(unint64_t)changed;
+- (void)deviceBecameActive:(id)active;
+- (void)deviceCachePrimed:(id)primed;
+- (void)deviceConfigurationChanged:(id)changed;
+- (void)didUpdateSupportedCapabilitiesForResidentDevice:(id)device;
+- (void)home:(id)home didAddAccessory:(id)accessory;
+- (void)home:(id)home didAddActionSet:(id)set;
+- (void)home:(id)home didAddRoom:(id)room;
+- (void)home:(id)home didAddRoom:(id)room toZone:(id)zone;
+- (void)home:(id)home didAddService:(id)service toServiceGroup:(id)group;
+- (void)home:(id)home didAddServiceGroup:(id)group;
+- (void)home:(id)home didAddTrigger:(id)trigger;
+- (void)home:(id)home didAddZone:(id)zone;
+- (void)home:(id)home didEncounterError:(id)error forAccessory:(id)accessory;
+- (void)home:(id)home didRemoveAccessory:(id)accessory;
+- (void)home:(id)home didRemoveActionSet:(id)set;
+- (void)home:(id)home didRemoveRoom:(id)room;
+- (void)home:(id)home didRemoveRoom:(id)room fromZone:(id)zone;
+- (void)home:(id)home didRemoveService:(id)service fromServiceGroup:(id)group;
+- (void)home:(id)home didRemoveServiceGroup:(id)group;
+- (void)home:(id)home didRemoveTrigger:(id)trigger;
+- (void)home:(id)home didRemoveZone:(id)zone;
+- (void)home:(id)home didUnblockAccessory:(id)accessory;
+- (void)home:(id)home didUpdateActionSet:(id)set isExecuting:(BOOL)executing;
+- (void)home:(id)home didUpdateActionsForActionSet:(id)set;
+- (void)home:(id)home didUpdateApplicationDataForActionSet:(id)set;
+- (void)home:(id)home didUpdateApplicationDataForRoom:(id)room;
+- (void)home:(id)home didUpdateApplicationDataForServiceGroup:(id)group;
+- (void)home:(id)home didUpdateAutomaticSoftwareUpdateEnabled:(BOOL)enabled;
+- (void)home:(id)home didUpdateHomeHubState:(unint64_t)state;
+- (void)home:(id)home didUpdateNameForActionSet:(id)set;
+- (void)home:(id)home didUpdateNameForRoom:(id)room;
+- (void)home:(id)home didUpdateNameForServiceGroup:(id)group;
+- (void)home:(id)home didUpdateNameForTrigger:(id)trigger;
+- (void)home:(id)home didUpdateNameForZone:(id)zone;
+- (void)home:(id)home didUpdateRoom:(id)room forAccessory:(id)accessory;
+- (void)home:(id)home didUpdateTrigger:(id)trigger;
+- (void)home:(void *)home didAddUser:(void *)user;
+- (void)home:(void *)home didRemoveUser:(void *)user;
+- (void)homeDidUpdateAccessControlForCurrentUser:(id)user;
+- (void)homeDidUpdateApplicationData:(id)data;
+- (void)homeDidUpdateName:(id)name;
+- (void)homeDidUpdateSupportedFeatures:(id)features;
+- (void)homeManager:(id)manager didAddHome:(id)home;
+- (void)homeManager:(id)manager didRemoveHome:(id)home;
+- (void)homeManagerDidUpdateCurrentHome:(id)home;
+- (void)homeManagerDidUpdateHomes:(id)homes;
+- (void)homeManagerDidUpdatePrimaryHome:(id)home;
+- (void)residentDevice:(id)device didUpdateStatus:(unint64_t)status;
+- (void)setCurrentHome:(id)home;
+- (void)setHomeManager:(id)manager;
+- (void)set_currentHome:(id)home;
+- (void)softwareUpdateController:(id)controller accessory:(id)accessory didFailUpdate:(id)update withError:(id)error timestamp:(id)timestamp;
+- (void)softwareUpdateController:(id)controller accessory:(id)accessory didReceiveUpdate:(id)update;
+- (void)softwareUpdateController:(id)controller accessory:(id)accessory didUpdateProgress:(id)progress;
+- (void)userActionPredictionController:(id)controller didUpdatePredictions:(id)predictions;
 @end
 
 @implementation DataModel
 
-- (void)home:(void *)a3 didAddUser:(void *)a4
+- (void)home:(void *)home didAddUser:(void *)user
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a1;
-  sub_1D1E2BA70(v6, v7, "%s %@");
+  homeCopy = home;
+  userCopy = user;
+  selfCopy = self;
+  sub_1D1E2BA70(homeCopy, userCopy, "%s %@");
 }
 
-- (void)home:(void *)a3 didRemoveUser:(void *)a4
+- (void)home:(void *)home didRemoveUser:(void *)user
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a1;
-  sub_1D1E2BDA4(v6, v7, "%s %@");
+  homeCopy = home;
+  userCopy = user;
+  selfCopy = self;
+  sub_1D1E2BDA4(homeCopy, userCopy, "%s %@");
 }
 
-+ (void)setHomeManagerConfiguration:(id)a3
++ (void)setHomeManagerConfiguration:(id)configuration
 {
   swift_beginAccess();
   v4 = qword_1EE07AE00;
-  qword_1EE07AE00 = a3;
-  v5 = a3;
+  qword_1EE07AE00 = configuration;
+  configurationCopy = configuration;
 }
 
 - (HMHomeManager)homeManager
@@ -124,26 +124,26 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setHomeManager:(id)a3
+- (void)setHomeManager:(id)manager
 {
   v5 = OBJC_IVAR____TtC13HomeDataModel9DataModel_homeManager;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = manager;
+  managerCopy = manager;
 }
 
-- (void)set_currentHome:(id)a3
+- (void)set_currentHome:(id)home
 {
   v5 = OBJC_IVAR____TtC13HomeDataModel9DataModel__currentHome;
   v6 = *(&self->super.isa + OBJC_IVAR____TtC13HomeDataModel9DataModel__currentHome);
   v7 = v6;
-  v8 = a3;
-  v11 = self;
-  sub_1D1DE7630(a3, sub_1D1DF39C4);
+  homeCopy = home;
+  selfCopy = self;
+  sub_1D1DE7630(home, sub_1D1DF39C4);
   v9 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v10 = v8;
+  *(&self->super.isa + v5) = home;
+  v10 = homeCopy;
 
   sub_1D1DE7630(v6, sub_1D1DE779C);
 }
@@ -152,20 +152,20 @@
 {
   swift_getKeyPath();
   sub_1D1DF4FF4(&qword_1EE07CFB0, type metadata accessor for DataModel);
-  v3 = self;
+  selfCopy = self;
   sub_1D1E66CAC();
 
-  v4 = *(&v3->super.isa + OBJC_IVAR____TtC13HomeDataModel9DataModel__currentHome);
+  v4 = *(&selfCopy->super.isa + OBJC_IVAR____TtC13HomeDataModel9DataModel__currentHome);
   v5 = v4;
 
   return v4;
 }
 
-- (void)setCurrentHome:(id)a3
+- (void)setCurrentHome:(id)home
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D1DE83C0(a3);
+  homeCopy = home;
+  selfCopy = self;
+  sub_1D1DE83C0(home);
 }
 
 + (_TtC13HomeDataModel9DataModel)shared
@@ -190,33 +190,33 @@
   return qword_1EE07AE40;
 }
 
-+ (void)setContext:(int64_t)a3
++ (void)setContext:(int64_t)context
 {
   if (qword_1EE07AE38 != -1)
   {
-    v3 = a3;
+    contextCopy = context;
     swift_once();
-    a3 = v3;
+    context = contextCopy;
   }
 
-  qword_1EE07AE40 = a3;
+  qword_1EE07AE40 = context;
 }
 
 - (HMHome)primaryHome
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DataModel.primaryHome.getter();
 
   return v3;
 }
 
-- (id)accessoryFor:(id)a3 in:(id)a4
+- (id)accessoryFor:(id)for in:(id)in
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC642590, qword_1D1E71260);
   v7 = *(*(v6 - 8) + 64);
   MEMORY[0x1EEE9AC00](v6 - 8);
   v9 = &v18[-v8];
-  if (a3)
+  if (for)
   {
     sub_1D1E66A5C();
     v10 = sub_1D1E66A7C();
@@ -229,8 +229,8 @@
     (*(*(v11 - 8) + 56))(v9, 1, 1, v11);
   }
 
-  v12 = a4;
-  v13 = [v12 accessories];
+  inCopy = in;
+  accessories = [inCopy accessories];
   sub_1D1741B10(0, &qword_1EE07B690, 0x1E696CAC8);
   v14 = sub_1D1E67C1C();
 
@@ -243,7 +243,7 @@
   return v16;
 }
 
-- (id)accessoryFromAnyHomeFor:(id)a3
+- (id)accessoryFromAnyHomeFor:(id)for
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC642590, qword_1D1E71260);
   v6 = *(v5 - 8);
@@ -252,7 +252,7 @@
   v9 = v22 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v8);
   v11 = v22 - v10;
-  if (a3)
+  if (for)
   {
     sub_1D1E66A5C();
     v12 = sub_1D1E66A7C();
@@ -265,15 +265,15 @@
     (*(*(v13 - 8) + 56))(v11, 1, 1, v13);
   }
 
-  v14 = self;
-  v15 = [(DataModel *)v14 sortedHomes];
+  selfCopy = self;
+  sortedHomes = [(DataModel *)selfCopy sortedHomes];
   sub_1D1741B10(0, &qword_1EE07B620, 0x1E696CB98);
   v16 = sub_1D1E67C1C();
 
   sub_1D17783E0(v11, v9);
   v17 = (*(v6 + 80) + 24) & ~*(v6 + 80);
   v18 = swift_allocObject();
-  *(v18 + 16) = v14;
+  *(v18 + 16) = selfCopy;
   sub_1D1778308(v9, v18 + v17);
   v22[1] = v16;
   v22[2] = sub_1D1E021A4;
@@ -282,7 +282,7 @@
   v22[5] = 0;
   v22[6] = sub_1D1716A30;
   v22[7] = 0;
-  v19 = v14;
+  v19 = selfCopy;
   v20 = sub_1D1778964(v19);
 
   sub_1D1741A30(v11, &qword_1EC642590, qword_1D1E71260);
@@ -290,7 +290,7 @@
   return v20;
 }
 
-- (id)homeFor:(id)a3
+- (id)homeFor:(id)for
 {
   v4 = sub_1D1E66A7C();
   v5 = *(v4 - 8);
@@ -298,8 +298,8 @@
   MEMORY[0x1EEE9AC00](v4);
   v8 = &v14[-((v7 + 15) & 0xFFFFFFFFFFFFFFF0)];
   sub_1D1E66A5C();
-  v9 = self;
-  v10 = [(DataModel *)v9 sortedHomes];
+  selfCopy = self;
+  sortedHomes = [(DataModel *)selfCopy sortedHomes];
   sub_1D1741B10(0, &qword_1EE07B620, 0x1E696CB98);
   v11 = sub_1D1E67C1C();
 
@@ -311,7 +311,7 @@
   return v12;
 }
 
-- (id)accessoryFor:(id)a3
+- (id)accessoryFor:(id)for
 {
   v4 = sub_1D1E66A7C();
   v5 = *(v4 - 8);
@@ -321,8 +321,8 @@
   MEMORY[0x1EEE9AC00](v7);
   v10 = v19 - v9;
   sub_1D1E66A5C();
-  v11 = self;
-  v12 = [(DataModel *)v11 sortedHomes];
+  selfCopy = self;
+  sortedHomes = [(DataModel *)selfCopy sortedHomes];
   sub_1D1741B10(0, &qword_1EE07B620, 0x1E696CB98);
   v13 = sub_1D1E67C1C();
 
@@ -344,7 +344,7 @@
   return v17;
 }
 
-- (id)accessoryFor:(id)a3 homeID:(id)a4
+- (id)accessoryFor:(id)for homeID:(id)d
 {
   v5 = sub_1D1E66A7C();
   v6 = *(v5 - 8);
@@ -355,16 +355,16 @@
   v12 = &v20 - v11;
   sub_1D1E66A5C();
   sub_1D1E66A5C();
-  v13 = self;
+  selfCopy = self;
   v14 = sub_1D1E66A2C();
-  v15 = [(DataModel *)v13 homeFor:v14];
+  v15 = [(DataModel *)selfCopy homeFor:v14];
 
   if (v15)
   {
     v16 = sub_1D1E66A2C();
-    v17 = [(DataModel *)v13 accessoryFor:v16 in:v15];
+    v17 = [(DataModel *)selfCopy accessoryFor:v16 in:v15];
 
-    v13 = v16;
+    selfCopy = v16;
   }
 
   else
@@ -379,7 +379,7 @@
   return v17;
 }
 
-- (id)actionSetFor:(id)a3
+- (id)actionSetFor:(id)for
 {
   v4 = sub_1D1E66A7C();
   v5 = *(v4 - 8);
@@ -389,8 +389,8 @@
   MEMORY[0x1EEE9AC00](v7);
   v10 = v19 - v9;
   sub_1D1E66A5C();
-  v11 = self;
-  v12 = [(DataModel *)v11 sortedHomes];
+  selfCopy = self;
+  sortedHomes = [(DataModel *)selfCopy sortedHomes];
   sub_1D1741B10(0, &qword_1EE07B620, 0x1E696CB98);
   v13 = sub_1D1E67C1C();
 
@@ -412,7 +412,7 @@
   return v17;
 }
 
-- (id)cameraProfileFor:(id)a3
+- (id)cameraProfileFor:(id)for
 {
   v4 = sub_1D1E66A7C();
   v5 = *(v4 - 8);
@@ -422,8 +422,8 @@
   MEMORY[0x1EEE9AC00](v7);
   v10 = v19 - v9;
   sub_1D1E66A5C();
-  v11 = self;
-  v12 = [(DataModel *)v11 sortedHomes];
+  selfCopy = self;
+  sortedHomes = [(DataModel *)selfCopy sortedHomes];
   sub_1D1741B10(0, &qword_1EE07B620, 0x1E696CB98);
   v13 = sub_1D1E67C1C();
 
@@ -445,7 +445,7 @@
   return v17;
 }
 
-- (id)mediaProfileFor:(id)a3
+- (id)mediaProfileFor:(id)for
 {
   v4 = sub_1D1E66A7C();
   v5 = *(v4 - 8);
@@ -455,8 +455,8 @@
   MEMORY[0x1EEE9AC00](v7);
   v10 = v19 - v9;
   sub_1D1E66A5C();
-  v11 = self;
-  v12 = [(DataModel *)v11 sortedHomes];
+  selfCopy = self;
+  sortedHomes = [(DataModel *)selfCopy sortedHomes];
   sub_1D1741B10(0, &qword_1EE07B620, 0x1E696CB98);
   v13 = sub_1D1E67C1C();
 
@@ -478,7 +478,7 @@
   return v17;
 }
 
-- (id)characteristicFor:(id)a3
+- (id)characteristicFor:(id)for
 {
   v4 = sub_1D1E66A7C();
   v5 = *(v4 - 8);
@@ -488,8 +488,8 @@
   MEMORY[0x1EEE9AC00](v7);
   v10 = v19 - v9;
   sub_1D1E66A5C();
-  v11 = self;
-  v12 = [(DataModel *)v11 sortedHomes];
+  selfCopy = self;
+  sortedHomes = [(DataModel *)selfCopy sortedHomes];
   sub_1D1741B10(0, &qword_1EE07B620, 0x1E696CB98);
   v13 = sub_1D1E67C1C();
 
@@ -511,7 +511,7 @@
   return v17;
 }
 
-- (id)roomFor:(id)a3
+- (id)roomFor:(id)for
 {
   v4 = sub_1D1E66A7C();
   v5 = *(v4 - 8);
@@ -521,8 +521,8 @@
   MEMORY[0x1EEE9AC00](v7);
   v10 = v19 - v9;
   sub_1D1E66A5C();
-  v11 = self;
-  v12 = [(DataModel *)v11 sortedHomes];
+  selfCopy = self;
+  sortedHomes = [(DataModel *)selfCopy sortedHomes];
   sub_1D1741B10(0, &qword_1EE07B620, 0x1E696CB98);
   v13 = sub_1D1E67C1C();
 
@@ -544,7 +544,7 @@
   return v17;
 }
 
-- (id)serviceFor:(id)a3
+- (id)serviceFor:(id)for
 {
   v4 = sub_1D1E66A7C();
   v5 = *(v4 - 8);
@@ -554,8 +554,8 @@
   MEMORY[0x1EEE9AC00](v7);
   v10 = v19 - v9;
   sub_1D1E66A5C();
-  v11 = self;
-  v12 = [(DataModel *)v11 sortedHomes];
+  selfCopy = self;
+  sortedHomes = [(DataModel *)selfCopy sortedHomes];
   sub_1D1741B10(0, &qword_1EE07B620, 0x1E696CB98);
   v13 = sub_1D1E67C1C();
 
@@ -577,7 +577,7 @@
   return v17;
 }
 
-- (id)serviceGroupFor:(id)a3
+- (id)serviceGroupFor:(id)for
 {
   v4 = sub_1D1E66A7C();
   v5 = *(v4 - 8);
@@ -587,8 +587,8 @@
   MEMORY[0x1EEE9AC00](v7);
   v10 = v19 - v9;
   sub_1D1E66A5C();
-  v11 = self;
-  v12 = [(DataModel *)v11 sortedHomes];
+  selfCopy = self;
+  sortedHomes = [(DataModel *)selfCopy sortedHomes];
   sub_1D1741B10(0, &qword_1EE07B620, 0x1E696CB98);
   v13 = sub_1D1E67C1C();
 
@@ -610,7 +610,7 @@
   return v17;
 }
 
-- (id)mediaSystemFor:(id)a3
+- (id)mediaSystemFor:(id)for
 {
   v4 = sub_1D1E66A7C();
   v5 = *(v4 - 8);
@@ -620,8 +620,8 @@
   MEMORY[0x1EEE9AC00](v7);
   v10 = v19 - v9;
   sub_1D1E66A5C();
-  v11 = self;
-  v12 = [(DataModel *)v11 sortedHomes];
+  selfCopy = self;
+  sortedHomes = [(DataModel *)selfCopy sortedHomes];
   sub_1D1741B10(0, &qword_1EE07B620, 0x1E696CB98);
   v13 = sub_1D1E67C1C();
 
@@ -643,7 +643,7 @@
   return v17;
 }
 
-- (id)userFor:(id)a3
+- (id)userFor:(id)for
 {
   v4 = sub_1D1E66A7C();
   v5 = *(v4 - 8);
@@ -653,8 +653,8 @@
   MEMORY[0x1EEE9AC00](v7);
   v10 = v19 - v9;
   sub_1D1E66A5C();
-  v11 = self;
-  v12 = [(DataModel *)v11 sortedHomes];
+  selfCopy = self;
+  sortedHomes = [(DataModel *)selfCopy sortedHomes];
   sub_1D1741B10(0, &qword_1EE07B620, 0x1E696CB98);
   v13 = sub_1D1E67C1C();
 
@@ -676,7 +676,7 @@
   return v17;
 }
 
-- (id)residentFor:(id)a3
+- (id)residentFor:(id)for
 {
   v4 = sub_1D1E66A7C();
   v5 = *(v4 - 8);
@@ -686,8 +686,8 @@
   MEMORY[0x1EEE9AC00](v7);
   v10 = v19 - v9;
   sub_1D1E66A5C();
-  v11 = self;
-  v12 = [(DataModel *)v11 sortedHomes];
+  selfCopy = self;
+  sortedHomes = [(DataModel *)selfCopy sortedHomes];
   sub_1D1741B10(0, &qword_1EE07B620, 0x1E696CB98);
   v13 = sub_1D1E67C1C();
 
@@ -709,21 +709,21 @@
   return v17;
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
-  v5 = self;
-  DataModel.homeManagerDidUpdateHomes(_:)(v4);
+  homesCopy = homes;
+  selfCopy = self;
+  DataModel.homeManagerDidUpdateHomes(_:)(homesCopy);
 }
 
-- (void)homeManagerDidUpdatePrimaryHome:(id)a3
+- (void)homeManagerDidUpdatePrimaryHome:(id)home
 {
-  v4 = a3;
-  v5 = self;
-  DataModel.homeManagerDidUpdatePrimaryHome(_:)(v4);
+  homeCopy = home;
+  selfCopy = self;
+  DataModel.homeManagerDidUpdatePrimaryHome(_:)(homeCopy);
 }
 
-- (void)homeManagerDidUpdateCurrentHome:(id)a3
+- (void)homeManagerDidUpdateCurrentHome:(id)home
 {
   ObjectType = swift_getObjectType();
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC6442C0, &qword_1D1E741A0);
@@ -733,18 +733,18 @@
   v9 = sub_1D1E67E7C();
   (*(*(v9 - 8) + 56))(v8, 1, 1, v9);
   sub_1D1E67E1C();
-  v10 = self;
+  selfCopy = self;
   v11 = sub_1D1E67E0C();
   v12 = swift_allocObject();
   v13 = MEMORY[0x1E69E85E0];
   v12[2] = v11;
   v12[3] = v13;
-  v12[4] = v10;
+  v12[4] = selfCopy;
   v12[5] = ObjectType;
   sub_1D17C6EF0(0, 0, v8, &unk_1D1EB1E18, v12);
 }
 
-- (void)homeManager:(id)a3 didAddHome:(id)a4
+- (void)homeManager:(id)manager didAddHome:(id)home
 {
   ObjectType = swift_getObjectType();
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC6442C0, &qword_1D1E741A0);
@@ -754,12 +754,12 @@
   v12 = sub_1D1E67E7C();
   (*(*(v12 - 8) + 56))(v11, 1, 1, v12);
   sub_1D1E67E1C();
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
-  v16 = v14;
-  v17 = v13;
-  v18 = v15;
+  managerCopy = manager;
+  homeCopy = home;
+  selfCopy = self;
+  v16 = homeCopy;
+  v17 = managerCopy;
+  v18 = selfCopy;
   v19 = sub_1D1E67E0C();
   v20 = swift_allocObject();
   v21 = MEMORY[0x1E69E85E0];
@@ -772,7 +772,7 @@
   sub_1D17C6EF0(0, 0, v11, &unk_1D1EB1E10, v20);
 }
 
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4
+- (void)homeManager:(id)manager didRemoveHome:(id)home
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC6442C0, &qword_1D1E741A0);
   v8 = *(*(v7 - 8) + 64);
@@ -781,11 +781,11 @@
   v11 = sub_1D1E67E7C();
   (*(*(v11 - 8) + 56))(v10, 1, 1, v11);
   sub_1D1E67E1C();
-  v12 = a4;
-  v13 = self;
-  v14 = v12;
-  v15 = v13;
-  v16 = a3;
+  homeCopy = home;
+  selfCopy = self;
+  v14 = homeCopy;
+  v15 = selfCopy;
+  managerCopy = manager;
   v17 = sub_1D1E67E0C();
   v18 = swift_allocObject();
   v19 = MEMORY[0x1E69E85E0];
@@ -803,249 +803,249 @@
   sub_1D1D50FD4(v14);
 }
 
-- (void)homeDidUpdateName:(id)a3
+- (void)homeDidUpdateName:(id)name
 {
-  v4 = a3;
-  v5 = self;
-  _s13HomeDataModel0bC0C17homeDidUpdateNameyySo6HMHomeCF_0(v4);
+  nameCopy = name;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C17homeDidUpdateNameyySo6HMHomeCF_0(nameCopy);
 }
 
-- (void)homeDidUpdateAccessControlForCurrentUser:(id)a3
+- (void)homeDidUpdateAccessControlForCurrentUser:(id)user
 {
-  v4 = a3;
-  v5 = self;
-  _s13HomeDataModel0bC0C26homeDidUpdateAccessControl14forCurrentUserySo6HMHomeC_tF_0(v4);
+  userCopy = user;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C26homeDidUpdateAccessControl14forCurrentUserySo6HMHomeC_tF_0(userCopy);
 }
 
-- (void)home:(id)a3 didAddAccessory:(id)a4
+- (void)home:(id)home didAddAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  DataModel.home(_:didAdd:)(v6, v7);
+  homeCopy = home;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  DataModel.home(_:didAdd:)(homeCopy, accessoryCopy);
 }
 
-- (void)home:(id)a3 didRemoveAccessory:(id)a4
+- (void)home:(id)home didRemoveAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  DataModel.home(_:didRemove:)(v6, v7);
+  homeCopy = home;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  DataModel.home(_:didRemove:)(homeCopy, accessoryCopy);
 }
 
-- (void)home:(id)a3 didUpdateRoom:(id)a4 forAccessory:(id)a5
+- (void)home:(id)home didUpdateRoom:(id)room forAccessory:(id)accessory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  _s13HomeDataModel0bC0C4home_9didUpdate3forySo6HMHomeC_So6HMRoomCSo11HMAccessoryCtF_0(v8, v9, v10);
+  homeCopy = home;
+  roomCopy = room;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C4home_9didUpdate3forySo6HMHomeC_So6HMRoomCSo11HMAccessoryCtF_0(homeCopy, roomCopy, accessoryCopy);
 }
 
-- (void)home:(id)a3 didAddRoom:(id)a4
+- (void)home:(id)home didAddRoom:(id)room
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s13HomeDataModel0bC0C4home_6didAddySo6HMHomeC_So6HMRoomCtF_0(v6, v7);
+  homeCopy = home;
+  roomCopy = room;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C4home_6didAddySo6HMHomeC_So6HMRoomCtF_0(homeCopy, roomCopy);
 }
 
-- (void)home:(id)a3 didRemoveRoom:(id)a4
+- (void)home:(id)home didRemoveRoom:(id)room
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s13HomeDataModel0bC0C4home_9didRemoveySo6HMHomeC_So6HMRoomCtF_0(v6, v7);
+  homeCopy = home;
+  roomCopy = room;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C4home_9didRemoveySo6HMHomeC_So6HMRoomCtF_0(homeCopy, roomCopy);
 }
 
-- (void)home:(id)a3 didUpdateNameForRoom:(id)a4
+- (void)home:(id)home didUpdateNameForRoom:(id)room
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s13HomeDataModel0bC0C4home_16didUpdateNameForySo6HMHomeC_So6HMRoomCtF_0(v6, v7);
+  homeCopy = home;
+  roomCopy = room;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C4home_16didUpdateNameForySo6HMHomeC_So6HMRoomCtF_0(homeCopy, roomCopy);
 }
 
-- (void)home:(id)a3 didAddZone:(id)a4
+- (void)home:(id)home didAddZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1E2BA70(v6, v7, "%s zone %@");
+  homeCopy = home;
+  zoneCopy = zone;
+  selfCopy = self;
+  sub_1D1E2BA70(homeCopy, zoneCopy, "%s zone %@");
 }
 
-- (void)home:(id)a3 didRemoveZone:(id)a4
+- (void)home:(id)home didRemoveZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1E2BDA4(v6, v7, "%s zone %@");
+  homeCopy = home;
+  zoneCopy = zone;
+  selfCopy = self;
+  sub_1D1E2BDA4(homeCopy, zoneCopy, "%s zone %@");
 }
 
-- (void)home:(id)a3 didUpdateNameForZone:(id)a4
+- (void)home:(id)home didUpdateNameForZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1E2C0C8(v6, v7, "%s zone %@");
+  homeCopy = home;
+  zoneCopy = zone;
+  selfCopy = self;
+  sub_1D1E2C0C8(homeCopy, zoneCopy, "%s zone %@");
 }
 
-- (void)home:(id)a3 didAddRoom:(id)a4 toZone:(id)a5
+- (void)home:(id)home didAddRoom:(id)room toZone:(id)zone
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1D1E2C3EC(v8, v9, v10, "%s room %@ zone %@");
+  homeCopy = home;
+  roomCopy = room;
+  zoneCopy = zone;
+  selfCopy = self;
+  sub_1D1E2C3EC(homeCopy, roomCopy, zoneCopy, "%s room %@ zone %@");
 }
 
-- (void)home:(id)a3 didRemoveRoom:(id)a4 fromZone:(id)a5
+- (void)home:(id)home didRemoveRoom:(id)room fromZone:(id)zone
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1D1E2C73C(v8, v9, v10, "%s room %@ zone %@");
+  homeCopy = home;
+  roomCopy = room;
+  zoneCopy = zone;
+  selfCopy = self;
+  sub_1D1E2C73C(homeCopy, roomCopy, zoneCopy, "%s room %@ zone %@");
 }
 
-- (void)home:(id)a3 didAddServiceGroup:(id)a4
+- (void)home:(id)home didAddServiceGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1E2BA70(v6, v7, "%s group %@)");
+  homeCopy = home;
+  groupCopy = group;
+  selfCopy = self;
+  sub_1D1E2BA70(homeCopy, groupCopy, "%s group %@)");
 }
 
-- (void)home:(id)a3 didRemoveServiceGroup:(id)a4
+- (void)home:(id)home didRemoveServiceGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1E2BDA4(v6, v7, "%s group %@)");
+  homeCopy = home;
+  groupCopy = group;
+  selfCopy = self;
+  sub_1D1E2BDA4(homeCopy, groupCopy, "%s group %@)");
 }
 
-- (void)home:(id)a3 didUpdateNameForServiceGroup:(id)a4
+- (void)home:(id)home didUpdateNameForServiceGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1E2C0C8(v6, v7, "%s group %@)");
+  homeCopy = home;
+  groupCopy = group;
+  selfCopy = self;
+  sub_1D1E2C0C8(homeCopy, groupCopy, "%s group %@)");
 }
 
-- (void)home:(id)a3 didAddService:(id)a4 toServiceGroup:(id)a5
+- (void)home:(id)home didAddService:(id)service toServiceGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1D1E2C3EC(v8, v9, v10, "%s service %@ group %@");
+  homeCopy = home;
+  serviceCopy = service;
+  groupCopy = group;
+  selfCopy = self;
+  sub_1D1E2C3EC(homeCopy, serviceCopy, groupCopy, "%s service %@ group %@");
 }
 
-- (void)home:(id)a3 didRemoveService:(id)a4 fromServiceGroup:(id)a5
+- (void)home:(id)home didRemoveService:(id)service fromServiceGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1D1E2C73C(v8, v9, v10, "%s service %@ group %@");
+  homeCopy = home;
+  serviceCopy = service;
+  groupCopy = group;
+  selfCopy = self;
+  sub_1D1E2C73C(homeCopy, serviceCopy, groupCopy, "%s service %@ group %@");
 }
 
-- (void)home:(id)a3 didAddActionSet:(id)a4
+- (void)home:(id)home didAddActionSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1E2BA70(v6, v7, "%s actionSet %@");
+  homeCopy = home;
+  setCopy = set;
+  selfCopy = self;
+  sub_1D1E2BA70(homeCopy, setCopy, "%s actionSet %@");
 }
 
-- (void)home:(id)a3 didRemoveActionSet:(id)a4
+- (void)home:(id)home didRemoveActionSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1E2BDA4(v6, v7, "%s actionSet %@");
+  homeCopy = home;
+  setCopy = set;
+  selfCopy = self;
+  sub_1D1E2BDA4(homeCopy, setCopy, "%s actionSet %@");
 }
 
-- (void)home:(id)a3 didUpdateNameForActionSet:(id)a4
+- (void)home:(id)home didUpdateNameForActionSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1E2C0C8(v6, v7, "%s actionSet %@");
+  homeCopy = home;
+  setCopy = set;
+  selfCopy = self;
+  sub_1D1E2C0C8(homeCopy, setCopy, "%s actionSet %@");
 }
 
-- (void)home:(id)a3 didUpdateActionsForActionSet:(id)a4
+- (void)home:(id)home didUpdateActionsForActionSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s13HomeDataModel0bC0C4home_19didUpdateActionsForySo6HMHomeC_So11HMActionSetCtF_0(v6, v7);
+  homeCopy = home;
+  setCopy = set;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C4home_19didUpdateActionsForySo6HMHomeC_So11HMActionSetCtF_0(homeCopy, setCopy);
 }
 
-- (void)home:(id)a3 didAddTrigger:(id)a4
+- (void)home:(id)home didAddTrigger:(id)trigger
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1E2BA70(v6, v7, "%s trigger %@");
+  homeCopy = home;
+  triggerCopy = trigger;
+  selfCopy = self;
+  sub_1D1E2BA70(homeCopy, triggerCopy, "%s trigger %@");
 }
 
-- (void)home:(id)a3 didRemoveTrigger:(id)a4
+- (void)home:(id)home didRemoveTrigger:(id)trigger
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1E2BDA4(v6, v7, "%s trigger %@");
+  homeCopy = home;
+  triggerCopy = trigger;
+  selfCopy = self;
+  sub_1D1E2BDA4(homeCopy, triggerCopy, "%s trigger %@");
 }
 
-- (void)home:(id)a3 didUpdateNameForTrigger:(id)a4
+- (void)home:(id)home didUpdateNameForTrigger:(id)trigger
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1E2C0C8(v6, v7, "%s trigger %@");
+  homeCopy = home;
+  triggerCopy = trigger;
+  selfCopy = self;
+  sub_1D1E2C0C8(homeCopy, triggerCopy, "%s trigger %@");
 }
 
-- (void)home:(id)a3 didUpdateTrigger:(id)a4
+- (void)home:(id)home didUpdateTrigger:(id)trigger
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s13HomeDataModel0bC0C4home_9didUpdateySo6HMHomeC_So9HMTriggerCtF_0(v6, v7);
+  homeCopy = home;
+  triggerCopy = trigger;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C4home_9didUpdateySo6HMHomeC_So9HMTriggerCtF_0(homeCopy, triggerCopy);
 }
 
-- (void)home:(id)a3 didUnblockAccessory:(id)a4
+- (void)home:(id)home didUnblockAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s13HomeDataModel0bC0C4home_19didUnblockAccessoryySo6HMHomeC_So11HMAccessoryCtF_0(v6, v7);
+  homeCopy = home;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C4home_19didUnblockAccessoryySo6HMHomeC_So11HMAccessoryCtF_0(homeCopy, accessoryCopy);
 }
 
-- (void)home:(id)a3 didEncounterError:(id)a4 forAccessory:(id)a5
+- (void)home:(id)home didEncounterError:(id)error forAccessory:(id)accessory
 {
-  v8 = a3;
-  v11 = a4;
-  v9 = a5;
-  v10 = self;
-  _s13HomeDataModel0bC0C4home_17didEncounterError3forySo6HMHomeC_s0G0_pSo11HMAccessoryCtF_0(v8, v11, v9);
+  homeCopy = home;
+  errorCopy = error;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C4home_17didEncounterError3forySo6HMHomeC_s0G0_pSo11HMAccessoryCtF_0(homeCopy, errorCopy, accessoryCopy);
 }
 
-- (void)home:(id)a3 didUpdateHomeHubState:(unint64_t)a4
+- (void)home:(id)home didUpdateHomeHubState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = self;
-  _s13HomeDataModel0bC0C4home_9didUpdateySo6HMHomeC_So0G8HubStateVtF_0(v6, a4);
+  homeCopy = home;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C4home_9didUpdateySo6HMHomeC_So0G8HubStateVtF_0(homeCopy, state);
 }
 
-- (void)homeDidUpdateSupportedFeatures:(id)a3
+- (void)homeDidUpdateSupportedFeatures:(id)features
 {
-  v4 = a3;
-  v5 = self;
-  _s13HomeDataModel0bC0C30homeDidUpdateSupportedFeaturesyySo6HMHomeCF_0(v4);
+  featuresCopy = features;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C30homeDidUpdateSupportedFeaturesyySo6HMHomeCF_0(featuresCopy);
 }
 
-- (void)home:(id)a3 didUpdateAutomaticSoftwareUpdateEnabled:(BOOL)a4
+- (void)home:(id)home didUpdateAutomaticSoftwareUpdateEnabled:(BOOL)enabled
 {
   updated = type metadata accessor for StateSnapshot.UpdateType(0);
   v6 = *(*(updated - 8) + 64);
@@ -1057,7 +1057,7 @@
   MEMORY[0x1EEE9AC00](v9);
   v13 = &v18 - v12;
   v14 = qword_1EE07DC88;
-  v15 = a3;
+  homeCopy = home;
   if (v14 != -1)
   {
     swift_once();
@@ -1065,55 +1065,55 @@
 
   v16 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC645BB8, &qword_1D1E7C4E0);
   __swift_project_value_buffer(v16, qword_1EE07DCE0);
-  *v8 = v15;
+  *v8 = homeCopy;
   swift_storeEnumTagMultiPayload();
-  v17 = v15;
+  v17 = homeCopy;
   sub_1D1E67ECC();
 
   (*(v10 + 8))(v13, v9);
 }
 
-- (void)homeDidUpdateApplicationData:(id)a3
+- (void)homeDidUpdateApplicationData:(id)data
 {
-  v4 = a3;
-  v5 = self;
-  _s13HomeDataModel0bC0C024homeDidUpdateApplicationB0yySo6HMHomeCF_0(v4);
+  dataCopy = data;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C024homeDidUpdateApplicationB0yySo6HMHomeCF_0(dataCopy);
 }
 
-- (void)home:(id)a3 didUpdateApplicationDataForRoom:(id)a4
+- (void)home:(id)home didUpdateApplicationDataForRoom:(id)room
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1E2E11C(v6, v7, "%s - new application data for room %s — %s");
+  homeCopy = home;
+  roomCopy = room;
+  selfCopy = self;
+  sub_1D1E2E11C(homeCopy, roomCopy, "%s - new application data for room %s — %s");
 }
 
-- (void)home:(id)a3 didUpdateApplicationDataForServiceGroup:(id)a4
+- (void)home:(id)home didUpdateApplicationDataForServiceGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1E2E11C(v6, v7, "%s - new application data for serviceGroup %s — %s");
+  homeCopy = home;
+  groupCopy = group;
+  selfCopy = self;
+  sub_1D1E2E11C(homeCopy, groupCopy, "%s - new application data for serviceGroup %s — %s");
 }
 
-- (void)home:(id)a3 didUpdateApplicationDataForActionSet:(id)a4
+- (void)home:(id)home didUpdateApplicationDataForActionSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1E2E11C(v6, v7, "%s - new application data for actionSet %s — %s");
+  homeCopy = home;
+  setCopy = set;
+  selfCopy = self;
+  sub_1D1E2E11C(homeCopy, setCopy, "%s - new application data for actionSet %s — %s");
 }
 
-- (void)home:(id)a3 didUpdateActionSet:(id)a4 isExecuting:(BOOL)a5
+- (void)home:(id)home didUpdateActionSet:(id)set isExecuting:(BOOL)executing
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_1D1E2E530(v9, v5);
+  executingCopy = executing;
+  homeCopy = home;
+  setCopy = set;
+  selfCopy = self;
+  sub_1D1E2E530(setCopy, executingCopy);
 }
 
-- (void)userActionPredictionController:(id)a3 didUpdatePredictions:(id)a4
+- (void)userActionPredictionController:(id)controller didUpdatePredictions:(id)predictions
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC6442C0, &qword_1D1E741A0);
   v6 = *(*(v5 - 8) + 64);
@@ -1126,97 +1126,97 @@
   v11 = swift_allocObject();
   v11[2] = 0;
   v11[3] = 0;
-  v11[4] = a3;
+  v11[4] = controller;
   v11[5] = v9;
-  v12 = a3;
+  controllerCopy = controller;
   sub_1D17C6EF0(0, 0, v8, &unk_1D1EB1DF0, v11);
 }
 
-- (void)accessoryDidUpdateName:(id)a3
+- (void)accessoryDidUpdateName:(id)name
 {
-  v4 = a3;
-  v5 = self;
-  _s13HomeDataModel0bC0C22accessoryDidUpdateNameyySo11HMAccessoryCF_0(v4);
+  nameCopy = name;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C22accessoryDidUpdateNameyySo11HMAccessoryCF_0(nameCopy);
 }
 
-- (void)accessoryDidUpdateReachability:(id)a3
+- (void)accessoryDidUpdateReachability:(id)reachability
 {
-  v4 = a3;
-  v5 = self;
-  _s13HomeDataModel0bC0C30accessoryDidUpdateReachabilityyySo11HMAccessoryCF_0(v4);
+  reachabilityCopy = reachability;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C30accessoryDidUpdateReachabilityyySo11HMAccessoryCF_0(reachabilityCopy);
 }
 
-- (void)accessoryDidUpdateServices:(id)a3
+- (void)accessoryDidUpdateServices:(id)services
 {
-  v4 = a3;
-  v5 = self;
-  _s13HomeDataModel0bC0C26accessoryDidUpdateServicesyySo11HMAccessoryCF_0(v4);
+  servicesCopy = services;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C26accessoryDidUpdateServicesyySo11HMAccessoryCF_0(servicesCopy);
 }
 
-- (void)accessory:(id)a3 didUpdateNameForService:(id)a4
+- (void)accessory:(id)accessory didUpdateNameForService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s13HomeDataModel0bC0C9accessory_16didUpdateNameForySo11HMAccessoryC_So9HMServiceCtF_0(v6, v7);
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C9accessory_16didUpdateNameForySo11HMAccessoryC_So9HMServiceCtF_0(accessoryCopy, serviceCopy);
 }
 
-- (void)accessory:(id)a3 service:(id)a4 didUpdateValueForCharacteristic:(id)a5
+- (void)accessory:(id)accessory service:(id)service didUpdateValueForCharacteristic:(id)characteristic
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1D1E2F9A0(v9, v10);
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  sub_1D1E2F9A0(serviceCopy, characteristicCopy);
 }
 
-- (void)accessory:(id)a3 didUpdateAssociatedServiceTypeForService:(id)a4
+- (void)accessory:(id)accessory didUpdateAssociatedServiceTypeForService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s13HomeDataModel0bC0C9accessory_33didUpdateAssociatedServiceTypeForySo11HMAccessoryC_So9HMServiceCtF_0(v6);
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C9accessory_33didUpdateAssociatedServiceTypeForySo11HMAccessoryC_So9HMServiceCtF_0(accessoryCopy);
 }
 
-- (void)accessory:(id)a3 didAddProfile:(id)a4
+- (void)accessory:(id)accessory didAddProfile:(id)profile
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s13HomeDataModel0bC0C9accessory_6didAddySo11HMAccessoryC_So0G7ProfileCtF_0(v6);
+  accessoryCopy = accessory;
+  profileCopy = profile;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C9accessory_6didAddySo11HMAccessoryC_So0G7ProfileCtF_0(accessoryCopy);
 }
 
-- (void)accessory:(id)a3 didRemoveProfile:(id)a4
+- (void)accessory:(id)accessory didRemoveProfile:(id)profile
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s13HomeDataModel0bC0C9accessory_9didRemoveySo11HMAccessoryC_So0G7ProfileCtF_0(v6);
+  accessoryCopy = accessory;
+  profileCopy = profile;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C9accessory_9didRemoveySo11HMAccessoryC_So0G7ProfileCtF_0(accessoryCopy);
 }
 
-- (void)accessory:(id)a3 didUpdateFirmwareVersion:(id)a4
+- (void)accessory:(id)accessory didUpdateFirmwareVersion:(id)version
 {
-  v5 = a3;
-  v6 = self;
-  _s13HomeDataModel0bC0C9accessory_24didUpdateFirmwareVersionySo11HMAccessoryC_SStF_0(v5);
+  accessoryCopy = accessory;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C9accessory_24didUpdateFirmwareVersionySo11HMAccessoryC_SStF_0(accessoryCopy);
 }
 
-- (void)accessoryDidUpdateApplicationData:(id)a3
+- (void)accessoryDidUpdateApplicationData:(id)data
 {
-  v4 = a3;
-  v5 = self;
-  _s13HomeDataModel0bC0C029accessoryDidUpdateApplicationB0yySo11HMAccessoryCF_0(v4);
+  dataCopy = data;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C029accessoryDidUpdateApplicationB0yySo11HMAccessoryCF_0(dataCopy);
 }
 
-- (void)accessory:(id)a3 didUpdateApplicationDataForService:(id)a4
+- (void)accessory:(id)accessory didUpdateApplicationDataForService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s13HomeDataModel0bC0C9accessory_020didUpdateApplicationB3ForySo11HMAccessoryC_So9HMServiceCtF_0(v6, v7);
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C9accessory_020didUpdateApplicationB3ForySo11HMAccessoryC_So9HMServiceCtF_0(accessoryCopy, serviceCopy);
 }
 
-- (void)accessorySettingsDataSource:(id)a3 didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)a4 settings:(id)a5
+- (void)accessorySettingsDataSource:(id)source didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)identifier settings:(id)settings
 {
   updated = type metadata accessor for StateSnapshot.UpdateType(0);
   v6 = *(*(updated - 8) + 64);
@@ -1245,7 +1245,7 @@
   (*(v13 + 8))(v16, v12);
 }
 
-- (void)softwareUpdateController:(id)a3 accessory:(id)a4 didReceiveUpdate:(id)a5
+- (void)softwareUpdateController:(id)controller accessory:(id)accessory didReceiveUpdate:(id)update
 {
   v8 = sub_1D1E66A7C();
   v9 = *(v8 - 8);
@@ -1253,40 +1253,40 @@
   MEMORY[0x1EEE9AC00](v8);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D1E66A5C();
-  v13 = a3;
-  v14 = a5;
-  v15 = self;
-  sub_1D1E3129C(v12, v14);
+  controllerCopy = controller;
+  updateCopy = update;
+  selfCopy = self;
+  sub_1D1E3129C(v12, updateCopy);
 
   (*(v9 + 8))(v12, v8);
 }
 
-- (void)softwareUpdateController:(id)a3 accessory:(id)a4 didFailUpdate:(id)a5 withError:(id)a6 timestamp:(id)a7
+- (void)softwareUpdateController:(id)controller accessory:(id)accessory didFailUpdate:(id)update withError:(id)error timestamp:(id)timestamp
 {
-  v23 = self;
+  selfCopy = self;
   v24 = sub_1D1E669FC();
   v10 = *(v24 - 8);
   v11 = *(v10 + 64);
   MEMORY[0x1EEE9AC00](v24);
-  v13 = &v23 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v13 = &selfCopy - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   v14 = sub_1D1E66A7C();
   v15 = *(v14 - 8);
   v16 = *(v15 + 64);
   MEMORY[0x1EEE9AC00](v14);
-  v18 = &v23 - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v18 = &selfCopy - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D1E66A5C();
   sub_1D1E669BC();
-  v19 = a3;
-  v20 = a5;
-  v21 = a6;
-  v22 = v23;
-  sub_1D1E315B0(v18, v20, v21);
+  controllerCopy = controller;
+  updateCopy = update;
+  errorCopy = error;
+  v22 = selfCopy;
+  sub_1D1E315B0(v18, updateCopy, errorCopy);
 
   (*(v10 + 8))(v13, v24);
   (*(v15 + 8))(v18, v14);
 }
 
-- (void)softwareUpdateController:(id)a3 accessory:(id)a4 didUpdateProgress:(id)a5
+- (void)softwareUpdateController:(id)controller accessory:(id)accessory didUpdateProgress:(id)progress
 {
   v8 = sub_1D1E66A7C();
   v9 = *(v8 - 8);
@@ -1294,15 +1294,15 @@
   MEMORY[0x1EEE9AC00](v8);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D1E66A5C();
-  v13 = a3;
-  v14 = a5;
-  v15 = self;
-  sub_1D1E31928(v12, v14);
+  controllerCopy = controller;
+  progressCopy = progress;
+  selfCopy = self;
+  sub_1D1E31928(v12, progressCopy);
 
   (*(v9 + 8))(v12, v8);
 }
 
-- (void)residentDevice:(id)a3 didUpdateStatus:(unint64_t)a4
+- (void)residentDevice:(id)device didUpdateStatus:(unint64_t)status
 {
   updated = type metadata accessor for StateSnapshot.UpdateType(0);
   v6 = *(*(updated - 8) + 64);
@@ -1314,7 +1314,7 @@
   MEMORY[0x1EEE9AC00](v9);
   v13 = &v17 - v12;
   v14 = qword_1EE07DC88;
-  v15 = a3;
+  deviceCopy = device;
   if (v14 != -1)
   {
     swift_once();
@@ -1322,14 +1322,14 @@
 
   v16 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC645BB8, &qword_1D1E7C4E0);
   __swift_project_value_buffer(v16, qword_1EE07DCE0);
-  *v8 = [v15 home];
+  *v8 = [deviceCopy home];
   swift_storeEnumTagMultiPayload();
   sub_1D1E67ECC();
 
   (*(v10 + 8))(v13, v9);
 }
 
-- (void)didUpdateSupportedCapabilitiesForResidentDevice:(id)a3
+- (void)didUpdateSupportedCapabilitiesForResidentDevice:(id)device
 {
   updated = type metadata accessor for StateSnapshot.UpdateType(0);
   v5 = *(*(updated - 8) + 64);
@@ -1341,7 +1341,7 @@
   MEMORY[0x1EEE9AC00](v8);
   v12 = &v16 - v11;
   v13 = qword_1EE07DC88;
-  v14 = a3;
+  deviceCopy = device;
   if (v13 != -1)
   {
     swift_once();
@@ -1349,39 +1349,39 @@
 
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC645BB8, &qword_1D1E7C4E0);
   __swift_project_value_buffer(v15, qword_1EE07DCE0);
-  *v7 = [v14 home];
+  *v7 = [deviceCopy home];
   swift_storeEnumTagMultiPayload();
   sub_1D1E67ECC();
 
   (*(v9 + 8))(v12, v8);
 }
 
-- (void)device:(id)a3 stateChanged:(unint64_t)a4
+- (void)device:(id)device stateChanged:(unint64_t)changed
 {
-  v6 = a3;
-  v7 = self;
-  _s13HomeDataModel0bC0C6device_12stateChangedySo9MTRDeviceC_So0G5StateVtF_0(v6, a4);
+  deviceCopy = device;
+  selfCopy = self;
+  _s13HomeDataModel0bC0C6device_12stateChangedySo9MTRDeviceC_So0G5StateVtF_0(deviceCopy, changed);
 }
 
-- (void)deviceBecameActive:(id)a3
+- (void)deviceBecameActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1AB43C4(v4, "Received MTRDevice delegate deviceBecameActive for device:%{public}@");
+  activeCopy = active;
+  selfCopy = self;
+  sub_1D1AB43C4(activeCopy, "Received MTRDevice delegate deviceBecameActive for device:%{public}@");
 }
 
-- (void)deviceCachePrimed:(id)a3
+- (void)deviceCachePrimed:(id)primed
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1AB43C4(v4, "Received MTRDevice delegate deviceCachePrimed for device:%{public}@");
+  primedCopy = primed;
+  selfCopy = self;
+  sub_1D1AB43C4(primedCopy, "Received MTRDevice delegate deviceCachePrimed for device:%{public}@");
 }
 
-- (void)deviceConfigurationChanged:(id)a3
+- (void)deviceConfigurationChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1AB43C4(v4, "Received MTRDevice delegate deviceConfigurationChanged for device:%{public}@");
+  changedCopy = changed;
+  selfCopy = self;
+  sub_1D1AB43C4(changedCopy, "Received MTRDevice delegate deviceConfigurationChanged for device:%{public}@");
 }
 
 @end

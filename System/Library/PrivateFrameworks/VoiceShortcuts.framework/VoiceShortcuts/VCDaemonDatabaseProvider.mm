@@ -1,8 +1,8 @@
 @interface VCDaemonDatabaseProvider
 - (BOOL)isShortcutsAppInstalled;
 - (VCDaemonDatabaseProvider)init;
-- (id)databaseWithError:(id *)a3;
-- (void)migrateVoiceShortcutsToShortcutsInDatabase:(id)a3;
+- (id)databaseWithError:(id *)error;
+- (void)migrateVoiceShortcutsToShortcutsInDatabase:(id)database;
 @end
 
 @implementation VCDaemonDatabaseProvider
@@ -16,12 +16,12 @@
   return v4;
 }
 
-- (void)migrateVoiceShortcutsToShortcutsInDatabase:(id)a3
+- (void)migrateVoiceShortcutsToShortcutsInDatabase:(id)database
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  databaseCopy = database;
   v4 = VCOSTransactionWithName(@"WFDaemonDatabaseProvider.migrateVoiceShortcutsToShortcutsInDatabase");
-  v5 = [objc_alloc(MEMORY[0x277D7C080]) initWithDatabase:v3];
+  v5 = [objc_alloc(MEMORY[0x277D7C080]) initWithDatabase:databaseCopy];
 
   v10 = 0;
   v6 = [v5 migrateWithError:&v10];
@@ -42,7 +42,7 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)databaseWithError:(id *)a3
+- (id)databaseWithError:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -56,7 +56,7 @@
   v12 = __Block_byref_object_copy__4672;
   v13 = __Block_byref_object_dispose__4673;
   v14 = 0;
-  v5 = [(VCDaemonDatabaseProvider *)self queue];
+  queue = [(VCDaemonDatabaseProvider *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__VCDaemonDatabaseProvider_databaseWithError___block_invoke;
@@ -64,11 +64,11 @@
   block[4] = self;
   block[5] = &v9;
   block[6] = &v15;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
-  if (a3)
+  if (error)
   {
-    *a3 = v16[5];
+    *error = v16[5];
   }
 
   v6 = v10[5];

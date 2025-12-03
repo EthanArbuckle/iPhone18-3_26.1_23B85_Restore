@@ -1,15 +1,15 @@
 @interface MADEmbeddingStoreService
 + (BOOL)isEntitledForInProcessAccess;
 + (id)sharedService;
-+ (void)configureServerInterface:(id)a3;
++ (void)configureServerInterface:(id)interface;
 - (MADEmbeddingStoreService)init;
 - (id)connection;
-- (id)fetchEmbeddingsWithAssetUUIDs:(id)a3 photoLibraryURL:(id)a4 options:(id)a5 error:(id *)a6;
+- (id)fetchEmbeddingsWithAssetUUIDs:(id)ds photoLibraryURL:(id)l options:(id)options error:(id *)error;
 - (id)initInternal;
-- (id)searchWithEmbeddings:(id)a3 photoLibraryURL:(id)a4 options:(id)a5 error:(id *)a6;
-- (void)checkSandboxExtensionForPhotoLibraryURL:(id)a3 error:(id *)a4;
+- (id)searchWithEmbeddings:(id)embeddings photoLibraryURL:(id)l options:(id)options error:(id *)error;
+- (void)checkSandboxExtensionForPhotoLibraryURL:(id)l error:(id *)error;
 - (void)dealloc;
-- (void)prewarmSearchWithConcurrencyLimit:(unint64_t)a3 photoLibraryURL:(id)a4 error:(id *)a5;
+- (void)prewarmSearchWithConcurrencyLimit:(unint64_t)limit photoLibraryURL:(id)l error:(id *)error;
 @end
 
 @implementation MADEmbeddingStoreService
@@ -41,19 +41,19 @@
     sandboxQueue = v2->_sandboxQueue;
     v2->_sandboxQueue = v5;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     sandboxHandles = v2->_sandboxHandles;
-    v2->_sandboxHandles = v7;
+    v2->_sandboxHandles = dictionary;
 
-    v9 = [MEMORY[0x1E696AE30] processInfo];
-    v10 = [v9 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
 
-    if (([v10 isEqualToString:@"mediaanalysisd"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"mediaanalysisd-service"))
+    if (([processName isEqualToString:@"mediaanalysisd"] & 1) != 0 || objc_msgSend(processName, "isEqualToString:", @"mediaanalysisd-service"))
     {
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v15 = v10;
+        v15 = processName;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[MADEmbeddingStoreService] calling service from MAD daemon (%@)", buf, 0xCu);
       }
     }
@@ -63,7 +63,7 @@
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v15 = v10;
+        v15 = processName;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[MADEmbeddingStoreService] calling service from client process (%@), using read-only vector database", buf, 0xCu);
       }
 
@@ -101,8 +101,8 @@ void __41__MADEmbeddingStoreService_sharedService__block_invoke()
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_sandboxHandles allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->_sandboxHandles allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -113,7 +113,7 @@ void __41__MADEmbeddingStoreService_sharedService__block_invoke()
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v6) longLongValue];
@@ -122,7 +122,7 @@ void __41__MADEmbeddingStoreService_sharedService__block_invoke()
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -134,16 +134,16 @@ void __41__MADEmbeddingStoreService_sharedService__block_invoke()
   [(MADEmbeddingStoreService *)&v7 dealloc];
 }
 
-+ (void)configureServerInterface:(id)a3
++ (void)configureServerInterface:(id)interface
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  interfaceCopy = interface;
   v4 = MEMORY[0x1E695DFD8];
   v19[0] = objc_opt_class();
   v19[1] = objc_opt_class();
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v6 = [v4 setWithArray:v5];
-  [v3 setClasses:v6 forSelector:sel_fetchEmbeddingsWithAssetUUIDs_photoLibraryURL_options_reply_ argumentIndex:0 ofReply:0];
+  [interfaceCopy setClasses:v6 forSelector:sel_fetchEmbeddingsWithAssetUUIDs_photoLibraryURL_options_reply_ argumentIndex:0 ofReply:0];
 
   v7 = MEMORY[0x1E695DFD8];
   v18[0] = objc_opt_class();
@@ -151,21 +151,21 @@ void __41__MADEmbeddingStoreService_sharedService__block_invoke()
   v18[2] = objc_opt_class();
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:3];
   v9 = [v7 setWithArray:v8];
-  [v3 setClasses:v9 forSelector:sel_fetchEmbeddingsWithAssetUUIDs_photoLibraryURL_options_reply_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v9 forSelector:sel_fetchEmbeddingsWithAssetUUIDs_photoLibraryURL_options_reply_ argumentIndex:0 ofReply:1];
 
   v10 = MEMORY[0x1E695DFD8];
   v17[0] = objc_opt_class();
   v17[1] = objc_opt_class();
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   v12 = [v10 setWithArray:v11];
-  [v3 setClasses:v12 forSelector:sel_searchWithEmbeddings_photoLibraryURL_options_reply_ argumentIndex:0 ofReply:0];
+  [interfaceCopy setClasses:v12 forSelector:sel_searchWithEmbeddings_photoLibraryURL_options_reply_ argumentIndex:0 ofReply:0];
 
   v13 = MEMORY[0x1E695DFD8];
   v16[0] = objc_opt_class();
   v16[1] = objc_opt_class();
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
   v15 = [v13 setWithArray:{v14, v16[0]}];
-  [v3 setClasses:v15 forSelector:sel_searchWithEmbeddings_photoLibraryURL_options_reply_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v15 forSelector:sel_searchWithEmbeddings_photoLibraryURL_options_reply_ argumentIndex:0 ofReply:1];
 }
 
 - (id)connection
@@ -312,18 +312,18 @@ const void **__56__MADEmbeddingStoreService_isEntitledForInProcessAccess__block_
   return CF<__CVBuffer *>::~CF(&v6);
 }
 
-- (void)checkSandboxExtensionForPhotoLibraryURL:(id)a3 error:(id *)a4
+- (void)checkSandboxExtensionForPhotoLibraryURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   sandboxQueue = self->_sandboxQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__MADEmbeddingStoreService_checkSandboxExtensionForPhotoLibraryURL_error___block_invoke;
   block[3] = &unk_1E834D7D0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = lCopy;
+  errorCopy = error;
+  v8 = lCopy;
   dispatch_sync(sandboxQueue, block);
 }
 
@@ -437,12 +437,12 @@ void __74__MADEmbeddingStoreService_checkSandboxExtensionForPhotoLibraryURL_erro
   }
 }
 
-- (id)fetchEmbeddingsWithAssetUUIDs:(id)a3 photoLibraryURL:(id)a4 options:(id)a5 error:(id *)a6
+- (id)fetchEmbeddingsWithAssetUUIDs:(id)ds photoLibraryURL:(id)l options:(id)options error:(id *)error
 {
   v59 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dsCopy = ds;
+  lCopy = l;
+  optionsCopy = options;
   v51 = 0;
   v52 = &v51;
   v53 = 0x3032000000;
@@ -455,22 +455,22 @@ void __74__MADEmbeddingStoreService_checkSandboxExtensionForPhotoLibraryURL_erro
   v48 = __Block_byref_object_copy__20;
   v49 = __Block_byref_object_dispose__20;
   v50 = 0;
-  if (v11)
+  if (lCopy)
   {
-    v13 = v11;
+    systemPhotoLibraryURL = lCopy;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E69789B0] systemPhotoLibraryURL];
+    systemPhotoLibraryURL = [MEMORY[0x1E69789B0] systemPhotoLibraryURL];
   }
 
-  v14 = v13;
+  v14 = systemPhotoLibraryURL;
   if (![objc_opt_class() isEntitledForInProcessAccess])
   {
     if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v10 count];
+      v19 = [dsCopy count];
       *buf = 67109120;
       v58 = v19;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADEmbeddingStoreService] Performing XPC embedding fetching for %u assets", buf, 8u);
@@ -487,20 +487,20 @@ void __74__MADEmbeddingStoreService_checkSandboxExtensionForPhotoLibraryURL_erro
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v23, OS_SIGNPOST_INTERVAL_BEGIN, v21, "MADEmbeddingStore_XPCFetch", "", buf, 2u);
     }
 
-    v24 = [(MADEmbeddingStoreService *)self connection];
+    connection = [(MADEmbeddingStoreService *)self connection];
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __88__MADEmbeddingStoreService_fetchEmbeddingsWithAssetUUIDs_photoLibraryURL_options_error___block_invoke;
     v42[3] = &unk_1E834CCA0;
     v42[4] = &v51;
-    v25 = [v24 synchronousRemoteObjectProxyWithErrorHandler:v42];
+    v25 = [connection synchronousRemoteObjectProxyWithErrorHandler:v42];
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
     v41[2] = __88__MADEmbeddingStoreService_fetchEmbeddingsWithAssetUUIDs_photoLibraryURL_options_error___block_invoke_259;
     v41[3] = &unk_1E834C890;
     v41[4] = &v45;
     v41[5] = &v51;
-    [v25 fetchEmbeddingsWithAssetUUIDs:v10 photoLibraryURL:v14 options:v12 reply:v41];
+    [v25 fetchEmbeddingsWithAssetUUIDs:dsCopy photoLibraryURL:v14 options:optionsCopy reply:v41];
 
     v26 = VCPSignPostLog();
     v27 = v26;
@@ -518,7 +518,7 @@ void __74__MADEmbeddingStoreService_checkSandboxExtensionForPhotoLibraryURL_erro
 
   if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v10 count];
+    v15 = [dsCopy count];
     *buf = 67109120;
     v58 = v15;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADEmbeddingStoreService] Performing in-process embedding fetching for %u assets", buf, 8u);
@@ -532,9 +532,9 @@ void __74__MADEmbeddingStoreService_checkSandboxExtensionForPhotoLibraryURL_erro
   if (v17)
   {
     v18 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v17;
+      *error = v17;
     }
 
     goto LABEL_31;
@@ -553,7 +553,7 @@ void __74__MADEmbeddingStoreService_checkSandboxExtensionForPhotoLibraryURL_erro
 
   v35 = (v52 + 5);
   v43 = v52[5];
-  v36 = [MADEmbeddingStore fetchEmbeddingsWithAssetUUIDs:v10 photoLibraryURL:v14 options:v12 error:&v43];
+  v36 = [MADEmbeddingStore fetchEmbeddingsWithAssetUUIDs:dsCopy photoLibraryURL:v14 options:optionsCopy error:&v43];
   objc_storeStrong(v35, v43);
   v37 = v46[5];
   v46[5] = v36;
@@ -572,12 +572,12 @@ LABEL_26:
 
 LABEL_27:
 
-  if (a6)
+  if (error)
   {
     v39 = v52[5];
     if (v39)
     {
-      *a6 = v39;
+      *error = v39;
     }
   }
 
@@ -618,12 +618,12 @@ void __88__MADEmbeddingStoreService_fetchEmbeddingsWithAssetUUIDs_photoLibraryUR
   *(v8 + 40) = v7;
 }
 
-- (id)searchWithEmbeddings:(id)a3 photoLibraryURL:(id)a4 options:(id)a5 error:(id *)a6
+- (id)searchWithEmbeddings:(id)embeddings photoLibraryURL:(id)l options:(id)options error:(id *)error
 {
   v59 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  embeddingsCopy = embeddings;
+  lCopy = l;
+  optionsCopy = options;
   v51 = 0;
   v52 = &v51;
   v53 = 0x3032000000;
@@ -636,22 +636,22 @@ void __88__MADEmbeddingStoreService_fetchEmbeddingsWithAssetUUIDs_photoLibraryUR
   v48 = __Block_byref_object_copy__20;
   v49 = __Block_byref_object_dispose__20;
   v50 = 0;
-  if (v11)
+  if (lCopy)
   {
-    v13 = v11;
+    systemPhotoLibraryURL = lCopy;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E69789B0] systemPhotoLibraryURL];
+    systemPhotoLibraryURL = [MEMORY[0x1E69789B0] systemPhotoLibraryURL];
   }
 
-  v14 = v13;
+  v14 = systemPhotoLibraryURL;
   if (![objc_opt_class() isEntitledForInProcessAccess])
   {
     if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v10 count];
+      v19 = [embeddingsCopy count];
       *buf = 134217984;
       v58 = v19;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADEmbeddingStoreService] XPC search with %llu embeddings", buf, 0xCu);
@@ -668,20 +668,20 @@ void __88__MADEmbeddingStoreService_fetchEmbeddingsWithAssetUUIDs_photoLibraryUR
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v23, OS_SIGNPOST_INTERVAL_BEGIN, v21, "MADEmbeddingStore_XPCSearch", "", buf, 2u);
     }
 
-    v24 = [(MADEmbeddingStoreService *)self connection];
+    connection = [(MADEmbeddingStoreService *)self connection];
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __79__MADEmbeddingStoreService_searchWithEmbeddings_photoLibraryURL_options_error___block_invoke;
     v42[3] = &unk_1E834CCA0;
     v42[4] = &v51;
-    v25 = [v24 synchronousRemoteObjectProxyWithErrorHandler:v42];
+    v25 = [connection synchronousRemoteObjectProxyWithErrorHandler:v42];
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
     v41[2] = __79__MADEmbeddingStoreService_searchWithEmbeddings_photoLibraryURL_options_error___block_invoke_263;
     v41[3] = &unk_1E834D7F8;
     v41[4] = &v45;
     v41[5] = &v51;
-    [v25 searchWithEmbeddings:v10 photoLibraryURL:v14 options:v12 reply:v41];
+    [v25 searchWithEmbeddings:embeddingsCopy photoLibraryURL:v14 options:optionsCopy reply:v41];
 
     v26 = VCPSignPostLog();
     v27 = v26;
@@ -699,7 +699,7 @@ void __88__MADEmbeddingStoreService_fetchEmbeddingsWithAssetUUIDs_photoLibraryUR
 
   if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v10 count];
+    v15 = [embeddingsCopy count];
     *buf = 134217984;
     v58 = v15;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADEmbeddingStoreService] In-process search with %llu embeddings", buf, 0xCu);
@@ -713,9 +713,9 @@ void __88__MADEmbeddingStoreService_fetchEmbeddingsWithAssetUUIDs_photoLibraryUR
   if (v17)
   {
     v18 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v17;
+      *error = v17;
     }
 
     goto LABEL_31;
@@ -734,7 +734,7 @@ void __88__MADEmbeddingStoreService_fetchEmbeddingsWithAssetUUIDs_photoLibraryUR
 
   v35 = (v52 + 5);
   v43 = v52[5];
-  v36 = [MADEmbeddingStore searchWithEmbeddings:v10 photoLibraryURL:v14 options:v12 error:&v43];
+  v36 = [MADEmbeddingStore searchWithEmbeddings:embeddingsCopy photoLibraryURL:v14 options:optionsCopy error:&v43];
   objc_storeStrong(v35, v43);
   v37 = v46[5];
   v46[5] = v36;
@@ -753,12 +753,12 @@ LABEL_26:
 
 LABEL_27:
 
-  if (a6)
+  if (error)
   {
     v39 = v52[5];
     if (v39)
     {
-      *a6 = v39;
+      *error = v39;
     }
   }
 
@@ -799,34 +799,34 @@ void __79__MADEmbeddingStoreService_searchWithEmbeddings_photoLibraryURL_options
   *(v8 + 40) = v7;
 }
 
-- (void)prewarmSearchWithConcurrencyLimit:(unint64_t)a3 photoLibraryURL:(id)a4 error:(id *)a5
+- (void)prewarmSearchWithConcurrencyLimit:(unint64_t)limit photoLibraryURL:(id)l error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = v8;
+  lCopy = l;
+  v9 = lCopy;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
   v38 = __Block_byref_object_copy__20;
   v39 = __Block_byref_object_dispose__20;
   v40 = 0;
-  if (v8)
+  if (lCopy)
   {
-    v10 = v8;
+    systemPhotoLibraryURL = lCopy;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E69789B0] systemPhotoLibraryURL];
+    systemPhotoLibraryURL = [MEMORY[0x1E69789B0] systemPhotoLibraryURL];
   }
 
-  v11 = v10;
+  v11 = systemPhotoLibraryURL;
   if ([objc_opt_class() isEntitledForInProcessAccess])
   {
     if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v42 = a3;
+      limitCopy = limit;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADEmbeddingStoreService] In-process prewarm with concurrencyLimit %u", buf, 8u);
     }
 
@@ -837,7 +837,7 @@ void __79__MADEmbeddingStoreService_searchWithEmbeddings_photoLibraryURL_options
     v13 = v36[5];
     if (v13)
     {
-      if (!a5)
+      if (!error)
       {
         goto LABEL_27;
       }
@@ -858,7 +858,7 @@ void __79__MADEmbeddingStoreService_searchWithEmbeddings_photoLibraryURL_options
 
     v29 = (v36 + 5);
     v33 = v36[5];
-    [MADEmbeddingStore prewarmSearchWithConcurrencyLimit:a3 photoLibraryURL:v9 error:&v33];
+    [MADEmbeddingStore prewarmSearchWithConcurrencyLimit:limit photoLibraryURL:v9 error:&v33];
     objc_storeStrong(v29, v33);
     v30 = VCPSignPostLog();
     v21 = v30;
@@ -885,19 +885,19 @@ void __79__MADEmbeddingStoreService_searchWithEmbeddings_photoLibraryURL_options
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v15, "MADEmbeddingStore_XPCPrewarm", "", buf, 2u);
     }
 
-    v18 = [(MADEmbeddingStoreService *)self connection];
+    connection = [(MADEmbeddingStoreService *)self connection];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __84__MADEmbeddingStoreService_prewarmSearchWithConcurrencyLimit_photoLibraryURL_error___block_invoke;
     v32[3] = &unk_1E834CCA0;
     v32[4] = &v35;
-    v19 = [v18 synchronousRemoteObjectProxyWithErrorHandler:v32];
+    v19 = [connection synchronousRemoteObjectProxyWithErrorHandler:v32];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __84__MADEmbeddingStoreService_prewarmSearchWithConcurrencyLimit_photoLibraryURL_error___block_invoke_267;
     v31[3] = &unk_1E834CCA0;
     v31[4] = &v35;
-    [v19 prewarmSearchWithConcurrencyLimit:a3 photoLibraryURL:v11 reply:v31];
+    [v19 prewarmSearchWithConcurrencyLimit:limit photoLibraryURL:v11 reply:v31];
 
     v20 = VCPSignPostLog();
     v21 = v20;
@@ -912,13 +912,13 @@ LABEL_23:
     }
   }
 
-  if (a5)
+  if (error)
   {
     v13 = v36[5];
     if (v13)
     {
 LABEL_26:
-      *a5 = v13;
+      *error = v13;
     }
   }
 

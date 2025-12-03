@@ -1,7 +1,7 @@
 @interface LighthouseBitacoraPlugin
 - (LighthouseBitacoraPlugin)init;
-- (id)getPathForKey:(id)a3 IsDirectory:(BOOL)a4 FromTrialClient:(id)a5 WithError:(id *)a6;
-- (id)performTrialTask:(id)a3 outError:(id *)a4;
+- (id)getPathForKey:(id)key IsDirectory:(BOOL)directory FromTrialClient:(id)client WithError:(id *)error;
+- (id)performTrialTask:(id)task outError:(id *)error;
 - (void)stop;
 @end
 
@@ -24,25 +24,25 @@
   return v2;
 }
 
-- (id)getPathForKey:(id)a3 IsDirectory:(BOOL)a4 FromTrialClient:(id)a5 WithError:(id *)a6
+- (id)getPathForKey:(id)key IsDirectory:(BOOL)directory FromTrialClient:(id)client WithError:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a5 levelForFactor:v9 withNamespaceName:trialNamespace];
+  directoryCopy = directory;
+  keyCopy = key;
+  v10 = [client levelForFactor:keyCopy withNamespaceName:trialNamespace];
   v11 = v10;
-  if (v8)
+  if (directoryCopy)
   {
-    v12 = [v10 directoryValue];
-    v13 = [v12 hasPath];
+    directoryValue = [v10 directoryValue];
+    hasPath = [directoryValue hasPath];
 
-    if (v13)
+    if (hasPath)
     {
-      v14 = [v11 directoryValue];
+      directoryValue2 = [v11 directoryValue];
 LABEL_6:
-      v17 = v14;
-      v18 = [v14 path];
+      v17 = directoryValue2;
+      path = [directoryValue2 path];
 
-      v19 = [NSURL fileURLWithPath:v18];
+      v19 = [NSURL fileURLWithPath:path];
 
       goto LABEL_12;
     }
@@ -55,12 +55,12 @@ LABEL_6:
 
   else
   {
-    v15 = [v10 fileValue];
-    v16 = [v15 hasPath];
+    fileValue = [v10 fileValue];
+    hasPath2 = [fileValue hasPath];
 
-    if (v16)
+    if (hasPath2)
     {
-      v14 = [v11 fileValue];
+      directoryValue2 = [v11 fileValue];
       goto LABEL_6;
     }
 
@@ -71,15 +71,15 @@ LABEL_6:
   }
 
   [NSError errorWithDomain:@"LighthouseBitacoraPluginDomain" code:-1 userInfo:0];
-  *a6 = v19 = 0;
+  *error = v19 = 0;
 LABEL_12:
 
   return v19;
 }
 
-- (id)performTrialTask:(id)a3 outError:(id *)a4
+- (id)performTrialTask:(id)task outError:(id *)error
 {
-  v6 = a3;
+  taskCopy = task;
   v7 = LBFLogContextPlugin;
   if (os_log_type_enabled(LBFLogContextPlugin, OS_LOG_TYPE_INFO))
   {
@@ -87,9 +87,9 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "LighthouseBitacoraPlugin: Start task", buf, 2u);
   }
 
-  v8 = [v6 triClient];
-  [v8 refresh];
-  v9 = [v8 experimentIdentifiersWithNamespaceName:trialNamespace];
+  triClient = [taskCopy triClient];
+  [triClient refresh];
+  v9 = [triClient experimentIdentifiersWithNamespaceName:trialNamespace];
   v10 = trialIds;
   trialIds = v9;
 
@@ -107,9 +107,9 @@ LABEL_12:
     {
       v13 = trialIds;
       v14 = v12;
-      v15 = [v13 experimentId];
+      experimentId = [v13 experimentId];
       *buf = 138412290;
-      v47 = v15;
+      v47 = experimentId;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Experiment ID :%@", buf, 0xCu);
     }
 
@@ -118,9 +118,9 @@ LABEL_12:
     {
       v17 = trialIds;
       v18 = v16;
-      v19 = [v17 treatmentId];
+      treatmentId = [v17 treatmentId];
       *buf = 138412290;
-      v47 = v19;
+      v47 = treatmentId;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Treatment ID :%@", buf, 0xCu);
     }
 
@@ -136,12 +136,12 @@ LABEL_12:
     }
 
     v45 = 0;
-    v24 = [(LighthouseBitacoraPlugin *)self getPathForKey:trialRecipeKey IsDirectory:0 FromTrialClient:v8 WithError:&v45];
+    v24 = [(LighthouseBitacoraPlugin *)self getPathForKey:trialRecipeKey IsDirectory:0 FromTrialClient:triClient WithError:&v45];
     v25 = v45;
     if (v25)
     {
       v26 = v25;
-      *a4 = v25;
+      *error = v25;
       [LBPluginBitacoraHandler emitPerformTrialTaskEvent:trialIds succeeded:0 error:v26];
     }
 
@@ -155,8 +155,8 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "The URL of the recipe is: %@", buf, 0xCu);
       }
 
-      v29 = [v24 path];
-      v30 = [NSData dataWithContentsOfFile:v29];
+      path = [v24 path];
+      v30 = [NSData dataWithContentsOfFile:path];
 
       v31 = LBFLogContextPlugin;
       if (os_log_type_enabled(LBFLogContextPlugin, OS_LOG_TYPE_INFO))
@@ -178,7 +178,7 @@ LABEL_12:
         }
 
         v34 = [NSError errorWithDomain:@"LighthouseBitacoraPluginDomain" code:-2 userInfo:0];
-        *a4 = v34;
+        *error = v34;
         [LBPluginBitacoraHandler emitPerformTrialTaskEvent:trialIds succeeded:0 error:v34];
       }
 
@@ -220,7 +220,7 @@ LABEL_12:
     }
 
     v27 = [NSError errorWithDomain:@"LighthouseBitacoraPluginDomain" code:-3 userInfo:0];
-    *a4 = v27;
+    *error = v27;
     [LBPluginBitacoraHandler emitPerformTrialTaskEvent:trialIds succeeded:0 error:v27];
   }
 

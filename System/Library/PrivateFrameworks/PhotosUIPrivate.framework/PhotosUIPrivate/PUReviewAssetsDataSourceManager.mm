@@ -1,8 +1,8 @@
 @interface PUReviewAssetsDataSourceManager
-- (PUReviewAssetsDataSourceManager)initWithReviewDataSource:(id)a3;
+- (PUReviewAssetsDataSourceManager)initWithReviewDataSource:(id)source;
 - (PUReviewAssetsDataSourceManagerDelegate)reviewDelegate;
 - (void)_createContainingAssetCollectionForMultiLibraryMode;
-- (void)_updateWithReviewDataSource:(id)a3 changeDetails:(id)a4;
+- (void)_updateWithReviewDataSource:(id)source changeDetails:(id)details;
 - (void)dealloc;
 @end
 
@@ -15,24 +15,24 @@
   return WeakRetained;
 }
 
-- (void)_updateWithReviewDataSource:(id)a3 changeDetails:(id)a4
+- (void)_updateWithReviewDataSource:(id)source changeDetails:(id)details
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = [v7 assetsByIdentifier];
-  v8 = [v7 orderedIdentifiers];
+  detailsCopy = details;
+  sourceCopy = source;
+  assetsByIdentifier = [sourceCopy assetsByIdentifier];
+  orderedIdentifiers = [sourceCopy orderedIdentifiers];
 
-  v9 = [(PUReviewAssetsDataSourceManager *)self _containingAssetCollection];
-  v10 = [[PUReviewAssetsDataSource alloc] initWithAssetsByIdentifier:v12 usingOrdering:v8 inAssetCollection:v9];
+  _containingAssetCollection = [(PUReviewAssetsDataSourceManager *)self _containingAssetCollection];
+  v10 = [[PUReviewAssetsDataSource alloc] initWithAssetsByIdentifier:assetsByIdentifier usingOrdering:orderedIdentifiers inAssetCollection:_containingAssetCollection];
   [(PUAssetsDataSourceManager *)self setAssetsDataSource:v10];
-  v11 = [(PUReviewAssetsDataSourceManager *)self reviewDelegate];
-  [v11 assetsDataSourceManager:self didChangeAssetsDataSource:v10 changeDetails:v6];
+  reviewDelegate = [(PUReviewAssetsDataSourceManager *)self reviewDelegate];
+  [reviewDelegate assetsDataSourceManager:self didChangeAssetsDataSource:v10 changeDetails:detailsCopy];
 }
 
 - (void)dealloc
 {
-  v3 = [(PUReviewAssetsDataSourceManager *)self _reviewDataSource];
-  [v3 unregisterChangeObserver:self];
+  _reviewDataSource = [(PUReviewAssetsDataSourceManager *)self _reviewDataSource];
+  [_reviewDataSource unregisterChangeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PUReviewAssetsDataSourceManager;
@@ -44,11 +44,11 @@
   v14 = *MEMORY[0x1E69E9840];
   if (!self->__containingAssetCollection)
   {
-    v3 = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
-    if (v3)
+    px_systemPhotoLibrary = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
+    if (px_systemPhotoLibrary)
     {
       self->_didFailToOpenPhotoLibrary = 0;
-      v4 = [objc_alloc(MEMORY[0x1E6978AF8]) initWithPhotoLibrary:v3];
+      v4 = [objc_alloc(MEMORY[0x1E6978AF8]) initWithPhotoLibrary:px_systemPhotoLibrary];
       v5 = [MEMORY[0x1E6978650] transientAssetCollectionWithOptions:v4];
       containingAssetCollection = self->__containingAssetCollection;
       self->__containingAssetCollection = v5;
@@ -68,7 +68,7 @@
         v10 = 138412546;
         v11 = objc_opt_class();
         v12 = 2048;
-        v13 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1B36F3000, v9, OS_LOG_TYPE_ERROR, "<%@:%p> failed to open system photo library - this data source manager will likely fail.", &v10, 0x16u);
       }
 
@@ -79,9 +79,9 @@
   }
 }
 
-- (PUReviewAssetsDataSourceManager)initWithReviewDataSource:(id)a3
+- (PUReviewAssetsDataSourceManager)initWithReviewDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = PUReviewAssetsDataSourceManager;
   v6 = [(PUReviewAssetsDataSourceManager *)&v11 init];
@@ -99,9 +99,9 @@
       v6->__containingAssetCollection = v7;
     }
 
-    objc_storeStrong(&v6->__reviewDataSource, a3);
-    [v5 registerChangeObserver:v6];
-    [(PUReviewAssetsDataSourceManager *)v6 _updateWithReviewDataSource:v5 changeDetails:0];
+    objc_storeStrong(&v6->__reviewDataSource, source);
+    [sourceCopy registerChangeObserver:v6];
+    [(PUReviewAssetsDataSourceManager *)v6 _updateWithReviewDataSource:sourceCopy changeDetails:0];
     v9 = v6;
   }
 

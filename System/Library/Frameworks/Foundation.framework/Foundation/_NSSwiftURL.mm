@@ -1,7 +1,7 @@
 @interface _NSSwiftURL
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_rangeForComponent:(int64_t)a3 rangeIncludingSeparators:(id *)a4;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_rangeForComponent:(int64_t)component rangeIncludingSeparators:(id *)separators;
 - (BOOL)hasDirectoryPath;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFileReferenceURL;
 - (BOOL)isFileURL;
 - (Class)classForCoder;
@@ -14,16 +14,16 @@
 - (NSURL)_compatibilityAbsoluteURL;
 - (NSURL)baseURL;
 - (_NSSwiftURL)init;
-- (_NSSwiftURL)initWithCoder:(id)a3;
-- (id)_URLByAppendingPathComponent:(id)a3 isDirectory:(BOOL)a4 encodingSlashes:(BOOL)a5;
-- (id)_URLByAppendingPathExtension:(id)a3;
-- (id)_fileSystemPath:(int64_t)a3 resolveAgainstBase:(BOOL)a4;
-- (id)_fragment:(id)a3;
-- (id)_query:(id)a3;
-- (id)_relativePath:(BOOL)a3;
+- (_NSSwiftURL)initWithCoder:(id)coder;
+- (id)_URLByAppendingPathComponent:(id)component isDirectory:(BOOL)directory encodingSlashes:(BOOL)slashes;
+- (id)_URLByAppendingPathExtension:(id)extension;
+- (id)_fileSystemPath:(int64_t)path resolveAgainstBase:(BOOL)base;
+- (id)_fragment:(id)_fragment;
+- (id)_query:(id)_query;
+- (id)_relativePath:(BOOL)path;
 - (int64_t)hash;
 - (void)_resourceInfoPtr;
-- (void)set_resourceInfoPtr:(void *)a3;
+- (void)set_resourceInfoPtr:(void *)ptr;
 @end
 
 @implementation _NSSwiftURL
@@ -35,18 +35,18 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_NSSwiftURL)initWithCoder:(id)a3
+- (_NSSwiftURL)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -55,7 +55,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = _NSSwiftURL.isEqual(_:)(v8);
@@ -67,7 +67,7 @@
 - (int64_t)hash
 {
   Hasher.init(_seed:)();
-  v3 = self;
+  selfCopy = self;
 
   String.hash(into:)();
 
@@ -78,7 +78,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   _SwiftURL.description.getter();
 
   v3 = String._bridgeToObjectiveCImpl()();
@@ -89,7 +89,7 @@
 - (NSData)dataRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = self;
+  selfCopy = self;
   v3 = _SwiftURL.dataRepresentation.getter();
   v5 = v4;
 
@@ -165,26 +165,26 @@ LABEL_9:
 
 - (NSNumber)port
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _SwiftURL.port.getter();
   if (v4)
   {
-    v5 = 0;
+    initWithInteger_ = 0;
   }
 
   else
   {
-    v5 = [objc_allocWithZone(NSNumber) initWithInteger_];
+    initWithInteger_ = [objc_allocWithZone(NSNumber) initWithInteger_];
   }
 
-  return v5;
+  return initWithInteger_;
 }
 
 - (NSString)query
 {
   if (*(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURL_isDecomposable) == 1)
   {
-    v3 = self;
+    selfCopy = self;
     object = _SwiftURL.query(percentEncoded:)(1).value._object;
 
     if (object)
@@ -210,7 +210,7 @@ LABEL_9:
 
 - (BOOL)hasDirectoryPath
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _NSSwiftURL.hasDirectoryPath.getter();
 
   return v3 & 1;
@@ -218,7 +218,7 @@ LABEL_9:
 
 - (BOOL)isFileURL
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _NSSwiftURL.isFileURL.getter();
 
   return v3 & 1;
@@ -226,7 +226,7 @@ LABEL_9:
 
 - (BOOL)isFileReferenceURL
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _NSSwiftURL.isFileReferenceURL()();
 
   return v3;
@@ -239,12 +239,12 @@ LABEL_9:
   return result;
 }
 
-- (id)_URLByAppendingPathComponent:(id)a3 isDirectory:(BOOL)a4 encodingSlashes:(BOOL)a5
+- (id)_URLByAppendingPathComponent:(id)component isDirectory:(BOOL)directory encodingSlashes:(BOOL)slashes
 {
-  v8 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+  v8 = static String._unconditionallyBridgeFromObjectiveC(_:)(component);
   v10 = v9;
-  v11 = self;
-  _NSSwiftURL._URL(byAppendingPathComponent:isDirectory:encodingSlashes:)(v8, v10, a4, a5, v16);
+  selfCopy = self;
+  _NSSwiftURL._URL(byAppendingPathComponent:isDirectory:encodingSlashes:)(v8, v10, directory, slashes, v16);
 
   if (v16[0])
   {
@@ -262,11 +262,11 @@ LABEL_9:
   return v14;
 }
 
-- (id)_URLByAppendingPathExtension:(id)a3
+- (id)_URLByAppendingPathExtension:(id)extension
 {
-  v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+  v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(extension);
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   _NSSwiftURL._URL(byAppendingPathExtension:)(v4, v6, v12);
 
   if (v12[0])
@@ -289,7 +289,7 @@ LABEL_9:
 {
   if (*((*(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURL_url))[2] + 220))
   {
-    v2 = self;
+    selfCopy = self;
 
     specialized URLComponents._URLComponents.init(parseInfo:)(v3, v6);
     URLComponents._URLComponents._uncheckedString(original:)(1);
@@ -307,21 +307,21 @@ LABEL_9:
 
 - (void)_resourceInfoPtr
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _NSSwiftURL._resourceInfoPtr.getter();
 
   return v3;
 }
 
-- (void)set_resourceInfoPtr:(void *)a3
+- (void)set_resourceInfoPtr:(void *)ptr
 {
-  v4 = self;
-  _NSSwiftURL._resourceInfoPtr.setter(a3);
+  selfCopy = self;
+  _NSSwiftURL._resourceInfoPtr.setter(ptr);
 }
 
 - (NSURL)_compatibilityAbsoluteURL
 {
-  v2 = self;
+  selfCopy = self;
   _SwiftURL.compatibilityAbsoluteURL.getter(v7);
   if (v7[0])
   {
@@ -331,7 +331,7 @@ LABEL_9:
   else
   {
     type metadata accessor for _BridgedNSSwiftURL();
-    *(swift_allocObject() + 16) = v2;
+    *(swift_allocObject() + 16) = selfCopy;
     v3 = &protocol witness table for _BridgedNSSwiftURL;
   }
 
@@ -342,12 +342,12 @@ LABEL_9:
   return v5;
 }
 
-- (id)_relativePath:(BOOL)a3
+- (id)_relativePath:(BOOL)path
 {
   if (*(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURL_hasPath) == 1)
   {
-    v5 = self;
-    _SwiftURL.relativePath(percentEncoded:)(a3);
+    selfCopy = self;
+    _SwiftURL.relativePath(percentEncoded:)(path);
 
     v6 = String._bridgeToObjectiveCImpl()();
 
@@ -362,10 +362,10 @@ LABEL_9:
   return v7;
 }
 
-- (id)_fileSystemPath:(int64_t)a3 resolveAgainstBase:(BOOL)a4
+- (id)_fileSystemPath:(int64_t)path resolveAgainstBase:(BOOL)base
 {
-  v6 = self;
-  object = _NSSwiftURL._fileSystemPath(_:resolveAgainstBase:)(a3, a4).value._object;
+  selfCopy = self;
+  object = _NSSwiftURL._fileSystemPath(_:resolveAgainstBase:)(path, base).value._object;
 
   if (object)
   {
@@ -380,11 +380,11 @@ LABEL_9:
   return v8;
 }
 
-- (id)_query:(id)a3
+- (id)_query:(id)_query
 {
-  if (a3)
+  if (_query)
   {
-    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(_query);
     v6 = v5;
   }
 
@@ -394,7 +394,7 @@ LABEL_9:
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   _NSSwiftURL._query(_:)(v4, v6, &selRef_query, closure #1 in static String._unconditionallyBridgeFromObjectiveC(_:)partial apply, closure #1 in closure #2 in static String._unconditionallyBridgeFromObjectiveC(_:)partial apply, closure #1 in closure #2 in static String._unconditionallyBridgeFromObjectiveC(_:)partial apply, closure #1 in StringProtocol.removingURLPercentEncoding(excluding:encoding:)specialized partial apply);
   v9 = v8;
 
@@ -411,11 +411,11 @@ LABEL_9:
   return v10;
 }
 
-- (id)_fragment:(id)a3
+- (id)_fragment:(id)_fragment
 {
-  if (a3)
+  if (_fragment)
   {
-    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(_fragment);
     v6 = v5;
   }
 
@@ -425,7 +425,7 @@ LABEL_9:
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   _NSSwiftURL._query(_:)(v4, v6, &selRef_fragment, closure #1 in static String._unconditionallyBridgeFromObjectiveC(_:)partial apply, closure #1 in closure #2 in static String._unconditionallyBridgeFromObjectiveC(_:)partial apply, closure #1 in closure #2 in static String._unconditionallyBridgeFromObjectiveC(_:)partial apply, partial apply for specialized closure #1 in StringProtocol.removingURLPercentEncoding(excluding:encoding:));
   v9 = v8;
 
@@ -442,10 +442,10 @@ LABEL_9:
   return v10;
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_rangeForComponent:(int64_t)a3 rangeIncludingSeparators:(id *)a4
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_rangeForComponent:(int64_t)component rangeIncludingSeparators:(id *)separators
 {
-  v6 = self;
-  v7 = _NSSwiftURL._range(for:rangeIncludingSeparators:)(a3, a4);
+  selfCopy = self;
+  v7 = _NSSwiftURL._range(for:rangeIncludingSeparators:)(component, separators);
   v9 = v8;
 
   v10 = v7;

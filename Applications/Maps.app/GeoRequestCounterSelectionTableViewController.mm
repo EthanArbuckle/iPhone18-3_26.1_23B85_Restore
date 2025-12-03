@@ -1,33 +1,33 @@
 @interface GeoRequestCounterSelectionTableViewController
-- (GeoRequestCounterSelectionTableViewController)initWithSelection:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (GeoRequestCounterSelectionTableViewController)initWithSelection:(id)selection;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation GeoRequestCounterSelectionTableViewController
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [v16 cellForRowAtIndexPath:v6];
-  v8 = [(GeoRequestCounterSelection *)self->_selection supportsMultipleSelection];
-  v9 = [(GeoRequestCounterSelection *)self->_selection currentSelection];
-  v10 = v9;
-  if (v8)
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
+  supportsMultipleSelection = [(GeoRequestCounterSelection *)self->_selection supportsMultipleSelection];
+  currentSelection = [(GeoRequestCounterSelection *)self->_selection currentSelection];
+  v10 = currentSelection;
+  if (supportsMultipleSelection)
   {
-    v11 = [v9 mutableCopy];
+    v11 = [currentSelection mutableCopy];
 
     if ([v7 accessoryType] == 3)
     {
       [v7 setAccessoryType:0];
-      [v11 removeIndex:{objc_msgSend(v6, "row")}];
+      [v11 removeIndex:{objc_msgSend(pathCopy, "row")}];
     }
 
     else
     {
       [v7 setAccessoryType:3];
-      [v11 addIndex:{objc_msgSend(v6, "row")}];
+      [v11 addIndex:{objc_msgSend(pathCopy, "row")}];
     }
 
     [(GeoRequestCounterSelection *)self->_selection setSelection:v11];
@@ -36,30 +36,30 @@
 
   else
   {
-    if ([v9 count])
+    if ([currentSelection count])
     {
       v12 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v10 firstIndex], 0);
-      v13 = [v16 cellForRowAtIndexPath:v12];
+      v13 = [viewCopy cellForRowAtIndexPath:v12];
 
       [v13 setAccessoryType:0];
     }
 
     selection = self->_selection;
-    v15 = +[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", [v6 row]);
+    v15 = +[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", [pathCopy row]);
     [(GeoRequestCounterSelection *)selection setSelection:v15];
 
     [v7 setAccessoryType:3];
   }
 
-  [v16 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"selection" forIndexPath:v6];
-  v8 = [(GeoRequestCounterSelection *)self->_selection currentSelection];
-  v9 = [v8 containsIndex:{objc_msgSend(v6, "row")}];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"selection" forIndexPath:pathCopy];
+  currentSelection = [(GeoRequestCounterSelection *)self->_selection currentSelection];
+  v9 = [currentSelection containsIndex:{objc_msgSend(pathCopy, "row")}];
 
   if (v9)
   {
@@ -72,25 +72,25 @@
   }
 
   [v7 setAccessoryType:v10];
-  v11 = -[GeoRequestCounterSelection stringForRow:](self->_selection, "stringForRow:", [v6 row]);
-  v12 = [v7 textLabel];
-  [v12 setText:v11];
+  v11 = -[GeoRequestCounterSelection stringForRow:](self->_selection, "stringForRow:", [pathCopy row]);
+  textLabel = [v7 textLabel];
+  [textLabel setText:v11];
 
   return v7;
 }
 
-- (GeoRequestCounterSelectionTableViewController)initWithSelection:(id)a3
+- (GeoRequestCounterSelectionTableViewController)initWithSelection:(id)selection
 {
-  v5 = a3;
+  selectionCopy = selection;
   v10.receiver = self;
   v10.super_class = GeoRequestCounterSelectionTableViewController;
   v6 = [(GeoRequestCounterSelectionTableViewController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_selection, a3);
-    v8 = [(GeoRequestCounterSelectionTableViewController *)v7 tableView];
-    [v8 registerClass:objc_opt_class() forCellReuseIdentifier:@"selection"];
+    objc_storeStrong(&v6->_selection, selection);
+    tableView = [(GeoRequestCounterSelectionTableViewController *)v7 tableView];
+    [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"selection"];
   }
 
   return v7;

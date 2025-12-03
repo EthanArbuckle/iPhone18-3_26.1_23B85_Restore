@@ -1,22 +1,22 @@
 @interface DBSmartWidgetCarousel
 - (BOOL)carouselForeground;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isShowingDecorations;
-- (_TtC9DashBoard21DBSmartWidgetCarousel)initWithEnvironment:(id)a3 engine:(id)a4 predictedSmartSize:(CGSize)a5;
-- (_TtC9DashBoard21DBSmartWidgetCarousel)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9DashBoard21DBSmartWidgetCarousel)initWithEnvironment:(id)environment engine:(id)engine predictedSmartSize:(CGSize)size;
+- (_TtC9DashBoard21DBSmartWidgetCarousel)initWithNibName:(id)name bundle:(id)bundle;
 - (id)decorationsStateChanged;
 - (id)linearFocusItems;
-- (void)_handleLongPressGesture:(id)a3;
-- (void)_handleLongPressKnobGesture:(id)a3;
+- (void)_handleLongPressGesture:(id)gesture;
+- (void)_handleLongPressKnobGesture:(id)gesture;
 - (void)_handleTapGesture;
-- (void)_wheelChangedWithEvent:(id)a3;
-- (void)prepareInitialPredictionsWithCompletion:(id)a3;
-- (void)setCarouselForeground:(BOOL)a3;
-- (void)setDecorationsStateChanged:(id)a3;
-- (void)setIsShowingDecorations:(BOOL)a3;
+- (void)_wheelChangedWithEvent:(id)event;
+- (void)prepareInitialPredictionsWithCompletion:(id)completion;
+- (void)setCarouselForeground:(BOOL)foreground;
+- (void)setDecorationsStateChanged:(id)changed;
+- (void)setIsShowingDecorations:(BOOL)decorations;
 - (void)updateCarouselElements;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)widgetViewTapped;
 @end
 
@@ -29,13 +29,13 @@
   return *(self + v3);
 }
 
-- (void)setIsShowingDecorations:(BOOL)a3
+- (void)setIsShowingDecorations:(BOOL)decorations
 {
   v5 = OBJC_IVAR____TtC9DashBoard21DBSmartWidgetCarousel_isShowingDecorations;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = decorations;
   v6 = *((*MEMORY[0x277D85000] & *self) + 0x168);
-  v7 = self;
+  selfCopy = self;
   v8 = v6();
   if (v8)
   {
@@ -74,9 +74,9 @@
   return v4;
 }
 
-- (void)setDecorationsStateChanged:(id)a3
+- (void)setDecorationsStateChanged:(id)changed
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(changed);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -94,28 +94,28 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_248167864(v7);
 }
 
-- (_TtC9DashBoard21DBSmartWidgetCarousel)initWithEnvironment:(id)a3 engine:(id)a4 predictedSmartSize:(CGSize)a5
+- (_TtC9DashBoard21DBSmartWidgetCarousel)initWithEnvironment:(id)environment engine:(id)engine predictedSmartSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  return DBSmartWidgetCarousel.init(environment:engine:predictedSmartSize:)(width, height, a3, a4);
+  return DBSmartWidgetCarousel.init(environment:engine:predictedSmartSize:)(width, height, environment, engine);
 }
 
-- (void)prepareInitialPredictionsWithCompletion:(id)a3
+- (void)prepareInitialPredictionsWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR____TtC9DashBoard21DBSmartWidgetCarousel_readyCompletion);
   v7 = *(self + OBJC_IVAR____TtC9DashBoard21DBSmartWidgetCarousel_readyCompletion);
   *v6 = sub_24825D51C;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
 
   sub_248167864(v7);
   sub_2483682F8();
@@ -128,21 +128,21 @@
   return *(self + v3);
 }
 
-- (void)setCarouselForeground:(BOOL)a3
+- (void)setCarouselForeground:(BOOL)foreground
 {
-  v4 = self;
-  DBSmartWidgetCarousel.carouselForeground.setter(a3);
+  selfCopy = self;
+  DBSmartWidgetCarousel.carouselForeground.setter(foreground);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  DBSmartWidgetCarousel.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  DBSmartWidgetCarousel.viewWillAppear(_:)(appear);
 }
 
 - (id)linearFocusItems
 {
-  v2 = self;
+  selfCopy = self;
   v3.super.isa = DBSmartWidgetCarousel.linearFocusItems()().super.isa;
 
   return v3.super.isa;
@@ -152,7 +152,7 @@
 {
   if (*(self + OBJC_IVAR____TtC9DashBoard21DBSmartWidgetCarousel_model))
   {
-    v2 = self;
+    selfCopy = self;
 
     sub_2483819B0();
   }
@@ -160,81 +160,81 @@
 
 - (void)updateCarouselElements
 {
-  v2 = self;
+  selfCopy = self;
   DBSmartWidgetCarousel.updateCarouselElements()();
 }
 
-- (_TtC9DashBoard21DBSmartWidgetCarousel)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9DashBoard21DBSmartWidgetCarousel)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)_wheelChangedWithEvent:(id)a3
+- (void)_wheelChangedWithEvent:(id)event
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  eventCopy = event;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = event;
   DBSmartWidgetCarousel._wheelChanged(with:)(v9);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   DBSmartWidgetCarousel.viewDidLoad()();
 }
 
-- (void)_handleLongPressGesture:(id)a3
+- (void)_handleLongPressGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_24836A200(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_24836A200(gestureCopy);
 }
 
-- (void)_handleLongPressKnobGesture:(id)a3
+- (void)_handleLongPressKnobGesture:(id)gesture
 {
-  v4 = a3;
-  v10 = self;
-  v5 = [(DBSmartWidgetCarousel *)v10 parentViewController];
-  if (v5)
+  gestureCopy = gesture;
+  selfCopy = self;
+  parentViewController = [(DBSmartWidgetCarousel *)selfCopy parentViewController];
+  if (parentViewController)
   {
-    v6 = v5;
-    v7 = [v5 view];
-    if (!v7)
+    v6 = parentViewController;
+    view = [parentViewController view];
+    if (!view)
     {
       __break(1u);
       return;
     }
 
-    v8 = v7;
-    v9 = [v7 isFocused];
+    v8 = view;
+    isFocused = [view isFocused];
 
-    if (v9)
+    if (isFocused)
     {
-      [(DBSmartWidgetCarousel *)v10 _handleLongPressGesture:v4];
+      [(DBSmartWidgetCarousel *)selfCopy _handleLongPressGesture:gestureCopy];
     }
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(DBSmartWidgetCarousel *)v5 view];
-  if (v6)
+  beginCopy = begin;
+  selfCopy = self;
+  view = [(DBSmartWidgetCarousel *)selfCopy view];
+  if (view)
   {
-    v7 = v6;
-    [v6 bounds];
+    v7 = view;
+    [view bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
-    v16 = [(DBSmartWidgetCarousel *)v5 view];
-    [v4 locationInView_];
+    view2 = [(DBSmartWidgetCarousel *)selfCopy view];
+    [beginCopy locationInView_];
     v18 = v17;
     v20 = v19;
 
@@ -244,9 +244,9 @@
     v23.size.height = v15;
     v22.x = v18;
     v22.y = v20;
-    LOBYTE(v16) = CGRectContainsPoint(v23, v22);
+    LOBYTE(view2) = CGRectContainsPoint(v23, v22);
 
-    LOBYTE(v6) = v16;
+    LOBYTE(view) = view2;
   }
 
   else
@@ -254,12 +254,12 @@
     __break(1u);
   }
 
-  return v6;
+  return view;
 }
 
 - (void)_handleTapGesture
 {
-  v2 = self;
+  selfCopy = self;
   sub_24836AF2C();
 }
 

@@ -11,7 +11,7 @@
   {
     v4 = @"more.options";
 LABEL_5:
-    v5 = accessibilityLocalizedString(v4);
+    accessibilityLabel = accessibilityLocalizedString(v4);
     goto LABEL_7;
   }
 
@@ -23,9 +23,9 @@ LABEL_5:
 
   v8.receiver = self;
   v8.super_class = AVTSimpleAvatarPickerHeaderViewAccessibility;
-  v5 = [(AVTSimpleAvatarPickerHeaderViewAccessibility *)&v8 accessibilityLabel];
+  accessibilityLabel = [(AVTSimpleAvatarPickerHeaderViewAccessibility *)&v8 accessibilityLabel];
 LABEL_7:
-  v6 = v5;
+  v6 = accessibilityLabel;
 
   return v6;
 }

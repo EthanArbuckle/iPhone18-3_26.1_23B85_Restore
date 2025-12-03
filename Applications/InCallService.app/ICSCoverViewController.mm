@@ -1,5 +1,5 @@
 @interface ICSCoverViewController
-- (ICSCoverViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ICSCoverViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)updateViews;
 - (void)viewDidLoad;
 @end
@@ -8,24 +8,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001FC08C();
 }
 
 - (void)updateViews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001FC480();
 }
 
-- (ICSCoverViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICSCoverViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1001FC91C();
 }
 

@@ -1,24 +1,24 @@
 @interface DMFBook
-- (id)initWithBook:(id)a3;
+- (id)initWithBook:(id)book;
 @end
 
 @implementation DMFBook
 
-- (id)initWithBook:(id)a3
+- (id)initWithBook:(id)book
 {
-  v3 = a3;
-  v4 = [v3 kind];
-  if ([v4 isEqualToString:@"ibooks"])
+  bookCopy = book;
+  kind = [bookCopy kind];
+  if ([kind isEqualToString:@"ibooks"])
   {
     v5 = 0;
   }
 
-  else if ([v4 isEqualToString:@"pdf"])
+  else if ([kind isEqualToString:@"pdf"])
   {
     v5 = 1;
   }
 
-  else if ([v4 isEqualToString:@"epub"])
+  else if ([kind isEqualToString:@"epub"])
   {
     v5 = 2;
   }
@@ -28,48 +28,48 @@
     v5 = 1;
   }
 
-  v6 = [v3 state];
-  if ([v6 isEqualToString:@"Queued"])
+  state = [bookCopy state];
+  if ([state isEqualToString:@"Queued"])
   {
     v7 = 1;
   }
 
-  else if ([v6 isEqualToString:@"PromptingForLogin"])
+  else if ([state isEqualToString:@"PromptingForLogin"])
   {
     v7 = 2;
   }
 
-  else if ([v6 isEqualToString:@"Updating"])
+  else if ([state isEqualToString:@"Updating"])
   {
     v7 = 3;
   }
 
-  else if ([v6 isEqualToString:@"Installing"])
+  else if ([state isEqualToString:@"Installing"])
   {
     v7 = 4;
   }
 
-  else if ([v6 isEqualToString:@"Managed"])
+  else if ([state isEqualToString:@"Managed"])
   {
     v7 = 7;
   }
 
-  else if ([v6 isEqualToString:@"ManagedButUninstalled"])
+  else if ([state isEqualToString:@"ManagedButUninstalled"])
   {
     v7 = 8;
   }
 
-  else if ([v6 isEqualToString:@"Installed"])
+  else if ([state isEqualToString:@"Installed"])
   {
     v7 = 5;
   }
 
-  else if ([v6 isEqualToString:@"Uninstalled"])
+  else if ([state isEqualToString:@"Uninstalled"])
   {
     v7 = 6;
   }
 
-  else if ([v6 isEqualToString:@"Failed"])
+  else if ([state isEqualToString:@"Failed"])
   {
     v7 = 9;
   }
@@ -79,12 +79,12 @@
     v7 = 0;
   }
 
-  v8 = [v3 persistentID];
-  v9 = [v3 iTunesStoreID];
-  v10 = [v3 author];
-  v11 = [v3 title];
-  v12 = [v3 version];
-  v13 = [(DMFBook *)self initWithPersistentID:v8 iTunesStoreID:v9 author:v10 title:v11 version:v12 type:v5 state:v7];
+  persistentID = [bookCopy persistentID];
+  iTunesStoreID = [bookCopy iTunesStoreID];
+  author = [bookCopy author];
+  title = [bookCopy title];
+  version = [bookCopy version];
+  v13 = [(DMFBook *)self initWithPersistentID:persistentID iTunesStoreID:iTunesStoreID author:author title:title version:version type:v5 state:v7];
 
   return v13;
 }

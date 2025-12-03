@@ -1,16 +1,16 @@
 @interface UIView
-+ (void)doc_performAllowingAnimations:(BOOL)a3 block:(id)a4;
++ (void)doc_performAllowingAnimations:(BOOL)animations block:(id)block;
 - (BOOL)doc_inWindowPerformingSnapshotting;
 - (BOOL)enclosedInUIPDocumentLanding;
 - (DOCAppearance)effectiveAppearance;
 - (id)_appearance;
 - (id)_inheritedAppearance;
-- (void)_notifyAppearanceChange:(id)a3;
+- (void)_notifyAppearanceChange:(id)change;
 - (void)doc_configureWithNoPlatter;
-- (void)doc_configureWithStandardPlatterWithCornerRadius:(double)a3;
+- (void)doc_configureWithStandardPlatterWithCornerRadius:(double)radius;
 - (void)doc_didMoveToSuperview;
-- (void)registerForTabSwitcherTraitChangesWithHandler:(id)a3;
-- (void)registerForUIPDocumentLandingTraitChangesWithHandler:(id)a3;
+- (void)registerForTabSwitcherTraitChangesWithHandler:(id)handler;
+- (void)registerForUIPDocumentLandingTraitChangesWithHandler:(id)handler;
 @end
 
 @implementation UIView
@@ -18,89 +18,89 @@
 - (void)doc_didMoveToSuperview
 {
   [(UIView *)self doc_didMoveToSuperview];
-  v3 = [(UIView *)self _appearance];
+  _appearance = [(UIView *)self _appearance];
 
-  if (!v3)
+  if (!_appearance)
   {
-    v4 = [(UIView *)self effectiveAppearance];
-    if (v4)
+    effectiveAppearance = [(UIView *)self effectiveAppearance];
+    if (effectiveAppearance)
     {
-      v5 = v4;
-      [(UIView *)self _notifyAppearanceChange:v4];
-      v4 = v5;
+      v5 = effectiveAppearance;
+      [(UIView *)self _notifyAppearanceChange:effectiveAppearance];
+      effectiveAppearance = v5;
     }
   }
 }
 
 - (id)_appearance
 {
-  v2 = [(UIView *)self _owningViewController];
-  v3 = [v2 _appearance];
+  _owningViewController = [(UIView *)self _owningViewController];
+  _appearance = [_owningViewController _appearance];
 
-  return v3;
+  return _appearance;
 }
 
 - (DOCAppearance)effectiveAppearance
 {
-  v3 = [(UIView *)self _appearance];
-  v4 = v3;
-  if (v3)
+  _appearance = [(UIView *)self _appearance];
+  v4 = _appearance;
+  if (_appearance)
   {
-    v5 = v3;
+    _inheritedAppearance = _appearance;
   }
 
   else
   {
-    v5 = [(UIView *)self _inheritedAppearance];
+    _inheritedAppearance = [(UIView *)self _inheritedAppearance];
   }
 
-  v6 = v5;
+  v6 = _inheritedAppearance;
 
   return v6;
 }
 
 - (id)_inheritedAppearance
 {
-  v2 = [(UIView *)self superview];
-  if (v2)
+  superview = [(UIView *)self superview];
+  if (superview)
   {
     do
     {
-      v3 = v2;
-      v4 = [v2 _appearance];
-      v2 = [v2 superview];
+      v3 = superview;
+      _appearance = [superview _appearance];
+      superview = [superview superview];
     }
 
-    while (v2 && !v4);
+    while (superview && !_appearance);
   }
 
   else
   {
-    v4 = 0;
+    _appearance = 0;
   }
 
-  return v4;
+  return _appearance;
 }
 
 - (BOOL)enclosedInUIPDocumentLanding
 {
-  v2 = self;
+  selfCopy = self;
   v3 = specialized DOCUIPTraitEnvironment<>._enclosedInUIPDocumentLanding.getter(&lazy cache variable for type metadata for UIView);
 
   return v3 & 1;
 }
 
-- (void)_notifyAppearanceChange:(id)a3
+- (void)_notifyAppearanceChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = MEMORY[0x277D75D18];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__UIView_DOCAppearanceInheritance___notifyAppearanceChange___block_invoke;
   v7[3] = &unk_278FA1E80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   [v5 performWithoutAnimation:v7];
 }
 
@@ -146,31 +146,31 @@ void __60__UIView_DOCAppearanceInheritance___notifyAppearanceChange___block_invo
   [v9 effectiveAppearanceDidChange:*(a1 + 40)];
 }
 
-- (void)doc_configureWithStandardPlatterWithCornerRadius:(double)a3
+- (void)doc_configureWithStandardPlatterWithCornerRadius:(double)radius
 {
   v5 = objc_opt_self();
-  v7 = self;
-  v6 = [v5 secondarySystemBackgroundColor];
-  [(UIView *)v7 setBackgroundColor:v6];
+  selfCopy = self;
+  secondarySystemBackgroundColor = [v5 secondarySystemBackgroundColor];
+  [(UIView *)selfCopy setBackgroundColor:secondarySystemBackgroundColor];
 
-  if (a3 > 0.0)
+  if (radius > 0.0)
   {
-    [(UIView *)v7 _setCornerRadius:a3];
+    [(UIView *)selfCopy _setCornerRadius:radius];
   }
 }
 
 - (void)doc_configureWithNoPlatter
 {
   v3 = objc_opt_self();
-  v5 = self;
-  v4 = [v3 clearColor];
-  [(UIView *)v5 setBackgroundColor:v4];
+  selfCopy = self;
+  clearColor = [v3 clearColor];
+  [(UIView *)selfCopy setBackgroundColor:clearColor];
 }
 
-- (void)registerForTabSwitcherTraitChangesWithHandler:(id)a3
+- (void)registerForTabSwitcherTraitChangesWithHandler:(id)handler
 {
   ObjectType = swift_getObjectType();
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v10 = 0;
@@ -179,17 +179,17 @@ void __60__UIView_DOCAppearanceInheritance___notifyAppearanceChange___block_invo
   v8[2] = thunk for @escaping @callee_unowned @convention(block) () -> ()partial apply;
   v8[3] = v7;
   v8[4] = ObjectType;
-  v9 = self;
+  selfCopy = self;
 
   UIView.registerForUIPTraitChanges<A>(tabStyle:documentLanding:options:_:)(1, 0, &v10, thunk for @callee_guaranteed () -> ()partial apply, v8, ObjectType);
 
   swift_unknownObjectRelease();
 }
 
-- (void)registerForUIPDocumentLandingTraitChangesWithHandler:(id)a3
+- (void)registerForUIPDocumentLandingTraitChangesWithHandler:(id)handler
 {
   ObjectType = swift_getObjectType();
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v10 = 0;
@@ -198,7 +198,7 @@ void __60__UIView_DOCAppearanceInheritance___notifyAppearanceChange___block_invo
   v8[2] = partial apply for thunk for @escaping @callee_unowned @convention(block) () -> ();
   v8[3] = v7;
   v8[4] = ObjectType;
-  v9 = self;
+  selfCopy = self;
 
   UIView.registerForUIPTraitChanges<A>(tabStyle:documentLanding:options:_:)(0, 1, &v10, thunk for @callee_guaranteed () -> ()partial apply, v8, ObjectType);
 
@@ -207,25 +207,25 @@ void __60__UIView_DOCAppearanceInheritance___notifyAppearanceChange___block_invo
 
 - (BOOL)doc_inWindowPerformingSnapshotting
 {
-  v2 = self;
-  v3 = [(UIView *)v2 window];
-  if (v3 && (v4 = v3, v5 = [(UIWindow *)v3 windowScene], v4, v5))
+  selfCopy = self;
+  window = [(UIView *)selfCopy window];
+  if (window && (v4 = window, v5 = [(UIWindow *)window windowScene], v4, v5))
   {
-    v6 = [(UIWindowScene *)v5 _isPerformingSystemSnapshot];
+    _isPerformingSystemSnapshot = [(UIWindowScene *)v5 _isPerformingSystemSnapshot];
   }
 
   else
   {
-    v6 = 0;
+    _isPerformingSystemSnapshot = 0;
   }
 
-  return v6;
+  return _isPerformingSystemSnapshot;
 }
 
-+ (void)doc_performAllowingAnimations:(BOOL)a3 block:(id)a4
++ (void)doc_performAllowingAnimations:(BOOL)animations block:(id)block
 {
-  v5 = _Block_copy(a4);
-  specialized static UIView.doc_performAllowingAnimations(_:block:)(a3, v5);
+  v5 = _Block_copy(block);
+  specialized static UIView.doc_performAllowingAnimations(_:block:)(animations, v5);
 
   _Block_release(v5);
 }

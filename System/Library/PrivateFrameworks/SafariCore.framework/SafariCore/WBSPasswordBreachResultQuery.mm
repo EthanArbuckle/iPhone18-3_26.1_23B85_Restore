@@ -1,40 +1,40 @@
 @interface WBSPasswordBreachResultQuery
 - (NSDictionary)dictionaryRepresentation;
-- (WBSPasswordBreachResultQuery)initWithDictionaryRepresentation:(id)a3;
-- (WBSPasswordBreachResultQuery)initWithPersistentIdentifier:(id)a3 dateLastModified:(id)a4;
+- (WBSPasswordBreachResultQuery)initWithDictionaryRepresentation:(id)representation;
+- (WBSPasswordBreachResultQuery)initWithPersistentIdentifier:(id)identifier dateLastModified:(id)modified;
 @end
 
 @implementation WBSPasswordBreachResultQuery
 
-- (WBSPasswordBreachResultQuery)initWithPersistentIdentifier:(id)a3 dateLastModified:(id)a4
+- (WBSPasswordBreachResultQuery)initWithPersistentIdentifier:(id)identifier dateLastModified:(id)modified
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  modifiedCopy = modified;
   v13.receiver = self;
   v13.super_class = WBSPasswordBreachResultQuery;
   v9 = [(WBSPasswordBreachResultQuery *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_persistentIdentifier, a3);
-    objc_storeStrong(&v10->_dateLastModified, a4);
+    objc_storeStrong(&v9->_persistentIdentifier, identifier);
+    objc_storeStrong(&v10->_dateLastModified, modified);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (WBSPasswordBreachResultQuery)initWithDictionaryRepresentation:(id)a3
+- (WBSPasswordBreachResultQuery)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 safari_dataForKey:@"PersistentIdentifier"];
+  representationCopy = representation;
+  v5 = [representationCopy safari_dataForKey:@"PersistentIdentifier"];
   if (v5)
   {
-    v6 = [v4 safari_dateForKey:@"DateLastModified"];
+    v6 = [representationCopy safari_dateForKey:@"DateLastModified"];
     if (v6)
     {
       self = [(WBSPasswordBreachResultQuery *)self initWithPersistentIdentifier:v5 dateLastModified:v6];
-      v7 = self;
+      selfCopy = self;
     }
 
     else
@@ -45,7 +45,7 @@
         [WBSPasswordBreachResultQuery initWithDictionaryRepresentation:v9];
       }
 
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -57,10 +57,10 @@
       [WBSPasswordBreachResultQuery initWithDictionaryRepresentation:v8];
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (NSDictionary)dictionaryRepresentation

@@ -1,40 +1,40 @@
 @interface DefaultSceneDelegate
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillResignActive:(id)active;
 @end
 
 @implementation DefaultSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
   sub_100026824();
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_100027520(v4);
+  activeCopy = active;
+  selfCopy = self;
+  sub_100027520(activeCopy);
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_100027720(v4);
+  activeCopy = active;
+  selfCopy = self;
+  sub_100027720(activeCopy);
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
-  sub_100027920(v4);
+  backgroundCopy = background;
+  selfCopy = self;
+  sub_100027920(backgroundCopy);
 }
 
 @end

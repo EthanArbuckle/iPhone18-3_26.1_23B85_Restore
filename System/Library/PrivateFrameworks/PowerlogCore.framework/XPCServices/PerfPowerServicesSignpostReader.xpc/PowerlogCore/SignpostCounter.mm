@@ -1,6 +1,6 @@
 @interface SignpostCounter
 - (SignpostCounter)init;
-- (void)updateMxSignpostOverlapStatistics:(id)a3;
+- (void)updateMxSignpostOverlapStatistics:(id)statistics;
 @end
 
 @implementation SignpostCounter
@@ -23,13 +23,13 @@
   return result;
 }
 
-- (void)updateMxSignpostOverlapStatistics:(id)a3
+- (void)updateMxSignpostOverlapStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   ++self->mxSignpostIntervalCounts;
   prevMxSignpostStartMs = self->prevMxSignpostStartMs;
-  v12 = v4;
-  [v4 startMs];
+  v12 = statisticsCopy;
+  [statisticsCopy startMs];
   if (prevMxSignpostStartMs <= v6)
   {
     prevMxSignpostEndMs = self->prevMxSignpostEndMs;

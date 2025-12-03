@@ -1,6 +1,6 @@
 @interface VKAnalyticsAnalyzerEvent
 - (CGSize)imageSize;
-- (VKAnalyticsAnalyzerEvent)initWithExecutionDurations:(id)a3 request:(id)a4 analysis:(id)a5 customIdentifier:(id)a6 error:(id)a7;
+- (VKAnalyticsAnalyzerEvent)initWithExecutionDurations:(id)durations request:(id)request analysis:(id)analysis customIdentifier:(id)identifier error:(id)error;
 - (double)madDocumentDuration;
 - (double)madMRCDuration;
 - (double)madRoundTripAnalysisDuration;
@@ -12,44 +12,44 @@
 
 @implementation VKAnalyticsAnalyzerEvent
 
-- (VKAnalyticsAnalyzerEvent)initWithExecutionDurations:(id)a3 request:(id)a4 analysis:(id)a5 customIdentifier:(id)a6 error:(id)a7
+- (VKAnalyticsAnalyzerEvent)initWithExecutionDurations:(id)durations request:(id)request analysis:(id)analysis customIdentifier:(id)identifier error:(id)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  durationsCopy = durations;
+  requestCopy = request;
+  analysisCopy = analysis;
+  errorCopy = error;
   v30.receiver = self;
   v30.super_class = VKAnalyticsAnalyzerEvent;
-  v17 = [(VKAnalyticsEvent *)&v30 initWithCustomIdentifier:a6];
+  v17 = [(VKAnalyticsEvent *)&v30 initWithCustomIdentifier:identifier];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_durations, a3);
-    v18->_analysisTypes = [v14 analysisTypes];
-    v18->_requestType = [v14 requestType];
-    v18->_requestSource = [v14 imageSource];
-    [v14 imageSize];
+    objc_storeStrong(&v17->_durations, durations);
+    v18->_analysisTypes = [requestCopy analysisTypes];
+    v18->_requestType = [requestCopy requestType];
+    v18->_requestSource = [requestCopy imageSource];
+    [requestCopy imageSize];
     v18->_imageSize.width = v19;
     v18->_imageSize.height = v20;
-    v21 = [v15 imageAnalysisResult];
-    v22 = [v21 allLineQuads];
-    v18->_lineCount = [v22 count];
+    imageAnalysisResult = [analysisCopy imageAnalysisResult];
+    allLineQuads = [imageAnalysisResult allLineQuads];
+    v18->_lineCount = [allLineQuads count];
 
-    v23 = [v15 imageAnalysisResult];
-    v24 = [v23 text];
-    v18->_textLength = [v24 length];
+    imageAnalysisResult2 = [analysisCopy imageAnalysisResult];
+    text = [imageAnalysisResult2 text];
+    v18->_textLength = [text length];
 
-    v25 = [v23 textDataDetectorElements];
-    v18->_ddCount = [v25 count];
+    textDataDetectorElements = [imageAnalysisResult2 textDataDetectorElements];
+    v18->_ddCount = [textDataDetectorElements count];
 
-    v26 = [v23 mrcDataDetectorElements];
-    v18->_mrcCount = [v26 count];
+    mrcDataDetectorElements = [imageAnalysisResult2 mrcDataDetectorElements];
+    v18->_mrcCount = [mrcDataDetectorElements count];
 
-    v27 = [v23 visualSearchResult];
-    v28 = [v27 resultItems];
-    v18->_visualSearchCount = [v28 count];
+    visualSearchResult = [imageAnalysisResult2 visualSearchResult];
+    resultItems = [visualSearchResult resultItems];
+    v18->_visualSearchCount = [resultItems count];
 
-    objc_storeStrong(&v18->_error, a7);
+    objc_storeStrong(&v18->_error, error);
   }
 
   return v18;
@@ -57,8 +57,8 @@
 
 - (double)madRoundTripAnalysisDuration
 {
-  v2 = [(VKAnalyticsAnalyzerEvent *)self durations];
-  [v2 madRoundTripAnalysisDuration];
+  durations = [(VKAnalyticsAnalyzerEvent *)self durations];
+  [durations madRoundTripAnalysisDuration];
   VKMReplaceIfNan();
   v4 = v3;
 
@@ -67,8 +67,8 @@
 
 - (double)madDocumentDuration
 {
-  v2 = [(VKAnalyticsAnalyzerEvent *)self durations];
-  [v2 madDocumentDuration];
+  durations = [(VKAnalyticsAnalyzerEvent *)self durations];
+  [durations madDocumentDuration];
   VKMReplaceIfNan();
   v4 = v3;
 
@@ -77,8 +77,8 @@
 
 - (double)madMRCDuration
 {
-  v2 = [(VKAnalyticsAnalyzerEvent *)self durations];
-  [v2 madMRCDuration];
+  durations = [(VKAnalyticsAnalyzerEvent *)self durations];
+  [durations madMRCDuration];
   VKMReplaceIfNan();
   v4 = v3;
 
@@ -87,8 +87,8 @@
 
 - (double)madVisualSearchDuration
 {
-  v2 = [(VKAnalyticsAnalyzerEvent *)self durations];
-  [v2 madVisualSearchDuration];
+  durations = [(VKAnalyticsAnalyzerEvent *)self durations];
+  [durations madVisualSearchDuration];
   VKMReplaceIfNan();
   v4 = v3;
 
@@ -97,8 +97,8 @@
 
 - (double)mrcParseDuration
 {
-  v2 = [(VKAnalyticsAnalyzerEvent *)self durations];
-  [v2 mrcParseDuration];
+  durations = [(VKAnalyticsAnalyzerEvent *)self durations];
+  [durations mrcParseDuration];
   VKMReplaceIfNan();
   v4 = v3;
 
@@ -173,15 +173,15 @@
   v18 = [MEMORY[0x1E696AD98] numberWithInteger:{-[VKAnalyticsAnalyzerEvent visualSearchCount](self, "visualSearchCount")}];
   v38[15] = v18;
   v37[16] = @"bundleIdentifier";
-  v19 = [(VKAnalyticsEvent *)self bundleIdentifier];
-  v38[16] = v19;
+  bundleIdentifier = [(VKAnalyticsEvent *)self bundleIdentifier];
+  v38[16] = bundleIdentifier;
   v37[17] = @"automatedTest";
   v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[VKAnalyticsEvent isPerformingAutomatedTest](self, "isPerformingAutomatedTest")}];
   v38[17] = v20;
   v37[18] = @"hadError";
   v21 = MEMORY[0x1E696AD98];
-  v22 = [(VKAnalyticsAnalyzerEvent *)self error];
-  v23 = [v21 numberWithInt:v22 != 0];
+  error = [(VKAnalyticsAnalyzerEvent *)self error];
+  v23 = [v21 numberWithInt:error != 0];
   v38[18] = v23;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:19];
 
@@ -214,8 +214,8 @@
   mrcCount = self->_mrcCount;
   visualSearchCount = self->_visualSearchCount;
   v20 = VKMUIStringForBool([(VKAnalyticsEvent *)self isPerformingAutomatedTest]);
-  v21 = [(VKAnalyticsEvent *)self bundleIdentifier];
-  v22 = [v27 stringWithFormat:@"%@ \n madRoundTripAnalysisDuration: %f \n madDocumentDuration: %f \n madVisualSearchDuration: %f \n madMRCDuration: %f \n mrcParseDuration: %f \n analysisTypes: %@ \n requestType: %@ \n requestSource: %@ \n imageSize: %@ \n textLength: %ld \n lineCount: %ld \n ddCount: %ld \n mrcCount: %ld \n visualSearchCount: %ld \n automatedTest: %@ \n bundleIdentifier: %@ \n error: %@ ", v26, v4, v6, v8, v10, v12, v25, v24, v13, v14, textLength, lineCount, ddCount, mrcCount, visualSearchCount, v20, v21, self->_error];
+  bundleIdentifier = [(VKAnalyticsEvent *)self bundleIdentifier];
+  v22 = [v27 stringWithFormat:@"%@ \n madRoundTripAnalysisDuration: %f \n madDocumentDuration: %f \n madVisualSearchDuration: %f \n madMRCDuration: %f \n mrcParseDuration: %f \n analysisTypes: %@ \n requestType: %@ \n requestSource: %@ \n imageSize: %@ \n textLength: %ld \n lineCount: %ld \n ddCount: %ld \n mrcCount: %ld \n visualSearchCount: %ld \n automatedTest: %@ \n bundleIdentifier: %@ \n error: %@ ", v26, v4, v6, v8, v10, v12, v25, v24, v13, v14, textLength, lineCount, ddCount, mrcCount, visualSearchCount, v20, bundleIdentifier, self->_error];
 
   return v22;
 }

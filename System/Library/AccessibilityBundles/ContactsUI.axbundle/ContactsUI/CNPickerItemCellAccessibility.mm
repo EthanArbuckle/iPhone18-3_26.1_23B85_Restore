@@ -1,5 +1,5 @@
 @interface CNPickerItemCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -9,25 +9,25 @@
 
 @implementation CNPickerItemCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNPickerItemCell" hasInstanceMethod:@"textField" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNPickerItemCell" hasInstanceMethod:@"beginEditing" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CNPickerItemCell" hasInstanceMethod:@"endEditing" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNPickerItemCell" hasInstanceMethod:@"textField" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNPickerItemCell" hasInstanceMethod:@"beginEditing" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CNPickerItemCell" hasInstanceMethod:@"endEditing" withFullSignature:{"v", 0}];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v3 = [(CNPickerItemCellAccessibility *)self safeValueForKey:@"textField"];
-  v4 = [v3 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v3 _accessibilityViewIsVisible];
 
-  if (v4)
+  if (_accessibilityViewIsVisible)
   {
     v5 = [(CNPickerItemCellAccessibility *)self safeValueForKey:@"textField"];
-    v6 = [v5 accessibilityTraits];
+    accessibilityTraits = [v5 accessibilityTraits];
 
-    return v6;
+    return accessibilityTraits;
   }
 
   else
@@ -41,28 +41,28 @@
 - (id)accessibilityLabel
 {
   v2 = [(CNPickerItemCellAccessibility *)self safeValueForKey:@"textLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
   v3 = [(CNPickerItemCellAccessibility *)self safeValueForKey:@"textField"];
-  v4 = [v3 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v3 _accessibilityViewIsVisible];
 
-  if (v4)
+  if (_accessibilityViewIsVisible)
   {
     v5 = [(CNPickerItemCellAccessibility *)self safeValueForKey:@"textField"];
-    v6 = [v5 accessibilityValue];
+    accessibilityValue = [v5 accessibilityValue];
   }
 
   else
   {
-    v6 = 0;
+    accessibilityValue = 0;
   }
 
-  return v6;
+  return accessibilityValue;
 }
 
 - (void)beginEditing

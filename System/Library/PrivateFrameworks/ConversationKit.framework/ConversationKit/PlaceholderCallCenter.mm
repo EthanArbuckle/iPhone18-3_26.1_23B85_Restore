@@ -1,32 +1,32 @@
 @interface PlaceholderCallCenter
-- (void)conversationManager:(id)a3 avModeChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4;
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4;
+- (void)conversationManager:(id)manager avModeChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation;
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation;
 @end
 
 @implementation PlaceholderCallCenter
 
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   PlaceholderCallCenter.conversationManager(_:stateChangedFor:)();
 }
 
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   PlaceholderCallCenter.conversationManager(_:removedActiveConversation:)();
 }
 
-- (void)conversationManager:(id)a3 avModeChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager avModeChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   PlaceholderCallCenter.conversationManager(_:avModeChangedFor:)();
 }
 

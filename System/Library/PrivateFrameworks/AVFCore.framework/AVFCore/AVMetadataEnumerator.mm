@@ -1,53 +1,53 @@
 @interface AVMetadataEnumerator
-+ (id)metadataEnumeratorWithArray:(id)a3 key:(id)a4 keySpace:(id)a5 locale:(id)a6;
-+ (id)metadataEnumeratorWithMetadataReader:(OpaqueFigMetadataReader *)a3;
-- (AVMetadataEnumerator)initWithMetadataReader:(OpaqueFigMetadataReader *)a3 array:(id)a4 key:(id)a5 keySpace:(id)a6 locale:(id)a7;
++ (id)metadataEnumeratorWithArray:(id)array key:(id)key keySpace:(id)space locale:(id)locale;
++ (id)metadataEnumeratorWithMetadataReader:(OpaqueFigMetadataReader *)reader;
+- (AVMetadataEnumerator)initWithMetadataReader:(OpaqueFigMetadataReader *)reader array:(id)array key:(id)key keySpace:(id)space locale:(id)locale;
 - (id)nextObject;
-- (void)_setArrayEnumerator:(id)a3;
-- (void)_setKey:(id)a3;
-- (void)_setKeySpace:(id)a3;
-- (void)_setLocale:(id)a3;
-- (void)_setMetadataReader:(OpaqueFigMetadataReader *)a3;
+- (void)_setArrayEnumerator:(id)enumerator;
+- (void)_setKey:(id)key;
+- (void)_setKeySpace:(id)space;
+- (void)_setLocale:(id)locale;
+- (void)_setMetadataReader:(OpaqueFigMetadataReader *)reader;
 - (void)dealloc;
 @end
 
 @implementation AVMetadataEnumerator
 
-+ (id)metadataEnumeratorWithMetadataReader:(OpaqueFigMetadataReader *)a3
++ (id)metadataEnumeratorWithMetadataReader:(OpaqueFigMetadataReader *)reader
 {
-  v3 = [[AVMetadataEnumerator alloc] initWithMetadataReader:a3];
+  v3 = [[AVMetadataEnumerator alloc] initWithMetadataReader:reader];
 
   return v3;
 }
 
-+ (id)metadataEnumeratorWithArray:(id)a3 key:(id)a4 keySpace:(id)a5 locale:(id)a6
++ (id)metadataEnumeratorWithArray:(id)array key:(id)key keySpace:(id)space locale:(id)locale
 {
-  v6 = [[AVMetadataEnumerator alloc] initWithArray:a3 key:a4 keySpace:a5 locale:a6];
+  v6 = [[AVMetadataEnumerator alloc] initWithArray:array key:key keySpace:space locale:locale];
 
   return v6;
 }
 
-- (AVMetadataEnumerator)initWithMetadataReader:(OpaqueFigMetadataReader *)a3 array:(id)a4 key:(id)a5 keySpace:(id)a6 locale:(id)a7
+- (AVMetadataEnumerator)initWithMetadataReader:(OpaqueFigMetadataReader *)reader array:(id)array key:(id)key keySpace:(id)space locale:(id)locale
 {
   v16.receiver = self;
   v16.super_class = AVMetadataEnumerator;
   v12 = [(AVMetadataEnumerator *)&v16 init];
   if (v12)
   {
-    if (a3)
+    if (reader)
     {
       v13 = *(*(CMBaseObjectGetVTable() + 16) + 40);
       if (v13)
       {
-        v14 = v13(a3, 0, 0);
+        v14 = v13(reader, 0, 0);
         v12->_count = v14;
         if (v14 > 0)
         {
-          [(AVMetadataEnumerator *)v12 _setMetadataReader:a3];
+          [(AVMetadataEnumerator *)v12 _setMetadataReader:reader];
 LABEL_9:
-          [(AVMetadataEnumerator *)v12 _setKey:a5];
-          [(AVMetadataEnumerator *)v12 _setKeySpace:a6];
-          [(AVMetadataEnumerator *)v12 _setLocale:a7];
+          [(AVMetadataEnumerator *)v12 _setKey:key];
+          [(AVMetadataEnumerator *)v12 _setKeySpace:space];
+          [(AVMetadataEnumerator *)v12 _setLocale:locale];
           return v12;
         }
       }
@@ -58,9 +58,9 @@ LABEL_9:
       }
     }
 
-    else if (a4)
+    else if (array)
     {
-      -[AVMetadataEnumerator _setArrayEnumerator:](v12, "_setArrayEnumerator:", [a4 objectEnumerator]);
+      -[AVMetadataEnumerator _setArrayEnumerator:](v12, "_setArrayEnumerator:", [array objectEnumerator]);
       goto LABEL_9;
     }
 
@@ -82,11 +82,11 @@ LABEL_9:
   [(AVMetadataEnumerator *)&v3 dealloc];
 }
 
-- (void)_setMetadataReader:(OpaqueFigMetadataReader *)a3
+- (void)_setMetadataReader:(OpaqueFigMetadataReader *)reader
 {
-  if (a3)
+  if (reader)
   {
-    CFRetain(a3);
+    CFRetain(reader);
   }
 
   reader = self->_reader;
@@ -95,40 +95,40 @@ LABEL_9:
     CFRelease(reader);
   }
 
-  self->_reader = a3;
+  self->_reader = reader;
 }
 
-- (void)_setArrayEnumerator:(id)a3
+- (void)_setArrayEnumerator:(id)enumerator
 {
-  v5 = a3;
+  enumeratorCopy = enumerator;
 
-  self->_arrayEnumerator = a3;
+  self->_arrayEnumerator = enumerator;
 }
 
-- (void)_setKey:(id)a3
+- (void)_setKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
 
-  self->_key = a3;
+  self->_key = key;
 }
 
-- (void)_setKeySpace:(id)a3
+- (void)_setKeySpace:(id)space
 {
-  v5 = a3;
+  spaceCopy = space;
 
-  self->_keySpace = a3;
+  self->_keySpace = space;
 }
 
-- (void)_setLocale:(id)a3
+- (void)_setLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
 
-  self->_locale = a3;
+  self->_locale = locale;
 }
 
 - (id)nextObject
 {
-  v3 = 0;
+  nextObject = 0;
   while (1)
   {
     if (self->_reader)
@@ -136,7 +136,7 @@ LABEL_9:
       index = self->_index;
       if (index < self->_count)
       {
-        v3 = [[AVMetadataItem alloc] _initWithReader:self->_reader itemIndex:self->_index];
+        nextObject = [[AVMetadataItem alloc] _initWithReader:self->_reader itemIndex:self->_index];
         index = self->_index;
       }
 
@@ -150,22 +150,22 @@ LABEL_9:
     }
 
 LABEL_6:
-    if (!v3)
+    if (!nextObject)
     {
-      return v3;
+      return nextObject;
     }
 
 LABEL_7:
     key = self->_key;
-    if (!key || [key isEqual:{objc_msgSend(v3, "key")}])
+    if (!key || [key isEqual:{objc_msgSend(nextObject, "key")}])
     {
       keySpace = self->_keySpace;
-      if (!keySpace || -[NSString isEqualToString:](keySpace, "isEqualToString:", [v3 keySpace]))
+      if (!keySpace || -[NSString isEqualToString:](keySpace, "isEqualToString:", [nextObject keySpace]))
       {
         locale = self->_locale;
-        if (!locale || AVNSLocalesMatchAccordingToRFC4647FilteringRules(locale, [v3 locale]))
+        if (!locale || AVNSLocalesMatchAccordingToRFC4647FilteringRules(locale, [nextObject locale]))
         {
-          return v3;
+          return nextObject;
         }
       }
     }
@@ -173,10 +173,10 @@ LABEL_7:
 
   while (1)
   {
-    v3 = [(NSEnumerator *)self->_arrayEnumerator nextObject];
-    if (!v3)
+    nextObject = [(NSEnumerator *)self->_arrayEnumerator nextObject];
+    if (!nextObject)
     {
-      return v3;
+      return nextObject;
     }
 
     objc_opt_class();

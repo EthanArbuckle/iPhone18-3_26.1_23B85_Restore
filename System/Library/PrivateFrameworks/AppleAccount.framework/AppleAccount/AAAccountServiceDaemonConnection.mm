@@ -1,24 +1,24 @@
 @interface AAAccountServiceDaemonConnection
-- (AAAccountServiceDaemonConnection)initWithListenerEndpoint:(id)a3;
+- (AAAccountServiceDaemonConnection)initWithListenerEndpoint:(id)endpoint;
 - (id)_connection;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)_connectionInvalidationHandler;
 - (void)dealloc;
 @end
 
 @implementation AAAccountServiceDaemonConnection
 
-- (AAAccountServiceDaemonConnection)initWithListenerEndpoint:(id)a3
+- (AAAccountServiceDaemonConnection)initWithListenerEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v9.receiver = self;
   v9.super_class = AAAccountServiceDaemonConnection;
   v6 = [(AAAccountServiceDaemonConnection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listenerEndpoint, a3);
+    objc_storeStrong(&v6->_listenerEndpoint, endpoint);
     v7->_unfairLock._os_unfair_lock_opaque = 0;
   }
 
@@ -29,35 +29,35 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1B6F6A000, a2, OS_LOG_TYPE_DEBUG, "%@ deallocated", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [(AAAccountServiceDaemonConnection *)a2 remoteObjectProxyWithErrorHandler:?];
   }
 
-  v6 = [(AAAccountServiceDaemonConnection *)self _connection];
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v5];
+  _connection = [(AAAccountServiceDaemonConnection *)self _connection];
+  v7 = [_connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v7;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [(AAAccountServiceDaemonConnection *)a2 synchronousRemoteObjectProxyWithErrorHandler:?];
   }
 
-  v6 = [(AAAccountServiceDaemonConnection *)self _connection];
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v5];
+  _connection = [(AAAccountServiceDaemonConnection *)self _connection];
+  v7 = [_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v7;
 }

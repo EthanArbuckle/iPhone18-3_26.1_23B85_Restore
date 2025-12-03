@@ -1,39 +1,39 @@
 @interface _UIPressGestureRecognizer
-- (BOOL)_shouldReceivePress:(id)a3;
-- (BOOL)shouldReceiveEvent:(id)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setDelegate:(id)a3;
+- (BOOL)_shouldReceivePress:(id)press;
+- (BOOL)shouldReceiveEvent:(id)event;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation _UIPressGestureRecognizer
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = _UIPressGestureRecognizer;
-  v4 = a3;
-  [(UIGestureRecognizer *)&v6 setDelegate:v4];
+  delegateCopy = delegate;
+  [(UIGestureRecognizer *)&v6 setDelegate:delegateCopy];
   v5 = objc_opt_respondsToSelector();
 
   *&self->_delegateRespondsTo = *&self->_delegateRespondsTo & 0xFE | v5 & 1;
 }
 
-- (BOOL)_shouldReceivePress:(id)a3
+- (BOOL)_shouldReceivePress:(id)press
 {
-  v4 = a3;
+  pressCopy = press;
   v8.receiver = self;
   v8.super_class = _UIPressGestureRecognizer;
-  if ([(UIGestureRecognizer *)&v8 _shouldReceivePress:v4])
+  if ([(UIGestureRecognizer *)&v8 _shouldReceivePress:pressCopy])
   {
     v5 = 1;
   }
 
   else if (*&self->_delegateRespondsTo)
   {
-    v6 = [(UIGestureRecognizer *)self delegate];
-    v5 = [v6 pressGestureRecognizer:self shouldAllowPress:v4];
+    delegate = [(UIGestureRecognizer *)self delegate];
+    v5 = [delegate pressGestureRecognizer:self shouldAllowPress:pressCopy];
   }
 
   else
@@ -44,35 +44,35 @@
   return v5;
 }
 
-- (BOOL)shouldReceiveEvent:(id)a3
+- (BOOL)shouldReceiveEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 type] == 3 || objc_msgSend(v3, "type") == 4;
+  eventCopy = event;
+  v4 = [eventCopy type] == 3 || objc_msgSend(eventCopy, "type") == 4;
 
   return v4;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _UIPressGestureRecognizer;
-  [(UIGestureRecognizer *)&v5 pressesBegan:a3 withEvent:a4];
+  [(UIGestureRecognizer *)&v5 pressesBegan:began withEvent:event];
   [(UIGestureRecognizer *)self setState:1];
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _UIPressGestureRecognizer;
-  [(UIGestureRecognizer *)&v5 pressesEnded:a3 withEvent:a4];
+  [(UIGestureRecognizer *)&v5 pressesEnded:ended withEvent:event];
   [(UIGestureRecognizer *)self setState:3];
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _UIPressGestureRecognizer;
-  [(UIGestureRecognizer *)&v5 pressesCancelled:a3 withEvent:a4];
+  [(UIGestureRecognizer *)&v5 pressesCancelled:cancelled withEvent:event];
   [(UIGestureRecognizer *)self setState:4];
 }
 

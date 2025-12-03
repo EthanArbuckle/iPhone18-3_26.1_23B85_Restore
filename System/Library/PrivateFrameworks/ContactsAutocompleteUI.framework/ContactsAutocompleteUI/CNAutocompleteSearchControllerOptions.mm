@@ -1,29 +1,29 @@
 @interface CNAutocompleteSearchControllerOptions
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CNAutocompleteSearchControllerOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(CNAutocompleteSearchControllerOptions *)self trailingButtonMidlineInsetFromLayoutMargin];
-  [v4 setTrailingButtonMidlineInsetFromLayoutMargin:v5];
+  trailingButtonMidlineInsetFromLayoutMargin = [(CNAutocompleteSearchControllerOptions *)self trailingButtonMidlineInsetFromLayoutMargin];
+  [v4 setTrailingButtonMidlineInsetFromLayoutMargin:trailingButtonMidlineInsetFromLayoutMargin];
 
-  v6 = [(CNAutocompleteSearchControllerOptions *)self labelTopPadding];
-  [v4 setLabelTopPadding:v6];
+  labelTopPadding = [(CNAutocompleteSearchControllerOptions *)self labelTopPadding];
+  [v4 setLabelTopPadding:labelTopPadding];
 
-  v7 = [(CNAutocompleteSearchControllerOptions *)self labelLeadingPadding];
-  [v4 setLabelLeadingPadding:v7];
+  labelLeadingPadding = [(CNAutocompleteSearchControllerOptions *)self labelLeadingPadding];
+  [v4 setLabelLeadingPadding:labelLeadingPadding];
 
-  v8 = [(CNAutocompleteSearchControllerOptions *)self shouldHideSeparator];
-  [v4 setShouldHideSeparator:v8];
+  shouldHideSeparator = [(CNAutocompleteSearchControllerOptions *)self shouldHideSeparator];
+  [v4 setShouldHideSeparator:shouldHideSeparator];
 
-  v9 = [(CNAutocompleteSearchControllerOptions *)self shouldAlwaysShowAddContactsButton];
-  [v4 setShouldAlwaysShowAddContactsButton:v9];
+  shouldAlwaysShowAddContactsButton = [(CNAutocompleteSearchControllerOptions *)self shouldAlwaysShowAddContactsButton];
+  [v4 setShouldAlwaysShowAddContactsButton:shouldAlwaysShowAddContactsButton];
 
-  v10 = [(CNAutocompleteSearchControllerOptions *)self showGlassBackground];
-  [v4 setShowGlassBackground:v10];
+  showGlassBackground = [(CNAutocompleteSearchControllerOptions *)self showGlassBackground];
+  [v4 setShowGlassBackground:showGlassBackground];
 
   [v4 setAddressableGroupResultStyle:{-[CNAutocompleteSearchControllerOptions addressableGroupResultStyle](self, "addressableGroupResultStyle")}];
   return v4;

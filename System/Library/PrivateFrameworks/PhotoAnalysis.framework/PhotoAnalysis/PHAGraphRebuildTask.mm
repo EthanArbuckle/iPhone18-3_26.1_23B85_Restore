@@ -1,18 +1,18 @@
 @interface PHAGraphRebuildTask
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)runWithGraphManager:(id)a3 withIncrementalChange:(id)a4 progressReporter:(id)a5 error:(id *)a6;
-- (BOOL)shouldRunIncrementallyWithGraphManager:(id)a3 incrementalChange:(id)a4 timeIntervalSinceNonIncrementalRun:(double)a5;
-- (BOOL)shouldRunWithGraphManager:(id)a3;
-- (PHAGraphRebuildTask)initWithMode:(unint64_t)a3;
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
+- (BOOL)runWithGraphManager:(id)manager withIncrementalChange:(id)change progressReporter:(id)reporter error:(id *)error;
+- (BOOL)shouldRunIncrementallyWithGraphManager:(id)manager incrementalChange:(id)change timeIntervalSinceNonIncrementalRun:(double)run;
+- (BOOL)shouldRunWithGraphManager:(id)manager;
+- (PHAGraphRebuildTask)initWithMode:(unint64_t)mode;
 - (id)taskClassDependencies;
-- (void)timeoutFatal:(BOOL)a3;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHAGraphRebuildTask
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHAGraphRebuildTask timeoutFatal:]", "PHAGraphRebuildTask.m", 242, "NO");
   }
@@ -24,17 +24,17 @@
   }
 }
 
-- (BOOL)runWithGraphManager:(id)a3 withIncrementalChange:(id)a4 progressReporter:(id)a5 error:(id *)a6
+- (BOOL)runWithGraphManager:(id)manager withIncrementalChange:(id)change progressReporter:(id)reporter error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v10 hasAnythingToDo])
+  managerCopy = manager;
+  changeCopy = change;
+  reporterCopy = reporter;
+  if ([changeCopy hasAnythingToDo])
   {
-    v12 = [v11 throughputReportBlock];
-    [v9 setThroughputReportBlock:v12];
+    throughputReportBlock = [reporterCopy throughputReportBlock];
+    [managerCopy setThroughputReportBlock:throughputReportBlock];
 
-    v13 = [objc_alloc(MEMORY[0x277D3B9D0]) initWithGraphManager:v9];
+    v13 = [objc_alloc(MEMORY[0x277D3B9D0]) initWithGraphManager:managerCopy];
     v14 = dispatch_group_create();
     dispatch_group_enter(v14);
     v37 = 0;
@@ -53,16 +53,16 @@
     v22[3] = &unk_2788B2BB8;
     v24 = &v37;
     v25 = &v31;
-    v15 = v14;
-    v23 = v15;
-    [v13 applyChangesFromGraphUpdate:v10 progressReporter:v11 completionHandler:v22];
-    dispatch_group_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
-    if (a6)
+    date = v14;
+    v23 = date;
+    [v13 applyChangesFromGraphUpdate:changeCopy progressReporter:reporterCopy completionHandler:v22];
+    dispatch_group_wait(date, 0xFFFFFFFFFFFFFFFFLL);
+    if (error)
     {
-      *a6 = v32[5];
+      *error = v32[5];
     }
 
-    [v9 setThroughputReportBlock:0];
+    [managerCopy setThroughputReportBlock:0];
     v16 = *(v38 + 24);
     v17 = v23;
   }
@@ -70,7 +70,7 @@
   else
   {
     v18 = dispatch_block_create(0, &__block_literal_global_243);
-    v15 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v37 = 0;
     v38 = &v37;
     v39 = 0x2020000000;
@@ -89,20 +89,20 @@
     v30 = &v31;
     v13 = v18;
     v28 = v13;
-    [v9 setGraphInfoDateOfLastIncrementalUpdateInvocationWithDate:v15 completionBlock:v27];
+    [managerCopy setGraphInfoDateOfLastIncrementalUpdateInvocationWithDate:date completionBlock:v27];
     dispatch_block_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
-    v19 = [v9 workingContext];
-    v20 = [v19 loggingConnection];
+    workingContext = [managerCopy workingContext];
+    loggingConnection = [workingContext loggingConnection];
 
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_22FA28000, v20, OS_LOG_TYPE_DEFAULT, "PHAGraphRebuildTask: IncrementalChange has nothing to do", buf, 2u);
+      _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "PHAGraphRebuildTask: IncrementalChange has nothing to do", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = v32[5];
+      *error = v32[5];
     }
 
     v16 = *(v38 + 24);
@@ -135,26 +135,26 @@ void __88__PHAGraphRebuildTask_runWithGraphManager_withIncrementalChange_progres
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  managerCopy = manager;
+  reporterCopy = reporter;
+  v10 = reporterCopy;
   if (self->_rebuildTaskMode == 2)
   {
-    v11 = [v8 workingContext];
-    v12 = [v11 loggingConnection];
+    workingContext = [managerCopy workingContext];
+    loggingConnection = [workingContext loggingConnection];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_22FA28000, v12, OS_LOG_TYPE_DEFAULT, "PHAGraphRebuildTask: Returning NO for full rebuild run: Current mode is ForceIncrementalUpdate", buf, 2u);
+      _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "PHAGraphRebuildTask: Returning NO for full rebuild run: Current mode is ForceIncrementalUpdate", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:14 localizedDescription:{@"Current mode is ForceIncrementalUpdate, the task does not support graph full rebuild"}];
-      *a5 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -165,8 +165,8 @@ void __88__PHAGraphRebuildTask_runWithGraphManager_withIncrementalChange_progres
 
   else
   {
-    v14 = [v9 throughputReportBlock];
-    [v8 setThroughputReportBlock:v14];
+    throughputReportBlock = [reporterCopy throughputReportBlock];
+    [managerCopy setThroughputReportBlock:throughputReportBlock];
 
     v37 = 0;
     v38 = &v37;
@@ -179,7 +179,7 @@ void __88__PHAGraphRebuildTask_runWithGraphManager_withIncrementalChange_progres
     v35 = __Block_byref_object_dispose__579;
     v36 = 0;
     v15 = dispatch_block_create(0, &__block_literal_global_584);
-    v16 = [objc_alloc(MEMORY[0x277D3B9C8]) initWithGraphManager:v8];
+    v16 = [objc_alloc(MEMORY[0x277D3B9C8]) initWithGraphManager:managerCopy];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __66__PHAGraphRebuildTask_runWithGraphManager_progressReporter_error___block_invoke_2;
@@ -189,7 +189,7 @@ void __88__PHAGraphRebuildTask_runWithGraphManager_withIncrementalChange_progres
     v21 = 3221225472;
     v22 = __66__PHAGraphRebuildTask_runWithGraphManager_progressReporter_error___block_invoke_3;
     v23 = &unk_2788B17D8;
-    v17 = v8;
+    v17 = managerCopy;
     v24 = v17;
     v25 = v30;
     v27 = &v37;
@@ -198,9 +198,9 @@ void __88__PHAGraphRebuildTask_runWithGraphManager_withIncrementalChange_progres
     v26 = v18;
     [v16 performFullRebuildWithProgressBlock:v29 completionBlock:&v20];
     dispatch_block_wait(v18, 0xFFFFFFFFFFFFFFFFLL);
-    if (a5)
+    if (error)
     {
-      *a5 = *(v32 + 5);
+      *error = *(v32 + 5);
     }
 
     [v17 setThroughputReportBlock:{0, v20, v21, v22, v23}];
@@ -250,49 +250,49 @@ uint64_t __66__PHAGraphRebuildTask_runWithGraphManager_progressReporter_error___
   return result;
 }
 
-- (BOOL)shouldRunIncrementallyWithGraphManager:(id)a3 incrementalChange:(id)a4 timeIntervalSinceNonIncrementalRun:(double)a5
+- (BOOL)shouldRunIncrementallyWithGraphManager:(id)manager incrementalChange:(id)change timeIntervalSinceNonIncrementalRun:(double)run
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  changeCopy = change;
   if (self->_rebuildTaskMode != 1)
   {
     v22 = 0;
-    v12 = [v7 isReadyWithError:&v22];
-    v10 = v22;
+    v12 = [managerCopy isReadyWithError:&v22];
+    loggingConnection2 = v22;
     if (v12)
     {
       if (self->_rebuildTaskMode == 2)
       {
-        v13 = [v7 workingContext];
-        v14 = [v13 loggingConnection];
+        workingContext = [managerCopy workingContext];
+        loggingConnection = [workingContext loggingConnection];
 
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
         {
           rebuildTaskMode = self->_rebuildTaskMode;
           *buf = 134217984;
           v24 = rebuildTaskMode;
-          _os_log_impl(&dword_22FA28000, v14, OS_LOG_TYPE_DEFAULT, "Returning YES for shouldRunIncrementally: Current mode is IncrementalUpdate, %lu", buf, 0xCu);
+          _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Returning YES for shouldRunIncrementally: Current mode is IncrementalUpdate, %lu", buf, 0xCu);
         }
 
         v11 = 1;
         goto LABEL_14;
       }
 
-      if (![v7 mePersonContactIdentifierDidChangeWithGraphUpdate:v8])
+      if (![managerCopy mePersonContactIdentifierDidChangeWithGraphUpdate:changeCopy])
       {
         v11 = 1;
         goto LABEL_15;
       }
 
-      v21 = [v7 workingContext];
-      v14 = [v21 loggingConnection];
+      workingContext2 = [managerCopy workingContext];
+      loggingConnection = [workingContext2 loggingConnection];
 
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v17 = "Returning NO for shouldRunIncrementally: IncrementalChange contains a contactIdentifier update of Me person";
-        v18 = v14;
+        v18 = loggingConnection;
         v19 = 2;
         goto LABEL_12;
       }
@@ -300,15 +300,15 @@ uint64_t __66__PHAGraphRebuildTask_runWithGraphManager_progressReporter_error___
 
     else
     {
-      v16 = [v7 workingContext];
-      v14 = [v16 loggingConnection];
+      workingContext3 = [managerCopy workingContext];
+      loggingConnection = [workingContext3 loggingConnection];
 
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v24 = v10;
+        v24 = loggingConnection2;
         v17 = "Returning NO for shouldRunIncrementally: Graph is not ready and need a full rebuild: %@";
-        v18 = v14;
+        v18 = loggingConnection;
         v19 = 12;
 LABEL_12:
         _os_log_impl(&dword_22FA28000, v18, OS_LOG_TYPE_DEFAULT, v17, buf, v19);
@@ -321,13 +321,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v9 = [v7 workingContext];
-  v10 = [v9 loggingConnection];
+  workingContext4 = [managerCopy workingContext];
+  loggingConnection2 = [workingContext4 loggingConnection];
 
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_22FA28000, v10, OS_LOG_TYPE_DEFAULT, "Returning NO for shouldRunIncrementally: Current mode is ForceRebuild", buf, 2u);
+    _os_log_impl(&dword_22FA28000, loggingConnection2, OS_LOG_TYPE_DEFAULT, "Returning NO for shouldRunIncrementally: Current mode is ForceRebuild", buf, 2u);
   }
 
   v11 = 0;
@@ -336,23 +336,23 @@ LABEL_15:
   return v11;
 }
 
-- (BOOL)shouldRunWithGraphManager:(id)a3
+- (BOOL)shouldRunWithGraphManager:(id)manager
 {
-  v3 = a3;
-  v4 = [v3 libraryAnalysisState];
-  if (v4 == 1)
+  managerCopy = manager;
+  libraryAnalysisState = [managerCopy libraryAnalysisState];
+  if (libraryAnalysisState == 1)
   {
-    v5 = [v3 workingContext];
-    v6 = [v5 loggingConnection];
+    workingContext = [managerCopy workingContext];
+    loggingConnection = [workingContext loggingConnection];
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
       *v8 = 0;
-      _os_log_impl(&dword_22FA28000, v6, OS_LOG_TYPE_DEFAULT, "PHAGraphRebuildTask: Graph is already rebuilding, skipping rebuild tasks", v8, 2u);
+      _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "PHAGraphRebuildTask: Graph is already rebuilding, skipping rebuild tasks", v8, 2u);
     }
   }
 
-  return v4 != 1;
+  return libraryAnalysisState != 1;
 }
 
 - (id)taskClassDependencies
@@ -375,14 +375,14 @@ LABEL_15:
   return v2;
 }
 
-- (PHAGraphRebuildTask)initWithMode:(unint64_t)a3
+- (PHAGraphRebuildTask)initWithMode:(unint64_t)mode
 {
   v5.receiver = self;
   v5.super_class = PHAGraphRebuildTask;
   result = [(PHAGraphRebuildTask *)&v5 init];
   if (result)
   {
-    result->_rebuildTaskMode = a3;
+    result->_rebuildTaskMode = mode;
   }
 
   return result;

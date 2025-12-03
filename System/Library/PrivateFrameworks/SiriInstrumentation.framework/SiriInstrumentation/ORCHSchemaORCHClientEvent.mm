@@ -1,6 +1,6 @@
 @interface ORCHSchemaORCHClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (ORCHSchemaNLRouterRewrittenUtteranceTier1)routerRewrittenUtterance;
 - (ORCHSchemaORCHASRBridgeContext)asrBridgeContext;
@@ -11,8 +11,8 @@
 - (ORCHSchemaORCHAudioTopologyReported)audioTopologyReported;
 - (ORCHSchemaORCHCDMBridgeContext)cdmBridgeContext;
 - (ORCHSchemaORCHCandidateRequestContext)candidateRequestContext;
-- (ORCHSchemaORCHClientEvent)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHClientEvent)initWithJSON:(id)a3;
+- (ORCHSchemaORCHClientEvent)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHClientEvent)initWithJSON:(id)n;
 - (ORCHSchemaORCHConversationContextSubmitted)contextSubmissionMessage;
 - (ORCHSchemaORCHDeviceDynamicContext)orchDeviceDynamicContext;
 - (ORCHSchemaORCHExecuteOnRemoteRequestContext)executeOnRemoteRequestContext;
@@ -45,7 +45,7 @@
 - (ORCHSchemaORCHUIActivationContext)uiActivationContext;
 - (ORCHSchemaORCHUnsupportedLanguageDetected)unsupportedLanguageDetected;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -92,62 +92,62 @@
 - (void)deleteUiActivationContext;
 - (void)deleteUnsupportedLanguageDetected;
 - (void)deleteUserSessionState;
-- (void)setAceCommandContext:(id)a3;
-- (void)setAsrBridgeContext:(id)a3;
-- (void)setAssetSetsReported:(id)a3;
-- (void)setAssistantdLaunchMetadataReported:(id)a3;
-- (void)setAudioTopologyReported:(id)a3;
-- (void)setAvailableAssets:(id)a3;
-- (void)setCandidateRequestContext:(id)a3;
-- (void)setCdmBridgeContext:(id)a3;
-- (void)setContextSubmissionMessage:(id)a3;
-- (void)setExecuteOnRemoteRequestContext:(id)a3;
-- (void)setExecutionBridgeContext:(id)a3;
-- (void)setFlowOutputSubmitted:(id)a3;
-- (void)setIdentityBridgeRequestContext:(id)a3;
-- (void)setIntelligenceFlowQuerySent:(id)a3;
-- (void)setIntelligenceFlowRequestContext:(id)a3;
-- (void)setMultiUserResultCandidate:(id)a3;
-- (void)setMultiUserResultSelected:(id)a3;
-- (void)setMuxBridgeContext:(id)a3;
-- (void)setNlRouterBridgeContext:(id)a3;
-- (void)setNlRouterBridgeSubComponentContext:(id)a3;
-- (void)setNlv3ServerFallbackDeprecated:(id)a3;
-- (void)setOrchDeviceDynamicContext:(id)a3;
-- (void)setPommesBridgeContext:(id)a3;
-- (void)setPowerContextPolicyReported:(id)a3;
-- (void)setRequestContext:(id)a3;
-- (void)setRequestMitigated:(id)a3;
-- (void)setResultCandidate:(id)a3;
-- (void)setResultSelected:(id)a3;
-- (void)setRouterRewrittenUtterance:(id)a3;
-- (void)setServerExecutionValuesReported:(id)a3;
-- (void)setServerFallbackContext:(id)a3;
-- (void)setShimToolContext:(id)a3;
-- (void)setSubRequestContext:(id)a3;
-- (void)setSubRequestFallback:(id)a3;
-- (void)setTrpCandidateCreated:(id)a3;
-- (void)setTrpCandidateReceived:(id)a3;
-- (void)setTrpFinalized:(id)a3;
-- (void)setUiActivationContext:(id)a3;
-- (void)setUnsupportedLanguageDetected:(id)a3;
-- (void)setUserSessionState:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAceCommandContext:(id)context;
+- (void)setAsrBridgeContext:(id)context;
+- (void)setAssetSetsReported:(id)reported;
+- (void)setAssistantdLaunchMetadataReported:(id)reported;
+- (void)setAudioTopologyReported:(id)reported;
+- (void)setAvailableAssets:(id)assets;
+- (void)setCandidateRequestContext:(id)context;
+- (void)setCdmBridgeContext:(id)context;
+- (void)setContextSubmissionMessage:(id)message;
+- (void)setExecuteOnRemoteRequestContext:(id)context;
+- (void)setExecutionBridgeContext:(id)context;
+- (void)setFlowOutputSubmitted:(id)submitted;
+- (void)setIdentityBridgeRequestContext:(id)context;
+- (void)setIntelligenceFlowQuerySent:(id)sent;
+- (void)setIntelligenceFlowRequestContext:(id)context;
+- (void)setMultiUserResultCandidate:(id)candidate;
+- (void)setMultiUserResultSelected:(id)selected;
+- (void)setMuxBridgeContext:(id)context;
+- (void)setNlRouterBridgeContext:(id)context;
+- (void)setNlRouterBridgeSubComponentContext:(id)context;
+- (void)setNlv3ServerFallbackDeprecated:(id)deprecated;
+- (void)setOrchDeviceDynamicContext:(id)context;
+- (void)setPommesBridgeContext:(id)context;
+- (void)setPowerContextPolicyReported:(id)reported;
+- (void)setRequestContext:(id)context;
+- (void)setRequestMitigated:(id)mitigated;
+- (void)setResultCandidate:(id)candidate;
+- (void)setResultSelected:(id)selected;
+- (void)setRouterRewrittenUtterance:(id)utterance;
+- (void)setServerExecutionValuesReported:(id)reported;
+- (void)setServerFallbackContext:(id)context;
+- (void)setShimToolContext:(id)context;
+- (void)setSubRequestContext:(id)context;
+- (void)setSubRequestFallback:(id)fallback;
+- (void)setTrpCandidateCreated:(id)created;
+- (void)setTrpCandidateReceived:(id)received;
+- (void)setTrpFinalized:(id)finalized;
+- (void)setUiActivationContext:(id)context;
+- (void)setUnsupportedLanguageDetected:(id)detected;
+- (void)setUserSessionState:(id)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHClientEvent
 
 - (id)qualifiedMessageName
 {
-  v2 = [(ORCHSchemaORCHClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 0x27)
+  whichEvent_Type = [(ORCHSchemaORCHClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0x27)
   {
     return @"com.apple.aiml.siri.orch.ORCHClientEvent";
   }
 
   else
   {
-    return off_1E78DE898[v2 - 101];
+    return off_1E78DE898[whichEvent_Type - 101];
   }
 }
 
@@ -736,16 +736,16 @@
   return v3;
 }
 
-- (ORCHSchemaORCHClientEvent)initWithDictionary:(id)a3
+- (ORCHSchemaORCHClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v127.receiver = self;
   v127.super_class = ORCHSchemaORCHClientEvent;
   v5 = [(ORCHSchemaORCHClientEvent *)&v127 init];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -753,7 +753,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"resourceUtilizationMetadata"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"resourceUtilizationMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -761,7 +761,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setResourceUtilizationMetadata:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"requestContext"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"requestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -769,7 +769,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setRequestContext:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"asrBridgeContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"asrBridgeContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -777,7 +777,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setAsrBridgeContext:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"cdmBridgeContext"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"cdmBridgeContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -785,7 +785,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setCdmBridgeContext:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"executionBridgeContext"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"executionBridgeContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -793,7 +793,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setExecutionBridgeContext:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"serverFallbackContext"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"serverFallbackContext"];
     objc_opt_class();
     v126 = v18;
     if (objc_opt_isKindOfClass())
@@ -802,7 +802,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setServerFallbackContext:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"flowOutputSubmitted"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"flowOutputSubmitted"];
     objc_opt_class();
     v125 = v20;
     if (objc_opt_isKindOfClass())
@@ -811,7 +811,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setFlowOutputSubmitted:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"resultCandidate"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"resultCandidate"];
     objc_opt_class();
     v124 = v22;
     if (objc_opt_isKindOfClass())
@@ -820,7 +820,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setResultCandidate:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"resultSelected"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"resultSelected"];
     objc_opt_class();
     v123 = v24;
     if (objc_opt_isKindOfClass())
@@ -829,7 +829,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setResultSelected:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"contextSubmissionMessage"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"contextSubmissionMessage"];
     objc_opt_class();
     v122 = v26;
     if (objc_opt_isKindOfClass())
@@ -838,7 +838,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setContextSubmissionMessage:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"availableAssets"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"availableAssets"];
     objc_opt_class();
     v121 = v28;
     if (objc_opt_isKindOfClass())
@@ -847,7 +847,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setAvailableAssets:v29];
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"orchDeviceDynamicContext"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"orchDeviceDynamicContext"];
     objc_opt_class();
     v120 = v30;
     if (objc_opt_isKindOfClass())
@@ -856,7 +856,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setOrchDeviceDynamicContext:v31];
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"pommesBridgeContext"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"pommesBridgeContext"];
     objc_opt_class();
     v119 = v32;
     if (objc_opt_isKindOfClass())
@@ -865,7 +865,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setPommesBridgeContext:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"muxBridgeContext"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"muxBridgeContext"];
     objc_opt_class();
     v118 = v34;
     if (objc_opt_isKindOfClass())
@@ -874,7 +874,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setMuxBridgeContext:v35];
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"multiUserResultCandidate"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"multiUserResultCandidate"];
     objc_opt_class();
     v117 = v36;
     if (objc_opt_isKindOfClass())
@@ -883,7 +883,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setMultiUserResultCandidate:v37];
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"multiUserResultSelected"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"multiUserResultSelected"];
     objc_opt_class();
     v116 = v38;
     if (objc_opt_isKindOfClass())
@@ -892,7 +892,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setMultiUserResultSelected:v39];
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"aceCommandContext"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"aceCommandContext"];
     objc_opt_class();
     v115 = v40;
     if (objc_opt_isKindOfClass())
@@ -901,7 +901,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setAceCommandContext:v41];
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"trpFinalized"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"trpFinalized"];
     objc_opt_class();
     v114 = v42;
     if (objc_opt_isKindOfClass())
@@ -910,7 +910,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setTrpFinalized:v43];
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"requestMitigated"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"requestMitigated"];
     objc_opt_class();
     v113 = v44;
     if (objc_opt_isKindOfClass())
@@ -919,7 +919,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setRequestMitigated:v45];
     }
 
-    v46 = [v4 objectForKeyedSubscript:@"nlv3ServerFallbackDeprecated"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"nlv3ServerFallbackDeprecated"];
     objc_opt_class();
     v112 = v46;
     if (objc_opt_isKindOfClass())
@@ -928,7 +928,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setNlv3ServerFallbackDeprecated:v47];
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"uiActivationContext"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"uiActivationContext"];
     objc_opt_class();
     v111 = v48;
     if (objc_opt_isKindOfClass())
@@ -937,7 +937,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setUiActivationContext:v49];
     }
 
-    v50 = [v4 objectForKeyedSubscript:@"trpCandidateReceived"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"trpCandidateReceived"];
     objc_opt_class();
     v110 = v50;
     if (objc_opt_isKindOfClass())
@@ -946,7 +946,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setTrpCandidateReceived:v51];
     }
 
-    v52 = [v4 objectForKeyedSubscript:@"identityBridgeRequestContext"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"identityBridgeRequestContext"];
     objc_opt_class();
     v109 = v52;
     if (objc_opt_isKindOfClass())
@@ -955,7 +955,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setIdentityBridgeRequestContext:v53];
     }
 
-    v54 = [v4 objectForKeyedSubscript:@"assetSetsReported"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"assetSetsReported"];
     objc_opt_class();
     v108 = v54;
     if (objc_opt_isKindOfClass())
@@ -964,7 +964,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setAssetSetsReported:v55];
     }
 
-    v56 = [v4 objectForKeyedSubscript:@"candidateRequestContext"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"candidateRequestContext"];
     objc_opt_class();
     v107 = v56;
     if (objc_opt_isKindOfClass())
@@ -973,7 +973,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setCandidateRequestContext:v57];
     }
 
-    v58 = [v4 objectForKeyedSubscript:@"powerContextPolicyReported"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"powerContextPolicyReported"];
     objc_opt_class();
     v106 = v58;
     if (objc_opt_isKindOfClass())
@@ -982,7 +982,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setPowerContextPolicyReported:v59];
     }
 
-    v60 = [v4 objectForKeyedSubscript:@"executeOnRemoteRequestContext"];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"executeOnRemoteRequestContext"];
     objc_opt_class();
     v105 = v60;
     if (objc_opt_isKindOfClass())
@@ -991,7 +991,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setExecuteOnRemoteRequestContext:v61];
     }
 
-    v62 = [v4 objectForKeyedSubscript:@"assistantdLaunchMetadataReported"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"assistantdLaunchMetadataReported"];
     objc_opt_class();
     v104 = v62;
     if (objc_opt_isKindOfClass())
@@ -1000,7 +1000,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setAssistantdLaunchMetadataReported:v63];
     }
 
-    v64 = [v4 objectForKeyedSubscript:@"intelligenceFlowQuerySent"];
+    v64 = [dictionaryCopy objectForKeyedSubscript:@"intelligenceFlowQuerySent"];
     objc_opt_class();
     v103 = v64;
     if (objc_opt_isKindOfClass())
@@ -1009,7 +1009,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setIntelligenceFlowQuerySent:v65];
     }
 
-    v66 = [v4 objectForKeyedSubscript:@"subRequestContext"];
+    v66 = [dictionaryCopy objectForKeyedSubscript:@"subRequestContext"];
     objc_opt_class();
     v102 = v66;
     if (objc_opt_isKindOfClass())
@@ -1018,7 +1018,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setSubRequestContext:v67];
     }
 
-    v68 = [v4 objectForKeyedSubscript:@"routerRewrittenUtterance"];
+    v68 = [dictionaryCopy objectForKeyedSubscript:@"routerRewrittenUtterance"];
     objc_opt_class();
     v101 = v68;
     if (objc_opt_isKindOfClass())
@@ -1027,7 +1027,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setRouterRewrittenUtterance:v69];
     }
 
-    v70 = [v4 objectForKeyedSubscript:@"nlRouterBridgeContext"];
+    v70 = [dictionaryCopy objectForKeyedSubscript:@"nlRouterBridgeContext"];
     objc_opt_class();
     v100 = v70;
     if (objc_opt_isKindOfClass())
@@ -1036,7 +1036,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setNlRouterBridgeContext:v71];
     }
 
-    v72 = [v4 objectForKeyedSubscript:@"shimToolContext"];
+    v72 = [dictionaryCopy objectForKeyedSubscript:@"shimToolContext"];
     objc_opt_class();
     v99 = v72;
     if (objc_opt_isKindOfClass())
@@ -1046,7 +1046,7 @@
     }
 
     v97 = v8;
-    v74 = [v4 objectForKeyedSubscript:@"subRequestFallback"];
+    v74 = [dictionaryCopy objectForKeyedSubscript:@"subRequestFallback"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1055,7 +1055,7 @@
     }
 
     v96 = v10;
-    v76 = [v4 objectForKeyedSubscript:{@"nlRouterBridgeSubComponentContext", v74}];
+    v76 = [dictionaryCopy objectForKeyedSubscript:{@"nlRouterBridgeSubComponentContext", v74}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1064,7 +1064,7 @@
     }
 
     v95 = v12;
-    v78 = [v4 objectForKeyedSubscript:@"unsupportedLanguageDetected"];
+    v78 = [dictionaryCopy objectForKeyedSubscript:@"unsupportedLanguageDetected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1073,7 +1073,7 @@
     }
 
     v94 = v14;
-    v80 = [v4 objectForKeyedSubscript:@"trpCandidateCreated"];
+    v80 = [dictionaryCopy objectForKeyedSubscript:@"trpCandidateCreated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1082,7 +1082,7 @@
     }
 
     v93 = v16;
-    v82 = [v4 objectForKeyedSubscript:@"audioTopologyReported"];
+    v82 = [dictionaryCopy objectForKeyedSubscript:@"audioTopologyReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1091,7 +1091,7 @@
     }
 
     v98 = v6;
-    v84 = [v4 objectForKeyedSubscript:@"intelligenceFlowRequestContext"];
+    v84 = [dictionaryCopy objectForKeyedSubscript:@"intelligenceFlowRequestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1099,7 +1099,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setIntelligenceFlowRequestContext:v85];
     }
 
-    v86 = [v4 objectForKeyedSubscript:@"userSessionState"];
+    v86 = [dictionaryCopy objectForKeyedSubscript:@"userSessionState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1107,7 +1107,7 @@
       [(ORCHSchemaORCHClientEvent *)v5 setUserSessionState:v87];
     }
 
-    v88 = [v4 objectForKeyedSubscript:@"serverExecutionValuesReported"];
+    v88 = [dictionaryCopy objectForKeyedSubscript:@"serverExecutionValuesReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1121,30 +1121,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHClientEvent)initWithJSON:(id)a3
+- (ORCHSchemaORCHClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -1157,683 +1157,683 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_aceCommandContext)
   {
-    v4 = [(ORCHSchemaORCHClientEvent *)self aceCommandContext];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    aceCommandContext = [(ORCHSchemaORCHClientEvent *)self aceCommandContext];
+    dictionaryRepresentation = [aceCommandContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"aceCommandContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"aceCommandContext"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"aceCommandContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"aceCommandContext"];
     }
   }
 
   if (self->_asrBridgeContext)
   {
-    v7 = [(ORCHSchemaORCHClientEvent *)self asrBridgeContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    asrBridgeContext = [(ORCHSchemaORCHClientEvent *)self asrBridgeContext];
+    dictionaryRepresentation2 = [asrBridgeContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"asrBridgeContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"asrBridgeContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"asrBridgeContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"asrBridgeContext"];
     }
   }
 
   if (self->_assetSetsReported)
   {
-    v10 = [(ORCHSchemaORCHClientEvent *)self assetSetsReported];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    assetSetsReported = [(ORCHSchemaORCHClientEvent *)self assetSetsReported];
+    dictionaryRepresentation3 = [assetSetsReported dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"assetSetsReported"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"assetSetsReported"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"assetSetsReported"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"assetSetsReported"];
     }
   }
 
   if (self->_assistantdLaunchMetadataReported)
   {
-    v13 = [(ORCHSchemaORCHClientEvent *)self assistantdLaunchMetadataReported];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    assistantdLaunchMetadataReported = [(ORCHSchemaORCHClientEvent *)self assistantdLaunchMetadataReported];
+    dictionaryRepresentation4 = [assistantdLaunchMetadataReported dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"assistantdLaunchMetadataReported"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"assistantdLaunchMetadataReported"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"assistantdLaunchMetadataReported"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"assistantdLaunchMetadataReported"];
     }
   }
 
   if (self->_audioTopologyReported)
   {
-    v16 = [(ORCHSchemaORCHClientEvent *)self audioTopologyReported];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    audioTopologyReported = [(ORCHSchemaORCHClientEvent *)self audioTopologyReported];
+    dictionaryRepresentation5 = [audioTopologyReported dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"audioTopologyReported"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"audioTopologyReported"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"audioTopologyReported"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"audioTopologyReported"];
     }
   }
 
   if (self->_availableAssets)
   {
-    v19 = [(ORCHSchemaORCHClientEvent *)self availableAssets];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    availableAssets = [(ORCHSchemaORCHClientEvent *)self availableAssets];
+    dictionaryRepresentation6 = [availableAssets dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"availableAssets"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"availableAssets"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"availableAssets"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"availableAssets"];
     }
   }
 
   if (self->_candidateRequestContext)
   {
-    v22 = [(ORCHSchemaORCHClientEvent *)self candidateRequestContext];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    candidateRequestContext = [(ORCHSchemaORCHClientEvent *)self candidateRequestContext];
+    dictionaryRepresentation7 = [candidateRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"candidateRequestContext"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"candidateRequestContext"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"candidateRequestContext"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"candidateRequestContext"];
     }
   }
 
   if (self->_cdmBridgeContext)
   {
-    v25 = [(ORCHSchemaORCHClientEvent *)self cdmBridgeContext];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    cdmBridgeContext = [(ORCHSchemaORCHClientEvent *)self cdmBridgeContext];
+    dictionaryRepresentation8 = [cdmBridgeContext dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"cdmBridgeContext"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"cdmBridgeContext"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"cdmBridgeContext"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"cdmBridgeContext"];
     }
   }
 
   if (self->_contextSubmissionMessage)
   {
-    v28 = [(ORCHSchemaORCHClientEvent *)self contextSubmissionMessage];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    contextSubmissionMessage = [(ORCHSchemaORCHClientEvent *)self contextSubmissionMessage];
+    dictionaryRepresentation9 = [contextSubmissionMessage dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"contextSubmissionMessage"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"contextSubmissionMessage"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"contextSubmissionMessage"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"contextSubmissionMessage"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v31 = [(ORCHSchemaORCHClientEvent *)self eventMetadata];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    eventMetadata = [(ORCHSchemaORCHClientEvent *)self eventMetadata];
+    dictionaryRepresentation10 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"eventMetadata"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_executeOnRemoteRequestContext)
   {
-    v34 = [(ORCHSchemaORCHClientEvent *)self executeOnRemoteRequestContext];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    executeOnRemoteRequestContext = [(ORCHSchemaORCHClientEvent *)self executeOnRemoteRequestContext];
+    dictionaryRepresentation11 = [executeOnRemoteRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"executeOnRemoteRequestContext"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"executeOnRemoteRequestContext"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"executeOnRemoteRequestContext"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"executeOnRemoteRequestContext"];
     }
   }
 
   if (self->_executionBridgeContext)
   {
-    v37 = [(ORCHSchemaORCHClientEvent *)self executionBridgeContext];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    executionBridgeContext = [(ORCHSchemaORCHClientEvent *)self executionBridgeContext];
+    dictionaryRepresentation12 = [executionBridgeContext dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"executionBridgeContext"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"executionBridgeContext"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"executionBridgeContext"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"executionBridgeContext"];
     }
   }
 
   if (self->_flowOutputSubmitted)
   {
-    v40 = [(ORCHSchemaORCHClientEvent *)self flowOutputSubmitted];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    flowOutputSubmitted = [(ORCHSchemaORCHClientEvent *)self flowOutputSubmitted];
+    dictionaryRepresentation13 = [flowOutputSubmitted dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"flowOutputSubmitted"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"flowOutputSubmitted"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"flowOutputSubmitted"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"flowOutputSubmitted"];
     }
   }
 
   if (self->_identityBridgeRequestContext)
   {
-    v43 = [(ORCHSchemaORCHClientEvent *)self identityBridgeRequestContext];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    identityBridgeRequestContext = [(ORCHSchemaORCHClientEvent *)self identityBridgeRequestContext];
+    dictionaryRepresentation14 = [identityBridgeRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"identityBridgeRequestContext"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"identityBridgeRequestContext"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"identityBridgeRequestContext"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"identityBridgeRequestContext"];
     }
   }
 
   if (self->_intelligenceFlowQuerySent)
   {
-    v46 = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowQuerySent];
-    v47 = [v46 dictionaryRepresentation];
-    if (v47)
+    intelligenceFlowQuerySent = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowQuerySent];
+    dictionaryRepresentation15 = [intelligenceFlowQuerySent dictionaryRepresentation];
+    if (dictionaryRepresentation15)
     {
-      [v3 setObject:v47 forKeyedSubscript:@"intelligenceFlowQuerySent"];
+      [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"intelligenceFlowQuerySent"];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v48 forKeyedSubscript:@"intelligenceFlowQuerySent"];
+      null15 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null15 forKeyedSubscript:@"intelligenceFlowQuerySent"];
     }
   }
 
   if (self->_intelligenceFlowRequestContext)
   {
-    v49 = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowRequestContext];
-    v50 = [v49 dictionaryRepresentation];
-    if (v50)
+    intelligenceFlowRequestContext = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowRequestContext];
+    dictionaryRepresentation16 = [intelligenceFlowRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation16)
     {
-      [v3 setObject:v50 forKeyedSubscript:@"intelligenceFlowRequestContext"];
+      [dictionary setObject:dictionaryRepresentation16 forKeyedSubscript:@"intelligenceFlowRequestContext"];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v51 forKeyedSubscript:@"intelligenceFlowRequestContext"];
+      null16 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null16 forKeyedSubscript:@"intelligenceFlowRequestContext"];
     }
   }
 
   if (self->_multiUserResultCandidate)
   {
-    v52 = [(ORCHSchemaORCHClientEvent *)self multiUserResultCandidate];
-    v53 = [v52 dictionaryRepresentation];
-    if (v53)
+    multiUserResultCandidate = [(ORCHSchemaORCHClientEvent *)self multiUserResultCandidate];
+    dictionaryRepresentation17 = [multiUserResultCandidate dictionaryRepresentation];
+    if (dictionaryRepresentation17)
     {
-      [v3 setObject:v53 forKeyedSubscript:@"multiUserResultCandidate"];
+      [dictionary setObject:dictionaryRepresentation17 forKeyedSubscript:@"multiUserResultCandidate"];
     }
 
     else
     {
-      v54 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v54 forKeyedSubscript:@"multiUserResultCandidate"];
+      null17 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null17 forKeyedSubscript:@"multiUserResultCandidate"];
     }
   }
 
   if (self->_multiUserResultSelected)
   {
-    v55 = [(ORCHSchemaORCHClientEvent *)self multiUserResultSelected];
-    v56 = [v55 dictionaryRepresentation];
-    if (v56)
+    multiUserResultSelected = [(ORCHSchemaORCHClientEvent *)self multiUserResultSelected];
+    dictionaryRepresentation18 = [multiUserResultSelected dictionaryRepresentation];
+    if (dictionaryRepresentation18)
     {
-      [v3 setObject:v56 forKeyedSubscript:@"multiUserResultSelected"];
+      [dictionary setObject:dictionaryRepresentation18 forKeyedSubscript:@"multiUserResultSelected"];
     }
 
     else
     {
-      v57 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v57 forKeyedSubscript:@"multiUserResultSelected"];
+      null18 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null18 forKeyedSubscript:@"multiUserResultSelected"];
     }
   }
 
   if (self->_muxBridgeContext)
   {
-    v58 = [(ORCHSchemaORCHClientEvent *)self muxBridgeContext];
-    v59 = [v58 dictionaryRepresentation];
-    if (v59)
+    muxBridgeContext = [(ORCHSchemaORCHClientEvent *)self muxBridgeContext];
+    dictionaryRepresentation19 = [muxBridgeContext dictionaryRepresentation];
+    if (dictionaryRepresentation19)
     {
-      [v3 setObject:v59 forKeyedSubscript:@"muxBridgeContext"];
+      [dictionary setObject:dictionaryRepresentation19 forKeyedSubscript:@"muxBridgeContext"];
     }
 
     else
     {
-      v60 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v60 forKeyedSubscript:@"muxBridgeContext"];
+      null19 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null19 forKeyedSubscript:@"muxBridgeContext"];
     }
   }
 
   if (self->_nlRouterBridgeContext)
   {
-    v61 = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeContext];
-    v62 = [v61 dictionaryRepresentation];
-    if (v62)
+    nlRouterBridgeContext = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeContext];
+    dictionaryRepresentation20 = [nlRouterBridgeContext dictionaryRepresentation];
+    if (dictionaryRepresentation20)
     {
-      [v3 setObject:v62 forKeyedSubscript:@"nlRouterBridgeContext"];
+      [dictionary setObject:dictionaryRepresentation20 forKeyedSubscript:@"nlRouterBridgeContext"];
     }
 
     else
     {
-      v63 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v63 forKeyedSubscript:@"nlRouterBridgeContext"];
+      null20 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null20 forKeyedSubscript:@"nlRouterBridgeContext"];
     }
   }
 
   if (self->_nlRouterBridgeSubComponentContext)
   {
-    v64 = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeSubComponentContext];
-    v65 = [v64 dictionaryRepresentation];
-    if (v65)
+    nlRouterBridgeSubComponentContext = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeSubComponentContext];
+    dictionaryRepresentation21 = [nlRouterBridgeSubComponentContext dictionaryRepresentation];
+    if (dictionaryRepresentation21)
     {
-      [v3 setObject:v65 forKeyedSubscript:@"nlRouterBridgeSubComponentContext"];
+      [dictionary setObject:dictionaryRepresentation21 forKeyedSubscript:@"nlRouterBridgeSubComponentContext"];
     }
 
     else
     {
-      v66 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v66 forKeyedSubscript:@"nlRouterBridgeSubComponentContext"];
+      null21 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null21 forKeyedSubscript:@"nlRouterBridgeSubComponentContext"];
     }
   }
 
   if (self->_nlv3ServerFallbackDeprecated)
   {
-    v67 = [(ORCHSchemaORCHClientEvent *)self nlv3ServerFallbackDeprecated];
-    v68 = [v67 dictionaryRepresentation];
-    if (v68)
+    nlv3ServerFallbackDeprecated = [(ORCHSchemaORCHClientEvent *)self nlv3ServerFallbackDeprecated];
+    dictionaryRepresentation22 = [nlv3ServerFallbackDeprecated dictionaryRepresentation];
+    if (dictionaryRepresentation22)
     {
-      [v3 setObject:v68 forKeyedSubscript:@"nlv3ServerFallbackDeprecated"];
+      [dictionary setObject:dictionaryRepresentation22 forKeyedSubscript:@"nlv3ServerFallbackDeprecated"];
     }
 
     else
     {
-      v69 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v69 forKeyedSubscript:@"nlv3ServerFallbackDeprecated"];
+      null22 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null22 forKeyedSubscript:@"nlv3ServerFallbackDeprecated"];
     }
   }
 
   if (self->_orchDeviceDynamicContext)
   {
-    v70 = [(ORCHSchemaORCHClientEvent *)self orchDeviceDynamicContext];
-    v71 = [v70 dictionaryRepresentation];
-    if (v71)
+    orchDeviceDynamicContext = [(ORCHSchemaORCHClientEvent *)self orchDeviceDynamicContext];
+    dictionaryRepresentation23 = [orchDeviceDynamicContext dictionaryRepresentation];
+    if (dictionaryRepresentation23)
     {
-      [v3 setObject:v71 forKeyedSubscript:@"orchDeviceDynamicContext"];
+      [dictionary setObject:dictionaryRepresentation23 forKeyedSubscript:@"orchDeviceDynamicContext"];
     }
 
     else
     {
-      v72 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v72 forKeyedSubscript:@"orchDeviceDynamicContext"];
+      null23 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null23 forKeyedSubscript:@"orchDeviceDynamicContext"];
     }
   }
 
   if (self->_pommesBridgeContext)
   {
-    v73 = [(ORCHSchemaORCHClientEvent *)self pommesBridgeContext];
-    v74 = [v73 dictionaryRepresentation];
-    if (v74)
+    pommesBridgeContext = [(ORCHSchemaORCHClientEvent *)self pommesBridgeContext];
+    dictionaryRepresentation24 = [pommesBridgeContext dictionaryRepresentation];
+    if (dictionaryRepresentation24)
     {
-      [v3 setObject:v74 forKeyedSubscript:@"pommesBridgeContext"];
+      [dictionary setObject:dictionaryRepresentation24 forKeyedSubscript:@"pommesBridgeContext"];
     }
 
     else
     {
-      v75 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v75 forKeyedSubscript:@"pommesBridgeContext"];
+      null24 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null24 forKeyedSubscript:@"pommesBridgeContext"];
     }
   }
 
   if (self->_powerContextPolicyReported)
   {
-    v76 = [(ORCHSchemaORCHClientEvent *)self powerContextPolicyReported];
-    v77 = [v76 dictionaryRepresentation];
-    if (v77)
+    powerContextPolicyReported = [(ORCHSchemaORCHClientEvent *)self powerContextPolicyReported];
+    dictionaryRepresentation25 = [powerContextPolicyReported dictionaryRepresentation];
+    if (dictionaryRepresentation25)
     {
-      [v3 setObject:v77 forKeyedSubscript:@"powerContextPolicyReported"];
+      [dictionary setObject:dictionaryRepresentation25 forKeyedSubscript:@"powerContextPolicyReported"];
     }
 
     else
     {
-      v78 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v78 forKeyedSubscript:@"powerContextPolicyReported"];
+      null25 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null25 forKeyedSubscript:@"powerContextPolicyReported"];
     }
   }
 
   if (self->_requestContext)
   {
-    v79 = [(ORCHSchemaORCHClientEvent *)self requestContext];
-    v80 = [v79 dictionaryRepresentation];
-    if (v80)
+    requestContext = [(ORCHSchemaORCHClientEvent *)self requestContext];
+    dictionaryRepresentation26 = [requestContext dictionaryRepresentation];
+    if (dictionaryRepresentation26)
     {
-      [v3 setObject:v80 forKeyedSubscript:@"requestContext"];
+      [dictionary setObject:dictionaryRepresentation26 forKeyedSubscript:@"requestContext"];
     }
 
     else
     {
-      v81 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v81 forKeyedSubscript:@"requestContext"];
+      null26 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null26 forKeyedSubscript:@"requestContext"];
     }
   }
 
   if (self->_requestMitigated)
   {
-    v82 = [(ORCHSchemaORCHClientEvent *)self requestMitigated];
-    v83 = [v82 dictionaryRepresentation];
-    if (v83)
+    requestMitigated = [(ORCHSchemaORCHClientEvent *)self requestMitigated];
+    dictionaryRepresentation27 = [requestMitigated dictionaryRepresentation];
+    if (dictionaryRepresentation27)
     {
-      [v3 setObject:v83 forKeyedSubscript:@"requestMitigated"];
+      [dictionary setObject:dictionaryRepresentation27 forKeyedSubscript:@"requestMitigated"];
     }
 
     else
     {
-      v84 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v84 forKeyedSubscript:@"requestMitigated"];
+      null27 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null27 forKeyedSubscript:@"requestMitigated"];
     }
   }
 
   if (self->_resourceUtilizationMetadata)
   {
-    v85 = [(ORCHSchemaORCHClientEvent *)self resourceUtilizationMetadata];
-    v86 = [v85 dictionaryRepresentation];
-    if (v86)
+    resourceUtilizationMetadata = [(ORCHSchemaORCHClientEvent *)self resourceUtilizationMetadata];
+    dictionaryRepresentation28 = [resourceUtilizationMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation28)
     {
-      [v3 setObject:v86 forKeyedSubscript:@"resourceUtilizationMetadata"];
+      [dictionary setObject:dictionaryRepresentation28 forKeyedSubscript:@"resourceUtilizationMetadata"];
     }
 
     else
     {
-      v87 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v87 forKeyedSubscript:@"resourceUtilizationMetadata"];
+      null28 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null28 forKeyedSubscript:@"resourceUtilizationMetadata"];
     }
   }
 
   if (self->_resultCandidate)
   {
-    v88 = [(ORCHSchemaORCHClientEvent *)self resultCandidate];
-    v89 = [v88 dictionaryRepresentation];
-    if (v89)
+    resultCandidate = [(ORCHSchemaORCHClientEvent *)self resultCandidate];
+    dictionaryRepresentation29 = [resultCandidate dictionaryRepresentation];
+    if (dictionaryRepresentation29)
     {
-      [v3 setObject:v89 forKeyedSubscript:@"resultCandidate"];
+      [dictionary setObject:dictionaryRepresentation29 forKeyedSubscript:@"resultCandidate"];
     }
 
     else
     {
-      v90 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v90 forKeyedSubscript:@"resultCandidate"];
+      null29 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null29 forKeyedSubscript:@"resultCandidate"];
     }
   }
 
   if (self->_resultSelected)
   {
-    v91 = [(ORCHSchemaORCHClientEvent *)self resultSelected];
-    v92 = [v91 dictionaryRepresentation];
-    if (v92)
+    resultSelected = [(ORCHSchemaORCHClientEvent *)self resultSelected];
+    dictionaryRepresentation30 = [resultSelected dictionaryRepresentation];
+    if (dictionaryRepresentation30)
     {
-      [v3 setObject:v92 forKeyedSubscript:@"resultSelected"];
+      [dictionary setObject:dictionaryRepresentation30 forKeyedSubscript:@"resultSelected"];
     }
 
     else
     {
-      v93 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v93 forKeyedSubscript:@"resultSelected"];
+      null30 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null30 forKeyedSubscript:@"resultSelected"];
     }
   }
 
   if (self->_routerRewrittenUtterance)
   {
-    v94 = [(ORCHSchemaORCHClientEvent *)self routerRewrittenUtterance];
-    v95 = [v94 dictionaryRepresentation];
-    if (v95)
+    routerRewrittenUtterance = [(ORCHSchemaORCHClientEvent *)self routerRewrittenUtterance];
+    dictionaryRepresentation31 = [routerRewrittenUtterance dictionaryRepresentation];
+    if (dictionaryRepresentation31)
     {
-      [v3 setObject:v95 forKeyedSubscript:@"routerRewrittenUtterance"];
+      [dictionary setObject:dictionaryRepresentation31 forKeyedSubscript:@"routerRewrittenUtterance"];
     }
 
     else
     {
-      v96 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v96 forKeyedSubscript:@"routerRewrittenUtterance"];
+      null31 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null31 forKeyedSubscript:@"routerRewrittenUtterance"];
     }
   }
 
   if (self->_serverExecutionValuesReported)
   {
-    v97 = [(ORCHSchemaORCHClientEvent *)self serverExecutionValuesReported];
-    v98 = [v97 dictionaryRepresentation];
-    if (v98)
+    serverExecutionValuesReported = [(ORCHSchemaORCHClientEvent *)self serverExecutionValuesReported];
+    dictionaryRepresentation32 = [serverExecutionValuesReported dictionaryRepresentation];
+    if (dictionaryRepresentation32)
     {
-      [v3 setObject:v98 forKeyedSubscript:@"serverExecutionValuesReported"];
+      [dictionary setObject:dictionaryRepresentation32 forKeyedSubscript:@"serverExecutionValuesReported"];
     }
 
     else
     {
-      v99 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v99 forKeyedSubscript:@"serverExecutionValuesReported"];
+      null32 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null32 forKeyedSubscript:@"serverExecutionValuesReported"];
     }
   }
 
   if (self->_serverFallbackContext)
   {
-    v100 = [(ORCHSchemaORCHClientEvent *)self serverFallbackContext];
-    v101 = [v100 dictionaryRepresentation];
-    if (v101)
+    serverFallbackContext = [(ORCHSchemaORCHClientEvent *)self serverFallbackContext];
+    dictionaryRepresentation33 = [serverFallbackContext dictionaryRepresentation];
+    if (dictionaryRepresentation33)
     {
-      [v3 setObject:v101 forKeyedSubscript:@"serverFallbackContext"];
+      [dictionary setObject:dictionaryRepresentation33 forKeyedSubscript:@"serverFallbackContext"];
     }
 
     else
     {
-      v102 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v102 forKeyedSubscript:@"serverFallbackContext"];
+      null33 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null33 forKeyedSubscript:@"serverFallbackContext"];
     }
   }
 
   if (self->_shimToolContext)
   {
-    v103 = [(ORCHSchemaORCHClientEvent *)self shimToolContext];
-    v104 = [v103 dictionaryRepresentation];
-    if (v104)
+    shimToolContext = [(ORCHSchemaORCHClientEvent *)self shimToolContext];
+    dictionaryRepresentation34 = [shimToolContext dictionaryRepresentation];
+    if (dictionaryRepresentation34)
     {
-      [v3 setObject:v104 forKeyedSubscript:@"shimToolContext"];
+      [dictionary setObject:dictionaryRepresentation34 forKeyedSubscript:@"shimToolContext"];
     }
 
     else
     {
-      v105 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v105 forKeyedSubscript:@"shimToolContext"];
+      null34 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null34 forKeyedSubscript:@"shimToolContext"];
     }
   }
 
   if (self->_subRequestContext)
   {
-    v106 = [(ORCHSchemaORCHClientEvent *)self subRequestContext];
-    v107 = [v106 dictionaryRepresentation];
-    if (v107)
+    subRequestContext = [(ORCHSchemaORCHClientEvent *)self subRequestContext];
+    dictionaryRepresentation35 = [subRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation35)
     {
-      [v3 setObject:v107 forKeyedSubscript:@"subRequestContext"];
+      [dictionary setObject:dictionaryRepresentation35 forKeyedSubscript:@"subRequestContext"];
     }
 
     else
     {
-      v108 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v108 forKeyedSubscript:@"subRequestContext"];
+      null35 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null35 forKeyedSubscript:@"subRequestContext"];
     }
   }
 
   if (self->_subRequestFallback)
   {
-    v109 = [(ORCHSchemaORCHClientEvent *)self subRequestFallback];
-    v110 = [v109 dictionaryRepresentation];
-    if (v110)
+    subRequestFallback = [(ORCHSchemaORCHClientEvent *)self subRequestFallback];
+    dictionaryRepresentation36 = [subRequestFallback dictionaryRepresentation];
+    if (dictionaryRepresentation36)
     {
-      [v3 setObject:v110 forKeyedSubscript:@"subRequestFallback"];
+      [dictionary setObject:dictionaryRepresentation36 forKeyedSubscript:@"subRequestFallback"];
     }
 
     else
     {
-      v111 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v111 forKeyedSubscript:@"subRequestFallback"];
+      null36 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null36 forKeyedSubscript:@"subRequestFallback"];
     }
   }
 
   if (self->_trpCandidateCreated)
   {
-    v112 = [(ORCHSchemaORCHClientEvent *)self trpCandidateCreated];
-    v113 = [v112 dictionaryRepresentation];
-    if (v113)
+    trpCandidateCreated = [(ORCHSchemaORCHClientEvent *)self trpCandidateCreated];
+    dictionaryRepresentation37 = [trpCandidateCreated dictionaryRepresentation];
+    if (dictionaryRepresentation37)
     {
-      [v3 setObject:v113 forKeyedSubscript:@"trpCandidateCreated"];
+      [dictionary setObject:dictionaryRepresentation37 forKeyedSubscript:@"trpCandidateCreated"];
     }
 
     else
     {
-      v114 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v114 forKeyedSubscript:@"trpCandidateCreated"];
+      null37 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null37 forKeyedSubscript:@"trpCandidateCreated"];
     }
   }
 
   if (self->_trpCandidateReceived)
   {
-    v115 = [(ORCHSchemaORCHClientEvent *)self trpCandidateReceived];
-    v116 = [v115 dictionaryRepresentation];
-    if (v116)
+    trpCandidateReceived = [(ORCHSchemaORCHClientEvent *)self trpCandidateReceived];
+    dictionaryRepresentation38 = [trpCandidateReceived dictionaryRepresentation];
+    if (dictionaryRepresentation38)
     {
-      [v3 setObject:v116 forKeyedSubscript:@"trpCandidateReceived"];
+      [dictionary setObject:dictionaryRepresentation38 forKeyedSubscript:@"trpCandidateReceived"];
     }
 
     else
     {
-      v117 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v117 forKeyedSubscript:@"trpCandidateReceived"];
+      null38 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null38 forKeyedSubscript:@"trpCandidateReceived"];
     }
   }
 
   if (self->_trpFinalized)
   {
-    v118 = [(ORCHSchemaORCHClientEvent *)self trpFinalized];
-    v119 = [v118 dictionaryRepresentation];
-    if (v119)
+    trpFinalized = [(ORCHSchemaORCHClientEvent *)self trpFinalized];
+    dictionaryRepresentation39 = [trpFinalized dictionaryRepresentation];
+    if (dictionaryRepresentation39)
     {
-      [v3 setObject:v119 forKeyedSubscript:@"trpFinalized"];
+      [dictionary setObject:dictionaryRepresentation39 forKeyedSubscript:@"trpFinalized"];
     }
 
     else
     {
-      v120 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v120 forKeyedSubscript:@"trpFinalized"];
+      null39 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null39 forKeyedSubscript:@"trpFinalized"];
     }
   }
 
   if (self->_uiActivationContext)
   {
-    v121 = [(ORCHSchemaORCHClientEvent *)self uiActivationContext];
-    v122 = [v121 dictionaryRepresentation];
-    if (v122)
+    uiActivationContext = [(ORCHSchemaORCHClientEvent *)self uiActivationContext];
+    dictionaryRepresentation40 = [uiActivationContext dictionaryRepresentation];
+    if (dictionaryRepresentation40)
     {
-      [v3 setObject:v122 forKeyedSubscript:@"uiActivationContext"];
+      [dictionary setObject:dictionaryRepresentation40 forKeyedSubscript:@"uiActivationContext"];
     }
 
     else
     {
-      v123 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v123 forKeyedSubscript:@"uiActivationContext"];
+      null40 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null40 forKeyedSubscript:@"uiActivationContext"];
     }
   }
 
   if (self->_unsupportedLanguageDetected)
   {
-    v124 = [(ORCHSchemaORCHClientEvent *)self unsupportedLanguageDetected];
-    v125 = [v124 dictionaryRepresentation];
-    if (v125)
+    unsupportedLanguageDetected = [(ORCHSchemaORCHClientEvent *)self unsupportedLanguageDetected];
+    dictionaryRepresentation41 = [unsupportedLanguageDetected dictionaryRepresentation];
+    if (dictionaryRepresentation41)
     {
-      [v3 setObject:v125 forKeyedSubscript:@"unsupportedLanguageDetected"];
+      [dictionary setObject:dictionaryRepresentation41 forKeyedSubscript:@"unsupportedLanguageDetected"];
     }
 
     else
     {
-      v126 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v126 forKeyedSubscript:@"unsupportedLanguageDetected"];
+      null41 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null41 forKeyedSubscript:@"unsupportedLanguageDetected"];
     }
   }
 
   if (self->_userSessionState)
   {
-    v127 = [(ORCHSchemaORCHClientEvent *)self userSessionState];
-    v128 = [v127 dictionaryRepresentation];
-    if (v128)
+    userSessionState = [(ORCHSchemaORCHClientEvent *)self userSessionState];
+    dictionaryRepresentation42 = [userSessionState dictionaryRepresentation];
+    if (dictionaryRepresentation42)
     {
-      [v3 setObject:v128 forKeyedSubscript:@"userSessionState"];
+      [dictionary setObject:dictionaryRepresentation42 forKeyedSubscript:@"userSessionState"];
     }
 
     else
     {
-      v129 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v129 forKeyedSubscript:@"userSessionState"];
+      null42 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null42 forKeyedSubscript:@"userSessionState"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v130 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v130 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -1882,34 +1882,34 @@
   return v39 ^ v43 ^ [(ORCHSchemaORCHServerExecutionValuesReported *)self->_serverExecutionValuesReported hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_213;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_213;
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v8 = [(ORCHSchemaORCHClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(ORCHSchemaORCHClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(ORCHSchemaORCHClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(ORCHSchemaORCHClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -1921,20 +1921,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self resourceUtilizationMetadata];
-  v7 = [v4 resourceUtilizationMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self resourceUtilizationMetadata];
+  eventMetadata2 = [equalCopy resourceUtilizationMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v13 = [(ORCHSchemaORCHClientEvent *)self resourceUtilizationMetadata];
-  if (v13)
+  resourceUtilizationMetadata = [(ORCHSchemaORCHClientEvent *)self resourceUtilizationMetadata];
+  if (resourceUtilizationMetadata)
   {
-    v14 = v13;
-    v15 = [(ORCHSchemaORCHClientEvent *)self resourceUtilizationMetadata];
-    v16 = [v4 resourceUtilizationMetadata];
-    v17 = [v15 isEqual:v16];
+    v14 = resourceUtilizationMetadata;
+    resourceUtilizationMetadata2 = [(ORCHSchemaORCHClientEvent *)self resourceUtilizationMetadata];
+    resourceUtilizationMetadata3 = [equalCopy resourceUtilizationMetadata];
+    v17 = [resourceUtilizationMetadata2 isEqual:resourceUtilizationMetadata3];
 
     if (!v17)
     {
@@ -1946,20 +1946,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self requestContext];
-  v7 = [v4 requestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self requestContext];
+  eventMetadata2 = [equalCopy requestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v18 = [(ORCHSchemaORCHClientEvent *)self requestContext];
-  if (v18)
+  requestContext = [(ORCHSchemaORCHClientEvent *)self requestContext];
+  if (requestContext)
   {
-    v19 = v18;
-    v20 = [(ORCHSchemaORCHClientEvent *)self requestContext];
-    v21 = [v4 requestContext];
-    v22 = [v20 isEqual:v21];
+    v19 = requestContext;
+    requestContext2 = [(ORCHSchemaORCHClientEvent *)self requestContext];
+    requestContext3 = [equalCopy requestContext];
+    v22 = [requestContext2 isEqual:requestContext3];
 
     if (!v22)
     {
@@ -1971,20 +1971,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self asrBridgeContext];
-  v7 = [v4 asrBridgeContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self asrBridgeContext];
+  eventMetadata2 = [equalCopy asrBridgeContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v23 = [(ORCHSchemaORCHClientEvent *)self asrBridgeContext];
-  if (v23)
+  asrBridgeContext = [(ORCHSchemaORCHClientEvent *)self asrBridgeContext];
+  if (asrBridgeContext)
   {
-    v24 = v23;
-    v25 = [(ORCHSchemaORCHClientEvent *)self asrBridgeContext];
-    v26 = [v4 asrBridgeContext];
-    v27 = [v25 isEqual:v26];
+    v24 = asrBridgeContext;
+    asrBridgeContext2 = [(ORCHSchemaORCHClientEvent *)self asrBridgeContext];
+    asrBridgeContext3 = [equalCopy asrBridgeContext];
+    v27 = [asrBridgeContext2 isEqual:asrBridgeContext3];
 
     if (!v27)
     {
@@ -1996,20 +1996,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self cdmBridgeContext];
-  v7 = [v4 cdmBridgeContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self cdmBridgeContext];
+  eventMetadata2 = [equalCopy cdmBridgeContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v28 = [(ORCHSchemaORCHClientEvent *)self cdmBridgeContext];
-  if (v28)
+  cdmBridgeContext = [(ORCHSchemaORCHClientEvent *)self cdmBridgeContext];
+  if (cdmBridgeContext)
   {
-    v29 = v28;
-    v30 = [(ORCHSchemaORCHClientEvent *)self cdmBridgeContext];
-    v31 = [v4 cdmBridgeContext];
-    v32 = [v30 isEqual:v31];
+    v29 = cdmBridgeContext;
+    cdmBridgeContext2 = [(ORCHSchemaORCHClientEvent *)self cdmBridgeContext];
+    cdmBridgeContext3 = [equalCopy cdmBridgeContext];
+    v32 = [cdmBridgeContext2 isEqual:cdmBridgeContext3];
 
     if (!v32)
     {
@@ -2021,20 +2021,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self executionBridgeContext];
-  v7 = [v4 executionBridgeContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self executionBridgeContext];
+  eventMetadata2 = [equalCopy executionBridgeContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v33 = [(ORCHSchemaORCHClientEvent *)self executionBridgeContext];
-  if (v33)
+  executionBridgeContext = [(ORCHSchemaORCHClientEvent *)self executionBridgeContext];
+  if (executionBridgeContext)
   {
-    v34 = v33;
-    v35 = [(ORCHSchemaORCHClientEvent *)self executionBridgeContext];
-    v36 = [v4 executionBridgeContext];
-    v37 = [v35 isEqual:v36];
+    v34 = executionBridgeContext;
+    executionBridgeContext2 = [(ORCHSchemaORCHClientEvent *)self executionBridgeContext];
+    executionBridgeContext3 = [equalCopy executionBridgeContext];
+    v37 = [executionBridgeContext2 isEqual:executionBridgeContext3];
 
     if (!v37)
     {
@@ -2046,20 +2046,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self serverFallbackContext];
-  v7 = [v4 serverFallbackContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self serverFallbackContext];
+  eventMetadata2 = [equalCopy serverFallbackContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v38 = [(ORCHSchemaORCHClientEvent *)self serverFallbackContext];
-  if (v38)
+  serverFallbackContext = [(ORCHSchemaORCHClientEvent *)self serverFallbackContext];
+  if (serverFallbackContext)
   {
-    v39 = v38;
-    v40 = [(ORCHSchemaORCHClientEvent *)self serverFallbackContext];
-    v41 = [v4 serverFallbackContext];
-    v42 = [v40 isEqual:v41];
+    v39 = serverFallbackContext;
+    serverFallbackContext2 = [(ORCHSchemaORCHClientEvent *)self serverFallbackContext];
+    serverFallbackContext3 = [equalCopy serverFallbackContext];
+    v42 = [serverFallbackContext2 isEqual:serverFallbackContext3];
 
     if (!v42)
     {
@@ -2071,20 +2071,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self flowOutputSubmitted];
-  v7 = [v4 flowOutputSubmitted];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self flowOutputSubmitted];
+  eventMetadata2 = [equalCopy flowOutputSubmitted];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v43 = [(ORCHSchemaORCHClientEvent *)self flowOutputSubmitted];
-  if (v43)
+  flowOutputSubmitted = [(ORCHSchemaORCHClientEvent *)self flowOutputSubmitted];
+  if (flowOutputSubmitted)
   {
-    v44 = v43;
-    v45 = [(ORCHSchemaORCHClientEvent *)self flowOutputSubmitted];
-    v46 = [v4 flowOutputSubmitted];
-    v47 = [v45 isEqual:v46];
+    v44 = flowOutputSubmitted;
+    flowOutputSubmitted2 = [(ORCHSchemaORCHClientEvent *)self flowOutputSubmitted];
+    flowOutputSubmitted3 = [equalCopy flowOutputSubmitted];
+    v47 = [flowOutputSubmitted2 isEqual:flowOutputSubmitted3];
 
     if (!v47)
     {
@@ -2096,20 +2096,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self resultCandidate];
-  v7 = [v4 resultCandidate];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self resultCandidate];
+  eventMetadata2 = [equalCopy resultCandidate];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v48 = [(ORCHSchemaORCHClientEvent *)self resultCandidate];
-  if (v48)
+  resultCandidate = [(ORCHSchemaORCHClientEvent *)self resultCandidate];
+  if (resultCandidate)
   {
-    v49 = v48;
-    v50 = [(ORCHSchemaORCHClientEvent *)self resultCandidate];
-    v51 = [v4 resultCandidate];
-    v52 = [v50 isEqual:v51];
+    v49 = resultCandidate;
+    resultCandidate2 = [(ORCHSchemaORCHClientEvent *)self resultCandidate];
+    resultCandidate3 = [equalCopy resultCandidate];
+    v52 = [resultCandidate2 isEqual:resultCandidate3];
 
     if (!v52)
     {
@@ -2121,20 +2121,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self resultSelected];
-  v7 = [v4 resultSelected];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self resultSelected];
+  eventMetadata2 = [equalCopy resultSelected];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v53 = [(ORCHSchemaORCHClientEvent *)self resultSelected];
-  if (v53)
+  resultSelected = [(ORCHSchemaORCHClientEvent *)self resultSelected];
+  if (resultSelected)
   {
-    v54 = v53;
-    v55 = [(ORCHSchemaORCHClientEvent *)self resultSelected];
-    v56 = [v4 resultSelected];
-    v57 = [v55 isEqual:v56];
+    v54 = resultSelected;
+    resultSelected2 = [(ORCHSchemaORCHClientEvent *)self resultSelected];
+    resultSelected3 = [equalCopy resultSelected];
+    v57 = [resultSelected2 isEqual:resultSelected3];
 
     if (!v57)
     {
@@ -2146,20 +2146,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self contextSubmissionMessage];
-  v7 = [v4 contextSubmissionMessage];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self contextSubmissionMessage];
+  eventMetadata2 = [equalCopy contextSubmissionMessage];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v58 = [(ORCHSchemaORCHClientEvent *)self contextSubmissionMessage];
-  if (v58)
+  contextSubmissionMessage = [(ORCHSchemaORCHClientEvent *)self contextSubmissionMessage];
+  if (contextSubmissionMessage)
   {
-    v59 = v58;
-    v60 = [(ORCHSchemaORCHClientEvent *)self contextSubmissionMessage];
-    v61 = [v4 contextSubmissionMessage];
-    v62 = [v60 isEqual:v61];
+    v59 = contextSubmissionMessage;
+    contextSubmissionMessage2 = [(ORCHSchemaORCHClientEvent *)self contextSubmissionMessage];
+    contextSubmissionMessage3 = [equalCopy contextSubmissionMessage];
+    v62 = [contextSubmissionMessage2 isEqual:contextSubmissionMessage3];
 
     if (!v62)
     {
@@ -2171,20 +2171,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self availableAssets];
-  v7 = [v4 availableAssets];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self availableAssets];
+  eventMetadata2 = [equalCopy availableAssets];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v63 = [(ORCHSchemaORCHClientEvent *)self availableAssets];
-  if (v63)
+  availableAssets = [(ORCHSchemaORCHClientEvent *)self availableAssets];
+  if (availableAssets)
   {
-    v64 = v63;
-    v65 = [(ORCHSchemaORCHClientEvent *)self availableAssets];
-    v66 = [v4 availableAssets];
-    v67 = [v65 isEqual:v66];
+    v64 = availableAssets;
+    availableAssets2 = [(ORCHSchemaORCHClientEvent *)self availableAssets];
+    availableAssets3 = [equalCopy availableAssets];
+    v67 = [availableAssets2 isEqual:availableAssets3];
 
     if (!v67)
     {
@@ -2196,20 +2196,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self orchDeviceDynamicContext];
-  v7 = [v4 orchDeviceDynamicContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self orchDeviceDynamicContext];
+  eventMetadata2 = [equalCopy orchDeviceDynamicContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v68 = [(ORCHSchemaORCHClientEvent *)self orchDeviceDynamicContext];
-  if (v68)
+  orchDeviceDynamicContext = [(ORCHSchemaORCHClientEvent *)self orchDeviceDynamicContext];
+  if (orchDeviceDynamicContext)
   {
-    v69 = v68;
-    v70 = [(ORCHSchemaORCHClientEvent *)self orchDeviceDynamicContext];
-    v71 = [v4 orchDeviceDynamicContext];
-    v72 = [v70 isEqual:v71];
+    v69 = orchDeviceDynamicContext;
+    orchDeviceDynamicContext2 = [(ORCHSchemaORCHClientEvent *)self orchDeviceDynamicContext];
+    orchDeviceDynamicContext3 = [equalCopy orchDeviceDynamicContext];
+    v72 = [orchDeviceDynamicContext2 isEqual:orchDeviceDynamicContext3];
 
     if (!v72)
     {
@@ -2221,20 +2221,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self pommesBridgeContext];
-  v7 = [v4 pommesBridgeContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self pommesBridgeContext];
+  eventMetadata2 = [equalCopy pommesBridgeContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v73 = [(ORCHSchemaORCHClientEvent *)self pommesBridgeContext];
-  if (v73)
+  pommesBridgeContext = [(ORCHSchemaORCHClientEvent *)self pommesBridgeContext];
+  if (pommesBridgeContext)
   {
-    v74 = v73;
-    v75 = [(ORCHSchemaORCHClientEvent *)self pommesBridgeContext];
-    v76 = [v4 pommesBridgeContext];
-    v77 = [v75 isEqual:v76];
+    v74 = pommesBridgeContext;
+    pommesBridgeContext2 = [(ORCHSchemaORCHClientEvent *)self pommesBridgeContext];
+    pommesBridgeContext3 = [equalCopy pommesBridgeContext];
+    v77 = [pommesBridgeContext2 isEqual:pommesBridgeContext3];
 
     if (!v77)
     {
@@ -2246,20 +2246,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self muxBridgeContext];
-  v7 = [v4 muxBridgeContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self muxBridgeContext];
+  eventMetadata2 = [equalCopy muxBridgeContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v78 = [(ORCHSchemaORCHClientEvent *)self muxBridgeContext];
-  if (v78)
+  muxBridgeContext = [(ORCHSchemaORCHClientEvent *)self muxBridgeContext];
+  if (muxBridgeContext)
   {
-    v79 = v78;
-    v80 = [(ORCHSchemaORCHClientEvent *)self muxBridgeContext];
-    v81 = [v4 muxBridgeContext];
-    v82 = [v80 isEqual:v81];
+    v79 = muxBridgeContext;
+    muxBridgeContext2 = [(ORCHSchemaORCHClientEvent *)self muxBridgeContext];
+    muxBridgeContext3 = [equalCopy muxBridgeContext];
+    v82 = [muxBridgeContext2 isEqual:muxBridgeContext3];
 
     if (!v82)
     {
@@ -2271,20 +2271,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self multiUserResultCandidate];
-  v7 = [v4 multiUserResultCandidate];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self multiUserResultCandidate];
+  eventMetadata2 = [equalCopy multiUserResultCandidate];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v83 = [(ORCHSchemaORCHClientEvent *)self multiUserResultCandidate];
-  if (v83)
+  multiUserResultCandidate = [(ORCHSchemaORCHClientEvent *)self multiUserResultCandidate];
+  if (multiUserResultCandidate)
   {
-    v84 = v83;
-    v85 = [(ORCHSchemaORCHClientEvent *)self multiUserResultCandidate];
-    v86 = [v4 multiUserResultCandidate];
-    v87 = [v85 isEqual:v86];
+    v84 = multiUserResultCandidate;
+    multiUserResultCandidate2 = [(ORCHSchemaORCHClientEvent *)self multiUserResultCandidate];
+    multiUserResultCandidate3 = [equalCopy multiUserResultCandidate];
+    v87 = [multiUserResultCandidate2 isEqual:multiUserResultCandidate3];
 
     if (!v87)
     {
@@ -2296,20 +2296,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self multiUserResultSelected];
-  v7 = [v4 multiUserResultSelected];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self multiUserResultSelected];
+  eventMetadata2 = [equalCopy multiUserResultSelected];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v88 = [(ORCHSchemaORCHClientEvent *)self multiUserResultSelected];
-  if (v88)
+  multiUserResultSelected = [(ORCHSchemaORCHClientEvent *)self multiUserResultSelected];
+  if (multiUserResultSelected)
   {
-    v89 = v88;
-    v90 = [(ORCHSchemaORCHClientEvent *)self multiUserResultSelected];
-    v91 = [v4 multiUserResultSelected];
-    v92 = [v90 isEqual:v91];
+    v89 = multiUserResultSelected;
+    multiUserResultSelected2 = [(ORCHSchemaORCHClientEvent *)self multiUserResultSelected];
+    multiUserResultSelected3 = [equalCopy multiUserResultSelected];
+    v92 = [multiUserResultSelected2 isEqual:multiUserResultSelected3];
 
     if (!v92)
     {
@@ -2321,20 +2321,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self aceCommandContext];
-  v7 = [v4 aceCommandContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self aceCommandContext];
+  eventMetadata2 = [equalCopy aceCommandContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v93 = [(ORCHSchemaORCHClientEvent *)self aceCommandContext];
-  if (v93)
+  aceCommandContext = [(ORCHSchemaORCHClientEvent *)self aceCommandContext];
+  if (aceCommandContext)
   {
-    v94 = v93;
-    v95 = [(ORCHSchemaORCHClientEvent *)self aceCommandContext];
-    v96 = [v4 aceCommandContext];
-    v97 = [v95 isEqual:v96];
+    v94 = aceCommandContext;
+    aceCommandContext2 = [(ORCHSchemaORCHClientEvent *)self aceCommandContext];
+    aceCommandContext3 = [equalCopy aceCommandContext];
+    v97 = [aceCommandContext2 isEqual:aceCommandContext3];
 
     if (!v97)
     {
@@ -2346,20 +2346,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self trpFinalized];
-  v7 = [v4 trpFinalized];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self trpFinalized];
+  eventMetadata2 = [equalCopy trpFinalized];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v98 = [(ORCHSchemaORCHClientEvent *)self trpFinalized];
-  if (v98)
+  trpFinalized = [(ORCHSchemaORCHClientEvent *)self trpFinalized];
+  if (trpFinalized)
   {
-    v99 = v98;
-    v100 = [(ORCHSchemaORCHClientEvent *)self trpFinalized];
-    v101 = [v4 trpFinalized];
-    v102 = [v100 isEqual:v101];
+    v99 = trpFinalized;
+    trpFinalized2 = [(ORCHSchemaORCHClientEvent *)self trpFinalized];
+    trpFinalized3 = [equalCopy trpFinalized];
+    v102 = [trpFinalized2 isEqual:trpFinalized3];
 
     if (!v102)
     {
@@ -2371,20 +2371,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self requestMitigated];
-  v7 = [v4 requestMitigated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self requestMitigated];
+  eventMetadata2 = [equalCopy requestMitigated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v103 = [(ORCHSchemaORCHClientEvent *)self requestMitigated];
-  if (v103)
+  requestMitigated = [(ORCHSchemaORCHClientEvent *)self requestMitigated];
+  if (requestMitigated)
   {
-    v104 = v103;
-    v105 = [(ORCHSchemaORCHClientEvent *)self requestMitigated];
-    v106 = [v4 requestMitigated];
-    v107 = [v105 isEqual:v106];
+    v104 = requestMitigated;
+    requestMitigated2 = [(ORCHSchemaORCHClientEvent *)self requestMitigated];
+    requestMitigated3 = [equalCopy requestMitigated];
+    v107 = [requestMitigated2 isEqual:requestMitigated3];
 
     if (!v107)
     {
@@ -2396,20 +2396,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self nlv3ServerFallbackDeprecated];
-  v7 = [v4 nlv3ServerFallbackDeprecated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self nlv3ServerFallbackDeprecated];
+  eventMetadata2 = [equalCopy nlv3ServerFallbackDeprecated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v108 = [(ORCHSchemaORCHClientEvent *)self nlv3ServerFallbackDeprecated];
-  if (v108)
+  nlv3ServerFallbackDeprecated = [(ORCHSchemaORCHClientEvent *)self nlv3ServerFallbackDeprecated];
+  if (nlv3ServerFallbackDeprecated)
   {
-    v109 = v108;
-    v110 = [(ORCHSchemaORCHClientEvent *)self nlv3ServerFallbackDeprecated];
-    v111 = [v4 nlv3ServerFallbackDeprecated];
-    v112 = [v110 isEqual:v111];
+    v109 = nlv3ServerFallbackDeprecated;
+    nlv3ServerFallbackDeprecated2 = [(ORCHSchemaORCHClientEvent *)self nlv3ServerFallbackDeprecated];
+    nlv3ServerFallbackDeprecated3 = [equalCopy nlv3ServerFallbackDeprecated];
+    v112 = [nlv3ServerFallbackDeprecated2 isEqual:nlv3ServerFallbackDeprecated3];
 
     if (!v112)
     {
@@ -2421,20 +2421,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self uiActivationContext];
-  v7 = [v4 uiActivationContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self uiActivationContext];
+  eventMetadata2 = [equalCopy uiActivationContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v113 = [(ORCHSchemaORCHClientEvent *)self uiActivationContext];
-  if (v113)
+  uiActivationContext = [(ORCHSchemaORCHClientEvent *)self uiActivationContext];
+  if (uiActivationContext)
   {
-    v114 = v113;
-    v115 = [(ORCHSchemaORCHClientEvent *)self uiActivationContext];
-    v116 = [v4 uiActivationContext];
-    v117 = [v115 isEqual:v116];
+    v114 = uiActivationContext;
+    uiActivationContext2 = [(ORCHSchemaORCHClientEvent *)self uiActivationContext];
+    uiActivationContext3 = [equalCopy uiActivationContext];
+    v117 = [uiActivationContext2 isEqual:uiActivationContext3];
 
     if (!v117)
     {
@@ -2446,20 +2446,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self trpCandidateReceived];
-  v7 = [v4 trpCandidateReceived];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self trpCandidateReceived];
+  eventMetadata2 = [equalCopy trpCandidateReceived];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v118 = [(ORCHSchemaORCHClientEvent *)self trpCandidateReceived];
-  if (v118)
+  trpCandidateReceived = [(ORCHSchemaORCHClientEvent *)self trpCandidateReceived];
+  if (trpCandidateReceived)
   {
-    v119 = v118;
-    v120 = [(ORCHSchemaORCHClientEvent *)self trpCandidateReceived];
-    v121 = [v4 trpCandidateReceived];
-    v122 = [v120 isEqual:v121];
+    v119 = trpCandidateReceived;
+    trpCandidateReceived2 = [(ORCHSchemaORCHClientEvent *)self trpCandidateReceived];
+    trpCandidateReceived3 = [equalCopy trpCandidateReceived];
+    v122 = [trpCandidateReceived2 isEqual:trpCandidateReceived3];
 
     if (!v122)
     {
@@ -2471,20 +2471,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self identityBridgeRequestContext];
-  v7 = [v4 identityBridgeRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self identityBridgeRequestContext];
+  eventMetadata2 = [equalCopy identityBridgeRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v123 = [(ORCHSchemaORCHClientEvent *)self identityBridgeRequestContext];
-  if (v123)
+  identityBridgeRequestContext = [(ORCHSchemaORCHClientEvent *)self identityBridgeRequestContext];
+  if (identityBridgeRequestContext)
   {
-    v124 = v123;
-    v125 = [(ORCHSchemaORCHClientEvent *)self identityBridgeRequestContext];
-    v126 = [v4 identityBridgeRequestContext];
-    v127 = [v125 isEqual:v126];
+    v124 = identityBridgeRequestContext;
+    identityBridgeRequestContext2 = [(ORCHSchemaORCHClientEvent *)self identityBridgeRequestContext];
+    identityBridgeRequestContext3 = [equalCopy identityBridgeRequestContext];
+    v127 = [identityBridgeRequestContext2 isEqual:identityBridgeRequestContext3];
 
     if (!v127)
     {
@@ -2496,20 +2496,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self assetSetsReported];
-  v7 = [v4 assetSetsReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self assetSetsReported];
+  eventMetadata2 = [equalCopy assetSetsReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v128 = [(ORCHSchemaORCHClientEvent *)self assetSetsReported];
-  if (v128)
+  assetSetsReported = [(ORCHSchemaORCHClientEvent *)self assetSetsReported];
+  if (assetSetsReported)
   {
-    v129 = v128;
-    v130 = [(ORCHSchemaORCHClientEvent *)self assetSetsReported];
-    v131 = [v4 assetSetsReported];
-    v132 = [v130 isEqual:v131];
+    v129 = assetSetsReported;
+    assetSetsReported2 = [(ORCHSchemaORCHClientEvent *)self assetSetsReported];
+    assetSetsReported3 = [equalCopy assetSetsReported];
+    v132 = [assetSetsReported2 isEqual:assetSetsReported3];
 
     if (!v132)
     {
@@ -2521,20 +2521,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self candidateRequestContext];
-  v7 = [v4 candidateRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self candidateRequestContext];
+  eventMetadata2 = [equalCopy candidateRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v133 = [(ORCHSchemaORCHClientEvent *)self candidateRequestContext];
-  if (v133)
+  candidateRequestContext = [(ORCHSchemaORCHClientEvent *)self candidateRequestContext];
+  if (candidateRequestContext)
   {
-    v134 = v133;
-    v135 = [(ORCHSchemaORCHClientEvent *)self candidateRequestContext];
-    v136 = [v4 candidateRequestContext];
-    v137 = [v135 isEqual:v136];
+    v134 = candidateRequestContext;
+    candidateRequestContext2 = [(ORCHSchemaORCHClientEvent *)self candidateRequestContext];
+    candidateRequestContext3 = [equalCopy candidateRequestContext];
+    v137 = [candidateRequestContext2 isEqual:candidateRequestContext3];
 
     if (!v137)
     {
@@ -2546,20 +2546,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self powerContextPolicyReported];
-  v7 = [v4 powerContextPolicyReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self powerContextPolicyReported];
+  eventMetadata2 = [equalCopy powerContextPolicyReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v138 = [(ORCHSchemaORCHClientEvent *)self powerContextPolicyReported];
-  if (v138)
+  powerContextPolicyReported = [(ORCHSchemaORCHClientEvent *)self powerContextPolicyReported];
+  if (powerContextPolicyReported)
   {
-    v139 = v138;
-    v140 = [(ORCHSchemaORCHClientEvent *)self powerContextPolicyReported];
-    v141 = [v4 powerContextPolicyReported];
-    v142 = [v140 isEqual:v141];
+    v139 = powerContextPolicyReported;
+    powerContextPolicyReported2 = [(ORCHSchemaORCHClientEvent *)self powerContextPolicyReported];
+    powerContextPolicyReported3 = [equalCopy powerContextPolicyReported];
+    v142 = [powerContextPolicyReported2 isEqual:powerContextPolicyReported3];
 
     if (!v142)
     {
@@ -2571,20 +2571,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self executeOnRemoteRequestContext];
-  v7 = [v4 executeOnRemoteRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self executeOnRemoteRequestContext];
+  eventMetadata2 = [equalCopy executeOnRemoteRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v143 = [(ORCHSchemaORCHClientEvent *)self executeOnRemoteRequestContext];
-  if (v143)
+  executeOnRemoteRequestContext = [(ORCHSchemaORCHClientEvent *)self executeOnRemoteRequestContext];
+  if (executeOnRemoteRequestContext)
   {
-    v144 = v143;
-    v145 = [(ORCHSchemaORCHClientEvent *)self executeOnRemoteRequestContext];
-    v146 = [v4 executeOnRemoteRequestContext];
-    v147 = [v145 isEqual:v146];
+    v144 = executeOnRemoteRequestContext;
+    executeOnRemoteRequestContext2 = [(ORCHSchemaORCHClientEvent *)self executeOnRemoteRequestContext];
+    executeOnRemoteRequestContext3 = [equalCopy executeOnRemoteRequestContext];
+    v147 = [executeOnRemoteRequestContext2 isEqual:executeOnRemoteRequestContext3];
 
     if (!v147)
     {
@@ -2596,20 +2596,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self assistantdLaunchMetadataReported];
-  v7 = [v4 assistantdLaunchMetadataReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self assistantdLaunchMetadataReported];
+  eventMetadata2 = [equalCopy assistantdLaunchMetadataReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v148 = [(ORCHSchemaORCHClientEvent *)self assistantdLaunchMetadataReported];
-  if (v148)
+  assistantdLaunchMetadataReported = [(ORCHSchemaORCHClientEvent *)self assistantdLaunchMetadataReported];
+  if (assistantdLaunchMetadataReported)
   {
-    v149 = v148;
-    v150 = [(ORCHSchemaORCHClientEvent *)self assistantdLaunchMetadataReported];
-    v151 = [v4 assistantdLaunchMetadataReported];
-    v152 = [v150 isEqual:v151];
+    v149 = assistantdLaunchMetadataReported;
+    assistantdLaunchMetadataReported2 = [(ORCHSchemaORCHClientEvent *)self assistantdLaunchMetadataReported];
+    assistantdLaunchMetadataReported3 = [equalCopy assistantdLaunchMetadataReported];
+    v152 = [assistantdLaunchMetadataReported2 isEqual:assistantdLaunchMetadataReported3];
 
     if (!v152)
     {
@@ -2621,20 +2621,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowQuerySent];
-  v7 = [v4 intelligenceFlowQuerySent];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowQuerySent];
+  eventMetadata2 = [equalCopy intelligenceFlowQuerySent];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v153 = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowQuerySent];
-  if (v153)
+  intelligenceFlowQuerySent = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowQuerySent];
+  if (intelligenceFlowQuerySent)
   {
-    v154 = v153;
-    v155 = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowQuerySent];
-    v156 = [v4 intelligenceFlowQuerySent];
-    v157 = [v155 isEqual:v156];
+    v154 = intelligenceFlowQuerySent;
+    intelligenceFlowQuerySent2 = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowQuerySent];
+    intelligenceFlowQuerySent3 = [equalCopy intelligenceFlowQuerySent];
+    v157 = [intelligenceFlowQuerySent2 isEqual:intelligenceFlowQuerySent3];
 
     if (!v157)
     {
@@ -2646,20 +2646,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self subRequestContext];
-  v7 = [v4 subRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self subRequestContext];
+  eventMetadata2 = [equalCopy subRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v158 = [(ORCHSchemaORCHClientEvent *)self subRequestContext];
-  if (v158)
+  subRequestContext = [(ORCHSchemaORCHClientEvent *)self subRequestContext];
+  if (subRequestContext)
   {
-    v159 = v158;
-    v160 = [(ORCHSchemaORCHClientEvent *)self subRequestContext];
-    v161 = [v4 subRequestContext];
-    v162 = [v160 isEqual:v161];
+    v159 = subRequestContext;
+    subRequestContext2 = [(ORCHSchemaORCHClientEvent *)self subRequestContext];
+    subRequestContext3 = [equalCopy subRequestContext];
+    v162 = [subRequestContext2 isEqual:subRequestContext3];
 
     if (!v162)
     {
@@ -2671,20 +2671,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self routerRewrittenUtterance];
-  v7 = [v4 routerRewrittenUtterance];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self routerRewrittenUtterance];
+  eventMetadata2 = [equalCopy routerRewrittenUtterance];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v163 = [(ORCHSchemaORCHClientEvent *)self routerRewrittenUtterance];
-  if (v163)
+  routerRewrittenUtterance = [(ORCHSchemaORCHClientEvent *)self routerRewrittenUtterance];
+  if (routerRewrittenUtterance)
   {
-    v164 = v163;
-    v165 = [(ORCHSchemaORCHClientEvent *)self routerRewrittenUtterance];
-    v166 = [v4 routerRewrittenUtterance];
-    v167 = [v165 isEqual:v166];
+    v164 = routerRewrittenUtterance;
+    routerRewrittenUtterance2 = [(ORCHSchemaORCHClientEvent *)self routerRewrittenUtterance];
+    routerRewrittenUtterance3 = [equalCopy routerRewrittenUtterance];
+    v167 = [routerRewrittenUtterance2 isEqual:routerRewrittenUtterance3];
 
     if (!v167)
     {
@@ -2696,20 +2696,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeContext];
-  v7 = [v4 nlRouterBridgeContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeContext];
+  eventMetadata2 = [equalCopy nlRouterBridgeContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v168 = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeContext];
-  if (v168)
+  nlRouterBridgeContext = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeContext];
+  if (nlRouterBridgeContext)
   {
-    v169 = v168;
-    v170 = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeContext];
-    v171 = [v4 nlRouterBridgeContext];
-    v172 = [v170 isEqual:v171];
+    v169 = nlRouterBridgeContext;
+    nlRouterBridgeContext2 = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeContext];
+    nlRouterBridgeContext3 = [equalCopy nlRouterBridgeContext];
+    v172 = [nlRouterBridgeContext2 isEqual:nlRouterBridgeContext3];
 
     if (!v172)
     {
@@ -2721,20 +2721,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self shimToolContext];
-  v7 = [v4 shimToolContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self shimToolContext];
+  eventMetadata2 = [equalCopy shimToolContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v173 = [(ORCHSchemaORCHClientEvent *)self shimToolContext];
-  if (v173)
+  shimToolContext = [(ORCHSchemaORCHClientEvent *)self shimToolContext];
+  if (shimToolContext)
   {
-    v174 = v173;
-    v175 = [(ORCHSchemaORCHClientEvent *)self shimToolContext];
-    v176 = [v4 shimToolContext];
-    v177 = [v175 isEqual:v176];
+    v174 = shimToolContext;
+    shimToolContext2 = [(ORCHSchemaORCHClientEvent *)self shimToolContext];
+    shimToolContext3 = [equalCopy shimToolContext];
+    v177 = [shimToolContext2 isEqual:shimToolContext3];
 
     if (!v177)
     {
@@ -2746,20 +2746,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self subRequestFallback];
-  v7 = [v4 subRequestFallback];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self subRequestFallback];
+  eventMetadata2 = [equalCopy subRequestFallback];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v178 = [(ORCHSchemaORCHClientEvent *)self subRequestFallback];
-  if (v178)
+  subRequestFallback = [(ORCHSchemaORCHClientEvent *)self subRequestFallback];
+  if (subRequestFallback)
   {
-    v179 = v178;
-    v180 = [(ORCHSchemaORCHClientEvent *)self subRequestFallback];
-    v181 = [v4 subRequestFallback];
-    v182 = [v180 isEqual:v181];
+    v179 = subRequestFallback;
+    subRequestFallback2 = [(ORCHSchemaORCHClientEvent *)self subRequestFallback];
+    subRequestFallback3 = [equalCopy subRequestFallback];
+    v182 = [subRequestFallback2 isEqual:subRequestFallback3];
 
     if (!v182)
     {
@@ -2771,20 +2771,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeSubComponentContext];
-  v7 = [v4 nlRouterBridgeSubComponentContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeSubComponentContext];
+  eventMetadata2 = [equalCopy nlRouterBridgeSubComponentContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v183 = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeSubComponentContext];
-  if (v183)
+  nlRouterBridgeSubComponentContext = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeSubComponentContext];
+  if (nlRouterBridgeSubComponentContext)
   {
-    v184 = v183;
-    v185 = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeSubComponentContext];
-    v186 = [v4 nlRouterBridgeSubComponentContext];
-    v187 = [v185 isEqual:v186];
+    v184 = nlRouterBridgeSubComponentContext;
+    nlRouterBridgeSubComponentContext2 = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeSubComponentContext];
+    nlRouterBridgeSubComponentContext3 = [equalCopy nlRouterBridgeSubComponentContext];
+    v187 = [nlRouterBridgeSubComponentContext2 isEqual:nlRouterBridgeSubComponentContext3];
 
     if (!v187)
     {
@@ -2796,20 +2796,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self unsupportedLanguageDetected];
-  v7 = [v4 unsupportedLanguageDetected];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self unsupportedLanguageDetected];
+  eventMetadata2 = [equalCopy unsupportedLanguageDetected];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v188 = [(ORCHSchemaORCHClientEvent *)self unsupportedLanguageDetected];
-  if (v188)
+  unsupportedLanguageDetected = [(ORCHSchemaORCHClientEvent *)self unsupportedLanguageDetected];
+  if (unsupportedLanguageDetected)
   {
-    v189 = v188;
-    v190 = [(ORCHSchemaORCHClientEvent *)self unsupportedLanguageDetected];
-    v191 = [v4 unsupportedLanguageDetected];
-    v192 = [v190 isEqual:v191];
+    v189 = unsupportedLanguageDetected;
+    unsupportedLanguageDetected2 = [(ORCHSchemaORCHClientEvent *)self unsupportedLanguageDetected];
+    unsupportedLanguageDetected3 = [equalCopy unsupportedLanguageDetected];
+    v192 = [unsupportedLanguageDetected2 isEqual:unsupportedLanguageDetected3];
 
     if (!v192)
     {
@@ -2821,20 +2821,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self trpCandidateCreated];
-  v7 = [v4 trpCandidateCreated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self trpCandidateCreated];
+  eventMetadata2 = [equalCopy trpCandidateCreated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v193 = [(ORCHSchemaORCHClientEvent *)self trpCandidateCreated];
-  if (v193)
+  trpCandidateCreated = [(ORCHSchemaORCHClientEvent *)self trpCandidateCreated];
+  if (trpCandidateCreated)
   {
-    v194 = v193;
-    v195 = [(ORCHSchemaORCHClientEvent *)self trpCandidateCreated];
-    v196 = [v4 trpCandidateCreated];
-    v197 = [v195 isEqual:v196];
+    v194 = trpCandidateCreated;
+    trpCandidateCreated2 = [(ORCHSchemaORCHClientEvent *)self trpCandidateCreated];
+    trpCandidateCreated3 = [equalCopy trpCandidateCreated];
+    v197 = [trpCandidateCreated2 isEqual:trpCandidateCreated3];
 
     if (!v197)
     {
@@ -2846,20 +2846,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self audioTopologyReported];
-  v7 = [v4 audioTopologyReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self audioTopologyReported];
+  eventMetadata2 = [equalCopy audioTopologyReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v198 = [(ORCHSchemaORCHClientEvent *)self audioTopologyReported];
-  if (v198)
+  audioTopologyReported = [(ORCHSchemaORCHClientEvent *)self audioTopologyReported];
+  if (audioTopologyReported)
   {
-    v199 = v198;
-    v200 = [(ORCHSchemaORCHClientEvent *)self audioTopologyReported];
-    v201 = [v4 audioTopologyReported];
-    v202 = [v200 isEqual:v201];
+    v199 = audioTopologyReported;
+    audioTopologyReported2 = [(ORCHSchemaORCHClientEvent *)self audioTopologyReported];
+    audioTopologyReported3 = [equalCopy audioTopologyReported];
+    v202 = [audioTopologyReported2 isEqual:audioTopologyReported3];
 
     if (!v202)
     {
@@ -2871,20 +2871,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowRequestContext];
-  v7 = [v4 intelligenceFlowRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowRequestContext];
+  eventMetadata2 = [equalCopy intelligenceFlowRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v203 = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowRequestContext];
-  if (v203)
+  intelligenceFlowRequestContext = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowRequestContext];
+  if (intelligenceFlowRequestContext)
   {
-    v204 = v203;
-    v205 = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowRequestContext];
-    v206 = [v4 intelligenceFlowRequestContext];
-    v207 = [v205 isEqual:v206];
+    v204 = intelligenceFlowRequestContext;
+    intelligenceFlowRequestContext2 = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowRequestContext];
+    intelligenceFlowRequestContext3 = [equalCopy intelligenceFlowRequestContext];
+    v207 = [intelligenceFlowRequestContext2 isEqual:intelligenceFlowRequestContext3];
 
     if (!v207)
     {
@@ -2896,20 +2896,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self userSessionState];
-  v7 = [v4 userSessionState];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self userSessionState];
+  eventMetadata2 = [equalCopy userSessionState];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v208 = [(ORCHSchemaORCHClientEvent *)self userSessionState];
-  if (v208)
+  userSessionState = [(ORCHSchemaORCHClientEvent *)self userSessionState];
+  if (userSessionState)
   {
-    v209 = v208;
-    v210 = [(ORCHSchemaORCHClientEvent *)self userSessionState];
-    v211 = [v4 userSessionState];
-    v212 = [v210 isEqual:v211];
+    v209 = userSessionState;
+    userSessionState2 = [(ORCHSchemaORCHClientEvent *)self userSessionState];
+    userSessionState3 = [equalCopy userSessionState];
+    v212 = [userSessionState2 isEqual:userSessionState3];
 
     if (!v212)
     {
@@ -2921,12 +2921,12 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self serverExecutionValuesReported];
-  v7 = [v4 serverExecutionValuesReported];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self serverExecutionValuesReported];
+  eventMetadata2 = [equalCopy serverExecutionValuesReported];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v213 = [(ORCHSchemaORCHClientEvent *)self serverExecutionValuesReported];
-    if (!v213)
+    serverExecutionValuesReported = [(ORCHSchemaORCHClientEvent *)self serverExecutionValuesReported];
+    if (!serverExecutionValuesReported)
     {
 
 LABEL_216:
@@ -2934,10 +2934,10 @@ LABEL_216:
       goto LABEL_214;
     }
 
-    v214 = v213;
-    v215 = [(ORCHSchemaORCHClientEvent *)self serverExecutionValuesReported];
-    v216 = [v4 serverExecutionValuesReported];
-    v217 = [v215 isEqual:v216];
+    v214 = serverExecutionValuesReported;
+    serverExecutionValuesReported2 = [(ORCHSchemaORCHClientEvent *)self serverExecutionValuesReported];
+    serverExecutionValuesReported3 = [equalCopy serverExecutionValuesReported];
+    v217 = [serverExecutionValuesReported2 isEqual:serverExecutionValuesReported3];
 
     if (v217)
     {
@@ -2957,346 +2957,346 @@ LABEL_214:
   return v218;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v89 = a3;
-  v4 = [(ORCHSchemaORCHClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(ORCHSchemaORCHClientEvent *)self eventMetadata];
+    eventMetadata2 = [(ORCHSchemaORCHClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self resourceUtilizationMetadata];
+  resourceUtilizationMetadata = [(ORCHSchemaORCHClientEvent *)self resourceUtilizationMetadata];
 
-  if (v6)
+  if (resourceUtilizationMetadata)
   {
-    v7 = [(ORCHSchemaORCHClientEvent *)self resourceUtilizationMetadata];
+    resourceUtilizationMetadata2 = [(ORCHSchemaORCHClientEvent *)self resourceUtilizationMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(ORCHSchemaORCHClientEvent *)self requestContext];
+  requestContext = [(ORCHSchemaORCHClientEvent *)self requestContext];
 
-  if (v8)
+  if (requestContext)
   {
-    v9 = [(ORCHSchemaORCHClientEvent *)self requestContext];
+    requestContext2 = [(ORCHSchemaORCHClientEvent *)self requestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(ORCHSchemaORCHClientEvent *)self asrBridgeContext];
+  asrBridgeContext = [(ORCHSchemaORCHClientEvent *)self asrBridgeContext];
 
-  if (v10)
+  if (asrBridgeContext)
   {
-    v11 = [(ORCHSchemaORCHClientEvent *)self asrBridgeContext];
+    asrBridgeContext2 = [(ORCHSchemaORCHClientEvent *)self asrBridgeContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(ORCHSchemaORCHClientEvent *)self cdmBridgeContext];
+  cdmBridgeContext = [(ORCHSchemaORCHClientEvent *)self cdmBridgeContext];
 
-  if (v12)
+  if (cdmBridgeContext)
   {
-    v13 = [(ORCHSchemaORCHClientEvent *)self cdmBridgeContext];
+    cdmBridgeContext2 = [(ORCHSchemaORCHClientEvent *)self cdmBridgeContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(ORCHSchemaORCHClientEvent *)self executionBridgeContext];
+  executionBridgeContext = [(ORCHSchemaORCHClientEvent *)self executionBridgeContext];
 
-  if (v14)
+  if (executionBridgeContext)
   {
-    v15 = [(ORCHSchemaORCHClientEvent *)self executionBridgeContext];
+    executionBridgeContext2 = [(ORCHSchemaORCHClientEvent *)self executionBridgeContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(ORCHSchemaORCHClientEvent *)self serverFallbackContext];
+  serverFallbackContext = [(ORCHSchemaORCHClientEvent *)self serverFallbackContext];
 
-  if (v16)
+  if (serverFallbackContext)
   {
-    v17 = [(ORCHSchemaORCHClientEvent *)self serverFallbackContext];
+    serverFallbackContext2 = [(ORCHSchemaORCHClientEvent *)self serverFallbackContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(ORCHSchemaORCHClientEvent *)self flowOutputSubmitted];
+  flowOutputSubmitted = [(ORCHSchemaORCHClientEvent *)self flowOutputSubmitted];
 
-  if (v18)
+  if (flowOutputSubmitted)
   {
-    v19 = [(ORCHSchemaORCHClientEvent *)self flowOutputSubmitted];
+    flowOutputSubmitted2 = [(ORCHSchemaORCHClientEvent *)self flowOutputSubmitted];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(ORCHSchemaORCHClientEvent *)self resultCandidate];
+  resultCandidate = [(ORCHSchemaORCHClientEvent *)self resultCandidate];
 
-  if (v20)
+  if (resultCandidate)
   {
-    v21 = [(ORCHSchemaORCHClientEvent *)self resultCandidate];
+    resultCandidate2 = [(ORCHSchemaORCHClientEvent *)self resultCandidate];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(ORCHSchemaORCHClientEvent *)self resultSelected];
+  resultSelected = [(ORCHSchemaORCHClientEvent *)self resultSelected];
 
-  if (v22)
+  if (resultSelected)
   {
-    v23 = [(ORCHSchemaORCHClientEvent *)self resultSelected];
+    resultSelected2 = [(ORCHSchemaORCHClientEvent *)self resultSelected];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(ORCHSchemaORCHClientEvent *)self contextSubmissionMessage];
+  contextSubmissionMessage = [(ORCHSchemaORCHClientEvent *)self contextSubmissionMessage];
 
-  if (v24)
+  if (contextSubmissionMessage)
   {
-    v25 = [(ORCHSchemaORCHClientEvent *)self contextSubmissionMessage];
+    contextSubmissionMessage2 = [(ORCHSchemaORCHClientEvent *)self contextSubmissionMessage];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(ORCHSchemaORCHClientEvent *)self availableAssets];
+  availableAssets = [(ORCHSchemaORCHClientEvent *)self availableAssets];
 
-  if (v26)
+  if (availableAssets)
   {
-    v27 = [(ORCHSchemaORCHClientEvent *)self availableAssets];
+    availableAssets2 = [(ORCHSchemaORCHClientEvent *)self availableAssets];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(ORCHSchemaORCHClientEvent *)self orchDeviceDynamicContext];
+  orchDeviceDynamicContext = [(ORCHSchemaORCHClientEvent *)self orchDeviceDynamicContext];
 
-  if (v28)
+  if (orchDeviceDynamicContext)
   {
-    v29 = [(ORCHSchemaORCHClientEvent *)self orchDeviceDynamicContext];
+    orchDeviceDynamicContext2 = [(ORCHSchemaORCHClientEvent *)self orchDeviceDynamicContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(ORCHSchemaORCHClientEvent *)self pommesBridgeContext];
+  pommesBridgeContext = [(ORCHSchemaORCHClientEvent *)self pommesBridgeContext];
 
-  if (v30)
+  if (pommesBridgeContext)
   {
-    v31 = [(ORCHSchemaORCHClientEvent *)self pommesBridgeContext];
+    pommesBridgeContext2 = [(ORCHSchemaORCHClientEvent *)self pommesBridgeContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(ORCHSchemaORCHClientEvent *)self muxBridgeContext];
+  muxBridgeContext = [(ORCHSchemaORCHClientEvent *)self muxBridgeContext];
 
-  if (v32)
+  if (muxBridgeContext)
   {
-    v33 = [(ORCHSchemaORCHClientEvent *)self muxBridgeContext];
+    muxBridgeContext2 = [(ORCHSchemaORCHClientEvent *)self muxBridgeContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v34 = [(ORCHSchemaORCHClientEvent *)self multiUserResultCandidate];
+  multiUserResultCandidate = [(ORCHSchemaORCHClientEvent *)self multiUserResultCandidate];
 
-  if (v34)
+  if (multiUserResultCandidate)
   {
-    v35 = [(ORCHSchemaORCHClientEvent *)self multiUserResultCandidate];
+    multiUserResultCandidate2 = [(ORCHSchemaORCHClientEvent *)self multiUserResultCandidate];
     PBDataWriterWriteSubmessage();
   }
 
-  v36 = [(ORCHSchemaORCHClientEvent *)self multiUserResultSelected];
+  multiUserResultSelected = [(ORCHSchemaORCHClientEvent *)self multiUserResultSelected];
 
-  if (v36)
+  if (multiUserResultSelected)
   {
-    v37 = [(ORCHSchemaORCHClientEvent *)self multiUserResultSelected];
+    multiUserResultSelected2 = [(ORCHSchemaORCHClientEvent *)self multiUserResultSelected];
     PBDataWriterWriteSubmessage();
   }
 
-  v38 = [(ORCHSchemaORCHClientEvent *)self aceCommandContext];
+  aceCommandContext = [(ORCHSchemaORCHClientEvent *)self aceCommandContext];
 
-  if (v38)
+  if (aceCommandContext)
   {
-    v39 = [(ORCHSchemaORCHClientEvent *)self aceCommandContext];
+    aceCommandContext2 = [(ORCHSchemaORCHClientEvent *)self aceCommandContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v40 = [(ORCHSchemaORCHClientEvent *)self trpFinalized];
+  trpFinalized = [(ORCHSchemaORCHClientEvent *)self trpFinalized];
 
-  if (v40)
+  if (trpFinalized)
   {
-    v41 = [(ORCHSchemaORCHClientEvent *)self trpFinalized];
+    trpFinalized2 = [(ORCHSchemaORCHClientEvent *)self trpFinalized];
     PBDataWriterWriteSubmessage();
   }
 
-  v42 = [(ORCHSchemaORCHClientEvent *)self requestMitigated];
+  requestMitigated = [(ORCHSchemaORCHClientEvent *)self requestMitigated];
 
-  if (v42)
+  if (requestMitigated)
   {
-    v43 = [(ORCHSchemaORCHClientEvent *)self requestMitigated];
+    requestMitigated2 = [(ORCHSchemaORCHClientEvent *)self requestMitigated];
     PBDataWriterWriteSubmessage();
   }
 
-  v44 = [(ORCHSchemaORCHClientEvent *)self nlv3ServerFallbackDeprecated];
+  nlv3ServerFallbackDeprecated = [(ORCHSchemaORCHClientEvent *)self nlv3ServerFallbackDeprecated];
 
-  if (v44)
+  if (nlv3ServerFallbackDeprecated)
   {
-    v45 = [(ORCHSchemaORCHClientEvent *)self nlv3ServerFallbackDeprecated];
+    nlv3ServerFallbackDeprecated2 = [(ORCHSchemaORCHClientEvent *)self nlv3ServerFallbackDeprecated];
     PBDataWriterWriteSubmessage();
   }
 
-  v46 = [(ORCHSchemaORCHClientEvent *)self uiActivationContext];
+  uiActivationContext = [(ORCHSchemaORCHClientEvent *)self uiActivationContext];
 
-  if (v46)
+  if (uiActivationContext)
   {
-    v47 = [(ORCHSchemaORCHClientEvent *)self uiActivationContext];
+    uiActivationContext2 = [(ORCHSchemaORCHClientEvent *)self uiActivationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v48 = [(ORCHSchemaORCHClientEvent *)self trpCandidateReceived];
+  trpCandidateReceived = [(ORCHSchemaORCHClientEvent *)self trpCandidateReceived];
 
-  if (v48)
+  if (trpCandidateReceived)
   {
-    v49 = [(ORCHSchemaORCHClientEvent *)self trpCandidateReceived];
+    trpCandidateReceived2 = [(ORCHSchemaORCHClientEvent *)self trpCandidateReceived];
     PBDataWriterWriteSubmessage();
   }
 
-  v50 = [(ORCHSchemaORCHClientEvent *)self identityBridgeRequestContext];
+  identityBridgeRequestContext = [(ORCHSchemaORCHClientEvent *)self identityBridgeRequestContext];
 
-  if (v50)
+  if (identityBridgeRequestContext)
   {
-    v51 = [(ORCHSchemaORCHClientEvent *)self identityBridgeRequestContext];
+    identityBridgeRequestContext2 = [(ORCHSchemaORCHClientEvent *)self identityBridgeRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v52 = [(ORCHSchemaORCHClientEvent *)self assetSetsReported];
+  assetSetsReported = [(ORCHSchemaORCHClientEvent *)self assetSetsReported];
 
-  if (v52)
+  if (assetSetsReported)
   {
-    v53 = [(ORCHSchemaORCHClientEvent *)self assetSetsReported];
+    assetSetsReported2 = [(ORCHSchemaORCHClientEvent *)self assetSetsReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v54 = [(ORCHSchemaORCHClientEvent *)self candidateRequestContext];
+  candidateRequestContext = [(ORCHSchemaORCHClientEvent *)self candidateRequestContext];
 
-  if (v54)
+  if (candidateRequestContext)
   {
-    v55 = [(ORCHSchemaORCHClientEvent *)self candidateRequestContext];
+    candidateRequestContext2 = [(ORCHSchemaORCHClientEvent *)self candidateRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v56 = [(ORCHSchemaORCHClientEvent *)self powerContextPolicyReported];
+  powerContextPolicyReported = [(ORCHSchemaORCHClientEvent *)self powerContextPolicyReported];
 
-  if (v56)
+  if (powerContextPolicyReported)
   {
-    v57 = [(ORCHSchemaORCHClientEvent *)self powerContextPolicyReported];
+    powerContextPolicyReported2 = [(ORCHSchemaORCHClientEvent *)self powerContextPolicyReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v58 = [(ORCHSchemaORCHClientEvent *)self executeOnRemoteRequestContext];
+  executeOnRemoteRequestContext = [(ORCHSchemaORCHClientEvent *)self executeOnRemoteRequestContext];
 
-  if (v58)
+  if (executeOnRemoteRequestContext)
   {
-    v59 = [(ORCHSchemaORCHClientEvent *)self executeOnRemoteRequestContext];
+    executeOnRemoteRequestContext2 = [(ORCHSchemaORCHClientEvent *)self executeOnRemoteRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v60 = [(ORCHSchemaORCHClientEvent *)self assistantdLaunchMetadataReported];
+  assistantdLaunchMetadataReported = [(ORCHSchemaORCHClientEvent *)self assistantdLaunchMetadataReported];
 
-  if (v60)
+  if (assistantdLaunchMetadataReported)
   {
-    v61 = [(ORCHSchemaORCHClientEvent *)self assistantdLaunchMetadataReported];
+    assistantdLaunchMetadataReported2 = [(ORCHSchemaORCHClientEvent *)self assistantdLaunchMetadataReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v62 = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowQuerySent];
+  intelligenceFlowQuerySent = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowQuerySent];
 
-  if (v62)
+  if (intelligenceFlowQuerySent)
   {
-    v63 = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowQuerySent];
+    intelligenceFlowQuerySent2 = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowQuerySent];
     PBDataWriterWriteSubmessage();
   }
 
-  v64 = [(ORCHSchemaORCHClientEvent *)self subRequestContext];
+  subRequestContext = [(ORCHSchemaORCHClientEvent *)self subRequestContext];
 
-  if (v64)
+  if (subRequestContext)
   {
-    v65 = [(ORCHSchemaORCHClientEvent *)self subRequestContext];
+    subRequestContext2 = [(ORCHSchemaORCHClientEvent *)self subRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v66 = [(ORCHSchemaORCHClientEvent *)self routerRewrittenUtterance];
+  routerRewrittenUtterance = [(ORCHSchemaORCHClientEvent *)self routerRewrittenUtterance];
 
-  if (v66)
+  if (routerRewrittenUtterance)
   {
-    v67 = [(ORCHSchemaORCHClientEvent *)self routerRewrittenUtterance];
+    routerRewrittenUtterance2 = [(ORCHSchemaORCHClientEvent *)self routerRewrittenUtterance];
     PBDataWriterWriteSubmessage();
   }
 
-  v68 = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeContext];
+  nlRouterBridgeContext = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeContext];
 
-  if (v68)
+  if (nlRouterBridgeContext)
   {
-    v69 = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeContext];
+    nlRouterBridgeContext2 = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v70 = [(ORCHSchemaORCHClientEvent *)self shimToolContext];
+  shimToolContext = [(ORCHSchemaORCHClientEvent *)self shimToolContext];
 
-  if (v70)
+  if (shimToolContext)
   {
-    v71 = [(ORCHSchemaORCHClientEvent *)self shimToolContext];
+    shimToolContext2 = [(ORCHSchemaORCHClientEvent *)self shimToolContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v72 = [(ORCHSchemaORCHClientEvent *)self subRequestFallback];
+  subRequestFallback = [(ORCHSchemaORCHClientEvent *)self subRequestFallback];
 
-  if (v72)
+  if (subRequestFallback)
   {
-    v73 = [(ORCHSchemaORCHClientEvent *)self subRequestFallback];
+    subRequestFallback2 = [(ORCHSchemaORCHClientEvent *)self subRequestFallback];
     PBDataWriterWriteSubmessage();
   }
 
-  v74 = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeSubComponentContext];
+  nlRouterBridgeSubComponentContext = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeSubComponentContext];
 
-  if (v74)
+  if (nlRouterBridgeSubComponentContext)
   {
-    v75 = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeSubComponentContext];
+    nlRouterBridgeSubComponentContext2 = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeSubComponentContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v76 = [(ORCHSchemaORCHClientEvent *)self unsupportedLanguageDetected];
+  unsupportedLanguageDetected = [(ORCHSchemaORCHClientEvent *)self unsupportedLanguageDetected];
 
-  if (v76)
+  if (unsupportedLanguageDetected)
   {
-    v77 = [(ORCHSchemaORCHClientEvent *)self unsupportedLanguageDetected];
+    unsupportedLanguageDetected2 = [(ORCHSchemaORCHClientEvent *)self unsupportedLanguageDetected];
     PBDataWriterWriteSubmessage();
   }
 
-  v78 = [(ORCHSchemaORCHClientEvent *)self trpCandidateCreated];
+  trpCandidateCreated = [(ORCHSchemaORCHClientEvent *)self trpCandidateCreated];
 
-  if (v78)
+  if (trpCandidateCreated)
   {
-    v79 = [(ORCHSchemaORCHClientEvent *)self trpCandidateCreated];
+    trpCandidateCreated2 = [(ORCHSchemaORCHClientEvent *)self trpCandidateCreated];
     PBDataWriterWriteSubmessage();
   }
 
-  v80 = [(ORCHSchemaORCHClientEvent *)self audioTopologyReported];
+  audioTopologyReported = [(ORCHSchemaORCHClientEvent *)self audioTopologyReported];
 
-  if (v80)
+  if (audioTopologyReported)
   {
-    v81 = [(ORCHSchemaORCHClientEvent *)self audioTopologyReported];
+    audioTopologyReported2 = [(ORCHSchemaORCHClientEvent *)self audioTopologyReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v82 = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowRequestContext];
+  intelligenceFlowRequestContext = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowRequestContext];
 
-  if (v82)
+  if (intelligenceFlowRequestContext)
   {
-    v83 = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowRequestContext];
+    intelligenceFlowRequestContext2 = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v84 = [(ORCHSchemaORCHClientEvent *)self userSessionState];
+  userSessionState = [(ORCHSchemaORCHClientEvent *)self userSessionState];
 
-  if (v84)
+  if (userSessionState)
   {
-    v85 = [(ORCHSchemaORCHClientEvent *)self userSessionState];
+    userSessionState2 = [(ORCHSchemaORCHClientEvent *)self userSessionState];
     PBDataWriterWriteSubmessage();
   }
 
-  v86 = [(ORCHSchemaORCHClientEvent *)self serverExecutionValuesReported];
+  serverExecutionValuesReported = [(ORCHSchemaORCHClientEvent *)self serverExecutionValuesReported];
 
-  v87 = v89;
-  if (v86)
+  v87 = toCopy;
+  if (serverExecutionValuesReported)
   {
-    v88 = [(ORCHSchemaORCHClientEvent *)self serverExecutionValuesReported];
+    serverExecutionValuesReported2 = [(ORCHSchemaORCHClientEvent *)self serverExecutionValuesReported];
     PBDataWriterWriteSubmessage();
 
-    v87 = v89;
+    v87 = toCopy;
   }
 }
 
@@ -3325,9 +3325,9 @@ LABEL_214:
   return v3;
 }
 
-- (void)setServerExecutionValuesReported:(id)a3
+- (void)setServerExecutionValuesReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -3446,14 +3446,14 @@ LABEL_214:
   self->_userSessionState = 0;
 
   v44 = 140;
-  if (!v4)
+  if (!reportedCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   serverExecutionValuesReported = self->_serverExecutionValuesReported;
-  self->_serverExecutionValuesReported = v4;
+  self->_serverExecutionValuesReported = reportedCopy;
 }
 
 - (void)deleteUserSessionState
@@ -3466,9 +3466,9 @@ LABEL_214:
   }
 }
 
-- (void)setUserSessionState:(id)a3
+- (void)setUserSessionState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -3587,14 +3587,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 139;
-  if (!v4)
+  if (!stateCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   userSessionState = self->_userSessionState;
-  self->_userSessionState = v4;
+  self->_userSessionState = stateCopy;
 }
 
 - (void)deleteIntelligenceFlowRequestContext
@@ -3607,9 +3607,9 @@ LABEL_214:
   }
 }
 
-- (void)setIntelligenceFlowRequestContext:(id)a3
+- (void)setIntelligenceFlowRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -3728,14 +3728,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 138;
-  if (!v4)
+  if (!contextCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   intelligenceFlowRequestContext = self->_intelligenceFlowRequestContext;
-  self->_intelligenceFlowRequestContext = v4;
+  self->_intelligenceFlowRequestContext = contextCopy;
 }
 
 - (void)deleteAudioTopologyReported
@@ -3748,9 +3748,9 @@ LABEL_214:
   }
 }
 
-- (void)setAudioTopologyReported:(id)a3
+- (void)setAudioTopologyReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -3869,14 +3869,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 137;
-  if (!v4)
+  if (!reportedCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   audioTopologyReported = self->_audioTopologyReported;
-  self->_audioTopologyReported = v4;
+  self->_audioTopologyReported = reportedCopy;
 }
 
 - (void)deleteTrpCandidateCreated
@@ -3889,9 +3889,9 @@ LABEL_214:
   }
 }
 
-- (void)setTrpCandidateCreated:(id)a3
+- (void)setTrpCandidateCreated:(id)created
 {
-  v4 = a3;
+  createdCopy = created;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -4010,14 +4010,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 136;
-  if (!v4)
+  if (!createdCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   trpCandidateCreated = self->_trpCandidateCreated;
-  self->_trpCandidateCreated = v4;
+  self->_trpCandidateCreated = createdCopy;
 }
 
 - (void)deleteUnsupportedLanguageDetected
@@ -4030,9 +4030,9 @@ LABEL_214:
   }
 }
 
-- (void)setUnsupportedLanguageDetected:(id)a3
+- (void)setUnsupportedLanguageDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -4151,14 +4151,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 135;
-  if (!v4)
+  if (!detectedCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   unsupportedLanguageDetected = self->_unsupportedLanguageDetected;
-  self->_unsupportedLanguageDetected = v4;
+  self->_unsupportedLanguageDetected = detectedCopy;
 }
 
 - (void)deleteNlRouterBridgeSubComponentContext
@@ -4171,9 +4171,9 @@ LABEL_214:
   }
 }
 
-- (void)setNlRouterBridgeSubComponentContext:(id)a3
+- (void)setNlRouterBridgeSubComponentContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -4292,14 +4292,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 134;
-  if (!v4)
+  if (!contextCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   nlRouterBridgeSubComponentContext = self->_nlRouterBridgeSubComponentContext;
-  self->_nlRouterBridgeSubComponentContext = v4;
+  self->_nlRouterBridgeSubComponentContext = contextCopy;
 }
 
 - (void)deleteSubRequestFallback
@@ -4312,9 +4312,9 @@ LABEL_214:
   }
 }
 
-- (void)setSubRequestFallback:(id)a3
+- (void)setSubRequestFallback:(id)fallback
 {
-  v4 = a3;
+  fallbackCopy = fallback;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -4433,14 +4433,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 133;
-  if (!v4)
+  if (!fallbackCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   subRequestFallback = self->_subRequestFallback;
-  self->_subRequestFallback = v4;
+  self->_subRequestFallback = fallbackCopy;
 }
 
 - (void)deleteShimToolContext
@@ -4453,9 +4453,9 @@ LABEL_214:
   }
 }
 
-- (void)setShimToolContext:(id)a3
+- (void)setShimToolContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -4574,14 +4574,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 132;
-  if (!v4)
+  if (!contextCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   shimToolContext = self->_shimToolContext;
-  self->_shimToolContext = v4;
+  self->_shimToolContext = contextCopy;
 }
 
 - (void)deleteNlRouterBridgeContext
@@ -4594,9 +4594,9 @@ LABEL_214:
   }
 }
 
-- (void)setNlRouterBridgeContext:(id)a3
+- (void)setNlRouterBridgeContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -4715,14 +4715,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 131;
-  if (!v4)
+  if (!contextCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   nlRouterBridgeContext = self->_nlRouterBridgeContext;
-  self->_nlRouterBridgeContext = v4;
+  self->_nlRouterBridgeContext = contextCopy;
 }
 
 - (void)deleteRouterRewrittenUtterance
@@ -4735,9 +4735,9 @@ LABEL_214:
   }
 }
 
-- (void)setRouterRewrittenUtterance:(id)a3
+- (void)setRouterRewrittenUtterance:(id)utterance
 {
-  v4 = a3;
+  utteranceCopy = utterance;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -4856,14 +4856,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 130;
-  if (!v4)
+  if (!utteranceCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   routerRewrittenUtterance = self->_routerRewrittenUtterance;
-  self->_routerRewrittenUtterance = v4;
+  self->_routerRewrittenUtterance = utteranceCopy;
 }
 
 - (void)deleteSubRequestContext
@@ -4876,9 +4876,9 @@ LABEL_214:
   }
 }
 
-- (void)setSubRequestContext:(id)a3
+- (void)setSubRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -4997,14 +4997,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 129;
-  if (!v4)
+  if (!contextCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   subRequestContext = self->_subRequestContext;
-  self->_subRequestContext = v4;
+  self->_subRequestContext = contextCopy;
 }
 
 - (void)deleteIntelligenceFlowQuerySent
@@ -5017,9 +5017,9 @@ LABEL_214:
   }
 }
 
-- (void)setIntelligenceFlowQuerySent:(id)a3
+- (void)setIntelligenceFlowQuerySent:(id)sent
 {
-  v4 = a3;
+  sentCopy = sent;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -5137,9 +5137,9 @@ LABEL_214:
   serverExecutionValuesReported = self->_serverExecutionValuesReported;
   self->_serverExecutionValuesReported = 0;
 
-  self->_whichEvent_Type = (v4 != 0) << 7;
+  self->_whichEvent_Type = (sentCopy != 0) << 7;
   intelligenceFlowQuerySent = self->_intelligenceFlowQuerySent;
-  self->_intelligenceFlowQuerySent = v4;
+  self->_intelligenceFlowQuerySent = sentCopy;
 }
 
 - (void)deleteAssistantdLaunchMetadataReported
@@ -5152,9 +5152,9 @@ LABEL_214:
   }
 }
 
-- (void)setAssistantdLaunchMetadataReported:(id)a3
+- (void)setAssistantdLaunchMetadataReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -5273,14 +5273,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 127;
-  if (!v4)
+  if (!reportedCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   assistantdLaunchMetadataReported = self->_assistantdLaunchMetadataReported;
-  self->_assistantdLaunchMetadataReported = v4;
+  self->_assistantdLaunchMetadataReported = reportedCopy;
 }
 
 - (void)deleteExecuteOnRemoteRequestContext
@@ -5293,9 +5293,9 @@ LABEL_214:
   }
 }
 
-- (void)setExecuteOnRemoteRequestContext:(id)a3
+- (void)setExecuteOnRemoteRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -5414,14 +5414,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 126;
-  if (!v4)
+  if (!contextCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   executeOnRemoteRequestContext = self->_executeOnRemoteRequestContext;
-  self->_executeOnRemoteRequestContext = v4;
+  self->_executeOnRemoteRequestContext = contextCopy;
 }
 
 - (void)deletePowerContextPolicyReported
@@ -5434,9 +5434,9 @@ LABEL_214:
   }
 }
 
-- (void)setPowerContextPolicyReported:(id)a3
+- (void)setPowerContextPolicyReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -5555,14 +5555,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 125;
-  if (!v4)
+  if (!reportedCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   powerContextPolicyReported = self->_powerContextPolicyReported;
-  self->_powerContextPolicyReported = v4;
+  self->_powerContextPolicyReported = reportedCopy;
 }
 
 - (void)deleteCandidateRequestContext
@@ -5575,9 +5575,9 @@ LABEL_214:
   }
 }
 
-- (void)setCandidateRequestContext:(id)a3
+- (void)setCandidateRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -5696,14 +5696,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 124;
-  if (!v4)
+  if (!contextCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   candidateRequestContext = self->_candidateRequestContext;
-  self->_candidateRequestContext = v4;
+  self->_candidateRequestContext = contextCopy;
 }
 
 - (void)deleteAssetSetsReported
@@ -5716,9 +5716,9 @@ LABEL_214:
   }
 }
 
-- (void)setAssetSetsReported:(id)a3
+- (void)setAssetSetsReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -5837,14 +5837,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 123;
-  if (!v4)
+  if (!reportedCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   assetSetsReported = self->_assetSetsReported;
-  self->_assetSetsReported = v4;
+  self->_assetSetsReported = reportedCopy;
 }
 
 - (void)deleteIdentityBridgeRequestContext
@@ -5857,9 +5857,9 @@ LABEL_214:
   }
 }
 
-- (void)setIdentityBridgeRequestContext:(id)a3
+- (void)setIdentityBridgeRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -5978,14 +5978,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 122;
-  if (!v4)
+  if (!contextCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   identityBridgeRequestContext = self->_identityBridgeRequestContext;
-  self->_identityBridgeRequestContext = v4;
+  self->_identityBridgeRequestContext = contextCopy;
 }
 
 - (void)deleteTrpCandidateReceived
@@ -5998,9 +5998,9 @@ LABEL_214:
   }
 }
 
-- (void)setTrpCandidateReceived:(id)a3
+- (void)setTrpCandidateReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -6119,14 +6119,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 121;
-  if (!v4)
+  if (!receivedCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   trpCandidateReceived = self->_trpCandidateReceived;
-  self->_trpCandidateReceived = v4;
+  self->_trpCandidateReceived = receivedCopy;
 }
 
 - (void)deleteUiActivationContext
@@ -6139,9 +6139,9 @@ LABEL_214:
   }
 }
 
-- (void)setUiActivationContext:(id)a3
+- (void)setUiActivationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -6260,14 +6260,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 120;
-  if (!v4)
+  if (!contextCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   uiActivationContext = self->_uiActivationContext;
-  self->_uiActivationContext = v4;
+  self->_uiActivationContext = contextCopy;
 }
 
 - (void)deleteNlv3ServerFallbackDeprecated
@@ -6280,9 +6280,9 @@ LABEL_214:
   }
 }
 
-- (void)setNlv3ServerFallbackDeprecated:(id)a3
+- (void)setNlv3ServerFallbackDeprecated:(id)deprecated
 {
-  v4 = a3;
+  deprecatedCopy = deprecated;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -6401,14 +6401,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 119;
-  if (!v4)
+  if (!deprecatedCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   nlv3ServerFallbackDeprecated = self->_nlv3ServerFallbackDeprecated;
-  self->_nlv3ServerFallbackDeprecated = v4;
+  self->_nlv3ServerFallbackDeprecated = deprecatedCopy;
 }
 
 - (void)deleteRequestMitigated
@@ -6421,9 +6421,9 @@ LABEL_214:
   }
 }
 
-- (void)setRequestMitigated:(id)a3
+- (void)setRequestMitigated:(id)mitigated
 {
-  v4 = a3;
+  mitigatedCopy = mitigated;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -6542,14 +6542,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 118;
-  if (!v4)
+  if (!mitigatedCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   requestMitigated = self->_requestMitigated;
-  self->_requestMitigated = v4;
+  self->_requestMitigated = mitigatedCopy;
 }
 
 - (void)deleteTrpFinalized
@@ -6562,9 +6562,9 @@ LABEL_214:
   }
 }
 
-- (void)setTrpFinalized:(id)a3
+- (void)setTrpFinalized:(id)finalized
 {
-  v4 = a3;
+  finalizedCopy = finalized;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -6683,14 +6683,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 117;
-  if (!v4)
+  if (!finalizedCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   trpFinalized = self->_trpFinalized;
-  self->_trpFinalized = v4;
+  self->_trpFinalized = finalizedCopy;
 }
 
 - (void)deleteAceCommandContext
@@ -6703,9 +6703,9 @@ LABEL_214:
   }
 }
 
-- (void)setAceCommandContext:(id)a3
+- (void)setAceCommandContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -6824,14 +6824,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 116;
-  if (!v4)
+  if (!contextCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   aceCommandContext = self->_aceCommandContext;
-  self->_aceCommandContext = v4;
+  self->_aceCommandContext = contextCopy;
 }
 
 - (void)deleteMultiUserResultSelected
@@ -6844,9 +6844,9 @@ LABEL_214:
   }
 }
 
-- (void)setMultiUserResultSelected:(id)a3
+- (void)setMultiUserResultSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -6965,14 +6965,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 115;
-  if (!v4)
+  if (!selectedCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   multiUserResultSelected = self->_multiUserResultSelected;
-  self->_multiUserResultSelected = v4;
+  self->_multiUserResultSelected = selectedCopy;
 }
 
 - (void)deleteMultiUserResultCandidate
@@ -6985,9 +6985,9 @@ LABEL_214:
   }
 }
 
-- (void)setMultiUserResultCandidate:(id)a3
+- (void)setMultiUserResultCandidate:(id)candidate
 {
-  v4 = a3;
+  candidateCopy = candidate;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -7106,14 +7106,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 114;
-  if (!v4)
+  if (!candidateCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   multiUserResultCandidate = self->_multiUserResultCandidate;
-  self->_multiUserResultCandidate = v4;
+  self->_multiUserResultCandidate = candidateCopy;
 }
 
 - (void)deleteMuxBridgeContext
@@ -7126,9 +7126,9 @@ LABEL_214:
   }
 }
 
-- (void)setMuxBridgeContext:(id)a3
+- (void)setMuxBridgeContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -7247,14 +7247,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 113;
-  if (!v4)
+  if (!contextCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   muxBridgeContext = self->_muxBridgeContext;
-  self->_muxBridgeContext = v4;
+  self->_muxBridgeContext = contextCopy;
 }
 
 - (void)deletePommesBridgeContext
@@ -7267,9 +7267,9 @@ LABEL_214:
   }
 }
 
-- (void)setPommesBridgeContext:(id)a3
+- (void)setPommesBridgeContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -7388,14 +7388,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 112;
-  if (!v4)
+  if (!contextCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   pommesBridgeContext = self->_pommesBridgeContext;
-  self->_pommesBridgeContext = v4;
+  self->_pommesBridgeContext = contextCopy;
 }
 
 - (void)deleteOrchDeviceDynamicContext
@@ -7408,9 +7408,9 @@ LABEL_214:
   }
 }
 
-- (void)setOrchDeviceDynamicContext:(id)a3
+- (void)setOrchDeviceDynamicContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -7529,14 +7529,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 111;
-  if (!v4)
+  if (!contextCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   orchDeviceDynamicContext = self->_orchDeviceDynamicContext;
-  self->_orchDeviceDynamicContext = v4;
+  self->_orchDeviceDynamicContext = contextCopy;
 }
 
 - (void)deleteAvailableAssets
@@ -7549,9 +7549,9 @@ LABEL_214:
   }
 }
 
-- (void)setAvailableAssets:(id)a3
+- (void)setAvailableAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -7670,14 +7670,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 110;
-  if (!v4)
+  if (!assetsCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   availableAssets = self->_availableAssets;
-  self->_availableAssets = v4;
+  self->_availableAssets = assetsCopy;
 }
 
 - (void)deleteContextSubmissionMessage
@@ -7690,9 +7690,9 @@ LABEL_214:
   }
 }
 
-- (void)setContextSubmissionMessage:(id)a3
+- (void)setContextSubmissionMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -7811,14 +7811,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 109;
-  if (!v4)
+  if (!messageCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   contextSubmissionMessage = self->_contextSubmissionMessage;
-  self->_contextSubmissionMessage = v4;
+  self->_contextSubmissionMessage = messageCopy;
 }
 
 - (void)deleteResultSelected
@@ -7831,9 +7831,9 @@ LABEL_214:
   }
 }
 
-- (void)setResultSelected:(id)a3
+- (void)setResultSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -7952,14 +7952,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 108;
-  if (!v4)
+  if (!selectedCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   resultSelected = self->_resultSelected;
-  self->_resultSelected = v4;
+  self->_resultSelected = selectedCopy;
 }
 
 - (void)deleteResultCandidate
@@ -7972,9 +7972,9 @@ LABEL_214:
   }
 }
 
-- (void)setResultCandidate:(id)a3
+- (void)setResultCandidate:(id)candidate
 {
-  v4 = a3;
+  candidateCopy = candidate;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -8093,14 +8093,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 107;
-  if (!v4)
+  if (!candidateCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   resultCandidate = self->_resultCandidate;
-  self->_resultCandidate = v4;
+  self->_resultCandidate = candidateCopy;
 }
 
 - (void)deleteFlowOutputSubmitted
@@ -8113,9 +8113,9 @@ LABEL_214:
   }
 }
 
-- (void)setFlowOutputSubmitted:(id)a3
+- (void)setFlowOutputSubmitted:(id)submitted
 {
-  v4 = a3;
+  submittedCopy = submitted;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -8234,14 +8234,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 106;
-  if (!v4)
+  if (!submittedCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   flowOutputSubmitted = self->_flowOutputSubmitted;
-  self->_flowOutputSubmitted = v4;
+  self->_flowOutputSubmitted = submittedCopy;
 }
 
 - (void)deleteServerFallbackContext
@@ -8254,9 +8254,9 @@ LABEL_214:
   }
 }
 
-- (void)setServerFallbackContext:(id)a3
+- (void)setServerFallbackContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -8375,14 +8375,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 105;
-  if (!v4)
+  if (!contextCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   serverFallbackContext = self->_serverFallbackContext;
-  self->_serverFallbackContext = v4;
+  self->_serverFallbackContext = contextCopy;
 }
 
 - (void)deleteExecutionBridgeContext
@@ -8395,9 +8395,9 @@ LABEL_214:
   }
 }
 
-- (void)setExecutionBridgeContext:(id)a3
+- (void)setExecutionBridgeContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -8516,14 +8516,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 104;
-  if (!v4)
+  if (!contextCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   executionBridgeContext = self->_executionBridgeContext;
-  self->_executionBridgeContext = v4;
+  self->_executionBridgeContext = contextCopy;
 }
 
 - (void)deleteCdmBridgeContext
@@ -8536,9 +8536,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmBridgeContext:(id)a3
+- (void)setCdmBridgeContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -8657,14 +8657,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 103;
-  if (!v4)
+  if (!contextCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   cdmBridgeContext = self->_cdmBridgeContext;
-  self->_cdmBridgeContext = v4;
+  self->_cdmBridgeContext = contextCopy;
 }
 
 - (void)deleteAsrBridgeContext
@@ -8677,9 +8677,9 @@ LABEL_214:
   }
 }
 
-- (void)setAsrBridgeContext:(id)a3
+- (void)setAsrBridgeContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -8798,14 +8798,14 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 102;
-  if (!v4)
+  if (!contextCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   asrBridgeContext = self->_asrBridgeContext;
-  self->_asrBridgeContext = v4;
+  self->_asrBridgeContext = contextCopy;
 }
 
 - (void)deleteRequestContext
@@ -8818,9 +8818,9 @@ LABEL_214:
   }
 }
 
-- (void)setRequestContext:(id)a3
+- (void)setRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   asrBridgeContext = self->_asrBridgeContext;
   self->_asrBridgeContext = 0;
 
@@ -8939,421 +8939,421 @@ LABEL_214:
   self->_serverExecutionValuesReported = 0;
 
   v44 = 101;
-  if (!v4)
+  if (!contextCopy)
   {
     v44 = 0;
   }
 
   self->_whichEvent_Type = v44;
   requestContext = self->_requestContext;
-  self->_requestContext = v4;
+  self->_requestContext = contextCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v134.receiver = self;
   v134.super_class = ORCHSchemaORCHClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v134 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v134 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(ORCHSchemaORCHClientEvent *)self deleteRouterRewrittenUtterance];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(ORCHSchemaORCHClientEvent *)self deleteRouterRewrittenUtterance];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(ORCHSchemaORCHClientEvent *)self deleteRouterRewrittenUtterance];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(ORCHSchemaORCHClientEvent *)self deleteRouterRewrittenUtterance];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(ORCHSchemaORCHClientEvent *)self deleteRouterRewrittenUtterance];
   }
 
-  v6 = [(ORCHSchemaORCHClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(ORCHSchemaORCHClientEvent *)self resourceUtilizationMetadata];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  resourceUtilizationMetadata = [(ORCHSchemaORCHClientEvent *)self resourceUtilizationMetadata];
+  v10 = [resourceUtilizationMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteResourceUtilizationMetadata];
   }
 
-  v12 = [(ORCHSchemaORCHClientEvent *)self requestContext];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  requestContext = [(ORCHSchemaORCHClientEvent *)self requestContext];
+  v13 = [requestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteRequestContext];
   }
 
-  v15 = [(ORCHSchemaORCHClientEvent *)self asrBridgeContext];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  asrBridgeContext = [(ORCHSchemaORCHClientEvent *)self asrBridgeContext];
+  v16 = [asrBridgeContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteAsrBridgeContext];
   }
 
-  v18 = [(ORCHSchemaORCHClientEvent *)self cdmBridgeContext];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  cdmBridgeContext = [(ORCHSchemaORCHClientEvent *)self cdmBridgeContext];
+  v19 = [cdmBridgeContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteCdmBridgeContext];
   }
 
-  v21 = [(ORCHSchemaORCHClientEvent *)self executionBridgeContext];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  executionBridgeContext = [(ORCHSchemaORCHClientEvent *)self executionBridgeContext];
+  v22 = [executionBridgeContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteExecutionBridgeContext];
   }
 
-  v24 = [(ORCHSchemaORCHClientEvent *)self serverFallbackContext];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  serverFallbackContext = [(ORCHSchemaORCHClientEvent *)self serverFallbackContext];
+  v25 = [serverFallbackContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteServerFallbackContext];
   }
 
-  v27 = [(ORCHSchemaORCHClientEvent *)self flowOutputSubmitted];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  flowOutputSubmitted = [(ORCHSchemaORCHClientEvent *)self flowOutputSubmitted];
+  v28 = [flowOutputSubmitted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteFlowOutputSubmitted];
   }
 
-  v30 = [(ORCHSchemaORCHClientEvent *)self resultCandidate];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  resultCandidate = [(ORCHSchemaORCHClientEvent *)self resultCandidate];
+  v31 = [resultCandidate applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteResultCandidate];
   }
 
-  v33 = [(ORCHSchemaORCHClientEvent *)self resultSelected];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  resultSelected = [(ORCHSchemaORCHClientEvent *)self resultSelected];
+  v34 = [resultSelected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteResultSelected];
   }
 
-  v36 = [(ORCHSchemaORCHClientEvent *)self contextSubmissionMessage];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  contextSubmissionMessage = [(ORCHSchemaORCHClientEvent *)self contextSubmissionMessage];
+  v37 = [contextSubmissionMessage applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteContextSubmissionMessage];
   }
 
-  v39 = [(ORCHSchemaORCHClientEvent *)self availableAssets];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  availableAssets = [(ORCHSchemaORCHClientEvent *)self availableAssets];
+  v40 = [availableAssets applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteAvailableAssets];
   }
 
-  v42 = [(ORCHSchemaORCHClientEvent *)self orchDeviceDynamicContext];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  orchDeviceDynamicContext = [(ORCHSchemaORCHClientEvent *)self orchDeviceDynamicContext];
+  v43 = [orchDeviceDynamicContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteOrchDeviceDynamicContext];
   }
 
-  v45 = [(ORCHSchemaORCHClientEvent *)self pommesBridgeContext];
-  v46 = [v45 applySensitiveConditionsPolicy:v4];
-  v47 = [v46 suppressMessage];
+  pommesBridgeContext = [(ORCHSchemaORCHClientEvent *)self pommesBridgeContext];
+  v46 = [pommesBridgeContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage14 = [v46 suppressMessage];
 
-  if (v47)
+  if (suppressMessage14)
   {
     [(ORCHSchemaORCHClientEvent *)self deletePommesBridgeContext];
   }
 
-  v48 = [(ORCHSchemaORCHClientEvent *)self muxBridgeContext];
-  v49 = [v48 applySensitiveConditionsPolicy:v4];
-  v50 = [v49 suppressMessage];
+  muxBridgeContext = [(ORCHSchemaORCHClientEvent *)self muxBridgeContext];
+  v49 = [muxBridgeContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage15 = [v49 suppressMessage];
 
-  if (v50)
+  if (suppressMessage15)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteMuxBridgeContext];
   }
 
-  v51 = [(ORCHSchemaORCHClientEvent *)self multiUserResultCandidate];
-  v52 = [v51 applySensitiveConditionsPolicy:v4];
-  v53 = [v52 suppressMessage];
+  multiUserResultCandidate = [(ORCHSchemaORCHClientEvent *)self multiUserResultCandidate];
+  v52 = [multiUserResultCandidate applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage16 = [v52 suppressMessage];
 
-  if (v53)
+  if (suppressMessage16)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteMultiUserResultCandidate];
   }
 
-  v54 = [(ORCHSchemaORCHClientEvent *)self multiUserResultSelected];
-  v55 = [v54 applySensitiveConditionsPolicy:v4];
-  v56 = [v55 suppressMessage];
+  multiUserResultSelected = [(ORCHSchemaORCHClientEvent *)self multiUserResultSelected];
+  v55 = [multiUserResultSelected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage17 = [v55 suppressMessage];
 
-  if (v56)
+  if (suppressMessage17)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteMultiUserResultSelected];
   }
 
-  v57 = [(ORCHSchemaORCHClientEvent *)self aceCommandContext];
-  v58 = [v57 applySensitiveConditionsPolicy:v4];
-  v59 = [v58 suppressMessage];
+  aceCommandContext = [(ORCHSchemaORCHClientEvent *)self aceCommandContext];
+  v58 = [aceCommandContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage18 = [v58 suppressMessage];
 
-  if (v59)
+  if (suppressMessage18)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteAceCommandContext];
   }
 
-  v60 = [(ORCHSchemaORCHClientEvent *)self trpFinalized];
-  v61 = [v60 applySensitiveConditionsPolicy:v4];
-  v62 = [v61 suppressMessage];
+  trpFinalized = [(ORCHSchemaORCHClientEvent *)self trpFinalized];
+  v61 = [trpFinalized applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage19 = [v61 suppressMessage];
 
-  if (v62)
+  if (suppressMessage19)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteTrpFinalized];
   }
 
-  v63 = [(ORCHSchemaORCHClientEvent *)self requestMitigated];
-  v64 = [v63 applySensitiveConditionsPolicy:v4];
-  v65 = [v64 suppressMessage];
+  requestMitigated = [(ORCHSchemaORCHClientEvent *)self requestMitigated];
+  v64 = [requestMitigated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage20 = [v64 suppressMessage];
 
-  if (v65)
+  if (suppressMessage20)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteRequestMitigated];
   }
 
-  v66 = [(ORCHSchemaORCHClientEvent *)self nlv3ServerFallbackDeprecated];
-  v67 = [v66 applySensitiveConditionsPolicy:v4];
-  v68 = [v67 suppressMessage];
+  nlv3ServerFallbackDeprecated = [(ORCHSchemaORCHClientEvent *)self nlv3ServerFallbackDeprecated];
+  v67 = [nlv3ServerFallbackDeprecated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage21 = [v67 suppressMessage];
 
-  if (v68)
+  if (suppressMessage21)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteNlv3ServerFallbackDeprecated];
   }
 
-  v69 = [(ORCHSchemaORCHClientEvent *)self uiActivationContext];
-  v70 = [v69 applySensitiveConditionsPolicy:v4];
-  v71 = [v70 suppressMessage];
+  uiActivationContext = [(ORCHSchemaORCHClientEvent *)self uiActivationContext];
+  v70 = [uiActivationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage22 = [v70 suppressMessage];
 
-  if (v71)
+  if (suppressMessage22)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteUiActivationContext];
   }
 
-  v72 = [(ORCHSchemaORCHClientEvent *)self trpCandidateReceived];
-  v73 = [v72 applySensitiveConditionsPolicy:v4];
-  v74 = [v73 suppressMessage];
+  trpCandidateReceived = [(ORCHSchemaORCHClientEvent *)self trpCandidateReceived];
+  v73 = [trpCandidateReceived applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage23 = [v73 suppressMessage];
 
-  if (v74)
+  if (suppressMessage23)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteTrpCandidateReceived];
   }
 
-  v75 = [(ORCHSchemaORCHClientEvent *)self identityBridgeRequestContext];
-  v76 = [v75 applySensitiveConditionsPolicy:v4];
-  v77 = [v76 suppressMessage];
+  identityBridgeRequestContext = [(ORCHSchemaORCHClientEvent *)self identityBridgeRequestContext];
+  v76 = [identityBridgeRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage24 = [v76 suppressMessage];
 
-  if (v77)
+  if (suppressMessage24)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteIdentityBridgeRequestContext];
   }
 
-  v78 = [(ORCHSchemaORCHClientEvent *)self assetSetsReported];
-  v79 = [v78 applySensitiveConditionsPolicy:v4];
-  v80 = [v79 suppressMessage];
+  assetSetsReported = [(ORCHSchemaORCHClientEvent *)self assetSetsReported];
+  v79 = [assetSetsReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage25 = [v79 suppressMessage];
 
-  if (v80)
+  if (suppressMessage25)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteAssetSetsReported];
   }
 
-  v81 = [(ORCHSchemaORCHClientEvent *)self candidateRequestContext];
-  v82 = [v81 applySensitiveConditionsPolicy:v4];
-  v83 = [v82 suppressMessage];
+  candidateRequestContext = [(ORCHSchemaORCHClientEvent *)self candidateRequestContext];
+  v82 = [candidateRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage26 = [v82 suppressMessage];
 
-  if (v83)
+  if (suppressMessage26)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteCandidateRequestContext];
   }
 
-  v84 = [(ORCHSchemaORCHClientEvent *)self powerContextPolicyReported];
-  v85 = [v84 applySensitiveConditionsPolicy:v4];
-  v86 = [v85 suppressMessage];
+  powerContextPolicyReported = [(ORCHSchemaORCHClientEvent *)self powerContextPolicyReported];
+  v85 = [powerContextPolicyReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage27 = [v85 suppressMessage];
 
-  if (v86)
+  if (suppressMessage27)
   {
     [(ORCHSchemaORCHClientEvent *)self deletePowerContextPolicyReported];
   }
 
-  v87 = [(ORCHSchemaORCHClientEvent *)self executeOnRemoteRequestContext];
-  v88 = [v87 applySensitiveConditionsPolicy:v4];
-  v89 = [v88 suppressMessage];
+  executeOnRemoteRequestContext = [(ORCHSchemaORCHClientEvent *)self executeOnRemoteRequestContext];
+  v88 = [executeOnRemoteRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage28 = [v88 suppressMessage];
 
-  if (v89)
+  if (suppressMessage28)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteExecuteOnRemoteRequestContext];
   }
 
-  v90 = [(ORCHSchemaORCHClientEvent *)self assistantdLaunchMetadataReported];
-  v91 = [v90 applySensitiveConditionsPolicy:v4];
-  v92 = [v91 suppressMessage];
+  assistantdLaunchMetadataReported = [(ORCHSchemaORCHClientEvent *)self assistantdLaunchMetadataReported];
+  v91 = [assistantdLaunchMetadataReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage29 = [v91 suppressMessage];
 
-  if (v92)
+  if (suppressMessage29)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteAssistantdLaunchMetadataReported];
   }
 
-  v93 = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowQuerySent];
-  v94 = [v93 applySensitiveConditionsPolicy:v4];
-  v95 = [v94 suppressMessage];
+  intelligenceFlowQuerySent = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowQuerySent];
+  v94 = [intelligenceFlowQuerySent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage30 = [v94 suppressMessage];
 
-  if (v95)
+  if (suppressMessage30)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteIntelligenceFlowQuerySent];
   }
 
-  v96 = [(ORCHSchemaORCHClientEvent *)self subRequestContext];
-  v97 = [v96 applySensitiveConditionsPolicy:v4];
-  v98 = [v97 suppressMessage];
+  subRequestContext = [(ORCHSchemaORCHClientEvent *)self subRequestContext];
+  v97 = [subRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage31 = [v97 suppressMessage];
 
-  if (v98)
+  if (suppressMessage31)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteSubRequestContext];
   }
 
-  v99 = [(ORCHSchemaORCHClientEvent *)self routerRewrittenUtterance];
-  v100 = [v99 applySensitiveConditionsPolicy:v4];
-  v101 = [v100 suppressMessage];
+  routerRewrittenUtterance = [(ORCHSchemaORCHClientEvent *)self routerRewrittenUtterance];
+  v100 = [routerRewrittenUtterance applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage32 = [v100 suppressMessage];
 
-  if (v101)
+  if (suppressMessage32)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteRouterRewrittenUtterance];
   }
 
-  v102 = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeContext];
-  v103 = [v102 applySensitiveConditionsPolicy:v4];
-  v104 = [v103 suppressMessage];
+  nlRouterBridgeContext = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeContext];
+  v103 = [nlRouterBridgeContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage33 = [v103 suppressMessage];
 
-  if (v104)
+  if (suppressMessage33)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteNlRouterBridgeContext];
   }
 
-  v105 = [(ORCHSchemaORCHClientEvent *)self shimToolContext];
-  v106 = [v105 applySensitiveConditionsPolicy:v4];
-  v107 = [v106 suppressMessage];
+  shimToolContext = [(ORCHSchemaORCHClientEvent *)self shimToolContext];
+  v106 = [shimToolContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage34 = [v106 suppressMessage];
 
-  if (v107)
+  if (suppressMessage34)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteShimToolContext];
   }
 
-  v108 = [(ORCHSchemaORCHClientEvent *)self subRequestFallback];
-  v109 = [v108 applySensitiveConditionsPolicy:v4];
-  v110 = [v109 suppressMessage];
+  subRequestFallback = [(ORCHSchemaORCHClientEvent *)self subRequestFallback];
+  v109 = [subRequestFallback applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage35 = [v109 suppressMessage];
 
-  if (v110)
+  if (suppressMessage35)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteSubRequestFallback];
   }
 
-  v111 = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeSubComponentContext];
-  v112 = [v111 applySensitiveConditionsPolicy:v4];
-  v113 = [v112 suppressMessage];
+  nlRouterBridgeSubComponentContext = [(ORCHSchemaORCHClientEvent *)self nlRouterBridgeSubComponentContext];
+  v112 = [nlRouterBridgeSubComponentContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage36 = [v112 suppressMessage];
 
-  if (v113)
+  if (suppressMessage36)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteNlRouterBridgeSubComponentContext];
   }
 
-  v114 = [(ORCHSchemaORCHClientEvent *)self unsupportedLanguageDetected];
-  v115 = [v114 applySensitiveConditionsPolicy:v4];
-  v116 = [v115 suppressMessage];
+  unsupportedLanguageDetected = [(ORCHSchemaORCHClientEvent *)self unsupportedLanguageDetected];
+  v115 = [unsupportedLanguageDetected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage37 = [v115 suppressMessage];
 
-  if (v116)
+  if (suppressMessage37)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteUnsupportedLanguageDetected];
   }
 
-  v117 = [(ORCHSchemaORCHClientEvent *)self trpCandidateCreated];
-  v118 = [v117 applySensitiveConditionsPolicy:v4];
-  v119 = [v118 suppressMessage];
+  trpCandidateCreated = [(ORCHSchemaORCHClientEvent *)self trpCandidateCreated];
+  v118 = [trpCandidateCreated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage38 = [v118 suppressMessage];
 
-  if (v119)
+  if (suppressMessage38)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteTrpCandidateCreated];
   }
 
-  v120 = [(ORCHSchemaORCHClientEvent *)self audioTopologyReported];
-  v121 = [v120 applySensitiveConditionsPolicy:v4];
-  v122 = [v121 suppressMessage];
+  audioTopologyReported = [(ORCHSchemaORCHClientEvent *)self audioTopologyReported];
+  v121 = [audioTopologyReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage39 = [v121 suppressMessage];
 
-  if (v122)
+  if (suppressMessage39)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteAudioTopologyReported];
   }
 
-  v123 = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowRequestContext];
-  v124 = [v123 applySensitiveConditionsPolicy:v4];
-  v125 = [v124 suppressMessage];
+  intelligenceFlowRequestContext = [(ORCHSchemaORCHClientEvent *)self intelligenceFlowRequestContext];
+  v124 = [intelligenceFlowRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage40 = [v124 suppressMessage];
 
-  if (v125)
+  if (suppressMessage40)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteIntelligenceFlowRequestContext];
   }
 
-  v126 = [(ORCHSchemaORCHClientEvent *)self userSessionState];
-  v127 = [v126 applySensitiveConditionsPolicy:v4];
-  v128 = [v127 suppressMessage];
+  userSessionState = [(ORCHSchemaORCHClientEvent *)self userSessionState];
+  v127 = [userSessionState applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage41 = [v127 suppressMessage];
 
-  if (v128)
+  if (suppressMessage41)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteUserSessionState];
   }
 
-  v129 = [(ORCHSchemaORCHClientEvent *)self serverExecutionValuesReported];
-  v130 = [v129 applySensitiveConditionsPolicy:v4];
-  v131 = [v130 suppressMessage];
+  serverExecutionValuesReported = [(ORCHSchemaORCHClientEvent *)self serverExecutionValuesReported];
+  v130 = [serverExecutionValuesReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage42 = [v130 suppressMessage];
 
-  if (v131)
+  if (suppressMessage42)
   {
     [(ORCHSchemaORCHClientEvent *)self deleteServerExecutionValuesReported];
   }
@@ -9373,14 +9373,14 @@ LABEL_214:
 
 - (int)componentName
 {
-  v2 = [(ORCHSchemaORCHClientEvent *)self eventMetadata];
-  v3 = [v2 requestId];
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self eventMetadata];
+  requestId = [eventMetadata requestId];
 
-  if (v3 && ([v3 value], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (requestId && ([requestId value], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [v3 value];
-    v7 = [v6 length] != 0;
+    value = [requestId value];
+    v7 = [value length] != 0;
   }
 
   else
@@ -9393,65 +9393,65 @@ LABEL_214:
 
 - (id)getComponentId
 {
-  v2 = [(ORCHSchemaORCHClientEvent *)self eventMetadata];
-  v3 = [v2 requestId];
+  eventMetadata = [(ORCHSchemaORCHClientEvent *)self eventMetadata];
+  requestId = [eventMetadata requestId];
 
-  if (!v3)
+  if (!requestId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [requestId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [requestId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = requestId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(ORCHSchemaORCHClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 0x27)
+  whichEvent_Type = [(ORCHSchemaORCHClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0x27)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EA658[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EA658[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 0x27)
+  if (tag - 101 > 0x27)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EA798[a3 - 101];
+    return off_1E78EA798[tag - 101];
   }
 }
 

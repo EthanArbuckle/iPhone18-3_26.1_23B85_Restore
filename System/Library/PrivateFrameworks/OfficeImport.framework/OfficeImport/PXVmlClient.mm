@@ -1,50 +1,50 @@
 @interface PXVmlClient
-+ (id)colorWithRecolorInfoColorString:(id)a3;
-+ (void)readClientDataFromShape:(_xmlNode *)a3 toGraphic:(id)a4 state:(id)a5;
++ (id)colorWithRecolorInfoColorString:(id)string;
++ (void)readClientDataFromShape:(_xmlNode *)shape toGraphic:(id)graphic state:(id)state;
 @end
 
 @implementation PXVmlClient
 
-+ (void)readClientDataFromShape:(_xmlNode *)a3 toGraphic:(id)a4 state:(id)a5
++ (void)readClientDataFromShape:(_xmlNode *)shape toGraphic:(id)graphic state:(id)state
 {
-  v34 = a4;
-  v7 = a5;
-  if (OCXFindChild(a3, PXVmlNamespace, "iscomment"))
+  graphicCopy = graphic;
+  stateCopy = state;
+  if (OCXFindChild(shape, PXVmlNamespace, "iscomment"))
   {
-    v8 = [v34 ensureClientDataOfClass:objc_opt_class()];
+    v8 = [graphicCopy ensureClientDataOfClass:objc_opt_class()];
     [v8 setIsComment:1];
   }
 
-  v9 = OCXFindChild(a3, PXVmlNamespace, "textdata");
+  v9 = OCXFindChild(shape, PXVmlNamespace, "textdata");
   if (v9)
   {
     v10 = CXDefaultStringAttribute(v9, CXNoNamespace, "id", 0);
     if (v10)
     {
-      v35 = [v7 packagePart];
-      v11 = [v35 package];
-      v12 = [v35 relationshipForIdentifier:v10];
-      v13 = [v12 targetLocation];
-      v14 = [v11 partForLocation:v13];
+      packagePart = [stateCopy packagePart];
+      package = [packagePart package];
+      v12 = [packagePart relationshipForIdentifier:v10];
+      targetLocation = [v12 targetLocation];
+      v14 = [package partForLocation:targetLocation];
 
-      v15 = [v14 data];
-      if (v15)
+      data = [v14 data];
+      if (data)
       {
         objc_opt_class();
-        v33 = v7;
-        v16 = v34;
+        v33 = stateCopy;
+        v16 = graphicCopy;
         objc_opt_class();
-        [PXLegacyText readLegacyTextFromData:v15 toShape:v16 state:v33];
+        [PXLegacyText readLegacyTextFromData:data toShape:v16 state:v33];
 
-        v7 = v33;
+        stateCopy = v33;
       }
 
-      v17 = [v12 targetLocation];
-      [v11 resetPartForLocation:v17];
+      targetLocation2 = [v12 targetLocation];
+      [package resetPartForLocation:targetLocation2];
     }
   }
 
-  v18 = OCXFindChild(a3, CXNoNamespace, "recolorinfo");
+  v18 = OCXFindChild(shape, CXNoNamespace, "recolorinfo");
   v19 = v18;
   if (v18 && CXDefaultBoolAttribute(v18, CXNoNamespace, "recolorstate", 1))
   {
@@ -77,7 +77,7 @@ LABEL_28:
       v22 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:v21];
     }
 
-    v31 = [v34 ensureClientDataOfClass:objc_opt_class()];
+    v31 = [graphicCopy ensureClientDataOfClass:objc_opt_class()];
     v32 = v22;
     v30 = [[OADImageRecolorInfo alloc] initWithColors:v36 fills:v22];
     [v31 setImageRecolorInfo:v30];
@@ -114,34 +114,34 @@ LABEL_28:
 LABEL_29:
 }
 
-+ (id)colorWithRecolorInfoColorString:(id)a3
++ (id)colorWithRecolorInfoColorString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (!stringCopy)
   {
     goto LABEL_12;
   }
 
-  if ([v3 hasPrefix:{@"rgb(", "hasSuffix:", @")"}])
+  if ([stringCopy hasPrefix:{@"rgb(", "hasSuffix:", @")"}])
   {
     v5 = objc_msgSend(v4, "substringWithRange:", objc_msgSend(@"rgb("), "length", objc_msgSend(v4, "length") - (objc_msgSend(@"rgb("), "length" + objc_msgSend(@""), "length")));
     v6 = [v5 componentsSeparatedByString:{@", "}];
     if ([v6 count] == 3)
     {
       v7 = [v6 objectAtIndex:0];
-      v8 = [v7 intValue];
+      intValue = [v7 intValue];
 
       v9 = [v6 objectAtIndex:1];
       LODWORD(v7) = [v9 intValue];
 
       v10 = [v6 objectAtIndex:2];
-      v11 = [v10 intValue];
+      intValue2 = [v10 intValue];
 
       v12 = [OADRgbColor alloc];
-      *&v13 = v8;
+      *&v13 = intValue;
       *&v14 = v7;
-      *&v15 = v11;
+      *&v15 = intValue2;
       v16 = [(OADRgbColor *)v12 initWithRedByte:v13 greenByte:v14 blueByte:v15];
     }
 

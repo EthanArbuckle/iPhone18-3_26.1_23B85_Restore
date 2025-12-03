@@ -1,15 +1,15 @@
 @interface NowPlayingTrackTitleStackViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation NowPlayingTrackTitleStackViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NowPlayingTrackTitleStackView" hasInstanceMethod:@"accessibilityTitleLabelText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NowPlayingTrackTitleStackView" hasInstanceMethod:@"accessibilitySubtitleLabelText" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NowPlayingTrackTitleStackView" hasInstanceMethod:@"accessibilityTitleLabelText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NowPlayingTrackTitleStackView" hasInstanceMethod:@"accessibilitySubtitleLabelText" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

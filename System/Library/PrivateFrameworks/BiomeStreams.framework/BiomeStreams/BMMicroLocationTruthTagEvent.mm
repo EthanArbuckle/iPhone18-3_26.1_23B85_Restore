@@ -1,9 +1,9 @@
 @interface BMMicroLocationTruthTagEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMMicroLocationTruthTagEvent)initWithAbsoluteTimestamp:(double)a3 clientBundleIdentifier:(id)a4 truthTagIdentifier:(id)a5 recordingRequestIdentifier:(id)a6;
-- (BMMicroLocationTruthTagEvent)initWithProto:(id)a3;
-- (BMMicroLocationTruthTagEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMMicroLocationTruthTagEvent)initWithAbsoluteTimestamp:(double)timestamp clientBundleIdentifier:(id)identifier truthTagIdentifier:(id)tagIdentifier recordingRequestIdentifier:(id)requestIdentifier;
+- (BMMicroLocationTruthTagEvent)initWithProto:(id)proto;
+- (BMMicroLocationTruthTagEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)proto;
 - (unint64_t)hash;
@@ -11,27 +11,27 @@
 
 @implementation BMMicroLocationTruthTagEvent
 
-- (BMMicroLocationTruthTagEvent)initWithAbsoluteTimestamp:(double)a3 clientBundleIdentifier:(id)a4 truthTagIdentifier:(id)a5 recordingRequestIdentifier:(id)a6
+- (BMMicroLocationTruthTagEvent)initWithAbsoluteTimestamp:(double)timestamp clientBundleIdentifier:(id)identifier truthTagIdentifier:(id)tagIdentifier recordingRequestIdentifier:(id)requestIdentifier
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  tagIdentifierCopy = tagIdentifier;
+  requestIdentifierCopy = requestIdentifier;
   v22.receiver = self;
   v22.super_class = BMMicroLocationTruthTagEvent;
   v13 = [(BMMicroLocationTruthTagEvent *)&v22 init];
   v14 = v13;
   if (v13)
   {
-    v13->_absoluteTimestamp = a3;
-    v15 = [v10 copy];
+    v13->_absoluteTimestamp = timestamp;
+    v15 = [identifierCopy copy];
     clientBundleIdentifier = v14->_clientBundleIdentifier;
     v14->_clientBundleIdentifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [tagIdentifierCopy copy];
     truthTagIdentifier = v14->_truthTagIdentifier;
     v14->_truthTagIdentifier = v17;
 
-    v19 = [v12 copy];
+    v19 = [requestIdentifierCopy copy];
     recordingRequestIdentifier = v14->_recordingRequestIdentifier;
     v14->_recordingRequestIdentifier = v19;
   }
@@ -39,12 +39,12 @@
   return v14;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (version == 1)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -52,7 +52,7 @@
     v8 = __biome_log_for_category();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [BMMicroLocationTruthTagEvent eventWithData:a4 dataVersion:v8];
+      [BMMicroLocationTruthTagEvent eventWithData:version dataVersion:v8];
     }
 
     v7 = 0;
@@ -63,19 +63,19 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMMicroLocationTruthTagEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMMicroLocationTruthTagEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMMicroLocationTruthTagEvent)initWithProto:(id)a3
+- (BMMicroLocationTruthTagEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -91,42 +91,42 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
+  v5 = protoCopy;
   [v5 absoluteTimestamp];
   v7 = v6;
-  v8 = [v5 clientBundleId];
+  clientBundleId = [v5 clientBundleId];
   v9 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v10 = [v5 truthTagIdentifier];
-  v11 = [v9 initWithUUIDString:v10];
+  truthTagIdentifier = [v5 truthTagIdentifier];
+  v11 = [v9 initWithUUIDString:truthTagIdentifier];
   v12 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v13 = [v5 recordingRequestIdentifier];
+  recordingRequestIdentifier = [v5 recordingRequestIdentifier];
 
-  v14 = [v12 initWithUUIDString:v13];
-  self = [(BMMicroLocationTruthTagEvent *)self initWithAbsoluteTimestamp:v8 clientBundleIdentifier:v11 truthTagIdentifier:v14 recordingRequestIdentifier:v7];
+  v14 = [v12 initWithUUIDString:recordingRequestIdentifier];
+  self = [(BMMicroLocationTruthTagEvent *)self initWithAbsoluteTimestamp:clientBundleId clientBundleIdentifier:v11 truthTagIdentifier:v14 recordingRequestIdentifier:v7];
 
-  v15 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v15;
+  return selfCopy;
 }
 
-- (BMMicroLocationTruthTagEvent)initWithProtoData:(id)a3
+- (BMMicroLocationTruthTagEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBMicroLocationTruthTagEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBMicroLocationTruthTagEvent alloc] initWithData:dataCopy];
 
     self = [(BMMicroLocationTruthTagEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -134,11 +134,11 @@ LABEL_8:
   v3 = objc_opt_new();
   [v3 setAbsoluteTimestamp:self->_absoluteTimestamp];
   [v3 setClientBundleId:self->_clientBundleIdentifier];
-  v4 = [(NSUUID *)self->_truthTagIdentifier UUIDString];
-  [v3 setTruthTagIdentifier:v4];
+  uUIDString = [(NSUUID *)self->_truthTagIdentifier UUIDString];
+  [v3 setTruthTagIdentifier:uUIDString];
 
-  v5 = [(NSUUID *)self->_recordingRequestIdentifier UUIDString];
-  [v3 setRecordingRequestIdentifier:v5];
+  uUIDString2 = [(NSUUID *)self->_recordingRequestIdentifier UUIDString];
+  [v3 setRecordingRequestIdentifier:uUIDString2];
 
   return v3;
 }
@@ -154,13 +154,13 @@ LABEL_8:
   return v7 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = equalCopy;
     absoluteTimestamp = self->_absoluteTimestamp;
     [v7 absoluteTimestamp];
     v10 = v9;
@@ -168,8 +168,8 @@ LABEL_8:
     v12 = clientBundleIdentifier;
     if (!clientBundleIdentifier)
     {
-      v3 = [v7 clientBundleIdentifier];
-      if (!v3)
+      clientBundleIdentifier = [v7 clientBundleIdentifier];
+      if (!clientBundleIdentifier)
       {
         v13 = 1;
 LABEL_9:
@@ -179,8 +179,8 @@ LABEL_10:
         v16 = truthTagIdentifier;
         if (!truthTagIdentifier)
         {
-          v4 = [v7 truthTagIdentifier];
-          if (!v4)
+          truthTagIdentifier = [v7 truthTagIdentifier];
+          if (!truthTagIdentifier)
           {
             v18 = 1;
 LABEL_16:
@@ -191,8 +191,8 @@ LABEL_17:
             v21 = recordingRequestIdentifier;
             if (!recordingRequestIdentifier)
             {
-              v4 = [v7 recordingRequestIdentifier];
-              if (!v4)
+              truthTagIdentifier = [v7 recordingRequestIdentifier];
+              if (!truthTagIdentifier)
               {
                 v23 = 1;
                 goto LABEL_23;
@@ -201,8 +201,8 @@ LABEL_17:
               v21 = self->_recordingRequestIdentifier;
             }
 
-            v22 = [v7 recordingRequestIdentifier];
-            v23 = [(NSUUID *)v21 isEqual:v22];
+            recordingRequestIdentifier = [v7 recordingRequestIdentifier];
+            v23 = [(NSUUID *)v21 isEqual:recordingRequestIdentifier];
 
             if (recordingRequestIdentifier)
             {
@@ -220,8 +220,8 @@ LABEL_23:
           v16 = self->_truthTagIdentifier;
         }
 
-        v17 = [v7 truthTagIdentifier];
-        v18 = [(NSUUID *)v16 isEqual:v17];
+        truthTagIdentifier2 = [v7 truthTagIdentifier];
+        v18 = [(NSUUID *)v16 isEqual:truthTagIdentifier2];
 
         if (truthTagIdentifier)
         {
@@ -234,8 +234,8 @@ LABEL_23:
       v12 = self->_clientBundleIdentifier;
     }
 
-    v4 = [v7 clientBundleIdentifier];
-    v13 = [(NSString *)v12 isEqualToString:v4];
+    truthTagIdentifier = [v7 clientBundleIdentifier];
+    v13 = [(NSString *)v12 isEqualToString:truthTagIdentifier];
 
     if (clientBundleIdentifier)
     {

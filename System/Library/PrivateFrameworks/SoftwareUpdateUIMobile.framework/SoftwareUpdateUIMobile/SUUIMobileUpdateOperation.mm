@@ -1,46 +1,46 @@
 @interface SUUIMobileUpdateOperation
 + (id)_generateStateTable;
-- (BOOL)beginOperation:(int64_t)a3 ofUnattendedPurge:(BOOL)a4 andUnattendedInstall:(BOOL)a5 descriptor:(id)a6 agreementStatusRegistry:(id)a7;
+- (BOOL)beginOperation:(int64_t)operation ofUnattendedPurge:(BOOL)purge andUnattendedInstall:(BOOL)install descriptor:(id)descriptor agreementStatusRegistry:(id)registry;
 - (BOOL)deviceSupportsCellularCapability;
-- (BOOL)hasAcceptedTermsAndConditionsOfDescriptorSync:(id)a3;
+- (BOOL)hasAcceptedTermsAndConditionsOfDescriptorSync:(id)sync;
 - (BOOL)isActive;
-- (BOOL)isCancelableState:(id)a3;
-- (BOOL)shouldConsiderErrorAsSuccessfulCase:(id)a3;
+- (BOOL)isCancelableState:(id)state;
+- (BOOL)shouldConsiderErrorAsSuccessfulCase:(id)case;
 - (NSString)identifier;
 - (OS_dispatch_queue)completionQueue;
 - (OS_dispatch_queue)delegateCallbackQueue;
-- (SUUIMobileUpdateOperation)initWithIdentifier:(id)a3 options:(id)a4 usingSUManagerClient:(id)a5 delegateCallbackQueue:(id)a6 withCompletionQueue:(id)a7;
+- (SUUIMobileUpdateOperation)initWithIdentifier:(id)identifier options:(id)options usingSUManagerClient:(id)client delegateCallbackQueue:(id)queue withCompletionQueue:(id)completionQueue;
 - (SUUIUpdateOperationDelegate)delegate;
 - (id)baseDomain;
-- (int64_t)actionUnknownAction:(id)a3 error:(id *)a4;
-- (int64_t)fsmAction_AquireKeybag:(id)a3 error:(id *)a4;
-- (int64_t)fsmAction_InitiateUpdateDownload:(id)a3 error:(id *)a4;
-- (int64_t)fsmAction_InitiateUpdateInstallation:(id)a3 error:(id *)a4;
-- (int64_t)fsmAction_PrepareUpdateProcess:(id)a3 error:(id *)a4;
-- (int64_t)fsmAction_PresentDownloadConstraints:(id)a3 error:(id *)a4;
-- (int64_t)fsmAction_PresentTermsConditions:(id)a3 error:(id *)a4;
-- (int64_t)fsmAction_PurgeSpace:(id)a3 error:(id *)a4;
-- (int64_t)fsmAction_ReportUpdateOperationOutcome:(id)a3 error:(id *)a4;
-- (int64_t)fsmAction_ResolveUpdateOperation:(id)a3 error:(id *)a4;
-- (int64_t)fsmAction_ScheduleUpdate:(id)a3 error:(id *)a4;
-- (int64_t)performAction:(id)a3 onEvent:(id)a4 inState:(id)a5 withInfo:(id)a6 nextState:(id)a7 error:(id *)a8;
-- (void)cancel:(id)a3;
-- (void)downloadAndInstallUpdate:(id)a3 withContext:(id)a4 delegate:(id)a5 completionHandler:(id)a6;
-- (void)downloadAndScheduleUpdate:(id)a3 forInstallationTonightWithContext:(id)a4 delegate:(id)a5 completionHandler:(id)a6;
-- (void)downloadUpdate:(id)a3 withContext:(id)a4 delegate:(id)a5 completionHandler:(id)a6;
-- (void)hasAcceptedTermsAndConditionsOfDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)installUpdate:(id)a3 withContext:(id)a4 delegate:(id)a5 completionHandler:(id)a6;
+- (int64_t)actionUnknownAction:(id)action error:(id *)error;
+- (int64_t)fsmAction_AquireKeybag:(id)keybag error:(id *)error;
+- (int64_t)fsmAction_InitiateUpdateDownload:(id)download error:(id *)error;
+- (int64_t)fsmAction_InitiateUpdateInstallation:(id)installation error:(id *)error;
+- (int64_t)fsmAction_PrepareUpdateProcess:(id)process error:(id *)error;
+- (int64_t)fsmAction_PresentDownloadConstraints:(id)constraints error:(id *)error;
+- (int64_t)fsmAction_PresentTermsConditions:(id)conditions error:(id *)error;
+- (int64_t)fsmAction_PurgeSpace:(id)space error:(id *)error;
+- (int64_t)fsmAction_ReportUpdateOperationOutcome:(id)outcome error:(id *)error;
+- (int64_t)fsmAction_ResolveUpdateOperation:(id)operation error:(id *)error;
+- (int64_t)fsmAction_ScheduleUpdate:(id)update error:(id *)error;
+- (int64_t)performAction:(id)action onEvent:(id)event inState:(id)state withInfo:(id)info nextState:(id)nextState error:(id *)error;
+- (void)cancel:(id)cancel;
+- (void)downloadAndInstallUpdate:(id)update withContext:(id)context delegate:(id)delegate completionHandler:(id)handler;
+- (void)downloadAndScheduleUpdate:(id)update forInstallationTonightWithContext:(id)context delegate:(id)delegate completionHandler:(id)handler;
+- (void)downloadUpdate:(id)update withContext:(id)context delegate:(id)delegate completionHandler:(id)handler;
+- (void)hasAcceptedTermsAndConditionsOfDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)installUpdate:(id)update withContext:(id)context delegate:(id)delegate completionHandler:(id)handler;
 - (void)invalidateMachine;
-- (void)promoteDownloadToUserInitiated:(id)a3 withContext:(id)a4 delegate:(id)a5 completionHandler:(id)a6;
-- (void)purgeDownload:(id)a3 withContext:(id)a4 delegate:(id)a5 completionHandler:(id)a6;
-- (void)respondToTermsAndConditionsOfDescriptor:(id)a3 withResponse:(int64_t)a4 completionHandler:(id)a5;
-- (void)respondToTermsAndConditionsOfDescriptorSync:(id)a3 withResponse:(int64_t)a4;
-- (void)scheduleUpdate:(id)a3 forInstallationTonightWithContext:(id)a4 delegate:(id)a5 completionHandler:(id)a6;
-- (void)setCompletionQueue:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDelegateCallbackQueue:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)unscheduleUpdate:(id)a3 forInstallationTonightWithContext:(id)a4 delegate:(id)a5 completionHandler:(id)a6;
+- (void)promoteDownloadToUserInitiated:(id)initiated withContext:(id)context delegate:(id)delegate completionHandler:(id)handler;
+- (void)purgeDownload:(id)download withContext:(id)context delegate:(id)delegate completionHandler:(id)handler;
+- (void)respondToTermsAndConditionsOfDescriptor:(id)descriptor withResponse:(int64_t)response completionHandler:(id)handler;
+- (void)respondToTermsAndConditionsOfDescriptorSync:(id)sync withResponse:(int64_t)response;
+- (void)scheduleUpdate:(id)update forInstallationTonightWithContext:(id)context delegate:(id)delegate completionHandler:(id)handler;
+- (void)setCompletionQueue:(id)queue;
+- (void)setDelegate:(id)delegate;
+- (void)setDelegateCallbackQueue:(id)queue;
+- (void)setIdentifier:(id)identifier;
+- (void)unscheduleUpdate:(id)update forInstallationTonightWithContext:(id)context delegate:(id)delegate completionHandler:(id)handler;
 @end
 
 @implementation SUUIMobileUpdateOperation
@@ -48,7 +48,7 @@
 + (id)_generateStateTable
 {
   v180[10] = *MEMORY[0x277D85DE8];
-  v76[2] = a1;
+  v76[2] = self;
   v76[1] = a2;
   v19 = MEMORY[0x277D64E88];
   v179[0] = *MEMORY[0x277D64E88];
@@ -444,14 +444,14 @@
 
 - (NSString)identifier
 {
-  v5 = self;
+  selfCopy = self;
   v4[2] = a2;
   v4[0] = 3;
   p_lock = &self->_lock;
   v7 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v4[1] = p_lock;
-  v6 = MEMORY[0x277D82BE0](v5->_identifier);
+  v6 = MEMORY[0x277D82BE0](selfCopy->_identifier);
   v9 = v4;
   os_unfair_recursive_lock_unlock();
   v2 = v6;
@@ -459,18 +459,18 @@
   return v2;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v3[0] = 3;
-  p_lock = &v5->_lock;
+  p_lock = &selfCopy->_lock;
   v6 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v3[1] = p_lock;
-  objc_storeStrong(&v5->_identifier, location[0]);
+  objc_storeStrong(&selfCopy->_identifier, location[0]);
   v8 = v3;
   os_unfair_recursive_lock_unlock();
   objc_storeStrong(location, 0);
@@ -478,14 +478,14 @@
 
 - (SUUIUpdateOperationDelegate)delegate
 {
-  v5 = self;
+  selfCopy = self;
   v4[2] = a2;
   v4[0] = 3;
   p_lock = &self->_lock;
   v7 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v4[1] = p_lock;
-  v6 = MEMORY[0x277D82BE0](v5->_delegate);
+  v6 = MEMORY[0x277D82BE0](selfCopy->_delegate);
   v9 = v4;
   os_unfair_recursive_lock_unlock();
   v2 = v6;
@@ -493,18 +493,18 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, delegate);
   v3[0] = 3;
-  p_lock = &v5->_lock;
+  p_lock = &selfCopy->_lock;
   v6 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v3[1] = p_lock;
-  objc_storeStrong(&v5->_delegate, location[0]);
+  objc_storeStrong(&selfCopy->_delegate, location[0]);
   v8 = v3;
   os_unfair_recursive_lock_unlock();
   objc_storeStrong(location, 0);
@@ -512,14 +512,14 @@
 
 - (OS_dispatch_queue)completionQueue
 {
-  v5 = self;
+  selfCopy = self;
   v4[2] = a2;
   v4[0] = 3;
   p_lock = &self->_lock;
   v7 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v4[1] = p_lock;
-  v6 = MEMORY[0x277D82BE0](v5->_completionQueue);
+  v6 = MEMORY[0x277D82BE0](selfCopy->_completionQueue);
   v9 = v4;
   os_unfair_recursive_lock_unlock();
   v2 = v6;
@@ -527,18 +527,18 @@
   return v2;
 }
 
-- (void)setCompletionQueue:(id)a3
+- (void)setCompletionQueue:(id)queue
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, queue);
   v3[0] = 3;
-  p_lock = &v5->_lock;
+  p_lock = &selfCopy->_lock;
   v6 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v3[1] = p_lock;
-  objc_storeStrong(&v5->_completionQueue, location[0]);
+  objc_storeStrong(&selfCopy->_completionQueue, location[0]);
   v8 = v3;
   os_unfair_recursive_lock_unlock();
   objc_storeStrong(location, 0);
@@ -546,14 +546,14 @@
 
 - (OS_dispatch_queue)delegateCallbackQueue
 {
-  v5 = self;
+  selfCopy = self;
   v4[2] = a2;
   v4[0] = 3;
   p_lock = &self->_lock;
   v7 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v4[1] = p_lock;
-  v6 = MEMORY[0x277D82BE0](v5->_delegateCallbackQueue);
+  v6 = MEMORY[0x277D82BE0](selfCopy->_delegateCallbackQueue);
   v9 = v4;
   os_unfair_recursive_lock_unlock();
   v2 = v6;
@@ -561,59 +561,59 @@
   return v2;
 }
 
-- (void)setDelegateCallbackQueue:(id)a3
+- (void)setDelegateCallbackQueue:(id)queue
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, queue);
   v3[0] = 3;
-  p_lock = &v5->_lock;
+  p_lock = &selfCopy->_lock;
   v6 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v3[1] = p_lock;
-  objc_storeStrong(&v5->_delegateCallbackQueue, location[0]);
+  objc_storeStrong(&selfCopy->_delegateCallbackQueue, location[0]);
   v8 = v3;
   os_unfair_recursive_lock_unlock();
   objc_storeStrong(location, 0);
 }
 
-- (int64_t)performAction:(id)a3 onEvent:(id)a4 inState:(id)a5 withInfo:(id)a6 nextState:(id)a7 error:(id *)a8
+- (int64_t)performAction:(id)action onEvent:(id)event inState:(id)state withInfo:(id)info nextState:(id)nextState error:(id *)error
 {
-  v38 = self;
+  selfCopy = self;
   v37 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, action);
   v35 = 0;
-  objc_storeStrong(&v35, a4);
+  objc_storeStrong(&v35, event);
   v34 = 0;
-  objc_storeStrong(&v34, a5);
+  objc_storeStrong(&v34, state);
   v33 = 0;
-  objc_storeStrong(&v33, a6);
+  objc_storeStrong(&v33, info);
   v32 = 0;
-  objc_storeStrong(&v32, a7);
-  v31 = a8;
-  v20 = [(SUUIMobileUpdateOperation *)v38 updateFSM];
-  v19 = [(SUCoreFSM *)v20 extendedStateQueue];
-  dispatch_assert_queue_V2(v19);
-  MEMORY[0x277D82BD8](v19);
-  MEMORY[0x277D82BD8](v20);
+  objc_storeStrong(&v32, nextState);
+  errorCopy = error;
+  updateFSM = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+  extendedStateQueue = [(SUCoreFSM *)updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](updateFSM);
   v30[0] = 3;
-  p_lock = &v38->_lock;
+  p_lock = &selfCopy->_lock;
   v40 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v30[1] = p_lock;
-  if ([(SUUIMobileUpdateOperation *)v38 canceled]&& ![(SUUIMobileUpdateOperation *)v38 isCancelableState:v34])
+  if ([(SUUIMobileUpdateOperation *)selfCopy canceled]&& ![(SUUIMobileUpdateOperation *)selfCopy isCancelableState:v34])
   {
-    v13 = [(SUUIMobileUpdateOperation *)v38 updateFSM];
-    v12 = [(SUCoreFSM *)v13 diag];
+    updateFSM2 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+    diag = [(SUCoreFSM *)updateFSM2 diag];
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"It's too late to cancel the operation in the current state. State: %@", v34];
-    [v12 trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:? withResult:? withError:?];
+    [diag trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:? withResult:? withError:?];
     MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
-    objc_initWeak(&from, v38);
-    queue = [(SUUIMobileUpdateOperation *)v38 completionQueue];
+    MEMORY[0x277D82BD8](diag);
+    MEMORY[0x277D82BD8](updateFSM2);
+    objc_initWeak(&from, selfCopy);
+    queue = [(SUUIMobileUpdateOperation *)selfCopy completionQueue];
     v22 = MEMORY[0x277D85DD0];
     v23 = -1073741824;
     v24 = 0;
@@ -623,12 +623,12 @@
     v27[1] = v37;
     dispatch_async(queue, &v22);
     MEMORY[0x277D82BD8](queue);
-    [(SUUIMobileUpdateOperation *)v38 setCanceled:0];
+    [(SUUIMobileUpdateOperation *)selfCopy setCanceled:0];
     objc_destroyWeak(v27);
     objc_destroyWeak(&from);
   }
 
-  if (!-[SUUIMobileUpdateOperation canceled](v38, "canceled") || ([location isEqualToString:*MEMORY[0x277D64CE0]] & 1) != 0)
+  if (!-[SUUIMobileUpdateOperation canceled](selfCopy, "canceled") || ([location isEqualToString:*MEMORY[0x277D64CE0]] & 1) != 0)
   {
     v29 = 2;
   }
@@ -663,57 +663,57 @@
 
     else if ([location isEqualToString:*MEMORY[0x277D64C98]])
     {
-      v21 = [(SUUIMobileUpdateOperation *)v38 fsmAction_PrepareUpdateProcess:v33 error:v31];
+      v21 = [(SUUIMobileUpdateOperation *)selfCopy fsmAction_PrepareUpdateProcess:v33 error:errorCopy];
     }
 
     else if ([location isEqualToString:*MEMORY[0x277D64CB0]])
     {
-      v21 = [(SUUIMobileUpdateOperation *)v38 fsmAction_PurgeSpace:v33 error:v31];
+      v21 = [(SUUIMobileUpdateOperation *)selfCopy fsmAction_PurgeSpace:v33 error:errorCopy];
     }
 
     else if ([location isEqualToString:*MEMORY[0x277D64C70]])
     {
-      v21 = [(SUUIMobileUpdateOperation *)v38 fsmAction_AquireKeybag:v33 error:v31];
+      v21 = [(SUUIMobileUpdateOperation *)selfCopy fsmAction_AquireKeybag:v33 error:errorCopy];
     }
 
     else if ([location isEqualToString:*MEMORY[0x277D64CA8]])
     {
-      v21 = [(SUUIMobileUpdateOperation *)v38 fsmAction_PresentTermsConditions:v33 error:v31];
+      v21 = [(SUUIMobileUpdateOperation *)selfCopy fsmAction_PresentTermsConditions:v33 error:errorCopy];
     }
 
     else if ([location isEqualToString:*MEMORY[0x277D64CE8]])
     {
-      v21 = [(SUUIMobileUpdateOperation *)v38 fsmAction_ResolveUpdateOperation:v33 error:v31];
+      v21 = [(SUUIMobileUpdateOperation *)selfCopy fsmAction_ResolveUpdateOperation:v33 error:errorCopy];
     }
 
     else if ([location isEqualToString:*MEMORY[0x277D64CA0]])
     {
-      v21 = [(SUUIMobileUpdateOperation *)v38 fsmAction_PresentDownloadConstraints:v33 error:v31];
+      v21 = [(SUUIMobileUpdateOperation *)selfCopy fsmAction_PresentDownloadConstraints:v33 error:errorCopy];
     }
 
     else if ([location isEqualToString:*MEMORY[0x277D64C80]])
     {
-      v21 = [(SUUIMobileUpdateOperation *)v38 fsmAction_InitiateUpdateDownload:v33 error:v31];
+      v21 = [(SUUIMobileUpdateOperation *)selfCopy fsmAction_InitiateUpdateDownload:v33 error:errorCopy];
     }
 
     else if ([location isEqualToString:*MEMORY[0x277D64C88]])
     {
-      v21 = [(SUUIMobileUpdateOperation *)v38 fsmAction_InitiateUpdateInstallation:v33 error:v31];
+      v21 = [(SUUIMobileUpdateOperation *)selfCopy fsmAction_InitiateUpdateInstallation:v33 error:errorCopy];
     }
 
     else if ([location isEqualToString:*MEMORY[0x277D64CF0]])
     {
-      v21 = [(SUUIMobileUpdateOperation *)v38 fsmAction_ScheduleUpdate:v33 error:v31];
+      v21 = [(SUUIMobileUpdateOperation *)selfCopy fsmAction_ScheduleUpdate:v33 error:errorCopy];
     }
 
     else if ([location isEqualToString:*MEMORY[0x277D64CE0]])
     {
-      v21 = [(SUUIMobileUpdateOperation *)v38 fsmAction_ReportUpdateOperationOutcome:v33 error:v31];
+      v21 = [(SUUIMobileUpdateOperation *)selfCopy fsmAction_ReportUpdateOperationOutcome:v33 error:errorCopy];
     }
 
     else
     {
-      v21 = [(SUUIMobileUpdateOperation *)v38 actionUnknownAction:location error:v31];
+      v21 = [(SUUIMobileUpdateOperation *)selfCopy actionUnknownAction:location error:errorCopy];
     }
 
     v39 = v21;
@@ -782,15 +782,15 @@ void __84__SUUIMobileUpdateOperation_performAction_onEvent_inState_withInfo_next
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)fsmAction_PrepareUpdateProcess:(id)a3 error:(id *)a4
+- (int64_t)fsmAction_PrepareUpdateProcess:(id)process error:(id *)error
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  from[1] = a4;
-  objc_initWeak(from, v17);
-  v5 = [(SUUIMobileUpdateOperation *)v17 suClient];
+  objc_storeStrong(&location, process);
+  from[1] = error;
+  objc_initWeak(from, selfCopy);
+  suClient = [(SUUIMobileUpdateOperation *)selfCopy suClient];
   v7 = MEMORY[0x277D85DD0];
   v8 = -1073741824;
   v9 = 0;
@@ -799,8 +799,8 @@ void __84__SUUIMobileUpdateOperation_performAction_onEvent_inState_withInfo_next
   objc_copyWeak(v13, from);
   v13[1] = v16;
   v12 = MEMORY[0x277D82BE0](location);
-  [(SUManagerClient *)v5 download:&v7];
-  MEMORY[0x277D82BD8](v5);
+  [(SUManagerClient *)suClient download:&v7];
+  MEMORY[0x277D82BD8](suClient);
   objc_storeStrong(&v12, 0);
   objc_destroyWeak(v13);
   objc_destroyWeak(from);
@@ -964,83 +964,83 @@ void __66__SUUIMobileUpdateOperation_fsmAction_PrepareUpdateProcess_error___bloc
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)fsmAction_PurgeSpace:(id)a3 error:(id *)a4
+- (int64_t)fsmAction_PurgeSpace:(id)space error:(id *)error
 {
   v75 = *MEMORY[0x277D85DE8];
-  v69 = self;
+  selfCopy = self;
   v68 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v66 = a4;
-  v31 = [(SUUIMobileUpdateOperation *)v69 updateFSM];
-  v30 = [(SUCoreFSM *)v31 extendedStateQueue];
-  dispatch_assert_queue_V2(v30);
-  MEMORY[0x277D82BD8](v30);
-  MEMORY[0x277D82BD8](v31);
+  objc_storeStrong(&location, space);
+  errorCopy = error;
+  updateFSM = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+  extendedStateQueue = [(SUCoreFSM *)updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](updateFSM);
   if (location)
   {
-    v28 = [location currentDownload];
-    v64 = [v28 underlyingDownload];
-    MEMORY[0x277D82BD8](v28);
-    v27 = [v64 descriptor];
-    v26 = [location descriptor];
-    v24 = [v26 underlyingDescriptor];
-    v25 = [v27 isEqual:?];
-    MEMORY[0x277D82BD8](v24);
-    MEMORY[0x277D82BD8](v26);
-    MEMORY[0x277D82BD8](v27);
+    currentDownload = [location currentDownload];
+    underlyingDownload = [currentDownload underlyingDownload];
+    MEMORY[0x277D82BD8](currentDownload);
+    descriptor = [underlyingDownload descriptor];
+    descriptor2 = [location descriptor];
+    underlyingDescriptor = [descriptor2 underlyingDescriptor];
+    v25 = [descriptor isEqual:?];
+    MEMORY[0x277D82BD8](underlyingDescriptor);
+    MEMORY[0x277D82BD8](descriptor2);
+    MEMORY[0x277D82BD8](descriptor);
     if (v25)
     {
-      v23 = [MEMORY[0x277D64B58] updateOperationLogger];
-      v63 = [v23 oslog];
-      MEMORY[0x277D82BD8](v23);
+      updateOperationLogger = [MEMORY[0x277D64B58] updateOperationLogger];
+      oslog = [updateOperationLogger oslog];
+      MEMORY[0x277D82BD8](updateOperationLogger);
       v62 = OS_LOG_TYPE_DEFAULT;
-      if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [location descriptor];
-        v21 = [v22 updateName];
-        v61 = MEMORY[0x277D82BE0](v21);
+        descriptor3 = [location descriptor];
+        updateName = [descriptor3 updateName];
+        v61 = MEMORY[0x277D82BE0](updateName);
         __os_log_helper_16_2_2_8_32_8_66(v74, "[SUUIMobileUpdateOperation fsmAction_PurgeSpace:error:]", v61);
-        _os_log_impl(&dword_26B0B9000, v63, v62, "%s [->%{public}@]: Currently downloading descriptor is the same as requested descriptor, do not purge", v74, 0x16u);
-        MEMORY[0x277D82BD8](v21);
-        MEMORY[0x277D82BD8](v22);
+        _os_log_impl(&dword_26B0B9000, oslog, v62, "%s [->%{public}@]: Currently downloading descriptor is the same as requested descriptor, do not purge", v74, 0x16u);
+        MEMORY[0x277D82BD8](updateName);
+        MEMORY[0x277D82BD8](descriptor3);
         objc_storeStrong(&v61, 0);
       }
 
-      objc_storeStrong(&v63, 0);
-      v20 = [(SUUIMobileUpdateOperation *)v69 updateFSM];
-      [(SUCoreFSM *)v20 postEvent:*MEMORY[0x277D64D78] withInfo:location];
-      MEMORY[0x277D82BD8](v20);
+      objc_storeStrong(&oslog, 0);
+      updateFSM2 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+      [(SUCoreFSM *)updateFSM2 postEvent:*MEMORY[0x277D64D78] withInfo:location];
+      MEMORY[0x277D82BD8](updateFSM2);
       v70 = 0;
       v65 = 1;
     }
 
-    else if (v64)
+    else if (underlyingDownload)
     {
       if ([location isUnattendedPurge])
       {
-        v15 = [MEMORY[0x277D64B58] updateOperationLogger];
-        v57 = [v15 oslog];
-        MEMORY[0x277D82BD8](v15);
+        updateOperationLogger2 = [MEMORY[0x277D64B58] updateOperationLogger];
+        oslog2 = [updateOperationLogger2 oslog];
+        MEMORY[0x277D82BD8](updateOperationLogger2);
         v56 = OS_LOG_TYPE_DEFAULT;
-        if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [location descriptor];
-          v13 = [v14 updateName];
-          v55 = MEMORY[0x277D82BE0](v13);
+          descriptor4 = [location descriptor];
+          updateName2 = [descriptor4 updateName];
+          v55 = MEMORY[0x277D82BE0](updateName2);
           __os_log_helper_16_2_2_8_32_8_66(v72, "[SUUIMobileUpdateOperation fsmAction_PurgeSpace:error:]", v55);
-          _os_log_impl(&dword_26B0B9000, v57, v56, "%s [->%{public}@]: Unattended Purge: Attempting to purge w/o user confirmation", v72, 0x16u);
-          MEMORY[0x277D82BD8](v13);
-          MEMORY[0x277D82BD8](v14);
+          _os_log_impl(&dword_26B0B9000, oslog2, v56, "%s [->%{public}@]: Unattended Purge: Attempting to purge w/o user confirmation", v72, 0x16u);
+          MEMORY[0x277D82BD8](updateName2);
+          MEMORY[0x277D82BD8](descriptor4);
           objc_storeStrong(&v55, 0);
         }
 
-        objc_storeStrong(&v57, 0);
+        objc_storeStrong(&oslog2, 0);
         v54 = objc_alloc_init(MEMORY[0x277D648D8]);
         [v54 setNotifyUser:0];
         [v54 setUserRequested:0];
-        objc_initWeak(&from, v69);
-        v11 = [(SUUIMobileUpdateOperation *)v69 suClient];
+        objc_initWeak(&from, selfCopy);
+        suClient = [(SUUIMobileUpdateOperation *)selfCopy suClient];
         v12 = v54;
         v46 = MEMORY[0x277D85DD0];
         v47 = -1073741824;
@@ -1050,8 +1050,8 @@ void __66__SUUIMobileUpdateOperation_fsmAction_PrepareUpdateProcess_error___bloc
         objc_copyWeak(v52, &from);
         v52[1] = v68;
         v51 = MEMORY[0x277D82BE0](location);
-        [(SUManagerClient *)v11 purgeDownloadWithOptions:v12 withResult:&v46];
-        MEMORY[0x277D82BD8](v11);
+        [(SUManagerClient *)suClient purgeDownloadWithOptions:v12 withResult:&v46];
+        MEMORY[0x277D82BD8](suClient);
         v70 = 0;
         v65 = 1;
         objc_storeStrong(&v51, 0);
@@ -1062,31 +1062,31 @@ void __66__SUUIMobileUpdateOperation_fsmAction_PrepareUpdateProcess_error___bloc
 
       else
       {
-        v10 = [MEMORY[0x277D64B58] updateOperationLogger];
-        oslog = [v10 oslog];
-        MEMORY[0x277D82BD8](v10);
+        updateOperationLogger3 = [MEMORY[0x277D64B58] updateOperationLogger];
+        oslog = [updateOperationLogger3 oslog];
+        MEMORY[0x277D82BD8](updateOperationLogger3);
         v44 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [location descriptor];
-          v8 = [v9 updateName];
-          v43 = MEMORY[0x277D82BE0](v8);
-          v7 = [v64 descriptor];
-          v6 = [v7 humanReadableUpdateName];
-          v42 = MEMORY[0x277D82BE0](v6);
+          descriptor5 = [location descriptor];
+          updateName3 = [descriptor5 updateName];
+          v43 = MEMORY[0x277D82BE0](updateName3);
+          descriptor6 = [underlyingDownload descriptor];
+          humanReadableUpdateName = [descriptor6 humanReadableUpdateName];
+          v42 = MEMORY[0x277D82BE0](humanReadableUpdateName);
           __os_log_helper_16_2_3_8_32_8_66_8_66(v71, "[SUUIMobileUpdateOperation fsmAction_PurgeSpace:error:]", v43, v42);
           _os_log_impl(&dword_26B0B9000, oslog, v44, "%s [->%{public}@]: Attempting to get the user consent to purge the download: %{public}@", v71, 0x20u);
-          MEMORY[0x277D82BD8](v6);
-          MEMORY[0x277D82BD8](v7);
-          MEMORY[0x277D82BD8](v8);
-          MEMORY[0x277D82BD8](v9);
+          MEMORY[0x277D82BD8](humanReadableUpdateName);
+          MEMORY[0x277D82BD8](descriptor6);
+          MEMORY[0x277D82BD8](updateName3);
+          MEMORY[0x277D82BD8](descriptor5);
           objc_storeStrong(&v42, 0);
           objc_storeStrong(&v43, 0);
         }
 
         objc_storeStrong(&oslog, 0);
-        objc_initWeak(&v41, v69);
-        queue = [(SUUIMobileUpdateOperation *)v69 delegateCallbackQueue];
+        objc_initWeak(&v41, selfCopy);
+        queue = [(SUUIMobileUpdateOperation *)selfCopy delegateCallbackQueue];
         v33 = MEMORY[0x277D85DD0];
         v34 = -1073741824;
         v35 = 0;
@@ -1095,7 +1095,7 @@ void __66__SUUIMobileUpdateOperation_fsmAction_PrepareUpdateProcess_error___bloc
         objc_copyWeak(v40, &v41);
         v40[1] = v68;
         v38 = MEMORY[0x277D82BE0](location);
-        v39 = MEMORY[0x277D82BE0](v64);
+        v39 = MEMORY[0x277D82BE0](underlyingDownload);
         dispatch_async(queue, &v33);
         MEMORY[0x277D82BD8](queue);
         v70 = 0;
@@ -1109,38 +1109,38 @@ void __66__SUUIMobileUpdateOperation_fsmAction_PrepareUpdateProcess_error___bloc
 
     else
     {
-      v19 = [MEMORY[0x277D64B58] updateOperationLogger];
-      v60 = [v19 oslog];
-      MEMORY[0x277D82BD8](v19);
+      updateOperationLogger4 = [MEMORY[0x277D64B58] updateOperationLogger];
+      oslog3 = [updateOperationLogger4 oslog];
+      MEMORY[0x277D82BD8](updateOperationLogger4);
       v59 = OS_LOG_TYPE_DEFAULT;
-      if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [location descriptor];
-        v17 = [v18 updateName];
-        v58 = MEMORY[0x277D82BE0](v17);
+        descriptor7 = [location descriptor];
+        updateName4 = [descriptor7 updateName];
+        v58 = MEMORY[0x277D82BE0](updateName4);
         __os_log_helper_16_2_2_8_32_8_66(v73, "[SUUIMobileUpdateOperation fsmAction_PurgeSpace:error:]", v58);
-        _os_log_impl(&dword_26B0B9000, v60, v59, "%s [->%{public}@]: There's no purgable download available.", v73, 0x16u);
-        MEMORY[0x277D82BD8](v17);
-        MEMORY[0x277D82BD8](v18);
+        _os_log_impl(&dword_26B0B9000, oslog3, v59, "%s [->%{public}@]: There's no purgable download available.", v73, 0x16u);
+        MEMORY[0x277D82BD8](updateName4);
+        MEMORY[0x277D82BD8](descriptor7);
         objc_storeStrong(&v58, 0);
       }
 
-      objc_storeStrong(&v60, 0);
-      v16 = [(SUUIMobileUpdateOperation *)v69 updateFSM];
-      [(SUCoreFSM *)v16 postEvent:*MEMORY[0x277D64D78] withInfo:location];
-      MEMORY[0x277D82BD8](v16);
+      objc_storeStrong(&oslog3, 0);
+      updateFSM3 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+      [(SUCoreFSM *)updateFSM3 postEvent:*MEMORY[0x277D64D78] withInfo:location];
+      MEMORY[0x277D82BD8](updateFSM3);
       v70 = 0;
       v65 = 1;
     }
 
-    objc_storeStrong(&v64, 0);
+    objc_storeStrong(&underlyingDownload, 0);
   }
 
   else
   {
-    v29 = [(SUCoreFSM *)v69->_updateFSM diag];
-    [v29 trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v29);
+    diag = [(SUCoreFSM *)selfCopy->_updateFSM diag];
+    [diag trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
     v70 = 8102;
     v65 = 1;
   }
@@ -1538,99 +1538,99 @@ void __56__SUUIMobileUpdateOperation_fsmAction_PurgeSpace_error___block_invoke_3
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)fsmAction_AquireKeybag:(id)a3 error:(id *)a4
+- (int64_t)fsmAction_AquireKeybag:(id)keybag error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v47 = self;
+  selfCopy = self;
   v46 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v44 = a4;
-  v20 = [(SUUIMobileUpdateOperation *)v47 updateFSM];
-  v19 = [(SUCoreFSM *)v20 extendedStateQueue];
-  dispatch_assert_queue_V2(v19);
-  MEMORY[0x277D82BD8](v19);
-  MEMORY[0x277D82BD8](v20);
+  objc_storeStrong(&location, keybag);
+  errorCopy = error;
+  updateFSM = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+  extendedStateQueue = [(SUCoreFSM *)updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](updateFSM);
   if (location)
   {
-    v17 = [(SUUIMobileUpdateOperation *)v47 suClient];
-    v16 = [location descriptor];
-    v14 = [v16 underlyingDescriptor];
-    v15 = [(SUManagerClient *)v17 isInstallationKeybagRequiredForDescriptor:?];
-    MEMORY[0x277D82BD8](v14);
-    MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
+    suClient = [(SUUIMobileUpdateOperation *)selfCopy suClient];
+    descriptor = [location descriptor];
+    underlyingDescriptor = [descriptor underlyingDescriptor];
+    v15 = [(SUManagerClient *)suClient isInstallationKeybagRequiredForDescriptor:?];
+    MEMORY[0x277D82BD8](underlyingDescriptor);
+    MEMORY[0x277D82BD8](descriptor);
+    MEMORY[0x277D82BD8](suClient);
     v42 = v15;
     v41 = v15 & 1;
     v39 = 0;
     v37 = 0;
-    v13 = 0;
+    hasPasscodeSet = 0;
     if ((v15 & 1) == 0)
     {
-      v40 = [location descriptor];
+      descriptor2 = [location descriptor];
       v39 = 1;
-      v13 = 0;
-      if ([v40 isSplatUpdate])
+      hasPasscodeSet = 0;
+      if ([descriptor2 isSplatUpdate])
       {
-        v38 = [MEMORY[0x277D648A8] sharedInstance];
+        mEMORY[0x277D648A8] = [MEMORY[0x277D648A8] sharedInstance];
         v37 = 1;
-        v13 = [v38 hasPasscodeSet];
+        hasPasscodeSet = [mEMORY[0x277D648A8] hasPasscodeSet];
       }
     }
 
     if (v37)
     {
-      MEMORY[0x277D82BD8](v38);
+      MEMORY[0x277D82BD8](mEMORY[0x277D648A8]);
     }
 
     if (v39)
     {
-      MEMORY[0x277D82BD8](v40);
+      MEMORY[0x277D82BD8](descriptor2);
     }
 
-    if (v13)
+    if (hasPasscodeSet)
     {
-      v12 = [MEMORY[0x277D64B58] updateOperationLogger];
-      v36 = [v12 oslog];
-      MEMORY[0x277D82BD8](v12);
+      updateOperationLogger = [MEMORY[0x277D64B58] updateOperationLogger];
+      oslog = [updateOperationLogger oslog];
+      MEMORY[0x277D82BD8](updateOperationLogger);
       v35 = OS_LOG_TYPE_DEFAULT;
-      if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [location descriptor];
-        v10 = [v11 updateName];
-        v34 = MEMORY[0x277D82BE0](v10);
+        descriptor3 = [location descriptor];
+        updateName = [descriptor3 updateName];
+        v34 = MEMORY[0x277D82BE0](updateName);
         __os_log_helper_16_2_2_8_32_8_66(v50, "[SUUIMobileUpdateOperation fsmAction_AquireKeybag:error:]", v34);
-        _os_log_impl(&dword_26B0B9000, v36, v35, "%s [->%{public}@]: Prompting for passcode for splat-only update, but not generating an installation keybag", v50, 0x16u);
-        MEMORY[0x277D82BD8](v10);
-        MEMORY[0x277D82BD8](v11);
+        _os_log_impl(&dword_26B0B9000, oslog, v35, "%s [->%{public}@]: Prompting for passcode for splat-only update, but not generating an installation keybag", v50, 0x16u);
+        MEMORY[0x277D82BD8](updateName);
+        MEMORY[0x277D82BD8](descriptor3);
         objc_storeStrong(&v34, 0);
       }
 
-      objc_storeStrong(&v36, 0);
+      objc_storeStrong(&oslog, 0);
       v41 = 1;
     }
 
     if (v41)
     {
-      v8 = [MEMORY[0x277D64B58] updateOperationLogger];
-      v33 = [v8 oslog];
-      MEMORY[0x277D82BD8](v8);
+      updateOperationLogger2 = [MEMORY[0x277D64B58] updateOperationLogger];
+      oslog2 = [updateOperationLogger2 oslog];
+      MEMORY[0x277D82BD8](updateOperationLogger2);
       v32 = OS_LOG_TYPE_DEFAULT;
-      if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [location descriptor];
-        v6 = [v7 updateName];
-        v31 = MEMORY[0x277D82BE0](v6);
+        descriptor4 = [location descriptor];
+        updateName2 = [descriptor4 updateName];
+        v31 = MEMORY[0x277D82BE0](updateName2);
         __os_log_helper_16_2_4_8_32_8_66_4_0_4_0(v49, "[SUUIMobileUpdateOperation fsmAction_AquireKeybag:error:]", v31, v42 & 1, v41 & 1);
-        _os_log_impl(&dword_26B0B9000, v33, v32, "%s [->%{public}@]: Attempts to create a Keybag by asking the user for the device passcode. isKeybagRequired: %d, askForPasscode: %d", v49, 0x22u);
-        MEMORY[0x277D82BD8](v6);
-        MEMORY[0x277D82BD8](v7);
+        _os_log_impl(&dword_26B0B9000, oslog2, v32, "%s [->%{public}@]: Attempts to create a Keybag by asking the user for the device passcode. isKeybagRequired: %d, askForPasscode: %d", v49, 0x22u);
+        MEMORY[0x277D82BD8](updateName2);
+        MEMORY[0x277D82BD8](descriptor4);
         objc_storeStrong(&v31, 0);
       }
 
-      objc_storeStrong(&v33, 0);
-      objc_initWeak(&from, v47);
-      queue = [(SUUIMobileUpdateOperation *)v47 delegateCallbackQueue];
+      objc_storeStrong(&oslog2, 0);
+      objc_initWeak(&from, selfCopy);
+      queue = [(SUUIMobileUpdateOperation *)selfCopy delegateCallbackQueue];
       v22 = MEMORY[0x277D85DD0];
       v23 = -1073741824;
       v24 = 0;
@@ -1651,9 +1651,9 @@ void __56__SUUIMobileUpdateOperation_fsmAction_PurgeSpace_error___block_invoke_3
 
     else
     {
-      v9 = [(SUUIMobileUpdateOperation *)v47 updateFSM];
-      [(SUCoreFSM *)v9 postEvent:*MEMORY[0x277D64D68] withInfo:location];
-      MEMORY[0x277D82BD8](v9);
+      updateFSM2 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+      [(SUCoreFSM *)updateFSM2 postEvent:*MEMORY[0x277D64D68] withInfo:location];
+      MEMORY[0x277D82BD8](updateFSM2);
       v48 = 0;
       v43 = 1;
     }
@@ -1661,9 +1661,9 @@ void __56__SUUIMobileUpdateOperation_fsmAction_PurgeSpace_error___block_invoke_3
 
   else
   {
-    v18 = [(SUCoreFSM *)v47->_updateFSM diag];
-    [v18 trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v18);
+    diag = [(SUCoreFSM *)selfCopy->_updateFSM diag];
+    [diag trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
     v48 = 8102;
     v43 = 1;
   }
@@ -2048,69 +2048,69 @@ void __58__SUUIMobileUpdateOperation_fsmAction_AquireKeybag_error___block_invoke
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)fsmAction_PresentTermsConditions:(id)a3 error:(id *)a4
+- (int64_t)fsmAction_PresentTermsConditions:(id)conditions error:(id *)error
 {
   v67 = *MEMORY[0x277D85DE8];
-  v63 = self;
+  selfCopy = self;
   v62 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v60 = a4;
-  v41 = [(SUUIMobileUpdateOperation *)v63 updateFSM];
-  v40 = [(SUCoreFSM *)v41 extendedStateQueue];
-  dispatch_assert_queue_V2(v40);
-  MEMORY[0x277D82BD8](v40);
-  MEMORY[0x277D82BD8](v41);
+  objc_storeStrong(&location, conditions);
+  errorCopy = error;
+  updateFSM = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+  extendedStateQueue = [(SUCoreFSM *)updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](updateFSM);
   if (location)
   {
-    v38 = [location currentDownload];
-    MEMORY[0x277D82BD8](v38);
-    if (!v38)
+    currentDownload = [location currentDownload];
+    MEMORY[0x277D82BD8](currentDownload);
+    if (!currentDownload)
     {
       goto LABEL_8;
     }
 
-    v37 = [location currentDownload];
-    v36 = [v37 underlyingDownload];
-    v34 = [v36 downloadOptions];
-    v35 = [v34 termsAndConditionsAgreementStatus];
-    MEMORY[0x277D82BD8](v34);
-    MEMORY[0x277D82BD8](v36);
-    MEMORY[0x277D82BD8](v37);
-    v58 = v35;
-    v33 = [MEMORY[0x277D64B58] updateOperationLogger];
-    v57 = [v33 oslog];
-    MEMORY[0x277D82BD8](v33);
+    currentDownload2 = [location currentDownload];
+    underlyingDownload = [currentDownload2 underlyingDownload];
+    downloadOptions = [underlyingDownload downloadOptions];
+    termsAndConditionsAgreementStatus = [downloadOptions termsAndConditionsAgreementStatus];
+    MEMORY[0x277D82BD8](downloadOptions);
+    MEMORY[0x277D82BD8](underlyingDownload);
+    MEMORY[0x277D82BD8](currentDownload2);
+    v58 = termsAndConditionsAgreementStatus;
+    updateOperationLogger = [MEMORY[0x277D64B58] updateOperationLogger];
+    oslog = [updateOperationLogger oslog];
+    MEMORY[0x277D82BD8](updateOperationLogger);
     v56 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [location descriptor];
-      v31 = [v32 updateName];
-      v55 = MEMORY[0x277D82BE0](v31);
+      descriptor = [location descriptor];
+      updateName = [descriptor updateName];
+      v55 = MEMORY[0x277D82BE0](updateName);
       v30 = SUStringFromAgreementStatus();
       v54 = MEMORY[0x277D82BE0](v30);
       __os_log_helper_16_2_4_8_32_8_66_8_66_4_0(v66, "[SUUIMobileUpdateOperation fsmAction_PresentTermsConditions:error:]", v55, v54, v58);
-      _os_log_impl(&dword_26B0B9000, v57, v56, "%s [->%{public}@]: A download object is available. SU T&C  agreement status: %{public}@ (%d)", v66, 0x26u);
+      _os_log_impl(&dword_26B0B9000, oslog, v56, "%s [->%{public}@]: A download object is available. SU T&C  agreement status: %{public}@ (%d)", v66, 0x26u);
       MEMORY[0x277D82BD8](v30);
-      MEMORY[0x277D82BD8](v31);
-      MEMORY[0x277D82BD8](v32);
+      MEMORY[0x277D82BD8](updateName);
+      MEMORY[0x277D82BD8](descriptor);
       objc_storeStrong(&v54, 0);
       objc_storeStrong(&v55, 0);
     }
 
-    objc_storeStrong(&v57, 0);
+    objc_storeStrong(&oslog, 0);
     if (v58 == 1)
     {
-      v29 = [location agreementStatusRegistry];
-      v28 = [location currentDownload];
-      v27 = [v28 underlyingDownload];
-      v26 = [v27 descriptor];
-      [v29 setAgreementStatus:1 type:2 forDescriptor:?];
-      MEMORY[0x277D82BD8](v26);
-      MEMORY[0x277D82BD8](v27);
-      MEMORY[0x277D82BD8](v28);
-      MEMORY[0x277D82BD8](v29);
-      [(SUCoreFSM *)v63->_updateFSM postEvent:*MEMORY[0x277D64DF0] withInfo:location];
+      agreementStatusRegistry = [location agreementStatusRegistry];
+      currentDownload3 = [location currentDownload];
+      underlyingDownload2 = [currentDownload3 underlyingDownload];
+      descriptor2 = [underlyingDownload2 descriptor];
+      [agreementStatusRegistry setAgreementStatus:1 type:2 forDescriptor:?];
+      MEMORY[0x277D82BD8](descriptor2);
+      MEMORY[0x277D82BD8](underlyingDownload2);
+      MEMORY[0x277D82BD8](currentDownload3);
+      MEMORY[0x277D82BD8](agreementStatusRegistry);
+      [(SUCoreFSM *)selfCopy->_updateFSM postEvent:*MEMORY[0x277D64DF0] withInfo:location];
       v64 = 0;
       v59 = 1;
     }
@@ -2118,84 +2118,84 @@ void __58__SUUIMobileUpdateOperation_fsmAction_AquireKeybag_error___block_invoke
     else
     {
 LABEL_8:
-      v25 = v63;
-      v23 = [location descriptor];
+      v25 = selfCopy;
+      descriptor3 = [location descriptor];
       v24 = [(SUUIMobileUpdateOperation *)v25 hasAcceptedTermsAndConditionsOfDescriptorSync:?];
-      MEMORY[0x277D82BD8](v23);
+      MEMORY[0x277D82BD8](descriptor3);
       if (v24)
       {
-        v22 = [location agreementStatusRegistry];
-        v21 = [location currentDownload];
-        v20 = [v21 underlyingDownload];
-        v19 = [v20 descriptor];
-        [v22 setAgreementStatus:1 type:2 forDescriptor:?];
-        MEMORY[0x277D82BD8](v19);
-        MEMORY[0x277D82BD8](v20);
-        MEMORY[0x277D82BD8](v21);
-        MEMORY[0x277D82BD8](v22);
-        [(SUCoreFSM *)v63->_updateFSM postEvent:*MEMORY[0x277D64DF0] withInfo:location];
+        agreementStatusRegistry2 = [location agreementStatusRegistry];
+        currentDownload4 = [location currentDownload];
+        underlyingDownload3 = [currentDownload4 underlyingDownload];
+        descriptor4 = [underlyingDownload3 descriptor];
+        [agreementStatusRegistry2 setAgreementStatus:1 type:2 forDescriptor:?];
+        MEMORY[0x277D82BD8](descriptor4);
+        MEMORY[0x277D82BD8](underlyingDownload3);
+        MEMORY[0x277D82BD8](currentDownload4);
+        MEMORY[0x277D82BD8](agreementStatusRegistry2);
+        [(SUCoreFSM *)selfCopy->_updateFSM postEvent:*MEMORY[0x277D64DF0] withInfo:location];
         v64 = 0;
         v59 = 1;
       }
 
       else
       {
-        v17 = [location descriptor];
-        v18 = [v17 isSplatUpdate];
-        MEMORY[0x277D82BD8](v17);
-        if (v18)
+        descriptor5 = [location descriptor];
+        isSplatUpdate = [descriptor5 isSplatUpdate];
+        MEMORY[0x277D82BD8](descriptor5);
+        if (isSplatUpdate)
         {
-          v16 = [location agreementStatusRegistry];
-          v15 = [location descriptor];
-          v14 = [v15 underlyingDescriptor];
-          [v16 setAgreementStatus:1 type:2 forDescriptor:?];
-          MEMORY[0x277D82BD8](v14);
-          MEMORY[0x277D82BD8](v15);
-          MEMORY[0x277D82BD8](v16);
-          v13 = [(SUUIMobileUpdateOperation *)v63 updateFSM];
-          [(SUCoreFSM *)v13 postEvent:*MEMORY[0x277D64E00] withInfo:location];
-          MEMORY[0x277D82BD8](v13);
+          agreementStatusRegistry3 = [location agreementStatusRegistry];
+          descriptor6 = [location descriptor];
+          underlyingDescriptor = [descriptor6 underlyingDescriptor];
+          [agreementStatusRegistry3 setAgreementStatus:1 type:2 forDescriptor:?];
+          MEMORY[0x277D82BD8](underlyingDescriptor);
+          MEMORY[0x277D82BD8](descriptor6);
+          MEMORY[0x277D82BD8](agreementStatusRegistry3);
+          updateFSM2 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+          [(SUCoreFSM *)updateFSM2 postEvent:*MEMORY[0x277D64E00] withInfo:location];
+          MEMORY[0x277D82BD8](updateFSM2);
           v64 = 0;
           v59 = 1;
         }
 
-        else if ([(SUUIMobileUpdateOperationOptions *)v63->_options bypassTermsAndConditions])
+        else if ([(SUUIMobileUpdateOperationOptions *)selfCopy->_options bypassTermsAndConditions])
         {
-          v12 = [location agreementStatusRegistry];
-          v11 = [location descriptor];
-          v10 = [v11 underlyingDescriptor];
-          [v12 setAgreementStatus:1 type:2 forDescriptor:?];
-          MEMORY[0x277D82BD8](v10);
-          MEMORY[0x277D82BD8](v11);
-          MEMORY[0x277D82BD8](v12);
-          v9 = [(SUUIMobileUpdateOperation *)v63 updateFSM];
-          [(SUCoreFSM *)v9 postEvent:*MEMORY[0x277D64DF8] withInfo:location];
-          MEMORY[0x277D82BD8](v9);
+          agreementStatusRegistry4 = [location agreementStatusRegistry];
+          descriptor7 = [location descriptor];
+          underlyingDescriptor2 = [descriptor7 underlyingDescriptor];
+          [agreementStatusRegistry4 setAgreementStatus:1 type:2 forDescriptor:?];
+          MEMORY[0x277D82BD8](underlyingDescriptor2);
+          MEMORY[0x277D82BD8](descriptor7);
+          MEMORY[0x277D82BD8](agreementStatusRegistry4);
+          updateFSM3 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+          [(SUCoreFSM *)updateFSM3 postEvent:*MEMORY[0x277D64DF8] withInfo:location];
+          MEMORY[0x277D82BD8](updateFSM3);
           v64 = 0;
           v59 = 1;
         }
 
         else
         {
-          v8 = [MEMORY[0x277D64B58] updateOperationLogger];
-          v53 = [v8 oslog];
-          MEMORY[0x277D82BD8](v8);
+          updateOperationLogger2 = [MEMORY[0x277D64B58] updateOperationLogger];
+          oslog2 = [updateOperationLogger2 oslog];
+          MEMORY[0x277D82BD8](updateOperationLogger2);
           v52 = OS_LOG_TYPE_DEFAULT;
-          if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
           {
-            v7 = [location descriptor];
-            v6 = [v7 updateName];
-            v51 = MEMORY[0x277D82BE0](v6);
+            descriptor8 = [location descriptor];
+            updateName2 = [descriptor8 updateName];
+            v51 = MEMORY[0x277D82BE0](updateName2);
             __os_log_helper_16_2_2_8_32_8_66(v65, "[SUUIMobileUpdateOperation fsmAction_PresentTermsConditions:error:]", v51);
-            _os_log_impl(&dword_26B0B9000, v53, v52, "%s [->%{public}@]: Attempting to present the T&C sheet", v65, 0x16u);
-            MEMORY[0x277D82BD8](v6);
-            MEMORY[0x277D82BD8](v7);
+            _os_log_impl(&dword_26B0B9000, oslog2, v52, "%s [->%{public}@]: Attempting to present the T&C sheet", v65, 0x16u);
+            MEMORY[0x277D82BD8](updateName2);
+            MEMORY[0x277D82BD8](descriptor8);
             objc_storeStrong(&v51, 0);
           }
 
-          objc_storeStrong(&v53, 0);
-          objc_initWeak(&from, v63);
-          queue = [(SUUIMobileUpdateOperation *)v63 delegateCallbackQueue];
+          objc_storeStrong(&oslog2, 0);
+          objc_initWeak(&from, selfCopy);
+          queue = [(SUUIMobileUpdateOperation *)selfCopy delegateCallbackQueue];
           v43 = MEMORY[0x277D85DD0];
           v44 = -1073741824;
           v45 = 0;
@@ -2218,9 +2218,9 @@ LABEL_8:
 
   else
   {
-    v39 = [(SUCoreFSM *)v63->_updateFSM diag];
-    [v39 trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v39);
+    diag = [(SUCoreFSM *)selfCopy->_updateFSM diag];
+    [diag trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
     v64 = 8102;
     v59 = 1;
   }
@@ -2581,50 +2581,50 @@ void __68__SUUIMobileUpdateOperation_fsmAction_PresentTermsConditions_error___bl
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)fsmAction_ResolveUpdateOperation:(id)a3 error:(id *)a4
+- (int64_t)fsmAction_ResolveUpdateOperation:(id)operation error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v31 = a4;
-  v25 = [(SUUIMobileUpdateOperation *)v33 updateFSM];
-  v24 = [(SUCoreFSM *)v25 extendedStateQueue];
-  dispatch_assert_queue_V2(v24);
-  MEMORY[0x277D82BD8](v24);
-  MEMORY[0x277D82BD8](v25);
+  objc_storeStrong(location, operation);
+  errorCopy = error;
+  updateFSM = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+  extendedStateQueue = [(SUCoreFSM *)updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](updateFSM);
   if (location[0])
   {
-    v21 = [(SUUIMobileUpdateOperation *)v33 operationType];
-    if (v21)
+    operationType = [(SUUIMobileUpdateOperation *)selfCopy operationType];
+    if (operationType)
     {
-      switch(v21)
+      switch(operationType)
       {
         case 1:
-          v20 = [(SUUIMobileUpdateOperation *)v33 updateFSM];
-          [(SUCoreFSM *)v20 postEvent:*MEMORY[0x277D64E48] withInfo:location[0]];
-          MEMORY[0x277D82BD8](v20);
+          updateFSM2 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+          [(SUCoreFSM *)updateFSM2 postEvent:*MEMORY[0x277D64E48] withInfo:location[0]];
+          MEMORY[0x277D82BD8](updateFSM2);
           break;
         case 2:
-          v19 = [(SUUIMobileUpdateOperation *)v33 updateFSM];
-          [(SUCoreFSM *)v19 postEvent:*MEMORY[0x277D64E38] withInfo:location[0]];
-          MEMORY[0x277D82BD8](v19);
+          updateFSM3 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+          [(SUCoreFSM *)updateFSM3 postEvent:*MEMORY[0x277D64E38] withInfo:location[0]];
+          MEMORY[0x277D82BD8](updateFSM3);
           break;
         case 3:
-          v18 = [(SUUIMobileUpdateOperation *)v33 updateFSM];
-          [(SUCoreFSM *)v18 postEvent:*MEMORY[0x277D64E40] withInfo:location[0]];
-          MEMORY[0x277D82BD8](v18);
+          updateFSM4 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+          [(SUCoreFSM *)updateFSM4 postEvent:*MEMORY[0x277D64E40] withInfo:location[0]];
+          MEMORY[0x277D82BD8](updateFSM4);
           break;
         case 4:
-          v17 = [(SUUIMobileUpdateOperation *)v33 updateFSM];
-          [(SUCoreFSM *)v17 postEvent:*MEMORY[0x277D64E58] withInfo:location[0]];
-          MEMORY[0x277D82BD8](v17);
+          updateFSM5 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+          [(SUCoreFSM *)updateFSM5 postEvent:*MEMORY[0x277D64E58] withInfo:location[0]];
+          MEMORY[0x277D82BD8](updateFSM5);
           break;
         case 5:
-          v16 = [(SUUIMobileUpdateOperation *)v33 updateFSM];
-          [(SUCoreFSM *)v16 postEvent:*MEMORY[0x277D64E50] withInfo:location[0]];
-          MEMORY[0x277D82BD8](v16);
+          updateFSM6 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+          [(SUCoreFSM *)updateFSM6 postEvent:*MEMORY[0x277D64E50] withInfo:location[0]];
+          MEMORY[0x277D82BD8](updateFSM6);
           break;
         default:
           goto LABEL_15;
@@ -2637,46 +2637,46 @@ LABEL_18:
     }
 
 LABEL_15:
-    v15 = [MEMORY[0x277D64B58] updateOperationLogger];
-    v29 = [v15 oslog];
-    MEMORY[0x277D82BD8](v15);
+    updateOperationLogger = [MEMORY[0x277D64B58] updateOperationLogger];
+    oslog = [updateOperationLogger oslog];
+    MEMORY[0x277D82BD8](updateOperationLogger);
     v28 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      log = v29;
+      log = oslog;
       type = v28;
-      v14 = [location[0] descriptor];
-      v13 = [v14 updateName];
-      v9 = MEMORY[0x277D82BE0](v13);
+      descriptor = [location[0] descriptor];
+      updateName = [descriptor updateName];
+      v9 = MEMORY[0x277D82BE0](updateName);
       v27 = v9;
-      [(SUUIMobileUpdateOperation *)v33 operationType];
+      [(SUUIMobileUpdateOperation *)selfCopy operationType];
       v12 = SUUIUpdateContinuousOperationTypeToString();
       v26 = MEMORY[0x277D82BE0](v12);
-      __os_log_helper_16_2_4_8_32_8_66_8_66_8_2(v35, "[SUUIMobileUpdateOperation fsmAction_ResolveUpdateOperation:error:]", v9, v26, [(SUUIMobileUpdateOperation *)v33 operationType]);
+      __os_log_helper_16_2_4_8_32_8_66_8_66_8_2(v35, "[SUUIMobileUpdateOperation fsmAction_ResolveUpdateOperation:error:]", v9, v26, [(SUUIMobileUpdateOperation *)selfCopy operationType]);
       _os_log_impl(&dword_26B0B9000, log, type, "%s [->%{public}@]: Can not resovle unknown operation type: %{public}@ (%{public}ld)", v35, 0x2Au);
       MEMORY[0x277D82BD8](v12);
-      MEMORY[0x277D82BD8](v13);
-      MEMORY[0x277D82BD8](v14);
+      MEMORY[0x277D82BD8](updateName);
+      MEMORY[0x277D82BD8](descriptor);
       objc_storeStrong(&v26, 0);
       objc_storeStrong(&v27, 0);
     }
 
-    objc_storeStrong(&v29, 0);
+    objc_storeStrong(&oslog, 0);
     v5 = [SUUIMobileStatefulError alloc];
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D64C28] code:10 userInfo:0];
     v6 = [(SUUIStatefulError *)v5 initFromError:?];
     [location[0] setOperationError:?];
     MEMORY[0x277D82BD8](v6);
     MEMORY[0x277D82BD8](v7);
-    v8 = [(SUUIMobileUpdateOperation *)v33 updateFSM];
-    [(SUCoreFSM *)v8 postEvent:*MEMORY[0x277D64D10] withInfo:location[0]];
-    MEMORY[0x277D82BD8](v8);
+    updateFSM7 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+    [(SUCoreFSM *)updateFSM7 postEvent:*MEMORY[0x277D64D10] withInfo:location[0]];
+    MEMORY[0x277D82BD8](updateFSM7);
     goto LABEL_18;
   }
 
-  v22 = [(SUCoreFSM *)v33->_updateFSM diag];
-  [v22 trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:? withError:?];
-  MEMORY[0x277D82BD8](v22);
+  diag = [(SUCoreFSM *)selfCopy->_updateFSM diag];
+  [diag trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:? withError:?];
+  MEMORY[0x277D82BD8](diag);
   v34 = 8102;
   v30 = 1;
 LABEL_19:
@@ -2685,66 +2685,66 @@ LABEL_19:
   return v34;
 }
 
-- (int64_t)fsmAction_PresentDownloadConstraints:(id)a3 error:(id *)a4
+- (int64_t)fsmAction_PresentDownloadConstraints:(id)constraints error:(id *)error
 {
   v108 = *MEMORY[0x277D85DE8];
-  v99 = self;
+  selfCopy = self;
   v98 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v96 = a4;
-  v58 = [(SUUIMobileUpdateOperation *)v99 updateFSM];
-  v57 = [(SUCoreFSM *)v58 extendedStateQueue];
-  dispatch_assert_queue_V2(v57);
-  MEMORY[0x277D82BD8](v57);
-  MEMORY[0x277D82BD8](v58);
+  objc_storeStrong(&location, constraints);
+  errorCopy = error;
+  updateFSM = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+  extendedStateQueue = [(SUCoreFSM *)updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](updateFSM);
   if (location)
   {
-    v55 = [location descriptor];
-    v94 = [v55 underlyingDescriptor];
-    MEMORY[0x277D82BD8](v55);
-    v54 = [location currentDownload];
-    v93 = [v54 underlyingDownload];
-    MEMORY[0x277D82BD8](v54);
+    descriptor = [location descriptor];
+    underlyingDescriptor = [descriptor underlyingDescriptor];
+    MEMORY[0x277D82BD8](descriptor);
+    currentDownload = [location currentDownload];
+    underlyingDownload = [currentDownload underlyingDownload];
+    MEMORY[0x277D82BD8](currentDownload);
     v53 = MEMORY[0x277D64898];
-    v52 = [v93 downloadOptions];
-    v51 = [v52 activeDownloadPolicy];
-    v92 = [v53 userDownloadPolicyForDescriptor:v94 existingPolicy:v51 allowCellularOverride:{-[SUUIMobileUpdateOperationOptions doesAllowUnrestrictedCellularDownload](v99->_options, "doesAllowUnrestrictedCellularDownload")}];
-    MEMORY[0x277D82BD8](v51);
-    MEMORY[0x277D82BD8](v52);
-    if ([(SUUIMobileUpdateOperation *)v99 deviceSupportsCellularCapability])
+    downloadOptions = [underlyingDownload downloadOptions];
+    activeDownloadPolicy = [downloadOptions activeDownloadPolicy];
+    v92 = [v53 userDownloadPolicyForDescriptor:underlyingDescriptor existingPolicy:activeDownloadPolicy allowCellularOverride:{-[SUUIMobileUpdateOperationOptions doesAllowUnrestrictedCellularDownload](selfCopy->_options, "doesAllowUnrestrictedCellularDownload")}];
+    MEMORY[0x277D82BD8](activeDownloadPolicy);
+    MEMORY[0x277D82BD8](downloadOptions);
+    if ([(SUUIMobileUpdateOperation *)selfCopy deviceSupportsCellularCapability])
     {
-      v88 = [MEMORY[0x277D648C0] sharedInstance];
-      if (-[SUUIMobileUpdateOperationOptions clientIsBuddy](v99->_options, "clientIsBuddy") && ([v88 isBootstrap] & 1) != 0 && (objc_msgSend(v88, "isPathSatisfied") & 1) == 0)
+      mEMORY[0x277D648C0] = [MEMORY[0x277D648C0] sharedInstance];
+      if (-[SUUIMobileUpdateOperationOptions clientIsBuddy](selfCopy->_options, "clientIsBuddy") && ([mEMORY[0x277D648C0] isBootstrap] & 1) != 0 && (objc_msgSend(mEMORY[0x277D648C0], "isPathSatisfied") & 1) == 0)
       {
-        v43 = [MEMORY[0x277D64B58] updateOperationLogger];
-        v87 = [v43 oslog];
-        MEMORY[0x277D82BD8](v43);
+        updateOperationLogger = [MEMORY[0x277D64B58] updateOperationLogger];
+        oslog = [updateOperationLogger oslog];
+        MEMORY[0x277D82BD8](updateOperationLogger);
         v86 = OS_LOG_TYPE_DEFAULT;
-        if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
-          v42 = [location descriptor];
-          v41 = [v42 updateName];
-          v85 = MEMORY[0x277D82BE0](v41);
+          descriptor2 = [location descriptor];
+          updateName = [descriptor2 updateName];
+          v85 = MEMORY[0x277D82BE0](updateName);
           __os_log_helper_16_2_2_8_32_8_66(v106, "[SUUIMobileUpdateOperation fsmAction_PresentDownloadConstraints:error:]", v85);
-          _os_log_impl(&dword_26B0B9000, v87, v86, "%s [->%{public}@]: Can't download update in bootstrap network. Not prompting for cellular download acceptance", v106, 0x16u);
-          MEMORY[0x277D82BD8](v41);
-          MEMORY[0x277D82BD8](v42);
+          _os_log_impl(&dword_26B0B9000, oslog, v86, "%s [->%{public}@]: Can't download update in bootstrap network. Not prompting for cellular download acceptance", v106, 0x16u);
+          MEMORY[0x277D82BD8](updateName);
+          MEMORY[0x277D82BD8](descriptor2);
           objc_storeStrong(&v85, 0);
         }
 
-        objc_storeStrong(&v87, 0);
-        v40 = [location agreementStatusRegistry];
-        v39 = [location descriptor];
-        v38 = [v39 underlyingDescriptor];
-        [v40 setAgreementStatus:0 type:1 forDescriptor:?];
-        MEMORY[0x277D82BD8](v38);
-        MEMORY[0x277D82BD8](v39);
-        MEMORY[0x277D82BD8](v40);
+        objc_storeStrong(&oslog, 0);
+        agreementStatusRegistry = [location agreementStatusRegistry];
+        descriptor3 = [location descriptor];
+        underlyingDescriptor2 = [descriptor3 underlyingDescriptor];
+        [agreementStatusRegistry setAgreementStatus:0 type:1 forDescriptor:?];
+        MEMORY[0x277D82BD8](underlyingDescriptor2);
+        MEMORY[0x277D82BD8](descriptor3);
+        MEMORY[0x277D82BD8](agreementStatusRegistry);
         [location setCellularAgreementStatus:0];
-        v37 = [(SUUIMobileUpdateOperation *)v99 updateFSM];
-        [(SUCoreFSM *)v37 postEvent:*MEMORY[0x277D64D38] withInfo:location];
-        MEMORY[0x277D82BD8](v37);
+        updateFSM2 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+        [(SUCoreFSM *)updateFSM2 postEvent:*MEMORY[0x277D64D38] withInfo:location];
+        MEMORY[0x277D82BD8](updateFSM2);
         v100 = 0;
         v95 = 1;
       }
@@ -2756,95 +2756,95 @@ LABEL_19:
         {
           if ([v92 isDownloadAllowableForCellular])
           {
-            if ([v88 currentNetworkType] == 1)
+            if ([mEMORY[0x277D648C0] currentNetworkType] == 1)
             {
-              v22 = [MEMORY[0x277D64B58] updateOperationLogger];
-              v77 = [v22 oslog];
-              MEMORY[0x277D82BD8](v22);
+              updateOperationLogger2 = [MEMORY[0x277D64B58] updateOperationLogger];
+              oslog2 = [updateOperationLogger2 oslog];
+              MEMORY[0x277D82BD8](updateOperationLogger2);
               v76 = OS_LOG_TYPE_DEFAULT;
-              if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
+              if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
               {
-                v21 = [location descriptor];
-                v20 = [v21 updateName];
-                v75 = MEMORY[0x277D82BE0](v20);
+                descriptor4 = [location descriptor];
+                updateName2 = [descriptor4 updateName];
+                v75 = MEMORY[0x277D82BE0](updateName2);
                 __os_log_helper_16_2_2_8_32_8_66(v103, "[SUUIMobileUpdateOperation fsmAction_PresentDownloadConstraints:error:]", v75);
-                _os_log_impl(&dword_26B0B9000, v77, v76, "%s [->%{public}@]: Device is currently using Wi-Fi. Skipping on the download constraints acceptance step.", v103, 0x16u);
-                MEMORY[0x277D82BD8](v20);
-                MEMORY[0x277D82BD8](v21);
+                _os_log_impl(&dword_26B0B9000, oslog2, v76, "%s [->%{public}@]: Device is currently using Wi-Fi. Skipping on the download constraints acceptance step.", v103, 0x16u);
+                MEMORY[0x277D82BD8](updateName2);
+                MEMORY[0x277D82BD8](descriptor4);
                 objc_storeStrong(&v75, 0);
               }
 
-              objc_storeStrong(&v77, 0);
-              v19 = [location agreementStatusRegistry];
-              v18 = [location descriptor];
-              v17 = [v18 underlyingDescriptor];
-              [v19 setAgreementStatus:0 type:1 forDescriptor:?];
-              MEMORY[0x277D82BD8](v17);
-              MEMORY[0x277D82BD8](v18);
-              MEMORY[0x277D82BD8](v19);
+              objc_storeStrong(&oslog2, 0);
+              agreementStatusRegistry2 = [location agreementStatusRegistry];
+              descriptor5 = [location descriptor];
+              underlyingDescriptor3 = [descriptor5 underlyingDescriptor];
+              [agreementStatusRegistry2 setAgreementStatus:0 type:1 forDescriptor:?];
+              MEMORY[0x277D82BD8](underlyingDescriptor3);
+              MEMORY[0x277D82BD8](descriptor5);
+              MEMORY[0x277D82BD8](agreementStatusRegistry2);
               [location setCellularAgreementStatus:0];
-              v16 = [(SUUIMobileUpdateOperation *)v99 updateFSM];
-              [(SUCoreFSM *)v16 postEvent:*MEMORY[0x277D64D38] withInfo:location];
-              MEMORY[0x277D82BD8](v16);
+              updateFSM3 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+              [(SUCoreFSM *)updateFSM3 postEvent:*MEMORY[0x277D64D38] withInfo:location];
+              MEMORY[0x277D82BD8](updateFSM3);
               v100 = 0;
               v95 = 1;
             }
 
             else if ([v92 is5GDownloadAllowed])
             {
-              v15 = [MEMORY[0x277D64B58] updateOperationLogger];
-              v74 = [v15 oslog];
-              MEMORY[0x277D82BD8](v15);
+              updateOperationLogger3 = [MEMORY[0x277D64B58] updateOperationLogger];
+              oslog3 = [updateOperationLogger3 oslog];
+              MEMORY[0x277D82BD8](updateOperationLogger3);
               v73 = OS_LOG_TYPE_DEFAULT;
-              if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
+              if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
               {
-                v14 = [location descriptor];
-                v13 = [v14 updateName];
-                v72 = MEMORY[0x277D82BE0](v13);
+                descriptor6 = [location descriptor];
+                updateName3 = [descriptor6 updateName];
+                v72 = MEMORY[0x277D82BE0](updateName3);
                 __os_log_helper_16_2_2_8_32_8_66(v102, "[SUUIMobileUpdateOperation fsmAction_PresentDownloadConstraints:error:]", v72);
-                _os_log_impl(&dword_26B0B9000, v74, v73, "%s [->%{public}@]: Device is using inexpensive HDM. Skipping on the download constraints acceptance step.", v102, 0x16u);
-                MEMORY[0x277D82BD8](v13);
-                MEMORY[0x277D82BD8](v14);
+                _os_log_impl(&dword_26B0B9000, oslog3, v73, "%s [->%{public}@]: Device is using inexpensive HDM. Skipping on the download constraints acceptance step.", v102, 0x16u);
+                MEMORY[0x277D82BD8](updateName3);
+                MEMORY[0x277D82BD8](descriptor6);
                 objc_storeStrong(&v72, 0);
               }
 
-              objc_storeStrong(&v74, 0);
-              v12 = [location agreementStatusRegistry];
-              v11 = [location descriptor];
-              v10 = [v11 underlyingDescriptor];
-              [v12 setAgreementStatus:0 type:1 forDescriptor:?];
-              MEMORY[0x277D82BD8](v10);
-              MEMORY[0x277D82BD8](v11);
-              MEMORY[0x277D82BD8](v12);
+              objc_storeStrong(&oslog3, 0);
+              agreementStatusRegistry3 = [location agreementStatusRegistry];
+              descriptor7 = [location descriptor];
+              underlyingDescriptor4 = [descriptor7 underlyingDescriptor];
+              [agreementStatusRegistry3 setAgreementStatus:0 type:1 forDescriptor:?];
+              MEMORY[0x277D82BD8](underlyingDescriptor4);
+              MEMORY[0x277D82BD8](descriptor7);
+              MEMORY[0x277D82BD8](agreementStatusRegistry3);
               [location setCellularAgreementStatus:0];
-              v9 = [(SUUIMobileUpdateOperation *)v99 updateFSM];
-              [(SUCoreFSM *)v9 postEvent:*MEMORY[0x277D64D38] withInfo:location];
-              MEMORY[0x277D82BD8](v9);
+              updateFSM4 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+              [(SUCoreFSM *)updateFSM4 postEvent:*MEMORY[0x277D64D38] withInfo:location];
+              MEMORY[0x277D82BD8](updateFSM4);
               v100 = 0;
               v95 = 1;
             }
 
             else
             {
-              v8 = [MEMORY[0x277D64B58] updateOperationLogger];
-              v71 = [v8 oslog];
-              MEMORY[0x277D82BD8](v8);
+              updateOperationLogger4 = [MEMORY[0x277D64B58] updateOperationLogger];
+              oslog4 = [updateOperationLogger4 oslog];
+              MEMORY[0x277D82BD8](updateOperationLogger4);
               v70 = OS_LOG_TYPE_DEFAULT;
-              if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
+              if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
               {
-                v7 = [location descriptor];
-                v6 = [v7 updateName];
-                v69 = MEMORY[0x277D82BE0](v6);
+                descriptor8 = [location descriptor];
+                updateName4 = [descriptor8 updateName];
+                v69 = MEMORY[0x277D82BE0](updateName4);
                 __os_log_helper_16_2_3_8_32_8_66_8_66(v101, "[SUUIMobileUpdateOperation fsmAction_PresentDownloadConstraints:error:]", v69, v92);
-                _os_log_impl(&dword_26B0B9000, v71, v70, "%s [->%{public}@]: Attempting to ask for download constraints approval for download policy: %{public}@", v101, 0x20u);
-                MEMORY[0x277D82BD8](v6);
-                MEMORY[0x277D82BD8](v7);
+                _os_log_impl(&dword_26B0B9000, oslog4, v70, "%s [->%{public}@]: Attempting to ask for download constraints approval for download policy: %{public}@", v101, 0x20u);
+                MEMORY[0x277D82BD8](updateName4);
+                MEMORY[0x277D82BD8](descriptor8);
                 objc_storeStrong(&v69, 0);
               }
 
-              objc_storeStrong(&v71, 0);
-              objc_initWeak(&from, v99);
-              queue = [(SUUIMobileUpdateOperation *)v99 delegateCallbackQueue];
+              objc_storeStrong(&oslog4, 0);
+              objc_initWeak(&from, selfCopy);
+              queue = [(SUUIMobileUpdateOperation *)selfCopy delegateCallbackQueue];
               v60 = MEMORY[0x277D85DD0];
               v61 = -1073741824;
               v62 = 0;
@@ -2867,34 +2867,34 @@ LABEL_19:
 
           else
           {
-            v29 = [MEMORY[0x277D64B58] updateOperationLogger];
-            v80 = [v29 oslog];
-            MEMORY[0x277D82BD8](v29);
+            updateOperationLogger5 = [MEMORY[0x277D64B58] updateOperationLogger];
+            oslog5 = [updateOperationLogger5 oslog];
+            MEMORY[0x277D82BD8](updateOperationLogger5);
             v79 = OS_LOG_TYPE_DEFAULT;
-            if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog5, OS_LOG_TYPE_DEFAULT))
             {
-              v28 = [location descriptor];
-              v27 = [v28 updateName];
-              v78 = MEMORY[0x277D82BE0](v27);
+              descriptor9 = [location descriptor];
+              updateName5 = [descriptor9 updateName];
+              v78 = MEMORY[0x277D82BE0](updateName5);
               __os_log_helper_16_2_2_8_32_8_66(v104, "[SUUIMobileUpdateOperation fsmAction_PresentDownloadConstraints:error:]", v78);
-              _os_log_impl(&dword_26B0B9000, v80, v79, "%s [->%{public}@]: The download policy does not support cellular capability. Skipping on the download constraints acceptance step.", v104, 0x16u);
-              MEMORY[0x277D82BD8](v27);
-              MEMORY[0x277D82BD8](v28);
+              _os_log_impl(&dword_26B0B9000, oslog5, v79, "%s [->%{public}@]: The download policy does not support cellular capability. Skipping on the download constraints acceptance step.", v104, 0x16u);
+              MEMORY[0x277D82BD8](updateName5);
+              MEMORY[0x277D82BD8](descriptor9);
               objc_storeStrong(&v78, 0);
             }
 
-            objc_storeStrong(&v80, 0);
-            v26 = [location agreementStatusRegistry];
-            v25 = [location descriptor];
-            v24 = [v25 underlyingDescriptor];
-            [v26 setAgreementStatus:0 type:1 forDescriptor:?];
-            MEMORY[0x277D82BD8](v24);
-            MEMORY[0x277D82BD8](v25);
-            MEMORY[0x277D82BD8](v26);
+            objc_storeStrong(&oslog5, 0);
+            agreementStatusRegistry4 = [location agreementStatusRegistry];
+            descriptor10 = [location descriptor];
+            underlyingDescriptor5 = [descriptor10 underlyingDescriptor];
+            [agreementStatusRegistry4 setAgreementStatus:0 type:1 forDescriptor:?];
+            MEMORY[0x277D82BD8](underlyingDescriptor5);
+            MEMORY[0x277D82BD8](descriptor10);
+            MEMORY[0x277D82BD8](agreementStatusRegistry4);
             [location setCellularAgreementStatus:0];
-            v23 = [(SUUIMobileUpdateOperation *)v99 updateFSM];
-            [(SUCoreFSM *)v23 postEvent:*MEMORY[0x277D64D38] withInfo:location];
-            MEMORY[0x277D82BD8](v23);
+            updateFSM5 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+            [(SUCoreFSM *)updateFSM5 postEvent:*MEMORY[0x277D64D38] withInfo:location];
+            MEMORY[0x277D82BD8](updateFSM5);
             v100 = 0;
             v95 = 1;
           }
@@ -2902,86 +2902,86 @@ LABEL_19:
 
         else
         {
-          v36 = [MEMORY[0x277D64B58] updateOperationLogger];
-          v83 = [v36 oslog];
-          MEMORY[0x277D82BD8](v36);
+          updateOperationLogger6 = [MEMORY[0x277D64B58] updateOperationLogger];
+          oslog6 = [updateOperationLogger6 oslog];
+          MEMORY[0x277D82BD8](updateOperationLogger6);
           v82 = OS_LOG_TYPE_DEFAULT;
-          if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog6, OS_LOG_TYPE_DEFAULT))
           {
-            v35 = [location descriptor];
-            v34 = [v35 updateName];
-            v81 = MEMORY[0x277D82BE0](v34);
+            descriptor11 = [location descriptor];
+            updateName6 = [descriptor11 updateName];
+            v81 = MEMORY[0x277D82BE0](updateName6);
             __os_log_helper_16_2_2_8_32_8_66(v105, "[SUUIMobileUpdateOperation fsmAction_PresentDownloadConstraints:error:]", v81);
-            _os_log_impl(&dword_26B0B9000, v83, v82, "%s [->%{public}@]: MobileGestalt: The device does not support cellular capability. Skipping on the download constraints acceptance step.", v105, 0x16u);
-            MEMORY[0x277D82BD8](v34);
-            MEMORY[0x277D82BD8](v35);
+            _os_log_impl(&dword_26B0B9000, oslog6, v82, "%s [->%{public}@]: MobileGestalt: The device does not support cellular capability. Skipping on the download constraints acceptance step.", v105, 0x16u);
+            MEMORY[0x277D82BD8](updateName6);
+            MEMORY[0x277D82BD8](descriptor11);
             objc_storeStrong(&v81, 0);
           }
 
-          objc_storeStrong(&v83, 0);
-          v33 = [location agreementStatusRegistry];
-          v32 = [location descriptor];
-          v31 = [v32 underlyingDescriptor];
-          [v33 setAgreementStatus:0 type:1 forDescriptor:?];
-          MEMORY[0x277D82BD8](v31);
-          MEMORY[0x277D82BD8](v32);
-          MEMORY[0x277D82BD8](v33);
+          objc_storeStrong(&oslog6, 0);
+          agreementStatusRegistry5 = [location agreementStatusRegistry];
+          descriptor12 = [location descriptor];
+          underlyingDescriptor6 = [descriptor12 underlyingDescriptor];
+          [agreementStatusRegistry5 setAgreementStatus:0 type:1 forDescriptor:?];
+          MEMORY[0x277D82BD8](underlyingDescriptor6);
+          MEMORY[0x277D82BD8](descriptor12);
+          MEMORY[0x277D82BD8](agreementStatusRegistry5);
           [location setCellularAgreementStatus:0];
-          v30 = [(SUUIMobileUpdateOperation *)v99 updateFSM];
-          [(SUCoreFSM *)v30 postEvent:*MEMORY[0x277D64D38] withInfo:location];
-          MEMORY[0x277D82BD8](v30);
+          updateFSM6 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+          [(SUCoreFSM *)updateFSM6 postEvent:*MEMORY[0x277D64D38] withInfo:location];
+          MEMORY[0x277D82BD8](updateFSM6);
           v100 = 0;
           v95 = 1;
         }
       }
 
-      objc_storeStrong(&v88, 0);
+      objc_storeStrong(&mEMORY[0x277D648C0], 0);
     }
 
     else
     {
-      v50 = [MEMORY[0x277D64B58] updateOperationLogger];
-      oslog = [v50 oslog];
-      MEMORY[0x277D82BD8](v50);
+      updateOperationLogger7 = [MEMORY[0x277D64B58] updateOperationLogger];
+      oslog = [updateOperationLogger7 oslog];
+      MEMORY[0x277D82BD8](updateOperationLogger7);
       type = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v49 = [location descriptor];
-        v48 = [v49 updateName];
-        v89 = MEMORY[0x277D82BE0](v48);
+        descriptor13 = [location descriptor];
+        updateName7 = [descriptor13 updateName];
+        v89 = MEMORY[0x277D82BE0](updateName7);
         __os_log_helper_16_2_2_8_32_8_66(v107, "[SUUIMobileUpdateOperation fsmAction_PresentDownloadConstraints:error:]", v89);
         _os_log_impl(&dword_26B0B9000, oslog, type, "%s [->%{public}@]: CoreTelephony: The device does not support cellular capability. Skipping on the download constraints acceptance step.", v107, 0x16u);
-        MEMORY[0x277D82BD8](v48);
-        MEMORY[0x277D82BD8](v49);
+        MEMORY[0x277D82BD8](updateName7);
+        MEMORY[0x277D82BD8](descriptor13);
         objc_storeStrong(&v89, 0);
       }
 
       objc_storeStrong(&oslog, 0);
-      v47 = [location agreementStatusRegistry];
-      v46 = [location descriptor];
-      v45 = [v46 underlyingDescriptor];
-      [v47 setAgreementStatus:0 type:1 forDescriptor:?];
-      MEMORY[0x277D82BD8](v45);
-      MEMORY[0x277D82BD8](v46);
-      MEMORY[0x277D82BD8](v47);
+      agreementStatusRegistry6 = [location agreementStatusRegistry];
+      descriptor14 = [location descriptor];
+      underlyingDescriptor7 = [descriptor14 underlyingDescriptor];
+      [agreementStatusRegistry6 setAgreementStatus:0 type:1 forDescriptor:?];
+      MEMORY[0x277D82BD8](underlyingDescriptor7);
+      MEMORY[0x277D82BD8](descriptor14);
+      MEMORY[0x277D82BD8](agreementStatusRegistry6);
       [location setCellularAgreementStatus:0];
-      v44 = [(SUUIMobileUpdateOperation *)v99 updateFSM];
-      [(SUCoreFSM *)v44 postEvent:*MEMORY[0x277D64D38] withInfo:location];
-      MEMORY[0x277D82BD8](v44);
+      updateFSM7 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+      [(SUCoreFSM *)updateFSM7 postEvent:*MEMORY[0x277D64D38] withInfo:location];
+      MEMORY[0x277D82BD8](updateFSM7);
       v100 = 0;
       v95 = 1;
     }
 
     objc_storeStrong(&v92, 0);
-    objc_storeStrong(&v93, 0);
-    objc_storeStrong(&v94, 0);
+    objc_storeStrong(&underlyingDownload, 0);
+    objc_storeStrong(&underlyingDescriptor, 0);
   }
 
   else
   {
-    v56 = [(SUCoreFSM *)v99->_updateFSM diag];
-    [v56 trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v56);
+    diag = [(SUCoreFSM *)selfCopy->_updateFSM diag];
+    [diag trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
     v100 = 8102;
     v95 = 1;
   }
@@ -3249,36 +3249,36 @@ void __72__SUUIMobileUpdateOperation_fsmAction_PresentDownloadConstraints_error_
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)fsmAction_InitiateUpdateDownload:(id)a3 error:(id *)a4
+- (int64_t)fsmAction_InitiateUpdateDownload:(id)download error:(id *)error
 {
-  v29 = self;
+  selfCopy = self;
   v28 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v26 = a4;
-  v12 = [(SUUIMobileUpdateOperation *)v29 updateFSM];
-  v11 = [(SUCoreFSM *)v12 extendedStateQueue];
-  dispatch_assert_queue_V2(v11);
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
+  objc_storeStrong(&location, download);
+  errorCopy = error;
+  updateFSM = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+  extendedStateQueue = [(SUCoreFSM *)updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](updateFSM);
   if (location)
   {
-    v7 = [location descriptor];
-    v24 = [v7 underlyingDescriptor];
-    MEMORY[0x277D82BD8](v7);
-    v23 = [objc_alloc(MEMORY[0x277D64890]) initWithDescriptor:v24];
-    v22 = [MEMORY[0x277D64898] userDownloadPolicyForDescriptor:v24 existingPolicy:0 allowCellularOverride:{-[SUUIMobileUpdateOperationOptions doesAllowUnrestrictedCellularDownload](v29->_options, "doesAllowUnrestrictedCellularDownload")}];
-    v8 = [(SUUIMobileUpdateOperation *)v29 operationType];
-    if (v8 != 1)
+    descriptor = [location descriptor];
+    underlyingDescriptor = [descriptor underlyingDescriptor];
+    MEMORY[0x277D82BD8](descriptor);
+    v23 = [objc_alloc(MEMORY[0x277D64890]) initWithDescriptor:underlyingDescriptor];
+    v22 = [MEMORY[0x277D64898] userDownloadPolicyForDescriptor:underlyingDescriptor existingPolicy:0 allowCellularOverride:{-[SUUIMobileUpdateOperationOptions doesAllowUnrestrictedCellularDownload](selfCopy->_options, "doesAllowUnrestrictedCellularDownload")}];
+    operationType = [(SUUIMobileUpdateOperation *)selfCopy operationType];
+    if (operationType != 1)
     {
-      if (v8 != 3)
+      if (operationType != 3)
       {
 LABEL_7:
         [v23 setActiveDownloadPolicy:v22];
         [v23 setDownloadFeeAgreementStatus:{objc_msgSend(location, "cellularAgreementStatus")}];
         [v23 setTermsAndConditionsAgreementStatus:1];
-        objc_initWeak(&from, v29);
-        v6 = [(SUUIMobileUpdateOperation *)v29 suClient];
+        objc_initWeak(&from, selfCopy);
+        suClient = [(SUUIMobileUpdateOperation *)selfCopy suClient];
         v5 = v23;
         v13 = MEMORY[0x277D85DD0];
         v14 = -1073741824;
@@ -3288,9 +3288,9 @@ LABEL_7:
         objc_copyWeak(v20, &from);
         v20[1] = v28;
         v18 = MEMORY[0x277D82BE0](location);
-        v19 = MEMORY[0x277D82BE0](v24);
-        [(SUManagerClient *)v6 startDownloadWithOptions:v5 withResult:&v13];
-        MEMORY[0x277D82BD8](v6);
+        v19 = MEMORY[0x277D82BE0](underlyingDescriptor);
+        [(SUManagerClient *)suClient startDownloadWithOptions:v5 withResult:&v13];
+        MEMORY[0x277D82BD8](suClient);
         v30 = 0;
         v25 = 1;
         objc_storeStrong(&v19, 0);
@@ -3299,7 +3299,7 @@ LABEL_7:
         objc_destroyWeak(&from);
         objc_storeStrong(&v22, 0);
         objc_storeStrong(&v23, 0);
-        objc_storeStrong(&v24, 0);
+        objc_storeStrong(&underlyingDescriptor, 0);
         goto LABEL_8;
       }
 
@@ -3310,9 +3310,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v9 = [(SUCoreFSM *)v29->_updateFSM diag];
-  [v9 trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:? withError:?];
-  MEMORY[0x277D82BD8](v9);
+  diag = [(SUCoreFSM *)selfCopy->_updateFSM diag];
+  [diag trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:? withError:?];
+  MEMORY[0x277D82BD8](diag);
   v30 = 8102;
   v25 = 1;
 LABEL_8:
@@ -3614,24 +3614,24 @@ void __68__SUUIMobileUpdateOperation_fsmAction_InitiateUpdateDownload_error___bl
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)fsmAction_InitiateUpdateInstallation:(id)a3 error:(id *)a4
+- (int64_t)fsmAction_InitiateUpdateInstallation:(id)installation error:(id *)error
 {
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v21 = a4;
-  v10 = [(SUUIMobileUpdateOperation *)v24 updateFSM];
-  v9 = [(SUCoreFSM *)v10 extendedStateQueue];
-  dispatch_assert_queue_V2(v9);
-  MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
+  objc_storeStrong(&location, installation);
+  errorCopy = error;
+  updateFSM = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+  extendedStateQueue = [(SUCoreFSM *)updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](updateFSM);
   if (location)
   {
     v19 = objc_alloc_init(MEMORY[0x277D648A0]);
     [v19 setIgnorableConstraints:{+[SUUIMobileScanOperation installationIgnorableConstraints](SUUIMobileScanOperation, "installationIgnorableConstraints")}];
-    objc_initWeak(&from, v24);
-    v6 = [(SUUIMobileUpdateOperation *)v24 suClient];
+    objc_initWeak(&from, selfCopy);
+    suClient = [(SUUIMobileUpdateOperation *)selfCopy suClient];
     v5 = v19;
     v11 = MEMORY[0x277D85DD0];
     v12 = -1073741824;
@@ -3641,8 +3641,8 @@ void __68__SUUIMobileUpdateOperation_fsmAction_InitiateUpdateDownload_error___bl
     objc_copyWeak(v17, &from);
     v17[1] = v23;
     v16 = MEMORY[0x277D82BE0](location);
-    [(SUManagerClient *)v6 installUpdateWithInstallOptions:v5 withResult:&v11];
-    MEMORY[0x277D82BD8](v6);
+    [(SUManagerClient *)suClient installUpdateWithInstallOptions:v5 withResult:&v11];
+    MEMORY[0x277D82BD8](suClient);
     v25 = 0;
     v20 = 1;
     objc_storeStrong(&v16, 0);
@@ -3653,9 +3653,9 @@ void __68__SUUIMobileUpdateOperation_fsmAction_InitiateUpdateDownload_error___bl
 
   else
   {
-    v7 = [(SUCoreFSM *)v24->_updateFSM diag];
-    [v7 trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:? withError:?];
-    MEMORY[0x277D82BD8](v7);
+    diag = [(SUCoreFSM *)selfCopy->_updateFSM diag];
+    [diag trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:? withError:?];
+    MEMORY[0x277D82BD8](diag);
     v25 = 8102;
     v20 = 1;
   }
@@ -3853,22 +3853,22 @@ void __72__SUUIMobileUpdateOperation_fsmAction_InitiateUpdateInstallation_error_
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)fsmAction_ScheduleUpdate:(id)a3 error:(id *)a4
+- (int64_t)fsmAction_ScheduleUpdate:(id)update error:(id *)error
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v19 = a4;
-  v9 = [(SUUIMobileUpdateOperation *)v22 updateFSM];
-  v8 = [(SUCoreFSM *)v9 extendedStateQueue];
-  dispatch_assert_queue_V2(v8);
-  MEMORY[0x277D82BD8](v8);
-  MEMORY[0x277D82BD8](v9);
+  objc_storeStrong(&location, update);
+  errorCopy = error;
+  updateFSM = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+  extendedStateQueue = [(SUCoreFSM *)updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](updateFSM);
   if (location)
   {
-    objc_initWeak(&from, v22);
-    v5 = [(SUUIMobileUpdateOperation *)v22 suClient];
+    objc_initWeak(&from, selfCopy);
+    suClient = [(SUUIMobileUpdateOperation *)selfCopy suClient];
     v10 = MEMORY[0x277D85DD0];
     v11 = -1073741824;
     v12 = 0;
@@ -3877,8 +3877,8 @@ void __72__SUUIMobileUpdateOperation_fsmAction_InitiateUpdateInstallation_error_
     objc_copyWeak(v16, &from);
     v16[1] = v21;
     v15 = MEMORY[0x277D82BE0](location);
-    [(SUManagerClient *)v5 currentAutoInstallOperation:1 withResult:&v10];
-    MEMORY[0x277D82BD8](v5);
+    [(SUManagerClient *)suClient currentAutoInstallOperation:1 withResult:&v10];
+    MEMORY[0x277D82BD8](suClient);
     v23 = 0;
     v18 = 1;
     objc_storeStrong(&v15, 0);
@@ -3888,9 +3888,9 @@ void __72__SUUIMobileUpdateOperation_fsmAction_InitiateUpdateInstallation_error_
 
   else
   {
-    v6 = [(SUCoreFSM *)v22->_updateFSM diag];
-    [v6 trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:? withError:?];
-    MEMORY[0x277D82BD8](v6);
+    diag = [(SUCoreFSM *)selfCopy->_updateFSM diag];
+    [diag trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:? withError:?];
+    MEMORY[0x277D82BD8](diag);
     v23 = 8102;
     v18 = 1;
   }
@@ -4147,23 +4147,23 @@ void __60__SUUIMobileUpdateOperation_fsmAction_ScheduleUpdate_error___block_invo
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)fsmAction_ReportUpdateOperationOutcome:(id)a3 error:(id *)a4
+- (int64_t)fsmAction_ReportUpdateOperationOutcome:(id)outcome error:(id *)error
 {
   v102 = *MEMORY[0x277D85DE8];
-  v94 = self;
+  selfCopy = self;
   v93 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v91 = a4;
-  v34 = [(SUUIMobileUpdateOperation *)v94 updateFSM];
-  v33 = [(SUCoreFSM *)v34 extendedStateQueue];
-  dispatch_assert_queue_V2(v33);
-  MEMORY[0x277D82BD8](v33);
-  MEMORY[0x277D82BD8](v34);
+  objc_storeStrong(&location, outcome);
+  errorCopy = error;
+  updateFSM = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+  extendedStateQueue = [(SUCoreFSM *)updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](updateFSM);
   if (location)
   {
     v89[0] = 3;
-    p_lock = &v94->_lock;
+    p_lock = &selfCopy->_lock;
     v96 = 0;
     os_unfair_recursive_lock_lock_with_options();
     v89[1] = p_lock;
@@ -4172,11 +4172,11 @@ void __60__SUUIMobileUpdateOperation_fsmAction_ScheduleUpdate_error___block_invo
     if ([location createdKeybag])
     {
       v30 = 1;
-      if (!v94->_canceled)
+      if (!selfCopy->_canceled)
       {
-        v88 = [location operationError];
+        operationError = [location operationError];
         v87 = 1;
-        v30 = v88 != 0;
+        v30 = operationError != 0;
       }
 
       v31 = v30;
@@ -4184,22 +4184,22 @@ void __60__SUUIMobileUpdateOperation_fsmAction_ScheduleUpdate_error___block_invo
 
     if (v87)
     {
-      MEMORY[0x277D82BD8](v88);
+      MEMORY[0x277D82BD8](operationError);
     }
 
     if (v31)
     {
-      v29 = [MEMORY[0x277D64B58] updateOperationLogger];
-      oslog = [v29 oslog];
-      MEMORY[0x277D82BD8](v29);
+      updateOperationLogger = [MEMORY[0x277D64B58] updateOperationLogger];
+      oslog = [updateOperationLogger oslog];
+      MEMORY[0x277D82BD8](updateOperationLogger);
       type = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [location descriptor];
-        v25 = [v28 updateName];
-        v26 = MEMORY[0x277D82BE0](v25);
+        descriptor = [location descriptor];
+        updateName = [descriptor updateName];
+        v26 = MEMORY[0x277D82BE0](updateName);
         v84 = v26;
-        if (v94->_canceled)
+        if (selfCopy->_canceled)
         {
           v4 = @"YES";
         }
@@ -4213,24 +4213,24 @@ void __60__SUUIMobileUpdateOperation_fsmAction_ScheduleUpdate_error___block_invo
         v5 = v4;
         v24 = v27;
         v83 = MEMORY[0x277D82BE0](v24);
-        v23 = [location operationError];
-        __os_log_helper_16_2_4_8_32_8_66_8_66_8_66(v101, "[SUUIMobileUpdateOperation fsmAction_ReportUpdateOperationOutcome:error:]", v26, v83, v23);
+        operationError2 = [location operationError];
+        __os_log_helper_16_2_4_8_32_8_66_8_66_8_66(v101, "[SUUIMobileUpdateOperation fsmAction_ReportUpdateOperationOutcome:error:]", v26, v83, operationError2);
         _os_log_impl(&dword_26B0B9000, oslog, type, "%s [->%{public}@]: A keybag was created during the update attempt, but the update operation did not finish with success result. Destroying the keybag.\ncanceled? %{public}@; operationError: %{public}@", v101, 0x2Au);
-        MEMORY[0x277D82BD8](v23);
+        MEMORY[0x277D82BD8](operationError2);
         MEMORY[0x277D82BD8](v24);
-        MEMORY[0x277D82BD8](v25);
-        MEMORY[0x277D82BD8](v28);
+        MEMORY[0x277D82BD8](updateName);
+        MEMORY[0x277D82BD8](descriptor);
         objc_storeStrong(&v83, 0);
         objc_storeStrong(&v84, 0);
       }
 
       objc_storeStrong(&oslog, 0);
-      v22 = [(SUUIMobileUpdateOperation *)v94 suClient];
-      [(SUManagerClient *)v22 destroyInstallationKeybag];
-      MEMORY[0x277D82BD8](v22);
+      suClient = [(SUUIMobileUpdateOperation *)selfCopy suClient];
+      [(SUManagerClient *)suClient destroyInstallationKeybag];
+      MEMORY[0x277D82BD8](suClient);
     }
 
-    if (v94->_canceled)
+    if (selfCopy->_canceled)
     {
       [location setDownloadStartedSuccessfully:0];
       [location setInstallInitiatedSuccessfully:0];
@@ -4266,8 +4266,8 @@ void __60__SUUIMobileUpdateOperation_fsmAction_ScheduleUpdate_error___block_invo
       }
 
       MEMORY[0x277D82BD8](v21);
-      objc_initWeak(&from, v94);
-      queue = v94->_completionQueue;
+      objc_initWeak(&from, selfCopy);
+      queue = selfCopy->_completionQueue;
       block = MEMORY[0x277D85DD0];
       v73 = -1073741824;
       v74 = 0;
@@ -4280,11 +4280,11 @@ void __60__SUUIMobileUpdateOperation_fsmAction_ScheduleUpdate_error___block_invo
       objc_destroyWeak(&from);
     }
 
-    operationType = v94->_operationType;
+    operationType = selfCopy->_operationType;
     if ((operationType - 1) <= 1)
     {
-      objc_initWeak(&v71, v94);
-      completionQueue = v94->_completionQueue;
+      objc_initWeak(&v71, selfCopy);
+      completionQueue = selfCopy->_completionQueue;
       v64 = MEMORY[0x277D85DD0];
       v65 = -1073741824;
       v66 = 0;
@@ -4304,8 +4304,8 @@ void __60__SUUIMobileUpdateOperation_fsmAction_ScheduleUpdate_error___block_invo
       switch(operationType)
       {
         case 3:
-          objc_initWeak(&v63, v94);
-          v15 = v94->_completionQueue;
+          objc_initWeak(&v63, selfCopy);
+          v15 = selfCopy->_completionQueue;
           v56 = MEMORY[0x277D85DD0];
           v57 = -1073741824;
           v58 = 0;
@@ -4320,8 +4320,8 @@ void __60__SUUIMobileUpdateOperation_fsmAction_ScheduleUpdate_error___block_invo
           objc_destroyWeak(&v63);
           break;
         case 4:
-          objc_initWeak(&v55, v94);
-          v14 = v94->_completionQueue;
+          objc_initWeak(&v55, selfCopy);
+          v14 = selfCopy->_completionQueue;
           v48 = MEMORY[0x277D85DD0];
           v49 = -1073741824;
           v50 = 0;
@@ -4336,8 +4336,8 @@ void __60__SUUIMobileUpdateOperation_fsmAction_ScheduleUpdate_error___block_invo
           objc_destroyWeak(&v55);
           break;
         case 5:
-          objc_initWeak(&v47, v94);
-          v13 = v94->_completionQueue;
+          objc_initWeak(&v47, selfCopy);
+          v13 = selfCopy->_completionQueue;
           v40 = MEMORY[0x277D85DD0];
           v41 = -1073741824;
           v42 = 0;
@@ -4352,28 +4352,28 @@ void __60__SUUIMobileUpdateOperation_fsmAction_ScheduleUpdate_error___block_invo
           objc_destroyWeak(&v47);
           break;
         default:
-          v12 = [MEMORY[0x277D64B58] updateOperationLogger];
-          v39 = [v12 oslog];
-          MEMORY[0x277D82BD8](v12);
+          updateOperationLogger2 = [MEMORY[0x277D64B58] updateOperationLogger];
+          oslog = [updateOperationLogger2 oslog];
+          MEMORY[0x277D82BD8](updateOperationLogger2);
           v38 = OS_LOG_TYPE_DEFAULT;
-          if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
           {
-            v11 = [location descriptor];
-            v10 = [v11 updateName];
-            v37 = MEMORY[0x277D82BE0](v10);
-            [(SUUIMobileUpdateOperation *)v94 operationType];
+            descriptor2 = [location descriptor];
+            updateName2 = [descriptor2 updateName];
+            v37 = MEMORY[0x277D82BE0](updateName2);
+            [(SUUIMobileUpdateOperation *)selfCopy operationType];
             v9 = SUUIUpdateContinuousOperationTypeToString();
             v36 = MEMORY[0x277D82BE0](v9);
-            __os_log_helper_16_2_4_8_32_8_66_8_66_8_2(v100, "[SUUIMobileUpdateOperation fsmAction_ReportUpdateOperationOutcome:error:]", v37, v36, [(SUUIMobileUpdateOperation *)v94 operationType]);
-            _os_log_impl(&dword_26B0B9000, v39, v38, "%s [->%{public}@]: Unknown operation type: %{public}@ (%{public}ld)", v100, 0x2Au);
+            __os_log_helper_16_2_4_8_32_8_66_8_66_8_2(v100, "[SUUIMobileUpdateOperation fsmAction_ReportUpdateOperationOutcome:error:]", v37, v36, [(SUUIMobileUpdateOperation *)selfCopy operationType]);
+            _os_log_impl(&dword_26B0B9000, oslog, v38, "%s [->%{public}@]: Unknown operation type: %{public}@ (%{public}ld)", v100, 0x2Au);
             MEMORY[0x277D82BD8](v9);
-            MEMORY[0x277D82BD8](v10);
-            MEMORY[0x277D82BD8](v11);
+            MEMORY[0x277D82BD8](updateName2);
+            MEMORY[0x277D82BD8](descriptor2);
             objc_storeStrong(&v36, 0);
             objc_storeStrong(&v37, 0);
           }
 
-          objc_storeStrong(&v39, 0);
+          objc_storeStrong(&oslog, 0);
           break;
       }
     }
@@ -4403,9 +4403,9 @@ void __60__SUUIMobileUpdateOperation_fsmAction_ScheduleUpdate_error___block_invo
 
   else
   {
-    v32 = [(SUCoreFSM *)v94->_updateFSM diag];
-    [v32 trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v32);
+    diag = [(SUCoreFSM *)selfCopy->_updateFSM diag];
+    [diag trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
     v95 = 8102;
     v90 = 1;
   }
@@ -4730,60 +4730,60 @@ void __74__SUUIMobileUpdateOperation_fsmAction_ReportUpdateOperationOutcome_erro
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)actionUnknownAction:(id)a3 error:(id *)a4
+- (int64_t)actionUnknownAction:(id)action error:(id *)error
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16[1] = a4;
+  objc_storeStrong(location, action);
+  v16[1] = error;
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v16[0] = [v4 initWithFormat:location[0]];
-  v11 = [(SUUIMobileUpdateOperation *)v18 updateFSM];
-  v10 = [(SUCoreFSM *)v11 diag];
+  updateFSM = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+  diag = [(SUCoreFSM *)updateFSM diag];
   v5 = objc_alloc(MEMORY[0x277CCACA8]);
   v9 = [v5 initWithFormat:@"unknown action(%@)", location[0]];
-  [v10 dumpTracked:? dumpingTo:? usingFilename:? clearingStatistics:? clearingHistory:?];
+  [diag dumpTracked:? dumpingTo:? usingFilename:? clearingStatistics:? clearingHistory:?];
   MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
-  v12 = [MEMORY[0x277D643F8] sharedCore];
-  v15 = [v12 buildError:8116 underlying:0 description:v16[0]];
-  MEMORY[0x277D82BD8](v12);
-  v14 = [(SUUIMobileUpdateOperation *)v18 updateFSM];
-  v13 = [(SUCoreFSM *)v14 diag];
-  v6 = [v15 code];
-  [v13 trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"Scan FSM has reported an anomaly" withResult:v6 withError:v15];
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
+  MEMORY[0x277D82BD8](diag);
+  MEMORY[0x277D82BD8](updateFSM);
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  v15 = [mEMORY[0x277D643F8] buildError:8116 underlying:0 description:v16[0]];
+  MEMORY[0x277D82BD8](mEMORY[0x277D643F8]);
+  updateFSM2 = [(SUUIMobileUpdateOperation *)selfCopy updateFSM];
+  diag2 = [(SUCoreFSM *)updateFSM2 diag];
+  code = [v15 code];
+  [diag2 trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"Scan FSM has reported an anomaly" withResult:code withError:v15];
+  MEMORY[0x277D82BD8](diag2);
+  MEMORY[0x277D82BD8](updateFSM2);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(v16, 0);
   objc_storeStrong(location, 0);
   return 0;
 }
 
-- (SUUIMobileUpdateOperation)initWithIdentifier:(id)a3 options:(id)a4 usingSUManagerClient:(id)a5 delegateCallbackQueue:(id)a6 withCompletionQueue:(id)a7
+- (SUUIMobileUpdateOperation)initWithIdentifier:(id)identifier options:(id)options usingSUManagerClient:(id)client delegateCallbackQueue:(id)queue withCompletionQueue:(id)completionQueue
 {
   v56 = *MEMORY[0x277D85DE8];
-  v51 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v49 = 0;
-  objc_storeStrong(&v49, a4);
+  objc_storeStrong(&v49, options);
   v48 = 0;
-  objc_storeStrong(&v48, a5);
+  objc_storeStrong(&v48, client);
   v47 = 0;
-  objc_storeStrong(&v47, a6);
+  objc_storeStrong(&v47, queue);
   v46 = 0;
-  objc_storeStrong(&v46, a7);
-  v7 = v51;
-  v51 = 0;
+  objc_storeStrong(&v46, completionQueue);
+  v7 = selfCopy;
+  selfCopy = 0;
   v45.receiver = v7;
   v45.super_class = SUUIMobileUpdateOperation;
   v39 = [(SUUIMobileUpdateOperation *)&v45 init];
-  v51 = v39;
-  objc_storeStrong(&v51, v39);
+  selfCopy = v39;
+  objc_storeStrong(&selfCopy, v39);
   if (!v39)
   {
     goto LABEL_8;
@@ -4802,54 +4802,54 @@ void __74__SUUIMobileUpdateOperation_fsmAction_ReportUpdateOperationOutcome_erro
   v32 = NSStringFromClass(v10);
   v42 = [v31 initWithFormat:@"%@:[(%@, %@)]", v32, v44, v43];
   MEMORY[0x277D82BD8](v32);
-  objc_storeStrong(v51 + 3, location[0]);
+  objc_storeStrong(selfCopy + 3, location[0]);
   v41[1] = 0;
-  *(v51 + 1) = 0;
-  objc_storeStrong(v51 + 10, v48);
-  v11 = [objc_opt_class() _generateStateTable];
-  v12 = *(v51 + 18);
-  *(v51 + 18) = v11;
+  *(selfCopy + 1) = 0;
+  objc_storeStrong(selfCopy + 10, v48);
+  _generateStateTable = [objc_opt_class() _generateStateTable];
+  v12 = *(selfCopy + 18);
+  *(selfCopy + 18) = _generateStateTable;
   MEMORY[0x277D82BD8](v12);
-  *(v51 + 7) = 0;
+  *(selfCopy + 7) = 0;
   v33 = objc_alloc(MEMORY[0x277D64458]);
-  v34 = [v51 stateTable];
-  v13 = [v33 initMachine:v42 withTable:v34 startingIn:*MEMORY[0x277D64E88] usingDelegate:v51 registeringAllInfoClass:objc_opt_class()];
-  v14 = *(v51 + 9);
-  *(v51 + 9) = v13;
+  stateTable = [selfCopy stateTable];
+  v13 = [v33 initMachine:v42 withTable:stateTable startingIn:*MEMORY[0x277D64E88] usingDelegate:selfCopy registeringAllInfoClass:objc_opt_class()];
+  v14 = *(selfCopy + 9);
+  *(selfCopy + 9) = v13;
   MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v34);
-  if (*(v51 + 9))
+  MEMORY[0x277D82BD8](stateTable);
+  if (*(selfCopy + 9))
   {
     v22 = MEMORY[0x277CCACA8];
-    v24 = [v51 baseDomain];
-    v23 = [v22 stringWithFormat:@"%@.requests-queue", v24];
+    baseDomain = [selfCopy baseDomain];
+    v23 = [v22 stringWithFormat:@"%@.requests-queue", baseDomain];
     v15 = v23;
     v16 = dispatch_queue_create([v23 UTF8String], 0);
-    v17 = *(v51 + 16);
-    *(v51 + 16) = v16;
+    v17 = *(selfCopy + 16);
+    *(selfCopy + 16) = v16;
     MEMORY[0x277D82BD8](v17);
     MEMORY[0x277D82BD8](v23);
-    MEMORY[0x277D82BD8](v24);
+    MEMORY[0x277D82BD8](baseDomain);
     v25 = MEMORY[0x277CCACA8];
-    v27 = [v51 baseDomain];
-    v26 = [v25 stringWithFormat:@"%@.work-queue", v27];
+    baseDomain2 = [selfCopy baseDomain];
+    v26 = [v25 stringWithFormat:@"%@.work-queue", baseDomain2];
     v18 = v26;
     v19 = dispatch_queue_create([v26 UTF8String], 0);
-    v20 = *(v51 + 17);
-    *(v51 + 17) = v19;
+    v20 = *(selfCopy + 17);
+    *(selfCopy + 17) = v19;
     MEMORY[0x277D82BD8](v20);
     MEMORY[0x277D82BD8](v26);
-    MEMORY[0x277D82BD8](v27);
-    objc_storeStrong(v51 + 6, v47);
-    objc_storeStrong(v51 + 5, v46);
+    MEMORY[0x277D82BD8](baseDomain2);
+    objc_storeStrong(selfCopy + 6, v47);
+    objc_storeStrong(selfCopy + 5, v46);
     v40 = 0;
   }
 
   else
   {
-    v28 = [MEMORY[0x277D64B58] updateOperationLogger];
-    v41[0] = [v28 oslog];
-    MEMORY[0x277D82BD8](v28);
+    updateOperationLogger = [MEMORY[0x277D64B58] updateOperationLogger];
+    v41[0] = [updateOperationLogger oslog];
+    MEMORY[0x277D82BD8](updateOperationLogger);
     if (os_log_type_enabled(v41[0], OS_LOG_TYPE_FAULT))
     {
       __os_log_helper_16_2_1_8_32(v55, "[SUUIMobileUpdateOperation initWithIdentifier:options:usingSUManagerClient:delegateCallbackQueue:withCompletionQueue:]");
@@ -4867,7 +4867,7 @@ void __74__SUUIMobileUpdateOperation_fsmAction_ReportUpdateOperationOutcome_erro
   if (!v40)
   {
 LABEL_8:
-    v52 = MEMORY[0x277D82BE0](v51);
+    v52 = MEMORY[0x277D82BE0](selfCopy);
   }
 
   objc_storeStrong(&v46, 0);
@@ -4875,49 +4875,49 @@ LABEL_8:
   objc_storeStrong(&v48, 0);
   objc_storeStrong(&v49, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v51, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return v52;
 }
 
-- (void)downloadUpdate:(id)a3 withContext:(id)a4 delegate:(id)a5 completionHandler:(id)a6
+- (void)downloadUpdate:(id)update withContext:(id)context delegate:(id)delegate completionHandler:(id)handler
 {
   v49 = *MEMORY[0x277D85DE8];
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
+  objc_storeStrong(&v42, context);
   v41 = 0;
-  objc_storeStrong(&v41, a5);
+  objc_storeStrong(&v41, delegate);
   v40 = 0;
-  objc_storeStrong(&v40, a6);
-  v24 = [MEMORY[0x277D64B58] updateOperationLogger];
-  v39 = [v24 oslog];
-  MEMORY[0x277D82BD8](v24);
+  objc_storeStrong(&v40, handler);
+  updateOperationLogger = [MEMORY[0x277D64B58] updateOperationLogger];
+  oslog = [updateOperationLogger oslog];
+  MEMORY[0x277D82BD8](updateOperationLogger);
   v38 = OS_LOG_TYPE_DEFAULT;
-  if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [location[0] updateName];
-    v37 = MEMORY[0x277D82BE0](v23);
+    updateName = [location[0] updateName];
+    v37 = MEMORY[0x277D82BE0](updateName);
     __os_log_helper_16_2_2_8_32_8_66(v48, "[SUUIMobileUpdateOperation downloadUpdate:withContext:delegate:completionHandler:]", v37);
-    _os_log_impl(&dword_26B0B9000, v39, v38, "%s: Initiating an update operation (Download Only) to target: %{public}@", v48, 0x16u);
-    MEMORY[0x277D82BD8](v23);
+    _os_log_impl(&dword_26B0B9000, oslog, v38, "%s: Initiating an update operation (Download Only) to target: %{public}@", v48, 0x16u);
+    MEMORY[0x277D82BD8](updateName);
     objc_storeStrong(&v37, 0);
   }
 
-  objc_storeStrong(&v39, 0);
+  objc_storeStrong(&oslog, 0);
   v36[0] = 3;
-  p_lock = &v44->_lock;
+  p_lock = &selfCopy->_lock;
   v45 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v36[1] = p_lock;
-  if (v44->_operationType)
+  if (selfCopy->_operationType)
   {
-    v22 = [(SUCoreFSM *)v44->_updateFSM diag];
-    [v22 trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"This update machine is currently process another scan request. Queuing requests is not currently supported." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v22);
+    diag = [(SUCoreFSM *)selfCopy->_updateFSM diag];
+    [diag trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"This update machine is currently process another scan request. Queuing requests is not currently supported." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
     v20 = v40;
     v21 = [SUUIMobileStatefulError alloc];
     v18 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D64C28] code:-1 userInfo:0];
@@ -4943,16 +4943,16 @@ LABEL_8:
     objc_storeStrong(&v33, 0);
     v34 = v32;
     v17 = MEMORY[0x26D66ED00](v40);
-    downloadUpdateCompletion = v44->_downloadUpdateCompletion;
-    v44->_downloadUpdateCompletion = v17;
+    downloadUpdateCompletion = selfCopy->_downloadUpdateCompletion;
+    selfCopy->_downloadUpdateCompletion = v17;
     MEMORY[0x277D82BD8](downloadUpdateCompletion);
-    objc_storeStrong(&v44->_delegate, v41);
-    v15 = v44;
-    v16 = [v34 unattendedPurge];
+    objc_storeStrong(&selfCopy->_delegate, v41);
+    v15 = selfCopy;
+    unattendedPurge = [v34 unattendedPurge];
     v14 = location[0];
-    v12 = [v34 agreementStatusRegistry];
-    v13 = [(SUUIMobileUpdateOperation *)v15 beginOperation:1 ofUnattendedPurge:v16 andUnattendedInstall:0 descriptor:v14 agreementStatusRegistry:?];
-    MEMORY[0x277D82BD8](v12);
+    agreementStatusRegistry = [v34 agreementStatusRegistry];
+    v13 = [(SUUIMobileUpdateOperation *)v15 beginOperation:1 ofUnattendedPurge:unattendedPurge andUnattendedInstall:0 descriptor:v14 agreementStatusRegistry:?];
+    MEMORY[0x277D82BD8](agreementStatusRegistry);
     if (!v13)
     {
       v11 = v40;
@@ -5019,44 +5019,44 @@ LABEL_8:
   *MEMORY[0x277D85DE8];
 }
 
-- (void)downloadAndInstallUpdate:(id)a3 withContext:(id)a4 delegate:(id)a5 completionHandler:(id)a6
+- (void)downloadAndInstallUpdate:(id)update withContext:(id)context delegate:(id)delegate completionHandler:(id)handler
 {
   v49 = *MEMORY[0x277D85DE8];
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
+  objc_storeStrong(&v42, context);
   v41 = 0;
-  objc_storeStrong(&v41, a5);
+  objc_storeStrong(&v41, delegate);
   v40 = 0;
-  objc_storeStrong(&v40, a6);
-  v24 = [MEMORY[0x277D64B58] updateOperationLogger];
-  v39 = [v24 oslog];
-  MEMORY[0x277D82BD8](v24);
+  objc_storeStrong(&v40, handler);
+  updateOperationLogger = [MEMORY[0x277D64B58] updateOperationLogger];
+  oslog = [updateOperationLogger oslog];
+  MEMORY[0x277D82BD8](updateOperationLogger);
   v38 = OS_LOG_TYPE_DEFAULT;
-  if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [location[0] updateName];
-    v37 = MEMORY[0x277D82BE0](v23);
+    updateName = [location[0] updateName];
+    v37 = MEMORY[0x277D82BE0](updateName);
     __os_log_helper_16_2_2_8_32_8_66(v48, "[SUUIMobileUpdateOperation downloadAndInstallUpdate:withContext:delegate:completionHandler:]", v37);
-    _os_log_impl(&dword_26B0B9000, v39, v38, "%s: Initiating an update operation (Download and Install) to target: %{public}@", v48, 0x16u);
-    MEMORY[0x277D82BD8](v23);
+    _os_log_impl(&dword_26B0B9000, oslog, v38, "%s: Initiating an update operation (Download and Install) to target: %{public}@", v48, 0x16u);
+    MEMORY[0x277D82BD8](updateName);
     objc_storeStrong(&v37, 0);
   }
 
-  objc_storeStrong(&v39, 0);
+  objc_storeStrong(&oslog, 0);
   v36[0] = 3;
-  p_lock = &v44->_lock;
+  p_lock = &selfCopy->_lock;
   v45 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v36[1] = p_lock;
-  if (v44->_operationType)
+  if (selfCopy->_operationType)
   {
-    v22 = [(SUCoreFSM *)v44->_updateFSM diag];
-    [v22 trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"This update machine is currently process another scan request. Queuing requests is not currently supported." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v22);
+    diag = [(SUCoreFSM *)selfCopy->_updateFSM diag];
+    [diag trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"This update machine is currently process another scan request. Queuing requests is not currently supported." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
     v20 = v40;
     v21 = [SUUIMobileStatefulError alloc];
     v18 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D64C28] code:-1 userInfo:0];
@@ -5082,16 +5082,16 @@ LABEL_8:
     objc_storeStrong(&v33, 0);
     v34 = v32;
     v17 = MEMORY[0x26D66ED00](v40);
-    downloadUpdateCompletion = v44->_downloadUpdateCompletion;
-    v44->_downloadUpdateCompletion = v17;
+    downloadUpdateCompletion = selfCopy->_downloadUpdateCompletion;
+    selfCopy->_downloadUpdateCompletion = v17;
     MEMORY[0x277D82BD8](downloadUpdateCompletion);
-    objc_storeStrong(&v44->_delegate, v41);
-    v15 = v44;
-    v16 = [v34 unattendedPurge];
+    objc_storeStrong(&selfCopy->_delegate, v41);
+    v15 = selfCopy;
+    unattendedPurge = [v34 unattendedPurge];
     v14 = location[0];
-    v12 = [v34 agreementStatusRegistry];
-    v13 = [(SUUIMobileUpdateOperation *)v15 beginOperation:2 ofUnattendedPurge:v16 andUnattendedInstall:1 descriptor:v14 agreementStatusRegistry:?];
-    MEMORY[0x277D82BD8](v12);
+    agreementStatusRegistry = [v34 agreementStatusRegistry];
+    v13 = [(SUUIMobileUpdateOperation *)v15 beginOperation:2 ofUnattendedPurge:unattendedPurge andUnattendedInstall:1 descriptor:v14 agreementStatusRegistry:?];
+    MEMORY[0x277D82BD8](agreementStatusRegistry);
     if (!v13)
     {
       v11 = v40;
@@ -5158,44 +5158,44 @@ LABEL_8:
   *MEMORY[0x277D85DE8];
 }
 
-- (void)downloadAndScheduleUpdate:(id)a3 forInstallationTonightWithContext:(id)a4 delegate:(id)a5 completionHandler:(id)a6
+- (void)downloadAndScheduleUpdate:(id)update forInstallationTonightWithContext:(id)context delegate:(id)delegate completionHandler:(id)handler
 {
   v49 = *MEMORY[0x277D85DE8];
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
+  objc_storeStrong(&v42, context);
   v41 = 0;
-  objc_storeStrong(&v41, a5);
+  objc_storeStrong(&v41, delegate);
   v40 = 0;
-  objc_storeStrong(&v40, a6);
-  v24 = [MEMORY[0x277D64B58] updateOperationLogger];
-  v39 = [v24 oslog];
-  MEMORY[0x277D82BD8](v24);
+  objc_storeStrong(&v40, handler);
+  updateOperationLogger = [MEMORY[0x277D64B58] updateOperationLogger];
+  oslog = [updateOperationLogger oslog];
+  MEMORY[0x277D82BD8](updateOperationLogger);
   v38 = OS_LOG_TYPE_DEFAULT;
-  if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [location[0] updateName];
-    v37 = MEMORY[0x277D82BE0](v23);
+    updateName = [location[0] updateName];
+    v37 = MEMORY[0x277D82BE0](updateName);
     __os_log_helper_16_2_2_8_32_8_66(v48, "[SUUIMobileUpdateOperation downloadAndScheduleUpdate:forInstallationTonightWithContext:delegate:completionHandler:]", v37);
-    _os_log_impl(&dword_26B0B9000, v39, v38, "%s: Initiating an update operation (Update Tonight) to target: %{public}@", v48, 0x16u);
-    MEMORY[0x277D82BD8](v23);
+    _os_log_impl(&dword_26B0B9000, oslog, v38, "%s: Initiating an update operation (Update Tonight) to target: %{public}@", v48, 0x16u);
+    MEMORY[0x277D82BD8](updateName);
     objc_storeStrong(&v37, 0);
   }
 
-  objc_storeStrong(&v39, 0);
+  objc_storeStrong(&oslog, 0);
   v36[0] = 3;
-  p_lock = &v44->_lock;
+  p_lock = &selfCopy->_lock;
   v45 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v36[1] = p_lock;
-  if (v44->_operationType)
+  if (selfCopy->_operationType)
   {
-    v22 = [(SUCoreFSM *)v44->_updateFSM diag];
-    [v22 trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"This update machine is currently process another scan request. Queuing requests is not currently supported." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v22);
+    diag = [(SUCoreFSM *)selfCopy->_updateFSM diag];
+    [diag trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"This update machine is currently process another scan request. Queuing requests is not currently supported." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
     v20 = v40;
     v21 = [SUUIMobileStatefulError alloc];
     v18 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D64C28] code:-1 userInfo:0];
@@ -5221,16 +5221,16 @@ LABEL_8:
     objc_storeStrong(&v33, 0);
     v34 = v32;
     v17 = MEMORY[0x26D66ED00](v40);
-    downloadAndScheduleCompletion = v44->_downloadAndScheduleCompletion;
-    v44->_downloadAndScheduleCompletion = v17;
+    downloadAndScheduleCompletion = selfCopy->_downloadAndScheduleCompletion;
+    selfCopy->_downloadAndScheduleCompletion = v17;
     MEMORY[0x277D82BD8](downloadAndScheduleCompletion);
-    objc_storeStrong(&v44->_delegate, v41);
-    v15 = v44;
-    v16 = [v34 unattendedPurge];
+    objc_storeStrong(&selfCopy->_delegate, v41);
+    v15 = selfCopy;
+    unattendedPurge = [v34 unattendedPurge];
     v14 = location[0];
-    v12 = [v34 agreementStatusRegistry];
-    v13 = [(SUUIMobileUpdateOperation *)v15 beginOperation:3 ofUnattendedPurge:v16 andUnattendedInstall:1 descriptor:v14 agreementStatusRegistry:?];
-    MEMORY[0x277D82BD8](v12);
+    agreementStatusRegistry = [v34 agreementStatusRegistry];
+    v13 = [(SUUIMobileUpdateOperation *)v15 beginOperation:3 ofUnattendedPurge:unattendedPurge andUnattendedInstall:1 descriptor:v14 agreementStatusRegistry:?];
+    MEMORY[0x277D82BD8](agreementStatusRegistry);
     if (!v13)
     {
       v11 = v40;
@@ -5297,44 +5297,44 @@ LABEL_8:
   *MEMORY[0x277D85DE8];
 }
 
-- (void)installUpdate:(id)a3 withContext:(id)a4 delegate:(id)a5 completionHandler:(id)a6
+- (void)installUpdate:(id)update withContext:(id)context delegate:(id)delegate completionHandler:(id)handler
 {
   v49 = *MEMORY[0x277D85DE8];
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
+  objc_storeStrong(&v42, context);
   v41 = 0;
-  objc_storeStrong(&v41, a5);
+  objc_storeStrong(&v41, delegate);
   v40 = 0;
-  objc_storeStrong(&v40, a6);
-  v24 = [MEMORY[0x277D64B58] updateOperationLogger];
-  v39 = [v24 oslog];
-  MEMORY[0x277D82BD8](v24);
+  objc_storeStrong(&v40, handler);
+  updateOperationLogger = [MEMORY[0x277D64B58] updateOperationLogger];
+  oslog = [updateOperationLogger oslog];
+  MEMORY[0x277D82BD8](updateOperationLogger);
   v38 = OS_LOG_TYPE_DEFAULT;
-  if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [location[0] updateName];
-    v37 = MEMORY[0x277D82BE0](v23);
+    updateName = [location[0] updateName];
+    v37 = MEMORY[0x277D82BE0](updateName);
     __os_log_helper_16_2_2_8_32_8_66(v48, "[SUUIMobileUpdateOperation installUpdate:withContext:delegate:completionHandler:]", v37);
-    _os_log_impl(&dword_26B0B9000, v39, v38, "%s: Initiating an install operation (Install Now) to target: %{public}@", v48, 0x16u);
-    MEMORY[0x277D82BD8](v23);
+    _os_log_impl(&dword_26B0B9000, oslog, v38, "%s: Initiating an install operation (Install Now) to target: %{public}@", v48, 0x16u);
+    MEMORY[0x277D82BD8](updateName);
     objc_storeStrong(&v37, 0);
   }
 
-  objc_storeStrong(&v39, 0);
+  objc_storeStrong(&oslog, 0);
   v36[0] = 3;
-  p_lock = &v44->_lock;
+  p_lock = &selfCopy->_lock;
   v45 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v36[1] = p_lock;
-  if (v44->_operationType)
+  if (selfCopy->_operationType)
   {
-    v22 = [(SUCoreFSM *)v44->_updateFSM diag];
-    [v22 trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"This update machine is currently process another scan request. Queuing requests is not currently supported." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v22);
+    diag = [(SUCoreFSM *)selfCopy->_updateFSM diag];
+    [diag trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"This update machine is currently process another scan request. Queuing requests is not currently supported." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
     v20 = v40;
     v21 = [SUUIMobileStatefulError alloc];
     v18 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D64C28] code:-1 userInfo:0];
@@ -5360,16 +5360,16 @@ LABEL_8:
     objc_storeStrong(&v33, 0);
     v34 = v32;
     v17 = MEMORY[0x26D66ED00](v40);
-    installCompletion = v44->_installCompletion;
-    v44->_installCompletion = v17;
+    installCompletion = selfCopy->_installCompletion;
+    selfCopy->_installCompletion = v17;
     MEMORY[0x277D82BD8](installCompletion);
-    objc_storeStrong(&v44->_delegate, v41);
-    v15 = v44;
-    v16 = [v34 unattendedPurge];
+    objc_storeStrong(&selfCopy->_delegate, v41);
+    v15 = selfCopy;
+    unattendedPurge = [v34 unattendedPurge];
     v14 = location[0];
-    v12 = [v34 agreementStatusRegistry];
-    v13 = [(SUUIMobileUpdateOperation *)v15 beginOperation:5 ofUnattendedPurge:v16 andUnattendedInstall:1 descriptor:v14 agreementStatusRegistry:?];
-    MEMORY[0x277D82BD8](v12);
+    agreementStatusRegistry = [v34 agreementStatusRegistry];
+    v13 = [(SUUIMobileUpdateOperation *)v15 beginOperation:5 ofUnattendedPurge:unattendedPurge andUnattendedInstall:1 descriptor:v14 agreementStatusRegistry:?];
+    MEMORY[0x277D82BD8](agreementStatusRegistry);
     if (!v13)
     {
       v11 = v40;
@@ -5436,40 +5436,40 @@ LABEL_8:
   *MEMORY[0x277D85DE8];
 }
 
-- (void)promoteDownloadToUserInitiated:(id)a3 withContext:(id)a4 delegate:(id)a5 completionHandler:(id)a6
+- (void)promoteDownloadToUserInitiated:(id)initiated withContext:(id)context delegate:(id)delegate completionHandler:(id)handler
 {
   v47 = *MEMORY[0x277D85DE8];
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, initiated);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
+  objc_storeStrong(&v42, context);
   v41 = 0;
-  objc_storeStrong(&v41, a5);
+  objc_storeStrong(&v41, delegate);
   v40 = 0;
-  objc_storeStrong(&v40, a6);
+  objc_storeStrong(&v40, handler);
   if (location[0])
   {
-    v15 = [MEMORY[0x277D64B58] updateOperationLogger];
-    v36 = [v15 oslog];
-    MEMORY[0x277D82BD8](v15);
+    updateOperationLogger = [MEMORY[0x277D64B58] updateOperationLogger];
+    oslog = [updateOperationLogger oslog];
+    MEMORY[0x277D82BD8](updateOperationLogger);
     v35 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = v36;
+      v11 = oslog;
       v12 = v35;
-      v14 = [location[0] descriptor];
-      v13 = [v14 updateName];
-      v34 = MEMORY[0x277D82BE0](v13);
+      descriptor = [location[0] descriptor];
+      updateName = [descriptor updateName];
+      v34 = MEMORY[0x277D82BE0](updateName);
       __os_log_helper_16_2_2_8_32_8_66(v45, "[SUUIMobileUpdateOperation promoteDownloadToUserInitiated:withContext:delegate:completionHandler:]", v34);
       _os_log_impl(&dword_26B0B9000, v11, v12, "%s: Initiating an update operation (Install once Downloaded) to target: %{public}@", v45, 0x16u);
-      MEMORY[0x277D82BD8](v13);
-      MEMORY[0x277D82BD8](v14);
+      MEMORY[0x277D82BD8](updateName);
+      MEMORY[0x277D82BD8](descriptor);
       objc_storeStrong(&v34, 0);
     }
 
-    objc_storeStrong(&v36, 0);
+    objc_storeStrong(&oslog, 0);
     v32 = MEMORY[0x277D82BE0](location[0]);
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -5481,14 +5481,14 @@ LABEL_8:
     v31 = MEMORY[0x277D82BE0](v32);
     objc_storeStrong(&v32, 0);
     v33 = v31;
-    v7 = [v31 underlyingDownload];
-    v6 = [v7 downloadOptions];
-    [v6 setAutoDownload:0];
-    MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
-    v10 = [(SUUIMobileUpdateOperation *)v44 suClient];
-    v9 = [v33 underlyingDownload];
-    v8 = [v9 downloadOptions];
+    underlyingDownload = [v31 underlyingDownload];
+    downloadOptions = [underlyingDownload downloadOptions];
+    [downloadOptions setAutoDownload:0];
+    MEMORY[0x277D82BD8](downloadOptions);
+    MEMORY[0x277D82BD8](underlyingDownload);
+    suClient = [(SUUIMobileUpdateOperation *)selfCopy suClient];
+    underlyingDownload2 = [v33 underlyingDownload];
+    downloadOptions2 = [underlyingDownload2 downloadOptions];
     v24 = MEMORY[0x277D85DD0];
     v25 = -1073741824;
     v26 = 0;
@@ -5496,10 +5496,10 @@ LABEL_8:
     v28 = &unk_279CCC940;
     v30 = MEMORY[0x277D82BE0](v40);
     v29 = MEMORY[0x277D82BE0](v33);
-    [(SUManagerClient *)v10 updateDownloadOptions:v8 withResult:&v24];
-    MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
+    [(SUManagerClient *)suClient updateDownloadOptions:downloadOptions2 withResult:&v24];
+    MEMORY[0x277D82BD8](downloadOptions2);
+    MEMORY[0x277D82BD8](underlyingDownload2);
+    MEMORY[0x277D82BD8](suClient);
     objc_storeStrong(&v29, 0);
     objc_storeStrong(&v30, 0);
     objc_storeStrong(&v33, 0);
@@ -5508,17 +5508,17 @@ LABEL_8:
 
   else
   {
-    v20 = [MEMORY[0x277D64B58] updateOperationLogger];
-    v39 = [v20 oslog];
-    MEMORY[0x277D82BD8](v20);
+    updateOperationLogger2 = [MEMORY[0x277D64B58] updateOperationLogger];
+    oslog2 = [updateOperationLogger2 oslog];
+    MEMORY[0x277D82BD8](updateOperationLogger2);
     v38 = OS_LOG_TYPE_ERROR;
-    if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
     {
       __os_log_helper_16_2_1_8_32(v46, "[SUUIMobileUpdateOperation promoteDownloadToUserInitiated:withContext:delegate:completionHandler:]");
-      _os_log_error_impl(&dword_26B0B9000, v39, v38, "%s: Can not promote the initial status of a nil targeted update.", v46, 0xCu);
+      _os_log_error_impl(&dword_26B0B9000, oslog2, v38, "%s: Can not promote the initial status of a nil targeted update.", v46, 0xCu);
     }
 
-    objc_storeStrong(&v39, 0);
+    objc_storeStrong(&oslog2, 0);
     v17 = v40;
     v16 = [SUUIMobileStatefulError alloc];
     v19 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D64C28] code:-1 userInfo:?];
@@ -5633,44 +5633,44 @@ void __99__SUUIMobileUpdateOperation_promoteDownloadToUserInitiated_withContext_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleUpdate:(id)a3 forInstallationTonightWithContext:(id)a4 delegate:(id)a5 completionHandler:(id)a6
+- (void)scheduleUpdate:(id)update forInstallationTonightWithContext:(id)context delegate:(id)delegate completionHandler:(id)handler
 {
   v49 = *MEMORY[0x277D85DE8];
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
+  objc_storeStrong(&v42, context);
   v41 = 0;
-  objc_storeStrong(&v41, a5);
+  objc_storeStrong(&v41, delegate);
   v40 = 0;
-  objc_storeStrong(&v40, a6);
-  v24 = [MEMORY[0x277D64B58] updateOperationLogger];
-  v39 = [v24 oslog];
-  MEMORY[0x277D82BD8](v24);
+  objc_storeStrong(&v40, handler);
+  updateOperationLogger = [MEMORY[0x277D64B58] updateOperationLogger];
+  oslog = [updateOperationLogger oslog];
+  MEMORY[0x277D82BD8](updateOperationLogger);
   v38 = OS_LOG_TYPE_DEFAULT;
-  if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [location[0] updateName];
-    v37 = MEMORY[0x277D82BE0](v23);
+    updateName = [location[0] updateName];
+    v37 = MEMORY[0x277D82BE0](updateName);
     __os_log_helper_16_2_2_8_32_8_66(v48, "[SUUIMobileUpdateOperation scheduleUpdate:forInstallationTonightWithContext:delegate:completionHandler:]", v37);
-    _os_log_impl(&dword_26B0B9000, v39, v38, "%s: Initiating a schedule operation (Install Tonight) of target: %{public}@", v48, 0x16u);
-    MEMORY[0x277D82BD8](v23);
+    _os_log_impl(&dword_26B0B9000, oslog, v38, "%s: Initiating a schedule operation (Install Tonight) of target: %{public}@", v48, 0x16u);
+    MEMORY[0x277D82BD8](updateName);
     objc_storeStrong(&v37, 0);
   }
 
-  objc_storeStrong(&v39, 0);
+  objc_storeStrong(&oslog, 0);
   v36[0] = 3;
-  p_lock = &v44->_lock;
+  p_lock = &selfCopy->_lock;
   v45 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v36[1] = p_lock;
-  if (v44->_operationType)
+  if (selfCopy->_operationType)
   {
-    v22 = [(SUCoreFSM *)v44->_updateFSM diag];
-    [v22 trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"This update machine is currently process another scan request. Queuing requests is not currently supported." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v22);
+    diag = [(SUCoreFSM *)selfCopy->_updateFSM diag];
+    [diag trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"This update machine is currently process another scan request. Queuing requests is not currently supported." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
     v20 = v40;
     v21 = [SUUIMobileStatefulError alloc];
     v18 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D64C28] code:-1 userInfo:0];
@@ -5696,16 +5696,16 @@ void __99__SUUIMobileUpdateOperation_promoteDownloadToUserInitiated_withContext_
     objc_storeStrong(&v33, 0);
     v34 = v32;
     v17 = MEMORY[0x26D66ED00](v40);
-    scheduleCompletion = v44->_scheduleCompletion;
-    v44->_scheduleCompletion = v17;
+    scheduleCompletion = selfCopy->_scheduleCompletion;
+    selfCopy->_scheduleCompletion = v17;
     MEMORY[0x277D82BD8](scheduleCompletion);
-    objc_storeStrong(&v44->_delegate, v41);
-    v15 = v44;
-    v16 = [v34 unattendedPurge];
+    objc_storeStrong(&selfCopy->_delegate, v41);
+    v15 = selfCopy;
+    unattendedPurge = [v34 unattendedPurge];
     v14 = location[0];
-    v12 = [v34 agreementStatusRegistry];
-    v13 = [(SUUIMobileUpdateOperation *)v15 beginOperation:4 ofUnattendedPurge:v16 andUnattendedInstall:1 descriptor:v14 agreementStatusRegistry:?];
-    MEMORY[0x277D82BD8](v12);
+    agreementStatusRegistry = [v34 agreementStatusRegistry];
+    v13 = [(SUUIMobileUpdateOperation *)v15 beginOperation:4 ofUnattendedPurge:unattendedPurge andUnattendedInstall:1 descriptor:v14 agreementStatusRegistry:?];
+    MEMORY[0x277D82BD8](agreementStatusRegistry);
     if (!v13)
     {
       v11 = v40;
@@ -5772,36 +5772,36 @@ void __99__SUUIMobileUpdateOperation_promoteDownloadToUserInitiated_withContext_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)unscheduleUpdate:(id)a3 forInstallationTonightWithContext:(id)a4 delegate:(id)a5 completionHandler:(id)a6
+- (void)unscheduleUpdate:(id)update forInstallationTonightWithContext:(id)context delegate:(id)delegate completionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, context);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
+  objc_storeStrong(&v22, delegate);
   v21 = 0;
-  objc_storeStrong(&v21, a6);
-  v12 = [MEMORY[0x277D64B58] updateOperationLogger];
-  v20 = [v12 oslog];
-  MEMORY[0x277D82BD8](v12);
+  objc_storeStrong(&v21, handler);
+  updateOperationLogger = [MEMORY[0x277D64B58] updateOperationLogger];
+  oslog = [updateOperationLogger oslog];
+  MEMORY[0x277D82BD8](updateOperationLogger);
   v19 = OS_LOG_TYPE_DEFAULT;
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    log = v20;
+    log = oslog;
     type = v19;
-    v11 = [location[0] updateName];
-    v18 = MEMORY[0x277D82BE0](v11);
+    updateName = [location[0] updateName];
+    v18 = MEMORY[0x277D82BE0](updateName);
     __os_log_helper_16_2_2_8_32_8_66(v25, "[SUUIMobileUpdateOperation unscheduleUpdate:forInstallationTonightWithContext:delegate:completionHandler:]", v18);
     _os_log_impl(&dword_26B0B9000, log, type, "%s: Initiating an update operation (Cancel Install Tonight) to operation: %{public}@", v25, 0x16u);
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](updateName);
     objc_storeStrong(&v18, 0);
   }
 
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&oslog, 0);
   v17 = MEMORY[0x277D82BE0](v23);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -5812,9 +5812,9 @@ void __99__SUUIMobileUpdateOperation_promoteDownloadToUserInitiated_withContext_
 
   v16 = MEMORY[0x277D82BE0](v17);
   objc_storeStrong(&v17, 0);
-  v6 = [v16 currentAutoInstallOperation];
-  [v6 cancel];
-  MEMORY[0x277D82BD8](v6);
+  currentAutoInstallOperation = [v16 currentAutoInstallOperation];
+  [currentAutoInstallOperation cancel];
+  MEMORY[0x277D82BD8](currentAutoInstallOperation);
   MEMORY[0x277D82BD8](v16);
   v7 = v21;
   v8 = [objc_alloc(MEMORY[0x277D64BC8]) initWithResult:1];
@@ -5827,32 +5827,32 @@ void __99__SUUIMobileUpdateOperation_promoteDownloadToUserInitiated_withContext_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)purgeDownload:(id)a3 withContext:(id)a4 delegate:(id)a5 completionHandler:(id)a6
+- (void)purgeDownload:(id)download withContext:(id)context delegate:(id)delegate completionHandler:(id)handler
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, download);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, context);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
+  objc_storeStrong(&v20, delegate);
   v19 = 0;
-  objc_storeStrong(&v19, a6);
+  objc_storeStrong(&v19, handler);
   v18 = objc_alloc_init(MEMORY[0x277D648D8]);
-  v6 = [v21 isNotifyUser];
-  [v18 setNotifyUser:v6];
-  v7 = [v21 isUserRequested];
-  [v18 setUserRequested:v7];
-  v12 = [(SUUIMobileUpdateOperation *)v23 suClient];
+  isNotifyUser = [v21 isNotifyUser];
+  [v18 setNotifyUser:isNotifyUser];
+  isUserRequested = [v21 isUserRequested];
+  [v18 setUserRequested:isUserRequested];
+  suClient = [(SUUIMobileUpdateOperation *)selfCopy suClient];
   v11 = v18;
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __82__SUUIMobileUpdateOperation_purgeDownload_withContext_delegate_completionHandler___block_invoke;
   v16 = &unk_279CCC968;
   v17 = MEMORY[0x277D82BE0](v19);
-  [(SUManagerClient *)v12 purgeDownloadWithOptions:v11 withResult:?];
-  MEMORY[0x277D82BD8](v12);
+  [(SUManagerClient *)suClient purgeDownloadWithOptions:v11 withResult:?];
+  MEMORY[0x277D82BD8](suClient);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v19, 0);
@@ -5958,67 +5958,67 @@ void __82__SUUIMobileUpdateOperation_purgeDownload_withContext_delegate_completi
   *MEMORY[0x277D85DE8];
 }
 
-- (void)hasAcceptedTermsAndConditionsOfDescriptor:(id)a3 completionHandler:(id)a4
+- (void)hasAcceptedTermsAndConditionsOfDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, descriptor);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  (*(v5 + 2))(v5, [(SUUIMobileUpdateOperation *)v7 hasAcceptedTermsAndConditionsOfDescriptorSync:location[0]], 0);
+  objc_storeStrong(&v5, handler);
+  (*(v5 + 2))(v5, [(SUUIMobileUpdateOperation *)selfCopy hasAcceptedTermsAndConditionsOfDescriptorSync:location[0]], 0);
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)respondToTermsAndConditionsOfDescriptor:(id)a3 withResponse:(int64_t)a4 completionHandler:(id)a5
+- (void)respondToTermsAndConditionsOfDescriptor:(id)descriptor withResponse:(int64_t)response completionHandler:(id)handler
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = a4;
+  objc_storeStrong(location, descriptor);
+  responseCopy = response;
   v7 = 0;
-  objc_storeStrong(&v7, a5);
-  [(SUUIMobileUpdateOperation *)v10 respondToTermsAndConditionsOfDescriptorSync:location[0] withResponse:v8];
+  objc_storeStrong(&v7, handler);
+  [(SUUIMobileUpdateOperation *)selfCopy respondToTermsAndConditionsOfDescriptorSync:location[0] withResponse:responseCopy];
   (*(v7 + 2))(v7, 1, 0);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
   v20 = *MEMORY[0x277D85DE8];
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = [MEMORY[0x277D64B58] updateOperationLogger];
-  v13 = [v10 oslog];
-  MEMORY[0x277D82BD8](v10);
+  objc_storeStrong(location, cancel);
+  updateOperationLogger = [MEMORY[0x277D64B58] updateOperationLogger];
+  oslog = [updateOperationLogger oslog];
+  MEMORY[0x277D82BD8](updateOperationLogger);
   v12 = OS_LOG_TYPE_DEFAULT;
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     __os_log_helper_16_2_1_8_32(v19, "[SUUIMobileUpdateOperation cancel:]");
-    _os_log_impl(&dword_26B0B9000, v13, v12, "%s: Requesting to cancel the current update operation", v19, 0xCu);
+    _os_log_impl(&dword_26B0B9000, oslog, v12, "%s: Requesting to cancel the current update operation", v19, 0xCu);
   }
 
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&oslog, 0);
   v11[0] = 3;
-  p_lock = &v15->_lock;
+  p_lock = &selfCopy->_lock;
   v16 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v11[1] = p_lock;
-  if (v15->_operationType)
+  if (selfCopy->_operationType)
   {
-    if (!v15->_canceled)
+    if (!selfCopy->_canceled)
     {
-      v15->_canceled = 1;
+      selfCopy->_canceled = 1;
       v8 = MEMORY[0x26D66ED00](location[0]);
-      cancelHandler = v15->_cancelHandler;
-      v15->_cancelHandler = v8;
+      cancelHandler = selfCopy->_cancelHandler;
+      selfCopy->_cancelHandler = v8;
       MEMORY[0x277D82BD8](cancelHandler);
-      updateFSM = v15->_updateFSM;
+      updateFSM = selfCopy->_updateFSM;
       v6 = *MEMORY[0x277D64D10];
       v7 = objc_alloc_init(SUUIMobileUpdateOperationParam);
       [(SUCoreFSM *)updateFSM postEvent:v6 withInfo:v7];
@@ -6028,9 +6028,9 @@ void __82__SUUIMobileUpdateOperation_purgeDownload_withContext_delegate_completi
 
   else
   {
-    v9 = [(SUCoreFSM *)v15->_updateFSM diag];
-    [v9 trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"There is no active search to cancel" withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v9);
+    diag = [(SUCoreFSM *)selfCopy->_updateFSM diag];
+    [diag trackAnomaly:@"[SUUIMobileUpdateOperation]" forReason:@"There is no active search to cancel" withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
   }
 
   v18 = v11;
@@ -6054,14 +6054,14 @@ void __82__SUUIMobileUpdateOperation_purgeDownload_withContext_delegate_completi
 
 - (BOOL)isActive
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 3;
   p_lock = &self->_lock;
   *&v5[1] = 0;
   os_unfair_recursive_lock_lock_with_options();
   v3[1] = p_lock;
-  *v5 = v4->_operationType != 0;
+  *v5 = selfCopy->_operationType != 0;
   v7 = v3;
   os_unfair_recursive_lock_unlock();
   return v5[0] & 1;
@@ -6088,33 +6088,33 @@ void __82__SUUIMobileUpdateOperation_purgeDownload_withContext_delegate_completi
   self->_canceled = 0;
 }
 
-- (BOOL)beginOperation:(int64_t)a3 ofUnattendedPurge:(BOOL)a4 andUnattendedInstall:(BOOL)a5 descriptor:(id)a6 agreementStatusRegistry:(id)a7
+- (BOOL)beginOperation:(int64_t)operation ofUnattendedPurge:(BOOL)purge andUnattendedInstall:(BOOL)install descriptor:(id)descriptor agreementStatusRegistry:(id)registry
 {
   v35 = *MEMORY[0x277D85DE8];
-  v32 = self;
+  selfCopy = self;
   v31 = a2;
-  v30 = a3;
-  v29 = a4;
-  v28 = a5;
+  operationCopy = operation;
+  purgeCopy = purge;
+  installCopy = install;
   location = 0;
-  objc_storeStrong(&location, a6);
+  objc_storeStrong(&location, descriptor);
   v26 = 0;
-  objc_storeStrong(&v26, a7);
-  if (v32->_delegate)
+  objc_storeStrong(&v26, registry);
+  if (selfCopy->_delegate)
   {
-    v32->_operationType = v30;
-    v16 = [MEMORY[0x277D643F8] sharedCore];
-    v7 = [v16 selectDelegateCallbackQueue:v32->_delegateCallbackQueue];
-    delegateCallbackQueue = v32->_delegateCallbackQueue;
-    v32->_delegateCallbackQueue = v7;
+    selfCopy->_operationType = operationCopy;
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v7 = [mEMORY[0x277D643F8] selectDelegateCallbackQueue:selfCopy->_delegateCallbackQueue];
+    delegateCallbackQueue = selfCopy->_delegateCallbackQueue;
+    selfCopy->_delegateCallbackQueue = v7;
     MEMORY[0x277D82BD8](delegateCallbackQueue);
-    MEMORY[0x277D82BD8](v16);
-    v17 = [MEMORY[0x277D643F8] sharedCore];
-    v9 = [v17 selectCompletionQueue:v32->_completionQueue];
-    completionQueue = v32->_completionQueue;
-    v32->_completionQueue = v9;
+    MEMORY[0x277D82BD8](mEMORY[0x277D643F8]);
+    mEMORY[0x277D643F8]2 = [MEMORY[0x277D643F8] sharedCore];
+    v9 = [mEMORY[0x277D643F8]2 selectCompletionQueue:selfCopy->_completionQueue];
+    completionQueue = selfCopy->_completionQueue;
+    selfCopy->_completionQueue = v9;
     MEMORY[0x277D82BD8](completionQueue);
-    MEMORY[0x277D82BD8](v17);
+    MEMORY[0x277D82BD8](mEMORY[0x277D643F8]2);
     v21 = MEMORY[0x277D82BE0](location);
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -6126,11 +6126,11 @@ void __82__SUUIMobileUpdateOperation_purgeDownload_withContext_delegate_completi
     v20 = MEMORY[0x277D82BE0](v21);
     objc_storeStrong(&v21, 0);
     v22 = v20;
-    [(SUCoreFSM *)v32->_updateFSM activateMachine];
-    updateFSM = v32->_updateFSM;
+    [(SUCoreFSM *)selfCopy->_updateFSM activateMachine];
+    updateFSM = selfCopy->_updateFSM;
     v13 = *MEMORY[0x277D64D00];
     v11 = [SUUIMobileUpdateOperationParam alloc];
-    v15 = [(SUUIMobileUpdateOperationParam *)v11 initWithDescriptor:v22 forUnattendedPurge:v29 andForUnattendedInstall:v28 usingAgreementStatusRegistry:v26];
+    v15 = [(SUUIMobileUpdateOperationParam *)v11 initWithDescriptor:v22 forUnattendedPurge:purgeCopy andForUnattendedInstall:installCopy usingAgreementStatusRegistry:v26];
     [(SUCoreFSM *)updateFSM postEvent:v13 withInfo:?];
     MEMORY[0x277D82BD8](v15);
     v33 = 1;
@@ -6140,17 +6140,17 @@ void __82__SUUIMobileUpdateOperation_purgeDownload_withContext_delegate_completi
 
   else
   {
-    v18 = [MEMORY[0x277D64B58] updateOperationLogger];
-    v25 = [v18 oslog];
-    MEMORY[0x277D82BD8](v18);
+    updateOperationLogger = [MEMORY[0x277D64B58] updateOperationLogger];
+    oslog = [updateOperationLogger oslog];
+    MEMORY[0x277D82BD8](updateOperationLogger);
     v24 = OS_LOG_TYPE_ERROR;
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      __os_log_helper_16_2_2_8_32_8_0(v34, "[SUUIMobileUpdateOperation beginOperation:ofUnattendedPurge:andUnattendedInstall:descriptor:agreementStatusRegistry:]", v30);
-      _os_log_error_impl(&dword_26B0B9000, v25, v24, "%s: Can not perform operation %ld: The class delegate must not be nil.", v34, 0x16u);
+      __os_log_helper_16_2_2_8_32_8_0(v34, "[SUUIMobileUpdateOperation beginOperation:ofUnattendedPurge:andUnattendedInstall:descriptor:agreementStatusRegistry:]", operationCopy);
+      _os_log_error_impl(&dword_26B0B9000, oslog, v24, "%s: Can not perform operation %ld: The class delegate must not be nil.", v34, 0x16u);
     }
 
-    objc_storeStrong(&v25, 0);
+    objc_storeStrong(&oslog, 0);
     v33 = 0;
     v23 = 1;
   }
@@ -6161,13 +6161,13 @@ void __82__SUUIMobileUpdateOperation_purgeDownload_withContext_delegate_completi
   return v33 & 1;
 }
 
-- (BOOL)hasAcceptedTermsAndConditionsOfDescriptorSync:(id)a3
+- (BOOL)hasAcceptedTermsAndConditionsOfDescriptorSync:(id)sync
 {
   v23 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, sync);
   v18 = MEMORY[0x277D82BE0](location[0]);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -6179,33 +6179,33 @@ void __82__SUUIMobileUpdateOperation_purgeDownload_withContext_delegate_completi
   v17 = MEMORY[0x277D82BE0](v18);
   objc_storeStrong(&v18, 0);
   v19 = v17;
-  v10 = [v17 underlyingDescriptor];
-  v9 = [v10 documentation];
-  v8 = [v9 slaVersion];
-  v11 = [v8 unsignedIntegerValue];
-  MEMORY[0x277D82BD8](v8);
-  MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
-  v16 = v11;
-  v15 = [MEMORY[0x277D4DA38] versionOfAcceptedAgreement];
-  v7 = [MEMORY[0x277D64B58] updateOperationLogger];
-  v14 = [v7 oslog];
-  MEMORY[0x277D82BD8](v7);
+  underlyingDescriptor = [v17 underlyingDescriptor];
+  documentation = [underlyingDescriptor documentation];
+  slaVersion = [documentation slaVersion];
+  unsignedIntegerValue = [slaVersion unsignedIntegerValue];
+  MEMORY[0x277D82BD8](slaVersion);
+  MEMORY[0x277D82BD8](documentation);
+  MEMORY[0x277D82BD8](underlyingDescriptor);
+  v16 = unsignedIntegerValue;
+  versionOfAcceptedAgreement = [MEMORY[0x277D4DA38] versionOfAcceptedAgreement];
+  updateOperationLogger = [MEMORY[0x277D64B58] updateOperationLogger];
+  oslog = [updateOperationLogger oslog];
+  MEMORY[0x277D82BD8](updateOperationLogger);
   v13 = OS_LOG_TYPE_DEFAULT;
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    log = v14;
+    log = oslog;
     type = v13;
-    v6 = [location[0] updateName];
-    v12 = MEMORY[0x277D82BE0](v6);
-    __os_log_helper_16_2_4_8_32_8_66_8_2_8_2(v22, "[SUUIMobileUpdateOperation hasAcceptedTermsAndConditionsOfDescriptorSync:]", v12, v16, v15);
+    updateName = [location[0] updateName];
+    v12 = MEMORY[0x277D82BE0](updateName);
+    __os_log_helper_16_2_4_8_32_8_66_8_2_8_2(v22, "[SUUIMobileUpdateOperation hasAcceptedTermsAndConditionsOfDescriptorSync:]", v12, v16, versionOfAcceptedAgreement);
     _os_log_impl(&dword_26B0B9000, log, type, "%s: Terms and Conditions Acceptance status:\n\t- Descriptor (%{public}@) SLA Version: %{public}lu\n\t- Setup Version: %{public}lu", v22, 0x2Au);
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](updateName);
     objc_storeStrong(&v12, 0);
   }
 
-  objc_storeStrong(&v14, 0);
-  if (v16 == v15)
+  objc_storeStrong(&oslog, 0);
+  if (v16 == versionOfAcceptedAgreement)
   {
     [MEMORY[0x277D4DA38] recordUserAcceptedAgreementVersion:v16];
     v21 = 1;
@@ -6222,14 +6222,14 @@ void __82__SUUIMobileUpdateOperation_purgeDownload_withContext_delegate_completi
   return v21 & 1;
 }
 
-- (void)respondToTermsAndConditionsOfDescriptorSync:(id)a3 withResponse:(int64_t)a4
+- (void)respondToTermsAndConditionsOfDescriptorSync:(id)sync withResponse:(int64_t)response
 {
   v27 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v24 = a4;
+  objc_storeStrong(location, sync);
+  responseCopy = response;
   v22 = MEMORY[0x277D82BE0](location[0]);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -6241,24 +6241,24 @@ void __82__SUUIMobileUpdateOperation_purgeDownload_withContext_delegate_completi
   v21 = MEMORY[0x277D82BE0](v22);
   objc_storeStrong(&v22, 0);
   v23 = v21;
-  v13 = [v21 underlyingDescriptor];
-  v12 = [v13 documentation];
-  v11 = [v12 slaVersion];
-  v14 = [v11 unsignedIntegerValue];
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
-  v20 = v14;
-  v10 = [MEMORY[0x277D64B58] updateOperationLogger];
-  v19 = [v10 oslog];
-  MEMORY[0x277D82BD8](v10);
+  underlyingDescriptor = [v21 underlyingDescriptor];
+  documentation = [underlyingDescriptor documentation];
+  slaVersion = [documentation slaVersion];
+  unsignedIntegerValue = [slaVersion unsignedIntegerValue];
+  MEMORY[0x277D82BD8](slaVersion);
+  MEMORY[0x277D82BD8](documentation);
+  MEMORY[0x277D82BD8](underlyingDescriptor);
+  v20 = unsignedIntegerValue;
+  updateOperationLogger = [MEMORY[0x277D64B58] updateOperationLogger];
+  oslog = [updateOperationLogger oslog];
+  MEMORY[0x277D82BD8](updateOperationLogger);
   v18 = OS_LOG_TYPE_DEFAULT;
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    log = v19;
+    log = oslog;
     type = v18;
-    v9 = [location[0] updateName];
-    v4 = MEMORY[0x277D82BE0](v9);
+    updateName = [location[0] updateName];
+    v4 = MEMORY[0x277D82BE0](updateName);
     v17 = v4;
     v5 = v20;
     v8 = SUUIUserInteractionResponseToString();
@@ -6266,13 +6266,13 @@ void __82__SUUIMobileUpdateOperation_purgeDownload_withContext_delegate_completi
     __os_log_helper_16_2_4_8_32_8_66_8_2_8_66(v26, "[SUUIMobileUpdateOperation respondToTermsAndConditionsOfDescriptorSync:withResponse:]", v4, v5, v16);
     _os_log_impl(&dword_26B0B9000, log, type, "%s: Recording new Terms and Conditions Acceptance status:\n\t- Descriptor (%{public}@) SLA Version: %{public}lu\n\t- New Status: %{public}@", v26, 0x2Au);
     MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](updateName);
     objc_storeStrong(&v16, 0);
     objc_storeStrong(&v17, 0);
   }
 
-  objc_storeStrong(&v19, 0);
-  if (!v24)
+  objc_storeStrong(&oslog, 0);
+  if (!responseCopy)
   {
     [MEMORY[0x277D4DA38] recordUserAcceptedAgreementVersion:v20];
   }
@@ -6290,13 +6290,13 @@ void __82__SUUIMobileUpdateOperation_purgeDownload_withContext_delegate_completi
   if (v5[0])
   {
     location = [v5[0] getInternetDataStatusSync:0];
-    v3 = 0;
+    cellularDataPossible = 0;
     if (location)
     {
-      v3 = [location cellularDataPossible];
+      cellularDataPossible = [location cellularDataPossible];
     }
 
-    v6 = v3 & 1;
+    v6 = cellularDataPossible & 1;
     objc_storeStrong(&location, 0);
   }
 
@@ -6313,19 +6313,19 @@ void __82__SUUIMobileUpdateOperation_purgeDownload_withContext_delegate_completi
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v3 = *MEMORY[0x277D64C30];
-  v5 = [(SUUIMobileUpdateOperation *)self identifier];
-  v6 = [v4 initWithFormat:@"%@.stateful-ui.update.%@", v3, v5];
-  MEMORY[0x277D82BD8](v5);
+  identifier = [(SUUIMobileUpdateOperation *)self identifier];
+  v6 = [v4 initWithFormat:@"%@.stateful-ui.update.%@", v3, identifier];
+  MEMORY[0x277D82BD8](identifier);
 
   return v6;
 }
 
-- (BOOL)isCancelableState:(id)a3
+- (BOOL)isCancelableState:(id)state
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, state);
   if ([location[0] isEqualToString:*MEMORY[0x277D64E88]])
   {
     v5 = 1;
@@ -6345,30 +6345,30 @@ void __82__SUUIMobileUpdateOperation_purgeDownload_withContext_delegate_completi
   return v5;
 }
 
-- (BOOL)shouldConsiderErrorAsSuccessfulCase:(id)a3
+- (BOOL)shouldConsiderErrorAsSuccessfulCase:(id)case
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, case);
   if (location[0])
   {
-    v5 = [location[0] domain];
-    v6 = [v5 isEqualToString:*MEMORY[0x277D64910]];
-    MEMORY[0x277D82BD8](v5);
+    domain = [location[0] domain];
+    v6 = [domain isEqualToString:*MEMORY[0x277D64910]];
+    MEMORY[0x277D82BD8](domain);
     if (v6)
     {
-      v7 = [location[0] code];
+      code = [location[0] code];
       v4 = 1;
-      if (v7 != 13)
+      if (code != 13)
       {
         v4 = 1;
-        if (v7 != 11)
+        if (code != 11)
         {
           v4 = 1;
-          if (v7 != 14)
+          if (code != 14)
           {
-            v4 = v7 == 41;
+            v4 = code == 41;
           }
         }
       }

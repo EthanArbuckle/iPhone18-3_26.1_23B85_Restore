@@ -1,15 +1,15 @@
 @interface HFAnalyticsFaceRecognitionNotificationAssociatePersonEvent
-- (HFAnalyticsFaceRecognitionNotificationAssociatePersonEvent)initWithData:(id)a3;
+- (HFAnalyticsFaceRecognitionNotificationAssociatePersonEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsFaceRecognitionNotificationAssociatePersonEvent
 
-- (HFAnalyticsFaceRecognitionNotificationAssociatePersonEvent)initWithData:(id)a3
+- (HFAnalyticsFaceRecognitionNotificationAssociatePersonEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"faceRecognitionNotificationAssociatePersonCount"];
+  v5 = [dataCopy objectForKeyedSubscript:@"faceRecognitionNotificationAssociatePersonCount"];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -28,7 +28,7 @@
   }
 
   objc_opt_class();
-  v8 = [v4 objectForKeyedSubscript:@"faceRecognitionNotificationAssociatePersonSuccess"];
+  v8 = [dataCopy objectForKeyedSubscript:@"faceRecognitionNotificationAssociatePersonSuccess"];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -63,14 +63,14 @@
 {
   v8.receiver = self;
   v8.super_class = HFAnalyticsFaceRecognitionNotificationAssociatePersonEvent;
-  v3 = [(HFAnalyticsEvent *)&v8 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v8 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsFaceRecognitionNotificationAssociatePersonEvent *)self unknownPersonsTagCount];
-  [v4 na_safeSetObject:v5 forKey:@"faceRecognitionNotificationAssociatePersonCount"];
+  unknownPersonsTagCount = [(HFAnalyticsFaceRecognitionNotificationAssociatePersonEvent *)self unknownPersonsTagCount];
+  [v4 na_safeSetObject:unknownPersonsTagCount forKey:@"faceRecognitionNotificationAssociatePersonCount"];
 
-  v6 = [(HFAnalyticsFaceRecognitionNotificationAssociatePersonEvent *)self openURLSuccess];
-  [v4 na_safeSetObject:v6 forKey:@"faceRecognitionNotificationAssociatePersonSuccess"];
+  openURLSuccess = [(HFAnalyticsFaceRecognitionNotificationAssociatePersonEvent *)self openURLSuccess];
+  [v4 na_safeSetObject:openURLSuccess forKey:@"faceRecognitionNotificationAssociatePersonSuccess"];
 
   return v4;
 }

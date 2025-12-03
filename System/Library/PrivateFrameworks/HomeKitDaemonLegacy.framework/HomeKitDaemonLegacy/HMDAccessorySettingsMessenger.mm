@@ -1,39 +1,39 @@
 @interface HMDAccessorySettingsMessenger
 + (id)logCategory;
-- (HMDAccessorySettingsMessenger)initWithMessageTargetUUID:(id)a3 messageDispatcher:(id)a4 messageRouter:(id)a5 messageHandler:(id)a6 logEventSubmitter:(id)a7 legacyMessageReceiver:(id)a8;
-- (id)fetchLogEventFromMessage:(id)a3;
-- (id)legacyMessageForMessage:(id)a3;
+- (HMDAccessorySettingsMessenger)initWithMessageTargetUUID:(id)d messageDispatcher:(id)dispatcher messageRouter:(id)router messageHandler:(id)handler logEventSubmitter:(id)submitter legacyMessageReceiver:(id)receiver;
+- (id)fetchLogEventFromMessage:(id)message;
+- (id)legacyMessageForMessage:(id)message;
 - (id)logIdentifier;
-- (void)registerForMessagesWithHome:(id)a3;
-- (void)routeAccessorySettingsFetchRequestMessage:(id)a3;
-- (void)routeAccessorySettingsUpdateRequestMessage:(id)a3;
-- (void)sendFetchAccessorySettingsRequestWithAccessoryUUID:(id)a3 keyPaths:(id)a4 completionHandler:(id)a5;
-- (void)sendUpdateAccessorySettingRequestWithAccessoryUUID:(id)a3 keyPath:(id)a4 settingValue:(id)a5 completionHandler:(id)a6;
-- (void)updateAndPostFetchSettingsEvent:(id)a3 responsePayload:(id)a4 responseError:(id)a5;
+- (void)registerForMessagesWithHome:(id)home;
+- (void)routeAccessorySettingsFetchRequestMessage:(id)message;
+- (void)routeAccessorySettingsUpdateRequestMessage:(id)message;
+- (void)sendFetchAccessorySettingsRequestWithAccessoryUUID:(id)d keyPaths:(id)paths completionHandler:(id)handler;
+- (void)sendUpdateAccessorySettingRequestWithAccessoryUUID:(id)d keyPath:(id)path settingValue:(id)value completionHandler:(id)handler;
+- (void)updateAndPostFetchSettingsEvent:(id)event responsePayload:(id)payload responseError:(id)error;
 @end
 
 @implementation HMDAccessorySettingsMessenger
 
-- (id)legacyMessageForMessage:(id)a3
+- (id)legacyMessageForMessage:(id)message
 {
-  v4 = [a3 copy];
+  v4 = [message copy];
   v5 = [v4 mutableCopy];
 
   v6 = objc_alloc(MEMORY[0x277D0F820]);
-  v7 = [(HMDAccessorySettingsMessenger *)self legacyMessageReceiver];
-  v8 = [v7 messageTargetUUID];
-  v9 = [v6 initWithTarget:v8];
+  legacyMessageReceiver = [(HMDAccessorySettingsMessenger *)self legacyMessageReceiver];
+  messageTargetUUID = [legacyMessageReceiver messageTargetUUID];
+  v9 = [v6 initWithTarget:messageTargetUUID];
   [v5 setDestination:v9];
 
   return v5;
 }
 
-- (void)routeAccessorySettingsUpdateRequestMessage:(id)a3
+- (void)routeAccessorySettingsUpdateRequestMessage:(id)message
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -41,21 +41,21 @@
     *buf = 138543618;
     v16 = v8;
     v17 = 2112;
-    v18 = v4;
+    v18 = messageCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Routing accessory settings update request message: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDAccessorySettingsMessenger *)v6 legacyMessageForMessage:v4];
-  v10 = [(HMDAccessorySettingsMessenger *)v6 messageRouter];
+  v9 = [(HMDAccessorySettingsMessenger *)selfCopy legacyMessageForMessage:messageCopy];
+  messageRouter = [(HMDAccessorySettingsMessenger *)selfCopy messageRouter];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __76__HMDAccessorySettingsMessenger_routeAccessorySettingsUpdateRequestMessage___block_invoke;
   v13[3] = &unk_2797316B0;
-  v13[4] = v6;
-  v14 = v4;
-  v11 = v4;
-  [v10 routeMessage:v9 localHandler:v13];
+  v13[4] = selfCopy;
+  v14 = messageCopy;
+  v11 = messageCopy;
+  [messageRouter routeMessage:v9 localHandler:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -66,12 +66,12 @@ void __76__HMDAccessorySettingsMessenger_routeAccessorySettingsUpdateRequestMess
   [v2 handleAccessorySettingsUpdateRequestMessage:*(a1 + 40)];
 }
 
-- (void)routeAccessorySettingsFetchRequestMessage:(id)a3
+- (void)routeAccessorySettingsFetchRequestMessage:(id)message
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -79,12 +79,12 @@ void __76__HMDAccessorySettingsMessenger_routeAccessorySettingsUpdateRequestMess
     *buf = 138543618;
     v31 = v8;
     v32 = 2112;
-    v33 = v4;
+    v33 = messageCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Routing accessory settings fetch request message: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = v4;
+  v9 = messageCopy;
   if ([v9 isRemote] & 1) != 0 || (objc_msgSend(v9, "isSecureRemote"))
   {
     v10 = 0;
@@ -93,7 +93,7 @@ void __76__HMDAccessorySettingsMessenger_routeAccessorySettingsUpdateRequestMess
 
   else
   {
-    v12 = [(HMDAccessorySettingsMessenger *)v6 fetchLogEventFromMessage:v9];
+    v12 = [(HMDAccessorySettingsMessenger *)selfCopy fetchLogEventFromMessage:v9];
     v13 = v9;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -120,8 +120,8 @@ void __76__HMDAccessorySettingsMessenger_routeAccessorySettingsUpdateRequestMess
 
     v17 = v16;
 
-    v18 = [v13 responseHandler];
-    objc_initWeak(buf, v6);
+    responseHandler = [v13 responseHandler];
+    objc_initWeak(buf, selfCopy);
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __75__HMDAccessorySettingsMessenger_routeAccessorySettingsFetchRequestMessage___block_invoke;
@@ -129,7 +129,7 @@ void __76__HMDAccessorySettingsMessenger_routeAccessorySettingsUpdateRequestMess
     objc_copyWeak(&v29, buf);
     v10 = v12;
     v27 = v10;
-    v19 = v18;
+    v19 = responseHandler;
     v28 = v19;
     [v17 setResponseHandler:v26];
     v11 = v17;
@@ -138,16 +138,16 @@ void __76__HMDAccessorySettingsMessenger_routeAccessorySettingsUpdateRequestMess
     objc_destroyWeak(buf);
   }
 
-  v20 = [(HMDAccessorySettingsMessenger *)v6 legacyMessageForMessage:v11];
-  v21 = [(HMDAccessorySettingsMessenger *)v6 messageRouter];
+  v20 = [(HMDAccessorySettingsMessenger *)selfCopy legacyMessageForMessage:v11];
+  messageRouter = [(HMDAccessorySettingsMessenger *)selfCopy messageRouter];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __75__HMDAccessorySettingsMessenger_routeAccessorySettingsFetchRequestMessage___block_invoke_2;
   v24[3] = &unk_2797316B0;
-  v24[4] = v6;
+  v24[4] = selfCopy;
   v25 = v11;
   v22 = v11;
-  [v21 routeMessage:v20 localHandler:v24];
+  [messageRouter routeMessage:v20 localHandler:v24];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -179,21 +179,21 @@ void __75__HMDAccessorySettingsMessenger_routeAccessorySettingsFetchRequestMessa
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAccessorySettingsMessenger *)self messageTargetUUID];
-  v3 = [v2 UUIDString];
+  messageTargetUUID = [(HMDAccessorySettingsMessenger *)self messageTargetUUID];
+  uUIDString = [messageTargetUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)sendUpdateAccessorySettingRequestWithAccessoryUUID:(id)a3 keyPath:(id)a4 settingValue:(id)a5 completionHandler:(id)a6
+- (void)sendUpdateAccessorySettingRequestWithAccessoryUUID:(id)d keyPath:(id)path settingValue:(id)value completionHandler:(id)handler
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  pathCopy = path;
+  valueCopy = value;
+  handlerCopy = handler;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -201,34 +201,34 @@ void __75__HMDAccessorySettingsMessenger_routeAccessorySettingsFetchRequestMessa
     *buf = 138544130;
     v35 = v17;
     v36 = 2112;
-    v37 = v10;
+    v37 = dCopy;
     v38 = 2112;
-    v39 = v11;
+    v39 = pathCopy;
     v40 = 2112;
-    v41 = v12;
+    v41 = valueCopy;
     _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_INFO, "%{public}@Sending update request with accessoryUUID: %@ keypath: %@ value: %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v14);
-  v18 = [objc_alloc(MEMORY[0x277CD17B8]) initWithAccessoryUUID:v10 keyPath:v11 settingValue:v12];
+  v18 = [objc_alloc(MEMORY[0x277CD17B8]) initWithAccessoryUUID:dCopy keyPath:pathCopy settingValue:valueCopy];
   v19 = objc_alloc(MEMORY[0x277D0F820]);
-  v20 = [(HMDAccessorySettingsMessenger *)v15 messageTargetUUID];
-  v21 = [v19 initWithTarget:v20];
+  messageTargetUUID = [(HMDAccessorySettingsMessenger *)selfCopy messageTargetUUID];
+  v21 = [v19 initWithTarget:messageTargetUUID];
 
   v22 = objc_alloc(MEMORY[0x277D0F848]);
   v23 = *MEMORY[0x277CCEDC8];
-  v24 = [v18 payloadCopy];
-  v25 = [v22 initWithName:v23 destination:v21 payload:v24];
+  payloadCopy = [v18 payloadCopy];
+  v25 = [v22 initWithName:v23 destination:v21 payload:payloadCopy];
 
   v28 = MEMORY[0x277D85DD0];
   v29 = 3221225472;
   v30 = __123__HMDAccessorySettingsMessenger_sendUpdateAccessorySettingRequestWithAccessoryUUID_keyPath_settingValue_completionHandler___block_invoke;
   v31 = &unk_279732CF0;
-  v32 = v15;
-  v33 = v13;
-  v26 = v13;
+  v32 = selfCopy;
+  v33 = handlerCopy;
+  v26 = handlerCopy;
   [v25 setResponseHandler:&v28];
-  [(HMDAccessorySettingsMessenger *)v15 routeAccessorySettingsUpdateRequestMessage:v25, v28, v29, v30, v31, v32];
+  [(HMDAccessorySettingsMessenger *)selfCopy routeAccessorySettingsUpdateRequestMessage:v25, v28, v29, v30, v31, v32];
 
   v27 = *MEMORY[0x277D85DE8];
 }
@@ -269,31 +269,31 @@ void __123__HMDAccessorySettingsMessenger_sendUpdateAccessorySettingRequestWithA
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAndPostFetchSettingsEvent:(id)a3 responsePayload:(id)a4 responseError:(id)a5
+- (void)updateAndPostFetchSettingsEvent:(id)event responsePayload:(id)payload responseError:(id)error
 {
   v54 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  payloadCopy = payload;
+  errorCopy = error;
   mach_absolute_time();
-  [v8 setResponseTimeStamp:UpTicksToMilliseconds()];
-  if (v10)
+  [eventCopy setResponseTimeStamp:UpTicksToMilliseconds()];
+  if (errorCopy)
   {
-    [v8 setError:v10];
+    [eventCopy setError:errorCopy];
 LABEL_3:
-    v11 = [v8 keyPaths];
-    [v8 setFailedKeyPaths:v11];
+    keyPaths = [eventCopy keyPaths];
+    [eventCopy setFailedKeyPaths:keyPaths];
 
 LABEL_4:
-    v12 = [(HMDAccessorySettingsMessenger *)self logEventSubmitter];
-    [v12 submitLogEvent:v8];
+    logEventSubmitter = [(HMDAccessorySettingsMessenger *)self logEventSubmitter];
+    [logEventSubmitter submitLogEvent:eventCopy];
     goto LABEL_5;
   }
 
-  if (!v9)
+  if (!payloadCopy)
   {
     v32 = objc_autoreleasePoolPush();
-    v33 = self;
+    selfCopy = self;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
@@ -307,32 +307,32 @@ LABEL_4:
 
     objc_autoreleasePoolPop(v32);
     v36 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    [v8 setError:v36];
+    [eventCopy setError:v36];
 
     goto LABEL_3;
   }
 
-  v14 = [objc_alloc(MEMORY[0x277CD17A8]) initWithPayload:v9];
+  v14 = [objc_alloc(MEMORY[0x277CD17A8]) initWithPayload:payloadCopy];
   if (v14)
   {
     v15 = v14;
-    v43 = self;
-    v44 = v9;
+    selfCopy2 = self;
+    v44 = payloadCopy;
     v16 = MEMORY[0x277CBEB18];
-    v17 = [v14 fetchResults];
-    v18 = [v16 arrayWithCapacity:{objc_msgSend(v17, "count")}];
+    fetchResults = [v14 fetchResults];
+    v18 = [v16 arrayWithCapacity:{objc_msgSend(fetchResults, "count")}];
 
     v19 = MEMORY[0x277CBEB18];
-    v20 = [v15 fetchResults];
-    v21 = [v19 arrayWithCapacity:{objc_msgSend(v20, "count")}];
+    fetchResults2 = [v15 fetchResults];
+    v21 = [v19 arrayWithCapacity:{objc_msgSend(fetchResults2, "count")}];
 
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
     v42 = v15;
-    v22 = [v15 fetchResults];
-    v23 = [v22 countByEnumeratingWithState:&v45 objects:v49 count:16];
+    fetchResults3 = [v15 fetchResults];
+    v23 = [fetchResults3 countByEnumeratingWithState:&v45 objects:v49 count:16];
     if (v23)
     {
       v24 = v23;
@@ -343,47 +343,47 @@ LABEL_4:
         {
           if (*v46 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(fetchResults3);
           }
 
           v27 = *(*(&v45 + 1) + 8 * i);
-          v28 = [v27 setting];
+          setting = [v27 setting];
 
-          v29 = [v27 keyPath];
-          if (v28)
+          keyPath = [v27 keyPath];
+          if (setting)
           {
-            [v18 addObject:v29];
+            [v18 addObject:keyPath];
           }
 
           else
           {
-            [v21 addObject:v29];
+            [v21 addObject:keyPath];
 
-            v29 = [v27 error];
-            [v8 setError:v29];
+            keyPath = [v27 error];
+            [eventCopy setError:keyPath];
           }
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v45 objects:v49 count:16];
+        v24 = [fetchResults3 countByEnumeratingWithState:&v45 objects:v49 count:16];
       }
 
       while (v24);
     }
 
     v30 = [v18 copy];
-    [v8 setSucceededKeyPaths:v30];
+    [eventCopy setSucceededKeyPaths:v30];
 
     v31 = [v21 copy];
-    [v8 setFailedKeyPaths:v31];
+    [eventCopy setFailedKeyPaths:v31];
 
-    v10 = 0;
-    v9 = v44;
-    self = v43;
+    errorCopy = 0;
+    payloadCopy = v44;
+    self = selfCopy2;
     goto LABEL_4;
   }
 
   v37 = objc_autoreleasePoolPush();
-  v38 = self;
+  selfCopy3 = self;
   v39 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
   {
@@ -391,32 +391,32 @@ LABEL_4:
     *buf = 138543618;
     v51 = v40;
     v52 = 2112;
-    v53 = v9;
+    v53 = payloadCopy;
     _os_log_impl(&dword_2531F8000, v39, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode fetch request response payload: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v37);
   v41 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-  [v8 setError:v41];
+  [eventCopy setError:v41];
 
-  v12 = [v8 keyPaths];
-  [v8 setFailedKeyPaths:v12];
+  logEventSubmitter = [eventCopy keyPaths];
+  [eventCopy setFailedKeyPaths:logEventSubmitter];
 LABEL_5:
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchLogEventFromMessage:(id)a3
+- (id)fetchLogEventFromMessage:(id)message
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   mach_absolute_time();
   v5 = UpTicksToMilliseconds();
-  v6 = [v4 transport];
+  transport = [messageCopy transport];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = transport;
   }
 
   else
@@ -428,10 +428,10 @@ LABEL_5:
 
   if (v8)
   {
-    v9 = [v8 name];
-    if (v9)
+    name = [v8 name];
+    if (name)
     {
-      v10 = v9;
+      v10 = name;
     }
 
     else
@@ -446,20 +446,20 @@ LABEL_5:
   }
 
   v11 = objc_alloc(MEMORY[0x277CD17A0]);
-  v12 = [v4 messagePayload];
-  v13 = [v11 initWithPayload:v12];
+  messagePayload = [messageCopy messagePayload];
+  v13 = [v11 initWithPayload:messagePayload];
 
   if (v13)
   {
     v14 = [HMDFetchAccessorySettingsLogEvent alloc];
-    v15 = [v13 keyPaths];
-    v16 = [(HMDFetchAccessorySettingsLogEvent *)v14 initWithKeyPaths:v15 startTime:v5 requestingClientName:v10 error:0];
+    keyPaths = [v13 keyPaths];
+    v16 = [(HMDFetchAccessorySettingsLogEvent *)v14 initWithKeyPaths:keyPaths startTime:v5 requestingClientName:v10 error:0];
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -478,14 +478,14 @@ LABEL_5:
   return v16;
 }
 
-- (void)sendFetchAccessorySettingsRequestWithAccessoryUUID:(id)a3 keyPaths:(id)a4 completionHandler:(id)a5
+- (void)sendFetchAccessorySettingsRequestWithAccessoryUUID:(id)d keyPaths:(id)paths completionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  pathsCopy = paths;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -493,34 +493,34 @@ LABEL_5:
     *buf = 138543874;
     v30 = v14;
     v31 = 2112;
-    v32 = v8;
+    v32 = dCopy;
     v33 = 2112;
-    v34 = v9;
+    v34 = pathsCopy;
     _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, "%{public}@Sending fetch request with accessoryUUID: %@ keypaths: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = [objc_alloc(MEMORY[0x277CD17A0]) initWithAccessoryUUID:v8 keyPaths:v9];
+  v15 = [objc_alloc(MEMORY[0x277CD17A0]) initWithAccessoryUUID:dCopy keyPaths:pathsCopy];
   v16 = objc_alloc(MEMORY[0x277D0F820]);
-  v17 = [(HMDAccessorySettingsMessenger *)v12 messageTargetUUID];
-  v18 = [v16 initWithTarget:v17];
+  messageTargetUUID = [(HMDAccessorySettingsMessenger *)selfCopy messageTargetUUID];
+  v18 = [v16 initWithTarget:messageTargetUUID];
 
   v19 = objc_alloc(MEMORY[0x277D0F848]);
   v20 = *MEMORY[0x277CCEDB8];
-  v21 = [v15 payloadCopy];
-  v22 = [v19 initWithName:v20 destination:v18 payload:v21];
+  payloadCopy = [v15 payloadCopy];
+  v22 = [v19 initWithName:v20 destination:v18 payload:payloadCopy];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __111__HMDAccessorySettingsMessenger_sendFetchAccessorySettingsRequestWithAccessoryUUID_keyPaths_completionHandler___block_invoke;
   v26[3] = &unk_279732AE8;
-  v27 = v9;
-  v28 = v10;
-  v26[4] = v12;
-  v23 = v9;
-  v24 = v10;
+  v27 = pathsCopy;
+  v28 = handlerCopy;
+  v26[4] = selfCopy;
+  v23 = pathsCopy;
+  v24 = handlerCopy;
   [v22 setResponseHandler:v26];
-  [(HMDAccessorySettingsMessenger *)v12 routeAccessorySettingsFetchRequestMessage:v22];
+  [(HMDAccessorySettingsMessenger *)selfCopy routeAccessorySettingsFetchRequestMessage:v22];
 
   v25 = *MEMORY[0x277D85DE8];
 }
@@ -597,94 +597,94 @@ void __111__HMDAccessorySettingsMessenger_sendFetchAccessorySettingsRequestWithA
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForMessagesWithHome:(id)a3
+- (void)registerForMessagesWithHome:(id)home
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = +[HMDRemoteMessagePolicy defaultSecurePolicy];
   v6 = [HMDXPCMessagePolicy policyWithEntitlements:5];
-  v7 = [HMDUserMessagePolicy userMessagePolicyWithHome:v4 userPrivilege:0 remoteAccessRequired:0];
-  v8 = [HMDUserMessagePolicy userMessagePolicyWithHome:v4 userPrivilege:4 remoteAccessRequired:0];
-  v9 = [(HMDAccessorySettingsMessenger *)self messageDispatcher];
+  v7 = [HMDUserMessagePolicy userMessagePolicyWithHome:homeCopy userPrivilege:0 remoteAccessRequired:0];
+  v8 = [HMDUserMessagePolicy userMessagePolicyWithHome:homeCopy userPrivilege:4 remoteAccessRequired:0];
+  messageDispatcher = [(HMDAccessorySettingsMessenger *)self messageDispatcher];
   v10 = *MEMORY[0x277CCEDB8];
   v18[0] = v5;
   v18[1] = v6;
   v18[2] = v7;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:3];
-  [v9 registerForMessage:v10 receiver:self policies:v11 selector:sel_routeAccessorySettingsFetchRequestMessage_];
+  [messageDispatcher registerForMessage:v10 receiver:self policies:v11 selector:sel_routeAccessorySettingsFetchRequestMessage_];
 
-  v12 = [(HMDAccessorySettingsMessenger *)self messageDispatcher];
+  messageDispatcher2 = [(HMDAccessorySettingsMessenger *)self messageDispatcher];
   v13 = *MEMORY[0x277CCEDC8];
   v17[0] = v5;
   v17[1] = v6;
   v17[2] = v8;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:3];
-  [v12 registerForMessage:v13 receiver:self policies:v14 selector:sel_routeAccessorySettingsUpdateRequestMessage_];
+  [messageDispatcher2 registerForMessage:v13 receiver:self policies:v14 selector:sel_routeAccessorySettingsUpdateRequestMessage_];
 
-  v15 = [(HMDAccessorySettingsMessenger *)self legacyMessageReceiver];
-  [v15 registerForMessagesWithHome:v4];
+  legacyMessageReceiver = [(HMDAccessorySettingsMessenger *)self legacyMessageReceiver];
+  [legacyMessageReceiver registerForMessagesWithHome:homeCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAccessorySettingsMessenger)initWithMessageTargetUUID:(id)a3 messageDispatcher:(id)a4 messageRouter:(id)a5 messageHandler:(id)a6 logEventSubmitter:(id)a7 legacyMessageReceiver:(id)a8
+- (HMDAccessorySettingsMessenger)initWithMessageTargetUUID:(id)d messageDispatcher:(id)dispatcher messageRouter:(id)router messageHandler:(id)handler logEventSubmitter:(id)submitter legacyMessageReceiver:(id)receiver
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  obj = a6;
-  v18 = a6;
-  v28 = a7;
-  v19 = a7;
-  v29 = a8;
-  v20 = a8;
-  if (!v15)
+  dCopy = d;
+  dispatcherCopy = dispatcher;
+  routerCopy = router;
+  obj = handler;
+  handlerCopy = handler;
+  submitterCopy = submitter;
+  submitterCopy2 = submitter;
+  receiverCopy = receiver;
+  receiverCopy2 = receiver;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v16)
+  if (!dispatcherCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  if (!v17)
+  if (!routerCopy)
   {
 LABEL_11:
     _HMFPreconditionFailure();
     goto LABEL_12;
   }
 
-  if (!v18)
+  if (!handlerCopy)
   {
 LABEL_12:
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  if (!v19)
+  if (!submitterCopy2)
   {
 LABEL_13:
     v25 = _HMFPreconditionFailure();
     return +[(HMDAccessorySettingsMessenger *)v25];
   }
 
-  v21 = v20;
+  v21 = receiverCopy2;
   v30.receiver = self;
   v30.super_class = HMDAccessorySettingsMessenger;
   v22 = [(HMDAccessorySettingsMessenger *)&v30 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_messageDispatcher, a4);
-    objc_storeStrong(&v23->_messageTargetUUID, a3);
-    objc_storeStrong(&v23->_messageRouter, a5);
+    objc_storeStrong(&v22->_messageDispatcher, dispatcher);
+    objc_storeStrong(&v23->_messageTargetUUID, d);
+    objc_storeStrong(&v23->_messageRouter, router);
     objc_storeStrong(&v23->_messageHandler, obj);
-    objc_storeStrong(&v23->_logEventSubmitter, v28);
-    objc_storeStrong(&v23->_legacyMessageReceiver, v29);
+    objc_storeStrong(&v23->_logEventSubmitter, submitterCopy);
+    objc_storeStrong(&v23->_legacyMessageReceiver, receiverCopy);
   }
 
   return v23;

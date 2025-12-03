@@ -1,34 +1,34 @@
 @interface _ATXHomeScreenTimelineRelevanceFilter
-- (BOOL)_isCurrentTimelineRelevanceScoreZeroForSuggestion:(id)a3 family:(int64_t)a4 intentIndexingHash:(int64_t)a5;
-- (BOOL)_widgetExistsOnScreen:(id)a3 homeScreenState:(id)a4;
-- (_ATXHomeScreenTimelineRelevanceFilter)initWithTimelineRelevanceStore:(id)a3;
-- (id)_nextRefreshDateForSuggestion:(id)a3 familyMask:(unint64_t)a4;
-- (id)_nextTimelineRelevanceChangeDateRelatedToSuggestions:(id)a3;
-- (id)removeSuggestionsByTimelineRelevanceIfNecessary:(id)a3 homeScreenState:(id)a4;
-- (void)_scheduleBlendingRefreshAtDate:(id)a3 reason:(id)a4;
-- (void)scheduleBlendingRefreshAtNextTimelineRelevanceChangeRelatedToSuggestions:(id)a3;
+- (BOOL)_isCurrentTimelineRelevanceScoreZeroForSuggestion:(id)suggestion family:(int64_t)family intentIndexingHash:(int64_t)hash;
+- (BOOL)_widgetExistsOnScreen:(id)screen homeScreenState:(id)state;
+- (_ATXHomeScreenTimelineRelevanceFilter)initWithTimelineRelevanceStore:(id)store;
+- (id)_nextRefreshDateForSuggestion:(id)suggestion familyMask:(unint64_t)mask;
+- (id)_nextTimelineRelevanceChangeDateRelatedToSuggestions:(id)suggestions;
+- (id)removeSuggestionsByTimelineRelevanceIfNecessary:(id)necessary homeScreenState:(id)state;
+- (void)_scheduleBlendingRefreshAtDate:(id)date reason:(id)reason;
+- (void)scheduleBlendingRefreshAtNextTimelineRelevanceChangeRelatedToSuggestions:(id)suggestions;
 @end
 
 @implementation _ATXHomeScreenTimelineRelevanceFilter
 
-- (_ATXHomeScreenTimelineRelevanceFilter)initWithTimelineRelevanceStore:(id)a3
+- (_ATXHomeScreenTimelineRelevanceFilter)initWithTimelineRelevanceStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = _ATXHomeScreenTimelineRelevanceFilter;
   v6 = [(_ATXHomeScreenTimelineRelevanceFilter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_timelineRelevanceStore, a3);
+    objc_storeStrong(&v6->_timelineRelevanceStore, store);
   }
 
   return v7;
 }
 
-- (void)scheduleBlendingRefreshAtNextTimelineRelevanceChangeRelatedToSuggestions:(id)a3
+- (void)scheduleBlendingRefreshAtNextTimelineRelevanceChangeRelatedToSuggestions:(id)suggestions
 {
-  v4 = [(_ATXHomeScreenTimelineRelevanceFilter *)self _nextTimelineRelevanceChangeDateRelatedToSuggestions:a3];
+  v4 = [(_ATXHomeScreenTimelineRelevanceFilter *)self _nextTimelineRelevanceChangeDateRelatedToSuggestions:suggestions];
   v5 = v4;
   if (v4)
   {
@@ -41,19 +41,19 @@
   }
 }
 
-- (id)removeSuggestionsByTimelineRelevanceIfNecessary:(id)a3 homeScreenState:(id)a4
+- (id)removeSuggestionsByTimelineRelevanceIfNecessary:(id)necessary homeScreenState:(id)state
 {
   v62 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v49 = v7;
+  necessaryCopy = necessary;
+  stateCopy = state;
+  selfCopy = self;
+  v49 = stateCopy;
   v9 = objc_opt_new();
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v10 = v6;
+  v10 = necessaryCopy;
   v11 = [v10 countByEnumeratingWithState:&v51 objects:v61 count:16];
   if (v11)
   {
@@ -63,7 +63,7 @@
     v45 = v12;
     v47 = v10;
     v48 = v9;
-    v46 = self;
+    selfCopy2 = self;
     v50 = *v52;
     do
     {
@@ -75,10 +75,10 @@
         }
 
         v16 = *(*(&v51 + 1) + 8 * i);
-        v17 = [v16 executableSpecification];
-        v18 = [v17 executableType];
+        executableSpecification = [v16 executableSpecification];
+        executableType = [executableSpecification executableType];
 
-        if (v18 != 3)
+        if (executableType != 3)
         {
           [v9 addObject:v16];
           continue;
@@ -87,14 +87,14 @@
         v19 = [MEMORY[0x277D42040] infoSuggestionFromProactiveSuggestion:v16];
         if (v19)
         {
-          if (![(_ATXHomeScreenTimelineRelevanceFilter *)v8 _widgetExistsOnScreen:v19 homeScreenState:v49])
+          if (![(_ATXHomeScreenTimelineRelevanceFilter *)selfCopy _widgetExistsOnScreen:v19 homeScreenState:v49])
           {
-            timelineRelevanceStore = v8->_timelineRelevanceStore;
-            v24 = [v19 widgetBundleIdentifier];
-            v25 = [v19 widgetKind];
-            v26 = [v19 intent];
+            timelineRelevanceStore = selfCopy->_timelineRelevanceStore;
+            widgetBundleIdentifier = [v19 widgetBundleIdentifier];
+            widgetKind = [v19 widgetKind];
+            intent = [v19 intent];
             v27 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-1800.0];
-            LODWORD(timelineRelevanceStore) = [(ATXInformationStore *)timelineRelevanceStore didMostRecentReloadFailForExtension:v24 kind:v25 intent:v26 cutoffDate:v27];
+            LODWORD(timelineRelevanceStore) = [(ATXInformationStore *)timelineRelevanceStore didMostRecentReloadFailForExtension:widgetBundleIdentifier kind:widgetKind intent:intent cutoffDate:v27];
 
             if (!timelineRelevanceStore)
             {
@@ -124,12 +124,12 @@ LABEL_30:
             goto LABEL_39;
           }
 
-          v20 = [v19 intent];
-          v21 = [v20 atx_indexingHash];
+          intent2 = [v19 intent];
+          atx_indexingHash = [intent2 atx_indexingHash];
 
           if (([v19 layouts] & 8) != 0)
           {
-            if ([(_ATXHomeScreenTimelineRelevanceFilter *)v8 _isCurrentTimelineRelevanceScoreZeroForSuggestion:v19 family:1 intentIndexingHash:v21])
+            if ([(_ATXHomeScreenTimelineRelevanceFilter *)selfCopy _isCurrentTimelineRelevanceScoreZeroForSuggestion:v19 family:1 intentIndexingHash:atx_indexingHash])
             {
               v22 = 0;
             }
@@ -146,17 +146,17 @@ LABEL_30:
           }
 
           v14 = v50;
-          if (([v19 layouts] & 0x10) != 0 && !-[_ATXHomeScreenTimelineRelevanceFilter _isCurrentTimelineRelevanceScoreZeroForSuggestion:family:intentIndexingHash:](v8, "_isCurrentTimelineRelevanceScoreZeroForSuggestion:family:intentIndexingHash:", v19, 2, v21))
+          if (([v19 layouts] & 0x10) != 0 && !-[_ATXHomeScreenTimelineRelevanceFilter _isCurrentTimelineRelevanceScoreZeroForSuggestion:family:intentIndexingHash:](selfCopy, "_isCurrentTimelineRelevanceScoreZeroForSuggestion:family:intentIndexingHash:", v19, 2, atx_indexingHash))
           {
             v22 |= 0x10uLL;
           }
 
-          if (([v19 layouts] & 0x40) != 0 && !-[_ATXHomeScreenTimelineRelevanceFilter _isCurrentTimelineRelevanceScoreZeroForSuggestion:family:intentIndexingHash:](v8, "_isCurrentTimelineRelevanceScoreZeroForSuggestion:family:intentIndexingHash:", v19, 3, v21))
+          if (([v19 layouts] & 0x40) != 0 && !-[_ATXHomeScreenTimelineRelevanceFilter _isCurrentTimelineRelevanceScoreZeroForSuggestion:family:intentIndexingHash:](selfCopy, "_isCurrentTimelineRelevanceScoreZeroForSuggestion:family:intentIndexingHash:", v19, 3, atx_indexingHash))
           {
             v22 |= 0x40uLL;
           }
 
-          if (([v19 layouts] & 0x80) != 0 && !-[_ATXHomeScreenTimelineRelevanceFilter _isCurrentTimelineRelevanceScoreZeroForSuggestion:family:intentIndexingHash:](v8, "_isCurrentTimelineRelevanceScoreZeroForSuggestion:family:intentIndexingHash:", v19, 4, v21))
+          if (([v19 layouts] & 0x80) != 0 && !-[_ATXHomeScreenTimelineRelevanceFilter _isCurrentTimelineRelevanceScoreZeroForSuggestion:family:intentIndexingHash:](selfCopy, "_isCurrentTimelineRelevanceScoreZeroForSuggestion:family:intentIndexingHash:", v19, 4, atx_indexingHash))
           {
             v22 |= 0x80uLL;
           }
@@ -182,9 +182,9 @@ LABEL_29:
             v31 = __atxlog_handle_blending();
             if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
             {
-              v32 = [v19 layouts];
+              layouts = [v19 layouts];
               *buf = v45;
-              v56 = v32;
+              v56 = layouts;
               v57 = 2048;
               v58 = v22;
               v59 = 2112;
@@ -194,20 +194,20 @@ LABEL_29:
 
             [v19 setLayouts:v22];
             v33 = MEMORY[0x277D42040];
-            v34 = [v16 clientModelSpecification];
-            v35 = [v34 clientModelId];
-            v36 = [v16 clientModelSpecification];
-            v37 = [v36 clientModelVersion];
-            v38 = [v16 scoreSpecification];
-            [v38 rawScore];
+            clientModelSpecification = [v16 clientModelSpecification];
+            clientModelId = [clientModelSpecification clientModelId];
+            clientModelSpecification2 = [v16 clientModelSpecification];
+            clientModelVersion = [clientModelSpecification2 clientModelVersion];
+            scoreSpecification = [v16 scoreSpecification];
+            [scoreSpecification rawScore];
             v40 = v39;
-            v41 = [v16 scoreSpecification];
-            v42 = [v33 proactiveSuggestionForInfoSuggestion:v19 withClientModelId:v35 clientModelVersion:v37 rawScore:objc_msgSend(v41 confidenceCategory:{"suggestedConfidenceCategory"), v40}];
+            scoreSpecification2 = [v16 scoreSpecification];
+            v42 = [v33 proactiveSuggestionForInfoSuggestion:v19 withClientModelId:clientModelId clientModelVersion:clientModelVersion rawScore:objc_msgSend(scoreSpecification2 confidenceCategory:{"suggestedConfidenceCategory"), v40}];
 
             v9 = v48;
             [v48 addObject:v42];
 
-            v8 = v46;
+            selfCopy = selfCopy2;
             goto LABEL_38;
           }
 
@@ -228,13 +228,13 @@ LABEL_39:
   return v9;
 }
 
-- (void)_scheduleBlendingRefreshAtDate:(id)a3 reason:(id)a4
+- (void)_scheduleBlendingRefreshAtDate:(id)date reason:(id)reason
 {
-  v5 = a4;
-  v6 = a3;
+  reasonCopy = reason;
+  dateCopy = date;
   v7 = xpc_dictionary_create(0, 0, 0);
   v8 = *MEMORY[0x277D86250];
-  [v6 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   v10 = v9;
 
   xpc_dictionary_set_int64(v7, v8, v10);
@@ -247,27 +247,27 @@ LABEL_39:
   v12[1] = 3221225472;
   v12[2] = __79___ATXHomeScreenTimelineRelevanceFilter__scheduleBlendingRefreshAtDate_reason___block_invoke;
   v12[3] = &unk_278596790;
-  v13 = v5;
-  v11 = v5;
+  v13 = reasonCopy;
+  v11 = reasonCopy;
   atxRegisterCTSJobHandler("com.apple.duetexpertd.HomeScreenTimelineRelevance", v7, v12);
 }
 
-- (id)_nextTimelineRelevanceChangeDateRelatedToSuggestions:(id)a3
+- (id)_nextTimelineRelevanceChangeDateRelatedToSuggestions:(id)suggestions
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEAA8] distantFuture];
+  suggestionsCopy = suggestions;
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v5 = v3;
+  v5 = suggestionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v6)
   {
     v31 = 0;
     v7 = *v35;
-    v8 = v4;
+    v8 = distantFuture;
     do
     {
       v9 = 0;
@@ -280,15 +280,15 @@ LABEL_39:
         }
 
         v10 = *(*(&v34 + 1) + 8 * v9);
-        v11 = [v10 executableSpecification];
-        v12 = [v11 executableType];
+        executableSpecification = [v10 executableSpecification];
+        executableType = [executableSpecification executableType];
 
-        if (v12 == 3)
+        if (executableType == 3)
         {
           v13 = v5;
           v14 = MEMORY[0x277D42040];
-          v15 = v4;
-          v16 = v4;
+          v15 = distantFuture;
+          v16 = distantFuture;
           v17 = [v14 infoSuggestionFromProactiveSuggestion:v10];
           v18 = -[_ATXHomeScreenTimelineRelevanceFilter _nextRefreshDateForSuggestion:familyMask:](self, "_nextRefreshDateForSuggestion:familyMask:", v17, ([v17 layouts] >> 2) & 4 | (objc_msgSend(v17, "layouts") >> 2) & 2 | (objc_msgSend(v17, "layouts") >> 3) & 8 | (objc_msgSend(v17, "layouts") >> 3) & 0x10);
           v19 = v18;
@@ -317,7 +317,7 @@ LABEL_39:
             v8 = v24;
           }
 
-          v4 = v15;
+          distantFuture = v15;
           v5 = v13;
           v6 = v33;
         }
@@ -331,7 +331,7 @@ LABEL_39:
 
     while (v6);
 
-    if (v8 != v4)
+    if (v8 != distantFuture)
     {
       v26 = __atxlog_handle_blending();
       v6 = v31;
@@ -355,7 +355,7 @@ LABEL_39:
   else
   {
 
-    v8 = v4;
+    v8 = distantFuture;
   }
 
   v28 = __atxlog_handle_blending();
@@ -373,56 +373,56 @@ LABEL_24:
   return v27;
 }
 
-- (id)_nextRefreshDateForSuggestion:(id)a3 familyMask:(unint64_t)a4
+- (id)_nextRefreshDateForSuggestion:(id)suggestion familyMask:(unint64_t)mask
 {
   timelineRelevanceStore = self->_timelineRelevanceStore;
-  v6 = a3;
-  v7 = [v6 widgetBundleIdentifier];
-  v8 = [v6 widgetKind];
-  v9 = [v6 intent];
+  suggestionCopy = suggestion;
+  widgetBundleIdentifier = [suggestionCopy widgetBundleIdentifier];
+  widgetKind = [suggestionCopy widgetKind];
+  intent = [suggestionCopy intent];
 
-  v10 = [(ATXInformationStore *)timelineRelevanceStore upcomingDateThatTimelineScoreChangesToOrFromZeroForWidget:v7 kind:v8 familyMask:a4 intent:v9];
+  v10 = [(ATXInformationStore *)timelineRelevanceStore upcomingDateThatTimelineScoreChangesToOrFromZeroForWidget:widgetBundleIdentifier kind:widgetKind familyMask:mask intent:intent];
 
   return v10;
 }
 
-- (BOOL)_isCurrentTimelineRelevanceScoreZeroForSuggestion:(id)a3 family:(int64_t)a4 intentIndexingHash:(int64_t)a5
+- (BOOL)_isCurrentTimelineRelevanceScoreZeroForSuggestion:(id)suggestion family:(int64_t)family intentIndexingHash:(int64_t)hash
 {
-  v8 = a3;
+  suggestionCopy = suggestion;
   timelineRelevanceStore = self->_timelineRelevanceStore;
-  v10 = [v8 widgetBundleIdentifier];
-  v11 = [v8 widgetKind];
-  v12 = [(ATXInformationStore *)timelineRelevanceStore mostRecentTimelineEntryWithScoreForWidget:v10 kind:v11 family:a4 intentIndexingHash:a5];
+  widgetBundleIdentifier = [suggestionCopy widgetBundleIdentifier];
+  widgetKind = [suggestionCopy widgetKind];
+  v12 = [(ATXInformationStore *)timelineRelevanceStore mostRecentTimelineEntryWithScoreForWidget:widgetBundleIdentifier kind:widgetKind family:family intentIndexingHash:hash];
 
-  v13 = [v12 relevance];
+  relevance = [v12 relevance];
 
-  if (v13)
+  if (relevance)
   {
-    v14 = [v12 relevance];
-    [v14 duration];
+    relevance2 = [v12 relevance];
+    [relevance2 duration];
     v16 = v15;
 
     if (v16 >= 0.0)
     {
-      v19 = [v12 relevance];
-      [v19 duration];
+      relevance3 = [v12 relevance];
+      [relevance3 duration];
       v21 = v20;
 
       if (v21 == 0.0)
       {
-        v22 = [v12 relevance];
-        [v22 score];
+        relevance4 = [v12 relevance];
+        [relevance4 score];
         v18 = v23 <= 0.0;
       }
 
       else
       {
-        v24 = [v12 date];
-        v25 = [v12 relevance];
-        [v25 duration];
-        v22 = [v24 dateByAddingTimeInterval:?];
+        date = [v12 date];
+        relevance5 = [v12 relevance];
+        [relevance5 duration];
+        relevance4 = [date dateByAddingTimeInterval:?];
 
-        [v22 timeIntervalSinceNow];
+        [relevance4 timeIntervalSinceNow];
         if (v26 <= 0.0)
         {
           v18 = 0;
@@ -430,8 +430,8 @@ LABEL_24:
 
         else
         {
-          v27 = [v12 relevance];
-          [v27 score];
+          relevance6 = [v12 relevance];
+          [relevance6 score];
           v18 = v28 <= 0.0;
         }
       }
@@ -442,7 +442,7 @@ LABEL_24:
       v17 = __atxlog_handle_blending();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        [_ATXHomeScreenTimelineRelevanceFilter _isCurrentTimelineRelevanceScoreZeroForSuggestion:v8 family:v17 intentIndexingHash:?];
+        [_ATXHomeScreenTimelineRelevanceFilter _isCurrentTimelineRelevanceScoreZeroForSuggestion:suggestionCopy family:v17 intentIndexingHash:?];
       }
 
       v18 = 1;
@@ -457,20 +457,20 @@ LABEL_24:
   return v18;
 }
 
-- (BOOL)_widgetExistsOnScreen:(id)a3 homeScreenState:(id)a4
+- (BOOL)_widgetExistsOnScreen:(id)screen homeScreenState:(id)state
 {
   v63 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  screenCopy = screen;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v6 = [a4 sortedPagesByUserLastVisit];
-  v7 = [v6 countByEnumeratingWithState:&v56 objects:v62 count:16];
+  sortedPagesByUserLastVisit = [state sortedPagesByUserLastVisit];
+  v7 = [sortedPagesByUserLastVisit countByEnumeratingWithState:&v56 objects:v62 count:16];
   if (v7)
   {
     v8 = *v57;
-    v45 = v6;
+    v45 = sortedPagesByUserLastVisit;
     v40 = *v57;
     do
     {
@@ -480,7 +480,7 @@ LABEL_24:
       {
         if (*v57 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sortedPagesByUserLastVisit);
         }
 
         v10 = *(*(&v56 + 1) + 8 * v9);
@@ -488,14 +488,14 @@ LABEL_24:
         v53 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v11 = [v10 stacks];
-        v43 = [v11 countByEnumeratingWithState:&v52 objects:v61 count:16];
+        stacks = [v10 stacks];
+        v43 = [stacks countByEnumeratingWithState:&v52 objects:v61 count:16];
         if (v43)
         {
           v12 = *v53;
           v41 = *v53;
           v42 = v9;
-          v46 = v11;
+          v46 = stacks;
           do
           {
             v13 = 0;
@@ -503,7 +503,7 @@ LABEL_24:
             {
               if (*v53 != v12)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(stacks);
               }
 
               v44 = v13;
@@ -512,11 +512,11 @@ LABEL_24:
               v49 = 0u;
               v50 = 0u;
               v51 = 0u;
-              v15 = [v14 config];
-              v16 = [v15 widgets];
+              config = [v14 config];
+              widgets = [config widgets];
 
-              obj = v16;
-              v17 = [v16 countByEnumeratingWithState:&v48 objects:v60 count:16];
+              obj = widgets;
+              v17 = [widgets countByEnumeratingWithState:&v48 objects:v60 count:16];
               if (v17)
               {
                 v18 = v17;
@@ -532,49 +532,49 @@ LABEL_24:
                     }
 
                     v21 = *(*(&v48 + 1) + 8 * v20);
-                    v22 = [v21 extensionBundleId];
-                    v23 = [v5 widgetBundleIdentifier];
-                    if ([v22 isEqualToString:v23])
+                    extensionBundleId = [v21 extensionBundleId];
+                    widgetBundleIdentifier = [screenCopy widgetBundleIdentifier];
+                    if ([extensionBundleId isEqualToString:widgetBundleIdentifier])
                     {
-                      v24 = [v21 widgetKind];
-                      v25 = [v5 widgetKind];
-                      v26 = [v24 isEqualToString:v25];
+                      widgetKind = [v21 widgetKind];
+                      widgetKind2 = [screenCopy widgetKind];
+                      v26 = [widgetKind isEqualToString:widgetKind2];
 
                       if (v26)
                       {
-                        v27 = [v21 intent];
-                        if (v27)
+                        intent = [v21 intent];
+                        if (intent)
                         {
                         }
 
                         else
                         {
-                          v28 = [v5 intent];
+                          intent2 = [screenCopy intent];
 
-                          if (!v28)
+                          if (!intent2)
                           {
                             goto LABEL_34;
                           }
                         }
 
-                        v29 = [v21 intent];
-                        if (v29)
+                        intent3 = [v21 intent];
+                        if (intent3)
                         {
-                          v30 = v29;
-                          v31 = [v5 intent];
+                          v30 = intent3;
+                          intent4 = [screenCopy intent];
 
-                          if (v31)
+                          if (intent4)
                           {
-                            v32 = [v21 intent];
-                            v33 = [v5 intent];
-                            v34 = [v32 atx_isEqualToIntent:v33];
+                            intent5 = [v21 intent];
+                            intent6 = [screenCopy intent];
+                            v34 = [intent5 atx_isEqualToIntent:intent6];
 
                             if (v34)
                             {
 LABEL_34:
 
                               v36 = 1;
-                              v6 = v45;
+                              sortedPagesByUserLastVisit = v45;
                               goto LABEL_36;
                             }
                           }
@@ -598,8 +598,8 @@ LABEL_34:
               }
 
               v13 = v44 + 1;
-              v6 = v45;
-              v11 = v46;
+              sortedPagesByUserLastVisit = v45;
+              stacks = v46;
               v12 = v41;
               v9 = v42;
             }
@@ -616,7 +616,7 @@ LABEL_34:
       }
 
       while (v9 != v39);
-      v7 = [v6 countByEnumeratingWithState:&v56 objects:v62 count:16];
+      v7 = [sortedPagesByUserLastVisit countByEnumeratingWithState:&v56 objects:v62 count:16];
       v8 = v40;
       v36 = 0;
     }

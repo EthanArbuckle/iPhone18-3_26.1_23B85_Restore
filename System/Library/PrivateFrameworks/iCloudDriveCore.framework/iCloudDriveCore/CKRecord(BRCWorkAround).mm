@@ -14,8 +14,8 @@
 
 - (uint64_t)brc_isfakeRecordWithErrorMarkerFor20716676
 {
-  v1 = [a1 recordType];
-  v2 = [v1 isEqualToString:@"BRCFakeRecordWithErrorMarkerFor20716676"];
+  recordType = [self recordType];
+  v2 = [recordType isEqualToString:@"BRCFakeRecordWithErrorMarkerFor20716676"];
 
   return v2;
 }

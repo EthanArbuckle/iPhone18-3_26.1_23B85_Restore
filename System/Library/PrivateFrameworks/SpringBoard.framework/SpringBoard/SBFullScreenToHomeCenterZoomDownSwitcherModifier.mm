@@ -1,50 +1,50 @@
 @interface SBFullScreenToHomeCenterZoomDownSwitcherModifier
-- (BOOL)_isIndexCenterZoomAppLayout:(unint64_t)a3;
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4;
-- (CGPoint)anchorPointForIndex:(unint64_t)a3;
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3;
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBFullScreenToHomeCenterZoomDownSwitcherModifier)initWithTransitionID:(id)a3 appLayout:(id)a4 offsetYPercentOfScreenHeight:(double)a5;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
+- (BOOL)_isIndexCenterZoomAppLayout:(unint64_t)layout;
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout;
+- (CGPoint)anchorPointForIndex:(unint64_t)index;
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index;
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBFullScreenToHomeCenterZoomDownSwitcherModifier)initWithTransitionID:(id)d appLayout:(id)layout offsetYPercentOfScreenHeight:(double)height;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
 - (double)fadeInDelayForSplitViewHandles;
-- (double)scaleForIndex:(unint64_t)a3;
+- (double)scaleForIndex:(unint64_t)index;
 - (id)_layoutSettings;
 - (id)_opacitySettings;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)topMostLayoutElements;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
 - (int64_t)homeScreenBackdropBlurType;
-- (void)didMoveToParentModifier:(id)a3;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBFullScreenToHomeCenterZoomDownSwitcherModifier
 
-- (SBFullScreenToHomeCenterZoomDownSwitcherModifier)initWithTransitionID:(id)a3 appLayout:(id)a4 offsetYPercentOfScreenHeight:(double)a5
+- (SBFullScreenToHomeCenterZoomDownSwitcherModifier)initWithTransitionID:(id)d appLayout:(id)layout offsetYPercentOfScreenHeight:(double)height
 {
-  v9 = a4;
+  layoutCopy = layout;
   v13.receiver = self;
   v13.super_class = SBFullScreenToHomeCenterZoomDownSwitcherModifier;
-  v10 = [(SBTransitionSwitcherModifier *)&v13 initWithTransitionID:a3];
+  v10 = [(SBTransitionSwitcherModifier *)&v13 initWithTransitionID:d];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_appLayout, a4);
-    v11->_offsetYPercentOfScreenHeight = a5;
+    objc_storeStrong(&v10->_appLayout, layout);
+    v11->_offsetYPercentOfScreenHeight = height;
   }
 
   return v11;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v7.receiver = self;
   v7.super_class = SBFullScreenToHomeCenterZoomDownSwitcherModifier;
   [(SBChainableModifier *)&v7 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     if (![(SBChainableModifier *)self containsChildModifier:self->_coplanarModifier])
     {
@@ -62,14 +62,14 @@
 {
   v6.receiver = self;
   v6.super_class = SBFullScreenToHomeCenterZoomDownSwitcherModifier;
-  v2 = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
   v3 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:2];
-  v4 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:v2];
+  v4 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:transitionWillBegin];
 
   return v4;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v21.receiver = self;
   v21.super_class = SBFullScreenToHomeCenterZoomDownSwitcherModifier;
@@ -78,7 +78,7 @@
   y = v7;
   width = v9;
   height = v11;
-  if ([(SBTransitionSwitcherModifier *)self isUpdatingLayout]&& [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self _isIndexCenterZoomAppLayout:a3])
+  if ([(SBTransitionSwitcherModifier *)self isUpdatingLayout]&& [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self _isIndexCenterZoomAppLayout:index])
   {
     v13 = *MEMORY[0x277CBF348];
     v14 = *(MEMORY[0x277CBF348] + 8);
@@ -107,13 +107,13 @@
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  if ([(SBTransitionSwitcherModifier *)self isUpdatingLayout]&& [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self _isIndexCenterZoomAppLayout:a3])
+  if ([(SBTransitionSwitcherModifier *)self isUpdatingLayout]&& [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self _isIndexCenterZoomAppLayout:index])
   {
-    v5 = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self switcherSettings];
-    v6 = [v5 animationSettings];
-    [v6 centerZoomScale];
+    switcherSettings = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings centerZoomScale];
     v8 = v7;
 
     return v8;
@@ -123,19 +123,19 @@
   {
     v10.receiver = self;
     v10.super_class = SBFullScreenToHomeCenterZoomDownSwitcherModifier;
-    [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)&v10 scaleForIndex:a3];
+    [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)&v10 scaleForIndex:index];
   }
 
   return result;
 }
 
-- (CGPoint)anchorPointForIndex:(unint64_t)a3
+- (CGPoint)anchorPointForIndex:(unint64_t)index
 {
-  if (!self->_shouldForceDefaultAnchorPointForTransition || (v7 = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self _isIndexCenterZoomAppLayout:a3], v3 = 0.5, v4 = 0.5, !v7))
+  if (!self->_shouldForceDefaultAnchorPointForTransition || (v7 = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self _isIndexCenterZoomAppLayout:index], v3 = 0.5, v4 = 0.5, !v7))
   {
     v8.receiver = self;
     v8.super_class = SBFullScreenToHomeCenterZoomDownSwitcherModifier;
-    [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)&v8 anchorPointForIndex:a3, v3, v4];
+    [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)&v8 anchorPointForIndex:index, v3, v4];
   }
 
   result.y = v4;
@@ -143,34 +143,34 @@
   return result;
 }
 
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space
 {
-  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self _isIndexCenterZoomAppLayout:a3])
+  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self _isIndexCenterZoomAppLayout:space])
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = SBFullScreenToHomeCenterZoomDownSwitcherModifier;
-  return [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)&v6 shouldPinLayoutRolesToSpace:a3];
+  return [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)&v6 shouldPinLayoutRolesToSpace:space];
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
-  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self _isIndexCenterZoomAppLayout:a3])
+  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self _isIndexCenterZoomAppLayout:space])
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = SBFullScreenToHomeCenterZoomDownSwitcherModifier;
-  return [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)&v6 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+  return [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)&v6 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
 }
 
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index
 {
-  v5 = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (self->_shouldForceDefaultAnchorPointForTransition && [v6 isEqual:self->_appLayout])
   {
@@ -182,7 +182,7 @@
   {
     v13.receiver = self;
     v13.super_class = SBFullScreenToHomeCenterZoomDownSwitcherModifier;
-    [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)&v13 perspectiveAngleForIndex:a3];
+    [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)&v13 perspectiveAngleForIndex:index];
     v7 = v9;
     v8 = v10;
   }
@@ -194,18 +194,18 @@
   return result;
 }
 
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = v9;
-  if (self->_shouldForceDefaultAnchorPointForTransition && [v9 isEqual:self->_appLayout])
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
+  v10 = layoutCopy;
+  if (self->_shouldForceDefaultAnchorPointForTransition && [layoutCopy isEqual:self->_appLayout])
   {
-    v11 = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self appLayouts];
-    -[SBFullScreenToHomeCenterZoomDownSwitcherModifier frameForIndex:](self, "frameForIndex:", [v11 indexOfObject:self->_appLayout]);
+    appLayouts = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self appLayouts];
+    -[SBFullScreenToHomeCenterZoomDownSwitcherModifier frameForIndex:](self, "frameForIndex:", [appLayouts indexOfObject:self->_appLayout]);
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -234,13 +234,13 @@
   return result;
 }
 
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = v7;
-  if (!self->_shouldForceDefaultAnchorPointForTransition || (v9 = 0.5, v10 = 0.5, ([v7 isEqual:self->_appLayout] & 1) == 0))
+  y = point.y;
+  x = point.x;
+  layoutCopy = layout;
+  v8 = layoutCopy;
+  if (!self->_shouldForceDefaultAnchorPointForTransition || (v9 = 0.5, v10 = 0.5, ([layoutCopy isEqual:self->_appLayout] & 1) == 0))
   {
     v15.receiver = self;
     v15.super_class = SBFullScreenToHomeCenterZoomDownSwitcherModifier;
@@ -260,61 +260,61 @@
 {
   v6.receiver = self;
   v6.super_class = SBFullScreenToHomeCenterZoomDownSwitcherModifier;
-  v3 = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)&v6 visibleAppLayouts];
-  v4 = [v3 setByAddingObject:self->_appLayout];
+  visibleAppLayouts = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)&v6 visibleAppLayouts];
+  v4 = [visibleAppLayouts setByAddingObject:self->_appLayout];
 
   return v4;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v9.receiver = self;
   v9.super_class = SBFullScreenToHomeCenterZoomDownSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v9 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v9 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self _layoutSettings];
-  [v5 setLayoutSettings:v6];
+  _layoutSettings = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self _layoutSettings];
+  [v5 setLayoutSettings:_layoutSettings];
 
-  v7 = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self _opacitySettings];
-  [v5 setOpacitySettings:v7];
+  _opacitySettings = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self _opacitySettings];
+  [v5 setOpacitySettings:_opacitySettings];
 
   return v5;
 }
 
 - (id)_layoutSettings
 {
-  v2 = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self switcherSettings];
-  v3 = [v2 animationSettings];
-  v4 = [v3 centerZoomSettings];
+  switcherSettings = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  centerZoomSettings = [animationSettings centerZoomSettings];
 
-  return v4;
+  return centerZoomSettings;
 }
 
 - (id)_opacitySettings
 {
-  v2 = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self switcherSettings];
-  v3 = [v2 animationSettings];
-  v4 = [v3 centerZoomOpacitySettings];
+  switcherSettings = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  centerZoomOpacitySettings = [animationSettings centerZoomOpacitySettings];
 
-  return v4;
+  return centerZoomOpacitySettings;
 }
 
 - (double)fadeInDelayForSplitViewHandles
 {
-  v2 = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self switcherSettings];
-  v3 = [v2 windowingSettings];
-  [v3 percentageOfTransitionForSplitViewHandleFadeInDelay];
+  switcherSettings = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  [windowingSettings percentageOfTransitionForSplitViewHandleFadeInDelay];
   v5 = v4;
-  v6 = [v2 animationSettings];
-  v7 = [v6 layoutSettings];
-  [v7 settlingDuration];
+  animationSettings = [switcherSettings animationSettings];
+  layoutSettings = [animationSettings layoutSettings];
+  [layoutSettings settlingDuration];
   v9 = v5 * v8;
 
   return v9;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self displayCornerRadius];
 
@@ -344,11 +344,11 @@
   v9[1] = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = SBFullScreenToHomeCenterZoomDownSwitcherModifier;
-  v3 = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)&v8 topMostLayoutElements];
-  v4 = v3;
-  if (v3)
+  topMostLayoutElements = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)&v8 topMostLayoutElements];
+  v4 = topMostLayoutElements;
+  if (topMostLayoutElements)
   {
-    v5 = [v3 mutableCopy];
+    v5 = [topMostLayoutElements mutableCopy];
     v6 = [v5 indexOfObject:self->_appLayout];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -370,14 +370,14 @@
   return v5;
 }
 
-- (BOOL)_isIndexCenterZoomAppLayout:(unint64_t)a3
+- (BOOL)_isIndexCenterZoomAppLayout:(unint64_t)layout
 {
-  v4 = self;
-  v5 = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  selfCopy = self;
+  appLayouts = [(SBFullScreenToHomeCenterZoomDownSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:layout];
 
-  LOBYTE(v4) = [v6 isEqual:v4->_appLayout];
-  return v4;
+  LOBYTE(selfCopy) = [v6 isEqual:selfCopy->_appLayout];
+  return selfCopy;
 }
 
 @end

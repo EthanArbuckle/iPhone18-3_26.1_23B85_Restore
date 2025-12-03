@@ -1,41 +1,41 @@
 @interface CPLScopeChange
-+ (BOOL)cplShouldIgnorePropertyForEquality:(id)a3;
-+ (BOOL)shouldAutoActivateScopeWithType:(int64_t)a3;
-+ (BOOL)supportsActivationOfScopeWithType:(int64_t)a3;
-+ (Class)scopeChangeClassForType:(int64_t)a3;
-+ (id)descriptionForBusyState:(int64_t)a3;
-+ (id)descriptionForScopeType:(int64_t)a3;
++ (BOOL)cplShouldIgnorePropertyForEquality:(id)equality;
++ (BOOL)shouldAutoActivateScopeWithType:(int64_t)type;
++ (BOOL)supportsActivationOfScopeWithType:(int64_t)type;
++ (Class)scopeChangeClassForType:(int64_t)type;
++ (id)descriptionForBusyState:(int64_t)state;
++ (id)descriptionForScopeType:(int64_t)type;
 + (id)mappingForScopeBusyStateDescription;
 + (id)mappingForScopeTypeDescription;
-+ (id)newDeleteScopeChangeWithScopeIdentifier:(id)a3 type:(int64_t)a4;
-+ (id)newScopeChangeInferClassWithScopeIdentifier:(id)a3 type:(int64_t)a4;
-+ (id)newScopeChangeWithScopeIdentifier:(id)a3 type:(int64_t)a4;
++ (id)newDeleteScopeChangeWithScopeIdentifier:(id)identifier type:(int64_t)type;
++ (id)newScopeChangeInferClassWithScopeIdentifier:(id)identifier type:(int64_t)type;
++ (id)newScopeChangeWithScopeIdentifier:(id)identifier type:(int64_t)type;
 - (BOOL)needsToSetScopeIdentifier;
-- (CPLScopeChange)initWithCoder:(id)a3;
-- (CPLScopeChange)initWithScopeIdentifier:(id)a3 type:(int64_t)a4;
+- (CPLScopeChange)initWithCoder:(id)coder;
+- (CPLScopeChange)initWithScopeIdentifier:(id)identifier type:(int64_t)type;
 - (id)_scopedIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)redactedDescription;
 - (id)scopeIdentifier;
 - (int64_t)defaultFlags;
-- (void)_setChangeType:(unint64_t)a3;
-- (void)updateScopeFromScopeChange:(id)a3 direction:(unint64_t)a4 didHaveChanges:(BOOL *)a5;
-- (void)updateScopeIdentifier:(id)a3;
+- (void)_setChangeType:(unint64_t)type;
+- (void)updateScopeFromScopeChange:(id)change direction:(unint64_t)direction didHaveChanges:(BOOL *)changes;
+- (void)updateScopeIdentifier:(id)identifier;
 @end
 
 @implementation CPLScopeChange
 
-- (void)updateScopeIdentifier:(id)a3
+- (void)updateScopeIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CPLScopeChange *)self _scopedIdentifier];
-  if (v5)
+  identifierCopy = identifier;
+  _scopedIdentifier = [(CPLScopeChange *)self _scopedIdentifier];
+  if (_scopedIdentifier)
   {
     v6 = [CPLScopedIdentifier alloc];
-    v7 = [v5 scopeIdentifier];
-    v8 = [(CPLScopedIdentifier *)v6 initWithScopeIdentifier:v7 identifier:v4];
+    scopeIdentifier = [_scopedIdentifier scopeIdentifier];
+    v8 = [(CPLScopedIdentifier *)v6 initWithScopeIdentifier:scopeIdentifier identifier:identifierCopy];
     v12.receiver = self;
     v12.super_class = CPLScopeChange;
     [(CPLRecordChange *)&v12 setScopedIdentifier:v8];
@@ -46,11 +46,11 @@
     v9 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(CPLScopeChange *)self _scopedIdentifier];
+      _scopedIdentifier2 = [(CPLScopeChange *)self _scopedIdentifier];
       *buf = 138412546;
-      v14 = v5;
+      v14 = _scopedIdentifier;
       v15 = 2112;
-      v16 = v10;
+      v16 = _scopedIdentifier2;
       _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_DEFAULT, "Updating %@ -> %@", buf, 0x16u);
     }
   }
@@ -60,45 +60,45 @@
 
 - (BOOL)needsToSetScopeIdentifier
 {
-  v2 = [(CPLScopeChange *)self scopeIdentifier];
-  v3 = [v2 isEqualToString:@"auto"];
+  scopeIdentifier = [(CPLScopeChange *)self scopeIdentifier];
+  v3 = [scopeIdentifier isEqualToString:@"auto"];
 
   return v3;
 }
 
-- (void)updateScopeFromScopeChange:(id)a3 direction:(unint64_t)a4 didHaveChanges:(BOOL *)a5
+- (void)updateScopeFromScopeChange:(id)change direction:(unint64_t)direction didHaveChanges:(BOOL *)changes
 {
-  if (a4 == 1)
+  if (direction == 1)
   {
-    *a5 = 0;
+    *changes = 0;
   }
 
   else
   {
-    *a5 = 1;
-    [self cplCopyPropertiesFromObject:a3 withCopyBlock:0];
+    *changes = 1;
+    [self cplCopyPropertiesFromObject:change withCopyBlock:0];
   }
 }
 
 - (int64_t)defaultFlags
 {
-  v3 = [(CPLScopeChange *)self share];
-  v4 = v3;
-  if (v3)
+  share = [(CPLScopeChange *)self share];
+  v4 = share;
+  if (share)
   {
-    v5 = [v3 currentUserParticipant];
-    v6 = v5;
-    if (v5)
+    currentUserParticipant = [share currentUserParticipant];
+    v6 = currentUserParticipant;
+    if (currentUserParticipant)
     {
-      v7 = [v5 permission];
+      permission = [currentUserParticipant permission];
     }
 
     else
     {
-      v7 = [v4 publicPermission];
+      permission = [v4 publicPermission];
     }
 
-    v8 = v7 == 2;
+    v8 = permission == 2;
   }
 
   else
@@ -121,10 +121,10 @@
 
 - (id)redactedDescription
 {
-  v3 = [(CPLScopeChange *)self share];
+  share = [(CPLScopeChange *)self share];
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v5 = objc_opt_class();
-  v6 = [(CPLScopeChange *)self scopeIdentifier];
+  scopeIdentifier = [(CPLScopeChange *)self scopeIdentifier];
   if (([(CPLRecordChange *)self changeType]& 0x400) != 0)
   {
     v7 = " [D]";
@@ -137,14 +137,14 @@
 
   v8 = [objc_opt_class() descriptionForScopeType:{-[CPLScopeChange scopeType](self, "scopeType")}];
   v9 = v8;
-  if (v3)
+  if (share)
   {
-    v10 = [v4 initWithFormat:@"<%@ %@%s (%@) - %@>", v5, v6, v7, v8, v3];
+    v10 = [v4 initWithFormat:@"<%@ %@%s (%@) - %@>", v5, scopeIdentifier, v7, v8, share];
   }
 
   else
   {
-    v10 = [v4 initWithFormat:@"<%@ %@%s (%@)>", v5, v6, v7, v8, v13];
+    v10 = [v4 initWithFormat:@"<%@ %@%s (%@)>", v5, scopeIdentifier, v7, v8, v13];
   }
 
   v11 = v10;
@@ -154,13 +154,13 @@
 
 - (id)description
 {
-  v3 = [(CPLScopeChange *)self share];
-  if (v3)
+  share = [(CPLScopeChange *)self share];
+  if (share)
   {
     stagingScopeIdentifier = self->_stagingScopeIdentifier;
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
     v6 = objc_opt_class();
-    v7 = [(CPLScopeChange *)self scopeIdentifier];
+    scopeIdentifier = [(CPLScopeChange *)self scopeIdentifier];
     v8 = "";
     if (([(CPLRecordChange *)self changeType]& 0x400) != 0)
     {
@@ -181,10 +181,10 @@
         v8 = " not-active";
       }
 
-      v12 = [(CPLScopeChange *)self _additionalDescription];
+      _additionalDescription = [(CPLScopeChange *)self _additionalDescription];
       v27 = v8;
-      v28 = v12;
-      v24 = v3;
+      v28 = _additionalDescription;
+      v24 = share;
       v25 = v11;
       v22 = v9;
       v23 = v10;
@@ -203,23 +203,23 @@
         v19 = " not-active";
       }
 
-      v12 = [(CPLScopeChange *)self _additionalDescription];
+      _additionalDescription = [(CPLScopeChange *)self _additionalDescription];
       v25 = v19;
-      v27 = v12;
+      v27 = _additionalDescription;
       v23 = v10;
-      v24 = v3;
+      v24 = share;
       v22 = v9;
       v13 = @"<%@ %@%s (%@) - %@%s%@>";
     }
 
-    v18 = [v5 initWithFormat:v13, v6, v7, v22, v23, v24, v25, v27, v28];
+    v18 = [v5 initWithFormat:v13, v6, scopeIdentifier, v22, v23, v24, v25, v27, v28];
   }
 
   else
   {
     v14 = objc_alloc(MEMORY[0x1E696AEC0]);
     v15 = objc_opt_class();
-    v7 = [(CPLScopeChange *)self scopeIdentifier];
+    scopeIdentifier = [(CPLScopeChange *)self scopeIdentifier];
     v16 = "";
     if (([(CPLRecordChange *)self changeType]& 0x400) != 0)
     {
@@ -237,8 +237,8 @@
       v16 = " not-active";
     }
 
-    v12 = [(CPLScopeChange *)self _additionalDescription];
-    v18 = [v14 initWithFormat:@"<%@ %@%s (%@)%s%@>", v15, v7, v17, v10, v16, v12, v26, v28];
+    _additionalDescription = [(CPLScopeChange *)self _additionalDescription];
+    v18 = [v14 initWithFormat:@"<%@ %@%s (%@)%s%@>", v15, scopeIdentifier, v17, v10, v16, _additionalDescription, v26, v28];
   }
 
   v20 = v18;
@@ -248,37 +248,37 @@
 
 - (id)scopeIdentifier
 {
-  v2 = [(CPLScopeChange *)self _scopedIdentifier];
-  v3 = [v2 identifier];
+  _scopedIdentifier = [(CPLScopeChange *)self _scopedIdentifier];
+  identifier = [_scopedIdentifier identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (id)_scopedIdentifier
 {
   v4.receiver = self;
   v4.super_class = CPLScopeChange;
-  v2 = [(CPLRecordChange *)&v4 scopedIdentifier];
+  scopedIdentifier = [(CPLRecordChange *)&v4 scopedIdentifier];
 
-  return v2;
+  return scopedIdentifier;
 }
 
-- (CPLScopeChange)initWithScopeIdentifier:(id)a3 type:(int64_t)a4
+- (CPLScopeChange)initWithScopeIdentifier:(id)identifier type:(int64_t)type
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = objc_opt_class();
   if (v8 == objc_opt_class())
   {
-    v13 = [CPLScopeChange scopeChangeClassForType:a4];
+    v13 = [CPLScopeChange scopeChangeClassForType:type];
     if (v13 != objc_opt_class())
     {
-      v12 = [[v13 alloc] initWithScopeIdentifier:v7 type:a4];
+      v12 = [[v13 alloc] initWithScopeIdentifier:identifierCopy type:type];
       goto LABEL_8;
     }
   }
 
-  else if (([objc_opt_class() isSubclassOfClass:{+[CPLScopeChange scopeChangeClassForType:](CPLScopeChange, "scopeChangeClassForType:", a4)}] & 1) == 0)
+  else if (([objc_opt_class() isSubclassOfClass:{+[CPLScopeChange scopeChangeClassForType:](CPLScopeChange, "scopeChangeClassForType:", type)}] & 1) == 0)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -287,7 +287,7 @@
       {
         v18 = objc_opt_class();
         v19 = v18;
-        v20 = [CPLScopeChange descriptionForScopeType:a4];
+        v20 = [CPLScopeChange descriptionForScopeType:type];
         *buf = 138412546;
         v28 = v18;
         v29 = 2112;
@@ -296,11 +296,11 @@
       }
     }
 
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLScopeChange.m"];
     v23 = objc_opt_class();
-    v24 = [CPLScopeChange descriptionForScopeType:a4];
-    [v21 handleFailureInMethod:a2 object:self file:v22 lineNumber:245 description:{@"Invalid class %@ for scope type %@", v23, v24}];
+    v24 = [CPLScopeChange descriptionForScopeType:type];
+    [currentHandler handleFailureInMethod:a2 object:self file:v22 lineNumber:245 description:{@"Invalid class %@ for scope type %@", v23, v24}];
 
     abort();
   }
@@ -311,8 +311,8 @@
   v10 = v9;
   if (v9)
   {
-    v9->_scopeType = a4;
-    v11 = [[CPLScopedIdentifier alloc] initWithScopeIdentifier:@"__SCOPE__" identifier:v7];
+    v9->_scopeType = type;
+    v11 = [[CPLScopedIdentifier alloc] initWithScopeIdentifier:@"__SCOPE__" identifier:identifierCopy];
     v25.receiver = v10;
     v25.super_class = CPLScopeChange;
     [(CPLRecordChange *)&v25 setScopedIdentifier:v11];
@@ -328,60 +328,60 @@ LABEL_8:
   return v14;
 }
 
-- (void)_setChangeType:(unint64_t)a3
+- (void)_setChangeType:(unint64_t)type
 {
   v3.receiver = self;
   v3.super_class = CPLScopeChange;
-  [(CPLRecordChange *)&v3 setChangeType:a3];
+  [(CPLRecordChange *)&v3 setChangeType:type];
 }
 
-+ (id)newDeleteScopeChangeWithScopeIdentifier:(id)a3 type:(int64_t)a4
++ (id)newDeleteScopeChangeWithScopeIdentifier:(id)identifier type:(int64_t)type
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithScopeIdentifier:v6 type:a4];
+  identifierCopy = identifier;
+  v7 = [[self alloc] initWithScopeIdentifier:identifierCopy type:type];
 
   [v7 _setChangeType:1024];
   return v7;
 }
 
-+ (id)newScopeChangeInferClassWithScopeIdentifier:(id)a3 type:(int64_t)a4
++ (id)newScopeChangeInferClassWithScopeIdentifier:(id)identifier type:(int64_t)type
 {
-  v6 = a3;
-  v7 = [objc_alloc(objc_msgSend(a1 scopeChangeClassForType:{a4)), "initWithScopeIdentifier:type:", v6, a4}];
+  identifierCopy = identifier;
+  v7 = [objc_alloc(objc_msgSend(self scopeChangeClassForType:{type)), "initWithScopeIdentifier:type:", identifierCopy, type}];
 
   return v7;
 }
 
-+ (id)newScopeChangeWithScopeIdentifier:(id)a3 type:(int64_t)a4
++ (id)newScopeChangeWithScopeIdentifier:(id)identifier type:(int64_t)type
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithScopeIdentifier:v6 type:a4];
+  identifierCopy = identifier;
+  v7 = [[self alloc] initWithScopeIdentifier:identifierCopy type:type];
 
   return v7;
 }
 
-+ (BOOL)shouldAutoActivateScopeWithType:(int64_t)a3
++ (BOOL)shouldAutoActivateScopeWithType:(int64_t)type
 {
-  v6 = [a1 supportsActivationOfScopeWithType:?];
+  v6 = [self supportsActivationOfScopeWithType:?];
   v7 = 0;
   if (!v6)
   {
     return v7 & 1;
   }
 
-  if (a3 > 5)
+  if (type > 5)
   {
-    if ((a3 - 7) >= 2)
+    if ((type - 7) >= 2)
     {
-      if (a3 == 6 || a3 == 0x7FFFFFFF)
+      if (type == 6 || type == 0x7FFFFFFF)
       {
         return v7 & 1;
       }
 
 LABEL_12:
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLScopeChange.m"];
-      [v8 handleFailureInMethod:a2 object:a1 file:v9 lineNumber:165 description:{@"unknown scope type %ld", a3}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v9 lineNumber:165 description:{@"unknown scope type %ld", type}];
 
       abort();
     }
@@ -391,17 +391,17 @@ LABEL_13:
     return v7 & 1;
   }
 
-  if (a3 < 2)
+  if (type < 2)
   {
     return v7 & 1;
   }
 
-  if ((a3 - 2) < 2)
+  if ((type - 2) < 2)
   {
     goto LABEL_13;
   }
 
-  if ((a3 - 4) >= 2)
+  if ((type - 4) >= 2)
   {
     goto LABEL_12;
   }
@@ -415,28 +415,28 @@ LABEL_13:
   return v7 & 1;
 }
 
-+ (BOOL)supportsActivationOfScopeWithType:(int64_t)a3
++ (BOOL)supportsActivationOfScopeWithType:(int64_t)type
 {
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    if ((a3 - 1) < 3)
+    if ((type - 1) < 3)
     {
       v4 = 1;
       return v4 & 1;
     }
 
-    if ((a3 - 4) < 2)
+    if ((type - 4) < 2)
     {
       v4 = overridesSharedLibraryFeatureFlag ^ 1 | isSharedLibraryFeatureEnabled;
       return v4 & 1;
     }
 
-    if (a3)
+    if (type)
     {
 LABEL_15:
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLScopeChange.m"];
-      [v9 handleFailureInMethod:a2 object:a1 file:v10 lineNumber:131 description:{@"unknown scope type %ld", a3}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v10 lineNumber:131 description:{@"unknown scope type %ld", type}];
 
       abort();
     }
@@ -446,9 +446,9 @@ LABEL_8:
     return v4 & 1;
   }
 
-  if ((a3 - 7) >= 2)
+  if ((type - 7) >= 2)
   {
-    if (a3 != 6 && a3 != 0x7FFFFFFF)
+    if (type != 6 && type != 0x7FFFFFFF)
     {
       goto LABEL_15;
     }
@@ -459,23 +459,23 @@ LABEL_8:
   return CPLIsCollectionShareFeatureEnabled();
 }
 
-+ (Class)scopeChangeClassForType:(int64_t)a3
++ (Class)scopeChangeClassForType:(int64_t)type
 {
   v3 = off_1E861A310;
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if ((a3 - 2) < 2)
+    if ((type - 2) < 2)
     {
       v3 = off_1E861A168;
       goto LABEL_15;
     }
 
-    if (!a3)
+    if (!type)
     {
       goto LABEL_15;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v3 = off_1E861A0E8;
       goto LABEL_15;
@@ -484,35 +484,35 @@ LABEL_8:
     goto LABEL_18;
   }
 
-  if (a3 <= 6)
+  if (type <= 6)
   {
-    if ((a3 - 4) < 2)
+    if ((type - 4) < 2)
     {
       v3 = off_1E861A0F0;
       goto LABEL_15;
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
       v3 = off_1E861A3B0;
       goto LABEL_15;
     }
 
 LABEL_18:
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLScopeChange.m"];
-    [v10 handleFailureInMethod:a2 object:a1 file:v11 lineNumber:104 description:{@"unknown scope type %ld", a3}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v11 lineNumber:104 description:{@"unknown scope type %ld", type}];
 
     abort();
   }
 
-  if ((a3 - 7) < 2)
+  if ((type - 7) < 2)
   {
     v3 = off_1E8619EB0;
     goto LABEL_15;
   }
 
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     goto LABEL_18;
   }
@@ -524,23 +524,23 @@ LABEL_15:
   return v5;
 }
 
-+ (id)descriptionForBusyState:(int64_t)a3
++ (id)descriptionForBusyState:(int64_t)state
 {
-  v4 = [a1 mappingForScopeBusyStateDescription];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  mappingForScopeBusyStateDescription = [self mappingForScopeBusyStateDescription];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:state];
+  v6 = [mappingForScopeBusyStateDescription objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = v6;
+    state = v6;
   }
 
   else
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown busy state (%ld)", a3];
+    state = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown busy state (%ld)", state];
   }
 
-  v8 = v7;
+  v8 = state;
 
   return v8;
 }
@@ -573,23 +573,23 @@ void __53__CPLScopeChange_mappingForScopeBusyStateDescription__block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)descriptionForScopeType:(int64_t)a3
++ (id)descriptionForScopeType:(int64_t)type
 {
-  v4 = [a1 mappingForScopeTypeDescription];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  mappingForScopeTypeDescription = [self mappingForScopeTypeDescription];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v6 = [mappingForScopeTypeDescription objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = v6;
+    type = v6;
   }
 
   else
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown type (%ld)", a3];
+    type = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown type (%ld)", type];
   }
 
-  v8 = v7;
+  v8 = type;
 
   return v8;
 }
@@ -636,30 +636,30 @@ void __48__CPLScopeChange_mappingForScopeTypeDescription__block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (CPLScopeChange)initWithCoder:(id)a3
+- (CPLScopeChange)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  if (v5 != objc_opt_class() || (v7 = +[CPLScopeChange scopeChangeClassForType:](CPLScopeChange, "scopeChangeClassForType:", [v4 decodeIntegerForKey:@"scopeType"]), v7 == v5))
+  if (v5 != objc_opt_class() || (v7 = +[CPLScopeChange scopeChangeClassForType:](CPLScopeChange, "scopeChangeClassForType:", [coderCopy decodeIntegerForKey:@"scopeType"]), v7 == v5))
   {
     v12.receiver = self;
     v12.super_class = CPLScopeChange;
-    self = [(CPLRecordChange *)&v12 initWithCoder:v4];
-    v6 = self;
+    self = [(CPLRecordChange *)&v12 initWithCoder:coderCopy];
+    selfCopy = self;
   }
 
   else
   {
     v8 = v7;
-    v6 = [[v7 alloc] initWithCoder:v4];
+    selfCopy = [[v7 alloc] initWithCoder:coderCopy];
     if ((_CPLSilentLogging & 1) == 0)
     {
       v9 = __CPLGenericOSLogDomain();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v14 = v6;
+        v14 = selfCopy;
         v15 = 2112;
         v16 = v8;
         _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_DEFAULT, "Automatically upgrading %@ to %@", buf, 0x16u);
@@ -668,29 +668,29 @@ void __48__CPLScopeChange_mappingForScopeTypeDescription__block_invoke()
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return v6;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 cplCopyPropertiesFromObject:self withCopyBlock:0];
   return v4;
 }
 
-+ (BOOL)cplShouldIgnorePropertyForEquality:(id)a3
++ (BOOL)cplShouldIgnorePropertyForEquality:(id)equality
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"scope"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"pullTaskItem") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"recordModificationDate"))
+  equalityCopy = equality;
+  if ([equalityCopy isEqualToString:@"scope"] & 1) != 0 || (objc_msgSend(equalityCopy, "isEqualToString:", @"pullTaskItem") & 1) != 0 || (objc_msgSend(equalityCopy, "isEqualToString:", @"recordModificationDate"))
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CPLScopeChange;
-    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForEquality_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForEquality_, equalityCopy);
   }
 
   return v5;

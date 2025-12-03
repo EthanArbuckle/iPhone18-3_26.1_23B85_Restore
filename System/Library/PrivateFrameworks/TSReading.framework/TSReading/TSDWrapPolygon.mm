@@ -1,21 +1,21 @@
 @interface TSDWrapPolygon
 - (BOOL)intersectsSelf;
-- (CGPoint)intersectionPointBetween:(CGPoint)a3 and:(CGPoint)a4;
+- (CGPoint)intersectionPointBetween:(CGPoint)between and:(CGPoint)and;
 - (CGRect)bounds;
-- (TSDWrapPolygon)initWithPath:(id)a3;
+- (TSDWrapPolygon)initWithPath:(id)path;
 - (id)bezierPath;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int)p_countSegments;
 - (void)dealloc;
 - (void)p_computeIntersectionState;
 - (void)p_freePolygon;
-- (void)setPath:(id)a3;
-- (void)transformUsingAffineTransform:(CGAffineTransform *)a3;
+- (void)setPath:(id)path;
+- (void)transformUsingAffineTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation TSDWrapPolygon
 
-- (TSDWrapPolygon)initWithPath:(id)a3
+- (TSDWrapPolygon)initWithPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = TSDWrapPolygon;
@@ -23,13 +23,13 @@
   v5 = v4;
   if (v4)
   {
-    [(TSDWrapPolygon *)v4 setPath:a3];
+    [(TSDWrapPolygon *)v4 setPath:path];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TSDWrapPolygon);
   [(TSDWrapPolygon *)v4 p_setPolygon:copyPolygon(self->mPolygon)];
@@ -49,23 +49,23 @@
   [(TSDWrapPolygon *)&v3 dealloc];
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  v3 = a3;
-  if (([a3 isFlat] & 1) == 0)
+  pathCopy = path;
+  if (([path isFlat] & 1) == 0)
   {
-    v3 = [v3 bezierPathByFlatteningPath];
+    pathCopy = [pathCopy bezierPathByFlatteningPath];
   }
 
-  if ([v3 isClockwise])
+  if ([pathCopy isClockwise])
   {
-    v3 = [v3 bezierPathByReversingPath];
+    pathCopy = [pathCopy bezierPathByReversingPath];
   }
 
   self->mComputedSelfIntersection = 0;
   self->mComputedBounds = 0;
   [(TSDWrapPolygon *)self p_freePolygon];
-  self->mPolygon = polygonFromBezier(v3);
+  self->mPolygon = polygonFromBezier(pathCopy);
 }
 
 - (BOOL)intersectsSelf
@@ -141,7 +141,7 @@
   return result;
 }
 
-- (void)transformUsingAffineTransform:(CGAffineTransform *)a3
+- (void)transformUsingAffineTransform:(CGAffineTransform *)transform
 {
   mPolygon = self->mPolygon;
   if (mPolygon)
@@ -159,7 +159,7 @@
           v8 = *(v6 + 16 * v5 + 8);
           do
           {
-            *v8 = vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(*&a3->c, v8[1]), *&a3->a, *v8));
+            *v8 = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v8[1]), *&transform->a, *v8));
             v8 += 2;
             --v7;
           }
@@ -177,7 +177,7 @@
   }
 }
 
-- (CGPoint)intersectionPointBetween:(CGPoint)a3 and:(CGPoint)a4
+- (CGPoint)intersectionPointBetween:(CGPoint)between and:(CGPoint)and
 {
   mPolygon = self->mPolygon;
   v5 = 0.0;
@@ -188,7 +188,7 @@
     {
       v7 = 0;
       v8 = *(mPolygon + 2);
-      v9 = a4.x - a3.x;
+      v9 = and.x - between.x;
       do
       {
         v10 = (v8 + 16 * v7);
@@ -208,11 +208,11 @@
             v15 = *v16;
             v19 = v17 - v14;
             v20 = v18 - *v16;
-            v21 = v20 * v9 - v19 * (a4.y - a3.y);
+            v21 = v20 * v9 - v19 * (and.y - between.y);
             if (v21 != 0.0)
             {
-              v22 = (v19 * (a3.y - v15) - v20 * (a3.x - v14)) / v21;
-              v23 = ((a3.x - v14) * -(a4.y - a3.y) + v9 * (a3.y - v15)) / v21;
+              v22 = (v19 * (between.y - v15) - v20 * (between.x - v14)) / v21;
+              v23 = ((between.x - v14) * -(and.y - between.y) + v9 * (between.y - v15)) / v21;
               v24 = v22 >= 0.0;
               if (v22 > 1.0)
               {
@@ -246,8 +246,8 @@
     }
   }
 
-  v27 = a3.x + (a4.x - a3.x) * v5;
-  v28 = a3.y + (a4.y - a3.y) * v5;
+  v27 = between.x + (and.x - between.x) * v5;
+  v28 = between.y + (and.y - between.y) * v5;
   result.y = v28;
   result.x = v27;
   return result;
@@ -307,9 +307,9 @@
 - (void)p_computeIntersectionState
 {
   mPolygon = self->mPolygon;
-  v4 = [(TSDWrapPolygon *)self p_countSegments];
+  p_countSegments = [(TSDWrapPolygon *)self p_countSegments];
   self->mIntersectsSelf = 0;
-  if (v4 >= 1)
+  if (p_countSegments >= 1)
   {
     v5 = 0;
     v6 = 0.0;
@@ -365,13 +365,13 @@
       }
 
 LABEL_13:
-      if (++v5 < v4)
+      if (++v5 < p_countSegments)
       {
         break;
       }
 
 LABEL_36:
-      if (v5 == v4)
+      if (v5 == p_countSegments)
       {
         return;
       }
@@ -437,7 +437,7 @@ LABEL_25:
         }
       }
 
-      if (++v24 == v4)
+      if (++v24 == p_countSegments)
       {
         goto LABEL_36;
       }

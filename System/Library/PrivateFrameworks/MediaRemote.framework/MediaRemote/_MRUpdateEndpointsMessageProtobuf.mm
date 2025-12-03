@@ -1,35 +1,35 @@
 @interface _MRUpdateEndpointsMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEndpointFeatures:(id)a3;
+- (int)StringAsEndpointFeatures:(id)features;
 - (int)endpointFeatures;
 - (unint64_t)hash;
-- (void)addEndpoints:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addEndpoints:(id)endpoints;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRUpdateEndpointsMessageProtobuf
 
-- (void)addEndpoints:(id)a3
+- (void)addEndpoints:(id)endpoints
 {
-  v4 = a3;
+  endpointsCopy = endpoints;
   endpoints = self->_endpoints;
-  v8 = v4;
+  v8 = endpointsCopy;
   if (!endpoints)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_endpoints;
     self->_endpoints = v6;
 
-    v4 = v8;
+    endpointsCopy = v8;
     endpoints = self->_endpoints;
   }
 
-  [(NSMutableArray *)endpoints addObject:v4];
+  [(NSMutableArray *)endpoints addObject:endpointsCopy];
 }
 
 - (int)endpointFeatures
@@ -45,35 +45,35 @@
   }
 }
 
-- (int)StringAsEndpointFeatures:(id)a3
+- (int)StringAsEndpointFeatures:(id)features
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  featuresCopy = features;
+  if ([featuresCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Audio"])
+  else if ([featuresCopy isEqualToString:@"Audio"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Screen"])
+  else if ([featuresCopy isEqualToString:@"Screen"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Video"])
+  else if ([featuresCopy isEqualToString:@"Video"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RemoteControl"])
+  else if ([featuresCopy isEqualToString:@"RemoteControl"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Companion"])
+  else if ([featuresCopy isEqualToString:@"Companion"])
   {
     v4 = 16;
   }
@@ -92,8 +92,8 @@
   v8.receiver = self;
   v8.super_class = _MRUpdateEndpointsMessageProtobuf;
   v4 = [(_MRUpdateEndpointsMessageProtobuf *)&v8 description];
-  v5 = [(_MRUpdateEndpointsMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRUpdateEndpointsMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -101,7 +101,7 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_endpoints count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_endpoints, "count")}];
@@ -124,8 +124,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -134,7 +134,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"endpoints"];
+    [dictionary setObject:v4 forKey:@"endpoints"];
   }
 
   if (*&self->_has)
@@ -169,7 +169,7 @@
         case 2:
           v12 = @"Screen";
 LABEL_25:
-          [v3 setObject:v12 forKey:@"endpointFeatures"];
+          [dictionary setObject:v12 forKey:@"endpointFeatures"];
 
           goto LABEL_26;
       }
@@ -182,13 +182,13 @@ LABEL_25:
 LABEL_26:
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -230,35 +230,35 @@ LABEL_26:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(_MRUpdateEndpointsMessageProtobuf *)self endpointsCount])
   {
-    [v8 clearEndpoints];
-    v4 = [(_MRUpdateEndpointsMessageProtobuf *)self endpointsCount];
-    if (v4)
+    [toCopy clearEndpoints];
+    endpointsCount = [(_MRUpdateEndpointsMessageProtobuf *)self endpointsCount];
+    if (endpointsCount)
     {
-      v5 = v4;
+      v5 = endpointsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(_MRUpdateEndpointsMessageProtobuf *)self endpointsAtIndex:i];
-        [v8 addEndpoints:v7];
+        [toCopy addEndpoints:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v8 + 2) = self->_endpointFeatures;
-    *(v8 + 24) |= 1u;
+    *(toCopy + 2) = self->_endpointFeatures;
+    *(toCopy + 24) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -279,7 +279,7 @@ LABEL_26:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addEndpoints:v11];
 
         ++v10;
@@ -302,16 +302,16 @@ LABEL_26:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   endpoints = self->_endpoints;
-  if (endpoints | *(v4 + 2))
+  if (endpoints | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)endpoints isEqual:?])
     {
@@ -319,10 +319,10 @@ LABEL_26:
     }
   }
 
-  v6 = (*(v4 + 24) & 1) == 0;
+  v6 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) != 0 && self->_endpointFeatures == *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) != 0 && self->_endpointFeatures == *(equalCopy + 2))
     {
       v6 = 1;
       goto LABEL_9;
@@ -353,15 +353,15 @@ LABEL_9:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -387,9 +387,9 @@ LABEL_9:
     while (v7);
   }
 
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
-    self->_endpointFeatures = *(v4 + 2);
+    self->_endpointFeatures = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 

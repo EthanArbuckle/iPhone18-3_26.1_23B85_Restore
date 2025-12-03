@@ -1,17 +1,17 @@
 @interface ATXPBSuggestionLayoutList
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)layoutAtIndex:(id *)a1;
-- (uint64_t)addLayout:(uint64_t)a1;
+- (id)layoutAtIndex:(id *)index;
+- (uint64_t)addLayout:(uint64_t)layout;
 - (uint64_t)clearLayouts;
 - (uint64_t)layouts;
 - (uint64_t)layoutsCount;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setLayouts:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setLayouts:(uint64_t)layouts;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBSuggestionLayoutList
@@ -22,8 +22,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBSuggestionLayoutList;
   v4 = [(ATXPBSuggestionLayoutList *)&v8 description];
-  v5 = [(ATXPBSuggestionLayoutList *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBSuggestionLayoutList *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -31,7 +31,7 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_layouts count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_layouts, "count")}];
@@ -54,8 +54,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -64,18 +64,18 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"layout"];
+    [dictionary setObject:v4 forKey:@"layout"];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -111,10 +111,10 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -135,7 +135,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [(ATXPBSuggestionLayoutList *)v5 addLayout:v11];
 
         ++v10;
@@ -152,13 +152,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     layouts = self->_layouts;
-    if (layouts | v4[1])
+    if (layouts | equalCopy[1])
     {
       v6 = [(NSMutableArray *)layouts isEqual:?];
     }
@@ -187,21 +187,21 @@
   return result;
 }
 
-- (uint64_t)addLayout:(uint64_t)a1
+- (uint64_t)addLayout:(uint64_t)layout
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (layout)
   {
-    v5 = *(a1 + 8);
+    v5 = *(layout + 8);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 8);
-      *(a1 + 8) = v6;
+      v7 = *(layout + 8);
+      *(layout + 8) = v6;
 
-      v5 = *(a1 + 8);
+      v5 = *(layout + 8);
     }
 
     v3 = [v5 addObject:v9];
@@ -221,44 +221,44 @@
   return result;
 }
 
-- (id)layoutAtIndex:(id *)a1
+- (id)layoutAtIndex:(id *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [a1[1] objectAtIndex:a2];
+    index = [index[1] objectAtIndex:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v7 = a2;
-  if (a1 && [*(a1 + 8) count])
+  if (to && [*(to + 8) count])
   {
     if (v7)
     {
       [v7[1] removeAllObjects];
     }
 
-    v3 = [*(a1 + 8) count];
+    v3 = [*(to + 8) count];
     if (v3)
     {
       v4 = v3;
       for (i = 0; i != v4; ++i)
       {
-        v6 = [*(a1 + 8) objectAtIndex:i];
+        v6 = [*(to + 8) objectAtIndex:i];
         [(ATXPBSuggestionLayoutList *)v7 addLayout:v6];
       }
     }
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (from)
   {
     v11 = 0u;
     v12 = 0u;
@@ -280,7 +280,7 @@
             objc_enumerationMutation(v3);
           }
 
-          [(ATXPBSuggestionLayoutList *)a1 addLayout:?];
+          [(ATXPBSuggestionLayoutList *)from addLayout:?];
         }
 
         while (v5 != v7);
@@ -304,11 +304,11 @@
   return result;
 }
 
-- (void)setLayouts:(uint64_t)a1
+- (void)setLayouts:(uint64_t)layouts
 {
-  if (a1)
+  if (layouts)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((layouts + 8), a2);
   }
 }
 

@@ -1,23 +1,23 @@
 @interface HMDAccessoryEventsGenerated
-+ (BOOL)topicSuffix:(id)a3 isPartOfIndex:(id)a4;
-+ (id)accessoryIndexForAccessoryUUID:(id)a3 homeUUID:(id)a4;
-+ (id)forwardingTopicsForTopics:(id)a3 residentAccessoryUUID:(id)a4 homeUUID:(id)a5;
-+ (id)indexTopicForTopic:(id)a3;
-+ (id)topicsRemovingAccessoryTopics:(id)a3 accessoryUUID:(id)a4;
++ (BOOL)topicSuffix:(id)suffix isPartOfIndex:(id)index;
++ (id)accessoryIndexForAccessoryUUID:(id)d homeUUID:(id)iD;
++ (id)forwardingTopicsForTopics:(id)topics residentAccessoryUUID:(id)d homeUUID:(id)iD;
++ (id)indexTopicForTopic:(id)topic;
++ (id)topicsRemovingAccessoryTopics:(id)topics accessoryUUID:(id)d;
 @end
 
 @implementation HMDAccessoryEventsGenerated
 
-+ (id)topicsRemovingAccessoryTopics:(id)a3 accessoryUUID:(id)a4
++ (id)topicsRemovingAccessoryTopics:(id)topics accessoryUUID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __75__HMDAccessoryEventsGenerated_topicsRemovingAccessoryTopics_accessoryUUID___block_invoke;
   v9[3] = &unk_27972FA10;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a3 na_filter:v9];
+  v10 = dCopy;
+  v6 = dCopy;
+  v7 = [topics na_filter:v9];
 
   return v7;
 }
@@ -41,46 +41,46 @@ uint64_t __75__HMDAccessoryEventsGenerated_topicsRemovingAccessoryTopics_accesso
   return v7;
 }
 
-+ (BOOL)topicSuffix:(id)a3 isPartOfIndex:(id)a4
++ (BOOL)topicSuffix:(id)suffix isPartOfIndex:(id)index
 {
-  v5 = a4;
-  v6 = [&unk_28662BD58 objectForKeyedSubscript:a3];
+  indexCopy = index;
+  v6 = [&unk_28662BD58 objectForKeyedSubscript:suffix];
   v7 = [v6 objectForKeyedSubscript:@"indexes"];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  v8 = [v7 objectForKeyedSubscript:indexCopy];
 
   return v8 != 0;
 }
 
-+ (id)accessoryIndexForAccessoryUUID:(id)a3 homeUUID:(id)a4
++ (id)accessoryIndexForAccessoryUUID:(id)d homeUUID:(id)iD
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a3;
-  v7 = [a4 UUIDString];
-  v8 = [v6 UUIDString];
+  dCopy = d;
+  uUIDString = [iD UUIDString];
+  uUIDString2 = [dCopy UUIDString];
 
-  v9 = [v5 stringWithFormat:@"index.home.%@.accessory.%@.info", v7, v8];
+  v9 = [v5 stringWithFormat:@"index.home.%@.accessory.%@.info", uUIDString, uUIDString2];
 
   return v9;
 }
 
-+ (id)forwardingTopicsForTopics:(id)a3 residentAccessoryUUID:(id)a4 homeUUID:(id)a5
++ (id)forwardingTopicsForTopics:(id)topics residentAccessoryUUID:(id)d homeUUID:(id)iD
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [a1 accessoryIndexForAccessoryUUID:v8 homeUUID:v9];
+  dCopy = d;
+  iDCopy = iD;
+  topicsCopy = topics;
+  v11 = [self accessoryIndexForAccessoryUUID:dCopy homeUUID:iDCopy];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __88__HMDAccessoryEventsGenerated_forwardingTopicsForTopics_residentAccessoryUUID_homeUUID___block_invoke;
   v17[3] = &unk_27972A9E0;
-  v18 = v8;
+  v18 = dCopy;
   v19 = v11;
-  v20 = v9;
-  v21 = a1;
-  v12 = v9;
+  v20 = iDCopy;
+  selfCopy = self;
+  v12 = iDCopy;
   v13 = v11;
-  v14 = v8;
-  v15 = [v10 na_map:v17];
+  v14 = dCopy;
+  v15 = [topicsCopy na_map:v17];
 
   return v15;
 }
@@ -160,35 +160,35 @@ LABEL_17:
   return v14;
 }
 
-+ (id)indexTopicForTopic:(id)a3
++ (id)indexTopicForTopic:(id)topic
 {
-  v4 = [MEMORY[0x277CD19F0] decodeTopic:a3];
-  v5 = [v4 asAccessorySettingTopic];
-  v6 = v5;
-  if (v5)
+  v4 = [MEMORY[0x277CD19F0] decodeTopic:topic];
+  asAccessorySettingTopic = [v4 asAccessorySettingTopic];
+  v6 = asAccessorySettingTopic;
+  if (asAccessorySettingTopic)
   {
     v7 = 0;
-    v8 = v5;
+    asAccessoryTopic = asAccessorySettingTopic;
 LABEL_3:
-    v9 = [v8 accessoryUUID];
-    v10 = [v8 homeUUID];
-    v11 = [a1 accessoryIndexForAccessoryUUID:v9 homeUUID:v10];
+    accessoryUUID = [asAccessoryTopic accessoryUUID];
+    homeUUID = [asAccessoryTopic homeUUID];
+    v11 = [self accessoryIndexForAccessoryUUID:accessoryUUID homeUUID:homeUUID];
 
-    v8 = v7;
+    asAccessoryTopic = v7;
     goto LABEL_8;
   }
 
-  v8 = [v4 asAccessoryTopic];
-  if (v8)
+  asAccessoryTopic = [v4 asAccessoryTopic];
+  if (asAccessoryTopic)
   {
-    v12 = [v4 topicSuffix];
-    v13 = [&unk_28662B588 objectForKeyedSubscript:v12];
+    topicSuffix = [v4 topicSuffix];
+    v13 = [&unk_28662B588 objectForKeyedSubscript:topicSuffix];
     v14 = [v13 objectForKeyedSubscript:@"indexes"];
     v15 = [v14 objectForKeyedSubscript:@"AppleAccessoryIndex"];
 
     if (v15)
     {
-      v7 = v8;
+      v7 = asAccessoryTopic;
       goto LABEL_3;
     }
   }

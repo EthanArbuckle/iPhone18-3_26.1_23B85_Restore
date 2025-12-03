@@ -1,7 +1,7 @@
 @interface CKObject
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CKObjCClass)objcClass;
-- (CKObject)initWithPropertyDictionary:(id)a3;
+- (CKObject)initWithPropertyDictionary:(id)dictionary;
 - (NSString)description;
 - (id)dictionaryPropertyEncoding;
 - (unint64_t)hash;
@@ -9,10 +9,10 @@
 
 @implementation CKObject
 
-- (CKObject)initWithPropertyDictionary:(id)a3
+- (CKObject)initWithPropertyDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v7 = objc_msgSend_objcClass(self, v5, v6);
   v27.receiver = self;
   v27.super_class = CKObject;
@@ -23,7 +23,7 @@
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = v4;
+    v9 = dictionaryCopy;
     v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v23, v28, 16);
     if (v11)
     {
@@ -68,10 +68,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -97,7 +97,7 @@
           }
 
           v16 = *(*(&v25 + 1) + 8 * i);
-          v17 = sub_1885B0A48(v16, v4);
+          v17 = sub_1885B0A48(v16, equalCopy);
           v18 = sub_1885B0A48(v16, self);
           isEqual = objc_msgSend_isEqual_(v17, v19, v18);
 

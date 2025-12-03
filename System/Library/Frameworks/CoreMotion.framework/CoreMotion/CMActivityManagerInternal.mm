@@ -3,8 +3,8 @@
 - (void)connect;
 - (void)dealloc;
 - (void)disconnect;
-- (void)simulateMotionStateYouthWithState:(int64_t)a3;
-- (void)startActivityUpdatesWithHandlerPrivate:(id)a3;
+- (void)simulateMotionStateYouthWithState:(int64_t)state;
+- (void)startActivityUpdatesWithHandlerPrivate:(id)private;
 - (void)stopActivityUpdatesPrivate;
 @end
 
@@ -71,14 +71,14 @@
   }
 }
 
-- (void)startActivityUpdatesWithHandlerPrivate:(id)a3
+- (void)startActivityUpdatesWithHandlerPrivate:(id)private
 {
   v13[1] = *MEMORY[0x1E69E9840];
   fActivityHandler = self->fActivityHandler;
-  if (fActivityHandler != a3)
+  if (fActivityHandler != private)
   {
 
-    self->fActivityHandler = objc_msgSend_copy(a3, v6, v7);
+    self->fActivityHandler = objc_msgSend_copy(private, v6, v7);
     objc_msgSend_connect(self, v8, v9);
     if (!self->fSubscribedToMotionState)
     {
@@ -106,14 +106,14 @@
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (void)simulateMotionStateYouthWithState:(int64_t)a3
+- (void)simulateMotionStateYouthWithState:(int64_t)state
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  objc_msgSend_connect(self, a2, a3);
+  objc_msgSend_connect(self, a2, state);
   if (self->fLocationdConnection)
   {
     v8 = @"CMMotionStateSimState";
-    v9[0] = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v5, a3);
+    v9[0] = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v5, state);
     objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v6, v9, &v8, 1);
     sub_19B5D12C8();
   }

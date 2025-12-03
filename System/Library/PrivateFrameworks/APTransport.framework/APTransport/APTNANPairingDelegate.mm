@@ -1,22 +1,22 @@
 @interface APTNANPairingDelegate
-- (APTNANPairingDelegate)initWithHandleAuthorizationRequestBlock:(id)a3 logContext:(__CFString *)a4;
+- (APTNANPairingDelegate)initWithHandleAuthorizationRequestBlock:(id)block logContext:(__CFString *)context;
 - (void)dealloc;
-- (void)handlePairingRequestOfType:(__CFString *)a3 withInputCompletionHandler:(id)a4;
+- (void)handlePairingRequestOfType:(__CFString *)type withInputCompletionHandler:(id)handler;
 @end
 
 @implementation APTNANPairingDelegate
 
-- (APTNANPairingDelegate)initWithHandleAuthorizationRequestBlock:(id)a3 logContext:(__CFString *)a4
+- (APTNANPairingDelegate)initWithHandleAuthorizationRequestBlock:(id)block logContext:(__CFString *)context
 {
-  if (a3 && a4)
+  if (block && context)
   {
     v8.receiver = self;
     v8.super_class = APTNANPairingDelegate;
     v6 = [(APTNANPairingDelegate *)&v8 init];
     if (v6)
     {
-      v6->_handleAuthorizationRequestBlock = _Block_copy(a3);
-      v6->_logContext = CFRetain(a4);
+      v6->_handleAuthorizationRequestBlock = _Block_copy(block);
+      v6->_logContext = CFRetain(context);
       *&v6->_handledPairingRequest = 0;
       if (gLogCategory_APTNANDataSession <= 50 && (gLogCategory_APTNANDataSession != -1 || _LogCategory_Initialize()))
       {
@@ -53,11 +53,11 @@
   [(APTNANPairingDelegate *)&v5 dealloc];
 }
 
-- (void)handlePairingRequestOfType:(__CFString *)a3 withInputCompletionHandler:(id)a4
+- (void)handlePairingRequestOfType:(__CFString *)type withInputCompletionHandler:(id)handler
 {
   if (gLogCategory_APTNANDataSession <= 50 && (gLogCategory_APTNANDataSession != -1 || _LogCategory_Initialize()))
   {
-    [APTNANPairingDelegate handlePairingRequestOfType:a3 withInputCompletionHandler:self];
+    [APTNANPairingDelegate handlePairingRequestOfType:type withInputCompletionHandler:self];
   }
 
   v7 = (*(self->_handleAuthorizationRequestBlock + 2))();
@@ -72,7 +72,7 @@
     [APTNANPairingDelegate handlePairingRequestOfType:withInputCompletionHandler:];
   }
 
-  (*(a4 + 2))(a4, 0);
+  (*(handler + 2))(handler, 0);
 }
 
 - (void)initWithHandleAuthorizationRequestBlock:(void *)a1 logContext:.cold.2(void *a1)

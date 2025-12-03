@@ -1,6 +1,6 @@
 @interface QuoteDetailViewRenderer
 - (_TtC8StocksUI23QuoteDetailViewRenderer)init;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
 @end
 
 @implementation QuoteDetailViewRenderer
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v7 = self;
-  [a3 contentOffset];
-  v4 = v7 + OBJC_IVAR____TtC8StocksUI23QuoteDetailViewRenderer_lastKnownContentOffset;
+  selfCopy = self;
+  [scroll contentOffset];
+  v4 = selfCopy + OBJC_IVAR____TtC8StocksUI23QuoteDetailViewRenderer_lastKnownContentOffset;
   *v4 = v5;
   *(v4 + 1) = v6;
   v4[16] = 0;

@@ -1,37 +1,37 @@
 @interface BRCConfigurationManager
 + (BRCConfigurationManager)sharedInstance;
-- (BOOL)waitForCachedConfigurationLoaded:(double)a3;
+- (BOOL)waitForCachedConfigurationLoaded:(double)loaded;
 - (BRCConfigurationManager)init;
-- (id)_cacheURLFromNamespace:(id)a3;
-- (id)_namespaceNamed:(id)a3;
-- (id)_readFromCacheForNamespace:(id)a3;
-- (id)_valueForKey:(id)a3 fromNamespaceData:(id)a4 source:(unint64_t)a5;
-- (id)allLogicalValuesFromNamespace:(id)a3 allowsOnlyDefaultSource:(BOOL)a4;
+- (id)_cacheURLFromNamespace:(id)namespace;
+- (id)_namespaceNamed:(id)named;
+- (id)_readFromCacheForNamespace:(id)namespace;
+- (id)_valueForKey:(id)key fromNamespaceData:(id)data source:(unint64_t)source;
+- (id)allLogicalValuesFromNamespace:(id)namespace allowsOnlyDefaultSource:(BOOL)source;
 - (id)jsBridge;
 - (id)namespaceInfo;
-- (id)rawValueForKey:(id)a3 fromNamespace:(id)a4;
-- (id)subscribeToKeys:(id)a3 inNamespace:(id)a4 callback:(id)a5;
-- (id)valueForKey:(id)a3 fromNamespace:(id)a4 source:(unint64_t)a5;
+- (id)rawValueForKey:(id)key fromNamespace:(id)namespace;
+- (id)subscribeToKeys:(id)keys inNamespace:(id)namespace callback:(id)callback;
+- (id)valueForKey:(id)key fromNamespace:(id)namespace source:(unint64_t)source;
 - (void)_clearSubscribers;
-- (void)_executeMonitorWithMessage:(id)a3 data:(id)a4;
-- (void)_saveToCacheNamespaceData:(id)a3 withNamespace:(id)a4;
-- (void)_updateNamespace:(id)a3 systemDefaults:(id)a4 configuration:(id)a5 treatmentIDs:(id)a6 segmentIDs:(id)a7 segmentSetIDs:(id)a8 reason:(int64_t)a9;
-- (void)addObserver:(id)a3;
-- (void)clearNamespace:(id)a3;
+- (void)_executeMonitorWithMessage:(id)message data:(id)data;
+- (void)_saveToCacheNamespaceData:(id)data withNamespace:(id)namespace;
+- (void)_updateNamespace:(id)namespace systemDefaults:(id)defaults configuration:(id)configuration treatmentIDs:(id)ds segmentIDs:(id)iDs segmentSetIDs:(id)setIDs reason:(int64_t)reason;
+- (void)addObserver:(id)observer;
+- (void)clearNamespace:(id)namespace;
 - (void)dealloc;
 - (void)disableMonitoring;
-- (void)dump:(id)a3;
-- (void)enableMonitoring:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)refreshNamespace:(id)a3;
-- (void)registerNamespace:(id)a3 withDefaults:(id)a4 forBundleID:(id)a5;
-- (void)removeObserver:(id)a3;
+- (void)dump:(id)dump;
+- (void)enableMonitoring:(id)monitoring;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)refreshNamespace:(id)namespace;
+- (void)registerNamespace:(id)namespace withDefaults:(id)defaults forBundleID:(id)d;
+- (void)removeObserver:(id)observer;
 - (void)resetForJavascript;
-- (void)setUserID:(id)a3;
-- (void)setValue:(id)a3 forKey:(id)a4 forNamespace:(id)a5;
-- (void)setValue:(id)a3 forKey:(id)a4 inNamespace:(id)a5 source:(unint64_t)a6;
-- (void)subscribe:(id)a3 toKeys:(id)a4 inNamespace:(id)a5 callback:(id)a6;
-- (void)unsubscribe:(id)a3;
+- (void)setUserID:(id)d;
+- (void)setValue:(id)value forKey:(id)key forNamespace:(id)namespace;
+- (void)setValue:(id)value forKey:(id)key inNamespace:(id)namespace source:(unint64_t)source;
+- (void)subscribe:(id)subscribe toKeys:(id)keys inNamespace:(id)namespace callback:(id)callback;
+- (void)unsubscribe:(id)unsubscribe;
 @end
 
 @implementation BRCConfigurationManager
@@ -42,7 +42,7 @@
   block[1] = 3221225472;
   block[2] = sub_12DC0C;
   block[3] = &unk_2C7CA8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_345E80 != -1)
   {
     dispatch_once(&qword_345E80, block);
@@ -126,64 +126,64 @@
   [(BRCConfigurationManager *)&v3 dealloc];
 }
 
-- (void)setUserID:(id)a3
+- (void)setUserID:(id)d
 {
   v5 = self->_userID;
-  v6 = [a3 copy];
+  v6 = [d copy];
   userID = self->_userID;
   self->_userID = v6;
 
   if ([(NSString *)self->_userID length]&& ![(NSString *)self->_userID isEqualToString:v5])
   {
-    v8 = [(BRCConfigurationManager *)self data];
+    data = [(BRCConfigurationManager *)self data];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_12E06C;
     v9[3] = &unk_2CDB18;
     v9[4] = self;
-    [v8 enumerateKeysAndObjectsUsingBlock:v9];
+    [data enumerateKeysAndObjectsUsingBlock:v9];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_accessLock);
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_accessLock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)registerNamespace:(id)a3 withDefaults:(id)a4 forBundleID:(id)a5
+- (void)registerNamespace:(id)namespace withDefaults:(id)defaults forBundleID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BRCConfigurationManager *)self _namespaceNamed:v8];
-  [v11 setBundleID:v10];
+  namespaceCopy = namespace;
+  defaultsCopy = defaults;
+  dCopy = d;
+  v11 = [(BRCConfigurationManager *)self _namespaceNamed:namespaceCopy];
+  [v11 setBundleID:dCopy];
 
-  v12 = [(BRCConfigurationManager *)self workerQueue];
+  workerQueue = [(BRCConfigurationManager *)self workerQueue];
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_12E2A8;
   v19 = &unk_2CBED8;
-  v20 = self;
-  v13 = v8;
+  selfCopy = self;
+  v13 = namespaceCopy;
   v21 = v13;
   v22 = v11;
-  v23 = v9;
-  v14 = v9;
+  v23 = defaultsCopy;
+  v14 = defaultsCopy;
   v15 = v11;
-  dispatch_sync(v12, &v16);
+  dispatch_sync(workerQueue, &v16);
 
   if ([(BRCConfigurationManager *)self refreshOnRegister:v16])
   {
@@ -191,16 +191,16 @@
   }
 }
 
-- (id)valueForKey:(id)a3 fromNamespace:(id)a4 source:(unint64_t)a5
+- (id)valueForKey:(id)key fromNamespace:(id)namespace source:(unint64_t)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(BRCConfigurationManager *)self data];
-  v11 = [v10 objectForKey:v9];
+  keyCopy = key;
+  namespaceCopy = namespace;
+  data = [(BRCConfigurationManager *)self data];
+  v11 = [data objectForKey:namespaceCopy];
 
   if (v11)
   {
-    v12 = [(BRCConfigurationManager *)self _valueForKey:v8 fromNamespaceData:v11 source:a5];
+    v12 = [(BRCConfigurationManager *)self _valueForKey:keyCopy fromNamespaceData:v11 source:source];
   }
 
   else
@@ -211,71 +211,71 @@
   return v12;
 }
 
-- (void)subscribe:(id)a3 toKeys:(id)a4 inNamespace:(id)a5 callback:(id)a6
+- (void)subscribe:(id)subscribe toKeys:(id)keys inNamespace:(id)namespace callback:(id)callback
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  subscribeCopy = subscribe;
+  keysCopy = keys;
+  namespaceCopy = namespace;
+  callbackCopy = callback;
   objc_initWeak(&location, self);
-  v14 = [(BRCConfigurationManager *)self updateQueue];
+  updateQueue = [(BRCConfigurationManager *)self updateQueue];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_12E7F0;
   v19[3] = &unk_2CDB40;
   objc_copyWeak(&v24, &location);
-  v20 = v12;
-  v21 = v10;
-  v22 = v11;
-  v23 = v13;
-  v15 = v11;
-  v16 = v13;
-  v17 = v10;
-  v18 = v12;
-  dispatch_async(v14, v19);
+  v20 = namespaceCopy;
+  v21 = subscribeCopy;
+  v22 = keysCopy;
+  v23 = callbackCopy;
+  v15 = keysCopy;
+  v16 = callbackCopy;
+  v17 = subscribeCopy;
+  v18 = namespaceCopy;
+  dispatch_async(updateQueue, v19);
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
 }
 
-- (void)refreshNamespace:(id)a3
+- (void)refreshNamespace:(id)namespace
 {
-  v4 = a3;
-  v5 = [(BRCConfigurationManager *)self userID];
+  namespaceCopy = namespace;
+  userID = [(BRCConfigurationManager *)self userID];
 
-  if (v5)
+  if (userID)
   {
     v14 = @"namespace";
-    v15 = v4;
+    v15 = namespaceCopy;
     v6 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
     [(BRCConfigurationManager *)self _executeMonitorWithMessage:@"refresh requested" data:v6];
 
-    v7 = [(BRCConfigurationManager *)self data];
-    v8 = [v7 objectForKey:v4];
+    data = [(BRCConfigurationManager *)self data];
+    v8 = [data objectForKey:namespaceCopy];
 
-    v9 = [(BRCConfigurationManager *)self userID];
+    userID2 = [(BRCConfigurationManager *)self userID];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_12EB10;
     v11[3] = &unk_2CDB90;
     v11[4] = self;
-    v12 = v4;
+    v12 = namespaceCopy;
     v13 = v8;
     v10 = v8;
-    [v10 settingsWithUserID:v9 completion:v11];
+    [v10 settingsWithUserID:userID2 completion:v11];
   }
 }
 
 - (void)resetForJavascript
 {
   objc_initWeak(&location, self);
-  v3 = [(BRCConfigurationManager *)self updateQueue];
+  updateQueue = [(BRCConfigurationManager *)self updateQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_12F170;
   v4[3] = &unk_2C8FF8;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(updateQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -284,30 +284,30 @@
 - (id)namespaceInfo
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(BRCConfigurationManager *)self data];
+  data = [(BRCConfigurationManager *)self data];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_12F298;
   v7[3] = &unk_2CDB18;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [data enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
 
-- (id)allLogicalValuesFromNamespace:(id)a3 allowsOnlyDefaultSource:(BOOL)a4
+- (id)allLogicalValuesFromNamespace:(id)namespace allowsOnlyDefaultSource:(BOOL)source
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(BRCConfigurationManager *)self data];
-  v8 = [v7 objectForKey:v6];
+  sourceCopy = source;
+  namespaceCopy = namespace;
+  data = [(BRCConfigurationManager *)self data];
+  v8 = [data objectForKey:namespaceCopy];
 
-  v9 = [v8 systemDefaults];
-  v10 = [v9 copy];
+  systemDefaults = [v8 systemDefaults];
+  v10 = [systemDefaults copy];
 
-  v11 = [v8 configuration];
-  v12 = [v11 copy];
+  configuration = [v8 configuration];
+  v12 = [configuration copy];
 
   if ([v12 count])
   {
@@ -316,7 +316,7 @@
     v14 = [v13 copy];
   }
 
-  else if (v4)
+  else if (sourceCopy)
   {
     v14 = v10;
   }
@@ -329,11 +329,11 @@
   return v14;
 }
 
-- (BOOL)waitForCachedConfigurationLoaded:(double)a3
+- (BOOL)waitForCachedConfigurationLoaded:(double)loaded
 {
   v5 = [NSDate dateWithTimeIntervalSinceNow:?];
-  v6 = [(BRCConfigurationManager *)self cacheLoadedCondition];
-  [v6 lock];
+  cacheLoadedCondition = [(BRCConfigurationManager *)self cacheLoadedCondition];
+  [cacheLoadedCondition lock];
 
   if (![(BRCConfigurationManager *)self cacheLoaded])
   {
@@ -341,7 +341,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 134217984;
-      v22 = a3;
+      loadedCopy = loaded;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "waitForCachedConfigurationLoaded: Waiting for cacheLoaded. timeout: %f", &v21, 0xCu);
     }
   }
@@ -350,15 +350,15 @@
   {
     do
     {
-      v8 = [(BRCConfigurationManager *)self cacheLoadedCondition];
-      v9 = [v8 waitUntilDate:v5];
+      cacheLoadedCondition2 = [(BRCConfigurationManager *)self cacheLoadedCondition];
+      v9 = [cacheLoadedCondition2 waitUntilDate:v5];
     }
 
     while (![(BRCConfigurationManager *)self cacheLoaded]&& (v9 & 1) != 0);
   }
 
-  v10 = [(BRCConfigurationManager *)self cacheLoaded];
-  if (!v10)
+  cacheLoaded = [(BRCConfigurationManager *)self cacheLoaded];
+  if (!cacheLoaded)
   {
     v11 = BRCConfigLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -367,42 +367,42 @@
     }
   }
 
-  v19 = [(BRCConfigurationManager *)self cacheLoadedCondition];
-  [v19 unlock];
+  cacheLoadedCondition3 = [(BRCConfigurationManager *)self cacheLoadedCondition];
+  [cacheLoadedCondition3 unlock];
 
-  return v10;
+  return cacheLoaded;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4 forNamespace:(id)a5
+- (void)setValue:(id)value forKey:(id)key forNamespace:(id)namespace
 {
-  v16 = a5;
+  namespaceCopy = namespace;
   self->_configurationLoaded = 1;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(BRCConfigurationManager *)self data];
-  v11 = [v10 objectForKeyedSubscript:v16];
+  keyCopy = key;
+  valueCopy = value;
+  data = [(BRCConfigurationManager *)self data];
+  v11 = [data objectForKeyedSubscript:namespaceCopy];
 
   if (!v11)
   {
     v11 = objc_alloc_init(BRCNamespaceData);
-    [(BRCNamespaceData *)v11 setNamespaceIdentifier:v16];
-    v12 = [(BRCConfigurationManager *)self data];
-    [v12 setObject:v11 forKeyedSubscript:v16];
+    [(BRCNamespaceData *)v11 setNamespaceIdentifier:namespaceCopy];
+    data2 = [(BRCConfigurationManager *)self data];
+    [data2 setObject:v11 forKeyedSubscript:namespaceCopy];
   }
 
-  v13 = [(BRCNamespaceData *)v11 configuration];
-  v14 = [v13 mutableCopy];
+  configuration = [(BRCNamespaceData *)v11 configuration];
+  v14 = [configuration mutableCopy];
 
-  [v14 setObject:v9 forKeyedSubscript:v8];
+  [v14 setObject:valueCopy forKeyedSubscript:keyCopy];
   v15 = [v14 copy];
   [(BRCNamespaceData *)v11 setConfiguration:v15];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_33EEA0 == a6)
+  if (off_33EEA0 == context)
   {
-    v7 = [(BRCConfigurationManager *)self data:a3];
+    v7 = [(BRCConfigurationManager *)self data:path];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_12F930;
@@ -433,66 +433,66 @@
   {
     v12.receiver = self;
     v12.super_class = BRCConfigurationManager;
-    [(BRCConfigurationManager *)&v12 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(BRCConfigurationManager *)&v12 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)_updateNamespace:(id)a3 systemDefaults:(id)a4 configuration:(id)a5 treatmentIDs:(id)a6 segmentIDs:(id)a7 segmentSetIDs:(id)a8 reason:(int64_t)a9
+- (void)_updateNamespace:(id)namespace systemDefaults:(id)defaults configuration:(id)configuration treatmentIDs:(id)ds segmentIDs:(id)iDs segmentSetIDs:(id)setIDs reason:(int64_t)reason
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  namespaceCopy = namespace;
+  defaultsCopy = defaults;
+  configurationCopy = configuration;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  setIDsCopy = setIDs;
   objc_initWeak(&location, self);
-  v21 = [(BRCConfigurationManager *)self updateQueue];
+  updateQueue = [(BRCConfigurationManager *)self updateQueue];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_12FB44;
   v28[3] = &unk_2CDBB8;
   objc_copyWeak(v36, &location);
-  v29 = v15;
-  v30 = v16;
-  v31 = v17;
-  v32 = v19;
-  v33 = v20;
-  v34 = v18;
-  v35 = self;
-  v36[1] = a9;
-  v22 = v18;
-  v23 = v20;
-  v24 = v19;
-  v25 = v17;
-  v26 = v16;
-  v27 = v15;
-  dispatch_async(v21, v28);
+  v29 = namespaceCopy;
+  v30 = defaultsCopy;
+  v31 = configurationCopy;
+  v32 = iDsCopy;
+  v33 = setIDsCopy;
+  v34 = dsCopy;
+  selfCopy = self;
+  v36[1] = reason;
+  v22 = dsCopy;
+  v23 = setIDsCopy;
+  v24 = iDsCopy;
+  v25 = configurationCopy;
+  v26 = defaultsCopy;
+  v27 = namespaceCopy;
+  dispatch_async(updateQueue, v28);
 
   objc_destroyWeak(v36);
   objc_destroyWeak(&location);
 }
 
-- (id)_valueForKey:(id)a3 fromNamespaceData:(id)a4 source:(unint64_t)a5
+- (id)_valueForKey:(id)key fromNamespaceData:(id)data source:(unint64_t)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  switch(a5)
+  keyCopy = key;
+  dataCopy = data;
+  v10 = dataCopy;
+  switch(source)
   {
     case 2uLL:
 LABEL_5:
-      v13 = [v10 systemDefaults];
+      systemDefaults = [v10 systemDefaults];
 LABEL_7:
-      v14 = v13;
-      v12 = [v13 valueForKeyPath:v8];
+      v14 = systemDefaults;
+      v12 = [systemDefaults valueForKeyPath:keyCopy];
 
       goto LABEL_9;
     case 1uLL:
-      v13 = [v9 configuration];
+      systemDefaults = [dataCopy configuration];
       goto LABEL_7;
     case 0uLL:
-      v11 = [v9 configuration];
-      v12 = [v11 valueForKeyPath:v8];
+      configuration = [dataCopy configuration];
+      v12 = [configuration valueForKeyPath:keyCopy];
 
       if (v12)
       {
@@ -505,9 +505,9 @@ LABEL_7:
   v12 = 0;
 LABEL_9:
   v20[0] = @"namespace";
-  v15 = [v10 namespaceIdentifier];
-  v21[0] = v15;
-  v21[1] = v8;
+  namespaceIdentifier = [v10 namespaceIdentifier];
+  v21[0] = namespaceIdentifier;
+  v21[1] = keyCopy;
   v20[1] = @"key";
   v20[2] = @"value";
   v16 = v12;
@@ -529,18 +529,18 @@ LABEL_9:
   return v18;
 }
 
-- (id)_namespaceNamed:(id)a3
+- (id)_namespaceNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(BRCConfigurationManager *)self data];
-  v6 = [v5 objectForKey:v4];
+  namedCopy = named;
+  data = [(BRCConfigurationManager *)self data];
+  v6 = [data objectForKey:namedCopy];
 
   if (!v6)
   {
     v6 = objc_alloc_init(BRCNamespaceData);
-    [(BRCNamespaceData *)v6 setNamespaceIdentifier:v4];
-    v7 = [(BRCConfigurationManager *)self data];
-    [v7 setObject:v6 forKey:v4];
+    [(BRCNamespaceData *)v6 setNamespaceIdentifier:namedCopy];
+    data2 = [(BRCConfigurationManager *)self data];
+    [data2 setObject:v6 forKey:namedCopy];
   }
 
   return v6;
@@ -549,36 +549,36 @@ LABEL_9:
 - (void)_clearSubscribers
 {
   objc_initWeak(&location, self);
-  v3 = [(BRCConfigurationManager *)self updateQueue];
+  updateQueue = [(BRCConfigurationManager *)self updateQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_130520;
   v4[3] = &unk_2C8FF8;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(updateQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
 
-- (void)_executeMonitorWithMessage:(id)a3 data:(id)a4
+- (void)_executeMonitorWithMessage:(id)message data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRCConfigurationManager *)self monitorCallback];
-  if (v8)
+  messageCopy = message;
+  dataCopy = data;
+  monitorCallback = [(BRCConfigurationManager *)self monitorCallback];
+  if (monitorCallback)
   {
-    v9 = v8;
-    v10 = [(BRCConfigurationManager *)self jsBridge];
+    v9 = monitorCallback;
+    jsBridge = [(BRCConfigurationManager *)self jsBridge];
 
-    if (v10)
+    if (jsBridge)
     {
-      v11 = [NSString stringWithFormat:@"RemoteConfigMonitor: %@, data = %@", v6, v7];
-      v12 = [(BRCConfigurationManager *)self jsBridge];
-      v13 = [(BRCConfigurationManager *)self monitorCallback];
-      v20 = v11;
+      dataCopy = [NSString stringWithFormat:@"RemoteConfigMonitor: %@, data = %@", messageCopy, dataCopy];
+      jsBridge2 = [(BRCConfigurationManager *)self jsBridge];
+      monitorCallback2 = [(BRCConfigurationManager *)self monitorCallback];
+      v20 = dataCopy;
       v14 = [NSArray arrayWithObjects:&v20 count:1];
-      [v12 enqueueValueCall:v13 arguments:v14 file:@"/Library/Caches/com.apple.xbs/Sources/Alder/frameworks/BookCore/BookCore/RemoteConfig/BRCConfigurationManager.m" line:538];
+      [jsBridge2 enqueueValueCall:monitorCallback2 arguments:v14 file:@"/Library/Caches/com.apple.xbs/Sources/Alder/frameworks/BookCore/BookCore/RemoteConfig/BRCConfigurationManager.m" line:538];
     }
   }
 
@@ -588,47 +588,47 @@ LABEL_9:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v17 = v6;
+      v17 = messageCopy;
       v18 = 2112;
-      v19 = v7;
+      v19 = dataCopy;
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_INFO, "RemoteConfigMonitor: %@, data = %@", buf, 0x16u);
     }
   }
 }
 
-- (id)rawValueForKey:(id)a3 fromNamespace:(id)a4
+- (id)rawValueForKey:(id)key fromNamespace:(id)namespace
 {
-  v4 = [(BRCConfigurationManager *)self valueForKey:a3 fromNamespace:a4];
-  v5 = [v4 object];
+  v4 = [(BRCConfigurationManager *)self valueForKey:key fromNamespace:namespace];
+  object = [v4 object];
 
-  return v5;
+  return object;
 }
 
-- (id)subscribeToKeys:(id)a3 inNamespace:(id)a4 callback:(id)a5
+- (id)subscribeToKeys:(id)keys inNamespace:(id)namespace callback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keysCopy = keys;
+  namespaceCopy = namespace;
+  callbackCopy = callback;
   v11 = +[NSUUID UUID];
-  v12 = [v11 UUIDString];
+  uUIDString = [v11 UUIDString];
 
   objc_initWeak(&location, self);
-  v13 = [(BRCConfigurationManager *)self updateQueue];
+  updateQueue = [(BRCConfigurationManager *)self updateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_130A1C;
   block[3] = &unk_2C8188;
   objc_copyWeak(&v27, &location);
-  v14 = v12;
+  v14 = uUIDString;
   v26 = v14;
-  dispatch_sync(v13, block);
+  dispatch_sync(updateQueue, block);
 
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x3032000000;
   v23[3] = sub_130A7C;
   v23[4] = sub_130A8C;
-  v15 = v10;
+  v15 = callbackCopy;
   v24 = v15;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
@@ -638,7 +638,7 @@ LABEL_9:
   v22 = v23;
   v16 = v14;
   v21 = v16;
-  [(BRCConfigurationManager *)self subscribe:v16 toKeys:v8 inNamespace:v9 callback:v20];
+  [(BRCConfigurationManager *)self subscribe:v16 toKeys:keysCopy inNamespace:namespaceCopy callback:v20];
   v17 = v21;
   v18 = v16;
 
@@ -649,45 +649,45 @@ LABEL_9:
   return v18;
 }
 
-- (void)unsubscribe:(id)a3
+- (void)unsubscribe:(id)unsubscribe
 {
-  v4 = a3;
+  unsubscribeCopy = unsubscribe;
   objc_initWeak(&location, self);
-  v5 = [(BRCConfigurationManager *)self updateQueue];
+  updateQueue = [(BRCConfigurationManager *)self updateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_130D80;
   block[3] = &unk_2C8188;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = unsubscribeCopy;
+  v6 = unsubscribeCopy;
+  dispatch_async(updateQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4 inNamespace:(id)a5 source:(unint64_t)a6
+- (void)setValue:(id)value forKey:(id)key inNamespace:(id)namespace source:(unint64_t)source
 {
-  v10 = a3;
-  v8 = a4;
+  valueCopy = value;
+  keyCopy = key;
   if ([(BRCConfigurationManager *)self monitoringEnabled])
   {
     v9 = +[BCRCDataContainer defaultContainer];
-    [v9 setOverrideObject:v10 forKey:v8];
+    [v9 setOverrideObject:valueCopy forKey:keyCopy];
   }
 }
 
-- (void)enableMonitoring:(id)a3
+- (void)enableMonitoring:(id)monitoring
 {
-  v5 = a3;
+  monitoringCopy = monitoring;
   if ([(BRCConfigurationManager *)self monitoringEnabled])
   {
-    v4 = [(BRCConfigurationManager *)self jsBridge];
+    jsBridge = [(BRCConfigurationManager *)self jsBridge];
 
-    if (v4)
+    if (jsBridge)
     {
-      [(BRCConfigurationManager *)self setMonitorCallback:v5];
+      [(BRCConfigurationManager *)self setMonitorCallback:monitoringCopy];
       [(BRCConfigurationManager *)self _executeMonitorWithMessage:@"monitoring callback set." data:0];
     }
   }
@@ -700,49 +700,49 @@ LABEL_9:
   [(BRCConfigurationManager *)self setMonitorCallback:0];
 }
 
-- (void)clearNamespace:(id)a3
+- (void)clearNamespace:(id)namespace
 {
-  v4 = a3;
+  namespaceCopy = namespace;
   if ([(BRCConfigurationManager *)self monitoringEnabled])
   {
     objc_initWeak(&location, self);
-    v5 = [(BRCConfigurationManager *)self updateQueue];
+    updateQueue = [(BRCConfigurationManager *)self updateQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_13102C;
     block[3] = &unk_2C8188;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
-    dispatch_async(v5, block);
+    v7 = namespaceCopy;
+    dispatch_async(updateQueue, block);
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)dump:(id)a3
+- (void)dump:(id)dump
 {
-  v4 = a3;
-  v5 = [(BRCConfigurationManager *)self data];
-  v8 = [v5 objectForKey:v4];
+  dumpCopy = dump;
+  data = [(BRCConfigurationManager *)self data];
+  v8 = [data objectForKey:dumpCopy];
 
   if (v8)
   {
-    v6 = [v8 systemDefaults];
-    [(BRCConfigurationManager *)self _executeMonitorWithMessage:@"system defaults" data:v6];
+    systemDefaults = [v8 systemDefaults];
+    [(BRCConfigurationManager *)self _executeMonitorWithMessage:@"system defaults" data:systemDefaults];
 
-    v7 = [v8 configuration];
-    [(BRCConfigurationManager *)self _executeMonitorWithMessage:@"configured defaults" data:v7];
+    configuration = [v8 configuration];
+    [(BRCConfigurationManager *)self _executeMonitorWithMessage:@"configured defaults" data:configuration];
   }
 }
 
-- (id)_readFromCacheForNamespace:(id)a3
+- (id)_readFromCacheForNamespace:(id)namespace
 {
-  v4 = a3;
-  v5 = [(BRCConfigurationManager *)self workerQueue];
-  dispatch_assert_queue_V2(v5);
+  namespaceCopy = namespace;
+  workerQueue = [(BRCConfigurationManager *)self workerQueue];
+  dispatch_assert_queue_V2(workerQueue);
 
-  v6 = [(BRCConfigurationManager *)self _cacheURLFromNamespace:v4];
+  v6 = [(BRCConfigurationManager *)self _cacheURLFromNamespace:namespaceCopy];
 
   v7 = [NSData dataWithContentsOfURL:v6];
   if (v7)
@@ -769,13 +769,13 @@ LABEL_9:
   return v8;
 }
 
-- (void)_saveToCacheNamespaceData:(id)a3 withNamespace:(id)a4
+- (void)_saveToCacheNamespaceData:(id)data withNamespace:(id)namespace
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 setNamespaceIdentifier:v6];
+  namespaceCopy = namespace;
+  dataCopy = data;
+  [dataCopy setNamespaceIdentifier:namespaceCopy];
   v15 = 0;
-  v8 = [NSKeyedArchiver archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v15];
+  v8 = [NSKeyedArchiver archivedDataWithRootObject:dataCopy requiringSecureCoding:1 error:&v15];
 
   v9 = v15;
   if (!v8)
@@ -787,7 +787,7 @@ LABEL_9:
     }
   }
 
-  v11 = [(BRCConfigurationManager *)self _cacheURLFromNamespace:v6];
+  v11 = [(BRCConfigurationManager *)self _cacheURLFromNamespace:namespaceCopy];
   v14 = v9;
   [v8 writeToURL:v11 options:1 error:&v14];
   v12 = v14;
@@ -802,9 +802,9 @@ LABEL_9:
   }
 }
 
-- (id)_cacheURLFromNamespace:(id)a3
+- (id)_cacheURLFromNamespace:(id)namespace
 {
-  v3 = a3;
+  namespaceCopy = namespace;
   v4 = +[NSFileManager defaultManager];
   v10 = 0;
   v5 = [v4 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:&v10];
@@ -812,7 +812,7 @@ LABEL_9:
 
   if (v5)
   {
-    v7 = [v5 URLByAppendingPathComponent:v3 isDirectory:0];
+    v7 = [v5 URLByAppendingPathComponent:namespaceCopy isDirectory:0];
   }
 
   else

@@ -1,24 +1,24 @@
 @interface STBackgroundActivityVisualDescriptor
 + (id)_defaultVisualDescriptors;
-+ (id)visualDescriptorForBackgroundActivityWithIdentifier:(id)a3;
-- (BOOL)canCrossfadeToBackgroundActivityWithIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)visualDescriptorForBackgroundActivityWithIdentifier:(id)identifier;
+- (BOOL)canCrossfadeToBackgroundActivityWithIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (STBackgroundActivityVisualDescriptor)init;
-- (STBackgroundActivityVisualDescriptor)initWithCoder:(id)a3;
-- (STBackgroundActivityVisualDescriptor)initWithPlistRepresentation:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (STBackgroundActivityVisualDescriptor)initWithCoder:(id)coder;
+- (STBackgroundActivityVisualDescriptor)initWithPlistRepresentation:(id)representation;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STBackgroundActivityVisualDescriptor
 
 + (id)_defaultVisualDescriptors
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = objc_opt_new();
   [v3 setSystemImageName:@"phone.down.fill"];
   [v3 setPreferredContinuousAnimationName:?];
@@ -28,7 +28,7 @@
 
   [v3 setPrefersToKeepContentVisible:1];
   [v3 setPrefersToSuppressDefaultUserInteractionHandler:1];
-  [v2 setObject:v3 forKey:@"com.apple.systemstatus.background-activity.CallRinging"];
+  [dictionary setObject:v3 forKey:@"com.apple.systemstatus.background-activity.CallRinging"];
 
   v5 = objc_opt_new();
   [v5 setSystemImageName:@"phone.fill"];
@@ -40,7 +40,7 @@
   [v5 setBackgroundColorRepresentation:v7];
 
   [v5 setPrefersToSuppressDefaultUserInteractionHandler:1];
-  [v2 setObject:v5 forKey:@"com.apple.systemstatus.background-activity.InCall"];
+  [dictionary setObject:v5 forKey:@"com.apple.systemstatus.background-activity.InCall"];
 
   v8 = objc_opt_new();
   [v8 setSystemImageName:@"phone.fill"];
@@ -52,7 +52,7 @@
   [v8 setCrossfadableActivities:v10];
 
   [v8 setPrefersToSuppressDefaultUserInteractionHandler:1];
-  [v2 setObject:v8 forKey:@"com.apple.systemstatus.background-activity.CallRecording"];
+  [dictionary setObject:v8 forKey:@"com.apple.systemstatus.background-activity.CallRecording"];
 
   v11 = objc_opt_new();
   [v11 setSystemImageName:@"phone.fill"];
@@ -62,7 +62,7 @@
 
   [v11 setPrefersToKeepContentVisible:1];
   [v11 setPrefersToSuppressDefaultUserInteractionHandler:1];
-  [v2 setObject:v11 forKey:@"com.apple.systemstatus.background-activity.CallHandoff"];
+  [dictionary setObject:v11 forKey:@"com.apple.systemstatus.background-activity.CallHandoff"];
 
   v13 = objc_opt_new();
   [v13 setSystemImageName:@"recordingtape"];
@@ -72,7 +72,7 @@
 
   [v13 setPrefersToKeepContentVisible:1];
   [v13 setPrefersToSuppressDefaultUserInteractionHandler:1];
-  [v2 setObject:v13 forKey:@"com.apple.systemstatus.background-activity.CallScreening"];
+  [dictionary setObject:v13 forKey:@"com.apple.systemstatus.background-activity.CallScreening"];
 
   v15 = objc_opt_new();
   [v15 setSystemImageName:@"video.fill"];
@@ -84,7 +84,7 @@
 
   [v15 setPrefersToKeepContentVisible:1];
   [v15 setPrefersToSuppressDefaultUserInteractionHandler:1];
-  [v2 setObject:v15 forKey:@"com.apple.systemstatus.background-activity.VideoConferenceRinging"];
+  [dictionary setObject:v15 forKey:@"com.apple.systemstatus.background-activity.VideoConferenceRinging"];
 
   v17 = objc_opt_new();
   [v17 setSystemImageName:@"video.fill"];
@@ -92,7 +92,7 @@
   [v17 setBackgroundColorRepresentation:v18];
 
   [v17 setPrefersToSuppressDefaultUserInteractionHandler:1];
-  [v2 setObject:v17 forKey:@"com.apple.systemstatus.background-activity.InVideoConference"];
+  [dictionary setObject:v17 forKey:@"com.apple.systemstatus.background-activity.InVideoConference"];
 
   v19 = objc_opt_new();
   [v19 setSystemImageName:@"video.fill"];
@@ -102,7 +102,7 @@
 
   [v19 setPrefersToKeepContentVisible:1];
   [v19 setPrefersToSuppressDefaultUserInteractionHandler:1];
-  [v2 setObject:v19 forKey:@"com.apple.systemstatus.background-activity.VideoConferenceHandoff"];
+  [dictionary setObject:v19 forKey:@"com.apple.systemstatus.background-activity.VideoConferenceHandoff"];
 
   v21 = objc_opt_new();
   [v21 setSystemImageName:@"waveform"];
@@ -111,7 +111,7 @@
 
   [v21 setPrefersToKeepContentVisible:1];
   [v21 setPrefersToSuppressDefaultUserInteractionHandler:1];
-  [v2 setObject:v21 forKey:@"com.apple.systemstatus.background-activity.ActivePushToTalkCall"];
+  [dictionary setObject:v21 forKey:@"com.apple.systemstatus.background-activity.ActivePushToTalkCall"];
 
   v23 = objc_opt_new();
   [v23 setSystemImageName:@"waveform"];
@@ -120,74 +120,74 @@
   [v23 setBackgroundColorRepresentation:v24];
 
   [v23 setPrefersToSuppressDefaultUserInteractionHandler:1];
-  [v2 setObject:v23 forKey:@"com.apple.systemstatus.background-activity.IdlePushToTalkCall"];
+  [dictionary setObject:v23 forKey:@"com.apple.systemstatus.background-activity.IdlePushToTalkCall"];
 
   v25 = objc_opt_new();
   [v25 setSystemImageName:@"video.fill"];
   v26 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemRedColor"];
   [v25 setBackgroundColorRepresentation:v26];
 
-  [v2 setObject:v25 forKey:@"com.apple.systemstatus.background-activity.WebRTCCapture"];
+  [dictionary setObject:v25 forKey:@"com.apple.systemstatus.background-activity.WebRTCCapture"];
   v27 = objc_opt_new();
   [v27 setSystemImageName:@"mic.fill"];
   v28 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemOrangeColor"];
   [v27 setBackgroundColorRepresentation:v28];
 
-  [v2 setObject:v27 forKey:@"com.apple.systemstatus.background-activity.WebRTCAudioCapture"];
+  [dictionary setObject:v27 forKey:@"com.apple.systemstatus.background-activity.WebRTCAudioCapture"];
   v29 = objc_opt_new();
   [v29 setSystemImageName:@"video.fill"];
   v30 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemRedColor"];
   [v29 setBackgroundColorRepresentation:v30];
 
-  [v2 setObject:v29 forKey:@"com.apple.systemstatus.background-activity.FullScreenWebRTCCapture"];
+  [dictionary setObject:v29 forKey:@"com.apple.systemstatus.background-activity.FullScreenWebRTCCapture"];
   v31 = objc_opt_new();
   [v31 setSystemImageName:@"mic.fill"];
   v32 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemOrangeColor"];
   [v31 setBackgroundColorRepresentation:v32];
 
-  [v2 setObject:v31 forKey:@"com.apple.systemstatus.background-activity.FullScreenWebRTCAudioCapture"];
+  [dictionary setObject:v31 forKey:@"com.apple.systemstatus.background-activity.FullScreenWebRTCAudioCapture"];
   v33 = objc_opt_new();
   [v33 setSystemImageName:@"location.north.circle.fill"];
   v34 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemBlueColor"];
   [v33 setBackgroundColorRepresentation:v34];
 
-  [v2 setObject:v33 forKey:@"com.apple.systemstatus.background-activity.Navigation"];
+  [dictionary setObject:v33 forKey:@"com.apple.systemstatus.background-activity.Navigation"];
   v35 = objc_opt_new();
   [v35 setSystemImageName:@"location.north.circle.fill"];
   v36 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemBlueColor"];
   [v35 setBackgroundColorRepresentation:v36];
 
-  [v2 setObject:v35 forKey:@"com.apple.systemstatus.background-activity.Navigation"];
+  [dictionary setObject:v35 forKey:@"com.apple.systemstatus.background-activity.Navigation"];
   v37 = objc_opt_new();
   [v37 setSystemImageName:@"location.north.circle.fill"];
   v38 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemBlueColor"];
   [v37 setBackgroundColorRepresentation:v38];
 
-  [v2 setObject:v37 forKey:@"com.apple.systemstatus.background-activity.BackgroundLocation"];
+  [dictionary setObject:v37 forKey:@"com.apple.systemstatus.background-activity.BackgroundLocation"];
   v39 = objc_opt_new();
   [v39 setSystemImageName:@"nearby.interactions"];
   v40 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemBlueColor"];
   [v39 setBackgroundColorRepresentation:v40];
 
-  [v2 setObject:v39 forKey:@"com.apple.systemstatus.background-activity.NearbyInteractions"];
+  [dictionary setObject:v39 forKey:@"com.apple.systemstatus.background-activity.NearbyInteractions"];
   v41 = objc_opt_new();
   [v41 setSystemImageName:@"mic.fill"];
   v42 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemOrangeColor"];
   [v41 setBackgroundColorRepresentation:v42];
 
-  [v2 setObject:v41 forKey:@"com.apple.systemstatus.background-activity.Recording"];
+  [dictionary setObject:v41 forKey:@"com.apple.systemstatus.background-activity.Recording"];
   v43 = objc_opt_new();
   [v43 setSystemImageName:@"mic.fill"];
   v44 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemOrangeColor"];
   [v43 setBackgroundColorRepresentation:v44];
 
-  [v2 setObject:v43 forKey:@"com.apple.systemstatus.background-activity.HearingAidRecording"];
+  [dictionary setObject:v43 forKey:@"com.apple.systemstatus.background-activity.HearingAidRecording"];
   v45 = objc_opt_new();
   [v45 setSystemImageName:@"record.circle"];
   v46 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemRedColor"];
   [v45 setBackgroundColorRepresentation:v46];
 
-  [v2 setObject:v45 forKey:@"com.apple.systemstatus.background-activity.ScreenReplayRecording"];
+  [dictionary setObject:v45 forKey:@"com.apple.systemstatus.background-activity.ScreenReplayRecording"];
   v47 = objc_opt_new();
   [v47 setSystemImageName:@"shareplay"];
   v48 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemGray4Color"];
@@ -197,7 +197,7 @@
   [v47 setCrossfadableActivities:v49];
 
   [v47 setPrefersToSuppressDefaultUserInteractionHandler:1];
-  [v2 setObject:v47 forKey:@"com.apple.systemstatus.background-activity.SharePlayInactive"];
+  [dictionary setObject:v47 forKey:@"com.apple.systemstatus.background-activity.SharePlayInactive"];
 
   v50 = objc_opt_new();
   [v50 setSystemImageName:@"shareplay"];
@@ -208,7 +208,7 @@
   [v50 setCrossfadableActivities:v52];
 
   [v50 setPrefersToSuppressDefaultUserInteractionHandler:1];
-  [v2 setObject:v50 forKey:@"com.apple.systemstatus.background-activity.SharePlay"];
+  [dictionary setObject:v50 forKey:@"com.apple.systemstatus.background-activity.SharePlay"];
 
   v53 = objc_opt_new();
   [v53 setSystemImageName:@"rectangle.inset.filled.and.person.filled"];
@@ -216,14 +216,14 @@
   [v53 setBackgroundColorRepresentation:v54];
 
   [v53 setPrefersToSuppressDefaultUserInteractionHandler:1];
-  [v2 setObject:v53 forKey:@"com.apple.systemstatus.background-activity.SharePlayScreenSharing"];
+  [dictionary setObject:v53 forKey:@"com.apple.systemstatus.background-activity.SharePlayScreenSharing"];
 
   v55 = objc_opt_new();
   [v55 setSystemImageName:@"airplayvideo"];
   v56 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemBlueColor"];
   [v55 setBackgroundColorRepresentation:v56];
 
-  [v2 setObject:v55 forKey:@"com.apple.systemstatus.background-activity.ScreenSharing"];
+  [dictionary setObject:v55 forKey:@"com.apple.systemstatus.background-activity.ScreenSharing"];
   v57 = objc_opt_new();
   [v57 setSystemImageName:@"airplayvideo"];
   [v57 setPrefersToSuppressPulse:1];
@@ -231,59 +231,59 @@
   v58 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemBlueColor"];
   [v57 setBackgroundColorRepresentation:v58];
 
-  [v2 setObject:v57 forKey:@"com.apple.systemstatus.background-activity.AutoAirPlayReady"];
+  [dictionary setObject:v57 forKey:@"com.apple.systemstatus.background-activity.AutoAirPlayReady"];
   v59 = objc_opt_new();
   [v59 setSystemImageName:@"airplayvideo"];
   [v59 setPrefersToKeepContentVisible:1];
   v60 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemBlueColor"];
   [v59 setBackgroundColorRepresentation:v60];
 
-  [v2 setObject:v59 forKey:@"com.apple.systemstatus.background-activity.AutoAirPlayPlaying"];
+  [dictionary setObject:v59 forKey:@"com.apple.systemstatus.background-activity.AutoAirPlayPlaying"];
   v61 = objc_opt_new();
   [v61 setSystemImageName:@"cable.connector.horizontal"];
   v62 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemBlueColor"];
   [v61 setBackgroundColorRepresentation:v62];
 
-  [v2 setObject:v61 forKey:@"com.apple.systemstatus.background-activity.VideoOut"];
+  [dictionary setObject:v61 forKey:@"com.apple.systemstatus.background-activity.VideoOut"];
   v63 = objc_opt_new();
   [v63 setSystemImageName:@"rectangle.inset.filled.and.person.filled"];
   v64 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemIndigoColor"];
   [v63 setBackgroundColorRepresentation:v64];
 
-  [v2 setObject:v63 forKey:@"com.apple.systemstatus.background-activity.ScreenSharingServer"];
+  [dictionary setObject:v63 forKey:@"com.apple.systemstatus.background-activity.ScreenSharingServer"];
   v65 = objc_opt_new();
   [v65 setSystemImageName:@"gear"];
   v66 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemBlueColor"];
   [v65 setBackgroundColorRepresentation:v66];
 
-  [v2 setObject:v65 forKey:@"com.apple.systemstatus.background-activity.Sysdiagnose"];
+  [dictionary setObject:v65 forKey:@"com.apple.systemstatus.background-activity.Sysdiagnose"];
   v67 = objc_opt_new();
   [v67 setSystemImageName:@"wrench.and.screwdriver.fill"];
   [v67 setFontSizeAdjustment:-1.0];
   v68 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemGrayColor"];
   [v67 setBackgroundColorRepresentation:v68];
 
-  [v2 setObject:v67 forKey:@"com.apple.systemstatus.background-activity.DeveloperTools"];
+  [dictionary setObject:v67 forKey:@"com.apple.systemstatus.background-activity.DeveloperTools"];
   v69 = objc_opt_new();
   [v69 setSystemImageName:@"waveform.path.ecg"];
   v70 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemBlueColor"];
   [v69 setBackgroundColorRepresentation:v70];
 
-  [v2 setObject:v69 forKey:@"com.apple.systemstatus.background-activity.Diagnostics"];
+  [dictionary setObject:v69 forKey:@"com.apple.systemstatus.background-activity.Diagnostics"];
   v71 = objc_opt_new();
   [v71 setSystemImageName:@"waveform.path.ecg"];
   v72 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemBlueColor"];
   [v71 setBackgroundColorRepresentation:v72];
 
   [v71 setPrefersToKeepContentVisible:1];
-  [v2 setObject:v71 forKey:@"com.apple.systemstatus.background-activity.LoggingCapture"];
+  [dictionary setObject:v71 forKey:@"com.apple.systemstatus.background-activity.LoggingCapture"];
 
   v73 = objc_opt_new();
   [v73 setTextLabel:@"SOS"];
   v74 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemRedColor"];
   [v73 setBackgroundColorRepresentation:v74];
 
-  [v2 setObject:v73 forKey:@"com.apple.systemstatus.background-activity.CellularSOS"];
+  [dictionary setObject:v73 forKey:@"com.apple.systemstatus.background-activity.CellularSOS"];
   v75 = objc_opt_new();
   [v75 setImageName:@"BackgroundTask_satellite"];
   [v75 setPrefersToSuppressPulse:1];
@@ -295,7 +295,7 @@
   [v75 setCrossfadableActivities:v77];
 
   [v75 setPrefersToSuppressDefaultUserInteractionHandler:1];
-  [v2 setObject:v75 forKey:@"com.apple.systemstatus.background-activity.SatelliteSOS"];
+  [dictionary setObject:v75 forKey:@"com.apple.systemstatus.background-activity.SatelliteSOS"];
 
   v78 = objc_opt_new();
   [v78 setImageName:@"BackgroundTask_satellite-disconnected"];
@@ -307,49 +307,49 @@
   v80 = [MEMORY[0x1E695DFD8] setWithObject:@"com.apple.systemstatus.background-activity.SatelliteSOS"];
   [v78 setCrossfadableActivities:v80];
 
-  [v2 setObject:v78 forKey:@"com.apple.systemstatus.background-activity.SatelliteSOSDisconnected"];
+  [dictionary setObject:v78 forKey:@"com.apple.systemstatus.background-activity.SatelliteSOSDisconnected"];
   v81 = objc_opt_new();
   [v81 setSystemImageName:@"carplay"];
   v82 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemBlueColor"];
   [v81 setBackgroundColorRepresentation:v82];
 
-  [v2 setObject:v81 forKey:@"com.apple.systemstatus.background-activity.CarPlay"];
+  [dictionary setObject:v81 forKey:@"com.apple.systemstatus.background-activity.CarPlay"];
   v83 = objc_opt_new();
   [v83 setSystemImageName:@"swift"];
   v84 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"_swiftColor"];
   [v83 setBackgroundColorRepresentation:v84];
 
-  [v2 setObject:v83 forKey:@"com.apple.systemstatus.background-activity.Playgrounds"];
+  [dictionary setObject:v83 forKey:@"com.apple.systemstatus.background-activity.Playgrounds"];
   v85 = objc_opt_new();
-  [v2 setObject:v85 forKey:@"com.apple.systemstatus.background-activity.InWorkout"];
+  [dictionary setObject:v85 forKey:@"com.apple.systemstatus.background-activity.InWorkout"];
 
   v86 = objc_opt_new();
   [v86 setSystemImageName:@"personalhotspot"];
   v87 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemGreenColor"];
   [v86 setBackgroundColorRepresentation:v87];
 
-  [v2 setObject:v86 forKey:@"com.apple.systemstatus.background-activity.Tethering"];
+  [dictionary setObject:v86 forKey:@"com.apple.systemstatus.background-activity.Tethering"];
   v88 = objc_opt_new();
   [v88 setSystemImageName:@"siri"];
   v89 = [MEMORY[0x1E698E650] colorWithRed:0.28627451 green:0.0901960784 blue:0.439215686 alpha:1.0];
   v90 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithBSColor:v89];
   [v88 setBackgroundColorRepresentation:v90];
 
-  [v2 setObject:v88 forKey:@"com.apple.systemstatus.background-activity.AssistantEyesFree"];
+  [dictionary setObject:v88 forKey:@"com.apple.systemstatus.background-activity.AssistantEyesFree"];
   v91 = objc_opt_new();
   [v91 setSystemImageName:@"printer.fill"];
   v92 = [[STBackgroundActivityVisualDescriptorColorRepresentation alloc] initWithSystemColorName:@"systemBlueColor"];
   [v91 setBackgroundColorRepresentation:v92];
 
-  [v2 setObject:v91 forKey:@"com.apple.systemstatus.background-activity.AirPrint"];
-  v93 = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:v91 forKey:@"com.apple.systemstatus.background-activity.AirPrint"];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v96[0] = MEMORY[0x1E69E9820];
   v96[1] = 3221225472;
   v96[2] = __75__STBackgroundActivityVisualDescriptor_BuiltIns___defaultVisualDescriptors__block_invoke;
   v96[3] = &unk_1E85DEF88;
-  v94 = v93;
+  v94 = dictionary2;
   v97 = v94;
-  [v2 enumerateKeysAndObjectsUsingBlock:v96];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v96];
 
   return v94;
 }
@@ -376,21 +376,21 @@ void __75__STBackgroundActivityVisualDescriptor_BuiltIns___defaultVisualDescript
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-+ (id)visualDescriptorForBackgroundActivityWithIdentifier:(id)a3
++ (id)visualDescriptorForBackgroundActivityWithIdentifier:(id)identifier
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __102__STBackgroundActivityVisualDescriptor_BuiltIns__visualDescriptorForBackgroundActivityWithIdentifier___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v3 = _MergedGlobals_14;
-  v4 = a3;
+  identifierCopy = identifier;
   if (v3 != -1)
   {
     dispatch_once(&_MergedGlobals_14, block);
   }
 
-  v5 = [qword_1ED7F5D48 objectForKey:v4];
+  v5 = [qword_1ED7F5D48 objectForKey:identifierCopy];
 
   return v5;
 }
@@ -404,63 +404,63 @@ uint64_t __102__STBackgroundActivityVisualDescriptor_BuiltIns__visualDescriptorF
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (BOOL)canCrossfadeToBackgroundActivityWithIdentifier:(id)a3
+- (BOOL)canCrossfadeToBackgroundActivityWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(STBackgroundActivityVisualDescriptor *)self crossfadableActivities];
-  v6 = [v5 containsObject:v4];
+  identifierCopy = identifier;
+  crossfadableActivities = [(STBackgroundActivityVisualDescriptor *)self crossfadableActivities];
+  v6 = [crossfadableActivities containsObject:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STBackgroundActivityVisualDescriptor *)self packageName];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  packageName = [(STBackgroundActivityVisualDescriptor *)self packageName];
   v70[0] = MEMORY[0x1E69E9820];
   v70[1] = 3221225472;
   v70[2] = __48__STBackgroundActivityVisualDescriptor_isEqual___block_invoke;
   v70[3] = &unk_1E85DDD28;
-  v7 = v4;
+  v7 = equalCopy;
   v71 = v7;
-  v8 = [v5 appendString:v6 counterpart:v70];
+  v8 = [v5 appendString:packageName counterpart:v70];
 
-  v9 = [(STBackgroundActivityVisualDescriptor *)self systemImageName];
+  systemImageName = [(STBackgroundActivityVisualDescriptor *)self systemImageName];
   v68[0] = MEMORY[0x1E69E9820];
   v68[1] = 3221225472;
   v68[2] = __48__STBackgroundActivityVisualDescriptor_isEqual___block_invoke_2;
   v68[3] = &unk_1E85DDD28;
   v10 = v7;
   v69 = v10;
-  v11 = [v5 appendString:v9 counterpart:v68];
+  v11 = [v5 appendString:systemImageName counterpart:v68];
 
-  v12 = [(STBackgroundActivityVisualDescriptor *)self imageName];
+  imageName = [(STBackgroundActivityVisualDescriptor *)self imageName];
   v66[0] = MEMORY[0x1E69E9820];
   v66[1] = 3221225472;
   v66[2] = __48__STBackgroundActivityVisualDescriptor_isEqual___block_invoke_3;
   v66[3] = &unk_1E85DDD28;
   v13 = v10;
   v67 = v13;
-  v14 = [v5 appendString:v12 counterpart:v66];
+  v14 = [v5 appendString:imageName counterpart:v66];
 
-  v15 = [(STBackgroundActivityVisualDescriptor *)self textLabel];
+  textLabel = [(STBackgroundActivityVisualDescriptor *)self textLabel];
   v64[0] = MEMORY[0x1E69E9820];
   v64[1] = 3221225472;
   v64[2] = __48__STBackgroundActivityVisualDescriptor_isEqual___block_invoke_4;
   v64[3] = &unk_1E85DDD28;
   v16 = v13;
   v65 = v16;
-  v17 = [v5 appendString:v15 counterpart:v64];
+  v17 = [v5 appendString:textLabel counterpart:v64];
 
-  v18 = [(STBackgroundActivityVisualDescriptor *)self backgroundColorRepresentation];
+  backgroundColorRepresentation = [(STBackgroundActivityVisualDescriptor *)self backgroundColorRepresentation];
   v62[0] = MEMORY[0x1E69E9820];
   v62[1] = 3221225472;
   v62[2] = __48__STBackgroundActivityVisualDescriptor_isEqual___block_invoke_5;
   v62[3] = &unk_1E85DDCD8;
   v19 = v16;
   v63 = v19;
-  v20 = [v5 appendObject:v18 counterpart:v62];
+  v20 = [v5 appendObject:backgroundColorRepresentation counterpart:v62];
 
   [(STBackgroundActivityVisualDescriptor *)self verticalOffsetInPixels];
   v22 = v21;
@@ -480,48 +480,48 @@ uint64_t __102__STBackgroundActivityVisualDescriptor_BuiltIns__visualDescriptorF
   v27 = v23;
   v59 = v27;
   v28 = [v5 appendDouble:v58 counterpart:v26];
-  v29 = [(STBackgroundActivityVisualDescriptor *)self prefersToKeepContentVisible];
+  prefersToKeepContentVisible = [(STBackgroundActivityVisualDescriptor *)self prefersToKeepContentVisible];
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __48__STBackgroundActivityVisualDescriptor_isEqual___block_invoke_8;
   v56[3] = &unk_1E85DDD50;
   v30 = v27;
   v57 = v30;
-  v31 = [v5 appendBool:v29 counterpart:v56];
-  v32 = [(STBackgroundActivityVisualDescriptor *)self preferredVisualEffectName];
+  v31 = [v5 appendBool:prefersToKeepContentVisible counterpart:v56];
+  preferredVisualEffectName = [(STBackgroundActivityVisualDescriptor *)self preferredVisualEffectName];
   v54[0] = MEMORY[0x1E69E9820];
   v54[1] = 3221225472;
   v54[2] = __48__STBackgroundActivityVisualDescriptor_isEqual___block_invoke_9;
   v54[3] = &unk_1E85DDD28;
   v33 = v30;
   v55 = v33;
-  v34 = [v5 appendString:v32 counterpart:v54];
+  v34 = [v5 appendString:preferredVisualEffectName counterpart:v54];
 
-  v35 = [(STBackgroundActivityVisualDescriptor *)self preferredContinuousAnimationName];
+  preferredContinuousAnimationName = [(STBackgroundActivityVisualDescriptor *)self preferredContinuousAnimationName];
   v52[0] = MEMORY[0x1E69E9820];
   v52[1] = 3221225472;
   v52[2] = __48__STBackgroundActivityVisualDescriptor_isEqual___block_invoke_10;
   v52[3] = &unk_1E85DDD28;
   v36 = v33;
   v53 = v36;
-  v37 = [v5 appendString:v35 counterpart:v52];
+  v37 = [v5 appendString:preferredContinuousAnimationName counterpart:v52];
 
-  v38 = [(STBackgroundActivityVisualDescriptor *)self prefersToSuppressDefaultUserInteractionHandler];
+  prefersToSuppressDefaultUserInteractionHandler = [(STBackgroundActivityVisualDescriptor *)self prefersToSuppressDefaultUserInteractionHandler];
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __48__STBackgroundActivityVisualDescriptor_isEqual___block_invoke_11;
   v50[3] = &unk_1E85DDD50;
   v39 = v36;
   v51 = v39;
-  v40 = [v5 appendBool:v38 counterpart:v50];
-  v41 = [(STBackgroundActivityVisualDescriptor *)self crossfadableActivities];
+  v40 = [v5 appendBool:prefersToSuppressDefaultUserInteractionHandler counterpart:v50];
+  crossfadableActivities = [(STBackgroundActivityVisualDescriptor *)self crossfadableActivities];
   v45 = MEMORY[0x1E69E9820];
   v46 = 3221225472;
   v47 = __48__STBackgroundActivityVisualDescriptor_isEqual___block_invoke_12;
   v48 = &unk_1E85DDCD8;
   v49 = v39;
   v42 = v39;
-  v43 = [v5 appendObject:v41 counterpart:&v45];
+  v43 = [v5 appendObject:crossfadableActivities counterpart:&v45];
 
   LOBYTE(v39) = [v5 isEqual];
   return v39;
@@ -530,40 +530,40 @@ uint64_t __102__STBackgroundActivityVisualDescriptor_BuiltIns__visualDescriptorF
 - (unint64_t)hash
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(STBackgroundActivityVisualDescriptor *)self packageName];
-  v5 = [v3 appendString:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  packageName = [(STBackgroundActivityVisualDescriptor *)self packageName];
+  v5 = [builder appendString:packageName];
 
-  v6 = [(STBackgroundActivityVisualDescriptor *)self systemImageName];
-  v7 = [v3 appendString:v6];
+  systemImageName = [(STBackgroundActivityVisualDescriptor *)self systemImageName];
+  v7 = [builder appendString:systemImageName];
 
-  v8 = [(STBackgroundActivityVisualDescriptor *)self imageName];
-  v9 = [v3 appendString:v8];
+  imageName = [(STBackgroundActivityVisualDescriptor *)self imageName];
+  v9 = [builder appendString:imageName];
 
-  v10 = [(STBackgroundActivityVisualDescriptor *)self textLabel];
-  v11 = [v3 appendString:v10];
+  textLabel = [(STBackgroundActivityVisualDescriptor *)self textLabel];
+  v11 = [builder appendString:textLabel];
 
-  v12 = [(STBackgroundActivityVisualDescriptor *)self backgroundColorRepresentation];
-  v13 = [v3 appendObject:v12];
+  backgroundColorRepresentation = [(STBackgroundActivityVisualDescriptor *)self backgroundColorRepresentation];
+  v13 = [builder appendObject:backgroundColorRepresentation];
 
   [(STBackgroundActivityVisualDescriptor *)self verticalOffsetInPixels];
-  v14 = [v3 appendDouble:?];
+  v14 = [builder appendDouble:?];
   [(STBackgroundActivityVisualDescriptor *)self fontSizeAdjustment];
-  v15 = [v3 appendDouble:?];
-  v16 = [v3 appendBool:{-[STBackgroundActivityVisualDescriptor prefersToKeepContentVisible](self, "prefersToKeepContentVisible")}];
-  v17 = [(STBackgroundActivityVisualDescriptor *)self preferredVisualEffectName];
-  v18 = [v3 appendString:v17];
+  v15 = [builder appendDouble:?];
+  v16 = [builder appendBool:{-[STBackgroundActivityVisualDescriptor prefersToKeepContentVisible](self, "prefersToKeepContentVisible")}];
+  preferredVisualEffectName = [(STBackgroundActivityVisualDescriptor *)self preferredVisualEffectName];
+  v18 = [builder appendString:preferredVisualEffectName];
 
-  v19 = [(STBackgroundActivityVisualDescriptor *)self preferredContinuousAnimationName];
-  v20 = [v3 appendString:v19];
+  preferredContinuousAnimationName = [(STBackgroundActivityVisualDescriptor *)self preferredContinuousAnimationName];
+  v20 = [builder appendString:preferredContinuousAnimationName];
 
-  v21 = [v3 appendBool:{-[STBackgroundActivityVisualDescriptor prefersToSuppressDefaultUserInteractionHandler](self, "prefersToSuppressDefaultUserInteractionHandler")}];
+  v21 = [builder appendBool:{-[STBackgroundActivityVisualDescriptor prefersToSuppressDefaultUserInteractionHandler](self, "prefersToSuppressDefaultUserInteractionHandler")}];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v22 = [(STBackgroundActivityVisualDescriptor *)self crossfadableActivities];
-  v23 = [v22 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  crossfadableActivities = [(STBackgroundActivityVisualDescriptor *)self crossfadableActivities];
+  v23 = [crossfadableActivities countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v23)
   {
     v24 = v23;
@@ -575,25 +575,25 @@ uint64_t __102__STBackgroundActivityVisualDescriptor_BuiltIns__visualDescriptorF
       {
         if (*v32 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(crossfadableActivities);
         }
 
-        v27 = [v3 appendString:*(*(&v31 + 1) + 8 * v26++)];
+        v27 = [builder appendString:*(*(&v31 + 1) + 8 * v26++)];
       }
 
       while (v24 != v26);
-      v24 = [v22 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v24 = [crossfadableActivities countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v24);
   }
 
-  v28 = [v3 hash];
+  v28 = [builder hash];
   v29 = *MEMORY[0x1E69E9840];
   return v28;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   _copyValuesFromDescriptorToDescriptor(self, v4);
@@ -602,26 +602,26 @@ uint64_t __102__STBackgroundActivityVisualDescriptor_BuiltIns__visualDescriptorF
 
 - (id)succinctDescription
 {
-  v2 = [(STBackgroundActivityVisualDescriptor *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STBackgroundActivityVisualDescriptor *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STBackgroundActivityVisualDescriptor *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STBackgroundActivityVisualDescriptor *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STBackgroundActivityVisualDescriptor *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STBackgroundActivityVisualDescriptor *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 void __88__STBackgroundActivityVisualDescriptor__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke(uint64_t a1)
@@ -690,62 +690,62 @@ void __88__STBackgroundActivityVisualDescriptor__descriptionBuilderWithMultiline
   [v27 appendArraySection:v28 withName:@"crossfadableActivities" skipIfEmpty:1];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STBackgroundActivityVisualDescriptor *)self packageName];
-  [v4 encodeObject:v5 forKey:@"packageName"];
+  coderCopy = coder;
+  packageName = [(STBackgroundActivityVisualDescriptor *)self packageName];
+  [coderCopy encodeObject:packageName forKey:@"packageName"];
 
-  v6 = [(STBackgroundActivityVisualDescriptor *)self systemImageName];
-  [v4 encodeObject:v6 forKey:@"systemImageName"];
+  systemImageName = [(STBackgroundActivityVisualDescriptor *)self systemImageName];
+  [coderCopy encodeObject:systemImageName forKey:@"systemImageName"];
 
-  v7 = [(STBackgroundActivityVisualDescriptor *)self imageName];
-  [v4 encodeObject:v7 forKey:@"imageName"];
+  imageName = [(STBackgroundActivityVisualDescriptor *)self imageName];
+  [coderCopy encodeObject:imageName forKey:@"imageName"];
 
-  v8 = [(STBackgroundActivityVisualDescriptor *)self textLabel];
-  [v4 encodeObject:v8 forKey:@"textLabel"];
+  textLabel = [(STBackgroundActivityVisualDescriptor *)self textLabel];
+  [coderCopy encodeObject:textLabel forKey:@"textLabel"];
 
-  v9 = [(STBackgroundActivityVisualDescriptor *)self backgroundColorRepresentation];
-  [v4 encodeObject:v9 forKey:@"backgroundColorRepresentation"];
+  backgroundColorRepresentation = [(STBackgroundActivityVisualDescriptor *)self backgroundColorRepresentation];
+  [coderCopy encodeObject:backgroundColorRepresentation forKey:@"backgroundColorRepresentation"];
 
   [(STBackgroundActivityVisualDescriptor *)self verticalOffsetInPixels];
-  [v4 encodeDouble:@"verticalOffsetInPixels" forKey:?];
+  [coderCopy encodeDouble:@"verticalOffsetInPixels" forKey:?];
   [(STBackgroundActivityVisualDescriptor *)self fontSizeAdjustment];
-  [v4 encodeDouble:@"fontSizeAdjustment" forKey:?];
-  [v4 encodeBool:-[STBackgroundActivityVisualDescriptor prefersToKeepContentVisible](self forKey:{"prefersToKeepContentVisible"), @"prefersToKeepContentVisible"}];
-  [v4 encodeBool:-[STBackgroundActivityVisualDescriptor prefersToSuppressDefaultUserInteractionHandler](self forKey:{"prefersToSuppressDefaultUserInteractionHandler"), @"prefersToSuppressDefaultUserInteractionHandler"}];
-  v10 = [(STBackgroundActivityVisualDescriptor *)self preferredVisualEffectName];
-  [v4 encodeObject:v10 forKey:@"preferredVisualEffectName"];
+  [coderCopy encodeDouble:@"fontSizeAdjustment" forKey:?];
+  [coderCopy encodeBool:-[STBackgroundActivityVisualDescriptor prefersToKeepContentVisible](self forKey:{"prefersToKeepContentVisible"), @"prefersToKeepContentVisible"}];
+  [coderCopy encodeBool:-[STBackgroundActivityVisualDescriptor prefersToSuppressDefaultUserInteractionHandler](self forKey:{"prefersToSuppressDefaultUserInteractionHandler"), @"prefersToSuppressDefaultUserInteractionHandler"}];
+  preferredVisualEffectName = [(STBackgroundActivityVisualDescriptor *)self preferredVisualEffectName];
+  [coderCopy encodeObject:preferredVisualEffectName forKey:@"preferredVisualEffectName"];
 
-  v11 = [(STBackgroundActivityVisualDescriptor *)self preferredContinuousAnimationName];
-  [v4 encodeObject:v11 forKey:@"preferredContinuousAnimationName"];
+  preferredContinuousAnimationName = [(STBackgroundActivityVisualDescriptor *)self preferredContinuousAnimationName];
+  [coderCopy encodeObject:preferredContinuousAnimationName forKey:@"preferredContinuousAnimationName"];
 
-  v12 = [(STBackgroundActivityVisualDescriptor *)self crossfadableActivities];
-  [v4 encodeObject:v12 forKey:@"crossfadableActivities"];
+  crossfadableActivities = [(STBackgroundActivityVisualDescriptor *)self crossfadableActivities];
+  [coderCopy encodeObject:crossfadableActivities forKey:@"crossfadableActivities"];
 }
 
-- (STBackgroundActivityVisualDescriptor)initWithCoder:(id)a3
+- (STBackgroundActivityVisualDescriptor)initWithCoder:(id)coder
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v7 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), v5, 0}];
-  v8 = [v4 decodeObjectOfClass:v5 forKey:@"packageName"];
-  v9 = [v4 decodeObjectOfClass:v5 forKey:@"systemImageName"];
-  v10 = [v4 decodeObjectOfClass:v5 forKey:@"imageName"];
-  v11 = [v4 decodeObjectOfClass:v5 forKey:@"textLabel"];
-  v12 = [v4 decodeObjectOfClass:v6 forKey:@"backgroundColorRepresentation"];
-  [v4 decodeDoubleForKey:@"verticalOffsetInPixels"];
+  v8 = [coderCopy decodeObjectOfClass:v5 forKey:@"packageName"];
+  v9 = [coderCopy decodeObjectOfClass:v5 forKey:@"systemImageName"];
+  v10 = [coderCopy decodeObjectOfClass:v5 forKey:@"imageName"];
+  v11 = [coderCopy decodeObjectOfClass:v5 forKey:@"textLabel"];
+  v12 = [coderCopy decodeObjectOfClass:v6 forKey:@"backgroundColorRepresentation"];
+  [coderCopy decodeDoubleForKey:@"verticalOffsetInPixels"];
   v14 = v13;
-  [v4 decodeDoubleForKey:@"fontSizeAdjustment"];
+  [coderCopy decodeDoubleForKey:@"fontSizeAdjustment"];
   v16 = v15;
-  v38 = [v4 decodeBoolForKey:@"prefersToKeepContentVisible"];
-  v17 = [v4 decodeObjectOfClass:v5 forKey:@"preferredVisualEffectName"];
-  v18 = [v4 decodeObjectOfClass:v5 forKey:@"preferredContinuousAnimationName"];
-  v39 = [v4 decodeBoolForKey:@"prefersToSuppressDefaultUserInteractionHandler"];
+  v38 = [coderCopy decodeBoolForKey:@"prefersToKeepContentVisible"];
+  v17 = [coderCopy decodeObjectOfClass:v5 forKey:@"preferredVisualEffectName"];
+  v18 = [coderCopy decodeObjectOfClass:v5 forKey:@"preferredContinuousAnimationName"];
+  v39 = [coderCopy decodeBoolForKey:@"prefersToSuppressDefaultUserInteractionHandler"];
   v40 = v7;
-  v19 = [v4 decodeObjectOfClasses:v7 forKey:@"crossfadableActivities"];
+  v19 = [coderCopy decodeObjectOfClasses:v7 forKey:@"crossfadableActivities"];
 
   v20 = [(STBackgroundActivityVisualDescriptor *)self init];
   if (v20)
@@ -816,25 +816,25 @@ void __88__STBackgroundActivityVisualDescriptor__descriptionBuilderWithMultiline
   return v20;
 }
 
-- (STBackgroundActivityVisualDescriptor)initWithPlistRepresentation:(id)a3
+- (STBackgroundActivityVisualDescriptor)initWithPlistRepresentation:(id)representation
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   v5 = [(STBackgroundActivityVisualDescriptor *)self init];
   if (!v5)
   {
     goto LABEL_27;
   }
 
-  v6 = [v4 bs_safeDictionaryForKey:@"BackgroundColor"];
-  v7 = [v4 bs_safeStringForKey:@"PreferredVisualEffectName"];
-  v8 = [v4 bs_safeStringForKey:@"PreferredContinuousAnimationName"];
-  v9 = [v4 bs_safeDictionaryForKey:@"SystemImage"];
+  v6 = [representationCopy bs_safeDictionaryForKey:@"BackgroundColor"];
+  v7 = [representationCopy bs_safeStringForKey:@"PreferredVisualEffectName"];
+  v8 = [representationCopy bs_safeStringForKey:@"PreferredContinuousAnimationName"];
+  v9 = [representationCopy bs_safeDictionaryForKey:@"SystemImage"];
   v10 = [v9 bs_safeStringForKey:@"InternalSymbolName"];
   systemImageName = v5->_systemImageName;
   v5->_systemImageName = v10;
 
-  v12 = [v4 bs_safeStringForKey:@"TextLabel"];
+  v12 = [representationCopy bs_safeStringForKey:@"TextLabel"];
   textLabel = v5->_textLabel;
   v5->_textLabel = v12;
 
@@ -842,12 +842,12 @@ void __88__STBackgroundActivityVisualDescriptor__descriptionBuilderWithMultiline
   backgroundColorRepresentation = v5->_backgroundColorRepresentation;
   v5->_backgroundColorRepresentation = v14;
 
-  v5->_prefersToKeepContentVisible = [v4 bs_BOOLForKey:@"PrefersToKeepContentVisible"];
-  v16 = [v4 bs_safeNumberForKey:@"FontSizeAdjustment"];
+  v5->_prefersToKeepContentVisible = [representationCopy bs_BOOLForKey:@"PrefersToKeepContentVisible"];
+  v16 = [representationCopy bs_safeNumberForKey:@"FontSizeAdjustment"];
   [v16 doubleValue];
   v5->_fontSizeAdjustment = v17;
 
-  v18 = [v4 bs_safeNumberForKey:@"VerticalOffsetInPixels"];
+  v18 = [representationCopy bs_safeNumberForKey:@"VerticalOffsetInPixels"];
   [v18 doubleValue];
   v5->_verticalOffsetInPixels = v19;
 
@@ -893,9 +893,9 @@ void __88__STBackgroundActivityVisualDescriptor__descriptionBuilderWithMultiline
   }
 
 LABEL_14:
-  v5->_prefersToSuppressDefaultUserInteractionHandler = [v4 bs_BOOLForKey:@"PrefersToSuppressDefaultUserInteractionHandler"];
+  v5->_prefersToSuppressDefaultUserInteractionHandler = [representationCopy bs_BOOLForKey:@"PrefersToSuppressDefaultUserInteractionHandler"];
   v25 = MEMORY[0x1E695DFD8];
-  v26 = [v4 bs_safeArrayForKey:@"CrossfadableActivities"];
+  v26 = [representationCopy bs_safeArrayForKey:@"CrossfadableActivities"];
   v27 = [v25 setWithArray:v26];
   crossfadableActivities = v5->_crossfadableActivities;
   v5->_crossfadableActivities = v27;

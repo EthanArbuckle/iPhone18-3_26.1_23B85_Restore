@@ -1,42 +1,42 @@
 @interface CMSchemaCMSearchEnded
-- (BOOL)isEqual:(id)a3;
-- (CMSchemaCMSearchEnded)initWithDictionary:(id)a3;
-- (CMSchemaCMSearchEnded)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CMSchemaCMSearchEnded)initWithDictionary:(id)dictionary;
+- (CMSchemaCMSearchEnded)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasHighestMatchScore:(BOOL)a3;
-- (void)setHasLowestMatchScore:(BOOL)a3;
-- (void)setHasResultCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasHighestMatchScore:(BOOL)score;
+- (void)setHasLowestMatchScore:(BOOL)score;
+- (void)setHasResultCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CMSchemaCMSearchEnded
 
-- (CMSchemaCMSearchEnded)initWithDictionary:(id)a3
+- (CMSchemaCMSearchEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = CMSchemaCMSearchEnded;
   v5 = [(CMSchemaCMSearchEnded *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"searchStrategy"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"searchStrategy"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CMSchemaCMSearchEnded setSearchStrategy:](v5, "setSearchStrategy:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"resultCount"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"resultCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CMSchemaCMSearchEnded setResultCount:](v5, "setResultCount:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"highestMatchScore"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"highestMatchScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(CMSchemaCMSearchEnded *)v5 setHighestMatchScore:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"lowestMatchScore"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"lowestMatchScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,30 +58,30 @@
   return v5;
 }
 
-- (CMSchemaCMSearchEnded)initWithJSON:(id)a3
+- (CMSchemaCMSearchEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CMSchemaCMSearchEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CMSchemaCMSearchEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CMSchemaCMSearchEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -94,14 +94,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v9 = MEMORY[0x1E696AD98];
     [(CMSchemaCMSearchEnded *)self highestMatchScore];
     v10 = [v9 numberWithDouble:?];
-    [v3 setObject:v10 forKeyedSubscript:@"highestMatchScore"];
+    [dictionary setObject:v10 forKeyedSubscript:@"highestMatchScore"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -114,7 +114,7 @@ LABEL_3:
 
 LABEL_16:
       v13 = [MEMORY[0x1E696AD98] numberWithInt:{-[CMSchemaCMSearchEnded resultCount](self, "resultCount")}];
-      [v3 setObject:v13 forKeyedSubscript:@"resultCount"];
+      [dictionary setObject:v13 forKeyedSubscript:@"resultCount"];
 
       if ((*&self->_has & 1) == 0)
       {
@@ -133,7 +133,7 @@ LABEL_16:
   v11 = MEMORY[0x1E696AD98];
   [(CMSchemaCMSearchEnded *)self lowestMatchScore];
   v12 = [v11 numberWithDouble:?];
-  [v3 setObject:v12 forKeyedSubscript:@"lowestMatchScore"];
+  [dictionary setObject:v12 forKeyedSubscript:@"lowestMatchScore"];
 
   has = self->_has;
   if ((has & 2) != 0)
@@ -148,14 +148,14 @@ LABEL_4:
   }
 
 LABEL_5:
-  v5 = [(CMSchemaCMSearchEnded *)self searchStrategy];
+  searchStrategy = [(CMSchemaCMSearchEnded *)self searchStrategy];
   v6 = @"CMSEARCHSTRATEGY_UNKNOWN";
-  if (v5 == 1)
+  if (searchStrategy == 1)
   {
     v6 = @"CMSEARCHSTRATEGY_EXACT_MATCH";
   }
 
-  if (v5 == 2)
+  if (searchStrategy == 2)
   {
     v7 = @"CMSEARCHSTRATEGY_APPROXIMATE_MATCH";
   }
@@ -165,11 +165,11 @@ LABEL_5:
     v7 = v6;
   }
 
-  [v3 setObject:v7 forKeyedSubscript:@"searchStrategy"];
+  [dictionary setObject:v7 forKeyedSubscript:@"searchStrategy"];
 LABEL_11:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -271,16 +271,16 @@ LABEL_11:
   return v5 ^ v4 ^ v9 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_17;
@@ -289,13 +289,13 @@ LABEL_11:
   if (*&has)
   {
     searchStrategy = self->_searchStrategy;
-    if (searchStrategy != [v4 searchStrategy])
+    if (searchStrategy != [equalCopy searchStrategy])
     {
       goto LABEL_17;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -304,13 +304,13 @@ LABEL_11:
     if (v8)
     {
       resultCount = self->_resultCount;
-      if (resultCount != [v4 resultCount])
+      if (resultCount != [equalCopy resultCount])
       {
         goto LABEL_17;
       }
 
       has = self->_has;
-      v6 = v4[32];
+      v6 = equalCopy[32];
     }
 
     v10 = (*&has >> 2) & 1;
@@ -319,20 +319,20 @@ LABEL_11:
       if (v10)
       {
         highestMatchScore = self->_highestMatchScore;
-        [v4 highestMatchScore];
+        [equalCopy highestMatchScore];
         if (highestMatchScore != v12)
         {
           goto LABEL_17;
         }
 
         has = self->_has;
-        v6 = v4[32];
+        v6 = equalCopy[32];
       }
 
       v13 = (*&has >> 3) & 1;
       if (v13 == ((v6 >> 3) & 1))
       {
-        if (!v13 || (lowestMatchScore = self->_lowestMatchScore, [v4 lowestMatchScore], lowestMatchScore == v15))
+        if (!v13 || (lowestMatchScore = self->_lowestMatchScore, [equalCopy lowestMatchScore], lowestMatchScore == v15))
         {
           v16 = 1;
           goto LABEL_18;
@@ -348,9 +348,9 @@ LABEL_18:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -397,9 +397,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasLowestMatchScore:(BOOL)a3
+- (void)setHasLowestMatchScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 8;
   }
@@ -412,9 +412,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasHighestMatchScore:(BOOL)a3
+- (void)setHasHighestMatchScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 4;
   }
@@ -427,9 +427,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasResultCount:(BOOL)a3
+- (void)setHasResultCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }

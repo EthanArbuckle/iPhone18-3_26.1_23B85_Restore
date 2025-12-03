@@ -1,24 +1,24 @@
 @interface INUpcomingMediaManager
 + (INUpcomingMediaManager)sharedManager;
 + (id)mediaQueue;
-- (INUpcomingMediaManager)initWithSearchableIndex:(id)a3;
-- (id)keyWithMediaItemTypeName:(id)a3 bundleId:(id)a4;
-- (int64_t)_predictionModeForBundleId:(id)a3 type:(int64_t)a4 error:(id *)a5;
-- (void)_replaceMediaIntents:(id)a3 forBundleIdentifier:(id)a4;
-- (void)_setSuggestedMediaIntents:(id)a3 forBundleIdentifier:(id)a4;
+- (INUpcomingMediaManager)initWithSearchableIndex:(id)index;
+- (id)keyWithMediaItemTypeName:(id)name bundleId:(id)id;
+- (int64_t)_predictionModeForBundleId:(id)id type:(int64_t)type error:(id *)error;
+- (void)_replaceMediaIntents:(id)intents forBundleIdentifier:(id)identifier;
+- (void)_setSuggestedMediaIntents:(id)intents forBundleIdentifier:(id)identifier;
 - (void)setPredictionMode:(INUpcomingMediaPredictionMode)mode forType:(INMediaItemType)type;
 @end
 
 @implementation INUpcomingMediaManager
 
-- (id)keyWithMediaItemTypeName:(id)a3 bundleId:(id)a4
+- (id)keyWithMediaItemTypeName:(id)name bundleId:(id)id
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v12[0] = a4;
-  v12[1] = a3;
+  v12[0] = id;
+  v12[1] = name;
   v5 = MEMORY[0x1E695DEC8];
-  v6 = a4;
-  v7 = a3;
+  idCopy = id;
+  nameCopy = name;
   v8 = [v5 arrayWithObjects:v12 count:2];
 
   v9 = [v8 componentsJoinedByString:@"-"];
@@ -28,22 +28,22 @@
   return v9;
 }
 
-- (int64_t)_predictionModeForBundleId:(id)a3 type:(int64_t)a4 error:(id *)a5
+- (int64_t)_predictionModeForBundleId:(id)id type:(int64_t)type error:(id *)error
 {
-  v7 = a3;
-  if ((a4 - 1) > 0x13)
+  idCopy = id;
+  if ((type - 1) > 0x13)
   {
     v8 = @"unknown";
   }
 
   else
   {
-    v8 = *(&off_1E7285F00 + a4 - 1);
+    v8 = *(&off_1E7285F00 + type - 1);
   }
 
   v9 = v8;
   v10 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.Intents.UpcomingMediaManager"];
-  v11 = [(INUpcomingMediaManager *)self keyWithMediaItemTypeName:v9 bundleId:v7];
+  v11 = [(INUpcomingMediaManager *)self keyWithMediaItemTypeName:v9 bundleId:idCopy];
 
   v12 = [v10 integerForKey:v11];
   return v12;
@@ -103,17 +103,17 @@ void __52__INUpcomingMediaManager_setPredictionMode_forType___block_invoke(uint6
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_replaceMediaIntents:(id)a3 forBundleIdentifier:(id)a4
+- (void)_replaceMediaIntents:(id)intents forBundleIdentifier:(id)identifier
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  intentsCopy = intents;
   v8 = +[INUpcomingMediaManager mediaQueue];
   dispatch_assert_queue_V2(v8);
 
-  v9 = [v7 count];
-  v10 = [MEMORY[0x1E696AE08] strongObjectsPointerArray];
-  [v10 setCount:v9];
+  v9 = [intentsCopy count];
+  strongObjectsPointerArray = [MEMORY[0x1E696AE08] strongObjectsPointerArray];
+  [strongObjectsPointerArray setCount:v9];
   v11 = objc_opt_new();
   v12 = dispatch_group_create();
   v29[0] = MEMORY[0x1E69E9820];
@@ -122,17 +122,17 @@ void __52__INUpcomingMediaManager_setPredictionMode_forType___block_invoke(uint6
   v29[3] = &unk_1E7281AD0;
   v13 = v12;
   v30 = v13;
-  v31 = self;
+  selfCopy = self;
   v34 = v9;
   v32 = v11;
-  v14 = v10;
+  v14 = strongObjectsPointerArray;
   v33 = v14;
   v15 = v11;
-  [v7 enumerateObjectsUsingBlock:v29];
+  [intentsCopy enumerateObjectsUsingBlock:v29];
 
   dispatch_group_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
   [v14 compact];
-  v16 = [(INUpcomingMediaManager *)self index];
+  index = [(INUpcomingMediaManager *)self index];
   dispatch_group_enter(v13);
   v35[0] = @"com.apple.siri.upcomingmedia";
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
@@ -143,10 +143,10 @@ void __52__INUpcomingMediaManager_setPredictionMode_forType___block_invoke(uint6
   v24[3] = &unk_1E7281B20;
   v25 = v14;
   v26 = v13;
-  v27 = v16;
-  v28 = v6;
-  v19 = v6;
-  v20 = v16;
+  v27 = index;
+  v28 = identifierCopy;
+  v19 = identifierCopy;
+  v20 = index;
   v21 = v13;
   v22 = v14;
   [v20 deleteSearchableItemsWithDomainIdentifiers:v17 protectionClass:v18 forBundleID:v19 options:0 completionHandler:v24];
@@ -288,16 +288,16 @@ LABEL_7:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setSuggestedMediaIntents:(id)a3 forBundleIdentifier:(id)a4
+- (void)_setSuggestedMediaIntents:(id)intents forBundleIdentifier:(id)identifier
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  intentsCopy = intents;
+  identifierCopy = identifier;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v6;
+  v8 = intentsCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
@@ -337,24 +337,24 @@ LABEL_7:
   block[3] = &unk_1E7281A78;
   block[4] = self;
   v23 = v8;
-  v24 = v7;
-  v14 = v7;
+  v24 = identifierCopy;
+  v14 = identifierCopy;
   v15 = v8;
   dispatch_async(v13, block);
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (INUpcomingMediaManager)initWithSearchableIndex:(id)a3
+- (INUpcomingMediaManager)initWithSearchableIndex:(id)index
 {
-  v5 = a3;
+  indexCopy = index;
   v10.receiver = self;
   v10.super_class = INUpcomingMediaManager;
   v6 = [(INUpcomingMediaManager *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_index, a3);
+    objc_storeStrong(&v6->_index, index);
     v8 = v7;
   }
 
@@ -367,7 +367,7 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __39__INUpcomingMediaManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_59716 != -1)
   {
     dispatch_once(&sharedManager_onceToken_59716, block);

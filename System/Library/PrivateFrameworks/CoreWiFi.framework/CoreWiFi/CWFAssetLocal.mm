@@ -1,43 +1,43 @@
 @interface CWFAssetLocal
-+ (BOOL)isValidAssetVersion:(id)a3;
-+ (BOOL)isValidOSVersion:(id)a3;
-+ (BOOL)isValidRestoreOSVersion:(id)a3;
-+ (char)compareOSVersion:(id)a3 withVersion:(id)a4;
-+ (char)compareSUCoreRestoreVersion:(id)a3 withVersion:(id)a4;
-+ (id)assetIDFromLocalURL:(id)a3;
-+ (id)restoreOSVersionFromOSVersion:(id)a3;
-- (BOOL)sanityCheckAssetBuildAttribute:(id)a3;
-- (BOOL)sanityCheckOSRestoreVersion:(id)a3;
-- (BOOL)sanityCheckOSVersion:(id)a3;
-- (BOOL)sanityCheckSKUVersion:(id)a3;
-- (CWFAssetLocal)initWithAssetType:(id)a3 assetSpecifier:(id)a4 assetVersion:(id)a5 attributes:(id)a6 rootCatalogInfo:(id)a7 localURL:(id)a8;
-- (id)getCoreWiFiCatalogDataFromMobileAssetFile:(id)a3;
++ (BOOL)isValidAssetVersion:(id)version;
++ (BOOL)isValidOSVersion:(id)version;
++ (BOOL)isValidRestoreOSVersion:(id)version;
++ (char)compareOSVersion:(id)version withVersion:(id)withVersion;
++ (char)compareSUCoreRestoreVersion:(id)version withVersion:(id)withVersion;
++ (id)assetIDFromLocalURL:(id)l;
++ (id)restoreOSVersionFromOSVersion:(id)version;
+- (BOOL)sanityCheckAssetBuildAttribute:(id)attribute;
+- (BOOL)sanityCheckOSRestoreVersion:(id)version;
+- (BOOL)sanityCheckOSVersion:(id)version;
+- (BOOL)sanityCheckSKUVersion:(id)version;
+- (CWFAssetLocal)initWithAssetType:(id)type assetSpecifier:(id)specifier assetVersion:(id)version attributes:(id)attributes rootCatalogInfo:(id)info localURL:(id)l;
+- (id)getCoreWiFiCatalogDataFromMobileAssetFile:(id)file;
 @end
 
 @implementation CWFAssetLocal
 
-+ (id)assetIDFromLocalURL:(id)a3
++ (id)assetIDFromLocalURL:(id)l
 {
-  v3 = [a3 pathComponents];
-  if ([v3 count] < 2)
+  pathComponents = [l pathComponents];
+  if ([pathComponents count] < 2)
   {
     v4 = &stru_1F5B8FC80;
   }
 
   else
   {
-    v4 = [v3 objectAtIndexedSubscript:{objc_msgSend(v3, "count") - 2}];
+    v4 = [pathComponents objectAtIndexedSubscript:{objc_msgSend(pathComponents, "count") - 2}];
   }
 
   return v4;
 }
 
-+ (BOOL)isValidAssetVersion:(id)a3
++ (BOOL)isValidAssetVersion:(id)version
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  versionCopy = version;
   v4 = objc_autoreleasePoolPush();
-  v5 = [objc_alloc(sub_1E0BFC038()) initWithRestoreVersion:v3];
+  v5 = [objc_alloc(sub_1E0BFC038()) initWithRestoreVersion:versionCopy];
   v6 = CWFGetOSLog();
   if (v6)
   {
@@ -60,12 +60,12 @@
   return v5 != 0;
 }
 
-+ (BOOL)isValidRestoreOSVersion:(id)a3
++ (BOOL)isValidRestoreOSVersion:(id)version
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  versionCopy = version;
   v4 = objc_autoreleasePoolPush();
-  v5 = [objc_alloc(sub_1E0BFC038()) initWithRestoreVersion:v3];
+  v5 = [objc_alloc(sub_1E0BFC038()) initWithRestoreVersion:versionCopy];
   v6 = CWFGetOSLog();
   if (v6)
   {
@@ -88,12 +88,12 @@
   return v5 != 0;
 }
 
-+ (BOOL)isValidOSVersion:(id)a3
++ (BOOL)isValidOSVersion:(id)version
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  versionCopy = version;
   v4 = objc_autoreleasePoolPush();
-  v5 = [CWFAssetLocal restoreOSVersionFromOSVersion:v3];
+  v5 = [CWFAssetLocal restoreOSVersionFromOSVersion:versionCopy];
   v6 = [objc_alloc(sub_1E0BFC038()) initWithRestoreVersion:v5];
   v7 = CWFGetOSLog();
   if (v7)
@@ -117,12 +117,12 @@
   return v6 != 0;
 }
 
-+ (id)restoreOSVersionFromOSVersion:(id)a3
++ (id)restoreOSVersionFromOSVersion:(id)version
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ([v3 isEqual:&stru_1F5B8FC80] & 1) != 0 || (objc_msgSend(v4, "containsString:", @",") & 1) != 0)
+  versionCopy = version;
+  v4 = versionCopy;
+  if (!versionCopy || ([versionCopy isEqual:&stru_1F5B8FC80] & 1) != 0 || (objc_msgSend(v4, "containsString:", @",") & 1) != 0)
   {
     v5 = 0;
   }
@@ -195,23 +195,23 @@
   return v5;
 }
 
-+ (char)compareOSVersion:(id)a3 withVersion:(id)a4
++ (char)compareOSVersion:(id)version withVersion:(id)withVersion
 {
-  v5 = a4;
-  v6 = [CWFAssetLocal restoreOSVersionFromOSVersion:a3];
-  v7 = [CWFAssetLocal restoreOSVersionFromOSVersion:v5];
+  withVersionCopy = withVersion;
+  v6 = [CWFAssetLocal restoreOSVersionFromOSVersion:version];
+  v7 = [CWFAssetLocal restoreOSVersionFromOSVersion:withVersionCopy];
 
-  LOBYTE(v5) = [CWFAssetLocal compareSUCoreRestoreVersion:v6 withVersion:v7];
-  return v5;
+  LOBYTE(withVersionCopy) = [CWFAssetLocal compareSUCoreRestoreVersion:v6 withVersion:v7];
+  return withVersionCopy;
 }
 
-+ (char)compareSUCoreRestoreVersion:(id)a3 withVersion:(id)a4
++ (char)compareSUCoreRestoreVersion:(id)version withVersion:(id)withVersion
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(sub_1E0BFC038()) initWithRestoreVersion:v6];
+  withVersionCopy = withVersion;
+  versionCopy = version;
+  v7 = [objc_alloc(sub_1E0BFC038()) initWithRestoreVersion:versionCopy];
 
-  v8 = [objc_alloc(sub_1E0BFC038()) initWithRestoreVersion:v5];
+  v8 = [objc_alloc(sub_1E0BFC038()) initWithRestoreVersion:withVersionCopy];
   if ([v7 isComparable:v8])
   {
     v9 = [v7 compare:v8];
@@ -244,17 +244,17 @@
   return v11;
 }
 
-- (BOOL)sanityCheckOSRestoreVersion:(id)a3
+- (BOOL)sanityCheckOSRestoreVersion:(id)version
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  versionCopy = version;
+  v5 = versionCopy;
+  if (!versionCopy)
   {
     goto LABEL_55;
   }
 
-  v6 = [v4 objectForKey:@"_OSRestoreVersionCompatibilities"];
+  v6 = [versionCopy objectForKey:@"_OSRestoreVersionCompatibilities"];
   v7 = v6;
   if (!v6 || ![v6 count])
   {
@@ -309,16 +309,16 @@
     v21 = CWFGetOTAOSLog();
     if (v21)
     {
-      v17 = CWFGetOTAOSLog();
+      restoreVersion = CWFGetOTAOSLog();
     }
 
     else
     {
-      v17 = MEMORY[0x1E69E9C10];
+      restoreVersion = MEMORY[0x1E69E9C10];
       v29 = MEMORY[0x1E69E9C10];
     }
 
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(restoreVersion, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_52;
     }
@@ -339,16 +339,16 @@
     v22 = CWFGetOTAOSLog();
     if (v22)
     {
-      v17 = CWFGetOTAOSLog();
+      restoreVersion = CWFGetOTAOSLog();
     }
 
     else
     {
-      v17 = MEMORY[0x1E69E9C10];
+      restoreVersion = MEMORY[0x1E69E9C10];
       v30 = MEMORY[0x1E69E9C10];
     }
 
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(restoreVersion, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_52;
     }
@@ -373,16 +373,16 @@ LABEL_55:
     v23 = CWFGetOTAOSLog();
     if (v23)
     {
-      v17 = CWFGetOTAOSLog();
+      restoreVersion = CWFGetOTAOSLog();
     }
 
     else
     {
-      v17 = MEMORY[0x1E69E9C10];
+      restoreVersion = MEMORY[0x1E69E9C10];
       v31 = MEMORY[0x1E69E9C10];
     }
 
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(restoreVersion, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_52;
     }
@@ -390,10 +390,10 @@ LABEL_55:
     goto LABEL_42;
   }
 
-  v16 = [sub_1E0BFCECC() sharedDevice];
-  v17 = [v16 restoreVersion];
+  sharedDevice = [sub_1E0BFCECC() sharedDevice];
+  restoreVersion = [sharedDevice restoreVersion];
 
-  if (([CWFAssetLocal compareOSRestoreVersion:self->_firstSupportedBuild withVersion:v17]- 1) <= 0xFDu)
+  if (([CWFAssetLocal compareOSRestoreVersion:self->_firstSupportedBuild withVersion:restoreVersion]- 1) <= 0xFDu)
   {
     v24 = CWFGetOTAOSLog();
     if (v24)
@@ -416,7 +416,7 @@ LABEL_55:
     goto LABEL_50;
   }
 
-  if (([CWFAssetLocal compareOSRestoreVersion:v17 withVersion:self->_lastSupportedBuild]- 1) <= 0xFDu)
+  if (([CWFAssetLocal compareOSRestoreVersion:restoreVersion withVersion:self->_lastSupportedBuild]- 1) <= 0xFDu)
   {
     v26 = CWFGetOTAOSLog();
     if (v26)
@@ -450,17 +450,17 @@ LABEL_56:
   return v18;
 }
 
-- (BOOL)sanityCheckOSVersion:(id)a3
+- (BOOL)sanityCheckOSVersion:(id)version
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  versionCopy = version;
+  v5 = versionCopy;
+  if (!versionCopy)
   {
     goto LABEL_55;
   }
 
-  v6 = [v4 objectForKey:@"_OSVersionCompatibilities"];
+  v6 = [versionCopy objectForKey:@"_OSVersionCompatibilities"];
   v7 = v6;
   if (!v6 || ![v6 count])
   {
@@ -515,16 +515,16 @@ LABEL_56:
     v21 = CWFGetOTAOSLog();
     if (v21)
     {
-      v17 = CWFGetOTAOSLog();
+      productVersion = CWFGetOTAOSLog();
     }
 
     else
     {
-      v17 = MEMORY[0x1E69E9C10];
+      productVersion = MEMORY[0x1E69E9C10];
       v29 = MEMORY[0x1E69E9C10];
     }
 
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(productVersion, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_52;
     }
@@ -545,16 +545,16 @@ LABEL_56:
     v22 = CWFGetOTAOSLog();
     if (v22)
     {
-      v17 = CWFGetOTAOSLog();
+      productVersion = CWFGetOTAOSLog();
     }
 
     else
     {
-      v17 = MEMORY[0x1E69E9C10];
+      productVersion = MEMORY[0x1E69E9C10];
       v30 = MEMORY[0x1E69E9C10];
     }
 
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(productVersion, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_52;
     }
@@ -579,16 +579,16 @@ LABEL_55:
     v23 = CWFGetOTAOSLog();
     if (v23)
     {
-      v17 = CWFGetOTAOSLog();
+      productVersion = CWFGetOTAOSLog();
     }
 
     else
     {
-      v17 = MEMORY[0x1E69E9C10];
+      productVersion = MEMORY[0x1E69E9C10];
       v31 = MEMORY[0x1E69E9C10];
     }
 
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(productVersion, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_52;
     }
@@ -596,10 +596,10 @@ LABEL_55:
     goto LABEL_42;
   }
 
-  v16 = [sub_1E0BFCECC() sharedDevice];
-  v17 = [v16 productVersion];
+  sharedDevice = [sub_1E0BFCECC() sharedDevice];
+  productVersion = [sharedDevice productVersion];
 
-  if (([CWFAssetLocal compareOSVersion:self->_firstSupportedOS withVersion:v17]- 1) <= 0xFDu)
+  if (([CWFAssetLocal compareOSVersion:self->_firstSupportedOS withVersion:productVersion]- 1) <= 0xFDu)
   {
     v24 = CWFGetOTAOSLog();
     if (v24)
@@ -622,7 +622,7 @@ LABEL_55:
     goto LABEL_50;
   }
 
-  if (([CWFAssetLocal compareOSVersion:v17 withVersion:self->_lastSupportedOS]- 1) <= 0xFDu)
+  if (([CWFAssetLocal compareOSVersion:productVersion withVersion:self->_lastSupportedOS]- 1) <= 0xFDu)
   {
     v26 = CWFGetOTAOSLog();
     if (v26)
@@ -656,15 +656,15 @@ LABEL_56:
   return v18;
 }
 
-- (BOOL)sanityCheckSKUVersion:(id)a3
+- (BOOL)sanityCheckSKUVersion:(id)version
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  versionCopy = version;
+  if (versionCopy)
   {
     v4 = MGCopyAnswer();
     v5 = +[CWFAssetPowerTable getDeviceSKU];
-    v6 = [v3 objectForKey:@"WiFiSKU"];
+    v6 = [versionCopy objectForKey:@"WiFiSKU"];
     v7 = v6;
     if (v6 && [v6 count] && v5 && objc_msgSend(v5, "length"))
     {
@@ -673,7 +673,7 @@ LABEL_56:
       if (v8 && [v8 count])
       {
         v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v5 encoding:4];
-        v11 = [v10 UTF8String];
+        uTF8String = [v10 UTF8String];
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
@@ -694,7 +694,7 @@ LABEL_56:
               }
 
               v16 = *(*(&v20 + 1) + 8 * i);
-              if (!strcmp([v16 UTF8String], v11))
+              if (!strcmp([v16 UTF8String], uTF8String))
               {
 
                 goto LABEL_19;
@@ -729,35 +729,35 @@ LABEL_21:
   return v17;
 }
 
-- (BOOL)sanityCheckAssetBuildAttribute:(id)a3
+- (BOOL)sanityCheckAssetBuildAttribute:(id)attribute
 {
-  v3 = [a3 objectForKey:@"Build"];
+  v3 = [attribute objectForKey:@"Build"];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)getCoreWiFiCatalogDataFromMobileAssetFile:(id)a3
+- (id)getCoreWiFiCatalogDataFromMobileAssetFile:(id)file
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v3 path];
-  v7 = [v5 fileExistsAtPath:v6];
+  fileCopy = file;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [fileCopy path];
+  v7 = [defaultManager fileExistsAtPath:path];
 
   if ((v7 & 1) == 0)
   {
     v21 = CWFGetOTAOSLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v3 path];
+      path2 = [fileCopy path];
       v26 = 136446722;
       v27 = "[CWFAssetLocal getCoreWiFiCatalogDataFromMobileAssetFile:]";
       v28 = 1024;
       v29 = 326;
       v30 = 2112;
-      v31 = v22;
+      v31 = path2;
       _os_log_impl(&dword_1E0BBF000, v21, OS_LOG_TYPE_ERROR, "%{public}s::%d:Path doesn't exist %@", &v26, 0x1Cu);
     }
 
@@ -765,25 +765,25 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v8 = [v3 URLByDeletingLastPathComponent];
-  v9 = [v8 URLByDeletingLastPathComponent];
-  v10 = [v9 URLByAppendingPathComponent:@"com_apple_MobileAsset_CoreWiFi.xml"];
+  uRLByDeletingLastPathComponent = [fileCopy URLByDeletingLastPathComponent];
+  v8URLByDeletingLastPathComponent = [uRLByDeletingLastPathComponent URLByDeletingLastPathComponent];
+  v10 = [v8URLByDeletingLastPathComponent URLByAppendingPathComponent:@"com_apple_MobileAsset_CoreWiFi.xml"];
 
-  v11 = [v10 path];
-  LOBYTE(v9) = [v5 fileExistsAtPath:v11];
+  path3 = [v10 path];
+  LOBYTE(v8URLByDeletingLastPathComponent) = [defaultManager fileExistsAtPath:path3];
 
-  if ((v9 & 1) == 0)
+  if ((v8URLByDeletingLastPathComponent & 1) == 0)
   {
     v23 = CWFGetOTAOSLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v10 path];
+      path4 = [v10 path];
       v26 = 136446722;
       v27 = "[CWFAssetLocal getCoreWiFiCatalogDataFromMobileAssetFile:]";
       v28 = 1024;
       v29 = 329;
       v30 = 2112;
-      v31 = v24;
+      v31 = path4;
       v25 = "%{public}s::%d:Core WiFi Mobile Asset Catalog XML File doesn't exist %@";
 LABEL_20:
       _os_log_impl(&dword_1E0BBF000, v23, OS_LOG_TYPE_ERROR, v25, &v26, 0x1Cu);
@@ -802,13 +802,13 @@ LABEL_22:
     v23 = CWFGetOTAOSLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v10 path];
+      path4 = [v10 path];
       v26 = 136446722;
       v27 = "[CWFAssetLocal getCoreWiFiCatalogDataFromMobileAssetFile:]";
       v28 = 1024;
       v29 = 332;
       v30 = 2112;
-      v31 = v24;
+      v31 = path4;
       v25 = "%{public}s::%d:Core WiFi Mobile Asset Catalog XML File Empty %@";
       goto LABEL_20;
     }
@@ -822,7 +822,7 @@ LABEL_22:
   if (v14)
   {
     v15 = [v13 objectForKeyedSubscript:@"lastTimeChecked"];
-    [v4 setObject:v15 forKeyedSubscript:@"lastTimeChecked"];
+    [dictionary setObject:v15 forKeyedSubscript:@"lastTimeChecked"];
   }
 
   v16 = [v13 objectForKeyedSubscript:@"postedDate"];
@@ -830,7 +830,7 @@ LABEL_22:
   if (v16)
   {
     v17 = [v13 objectForKeyedSubscript:@"postedDate"];
-    [v4 setObject:v17 forKeyedSubscript:@"postedDate"];
+    [dictionary setObject:v17 forKeyedSubscript:@"postedDate"];
   }
 
 LABEL_8:
@@ -842,50 +842,50 @@ LABEL_8:
     v28 = 1024;
     v29 = 344;
     v30 = 2112;
-    v31 = v4;
+    v31 = dictionary;
     _os_log_impl(&dword_1E0BBF000, v18, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Core WiFi Mobile Asset Catalog XML Data %@", &v26, 0x1Cu);
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return dictionary;
 }
 
-- (CWFAssetLocal)initWithAssetType:(id)a3 assetSpecifier:(id)a4 assetVersion:(id)a5 attributes:(id)a6 rootCatalogInfo:(id)a7 localURL:(id)a8
+- (CWFAssetLocal)initWithAssetType:(id)type assetSpecifier:(id)specifier assetVersion:(id)version attributes:(id)attributes rootCatalogInfo:(id)info localURL:(id)l
 {
   v94 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  typeCopy = type;
+  specifierCopy = specifier;
+  versionCopy = version;
+  attributesCopy = attributes;
+  infoCopy = info;
+  lCopy = l;
   v87.receiver = self;
   v87.super_class = CWFAssetLocal;
   v20 = [(CWFAssetLocal *)&v87 init];
-  v85 = v18;
-  v86 = v15;
-  v82 = v14;
+  v85 = infoCopy;
+  v86 = specifierCopy;
+  v82 = typeCopy;
   if (v20)
   {
-    v21 = [v14 copy];
+    v21 = [typeCopy copy];
     assetType = v20->_assetType;
     v20->_assetType = v21;
 
-    v23 = [v19 copy];
+    v23 = [lCopy copy];
     localURL = v20->_localURL;
     v20->_localURL = v23;
 
-    if (v18)
+    if (infoCopy)
     {
-      v25 = v18;
+      v25 = infoCopy;
       [v25 objectForKeyedSubscript:@"RootAssetID"];
     }
 
     else
     {
-      v25 = [(CWFAssetLocal *)v20 getCoreWiFiCatalogDataFromMobileAssetFile:v19];
-      [CWFAssetLocal assetIDFromLocalURL:v19];
+      v25 = [(CWFAssetLocal *)v20 getCoreWiFiCatalogDataFromMobileAssetFile:lCopy];
+      [CWFAssetLocal assetIDFromLocalURL:lCopy];
     }
     v26 = ;
     assetID = v20->_assetID;
@@ -909,14 +909,14 @@ LABEL_8:
       v20->_catalogPostedDate = v32;
     }
 
-    v80 = v16;
-    v34 = [CWFAssetLocal isValidAssetVersion:v16];
+    v80 = versionCopy;
+    v34 = [CWFAssetLocal isValidAssetVersion:versionCopy];
     v84 = v25;
-    if (v15)
+    if (specifierCopy)
     {
       v35 = +[CWFAssetPowerTable sharedObj];
-      v36 = [v35 assetSpecifierToTrack];
-      v37 = [v15 isEqual:v36] ^ 1;
+      assetSpecifierToTrack = [v35 assetSpecifierToTrack];
+      v37 = [specifierCopy isEqual:assetSpecifierToTrack] ^ 1;
     }
 
     else
@@ -924,15 +924,15 @@ LABEL_8:
       v37 = 1;
     }
 
-    v38 = [(CWFAssetLocal *)v20 sanityCheckOSVersion:v17];
-    v39 = [(CWFAssetLocal *)v20 sanityCheckOSRestoreVersion:v17];
-    v81 = [(CWFAssetLocal *)v20 sanityCheckSKUVersion:v17];
-    v83 = [(CWFAssetLocal *)v20 sanityCheckAssetBuildAttribute:v17];
-    if (v18)
+    v38 = [(CWFAssetLocal *)v20 sanityCheckOSVersion:attributesCopy];
+    v39 = [(CWFAssetLocal *)v20 sanityCheckOSRestoreVersion:attributesCopy];
+    v81 = [(CWFAssetLocal *)v20 sanityCheckSKUVersion:attributesCopy];
+    v83 = [(CWFAssetLocal *)v20 sanityCheckAssetBuildAttribute:attributesCopy];
+    if (infoCopy)
     {
-      v40 = v18;
+      v40 = infoCopy;
       v41 = MEMORY[0x1E696AEC0];
-      v42 = [v17 objectForKey:@"Build"];
+      v42 = [attributesCopy objectForKey:@"Build"];
       v43 = [v40 objectForKeyedSubscript:@"RootAssetID"];
       v44 = [v41 stringWithFormat:@"Root_%@_%@", v42, v43];
       assetBuild = v20->_assetBuild;
@@ -941,7 +941,7 @@ LABEL_8:
 
     else
     {
-      v46 = [v17 objectForKey:@"Build"];
+      v46 = [attributesCopy objectForKey:@"Build"];
       v42 = v20->_assetBuild;
       v20->_assetBuild = v46;
     }
@@ -960,7 +960,7 @@ LABEL_8:
         v71 = MEMORY[0x1E69E9C10];
       }
 
-      v16 = v80;
+      versionCopy = v80;
       if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
       {
         v88 = 136315394;
@@ -976,7 +976,7 @@ LABEL_8:
       goto LABEL_70;
     }
 
-    v16 = v80;
+    versionCopy = v80;
     v47 = [v80 copy];
     assetVersion = v20->_assetVersion;
     v20->_assetVersion = v47;
@@ -998,26 +998,26 @@ LABEL_8:
       if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
       {
         v73 = +[CWFAssetPowerTable sharedObj];
-        v74 = [v73 assetSpecifierToTrack];
+        assetSpecifierToTrack2 = [v73 assetSpecifierToTrack];
         v88 = 136315650;
         v89 = "[CWFAssetLocal initWithAssetType:assetSpecifier:assetVersion:attributes:rootCatalogInfo:localURL:]";
         v90 = 2112;
         v91 = v86;
         v92 = 2112;
-        v93 = v74;
+        v93 = assetSpecifierToTrack2;
         v79 = &v88;
         _os_log_send_and_compose_impl();
       }
 
       v56 = 0;
       v55 = 1;
-      v16 = v80;
+      versionCopy = v80;
       goto LABEL_70;
     }
 
     v49 = CWFGetOTAOSLog();
     v50 = v49;
-    if (v17)
+    if (attributesCopy)
     {
       if (v38)
       {
@@ -1197,7 +1197,7 @@ LABEL_27:
   BYTE2(v79) = v39;
   BYTE1(v79) = v38;
   LOBYTE(v79) = v55;
-  [v57 setAssetLocalInfo:v82 assetSpecifier:v86 assetVersion:v16 assetBuild:v20->_assetBuild lastTimeCatalogChecked:v20->_lastTimeCatalogChecked catalogPostedDate:v20->_catalogPostedDate assetVersionSanity:v79 osVersionSanity:v17 osRestoreVersionSanity:v19 skuSanity:? sanityCheckAssetBuildAttribute:? attributes:? localURL:?];
+  [v57 setAssetLocalInfo:v82 assetSpecifier:v86 assetVersion:versionCopy assetBuild:v20->_assetBuild lastTimeCatalogChecked:v20->_lastTimeCatalogChecked catalogPostedDate:v20->_catalogPostedDate assetVersionSanity:v79 osVersionSanity:attributesCopy osRestoreVersionSanity:lCopy skuSanity:? sanityCheckAssetBuildAttribute:? attributes:? localURL:?];
 
   if ((v56 & 1) == 0)
   {

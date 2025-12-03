@@ -1,8 +1,8 @@
 @interface CLSPotentialLandmarkModel
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3;
-- (CLSPotentialLandmarkModel)initWithSceneAnalysisVersion:(unint64_t)a3;
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version;
+- (CLSPotentialLandmarkModel)initWithSceneAnalysisVersion:(unint64_t)version;
 - (id)modelInfo;
-- (id)nodeForSignalIdentifier:(unint64_t)a3;
+- (id)nodeForSignalIdentifier:(unint64_t)identifier;
 - (void)setupVersion32;
 - (void)setupVersion33;
 @end
@@ -32,17 +32,17 @@ void __38__CLSPotentialLandmarkModel_modelInfo__block_invoke(uint64_t a1, void *
   [v2 addObject:v3];
 }
 
-- (id)nodeForSignalIdentifier:(unint64_t)a3
+- (id)nodeForSignalIdentifier:(unint64_t)identifier
 {
-  if (a3 == 2147483135)
+  if (identifier == 2147483135)
   {
     v4 = self->_landmarkNode;
   }
 
-  else if ([(CLSPotentialLandmarkModel *)self isResponsibleForSignalIdentifier:a3])
+  else if ([(CLSPotentialLandmarkModel *)self isResponsibleForSignalIdentifier:identifier])
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"PL - Unknown (%X)", a3];
-    v4 = [[CLSSignalNode alloc] initWithIdentifier:a3 name:v5 operatingPoint:0.0 highPrecisionOperatingPoint:0.0 highRecallOperatingPoint:0.0];
+    identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"PL - Unknown (%X)", identifier];
+    v4 = [[CLSSignalNode alloc] initWithIdentifier:identifier name:identifier operatingPoint:0.0 highPrecisionOperatingPoint:0.0 highRecallOperatingPoint:0.0];
   }
 
   else
@@ -73,7 +73,7 @@ void __38__CLSPotentialLandmarkModel_modelInfo__block_invoke(uint64_t a1, void *
   MEMORY[0x2821F96F8]();
 }
 
-- (CLSPotentialLandmarkModel)initWithSceneAnalysisVersion:(unint64_t)a3
+- (CLSPotentialLandmarkModel)initWithSceneAnalysisVersion:(unint64_t)version
 {
   v14 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -82,9 +82,9 @@ void __38__CLSPotentialLandmarkModel_modelInfo__block_invoke(uint64_t a1, void *
   v5 = v4;
   if (v4)
   {
-    if (a3 < 0x21)
+    if (version < 0x21)
     {
-      if (a3 == 32)
+      if (version == 32)
       {
         [(CLSPotentialLandmarkModel *)v4 setupVersion32];
       }
@@ -95,7 +95,7 @@ void __38__CLSPotentialLandmarkModel_modelInfo__block_invoke(uint64_t a1, void *
         {
           v6 = objc_opt_class();
           *buf = 67109378;
-          v11 = a3;
+          versionCopy = version;
           v12 = 2112;
           v13 = v6;
           _os_log_impl(&dword_25E5F0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unsupported version %d in %@", buf, 0x12u);
@@ -115,16 +115,16 @@ void __38__CLSPotentialLandmarkModel_modelInfo__block_invoke(uint64_t a1, void *
   return v5;
 }
 
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version
 {
-  if (a3 >= 0x21)
+  if (version >= 0x21)
   {
     return 33;
   }
 
   else
   {
-    return 32 * (a3 == 32);
+    return 32 * (version == 32);
   }
 }
 

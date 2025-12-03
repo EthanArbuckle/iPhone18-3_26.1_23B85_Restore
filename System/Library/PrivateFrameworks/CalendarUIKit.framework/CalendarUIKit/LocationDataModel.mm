@@ -1,29 +1,29 @@
 @interface LocationDataModel
-- (BOOL)shouldIncludeConferenceRoom:(id)a3;
-- (id)eventIDForSearchModel:(id)a3;
-- (void)locationSearchModel:(id)a3 selectedLocation:(id)a4 withError:(id)a5;
-- (void)locationSearchModel:(id)a3 updatedSearchTypes:(unint64_t)a4;
+- (BOOL)shouldIncludeConferenceRoom:(id)room;
+- (id)eventIDForSearchModel:(id)model;
+- (void)locationSearchModel:(id)model selectedLocation:(id)location withError:(id)error;
+- (void)locationSearchModel:(id)model updatedSearchTypes:(unint64_t)types;
 @end
 
 @implementation LocationDataModel
 
-- (void)locationSearchModel:(id)a3 selectedLocation:(id)a4 withError:(id)a5
+- (void)locationSearchModel:(id)model selectedLocation:(id)location withError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  locationCopy = location;
 
-  v9 = a5;
-  sub_1CAD1BE54(a4);
+  errorCopy = error;
+  sub_1CAD1BE54(location);
 }
 
-- (void)locationSearchModel:(id)a3 updatedSearchTypes:(unint64_t)a4
+- (void)locationSearchModel:(id)model updatedSearchTypes:(unint64_t)types
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC4679C0);
   MEMORY[0x1EEE9AC00](v6 - 8);
   v8 = &v12 - v7;
-  v9 = a3;
+  modelCopy = model;
 
-  if ([v9 resultsPending])
+  if ([modelCopy resultsPending])
   {
   }
 
@@ -39,7 +39,7 @@
   }
 }
 
-- (id)eventIDForSearchModel:(id)a3
+- (id)eventIDForSearchModel:(id)model
 {
   if (*&self->_anon_8[OBJC_IVAR____TtC13CalendarUIKit17LocationDataModel_eventID])
   {
@@ -55,11 +55,11 @@
   return v3;
 }
 
-- (BOOL)shouldIncludeConferenceRoom:(id)a3
+- (BOOL)shouldIncludeConferenceRoom:(id)room
 {
-  v3 = a3;
+  roomCopy = room;
 
-  v4 = sub_1CAD106F4(v3);
+  v4 = sub_1CAD106F4(roomCopy);
 
   return v4 & 1;
 }

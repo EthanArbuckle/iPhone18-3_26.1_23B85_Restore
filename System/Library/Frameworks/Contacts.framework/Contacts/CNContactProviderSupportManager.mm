@@ -1,30 +1,30 @@
 @interface CNContactProviderSupportManager
-+ (BOOL)isConnectionForContactProvider:(id)a3;
++ (BOOL)isConnectionForContactProvider:(id)provider;
 + (void)invalidateCache;
-- (BOOL)addDomain:(id)a3 error:(id *)a4;
-- (BOOL)disableDomain:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)enableDomain:(id)a3 bundleIdentifier:(id)a4 shouldSynchronize:(BOOL)a5 error:(id *)a6;
-- (BOOL)invalidateExtensionForDomain:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)removeDomain:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)resetEnumerationForDomain:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)synchronizeProviderDomainUsingSession:(id)a3 error:(id *)a4;
-- (CNContactProviderSupportManager)initWithAuditToken:(id)a3;
+- (BOOL)addDomain:(id)domain error:(id *)error;
+- (BOOL)disableDomain:(id)domain bundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)enableDomain:(id)domain bundleIdentifier:(id)identifier shouldSynchronize:(BOOL)synchronize error:(id *)error;
+- (BOOL)invalidateExtensionForDomain:(id)domain bundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)removeDomain:(id)domain bundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)resetEnumerationForDomain:(id)domain bundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)synchronizeProviderDomainUsingSession:(id)session error:(id *)error;
+- (CNContactProviderSupportManager)initWithAuditToken:(id)token;
 - (CNContainer)providerContainer;
 - (id)fetchExtensionCount;
 - (id)fetchExtensionItems;
-- (id)getActualBundleIdentifier:(id)a3;
-- (id)isProviderDomainEnabledWithBundleIdentifier:(id)a3;
-- (id)providerContainerWithBundleIdentifier:(id)a3;
-- (id)registeredDomainsForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)requestHostDomainCommand:(id)a3 error:(id *)a4;
+- (id)getActualBundleIdentifier:(id)identifier;
+- (id)isProviderDomainEnabledWithBundleIdentifier:(id)identifier;
+- (id)providerContainerWithBundleIdentifier:(id)identifier;
+- (id)registeredDomainsForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)requestHostDomainCommand:(id)command error:(id *)error;
 @end
 
 @implementation CNContactProviderSupportManager
 
-- (CNContactProviderSupportManager)initWithAuditToken:(id)a3
+- (CNContactProviderSupportManager)initWithAuditToken:(id)token
 {
-  v4 = a3;
-  if (!v4)
+  tokenCopy = token;
+  if (!tokenCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_4 != -1)
     {
@@ -43,7 +43,7 @@
   v6 = [(CNContactProviderSupportManager *)&v17 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E6996640] bundleIdentifierForAuditToken:v4];
+    v7 = [MEMORY[0x1E6996640] bundleIdentifierForAuditToken:tokenCopy];
     clientLoggingIdentifier = v6->_clientLoggingIdentifier;
     v6->_clientLoggingIdentifier = v7;
     v9 = v7;
@@ -56,9 +56,9 @@
     moderator = v6->_moderator;
     v6->_moderator = v12;
 
-    v14 = [MEMORY[0x1E6996818] offMainThreadScheduler];
+    offMainThreadScheduler = [MEMORY[0x1E6996818] offMainThreadScheduler];
 
-    [v14 performBlock:&__block_literal_global_56];
+    [offMainThreadScheduler performBlock:&__block_literal_global_56];
     v15 = v6;
   }
 
@@ -70,10 +70,10 @@ void __54__CNContactProviderSupportManager_initWithAuditToken___block_invoke()
   v0 = +[_TtC8Contacts29CNContactProviderSupportCache sharedCache];
 }
 
-+ (BOOL)isConnectionForContactProvider:(id)a3
++ (BOOL)isConnectionForContactProvider:(id)provider
 {
-  v3 = [a3 serviceName];
-  v4 = [v3 isEqualToString:@"com.apple.contactsd.contact-provider"];
+  serviceName = [provider serviceName];
+  v4 = [serviceName isEqualToString:@"com.apple.contactsd.contact-provider"];
 
   return v4;
 }
@@ -84,41 +84,41 @@ void __54__CNContactProviderSupportManager_initWithAuditToken___block_invoke()
   [v2 invalidateCache];
 }
 
-- (id)requestHostDomainCommand:(id)a3 error:(id *)a4
+- (id)requestHostDomainCommand:(id)command error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 commandType];
-  v8 = [v7 isEqualToString:@"FetchDomainEnabled"];
+  commandCopy = command;
+  commandType = [commandCopy commandType];
+  v8 = [commandType isEqualToString:@"FetchDomainEnabled"];
 
   if (v8)
   {
-    v9 = [v6 bundleIdentifier];
-    v10 = [(CNContactProviderSupportManager *)self isProviderDomainEnabledWithBundleIdentifier:v9];
+    bundleIdentifier = [commandCopy bundleIdentifier];
+    v10 = [(CNContactProviderSupportManager *)self isProviderDomainEnabledWithBundleIdentifier:bundleIdentifier];
 
 LABEL_3:
     v11 = 0;
     goto LABEL_16;
   }
 
-  v12 = [v6 commandType];
-  v13 = [v12 isEqualToString:@"FetchDomainContainerIdentifier"];
+  commandType2 = [commandCopy commandType];
+  v13 = [commandType2 isEqualToString:@"FetchDomainContainerIdentifier"];
 
   if (v13)
   {
-    v14 = [(CNContactProviderSupportManager *)self providerContainer];
-    v15 = [v14 identifier];
+    providerContainer = [(CNContactProviderSupportManager *)self providerContainer];
+    identifier = [providerContainer identifier];
 
     goto LABEL_20;
   }
 
-  v16 = [v6 commandType];
-  v17 = [v16 isEqualToString:@"SynchronizeDomain"];
+  commandType3 = [commandCopy commandType];
+  v17 = [commandType3 isEqualToString:@"SynchronizeDomain"];
 
   if (v17)
   {
-    v18 = [v6 session];
+    session = [commandCopy session];
     v52 = 0;
-    [(CNContactProviderSupportManager *)self synchronizeProviderDomainUsingSession:v18 error:&v52];
+    [(CNContactProviderSupportManager *)self synchronizeProviderDomainUsingSession:session error:&v52];
     v19 = v52;
 LABEL_8:
     v11 = v19;
@@ -129,15 +129,15 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v20 = [v6 commandType];
-  v21 = [v20 isEqualToString:@"InvalidateExtension"];
+  commandType4 = [commandCopy commandType];
+  v21 = [commandType4 isEqualToString:@"InvalidateExtension"];
 
   if (v21)
   {
-    v18 = [v6 domainIdentifier];
-    v22 = [v6 bundleIdentifier];
+    session = [commandCopy domainIdentifier];
+    bundleIdentifier2 = [commandCopy bundleIdentifier];
     v51 = 0;
-    [(CNContactProviderSupportManager *)self invalidateExtensionForDomain:v18 bundleIdentifier:v22 error:&v51];
+    [(CNContactProviderSupportManager *)self invalidateExtensionForDomain:session bundleIdentifier:bundleIdentifier2 error:&v51];
     v23 = v51;
 LABEL_13:
     v11 = v23;
@@ -145,80 +145,80 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v24 = [v6 commandType];
-  v25 = [v24 isEqualToString:@"ResetEnumeration"];
+  commandType5 = [commandCopy commandType];
+  v25 = [commandType5 isEqualToString:@"ResetEnumeration"];
 
   if (v25)
   {
-    v18 = [v6 domainIdentifier];
-    v22 = [v6 bundleIdentifier];
+    session = [commandCopy domainIdentifier];
+    bundleIdentifier2 = [commandCopy bundleIdentifier];
     v50 = 0;
-    [(CNContactProviderSupportManager *)self resetEnumerationForDomain:v18 bundleIdentifier:v22 error:&v50];
+    [(CNContactProviderSupportManager *)self resetEnumerationForDomain:session bundleIdentifier:bundleIdentifier2 error:&v50];
     v23 = v50;
     goto LABEL_13;
   }
 
-  v29 = [v6 commandType];
-  v30 = [v29 isEqualToString:@"AddDomain"];
+  commandType6 = [commandCopy commandType];
+  v30 = [commandType6 isEqualToString:@"AddDomain"];
 
   if (v30)
   {
-    v18 = [v6 domain];
+    session = [commandCopy domain];
     v49 = 0;
-    [(CNContactProviderSupportManager *)self addDomain:v18 error:&v49];
+    [(CNContactProviderSupportManager *)self addDomain:session error:&v49];
     v19 = v49;
     goto LABEL_8;
   }
 
-  v31 = [v6 commandType];
-  v32 = [v31 isEqualToString:@"RemoveDomain"];
+  commandType7 = [commandCopy commandType];
+  v32 = [commandType7 isEqualToString:@"RemoveDomain"];
 
   if (v32)
   {
-    v18 = [v6 domainIdentifier];
-    v22 = [v6 bundleIdentifier];
+    session = [commandCopy domainIdentifier];
+    bundleIdentifier2 = [commandCopy bundleIdentifier];
     v48 = 0;
-    [(CNContactProviderSupportManager *)self removeDomain:v18 bundleIdentifier:v22 error:&v48];
+    [(CNContactProviderSupportManager *)self removeDomain:session bundleIdentifier:bundleIdentifier2 error:&v48];
     v23 = v48;
     goto LABEL_13;
   }
 
-  v33 = [v6 commandType];
-  v34 = [v33 isEqualToString:@"FetchRegisteredDomains"];
+  commandType8 = [commandCopy commandType];
+  v34 = [commandType8 isEqualToString:@"FetchRegisteredDomains"];
 
   if (!v34)
   {
-    v36 = [v6 commandType];
-    v37 = [v36 isEqualToString:@"EnableDomain"];
+    commandType9 = [commandCopy commandType];
+    v37 = [commandType9 isEqualToString:@"EnableDomain"];
 
     if (v37)
     {
-      v18 = [v6 domainIdentifier];
-      v22 = [v6 bundleIdentifier];
+      session = [commandCopy domainIdentifier];
+      bundleIdentifier2 = [commandCopy bundleIdentifier];
       v46 = 0;
-      -[CNContactProviderSupportManager enableDomain:bundleIdentifier:shouldSynchronize:error:](self, "enableDomain:bundleIdentifier:shouldSynchronize:error:", v18, v22, [v6 shouldSynchronize], &v46);
+      -[CNContactProviderSupportManager enableDomain:bundleIdentifier:shouldSynchronize:error:](self, "enableDomain:bundleIdentifier:shouldSynchronize:error:", session, bundleIdentifier2, [commandCopy shouldSynchronize], &v46);
       v23 = v46;
     }
 
     else
     {
-      v38 = [v6 commandType];
-      v39 = [v38 isEqualToString:@"DisableDomain"];
+      commandType10 = [commandCopy commandType];
+      v39 = [commandType10 isEqualToString:@"DisableDomain"];
 
       if (!v39)
       {
-        v40 = [v6 commandType];
-        v41 = [v40 isEqualToString:@"FetchAllDomainsCount"];
+        commandType11 = [commandCopy commandType];
+        v41 = [commandType11 isEqualToString:@"FetchAllDomainsCount"];
 
         if (v41)
         {
-          v42 = [(CNContactProviderSupportManager *)self fetchExtensionCount];
+          fetchExtensionCount = [(CNContactProviderSupportManager *)self fetchExtensionCount];
         }
 
         else
         {
-          v43 = [v6 commandType];
-          v44 = [v43 isEqualToString:@"FetchAllDomains"];
+          commandType12 = [commandCopy commandType];
+          v44 = [commandType12 isEqualToString:@"FetchAllDomains"];
 
           if (!v44)
           {
@@ -226,63 +226,63 @@ LABEL_13:
             goto LABEL_15;
           }
 
-          v42 = [(CNContactProviderSupportManager *)self fetchExtensionItems];
+          fetchExtensionCount = [(CNContactProviderSupportManager *)self fetchExtensionItems];
         }
 
-        v10 = v42;
+        v10 = fetchExtensionCount;
         goto LABEL_3;
       }
 
-      v18 = [v6 domainIdentifier];
-      v22 = [v6 bundleIdentifier];
+      session = [commandCopy domainIdentifier];
+      bundleIdentifier2 = [commandCopy bundleIdentifier];
       v45 = 0;
-      [(CNContactProviderSupportManager *)self disableDomain:v18 bundleIdentifier:v22 error:&v45];
+      [(CNContactProviderSupportManager *)self disableDomain:session bundleIdentifier:bundleIdentifier2 error:&v45];
       v23 = v45;
     }
 
     goto LABEL_13;
   }
 
-  v35 = [v6 bundleIdentifier];
+  bundleIdentifier3 = [commandCopy bundleIdentifier];
   v47 = 0;
-  v10 = [(CNContactProviderSupportManager *)self registeredDomainsForBundleIdentifier:v35 error:&v47];
+  v10 = [(CNContactProviderSupportManager *)self registeredDomainsForBundleIdentifier:bundleIdentifier3 error:&v47];
   v11 = v47;
 
 LABEL_16:
   v26 = v10;
-  v15 = v26;
-  if (a4 && !v26)
+  identifier = v26;
+  if (error && !v26)
   {
     v27 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_20:
 
-  return v15;
+  return identifier;
 }
 
 - (CNContainer)providerContainer
 {
-  v3 = [(CNContactProviderSupportManager *)self clientLoggingIdentifier];
-  v4 = [(CNContactProviderSupportManager *)self providerContainerWithBundleIdentifier:v3];
+  clientLoggingIdentifier = [(CNContactProviderSupportManager *)self clientLoggingIdentifier];
+  v4 = [(CNContactProviderSupportManager *)self providerContainerWithBundleIdentifier:clientLoggingIdentifier];
 
   return v4;
 }
 
-- (id)providerContainerWithBundleIdentifier:(id)a3
+- (id)providerContainerWithBundleIdentifier:(id)identifier
 {
-  v4 = [(CNContactProviderSupportManager *)self getActualBundleIdentifier:a3];
-  v5 = [(CNContactProviderSupportManager *)self providerHost];
-  v6 = [v5 providerContainerFor:v4];
+  v4 = [(CNContactProviderSupportManager *)self getActualBundleIdentifier:identifier];
+  providerHost = [(CNContactProviderSupportManager *)self providerHost];
+  v6 = [providerHost providerContainerFor:v4];
 
   return v6;
 }
 
-- (BOOL)synchronizeProviderDomainUsingSession:(id)a3 error:(id *)a4
+- (BOOL)synchronizeProviderDomainUsingSession:(id)session error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  sessionCopy = session;
+  if (!sessionCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_4 != -1)
     {
@@ -296,269 +296,269 @@ LABEL_20:
     }
   }
 
-  v8 = [(CNContactProviderSupportManager *)self moderator];
-  v9 = [(CNContactProviderSupportManager *)self clientLoggingIdentifier];
-  v10 = [(CNContactProviderSupportManager *)self providerHost];
-  v11 = [v8 synchronizeProviderDomainUsingSession:v6 bundleIdentifier:v9 providerHost:v10];
+  moderator = [(CNContactProviderSupportManager *)self moderator];
+  clientLoggingIdentifier = [(CNContactProviderSupportManager *)self clientLoggingIdentifier];
+  providerHost = [(CNContactProviderSupportManager *)self providerHost];
+  v11 = [moderator synchronizeProviderDomainUsingSession:sessionCopy bundleIdentifier:clientLoggingIdentifier providerHost:providerHost];
 
   v12 = [MEMORY[0x1E6996810] resultWithFuture:v11 timeout:1800.0];
-  v13 = [v12 isSuccess];
-  if ((v13 & 1) == 0)
+  isSuccess = [v12 isSuccess];
+  if ((isSuccess & 1) == 0)
   {
-    v14 = [v12 error];
-    if (a4)
+    error = [v12 error];
+    if (error)
     {
-      v14 = v14;
-      *a4 = v14;
+      error = error;
+      *error = error;
     }
   }
 
-  return v13;
+  return isSuccess;
 }
 
-- (BOOL)invalidateExtensionForDomain:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)invalidateExtensionForDomain:(id)domain bundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = [(CNContactProviderSupportManager *)self getActualBundleIdentifier:a4];
+  domainCopy = domain;
+  v9 = [(CNContactProviderSupportManager *)self getActualBundleIdentifier:identifier];
   v10 = objc_alloc_init(MEMORY[0x1E69967D0]);
-  v11 = [(CNContactProviderSupportManager *)self providerHost];
-  v12 = [v10 errorOnlyCompletionHandlerAdapter];
-  [v11 invalidateExtensionFor:v8 bundleIdentifier:v9 completionHandler:v12];
+  providerHost = [(CNContactProviderSupportManager *)self providerHost];
+  errorOnlyCompletionHandlerAdapter = [v10 errorOnlyCompletionHandlerAdapter];
+  [providerHost invalidateExtensionFor:domainCopy bundleIdentifier:v9 completionHandler:errorOnlyCompletionHandlerAdapter];
 
   v13 = MEMORY[0x1E6996810];
-  v14 = [v10 future];
-  v15 = [v13 resultWithFuture:v14];
+  future = [v10 future];
+  v15 = [v13 resultWithFuture:future];
 
   v16 = v15;
-  v17 = [v16 isSuccess];
-  if ((v17 & 1) == 0)
+  isSuccess = [v16 isSuccess];
+  if ((isSuccess & 1) == 0)
   {
-    v18 = [v16 error];
-    if (a5)
+    error = [v16 error];
+    if (error)
     {
-      v18 = v18;
-      *a5 = v18;
+      error = error;
+      *error = error;
     }
   }
 
-  return v17;
+  return isSuccess;
 }
 
-- (BOOL)resetEnumerationForDomain:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)resetEnumerationForDomain:(id)domain bundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = [(CNContactProviderSupportManager *)self getActualBundleIdentifier:a4];
+  domainCopy = domain;
+  v9 = [(CNContactProviderSupportManager *)self getActualBundleIdentifier:identifier];
   v10 = objc_alloc_init(MEMORY[0x1E69967D0]);
-  v11 = [(CNContactProviderSupportManager *)self providerHost];
-  v12 = [v10 errorOnlyCompletionHandlerAdapter];
-  [v11 resetEnumerationFor:v8 bundleIdentifier:v9 completionHandler:v12];
+  providerHost = [(CNContactProviderSupportManager *)self providerHost];
+  errorOnlyCompletionHandlerAdapter = [v10 errorOnlyCompletionHandlerAdapter];
+  [providerHost resetEnumerationFor:domainCopy bundleIdentifier:v9 completionHandler:errorOnlyCompletionHandlerAdapter];
 
   v13 = MEMORY[0x1E6996810];
-  v14 = [v10 future];
-  v15 = [v13 resultWithFuture:v14];
+  future = [v10 future];
+  v15 = [v13 resultWithFuture:future];
 
   v16 = v15;
-  v17 = [v16 isSuccess];
-  if ((v17 & 1) == 0)
+  isSuccess = [v16 isSuccess];
+  if ((isSuccess & 1) == 0)
   {
-    v18 = [v16 error];
-    if (a5)
+    error = [v16 error];
+    if (error)
     {
-      v18 = v18;
-      *a5 = v18;
+      error = error;
+      *error = error;
     }
   }
 
-  return v17;
+  return isSuccess;
 }
 
-- (id)isProviderDomainEnabledWithBundleIdentifier:(id)a3
+- (id)isProviderDomainEnabledWithBundleIdentifier:(id)identifier
 {
-  v3 = [(CNContactProviderSupportManager *)self providerContainerWithBundleIdentifier:a3];
+  v3 = [(CNContactProviderSupportManager *)self providerContainerWithBundleIdentifier:identifier];
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "isEnabled")}];
 
   return v4;
 }
 
-- (BOOL)addDomain:(id)a3 error:(id *)a4
+- (BOOL)addDomain:(id)domain error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bundleIdentifier];
-  v8 = [(CNContactProviderSupportManager *)self getActualBundleIdentifier:v7];
+  domainCopy = domain;
+  bundleIdentifier = [domainCopy bundleIdentifier];
+  v8 = [(CNContactProviderSupportManager *)self getActualBundleIdentifier:bundleIdentifier];
 
   v9 = objc_alloc_init(MEMORY[0x1E69967D0]);
-  v10 = [(CNContactProviderSupportManager *)self providerHost];
-  v11 = [v9 errorOnlyCompletionHandlerAdapter];
-  [v10 addDomain:v6 bundleIdentifier:v8 completionHandler:v11];
+  providerHost = [(CNContactProviderSupportManager *)self providerHost];
+  errorOnlyCompletionHandlerAdapter = [v9 errorOnlyCompletionHandlerAdapter];
+  [providerHost addDomain:domainCopy bundleIdentifier:v8 completionHandler:errorOnlyCompletionHandlerAdapter];
 
   v12 = MEMORY[0x1E6996810];
-  v13 = [v9 future];
-  v14 = [v12 resultWithFuture:v13];
+  future = [v9 future];
+  v14 = [v12 resultWithFuture:future];
 
   v15 = v14;
-  v16 = [v15 isSuccess];
-  if ((v16 & 1) == 0)
+  isSuccess = [v15 isSuccess];
+  if ((isSuccess & 1) == 0)
   {
-    v17 = [v15 error];
-    if (a4)
+    error = [v15 error];
+    if (error)
     {
-      v17 = v17;
-      *a4 = v17;
+      error = error;
+      *error = error;
     }
   }
 
-  return v16;
+  return isSuccess;
 }
 
-- (BOOL)removeDomain:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)removeDomain:(id)domain bundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = [(CNContactProviderSupportManager *)self getActualBundleIdentifier:a4];
+  domainCopy = domain;
+  v9 = [(CNContactProviderSupportManager *)self getActualBundleIdentifier:identifier];
   v10 = objc_alloc_init(MEMORY[0x1E69967D0]);
-  v11 = [(CNContactProviderSupportManager *)self providerHost];
-  v12 = [v10 errorOnlyCompletionHandlerAdapter];
-  [v11 removeDomainFor:v8 bundleIdentifier:v9 completionHandler:v12];
+  providerHost = [(CNContactProviderSupportManager *)self providerHost];
+  errorOnlyCompletionHandlerAdapter = [v10 errorOnlyCompletionHandlerAdapter];
+  [providerHost removeDomainFor:domainCopy bundleIdentifier:v9 completionHandler:errorOnlyCompletionHandlerAdapter];
 
   v13 = MEMORY[0x1E6996810];
-  v14 = [v10 future];
-  v15 = [v13 resultWithFuture:v14];
+  future = [v10 future];
+  v15 = [v13 resultWithFuture:future];
 
   v16 = v15;
-  v17 = [v16 isSuccess];
-  if ((v17 & 1) == 0)
+  isSuccess = [v16 isSuccess];
+  if ((isSuccess & 1) == 0)
   {
-    v18 = [v16 error];
-    if (a5)
+    error = [v16 error];
+    if (error)
     {
-      v18 = v18;
-      *a5 = v18;
+      error = error;
+      *error = error;
     }
   }
 
-  return v17;
+  return isSuccess;
 }
 
-- (id)registeredDomainsForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)registeredDomainsForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = [(CNContactProviderSupportManager *)self getActualBundleIdentifier:a3];
+  v6 = [(CNContactProviderSupportManager *)self getActualBundleIdentifier:identifier];
   v7 = objc_alloc_init(MEMORY[0x1E69967D0]);
-  v8 = [(CNContactProviderSupportManager *)self providerHost];
-  v9 = [v7 completionHandlerAdapter];
-  [v8 registeredDomainsFor:v6 completionHandler:v9];
+  providerHost = [(CNContactProviderSupportManager *)self providerHost];
+  completionHandlerAdapter = [v7 completionHandlerAdapter];
+  [providerHost registeredDomainsFor:v6 completionHandler:completionHandlerAdapter];
 
   v10 = MEMORY[0x1E6996810];
-  v11 = [v7 future];
-  v12 = [v10 resultWithFuture:v11];
+  future = [v7 future];
+  v12 = [v10 resultWithFuture:future];
 
   v13 = v12;
-  v14 = [v13 value];
+  value = [v13 value];
 
-  if (v14)
+  if (value)
   {
-    v15 = [v13 value];
+    value2 = [v13 value];
   }
 
   else
   {
-    v16 = [v13 error];
-    if (a4)
+    error = [v13 error];
+    if (error)
     {
-      v16 = v16;
-      *a4 = v16;
+      error = error;
+      *error = error;
     }
 
-    v15 = 0;
+    value2 = 0;
   }
 
-  return v15;
+  return value2;
 }
 
-- (BOOL)enableDomain:(id)a3 bundleIdentifier:(id)a4 shouldSynchronize:(BOOL)a5 error:(id *)a6
+- (BOOL)enableDomain:(id)domain bundleIdentifier:(id)identifier shouldSynchronize:(BOOL)synchronize error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = [(CNContactProviderSupportManager *)self getActualBundleIdentifier:a4];
+  synchronizeCopy = synchronize;
+  domainCopy = domain;
+  v11 = [(CNContactProviderSupportManager *)self getActualBundleIdentifier:identifier];
   v12 = [(CNContactProviderSupportManager *)self isProviderDomainEnabledWithBundleIdentifier:v11];
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
 
-  v14 = a4 == 0;
+  v14 = identifier == 0;
   v15 = objc_alloc_init(MEMORY[0x1E69967D0]);
-  v16 = [(CNContactProviderSupportManager *)self providerHost];
-  v17 = [v15 errorOnlyCompletionHandlerAdapter];
-  [v16 enableDomainFor:v10 bundleIdentifier:v11 showPrompt:v14 & (v13 ^ 1u) shouldSynchronize:v7 completionHandler:v17];
+  providerHost = [(CNContactProviderSupportManager *)self providerHost];
+  errorOnlyCompletionHandlerAdapter = [v15 errorOnlyCompletionHandlerAdapter];
+  [providerHost enableDomainFor:domainCopy bundleIdentifier:v11 showPrompt:v14 & (bOOLValue ^ 1u) shouldSynchronize:synchronizeCopy completionHandler:errorOnlyCompletionHandlerAdapter];
 
   v18 = MEMORY[0x1E6996810];
-  v19 = [v15 future];
-  v20 = [v18 resultWithFuture:v19];
+  future = [v15 future];
+  v20 = [v18 resultWithFuture:future];
 
   v21 = v20;
-  v22 = [v21 isSuccess];
-  if ((v22 & 1) == 0)
+  isSuccess = [v21 isSuccess];
+  if ((isSuccess & 1) == 0)
   {
-    v23 = [v21 error];
-    if (a6)
+    error = [v21 error];
+    if (error)
     {
-      v23 = v23;
-      *a6 = v23;
+      error = error;
+      *error = error;
     }
   }
 
-  return v22;
+  return isSuccess;
 }
 
-- (BOOL)disableDomain:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)disableDomain:(id)domain bundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = [(CNContactProviderSupportManager *)self getActualBundleIdentifier:a4];
+  domainCopy = domain;
+  v9 = [(CNContactProviderSupportManager *)self getActualBundleIdentifier:identifier];
   v10 = objc_alloc_init(MEMORY[0x1E69967D0]);
-  v11 = [(CNContactProviderSupportManager *)self providerHost];
-  v12 = [v10 errorOnlyCompletionHandlerAdapter];
-  [v11 disableDomainFor:v8 bundleIdentifier:v9 completionHandler:v12];
+  providerHost = [(CNContactProviderSupportManager *)self providerHost];
+  errorOnlyCompletionHandlerAdapter = [v10 errorOnlyCompletionHandlerAdapter];
+  [providerHost disableDomainFor:domainCopy bundleIdentifier:v9 completionHandler:errorOnlyCompletionHandlerAdapter];
 
   v13 = MEMORY[0x1E6996810];
-  v14 = [v10 future];
-  v15 = [v13 resultWithFuture:v14];
+  future = [v10 future];
+  v15 = [v13 resultWithFuture:future];
 
   v16 = v15;
-  v17 = [v16 isSuccess];
-  if ((v17 & 1) == 0)
+  isSuccess = [v16 isSuccess];
+  if ((isSuccess & 1) == 0)
   {
-    v18 = [v16 error];
-    if (a5)
+    error = [v16 error];
+    if (error)
     {
-      v18 = v18;
-      *a5 = v18;
+      error = error;
+      *error = error;
     }
   }
 
-  return v17;
+  return isSuccess;
 }
 
-- (id)getActualBundleIdentifier:(id)a3
+- (id)getActualBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v4 = [(CNContactProviderSupportManager *)self clientLoggingIdentifier];
+    identifierCopy = [(CNContactProviderSupportManager *)self clientLoggingIdentifier];
   }
 
-  return v4;
+  return identifierCopy;
 }
 
 - (id)fetchExtensionCount
 {
-  v2 = [(CNContactProviderSupportManager *)self providerHost];
-  v3 = [v2 extensionCount];
+  providerHost = [(CNContactProviderSupportManager *)self providerHost];
+  extensionCount = [providerHost extensionCount];
 
-  return v3;
+  return extensionCount;
 }
 
 - (id)fetchExtensionItems
 {
-  v2 = [(CNContactProviderSupportManager *)self providerHost];
-  v3 = [v2 extensionItems];
+  providerHost = [(CNContactProviderSupportManager *)self providerHost];
+  extensionItems = [providerHost extensionItems];
 
-  return v3;
+  return extensionItems;
 }
 
 @end

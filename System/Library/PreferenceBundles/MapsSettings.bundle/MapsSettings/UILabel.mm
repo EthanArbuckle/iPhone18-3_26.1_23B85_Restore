@@ -1,17 +1,17 @@
 @interface UILabel
-+ (double)_maps_maximumHeightWithFont:(id)a3 numberOfLines:(int64_t)a4 displayScale:(double)a5;
-+ (id)newStandardTextLabelWithFont:(id)a3;
-- (BOOL)isTextTruncatedIgnoringLeading:(BOOL)a3;
-- (CGRect)_boundingRectWithSize:(CGSize)a3 ignoringLeading:(BOOL)a4;
++ (double)_maps_maximumHeightWithFont:(id)font numberOfLines:(int64_t)lines displayScale:(double)scale;
++ (id)newStandardTextLabelWithFont:(id)font;
+- (BOOL)isTextTruncatedIgnoringLeading:(BOOL)leading;
+- (CGRect)_boundingRectWithSize:(CGSize)size ignoringLeading:(BOOL)leading;
 @end
 
 @implementation UILabel
 
-+ (id)newStandardTextLabelWithFont:(id)a3
++ (id)newStandardTextLabelWithFont:(id)font
 {
-  v3 = a3;
+  fontCopy = font;
   v4 = objc_alloc_init(UILabel);
-  [v4 setFont:v3];
+  [v4 setFont:fontCopy];
 
   v5 = +[UIColor clearColor];
   [v4 setBackgroundColor:v5];
@@ -19,27 +19,27 @@
   return v4;
 }
 
-+ (double)_maps_maximumHeightWithFont:(id)a3 numberOfLines:(int64_t)a4 displayScale:(double)a5
++ (double)_maps_maximumHeightWithFont:(id)font numberOfLines:(int64_t)lines displayScale:(double)scale
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 < 1)
+  fontCopy = font;
+  v7 = fontCopy;
+  if (lines < 1)
   {
     v17 = 1.79769313e308;
   }
 
   else
   {
-    [v6 lineHeight];
+    [fontCopy lineHeight];
     [v7 leading];
     v8 = +[UIDevice currentDevice];
-    v9 = [v8 userInterfaceIdiom];
+    userInterfaceIdiom = [v8 userInterfaceIdiom];
 
-    if (v9 == &dword_4 + 1)
+    if (userInterfaceIdiom == &dword_4 + 1)
     {
-      v10 = [v7 fontDescriptor];
-      v11 = [v10 fontAttributes];
-      v12 = [v11 objectForKeyedSubscript:UIFontDescriptorTextStyleAttribute];
+      fontDescriptor = [v7 fontDescriptor];
+      fontAttributes = [fontDescriptor fontAttributes];
+      v12 = [fontAttributes objectForKeyedSubscript:UIFontDescriptorTextStyleAttribute];
 
       if (v12)
       {
@@ -88,20 +88,20 @@ LABEL_6:
   return v17;
 }
 
-- (BOOL)isTextTruncatedIgnoringLeading:(BOOL)a3
+- (BOOL)isTextTruncatedIgnoringLeading:(BOOL)leading
 {
-  v3 = a3;
-  v5 = [(UILabel *)self text];
-  if (v5)
+  leadingCopy = leading;
+  text = [(UILabel *)self text];
+  if (text)
   {
-    v6 = v5;
-    v7 = [(UILabel *)self text];
-    v8 = [v7 length];
+    v6 = text;
+    text2 = [(UILabel *)self text];
+    v8 = [text2 length];
 
     if (v8)
     {
       v9 = 1.79769313e308;
-      [(UILabel *)self _boundingRectWithSize:v3 ignoringLeading:1.79769313e308, 1.79769313e308];
+      [(UILabel *)self _boundingRectWithSize:leadingCopy ignoringLeading:1.79769313e308, 1.79769313e308];
       v11 = v10;
       [(UILabel *)self bounds];
       Width = CGRectGetWidth(v16);
@@ -110,27 +110,27 @@ LABEL_6:
         v9 = v11 * [(UILabel *)self numberOfLines];
       }
 
-      [(UILabel *)self _boundingRectWithSize:v3 ignoringLeading:Width, 1.79769313e308];
+      [(UILabel *)self _boundingRectWithSize:leadingCopy ignoringLeading:Width, 1.79769313e308];
       v14 = vabdd_f64(v13, v9) > 2.22044605e-16;
-      LOBYTE(v5) = v13 > v9 && v14;
+      LOBYTE(text) = v13 > v9 && v14;
     }
 
     else
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(text) = 0;
     }
   }
 
-  return v5;
+  return text;
 }
 
-- (CGRect)_boundingRectWithSize:(CGSize)a3 ignoringLeading:(BOOL)a4
+- (CGRect)_boundingRectWithSize:(CGSize)size ignoringLeading:(BOOL)leading
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
-  v8 = [(UILabel *)self text];
-  if (v4)
+  leadingCopy = leading;
+  height = size.height;
+  width = size.width;
+  text = [(UILabel *)self text];
+  if (leadingCopy)
   {
     v9 = 33;
   }
@@ -141,10 +141,10 @@ LABEL_6:
   }
 
   v24 = NSFontAttributeName;
-  v10 = [(UILabel *)self font];
-  v25 = v10;
+  font = [(UILabel *)self font];
+  v25 = font;
   v11 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-  [v8 boundingRectWithSize:v9 options:v11 attributes:0 context:{width, height}];
+  [text boundingRectWithSize:v9 options:v11 attributes:0 context:{width, height}];
   v13 = v12;
   v15 = v14;
   v17 = v16;

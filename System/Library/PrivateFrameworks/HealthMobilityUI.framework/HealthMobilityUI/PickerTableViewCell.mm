@@ -1,13 +1,13 @@
 @interface PickerTableViewCell
-- (_TtC16HealthMobilityUI19PickerTableViewCell)initWithCoder:(id)a3;
-- (_TtC16HealthMobilityUI19PickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC16HealthMobilityUI19PickerTableViewCell)initWithCoder:(id)coder;
+- (_TtC16HealthMobilityUI19PickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation PickerTableViewCell
 
-- (_TtC16HealthMobilityUI19PickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC16HealthMobilityUI19PickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = sub_2519AEE38();
   }
@@ -21,7 +21,7 @@
   return sub_251980EAC(v4, v5);
 }
 
-- (_TtC16HealthMobilityUI19PickerTableViewCell)initWithCoder:(id)a3
+- (_TtC16HealthMobilityUI19PickerTableViewCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC16HealthMobilityUI19PickerTableViewCell_item;
   *v3 = 0u;

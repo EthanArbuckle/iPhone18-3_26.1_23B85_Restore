@@ -1,27 +1,27 @@
 @interface MPRadioController
 - (BOOL)isRadioAvailable;
 - (MPRadioController)init;
-- (void)_beginRemoteProcessAssertionWithCompletionHandler:(id)a3;
+- (void)_beginRemoteProcessAssertionWithCompletionHandler:(id)handler;
 - (void)_endRemoteProcessAssertion;
-- (void)_getConnectionWithCompletionHandler:(id)a3;
-- (void)_setRadioAvailable:(BOOL)a3;
-- (void)clientRadioControllerRadioAvailabilityDidChange:(BOOL)a3;
+- (void)_getConnectionWithCompletionHandler:(id)handler;
+- (void)_setRadioAvailable:(BOOL)available;
+- (void)clientRadioControllerRadioAvailabilityDidChange:(BOOL)change;
 - (void)clientRadioControllerRecentStationsDidChange;
 - (void)dealloc;
-- (void)getRecentStationGroupsWithCompletionHandler:(id)a3;
+- (void)getRecentStationGroupsWithCompletionHandler:(id)handler;
 @end
 
 @implementation MPRadioController
 
-- (void)_getConnectionWithCompletionHandler:(id)a3
+- (void)_getConnectionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (self->_connection)
   {
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4);
+      handlerCopy[2](handlerCopy);
     }
   }
 
@@ -32,7 +32,7 @@
     v6[2] = __57__MPRadioController__getConnectionWithCompletionHandler___block_invoke;
     v6[3] = &unk_1E76824C8;
     v6[4] = self;
-    v7 = v4;
+    v7 = handlerCopy;
     [(MPRadioController *)self _beginRemoteProcessAssertionWithCompletionHandler:v6];
   }
 }
@@ -222,13 +222,13 @@ void __57__MPRadioController__getConnectionWithCompletionHandler___block_invoke_
   }
 }
 
-- (void)_setRadioAvailable:(BOOL)a3
+- (void)_setRadioAvailable:(BOOL)available
 {
-  if (self->_isRadioAvailable != a3)
+  if (self->_isRadioAvailable != available)
   {
     block[7] = v3;
     block[8] = v4;
-    self->_isRadioAvailable = a3;
+    self->_isRadioAvailable = available;
     CFPreferencesSetAppValue(@"MPRadioControllerRadioAvailability", [MEMORY[0x1E696AD98] numberWithBool:?], @"com.apple.mobileipod");
     v6 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x1E69E9820];
@@ -289,17 +289,17 @@ void __47__MPRadioController__endRemoteProcessAssertion__block_invoke_2(uint64_t
   }
 }
 
-- (void)_beginRemoteProcessAssertionWithCompletionHandler:(id)a3
+- (void)_beginRemoteProcessAssertionWithCompletionHandler:(id)handler
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   remoteProcessAssertionCompletionHandler = self->_remoteProcessAssertionCompletionHandler;
   ++self->_remoteProcessAssertionCount;
   if (self->_hasLaunchedService && remoteProcessAssertionCompletionHandler == 0)
   {
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4);
+      handlerCopy[2](handlerCopy);
     }
   }
 
@@ -312,7 +312,7 @@ void __47__MPRadioController__endRemoteProcessAssertion__block_invoke_2(uint64_t
     v14[3] = &unk_1E7677BD8;
     v8 = v7;
     v15 = v8;
-    v16 = v4;
+    v16 = handlerCopy;
     v9 = [v14 copy];
     v10 = self->_remoteProcessAssertionCompletionHandler;
     self->_remoteProcessAssertionCompletionHandler = v9;
@@ -320,7 +320,7 @@ void __47__MPRadioController__endRemoteProcessAssertion__block_invoke_2(uint64_t
     if (!self->_hasLaunchedService)
     {
       self->_hasLaunchedService = 1;
-      v11 = [MEMORY[0x1E699FCA0] sharedService];
+      mEMORY[0x1E699FCA0] = [MEMORY[0x1E699FCA0] sharedService];
       v17 = *MEMORY[0x1E699F8E8];
       v18[0] = MEMORY[0x1E695E118];
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
@@ -329,7 +329,7 @@ void __47__MPRadioController__endRemoteProcessAssertion__block_invoke_2(uint64_t
       v13[2] = __71__MPRadioController__beginRemoteProcessAssertionWithCompletionHandler___block_invoke_2;
       v13[3] = &unk_1E767D2A0;
       v13[4] = self;
-      [v11 openApplication:@"com.apple.Music" options:v12 withResult:v13];
+      [mEMORY[0x1E699FCA0] openApplication:@"com.apple.Music" options:v12 withResult:v13];
     }
   }
 }
@@ -475,17 +475,17 @@ void __71__MPRadioController__beginRemoteProcessAssertionWithCompletionHandler__
   }
 }
 
-- (void)getRecentStationGroupsWithCompletionHandler:(id)a3
+- (void)getRecentStationGroupsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__MPRadioController_getRecentStationGroupsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E76824C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
@@ -641,7 +641,7 @@ void __65__MPRadioController_clientRadioControllerRecentStationsDidChange__block
   [v2 postNotificationName:@"MPRadioControllerRecentStationsDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)clientRadioControllerRadioAvailabilityDidChange:(BOOL)a3
+- (void)clientRadioControllerRadioAvailabilityDidChange:(BOOL)change
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -649,7 +649,7 @@ void __65__MPRadioController_clientRadioControllerRecentStationsDidChange__block
   v4[2] = __69__MPRadioController_clientRadioControllerRadioAvailabilityDidChange___block_invoke;
   v4[3] = &unk_1E7682280;
   v4[4] = self;
-  v5 = a3;
+  changeCopy = change;
   dispatch_barrier_async(accessQueue, v4);
 }
 

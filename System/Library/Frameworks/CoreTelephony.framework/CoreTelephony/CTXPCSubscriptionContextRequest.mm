@@ -8,10 +8,10 @@
 
 - (CTServiceDescriptor)descriptor
 {
-  v2 = [(CTXPCSubscriptionContextRequest *)self context];
-  if (v2)
+  context = [(CTXPCSubscriptionContextRequest *)self context];
+  if (context)
   {
-    v3 = [CTServiceDescriptor descriptorWithSubscriptionContext:v2];
+    v3 = [CTServiceDescriptor descriptorWithSubscriptionContext:context];
   }
 
   else
@@ -24,8 +24,8 @@
 
 - (CTXPCServiceSubscriptionContext)context
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"context"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"context"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -42,7 +42,7 @@
 
 + (id)allowedClassesForArguments
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CTXPCSubscriptionContextRequest;
   v2 = objc_msgSendSuper2(&v5, sel_allowedClassesForArguments);
   v3 = [v2 setByAddingObject:objc_opt_class()];

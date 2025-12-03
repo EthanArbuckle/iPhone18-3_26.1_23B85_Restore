@@ -1,45 +1,45 @@
 @interface NTKFaceCollectionGalleryCollection
-- (NTKFaceCollectionGalleryCollection)initWithTitle:(id)a3 faceCollection:(id)a4;
-- (void)faceCollection:(id)a3 didAddFace:(id)a4 atIndex:(unint64_t)a5;
-- (void)faceCollection:(id)a3 didRemoveFace:(id)a4 atIndex:(unint64_t)a5;
-- (void)faceCollectionDidLoad:(id)a3;
-- (void)faceCollectionDidReorderFaces:(id)a3;
+- (NTKFaceCollectionGalleryCollection)initWithTitle:(id)title faceCollection:(id)collection;
+- (void)faceCollection:(id)collection didAddFace:(id)face atIndex:(unint64_t)index;
+- (void)faceCollection:(id)collection didRemoveFace:(id)face atIndex:(unint64_t)index;
+- (void)faceCollectionDidLoad:(id)load;
+- (void)faceCollectionDidReorderFaces:(id)faces;
 @end
 
 @implementation NTKFaceCollectionGalleryCollection
 
-- (NTKFaceCollectionGalleryCollection)initWithTitle:(id)a3 faceCollection:(id)a4
+- (NTKFaceCollectionGalleryCollection)initWithTitle:(id)title faceCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  collectionCopy = collection;
   v11.receiver = self;
   v11.super_class = NTKFaceCollectionGalleryCollection;
   v8 = [(NTKFaceCollectionGalleryCollection *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(NTKGalleryCollection *)v8 setTitle:v6];
-    objc_storeStrong(&v9->_faceCollection, a4);
+    [(NTKGalleryCollection *)v8 setTitle:titleCopy];
+    objc_storeStrong(&v9->_faceCollection, collection);
   }
 
   return v9;
 }
 
-- (void)faceCollectionDidLoad:(id)a3
+- (void)faceCollectionDidLoad:(id)load
 {
   v4 = MEMORY[0x277CBBAE8];
-  v5 = [(NTKFaceCollection *)self->_faceCollection deviceUUID];
-  v6 = [v4 deviceForPairingID:v5];
+  deviceUUID = [(NTKFaceCollection *)self->_faceCollection deviceUUID];
+  v6 = [v4 deviceForPairingID:deviceUUID];
 
-  v7 = [v6 pdrDevice];
+  pdrDevice = [v6 pdrDevice];
   faceCollection = self->_faceCollection;
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __60__NTKFaceCollectionGalleryCollection_faceCollectionDidLoad___block_invoke;
   v15 = &unk_2787840E8;
   v16 = v6;
-  v17 = v7;
-  v9 = v7;
+  v17 = pdrDevice;
+  v9 = pdrDevice;
   v10 = v6;
   [(NTKFaceCollection *)faceCollection enumerateFacesUsingBlock:&v12];
   v11 = [(NTKGalleryCollection *)self delegate:v12];
@@ -98,22 +98,22 @@ void __60__NTKFaceCollectionGalleryCollection_faceCollectionDidLoad___block_invo
   }
 }
 
-- (void)faceCollection:(id)a3 didAddFace:(id)a4 atIndex:(unint64_t)a5
+- (void)faceCollection:(id)collection didAddFace:(id)face atIndex:(unint64_t)index
 {
-  v6 = [(NTKGalleryCollection *)self delegate:a3];
+  v6 = [(NTKGalleryCollection *)self delegate:collection];
   [v6 galleryCollectionDidChange:self shouldUpdateSnaphots:1];
 }
 
-- (void)faceCollection:(id)a3 didRemoveFace:(id)a4 atIndex:(unint64_t)a5
+- (void)faceCollection:(id)collection didRemoveFace:(id)face atIndex:(unint64_t)index
 {
-  v6 = [(NTKGalleryCollection *)self delegate:a3];
+  v6 = [(NTKGalleryCollection *)self delegate:collection];
   [v6 galleryCollectionDidChange:self shouldUpdateSnaphots:1];
 }
 
-- (void)faceCollectionDidReorderFaces:(id)a3
+- (void)faceCollectionDidReorderFaces:(id)faces
 {
-  v4 = [(NTKGalleryCollection *)self delegate];
-  [v4 galleryCollectionDidChange:self shouldUpdateSnaphots:1];
+  delegate = [(NTKGalleryCollection *)self delegate];
+  [delegate galleryCollectionDidChange:self shouldUpdateSnaphots:1];
 }
 
 @end

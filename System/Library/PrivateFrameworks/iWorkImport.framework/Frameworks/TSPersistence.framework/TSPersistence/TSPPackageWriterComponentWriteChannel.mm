@@ -1,28 +1,28 @@
 @interface TSPPackageWriterComponentWriteChannel
-- (TSPPackageWriterComponentWriteChannel)initWithArchiveWriter:(id)a3;
-- (void)writeData:(id)a3;
+- (TSPPackageWriterComponentWriteChannel)initWithArchiveWriter:(id)writer;
+- (void)writeData:(id)data;
 @end
 
 @implementation TSPPackageWriterComponentWriteChannel
 
-- (TSPPackageWriterComponentWriteChannel)initWithArchiveWriter:(id)a3
+- (TSPPackageWriterComponentWriteChannel)initWithArchiveWriter:(id)writer
 {
-  v5 = a3;
+  writerCopy = writer;
   v9.receiver = self;
   v9.super_class = TSPPackageWriterComponentWriteChannel;
   v6 = [(TSPPackageWriterComponentWriteChannel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_archiveWriter, a3);
+    objc_storeStrong(&v6->_archiveWriter, writer);
   }
 
   return v7;
 }
 
-- (void)writeData:(id)a3
+- (void)writeData:(id)data
 {
-  v12 = a3;
+  dataCopy = data;
   v5 = atomic_load(&self->_isClosed);
   if (v5)
   {
@@ -36,7 +36,7 @@
     abort();
   }
 
-  objc_msgSend_addData_(self->_archiveWriter, v4, v12);
+  objc_msgSend_addData_(self->_archiveWriter, v4, dataCopy);
 }
 
 @end

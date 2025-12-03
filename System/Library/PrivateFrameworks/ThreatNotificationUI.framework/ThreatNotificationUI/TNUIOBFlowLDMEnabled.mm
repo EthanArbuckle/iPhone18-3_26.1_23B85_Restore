@@ -1,8 +1,8 @@
 @interface TNUIOBFlowLDMEnabled
 - (TNUIOnBoardingViewControllerDelegate)onBoardingDelegate;
-- (_TtC20ThreatNotificationUI20TNUIOBFlowLDMEnabled)initWithCoder:(id)a3;
-- (_TtC20ThreatNotificationUI20TNUIOBFlowLDMEnabled)initWithTransitionStyle:(int64_t)a3 navigationOrientation:(int64_t)a4 options:(id)a5;
-- (void)setOnBoardingDelegate:(id)a3;
+- (_TtC20ThreatNotificationUI20TNUIOBFlowLDMEnabled)initWithCoder:(id)coder;
+- (_TtC20ThreatNotificationUI20TNUIOBFlowLDMEnabled)initWithTransitionStyle:(int64_t)style navigationOrientation:(int64_t)orientation options:(id)options;
+- (void)setOnBoardingDelegate:(id)delegate;
 - (void)viewDidLoad;
 @end
 
@@ -24,7 +24,7 @@
   return Strong;
 }
 
-- (void)setOnBoardingDelegate:(id)a3
+- (void)setOnBoardingDelegate:(id)delegate
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -38,7 +38,7 @@
   swift_unknownObjectWeakAssign();
 }
 
-- (_TtC20ThreatNotificationUI20TNUIOBFlowLDMEnabled)initWithCoder:(id)a3
+- (_TtC20ThreatNotificationUI20TNUIOBFlowLDMEnabled)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -48,7 +48,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = TNUIOBFlowLDMEnabled.init(coder:)(a3);
+  v4 = TNUIOBFlowLDMEnabled.init(coder:)(coder);
 
   return v4;
 }
@@ -65,12 +65,12 @@
 
   v4.receiver = self;
   v4.super_class = type metadata accessor for TNUIOBFlowLDMEnabled();
-  v3 = self;
+  selfCopy = self;
   [(TNUIOBFlowLDMEnabled *)&v4 viewDidLoad];
   TNUIOBFlowLDMEnabled.showPage(page:animated:)(1, 0);
 }
 
-- (_TtC20ThreatNotificationUI20TNUIOBFlowLDMEnabled)initWithTransitionStyle:(int64_t)a3 navigationOrientation:(int64_t)a4 options:(id)a5
+- (_TtC20ThreatNotificationUI20TNUIOBFlowLDMEnabled)initWithTransitionStyle:(int64_t)style navigationOrientation:(int64_t)orientation options:(id)options
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

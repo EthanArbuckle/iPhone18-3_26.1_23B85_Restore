@@ -1,20 +1,20 @@
 @interface CKInvisibleInkEffectCoverageTracker
 - (CGSize)size;
-- (CKInvisibleInkEffectCoverageTracker)initWithSize:(CGSize)a3 touchLifetime:(double)a4;
+- (CKInvisibleInkEffectCoverageTracker)initWithSize:(CGSize)size touchLifetime:(double)lifetime;
 - (CKInvisibleInkEffectCoverageTrackerDelegate)delegate;
-- (void)_checkForCover:(id)a3;
+- (void)_checkForCover:(id)cover;
 - (void)dealloc;
-- (void)recordTouchAtPoint:(CGPoint)a3;
+- (void)recordTouchAtPoint:(CGPoint)point;
 - (void)reset;
-- (void)setSize:(CGSize)a3;
+- (void)setSize:(CGSize)size;
 @end
 
 @implementation CKInvisibleInkEffectCoverageTracker
 
-- (CKInvisibleInkEffectCoverageTracker)initWithSize:(CGSize)a3 touchLifetime:(double)a4
+- (CKInvisibleInkEffectCoverageTracker)initWithSize:(CGSize)size touchLifetime:(double)lifetime
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = CKInvisibleInkEffectCoverageTracker;
   v7 = [(CKInvisibleInkEffectCoverageTracker *)&v10 init];
@@ -22,7 +22,7 @@
   if (v7)
   {
     [(CKInvisibleInkEffectCoverageTracker *)v7 setSize:width, height];
-    v8->_touchLifetime = a4;
+    v8->_touchLifetime = lifetime;
   }
 
   return v8;
@@ -37,17 +37,17 @@
   [(CKInvisibleInkEffectCoverageTracker *)&v3 dealloc];
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  if (a3.width != self->_size.width || a3.height != self->_size.height)
+  if (size.width != self->_size.width || size.height != self->_size.height)
   {
-    self->_size = a3;
-    height = a3.height;
+    self->_size = size;
+    height = size.height;
     __asm { FMOV            V2.2D, #1.0 }
 
-    v11 = vcvtq_u64_f64(vmaxnmq_f64(vrndmq_f64(vdivq_f64(a3, vdupq_n_s64(0x4044000000000000uLL))), _Q2));
+    v11 = vcvtq_u64_f64(vmaxnmq_f64(vrndmq_f64(vdivq_f64(size, vdupq_n_s64(0x4044000000000000uLL))), _Q2));
     *&self->_width = v11;
-    *&self->_cellWidth = vdivq_f64(a3, vcvtq_f64_u64(v11));
+    *&self->_cellWidth = vdivq_f64(size, vcvtq_f64_u64(v11));
     free(self->_expiryTimes);
     self->_expiryTimes = malloc_type_malloc(8 * self->_width * self->_height, 0x100004000313F17uLL);
 
@@ -57,8 +57,8 @@
 
 - (void)reset
 {
-  v3 = [MEMORY[0x1E695DF00] distantPast];
-  [v3 timeIntervalSinceReferenceDate];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  [distantPast timeIntervalSinceReferenceDate];
   v5 = v4;
 
   v6 = self->_height * self->_width;
@@ -96,10 +96,10 @@
   [(NSTimer *)recoverTimer invalidate];
 }
 
-- (void)recordTouchAtPoint:(CGPoint)a3
+- (void)recordTouchAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   cellWidth = self->_cellWidth;
   cellHeight = self->_cellHeight;
   Current = CFAbsoluteTimeGetCurrent();
@@ -178,7 +178,7 @@
       self->_recoverTimer = v24;
     }
 
-    v25 = [(CKInvisibleInkEffectCoverageTracker *)self delegate];
+    delegate = [(CKInvisibleInkEffectCoverageTracker *)self delegate];
     v26 = objc_opt_respondsToSelector();
 
     if (v26)
@@ -199,11 +199,11 @@ void __58__CKInvisibleInkEffectCoverageTracker_recordTouchAtPoint___block_invoke
   [v2 invisibleInkEffectCoverageTrackerDidUncover:*(a1 + 32)];
 }
 
-- (void)_checkForCover:(id)a3
+- (void)_checkForCover:(id)cover
 {
   Current = CFAbsoluteTimeGetCurrent();
-  v5 = [MEMORY[0x1E695DF00] distantFuture];
-  [v5 timeIntervalSinceReferenceDate];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  [distantFuture timeIntervalSinceReferenceDate];
   v7 = v6;
 
   v8 = self->_height * self->_width;
@@ -241,16 +241,16 @@ void __58__CKInvisibleInkEffectCoverageTracker_recordTouchAtPoint___block_invoke
   while (v11);
   if (v8 * 0.75 < v9)
   {
-    v15 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__checkForCover_ selector:0 userInfo:0 repeats:v7 - Current];
+    current = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__checkForCover_ selector:0 userInfo:0 repeats:v7 - Current];
     recoverTimer = self->_recoverTimer;
-    self->_recoverTimer = v15;
+    self->_recoverTimer = current;
   }
 
   else
   {
 LABEL_11:
     [(CKInvisibleInkEffectCoverageTracker *)self setUncovered:0];
-    v17 = [(CKInvisibleInkEffectCoverageTracker *)self delegate];
+    delegate = [(CKInvisibleInkEffectCoverageTracker *)self delegate];
     v18 = objc_opt_respondsToSelector();
 
     if ((v18 & 1) == 0)
@@ -258,9 +258,9 @@ LABEL_11:
       return;
     }
 
-    v19 = [(CKInvisibleInkEffectCoverageTracker *)self delegate];
-    [(NSTimer *)v19 invisibleInkEffectCoverageTrackerDidRecover:self];
-    recoverTimer = v19;
+    delegate2 = [(CKInvisibleInkEffectCoverageTracker *)self delegate];
+    [(NSTimer *)delegate2 invisibleInkEffectCoverageTrackerDidRecover:self];
+    recoverTimer = delegate2;
   }
 }
 

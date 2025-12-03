@@ -11,34 +11,34 @@
 - (int64_t)keyLineMode;
 - (int64_t)sampledBackgroundLuminanceLevel;
 - (int64_t)shadowStyle;
-- (void)setAssociatedSystemApertureElementIdentity:(id)a3;
-- (void)setContentBounds:(CGRect)a3;
-- (void)setContentCenter:(CGPoint)a3;
-- (void)setContentClippingEnabled:(BOOL)a3;
-- (void)setContentScale:(CGSize)a3;
-- (void)setKeyLineMode:(int64_t)a3;
-- (void)setKeyLineTintColor:(id)a3;
-- (void)setRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)a3;
-- (void)setSampledBackgroundLuminanceLevel:(int64_t)a3;
-- (void)setShadowStyle:(int64_t)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setAssociatedSystemApertureElementIdentity:(id)identity;
+- (void)setContentBounds:(CGRect)bounds;
+- (void)setContentCenter:(CGPoint)center;
+- (void)setContentClippingEnabled:(BOOL)enabled;
+- (void)setContentScale:(CGSize)scale;
+- (void)setKeyLineMode:(int64_t)mode;
+- (void)setKeyLineTintColor:(id)color;
+- (void)setRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)configuration;
+- (void)setSampledBackgroundLuminanceLevel:(int64_t)level;
+- (void)setShadowStyle:(int64_t)style;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation SBSAContainerViewDescriptionMutator
 
 - (SAElementIdentifying)associatedSystemApertureElementIdentity
 {
-  v2 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  v3 = [v2 associatedSystemApertureElementIdentity];
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  associatedSystemApertureElementIdentity = [_containerViewDescription associatedSystemApertureElementIdentity];
 
-  return v3;
+  return associatedSystemApertureElementIdentity;
 }
 
 - (id)_containerViewDescription
 {
-  v2 = [(SBSAViewDescriptionMutator *)self viewDescription];
+  viewDescription = [(SBSAViewDescriptionMutator *)self viewDescription];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = viewDescription;
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -59,16 +59,16 @@
 
 - (UIColor)keyLineTintColor
 {
-  v2 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  v3 = [v2 keyLineTintColor];
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  keyLineTintColor = [_containerViewDescription keyLineTintColor];
 
-  return v3;
+  return keyLineTintColor;
 }
 
 - (CGSize)contentScale
 {
-  v2 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  [v2 contentScale];
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  [_containerViewDescription contentScale];
   v4 = v3;
   v6 = v5;
 
@@ -79,43 +79,43 @@
   return result;
 }
 
-- (void)setAssociatedSystemApertureElementIdentity:(id)a3
+- (void)setAssociatedSystemApertureElementIdentity:(id)identity
 {
-  v11 = a3;
-  v4 = [(SBSAContainerViewDescriptionMutator *)self associatedSystemApertureElementIdentity];
+  identityCopy = identity;
+  associatedSystemApertureElementIdentity = [(SBSAContainerViewDescriptionMutator *)self associatedSystemApertureElementIdentity];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-    if (v11)
+    _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+    if (identityCopy)
     {
       v7 = [SBSAElementIdentification alloc];
-      v8 = [v11 clientIdentifier];
-      v9 = [v11 elementIdentifier];
-      v10 = [(SBSAElementIdentification *)v7 initWithClientIdentifier:v8 elementIdentifier:v9];
-      [v6 _setAssociatedSystemApertureElementIdentity:v10];
+      clientIdentifier = [identityCopy clientIdentifier];
+      elementIdentifier = [identityCopy elementIdentifier];
+      v10 = [(SBSAElementIdentification *)v7 initWithClientIdentifier:clientIdentifier elementIdentifier:elementIdentifier];
+      [_containerViewDescription _setAssociatedSystemApertureElementIdentity:v10];
     }
 
     else
     {
-      [v6 _setAssociatedSystemApertureElementIdentity:0];
+      [_containerViewDescription _setAssociatedSystemApertureElementIdentity:0];
     }
   }
 }
 
-- (void)setContentScale:(CGSize)a3
+- (void)setContentScale:(CGSize)scale
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  [v5 _setContentScale:{width, height}];
+  height = scale.height;
+  width = scale.width;
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  [_containerViewDescription _setContentScale:{width, height}];
 }
 
 - (CGRect)contentBounds
 {
-  v2 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  [v2 contentBounds];
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  [_containerViewDescription contentBounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -132,20 +132,20 @@
   return result;
 }
 
-- (void)setContentBounds:(CGRect)a3
+- (void)setContentBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  [v7 _setContentBounds:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  [_containerViewDescription _setContentBounds:{x, y, width, height}];
 }
 
 - (CGPoint)contentCenter
 {
-  v2 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  [v2 contentCenter];
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  [_containerViewDescription contentCenter];
   v4 = v3;
   v6 = v5;
 
@@ -156,77 +156,77 @@
   return result;
 }
 
-- (void)setContentCenter:(CGPoint)a3
+- (void)setContentCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  [v5 _setContentCenter:{x, y}];
+  y = center.y;
+  x = center.x;
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  [_containerViewDescription _setContentCenter:{x, y}];
 }
 
 - (int64_t)keyLineMode
 {
-  v2 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  v3 = [v2 keyLineMode];
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  keyLineMode = [_containerViewDescription keyLineMode];
 
-  return v3;
+  return keyLineMode;
 }
 
-- (void)setKeyLineMode:(int64_t)a3
+- (void)setKeyLineMode:(int64_t)mode
 {
-  v4 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  [v4 _setKeyLineMode:a3];
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  [_containerViewDescription _setKeyLineMode:mode];
 }
 
-- (void)setKeyLineTintColor:(id)a3
+- (void)setKeyLineTintColor:(id)color
 {
-  v7 = a3;
-  v4 = [(SBSAContainerViewDescriptionMutator *)self keyLineTintColor];
+  colorCopy = color;
+  keyLineTintColor = [(SBSAContainerViewDescriptionMutator *)self keyLineTintColor];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-    [v6 _setKeyLineTintColor:v7];
+    _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+    [_containerViewDescription _setKeyLineTintColor:colorCopy];
   }
 }
 
 - (int64_t)sampledBackgroundLuminanceLevel
 {
-  v2 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  v3 = [v2 sampledBackgroundLuminanceLevel];
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  sampledBackgroundLuminanceLevel = [_containerViewDescription sampledBackgroundLuminanceLevel];
 
-  return v3;
+  return sampledBackgroundLuminanceLevel;
 }
 
-- (void)setSampledBackgroundLuminanceLevel:(int64_t)a3
+- (void)setSampledBackgroundLuminanceLevel:(int64_t)level
 {
-  v4 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  [v4 _setSampledBackgroundLuminanceLevel:a3];
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  [_containerViewDescription _setSampledBackgroundLuminanceLevel:level];
 }
 
 - (int64_t)shadowStyle
 {
-  v2 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  v3 = [v2 shadowStyle];
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  shadowStyle = [_containerViewDescription shadowStyle];
 
-  return v3;
+  return shadowStyle;
 }
 
-- (void)setShadowStyle:(int64_t)a3
+- (void)setShadowStyle:(int64_t)style
 {
-  v4 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  [v4 _setShadowStyle:a3];
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  [_containerViewDescription _setShadowStyle:style];
 }
 
 - (SBSystemApertureContainerRenderingConfiguration)renderingConfiguration
 {
-  v4 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  if (v4)
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  if (_containerViewDescription)
   {
-    v6 = v4;
-    [v4 renderingConfiguration];
-    v4 = v6;
+    v6 = _containerViewDescription;
+    [_containerViewDescription renderingConfiguration];
+    _containerViewDescription = v6;
   }
 
   else
@@ -239,41 +239,41 @@
   return result;
 }
 
-- (void)setRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)a3
+- (void)setRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)configuration
 {
-  v4 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  v5 = *a3;
-  [v4 _setRenderingConfiguration:&v5];
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  v5 = *configuration;
+  [_containerViewDescription _setRenderingConfiguration:&v5];
 }
 
 - (BOOL)isContentClippingEnabled
 {
-  v2 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  v3 = [v2 isContentClippingEnabled];
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  isContentClippingEnabled = [_containerViewDescription isContentClippingEnabled];
 
-  return v3;
+  return isContentClippingEnabled;
 }
 
-- (void)setContentClippingEnabled:(BOOL)a3
+- (void)setContentClippingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  [v4 _setContentClippingEnabled:v3];
+  enabledCopy = enabled;
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  [_containerViewDescription _setContentClippingEnabled:enabledCopy];
 }
 
 - (BOOL)isUserInteractionEnabled
 {
-  v2 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  v3 = [v2 isUserInteractionEnabled];
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  isUserInteractionEnabled = [_containerViewDescription isUserInteractionEnabled];
 
-  return v3;
+  return isUserInteractionEnabled;
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
-  [v4 _setUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  _containerViewDescription = [(SBSAContainerViewDescriptionMutator *)self _containerViewDescription];
+  [_containerViewDescription _setUserInteractionEnabled:enabledCopy];
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface DoseComplicationFormatter
-- (BOOL)supportsFamily:(int64_t)a3 forDevice:(id)a4;
+- (BOOL)supportsFamily:(int64_t)family forDevice:(id)device;
 - (DoseComplicationFormatter)init;
-- (id)_alwaysOnTemplateWithFamily:(int64_t)a3 content:(id)a4 device:(id)a5;
-- (id)_setupNoiseTemplateWithFamily:(int64_t)a3 device:(id)a4;
-- (id)_templateWithFamily:(int64_t)a3 content:(id)a4 device:(id)a5;
-- (id)accessibilityLabelForSymbol:(id)a3;
-- (id)alwaysOnTemplateWithFamily:(int64_t)a3 forDevice:(id)a4;
-- (id)createGaugeProviderWithFillValue:(double)a3 tintColor:(id)a4;
-- (id)createMonospaceTextProviderWithText:(id)a3 shortText:(id)a4;
-- (id)createOuterMonospaceTextProviderWithText:(id)a3;
-- (id)formattedTemplateWithFamily:(int64_t)a3 forDevice:(id)a4;
-- (id)fullColorImageProviderWithImage:(id)a3;
-- (id)fullColorImageProviderWithSymbolName:(id)a3 tintColor:(id)a4 pointSizeSymbolConstants:(id *)a5;
-- (id)imageProviderWithImage:(id)a3 tintColor:(id)a4;
-- (id)imageProviderWithSymbolName:(id)a3 tintColor:(id)a4;
-- (id)imageProviderWithSymbolName:(id)a3 tintColor:(id)a4 pointSizeSymbolConstants:(id *)a5;
+- (id)_alwaysOnTemplateWithFamily:(int64_t)family content:(id)content device:(id)device;
+- (id)_setupNoiseTemplateWithFamily:(int64_t)family device:(id)device;
+- (id)_templateWithFamily:(int64_t)family content:(id)content device:(id)device;
+- (id)accessibilityLabelForSymbol:(id)symbol;
+- (id)alwaysOnTemplateWithFamily:(int64_t)family forDevice:(id)device;
+- (id)createGaugeProviderWithFillValue:(double)value tintColor:(id)color;
+- (id)createMonospaceTextProviderWithText:(id)text shortText:(id)shortText;
+- (id)createOuterMonospaceTextProviderWithText:(id)text;
+- (id)formattedTemplateWithFamily:(int64_t)family forDevice:(id)device;
+- (id)fullColorImageProviderWithImage:(id)image;
+- (id)fullColorImageProviderWithSymbolName:(id)name tintColor:(id)color pointSizeSymbolConstants:(id *)constants;
+- (id)imageProviderWithImage:(id)image tintColor:(id)color;
+- (id)imageProviderWithSymbolName:(id)name tintColor:(id)color;
+- (id)imageProviderWithSymbolName:(id)name tintColor:(id)color pointSizeSymbolConstants:(id *)constants;
 - (id)newAlwaysOnDoseContent;
 - (id)newSwitcherDoseContent;
 - (id)setupComplicationBackgroundColor;
-- (id)switcherTemplateWithFamily:(int64_t)a3 forDevice:(id)a4;
+- (id)switcherTemplateWithFamily:(int64_t)family forDevice:(id)device;
 @end
 
 @implementation DoseComplicationFormatter
@@ -38,16 +38,16 @@
     [v3 setNotANumberSymbol:v5];
 
     [(DoseComplicationFormatter *)v2 setDbFormatter:v3];
-    v6 = [(DoseComplicationFormatter *)v2 newSwitcherDoseContent];
-    [(DoseComplicationFormatter *)v2 setCurrentDoseContent:v6];
+    newSwitcherDoseContent = [(DoseComplicationFormatter *)v2 newSwitcherDoseContent];
+    [(DoseComplicationFormatter *)v2 setCurrentDoseContent:newSwitcherDoseContent];
 
-    v7 = [(DoseComplicationFormatter *)v2 newSwitcherDoseContent];
+    newSwitcherDoseContent2 = [(DoseComplicationFormatter *)v2 newSwitcherDoseContent];
     switcherDoseContent = v2->_switcherDoseContent;
-    v2->_switcherDoseContent = v7;
+    v2->_switcherDoseContent = newSwitcherDoseContent2;
 
-    v9 = [(DoseComplicationFormatter *)v2 newAlwaysOnDoseContent];
+    newAlwaysOnDoseContent = [(DoseComplicationFormatter *)v2 newAlwaysOnDoseContent];
     alwaysOnDoseContent = v2->_alwaysOnDoseContent;
-    v2->_alwaysOnDoseContent = v9;
+    v2->_alwaysOnDoseContent = newAlwaysOnDoseContent;
   }
 
   return v2;
@@ -75,10 +75,10 @@
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"LEVEL_SHORT" value:&stru_C3E0 table:0];
   v12 = [v9 localizedStringForKey:@"LEVEL_SHORT" value:v11 table:@"Noise"];
-  v13 = [(DoseComplicationFormatter *)self dbFormatter];
+  dbFormatter = [(DoseComplicationFormatter *)self dbFormatter];
   [v3 slowLeq];
   v14 = [NSNumber numberWithFloat:?];
-  v15 = [v13 stringFromNumber:v14];
+  v15 = [dbFormatter stringFromNumber:v14];
   v16 = [NSString stringWithFormat:v12, v15];
   [v3 setLevelContentShort:v16];
 
@@ -86,10 +86,10 @@
   v18 = [NSBundle bundleForClass:objc_opt_class()];
   v19 = [v18 localizedStringForKey:@"LEVEL_LONG" value:&stru_C3E0 table:0];
   v20 = [v17 localizedStringForKey:@"LEVEL_LONG" value:v19 table:@"Noise"];
-  v21 = [(DoseComplicationFormatter *)self dbFormatter];
+  dbFormatter2 = [(DoseComplicationFormatter *)self dbFormatter];
   [v3 slowLeq];
   v22 = [NSNumber numberWithFloat:?];
-  v23 = [v21 stringFromNumber:v22];
+  v23 = [dbFormatter2 stringFromNumber:v22];
   v24 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v20, [v23 integerValue]);
   [v3 setLevelContentLong:v24];
 
@@ -144,17 +144,17 @@
   return v2;
 }
 
-- (BOOL)supportsFamily:(int64_t)a3 forDevice:(id)a4
+- (BOOL)supportsFamily:(int64_t)family forDevice:(id)device
 {
-  if (CLKComplicationFamilyCircularMedium == a3)
+  if (CLKComplicationFamilyCircularMedium == family)
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v4 = 0x1FDFu >> a3;
-    if (a3 > 0xC)
+    v4 = 0x1FDFu >> family;
+    if (family > 0xC)
     {
       LOBYTE(v4) = 0;
     }
@@ -163,10 +163,10 @@
   return v4 & 1;
 }
 
-- (id)accessibilityLabelForSymbol:(id)a3
+- (id)accessibilityLabelForSymbol:(id)symbol
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"checkmark.circle.fill"])
+  symbolCopy = symbol;
+  if ([symbolCopy isEqualToString:@"checkmark.circle.fill"])
   {
     v4 = @"THRESHOLD_OK_SYMBOL_ACCESSIBILITY";
 LABEL_5:
@@ -178,7 +178,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"exclamationmark.triangle.fill"])
+  if ([symbolCopy isEqualToString:@"exclamationmark.triangle.fill"])
   {
     v4 = @"THRESHOLD_WARNING_SYMBOL_ACCESSIBILITY";
     goto LABEL_5;
@@ -190,85 +190,85 @@ LABEL_7:
   return v8;
 }
 
-- (id)imageProviderWithSymbolName:(id)a3 tintColor:(id)a4
+- (id)imageProviderWithSymbolName:(id)name tintColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  colorCopy = color;
   v8 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:2 scale:12.0];
   if (qword_10B28 != -1)
   {
     sub_6810();
   }
 
-  v9 = [qword_10B20 objectForKeyedSubscript:v6];
+  v9 = [qword_10B20 objectForKeyedSubscript:nameCopy];
   if (!v9)
   {
-    v9 = [UIImage systemImageNamed:v6 withConfiguration:v8];
-    v10 = [(DoseComplicationFormatter *)self accessibilityLabelForSymbol:v6];
+    v9 = [UIImage systemImageNamed:nameCopy withConfiguration:v8];
+    v10 = [(DoseComplicationFormatter *)self accessibilityLabelForSymbol:nameCopy];
     [v9 setAccessibilityLabel:v10];
 
-    [qword_10B20 setObject:v9 forKeyedSubscript:v6];
+    [qword_10B20 setObject:v9 forKeyedSubscript:nameCopy];
   }
 
-  v11 = [(DoseComplicationFormatter *)self imageProviderWithImage:v9 tintColor:v7];
+  v11 = [(DoseComplicationFormatter *)self imageProviderWithImage:v9 tintColor:colorCopy];
 
   return v11;
 }
 
-- (id)imageProviderWithSymbolName:(id)a3 tintColor:(id)a4 pointSizeSymbolConstants:(id *)a5
+- (id)imageProviderWithSymbolName:(id)name tintColor:(id)color pointSizeSymbolConstants:(id *)constants
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [CLKSymbolImageProvider symbolImageProviderWithSystemName:v9];
-  [v10 setTintColor:v8];
+  colorCopy = color;
+  nameCopy = name;
+  v10 = [CLKSymbolImageProvider symbolImageProviderWithSystemName:nameCopy];
+  [v10 setTintColor:colorCopy];
 
-  v11 = [(DoseComplicationFormatter *)self accessibilityLabelForSymbol:v9];
+  v11 = [(DoseComplicationFormatter *)self accessibilityLabelForSymbol:nameCopy];
 
   [v10 setAccessibilityLabel:v11];
   [v10 setIgnoreHierarchicalLayers:1];
-  v12 = [NSNumber numberWithDouble:a5->var0];
+  v12 = [NSNumber numberWithDouble:constants->var0];
   [v10 setOverridePointSize:v12];
 
   return v10;
 }
 
-- (id)imageProviderWithImage:(id)a3 tintColor:(id)a4
+- (id)imageProviderWithImage:(id)image tintColor:(id)color
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [CLKImageProvider imageProviderWithOnePieceImage:v6];
-  [v7 setTintColor:v5];
+  colorCopy = color;
+  imageCopy = image;
+  v7 = [CLKImageProvider imageProviderWithOnePieceImage:imageCopy];
+  [v7 setTintColor:colorCopy];
 
-  v8 = [v6 accessibilityLabel];
+  accessibilityLabel = [imageCopy accessibilityLabel];
 
-  [v7 setAccessibilityLabel:v8];
+  [v7 setAccessibilityLabel:accessibilityLabel];
 
   return v7;
 }
 
-- (id)fullColorImageProviderWithImage:(id)a3
+- (id)fullColorImageProviderWithImage:(id)image
 {
-  v3 = a3;
-  v4 = [CLKFullColorImageProvider providerWithFullColorImage:v3 monochromeFilterType:1];
-  v5 = [v3 accessibilityLabel];
+  imageCopy = image;
+  v4 = [CLKFullColorImageProvider providerWithFullColorImage:imageCopy monochromeFilterType:1];
+  accessibilityLabel = [imageCopy accessibilityLabel];
 
-  [v4 setAccessibilityLabel:v5];
+  [v4 setAccessibilityLabel:accessibilityLabel];
 
   return v4;
 }
 
-- (id)fullColorImageProviderWithSymbolName:(id)a3 tintColor:(id)a4 pointSizeSymbolConstants:(id *)a5
+- (id)fullColorImageProviderWithSymbolName:(id)name tintColor:(id)color pointSizeSymbolConstants:(id *)constants
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [CLKFullColorSymbolImageProvider symbolImageProviderWithSystemName:v9];
-  [v10 setTintColor:v8];
+  colorCopy = color;
+  nameCopy = name;
+  v10 = [CLKFullColorSymbolImageProvider symbolImageProviderWithSystemName:nameCopy];
+  [v10 setTintColor:colorCopy];
 
-  v11 = [(DoseComplicationFormatter *)self accessibilityLabelForSymbol:v9];
+  v11 = [(DoseComplicationFormatter *)self accessibilityLabelForSymbol:nameCopy];
 
   [v10 setAccessibilityLabel:v11];
   [v10 setIgnoreHierarchicalLayers:1];
-  v12 = [NSNumber numberWithDouble:a5->var0];
+  v12 = [NSNumber numberWithDouble:constants->var0];
   [v10 setOverridePointSize:v12];
 
   return v10;
@@ -283,37 +283,37 @@ LABEL_7:
   return v2;
 }
 
-- (id)formattedTemplateWithFamily:(int64_t)a3 forDevice:(id)a4
+- (id)formattedTemplateWithFamily:(int64_t)family forDevice:(id)device
 {
-  v6 = a4;
-  v7 = [(DoseComplicationFormatter *)self switcherDoseContent];
-  v8 = [(DoseComplicationFormatter *)self _templateWithFamily:a3 content:v7 device:v6];
+  deviceCopy = device;
+  switcherDoseContent = [(DoseComplicationFormatter *)self switcherDoseContent];
+  v8 = [(DoseComplicationFormatter *)self _templateWithFamily:family content:switcherDoseContent device:deviceCopy];
 
   return v8;
 }
 
-- (id)switcherTemplateWithFamily:(int64_t)a3 forDevice:(id)a4
+- (id)switcherTemplateWithFamily:(int64_t)family forDevice:(id)device
 {
-  v6 = a4;
-  v7 = [(DoseComplicationFormatter *)self switcherDoseContent];
-  v8 = [(DoseComplicationFormatter *)self _templateWithFamily:a3 content:v7 device:v6];
+  deviceCopy = device;
+  switcherDoseContent = [(DoseComplicationFormatter *)self switcherDoseContent];
+  v8 = [(DoseComplicationFormatter *)self _templateWithFamily:family content:switcherDoseContent device:deviceCopy];
 
   return v8;
 }
 
-- (id)alwaysOnTemplateWithFamily:(int64_t)a3 forDevice:(id)a4
+- (id)alwaysOnTemplateWithFamily:(int64_t)family forDevice:(id)device
 {
-  v6 = a4;
-  v7 = [(DoseComplicationFormatter *)self alwaysOnDoseContent];
-  v8 = [(DoseComplicationFormatter *)self _alwaysOnTemplateWithFamily:a3 content:v7 device:v6];
+  deviceCopy = device;
+  alwaysOnDoseContent = [(DoseComplicationFormatter *)self alwaysOnDoseContent];
+  v8 = [(DoseComplicationFormatter *)self _alwaysOnTemplateWithFamily:family content:alwaysOnDoseContent device:deviceCopy];
 
   return v8;
 }
 
-- (id)_alwaysOnTemplateWithFamily:(int64_t)a3 content:(id)a4 device:(id)a5
+- (id)_alwaysOnTemplateWithFamily:(int64_t)family content:(id)content device:(id)device
 {
-  v8 = a4;
-  v9 = a5;
+  contentCopy = content;
+  deviceCopy = device;
   if (qword_10BF0 != -1)
   {
     sub_6824();
@@ -331,13 +331,13 @@ LABEL_7:
   v114 = unk_10B40;
   v115 = xmmword_10B50;
   v116 = *&qword_10B60;
-  if (a3 <= 7)
+  if (family <= 7)
   {
-    if (a3 <= 2)
+    if (family <= 2)
     {
-      if (a3)
+      if (family)
       {
-        if (a3 != 1)
+        if (family != 1)
         {
           goto LABEL_37;
         }
@@ -350,63 +350,63 @@ LABEL_7:
         v21 = [CLKSimpleTextProvider textProviderWithText:v20];
         [v10 setHeaderTextProvider:v21];
 
-        v22 = [v8 classifierContent];
-        v23 = [CLKSimpleTextProvider textProviderWithText:v22];
+        classifierContent = [contentCopy classifierContent];
+        v23 = [CLKSimpleTextProvider textProviderWithText:classifierContent];
         [v10 setBody1TextProvider:v23];
 
-        v24 = [v8 levelContentLong];
-        v25 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:v24 shortText:0];
+        levelContentLong = [contentCopy levelContentLong];
+        v25 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:levelContentLong shortText:0];
         [v10 setBody2TextProvider:v25];
 
         v26 = +[UIColor systemBlueColor];
-        v27 = [v10 headerTextProvider];
-        [v27 setTintColor:v26];
+        headerTextProvider = [v10 headerTextProvider];
+        [headerTextProvider setTintColor:v26];
       }
 
       else
       {
         v10 = objc_alloc_init(CLKComplicationTemplateModularSmallStackImage);
-        v46 = [v8 classificationImageName];
+        classificationImageName = [contentCopy classificationImageName];
 
-        if (v46)
+        if (classificationImageName)
         {
-          v47 = [v8 classificationImageName];
-          v48 = [v8 imageTintColor];
+          classificationImageName2 = [contentCopy classificationImageName];
+          imageTintColor = [contentCopy imageTintColor];
           v111 = v119;
           v112 = v120;
-          v49 = [(DoseComplicationFormatter *)self imageProviderWithSymbolName:v47 tintColor:v48 pointSizeSymbolConstants:&v111];
+          v49 = [(DoseComplicationFormatter *)self imageProviderWithSymbolName:classificationImageName2 tintColor:imageTintColor pointSizeSymbolConstants:&v111];
           [v10 setLine1ImageProvider:v49];
         }
 
-        v50 = [v8 levelContentShort];
-        v51 = [NSString localizedStringWithFormat:@"%@", v50];
+        levelContentShort = [contentCopy levelContentShort];
+        v51 = [NSString localizedStringWithFormat:@"%@", levelContentShort];
         v52 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:v51 shortText:0];
         [v10 setLine2TextProvider:v52];
 
         [v10 setHighlightLine2:0];
       }
 
-      v42 = [v8 tintColor];
-      [v10 setTintColor:v42];
+      tintColor = [contentCopy tintColor];
+      [v10 setTintColor:tintColor];
 LABEL_31:
 
       goto LABEL_38;
     }
 
-    if (a3 != 3)
+    if (family != 3)
     {
-      if (a3 == 4)
+      if (family == 4)
       {
         v10 = objc_alloc_init(CLKComplicationTemplateCircularSmallStackText);
         v28 = [NSBundle bundleForClass:objc_opt_class()];
         v29 = [NSBundle bundleForClass:objc_opt_class()];
         [v29 localizedStringForKey:@"UNKNOWN_DECIBELS_LEVEL" value:&stru_C3E0 table:0];
-        v31 = v30 = v9;
+        v31 = v30 = deviceCopy;
         v32 = [v28 localizedStringForKey:@"UNKNOWN_DECIBELS_LEVEL" value:v31 table:@"Noise"];
         v33 = [CLKSimpleTextProvider textProviderWithText:v32];
         [v10 setLine1TextProvider:v33];
 
-        v9 = v30;
+        deviceCopy = v30;
         v34 = [NSBundle bundleForClass:objc_opt_class()];
         v35 = [NSBundle bundleForClass:objc_opt_class()];
         v36 = [v35 localizedStringForKey:@"UNIT_LABEL" value:&stru_C3E0 table:0];
@@ -420,15 +420,15 @@ LABEL_31:
       goto LABEL_37;
     }
 
-    v110 = v9;
+    v110 = deviceCopy;
     v10 = objc_alloc_init(CLKComplicationTemplateUtilitarianLargeFlat);
-    v53 = [v8 classificationImageName];
+    classificationImageName3 = [contentCopy classificationImageName];
 
-    if (v53)
+    if (classificationImageName3)
     {
-      v54 = [v8 classificationImageName];
-      v55 = [v8 imageTintColor];
-      v56 = [(DoseComplicationFormatter *)self imageProviderWithSymbolName:v54 tintColor:v55];
+      classificationImageName4 = [contentCopy classificationImageName];
+      imageTintColor2 = [contentCopy imageTintColor];
+      v56 = [(DoseComplicationFormatter *)self imageProviderWithSymbolName:classificationImageName4 tintColor:imageTintColor2];
       [v10 setImageProvider:v56];
     }
 
@@ -436,47 +436,47 @@ LABEL_31:
     v109 = [NSBundle bundleForClass:objc_opt_class()];
     v107 = [v109 localizedStringForKey:@"LEVEL_SUMMARY" value:&stru_C3E0 table:0];
     v57 = [v108 localizedStringForKey:@"LEVEL_SUMMARY" value:v107 table:@"Noise"];
-    v106 = [v8 classifierContent];
-    v58 = [v106 uppercaseString];
+    classifierContent2 = [contentCopy classifierContent];
+    uppercaseString = [classifierContent2 uppercaseString];
     v59 = [NSBundle bundleForClass:objc_opt_class()];
     v60 = [NSBundle bundleForClass:objc_opt_class()];
     v61 = [v60 localizedStringForKey:&stru_C3E0 value:&stru_C3E0 table:0];
     v62 = [v59 localizedStringForKey:&stru_C3E0 value:v61 table:@"Noise"];
     v63 = v57;
-    v64 = [NSString localizedStringWithFormat:v57, v58, v62];
+    v64 = [NSString localizedStringWithFormat:v57, uppercaseString, v62];
     v65 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:v64 shortText:0];
     [v10 setTextProvider:v65];
 
-    v66 = [v10 textProvider];
-    [v66 setIgnoreUppercaseStyle:1];
+    textProvider = [v10 textProvider];
+    [textProvider setIgnoreUppercaseStyle:1];
 LABEL_35:
 
-    v9 = v110;
+    deviceCopy = v110;
     goto LABEL_38;
   }
 
-  if (a3 <= 9)
+  if (family <= 9)
   {
-    if (a3 != 8)
+    if (family != 8)
     {
       v39 = [NSBundle bundleForClass:objc_opt_class()];
       v40 = [NSBundle bundleForClass:objc_opt_class()];
       v41 = [v40 localizedStringForKey:@"HEADER_TITLE" value:&stru_C3E0 table:0];
-      v42 = [v39 localizedStringForKey:@"HEADER_TITLE" value:v41 table:@"Noise"];
+      tintColor = [v39 localizedStringForKey:@"HEADER_TITLE" value:v41 table:@"Noise"];
 
       v10 = objc_alloc_init(CLKComplicationTemplateGraphicBezelCircularText);
-      v43 = [v42 localizedCapitalizedString];
-      v44 = [CLKSimpleTextProvider textProviderWithText:v43];
+      localizedCapitalizedString = [tintColor localizedCapitalizedString];
+      v44 = [CLKSimpleTextProvider textProviderWithText:localizedCapitalizedString];
       [v10 setTextProvider:v44];
 
-      v45 = [(DoseComplicationFormatter *)self _alwaysOnTemplateWithFamily:10 content:v8 device:v9];
+      v45 = [(DoseComplicationFormatter *)self _alwaysOnTemplateWithFamily:10 content:contentCopy device:deviceCopy];
       [v10 setCircularTemplate:v45];
 LABEL_30:
 
       goto LABEL_31;
     }
 
-    v110 = v9;
+    v110 = deviceCopy;
     v10 = objc_alloc_init(CLKComplicationTemplateGraphicCornerMeteredGaugeText);
     v73 = [NSBundle bundleForClass:objc_opt_class()];
     v74 = [NSBundle bundleForClass:objc_opt_class()];
@@ -485,12 +485,12 @@ LABEL_30:
     v77 = [CLKSimpleTextProvider textProviderWithText:v76];
     [v10 setLeadingTextProvider:v77];
 
-    v78 = [v10 leadingTextProvider];
-    [v78 setIgnoreUppercaseStyle:1];
+    leadingTextProvider = [v10 leadingTextProvider];
+    [leadingTextProvider setIgnoreUppercaseStyle:1];
 
     v79 = [UIColor colorWithRed:0.99 green:0.99 blue:0.99 alpha:1.0];
-    v80 = [v10 leadingTextProvider];
-    [v80 setTintColor:v79];
+    leadingTextProvider2 = [v10 leadingTextProvider];
+    [leadingTextProvider2 setTintColor:v79];
 
     v81 = [NSBundle bundleForClass:objc_opt_class()];
     v82 = [NSBundle bundleForClass:objc_opt_class()];
@@ -499,57 +499,57 @@ LABEL_30:
     v85 = [(DoseComplicationFormatter *)self createOuterMonospaceTextProviderWithText:v84];
     [v10 setOuterTextProvider:v85];
 
-    v86 = [v8 classificationImageName];
+    classificationImageName5 = [contentCopy classificationImageName];
 
-    if (v86)
+    if (classificationImageName5)
     {
-      v87 = [v8 classificationImageName];
-      v88 = [v8 imageTintColor];
+      classificationImageName6 = [contentCopy classificationImageName];
+      imageTintColor3 = [contentCopy imageTintColor];
       v111 = v113;
       v112 = v114;
-      v89 = [(DoseComplicationFormatter *)self fullColorImageProviderWithSymbolName:v87 tintColor:v88 pointSizeSymbolConstants:&v111];
+      v89 = [(DoseComplicationFormatter *)self fullColorImageProviderWithSymbolName:classificationImageName6 tintColor:imageTintColor3 pointSizeSymbolConstants:&v111];
       [v10 setOuterImageProvider:v89];
     }
 
-    [v8 gaugeFillValue];
+    [contentCopy gaugeFillValue];
     v91 = v90;
-    v66 = [v8 tintColor];
-    v92 = [(DoseComplicationFormatter *)self createGaugeProviderWithFillValue:v66 tintColor:v91];
+    textProvider = [contentCopy tintColor];
+    v92 = [(DoseComplicationFormatter *)self createGaugeProviderWithFillValue:textProvider tintColor:v91];
     [v10 setGaugeProvider:v92];
 
     goto LABEL_35;
   }
 
-  switch(a3)
+  switch(family)
   {
     case 10:
       v10 = objc_alloc_init(CLKComplicationTemplateGraphicCircularOpenMeteredGaugeImage);
-      v67 = [v8 levelContentShort];
-      v68 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:v67 shortText:0];
+      levelContentShort2 = [contentCopy levelContentShort];
+      v68 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:levelContentShort2 shortText:0];
       [v10 setTextProvider:v68];
 
-      v69 = [v8 classificationImageName];
+      classificationImageName7 = [contentCopy classificationImageName];
 
-      if (v69)
+      if (classificationImageName7)
       {
-        v14 = [v8 classificationImageName];
-        v15 = [v8 imageTintColor];
+        classificationImageName8 = [contentCopy classificationImageName];
+        imageTintColor4 = [contentCopy imageTintColor];
         v111 = v116;
         v16 = v117;
         goto LABEL_28;
       }
 
 LABEL_29:
-      [v8 gaugeFillValue];
+      [contentCopy gaugeFillValue];
       v72 = v71;
-      v42 = [v8 tintColor];
-      v45 = [(DoseComplicationFormatter *)self createGaugeProviderWithFillValue:v42 tintColor:v72];
+      tintColor = [contentCopy tintColor];
+      v45 = [(DoseComplicationFormatter *)self createGaugeProviderWithFillValue:tintColor tintColor:v72];
       [v10 setGaugeProvider:v45];
       goto LABEL_30;
     case 11:
       v10 = objc_alloc_init(CLKComplicationTemplateGraphicRectangularTextMeteredGauge);
-      v93 = [v8 classifierContent];
-      v94 = [CLKSimpleTextProvider textProviderWithText:v93];
+      classifierContent3 = [contentCopy classifierContent];
+      v94 = [CLKSimpleTextProvider textProviderWithText:classifierContent3];
 
       v95 = [UIColor colorWithRed:0.99 green:0.99 blue:0.99 alpha:1.0];
       [v94 setTintColor:v95];
@@ -562,30 +562,30 @@ LABEL_29:
       v100 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:v99 shortText:0];
       [v10 setBody1TextProvider:v100];
 
-      [v8 gaugeFillValue];
+      [contentCopy gaugeFillValue];
       v102 = v101;
-      v103 = [v8 tintColor];
-      v104 = [(DoseComplicationFormatter *)self createGaugeProviderWithFillValue:v103 tintColor:v102];
+      tintColor2 = [contentCopy tintColor];
+      v104 = [(DoseComplicationFormatter *)self createGaugeProviderWithFillValue:tintColor2 tintColor:v102];
       [v10 setGaugeProvider:v104];
 
       goto LABEL_38;
     case 12:
       v10 = objc_alloc_init(CLKComplicationTemplateGraphicExtraLargeCircularOpenMeteredGaugeImage);
-      v11 = [v8 levelContentShort];
-      v12 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:v11 shortText:0];
+      levelContentShort3 = [contentCopy levelContentShort];
+      v12 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:levelContentShort3 shortText:0];
       [v10 setTextProvider:v12];
 
-      v13 = [v8 classificationImageName];
+      classificationImageName9 = [contentCopy classificationImageName];
 
-      if (v13)
+      if (classificationImageName9)
       {
-        v14 = [v8 classificationImageName];
-        v15 = [v8 imageTintColor];
+        classificationImageName8 = [contentCopy classificationImageName];
+        imageTintColor4 = [contentCopy imageTintColor];
         v111 = *&v123[8];
         v16 = *&v123[24];
 LABEL_28:
         v112 = v16;
-        v70 = [(DoseComplicationFormatter *)self fullColorImageProviderWithSymbolName:v14 tintColor:v15 pointSizeSymbolConstants:&v111];
+        v70 = [(DoseComplicationFormatter *)self fullColorImageProviderWithSymbolName:classificationImageName8 tintColor:imageTintColor4 pointSizeSymbolConstants:&v111];
         [v10 setImageProvider:v70];
 
         goto LABEL_29;
@@ -595,16 +595,16 @@ LABEL_28:
   }
 
 LABEL_37:
-  v10 = [(DoseComplicationFormatter *)self _templateWithFamily:a3 content:v8 device:v9];
+  v10 = [(DoseComplicationFormatter *)self _templateWithFamily:family content:contentCopy device:deviceCopy];
 LABEL_38:
 
   return v10;
 }
 
-- (id)_templateWithFamily:(int64_t)a3 content:(id)a4 device:(id)a5
+- (id)_templateWithFamily:(int64_t)family content:(id)content device:(id)device
 {
-  v8 = a4;
-  v9 = a5;
+  contentCopy = content;
+  deviceCopy = device;
   if (qword_10BF0 != -1)
   {
     sub_6824();
@@ -622,16 +622,16 @@ LABEL_38:
   *v188 = unk_10B40;
   *&v188[16] = xmmword_10B50;
   v189 = *&qword_10B60;
-  v10 = [v8 classificationImageName];
+  classificationImageName = [contentCopy classificationImageName];
 
-  if (v10)
+  if (classificationImageName)
   {
-    v11 = [v8 classificationImageName];
-    v12 = [v8 imageTintColor];
-    v13 = [(DoseComplicationFormatter *)self imageProviderWithSymbolName:v11 tintColor:v12];
+    classificationImageName2 = [contentCopy classificationImageName];
+    imageTintColor = [contentCopy imageTintColor];
+    v13 = [(DoseComplicationFormatter *)self imageProviderWithSymbolName:classificationImageName2 tintColor:imageTintColor];
 
-    v14 = [v8 classificationImageName];
-    v15 = [(DoseComplicationFormatter *)self accessibilityLabelForSymbol:v14];
+    classificationImageName3 = [contentCopy classificationImageName];
+    v15 = [(DoseComplicationFormatter *)self accessibilityLabelForSymbol:classificationImageName3];
     v183 = v13;
     [v13 setAccessibilityLabel:v15];
   }
@@ -642,23 +642,23 @@ LABEL_38:
   }
 
   v16 = [UIColor colorWithRed:0.99 green:0.99 blue:0.99 alpha:1.0];
-  v17 = [(DoseComplicationFormatter *)self dbFormatter];
-  [v8 slowLeq];
+  dbFormatter = [(DoseComplicationFormatter *)self dbFormatter];
+  [contentCopy slowLeq];
   v18 = [NSNumber numberWithFloat:?];
-  v19 = [v17 stringFromNumber:v18];
+  v19 = [dbFormatter stringFromNumber:v18];
 
   v184 = v19;
-  if (CLKComplicationFamilyCircularMedium == a3)
+  if (CLKComplicationFamilyCircularMedium == family)
   {
     v20 = objc_alloc_init(CLKComplicationTemplateCircularMediumStackImage);
     v21 = v183;
     [v20 setLine1ImageProvider:v183];
-    v22 = [v8 levelContentShort];
-    v23 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:v22 shortText:v19];
+    levelContentShort = [contentCopy levelContentShort];
+    v23 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:levelContentShort shortText:v19];
     [v20 setLine2TextProvider:v23];
 
 LABEL_8:
-    if ([v8 isEnabled])
+    if ([contentCopy isEnabled])
     {
       [v20 setTintColor:v16];
     }
@@ -667,222 +667,222 @@ LABEL_8:
   }
 
   v20 = 0;
-  if (a3 > 6)
+  if (family > 6)
   {
-    if (a3 > 9)
+    if (family > 9)
     {
       v182 = v16;
-      if (a3 == 10)
+      if (family == 10)
       {
         v20 = objc_alloc_init(CLKComplicationTemplateGraphicCircularOpenMeteredGaugeImage);
-        v57 = v9;
-        if ([v8 isEnabled])
+        v57 = deviceCopy;
+        if ([contentCopy isEnabled])
         {
-          v58 = [v8 levelContentShort];
-          v59 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:v58 shortText:v184];
+          levelContentShort2 = [contentCopy levelContentShort];
+          v59 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:levelContentShort2 shortText:v184];
           [v20 setTextProvider:v59];
         }
 
         else
         {
-          v58 = [NSBundle bundleForClass:objc_opt_class()];
+          levelContentShort2 = [NSBundle bundleForClass:objc_opt_class()];
           v59 = [NSBundle bundleForClass:objc_opt_class()];
           v126 = [v59 localizedStringForKey:@"UNIT_LABEL" value:&stru_C3E0 table:0];
-          v127 = [v58 localizedStringForKey:@"UNIT_LABEL" value:v126 table:@"Noise"];
+          v127 = [levelContentShort2 localizedStringForKey:@"UNIT_LABEL" value:v126 table:@"Noise"];
           v128 = [CLKSimpleTextProvider textProviderWithText:v127];
           [v20 setTextProvider:v128];
         }
 
         v21 = v183;
 
-        v129 = [v8 classificationImageName];
+        classificationImageName4 = [contentCopy classificationImageName];
 
-        if (v129)
+        if (classificationImageName4)
         {
-          v130 = [v8 classificationImageName];
-          v131 = [v8 imageTintColor];
+          classificationImageName5 = [contentCopy classificationImageName];
+          imageTintColor2 = [contentCopy imageTintColor];
           v185 = v189;
           v186 = *v190;
-          v132 = [(DoseComplicationFormatter *)self fullColorImageProviderWithSymbolName:v130 tintColor:v131 pointSizeSymbolConstants:&v185];
+          v132 = [(DoseComplicationFormatter *)self fullColorImageProviderWithSymbolName:classificationImageName5 tintColor:imageTintColor2 pointSizeSymbolConstants:&v185];
           [v20 setImageProvider:v132];
         }
 
-        [v8 gaugeFillValue];
+        [contentCopy gaugeFillValue];
         v134 = v133;
-        v135 = [v8 tintColor];
-        v136 = [(DoseComplicationFormatter *)self createGaugeProviderWithFillValue:v135 tintColor:v134];
+        tintColor = [contentCopy tintColor];
+        v136 = [(DoseComplicationFormatter *)self createGaugeProviderWithFillValue:tintColor tintColor:v134];
         [v20 setGaugeProvider:v136];
       }
 
       else
       {
         v21 = v183;
-        if (a3 != 11)
+        if (family != 11)
         {
-          if (a3 != 12)
+          if (family != 12)
           {
             goto LABEL_87;
           }
 
           v20 = objc_alloc_init(CLKComplicationTemplateGraphicExtraLargeCircularOpenMeteredGaugeImage);
-          v178 = v9;
-          if ([v8 isEnabled])
+          v178 = deviceCopy;
+          if ([contentCopy isEnabled])
           {
-            v36 = [v8 levelContentShort];
-            v37 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:v36 shortText:v19];
+            levelContentShort3 = [contentCopy levelContentShort];
+            v37 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:levelContentShort3 shortText:v19];
             [v20 setTextProvider:v37];
           }
 
           else
           {
-            v36 = [NSBundle bundleForClass:objc_opt_class()];
+            levelContentShort3 = [NSBundle bundleForClass:objc_opt_class()];
             v37 = [NSBundle bundleForClass:objc_opt_class()];
             v107 = [v37 localizedStringForKey:@"UNIT_LABEL" value:&stru_C3E0 table:0];
-            v108 = [v36 localizedStringForKey:@"UNIT_LABEL" value:v107 table:@"Noise"];
+            v108 = [levelContentShort3 localizedStringForKey:@"UNIT_LABEL" value:v107 table:@"Noise"];
             v109 = [CLKSimpleTextProvider textProviderWithText:v108];
             [v20 setTextProvider:v109];
 
             v21 = v183;
           }
 
-          v110 = [v8 classificationImageName];
+          classificationImageName6 = [contentCopy classificationImageName];
 
-          if (v110)
+          if (classificationImageName6)
           {
-            v111 = [v8 classificationImageName];
-            v112 = [v8 imageTintColor];
+            classificationImageName7 = [contentCopy classificationImageName];
+            imageTintColor3 = [contentCopy imageTintColor];
             v185 = *&v194[8];
             v186 = *&v194[24];
-            v113 = [(DoseComplicationFormatter *)self fullColorImageProviderWithSymbolName:v111 tintColor:v112 pointSizeSymbolConstants:&v185];
+            v113 = [(DoseComplicationFormatter *)self fullColorImageProviderWithSymbolName:classificationImageName7 tintColor:imageTintColor3 pointSizeSymbolConstants:&v185];
             [v20 setImageProvider:v113];
           }
 
-          [v8 gaugeFillValue];
+          [contentCopy gaugeFillValue];
           v115 = v114;
-          v116 = [v8 tintColor];
-          v117 = [(DoseComplicationFormatter *)self createGaugeProviderWithFillValue:v116 tintColor:v115];
-          [v20 setGaugeProvider:v117];
+          tintColor2 = [contentCopy tintColor];
+          headerTextProvider = [(DoseComplicationFormatter *)self createGaugeProviderWithFillValue:tintColor2 tintColor:v115];
+          [v20 setGaugeProvider:headerTextProvider];
 LABEL_69:
 
-          v9 = v178;
+          deviceCopy = v178;
 LABEL_86:
           v16 = v182;
           goto LABEL_87;
         }
 
-        v57 = v9;
+        v57 = deviceCopy;
         v20 = objc_alloc_init(CLKComplicationTemplateGraphicRectangularTextMeteredGauge);
-        v93 = [v8 classifierContent];
-        v94 = [CLKSimpleTextProvider textProviderWithText:v93];
+        classifierContent = [contentCopy classifierContent];
+        v94 = [CLKSimpleTextProvider textProviderWithText:classifierContent];
 
-        v95 = [v8 tintColor];
-        [v94 setTintColor:v95];
+        tintColor3 = [contentCopy tintColor];
+        [v94 setTintColor:tintColor3];
 
         [v20 setHeaderTextProvider:v94];
-        v96 = [v8 levelContentLong];
-        v97 = [v8 levelContentShort];
-        v98 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:v96 shortText:v97];
+        levelContentLong = [contentCopy levelContentLong];
+        levelContentShort4 = [contentCopy levelContentShort];
+        v98 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:levelContentLong shortText:levelContentShort4];
         [v20 setBody1TextProvider:v98];
 
-        v99 = [v8 classificationImageName];
+        classificationImageName8 = [contentCopy classificationImageName];
 
-        if (v99)
+        if (classificationImageName8)
         {
-          v100 = [v8 isEnabled];
-          v101 = [v8 classificationImageName];
-          if (v100)
+          isEnabled = [contentCopy isEnabled];
+          classificationImageName9 = [contentCopy classificationImageName];
+          if (isEnabled)
           {
-            v102 = [v8 imageTintColor];
+            imageTintColor4 = [contentCopy imageTintColor];
             v185 = *&v190[8];
             v186 = *&v190[24];
-            v103 = [(DoseComplicationFormatter *)self fullColorImageProviderWithSymbolName:v101 tintColor:v102 pointSizeSymbolConstants:&v185];
+            v103 = [(DoseComplicationFormatter *)self fullColorImageProviderWithSymbolName:classificationImageName9 tintColor:imageTintColor4 pointSizeSymbolConstants:&v185];
             [v20 setHeaderImageProvider:v103];
           }
 
           else
           {
-            v167 = [v8 tintColor];
+            tintColor4 = [contentCopy tintColor];
             v185 = *&v190[8];
             v186 = *&v190[24];
-            v168 = [(DoseComplicationFormatter *)self fullColorImageProviderWithSymbolName:v101 tintColor:v167 pointSizeSymbolConstants:&v185];
+            v168 = [(DoseComplicationFormatter *)self fullColorImageProviderWithSymbolName:classificationImageName9 tintColor:tintColor4 pointSizeSymbolConstants:&v185];
             [v20 setHeaderImageProvider:v168];
 
-            v101 = [v8 tintColor];
-            v102 = [v20 body1TextProvider];
-            [v102 setTintColor:v101];
+            classificationImageName9 = [contentCopy tintColor];
+            imageTintColor4 = [v20 body1TextProvider];
+            [imageTintColor4 setTintColor:classificationImageName9];
           }
 
           v21 = v183;
         }
 
-        [v8 gaugeFillValue];
+        [contentCopy gaugeFillValue];
         v170 = v169;
-        v171 = [v8 tintColor];
-        v172 = [(DoseComplicationFormatter *)self createGaugeProviderWithFillValue:v171 tintColor:v170];
+        tintColor5 = [contentCopy tintColor];
+        v172 = [(DoseComplicationFormatter *)self createGaugeProviderWithFillValue:tintColor5 tintColor:v170];
         [v20 setGaugeProvider:v172];
       }
 
-      v9 = v57;
+      deviceCopy = v57;
       goto LABEL_86;
     }
 
-    if (a3 == 7)
+    if (family == 7)
     {
-      v179 = v9;
+      v179 = deviceCopy;
       v20 = objc_alloc_init(CLKComplicationTemplateExtraLargeStackImage);
-      v41 = [v8 classificationImageName];
+      classificationImageName10 = [contentCopy classificationImageName];
 
-      if (v41)
+      if (classificationImageName10)
       {
-        v42 = [v8 classificationImageName];
-        [v8 imageTintColor];
+        classificationImageName11 = [contentCopy classificationImageName];
+        [contentCopy imageTintColor];
         v44 = v43 = v16;
         v185 = v193;
         v186 = *v194;
-        v45 = [(DoseComplicationFormatter *)self imageProviderWithSymbolName:v42 tintColor:v44 pointSizeSymbolConstants:&v185];
+        v45 = [(DoseComplicationFormatter *)self imageProviderWithSymbolName:classificationImageName11 tintColor:v44 pointSizeSymbolConstants:&v185];
         [v20 setLine1ImageProvider:v45];
 
         v16 = v43;
       }
 
       v21 = v183;
-      if ([v8 isEnabled])
+      if ([contentCopy isEnabled])
       {
-        v46 = [v8 levelContentShort];
-        v47 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:v46 shortText:v19];
+        levelContentShort5 = [contentCopy levelContentShort];
+        v47 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:levelContentShort5 shortText:v19];
         [v20 setLine2TextProvider:v47];
       }
 
       else
       {
         v118 = v16;
-        v46 = [NSBundle bundleForClass:objc_opt_class()];
+        levelContentShort5 = [NSBundle bundleForClass:objc_opt_class()];
         v47 = [NSBundle bundleForClass:objc_opt_class()];
         v119 = [v47 localizedStringForKey:@"UNIT_LABEL" value:&stru_C3E0 table:0];
-        v120 = [v46 localizedStringForKey:@"UNIT_LABEL" value:v119 table:@"Noise"];
+        v120 = [levelContentShort5 localizedStringForKey:@"UNIT_LABEL" value:v119 table:@"Noise"];
         v121 = [CLKSimpleTextProvider textProviderWithText:v120];
         [v20 setLine2TextProvider:v121];
 
         v16 = v118;
       }
 
-      v9 = v179;
+      deviceCopy = v179;
 
       goto LABEL_87;
     }
 
-    if (a3 != 8)
+    if (family != 8)
     {
       v182 = v16;
-      v24 = v9;
-      if ([v8 isEnabled])
+      v24 = deviceCopy;
+      if ([contentCopy isEnabled])
       {
         v25 = [NSBundle bundleForClass:objc_opt_class()];
         v26 = [NSBundle bundleForClass:objc_opt_class()];
         v27 = [v26 localizedStringForKey:@"BEZEL_LABEL" value:&stru_C3E0 table:0];
         v28 = [v25 localizedStringForKey:@"BEZEL_LABEL" value:v27 table:@"Noise"];
-        v29 = [v8 classifierContent];
-        v30 = [NSString localizedStringWithFormat:v28, v29];
+        classifierContent2 = [contentCopy classifierContent];
+        v30 = [NSString localizedStringWithFormat:v28, classifierContent2];
       }
 
       else
@@ -894,20 +894,20 @@ LABEL_86:
       }
 
       v20 = objc_alloc_init(CLKComplicationTemplateGraphicBezelCircularText);
-      v104 = [v30 localizedCapitalizedString];
-      v105 = [CLKSimpleTextProvider textProviderWithText:v104];
+      localizedCapitalizedString = [v30 localizedCapitalizedString];
+      v105 = [CLKSimpleTextProvider textProviderWithText:localizedCapitalizedString];
       [v20 setTextProvider:v105];
 
-      v106 = [(DoseComplicationFormatter *)self _templateWithFamily:10 content:v8 device:v24];
+      v106 = [(DoseComplicationFormatter *)self _templateWithFamily:10 content:contentCopy device:v24];
       [v20 setCircularTemplate:v106];
 
-      v9 = v24;
+      deviceCopy = v24;
       goto LABEL_75;
     }
 
-    v180 = v9;
+    v180 = deviceCopy;
     v182 = v16;
-    if ([v8 isEnabled])
+    if ([contentCopy isEnabled])
     {
       v20 = objc_alloc_init(CLKComplicationTemplateGraphicCornerMeteredGaugeText);
       v67 = [NSBundle bundleForClass:objc_opt_class()];
@@ -917,29 +917,29 @@ LABEL_86:
       v71 = [CLKSimpleTextProvider textProviderWithText:v70];
       [v20 setLeadingTextProvider:v71];
 
-      v72 = [v20 leadingTextProvider];
-      [v72 setIgnoreUppercaseStyle:1];
+      leadingTextProvider = [v20 leadingTextProvider];
+      [leadingTextProvider setIgnoreUppercaseStyle:1];
 
-      v73 = [v8 tintColor];
-      v74 = [v20 leadingTextProvider];
-      [v74 setTintColor:v73];
+      tintColor6 = [contentCopy tintColor];
+      leadingTextProvider2 = [v20 leadingTextProvider];
+      [leadingTextProvider2 setTintColor:tintColor6];
 
-      v75 = [(DoseComplicationFormatter *)self dbFormatter];
-      [v8 slowLeq];
+      dbFormatter2 = [(DoseComplicationFormatter *)self dbFormatter];
+      [contentCopy slowLeq];
       v76 = [NSNumber numberWithFloat:?];
-      v77 = [v75 stringFromNumber:v76];
+      v77 = [dbFormatter2 stringFromNumber:v76];
       v78 = [(DoseComplicationFormatter *)self createOuterMonospaceTextProviderWithText:v77];
       [v20 setOuterTextProvider:v78];
 
-      v79 = [v8 classificationImageName];
+      classificationImageName12 = [contentCopy classificationImageName];
 
-      if (v79)
+      if (classificationImageName12)
       {
-        v80 = [v8 classificationImageName];
-        v81 = [v8 imageTintColor];
+        classificationImageName13 = [contentCopy classificationImageName];
+        imageTintColor5 = [contentCopy imageTintColor];
         v185 = v187;
         v186 = *v188;
-        v82 = [(DoseComplicationFormatter *)self fullColorImageProviderWithSymbolName:v80 tintColor:v81 pointSizeSymbolConstants:&v185];
+        v82 = [(DoseComplicationFormatter *)self fullColorImageProviderWithSymbolName:classificationImageName13 tintColor:imageTintColor5 pointSizeSymbolConstants:&v185];
         [v20 setOuterImageProvider:v82];
 LABEL_72:
       }
@@ -955,72 +955,72 @@ LABEL_72:
       v149 = [CLKSimpleTextProvider textProviderWithText:v148];
       [v20 setLeadingTextProvider:v149];
 
-      v150 = [v20 leadingTextProvider];
-      [v150 setIgnoreUppercaseStyle:1];
+      leadingTextProvider3 = [v20 leadingTextProvider];
+      [leadingTextProvider3 setIgnoreUppercaseStyle:1];
 
-      v151 = [v8 tintColor];
-      v152 = [v20 leadingTextProvider];
-      [v152 setTintColor:v151];
+      tintColor7 = [contentCopy tintColor];
+      leadingTextProvider4 = [v20 leadingTextProvider];
+      [leadingTextProvider4 setTintColor:tintColor7];
 
-      v153 = [v8 classificationImageName];
+      classificationImageName14 = [contentCopy classificationImageName];
 
-      if (v153)
+      if (classificationImageName14)
       {
-        v80 = [v8 classificationImageName];
-        v81 = [v8 imageTintColor];
+        classificationImageName13 = [contentCopy classificationImageName];
+        imageTintColor5 = [contentCopy imageTintColor];
         v185 = *&v188[8];
         v186 = *&v188[24];
-        v82 = [(DoseComplicationFormatter *)self fullColorImageProviderWithSymbolName:v80 tintColor:v81 pointSizeSymbolConstants:&v185];
+        v82 = [(DoseComplicationFormatter *)self fullColorImageProviderWithSymbolName:classificationImageName13 tintColor:imageTintColor5 pointSizeSymbolConstants:&v185];
         [v20 setImageProvider:v82];
         goto LABEL_72;
       }
     }
 
-    [v8 gaugeFillValue];
+    [contentCopy gaugeFillValue];
     v155 = v154;
-    v156 = [v8 tintColor];
-    v157 = [(DoseComplicationFormatter *)self createGaugeProviderWithFillValue:v156 tintColor:v155];
+    tintColor8 = [contentCopy tintColor];
+    v157 = [(DoseComplicationFormatter *)self createGaugeProviderWithFillValue:tintColor8 tintColor:v155];
     [v20 setGaugeProvider:v157];
 
 LABEL_74:
-    v9 = v180;
+    deviceCopy = v180;
 LABEL_75:
     v21 = v183;
     goto LABEL_86;
   }
 
-  if (a3 <= 2)
+  if (family <= 2)
   {
-    if (!a3)
+    if (!family)
     {
       v20 = objc_alloc_init(CLKComplicationTemplateModularSmallStackImage);
-      v38 = [v8 classificationImageName];
+      classificationImageName15 = [contentCopy classificationImageName];
 
       v21 = v183;
-      if (v38)
+      if (classificationImageName15)
       {
-        v39 = [v8 isEnabled];
-        v40 = [v8 classificationImageName];
-        if (v39)
+        isEnabled2 = [contentCopy isEnabled];
+        classificationImageName16 = [contentCopy classificationImageName];
+        if (isEnabled2)
         {
-          [v8 imageTintColor];
+          [contentCopy imageTintColor];
         }
 
         else
         {
-          [v8 tintColor];
+          [contentCopy tintColor];
         }
         v163 = ;
         v185 = v191;
         v186 = *v192;
-        v164 = [(DoseComplicationFormatter *)self imageProviderWithSymbolName:v40 tintColor:v163 pointSizeSymbolConstants:&v185];
+        v164 = [(DoseComplicationFormatter *)self imageProviderWithSymbolName:classificationImageName16 tintColor:v163 pointSizeSymbolConstants:&v185];
         [v20 setLine1ImageProvider:v164];
 
         v21 = v183;
       }
 
-      v165 = [v8 levelContentShort];
-      v166 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:v165 shortText:v19];
+      levelContentShort6 = [contentCopy levelContentShort];
+      v166 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:levelContentShort6 shortText:v19];
       [v20 setLine2TextProvider:v166];
 
       [v20 setHighlightLine2:0];
@@ -1028,9 +1028,9 @@ LABEL_75:
     }
 
     v21 = v183;
-    if (a3 != 1)
+    if (family != 1)
     {
-      if (a3 != 2)
+      if (family != 2)
       {
         goto LABEL_87;
       }
@@ -1038,7 +1038,7 @@ LABEL_75:
       goto LABEL_24;
     }
 
-    v178 = v9;
+    v178 = deviceCopy;
     v182 = v16;
     v20 = objc_alloc_init(CLKComplicationTemplateModularLargeStandardBody);
     v60 = [NSBundle bundleForClass:objc_opt_class()];
@@ -1048,10 +1048,10 @@ LABEL_75:
     v64 = [CLKSimpleTextProvider textProviderWithText:v63];
     [v20 setHeaderTextProvider:v64];
 
-    if ([v8 isEnabled])
+    if ([contentCopy isEnabled])
     {
-      v65 = [v8 classifierContent];
-      v66 = [CLKSimpleTextProvider textProviderWithText:v65];
+      classifierContent3 = [contentCopy classifierContent];
+      v66 = [CLKSimpleTextProvider textProviderWithText:classifierContent3];
       [v20 setBody1TextProvider:v66];
 
       [v20 setTintColor:v182];
@@ -1068,51 +1068,51 @@ LABEL_75:
     }
 
     v21 = v183;
-    v142 = [v8 levelContentLong];
-    v143 = [v8 levelContentShort];
-    v144 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:v142 shortText:v143];
+    levelContentLong2 = [contentCopy levelContentLong];
+    levelContentShort7 = [contentCopy levelContentShort];
+    v144 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:levelContentLong2 shortText:levelContentShort7];
     [v20 setBody2TextProvider:v144];
 
-    v116 = +[UIColor systemBlueColor];
-    v117 = [v20 headerTextProvider];
-    [v117 setTintColor:v116];
+    tintColor2 = +[UIColor systemBlueColor];
+    headerTextProvider = [v20 headerTextProvider];
+    [headerTextProvider setTintColor:tintColor2];
     goto LABEL_69;
   }
 
-  if (a3 == 3)
+  if (family == 3)
   {
-    v180 = v9;
+    v180 = deviceCopy;
     v20 = objc_alloc_init(CLKComplicationTemplateUtilitarianLargeFlat);
     [v20 setImageProvider:v183];
     v182 = v16;
-    if ([v8 isEnabled])
+    if ([contentCopy isEnabled])
     {
       [v20 setTintColor:v16];
       v176 = [NSBundle bundleForClass:objc_opt_class()];
       v177 = [NSBundle bundleForClass:objc_opt_class()];
       v175 = [v177 localizedStringForKey:@"LEVEL_SUMMARY" value:&stru_C3E0 table:0];
       v48 = [v176 localizedStringForKey:@"LEVEL_SUMMARY" value:v175 table:@"Noise"];
-      v174 = [v8 classifierContent];
-      v49 = [v174 uppercaseString];
-      v50 = [(DoseComplicationFormatter *)self dbFormatter];
-      [v8 slowLeq];
+      classifierContent4 = [contentCopy classifierContent];
+      uppercaseString = [classifierContent4 uppercaseString];
+      dbFormatter3 = [(DoseComplicationFormatter *)self dbFormatter];
+      [contentCopy slowLeq];
       v51 = [NSNumber numberWithFloat:?];
-      v52 = [v50 stringFromNumber:v51];
-      v53 = [NSString localizedStringWithFormat:v48, v49, v52];
-      v54 = [v8 levelContentShort];
-      v55 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:v53 shortText:v54];
+      v52 = [dbFormatter3 stringFromNumber:v51];
+      v53 = [NSString localizedStringWithFormat:v48, uppercaseString, v52];
+      levelContentShort8 = [contentCopy levelContentShort];
+      v55 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:v53 shortText:levelContentShort8];
       [v20 setTextProvider:v55];
 
-      v56 = [v20 textProvider];
-      [v56 setIgnoreUppercaseStyle:1];
+      textProvider = [v20 textProvider];
+      [textProvider setIgnoreUppercaseStyle:1];
     }
 
     else
     {
-      v56 = [NSBundle bundleForClass:objc_opt_class()];
+      textProvider = [NSBundle bundleForClass:objc_opt_class()];
       v122 = [NSBundle bundleForClass:objc_opt_class()];
       v123 = [v122 localizedStringForKey:@"SUSPENDED_LABEL" value:&stru_C3E0 table:0];
-      v124 = [v56 localizedStringForKey:@"SUSPENDED_LABEL" value:v123 table:@"Noise"];
+      v124 = [textProvider localizedStringForKey:@"SUSPENDED_LABEL" value:v123 table:@"Noise"];
       v125 = [CLKSimpleTextProvider textProviderWithText:v124];
       [v20 setTextProvider:v125];
     }
@@ -1120,51 +1120,51 @@ LABEL_75:
     goto LABEL_74;
   }
 
-  if (a3 != 4)
+  if (family != 4)
   {
     v21 = v183;
-    if (a3 != 6)
+    if (family != 6)
     {
       goto LABEL_87;
     }
 
 LABEL_24:
     v31 = v16;
-    v32 = v9;
+    v32 = deviceCopy;
     v20 = objc_alloc_init(CLKComplicationTemplateUtilitarianSmallFlat);
     [v20 setImageProvider:v21];
-    v33 = [v8 levelContentShort];
-    v34 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:v33 shortText:v184];
+    levelContentShort9 = [contentCopy levelContentShort];
+    v34 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:levelContentShort9 shortText:v184];
     [v20 setTextProvider:v34];
 
-    v35 = [v20 textProvider];
-    [v35 setIgnoreUppercaseStyle:1];
+    textProvider2 = [v20 textProvider];
+    [textProvider2 setIgnoreUppercaseStyle:1];
 
-    if ([v8 isEnabled])
+    if ([contentCopy isEnabled])
     {
       v16 = v31;
       [v20 setTintColor:v31];
-      v9 = v32;
+      deviceCopy = v32;
     }
 
     else
     {
-      v9 = v32;
+      deviceCopy = v32;
       v16 = v31;
     }
 
     goto LABEL_87;
   }
 
-  v181 = v9;
-  if ([v8 isEnabled])
+  v181 = deviceCopy;
+  if ([contentCopy isEnabled])
   {
     v20 = objc_alloc_init(CLKComplicationTemplateCircularSmallStackText);
-    v83 = [(DoseComplicationFormatter *)self dbFormatter];
+    dbFormatter4 = [(DoseComplicationFormatter *)self dbFormatter];
     v84 = v16;
-    [v8 slowLeq];
+    [contentCopy slowLeq];
     v85 = [NSNumber numberWithFloat:?];
-    v86 = [v83 stringFromNumber:v85];
+    v86 = [dbFormatter4 stringFromNumber:v85];
     v87 = [(DoseComplicationFormatter *)self createMonospaceTextProviderWithText:v86 shortText:0];
     [v20 setLine1TextProvider:v87];
 
@@ -1181,32 +1181,32 @@ LABEL_24:
   else
   {
     v20 = objc_alloc_init(CLKComplicationTemplateCircularSmallSimpleImage);
-    v158 = [v8 classificationImageName];
+    classificationImageName17 = [contentCopy classificationImageName];
 
-    if (v158)
+    if (classificationImageName17)
     {
-      v159 = [v8 classificationImageName];
-      [v8 imageTintColor];
+      classificationImageName18 = [contentCopy classificationImageName];
+      [contentCopy imageTintColor];
       v161 = v160 = v16;
       v185 = *&v192[8];
       v186 = *&v192[24];
-      v162 = [(DoseComplicationFormatter *)self imageProviderWithSymbolName:v159 tintColor:v161 pointSizeSymbolConstants:&v185];
+      v162 = [(DoseComplicationFormatter *)self imageProviderWithSymbolName:classificationImageName18 tintColor:v161 pointSizeSymbolConstants:&v185];
       [v20 setImageProvider:v162];
 
       v16 = v160;
     }
   }
 
-  v9 = v181;
+  deviceCopy = v181;
   v21 = v183;
 LABEL_87:
 
   return v20;
 }
 
-- (id)_setupNoiseTemplateWithFamily:(int64_t)a3 device:(id)a4
+- (id)_setupNoiseTemplateWithFamily:(int64_t)family device:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   v53[0] = _NSConcreteStackBlock;
   v53[1] = 3221225472;
   v53[2] = sub_6384;
@@ -1225,18 +1225,18 @@ LABEL_87:
   v51[3] = &unk_C380;
   v51[4] = self;
   v9 = objc_retainBlock(v51);
-  if (CLKComplicationFamilyCircularMedium == a3)
+  if (CLKComplicationFamilyCircularMedium == family)
   {
     v10 = CLKComplicationTemplateCircularMediumSimpleImage;
     goto LABEL_3;
   }
 
   v11 = 0;
-  if (a3 > 6)
+  if (family > 6)
   {
-    if (a3 <= 9)
+    if (family <= 9)
     {
-      if (a3 == 7)
+      if (family == 7)
       {
         v11 = objc_alloc_init(CLKComplicationTemplateExtraLargeSimpleImage);
         (v8[2])(v8, @"XL_noise");
@@ -1244,7 +1244,7 @@ LABEL_87:
 
       else
       {
-        if (a3 != 8)
+        if (family != 8)
         {
           v11 = objc_alloc_init(CLKComplicationTemplateGraphicBezelCircularText);
           v48 = [NSBundle bundleForClass:objc_opt_class()];
@@ -1254,8 +1254,8 @@ LABEL_87:
           v17 = sub_6318(v16, v16);
           [v11 setTextProvider:v17];
 
-          v12 = [(DoseComplicationFormatter *)self _setupNoiseTemplateWithFamily:10 device:v6];
-          [v11 setCircularTemplate:v12];
+          setupComplicationBackgroundColor = [(DoseComplicationFormatter *)self _setupNoiseTemplateWithFamily:10 device:deviceCopy];
+          [v11 setCircularTemplate:setupComplicationBackgroundColor];
           goto LABEL_6;
         }
 
@@ -1270,14 +1270,14 @@ LABEL_87:
         (v9[2])(v9, @"rich-corner_noise-394h");
       }
 
-      v12 = LABEL_5:;
-      [v11 setImageProvider:v12];
+      setupComplicationBackgroundColor = LABEL_5:;
+      [v11 setImageProvider:setupComplicationBackgroundColor];
 LABEL_6:
 
       goto LABEL_7;
     }
 
-    switch(a3)
+    switch(family)
     {
       case 10:
         v11 = objc_alloc_init(CLKComplicationTemplateGraphicCircularImage);
@@ -1299,8 +1299,8 @@ LABEL_6:
         v47 = sub_6318(v46, v46);
         [v11 setBody1TextProvider:v47];
 
-        v12 = (v7[2])(v7);
-        [v11 setGaugeProvider:v12];
+        setupComplicationBackgroundColor = (v7[2])(v7);
+        [v11 setGaugeProvider:setupComplicationBackgroundColor];
         goto LABEL_6;
       case 12:
         v11 = objc_alloc_init(CLKComplicationTemplateGraphicExtraLargeCircularImage);
@@ -1312,20 +1312,20 @@ LABEL_6:
     v24 = ;
     [v11 setImageProvider:v24];
 
-    v12 = [(DoseComplicationFormatter *)self setupComplicationBackgroundColor];
-    [v11 setMetadata:v12];
+    setupComplicationBackgroundColor = [(DoseComplicationFormatter *)self setupComplicationBackgroundColor];
+    [v11 setMetadata:setupComplicationBackgroundColor];
     goto LABEL_6;
   }
 
-  if (a3 > 2)
+  if (family > 2)
   {
-    switch(a3)
+    switch(family)
     {
       case 3:
         v11 = objc_alloc_init(CLKComplicationTemplateUtilitarianLargeFlat);
-        v12 = [NSBundle bundleForClass:objc_opt_class()];
+        setupComplicationBackgroundColor = [NSBundle bundleForClass:objc_opt_class()];
         v18 = [NSBundle bundleForClass:objc_opt_class()];
-        v19 = v18;
+        headerTextProvider = v18;
         v20 = @"SETUP_NOISE";
         break;
       case 4:
@@ -1336,9 +1336,9 @@ LABEL_3:
         goto LABEL_5;
       case 6:
         v11 = objc_alloc_init(CLKComplicationTemplateUtilitarianSmallFlat);
-        v12 = [NSBundle bundleForClass:objc_opt_class()];
+        setupComplicationBackgroundColor = [NSBundle bundleForClass:objc_opt_class()];
         v18 = [NSBundle bundleForClass:objc_opt_class()];
-        v19 = v18;
+        headerTextProvider = v18;
         v20 = @"SETUP_SHORT";
         break;
       default:
@@ -1346,7 +1346,7 @@ LABEL_3:
     }
 
     v21 = [v18 localizedStringForKey:v20 value:&stru_C3E0 table:0];
-    v22 = [v12 localizedStringForKey:v20 value:v21 table:@"Noise"];
+    v22 = [setupComplicationBackgroundColor localizedStringForKey:v20 value:v21 table:@"Noise"];
     v23 = sub_6318(v22, v22);
     [v11 setTextProvider:v23];
 
@@ -1354,7 +1354,7 @@ LABEL_35:
     goto LABEL_6;
   }
 
-  switch(a3)
+  switch(family)
   {
     case 0:
       v11 = objc_alloc_init(CLKComplicationTemplateModularSmallSimpleImage);
@@ -1376,9 +1376,9 @@ LABEL_35:
       v33 = sub_6318(v32, v32);
       [v11 setBody1TextProvider:v33];
 
-      v12 = +[UIColor systemBlueColor];
-      v19 = [v11 headerTextProvider];
-      [v19 setTintColor:v12];
+      setupComplicationBackgroundColor = +[UIColor systemBlueColor];
+      headerTextProvider = [v11 headerTextProvider];
+      [headerTextProvider setTintColor:setupComplicationBackgroundColor];
       goto LABEL_35;
     case 2:
       v11 = objc_alloc_init(CLKComplicationTemplateUtilitarianSmallSquare);
@@ -1391,25 +1391,25 @@ LABEL_7:
   return v11;
 }
 
-- (id)createMonospaceTextProviderWithText:(id)a3 shortText:(id)a4
+- (id)createMonospaceTextProviderWithText:(id)text shortText:(id)shortText
 {
-  v4 = [CLKSimpleTextProvider textProviderWithText:a3 shortText:a4];
+  v4 = [CLKSimpleTextProvider textProviderWithText:text shortText:shortText];
   [v4 setMonospacedNumbers:1];
 
   return v4;
 }
 
-- (id)createOuterMonospaceTextProviderWithText:(id)a3
+- (id)createOuterMonospaceTextProviderWithText:(id)text
 {
-  v3 = [DoseTextProvider textProviderWithText:a3];
+  v3 = [DoseTextProvider textProviderWithText:text];
   [v3 setMonospacedNumbers:1];
 
   return v3;
 }
 
-- (id)createGaugeProviderWithFillValue:(double)a3 tintColor:(id)a4
+- (id)createGaugeProviderWithFillValue:(double)value tintColor:(id)color
 {
-  v4 = fmax(a3, 0.0);
+  v4 = fmax(value, 0.0);
   if (v4 <= 1.0)
   {
     v5 = v4;
@@ -1420,7 +1420,7 @@ LABEL_7:
     v5 = 1.0;
   }
 
-  v6 = _SPLGradientColor(a4);
+  v6 = _SPLGradientColor(color);
   *&v7 = v5;
   v8 = [CLKSimpleGaugeProvider gaugeProviderWithStyle:1 gaugeColors:v6 gaugeColorLocations:&off_C948 fillFraction:v7];
 

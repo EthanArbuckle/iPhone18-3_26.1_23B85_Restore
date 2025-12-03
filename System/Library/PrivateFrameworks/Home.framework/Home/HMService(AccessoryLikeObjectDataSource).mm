@@ -6,21 +6,21 @@
 
 - (id)hf_rootAccessoryLikeHomeKitObject
 {
-  v2 = [a1 hf_serviceGroup];
-  v3 = v2;
-  if (v2)
+  hf_serviceGroup = [self hf_serviceGroup];
+  v3 = hf_serviceGroup;
+  if (hf_serviceGroup)
   {
-    v4 = [v2 hf_rootAccessoryLikeHomeKitObject];
+    selfCopy = [hf_serviceGroup hf_rootAccessoryLikeHomeKitObject];
     goto LABEL_12;
   }
 
-  v5 = [a1 accessory];
-  if ([v5 hf_showAsAccessoryTile])
+  accessory = [self accessory];
+  if ([accessory hf_showAsAccessoryTile])
   {
-    v6 = [a1 accessory];
-    v7 = [v6 hf_isHomePod];
+    accessory2 = [self accessory];
+    hf_isHomePod = [accessory2 hf_isHomePod];
 
-    if (v7)
+    if (hf_isHomePod)
     {
       goto LABEL_11;
     }
@@ -30,18 +30,18 @@
   {
   }
 
-  v8 = [a1 accessory];
-  if ([v8 hf_showAsAccessoryTile])
+  accessory3 = [self accessory];
+  if ([accessory3 hf_showAsAccessoryTile])
   {
-    v9 = [a1 accessory];
-    v10 = [v9 hf_primaryService];
-    v11 = [v10 serviceType];
-    v12 = [a1 serviceType];
-    v13 = [v11 isEqualToString:v12];
+    accessory4 = [self accessory];
+    hf_primaryService = [accessory4 hf_primaryService];
+    serviceType = [hf_primaryService serviceType];
+    serviceType2 = [self serviceType];
+    v13 = [serviceType isEqualToString:serviceType2];
 
     if (v13)
     {
-      v4 = [a1 accessory];
+      selfCopy = [self accessory];
       goto LABEL_12;
     }
   }
@@ -51,9 +51,9 @@
   }
 
 LABEL_11:
-  v4 = a1;
+  selfCopy = self;
 LABEL_12:
-  v14 = v4;
+  v14 = selfCopy;
 
   return v14;
 }

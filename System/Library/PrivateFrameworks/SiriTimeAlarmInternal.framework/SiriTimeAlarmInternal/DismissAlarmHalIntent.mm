@@ -1,8 +1,8 @@
 @interface DismissAlarmHalIntent
 - (DismissAlarmHalIntent)init;
-- (DismissAlarmHalIntent)initWithCoder:(id)a3;
-- (DismissAlarmHalIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (DismissAlarmHalIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (DismissAlarmHalIntent)initWithCoder:(id)coder;
+- (DismissAlarmHalIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (DismissAlarmHalIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation DismissAlarmHalIntent
@@ -14,12 +14,12 @@
   return [(DismissAlarmHalIntent *)&v3 init];
 }
 
-- (DismissAlarmHalIntent)initWithCoder:(id)a3
+- (DismissAlarmHalIntent)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for DismissAlarmHalIntent();
-  v4 = a3;
-  v5 = [(DismissAlarmHalIntent *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(DismissAlarmHalIntent *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -28,48 +28,48 @@
   return v5;
 }
 
-- (DismissAlarmHalIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (DismissAlarmHalIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     sub_2692C7830();
-    v6 = a4;
+    storeCopy = store;
     v7 = sub_2692C7820();
   }
 
   else
   {
-    v8 = a4;
+    storeCopy2 = store;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for DismissAlarmHalIntent();
-  v9 = [(DismissAlarmHalIntent *)&v11 initWithIdentifier:v7 backingStore:a4];
+  v9 = [(DismissAlarmHalIntent *)&v11 initWithIdentifier:v7 backingStore:store];
 
   return v9;
 }
 
-- (DismissAlarmHalIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (DismissAlarmHalIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
-  if (a5)
+  if (name)
   {
     sub_2692C77E0();
-    v8 = a3;
-    v9 = a4;
+    domainCopy = domain;
+    verbCopy = verb;
     v10 = sub_2692C77D0();
   }
 
   else
   {
-    v11 = a3;
-    v12 = a4;
+    domainCopy2 = domain;
+    verbCopy2 = verb;
     v10 = 0;
   }
 
   v15.receiver = self;
   v15.super_class = type metadata accessor for DismissAlarmHalIntent();
-  v13 = [(DismissAlarmHalIntent *)&v15 initWithDomain:a3 verb:a4 parametersByName:v10];
+  v13 = [(DismissAlarmHalIntent *)&v15 initWithDomain:domain verb:verb parametersByName:v10];
 
   return v13;
 }

@@ -1,21 +1,21 @@
 @interface WLRequest
 - (WLRequestDelegate)delegate;
-- (void)request:(id)a3 redirect:(BOOL)a4;
-- (void)sessionDidFinish:(id)a3 response:(id)a4 error:(id)a5 redirect:(BOOL)a6;
+- (void)request:(id)request redirect:(BOOL)redirect;
+- (void)sessionDidFinish:(id)finish response:(id)response error:(id)error redirect:(BOOL)redirect;
 @end
 
 @implementation WLRequest
 
-- (void)request:(id)a3 redirect:(BOOL)a4
+- (void)request:(id)request redirect:(BOOL)redirect
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-  [v7 setTLSMinimumSupportedProtocolVersion:771];
-  [v7 setTLSMaximumSupportedProtocolVersion:772];
-  [v7 setHTTPMaximumConnectionsPerHost:1];
-  v8 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v7];
+  requestCopy = request;
+  defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+  [defaultSessionConfiguration setTLSMinimumSupportedProtocolVersion:771];
+  [defaultSessionConfiguration setTLSMaximumSupportedProtocolVersion:772];
+  [defaultSessionConfiguration setHTTPMaximumConnectionsPerHost:1];
+  v8 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
   v9 = MEMORY[0x277CCAD20];
-  v10 = [MEMORY[0x277CBEBC0] URLWithString:v6];
+  v10 = [MEMORY[0x277CBEBC0] URLWithString:requestCopy];
   v11 = [v9 requestWithURL:v10 cachePolicy:1 timeoutInterval:10.0];
 
   objc_initWeak(&location, self);
@@ -24,7 +24,7 @@
   v13[2] = __30__WLRequest_request_redirect___block_invoke;
   v13[3] = &unk_279EB8E68;
   objc_copyWeak(&v14, &location);
-  v15 = a4;
+  redirectCopy = redirect;
   v12 = [v8 dataTaskWithRequest:v11 completionHandler:v13];
   [v12 resume];
 
@@ -60,16 +60,16 @@ void __30__WLRequest_request_redirect___block_invoke_2(uint64_t a1)
   [WeakRetained sessionDidFinish:*(a1 + 32) response:*(a1 + 40) error:*(a1 + 48) redirect:*(a1 + 64)];
 }
 
-- (void)sessionDidFinish:(id)a3 response:(id)a4 error:(id)a5 redirect:(BOOL)a6
+- (void)sessionDidFinish:(id)finish response:(id)response error:(id)error redirect:(BOOL)redirect
 {
-  v6 = a6;
-  v19 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v11)
+  redirectCopy = redirect;
+  finishCopy = finish;
+  responseCopy = response;
+  errorCopy = error;
+  v12 = errorCopy;
+  if (errorCopy)
   {
-    v13 = v11;
+    v13 = errorCopy;
     v14 = 0;
     goto LABEL_10;
   }
@@ -77,12 +77,12 @@ void __30__WLRequest_request_redirect___block_invoke_2(uint64_t a1)
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    WeakRetained = v10;
-    v16 = [WeakRetained statusCode];
-    if (!v6 || (v16 - 301) > 1)
+    WeakRetained = responseCopy;
+    statusCode = [WeakRetained statusCode];
+    if (!redirectCopy || (statusCode - 301) > 1)
     {
-      v14 = (v16 - 200) < 0x64;
-      if ((v16 - 200) >= 0x64)
+      v14 = (statusCode - 200) < 0x64;
+      if ((statusCode - 200) >= 0x64)
       {
         v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"WLRequest" code:3 userInfo:0];
       }
@@ -100,8 +100,8 @@ void __30__WLRequest_request_redirect___block_invoke_2(uint64_t a1)
       goto LABEL_10;
     }
 
-    v17 = [WeakRetained allHeaderFields];
-    v18 = [v17 objectForKey:@"Location"];
+    allHeaderFields = [WeakRetained allHeaderFields];
+    v18 = [allHeaderFields objectForKey:@"Location"];
     if ([v18 length])
     {
       [(WLRequest *)self request:v18 redirect:1];

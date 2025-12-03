@@ -1,23 +1,23 @@
 @interface FCSportsRecommendationMappings
-- (FCSportsRecommendationMappings)initWithDictionary:(id)a3;
+- (FCSportsRecommendationMappings)initWithDictionary:(id)dictionary;
 @end
 
 @implementation FCSportsRecommendationMappings
 
-- (FCSportsRecommendationMappings)initWithDictionary:(id)a3
+- (FCSportsRecommendationMappings)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = FCSportsRecommendationMappings;
   v5 = [(FCSportsRecommendationMappings *)&v14 init];
   if (v5)
   {
-    v6 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"defaultRecommendations", 0);
+    v6 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"defaultRecommendations", 0);
     v7 = [[FCSportsRecommendationsProvider alloc] initWithDictionary:v6];
     defaultRecommendations = v5->_defaultRecommendations;
     v5->_defaultRecommendations = v7;
 
-    v9 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"alternativeRecommendations", 0);
+    v9 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"alternativeRecommendations", 0);
     v10 = [[FCSportsRecommendationsProvider alloc] initWithDictionary:v9];
     alternativeRecommendations = v5->_alternativeRecommendations;
     v5->_alternativeRecommendations = v10;

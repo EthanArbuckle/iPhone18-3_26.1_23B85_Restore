@@ -1,13 +1,13 @@
 @interface CKSessionReadinessErrorBox
 - (id)CKXPCSuitableString;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation CKSessionReadinessErrorBox
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   CKSessionReadinessErrorBox.copy(with:)(v6);
 
   sub_188400B68(v6, v6[3]);
@@ -18,7 +18,7 @@
 
 - (id)CKXPCSuitableString
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKSessionReadinessErrorBox.CKXPCSuitableString()();
 
   v4 = MEMORY[0x18CFD5010](v3._countAndFlagsBits, v3._object);

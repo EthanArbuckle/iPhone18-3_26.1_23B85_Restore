@@ -9,16 +9,16 @@
 
 - (uint64_t)st_payloadAllowMail
 {
-  v1 = [a1 payloadBlacklistedAppBundleIDs];
-  v2 = [v1 containsObject:*MEMORY[0x277D4BC08]];
+  payloadBlacklistedAppBundleIDs = [self payloadBlacklistedAppBundleIDs];
+  v2 = [payloadBlacklistedAppBundleIDs containsObject:*MEMORY[0x277D4BC08]];
 
   return v2 ^ 1u;
 }
 
 - (void)setSt_payloadAllowMail:()UIAdditions
 {
-  v5 = [a1 payloadBlacklistedAppBundleIDs];
-  v6 = [v5 mutableCopy];
+  payloadBlacklistedAppBundleIDs = [self payloadBlacklistedAppBundleIDs];
+  v6 = [payloadBlacklistedAppBundleIDs mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -43,21 +43,21 @@
     [v10 addObject:v9];
   }
 
-  [a1 setPayloadBlacklistedAppBundleIDs:v10];
+  [self setPayloadBlacklistedAppBundleIDs:v10];
 }
 
 - (uint64_t)st_payloadAllowWallet
 {
-  v1 = [a1 payloadBlacklistedAppBundleIDs];
-  v2 = [v1 containsObject:*MEMORY[0x277D4BC58]];
+  payloadBlacklistedAppBundleIDs = [self payloadBlacklistedAppBundleIDs];
+  v2 = [payloadBlacklistedAppBundleIDs containsObject:*MEMORY[0x277D4BC58]];
 
   return v2 ^ 1u;
 }
 
 - (void)setSt_payloadAllowWallet:()UIAdditions
 {
-  v5 = [a1 payloadBlacklistedAppBundleIDs];
-  v6 = [v5 mutableCopy];
+  payloadBlacklistedAppBundleIDs = [self payloadBlacklistedAppBundleIDs];
+  v6 = [payloadBlacklistedAppBundleIDs mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -82,7 +82,7 @@
     [v10 addObject:v9];
   }
 
-  [a1 setPayloadBlacklistedAppBundleIDs:v10];
+  [self setPayloadBlacklistedAppBundleIDs:v10];
 }
 
 @end

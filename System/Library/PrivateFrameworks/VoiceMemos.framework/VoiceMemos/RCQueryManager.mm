@@ -2,26 +2,26 @@
 + (NSArray)defaultFetchedProperties;
 + (NSArray)defaultSortDescriptors;
 + (id)_defaultFolderFetchRequest;
-+ (id)_defaultFolderFetchRequest:(id)a3;
++ (id)_defaultFolderFetchRequest:(id)request;
 + (id)_defaultRecordingsFetchRequest;
-+ (id)_defaultRecordingsFetchRequest:(id)a3;
-+ (id)_foldersWithPredicateFormat:(id)a3;
-+ (id)_recordingsWithPredicateFormat:(id)a3;
++ (id)_defaultRecordingsFetchRequest:(id)request;
++ (id)_foldersWithPredicateFormat:(id)format;
++ (id)_recordingsWithPredicateFormat:(id)format;
 + (id)allCustomLabelsFetchRequest;
 + (id)allDeletedRecordingsFetchRequest;
 + (id)allFoldersForSortingFetchRequest;
 + (id)defaultResidentRecordingsFetchedProperties;
 + (id)deletedRecordingsFetchRequest;
 + (id)encryptedFieldsMigrationsFetchRequest;
-+ (id)evictionDateBeforeFetchRequest:(id)a3;
-+ (id)foldersWithNameFetchRequest:(id)a3 searchOption:(int)a4;
-+ (id)foldersWithhRankFetchRequest:(int64_t)a3;
++ (id)evictionDateBeforeFetchRequest:(id)request;
++ (id)foldersWithNameFetchRequest:(id)request searchOption:(int)option;
++ (id)foldersWithhRankFetchRequest:(int64_t)request;
 + (id)playableRecordingsExcludingDeletedPredicate;
-+ (id)playableRecordingsFetchRequestWithSubPredicate:(id)a3;
-+ (id)recordingWithNameFetchRequest:(id)a3 searchOption:(int)a4;
++ (id)playableRecordingsFetchRequestWithSubPredicate:(id)predicate;
++ (id)recordingWithNameFetchRequest:(id)request searchOption:(int)option;
 + (id)recordingsNeedingAssetExportFetchRequest;
 + (id)recordingsWithNilAudioFuturesFetchRequest;
-+ (id)recordingsWithTitleFetchRequest:(id)a3;
++ (id)recordingsWithTitleFetchRequest:(id)request;
 + (id)userDefinedFoldersFetchRequest;
 + (id)visibleRecordingsFetchRequest;
 @end
@@ -31,8 +31,8 @@
 + (id)_defaultRecordingsFetchRequest
 {
   v3 = [MEMORY[0x277CBE428] fetchRequestWithEntityName:@"CloudRecording"];
-  v4 = [a1 defaultFetchedProperties];
-  [v3 setPropertiesToFetch:v4];
+  defaultFetchedProperties = [self defaultFetchedProperties];
+  [v3 setPropertiesToFetch:defaultFetchedProperties];
 
   return v3;
 }
@@ -69,9 +69,9 @@ void __42__RCQueryManager_defaultFetchedProperties__block_invoke()
 
 + (id)playableRecordingsExcludingDeletedPredicate
 {
-  v3 = [a1 playablePredicate];
-  v4 = [a1 deletedRecordingsPredicate];
-  v5 = [v3 rc_andNot:v4];
+  playablePredicate = [self playablePredicate];
+  deletedRecordingsPredicate = [self deletedRecordingsPredicate];
+  v5 = [playablePredicate rc_andNot:deletedRecordingsPredicate];
 
   return v5;
 }
@@ -133,27 +133,27 @@ void __60__RCQueryManager_defaultResidentRecordingsFetchedProperties__block_invo
 
 + (id)deletedRecordingsFetchRequest
 {
-  v3 = [a1 _defaultRecordingsFetchRequest];
-  v4 = [a1 playablePredicate];
-  v5 = [a1 deletedRecordingsPredicate];
-  v6 = [v4 rc_and:v5];
-  [v3 setPredicate:v6];
+  _defaultRecordingsFetchRequest = [self _defaultRecordingsFetchRequest];
+  playablePredicate = [self playablePredicate];
+  deletedRecordingsPredicate = [self deletedRecordingsPredicate];
+  v6 = [playablePredicate rc_and:deletedRecordingsPredicate];
+  [_defaultRecordingsFetchRequest setPredicate:v6];
 
-  v7 = [a1 defaultResidentRecordingsFetchedProperties];
-  [v3 setPropertiesToFetch:v7];
+  defaultResidentRecordingsFetchedProperties = [self defaultResidentRecordingsFetchedProperties];
+  [_defaultRecordingsFetchRequest setPropertiesToFetch:defaultResidentRecordingsFetchedProperties];
 
-  v8 = [a1 defaultSortDescriptors];
-  [v3 setSortDescriptors:v8];
+  defaultSortDescriptors = [self defaultSortDescriptors];
+  [_defaultRecordingsFetchRequest setSortDescriptors:defaultSortDescriptors];
 
-  [v3 setFetchBatchSize:100];
+  [_defaultRecordingsFetchRequest setFetchBatchSize:100];
 
-  return v3;
+  return _defaultRecordingsFetchRequest;
 }
 
 + (id)userDefinedFoldersFetchRequest
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 _foldersWithPredicateFormat:@"%K != NULL && %K != NULL", @"encryptedName", @"uuid"];
+  v2 = [self _foldersWithPredicateFormat:@"%K != NULL && %K != NULL", @"encryptedName", @"uuid"];
   [v2 setShouldRefreshRefetchedObjects:1];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"rank" ascending:1];
   v7[0] = v3;
@@ -190,51 +190,51 @@ void __44__RCQueryManager__defaultFolderFetchRequest__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)playableRecordingsFetchRequestWithSubPredicate:(id)a3
++ (id)playableRecordingsFetchRequestWithSubPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [a1 _defaultRecordingsFetchRequest];
-  v6 = [a1 playableRecordingsExcludingDeletedPredicate];
-  [v5 setPredicate:v6];
+  predicateCopy = predicate;
+  _defaultRecordingsFetchRequest = [self _defaultRecordingsFetchRequest];
+  playableRecordingsExcludingDeletedPredicate = [self playableRecordingsExcludingDeletedPredicate];
+  [_defaultRecordingsFetchRequest setPredicate:playableRecordingsExcludingDeletedPredicate];
 
-  v7 = [a1 defaultResidentRecordingsFetchedProperties];
-  [v5 setPropertiesToFetch:v7];
+  defaultResidentRecordingsFetchedProperties = [self defaultResidentRecordingsFetchedProperties];
+  [_defaultRecordingsFetchRequest setPropertiesToFetch:defaultResidentRecordingsFetchedProperties];
 
-  v8 = [a1 defaultSortDescriptors];
-  [v5 setSortDescriptors:v8];
+  defaultSortDescriptors = [self defaultSortDescriptors];
+  [_defaultRecordingsFetchRequest setSortDescriptors:defaultSortDescriptors];
 
-  [v5 setFetchBatchSize:100];
-  if (v4)
+  [_defaultRecordingsFetchRequest setFetchBatchSize:100];
+  if (predicateCopy)
   {
-    v9 = [v5 predicate];
-    v10 = [v9 rc_and:v4];
-    [v5 setPredicate:v10];
+    predicate = [_defaultRecordingsFetchRequest predicate];
+    v10 = [predicate rc_and:predicateCopy];
+    [_defaultRecordingsFetchRequest setPredicate:v10];
   }
 
-  return v5;
+  return _defaultRecordingsFetchRequest;
 }
 
-+ (id)evictionDateBeforeFetchRequest:(id)a3
++ (id)evictionDateBeforeFetchRequest:(id)request
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 _defaultRecordingsFetchRequest];
+  requestCopy = request;
+  _defaultRecordingsFetchRequest = [self _defaultRecordingsFetchRequest];
   v10[0] = @"evictionDate";
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-  [v5 setPropertiesToFetch:v6];
+  [_defaultRecordingsFetchRequest setPropertiesToFetch:v6];
 
-  v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != nil AND %K <= %@", @"evictionDate", @"evictionDate", v4];
+  requestCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != nil AND %K <= %@", @"evictionDate", @"evictionDate", requestCopy];
 
-  [v5 setPredicate:v7];
+  [_defaultRecordingsFetchRequest setPredicate:requestCopy];
   v8 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return _defaultRecordingsFetchRequest;
 }
 
 + (id)allDeletedRecordingsFetchRequest
 {
-  v3 = [a1 deletedRecordingsPredicate];
-  v4 = [a1 _defaultRecordingsFetchRequest:v3];
+  deletedRecordingsPredicate = [self deletedRecordingsPredicate];
+  v4 = [self _defaultRecordingsFetchRequest:deletedRecordingsPredicate];
 
   return v4;
 }
@@ -242,39 +242,39 @@ void __44__RCQueryManager__defaultFolderFetchRequest__block_invoke()
 + (id)allCustomLabelsFetchRequest
 {
   v6[2] = *MEMORY[0x277D85DE8];
-  v2 = [a1 _defaultRecordingsFetchRequest];
+  _defaultRecordingsFetchRequest = [self _defaultRecordingsFetchRequest];
   v6[0] = @"customLabelForSorting";
   v6[1] = @"evictionDate";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:2];
-  [v2 setPropertiesToFetch:v3];
+  [_defaultRecordingsFetchRequest setPropertiesToFetch:v3];
 
   v4 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return _defaultRecordingsFetchRequest;
 }
 
-+ (id)recordingWithNameFetchRequest:(id)a3 searchOption:(int)a4
++ (id)recordingWithNameFetchRequest:(id)request searchOption:(int)option
 {
   v6 = MEMORY[0x277CCA9C0];
-  v7 = a3;
+  requestCopy = request;
   v8 = [v6 expressionForKeyPath:@"customLabelForSorting"];
-  v9 = [MEMORY[0x277CCA9C0] expressionForConstantValue:v7];
+  v9 = [MEMORY[0x277CCA9C0] expressionForConstantValue:requestCopy];
 
   v10 = MEMORY[0x277CCA918];
-  v11 = _predicateOperatorTypeForSearchOption(a4);
-  v12 = [v10 predicateWithLeftExpression:v8 rightExpression:v9 modifier:0 type:v11 options:_predicateOptionsForSearchOption(a4)];
-  v13 = [a1 _defaultRecordingsFetchRequest:v12];
+  v11 = _predicateOperatorTypeForSearchOption(option);
+  v12 = [v10 predicateWithLeftExpression:v8 rightExpression:v9 modifier:0 type:v11 options:_predicateOptionsForSearchOption(option)];
+  v13 = [self _defaultRecordingsFetchRequest:v12];
 
   return v13;
 }
 
 + (id)visibleRecordingsFetchRequest
 {
-  v3 = [a1 playablePredicate];
-  v4 = [a1 _defaultRecordingsFetchRequest:v3];
+  playablePredicate = [self playablePredicate];
+  v4 = [self _defaultRecordingsFetchRequest:playablePredicate];
 
-  v5 = [a1 defaultSortDescriptors];
-  [v4 setSortDescriptors:v5];
+  defaultSortDescriptors = [self defaultSortDescriptors];
+  [v4 setSortDescriptors:defaultSortDescriptors];
 
   return v4;
 }
@@ -283,7 +283,7 @@ void __44__RCQueryManager__defaultFolderFetchRequest__block_invoke()
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != nil && bitwiseAnd:with:(%K, %@) == %@", @"flags", @"flags", &unk_2881AE0D0, &unk_2881AE0D0];
-  v4 = [a1 _defaultRecordingsFetchRequest:v3];
+  v4 = [self _defaultRecordingsFetchRequest:v3];
 
   v8[0] = @"flags";
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
@@ -297,7 +297,7 @@ void __44__RCQueryManager__defaultFolderFetchRequest__block_invoke()
 + (id)recordingsWithNilAudioFuturesFetchRequest
 {
   v6[3] = *MEMORY[0x277D85DE8];
-  v2 = [a1 _recordingsWithPredicateFormat:@"%K == nil && %K == nil && %K == nil", @"audioFuture", @"mtAudioFuture", @"versionedAudioFuture"];
+  v2 = [self _recordingsWithPredicateFormat:@"%K == nil && %K == nil && %K == nil", @"audioFuture", @"mtAudioFuture", @"versionedAudioFuture"];
   v6[0] = @"audioFuture";
   v6[1] = @"mtAudioFuture";
   v6[2] = @"versionedAudioFuture";
@@ -318,36 +318,36 @@ void __44__RCQueryManager__defaultFolderFetchRequest__block_invoke()
   return v2;
 }
 
-+ (id)recordingsWithTitleFetchRequest:(id)a3
++ (id)recordingsWithTitleFetchRequest:(id)request
 {
-  v3 = @"nil";
-  if (a3)
+  requestCopy = @"nil";
+  if (request)
   {
-    v3 = a3;
+    requestCopy = request;
   }
 
-  return [a1 _recordingsWithPredicateFormat:@"%K == %@", @"customLabelForSorting", v3];
+  return [self _recordingsWithPredicateFormat:@"%K == %@", @"customLabelForSorting", requestCopy];
 }
 
-+ (id)foldersWithNameFetchRequest:(id)a3 searchOption:(int)a4
++ (id)foldersWithNameFetchRequest:(id)request searchOption:(int)option
 {
   v6 = MEMORY[0x277CCA9C0];
-  v7 = a3;
+  requestCopy = request;
   v8 = [v6 expressionForKeyPath:@"encryptedName"];
-  v9 = [MEMORY[0x277CCA9C0] expressionForConstantValue:v7];
+  v9 = [MEMORY[0x277CCA9C0] expressionForConstantValue:requestCopy];
 
   v10 = MEMORY[0x277CCA918];
-  v11 = _predicateOperatorTypeForSearchOption(a4);
-  v12 = [v10 predicateWithLeftExpression:v8 rightExpression:v9 modifier:0 type:v11 options:_predicateOptionsForSearchOption(a4)];
-  v13 = [a1 _defaultFolderFetchRequest:v12];
+  v11 = _predicateOperatorTypeForSearchOption(option);
+  v12 = [v10 predicateWithLeftExpression:v8 rightExpression:v9 modifier:0 type:v11 options:_predicateOptionsForSearchOption(option)];
+  v13 = [self _defaultFolderFetchRequest:v12];
 
   return v13;
 }
 
-+ (id)foldersWithhRankFetchRequest:(int64_t)a3
++ (id)foldersWithhRankFetchRequest:(int64_t)request
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
-  v5 = [a1 _foldersWithPredicateFormat:@"%K == %@", @"rank", v4];
+  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:request];
+  v5 = [self _foldersWithPredicateFormat:@"%K == %@", @"rank", v4];
 
   return v5;
 }
@@ -355,55 +355,55 @@ void __44__RCQueryManager__defaultFolderFetchRequest__block_invoke()
 + (id)allFoldersForSortingFetchRequest
 {
   v6[2] = *MEMORY[0x277D85DE8];
-  v2 = [a1 _defaultFolderFetchRequest];
+  _defaultFolderFetchRequest = [self _defaultFolderFetchRequest];
   v6[0] = @"rank";
   v6[1] = @"uuid";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:2];
-  [v2 setPropertiesToFetch:v3];
+  [_defaultFolderFetchRequest setPropertiesToFetch:v3];
 
   v4 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return _defaultFolderFetchRequest;
 }
 
-+ (id)_defaultRecordingsFetchRequest:(id)a3
++ (id)_defaultRecordingsFetchRequest:(id)request
 {
-  v4 = a3;
-  v5 = [a1 _defaultRecordingsFetchRequest];
-  [v5 setPredicate:v4];
+  requestCopy = request;
+  _defaultRecordingsFetchRequest = [self _defaultRecordingsFetchRequest];
+  [_defaultRecordingsFetchRequest setPredicate:requestCopy];
 
-  return v5;
+  return _defaultRecordingsFetchRequest;
 }
 
-+ (id)_defaultFolderFetchRequest:(id)a3
++ (id)_defaultFolderFetchRequest:(id)request
 {
-  v4 = a3;
-  v5 = [a1 _defaultFolderFetchRequest];
-  [v5 setPredicate:v4];
+  requestCopy = request;
+  _defaultFolderFetchRequest = [self _defaultFolderFetchRequest];
+  [_defaultFolderFetchRequest setPredicate:requestCopy];
 
-  return v5;
+  return _defaultFolderFetchRequest;
 }
 
-+ (id)_recordingsWithPredicateFormat:(id)a3
++ (id)_recordingsWithPredicateFormat:(id)format
 {
-  v4 = a3;
-  v5 = [a1 _defaultRecordingsFetchRequest];
-  v6 = [MEMORY[0x277CCAC30] predicateWithFormat:v4 arguments:&v9];
+  formatCopy = format;
+  _defaultRecordingsFetchRequest = [self _defaultRecordingsFetchRequest];
+  v6 = [MEMORY[0x277CCAC30] predicateWithFormat:formatCopy arguments:&v9];
 
-  [v5 setPredicate:v6];
+  [_defaultRecordingsFetchRequest setPredicate:v6];
 
-  return v5;
+  return _defaultRecordingsFetchRequest;
 }
 
-+ (id)_foldersWithPredicateFormat:(id)a3
++ (id)_foldersWithPredicateFormat:(id)format
 {
-  v4 = a3;
-  v5 = [a1 _defaultFolderFetchRequest];
-  v6 = [MEMORY[0x277CCAC30] predicateWithFormat:v4 arguments:&v9];
+  formatCopy = format;
+  _defaultFolderFetchRequest = [self _defaultFolderFetchRequest];
+  v6 = [MEMORY[0x277CCAC30] predicateWithFormat:formatCopy arguments:&v9];
 
-  [v5 setPredicate:v6];
+  [_defaultFolderFetchRequest setPredicate:v6];
 
-  return v5;
+  return _defaultFolderFetchRequest;
 }
 
 @end

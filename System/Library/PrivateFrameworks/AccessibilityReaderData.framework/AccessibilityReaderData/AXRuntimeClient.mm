@@ -10,11 +10,11 @@
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC23AccessibilityReaderData15AXRuntimeClient_axObserver);
   *(&self->super.isa + OBJC_IVAR____TtC23AccessibilityReaderData15AXRuntimeClient_axObserver) = 0;
-  v5 = self;
+  selfCopy = self;
 
   sub_23D799584();
   sub_23D798DBC(0);
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(AXRuntimeClient *)&v6 dealloc];
 }

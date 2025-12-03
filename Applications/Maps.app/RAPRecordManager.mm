@@ -1,26 +1,26 @@
 @interface RAPRecordManager
 + (id)_sharedInstance;
-+ (void)addRAPRecord:(id)a3 completion:(id)a4;
-+ (void)addTrafficIncidentReport:(id)a3 completion:(id)a4;
-+ (void)editStatusOfRAPRecordWithReportID:(id)a3 status:(signed __int16)a4 completion:(id)a5;
-+ (void)fetchAllRAPRecordsWithCompletion:(id)a3;
-+ (void)fetchAllTrafficIncidentReportsWithCompletion:(id)a3;
-+ (void)fetchRAPRecordsMatchingProblemId:(id)a3 completion:(id)a4;
-- (RAPRecordManager)initWithSyncedCache:(id)a3;
-- (void)_addRAPRecord:(id)a3 completion:(id)a4;
-- (void)_addTrafficIncidentReport:(id)a3 completion:(id)a4;
-- (void)_editStatusOfRAPRecordWithReportID:(id)a3 status:(signed __int16)a4 completion:(id)a5;
-- (void)_fetchAllRAPRecordsWithCompletion:(id)a3;
-- (void)_fetchAllTrafficIncidentReportsWithCompletion:(id)a3;
-- (void)_fetchRAPRecordsMatchingProblemId:(id)a3 completion:(id)a4;
-- (void)_fetchRAPRecordsMatchingProblemIdV2:(id)a3 completion:(id)a4;
++ (void)addRAPRecord:(id)record completion:(id)completion;
++ (void)addTrafficIncidentReport:(id)report completion:(id)completion;
++ (void)editStatusOfRAPRecordWithReportID:(id)d status:(signed __int16)status completion:(id)completion;
++ (void)fetchAllRAPRecordsWithCompletion:(id)completion;
++ (void)fetchAllTrafficIncidentReportsWithCompletion:(id)completion;
++ (void)fetchRAPRecordsMatchingProblemId:(id)id completion:(id)completion;
+- (RAPRecordManager)initWithSyncedCache:(id)cache;
+- (void)_addRAPRecord:(id)record completion:(id)completion;
+- (void)_addTrafficIncidentReport:(id)report completion:(id)completion;
+- (void)_editStatusOfRAPRecordWithReportID:(id)d status:(signed __int16)status completion:(id)completion;
+- (void)_fetchAllRAPRecordsWithCompletion:(id)completion;
+- (void)_fetchAllTrafficIncidentReportsWithCompletion:(id)completion;
+- (void)_fetchRAPRecordsMatchingProblemId:(id)id completion:(id)completion;
+- (void)_fetchRAPRecordsMatchingProblemIdV2:(id)v2 completion:(id)completion;
 @end
 
 @implementation RAPRecordManager
 
-- (void)_fetchAllTrafficIncidentReportsWithCompletion:(id)a3
+- (void)_fetchAllTrafficIncidentReportsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -37,44 +37,44 @@
   v9[2] = sub_100A355C0;
   v9[3] = &unk_101632468;
   v11 = &v12;
-  v8 = v4;
+  v8 = completionCopy;
   v10 = v8;
   [(RAPRecordMapsSync *)syncedCache fetchAllTrafficIncidentReportsWithCompletion:v9];
 
   _Block_object_dispose(&v12, 8);
 }
 
-- (void)_addTrafficIncidentReport:(id)a3 completion:(id)a4
+- (void)_addTrafficIncidentReport:(id)report completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   syncedCache = self->_syncedCache;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100A3588C;
   v9[3] = &unk_1016610B8;
-  v10 = v6;
-  v8 = v6;
-  [(RAPRecordMapsSync *)syncedCache addTrafficIncidentReport:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(RAPRecordMapsSync *)syncedCache addTrafficIncidentReport:report completion:v9];
 }
 
-- (void)_editStatusOfRAPRecordWithReportID:(id)a3 status:(signed __int16)a4 completion:(id)a5
+- (void)_editStatusOfRAPRecordWithReportID:(id)d status:(signed __int16)status completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
+  statusCopy = status;
+  completionCopy = completion;
   syncedCache = self->_syncedCache;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100A35A84;
   v11[3] = &unk_1016610B8;
-  v12 = v8;
-  v10 = v8;
-  [(RAPRecordMapsSync *)syncedCache editStatusOfRAPRecordWithReportID:a3 toStatus:v5 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [(RAPRecordMapsSync *)syncedCache editStatusOfRAPRecordWithReportID:d toStatus:statusCopy completion:v11];
 }
 
-- (void)_fetchRAPRecordsMatchingProblemIdV2:(id)a3 completion:(id)a4
+- (void)_fetchRAPRecordsMatchingProblemIdV2:(id)v2 completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  v2Copy = v2;
+  completionCopy = completion;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
@@ -86,20 +86,20 @@
   block[1] = 3221225472;
   block[2] = sub_100A35C74;
   block[3] = &unk_1016562F0;
-  v13 = v7;
+  v13 = completionCopy;
   v14 = v15;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  v12 = v2Copy;
+  v9 = completionCopy;
+  v10 = v2Copy;
   dispatch_async(mapsSyncQueue, block);
 
   _Block_object_dispose(v15, 8);
 }
 
-- (void)_fetchRAPRecordsMatchingProblemId:(id)a3 completion:(id)a4
+- (void)_fetchRAPRecordsMatchingProblemId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
@@ -112,16 +112,16 @@
   v10[2] = sub_100A3624C;
   v10[3] = &unk_101632468;
   v12 = v13;
-  v9 = v7;
+  v9 = completionCopy;
   v11 = v9;
-  [(RAPRecordMapsSync *)syncedCache fetchRAPHistoryWithReportId:v6 completion:v10];
+  [(RAPRecordMapsSync *)syncedCache fetchRAPHistoryWithReportId:idCopy completion:v10];
 
   _Block_object_dispose(v13, 8);
 }
 
-- (void)_fetchAllRAPRecordsWithCompletion:(id)a3
+- (void)_fetchAllRAPRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -138,36 +138,36 @@
   v9[2] = sub_100A36708;
   v9[3] = &unk_101632468;
   v11 = &v12;
-  v8 = v4;
+  v8 = completionCopy;
   v10 = v8;
   [(RAPRecordMapsSync *)syncedCache fetchAllRAPHistoryObjectsWithCompletion:v9];
 
   _Block_object_dispose(&v12, 8);
 }
 
-- (void)_addRAPRecord:(id)a3 completion:(id)a4
+- (void)_addRAPRecord:(id)record completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   syncedCache = self->_syncedCache;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100A36B40;
   v9[3] = &unk_1016610B8;
-  v10 = v6;
-  v8 = v6;
-  [(RAPRecordMapsSync *)syncedCache addRAPRecord:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(RAPRecordMapsSync *)syncedCache addRAPRecord:record completion:v9];
 }
 
-- (RAPRecordManager)initWithSyncedCache:(id)a3
+- (RAPRecordManager)initWithSyncedCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v12.receiver = self;
   v12.super_class = RAPRecordManager;
   v6 = [(RAPRecordManager *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_syncedCache, a3);
+    objc_storeStrong(&v6->_syncedCache, cache);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.Maps.RAPRecordManager.mapsSyncQueue", v8);
     mapsSyncQueue = v7->_mapsSyncQueue;
@@ -189,51 +189,51 @@
   return v3;
 }
 
-+ (void)fetchAllTrafficIncidentReportsWithCompletion:(id)a3
++ (void)fetchAllTrafficIncidentReportsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _sharedInstance];
-  [v5 _fetchAllTrafficIncidentReportsWithCompletion:v4];
+  completionCopy = completion;
+  _sharedInstance = [self _sharedInstance];
+  [_sharedInstance _fetchAllTrafficIncidentReportsWithCompletion:completionCopy];
 }
 
-+ (void)addTrafficIncidentReport:(id)a3 completion:(id)a4
++ (void)addTrafficIncidentReport:(id)report completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _sharedInstance];
-  [v8 _addTrafficIncidentReport:v7 completion:v6];
+  completionCopy = completion;
+  reportCopy = report;
+  _sharedInstance = [self _sharedInstance];
+  [_sharedInstance _addTrafficIncidentReport:reportCopy completion:completionCopy];
 }
 
-+ (void)editStatusOfRAPRecordWithReportID:(id)a3 status:(signed __int16)a4 completion:(id)a5
++ (void)editStatusOfRAPRecordWithReportID:(id)d status:(signed __int16)status completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [a1 _sharedInstance];
-  [v10 _editStatusOfRAPRecordWithReportID:v9 status:v5 completion:v8];
+  statusCopy = status;
+  completionCopy = completion;
+  dCopy = d;
+  _sharedInstance = [self _sharedInstance];
+  [_sharedInstance _editStatusOfRAPRecordWithReportID:dCopy status:statusCopy completion:completionCopy];
 }
 
-+ (void)fetchRAPRecordsMatchingProblemId:(id)a3 completion:(id)a4
++ (void)fetchRAPRecordsMatchingProblemId:(id)id completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _sharedInstance];
-  [v8 _fetchRAPRecordsMatchingProblemId:v7 completion:v6];
+  completionCopy = completion;
+  idCopy = id;
+  _sharedInstance = [self _sharedInstance];
+  [_sharedInstance _fetchRAPRecordsMatchingProblemId:idCopy completion:completionCopy];
 }
 
-+ (void)fetchAllRAPRecordsWithCompletion:(id)a3
++ (void)fetchAllRAPRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _sharedInstance];
-  [v5 _fetchAllRAPRecordsWithCompletion:v4];
+  completionCopy = completion;
+  _sharedInstance = [self _sharedInstance];
+  [_sharedInstance _fetchAllRAPRecordsWithCompletion:completionCopy];
 }
 
-+ (void)addRAPRecord:(id)a3 completion:(id)a4
++ (void)addRAPRecord:(id)record completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _sharedInstance];
-  [v8 _addRAPRecord:v7 completion:v6];
+  completionCopy = completion;
+  recordCopy = record;
+  _sharedInstance = [self _sharedInstance];
+  [_sharedInstance _addRAPRecord:recordCopy completion:completionCopy];
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface TVShowsAndMoviesViewController.SegmentedControlContainerView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtCC16MusicApplication30TVShowsAndMoviesViewControllerP33_0A44ACF94072246E8AD16A61955F73C029SegmentedControlContainerView)initWithCoder:(id)a3;
-- (_TtCC16MusicApplication30TVShowsAndMoviesViewControllerP33_0A44ACF94072246E8AD16A61955F73C029SegmentedControlContainerView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtCC16MusicApplication30TVShowsAndMoviesViewControllerP33_0A44ACF94072246E8AD16A61955F73C029SegmentedControlContainerView)initWithCoder:(id)coder;
+- (_TtCC16MusicApplication30TVShowsAndMoviesViewControllerP33_0A44ACF94072246E8AD16A61955F73C029SegmentedControlContainerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)music_inheritedLayoutInsetsDidChange;
 @end
 
 @implementation TVShowsAndMoviesViewController.SegmentedControlContainerView
 
-- (_TtCC16MusicApplication30TVShowsAndMoviesViewControllerP33_0A44ACF94072246E8AD16A61955F73C029SegmentedControlContainerView)initWithCoder:(id)a3
+- (_TtCC16MusicApplication30TVShowsAndMoviesViewControllerP33_0A44ACF94072246E8AD16A61955F73C029SegmentedControlContainerView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtCC16MusicApplication30TVShowsAndMoviesViewControllerP33_0A44ACF94072246E8AD16A61955F73C029SegmentedControlContainerView_segmentedControl;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(UISegmentedControl) init];
@@ -41,9 +41,9 @@
 - (CGSize)intrinsicContentSize
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtCC16MusicApplication30TVShowsAndMoviesViewControllerP33_0A44ACF94072246E8AD16A61955F73C029SegmentedControlContainerView_segmentedControl);
-  v3 = self;
+  selfCopy = self;
   [v2 intrinsicContentSize];
-  [(TVShowsAndMoviesViewController.SegmentedControlContainerView *)v3 layoutMargins];
+  [(TVShowsAndMoviesViewController.SegmentedControlContainerView *)selfCopy layoutMargins];
   sub_AB9EB0();
   sub_ABA530();
   v5 = v4;
@@ -56,14 +56,14 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____TtCC16MusicApplication30TVShowsAndMoviesViewControllerP33_0A44ACF94072246E8AD16A61955F73C029SegmentedControlContainerView_segmentedControl);
-  v6 = self;
+  selfCopy = self;
   [v5 intrinsicContentSize];
-  [(TVShowsAndMoviesViewController.SegmentedControlContainerView *)v6 layoutMargins];
+  [(TVShowsAndMoviesViewController.SegmentedControlContainerView *)selfCopy layoutMargins];
   sub_AB9EB0();
   sub_ABA530();
   v8 = v7;
@@ -118,7 +118,7 @@
   [v2 setLayoutMargins:?];
 }
 
-- (_TtCC16MusicApplication30TVShowsAndMoviesViewControllerP33_0A44ACF94072246E8AD16A61955F73C029SegmentedControlContainerView)initWithFrame:(CGRect)a3
+- (_TtCC16MusicApplication30TVShowsAndMoviesViewControllerP33_0A44ACF94072246E8AD16A61955F73C029SegmentedControlContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

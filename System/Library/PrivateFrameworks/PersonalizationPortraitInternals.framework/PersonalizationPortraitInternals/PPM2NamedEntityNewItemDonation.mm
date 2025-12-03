@@ -1,88 +1,88 @@
 @interface PPM2NamedEntityNewItemDonation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAlgorithm:(id)a3;
-- (int)StringAsCategory:(id)a3;
-- (int)StringAsDonationSource:(id)a3;
+- (int)StringAsAlgorithm:(id)algorithm;
+- (int)StringAsCategory:(id)category;
+- (int)StringAsDonationSource:(id)source;
 - (int)algorithm;
 - (int)category;
 - (int)donationSource;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAlgorithm:(BOOL)a3;
-- (void)setHasCategory:(BOOL)a3;
-- (void)setHasDonationSource:(BOOL)a3;
-- (void)setHasNewItem:(BOOL)a3;
-- (void)setHasUserCreated:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAlgorithm:(BOOL)algorithm;
+- (void)setHasCategory:(BOOL)category;
+- (void)setHasDonationSource:(BOOL)source;
+- (void)setHasNewItem:(BOOL)item;
+- (void)setHasUserCreated:(BOOL)created;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPM2NamedEntityNewItemDonation
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 60);
+  fromCopy = from;
+  v5 = *(fromCopy + 60);
   if ((v5 & 8) != 0)
   {
-    self->_donationSource = *(v4 + 8);
+    self->_donationSource = *(fromCopy + 8);
     *&self->_has |= 8u;
-    v5 = *(v4 + 60);
+    v5 = *(fromCopy + 60);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_category = *(v4 + 7);
+    self->_category = *(fromCopy + 7);
     *&self->_has |= 4u;
   }
 
-  v8 = v4;
-  if (*(v4 + 5))
+  v8 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(PPM2NamedEntityNewItemDonation *)self setDynamicCategory:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PPM2NamedEntityNewItemDonation *)self setGroupId:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v6 = *(v4 + 60);
+  v6 = *(fromCopy + 60);
   if ((v6 & 0x10) != 0)
   {
-    self->_newItem = *(v4 + 56);
+    self->_newItem = *(fromCopy + 56);
     *&self->_has |= 0x10u;
-    v6 = *(v4 + 60);
+    v6 = *(fromCopy + 60);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_algorithm = *(v4 + 6);
+    self->_algorithm = *(fromCopy + 6);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(PPM2NamedEntityNewItemDonation *)self setActiveTreatments:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = *(v4 + 60);
+  v7 = *(fromCopy + 60);
   if ((v7 & 0x20) != 0)
   {
-    self->_userCreated = *(v4 + 57);
+    self->_userCreated = *(fromCopy + 57);
     *&self->_has |= 0x20u;
-    v7 = *(v4 + 60);
+    v7 = *(fromCopy + 60);
   }
 
   if (v7)
   {
-    self->_rank = *(v4 + 1);
+    self->_rank = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }
@@ -160,49 +160,49 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_39;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(equalCopy + 60);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 60) & 8) == 0 || self->_donationSource != *(v4 + 8))
+    if ((*(equalCopy + 60) & 8) == 0 || self->_donationSource != *(equalCopy + 8))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 60) & 8) != 0)
+  else if ((*(equalCopy + 60) & 8) != 0)
   {
     goto LABEL_39;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 60) & 4) == 0 || self->_category != *(v4 + 7))
+    if ((*(equalCopy + 60) & 4) == 0 || self->_category != *(equalCopy + 7))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 60) & 4) != 0)
+  else if ((*(equalCopy + 60) & 4) != 0)
   {
     goto LABEL_39;
   }
 
   dynamicCategory = self->_dynamicCategory;
-  if (dynamicCategory | *(v4 + 5) && ![(NSString *)dynamicCategory isEqual:?])
+  if (dynamicCategory | *(equalCopy + 5) && ![(NSString *)dynamicCategory isEqual:?])
   {
     goto LABEL_39;
   }
 
   groupId = self->_groupId;
-  if (groupId | *(v4 + 6))
+  if (groupId | *(equalCopy + 6))
   {
     if (![(NSString *)groupId isEqual:?])
     {
@@ -211,49 +211,49 @@ LABEL_13:
   }
 
   has = self->_has;
-  v9 = *(v4 + 60);
+  v9 = *(equalCopy + 60);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 60) & 0x10) == 0)
+    if ((*(equalCopy + 60) & 0x10) == 0)
     {
       goto LABEL_39;
     }
 
-    v10 = *(v4 + 56);
+    v10 = *(equalCopy + 56);
     if (self->_newItem)
     {
-      if ((*(v4 + 56) & 1) == 0)
+      if ((*(equalCopy + 56) & 1) == 0)
       {
         goto LABEL_39;
       }
     }
 
-    else if (*(v4 + 56))
+    else if (*(equalCopy + 56))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 60) & 0x10) != 0)
+  else if ((*(equalCopy + 60) & 0x10) != 0)
   {
     goto LABEL_39;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_algorithm != *(v4 + 6))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_algorithm != *(equalCopy + 6))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_39;
   }
 
   activeTreatments = self->_activeTreatments;
-  if (activeTreatments | *(v4 + 2))
+  if (activeTreatments | *(equalCopy + 2))
   {
     if (![(NSString *)activeTreatments isEqual:?])
     {
@@ -261,7 +261,7 @@ LABEL_13:
     }
 
     has = self->_has;
-    v9 = *(v4 + 60);
+    v9 = *(equalCopy + 60);
   }
 
   if ((has & 0x20) == 0)
@@ -281,16 +281,16 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  v14 = *(v4 + 57);
+  v14 = *(equalCopy + 57);
   if (self->_userCreated)
   {
-    if ((*(v4 + 57) & 1) == 0)
+    if ((*(equalCopy + 57) & 1) == 0)
     {
       goto LABEL_39;
     }
   }
 
-  else if (*(v4 + 57))
+  else if (*(equalCopy + 57))
   {
     goto LABEL_39;
   }
@@ -299,7 +299,7 @@ LABEL_32:
   v12 = (v9 & 1) == 0;
   if (has)
   {
-    if ((v9 & 1) == 0 || self->_rank != *(v4 + 1))
+    if ((v9 & 1) == 0 || self->_rank != *(equalCopy + 1))
     {
       goto LABEL_39;
     }
@@ -312,9 +312,9 @@ LABEL_40:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -330,11 +330,11 @@ LABEL_40:
     *(v5 + 60) |= 4u;
   }
 
-  v8 = [(NSString *)self->_dynamicCategory copyWithZone:a3];
+  v8 = [(NSString *)self->_dynamicCategory copyWithZone:zone];
   v9 = *(v6 + 40);
   *(v6 + 40) = v8;
 
-  v10 = [(NSString *)self->_groupId copyWithZone:a3];
+  v10 = [(NSString *)self->_groupId copyWithZone:zone];
   v11 = *(v6 + 48);
   *(v6 + 48) = v10;
 
@@ -352,7 +352,7 @@ LABEL_40:
     *(v6 + 60) |= 2u;
   }
 
-  v13 = [(NSString *)self->_activeTreatments copyWithZone:a3];
+  v13 = [(NSString *)self->_activeTreatments copyWithZone:zone];
   v14 = *(v6 + 16);
   *(v6 + 16) = v13;
 
@@ -373,74 +373,74 @@ LABEL_40:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[8] = self->_donationSource;
-    *(v4 + 60) |= 8u;
+    toCopy[8] = self->_donationSource;
+    *(toCopy + 60) |= 8u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    v4[7] = self->_category;
-    *(v4 + 60) |= 4u;
+    toCopy[7] = self->_category;
+    *(toCopy + 60) |= 4u;
   }
 
-  v8 = v4;
+  v8 = toCopy;
   if (self->_dynamicCategory)
   {
-    [v4 setDynamicCategory:?];
-    v4 = v8;
+    [toCopy setDynamicCategory:?];
+    toCopy = v8;
   }
 
   if (self->_groupId)
   {
     [v8 setGroupId:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v6 = self->_has;
   if ((v6 & 0x10) != 0)
   {
-    *(v4 + 56) = self->_newItem;
-    *(v4 + 60) |= 0x10u;
+    *(toCopy + 56) = self->_newItem;
+    *(toCopy + 60) |= 0x10u;
     v6 = self->_has;
   }
 
   if ((v6 & 2) != 0)
   {
-    v4[6] = self->_algorithm;
-    *(v4 + 60) |= 2u;
+    toCopy[6] = self->_algorithm;
+    *(toCopy + 60) |= 2u;
   }
 
   if (self->_activeTreatments)
   {
     [v8 setActiveTreatments:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v7 = self->_has;
   if ((v7 & 0x20) != 0)
   {
-    *(v4 + 57) = self->_userCreated;
-    *(v4 + 60) |= 0x20u;
+    *(toCopy + 57) = self->_userCreated;
+    *(toCopy + 60) |= 0x20u;
     v7 = self->_has;
   }
 
   if (v7)
   {
-    *(v4 + 1) = self->_rank;
-    *(v4 + 60) |= 1u;
+    *(toCopy + 1) = self->_rank;
+    *(toCopy + 60) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -501,7 +501,7 @@ LABEL_40:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -516,7 +516,7 @@ LABEL_40:
       v6 = off_2789757C0[donationSource];
     }
 
-    [v3 setObject:v6 forKey:@"donationSource"];
+    [dictionary setObject:v6 forKey:@"donationSource"];
 
     has = self->_has;
   }
@@ -534,26 +534,26 @@ LABEL_40:
       v8 = off_278975888[category];
     }
 
-    [v3 setObject:v8 forKey:@"category"];
+    [dictionary setObject:v8 forKey:@"category"];
   }
 
   dynamicCategory = self->_dynamicCategory;
   if (dynamicCategory)
   {
-    [v3 setObject:dynamicCategory forKey:@"dynamicCategory"];
+    [dictionary setObject:dynamicCategory forKey:@"dynamicCategory"];
   }
 
   groupId = self->_groupId;
   if (groupId)
   {
-    [v3 setObject:groupId forKey:@"groupId"];
+    [dictionary setObject:groupId forKey:@"groupId"];
   }
 
   v11 = self->_has;
   if ((v11 & 0x10) != 0)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_newItem];
-    [v3 setObject:v12 forKey:@"newItem"];
+    [dictionary setObject:v12 forKey:@"newItem"];
 
     v11 = self->_has;
   }
@@ -571,20 +571,20 @@ LABEL_40:
       v14 = off_278975938[algorithm];
     }
 
-    [v3 setObject:v14 forKey:@"algorithm"];
+    [dictionary setObject:v14 forKey:@"algorithm"];
   }
 
   activeTreatments = self->_activeTreatments;
   if (activeTreatments)
   {
-    [v3 setObject:activeTreatments forKey:@"activeTreatments"];
+    [dictionary setObject:activeTreatments forKey:@"activeTreatments"];
   }
 
   v16 = self->_has;
   if ((v16 & 0x20) != 0)
   {
     v17 = [MEMORY[0x277CCABB0] numberWithBool:self->_userCreated];
-    [v3 setObject:v17 forKey:@"userCreated"];
+    [dictionary setObject:v17 forKey:@"userCreated"];
 
     v16 = self->_has;
   }
@@ -592,10 +592,10 @@ LABEL_40:
   if (v16)
   {
     v18 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_rank];
-    [v3 setObject:v18 forKey:@"rank"];
+    [dictionary setObject:v18 forKey:@"rank"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -604,15 +604,15 @@ LABEL_40:
   v8.receiver = self;
   v8.super_class = PPM2NamedEntityNewItemDonation;
   v4 = [(PPM2NamedEntityNewItemDonation *)&v8 description];
-  v5 = [(PPM2NamedEntityNewItemDonation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPM2NamedEntityNewItemDonation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasUserCreated:(BOOL)a3
+- (void)setHasUserCreated:(BOOL)created
 {
-  if (a3)
+  if (created)
   {
     v3 = 32;
   }
@@ -625,115 +625,115 @@ LABEL_40:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)StringAsAlgorithm:(id)a3
+- (int)StringAsAlgorithm:(id)algorithm
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  algorithmCopy = algorithm;
+  if ([algorithmCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LookupHint"])
+  else if ([algorithmCopy isEqualToString:@"LookupHint"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CoreNLP"])
+  else if ([algorithmCopy isEqualToString:@"CoreNLP"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CoreRoutineImport"])
+  else if ([algorithmCopy isEqualToString:@"CoreRoutineImport"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"DataDetectors"])
+  else if ([algorithmCopy isEqualToString:@"DataDetectors"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NSUALocation"])
+  else if ([algorithmCopy isEqualToString:@"NSUALocation"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"TrustedLocation"])
+  else if ([algorithmCopy isEqualToString:@"TrustedLocation"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"MapsInteraction"])
+  else if ([algorithmCopy isEqualToString:@"MapsInteraction"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"CustomTagger"])
+  else if ([algorithmCopy isEqualToString:@"CustomTagger"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"EventKitImport"])
+  else if ([algorithmCopy isEqualToString:@"EventKitImport"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"PhotosKnowledgeGraph"])
+  else if ([algorithmCopy isEqualToString:@"PhotosKnowledgeGraph"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ContextKit"])
+  else if ([algorithmCopy isEqualToString:@"ContextKit"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SiriDonation"])
+  else if ([algorithmCopy isEqualToString:@"SiriDonation"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"NE2T"])
+  else if ([algorithmCopy isEqualToString:@"NE2T"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"HighLevelTopicExtraction"])
+  else if ([algorithmCopy isEqualToString:@"HighLevelTopicExtraction"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"ParsecDonation"])
+  else if ([algorithmCopy isEqualToString:@"ParsecDonation"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"PodcastsInteraction"])
+  else if ([algorithmCopy isEqualToString:@"PodcastsInteraction"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"HealthKitImport"])
+  else if ([algorithmCopy isEqualToString:@"HealthKitImport"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"NowPlayingDonation"])
+  else if ([algorithmCopy isEqualToString:@"NowPlayingDonation"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"ContactsImport"])
+  else if ([algorithmCopy isEqualToString:@"ContactsImport"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"AugmentedGazetteer"])
+  else if ([algorithmCopy isEqualToString:@"AugmentedGazetteer"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"KnowledgeGraph"])
+  else if ([algorithmCopy isEqualToString:@"KnowledgeGraph"])
   {
     v4 = 21;
   }
@@ -746,9 +746,9 @@ LABEL_40:
   return v4;
 }
 
-- (void)setHasAlgorithm:(BOOL)a3
+- (void)setHasAlgorithm:(BOOL)algorithm
 {
-  if (a3)
+  if (algorithm)
   {
     v3 = 2;
   }
@@ -774,9 +774,9 @@ LABEL_40:
   }
 }
 
-- (void)setHasNewItem:(BOOL)a3
+- (void)setHasNewItem:(BOOL)item
 {
-  if (a3)
+  if (item)
   {
     v3 = 16;
   }
@@ -789,115 +789,115 @@ LABEL_40:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsCategory:(id)a3
+- (int)StringAsCategory:(id)category
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UnknownCategory"])
+  categoryCopy = category;
+  if ([categoryCopy isEqualToString:@"UnknownCategory"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Person"])
+  else if ([categoryCopy isEqualToString:@"Person"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Organization"])
+  else if ([categoryCopy isEqualToString:@"Organization"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Location"])
+  else if ([categoryCopy isEqualToString:@"Location"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Restaurant"])
+  else if ([categoryCopy isEqualToString:@"Restaurant"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ActivityLocation"])
+  else if ([categoryCopy isEqualToString:@"ActivityLocation"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Media"])
+  else if ([categoryCopy isEqualToString:@"Media"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Artist"])
+  else if ([categoryCopy isEqualToString:@"Artist"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"StreetAddress"])
+  else if ([categoryCopy isEqualToString:@"StreetAddress"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"City"])
+  else if ([categoryCopy isEqualToString:@"City"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"State"])
+  else if ([categoryCopy isEqualToString:@"State"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"Country"])
+  else if ([categoryCopy isEqualToString:@"Country"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"FullAddress"])
+  else if ([categoryCopy isEqualToString:@"FullAddress"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"TouristAttraction"])
+  else if ([categoryCopy isEqualToString:@"TouristAttraction"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"EventTitle"])
+  else if ([categoryCopy isEqualToString:@"EventTitle"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"SportsTeam"])
+  else if ([categoryCopy isEqualToString:@"SportsTeam"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"ProfessionalAthlete"])
+  else if ([categoryCopy isEqualToString:@"ProfessionalAthlete"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"Musician"])
+  else if ([categoryCopy isEqualToString:@"Musician"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"Movie"])
+  else if ([categoryCopy isEqualToString:@"Movie"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"Dynamic"])
+  else if ([categoryCopy isEqualToString:@"Dynamic"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"Politician"])
+  else if ([categoryCopy isEqualToString:@"Politician"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"TelevisionShow"])
+  else if ([categoryCopy isEqualToString:@"TelevisionShow"])
   {
     v4 = 21;
   }
@@ -910,9 +910,9 @@ LABEL_40:
   return v4;
 }
 
-- (void)setHasCategory:(BOOL)a3
+- (void)setHasCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v3 = 4;
   }
@@ -938,130 +938,130 @@ LABEL_40:
   }
 }
 
-- (int)StringAsDonationSource:(id)a3
+- (int)StringAsDonationSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Safari"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"Safari"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"News"])
+  else if ([sourceCopy isEqualToString:@"News"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Mail"])
+  else if ([sourceCopy isEqualToString:@"Mail"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Messages"])
+  else if ([sourceCopy isEqualToString:@"Messages"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CoreRoutine"])
+  else if ([sourceCopy isEqualToString:@"CoreRoutine"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Siri"])
+  else if ([sourceCopy isEqualToString:@"Siri"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Photos"])
+  else if ([sourceCopy isEqualToString:@"Photos"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Health"])
+  else if ([sourceCopy isEqualToString:@"Health"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Podcasts"])
+  else if ([sourceCopy isEqualToString:@"Podcasts"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Calendar"])
+  else if ([sourceCopy isEqualToString:@"Calendar"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Parsec"])
+  else if ([sourceCopy isEqualToString:@"Parsec"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"NowPlaying"])
+  else if ([sourceCopy isEqualToString:@"NowPlaying"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"Notes"])
+  else if ([sourceCopy isEqualToString:@"Notes"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"Maps"])
+  else if ([sourceCopy isEqualToString:@"Maps"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"ContactsSource"])
+  else if ([sourceCopy isEqualToString:@"ContactsSource"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"Reminders"])
+  else if ([sourceCopy isEqualToString:@"Reminders"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"UnknownFirstParty"])
+  else if ([sourceCopy isEqualToString:@"UnknownFirstParty"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"UnknownThirdParty"])
+  else if ([sourceCopy isEqualToString:@"UnknownThirdParty"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"UnknownSource"])
+  else if ([sourceCopy isEqualToString:@"UnknownSource"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"Music"])
+  else if ([sourceCopy isEqualToString:@"Music"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"Wallet"])
+  else if ([sourceCopy isEqualToString:@"Wallet"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"Facetime"])
+  else if ([sourceCopy isEqualToString:@"Facetime"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"Camera"])
+  else if ([sourceCopy isEqualToString:@"Camera"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"TVRemoteNotifications"])
+  else if ([sourceCopy isEqualToString:@"TVRemoteNotifications"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"TVApp"])
+  else if ([sourceCopy isEqualToString:@"TVApp"])
   {
     v4 = 24;
   }
@@ -1074,9 +1074,9 @@ LABEL_40:
   return v4;
 }
 
-- (void)setHasDonationSource:(BOOL)a3
+- (void)setHasDonationSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 8;
   }

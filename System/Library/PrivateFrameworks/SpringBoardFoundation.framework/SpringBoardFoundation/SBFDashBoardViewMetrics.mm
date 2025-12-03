@@ -1,42 +1,42 @@
 @interface SBFDashBoardViewMetrics
 + (BOOL)_presentsListBelowDateTime;
-+ (CGRect)_reducedPageBoundsFromBounds:(CGRect)a3 forPage:(unint64_t)a4;
-+ (CGRect)suggestedFrameForCallToActionLabel:(id)a3 yOffset:(double)a4 inBounds:(CGRect)a5;
-+ (CGRect)suggestedFrameForDateTimeViewInScreenCoordinates:(CGRect)a3 centeredX:(BOOL)a4;
-+ (CGRect)suggestedFrameForListForPage:(unint64_t)a3 pageBounds:(CGRect)a4;
-+ (CGRect)suggestedFrameForListForPage:(unint64_t)a3 pageBounds:(CGRect)a4 insets:(UIEdgeInsets)a5;
-+ (CGRect)suggestedFrameForListForPage:(unint64_t)a3 pageBounds:(CGRect)a4 insets:(UIEdgeInsets)a5 scrollsDateTime:(BOOL)a6;
-+ (CGRect)suggestedFrameForMediaArtworkForControlsFrame:(CGRect)a3 bottomInset:(double)a4 inPageBounds:(CGRect)a5;
-+ (CGRect)suggestedFrameForMediaControlsForPageBounds:(CGRect)a3;
-+ (CGRect)suggestedFrameForStatusView:(id)a3 inView:(id)a4 withInsets:(UIEdgeInsets)a5;
-+ (UIEdgeInsets)_cachedGlyphInsetsForString:(id)a3 withFont:(id)a4;
-+ (UIEdgeInsets)suggestedContentInsetsForListForPage:(unint64_t)a3 pageBounds:(CGRect)a4;
-+ (UIEdgeInsets)suggestedContentInsetsForListForPage:(unint64_t)a3 pageBounds:(CGRect)a4 scrollsDateTime:(BOOL)a5;
-+ (double)_dateTimeMinXForReducedBounds:(CGRect)a3 forPage:(unint64_t)a4;
-+ (double)_padSpecificInsets:(SBFDashBoardPadPageInsets *)a3 leading:(BOOL)a4;
-+ (double)_padSpecificValueForDevice:(SBFDashBoardOrientationLeadingInsets)a3 leading:(BOOL)a4;
-+ (double)_padSpecificValueJ99:(double)a3 otherPad:(double)a4;
-+ (double)_phoneSpecificValueN56:(double)a3 n61:(double)a4 n69:(double)a5;
-+ (double)_phoneSpecificValueN56:(double)a3 n61:(double)a4 n69:(double)a5 d22:(double)a6;
++ (CGRect)_reducedPageBoundsFromBounds:(CGRect)bounds forPage:(unint64_t)page;
++ (CGRect)suggestedFrameForCallToActionLabel:(id)label yOffset:(double)offset inBounds:(CGRect)bounds;
++ (CGRect)suggestedFrameForDateTimeViewInScreenCoordinates:(CGRect)coordinates centeredX:(BOOL)x;
++ (CGRect)suggestedFrameForListForPage:(unint64_t)page pageBounds:(CGRect)bounds;
++ (CGRect)suggestedFrameForListForPage:(unint64_t)page pageBounds:(CGRect)bounds insets:(UIEdgeInsets)insets;
++ (CGRect)suggestedFrameForListForPage:(unint64_t)page pageBounds:(CGRect)bounds insets:(UIEdgeInsets)insets scrollsDateTime:(BOOL)time;
++ (CGRect)suggestedFrameForMediaArtworkForControlsFrame:(CGRect)frame bottomInset:(double)inset inPageBounds:(CGRect)bounds;
++ (CGRect)suggestedFrameForMediaControlsForPageBounds:(CGRect)bounds;
++ (CGRect)suggestedFrameForStatusView:(id)view inView:(id)inView withInsets:(UIEdgeInsets)insets;
++ (UIEdgeInsets)_cachedGlyphInsetsForString:(id)string withFont:(id)font;
++ (UIEdgeInsets)suggestedContentInsetsForListForPage:(unint64_t)page pageBounds:(CGRect)bounds;
++ (UIEdgeInsets)suggestedContentInsetsForListForPage:(unint64_t)page pageBounds:(CGRect)bounds scrollsDateTime:(BOOL)time;
++ (double)_dateTimeMinXForReducedBounds:(CGRect)bounds forPage:(unint64_t)page;
++ (double)_padSpecificInsets:(SBFDashBoardPadPageInsets *)insets leading:(BOOL)leading;
++ (double)_padSpecificValueForDevice:(SBFDashBoardOrientationLeadingInsets)device leading:(BOOL)leading;
++ (double)_padSpecificValueJ99:(double)j99 otherPad:(double)pad;
++ (double)_phoneSpecificValueN56:(double)n56 n61:(double)n61 n69:(double)n69;
++ (double)_phoneSpecificValueN56:(double)n56 n61:(double)n61 n69:(double)n69 d22:(double)d22;
 + (double)dateBaselineToListY;
-+ (double)listInsetXForPage:(unint64_t)a3;
-+ (double)listInsetXForPage:(unint64_t)a3 leading:(BOOL)a4;
-+ (double)listMinYForPage:(unint64_t)a3;
-+ (double)listWidthForPage:(unint64_t)a3;
-+ (double)scaledFontSize:(double)a3 withMaximumFontSizeCategory:(id)a4;
++ (double)listInsetXForPage:(unint64_t)page;
++ (double)listInsetXForPage:(unint64_t)page leading:(BOOL)leading;
++ (double)listMinYForPage:(unint64_t)page;
++ (double)listWidthForPage:(unint64_t)page;
++ (double)scaledFontSize:(double)size withMaximumFontSizeCategory:(id)category;
 + (double)searchBarWidth;
 + (double)searchClippingLineMaxY;
 + (double)singleLineDateViewBaselineDifferenceY;
 + (double)timeLabelBaselineY;
-+ (double)timeLabelScrollPercentForPage:(unint64_t)a3;
++ (double)timeLabelScrollPercentForPage:(unint64_t)page;
 + (double)timeLabelToSubtitleLabelDifferenceY;
 + (double)timeSubtitleBaselineY;
-+ (double)timeToListInsetXforPage:(unint64_t)a3;
++ (double)timeToListInsetXforPage:(unint64_t)page;
 + (double)timeToSubtitleLabelBaselineDifferenceY;
 + (id)dateFont;
 + (id)dateOnlyLunarDateFont;
-+ (unint64_t)dateTimeLayoutForPage:(unint64_t)a3;
-+ (unint64_t)listLayoutForPage:(unint64_t)a3;
++ (unint64_t)dateTimeLayoutForPage:(unint64_t)page;
++ (unint64_t)listLayoutForPage:(unint64_t)page;
 @end
 
 @implementation SBFDashBoardViewMetrics
@@ -53,8 +53,8 @@
     return *&timeToSubtitleLabelBaselineDifferenceY_timeToSubtitleLabelBaselineDifferenceY;
   }
 
-  v3 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -65,12 +65,12 @@
 
   else
   {
-    v7 = [MEMORY[0x1E69DC938] currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      [a1 _padSpecificValueJ99:46.0 otherPad:40.0];
+      [self _padSpecificValueJ99:46.0 otherPad:40.0];
       timeToSubtitleLabelBaselineDifferenceY_timeToSubtitleLabelBaselineDifferenceY = *&result;
     }
 
@@ -84,29 +84,29 @@
   return result;
 }
 
-+ (unint64_t)listLayoutForPage:(unint64_t)a3
++ (unint64_t)listLayoutForPage:(unint64_t)page
 {
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    return a3 != 2;
+    return page != 2;
   }
 
-  v8 = [a1 _isPortrait];
+  _isPortrait = [self _isPortrait];
   v9 = 3;
-  if (a3)
+  if (page)
   {
     v9 = 0;
   }
 
-  if (a3 == 1)
+  if (page == 1)
   {
     v9 = 4;
   }
 
-  if (v8)
+  if (_isPortrait)
   {
     return 2;
   }
@@ -117,24 +117,24 @@
   }
 }
 
-+ (unint64_t)dateTimeLayoutForPage:(unint64_t)a3
++ (unint64_t)dateTimeLayoutForPage:(unint64_t)page
 {
-  if (a3 == 2)
+  if (page == 2)
   {
     return 1;
   }
 
-  if (a3 == 1)
+  if (page == 1)
   {
-    return [a1 _presentsListBelowDateTime] ^ 1;
+    return [self _presentsListBelowDateTime] ^ 1;
   }
 
   return 2;
 }
 
-+ (CGRect)suggestedFrameForListForPage:(unint64_t)a3 pageBounds:(CGRect)a4
++ (CGRect)suggestedFrameForListForPage:(unint64_t)page pageBounds:(CGRect)bounds
 {
-  [a1 suggestedFrameForListForPage:a3 pageBounds:a4.origin.x insets:{a4.origin.y, a4.size.width, a4.size.height, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+  [self suggestedFrameForListForPage:page pageBounds:bounds.origin.x insets:{bounds.origin.y, bounds.size.width, bounds.size.height, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -142,19 +142,19 @@
   return result;
 }
 
-+ (CGRect)suggestedFrameForListForPage:(unint64_t)a3 pageBounds:(CGRect)a4 insets:(UIEdgeInsets)a5
++ (CGRect)suggestedFrameForListForPage:(unint64_t)page pageBounds:(CGRect)bounds insets:(UIEdgeInsets)insets
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = [a1 listScrollsDateTime];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  listScrollsDateTime = [self listScrollsDateTime];
 
-  [a1 suggestedFrameForListForPage:a3 pageBounds:v15 insets:x scrollsDateTime:{y, width, height, top, left, bottom, right}];
+  [self suggestedFrameForListForPage:page pageBounds:listScrollsDateTime insets:x scrollsDateTime:{y, width, height, top, left, bottom, right}];
   result.size.height = v19;
   result.size.width = v18;
   result.origin.y = v17;
@@ -162,31 +162,31 @@
   return result;
 }
 
-+ (CGRect)suggestedFrameForListForPage:(unint64_t)a3 pageBounds:(CGRect)a4 insets:(UIEdgeInsets)a5 scrollsDateTime:(BOOL)a6
++ (CGRect)suggestedFrameForListForPage:(unint64_t)page pageBounds:(CGRect)bounds insets:(UIEdgeInsets)insets scrollsDateTime:(BOOL)time
 {
-  v6 = a6;
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  [a1 _reducedPageBoundsFromBounds:? forPage:?];
+  timeCopy = time;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  [self _reducedPageBoundsFromBounds:? forPage:?];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v45 = width;
   v46 = height;
-  [a1 suggestedContentInsetsForListForPage:a3 pageBounds:v6 scrollsDateTime:{x, y, width, height}];
+  [self suggestedContentInsetsForListForPage:page pageBounds:timeCopy scrollsDateTime:{x, y, width, height}];
   v23 = v22;
-  v24 = [SBFDashBoardViewMetrics listLayoutForPage:a3];
+  v24 = [SBFDashBoardViewMetrics listLayoutForPage:page];
   v25 = 0.0;
-  if (!v6)
+  if (!timeCopy)
   {
-    [a1 listMinYForPage:a3];
+    [self listMinYForPage:page];
     v25 = v26 - v23;
   }
 
@@ -200,12 +200,12 @@
   v30 = v29;
   if (v28)
   {
-    [a1 listWidthForPage:a3];
+    [self listWidthForPage:page];
     v43 = v27;
     v44 = v31;
     if (v30)
     {
-      [a1 listInsetXForPage:a3];
+      [self listInsetXForPage:page];
     }
 
     else
@@ -217,21 +217,21 @@
         v58.size.width = v19;
         v58.size.height = v21;
         v40 = CGRectGetWidth(v58) - v44;
-        [a1 listInsetXForPage:a3 leading:0];
+        [self listInsetXForPage:page leading:0];
         v33 = v40 - v41;
         goto LABEL_12;
       }
 
       if (v24 != 3)
       {
-        v42 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v42 handleFailureInMethod:a2 object:a1 file:@"SBFDashBoardViewMetrics.m" lineNumber:265 description:{@"The only way to get here should be left or right align, not %lu", v24}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SBFDashBoardViewMetrics.m" lineNumber:265 description:{@"The only way to get here should be left or right align, not %lu", v24}];
 
         v33 = 0.0;
         goto LABEL_12;
       }
 
-      [a1 listInsetXForPage:a3 leading:1];
+      [self listInsetXForPage:page leading:1];
     }
 
     v33 = v32;
@@ -288,15 +288,15 @@ LABEL_14:
   return result;
 }
 
-+ (UIEdgeInsets)suggestedContentInsetsForListForPage:(unint64_t)a3 pageBounds:(CGRect)a4
++ (UIEdgeInsets)suggestedContentInsetsForListForPage:(unint64_t)page pageBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = [a1 listScrollsDateTime];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  listScrollsDateTime = [self listScrollsDateTime];
 
-  [a1 suggestedContentInsetsForListForPage:a3 pageBounds:v10 scrollsDateTime:{x, y, width, height}];
+  [self suggestedContentInsetsForListForPage:page pageBounds:listScrollsDateTime scrollsDateTime:{x, y, width, height}];
   result.right = v14;
   result.bottom = v13;
   result.left = v12;
@@ -304,24 +304,24 @@ LABEL_14:
   return result;
 }
 
-+ (UIEdgeInsets)suggestedContentInsetsForListForPage:(unint64_t)a3 pageBounds:(CGRect)a4 scrollsDateTime:(BOOL)a5
++ (UIEdgeInsets)suggestedContentInsetsForListForPage:(unint64_t)page pageBounds:(CGRect)bounds scrollsDateTime:(BOOL)time
 {
-  v5 = a5;
-  [a1 listMinYForPage:{a4.origin.x, a4.origin.y, a4.size.width, a4.size.height}];
+  timeCopy = time;
+  [self listMinYForPage:{bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height}];
   v9 = v8;
-  if (v5)
+  if (timeCopy)
   {
     *&v10 = 66.0;
-    if (!a3)
+    if (!page)
     {
-      [a1 searchClippingLineMaxY];
+      [self searchClippingLineMaxY];
       v9 = v9 - v11;
     }
   }
 
-  else if (a3 == 1)
+  else if (page == 1)
   {
-    if ([a1 _presentsListBelowDateTime])
+    if ([self _presentsListBelowDateTime])
     {
       v9 = 10.0;
     }
@@ -332,14 +332,14 @@ LABEL_14:
   else
   {
     *&v10 = 0.0;
-    if (a3)
+    if (page)
     {
       v9 = 0.0;
     }
 
     else
     {
-      [a1 searchClippingLineMaxY];
+      [self searchClippingLineMaxY];
       v9 = -v12;
     }
   }
@@ -355,14 +355,14 @@ LABEL_14:
   return result;
 }
 
-+ (CGRect)suggestedFrameForMediaControlsForPageBounds:(CGRect)a3
++ (CGRect)suggestedFrameForMediaControlsForPageBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = [*MEMORY[0x1E69DDA98] activeInterfaceOrientation];
-  [MEMORY[0x1E69DCF98] heightForStyle:1 orientation:v11];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  activeInterfaceOrientation = [*MEMORY[0x1E69DDA98] activeInterfaceOrientation];
+  [MEMORY[0x1E69DCF98] heightForStyle:1 orientation:activeInterfaceOrientation];
   if (__sb__runningInSpringBoard())
   {
     if (SBFEffectiveDeviceClass() != 2)
@@ -373,14 +373,14 @@ LABEL_14:
 
   else
   {
-    v15 = [MEMORY[0x1E69DC938] currentDevice];
-    v3 = [v15 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v3 != 1)
+    if (userInterfaceIdiom != 1)
     {
 LABEL_3:
-      v12 = __sb__runningInSpringBoard();
-      if (v12)
+      mainScreen = __sb__runningInSpringBoard();
+      if (mainScreen)
       {
         if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
         {
@@ -392,8 +392,8 @@ LABEL_3:
 
       else
       {
-        v11 = [MEMORY[0x1E69DC938] currentDevice];
-        if ([v11 userInterfaceIdiom])
+        activeInterfaceOrientation = [MEMORY[0x1E69DC938] currentDevice];
+        if ([activeInterfaceOrientation userInterfaceIdiom])
         {
           v14 = 0;
           v13 = 1;
@@ -401,7 +401,7 @@ LABEL_3:
         }
       }
 
-      v13 = v12 ^ 1;
+      v13 = mainScreen ^ 1;
       v20 = __sb__runningInSpringBoard();
       if (v20)
       {
@@ -410,8 +410,8 @@ LABEL_3:
 
       else
       {
-        v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v12 _referenceBounds];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       v14 = v20 ^ 1;
@@ -444,8 +444,8 @@ LABEL_29:
 
       else
       {
-        v4 = [MEMORY[0x1E69DC938] currentDevice];
-        if ([v4 userInterfaceIdiom])
+        currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+        if ([currentDevice2 userInterfaceIdiom])
         {
           goto LABEL_47;
         }
@@ -460,8 +460,8 @@ LABEL_29:
 
       else
       {
-        v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v6 _referenceBounds];
+        mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen2 _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -512,7 +512,7 @@ LABEL_47:
     }
   }
 
-  if ((v11 - 3) <= 1)
+  if ((activeInterfaceOrientation - 3) <= 1)
   {
     v31.origin.x = x;
     v31.origin.y = y;
@@ -534,8 +534,8 @@ LABEL_47:
 
   else
   {
-    v3 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v3 userInterfaceIdiom] != 1)
+    userInterfaceIdiom = [MEMORY[0x1E69DC938] currentDevice];
+    if ([userInterfaceIdiom userInterfaceIdiom] != 1)
     {
 
       goto LABEL_39;
@@ -551,8 +551,8 @@ LABEL_47:
 
   else
   {
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 _referenceBounds];
+    mainScreen3 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen3 _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -586,23 +586,23 @@ LABEL_39:
   return result;
 }
 
-+ (CGRect)suggestedFrameForMediaArtworkForControlsFrame:(CGRect)a3 bottomInset:(double)a4 inPageBounds:(CGRect)a5
++ (CGRect)suggestedFrameForMediaArtworkForControlsFrame:(CGRect)frame bottomInset:(double)inset inPageBounds:(CGRect)bounds
 {
-  CGRectGetMaxY(a3);
-  v6 = 0x1E69DC000;
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  CGRectGetMaxY(frame);
+  currentDevice2 = 0x1E69DC000;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v8 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    CGRectGetWidth(a5);
-    CGRectGetHeight(a5);
+    CGRectGetWidth(bounds);
+    CGRectGetHeight(bounds);
     goto LABEL_17;
   }
 
   if (([*MEMORY[0x1E69DDA98] activeInterfaceOrientation] - 3) <= 1)
   {
-    CGRectGetWidth(a5);
+    CGRectGetWidth(bounds);
   }
 
   v9 = __sb__runningInSpringBoard();
@@ -617,8 +617,8 @@ LABEL_39:
 
   else
   {
-    v6 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v6 userInterfaceIdiom] != 1)
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom] != 1)
     {
 LABEL_16:
 
@@ -635,8 +635,8 @@ LABEL_16:
 
   else
   {
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -659,13 +659,13 @@ LABEL_17:
   return result;
 }
 
-+ (CGRect)suggestedFrameForCallToActionLabel:(id)a3 yOffset:(double)a4 inBounds:(CGRect)a5
++ (CGRect)suggestedFrameForCallToActionLabel:(id)label yOffset:(double)offset inBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  [a3 sizeThatFits:{a5.size.width + -48.0, 1.79769313e308}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  [label sizeThatFits:{bounds.size.width + -48.0, 1.79769313e308}];
   v13.origin.x = x;
   v13.origin.y = y;
   v13.size.width = width;
@@ -685,7 +685,7 @@ LABEL_17:
   block[1] = 3221225472;
   block[2] = __41__SBFDashBoardViewMetrics_searchBarWidth__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (searchBarWidth_onceToken != -1)
   {
     dispatch_once(&searchBarWidth_onceToken, block);
@@ -730,9 +730,9 @@ void __41__SBFDashBoardViewMetrics_searchBarWidth__block_invoke(uint64_t a1)
   }
 }
 
-+ (double)timeLabelScrollPercentForPage:(unint64_t)a3
++ (double)timeLabelScrollPercentForPage:(unint64_t)page
 {
-  v3 = [a1 dateTimeLayoutForPage:a3];
+  v3 = [self dateTimeLayoutForPage:page];
   if (v3 == 2)
   {
     v5 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1;
@@ -761,34 +761,34 @@ void __41__SBFDashBoardViewMetrics_searchBarWidth__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (CGRect)suggestedFrameForDateTimeViewInScreenCoordinates:(CGRect)a3 centeredX:(BOOL)a4
++ (CGRect)suggestedFrameForDateTimeViewInScreenCoordinates:(CGRect)coordinates centeredX:(BOOL)x
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [a1 _reducedPageBoundsFromBounds:0 forPage:?];
+  xCopy = x;
+  height = coordinates.size.height;
+  width = coordinates.size.width;
+  y = coordinates.origin.y;
+  x = coordinates.origin.x;
+  [self _reducedPageBoundsFromBounds:0 forPage:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
   rect = v10;
-  if ([a1 _presentsListBelowDateTime])
+  if ([self _presentsListBelowDateTime])
   {
-    [a1 suggestedFrameForListForPage:0 pageBounds:{x, y, width, height}];
+    [self suggestedFrameForListForPage:0 pageBounds:{x, y, width, height}];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    [a1 timeToListInsetXforPage:0];
+    [self timeToListInsetXforPage:0];
     v26 = MEMORY[0x1E69DDA98];
-    v27 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
     v28 = v19;
     v29 = v21;
     v30 = v23;
     v31 = v25;
-    if (v27 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       CGRectGetMinX(*&v28);
     }
@@ -798,20 +798,20 @@ void __41__SBFDashBoardViewMetrics_searchBarWidth__block_invoke(uint64_t a1)
       CGRectGetMaxX(*&v28);
     }
 
-    v33 = x;
+    xCopy3 = x;
     v51 = height;
-    [a1 suggestedFrameForListForPage:1 pageBounds:{x, y, width, height}];
+    [self suggestedFrameForListForPage:1 pageBounds:{x, y, width, height}];
     v35 = v34;
     v37 = v36;
     v39 = v38;
     v41 = v40;
-    [a1 timeToListInsetXforPage:1];
-    v42 = [*v26 userInterfaceLayoutDirection];
+    [self timeToListInsetXforPage:1];
+    userInterfaceLayoutDirection2 = [*v26 userInterfaceLayoutDirection];
     v43 = v35;
     v44 = v37;
     v45 = v39;
     v46 = v41;
-    if (v42 == 1)
+    if (userInterfaceLayoutDirection2 == 1)
     {
       CGRectGetMaxX(*&v43);
     }
@@ -822,7 +822,7 @@ void __41__SBFDashBoardViewMetrics_searchBarWidth__block_invoke(uint64_t a1)
     }
 
     height = v51;
-    if (![a1 dateTimeLayoutForPage:1])
+    if (![self dateTimeLayoutForPage:1])
     {
       v56.origin.x = x;
       v56.origin.y = y;
@@ -831,10 +831,10 @@ void __41__SBFDashBoardViewMetrics_searchBarWidth__block_invoke(uint64_t a1)
       CGRectGetMaxX(v56);
     }
 
-    if (v4)
+    if (xCopy)
     {
 LABEL_17:
-      v57.origin.x = v33;
+      v57.origin.x = xCopy3;
       v57.origin.y = y;
       v57.size.width = width;
       v57.size.height = height;
@@ -846,7 +846,7 @@ LABEL_17:
 
   else
   {
-    [a1 _dateTimeMinXForReducedBounds:0 forPage:{v11, v13, v15, v17}];
+    [self _dateTimeMinXForReducedBounds:0 forPage:{v11, v13, v15, v17}];
     v32 = MEMORY[0x1E69DDA98];
     if ([*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1)
     {
@@ -857,8 +857,8 @@ LABEL_17:
       CGRectGetWidth(v54);
     }
 
-    [a1 _dateTimeMinXForReducedBounds:1 forPage:{v11, v13, v15, v17}];
-    v33 = x;
+    [self _dateTimeMinXForReducedBounds:1 forPage:{v11, v13, v15, v17}];
+    xCopy3 = x;
     if ([*v32 userInterfaceLayoutDirection] == 1)
     {
       v55.origin.x = rect;
@@ -868,15 +868,15 @@ LABEL_17:
       CGRectGetWidth(v55);
     }
 
-    if (v4)
+    if (xCopy)
     {
       goto LABEL_17;
     }
   }
 
-  [a1 timeLabelBaselineY];
+  [self timeLabelBaselineY];
   +[SBFLockScreenDateView timeFontMetrics];
-  [a1 timeSubtitleBaselineY];
+  [self timeSubtitleBaselineY];
   +[SBFLockScreenDateSubtitleView labelFontMetrics];
   SBFMainScreenScale();
 
@@ -888,13 +888,13 @@ LABEL_17:
   return result;
 }
 
-+ (double)_dateTimeMinXForReducedBounds:(CGRect)a3 forPage:(unint64_t)a4
++ (double)_dateTimeMinXForReducedBounds:(CGRect)bounds forPage:(unint64_t)page
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [a1 dateTimeLayoutForPage:?];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v10 = [self dateTimeLayoutForPage:?];
   if (v10)
   {
     if (v10 == 2)
@@ -904,14 +904,14 @@ LABEL_17:
       v15.size.width = width;
       v15.size.height = height;
       MaxX = CGRectGetMaxX(v15);
-      [a1 listInsetXForPage:a4];
+      [self listInsetXForPage:page];
       return MaxX - v13;
     }
 
     else if (v10 == 1)
     {
 
-      [a1 listInsetXForPage:a4];
+      [self listInsetXForPage:page];
     }
   }
 
@@ -933,13 +933,13 @@ LABEL_17:
   block[1] = 3221225472;
   block[2] = __45__SBFDashBoardViewMetrics_timeLabelBaselineY__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (timeLabelBaselineY_onceToken != -1)
   {
     dispatch_once(&timeLabelBaselineY_onceToken, block);
   }
 
-  [a1 searchClippingLineMaxY];
+  [self searchClippingLineMaxY];
   +[SBFLockScreenDateView timeFontMetrics];
   SBFMainScreenScale();
   BSFloatRoundForScale();
@@ -980,7 +980,7 @@ uint64_t __45__SBFDashBoardViewMetrics_timeLabelBaselineY__block_invoke(uint64_t
 
   +[SBFLockScreenDateView timeFontMetrics];
   v4 = v3;
-  [a1 timeToSubtitleLabelBaselineDifferenceY];
+  [self timeToSubtitleLabelBaselineDifferenceY];
   v6 = v4 + v5;
   +[SBFLockScreenDateSubtitleView labelFontMetrics];
   result = v6 - v7;
@@ -1004,18 +1004,18 @@ void __65__SBFDashBoardViewMetrics_timeToSubtitleLabelBaselineDifferenceY__block
   v2 = [v3 addObserverForName:v0 object:0 queue:v1 usingBlock:&__block_literal_global_21];
 }
 
-+ (UIEdgeInsets)_cachedGlyphInsetsForString:(id)a3 withFont:(id)a4
++ (UIEdgeInsets)_cachedGlyphInsetsForString:(id)string withFont:(id)font
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  fontCopy = font;
   if (_cachedGlyphInsetsForString_withFont__onceToken != -1)
   {
     +[SBFDashBoardViewMetrics _cachedGlyphInsetsForString:withFont:];
   }
 
-  v7 = [_cachedGlyphInsetsForString_withFont__leadingInsetForNumber objectForKeyedSubscript:v5];
-  v8 = [_cachedGlyphInsetsForString_withFont__trailingInsetForNumber objectForKeyedSubscript:v5];
+  v7 = [_cachedGlyphInsetsForString_withFont__leadingInsetForNumber objectForKeyedSubscript:stringCopy];
+  v8 = [_cachedGlyphInsetsForString_withFont__trailingInsetForNumber objectForKeyedSubscript:stringCopy];
   v9 = v8;
   if (v7)
   {
@@ -1030,15 +1030,15 @@ void __65__SBFDashBoardViewMetrics_timeToSubtitleLabelBaselineDifferenceY__block
   if (v10)
   {
     v32 = *MEMORY[0x1E69DB648];
-    v33[0] = v6;
+    v33[0] = fontCopy;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
     v12 = *MEMORY[0x1E695F060];
     v13 = *(MEMORY[0x1E695F060] + 8);
-    [v5 boundingRectWithSize:8 options:v11 attributes:0 context:{*MEMORY[0x1E695F060], v13}];
+    [stringCopy boundingRectWithSize:8 options:v11 attributes:0 context:{*MEMORY[0x1E695F060], v13}];
     UIRectIntegralWithScale();
     v15 = v14;
     v17 = v16;
-    [v5 boundingRectWithSize:0 options:v11 attributes:0 context:{v12, v13}];
+    [stringCopy boundingRectWithSize:0 options:v11 attributes:0 context:{v12, v13}];
     UIRectIntegralWithScale();
     v19 = v18;
     v21 = v15 - v20;
@@ -1046,8 +1046,8 @@ void __65__SBFDashBoardViewMetrics_timeToSubtitleLabelBaselineDifferenceY__block
 
     v23 = [MEMORY[0x1E696AD98] numberWithDouble:v19 - v17 - v21];
 
-    [_cachedGlyphInsetsForString_withFont__leadingInsetForNumber setObject:v22 forKeyedSubscript:v5];
-    [_cachedGlyphInsetsForString_withFont__trailingInsetForNumber setObject:v23 forKeyedSubscript:v5];
+    [_cachedGlyphInsetsForString_withFont__leadingInsetForNumber setObject:v22 forKeyedSubscript:stringCopy];
+    [_cachedGlyphInsetsForString_withFont__trailingInsetForNumber setObject:v23 forKeyedSubscript:stringCopy];
 
     v9 = v23;
     v7 = v22;
@@ -1082,17 +1082,17 @@ uint64_t __64__SBFDashBoardViewMetrics__cachedGlyphInsetsForString_withFont___bl
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-+ (double)timeToListInsetXforPage:(unint64_t)a3
++ (double)timeToListInsetXforPage:(unint64_t)page
 {
-  v4 = [a1 _presentsListBelowDateTime];
+  _presentsListBelowDateTime = [self _presentsListBelowDateTime];
   result = 0.0;
-  if (v4)
+  if (_presentsListBelowDateTime)
   {
-    v6 = [MEMORY[0x1E69DC938] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     result = 16.0;
-    if ((v7 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
       v8 = __sb__runningInSpringBoard();
       v9 = v8;
@@ -1111,8 +1111,8 @@ uint64_t __64__SBFDashBoardViewMetrics__cachedGlyphInsetsForString_withFont___bl
 
       else
       {
-        v7 = [MEMORY[0x1E69DC938] currentDevice];
-        if ([v7 userInterfaceIdiom])
+        userInterfaceIdiom = [MEMORY[0x1E69DC938] currentDevice];
+        if ([userInterfaceIdiom userInterfaceIdiom])
         {
 
           return 18.0;
@@ -1128,8 +1128,8 @@ uint64_t __64__SBFDashBoardViewMetrics__cachedGlyphInsetsForString_withFont___bl
 
       else
       {
-        v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -1166,9 +1166,9 @@ uint64_t __64__SBFDashBoardViewMetrics__cachedGlyphInsetsForString_withFont___bl
 
 + (double)timeSubtitleBaselineY
 {
-  [a1 timeLabelBaselineY];
+  [self timeLabelBaselineY];
   v4 = v3;
-  [a1 timeToSubtitleLabelBaselineDifferenceY];
+  [self timeToSubtitleLabelBaselineDifferenceY];
   return v4 + v5;
 }
 
@@ -1185,10 +1185,10 @@ uint64_t __64__SBFDashBoardViewMetrics__cachedGlyphInsetsForString_withFont___bl
   }
 
   v4 = MEMORY[0x1E69DB878];
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v7 = 23.0;
   }
@@ -1198,8 +1198,8 @@ uint64_t __64__SBFDashBoardViewMetrics__cachedGlyphInsetsForString_withFont___bl
     v7 = 15.0;
   }
 
-  v8 = __sb__runningInSpringBoard();
-  if (v8)
+  currentDevice2 = __sb__runningInSpringBoard();
+  if (currentDevice2)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -1214,8 +1214,8 @@ LABEL_24:
 
   else
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v5 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
       v9 = 0;
       v10 = 0;
@@ -1224,9 +1224,9 @@ LABEL_24:
     }
   }
 
-  v11 = v8 ^ 1;
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  v11 = currentDevice2 ^ 1;
+  mainScreen = __sb__runningInSpringBoard();
+  if (mainScreen)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -1239,8 +1239,8 @@ LABEL_24:
 
   else
   {
-    v8 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v8 userInterfaceIdiom])
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom])
     {
       v10 = 0;
       v12 = MEMORY[0x1E69DDC30];
@@ -1249,7 +1249,7 @@ LABEL_24:
     }
   }
 
-  v9 = v2 ^ 1;
+  v9 = mainScreen ^ 1;
   v13 = __sb__runningInSpringBoard();
   if (v13)
   {
@@ -1258,8 +1258,8 @@ LABEL_24:
 
   else
   {
-    v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   v10 = v13 ^ 1;
@@ -1271,7 +1271,7 @@ LABEL_24:
 
   v12 = MEMORY[0x1E69DDC30];
 LABEL_25:
-  [a1 scaledFontSize:*v12 withMaximumFontSizeCategory:v7];
+  [self scaledFontSize:*v12 withMaximumFontSizeCategory:v7];
   v15 = [v4 systemFontOfSize:?];
   v16 = dateOnlyLunarDateFont_dateOnlyLunarFont;
   dateOnlyLunarDateFont_dateOnlyLunarFont = v15;
@@ -1331,21 +1331,21 @@ void __48__SBFDashBoardViewMetrics_dateOnlyLunarDateFont__block_invoke_2()
   v3 = dateFont_dateFont;
   if (!dateFont_dateFont)
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      [a1 _padSpecificValueJ99:66.0 otherPad:56.0];
+      [self _padSpecificValueJ99:66.0 otherPad:56.0];
     }
 
     else
     {
-      [a1 _phoneSpecificValueN56:42.0 n61:36.0 n69:36.0];
+      [self _phoneSpecificValueN56:42.0 n61:36.0 n69:36.0];
     }
 
     v6 = MEMORY[0x1E69DB878];
-    [a1 scaledFontSize:*MEMORY[0x1E69DDC40] withMaximumFontSizeCategory:?];
+    [self scaledFontSize:*MEMORY[0x1E69DDC40] withMaximumFontSizeCategory:?];
     v7 = [v6 _lightSystemFontOfSize:?];
     v8 = dateFont_dateFont;
     dateFont_dateFont = v7;
@@ -1376,7 +1376,7 @@ void __35__SBFDashBoardViewMetrics_dateFont__block_invoke_2()
   block[1] = 3221225472;
   block[2] = __64__SBFDashBoardViewMetrics_singleLineDateViewBaselineDifferenceY__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (singleLineDateViewBaselineDifferenceY_onceToken != -1)
   {
     dispatch_once(&singleLineDateViewBaselineDifferenceY_onceToken, block);
@@ -1403,7 +1403,7 @@ void __64__SBFDashBoardViewMetrics_singleLineDateViewBaselineDifferenceY__block_
   block[1] = 3221225472;
   block[2] = __46__SBFDashBoardViewMetrics_dateBaselineToListY__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (dateBaselineToListY_onceToken != -1)
   {
     dispatch_once(&dateBaselineToListY_onceToken, block);
@@ -1426,15 +1426,15 @@ void __46__SBFDashBoardViewMetrics_dateBaselineToListY__block_invoke(uint64_t a1
   dateBaselineToListY_dateBaselineToListY = *&v4;
 }
 
-+ (double)listMinYForPage:(unint64_t)a3
++ (double)listMinYForPage:(unint64_t)page
 {
-  if ([a1 _presentsListBelowDateTime])
+  if ([self _presentsListBelowDateTime])
   {
-    [a1 timeLabelBaselineY];
+    [self timeLabelBaselineY];
     v5 = v4;
-    [a1 timeToSubtitleLabelBaselineDifferenceY];
+    [self timeToSubtitleLabelBaselineDifferenceY];
     v7 = v5 + v6;
-    [a1 dateBaselineToListY];
+    [self dateBaselineToListY];
     v9 = v7 + v8;
     if (listMinYForPage__onceToken != -1)
     {
@@ -1447,7 +1447,7 @@ void __46__SBFDashBoardViewMetrics_dateBaselineToListY__block_invoke(uint64_t a1
   else
   {
 
-    [a1 _phoneSpecificValueN56:78.0 n61:58.0 n69:32.0];
+    [self _phoneSpecificValueN56:78.0 n61:58.0 n69:32.0];
   }
 
   return result;
@@ -1476,15 +1476,15 @@ uint64_t __43__SBFDashBoardViewMetrics_listMinYForPage___block_invoke_2()
 
 + (BOOL)_presentsListBelowDateTime
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 1;
   }
 
-  return [a1 _isPortrait];
+  return [self _isPortrait];
 }
 
 + (double)searchClippingLineMaxY
@@ -1548,7 +1548,7 @@ void __49__SBFDashBoardViewMetrics_searchClippingLineMaxY__block_invoke()
   searchClippingLineMaxY_searchClippingLineMaxY = *&v4;
 }
 
-+ (double)_phoneSpecificValueN56:(double)a3 n61:(double)a4 n69:(double)a5
++ (double)_phoneSpecificValueN56:(double)n56 n61:(double)n61 n69:(double)n69
 {
   v10 = __sb__runningInSpringBoard();
   v11 = v10;
@@ -1562,8 +1562,8 @@ void __49__SBFDashBoardViewMetrics_searchClippingLineMaxY__block_invoke()
 
   else
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v5 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
 
       goto LABEL_15;
@@ -1579,8 +1579,8 @@ void __49__SBFDashBoardViewMetrics_searchClippingLineMaxY__block_invoke()
 
   else
   {
-    v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v6 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -1596,7 +1596,7 @@ void __49__SBFDashBoardViewMetrics_searchClippingLineMaxY__block_invoke()
 
   if (v15 >= v16)
   {
-    return a3;
+    return n56;
   }
 
 LABEL_15:
@@ -1604,18 +1604,18 @@ LABEL_15:
   v18 = v17;
   if (!v17)
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    if (![v5 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if (![currentDevice userInterfaceIdiom])
     {
       goto LABEL_22;
     }
 
-    return a5;
+    return n69;
   }
 
   if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
   {
-    return a5;
+    return n69;
   }
 
 LABEL_22:
@@ -1628,8 +1628,8 @@ LABEL_22:
 
   else
   {
-    v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v6 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -1640,48 +1640,48 @@ LABEL_22:
 
   if (v18)
   {
-    a3 = a5;
+    n56 = n69;
     if (!v22)
     {
-      return a3;
+      return n56;
     }
 
-    return a4;
+    return n61;
   }
 
-  a3 = a5;
+  n56 = n69;
   if (v22)
   {
-    return a4;
+    return n61;
   }
 
-  return a3;
+  return n56;
 }
 
-+ (double)_phoneSpecificValueN56:(double)a3 n61:(double)a4 n69:(double)a5 d22:(double)a6
++ (double)_phoneSpecificValueN56:(double)n56 n61:(double)n61 n69:(double)n69 d22:(double)d22
 {
   if (__sb__runningInSpringBoard())
   {
     if ((!SBFEffectiveDeviceClass() || SBFEffectiveDeviceClass() == 1) && SBFEffectiveHomeButtonType() == 2)
     {
-      return a6;
+      return d22;
     }
   }
 
   else
   {
-    v12 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v12 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
     }
 
     else
     {
-      v6 = SBFEffectiveHomeButtonType();
+      currentDevice2 = SBFEffectiveHomeButtonType();
 
-      if (v6 == 2)
+      if (currentDevice2 == 2)
       {
-        return a6;
+        return d22;
       }
     }
   }
@@ -1698,8 +1698,8 @@ LABEL_22:
 
   else
   {
-    v6 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v6 userInterfaceIdiom])
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom])
     {
 
       goto LABEL_24;
@@ -1715,8 +1715,8 @@ LABEL_22:
 
   else
   {
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -1731,7 +1731,7 @@ LABEL_22:
   }
 
   v20 = v18 < v19;
-  a6 = a3;
+  d22 = n56;
   if (v20)
   {
 LABEL_24:
@@ -1747,8 +1747,8 @@ LABEL_24:
 
     else
     {
-      v6 = [MEMORY[0x1E69DC938] currentDevice];
-      if (![v6 userInterfaceIdiom])
+      currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+      if (![currentDevice2 userInterfaceIdiom])
       {
 LABEL_31:
         v23 = __sb__runningInSpringBoard();
@@ -1760,8 +1760,8 @@ LABEL_31:
 
         else
         {
-          v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-          [v7 _referenceBounds];
+          mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+          [mainScreen _referenceBounds];
         }
 
         BSSizeRoundForScale();
@@ -1772,34 +1772,34 @@ LABEL_31:
 
         if (v22)
         {
-          a6 = a5;
+          d22 = n69;
           if (!v26)
           {
-            return a6;
+            return d22;
           }
         }
 
         else
         {
 
-          a6 = a5;
+          d22 = n69;
           if (!v26)
           {
-            return a6;
+            return d22;
           }
         }
 
-        return a4;
+        return n61;
       }
     }
 
-    return a5;
+    return n69;
   }
 
-  return a6;
+  return d22;
 }
 
-+ (double)_padSpecificValueJ99:(double)a3 otherPad:(double)a4
++ (double)_padSpecificValueJ99:(double)j99 otherPad:(double)pad
 {
   v8 = __sb__runningInSpringBoard();
   v9 = v8;
@@ -1807,18 +1807,18 @@ LABEL_31:
   {
     if (SBFEffectiveDeviceClass() != 2)
     {
-      return a4;
+      return pad;
     }
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v4 userInterfaceIdiom] != 1)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
 LABEL_13:
 
-      return a4;
+      return pad;
     }
   }
 
@@ -1831,14 +1831,14 @@ LABEL_13:
 
   else
   {
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
   if (v12 >= *(MEMORY[0x1E69D4380] + 280))
   {
-    a4 = a3;
+    pad = j99;
   }
 
   if ((v11 & 1) == 0)
@@ -1850,12 +1850,12 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  return a4;
+  return pad;
 }
 
-+ (double)_padSpecificInsets:(SBFDashBoardPadPageInsets *)a3 leading:(BOOL)a4
++ (double)_padSpecificInsets:(SBFDashBoardPadPageInsets *)insets leading:(BOOL)leading
 {
-  v6 = a4;
+  leadingCopy = leading;
   v9 = __sb__runningInSpringBoard();
   v10 = v9;
   if (v9)
@@ -1868,8 +1868,8 @@ LABEL_13:
 
   else
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v4 userInterfaceIdiom] != 1)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
 
       goto LABEL_15;
@@ -1885,8 +1885,8 @@ LABEL_13:
 
   else
   {
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -1902,7 +1902,7 @@ LABEL_13:
 
   if (v14 >= v15)
   {
-    p_var2 = &a3->var2;
+    p_var2 = &insets->var2;
     v17 = 88;
     v18 = 80;
     v19 = 72;
@@ -1922,8 +1922,8 @@ LABEL_15:
 
   else
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v4 userInterfaceIdiom] != 1)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
 
       goto LABEL_29;
@@ -1939,8 +1939,8 @@ LABEL_15:
 
   else
   {
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -1956,7 +1956,7 @@ LABEL_15:
 
   if (v25 >= v26)
   {
-    p_var2 = &a3->var1;
+    p_var2 = &insets->var1;
     v17 = 56;
     v18 = 48;
     v19 = 40;
@@ -1967,25 +1967,25 @@ LABEL_29:
   v17 = 24;
   v18 = 16;
   v19 = 8;
-  p_var2 = a3;
+  p_var2 = insets;
 LABEL_30:
   var0 = p_var2->var0.var0;
-  v28 = *(&a3->var0.var0 + v19);
-  v29 = *(&a3->var0.var0 + v18);
-  v30 = *(&a3->var0.var0 + v17);
+  v28 = *(&insets->var0.var0 + v19);
+  v29 = *(&insets->var0.var0 + v18);
+  v30 = *(&insets->var0.var0 + v17);
 
-  [a1 _padSpecificValueForDevice:v6 leading:{var0, v28, v29, v30}];
+  [self _padSpecificValueForDevice:leadingCopy leading:{var0, v28, v29, v30}];
   return result;
 }
 
-+ (double)_padSpecificValueForDevice:(SBFDashBoardOrientationLeadingInsets)a3 leading:(BOOL)a4
++ (double)_padSpecificValueForDevice:(SBFDashBoardOrientationLeadingInsets)device leading:(BOOL)leading
 {
-  v4 = a4;
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v8 = [a1 _isPortrait];
-  if (v4)
+  leadingCopy = leading;
+  var2 = device.var2;
+  var1 = device.var1;
+  var0 = device.var0;
+  _isPortrait = [self _isPortrait];
+  if (leadingCopy)
   {
     result = var0;
   }
@@ -1995,7 +1995,7 @@ LABEL_30:
     result = var2;
   }
 
-  if (!v8)
+  if (!_isPortrait)
   {
     return var1;
   }
@@ -2003,13 +2003,13 @@ LABEL_30:
   return result;
 }
 
-+ (double)listInsetXForPage:(unint64_t)a3
++ (double)listInsetXForPage:(unint64_t)page
 {
-  v4 = [a1 listLayoutForPage:a3] - 3;
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  v4 = [self listLayoutForPage:page] - 3;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v7 = v6 & 0xFFFFFFFFFFFFFFFBLL;
+  v7 = userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL;
   if (v4 > 1)
   {
     result = 8.0;
@@ -2021,11 +2021,11 @@ LABEL_30:
 
   else
   {
-    v8 = [a1 _isPortrait];
+    _isPortrait = [self _isPortrait];
     if (v7 == 1)
     {
       result = 69.0;
-      if (v8)
+      if (_isPortrait)
       {
         return 56.0;
       }
@@ -2034,10 +2034,10 @@ LABEL_30:
     else
     {
       result = 8.0;
-      if ((v8 & 1) == 0)
+      if ((_isPortrait & 1) == 0)
       {
 
-        [a1 _phoneSpecificValueN56:79.0 n61:69.0 n69:54.0];
+        [self _phoneSpecificValueN56:79.0 n61:69.0 n69:54.0];
       }
     }
   }
@@ -2045,14 +2045,14 @@ LABEL_30:
   return result;
 }
 
-+ (double)listInsetXForPage:(unint64_t)a3 leading:(BOOL)a4
++ (double)listInsetXForPage:(unint64_t)page leading:(BOOL)leading
 {
-  v4 = a4;
-  v6 = [a1 listLayoutForPage:a3] - 3;
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  leadingCopy = leading;
+  v6 = [self listLayoutForPage:page] - 3;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v9 = v8 & 0xFFFFFFFFFFFFFFFBLL;
+  v9 = userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL;
   if (v6 > 1)
   {
     result = 8.0;
@@ -2070,32 +2070,32 @@ LABEL_30:
     v12[3] = vdupq_n_s64(0x4050000000000000uLL);
     v12[4] = xmmword_1BEAD4050;
     v12[5] = vdupq_n_s64(0x4054000000000000uLL);
-    [a1 _padSpecificInsets:v12 leading:v4];
+    [self _padSpecificInsets:v12 leading:leadingCopy];
   }
 
   else
   {
-    v11 = [a1 _isPortrait];
+    _isPortrait = [self _isPortrait];
     result = 8.0;
-    if ((v11 & 1) == 0)
+    if ((_isPortrait & 1) == 0)
     {
 
-      [a1 _phoneSpecificValueN56:79.0 n61:69.0 n69:54.0];
+      [self _phoneSpecificValueN56:79.0 n61:69.0 n69:54.0];
     }
   }
 
   return result;
 }
 
-+ (double)listWidthForPage:(unint64_t)a3
++ (double)listWidthForPage:(unint64_t)page
 {
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     result = 0.0;
-    if (a3 <= 1)
+    if (page <= 1)
     {
       v8 = _os_feature_enabled_impl();
       result = 556.0;
@@ -2106,10 +2106,10 @@ LABEL_30:
     }
   }
 
-  else if ([a1 _isPortrait] || objc_msgSend(a1, "_presentsListBelowDateTime"))
+  else if ([self _isPortrait] || objc_msgSend(self, "_presentsListBelowDateTime"))
   {
 
-    [a1 searchBarWidth];
+    [self searchBarWidth];
   }
 
   else
@@ -2120,14 +2120,14 @@ LABEL_30:
   return result;
 }
 
-+ (CGRect)suggestedFrameForStatusView:(id)a3 inView:(id)a4 withInsets:(UIEdgeInsets)a5
++ (CGRect)suggestedFrameForStatusView:(id)view inView:(id)inView withInsets:(UIEdgeInsets)insets
 {
-  if (a3 && a4)
+  if (view && inView)
   {
-    right = a5.right;
-    left = a5.left;
-    v8 = a3;
-    [a4 bounds];
+    right = insets.right;
+    left = insets.left;
+    viewCopy = view;
+    [inView bounds];
     if (left >= right)
     {
       v10 = left;
@@ -2138,7 +2138,7 @@ LABEL_30:
       v10 = right;
     }
 
-    [v8 sizeThatFits:{v9 + fmax(v10, 25.0) * -2.0}];
+    [viewCopy sizeThatFits:{v9 + fmax(v10, 25.0) * -2.0}];
 
     UIRectInset();
     SBFMainScreenScale();
@@ -2160,16 +2160,16 @@ LABEL_30:
   return result;
 }
 
-+ (CGRect)_reducedPageBoundsFromBounds:(CGRect)a3 forPage:(unint64_t)a4
++ (CGRect)_reducedPageBoundsFromBounds:(CGRect)bounds forPage:(unint64_t)page
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [MEMORY[0x1E69DC938] currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v11 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     goto LABEL_10;
   }
@@ -2179,9 +2179,9 @@ LABEL_30:
   v23.size.width = width;
   v23.size.height = height;
   v12 = CGRectGetWidth(v23);
-  [a1 listInsetXForPage:a4];
+  [self listInsetXForPage:page];
   v14 = v12 + v13 * -2.0;
-  [a1 listWidthForPage:a4];
+  [self listWidthForPage:page];
   if (v15 >= v14)
   {
     v16 = v14;
@@ -2192,8 +2192,8 @@ LABEL_30:
     v16 = v15;
   }
 
-  v17 = [a1 listLayoutForPage:a4];
-  if (![a1 layoutUsesMargin:v17])
+  v17 = [self listLayoutForPage:page];
+  if (![self layoutUsesMargin:v17])
   {
     v14 = v16;
   }
@@ -2205,7 +2205,7 @@ LABEL_30:
   v18 = CGRectGetWidth(v24) - v14;
   if (v18 > 0.0)
   {
-    if ([a1 layoutCentersContent:v17])
+    if ([self layoutCentersContent:v17])
     {
       x = x + v18 * 0.5;
     }
@@ -2228,11 +2228,11 @@ LABEL_10:
   return result;
 }
 
-+ (double)scaledFontSize:(double)a3 withMaximumFontSizeCategory:(id)a4
++ (double)scaledFontSize:(double)size withMaximumFontSizeCategory:(id)category
 {
-  v5 = a4;
-  v6 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  v7 = UIContentSizeCategoryCompareToCategory(v6, v5);
+  categoryCopy = category;
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  v7 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, categoryCopy);
 
   v8 = MEMORY[0x1E69DB878];
   v9 = *MEMORY[0x1E69DDCF8];
@@ -2243,12 +2243,12 @@ LABEL_10:
 
   else
   {
-    v10 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:v5];
+    v10 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:categoryCopy];
     v11 = [v8 preferredFontForTextStyle:v9 compatibleWithTraitCollection:v10];
   }
 
-  [v11 _scaledValueForValue:a3];
-  v12 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [v11 _scaledValueForValue:size];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
   UIRoundToScreenScale();
   v14 = v13;
 

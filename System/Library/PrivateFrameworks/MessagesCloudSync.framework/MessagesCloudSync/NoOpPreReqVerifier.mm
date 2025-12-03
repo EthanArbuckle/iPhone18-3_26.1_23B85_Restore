@@ -1,18 +1,18 @@
 @interface NoOpPreReqVerifier
-- (void)verifyAllPreReqsWithRequireEnablement:(BOOL)a3 completionHandler:(id)a4;
+- (void)verifyAllPreReqsWithRequireEnablement:(BOOL)enablement completionHandler:(id)handler;
 @end
 
 @implementation NoOpPreReqVerifier
 
-- (void)verifyAllPreReqsWithRequireEnablement:(BOOL)a3 completionHandler:(id)a4
+- (void)verifyAllPreReqsWithRequireEnablement:(BOOL)enablement completionHandler:(id)handler
 {
   v7 = sub_22B9349C8(&unk_27D8D5780, &qword_22BA13DB0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8, v9);
   v11 = &v17 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
+  *(v13 + 16) = enablement;
   *(v13 + 24) = v12;
   *(v13 + 32) = self;
   v14 = sub_22BA1030C();

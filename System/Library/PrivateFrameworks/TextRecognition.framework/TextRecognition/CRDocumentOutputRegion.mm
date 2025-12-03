@@ -1,31 +1,31 @@
 @interface CRDocumentOutputRegion
-+ (id)documentWithLines:(id)a3 title:(id)a4 confidence:(unint64_t)a5 imageSize:(CGSize)a6;
-+ (id)documentWithRegions:(id)a3 title:(id)a4 confidence:(unint64_t)a5 imageSize:(CGSize)a6;
-+ (id)groupedParagraphBlocksFromParagraphs:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)documentWithLines:(id)lines title:(id)title confidence:(unint64_t)confidence imageSize:(CGSize)size;
++ (id)documentWithRegions:(id)regions title:(id)title confidence:(unint64_t)confidence imageSize:(CGSize)size;
++ (id)groupedParagraphBlocksFromParagraphs:(id)paragraphs;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)shouldReprocessDocument;
-- (CRDocumentOutputRegion)initWithCRCodableDataRepresentation:(id)a3 version:(int64_t)a4 offset:(unint64_t *)a5;
-- (CRDocumentOutputRegion)outputRegionWithContentsBetweenStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4;
-- (CRDocumentOutputRegion)outputRegionWithContentsOfCharacterRange:(_NSRange)a3;
-- (CRDocumentOutputRegion)outputRegionWithContentsOfQuad:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 copyChildren:(BOOL)a4 copyCandidates:(BOOL)a5 deepCopy:(BOOL)a6;
+- (CRDocumentOutputRegion)initWithCRCodableDataRepresentation:(id)representation version:(int64_t)version offset:(unint64_t *)offset;
+- (CRDocumentOutputRegion)outputRegionWithContentsBetweenStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint;
+- (CRDocumentOutputRegion)outputRegionWithContentsOfCharacterRange:(_NSRange)range;
+- (CRDocumentOutputRegion)outputRegionWithContentsOfQuad:(id)quad;
+- (id)copyWithZone:(_NSZone *)zone copyChildren:(BOOL)children copyCandidates:(BOOL)candidates deepCopy:(BOOL)copy;
 - (id)crCodableDataRepresentation;
-- (id)detectedFieldRegionsExcludingFields:(id)a3 updateExcludedFields:(BOOL)a4;
+- (id)detectedFieldRegionsExcludingFields:(id)fields updateExcludedFields:(BOOL)excludedFields;
 - (id)layoutComponents;
-- (id)proposedFieldForPoint:(CGPoint)a3 existingFields:(id)a4;
-- (id)trackingDocumentWithTrackedType:(unint64_t)a3 includeLines:(BOOL)a4;
-- (id)writeToFileInFolder:(id)a3 basename:(id)a4;
+- (id)proposedFieldForPoint:(CGPoint)point existingFields:(id)fields;
+- (id)trackingDocumentWithTrackedType:(unint64_t)type includeLines:(BOOL)lines;
+- (id)writeToFileInFolder:(id)folder basename:(id)basename;
 - (unint64_t)formness;
-- (void)collectMetadataForNumFilteredRegions:(int64_t)a3;
-- (void)setChildren:(id)a3;
+- (void)collectMetadataForNumFilteredRegions:(int64_t)regions;
+- (void)setChildren:(id)children;
 @end
 
 @implementation CRDocumentOutputRegion
 
-- (CRDocumentOutputRegion)initWithCRCodableDataRepresentation:(id)a3 version:(int64_t)a4 offset:(unint64_t *)a5
+- (CRDocumentOutputRegion)initWithCRCodableDataRepresentation:(id)representation version:(int64_t)version offset:(unint64_t *)offset
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  representationCopy = representation;
   v9 = &qword_1ED960000;
   if (CRSignpostLog_onceToken != -1)
   {
@@ -52,19 +52,19 @@
 
   v46.receiver = self;
   v46.super_class = CRDocumentOutputRegion;
-  v15 = [(CROutputRegion *)&v46 initWithCRCodableDataRepresentation:v8 version:a4 offset:a5];
+  v15 = [(CROutputRegion *)&v46 initWithCRCodableDataRepresentation:representationCopy version:version offset:offset];
   if (v15)
   {
-    v16 = a4 >= 3 && [CRCodingUtilities integerFromEncodingData:v8 offset:a5]> 0;
-    v17 = [CRCodingUtilities objectDataFromEncodingData:v8 offset:a5];
+    v16 = version >= 3 && [CRCodingUtilities integerFromEncodingData:representationCopy offset:offset]> 0;
+    v17 = [CRCodingUtilities objectDataFromEncodingData:representationCopy offset:offset];
     v18 = [CROutputRegion outputRegionWithCRCodableDataRepresentation:v17];
     title = v15->_title;
     v15->_title = v18;
 
     if (v16)
     {
-      v15->_documentRevision = [CRCodingUtilities unsignedIntegerFromEncodingData:v8 offset:a5];
-      v20 = [CRCodingUtilities objectDataFromEncodingData:v8 offset:a5];
+      v15->_documentRevision = [CRCodingUtilities unsignedIntegerFromEncodingData:representationCopy offset:offset];
+      v20 = [CRCodingUtilities objectDataFromEncodingData:representationCopy offset:offset];
       v10 = &qword_1ED960000;
       if (v20)
       {
@@ -83,7 +83,7 @@
       v10 = &qword_1ED960000;
     }
 
-    if (a4 <= 9)
+    if (version <= 9)
     {
       v40 = v12;
       v23 = objc_opt_new();
@@ -92,8 +92,8 @@
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v25 = [(CROutputRegion *)v15 children];
-      v26 = [v25 countByEnumeratingWithState:&v42 objects:v53 count:16];
+      children = [(CROutputRegion *)v15 children];
+      v26 = [children countByEnumeratingWithState:&v42 objects:v53 count:16];
       if (v26)
       {
         v27 = v26;
@@ -104,7 +104,7 @@
           {
             if (*v43 != v28)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(children);
             }
 
             v30 = *(*(&v42 + 1) + 8 * i);
@@ -121,7 +121,7 @@
             }
           }
 
-          v27 = [v25 countByEnumeratingWithState:&v42 objects:v53 count:16];
+          v27 = [children countByEnumeratingWithState:&v42 objects:v53 count:16];
         }
 
         while (v27);
@@ -136,8 +136,8 @@
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
           v33 = [v24 count];
-          v34 = [(CROutputRegion *)v15 children];
-          v35 = [v34 count];
+          children2 = [(CROutputRegion *)v15 children];
+          v35 = [children2 count];
           v36 = [v23 count];
           *buf = 134218496;
           v48 = v33;
@@ -171,41 +171,41 @@
   return v15;
 }
 
-+ (id)documentWithRegions:(id)a3 title:(id)a4 confidence:(unint64_t)a5 imageSize:(CGSize)a6
++ (id)documentWithRegions:(id)regions title:(id)title confidence:(unint64_t)confidence imageSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(CROutputRegion *)[CRDocumentOutputRegion alloc] initWithConfidence:a5 baselineAngle:0.0];
-  [(CRDocumentOutputRegion *)v12 setTitle:v10];
+  height = size.height;
+  width = size.width;
+  titleCopy = title;
+  regionsCopy = regions;
+  v12 = [(CROutputRegion *)[CRDocumentOutputRegion alloc] initWithConfidence:confidence baselineAngle:0.0];
+  [(CRDocumentOutputRegion *)v12 setTitle:titleCopy];
 
-  v13 = [[CRNormalizedQuad alloc] initWithNormalizedBoundingBox:0.0 size:0.0, 1.0, 1.0, width, height];
-  [(CROutputRegion *)v12 setBoundingQuad:v13];
+  height = [[CRNormalizedQuad alloc] initWithNormalizedBoundingBox:0.0 size:0.0, 1.0, 1.0, width, height];
+  [(CROutputRegion *)v12 setBoundingQuad:height];
 
   [(CROutputRegion *)v12 setShouldComputeBoundsFromChildren:0];
-  [(CRDocumentOutputRegion *)v12 setChildren:v11];
+  [(CRDocumentOutputRegion *)v12 setChildren:regionsCopy];
 
   [(CRDocumentOutputRegion *)v12 setDocumentRevision:1];
 
   return v12;
 }
 
-+ (id)documentWithLines:(id)a3 title:(id)a4 confidence:(unint64_t)a5 imageSize:(CGSize)a6
++ (id)documentWithLines:(id)lines title:(id)title confidence:(unint64_t)confidence imageSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v10 = a4;
-  v11 = a3;
-  v12 = [objc_opt_class() documentWithRegions:v11 title:v10 confidence:a5 imageSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  titleCopy = title;
+  linesCopy = lines;
+  v12 = [objc_opt_class() documentWithRegions:linesCopy title:titleCopy confidence:confidence imageSize:{width, height}];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -215,14 +215,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(CRDocumentOutputRegion *)self title];
+      v5 = equalCopy;
+      title = [(CRDocumentOutputRegion *)self title];
 
-      if (v6)
+      if (title)
       {
-        v7 = [(CRDocumentOutputRegion *)self title];
-        v8 = [(CRDocumentOutputRegion *)v5 title];
-        v9 = [v7 isEqual:v8];
+        title2 = [(CRDocumentOutputRegion *)self title];
+        title3 = [(CRDocumentOutputRegion *)v5 title];
+        v9 = [title2 isEqual:title3];
 
         if (!v9)
         {
@@ -232,9 +232,9 @@
 
       else
       {
-        v11 = [(CRDocumentOutputRegion *)v5 title];
+        title4 = [(CRDocumentOutputRegion *)v5 title];
 
-        if (v11)
+        if (title4)
         {
 LABEL_11:
           v10 = 0;
@@ -244,18 +244,18 @@ LABEL_14:
         }
       }
 
-      v12 = [(CRDocumentOutputRegion *)self additionalMetadata];
-      v13 = [(CRDocumentOutputRegion *)v5 additionalMetadata];
-      v14 = v13;
-      if (v12 == v13)
+      additionalMetadata = [(CRDocumentOutputRegion *)self additionalMetadata];
+      additionalMetadata2 = [(CRDocumentOutputRegion *)v5 additionalMetadata];
+      v14 = additionalMetadata2;
+      if (additionalMetadata == additionalMetadata2)
       {
       }
 
       else
       {
-        v15 = [(CRDocumentOutputRegion *)self additionalMetadata];
-        v16 = [(CRDocumentOutputRegion *)v5 additionalMetadata];
-        v17 = [v15 isEqual:v16];
+        additionalMetadata3 = [(CRDocumentOutputRegion *)self additionalMetadata];
+        additionalMetadata4 = [(CRDocumentOutputRegion *)v5 additionalMetadata];
+        v17 = [additionalMetadata3 isEqual:additionalMetadata4];
 
         if (!v17)
         {
@@ -277,31 +277,31 @@ LABEL_15:
   return v10;
 }
 
-- (void)setChildren:(id)a3
+- (void)setChildren:(id)children
 {
   v4.receiver = self;
   v4.super_class = CRDocumentOutputRegion;
-  [(CROutputRegion *)&v4 setChildren:a3];
+  [(CROutputRegion *)&v4 setChildren:children];
   [(CRDocumentOutputRegion *)self setCachedLayoutComponents:0];
 }
 
-- (CRDocumentOutputRegion)outputRegionWithContentsOfQuad:(id)a3
+- (CRDocumentOutputRegion)outputRegionWithContentsOfQuad:(id)quad
 {
   v6.receiver = self;
   v6.super_class = CRDocumentOutputRegion;
-  v3 = a3;
-  v4 = [(CROutputRegion *)&v6 outputRegionWithContentsOfQuad:v3];
-  [v4 setBoundingQuad:{v3, v6.receiver, v6.super_class}];
+  quadCopy = quad;
+  v4 = [(CROutputRegion *)&v6 outputRegionWithContentsOfQuad:quadCopy];
+  [v4 setBoundingQuad:{quadCopy, v6.receiver, v6.super_class}];
 
   return v4;
 }
 
-- (CRDocumentOutputRegion)outputRegionWithContentsBetweenStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4
+- (CRDocumentOutputRegion)outputRegionWithContentsBetweenStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = endPoint.y;
+  x = endPoint.x;
+  v6 = point.y;
+  v7 = point.x;
   if ([(CROutputRegion *)self shouldComputeBoundsFromChildren])
   {
     v12.receiver = self;
@@ -319,10 +319,10 @@ LABEL_15:
   return v9;
 }
 
-- (CRDocumentOutputRegion)outputRegionWithContentsOfCharacterRange:(_NSRange)a3
+- (CRDocumentOutputRegion)outputRegionWithContentsOfCharacterRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if ([(CROutputRegion *)self shouldComputeBoundsFromChildren])
   {
     v9.receiver = self;
@@ -366,16 +366,16 @@ LABEL_15:
   v7 = MEMORY[0x1E695DF88];
   v15.receiver = self;
   v15.super_class = CRDocumentOutputRegion;
-  v8 = [(CROutputRegion *)&v15 crCodableDataRepresentation];
-  v9 = [v7 dataWithData:v8];
+  crCodableDataRepresentation = [(CROutputRegion *)&v15 crCodableDataRepresentation];
+  v9 = [v7 dataWithData:crCodableDataRepresentation];
 
   [CRCodingUtilities appendInteger:1 toData:v9];
-  v10 = [(CRDocumentOutputRegion *)self title];
-  [CRCodingUtilities appendCodable:v10 toData:v9];
+  title = [(CRDocumentOutputRegion *)self title];
+  [CRCodingUtilities appendCodable:title toData:v9];
 
   [CRCodingUtilities appendUInteger:1 toData:v9];
-  v11 = [(CRDocumentOutputRegion *)self additionalMetadata];
-  [CRCodingUtilities appendCodable:v11 toData:v9];
+  additionalMetadata = [(CRDocumentOutputRegion *)self additionalMetadata];
+  [CRCodingUtilities appendCodable:additionalMetadata toData:v9];
 
   if (CRSignpostLog_onceToken != -1)
   {
@@ -398,14 +398,14 @@ LABEL_15:
   v20 = *MEMORY[0x1E69E9840];
   if ([(CRDocumentOutputRegion *)self documentRevision]== 1 && self)
   {
-    v3 = [(CRDocumentOutputRegion *)self additionalMetadata];
+    additionalMetadata = [(CRDocumentOutputRegion *)self additionalMetadata];
 
-    if (v3)
+    if (additionalMetadata)
     {
       v4 = [(CROutputRegion *)self contentsWithTypes:8];
-      v3 = [v4 count];
-      v5 = [(CRDocumentOutputRegion *)self additionalMetadata];
-      v6 = [v5 numFilteredRegions];
+      additionalMetadata = [v4 count];
+      additionalMetadata2 = [(CRDocumentOutputRegion *)self additionalMetadata];
+      numFilteredRegions = [additionalMetadata2 numFilteredRegions];
 
       v17 = 0u;
       v18 = 0u;
@@ -417,7 +417,7 @@ LABEL_15:
       {
         v9 = v8;
         v10 = *v16;
-        v11 = v6;
+        v11 = numFilteredRegions;
         do
         {
           for (i = 0; i != v9; ++i)
@@ -442,25 +442,25 @@ LABEL_15:
 
       else
       {
-        v11 = v6;
+        v11 = numFilteredRegions;
       }
 
-      LOBYTE(v3) = (v11 / (v3 + v6)) >= 0.75;
+      LOBYTE(additionalMetadata) = (v11 / (additionalMetadata + numFilteredRegions)) >= 0.75;
     }
   }
 
   else
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(additionalMetadata) = 0;
   }
 
-  return v3;
+  return additionalMetadata;
 }
 
-- (void)collectMetadataForNumFilteredRegions:(int64_t)a3
+- (void)collectMetadataForNumFilteredRegions:(int64_t)regions
 {
   v5 = objc_opt_new();
-  [v5 setNumFilteredRegions:a3];
+  [v5 setNumFilteredRegions:regions];
   [(CRDocumentOutputRegion *)self setAdditionalMetadata:v5];
 }
 
@@ -544,34 +544,34 @@ void __34__CRDocumentOutputRegion_formness__block_invoke(void *a1, void *a2)
   }
 }
 
-- (id)detectedFieldRegionsExcludingFields:(id)a3 updateExcludedFields:(BOOL)a4
+- (id)detectedFieldRegionsExcludingFields:(id)fields updateExcludedFields:(BOOL)excludedFields
 {
-  v4 = a4;
+  excludedFieldsCopy = excludedFields;
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  fieldsCopy = fields;
   v7 = CROSLogForCategory(6);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315650;
     v11 = "[CRDocumentOutputRegion detectedFieldRegionsExcludingFields:updateExcludedFields:]";
     v12 = 2048;
-    v13 = [v6 count];
+    v13 = [fieldsCopy count];
     v14 = 1024;
-    v15 = v4;
+    v15 = excludedFieldsCopy;
     _os_log_impl(&dword_1B40D2000, v7, OS_LOG_TYPE_DEFAULT, "%s: #fields:%lu updateExcludedFields:%d", &v10, 0x1Cu);
   }
 
-  v8 = [CRFormUtilities detectedFieldRegionsInDocument:self excludingFields:v6 updateExcludedFields:v4];
+  v8 = [CRFormUtilities detectedFieldRegionsInDocument:self excludingFields:fieldsCopy updateExcludedFields:excludedFieldsCopy];
 
   return v8;
 }
 
-- (id)proposedFieldForPoint:(CGPoint)a3 existingFields:(id)a4
+- (id)proposedFieldForPoint:(CGPoint)point existingFields:(id)fields
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  fieldsCopy = fields;
   v8 = CROSLogForCategory(6);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -582,25 +582,25 @@ void __34__CRDocumentOutputRegion_formness__block_invoke(void *a1, void *a2)
     v27 = 2048;
     v28 = y;
     v29 = 2048;
-    v30 = [v7 count];
+    v30 = [fieldsCopy count];
     _os_log_impl(&dword_1B40D2000, v8, OS_LOG_TYPE_DEFAULT, "%s: x:%lf y:%lf #existingFields:%lu", &v23, 0x2Au);
   }
 
-  v9 = [CRFormUtilities proposedFieldForPoint:self inDocument:v7 existingFields:x, y];
+  v9 = [CRFormUtilities proposedFieldForPoint:self inDocument:fieldsCopy existingFields:x, y];
   v10 = CROSLogForCategory(6);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 boundingQuad];
-    [v11 boundingBox];
+    boundingQuad = [v9 boundingQuad];
+    [boundingQuad boundingBox];
     v13 = v12;
-    v14 = [v9 boundingQuad];
-    [v14 boundingBox];
+    boundingQuad2 = [v9 boundingQuad];
+    [boundingQuad2 boundingBox];
     v16 = v15;
-    v17 = [v9 boundingQuad];
-    [v17 boundingBox];
+    boundingQuad3 = [v9 boundingQuad];
+    [boundingQuad3 boundingBox];
     v19 = v18;
-    v20 = [v9 boundingQuad];
-    [v20 boundingBox];
+    boundingQuad4 = [v9 boundingQuad];
+    [boundingQuad4 boundingBox];
     v23 = 136316162;
     v24 = "[CRDocumentOutputRegion proposedFieldForPoint:existingFields:]";
     v25 = 2048;
@@ -619,11 +619,11 @@ void __34__CRDocumentOutputRegion_formness__block_invoke(void *a1, void *a2)
 
 - (id)layoutComponents
 {
-  v2 = self;
+  selfCopy = self;
   v52 = *MEMORY[0x1E69E9840];
-  v3 = [(CRDocumentOutputRegion *)self cachedLayoutComponents];
+  cachedLayoutComponents = [(CRDocumentOutputRegion *)self cachedLayoutComponents];
 
-  if (!v3)
+  if (!cachedLayoutComponents)
   {
     if (CRSignpostLog_onceToken != -1)
     {
@@ -648,14 +648,14 @@ void __34__CRDocumentOutputRegion_formness__block_invoke(void *a1, void *a2)
     }
 
     v36 = objc_opt_new();
-    v9 = [(CROutputRegion *)v2 contentsWithTypes:64];
-    v10 = [(CROutputRegion *)v2 contentsWithTypes:256];
-    v34 = [(CROutputRegion *)v2 contentsWithTypes:4];
+    v9 = [(CROutputRegion *)selfCopy contentsWithTypes:64];
+    v10 = [(CROutputRegion *)selfCopy contentsWithTypes:256];
+    v34 = [(CROutputRegion *)selfCopy contentsWithTypes:4];
     v35 = v10;
     v11 = [v34 arrayByAddingObjectsFromArray:v10];
     v40 = [v11 arrayByAddingObjectsFromArray:v9];
 
-    [(CROutputRegion *)v2 contentsWithTypes:8];
+    [(CROutputRegion *)selfCopy contentsWithTypes:8];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
@@ -667,7 +667,7 @@ void __34__CRDocumentOutputRegion_formness__block_invoke(void *a1, void *a2)
       v30 = v5 - 1;
       v31 = v9;
       v32 = v5;
-      v33 = v2;
+      v33 = selfCopy;
       v38 = 0;
       v39 = *v46;
       while (1)
@@ -742,7 +742,7 @@ LABEL_28:
         if (!v13)
         {
           v5 = v32;
-          v2 = v33;
+          selfCopy = v33;
           v8 = v30;
           v9 = v31;
           if (v38)
@@ -755,8 +755,8 @@ LABEL_28:
       }
     }
 
-    v25 = [v36 array];
-    [(CRDocumentOutputRegion *)v2 setCachedLayoutComponents:v25];
+    array = [v36 array];
+    [(CRDocumentOutputRegion *)selfCopy setCachedLayoutComponents:array];
 
     if (CRSignpostLog_onceToken != -1)
     {
@@ -772,35 +772,35 @@ LABEL_28:
     }
   }
 
-  v28 = [(CRDocumentOutputRegion *)v2 cachedLayoutComponents];
+  cachedLayoutComponents2 = [(CRDocumentOutputRegion *)selfCopy cachedLayoutComponents];
 
-  return v28;
+  return cachedLayoutComponents2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 copyChildren:(BOOL)a4 copyCandidates:(BOOL)a5 deepCopy:(BOOL)a6
+- (id)copyWithZone:(_NSZone *)zone copyChildren:(BOOL)children copyCandidates:(BOOL)candidates deepCopy:(BOOL)copy
 {
   v12.receiver = self;
   v12.super_class = CRDocumentOutputRegion;
-  v7 = [(CROutputRegion *)&v12 copyWithZone:a3 copyChildren:a4 copyCandidates:a5 deepCopy:a6];
-  v8 = [(CRDocumentOutputRegion *)self title];
-  [v7 setTitle:v8];
+  v7 = [(CROutputRegion *)&v12 copyWithZone:zone copyChildren:children copyCandidates:candidates deepCopy:copy];
+  title = [(CRDocumentOutputRegion *)self title];
+  [v7 setTitle:title];
 
-  v9 = [(CRDocumentOutputRegion *)self additionalMetadata];
-  v10 = [v9 copy];
+  additionalMetadata = [(CRDocumentOutputRegion *)self additionalMetadata];
+  v10 = [additionalMetadata copy];
   [v7 setAdditionalMetadata:v10];
 
   return v7;
 }
 
-+ (id)groupedParagraphBlocksFromParagraphs:(id)a3
++ (id)groupedParagraphBlocksFromParagraphs:(id)paragraphs
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  paragraphsCopy = paragraphs;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  v4 = [paragraphsCopy countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v4)
   {
     v5 = v4;
@@ -811,26 +811,26 @@ LABEL_28:
       {
         if (*v26 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(paragraphsCopy);
         }
 
         v8 = *(*(&v25 + 1) + 8 * i);
-        v9 = [v8 trackingID];
+        trackingID = [v8 trackingID];
 
-        if (!v9)
+        if (!trackingID)
         {
-          v10 = [MEMORY[0x1E696AFB0] UUID];
-          [v8 setTrackingID:v10];
+          uUID = [MEMORY[0x1E696AFB0] UUID];
+          [v8 setTrackingID:uUID];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v5 = [paragraphsCopy countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v5);
   }
 
-  v11 = [CRTrackedRegionGroup groupsFromOutputRegions:v3];
+  v11 = [CRTrackedRegionGroup groupsFromOutputRegions:paragraphsCopy];
   v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v11, "count")}];
   v21 = 0u;
   v22 = 0u;
@@ -866,23 +866,23 @@ LABEL_28:
   return v19;
 }
 
-- (id)trackingDocumentWithTrackedType:(unint64_t)a3 includeLines:(BOOL)a4
+- (id)trackingDocumentWithTrackedType:(unint64_t)type includeLines:(BOOL)lines
 {
   v32 = *MEMORY[0x1E69E9840];
   v6 = 2;
-  if (a4)
+  if (lines)
   {
     v6 = 10;
   }
 
-  v7 = [(CROutputRegion *)self copyIncludingChildrenOfTypes:v6 | a3];
-  v8 = [v7 children];
-  v9 = v8;
-  if (a3 != 2)
+  type = [(CROutputRegion *)self copyIncludingChildrenOfTypes:v6 | type];
+  children = [type children];
+  v9 = children;
+  if (type != 2)
   {
-    v26 = v8;
+    v26 = children;
     v10 = objc_opt_new();
-    v11 = [v7 contentsWithTypes:a3];
+    v11 = [type contentsWithTypes:type];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -901,7 +901,7 @@ LABEL_28:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [CRTrackedDocumentOutputRegion _blockFromRegion:a3 trackedType:?];
+          v16 = [CRTrackedDocumentOutputRegion _blockFromRegion:type trackedType:?];
           [v10 addObject:v16];
         }
 
@@ -915,55 +915,55 @@ LABEL_28:
   }
 
   v17 = [CRTrackedDocumentOutputRegion alloc];
-  v18 = [(CROutputRegion *)self confidence];
+  confidence = [(CROutputRegion *)self confidence];
   [(CROutputRegion *)self baselineAngle];
-  v19 = [(CROutputRegion *)v17 initWithConfidence:v18 baselineAngle:?];
+  v19 = [(CROutputRegion *)v17 initWithConfidence:confidence baselineAngle:?];
   v20 = v19;
   if (v19)
   {
-    v19->_trackedRegionType = a3;
+    v19->_trackedRegionType = type;
     [(CROutputRegion *)v19 setShouldComputeBoundsFromChildren:0];
     [(CROutputRegion *)v20 setShouldComputeParagraphsFromChildren:0];
-    v21 = [v7 text];
-    [(CROutputRegion *)v20 setText:v21];
+    text = [type text];
+    [(CROutputRegion *)v20 setText:text];
 
     [(CRDocumentOutputRegion *)v20 setChildren:v9];
-    v22 = [v7 paragraphRegions];
-    [(CROutputRegion *)v20 setParagraphRegions:v22];
+    paragraphRegions = [type paragraphRegions];
+    [(CROutputRegion *)v20 setParagraphRegions:paragraphRegions];
 
-    v20->_trackedRegionType = a3;
+    v20->_trackedRegionType = type;
   }
 
   else
   {
     [0 setShouldComputeBoundsFromChildren:0];
     [0 setShouldComputeParagraphsFromChildren:0];
-    v24 = [v7 text];
-    [0 setText:v24];
+    text2 = [type text];
+    [0 setText:text2];
 
     [0 setChildren:v9];
-    v25 = [v7 paragraphRegions];
-    [0 setParagraphRegions:v25];
+    paragraphRegions2 = [type paragraphRegions];
+    [0 setParagraphRegions:paragraphRegions2];
   }
 
   return v20;
 }
 
-- (id)writeToFileInFolder:(id)a3 basename:(id)a4
+- (id)writeToFileInFolder:(id)folder basename:(id)basename
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  folderCopy = folder;
+  basenameCopy = basename;
   v8 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  v9 = [v6 absoluteString];
-  v10 = [v8 fileExistsAtPath:v9];
+  absoluteString = [folderCopy absoluteString];
+  v10 = [v8 fileExistsAtPath:absoluteString];
 
   if (v10)
   {
     v11 = 0;
 LABEL_4:
     v13 = v11;
-    v14 = [v6 URLByAppendingPathComponent:v7];
+    v14 = [folderCopy URLByAppendingPathComponent:basenameCopy];
     v15 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
     v21 = v11;
     [v15 writeToURL:v14 options:1 error:&v21];
@@ -972,12 +972,12 @@ LABEL_4:
     v16 = CROSLogForCategory(0);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v14 absoluteString];
+      absoluteString2 = [v14 absoluteString];
       v18 = [v11 description];
       *buf = 136315650;
       v24 = "[CRDocumentOutputRegion writeToFileInFolder:basename:]";
       v25 = 2112;
-      v26 = v17;
+      v26 = absoluteString2;
       v27 = 2112;
       v28 = v18;
       _os_log_impl(&dword_1B40D2000, v16, OS_LOG_TYPE_DEFAULT, "%s: saving document output at URL %@, error = %@", buf, 0x20u);
@@ -985,19 +985,19 @@ LABEL_4:
 
     if (v11)
     {
-      v19 = 0;
+      absoluteString3 = 0;
     }
 
     else
     {
-      v19 = [v14 absoluteString];
+      absoluteString3 = [v14 absoluteString];
     }
 
     goto LABEL_13;
   }
 
   v22 = 0;
-  v12 = [v8 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v22];
+  v12 = [v8 createDirectoryAtURL:folderCopy withIntermediateDirectories:1 attributes:0 error:&v22];
   v11 = v22;
   if (v12)
   {
@@ -1010,16 +1010,16 @@ LABEL_4:
     *buf = 136315650;
     v24 = "[CRDocumentOutputRegion writeToFileInFolder:basename:]";
     v25 = 2112;
-    v26 = v6;
+    v26 = folderCopy;
     v27 = 2112;
     v28 = v11;
     _os_log_impl(&dword_1B40D2000, v14, OS_LOG_TYPE_ERROR, "%s: Unable to create folder at URL %@: Error %@", buf, 0x20u);
   }
 
-  v19 = 0;
+  absoluteString3 = 0;
 LABEL_13:
 
-  return v19;
+  return absoluteString3;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface AVTUIFontRepository
-+ (id)appropriateContentSizeCategoryForCategory:(id)a3 minCategory:(id)a4 maxCategory:(id)a5;
++ (id)appropriateContentSizeCategoryForCategory:(id)category minCategory:(id)minCategory maxCategory:(id)maxCategory;
 + (id)attributeTitleButtonFont;
 + (id)attributeTitleFont;
 + (id)attributeViewLabelFont;
@@ -19,26 +19,26 @@
 
 @implementation AVTUIFontRepository
 
-+ (id)appropriateContentSizeCategoryForCategory:(id)a3 minCategory:(id)a4 maxCategory:(id)a5
++ (id)appropriateContentSizeCategoryForCategory:(id)category minCategory:(id)minCategory maxCategory:(id)maxCategory
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v7;
-  if (UIContentSizeCategoryCompareToCategory(v8, v9) == NSOrderedDescending)
+  categoryCopy = category;
+  minCategoryCopy = minCategory;
+  maxCategoryCopy = maxCategory;
+  v10 = categoryCopy;
+  if (UIContentSizeCategoryCompareToCategory(minCategoryCopy, maxCategoryCopy) == NSOrderedDescending)
   {
     v11 = MEMORY[0x1E695DF30];
     v12 = *MEMORY[0x1E695D930];
     v20 = @"minCategory";
-    v21[0] = v8;
+    v21[0] = minCategoryCopy;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
     v14 = [v11 exceptionWithName:v12 reason:@"Min content size category must be less than or equal to max content size category" userInfo:v13];
   }
 
-  v15 = UIContentSizeCategoryCompareToCategory(v8, v10);
-  v16 = v8;
-  if (v15 == NSOrderedDescending || (v17 = UIContentSizeCategoryCompareToCategory(v10, v9), v16 = v9, v18 = v10, v17 == NSOrderedDescending))
+  v15 = UIContentSizeCategoryCompareToCategory(minCategoryCopy, v10);
+  v16 = minCategoryCopy;
+  if (v15 == NSOrderedDescending || (v17 = UIContentSizeCategoryCompareToCategory(v10, maxCategoryCopy), v16 = maxCategoryCopy, v18 = v10, v17 == NSOrderedDescending))
   {
     v18 = v16;
   }
@@ -48,11 +48,11 @@
 
 + (id)splashTitleFont
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = [a1 appropriateContentSizeCategoryForCategory:v4 minCategory:*MEMORY[0x1E69DDC68] maxCategory:*MEMORY[0x1E69DDC38]];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  v5 = [self appropriateContentSizeCategoryForCategory:preferredContentSizeCategory minCategory:*MEMORY[0x1E69DDC68] maxCategory:*MEMORY[0x1E69DDC38]];
 
-  [a1 largeTitleTextStyle];
+  [self largeTitleTextStyle];
   v6 = CTFontDescriptorCreateWithTextStyle();
   v7 = [v6 fontDescriptorWithSymbolicTraits:2];
   v8 = [MEMORY[0x1E69DB878] fontWithDescriptor:v7 size:0.0];
@@ -62,9 +62,9 @@
 
 + (id)splashSubTitleFont
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = [a1 appropriateContentSizeCategoryForCategory:v4 minCategory:*MEMORY[0x1E69DDC68] maxCategory:*MEMORY[0x1E69DDC38]];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  v5 = [self appropriateContentSizeCategoryForCategory:preferredContentSizeCategory minCategory:*MEMORY[0x1E69DDC68] maxCategory:*MEMORY[0x1E69DDC38]];
 
   v6 = CTFontDescriptorCreateWithTextStyle();
   v7 = [MEMORY[0x1E69DB878] fontWithDescriptor:v6 size:0.0];
@@ -74,9 +74,9 @@
 
 + (id)splashContinueButtonFont
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = [a1 appropriateContentSizeCategoryForCategory:v4 minCategory:*MEMORY[0x1E69DDC70] maxCategory:*MEMORY[0x1E69DDC38]];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  v5 = [self appropriateContentSizeCategoryForCategory:preferredContentSizeCategory minCategory:*MEMORY[0x1E69DDC70] maxCategory:*MEMORY[0x1E69DDC38]];
 
   v6 = CTFontDescriptorCreateWithTextStyle();
   v7 = [v6 fontDescriptorWithSymbolicTraits:2];
@@ -87,9 +87,9 @@
 
 + (id)attributeTitleFont
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = [a1 appropriateContentSizeCategoryForCategory:v4 minCategory:*MEMORY[0x1E69DDC68] maxCategory:*MEMORY[0x1E69DDC38]];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  v5 = [self appropriateContentSizeCategoryForCategory:preferredContentSizeCategory minCategory:*MEMORY[0x1E69DDC68] maxCategory:*MEMORY[0x1E69DDC38]];
 
   v6 = CTFontDescriptorCreateWithTextStyle();
   v7 = [v6 fontDescriptorWithSymbolicTraits:2];
@@ -100,9 +100,9 @@
 
 + (id)attributeTitleButtonFont
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = [a1 appropriateContentSizeCategoryForCategory:v4 minCategory:*MEMORY[0x1E69DDC68] maxCategory:*MEMORY[0x1E69DDC38]];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  v5 = [self appropriateContentSizeCategoryForCategory:preferredContentSizeCategory minCategory:*MEMORY[0x1E69DDC68] maxCategory:*MEMORY[0x1E69DDC38]];
 
   v6 = CTFontDescriptorCreateWithTextStyle();
   v7 = [MEMORY[0x1E69DB878] fontWithDescriptor:v6 size:0.0];
@@ -113,8 +113,8 @@
 + (id)templateTitleLabelFont
 {
   v2 = MEMORY[0x1E69DB880];
-  v3 = [a1 largeTitleTextStyle];
-  v4 = [v2 preferredFontDescriptorWithTextStyle:v3 addingSymbolicTraits:2 options:0];
+  largeTitleTextStyle = [self largeTitleTextStyle];
+  v4 = [v2 preferredFontDescriptorWithTextStyle:largeTitleTextStyle addingSymbolicTraits:2 options:0];
 
   v5 = [MEMORY[0x1E69DB878] fontWithDescriptor:v4 size:0.0];
 
@@ -125,8 +125,8 @@
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v2 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDDC8] addingSymbolicTraits:0 options:0];
-  v3 = [v2 fontAttributes];
-  v4 = [v3 mutableCopy];
+  fontAttributes = [v2 fontAttributes];
+  v4 = [fontAttributes mutableCopy];
 
   v13 = *MEMORY[0x1E69DB990];
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:*MEMORY[0x1E69DB978]];
@@ -146,9 +146,9 @@
 + (id)userInfoLabelFont
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = [a1 appropriateContentSizeCategoryForCategory:v4 minCategory:*MEMORY[0x1E69DDC70] maxCategory:*MEMORY[0x1E69DDC38]];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  v5 = [self appropriateContentSizeCategoryForCategory:preferredContentSizeCategory minCategory:*MEMORY[0x1E69DDC70] maxCategory:*MEMORY[0x1E69DDC38]];
 
   v6 = CTFontDescriptorCreateWithTextStyle();
   v14 = *MEMORY[0x1E69DB8F0];
@@ -166,9 +166,9 @@
 
 + (id)groupDialLabelFont
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = [a1 appropriateContentSizeCategoryForCategory:v4 minCategory:*MEMORY[0x1E69DDC68] maxCategory:*MEMORY[0x1E69DDC38]];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  v5 = [self appropriateContentSizeCategoryForCategory:preferredContentSizeCategory minCategory:*MEMORY[0x1E69DDC68] maxCategory:*MEMORY[0x1E69DDC38]];
 
   v6 = CTFontDescriptorCreateWithTextStyle();
   v7 = [v6 fontDescriptorWithSymbolicTraits:2];
@@ -179,9 +179,9 @@
 
 + (id)multicolorPickerLabelFont
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = [a1 appropriateContentSizeCategoryForCategory:v4 minCategory:*MEMORY[0x1E69DDC68] maxCategory:*MEMORY[0x1E69DDC38]];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  v5 = [self appropriateContentSizeCategoryForCategory:preferredContentSizeCategory minCategory:*MEMORY[0x1E69DDC68] maxCategory:*MEMORY[0x1E69DDC38]];
 
   v6 = CTFontDescriptorCreateWithTextStyle();
   v7 = [v6 fontDescriptorWithSymbolicTraits:2];
@@ -202,9 +202,9 @@
 + (id)funCamItemTitleFont
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = [a1 appropriateContentSizeCategoryForCategory:v4 minCategory:*MEMORY[0x1E69DDC68] maxCategory:*MEMORY[0x1E69DDC60]];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  v5 = [self appropriateContentSizeCategoryForCategory:preferredContentSizeCategory minCategory:*MEMORY[0x1E69DDC68] maxCategory:*MEMORY[0x1E69DDC60]];
 
   v6 = CTFontDescriptorCreateWithTextStyle();
   v14 = *MEMORY[0x1E69DB8F0];

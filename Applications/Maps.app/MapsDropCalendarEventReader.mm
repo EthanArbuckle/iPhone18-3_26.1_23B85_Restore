@@ -1,19 +1,19 @@
 @interface MapsDropCalendarEventReader
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation MapsDropCalendarEventReader
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (([v10 isEqualToString:@"com.apple.reminders.ics"] & 1) == 0 && !objc_msgSend(v10, "isEqualToString:", @"com.apple.calendar.ics"))
+  dataCopy = data;
+  identifierCopy = identifier;
+  if (([identifierCopy isEqualToString:@"com.apple.reminders.ics"] & 1) == 0 && !objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.calendar.ics"))
   {
-    if (a5)
+    if (error)
     {
       [NSError errorWithDomain:NSCocoaErrorDomain code:3328 userInfo:0];
-      *a5 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_13;
     }
 
@@ -21,15 +21,15 @@
   }
 
   v19 = 0;
-  v11 = [[ICSDocument alloc] initWithData:v9 options:0 error:&v19];
+  v11 = [[ICSDocument alloc] initWithData:dataCopy options:0 error:&v19];
   v12 = v19;
   v13 = v12;
   if (!v11)
   {
-    if (a5)
+    if (error)
     {
       v17 = v12;
-      *a5 = v13;
+      *error = v13;
     }
 
 LABEL_12:
@@ -38,14 +38,14 @@ LABEL_12:
   }
 
   v14 = objc_alloc_init(objc_opt_class());
-  if (a1)
+  if (self)
   {
-    v15 = [v11 calendar];
+    calendar = [v11 calendar];
     v16 = *(v14 + 2);
-    *(v14 + 2) = v15;
+    *(v14 + 2) = calendar;
 
-    objc_storeStrong(v14 + 1, a3);
-    objc_storeStrong(v14 + 3, a4);
+    objc_storeStrong(v14 + 1, data);
+    objc_storeStrong(v14 + 3, identifier);
   }
 
 LABEL_13:

@@ -1,16 +1,16 @@
 @interface MFConversationItemHeaderBlockAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)createPrimaryViews;
 @end
 
 @implementation MFConversationItemHeaderBlockAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFConversationItemHeaderBlock" hasInstanceMethod:@"horizontalStatusIndicatorContentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFConversationItemHeaderBlock" hasInstanceMethod:@"createPrimaryViews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFConversationItemHeaderBlock" hasInstanceMethod:@"horizontalStatusIndicatorContentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFConversationItemHeaderBlock" hasInstanceMethod:@"createPrimaryViews" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

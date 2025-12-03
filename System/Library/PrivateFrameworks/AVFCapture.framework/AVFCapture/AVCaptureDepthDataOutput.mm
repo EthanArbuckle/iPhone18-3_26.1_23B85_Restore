@@ -1,22 +1,22 @@
 @interface AVCaptureDepthDataOutput
 - (AVCaptureDepthDataOutput)init;
-- (BOOL)canAddConnection:(id)a3 failureReason:(id *)a4;
-- (id)addConnection:(id)a3 error:(id *)a4;
+- (BOOL)canAddConnection:(id)connection failureReason:(id *)reason;
+- (id)addConnection:(id)connection error:(id *)error;
 - (id)companionSettingsVideoDataOutput;
-- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)a3;
-- (void)_handleNotification:(id)a3 payload:(id)a4;
-- (void)_handleRemoteQueueOperation:(FigRemoteOperation *)a3;
-- (void)_processSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)_updateLocalQueue:(localQueueOpaque *)a3;
-- (void)_updateRemoteQueue:(remoteQueueReceiverOpaque *)a3;
-- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)a3;
+- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)message;
+- (void)_handleNotification:(id)notification payload:(id)payload;
+- (void)_handleRemoteQueueOperation:(FigRemoteOperation *)operation;
+- (void)_processSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)_updateLocalQueue:(localQueueOpaque *)queue;
+- (void)_updateRemoteQueue:(remoteQueueReceiverOpaque *)queue;
+- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)session;
 - (void)dealloc;
-- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeConnection:(id)a3;
+- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)session;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeConnection:(id)connection;
 - (void)setAlwaysDiscardsLateDepthData:(BOOL)alwaysDiscardsLateDepthData;
 - (void)setDelegate:(id)delegate callbackQueue:(dispatch_queue_t)callbackQueue;
-- (void)setDelegateOverride:(id)a3 delegateOverrideCallbackQueue:(id)a4;
+- (void)setDelegateOverride:(id)override delegateOverrideCallbackQueue:(id)queue;
 - (void)setFilteringEnabled:(BOOL)filteringEnabled;
 @end
 
@@ -26,14 +26,14 @@
 {
   v5.receiver = self;
   v5.super_class = AVCaptureDepthDataOutput;
-  v2 = [(AVCaptureOutput *)&v5 initSubclass];
-  if (v2)
+  initSubclass = [(AVCaptureOutput *)&v5 initSubclass];
+  if (initSubclass)
   {
     v3 = objc_alloc_init(AVCaptureDepthDataOutputInternal);
-    v2->_internal = v3;
+    initSubclass->_internal = v3;
     if (v3)
     {
-      v2->_internal->weakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:v2];
+      initSubclass->_internal->weakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:initSubclass];
     }
 
     else
@@ -43,7 +43,7 @@
     }
   }
 
-  return v2;
+  return initSubclass;
 }
 
 - (void)dealloc
@@ -100,10 +100,10 @@
   }
 }
 
-- (BOOL)canAddConnection:(id)a3 failureReason:(id *)a4
+- (BOOL)canAddConnection:(id)connection failureReason:(id *)reason
 {
-  v7 = [a3 mediaType];
-  if (![v7 isEqualToString:*MEMORY[0x1E69875C0]])
+  mediaType = [connection mediaType];
+  if (![mediaType isEqualToString:*MEMORY[0x1E69875C0]])
   {
     v8 = 1;
     goto LABEL_5;
@@ -113,70 +113,70 @@
   {
     v8 = 2;
 LABEL_5:
-    v9 = AVCaptureOutputConnectionFailureReasonString(v8, self, a3);
+    v9 = AVCaptureOutputConnectionFailureReasonString(v8, self, connection);
     result = 0;
-    *a4 = v9;
+    *reason = v9;
     return result;
   }
 
   return 1;
 }
 
-- (id)addConnection:(id)a3 error:(id *)a4
+- (id)addConnection:(id)connection error:(id *)error
 {
-  [a3 addObserver:self forKeyPath:@"videoMirrored" options:3 context:AVCaptureOutputVideoMirroredChangedContext];
-  [a3 addObserver:self forKeyPath:@"videoOrientation" options:3 context:AVCaptureOutputVideoOrientationChangedContext];
-  [a3 addObserver:self forKeyPath:@"active" options:3 context:AVCaptureOutputActiveChangedContext];
+  [connection addObserver:self forKeyPath:@"videoMirrored" options:3 context:AVCaptureOutputVideoMirroredChangedContext];
+  [connection addObserver:self forKeyPath:@"videoOrientation" options:3 context:AVCaptureOutputVideoOrientationChangedContext];
+  [connection addObserver:self forKeyPath:@"active" options:3 context:AVCaptureOutputActiveChangedContext];
   v8.receiver = self;
   v8.super_class = AVCaptureDepthDataOutput;
-  return [(AVCaptureOutput *)&v8 addConnection:a3 error:a4];
+  return [(AVCaptureOutput *)&v8 addConnection:connection error:error];
 }
 
-- (void)removeConnection:(id)a3
+- (void)removeConnection:(id)connection
 {
-  [a3 removeObserver:self forKeyPath:@"videoMirrored" context:AVCaptureOutputVideoMirroredChangedContext];
-  [a3 removeObserver:self forKeyPath:@"videoOrientation" context:AVCaptureOutputVideoOrientationChangedContext];
-  [a3 removeObserver:self forKeyPath:@"active" context:AVCaptureOutputActiveChangedContext];
+  [connection removeObserver:self forKeyPath:@"videoMirrored" context:AVCaptureOutputVideoMirroredChangedContext];
+  [connection removeObserver:self forKeyPath:@"videoOrientation" context:AVCaptureOutputVideoOrientationChangedContext];
+  [connection removeObserver:self forKeyPath:@"active" context:AVCaptureOutputActiveChangedContext];
   v5.receiver = self;
   v5.super_class = AVCaptureDepthDataOutput;
-  [(AVCaptureOutput *)&v5 removeConnection:a3];
+  [(AVCaptureOutput *)&v5 removeConnection:connection];
 }
 
-- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   v5 = [MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
   weakReference = self->_internal->weakReference;
-  [v5 addListenerWithWeakReference:weakReference callback:ddo_notificationHandler name:*MEMORY[0x1E698FE48] object:a3 flags:0];
-  [v5 addListenerWithWeakReference:weakReference callback:ddo_notificationHandler name:*MEMORY[0x1E698FE40] object:a3 flags:0];
+  [v5 addListenerWithWeakReference:weakReference callback:ddo_notificationHandler name:*MEMORY[0x1E698FE48] object:session flags:0];
+  [v5 addListenerWithWeakReference:weakReference callback:ddo_notificationHandler name:*MEMORY[0x1E698FE40] object:session flags:0];
   v7.receiver = self;
   v7.super_class = AVCaptureDepthDataOutput;
-  [(AVCaptureOutput *)&v7 attachSafelyToFigCaptureSession:a3];
+  [(AVCaptureOutput *)&v7 attachSafelyToFigCaptureSession:session];
 }
 
-- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   v5 = [MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:ddo_notificationHandler name:*MEMORY[0x1E698FE48] object:a3];
-  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:ddo_notificationHandler name:*MEMORY[0x1E698FE40] object:a3];
+  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:ddo_notificationHandler name:*MEMORY[0x1E698FE48] object:session];
+  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:ddo_notificationHandler name:*MEMORY[0x1E698FE40] object:session];
   v6.receiver = self;
   v6.super_class = AVCaptureDepthDataOutput;
-  [(AVCaptureOutput *)&v6 detachSafelyFromFigCaptureSession:a3];
+  [(AVCaptureOutput *)&v6 detachSafelyFromFigCaptureSession:session];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (AVCaptureOutputVideoMirroredChangedContext == a6 || AVCaptureOutputVideoOrientationChangedContext == a6)
+  if (AVCaptureOutputVideoMirroredChangedContext == context || AVCaptureOutputVideoOrientationChangedContext == context)
   {
     goto LABEL_6;
   }
 
-  if (AVCaptureOutputActiveChangedContext != a6)
+  if (AVCaptureOutputActiveChangedContext != context)
   {
     return;
   }
 
-  v9 = [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A500]), "BOOLValue"}];
-  v10 = [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}];
+  v9 = [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A500]), "BOOLValue"}];
+  v10 = [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}];
   if (v9 == v10)
   {
     return;
@@ -185,8 +185,8 @@ LABEL_5:
   if (v10)
   {
 LABEL_6:
-    v11 = [objc_msgSend(a4 "sourceDevice")];
-    v12 = [objc_msgSend(a4 "sourceDevice")];
+    v11 = [objc_msgSend(object "sourceDevice")];
+    v12 = [objc_msgSend(object "sourceDevice")];
   }
 
   else
@@ -198,33 +198,33 @@ LABEL_6:
   [(AVCaptureOutput *)self updateMetadataTransformForSourceFormat:v11 aspectRatio:v12];
 }
 
-- (void)_handleNotification:(id)a3 payload:(id)a4
+- (void)_handleNotification:(id)notification payload:(id)payload
 {
-  if ([objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FCD8]), "isEqual:", -[AVCaptureOutput sinkID](self, "sinkID")}])
+  if ([objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FCD8]), "isEqual:", -[AVCaptureOutput sinkID](self, "sinkID")}])
   {
-    if ([a3 isEqualToString:*MEMORY[0x1E698FE48]])
+    if ([notification isEqualToString:*MEMORY[0x1E698FE48]])
     {
-      v7 = [a4 objectForKeyedSubscript:*MEMORY[0x1E698FE38]];
+      v7 = [payload objectForKeyedSubscript:*MEMORY[0x1E698FE38]];
 
       [(AVCaptureDepthDataOutput *)self _updateRemoteQueue:v7];
     }
 
-    else if ([a3 isEqualToString:*MEMORY[0x1E698FE40]])
+    else if ([notification isEqualToString:*MEMORY[0x1E698FE40]])
     {
-      v8 = [a4 objectForKeyedSubscript:*MEMORY[0x1E698FBB8]];
+      v8 = [payload objectForKeyedSubscript:*MEMORY[0x1E698FBB8]];
 
       [(AVCaptureDepthDataOutput *)self _updateLocalQueue:v8];
     }
   }
 }
 
-- (void)_updateRemoteQueue:(remoteQueueReceiverOpaque *)a3
+- (void)_updateRemoteQueue:(remoteQueueReceiverOpaque *)queue
 {
   v5 = self->_internal->weakReference;
   objc_initWeak(&location, [(AVCaptureOutput *)self session]);
   objc_copyWeak(&v7, &location);
   MessageReceiver = FigRemoteOperationReceiverCreateMessageReceiver();
-  -[AVCaptureDataOutputDelegateCallbackHelper updateRemoteQueueReceiver:handler:](self->_internal->delegateCallbackHelper, "updateRemoteQueueReceiver:handler:", a3, [MessageReceiver copy]);
+  -[AVCaptureDataOutputDelegateCallbackHelper updateRemoteQueueReceiver:handler:](self->_internal->delegateCallbackHelper, "updateRemoteQueueReceiver:handler:", queue, [MessageReceiver copy]);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -256,15 +256,15 @@ void __47__AVCaptureDepthDataOutput__updateRemoteQueue___block_invoke(uint64_t a
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)_handleRemoteQueueOperation:(FigRemoteOperation *)a3
+- (void)_handleRemoteQueueOperation:(FigRemoteOperation *)operation
 {
-  if (a3->var0 == 3)
+  if (operation->var0 == 3)
   {
-    [(AVCaptureDepthDataOutput *)self _processSampleBuffer:a3->var4.var4.var0];
+    [(AVCaptureDepthDataOutput *)self _processSampleBuffer:operation->var4.var4.var0];
   }
 }
 
-- (void)_updateLocalQueue:(localQueueOpaque *)a3
+- (void)_updateLocalQueue:(localQueueOpaque *)queue
 {
   v5 = self->_internal->weakReference;
   objc_initWeak(&location, [(AVCaptureOutput *)self session]);
@@ -274,7 +274,7 @@ void __47__AVCaptureDepthDataOutput__updateRemoteQueue___block_invoke(uint64_t a
   v6[3] = &unk_1E786EEA8;
   v6[4] = v5;
   objc_copyWeak(&v7, &location);
-  -[AVCaptureDataOutputDelegateCallbackHelper updateLocalQueue:handler:](self->_internal->delegateCallbackHelper, "updateLocalQueue:handler:", a3, [v6 copy]);
+  -[AVCaptureDataOutputDelegateCallbackHelper updateLocalQueue:handler:](self->_internal->delegateCallbackHelper, "updateLocalQueue:handler:", queue, [v6 copy]);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -300,57 +300,57 @@ void __46__AVCaptureDepthDataOutput__updateLocalQueue___block_invoke(uint64_t a1
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)a3
+- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)message
 {
-  if (a3->var0 == 3)
+  if (message->var0 == 3)
   {
-    [(AVCaptureDepthDataOutput *)self _processSampleBuffer:*(&a3->var0 + 1)];
+    [(AVCaptureDepthDataOutput *)self _processSampleBuffer:*(&message->var0 + 1)];
   }
 }
 
-- (void)_processSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)_processSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v5 = [(AVCaptureDataOutputDelegateCallbackHelper *)self->_internal->delegateCallbackHelper activeDelegate];
-  v6 = [(NSArray *)[(AVCaptureOutput *)self connections] firstObject];
-  if ([v6 isLive] && objc_msgSend(-[AVCaptureOutput session](self, "session"), "isRunning") && (objc_msgSend(-[AVCaptureOutput session](self, "session"), "isInterrupted") & 1) == 0)
+  activeDelegate = [(AVCaptureDataOutputDelegateCallbackHelper *)self->_internal->delegateCallbackHelper activeDelegate];
+  firstObject = [(NSArray *)[(AVCaptureOutput *)self connections] firstObject];
+  if ([firstObject isLive] && objc_msgSend(-[AVCaptureOutput session](self, "session"), "isRunning") && (objc_msgSend(-[AVCaptureOutput session](self, "session"), "isInterrupted") & 1) == 0)
   {
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
-    v8 = CMGetAttachment(a3, *MEMORY[0x1E69914F0], 0);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
+    v8 = CMGetAttachment(buffer, *MEMORY[0x1E69914F0], 0);
     memset(&v12, 0, sizeof(v12));
-    CMSampleBufferGetPresentationTimeStamp(&v12, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v12, buffer);
     v9 = [[AVDepthData alloc] initWithPixelBuffer:ImageBuffer depthMetadataDictionary:v8];
     if (ImageBuffer)
     {
       if (objc_opt_respondsToSelector())
       {
         v11 = v12;
-        [v5 depthDataOutput:self didOutputDepthData:v9 timestamp:&v11 connection:v6];
+        [activeDelegate depthDataOutput:self didOutputDepthData:v9 timestamp:&v11 connection:firstObject];
       }
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      v10 = [AVCaptureOutput dataDroppedReasonFromSampleBuffer:a3];
+      v10 = [AVCaptureOutput dataDroppedReasonFromSampleBuffer:buffer];
       v11 = v12;
-      [v5 depthDataOutput:self didDropDepthData:v9 timestamp:&v11 connection:v6 reason:v10];
+      [activeDelegate depthDataOutput:self didDropDepthData:v9 timestamp:&v11 connection:firstObject reason:v10];
     }
   }
 }
 
-- (void)setDelegateOverride:(id)a3 delegateOverrideCallbackQueue:(id)a4
+- (void)setDelegateOverride:(id)override delegateOverrideCallbackQueue:(id)queue
 {
   if (AVCaptureIsRunningInMediaserverd())
   {
-    v7 = 0;
+    queueCopy = 0;
   }
 
   else
   {
-    v7 = a4;
+    queueCopy = queue;
   }
 
   v9 = 0;
-  if (![(AVCaptureDataOutputDelegateCallbackHelper *)self->_internal->delegateCallbackHelper setDelegateOverride:a3 delegateOverrideCallbackQueue:v7 exceptionReason:&v9])
+  if (![(AVCaptureDataOutputDelegateCallbackHelper *)self->_internal->delegateCallbackHelper setDelegateOverride:override delegateOverrideCallbackQueue:queueCopy exceptionReason:&v9])
   {
     v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())

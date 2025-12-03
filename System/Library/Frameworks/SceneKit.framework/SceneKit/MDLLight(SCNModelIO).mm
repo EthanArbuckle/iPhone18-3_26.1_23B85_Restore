@@ -12,14 +12,14 @@
   [a3 color];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = [a3 color];
-  v7 = v6;
+  color = [a3 color];
+  cGColor = color;
   if (isKindOfClass)
   {
-    v7 = [v6 CGColor];
+    cGColor = [color CGColor];
   }
 
-  [v4 setColor:v7];
+  [v4 setColor:cGColor];
   [a3 attenuationStartDistance];
   *&v8 = v8;
   [v4 setAttenuationStartDistance:v8];

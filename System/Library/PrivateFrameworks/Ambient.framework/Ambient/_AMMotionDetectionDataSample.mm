@@ -1,22 +1,22 @@
 @interface _AMMotionDetectionDataSample
-+ (id)zeroMotionDataWithTimestamp:(double)a3;
++ (id)zeroMotionDataWithTimestamp:(double)timestamp;
 - (id)description;
 @end
 
 @implementation _AMMotionDetectionDataSample
 
-+ (id)zeroMotionDataWithTimestamp:(double)a3
++ (id)zeroMotionDataWithTimestamp:(double)timestamp
 {
   v4 = objc_alloc_init(_AMMotionDetectionDataSample);
   [(_AMMotionDetectionDataSample *)v4 setData:&unk_285177BE0];
-  [(_AMMotionDetectionDataSample *)v4 setTimestampSeconds:a3];
+  [(_AMMotionDetectionDataSample *)v4 setTimestampSeconds:timestamp];
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = [(NSArray *)self->_data count];
   if (v4)
   {
@@ -49,7 +49,7 @@
         v12 = CFSTR("( %@,");
       }
 
-      [v3 appendFormat:v12, v10];
+      [string appendFormat:v12, v10];
 
       ++v6;
     }
@@ -57,7 +57,7 @@
     while (v5);
   }
 
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@:%p : t=%0.3fs data=%@>", objc_opt_class(), self, *&self->_timestampSeconds, v3];
+  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@:%p : t=%0.3fs data=%@>", objc_opt_class(), self, *&self->_timestampSeconds, string];
 
   return v13;
 }

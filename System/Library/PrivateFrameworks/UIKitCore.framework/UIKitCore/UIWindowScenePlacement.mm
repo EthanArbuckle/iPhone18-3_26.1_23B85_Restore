@@ -1,12 +1,12 @@
 @interface UIWindowScenePlacement
 + (id)_default;
-- (BOOL)isEqual:(id)a3;
-- (id)_createConfigurationWithError:(id *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_createConfigurationWithError:(id *)error;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
@@ -21,31 +21,31 @@
 
 + (id)_default
 {
-  v2 = [[a1 alloc] _init];
+  _init = [[self alloc] _init];
 
-  return v2;
+  return _init;
 }
 
-- (id)_createConfigurationWithError:(id *)a3
+- (id)_createConfigurationWithError:(id *)error
 {
-  *a3 = _UISceneErrorWithCode(1);
+  *error = _UISceneErrorWithCode(1);
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = objc_alloc(objc_opt_class());
 
   return [v3 _init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v7 = 1;
     }
@@ -67,35 +67,35 @@
 
 - (id)succinctDescription
 {
-  v2 = [(UIWindowScenePlacement *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UIWindowScenePlacement *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(UIWindowScenePlacement *)self succinctDescriptionBuilder];
-  [v5 setActiveMultilinePrefix:v4];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(UIWindowScenePlacement *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder setActiveMultilinePrefix:prefixCopy];
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UIWindowScenePlacement *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UIWindowScenePlacement *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UIWindowScenePlacement *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UIWindowScenePlacement *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

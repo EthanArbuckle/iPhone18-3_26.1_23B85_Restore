@@ -1,7 +1,7 @@
 @interface SSPRXD2DMigrationDoneViewController
 - (SSPRXD2DMigrationDoneViewController)init;
 - (TSSIMSetupFlowDelegate)delegate;
-- (void)_launchDisembarkUI:(id)a3;
+- (void)_launchDisembarkUI:(id)i;
 @end
 
 @implementation SSPRXD2DMigrationDoneViewController
@@ -24,35 +24,35 @@
     v7 = [ExitBuddyIconView alloc];
     v8 = [(ExitBuddyIconView *)v7 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     [(ExitBuddyIconView *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [(SSPRXD2DMigrationDoneViewController *)v2 contentView];
-    [v9 addSubview:v8];
+    contentView = [(SSPRXD2DMigrationDoneViewController *)v2 contentView];
+    [contentView addSubview:v8];
 
-    v10 = [(ExitBuddyIconView *)v8 topAnchor];
-    v11 = [(SSPRXD2DMigrationDoneViewController *)v2 contentView];
-    v12 = [v11 mainContentGuide];
-    v13 = [v12 topAnchor];
-    v14 = [v10 constraintGreaterThanOrEqualToAnchor:v13];
+    topAnchor = [(ExitBuddyIconView *)v8 topAnchor];
+    contentView2 = [(SSPRXD2DMigrationDoneViewController *)v2 contentView];
+    mainContentGuide = [contentView2 mainContentGuide];
+    topAnchor2 = [mainContentGuide topAnchor];
+    v14 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     [v14 setActive:1];
 
-    v15 = [(ExitBuddyIconView *)v8 bottomAnchor];
-    v16 = [(SSPRXD2DMigrationDoneViewController *)v2 contentView];
-    v17 = [v16 mainContentGuide];
-    v18 = [v17 bottomAnchor];
-    v19 = [v15 constraintLessThanOrEqualToAnchor:v18];
+    bottomAnchor = [(ExitBuddyIconView *)v8 bottomAnchor];
+    contentView3 = [(SSPRXD2DMigrationDoneViewController *)v2 contentView];
+    mainContentGuide2 = [contentView3 mainContentGuide];
+    bottomAnchor2 = [mainContentGuide2 bottomAnchor];
+    v19 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     [v19 setActive:1];
 
-    v20 = [(ExitBuddyIconView *)v8 centerXAnchor];
-    v21 = [(SSPRXD2DMigrationDoneViewController *)v2 contentView];
-    v22 = [v21 mainContentGuide];
-    v23 = [v22 centerXAnchor];
-    v24 = [v20 constraintEqualToAnchor:v23];
+    centerXAnchor = [(ExitBuddyIconView *)v8 centerXAnchor];
+    contentView4 = [(SSPRXD2DMigrationDoneViewController *)v2 contentView];
+    mainContentGuide3 = [contentView4 mainContentGuide];
+    centerXAnchor2 = [mainContentGuide3 centerXAnchor];
+    v24 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v24 setActive:1];
 
-    v25 = [(ExitBuddyIconView *)v8 centerYAnchor];
-    v26 = [(SSPRXD2DMigrationDoneViewController *)v2 contentView];
-    v27 = [v26 mainContentGuide];
-    v28 = [v27 centerYAnchor];
-    v29 = [v25 constraintEqualToAnchor:v28];
+    centerYAnchor = [(ExitBuddyIconView *)v8 centerYAnchor];
+    contentView5 = [(SSPRXD2DMigrationDoneViewController *)v2 contentView];
+    mainContentGuide4 = [contentView5 mainContentGuide];
+    centerYAnchor2 = [mainContentGuide4 centerYAnchor];
+    v29 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v29 setActive:1];
 
     objc_initWeak(&location, v2);
@@ -81,9 +81,9 @@ void __43__SSPRXD2DMigrationDoneViewController_init__block_invoke(uint64_t a1, v
   [WeakRetained _launchDisembarkUI:v3];
 }
 
-- (void)_launchDisembarkUI:(id)a3
+- (void)_launchDisembarkUI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;

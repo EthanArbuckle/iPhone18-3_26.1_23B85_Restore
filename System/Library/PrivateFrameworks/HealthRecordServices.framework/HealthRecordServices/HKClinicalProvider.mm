@@ -1,10 +1,10 @@
 @interface HKClinicalProvider
 - (BOOL)isSupported;
 - (HKClinicalProvider)init;
-- (HKClinicalProvider)initWithCoder:(id)a3;
-- (HKClinicalProvider)initWithExternalID:(id)a3 title:(id)a4 subtitle:(id)a5 location:(id)a6 informationURL:(id)a7 brand:(id)a8 gateways:(id)a9;
+- (HKClinicalProvider)initWithCoder:(id)coder;
+- (HKClinicalProvider)initWithExternalID:(id)d title:(id)title subtitle:(id)subtitle location:(id)location informationURL:(id)l brand:(id)brand gateways:(id)gateways;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalProvider
@@ -19,47 +19,47 @@
   return 0;
 }
 
-- (HKClinicalProvider)initWithExternalID:(id)a3 title:(id)a4 subtitle:(id)a5 location:(id)a6 informationURL:(id)a7 brand:(id)a8 gateways:(id)a9
+- (HKClinicalProvider)initWithExternalID:(id)d title:(id)title subtitle:(id)subtitle location:(id)location informationURL:(id)l brand:(id)brand gateways:(id)gateways
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  dCopy = d;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  locationCopy = location;
+  lCopy = l;
+  brandCopy = brand;
+  gatewaysCopy = gateways;
   v38.receiver = self;
   v38.super_class = HKClinicalProvider;
   v22 = [(HKClinicalProvider *)&v38 init];
   if (v22)
   {
-    v23 = [v15 copy];
+    v23 = [dCopy copy];
     externalID = v22->_externalID;
     v22->_externalID = v23;
 
-    v25 = [v16 copy];
+    v25 = [titleCopy copy];
     title = v22->_title;
     v22->_title = v25;
 
-    v27 = [v17 copy];
+    v27 = [subtitleCopy copy];
     subtitle = v22->_subtitle;
     v22->_subtitle = v27;
 
-    v29 = [v18 copy];
+    v29 = [locationCopy copy];
     location = v22->_location;
     v22->_location = v29;
 
-    v31 = [v19 copy];
+    v31 = [lCopy copy];
     informationURL = v22->_informationURL;
     v22->_informationURL = v31;
 
-    v33 = [v20 copy];
+    v33 = [brandCopy copy];
     brand = v22->_brand;
     v22->_brand = v33;
 
-    if (v21)
+    if (gatewaysCopy)
     {
-      v35 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v21 copyItems:1];
+      v35 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:gatewaysCopy copyItems:1];
       gateways = v22->_gateways;
       v22->_gateways = v35;
     }
@@ -72,54 +72,54 @@
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = objc_opt_class();
-  v5 = [(HKClinicalProvider *)self title];
-  v6 = [(HKClinicalProvider *)self subtitle];
-  v7 = [(HKClinicalProvider *)self externalID];
-  v8 = [(HKClinicalProvider *)self gateways];
-  v9 = [v3 initWithFormat:@"<%@:%p; title: %@; subtitle: %@; external-id: %@; gateway-count: %ld;>", v4, self, v5, v6, v7, objc_msgSend(v8, "count")];
+  title = [(HKClinicalProvider *)self title];
+  subtitle = [(HKClinicalProvider *)self subtitle];
+  externalID = [(HKClinicalProvider *)self externalID];
+  gateways = [(HKClinicalProvider *)self gateways];
+  v9 = [v3 initWithFormat:@"<%@:%p; title: %@; subtitle: %@; external-id: %@; gateway-count: %ld;>", v4, self, title, subtitle, externalID, objc_msgSend(gateways, "count")];
 
   return v9;
 }
 
 - (BOOL)isSupported
 {
-  v2 = [(HKClinicalProvider *)self gateways];
-  v3 = [v2 count] != 0;
+  gateways = [(HKClinicalProvider *)self gateways];
+  v3 = [gateways count] != 0;
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HKClinicalProvider *)self brand];
-  [v4 encodeObject:v5 forKey:@"brand"];
+  coderCopy = coder;
+  brand = [(HKClinicalProvider *)self brand];
+  [coderCopy encodeObject:brand forKey:@"brand"];
 
-  v6 = [(HKClinicalProvider *)self externalID];
-  [v4 encodeObject:v6 forKey:@"externalID"];
+  externalID = [(HKClinicalProvider *)self externalID];
+  [coderCopy encodeObject:externalID forKey:@"externalID"];
 
-  v7 = [(HKClinicalProvider *)self gateways];
-  [v4 encodeObject:v7 forKey:@"gateways"];
+  gateways = [(HKClinicalProvider *)self gateways];
+  [coderCopy encodeObject:gateways forKey:@"gateways"];
 
-  v8 = [(HKClinicalProvider *)self informationURL];
-  [v4 encodeObject:v8 forKey:@"infoURL"];
+  informationURL = [(HKClinicalProvider *)self informationURL];
+  [coderCopy encodeObject:informationURL forKey:@"infoURL"];
 
-  v9 = [(HKClinicalProvider *)self title];
-  [v4 encodeObject:v9 forKey:@"title"];
+  title = [(HKClinicalProvider *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v10 = [(HKClinicalProvider *)self subtitle];
-  [v4 encodeObject:v10 forKey:@"subtitle"];
+  subtitle = [(HKClinicalProvider *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"subtitle"];
 
-  v11 = [(HKClinicalProvider *)self location];
-  [v4 encodeObject:v11 forKey:@"location"];
+  location = [(HKClinicalProvider *)self location];
+  [coderCopy encodeObject:location forKey:@"location"];
 }
 
-- (HKClinicalProvider)initWithCoder:(id)a3
+- (HKClinicalProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
   v8 = v7;
   if (v6)
   {
@@ -133,23 +133,23 @@
 
   if (v9)
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v15 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
   else
   {
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"infoURL"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brand"];
-    v14 = [v4 decodeObjectOfClasses:v5 forKey:@"gateways"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"infoURL"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brand"];
+    v14 = [coderCopy decodeObjectOfClasses:v5 forKey:@"gateways"];
     self = [(HKClinicalProvider *)self initWithExternalID:v6 title:v8 subtitle:v10 location:v11 informationURL:v12 brand:v13 gateways:v14];
 
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 @end

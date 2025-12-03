@@ -1,28 +1,28 @@
 @interface CastleEmailAliasUpdateResult
-- (CastleEmailAliasUpdateResult)initWithReceiveEmailAliasAddresses:(id)a3 emailAddresses:(id)a4 defaultEmailAddress:(id)a5 entityTag:(id)a6 isSuccess:(BOOL)a7 notModified:(BOOL)a8 accountNeedsToUpdateProperties:(BOOL)a9;
+- (CastleEmailAliasUpdateResult)initWithReceiveEmailAliasAddresses:(id)addresses emailAddresses:(id)emailAddresses defaultEmailAddress:(id)address entityTag:(id)tag isSuccess:(BOOL)success notModified:(BOOL)modified accountNeedsToUpdateProperties:(BOOL)properties;
 @end
 
 @implementation CastleEmailAliasUpdateResult
 
-- (CastleEmailAliasUpdateResult)initWithReceiveEmailAliasAddresses:(id)a3 emailAddresses:(id)a4 defaultEmailAddress:(id)a5 entityTag:(id)a6 isSuccess:(BOOL)a7 notModified:(BOOL)a8 accountNeedsToUpdateProperties:(BOOL)a9
+- (CastleEmailAliasUpdateResult)initWithReceiveEmailAliasAddresses:(id)addresses emailAddresses:(id)emailAddresses defaultEmailAddress:(id)address entityTag:(id)tag isSuccess:(BOOL)success notModified:(BOOL)modified accountNeedsToUpdateProperties:(BOOL)properties
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v22 = a6;
+  addressesCopy = addresses;
+  emailAddressesCopy = emailAddresses;
+  addressCopy = address;
+  tagCopy = tag;
   v23.receiver = self;
   v23.super_class = CastleEmailAliasUpdateResult;
   v19 = [(CastleEmailAliasUpdateResult *)&v23 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_receiveEmailAliasAddresses, a3);
-    objc_storeStrong(&v20->_emailAddresses, a4);
-    objc_storeStrong(&v20->_defaultEmailAddress, a5);
-    objc_storeStrong(&v20->_entityTag, a6);
-    v20->_isSuccess = a7;
-    v20->_notModified = a8;
-    v20->_accountNeedsToUpdateProperties = a9;
+    objc_storeStrong(&v19->_receiveEmailAliasAddresses, addresses);
+    objc_storeStrong(&v20->_emailAddresses, emailAddresses);
+    objc_storeStrong(&v20->_defaultEmailAddress, address);
+    objc_storeStrong(&v20->_entityTag, tag);
+    v20->_isSuccess = success;
+    v20->_notModified = modified;
+    v20->_accountNeedsToUpdateProperties = properties;
   }
 
   return v20;

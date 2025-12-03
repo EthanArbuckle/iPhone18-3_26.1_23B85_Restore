@@ -1,14 +1,14 @@
 @interface CACAXNotificationObserver
-- (CACAXNotificationObserver)initWithNotifications:(id)a3;
+- (CACAXNotificationObserver)initWithNotifications:(id)notifications;
 - (CACAXNotificationObserverDelegate)delegate;
-- (void)_didObserveNotification:(int)a3 notificationData:(void *)a4;
+- (void)_didObserveNotification:(int)notification notificationData:(void *)data;
 @end
 
 @implementation CACAXNotificationObserver
 
-- (CACAXNotificationObserver)initWithNotifications:(id)a3
+- (CACAXNotificationObserver)initWithNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   v11.receiver = self;
   v11.super_class = CACAXNotificationObserver;
   v5 = [(CACAXNotificationObserver *)&v11 init];
@@ -20,7 +20,7 @@
     v8[2] = __51__CACAXNotificationObserver_initWithNotifications___block_invoke;
     v8[3] = &unk_279CEB4C0;
     v9 = v5;
-    v10 = v4;
+    v10 = notificationsCopy;
     dispatch_async(MEMORY[0x277D85CD0], v8);
   }
 
@@ -111,11 +111,11 @@ void __51__CACAXNotificationObserver_initWithNotifications___block_invoke(uint64
 LABEL_4:
 }
 
-- (void)_didObserveNotification:(int)a3 notificationData:(void *)a4
+- (void)_didObserveNotification:(int)notification notificationData:(void *)data
 {
-  v5 = *&a3;
-  v7 = [(CACAXNotificationObserver *)self delegate];
-  [v7 observer:self didObserveNotification:v5 notificationData:a4];
+  v5 = *&notification;
+  delegate = [(CACAXNotificationObserver *)self delegate];
+  [delegate observer:self didObserveNotification:v5 notificationData:data];
 }
 
 - (CACAXNotificationObserverDelegate)delegate

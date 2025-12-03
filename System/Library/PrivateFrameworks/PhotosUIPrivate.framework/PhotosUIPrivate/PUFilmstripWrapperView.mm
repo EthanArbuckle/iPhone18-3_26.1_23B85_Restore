@@ -1,14 +1,14 @@
 @interface PUFilmstripWrapperView
 - (CGRect)visibleRect;
 - (CGSize)expandedSize;
-- (PUFilmstripWrapperView)initWithFrame:(CGRect)a3;
+- (PUFilmstripWrapperView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setAnimating:(BOOL)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setExpandedSize:(CGSize)a3;
-- (void)setFilmstripView:(id)a3 leavingPreviousViewInPlace:(BOOL)a4;
-- (void)setVisibleRect:(CGRect)a3;
+- (void)setAnimating:(BOOL)animating;
+- (void)setBackgroundView:(id)view;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setExpandedSize:(CGSize)size;
+- (void)setFilmstripView:(id)view leavingPreviousViewInPlace:(BOOL)place;
+- (void)setVisibleRect:(CGRect)rect;
 @end
 
 @implementation PUFilmstripWrapperView
@@ -35,39 +35,39 @@
   return result;
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   backgroundView = self->_backgroundView;
-  if (backgroundView != v5)
+  if (backgroundView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIView *)backgroundView removeFromSuperview];
-    objc_storeStrong(&self->_backgroundView, a3);
-    v7 = [(PUFilmstripWrapperView *)self clippingView];
-    [v7 addSubview:v8];
+    objc_storeStrong(&self->_backgroundView, view);
+    clippingView = [(PUFilmstripWrapperView *)self clippingView];
+    [clippingView addSubview:v8];
 
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](backgroundView, v5);
+  MEMORY[0x1EEE66BB8](backgroundView, viewCopy);
 }
 
-- (void)setFilmstripView:(id)a3 leavingPreviousViewInPlace:(BOOL)a4
+- (void)setFilmstripView:(id)view leavingPreviousViewInPlace:(BOOL)place
 {
-  v7 = a3;
+  viewCopy = view;
   filmstripView = self->_filmstripView;
-  if (filmstripView != v7)
+  if (filmstripView != viewCopy)
   {
-    v23 = v7;
-    if (!a4)
+    v23 = viewCopy;
+    if (!place)
     {
       [(PUFilmstripView *)filmstripView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_filmstripView, a3);
-    v9 = [(PUFilmstripWrapperView *)self clippingView];
-    [v9 bounds];
+    objc_storeStrong(&self->_filmstripView, view);
+    clippingView = [(PUFilmstripWrapperView *)self clippingView];
+    [clippingView bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -83,15 +83,15 @@
     v26 = CGRectInset(v25, v19, v21);
     [(PUFilmstripView *)v23 setFrame:v26.origin.x, v26.origin.y, v26.size.width, v26.size.height];
 
-    v22 = [(PUFilmstripWrapperView *)self clippingView];
-    [v22 addSubview:v23];
+    clippingView2 = [(PUFilmstripWrapperView *)self clippingView];
+    [clippingView2 addSubview:v23];
 
     [(PUFilmstripWrapperView *)self setNeedsLayout];
     filmstripView = [(PUFilmstripWrapperView *)self layoutIfNeeded];
-    v7 = v23;
+    viewCopy = v23;
   }
 
-  MEMORY[0x1EEE66BB8](filmstripView, v7);
+  MEMORY[0x1EEE66BB8](filmstripView, viewCopy);
 }
 
 - (void)layoutSubviews
@@ -104,13 +104,13 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PUFilmstripWrapperView *)self filmstripView];
-  v12 = [(PUFilmstripWrapperView *)self clippingView];
-  [v11 desiredClippingOutset];
+  filmstripView = [(PUFilmstripWrapperView *)self filmstripView];
+  clippingView = [(PUFilmstripWrapperView *)self clippingView];
+  [filmstripView desiredClippingOutset];
   v14 = v13;
-  v15 = [(PUFilmstripWrapperView *)self isExpanded];
+  isExpanded = [(PUFilmstripWrapperView *)self isExpanded];
   anchoredLeft = self->_anchoredLeft;
-  if (v15)
+  if (isExpanded)
   {
     self->_anchoredLeft = 0;
 
@@ -130,7 +130,7 @@
     v60.size.width = v8;
     v60.size.height = v10;
     v61 = CGRectInset(v60, v14 * -2.0, v14 * -2.0);
-    [v12 setFrame:{v61.origin.x, v61.origin.y, v61.size.width, v61.size.height}];
+    [clippingView setFrame:{v61.origin.x, v61.origin.y, v61.size.width, v61.size.height}];
     v19 = 0.0;
     v20 = v10;
     v21 = 0.0;
@@ -140,16 +140,16 @@
   {
     if (!anchoredLeft)
     {
-      [v11 visibleRect];
+      [filmstripView visibleRect];
       v58.x = 0.0;
       v58.y = 0.0;
       v22 = CGRectContainsPoint(v62, v58);
-      [v11 visibleRect];
+      [filmstripView visibleRect];
       v24 = v23;
       v26 = v25;
       v28 = v27;
       recta = v29;
-      [v11 bounds];
+      [filmstripView bounds];
       v59.x = CGRectGetMaxX(v63) + -1.0;
       v59.y = 0.0;
       v64.origin.x = v24;
@@ -176,37 +176,37 @@
     v65.size.width = v8;
     v65.size.height = v10;
     v66 = CGRectInset(v65, 0.0, v14 * -2.0);
-    [v12 setFrame:{v66.origin.x, v66.origin.y, v66.size.width, v66.size.height}];
-    v33 = [(NSNumber *)self->_anchoredLeft BOOLValue];
-    [v11 frame];
-    [(PUFilmstripWrapperView *)self convertRect:v12 fromView:?];
+    [clippingView setFrame:{v66.origin.x, v66.origin.y, v66.size.width, v66.size.height}];
+    bOOLValue = [(NSNumber *)self->_anchoredLeft BOOLValue];
+    [filmstripView frame];
+    [(PUFilmstripWrapperView *)self convertRect:clippingView fromView:?];
     v18 = v34;
     v21 = v8 - v34;
-    if (v33)
+    if (bOOLValue)
     {
       v21 = 0.0;
     }
   }
 
-  [v12 convertRect:self fromView:{v21, v19, v18, v20}];
-  [v11 setFrame:?];
-  [v12 convertRect:self fromView:{v4, v6, v8, v10}];
+  [clippingView convertRect:self fromView:{v21, v19, v18, v20}];
+  [filmstripView setFrame:?];
+  [clippingView convertRect:self fromView:{v4, v6, v8, v10}];
   v36 = v35;
   v38 = v37;
   v40 = v39;
   v42 = v41;
-  v43 = [(PUFilmstripWrapperView *)self backgroundView];
-  [v43 setFrame:{v36, v38, v40, v42}];
+  backgroundView = [(PUFilmstripWrapperView *)self backgroundView];
+  [backgroundView setFrame:{v36, v38, v40, v42}];
 
   [(PUFilmstripWrapperView *)self visibleRect];
-  [v11 convertRect:self fromView:?];
+  [filmstripView convertRect:self fromView:?];
   x = v44;
   y = v46;
   width = v48;
   height = v50;
   if ([(PUFilmstripWrapperView *)self isAnimating])
   {
-    [v11 visibleRect];
+    [filmstripView visibleRect];
     v69.origin.x = v52;
     v69.origin.y = v53;
     v69.size.width = v54;
@@ -222,35 +222,35 @@
     height = v68.size.height;
   }
 
-  [v11 setVisibleRect:{x, y, width, height}];
+  [filmstripView setVisibleRect:{x, y, width, height}];
 }
 
-- (void)setExpandedSize:(CGSize)a3
+- (void)setExpandedSize:(CGSize)size
 {
-  if (self->_expandedSize.width != a3.width || self->_expandedSize.height != a3.height)
+  if (self->_expandedSize.width != size.width || self->_expandedSize.height != size.height)
   {
-    self->_expandedSize = a3;
+    self->_expandedSize = size;
     [(PUFilmstripWrapperView *)self setNeedsLayout];
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (self->_isExpanded != a3)
+  if (self->_isExpanded != expanded)
   {
-    self->_isExpanded = a3;
+    self->_isExpanded = expanded;
     [(PUFilmstripWrapperView *)self setNeedsLayout];
   }
 }
 
-- (void)setVisibleRect:(CGRect)a3
+- (void)setVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_visibleRect = &self->_visibleRect;
-  if (!CGRectEqualToRect(self->_visibleRect, a3))
+  if (!CGRectEqualToRect(self->_visibleRect, rect))
   {
     p_visibleRect->origin.x = x;
     p_visibleRect->origin.y = y;
@@ -261,20 +261,20 @@
   }
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  if (self->_isAnimating != a3)
+  if (self->_isAnimating != animating)
   {
-    self->_isAnimating = a3;
+    self->_isAnimating = animating;
     [(PUFilmstripWrapperView *)self setNeedsLayout];
   }
 }
 
-- (PUFilmstripWrapperView)initWithFrame:(CGRect)a3
+- (PUFilmstripWrapperView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PUFilmstripWrapperView;
-  v3 = [(PUFilmstripWrapperView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUFilmstripWrapperView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -283,8 +283,8 @@
     clippingView = v3->_clippingView;
     v3->_clippingView = v5;
 
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v3->_clippingView setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v3->_clippingView setBackgroundColor:clearColor];
 
     [(UIView *)v3->_clippingView setClipsToBounds:1];
     [(UIView *)v3->_clippingView setAutoresizingMask:18];

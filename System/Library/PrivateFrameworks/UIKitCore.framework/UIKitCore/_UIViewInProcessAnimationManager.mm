@@ -1,23 +1,23 @@
 @interface _UIViewInProcessAnimationManager
-+ (uint64_t)_advanceWithTime:(double)a1;
++ (uint64_t)_advanceWithTime:(double)time;
 + (uint64_t)_applicationBecameActive;
 + (uint64_t)_applicationDidEnterBackground;
 + (uint64_t)_cancelAllAnimationsImmediately;
-+ (uint64_t)_setCurrentMediaTime:(double)a1;
-+ (void)_setExternalAnimationDriver:(id)a3;
++ (uint64_t)_setCurrentMediaTime:(double)time;
++ (void)_setExternalAnimationDriver:(id)driver;
 - (_UIViewInProcessAnimationManager)init;
 @end
 
 @implementation _UIViewInProcessAnimationManager
 
-+ (void)_setExternalAnimationDriver:(id)a3
++ (void)_setExternalAnimationDriver:(id)driver
 {
   v4 = 0;
-  if (a3)
+  if (driver)
   {
     type metadata accessor for ManagerDriverShimPresenter();
     v4 = swift_allocObject();
-    *(v4 + 16) = a3;
+    *(v4 + 16) = driver;
     v5 = &off_1EFAE6850;
   }
 
@@ -98,7 +98,7 @@ LABEL_10:
   }
 }
 
-+ (uint64_t)_advanceWithTime:(double)a1
++ (uint64_t)_advanceWithTime:(double)time
 {
   if (qword_1ED48EFD0 != -1)
   {
@@ -161,9 +161,9 @@ LABEL_22:
     *(v16 + 24) = 0;
     *(v16 + 32) = signpost_c2_entryLock_start;
     *(v16 + 40) = 0;
-    *(v16 + 48) = a1;
+    *(v16 + 48) = time;
     *(v16 + 56) = 0;
-    *(v16 + 64) = a1;
+    *(v16 + 64) = time;
     *(v16 + 72) = signpost_c2_entryLock_start;
     *(v16 + 80) = 0;
     v17 = swift_allocObject();
@@ -242,7 +242,7 @@ LABEL_22:
   }
 }
 
-+ (uint64_t)_setCurrentMediaTime:(double)a1
++ (uint64_t)_setCurrentMediaTime:(double)time
 {
   if (qword_1ED48EFD0 != -1)
   {
@@ -271,7 +271,7 @@ LABEL_14:
 LABEL_10:
       v11 = __clz(__rbit64(v8));
       v8 &= v8 - 1;
-      *(*(*(v4 + 56) + ((v10 << 9) | (8 * v11))) + 240) = a1;
+      *(*(*(v4 + 56) + ((v10 << 9) | (8 * v11))) + 240) = time;
       if (!v8)
       {
         goto LABEL_6;

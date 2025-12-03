@@ -1,26 +1,26 @@
 @interface ETHorizontalColorPicker
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFitsColumns:(unint64_t)a3;
-- (ETHorizontalColorPicker)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFitsColumns:(unint64_t)columns;
+- (ETHorizontalColorPicker)initWithFrame:(CGRect)frame;
 - (ETHorizontalColorPickerDelegate)presentationDelegate;
-- (void)_getNumCirclesPerColumn:(unint64_t *)a3 numExtraCircles:(unint64_t *)a4 horizontalSpacing:(double *)a5 verticalSpacing:(double *)a6 forNumRows:(unint64_t)a7 andNumColumns:(unint64_t)a8;
-- (void)_getNumRows:(unint64_t *)a3 numColumns:(unint64_t *)a4 numCirclesPerColumn:(unint64_t *)a5 numExtraCircles:(unint64_t *)a6 horizontalSpacing:(double *)a7 verticalSpacing:(double *)a8 forSize:(CGSize)a9;
-- (void)_getWidthNeeded:(double *)a3 heightNeeded:(double *)a4 numColumns:(unint64_t)a5 numCirclesPerColumn:(unint64_t)a6 numExtraCircles:(unint64_t)a7 horizontalSpacing:(unint64_t)a8 verticalSpacing:(unint64_t)a9;
-- (void)colorWheel:(id)a3 didPickColor:(id)a4;
-- (void)colorWheel:(id)a3 pickerColorChanged:(id)a4;
+- (void)_getNumCirclesPerColumn:(unint64_t *)column numExtraCircles:(unint64_t *)circles horizontalSpacing:(double *)spacing verticalSpacing:(double *)verticalSpacing forNumRows:(unint64_t)rows andNumColumns:(unint64_t)columns;
+- (void)_getNumRows:(unint64_t *)rows numColumns:(unint64_t *)columns numCirclesPerColumn:(unint64_t *)column numExtraCircles:(unint64_t *)circles horizontalSpacing:(double *)spacing verticalSpacing:(double *)verticalSpacing forSize:(CGSize)size;
+- (void)_getWidthNeeded:(double *)needed heightNeeded:(double *)heightNeeded numColumns:(unint64_t)columns numCirclesPerColumn:(unint64_t)column numExtraCircles:(unint64_t)circles horizontalSpacing:(unint64_t)spacing verticalSpacing:(unint64_t)verticalSpacing;
+- (void)colorWheel:(id)wheel didPickColor:(id)color;
+- (void)colorWheel:(id)wheel pickerColorChanged:(id)changed;
 - (void)layoutSubviews;
-- (void)setDimmed:(BOOL)a3 excludeSelectedColor:(BOOL)a4 animated:(BOOL)a5;
-- (void)setTransform:(CGAffineTransform *)a3 excludeSelectedColor:(BOOL)a4;
+- (void)setDimmed:(BOOL)dimmed excludeSelectedColor:(BOOL)color animated:(BOOL)animated;
+- (void)setTransform:(CGAffineTransform *)transform excludeSelectedColor:(BOOL)color;
 - (void)showColorWheel;
 @end
 
 @implementation ETHorizontalColorPicker
 
-- (ETHorizontalColorPicker)initWithFrame:(CGRect)a3
+- (ETHorizontalColorPicker)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = ETHorizontalColorPicker;
-  v3 = [(ETHorizontalColorPicker *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ETHorizontalColorPicker *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -29,8 +29,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(ETHorizontalColorPicker *)v4 paletteCircles];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    paletteCircles = [(ETHorizontalColorPicker *)v4 paletteCircles];
+    v6 = [paletteCircles countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v6)
     {
       v8 = v6;
@@ -42,7 +42,7 @@
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(paletteCircles);
           }
 
           LODWORD(v7) = -1093874483;
@@ -51,7 +51,7 @@
         }
 
         while (v8 != v10);
-        v8 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v8 = [paletteCircles countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v8);
@@ -75,8 +75,8 @@
   [(ETHorizontalColorPicker *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(ETHorizontalColorPicker *)self paletteCircles];
-  v8 = [v7 count];
+  paletteCircles = [(ETHorizontalColorPicker *)self paletteCircles];
+  v8 = [paletteCircles count];
   [(ETHorizontalColorPicker *)self colorCircleDiameter];
   v10 = v9;
   v28 = 0;
@@ -118,7 +118,7 @@
         do
         {
           v19 = v13;
-          v13 = [v7 objectAtIndexedSubscript:v14];
+          v13 = [paletteCircles objectAtIndexedSubscript:v14];
 
           v20 = v25;
           v21 = v15 + v18 * (v10 + v24);
@@ -144,19 +144,19 @@
   }
 }
 
-- (CGSize)sizeThatFitsColumns:(unint64_t)a3
+- (CGSize)sizeThatFitsColumns:(unint64_t)columns
 {
-  v5 = [(ETHorizontalColorPicker *)self paletteCircles];
-  v6 = [v5 count];
+  paletteCircles = [(ETHorizontalColorPicker *)self paletteCircles];
+  v6 = [paletteCircles count];
 
   v14 = 0;
   v12 = 0.0;
   v13 = 0;
   v11 = 0.0;
-  [(ETHorizontalColorPicker *)self _getNumCirclesPerColumn:&v14 numExtraCircles:&v13 horizontalSpacing:&v12 verticalSpacing:&v11 forNumRows:vcvtps_u32_f32(v6 / a3) andNumColumns:a3];
+  [(ETHorizontalColorPicker *)self _getNumCirclesPerColumn:&v14 numExtraCircles:&v13 horizontalSpacing:&v12 verticalSpacing:&v11 forNumRows:vcvtps_u32_f32(v6 / columns) andNumColumns:columns];
   v9 = 0.0;
   v10 = 0.0;
-  [(ETHorizontalColorPicker *)self _getWidthNeeded:&v10 heightNeeded:&v9 numColumns:a3 numCirclesPerColumn:v14 numExtraCircles:v13 horizontalSpacing:v12 verticalSpacing:v11];
+  [(ETHorizontalColorPicker *)self _getWidthNeeded:&v10 heightNeeded:&v9 numColumns:columns numCirclesPerColumn:v14 numExtraCircles:v13 horizontalSpacing:v12 verticalSpacing:v11];
   v8 = v9;
   v7 = v10;
   result.height = v8;
@@ -164,7 +164,7 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v12 = 0;
   v13 = 0;
@@ -172,7 +172,7 @@
   v9 = 0.0;
   v10 = 0;
   v8 = 0.0;
-  [(ETHorizontalColorPicker *)self _getNumRows:&v13 numColumns:&v12 numCirclesPerColumn:&v11 numExtraCircles:&v10 horizontalSpacing:&v9 verticalSpacing:&v8 forSize:a3.width, a3.height];
+  [(ETHorizontalColorPicker *)self _getNumRows:&v13 numColumns:&v12 numCirclesPerColumn:&v11 numExtraCircles:&v10 horizontalSpacing:&v9 verticalSpacing:&v8 forSize:fits.width, fits.height];
   v6 = 0.0;
   v7 = 0.0;
   [(ETHorizontalColorPicker *)self _getWidthNeeded:&v7 heightNeeded:&v6 numColumns:v12 numCirclesPerColumn:v11 numExtraCircles:v10 horizontalSpacing:v9 verticalSpacing:v8];
@@ -183,31 +183,31 @@
   return result;
 }
 
-- (void)_getWidthNeeded:(double *)a3 heightNeeded:(double *)a4 numColumns:(unint64_t)a5 numCirclesPerColumn:(unint64_t)a6 numExtraCircles:(unint64_t)a7 horizontalSpacing:(unint64_t)a8 verticalSpacing:(unint64_t)a9
+- (void)_getWidthNeeded:(double *)needed heightNeeded:(double *)heightNeeded numColumns:(unint64_t)columns numCirclesPerColumn:(unint64_t)column numExtraCircles:(unint64_t)circles horizontalSpacing:(unint64_t)spacing verticalSpacing:(unint64_t)verticalSpacing
 {
   [(ETHorizontalColorPicker *)self colorCircleDiameter];
-  *a3 = ((a5 - 1) * a8) + a5 * v15;
-  v16 = ((a6 - 1) * a9) + a6 * v15;
-  *a4 = v16;
-  if (a7)
+  *needed = ((columns - 1) * spacing) + columns * v15;
+  v16 = ((column - 1) * verticalSpacing) + column * v15;
+  *heightNeeded = v16;
+  if (circles)
   {
-    v17 = a9 + v15 * 2.0;
-    v18 = v15 + a9;
-    if (a7 != 1)
+    v17 = verticalSpacing + v15 * 2.0;
+    v18 = v15 + verticalSpacing;
+    if (circles != 1)
     {
       v18 = v17;
     }
 
-    *a4 = v16 + v18;
+    *heightNeeded = v16 + v18;
   }
 }
 
-- (void)_getNumRows:(unint64_t *)a3 numColumns:(unint64_t *)a4 numCirclesPerColumn:(unint64_t *)a5 numExtraCircles:(unint64_t *)a6 horizontalSpacing:(double *)a7 verticalSpacing:(double *)a8 forSize:(CGSize)a9
+- (void)_getNumRows:(unint64_t *)rows numColumns:(unint64_t *)columns numCirclesPerColumn:(unint64_t *)column numExtraCircles:(unint64_t *)circles horizontalSpacing:(double *)spacing verticalSpacing:(double *)verticalSpacing forSize:(CGSize)size
 {
-  height = a9.height;
-  width = a9.width;
-  v25 = [(ETHorizontalColorPicker *)self paletteCircles];
-  v18 = [v25 count];
+  height = size.height;
+  width = size.width;
+  paletteCircles = [(ETHorizontalColorPicker *)self paletteCircles];
+  v18 = [paletteCircles count];
   [(ETHorizontalColorPicker *)self colorCircleDiameter];
   v20 = v19;
   v21 = floor((height + v19) / (v20 + v20));
@@ -216,20 +216,20 @@
     v21 = 1.0;
   }
 
-  *a3 = v21;
-  *a4 = vcvtps_u32_f32(v18 / v21);
-  [(ETHorizontalColorPicker *)self _getNumCirclesPerColumn:a5 numExtraCircles:a6 horizontalSpacing:a7 verticalSpacing:a8 forNumRows:*a3 andNumColumns:?];
-  v22 = [(ETHorizontalColorPicker *)self colorCircleSize];
-  if (v22 != &dword_0 + 3 && v22)
+  *rows = v21;
+  *columns = vcvtps_u32_f32(v18 / v21);
+  [(ETHorizontalColorPicker *)self _getNumCirclesPerColumn:column numExtraCircles:circles horizontalSpacing:spacing verticalSpacing:verticalSpacing forNumRows:*rows andNumColumns:?];
+  colorCircleSize = [(ETHorizontalColorPicker *)self colorCircleSize];
+  if (colorCircleSize != &dword_0 + 3 && colorCircleSize)
   {
     [(ETHorizontalColorPicker *)self colorCircleHorizontalSpacing];
-    v23 = v25;
+    v23 = paletteCircles;
   }
 
   else
   {
-    v23 = v25;
-    if (*a3 != 1)
+    v23 = paletteCircles;
+    if (*rows != 1)
     {
       goto LABEL_11;
     }
@@ -241,21 +241,21 @@
     }
   }
 
-  *a7 = v24;
+  *spacing = v24;
 LABEL_11:
 }
 
-- (void)_getNumCirclesPerColumn:(unint64_t *)a3 numExtraCircles:(unint64_t *)a4 horizontalSpacing:(double *)a5 verticalSpacing:(double *)a6 forNumRows:(unint64_t)a7 andNumColumns:(unint64_t)a8
+- (void)_getNumCirclesPerColumn:(unint64_t *)column numExtraCircles:(unint64_t *)circles horizontalSpacing:(double *)spacing verticalSpacing:(double *)verticalSpacing forNumRows:(unint64_t)rows andNumColumns:(unint64_t)columns
 {
-  v15 = [(ETHorizontalColorPicker *)self paletteCircles];
-  v16 = [v15 count];
+  paletteCircles = [(ETHorizontalColorPicker *)self paletteCircles];
+  v16 = [paletteCircles count];
 
   [(ETHorizontalColorPicker *)self colorCircleDiameter];
   v18 = v17;
-  *a3 = v16 / a8;
-  *a4 = v16 % a8;
-  v19 = [(ETHorizontalColorPicker *)self colorCircleSize];
-  if ([(ETHorizontalColorPicker *)self shouldCompressSpacingBetweenColumns]|| v19 != &dword_0 + 3 && v19)
+  *column = v16 / columns;
+  *circles = v16 % columns;
+  colorCircleSize = [(ETHorizontalColorPicker *)self colorCircleSize];
+  if ([(ETHorizontalColorPicker *)self shouldCompressSpacingBetweenColumns]|| colorCircleSize != &dword_0 + 3 && colorCircleSize)
   {
     [(ETHorizontalColorPicker *)self colorCircleHorizontalSpacing];
   }
@@ -263,27 +263,27 @@ LABEL_11:
   else
   {
     v20 = v18 * 0.5;
-    if (a7 == 1)
+    if (rows == 1)
     {
       v20 = v18;
     }
   }
 
-  *a5 = v20;
-  *a6 = v18;
+  *spacing = v20;
+  *verticalSpacing = v18;
 }
 
-- (void)setDimmed:(BOOL)a3 excludeSelectedColor:(BOOL)a4 animated:(BOOL)a5
+- (void)setDimmed:(BOOL)dimmed excludeSelectedColor:(BOOL)color animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a3;
-  if ([(ETHorizontalColorPicker *)self isDimmed]!= a3)
+  animatedCopy = animated;
+  dimmedCopy = dimmed;
+  if ([(ETHorizontalColorPicker *)self isDimmed]!= dimmed)
   {
     v13.receiver = self;
     v13.super_class = ETHorizontalColorPicker;
-    [(ETHorizontalColorPicker *)&v13 setDimmed:v7];
+    [(ETHorizontalColorPicker *)&v13 setDimmed:dimmedCopy];
     v9 = 1.0;
-    if (v7)
+    if (dimmedCopy)
     {
       v9 = 0.1;
     }
@@ -294,27 +294,27 @@ LABEL_11:
     v11[2] = sub_99D8;
     v11[3] = &unk_24A00;
     v11[4] = self;
-    if (v5)
+    if (animatedCopy)
     {
       v10 = 0.25;
     }
 
-    v12 = a4;
+    colorCopy = color;
     *&v11[5] = v9;
     [UIView animateWithDuration:v11 animations:0 completion:v10];
-    [(ETHorizontalColorPicker *)self setUserInteractionEnabled:v7 ^ 1];
+    [(ETHorizontalColorPicker *)self setUserInteractionEnabled:dimmedCopy ^ 1];
   }
 }
 
-- (void)setTransform:(CGAffineTransform *)a3 excludeSelectedColor:(BOOL)a4
+- (void)setTransform:(CGAffineTransform *)transform excludeSelectedColor:(BOOL)color
 {
-  v4 = a4;
+  colorCopy = color;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(ETHorizontalColorPicker *)self paletteCircles];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  paletteCircles = [(ETHorizontalColorPicker *)self paletteCircles];
+  v8 = [paletteCircles countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -326,16 +326,16 @@ LABEL_11:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(paletteCircles);
         }
 
         v12 = *(*(&v16 + 1) + 8 * v11);
-        if (!v4 || ([(ETHorizontalColorPicker *)self selectedCircle], v13 = objc_claimAutoreleasedReturnValue(), v13, v12 != v13))
+        if (!colorCopy || ([(ETHorizontalColorPicker *)self selectedCircle], v13 = objc_claimAutoreleasedReturnValue(), v13, v12 != v13))
         {
-          v14 = *&a3->c;
-          v15[0] = *&a3->a;
+          v14 = *&transform->c;
+          v15[0] = *&transform->a;
           v15[1] = v14;
-          v15[2] = *&a3->tx;
+          v15[2] = *&transform->tx;
           [v12 setTransform:v15];
         }
 
@@ -343,7 +343,7 @@ LABEL_11:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [paletteCircles countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -352,43 +352,43 @@ LABEL_11:
 
 - (void)showColorWheel
 {
-  v3 = [(ETHorizontalColorPicker *)self longPressRecognizer];
-  [v3 setEnabled:0];
+  longPressRecognizer = [(ETHorizontalColorPicker *)self longPressRecognizer];
+  [longPressRecognizer setEnabled:0];
 
   colorWheel = self->_colorWheel;
-  v5 = [(ETHorizontalColorPicker *)self selectedCircle];
-  [(ETTranscriptColorWheel *)colorWheel setHueForPaletteCircle:v5];
+  selectedCircle = [(ETHorizontalColorPicker *)self selectedCircle];
+  [(ETTranscriptColorWheel *)colorWheel setHueForPaletteCircle:selectedCircle];
 
-  v6 = [(ETHorizontalColorPicker *)self presentationDelegate];
-  [v6 colorPicker:self requestsPresentColorWheel:self->_colorWheel];
+  presentationDelegate = [(ETHorizontalColorPicker *)self presentationDelegate];
+  [presentationDelegate colorPicker:self requestsPresentColorWheel:self->_colorWheel];
 }
 
-- (void)colorWheel:(id)a3 didPickColor:(id)a4
+- (void)colorWheel:(id)wheel didPickColor:(id)color
 {
-  if (a4)
+  if (color)
   {
-    v5 = a4;
+    colorCopy = color;
     v6 = +[ETColorStore defaultStore];
-    v7 = [(ETHorizontalColorPicker *)self paletteCircles];
-    v8 = [(ETHorizontalColorPicker *)self selectedCircle];
-    [v6 saveColor:v5 forIndex:{objc_msgSend(v7, "indexOfObject:", v8)}];
+    paletteCircles = [(ETHorizontalColorPicker *)self paletteCircles];
+    selectedCircle = [(ETHorizontalColorPicker *)self selectedCircle];
+    [v6 saveColor:colorCopy forIndex:{objc_msgSend(paletteCircles, "indexOfObject:", selectedCircle)}];
   }
 
-  v9 = [(ETHorizontalColorPicker *)self delegate];
-  [v9 colorPickerSelectedColorDidChange:self];
+  delegate = [(ETHorizontalColorPicker *)self delegate];
+  [delegate colorPickerSelectedColorDidChange:self];
 
-  v10 = [(ETHorizontalColorPicker *)self longPressRecognizer];
-  [v10 setEnabled:1];
+  longPressRecognizer = [(ETHorizontalColorPicker *)self longPressRecognizer];
+  [longPressRecognizer setEnabled:1];
 
-  v11 = [(ETHorizontalColorPicker *)self presentationDelegate];
-  [v11 colorPicker:self requestsDismissColorWheel:self->_colorWheel];
+  presentationDelegate = [(ETHorizontalColorPicker *)self presentationDelegate];
+  [presentationDelegate colorPicker:self requestsDismissColorWheel:self->_colorWheel];
 }
 
-- (void)colorWheel:(id)a3 pickerColorChanged:(id)a4
+- (void)colorWheel:(id)wheel pickerColorChanged:(id)changed
 {
-  v5 = a4;
-  v6 = [(ETHorizontalColorPicker *)self selectedCircle];
-  [v6 setBackgroundColor:v5];
+  changedCopy = changed;
+  selectedCircle = [(ETHorizontalColorPicker *)self selectedCircle];
+  [selectedCircle setBackgroundColor:changedCopy];
 }
 
 - (ETHorizontalColorPickerDelegate)presentationDelegate

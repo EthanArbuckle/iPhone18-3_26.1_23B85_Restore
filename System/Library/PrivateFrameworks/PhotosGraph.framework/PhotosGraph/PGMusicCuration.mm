@@ -1,5 +1,5 @@
 @interface PGMusicCuration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSNumber)keySongArousal;
 - (NSNumber)keySongValence;
 - (NSString)description;
@@ -8,15 +8,15 @@
 - (NSString)keySongTitle;
 - (PGMusicCuration)init;
 - (id)jsonRepresentation;
-- (id)replaceBestMusicSuggestionsWithAdamIds:(id)a3;
-- (id)replaceFirstSongInBestSongSuggestionsWith:(id)a3;
+- (id)replaceBestMusicSuggestionsWithAdamIds:(id)ids;
+- (id)replaceFirstSongInBestSongSuggestionsWith:(id)with;
 @end
 
 @implementation PGMusicCuration
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   MusicCuration.description.getter();
 
   v3 = sub_22F740DF0();
@@ -26,7 +26,7 @@
 
 - (id)jsonRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   object = MusicCuration.jsonRepresentation()().value._object;
 
   if (object)
@@ -49,11 +49,11 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_22F741920();
     swift_unknownObjectRelease();
@@ -62,7 +62,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = MusicCuration.isEqual(_:)(v8);
@@ -136,7 +136,7 @@
 
 - (NSNumber)keySongArousal
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MusicCuration.keySongArousal.getter();
 
   return v3;
@@ -144,26 +144,26 @@
 
 - (NSNumber)keySongValence
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MusicCuration.keySongValence.getter();
 
   return v3;
 }
 
-- (id)replaceBestMusicSuggestionsWithAdamIds:(id)a3
+- (id)replaceBestMusicSuggestionsWithAdamIds:(id)ids
 {
   v4 = sub_22F741180();
-  v5 = self;
+  selfCopy = self;
   v6 = MusicCuration.replaceBestMusicSuggestions(adamIds:)(v4);
 
   return v6;
 }
 
-- (id)replaceFirstSongInBestSongSuggestionsWith:(id)a3
+- (id)replaceFirstSongInBestSongSuggestionsWith:(id)with
 {
   v4 = sub_22F740E20();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = MusicCuration.replaceFirstSongInBestSongSuggestions(with:)(v4, v6);
 
   return v8;

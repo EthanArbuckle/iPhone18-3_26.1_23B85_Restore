@@ -1,16 +1,16 @@
 @interface ML3SubscriptionImportOperation
-- (BOOL)_performDAAPImportWithTransaction:(id)a3;
+- (BOOL)_performDAAPImportWithTransaction:(id)transaction;
 - (void)main;
 @end
 
 @implementation ML3SubscriptionImportOperation
 
-- (BOOL)_performDAAPImportWithTransaction:(id)a3
+- (BOOL)_performDAAPImportWithTransaction:(id)transaction
 {
-  v4 = [a3 connection];
+  connection = [transaction connection];
   if (([(ML3SubscriptionImportOperation *)self isCancelled]& 1) == 0)
   {
-    v5 = [(ML3DAAPImportOperation *)self performImportOfSourceType:6 usingConnection:v4];
+    v5 = [(ML3DAAPImportOperation *)self performImportOfSourceType:6 usingConnection:connection];
     v6 = os_log_create("com.apple.amp.medialibrary", "Default");
     v7 = v6;
     if (v5)
@@ -49,24 +49,24 @@ LABEL_10:
 - (void)main
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = [(ML3ImportOperation *)self import];
-  v5 = [v4 trackData];
-  if (v5)
+  import = [(ML3ImportOperation *)self import];
+  trackData = [import trackData];
+  if (trackData)
   {
   }
 
   else
   {
-    v6 = [(ML3ImportOperation *)self import];
-    v7 = [v6 playlistData];
+    import2 = [(ML3ImportOperation *)self import];
+    playlistData = [import2 playlistData];
 
-    if (v7)
+    if (playlistData)
     {
       goto LABEL_5;
     }
 
-    v4 = [MEMORY[0x277CCA890] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"ML3SubscriptionImportOperation.mm" lineNumber:26 description:@"Attempted to start subscription import operation without DAAP payload data."];
+    import = [MEMORY[0x277CCA890] currentHandler];
+    [import handleFailureInMethod:a2 object:self file:@"ML3SubscriptionImportOperation.mm" lineNumber:26 description:@"Attempted to start subscription import operation without DAAP payload data."];
   }
 
 LABEL_5:
@@ -90,11 +90,11 @@ LABEL_5:
   v10 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(ML3SubscriptionImportOperation *)self isCancelled];
+    isCancelled = [(ML3SubscriptionImportOperation *)self isCancelled];
     v12 = *(v17 + 24);
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     *buf = 67109632;
-    v21 = v11;
+    v21 = isCancelled;
     v22 = 1024;
     v23 = v12;
     v24 = 2048;

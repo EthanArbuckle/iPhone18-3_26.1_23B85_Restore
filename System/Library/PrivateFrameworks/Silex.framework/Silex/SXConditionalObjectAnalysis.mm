@@ -1,20 +1,20 @@
 @interface SXConditionalObjectAnalysis
 - (SXConditionalObjectAnalysis)init;
-- (id)componentLayoutsUsingConditionType:(id)a3;
-- (id)componentStylesUsingConditionType:(id)a3;
-- (id)componentTextStylesUsingConditionType:(id)a3;
-- (id)componentsUsingConditionType:(id)a3;
-- (id)conditionTypesUsedByComponent:(id)a3;
-- (id)conditionTypesUsedByComponentLayout:(id)a3;
-- (id)conditionTypesUsedByComponentStyle:(id)a3;
-- (id)conditionTypesUsedByComponentTextStyle:(id)a3;
-- (id)conditionTypesUsedByTextStyle:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)objectsForKey:(id)a3 map:(id)a4;
-- (id)objectsForKeys:(id)a3 map:(id)a4;
-- (id)textStylesUsingConditionType:(id)a3;
-- (void)populateWithSource:(id)a3;
+- (id)componentLayoutsUsingConditionType:(id)type;
+- (id)componentStylesUsingConditionType:(id)type;
+- (id)componentTextStylesUsingConditionType:(id)type;
+- (id)componentsUsingConditionType:(id)type;
+- (id)conditionTypesUsedByComponent:(id)component;
+- (id)conditionTypesUsedByComponentLayout:(id)layout;
+- (id)conditionTypesUsedByComponentStyle:(id)style;
+- (id)conditionTypesUsedByComponentTextStyle:(id)style;
+- (id)conditionTypesUsedByTextStyle:(id)style;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)objectsForKey:(id)key map:(id)map;
+- (id)objectsForKeys:(id)keys map:(id)map;
+- (id)textStylesUsingConditionType:(id)type;
+- (void)populateWithSource:(id)source;
 @end
 
 @implementation SXConditionalObjectAnalysis
@@ -26,45 +26,45 @@
   v2 = [(SXConditionalObjectAnalysis *)&v26 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     conditionsToComponentsMap = v2->_conditionsToComponentsMap;
-    v2->_conditionsToComponentsMap = v3;
+    v2->_conditionsToComponentsMap = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     componentsToConditionsMap = v2->_componentsToConditionsMap;
-    v2->_componentsToConditionsMap = v5;
+    v2->_componentsToConditionsMap = dictionary2;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     conditionsToComponentStylesMap = v2->_conditionsToComponentStylesMap;
-    v2->_conditionsToComponentStylesMap = v7;
+    v2->_conditionsToComponentStylesMap = dictionary3;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
     componentStylesToConditionsMap = v2->_componentStylesToConditionsMap;
-    v2->_componentStylesToConditionsMap = v9;
+    v2->_componentStylesToConditionsMap = dictionary4;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary5 = [MEMORY[0x1E695DF90] dictionary];
     conditionsToComponentLayoutsMap = v2->_conditionsToComponentLayoutsMap;
-    v2->_conditionsToComponentLayoutsMap = v11;
+    v2->_conditionsToComponentLayoutsMap = dictionary5;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary6 = [MEMORY[0x1E695DF90] dictionary];
     componentLayoutsToConditionsMap = v2->_componentLayoutsToConditionsMap;
-    v2->_componentLayoutsToConditionsMap = v13;
+    v2->_componentLayoutsToConditionsMap = dictionary6;
 
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary7 = [MEMORY[0x1E695DF90] dictionary];
     conditionsToComponentTextStylesMap = v2->_conditionsToComponentTextStylesMap;
-    v2->_conditionsToComponentTextStylesMap = v15;
+    v2->_conditionsToComponentTextStylesMap = dictionary7;
 
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary8 = [MEMORY[0x1E695DF90] dictionary];
     componentTextStylesToConditionsMap = v2->_componentTextStylesToConditionsMap;
-    v2->_componentTextStylesToConditionsMap = v17;
+    v2->_componentTextStylesToConditionsMap = dictionary8;
 
-    v19 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary9 = [MEMORY[0x1E695DF90] dictionary];
     conditionsToTextStylesMap = v2->_conditionsToTextStylesMap;
-    v2->_conditionsToTextStylesMap = v19;
+    v2->_conditionsToTextStylesMap = dictionary9;
 
-    v21 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary10 = [MEMORY[0x1E695DF90] dictionary];
     textStylesToConditionsMap = v2->_textStylesToConditionsMap;
-    v2->_textStylesToConditionsMap = v21;
+    v2->_textStylesToConditionsMap = dictionary10;
 
     v23 = [MEMORY[0x1E695DFA8] set];
     documentStyleConditionTypes = v2->_documentStyleConditionTypes;
@@ -74,116 +74,116 @@
   return v2;
 }
 
-- (id)componentsUsingConditionType:(id)a3
+- (id)componentsUsingConditionType:(id)type
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:type];
   v5 = [(SXConditionalObjectAnalysis *)self componentsUsingConditionTypes:v4];
 
   return v5;
 }
 
-- (id)conditionTypesUsedByComponent:(id)a3
+- (id)conditionTypesUsedByComponent:(id)component
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:component];
   v5 = [(SXConditionalObjectAnalysis *)self conditionTypesUsedByComponents:v4];
 
   return v5;
 }
 
-- (id)componentStylesUsingConditionType:(id)a3
+- (id)componentStylesUsingConditionType:(id)type
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:type];
   v5 = [(SXConditionalObjectAnalysis *)self componentStylesUsingConditionTypes:v4];
 
   return v5;
 }
 
-- (id)conditionTypesUsedByComponentStyle:(id)a3
+- (id)conditionTypesUsedByComponentStyle:(id)style
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:style];
   v5 = [(SXConditionalObjectAnalysis *)self conditionTypesUsedByComponentStyles:v4];
 
   return v5;
 }
 
-- (id)componentTextStylesUsingConditionType:(id)a3
+- (id)componentTextStylesUsingConditionType:(id)type
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:type];
   v5 = [(SXConditionalObjectAnalysis *)self componentTextStylesUsingConditionTypes:v4];
 
   return v5;
 }
 
-- (id)conditionTypesUsedByComponentTextStyle:(id)a3
+- (id)conditionTypesUsedByComponentTextStyle:(id)style
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:style];
   v5 = [(SXConditionalObjectAnalysis *)self conditionTypesUsedByComponentTextStyles:v4];
 
   return v5;
 }
 
-- (id)textStylesUsingConditionType:(id)a3
+- (id)textStylesUsingConditionType:(id)type
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:type];
   v5 = [(SXConditionalObjectAnalysis *)self textStylesUsingConditionTypes:v4];
 
   return v5;
 }
 
-- (id)conditionTypesUsedByTextStyle:(id)a3
+- (id)conditionTypesUsedByTextStyle:(id)style
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:style];
   v5 = [(SXConditionalObjectAnalysis *)self conditionTypesUsedByTextStyles:v4];
 
   return v5;
 }
 
-- (id)componentLayoutsUsingConditionType:(id)a3
+- (id)componentLayoutsUsingConditionType:(id)type
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:type];
   v5 = [(SXConditionalObjectAnalysis *)self componentLayoutsUsingConditionTypes:v4];
 
   return v5;
 }
 
-- (id)conditionTypesUsedByComponentLayout:(id)a3
+- (id)conditionTypesUsedByComponentLayout:(id)layout
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:layout];
   v5 = [(SXConditionalObjectAnalysis *)self conditionTypesUsedByComponentLayouts:v4];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SXConditionalObjectAnalysis);
   [(SXConditionalObjectAnalysis *)v4 populateWithSource:self];
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SXMutableConditionalObjectAnalysis);
   [(SXConditionalObjectAnalysis *)v4 populateWithSource:self];
   return v4;
 }
 
-- (void)populateWithSource:(id)a3
+- (void)populateWithSource:(id)source
 {
-  v4 = *(a3 + 1);
+  v4 = *(source + 1);
   conditionsToComponentsMap = self->_conditionsToComponentsMap;
-  v6 = a3;
-  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v6, v4, conditionsToComponentsMap);
-  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v7, v6[2], self->_componentsToConditionsMap);
-  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v8, v6[3], self->_conditionsToComponentStylesMap);
-  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v9, v6[4], self->_componentStylesToConditionsMap);
-  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v10, v6[5], self->_conditionsToComponentLayoutsMap);
-  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v11, v6[6], self->_componentLayoutsToConditionsMap);
-  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v12, v6[7], self->_conditionsToComponentTextStylesMap);
-  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v13, v6[8], self->_componentTextStylesToConditionsMap);
-  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v14, v6[9], self->_conditionsToTextStylesMap);
-  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v15, v6[10], self->_textStylesToConditionsMap);
-  v16 = v6[11];
+  sourceCopy = source;
+  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(sourceCopy, v4, conditionsToComponentsMap);
+  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v7, sourceCopy[2], self->_componentsToConditionsMap);
+  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v8, sourceCopy[3], self->_conditionsToComponentStylesMap);
+  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v9, sourceCopy[4], self->_componentStylesToConditionsMap);
+  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v10, sourceCopy[5], self->_conditionsToComponentLayoutsMap);
+  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v11, sourceCopy[6], self->_componentLayoutsToConditionsMap);
+  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v12, sourceCopy[7], self->_conditionsToComponentTextStylesMap);
+  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v13, sourceCopy[8], self->_componentTextStylesToConditionsMap);
+  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v14, sourceCopy[9], self->_conditionsToTextStylesMap);
+  __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke(v15, sourceCopy[10], self->_textStylesToConditionsMap);
+  v16 = sourceCopy[11];
 
   v17 = [v16 mutableCopy];
   documentStyleConditionTypes = self->_documentStyleConditionTypes;
@@ -212,17 +212,17 @@ void __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke_2(uint6
   [v4 setObject:v6 forKey:v5];
 }
 
-- (id)objectsForKeys:(id)a3 map:(id)a4
+- (id)objectsForKeys:(id)keys map:(id)map
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  mapCopy = map;
   v8 = [MEMORY[0x1E695DFA8] set];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v6;
+  v9 = keysCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -237,7 +237,7 @@ void __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke_2(uint6
           objc_enumerationMutation(v9);
         }
 
-        v14 = [(SXConditionalObjectAnalysis *)self objectsForKey:*(*(&v17 + 1) + 8 * i) map:v7, v17];
+        v14 = [(SXConditionalObjectAnalysis *)self objectsForKey:*(*(&v17 + 1) + 8 * i) map:mapCopy, v17];
         [v8 unionSet:v14];
       }
 
@@ -252,15 +252,15 @@ void __50__SXConditionalObjectAnalysis_populateWithSource___block_invoke_2(uint6
   return v15;
 }
 
-- (id)objectsForKey:(id)a3 map:(id)a4
+- (id)objectsForKey:(id)key map:(id)map
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKey:v5];
+  keyCopy = key;
+  mapCopy = map;
+  v7 = [mapCopy objectForKey:keyCopy];
   if (!v7)
   {
     v7 = [MEMORY[0x1E695DFA8] set];
-    [v6 setObject:v7 forKey:v5];
+    [mapCopy setObject:v7 forKey:keyCopy];
   }
 
   return v7;

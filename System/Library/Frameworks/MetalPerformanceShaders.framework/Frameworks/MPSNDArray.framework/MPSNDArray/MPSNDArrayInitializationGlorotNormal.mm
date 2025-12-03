@@ -1,20 +1,20 @@
 @interface MPSNDArrayInitializationGlorotNormal
-- (MPSNDArrayInitializationGlorotNormal)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayInitializationGlorotNormal)initWithDevice:(id)a3 seed:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (unint64_t)kernelDimensionalityForDestinationArray:(id)a3;
-- (void)encodeToCommandBuffer:(id)a3 destinationArray:(id)a4;
+- (MPSNDArrayInitializationGlorotNormal)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayInitializationGlorotNormal)initWithDevice:(id)device seed:(unint64_t)seed;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (unint64_t)kernelDimensionalityForDestinationArray:(id)array;
+- (void)encodeToCommandBuffer:(id)buffer destinationArray:(id)array;
 @end
 
 @implementation MPSNDArrayInitializationGlorotNormal
 
-- (unint64_t)kernelDimensionalityForDestinationArray:(id)a3
+- (unint64_t)kernelDimensionalityForDestinationArray:(id)array
 {
-  v4 = *(a3 + *MEMORY[0x277CD73F0]);
+  v4 = *(array + *MEMORY[0x277CD73F0]);
   if (v4)
   {
     v5 = 0;
-    v6 = *(a3 + *MEMORY[0x277CD73D8]);
+    v6 = *(array + *MEMORY[0x277CD73D8]);
     while (1)
     {
       v34 = v6;
@@ -33,7 +33,7 @@
   else
   {
 LABEL_5:
-    result = [a3 numberOfDimensions];
+    result = [array numberOfDimensions];
     if (result < 2)
     {
       v11 = 1;
@@ -43,7 +43,7 @@ LABEL_5:
     {
       v8 = *MEMORY[0x277CD7410];
       v9 = *MEMORY[0x277CD7418];
-      if (*(a3 + *MEMORY[0x277CD7400]) != (*(a3 + *MEMORY[0x277CD73C8]) >> 3) * *(a3 + v8) || *(a3 + v9) != 0)
+      if (*(array + *MEMORY[0x277CD7400]) != (*(array + *MEMORY[0x277CD73C8]) >> 3) * *(array + v8) || *(array + v9) != 0)
       {
         return v4 != 0;
       }
@@ -61,20 +61,20 @@ LABEL_5:
         }
       }
 
-      v12 = (a3 + *MEMORY[0x277CD73D0]);
+      v12 = (array + *MEMORY[0x277CD73D0]);
       v14 = v12[2];
       v13 = v12[3];
       v16 = *v12;
       v15 = v12[1];
-      v17 = (a3 + v8);
+      v17 = (array + v8);
       v19 = v17[2];
       v18 = v17[3];
       v21 = *v17;
       v20 = v17[1];
-      v23 = *(a3 + v9 + 32);
-      v22 = *(a3 + v9 + 48);
-      v25 = *(a3 + v9);
-      v24 = *(a3 + v9 + 16);
+      v23 = *(array + v9 + 32);
+      v22 = *(array + v9 + 48);
+      v25 = *(array + v9);
+      v24 = *(array + v9 + 16);
       v11 = 2;
       while (1)
       {
@@ -123,14 +123,14 @@ LABEL_5:
   }
 }
 
-- (MPSNDArrayInitializationGlorotNormal)initWithDevice:(id)a3 seed:(unint64_t)a4
+- (MPSNDArrayInitializationGlorotNormal)initWithDevice:(id)device seed:(unint64_t)seed
 {
   v6.receiver = self;
   v6.super_class = MPSNDArrayInitializationGlorotNormal;
-  result = [(MPSNDArrayInitialization *)&v6 initWithDevice:a3 sourceCount:0];
+  result = [(MPSNDArrayInitialization *)&v6 initWithDevice:device sourceCount:0];
   if (result)
   {
-    result->super._seed = a4;
+    result->super._seed = seed;
     result->super.super._encode = EncodeGlorotInitialization;
     result->super.super.super._encodeData = result;
   }
@@ -138,11 +138,11 @@ LABEL_5:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayInitializationGlorotNormal;
-  result = [(MPSNDArrayInitialization *)&v5 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayInitialization *)&v5 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 17) = EncodeGlorotInitialization;
@@ -151,11 +151,11 @@ LABEL_5:
   return result;
 }
 
-- (MPSNDArrayInitializationGlorotNormal)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayInitializationGlorotNormal)initWithCoder:(id)coder device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayInitializationGlorotNormal;
-  result = [(MPSNDArrayInitialization *)&v5 initWithCoder:a3 device:a4];
+  result = [(MPSNDArrayInitialization *)&v5 initWithCoder:coder device:device];
   if (result)
   {
     result->super.super._encode = EncodeGlorotInitialization;
@@ -164,7 +164,7 @@ LABEL_5:
   return result;
 }
 
-- (void)encodeToCommandBuffer:(id)a3 destinationArray:(id)a4
+- (void)encodeToCommandBuffer:(id)buffer destinationArray:(id)array
 {
   v7 = objc_autoreleasePoolPush();
   *&v8 = sqrtf(2.0 / (self->_FanIn + self->_FanOut));
@@ -176,7 +176,7 @@ LABEL_5:
   objc_autoreleasePoolPop(v7);
   v13.receiver = self;
   v13.super_class = MPSNDArrayInitializationGlorotNormal;
-  [(MPSNDArrayInitialization *)&v13 encodeToCommandBuffer:a3 destinationArray:a4];
+  [(MPSNDArrayInitialization *)&v13 encodeToCommandBuffer:buffer destinationArray:array];
 }
 
 @end

@@ -7,20 +7,20 @@
 - (id)analyticsDict
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(NSPTokenFetchAnalytics *)self proxyURL];
-  [v3 setObject:v4 forKeyedSubscript:@"ProxyURL"];
+  proxyURL = [(NSPTokenFetchAnalytics *)self proxyURL];
+  [v3 setObject:proxyURL forKeyedSubscript:@"ProxyURL"];
 
-  v5 = [(NSPTokenFetchAnalytics *)self proxyVendor];
-  [v3 setObject:v5 forKeyedSubscript:@"ProxyVendor"];
+  proxyVendor = [(NSPTokenFetchAnalytics *)self proxyVendor];
+  [v3 setObject:proxyVendor forKeyedSubscript:@"ProxyVendor"];
 
-  v6 = [(NSPTokenFetchAnalytics *)self tierType];
-  [v3 setObject:v6 forKeyedSubscript:@"TierType"];
+  tierType = [(NSPTokenFetchAnalytics *)self tierType];
+  [v3 setObject:tierType forKeyedSubscript:@"TierType"];
 
-  v7 = [(NSPTokenFetchAnalytics *)self authenticationType];
-  [v3 setObject:v7 forKeyedSubscript:@"AuthenticationType"];
+  authenticationType = [(NSPTokenFetchAnalytics *)self authenticationType];
+  [v3 setObject:authenticationType forKeyedSubscript:@"AuthenticationType"];
 
-  v8 = [(NSPTokenFetchAnalytics *)self requestedServerUUID];
-  [v3 setObject:v8 forKeyedSubscript:@"RequestedServerUUID"];
+  requestedServerUUID = [(NSPTokenFetchAnalytics *)self requestedServerUUID];
+  [v3 setObject:requestedServerUUID forKeyedSubscript:@"RequestedServerUUID"];
 
   v9 = [NSNumber numberWithUnsignedInteger:[(NSPTokenFetchAnalytics *)self requestedTokenCount]];
   [v3 setObject:v9 forKeyedSubscript:@"RequestedTokenCount"];

@@ -1,34 +1,34 @@
 @interface TUIWPBox
-+ (id)textModelBuilderWithFontSpec:(id)a3 style:(unint64_t)a4 color:(id)a5 alignment:(int64_t)a6 writingDirection:(int64_t)a7 language:(id)a8 shouldHyphenate:(BOOL)a9 service:(id)a10;
++ (id)textModelBuilderWithFontSpec:(id)spec style:(unint64_t)style color:(id)color alignment:(int64_t)alignment writingDirection:(int64_t)direction language:(id)language shouldHyphenate:(BOOL)hyphenate service:(id)self0;
 - (NSAttributedString)placeholderString;
 - (NSString)blendMode;
 - (NSString)string;
 - (TUIWPBox)init;
-- (TUIWPBox)initWithTextModel:(id)a3;
+- (TUIWPBox)initWithTextModel:(id)model;
 - (unint64_t)maxLines;
-- (void)setAllowHangingPunctuation:(BOOL)a3;
-- (void)setAllowShrinkToFit:(BOOL)a3;
-- (void)setHideEllipses:(BOOL)a3;
-- (void)setMaxLines:(unint64_t)a3;
+- (void)setAllowHangingPunctuation:(BOOL)punctuation;
+- (void)setAllowShrinkToFit:(BOOL)fit;
+- (void)setHideEllipses:(BOOL)ellipses;
+- (void)setMaxLines:(unint64_t)lines;
 @end
 
 @implementation TUIWPBox
 
-+ (id)textModelBuilderWithFontSpec:(id)a3 style:(unint64_t)a4 color:(id)a5 alignment:(int64_t)a6 writingDirection:(int64_t)a7 language:(id)a8 shouldHyphenate:(BOOL)a9 service:(id)a10
++ (id)textModelBuilderWithFontSpec:(id)spec style:(unint64_t)style color:(id)color alignment:(int64_t)alignment writingDirection:(int64_t)direction language:(id)language shouldHyphenate:(BOOL)hyphenate service:(id)self0
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a8;
-  v18 = a10;
-  LOBYTE(v21) = a9;
-  v19 = [[TUIWPBuilder alloc] initWithFontSpec:v15 style:a4 color:v16 alignment:a6 writingDirection:a7 language:v17 shouldHyphenate:v21 service:v18];
+  specCopy = spec;
+  colorCopy = color;
+  languageCopy = language;
+  serviceCopy = service;
+  LOBYTE(v21) = hyphenate;
+  v19 = [[TUIWPBuilder alloc] initWithFontSpec:specCopy style:style color:colorCopy alignment:alignment writingDirection:direction language:languageCopy shouldHyphenate:v21 service:serviceCopy];
 
   return v19;
 }
 
-- (TUIWPBox)initWithTextModel:(id)a3
+- (TUIWPBox)initWithTextModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = TUIWPBox;
   v6 = [(TUIBox *)&v9 init];
@@ -36,7 +36,7 @@
   if (v6)
   {
     v6->super.super._storage._data = TUIWPBoxStorageDataset | 1;
-    objc_storeStrong(&v6->_wpStorage, a3);
+    objc_storeStrong(&v6->_wpStorage, model);
     [(TUIBox *)v7 setAXElement:1];
   }
 
@@ -62,33 +62,33 @@
 {
   if (self->_wpStorage)
   {
-    v2 = [(TUIWPStorage *)self->_wpStorage string];
-    v3 = [v2 copy];
+    string = [(TUIWPStorage *)self->_wpStorage string];
+    v3 = [string copy];
   }
 
   else
   {
-    v2 = [(TUIWPBox *)self placeholderString];
-    v4 = [v2 string];
-    v3 = [v4 copy];
+    string = [(TUIWPBox *)self placeholderString];
+    v2String = [string string];
+    v3 = [v2String copy];
   }
 
   return v3;
 }
 
-- (void)setMaxLines:(unint64_t)a3
+- (void)setMaxLines:(unint64_t)lines
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (lines == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = 0x7FFFFFFF;
+    linesCopy = 0x7FFFFFFF;
   }
 
   else
   {
-    v4 = a3;
+    linesCopy = lines;
   }
 
-  if (!v4)
+  if (!linesCopy)
   {
     v6 = TUI::Util::PartialStruct::Storage::dataForKey(&self->super.super._storage, 0xDu);
     if (!v6)
@@ -105,7 +105,7 @@
   if (DataForKey)
   {
 LABEL_9:
-    *DataForKey = v4;
+    *DataForKey = linesCopy;
   }
 }
 
@@ -128,9 +128,9 @@ LABEL_9:
   return result;
 }
 
-- (void)setAllowHangingPunctuation:(BOOL)a3
+- (void)setAllowHangingPunctuation:(BOOL)punctuation
 {
-  if (a3)
+  if (punctuation)
   {
     v3 = 64;
   }
@@ -143,9 +143,9 @@ LABEL_9:
   *(&self->super.super._flags + 2) = *(&self->super.super._flags + 2) & 0xFFBF | v3;
 }
 
-- (void)setAllowShrinkToFit:(BOOL)a3
+- (void)setAllowShrinkToFit:(BOOL)fit
 {
-  if (a3)
+  if (fit)
   {
     v3 = 128;
   }
@@ -158,9 +158,9 @@ LABEL_9:
   *(&self->super.super._flags + 2) = *(&self->super.super._flags + 2) & 0xFF7F | v3;
 }
 
-- (void)setHideEllipses:(BOOL)a3
+- (void)setHideEllipses:(BOOL)ellipses
 {
-  if (a3)
+  if (ellipses)
   {
     v3 = 256;
   }

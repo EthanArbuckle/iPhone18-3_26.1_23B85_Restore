@@ -1,6 +1,6 @@
 @interface MADConfidenceTracker
 - (MADConfidenceTracker)init;
-- (double)updateConfidence:(double)a3;
+- (double)updateConfidence:(double)confidence;
 @end
 
 @implementation MADConfidenceTracker
@@ -12,9 +12,9 @@
   v2 = [(MADConfidenceTracker *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     history = v2->_history;
-    v2->_history = v3;
+    v2->_history = array;
 
     v2->_confidence = 0.0;
   }
@@ -22,14 +22,14 @@
   return v2;
 }
 
-- (double)updateConfidence:(double)a3
+- (double)updateConfidence:(double)confidence
 {
   v5 = +[MADVideoRemoveBackgroundSettings visionTrimWindow];
   history = self->_history;
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:confidence];
   [(NSMutableArray *)history addObject:v7];
 
-  self->_confidence = self->_confidence + a3;
+  self->_confidence = self->_confidence + confidence;
   v8 = [(NSMutableArray *)self->_history count];
   v9 = self->_history;
   if (v8 <= v5)

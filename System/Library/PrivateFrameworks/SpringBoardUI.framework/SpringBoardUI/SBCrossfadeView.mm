@@ -1,7 +1,7 @@
 @interface SBCrossfadeView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (id)_initWithStartView:(id)a3 endView:(id)a4 translucent:(BOOL)a5;
-- (void)crossfadeWithCompletion:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (id)_initWithStartView:(id)view endView:(id)endView translucent:(BOOL)translucent;
+- (void)crossfadeWithCompletion:(id)completion;
 - (void)layoutSubviews;
 @end
 
@@ -20,11 +20,11 @@
   [(UIView *)endView setFrame:?];
 }
 
-- (id)_initWithStartView:(id)a3 endView:(id)a4 translucent:(BOOL)a5
+- (id)_initWithStartView:(id)view endView:(id)endView translucent:(BOOL)translucent
 {
-  v9 = a3;
-  v10 = a4;
-  [v9 frame];
+  viewCopy = view;
+  endViewCopy = endView;
+  [viewCopy frame];
   v18.receiver = self;
   v18.super_class = SBCrossfadeView;
   v11 = [(SBCrossfadeView *)&v18 initWithFrame:?];
@@ -34,9 +34,9 @@
     animationFactory = v11->_animationFactory;
     v11->_animationFactory = v12;
 
-    objc_storeStrong(&v11->_startView, a3);
-    objc_storeStrong(&v11->_endView, a4);
-    v11->_translucent = a5;
+    objc_storeStrong(&v11->_startView, view);
+    objc_storeStrong(&v11->_endView, endView);
+    v11->_translucent = translucent;
     v11->_allowsGroupOpacityDuringCrossfade = 1;
     v11->_adaptsAnimationFactoryTimingFunction = 1;
     [(SBCrossfadeView *)v11 addSubview:v11->_endView];
@@ -53,18 +53,18 @@
   return v11;
 }
 
-- (void)crossfadeWithCompletion:(id)a3
+- (void)crossfadeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (!self->_crossfaded)
   {
     self->_crossfaded = 1;
-    v5 = [(UIView *)self->_startView isUserInteractionEnabled];
-    v6 = [(UIView *)self->_startView layer];
-    v7 = [v6 allowsHitTesting];
+    isUserInteractionEnabled = [(UIView *)self->_startView isUserInteractionEnabled];
+    layer = [(UIView *)self->_startView layer];
+    allowsHitTesting = [layer allowsHitTesting];
 
-    v8 = [(UIView *)self->_startView layer];
-    [v8 setAllowsHitTesting:0];
+    layer2 = [(UIView *)self->_startView layer];
+    [layer2 setAllowsHitTesting:0];
 
     [(UIView *)self->_startView setUserInteractionEnabled:0];
     [(UIView *)self->_endView setHidden:0];
@@ -78,32 +78,32 @@
     v33[3] = &unk_27836B6B0;
     v35 = &v38;
     v33[4] = self;
-    v36 = v7;
-    v37 = v5;
-    v34 = v4;
+    v36 = allowsHitTesting;
+    v37 = isUserInteractionEnabled;
+    v34 = completionCopy;
     v9 = MEMORY[0x223D63700](v33);
-    v10 = [(SBCrossfadeView *)self animationFactory];
+    animationFactory = [(SBCrossfadeView *)self animationFactory];
     if (self->_translucent)
     {
       ++v39[3];
-      v11 = [(SBCrossfadeView *)self allowsGroupOpacityDuringCrossfade];
-      v12 = [(UIView *)self->_endView layer];
-      [v12 setAllowsGroupOpacity:v11];
+      allowsGroupOpacityDuringCrossfade = [(SBCrossfadeView *)self allowsGroupOpacityDuringCrossfade];
+      layer3 = [(UIView *)self->_endView layer];
+      [layer3 setAllowsGroupOpacity:allowsGroupOpacityDuringCrossfade];
 
-      v13 = [(UIView *)self->_startView layer];
-      [v13 setAllowsGroupOpacity:v11];
+      layer4 = [(UIView *)self->_startView layer];
+      [layer4 setAllowsGroupOpacity:allowsGroupOpacityDuringCrossfade];
 
-      v14 = [(SBCrossfadeView *)self adaptsAnimationFactoryTimingFunction];
-      if (v14)
+      adaptsAnimationFactoryTimingFunction = [(SBCrossfadeView *)self adaptsAnimationFactoryTimingFunction];
+      if (adaptsAnimationFactoryTimingFunction)
       {
         LODWORD(v15) = 0.25;
         LODWORD(v16) = 0.75;
         LODWORD(v17) = 0.25;
         LODWORD(v18) = 0.75;
         v19 = [MEMORY[0x277CD9EF8] functionWithControlPoints:v15 :v16 :v17 :v18];
-        v20 = [v10 factoryWithTimingFunction:v19];
+        v20 = [animationFactory factoryWithTimingFunction:v19];
 
-        v10 = v20;
+        animationFactory = v20;
       }
 
       v21 = MEMORY[0x277CF0D38];
@@ -118,17 +118,17 @@
       v30[3] = &unk_27836B6D8;
       v30[4] = self;
       v31 = v9;
-      [v21 animateWithFactory:v10 options:2 actions:v32 completion:v30];
-      if (v14)
+      [v21 animateWithFactory:animationFactory options:2 actions:v32 completion:v30];
+      if (adaptsAnimationFactoryTimingFunction)
       {
         LODWORD(v22) = 0.75;
         LODWORD(v23) = 0.25;
         LODWORD(v24) = 0.75;
         LODWORD(v25) = 0.25;
         v26 = [MEMORY[0x277CD9EF8] functionWithControlPoints:v22 :v23 :v24 :v25];
-        v27 = [v10 factoryWithTimingFunction:v26];
+        v27 = [animationFactory factoryWithTimingFunction:v26];
 
-        v10 = v27;
+        animationFactory = v27;
       }
     }
 
@@ -147,7 +147,7 @@
     v28[2] = __43__SBCrossfadeView_crossfadeWithCompletion___block_invoke_5;
     v28[3] = &unk_27836AFB0;
     v28[4] = self;
-    [MEMORY[0x277CF0D38] animateWithFactory:v10 options:2 actions:v28 completion:v9];
+    [MEMORY[0x277CF0D38] animateWithFactory:animationFactory options:2 actions:v28 completion:v9];
 
     _Block_object_dispose(&v38, 8);
   }
@@ -187,10 +187,10 @@ uint64_t __43__SBCrossfadeView_crossfadeWithCompletion___block_invoke_3(uint64_t
   return v4();
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"zPosition"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"zPosition"])
   {
     v5 = 1;
   }
@@ -199,7 +199,7 @@ uint64_t __43__SBCrossfadeView_crossfadeWithCompletion___block_invoke_3(uint64_t
   {
     v7.receiver = self;
     v7.super_class = SBCrossfadeView;
-    v5 = [(SBCrossfadeView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(SBCrossfadeView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

@@ -3,23 +3,23 @@
 + (id)createContextForCPUExport;
 + (id)createContextForGPUDisplay;
 + (id)createContextForGPUExport;
-+ (id)defaultOutputColorSpaceWithRenderingIntent:(int)a3;
-+ (id)defaultWorkingColorSpaceWithOutputColorSpace:(id)a3;
++ (id)defaultOutputColorSpaceWithRenderingIntent:(int)intent;
++ (id)defaultWorkingColorSpaceWithOutputColorSpace:(id)space;
 + (id)dotGraphLoggingDirectory;
-- (PVVideoCompositingContext)initWithCoder:(id)a3;
-- (PVVideoCompositingContext)initWithDevice:(int)a3 defaultColorSpace:(id)a4;
-- (PVVideoCompositingContext)initWithDevice:(int)a3 workingColorSpace:(id)a4 outputColorSpace:(id)a5;
-- (PVVideoCompositingContext)initWithDeviceForDisplay:(int)a3;
-- (PVVideoCompositingContext)initWithDeviceForExport:(int)a3;
+- (PVVideoCompositingContext)initWithCoder:(id)coder;
+- (PVVideoCompositingContext)initWithDevice:(int)device defaultColorSpace:(id)space;
+- (PVVideoCompositingContext)initWithDevice:(int)device workingColorSpace:(id)space outputColorSpace:(id)colorSpace;
+- (PVVideoCompositingContext)initWithDeviceForDisplay:(int)display;
+- (PVVideoCompositingContext)initWithDeviceForExport:(int)export;
 - (void)dumpContext;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContext:(id)a3;
-- (void)setInstructionGraphDumpLevel:(int)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContext:(id)context;
+- (void)setInstructionGraphDumpLevel:(int)level;
 - (void)setIntermediateBufferFormatForWorkingColorSpace;
-- (void)setOutputColorSpace:(id)a3;
-- (void)setSignPostLevel:(int)a3;
-- (void)setTraceMetalLevel:(int)a3;
-- (void)setWorkingColorSpace:(id)a3;
+- (void)setOutputColorSpace:(id)space;
+- (void)setSignPostLevel:(int)level;
+- (void)setTraceMetalLevel:(int)level;
+- (void)setWorkingColorSpace:(id)space;
 @end
 
 @implementation PVVideoCompositingContext
@@ -97,27 +97,27 @@ uint64_t __53__PVVideoCompositingContext_dotGraphLoggingDirectory__block_invoke(
   return v2;
 }
 
-+ (id)defaultOutputColorSpaceWithRenderingIntent:(int)a3
++ (id)defaultOutputColorSpaceWithRenderingIntent:(int)intent
 {
-  if ((a3 - 2) < 2)
+  if ((intent - 2) < 2)
   {
     goto LABEL_4;
   }
 
-  if (a3 == 1)
+  if (intent == 1)
   {
     v3 = +[PVHostApplicationDelegateHandler sharedInstance];
-    v4 = [v3 preferredExportColorSpace];
+    preferredExportColorSpace = [v3 preferredExportColorSpace];
     goto LABEL_6;
   }
 
-  if (!a3)
+  if (!intent)
   {
 LABEL_4:
     v3 = +[PVHostApplicationDelegateHandler sharedInstance];
-    v4 = [v3 preferredDisplayColorSpace];
+    preferredExportColorSpace = [v3 preferredDisplayColorSpace];
 LABEL_6:
-    v5 = v4;
+    v5 = preferredExportColorSpace;
 
     goto LABEL_8;
   }
@@ -128,11 +128,11 @@ LABEL_8:
   return v5;
 }
 
-+ (id)defaultWorkingColorSpaceWithOutputColorSpace:(id)a3
++ (id)defaultWorkingColorSpaceWithOutputColorSpace:(id)space
 {
-  v3 = a3;
-  v4 = v3;
-  if ([v3 isHDRSpace])
+  spaceCopy = space;
+  v4 = spaceCopy;
+  if ([spaceCopy isHDRSpace])
   {
     v4 = +[PVColorSpace rec2020LinearColorSpace];
   }
@@ -140,39 +140,39 @@ LABEL_8:
   return v4;
 }
 
-- (PVVideoCompositingContext)initWithDeviceForDisplay:(int)a3
+- (PVVideoCompositingContext)initWithDeviceForDisplay:(int)display
 {
-  v3 = *&a3;
+  v3 = *&display;
   v5 = [PVVideoCompositingContext defaultOutputColorSpaceWithRenderingIntent:0];
   v6 = [(PVVideoCompositingContext *)self initWithDevice:v3 defaultColorSpace:v5];
 
   return v6;
 }
 
-- (PVVideoCompositingContext)initWithDeviceForExport:(int)a3
+- (PVVideoCompositingContext)initWithDeviceForExport:(int)export
 {
-  v3 = *&a3;
+  v3 = *&export;
   v5 = [PVVideoCompositingContext defaultOutputColorSpaceWithRenderingIntent:1];
   v6 = [(PVVideoCompositingContext *)self initWithDevice:v3 defaultColorSpace:v5];
 
   return v6;
 }
 
-- (PVVideoCompositingContext)initWithDevice:(int)a3 defaultColorSpace:(id)a4
+- (PVVideoCompositingContext)initWithDevice:(int)device defaultColorSpace:(id)space
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = [PVVideoCompositingContext defaultWorkingColorSpaceWithOutputColorSpace:v6];
-  v8 = [(PVVideoCompositingContext *)self initWithDevice:v4 workingColorSpace:v7 outputColorSpace:v6];
+  v4 = *&device;
+  spaceCopy = space;
+  v7 = [PVVideoCompositingContext defaultWorkingColorSpaceWithOutputColorSpace:spaceCopy];
+  v8 = [(PVVideoCompositingContext *)self initWithDevice:v4 workingColorSpace:v7 outputColorSpace:spaceCopy];
 
   return v8;
 }
 
-- (PVVideoCompositingContext)initWithDevice:(int)a3 workingColorSpace:(id)a4 outputColorSpace:(id)a5
+- (PVVideoCompositingContext)initWithDevice:(int)device workingColorSpace:(id)space outputColorSpace:(id)colorSpace
 {
-  v6 = *&a3;
-  v8 = a4;
-  v9 = a5;
+  v6 = *&device;
+  spaceCopy = space;
+  colorSpaceCopy = colorSpace;
   v16.receiver = self;
   v16.super_class = PVVideoCompositingContext;
   v10 = [(PVVideoCompositingContext *)&v16 init];
@@ -182,8 +182,8 @@ LABEL_8:
     [(PVVideoCompositingContext *)v10 setRenderDevice:v6];
     [(PVVideoCompositingContext *)v11 setGpuRenderAPI:1];
     v12 = +[PVDeviceCharacteristics hasExtendedColorDisplay];
-    [(PVVideoCompositingContext *)v11 setOutputColorSpace:v9];
-    [(PVVideoCompositingContext *)v11 setWorkingColorSpace:v8];
+    [(PVVideoCompositingContext *)v11 setOutputColorSpace:colorSpaceCopy];
+    [(PVVideoCompositingContext *)v11 setWorkingColorSpace:spaceCopy];
     [(PVVideoCompositingContext *)v11 setWorkingColorSpaceConformIntent:!v12];
     [(PVVideoCompositingContext *)v11 setShaderFormat:28];
     [(PVVideoCompositingContext *)v11 setConcatenationFlag:1];
@@ -200,39 +200,39 @@ LABEL_8:
     [(PVVideoCompositingContext *)v11 setInstructionGraphDumpLevel:0];
     [(PVVideoCompositingContext *)v11 setInstructionGraphDotTreeLevel:0];
     [(PVVideoCompositingContext *)v11 setPowerFriendlyExport:0];
-    v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v14 = [v13 dictionaryRepresentation];
-    [(PVVideoCompositingContext *)v11 setContext:v14];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    dictionaryRepresentation = [standardUserDefaults dictionaryRepresentation];
+    [(PVVideoCompositingContext *)v11 setContext:dictionaryRepresentation];
   }
 
   return v11;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
-  [(PVVideoCompositingContext *)self setRenderDevice:getDefaultsIntValue(v4, &cfstr_Pvvideocomposi_0.isa, [(PVVideoCompositingContext *)self renderDevice])];
-  [(PVVideoCompositingContext *)self setGpuRenderAPI:getDefaultsIntValue(v4, &cfstr_Pvvideocomposi_1.isa, [(PVVideoCompositingContext *)self gpuRenderAPI])];
-  [(PVVideoCompositingContext *)self setNumCPUThreads:getDefaultsIntValue(v4, &cfstr_Pvvideocomposi_2.isa, [(PVVideoCompositingContext *)self numCPUThreads])];
-  [(PVVideoCompositingContext *)self setBufferFormat:getDefaultsIntValue(v4, &cfstr_Pvvideocomposi_3.isa, [(PVVideoCompositingContext *)self bufferFormat])];
-  [(PVVideoCompositingContext *)self setShaderFormat:getDefaultsIntValue(v4, &cfstr_Pvvideocomposi_4.isa, [(PVVideoCompositingContext *)self shaderFormat])];
-  [(PVVideoCompositingContext *)self setFilterMode:getDefaultsIntValue(v4, &cfstr_Pvvideocomposi_5.isa, [(PVVideoCompositingContext *)self filterMode])];
-  [(PVVideoCompositingContext *)self setConcatenationFlag:getDefaultsBoolValue(v4, &cfstr_Pvvideocomposi_6.isa, [(PVVideoCompositingContext *)self concatenationFlag])];
-  [(PVVideoCompositingContext *)self setTileSize:getDefaultsIntValue(v4, &cfstr_Pvvideocomposi_7.isa, [(PVVideoCompositingContext *)self tileSize])];
-  [(PVVideoCompositingContext *)self setPageSize:getDefaultsIntValue(v4, &cfstr_Pvvideocomposi_8.isa, [(PVVideoCompositingContext *)self pageSize])];
-  [(PVVideoCompositingContext *)self setTextureBorder:getDefaultsBoolValue(v4, &cfstr_Pvvideocomposi_9.isa, [(PVVideoCompositingContext *)self textureBorder])];
-  [(PVVideoCompositingContext *)self setDynamicPlayback:getDefaultsBoolValue(v4, &cfstr_Pvvideocomposi_10.isa, [(PVVideoCompositingContext *)self dynamicPlayback])];
-  [(PVVideoCompositingContext *)self setRenderGraphDumpLevel:getDefaultsIntValue(v4, &cfstr_Pvvideocomposi_11.isa, [(PVVideoCompositingContext *)self renderGraphDumpLevel])];
-  [(PVVideoCompositingContext *)self setRenderStatsFlag:getDefaultsBoolValue(v4, &cfstr_Pvvideocomposi_12.isa, [(PVVideoCompositingContext *)self renderStatsFlag])];
-  [(PVVideoCompositingContext *)self setRenderStatsWarmUp:getDefaultsIntValue(v4, &cfstr_Pvvideocomposi_13.isa, [(PVVideoCompositingContext *)self renderStatsWarmUp])];
-  [(PVVideoCompositingContext *)self setRenderStatsMaxVals:getDefaultsIntValue(v4, &cfstr_Pvvideocomposi_14.isa, [(PVVideoCompositingContext *)self renderStatsMaxVals])];
-  [(PVVideoCompositingContext *)self setDotGraphLevel:getDefaultsIntValue(v4, &cfstr_Pvvideocomposi_15.isa, [(PVVideoCompositingContext *)self dotGraphLevel])];
-  [(PVVideoCompositingContext *)self setSignPostLevel:getDefaultsIntValue(v4, &cfstr_Pvvideocomposi_16.isa, [(PVVideoCompositingContext *)self signPostLevel])];
-  [(PVVideoCompositingContext *)self setTraceGLLevel:getDefaultsIntValue(v4, &cfstr_Pvvideocomposi_17.isa, [(PVVideoCompositingContext *)self traceGLLevel])];
-  [(PVVideoCompositingContext *)self setTraceMetalLevel:getDefaultsIntValue(v4, &cfstr_Pvvideocomposi_18.isa, [(PVVideoCompositingContext *)self traceMetalLevel])];
-  [(PVVideoCompositingContext *)self setInstructionGraphDumpLevel:getDefaultsIntValue(v4, &cfstr_Pvvideocomposi_19.isa, [(PVVideoCompositingContext *)self instructionGraphDumpLevel])];
-  [(PVVideoCompositingContext *)self setInstructionGraphDotTreeLevel:getDefaultsIntValue(v4, &cfstr_Pvvideocomposi_20.isa, [(PVVideoCompositingContext *)self instructionGraphDotTreeLevel])];
-  [(PVVideoCompositingContext *)self setPowerFriendlyExport:getDefaultsBoolValue(v4, &cfstr_Pvvideocomposi_21.isa, [(PVVideoCompositingContext *)self powerFriendlyExport])];
+  contextCopy = context;
+  [(PVVideoCompositingContext *)self setRenderDevice:getDefaultsIntValue(contextCopy, &cfstr_Pvvideocomposi_0.isa, [(PVVideoCompositingContext *)self renderDevice])];
+  [(PVVideoCompositingContext *)self setGpuRenderAPI:getDefaultsIntValue(contextCopy, &cfstr_Pvvideocomposi_1.isa, [(PVVideoCompositingContext *)self gpuRenderAPI])];
+  [(PVVideoCompositingContext *)self setNumCPUThreads:getDefaultsIntValue(contextCopy, &cfstr_Pvvideocomposi_2.isa, [(PVVideoCompositingContext *)self numCPUThreads])];
+  [(PVVideoCompositingContext *)self setBufferFormat:getDefaultsIntValue(contextCopy, &cfstr_Pvvideocomposi_3.isa, [(PVVideoCompositingContext *)self bufferFormat])];
+  [(PVVideoCompositingContext *)self setShaderFormat:getDefaultsIntValue(contextCopy, &cfstr_Pvvideocomposi_4.isa, [(PVVideoCompositingContext *)self shaderFormat])];
+  [(PVVideoCompositingContext *)self setFilterMode:getDefaultsIntValue(contextCopy, &cfstr_Pvvideocomposi_5.isa, [(PVVideoCompositingContext *)self filterMode])];
+  [(PVVideoCompositingContext *)self setConcatenationFlag:getDefaultsBoolValue(contextCopy, &cfstr_Pvvideocomposi_6.isa, [(PVVideoCompositingContext *)self concatenationFlag])];
+  [(PVVideoCompositingContext *)self setTileSize:getDefaultsIntValue(contextCopy, &cfstr_Pvvideocomposi_7.isa, [(PVVideoCompositingContext *)self tileSize])];
+  [(PVVideoCompositingContext *)self setPageSize:getDefaultsIntValue(contextCopy, &cfstr_Pvvideocomposi_8.isa, [(PVVideoCompositingContext *)self pageSize])];
+  [(PVVideoCompositingContext *)self setTextureBorder:getDefaultsBoolValue(contextCopy, &cfstr_Pvvideocomposi_9.isa, [(PVVideoCompositingContext *)self textureBorder])];
+  [(PVVideoCompositingContext *)self setDynamicPlayback:getDefaultsBoolValue(contextCopy, &cfstr_Pvvideocomposi_10.isa, [(PVVideoCompositingContext *)self dynamicPlayback])];
+  [(PVVideoCompositingContext *)self setRenderGraphDumpLevel:getDefaultsIntValue(contextCopy, &cfstr_Pvvideocomposi_11.isa, [(PVVideoCompositingContext *)self renderGraphDumpLevel])];
+  [(PVVideoCompositingContext *)self setRenderStatsFlag:getDefaultsBoolValue(contextCopy, &cfstr_Pvvideocomposi_12.isa, [(PVVideoCompositingContext *)self renderStatsFlag])];
+  [(PVVideoCompositingContext *)self setRenderStatsWarmUp:getDefaultsIntValue(contextCopy, &cfstr_Pvvideocomposi_13.isa, [(PVVideoCompositingContext *)self renderStatsWarmUp])];
+  [(PVVideoCompositingContext *)self setRenderStatsMaxVals:getDefaultsIntValue(contextCopy, &cfstr_Pvvideocomposi_14.isa, [(PVVideoCompositingContext *)self renderStatsMaxVals])];
+  [(PVVideoCompositingContext *)self setDotGraphLevel:getDefaultsIntValue(contextCopy, &cfstr_Pvvideocomposi_15.isa, [(PVVideoCompositingContext *)self dotGraphLevel])];
+  [(PVVideoCompositingContext *)self setSignPostLevel:getDefaultsIntValue(contextCopy, &cfstr_Pvvideocomposi_16.isa, [(PVVideoCompositingContext *)self signPostLevel])];
+  [(PVVideoCompositingContext *)self setTraceGLLevel:getDefaultsIntValue(contextCopy, &cfstr_Pvvideocomposi_17.isa, [(PVVideoCompositingContext *)self traceGLLevel])];
+  [(PVVideoCompositingContext *)self setTraceMetalLevel:getDefaultsIntValue(contextCopy, &cfstr_Pvvideocomposi_18.isa, [(PVVideoCompositingContext *)self traceMetalLevel])];
+  [(PVVideoCompositingContext *)self setInstructionGraphDumpLevel:getDefaultsIntValue(contextCopy, &cfstr_Pvvideocomposi_19.isa, [(PVVideoCompositingContext *)self instructionGraphDumpLevel])];
+  [(PVVideoCompositingContext *)self setInstructionGraphDotTreeLevel:getDefaultsIntValue(contextCopy, &cfstr_Pvvideocomposi_20.isa, [(PVVideoCompositingContext *)self instructionGraphDotTreeLevel])];
+  [(PVVideoCompositingContext *)self setPowerFriendlyExport:getDefaultsBoolValue(contextCopy, &cfstr_Pvvideocomposi_21.isa, [(PVVideoCompositingContext *)self powerFriendlyExport])];
 }
 
 - (void)dumpContext
@@ -279,65 +279,65 @@ LABEL_8:
   NSLog(&cfstr_PowerFriendlyE.isa, self->powerFriendlyExport);
 }
 
-- (PVVideoCompositingContext)initWithCoder:(id)a3
+- (PVVideoCompositingContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[PVVideoCompositingContext initWithDevice:](self, "initWithDevice:", [v4 decodeIntForKey:@"PVVideoCompositingContextDeviceIDKey"]);
-  -[PVVideoCompositingContext setGpuRenderAPI:](v5, "setGpuRenderAPI:", [v4 decodeIntegerForKey:@"PVVideoCompositingContextGPURenderAPIKey"]);
-  -[PVVideoCompositingContext setNumCPUThreads:](v5, "setNumCPUThreads:", [v4 decodeIntForKey:@"PVVideoCompositingContextNumCPUThreadsKey"]);
-  -[PVVideoCompositingContext setBufferFormat:](v5, "setBufferFormat:", [v4 decodeIntForKey:@"PVVideoCompositingContextBufferFormatKey"]);
-  -[PVVideoCompositingContext setShaderFormat:](v5, "setShaderFormat:", [v4 decodeIntForKey:@"PVVideoCompositingContextShaderFormatKey"]);
-  -[PVVideoCompositingContext setFilterMode:](v5, "setFilterMode:", [v4 decodeIntForKey:@"PVVideoCompositingContextFilterModeKey"]);
-  -[PVVideoCompositingContext setConcatenationFlag:](v5, "setConcatenationFlag:", [v4 decodeBoolForKey:@"PVVideoCompositingContextConcatentationKey"]);
-  -[PVVideoCompositingContext setTileSize:](v5, "setTileSize:", [v4 decodeBoolForKey:@"PVVideoCompositingContextTileSizeKey"]);
-  -[PVVideoCompositingContext setPageSize:](v5, "setPageSize:", [v4 decodeBoolForKey:@"PVVideoCompositingContextPageSizeKey"]);
-  -[PVVideoCompositingContext setTextureBorder:](v5, "setTextureBorder:", [v4 decodeBoolForKey:@"PVVideoCompositingContextTextureBorderKey"]);
-  -[PVVideoCompositingContext setDynamicPlayback:](v5, "setDynamicPlayback:", [v4 decodeBoolForKey:@"PVVideoCompositingContextDynamicPlaybackKey"]);
-  -[PVVideoCompositingContext setRenderGraphDumpLevel:](v5, "setRenderGraphDumpLevel:", [v4 decodeIntForKey:@"PVVideoCompositingContextGraphDumpLevelKey"]);
-  -[PVVideoCompositingContext setRenderStatsFlag:](v5, "setRenderStatsFlag:", [v4 decodeIntForKey:@"PVVideoCompositingContextStatsFlagKey"] != 0);
-  -[PVVideoCompositingContext setRenderStatsWarmUp:](v5, "setRenderStatsWarmUp:", [v4 decodeIntForKey:@"PVVideoCompositingContextStatsWarmUpKey"]);
-  -[PVVideoCompositingContext setRenderStatsMaxVals:](v5, "setRenderStatsMaxVals:", [v4 decodeIntForKey:@"PVVideoCompositingContextStatsMaxValsKey"]);
-  -[PVVideoCompositingContext setDotGraphLevel:](v5, "setDotGraphLevel:", [v4 decodeIntForKey:@"PVVideoCompositingContextDotGraphLevelKey"]);
-  -[PVVideoCompositingContext setSignPostLevel:](v5, "setSignPostLevel:", [v4 decodeIntForKey:@"PVVideoCompositingContextSignPostLevelKey"]);
-  -[PVVideoCompositingContext setTraceGLLevel:](v5, "setTraceGLLevel:", [v4 decodeIntegerForKey:@"PVVideoCompositingContextTraceGLLevelKey"]);
-  -[PVVideoCompositingContext setTraceMetalLevel:](v5, "setTraceMetalLevel:", [v4 decodeIntegerForKey:@"PVVideoCompositingContextTraceMetalLevelKey"]);
-  -[PVVideoCompositingContext setInstructionGraphDumpLevel:](v5, "setInstructionGraphDumpLevel:", [v4 decodeIntForKey:@"PVVideoCompositingContextInstructionGraphDumpLevelKey"]);
-  -[PVVideoCompositingContext setInstructionGraphDotTreeLevel:](v5, "setInstructionGraphDotTreeLevel:", [v4 decodeIntForKey:@"PVVideoCompositingContextInstructionGraphDotTreeLevelKey"]);
-  -[PVVideoCompositingContext setPowerFriendlyExport:](v5, "setPowerFriendlyExport:", [v4 decodeBoolForKey:@"PVVideoCompositingContextPowerFriendlyExport"]);
+  coderCopy = coder;
+  v5 = -[PVVideoCompositingContext initWithDevice:](self, "initWithDevice:", [coderCopy decodeIntForKey:@"PVVideoCompositingContextDeviceIDKey"]);
+  -[PVVideoCompositingContext setGpuRenderAPI:](v5, "setGpuRenderAPI:", [coderCopy decodeIntegerForKey:@"PVVideoCompositingContextGPURenderAPIKey"]);
+  -[PVVideoCompositingContext setNumCPUThreads:](v5, "setNumCPUThreads:", [coderCopy decodeIntForKey:@"PVVideoCompositingContextNumCPUThreadsKey"]);
+  -[PVVideoCompositingContext setBufferFormat:](v5, "setBufferFormat:", [coderCopy decodeIntForKey:@"PVVideoCompositingContextBufferFormatKey"]);
+  -[PVVideoCompositingContext setShaderFormat:](v5, "setShaderFormat:", [coderCopy decodeIntForKey:@"PVVideoCompositingContextShaderFormatKey"]);
+  -[PVVideoCompositingContext setFilterMode:](v5, "setFilterMode:", [coderCopy decodeIntForKey:@"PVVideoCompositingContextFilterModeKey"]);
+  -[PVVideoCompositingContext setConcatenationFlag:](v5, "setConcatenationFlag:", [coderCopy decodeBoolForKey:@"PVVideoCompositingContextConcatentationKey"]);
+  -[PVVideoCompositingContext setTileSize:](v5, "setTileSize:", [coderCopy decodeBoolForKey:@"PVVideoCompositingContextTileSizeKey"]);
+  -[PVVideoCompositingContext setPageSize:](v5, "setPageSize:", [coderCopy decodeBoolForKey:@"PVVideoCompositingContextPageSizeKey"]);
+  -[PVVideoCompositingContext setTextureBorder:](v5, "setTextureBorder:", [coderCopy decodeBoolForKey:@"PVVideoCompositingContextTextureBorderKey"]);
+  -[PVVideoCompositingContext setDynamicPlayback:](v5, "setDynamicPlayback:", [coderCopy decodeBoolForKey:@"PVVideoCompositingContextDynamicPlaybackKey"]);
+  -[PVVideoCompositingContext setRenderGraphDumpLevel:](v5, "setRenderGraphDumpLevel:", [coderCopy decodeIntForKey:@"PVVideoCompositingContextGraphDumpLevelKey"]);
+  -[PVVideoCompositingContext setRenderStatsFlag:](v5, "setRenderStatsFlag:", [coderCopy decodeIntForKey:@"PVVideoCompositingContextStatsFlagKey"] != 0);
+  -[PVVideoCompositingContext setRenderStatsWarmUp:](v5, "setRenderStatsWarmUp:", [coderCopy decodeIntForKey:@"PVVideoCompositingContextStatsWarmUpKey"]);
+  -[PVVideoCompositingContext setRenderStatsMaxVals:](v5, "setRenderStatsMaxVals:", [coderCopy decodeIntForKey:@"PVVideoCompositingContextStatsMaxValsKey"]);
+  -[PVVideoCompositingContext setDotGraphLevel:](v5, "setDotGraphLevel:", [coderCopy decodeIntForKey:@"PVVideoCompositingContextDotGraphLevelKey"]);
+  -[PVVideoCompositingContext setSignPostLevel:](v5, "setSignPostLevel:", [coderCopy decodeIntForKey:@"PVVideoCompositingContextSignPostLevelKey"]);
+  -[PVVideoCompositingContext setTraceGLLevel:](v5, "setTraceGLLevel:", [coderCopy decodeIntegerForKey:@"PVVideoCompositingContextTraceGLLevelKey"]);
+  -[PVVideoCompositingContext setTraceMetalLevel:](v5, "setTraceMetalLevel:", [coderCopy decodeIntegerForKey:@"PVVideoCompositingContextTraceMetalLevelKey"]);
+  -[PVVideoCompositingContext setInstructionGraphDumpLevel:](v5, "setInstructionGraphDumpLevel:", [coderCopy decodeIntForKey:@"PVVideoCompositingContextInstructionGraphDumpLevelKey"]);
+  -[PVVideoCompositingContext setInstructionGraphDotTreeLevel:](v5, "setInstructionGraphDotTreeLevel:", [coderCopy decodeIntForKey:@"PVVideoCompositingContextInstructionGraphDotTreeLevelKey"]);
+  -[PVVideoCompositingContext setPowerFriendlyExport:](v5, "setPowerFriendlyExport:", [coderCopy decodeBoolForKey:@"PVVideoCompositingContextPowerFriendlyExport"]);
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:-[PVVideoCompositingContext renderDevice](self forKey:{"renderDevice"), @"PVVideoCompositingContextDeviceIDKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext gpuRenderAPI](self forKey:{"gpuRenderAPI"), @"PVVideoCompositingContextGPURenderAPIKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext numCPUThreads](self forKey:{"numCPUThreads"), @"PVVideoCompositingContextNumCPUThreadsKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext bufferFormat](self forKey:{"bufferFormat"), @"PVVideoCompositingContextBufferFormatKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext shaderFormat](self forKey:{"shaderFormat"), @"PVVideoCompositingContextShaderFormatKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext filterMode](self forKey:{"filterMode"), @"PVVideoCompositingContextFilterModeKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext concatenationFlag](self forKey:{"concatenationFlag"), @"PVVideoCompositingContextConcatentationKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext tileSize](self forKey:{"tileSize"), @"PVVideoCompositingContextTileSizeKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext pageSize](self forKey:{"pageSize"), @"PVVideoCompositingContextPageSizeKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext textureBorder](self forKey:{"textureBorder"), @"PVVideoCompositingContextTextureBorderKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext dynamicPlayback](self forKey:{"dynamicPlayback"), @"PVVideoCompositingContextDynamicPlaybackKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext renderGraphDumpLevel](self forKey:{"renderGraphDumpLevel"), @"PVVideoCompositingContextGraphDumpLevelKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext renderStatsFlag](self forKey:{"renderStatsFlag"), @"PVVideoCompositingContextStatsFlagKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext renderStatsWarmUp](self forKey:{"renderStatsWarmUp"), @"PVVideoCompositingContextStatsWarmUpKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext renderStatsMaxVals](self forKey:{"renderStatsMaxVals"), @"PVVideoCompositingContextStatsMaxValsKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext dotGraphLevel](self forKey:{"dotGraphLevel"), @"PVVideoCompositingContextDotGraphLevelKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext signPostLevel](self forKey:{"signPostLevel"), @"PVVideoCompositingContextSignPostLevelKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext traceGLLevel](self forKey:{"traceGLLevel"), @"PVVideoCompositingContextTraceGLLevelKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext traceMetalLevel](self forKey:{"traceMetalLevel"), @"PVVideoCompositingContextTraceMetalLevelKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext instructionGraphDumpLevel](self forKey:{"instructionGraphDumpLevel"), @"PVVideoCompositingContextInstructionGraphDumpLevelKey"}];
-  [v4 encodeInt:-[PVVideoCompositingContext instructionGraphDotTreeLevel](self forKey:{"instructionGraphDotTreeLevel"), @"PVVideoCompositingContextInstructionGraphDotTreeLevelKey"}];
-  [v4 encodeBool:-[PVVideoCompositingContext powerFriendlyExport](self forKey:{"powerFriendlyExport"), @"PVVideoCompositingContextPowerFriendlyExport"}];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[PVVideoCompositingContext renderDevice](self forKey:{"renderDevice"), @"PVVideoCompositingContextDeviceIDKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext gpuRenderAPI](self forKey:{"gpuRenderAPI"), @"PVVideoCompositingContextGPURenderAPIKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext numCPUThreads](self forKey:{"numCPUThreads"), @"PVVideoCompositingContextNumCPUThreadsKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext bufferFormat](self forKey:{"bufferFormat"), @"PVVideoCompositingContextBufferFormatKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext shaderFormat](self forKey:{"shaderFormat"), @"PVVideoCompositingContextShaderFormatKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext filterMode](self forKey:{"filterMode"), @"PVVideoCompositingContextFilterModeKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext concatenationFlag](self forKey:{"concatenationFlag"), @"PVVideoCompositingContextConcatentationKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext tileSize](self forKey:{"tileSize"), @"PVVideoCompositingContextTileSizeKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext pageSize](self forKey:{"pageSize"), @"PVVideoCompositingContextPageSizeKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext textureBorder](self forKey:{"textureBorder"), @"PVVideoCompositingContextTextureBorderKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext dynamicPlayback](self forKey:{"dynamicPlayback"), @"PVVideoCompositingContextDynamicPlaybackKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext renderGraphDumpLevel](self forKey:{"renderGraphDumpLevel"), @"PVVideoCompositingContextGraphDumpLevelKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext renderStatsFlag](self forKey:{"renderStatsFlag"), @"PVVideoCompositingContextStatsFlagKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext renderStatsWarmUp](self forKey:{"renderStatsWarmUp"), @"PVVideoCompositingContextStatsWarmUpKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext renderStatsMaxVals](self forKey:{"renderStatsMaxVals"), @"PVVideoCompositingContextStatsMaxValsKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext dotGraphLevel](self forKey:{"dotGraphLevel"), @"PVVideoCompositingContextDotGraphLevelKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext signPostLevel](self forKey:{"signPostLevel"), @"PVVideoCompositingContextSignPostLevelKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext traceGLLevel](self forKey:{"traceGLLevel"), @"PVVideoCompositingContextTraceGLLevelKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext traceMetalLevel](self forKey:{"traceMetalLevel"), @"PVVideoCompositingContextTraceMetalLevelKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext instructionGraphDumpLevel](self forKey:{"instructionGraphDumpLevel"), @"PVVideoCompositingContextInstructionGraphDumpLevelKey"}];
+  [coderCopy encodeInt:-[PVVideoCompositingContext instructionGraphDotTreeLevel](self forKey:{"instructionGraphDotTreeLevel"), @"PVVideoCompositingContextInstructionGraphDotTreeLevelKey"}];
+  [coderCopy encodeBool:-[PVVideoCompositingContext powerFriendlyExport](self forKey:{"powerFriendlyExport"), @"PVVideoCompositingContextPowerFriendlyExport"}];
 }
 
-- (void)setSignPostLevel:(int)a3
+- (void)setSignPostLevel:(int)level
 {
-  v3 = *&a3;
+  v3 = *&level;
   obj = self;
   objc_sync_enter(obj);
   obj->signPostLevel = v3;
@@ -345,9 +345,9 @@ LABEL_8:
   objc_sync_exit(obj);
 }
 
-- (void)setInstructionGraphDumpLevel:(int)a3
+- (void)setInstructionGraphDumpLevel:(int)level
 {
-  v3 = *&a3;
+  v3 = *&level;
   obj = self;
   objc_sync_enter(obj);
   obj->instructionGraphDumpLevel = v3;
@@ -355,9 +355,9 @@ LABEL_8:
   objc_sync_exit(obj);
 }
 
-- (void)setTraceMetalLevel:(int)a3
+- (void)setTraceMetalLevel:(int)level
 {
-  v3 = *&a3;
+  v3 = *&level;
   obj = self;
   objc_sync_enter(obj);
   obj->traceMetalLevel = v3;
@@ -365,39 +365,39 @@ LABEL_8:
   objc_sync_exit(obj);
 }
 
-- (void)setOutputColorSpace:(id)a3
+- (void)setOutputColorSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   obj = self;
   objc_sync_enter(obj);
   outputColorSpace = obj->_outputColorSpace;
-  obj->_outputColorSpace = v4;
+  obj->_outputColorSpace = spaceCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)setWorkingColorSpace:(id)a3
+- (void)setWorkingColorSpace:(id)space
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(PVColorSpace *)v5->_workingColorSpace isEqual:v6])
+  spaceCopy = space;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(PVColorSpace *)selfCopy->_workingColorSpace isEqual:spaceCopy])
   {
-    objc_storeStrong(&v5->_workingColorSpace, a3);
-    [(PVVideoCompositingContext *)v5 setIntermediateBufferFormatForWorkingColorSpace];
+    objc_storeStrong(&selfCopy->_workingColorSpace, space);
+    [(PVVideoCompositingContext *)selfCopy setIntermediateBufferFormatForWorkingColorSpace];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)setIntermediateBufferFormatForWorkingColorSpace
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(PVVideoCompositingContext *)obj workingColorSpace];
-  v3 = [v2 isWideGamutSpace];
+  workingColorSpace = [(PVVideoCompositingContext *)obj workingColorSpace];
+  isWideGamutSpace = [workingColorSpace isWideGamutSpace];
 
-  if (v3)
+  if (isWideGamutSpace)
   {
     v4 = 27;
   }

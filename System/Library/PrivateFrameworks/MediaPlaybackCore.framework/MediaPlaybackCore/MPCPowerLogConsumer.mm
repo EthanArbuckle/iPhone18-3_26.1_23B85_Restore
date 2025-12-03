@@ -2,27 +2,27 @@
 + (PPSTelemetryIdentifier)songTransitionsTelemetryID;
 + (PPSTelemetryIdentifier)vocalAttenuationTelemetryID;
 - (void)dealloc;
-- (void)reportSongTransitionInfo:(double)a3 transitionProvided:(int64_t)a4 date:(id)a5;
-- (void)reportVocalAttenuationIsActive:(BOOL)a3 date:(id)a4;
-- (void)subscribeToEventStream:(id)a3;
+- (void)reportSongTransitionInfo:(double)info transitionProvided:(int64_t)provided date:(id)date;
+- (void)reportVocalAttenuationIsActive:(BOOL)active date:(id)date;
+- (void)subscribeToEventStream:(id)stream;
 @end
 
 @implementation MPCPowerLogConsumer
 
-- (void)reportSongTransitionInfo:(double)a3 transitionProvided:(int64_t)a4 date:(id)a5
+- (void)reportSongTransitionInfo:(double)info transitionProvided:(int64_t)provided date:(id)date
 {
   v21[3] = *MEMORY[0x1E69E9840];
   v20[0] = @"TransitionDuration";
   v7 = MEMORY[0x1E696AD98];
-  v8 = a5;
-  v9 = [v7 numberWithDouble:a3];
+  dateCopy = date;
+  v9 = [v7 numberWithDouble:info];
   v21[0] = v9;
   v20[1] = @"TransitionProvided";
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:provided];
   v21[1] = v10;
   v20[2] = @"TimestampSent";
   v11 = MEMORY[0x1E696AD98];
-  [v8 timeIntervalSince1970];
+  [dateCopy timeIntervalSince1970];
   v13 = v12;
 
   v14 = [v11 numberWithDouble:v13];
@@ -55,19 +55,19 @@ uint64_t __72__MPCPowerLogConsumer_reportSongTransitionInfo_transitionProvided_d
   return PPSSendTelemetry();
 }
 
-- (void)reportVocalAttenuationIsActive:(BOOL)a3 date:(id)a4
+- (void)reportVocalAttenuationIsActive:(BOOL)active date:(id)date
 {
-  v4 = a3;
+  activeCopy = active;
   v19[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if ([(MPCPowerLogConsumer *)self lastVocalAttenuationIsActive]!= v4 && MSVDeviceSupportsVocalAttenuation())
+  dateCopy = date;
+  if ([(MPCPowerLogConsumer *)self lastVocalAttenuationIsActive]!= activeCopy && MSVDeviceSupportsVocalAttenuation())
   {
     v18[0] = @"Enabled";
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:activeCopy];
     v18[1] = @"TimestampSent";
     v19[0] = v7;
     v8 = MEMORY[0x1E696AD98];
-    [v6 timeIntervalSince1970];
+    [dateCopy timeIntervalSince1970];
     v9 = [v8 numberWithDouble:?];
     v19[1] = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:2];
@@ -81,7 +81,7 @@ uint64_t __72__MPCPowerLogConsumer_reportSongTransitionInfo_transitionProvided_d
     v12 = v10;
     dispatch_async(v11, &v13);
 
-    [(MPCPowerLogConsumer *)self setLastVocalAttenuationIsActive:v4, v13, v14, v15, v16];
+    [(MPCPowerLogConsumer *)self setLastVocalAttenuationIsActive:activeCopy, v13, v14, v15, v16];
   }
 }
 
@@ -101,10 +101,10 @@ uint64_t __59__MPCPowerLogConsumer_reportVocalAttenuationIsActive_date___block_i
   return PPSSendTelemetry();
 }
 
-- (void)subscribeToEventStream:(id)a3
+- (void)subscribeToEventStream:(id)stream
 {
-  v5 = a3;
-  objc_storeStrong(&self->_subscription, a3);
+  streamCopy = stream;
+  objc_storeStrong(&self->_subscription, stream);
   if (MSVDeviceSupportsVocalAttenuation())
   {
     subscription = self->_subscription;

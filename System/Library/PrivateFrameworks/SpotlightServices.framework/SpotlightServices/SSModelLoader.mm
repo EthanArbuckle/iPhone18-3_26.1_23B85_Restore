@@ -1,14 +1,14 @@
 @interface SSModelLoader
-+ (id)assetDirectoryPathForType:(unint64_t)a3 forUpdate:(BOOL)a4;
++ (id)assetDirectoryPathForType:(unint64_t)type forUpdate:(BOOL)update;
 + (id)sharedInstance;
 - (BOOL)hasPendingUpdates;
 - (SSModelLoader)init;
-- (void)moveNewlyPackagedAssets:(id)a3;
-- (void)removeAssetsForType:(unint64_t)a3 group:(id)a4;
-- (void)removeAssetsWithName:(id)a3;
-- (void)unpackageModelAssets:(id)a3 assetName:(id)a4 completion:(id)a5;
-- (void)unpackageModelAssets:(id)a3 type:(unint64_t)a4 group:(id)a5 completion:(id)a6;
-- (void)unpackageModelAssets:(id)a3 type:(unint64_t)a4 intoDirectory:(id)a5 group:(id)a6 completion:(id)a7;
+- (void)moveNewlyPackagedAssets:(id)assets;
+- (void)removeAssetsForType:(unint64_t)type group:(id)group;
+- (void)removeAssetsWithName:(id)name;
+- (void)unpackageModelAssets:(id)assets assetName:(id)name completion:(id)completion;
+- (void)unpackageModelAssets:(id)assets type:(unint64_t)type group:(id)group completion:(id)completion;
+- (void)unpackageModelAssets:(id)assets type:(unint64_t)type intoDirectory:(id)directory group:(id)group completion:(id)completion;
 @end
 
 @implementation SSModelLoader
@@ -53,10 +53,10 @@ uint64_t __31__SSModelLoader_sharedInstance__block_invoke()
   return v2;
 }
 
-+ (id)assetDirectoryPathForType:(unint64_t)a3 forUpdate:(BOOL)a4
++ (id)assetDirectoryPathForType:(unint64_t)type forUpdate:(BOOL)update
 {
   v5 = @"Library/Spotlight/Resources_V3/";
-  if (a4)
+  if (update)
   {
     v5 = @"Library/Spotlight/Resources.update_V3/";
   }
@@ -65,14 +65,14 @@ uint64_t __31__SSModelLoader_sharedInstance__block_invoke()
   v7 = NSHomeDirectory();
   v8 = [v7 stringByAppendingPathComponent:v6];
 
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  if (a3 == 1)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (type == 1)
   {
     v10 = @"Default";
     goto LABEL_7;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v10 = @"Experimental";
 LABEL_7:
@@ -82,9 +82,9 @@ LABEL_7:
 
   v11 = 0;
 LABEL_9:
-  if (([v9 fileExistsAtPath:v11] & 1) == 0)
+  if (([defaultManager fileExistsAtPath:v11] & 1) == 0)
   {
-    [v9 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:0];
+    [defaultManager createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:0];
   }
 
   return v11;
@@ -97,12 +97,12 @@ LABEL_9:
     return 1;
   }
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v5 = 2;
   do
   {
     v6 = [objc_opt_class() assetDirectoryPathForType:v5 forUpdate:1];
-    v7 = [v4 contentsOfDirectoryAtPath:v6 error:0];
+    v7 = [defaultManager contentsOfDirectoryAtPath:v6 error:0];
     if ([v7 count])
     {
       pendingUpdates = self->_pendingUpdates;
@@ -119,13 +119,13 @@ LABEL_9:
   return v3;
 }
 
-- (void)removeAssetsWithName:(id)a3
+- (void)removeAssetsWithName:(id)name
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (assetIsValid(v4))
+  nameCopy = name;
+  if (assetIsValid(nameCopy))
   {
-    AssetTypeForName = getAssetTypeForName(v4);
+    AssetTypeForName = getAssetTypeForName(nameCopy);
     v6 = PRSLogCategoryDefault();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -140,18 +140,18 @@ LABEL_9:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeAssetsForType:(unint64_t)a3 group:(id)a4
+- (void)removeAssetsForType:(unint64_t)type group:(id)group
 {
-  v6 = a4;
+  groupCopy = group;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__SSModelLoader_removeAssetsForType_group___block_invoke;
   block[3] = &unk_1E8596808;
-  v10 = v6;
-  v11 = a3;
+  v10 = groupCopy;
+  typeCopy = type;
   block[4] = self;
-  v8 = v6;
+  v8 = groupCopy;
   dispatch_async(queue, block);
 }
 
@@ -173,16 +173,16 @@ void __43__SSModelLoader_removeAssetsForType_group___block_invoke(void *a1)
   [SSADEventReporter reportModelDeletionForType:a1[6]];
 }
 
-- (void)unpackageModelAssets:(id)a3 assetName:(id)a4 completion:(id)a5
+- (void)unpackageModelAssets:(id)assets assetName:(id)name completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (assetIsValid(v9))
+  assetsCopy = assets;
+  nameCopy = name;
+  completionCopy = completion;
+  if (assetIsValid(nameCopy))
   {
-    AssetTypeForName = getAssetTypeForName(v9);
-    v12 = [MEMORY[0x1E696AC00] fileHandleForReadingAtPath:v8];
+    AssetTypeForName = getAssetTypeForName(nameCopy);
+    v12 = [MEMORY[0x1E696AC00] fileHandleForReadingAtPath:assetsCopy];
     v13 = [objc_opt_class() assetDirectoryPathForType:AssetTypeForName forUpdate:1];
     v14 = PRSLogCategoryDefault();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -192,27 +192,27 @@ void __43__SSModelLoader_removeAssetsForType_group___block_invoke(void *a1)
       _os_log_impl(&dword_1D9F69000, v14, OS_LOG_TYPE_INFO, "[Model loading] unpackaging %lu", &v16, 0xCu);
     }
 
-    [(SSModelLoader *)self unpackageModelAssets:v12 type:AssetTypeForName intoDirectory:v13 group:0 completion:v10];
+    [(SSModelLoader *)self unpackageModelAssets:v12 type:AssetTypeForName intoDirectory:v13 group:0 completion:completionCopy];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unpackageModelAssets:(id)a3 type:(unint64_t)a4 group:(id)a5 completion:(id)a6
+- (void)unpackageModelAssets:(id)assets type:(unint64_t)type group:(id)group completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [objc_opt_class() assetDirectoryPathForType:a4 forUpdate:1];
-  [(SSModelLoader *)self unpackageModelAssets:v12 type:a4 intoDirectory:v13 group:v11 completion:v10];
+  completionCopy = completion;
+  groupCopy = group;
+  assetsCopy = assets;
+  v13 = [objc_opt_class() assetDirectoryPathForType:type forUpdate:1];
+  [(SSModelLoader *)self unpackageModelAssets:assetsCopy type:type intoDirectory:v13 group:groupCopy completion:completionCopy];
 }
 
-- (void)unpackageModelAssets:(id)a3 type:(unint64_t)a4 intoDirectory:(id)a5 group:(id)a6 completion:(id)a7
+- (void)unpackageModelAssets:(id)assets type:(unint64_t)type intoDirectory:(id)directory group:(id)group completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  assetsCopy = assets;
+  directoryCopy = directory;
+  groupCopy = group;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -220,15 +220,15 @@ void __43__SSModelLoader_removeAssetsForType_group___block_invoke(void *a1)
   block[2] = __74__SSModelLoader_unpackageModelAssets_type_intoDirectory_group_completion___block_invoke;
   block[3] = &unk_1E8596830;
   objc_copyWeak(v26, &location);
-  v22 = v13;
-  v23 = v12;
-  v26[1] = a4;
-  v24 = v14;
-  v25 = v15;
-  v17 = v14;
-  v18 = v15;
-  v19 = v12;
-  v20 = v13;
+  v22 = directoryCopy;
+  v23 = assetsCopy;
+  v26[1] = type;
+  v24 = groupCopy;
+  v25 = completionCopy;
+  v17 = groupCopy;
+  v18 = completionCopy;
+  v19 = assetsCopy;
+  v20 = directoryCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(v26);
@@ -283,9 +283,9 @@ LABEL_6:
 LABEL_11:
 }
 
-- (void)moveNewlyPackagedAssets:(id)a3
+- (void)moveNewlyPackagedAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -294,7 +294,7 @@ LABEL_11:
   block[3] = &unk_1E8596858;
   objc_copyWeak(&v7, &location);
   block[4] = self;
-  dispatch_group_async(v4, queue, block);
+  dispatch_group_async(assetsCopy, queue, block);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);

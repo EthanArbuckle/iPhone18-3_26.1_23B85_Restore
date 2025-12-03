@@ -2,38 +2,38 @@
 - (BOOL)_loadArtworkFromMemoryCache;
 - (BOOL)isPlaceholder;
 - (id)imageProvider;
-- (void)_asyncFetchArtworkDidLoadImage:(id)a3 forArtworkKey:(id)a4;
+- (void)_asyncFetchArtworkDidLoadImage:(id)image forArtworkKey:(id)key;
 - (void)_clearAndHideArtworkView;
 - (void)_fetchArtwork;
 - (void)_fetchArtworkInBackground;
 - (void)_layoutContentViewSubviews;
 - (void)_updateSeparatorInsets;
 - (void)layoutSubviews;
-- (void)setArtworkKey:(id)a3;
-- (void)setCellEmphasis:(int64_t)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setMaximumNumberOfTextLines:(unint64_t)a3;
+- (void)setArtworkKey:(id)key;
+- (void)setCellEmphasis:(int64_t)emphasis;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setMaximumNumberOfTextLines:(unint64_t)lines;
 - (void)setupCell;
-- (void)toggleChanged:(id)a3;
-- (void)toggleOn:(BOOL)a3 animated:(BOOL)a4;
+- (void)toggleChanged:(id)changed;
+- (void)toggleOn:(BOOL)on animated:(BOOL)animated;
 @end
 
 @implementation MTSwitchCell
 
-- (void)toggleOn:(BOOL)a3 animated:(BOOL)a4
+- (void)toggleOn:(BOOL)on animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(MTSwitchCell *)self toggle];
-  [v6 setOn:v5 animated:v4];
+  animatedCopy = animated;
+  onCopy = on;
+  toggle = [(MTSwitchCell *)self toggle];
+  [toggle setOn:onCopy animated:animatedCopy];
 }
 
-- (void)setArtworkKey:(id)a3
+- (void)setArtworkKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   if (([(NSString *)self->_artworkKey isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_artworkKey, a3);
+    objc_storeStrong(&self->_artworkKey, key);
     if ([(NSString *)self->_artworkKey length])
     {
       [(MTSwitchCell *)self _fetchArtwork];
@@ -46,23 +46,23 @@
   }
 }
 
-- (void)setMaximumNumberOfTextLines:(unint64_t)a3
+- (void)setMaximumNumberOfTextLines:(unint64_t)lines
 {
-  if (a3 <= 1)
+  if (lines <= 1)
   {
-    v3 = 1;
+    linesCopy = 1;
   }
 
   else
   {
-    v3 = a3;
+    linesCopy = lines;
   }
 
-  if (self->_maximumNumberOfTextLines != v3)
+  if (self->_maximumNumberOfTextLines != linesCopy)
   {
-    self->_maximumNumberOfTextLines = v3;
-    v5 = [(MTSwitchCell *)self textLabel];
-    [v5 setNumberOfLines:self->_maximumNumberOfTextLines];
+    self->_maximumNumberOfTextLines = linesCopy;
+    textLabel = [(MTSwitchCell *)self textLabel];
+    [textLabel setNumberOfLines:self->_maximumNumberOfTextLines];
 
     [(MTSwitchCell *)self setNeedsLayout];
   }
@@ -77,14 +77,14 @@
   [(MTSwitchCell *)self _layoutContentViewSubviews];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = MTSwitchCell;
   [(MTTableViewCell *)&v6 setEnabled:?];
-  v5 = [(MTSwitchCell *)self toggle];
-  [v5 setEnabled:v3];
+  toggle = [(MTSwitchCell *)self toggle];
+  [toggle setEnabled:enabledCopy];
 }
 
 - (void)setupCell
@@ -96,28 +96,28 @@
   [(MTSwitchCell *)self setToggle:v3];
   [v3 addTarget:self action:"toggleChanged:" forControlEvents:4096];
   [(MTSwitchCell *)self setAccessoryView:v3];
-  v4 = [(MTSwitchCell *)self textLabel];
+  textLabel = [(MTSwitchCell *)self textLabel];
   v5 = +[UIColor cellTextColor];
-  [v4 setTextColor:v5];
+  [textLabel setTextColor:v5];
 
-  v6 = [(MTSwitchCell *)self textLabel];
-  v7 = [objc_opt_class() titleFont];
-  [v6 setFont:v7];
+  textLabel2 = [(MTSwitchCell *)self textLabel];
+  titleFont = [objc_opt_class() titleFont];
+  [textLabel2 setFont:titleFont];
 }
 
-- (void)setCellEmphasis:(int64_t)a3
+- (void)setCellEmphasis:(int64_t)emphasis
 {
-  if ([(MTTableViewCell *)self cellEmphasis]!= a3)
+  if ([(MTTableViewCell *)self cellEmphasis]!= emphasis)
   {
     v6.receiver = self;
     v6.super_class = MTSwitchCell;
-    [(MTTableViewCell *)&v6 setCellEmphasis:a3];
+    [(MTTableViewCell *)&v6 setCellEmphasis:emphasis];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_10007A954;
     v5[3] = &unk_1004D9720;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = emphasis;
     [UIView performWithoutAnimation:v5];
   }
 }
@@ -126,20 +126,20 @@
 {
   if ([(MTSwitchCell *)self customiseLabelAndSeparatorInsets])
   {
-    v3 = [(MTSwitchCell *)self mt_isRTL];
-    v4 = [(MTSwitchCell *)self contentView];
-    [v4 layoutMargins];
+    mt_isRTL = [(MTSwitchCell *)self mt_isRTL];
+    contentView = [(MTSwitchCell *)self contentView];
+    [contentView layoutMargins];
     v6 = v5;
     v8 = v7;
 
-    if (v3)
+    if (mt_isRTL)
     {
       v6 = v8;
     }
 
-    v9 = [(MTSwitchCell *)self _showsArtwork];
+    _showsArtwork = [(MTSwitchCell *)self _showsArtwork];
     v10 = 64.0;
-    if (!v9)
+    if (!_showsArtwork)
     {
       v10 = 0.0;
     }
@@ -150,19 +150,19 @@
 
 - (void)_layoutContentViewSubviews
 {
-  v3 = [(MTSwitchCell *)self effectiveUserInterfaceLayoutDirection];
-  v32 = [(MTSwitchCell *)self contentView];
-  [v32 bounds];
-  [v32 layoutMargins];
-  [v32 layoutMargins];
+  effectiveUserInterfaceLayoutDirection = [(MTSwitchCell *)self effectiveUserInterfaceLayoutDirection];
+  contentView = [(MTSwitchCell *)self contentView];
+  [contentView bounds];
+  [contentView layoutMargins];
+  [contentView layoutMargins];
   UIRectInset();
   UIRectInset();
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(MTSwitchCell *)self artworkKey];
-  v13 = [v12 length];
+  artworkKey = [(MTSwitchCell *)self artworkKey];
+  v13 = [artworkKey length];
 
   if (v13)
   {
@@ -171,23 +171,23 @@
     v34.size.width = v9;
     v34.size.height = v11;
     Height = CGRectGetHeight(v34);
-    v15 = sub_100146EDC(v3 == 1, 1, 1, 0.0, (Height + -48.0) * 0.5, 48.0, 48.0, v5, v7, v9, v11);
+    v15 = sub_100146EDC(effectiveUserInterfaceLayoutDirection == 1, 1, 1, 0.0, (Height + -48.0) * 0.5, 48.0, 48.0, v5, v7, v9, v11);
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(MTSwitchCell *)self imageView];
-    [v22 setFrame:{v15, v17, v19, v21}];
+    imageView = [(MTSwitchCell *)self imageView];
+    [imageView setFrame:{v15, v17, v19, v21}];
 
-    v23 = [(MTSwitchCell *)self imageView];
-    v24 = [v23 superview];
+    imageView2 = [(MTSwitchCell *)self imageView];
+    superview = [imageView2 superview];
 
-    if (!v24)
+    if (!superview)
     {
-      v25 = [(MTSwitchCell *)self imageView];
-      [v32 addSubview:v25];
+      imageView3 = [(MTSwitchCell *)self imageView];
+      [contentView addSubview:imageView3];
 
-      v26 = [(MTSwitchCell *)self imageView];
-      [v26 setClipsToBounds:1];
+      imageView4 = [(MTSwitchCell *)self imageView];
+      [imageView4 setClipsToBounds:1];
     }
 
     UIRectInset();
@@ -199,31 +199,31 @@
 
   if ([(MTSwitchCell *)self customiseLabelAndSeparatorInsets])
   {
-    v31 = [(MTSwitchCell *)self textLabel];
-    [v31 setFrame:{v5, v7, v9, v11}];
+    textLabel = [(MTSwitchCell *)self textLabel];
+    [textLabel setFrame:{v5, v7, v9, v11}];
   }
 }
 
 - (void)_clearAndHideArtworkView
 {
-  v2 = [(MTSwitchCell *)self _artworkView];
-  [v2 setImage:0];
-  [v2 setHidden:1];
+  _artworkView = [(MTSwitchCell *)self _artworkView];
+  [_artworkView setImage:0];
+  [_artworkView setHidden:1];
 }
 
 - (void)_fetchArtwork
 {
-  v3 = [(MTSwitchCell *)self artworkKey];
-  v4 = [v3 length];
+  artworkKey = [(MTSwitchCell *)self artworkKey];
+  v4 = [artworkKey length];
 
   if (v4)
   {
-    v5 = [(MTSwitchCell *)self _artworkView];
-    [v5 mt_configureForDisplayingArtworkWithRadius:3.0];
-    [v5 setHidden:0];
+    _artworkView = [(MTSwitchCell *)self _artworkView];
+    [_artworkView mt_configureForDisplayingArtworkWithRadius:3.0];
+    [_artworkView setHidden:0];
     if (![(MTSwitchCell *)self _loadArtworkFromMemoryCache])
     {
-      [v5 setImage:0];
+      [_artworkView setImage:0];
       [(MTSwitchCell *)self _fetchArtworkInBackground];
     }
   }
@@ -231,14 +231,14 @@
 
 - (void)_fetchArtworkInBackground
 {
-  v3 = [(MTSwitchCell *)self artworkKey];
+  artworkKey = [(MTSwitchCell *)self artworkKey];
   objc_initWeak(&location, self);
   v4 = +[UIImage defaultPodcastArtwork];
-  [(MTSwitchCell *)self _asyncFetchArtworkDidLoadImage:v4 forArtworkKey:v3];
+  [(MTSwitchCell *)self _asyncFetchArtworkDidLoadImage:v4 forArtworkKey:artworkKey];
 
   if ([(MTSwitchCell *)self isPlaceholder])
   {
-    v5 = [(MTSwitchCell *)self imageProvider];
+    imageProvider = [(MTSwitchCell *)self imageProvider];
     v6 = v8;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -246,13 +246,13 @@
     v8[3] = &unk_1004D9748;
     v7 = &v9;
     objc_copyWeak(&v9, &location);
-    v8[4] = v3;
-    [v5 placeholderWithSize:v8 completionHandler:{48.0, 48.0}];
+    v8[4] = artworkKey;
+    [imageProvider placeholderWithSize:v8 completionHandler:{48.0, 48.0}];
   }
 
   else
   {
-    v5 = [(MTSwitchCell *)self imageProvider];
+    imageProvider = [(MTSwitchCell *)self imageProvider];
     v6 = v10;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
@@ -260,36 +260,36 @@
     v10[3] = &unk_1004D9748;
     v7 = &v12;
     objc_copyWeak(&v12, &location);
-    v11 = v3;
-    [v5 artworkForShow:v11 size:v10 completionHandler:{48.0, 48.0}];
+    v11 = artworkKey;
+    [imageProvider artworkForShow:v11 size:v10 completionHandler:{48.0, 48.0}];
   }
 
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
 }
 
-- (void)_asyncFetchArtworkDidLoadImage:(id)a3 forArtworkKey:(id)a4
+- (void)_asyncFetchArtworkDidLoadImage:(id)image forArtworkKey:(id)key
 {
-  v6 = a3;
+  imageCopy = image;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10007B264;
   v9[3] = &unk_1004D94C8;
   v9[4] = self;
-  v10 = a4;
-  v11 = v6;
-  v7 = v6;
-  v8 = v10;
+  keyCopy = key;
+  v11 = imageCopy;
+  v7 = imageCopy;
+  v8 = keyCopy;
   [NSThread mainThread:v9];
 }
 
 - (BOOL)_loadArtworkFromMemoryCache
 {
-  v3 = [(MTSwitchCell *)self artworkKey];
-  if (v3 && !-[MTSwitchCell isPlaceholder](self, "isPlaceholder") && (-[MTSwitchCell imageProvider](self, "imageProvider"), v4 = objc_claimAutoreleasedReturnValue(), [v4 legacyUICachedArtworkForPodcastUuid:v3 withSize:{48.0, 48.0}], v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
+  artworkKey = [(MTSwitchCell *)self artworkKey];
+  if (artworkKey && !-[MTSwitchCell isPlaceholder](self, "isPlaceholder") && (-[MTSwitchCell imageProvider](self, "imageProvider"), v4 = objc_claimAutoreleasedReturnValue(), [v4 legacyUICachedArtworkForPodcastUuid:artworkKey withSize:{48.0, 48.0}], v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
   {
-    v6 = [(MTSwitchCell *)self imageView];
-    [v6 setImage:v5];
+    imageView = [(MTSwitchCell *)self imageView];
+    [imageView setImage:v5];
 
     [(MTSwitchCell *)self setNeedsLayout];
     v7 = 1;
@@ -305,21 +305,21 @@
 
 - (BOOL)isPlaceholder
 {
-  v2 = [(MTSwitchCell *)self artworkKey];
-  v3 = [v2 isEqualToString:kMTLibraryDefaultImageKey];
+  artworkKey = [(MTSwitchCell *)self artworkKey];
+  v3 = [artworkKey isEqualToString:kMTLibraryDefaultImageKey];
 
   return v3;
 }
 
-- (void)toggleChanged:(id)a3
+- (void)toggleChanged:(id)changed
 {
   toggleChanged = self->_toggleChanged;
   if (toggleChanged)
   {
-    v4 = [a3 isOn];
+    isOn = [changed isOn];
     v5 = toggleChanged[2];
 
-    v5(toggleChanged, v4);
+    v5(toggleChanged, isOn);
   }
 }
 

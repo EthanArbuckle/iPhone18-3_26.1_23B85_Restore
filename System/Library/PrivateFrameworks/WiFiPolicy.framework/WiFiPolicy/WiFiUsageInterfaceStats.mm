@@ -1,23 +1,23 @@
 @interface WiFiUsageInterfaceStats
-+ (id)_statsFromMIB:(id)a3;
-+ (id)_statsFromNetIF:(id)a3;
-+ (id)statsForInterfaceName:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToInterfaceStats:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)_statsFromMIB:(id)b;
++ (id)_statsFromNetIF:(id)f;
++ (id)statsForInterfaceName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToInterfaceStats:(id)stats;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation WiFiUsageInterfaceStats
 
-+ (id)_statsFromNetIF:(id)a3
++ (id)_statsFromNetIF:(id)f
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  fCopy = f;
+  v5 = objc_alloc_init(self);
   v13 = 0;
   [v5 setTxBytes:0];
   [v5 setRxBytes:0];
-  if (v4)
+  if (fCopy)
   {
     v6 = getifaddrs(&v13);
     v7 = v13;
@@ -36,14 +36,14 @@
               ifa_name = v7->ifa_name;
               if (ifa_name)
               {
-                if (!strcmp(ifa_name, [v4 UTF8String]))
+                if (!strcmp(ifa_name, [fCopy UTF8String]))
                 {
                   [v5 setTxBytes:ifa_data[11]];
                   [v5 setRxBytes:ifa_data[10]];
                   [v5 setTxL3Packets:ifa_data[7]];
                   [v5 setRxL3Packets:ifa_data[5]];
-                  v11 = [MEMORY[0x277CBEAA8] date];
-                  [v5 setTimestamp:v11];
+                  date = [MEMORY[0x277CBEAA8] date];
+                  [v5 setTimestamp:date];
                 }
               }
             }
@@ -66,16 +66,16 @@
   return v5;
 }
 
-+ (id)_statsFromMIB:(id)a3
++ (id)_statsFromMIB:(id)b
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  bCopy = b;
+  v5 = objc_alloc_init(self);
   *v37 = xmmword_2333AB5C0;
   v38 = 6;
-  v6 = [v4 UTF8String];
+  uTF8String = [bCopy UTF8String];
 
-  v39 = if_nametoindex(v6);
+  v39 = if_nametoindex(uTF8String);
   size = 0;
   sysctl(v37, 6u, 0, &size, 0, 0);
   if (size)
@@ -99,8 +99,8 @@
         [v5 setRxBytes:v8[12]];
         [v5 setTxL3Packets:v8[9]];
         [v5 setRxL3Packets:v8[7]];
-        v9 = [MEMORY[0x277CBEAA8] date];
-        [v5 setTimestamp:v9];
+        date = [MEMORY[0x277CBEAA8] date];
+        [v5 setTimestamp:date];
       }
 
       free(v8);
@@ -130,13 +130,13 @@
   return v5;
 }
 
-+ (id)statsForInterfaceName:(id)a3
++ (id)statsForInterfaceName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 UTF8String])
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy && [nameCopy UTF8String])
   {
-    v6 = [a1 _statsFromMIB:v5];
+    v6 = [self _statsFromMIB:v5];
     if (!v6)
     {
       v7 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
@@ -145,7 +145,7 @@
         [(WiFiUsageInterfaceStats *)v7 statsForInterfaceName:v8, v9, v10, v11, v12, v13, v14];
       }
 
-      v6 = [a1 _statsFromNetIF:v5];
+      v6 = [self _statsFromNetIF:v5];
     }
   }
 
@@ -157,15 +157,15 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setRxBytes:{-[WiFiUsageInterfaceStats rxBytes](self, "rxBytes")}];
   [v4 setTxBytes:{-[WiFiUsageInterfaceStats txBytes](self, "txBytes")}];
   [v4 setRxL3Packets:{-[WiFiUsageInterfaceStats rxL3Packets](self, "rxL3Packets")}];
   [v4 setTxL3Packets:{-[WiFiUsageInterfaceStats txL3Packets](self, "txL3Packets")}];
-  v5 = [(WiFiUsageInterfaceStats *)self timestamp];
-  [v4 setTimestamp:v5];
+  timestamp = [(WiFiUsageInterfaceStats *)self timestamp];
+  [v4 setTimestamp:timestamp];
 
   return v4;
 }
@@ -181,20 +181,20 @@
   [v6 appendFormat:@"Bytes=%lu ", -[WiFiUsageInterfaceStats rxBytes](self, "rxBytes")];
   [v6 appendFormat:@"Tx: Packets=%lu ", -[WiFiUsageInterfaceStats txL3Packets](self, "txL3Packets")];
   [v6 appendFormat:@"Bytes=%lu ", -[WiFiUsageInterfaceStats txBytes](self, "txBytes")];
-  v7 = [(WiFiUsageInterfaceStats *)self timestamp];
-  [v6 appendFormat:@"Ts: %@>", v7];
+  timestamp = [(WiFiUsageInterfaceStats *)self timestamp];
+  [v6 appendFormat:@"Ts: %@>", timestamp];
 
   return v6;
 }
 
-- (BOOL)isEqualToInterfaceStats:(id)a3
+- (BOOL)isEqualToInterfaceStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   rxBytes = self->_rxBytes;
-  if (rxBytes == [v4 rxBytes] && (txBytes = self->_txBytes, txBytes == objc_msgSend(v4, "txBytes")) && (rxL3Packets = self->_rxL3Packets, rxL3Packets == objc_msgSend(v4, "rxL3Packets")))
+  if (rxBytes == [statsCopy rxBytes] && (txBytes = self->_txBytes, txBytes == objc_msgSend(statsCopy, "txBytes")) && (rxL3Packets = self->_rxL3Packets, rxL3Packets == objc_msgSend(statsCopy, "rxL3Packets")))
   {
     txL3Packets = self->_txL3Packets;
-    v9 = txL3Packets == [v4 txL3Packets];
+    v9 = txL3Packets == [statsCopy txL3Packets];
   }
 
   else
@@ -205,18 +205,18 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(WiFiUsageInterfaceStats *)self isEqualToInterfaceStats:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(WiFiUsageInterfaceStats *)self isEqualToInterfaceStats:v5];
   }
 
   return v6;

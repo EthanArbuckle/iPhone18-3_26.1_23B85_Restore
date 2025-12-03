@@ -1,16 +1,16 @@
 @interface JSAOSLog
-+ (void)logFault:(id)a3;
++ (void)logFault:(id)fault;
 @end
 
 @implementation JSAOSLog
 
-+ (void)logFault:(id)a3
++ (void)logFault:(id)fault
 {
-  v3 = a3;
+  faultCopy = fault;
   v4 = JSALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
   {
-    sub_7EF64(v3, v4);
+    sub_7EF64(faultCopy, v4);
   }
 }
 

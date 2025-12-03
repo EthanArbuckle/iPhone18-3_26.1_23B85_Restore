@@ -7,15 +7,15 @@
 - (MCMContainerPathCanBeTransient)containerPath;
 - (MCMEntitlements)entitlements;
 - (MCMSandboxExtension)init;
-- (MCMSandboxExtension)initWithClientIdentity:(id)a3 containerPath:(id)a4 containerIdentity:(id)a5;
+- (MCMSandboxExtension)initWithClientIdentity:(id)identity containerPath:(id)path containerIdentity:(id)containerIdentity;
 - (NSString)clientTeamIdentifier;
-- (id)tokenForPart:(unint64_t)a3 partDomain:(id)a4 error:(id *)a5;
+- (id)tokenForPart:(unint64_t)part partDomain:(id)domain error:(id *)error;
 - (unint64_t)reason;
 - (unint64_t)type;
-- (void)setReason:(unint64_t)a3;
-- (void)setType:(unint64_t)a3;
-- (void)setUseLegacyExtensionPolicy:(BOOL)a3;
-- (void)setUseProxiedClientForTarget:(BOOL)a3;
+- (void)setReason:(unint64_t)reason;
+- (void)setType:(unint64_t)type;
+- (void)setUseLegacyExtensionPolicy:(BOOL)policy;
+- (void)setUseProxiedClientForTarget:(BOOL)target;
 @end
 
 @implementation MCMSandboxExtension
@@ -35,23 +35,23 @@
   return *(self + v3);
 }
 
-- (void)setUseLegacyExtensionPolicy:(BOOL)a3
+- (void)setUseLegacyExtensionPolicy:(BOOL)policy
 {
   v5 = OBJC_IVAR___MCMSandboxExtension_useLegacyExtensionPolicy;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = policy;
 }
 
-- (void)setUseProxiedClientForTarget:(BOOL)a3
+- (void)setUseProxiedClientForTarget:(BOOL)target
 {
   v5 = OBJC_IVAR___MCMSandboxExtension_useProxiedClientForTarget;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = target;
 }
 
-- (id)tokenForPart:(unint64_t)a3 partDomain:(id)a4 error:(id *)a5
+- (id)tokenForPart:(unint64_t)part partDomain:(id)domain error:(id *)error
 {
-  if (a4)
+  if (domain)
   {
     v8 = sub_1DF3B0DCC();
     v10 = v9;
@@ -63,8 +63,8 @@
     v10 = 0;
   }
 
-  v11 = self;
-  sub_1DF2CE5BC(a3, v8, v10, a5);
+  selfCopy = self;
+  sub_1DF2CE5BC(part, v8, v10, error);
   v13 = v12;
 
   if (v13)
@@ -94,11 +94,11 @@
   return *(self + v3);
 }
 
-- (void)setReason:(unint64_t)a3
+- (void)setReason:(unint64_t)reason
 {
   v5 = OBJC_IVAR___MCMSandboxExtension_reason;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = reason;
 }
 
 - (MCMContainerPathCanBeTransient)containerPath
@@ -109,12 +109,12 @@
   return v3;
 }
 
-- (MCMSandboxExtension)initWithClientIdentity:(id)a3 containerPath:(id)a4 containerIdentity:(id)a5
+- (MCMSandboxExtension)initWithClientIdentity:(id)identity containerPath:(id)path containerIdentity:(id)containerIdentity
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v8 = sub_1DF2CDEF0(a3, a4, a5);
+  v8 = sub_1DF2CDEF0(identity, path, containerIdentity);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
@@ -152,11 +152,11 @@
   return *(self + v3);
 }
 
-- (void)setType:(unint64_t)a3
+- (void)setType:(unint64_t)type
 {
   v5 = OBJC_IVAR___MCMSandboxExtension_type;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (NSString)clientTeamIdentifier

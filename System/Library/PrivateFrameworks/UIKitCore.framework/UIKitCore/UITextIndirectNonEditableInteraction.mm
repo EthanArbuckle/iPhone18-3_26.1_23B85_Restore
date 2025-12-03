@@ -1,9 +1,9 @@
 @interface UITextIndirectNonEditableInteraction
-- (BOOL)shouldAllowSelectionGestures:(BOOL)a3 atPoint:(CGPoint)a4 toBegin:(BOOL)a5;
-- (BOOL)shouldAllowWithTouchTypes:(id)a3 atPoint:(CGPoint)a4 toBegin:(BOOL)a5;
+- (BOOL)shouldAllowSelectionGestures:(BOOL)gestures atPoint:(CGPoint)point toBegin:(BOOL)begin;
+- (BOOL)shouldAllowWithTouchTypes:(id)types atPoint:(CGPoint)point toBegin:(BOOL)begin;
 - (UIKeyboardTaskQueue)taskQueue;
-- (UITextIndirectNonEditableInteraction)initWithView:(id)a3;
-- (void)_setupControllersIfNecessaryWithView:(id)a3;
+- (UITextIndirectNonEditableInteraction)initWithView:(id)view;
+- (void)_setupControllersIfNecessaryWithView:(id)view;
 - (void)dealloc;
 - (void)didEndGesture;
 - (void)finishSetup;
@@ -17,15 +17,15 @@
   v4.receiver = self;
   v4.super_class = UITextIndirectNonEditableInteraction;
   [(UITextInteraction *)&v4 finishSetup];
-  v3 = [(UITextInteraction *)self view];
-  [(UITextIndirectNonEditableInteraction *)self _setupControllersIfNecessaryWithView:v3];
+  view = [(UITextInteraction *)self view];
+  [(UITextIndirectNonEditableInteraction *)self _setupControllersIfNecessaryWithView:view];
 }
 
 - (void)dealloc
 {
-  v3 = [(_UIKeyboardTextSelectionGestureController *)self->super._textSelectionGestureController delegate];
+  delegate = [(_UIKeyboardTextSelectionGestureController *)self->super._textSelectionGestureController delegate];
 
-  if (v3 == self)
+  if (delegate == self)
   {
     [(_UIKeyboardTextSelectionGestureController *)self->super._textSelectionGestureController setDelegate:0];
   }
@@ -38,31 +38,31 @@
   [(UITextIndirectNonEditableInteraction *)&v5 dealloc];
 }
 
-- (UITextIndirectNonEditableInteraction)initWithView:(id)a3
+- (UITextIndirectNonEditableInteraction)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = UITextIndirectNonEditableInteraction;
   v5 = [(UITextInteraction *)&v8 init];
   v6 = v5;
-  if (v4 && v5)
+  if (viewCopy && v5)
   {
-    [(UITextIndirectNonEditableInteraction *)v5 _setupControllersIfNecessaryWithView:v4];
+    [(UITextIndirectNonEditableInteraction *)v5 _setupControllersIfNecessaryWithView:viewCopy];
   }
 
   return v6;
 }
 
-- (void)_setupControllersIfNecessaryWithView:(id)a3
+- (void)_setupControllersIfNecessaryWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (!self->_textSelectionController || !self->super._textSelectionGestureController)
   {
-    v17 = v4;
-    if ([v4 conformsToProtocol:&unk_1EFE8B2D0])
+    v17 = viewCopy;
+    if ([viewCopy conformsToProtocol:&unk_1EFE8B2D0])
     {
-      v5 = v17;
-      if (!v5)
+      textInput = v17;
+      if (!textInput)
       {
         goto LABEL_12;
       }
@@ -70,29 +70,29 @@
 
     else
     {
-      v6 = [(UITextInteraction *)self root];
-      v5 = [v6 textInput];
+      root = [(UITextInteraction *)self root];
+      textInput = [root textInput];
 
-      if (!v5)
+      if (!textInput)
       {
 LABEL_12:
 
-        v4 = v17;
+        viewCopy = v17;
         goto LABEL_13;
       }
     }
 
-    v7 = [v5 inputDelegate];
-    if (!v7 || (v8 = v7, [v5 inputDelegate], v9 = objc_claimAutoreleasedReturnValue(), +[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v9 == v10))
+    inputDelegate = [textInput inputDelegate];
+    if (!inputDelegate || (v8 = inputDelegate, [textInput inputDelegate], v9 = objc_claimAutoreleasedReturnValue(), +[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v9 == v10))
     {
-      v11 = [v17 _usesAsynchronousProtocol];
+      _usesAsynchronousProtocol = [v17 _usesAsynchronousProtocol];
       v12 = off_1E70EBA68;
-      if (!v11)
+      if (!_usesAsynchronousProtocol)
       {
         v12 = off_1E70EBA98;
       }
 
-      v13 = [objc_alloc(*v12) initWithInputDelegate:v5];
+      v13 = [objc_alloc(*v12) initWithInputDelegate:textInput];
       textSelectionController = self->_textSelectionController;
       self->_textSelectionController = v13;
 
@@ -112,64 +112,64 @@ LABEL_13:
 - (UIKeyboardTaskQueue)taskQueue
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 taskQueue];
+  taskQueue = [v2 taskQueue];
 
-  return v3;
+  return taskQueue;
 }
 
 - (void)willBeginGesture
 {
-  v2 = self;
-  v5 = [(UITextInteraction *)v2 assistantDelegate];
-  v3 = [(UITextInteraction *)v2 inGesture];
-  [(UITextInteraction *)v2 setInGesture:1];
-  [v5 checkEditabilityAndSetFirstResponderIfNecessary];
-  v4 = [v5 _editMenuAssistant];
-  [v4 hideSelectionCommands];
+  selfCopy = self;
+  assistantDelegate = [(UITextInteraction *)selfCopy assistantDelegate];
+  inGesture = [(UITextInteraction *)selfCopy inGesture];
+  [(UITextInteraction *)selfCopy setInGesture:1];
+  [assistantDelegate checkEditabilityAndSetFirstResponderIfNecessary];
+  _editMenuAssistant = [assistantDelegate _editMenuAssistant];
+  [_editMenuAssistant hideSelectionCommands];
 
-  [(UITextInteraction *)v2 setInGesture:v3];
+  [(UITextInteraction *)selfCopy setInGesture:inGesture];
 }
 
 - (void)didEndGesture
 {
-  v5 = [(UITextInteraction *)self assistantDelegate];
-  if ([v5 needsGestureUpdate])
+  assistantDelegate = [(UITextInteraction *)self assistantDelegate];
+  if ([assistantDelegate needsGestureUpdate])
   {
-    v3 = [(UITextInteraction *)self _textInput];
-    v4 = [v3 isFirstResponder];
+    _textInput = [(UITextInteraction *)self _textInput];
+    isFirstResponder = [_textInput isFirstResponder];
 
-    if (v4)
+    if (isFirstResponder)
     {
-      [v5 setGestureRecognizers];
-      [v5 setNeedsGestureUpdate:0];
+      [assistantDelegate setGestureRecognizers];
+      [assistantDelegate setNeedsGestureUpdate:0];
     }
   }
 }
 
-- (BOOL)shouldAllowWithTouchTypes:(id)a3 atPoint:(CGPoint)a4 toBegin:(BOOL)a5
+- (BOOL)shouldAllowWithTouchTypes:(id)types atPoint:(CGPoint)point toBegin:(BOOL)begin
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = [(UITextInteraction *)self root];
-  LOBYTE(v5) = [v10 shouldAllowWithTouchTypes:v9 atPoint:v5 toBegin:{x, y}];
+  beginCopy = begin;
+  y = point.y;
+  x = point.x;
+  typesCopy = types;
+  root = [(UITextInteraction *)self root];
+  LOBYTE(beginCopy) = [root shouldAllowWithTouchTypes:typesCopy atPoint:beginCopy toBegin:{x, y}];
 
-  return v5;
+  return beginCopy;
 }
 
-- (BOOL)shouldAllowSelectionGestures:(BOOL)a3 atPoint:(CGPoint)a4 toBegin:(BOOL)a5
+- (BOOL)shouldAllowSelectionGestures:(BOOL)gestures atPoint:(CGPoint)point toBegin:(BOOL)begin
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
+  beginCopy = begin;
+  y = point.y;
+  x = point.x;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 1;
   }
 
   textSelectionController = self->_textSelectionController;
-  if (v5)
+  if (beginCopy)
   {
     v10 = 1;
   }

@@ -1,6 +1,6 @@
 @interface WBReadingList
 + (WBReadingList)defaultReadingList;
-- (BOOL)addReadingListItemWithURL:(id)a3 title:(id)a4 previewText:(id)a5 error:(id *)a6;
+- (BOOL)addReadingListItemWithURL:(id)l title:(id)title previewText:(id)text error:(id *)error;
 - (WBReadingList)init;
 - (id)_init;
 @end
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __35__WBReadingList_defaultReadingList__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultReadingList_onceToken != -1)
   {
     dispatch_once(&defaultReadingList_onceToken, block);
@@ -58,30 +58,30 @@ uint64_t __35__WBReadingList_defaultReadingList__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)addReadingListItemWithURL:(id)a3 title:(id)a4 previewText:(id)a5 error:(id *)a6
+- (BOOL)addReadingListItemWithURL:(id)l title:(id)title previewText:(id)text error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [WBReadingList supportsURL:v10];
+  lCopy = l;
+  titleCopy = title;
+  textCopy = text;
+  v13 = [WBReadingList supportsURL:lCopy];
   if (!v13)
   {
     v15 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       [WBReadingList addReadingListItemWithURL:v15 title:? previewText:? error:?];
-      if (!a6)
+      if (!error)
       {
         goto LABEL_6;
       }
     }
 
-    else if (!a6)
+    else if (!error)
     {
       goto LABEL_6;
     }
 
-    *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"WBErrorDomain" code:1 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"WBErrorDomain" code:1 userInfo:0];
     goto LABEL_6;
   }
 
@@ -91,9 +91,9 @@ uint64_t __35__WBReadingList_defaultReadingList__block_invoke(uint64_t a1)
   v17[2] = __67__WBReadingList_addReadingListItemWithURL_title_previewText_error___block_invoke;
   v17[3] = &unk_279E75C98;
   v17[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
+  v18 = lCopy;
+  v19 = titleCopy;
+  v20 = textCopy;
   dispatch_async(serialQueue, v17);
 
 LABEL_6:

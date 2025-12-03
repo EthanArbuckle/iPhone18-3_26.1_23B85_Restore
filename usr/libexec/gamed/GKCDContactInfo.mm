@@ -1,44 +1,44 @@
 @interface GKCDContactInfo
-+ (id)_gkObjectsMatchingHandles:(id)a3 withContext:(id)a4;
-+ (id)_gkUpdateWithContact:(id)a3 withContext:(id)a4;
-+ (void)_gkDeleteObjectsWithContactIdentifier:(id)a3 withContext:(id)a4;
-- (void)_gkUpdateEntryWithHandle:(id)a3 fromContact:(id)a4;
++ (id)_gkObjectsMatchingHandles:(id)handles withContext:(id)context;
++ (id)_gkUpdateWithContact:(id)contact withContext:(id)context;
++ (void)_gkDeleteObjectsWithContactIdentifier:(id)identifier withContext:(id)context;
+- (void)_gkUpdateEntryWithHandle:(id)handle fromContact:(id)contact;
 @end
 
 @implementation GKCDContactInfo
 
-- (void)_gkUpdateEntryWithHandle:(id)a3 fromContact:(id)a4
+- (void)_gkUpdateEntryWithHandle:(id)handle fromContact:(id)contact
 {
-  v6 = a4;
-  [(GKCDContactInfo *)self setHandle:a3];
-  v7 = [v6 identifier];
-  [(GKCDContactInfo *)self setContactID:v7];
+  contactCopy = contact;
+  [(GKCDContactInfo *)self setHandle:handle];
+  identifier = [contactCopy identifier];
+  [(GKCDContactInfo *)self setContactID:identifier];
 
-  v8 = [v6 givenName];
-  [(GKCDContactInfo *)self setGivenName:v8];
+  givenName = [contactCopy givenName];
+  [(GKCDContactInfo *)self setGivenName:givenName];
 
-  v9 = [v6 familyName];
-  [(GKCDContactInfo *)self setFamilyName:v9];
+  familyName = [contactCopy familyName];
+  [(GKCDContactInfo *)self setFamilyName:familyName];
 
-  v10 = [v6 nickname];
-  [(GKCDContactInfo *)self setNickname:v10];
+  nickname = [contactCopy nickname];
+  [(GKCDContactInfo *)self setNickname:nickname];
 
-  v11 = [v6 nameSuffix];
-  [(GKCDContactInfo *)self setNameSuffix:v11];
+  nameSuffix = [contactCopy nameSuffix];
+  [(GKCDContactInfo *)self setNameSuffix:nameSuffix];
 
-  v12 = [v6 namePrefix];
+  namePrefix = [contactCopy namePrefix];
 
-  [(GKCDContactInfo *)self setNamePrefix:v12];
+  [(GKCDContactInfo *)self setNamePrefix:namePrefix];
 }
 
-+ (id)_gkUpdateWithContact:(id)a3 withContext:(id)a4
++ (id)_gkUpdateWithContact:(id)contact withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  [a1 _gkDeleteObjectsWithContactIdentifier:v8 withContext:v7];
+  contactCopy = contact;
+  contextCopy = context;
+  identifier = [contactCopy identifier];
+  [self _gkDeleteObjectsWithContactIdentifier:identifier withContext:contextCopy];
 
-  [v6 _gkAllHandles];
+  [contactCopy _gkAllHandles];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -59,10 +59,10 @@
 
         v13 = *(*(&v19 + 1) + 8 * i);
         v14 = [GKCDContactInfo alloc];
-        v15 = [a1 entity];
-        v16 = [(GKCDContactInfo *)v14 initWithEntity:v15 insertIntoManagedObjectContext:v7];
+        entity = [self entity];
+        v16 = [(GKCDContactInfo *)v14 initWithEntity:entity insertIntoManagedObjectContext:contextCopy];
 
-        [(GKCDContactInfo *)v16 _gkUpdateEntryWithHandle:v13 fromContact:v6];
+        [(GKCDContactInfo *)v16 _gkUpdateEntryWithHandle:v13 fromContact:contactCopy];
       }
 
       v10 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -74,19 +74,19 @@
   return obj;
 }
 
-+ (void)_gkDeleteObjectsWithContactIdentifier:(id)a3 withContext:(id)a4
++ (void)_gkDeleteObjectsWithContactIdentifier:(id)identifier withContext:(id)context
 {
-  v5 = a4;
-  v7 = [NSPredicate predicateWithFormat:@"contactID == %@", a3];
-  v6 = [GKCDContactInfo _gkObjectsMatchingPredicate:v7 withContext:v5];
-  [v5 _gkDeleteObjects:v6];
+  contextCopy = context;
+  identifier = [NSPredicate predicateWithFormat:@"contactID == %@", identifier];
+  v6 = [GKCDContactInfo _gkObjectsMatchingPredicate:identifier withContext:contextCopy];
+  [contextCopy _gkDeleteObjects:v6];
 }
 
-+ (id)_gkObjectsMatchingHandles:(id)a3 withContext:(id)a4
++ (id)_gkObjectsMatchingHandles:(id)handles withContext:(id)context
 {
-  v6 = a4;
-  v7 = [NSPredicate predicateWithFormat:@"handle IN %@", a3];
-  v8 = [a1 _gkObjectsMatchingPredicate:v7 withContext:v6];
+  contextCopy = context;
+  handles = [NSPredicate predicateWithFormat:@"handle IN %@", handles];
+  v8 = [self _gkObjectsMatchingPredicate:handles withContext:contextCopy];
 
   return v8;
 }

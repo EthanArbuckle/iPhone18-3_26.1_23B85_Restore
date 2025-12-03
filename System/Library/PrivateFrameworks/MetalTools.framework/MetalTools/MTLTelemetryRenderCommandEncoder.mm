@@ -1,52 +1,52 @@
 @interface MTLTelemetryRenderCommandEncoder
-- (MTLTelemetryRenderCommandEncoder)initWithRenderCommandEncoder:(id)a3 parent:(id)a4 commandBuffer:(id)a5 descriptor:(id)a6;
-- (MTLTelemetryRenderCommandEncoder)initWithRenderCommandEncoder:(id)a3 parent:(id)a4 descriptor:(id)a5;
-- (void)accumDrawWithType:(unint64_t)a3 indexType:(unint64_t)a4 primitiveType:(unint64_t)a5 vertexCount:(unint64_t)a6 instanceCount:(unint64_t)a7;
-- (void)accumScissorRectTelemetry:(id *)a3 count:(unint64_t)a4;
-- (void)accumViewportTelemetry:(id *)a3 count:(unint64_t)a4;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseVertex:(int64_t)a9 baseInstance:(unint64_t)a10;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexType:(unint64_t)a4 indexBuffer:(id)a5 indexBufferOffset:(unint64_t)a6 indirectBuffer:(id)a7 indirectBufferOffset:(unint64_t)a8;
-- (void)drawPrimitives:(unint64_t)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6 baseInstance:(unint64_t)a7;
+- (MTLTelemetryRenderCommandEncoder)initWithRenderCommandEncoder:(id)encoder parent:(id)parent commandBuffer:(id)buffer descriptor:(id)descriptor;
+- (MTLTelemetryRenderCommandEncoder)initWithRenderCommandEncoder:(id)encoder parent:(id)parent descriptor:(id)descriptor;
+- (void)accumDrawWithType:(unint64_t)type indexType:(unint64_t)indexType primitiveType:(unint64_t)primitiveType vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount;
+- (void)accumScissorRectTelemetry:(id *)telemetry count:(unint64_t)count;
+- (void)accumViewportTelemetry:(id *)telemetry count:(unint64_t)count;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseVertex:(int64_t)vertex baseInstance:(unint64_t)self0;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset;
+- (void)drawPrimitives:(unint64_t)primitives indirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance;
 - (void)endEncoding;
-- (void)initTelemetryWithDescriptor:(id)a3 commandBuffer:(id)a4;
-- (void)setDepthClipMode:(unint64_t)a3;
-- (void)setDepthStencilState:(id)a3;
-- (void)setFragmentSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFragmentSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setFragmentSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setFragmentSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setFragmentTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFragmentTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setRenderPipelineState:(id)a3;
-- (void)setScissorRect:(id *)a3;
-- (void)setScissorRects:(id *)a3 count:(unint64_t)a4;
-- (void)setViewport:(id *)a3;
-- (void)setViewports:(id *)a3 count:(unint64_t)a4;
+- (void)initTelemetryWithDescriptor:(id)descriptor commandBuffer:(id)buffer;
+- (void)setDepthClipMode:(unint64_t)mode;
+- (void)setDepthStencilState:(id)state;
+- (void)setFragmentSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setFragmentSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setFragmentSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setFragmentSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setFragmentTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setFragmentTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setRenderPipelineState:(id)state;
+- (void)setScissorRect:(id *)rect;
+- (void)setScissorRects:(id *)rects count:(unint64_t)count;
+- (void)setViewport:(id *)viewport;
+- (void)setViewports:(id *)viewports count:(unint64_t)count;
 @end
 
 @implementation MTLTelemetryRenderCommandEncoder
 
-- (void)initTelemetryWithDescriptor:(id)a3 commandBuffer:(id)a4
+- (void)initTelemetryWithDescriptor:(id)descriptor commandBuffer:(id)buffer
 {
-  v6 = self;
-  v7 = [(MTLToolsObject *)self device];
-  v6->_telemetryDevice = v7;
-  if (![(MTLDevice *)v7 enableTelemetry])
+  selfCopy = self;
+  device = [(MTLToolsObject *)self device];
+  selfCopy->_telemetryDevice = device;
+  if (![(MTLDevice *)device enableTelemetry])
   {
     return;
   }
 
-  -[MTLTelemetryDevice setGLMode:](v6->_telemetryDevice, "setGLMode:", *([a3 _descriptorPrivate] + 43));
-  v6->_telemetryCommandBuffer = a4;
-  v6->_reDraws = 0;
-  v6->_anisoFragmentSamplers = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v6->_clippedMip2DFragmentTextures = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6->_telemetryPipeline = 0;
-  if (!a3)
+  -[MTLTelemetryDevice setGLMode:](selfCopy->_telemetryDevice, "setGLMode:", *([descriptor _descriptorPrivate] + 43));
+  selfCopy->_telemetryCommandBuffer = buffer;
+  selfCopy->_reDraws = 0;
+  selfCopy->_anisoFragmentSamplers = objc_alloc_init(MEMORY[0x277CBEB58]);
+  selfCopy->_clippedMip2DFragmentTextures = objc_alloc_init(MEMORY[0x277CBEB38]);
+  selfCopy->_telemetryPipeline = 0;
+  if (!descriptor)
   {
     return;
   }
@@ -54,47 +54,47 @@
   v8 = 0;
   v9 = 0;
   v10 = 3;
-  v41 = a3;
+  descriptorCopy = descriptor;
   do
   {
     if (v9 != 8)
     {
-      v11 = (v9 == 9 ? [a3 stencilAttachment] : objc_msgSend(objc_msgSend(a3, "colorAttachments"), "_descriptorAtIndex:", v9));
+      v11 = (v9 == 9 ? [descriptor stencilAttachment] : objc_msgSend(objc_msgSend(descriptor, "colorAttachments"), "_descriptorAtIndex:", v9));
       v12 = v11;
       if (v11)
       {
-        v13 = [v11 texture];
-        if (v13)
+        texture = [v11 texture];
+        if (texture)
         {
-          v14 = v13;
+          v14 = texture;
           v15 = v8;
-          v16 = v6;
-          telemetryCommandBuffer = v6->_telemetryCommandBuffer;
-          v42[0] = [v13 pixelFormat];
+          v16 = selfCopy;
+          telemetryCommandBuffer = selfCopy->_telemetryCommandBuffer;
+          v42[0] = [texture pixelFormat];
           v42[2] = v42;
           v18 = std::__hash_table<std::__hash_value_type<MTLPixelFormat,MTLTelemetryRenderTargetDistribution>,std::__unordered_map_hasher<MTLPixelFormat,std::__hash_value_type<MTLPixelFormat,MTLTelemetryRenderTargetDistribution>,std::hash<unsigned long long>,std::equal_to<MTLPixelFormat>,true>,std::__unordered_map_equal<MTLPixelFormat,std::__hash_value_type<MTLPixelFormat,MTLTelemetryRenderTargetDistribution>,std::equal_to<MTLPixelFormat>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<MTLPixelFormat,MTLTelemetryRenderTargetDistribution>>>::__emplace_unique_key_args<MTLPixelFormat,std::piecewise_construct_t const&,std::tuple<MTLPixelFormat&&>,std::tuple<>>(&telemetryCommandBuffer->renderTargetMap.__table_.__bucket_list_.__ptr_, v42);
-          v19 = [v14 textureType];
-          v20 = [v12 loadAction];
-          v21 = [v12 storeAction];
+          textureType = [v14 textureType];
+          loadAction = [v12 loadAction];
+          storeAction = [v12 storeAction];
           if (v9 == 9)
           {
-            v22 = &v18[792 * v19 + 28515 + 264 * v20 + 44 * v21 + 22 * [v12 stencilResolveFilter]];
+            v22 = &v18[792 * textureType + 28515 + 264 * loadAction + 44 * storeAction + 22 * [v12 stencilResolveFilter]];
           }
 
           else
           {
-            v22 = &v18[396 * v19 + 132 * v20 + 22 * v21 + v10];
+            v22 = &v18[396 * textureType + 132 * loadAction + 22 * storeAction + v10];
           }
 
-          v23 = [v14 width];
+          width = [v14 width];
           v24 = v15;
-          a3 = v41;
-          v6 = v16;
-          if (!v23)
+          descriptor = descriptorCopy;
+          selfCopy = v16;
+          if (!width)
           {
 LABEL_22:
-            v26 = [v14 height];
-            if (!v26)
+            height = [v14 height];
+            if (!height)
             {
               goto LABEL_31;
             }
@@ -102,12 +102,12 @@ LABEL_22:
             v27 = *(v22 + 48);
             if (v27)
             {
-              if (*(v22 + 36) < v26)
+              if (*(v22 + 36) < height)
               {
-                *(v22 + 36) = v26;
+                *(v22 + 36) = height;
               }
 
-              if (*(v22 + 32) <= v26)
+              if (*(v22 + 32) <= height)
               {
                 goto LABEL_30;
               }
@@ -115,16 +115,16 @@ LABEL_22:
 
             else
             {
-              *(v22 + 36) = v26;
+              *(v22 + 36) = height;
             }
 
-            *(v22 + 32) = v26;
+            *(v22 + 32) = height;
 LABEL_30:
-            *(v22 + 40) += v26;
+            *(v22 + 40) += height;
             *(v22 + 48) = v27 + 1;
 LABEL_31:
-            v28 = [v14 depth];
-            if (!v28)
+            depth = [v14 depth];
+            if (!depth)
             {
               goto LABEL_40;
             }
@@ -132,12 +132,12 @@ LABEL_31:
             v29 = *(v22 + 72);
             if (v29)
             {
-              if (*(v22 + 60) < v28)
+              if (*(v22 + 60) < depth)
               {
-                *(v22 + 60) = v28;
+                *(v22 + 60) = depth;
               }
 
-              if (*(v22 + 56) <= v28)
+              if (*(v22 + 56) <= depth)
               {
                 goto LABEL_39;
               }
@@ -145,16 +145,16 @@ LABEL_31:
 
             else
             {
-              *(v22 + 60) = v28;
+              *(v22 + 60) = depth;
             }
 
-            *(v22 + 56) = v28;
+            *(v22 + 56) = depth;
 LABEL_39:
-            *(v22 + 64) += v28;
+            *(v22 + 64) += depth;
             *(v22 + 72) = v29 + 1;
 LABEL_40:
-            v30 = [v14 arrayLength];
-            if (!v30)
+            arrayLength = [v14 arrayLength];
+            if (!arrayLength)
             {
               goto LABEL_49;
             }
@@ -162,12 +162,12 @@ LABEL_40:
             v31 = *(v22 + 96);
             if (v31)
             {
-              if (*(v22 + 84) < v30)
+              if (*(v22 + 84) < arrayLength)
               {
-                *(v22 + 84) = v30;
+                *(v22 + 84) = arrayLength;
               }
 
-              if (*(v22 + 80) <= v30)
+              if (*(v22 + 80) <= arrayLength)
               {
                 goto LABEL_48;
               }
@@ -175,16 +175,16 @@ LABEL_40:
 
             else
             {
-              *(v22 + 84) = v30;
+              *(v22 + 84) = arrayLength;
             }
 
-            *(v22 + 80) = v30;
+            *(v22 + 80) = arrayLength;
 LABEL_48:
-            *(v22 + 88) += v30;
+            *(v22 + 88) += arrayLength;
             *(v22 + 96) = v31 + 1;
 LABEL_49:
-            v32 = [v14 sampleCount];
-            if (!v32)
+            sampleCount = [v14 sampleCount];
+            if (!sampleCount)
             {
               goto LABEL_58;
             }
@@ -192,12 +192,12 @@ LABEL_49:
             v33 = *(v22 + 120);
             if (v33)
             {
-              if (*(v22 + 108) < v32)
+              if (*(v22 + 108) < sampleCount)
               {
-                *(v22 + 108) = v32;
+                *(v22 + 108) = sampleCount;
               }
 
-              if (*(v22 + 104) <= v32)
+              if (*(v22 + 104) <= sampleCount)
               {
                 goto LABEL_57;
               }
@@ -205,16 +205,16 @@ LABEL_49:
 
             else
             {
-              *(v22 + 108) = v32;
+              *(v22 + 108) = sampleCount;
             }
 
-            *(v22 + 104) = v32;
+            *(v22 + 104) = sampleCount;
 LABEL_57:
-            *(v22 + 112) += v32;
+            *(v22 + 112) += sampleCount;
             *(v22 + 120) = v33 + 1;
 LABEL_58:
-            v34 = [v12 level];
-            if (!v34)
+            level = [v12 level];
+            if (!level)
             {
               goto LABEL_67;
             }
@@ -222,12 +222,12 @@ LABEL_58:
             v35 = *(v22 + 168);
             if (v35)
             {
-              if (*(v22 + 156) < v34)
+              if (*(v22 + 156) < level)
               {
-                *(v22 + 156) = v34;
+                *(v22 + 156) = level;
               }
 
-              if (*(v22 + 152) <= v34)
+              if (*(v22 + 152) <= level)
               {
                 goto LABEL_66;
               }
@@ -235,16 +235,16 @@ LABEL_58:
 
             else
             {
-              *(v22 + 156) = v34;
+              *(v22 + 156) = level;
             }
 
-            *(v22 + 152) = v34;
+            *(v22 + 152) = level;
 LABEL_66:
-            *(v22 + 160) += v34;
+            *(v22 + 160) += level;
             *(v22 + 168) = v35 + 1;
 LABEL_67:
-            v36 = [v12 slice];
-            if (!v36)
+            slice = [v12 slice];
+            if (!slice)
             {
 LABEL_76:
               ++*v22;
@@ -255,12 +255,12 @@ LABEL_76:
             v37 = *(v22 + 144);
             if (v37)
             {
-              if (*(v22 + 132) < v36)
+              if (*(v22 + 132) < slice)
               {
-                *(v22 + 132) = v36;
+                *(v22 + 132) = slice;
               }
 
-              if (*(v22 + 128) <= v36)
+              if (*(v22 + 128) <= slice)
               {
                 goto LABEL_75;
               }
@@ -268,12 +268,12 @@ LABEL_76:
 
             else
             {
-              *(v22 + 132) = v36;
+              *(v22 + 132) = slice;
             }
 
-            *(v22 + 128) = v36;
+            *(v22 + 128) = slice;
 LABEL_75:
-            *(v22 + 136) += v36;
+            *(v22 + 136) += slice;
             *(v22 + 144) = v37 + 1;
             goto LABEL_76;
           }
@@ -281,12 +281,12 @@ LABEL_75:
           v25 = *(v22 + 24);
           if (v25)
           {
-            if (*(v22 + 12) < v23)
+            if (*(v22 + 12) < width)
             {
-              *(v22 + 12) = v23;
+              *(v22 + 12) = width;
             }
 
-            if (*(v22 + 8) <= v23)
+            if (*(v22 + 8) <= width)
             {
               goto LABEL_21;
             }
@@ -294,12 +294,12 @@ LABEL_75:
 
           else
           {
-            *(v22 + 12) = v23;
+            *(v22 + 12) = width;
           }
 
-          *(v22 + 8) = v23;
+          *(v22 + 8) = width;
 LABEL_21:
-          *(v22 + 16) += v23;
+          *(v22 + 16) += width;
           *(v22 + 24) = v25 + 1;
           goto LABEL_22;
         }
@@ -317,11 +317,11 @@ LABEL_77:
     goto LABEL_87;
   }
 
-  attachmentCount = v6->_telemetryCommandBuffer->attachmentCount;
+  attachmentCount = selfCopy->_telemetryCommandBuffer->attachmentCount;
   if (!attachmentCount->count)
   {
     attachmentCount->max = v8;
-    attachmentCount = v6->_telemetryCommandBuffer->attachmentCount;
+    attachmentCount = selfCopy->_telemetryCommandBuffer->attachmentCount;
 LABEL_85:
     attachmentCount->min = v8;
     goto LABEL_86;
@@ -330,7 +330,7 @@ LABEL_85:
   if (v8 > attachmentCount->max)
   {
     attachmentCount->max = v8;
-    attachmentCount = v6->_telemetryCommandBuffer->attachmentCount;
+    attachmentCount = selfCopy->_telemetryCommandBuffer->attachmentCount;
   }
 
   if (v8 < attachmentCount->min)
@@ -339,134 +339,134 @@ LABEL_85:
   }
 
 LABEL_86:
-  v6->_telemetryCommandBuffer->attachmentCount->total += v8;
-  ++v6->_telemetryCommandBuffer->attachmentCount->count;
+  selfCopy->_telemetryCommandBuffer->attachmentCount->total += v8;
+  ++selfCopy->_telemetryCommandBuffer->attachmentCount->count;
 LABEL_87:
-  v39 = [a3 renderTargetArrayLength];
-  if (v39)
+  renderTargetArrayLength = [descriptor renderTargetArrayLength];
+  if (renderTargetArrayLength)
   {
-    renderTargetArrayLengthDistribution = v6->_telemetryCommandBuffer->renderTargetArrayLengthDistribution;
+    renderTargetArrayLengthDistribution = selfCopy->_telemetryCommandBuffer->renderTargetArrayLengthDistribution;
     if (renderTargetArrayLengthDistribution->count)
     {
-      if (renderTargetArrayLengthDistribution->max < v39)
+      if (renderTargetArrayLengthDistribution->max < renderTargetArrayLength)
       {
-        renderTargetArrayLengthDistribution->max = v39;
-        renderTargetArrayLengthDistribution = v6->_telemetryCommandBuffer->renderTargetArrayLengthDistribution;
+        renderTargetArrayLengthDistribution->max = renderTargetArrayLength;
+        renderTargetArrayLengthDistribution = selfCopy->_telemetryCommandBuffer->renderTargetArrayLengthDistribution;
       }
 
-      if (renderTargetArrayLengthDistribution->min <= v39)
+      if (renderTargetArrayLengthDistribution->min <= renderTargetArrayLength)
       {
 LABEL_95:
-        v6->_telemetryCommandBuffer->renderTargetArrayLengthDistribution->total += v39;
-        ++v6->_telemetryCommandBuffer->renderTargetArrayLengthDistribution->count;
+        selfCopy->_telemetryCommandBuffer->renderTargetArrayLengthDistribution->total += renderTargetArrayLength;
+        ++selfCopy->_telemetryCommandBuffer->renderTargetArrayLengthDistribution->count;
         return;
       }
     }
 
     else
     {
-      renderTargetArrayLengthDistribution->max = v39;
-      renderTargetArrayLengthDistribution = v6->_telemetryCommandBuffer->renderTargetArrayLengthDistribution;
+      renderTargetArrayLengthDistribution->max = renderTargetArrayLength;
+      renderTargetArrayLengthDistribution = selfCopy->_telemetryCommandBuffer->renderTargetArrayLengthDistribution;
     }
 
-    renderTargetArrayLengthDistribution->min = v39;
+    renderTargetArrayLengthDistribution->min = renderTargetArrayLength;
     goto LABEL_95;
   }
 }
 
-- (MTLTelemetryRenderCommandEncoder)initWithRenderCommandEncoder:(id)a3 parent:(id)a4 commandBuffer:(id)a5 descriptor:(id)a6
+- (MTLTelemetryRenderCommandEncoder)initWithRenderCommandEncoder:(id)encoder parent:(id)parent commandBuffer:(id)buffer descriptor:(id)descriptor
 {
   v11.receiver = self;
   v11.super_class = MTLTelemetryRenderCommandEncoder;
-  v8 = [(MTLToolsRenderCommandEncoder *)&v11 initWithRenderCommandEncoder:a3 parent:a4];
+  v8 = [(MTLToolsRenderCommandEncoder *)&v11 initWithRenderCommandEncoder:encoder parent:parent];
   v9 = v8;
   if (v8)
   {
-    [(MTLTelemetryRenderCommandEncoder *)v8 initTelemetryWithDescriptor:a6 commandBuffer:a5];
+    [(MTLTelemetryRenderCommandEncoder *)v8 initTelemetryWithDescriptor:descriptor commandBuffer:buffer];
   }
 
   return v9;
 }
 
-- (MTLTelemetryRenderCommandEncoder)initWithRenderCommandEncoder:(id)a3 parent:(id)a4 descriptor:(id)a5
+- (MTLTelemetryRenderCommandEncoder)initWithRenderCommandEncoder:(id)encoder parent:(id)parent descriptor:(id)descriptor
 {
   v10.receiver = self;
   v10.super_class = MTLTelemetryRenderCommandEncoder;
-  v7 = [MTLToolsRenderCommandEncoder initWithRenderCommandEncoder:sel_initWithRenderCommandEncoder_parent_descriptor_ parent:a3 descriptor:?];
+  v7 = [MTLToolsRenderCommandEncoder initWithRenderCommandEncoder:sel_initWithRenderCommandEncoder_parent_descriptor_ parent:encoder descriptor:?];
   v8 = v7;
   if (v7)
   {
-    [(MTLTelemetryRenderCommandEncoder *)v7 initTelemetryWithDescriptor:a5 commandBuffer:a4];
+    [(MTLTelemetryRenderCommandEncoder *)v7 initTelemetryWithDescriptor:descriptor commandBuffer:parent];
   }
 
   return v8;
 }
 
-- (void)setRenderPipelineState:(id)a3
+- (void)setRenderPipelineState:(id)state
 {
-  if (a3)
+  if (state)
   {
-    [a3 accumulateUsage];
+    [state accumulateUsage];
     if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
     {
 
-      self->_telemetryPipeline = a3;
+      self->_telemetryPipeline = state;
     }
   }
 
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [state baseObject];
 
-  [v5 setRenderPipelineState:v6];
+  [baseObject setRenderPipelineState:baseObject2];
 }
 
-- (void)setDepthStencilState:(id)a3
+- (void)setDepthStencilState:(id)state
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v5 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [state baseObject];
 
-  [v4 setDepthStencilState:v5];
+  [baseObject setDepthStencilState:baseObject2];
 }
 
-- (void)setDepthClipMode:(unint64_t)a3
+- (void)setDepthClipMode:(unint64_t)mode
 {
   telemetryCommandBuffer = self->_telemetryCommandBuffer;
   depthClipModeClampCount = telemetryCommandBuffer->depthClipModeClampCount;
-  if (a3 == 1)
+  if (mode == 1)
   {
     ++depthClipModeClampCount;
   }
 
   telemetryCommandBuffer->depthClipModeClampCount = depthClipModeClampCount;
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setDepthClipModeSPI:a3];
+  [baseObject setDepthClipModeSPI:mode];
 }
 
-- (void)accumDrawWithType:(unint64_t)a3 indexType:(unint64_t)a4 primitiveType:(unint64_t)a5 vertexCount:(unint64_t)a6 instanceCount:(unint64_t)a7
+- (void)accumDrawWithType:(unint64_t)type indexType:(unint64_t)indexType primitiveType:(unint64_t)primitiveType vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount
 {
   v39 = *MEMORY[0x277D85DE8];
   telemetryCommandBuffer = self->_telemetryCommandBuffer;
   drawDistribution = telemetryCommandBuffer->drawDistribution;
   ++telemetryCommandBuffer->cbDraws;
   ++self->_reDraws;
-  if (a3 != 2)
+  if (type != 2)
   {
-    if (!a6)
+    if (!count)
     {
       goto LABEL_11;
     }
 
-    v10 = &drawDistribution->var0[a5][a4][a3];
+    v10 = &drawDistribution->var0[primitiveType][indexType][type];
     v11 = *(v10 + 24);
     if (v11)
     {
-      if (*(v10 + 12) < a6)
+      if (*(v10 + 12) < count)
       {
-        *(v10 + 12) = a6;
+        *(v10 + 12) = count;
       }
 
-      if (*(v10 + 8) <= a6)
+      if (*(v10 + 8) <= count)
       {
         goto LABEL_10;
       }
@@ -474,29 +474,29 @@ LABEL_95:
 
     else
     {
-      *(v10 + 12) = a6;
+      *(v10 + 12) = count;
     }
 
-    *(v10 + 8) = a6;
+    *(v10 + 8) = count;
 LABEL_10:
-    *(v10 + 16) += a6;
+    *(v10 + 16) += count;
     *(v10 + 24) = v11 + 1;
 LABEL_11:
-    if (!a7)
+    if (!instanceCount)
     {
       goto LABEL_20;
     }
 
-    v12 = &drawDistribution->var0[a5][a4][a3];
+    v12 = &drawDistribution->var0[primitiveType][indexType][type];
     v13 = *(v12 + 48);
     if (v13)
     {
-      if (*(v12 + 36) < a7)
+      if (*(v12 + 36) < instanceCount)
       {
-        *(v12 + 36) = a7;
+        *(v12 + 36) = instanceCount;
       }
 
-      if (*(v12 + 32) <= a7)
+      if (*(v12 + 32) <= instanceCount)
       {
         goto LABEL_19;
       }
@@ -504,17 +504,17 @@ LABEL_11:
 
     else
     {
-      *(v12 + 36) = a7;
+      *(v12 + 36) = instanceCount;
     }
 
-    *(v12 + 32) = a7;
+    *(v12 + 32) = instanceCount;
 LABEL_19:
-    *(v12 + 40) += a7;
+    *(v12 + 40) += instanceCount;
     *(v12 + 48) = v13 + 1;
   }
 
 LABEL_20:
-  ++drawDistribution->var0[a5][a4][a3].var0;
+  ++drawDistribution->var0[primitiveType][indexType][type].var0;
   telemetryPipeline = self->_telemetryPipeline;
   if (telemetryPipeline)
   {
@@ -599,94 +599,94 @@ LABEL_40:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount
 {
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
-    [(MTLTelemetryRenderCommandEncoder *)self accumDrawWithType:1 indexType:a5 primitiveType:a3 vertexCount:a4 instanceCount:a8];
+    [(MTLTelemetryRenderCommandEncoder *)self accumDrawWithType:1 indexType:type primitiveType:primitives vertexCount:count instanceCount:instanceCount];
   }
 
-  v15 = [(MTLToolsObject *)self baseObject];
-  v16 = [a6 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v15 drawIndexedPrimitives:a3 indexCount:a4 indexType:a5 indexBuffer:v16 indexBufferOffset:a7 instanceCount:a8];
+  [baseObject drawIndexedPrimitives:primitives indexCount:count indexType:type indexBuffer:baseObject2 indexBufferOffset:offset instanceCount:instanceCount];
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset
 {
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
-    [(MTLTelemetryRenderCommandEncoder *)self accumDrawWithType:1 indexType:a5 primitiveType:a3 vertexCount:a4 instanceCount:1];
+    [(MTLTelemetryRenderCommandEncoder *)self accumDrawWithType:1 indexType:type primitiveType:primitives vertexCount:count instanceCount:1];
   }
 
-  v13 = [(MTLToolsObject *)self baseObject];
-  v14 = [a6 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v13 drawIndexedPrimitives:a3 indexCount:a4 indexType:a5 indexBuffer:v14 indexBufferOffset:a7];
+  [baseObject drawIndexedPrimitives:primitives indexCount:count indexType:type indexBuffer:baseObject2 indexBufferOffset:offset];
 }
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6 baseInstance:(unint64_t)a7
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance
 {
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
-    [(MTLTelemetryRenderCommandEncoder *)self accumDrawWithType:0 indexType:2 primitiveType:a3 vertexCount:a5 instanceCount:a6];
+    [(MTLTelemetryRenderCommandEncoder *)self accumDrawWithType:0 indexType:2 primitiveType:primitives vertexCount:count instanceCount:instanceCount];
   }
 
-  v13 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v13 drawPrimitives:a3 vertexStart:a4 vertexCount:a5 instanceCount:a6 baseInstance:a7];
+  [baseObject drawPrimitives:primitives vertexStart:start vertexCount:count instanceCount:instanceCount baseInstance:instance];
 }
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count
 {
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
-    [(MTLTelemetryRenderCommandEncoder *)self accumDrawWithType:0 indexType:2 primitiveType:a3 vertexCount:a5 instanceCount:1];
+    [(MTLTelemetryRenderCommandEncoder *)self accumDrawWithType:0 indexType:2 primitiveType:primitives vertexCount:count instanceCount:1];
   }
 
-  v9 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v9 drawPrimitives:a3 vertexStart:a4 vertexCount:a5];
+  [baseObject drawPrimitives:primitives vertexStart:start vertexCount:count];
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseVertex:(int64_t)a9 baseInstance:(unint64_t)a10
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseVertex:(int64_t)vertex baseInstance:(unint64_t)self0
 {
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
-    [(MTLTelemetryRenderCommandEncoder *)self accumDrawWithType:1 indexType:a5 primitiveType:a3 vertexCount:a4 instanceCount:a8];
+    [(MTLTelemetryRenderCommandEncoder *)self accumDrawWithType:1 indexType:type primitiveType:primitives vertexCount:count instanceCount:instanceCount];
   }
 
-  v17 = [(MTLToolsObject *)self baseObject];
-  v18 = [a6 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v17 drawIndexedPrimitives:a3 indexCount:a4 indexType:a5 indexBuffer:v18 indexBufferOffset:a7 instanceCount:a8 baseVertex:? baseInstance:?];
+  [baseObject drawIndexedPrimitives:primitives indexCount:count indexType:type indexBuffer:baseObject2 indexBufferOffset:offset instanceCount:instanceCount baseVertex:? baseInstance:?];
 }
 
-- (void)drawPrimitives:(unint64_t)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5
+- (void)drawPrimitives:(unint64_t)primitives indirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset
 {
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
-    [(MTLTelemetryRenderCommandEncoder *)self accumDrawWithType:2 indexType:2 primitiveType:a3 vertexCount:0 instanceCount:1];
+    [(MTLTelemetryRenderCommandEncoder *)self accumDrawWithType:2 indexType:2 primitiveType:primitives vertexCount:0 instanceCount:1];
   }
 
-  v9 = [(MTLToolsObject *)self baseObject];
-  v10 = [a4 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v9 drawPrimitives:a3 indirectBuffer:v10 indirectBufferOffset:a5];
+  [baseObject drawPrimitives:primitives indirectBuffer:baseObject2 indirectBufferOffset:offset];
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexType:(unint64_t)a4 indexBuffer:(id)a5 indexBufferOffset:(unint64_t)a6 indirectBuffer:(id)a7 indirectBufferOffset:(unint64_t)a8
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset
 {
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
-    [(MTLTelemetryRenderCommandEncoder *)self accumDrawWithType:2 indexType:a4 primitiveType:a3 vertexCount:0 instanceCount:1];
+    [(MTLTelemetryRenderCommandEncoder *)self accumDrawWithType:2 indexType:type primitiveType:primitives vertexCount:0 instanceCount:1];
   }
 
-  v15 = [(MTLToolsObject *)self baseObject];
-  v16 = [a5 baseObject];
-  v17 = [a7 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
+  baseObject3 = [indirectBuffer baseObject];
 
-  [v15 drawIndexedPrimitives:a3 indexType:a4 indexBuffer:v16 indexBufferOffset:a6 indirectBuffer:v17 indirectBufferOffset:a8];
+  [baseObject drawIndexedPrimitives:primitives indexType:type indexBuffer:baseObject2 indexBufferOffset:offset indirectBuffer:baseObject3 indirectBufferOffset:bufferOffset];
 }
 
 - (void)endEncoding
@@ -734,20 +734,20 @@ LABEL_10:
   }
 
 LABEL_12:
-  v5 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v5 endEncoding];
+  [baseObject endEncoding];
 }
 
-- (void)setFragmentTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setFragmentTexture:(id)texture atIndex:(unint64_t)index
 {
   if (![(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
     goto LABEL_17;
   }
 
-  v7 = a4 + 1;
-  if (a4 != -1)
+  v7 = index + 1;
+  if (index != -1)
   {
     textureBindCount = self->_telemetryCommandBuffer->textureBindCount;
     if (textureBindCount->count)
@@ -776,27 +776,27 @@ LABEL_10:
     ++self->_telemetryCommandBuffer->textureBindCount->count;
   }
 
-  if (a3 && *(a3 + 9) && ([a3 textureType] == 2 || objc_msgSend(a3, "textureType") == 3))
+  if (texture && *(texture + 9) && ([texture textureType] == 2 || objc_msgSend(texture, "textureType") == 3))
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:*(a3 + 9)];
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_clippedMip2DFragmentTextures, "setObject:forKeyedSubscript:", v9, [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4]);
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:*(texture + 9)];
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_clippedMip2DFragmentTextures, "setObject:forKeyedSubscript:", v9, [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index]);
   }
 
   else
   {
-    -[NSMutableDictionary removeObjectForKey:](self->_clippedMip2DFragmentTextures, "removeObjectForKey:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4]);
+    -[NSMutableDictionary removeObjectForKey:](self->_clippedMip2DFragmentTextures, "removeObjectForKey:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index]);
   }
 
 LABEL_17:
   v10.receiver = self;
   v10.super_class = MTLTelemetryRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v10 setFragmentTexture:a3 atIndex:a4];
+  [(MTLToolsRenderCommandEncoder *)&v10 setFragmentTexture:texture atIndex:index];
 }
 
-- (void)setFragmentTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFragmentTextures:(const void *)textures withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (![(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
     goto LABEL_20;
@@ -834,13 +834,13 @@ LABEL_10:
 
   if (length)
   {
-    v8 = a3;
+    texturesCopy = textures;
     v9 = location;
     v10 = length;
     do
     {
-      v11 = *v8;
-      if (*v8 && v11[9] && ([*v8 textureType] == 2 || objc_msgSend(v11, "textureType") == 3))
+      v11 = *texturesCopy;
+      if (*texturesCopy && v11[9] && ([*texturesCopy textureType] == 2 || objc_msgSend(v11, "textureType") == 3))
       {
         v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11[9]];
         -[NSMutableDictionary setObject:forKeyedSubscript:](self->_clippedMip2DFragmentTextures, "setObject:forKeyedSubscript:", v12, [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v9]);
@@ -851,7 +851,7 @@ LABEL_10:
         -[NSMutableDictionary removeObjectForKey:](self->_clippedMip2DFragmentTextures, "removeObjectForKey:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v9]);
       }
 
-      ++v8;
+      ++texturesCopy;
       ++v9;
       --v10;
     }
@@ -862,33 +862,33 @@ LABEL_10:
 LABEL_20:
   v15.receiver = self;
   v15.super_class = MTLTelemetryRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v15 setFragmentTextures:a3 withRange:location, length];
+  [(MTLToolsRenderCommandEncoder *)&v15 setFragmentTextures:textures withRange:location, length];
 }
 
-- (void)setFragmentSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setFragmentSamplerState:(id)state atIndex:(unint64_t)index
 {
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
-    if (a3 && *(a3 + 36) == 1)
+    if (state && *(state + 36) == 1)
     {
-      -[NSMutableSet addObject:](self->_anisoFragmentSamplers, "addObject:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4]);
+      -[NSMutableSet addObject:](self->_anisoFragmentSamplers, "addObject:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index]);
     }
 
     else
     {
-      -[NSMutableSet removeObject:](self->_anisoFragmentSamplers, "removeObject:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4]);
+      -[NSMutableSet removeObject:](self->_anisoFragmentSamplers, "removeObject:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index]);
     }
   }
 
   v7.receiver = self;
   v7.super_class = MTLTelemetryRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v7 setFragmentSamplerState:a3 atIndex:a4];
+  [(MTLToolsRenderCommandEncoder *)&v7 setFragmentSamplerState:state atIndex:index];
 }
 
-- (void)setFragmentSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFragmentSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
     v7 = length == 0;
@@ -902,11 +902,11 @@ LABEL_20:
   if (!v7)
   {
     v8 = location;
-    v9 = a3;
+    statesCopy = states;
     v10 = length;
     do
     {
-      if (*v9 && *(*v9 + 36) == 1)
+      if (*statesCopy && *(*statesCopy + 36) == 1)
       {
         -[NSMutableSet addObject:](self->_anisoFragmentSamplers, "addObject:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8]);
       }
@@ -916,7 +916,7 @@ LABEL_20:
         -[NSMutableSet removeObject:](self->_anisoFragmentSamplers, "removeObject:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8]);
       }
 
-      ++v9;
+      ++statesCopy;
       ++v8;
       --v10;
     }
@@ -926,35 +926,35 @@ LABEL_20:
 
   v12.receiver = self;
   v12.super_class = MTLTelemetryRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v12 setFragmentSamplerStates:a3 withRange:location, length];
+  [(MTLToolsRenderCommandEncoder *)&v12 setFragmentSamplerStates:states withRange:location, length];
 }
 
-- (void)setFragmentSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setFragmentSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
-    if (a3 && *(a3 + 36) == 1)
+    if (state && *(state + 36) == 1)
     {
-      -[NSMutableSet addObject:](self->_anisoFragmentSamplers, "addObject:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6]);
+      -[NSMutableSet addObject:](self->_anisoFragmentSamplers, "addObject:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index]);
     }
 
     else
     {
-      -[NSMutableSet removeObject:](self->_anisoFragmentSamplers, "removeObject:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6]);
+      -[NSMutableSet removeObject:](self->_anisoFragmentSamplers, "removeObject:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index]);
     }
   }
 
   v13.receiver = self;
   v13.super_class = MTLTelemetryRenderCommandEncoder;
-  *&v11 = a4;
-  *&v12 = a5;
-  [(MTLToolsRenderCommandEncoder *)&v13 setFragmentSamplerState:a3 lodMinClamp:a6 lodMaxClamp:v11 atIndex:v12];
+  *&v11 = clamp;
+  *&v12 = maxClamp;
+  [(MTLToolsRenderCommandEncoder *)&v13 setFragmentSamplerState:state lodMinClamp:index lodMaxClamp:v11 atIndex:v12];
 }
 
-- (void)setFragmentSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setFragmentSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
+  length = range.length;
+  location = range.location;
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
     v9 = length == 0;
@@ -968,11 +968,11 @@ LABEL_20:
   if (!v9)
   {
     v10 = location;
-    v11 = a3;
+    statesCopy = states;
     v12 = length;
     do
     {
-      if (*v11 && *(*v11 + 36) == 1)
+      if (*statesCopy && *(*statesCopy + 36) == 1)
       {
         -[NSMutableSet addObject:](self->_anisoFragmentSamplers, "addObject:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10]);
       }
@@ -982,7 +982,7 @@ LABEL_20:
         -[NSMutableSet removeObject:](self->_anisoFragmentSamplers, "removeObject:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10]);
       }
 
-      ++v11;
+      ++statesCopy;
       ++v10;
       --v12;
     }
@@ -992,23 +992,23 @@ LABEL_20:
 
   v16.receiver = self;
   v16.super_class = MTLTelemetryRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v16 setFragmentSamplerStates:a3 lodMinClamps:a4 lodMaxClamps:a5 withRange:location, length];
+  [(MTLToolsRenderCommandEncoder *)&v16 setFragmentSamplerStates:states lodMinClamps:clamps lodMaxClamps:maxClamps withRange:location, length];
 }
 
-- (void)accumViewportTelemetry:(id *)a3 count:(unint64_t)a4
+- (void)accumViewportTelemetry:(id *)telemetry count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
     viewportDistribution = self->_telemetryCommandBuffer->viewportDistribution;
     if (viewportDistribution->var0.count)
     {
-      if (viewportDistribution->var0.max < a4)
+      if (viewportDistribution->var0.max < count)
       {
-        viewportDistribution->var0.max = a4;
+        viewportDistribution->var0.max = count;
         viewportDistribution = self->_telemetryCommandBuffer->viewportDistribution;
       }
 
-      if (viewportDistribution->var0.min <= a4)
+      if (viewportDistribution->var0.min <= count)
       {
         goto LABEL_11;
       }
@@ -1016,21 +1016,21 @@ LABEL_20:
 
     else
     {
-      viewportDistribution->var0.max = a4;
+      viewportDistribution->var0.max = count;
       viewportDistribution = self->_telemetryCommandBuffer->viewportDistribution;
     }
 
-    viewportDistribution->var0.min = a4;
+    viewportDistribution->var0.min = count;
 LABEL_11:
-    self->_telemetryCommandBuffer->viewportDistribution->var0.total += a4;
+    self->_telemetryCommandBuffer->viewportDistribution->var0.total += count;
     ++self->_telemetryCommandBuffer->viewportDistribution->var0.count;
     goto LABEL_12;
   }
 
-  if (a4)
+  if (count)
   {
 LABEL_12:
-    p_var5 = &a3->var5;
+    p_var5 = &telemetry->var5;
     for (i = 1; ; ++i)
     {
       v7 = *(p_var5 - 3);
@@ -1140,7 +1140,7 @@ LABEL_41:
       ++self->_telemetryCommandBuffer->viewportDistribution->var4.var3;
       v23 = i;
       p_var5 += 6;
-      if (v23 >= a4)
+      if (v23 >= count)
       {
         return;
       }
@@ -1154,47 +1154,47 @@ LABEL_19:
   }
 }
 
-- (void)setViewport:(id *)a3
+- (void)setViewport:(id *)viewport
 {
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
-    [(MTLTelemetryRenderCommandEncoder *)self accumViewportTelemetry:a3 count:1];
+    [(MTLTelemetryRenderCommandEncoder *)self accumViewportTelemetry:viewport count:1];
   }
 
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = *&a3->var2;
-  v7[0] = *&a3->var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v6 = *&viewport->var2;
+  v7[0] = *&viewport->var0;
   v7[1] = v6;
-  v7[2] = *&a3->var4;
-  [v5 setViewport:v7];
+  v7[2] = *&viewport->var4;
+  [baseObject setViewport:v7];
 }
 
-- (void)setViewports:(id *)a3 count:(unint64_t)a4
+- (void)setViewports:(id *)viewports count:(unint64_t)count
 {
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
-    [(MTLTelemetryRenderCommandEncoder *)self accumViewportTelemetry:a3 count:a4];
+    [(MTLTelemetryRenderCommandEncoder *)self accumViewportTelemetry:viewports count:count];
   }
 
-  v7 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v7 setViewports:a3 count:a4];
+  [baseObject setViewports:viewports count:count];
 }
 
-- (void)accumScissorRectTelemetry:(id *)a3 count:(unint64_t)a4
+- (void)accumScissorRectTelemetry:(id *)telemetry count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
     scissorRectDistribution = self->_telemetryCommandBuffer->scissorRectDistribution;
     if (scissorRectDistribution->var0.count)
     {
-      if (scissorRectDistribution->var0.max < a4)
+      if (scissorRectDistribution->var0.max < count)
       {
-        scissorRectDistribution->var0.max = a4;
+        scissorRectDistribution->var0.max = count;
         scissorRectDistribution = self->_telemetryCommandBuffer->scissorRectDistribution;
       }
 
-      if (scissorRectDistribution->var0.min <= a4)
+      if (scissorRectDistribution->var0.min <= count)
       {
         goto LABEL_11;
       }
@@ -1202,21 +1202,21 @@ LABEL_19:
 
     else
     {
-      scissorRectDistribution->var0.max = a4;
+      scissorRectDistribution->var0.max = count;
       scissorRectDistribution = self->_telemetryCommandBuffer->scissorRectDistribution;
     }
 
-    scissorRectDistribution->var0.min = a4;
+    scissorRectDistribution->var0.min = count;
 LABEL_11:
-    self->_telemetryCommandBuffer->scissorRectDistribution->var0.total += a4;
+    self->_telemetryCommandBuffer->scissorRectDistribution->var0.total += count;
     ++self->_telemetryCommandBuffer->scissorRectDistribution->var0.count;
     goto LABEL_12;
   }
 
-  if (a4)
+  if (count)
   {
 LABEL_12:
-    p_var3 = &a3->var3;
+    p_var3 = &telemetry->var3;
     for (i = 1; ; ++i)
     {
       v7 = *(p_var3 - 1);
@@ -1272,7 +1272,7 @@ LABEL_27:
       ++self->_telemetryCommandBuffer->scissorRectDistribution->var2.var3;
       v15 = i;
       p_var3 += 4;
-      if (v15 >= a4)
+      if (v15 >= count)
       {
         return;
       }
@@ -1286,30 +1286,30 @@ LABEL_19:
   }
 }
 
-- (void)setScissorRect:(id *)a3
+- (void)setScissorRect:(id *)rect
 {
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
-    [(MTLTelemetryRenderCommandEncoder *)self accumScissorRectTelemetry:a3 count:1];
+    [(MTLTelemetryRenderCommandEncoder *)self accumScissorRectTelemetry:rect count:1];
   }
 
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = *&a3->var2;
-  v7[0] = *&a3->var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v6 = *&rect->var2;
+  v7[0] = *&rect->var0;
   v7[1] = v6;
-  [v5 setScissorRect:v7];
+  [baseObject setScissorRect:v7];
 }
 
-- (void)setScissorRects:(id *)a3 count:(unint64_t)a4
+- (void)setScissorRects:(id *)rects count:(unint64_t)count
 {
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
-    [(MTLTelemetryRenderCommandEncoder *)self accumScissorRectTelemetry:a3 count:a4];
+    [(MTLTelemetryRenderCommandEncoder *)self accumScissorRectTelemetry:rects count:count];
   }
 
-  v7 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v7 setScissorRects:a3 count:a4];
+  [baseObject setScissorRects:rects count:count];
 }
 
 @end

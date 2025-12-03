@@ -1,6 +1,6 @@
 @interface TPFavoritesCollectionViewFlowLayout
 - (TPFavoritesCollectionViewFlowLayout)init;
-- (double)caption2FontScaledValueForValue:(double)a3;
+- (double)caption2FontScaledValueForValue:(double)value;
 @end
 
 @implementation TPFavoritesCollectionViewFlowLayout
@@ -22,10 +22,10 @@
   return v3;
 }
 
-- (double)caption2FontScaledValueForValue:(double)a3
+- (double)caption2FontScaledValueForValue:(double)value
 {
   v4 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD10]];
-  [v4 _scaledValueForValue:a3];
+  [v4 _scaledValueForValue:value];
   v6 = ceil(v5);
 
   return v6;

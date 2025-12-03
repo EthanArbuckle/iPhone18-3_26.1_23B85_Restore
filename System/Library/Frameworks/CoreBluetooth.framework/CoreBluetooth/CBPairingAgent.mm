@@ -1,41 +1,41 @@
 @interface CBPairingAgent
-- (CBPairingAgent)initWithParentManager:(id)a3;
+- (CBPairingAgent)initWithParentManager:(id)manager;
 - (CBPairingAgentDelegate)delegate;
 - (CBPairingAgentParentDelegate)parentManager;
-- (id)retrieveOOBDataForPeer:(id)a3;
+- (id)retrieveOOBDataForPeer:(id)peer;
 - (id)retrievePairedPeers;
 - (void)dealloc;
-- (void)handlePairingCompleted:(id)a3;
-- (void)handlePairingMessage:(unsigned __int16)a3 args:(id)a4;
-- (void)handlePairingRequested:(id)a3;
-- (void)handleUnpaired:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)pairPeer:(id)a3 options:(id)a4;
+- (void)handlePairingCompleted:(id)completed;
+- (void)handlePairingMessage:(unsigned __int16)message args:(id)args;
+- (void)handlePairingRequested:(id)requested;
+- (void)handleUnpaired:(id)unpaired;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)pairPeer:(id)peer options:(id)options;
 - (void)removeGlobalTemporaryLTK;
-- (void)setUseOOBMode:(BOOL)a3;
-- (void)unpairPeer:(id)a3;
-- (void)unpairPeer:(id)a3 options:(id)a4;
+- (void)setUseOOBMode:(BOOL)mode;
+- (void)unpairPeer:(id)peer;
+- (void)unpairPeer:(id)peer options:(id)options;
 - (void)updateRegistration;
 @end
 
 @implementation CBPairingAgent
 
-- (CBPairingAgent)initWithParentManager:(id)a3
+- (CBPairingAgent)initWithParentManager:(id)manager
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  managerCopy = manager;
   v26.receiver = self;
   v26.super_class = CBPairingAgent;
   v5 = [(CBPairingAgent *)&v26 init];
   v6 = v5;
   if (v5)
   {
-    [(CBPairingAgent *)v5 setParentManager:v4];
-    v7 = [(CBPairingAgent *)v6 parentManager];
-    [v7 sendMsg:10 args:MEMORY[0x1E695E0F8]];
+    [(CBPairingAgent *)v5 setParentManager:managerCopy];
+    parentManager = [(CBPairingAgent *)v6 parentManager];
+    [parentManager sendMsg:10 args:MEMORY[0x1E695E0F8]];
 
-    v8 = [(CBPairingAgent *)v6 parentManager];
-    v9 = [v8 sendSyncMsg:12 args:0];
+    parentManager2 = [(CBPairingAgent *)v6 parentManager];
+    v9 = [parentManager2 sendSyncMsg:12 args:0];
 
     v24 = 0u;
     v25 = 0u;
@@ -59,8 +59,8 @@
           }
 
           v15 = *(*(&v22 + 1) + 8 * v14);
-          v16 = [(CBPairingAgent *)v6 parentManager];
-          v17 = [v16 peerWithInfo:v15];
+          parentManager3 = [(CBPairingAgent *)v6 parentManager];
+          v17 = [parentManager3 peerWithInfo:v15];
 
           v18 = [v15 objectForKeyedSubscript:@"kCBMsgArgPairingState"];
           [v17 setPairingState:{objc_msgSend(v18, "integerValue")}];
@@ -90,14 +90,14 @@
   [(CBPairingAgent *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a3;
-  if (objc_opt_class() == a6)
+  objectCopy = object;
+  changeCopy = change;
+  pathCopy = path;
+  if (objc_opt_class() == context)
   {
-    v13 = [v12 isEqualToString:@"delegate"];
+    v13 = [pathCopy isEqualToString:@"delegate"];
 
     if (v13)
     {
@@ -109,34 +109,34 @@
   {
     v14.receiver = self;
     v14.super_class = CBPairingAgent;
-    [(CBPairingAgent *)&v14 observeValueForKeyPath:v12 ofObject:v10 change:v11 context:a6];
+    [(CBPairingAgent *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
 - (void)updateRegistration
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CBPairingAgent *)self delegate];
+  delegate = [(CBPairingAgent *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(CBPairingAgent *)self delegate];
+    delegate2 = [(CBPairingAgent *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
-    v6 = [(CBPairingAgent *)self parentManager];
+    parentManager = [(CBPairingAgent *)self parentManager];
     v12 = @"kCBMsgArgProgrammaticPairing";
     v7 = [MEMORY[0x1E696AD98] numberWithBool:v5 & 1];
     v13[0] = v7;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-    [v6 sendMsg:10 args:v8];
+    [parentManager sendMsg:10 args:v8];
 
     v9 = *MEMORY[0x1E69E9840];
   }
 
   else
   {
-    v11 = [(CBPairingAgent *)self parentManager];
-    [v11 sendMsg:10 args:MEMORY[0x1E695E0F8]];
+    parentManager2 = [(CBPairingAgent *)self parentManager];
+    [parentManager2 sendMsg:10 args:MEMORY[0x1E695E0F8]];
     v10 = *MEMORY[0x1E69E9840];
   }
 }
@@ -144,10 +144,10 @@
 - (id)retrievePairedPeers
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(CBPairingAgent *)self parentManager];
-  v4 = [v3 sendSyncMsg:12 args:0];
+  parentManager = [(CBPairingAgent *)self parentManager];
+  v4 = [parentManager sendSyncMsg:12 args:0];
 
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -168,10 +168,10 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [(CBPairingAgent *)self parentManager];
-        v13 = [v12 peerWithInfo:v11];
+        parentManager2 = [(CBPairingAgent *)self parentManager];
+        v13 = [parentManager2 peerWithInfo:v11];
 
-        [v5 addObject:v13];
+        [array addObject:v13];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -182,86 +182,86 @@
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
-- (void)pairPeer:(id)a3 options:(id)a4
+- (void)pairPeer:(id)peer options:(id)options
 {
-  v10 = a3;
-  v6 = a4;
-  if (!v10)
+  peerCopy = peer;
+  optionsCopy = options;
+  if (!peerCopy)
   {
     [CBPairingAgent pairPeer:options:];
   }
 
-  v7 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v6];
-  v8 = [v10 identifier];
-  [v7 setObject:v8 forKeyedSubscript:@"kCBMsgArgDeviceUUID"];
+  v7 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:optionsCopy];
+  identifier = [peerCopy identifier];
+  [v7 setObject:identifier forKeyedSubscript:@"kCBMsgArgDeviceUUID"];
 
-  v9 = [(CBPairingAgent *)self parentManager];
-  [v9 sendMsg:13 args:v7];
+  parentManager = [(CBPairingAgent *)self parentManager];
+  [parentManager sendMsg:13 args:v7];
 }
 
-- (void)unpairPeer:(id)a3 options:(id)a4
+- (void)unpairPeer:(id)peer options:(id)options
 {
   v6 = MEMORY[0x1E695DF90];
-  v7 = a3;
-  v10 = [v6 dictionaryWithDictionary:a4];
-  v8 = [v7 identifier];
+  peerCopy = peer;
+  v10 = [v6 dictionaryWithDictionary:options];
+  identifier = [peerCopy identifier];
 
-  [v10 setObject:v8 forKeyedSubscript:@"kCBMsgArgDeviceUUID"];
-  v9 = [(CBPairingAgent *)self parentManager];
-  [v9 sendMsg:15 args:v10];
+  [v10 setObject:identifier forKeyedSubscript:@"kCBMsgArgDeviceUUID"];
+  parentManager = [(CBPairingAgent *)self parentManager];
+  [parentManager sendMsg:15 args:v10];
 }
 
-- (void)unpairPeer:(id)a3
+- (void)unpairPeer:(id)peer
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  peerCopy = peer;
+  v5 = peerCopy;
+  if (!peerCopy)
   {
     [CBPairingAgent unpairPeer:];
-    v4 = 0;
+    peerCopy = 0;
   }
 
-  [(CBPairingAgent *)self unpairPeer:v4 options:MEMORY[0x1E695E0F8]];
+  [(CBPairingAgent *)self unpairPeer:peerCopy options:MEMORY[0x1E695E0F8]];
 }
 
-- (void)setUseOOBMode:(BOOL)a3
+- (void)setUseOOBMode:(BOOL)mode
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (self->_useOOBMode != a3)
+  if (self->_useOOBMode != mode)
   {
-    self->_useOOBMode = a3;
-    v4 = [(CBPairingAgent *)self parentManager];
+    self->_useOOBMode = mode;
+    parentManager = [(CBPairingAgent *)self parentManager];
     v8 = @"kCBMsgArgUseOOBPairing";
     v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_useOOBMode];
     v9[0] = v5;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-    [v4 sendMsg:16 args:v6];
+    [parentManager sendMsg:16 args:v6];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)retrieveOOBDataForPeer:(id)a3
+- (id)retrieveOOBDataForPeer:(id)peer
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CBPairingAgent *)self parentManager];
-  v6 = v5;
-  if (v4)
+  peerCopy = peer;
+  parentManager = [(CBPairingAgent *)self parentManager];
+  v6 = parentManager;
+  if (peerCopy)
   {
     v13 = @"kCBMsgArgDeviceUUID";
-    v7 = [v4 identifier];
-    v14[0] = v7;
+    identifier = [peerCopy identifier];
+    v14[0] = identifier;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     v9 = [v6 sendSyncMsg:17 args:v8];
   }
 
   else
   {
-    v9 = [v5 sendSyncMsg:17 args:MEMORY[0x1E695E0F8]];
+    v9 = [parentManager sendSyncMsg:17 args:MEMORY[0x1E695E0F8]];
   }
 
   v10 = [v9 objectForKeyedSubscript:@"kCBMsgArgPairingData"];
@@ -273,41 +273,41 @@
 
 - (void)removeGlobalTemporaryLTK
 {
-  v2 = [(CBPairingAgent *)self parentManager];
-  [v2 sendMsg:22 args:MEMORY[0x1E695E0F8]];
+  parentManager = [(CBPairingAgent *)self parentManager];
+  [parentManager sendMsg:22 args:MEMORY[0x1E695E0F8]];
 }
 
-- (void)handlePairingRequested:(id)a3
+- (void)handlePairingRequested:(id)requested
 {
-  v4 = a3;
-  v5 = [(CBPairingAgent *)self parentManager];
-  v12 = [v5 peerWithInfo:v4];
+  requestedCopy = requested;
+  parentManager = [(CBPairingAgent *)self parentManager];
+  v12 = [parentManager peerWithInfo:requestedCopy];
 
-  v6 = [v4 objectForKeyedSubscript:@"kCBMsgArgPairingType"];
-  v7 = [v6 integerValue];
+  v6 = [requestedCopy objectForKeyedSubscript:@"kCBMsgArgPairingType"];
+  integerValue = [v6 integerValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"kCBMsgArgPairingPasskey"];
+  v8 = [requestedCopy objectForKeyedSubscript:@"kCBMsgArgPairingPasskey"];
 
-  v9 = [(CBPairingAgent *)self delegate];
+  delegate = [(CBPairingAgent *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(CBPairingAgent *)self delegate];
-    [v11 pairingAgent:self peerDidRequestPairing:v12 type:v7 passkey:v8];
+    delegate2 = [(CBPairingAgent *)self delegate];
+    [delegate2 pairingAgent:self peerDidRequestPairing:v12 type:integerValue passkey:v8];
   }
 }
 
-- (void)handlePairingCompleted:(id)a3
+- (void)handlePairingCompleted:(id)completed
 {
-  v13 = a3;
-  v4 = [(CBPairingAgent *)self parentManager];
-  v5 = [v4 peerWithInfo:v13];
+  completedCopy = completed;
+  parentManager = [(CBPairingAgent *)self parentManager];
+  v5 = [parentManager peerWithInfo:completedCopy];
 
-  v6 = [MEMORY[0x1E696ABC0] errorWithInfo:v13];
+  v6 = [MEMORY[0x1E696ABC0] errorWithInfo:completedCopy];
   if (v6)
   {
-    v7 = [(CBPairingAgent *)self delegate];
+    delegate = [(CBPairingAgent *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if ((v8 & 1) == 0)
@@ -315,16 +315,16 @@
       goto LABEL_7;
     }
 
-    v9 = [(CBPairingAgent *)self delegate];
-    [v9 pairingAgent:self peerDidFailToCompletePairing:v5 error:v6];
+    delegate2 = [(CBPairingAgent *)self delegate];
+    [delegate2 pairingAgent:self peerDidFailToCompletePairing:v5 error:v6];
   }
 
   else
   {
-    v10 = [v13 objectForKeyedSubscript:@"kCBMsgArgPairingState"];
+    v10 = [completedCopy objectForKeyedSubscript:@"kCBMsgArgPairingState"];
     [v5 setPairingState:{objc_msgSend(v10, "integerValue")}];
 
-    v11 = [(CBPairingAgent *)self delegate];
+    delegate3 = [(CBPairingAgent *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if ((v12 & 1) == 0)
@@ -332,37 +332,37 @@
       goto LABEL_7;
     }
 
-    v9 = [(CBPairingAgent *)self delegate];
-    [v9 pairingAgent:self peerDidCompletePairing:v5];
+    delegate2 = [(CBPairingAgent *)self delegate];
+    [delegate2 pairingAgent:self peerDidCompletePairing:v5];
   }
 
 LABEL_7:
 }
 
-- (void)handleUnpaired:(id)a3
+- (void)handleUnpaired:(id)unpaired
 {
-  v4 = a3;
-  v5 = [(CBPairingAgent *)self parentManager];
-  v8 = [v5 peerWithInfo:v4];
+  unpairedCopy = unpaired;
+  parentManager = [(CBPairingAgent *)self parentManager];
+  v8 = [parentManager peerWithInfo:unpairedCopy];
 
   [v8 setPairingState:0];
-  v6 = [(CBPairingAgent *)self delegate];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  delegate = [(CBPairingAgent *)self delegate];
+  LOBYTE(parentManager) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (parentManager)
   {
-    v7 = [(CBPairingAgent *)self delegate];
-    [v7 pairingAgent:self peerDidUnpair:v8];
+    delegate2 = [(CBPairingAgent *)self delegate];
+    [delegate2 pairingAgent:self peerDidUnpair:v8];
   }
 }
 
-- (void)handlePairingMessage:(unsigned __int16)a3 args:(id)a4
+- (void)handlePairingMessage:(unsigned __int16)message args:(id)args
 {
-  v4 = a3;
-  v6 = a4;
-  if ((v4 - 18) < 3)
+  messageCopy = message;
+  argsCopy = args;
+  if ((messageCopy - 18) < 3)
   {
-    [self *off_1E8122300[(v4 - 18)]];
+    [self *off_1E8122300[(messageCopy - 18)]];
 LABEL_3:
 
     return;
@@ -379,7 +379,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [CBScalablePipeManager handleMsg:v4 args:v7];
+  [CBScalablePipeManager handleMsg:messageCopy args:v7];
 }
 
 - (CBPairingAgentDelegate)delegate

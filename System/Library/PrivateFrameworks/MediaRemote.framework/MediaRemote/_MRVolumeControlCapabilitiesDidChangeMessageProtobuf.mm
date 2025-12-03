@@ -1,12 +1,12 @@
 @interface _MRVolumeControlCapabilitiesDidChangeMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRVolumeControlCapabilitiesDidChangeMessageProtobuf
@@ -17,108 +17,108 @@
   v8.receiver = self;
   v8.super_class = _MRVolumeControlCapabilitiesDidChangeMessageProtobuf;
   v4 = [(_MRVolumeControlCapabilitiesDidChangeMessageProtobuf *)&v8 description];
-  v5 = [(_MRVolumeControlCapabilitiesDidChangeMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRVolumeControlCapabilitiesDidChangeMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   capabilities = self->_capabilities;
   if (capabilities)
   {
-    v5 = [(_MRVolumeControlAvailabilityProtobuf *)capabilities dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"capabilities"];
+    dictionaryRepresentation = [(_MRVolumeControlAvailabilityProtobuf *)capabilities dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"capabilities"];
   }
 
   endpointUID = self->_endpointUID;
   if (endpointUID)
   {
-    [v3 setObject:endpointUID forKey:@"endpointUID"];
+    [dictionary setObject:endpointUID forKey:@"endpointUID"];
   }
 
   outputDeviceUID = self->_outputDeviceUID;
   if (outputDeviceUID)
   {
-    [v3 setObject:outputDeviceUID forKey:@"outputDeviceUID"];
+    [dictionary setObject:outputDeviceUID forKey:@"outputDeviceUID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_capabilities)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_endpointUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_outputDeviceUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_capabilities)
   {
-    [v4 setCapabilities:?];
-    v4 = v5;
+    [toCopy setCapabilities:?];
+    toCopy = v5;
   }
 
   if (self->_endpointUID)
   {
     [v5 setEndpointUID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_outputDeviceUID)
   {
     [v5 setOutputDeviceUID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_MRVolumeControlAvailabilityProtobuf *)self->_capabilities copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_MRVolumeControlAvailabilityProtobuf *)self->_capabilities copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_endpointUID copyWithZone:a3];
+  v8 = [(NSString *)self->_endpointUID copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_outputDeviceUID copyWithZone:a3];
+  v10 = [(NSString *)self->_outputDeviceUID copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((capabilities = self->_capabilities, !(capabilities | v4[1])) || -[_MRVolumeControlAvailabilityProtobuf isEqual:](capabilities, "isEqual:")) && ((endpointUID = self->_endpointUID, !(endpointUID | v4[2])) || -[NSString isEqual:](endpointUID, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((capabilities = self->_capabilities, !(capabilities | equalCopy[1])) || -[_MRVolumeControlAvailabilityProtobuf isEqual:](capabilities, "isEqual:")) && ((endpointUID = self->_endpointUID, !(endpointUID | equalCopy[2])) || -[NSString isEqual:](endpointUID, "isEqual:")))
   {
     outputDeviceUID = self->_outputDeviceUID;
-    if (outputDeviceUID | v4[3])
+    if (outputDeviceUID | equalCopy[3])
     {
       v8 = [(NSString *)outputDeviceUID isEqual:?];
     }
@@ -144,12 +144,12 @@
   return v4 ^ [(NSString *)self->_outputDeviceUID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   capabilities = self->_capabilities;
-  v6 = v4[1];
-  v7 = v4;
+  v6 = fromCopy[1];
+  v7 = fromCopy;
   if (capabilities)
   {
     if (!v6)
@@ -170,18 +170,18 @@
     [(_MRVolumeControlCapabilitiesDidChangeMessageProtobuf *)self setCapabilities:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(_MRVolumeControlCapabilitiesDidChangeMessageProtobuf *)self setEndpointUID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(_MRVolumeControlCapabilitiesDidChangeMessageProtobuf *)self setOutputDeviceUID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 

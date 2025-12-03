@@ -1,31 +1,31 @@
 @interface _LTMultiParagraphTranslationRequest
-- (_LTMultiParagraphTranslationRequest)initWithText:(id)a3 localePair:(id)a4 completionHandler:(id)a5;
+- (_LTMultiParagraphTranslationRequest)initWithText:(id)text localePair:(id)pair completionHandler:(id)handler;
 - (void)_cleanUp;
 - (void)_generateParagraphRequests;
 @end
 
 @implementation _LTMultiParagraphTranslationRequest
 
-- (_LTMultiParagraphTranslationRequest)initWithText:(id)a3 localePair:(id)a4 completionHandler:(id)a5
+- (_LTMultiParagraphTranslationRequest)initWithText:(id)text localePair:(id)pair completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  pairCopy = pair;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = _LTMultiParagraphTranslationRequest;
   v11 = [(_LTMultiParagraphTranslationRequest *)&v22 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [textCopy copy];
     text = v11->_text;
     v11->_text = v12;
 
-    objc_storeStrong(&v11->_localePair, a4);
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v11->_localePair, pair);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     completedResultMap = v11->_completedResultMap;
-    v11->_completedResultMap = v14;
+    v11->_completedResultMap = dictionary;
 
-    v16 = _Block_copy(v10);
+    v16 = _Block_copy(handlerCopy);
     completionHandler = v11->_completionHandler;
     v11->_completionHandler = v16;
 
@@ -44,17 +44,17 @@
 {
   v21[1] = *MEMORY[0x277D85DE8];
   v3 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:self->_text];
-  v4 = [v3 paragraphs];
-  if (![v4 count])
+  paragraphs = [v3 paragraphs];
+  if (![paragraphs count])
   {
     v21[0] = v3;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
 
-    v4 = v5;
+    paragraphs = v5;
   }
 
   v6 = dispatch_group_create();
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(paragraphs, "count")}];
   objc_initWeak(&location, self);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -65,7 +65,7 @@
   v17 = v8;
   v9 = v7;
   v18 = v9;
-  [v4 enumerateObjectsUsingBlock:v16];
+  [paragraphs enumerateObjectsUsingBlock:v16];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

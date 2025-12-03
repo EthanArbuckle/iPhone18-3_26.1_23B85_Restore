@@ -1,11 +1,11 @@
 @interface ParmesanStackedTimeLabel
-- (_TtC30NTKParmesanFaceBundleCompanion24ParmesanStackedTimeLabel)initWithCoder:(id)a3;
+- (_TtC30NTKParmesanFaceBundleCompanion24ParmesanStackedTimeLabel)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation ParmesanStackedTimeLabel
 
-- (_TtC30NTKParmesanFaceBundleCompanion24ParmesanStackedTimeLabel)initWithCoder:(id)a3
+- (_TtC30NTKParmesanFaceBundleCompanion24ParmesanStackedTimeLabel)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion24ParmesanStackedTimeLabel_timeRect;
   *v3 = 0;
@@ -21,7 +21,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BFF2670();
 }
 

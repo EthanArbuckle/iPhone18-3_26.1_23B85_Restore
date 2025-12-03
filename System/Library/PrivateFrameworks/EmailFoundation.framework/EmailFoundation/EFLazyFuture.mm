@@ -3,23 +3,23 @@
 - (BOOL)isFinished;
 - (BOOL)run;
 - (BOOL)tryCancel;
-- (EFLazyFuture)initWithScheduler:(id)a3 block:(id)a4;
+- (EFLazyFuture)initWithScheduler:(id)scheduler block:(id)block;
 - (id)delegate;
-- (id)resultBeforeDate:(id)a3 error:(id *)a4;
-- (id)resultIfAvailable:(id *)a3;
-- (void)addFailureBlock:(id)a3;
-- (void)addSuccessBlock:(id)a3;
-- (void)onScheduler:(id)a3 addFailureBlock:(id)a4;
-- (void)onScheduler:(id)a3 addSuccessBlock:(id)a4;
-- (void)setDelegate:(id)a3;
+- (id)resultBeforeDate:(id)date error:(id *)error;
+- (id)resultIfAvailable:(id *)available;
+- (void)addFailureBlock:(id)block;
+- (void)addSuccessBlock:(id)block;
+- (void)onScheduler:(id)scheduler addFailureBlock:(id)block;
+- (void)onScheduler:(id)scheduler addSuccessBlock:(id)block;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation EFLazyFuture
 
-- (EFLazyFuture)initWithScheduler:(id)a3 block:(id)a4
+- (EFLazyFuture)initWithScheduler:(id)scheduler block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  schedulerCopy = scheduler;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = EFLazyFuture;
   v9 = [(EFFuture *)&v17 init];
@@ -30,8 +30,8 @@
     v9->_stateLock = v10;
 
     [(NSConditionLock *)v9->_stateLock setName:@"EFLazyFuture state lock"];
-    objc_storeStrong(&v9->_scheduler, a3);
-    v12 = _Block_copy(v8);
+    objc_storeStrong(&v9->_scheduler, scheduler);
+    v12 = _Block_copy(blockCopy);
     block = v9->_block;
     v9->_block = v12;
 
@@ -45,24 +45,24 @@
 
 - (id)delegate
 {
-  v2 = [(EFPromise *)self->_promise future];
-  v3 = [v2 delegate];
+  future = [(EFPromise *)self->_promise future];
+  delegate = [future delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
-  v4 = [(EFPromise *)self->_promise future];
-  [v4 setDelegate:v5];
+  delegateCopy = delegate;
+  future = [(EFPromise *)self->_promise future];
+  [future setDelegate:delegateCopy];
 }
 
 - (BOOL)run
 {
   [(NSConditionLock *)self->_stateLock lock];
-  v3 = [(NSConditionLock *)self->_stateLock condition];
-  if (v3)
+  condition = [(NSConditionLock *)self->_stateLock condition];
+  if (condition)
   {
     [(NSConditionLock *)self->_stateLock unlock];
   }
@@ -85,7 +85,7 @@
     [(EFScheduler *)scheduler performBlock:v9];
   }
 
-  return v3 == 0;
+  return condition == 0;
 }
 
 void __19__EFLazyFuture_run__block_invoke(uint64_t a1)
@@ -101,33 +101,33 @@ void __19__EFLazyFuture_run__block_invoke(uint64_t a1)
 
 - (BOOL)isFinished
 {
-  v2 = [(EFPromise *)self->_promise future];
-  v3 = [v2 isFinished];
+  future = [(EFPromise *)self->_promise future];
+  isFinished = [future isFinished];
 
-  return v3;
+  return isFinished;
 }
 
 - (BOOL)isCancelled
 {
-  v2 = [(EFPromise *)self->_promise future];
-  v3 = [v2 isCancelled];
+  future = [(EFPromise *)self->_promise future];
+  isCancelled = [future isCancelled];
 
-  return v3;
+  return isCancelled;
 }
 
 - (BOOL)tryCancel
 {
   [(NSConditionLock *)self->_stateLock lock];
-  v3 = [(NSConditionLock *)self->_stateLock condition];
-  if (v3)
+  condition = [(NSConditionLock *)self->_stateLock condition];
+  if (condition)
   {
     [(NSConditionLock *)self->_stateLock unlock];
   }
 
   else
   {
-    v4 = [(EFPromise *)self->_promise future];
-    [v4 cancel];
+    future = [(EFPromise *)self->_promise future];
+    [future cancel];
 
     block = self->_block;
     self->_block = 0;
@@ -135,55 +135,55 @@ void __19__EFLazyFuture_run__block_invoke(uint64_t a1)
     [(NSConditionLock *)self->_stateLock unlockWithCondition:2];
   }
 
-  return v3 == 0;
+  return condition == 0;
 }
 
-- (void)addSuccessBlock:(id)a3
+- (void)addSuccessBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v4 = +[EFScheduler immediateScheduler];
-  [(EFLazyFuture *)self onScheduler:v4 addSuccessBlock:v5];
+  [(EFLazyFuture *)self onScheduler:v4 addSuccessBlock:blockCopy];
 }
 
-- (void)onScheduler:(id)a3 addSuccessBlock:(id)a4
+- (void)onScheduler:(id)scheduler addSuccessBlock:(id)block
 {
-  v8 = a3;
-  v6 = a4;
+  schedulerCopy = scheduler;
+  blockCopy = block;
   [(EFLazyFuture *)self run];
-  v7 = [(EFPromise *)self->_promise future];
-  [v7 onScheduler:v8 addSuccessBlock:v6];
+  future = [(EFPromise *)self->_promise future];
+  [future onScheduler:schedulerCopy addSuccessBlock:blockCopy];
 }
 
-- (void)addFailureBlock:(id)a3
+- (void)addFailureBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v4 = +[EFScheduler immediateScheduler];
-  [(EFLazyFuture *)self onScheduler:v4 addFailureBlock:v5];
+  [(EFLazyFuture *)self onScheduler:v4 addFailureBlock:blockCopy];
 }
 
-- (void)onScheduler:(id)a3 addFailureBlock:(id)a4
+- (void)onScheduler:(id)scheduler addFailureBlock:(id)block
 {
-  v8 = a3;
-  v6 = a4;
+  schedulerCopy = scheduler;
+  blockCopy = block;
   [(EFLazyFuture *)self run];
-  v7 = [(EFPromise *)self->_promise future];
-  [v7 onScheduler:v8 addFailureBlock:v6];
+  future = [(EFPromise *)self->_promise future];
+  [future onScheduler:schedulerCopy addFailureBlock:blockCopy];
 }
 
-- (id)resultBeforeDate:(id)a3 error:(id *)a4
+- (id)resultBeforeDate:(id)date error:(id *)error
 {
-  v6 = a3;
+  dateCopy = date;
   [(EFLazyFuture *)self run];
-  v7 = [(EFPromise *)self->_promise future];
-  v8 = [v7 resultBeforeDate:v6 error:a4];
+  future = [(EFPromise *)self->_promise future];
+  v8 = [future resultBeforeDate:dateCopy error:error];
 
   return v8;
 }
 
-- (id)resultIfAvailable:(id *)a3
+- (id)resultIfAvailable:(id *)available
 {
-  v5 = [MEMORY[0x1E695DF00] distantPast];
-  v6 = [(EFLazyFuture *)self resultBeforeDate:v5 error:a3];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  v6 = [(EFLazyFuture *)self resultBeforeDate:distantPast error:available];
 
   return v6;
 }

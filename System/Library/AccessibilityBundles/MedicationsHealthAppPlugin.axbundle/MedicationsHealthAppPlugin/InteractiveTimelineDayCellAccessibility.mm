@@ -1,17 +1,17 @@
 @interface InteractiveTimelineDayCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation InteractiveTimelineDayCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MedicationsHealthAppPlugin.InteractiveTimelineDayCell" hasInstanceMethod:@"startDate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MedicationsHealthAppPlugin.InteractiveTimelineDayCell" hasSwiftField:@"timelineDay" withSwiftType:"TimelineDay"];
-  [v3 validateSwiftStruct:@"MedicationsHealthAppPlugin.TimelineDay" hasSwiftField:@"logIndicatorAppearance" withSwiftType:"TimelineLogIndicatorAppearance"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MedicationsHealthAppPlugin.InteractiveTimelineDayCell" hasInstanceMethod:@"startDate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MedicationsHealthAppPlugin.InteractiveTimelineDayCell" hasSwiftField:@"timelineDay" withSwiftType:"TimelineDay"];
+  [validationsCopy validateSwiftStruct:@"MedicationsHealthAppPlugin.TimelineDay" hasSwiftField:@"logIndicatorAppearance" withSwiftType:"TimelineLogIndicatorAppearance"];
 }
 
 - (id)accessibilityLabel
@@ -27,9 +27,9 @@
 {
   v2 = [(InteractiveTimelineDayCellAccessibility *)self safeSwiftValueForKey:@"timelineDay"];
   v3 = [v2 safeSwiftValueForKey:@"logIndicatorAppearance"];
-  v4 = [v3 safeSwiftEnumCase];
+  safeSwiftEnumCase = [v3 safeSwiftEnumCase];
 
-  v5 = accessibilityLocalizedString(v4);
+  v5 = accessibilityLocalizedString(safeSwiftEnumCase);
 
   return v5;
 }

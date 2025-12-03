@@ -1,26 +1,26 @@
 @interface BKDisplayAnnotationStyleSheet
 - (BKDisplayAnnotationStyle)subnodeStyleModifier;
-- (id)newLayerForContent:(id)a3 scale:(double)a4;
-- (void)applyToLayer:(id)a3 forContent:(id)a4;
-- (void)sizeLayer:(id)a3 toFitAtScale:(double)a4;
+- (id)newLayerForContent:(id)content scale:(double)scale;
+- (void)applyToLayer:(id)layer forContent:(id)content;
+- (void)sizeLayer:(id)layer toFitAtScale:(double)scale;
 @end
 
 @implementation BKDisplayAnnotationStyleSheet
 
-- (id)newLayerForContent:(id)a3 scale:(double)a4
+- (id)newLayerForContent:(id)content scale:(double)scale
 {
-  v5 = a3;
+  contentCopy = content;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = +[CATextLayer layer];
-    v7 = [v5 string];
-    [v6 setString:v7];
-    v8 = [@"Text annotation: " stringByAppendingString:v7];
+    string = [contentCopy string];
+    [v6 setString:string];
+    v8 = [@"Text annotation: " stringByAppendingString:string];
     [v6 setName:v8];
 
-    [v6 setContentsScale:a4];
-    [v6 setRasterizationScale:a4];
+    [v6 setContentsScale:scale];
+    [v6 setRasterizationScale:scale];
     [v6 setContentsFormat:kCAContentsFormatAutomatic];
   }
 
@@ -55,31 +55,31 @@
   return v3;
 }
 
-- (void)sizeLayer:(id)a3 toFitAtScale:(double)a4
+- (void)sizeLayer:(id)layer toFitAtScale:(double)scale
 {
-  v8 = a3;
+  layerCopy = layer;
   baseStyle = self->_baseStyle;
   if (objc_opt_respondsToSelector())
   {
-    [(BKDisplayAnnotationStyle *)self->_baseStyle sizeLayer:v8 toFitAtScale:a4];
+    [(BKDisplayAnnotationStyle *)self->_baseStyle sizeLayer:layerCopy toFitAtScale:scale];
   }
 
   styleModifier = self->_styleModifier;
   if (styleModifier && self->_baseStyle != styleModifier && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(BKDisplayAnnotationStyle *)self->_styleModifier sizeLayer:v8 toFitAtScale:a4];
+    [(BKDisplayAnnotationStyle *)self->_styleModifier sizeLayer:layerCopy toFitAtScale:scale];
   }
 }
 
-- (void)applyToLayer:(id)a3 forContent:(id)a4
+- (void)applyToLayer:(id)layer forContent:(id)content
 {
-  v8 = a3;
-  v6 = a4;
-  [(BKDisplayAnnotationStyle *)self->_baseStyle applyToLayer:v8 forContent:v6];
+  layerCopy = layer;
+  contentCopy = content;
+  [(BKDisplayAnnotationStyle *)self->_baseStyle applyToLayer:layerCopy forContent:contentCopy];
   styleModifier = self->_styleModifier;
   if (styleModifier && self->_baseStyle != styleModifier)
   {
-    [(BKDisplayAnnotationStyle *)styleModifier applyToLayer:v8 forContent:v6];
+    [(BKDisplayAnnotationStyle *)styleModifier applyToLayer:layerCopy forContent:contentCopy];
   }
 }
 

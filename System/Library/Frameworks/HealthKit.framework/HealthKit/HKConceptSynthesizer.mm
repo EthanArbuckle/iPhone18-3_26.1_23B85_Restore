@@ -1,17 +1,17 @@
 @interface HKConceptSynthesizer
-+ (id)_popValueForString:(id)a3 startingFromSubstring:(id)a4 untilSubstring:(id)a5 outRemainderString:(id *)a6 outEndOfString:(BOOL *)a7 error:(id *)a8;
-+ (id)_substringsInBetweenSequentialDelimiters:(id)a3 poppableString:(id)a4 outReachedEndOfString:(BOOL *)a5 outStringRemainder:(id *)a6 error:(id *)a7;
-+ (id)_synthesizeConceptWithIdentifier:(id)a3 forCodingCollection:(id)a4 additionalAttributes:(id)a5;
-+ (id)_synthesizeConceptWithIdentifier:(id)a3 forCodingCollection:(id)a4 prioritizedCodingSystems:(id)a5 addtionalAttributes:(id)a6;
-+ (id)adHocCodingForCodingCollection:(id)a3;
-+ (id)bestCodingSystemForDisplayForCodingCollection:(id)a3 prioritizedCodingSystems:(id)a4;
-+ (id)bestDisplayNameForCodingCollection:(id)a3;
-+ (id)bestDisplayNameForCodingCollection:(id)a3 prioritizedCodingSystems:(id)a4;
-+ (id)codingCollectionFromAdHocCode:(id)a3 error:(id *)a4;
-+ (id)enumerateCodingsBySystem:(id)a3 prioritizingCodingSystems:(id)a4 handler:(id)a5;
++ (id)_popValueForString:(id)string startingFromSubstring:(id)substring untilSubstring:(id)untilSubstring outRemainderString:(id *)remainderString outEndOfString:(BOOL *)ofString error:(id *)error;
++ (id)_substringsInBetweenSequentialDelimiters:(id)delimiters poppableString:(id)string outReachedEndOfString:(BOOL *)ofString outStringRemainder:(id *)remainder error:(id *)error;
++ (id)_synthesizeConceptWithIdentifier:(id)identifier forCodingCollection:(id)collection additionalAttributes:(id)attributes;
++ (id)_synthesizeConceptWithIdentifier:(id)identifier forCodingCollection:(id)collection prioritizedCodingSystems:(id)systems addtionalAttributes:(id)attributes;
++ (id)adHocCodingForCodingCollection:(id)collection;
++ (id)bestCodingSystemForDisplayForCodingCollection:(id)collection prioritizedCodingSystems:(id)systems;
++ (id)bestDisplayNameForCodingCollection:(id)collection;
++ (id)bestDisplayNameForCodingCollection:(id)collection prioritizedCodingSystems:(id)systems;
++ (id)codingCollectionFromAdHocCode:(id)code error:(id *)error;
++ (id)enumerateCodingsBySystem:(id)system prioritizingCodingSystems:(id)systems handler:(id)handler;
 + (id)prioritizedCodingSystemsForDisplay;
 + (id)privateCodeCreationCodingSortDescriptors;
-+ (id)synthesizeInMemoryConceptForCodingCollection:(id)a3 additionalAttributes:(id)a4;
++ (id)synthesizeInMemoryConceptForCodingCollection:(id)collection additionalAttributes:(id)attributes;
 @end
 
 @implementation HKConceptSynthesizer
@@ -119,77 +119,77 @@ void __64__HKConceptSynthesizer_privateCodeCreationCodingSortDescriptors__block_
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_synthesizeConceptWithIdentifier:(id)a3 forCodingCollection:(id)a4 additionalAttributes:(id)a5
++ (id)_synthesizeConceptWithIdentifier:(id)identifier forCodingCollection:(id)collection additionalAttributes:(id)attributes
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 prioritizedCodingSystemsForDisplay];
-  v12 = [a1 _synthesizeConceptWithIdentifier:v10 forCodingCollection:v9 prioritizedCodingSystems:v11 addtionalAttributes:v8];
+  attributesCopy = attributes;
+  collectionCopy = collection;
+  identifierCopy = identifier;
+  prioritizedCodingSystemsForDisplay = [self prioritizedCodingSystemsForDisplay];
+  v12 = [self _synthesizeConceptWithIdentifier:identifierCopy forCodingCollection:collectionCopy prioritizedCodingSystems:prioritizedCodingSystemsForDisplay addtionalAttributes:attributesCopy];
 
   return v12;
 }
 
-+ (id)bestDisplayNameForCodingCollection:(id)a3 prioritizedCodingSystems:(id)a4
++ (id)bestDisplayNameForCodingCollection:(id)collection prioritizedCodingSystems:(id)systems
 {
-  v4 = [a1 bestCodingSystemForDisplayForCodingCollection:a3 prioritizedCodingSystems:a4];
-  v5 = [v4 displayString];
-  v6 = [v5 length];
+  v4 = [self bestCodingSystemForDisplayForCodingCollection:collection prioritizedCodingSystems:systems];
+  displayString = [v4 displayString];
+  v6 = [displayString length];
 
   if (v6)
   {
-    v7 = [v4 displayString];
+    displayString2 = [v4 displayString];
   }
 
   else
   {
-    v8 = [v4 code];
+    code = [v4 code];
 
-    if (!v8)
+    if (!code)
     {
       goto LABEL_6;
     }
 
-    v7 = [v4 code];
+    displayString2 = [v4 code];
   }
 
-  v8 = v7;
+  code = displayString2;
 LABEL_6:
 
-  return v8;
+  return code;
 }
 
-+ (id)synthesizeInMemoryConceptForCodingCollection:(id)a3 additionalAttributes:(id)a4
++ (id)synthesizeInMemoryConceptForCodingCollection:(id)collection additionalAttributes:(id)attributes
 {
-  v6 = a4;
-  v7 = a3;
+  attributesCopy = attributes;
+  collectionCopy = collection;
   v8 = +[HKConceptIdentifier inMemoryConceptIdentifier];
-  v9 = [a1 _synthesizeConceptWithIdentifier:v8 forCodingCollection:v7 additionalAttributes:v6];
+  v9 = [self _synthesizeConceptWithIdentifier:v8 forCodingCollection:collectionCopy additionalAttributes:attributesCopy];
 
   return v9;
 }
 
-+ (id)bestDisplayNameForCodingCollection:(id)a3
++ (id)bestDisplayNameForCodingCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [a1 prioritizedCodingSystemsForDisplay];
-  v6 = [a1 bestDisplayNameForCodingCollection:v4 prioritizedCodingSystems:v5];
+  collectionCopy = collection;
+  prioritizedCodingSystemsForDisplay = [self prioritizedCodingSystemsForDisplay];
+  v6 = [self bestDisplayNameForCodingCollection:collectionCopy prioritizedCodingSystems:prioritizedCodingSystemsForDisplay];
 
   return v6;
 }
 
-+ (id)bestCodingSystemForDisplayForCodingCollection:(id)a3 prioritizedCodingSystems:(id)a4
++ (id)bestCodingSystemForDisplayForCodingCollection:(id)collection prioritizedCodingSystems:(id)systems
 {
-  v5 = a4;
-  v6 = [a3 codingsBySystem];
+  systemsCopy = systems;
+  codingsBySystem = [collection codingsBySystem];
   v7 = objc_opt_class();
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __95__HKConceptSynthesizer_bestCodingSystemForDisplayForCodingCollection_prioritizedCodingSystems___block_invoke;
   v17[3] = &unk_1E7383D08;
-  v8 = v6;
+  v8 = codingsBySystem;
   v18 = v8;
-  v9 = [v7 enumerateCodingsBySystem:v8 prioritizingCodingSystems:v5 handler:v17];
+  v9 = [v7 enumerateCodingsBySystem:v8 prioritizingCodingSystems:systemsCopy handler:v17];
   if (v9)
   {
     v10 = v9;
@@ -203,7 +203,7 @@ LABEL_6:
     v15[2] = __95__HKConceptSynthesizer_bestCodingSystemForDisplayForCodingCollection_prioritizedCodingSystems___block_invoke_2;
     v15[3] = &unk_1E7383D08;
     v16 = v8;
-    v12 = [v11 enumerateCodingsBySystem:v16 prioritizingCodingSystems:v5 handler:v15];
+    v12 = [v11 enumerateCodingsBySystem:v16 prioritizingCodingSystems:systemsCopy handler:v15];
     v10 = v12;
     if (v12)
     {
@@ -280,17 +280,17 @@ id __95__HKConceptSynthesizer_bestCodingSystemForDisplayForCodingCollection_prio
   return v6;
 }
 
-+ (id)enumerateCodingsBySystem:(id)a3 prioritizingCodingSystems:(id)a4 handler:(id)a5
++ (id)enumerateCodingsBySystem:(id)system prioritizingCodingSystems:(id)systems handler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  systemCopy = system;
+  systemsCopy = systems;
+  handlerCopy = handler;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v10 = v8;
+  v10 = systemsCopy;
   v11 = [v10 countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v11)
   {
@@ -306,11 +306,11 @@ id __95__HKConceptSynthesizer_bestCodingSystemForDisplayForCodingCollection_prio
         }
 
         v15 = *(*(&v34 + 1) + 8 * i);
-        v16 = [v7 objectForKeyedSubscript:v15];
+        v16 = [systemCopy objectForKeyedSubscript:v15];
         if (v16)
         {
           v17 = v16;
-          v18 = v9[2](v9, v15, v16);
+          v18 = handlerCopy[2](handlerCopy, v15, v16);
 
           if (v18)
           {
@@ -330,8 +330,8 @@ id __95__HKConceptSynthesizer_bestCodingSystemForDisplayForCodingCollection_prio
     }
   }
 
-  v19 = [v7 allKeys];
-  v20 = [v19 sortedArrayUsingComparator:&__block_literal_global_176];
+  allKeys = [systemCopy allKeys];
+  v20 = [allKeys sortedArrayUsingComparator:&__block_literal_global_176];
 
   v32 = 0u;
   v33 = 0u;
@@ -355,8 +355,8 @@ LABEL_12:
       v26 = *(*(&v30 + 1) + 8 * v25);
       if (([v10 containsObject:{v26, v30}] & 1) == 0)
       {
-        v27 = [v7 objectForKeyedSubscript:v26];
-        v18 = v9[2](v9, v26, v27);
+        v27 = [systemCopy objectForKeyedSubscript:v26];
+        v18 = handlerCopy[2](handlerCopy, v26, v27);
 
         if (v18)
         {
@@ -399,30 +399,30 @@ uint64_t __83__HKConceptSynthesizer_enumerateCodingsBySystem_prioritizingCodingS
   return v7;
 }
 
-+ (id)_synthesizeConceptWithIdentifier:(id)a3 forCodingCollection:(id)a4 prioritizedCodingSystems:(id)a5 addtionalAttributes:(id)a6
++ (id)_synthesizeConceptWithIdentifier:(id)identifier forCodingCollection:(id)collection prioritizedCodingSystems:(id)systems addtionalAttributes:(id)attributes
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
+  collectionCopy = collection;
+  systemsCopy = systems;
+  attributesCopy = attributes;
+  identifierCopy = identifier;
   v14 = [HKConceptAttribute alloc];
-  v15 = [a1 adHocCodingForCodingCollection:v10];
-  v16 = [v15 code];
-  v17 = [(HKConceptAttribute *)v14 initWithType:2 stringValue:v16];
+  v15 = [self adHocCodingForCodingCollection:collectionCopy];
+  code = [v15 code];
+  v17 = [(HKConceptAttribute *)v14 initWithType:2 stringValue:code];
   v28[0] = v17;
   v18 = [[HKConceptAttribute alloc] initWithType:959 stringValue:@"CA, GB, US"];
   v28[1] = v18;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
 
-  if (v12)
+  if (attributesCopy)
   {
-    v20 = [v19 arrayByAddingObjectsFromArray:v12];
+    v20 = [v19 arrayByAddingObjectsFromArray:attributesCopy];
 
     v19 = v20;
   }
 
-  v21 = [a1 bestDisplayNameForCodingCollection:v10 prioritizedCodingSystems:v11];
+  v21 = [self bestDisplayNameForCodingCollection:collectionCopy prioritizedCodingSystems:systemsCopy];
   if (v21)
   {
     v22 = [[HKConceptAttribute alloc] initWithType:1012 stringValue:v21];
@@ -432,22 +432,22 @@ uint64_t __83__HKConceptSynthesizer_enumerateCodingsBySystem_prioritizingCodingS
   }
 
   v24 = [HKConcept alloc];
-  v25 = [(HKConcept *)v24 initWithIdentifier:v13 attributes:v19 relationships:MEMORY[0x1E695E0F0] version:0 deleted:0 options:0];
+  v25 = [(HKConcept *)v24 initWithIdentifier:identifierCopy attributes:v19 relationships:MEMORY[0x1E695E0F0] version:0 deleted:0 options:0];
 
   v26 = *MEMORY[0x1E69E9840];
 
   return v25;
 }
 
-+ (id)adHocCodingForCodingCollection:(id)a3
++ (id)adHocCodingForCodingCollection:(id)collection
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 privateCodeCreationCodingSortDescriptors];
-  v32 = v4;
-  v6 = [v4 codings];
-  v31 = v5;
-  v7 = [v6 sortedArrayUsingDescriptors:v5];
+  collectionCopy = collection;
+  privateCodeCreationCodingSortDescriptors = [self privateCodeCreationCodingSortDescriptors];
+  v32 = collectionCopy;
+  codings = [collectionCopy codings];
+  v31 = privateCodeCreationCodingSortDescriptors;
+  v7 = [codings sortedArrayUsingDescriptors:privateCodeCreationCodingSortDescriptors];
 
   v8 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v34 = 0u;
@@ -471,12 +471,12 @@ uint64_t __83__HKConceptSynthesizer_enumerateCodingsBySystem_prioritizingCodingS
 
         v13 = *(*(&v34 + 1) + 8 * i);
         [v8 appendString:@"system="];
-        v14 = [v13 codingSystem];
-        v15 = [v14 identifier];
-        v16 = v15;
-        if (v15)
+        codingSystem = [v13 codingSystem];
+        identifier = [codingSystem identifier];
+        v16 = identifier;
+        if (identifier)
         {
-          v17 = v15;
+          v17 = identifier;
         }
 
         else
@@ -487,11 +487,11 @@ uint64_t __83__HKConceptSynthesizer_enumerateCodingsBySystem_prioritizingCodingS
         [v8 appendString:v17];
 
         [v8 appendString:@"version="];
-        v18 = [v13 codingVersion];
-        v19 = v18;
-        if (v18)
+        codingVersion = [v13 codingVersion];
+        v19 = codingVersion;
+        if (codingVersion)
         {
-          v20 = v18;
+          v20 = codingVersion;
         }
 
         else
@@ -502,11 +502,11 @@ uint64_t __83__HKConceptSynthesizer_enumerateCodingsBySystem_prioritizingCodingS
         [v8 appendString:v20];
 
         [v8 appendString:@"code="];
-        v21 = [v13 code];
-        v22 = v21;
-        if (v21)
+        code = [v13 code];
+        v22 = code;
+        if (code)
         {
-          v23 = v21;
+          v23 = code;
         }
 
         else
@@ -517,11 +517,11 @@ uint64_t __83__HKConceptSynthesizer_enumerateCodingsBySystem_prioritizingCodingS
         [v8 appendString:v23];
 
         [v8 appendString:@"display="];
-        v24 = [v13 displayString];
-        v25 = v24;
-        if (v24)
+        displayString = [v13 displayString];
+        v25 = displayString;
+        if (displayString)
         {
-          v26 = v24;
+          v26 = displayString;
         }
 
         else
@@ -546,18 +546,18 @@ uint64_t __83__HKConceptSynthesizer_enumerateCodingsBySystem_prioritizingCodingS
   return v28;
 }
 
-+ (id)codingCollectionFromAdHocCode:(id)a3 error:(id *)a4
++ (id)codingCollectionFromAdHocCode:(id)code error:(id *)error
 {
   v37[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  codeCopy = code;
   v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v5 length])
+  if ([codeCopy length])
   {
-    v23 = v5;
-    v6 = [v5 copy];
+    v23 = codeCopy;
+    v6 = [codeCopy copy];
     v36 = 0;
     v7 = @"none";
-    v28 = a4;
+    errorCopy = error;
     while (1)
     {
       v8 = v7;
@@ -568,7 +568,7 @@ uint64_t __83__HKConceptSynthesizer_enumerateCodingsBySystem_prioritizingCodingS
       v37[3] = @"display=";
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:4];
       v35 = v6;
-      v11 = [a1 _substringsInBetweenSequentialDelimiters:v10 poppableString:v6 outReachedEndOfString:&v36 outStringRemainder:&v35 error:a4];
+      v11 = [self _substringsInBetweenSequentialDelimiters:v10 poppableString:v6 outReachedEndOfString:&v36 outStringRemainder:&v35 error:error];
       v6 = v35;
 
       if (!v11)
@@ -633,7 +633,7 @@ uint64_t __83__HKConceptSynthesizer_enumerateCodingsBySystem_prioritizingCodingS
       {
       }
 
-      a4 = v28;
+      error = errorCopy;
       if ((v13 & 1) == 0)
       {
       }
@@ -650,12 +650,12 @@ uint64_t __83__HKConceptSynthesizer_enumerateCodingsBySystem_prioritizingCodingS
       }
     }
 
-    v5 = v23;
+    codeCopy = v23;
   }
 
   else
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 description:@"Must supply a non-empty string for adhoc code decoding"];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 description:@"Must supply a non-empty string for adhoc code decoding"];
     v11 = 0;
   }
 
@@ -664,10 +664,10 @@ uint64_t __83__HKConceptSynthesizer_enumerateCodingsBySystem_prioritizingCodingS
   return v11;
 }
 
-+ (id)_substringsInBetweenSequentialDelimiters:(id)a3 poppableString:(id)a4 outReachedEndOfString:(BOOL *)a5 outStringRemainder:(id *)a6 error:(id *)a7
++ (id)_substringsInBetweenSequentialDelimiters:(id)delimiters poppableString:(id)string outReachedEndOfString:(BOOL *)ofString outStringRemainder:(id *)remainder error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
+  delimitersCopy = delimiters;
+  stringCopy = string;
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v43 = 0;
   v44 = &v43;
@@ -682,7 +682,7 @@ uint64_t __83__HKConceptSynthesizer_enumerateCodingsBySystem_prioritizingCodingS
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__49;
   v37 = __Block_byref_object_dispose__49;
-  v38 = [v12 copy];
+  v38 = [stringCopy copy];
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -693,26 +693,26 @@ uint64_t __83__HKConceptSynthesizer_enumerateCodingsBySystem_prioritizingCodingS
   v19[1] = 3221225472;
   v19[2] = __127__HKConceptSynthesizer__substringsInBetweenSequentialDelimiters_poppableString_outReachedEndOfString_outStringRemainder_error___block_invoke;
   v19[3] = &unk_1E7383D50;
-  v14 = v11;
+  v14 = delimitersCopy;
   v20 = v14;
   v22 = &v33;
   v23 = &v43;
   v24 = &v27;
   v25 = &v39;
-  v26 = a1;
+  selfCopy = self;
   v15 = v13;
   v21 = v15;
   [v14 enumerateObjectsUsingBlock:v19];
   if (v40[3])
   {
-    if (a6)
+    if (remainder)
     {
-      *a6 = v34[5];
+      *remainder = v34[5];
     }
 
-    if (a5)
+    if (ofString)
     {
-      *a5 = *(v44 + 24);
+      *ofString = *(v44 + 24);
     }
 
     v16 = [v15 copy];
@@ -721,9 +721,9 @@ uint64_t __83__HKConceptSynthesizer_enumerateCodingsBySystem_prioritizingCodingS
   else
   {
     v16 = 0;
-    if (a7)
+    if (error)
     {
-      *a7 = v28[5];
+      *error = v28[5];
     }
   }
 
@@ -776,22 +776,22 @@ LABEL_8:
 LABEL_9:
 }
 
-+ (id)_popValueForString:(id)a3 startingFromSubstring:(id)a4 untilSubstring:(id)a5 outRemainderString:(id *)a6 outEndOfString:(BOOL *)a7 error:(id *)a8
++ (id)_popValueForString:(id)string startingFromSubstring:(id)substring untilSubstring:(id)untilSubstring outRemainderString:(id *)remainderString outEndOfString:(BOOL *)ofString error:(id *)error
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = [v13 rangeOfString:a4];
+  stringCopy = string;
+  untilSubstringCopy = untilSubstring;
+  v15 = [stringCopy rangeOfString:substring];
   v17 = v16;
-  v18 = [v13 rangeOfString:v14];
+  v18 = [stringCopy rangeOfString:untilSubstringCopy];
 
   if (v15 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v19 = MEMORY[0x1E696ABC0];
     v20 = @"Starting substring was not found in string when trying to unwrap adhoc code.";
-    v21 = a8;
+    errorCopy2 = error;
     v22 = 100;
 LABEL_3:
-    [v19 hk_assignError:v21 code:v22 description:v20];
+    [v19 hk_assignError:errorCopy2 code:v22 description:v20];
     v23 = 0;
     goto LABEL_16;
   }
@@ -799,17 +799,17 @@ LABEL_3:
   v24 = v15 + v17;
   if (v18 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a6)
+    if (remainderString)
     {
-      *a6 = 0;
+      *remainderString = 0;
     }
 
-    if (a7)
+    if (ofString)
     {
-      *a7 = 1;
+      *ofString = 1;
     }
 
-    v23 = [v13 substringFromIndex:v24];
+    v23 = [stringCopy substringFromIndex:v24];
   }
 
   else
@@ -818,22 +818,22 @@ LABEL_3:
     {
       v19 = MEMORY[0x1E696ABC0];
       v20 = @"Starting substring has a location after or equal to the second one. The first substring must come before the first.";
-      v21 = a8;
+      errorCopy2 = error;
       v22 = 3;
       goto LABEL_3;
     }
 
-    v23 = [v13 substringWithRange:{v24, v18 - v24}];
-    v25 = [v13 substringFromIndex:v18];
-    if (a6)
+    v23 = [stringCopy substringWithRange:{v24, v18 - v24}];
+    v25 = [stringCopy substringFromIndex:v18];
+    if (remainderString)
     {
       v25 = v25;
-      *a6 = v25;
+      *remainderString = v25;
     }
 
-    if (a7)
+    if (ofString)
     {
-      *a7 = 0;
+      *ofString = 0;
     }
   }
 

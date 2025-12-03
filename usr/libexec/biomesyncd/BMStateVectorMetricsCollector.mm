@@ -1,27 +1,27 @@
 @interface BMStateVectorMetricsCollector
-- (BMStateVectorMetricsCollector)initWithDatabase:(id)a3 activity:(id)a4;
+- (BMStateVectorMetricsCollector)initWithDatabase:(id)database activity:(id)activity;
 - (id)computeStateVectorMetrics;
 - (id)dateToRelativePositionDictionary;
 - (id)validStreamNameMapping;
-- (unint64_t)sizeOfSerializedStateVectorInBytes:(id)a3;
-- (unint64_t)timestampCountForStateVector:(id)a3;
+- (unint64_t)sizeOfSerializedStateVectorInBytes:(id)bytes;
+- (unint64_t)timestampCountForStateVector:(id)vector;
 - (void)computeAndSendStateVectorMetrics;
 @end
 
 @implementation BMStateVectorMetricsCollector
 
-- (BMStateVectorMetricsCollector)initWithDatabase:(id)a3 activity:(id)a4
+- (BMStateVectorMetricsCollector)initWithDatabase:(id)database activity:(id)activity
 {
-  v7 = a3;
-  v8 = a4;
+  databaseCopy = database;
+  activityCopy = activity;
   v12.receiver = self;
   v12.super_class = BMStateVectorMetricsCollector;
   v9 = [(BMStateVectorMetricsCollector *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_database, a3);
-    objc_storeStrong(&v10->_activity, a4);
+    objc_storeStrong(&v9->_database, database);
+    objc_storeStrong(&v10->_activity, activity);
   }
 
   return v10;
@@ -33,8 +33,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(BMStateVectorMetricsCollector *)self computeStateVectorMetrics];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  computeStateVectorMetrics = [(BMStateVectorMetricsCollector *)self computeStateVectorMetrics];
+  v3 = [computeStateVectorMetrics countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -46,7 +46,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(computeStateVectorMetrics);
         }
 
         [BMCoreAnalyticsEvents sendCKRecordCRDTLog:*(*(&v7 + 1) + 8 * v6)];
@@ -54,7 +54,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [computeStateVectorMetrics countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -84,21 +84,21 @@
         }
 
         v7 = *(*(&v23 + 1) + 8 * i);
-        v8 = [v7 streamIdentifier];
-        v9 = [v7 syncPolicy];
-        if ([v9 supportsTransport:3 direction:3])
+        streamIdentifier = [v7 streamIdentifier];
+        syncPolicy = [v7 syncPolicy];
+        if ([syncPolicy supportsTransport:3 direction:3])
         {
-          [v2 setObject:v8 forKeyedSubscript:v8];
-          v10 = [v7 streamUUID];
-          v11 = [v10 UUIDString];
-          [v2 setObject:v8 forKeyedSubscript:v11];
+          [v2 setObject:streamIdentifier forKeyedSubscript:streamIdentifier];
+          streamUUID = [v7 streamUUID];
+          uUIDString = [streamUUID UUIDString];
+          [v2 setObject:streamIdentifier forKeyedSubscript:uUIDString];
 
           v21 = 0u;
           v22 = 0u;
           v19 = 0u;
           v20 = 0u;
-          v12 = [v7 legacyNames];
-          v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+          legacyNames = [v7 legacyNames];
+          v13 = [legacyNames countByEnumeratingWithState:&v19 objects:v27 count:16];
           if (v13)
           {
             v14 = v13;
@@ -109,13 +109,13 @@
               {
                 if (*v20 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(legacyNames);
                 }
 
-                [v2 setObject:v8 forKeyedSubscript:*(*(&v19 + 1) + 8 * j)];
+                [v2 setObject:streamIdentifier forKeyedSubscript:*(*(&v19 + 1) + 8 * j)];
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+              v14 = [legacyNames countByEnumeratingWithState:&v19 objects:v27 count:16];
             }
 
             while (v14);
@@ -135,9 +135,9 @@
 - (id)computeStateVectorMetrics
 {
   v41 = objc_opt_new();
-  v40 = [(BMStateVectorMetricsCollector *)self validStreamNameMapping];
-  v3 = [v40 allKeys];
-  v4 = [NSSet setWithArray:v3];
+  validStreamNameMapping = [(BMStateVectorMetricsCollector *)self validStreamNameMapping];
+  allKeys = [validStreamNameMapping allKeys];
+  v4 = [NSSet setWithArray:allKeys];
 
   v5 = __biome_log_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -145,7 +145,7 @@
     sub_100048080(self, v4, v5);
   }
 
-  v39 = [(BMStateVectorMetricsCollector *)self dateToRelativePositionDictionary];
+  dateToRelativePositionDictionary = [(BMStateVectorMetricsCollector *)self dateToRelativePositionDictionary];
   [(BMSyncDatabase *)self->_database locationsWithState:2];
   v48 = 0u;
   v49 = 0u;
@@ -171,8 +171,8 @@
 
         v10 = *(*(&v48 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 streamName];
-        v13 = [v4 containsObject:v12];
+        streamName = [v10 streamName];
+        v13 = [v4 containsObject:streamName];
 
         if (v13)
         {
@@ -180,7 +180,7 @@
           v47 = [(BMSyncDatabase *)self->_database locationRowWithLocation:v10];
           v14 = [(BMSyncDatabase *)self->_database stateVectorForLocationRow:?];
           v15 = [v10 day];
-          v16 = [v39 objectForKeyedSubscript:v15];
+          v16 = [dateToRelativePositionDictionary objectForKeyedSubscript:v15];
           v17 = v16;
           v18 = &off_10007F390;
           if (v16)
@@ -194,9 +194,9 @@
           v59[0] = v19;
           v58[0] = @"relative_pos";
           v58[1] = @"state_vector_sites_cnt";
-          v20 = [v14 clockVector];
-          v21 = [v20 allSiteIdentifiers];
-          v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v21 count]);
+          clockVector = [v14 clockVector];
+          allSiteIdentifiers = [clockVector allSiteIdentifiers];
+          v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [allSiteIdentifiers count]);
           v59[1] = v22;
           v58[2] = @"state_vector_size_est";
           v23 = [NSNumber numberWithUnsignedInteger:[(BMStateVectorMetricsCollector *)self sizeOfSerializedStateVectorInBytes:v14]];
@@ -207,7 +207,7 @@
           v58[4] = @"stream_name";
           [v10 streamName];
           v26 = v25 = self;
-          v27 = [v40 objectForKeyedSubscript:v26];
+          v27 = [validStreamNameMapping objectForKeyedSubscript:v26];
           v59[4] = v27;
           v44 = [NSDictionary dictionaryWithObjects:v59 forKeys:v58 count:5];
 
@@ -217,8 +217,8 @@
           {
             v30 = objc_opt_class();
             v31 = NSStringFromClass(v30);
-            v32 = [v47 location];
-            v33 = [v32 day];
+            location = [v47 location];
+            v33 = [location day];
             *buf = 138412802;
             v53 = v31;
             v54 = 2112;
@@ -280,18 +280,18 @@
   return v2;
 }
 
-- (unint64_t)sizeOfSerializedStateVectorInBytes:(id)a3
+- (unint64_t)sizeOfSerializedStateVectorInBytes:(id)bytes
 {
-  v4 = a3;
+  bytesCopy = bytes;
   v10 = 0;
-  v5 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v10];
+  v5 = [NSKeyedArchiver archivedDataWithRootObject:bytesCopy requiringSecureCoding:1 error:&v10];
   v6 = v10;
   if (v6)
   {
     v7 = __biome_log_for_category();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_100048124(self, v4, v7);
+      sub_100048124(self, bytesCopy, v7);
     }
   }
 
@@ -300,9 +300,9 @@
   return v8;
 }
 
-- (unint64_t)timestampCountForStateVector:(id)a3
+- (unint64_t)timestampCountForStateVector:(id)vector
 {
-  v3 = a3;
+  vectorCopy = vector;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -312,7 +312,7 @@
   v6[2] = sub_10000FCB4;
   v6[3] = &unk_100078E40;
   v6[4] = &v7;
-  [v3 enumerateAllClockValuesUsingBlock:v6];
+  [vectorCopy enumerateAllClockValuesUsingBlock:v6];
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
 

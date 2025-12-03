@@ -1,15 +1,15 @@
 @interface SGEventSuggestionBase
 + (id)_eventStore;
-+ (void)confirm:(BOOL)a3 event:(id)a4 completion:(id)a5;
-- (SGEventSuggestionBase)initWithRealtimeEvent:(id)a3;
++ (void)confirm:(BOOL)confirm event:(id)event completion:(id)completion;
+- (SGEventSuggestionBase)initWithRealtimeEvent:(id)event;
 - (SGSuggestionDelegate)suggestionDelegate;
 - (id)eventKitEvent;
 - (id)primaryActionTitle;
 - (id)suggestionCategoryImage;
-- (id)suggestionCategoryLocalizedCountOfItems:(id)a3;
-- (id)suggestionCategorySubtitleForItems:(id)a3;
+- (id)suggestionCategoryLocalizedCountOfItems:(id)items;
+- (id)suggestionCategorySubtitleForItems:(id)items;
 - (id)suggestionCategoryTitle;
-- (id)suggestionCategoryTitleForItems:(id)a3;
+- (id)suggestionCategoryTitleForItems:(id)items;
 - (id)suggestionComparator;
 - (id)suggestionDismissAction;
 - (id)suggestionImage;
@@ -18,7 +18,7 @@
 - (int64_t)suggestionActionButtonType;
 - (int64_t)suggestionCategoryActionButtonType;
 - (void)dealloc;
-- (void)eventKitStoreChangedNotification:(id)a3;
+- (void)eventKitStoreChangedNotification:(id)notification;
 @end
 
 @implementation SGEventSuggestionBase
@@ -35,22 +35,22 @@
   calendarImage = self->_calendarImage;
   if (!calendarImage)
   {
-    v4 = [(SGRealtimeEvent *)self->_realtimeEvent event];
-    v5 = [v4 startTimeZone];
+    event = [(SGRealtimeEvent *)self->_realtimeEvent event];
+    startTimeZone = [event startTimeZone];
 
     [(SGRealtimeEvent *)self->_realtimeEvent event];
-    if (v5)
+    if (startTimeZone)
       v6 = {;
-      v7 = [v6 start];
+      start = [v6 start];
     }
 
     else
       v6 = {;
-      v8 = [v6 start];
-      v7 = [SGBannerUtility dateForUTCDate:v8];
+      start2 = [v6 start];
+      start = [SGBannerUtility dateForUTCDate:start2];
     }
 
-    v9 = [SGUIIconSupport iconForCalendarDate:v7 drawBorder:1];
+    v9 = [SGUIIconSupport iconForCalendarDate:start drawBorder:1];
     v10 = self->_calendarImage;
     self->_calendarImage = v9;
 
@@ -67,31 +67,31 @@
   return v2;
 }
 
-- (id)suggestionCategoryLocalizedCountOfItems:(id)a3
+- (id)suggestionCategoryLocalizedCountOfItems:(id)items
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = MEMORY[0x1E696AAE8];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [v4 bundleWithIdentifier:@"com.apple.CoreSuggestionsUI"];
   v7 = [v6 localizedStringForKey:@"SuggestionsBannerMixedSubtitleEvents" value:&stru_1F3012140 table:0];
-  v8 = [v5 count];
+  v8 = [itemsCopy count];
 
   v9 = [v3 localizedStringWithFormat:v7, v8];
 
   return v9;
 }
 
-- (id)suggestionCategorySubtitleForItems:(id)a3
+- (id)suggestionCategorySubtitleForItems:(id)items
 {
-  v3 = a3;
-  v4 = [v3 count];
+  itemsCopy = items;
+  v4 = [itemsCopy count];
   if (v4)
   {
     v5 = v4;
     if (v4 == 1)
     {
-      v6 = [v3 objectAtIndexedSubscript:0];
-      v7 = [v6 suggestionTitle];
+      v6 = [itemsCopy objectAtIndexedSubscript:0];
+      suggestionTitle = [v6 suggestionTitle];
     }
 
     else
@@ -99,21 +99,21 @@
       v8 = MEMORY[0x1E696AEC0];
       v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.CoreSuggestionsUI"];
       v9 = [v6 localizedStringForKey:@"SuggestionsBannerMixedSubtitleEvents" value:&stru_1F3012140 table:0];
-      v7 = [v8 localizedStringWithFormat:v9, v5];
+      suggestionTitle = [v8 localizedStringWithFormat:v9, v5];
     }
   }
 
   else
   {
-    v7 = &stru_1F3012140;
+    suggestionTitle = &stru_1F3012140;
   }
 
-  return v7;
+  return suggestionTitle;
 }
 
-- (id)suggestionCategoryTitleForItems:(id)a3
+- (id)suggestionCategoryTitleForItems:(id)items
 {
-  if ([a3 count])
+  if ([items count])
   {
     v3 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.CoreSuggestionsUI"];
     v4 = [v3 localizedStringForKey:@"SuggestionsBannerMultipleSuggestionsTitleFormat" value:&stru_1F3012140 table:0];
@@ -129,8 +129,8 @@
 
 - (int64_t)suggestionCategoryActionButtonType
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 6;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 6;
 
   return 4 * v3;
 }
@@ -152,8 +152,8 @@
 
 - (int64_t)suggestionActionButtonType
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 6;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 6;
 
   return 4 * v3;
 }
@@ -206,17 +206,17 @@ void __48__SGEventSuggestionBase_suggestionDismissAction__block_invoke(uint64_t 
   v4 = sgEventsLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [(SGRealtimeEvent *)self->_realtimeEvent event];
-    v16 = [v15 loggingIdentifier];
-    v17 = [(SGRealtimeEvent *)self->_realtimeEvent state];
+    event = [(SGRealtimeEvent *)self->_realtimeEvent event];
+    loggingIdentifier = [event loggingIdentifier];
+    state = [(SGRealtimeEvent *)self->_realtimeEvent state];
     v18 = 138543618;
-    v19 = v16;
+    v19 = loggingIdentifier;
     v20 = 1026;
-    v21 = v17;
+    v21 = state;
     _os_log_debug_impl(&dword_1B8182000, v4, OS_LOG_TYPE_DEBUG, "SGEventSuggestionBase - [SGEvent %{public}@] in State %{public}d", &v18, 0x12u);
   }
 
-  v5 = [(SGRealtimeEvent *)self->_realtimeEvent state];
+  state2 = [(SGRealtimeEvent *)self->_realtimeEvent state];
   v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.CoreSuggestionsUI"];
   v7 = v6;
   v8 = @"SuggestionsListButtonAddToCalendar";
@@ -243,17 +243,17 @@ void __48__SGEventSuggestionBase_suggestionDismissAction__block_invoke(uint64_t 
     v11 = @"SuggestionsBannerButtonShow";
   }
 
-  if (v5 != 3)
+  if (state2 != 3)
   {
     v10 = v11;
   }
 
-  if (v5 != 2)
+  if (state2 != 2)
   {
     v9 = v10;
   }
 
-  if (v5 == 1)
+  if (state2 == 1)
   {
     v12 = v8;
   }
@@ -270,14 +270,14 @@ void __48__SGEventSuggestionBase_suggestionDismissAction__block_invoke(uint64_t 
 
 - (id)suggestionSubtitle
 {
-  v3 = [(SGEventSuggestionBase *)self suggestionsEvent];
-  v4 = [v3 title];
+  suggestionsEvent = [(SGEventSuggestionBase *)self suggestionsEvent];
+  title = [suggestionsEvent title];
 
-  v5 = [(SGEventSuggestionBase *)self eventKitEvent];
-  v6 = v5;
-  if (v5)
+  eventKitEvent = [(SGEventSuggestionBase *)self eventKitEvent];
+  v6 = eventKitEvent;
+  if (eventKitEvent)
   {
-    v7 = timeStringForDate(v5);
+    v7 = timeStringForDate(eventKitEvent);
     v8 = dateStringForDate(v6);
   }
 
@@ -297,12 +297,12 @@ void __48__SGEventSuggestionBase_suggestionDismissAction__block_invoke(uint64_t 
 
   if (![v9 length])
   {
-    v10 = v4;
-    v4 = v10;
+    v10 = title;
+    title = v10;
     goto LABEL_10;
   }
 
-  if (_currentContext || ![v4 length])
+  if (_currentContext || ![title length])
   {
     v10 = v9;
 LABEL_10:
@@ -310,10 +310,10 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v13 = [v4 stringByAppendingString:@"\n"];
+  v13 = [title stringByAppendingString:@"\n"];
 
   v11 = [v13 stringByAppendingString:v9];
-  v4 = v13;
+  title = v13;
 LABEL_11:
 
   return v11;
@@ -323,8 +323,8 @@ LABEL_11:
 {
   if (_currentContext)
   {
-    v3 = [(SGEventSuggestionBase *)self suggestionsEvent];
-    v4 = [v3 title];
+    suggestionsEvent = [(SGEventSuggestionBase *)self suggestionsEvent];
+    title = [suggestionsEvent title];
   }
 
   else
@@ -333,17 +333,17 @@ LABEL_11:
     {
       v5 = MEMORY[0x1E696AEC0];
       v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.CoreSuggestionsUI"];
-      v3 = v6;
+      suggestionsEvent = v6;
       v7 = @"SuggestionsBannerUpdatedEventTitle";
     }
 
     else
     {
-      v8 = [(SGRealtimeEvent *)self->_realtimeEvent state];
+      state = [(SGRealtimeEvent *)self->_realtimeEvent state];
       v5 = MEMORY[0x1E696AEC0];
       v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.CoreSuggestionsUI"];
-      v3 = v6;
-      if (v8 == 3)
+      suggestionsEvent = v6;
+      if (state == 3)
       {
         v7 = @"SuggestionsBannerCanceledEventTitle";
       }
@@ -355,10 +355,10 @@ LABEL_11:
     }
 
     v9 = [v6 localizedStringForKey:v7 value:&stru_1F3012140 table:0];
-    v4 = [v5 localizedStringWithFormat:v9, 1];
+    title = [v5 localizedStringWithFormat:v9, 1];
   }
 
-  return v4;
+  return title;
 }
 
 - (id)eventKitEvent
@@ -367,14 +367,14 @@ LABEL_11:
   eventKitEvent = self->_eventKitEvent;
   if (!eventKitEvent || ![(EKEvent *)eventKitEvent refresh])
   {
-    v4 = [objc_opt_class() _eventStore];
-    v5 = [(SGRealtimeEvent *)self->_realtimeEvent state];
-    if (v5 > 2)
+    _eventStore = [objc_opt_class() _eventStore];
+    state = [(SGRealtimeEvent *)self->_realtimeEvent state];
+    if (state > 2)
     {
-      if ((v5 - 3) < 3)
+      if ((state - 3) < 3)
       {
-        v6 = [(SGRealtimeEvent *)self->_realtimeEvent eventIdentifier];
-        v7 = [v4 eventWithIdentifier:v6];
+        eventIdentifier = [(SGRealtimeEvent *)self->_realtimeEvent eventIdentifier];
+        v7 = [_eventStore eventWithIdentifier:eventIdentifier];
 LABEL_15:
         v16 = self->_eventKitEvent;
         self->_eventKitEvent = v7;
@@ -382,19 +382,19 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      if (v5 == 6)
+      if (state == 6)
       {
-        v6 = sgEventsLogHandle();
-        if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+        eventIdentifier = sgEventsLogHandle();
+        if (os_log_type_enabled(eventIdentifier, OS_LOG_TYPE_DEBUG))
         {
-          v13 = [(SGRealtimeEvent *)self->_realtimeEvent event];
-          v14 = [v13 loggingIdentifier];
-          v15 = [(SGRealtimeEvent *)self->_realtimeEvent state];
+          event = [(SGRealtimeEvent *)self->_realtimeEvent event];
+          loggingIdentifier = [event loggingIdentifier];
+          state2 = [(SGRealtimeEvent *)self->_realtimeEvent state];
           v19 = 138543618;
-          v20 = v14;
+          v20 = loggingIdentifier;
           v21 = 1026;
-          v22 = v15;
-          _os_log_debug_impl(&dword_1B8182000, v6, OS_LOG_TYPE_DEBUG, "SGEventSuggestionBase - [SGEvent %{public}@] in unsupported state %{public}d", &v19, 0x12u);
+          v22 = state2;
+          _os_log_debug_impl(&dword_1B8182000, eventIdentifier, OS_LOG_TYPE_DEBUG, "SGEventSuggestionBase - [SGEvent %{public}@] in unsupported state %{public}d", &v19, 0x12u);
         }
 
         goto LABEL_16;
@@ -405,37 +405,37 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    if (v5 == 1)
+    if (state == 1)
     {
-      v12 = [(SGRealtimeEvent *)self->_realtimeEvent event];
-      v6 = v12;
+      event2 = [(SGRealtimeEvent *)self->_realtimeEvent event];
+      eventIdentifier = event2;
     }
 
     else
     {
-      if (v5 != 2)
+      if (state != 2)
       {
         goto LABEL_17;
       }
 
-      v8 = [(SGRealtimeEvent *)self->_realtimeEvent eventIdentifier];
-      v9 = [v4 eventWithIdentifier:v8];
+      eventIdentifier2 = [(SGRealtimeEvent *)self->_realtimeEvent eventIdentifier];
+      v9 = [_eventStore eventWithIdentifier:eventIdentifier2];
       v10 = self->_eventKitEvent;
       self->_eventKitEvent = v9;
 
       v11 = self->_eventKitEvent;
-      v12 = [(SGRealtimeEvent *)self->_realtimeEvent event];
-      v6 = v12;
+      event2 = [(SGRealtimeEvent *)self->_realtimeEvent event];
+      eventIdentifier = event2;
       if (v11)
       {
-        [v12 mergeIntoEKEvent:self->_eventKitEvent withStore:v4];
+        [event2 mergeIntoEKEvent:self->_eventKitEvent withStore:_eventStore];
 LABEL_16:
 
         goto LABEL_17;
       }
     }
 
-    v7 = [v12 toEKEventWithStore:v4];
+    v7 = [event2 toEKEventWithStore:_eventStore];
     goto LABEL_15;
   }
 
@@ -445,34 +445,34 @@ LABEL_18:
   return v17;
 }
 
-- (void)eventKitStoreChangedNotification:(id)a3
+- (void)eventKitStoreChangedNotification:(id)notification
 {
-  v4 = [(SGEventSuggestionBase *)self suggestionDelegate];
-  [v4 suggestionWasUpdated:self];
+  suggestionDelegate = [(SGEventSuggestionBase *)self suggestionDelegate];
+  [suggestionDelegate suggestionWasUpdated:self];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SGEventSuggestionBase;
   [(SGEventSuggestionBase *)&v4 dealloc];
 }
 
-- (SGEventSuggestionBase)initWithRealtimeEvent:(id)a3
+- (SGEventSuggestionBase)initWithRealtimeEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = SGEventSuggestionBase;
   v6 = [(SGEventSuggestionBase *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_realtimeEvent, a3);
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v7 selector:sel_eventKitStoreChangedNotification_ name:*MEMORY[0x1E6966928] object:0];
+    objc_storeStrong(&v6->_realtimeEvent, event);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_eventKitStoreChangedNotification_ name:*MEMORY[0x1E6966928] object:0];
   }
 
   [(SGEventSuggestionBase *)v7 preloadPrimaryActionViewController];
@@ -499,29 +499,29 @@ uint64_t __36__SGEventSuggestionBase__eventStore__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)confirm:(BOOL)a3 event:(id)a4 completion:(id)a5
++ (void)confirm:(BOOL)confirm event:(id)event completion:(id)completion
 {
-  v6 = a3;
+  confirmCopy = confirm;
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  eventCopy = event;
+  completionCopy = completion;
   if (!confirm_event_completion__service)
   {
-    v9 = [MEMORY[0x1E69992A0] serviceForEvents];
+    serviceForEvents = [MEMORY[0x1E69992A0] serviceForEvents];
     v10 = confirm_event_completion__service;
-    confirm_event_completion__service = v9;
+    confirm_event_completion__service = serviceForEvents;
   }
 
   v11 = sgEventsLogHandle();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
-  if (v6)
+  if (confirmCopy)
   {
     if (v12)
     {
-      v19 = [v7 event];
-      v20 = [v19 loggingIdentifier];
+      event = [eventCopy event];
+      loggingIdentifier = [event loggingIdentifier];
       *buf = 138543362;
-      v30 = v20;
+      v30 = loggingIdentifier;
       _os_log_debug_impl(&dword_1B8182000, v11, OS_LOG_TYPE_DEBUG, "SGEventSuggestionBase - Confirming Event %{public}@", buf, 0xCu);
     }
 
@@ -532,20 +532,20 @@ uint64_t __36__SGEventSuggestionBase__eventStore__block_invoke()
     v26[3] = &unk_1E7CD9388;
     v14 = &v27;
     v15 = &v28;
-    v27 = v7;
-    v28 = v8;
-    v16 = v8;
-    [v13 confirmEvent:v7 withCompletion:v26];
+    v27 = eventCopy;
+    v28 = completionCopy;
+    v16 = completionCopy;
+    [v13 confirmEvent:eventCopy withCompletion:v26];
   }
 
   else
   {
     if (v12)
     {
-      v21 = [v7 event];
-      v22 = [v21 loggingIdentifier];
+      event2 = [eventCopy event];
+      loggingIdentifier2 = [event2 loggingIdentifier];
       *buf = 138543362;
-      v30 = v22;
+      v30 = loggingIdentifier2;
       _os_log_debug_impl(&dword_1B8182000, v11, OS_LOG_TYPE_DEBUG, "SGEventSuggestionBase - Rejecting Event %{public}@", buf, 0xCu);
     }
 
@@ -556,10 +556,10 @@ uint64_t __36__SGEventSuggestionBase__eventStore__block_invoke()
     v23[3] = &unk_1E7CD9388;
     v14 = &v24;
     v15 = &v25;
-    v24 = v7;
-    v25 = v8;
-    v18 = v8;
-    [v17 rejectEvent:v7 withCompletion:v23];
+    v24 = eventCopy;
+    v25 = completionCopy;
+    v18 = completionCopy;
+    [v17 rejectEvent:eventCopy withCompletion:v23];
   }
 }
 

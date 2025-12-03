@@ -1,54 +1,54 @@
 @interface WFPreviewNavigationController
-- (WFPreviewNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (WFPreviewNavigationController)initWithRootViewController:(id)a3 isInSheetView:(BOOL)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (WFPreviewNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (WFPreviewNavigationController)initWithRootViewController:(id)controller isInSheetView:(BOOL)view;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation WFPreviewNavigationController
 
-- (WFPreviewNavigationController)initWithRootViewController:(id)a3 isInSheetView:(BOOL)a4
+- (WFPreviewNavigationController)initWithRootViewController:(id)controller isInSheetView:(BOOL)view
 {
   swift_getObjectType();
-  v7 = a3;
+  controllerCopy = controller;
 
-  return sub_274810068(v7, a4, self);
+  return sub_274810068(controllerCopy, view, self);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_27480DB44();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_27480E918(a3);
+  selfCopy = self;
+  sub_27480E918(appearing);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_27480EB8C();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_27480EEF8(a3);
+  selfCopy = self;
+  sub_27480EEF8(disappear);
 }
 
-- (WFPreviewNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (WFPreviewNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     _sSo32WFShortcutConcerningReportReasona10WorkflowUIE2idSSvg_0();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   WFPreviewNavigationController.init(nibName:bundle:)();
 }
 

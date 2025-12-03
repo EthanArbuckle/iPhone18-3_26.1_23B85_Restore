@@ -1,33 +1,33 @@
 @interface PKPeerPaymentPreferencesNotification
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPreferencesNotification:(id)a3;
-- (PKPeerPaymentPreferencesNotification)initWithCoder:(id)a3;
-- (PKPeerPaymentPreferencesNotification)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPreferencesNotification:(id)notification;
+- (PKPeerPaymentPreferencesNotification)initWithCoder:(id)coder;
+- (PKPeerPaymentPreferencesNotification)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentPreferencesNotification
 
-- (PKPeerPaymentPreferencesNotification)initWithDictionary:(id)a3
+- (PKPeerPaymentPreferencesNotification)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = PKPeerPaymentPreferencesNotification;
   v5 = [(PKPeerPaymentPreferencesNotification *)&v10 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"altDSID"];
+    v6 = [dictionaryCopy PKStringForKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v6;
 
-    v8 = [v4 PKStringForKey:@"notificationType"];
+    v8 = [dictionaryCopy PKStringForKey:@"notificationType"];
     v5->_notificationType = PKPeerPaymentPreferencesNotificationTypeFromString(v8);
 
-    v5->_value = [v4 PKBoolForKey:@"value"];
+    v5->_value = [dictionaryCopy PKBoolForKey:@"value"];
   }
 
   return v5;
@@ -35,8 +35,8 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:self->_altDSID forKey:@"altDSID"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self->_altDSID forKey:@"altDSID"];
   notificationType = self->_notificationType;
   v5 = @"unknown";
   if (notificationType)
@@ -54,47 +54,47 @@
     v6 = v5;
   }
 
-  [v3 setObject:v6 forKey:@"notificationType"];
+  [dictionary setObject:v6 forKey:@"notificationType"];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_value];
-  [v3 setObject:v7 forKey:@"value"];
+  [dictionary setObject:v7 forKey:@"value"];
 
-  v8 = [v3 copy];
+  v8 = [dictionary copy];
 
   return v8;
 }
 
-- (PKPeerPaymentPreferencesNotification)initWithCoder:(id)a3
+- (PKPeerPaymentPreferencesNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPeerPaymentPreferencesNotification;
   v5 = [(PKPeerPaymentPreferencesNotification *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v6;
 
-    v5->_notificationType = [v4 decodeIntegerForKey:@"notificationType"];
-    v5->_value = [v4 decodeBoolForKey:@"value"];
+    v5->_notificationType = [coderCopy decodeIntegerForKey:@"notificationType"];
+    v5->_value = [coderCopy decodeBoolForKey:@"value"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   altDSID = self->_altDSID;
-  v5 = a3;
-  [v5 encodeObject:altDSID forKey:@"altDSID"];
-  [v5 encodeInteger:self->_notificationType forKey:@"notificationType"];
-  [v5 encodeBool:self->_value forKey:@"value"];
+  coderCopy = coder;
+  [coderCopy encodeObject:altDSID forKey:@"altDSID"];
+  [coderCopy encodeInteger:self->_notificationType forKey:@"notificationType"];
+  [coderCopy encodeBool:self->_value forKey:@"value"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPeerPaymentPreferencesNotification allocWithZone:](PKPeerPaymentPreferencesNotification init];
-  v6 = [(NSString *)self->_altDSID copyWithZone:a3];
+  v6 = [(NSString *)self->_altDSID copyWithZone:zone];
   altDSID = v5->_altDSID;
   v5->_altDSID = v6;
 
@@ -103,28 +103,28 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPeerPaymentPreferencesNotification *)self isEqualToPreferencesNotification:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPeerPaymentPreferencesNotification *)self isEqualToPreferencesNotification:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPreferencesNotification:(id)a3
+- (BOOL)isEqualToPreferencesNotification:(id)notification
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_notificationType == v4[3] && self->_value == *(v4 + 8))
+  notificationCopy = notification;
+  v5 = notificationCopy;
+  if (notificationCopy && self->_notificationType == notificationCopy[3] && self->_value == *(notificationCopy + 8))
   {
     altDSID = self->_altDSID;
     v7 = v5[2];
@@ -149,9 +149,9 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_altDSID];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_altDSID];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_notificationType - v4 + 32 * v4;
   v6 = self->_value - v5 + 32 * v5;
 

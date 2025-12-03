@@ -1,11 +1,11 @@
 @interface GTMTLReplaySharedResourcePool
-- (GTMTLReplaySharedResourcePool)initWithDevice:(id)a3 bufferCapacity:(unint64_t)a4;
-- (id)newBufferHeapWithLength:(unint64_t)a3;
-- (id)newTextureWithDescriptor:(id)a3 error:(id *)a4;
+- (GTMTLReplaySharedResourcePool)initWithDevice:(id)device bufferCapacity:(unint64_t)capacity;
+- (id)newBufferHeapWithLength:(unint64_t)length;
+- (id)newTextureWithDescriptor:(id)descriptor error:(id *)error;
 - (void)dealloc;
-- (void)reclaimBuffer:(id)a3;
+- (void)reclaimBuffer:(id)buffer;
 - (void)releasePooledBuffers;
-- (void)setMaxPooledBuffers:(unint64_t)a3;
+- (void)setMaxPooledBuffers:(unint64_t)buffers;
 - (void)waitUntilCapacity;
 @end
 
@@ -19,28 +19,28 @@
   pthread_mutex_unlock(&self->_mutex);
 }
 
-- (void)setMaxPooledBuffers:(unint64_t)a3
+- (void)setMaxPooledBuffers:(unint64_t)buffers
 {
   pthread_mutex_lock(&self->_mutex);
   v5 = [(NSMutableArray *)self->_pooledBuffers count];
-  if (v5 > a3)
+  if (v5 > buffers)
   {
-    [(NSMutableArray *)self->_pooledBuffers removeObjectsInRange:a3, v5 - a3];
+    [(NSMutableArray *)self->_pooledBuffers removeObjectsInRange:buffers, v5 - buffers];
   }
 
-  self->_maxPooledBuffers = a3;
+  self->_maxPooledBuffers = buffers;
 
   pthread_mutex_unlock(&self->_mutex);
 }
 
-- (void)reclaimBuffer:(id)a3
+- (void)reclaimBuffer:(id)buffer
 {
-  v4 = a3;
-  v5 = [v4 length];
+  bufferCopy = buffer;
+  v5 = [bufferCopy length];
   pthread_mutex_lock(&self->_mutex);
   if (v5 == self->_defaultBufferCapacity && [(NSMutableArray *)self->_pooledBuffers count]< self->_maxPooledBuffers)
   {
-    [(NSMutableArray *)self->_pooledBuffers addObject:v4];
+    [(NSMutableArray *)self->_pooledBuffers addObject:bufferCopy];
   }
 
   pthread_mutex_unlock(&self->_mutex);
@@ -50,22 +50,22 @@
   pthread_cond_broadcast(&self->_cond);
 }
 
-- (id)newTextureWithDescriptor:(id)a3 error:(id *)a4
+- (id)newTextureWithDescriptor:(id)descriptor error:(id *)error
 {
   v92 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(MTLDevice *)self->_device heapTextureSizeAndAlignWithDescriptor:v6];
+  descriptorCopy = descriptor;
+  v7 = [(MTLDevice *)self->_device heapTextureSizeAndAlignWithDescriptor:descriptorCopy];
   v8 = v7;
   if (v7)
   {
     atomic_fetch_add(&self->_usedSize, v7);
-    v9 = [(MTLDevice *)self->_device newTextureWithDescriptor:v6];
+    v9 = [(MTLDevice *)self->_device newTextureWithDescriptor:descriptorCopy];
   }
 
   else
   {
-    v10 = [v6 pixelFormat];
-    if (v10 == 540)
+    pixelFormat = [descriptorCopy pixelFormat];
+    if (pixelFormat == 540)
     {
       v11 = 875704438;
     }
@@ -75,22 +75,22 @@
       v11 = 0;
     }
 
-    v12 = [v6 width];
-    v13 = [v6 height];
-    if (v12)
+    width = [descriptorCopy width];
+    height = [descriptorCopy height];
+    if (width)
     {
-      v14 = v13;
-      if (v13)
+      v14 = height;
+      if (height)
       {
-        if (v10 == 540)
+        if (pixelFormat == 540)
         {
-          v8 = MinBytesPerRow(v11, v12);
+          v8 = MinBytesPerRow(v11, width);
           if (v8)
           {
             if (IsBiplanar(v11))
             {
-              v15 = (v12 + 1) >> 1;
-              v16 = MinBytesPerRow(826486840, v12);
+              v15 = (width + 1) >> 1;
+              v16 = MinBytesPerRow(826486840, width);
               v17 = MinBytesPerRow(843264056, v15);
               if (v16 <= v17)
               {
@@ -107,7 +107,7 @@
 
             else
             {
-              v8 = ((v8 + 15) & 0x1FFFFFFF0) * v12;
+              v8 = ((v8 + 15) & 0x1FFFFFFF0) * width;
             }
           }
         }
@@ -115,23 +115,23 @@
     }
 
     atomic_fetch_add(&self->_usedSize, v8);
-    v19 = [v6 width];
-    v20 = [v6 height];
+    width2 = [descriptorCopy width];
+    height2 = [descriptorCopy height];
     v21 = 0;
-    if (v19)
+    if (width2)
     {
-      v22 = v20;
-      if (v20)
+      v22 = height2;
+      if (height2)
       {
-        if (v10 == 540)
+        if (pixelFormat == 540)
         {
-          v21 = MinBytesPerRow(v11, v19);
+          v21 = MinBytesPerRow(v11, width2);
           if (v21)
           {
-            v85 = a4;
+            errorCopy = error;
             Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
             v24 = *MEMORY[0x277CD2B88];
-            LODWORD(valuePtr) = v19;
+            LODWORD(valuePtr) = width2;
             v25 = CFNumberCreate(0, kCFNumberIntType, &valuePtr);
             CFDictionarySetValue(Mutable, v24, v25);
             CFRelease(v25);
@@ -148,12 +148,12 @@
             CFRelease(v29);
             if (IsBiplanar(v11))
             {
-              v82 = (v19 + 1) >> 1;
+              v82 = (width2 + 1) >> 1;
               v80 = BytesPerElement(826486840);
               v84 = BytesPerElement(843264056);
               v81 = ElementWidth(826486840);
               v83 = ElementWidth(843264056);
-              v30 = MinBytesPerRow(826486840, v19);
+              v30 = MinBytesPerRow(826486840, width2);
               v31 = MinBytesPerRow(843264056, v82);
               if (v30 <= v31)
               {
@@ -180,7 +180,7 @@
               valuePtr = v38;
               v39 = *MEMORY[0x277CD2B50];
               key = *MEMORY[0x277CD2B50];
-              v87 = v19;
+              v87 = width2;
               v40 = CFNumberCreate(0, kCFNumberIntType, &v87);
               CFDictionarySetValue(v38, v39, v40);
               CFRelease(v40);
@@ -272,7 +272,7 @@
             }
 
             CFRelease(v60);
-            a4 = v85;
+            error = errorCopy;
             v21 = IOSurfaceCreate(v55);
             CFRelease(v55);
           }
@@ -280,7 +280,7 @@
       }
     }
 
-    v9 = [(MTLDevice *)self->_device newTextureWithDescriptor:v6 iosurface:v21 plane:0, v77];
+    v9 = [(MTLDevice *)self->_device newTextureWithDescriptor:descriptorCopy iosurface:v21 plane:0, v77];
   }
 
   v69 = v9;
@@ -294,14 +294,14 @@
   else
   {
     v88 = @"GTErrorKeyMTLTextureDescriptor";
-    v72 = SerializeMTLTextureDescriptorToDictionary(v6);
+    v72 = SerializeMTLTextureDescriptorToDictionary(descriptorCopy);
     v89 = v72;
     v73 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v89 forKeys:&v88 count:1];
 
-    GTMTLReplay_fillError(a4, 101, v73);
-    if (a4)
+    GTMTLReplay_fillError(error, 101, v73);
+    if (error)
     {
-      v74 = *a4;
+      v74 = *error;
     }
 
     else
@@ -316,16 +316,16 @@
   return v69;
 }
 
-- (id)newBufferHeapWithLength:(unint64_t)a3
+- (id)newBufferHeapWithLength:(unint64_t)length
 {
   pthread_mutex_lock(&self->_mutex);
-  atomic_fetch_add(&self->_usedSize, a3);
-  if (self->_defaultBufferCapacity == a3)
+  atomic_fetch_add(&self->_usedSize, length);
+  if (self->_defaultBufferCapacity == length)
   {
-    v5 = [(NSMutableArray *)self->_pooledBuffers lastObject];
+    lastObject = [(NSMutableArray *)self->_pooledBuffers lastObject];
     [(NSMutableArray *)self->_pooledBuffers removeLastObject];
     pthread_mutex_unlock(&self->_mutex);
-    if (v5)
+    if (lastObject)
     {
       goto LABEL_7;
     }
@@ -336,15 +336,15 @@
     pthread_mutex_unlock(&self->_mutex);
   }
 
-  result = [(MTLDevice *)self->_device newBufferWithLength:a3 options:256];
+  result = [(MTLDevice *)self->_device newBufferWithLength:length options:256];
   if (!result)
   {
     return result;
   }
 
-  v5 = result;
+  lastObject = result;
 LABEL_7:
-  v7 = [[GTMTLReplaySharedBufferHeap alloc] initWithBuffer:v5 resourcePool:self];
+  v7 = [[GTMTLReplaySharedBufferHeap alloc] initWithBuffer:lastObject resourcePool:self];
 
   return v7;
 }
@@ -378,17 +378,17 @@ LABEL_7:
   [(GTMTLReplaySharedResourcePool *)&v3 dealloc];
 }
 
-- (GTMTLReplaySharedResourcePool)initWithDevice:(id)a3 bufferCapacity:(unint64_t)a4
+- (GTMTLReplaySharedResourcePool)initWithDevice:(id)device bufferCapacity:(unint64_t)capacity
 {
-  v7 = a3;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = GTMTLReplaySharedResourcePool;
   v8 = [(GTMTLReplaySharedResourcePool *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_device, a3);
-    v9->_defaultBufferCapacity = a4;
+    objc_storeStrong(&v8->_device, device);
+    v9->_defaultBufferCapacity = capacity;
     pthread_mutex_init(&v9->_mutex, 0);
     pthread_cond_init(&v9->_cond, 0);
     v9->_maxPooledBuffers = 8;

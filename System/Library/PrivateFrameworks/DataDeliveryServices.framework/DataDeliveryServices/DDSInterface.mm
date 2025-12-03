@@ -1,37 +1,37 @@
 @interface DDSInterface
 + (id)interface;
 + (unint64_t)xpcConnectionOptionsForServer;
-- (DDSInterface)initWithXPCServiceName:(id)a3;
+- (DDSInterface)initWithXPCServiceName:(id)name;
 - (DDSManagingDelegate)delegate;
 - (id)server;
 - (id)serviceObjectProxy;
 - (id)syncServer;
 - (id)syncServiceObjectProxy;
 - (void)_teardownXPCConnection;
-- (void)addAssertionForQuery:(id)a3 policy:(id)a4 assertionID:(id)a5 clientID:(id)a6;
-- (void)assertionIDsForClientID:(id)a3 reply:(id)a4;
+- (void)addAssertionForQuery:(id)query policy:(id)policy assertionID:(id)d clientID:(id)iD;
+- (void)assertionIDsForClientID:(id)d reply:(id)reply;
 - (void)createConnectionIfNecessary;
 - (void)dealloc;
-- (void)fetchAssetUpdateStatusForQuery:(id)a3 callback:(id)a4;
-- (void)removeAssertionWithID:(id)a3;
+- (void)fetchAssetUpdateStatusForQuery:(id)query callback:(id)callback;
+- (void)removeAssertionWithID:(id)d;
 - (void)server;
 - (void)syncServer;
 - (void)teardownXPCConnection;
-- (void)triggerDumpWithReply:(id)a3;
+- (void)triggerDumpWithReply:(id)reply;
 - (void)triggerUpdate;
-- (void)updateAssetForQuery:(id)a3 callback:(id)a4;
+- (void)updateAssetForQuery:(id)query callback:(id)callback;
 @end
 
 @implementation DDSInterface
 
 - (id)syncServer
 {
-  v3 = [(DDSInterface *)self connectionUsageQueue];
-  dispatch_assert_queue_V2(v3);
+  connectionUsageQueue = [(DDSInterface *)self connectionUsageQueue];
+  dispatch_assert_queue_V2(connectionUsageQueue);
 
-  v4 = [(DDSInterface *)self serverOverride];
+  serverOverride = [(DDSInterface *)self serverOverride];
 
-  if (v4)
+  if (serverOverride)
   {
     v5 = DefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -40,12 +40,12 @@
       _os_log_impl(&dword_1DF7C6000, v5, OS_LOG_TYPE_DEFAULT, "Using test local server", v9, 2u);
     }
 
-    v6 = [(DDSInterface *)self serverOverride];
+    serverOverride2 = [(DDSInterface *)self serverOverride];
   }
 
   else
   {
-    v6 = [(DDSInterface *)self syncServiceObjectProxy];
+    serverOverride2 = [(DDSInterface *)self syncServiceObjectProxy];
     v7 = DefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
@@ -53,13 +53,13 @@
     }
   }
 
-  return v6;
+  return serverOverride2;
 }
 
 - (id)syncServiceObjectProxy
 {
-  v3 = [(DDSInterface *)self connectionUsageQueue];
-  dispatch_assert_queue_V2(v3);
+  connectionUsageQueue = [(DDSInterface *)self connectionUsageQueue];
+  dispatch_assert_queue_V2(connectionUsageQueue);
 
   [(DDSInterface *)self createConnectionIfNecessary];
   remoteServer = self->_remoteServer;
@@ -69,20 +69,20 @@
 
 - (void)createConnectionIfNecessary
 {
-  v3 = [(DDSInterface *)self connectionUsageQueue];
-  dispatch_assert_queue_V2(v3);
+  connectionUsageQueue = [(DDSInterface *)self connectionUsageQueue];
+  dispatch_assert_queue_V2(connectionUsageQueue);
 
   if (!self->_remoteServer)
   {
     v4 = objc_alloc(MEMORY[0x1E696B0B8]);
-    v5 = [(DDSInterface *)self xpcServiceName];
-    v6 = [v4 initWithMachServiceName:v5 options:{objc_msgSend(objc_opt_class(), "xpcConnectionOptionsForServer")}];
+    xpcServiceName = [(DDSInterface *)self xpcServiceName];
+    v6 = [v4 initWithMachServiceName:xpcServiceName options:{objc_msgSend(objc_opt_class(), "xpcConnectionOptionsForServer")}];
     remoteServer = self->_remoteServer;
     self->_remoteServer = v6;
 
     [(NSXPCConnection *)self->_remoteServer setExportedObject:self];
-    v8 = [objc_opt_class() interface];
-    [(NSXPCConnection *)self->_remoteServer setExportedInterface:v8];
+    interface = [objc_opt_class() interface];
+    [(NSXPCConnection *)self->_remoteServer setExportedInterface:interface];
 
     v9 = +[DDSServer interface];
     [(NSXPCConnection *)self->_remoteServer setRemoteObjectInterface:v9];
@@ -101,9 +101,9 @@
   }
 }
 
-- (DDSInterface)initWithXPCServiceName:(id)a3
+- (DDSInterface)initWithXPCServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = DDSInterface;
   v5 = [(DDSInterface *)&v11 init];
@@ -113,7 +113,7 @@
     connectionUsageQueue = v5->_connectionUsageQueue;
     v5->_connectionUsageQueue = v6;
 
-    v8 = [v4 copy];
+    v8 = [nameCopy copy];
     xpcServiceName = v5->_xpcServiceName;
     v5->_xpcServiceName = v8;
   }
@@ -121,27 +121,27 @@
   return v5;
 }
 
-- (void)addAssertionForQuery:(id)a3 policy:(id)a4 assertionID:(id)a5 clientID:(id)a6
+- (void)addAssertionForQuery:(id)query policy:(id)policy assertionID:(id)d clientID:(id)iD
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(DDSInterface *)self connectionUsageQueue];
+  queryCopy = query;
+  policyCopy = policy;
+  dCopy = d;
+  iDCopy = iD;
+  connectionUsageQueue = [(DDSInterface *)self connectionUsageQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__DDSInterface_addAssertionForQuery_policy_assertionID_clientID___block_invoke;
   block[3] = &unk_1E86C6158;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_sync(v14, block);
+  v20 = queryCopy;
+  v21 = policyCopy;
+  v22 = dCopy;
+  v23 = iDCopy;
+  v15 = iDCopy;
+  v16 = dCopy;
+  v17 = policyCopy;
+  v18 = queryCopy;
+  dispatch_sync(connectionUsageQueue, block);
 }
 
 void __65__DDSInterface_addAssertionForQuery_policy_assertionID_clientID___block_invoke(uint64_t a1)
@@ -150,18 +150,18 @@ void __65__DDSInterface_addAssertionForQuery_policy_assertionID_clientID___block
   [v2 addAssertionForQuery:*(a1 + 40) policy:*(a1 + 48) assertionID:*(a1 + 56) clientID:*(a1 + 64)];
 }
 
-- (void)removeAssertionWithID:(id)a3
+- (void)removeAssertionWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(DDSInterface *)self connectionUsageQueue];
+  dCopy = d;
+  connectionUsageQueue = [(DDSInterface *)self connectionUsageQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__DDSInterface_removeAssertionWithID___block_invoke;
   v7[3] = &unk_1E86C5C70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_sync(connectionUsageQueue, v7);
 }
 
 void __38__DDSInterface_removeAssertionWithID___block_invoke(uint64_t a1)
@@ -170,21 +170,21 @@ void __38__DDSInterface_removeAssertionWithID___block_invoke(uint64_t a1)
   [v2 removeAssertionWithID:*(a1 + 40)];
 }
 
-- (void)assertionIDsForClientID:(id)a3 reply:(id)a4
+- (void)assertionIDsForClientID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DDSInterface *)self connectionUsageQueue];
+  dCopy = d;
+  replyCopy = reply;
+  connectionUsageQueue = [(DDSInterface *)self connectionUsageQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__DDSInterface_assertionIDsForClientID_reply___block_invoke;
   block[3] = &unk_1E86C5C48;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = dCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = dCopy;
+  dispatch_sync(connectionUsageQueue, block);
 }
 
 void __46__DDSInterface_assertionIDsForClientID_reply___block_invoke(uint64_t a1)
@@ -199,21 +199,21 @@ void __46__DDSInterface_assertionIDsForClientID_reply___block_invoke(uint64_t a1
   [v2 assertionIDsForClientID:v3 reply:v4];
 }
 
-- (void)fetchAssetUpdateStatusForQuery:(id)a3 callback:(id)a4
+- (void)fetchAssetUpdateStatusForQuery:(id)query callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DDSInterface *)self connectionUsageQueue];
+  queryCopy = query;
+  callbackCopy = callback;
+  connectionUsageQueue = [(DDSInterface *)self connectionUsageQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__DDSInterface_fetchAssetUpdateStatusForQuery_callback___block_invoke;
   block[3] = &unk_1E86C5C48;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = queryCopy;
+  v13 = callbackCopy;
+  v9 = callbackCopy;
+  v10 = queryCopy;
+  dispatch_async(connectionUsageQueue, block);
 }
 
 void __56__DDSInterface_fetchAssetUpdateStatusForQuery_callback___block_invoke(uint64_t a1)
@@ -222,21 +222,21 @@ void __56__DDSInterface_fetchAssetUpdateStatusForQuery_callback___block_invoke(u
   [v2 fetchAssetUpdateStatusForQuery:*(a1 + 40) callback:*(a1 + 48)];
 }
 
-- (void)updateAssetForQuery:(id)a3 callback:(id)a4
+- (void)updateAssetForQuery:(id)query callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DDSInterface *)self connectionUsageQueue];
+  queryCopy = query;
+  callbackCopy = callback;
+  connectionUsageQueue = [(DDSInterface *)self connectionUsageQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__DDSInterface_updateAssetForQuery_callback___block_invoke;
   block[3] = &unk_1E86C5C48;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = queryCopy;
+  v13 = callbackCopy;
+  v9 = callbackCopy;
+  v10 = queryCopy;
+  dispatch_async(connectionUsageQueue, block);
 }
 
 void __45__DDSInterface_updateAssetForQuery_callback___block_invoke(uint64_t a1)
@@ -245,18 +245,18 @@ void __45__DDSInterface_updateAssetForQuery_callback___block_invoke(uint64_t a1)
   [v2 updateAssetForQuery:*(a1 + 40) callback:*(a1 + 48)];
 }
 
-- (void)triggerDumpWithReply:(id)a3
+- (void)triggerDumpWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(DDSInterface *)self connectionUsageQueue];
+  replyCopy = reply;
+  connectionUsageQueue = [(DDSInterface *)self connectionUsageQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__DDSInterface_triggerDumpWithReply___block_invoke;
   v7[3] = &unk_1E86C61D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = replyCopy;
+  v6 = replyCopy;
+  dispatch_sync(connectionUsageQueue, v7);
 }
 
 void __37__DDSInterface_triggerDumpWithReply___block_invoke(uint64_t a1)
@@ -272,13 +272,13 @@ void __37__DDSInterface_triggerDumpWithReply___block_invoke(uint64_t a1)
 
 - (void)triggerUpdate
 {
-  v3 = [(DDSInterface *)self connectionUsageQueue];
+  connectionUsageQueue = [(DDSInterface *)self connectionUsageQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __29__DDSInterface_triggerUpdate__block_invoke;
   block[3] = &unk_1E86C5AF0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(connectionUsageQueue, block);
 }
 
 void __29__DDSInterface_triggerUpdate__block_invoke(uint64_t a1)
@@ -327,13 +327,13 @@ void __43__DDSInterface_createConnectionIfNecessary__block_invoke_6()
 
 - (void)teardownXPCConnection
 {
-  v3 = [(DDSInterface *)self connectionUsageQueue];
+  connectionUsageQueue = [(DDSInterface *)self connectionUsageQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __37__DDSInterface_teardownXPCConnection__block_invoke;
   block[3] = &unk_1E86C5AF0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(connectionUsageQueue, block);
 }
 
 - (void)_teardownXPCConnection
@@ -347,8 +347,8 @@ void __43__DDSInterface_createConnectionIfNecessary__block_invoke_6()
 
 - (id)serviceObjectProxy
 {
-  v3 = [(DDSInterface *)self connectionUsageQueue];
-  dispatch_assert_queue_V2(v3);
+  connectionUsageQueue = [(DDSInterface *)self connectionUsageQueue];
+  dispatch_assert_queue_V2(connectionUsageQueue);
 
   [(DDSInterface *)self createConnectionIfNecessary];
   remoteServer = self->_remoteServer;
@@ -378,12 +378,12 @@ void __38__DDSInterface_syncServiceObjectProxy__block_invoke(uint64_t a1, void *
 
 - (id)server
 {
-  v3 = [(DDSInterface *)self connectionUsageQueue];
-  dispatch_assert_queue_V2(v3);
+  connectionUsageQueue = [(DDSInterface *)self connectionUsageQueue];
+  dispatch_assert_queue_V2(connectionUsageQueue);
 
-  v4 = [(DDSInterface *)self serverOverride];
+  serverOverride = [(DDSInterface *)self serverOverride];
 
-  if (v4)
+  if (serverOverride)
   {
     v5 = DefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -392,12 +392,12 @@ void __38__DDSInterface_syncServiceObjectProxy__block_invoke(uint64_t a1, void *
       _os_log_impl(&dword_1DF7C6000, v5, OS_LOG_TYPE_DEFAULT, "Using test local server", v9, 2u);
     }
 
-    v6 = [(DDSInterface *)self serverOverride];
+    serverOverride2 = [(DDSInterface *)self serverOverride];
   }
 
   else
   {
-    v6 = [(DDSInterface *)self serviceObjectProxy];
+    serverOverride2 = [(DDSInterface *)self serviceObjectProxy];
     v7 = DefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
@@ -405,7 +405,7 @@ void __38__DDSInterface_syncServiceObjectProxy__block_invoke(uint64_t a1, void *
     }
   }
 
-  return v6;
+  return serverOverride2;
 }
 
 + (id)interface

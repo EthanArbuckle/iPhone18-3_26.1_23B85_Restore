@@ -1,13 +1,13 @@
 @interface ContainerStack
 - (ContainerStack)init;
 - (id)allObjects;
-- (id)containeeStateAtIndex:(unint64_t)a3;
+- (id)containeeStateAtIndex:(unint64_t)index;
 - (id)lastState;
 - (id)popAll;
-- (id)popFromIndex:(unint64_t)a3;
-- (void)pushContaineeState:(id)a3;
-- (void)removeContaineeState:(id)a3;
-- (void)replaceLastOne:(id)a3;
+- (id)popFromIndex:(unint64_t)index;
+- (void)pushContaineeState:(id)state;
+- (void)removeContaineeState:(id)state;
+- (void)replaceLastOne:(id)one;
 @end
 
 @implementation ContainerStack
@@ -41,22 +41,22 @@
 - (id)lastState
 {
   content = self->_content;
-  v3 = [(NSMutableArray *)self->_array lastObject];
-  v4 = [(NSMapTable *)content objectForKey:v3];
+  lastObject = [(NSMutableArray *)self->_array lastObject];
+  v4 = [(NSMapTable *)content objectForKey:lastObject];
 
   return v4;
 }
 
-- (id)popFromIndex:(unint64_t)a3
+- (id)popFromIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL || [(NSMutableArray *)self->_array count]<= a3)
+  if (index == 0x7FFFFFFFFFFFFFFFLL || [(NSMutableArray *)self->_array count]<= index)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_array subarrayWithRange:a3 + 1, [(NSMutableArray *)self->_array count]- a3 - 1];
+    v5 = [(NSMutableArray *)self->_array subarrayWithRange:index + 1, [(NSMutableArray *)self->_array count]- index - 1];
     [(NSMutableArray *)self->_array removeObjectsInArray:v5];
     v14 = 0u;
     v15 = 0u;
@@ -125,57 +125,57 @@
   return v4;
 }
 
-- (void)replaceLastOne:(id)a3
+- (void)replaceLastOne:(id)one
 {
-  v4 = a3;
-  v9 = [(ContainerStack *)self lastState];
+  oneCopy = one;
+  lastState = [(ContainerStack *)self lastState];
   content = self->_content;
-  v6 = [v9 viewController];
-  [(NSMapTable *)content removeObjectForKey:v6];
+  viewController = [lastState viewController];
+  [(NSMapTable *)content removeObjectForKey:viewController];
 
   array = self->_array;
-  v8 = [v9 viewController];
-  [(NSMutableArray *)array removeObject:v8];
+  viewController2 = [lastState viewController];
+  [(NSMutableArray *)array removeObject:viewController2];
 
-  [(ContainerStack *)self pushContaineeState:v4];
+  [(ContainerStack *)self pushContaineeState:oneCopy];
 }
 
-- (void)removeContaineeState:(id)a3
+- (void)removeContaineeState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 viewController];
-  v6 = [v5 cardPresentationController];
-  [v6 wantsLayout:1];
+  stateCopy = state;
+  viewController = [stateCopy viewController];
+  cardPresentationController = [viewController cardPresentationController];
+  [cardPresentationController wantsLayout:1];
 
   content = self->_content;
-  v8 = [v4 viewController];
-  [(NSMapTable *)content removeObjectForKey:v8];
+  viewController2 = [stateCopy viewController];
+  [(NSMapTable *)content removeObjectForKey:viewController2];
 
   array = self->_array;
-  v10 = [v4 viewController];
+  viewController3 = [stateCopy viewController];
 
-  [(NSMutableArray *)array removeObject:v10];
+  [(NSMutableArray *)array removeObject:viewController3];
 }
 
-- (void)pushContaineeState:(id)a3
+- (void)pushContaineeState:(id)state
 {
   content = self->_content;
-  v5 = a3;
-  v6 = [v5 viewController];
-  [(NSMapTable *)content setObject:v5 forKey:v6];
+  stateCopy = state;
+  viewController = [stateCopy viewController];
+  [(NSMapTable *)content setObject:stateCopy forKey:viewController];
 
   array = self->_array;
-  v8 = [v5 viewController];
+  viewController2 = [stateCopy viewController];
 
-  [(NSMutableArray *)array addObject:v8];
+  [(NSMutableArray *)array addObject:viewController2];
 }
 
-- (id)containeeStateAtIndex:(unint64_t)a3
+- (id)containeeStateAtIndex:(unint64_t)index
 {
-  if ([(NSMapTable *)self->_content count]&& [(NSMapTable *)self->_content count]- 1 >= a3)
+  if ([(NSMapTable *)self->_content count]&& [(NSMapTable *)self->_content count]- 1 >= index)
   {
     content = self->_content;
-    v7 = [(NSMutableArray *)self->_array objectAtIndexedSubscript:a3];
+    v7 = [(NSMutableArray *)self->_array objectAtIndexedSubscript:index];
     v5 = [(NSMapTable *)content objectForKey:v7];
   }
 

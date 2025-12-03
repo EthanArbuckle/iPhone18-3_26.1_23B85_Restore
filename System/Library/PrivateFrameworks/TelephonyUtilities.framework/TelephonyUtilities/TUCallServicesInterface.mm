@@ -1,9 +1,9 @@
 @interface TUCallServicesInterface
 - (BOOL)hasServerLaunched;
 - (BOOL)isServerLocal;
-- (BOOL)isUnknownAddress:(id)a3 normalizedAddress:(id)a4 forBundleIdentifier:(id)a5;
-- (BOOL)validateIMAVPush:(id)a3;
-- (BOOL)willRestrictAddresses:(id)a3 forBundleIdentifier:(id)a4;
+- (BOOL)isUnknownAddress:(id)address normalizedAddress:(id)normalizedAddress forBundleIdentifier:(id)identifier;
+- (BOOL)validateIMAVPush:(id)push;
+- (BOOL)willRestrictAddresses:(id)addresses forBundleIdentifier:(id)identifier;
 - (NSArray)currentCalls;
 - (NSString)debugDescription;
 - (NSXPCConnection)xpcConnection;
@@ -11,94 +11,94 @@
 - (TUCallContainerPrivate)callContainer;
 - (TUCallServicesXPCServer)asynchronousServer;
 - (TUCallServicesXPCServer)server;
-- (id)_proxyCallWithCall:(id)a3;
-- (id)_proxyCallWithUniqueProxyIdentifier:(id)a3;
-- (id)asynchronousServerWithErrorHandler:(id)a3;
-- (id)customGreetingForAccountUUID:(id)a3;
+- (id)_proxyCallWithCall:(id)call;
+- (id)_proxyCallWithUniqueProxyIdentifier:(id)identifier;
+- (id)asynchronousServerWithErrorHandler:(id)handler;
+- (id)customGreetingForAccountUUID:(id)d;
 - (id)defaultGreeting;
-- (id)dialWithRequest:(id)a3 completion:(id)a4;
+- (id)dialWithRequest:(id)request completion:(id)completion;
 - (id)fetchCurrentCallUpdates;
-- (id)joinConversationWithRequest:(id)a3;
-- (id)policyForAddresses:(id)a3 forBundleIdentifier:(id)a4;
-- (id)routesByUniqueIdentifierForRouteController:(id)a3;
-- (id)synchronousServerWithErrorHandler:(id)a3;
-- (unint64_t)filterStatusForAddresses:(id)a3 forBundleIdentifier:(id)a4;
-- (void)_handleCurrentCallsChanged:(id)a3 callsDisconnected:(id)a4;
+- (id)joinConversationWithRequest:(id)request;
+- (id)policyForAddresses:(id)addresses forBundleIdentifier:(id)identifier;
+- (id)routesByUniqueIdentifierForRouteController:(id)controller;
+- (id)synchronousServerWithErrorHandler:(id)handler;
+- (unint64_t)filterStatusForAddresses:(id)addresses forBundleIdentifier:(id)identifier;
+- (void)_handleCurrentCallsChanged:(id)changed callsDisconnected:(id)disconnected;
 - (void)_ignorePendingServerDisconnectionHandlers;
-- (void)_performSmartHoldingRequest:(id)a3 completion:(id)a4;
-- (void)_registerCall:(id)a3;
+- (void)_performSmartHoldingRequest:(id)request completion:(id)completion;
+- (void)_registerCall:(id)call;
 - (void)_setUpXPCConnection;
 - (void)_tearDownXPCConnection;
-- (void)_updateCurrentCalls:(id)a3;
-- (void)_updateCurrentCalls:(id)a3 withNotificationsUsingUpdatedCalls:(id)a4;
-- (void)_updateCurrentCallsWithoutNotifications:(id)a3;
-- (void)activateInCallUIWithActivityContinuationIdentifier:(id)a3;
-- (void)addScreenSharingType:(unint64_t)a3 forCallWithUniqueProxyIdentifier:(id)a4;
-- (void)answerCallWithRequest:(id)a3;
+- (void)_updateCurrentCalls:(id)calls;
+- (void)_updateCurrentCalls:(id)calls withNotificationsUsingUpdatedCalls:(id)updatedCalls;
+- (void)_updateCurrentCallsWithoutNotifications:(id)notifications;
+- (void)activateInCallUIWithActivityContinuationIdentifier:(id)identifier;
+- (void)addScreenSharingType:(unint64_t)type forCallWithUniqueProxyIdentifier:(id)identifier;
+- (void)answerCallWithRequest:(id)request;
 - (void)dealloc;
-- (void)deleteCustomGreetingForAccountUUID:(id)a3;
+- (void)deleteCustomGreetingForAccountUUID:(id)d;
 - (void)disconnectAllCalls;
-- (void)disconnectCallWithUniqueProxyIdentifier:(id)a3;
+- (void)disconnectCallWithUniqueProxyIdentifier:(id)identifier;
 - (void)disconnectCurrentCall;
 - (void)disconnectCurrentCallAndActivateHeld;
 - (void)enteredBackgroundForAllCalls;
-- (void)enteredForegroundForCallWithUniqueProxyIdentifier:(id)a3;
-- (void)fetchAnonymousXPCEndpoint:(id)a3;
+- (void)enteredForegroundForCallWithUniqueProxyIdentifier:(id)identifier;
+- (void)fetchAnonymousXPCEndpoint:(id)endpoint;
 - (void)fetchCurrentCalls;
-- (void)groupCallWithUniqueProxyIdentifier:(id)a3 withOtherCallWithUniqueProxyIdentifier:(id)a4;
-- (void)handleCurrentCallsChanged:(id)a3 callDisconnected:(id)a4;
-- (void)handleFrequencyChangedTo:(id)a3 inDirection:(int)a4 forCallsWithUniqueProxyIdentifiers:(id)a5;
-- (void)handleLocalRoutesByUniqueIdentifierUpdated:(id)a3;
-- (void)handleMeterLevelChangedTo:(float)a3 inDirection:(int)a4 forCallsWithUniqueProxyIdentifiers:(id)a5;
-- (void)handleNewCaptionsResult:(id)a3;
-- (void)handleNotificationName:(id)a3 forCallWithUniqueProxyIdentifier:(id)a4 userInfo:(id)a5;
-- (void)handlePairedHostDeviceRoutesByUniqueIdentifierUpdated:(id)a3;
-- (void)handlePairedHostVolumeChanged:(float)a3;
-- (void)handleReceivedCallDTMFUpdate:(id)a3 forCallWithUniqueProxyIdentifier:(id)a4;
+- (void)groupCallWithUniqueProxyIdentifier:(id)identifier withOtherCallWithUniqueProxyIdentifier:(id)proxyIdentifier;
+- (void)handleCurrentCallsChanged:(id)changed callDisconnected:(id)disconnected;
+- (void)handleFrequencyChangedTo:(id)to inDirection:(int)direction forCallsWithUniqueProxyIdentifiers:(id)identifiers;
+- (void)handleLocalRoutesByUniqueIdentifierUpdated:(id)updated;
+- (void)handleMeterLevelChangedTo:(float)to inDirection:(int)direction forCallsWithUniqueProxyIdentifiers:(id)identifiers;
+- (void)handleNewCaptionsResult:(id)result;
+- (void)handleNotificationName:(id)name forCallWithUniqueProxyIdentifier:(id)identifier userInfo:(id)info;
+- (void)handlePairedHostDeviceRoutesByUniqueIdentifierUpdated:(id)updated;
+- (void)handlePairedHostVolumeChanged:(float)changed;
+- (void)handleReceivedCallDTMFUpdate:(id)update forCallWithUniqueProxyIdentifier:(id)identifier;
 - (void)handleServerDisconnect;
 - (void)handleServerDisconnectIfNecessary;
 - (void)handleServerReconnect;
-- (void)handleUIXPCEndpointChanged:(id)a3;
-- (void)holdCallWithUniqueProxyIdentifier:(id)a3;
-- (void)performBlockOnQueue:(id)a3 andWait:(BOOL)a4;
-- (void)performRecordingRequest:(id)a3 completion:(id)a4;
-- (void)performSmartHoldingRequest:(id)a3 completion:(id)a4;
-- (void)performTranslationRequest:(id)a3 completion:(id)a4;
-- (void)pullCallFromClientUsingHandoffActivityUserInfo:(id)a3 completion:(id)a4;
+- (void)handleUIXPCEndpointChanged:(id)changed;
+- (void)holdCallWithUniqueProxyIdentifier:(id)identifier;
+- (void)performBlockOnQueue:(id)queue andWait:(BOOL)wait;
+- (void)performRecordingRequest:(id)request completion:(id)completion;
+- (void)performSmartHoldingRequest:(id)request completion:(id)completion;
+- (void)performTranslationRequest:(id)request completion:(id)completion;
+- (void)pullCallFromClientUsingHandoffActivityUserInfo:(id)info completion:(id)completion;
 - (void)pullHostedCallsFromPairedHostDevice;
-- (void)pullPersistedChannel:(id)a3;
+- (void)pullPersistedChannel:(id)channel;
 - (void)pullRelayingCallsFromClient;
 - (void)pullRelayingGFTCallsFromClientIfNecessary;
-- (void)pushHostedCallsToDestination:(id)a3;
-- (void)pushRelayingCallsToHostWithSourceIdentifier:(id)a3;
-- (void)registerAnonymousXPCEndpoint:(id)a3;
-- (void)registerCall:(id)a3;
-- (void)reportLocalPreviewStoppedForCallWithUniqueProxyIdentifier:(id)a3;
-- (void)requestCurrentStateWithCompletionHandler:(id)a3;
-- (void)requestCurrentStateWithCompletionHandler:(id)a3 handleInitialState:(id)a4;
-- (void)requestVideoUpgradeForCallWithUniqueProxyIdentifier:(id)a3;
+- (void)pushHostedCallsToDestination:(id)destination;
+- (void)pushRelayingCallsToHostWithSourceIdentifier:(id)identifier;
+- (void)registerAnonymousXPCEndpoint:(id)endpoint;
+- (void)registerCall:(id)call;
+- (void)reportLocalPreviewStoppedForCallWithUniqueProxyIdentifier:(id)identifier;
+- (void)requestCurrentStateWithCompletionHandler:(id)handler;
+- (void)requestCurrentStateWithCompletionHandler:(id)handler handleInitialState:(id)state;
+- (void)requestVideoUpgradeForCallWithUniqueProxyIdentifier:(id)identifier;
 - (void)resetCallProvisionalStates;
-- (void)routesByUniqueIdentifierForRouteController:(id)a3 completionHandler:(id)a4;
-- (void)saveCustomGreeting:(id)a3 forAccountUUID:(id)a4;
-- (void)screenWithRequest:(id)a3;
-- (void)sendHardPauseDigitsForCallWithUniqueProxyIdentifier:(id)a3;
-- (void)sendMMIOrUSSDCodeWithRequest:(id)a3;
-- (void)sendReceptionistReply:(id)a3;
-- (void)setBluetoothAudioFormatForCallWithUniqueProxyIdentifier:(id)a3 bluetoothAudioFormat:(int64_t)a4;
-- (void)setClientCapabilities:(id)a3;
-- (void)setCurrentAudioInputDeviceToDeviceWithUID:(id)a3;
-- (void)setCurrentAudioOutputDeviceToDeviceWithUID:(id)a3;
-- (void)setEmergencyMediaItems:(id)a3 forCallWithUniqueProxyIdentifier:(id)a4;
-- (void)setLiveVoicemailUnavailableReason:(int64_t)a3 forCallWithUniqueProxyIdentifier:(id)a4;
-- (void)setRemoteVideoPresentationSizeForCallWithUniqueProxyIdentifier:(id)a3 size:(CGSize)a4;
-- (void)setScreenShareAttributesForCallWithUniqueProxyIdentifier:(id)a3 attributes:(id)a4;
-- (void)setVolume:(float)a3 forRouteController:(id)a4;
+- (void)routesByUniqueIdentifierForRouteController:(id)controller completionHandler:(id)handler;
+- (void)saveCustomGreeting:(id)greeting forAccountUUID:(id)d;
+- (void)screenWithRequest:(id)request;
+- (void)sendHardPauseDigitsForCallWithUniqueProxyIdentifier:(id)identifier;
+- (void)sendMMIOrUSSDCodeWithRequest:(id)request;
+- (void)sendReceptionistReply:(id)reply;
+- (void)setBluetoothAudioFormatForCallWithUniqueProxyIdentifier:(id)identifier bluetoothAudioFormat:(int64_t)format;
+- (void)setClientCapabilities:(id)capabilities;
+- (void)setCurrentAudioInputDeviceToDeviceWithUID:(id)d;
+- (void)setCurrentAudioOutputDeviceToDeviceWithUID:(id)d;
+- (void)setEmergencyMediaItems:(id)items forCallWithUniqueProxyIdentifier:(id)identifier;
+- (void)setLiveVoicemailUnavailableReason:(int64_t)reason forCallWithUniqueProxyIdentifier:(id)identifier;
+- (void)setRemoteVideoPresentationSizeForCallWithUniqueProxyIdentifier:(id)identifier size:(CGSize)size;
+- (void)setScreenShareAttributesForCallWithUniqueProxyIdentifier:(id)identifier attributes:(id)attributes;
+- (void)setVolume:(float)volume forRouteController:(id)controller;
 - (void)startReceptionistReply;
 - (void)swapCalls;
 - (void)tearDownXPCConnection;
-- (void)ungroupCallWithUniqueProxyIdentifier:(id)a3;
-- (void)unholdCallWithUniqueProxyIdentifier:(id)a3;
-- (void)updateCallWithProxy:(id)a3;
+- (void)ungroupCallWithUniqueProxyIdentifier:(id)identifier;
+- (void)unholdCallWithUniqueProxyIdentifier:(id)identifier;
+- (void)updateCallWithProxy:(id)proxy;
 - (void)waitForInitialStateIfNecessary;
 - (void)willEnterBackgroundForAllCalls;
 @end
@@ -107,20 +107,20 @@
 
 - (TUCallContainerPrivate)callContainer
 {
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [TUCallContainer alloc];
-  v5 = [(TUCallServicesInterface *)self currentCalls];
-  v6 = [(TUCallContainer *)v4 initWithCalls:v5];
+  currentCalls = [(TUCallServicesInterface *)self currentCalls];
+  v6 = [(TUCallContainer *)v4 initWithCalls:currentCalls];
 
   return v6;
 }
 
 - (NSArray)currentCalls
 {
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(TUCallServicesInterface *)self waitForInitialStateIfNecessary];
   currentCalls = self->_currentCalls;
@@ -130,8 +130,8 @@
 
 - (void)waitForInitialStateIfNecessary
 {
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (!self->_currentCalls)
   {
@@ -165,20 +165,20 @@
 
 - (TUCallServicesXPCServer)asynchronousServer
 {
-  v3 = [(TUCallServicesInterface *)self server];
-  v4 = v3;
-  if (v3)
+  server = [(TUCallServicesInterface *)self server];
+  v4 = server;
+  if (server)
   {
-    v5 = v3;
+    remoteObjectProxy = server;
   }
 
   else
   {
-    v6 = [(TUCallServicesInterface *)self xpcConnection];
-    v5 = [v6 remoteObjectProxy];
+    xpcConnection = [(TUCallServicesInterface *)self xpcConnection];
+    remoteObjectProxy = [xpcConnection remoteObjectProxy];
   }
 
-  return v5;
+  return remoteObjectProxy;
 }
 
 - (void)_setUpXPCConnection
@@ -188,7 +188,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1956FD000, v3, OS_LOG_TYPE_DEFAULT, "%@: Setting up XPC connection", buf, 0xCu);
   }
 
@@ -196,11 +196,11 @@
   xpcConnection = self->_xpcConnection;
   self->_xpcConnection = v4;
 
-  v6 = [MEMORY[0x1E696B0B8] callServicesServerXPCInterface];
-  [(NSXPCConnection *)self->_xpcConnection setRemoteObjectInterface:v6];
+  callServicesServerXPCInterface = [MEMORY[0x1E696B0B8] callServicesServerXPCInterface];
+  [(NSXPCConnection *)self->_xpcConnection setRemoteObjectInterface:callServicesServerXPCInterface];
 
-  v7 = [MEMORY[0x1E696B0B8] callServicesClientXPCInterface];
-  [(NSXPCConnection *)self->_xpcConnection setExportedInterface:v7];
+  callServicesClientXPCInterface = [MEMORY[0x1E696B0B8] callServicesClientXPCInterface];
+  [(NSXPCConnection *)self->_xpcConnection setExportedInterface:callServicesClientXPCInterface];
 
   [(NSXPCConnection *)self->_xpcConnection setExportedObject:self];
   objc_initWeak(buf, self);
@@ -264,8 +264,8 @@ LABEL_10:
 
 - (BOOL)isServerLocal
 {
-  v2 = [(TUCallServicesInterface *)self server];
-  v3 = v2 != 0;
+  server = [(TUCallServicesInterface *)self server];
+  v3 = server != 0;
 
   return v3;
 }
@@ -279,8 +279,8 @@ LABEL_10:
 
 - (void)fetchCurrentCalls
 {
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -306,13 +306,13 @@ LABEL_10:
 
 - (void)_ignorePendingServerDisconnectionHandlers
 {
-  v3 = [(TUCallServicesInterface *)self xpcConnection];
+  xpcConnection = [(TUCallServicesInterface *)self xpcConnection];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __68__TUCallServicesInterface__ignorePendingServerDisconnectionHandlers__block_invoke;
   v4[3] = &unk_1E7424950;
   v4[4] = self;
-  [v3 performBlockOnQueue:v4];
+  [xpcConnection performBlockOnQueue:v4];
 }
 
 void __44__TUCallServicesInterface_fetchCurrentCalls__block_invoke_27(uint64_t a1)
@@ -413,8 +413,8 @@ void __88__TUCallServicesInterface_initWithQueue_callCenter_wantsCallNotificatio
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(TUCallServicesInterface *)self currentCalls];
-  v6 = [v3 stringWithFormat:@"<%@ %p calls=%@>", v4, self, v5];
+  currentCalls = [(TUCallServicesInterface *)self currentCalls];
+  v6 = [v3 stringWithFormat:@"<%@ %p calls=%@>", v4, self, currentCalls];
 
   return v6;
 }
@@ -429,39 +429,39 @@ void __88__TUCallServicesInterface_initWithQueue_callCenter_wantsCallNotificatio
   [(TUCallServicesInterface *)&v3 dealloc];
 }
 
-- (id)asynchronousServerWithErrorHandler:(id)a3
+- (id)asynchronousServerWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self server];
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  server = [(TUCallServicesInterface *)self server];
+  v6 = server;
+  if (server)
   {
-    v7 = v5;
+    v7 = server;
   }
 
   else
   {
-    v8 = [(TUCallServicesInterface *)self xpcConnection];
-    v7 = [v8 remoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(TUCallServicesInterface *)self xpcConnection];
+    v7 = [xpcConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v7;
 }
 
-- (id)synchronousServerWithErrorHandler:(id)a3
+- (id)synchronousServerWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self server];
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  server = [(TUCallServicesInterface *)self server];
+  v6 = server;
+  if (server)
   {
-    v7 = v5;
+    v7 = server;
   }
 
   else
   {
-    v8 = [(TUCallServicesInterface *)self xpcConnection];
-    v7 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(TUCallServicesInterface *)self xpcConnection];
+    v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v7;
@@ -539,19 +539,19 @@ uint64_t __46__TUCallServicesInterface__setUpXPCConnection__block_invoke_21(uint
   self->_xpcConnection = 0;
 }
 
-- (void)_registerCall:(id)a3
+- (void)_registerCall:(id)call
 {
-  v5 = a3;
-  v4 = [(TUCallServicesInterface *)self queue];
-  [v5 setQueue:v4];
+  callCopy = call;
+  queue = [(TUCallServicesInterface *)self queue];
+  [callCopy setQueue:queue];
 
-  [v5 setCallServicesInterface:self];
+  [callCopy setCallServicesInterface:self];
 }
 
-- (void)_updateCurrentCalls:(id)a3
+- (void)_updateCurrentCalls:(id)calls
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  callsCopy = calls;
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -559,18 +559,18 @@ uint64_t __46__TUCallServicesInterface__setUpXPCConnection__block_invoke_21(uint
     *buf = 138412546;
     v32 = currentCalls;
     v33 = 2112;
-    v34 = v4;
+    v34 = callsCopy;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "_currentCalls: %@ currentCalls: %@", buf, 0x16u);
   }
 
-  if (![(NSArray *)self->_currentCalls isEqualToArray:v4]&& self->_currentCalls != v4)
+  if (![(NSArray *)self->_currentCalls isEqualToArray:callsCopy]&& self->_currentCalls != callsCopy)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v8 = v4;
+    v8 = callsCopy;
     v9 = [(NSArray *)v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v9)
     {
@@ -587,7 +587,7 @@ uint64_t __46__TUCallServicesInterface__setUpXPCConnection__block_invoke_21(uint
           }
 
           v13 = [(TUCallServicesInterface *)self _proxyCallWithCall:*(*(&v25 + 1) + 8 * v12)];
-          [(NSArray *)v7 addObject:v13];
+          [(NSArray *)array addObject:v13];
 
           ++v12;
         }
@@ -599,7 +599,7 @@ uint64_t __46__TUCallServicesInterface__setUpXPCConnection__block_invoke_21(uint
       while (v10);
     }
 
-    [(TUCallServicesInterface *)self setLocalProxyCalls:v7];
+    [(TUCallServicesInterface *)self setLocalProxyCalls:array];
     if ([(TUCallServicesInterface *)self isServerLocal])
     {
       v14 = v8;
@@ -607,7 +607,7 @@ uint64_t __46__TUCallServicesInterface__setUpXPCConnection__block_invoke_21(uint
 
     else
     {
-      v14 = v7;
+      v14 = array;
     }
 
     [(TUCallServicesInterface *)self setCurrentCalls:v14];
@@ -645,16 +645,16 @@ uint64_t __46__TUCallServicesInterface__setUpXPCConnection__block_invoke_21(uint
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateCurrentCallsWithoutNotifications:(id)a3
+- (void)_updateCurrentCallsWithoutNotifications:(id)notifications
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(TUCallServicesInterface *)self _updateCurrentCalls:v4];
+  notificationsCopy = notifications;
+  [(TUCallServicesInterface *)self _updateCurrentCalls:notificationsCopy];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4;
+  v5 = notificationsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -683,16 +683,16 @@ uint64_t __46__TUCallServicesInterface__setUpXPCConnection__block_invoke_21(uint
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateCurrentCalls:(id)a3 withNotificationsUsingUpdatedCalls:(id)a4
+- (void)_updateCurrentCalls:(id)calls withNotificationsUsingUpdatedCalls:(id)updatedCalls
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  [(TUCallServicesInterface *)self _updateCurrentCalls:a3];
+  updatedCallsCopy = updatedCalls;
+  [(TUCallServicesInterface *)self _updateCurrentCalls:calls];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v6;
+  obj = updatedCallsCopy;
   v7 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -717,19 +717,19 @@ uint64_t __46__TUCallServicesInterface__setUpXPCConnection__block_invoke_21(uint
         v12 = _Block_copy(aBlock);
         if ([(TUCallServicesInterface *)self isServerLocal])
         {
-          v13 = v11;
+          comparativeCall = v11;
         }
 
         else
         {
-          v13 = [v11 comparativeCall];
+          comparativeCall = [v11 comparativeCall];
         }
 
-        v14 = v13;
-        [(TUCallServicesInterface *)self _registerCall:v13];
-        v15 = [(TUCallServicesInterface *)self callNotificationManager];
-        v16 = [v11 comparativeCall];
-        [v15 postNotificationsForCall:v14 usingComparisonCall:v16 afterUpdatesInBlock:v12];
+        v14 = comparativeCall;
+        [(TUCallServicesInterface *)self _registerCall:comparativeCall];
+        callNotificationManager = [(TUCallServicesInterface *)self callNotificationManager];
+        comparativeCall2 = [v11 comparativeCall];
+        [callNotificationManager postNotificationsForCall:v14 usingComparisonCall:comparativeCall2 afterUpdatesInBlock:v12];
 
         ++v10;
       }
@@ -744,36 +744,36 @@ uint64_t __46__TUCallServicesInterface__setUpXPCConnection__block_invoke_21(uint
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_proxyCallWithCall:(id)a3
+- (id)_proxyCallWithCall:(id)call
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 uniqueProxyIdentifier];
-  v6 = [(TUCallServicesInterface *)self _proxyCallWithUniqueProxyIdentifier:v5];
+  callCopy = call;
+  uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
+  v6 = [(TUCallServicesInterface *)self _proxyCallWithUniqueProxyIdentifier:uniqueProxyIdentifier];
 
   if (!v6)
   {
     v7 = [TUProxyCall alloc];
-    v8 = [v4 uniqueProxyIdentifier];
-    v6 = [(TUCall *)v7 initWithUniqueProxyIdentifier:v8];
+    uniqueProxyIdentifier2 = [callCopy uniqueProxyIdentifier];
+    v6 = [(TUCall *)v7 initWithUniqueProxyIdentifier:uniqueProxyIdentifier2];
 
-    -[TUProxyCall setIsVideo:](v6, "setIsVideo:", [v4 isVideo]);
-    -[TUProxyCall setLaunchInBackground:](v6, "setLaunchInBackground:", [v4 launchInBackground]);
+    -[TUProxyCall setIsVideo:](v6, "setIsVideo:", [callCopy isVideo]);
+    -[TUProxyCall setLaunchInBackground:](v6, "setLaunchInBackground:", [callCopy launchInBackground]);
     [(TUProxyCall *)v6 setProxyCallActionsDelegate:self];
     v9 = TUDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 uniqueProxyIdentifier];
+      uniqueProxyIdentifier3 = [callCopy uniqueProxyIdentifier];
       v15 = 138412546;
-      v16 = v10;
+      v16 = uniqueProxyIdentifier3;
       v17 = 2048;
       v18 = v6;
       _os_log_impl(&dword_1956FD000, v9, OS_LOG_TYPE_DEFAULT, "No cached call found for %@. Initialized new proxy call %p", &v15, 0x16u);
     }
 
-    v11 = [(TUCallServicesInterface *)self uniqueProxyIdentifierToProxyCall];
-    v12 = [v4 uniqueProxyIdentifier];
-    [v11 setObject:v6 forKey:v12];
+    uniqueProxyIdentifierToProxyCall = [(TUCallServicesInterface *)self uniqueProxyIdentifierToProxyCall];
+    uniqueProxyIdentifier4 = [callCopy uniqueProxyIdentifier];
+    [uniqueProxyIdentifierToProxyCall setObject:v6 forKey:uniqueProxyIdentifier4];
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -781,13 +781,13 @@ uint64_t __46__TUCallServicesInterface__setUpXPCConnection__block_invoke_21(uint
   return v6;
 }
 
-- (id)_proxyCallWithUniqueProxyIdentifier:(id)a3
+- (id)_proxyCallWithUniqueProxyIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
-    v5 = [(TUCallServicesInterface *)self uniqueProxyIdentifierToProxyCall];
-    v6 = [v5 objectForKey:v4];
+    identifierCopy = identifier;
+    uniqueProxyIdentifierToProxyCall = [(TUCallServicesInterface *)self uniqueProxyIdentifierToProxyCall];
+    v6 = [uniqueProxyIdentifierToProxyCall objectForKey:identifierCopy];
   }
 
   else
@@ -798,10 +798,10 @@ uint64_t __46__TUCallServicesInterface__setUpXPCConnection__block_invoke_21(uint
   return v6;
 }
 
-- (void)performBlockOnQueue:(id)a3 andWait:(BOOL)a4
+- (void)performBlockOnQueue:(id)queue andWait:(BOOL)wait
 {
-  v4 = a4;
-  block = a3;
+  waitCopy = wait;
+  block = queue;
   specific = dispatch_get_specific([(TUCallServicesInterface *)self queueContext]);
   if (specific == [(TUCallServicesInterface *)self queueContext])
   {
@@ -810,33 +810,33 @@ uint64_t __46__TUCallServicesInterface__setUpXPCConnection__block_invoke_21(uint
 
   else
   {
-    v7 = [(TUCallServicesInterface *)self queue];
-    v8 = v7;
-    if (v4)
+    queue = [(TUCallServicesInterface *)self queue];
+    v8 = queue;
+    if (waitCopy)
     {
-      dispatch_sync(v7, block);
+      dispatch_sync(queue, block);
     }
 
     else
     {
-      dispatch_async(v7, block);
+      dispatch_async(queue, block);
     }
   }
 }
 
-- (void)registerCall:(id)a3
+- (void)registerCall:(id)call
 {
-  v5 = a3;
-  v4 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v4);
+  callCopy = call;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(TUCallServicesInterface *)self _registerCall:v5];
+  [(TUCallServicesInterface *)self _registerCall:callCopy];
 }
 
 - (void)tearDownXPCConnection
 {
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -848,11 +848,11 @@ uint64_t __46__TUCallServicesInterface__setUpXPCConnection__block_invoke_21(uint
   [(TUCallServicesInterface *)self _tearDownXPCConnection];
 }
 
-- (void)requestCurrentStateWithCompletionHandler:(id)a3 handleInitialState:(id)a4
+- (void)requestCurrentStateWithCompletionHandler:(id)handler handleInitialState:(id)state
 {
-  v5 = a4;
-  v6 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v6);
+  stateCopy = state;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(TUCallServicesInterface *)self setHasRequestedInitialState:1];
   v7 = TUDefaultLog();
@@ -862,13 +862,13 @@ uint64_t __46__TUCallServicesInterface__setUpXPCConnection__block_invoke_21(uint
     _os_log_impl(&dword_1956FD000, v7, OS_LOG_TYPE_DEFAULT, "Requesting current state", buf, 2u);
   }
 
-  v8 = [(TUCallServicesInterface *)self callServicesClientCapabilities];
-  [v8 save];
+  callServicesClientCapabilities = [(TUCallServicesInterface *)self callServicesClientCapabilities];
+  [callServicesClientCapabilities save];
 
   if ([(TUCallServicesInterface *)self isServerLocal])
   {
-    v9 = [(TUCallServicesInterface *)self asynchronousServer];
-    [v9 requestInitialState:v5];
+    asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+    [asynchronousServer requestInitialState:stateCopy];
   }
 
   else if ([(TUCallServicesInterface *)self hasServerLaunched])
@@ -877,7 +877,7 @@ uint64_t __46__TUCallServicesInterface__setUpXPCConnection__block_invoke_21(uint
     v13[1] = 3221225472;
     v13[2] = __87__TUCallServicesInterface_requestCurrentStateWithCompletionHandler_handleInitialState___block_invoke;
     v13[3] = &unk_1E7424A10;
-    v10 = v5;
+    v10 = stateCopy;
     v14 = v10;
     v11 = [(TUCallServicesInterface *)self asynchronousServerWithErrorHandler:v13];
     [v11 requestInitialState:v10];
@@ -892,7 +892,7 @@ uint64_t __46__TUCallServicesInterface__setUpXPCConnection__block_invoke_21(uint
       _os_log_impl(&dword_1956FD000, v12, OS_LOG_TYPE_DEFAULT, "CSD hasn't launched since boot so assuming no current calls exist", buf, 2u);
     }
 
-    (*(v5 + 2))(v5, MEMORY[0x1E695E0F0]);
+    (*(stateCopy + 2))(stateCopy, MEMORY[0x1E695E0F0]);
   }
 }
 
@@ -908,18 +908,18 @@ void __87__TUCallServicesInterface_requestCurrentStateWithCompletionHandler_hand
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)requestCurrentStateWithCompletionHandler:(id)a3
+- (void)requestCurrentStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __68__TUCallServicesInterface_requestCurrentStateWithCompletionHandler___block_invoke;
   v10 = &unk_1E7426480;
-  v11 = self;
-  v12 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v12 = handlerCopy;
+  v5 = handlerCopy;
   v6 = _Block_copy(&v7);
-  [(TUCallServicesInterface *)self requestCurrentStateWithCompletionHandler:v5 handleInitialState:v6, v7, v8, v9, v10, v11];
+  [(TUCallServicesInterface *)self requestCurrentStateWithCompletionHandler:v5 handleInitialState:v6, v7, v8, v9, v10, selfCopy];
 }
 
 void __68__TUCallServicesInterface_requestCurrentStateWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1003,25 +1003,25 @@ void __44__TUCallServicesInterface_fetchCurrentCalls__block_invoke(uint64_t a1, 
 {
   [(TUCallServicesInterface *)self setHasServerLaunched:1];
   [(TUCallServicesInterface *)self requestCurrentStateWithCompletionHandler:0];
-  v3 = [(TUCallServicesInterface *)self anonymousXPCEndpoint];
+  anonymousXPCEndpoint = [(TUCallServicesInterface *)self anonymousXPCEndpoint];
 
-  if (v3)
+  if (anonymousXPCEndpoint)
   {
-    v4 = [(TUCallServicesInterface *)self anonymousXPCEndpoint];
-    [(TUCallServicesInterface *)self registerAnonymousXPCEndpoint:v4];
+    anonymousXPCEndpoint2 = [(TUCallServicesInterface *)self anonymousXPCEndpoint];
+    [(TUCallServicesInterface *)self registerAnonymousXPCEndpoint:anonymousXPCEndpoint2];
   }
 
-  v5 = [(TUCallServicesInterface *)self localRouteController];
-  [v5 handleServerReconnect];
+  localRouteController = [(TUCallServicesInterface *)self localRouteController];
+  [localRouteController handleServerReconnect];
 
-  v6 = [(TUCallServicesInterface *)self pairedHostDeviceRouteController];
-  [v6 handleServerReconnect];
+  pairedHostDeviceRouteController = [(TUCallServicesInterface *)self pairedHostDeviceRouteController];
+  [pairedHostDeviceRouteController handleServerReconnect];
 }
 
 - (void)handleServerDisconnectIfNecessary
 {
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(TUCallServicesInterface *)self shouldHandleServerDisconnect])
   {
@@ -1043,23 +1043,23 @@ void __44__TUCallServicesInterface_fetchCurrentCalls__block_invoke(uint64_t a1, 
 - (void)handleServerDisconnect
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(TUCallServicesInterface *)self hasReceivedInitialState])
   {
     [(TUCallServicesInterface *)self _ignorePendingServerDisconnectionHandlers];
     v4 = MEMORY[0x1E695DF70];
-    v5 = [(TUCallServicesInterface *)self currentCalls];
-    v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    currentCalls = [(TUCallServicesInterface *)self currentCalls];
+    v6 = [v4 arrayWithCapacity:{objc_msgSend(currentCalls, "count")}];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v18 = self;
-    v7 = [(TUCallServicesInterface *)self currentCalls];
-    v8 = [v7 countByEnumeratingWithState:&v19 objects:v25 count:16];
+    selfCopy = self;
+    currentCalls2 = [(TUCallServicesInterface *)self currentCalls];
+    v8 = [currentCalls2 countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1071,7 +1071,7 @@ void __44__TUCallServicesInterface_fetchCurrentCalls__block_invoke(uint64_t a1, 
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(currentCalls2);
           }
 
           v12 = *(*(&v19 + 1) + 8 * v11);
@@ -1091,48 +1091,48 @@ void __44__TUCallServicesInterface_fetchCurrentCalls__block_invoke(uint64_t a1, 
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v19 objects:v25 count:16];
+        v9 = [currentCalls2 countByEnumeratingWithState:&v19 objects:v25 count:16];
       }
 
       while (v9);
     }
 
-    [(TUCallServicesInterface *)v18 _handleCurrentCallsChanged:MEMORY[0x1E695E0F0] callsDisconnected:v6];
-    [(TUCallServicesInterface *)v18 resetCallProvisionalStates];
-    v15 = [(TUCallServicesInterface *)v18 localRouteController];
-    [v15 handleServerDisconnect];
+    [(TUCallServicesInterface *)selfCopy _handleCurrentCallsChanged:MEMORY[0x1E695E0F0] callsDisconnected:v6];
+    [(TUCallServicesInterface *)selfCopy resetCallProvisionalStates];
+    localRouteController = [(TUCallServicesInterface *)selfCopy localRouteController];
+    [localRouteController handleServerDisconnect];
 
-    v16 = [(TUCallServicesInterface *)v18 pairedHostDeviceRouteController];
-    [v16 handleServerDisconnect];
+    pairedHostDeviceRouteController = [(TUCallServicesInterface *)selfCopy pairedHostDeviceRouteController];
+    [pairedHostDeviceRouteController handleServerDisconnect];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)dialWithRequest:(id)a3 completion:(id)a4
+- (id)dialWithRequest:(id)request completion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v9);
+  requestCopy = request;
+  completionCopy = completion;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v10 = TUDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v42 = v7;
+    v42 = requestCopy;
     _os_log_impl(&dword_1956FD000, v10, OS_LOG_TYPE_DEFAULT, "Proxying dial through CSD for %@", buf, 0xCu);
   }
 
-  if (v8)
+  if (completionCopy)
   {
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __54__TUCallServicesInterface_dialWithRequest_completion___block_invoke;
     v39[3] = &unk_1E74264D0;
     v39[4] = self;
-    v11 = v8;
+    v11 = completionCopy;
     v40 = v11;
     v12 = [(TUCallServicesInterface *)self asynchronousServerWithErrorHandler:v39];
     v37[0] = MEMORY[0x1E69E9820];
@@ -1141,7 +1141,7 @@ void __44__TUCallServicesInterface_fetchCurrentCalls__block_invoke(uint64_t a1, 
     v37[3] = &unk_1E7426520;
     v37[4] = self;
     v38 = v11;
-    [v12 dialWithRequest:v7 reply:v37];
+    [v12 dialWithRequest:requestCopy reply:v37];
 
     v13 = 0;
   }
@@ -1163,68 +1163,68 @@ void __44__TUCallServicesInterface_fetchCurrentCalls__block_invoke(uint64_t a1, 
     }
 
     v15 = [TUProxyCall alloc];
-    v16 = [v7 uniqueProxyIdentifier];
-    v17 = [(TUCall *)v15 initWithUniqueProxyIdentifier:v16];
+    uniqueProxyIdentifier = [requestCopy uniqueProxyIdentifier];
+    v17 = [(TUCall *)v15 initWithUniqueProxyIdentifier:uniqueProxyIdentifier];
 
     [(TUCallServicesInterface *)self registerCall:v17];
     [(TUProxyCall *)v17 setProxyCallActionsDelegate:self];
-    v18 = [v7 provider];
-    [(TUProxyCall *)v17 setProvider:v18];
+    provider = [requestCopy provider];
+    [(TUProxyCall *)v17 setProvider:provider];
 
-    v19 = [v7 handle];
-    [(TUProxyCall *)v17 setHandle:v19];
+    handle = [requestCopy handle];
+    [(TUProxyCall *)v17 setHandle:handle];
 
-    v20 = [(TUProxyCall *)v17 handle];
+    handle2 = [(TUProxyCall *)v17 handle];
     v21 = MEMORY[0x1E695DFD8];
-    if (v20)
+    if (handle2)
     {
-      v22 = [(TUProxyCall *)v17 handle];
-      v23 = [v21 setWithObject:v22];
+      handle3 = [(TUProxyCall *)v17 handle];
+      v23 = [v21 setWithObject:handle3];
       [(TUProxyCall *)v17 setRemoteParticipantHandles:v23];
     }
 
     else
     {
-      v22 = [MEMORY[0x1E695DFD8] set];
-      [(TUProxyCall *)v17 setRemoteParticipantHandles:v22];
+      handle3 = [MEMORY[0x1E695DFD8] set];
+      [(TUProxyCall *)v17 setRemoteParticipantHandles:handle3];
     }
 
     [(TUProxyCall *)v17 setCallStatus:3];
-    v24 = [v7 audioSourceIdentifier];
-    [(TUCall *)v17 setSourceIdentifier:v24];
+    audioSourceIdentifier = [requestCopy audioSourceIdentifier];
+    [(TUCall *)v17 setSourceIdentifier:audioSourceIdentifier];
 
-    v25 = [v7 localSenderIdentityUUID];
-    [(TUProxyCall *)v17 setLocalSenderIdentityUUID:v25];
+    localSenderIdentityUUID = [requestCopy localSenderIdentityUUID];
+    [(TUProxyCall *)v17 setLocalSenderIdentityUUID:localSenderIdentityUUID];
 
-    v26 = [v7 localSenderIdentityAccountUUID];
-    [(TUProxyCall *)v17 setLocalSenderIdentityAccountUUID:v26];
+    localSenderIdentityAccountUUID = [requestCopy localSenderIdentityAccountUUID];
+    [(TUProxyCall *)v17 setLocalSenderIdentityAccountUUID:localSenderIdentityAccountUUID];
 
     [(TUProxyCall *)v17 setOutgoing:1];
-    -[TUProxyCall setVoicemail:](v17, "setVoicemail:", [v7 dialType] == 2);
-    -[TUProxyCall setHostedOnCurrentDevice:](v17, "setHostedOnCurrentDevice:", [v7 hostOnCurrentDevice]);
-    -[TUProxyCall setEndpointOnCurrentDevice:](v17, "setEndpointOnCurrentDevice:", [v7 endpointOnCurrentDevice]);
-    -[TUProxyCall setIsVideo:](v17, "setIsVideo:", [v7 isVideo]);
-    -[TUProxyCall setIsSendingVideo:](v17, "setIsSendingVideo:", [v7 isVideo]);
-    -[TUProxyCall setEmergency:](v17, "setEmergency:", [v7 dialType] == 1);
-    -[TUProxyCall setSOS:](v17, "setSOS:", [v7 isSOS]);
-    -[TUProxyCall setTtyType:](v17, "setTtyType:", TUCallTTYTypeForTUDialRequestTTYType([v7 ttyType]));
-    -[TUProxyCall setShouldSuppressInCallUI:](v17, "setShouldSuppressInCallUI:", [v7 shouldSuppressInCallUI]);
-    -[TUProxyCall setLaunchInBackground:](v17, "setLaunchInBackground:", [v7 launchInBackground]);
-    -[TUProxyCall setOriginatingUIType:](v17, "setOriginatingUIType:", [v7 originatingUIType]);
-    -[TUProxyCall setUplinkMuted:](v17, "setUplinkMuted:", [v7 shouldStartWithUplinkMuted]);
+    -[TUProxyCall setVoicemail:](v17, "setVoicemail:", [requestCopy dialType] == 2);
+    -[TUProxyCall setHostedOnCurrentDevice:](v17, "setHostedOnCurrentDevice:", [requestCopy hostOnCurrentDevice]);
+    -[TUProxyCall setEndpointOnCurrentDevice:](v17, "setEndpointOnCurrentDevice:", [requestCopy endpointOnCurrentDevice]);
+    -[TUProxyCall setIsVideo:](v17, "setIsVideo:", [requestCopy isVideo]);
+    -[TUProxyCall setIsSendingVideo:](v17, "setIsSendingVideo:", [requestCopy isVideo]);
+    -[TUProxyCall setEmergency:](v17, "setEmergency:", [requestCopy dialType] == 1);
+    -[TUProxyCall setSOS:](v17, "setSOS:", [requestCopy isSOS]);
+    -[TUProxyCall setTtyType:](v17, "setTtyType:", TUCallTTYTypeForTUDialRequestTTYType([requestCopy ttyType]));
+    -[TUProxyCall setShouldSuppressInCallUI:](v17, "setShouldSuppressInCallUI:", [requestCopy shouldSuppressInCallUI]);
+    -[TUProxyCall setLaunchInBackground:](v17, "setLaunchInBackground:", [requestCopy launchInBackground]);
+    -[TUProxyCall setOriginatingUIType:](v17, "setOriginatingUIType:", [requestCopy originatingUIType]);
+    -[TUProxyCall setUplinkMuted:](v17, "setUplinkMuted:", [requestCopy shouldStartWithUplinkMuted]);
     v27 = [TUDynamicCallDisplayContext alloc];
-    v28 = [v7 contactIdentifier];
-    v29 = [(TUCallServicesInterface *)self queue];
-    v30 = [(TUDynamicCallDisplayContext *)v27 initWithCall:v17 contactIdentifier:v28 serialQueue:v29];
+    contactIdentifier = [requestCopy contactIdentifier];
+    queue2 = [(TUCallServicesInterface *)self queue];
+    v30 = [(TUDynamicCallDisplayContext *)v27 initWithCall:v17 contactIdentifier:contactIdentifier serialQueue:queue2];
 
     [(TUProxyCall *)v17 setDisplayContext:v30];
-    v31 = [(TUCallServicesInterface *)self asynchronousServer];
+    asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
     v32 = [(TUDynamicCallDisplayContext *)v30 copy];
-    [v31 dialWithRequest:v7 displayContext:v32];
+    [asynchronousServer dialWithRequest:requestCopy displayContext:v32];
 
     v13 = [(TUCallServicesInterface *)self _proxyCallWithCall:v17];
-    v33 = [(TUCallServicesInterface *)self currentCalls];
-    v34 = [v33 arrayByAddingObject:v17];
+    currentCalls = [(TUCallServicesInterface *)self currentCalls];
+    v34 = [currentCalls arrayByAddingObject:v17];
     [(TUCallServicesInterface *)self _handleCurrentCallsChanged:v34 callsDisconnected:MEMORY[0x1E695E0F0]];
   }
 
@@ -1312,24 +1312,24 @@ uint64_t __54__TUCallServicesInterface_dialWithRequest_completion___block_invoke
   return result;
 }
 
-- (id)joinConversationWithRequest:(id)a3
+- (id)joinConversationWithRequest:(id)request
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *v63 = v4;
+    *v63 = requestCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Proxying joinConversationWithRequest request: %@", buf, 0xCu);
   }
 
-  v7 = [v4 UUID];
-  v8 = [v7 UUIDString];
-  v9 = [(TUCallServicesInterface *)self _proxyCallWithUniqueProxyIdentifier:v8];
+  uUID = [requestCopy UUID];
+  uUIDString = [uUID UUIDString];
+  v9 = [(TUCallServicesInterface *)self _proxyCallWithUniqueProxyIdentifier:uUIDString];
 
   if (v9)
   {
@@ -1339,38 +1339,38 @@ uint64_t __54__TUCallServicesInterface_dialWithRequest_completion___block_invoke
   else
   {
     v11 = [TUProxyCall alloc];
-    v12 = [v4 UUID];
-    v13 = [v12 UUIDString];
-    v10 = [(TUCall *)v11 initWithUniqueProxyIdentifier:v13];
+    uUID2 = [requestCopy UUID];
+    uUIDString2 = [uUID2 UUIDString];
+    v10 = [(TUCall *)v11 initWithUniqueProxyIdentifier:uUIDString2];
   }
 
   [(TUCallServicesInterface *)self registerCall:v10];
   [(TUProxyCall *)v10 setProxyCallActionsDelegate:self];
-  v14 = [(TUCallServicesInterface *)self callCenter];
-  v15 = [v14 providerManager];
+  callCenter = [(TUCallServicesInterface *)self callCenter];
+  providerManager = [callCenter providerManager];
 
-  v16 = [(TUCallServicesInterface *)self featureFlags];
-  if ([v16 groupFacetimeAsAServiceEnabled])
+  featureFlags = [(TUCallServicesInterface *)self featureFlags];
+  if ([featureFlags groupFacetimeAsAServiceEnabled])
   {
-    v17 = [v4 provider];
-    v18 = [v17 identifier];
-    v19 = [v15 providerWithIdentifier:v18];
+    provider = [requestCopy provider];
+    identifier = [provider identifier];
+    faceTimeProvider = [providerManager providerWithIdentifier:identifier];
   }
 
   else
   {
-    v19 = [v15 faceTimeProvider];
+    faceTimeProvider = [providerManager faceTimeProvider];
   }
 
-  [(TUProxyCall *)v10 setProvider:v19];
+  [(TUProxyCall *)v10 setProvider:faceTimeProvider];
   [(TUProxyCall *)v10 setCallStatus:3];
   [(TUProxyCall *)v10 setOutgoing:1];
   [(TUProxyCall *)v10 setHostedOnCurrentDevice:1];
   [(TUProxyCall *)v10 setEndpointOnCurrentDevice:1];
-  if ([v4 isVideo])
+  if ([requestCopy isVideo])
   {
-    v20 = [v4 provider];
-    -[TUProxyCall setIsVideo:](v10, "setIsVideo:", [v20 supportsVideo]);
+    provider2 = [requestCopy provider];
+    -[TUProxyCall setIsVideo:](v10, "setIsVideo:", [provider2 supportsVideo]);
   }
 
   else
@@ -1378,26 +1378,26 @@ uint64_t __54__TUCallServicesInterface_dialWithRequest_completion___block_invoke
     [(TUProxyCall *)v10 setIsVideo:0];
   }
 
-  -[TUProxyCall setShouldSuppressInCallUI:](v10, "setShouldSuppressInCallUI:", [v4 shouldSuppressInCallUI]);
-  -[TUProxyCall setLaunchInBackground:](v10, "setLaunchInBackground:", [v4 launchInBackground]);
-  -[TUProxyCall setWantsStagingArea:](v10, "setWantsStagingArea:", [v4 wantsStagingArea]);
-  v21 = [v4 callerID];
-  v22 = [v19 senderIdentityForHandle:v21];
-  v23 = [v22 UUID];
-  [(TUProxyCall *)v10 setLocalSenderIdentityUUID:v23];
+  -[TUProxyCall setShouldSuppressInCallUI:](v10, "setShouldSuppressInCallUI:", [requestCopy shouldSuppressInCallUI]);
+  -[TUProxyCall setLaunchInBackground:](v10, "setLaunchInBackground:", [requestCopy launchInBackground]);
+  -[TUProxyCall setWantsStagingArea:](v10, "setWantsStagingArea:", [requestCopy wantsStagingArea]);
+  callerID = [requestCopy callerID];
+  v22 = [faceTimeProvider senderIdentityForHandle:callerID];
+  uUID3 = [v22 UUID];
+  [(TUProxyCall *)v10 setLocalSenderIdentityUUID:uUID3];
 
-  -[TUProxyCall setOriginatingUIType:](v10, "setOriginatingUIType:", [v4 originatingUIType]);
-  v24 = [(TUCallServicesInterface *)self featureFlags];
-  v25 = [v24 nearbyFaceTimeEnabled];
-  if (v9 || (v25 & 1) == 0)
+  -[TUProxyCall setOriginatingUIType:](v10, "setOriginatingUIType:", [requestCopy originatingUIType]);
+  featureFlags2 = [(TUCallServicesInterface *)self featureFlags];
+  nearbyFaceTimeEnabled = [featureFlags2 nearbyFaceTimeEnabled];
+  if (v9 || (nearbyFaceTimeEnabled & 1) == 0)
   {
   }
 
   else
   {
-    v26 = [v4 invitationPreferences];
+    invitationPreferences = [requestCopy invitationPreferences];
     v27 = +[TUConversationInvitationPreference nearbyInvitationPreferences];
-    v28 = [v26 isEqualToSet:v27];
+    v28 = [invitationPreferences isEqualToSet:v27];
 
     if (v28)
     {
@@ -1405,43 +1405,43 @@ uint64_t __54__TUCallServicesInterface_dialWithRequest_completion___block_invoke
     }
   }
 
-  if ([v4 requestToShareScreen])
+  if ([requestCopy requestToShareScreen])
   {
-    v29 = 2;
+    requestToShareMyScreen = 2;
   }
 
   else
   {
-    v29 = [v4 requestToShareMyScreen];
+    requestToShareMyScreen = [requestCopy requestToShareMyScreen];
   }
 
-  [(TUProxyCall *)v10 setScreenSharingIntention:v29];
-  v30 = [v4 remoteMembers];
-  v55 = v19;
-  v56 = v15;
-  if ([v30 count] == 1)
+  [(TUProxyCall *)v10 setScreenSharingIntention:requestToShareMyScreen];
+  remoteMembers = [requestCopy remoteMembers];
+  v55 = faceTimeProvider;
+  v56 = providerManager;
+  if ([remoteMembers count] == 1)
   {
-    v31 = [v4 conversationLink];
-    if (v31)
+    conversationLink = [requestCopy conversationLink];
+    if (conversationLink)
     {
       [(TUProxyCall *)v10 setConversation:1];
     }
 
     else
     {
-      v32 = [v4 otherInvitedHandles];
-      if ([v32 count])
+      otherInvitedHandles = [requestCopy otherInvitedHandles];
+      if ([otherInvitedHandles count])
       {
         [(TUProxyCall *)v10 setConversation:1];
       }
 
       else
       {
-        v33 = [v4 provider];
-        if ([v33 isDefaultProvider])
+        provider3 = [requestCopy provider];
+        if ([provider3 isDefaultProvider])
         {
-          v54 = [v4 participantAssociation];
-          [(TUProxyCall *)v10 setConversation:v54 != 0];
+          participantAssociation = [requestCopy participantAssociation];
+          [(TUProxyCall *)v10 setConversation:participantAssociation != 0];
         }
 
         else
@@ -1459,30 +1459,30 @@ uint64_t __54__TUCallServicesInterface_dialWithRequest_completion___block_invoke
 
   if (v9)
   {
-    [v4 setVideoEnabled:{-[TUProxyCall isSendingVideo](v10, "isSendingVideo")}];
-    [v4 setUplinkMuted:{-[TUProxyCall isUplinkMuted](v10, "isUplinkMuted")}];
+    [requestCopy setVideoEnabled:{-[TUProxyCall isSendingVideo](v10, "isSendingVideo")}];
+    [requestCopy setUplinkMuted:{-[TUProxyCall isUplinkMuted](v10, "isUplinkMuted")}];
     v34 = TUDefaultLog();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      v35 = [v4 isVideoEnabled];
-      v36 = [v4 isUplinkMuted];
+      isVideoEnabled = [requestCopy isVideoEnabled];
+      isUplinkMuted = [requestCopy isUplinkMuted];
       *buf = 67109376;
-      *v63 = v35;
+      *v63 = isVideoEnabled;
       *&v63[4] = 1024;
-      *&v63[6] = v36;
+      *&v63[6] = isUplinkMuted;
       _os_log_impl(&dword_1956FD000, v34, OS_LOG_TYPE_DEFAULT, "Updated joinConversationWithRequest videoEnable=%d uplinkMuted=%d", buf, 0xEu);
     }
   }
 
-  -[TUProxyCall setIsSendingVideo:](v10, "setIsSendingVideo:", [v4 isVideoEnabled]);
-  -[TUProxyCall setUplinkMuted:](v10, "setUplinkMuted:", [v4 isUplinkMuted]);
+  -[TUProxyCall setIsSendingVideo:](v10, "setIsSendingVideo:", [requestCopy isVideoEnabled]);
+  -[TUProxyCall setUplinkMuted:](v10, "setUplinkMuted:", [requestCopy isUplinkMuted]);
   v37 = [MEMORY[0x1E695DFA8] set];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v38 = [v4 remoteMembers];
-  v39 = [v38 countByEnumeratingWithState:&v57 objects:v61 count:16];
+  remoteMembers2 = [requestCopy remoteMembers];
+  v39 = [remoteMembers2 countByEnumeratingWithState:&v57 objects:v61 count:16];
   if (v39)
   {
     v40 = v39;
@@ -1493,68 +1493,68 @@ uint64_t __54__TUCallServicesInterface_dialWithRequest_completion___block_invoke
       {
         if (*v58 != v41)
         {
-          objc_enumerationMutation(v38);
+          objc_enumerationMutation(remoteMembers2);
         }
 
-        v43 = [*(*(&v57 + 1) + 8 * i) handle];
-        [v37 addObject:v43];
+        handle = [*(*(&v57 + 1) + 8 * i) handle];
+        [v37 addObject:handle];
       }
 
-      v40 = [v38 countByEnumeratingWithState:&v57 objects:v61 count:16];
+      v40 = [remoteMembers2 countByEnumeratingWithState:&v57 objects:v61 count:16];
     }
 
     while (v40);
   }
 
   [(TUProxyCall *)v10 setRemoteParticipantHandles:v37];
-  v44 = [(TUProxyCall *)v10 remoteParticipantHandles];
-  v45 = [v44 anyObject];
-  [(TUProxyCall *)v10 setHandle:v45];
+  remoteParticipantHandles = [(TUProxyCall *)v10 remoteParticipantHandles];
+  anyObject = [remoteParticipantHandles anyObject];
+  [(TUProxyCall *)v10 setHandle:anyObject];
 
   v46 = [TUDynamicCallDisplayContext alloc];
-  v47 = [(TUCallServicesInterface *)self queue];
-  v48 = [(TUDynamicCallDisplayContext *)v46 initWithCall:v10 contactIdentifier:0 serialQueue:v47];
+  queue2 = [(TUCallServicesInterface *)self queue];
+  v48 = [(TUDynamicCallDisplayContext *)v46 initWithCall:v10 contactIdentifier:0 serialQueue:queue2];
 
   [(TUProxyCall *)v10 setDisplayContext:v48];
-  v49 = [(TUCallServicesInterface *)self currentCalls];
-  v50 = [v49 arrayByAddingObject:v10];
+  currentCalls = [(TUCallServicesInterface *)self currentCalls];
+  v50 = [currentCalls arrayByAddingObject:v10];
   [(TUCallServicesInterface *)self _handleCurrentCallsChanged:v50 callsDisconnected:MEMORY[0x1E695E0F0]];
 
-  v51 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v51 joinConversationWithRequest:v4];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer joinConversationWithRequest:requestCopy];
 
   v52 = *MEMORY[0x1E69E9840];
 
   return v10;
 }
 
-- (void)reportLocalPreviewStoppedForCallWithUniqueProxyIdentifier:(id)a3
+- (void)reportLocalPreviewStoppedForCallWithUniqueProxyIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Proxying reportLocalPreviewStopped for %@", &v9, 0xCu);
   }
 
-  v7 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v7 reportLocalPreviewStoppedForCallWithUniqueProxyIdentifier:v4];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer reportLocalPreviewStoppedForCallWithUniqueProxyIdentifier:identifierCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveCustomGreeting:(id)a3 forAccountUUID:(id)a4
+- (void)saveCustomGreeting:(id)greeting forAccountUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v8);
+  dCopy = d;
+  greetingCopy = greeting;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = TUDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1564,7 +1564,7 @@ uint64_t __54__TUCallServicesInterface_dialWithRequest_completion___block_invoke
   }
 
   v10 = [(TUCallServicesInterface *)self asynchronousServerWithErrorHandler:&__block_literal_global_34];
-  [v10 saveCustomSandboxedURLGreeting:v7 forAccountUUID:v6];
+  [v10 saveCustomSandboxedURLGreeting:greetingCopy forAccountUUID:dCopy];
 }
 
 void __61__TUCallServicesInterface_saveCustomGreeting_forAccountUUID___block_invoke(uint64_t a1, void *a2)
@@ -1577,11 +1577,11 @@ void __61__TUCallServicesInterface_saveCustomGreeting_forAccountUUID___block_inv
   }
 }
 
-- (id)customGreetingForAccountUUID:(id)a3
+- (id)customGreetingForAccountUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1602,7 +1602,7 @@ void __61__TUCallServicesInterface_saveCustomGreeting_forAccountUUID___block_inv
   v10[2] = __56__TUCallServicesInterface_customGreetingForAccountUUID___block_invoke_49;
   v10[3] = &unk_1E7426548;
   v10[4] = buf;
-  [v7 customSandboxedURLGreetingForAccountUUID:v4 withCompletion:v10];
+  [v7 customSandboxedURLGreetingForAccountUUID:dCopy withCompletion:v10];
 
   v8 = *(v12 + 5);
   _Block_object_dispose(buf, 8);
@@ -1630,11 +1630,11 @@ uint64_t __56__TUCallServicesInterface_customGreetingForAccountUUID___block_invo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)deleteCustomGreetingForAccountUUID:(id)a3
+- (void)deleteCustomGreetingForAccountUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1644,7 +1644,7 @@ uint64_t __56__TUCallServicesInterface_customGreetingForAccountUUID___block_invo
   }
 
   v7 = [(TUCallServicesInterface *)self asynchronousServerWithErrorHandler:&__block_literal_global_52_0];
-  [v7 deleteCustomGreetingForAccountUUID:v4];
+  [v7 deleteCustomGreetingForAccountUUID:dCopy];
 }
 
 void __62__TUCallServicesInterface_deleteCustomGreetingForAccountUUID___block_invoke(uint64_t a1, void *a2)
@@ -1659,8 +1659,8 @@ void __62__TUCallServicesInterface_deleteCustomGreetingForAccountUUID___block_in
 
 - (id)defaultGreeting
 {
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1711,8 +1711,8 @@ uint64_t __42__TUCallServicesInterface_defaultGreeting__block_invoke_55(uint64_t
 
 - (id)fetchCurrentCallUpdates
 {
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1761,11 +1761,11 @@ uint64_t __50__TUCallServicesInterface_fetchCurrentCallUpdates__block_invoke_58(
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)screenWithRequest:(id)a3
+- (void)screenWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1775,7 +1775,7 @@ uint64_t __50__TUCallServicesInterface_fetchCurrentCallUpdates__block_invoke_58(
   }
 
   v7 = [(TUCallServicesInterface *)self asynchronousServerWithErrorHandler:&__block_literal_global_60_0];
-  [v7 screenWithRequest:v4];
+  [v7 screenWithRequest:requestCopy];
 }
 
 void __45__TUCallServicesInterface_screenWithRequest___block_invoke(uint64_t a1, void *a2)
@@ -1790,8 +1790,8 @@ void __45__TUCallServicesInterface_screenWithRequest___block_invoke(uint64_t a1,
 
 - (void)startReceptionistReply
 {
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1814,11 +1814,11 @@ void __49__TUCallServicesInterface_startReceptionistReply__block_invoke(uint64_t
   }
 }
 
-- (void)sendReceptionistReply:(id)a3
+- (void)sendReceptionistReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  replyCopy = reply;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1828,7 +1828,7 @@ void __49__TUCallServicesInterface_startReceptionistReply__block_invoke(uint64_t
   }
 
   v7 = [(TUCallServicesInterface *)self asynchronousServerWithErrorHandler:&__block_literal_global_64];
-  [v7 sendReceptionistReply:v4];
+  [v7 sendReceptionistReply:replyCopy];
 }
 
 void __49__TUCallServicesInterface_sendReceptionistReply___block_invoke(uint64_t a1, void *a2)
@@ -1841,16 +1841,16 @@ void __49__TUCallServicesInterface_sendReceptionistReply___block_invoke(uint64_t
   }
 }
 
-- (void)performRecordingRequest:(id)a3 completion:(id)a4
+- (void)performRecordingRequest:(id)request completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v6;
+    v15 = requestCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Proxying perform recording request %@", buf, 0xCu);
   }
 
@@ -1858,10 +1858,10 @@ void __49__TUCallServicesInterface_sendReceptionistReply___block_invoke(uint64_t
   v12[1] = 3221225472;
   v12[2] = __62__TUCallServicesInterface_performRecordingRequest_completion___block_invoke;
   v12[3] = &unk_1E7424A10;
-  v13 = v7;
-  v9 = v7;
+  v13 = completionCopy;
+  v9 = completionCopy;
   v10 = [(TUCallServicesInterface *)self asynchronousServerWithErrorHandler:v12];
-  [v10 performRecordingRequest:v6 completion:v9];
+  [v10 performRecordingRequest:requestCopy completion:v9];
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -1878,16 +1878,16 @@ void __62__TUCallServicesInterface_performRecordingRequest_completion___block_in
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)performTranslationRequest:(id)a3 completion:(id)a4
+- (void)performTranslationRequest:(id)request completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v6;
+    v15 = requestCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Proxying perform translation request %@", buf, 0xCu);
   }
 
@@ -1895,10 +1895,10 @@ void __62__TUCallServicesInterface_performRecordingRequest_completion___block_in
   v12[1] = 3221225472;
   v12[2] = __64__TUCallServicesInterface_performTranslationRequest_completion___block_invoke;
   v12[3] = &unk_1E7424A10;
-  v13 = v7;
-  v9 = v7;
+  v13 = completionCopy;
+  v9 = completionCopy;
   v10 = [(TUCallServicesInterface *)self asynchronousServerWithErrorHandler:v12];
-  [v10 performTranslationRequest:v6 completion:v9];
+  [v10 performTranslationRequest:requestCopy completion:v9];
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -1915,16 +1915,16 @@ void __64__TUCallServicesInterface_performTranslationRequest_completion___block_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_performSmartHoldingRequest:(id)a3 completion:(id)a4
+- (void)_performSmartHoldingRequest:(id)request completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v6;
+    v15 = requestCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Proxying perform smart holding session request %@", buf, 0xCu);
   }
 
@@ -1932,10 +1932,10 @@ void __64__TUCallServicesInterface_performTranslationRequest_completion___block_
   v12[1] = 3221225472;
   v12[2] = __66__TUCallServicesInterface__performSmartHoldingRequest_completion___block_invoke;
   v12[3] = &unk_1E7424A10;
-  v13 = v7;
-  v9 = v7;
+  v13 = completionCopy;
+  v9 = completionCopy;
   v10 = [(TUCallServicesInterface *)self asynchronousServerWithErrorHandler:v12];
-  [v10 _performSmartHoldingRequest:v6 completion:v9];
+  [v10 _performSmartHoldingRequest:requestCopy completion:v9];
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -1952,16 +1952,16 @@ void __66__TUCallServicesInterface__performSmartHoldingRequest_completion___bloc
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)performSmartHoldingRequest:(id)a3 completion:(id)a4
+- (void)performSmartHoldingRequest:(id)request completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v6;
+    v15 = requestCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Proxying TUSmartHoldingRequest %@", buf, 0xCu);
   }
 
@@ -1969,10 +1969,10 @@ void __66__TUCallServicesInterface__performSmartHoldingRequest_completion___bloc
   v12[1] = 3221225472;
   v12[2] = __65__TUCallServicesInterface_performSmartHoldingRequest_completion___block_invoke;
   v12[3] = &unk_1E7424A10;
-  v13 = v7;
-  v9 = v7;
+  v13 = completionCopy;
+  v9 = completionCopy;
   v10 = [(TUCallServicesInterface *)self asynchronousServerWithErrorHandler:v12];
-  [v10 performSmartHoldingRequest:v6 completion:v9];
+  [v10 performSmartHoldingRequest:requestCopy completion:v9];
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -1989,13 +1989,13 @@ void __65__TUCallServicesInterface_performSmartHoldingRequest_completion___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)registerAnonymousXPCEndpoint:(id)a3
+- (void)registerAnonymousXPCEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  endpointCopy = endpoint;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(TUCallServicesInterface *)self setAnonymousXPCEndpoint:v4];
+  [(TUCallServicesInterface *)self setAnonymousXPCEndpoint:endpointCopy];
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -2004,7 +2004,7 @@ void __65__TUCallServicesInterface_performSmartHoldingRequest_completion___block
   }
 
   v7 = [(TUCallServicesInterface *)self asynchronousServerWithErrorHandler:&__block_literal_global_66];
-  [v7 registerAnonymousXPCEndpoint:v4];
+  [v7 registerAnonymousXPCEndpoint:endpointCopy];
 }
 
 void __56__TUCallServicesInterface_registerAnonymousXPCEndpoint___block_invoke(uint64_t a1, void *a2)
@@ -2017,11 +2017,11 @@ void __56__TUCallServicesInterface_registerAnonymousXPCEndpoint___block_invoke(u
   }
 }
 
-- (void)fetchAnonymousXPCEndpoint:(id)a3
+- (void)fetchAnonymousXPCEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  endpointCopy = endpoint;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2031,7 +2031,7 @@ void __56__TUCallServicesInterface_registerAnonymousXPCEndpoint___block_invoke(u
   }
 
   v7 = [(TUCallServicesInterface *)self asynchronousServerWithErrorHandler:&__block_literal_global_68];
-  [v7 fetchAnonymousXPCEndpoint:v4];
+  [v7 fetchAnonymousXPCEndpoint:endpointCopy];
 }
 
 void __53__TUCallServicesInterface_fetchAnonymousXPCEndpoint___block_invoke(uint64_t a1, void *a2)
@@ -2044,160 +2044,160 @@ void __53__TUCallServicesInterface_fetchAnonymousXPCEndpoint___block_invoke(uint
   }
 }
 
-- (void)answerCallWithRequest:(id)a3
+- (void)answerCallWithRequest:(id)request
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = requestCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Proxying answer through CSD for %@", &v9, 0xCu);
   }
 
-  v7 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v7 answerCallWithRequest:v4];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer answerCallWithRequest:requestCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)holdCallWithUniqueProxyIdentifier:(id)a3
+- (void)holdCallWithUniqueProxyIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Proxying hold through CSD for %@", &v9, 0xCu);
   }
 
-  v7 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v7 holdCallWithUniqueProxyIdentifier:v4];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer holdCallWithUniqueProxyIdentifier:identifierCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unholdCallWithUniqueProxyIdentifier:(id)a3
+- (void)unholdCallWithUniqueProxyIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Proxying unhold through CSD for %@", &v9, 0xCu);
   }
 
-  v7 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v7 unholdCallWithUniqueProxyIdentifier:v4];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer unholdCallWithUniqueProxyIdentifier:identifierCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestVideoUpgradeForCallWithUniqueProxyIdentifier:(id)a3
+- (void)requestVideoUpgradeForCallWithUniqueProxyIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Proxying upgrade video call through CSD for %@", &v9, 0xCu);
   }
 
-  v7 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v7 requestVideoUpgradeForCallWithUniqueProxyIdentifier:v4];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer requestVideoUpgradeForCallWithUniqueProxyIdentifier:identifierCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)disconnectCallWithUniqueProxyIdentifier:(id)a3
+- (void)disconnectCallWithUniqueProxyIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Proxying disconnect through CSD for %@", &v9, 0xCu);
   }
 
-  v7 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v7 disconnectCallWithUniqueProxyIdentifier:v4];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer disconnectCallWithUniqueProxyIdentifier:identifierCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)groupCallWithUniqueProxyIdentifier:(id)a3 withOtherCallWithUniqueProxyIdentifier:(id)a4
+- (void)groupCallWithUniqueProxyIdentifier:(id)identifier withOtherCallWithUniqueProxyIdentifier:(id)proxyIdentifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v8);
+  identifierCopy = identifier;
+  proxyIdentifierCopy = proxyIdentifier;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = TUDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v6;
+    v13 = identifierCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = proxyIdentifierCopy;
     _os_log_impl(&dword_1956FD000, v9, OS_LOG_TYPE_DEFAULT, "Proxying groupCall through CSD for %@ and %@", &v12, 0x16u);
   }
 
-  v10 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v10 groupCallWithUniqueProxyIdentifier:v6 withOtherCallWithUniqueProxyIdentifier:v7];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer groupCallWithUniqueProxyIdentifier:identifierCopy withOtherCallWithUniqueProxyIdentifier:proxyIdentifierCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ungroupCallWithUniqueProxyIdentifier:(id)a3
+- (void)ungroupCallWithUniqueProxyIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Proxying ungroupCall through CSD for %@", &v9, 0xCu);
   }
 
-  v7 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v7 ungroupCallWithUniqueProxyIdentifier:v4];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer ungroupCallWithUniqueProxyIdentifier:identifierCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)swapCalls
 {
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2206,14 +2206,14 @@ void __53__TUCallServicesInterface_fetchAnonymousXPCEndpoint___block_invoke(uint
     _os_log_impl(&dword_1956FD000, v4, OS_LOG_TYPE_DEFAULT, "Proxying swapCalls through CSD", v6, 2u);
   }
 
-  v5 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v5 swapCalls];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer swapCalls];
 }
 
 - (void)disconnectCurrentCall
 {
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2222,14 +2222,14 @@ void __53__TUCallServicesInterface_fetchAnonymousXPCEndpoint___block_invoke(uint
     _os_log_impl(&dword_1956FD000, v4, OS_LOG_TYPE_DEFAULT, "Proxying disconnectCurrentCall through CSD", v6, 2u);
   }
 
-  v5 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v5 disconnectCurrentCall];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer disconnectCurrentCall];
 }
 
 - (void)disconnectCurrentCallAndActivateHeld
 {
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2238,14 +2238,14 @@ void __53__TUCallServicesInterface_fetchAnonymousXPCEndpoint___block_invoke(uint
     _os_log_impl(&dword_1956FD000, v4, OS_LOG_TYPE_DEFAULT, "Proxying disconnectCurrentCallAndActivateHeld through CSD", v6, 2u);
   }
 
-  v5 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v5 disconnectCurrentCallAndActivateHeld];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer disconnectCurrentCallAndActivateHeld];
 }
 
 - (void)disconnectAllCalls
 {
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2254,15 +2254,15 @@ void __53__TUCallServicesInterface_fetchAnonymousXPCEndpoint___block_invoke(uint
     _os_log_impl(&dword_1956FD000, v4, OS_LOG_TYPE_DEFAULT, "Proxying disconnectAllCalls through CSD", v6, 2u);
   }
 
-  v5 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v5 disconnectAllCalls];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer disconnectAllCalls];
 }
 
-- (void)setLiveVoicemailUnavailableReason:(int64_t)a3 forCallWithUniqueProxyIdentifier:(id)a4
+- (void)setLiveVoicemailUnavailableReason:(int64_t)reason forCallWithUniqueProxyIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v7);
+  identifierCopy = identifier;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -2271,14 +2271,14 @@ void __53__TUCallServicesInterface_fetchAnonymousXPCEndpoint___block_invoke(uint
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Proxying setLiveVoicemailUnavailableReason:forCall: through CSD", v10, 2u);
   }
 
-  v9 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v9 setLiveVoicemailUnavailableReason:a3 forCallWithUniqueProxyIdentifier:v6];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer setLiveVoicemailUnavailableReason:reason forCallWithUniqueProxyIdentifier:identifierCopy];
 }
 
 - (void)pullRelayingCallsFromClient
 {
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2287,14 +2287,14 @@ void __53__TUCallServicesInterface_fetchAnonymousXPCEndpoint___block_invoke(uint
     _os_log_impl(&dword_1956FD000, v4, OS_LOG_TYPE_DEFAULT, "Proxying pullRelayingCallsFromClient through CSD", v6, 2u);
   }
 
-  v5 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v5 pullRelayingCallsFromClient];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer pullRelayingCallsFromClient];
 }
 
 - (void)pullRelayingGFTCallsFromClientIfNecessary
 {
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2303,15 +2303,15 @@ void __53__TUCallServicesInterface_fetchAnonymousXPCEndpoint___block_invoke(uint
     _os_log_impl(&dword_1956FD000, v4, OS_LOG_TYPE_DEFAULT, "Proxying pullRelayingGFTCallsFromClientIfNecessary through CSD", v6, 2u);
   }
 
-  v5 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v5 pullRelayingGFTCallsFromClientIfNecessary];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer pullRelayingGFTCallsFromClientIfNecessary];
 }
 
-- (void)pushRelayingCallsToHostWithSourceIdentifier:(id)a3
+- (void)pushRelayingCallsToHostWithSourceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2320,23 +2320,23 @@ void __53__TUCallServicesInterface_fetchAnonymousXPCEndpoint___block_invoke(uint
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Proxying pushRelayingCallsToHost through CSD", v8, 2u);
   }
 
-  v7 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v7 pushRelayingCallsToHostWithSourceIdentifier:v4];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer pushRelayingCallsToHostWithSourceIdentifier:identifierCopy];
 }
 
-- (void)pullCallFromClientUsingHandoffActivityUserInfo:(id)a3 completion:(id)a4
+- (void)pullCallFromClientUsingHandoffActivityUserInfo:(id)info completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v8);
+  completionCopy = completion;
+  infoCopy = info;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = TUDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"non-nil";
-    if (!v6)
+    if (!completionCopy)
     {
       v10 = @"nil";
     }
@@ -2351,8 +2351,8 @@ void __53__TUCallServicesInterface_fetchAnonymousXPCEndpoint___block_invoke(uint
   aBlock[2] = __85__TUCallServicesInterface_pullCallFromClientUsingHandoffActivityUserInfo_completion___block_invoke;
   aBlock[3] = &unk_1E7426520;
   aBlock[4] = self;
-  v19 = v6;
-  v11 = v6;
+  v19 = completionCopy;
+  v11 = completionCopy;
   v12 = _Block_copy(aBlock);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -2361,7 +2361,7 @@ void __53__TUCallServicesInterface_fetchAnonymousXPCEndpoint___block_invoke(uint
   v17 = v12;
   v13 = v12;
   v14 = [(TUCallServicesInterface *)self asynchronousServerWithErrorHandler:v16];
-  [v14 pullCallFromClientUsingHandoffActivityUserInfo:v7 reply:v13];
+  [v14 pullCallFromClientUsingHandoffActivityUserInfo:infoCopy reply:v13];
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -2417,11 +2417,11 @@ void __85__TUCallServicesInterface_pullCallFromClientUsingHandoffActivityUserInf
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)pullPersistedChannel:(id)a3
+- (void)pullPersistedChannel:(id)channel
 {
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  channelCopy = channel;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2431,7 +2431,7 @@ void __85__TUCallServicesInterface_pullCallFromClientUsingHandoffActivityUserInf
   }
 
   v7 = [(TUCallServicesInterface *)self synchronousServerWithErrorHandler:&__block_literal_global_76_0];
-  [v7 pullPersistedChannel:v4];
+  [v7 pullPersistedChannel:channelCopy];
 }
 
 void __48__TUCallServicesInterface_pullPersistedChannel___block_invoke(uint64_t a1, void *a2)
@@ -2464,31 +2464,31 @@ void __83__TUCallServicesInterface_stopTransmissionForBargeCall_sourceIsHandsfre
   }
 }
 
-- (void)pushHostedCallsToDestination:(id)a3
+- (void)pushHostedCallsToDestination:(id)destination
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  destinationCopy = destination;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = destinationCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Proxying pushHostedCallsToDestination through CSD for destination %@", &v9, 0xCu);
   }
 
-  v7 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v7 pushHostedCallsToDestination:v4];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer pushHostedCallsToDestination:destinationCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)pullHostedCallsFromPairedHostDevice
 {
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2497,15 +2497,15 @@ void __83__TUCallServicesInterface_stopTransmissionForBargeCall_sourceIsHandsfre
     _os_log_impl(&dword_1956FD000, v4, OS_LOG_TYPE_DEFAULT, "Proxying pullHostedCallsFromPairedHostDevice through CSD", v6, 2u);
   }
 
-  v5 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v5 pullHostedCallsFromPairedHostDevice];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer pullHostedCallsFromPairedHostDevice];
 }
 
-- (void)sendHardPauseDigitsForCallWithUniqueProxyIdentifier:(id)a3
+- (void)sendHardPauseDigitsForCallWithUniqueProxyIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2514,56 +2514,56 @@ void __83__TUCallServicesInterface_stopTransmissionForBargeCall_sourceIsHandsfre
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Proxying sendHardPauseDigits through CSD", v8, 2u);
   }
 
-  v7 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v7 sendHardPauseDigitsForCallWithUniqueProxyIdentifier:v4];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer sendHardPauseDigitsForCallWithUniqueProxyIdentifier:identifierCopy];
 }
 
-- (void)updateCallWithProxy:(id)a3
+- (void)updateCallWithProxy:(id)proxy
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  proxyCopy = proxy;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = proxyCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Proxying updateCallWithProxy through CSD for proxy call %@", &v9, 0xCu);
   }
 
-  v7 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v7 updateCallWithProxy:v4];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer updateCallWithProxy:proxyCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enteredForegroundForCallWithUniqueProxyIdentifier:(id)a3
+- (void)enteredForegroundForCallWithUniqueProxyIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Proxying enteredForegroundForCallWithUniqueProxyIdentifier through CSD for uniqueProxyIdentifier %@", &v9, 0xCu);
   }
 
-  v7 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v7 enteredForegroundForCallWithUniqueProxyIdentifier:v4];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer enteredForegroundForCallWithUniqueProxyIdentifier:identifierCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)willEnterBackgroundForAllCalls
 {
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2572,14 +2572,14 @@ void __83__TUCallServicesInterface_stopTransmissionForBargeCall_sourceIsHandsfre
     _os_log_impl(&dword_1956FD000, v4, OS_LOG_TYPE_DEFAULT, "Proxying willEnterBackgroundForAllCalls through CSD", v6, 2u);
   }
 
-  v5 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v5 willEnterBackgroundForAllCalls];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer willEnterBackgroundForAllCalls];
 }
 
 - (void)enteredBackgroundForAllCalls
 {
-  v3 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2588,18 +2588,18 @@ void __83__TUCallServicesInterface_stopTransmissionForBargeCall_sourceIsHandsfre
     _os_log_impl(&dword_1956FD000, v4, OS_LOG_TYPE_DEFAULT, "Proxying enteredBackgroundForAllCalls through CSD", v6, 2u);
   }
 
-  v5 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v5 enteredBackgroundForAllCalls];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer enteredBackgroundForAllCalls];
 }
 
-- (void)setRemoteVideoPresentationSizeForCallWithUniqueProxyIdentifier:(id)a3 size:(CGSize)a4
+- (void)setRemoteVideoPresentationSizeForCallWithUniqueProxyIdentifier:(id)identifier size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v8);
+  identifierCopy = identifier;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = TUDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2608,160 +2608,160 @@ void __83__TUCallServicesInterface_stopTransmissionForBargeCall_sourceIsHandsfre
     v18.height = height;
     v10 = NSStringFromSize(v18);
     v13 = 138412546;
-    v14 = v7;
+    v14 = identifierCopy;
     v15 = 2112;
     v16 = v10;
     _os_log_impl(&dword_1956FD000, v9, OS_LOG_TYPE_DEFAULT, "Proxying setRemoteVideoPresentationSizeForCallWithUniqueProxyIdentifier through CSD for uniqueProxyIdentifier %@, size %@", &v13, 0x16u);
   }
 
-  v11 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v11 setRemoteVideoPresentationSizeForCallWithUniqueProxyIdentifier:v7 size:{width, height}];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer setRemoteVideoPresentationSizeForCallWithUniqueProxyIdentifier:identifierCopy size:{width, height}];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setScreenShareAttributesForCallWithUniqueProxyIdentifier:(id)a3 attributes:(id)a4
+- (void)setScreenShareAttributesForCallWithUniqueProxyIdentifier:(id)identifier attributes:(id)attributes
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v8);
+  identifierCopy = identifier;
+  attributesCopy = attributes;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = TUDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v6;
+    v13 = identifierCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = attributesCopy;
     _os_log_impl(&dword_1956FD000, v9, OS_LOG_TYPE_DEFAULT, "Proxying setScreenShareAttributesForCallWithUniqueProxyIdentifier through CSD for uniqueProxyIdentifier %@, screenShareAttributes %@", &v12, 0x16u);
   }
 
-  v10 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v10 setScreenShareAttributesForCallWithUniqueProxyIdentifier:v6 attributes:v7];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer setScreenShareAttributesForCallWithUniqueProxyIdentifier:identifierCopy attributes:attributesCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setBluetoothAudioFormatForCallWithUniqueProxyIdentifier:(id)a3 bluetoothAudioFormat:(int64_t)a4
+- (void)setBluetoothAudioFormatForCallWithUniqueProxyIdentifier:(id)identifier bluetoothAudioFormat:(int64_t)format
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v7);
+  identifierCopy = identifier;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = identifierCopy;
     v13 = 2048;
-    v14 = a4;
+    formatCopy = format;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Proxying setBluetoothAudioFormatForCallWithUniqueProxyIdentifier through CSD for uniqueProxyIdentifier %@, bluetoothAudioFormat %ld", &v11, 0x16u);
   }
 
-  v9 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v9 setBluetoothAudioFormatForCallWithUniqueProxyIdentifier:v6 bluetoothAudioFormat:a4];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer setBluetoothAudioFormatForCallWithUniqueProxyIdentifier:identifierCopy bluetoothAudioFormat:format];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendMMIOrUSSDCodeWithRequest:(id)a3
+- (void)sendMMIOrUSSDCodeWithRequest:(id)request
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = requestCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Sending MMI/USSD code through CSD for %@", &v9, 0xCu);
   }
 
-  v7 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v7 sendMMIOrUSSDCodeWithRequest:v4];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer sendMMIOrUSSDCodeWithRequest:requestCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addScreenSharingType:(unint64_t)a3 forCallWithUniqueProxyIdentifier:(id)a4
+- (void)addScreenSharingType:(unint64_t)type forCallWithUniqueProxyIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v7);
+  identifierCopy = identifier;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134218242;
-    v12 = a3;
+    typeCopy = type;
     v13 = 2112;
-    v14 = v6;
+    v14 = identifierCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Proxying addScreenSharingType=%lu for %@", &v11, 0x16u);
   }
 
-  v9 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v9 addScreenSharingType:a3 forCallWithUniqueProxyIdentifier:v6];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer addScreenSharingType:type forCallWithUniqueProxyIdentifier:identifierCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setEmergencyMediaItems:(id)a3 forCallWithUniqueProxyIdentifier:(id)a4
+- (void)setEmergencyMediaItems:(id)items forCallWithUniqueProxyIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v8);
+  itemsCopy = items;
+  identifierCopy = identifier;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = TUDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v6;
+    v13 = itemsCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = identifierCopy;
     _os_log_impl(&dword_1956FD000, v9, OS_LOG_TYPE_DEFAULT, "Proxying setEmergencyMediaItems=%@ for %@", &v12, 0x16u);
   }
 
-  v10 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v10 setEmergencyMediaItems:v6 forCallWithUniqueProxyIdentifier:v7];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer setEmergencyMediaItems:itemsCopy forCallWithUniqueProxyIdentifier:identifierCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activateInCallUIWithActivityContinuationIdentifier:(id)a3
+- (void)activateInCallUIWithActivityContinuationIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Proying activateInCallUIWithActivityContinuationIdentifier=%@", &v9, 0xCu);
   }
 
-  v7 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v7 activateInCallUIWithActivityContinuationIdentifier:v4];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer activateInCallUIWithActivityContinuationIdentifier:identifierCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCurrentAudioInputDeviceToDeviceWithUID:(id)a3
+- (void)setCurrentAudioInputDeviceToDeviceWithUID:(id)d
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (![(TUCallServicesInterface *)self isServerLocal])
   {
@@ -2769,23 +2769,23 @@ void __83__TUCallServicesInterface_stopTransmissionForBargeCall_sourceIsHandsfre
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = dCopy;
       _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Proxying setCurrentAudioInputDeviceToDeviceWithUID through CSD for UID %@", &v9, 0xCu);
     }
 
-    v7 = [(TUCallServicesInterface *)self asynchronousServer];
-    [v7 setCurrentAudioInputDeviceToDeviceWithUID:v4];
+    asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+    [asynchronousServer setCurrentAudioInputDeviceToDeviceWithUID:dCopy];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCurrentAudioOutputDeviceToDeviceWithUID:(id)a3
+- (void)setCurrentAudioOutputDeviceToDeviceWithUID:(id)d
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (![(TUCallServicesInterface *)self isServerLocal])
   {
@@ -2793,22 +2793,22 @@ void __83__TUCallServicesInterface_stopTransmissionForBargeCall_sourceIsHandsfre
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = dCopy;
       _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Proxying setCurrentOutputDeviceToDeviceWithUID through CSD for deviceUID %@", &v9, 0xCu);
     }
 
-    v7 = [(TUCallServicesInterface *)self asynchronousServer];
-    [v7 setCurrentAudioOutputDeviceToDeviceWithUID:v4];
+    asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+    [asynchronousServer setCurrentAudioOutputDeviceToDeviceWithUID:dCopy];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)routesByUniqueIdentifierForRouteController:(id)a3
+- (id)routesByUniqueIdentifierForRouteController:(id)controller
 {
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  controllerCopy = controller;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v16 = 0;
   v17 = &v16;
@@ -2816,9 +2816,9 @@ void __83__TUCallServicesInterface_stopTransmissionForBargeCall_sourceIsHandsfre
   v19 = __Block_byref_object_copy__9;
   v20 = __Block_byref_object_dispose__9;
   v21 = MEMORY[0x1E695E0F8];
-  v6 = [(TUCallServicesInterface *)self localRouteController];
+  localRouteController = [(TUCallServicesInterface *)self localRouteController];
 
-  if (v6 == v4)
+  if (localRouteController == controllerCopy)
   {
     v10 = TUDefaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2838,9 +2838,9 @@ void __83__TUCallServicesInterface_stopTransmissionForBargeCall_sourceIsHandsfre
 
   else
   {
-    v7 = [(TUCallServicesInterface *)self pairedHostDeviceRouteController];
+    pairedHostDeviceRouteController = [(TUCallServicesInterface *)self pairedHostDeviceRouteController];
 
-    if (v7 != v4)
+    if (pairedHostDeviceRouteController != controllerCopy)
     {
       goto LABEL_10;
     }
@@ -2888,16 +2888,16 @@ void __70__TUCallServicesInterface_routesByUniqueIdentifierForRouteController___
   }
 }
 
-- (void)routesByUniqueIdentifierForRouteController:(id)a3 completionHandler:(id)a4
+- (void)routesByUniqueIdentifierForRouteController:(id)controller completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v8);
+  controllerCopy = controller;
+  handlerCopy = handler;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(TUCallServicesInterface *)self localRouteController];
+  localRouteController = [(TUCallServicesInterface *)self localRouteController];
 
-  if (v9 == v6)
+  if (localRouteController == controllerCopy)
   {
     v13 = TUDefaultLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -2907,13 +2907,13 @@ void __70__TUCallServicesInterface_routesByUniqueIdentifierForRouteController___
     }
 
     v12 = [(TUCallServicesInterface *)self asynchronousServerWithErrorHandler:&__block_literal_global_90_0];
-    [v12 localRoutesByUniqueIdentifier:v7];
+    [v12 localRoutesByUniqueIdentifier:handlerCopy];
     goto LABEL_9;
   }
 
-  v10 = [(TUCallServicesInterface *)self pairedHostDeviceRouteController];
+  pairedHostDeviceRouteController = [(TUCallServicesInterface *)self pairedHostDeviceRouteController];
 
-  if (v10 == v6)
+  if (pairedHostDeviceRouteController == controllerCopy)
   {
     v11 = TUDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -2923,7 +2923,7 @@ void __70__TUCallServicesInterface_routesByUniqueIdentifierForRouteController___
     }
 
     v12 = [(TUCallServicesInterface *)self asynchronousServerWithErrorHandler:&__block_literal_global_93];
-    [v12 pairedHostDeviceRoutesByUniqueIdentifier:v7];
+    [v12 pairedHostDeviceRoutesByUniqueIdentifier:handlerCopy];
 LABEL_9:
   }
 }
@@ -2948,55 +2948,55 @@ void __88__TUCallServicesInterface_routesByUniqueIdentifierForRouteController_co
   }
 }
 
-- (void)setVolume:(float)a3 forRouteController:(id)a4
+- (void)setVolume:(float)volume forRouteController:(id)controller
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v7);
+  controllerCopy = controller;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [(TUCallServicesInterface *)self localRouteController];
+  localRouteController = [(TUCallServicesInterface *)self localRouteController];
 
-  if (v8 == v6)
+  if (localRouteController == controllerCopy)
   {
     v13 = TUDefaultLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 134217984;
-      v17 = a3;
+      volumeCopy2 = volume;
       _os_log_impl(&dword_1956FD000, v13, OS_LOG_TYPE_DEFAULT, "Proxying setting localDevice for %f", &v16, 0xCu);
     }
 
-    v11 = [(TUCallServicesInterface *)self asynchronousServer];
-    *&v14 = a3;
-    [v11 setLocalDeviceVolume:v14];
+    asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+    *&v14 = volume;
+    [asynchronousServer setLocalDeviceVolume:v14];
     goto LABEL_9;
   }
 
-  v9 = [(TUCallServicesInterface *)self pairedHostDeviceRouteController];
+  pairedHostDeviceRouteController = [(TUCallServicesInterface *)self pairedHostDeviceRouteController];
 
-  if (v9 == v6)
+  if (pairedHostDeviceRouteController == controllerCopy)
   {
     v10 = TUDefaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 134217984;
-      v17 = a3;
+      volumeCopy2 = volume;
       _os_log_impl(&dword_1956FD000, v10, OS_LOG_TYPE_DEFAULT, "Proxying setPairedHostDeviceVolume for %f", &v16, 0xCu);
     }
 
-    v11 = [(TUCallServicesInterface *)self asynchronousServer];
-    *&v12 = a3;
-    [v11 setPairedHostDeviceVolume:v12];
+    asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+    *&v12 = volume;
+    [asynchronousServer setPairedHostDeviceVolume:v12];
 LABEL_9:
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)validateIMAVPush:(id)a3
+- (BOOL)validateIMAVPush:(id)push
 {
-  v4 = a3;
+  pushCopy = push;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -3007,7 +3007,7 @@ LABEL_9:
   v7[2] = __44__TUCallServicesInterface_validateIMAVPush___block_invoke_96;
   v7[3] = &unk_1E7426598;
   v7[4] = &v8;
-  [v5 validateIMAVPush:v4 reply:v7];
+  [v5 validateIMAVPush:pushCopy reply:v7];
 
   LOBYTE(v5) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -3035,12 +3035,12 @@ void __93__TUCallServicesInterface_containsRestrictedHandle_forBundleIdentifier_
   }
 }
 
-- (id)policyForAddresses:(id)a3 forBundleIdentifier:(id)a4
+- (id)policyForAddresses:(id)addresses forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v8);
+  addressesCopy = addresses;
+  identifierCopy = identifier;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v13 = 0;
   v14 = &v13;
@@ -3054,7 +3054,7 @@ void __93__TUCallServicesInterface_containsRestrictedHandle_forBundleIdentifier_
   v12[2] = __66__TUCallServicesInterface_policyForAddresses_forBundleIdentifier___block_invoke_103;
   v12[3] = &unk_1E7426570;
   v12[4] = &v13;
-  [v9 policyForAddresses:v6 forBundleIdentifier:v7 reply:v12];
+  [v9 policyForAddresses:addressesCopy forBundleIdentifier:identifierCopy reply:v12];
 
   v10 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -3072,12 +3072,12 @@ void __66__TUCallServicesInterface_policyForAddresses_forBundleIdentifier___bloc
   }
 }
 
-- (BOOL)willRestrictAddresses:(id)a3 forBundleIdentifier:(id)a4
+- (BOOL)willRestrictAddresses:(id)addresses forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v8);
+  addressesCopy = addresses;
+  identifierCopy = identifier;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v12 = 0;
   v13 = &v12;
@@ -3089,7 +3089,7 @@ void __66__TUCallServicesInterface_policyForAddresses_forBundleIdentifier___bloc
   v11[2] = __69__TUCallServicesInterface_willRestrictAddresses_forBundleIdentifier___block_invoke_106;
   v11[3] = &unk_1E7426598;
   v11[4] = &v12;
-  [v9 willRestrictAddresses:v6 forBundleIdentifier:v7 reply:v11];
+  [v9 willRestrictAddresses:addressesCopy forBundleIdentifier:identifierCopy reply:v11];
 
   LOBYTE(v9) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
@@ -3117,10 +3117,10 @@ void __92__TUCallServicesInterface_shouldRestrictAddresses_forBundleIdentifier_p
   }
 }
 
-- (unint64_t)filterStatusForAddresses:(id)a3 forBundleIdentifier:(id)a4
+- (unint64_t)filterStatusForAddresses:(id)addresses forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  addressesCopy = addresses;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -3131,7 +3131,7 @@ void __92__TUCallServicesInterface_shouldRestrictAddresses_forBundleIdentifier_p
   v11[2] = __72__TUCallServicesInterface_filterStatusForAddresses_forBundleIdentifier___block_invoke_112;
   v11[3] = &unk_1E74265C0;
   v11[4] = &v12;
-  [v8 filterStatusForAddresses:v6 forBundleIdentifier:v7 reply:v11];
+  [v8 filterStatusForAddresses:addressesCopy forBundleIdentifier:identifierCopy reply:v11];
 
   v9 = v13[3];
   _Block_object_dispose(&v12, 8);
@@ -3149,11 +3149,11 @@ void __72__TUCallServicesInterface_filterStatusForAddresses_forBundleIdentifier_
   }
 }
 
-- (BOOL)isUnknownAddress:(id)a3 normalizedAddress:(id)a4 forBundleIdentifier:(id)a5
+- (BOOL)isUnknownAddress:(id)address normalizedAddress:(id)normalizedAddress forBundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  addressCopy = address;
+  normalizedAddressCopy = normalizedAddress;
+  identifierCopy = identifier;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -3164,7 +3164,7 @@ void __72__TUCallServicesInterface_filterStatusForAddresses_forBundleIdentifier_
   v13[2] = __82__TUCallServicesInterface_isUnknownAddress_normalizedAddress_forBundleIdentifier___block_invoke_116;
   v13[3] = &unk_1E7426598;
   v13[4] = &v14;
-  [v11 isUnknownAddress:v8 normalizedAddress:v9 forBundleIdentifier:v10 reply:v13];
+  [v11 isUnknownAddress:addressCopy normalizedAddress:normalizedAddressCopy forBundleIdentifier:identifierCopy reply:v13];
 
   LOBYTE(v11) = *(v15 + 24);
   _Block_object_dispose(&v14, 8);
@@ -3192,37 +3192,37 @@ void __104__TUCallServicesInterface_isRestrictedExclusivelyByScreenTime_forBundl
   }
 }
 
-- (void)setClientCapabilities:(id)a3
+- (void)setClientCapabilities:(id)capabilities
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCallServicesInterface *)self queue];
-  dispatch_assert_queue_V2(v5);
+  capabilitiesCopy = capabilities;
+  queue = [(TUCallServicesInterface *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = capabilitiesCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Proxying setClientCapabilities through CSD for capabilities %@", &v9, 0xCu);
   }
 
-  v7 = [(TUCallServicesInterface *)self asynchronousServer];
-  [v7 setClientCapabilities:v4];
+  asynchronousServer = [(TUCallServicesInterface *)self asynchronousServer];
+  [asynchronousServer setClientCapabilities:capabilitiesCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleLocalRoutesByUniqueIdentifierUpdated:(id)a3
+- (void)handleLocalRoutesByUniqueIdentifierUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__TUCallServicesInterface_handleLocalRoutesByUniqueIdentifierUpdated___block_invoke;
   v6[3] = &unk_1E7424898;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updatedCopy;
+  v5 = updatedCopy;
   [(TUCallServicesInterface *)self performBlockOnQueue:v6];
 }
 
@@ -3232,16 +3232,16 @@ void __70__TUCallServicesInterface_handleLocalRoutesByUniqueIdentifierUpdated___
   [v2 handleRoutesByUniqueIdentifierUpdated:*(a1 + 40)];
 }
 
-- (void)handlePairedHostDeviceRoutesByUniqueIdentifierUpdated:(id)a3
+- (void)handlePairedHostDeviceRoutesByUniqueIdentifierUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __81__TUCallServicesInterface_handlePairedHostDeviceRoutesByUniqueIdentifierUpdated___block_invoke;
   v6[3] = &unk_1E7424898;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updatedCopy;
+  v5 = updatedCopy;
   [(TUCallServicesInterface *)self performBlockOnQueue:v6];
 }
 
@@ -3251,14 +3251,14 @@ void __81__TUCallServicesInterface_handlePairedHostDeviceRoutesByUniqueIdentifie
   [v2 handleRoutesByUniqueIdentifierUpdated:*(a1 + 40)];
 }
 
-- (void)handlePairedHostVolumeChanged:(float)a3
+- (void)handlePairedHostVolumeChanged:(float)changed
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __57__TUCallServicesInterface_handlePairedHostVolumeChanged___block_invoke;
   v3[3] = &unk_1E74256D0;
   v3[4] = self;
-  v4 = a3;
+  changedCopy = changed;
   [(TUCallServicesInterface *)self performBlockOnQueue:v3];
 }
 
@@ -3269,16 +3269,16 @@ void __57__TUCallServicesInterface_handlePairedHostVolumeChanged___block_invoke(
   [v3 handleVolumeUpdateFromHost:v2];
 }
 
-- (void)handleNewCaptionsResult:(id)a3
+- (void)handleNewCaptionsResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__TUCallServicesInterface_handleNewCaptionsResult___block_invoke;
   v6[3] = &unk_1E7424898;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   [(TUCallServicesInterface *)self performBlockOnQueue:v6];
 }
 
@@ -3288,20 +3288,20 @@ void __51__TUCallServicesInterface_handleNewCaptionsResult___block_invoke(uint64
   [v2 _handleReceivedCaptionUpdate:*(a1 + 40)];
 }
 
-- (void)handleFrequencyChangedTo:(id)a3 inDirection:(int)a4 forCallsWithUniqueProxyIdentifiers:(id)a5
+- (void)handleFrequencyChangedTo:(id)to inDirection:(int)direction forCallsWithUniqueProxyIdentifiers:(id)identifiers
 {
-  v8 = a3;
-  v9 = a5;
+  toCopy = to;
+  identifiersCopy = identifiers;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __99__TUCallServicesInterface_handleFrequencyChangedTo_inDirection_forCallsWithUniqueProxyIdentifiers___block_invoke;
   v12[3] = &unk_1E74265E8;
-  v13 = v9;
-  v14 = self;
-  v16 = a4;
-  v15 = v8;
-  v10 = v8;
-  v11 = v9;
+  v13 = identifiersCopy;
+  selfCopy = self;
+  directionCopy = direction;
+  v15 = toCopy;
+  v10 = toCopy;
+  v11 = identifiersCopy;
   [(TUCallServicesInterface *)self performBlockOnQueue:v12];
 }
 
@@ -3350,41 +3350,41 @@ void __99__TUCallServicesInterface_handleFrequencyChangedTo_inDirection_forCalls
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleCurrentCallsChanged:(id)a3 callDisconnected:(id)a4
+- (void)handleCurrentCallsChanged:(id)changed callDisconnected:(id)disconnected
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  disconnectedCopy = disconnected;
+  v7 = disconnectedCopy;
+  if (disconnectedCopy)
   {
-    v12 = v6;
+    v12 = disconnectedCopy;
     v8 = MEMORY[0x1E695DEC8];
-    v9 = a3;
-    v10 = [v8 arrayWithObjects:&v12 count:1];
-    [(TUCallServicesInterface *)self _handleCurrentCallsChanged:v9 callsDisconnected:v10, v12, v13];
+    changedCopy = changed;
+    changedCopy2 = [v8 arrayWithObjects:&v12 count:1];
+    [(TUCallServicesInterface *)self _handleCurrentCallsChanged:changedCopy callsDisconnected:changedCopy2, v12, v13];
   }
 
   else
   {
-    v10 = a3;
-    [(TUCallServicesInterface *)self _handleCurrentCallsChanged:v10 callsDisconnected:MEMORY[0x1E695E0F0]];
+    changedCopy2 = changed;
+    [(TUCallServicesInterface *)self _handleCurrentCallsChanged:changedCopy2 callsDisconnected:MEMORY[0x1E695E0F0]];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleMeterLevelChangedTo:(float)a3 inDirection:(int)a4 forCallsWithUniqueProxyIdentifiers:(id)a5
+- (void)handleMeterLevelChangedTo:(float)to inDirection:(int)direction forCallsWithUniqueProxyIdentifiers:(id)identifiers
 {
-  v8 = a5;
+  identifiersCopy = identifiers;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __100__TUCallServicesInterface_handleMeterLevelChangedTo_inDirection_forCallsWithUniqueProxyIdentifiers___block_invoke;
   v10[3] = &unk_1E7425028;
-  v11 = v8;
-  v12 = self;
-  v13 = a4;
-  v14 = a3;
-  v9 = v8;
+  v11 = identifiersCopy;
+  selfCopy = self;
+  directionCopy = direction;
+  toCopy = to;
+  v9 = identifiersCopy;
   [(TUCallServicesInterface *)self performBlockOnQueue:v10];
 }
 
@@ -3435,16 +3435,16 @@ void __100__TUCallServicesInterface_handleMeterLevelChangedTo_inDirection_forCal
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleUIXPCEndpointChanged:(id)a3
+- (void)handleUIXPCEndpointChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__TUCallServicesInterface_handleUIXPCEndpointChanged___block_invoke;
   v6[3] = &unk_1E7424898;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changedCopy;
+  v5 = changedCopy;
   [(TUCallServicesInterface *)self performBlockOnQueue:v6];
 }
 
@@ -3465,19 +3465,19 @@ void __54__TUCallServicesInterface_handleUIXPCEndpointChanged___block_invoke(uin
   [v7 setUiDataSource:v6];
 }
 
-- (void)handleReceivedCallDTMFUpdate:(id)a3 forCallWithUniqueProxyIdentifier:(id)a4
+- (void)handleReceivedCallDTMFUpdate:(id)update forCallWithUniqueProxyIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __89__TUCallServicesInterface_handleReceivedCallDTMFUpdate_forCallWithUniqueProxyIdentifier___block_invoke;
   v10[3] = &unk_1E7424FD8;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = updateCopy;
+  v12 = identifierCopy;
+  selfCopy = self;
+  v8 = identifierCopy;
+  v9 = updateCopy;
   [(TUCallServicesInterface *)self performBlockOnQueue:v10];
 }
 
@@ -3515,19 +3515,19 @@ void __89__TUCallServicesInterface_handleReceivedCallDTMFUpdate_forCallWithUniqu
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleCurrentCallsChanged:(id)a3 callsDisconnected:(id)a4
+- (void)_handleCurrentCallsChanged:(id)changed callsDisconnected:(id)disconnected
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  disconnectedCopy = disconnected;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__TUCallServicesInterface__handleCurrentCallsChanged_callsDisconnected___block_invoke;
   v10[3] = &unk_1E7424FD8;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = changedCopy;
+  selfCopy = self;
+  v13 = disconnectedCopy;
+  v8 = disconnectedCopy;
+  v9 = changedCopy;
   [(TUCallServicesInterface *)self performBlockOnQueue:v10];
 }
 
@@ -3695,22 +3695,22 @@ void __53__TUCallServicesInterface_resetCallProvisionalStates__block_invoke(uint
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleNotificationName:(id)a3 forCallWithUniqueProxyIdentifier:(id)a4 userInfo:(id)a5
+- (void)handleNotificationName:(id)name forCallWithUniqueProxyIdentifier:(id)identifier userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  identifierCopy = identifier;
+  infoCopy = info;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __92__TUCallServicesInterface_handleNotificationName_forCallWithUniqueProxyIdentifier_userInfo___block_invoke;
   v14[3] = &unk_1E7425188;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v18 = self;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = nameCopy;
+  v16 = identifierCopy;
+  v17 = infoCopy;
+  selfCopy = self;
+  v11 = infoCopy;
+  v12 = identifierCopy;
+  v13 = nameCopy;
   [(TUCallServicesInterface *)self performBlockOnQueue:v14];
 }
 

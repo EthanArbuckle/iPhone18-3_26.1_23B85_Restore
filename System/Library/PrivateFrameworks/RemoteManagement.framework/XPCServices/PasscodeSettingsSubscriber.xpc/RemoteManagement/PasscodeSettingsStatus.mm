@@ -1,7 +1,7 @@
 @interface PasscodeSettingsStatus
 + (id)supportedStatusKeys;
 - (_TtC26PasscodeSettingsSubscriber22PasscodeSettingsStatus)init;
-- (void)queryForStatusWithKeyPaths:(NSArray *)a3 store:(RMSubscriberStore *)a4 completionHandler:(id)a5;
+- (void)queryForStatusWithKeyPaths:(NSArray *)paths store:(RMSubscriberStore *)store completionHandler:(id)handler;
 @end
 
 @implementation PasscodeSettingsStatus
@@ -14,15 +14,15 @@
   return v2.super.isa;
 }
 
-- (void)queryForStatusWithKeyPaths:(NSArray *)a3 store:(RMSubscriberStore *)a4 completionHandler:(id)a5
+- (void)queryForStatusWithKeyPaths:(NSArray *)paths store:(RMSubscriberStore *)store completionHandler:(id)handler
 {
   v9 = (*(*(sub_1000014B8(&qword_100014908, &qword_10000B678) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v11 = &v20 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = paths;
+  v13[3] = store;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_10000AB5C();
@@ -37,9 +37,9 @@
   v16[3] = 0;
   v16[4] = &unk_10000B690;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
+  pathsCopy = paths;
+  storeCopy = store;
+  selfCopy = self;
   sub_100008414(0, 0, v11, &unk_10000B698, v16);
 }
 

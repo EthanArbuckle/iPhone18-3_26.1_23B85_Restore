@@ -2,11 +2,11 @@
 + (id)logger;
 - (BOOL)_initializeNewKeyMaterial;
 - (NSData)keyMaterial;
-- (SKAPresenceEncryptionKey)initWithKeyMaterial:(id)a3;
+- (SKAPresenceEncryptionKey)initWithKeyMaterial:(id)material;
 - (SKAPresenceEncryptionKey)initWithNewKeyMaterial;
-- (id)_randomBytesWithLength:(unint64_t)a3 error:(id *)a4;
-- (id)decryptPayload:(id)a3;
-- (id)encryptPayload:(id)a3;
+- (id)_randomBytesWithLength:(unint64_t)length error:(id *)error;
+- (id)decryptPayload:(id)payload;
+- (id)encryptPayload:(id)payload;
 @end
 
 @implementation SKAPresenceEncryptionKey
@@ -30,9 +30,9 @@
   return v4;
 }
 
-- (SKAPresenceEncryptionKey)initWithKeyMaterial:(id)a3
+- (SKAPresenceEncryptionKey)initWithKeyMaterial:(id)material
 {
-  v5 = a3;
+  materialCopy = material;
   v10.receiver = self;
   v10.super_class = SKAPresenceEncryptionKey;
   v6 = [(SKAPresenceEncryptionKey *)&v10 init];
@@ -41,9 +41,9 @@
     goto LABEL_5;
   }
 
-  if ([v5 length] && objc_msgSend(v5, "length") == 32)
+  if ([materialCopy length] && objc_msgSend(materialCopy, "length") == 32)
   {
-    objc_storeStrong(&v6->_keyData, a3);
+    objc_storeStrong(&v6->_keyData, material);
 LABEL_5:
     v7 = v6;
     goto LABEL_9;
@@ -61,10 +61,10 @@ LABEL_9:
   return v7;
 }
 
-- (id)encryptPayload:(id)a3
+- (id)encryptPayload:(id)payload
 {
-  v4 = a3;
-  if (![v4 length])
+  payloadCopy = payload;
+  if (![payloadCopy length])
   {
     v6 = +[SKAPresenceEncryptionKey logger];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -87,20 +87,20 @@ LABEL_9:
 
   [v5 length];
   v6 = v6;
-  v7 = [(SKAPresenceEncryptionKey *)self keyData];
-  [v7 length];
+  keyData = [(SKAPresenceEncryptionKey *)self keyData];
+  [keyData length];
 
-  v8 = [(SKAPresenceEncryptionKey *)self keyData];
-  v9 = [v4 length];
-  v10 = v4;
+  keyData2 = [(SKAPresenceEncryptionKey *)self keyData];
+  v9 = [payloadCopy length];
+  v10 = payloadCopy;
   v11 = [MEMORY[0x277CBEB28] dataWithLength:v9];
   v12 = [MEMORY[0x277CBEB28] dataWithLength:16];
-  v18 = v8;
-  [v8 bytes];
+  v18 = keyData2;
+  [keyData2 bytes];
   [v6 bytes];
   [v10 bytes];
-  v13 = [v11 mutableBytes];
-  v17 = [v12 mutableBytes];
+  mutableBytes = [v11 mutableBytes];
+  mutableBytes2 = [v12 mutableBytes];
   if (CCCryptorGCMOneshotEncrypt())
   {
     v14 = [SKAPresenceEncryptionKey logger:v9];
@@ -115,7 +115,7 @@ LABEL_9:
   else
   {
     v15 = objc_alloc_init(MEMORY[0x277CBEB28]);
-    [v15 appendData:{v6, v9, v13, v17, 16}];
+    [v15 appendData:{v6, v9, mutableBytes, mutableBytes2, 16}];
     [v15 appendData:v11];
     [v15 appendData:v12];
   }
@@ -125,30 +125,30 @@ LABEL_12:
   return v15;
 }
 
-- (id)decryptPayload:(id)a3
+- (id)decryptPayload:(id)payload
 {
-  v4 = a3;
-  if ([v4 length] > 0x1C)
+  payloadCopy = payload;
+  if ([payloadCopy length] > 0x1C)
   {
-    v5 = [v4 subdataWithRange:{0, 12}];
-    v7 = [v4 length];
+    v5 = [payloadCopy subdataWithRange:{0, 12}];
+    v7 = [payloadCopy length];
     v8 = v7 - 16;
-    v9 = [v4 subdataWithRange:{12, v7 - 28}];
-    v10 = [v4 subdataWithRange:{v8, 16}];
+    v9 = [payloadCopy subdataWithRange:{12, v7 - 28}];
+    v10 = [payloadCopy subdataWithRange:{v8, 16}];
     [v5 length];
-    v11 = [(SKAPresenceEncryptionKey *)self keyData];
-    [v11 length];
+    keyData = [(SKAPresenceEncryptionKey *)self keyData];
+    [keyData length];
 
-    v12 = [(SKAPresenceEncryptionKey *)self keyData];
+    keyData2 = [(SKAPresenceEncryptionKey *)self keyData];
     v13 = [v9 length];
     v14 = v9;
     v20 = [v10 length];
     v15 = [MEMORY[0x277CBEB28] dataWithLength:v13];
-    [v12 bytes];
+    [keyData2 bytes];
     [v5 bytes];
     [v14 bytes];
-    v16 = [v15 mutableBytes];
-    v19 = [v10 bytes];
+    mutableBytes = [v15 mutableBytes];
+    bytes = [v10 bytes];
     if (CCCryptorGCMOneshotDecrypt())
     {
       v17 = [SKAPresenceEncryptionKey logger:v13];
@@ -182,20 +182,20 @@ LABEL_12:
 
 - (NSData)keyMaterial
 {
-  v3 = [(SKAPresenceEncryptionKey *)self keyData];
-  if (![v3 length])
+  keyData = [(SKAPresenceEncryptionKey *)self keyData];
+  if (![keyData length])
   {
     v6 = 0;
     goto LABEL_5;
   }
 
-  v4 = [(SKAPresenceEncryptionKey *)self keyData];
-  v5 = [v4 length];
+  keyData2 = [(SKAPresenceEncryptionKey *)self keyData];
+  v5 = [keyData2 length];
 
   if (v5 == 32)
   {
-    v3 = [(SKAPresenceEncryptionKey *)self keyData];
-    v6 = [v3 copy];
+    keyData = [(SKAPresenceEncryptionKey *)self keyData];
+    v6 = [keyData copy];
 LABEL_5:
 
     goto LABEL_7;
@@ -219,10 +219,10 @@ LABEL_7:
   return v4 == 0;
 }
 
-- (id)_randomBytesWithLength:(unint64_t)a3 error:(id *)a4
+- (id)_randomBytesWithLength:(unint64_t)length error:(id *)error
 {
   v6 = [MEMORY[0x277CBEB28] dataWithLength:?];
-  Bytes = CCRandomGenerateBytes([v6 mutableBytes], a3);
+  Bytes = CCRandomGenerateBytes([v6 mutableBytes], length);
   if (Bytes)
   {
     v8 = Bytes;
@@ -234,10 +234,10 @@ LABEL_7:
 
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not generate random bytes. %i", v8];
     v11 = [SKAError errorWithCode:400 customDescription:v10];
-    if (a4)
+    if (error)
     {
       v11 = v11;
-      *a4 = v11;
+      *error = v11;
     }
 
     v12 = 0;

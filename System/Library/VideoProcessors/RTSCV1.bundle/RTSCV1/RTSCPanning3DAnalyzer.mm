@@ -1,13 +1,13 @@
 @interface RTSCPanning3DAnalyzer
-- (RTSCPanning3DAnalyzer)initWithTimeConstant:(float)a3 initialVariance:;
+- (RTSCPanning3DAnalyzer)initWithTimeConstant:(float)constant initialVariance:;
 - (__n128)panningCovariance;
 - (void)reset;
-- (void)updateWithPose:(double)a3 atTime:;
+- (void)updateWithPose:(double)pose atTime:;
 @end
 
 @implementation RTSCPanning3DAnalyzer
 
-- (RTSCPanning3DAnalyzer)initWithTimeConstant:(float)a3 initialVariance:
+- (RTSCPanning3DAnalyzer)initWithTimeConstant:(float)constant initialVariance:
 {
   v8 = v3;
   v9.receiver = self;
@@ -16,7 +16,7 @@
   v6 = v5;
   if (v5)
   {
-    v5->_timeConstant = a3;
+    v5->_timeConstant = constant;
     *&v5->_initVariance[4] = v8;
     [(RTSCPanning3DAnalyzer *)v5 reset];
   }
@@ -41,39 +41,39 @@
   *&self->_anon_94[4] = self->_timeConstant * self->_timeConstant;
 }
 
-- (void)updateWithPose:(double)a3 atTime:
+- (void)updateWithPose:(double)pose atTime:
 {
-  v6 = *(a1 + 8);
-  if (*(a1 + 32) == 1)
+  v6 = *(self + 8);
+  if (*(self + 32) == 1)
   {
-    v8 = *(a1 + 40);
-    v7 = *(a1 + 48);
-    v9 = *(a1 + 64);
+    poseCopy = *(self + 40);
+    v7 = *(self + 48);
+    v9 = *(self + 64);
   }
 
   else
   {
-    v7 = a3 - v6;
-    v10 = *(a1 + 16);
-    HIDWORD(v11) = HIDWORD(*(a1 + 16));
-    *(a1 + 136) = DWORD2(v10);
-    *(a1 + 80) = COERCE_UNSIGNED_INT(v6 * v6);
+    v7 = pose - v6;
+    v10 = *(self + 16);
+    HIDWORD(v11) = HIDWORD(*(self + 16));
+    *(self + 136) = DWORD2(v10);
+    *(self + 80) = COERCE_UNSIGNED_INT(v6 * v6);
     LODWORD(v11) = 0;
-    *(a1 + 104) = 0;
-    *(a1 + 96) = v10;
-    *(a1 + 120) = 0;
-    *(a1 + 112) = v11;
-    *(a1 + 128) = 0;
-    *(a1 + 32) = 1;
+    *(self + 104) = 0;
+    *(self + 96) = v10;
+    *(self + 120) = 0;
+    *(self + 112) = v11;
+    *(self + 128) = 0;
+    *(self + 32) = 1;
     v9 = a2;
-    v8 = a3;
+    poseCopy = pose;
   }
 
-  *&v12 = a3 - v8;
+  *&v12 = pose - poseCopy;
   *v12.i32 = *v12.i32;
   *v12.i32 = v6 / (v6 + *v12.i32);
-  v13 = a3 + *v12.i32 * (v7 - a3);
-  *(a1 + 48) = v13;
+  v13 = pose + *v12.i32 * (v7 - pose);
+  *(self + 48) = v13;
   v14 = vmulq_f32(a2, v9);
   v15 = vextq_s8(v14, v14, 8uLL);
   *v14.f32 = vadd_f32(*v14.f32, *v15.f32);
@@ -142,15 +142,15 @@
     v38 = vmulq_n_f32(v36, vmul_f32(v41, vrsqrts_f32(v39, vmul_f32(v41, v41))).f32[0]);
   }
 
-  *(a1 + 64) = v38;
-  *v37.i64 = a3 - v13;
+  *(self + 64) = v38;
+  *v37.i64 = pose - v13;
   v42 = vmulq_f32(v38, xmmword_11B60);
   v43 = vnegq_f32(v75);
   v44 = vtrn2q_s32(v75, vtrn1q_s32(v75, v43));
   v45 = vmlaq_n_f32(vmulq_lane_f32(vextq_s8(v75, v43, 8uLL), *v42.f32, 1), vextq_s8(v44, v44, 8uLL), v42.f32[0]);
   v46 = vrev64q_s32(v75);
   v46.i32[0] = v43.i32[1];
-  *v37.i32 = a3 - v13;
+  *v37.i32 = pose - v13;
   v74 = v37;
   v46.i32[3] = v43.i32[2];
   v76 = vaddq_f32(v45, vmlaq_laneq_f32(vmulq_laneq_f32(v75, v42, 3), v46, v42, 2));
@@ -166,7 +166,7 @@
   v79[1] = vmulq_n_f32(v52, v51.f32[0]);
   v79[2] = vmulq_lane_f32(v52, *v51.f32, 1);
   v79[3] = vmulq_laneq_f32(v52, v51, 2);
-  v54 = (a1 + 96);
+  v54 = (self + 96);
   v55 = vdupq_lane_s32(v77, 0);
   v55.i32[3] = 0;
   for (i = 1; i != 4; ++i)
@@ -178,16 +178,16 @@
     *v54++ = vmlaq_f32(v57, v58, v55);
   }
 
-  v59 = vmlaq_n_f32(v53, vsubq_f32(*(a1 + 80), v53), *v77.i32);
-  *(a1 + 80) = v59;
-  *(a1 + 40) = a3;
+  v59 = vmlaq_n_f32(v53, vsubq_f32(*(self + 80), v53), *v77.i32);
+  *(self + 80) = v59;
+  *(self + 40) = pose;
   v60 = vrecpe_f32(v59.u32[0]);
   v61 = vmul_f32(v60, vrecps_f32(v59.u32[0], v60));
   v62 = vextq_s8(v59, v59, 4uLL);
   v63 = vmulq_n_f32(v62, vmul_f32(v61, vrecps_f32(v59.u32[0], v61)).f32[0]);
-  *(a1 + 160) = v63;
+  *(self + 160) = v63;
   v64 = vnegq_f32(v63);
-  v65 = (a1 + 176);
+  v65 = (self + 176);
   v66 = -3;
   do
   {
@@ -197,14 +197,14 @@
   }
 
   while (!__CFADD__(v66++, 1));
-  *(a1 + 144) = v59.i32[0];
+  *(self + 144) = v59.i32[0];
 }
 
 - (__n128)panningCovariance
 {
-  result = *(a1 + 176);
-  v2 = *(a1 + 192);
-  v3 = *(a1 + 208);
+  result = *(self + 176);
+  v2 = *(self + 192);
+  v3 = *(self + 208);
   return result;
 }
 

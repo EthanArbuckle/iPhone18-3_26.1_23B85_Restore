@@ -1,35 +1,35 @@
 @interface UIPress
 - (NSString)description;
-- (SEL)_responderSelectorForPhase:(int64_t)a3;
+- (SEL)_responderSelectorForPhase:(int64_t)phase;
 - (_UIEventComponentPhaseValue)_eventComponentPhase;
-- (id)_eventComponentPhaseForValue:(int64_t)a3;
+- (id)_eventComponentPhaseForValue:(int64_t)value;
 - (id)_mutableForwardingRecord;
 - (id)_phaseDescription;
 - (void)_abandonForwardingRecord;
-- (void)_loadStateFromPress:(id)a3;
-- (void)_loadStateFromPressInfo:(id)a3;
-- (void)_removeGestureRecognizer:(id)a3;
-- (void)setGestureRecognizers:(id)a3;
+- (void)_loadStateFromPress:(id)press;
+- (void)_loadStateFromPressInfo:(id)info;
+- (void)_removeGestureRecognizer:(id)recognizer;
+- (void)setGestureRecognizers:(id)recognizers;
 @end
 
 @implementation UIPress
 
-- (void)setGestureRecognizers:(id)a3
+- (void)setGestureRecognizers:(id)recognizers
 {
-  if (self->_gestureRecognizers != a3)
+  if (self->_gestureRecognizers != recognizers)
   {
-    v5 = [a3 mutableCopy];
+    v5 = [recognizers mutableCopy];
     gestureRecognizers = self->_gestureRecognizers;
     self->_gestureRecognizers = v5;
   }
 }
 
-- (void)_removeGestureRecognizer:(id)a3
+- (void)_removeGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   if ([(NSMutableArray *)self->_gestureRecognizers containsObject:?])
   {
-    [(NSMutableArray *)self->_gestureRecognizers removeObject:v4];
+    [(NSMutableArray *)self->_gestureRecognizers removeObject:recognizerCopy];
   }
 }
 
@@ -55,19 +55,19 @@
   self->_forwardingRecord = 0;
 }
 
-- (SEL)_responderSelectorForPhase:(int64_t)a3
+- (SEL)_responderSelectorForPhase:(int64_t)phase
 {
-  if (a3 == 4)
+  if (phase == 4)
   {
     return sel_pressesCancelled_withEvent_;
   }
 
-  if (a3 == 3)
+  if (phase == 3)
   {
     return sel_pressesEnded_withEvent_;
   }
 
-  if (a3)
+  if (phase)
   {
     return 0;
   }
@@ -79,10 +79,10 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(UIPress *)self phase];
-  v6 = [(UIPress *)self type];
+  phase = [(UIPress *)self phase];
+  type = [(UIPress *)self type];
   [(UIPress *)self force];
-  return [v3 stringWithFormat:@"<%@: %p phase=%ld type=%ld force=%f>", v4, self, v5, v6, v7];
+  return [v3 stringWithFormat:@"<%@: %p phase=%ld type=%ld force=%f>", v4, self, phase, type, v7];
 }
 
 - (id)_phaseDescription
@@ -108,57 +108,57 @@
   return v4;
 }
 
-- (id)_eventComponentPhaseForValue:(int64_t)a3
+- (id)_eventComponentPhaseForValue:(int64_t)value
 {
   v4 = _eventComponentPhaseMapping_0();
-  v5 = _eventComponentPhaseForValue(a3, v4);
+  v5 = _eventComponentPhaseForValue(value, v4);
 
   return v5;
 }
 
-- (void)_loadStateFromPress:(id)a3
+- (void)_loadStateFromPress:(id)press
 {
-  self->_timestamp = *(a3 + 4);
-  self->_phase = *(a3 + 5);
-  self->_type = *(a3 + 6);
-  self->_force = *(a3 + 9);
-  self->_source = *(a3 + 12);
-  self->_gameControllerComponent = *(a3 + 13);
-  self->_isDelayed = *(a3 + 25);
-  self->_sentPressesEnded = *(a3 + 26);
-  v5 = *(a3 + 8);
+  self->_timestamp = *(press + 4);
+  self->_phase = *(press + 5);
+  self->_type = *(press + 6);
+  self->_force = *(press + 9);
+  self->_source = *(press + 12);
+  self->_gameControllerComponent = *(press + 13);
+  self->_isDelayed = *(press + 25);
+  self->_sentPressesEnded = *(press + 26);
+  v5 = *(press + 8);
   responder = self->_responder;
   self->_responder = v5;
-  v7 = a3;
+  pressCopy = press;
 
-  objc_storeStrong(&self->_window, *(v7 + 7));
-  self->_clickCount = *(v7 + 14);
-  self->_longClick = *(v7 + 27);
-  LODWORD(responder) = *(v7 + 7);
+  objc_storeStrong(&self->_window, *(pressCopy + 7));
+  self->_clickCount = *(pressCopy + 14);
+  self->_longClick = *(pressCopy + 27);
+  LODWORD(responder) = *(pressCopy + 7);
 
   self->_contextID = responder;
 }
 
-- (void)_loadStateFromPressInfo:(id)a3
+- (void)_loadStateFromPressInfo:(id)info
 {
-  v4 = a3;
-  [v4 timestamp];
+  infoCopy = info;
+  [infoCopy timestamp];
   self->_timestamp = v5;
-  self->_phase = [v4 phase];
-  self->_type = [v4 type];
-  [v4 force];
+  self->_phase = [infoCopy phase];
+  self->_type = [infoCopy type];
+  [infoCopy force];
   self->_force = v6;
-  self->_source = [v4 source];
-  self->_gameControllerComponent = [v4 gameControllerComponent];
-  self->_clickCount = [v4 clickCount];
-  self->_longClick = [v4 isLongClick];
-  self->_contextID = [v4 contextID];
-  v7 = [v4 key];
+  self->_source = [infoCopy source];
+  self->_gameControllerComponent = [infoCopy gameControllerComponent];
+  self->_clickCount = [infoCopy clickCount];
+  self->_longClick = [infoCopy isLongClick];
+  self->_contextID = [infoCopy contextID];
+  v7 = [infoCopy key];
   key = self->_key;
   self->_key = v7;
 
-  v9 = [v4 modifierFlags];
-  self->_modifierFlags = v9;
+  modifierFlags = [infoCopy modifierFlags];
+  self->_modifierFlags = modifierFlags;
 }
 
 @end

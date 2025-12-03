@@ -1,9 +1,9 @@
 @interface CKDatabaseNotification
 + (void)initialize;
-- (CKDatabaseNotification)initWithCoder:(id)a3;
-- (CKDatabaseNotification)initWithRemoteNotificationDictionary:(id)a3;
+- (CKDatabaseNotification)initWithCoder:(id)coder;
+- (CKDatabaseNotification)initWithRemoteNotificationDictionary:(id)dictionary;
 - (id)CKPropertiesDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKDatabaseNotification
@@ -21,55 +21,55 @@
   v3 = MEMORY[0x1E696AEC0];
   v18.receiver = self;
   v18.super_class = CKDatabaseNotification;
-  v4 = [(CKNotification *)&v18 CKPropertiesDescription];
+  cKPropertiesDescription = [(CKNotification *)&v18 CKPropertiesDescription];
   v7 = objc_msgSend_databaseScope(self, v5, v6);
   v8 = CKDatabaseScopeString(v7);
   v11 = objc_msgSend_recordZoneID(self, v9, v10);
   v14 = objc_msgSend_ckShortDescription(v11, v12, v13);
-  v16 = objc_msgSend_stringWithFormat_(v3, v15, @"%@, database=%@, zoneID=%@", v4, v8, v14);
+  v16 = objc_msgSend_stringWithFormat_(v3, v15, @"%@, database=%@, zoneID=%@", cKPropertiesDescription, v8, v14);
 
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v10.receiver = self;
   v10.super_class = CKDatabaseNotification;
-  [(CKNotification *)&v10 encodeWithCoder:v4];
+  [(CKNotification *)&v10 encodeWithCoder:coderCopy];
   v8 = objc_msgSend_databaseScope(self, v6, v7);
-  objc_msgSend_encodeInt64_forKey_(v4, v9, v8, @"DatabaseScope");
+  objc_msgSend_encodeInt64_forKey_(coderCopy, v9, v8, @"DatabaseScope");
   objc_autoreleasePoolPop(v5);
 }
 
-- (CKDatabaseNotification)initWithCoder:(id)a3
+- (CKDatabaseNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CKDatabaseNotification;
-  v5 = [(CKNotification *)&v9 initWithCoder:v4];
+  v5 = [(CKNotification *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v5->_databaseScope = objc_msgSend_decodeInt64ForKey_(v4, v7, @"DatabaseScope");
+    v5->_databaseScope = objc_msgSend_decodeInt64ForKey_(coderCopy, v7, @"DatabaseScope");
     objc_autoreleasePoolPop(v6);
   }
 
   return v5;
 }
 
-- (CKDatabaseNotification)initWithRemoteNotificationDictionary:(id)a3
+- (CKDatabaseNotification)initWithRemoteNotificationDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = CKDatabaseNotification;
-  v5 = [(CKNotification *)&v35 initWithRemoteNotificationDictionary:v4];
+  v5 = [(CKNotification *)&v35 initWithRemoteNotificationDictionary:dictionaryCopy];
   v7 = v5;
   if (v5)
   {
     objc_msgSend_setNotificationType_(v5, v6, 4);
-    v9 = objc_msgSend_objectForKeyedSubscript_(v4, v8, @"ck");
+    v9 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v8, @"ck");
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {

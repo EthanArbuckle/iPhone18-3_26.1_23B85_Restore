@@ -1,15 +1,15 @@
 @interface PostPurchaseOnboardingContainerViewController
-- (_TtC16NewsSubscription45PostPurchaseOnboardingContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
+- (_TtC16NewsSubscription45PostPurchaseOnboardingContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation PostPurchaseOnboardingContainerViewController
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v5 = a3;
+  animatedCopy = animated;
   ObjectType = swift_getObjectType();
-  v8 = _Block_copy(a4);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -35,17 +35,17 @@
   aBlock[2] = sub_1D775FB6C;
   aBlock[3] = &block_descriptor_15;
   v12 = _Block_copy(aBlock);
-  v13 = self;
+  selfCopy = self;
   sub_1D776AC18(v8);
 
-  v14.receiver = v13;
+  v14.receiver = selfCopy;
   v14.super_class = ObjectType;
-  [(PostPurchaseOnboardingContainerViewController *)&v14 dismissViewControllerAnimated:v5 completion:v12];
+  [(PostPurchaseOnboardingContainerViewController *)&v14 dismissViewControllerAnimated:animatedCopy completion:v12];
   _Block_release(v12);
   sub_1D7744A7C(v8);
 }
 
-- (_TtC16NewsSubscription45PostPurchaseOnboardingContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16NewsSubscription45PostPurchaseOnboardingContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

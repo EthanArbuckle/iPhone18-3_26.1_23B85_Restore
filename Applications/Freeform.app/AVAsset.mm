@@ -1,17 +1,17 @@
 @interface AVAsset
-+ (id)crl_creatorArtistOrAuthorWithMetadataArray:(id)a3;
-+ (id)crl_titleWithMetadataArray:(id)a3;
++ (id)crl_creatorArtistOrAuthorWithMetadataArray:(id)array;
++ (id)crl_titleWithMetadataArray:(id)array;
 + (id)keyPathsForValuesAffectingTsu_isPlayable;
 - (BOOL)crl_containsAudioTracks;
 - (BOOL)crl_containsHDRContent;
 - (BOOL)crl_containsTracksWithVisualCharacteristics;
 - (BOOL)crl_containsVideoTracks;
-- (BOOL)p_doesTrack:(id)a3 matchCodecTypes:(id)a4;
+- (BOOL)p_doesTrack:(id)track matchCodecTypes:(id)types;
 - (CGSize)naturalSizeWithPreferredTransforms;
 - (id)crl_creatorArtistOrAuthor;
-- (id)crl_firstTrackWithMediaType:(id)a3;
+- (id)crl_firstTrackWithMediaType:(id)type;
 - (id)crl_title;
-- (void)crl_loadValuesAsynchronouslyForKeys:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5;
+- (void)crl_loadValuesAsynchronouslyForKeys:(id)keys completionQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation AVAsset
@@ -89,21 +89,21 @@
 
 + (id)keyPathsForValuesAffectingTsu_isPlayable
 {
-  v2 = [a1 crl_playableKeysWithKeys:&__NSArray0__struct];
+  v2 = [self crl_playableKeysWithKeys:&__NSArray0__struct];
   v3 = [NSSet setWithArray:v2];
 
   return v3;
 }
 
-- (BOOL)p_doesTrack:(id)a3 matchCodecTypes:(id)a4
+- (BOOL)p_doesTrack:(id)track matchCodecTypes:(id)types
 {
-  v5 = a4;
+  typesCopy = types;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a3 formatDescriptions];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  formatDescriptions = [track formatDescriptions];
+  v7 = [formatDescriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -113,11 +113,11 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(formatDescriptions);
         }
 
         v10 = [NSNumber numberWithUnsignedInt:CMFormatDescriptionGetMediaSubType(*(*(&v13 + 1) + 8 * i))];
-        v11 = [v5 containsObject:v10];
+        v11 = [typesCopy containsObject:v10];
 
         if (v11)
         {
@@ -126,7 +126,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [formatDescriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -141,17 +141,17 @@ LABEL_11:
   return v7;
 }
 
-- (void)crl_loadValuesAsynchronouslyForKeys:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5
+- (void)crl_loadValuesAsynchronouslyForKeys:(id)keys completionQueue:(id)queue completionHandler:(id)handler
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10042ADD0;
   v10[3] = &unk_101839D68;
-  v11 = a4;
-  v12 = a5;
-  v8 = v11;
-  v9 = v12;
-  [(AVAsset *)self loadValuesAsynchronouslyForKeys:a3 completionHandler:v10];
+  queueCopy = queue;
+  handlerCopy = handler;
+  v8 = queueCopy;
+  v9 = handlerCopy;
+  [(AVAsset *)self loadValuesAsynchronouslyForKeys:keys completionHandler:v10];
 }
 
 - (BOOL)crl_containsHDRContent
@@ -222,9 +222,9 @@ LABEL_11:
   return v7;
 }
 
-- (id)crl_firstTrackWithMediaType:(id)a3
+- (id)crl_firstTrackWithMediaType:(id)type
 {
-  [(AVAsset *)self tracksWithMediaType:a3];
+  [(AVAsset *)self tracksWithMediaType:type];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -267,15 +267,15 @@ LABEL_11:
 
 - (id)crl_creatorArtistOrAuthor
 {
-  v2 = [(AVAsset *)self metadata];
-  v3 = [AVAsset crl_creatorArtistOrAuthorWithMetadataArray:v2];
+  metadata = [(AVAsset *)self metadata];
+  v3 = [AVAsset crl_creatorArtistOrAuthorWithMetadataArray:metadata];
 
   return v3;
 }
 
-+ (id)crl_creatorArtistOrAuthorWithMetadataArray:(id)a3
++ (id)crl_creatorArtistOrAuthorWithMetadataArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v18[0] = AVMetadataCommonIdentifierCreator;
   v18[1] = AVMetadataCommonIdentifierArtist;
   v18[2] = AVMetadataCommonIdentifierAuthor;
@@ -313,10 +313,10 @@ LABEL_3:
         objc_enumerationMutation(v4);
       }
 
-      v9 = [AVMetadataItem metadataItemsFromArray:v3 filteredByIdentifier:*(*(&v13 + 1) + 8 * v8), v13];
-      v10 = [v9 firstObject];
+      v9 = [AVMetadataItem metadataItemsFromArray:arrayCopy filteredByIdentifier:*(*(&v13 + 1) + 8 * v8), v13];
+      firstObject = [v9 firstObject];
 
-      if (v10)
+      if (firstObject)
       {
         break;
       }
@@ -337,25 +337,25 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v10 = 0;
+    firstObject = 0;
   }
 
-  v11 = [v10 stringValue];
+  stringValue = [firstObject stringValue];
 
-  return v11;
+  return stringValue;
 }
 
 - (id)crl_title
 {
-  v2 = [(AVAsset *)self metadata];
-  v3 = [AVAsset crl_titleWithMetadataArray:v2];
+  metadata = [(AVAsset *)self metadata];
+  v3 = [AVAsset crl_titleWithMetadataArray:metadata];
 
   return v3;
 }
 
-+ (id)crl_titleWithMetadataArray:(id)a3
++ (id)crl_titleWithMetadataArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v18[0] = AVMetadataCommonIdentifierTitle;
   v18[1] = @"caaf/info-title";
   v18[2] = AVMetadataCommonIdentifierAlbumName;
@@ -385,10 +385,10 @@ LABEL_3:
         objc_enumerationMutation(v4);
       }
 
-      v9 = [AVMetadataItem metadataItemsFromArray:v3 filteredByIdentifier:*(*(&v13 + 1) + 8 * v8), v13];
-      v10 = [v9 firstObject];
+      v9 = [AVMetadataItem metadataItemsFromArray:arrayCopy filteredByIdentifier:*(*(&v13 + 1) + 8 * v8), v13];
+      firstObject = [v9 firstObject];
 
-      if (v10)
+      if (firstObject)
       {
         break;
       }
@@ -409,12 +409,12 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v10 = 0;
+    firstObject = 0;
   }
 
-  v11 = [v10 stringValue];
+  stringValue = [firstObject stringValue];
 
-  return v11;
+  return stringValue;
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface ICShowIdentifierActivity
-- (ICShowIdentifierActivity)initWithIdentifier:(id)a3;
+- (ICShowIdentifierActivity)initWithIdentifier:(id)identifier;
 - (id)activityViewController;
 @end
 
 @implementation ICShowIdentifierActivity
 
-- (ICShowIdentifierActivity)initWithIdentifier:(id)a3
+- (ICShowIdentifierActivity)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8.receiver = self;
   v8.super_class = ICShowIdentifierActivity;
   v5 = [(UIActivity *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICShowIdentifierActivity *)v5 setIdentifier:v4];
+    [(ICShowIdentifierActivity *)v5 setIdentifier:identifierCopy];
   }
 
   return v6;
@@ -23,8 +23,8 @@
 - (id)activityViewController
 {
   v3 = MEMORY[0x1E69DC650];
-  v4 = [(ICShowIdentifierActivity *)self identifier];
-  v5 = [v3 alertControllerWithTitle:v4 message:@"Copy this identifier to the clipboard?" preferredStyle:0];
+  identifier = [(ICShowIdentifierActivity *)self identifier];
+  v5 = [v3 alertControllerWithTitle:identifier message:@"Copy this identifier to the clipboard?" preferredStyle:0];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;

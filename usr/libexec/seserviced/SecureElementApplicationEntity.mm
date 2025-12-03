@@ -1,14 +1,14 @@
 @interface SecureElementApplicationEntity
-- (SecureElementApplicationEntity)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (SecureElementApplicationEntity)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation SecureElementApplicationEntity
 
-- (SecureElementApplicationEntity)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (SecureElementApplicationEntity)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SecureElementApplicationEntity();
-  return [(SecureElementApplicationEntity *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(SecureElementApplicationEntity *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

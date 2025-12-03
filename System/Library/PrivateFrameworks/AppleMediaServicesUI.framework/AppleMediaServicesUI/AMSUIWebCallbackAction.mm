@@ -1,19 +1,19 @@
 @interface AMSUIWebCallbackAction
-- (AMSUIWebCallbackAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebCallbackAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebCallbackAction
 
-- (AMSUIWebCallbackAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebCallbackAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = AMSUIWebCallbackAction;
-  v7 = [(AMSUIWebAction *)&v15 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v15 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"service"];
+    v8 = [objectCopy objectForKeyedSubscript:@"service"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
     service = v7->_service;
     v7->_service = v9;
 
-    v11 = [v6 objectForKeyedSubscript:@"data"];
+    v11 = [objectCopy objectForKeyedSubscript:@"data"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,47 +52,47 @@
   v36 = *MEMORY[0x1E69E9840];
   v27.receiver = self;
   v27.super_class = AMSUIWebCallbackAction;
-  v3 = [(AMSUIWebAction *)&v27 runAction];
+  runAction = [(AMSUIWebAction *)&v27 runAction];
   v4 = AMSGenerateLogCorrelationKey();
-  v5 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v5)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v5 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
-    v8 = [(AMSUIWebAction *)self context];
-    v9 = [v8 logKey];
-    v10 = [(AMSUIWebCallbackAction *)self service];
+    context = [(AMSUIWebAction *)self context];
+    logKey = [context logKey];
+    service = [(AMSUIWebCallbackAction *)self service];
     *buf = 138544130;
     v29 = v7;
     v30 = 2114;
-    v31 = v9;
+    v31 = logKey;
     v32 = 2114;
-    v33 = v10;
+    v33 = service;
     v34 = 2114;
     v35 = v4;
-    _os_log_impl(&dword_1BB036000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Calling back to the JS service: %{public}@ key: %{public}@", buf, 0x2Au);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Calling back to the JS service: %{public}@ key: %{public}@", buf, 0x2Au);
   }
 
-  v11 = [(AMSUIWebAction *)self context];
-  v12 = [v11 logKey];
-  v13 = AMSUIWebSetSubLogKey(v12, 0);
+  context2 = [(AMSUIWebAction *)self context];
+  logKey2 = [context2 logKey];
+  v13 = AMSUIWebSetSubLogKey(logKey2, 0);
 
   v14 = objc_alloc_init(MEMORY[0x1E698CAD0]);
   v15 = [AMSUIWebJSRequest alloc];
-  v16 = [(AMSUIWebCallbackAction *)self service];
-  v17 = [(AMSUIWebJSRequest *)v15 initWithServiceName:v16 logKey:v13];
+  service2 = [(AMSUIWebCallbackAction *)self service];
+  v17 = [(AMSUIWebJSRequest *)v15 initWithServiceName:service2 logKey:v13];
 
-  v18 = [(AMSUIWebCallbackAction *)self data];
-  [(AMSUIWebJSRequest *)v17 setOptions:v18];
+  data = [(AMSUIWebCallbackAction *)self data];
+  [(AMSUIWebJSRequest *)v17 setOptions:data];
 
-  v19 = [(AMSUIWebAction *)self context];
-  v20 = [v19 dataProvider];
-  v21 = [v20 runJSRequest:v17];
+  context3 = [(AMSUIWebAction *)self context];
+  dataProvider = [context3 dataProvider];
+  v21 = [dataProvider runJSRequest:v17];
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;

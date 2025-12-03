@@ -1,6 +1,6 @@
 @interface PGMoodSourceVideo
 - (id)_assetsByMomentIDs;
-- (id)_plistMoodIdentifiersWithGraph:(id)a3;
+- (id)_plistMoodIdentifiersWithGraph:(id)graph;
 @end
 
 @implementation PGMoodSourceVideo
@@ -8,62 +8,62 @@
 - (id)_assetsByMomentIDs
 {
   v60[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(PGMoodSource *)self photoLibrary];
-  v5 = [(PGMoodSource *)self assetCollection];
-  v6 = [(PGMoodSource *)self options];
-  v7 = [v6 prefetchedAssets];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  photoLibrary = [(PGMoodSource *)self photoLibrary];
+  assetCollection = [(PGMoodSource *)self assetCollection];
+  options = [(PGMoodSource *)self options];
+  prefetchedAssets = [options prefetchedAssets];
 
-  if (!v7)
+  if (!prefetchedAssets)
   {
-    v8 = [v4 librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
     v9 = *MEMORY[0x277CD9AD0];
     v60[0] = *MEMORY[0x277CD9B10];
     v60[1] = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:2];
-    [v8 setFetchPropertySets:v10];
+    [librarySpecificFetchOptions setFetchPropertySets:v10];
 
     v11 = +[PGCurationManager defaultAssetSortDescriptors];
-    [v8 setSortDescriptors:v11];
+    [librarySpecificFetchOptions setSortDescriptors:v11];
 
-    v12 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:v5 options:v8];
+    v12 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:assetCollection options:librarySpecificFetchOptions];
     v13 = objc_alloc(MEMORY[0x277D3C790]);
-    v14 = [(PGMoodSource *)self photoLibrary];
-    v15 = [v13 initWithPhotoLibrary:v14];
+    photoLibrary2 = [(PGMoodSource *)self photoLibrary];
+    v15 = [v13 initWithPhotoLibrary:photoLibrary2];
 
-    v7 = [MEMORY[0x277CD97A8] clsAllAssetsFromFetchResult:v12 prefetchOptions:9 curationContext:v15];
-    v16 = [(PGMoodSource *)self options];
-    [v16 setPrefetchedAssets:v7];
+    prefetchedAssets = [MEMORY[0x277CD97A8] clsAllAssetsFromFetchResult:v12 prefetchOptions:9 curationContext:v15];
+    options2 = [(PGMoodSource *)self options];
+    [options2 setPrefetchedAssets:prefetchedAssets];
   }
 
-  if ([v7 count])
+  if ([prefetchedAssets count])
   {
-    v17 = [v4 librarySpecificFetchOptions];
+    librarySpecificFetchOptions2 = [photoLibrary librarySpecificFetchOptions];
     v18 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"startDate" ascending:1];
     v57 = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
-    [v17 setSortDescriptors:v19];
+    [librarySpecificFetchOptions2 setSortDescriptors:v19];
 
-    v51 = [MEMORY[0x277CD97B8] fetchAssetCollectionsContainingAssets:v7 withType:3 options:v17];
-    v20 = [v51 fetchedObjects];
-    v21 = [v20 objectEnumerator];
+    v51 = [MEMORY[0x277CD97B8] fetchAssetCollectionsContainingAssets:prefetchedAssets withType:3 options:librarySpecificFetchOptions2];
+    fetchedObjects = [v51 fetchedObjects];
+    objectEnumerator = [fetchedObjects objectEnumerator];
 
-    v22 = [v21 nextObject];
-    v23 = [v22 endDate];
-    [v23 timeIntervalSinceReferenceDate];
+    nextObject = [objectEnumerator nextObject];
+    endDate = [nextObject endDate];
+    [endDate timeIntervalSinceReferenceDate];
     v25 = v24;
 
-    if (v22)
+    if (nextObject)
     {
-      v47 = v17;
-      v48 = v7;
-      v49 = v5;
-      v50 = v4;
+      v47 = librarySpecificFetchOptions2;
+      v48 = prefetchedAssets;
+      v49 = assetCollection;
+      v50 = photoLibrary;
       v54 = 0u;
       v55 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v26 = v7;
+      v26 = prefetchedAssets;
       v27 = [v26 countByEnumeratingWithState:&v52 objects:v56 count:16];
       if (v27)
       {
@@ -79,46 +79,46 @@
             }
 
             v31 = *(*(&v52 + 1) + 8 * i);
-            v32 = [v31 creationDate];
-            [v32 timeIntervalSinceReferenceDate];
+            creationDate = [v31 creationDate];
+            [creationDate timeIntervalSinceReferenceDate];
             v34 = v33;
 
             if (v34 > v25)
             {
-              v35 = [v21 nextObject];
+              nextObject2 = [objectEnumerator nextObject];
 
-              v36 = [v35 endDate];
-              [v36 timeIntervalSinceReferenceDate];
+              endDate2 = [nextObject2 endDate];
+              [endDate2 timeIntervalSinceReferenceDate];
               v25 = v37;
 
-              if (!v35)
+              if (!nextObject2)
               {
                 v43 = +[PGLogging sharedLogging];
-                v44 = [v43 loggingConnection];
+                loggingConnection = [v43 loggingConnection];
 
-                if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
+                if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138412290;
                   v59 = v31;
-                  _os_log_error_impl(&dword_22F0FC000, v44, OS_LOG_TYPE_ERROR, "Error: No Moments contain Asset %@", buf, 0xCu);
+                  _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Error: No Moments contain Asset %@", buf, 0xCu);
                 }
 
-                v22 = 0;
+                nextObject = 0;
                 goto LABEL_27;
               }
 
-              v22 = v35;
+              nextObject = nextObject2;
             }
 
-            v38 = [v22 uuid];
-            v39 = [v3 objectForKeyedSubscript:v38];
-            if (!v39)
+            uuid = [nextObject uuid];
+            array = [dictionary objectForKeyedSubscript:uuid];
+            if (!array)
             {
-              v39 = [MEMORY[0x277CBEB18] array];
-              [v3 setObject:v39 forKeyedSubscript:v38];
+              array = [MEMORY[0x277CBEB18] array];
+              [dictionary setObject:array forKeyedSubscript:uuid];
             }
 
-            [v39 addObject:v31];
+            [array addObject:v31];
           }
 
           v28 = [v26 countByEnumeratingWithState:&v52 objects:v56 count:16];
@@ -133,23 +133,23 @@
 
 LABEL_27:
 
-      v41 = v3;
-      v5 = v49;
-      v4 = v50;
-      v17 = v47;
-      v7 = v48;
+      v41 = dictionary;
+      assetCollection = v49;
+      photoLibrary = v50;
+      librarySpecificFetchOptions2 = v47;
+      prefetchedAssets = v48;
     }
 
     else
     {
       v42 = +[PGLogging sharedLogging];
-      v22 = [v42 loggingConnection];
+      nextObject = [v42 loggingConnection];
 
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(nextObject, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v59 = v7;
-        _os_log_error_impl(&dword_22F0FC000, v22, OS_LOG_TYPE_ERROR, "Error: No moments contain assets: %@", buf, 0xCu);
+        v59 = prefetchedAssets;
+        _os_log_error_impl(&dword_22F0FC000, nextObject, OS_LOG_TYPE_ERROR, "Error: No moments contain assets: %@", buf, 0xCu);
       }
 
       v41 = MEMORY[0x277CBEC10];
@@ -159,13 +159,13 @@ LABEL_27:
   else
   {
     v40 = +[PGLogging sharedLogging];
-    v17 = [v40 loggingConnection];
+    librarySpecificFetchOptions2 = [v40 loggingConnection];
 
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(librarySpecificFetchOptions2, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v59 = v5;
-      _os_log_error_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_ERROR, "Error: No assets in assetCollection: %@", buf, 0xCu);
+      v59 = assetCollection;
+      _os_log_error_impl(&dword_22F0FC000, librarySpecificFetchOptions2, OS_LOG_TYPE_ERROR, "Error: No assets in assetCollection: %@", buf, 0xCu);
     }
 
     v41 = MEMORY[0x277CBEC10];
@@ -176,10 +176,10 @@ LABEL_27:
   return v41;
 }
 
-- (id)_plistMoodIdentifiersWithGraph:(id)a3
+- (id)_plistMoodIdentifiersWithGraph:(id)graph
 {
   v38 = *MEMORY[0x277D85DE8];
-  v25 = a3;
+  graphCopy = graph;
   [(PGMoodSourceVideo *)self _assetsByMomentIDs];
   v31 = 0u;
   v32 = 0u;

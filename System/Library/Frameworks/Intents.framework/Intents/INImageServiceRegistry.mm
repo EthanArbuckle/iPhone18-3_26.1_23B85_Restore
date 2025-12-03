@@ -4,12 +4,12 @@
 - (NSArray)imageLoaders;
 - (NSArray)imageServices;
 - (NSArray)imageStorageServices;
-- (id)imageLoaderForServiceIdentifier:(id)a3;
-- (id)imageServiceForServiceIdentifier:(id)a3;
-- (id)imageStorageServiceForServiceIdentifier:(id)a3;
+- (id)imageLoaderForServiceIdentifier:(id)identifier;
+- (id)imageServiceForServiceIdentifier:(id)identifier;
+- (id)imageStorageServiceForServiceIdentifier:(id)identifier;
 - (void)_reprioritizeImageServices;
-- (void)registerImageService:(id)a3;
-- (void)unregisterImageService:(id)a3;
+- (void)registerImageService:(id)service;
+- (void)unregisterImageService:(id)service;
 @end
 
 @implementation INImageServiceRegistry
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __40__INImageServiceRegistry_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -62,8 +62,8 @@ uint64_t __40__INImageServiceRegistry_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)_reprioritizeImageServices
 {
-  v6 = [(NSMutableDictionary *)self->_imageServicesByServiceIdentifier allValues];
-  v3 = [v6 sortedArrayUsingComparator:&__block_literal_global_69072];
+  allValues = [(NSMutableDictionary *)self->_imageServicesByServiceIdentifier allValues];
+  v3 = [allValues sortedArrayUsingComparator:&__block_literal_global_69072];
   v4 = [v3 mutableCopy];
   prioritySortedImageServices = self->_prioritySortedImageServices;
   self->_prioritySortedImageServices = v4;
@@ -146,9 +146,9 @@ uint64_t __77__INImageServiceRegistry_INImageStorageServiceRegistry__imageStorag
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)imageServiceForServiceIdentifier:(id)a3
+- (id)imageServiceForServiceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -160,10 +160,10 @@ uint64_t __77__INImageServiceRegistry_INImageStorageServiceRegistry__imageStorag
   block[1] = 3221225472;
   block[2] = __59__INImageServiceRegistry_imageServiceForServiceIdentifier___block_invoke;
   block[3] = &unk_1E7283018;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
-  v10 = v4;
-  v6 = v4;
+  v10 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(registryQueue, block);
   v7 = v14[5];
 
@@ -231,19 +231,19 @@ void __39__INImageServiceRegistry_imageServices__block_invoke(uint64_t a1)
   objc_storeStrong((*(*(a1 + 40) + 8) + 40), v3);
 }
 
-- (void)unregisterImageService:(id)a3
+- (void)unregisterImageService:(id)service
 {
-  v4 = a3;
-  v5 = [v4 serviceIdentifier];
+  serviceCopy = service;
+  serviceIdentifier = [serviceCopy serviceIdentifier];
 
-  if (v5)
+  if (serviceIdentifier)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __49__INImageServiceRegistry_unregisterImageService___block_invoke;
     v7[3] = &unk_1E7287190;
     v7[4] = self;
-    v8 = v4;
+    v8 = serviceCopy;
     v6 = MEMORY[0x193AD7780](v7);
     if (dispatch_get_specific(&INImageServiceRegistryQueueSpecificKey) == self)
     {
@@ -269,19 +269,19 @@ uint64_t __49__INImageServiceRegistry_unregisterImageService___block_invoke(uint
   return [v5 removeObject:v4];
 }
 
-- (void)registerImageService:(id)a3
+- (void)registerImageService:(id)service
 {
-  v4 = a3;
-  v5 = [v4 serviceIdentifier];
+  serviceCopy = service;
+  serviceIdentifier = [serviceCopy serviceIdentifier];
 
-  if (v5)
+  if (serviceIdentifier)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __47__INImageServiceRegistry_registerImageService___block_invoke;
     v7[3] = &unk_1E7287190;
     v7[4] = self;
-    v8 = v4;
+    v8 = serviceCopy;
     v6 = MEMORY[0x193AD7780](v7);
     if (dispatch_get_specific(&INImageServiceRegistryQueueSpecificKey) == self)
     {
@@ -307,9 +307,9 @@ uint64_t __47__INImageServiceRegistry_registerImageService___block_invoke(uint64
   return [v5 _reprioritizeImageServices];
 }
 
-- (id)imageStorageServiceForServiceIdentifier:(id)a3
+- (id)imageStorageServiceForServiceIdentifier:(id)identifier
 {
-  v3 = [(INImageServiceRegistry *)self imageServiceForServiceIdentifier:a3];
+  v3 = [(INImageServiceRegistry *)self imageServiceForServiceIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
@@ -334,9 +334,9 @@ uint64_t __47__INImageServiceRegistry_registerImageService___block_invoke(uint64
   return v5;
 }
 
-- (id)imageLoaderForServiceIdentifier:(id)a3
+- (id)imageLoaderForServiceIdentifier:(id)identifier
 {
-  v3 = [(INImageServiceRegistry *)self imageServiceForServiceIdentifier:a3];
+  v3 = [(INImageServiceRegistry *)self imageServiceForServiceIdentifier:identifier];
   v4 = v3;
   if (v3)
   {

@@ -1,13 +1,13 @@
 @interface SUScriptButton
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (BOOL)enabled;
 - (BOOL)loading;
 - (NSString)style;
 - (NSString)subtitle;
 - (NSString)title;
-- (SUScriptButton)initWithSystemItemString:(id)a3;
+- (SUScriptButton)initWithSystemItemString:(id)string;
 - (SUScriptCanvasContext)canvas;
 - (UIEdgeInsets)imageEdgeInsets;
 - (UIImage)image;
@@ -18,22 +18,22 @@
 - (id)_systemItemString;
 - (id)action;
 - (id)buttonItem;
-- (id)nativeButtonOfType:(int)a3;
+- (id)nativeButtonOfType:(int)type;
 - (id)scriptAttributeKeys;
 - (id)showingConfirmation;
 - (int64_t)tag;
 - (void)dealloc;
-- (void)performActionWithArguments:(id)a3;
-- (void)setAction:(id)a3;
-- (void)setCanvas:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setImageWithURLString:(id)a3 scale:(id)a4;
-- (void)setNativeButton:(id)a3;
-- (void)setStyle:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTarget:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)showConfirmationWithTitle:(id)a3 animated:(BOOL)a4;
+- (void)performActionWithArguments:(id)arguments;
+- (void)setAction:(id)action;
+- (void)setCanvas:(id)canvas;
+- (void)setImage:(id)image;
+- (void)setImageWithURLString:(id)string scale:(id)scale;
+- (void)setNativeButton:(id)button;
+- (void)setStyle:(id)style;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTarget:(id)target;
+- (void)setTitle:(id)title;
+- (void)showConfirmationWithTitle:(id)title animated:(BOOL)animated;
 @end
 
 @implementation SUScriptButton
@@ -51,17 +51,17 @@
   return result;
 }
 
-- (SUScriptButton)initWithSystemItemString:(id)a3
+- (SUScriptButton)initWithSystemItemString:(id)string
 {
-  v4 = [(SUScriptButton *)self _initSUScriptButton];
-  if (v4)
+  _initSUScriptButton = [(SUScriptButton *)self _initSUScriptButton];
+  if (_initSUScriptButton)
   {
-    v5 = [[SUScriptButtonNativeObject alloc] initWithSystemItemString:a3];
-    [(SUScriptObject *)v4 setNativeObject:v5];
-    [(SUScriptObject *)v4 setNativeObject:[SUScriptNativeUIBarButtonItem objectWithDefaultButtonForScriptButton:v4]];
+    v5 = [[SUScriptButtonNativeObject alloc] initWithSystemItemString:string];
+    [(SUScriptObject *)_initSUScriptButton setNativeObject:v5];
+    [(SUScriptObject *)_initSUScriptButton setNativeObject:[SUScriptNativeUIBarButtonItem objectWithDefaultButtonForScriptButton:_initSUScriptButton]];
   }
 
-  return v4;
+  return _initSUScriptButton;
 }
 
 - (void)dealloc
@@ -73,16 +73,16 @@
 
 - (UIImage)image
 {
-  v2 = [(SUScriptButton *)self _boxedNativeButton];
+  _boxedNativeButton = [(SUScriptButton *)self _boxedNativeButton];
 
-  return [v2 image];
+  return [_boxedNativeButton image];
 }
 
 - (UIEdgeInsets)imageEdgeInsets
 {
-  v2 = [(SUScriptButton *)self _boxedNativeButton];
+  _boxedNativeButton = [(SUScriptButton *)self _boxedNativeButton];
 
-  [v2 imageInsets];
+  [_boxedNativeButton imageInsets];
   result.right = v6;
   result.bottom = v5;
   result.left = v4;
@@ -90,11 +90,11 @@
   return result;
 }
 
-- (id)nativeButtonOfType:(int)a3
+- (id)nativeButtonOfType:(int)type
 {
-  v5 = [(SUScriptObject *)self nativeObject];
-  v6 = v5;
-  if (v5 && [(SUScriptNativeObject *)v5 buttonType]== a3)
+  nativeObject = [(SUScriptObject *)self nativeObject];
+  v6 = nativeObject;
+  if (nativeObject && [(SUScriptNativeObject *)nativeObject buttonType]== type)
   {
     v7 = v6;
   }
@@ -102,7 +102,7 @@
   else
   {
     v8 = off_1E8162F08;
-    if (a3 != 1)
+    if (type != 1)
     {
       v8 = off_1E8162F10;
     }
@@ -120,7 +120,7 @@
   return [(SUScriptNativeObject *)v7 object];
 }
 
-- (void)performActionWithArguments:(id)a3
+- (void)performActionWithArguments:(id)arguments
 {
   action = self->_action;
   objc_opt_class();
@@ -148,19 +148,19 @@ LABEL_2:
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = [(SUScriptButton *)self _boxedNativeButton];
+  _boxedNativeButton = [(SUScriptButton *)self _boxedNativeButton];
 
-  [v4 setImage:a3];
+  [_boxedNativeButton setImage:image];
 }
 
-- (void)setNativeButton:(id)a3
+- (void)setNativeButton:(id)button
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (v5 = objc_opt_class()) != 0)
   {
-    v6 = [v5 objectWithNativeObject:a3];
+    v6 = [v5 objectWithNativeObject:button];
   }
 
   else
@@ -180,10 +180,10 @@ LABEL_2:
     goto LABEL_7;
   }
 
-  v4 = [(SUScriptButton *)self style];
+  style = [(SUScriptButton *)self style];
   v5 = &off_1E8165720;
   v6 = 4;
-  while (![*v5 isEqualToString:v4])
+  while (![*v5 isEqualToString:style])
   {
     v5 += 2;
     if (!--v6)
@@ -196,15 +196,15 @@ LABEL_2:
   {
 LABEL_7:
     v7 = [-[SUScriptButton _boxedNativeButton](self "_boxedNativeButton")];
-    v8 = [(SUClientInterface *)[(SUScriptObject *)self clientInterface] appearance];
+    appearance = [(SUClientInterface *)[(SUScriptObject *)self clientInterface] appearance];
     if (v7)
     {
-      [(SUUIAppearance *)v8 _styleBackBarButtonItem:v3];
+      [(SUUIAppearance *)appearance _styleBackBarButtonItem:v3];
     }
 
     else
     {
-      [(SUUIAppearance *)v8 styleBarButtonItem:v3];
+      [(SUUIAppearance *)appearance styleBarButtonItem:v3];
     }
   }
 
@@ -286,10 +286,10 @@ uint64_t __25__SUScriptButton_loading__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !action) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -324,21 +324,21 @@ uint64_t __28__SUScriptButton_setAction___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setCanvas:(id)a3
+- (void)setCanvas:(id)canvas
 {
   [(SUScriptObject *)self lock];
   canvas = self->_canvas;
-  if (canvas == a3)
+  if (canvas == canvas)
   {
     [(SUScriptObject *)self unlock];
-    v6 = 0;
+    copyCanvasImage = 0;
   }
 
   else
   {
 
-    self->_canvas = a3;
-    v6 = [a3 copyCanvasImage];
+    self->_canvas = canvas;
+    copyCanvasImage = [canvas copyCanvasImage];
     [(SUScriptObject *)self unlock];
     WebThreadRunOnMainThread();
   }
@@ -363,16 +363,16 @@ uint64_t __54__SUScriptButton_setImageInsetsTop_left_bottom_right___block_invoke
   return [v2 setImageInsets:{v3, v4, v5, v6}];
 }
 
-- (void)setImageWithURLString:(id)a3 scale:(id)a4
+- (void)setImageWithURLString:(id)string scale:(id)scale
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a4 = 0;
+    scale = 0;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (!a4 || (objc_opt_respondsToSelector()))
+  if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !string) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (!scale || (objc_opt_respondsToSelector()))
   {
     WebThreadRunOnMainThread();
   }
@@ -423,10 +423,10 @@ uint64_t __29__SUScriptButton_setLoading___block_invoke(uint64_t a1)
   return [v2 setLoading:v3];
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !style) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -455,10 +455,10 @@ uint64_t __27__SUScriptButton_setStyle___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !subtitle) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -487,10 +487,10 @@ uint64_t __25__SUScriptButton_setTag___block_invoke(uint64_t a1)
   return [v2 setTag:v3];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !title) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -511,10 +511,10 @@ uint64_t __27__SUScriptButton_setTitle___block_invoke(uint64_t a1)
   return [v2 setTitle:v3];
 }
 
-- (void)showConfirmationWithTitle:(id)a3 animated:(BOOL)a4
+- (void)showConfirmationWithTitle:(id)title animated:(BOOL)animated
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !title) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -578,15 +578,15 @@ uint64_t __37__SUScriptButton_showingConfirmation__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -611,15 +611,15 @@ id __23__SUScriptButton_style__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -663,15 +663,15 @@ uint64_t __21__SUScriptButton_tag__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -683,19 +683,19 @@ id __23__SUScriptButton_title__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    targetCopy = 0;
 LABEL_3:
     [(SUScriptObject *)self lock];
     target = self->_target;
-    if (target != v5)
+    if (target != targetCopy)
     {
 
-      self->_target = v5;
+      self->_target = targetCopy;
     }
 
     [(SUScriptObject *)self unlock];
@@ -704,8 +704,8 @@ LABEL_3:
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = 0;
-  if (!a3)
+  targetCopy = 0;
+  if (!target)
   {
     goto LABEL_3;
   }
@@ -716,7 +716,7 @@ LABEL_3:
   }
 
   objc_opt_class();
-  v5 = a3;
+  targetCopy = target;
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_3;
@@ -737,52 +737,52 @@ LABEL_3:
 
 - (id)_boxedNativeButton
 {
-  v3 = [(SUScriptObject *)self nativeObject];
+  nativeObject = [(SUScriptObject *)self nativeObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v3 = [SUScriptNativeUIButton objectWithDefaultButtonForScriptButton:self];
-    [(SUScriptObject *)self setNativeObject:v3];
+    nativeObject = [SUScriptNativeUIButton objectWithDefaultButtonForScriptButton:self];
+    [(SUScriptObject *)self setNativeObject:nativeObject];
   }
 
-  return v3;
+  return nativeObject;
 }
 
 - (id)_nativeButton
 {
-  v2 = [(SUScriptButton *)self _boxedNativeButton];
+  _boxedNativeButton = [(SUScriptButton *)self _boxedNativeButton];
 
-  return [v2 object];
+  return [_boxedNativeButton object];
 }
 
 - (id)_systemItemString
 {
-  v2 = [(SUScriptObject *)self nativeObject];
+  nativeObject = [(SUScriptObject *)self nativeObject];
 
-  return [(SUScriptNativeObject *)v2 systemItemString];
+  return [(SUScriptNativeObject *)nativeObject systemItemString];
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_12 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptButton;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_9, 4);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_9, 4);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptButton;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -792,14 +792,14 @@ LABEL_3:
 {
   v4.receiver = self;
   v4.super_class = SUScriptButton;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_12 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_12 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __KeyMapping_12 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{@"action", @"canvas", @"canvas", @"enabled", @"enabled", @"loading", @"loading", @"showingConfirmation", @"showingConfirmation", @"style", @"style", @"subtitle", @"subtitle", @"tag", @"tag", @"title", @"title", @"target", @"target", 0}];
     __SelectorMapping_9 = sel_hideConfirmationAnimated_;

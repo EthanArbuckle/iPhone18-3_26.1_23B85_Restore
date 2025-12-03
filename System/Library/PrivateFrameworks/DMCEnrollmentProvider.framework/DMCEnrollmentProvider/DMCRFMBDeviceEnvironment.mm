@@ -40,19 +40,19 @@
   block[3] = &unk_278EE7940;
   block[4] = v24;
   dispatch_after(v8, v7, block);
-  v9 = [MEMORY[0x277D04BF8] currentUserConnection];
+  currentUserConnection = [MEMORY[0x277D04BF8] currentUserConnection];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __57__DMCRFMBDeviceEnvironment_installedAppBundleIdentifiers__block_invoke_18;
   v17[3] = &unk_278EE8098;
   v10 = v7;
   v18 = v10;
-  v19 = self;
+  selfCopy = self;
   v21 = v24;
   v22 = buf;
   v11 = v6;
   v20 = v11;
-  [v9 performRequest:v4 completion:v17];
+  [currentUserConnection performRequest:v4 completion:v17];
 
   v12 = *(DMCLogObjects() + 32);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))

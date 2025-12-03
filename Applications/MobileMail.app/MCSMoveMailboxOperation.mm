@@ -1,24 +1,24 @@
 @interface MCSMoveMailboxOperation
 - (BOOL)commit;
-- (MCSMoveMailboxOperation)initWithMailboxToMove:(id)a3 toParent:(id)a4;
+- (MCSMoveMailboxOperation)initWithMailboxToMove:(id)move toParent:(id)parent;
 - (id)localizedErrorDescription;
 - (id)localizedErrorTitle;
 @end
 
 @implementation MCSMoveMailboxOperation
 
-- (MCSMoveMailboxOperation)initWithMailboxToMove:(id)a3 toParent:(id)a4
+- (MCSMoveMailboxOperation)initWithMailboxToMove:(id)move toParent:(id)parent
 {
-  v7 = a3;
-  v8 = a4;
+  moveCopy = move;
+  parentCopy = parent;
   v12.receiver = self;
   v12.super_class = MCSMoveMailboxOperation;
   v9 = [(MCSMoveMailboxOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mailboxToMove, a3);
-    objc_storeStrong(&v10->_parentMailbox, a4);
+    objc_storeStrong(&v9->_mailboxToMove, move);
+    objc_storeStrong(&v10->_parentMailbox, parent);
     *(&v10->super.super + 8) |= 1u;
   }
 
@@ -27,30 +27,30 @@
 
 - (BOOL)commit
 {
-  v3 = [(MFMailboxUid *)self->_mailboxToMove account];
-  v4 = [(MFMailboxUid *)self->_parentMailbox account];
-  if (v3 == v4)
+  account = [(MFMailboxUid *)self->_mailboxToMove account];
+  account2 = [(MFMailboxUid *)self->_parentMailbox account];
+  if (account == account2)
   {
     v6 = [EMMoveMailboxChangeAction alloc];
-    v7 = [(MFMailboxUid *)self->_mailboxToMove objectID];
-    v8 = [(MFMailboxUid *)self->_parentMailbox objectID];
-    v9 = [v6 initWithMailboxObjectID:v7 newParentMailboxID:v8];
+    objectID = [(MFMailboxUid *)self->_mailboxToMove objectID];
+    objectID2 = [(MFMailboxUid *)self->_parentMailbox objectID];
+    v9 = [v6 initWithMailboxObjectID:objectID newParentMailboxID:objectID2];
 
     v10 = +[UIApplication sharedApplication];
-    v11 = [v10 daemonInterface];
-    v12 = [v11 mailboxRepository];
-    v13 = [v12 performMailboxChangeAction:v9];
+    daemonInterface = [v10 daemonInterface];
+    mailboxRepository = [daemonInterface mailboxRepository];
+    v13 = [mailboxRepository performMailboxChangeAction:v9];
 
     v14 = [v13 result:0];
-    v5 = [v14 BOOLValue];
+    bOOLValue = [v14 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)localizedErrorDescription

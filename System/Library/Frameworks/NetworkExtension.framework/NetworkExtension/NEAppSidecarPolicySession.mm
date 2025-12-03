@@ -565,11 +565,11 @@ LABEL_111:
         }
       }
 
-      v109 = [objc_getProperty(selfa v108];
+      v108 = [objc_getProperty(selfa v108];
       v110 = ne_log_obj();
       v111 = v110;
       v3 = v124;
-      if (v109)
+      if (v108)
       {
         v4 = v125;
         v6 = v127;
@@ -638,9 +638,9 @@ LABEL_86:
     goto LABEL_4;
   }
 
-  v3 = [[NEPolicySession alloc] initFromPrivilegedProcess];
+  initFromPrivilegedProcess = [[NEPolicySession alloc] initFromPrivilegedProcess];
   policySession = v2->_policySession;
-  v2->_policySession = v3;
+  v2->_policySession = initFromPrivilegedProcess;
 
   v5 = v2->_policySession;
   if (v5)

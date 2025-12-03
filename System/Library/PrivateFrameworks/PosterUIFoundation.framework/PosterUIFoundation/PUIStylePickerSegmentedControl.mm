@@ -1,32 +1,32 @@
 @interface PUIStylePickerSegmentedControl
-- (PUIStylePickerSegmentedControl)initWithFrame:(CGRect)a3 actions:(id)a4;
-- (double)calculatedWidthForAvailableWidth:(double)a3;
+- (PUIStylePickerSegmentedControl)initWithFrame:(CGRect)frame actions:(id)actions;
+- (double)calculatedWidthForAvailableWidth:(double)width;
 - (void)_updateSegmentWidths;
 - (void)layoutSubviews;
 @end
 
 @implementation PUIStylePickerSegmentedControl
 
-- (PUIStylePickerSegmentedControl)initWithFrame:(CGRect)a3 actions:(id)a4
+- (PUIStylePickerSegmentedControl)initWithFrame:(CGRect)frame actions:(id)actions
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v48[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  actionsCopy = actions;
   v45.receiver = self;
   v45.super_class = PUIStylePickerSegmentedControl;
-  v10 = [(PUIStylePickerSegmentedControl *)&v45 initWithFrame:v9 actions:x, y, width, height];
-  if (v10)
+  height = [(PUIStylePickerSegmentedControl *)&v45 initWithFrame:actionsCopy actions:x, y, width, height];
+  if (height)
   {
     if (objc_opt_respondsToSelector())
     {
-      [(PUIStylePickerSegmentedControl *)v10 _setUseSpringBoardVibrancy:1];
+      [(PUIStylePickerSegmentedControl *)height _setUseSpringBoardVibrancy:1];
     }
 
-    [(PUIStylePickerSegmentedControl *)v10 setTransparentBackground:1];
-    v10->_lastKnownWidth = -1.0;
+    [(PUIStylePickerSegmentedControl *)height setTransparentBackground:1];
+    height->_lastKnownWidth = -1.0;
     v47 = *MEMORY[0x1E6965808];
     v48[0] = @".SFUI-Medium";
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:&v47 count:1];
@@ -41,7 +41,7 @@
 
     v17 = *MEMORY[0x1E69DB648];
     [v14 setObject:v13 forKey:*MEMORY[0x1E69DB648]];
-    [(PUIStylePickerSegmentedControl *)v10 setTitleTextAttributes:v14 forState:0];
+    [(PUIStylePickerSegmentedControl *)height setTitleTextAttributes:v14 forState:0];
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v19 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
     [v18 setObject:v19 forKey:v16];
@@ -49,19 +49,19 @@
     v38 = v13;
     [v18 setObject:v13 forKey:v17];
     v37 = v18;
-    [(PUIStylePickerSegmentedControl *)v10 setTitleTextAttributes:v18 forState:4];
+    [(PUIStylePickerSegmentedControl *)height setTitleTextAttributes:v18 forState:4];
     v36 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.12];
-    [(PUIStylePickerSegmentedControl *)v10 setSelectedSegmentTintColor:?];
-    v20 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+    [(PUIStylePickerSegmentedControl *)height setSelectedSegmentTintColor:?];
+    v20 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(actionsCopy, "count")}];
     v21 = v14;
-    v22 = v10;
-    *&v10->_segmentMinimumWidth = qword_1A8D24950[[v9 count] > 2];
+    v22 = height;
+    *&height->_segmentMinimumWidth = qword_1A8D24950[[actionsCopy count] > 2];
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v39 = v9;
-    obj = v9;
+    v39 = actionsCopy;
+    obj = actionsCopy;
     v23 = [obj countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v23)
     {
@@ -77,8 +77,8 @@
             objc_enumerationMutation(obj);
           }
 
-          v28 = [*(*(&v41 + 1) + 8 * i) title];
-          [v28 sizeWithAttributes:v21];
+          title = [*(*(&v41 + 1) + 8 * i) title];
+          [title sizeWithAttributes:v21];
           v30 = ceil(v29 + 25.0);
           if (v30 >= v22->_segmentMinimumWidth)
           {
@@ -109,15 +109,15 @@
     }
 
     v33 = [v20 copy];
-    v10 = v22;
+    height = v22;
     idealSegmentWidths = v22->_idealSegmentWidths;
     v22->_idealSegmentWidths = v33;
 
     v22->_totalIdealWidth = v26;
-    v9 = v39;
+    actionsCopy = v39;
   }
 
-  return v10;
+  return height;
 }
 
 - (void)layoutSubviews
@@ -187,20 +187,20 @@
   }
 }
 
-- (double)calculatedWidthForAvailableWidth:(double)a3
+- (double)calculatedWidthForAvailableWidth:(double)width
 {
-  v3 = a3;
-  if (self->_totalIdealWidth <= a3)
+  widthCopy = width;
+  if (self->_totalIdealWidth <= width)
   {
     if ([(PUIStylePickerSegmentedControl *)self numberOfSegments])
     {
       v5 = 0;
-      v3 = 0.0;
+      widthCopy = 0.0;
       do
       {
         v6 = [(NSArray *)self->_idealSegmentWidths objectAtIndex:v5];
         [v6 floatValue];
-        v3 = v3 + v7;
+        widthCopy = widthCopy + v7;
 
         ++v5;
       }
@@ -214,7 +214,7 @@
     }
   }
 
-  return v3;
+  return widthCopy;
 }
 
 @end

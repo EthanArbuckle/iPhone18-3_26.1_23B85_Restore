@@ -1,24 +1,24 @@
 @interface DMDConfigurationSource
 - (NSString)description;
 - (NSString)organizationIdentifier;
-- (void)setOrganizationIdentifier:(id)a3;
+- (void)setOrganizationIdentifier:(id)identifier;
 @end
 
 @implementation DMDConfigurationSource
 
-- (void)setOrganizationIdentifier:(id)a3
+- (void)setOrganizationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DMDConfigurationSource *)self organization];
-  [v5 setIdentifier:v4];
+  identifierCopy = identifier;
+  organization = [(DMDConfigurationSource *)self organization];
+  [organization setIdentifier:identifierCopy];
 }
 
 - (NSString)organizationIdentifier
 {
-  v2 = [(DMDConfigurationSource *)self organization];
-  v3 = [v2 identifier];
+  organization = [(DMDConfigurationSource *)self organization];
+  identifier = [organization identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSString)description

@@ -1,9 +1,9 @@
 @interface CNUICoreContactTypeAssessor
 + (NSArray)keysToFetch;
 - (CNUICoreContactTypeAssessor)init;
-- (CNUICoreContactTypeAssessor)initWithFamilyInfo:(id)a3;
-- (CNUICoreContactTypeAssessor)initWithFamilyInfoFuture:(id)a3;
-- (int64_t)estiamtedTypeOfContact:(id)a3;
+- (CNUICoreContactTypeAssessor)initWithFamilyInfo:(id)info;
+- (CNUICoreContactTypeAssessor)initWithFamilyInfoFuture:(id)future;
+- (int64_t)estiamtedTypeOfContact:(id)contact;
 @end
 
 @implementation CNUICoreContactTypeAssessor
@@ -20,15 +20,15 @@
 
 - (CNUICoreContactTypeAssessor)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNUICoreContactTypeAssessor)initWithFamilyInfo:(id)a3
+- (CNUICoreContactTypeAssessor)initWithFamilyInfo:(id)info
 {
-  v4 = a3;
-  if (!v4)
+  infoCopy = info;
+  if (!infoCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_17 != -1)
     {
@@ -42,16 +42,16 @@
     }
   }
 
-  v6 = [MEMORY[0x1E6996720] futureWithResult:v4];
+  v6 = [MEMORY[0x1E6996720] futureWithResult:infoCopy];
   v7 = [(CNUICoreContactTypeAssessor *)self initWithFamilyInfoFuture:v6];
 
   return v7;
 }
 
-- (CNUICoreContactTypeAssessor)initWithFamilyInfoFuture:(id)a3
+- (CNUICoreContactTypeAssessor)initWithFamilyInfoFuture:(id)future
 {
-  v5 = a3;
-  if (!v5)
+  futureCopy = future;
+  if (!futureCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_17 != -1)
     {
@@ -71,25 +71,25 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_familyInfoFuture, a3);
+    objc_storeStrong(&v7->_familyInfoFuture, future);
     v9 = v8;
   }
 
   return v8;
 }
 
-- (int64_t)estiamtedTypeOfContact:(id)a3
+- (int64_t)estiamtedTypeOfContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNUICoreContactTypeAssessor *)self familyInfoFuture];
-  v6 = [v5 result:0];
+  contactCopy = contact;
+  familyInfoFuture = [(CNUICoreContactTypeAssessor *)self familyInfoFuture];
+  v6 = [familyInfoFuture result:0];
 
   if (v6)
   {
-    v7 = [v6 meContact];
-    v8 = [CNUICoreContactMatcher doesContact:v4 matchContact:v7];
+    meContact = [v6 meContact];
+    v8 = [CNUICoreContactMatcher doesContact:contactCopy matchContact:meContact];
 
-    v9 = [CNUICoreContactMatcher doesContact:v4 matchAnyParentOrGuardianInFamily:v6];
+    v9 = [CNUICoreContactMatcher doesContact:contactCopy matchAnyParentOrGuardianInFamily:v6];
     if (v8)
     {
       v10 = 2;

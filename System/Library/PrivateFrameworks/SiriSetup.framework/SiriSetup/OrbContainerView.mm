@@ -1,13 +1,13 @@
 @interface OrbContainerView
 - (CGSize)intrinsicContentSize;
-- (_TtC9SiriSetup16OrbContainerView)initWithCoder:(id)a3;
-- (_TtC9SiriSetup16OrbContainerView)initWithFrame:(CGRect)a3;
+- (_TtC9SiriSetup16OrbContainerView)initWithCoder:(id)coder;
+- (_TtC9SiriSetup16OrbContainerView)initWithFrame:(CGRect)frame;
 - (void)updateConstraints;
 @end
 
 @implementation OrbContainerView
 
-- (_TtC9SiriSetup16OrbContainerView)initWithCoder:(id)a3
+- (_TtC9SiriSetup16OrbContainerView)initWithCoder:(id)coder
 {
   result = sub_269057CC4();
   __break(1u);
@@ -16,7 +16,7 @@
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_269012E9C();
 }
 
@@ -29,7 +29,7 @@
   return result;
 }
 
-- (_TtC9SiriSetup16OrbContainerView)initWithFrame:(CGRect)a3
+- (_TtC9SiriSetup16OrbContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

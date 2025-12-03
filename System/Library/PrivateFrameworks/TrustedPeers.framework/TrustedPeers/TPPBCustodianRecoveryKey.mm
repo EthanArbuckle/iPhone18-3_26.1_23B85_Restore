@@ -1,43 +1,43 @@
 @interface TPPBCustodianRecoveryKey
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsKind:(id)a3;
+- (int)StringAsKind:(id)kind;
 - (int)kind;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TPPBCustodianRecoveryKey
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(TPPBCustodianRecoveryKey *)self setUuid:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(TPPBCustodianRecoveryKey *)self setSigningPublicKey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(TPPBCustodianRecoveryKey *)self setEncryptionPublicKey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[10])
+  if (fromCopy[10])
   {
-    self->_kind = v4[4];
+    self->_kind = fromCopy[4];
     *&self->_has |= 1u;
   }
 }
@@ -60,16 +60,16 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 4))
+  if (uuid | *(equalCopy + 4))
   {
     if (![(NSString *)uuid isEqual:?])
     {
@@ -78,7 +78,7 @@
   }
 
   signingPublicKey = self->_signingPublicKey;
-  if (signingPublicKey | *(v4 + 3))
+  if (signingPublicKey | *(equalCopy + 3))
   {
     if (![(NSData *)signingPublicKey isEqual:?])
     {
@@ -87,7 +87,7 @@
   }
 
   encryptionPublicKey = self->_encryptionPublicKey;
-  if (encryptionPublicKey | *(v4 + 1))
+  if (encryptionPublicKey | *(equalCopy + 1))
   {
     if (![(NSData *)encryptionPublicKey isEqual:?])
     {
@@ -95,10 +95,10 @@
     }
   }
 
-  v8 = (*(v4 + 40) & 1) == 0;
+  v8 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) != 0 && self->_kind == *(v4 + 4))
+    if ((*(equalCopy + 40) & 1) != 0 && self->_kind == *(equalCopy + 4))
     {
       v8 = 1;
       goto LABEL_13;
@@ -113,18 +113,18 @@ LABEL_13:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuid copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSData *)self->_signingPublicKey copyWithZone:a3];
+  v8 = [(NSData *)self->_signingPublicKey copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSData *)self->_encryptionPublicKey copyWithZone:a3];
+  v10 = [(NSData *)self->_encryptionPublicKey copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
@@ -137,73 +137,73 @@ LABEL_13:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_uuid)
   {
-    [v4 setUuid:?];
-    v4 = v5;
+    [toCopy setUuid:?];
+    toCopy = v5;
   }
 
   if (self->_signingPublicKey)
   {
     [v5 setSigningPublicKey:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_encryptionPublicKey)
   {
     [v5 setEncryptionPublicKey:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_kind;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 4) = self->_kind;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_uuid)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_signingPublicKey)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_encryptionPublicKey)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     kind = self->_kind;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   signingPublicKey = self->_signingPublicKey;
@@ -243,26 +243,26 @@ LABEL_13:
   v8.receiver = self;
   v8.super_class = TPPBCustodianRecoveryKey;
   v4 = [(TPPBCustodianRecoveryKey *)&v8 description];
-  v5 = [(TPPBCustodianRecoveryKey *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(TPPBCustodianRecoveryKey *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsKind:(id)a3
+- (int)StringAsKind:(id)kind
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  kindCopy = kind;
+  if ([kindCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"RECOVERY_KEY"])
+  else if ([kindCopy isEqualToString:@"RECOVERY_KEY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"INHERITANCE_KEY"])
+  else if ([kindCopy isEqualToString:@"INHERITANCE_KEY"])
   {
     v4 = 2;
   }

@@ -1,32 +1,32 @@
 @interface RESimpleTextContentProvider
-+ (id)textContentProviderWithText:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (RESimpleTextContentProvider)initWithCoder:(id)a3;
-- (RESimpleTextContentProvider)initWithText:(id)a3;
++ (id)textContentProviderWithText:(id)text;
+- (BOOL)isEqual:(id)equal;
+- (RESimpleTextContentProvider)initWithCoder:(id)coder;
+- (RESimpleTextContentProvider)initWithText:(id)text;
 - (id)attributedStringRepresentation;
 - (id)contentEncodedString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RESimpleTextContentProvider
 
-+ (id)textContentProviderWithText:(id)a3
++ (id)textContentProviderWithText:(id)text
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithText:v4];
+  textCopy = text;
+  v5 = [[self alloc] initWithText:textCopy];
 
   return v5;
 }
 
-- (RESimpleTextContentProvider)initWithText:(id)a3
+- (RESimpleTextContentProvider)initWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v9.receiver = self;
   v9.super_class = RESimpleTextContentProvider;
   v5 = [(RESimpleTextContentProvider *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [textCopy copy];
     text = v5->_text;
     v5->_text = v6;
   }
@@ -52,30 +52,30 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   text = self->_text;
 
   return [v4 initWithText:text];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 text];
-    v6 = v5;
-    if (v5 == self->_text)
+    text = [equalCopy text];
+    v6 = text;
+    if (text == self->_text)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = [(NSString *)v5 isEqual:?];
+      v7 = [(NSString *)text isEqual:?];
     }
   }
 
@@ -87,10 +87,10 @@
   return v7;
 }
 
-- (RESimpleTextContentProvider)initWithCoder:(id)a3
+- (RESimpleTextContentProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
 
   v6 = [(RESimpleTextContentProvider *)self initWithText:v5];
   return v6;
@@ -98,10 +98,10 @@
 
 - (id)contentEncodedString
 {
-  v2 = [(RESimpleTextContentProvider *)self text];
-  v3 = [v2 contentEncodedString];
+  text = [(RESimpleTextContentProvider *)self text];
+  contentEncodedString = [text contentEncodedString];
 
-  return v3;
+  return contentEncodedString;
 }
 
 @end

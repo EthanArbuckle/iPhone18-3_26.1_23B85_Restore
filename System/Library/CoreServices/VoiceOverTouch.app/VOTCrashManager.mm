@@ -65,27 +65,27 @@ LABEL_6:
   v8 = [[AXDispatchTimer alloc] initWithTargetSerialQueue:0];
   [(VOTCrashManager *)self setCrashloopTimer:v8];
 
-  v9 = [(VOTCrashManager *)self crashloopTimer];
-  [v9 afterDelay:&stru_1001C7DB8 processBlock:20.0];
+  crashloopTimer = [(VOTCrashManager *)self crashloopTimer];
+  [crashloopTimer afterDelay:&stru_1001C7DB8 processBlock:20.0];
 }
 
 - (int64_t)consecutiveCrashCount
 {
   v2 = +[VOTConfiguration rootConfiguration];
   v3 = [v2 preferenceForKey:@"VOTConsecutiveCrashCount"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (void)_incrementConsecutiveCrashCount
 {
   v2 = +[VOTConfiguration rootConfiguration];
   v3 = [v2 preferenceForKey:@"VOTConsecutiveCrashCount"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
   v6 = +[VOTConfiguration rootConfiguration];
-  v5 = [NSNumber numberWithInteger:v4 + 1];
+  v5 = [NSNumber numberWithInteger:integerValue + 1];
   [v6 setPreferenceSync:v5 forKey:@"VOTConsecutiveCrashCount"];
 }
 

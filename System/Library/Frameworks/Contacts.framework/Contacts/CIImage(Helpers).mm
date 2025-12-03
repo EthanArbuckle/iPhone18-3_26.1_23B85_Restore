@@ -16,7 +16,7 @@
     v4 = a3;
   }
 
-  [a1 extent];
+  [self extent];
   if (v5 > v4 || v6 > v4)
   {
     v8 = v4 / v5;
@@ -29,15 +29,15 @@
     *&v12.a = 0uLL;
     CGAffineTransformMakeScale(&v12, v8, v8);
     v11 = v12;
-    v9 = [a1 imageByApplyingTransform:&v11];
+    selfCopy = [self imageByApplyingTransform:&v11];
   }
 
   else
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

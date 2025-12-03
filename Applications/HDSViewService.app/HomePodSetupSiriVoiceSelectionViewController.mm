@@ -1,51 +1,51 @@
 @interface HomePodSetupSiriVoiceSelectionViewController
-- (_TtC14HDSViewService44HomePodSetupSiriVoiceSelectionViewController)initWithContentView:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC14HDSViewService44HomePodSetupSiriVoiceSelectionViewController)initWithContentView:(id)view;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)voiceSelectionController:(id)a3 didSelectVoice:(id)a4;
-- (void)voiceSelectionControllerRequestsDismissal:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)voiceSelectionController:(id)controller didSelectVoice:(id)voice;
+- (void)voiceSelectionControllerRequestsDismissal:(id)dismissal;
 @end
 
 @implementation HomePodSetupSiriVoiceSelectionViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100058F80();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000595F8(a3, &selRef_viewWillAppear_, "HomePod Setup %@ viewWillAppear");
+  selfCopy = self;
+  sub_1000595F8(appear, &selRef_viewWillAppear_, "HomePod Setup %@ viewWillAppear");
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1000595F8(a3, &selRef_viewDidDisappear_, "HomePod Setup %@ viewDidDisappear");
+  selfCopy = self;
+  sub_1000595F8(disappear, &selRef_viewDidDisappear_, "HomePod Setup %@ viewDidDisappear");
 }
 
-- (_TtC14HDSViewService44HomePodSetupSiriVoiceSelectionViewController)initWithContentView:(id)a3
+- (_TtC14HDSViewService44HomePodSetupSiriVoiceSelectionViewController)initWithContentView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)voiceSelectionController:(id)a3 didSelectVoice:(id)a4
+- (void)voiceSelectionController:(id)controller didSelectVoice:(id)voice
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100059FA0(v7);
+  controllerCopy = controller;
+  voiceCopy = voice;
+  selfCopy = self;
+  sub_100059FA0(voiceCopy);
 }
 
-- (void)voiceSelectionControllerRequestsDismissal:(id)a3
+- (void)voiceSelectionControllerRequestsDismissal:(id)dismissal
 {
-  v4 = a3;
-  v5 = self;
+  dismissalCopy = dismissal;
+  selfCopy = self;
   sub_10005A1B4();
 }
 

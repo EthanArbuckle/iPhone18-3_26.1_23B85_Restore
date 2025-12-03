@@ -1,14 +1,14 @@
 @interface MultitaskingWindowManagementPackageAnimationView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC31MultitaskingAndGesturesSettings48MultitaskingWindowManagementPackageAnimationView)initWithCoder:(id)a3;
-- (_TtC31MultitaskingAndGesturesSettings48MultitaskingWindowManagementPackageAnimationView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC31MultitaskingAndGesturesSettings48MultitaskingWindowManagementPackageAnimationView)initWithCoder:(id)coder;
+- (_TtC31MultitaskingAndGesturesSettings48MultitaskingWindowManagementPackageAnimationView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MultitaskingWindowManagementPackageAnimationView
 
-- (_TtC31MultitaskingAndGesturesSettings48MultitaskingWindowManagementPackageAnimationView)initWithFrame:(CGRect)a3
+- (_TtC31MultitaskingAndGesturesSettings48MultitaskingWindowManagementPackageAnimationView)initWithFrame:(CGRect)frame
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC31MultitaskingAndGesturesSettings48MultitaskingWindowManagementPackageAnimationView_originalSize);
   *v3 = 0;
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (_TtC31MultitaskingAndGesturesSettings48MultitaskingWindowManagementPackageAnimationView)initWithCoder:(id)a3
+- (_TtC31MultitaskingAndGesturesSettings48MultitaskingWindowManagementPackageAnimationView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC31MultitaskingAndGesturesSettings48MultitaskingWindowManagementPackageAnimationView_originalSize);
   *v3 = 0;
@@ -36,15 +36,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_32328();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_31494(width, height);
   v7 = v6;
   v9 = v8;
@@ -56,15 +56,15 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v8.receiver;
-  [(MultitaskingWindowManagementPackageAnimationView *)&v8 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
-  v7 = [v6 hasDifferentColorAppearanceComparedToTraitCollection:v4];
+  [(MultitaskingWindowManagementPackageAnimationView *)&v8 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
+  v7 = [traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy];
 
   if (v7)
   {

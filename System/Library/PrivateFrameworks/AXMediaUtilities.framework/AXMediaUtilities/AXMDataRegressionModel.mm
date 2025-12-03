@@ -1,31 +1,31 @@
 @interface AXMDataRegressionModel
-+ (id)getModelForX:(double *)a3 y:(double *)a4 n:(int)a5;
-- (AXMDataRegressionModel)initWithXValues:(double *)a3 yValues:(double *)a4 count:(int)a5;
++ (id)getModelForX:(double *)x y:(double *)y n:(int)n;
+- (AXMDataRegressionModel)initWithXValues:(double *)values yValues:(double *)yValues count:(int)count;
 - (NSArray)partialDerivatives;
 - (double)confidence;
-- (double)fitDataWithModelParams:(double *)a3 finalParams:(double *)a4;
-- (double)magnitude:(double *)a3 size:(int)a4;
-- (double)roundNumber:(double)a3 withSignificantFigures:(unint64_t)a4;
+- (double)fitDataWithModelParams:(double *)params finalParams:(double *)finalParams;
+- (double)magnitude:(double *)magnitude size:(int)size;
+- (double)roundNumber:(double)number withSignificantFigures:(unint64_t)figures;
 - (id)modelFunction;
-- (id)modelFunctionStringForParameters:(double *)a3 significantFigures:(int)a4;
-- (int)getMatrixInverse:(double *)a3 size:(int)a4 pivot:(int *)a5 tmp:(double *)a6 result:(double *)a7;
+- (id)modelFunctionStringForParameters:(double *)parameters significantFigures:(int)figures;
+- (int)getMatrixInverse:(double *)inverse size:(int)size pivot:(int *)pivot tmp:(double *)tmp result:(double *)result;
 - (int)modelParameterCount;
 - (void)computeScore;
 - (void)dealloc;
-- (void)getDiagonal:(double *)a3 size:(int)a4 result:(double *)a5;
-- (void)getGradientForX:(double)a3 parameterValues:(double *)a4 result:(double *)a5;
-- (void)getIdentityMatrixWithSize:(int)a3 scalar:(double)a4 result:(double *)a5;
-- (void)getInitialParams:(double *)a3;
-- (void)getJacobianForParameters:(double *)a3 gradient:(double *)a4 result:(double *)a5;
-- (void)getResidualsVector:(double *)a3 result:(double *)a4;
-- (void)getSMA:(double *)a3 lookback:(int)a4;
-- (void)printMatrix:(double *)a3 rows:(int)a4 cols:(int)a5;
+- (void)getDiagonal:(double *)diagonal size:(int)size result:(double *)result;
+- (void)getGradientForX:(double)x parameterValues:(double *)values result:(double *)result;
+- (void)getIdentityMatrixWithSize:(int)size scalar:(double)scalar result:(double *)result;
+- (void)getInitialParams:(double *)params;
+- (void)getJacobianForParameters:(double *)parameters gradient:(double *)gradient result:(double *)result;
+- (void)getResidualsVector:(double *)vector result:(double *)result;
+- (void)getSMA:(double *)a lookback:(int)lookback;
+- (void)printMatrix:(double *)matrix rows:(int)rows cols:(int)cols;
 - (void)sortDataPoints;
 @end
 
 @implementation AXMDataRegressionModel
 
-- (AXMDataRegressionModel)initWithXValues:(double *)a3 yValues:(double *)a4 count:(int)a5
+- (AXMDataRegressionModel)initWithXValues:(double *)values yValues:(double *)yValues count:(int)count
 {
   v11.receiver = self;
   v11.super_class = AXMDataRegressionModel;
@@ -33,12 +33,12 @@
   v9 = v8;
   if (v8)
   {
-    v8->_n = a5;
-    v8->_x = malloc_type_malloc(8 * a5, 0x100004000313F17uLL);
+    v8->_n = count;
+    v8->_x = malloc_type_malloc(8 * count, 0x100004000313F17uLL);
     v9->_y = malloc_type_malloc(8 * v9->_n, 0x100004000313F17uLL);
     v9->_bestFitParameters = malloc_type_malloc(8 * [(AXMDataRegressionModel *)v9 modelParameterCount], 0x100004000313F17uLL);
-    memcpy(v9->_x, a3, 8 * v9->_n);
-    memcpy(v9->_y, a4, 8 * v9->_n);
+    memcpy(v9->_x, values, 8 * v9->_n);
+    memcpy(v9->_y, yValues, 8 * v9->_n);
     v9->_error = 1.79769313e308;
   }
 
@@ -55,9 +55,9 @@
   [(AXMDataRegressionModel *)&v3 dealloc];
 }
 
-+ (id)getModelForX:(double *)a3 y:(double *)a4 n:(int)a5
++ (id)getModelForX:(double *)x y:(double *)y n:(int)n
 {
-  v5 = *&a5;
+  v5 = *&n;
   v38[5] = *MEMORY[0x1E69E9840];
   v8 = getModelForX_y_n__modelClasses;
   if (!getModelForX_y_n__modelClasses)
@@ -94,7 +94,7 @@
           objc_enumerationMutation(obj);
         }
 
-        v15 = [objc_alloc(*(*(&v33 + 1) + 8 * i)) initWithXValues:a3 yValues:a4 count:v5];
+        v15 = [objc_alloc(*(*(&v33 + 1) + 8 * i)) initWithXValues:x yValues:y count:v5];
         v16 = malloc_type_malloc(8 * [v15 modelParameterCount], v12);
         v17 = malloc_type_malloc(8 * [v15 modelParameterCount], v12);
         [v15 getInitialParams:v16];
@@ -107,15 +107,15 @@
             v22 = v11;
             v23 = v13;
             v24 = v12;
-            v25 = a3;
-            v26 = a4;
+            xCopy = x;
+            yCopy = y;
             v27 = v5;
             v28 = v21;
 
             v29 = v28;
             v5 = v27;
-            a4 = v26;
-            a3 = v25;
+            y = yCopy;
+            x = xCopy;
             v12 = v24;
             v13 = v23;
             v11 = v29;
@@ -146,24 +146,24 @@
   return result;
 }
 
-- (double)fitDataWithModelParams:(double *)a3 finalParams:(double *)a4
+- (double)fitDataWithModelParams:(double *)params finalParams:(double *)finalParams
 {
   if ([(AXMDataRegressionModel *)self dataSatisfiesInitialConditions])
   {
-    __dst = a4;
-    v7 = [(AXMDataRegressionModel *)self modelParameterCount];
+    __dst = finalParams;
+    modelParameterCount = [(AXMDataRegressionModel *)self modelParameterCount];
     __B[0] = 1.0;
-    v44 = malloc_type_malloc(8 * self->_n * v7, 0x100004000313F17uLL);
-    v8 = malloc_type_malloc(8 * self->_n * v7, 0x100004000313F17uLL);
-    v9 = v7 * v7;
+    v44 = malloc_type_malloc(8 * self->_n * modelParameterCount, 0x100004000313F17uLL);
+    v8 = malloc_type_malloc(8 * self->_n * modelParameterCount, 0x100004000313F17uLL);
+    v9 = modelParameterCount * modelParameterCount;
     v10 = vcvtd_n_u64_f64(v9, 3uLL);
     v11 = malloc_type_malloc(v10, 0x100004000313F17uLL);
     v49 = malloc_type_malloc(v10, 0x100004000313F17uLL);
     __C = malloc_type_malloc(v10, 0x100004000313F17uLL);
     v39 = malloc_type_malloc(v10, 0x100004000313F17uLL);
-    v38 = malloc_type_malloc(8 * self->_n * v7, 0x100004000313F17uLL);
-    __P = v7;
-    v13 = 8 * v7;
+    v38 = malloc_type_malloc(8 * self->_n * modelParameterCount, 0x100004000313F17uLL);
+    __P = modelParameterCount;
+    v13 = 8 * modelParameterCount;
     v47 = malloc_type_malloc(v13 * self->_n, 0x100004000313F17uLL);
     v37 = malloc_type_malloc(v10, 0x100004000313F17uLL);
     v46 = malloc_type_malloc(v10, 0x100004000313F17uLL);
@@ -176,7 +176,7 @@
     v41 = malloc_type_malloc(v13, 0x100004000313F17uLL);
     v35 = malloc_type_malloc(v13, 0x100004000313F17uLL);
     v16 = malloc_type_malloc(v13, 0x100004000313F17uLL);
-    memcpy(v14, a3, v13);
+    memcpy(v14, params, v13);
     [(AXMDataRegressionModel *)self getResidualsVector:v14 result:v15];
     n = self->_n;
     if (n < 1)
@@ -315,69 +315,69 @@
   return v21;
 }
 
-- (void)printMatrix:(double *)a3 rows:(int)a4 cols:(int)a5
+- (void)printMatrix:(double *)matrix rows:(int)rows cols:(int)cols
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v12 = [MEMORY[0x1E696AD60] string];
-  [v12 appendFormat:@"\n%d x %d\n", v6, v5];
+  v5 = *&cols;
+  v6 = *&rows;
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"\n%d x %d\n", v6, v5];
   if (v6 >= 1)
   {
     v8 = 0;
     do
     {
       v9 = v5;
-      v10 = a3;
+      matrixCopy = matrix;
       if (v5 >= 1)
       {
         do
         {
-          v11 = *v10++;
-          [v12 appendFormat:@"\t%.6f", v11];
+          v11 = *matrixCopy++;
+          [string appendFormat:@"\t%.6f", v11];
           --v9;
         }
 
         while (v9);
       }
 
-      [v12 appendString:@"\n"];
+      [string appendString:@"\n"];
       ++v8;
-      a3 += v6;
+      matrix += v6;
     }
 
     while (v8 != v6);
   }
 
-  NSLog(&stru_1F23ECC68.isa, v12);
+  NSLog(&stru_1F23ECC68.isa, string);
 }
 
-- (double)magnitude:(double *)a3 size:(int)a4
+- (double)magnitude:(double *)magnitude size:(int)size
 {
-  if (a4 < 1)
+  if (size < 1)
   {
     return 0.0;
   }
 
-  v4 = a4;
+  sizeCopy = size;
   result = 0.0;
   do
   {
-    v6 = *a3++;
+    v6 = *magnitude++;
     result = result + v6 * v6;
-    --v4;
+    --sizeCopy;
   }
 
-  while (v4);
+  while (sizeCopy);
   return result;
 }
 
-- (void)getIdentityMatrixWithSize:(int)a3 scalar:(double)a4 result:(double *)a5
+- (void)getIdentityMatrixWithSize:(int)size scalar:(double)scalar result:(double *)result
 {
-  if (a3)
+  if (size)
   {
     v5 = 0;
-    LODWORD(v6) = a3 * a3;
-    if ((a3 * a3) <= 1)
+    LODWORD(v6) = size * size;
+    if ((size * size) <= 1)
     {
       v6 = 1;
     }
@@ -389,34 +389,34 @@
 
     do
     {
-      if (v5 / a3 == v5 % a3)
+      if (v5 / size == v5 % size)
       {
-        v7 = a4;
+        scalarCopy = scalar;
       }
 
       else
       {
-        v7 = 0.0;
+        scalarCopy = 0.0;
       }
 
-      a5[v5++] = v7;
+      result[v5++] = scalarCopy;
     }
 
     while (v6 != v5);
   }
 }
 
-- (void)getResidualsVector:(double *)a3 result:(double *)a4
+- (void)getResidualsVector:(double *)vector result:(double *)result
 {
-  v10 = [(AXMDataRegressionModel *)self modelFunction];
-  v7 = [(AXMDataRegressionModel *)self modelParameterCount];
+  modelFunction = [(AXMDataRegressionModel *)self modelFunction];
+  modelParameterCount = [(AXMDataRegressionModel *)self modelParameterCount];
   if (self->_n >= 1)
   {
     v8 = 0;
-    v9 = v7;
+    v9 = modelParameterCount;
     do
     {
-      a4[v8] = v10[2](v10, a3, v9, self->_x[v8]) - self->_y[v8];
+      result[v8] = modelFunction[2](modelFunction, vector, v9, self->_x[v8]) - self->_y[v8];
       ++v8;
     }
 
@@ -424,46 +424,46 @@
   }
 }
 
-- (void)getGradientForX:(double)a3 parameterValues:(double *)a4 result:(double *)a5
+- (void)getGradientForX:(double)x parameterValues:(double *)values result:(double *)result
 {
-  v9 = [(AXMDataRegressionModel *)self modelParameterCount];
-  v12 = [(AXMDataRegressionModel *)self partialDerivatives];
-  if ([v12 count])
+  modelParameterCount = [(AXMDataRegressionModel *)self modelParameterCount];
+  partialDerivatives = [(AXMDataRegressionModel *)self partialDerivatives];
+  if ([partialDerivatives count])
   {
     v10 = 0;
     do
     {
-      v11 = [v12 objectAtIndexedSubscript:v10];
-      a5[v10] = (v11)[2](v11, a4, v9, a3);
+      v11 = [partialDerivatives objectAtIndexedSubscript:v10];
+      result[v10] = (v11)[2](v11, values, modelParameterCount, x);
 
       ++v10;
     }
 
-    while (v10 < [v12 count]);
+    while (v10 < [partialDerivatives count]);
   }
 }
 
-- (void)getJacobianForParameters:(double *)a3 gradient:(double *)a4 result:(double *)a5
+- (void)getJacobianForParameters:(double *)parameters gradient:(double *)gradient result:(double *)result
 {
-  v9 = [(AXMDataRegressionModel *)self modelParameterCount];
+  modelParameterCount = [(AXMDataRegressionModel *)self modelParameterCount];
   if (self->_n >= 1)
   {
-    v10 = v9;
+    v10 = modelParameterCount;
     v11 = 0;
-    v12 = 8 * v9;
-    v13 = v9;
+    v12 = 8 * modelParameterCount;
+    v13 = modelParameterCount;
     do
     {
-      [(AXMDataRegressionModel *)self getGradientForX:a3 parameterValues:a4 result:self->_x[v11]];
+      [(AXMDataRegressionModel *)self getGradientForX:parameters parameterValues:gradient result:self->_x[v11]];
       v14 = v13;
-      v15 = a4;
-      v16 = a5;
+      gradientCopy = gradient;
+      resultCopy = result;
       if (v10 >= 1)
       {
         do
         {
-          v17 = *v15++;
-          *v16++ = v17;
+          v17 = *gradientCopy++;
+          *resultCopy++ = v17;
           --v14;
         }
 
@@ -471,37 +471,37 @@
       }
 
       ++v11;
-      a5 = (a5 + v12);
+      result = (result + v12);
     }
 
     while (v11 < self->_n);
   }
 }
 
-- (int)getMatrixInverse:(double *)a3 size:(int)a4 pivot:(int *)a5 tmp:(double *)a6 result:(double *)a7
+- (int)getMatrixInverse:(double *)inverse size:(int)size pivot:(int *)pivot tmp:(double *)tmp result:(double *)result
 {
-  memcpy(a7, a3, 8 * a4 * a4);
+  memcpy(result, inverse, 8 * size * size);
   dgetrf_NEWLAPACK();
   dgetri_NEWLAPACK();
   return 0;
 }
 
-- (void)getDiagonal:(double *)a3 size:(int)a4 result:(double *)a5
+- (void)getDiagonal:(double *)diagonal size:(int)size result:(double *)result
 {
-  if (a4 >= 1)
+  if (size >= 1)
   {
-    for (i = 0; i != a4; ++i)
+    for (i = 0; i != size; ++i)
     {
-      for (j = 0; j != a4; a5[j++] = v7)
+      for (j = 0; j != size; result[j++] = v7)
       {
         v7 = 0.0;
         if (i == j)
         {
-          v7 = a3[i + i * a4];
+          v7 = diagonal[i + i * size];
         }
       }
 
-      a5 += a4;
+      result += size;
     }
   }
 }
@@ -560,13 +560,13 @@
   return 0;
 }
 
-- (void)getInitialParams:(double *)a3
+- (void)getInitialParams:(double *)params
 {
-  v4 = [(AXMDataRegressionModel *)self modelParameterCount];
-  if (v4 >= 1)
+  modelParameterCount = [(AXMDataRegressionModel *)self modelParameterCount];
+  if (modelParameterCount >= 1)
   {
 
-    memset_pattern16(a3, &xmmword_1AE451DD0, 8 * v4);
+    memset_pattern16(params, &xmmword_1AE451DD0, 8 * modelParameterCount);
   }
 }
 
@@ -578,7 +578,7 @@
   return 0;
 }
 
-- (id)modelFunctionStringForParameters:(double *)a3 significantFigures:(int)a4
+- (id)modelFunctionStringForParameters:(double *)parameters significantFigures:(int)figures
 {
   v4 = NSStringFromSelector(a2);
   NSLog(&cfstr_SubclassesMust.isa, v4);
@@ -588,7 +588,7 @@
 
 - (void)sortDataPoints
 {
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self->_n >= 1)
   {
     v3 = 0;
@@ -597,7 +597,7 @@
       v4 = objc_alloc_init(AXMPoint);
       [(AXMPoint *)v4 setX:self->_x[v3]];
       [(AXMPoint *)v4 setY:self->_y[v3]];
-      [v10 addObject:v4];
+      [array addObject:v4];
 
       ++v3;
     }
@@ -605,17 +605,17 @@
     while (v3 < self->_n);
   }
 
-  [v10 sortUsingComparator:&__block_literal_global_32];
+  [array sortUsingComparator:&__block_literal_global_32];
   if (self->_n >= 1)
   {
     v5 = 0;
     do
     {
-      v6 = [v10 objectAtIndexedSubscript:v5];
+      v6 = [array objectAtIndexedSubscript:v5];
       [v6 x];
       self->_x[v5] = v7;
 
-      v8 = [v10 objectAtIndexedSubscript:v5];
+      v8 = [array objectAtIndexedSubscript:v5];
       [v8 y];
       self->_y[v5] = v9;
 
@@ -649,49 +649,49 @@ uint64_t __40__AXMDataRegressionModel_sortDataPoints__block_invoke(uint64_t a1, 
   return v9;
 }
 
-- (void)getSMA:(double *)a3 lookback:(int)a4
+- (void)getSMA:(double *)a lookback:(int)lookback
 {
   n = self->_n;
   if (n >= 1)
   {
     for (i = 0; i != n; ++i)
     {
-      if (a4 < 1)
+      if (lookback < 1)
       {
         v7 = 0.0;
 LABEL_9:
-        v6 = a4;
+        lookbackCopy = lookback;
       }
 
       else
       {
-        v6 = 0;
+        lookbackCopy = 0;
         v7 = 0.0;
         v8 = i;
         while ((v8 & 0x80000000) == 0)
         {
           v7 = v7 + self->_y[v8--];
-          ++v6;
-          if (i - a4 >= v8)
+          ++lookbackCopy;
+          if (i - lookback >= v8)
           {
             goto LABEL_9;
           }
         }
       }
 
-      a3[i] = v7 / v6;
+      a[i] = v7 / lookbackCopy;
     }
   }
 }
 
-- (double)roundNumber:(double)a3 withSignificantFigures:(unint64_t)a4
+- (double)roundNumber:(double)number withSignificantFigures:(unint64_t)figures
 {
-  v5 = fabs(a3);
-  v6 = floor(log10(v5)) - a4 + 1.0;
+  v5 = fabs(number);
+  v6 = floor(log10(v5)) - figures + 1.0;
   v7 = round(v5 * __exp10(-v6));
   v8 = __exp10(v6) * v7;
   result = -v8;
-  if (a3 >= 0.0)
+  if (number >= 0.0)
   {
     return v8;
   }

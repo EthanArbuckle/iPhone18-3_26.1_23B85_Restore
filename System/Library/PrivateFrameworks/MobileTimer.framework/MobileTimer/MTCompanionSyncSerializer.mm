@@ -1,28 +1,28 @@
 @interface MTCompanionSyncSerializer
-- (id)changeFromData:(id)a3 ofType:(int64_t)a4;
-- (id)dataFromChange:(id)a3;
+- (id)changeFromData:(id)data ofType:(int64_t)type;
+- (id)dataFromChange:(id)change;
 @end
 
 @implementation MTCompanionSyncSerializer
 
-- (id)dataFromChange:(id)a3
+- (id)dataFromChange:(id)change
 {
-  v5 = a3;
-  if (([v5 conformsToProtocol:&unk_1F2976660] & 1) == 0)
+  changeCopy = change;
+  if (([changeCopy conformsToProtocol:&unk_1F2976660] & 1) == 0)
   {
-    [(MTCompanionSyncSerializer *)a2 dataFromChange:v5];
+    [(MTCompanionSyncSerializer *)a2 dataFromChange:changeCopy];
   }
 
-  v6 = [v5 serialize];
-  v7 = [v6 data];
+  serialize = [changeCopy serialize];
+  data = [serialize data];
 
-  return v7;
+  return data;
 }
 
-- (id)changeFromData:(id)a3 ofType:(int64_t)a4
+- (id)changeFromData:(id)data ofType:(int64_t)type
 {
-  v4 = a3;
-  v5 = [[MTPBSyncMessage alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[MTPBSyncMessage alloc] initWithData:dataCopy];
 
   if ([(MTPBSyncMessage *)v5 hasDismissAction])
   {

@@ -1,22 +1,22 @@
 @interface HKInteractiveChartHandwashingEventFormatter
-- (id)_formattedSelectedRangeLabelDataWithChartData:(id)a3 items:(id)a4;
+- (id)_formattedSelectedRangeLabelDataWithChartData:(id)data items:(id)items;
 @end
 
 @implementation HKInteractiveChartHandwashingEventFormatter
 
-- (id)_formattedSelectedRangeLabelDataWithChartData:(id)a3 items:(id)a4
+- (id)_formattedSelectedRangeLabelDataWithChartData:(id)data items:(id)items
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  dataCopy = data;
+  itemsCopy = items;
+  if (dataCopy && [dataCopy count])
   {
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v36 = v6;
-    v8 = v6;
+    v36 = dataCopy;
+    v8 = dataCopy;
     v9 = [v8 countByEnumeratingWithState:&v44 objects:v53 count:16];
     if (v9)
     {
@@ -51,13 +51,13 @@
 
     v34 = v16;
     v38 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v16, v11];
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v35 = v7;
-    v17 = v7;
+    v35 = itemsCopy;
+    v17 = itemsCopy;
     v18 = [v17 countByEnumeratingWithState:&v40 objects:v52 count:16];
     if (v18)
     {
@@ -79,8 +79,8 @@
             objc_enumerationMutation(v17);
           }
 
-          v23 = [*(*(&v40 + 1) + 8 * j) integerValue];
-          if (v23 == 0x40000)
+          integerValue = [*(*(&v40 + 1) + 8 * j) integerValue];
+          if (integerValue == 0x40000)
           {
             if ([v8 count])
             {
@@ -90,7 +90,7 @@
               v29 = [MEMORY[0x1E696AD98] numberWithDouble:v28];
               [(HKSelectedRangeData *)v24 setValueAsNumber:v29];
 
-              v26 = self;
+              selfCopy2 = self;
               v27 = v28;
               goto LABEL_25;
             }
@@ -111,27 +111,27 @@
 
           else
           {
-            if (v23 == 0x20000)
+            if (integerValue == 0x20000)
             {
               v24 = [[HKSelectedRangeData alloc] initWithStatisticsType:v37];
               [(HKSelectedRangeData *)v24 setDataType:0];
               v25 = [MEMORY[0x1E696AD98] numberWithInteger:v11];
               [(HKSelectedRangeData *)v24 setValueAsNumber:v25];
 
-              v26 = self;
+              selfCopy2 = self;
               v27 = v11;
 LABEL_25:
-              v30 = [(HKInteractiveChartDataFormatter *)v26 formattedStringWithValue:v38 unitString:1 showUnit:v27];
+              v30 = [(HKInteractiveChartDataFormatter *)selfCopy2 formattedStringWithValue:v38 unitString:1 showUnit:v27];
               [(HKSelectedRangeData *)v24 setAttributedString:v30];
 
-              [v14 addObject:v24];
+              [array addObject:v24];
               goto LABEL_29;
             }
 
             v39.receiver = self;
             v39.super_class = HKInteractiveChartHandwashingEventFormatter;
             v24 = [(HKInteractiveChartTimePeriodFormatter *)&v39 formattedSelectedRangeLabelDataWithChartData:v8 items:v17];
-            [v14 addObjectsFromArray:v24];
+            [array addObjectsFromArray:v24];
           }
 
 LABEL_29:
@@ -143,16 +143,16 @@ LABEL_29:
       while (v19);
     }
 
-    v7 = v35;
-    v6 = v36;
+    itemsCopy = v35;
+    dataCopy = v36;
   }
 
   else
   {
-    v14 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v14;
+  return array;
 }
 
 @end

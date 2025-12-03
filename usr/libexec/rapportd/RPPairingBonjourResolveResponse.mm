@@ -2,7 +2,7 @@
 - (NSData)serverPublicKey;
 - (NSUUID)bonjourServiceID;
 - (_TtC8rapportd31RPPairingBonjourResolveResponse)init;
-- (_TtC8rapportd31RPPairingBonjourResolveResponse)initWithServerPublicKey:(id)a3 bonjourServiceID:(id)a4;
+- (_TtC8rapportd31RPPairingBonjourResolveResponse)initWithServerPublicKey:(id)key bonjourServiceID:(id)d;
 @end
 
 @implementation RPPairingBonjourResolveResponse
@@ -32,7 +32,7 @@
   return v8.super.isa;
 }
 
-- (_TtC8rapportd31RPPairingBonjourResolveResponse)initWithServerPublicKey:(id)a3 bonjourServiceID:(id)a4
+- (_TtC8rapportd31RPPairingBonjourResolveResponse)initWithServerPublicKey:(id)key bonjourServiceID:(id)d
 {
   ObjectType = swift_getObjectType();
   v8 = type metadata accessor for UUID();
@@ -40,8 +40,8 @@
   v10 = *(v9 + 64);
   __chkstk_darwin(v8);
   v12 = &v21 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v13 = a3;
-  v14 = a4;
+  keyCopy = key;
+  dCopy = d;
   v15 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v17 = v16;
 

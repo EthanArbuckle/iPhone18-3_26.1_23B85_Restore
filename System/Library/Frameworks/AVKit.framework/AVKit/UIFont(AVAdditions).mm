@@ -26,11 +26,11 @@
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
   v15 = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
-  v7 = [v3 fontDescriptor];
+  fontDescriptor = [v3 fontDescriptor];
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:{v2, *MEMORY[0x1E69DB8B0], *MEMORY[0x1E69DB8C0], v6}];
   v14[1] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:2];
-  v10 = [v7 fontDescriptorByAddingAttributes:v9];
+  v10 = [fontDescriptor fontDescriptorByAddingAttributes:v9];
 
   v11 = [MEMORY[0x1E69DB878] fontWithDescriptor:v10 size:v2];
 
@@ -56,7 +56,7 @@
 + (id)monospacedTimeFontOfSize:()AVAdditions
 {
   v3 = [MEMORY[0x1E69DB878] monospacedDigitSystemFontOfSize:a2 weight:*MEMORY[0x1E69DB978]];
-  v4 = [a1 timeFontWithFont:v3];
+  v4 = [self timeFontWithFont:v3];
 
   return v4;
 }
@@ -64,7 +64,7 @@
 + (id)italicTimeFontOfSize:()AVAdditions
 {
   v2 = [MEMORY[0x1E69DB878] italicSystemFontOfSize:?];
-  v3 = [a1 timeFontWithFont:v2];
+  v3 = [self timeFontWithFont:v2];
 
   return v3;
 }
@@ -72,7 +72,7 @@
 + (id)boldTimeFontOfSize:()AVAdditions
 {
   v2 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:?];
-  v3 = [a1 timeFontWithFont:v2];
+  v3 = [self timeFontWithFont:v2];
 
   return v3;
 }
@@ -80,7 +80,7 @@
 + (id)timeFontOfSize:()AVAdditions
 {
   v2 = [MEMORY[0x1E69DB878] systemFontOfSize:?];
-  v3 = [a1 timeFontWithFont:v2];
+  v3 = [self timeFontWithFont:v2];
 
   return v3;
 }
@@ -88,7 +88,7 @@
 + (id)timeFontWithName:()AVAdditions size:
 {
   v2 = [MEMORY[0x1E69DB878] fontWithName:? size:?];
-  v3 = [a1 timeFontWithFont:v2];
+  v3 = [self timeFontWithFont:v2];
 
   return v3;
 }
@@ -109,11 +109,11 @@
     v21[0] = v6;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
 
-    v8 = [v5 fontDescriptor];
+    fontDescriptor = [v5 fontDescriptor];
     v17 = *MEMORY[0x1E69DB8B0];
     v18 = v7;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    v10 = [v8 fontDescriptorByAddingAttributes:v9];
+    v10 = [fontDescriptor fontDescriptorByAddingAttributes:v9];
 
     v11 = MEMORY[0x1E69DB878];
     [v5 pointSize];

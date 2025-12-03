@@ -1,33 +1,33 @@
 @interface AVTPaddleView
-- (AVTPaddleView)initWithLayoutDirection:(int64_t)a3 symbolConfiguration:(id)a4;
+- (AVTPaddleView)initWithLayoutDirection:(int64_t)direction symbolConfiguration:(id)configuration;
 - (AVTPaddleViewDelegate)delegate;
-- (BOOL)isPointInsideTransparentRegion:(CGPoint)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGRect)frameForAddButtonInCoordinateSpace:(id)a3;
-- (CGRect)frameForVideoInCoordinateSpace:(id)a3;
-- (void)_configureWithSymbolConfiguration:(id)a3;
-- (void)attachVideoController:(id)a3;
+- (BOOL)isPointInsideTransparentRegion:(CGPoint)region;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGRect)frameForAddButtonInCoordinateSpace:(id)space;
+- (CGRect)frameForVideoInCoordinateSpace:(id)space;
+- (void)_configureWithSymbolConfiguration:(id)configuration;
+- (void)attachVideoController:(id)controller;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)dismissAnimated:(BOOL)a3;
-- (void)drawRect:(CGRect)a3;
+- (void)dismissAnimated:(BOOL)animated;
+- (void)drawRect:(CGRect)rect;
 - (void)handleDismissGesture;
 - (void)handleTapAddButton;
 - (void)handleTapGesture;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)showAnimated:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)showAnimated:(BOOL)animated;
 - (void)startPlayingIfNecessary;
 - (void)stopPlayingIfNecessary;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateLayoutFromPlusButtonView:(id)a3 videoView:(id)a4;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateLayoutFromPlusButtonView:(id)view videoView:(id)videoView;
 @end
 
 @implementation AVTPaddleView
 
-- (AVTPaddleView)initWithLayoutDirection:(int64_t)a3 symbolConfiguration:(id)a4
+- (AVTPaddleView)initWithLayoutDirection:(int64_t)direction symbolConfiguration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = AVTPaddleView;
   v7 = [(AVTPaddleView *)&v13 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -35,13 +35,13 @@
   {
     [objc_opt_class() defaultPadding];
     v7->_padding = v8;
-    v7->_layoutDirection = a3;
+    v7->_layoutDirection = direction;
     v9 = +[AVTUIEnvironment defaultEnvironment];
-    v10 = [v9 logger];
+    logger = [v9 logger];
     logger = v7->_logger;
-    v7->_logger = v10;
+    v7->_logger = logger;
 
-    [(AVTPaddleView *)v7 _configureWithSymbolConfiguration:v6];
+    [(AVTPaddleView *)v7 _configureWithSymbolConfiguration:configurationCopy];
   }
 
   return v7;
@@ -50,12 +50,12 @@
 - (void)dealloc
 {
   [(AVTPaddleView *)self stopPlayingIfNecessary];
-  v3 = [(AVTPaddleView *)self tapGestureRecognizer];
-  [(AVTPaddleView *)self removeGestureRecognizer:v3];
+  tapGestureRecognizer = [(AVTPaddleView *)self tapGestureRecognizer];
+  [(AVTPaddleView *)self removeGestureRecognizer:tapGestureRecognizer];
 
-  v4 = [(AVTPaddleView *)self superview];
-  v5 = [(AVTPaddleView *)self dismissGestureRecognizer];
-  [v4 removeGestureRecognizer:v5];
+  superview = [(AVTPaddleView *)self superview];
+  dismissGestureRecognizer = [(AVTPaddleView *)self dismissGestureRecognizer];
+  [superview removeGestureRecognizer:dismissGestureRecognizer];
 
   [(AVTPaddleView *)self setTapGestureRecognizer:0];
   [(AVTPaddleView *)self setDismissGestureRecognizer:0];
@@ -64,25 +64,25 @@
   [(AVTPaddleView *)&v6 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v13 = a4;
-  v8 = [a3 isEqualToString:@"status"];
-  v9 = v13;
+  objectCopy = object;
+  v8 = [path isEqualToString:@"status"];
+  v9 = objectCopy;
   if (v8)
   {
-    v10 = v13;
+    v10 = objectCopy;
     if ([v10 status] == 2)
     {
-      v11 = [(AVTPaddleView *)self logger];
-      v12 = [v10 error];
-      [v11 logPaddleViewVideoPlayerFailed:v12];
+      logger = [(AVTPaddleView *)self logger];
+      error = [v10 error];
+      [logger logPaddleViewVideoPlayerFailed:error];
 
       [(AVTPaddleView *)self stopPlayingIfNecessary];
       [(AVTPaddleView *)self startPlayingIfNecessary];
     }
 
-    v9 = v13;
+    v9 = objectCopy;
   }
 
   MEMORY[0x1EEE66BB8](v8, v9);
@@ -95,25 +95,25 @@
   [(AVTPaddleView *)&v2 layoutSubviews];
 }
 
-- (void)_configureWithSymbolConfiguration:(id)a3
+- (void)_configureWithSymbolConfiguration:(id)configuration
 {
-  v38 = a3;
+  configurationCopy = configuration;
   self->_automaticallyStartsPlaying = 1;
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [(AVTPaddleView *)self setBackgroundColor:v4];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(AVTPaddleView *)self setBackgroundColor:clearColor];
 
   [(AVTPaddleView *)self setAutoresizingMask:0];
   v5 = *MEMORY[0x1E695F060];
   v6 = *(MEMORY[0x1E695F060] + 8);
-  v7 = [(AVTPaddleView *)self layer];
-  [v7 setShadowOffset:{v5, v6}];
+  layer = [(AVTPaddleView *)self layer];
+  [layer setShadowOffset:{v5, v6}];
 
-  v8 = [(AVTPaddleView *)self layer];
-  [v8 setShadowRadius:40.0];
+  layer2 = [(AVTPaddleView *)self layer];
+  [layer2 setShadowRadius:40.0];
 
-  v9 = [(AVTPaddleView *)self layer];
+  layer3 = [(AVTPaddleView *)self layer];
   LODWORD(v10) = 1047233823;
-  [v9 setShadowOpacity:v10];
+  [layer3 setShadowOpacity:v10];
 
   v11 = objc_alloc(MEMORY[0x1E69DD250]);
   v12 = *MEMORY[0x1E695F058];
@@ -125,37 +125,37 @@
   self->_videoViewContainer = v16;
 
   [(UIView *)self->_videoViewContainer setAutoresizingMask:0];
-  v18 = [MEMORY[0x1E69DC888] clearColor];
-  [(UIView *)self->_videoViewContainer setBackgroundColor:v18];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [(UIView *)self->_videoViewContainer setBackgroundColor:clearColor2];
 
   [(AVTPaddleView *)self addSubview:self->_videoViewContainer];
   v19 = objc_alloc_init(MEMORY[0x1E6958608]);
   videoController = self->_videoController;
   self->_videoController = v19;
 
-  v21 = [MEMORY[0x1E69DC888] clearColor];
-  v22 = [(AVPlayerViewController *)self->_videoController view];
-  [v22 setBackgroundColor:v21];
+  clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+  view = [(AVPlayerViewController *)self->_videoController view];
+  [view setBackgroundColor:clearColor3];
 
   [(AVPlayerViewController *)self->_videoController setShowsPlaybackControls:0];
   [(AVPlayerViewController *)self->_videoController setUpdatesNowPlayingInfoCenter:0];
-  v23 = [(AVPlayerViewController *)self->_videoController player];
-  [v23 setAllowsExternalPlayback:0];
+  player = [(AVPlayerViewController *)self->_videoController player];
+  [player setAllowsExternalPlayback:0];
 
-  v24 = [(AVPlayerViewController *)self->_videoController view];
-  [v24 setAutoresizingMask:0];
+  view2 = [(AVPlayerViewController *)self->_videoController view];
+  [view2 setAutoresizingMask:0];
 
   v25 = self->_videoViewContainer;
-  v26 = [(AVPlayerViewController *)self->_videoController view];
-  [(UIView *)v25 addSubview:v26];
+  view3 = [(AVPlayerViewController *)self->_videoController view];
+  [(UIView *)v25 addSubview:view3];
 
   v27 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v12, v13, v14, v15}];
   addButtonViewContainer = self->_addButtonViewContainer;
   self->_addButtonViewContainer = v27;
 
   [(UIView *)self->_addButtonViewContainer setAutoresizingMask:0];
-  v29 = [MEMORY[0x1E69DC888] clearColor];
-  [(UIView *)self->_addButtonViewContainer setBackgroundColor:v29];
+  clearColor4 = [MEMORY[0x1E69DC888] clearColor];
+  [(UIView *)self->_addButtonViewContainer setBackgroundColor:clearColor4];
 
   [(AVTPaddleView *)self addSubview:self->_addButtonViewContainer];
   v30 = [AVTCircularButton buttonWithType:0];
@@ -163,9 +163,9 @@
   self->_addButton = v30;
 
   v32 = self->_addButton;
-  if (v38)
+  if (configurationCopy)
   {
-    [(AVTCircularButton *)v32 setSymbolImageWithName:@"plus" configuration:v38];
+    [(AVTCircularButton *)v32 setSymbolImageWithName:@"plus" configuration:configurationCopy];
   }
 
   else
@@ -185,38 +185,38 @@
   self->_dismissGestureRecognizer = v35;
 
   [(AVTTouchDownGestureRecognizer *)self->_dismissGestureRecognizer requireGestureRecognizerToFail:self->_tapGestureRecognizer];
-  v37 = [(AVTPaddleView *)self superview];
-  [v37 addGestureRecognizer:self->_dismissGestureRecognizer];
+  superview = [(AVTPaddleView *)self superview];
+  [superview addGestureRecognizer:self->_dismissGestureRecognizer];
 
   [(AVTPaddleView *)self layoutIfNeeded];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = AVTPaddleView;
-  [(AVTPaddleView *)&v4 traitCollectionDidChange:a3];
+  [(AVTPaddleView *)&v4 traitCollectionDidChange:change];
   [(AVTPaddleView *)self setNeedsDisplay];
 }
 
-- (void)updateLayoutFromPlusButtonView:(id)a3 videoView:(id)a4
+- (void)updateLayoutFromPlusButtonView:(id)view videoView:(id)videoView
 {
-  v114 = a4;
-  v6 = a3;
-  v7 = [v6 superview];
-  [v6 frame];
+  videoViewCopy = videoView;
+  viewCopy = view;
+  superview = [viewCopy superview];
+  [viewCopy frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(AVTPaddleView *)self superview];
-  [v7 convertRect:v16 toView:{v9, v11, v13, v15}];
+  superview2 = [(AVTPaddleView *)self superview];
+  [superview convertRect:superview2 toView:{v9, v11, v13, v15}];
   rect_24 = v17;
   v19 = v18;
   v115 = v20;
   rect_8 = v21;
 
-  [v6 bounds];
+  [viewCopy bounds];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -238,17 +238,17 @@
   v119.size.height = v33;
   Height = CGRectGetHeight(v119);
   [(AVTPaddleView *)self padding];
-  if (v114)
+  if (videoViewCopy)
   {
-    v37 = [v114 superview];
-    [v114 frame];
+    superview3 = [videoViewCopy superview];
+    [videoViewCopy frame];
     v39 = v38;
     rect_16a = v19;
     v41 = v40;
     v43 = v42;
     v45 = v44;
-    v46 = [(AVTPaddleView *)self superview];
-    [v37 convertRect:v46 toView:{v39, v41, v43, v45}];
+    superview4 = [(AVTPaddleView *)self superview];
+    [superview3 convertRect:superview4 toView:{v39, v41, v43, v45}];
     v48 = v47;
     rect = v47;
     v50 = v49;
@@ -299,9 +299,9 @@
   v61 = v60;
   [(AVTPaddleView *)self padding];
   v63 = v19 - v62;
-  v64 = [(AVTPaddleView *)self layoutDirection];
+  layoutDirection = [(AVTPaddleView *)self layoutDirection];
   v65 = v113;
-  if (v64 == 1)
+  if (layoutDirection == 1)
   {
     v66 = v23;
     v67 = v25;
@@ -350,31 +350,31 @@
     rect_24a = v73;
   }
 
-  v77 = [(AVTPaddleView *)self videoViewContainer];
-  [v77 setFrame:{0.0, v69, v71, v70}];
+  videoViewContainer = [(AVTPaddleView *)self videoViewContainer];
+  [videoViewContainer setFrame:{0.0, v69, v71, v70}];
 
-  v78 = [(AVTPaddleView *)self videoViewContainer];
-  [(AVTPaddleView *)self frameForVideoInCoordinateSpace:v78];
+  videoViewContainer2 = [(AVTPaddleView *)self videoViewContainer];
+  [(AVTPaddleView *)self frameForVideoInCoordinateSpace:videoViewContainer2];
   v80 = v79;
   rect_8b = v69;
   v82 = v81;
   v84 = v83;
   v86 = v85;
-  v87 = [(AVTPaddleView *)self videoController];
-  v88 = [v87 view];
-  [v88 setFrame:{v80, v82, v84, v86}];
+  videoController = [(AVTPaddleView *)self videoController];
+  view = [videoController view];
+  [view setFrame:{v80, v82, v84, v86}];
 
-  v89 = [(AVTPaddleView *)self addButtonViewContainer];
-  [v89 setFrame:{v76, v112, v31, v113}];
+  addButtonViewContainer = [(AVTPaddleView *)self addButtonViewContainer];
+  [addButtonViewContainer setFrame:{v76, v112, v31, v113}];
 
-  v90 = [(AVTPaddleView *)self addButtonViewContainer];
-  [(AVTPaddleView *)self frameForAddButtonInCoordinateSpace:v90];
+  addButtonViewContainer2 = [(AVTPaddleView *)self addButtonViewContainer];
+  [(AVTPaddleView *)self frameForAddButtonInCoordinateSpace:addButtonViewContainer2];
   v92 = v91;
   v94 = v93;
   v96 = v95;
   v98 = v97;
-  v99 = [(AVTPaddleView *)self addButton];
-  [v99 setFrame:{v92, v94, v96, v98}];
+  addButton = [(AVTPaddleView *)self addButton];
+  [addButton setFrame:{v92, v94, v96, v98}];
 
   v127.origin.x = 0.0;
   v127.origin.y = rect_8b;
@@ -400,21 +400,21 @@
   [(AVTPaddleView *)self setNeedsDisplay];
 }
 
-- (CGRect)frameForAddButtonInCoordinateSpace:(id)a3
+- (CGRect)frameForAddButtonInCoordinateSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   [(AVTPaddleView *)self padding];
   v6 = v5;
-  v7 = [(AVTPaddleView *)self addButtonViewContainer];
-  [v7 bounds];
+  addButtonViewContainer = [(AVTPaddleView *)self addButtonViewContainer];
+  [addButtonViewContainer bounds];
   v26 = CGRectInset(v25, v6, v6);
   x = v26.origin.x;
   y = v26.origin.y;
   width = v26.size.width;
   height = v26.size.height;
 
-  v12 = [(AVTPaddleView *)self addButtonViewContainer];
-  [v4 convertRect:v12 fromCoordinateSpace:{x, y, width, height}];
+  addButtonViewContainer2 = [(AVTPaddleView *)self addButtonViewContainer];
+  [spaceCopy convertRect:addButtonViewContainer2 fromCoordinateSpace:{x, y, width, height}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -431,9 +431,9 @@
   return result;
 }
 
-- (CGRect)frameForVideoInCoordinateSpace:(id)a3
+- (CGRect)frameForVideoInCoordinateSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   [(AVTPaddleView *)self padding];
   if (v5 >= 12.0)
   {
@@ -445,16 +445,16 @@
     v6 = 12.0;
   }
 
-  v7 = [(AVTPaddleView *)self videoViewContainer];
-  [v7 bounds];
+  videoViewContainer = [(AVTPaddleView *)self videoViewContainer];
+  [videoViewContainer bounds];
   v26 = CGRectInset(v25, v6, v6);
   x = v26.origin.x;
   y = v26.origin.y;
   width = v26.size.width;
   height = v26.size.height;
 
-  v12 = [(AVTPaddleView *)self videoViewContainer];
-  [v4 convertRect:v12 fromCoordinateSpace:{x, y, width, height}];
+  videoViewContainer2 = [(AVTPaddleView *)self videoViewContainer];
+  [spaceCopy convertRect:videoViewContainer2 fromCoordinateSpace:{x, y, width, height}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -473,43 +473,43 @@
 
 - (void)handleTapAddButton
 {
-  v3 = [(AVTPaddleView *)self delegate];
+  delegate = [(AVTPaddleView *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(AVTPaddleView *)self delegate];
-    [v4 paddleViewTapped:self];
+    delegate2 = [(AVTPaddleView *)self delegate];
+    [delegate2 paddleViewTapped:self];
   }
 }
 
 - (void)handleTapGesture
 {
-  v3 = [(AVTPaddleView *)self delegate];
+  delegate = [(AVTPaddleView *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(AVTPaddleView *)self delegate];
-    [v4 paddleViewTapped:self];
+    delegate2 = [(AVTPaddleView *)self delegate];
+    [delegate2 paddleViewTapped:self];
   }
 }
 
 - (void)handleDismissGesture
 {
-  v3 = [(AVTPaddleView *)self delegate];
+  delegate = [(AVTPaddleView *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(AVTPaddleView *)self delegate];
-    [v4 paddleViewWantsToBeDismissed:self];
+    delegate2 = [(AVTPaddleView *)self delegate];
+    [delegate2 paddleViewWantsToBeDismissed:self];
   }
 }
 
-- (BOOL)isPointInsideTransparentRegion:(CGPoint)a3
+- (BOOL)isPointInsideTransparentRegion:(CGPoint)region
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AVTPaddleView *)self addButtonViewContainer];
-  [v6 frame];
+  y = region.y;
+  x = region.x;
+  addButtonViewContainer = [(AVTPaddleView *)self addButtonViewContainer];
+  [addButtonViewContainer frame];
   v10.x = x;
   v10.y = y;
   if (CGRectContainsPoint(v12, v10))
@@ -519,8 +519,8 @@
 
   else
   {
-    v8 = [(AVTPaddleView *)self videoViewContainer];
-    [v8 frame];
+    videoViewContainer = [(AVTPaddleView *)self videoViewContainer];
+    [videoViewContainer frame];
     v11.x = x;
     v11.y = y;
     v7 = !CGRectContainsPoint(v13, v11);
@@ -529,13 +529,13 @@
   return v7;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v9.receiver = self;
   v9.super_class = AVTPaddleView;
-  v7 = [(AVTPaddleView *)&v9 pointInside:a4 withEvent:?];
+  v7 = [(AVTPaddleView *)&v9 pointInside:event withEvent:?];
   if (v7)
   {
     LOBYTE(v7) = ![(AVTPaddleView *)self isPointInsideTransparentRegion:x, y];
@@ -544,42 +544,42 @@
   return v7;
 }
 
-- (void)attachVideoController:(id)a3
+- (void)attachVideoController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(AVTPaddleView *)self stopPlayingIfNecessary];
-  v5 = [(AVPlayerViewController *)v4 player];
+  player = [(AVPlayerViewController *)controllerCopy player];
   player = self->_player;
-  self->_player = v5;
+  self->_player = player;
 
   [(AVPlayer *)self->_player setAllowsExternalPlayback:0];
   [(AVPlayer *)self->_player addObserver:self forKeyPath:@"status" options:1 context:0];
   videoController = self->_videoController;
-  self->_videoController = v4;
-  v8 = v4;
+  self->_videoController = controllerCopy;
+  v8 = controllerCopy;
 
   [(AVTPaddleView *)self frameForVideoInCoordinateSpace:self->_videoViewContainer];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(AVPlayerViewController *)self->_videoController view];
-  [v17 setFrame:{v10, v12, v14, v16}];
+  view = [(AVPlayerViewController *)self->_videoController view];
+  [view setFrame:{v10, v12, v14, v16}];
 
-  v18 = [(AVPlayerViewController *)self->_videoController view];
-  [v18 setAutoresizingMask:18];
+  view2 = [(AVPlayerViewController *)self->_videoController view];
+  [view2 setAutoresizingMask:18];
 
   videoViewContainer = self->_videoViewContainer;
-  v20 = [(AVPlayerViewController *)self->_videoController view];
-  [(UIView *)videoViewContainer addSubview:v20];
+  view3 = [(AVPlayerViewController *)self->_videoController view];
+  [(UIView *)videoViewContainer addSubview:view3];
 }
 
 - (void)startPlayingIfNecessary
 {
   if (!self->_player)
   {
-    v6 = [objc_opt_class() videoItem];
-    v3 = [objc_alloc(MEMORY[0x1E6988100]) initWithPlayerItem:v6];
+    videoItem = [objc_opt_class() videoItem];
+    v3 = [objc_alloc(MEMORY[0x1E6988100]) initWithPlayerItem:videoItem];
     [(AVPlayer *)v3 setPreventsDisplaySleepDuringVideoPlayback:0];
     [(AVPlayer *)v3 addObserver:self forKeyPath:@"status" options:1 context:0];
     player = self->_player;
@@ -610,26 +610,26 @@
   v18.receiver = self;
   v18.super_class = AVTPaddleView;
   [(AVTPaddleView *)&v18 didMoveToWindow];
-  v3 = [(AVTPaddleView *)self dismissGestureRecognizer];
-  v4 = [v3 view];
-  v5 = [(AVTPaddleView *)self superview];
+  dismissGestureRecognizer = [(AVTPaddleView *)self dismissGestureRecognizer];
+  view = [dismissGestureRecognizer view];
+  superview = [(AVTPaddleView *)self superview];
 
-  if (v4 != v5)
+  if (view != superview)
   {
-    v6 = [(AVTPaddleView *)self dismissGestureRecognizer];
-    v7 = [v6 view];
-    v8 = [(AVTPaddleView *)self dismissGestureRecognizer];
-    [v7 removeGestureRecognizer:v8];
+    dismissGestureRecognizer2 = [(AVTPaddleView *)self dismissGestureRecognizer];
+    view2 = [dismissGestureRecognizer2 view];
+    dismissGestureRecognizer3 = [(AVTPaddleView *)self dismissGestureRecognizer];
+    [view2 removeGestureRecognizer:dismissGestureRecognizer3];
 
-    v9 = [(AVTPaddleView *)self superview];
-    v10 = [(AVTPaddleView *)self dismissGestureRecognizer];
-    [v9 addGestureRecognizer:v10];
+    superview2 = [(AVTPaddleView *)self superview];
+    dismissGestureRecognizer4 = [(AVTPaddleView *)self dismissGestureRecognizer];
+    [superview2 addGestureRecognizer:dismissGestureRecognizer4];
   }
 
   objc_initWeak(&location, self);
-  v11 = [(AVTPaddleView *)self preCommitBlock];
+  preCommitBlock = [(AVTPaddleView *)self preCommitBlock];
 
-  if (!v11)
+  if (!preCommitBlock)
   {
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
@@ -665,12 +665,12 @@ void __32__AVTPaddleView_didMoveToWindow__block_invoke(uint64_t a1)
   [WeakRetained setPreCommitBlock:0];
 }
 
-- (void)showAnimated:(BOOL)a3
+- (void)showAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(AVTPaddleView *)self setAlpha:0.0];
   v5 = 0.2;
-  if (!v3)
+  if (!animatedCopy)
   {
     v5 = 0.0;
   }
@@ -683,10 +683,10 @@ void __32__AVTPaddleView_didMoveToWindow__block_invoke(uint64_t a1)
   [MEMORY[0x1E69DD250] animateWithDuration:v6 animations:0 completion:v5];
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
   v3 = 0.2;
-  if (!a3)
+  if (!animated)
   {
     v3 = 0.0;
   }
@@ -704,29 +704,29 @@ void __32__AVTPaddleView_didMoveToWindow__block_invoke(uint64_t a1)
   [MEMORY[0x1E69DD250] animateWithDuration:v5 animations:v4 completion:v3];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v4 = [(AVTPaddleView *)self videoViewContainer:a3.origin.x];
+  v4 = [(AVTPaddleView *)self videoViewContainer:rect.origin.x];
   [v4 frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(AVTPaddleView *)self addButtonViewContainer];
-  [v13 frame];
+  addButtonViewContainer = [(AVTPaddleView *)self addButtonViewContainer];
+  [addButtonViewContainer frame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
   v22 = +[AVTUIColorRepository paddleViewBackgroundColor];
-  v23 = [(AVTPaddleView *)self traitCollection];
-  v24 = [v22 resolvedColorWithTraitCollection:v23];
+  traitCollection = [(AVTPaddleView *)self traitCollection];
+  v24 = [v22 resolvedColorWithTraitCollection:traitCollection];
   [v24 setFill];
 
-  v25 = [AVTPaddlePathGenerator paddlePathWithBaseRect:[(AVTPaddleView *)self layoutDirection]== 1 contentRect:[(AVTPaddleView *)self isRTL] radius:v15 topToBottom:v17 rightToLeft:v19, v21, v6, v8, v10, v12, 0x4028000000000000];
-  [v25 fill];
+  0x4028000000000000 = [AVTPaddlePathGenerator paddlePathWithBaseRect:[(AVTPaddleView *)self layoutDirection]== 1 contentRect:[(AVTPaddleView *)self isRTL] radius:v15 topToBottom:v17 rightToLeft:v19, v21, v6, v8, v10, v12, 0x4028000000000000];
+  [0x4028000000000000 fill];
 }
 
 - (AVTPaddleViewDelegate)delegate

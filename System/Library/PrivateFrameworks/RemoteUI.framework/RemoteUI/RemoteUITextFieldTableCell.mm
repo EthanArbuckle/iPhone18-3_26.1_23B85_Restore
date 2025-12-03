@@ -8,9 +8,9 @@
 {
   v4.receiver = self;
   v4.super_class = RemoteUITextFieldTableCell;
-  v2 = [(RemoteUICustomTableViewCell *)&v4 customTextLabel];
+  customTextLabel = [(RemoteUICustomTableViewCell *)&v4 customTextLabel];
 
-  return v2;
+  return customTextLabel;
 }
 
 @end

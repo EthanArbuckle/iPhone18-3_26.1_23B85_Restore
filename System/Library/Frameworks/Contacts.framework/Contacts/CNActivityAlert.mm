@@ -1,37 +1,37 @@
 @interface CNActivityAlert
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isValid:(id *)a3;
-- (CNActivityAlert)initWithCoder:(id)a3;
-- (CNActivityAlert)initWithSound:(id)a3 vibration:(id)a4 ignoreMute:(BOOL)a5 userInfo:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isValid:(id *)valid;
+- (CNActivityAlert)initWithCoder:(id)coder;
+- (CNActivityAlert)initWithSound:(id)sound vibration:(id)vibration ignoreMute:(BOOL)mute userInfo:(id)info;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNActivityAlert
 
-- (CNActivityAlert)initWithSound:(id)a3 vibration:(id)a4 ignoreMute:(BOOL)a5 userInfo:(id)a6
+- (CNActivityAlert)initWithSound:(id)sound vibration:(id)vibration ignoreMute:(BOOL)mute userInfo:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  soundCopy = sound;
+  vibrationCopy = vibration;
+  infoCopy = info;
   v22.receiver = self;
   v22.super_class = CNActivityAlert;
   v13 = [(CNActivityAlert *)&v22 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [soundCopy copy];
     sound = v13->_sound;
     v13->_sound = v14;
 
-    v16 = [v11 copy];
+    v16 = [vibrationCopy copy];
     vibration = v13->_vibration;
     v13->_vibration = v16;
 
-    v13->_ignoreMute = a5;
-    v18 = [v12 copy];
+    v13->_ignoreMute = mute;
+    v18 = [infoCopy copy];
     userInfo = v13->_userInfo;
     v13->_userInfo = v18;
 
@@ -41,7 +41,7 @@
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CNActivityAlert alloc];
   sound = self->_sound;
@@ -52,18 +52,18 @@
   return [(CNActivityAlert *)v4 initWithSound:sound vibration:vibration ignoreMute:ignoreMute userInfo:userInfo];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CNMutableActivityAlert);
-  v5 = [(CNActivityAlert *)self sound];
-  [(CNActivityAlert *)v4 setSound:v5];
+  sound = [(CNActivityAlert *)self sound];
+  [(CNActivityAlert *)v4 setSound:sound];
 
-  v6 = [(CNActivityAlert *)self vibration];
-  [(CNActivityAlert *)v4 setVibration:v6];
+  vibration = [(CNActivityAlert *)self vibration];
+  [(CNActivityAlert *)v4 setVibration:vibration];
 
   [(CNActivityAlert *)v4 setIgnoreMute:[(CNActivityAlert *)self ignoreMute]];
-  v7 = [(CNActivityAlert *)self userInfo];
-  [(CNActivityAlert *)v4 setUserInfo:v7];
+  userInfo = [(CNActivityAlert *)self userInfo];
+  [(CNActivityAlert *)v4 setUserInfo:userInfo];
 
   return v4;
 }
@@ -81,14 +81,14 @@
     v8 = [v3 appendName:@"userInfo" object:?];
   }
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v6 = objc_opt_class();
   v24[0] = MEMORY[0x1E69E9820];
@@ -96,7 +96,7 @@
   v24[2] = __27__CNActivityAlert_isEqual___block_invoke;
   v24[3] = &unk_1E7412228;
   v24[4] = self;
-  v25 = v4;
+  v25 = equalCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __27__CNActivityAlert_isEqual___block_invoke_2;
@@ -117,11 +117,11 @@
   v15 = 3221225472;
   v16 = __27__CNActivityAlert_isEqual___block_invoke_4;
   v17 = &unk_1E7412228;
-  v18 = self;
+  selfCopy = self;
   v19 = v9;
   v11 = v9;
   v12 = _Block_copy(&v14);
-  LOBYTE(self) = [v5 isObject:v11 kindOfClass:v6 andEqualToObject:self withBlocks:{v24, v8, v10, v12, 0, v14, v15, v16, v17, v18}];
+  LOBYTE(self) = [v5 isObject:v11 kindOfClass:v6 andEqualToObject:self withBlocks:{v24, v8, v10, v12, 0, v14, v15, v16, v17, selfCopy}];
 
   return self;
 }
@@ -231,29 +231,29 @@ uint64_t __23__CNActivityAlert_hash__block_invoke_4(uint64_t a1)
   return v3;
 }
 
-- (CNActivityAlert)initWithCoder:(id)a3
+- (CNActivityAlert)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = CNActivityAlert;
   v5 = [(CNActivityAlert *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_sound"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_sound"];
     v7 = [v6 copy];
     sound = v5->_sound;
     v5->_sound = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_vibration"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_vibration"];
     v10 = [v9 copy];
     vibration = v5->_vibration;
     v5->_vibration = v10;
 
-    v5->_ignoreMute = [v4 decodeBoolForKey:@"_ignoreMute"];
+    v5->_ignoreMute = [coderCopy decodeBoolForKey:@"_ignoreMute"];
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"_userInfo"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"_userInfo"];
     v16 = [v15 copy];
     userInfo = v5->_userInfo;
     v5->_userInfo = v16;
@@ -264,17 +264,17 @@ uint64_t __23__CNActivityAlert_hash__block_invoke_4(uint64_t a1)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sound = self->_sound;
-  v5 = a3;
-  [v5 encodeObject:sound forKey:@"_sound"];
-  [v5 encodeObject:self->_vibration forKey:@"_vibration"];
-  [v5 encodeBool:self->_ignoreMute forKey:@"_ignoreMute"];
-  [v5 encodeObject:self->_userInfo forKey:@"_userInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sound forKey:@"_sound"];
+  [coderCopy encodeObject:self->_vibration forKey:@"_vibration"];
+  [coderCopy encodeBool:self->_ignoreMute forKey:@"_ignoreMute"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"_userInfo"];
 }
 
-- (BOOL)isValid:(id *)a3
+- (BOOL)isValid:(id *)valid
 {
   if (isValid__cn_once_token_0 != -1)
   {
@@ -294,7 +294,7 @@ uint64_t __23__CNActivityAlert_hash__block_invoke_4(uint64_t a1)
     [CNActivityAlert isValid:];
   }
 
-  v8 = [CN areValidKeyPaths:v5 forObject:self expectedClasses:v7 allowNil:isValid__cn_once_object_2 error:a3];
+  v8 = [CN areValidKeyPaths:v5 forObject:self expectedClasses:v7 allowNil:isValid__cn_once_object_2 error:valid];
 
   return v8;
 }

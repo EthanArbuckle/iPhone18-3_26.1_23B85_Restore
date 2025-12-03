@@ -1,28 +1,28 @@
 @interface CRKStudentDaemonProxy
 + (id)studentDaemonProxy;
-+ (void)fetchResourceFromURL:(id)a3 completion:(id)a4;
-+ (void)setActiveStudentIdentifier:(id)a3 completion:(id)a4;
-+ (void)studentDidAuthenticate:(id)a3 completion:(id)a4;
-- (CRKStudentDaemonProxy)initWithConnectionBuilder:(id)a3;
-- (id)enqueuedOperationForRequest:(id)a3;
-- (id)operationForRequest:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)client:(id)a3 didInterruptWithError:(id)a4;
-- (void)client:(id)a3 didReceiveNotificationWithName:(id)a4 userInfo:(id)a5;
-- (void)clientDidConnect:(id)a3;
-- (void)clientDidDisconnect:(id)a3;
++ (void)fetchResourceFromURL:(id)l completion:(id)completion;
++ (void)setActiveStudentIdentifier:(id)identifier completion:(id)completion;
++ (void)studentDidAuthenticate:(id)authenticate completion:(id)completion;
+- (CRKStudentDaemonProxy)initWithConnectionBuilder:(id)builder;
+- (id)enqueuedOperationForRequest:(id)request;
+- (id)operationForRequest:(id)request;
+- (void)addObserver:(id)observer;
+- (void)client:(id)client didInterruptWithError:(id)error;
+- (void)client:(id)client didReceiveNotificationWithName:(id)name userInfo:(id)info;
+- (void)clientDidConnect:(id)connect;
+- (void)clientDidDisconnect:(id)disconnect;
 - (void)connect;
 - (void)dealloc;
 - (void)disconnect;
-- (void)enqueueOperation:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)enqueueOperation:(id)operation;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation CRKStudentDaemonProxy
 
-- (CRKStudentDaemonProxy)initWithConnectionBuilder:(id)a3
+- (CRKStudentDaemonProxy)initWithConnectionBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v15.receiver = self;
   v15.super_class = CRKStudentDaemonProxy;
   v5 = [(CRKStudentDaemonProxy *)&v15 init];
@@ -37,12 +37,12 @@
     mOperationQueue = v5->mOperationQueue;
     v5->mOperationQueue = v8;
 
-    v10 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     mObservers = v5->mObservers;
-    v5->mObservers = v10;
+    v5->mObservers = weakObjectsHashTable;
 
     v5->_maxConnectionAttempts = 5;
-    v12 = MEMORY[0x245D3AAD0](v4);
+    v12 = MEMORY[0x245D3AAD0](builderCopy);
     connectionBuilder = v5->_connectionBuilder;
     v5->_connectionBuilder = v12;
   }
@@ -82,34 +82,34 @@
   [OUTLINED_FUNCTION_0_0(v2 v3];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKStudentDaemonProxy addObserver:];
   }
 
-  [(NSHashTable *)self->mObservers addObject:v4];
+  [(NSHashTable *)self->mObservers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKStudentDaemonProxy removeObserver:];
   }
 
-  [(NSHashTable *)self->mObservers removeObject:v4];
+  [(NSHashTable *)self->mObservers removeObject:observerCopy];
 }
 
-- (id)operationForRequest:(id)a3
+- (id)operationForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    if (v4)
+    if (requestCopy)
     {
       goto LABEL_3;
     }
@@ -118,7 +118,7 @@
   else
   {
     [CRKStudentDaemonProxy operationForRequest:];
-    if (v4)
+    if (requestCopy)
     {
       goto LABEL_3;
     }
@@ -126,17 +126,17 @@
 
   [CRKStudentDaemonProxy operationForRequest:];
 LABEL_3:
-  v5 = [(CATTaskClient *)self->mTaskClient prepareTaskOperationForRequest:v4];
+  v5 = [(CATTaskClient *)self->mTaskClient prepareTaskOperationForRequest:requestCopy];
 
   return v5;
 }
 
-- (id)enqueuedOperationForRequest:(id)a3
+- (id)enqueuedOperationForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    if (v4)
+    if (requestCopy)
     {
       goto LABEL_3;
     }
@@ -145,7 +145,7 @@ LABEL_3:
   else
   {
     [CRKStudentDaemonProxy enqueuedOperationForRequest:];
-    if (v4)
+    if (requestCopy)
     {
       goto LABEL_3;
     }
@@ -153,22 +153,22 @@ LABEL_3:
 
   [CRKStudentDaemonProxy enqueuedOperationForRequest:];
 LABEL_3:
-  v5 = [(CRKStudentDaemonProxy *)self operationForRequest:v4];
+  v5 = [(CRKStudentDaemonProxy *)self operationForRequest:requestCopy];
   [(CATOperationQueue *)self->mOperationQueue addOperation:v5];
 
   return v5;
 }
 
-- (void)enqueueOperation:(id)a3
+- (void)enqueueOperation:(id)operation
 {
-  v5 = a3;
+  operationCopy = operation;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKStudentDaemonProxy enqueueOperation:];
   }
 
-  v4 = v5;
-  if (!v5)
+  v4 = operationCopy;
+  if (!operationCopy)
   {
     [CRKStudentDaemonProxy enqueueOperation:];
     v4 = 0;
@@ -177,7 +177,7 @@ LABEL_3:
   [(CATOperationQueue *)self->mOperationQueue addOperation:v4];
 }
 
-- (void)clientDidConnect:(id)a3
+- (void)clientDidConnect:(id)connect
 {
   v15 = *MEMORY[0x277D85DE8];
   [(CRKStudentDaemonProxy *)self setConnected:1];
@@ -187,8 +187,8 @@ LABEL_3:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSHashTable *)self->mObservers allObjects];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allObjects = [(NSHashTable *)self->mObservers allObjects];
+  v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -200,7 +200,7 @@ LABEL_3:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObjects);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
@@ -213,17 +213,17 @@ LABEL_3:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)client:(id)a3 didInterruptWithError:(id)a4
+- (void)client:(id)client didInterruptWithError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  clientCopy = client;
+  errorCopy = error;
   if (_CRKLogGeneral_onceToken_10 != -1)
   {
     [CRKStudentDaemonProxy client:didInterruptWithError:];
@@ -232,13 +232,13 @@ LABEL_3:
   v7 = _CRKLogGeneral_logObj_10;
   if (os_log_type_enabled(_CRKLogGeneral_logObj_10, OS_LOG_TYPE_ERROR))
   {
-    [CRKStudentDaemonProxy client:v7 didInterruptWithError:v6];
+    [CRKStudentDaemonProxy client:v7 didInterruptWithError:errorCopy];
   }
 
-  [v5 disconnect];
+  [clientCopy disconnect];
 }
 
-- (void)clientDidDisconnect:(id)a3
+- (void)clientDidDisconnect:(id)disconnect
 {
   v16 = *MEMORY[0x277D85DE8];
   [(CRKStudentDaemonProxy *)self setConnected:0];
@@ -247,8 +247,8 @@ LABEL_3:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSHashTable *)self->mObservers allObjects];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allObjects = [(NSHashTable *)self->mObservers allObjects];
+  v5 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -260,7 +260,7 @@ LABEL_3:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObjects);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -273,7 +273,7 @@ LABEL_3:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -289,17 +289,17 @@ LABEL_3:
   }
 }
 
-- (void)client:(id)a3 didReceiveNotificationWithName:(id)a4 userInfo:(id)a5
+- (void)client:(id)client didReceiveNotificationWithName:(id)name userInfo:(id)info
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  nameCopy = name;
+  infoCopy = info;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [(NSHashTable *)self->mObservers allObjects];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allObjects = [(NSHashTable *)self->mObservers allObjects];
+  v10 = [allObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -311,48 +311,48 @@ LABEL_3:
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allObjects);
         }
 
         v14 = *(*(&v15 + 1) + 8 * v13);
         if (objc_opt_respondsToSelector())
         {
-          [v14 daemonProxy:self didReceiveNotificationWithName:v7 userInfo:v8];
+          [v14 daemonProxy:self didReceiveNotificationWithName:nameCopy userInfo:infoCopy];
         }
 
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [allObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
   }
 }
 
-+ (void)setActiveStudentIdentifier:(id)a3 completion:(id)a4
++ (void)setActiveStudentIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 studentDaemonProxy];
-  [v8 setActiveStudentIdentifier:v7 completion:v6];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  studentDaemonProxy = [self studentDaemonProxy];
+  [studentDaemonProxy setActiveStudentIdentifier:identifierCopy completion:completionCopy];
 }
 
-+ (void)studentDidAuthenticate:(id)a3 completion:(id)a4
++ (void)studentDidAuthenticate:(id)authenticate completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 studentDaemonProxy];
-  [v8 studentDidAuthenticate:v7 completion:v6];
+  completionCopy = completion;
+  authenticateCopy = authenticate;
+  studentDaemonProxy = [self studentDaemonProxy];
+  [studentDaemonProxy studentDidAuthenticate:authenticateCopy completion:completionCopy];
 }
 
-+ (void)fetchResourceFromURL:(id)a3 completion:(id)a4
++ (void)fetchResourceFromURL:(id)l completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 studentDaemonProxy];
-  [v8 fetchResourceFromURL:v7 completion:v6];
+  completionCopy = completion;
+  lCopy = l;
+  studentDaemonProxy = [self studentDaemonProxy];
+  [studentDaemonProxy fetchResourceFromURL:lCopy completion:completionCopy];
 }
 
 + (id)studentDaemonProxy

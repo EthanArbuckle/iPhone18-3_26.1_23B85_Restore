@@ -1,12 +1,12 @@
 @interface TTRISearchResultContainerViewController
-- (_TtC9Reminders39TTRISearchResultContainerViewController)initWithCoder:(id)a3;
-- (_TtC9Reminders39TTRISearchResultContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)scrollViewWillBeginDragging:(id)a3;
+- (_TtC9Reminders39TTRISearchResultContainerViewController)initWithCoder:(id)coder;
+- (_TtC9Reminders39TTRISearchResultContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)scrollViewWillBeginDragging:(id)dragging;
 @end
 
 @implementation TTRISearchResultContainerViewController
 
-- (_TtC9Reminders39TTRISearchResultContainerViewController)initWithCoder:(id)a3
+- (_TtC9Reminders39TTRISearchResultContainerViewController)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC9Reminders39TTRISearchResultContainerViewController_resultViewController);
   *v3 = 0;
@@ -20,17 +20,17 @@
   return result;
 }
 
-- (_TtC9Reminders39TTRISearchResultContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9Reminders39TTRISearchResultContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
+  draggingCopy = dragging;
+  selfCopy = self;
   sub_100506A0C();
 }
 

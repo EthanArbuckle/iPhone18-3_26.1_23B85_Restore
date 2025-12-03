@@ -1,50 +1,50 @@
 @interface SCATControllableDevicesMenuItem
-- (SCATControllableDevicesMenuItem)initWithIdentifier:(id)a3 delegate:(id)a4 searchResult:(id)a5;
-- (id)_imageNameForDeviceType:(id)a3;
+- (SCATControllableDevicesMenuItem)initWithIdentifier:(id)identifier delegate:(id)delegate searchResult:(id)result;
+- (id)_imageNameForDeviceType:(id)type;
 @end
 
 @implementation SCATControllableDevicesMenuItem
 
-- (SCATControllableDevicesMenuItem)initWithIdentifier:(id)a3 delegate:(id)a4 searchResult:(id)a5
+- (SCATControllableDevicesMenuItem)initWithIdentifier:(id)identifier delegate:(id)delegate searchResult:(id)result
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 name];
-  v12 = [v8 deviceType];
-  v13 = [(SCATControllableDevicesMenuItem *)self _imageNameForDeviceType:v12];
+  resultCopy = result;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
+  name = [resultCopy name];
+  deviceType = [resultCopy deviceType];
+  v13 = [(SCATControllableDevicesMenuItem *)self _imageNameForDeviceType:deviceType];
   v17.receiver = self;
   v17.super_class = SCATControllableDevicesMenuItem;
   v16 = 1;
-  v14 = [(SCATModernMenuItem *)&v17 initWithIdentifier:v10 delegate:v9 title:v11 imageName:v13 activateBehavior:2 allowedWithGuidedAccess:1 allowedWithAssistiveAccess:v16 activateHandler:0 updateHandler:0];
+  v14 = [(SCATModernMenuItem *)&v17 initWithIdentifier:identifierCopy delegate:delegateCopy title:name imageName:v13 activateBehavior:2 allowedWithGuidedAccess:1 allowedWithAssistiveAccess:v16 activateHandler:0 updateHandler:0];
 
   if (v14)
   {
-    [(SCATControllableDevicesMenuItem *)v14 setSearchResult:v8];
+    [(SCATControllableDevicesMenuItem *)v14 setSearchResult:resultCopy];
   }
 
   return v14;
 }
 
-- (id)_imageNameForDeviceType:(id)a3
+- (id)_imageNameForDeviceType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:AXSSDeviceTypeMac])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:AXSSDeviceTypeMac])
   {
     v4 = @"SCATIcon_interdevice_mac";
   }
 
-  else if ([v3 isEqualToString:AXSSDeviceTypePhone])
+  else if ([typeCopy isEqualToString:AXSSDeviceTypePhone])
   {
     v4 = @"SCATIcon_interdevice_iphone";
   }
 
-  else if ([v3 isEqualToString:AXSSDeviceTypePad])
+  else if ([typeCopy isEqualToString:AXSSDeviceTypePad])
   {
     v4 = @"SCATIcon_interdevice_ipad";
   }
 
-  else if ([v3 isEqualToString:AXSSDeviceTypeAppleTV])
+  else if ([typeCopy isEqualToString:AXSSDeviceTypeAppleTV])
   {
     v4 = @"SCATIcon_interdevice_appletv";
   }

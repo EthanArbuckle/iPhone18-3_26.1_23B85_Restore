@@ -2,10 +2,10 @@
 - (SBSUIHearingTestModeHostComponent)init;
 - (SBSUIHearingTestModeHostComponentDelegate)delegate;
 - (void)_updateHearingTestMode;
-- (void)scene:(id)a3 didCompleteUpdateWithContext:(id)a4 error:(id)a5;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4;
-- (void)setHearingTestMode:(int64_t)a3;
+- (void)scene:(id)scene didCompleteUpdateWithContext:(id)context error:(id)error;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context;
+- (void)setHearingTestMode:(int64_t)mode;
 @end
 
 @implementation SBSUIHearingTestModeHostComponent
@@ -17,10 +17,10 @@
   v2 = [(SBSUIHearingTestModeHostComponent *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v2->_identifier;
-    v2->_identifier = v4;
+    v2->_identifier = uUIDString;
   }
 
   return v2;
@@ -28,32 +28,32 @@
 
 - (void)_updateHearingTestMode
 {
-  v3 = [(FBSSceneComponent *)self scene];
-  v4 = [v3 clientSettings];
-  v5 = [v4 hearingTestMode];
+  scene = [(FBSSceneComponent *)self scene];
+  clientSettings = [scene clientSettings];
+  hearingTestMode = [clientSettings hearingTestMode];
 
-  v6 = [v3 isValid];
-  v7 = 0;
-  if (v6 && v5)
+  isValid = [scene isValid];
+  hearingTestMode2 = 0;
+  if (isValid && hearingTestMode)
   {
-    v8 = [v3 settings];
-    v9 = [v8 isForeground];
+    settings = [scene settings];
+    isForeground = [settings isForeground];
 
-    if (v9)
+    if (isForeground)
     {
       [(NSTimer *)self->_disableHearingTestModeAfterDelayWhenBackgroundTimer invalidate];
       [(SBSUIHearingTestModeHostComponent *)self setDisableHearingTestModeAfterDelayWhenBackgroundTimer:0];
-      v7 = v5;
+      hearingTestMode2 = hearingTestMode;
     }
 
     else
     {
-      v7 = [(SBSUIHearingTestModeHostComponent *)self hearingTestMode];
-      if (v7 == 1)
+      hearingTestMode2 = [(SBSUIHearingTestModeHostComponent *)self hearingTestMode];
+      if (hearingTestMode2 == 1)
       {
-        v10 = [(SBSUIHearingTestModeHostComponent *)self disableHearingTestModeAfterDelayWhenBackgroundTimer];
+        disableHearingTestModeAfterDelayWhenBackgroundTimer = [(SBSUIHearingTestModeHostComponent *)self disableHearingTestModeAfterDelayWhenBackgroundTimer];
 
-        if (!v10)
+        if (!disableHearingTestModeAfterDelayWhenBackgroundTimer)
         {
           objc_initWeak(&location, self);
           v11 = MEMORY[0x1E695DFF0];
@@ -69,20 +69,20 @@
           objc_destroyWeak(&location);
         }
 
-        v7 = 1;
+        hearingTestMode2 = 1;
       }
     }
   }
 
-  [(SBSUIHearingTestModeHostComponent *)self setHearingTestMode:v7];
+  [(SBSUIHearingTestModeHostComponent *)self setHearingTestMode:hearingTestMode2];
 }
 
-- (void)setHearingTestMode:(int64_t)a3
+- (void)setHearingTestMode:(int64_t)mode
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_hearingTestMode != a3)
+  if (self->_hearingTestMode != mode)
   {
-    self->_hearingTestMode = a3;
+    self->_hearingTestMode = mode;
     v4 = SBLogHearingTestMode();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -92,8 +92,8 @@
       _os_log_impl(&dword_1A9A79000, v4, OS_LOG_TYPE_DEFAULT, "Host component post changes in hearing test mode through delegate: %{public}@", &v7, 0xCu);
     }
 
-    v6 = [(SBSUIHearingTestModeHostComponent *)self delegate];
-    [v6 hearingTestModeHostComponentDidChangeActiveState:self];
+    delegate = [(SBSUIHearingTestModeHostComponent *)self delegate];
+    [delegate hearingTestModeHostComponentDidChangeActiveState:self];
   }
 }
 
@@ -114,25 +114,25 @@ void __59__SBSUIHearingTestModeHostComponent__updateHearingTestMode__block_invok
   }
 }
 
-- (void)scene:(id)a3 didCompleteUpdateWithContext:(id)a4 error:(id)a5
+- (void)scene:(id)scene didCompleteUpdateWithContext:(id)context error:(id)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  contextCopy = context;
+  errorCopy = error;
   v9 = SBLogHearingTestMode();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v7;
+    v11 = contextCopy;
     v12 = 2112;
-    v13 = v8;
+    v13 = errorCopy;
     _os_log_impl(&dword_1A9A79000, v9, OS_LOG_TYPE_DEFAULT, "Host Component did receive scene settings updates with context: %@, error: %@", &v10, 0x16u);
   }
 
   [(SBSUIHearingTestModeHostComponent *)self _updateHearingTestMode];
 }
 
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context
 {
   v5 = SBLogHearingTestMode();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -144,25 +144,25 @@ void __59__SBSUIHearingTestModeHostComponent__updateHearingTestMode__block_invok
   [(SBSUIHearingTestModeHostComponent *)self _updateHearingTestMode];
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 settingsDiff];
-  v7 = [v5 previousSettings];
-  v8 = [v5 transitionContext];
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  previousSettings = [settingsCopy previousSettings];
+  transitionContext = [settingsCopy transitionContext];
 
-  if ([v6 containsProperty:sel_hearingTestMode])
+  if ([settingsDiff containsProperty:sel_hearingTestMode])
   {
     v9 = SBLogHearingTestMode();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412802;
-      v11 = v6;
+      v11 = settingsDiff;
       v12 = 2112;
-      v13 = v7;
+      v13 = previousSettings;
       v14 = 2112;
-      v15 = v8;
+      v15 = transitionContext;
       _os_log_impl(&dword_1A9A79000, v9, OS_LOG_TYPE_DEFAULT, "Host Component did receive client scene settings updates with clientSettingsDiff: %@, oldSettings: %@, transitionContext: %@", &v10, 0x20u);
     }
 

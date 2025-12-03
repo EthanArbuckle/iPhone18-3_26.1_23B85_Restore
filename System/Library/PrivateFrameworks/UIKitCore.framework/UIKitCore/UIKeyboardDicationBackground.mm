@@ -1,5 +1,5 @@
 @interface UIKeyboardDicationBackground
-- (UIKeyboardDicationBackground)initWithFrame:(CGRect)a3;
+- (UIKeyboardDicationBackground)initWithFrame:(CGRect)frame;
 - (id)shadows;
 - (void)layoutSubviews;
 @end
@@ -43,18 +43,18 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIKeyboardDicationBackground *)self gradient];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  gradient = [(UIKeyboardDicationBackground *)self gradient];
+  [gradient setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(UIKeyboardDicationBackground *)self gradient];
-  [v12 setNeedsDisplay];
+  gradient2 = [(UIKeyboardDicationBackground *)self gradient];
+  [gradient2 setNeedsDisplay];
 }
 
-- (UIKeyboardDicationBackground)initWithFrame:(CGRect)a3
+- (UIKeyboardDicationBackground)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = UIKeyboardDicationBackground;
-  v3 = [(UIView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -65,8 +65,8 @@
     v6 = [(UIKeyboardDicationBackgroundGradientView *)v5 initWithFrame:?];
     [(UIKeyboardDicationBackground *)v3 setGradient:v6];
 
-    v7 = [(UIKeyboardDicationBackground *)v3 gradient];
-    [(UIView *)v3 addSubview:v7];
+    gradient = [(UIKeyboardDicationBackground *)v3 gradient];
+    [(UIView *)v3 addSubview:gradient];
 
     [(UIView *)v3 setNeedsLayout];
     v8 = v3;

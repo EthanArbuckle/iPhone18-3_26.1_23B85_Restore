@@ -57,8 +57,8 @@
 - (double)startTime;
 - (float)defaultPlaybackRate;
 - (float)playbackRate;
-- (id)copyWithNewIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithNewIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)activeFormatJustification;
 - (int64_t)discNumber;
 - (int64_t)episodeNumber;
@@ -83,127 +83,127 @@
 - (unint64_t)mediaType;
 - (unint64_t)playlistTraits;
 - (unint64_t)songTraits;
-- (void)_mergeContentItem:(id)a3;
+- (void)_mergeContentItem:(id)item;
 - (void)invalidateArtwork;
 - (void)invalidateDescription;
 - (void)invalidateLanguageOptions;
 - (void)invalidateLyrics;
 - (void)invalidateSections;
 - (void)invalidateTranscriptAlignments;
-- (void)setActiveFormat:(id)a3;
-- (void)setActiveFormatJustification:(int64_t)a3;
-- (void)setAdvertisement:(BOOL)a3;
-- (void)setAlbumArtistName:(id)a3;
-- (void)setAlbumName:(id)a3;
-- (void)setAlbumTraits:(unint64_t)a3;
-- (void)setAlbumYear:(id)a3;
-- (void)setAlternativeFormats:(id)a3;
-- (void)setAlwaysLiveItem:(BOOL)a3;
-- (void)setArtwork:(id)a3;
-- (void)setArtworkIdentifier:(id)a3;
-- (void)setArtworkURL:(id)a3;
-- (void)setArtworkURLTemplates:(id)a3;
-- (void)setAssociatedParticipantIdentifier:(id)a3;
-- (void)setAudioRoute:(id)a3;
-- (void)setAvailableLanguageOptions:(id)a3;
-- (void)setCollectionIdentifier:(id)a3;
-- (void)setCollectionInfo:(id)a3;
-- (void)setComposerName:(id)a3;
-- (void)setCurrentLanguageOptions:(id)a3;
-- (void)setDefaultPlaybackRate:(float)a3;
-- (void)setDeviceSpecificUserInfo:(id)a3;
-- (void)setDirectorName:(id)a3;
-- (void)setDiscNumber:(int64_t)a3;
-- (void)setDuration:(double)a3;
-- (void)setDurationStringLocalizationKey:(id)a3;
-- (void)setEditingStyleFlags:(int64_t)a3;
-- (void)setElapsedTime:(double)a3;
-- (void)setElapsedTime:(double)a3 playbackRate:(float)a4;
-- (void)setEpisodeNumber:(int64_t)a3;
-- (void)setEpisodeType:(int64_t)a3;
-- (void)setExternalContentIdentifier:(id)a3;
-- (void)setFormatTierPreference:(unint64_t)a3;
-- (void)setGenreName:(id)a3;
-- (void)setHasArtwork:(BOOL)a3;
-- (void)setHasDescription:(BOOL)a3;
-- (void)setHasLanguageOptions:(BOOL)a3;
-- (void)setHasLyrics:(BOOL)a3;
-- (void)setHasTranscriptAlignments:(BOOL)a3;
-- (void)setInTransition:(BOOL)a3;
-- (void)setInfo:(id)a3;
-- (void)setLegacyUniqueID:(int64_t)a3;
-- (void)setLoading:(BOOL)a3;
-- (void)setLocalizedContentRating:(id)a3;
-- (void)setLocalizedDurationString:(id)a3;
-- (void)setLyrics:(id)a3;
-- (void)setLyricsAdamID:(int64_t)a3;
-- (void)setMediaType:(unint64_t)a3;
-- (void)setNowPlayingInfo:(id)a3;
-- (void)setNumberOfChildren:(int64_t)a3;
-- (void)setPlayCount:(int64_t)a3;
-- (void)setPlaybackRate:(float)a3;
-- (void)setPlaylistTraits:(unint64_t)a3;
-- (void)setPlaylistType:(int64_t)a3;
-- (void)setPreferredFormat:(id)a3;
-- (void)setProfileIdentifier:(id)a3;
-- (void)setRadioStationName:(id)a3;
-- (void)setRadioStationStringIdentifier:(id)a3;
-- (void)setRadioStationType:(int64_t)a3;
-- (void)setReleaseDate:(id)a3;
-- (void)setRemoteArtworks:(id)a3;
-- (void)setReportingAdamID:(int64_t)a3;
-- (void)setSeasonNumber:(int64_t)a3;
-- (void)setSections:(id)a3;
-- (void)setSeriesName:(id)a3;
-- (void)setServiceIdentifier:(id)a3;
-- (void)setSongTraits:(unint64_t)a3;
-- (void)setStartTime:(double)a3;
-- (void)setSteerable:(BOOL)a3;
-- (void)setStoreAlbumArtistID:(int64_t)a3;
-- (void)setStoreAlbumID:(int64_t)a3;
-- (void)setStoreArtistID:(int64_t)a3;
-- (void)setStoreID:(int64_t)a3;
-- (void)setStoreSubscriptionID:(int64_t)a3;
-- (void)setSubtitleShort:(id)a3;
-- (void)setSupportedRemoteArtworkFormats:(id)a3;
-- (void)setTotalDiscCount:(int64_t)a3;
-- (void)setTotalTrackCount:(int64_t)a3;
-- (void)setTrackArtistName:(id)a3;
-- (void)setTrackNumber:(int64_t)a3;
-- (void)setTranscriptAlignments:(id)a3;
-- (void)setTransitionInfo:(id)a3;
-- (void)setUserInfo:(id)a3;
+- (void)setActiveFormat:(id)format;
+- (void)setActiveFormatJustification:(int64_t)justification;
+- (void)setAdvertisement:(BOOL)advertisement;
+- (void)setAlbumArtistName:(id)name;
+- (void)setAlbumName:(id)name;
+- (void)setAlbumTraits:(unint64_t)traits;
+- (void)setAlbumYear:(id)year;
+- (void)setAlternativeFormats:(id)formats;
+- (void)setAlwaysLiveItem:(BOOL)item;
+- (void)setArtwork:(id)artwork;
+- (void)setArtworkIdentifier:(id)identifier;
+- (void)setArtworkURL:(id)l;
+- (void)setArtworkURLTemplates:(id)templates;
+- (void)setAssociatedParticipantIdentifier:(id)identifier;
+- (void)setAudioRoute:(id)route;
+- (void)setAvailableLanguageOptions:(id)options;
+- (void)setCollectionIdentifier:(id)identifier;
+- (void)setCollectionInfo:(id)info;
+- (void)setComposerName:(id)name;
+- (void)setCurrentLanguageOptions:(id)options;
+- (void)setDefaultPlaybackRate:(float)rate;
+- (void)setDeviceSpecificUserInfo:(id)info;
+- (void)setDirectorName:(id)name;
+- (void)setDiscNumber:(int64_t)number;
+- (void)setDuration:(double)duration;
+- (void)setDurationStringLocalizationKey:(id)key;
+- (void)setEditingStyleFlags:(int64_t)flags;
+- (void)setElapsedTime:(double)time;
+- (void)setElapsedTime:(double)time playbackRate:(float)rate;
+- (void)setEpisodeNumber:(int64_t)number;
+- (void)setEpisodeType:(int64_t)type;
+- (void)setExternalContentIdentifier:(id)identifier;
+- (void)setFormatTierPreference:(unint64_t)preference;
+- (void)setGenreName:(id)name;
+- (void)setHasArtwork:(BOOL)artwork;
+- (void)setHasDescription:(BOOL)description;
+- (void)setHasLanguageOptions:(BOOL)options;
+- (void)setHasLyrics:(BOOL)lyrics;
+- (void)setHasTranscriptAlignments:(BOOL)alignments;
+- (void)setInTransition:(BOOL)transition;
+- (void)setInfo:(id)info;
+- (void)setLegacyUniqueID:(int64_t)d;
+- (void)setLoading:(BOOL)loading;
+- (void)setLocalizedContentRating:(id)rating;
+- (void)setLocalizedDurationString:(id)string;
+- (void)setLyrics:(id)lyrics;
+- (void)setLyricsAdamID:(int64_t)d;
+- (void)setMediaType:(unint64_t)type;
+- (void)setNowPlayingInfo:(id)info;
+- (void)setNumberOfChildren:(int64_t)children;
+- (void)setPlayCount:(int64_t)count;
+- (void)setPlaybackRate:(float)rate;
+- (void)setPlaylistTraits:(unint64_t)traits;
+- (void)setPlaylistType:(int64_t)type;
+- (void)setPreferredFormat:(id)format;
+- (void)setProfileIdentifier:(id)identifier;
+- (void)setRadioStationName:(id)name;
+- (void)setRadioStationStringIdentifier:(id)identifier;
+- (void)setRadioStationType:(int64_t)type;
+- (void)setReleaseDate:(id)date;
+- (void)setRemoteArtworks:(id)artworks;
+- (void)setReportingAdamID:(int64_t)d;
+- (void)setSeasonNumber:(int64_t)number;
+- (void)setSections:(id)sections;
+- (void)setSeriesName:(id)name;
+- (void)setServiceIdentifier:(id)identifier;
+- (void)setSongTraits:(unint64_t)traits;
+- (void)setStartTime:(double)time;
+- (void)setSteerable:(BOOL)steerable;
+- (void)setStoreAlbumArtistID:(int64_t)d;
+- (void)setStoreAlbumID:(int64_t)d;
+- (void)setStoreArtistID:(int64_t)d;
+- (void)setStoreID:(int64_t)d;
+- (void)setStoreSubscriptionID:(int64_t)d;
+- (void)setSubtitleShort:(id)short;
+- (void)setSupportedRemoteArtworkFormats:(id)formats;
+- (void)setTotalDiscCount:(int64_t)count;
+- (void)setTotalTrackCount:(int64_t)count;
+- (void)setTrackArtistName:(id)name;
+- (void)setTrackNumber:(int64_t)number;
+- (void)setTranscriptAlignments:(id)alignments;
+- (void)setTransitionInfo:(id)info;
+- (void)setUserInfo:(id)info;
 @end
 
 @implementation MPNowPlayingContentItem
 
-- (void)_mergeContentItem:(id)a3
+- (void)_mergeContentItem:(id)item
 {
-  v5 = self;
-  v6 = a3;
+  selfCopy = self;
+  itemCopy = item;
   [(MPContentItem *)self _mediaRemoteContentItem];
-  [v6 _mediaRemoteContentItem];
+  [itemCopy _mediaRemoteContentItem];
 
   MRContentItemMerge();
 }
 
-- (void)setAlternativeFormats:(id)a3
+- (void)setAlternativeFormats:(id)formats
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self alternativeFormats];
-  v6 = v5;
-  if (v5 != v4 && ([v5 isEqual:v4] & 1) == 0)
+  formatsCopy = formats;
+  alternativeFormats = [(MPNowPlayingContentItem *)self alternativeFormats];
+  v6 = alternativeFormats;
+  if (alternativeFormats != formatsCopy && ([alternativeFormats isEqual:formatsCopy] & 1) == 0)
   {
-    v7 = [(MPContentItem *)self _mediaRemoteContentItem];
-    v8 = [v4 msv_map:&__block_literal_global_223];
-    v9 = [v7 metadata];
-    [v9 setAlternativeFormats:v8];
+    _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
+    v8 = [formatsCopy msv_map:&__block_literal_global_223];
+    metadata = [_mediaRemoteContentItem metadata];
+    [metadata setAlternativeFormats:v8];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __49__MPNowPlayingContentItem_setAlternativeFormats___block_invoke_4;
     v10[3] = &unk_1E7680D90;
-    v11 = v4;
+    v11 = formatsCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v10];
   }
 }
@@ -218,9 +218,9 @@ void __49__MPNowPlayingContentItem_setAlternativeFormats___block_invoke_4(uint64
 - (NSArray)alternativeFormats
 {
   v2 = [-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")];
-  v3 = [v2 alternativeFormats];
+  alternativeFormats = [v2 alternativeFormats];
 
-  v4 = [v3 msv_map:&__block_literal_global_213_53580];
+  v4 = [alternativeFormats msv_map:&__block_literal_global_213_53580];
 
   return v4;
 }
@@ -233,23 +233,23 @@ MPNowPlayingInfoAudioFormat *__45__MPNowPlayingContentItem_alternativeFormats__b
   return v3;
 }
 
-- (void)setAudioRoute:(id)a3
+- (void)setAudioRoute:(id)route
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self audioRoute];
-  v6 = v5;
-  if (v5 != v4 && ([v5 isEqual:v4] & 1) == 0)
+  routeCopy = route;
+  audioRoute = [(MPNowPlayingContentItem *)self audioRoute];
+  v6 = audioRoute;
+  if (audioRoute != routeCopy && ([audioRoute isEqual:routeCopy] & 1) == 0)
   {
-    v7 = [(MPContentItem *)self _mediaRemoteContentItem];
-    v8 = [v4 mediaRemoteAudioRoute];
-    v9 = [v7 metadata];
-    [v9 setAudioRoute:v8];
+    _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
+    mediaRemoteAudioRoute = [routeCopy mediaRemoteAudioRoute];
+    metadata = [_mediaRemoteContentItem metadata];
+    [metadata setAudioRoute:mediaRemoteAudioRoute];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __41__MPNowPlayingContentItem_setAudioRoute___block_invoke_3;
     v10[3] = &unk_1E7680D90;
-    v11 = v4;
+    v11 = routeCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v10];
   }
 }
@@ -264,26 +264,26 @@ void __41__MPNowPlayingContentItem_setAudioRoute___block_invoke_3(uint64_t a1, v
 - (MPNowPlayingInfoAudioRoute)audioRoute
 {
   v2 = [-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")];
-  v3 = [v2 audioRoute];
+  audioRoute = [v2 audioRoute];
 
-  v4 = v3;
+  v4 = audioRoute;
   v5 = [[MPNowPlayingInfoAudioRoute alloc] initWithMediaRemoteAudioRoute:v4];
 
   return v5;
 }
 
-- (void)setFormatTierPreference:(unint64_t)a3
+- (void)setFormatTierPreference:(unint64_t)preference
 {
-  if ([(MPNowPlayingContentItem *)self formatTierPreference]!= a3)
+  if ([(MPNowPlayingContentItem *)self formatTierPreference]!= preference)
   {
     v5 = [-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")];
-    [v5 setFormatTierPreference:a3 & 0x1F];
+    [v5 setFormatTierPreference:preference & 0x1F];
 
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __51__MPNowPlayingContentItem_setFormatTierPreference___block_invoke_3;
     v6[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v6[4] = a3;
+    v6[4] = preference;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v6];
   }
 }
@@ -298,17 +298,17 @@ void __51__MPNowPlayingContentItem_setFormatTierPreference___block_invoke_3(uint
 - (unint64_t)formatTierPreference
 {
   v2 = [-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")];
-  v3 = [v2 formatTierPreference];
+  formatTierPreference = [v2 formatTierPreference];
 
-  return v3 & 0x1F;
+  return formatTierPreference & 0x1F;
 }
 
-- (void)setActiveFormatJustification:(int64_t)a3
+- (void)setActiveFormatJustification:(int64_t)justification
 {
-  if ([(MPNowPlayingContentItem *)self activeFormatJustification]!= a3)
+  if ([(MPNowPlayingContentItem *)self activeFormatJustification]!= justification)
   {
-    v5 = [(MPContentItem *)self _mediaRemoteContentItem];
-    if (a3 == 1000)
+    _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
+    if (justification == 1000)
     {
       v6 = 1000;
     }
@@ -318,17 +318,17 @@ void __51__MPNowPlayingContentItem_setFormatTierPreference___block_invoke_3(uint
       v6 = 0;
     }
 
-    if (a3 == 501)
+    if (justification == 501)
     {
       v6 = 501;
     }
 
-    if (a3 == 500)
+    if (justification == 500)
     {
       v6 = 500;
     }
 
-    if (a3 == 101)
+    if (justification == 101)
     {
       v7 = 101;
     }
@@ -338,17 +338,17 @@ void __51__MPNowPlayingContentItem_setFormatTierPreference___block_invoke_3(uint
       v7 = 0;
     }
 
-    if (a3 == 100)
+    if (justification == 100)
     {
       v7 = 100;
     }
 
-    if (a3 == 1)
+    if (justification == 1)
     {
       v7 = 1;
     }
 
-    if (a3 <= 499)
+    if (justification <= 499)
     {
       v8 = v7;
     }
@@ -358,14 +358,14 @@ void __51__MPNowPlayingContentItem_setFormatTierPreference___block_invoke_3(uint
       v8 = v6;
     }
 
-    v9 = [v5 metadata];
-    [v9 setActiveFormatJustification:v8];
+    metadata = [_mediaRemoteContentItem metadata];
+    [metadata setActiveFormatJustification:v8];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __56__MPNowPlayingContentItem_setActiveFormatJustification___block_invoke_3;
     v10[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v10[4] = a3;
+    v10[4] = justification;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v10];
   }
 }
@@ -430,9 +430,9 @@ void __56__MPNowPlayingContentItem_setActiveFormatJustification___block_invoke_3
 - (int64_t)activeFormatJustification
 {
   v2 = [-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")];
-  v3 = [v2 activeFormatJustification];
+  activeFormatJustification = [v2 activeFormatJustification];
 
-  if (v3 == 1000)
+  if (activeFormatJustification == 1000)
   {
     v4 = 1000;
   }
@@ -442,17 +442,17 @@ void __56__MPNowPlayingContentItem_setActiveFormatJustification___block_invoke_3
     v4 = 0;
   }
 
-  if (v3 == 501)
+  if (activeFormatJustification == 501)
   {
     v4 = 501;
   }
 
-  if (v3 == 500)
+  if (activeFormatJustification == 500)
   {
     v4 = 500;
   }
 
-  if (v3 == 101)
+  if (activeFormatJustification == 101)
   {
     v5 = 101;
   }
@@ -462,17 +462,17 @@ void __56__MPNowPlayingContentItem_setActiveFormatJustification___block_invoke_3
     v5 = 0;
   }
 
-  if (v3 == 100)
+  if (activeFormatJustification == 100)
   {
     v5 = 100;
   }
 
-  if (v3 == 1)
+  if (activeFormatJustification == 1)
   {
     v5 = 1;
   }
 
-  if (v3 <= 499)
+  if (activeFormatJustification <= 499)
   {
     return v5;
   }
@@ -483,23 +483,23 @@ void __56__MPNowPlayingContentItem_setActiveFormatJustification___block_invoke_3
   }
 }
 
-- (void)setActiveFormat:(id)a3
+- (void)setActiveFormat:(id)format
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self activeFormat];
-  v6 = v5;
-  if (v5 != v4 && ([v5 isEqual:v4] & 1) == 0)
+  formatCopy = format;
+  activeFormat = [(MPNowPlayingContentItem *)self activeFormat];
+  v6 = activeFormat;
+  if (activeFormat != formatCopy && ([activeFormat isEqual:formatCopy] & 1) == 0)
   {
-    v7 = [(MPContentItem *)self _mediaRemoteContentItem];
-    v8 = [v4 mediaRemoteAudioFormat];
-    v9 = [v7 metadata];
-    [v9 setActiveFormat:v8];
+    _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
+    mediaRemoteAudioFormat = [formatCopy mediaRemoteAudioFormat];
+    metadata = [_mediaRemoteContentItem metadata];
+    [metadata setActiveFormat:mediaRemoteAudioFormat];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __43__MPNowPlayingContentItem_setActiveFormat___block_invoke_3;
     v10[3] = &unk_1E7680D90;
-    v11 = v4;
+    v11 = formatCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v10];
   }
 }
@@ -514,31 +514,31 @@ void __43__MPNowPlayingContentItem_setActiveFormat___block_invoke_3(uint64_t a1,
 - (MPNowPlayingInfoAudioFormat)activeFormat
 {
   v2 = [-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")];
-  v3 = [v2 activeFormat];
+  activeFormat = [v2 activeFormat];
 
-  v4 = v3;
+  v4 = activeFormat;
   v5 = [[MPNowPlayingInfoAudioFormat alloc] initWithMediaRemoteAudioFormat:v4];
 
   return v5;
 }
 
-- (void)setPreferredFormat:(id)a3
+- (void)setPreferredFormat:(id)format
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self preferredFormat];
-  v6 = v5;
-  if (v5 != v4 && ([v5 isEqual:v4] & 1) == 0)
+  formatCopy = format;
+  preferredFormat = [(MPNowPlayingContentItem *)self preferredFormat];
+  v6 = preferredFormat;
+  if (preferredFormat != formatCopy && ([preferredFormat isEqual:formatCopy] & 1) == 0)
   {
-    v7 = [(MPContentItem *)self _mediaRemoteContentItem];
-    v8 = [v4 mediaRemoteAudioFormat];
-    v9 = [v7 metadata];
-    [v9 setPreferredFormat:v8];
+    _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
+    mediaRemoteAudioFormat = [formatCopy mediaRemoteAudioFormat];
+    metadata = [_mediaRemoteContentItem metadata];
+    [metadata setPreferredFormat:mediaRemoteAudioFormat];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __46__MPNowPlayingContentItem_setPreferredFormat___block_invoke_3;
     v10[3] = &unk_1E7680D90;
-    v11 = v4;
+    v11 = formatCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v10];
   }
 }
@@ -553,26 +553,26 @@ void __46__MPNowPlayingContentItem_setPreferredFormat___block_invoke_3(uint64_t 
 - (MPNowPlayingInfoAudioFormat)preferredFormat
 {
   v2 = [-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")];
-  v3 = [v2 preferredFormat];
+  preferredFormat = [v2 preferredFormat];
 
-  v4 = v3;
+  v4 = preferredFormat;
   v5 = [[MPNowPlayingInfoAudioFormat alloc] initWithMediaRemoteAudioFormat:v4];
 
   return v5;
 }
 
-- (void)setPlaylistTraits:(unint64_t)a3
+- (void)setPlaylistTraits:(unint64_t)traits
 {
-  if ([(MPNowPlayingContentItem *)self playlistTraits]!= a3)
+  if ([(MPNowPlayingContentItem *)self playlistTraits]!= traits)
   {
     v5 = [-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")];
-    [v5 setPlaylistTraits:a3 & 0x138];
+    [v5 setPlaylistTraits:traits & 0x138];
 
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __45__MPNowPlayingContentItem_setPlaylistTraits___block_invoke_3;
     v6[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v6[4] = a3;
+    v6[4] = traits;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v6];
   }
 }
@@ -587,23 +587,23 @@ void __45__MPNowPlayingContentItem_setPlaylistTraits___block_invoke_3(uint64_t a
 - (unint64_t)playlistTraits
 {
   v2 = [-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")];
-  v3 = [v2 playlistTraits];
+  playlistTraits = [v2 playlistTraits];
 
-  return v3 & 0x138;
+  return playlistTraits & 0x138;
 }
 
-- (void)setAlbumTraits:(unint64_t)a3
+- (void)setAlbumTraits:(unint64_t)traits
 {
-  if ([(MPNowPlayingContentItem *)self albumTraits]!= a3)
+  if ([(MPNowPlayingContentItem *)self albumTraits]!= traits)
   {
     v5 = [-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")];
-    [v5 setAlbumTraits:a3 & 0x3F];
+    [v5 setAlbumTraits:traits & 0x3F];
 
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __42__MPNowPlayingContentItem_setAlbumTraits___block_invoke_3;
     v6[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v6[4] = a3;
+    v6[4] = traits;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v6];
   }
 }
@@ -618,23 +618,23 @@ void __42__MPNowPlayingContentItem_setAlbumTraits___block_invoke_3(uint64_t a1, 
 - (unint64_t)albumTraits
 {
   v2 = [-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")];
-  v3 = [v2 albumTraits];
+  albumTraits = [v2 albumTraits];
 
-  return v3 & 0x3F;
+  return albumTraits & 0x3F;
 }
 
-- (void)setSongTraits:(unint64_t)a3
+- (void)setSongTraits:(unint64_t)traits
 {
-  if ([(MPNowPlayingContentItem *)self songTraits]!= a3)
+  if ([(MPNowPlayingContentItem *)self songTraits]!= traits)
   {
     v5 = [-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")];
-    [v5 setSongTraits:a3 & 0x3F];
+    [v5 setSongTraits:traits & 0x3F];
 
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __41__MPNowPlayingContentItem_setSongTraits___block_invoke_3;
     v6[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v6[4] = a3;
+    v6[4] = traits;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v6];
   }
 }
@@ -649,46 +649,46 @@ void __41__MPNowPlayingContentItem_setSongTraits___block_invoke_3(uint64_t a1, v
 - (unint64_t)songTraits
 {
   v2 = [-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")];
-  v3 = [v2 songTraits];
+  songTraits = [v2 songTraits];
 
-  return v3 & 0x3F;
+  return songTraits & 0x3F;
 }
 
 - (void)invalidateArtwork
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MPContentItem *)self identifier];
-  v11[0] = v3;
+  identifier = [(MPContentItem *)self identifier];
+  v11[0] = identifier;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v4 = MRPlaybackQueueRequestCreateWithIdentifiers();
 
   MRPlaybackQueueRequestSetIncludeArtwork();
-  v5 = [(MPContentItem *)self identifier];
+  identifier2 = [(MPContentItem *)self identifier];
   v6 = MRContentItemCreate();
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v9[0] = @"_MPContentItemDidChangeUserInfoKeyDeltaRequest";
   v9[1] = @"_MPContentItemDidChangeUserInfoKeyDeltaItem";
   v10[0] = v4;
   v10[1] = v6;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
-  [v7 postNotificationName:@"_MPContentItemDidChangeNotification" object:self userInfo:v8];
+  [defaultCenter postNotificationName:@"_MPContentItemDidChangeNotification" object:self userInfo:v8];
 
   CFRelease(v4);
   CFRelease(v6);
 }
 
-- (void)setArtwork:(id)a3
+- (void)setArtwork:(id)artwork
 {
   v5.receiver = self;
   v5.super_class = MPNowPlayingContentItem;
   [(MPContentItem *)&v5 setArtwork:?];
-  [(MPNowPlayingContentItem *)self setHasArtwork:a3 != 0];
+  [(MPNowPlayingContentItem *)self setHasArtwork:artwork != 0];
 }
 
-- (void)setHasArtwork:(BOOL)a3
+- (void)setHasArtwork:(BOOL)artwork
 {
-  if ([(MPNowPlayingContentItem *)self hasArtwork]!= a3)
+  if ([(MPNowPlayingContentItem *)self hasArtwork]!= artwork)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetHasArtworkData();
@@ -696,55 +696,55 @@ void __41__MPNowPlayingContentItem_setSongTraits___block_invoke_3(uint64_t a1, v
     v5[1] = 3221225472;
     v5[2] = __41__MPNowPlayingContentItem_setHasArtwork___block_invoke;
     v5[3] = &__block_descriptor_33_e9_v16__0_v8l;
-    v6 = a3;
+    artworkCopy = artwork;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (BOOL)hasArtwork
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CA10](v2);
+  return MEMORY[0x1EEE1CA10](_mediaRemoteContentItem);
 }
 
 - (void)invalidateLyrics
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MPContentItem *)self identifier];
-  v11[0] = v3;
+  identifier = [(MPContentItem *)self identifier];
+  v11[0] = identifier;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v4 = MRPlaybackQueueRequestCreateWithIdentifiers();
 
   MRPlaybackQueueRequestSetIncludeLyrics();
-  v5 = [(MPContentItem *)self identifier];
+  identifier2 = [(MPContentItem *)self identifier];
   v6 = MRContentItemCreate();
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v9[0] = @"_MPContentItemDidChangeUserInfoKeyDeltaRequest";
   v9[1] = @"_MPContentItemDidChangeUserInfoKeyDeltaItem";
   v10[0] = v4;
   v10[1] = v6;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
-  [v7 postNotificationName:@"_MPContentItemDidChangeNotification" object:self userInfo:v8];
+  [defaultCenter postNotificationName:@"_MPContentItemDidChangeNotification" object:self userInfo:v8];
 
   CFRelease(v4);
   CFRelease(v6);
 }
 
-- (void)setLyrics:(id)a3
+- (void)setLyrics:(id)lyrics
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self lyrics];
+  lyricsCopy = lyrics;
+  lyrics = [(MPNowPlayingContentItem *)self lyrics];
   [(MPContentItem *)self _mediaRemoteContentItem];
-  [v4 mediaRemoteLyricsItem];
+  [lyricsCopy mediaRemoteLyricsItem];
   MRContentItemSetLyrics();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__MPNowPlayingContentItem_setLyrics___block_invoke_2;
   v7[3] = &unk_1E7680D90;
-  v8 = v4;
-  v6 = v4;
+  v8 = lyricsCopy;
+  v6 = lyricsCopy;
   [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
 }
 
@@ -763,9 +763,9 @@ uint64_t __37__MPNowPlayingContentItem_setLyrics___block_invoke_2(uint64_t a1)
   return v2;
 }
 
-- (void)setHasLyrics:(BOOL)a3
+- (void)setHasLyrics:(BOOL)lyrics
 {
-  if ([(MPNowPlayingContentItem *)self hasLyrics]!= a3)
+  if ([(MPNowPlayingContentItem *)self hasLyrics]!= lyrics)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetHasLyrics();
@@ -773,45 +773,45 @@ uint64_t __37__MPNowPlayingContentItem_setLyrics___block_invoke_2(uint64_t a1)
     v5[1] = 3221225472;
     v5[2] = __40__MPNowPlayingContentItem_setHasLyrics___block_invoke;
     v5[3] = &__block_descriptor_33_e9_v16__0_v8l;
-    v6 = a3;
+    lyricsCopy = lyrics;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (BOOL)hasLyrics
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CA30](v2);
+  return MEMORY[0x1EEE1CA30](_mediaRemoteContentItem);
 }
 
 - (void)invalidateDescription
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MPContentItem *)self identifier];
-  v11[0] = v3;
+  identifier = [(MPContentItem *)self identifier];
+  v11[0] = identifier;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v4 = MRPlaybackQueueRequestCreateWithIdentifiers();
 
   MRPlaybackQueueRequestSetIncludeInfo();
-  v5 = [(MPContentItem *)self identifier];
+  identifier2 = [(MPContentItem *)self identifier];
   v6 = MRContentItemCreate();
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v9[0] = @"_MPContentItemDidChangeUserInfoKeyDeltaRequest";
   v9[1] = @"_MPContentItemDidChangeUserInfoKeyDeltaItem";
   v10[0] = v4;
   v10[1] = v6;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
-  [v7 postNotificationName:@"_MPContentItemDidChangeNotification" object:self userInfo:v8];
+  [defaultCenter postNotificationName:@"_MPContentItemDidChangeNotification" object:self userInfo:v8];
 
   CFRelease(v4);
   CFRelease(v6);
 }
 
-- (void)setHasDescription:(BOOL)a3
+- (void)setHasDescription:(BOOL)description
 {
-  if ([(MPNowPlayingContentItem *)self hasDescription]!= a3)
+  if ([(MPNowPlayingContentItem *)self hasDescription]!= description)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetHasInfo();
@@ -819,25 +819,25 @@ uint64_t __37__MPNowPlayingContentItem_setLyrics___block_invoke_2(uint64_t a1)
     v5[1] = 3221225472;
     v5[2] = __45__MPNowPlayingContentItem_setHasDescription___block_invoke;
     v5[3] = &__block_descriptor_33_e9_v16__0_v8l;
-    v6 = a3;
+    descriptionCopy = description;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (BOOL)hasDescription
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CA20](v2);
+  return MEMORY[0x1EEE1CA20](_mediaRemoteContentItem);
 }
 
-- (void)setSections:(id)a3
+- (void)setSections:(id)sections
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self sections];
+  sectionsCopy = sections;
+  sections = [(MPNowPlayingContentItem *)self sections];
   [(MPContentItem *)self _mediaRemoteContentItem];
-  v6 = v4;
+  v6 = sectionsCopy;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = 0u;
   v17 = 0u;
@@ -946,22 +946,22 @@ uint64_t __39__MPNowPlayingContentItem_setSections___block_invoke_2(uint64_t a1)
 - (void)invalidateSections
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MPContentItem *)self identifier];
-  v11[0] = v3;
+  identifier = [(MPContentItem *)self identifier];
+  v11[0] = identifier;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v4 = MRPlaybackQueueRequestCreateWithIdentifiers();
 
   MRPlaybackQueueRequestSetIncludeSections();
-  v5 = [(MPContentItem *)self identifier];
+  identifier2 = [(MPContentItem *)self identifier];
   v6 = MRContentItemCreate();
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v9[0] = @"_MPContentItemDidChangeUserInfoKeyDeltaRequest";
   v9[1] = @"_MPContentItemDidChangeUserInfoKeyDeltaItem";
   v10[0] = v4;
   v10[1] = v6;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
-  [v7 postNotificationName:@"_MPContentItemDidChangeNotification" object:self userInfo:v8];
+  [defaultCenter postNotificationName:@"_MPContentItemDidChangeNotification" object:self userInfo:v8];
 
   CFRelease(v4);
   CFRelease(v6);
@@ -970,34 +970,34 @@ uint64_t __39__MPNowPlayingContentItem_setSections___block_invoke_2(uint64_t a1)
 - (void)invalidateLanguageOptions
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MPContentItem *)self identifier];
-  v11[0] = v3;
+  identifier = [(MPContentItem *)self identifier];
+  v11[0] = identifier;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v4 = MRPlaybackQueueRequestCreateWithIdentifiers();
 
   MRPlaybackQueueRequestSetIncludeLanguageOptions();
-  v5 = [(MPContentItem *)self identifier];
+  identifier2 = [(MPContentItem *)self identifier];
   v6 = MRContentItemCreate();
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v9[0] = @"_MPContentItemDidChangeUserInfoKeyDeltaRequest";
   v9[1] = @"_MPContentItemDidChangeUserInfoKeyDeltaItem";
   v10[0] = v4;
   v10[1] = v6;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
-  [v7 postNotificationName:@"_MPContentItemDidChangeNotification" object:self userInfo:v8];
+  [defaultCenter postNotificationName:@"_MPContentItemDidChangeNotification" object:self userInfo:v8];
 
   CFRelease(v4);
   CFRelease(v6);
 }
 
-- (void)setCurrentLanguageOptions:(id)a3
+- (void)setCurrentLanguageOptions:(id)options
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self currentLanguageOptions];
+  optionsCopy = options;
+  currentLanguageOptions = [(MPNowPlayingContentItem *)self currentLanguageOptions];
   [(MPContentItem *)self _mediaRemoteContentItem];
-  v6 = v4;
+  v6 = optionsCopy;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v18 = 0u;
   v19 = 0u;
@@ -1106,13 +1106,13 @@ uint64_t __53__MPNowPlayingContentItem_setCurrentLanguageOptions___block_invoke_
   return CurrentLanguageOptions;
 }
 
-- (void)setAvailableLanguageOptions:(id)a3
+- (void)setAvailableLanguageOptions:(id)options
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self availableLanguageOptions];
+  optionsCopy = options;
+  availableLanguageOptions = [(MPNowPlayingContentItem *)self availableLanguageOptions];
   [(MPContentItem *)self _mediaRemoteContentItem];
-  v6 = v4;
+  v6 = optionsCopy;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v18 = 0u;
   v19 = 0u;
@@ -1221,9 +1221,9 @@ uint64_t __55__MPNowPlayingContentItem_setAvailableLanguageOptions___block_invok
   return AvailableLanguageOptions;
 }
 
-- (void)setHasLanguageOptions:(BOOL)a3
+- (void)setHasLanguageOptions:(BOOL)options
 {
-  if ([(MPNowPlayingContentItem *)self hasLanguageOptions]!= a3)
+  if ([(MPNowPlayingContentItem *)self hasLanguageOptions]!= options)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetHasLanguageOptions();
@@ -1231,55 +1231,55 @@ uint64_t __55__MPNowPlayingContentItem_setAvailableLanguageOptions___block_invok
     v5[1] = 3221225472;
     v5[2] = __49__MPNowPlayingContentItem_setHasLanguageOptions___block_invoke;
     v5[3] = &__block_descriptor_33_e9_v16__0_v8l;
-    v6 = a3;
+    optionsCopy = options;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (BOOL)hasLanguageOptions
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CA28](v2);
+  return MEMORY[0x1EEE1CA28](_mediaRemoteContentItem);
 }
 
 - (void)invalidateTranscriptAlignments
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MPContentItem *)self identifier];
-  v11[0] = v3;
+  identifier = [(MPContentItem *)self identifier];
+  v11[0] = identifier;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v4 = MRPlaybackQueueRequestCreateWithIdentifiers();
 
   [v4 setIncludeAlignments:1];
-  v5 = [(MPContentItem *)self identifier];
+  identifier2 = [(MPContentItem *)self identifier];
   v6 = MRContentItemCreate();
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v9[0] = @"_MPContentItemDidChangeUserInfoKeyDeltaRequest";
   v9[1] = @"_MPContentItemDidChangeUserInfoKeyDeltaItem";
   v10[0] = v4;
   v10[1] = v6;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
-  [v7 postNotificationName:@"_MPContentItemDidChangeNotification" object:self userInfo:v8];
+  [defaultCenter postNotificationName:@"_MPContentItemDidChangeNotification" object:self userInfo:v8];
 
   CFRelease(v4);
   CFRelease(v6);
 }
 
-- (void)setTranscriptAlignments:(id)a3
+- (void)setTranscriptAlignments:(id)alignments
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self transcriptAlignments];
+  alignmentsCopy = alignments;
+  transcriptAlignments = [(MPNowPlayingContentItem *)self transcriptAlignments];
   [(MPContentItem *)self _mediaRemoteContentItem];
-  [v4 msv_map:&__block_literal_global_58_53595];
+  [alignmentsCopy msv_map:&__block_literal_global_58_53595];
   MRContentItemSetTranscriptAlignments();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__MPNowPlayingContentItem_setTranscriptAlignments___block_invoke_3;
   v7[3] = &unk_1E7680D90;
-  v8 = v4;
-  v6 = v4;
+  v8 = alignmentsCopy;
+  v6 = alignmentsCopy;
   [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
 }
 
@@ -1318,9 +1318,9 @@ uint64_t __51__MPNowPlayingContentItem_setTranscriptAlignments___block_invoke_3(
   return TranscriptAlignments;
 }
 
-- (void)setHasTranscriptAlignments:(BOOL)a3
+- (void)setHasTranscriptAlignments:(BOOL)alignments
 {
-  if ([(MPNowPlayingContentItem *)self hasTranscriptAlignments]!= a3)
+  if ([(MPNowPlayingContentItem *)self hasTranscriptAlignments]!= alignments)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetHasTranscriptAlignments();
@@ -1328,23 +1328,23 @@ uint64_t __51__MPNowPlayingContentItem_setTranscriptAlignments___block_invoke_3(
     v5[1] = 3221225472;
     v5[2] = __54__MPNowPlayingContentItem_setHasTranscriptAlignments___block_invoke;
     v5[3] = &__block_descriptor_33_e9_v16__0_v8l;
-    v6 = a3;
+    alignmentsCopy = alignments;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (BOOL)hasTranscriptAlignments
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CA40](v2);
+  return MEMORY[0x1EEE1CA40](_mediaRemoteContentItem);
 }
 
-- (void)setElapsedTime:(double)a3 playbackRate:(float)a4
+- (void)setElapsedTime:(double)time playbackRate:(float)rate
 {
   v7 = _AXSHapticMusicEnabled();
   [(MPNowPlayingContentItem *)self playbackRate];
-  v9 = v8 - a4;
+  v9 = v8 - rate;
   if (v9 >= 0.0)
   {
     v10 = v9;
@@ -1361,7 +1361,7 @@ uint64_t __51__MPNowPlayingContentItem_setTranscriptAlignments___block_invoke_3(
     goto LABEL_9;
   }
 
-  v12 = v11 - a3;
+  v12 = v11 - time;
   if (v12 < 0.0)
   {
     v12 = -v12;
@@ -1370,8 +1370,8 @@ uint64_t __51__MPNowPlayingContentItem_setTranscriptAlignments___block_invoke_3(
   if (v12 > dbl_1A273DE40[v7 == 0] || !self->_didSetElapsedTime)
   {
 LABEL_9:
-    [(MPNowPlayingContentItem *)self setElapsedTime:a3];
-    *&v13 = a4;
+    [(MPNowPlayingContentItem *)self setElapsedTime:time];
+    *&v13 = rate;
     [(MPNowPlayingContentItem *)self setPlaybackRate:v13];
     self->_didSetElapsedTime = 1;
   }
@@ -1396,11 +1396,11 @@ LABEL_9:
   return result;
 }
 
-- (void)setNowPlayingInfo:(id)a3
+- (void)setNowPlayingInfo:(id)info
 {
   v5 = self->_nowPlayingInfo;
-  v6 = self;
-  v7 = a3;
+  selfCopy = self;
+  infoCopy = info;
   [(MPContentItem *)self _mediaRemoteContentItem];
   MRContentItemSetNowPlayingInfo();
 
@@ -1436,33 +1436,33 @@ LABEL_9:
   return v2;
 }
 
-- (void)setMediaType:(unint64_t)a3
+- (void)setMediaType:(unint64_t)type
 {
-  if ([(MPNowPlayingContentItem *)self mediaType]!= a3)
+  if ([(MPNowPlayingContentItem *)self mediaType]!= type)
   {
-    if (a3)
+    if (type)
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = 2 * ((a3 & 0xFF00) != 0);
+      v5 = 2 * ((type & 0xFF00) != 0);
     }
 
     v6 = 1;
-    if (a3 > 511)
+    if (type > 511)
     {
-      if (a3 > 2047)
+      if (type > 2047)
       {
-        if (a3 == 2048)
+        if (type == 2048)
         {
           goto LABEL_25;
         }
 
-        if (a3 != 4096)
+        if (type != 4096)
         {
-          if (a3 == 0x2000)
+          if (type == 0x2000)
           {
             v6 = 7;
             goto LABEL_25;
@@ -1476,13 +1476,13 @@ LABEL_22:
         goto LABEL_25;
       }
 
-      if (a3 == 512)
+      if (type == 512)
       {
         v6 = 2;
         goto LABEL_25;
       }
 
-      if (a3 != 1024)
+      if (type != 1024)
       {
         goto LABEL_21;
       }
@@ -1490,17 +1490,17 @@ LABEL_22:
 
     else
     {
-      if (a3 > 3)
+      if (type > 3)
       {
-        if (a3 == 4)
+        if (type == 4)
         {
           v6 = 5;
           goto LABEL_25;
         }
 
-        if (a3 != 8)
+        if (type != 8)
         {
-          if (a3 == 256)
+          if (type == 256)
           {
             v6 = 3;
 LABEL_25:
@@ -1527,12 +1527,12 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      if (a3 == 1)
+      if (type == 1)
       {
         goto LABEL_25;
       }
 
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_21;
       }
@@ -1622,18 +1622,18 @@ LABEL_19:
   }
 }
 
-- (void)setTransitionInfo:(id)a3
+- (void)setTransitionInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self transitionInfo];
+  infoCopy = info;
+  transitionInfo = [(MPNowPlayingContentItem *)self transitionInfo];
   [(MPContentItem *)self _mediaRemoteContentItem];
   MRContentItemSetTransitionInfo();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__MPNowPlayingContentItem_setTransitionInfo___block_invoke_2;
   v7[3] = &unk_1E7680D90;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
 }
 
@@ -1645,19 +1645,19 @@ LABEL_19:
   return v2;
 }
 
-- (void)setCollectionInfo:(id)a3
+- (void)setCollectionInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self collectionInfo];
+  infoCopy = info;
+  collectionInfo = [(MPNowPlayingContentItem *)self collectionInfo];
   [(MPContentItem *)self _mediaRemoteContentItem];
-  MPNowPlayingCollectionInfoToMediaRemote(v4);
+  MPNowPlayingCollectionInfoToMediaRemote(infoCopy);
   MRContentItemSetCollectionInfo();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__MPNowPlayingContentItem_setCollectionInfo___block_invoke_2;
   v7[3] = &unk_1E7680D90;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
 }
 
@@ -1685,10 +1685,10 @@ uint64_t __45__MPNowPlayingContentItem_setCollectionInfo___block_invoke_2(uint64
   return result;
 }
 
-- (void)setPlaybackRate:(float)a3
+- (void)setPlaybackRate:(float)rate
 {
   [(MPNowPlayingContentItem *)self playbackRate];
-  v6 = v5 - a3;
+  v6 = v5 - rate;
   if (v6 < 0.0)
   {
     v6 = -v6;
@@ -1702,7 +1702,7 @@ uint64_t __45__MPNowPlayingContentItem_setCollectionInfo___block_invoke_2(uint64
     v7[1] = 3221225472;
     v7[2] = __43__MPNowPlayingContentItem_setPlaybackRate___block_invoke;
     v7[3] = &__block_descriptor_36_e9_v16__0_v8l;
-    v8 = a3;
+    rateCopy = rate;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
@@ -1715,10 +1715,10 @@ uint64_t __45__MPNowPlayingContentItem_setCollectionInfo___block_invoke_2(uint64
   return result;
 }
 
-- (void)setElapsedTime:(double)a3
+- (void)setElapsedTime:(double)time
 {
   [(MPNowPlayingContentItem *)self elapsedTime];
-  v6 = v5 - a3;
+  v6 = v5 - time;
   if (v6 < 0.0)
   {
     v6 = -v6;
@@ -1732,7 +1732,7 @@ uint64_t __45__MPNowPlayingContentItem_setCollectionInfo___block_invoke_2(uint64
     v8[1] = 3221225472;
     v8[2] = __42__MPNowPlayingContentItem_setElapsedTime___block_invoke;
     v8[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    *&v8[4] = a3;
+    *&v8[4] = time;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v8];
   }
 
@@ -1754,15 +1754,15 @@ uint64_t __42__MPNowPlayingContentItem_setElapsedTime___block_invoke_2(uint64_t 
 
 - (double)elapsedTime
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  MEMORY[0x1EEE1C9E8](v2);
+  MEMORY[0x1EEE1C9E8](_mediaRemoteContentItem);
   return result;
 }
 
-- (void)setEditingStyleFlags:(int64_t)a3
+- (void)setEditingStyleFlags:(int64_t)flags
 {
-  if ([(MPNowPlayingContentItem *)self editingStyleFlags]!= a3)
+  if ([(MPNowPlayingContentItem *)self editingStyleFlags]!= flags)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetEditingStyleFlags();
@@ -1770,14 +1770,14 @@ uint64_t __42__MPNowPlayingContentItem_setElapsedTime___block_invoke_2(uint64_t 
     v5[1] = 3221225472;
     v5[2] = __48__MPNowPlayingContentItem_setEditingStyleFlags___block_invoke_2;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = flags;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
-- (void)setEpisodeType:(int64_t)a3
+- (void)setEpisodeType:(int64_t)type
 {
-  if ([(MPNowPlayingContentItem *)self episodeType]!= a3)
+  if ([(MPNowPlayingContentItem *)self episodeType]!= type)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetEpisodeType();
@@ -1785,7 +1785,7 @@ uint64_t __42__MPNowPlayingContentItem_setElapsedTime___block_invoke_2(uint64_t 
     v5[1] = 3221225472;
     v5[2] = __42__MPNowPlayingContentItem_setEpisodeType___block_invoke_2;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = type;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
@@ -1802,9 +1802,9 @@ uint64_t __42__MPNowPlayingContentItem_setElapsedTime___block_invoke_2(uint64_t 
   return result;
 }
 
-- (void)setRadioStationType:(int64_t)a3
+- (void)setRadioStationType:(int64_t)type
 {
-  if ([(MPNowPlayingContentItem *)self radioStationType]!= a3)
+  if ([(MPNowPlayingContentItem *)self radioStationType]!= type)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetRadioStationType();
@@ -1812,14 +1812,14 @@ uint64_t __42__MPNowPlayingContentItem_setElapsedTime___block_invoke_2(uint64_t 
     v5[1] = 3221225472;
     v5[2] = __47__MPNowPlayingContentItem_setRadioStationType___block_invoke_2;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = type;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
-- (void)setPlaylistType:(int64_t)a3
+- (void)setPlaylistType:(int64_t)type
 {
-  if ([(MPNowPlayingContentItem *)self playlistType]!= a3)
+  if ([(MPNowPlayingContentItem *)self playlistType]!= type)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetPlaylistType();
@@ -1827,7 +1827,7 @@ uint64_t __42__MPNowPlayingContentItem_setElapsedTime___block_invoke_2(uint64_t 
     v5[1] = 3221225472;
     v5[2] = __43__MPNowPlayingContentItem_setPlaylistType___block_invoke_2;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = type;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
@@ -1844,27 +1844,27 @@ uint64_t __42__MPNowPlayingContentItem_setElapsedTime___block_invoke_2(uint64_t 
   return result;
 }
 
-- (void)setRemoteArtworks:(id)a3
+- (void)setRemoteArtworks:(id)artworks
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self remoteArtworks];
-  if (v5 == v4)
+  artworksCopy = artworks;
+  remoteArtworks = [(MPNowPlayingContentItem *)self remoteArtworks];
+  if (remoteArtworks == artworksCopy)
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 isEqual:v5];
+  v6 = [artworksCopy isEqual:remoteArtworks];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [v4 msv_mapValues:&__block_literal_global_6];
+    v7 = [artworksCopy msv_mapValues:&__block_literal_global_6];
     [-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __45__MPNowPlayingContentItem_setRemoteArtworks___block_invoke_2;
     v8[3] = &unk_1E7680D90;
     v9 = v7;
-    v5 = v7;
+    remoteArtworks = v7;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v8];
 
 LABEL_4:
@@ -1887,18 +1887,18 @@ MPNowPlayingContentItemRemoteArtwork *__41__MPNowPlayingContentItem_remoteArtwor
   return v4;
 }
 
-- (void)setSupportedRemoteArtworkFormats:(id)a3
+- (void)setSupportedRemoteArtworkFormats:(id)formats
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self supportedRemoteArtworkFormats];
-  v6 = v5;
-  if (v5 == v4)
+  formatsCopy = formats;
+  supportedRemoteArtworkFormats = [(MPNowPlayingContentItem *)self supportedRemoteArtworkFormats];
+  v6 = supportedRemoteArtworkFormats;
+  if (supportedRemoteArtworkFormats == formatsCopy)
   {
   }
 
   else
   {
-    v7 = [v4 isEqual:v5];
+    v7 = [formatsCopy isEqual:supportedRemoteArtworkFormats];
 
     if ((v7 & 1) == 0)
     {
@@ -1907,7 +1907,7 @@ MPNowPlayingContentItemRemoteArtwork *__41__MPNowPlayingContentItem_remoteArtwor
       v8[1] = 3221225472;
       v8[2] = __60__MPNowPlayingContentItem_setSupportedRemoteArtworkFormats___block_invoke;
       v8[3] = &unk_1E7680D90;
-      v9 = v4;
+      v9 = formatsCopy;
       [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v8];
     }
   }
@@ -1915,34 +1915,34 @@ MPNowPlayingContentItemRemoteArtwork *__41__MPNowPlayingContentItem_remoteArtwor
 
 - (NSArray)supportedRemoteArtworkFormats
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return [v2 availableRemoteArtworkFormats];
+  return [_mediaRemoteContentItem availableRemoteArtworkFormats];
 }
 
-- (void)setSubtitleShort:(id)a3
+- (void)setSubtitleShort:(id)short
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self subtitleShort];
-  v6 = v5;
-  if (v5 == v4)
+  shortCopy = short;
+  subtitleShort = [(MPNowPlayingContentItem *)self subtitleShort];
+  v6 = subtitleShort;
+  if (subtitleShort == shortCopy)
   {
   }
 
   else
   {
-    v7 = [v4 isEqual:v5];
+    v7 = [shortCopy isEqual:subtitleShort];
 
     if ((v7 & 1) == 0)
     {
       v8 = [-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")];
-      [v8 setSubtitleShort:v4];
+      [v8 setSubtitleShort:shortCopy];
 
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke;
       v9[3] = &unk_1E7680D90;
-      v10 = v4;
+      v10 = shortCopy;
       [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v9];
     }
   }
@@ -1958,23 +1958,23 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
 - (NSString)subtitleShort
 {
   v2 = [-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")];
-  v3 = [v2 subtitleShort];
+  subtitleShort = [v2 subtitleShort];
 
-  return v3;
+  return subtitleShort;
 }
 
-- (void)setAssociatedParticipantIdentifier:(id)a3
+- (void)setAssociatedParticipantIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self associatedParticipantIdentifier];
-  v6 = v5;
-  if (v5 == v4)
+  identifierCopy = identifier;
+  associatedParticipantIdentifier = [(MPNowPlayingContentItem *)self associatedParticipantIdentifier];
+  v6 = associatedParticipantIdentifier;
+  if (associatedParticipantIdentifier == identifierCopy)
   {
   }
 
   else
   {
-    v7 = [v4 isEqual:v5];
+    v7 = [identifierCopy isEqual:associatedParticipantIdentifier];
 
     if ((v7 & 1) == 0)
     {
@@ -1983,7 +1983,7 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
       v8[1] = 3221225472;
       v8[2] = __62__MPNowPlayingContentItem_setAssociatedParticipantIdentifier___block_invoke;
       v8[3] = &unk_1E7680D90;
-      v9 = v4;
+      v9 = identifierCopy;
       [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v8];
     }
   }
@@ -1991,14 +1991,14 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
 
 - (NSString)associatedParticipantIdentifier
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return [v2 associatedParticipantIdentifier];
+  return [_mediaRemoteContentItem associatedParticipantIdentifier];
 }
 
-- (void)setStoreAlbumArtistID:(int64_t)a3
+- (void)setStoreAlbumArtistID:(int64_t)d
 {
-  if ([(MPNowPlayingContentItem *)self storeAlbumArtistID]!= a3)
+  if ([(MPNowPlayingContentItem *)self storeAlbumArtistID]!= d)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetITunesStoreAlbumArtistIdentifier();
@@ -2006,21 +2006,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v5[1] = 3221225472;
     v5[2] = __49__MPNowPlayingContentItem_setStoreAlbumArtistID___block_invoke;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = d;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (int64_t)storeAlbumArtistID
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CA48](v2);
+  return MEMORY[0x1EEE1CA48](_mediaRemoteContentItem);
 }
 
-- (void)setLyricsAdamID:(int64_t)a3
+- (void)setLyricsAdamID:(int64_t)d
 {
-  if ([(MPNowPlayingContentItem *)self lyricsAdamID]!= a3)
+  if ([(MPNowPlayingContentItem *)self lyricsAdamID]!= d)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetLyricsAdamID();
@@ -2028,21 +2028,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v5[1] = 3221225472;
     v5[2] = __43__MPNowPlayingContentItem_setLyricsAdamID___block_invoke;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = d;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (int64_t)lyricsAdamID
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CAE8](v2);
+  return MEMORY[0x1EEE1CAE8](_mediaRemoteContentItem);
 }
 
-- (void)setReportingAdamID:(int64_t)a3
+- (void)setReportingAdamID:(int64_t)d
 {
-  if ([(MPNowPlayingContentItem *)self reportingAdamID]!= a3)
+  if ([(MPNowPlayingContentItem *)self reportingAdamID]!= d)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetReportingAdamID();
@@ -2050,21 +2050,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v5[1] = 3221225472;
     v5[2] = __46__MPNowPlayingContentItem_setReportingAdamID___block_invoke;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = d;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (int64_t)reportingAdamID
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CB50](v2);
+  return MEMORY[0x1EEE1CB50](_mediaRemoteContentItem);
 }
 
-- (void)setLegacyUniqueID:(int64_t)a3
+- (void)setLegacyUniqueID:(int64_t)d
 {
-  if ([(MPNowPlayingContentItem *)self legacyUniqueID]!= a3)
+  if ([(MPNowPlayingContentItem *)self legacyUniqueID]!= d)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetLegacyUniqueIdentifier();
@@ -2072,21 +2072,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v5[1] = 3221225472;
     v5[2] = __45__MPNowPlayingContentItem_setLegacyUniqueID___block_invoke;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = d;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (int64_t)legacyUniqueID
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CAC8](v2);
+  return MEMORY[0x1EEE1CAC8](_mediaRemoteContentItem);
 }
 
-- (void)setStoreSubscriptionID:(int64_t)a3
+- (void)setStoreSubscriptionID:(int64_t)d
 {
-  if ([(MPNowPlayingContentItem *)self storeSubscriptionID]!= a3)
+  if ([(MPNowPlayingContentItem *)self storeSubscriptionID]!= d)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetITunesStoreSubscriptionIdentifier();
@@ -2094,21 +2094,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v5[1] = 3221225472;
     v5[2] = __50__MPNowPlayingContentItem_setStoreSubscriptionID___block_invoke;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = d;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (int64_t)storeSubscriptionID
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CA68](v2);
+  return MEMORY[0x1EEE1CA68](_mediaRemoteContentItem);
 }
 
-- (void)setStoreID:(int64_t)a3
+- (void)setStoreID:(int64_t)d
 {
-  if ([(MPNowPlayingContentItem *)self storeID]!= a3)
+  if ([(MPNowPlayingContentItem *)self storeID]!= d)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetITunesStoreIdentifier();
@@ -2116,21 +2116,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v5[1] = 3221225472;
     v5[2] = __38__MPNowPlayingContentItem_setStoreID___block_invoke;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = d;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (int64_t)storeID
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CA60](v2);
+  return MEMORY[0x1EEE1CA60](_mediaRemoteContentItem);
 }
 
-- (void)setStoreArtistID:(int64_t)a3
+- (void)setStoreArtistID:(int64_t)d
 {
-  if ([(MPNowPlayingContentItem *)self storeArtistID]!= a3)
+  if ([(MPNowPlayingContentItem *)self storeArtistID]!= d)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetITunesStoreArtistIdentifier();
@@ -2138,21 +2138,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v5[1] = 3221225472;
     v5[2] = __44__MPNowPlayingContentItem_setStoreArtistID___block_invoke;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = d;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (int64_t)storeArtistID
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CA58](v2);
+  return MEMORY[0x1EEE1CA58](_mediaRemoteContentItem);
 }
 
-- (void)setStoreAlbumID:(int64_t)a3
+- (void)setStoreAlbumID:(int64_t)d
 {
-  if ([(MPNowPlayingContentItem *)self storeAlbumID]!= a3)
+  if ([(MPNowPlayingContentItem *)self storeAlbumID]!= d)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetITunesStoreAlbumIdentifier();
@@ -2160,21 +2160,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v5[1] = 3221225472;
     v5[2] = __43__MPNowPlayingContentItem_setStoreAlbumID___block_invoke;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = d;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (int64_t)storeAlbumID
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CA50](v2);
+  return MEMORY[0x1EEE1CA50](_mediaRemoteContentItem);
 }
 
-- (void)setNumberOfChildren:(int64_t)a3
+- (void)setNumberOfChildren:(int64_t)children
 {
-  if ([(MPNowPlayingContentItem *)self numberOfChildren]!= a3)
+  if ([(MPNowPlayingContentItem *)self numberOfChildren]!= children)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetNumberOfSections();
@@ -2182,7 +2182,7 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v5[1] = 3221225472;
     v5[2] = __47__MPNowPlayingContentItem_setNumberOfChildren___block_invoke;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = children;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 
@@ -2191,14 +2191,14 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
 
 - (int64_t)numberOfChildren
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CB00](v2);
+  return MEMORY[0x1EEE1CB00](_mediaRemoteContentItem);
 }
 
-- (void)setInTransition:(BOOL)a3
+- (void)setInTransition:(BOOL)transition
 {
-  if (-[MPNowPlayingContentItem isInTransition](self, "isInTransition") != a3 || ([-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasInTransition"), v5, (v6 & 1) == 0))
+  if (-[MPNowPlayingContentItem isInTransition](self, "isInTransition") != transition || ([-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasInTransition"), v5, (v6 & 1) == 0))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetIsInTransition();
@@ -2206,21 +2206,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v7[1] = 3221225472;
     v7[2] = __43__MPNowPlayingContentItem_setInTransition___block_invoke;
     v7[3] = &__block_descriptor_33_e9_v16__0_v8l;
-    v8 = a3;
+    transitionCopy = transition;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (BOOL)isInTransition
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CAA0](v2);
+  return MEMORY[0x1EEE1CAA0](_mediaRemoteContentItem);
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  if (-[MPNowPlayingContentItem isLoading](self, "isLoading") != a3 || ([-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasLoading"), v5, (v6 & 1) == 0))
+  if (-[MPNowPlayingContentItem isLoading](self, "isLoading") != loading || ([-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasLoading"), v5, (v6 & 1) == 0))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetIsLoading();
@@ -2228,21 +2228,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v7[1] = 3221225472;
     v7[2] = __38__MPNowPlayingContentItem_setLoading___block_invoke;
     v7[3] = &__block_descriptor_33_e9_v16__0_v8l;
-    v8 = a3;
+    loadingCopy = loading;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (BOOL)isLoading
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CAA8](v2);
+  return MEMORY[0x1EEE1CAA8](_mediaRemoteContentItem);
 }
 
-- (void)setSteerable:(BOOL)a3
+- (void)setSteerable:(BOOL)steerable
 {
-  if (-[MPNowPlayingContentItem isSteerable](self, "isSteerable") != a3 || ([-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasSteerable"), v5, (v6 & 1) == 0))
+  if (-[MPNowPlayingContentItem isSteerable](self, "isSteerable") != steerable || ([-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasSteerable"), v5, (v6 & 1) == 0))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetIsSteerable();
@@ -2250,21 +2250,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v7[1] = 3221225472;
     v7[2] = __40__MPNowPlayingContentItem_setSteerable___block_invoke;
     v7[3] = &__block_descriptor_33_e9_v16__0_v8l;
-    v8 = a3;
+    steerableCopy = steerable;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (BOOL)isSteerable
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CAB8](v2);
+  return MEMORY[0x1EEE1CAB8](_mediaRemoteContentItem);
 }
 
-- (void)setAdvertisement:(BOOL)a3
+- (void)setAdvertisement:(BOOL)advertisement
 {
-  if (-[MPNowPlayingContentItem isAdvertisement](self, "isAdvertisement") != a3 || ([-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasAdvertisement"), v5, (v6 & 1) == 0))
+  if (-[MPNowPlayingContentItem isAdvertisement](self, "isAdvertisement") != advertisement || ([-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasAdvertisement"), v5, (v6 & 1) == 0))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetIsAdvertisement();
@@ -2272,21 +2272,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v7[1] = 3221225472;
     v7[2] = __44__MPNowPlayingContentItem_setAdvertisement___block_invoke;
     v7[3] = &__block_descriptor_33_e9_v16__0_v8l;
-    v8 = a3;
+    advertisementCopy = advertisement;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (BOOL)isAdvertisement
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CA80](v2);
+  return MEMORY[0x1EEE1CA80](_mediaRemoteContentItem);
 }
 
-- (void)setAlwaysLiveItem:(BOOL)a3
+- (void)setAlwaysLiveItem:(BOOL)item
 {
-  if (-[MPNowPlayingContentItem isAlwaysLiveItem](self, "isAlwaysLiveItem") != a3 || ([-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasAlwaysLive"), v5, (v6 & 1) == 0))
+  if (-[MPNowPlayingContentItem isAlwaysLiveItem](self, "isAlwaysLiveItem") != item || ([-[MPContentItem _mediaRemoteContentItem](self "_mediaRemoteContentItem")], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasAlwaysLive"), v5, (v6 & 1) == 0))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetIsAlwaysLive();
@@ -2294,24 +2294,24 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v7[1] = 3221225472;
     v7[2] = __45__MPNowPlayingContentItem_setAlwaysLiveItem___block_invoke;
     v7[3] = &__block_descriptor_33_e9_v16__0_v8l;
-    v8 = a3;
+    itemCopy = item;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (BOOL)isAlwaysLiveItem
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CA88](v2);
+  return MEMORY[0x1EEE1CA88](_mediaRemoteContentItem);
 }
 
-- (void)setServiceIdentifier:(id)a3
+- (void)setServiceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self serviceIdentifier];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  identifierCopy = identifier;
+  serviceIdentifier = [(MPNowPlayingContentItem *)self serviceIdentifier];
+  v6 = serviceIdentifier;
+  if (serviceIdentifier != identifierCopy && ![serviceIdentifier isEqual:identifierCopy] || !(identifierCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetServiceIdentifier();
@@ -2319,24 +2319,24 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v7[1] = 3221225472;
     v7[2] = __48__MPNowPlayingContentItem_setServiceIdentifier___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = identifierCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)serviceIdentifier
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CB70](v2);
+  return MEMORY[0x1EEE1CB70](_mediaRemoteContentItem);
 }
 
-- (void)setExternalContentIdentifier:(id)a3
+- (void)setExternalContentIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self externalContentIdentifier];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  identifierCopy = identifier;
+  externalContentIdentifier = [(MPNowPlayingContentItem *)self externalContentIdentifier];
+  v6 = externalContentIdentifier;
+  if (externalContentIdentifier != identifierCopy && ![externalContentIdentifier isEqual:identifierCopy] || !(identifierCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetContentIdentifier();
@@ -2344,24 +2344,24 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v7[1] = 3221225472;
     v7[2] = __56__MPNowPlayingContentItem_setExternalContentIdentifier___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = identifierCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)externalContentIdentifier
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1C9A8](v2);
+  return MEMORY[0x1EEE1C9A8](_mediaRemoteContentItem);
 }
 
-- (void)setRadioStationStringIdentifier:(id)a3
+- (void)setRadioStationStringIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self radioStationStringIdentifier];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  identifierCopy = identifier;
+  radioStationStringIdentifier = [(MPNowPlayingContentItem *)self radioStationStringIdentifier];
+  v6 = radioStationStringIdentifier;
+  if (radioStationStringIdentifier != identifierCopy && ![radioStationStringIdentifier isEqual:identifierCopy] || !(identifierCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetRadioStationString();
@@ -2369,24 +2369,24 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v7[1] = 3221225472;
     v7[2] = __59__MPNowPlayingContentItem_setRadioStationStringIdentifier___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = identifierCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)radioStationStringIdentifier
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CB38](v2);
+  return MEMORY[0x1EEE1CB38](_mediaRemoteContentItem);
 }
 
-- (void)setGenreName:(id)a3
+- (void)setGenreName:(id)name
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self genreName];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  nameCopy = name;
+  genreName = [(MPNowPlayingContentItem *)self genreName];
+  v6 = genreName;
+  if (genreName != nameCopy && ![genreName isEqual:nameCopy] || !(nameCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetGenre();
@@ -2394,24 +2394,24 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v7[1] = 3221225472;
     v7[2] = __40__MPNowPlayingContentItem_setGenreName___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = nameCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)genreName
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CA08](v2);
+  return MEMORY[0x1EEE1CA08](_mediaRemoteContentItem);
 }
 
-- (void)setComposerName:(id)a3
+- (void)setComposerName:(id)name
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self composerName];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  nameCopy = name;
+  composerName = [(MPNowPlayingContentItem *)self composerName];
+  v6 = composerName;
+  if (composerName != nameCopy && ![composerName isEqual:nameCopy] || !(nameCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetComposer();
@@ -2419,21 +2419,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v7[1] = 3221225472;
     v7[2] = __43__MPNowPlayingContentItem_setComposerName___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = nameCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)composerName
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1C9A0](v2);
+  return MEMORY[0x1EEE1C9A0](_mediaRemoteContentItem);
 }
 
-- (void)setTrackNumber:(int64_t)a3
+- (void)setTrackNumber:(int64_t)number
 {
-  if ([(MPNowPlayingContentItem *)self trackNumber]!= a3)
+  if ([(MPNowPlayingContentItem *)self trackNumber]!= number)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetTrackNumber();
@@ -2441,21 +2441,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v5[1] = 3221225472;
     v5[2] = __42__MPNowPlayingContentItem_setTrackNumber___block_invoke;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = number;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (int64_t)trackNumber
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CBA8](v2);
+  return MEMORY[0x1EEE1CBA8](_mediaRemoteContentItem);
 }
 
-- (void)setTotalTrackCount:(int64_t)a3
+- (void)setTotalTrackCount:(int64_t)count
 {
-  if ([(MPNowPlayingContentItem *)self totalTrackCount]!= a3)
+  if ([(MPNowPlayingContentItem *)self totalTrackCount]!= count)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetTotalTrackCount();
@@ -2463,21 +2463,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v5[1] = 3221225472;
     v5[2] = __46__MPNowPlayingContentItem_setTotalTrackCount___block_invoke;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = count;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (int64_t)totalTrackCount
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CB98](v2);
+  return MEMORY[0x1EEE1CB98](_mediaRemoteContentItem);
 }
 
-- (void)setTotalDiscCount:(int64_t)a3
+- (void)setTotalDiscCount:(int64_t)count
 {
-  if ([(MPNowPlayingContentItem *)self totalDiscCount]!= a3)
+  if ([(MPNowPlayingContentItem *)self totalDiscCount]!= count)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetTotalDiscCount();
@@ -2485,21 +2485,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v5[1] = 3221225472;
     v5[2] = __45__MPNowPlayingContentItem_setTotalDiscCount___block_invoke;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = count;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (int64_t)totalDiscCount
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CB90](v2);
+  return MEMORY[0x1EEE1CB90](_mediaRemoteContentItem);
 }
 
-- (void)setSeasonNumber:(int64_t)a3
+- (void)setSeasonNumber:(int64_t)number
 {
-  if ([(MPNowPlayingContentItem *)self seasonNumber]!= a3)
+  if ([(MPNowPlayingContentItem *)self seasonNumber]!= number)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetSeasonNumber();
@@ -2507,21 +2507,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v5[1] = 3221225472;
     v5[2] = __43__MPNowPlayingContentItem_setSeasonNumber___block_invoke;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = number;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (int64_t)seasonNumber
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CB58](v2);
+  return MEMORY[0x1EEE1CB58](_mediaRemoteContentItem);
 }
 
-- (void)setPlayCount:(int64_t)a3
+- (void)setPlayCount:(int64_t)count
 {
-  if ([(MPNowPlayingContentItem *)self playCount]!= a3)
+  if ([(MPNowPlayingContentItem *)self playCount]!= count)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetPlayCount();
@@ -2529,21 +2529,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v5[1] = 3221225472;
     v5[2] = __40__MPNowPlayingContentItem_setPlayCount___block_invoke;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = count;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (int64_t)playCount
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CB08](v2);
+  return MEMORY[0x1EEE1CB08](_mediaRemoteContentItem);
 }
 
-- (void)setEpisodeNumber:(int64_t)a3
+- (void)setEpisodeNumber:(int64_t)number
 {
-  if ([(MPNowPlayingContentItem *)self episodeNumber]!= a3)
+  if ([(MPNowPlayingContentItem *)self episodeNumber]!= number)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetEpisodeNumber();
@@ -2551,21 +2551,21 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v5[1] = 3221225472;
     v5[2] = __44__MPNowPlayingContentItem_setEpisodeNumber___block_invoke;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = number;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (int64_t)episodeNumber
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1C9F8](v2);
+  return MEMORY[0x1EEE1C9F8](_mediaRemoteContentItem);
 }
 
-- (void)setDiscNumber:(int64_t)a3
+- (void)setDiscNumber:(int64_t)number
 {
-  if ([(MPNowPlayingContentItem *)self discNumber]!= a3)
+  if ([(MPNowPlayingContentItem *)self discNumber]!= number)
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetDiscNumber();
@@ -2573,19 +2573,19 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     v5[1] = 3221225472;
     v5[2] = __41__MPNowPlayingContentItem_setDiscNumber___block_invoke;
     v5[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v5[4] = a3;
+    v5[4] = number;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v5];
   }
 }
 
 - (int64_t)discNumber
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1C9C8](v2);
+  return MEMORY[0x1EEE1C9C8](_mediaRemoteContentItem);
 }
 
-- (void)setDefaultPlaybackRate:(float)a3
+- (void)setDefaultPlaybackRate:(float)rate
 {
   [(MPNowPlayingContentItem *)self defaultPlaybackRate];
   v6 = -v5;
@@ -2599,16 +2599,16 @@ void __44__MPNowPlayingContentItem_setSubtitleShort___block_invoke(uint64_t a1, 
     goto LABEL_7;
   }
 
-  v7 = -a3;
-  if (a3 >= 0.0)
+  rateCopy = -rate;
+  if (rate >= 0.0)
   {
-    v7 = a3;
+    rateCopy = rate;
   }
 
-  if (v7 > 0.00000011921)
+  if (rateCopy > 0.00000011921)
   {
 LABEL_7:
-    v8 = v5 - a3;
+    v8 = v5 - rate;
     if (v8 < 0.0)
     {
       v8 = -v8;
@@ -2622,7 +2622,7 @@ LABEL_7:
       v9[1] = 3221225472;
       v9[2] = __50__MPNowPlayingContentItem_setDefaultPlaybackRate___block_invoke;
       v9[3] = &__block_descriptor_36_e9_v16__0_v8l;
-      v10 = a3;
+      rateCopy2 = rate;
       [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v9];
     }
   }
@@ -2630,13 +2630,13 @@ LABEL_7:
 
 - (float)defaultPlaybackRate
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  MEMORY[0x1EEE1C9B8](v2);
+  MEMORY[0x1EEE1C9B8](_mediaRemoteContentItem);
   return result;
 }
 
-- (void)setStartTime:(double)a3
+- (void)setStartTime:(double)time
 {
   [(MPNowPlayingContentItem *)self startTime];
   v6 = -v5;
@@ -2650,16 +2650,16 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v7 = -a3;
-  if (a3 >= 0.0)
+  timeCopy = -time;
+  if (time >= 0.0)
   {
-    v7 = a3;
+    timeCopy = time;
   }
 
-  if (v7 > 2.22044605e-16)
+  if (timeCopy > 2.22044605e-16)
   {
 LABEL_7:
-    v8 = v5 - a3;
+    v8 = v5 - time;
     if (v8 < 0.0)
     {
       v8 = -v8;
@@ -2673,7 +2673,7 @@ LABEL_7:
       v9[1] = 3221225472;
       v9[2] = __40__MPNowPlayingContentItem_setStartTime___block_invoke;
       v9[3] = &__block_descriptor_40_e9_v16__0_v8l;
-      *&v9[4] = a3;
+      *&v9[4] = time;
       [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v9];
     }
   }
@@ -2681,13 +2681,13 @@ LABEL_7:
 
 - (double)startTime
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  MEMORY[0x1EEE1CB78](v2);
+  MEMORY[0x1EEE1CB78](_mediaRemoteContentItem);
   return result;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
   [(MPNowPlayingContentItem *)self duration];
   v6 = -v5;
@@ -2701,16 +2701,16 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v7 = -a3;
-  if (a3 >= 0.0)
+  durationCopy = -duration;
+  if (duration >= 0.0)
   {
-    v7 = a3;
+    durationCopy = duration;
   }
 
-  if (v7 > 2.22044605e-16)
+  if (durationCopy > 2.22044605e-16)
   {
 LABEL_7:
-    v8 = v5 - a3;
+    v8 = v5 - duration;
     if (v8 < 0.0)
     {
       v8 = -v8;
@@ -2724,7 +2724,7 @@ LABEL_7:
       v9[1] = 3221225472;
       v9[2] = __39__MPNowPlayingContentItem_setDuration___block_invoke;
       v9[3] = &__block_descriptor_40_e9_v16__0_v8l;
-      *&v9[4] = a3;
+      *&v9[4] = duration;
       [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v9];
     }
   }
@@ -2732,18 +2732,18 @@ LABEL_7:
 
 - (double)duration
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  MEMORY[0x1EEE1C9D0](v2);
+  MEMORY[0x1EEE1C9D0](_mediaRemoteContentItem);
   return result;
 }
 
-- (void)setDurationStringLocalizationKey:(id)a3
+- (void)setDurationStringLocalizationKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self durationStringLocalizationKey];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  keyCopy = key;
+  durationStringLocalizationKey = [(MPNowPlayingContentItem *)self durationStringLocalizationKey];
+  v6 = durationStringLocalizationKey;
+  if (durationStringLocalizationKey != keyCopy && ![durationStringLocalizationKey isEqual:keyCopy] || !(keyCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetDurationStringLocalizationKey();
@@ -2751,24 +2751,24 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __60__MPNowPlayingContentItem_setDurationStringLocalizationKey___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = keyCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)durationStringLocalizationKey
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1C9D8](v2);
+  return MEMORY[0x1EEE1C9D8](_mediaRemoteContentItem);
 }
 
-- (void)setLocalizedDurationString:(id)a3
+- (void)setLocalizedDurationString:(id)string
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self localizedDurationString];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  stringCopy = string;
+  localizedDurationString = [(MPNowPlayingContentItem *)self localizedDurationString];
+  v6 = localizedDurationString;
+  if (localizedDurationString != stringCopy && ![localizedDurationString isEqual:stringCopy] || !(stringCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetLocalizedDurationString();
@@ -2776,24 +2776,24 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __54__MPNowPlayingContentItem_setLocalizedDurationString___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = stringCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)localizedDurationString
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CAD8](v2);
+  return MEMORY[0x1EEE1CAD8](_mediaRemoteContentItem);
 }
 
-- (void)setArtworkIdentifier:(id)a3
+- (void)setArtworkIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self artworkIdentifier];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  identifierCopy = identifier;
+  artworkIdentifier = [(MPNowPlayingContentItem *)self artworkIdentifier];
+  v6 = artworkIdentifier;
+  if (artworkIdentifier != identifierCopy && ![artworkIdentifier isEqual:identifierCopy] || !(identifierCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetArtworkIdentifier();
@@ -2801,24 +2801,24 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __48__MPNowPlayingContentItem_setArtworkIdentifier___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = identifierCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)artworkIdentifier
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1C970](v2);
+  return MEMORY[0x1EEE1C970](_mediaRemoteContentItem);
 }
 
-- (void)setArtworkURLTemplates:(id)a3
+- (void)setArtworkURLTemplates:(id)templates
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self artworkURLTemplates];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  templatesCopy = templates;
+  artworkURLTemplates = [(MPNowPlayingContentItem *)self artworkURLTemplates];
+  v6 = artworkURLTemplates;
+  if (artworkURLTemplates != templatesCopy && ![artworkURLTemplates isEqual:templatesCopy] || !(templatesCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetArtworkURLTemplates();
@@ -2826,24 +2826,24 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __50__MPNowPlayingContentItem_setArtworkURLTemplates___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = templatesCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSArray)artworkURLTemplates
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1C980](v2);
+  return MEMORY[0x1EEE1C980](_mediaRemoteContentItem);
 }
 
-- (void)setArtworkURL:(id)a3
+- (void)setArtworkURL:(id)l
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self artworkURL];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  lCopy = l;
+  artworkURL = [(MPNowPlayingContentItem *)self artworkURL];
+  v6 = artworkURL;
+  if (artworkURL != lCopy && ![artworkURL isEqual:lCopy] || !(lCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetArtworkURL();
@@ -2851,24 +2851,24 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __41__MPNowPlayingContentItem_setArtworkURL___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = lCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)artworkURL
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1C978](v2);
+  return MEMORY[0x1EEE1C978](_mediaRemoteContentItem);
 }
 
-- (void)setTrackArtistName:(id)a3
+- (void)setTrackArtistName:(id)name
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self trackArtistName];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  nameCopy = name;
+  trackArtistName = [(MPNowPlayingContentItem *)self trackArtistName];
+  v6 = trackArtistName;
+  if (trackArtistName != nameCopy && ![trackArtistName isEqual:nameCopy] || !(nameCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetTrackArtistName();
@@ -2876,24 +2876,24 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __46__MPNowPlayingContentItem_setTrackArtistName___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = nameCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)trackArtistName
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CBA0](v2);
+  return MEMORY[0x1EEE1CBA0](_mediaRemoteContentItem);
 }
 
-- (void)setSeriesName:(id)a3
+- (void)setSeriesName:(id)name
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self seriesName];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  nameCopy = name;
+  seriesName = [(MPNowPlayingContentItem *)self seriesName];
+  v6 = seriesName;
+  if (seriesName != nameCopy && ![seriesName isEqual:nameCopy] || !(nameCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetSeriesName();
@@ -2901,24 +2901,24 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __41__MPNowPlayingContentItem_setSeriesName___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = nameCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)seriesName
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CB68](v2);
+  return MEMORY[0x1EEE1CB68](_mediaRemoteContentItem);
 }
 
-- (void)setRadioStationName:(id)a3
+- (void)setRadioStationName:(id)name
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self radioStationName];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  nameCopy = name;
+  radioStationName = [(MPNowPlayingContentItem *)self radioStationName];
+  v6 = radioStationName;
+  if (radioStationName != nameCopy && ![radioStationName isEqual:nameCopy] || !(nameCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetRadioStationName();
@@ -2926,24 +2926,24 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __47__MPNowPlayingContentItem_setRadioStationName___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = nameCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)radioStationName
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CB30](v2);
+  return MEMORY[0x1EEE1CB30](_mediaRemoteContentItem);
 }
 
-- (void)setProfileIdentifier:(id)a3
+- (void)setProfileIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self profileIdentifier];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  identifierCopy = identifier;
+  profileIdentifier = [(MPNowPlayingContentItem *)self profileIdentifier];
+  v6 = profileIdentifier;
+  if (profileIdentifier != identifierCopy && ![profileIdentifier isEqual:identifierCopy] || !(identifierCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetProfileIdentifier();
@@ -2951,24 +2951,24 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __48__MPNowPlayingContentItem_setProfileIdentifier___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = identifierCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)profileIdentifier
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CB28](v2);
+  return MEMORY[0x1EEE1CB28](_mediaRemoteContentItem);
 }
 
-- (void)setLocalizedContentRating:(id)a3
+- (void)setLocalizedContentRating:(id)rating
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self localizedContentRating];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  ratingCopy = rating;
+  localizedContentRating = [(MPNowPlayingContentItem *)self localizedContentRating];
+  v6 = localizedContentRating;
+  if (localizedContentRating != ratingCopy && ![localizedContentRating isEqual:ratingCopy] || !(ratingCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetLocalizedContentRating();
@@ -2976,24 +2976,24 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __53__MPNowPlayingContentItem_setLocalizedContentRating___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = ratingCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)localizedContentRating
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CAD0](v2);
+  return MEMORY[0x1EEE1CAD0](_mediaRemoteContentItem);
 }
 
-- (void)setInfo:(id)a3
+- (void)setInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self info];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  infoCopy = info;
+  info = [(MPNowPlayingContentItem *)self info];
+  v6 = info;
+  if (info != infoCopy && ![info isEqual:infoCopy] || !(infoCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetInfo();
@@ -3001,24 +3001,24 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __35__MPNowPlayingContentItem_setInfo___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = infoCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)info
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CA78](v2);
+  return MEMORY[0x1EEE1CA78](_mediaRemoteContentItem);
 }
 
-- (void)setDirectorName:(id)a3
+- (void)setDirectorName:(id)name
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self directorName];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  nameCopy = name;
+  directorName = [(MPNowPlayingContentItem *)self directorName];
+  v6 = directorName;
+  if (directorName != nameCopy && ![directorName isEqual:nameCopy] || !(nameCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetDirectorName();
@@ -3026,24 +3026,24 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __43__MPNowPlayingContentItem_setDirectorName___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = nameCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)directorName
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1C9C0](v2);
+  return MEMORY[0x1EEE1C9C0](_mediaRemoteContentItem);
 }
 
-- (void)setCollectionIdentifier:(id)a3
+- (void)setCollectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self collectionIdentifier];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  identifierCopy = identifier;
+  collectionIdentifier = [(MPNowPlayingContentItem *)self collectionIdentifier];
+  v6 = collectionIdentifier;
+  if (collectionIdentifier != identifierCopy && ![collectionIdentifier isEqual:identifierCopy] || !(identifierCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetCollectionIdentifier();
@@ -3051,24 +3051,24 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __51__MPNowPlayingContentItem_setCollectionIdentifier___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = identifierCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)collectionIdentifier
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1C998](v2);
+  return MEMORY[0x1EEE1C998](_mediaRemoteContentItem);
 }
 
-- (void)setAlbumYear:(id)a3
+- (void)setAlbumYear:(id)year
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self albumYear];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  yearCopy = year;
+  albumYear = [(MPNowPlayingContentItem *)self albumYear];
+  v6 = albumYear;
+  if (albumYear != yearCopy && ![albumYear isEqual:yearCopy] || !(yearCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetAlbumYear();
@@ -3076,7 +3076,7 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __40__MPNowPlayingContentItem_setAlbumYear___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = yearCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
@@ -3089,12 +3089,12 @@ LABEL_7:
   return v2;
 }
 
-- (void)setAlbumName:(id)a3
+- (void)setAlbumName:(id)name
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self albumName];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  nameCopy = name;
+  albumName = [(MPNowPlayingContentItem *)self albumName];
+  v6 = albumName;
+  if (albumName != nameCopy && ![albumName isEqual:nameCopy] || !(nameCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetAlbumName();
@@ -3102,24 +3102,24 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __40__MPNowPlayingContentItem_setAlbumName___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = nameCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)albumName
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1C960](v2);
+  return MEMORY[0x1EEE1C960](_mediaRemoteContentItem);
 }
 
-- (void)setAlbumArtistName:(id)a3
+- (void)setAlbumArtistName:(id)name
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self albumArtistName];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  nameCopy = name;
+  albumArtistName = [(MPNowPlayingContentItem *)self albumArtistName];
+  v6 = albumArtistName;
+  if (albumArtistName != nameCopy && ![albumArtistName isEqual:nameCopy] || !(nameCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetAlbumArtistName();
@@ -3127,24 +3127,24 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __46__MPNowPlayingContentItem_setAlbumArtistName___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = nameCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSString)albumArtistName
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1C958](v2);
+  return MEMORY[0x1EEE1C958](_mediaRemoteContentItem);
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self userInfo];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  infoCopy = info;
+  userInfo = [(MPNowPlayingContentItem *)self userInfo];
+  v6 = userInfo;
+  if (userInfo != infoCopy && ![userInfo isEqual:infoCopy] || !(infoCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetUserInfo();
@@ -3152,7 +3152,7 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __39__MPNowPlayingContentItem_setUserInfo___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = infoCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
@@ -3165,12 +3165,12 @@ LABEL_7:
   return v2;
 }
 
-- (void)setDeviceSpecificUserInfo:(id)a3
+- (void)setDeviceSpecificUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self deviceSpecificUserInfo];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  infoCopy = info;
+  deviceSpecificUserInfo = [(MPNowPlayingContentItem *)self deviceSpecificUserInfo];
+  v6 = deviceSpecificUserInfo;
+  if (deviceSpecificUserInfo != infoCopy && ![deviceSpecificUserInfo isEqual:infoCopy] || !(infoCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetDeviceSpecificUserInfo();
@@ -3178,7 +3178,7 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __53__MPNowPlayingContentItem_setDeviceSpecificUserInfo___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = infoCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
@@ -3191,12 +3191,12 @@ LABEL_7:
   return v2;
 }
 
-- (void)setReleaseDate:(id)a3
+- (void)setReleaseDate:(id)date
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingContentItem *)self releaseDate];
-  v6 = v5;
-  if (v5 != v4 && ![v5 isEqual:v4] || !(v4 | v6))
+  dateCopy = date;
+  releaseDate = [(MPNowPlayingContentItem *)self releaseDate];
+  v6 = releaseDate;
+  if (releaseDate != dateCopy && ![releaseDate isEqual:dateCopy] || !(dateCopy | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetReleaseDate();
@@ -3204,22 +3204,22 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __42__MPNowPlayingContentItem_setReleaseDate___block_invoke;
     v7[3] = &unk_1E7680D90;
-    v8 = v4;
+    v8 = dateCopy;
     [(MPContentItem *)self _postItemChangedNotificationWithDeltaBlock:v7];
   }
 }
 
 - (NSDate)releaseDate
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CB48](v2);
+  return MEMORY[0x1EEE1CB48](_mediaRemoteContentItem);
 }
 
-- (id)copyWithNewIdentifier:(id)a3
+- (id)copyWithNewIdentifier:(id)identifier
 {
-  v5 = self;
-  v6 = a3;
+  selfCopy = self;
+  identifierCopy = identifier;
   [(MPContentItem *)self _mediaRemoteContentItem];
   v7 = MRContentItemCopyWithIdentifier();
 
@@ -3228,7 +3228,7 @@ LABEL_7:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = MEMORY[0x1A58DDC00]([(MPContentItem *)self _mediaRemoteContentItem]);
   v4 = [objc_alloc(objc_opt_class()) _initWithMediaRemoteContentItem:v3];

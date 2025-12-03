@@ -1,31 +1,31 @@
 @interface PLKeywordManager
-+ (id)_keywordsForAsset:(id)a3;
-+ (id)keywordsForAssetWithUUID:(id)a3 managedObjectContext:(id)a4;
-+ (id)keywordsForAssets:(id)a3;
-- (BOOL)_setKeyword:(id)a3 forAssets:(id)a4 managedObjectContext:(id)a5;
-- (BOOL)_setKeywords:(id)a3 forAsset:(id)a4 managedObjectContext:(id)a5;
-- (BOOL)setKeyword:(id)a3 forAssets:(id)a4 managedObjectContext:(id)a5;
-- (BOOL)setKeyword:(id)a3 managedObjectContext:(id)a4;
-- (BOOL)setKeywords:(id)a3 forAsset:(id)a4;
-- (BOOL)setKeywords:(id)a3 forAssetUUID:(id)a4 managedObjectContext:(id)a5;
-- (PLKeywordManager)initWithPathManager:(id)a3;
-- (id)_inq_keywordObjectsForKeywords:(id)a3 managedObjectContext:(id)a4;
-- (id)createOrLookupKeywordForTitle:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
-- (void)_inq_loadKeywordsUsingContextIfNecessaryInManagedObjectContext:(id)a3;
++ (id)_keywordsForAsset:(id)asset;
++ (id)keywordsForAssetWithUUID:(id)d managedObjectContext:(id)context;
++ (id)keywordsForAssets:(id)assets;
+- (BOOL)_setKeyword:(id)keyword forAssets:(id)assets managedObjectContext:(id)context;
+- (BOOL)_setKeywords:(id)keywords forAsset:(id)asset managedObjectContext:(id)context;
+- (BOOL)setKeyword:(id)keyword forAssets:(id)assets managedObjectContext:(id)context;
+- (BOOL)setKeyword:(id)keyword managedObjectContext:(id)context;
+- (BOOL)setKeywords:(id)keywords forAsset:(id)asset;
+- (BOOL)setKeywords:(id)keywords forAssetUUID:(id)d managedObjectContext:(id)context;
+- (PLKeywordManager)initWithPathManager:(id)manager;
+- (id)_inq_keywordObjectsForKeywords:(id)keywords managedObjectContext:(id)context;
+- (id)createOrLookupKeywordForTitle:(id)title photoLibrary:(id)library error:(id *)error;
+- (void)_inq_loadKeywordsUsingContextIfNecessaryInManagedObjectContext:(id)context;
 @end
 
 @implementation PLKeywordManager
 
-- (BOOL)_setKeyword:(id)a3 forAssets:(id)a4 managedObjectContext:(id)a5
+- (BOOL)_setKeyword:(id)keyword forAssets:(id)assets managedObjectContext:(id)context
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  keywordCopy = keyword;
+  assetsCopy = assets;
+  contextCopy = context;
+  v12 = contextCopy;
+  if (keywordCopy)
   {
-    if (v11)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -33,8 +33,8 @@
 
   else
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PLKeywordManager.m" lineNumber:228 description:{@"Invalid parameter not satisfying: %@", @"keyword"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLKeywordManager.m" lineNumber:228 description:{@"Invalid parameter not satisfying: %@", @"keyword"}];
 
     if (v12)
     {
@@ -42,54 +42,54 @@
     }
   }
 
-  v27 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v27 handleFailureInMethod:a2 object:self file:@"PLKeywordManager.m" lineNumber:229 description:{@"Invalid parameter not satisfying: %@", @"moc"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLKeywordManager.m" lineNumber:229 description:{@"Invalid parameter not satisfying: %@", @"moc"}];
 
 LABEL_3:
-  v13 = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
-  v14 = [v12 pathManager];
-  v15 = [v14 libraryURL];
-  v16 = [v13 isEqual:v15];
+  libraryURL = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
+  pathManager = [v12 pathManager];
+  libraryURL2 = [pathManager libraryURL];
+  v16 = [libraryURL isEqual:libraryURL2];
 
   if ((v16 & 1) == 0)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    v29 = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
-    v30 = [v12 pathManager];
-    v31 = [v30 libraryURL];
-    [v28 handleFailureInMethod:a2 object:self file:@"PLKeywordManager.m" lineNumber:234 description:{@"KeywordManager libraryURL and moc libraryURL mismatch: %@ != %@", v29, v31}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    libraryURL3 = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
+    pathManager2 = [v12 pathManager];
+    libraryURL4 = [pathManager2 libraryURL];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLKeywordManager.m" lineNumber:234 description:{@"KeywordManager libraryURL and moc libraryURL mismatch: %@ != %@", libraryURL3, libraryURL4}];
   }
 
   pl_dispatch_sync();
-  v34[0] = v9;
+  v34[0] = keywordCopy;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
   v18 = [(PLKeywordManager *)self _inq_keywordObjectsForKeywords:v17 managedObjectContext:v12];
 
   v19 = [v18 count];
   if (!v19)
   {
-    v20 = PLBackendGetLog();
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    firstObject = PLBackendGetLog();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v33 = v9;
-      _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "Failed to fetch existing keyword %@", buf, 0xCu);
+      v33 = keywordCopy;
+      _os_log_impl(&dword_19BF1F000, firstObject, OS_LOG_TYPE_ERROR, "Failed to fetch existing keyword %@", buf, 0xCu);
     }
 
     goto LABEL_10;
   }
 
-  if ([v10 count])
+  if ([assetsCopy count])
   {
-    v20 = [v18 firstObject];
+    firstObject = [v18 firstObject];
     v21 = objc_alloc(MEMORY[0x1E695DFA8]);
-    v22 = [v20 assetAttributes];
-    v23 = [v21 initWithSet:v22];
+    assetAttributes = [firstObject assetAttributes];
+    v23 = [v21 initWithSet:assetAttributes];
 
-    v24 = [v10 valueForKeyPath:@"additionalAttributes"];
+    v24 = [assetsCopy valueForKeyPath:@"additionalAttributes"];
     [v23 addObjectsFromArray:v24];
 
-    [v20 setAssetAttributes:v23];
+    [firstObject setAssetAttributes:v23];
 LABEL_10:
   }
 
@@ -97,33 +97,33 @@ LABEL_10:
   return v19 != 0;
 }
 
-- (BOOL)_setKeywords:(id)a3 forAsset:(id)a4 managedObjectContext:(id)a5
+- (BOOL)_setKeywords:(id)keywords forAsset:(id)asset managedObjectContext:(id)context
 {
   v35 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
-  v13 = [v11 pathManager];
-  v14 = [v13 libraryURL];
-  v15 = [v12 isEqual:v14];
+  keywordsCopy = keywords;
+  assetCopy = asset;
+  contextCopy = context;
+  libraryURL = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
+  pathManager = [contextCopy pathManager];
+  libraryURL2 = [pathManager libraryURL];
+  v15 = [libraryURL isEqual:libraryURL2];
 
   if ((v15 & 1) == 0)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    v30 = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
-    v31 = [v11 pathManager];
-    v32 = [v31 libraryURL];
-    [v29 handleFailureInMethod:a2 object:self file:@"PLKeywordManager.m" lineNumber:199 description:{@"KeywordManager libraryURL and moc libraryURL mismatch: %@ != %@", v30, v32}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    libraryURL3 = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
+    pathManager2 = [contextCopy pathManager];
+    libraryURL4 = [pathManager2 libraryURL];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLKeywordManager.m" lineNumber:199 description:{@"KeywordManager libraryURL and moc libraryURL mismatch: %@ != %@", libraryURL3, libraryURL4}];
   }
 
   pl_dispatch_sync();
   v16 = PLBackendGetLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [v10 uuid];
+    uuid = [assetCopy uuid];
     *buf = 138543362;
-    v34 = v17;
+    v34 = uuid;
     _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEBUG, "Setting keywords for asset: %{public}@", buf, 0xCu);
   }
 
@@ -131,22 +131,22 @@ LABEL_10:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v34 = v9;
+    v34 = keywordsCopy;
     _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEBUG, "Keywords: %{public}@", buf, 0xCu);
   }
 
-  if ([v9 count])
+  if ([keywordsCopy count])
   {
-    v19 = [v9 allObjects];
-    v20 = [(PLKeywordManager *)self _inq_keywordObjectsForKeywords:v19 managedObjectContext:v11];
+    allObjects = [keywordsCopy allObjects];
+    additionalAttributes2 = [(PLKeywordManager *)self _inq_keywordObjectsForKeywords:allObjects managedObjectContext:contextCopy];
 
-    v21 = v20 != 0;
-    if (v20)
+    v21 = additionalAttributes2 != 0;
+    if (additionalAttributes2)
     {
-      v22 = [v10 additionalAttributes];
-      v23 = [v22 mutableSetValueForKey:@"keywords"];
+      additionalAttributes = [assetCopy additionalAttributes];
+      v23 = [additionalAttributes mutableSetValueForKey:@"keywords"];
 
-      v24 = [MEMORY[0x1E695DFD8] setWithArray:v20];
+      v24 = [MEMORY[0x1E695DFD8] setWithArray:additionalAttributes2];
       [v23 setSet:v24];
 
       v25 = PLBackendGetLog();
@@ -163,9 +163,9 @@ LABEL_10:
       v23 = PLBackendGetLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v27 = [v10 uuid];
+        uuid2 = [assetCopy uuid];
         *buf = 138412290;
-        v34 = v27;
+        v34 = uuid2;
         _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "Failed to fetch existing keywords for asset %@", buf, 0xCu);
       }
     }
@@ -180,8 +180,8 @@ LABEL_10:
       _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_DEBUG, "Setting keywords to nil", buf, 2u);
     }
 
-    v20 = [v10 additionalAttributes];
-    [v20 setKeywords:0];
+    additionalAttributes2 = [assetCopy additionalAttributes];
+    [additionalAttributes2 setKeywords:0];
     v21 = 1;
   }
 
@@ -189,24 +189,24 @@ LABEL_10:
   return v21;
 }
 
-- (id)_inq_keywordObjectsForKeywords:(id)a3 managedObjectContext:(id)a4
+- (id)_inq_keywordObjectsForKeywords:(id)keywords managedObjectContext:(id)context
 {
   v69 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v47 = v7;
-  [(PLKeywordManager *)self _inq_loadKeywordsUsingContextIfNecessaryInManagedObjectContext:v7];
+  keywordsCopy = keywords;
+  contextCopy = context;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v47 = contextCopy;
+  [(PLKeywordManager *)self _inq_loadKeywordsUsingContextIfNecessaryInManagedObjectContext:contextCopy];
   if (self->_keywordCache)
   {
-    v9 = self;
-    v45 = v8;
+    selfCopy = self;
+    v45 = dictionary;
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v44 = v6;
-    obj = v6;
+    v44 = keywordsCopy;
+    obj = keywordsCopy;
     v10 = [obj countByEnumeratingWithState:&v58 objects:v68 count:16];
     if (v10)
     {
@@ -222,7 +222,7 @@ LABEL_10:
           }
 
           v14 = *(*(&v58 + 1) + 8 * i);
-          v15 = [(NSMutableDictionary *)v9->_keywordCache objectForKeyedSubscript:v14];
+          v15 = [(NSMutableDictionary *)selfCopy->_keywordCache objectForKeyedSubscript:v14];
           if (v15)
           {
             v57 = 0;
@@ -254,7 +254,7 @@ LABEL_10:
       while (v11);
     }
 
-    v21 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
@@ -289,7 +289,7 @@ LABEL_10:
 
             [v30 setTitle:v27];
             [v45 setObject:v30 forKey:v27];
-            [v21 addObject:v30];
+            [array addObject:v30];
           }
         }
 
@@ -301,10 +301,10 @@ LABEL_10:
 
 LABEL_27:
 
-    if ([v21 count])
+    if ([array count])
     {
       v52 = 0;
-      v31 = [v47 obtainPermanentIDsForObjects:v21 error:&v52];
+      v31 = [v47 obtainPermanentIDsForObjects:array error:&v52];
       v32 = v52;
       if (v31)
       {
@@ -312,7 +312,7 @@ LABEL_27:
         v51 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v33 = v21;
+        v33 = array;
         v34 = [v33 countByEnumeratingWithState:&v48 objects:v62 count:16];
         if (v34)
         {
@@ -328,10 +328,10 @@ LABEL_27:
               }
 
               v38 = *(*(&v48 + 1) + 8 * k);
-              keywordCache = v9->_keywordCache;
-              v40 = [v38 objectID];
-              v41 = [v38 title];
-              [(NSMutableDictionary *)keywordCache setObject:v40 forKey:v41];
+              keywordCache = selfCopy->_keywordCache;
+              objectID = [v38 objectID];
+              title = [v38 title];
+              [(NSMutableDictionary *)keywordCache setObject:objectID forKey:title];
             }
 
             v35 = [v33 countByEnumeratingWithState:&v48 objects:v62 count:16];
@@ -342,24 +342,24 @@ LABEL_27:
       }
     }
 
-    v8 = v45;
-    v42 = [v45 allValues];
-    v6 = v44;
+    dictionary = v45;
+    allValues = [v45 allValues];
+    keywordsCopy = v44;
   }
 
   else
   {
-    v21 = PLBackendGetLog();
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    array = PLBackendGetLog();
+    if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "Failed to fetch keywords.", buf, 2u);
+      _os_log_impl(&dword_19BF1F000, array, OS_LOG_TYPE_ERROR, "Failed to fetch keywords.", buf, 2u);
     }
 
-    v42 = 0;
+    allValues = 0;
   }
 
-  return v42;
+  return allValues;
 }
 
 void __43__PLKeywordManager__invalidateKeywordCache__block_invoke(uint64_t a1)
@@ -369,9 +369,9 @@ void __43__PLKeywordManager__invalidateKeywordCache__block_invoke(uint64_t a1)
   *(v1 + 24) = 0;
 }
 
-- (void)_inq_loadKeywordsUsingContextIfNecessaryInManagedObjectContext:(id)a3
+- (void)_inq_loadKeywordsUsingContextIfNecessaryInManagedObjectContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (!self->_keywordCache)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -382,9 +382,9 @@ void __43__PLKeywordManager__invalidateKeywordCache__block_invoke(uint64_t a1)
     v8[1] = 3221225472;
     v8[2] = __83__PLKeywordManager__inq_loadKeywordsUsingContextIfNecessaryInManagedObjectContext___block_invoke;
     v8[3] = &unk_1E75782F8;
-    v10 = self;
+    selfCopy = self;
     v11 = a2;
-    v9 = v5;
+    v9 = contextCopy;
     [v9 performBlockAndWait:v8];
   }
 }
@@ -465,10 +465,10 @@ void __83__PLKeywordManager__inq_loadKeywordsUsingContextIfNecessaryInManagedObj
   }
 }
 
-- (id)createOrLookupKeywordForTitle:(id)a3 photoLibrary:(id)a4 error:(id *)a5
+- (id)createOrLookupKeywordForTitle:(id)title photoLibrary:(id)library error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  libraryCopy = library;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -486,19 +486,19 @@ void __83__PLKeywordManager__inq_loadKeywordsUsingContextIfNecessaryInManagedObj
   v16[2] = __69__PLKeywordManager_createOrLookupKeywordForTitle_photoLibrary_error___block_invoke;
   v16[3] = &unk_1E75787D0;
   v16[4] = self;
-  v10 = v8;
+  v10 = titleCopy;
   v17 = v10;
-  v11 = v9;
+  v11 = libraryCopy;
   v18 = v11;
   v19 = &v27;
   v20 = &v21;
   [v11 performBlockAndWait:v16];
   v12 = v28[5];
   v13 = v22[5];
-  if (!v12 && a5)
+  if (!v12 && error)
   {
     v13 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
   v14 = v28[5];
@@ -541,69 +541,69 @@ void __69__PLKeywordManager_createOrLookupKeywordForTitle_photoLibrary_error___b
   }
 }
 
-- (BOOL)setKeyword:(id)a3 managedObjectContext:(id)a4
+- (BOOL)setKeyword:(id)keyword managedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  keywordCopy = keyword;
+  contextCopy = context;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLKeywordManager.m" lineNumber:97 description:{@"%s must be called in assetsd", "-[PLKeywordManager setKeyword:managedObjectContext:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLKeywordManager.m" lineNumber:97 description:{@"%s must be called in assetsd", "-[PLKeywordManager setKeyword:managedObjectContext:]"}];
   }
 
-  v9 = [(PLKeywordManager *)self _setKeyword:v7 forAssets:0 managedObjectContext:v8];
+  v9 = [(PLKeywordManager *)self _setKeyword:keywordCopy forAssets:0 managedObjectContext:contextCopy];
 
   return v9;
 }
 
-- (BOOL)setKeyword:(id)a3 forAssets:(id)a4 managedObjectContext:(id)a5
+- (BOOL)setKeyword:(id)keyword forAssets:(id)assets managedObjectContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  keywordCopy = keyword;
+  assetsCopy = assets;
+  contextCopy = context;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PLKeywordManager.m" lineNumber:92 description:{@"%s must be called in assetsd", "-[PLKeywordManager setKeyword:forAssets:managedObjectContext:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLKeywordManager.m" lineNumber:92 description:{@"%s must be called in assetsd", "-[PLKeywordManager setKeyword:forAssets:managedObjectContext:]"}];
   }
 
-  v12 = [(PLKeywordManager *)self _setKeyword:v9 forAssets:v10 managedObjectContext:v11];
+  v12 = [(PLKeywordManager *)self _setKeyword:keywordCopy forAssets:assetsCopy managedObjectContext:contextCopy];
 
   return v12;
 }
 
-- (BOOL)setKeywords:(id)a3 forAsset:(id)a4
+- (BOOL)setKeywords:(id)keywords forAsset:(id)asset
 {
-  v7 = a4;
-  v8 = a3;
+  assetCopy = asset;
+  keywordsCopy = keywords;
   if ((PLIsAssetsd() & 1) == 0 && (MEMORY[0x19EAEE520]() & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLKeywordManager.m" lineNumber:87 description:{@"%s must be called in assetsd", "-[PLKeywordManager setKeywords:forAsset:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLKeywordManager.m" lineNumber:87 description:{@"%s must be called in assetsd", "-[PLKeywordManager setKeywords:forAsset:]"}];
   }
 
-  v9 = [v7 managedObjectContext];
-  v10 = [(PLKeywordManager *)self _setKeywords:v8 forAsset:v7 managedObjectContext:v9];
+  managedObjectContext = [assetCopy managedObjectContext];
+  v10 = [(PLKeywordManager *)self _setKeywords:keywordsCopy forAsset:assetCopy managedObjectContext:managedObjectContext];
 
   return v10;
 }
 
-- (BOOL)setKeywords:(id)a3 forAssetUUID:(id)a4 managedObjectContext:(id)a5
+- (BOOL)setKeywords:(id)keywords forAssetUUID:(id)d managedObjectContext:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  keywordsCopy = keywords;
+  dCopy = d;
+  contextCopy = context;
   if ((PLIsAssetsd() & 1) == 0 && (MEMORY[0x19EAEE520]() & 1) == 0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLKeywordManager.m" lineNumber:76 description:{@"%s must be called in assetsd", "-[PLKeywordManager setKeywords:forAssetUUID:managedObjectContext:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLKeywordManager.m" lineNumber:76 description:{@"%s must be called in assetsd", "-[PLKeywordManager setKeywords:forAssetUUID:managedObjectContext:]"}];
   }
 
-  v12 = [PLManagedAsset assetWithUUID:v10 inManagedObjectContext:v11];
+  v12 = [PLManagedAsset assetWithUUID:dCopy inManagedObjectContext:contextCopy];
   if (v12)
   {
-    v13 = [(PLKeywordManager *)self _setKeywords:v9 forAsset:v12 managedObjectContext:v11];
+    v13 = [(PLKeywordManager *)self _setKeywords:keywordsCopy forAsset:v12 managedObjectContext:contextCopy];
   }
 
   else
@@ -612,7 +612,7 @@ void __69__PLKeywordManager_createOrLookupKeywordForTitle_photoLibrary_error___b
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v18 = v10;
+      v18 = dCopy;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Asset with uuid %@ cannot be found.", buf, 0xCu);
     }
 
@@ -622,13 +622,13 @@ void __69__PLKeywordManager_createOrLookupKeywordForTitle_photoLibrary_error___b
   return v13;
 }
 
-- (PLKeywordManager)initWithPathManager:(id)a3
+- (PLKeywordManager)initWithPathManager:(id)manager
 {
-  v6 = a3;
+  managerCopy = manager;
   if ((PLIsAssetsd() & 1) == 0 && (MEMORY[0x19EAEE520]() & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLKeywordManager.m" lineNumber:34 description:@"PLKeywordManager must be initialized in assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLKeywordManager.m" lineNumber:34 description:@"PLKeywordManager must be initialized in assetsd"];
   }
 
   v13.receiver = self;
@@ -637,7 +637,7 @@ void __69__PLKeywordManager_createOrLookupKeywordForTitle_photoLibrary_error___b
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_pathManager, a3);
+    objc_storeStrong(&v7->_pathManager, manager);
     v9 = dispatch_queue_create("com.apple.photos.assetsd.keywordWrites", 0);
     writeQueue = v8->_writeQueue;
     v8->_writeQueue = v9;
@@ -646,17 +646,17 @@ void __69__PLKeywordManager_createOrLookupKeywordForTitle_photoLibrary_error___b
   return v8;
 }
 
-+ (id)_keywordsForAsset:(id)a3
++ (id)_keywordsForAsset:(id)asset
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [a3 additionalAttributes];
-  v4 = [v3 keywords];
-  v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  additionalAttributes = [asset additionalAttributes];
+  keywords = [additionalAttributes keywords];
+  v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(keywords, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = keywords;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -671,8 +671,8 @@ void __69__PLKeywordManager_createOrLookupKeywordForTitle_photoLibrary_error___b
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) title];
-        [v5 addObject:v11];
+        title = [*(*(&v13 + 1) + 8 * i) title];
+        [v5 addObject:title];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -684,16 +684,16 @@ void __69__PLKeywordManager_createOrLookupKeywordForTitle_photoLibrary_error___b
   return v5;
 }
 
-+ (id)keywordsForAssets:(id)a3
++ (id)keywordsForAssets:(id)assets
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  assetsCopy = assets;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(assetsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = assetsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -710,7 +710,7 @@ void __69__PLKeywordManager_createOrLookupKeywordForTitle_photoLibrary_error___b
 
         v11 = *(*(&v15 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v13 = [a1 _keywordsForAsset:{v11, v15}];
+        v13 = [self _keywordsForAsset:{v11, v15}];
         [v5 addObject:v13];
 
         objc_autoreleasePoolPop(v12);
@@ -725,10 +725,10 @@ void __69__PLKeywordManager_createOrLookupKeywordForTitle_photoLibrary_error___b
   return v5;
 }
 
-+ (id)keywordsForAssetWithUUID:(id)a3 managedObjectContext:(id)a4
++ (id)keywordsForAssetWithUUID:(id)d managedObjectContext:(id)context
 {
-  v5 = [PLManagedAsset assetWithUUID:a3 inManagedObjectContext:a4];
-  v6 = [a1 _keywordsForAsset:v5];
+  v5 = [PLManagedAsset assetWithUUID:d inManagedObjectContext:context];
+  v6 = [self _keywordsForAsset:v5];
 
   return v6;
 }

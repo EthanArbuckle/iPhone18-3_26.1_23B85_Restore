@@ -1,34 +1,34 @@
 @interface NTKRichComplicationCircularOpenSegmentedGaugeImageView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
++ (BOOL)handlesComplicationTemplate:(id)template;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 @end
 
 @implementation NTKRichComplicationCircularOpenSegmentedGaugeImageView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self progressView];
-  v8 = [v6 gaugeProvider];
-  [v7 setGaugeProvider:v8];
+  templateCopy = template;
+  progressView = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self progressView];
+  gaugeProvider = [templateCopy gaugeProvider];
+  [progressView setGaugeProvider:gaugeProvider];
 
-  v9 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self centerImageView];
-  v10 = [v6 imageProvider];
-  [v9 setImageProvider:v10 reason:a4];
+  centerImageView = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self centerImageView];
+  imageProvider = [templateCopy imageProvider];
+  [centerImageView setImageProvider:imageProvider reason:reason];
 
-  v12 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self smallLabel];
-  v11 = [v6 textProvider];
+  smallLabel = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self smallLabel];
+  textProvider = [templateCopy textProvider];
 
-  [v12 setTextProvider:v11];
+  [smallLabel setTextProvider:textProvider];
 }
 
 @end

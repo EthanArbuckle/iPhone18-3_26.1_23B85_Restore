@@ -1,26 +1,26 @@
 @interface ISURLResolverOperation
-- (ISURLResolverOperation)initWithURL:(id)a3;
+- (ISURLResolverOperation)initWithURL:(id)l;
 - (NSArray)resolvedAddressStrings;
 - (NSArray)resolvedAddresses;
 - (id)url;
-- (void)_resolutionCompletedWithError:(id)a3;
-- (void)_runLookupForHostname:(id)a3;
+- (void)_resolutionCompletedWithError:(id)error;
+- (void)_runLookupForHostname:(id)hostname;
 - (void)dealloc;
 - (void)run;
-- (void)setUrl:(id)a3;
+- (void)setUrl:(id)url;
 @end
 
 @implementation ISURLResolverOperation
 
-- (ISURLResolverOperation)initWithURL:(id)a3
+- (ISURLResolverOperation)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = ISURLResolverOperation;
   v5 = [(ISOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     url = v5->_url;
     v5->_url = v6;
   }
@@ -92,15 +92,15 @@
 - (NSArray)resolvedAddressStrings
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [(ISURLResolverOperation *)self resolvedAddresses];
-  if (v2)
+  resolvedAddresses = [(ISURLResolverOperation *)self resolvedAddresses];
+  if (resolvedAddresses)
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = v2;
+    v4 = resolvedAddresses;
     v5 = [v4 countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v5)
     {
@@ -151,11 +151,11 @@ LABEL_12:
   return v3;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  v4 = a3;
+  urlCopy = url;
   [(ISOperation *)self lock];
-  v5 = [v4 copy];
+  v5 = [urlCopy copy];
 
   url = self->_url;
   self->_url = v5;
@@ -177,39 +177,39 @@ LABEL_12:
   v5 = +[ISNetworkObserver sharedInstance];
   [v5 beginUsingNetwork];
   v3 = [(ISURLResolverOperation *)self url];
-  v4 = [v3 host];
+  host = [v3 host];
 
-  if (v4)
+  if (host)
   {
-    [(ISURLResolverOperation *)self _runLookupForHostname:v4];
+    [(ISURLResolverOperation *)self _runLookupForHostname:host];
   }
 
   [v5 endUsingNetwork];
 }
 
-- (void)_resolutionCompletedWithError:(id)a3
+- (void)_resolutionCompletedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(ISOperation *)self stopRunLoop];
-  v5 = [(ISOperation *)self operationRunLoop];
-  v6 = [v5 getCFRunLoop];
+  operationRunLoop = [(ISOperation *)self operationRunLoop];
+  getCFRunLoop = [operationRunLoop getCFRunLoop];
 
   CFHostSetClient(self->_host, 0, 0);
-  CFHostUnscheduleFromRunLoop(self->_host, v6, *MEMORY[0x277CBF058]);
+  CFHostUnscheduleFromRunLoop(self->_host, getCFRunLoop, *MEMORY[0x277CBF058]);
   CFHostCancelInfoResolution(self->_host, kCFHostAddresses);
-  [(ISOperation *)self setError:v4];
+  [(ISOperation *)self setError:errorCopy];
 
-  [(ISOperation *)self setSuccess:v4 == 0];
+  [(ISOperation *)self setSuccess:errorCopy == 0];
 }
 
-- (void)_runLookupForHostname:(id)a3
+- (void)_runLookupForHostname:(id)hostname
 {
   clientContext.version = 0;
   memset(&clientContext.retain, 0, 24);
   clientContext.info = self;
   error.domain = 0;
   *&error.error = 0;
-  v4 = CFHostCreateWithName(*MEMORY[0x277CBECE8], a3);
+  v4 = CFHostCreateWithName(*MEMORY[0x277CBECE8], hostname);
   self->_host = v4;
   if (!CFHostSetClient(v4, _HostResolutionCallback, &clientContext))
   {
@@ -219,31 +219,31 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  v5 = [(ISOperation *)self operationRunLoop];
-  v6 = [v5 getCFRunLoop];
+  operationRunLoop = [(ISOperation *)self operationRunLoop];
+  getCFRunLoop = [operationRunLoop getCFRunLoop];
 
-  CFHostScheduleWithRunLoop(self->_host, v6, *MEMORY[0x277CBF058]);
+  CFHostScheduleWithRunLoop(self->_host, getCFRunLoop, *MEMORY[0x277CBF058]);
   if (CFHostStartInfoResolution(self->_host, kCFHostAddresses, &error))
   {
-    v7 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v7)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v7 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
-    if ([v7 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
-    v10 = [v7 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v11 = v9;
     }
@@ -273,7 +273,7 @@ LABEL_15:
         goto LABEL_18;
       }
 
-      v10 = [MEMORY[0x277CCACA8] stringWithCString:v12 encoding:{4, v17, v16}];
+      oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v12 encoding:{4, v17, v16}];
       free(v12);
       SSFileLog();
     }

@@ -3,21 +3,21 @@
 - (CATTransportDelegate)delegate;
 - (id)debugDescription;
 - (id)description;
-- (id)operationToSendMessage:(id)a3;
+- (id)operationToSendMessage:(id)message;
 - (void)cancelAndResumeQueuesAndEnqueueInvalidateConnection;
 - (void)dealloc;
 - (void)delegateDidInvalidate;
 - (void)delegateDidResume;
-- (void)didInterruptWithError:(id)a3;
+- (void)didInterruptWithError:(id)error;
 - (void)didInvalidate;
-- (void)didReceiveMessage:(id)a3;
-- (void)enqueueDelegateCouldNotConnectWithError:(id)a3;
+- (void)didReceiveMessage:(id)message;
+- (void)enqueueDelegateCouldNotConnectWithError:(id)error;
 - (void)enqueueDelegateDidConnect;
-- (void)enqueueDelegateDidInterruptWithError:(id)a3;
+- (void)enqueueDelegateDidInterruptWithError:(id)error;
 - (void)enqueueDelegateDidInvalidateAndFinalize;
-- (void)enqueueDelegateDidReceiveMessage:(id)a3;
-- (void)enqueueSendForMessage:(id)a3;
-- (void)invalidSendForMessage:(id)a3;
+- (void)enqueueDelegateDidReceiveMessage:(id)message;
+- (void)enqueueSendForMessage:(id)message;
+- (void)invalidSendForMessage:(id)message;
 - (void)invalidate;
 - (void)invalidateConnection;
 - (void)resume;
@@ -25,7 +25,7 @@
 - (void)resumeQueue;
 - (void)resumeQueueAndConnection;
 - (void)sendHelloMessageAndResumeQueue;
-- (void)sendMessage:(id)a3;
+- (void)sendMessage:(id)message;
 - (void)suspend;
 - (void)suspendConnection;
 - (void)suspendQueue;
@@ -36,8 +36,8 @@
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"CATTransport.m" lineNumber:49 description:{@"%@ cannot dealloc while receiver is still valid.", a2}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"CATTransport.m" lineNumber:49 description:{@"%@ cannot dealloc while receiver is still valid.", a2}];
 }
 
 - (CATTransport)init
@@ -73,8 +73,8 @@
     mFSM = v2->mFSM;
     v2->mFSM = v11;
 
-    v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v14 = [v13 valueForKey:@"CATTransportLogLevel"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v14 = [standardUserDefaults valueForKey:@"CATTransportLogLevel"];
     -[CATStateMachine setLogLevel:](v2->mFSM, "setLogLevel:", [v14 integerValue]);
 
     v15 = [(CATStateMachine *)v2->mFSM addStateWithName:@"Not Connected (Suspended)"];
@@ -121,23 +121,23 @@
 
 - (id)description
 {
-  v3 = [(CATTransport *)self name];
+  name = [(CATTransport *)self name];
 
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
-  if (v3)
+  if (name)
   {
-    v6 = [(CATTransport *)self name];
-    v7 = [(CATStateMachine *)self->mFSM currentState];
-    v8 = [v7 name];
-    v9 = [v4 stringWithFormat:@"<%@: %p { name = %@, state = %@ }>", v5, self, v6, v8];
+    name2 = [(CATTransport *)self name];
+    currentState = [(CATStateMachine *)self->mFSM currentState];
+    name3 = [currentState name];
+    v9 = [v4 stringWithFormat:@"<%@: %p { name = %@, state = %@ }>", v5, self, name2, name3];
   }
 
   else
   {
-    v6 = [(CATStateMachine *)self->mFSM currentState];
-    v7 = [v6 name];
-    v9 = [v4 stringWithFormat:@"<%@: %p { state = %@ }>", v5, self, v7];
+    name2 = [(CATStateMachine *)self->mFSM currentState];
+    currentState = [name2 name];
+    v9 = [v4 stringWithFormat:@"<%@: %p { state = %@ }>", v5, self, currentState];
   }
 
   return v9;
@@ -188,38 +188,38 @@
   [(CATStateMachine *)mFSM transitionWithTriggeringEvent:v6];
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = CATGetCatalystQueue();
   CATAssertIsQueue(v6);
 
   mFSM = self->mFSM;
   v9 = NSStringFromSelector(a2);
-  v8 = [CATStateMachineEvent eventWithTrigger:v9 context:v5];
+  v8 = [CATStateMachineEvent eventWithTrigger:v9 context:messageCopy];
 
   [(CATStateMachine *)mFSM transitionWithTriggeringEvent:v8];
 }
 
-- (void)didReceiveMessage:(id)a3
+- (void)didReceiveMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = CATGetCatalystQueue();
   CATAssertIsQueue(v6);
 
   v7 = NSStringFromSelector(a2);
-  v8 = [CATStateMachineEvent eventWithTrigger:v7 context:v5];
+  v8 = [CATStateMachineEvent eventWithTrigger:v7 context:messageCopy];
 
   v9 = MEMORY[0x277CCA8C8];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __34__CATTransport_didReceiveMessage___block_invoke;
   v15 = &unk_278DA7470;
-  v16 = self;
+  selfCopy = self;
   v17 = v8;
   v10 = v8;
   v11 = [v9 blockOperationWithBlock:&v12];
-  [v11 setName:{@"Receive Message", v12, v13, v14, v15, v16}];
+  [v11 setName:{@"Receive Message", v12, v13, v14, v15, selfCopy}];
   [(CATOperationQueue *)self->mMessageQueue addOperation:v11];
 }
 
@@ -231,15 +231,15 @@ void __34__CATTransport_didReceiveMessage___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)didInterruptWithError:(id)a3
+- (void)didInterruptWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v6 = CATGetCatalystQueue();
   CATAssertIsQueue(v6);
 
   mFSM = self->mFSM;
   v9 = NSStringFromSelector(a2);
-  v8 = [CATStateMachineEvent eventWithTrigger:v9 context:v5];
+  v8 = [CATStateMachineEvent eventWithTrigger:v9 context:errorCopy];
 
   [(CATStateMachine *)mFSM transitionWithTriggeringEvent:v8];
 }
@@ -386,13 +386,13 @@ void __40__CATTransport_resumeQueueAndConnection__block_invoke(uint64_t a1)
   [(CATOperationQueue *)mMessageQueue setSuspended:1];
 }
 
-- (void)enqueueSendForMessage:(id)a3
+- (void)enqueueSendForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = CATGetCatalystQueue();
   CATAssertIsQueue(v5);
 
-  v6 = [(CATTransport *)self operationToSendMessage:v4];
+  v6 = [(CATTransport *)self operationToSendMessage:messageCopy];
   [v6 setName:@"Send Message"];
   objc_initWeak(&location, self);
   v10 = MEMORY[0x277D85DD0];
@@ -402,7 +402,7 @@ void __40__CATTransport_resumeQueueAndConnection__block_invoke(uint64_t a1)
   v7 = v6;
   v14 = v7;
   objc_copyWeak(&v16, &location);
-  v8 = v4;
+  v8 = messageCopy;
   v15 = v8;
   v9 = [(NSBlockOperation *)_CATTransportDidSendMessageOperation blockOperationWithBlock:&v10];
   [v9 setName:{@"Delegate Did Send Message", v10, v11, v12, v13}];
@@ -478,9 +478,9 @@ LABEL_12:
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)invalidSendForMessage:(id)a3
+- (void)invalidSendForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = CATGetCatalystQueue();
   CATAssertIsQueue(v5);
 
@@ -490,7 +490,7 @@ LABEL_12:
   v8[2] = __38__CATTransport_invalidSendForMessage___block_invoke;
   v8[3] = &unk_278DA7530;
   objc_copyWeak(&v10, &location);
-  v6 = v4;
+  v6 = messageCopy;
   v9 = v6;
   v7 = [(NSBlockOperation *)_CATTransportDidSendMessageOperation blockOperationWithBlock:v8];
   [v7 setName:@"Invalid Send"];
@@ -552,9 +552,9 @@ void __67__CATTransport_cancelAndResumeQueuesAndEnqueueInvalidateConnection__blo
 
 - (void)enqueueDelegateDidInvalidateAndFinalize
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  v4 = NSStringFromSelector(a1);
-  [v5 handleFailureInMethod:a1 object:a2 file:@"CATTransport.m" lineNumber:386 description:{@"%@ cannot call %@ when it has not created a strong reference to self", a2, v4}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  v4 = NSStringFromSelector(self);
+  [currentHandler handleFailureInMethod:self object:a2 file:@"CATTransport.m" lineNumber:386 description:{@"%@ cannot call %@ when it has not created a strong reference to self", a2, v4}];
 }
 
 void __55__CATTransport_enqueueDelegateDidInvalidateAndFinalize__block_invoke(uint64_t a1)
@@ -588,30 +588,30 @@ void __55__CATTransport_enqueueDelegateDidInvalidateAndFinalize__block_invoke_2(
 
 - (void)resumeConnection
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v4 = NSStringFromSelector(a2);
-  [v5 handleFailureInMethod:a2 object:self file:@"CATTransport.m" lineNumber:420 description:{@"%@ must override %@", self, v4}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CATTransport.m" lineNumber:420 description:{@"%@ must override %@", self, v4}];
 }
 
 - (void)suspendConnection
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v4 = NSStringFromSelector(a2);
-  [v5 handleFailureInMethod:a2 object:self file:@"CATTransport.m" lineNumber:426 description:{@"%@ must override %@", self, v4}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CATTransport.m" lineNumber:426 description:{@"%@ must override %@", self, v4}];
 }
 
 - (void)invalidateConnection
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v4 = NSStringFromSelector(a2);
-  [v5 handleFailureInMethod:a2 object:self file:@"CATTransport.m" lineNumber:432 description:{@"%@ must override %@", self, v4}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CATTransport.m" lineNumber:432 description:{@"%@ must override %@", self, v4}];
 }
 
-- (id)operationToSendMessage:(id)a3
+- (id)operationToSendMessage:(id)message
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(a2);
-  [v5 handleFailureInMethod:a2 object:self file:@"CATTransport.m" lineNumber:438 description:{@"%@ must override %@", self, v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CATTransport.m" lineNumber:438 description:{@"%@ must override %@", self, v6}];
 
   return 0;
 }
@@ -621,13 +621,13 @@ void __55__CATTransport_enqueueDelegateDidInvalidateAndFinalize__block_invoke_2(
   v3 = CATGetCatalystQueue();
   CATAssertIsQueue(v3);
 
-  v4 = [(CATTransport *)self delegate];
+  delegate = [(CATTransport *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CATTransport *)self delegate];
-    [v6 transportDidResume:self];
+    delegate2 = [(CATTransport *)self delegate];
+    [delegate2 transportDidResume:self];
   }
 }
 
@@ -673,9 +673,9 @@ void __41__CATTransport_enqueueDelegateDidConnect__block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)enqueueDelegateDidReceiveMessage:(id)a3
+- (void)enqueueDelegateDidReceiveMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = CATGetCatalystQueue();
   CATAssertIsQueue(v5);
 
@@ -686,7 +686,7 @@ void __41__CATTransport_enqueueDelegateDidConnect__block_invoke(uint64_t a1)
   v9[2] = __49__CATTransport_enqueueDelegateDidReceiveMessage___block_invoke;
   v9[3] = &unk_278DA7530;
   objc_copyWeak(&v11, &location);
-  v7 = v4;
+  v7 = messageCopy;
   v10 = v7;
   v8 = [v6 blockOperationWithBlock:v9];
   [v8 setName:@"Delegate Did Receive Message"];
@@ -718,15 +718,15 @@ void __49__CATTransport_enqueueDelegateDidReceiveMessage___block_invoke(uint64_t
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)enqueueDelegateCouldNotConnectWithError:(id)a3
+- (void)enqueueDelegateCouldNotConnectWithError:(id)error
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = CATGetCatalystQueue();
   CATAssertIsQueue(v5);
 
   v9 = *MEMORY[0x277CCA7E8];
-  v10[0] = v4;
+  v10[0] = errorCopy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = CATErrorWithCodeAndUserInfo(202, v6);
@@ -735,9 +735,9 @@ void __49__CATTransport_enqueueDelegateDidReceiveMessage___block_invoke(uint64_t
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enqueueDelegateDidInterruptWithError:(id)a3
+- (void)enqueueDelegateDidInterruptWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = CATGetCatalystQueue();
   CATAssertIsQueue(v5);
 
@@ -748,7 +748,7 @@ void __49__CATTransport_enqueueDelegateDidReceiveMessage___block_invoke(uint64_t
   v9[2] = __53__CATTransport_enqueueDelegateDidInterruptWithError___block_invoke;
   v9[3] = &unk_278DA7530;
   objc_copyWeak(&v11, &location);
-  v7 = v4;
+  v7 = errorCopy;
   v10 = v7;
   v8 = [v6 blockOperationWithBlock:v9];
   [v8 setName:@"Delegate Did Interrupt"];
@@ -785,13 +785,13 @@ void __53__CATTransport_enqueueDelegateDidInterruptWithError___block_invoke(uint
   v3 = CATGetCatalystQueue();
   CATAssertIsQueue(v3);
 
-  v4 = [(CATTransport *)self delegate];
+  delegate = [(CATTransport *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CATTransport *)self delegate];
-    [v6 transportDidInvalidate:self];
+    delegate2 = [(CATTransport *)self delegate];
+    [delegate2 transportDidInvalidate:self];
   }
 }
 

@@ -1,42 +1,42 @@
 @interface ProbeManager
-- (ProbeManager)initWithQueue:(id)a3;
+- (ProbeManager)initWithQueue:(id)queue;
 - (id)probeCallbackFunctions;
-- (void)awdlPeerPollProbe:(id)a3 serviceAdded:(id)a4;
-- (void)awdlPeerPollProbe:(id)a3 serviceRemoved:(id)a4;
-- (void)awdlPeerPollProbe:(id)a3 serviceUpdated:(id)a4;
-- (void)awdlPeerPollProbeIsComplete:(id)a3;
-- (void)bonjourProbeComplete:(id)a3 status:(unsigned int)a4;
-- (void)bonjourServiceAdded:(id)a3 isUpdatedService:(BOOL)a4;
-- (void)bonjourServiceRemoved:(id)a3;
+- (void)awdlPeerPollProbe:(id)probe serviceAdded:(id)added;
+- (void)awdlPeerPollProbe:(id)probe serviceRemoved:(id)removed;
+- (void)awdlPeerPollProbe:(id)probe serviceUpdated:(id)updated;
+- (void)awdlPeerPollProbeIsComplete:(id)complete;
+- (void)bonjourProbeComplete:(id)complete status:(unsigned int)status;
+- (void)bonjourServiceAdded:(id)added isUpdatedService:(BOOL)service;
+- (void)bonjourServiceRemoved:(id)removed;
 - (void)cancelAllProbes;
 - (void)dealloc;
-- (void)icmpPingProbe:(id)a3 completedIterations:(unint64_t)a4 successfulCount:(unint64_t)a5 withError:(id)a6;
-- (void)icmpPingProbe:(id)a3 echoResponseReceived:(id)a4 success:(BOOL)a5;
-- (void)startAWDLPeerPollingWithDiagSession:(id)a3 services:(id)a4 count:(id)a5 interval:(id)a6;
-- (void)startAirDropBonjourScan:(id)a3 duration:(id)a4;
-- (void)startGetNetworkInfo:(id)a3;
-- (void)startICMPPingForDiagSession:(id)a3 hostName:(id)a4 ipAddress:(id)a5 interface:(id)a6 pingCount:(id)a7 interPingInterval:(id)a8 burstCount:(id)a9 interBurstInterval:(id)a10 timeout:(id)a11;
-- (void)startTCPDumpForDiagSession:(id)a3 duration:(id)a4;
-- (void)startTestHTTPForDiagSession:(id)a3 url:(id)a4 timeout:(id)a5 interfaceName:(id)a6 userAgent:(id)a7;
-- (void)startTestTCPConnectionForDiagSession:(id)a3 url:(id)a4 host:(id)a5 port:(id)a6 interfaceName:(id)a7 timeout:(id)a8;
+- (void)icmpPingProbe:(id)probe completedIterations:(unint64_t)iterations successfulCount:(unint64_t)count withError:(id)error;
+- (void)icmpPingProbe:(id)probe echoResponseReceived:(id)received success:(BOOL)success;
+- (void)startAWDLPeerPollingWithDiagSession:(id)session services:(id)services count:(id)count interval:(id)interval;
+- (void)startAirDropBonjourScan:(id)scan duration:(id)duration;
+- (void)startGetNetworkInfo:(id)info;
+- (void)startICMPPingForDiagSession:(id)session hostName:(id)name ipAddress:(id)address interface:(id)interface pingCount:(id)count interPingInterval:(id)interval burstCount:(id)burstCount interBurstInterval:(id)self0 timeout:(id)self1;
+- (void)startTCPDumpForDiagSession:(id)session duration:(id)duration;
+- (void)startTestHTTPForDiagSession:(id)session url:(id)url timeout:(id)timeout interfaceName:(id)name userAgent:(id)agent;
+- (void)startTestTCPConnectionForDiagSession:(id)session url:(id)url host:(id)host port:(id)port interfaceName:(id)name timeout:(id)timeout;
 - (void)stopTCPDump;
 @end
 
 @implementation ProbeManager
 
-- (ProbeManager)initWithQueue:(id)a3
+- (ProbeManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = ProbeManager;
   v6 = [(ProbeManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v6->_queue, queue);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     probes = v7->_probes;
-    v7->_probes = v8;
+    v7->_probes = dictionary;
   }
 
   return v7;
@@ -52,24 +52,24 @@
 
 - (id)probeCallbackFunctions
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
-  [v2 setObject:@"startTestHTTPForDiagSession:url:timeout:interfaceName:userAgent:" forKey:@"StartTestHTTP"];
-  [v2 setObject:@"startTCPDumpForDiagSession:duration:" forKey:@"StartTCPDump"];
-  [v2 setObject:@"stopTCPDump" forKey:@"StopTCPDump"];
-  [v2 setObject:@"startGetNetworkInfo:" forKey:@"StartGetNetworkInfo"];
-  [v2 setObject:@"startAirDropBonjourScan:duration:" forKey:@"StartAirDropBonjourScan"];
-  [v2 setObject:@"startICMPPingForDiagSession:hostName:ipAddress:interface:pingCount:interPingInterval:burstCount:interBurstInterval:timeout:" forKey:@"StartICMPPing"];
-  [v2 setObject:@"startAWDLPeerPollingWithDiagSession:services:count:interval:" forKey:@"StartAWDLPeerPollProbe"];
-  [v2 setObject:@"startTestTCPConnectionForDiagSession:url:host:port:interfaceName:timeout:" forKey:@"StartTCPConnCheck"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:@"startTestHTTPForDiagSession:url:timeout:interfaceName:userAgent:" forKey:@"StartTestHTTP"];
+  [dictionary setObject:@"startTCPDumpForDiagSession:duration:" forKey:@"StartTCPDump"];
+  [dictionary setObject:@"stopTCPDump" forKey:@"StopTCPDump"];
+  [dictionary setObject:@"startGetNetworkInfo:" forKey:@"StartGetNetworkInfo"];
+  [dictionary setObject:@"startAirDropBonjourScan:duration:" forKey:@"StartAirDropBonjourScan"];
+  [dictionary setObject:@"startICMPPingForDiagSession:hostName:ipAddress:interface:pingCount:interPingInterval:burstCount:interBurstInterval:timeout:" forKey:@"StartICMPPing"];
+  [dictionary setObject:@"startAWDLPeerPollingWithDiagSession:services:count:interval:" forKey:@"StartAWDLPeerPollProbe"];
+  [dictionary setObject:@"startTestTCPConnectionForDiagSession:url:host:port:interfaceName:timeout:" forKey:@"StartTCPConnCheck"];
 
-  return v2;
+  return dictionary;
 }
 
 - (void)cancelAllProbes
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(ProbeManager *)self probes];
-  v4 = [v3 count];
+  probes = [(ProbeManager *)self probes];
+  v4 = [probes count];
 
   if (v4)
   {
@@ -77,8 +77,8 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [(ProbeManager *)self probes];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    probes2 = [(ProbeManager *)self probes];
+    v6 = [probes2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
       v7 = v6;
@@ -90,12 +90,12 @@
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(probes2);
           }
 
           v10 = *(*(&v16 + 1) + 8 * v9);
-          v11 = [(ProbeManager *)self probes];
-          v12 = [v11 objectForKey:v10];
+          probes3 = [(ProbeManager *)self probes];
+          v12 = [probes3 objectForKey:v10];
 
           if ([v12 status] == 1 || objc_msgSend(v12, "status") == -1)
           {
@@ -111,7 +111,7 @@
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [probes2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v7);
@@ -133,33 +133,33 @@ uint64_t __31__ProbeManager_cancelAllProbes__block_invoke(uint64_t result, int a
   return result;
 }
 
-- (void)startTestTCPConnectionForDiagSession:(id)a3 url:(id)a4 host:(id)a5 port:(id)a6 interfaceName:(id)a7 timeout:(id)a8
+- (void)startTestTCPConnectionForDiagSession:(id)session url:(id)url host:(id)host port:(id)port interfaceName:(id)name timeout:(id)timeout
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [(ProbeManager *)self queue];
+  sessionCopy = session;
+  urlCopy = url;
+  hostCopy = host;
+  portCopy = port;
+  nameCopy = name;
+  timeoutCopy = timeout;
+  queue = [(ProbeManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__ProbeManager_startTestTCPConnectionForDiagSession_url_host_port_interfaceName_timeout___block_invoke;
   block[3] = &unk_27898F6C0;
   block[4] = self;
-  v28 = v17;
-  v29 = v16;
-  v30 = v15;
-  v31 = v14;
-  v32 = v19;
-  v33 = v18;
-  v21 = v18;
-  v22 = v19;
-  v23 = v14;
-  v24 = v15;
-  v25 = v16;
-  v26 = v17;
-  dispatch_async(v20, block);
+  v28 = portCopy;
+  v29 = hostCopy;
+  v30 = urlCopy;
+  v31 = sessionCopy;
+  v32 = timeoutCopy;
+  v33 = nameCopy;
+  v21 = nameCopy;
+  v22 = timeoutCopy;
+  v23 = sessionCopy;
+  v24 = urlCopy;
+  v25 = hostCopy;
+  v26 = portCopy;
+  dispatch_async(queue, block);
 }
 
 void __89__ProbeManager_startTestTCPConnectionForDiagSession_url_host_port_interfaceName_timeout___block_invoke(id *a1)
@@ -403,30 +403,30 @@ void __89__ProbeManager_startTestTCPConnectionForDiagSession_url_host_port_inter
   *(v23 + 40) = 0;
 }
 
-- (void)startTestHTTPForDiagSession:(id)a3 url:(id)a4 timeout:(id)a5 interfaceName:(id)a6 userAgent:(id)a7
+- (void)startTestHTTPForDiagSession:(id)session url:(id)url timeout:(id)timeout interfaceName:(id)name userAgent:(id)agent
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(ProbeManager *)self queue];
+  sessionCopy = session;
+  urlCopy = url;
+  timeoutCopy = timeout;
+  nameCopy = name;
+  agentCopy = agent;
+  queue = [(ProbeManager *)self queue];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __80__ProbeManager_startTestHTTPForDiagSession_url_timeout_interfaceName_userAgent___block_invoke;
   v23[3] = &unk_27898F710;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
-  dispatch_async(v17, v23);
+  v24 = sessionCopy;
+  v25 = urlCopy;
+  v26 = timeoutCopy;
+  v27 = nameCopy;
+  v28 = agentCopy;
+  v18 = agentCopy;
+  v19 = nameCopy;
+  v20 = timeoutCopy;
+  v21 = urlCopy;
+  v22 = sessionCopy;
+  dispatch_async(queue, v23);
 }
 
 void __80__ProbeManager_startTestHTTPForDiagSession_url_timeout_interfaceName_userAgent___block_invoke(uint64_t a1)
@@ -538,21 +538,21 @@ void __80__ProbeManager_startTestHTTPForDiagSession_url_timeout_interfaceName_us
   *(v19 + 40) = 0;
 }
 
-- (void)startTCPDumpForDiagSession:(id)a3 duration:(id)a4
+- (void)startTCPDumpForDiagSession:(id)session duration:(id)duration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ProbeManager *)self queue];
+  sessionCopy = session;
+  durationCopy = duration;
+  queue = [(ProbeManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__ProbeManager_startTCPDumpForDiagSession_duration___block_invoke;
   block[3] = &unk_27898A328;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = sessionCopy;
+  v13 = durationCopy;
+  v9 = durationCopy;
+  v10 = sessionCopy;
+  dispatch_async(queue, block);
 }
 
 void __52__ProbeManager_startTCPDumpForDiagSession_duration___block_invoke(uint64_t a1)
@@ -688,24 +688,24 @@ void __52__ProbeManager_startTCPDumpForDiagSession_duration___block_invoke_4(uin
 
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ProbeManager *)self probes];
-  v7 = [v6 objectForKey:v5];
+  probes = [(ProbeManager *)self probes];
+  v7 = [probes objectForKey:v5];
 
   [v7 stopTest];
 }
 
-- (void)startGetNetworkInfo:(id)a3
+- (void)startGetNetworkInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(ProbeManager *)self queue];
+  infoCopy = info;
+  queue = [(ProbeManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__ProbeManager_startGetNetworkInfo___block_invoke;
   v7[3] = &unk_27898A7D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = infoCopy;
+  v6 = infoCopy;
+  dispatch_async(queue, v7);
 }
 
 void __36__ProbeManager_startGetNetworkInfo___block_invoke(uint64_t a1)
@@ -819,21 +819,21 @@ void __36__ProbeManager_startGetNetworkInfo___block_invoke_2(uint64_t a1, uint64
   *(v18 + 40) = 0;
 }
 
-- (void)startAirDropBonjourScan:(id)a3 duration:(id)a4
+- (void)startAirDropBonjourScan:(id)scan duration:(id)duration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ProbeManager *)self queue];
+  scanCopy = scan;
+  durationCopy = duration;
+  queue = [(ProbeManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__ProbeManager_startAirDropBonjourScan_duration___block_invoke;
   block[3] = &unk_27898A328;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = scanCopy;
+  v13 = durationCopy;
+  v9 = durationCopy;
+  v10 = scanCopy;
+  dispatch_async(queue, block);
 }
 
 void __49__ProbeManager_startAirDropBonjourScan_duration___block_invoke(uint64_t a1)
@@ -859,19 +859,19 @@ void __49__ProbeManager_startAirDropBonjourScan_duration___block_invoke(uint64_t
   }
 }
 
-- (void)bonjourServiceAdded:(id)a3 isUpdatedService:(BOOL)a4
+- (void)bonjourServiceAdded:(id)added isUpdatedService:(BOOL)service
 {
-  v6 = [a3 copy];
-  v7 = [(ProbeManager *)self queue];
+  v6 = [added copy];
+  queue = [(ProbeManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__ProbeManager_bonjourServiceAdded_isUpdatedService___block_invoke;
   block[3] = &unk_27898BE18;
-  v11 = a4;
+  serviceCopy = service;
   block[4] = self;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __53__ProbeManager_bonjourServiceAdded_isUpdatedService___block_invoke(uint64_t a1)
@@ -905,10 +905,10 @@ uint64_t __53__ProbeManager_bonjourServiceAdded_isUpdatedService___block_invoke(
   return result;
 }
 
-- (void)bonjourServiceRemoved:(id)a3
+- (void)bonjourServiceRemoved:(id)removed
 {
-  v4 = [a3 copy];
-  v5 = [(ProbeManager *)self queue];
+  v4 = [removed copy];
+  queue = [(ProbeManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__ProbeManager_bonjourServiceRemoved___block_invoke;
@@ -916,7 +916,7 @@ uint64_t __53__ProbeManager_bonjourServiceAdded_isUpdatedService___block_invoke(
   v7[4] = self;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, v7);
+  dispatch_async(queue, v7);
 }
 
 uint64_t __38__ProbeManager_bonjourServiceRemoved___block_invoke(uint64_t a1)
@@ -934,18 +934,18 @@ uint64_t __38__ProbeManager_bonjourServiceRemoved___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)bonjourProbeComplete:(id)a3 status:(unsigned int)a4
+- (void)bonjourProbeComplete:(id)complete status:(unsigned int)status
 {
-  v5 = a3;
-  v6 = [(ProbeManager *)self queue];
+  completeCopy = complete;
+  queue = [(ProbeManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__ProbeManager_bonjourProbeComplete_status___block_invoke;
   v8[3] = &unk_27898A7D0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = completeCopy;
+  v7 = completeCopy;
+  dispatch_async(queue, v8);
 }
 
 void __44__ProbeManager_bonjourProbeComplete_status___block_invoke(uint64_t a1)
@@ -978,42 +978,42 @@ void __44__ProbeManager_bonjourProbeComplete_status___block_invoke(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startICMPPingForDiagSession:(id)a3 hostName:(id)a4 ipAddress:(id)a5 interface:(id)a6 pingCount:(id)a7 interPingInterval:(id)a8 burstCount:(id)a9 interBurstInterval:(id)a10 timeout:(id)a11
+- (void)startICMPPingForDiagSession:(id)session hostName:(id)name ipAddress:(id)address interface:(id)interface pingCount:(id)count interPingInterval:(id)interval burstCount:(id)burstCount interBurstInterval:(id)self0 timeout:(id)self1
 {
-  v33 = a3;
-  v32 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = [(ProbeManager *)self queue];
+  sessionCopy = session;
+  nameCopy = name;
+  addressCopy = address;
+  interfaceCopy = interface;
+  countCopy = count;
+  intervalCopy = interval;
+  burstCountCopy = burstCount;
+  burstIntervalCopy = burstInterval;
+  timeoutCopy = timeout;
+  queue = [(ProbeManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __139__ProbeManager_startICMPPingForDiagSession_hostName_ipAddress_interface_pingCount_interPingInterval_burstCount_interBurstInterval_timeout___block_invoke;
   block[3] = &unk_27898F788;
   block[4] = self;
-  v37 = v33;
-  v38 = v32;
-  v39 = v17;
-  v40 = v18;
-  v41 = v19;
-  v42 = v20;
-  v43 = v21;
-  v44 = v22;
-  v45 = v23;
-  v35 = v23;
-  v34 = v22;
-  v25 = v21;
-  v26 = v20;
-  v27 = v19;
-  v28 = v18;
-  v29 = v17;
-  v30 = v32;
-  v31 = v33;
-  dispatch_async(v24, block);
+  v37 = sessionCopy;
+  v38 = nameCopy;
+  v39 = addressCopy;
+  v40 = interfaceCopy;
+  v41 = countCopy;
+  v42 = intervalCopy;
+  v43 = burstCountCopy;
+  v44 = burstIntervalCopy;
+  v45 = timeoutCopy;
+  v35 = timeoutCopy;
+  v34 = burstIntervalCopy;
+  v25 = burstCountCopy;
+  v26 = intervalCopy;
+  v27 = countCopy;
+  v28 = interfaceCopy;
+  v29 = addressCopy;
+  v30 = nameCopy;
+  v31 = sessionCopy;
+  dispatch_async(queue, block);
 }
 
 void __139__ProbeManager_startICMPPingForDiagSession_hostName_ipAddress_interface_pingCount_interPingInterval_burstCount_interBurstInterval_timeout___block_invoke(uint64_t a1)
@@ -1067,27 +1067,27 @@ void __139__ProbeManager_startICMPPingForDiagSession_hostName_ipAddress_interfac
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startAWDLPeerPollingWithDiagSession:(id)a3 services:(id)a4 count:(id)a5 interval:(id)a6
+- (void)startAWDLPeerPollingWithDiagSession:(id)session services:(id)services count:(id)count interval:(id)interval
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(ProbeManager *)self queue];
+  sessionCopy = session;
+  servicesCopy = services;
+  countCopy = count;
+  intervalCopy = interval;
+  queue = [(ProbeManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__ProbeManager_startAWDLPeerPollingWithDiagSession_services_count_interval___block_invoke;
   block[3] = &unk_27898C108;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = sessionCopy;
+  v21 = servicesCopy;
+  v22 = countCopy;
+  v23 = intervalCopy;
+  v15 = intervalCopy;
+  v16 = countCopy;
+  v17 = servicesCopy;
+  v18 = sessionCopy;
+  dispatch_async(queue, block);
 }
 
 void __76__ProbeManager_startAWDLPeerPollingWithDiagSession_services_count_interval___block_invoke(uint64_t a1)
@@ -1132,10 +1132,10 @@ void __76__ProbeManager_startAWDLPeerPollingWithDiagSession_services_count_inter
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)awdlPeerPollProbe:(id)a3 serviceAdded:(id)a4
+- (void)awdlPeerPollProbe:(id)probe serviceAdded:(id)added
 {
-  v5 = [a4 copy];
-  v6 = [(ProbeManager *)self queue];
+  v5 = [added copy];
+  queue = [(ProbeManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__ProbeManager_awdlPeerPollProbe_serviceAdded___block_invoke;
@@ -1143,7 +1143,7 @@ void __76__ProbeManager_startAWDLPeerPollingWithDiagSession_services_count_inter
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  dispatch_async(v6, v8);
+  dispatch_async(queue, v8);
 }
 
 void __47__ProbeManager_awdlPeerPollProbe_serviceAdded___block_invoke(uint64_t a1)
@@ -1156,10 +1156,10 @@ void __47__ProbeManager_awdlPeerPollProbe_serviceAdded___block_invoke(uint64_t a
   }
 }
 
-- (void)awdlPeerPollProbe:(id)a3 serviceUpdated:(id)a4
+- (void)awdlPeerPollProbe:(id)probe serviceUpdated:(id)updated
 {
-  v5 = [a4 copy];
-  v6 = [(ProbeManager *)self queue];
+  v5 = [updated copy];
+  queue = [(ProbeManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__ProbeManager_awdlPeerPollProbe_serviceUpdated___block_invoke;
@@ -1167,7 +1167,7 @@ void __47__ProbeManager_awdlPeerPollProbe_serviceAdded___block_invoke(uint64_t a
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  dispatch_async(v6, v8);
+  dispatch_async(queue, v8);
 }
 
 void __49__ProbeManager_awdlPeerPollProbe_serviceUpdated___block_invoke(uint64_t a1)
@@ -1180,10 +1180,10 @@ void __49__ProbeManager_awdlPeerPollProbe_serviceUpdated___block_invoke(uint64_t
   }
 }
 
-- (void)awdlPeerPollProbe:(id)a3 serviceRemoved:(id)a4
+- (void)awdlPeerPollProbe:(id)probe serviceRemoved:(id)removed
 {
-  v5 = [a4 copy];
-  v6 = [(ProbeManager *)self queue];
+  v5 = [removed copy];
+  queue = [(ProbeManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__ProbeManager_awdlPeerPollProbe_serviceRemoved___block_invoke;
@@ -1191,7 +1191,7 @@ void __49__ProbeManager_awdlPeerPollProbe_serviceUpdated___block_invoke(uint64_t
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  dispatch_async(v6, v8);
+  dispatch_async(queue, v8);
 }
 
 void __49__ProbeManager_awdlPeerPollProbe_serviceRemoved___block_invoke(uint64_t a1)
@@ -1204,53 +1204,53 @@ void __49__ProbeManager_awdlPeerPollProbe_serviceRemoved___block_invoke(uint64_t
   }
 }
 
-- (void)awdlPeerPollProbeIsComplete:(id)a3
+- (void)awdlPeerPollProbeIsComplete:(id)complete
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completeCopy = complete;
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v4 peerList];
-    v7 = [v6 count];
+    peerList = [completeCopy peerList];
+    v7 = [peerList count];
 
     v8 = MEMORY[0x277CBEAC0];
     v18 = @"discoveredCount";
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
     v19[0] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-    v11 = [v4 diagSessionUUID];
-    v12 = [v8 dictionaryWithObjectsAndKeys:{@"AWDLPeerPollProbe", @"kNDFProbeName", &unk_2847EFD10, @"kNDFProbeStatus", v10, @"kNDFProbeContext", @"Networking", @"kNDFProbeCLIPSModule", v11, @"kNDFProbeSessionUUID", 0}];
+    diagSessionUUID = [completeCopy diagSessionUUID];
+    v12 = [v8 dictionaryWithObjectsAndKeys:{@"AWDLPeerPollProbe", @"kNDFProbeName", &unk_2847EFD10, @"kNDFProbeStatus", v10, @"kNDFProbeContext", @"Networking", @"kNDFProbeCLIPSModule", diagSessionUUID, @"kNDFProbeSessionUUID", 0}];
 
-    v13 = [(ProbeManager *)self delegate];
-    [v13 probeStatusUpdate:v12];
+    delegate = [(ProbeManager *)self delegate];
+    [delegate probeStatusUpdate:v12];
   }
 
-  if (v4)
+  if (completeCopy)
   {
-    v14 = [(ProbeManager *)self probes];
+    probes = [(ProbeManager *)self probes];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    [v14 removeObjectForKey:v16];
+    [probes removeObjectForKey:v16];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)icmpPingProbe:(id)a3 completedIterations:(unint64_t)a4 successfulCount:(unint64_t)a5 withError:(id)a6
+- (void)icmpPingProbe:(id)probe completedIterations:(unint64_t)iterations successfulCount:(unint64_t)count withError:(id)error
 {
-  v9 = a3;
-  v10 = [(ProbeManager *)self queue];
+  probeCopy = probe;
+  queue = [(ProbeManager *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __76__ProbeManager_icmpPingProbe_completedIterations_successfulCount_withError___block_invoke;
   v12[3] = &unk_27898F7B0;
-  v13 = v9;
-  v14 = self;
-  v15 = a5;
-  v16 = a4;
-  v11 = v9;
-  dispatch_async(v10, v12);
+  v13 = probeCopy;
+  selfCopy = self;
+  countCopy = count;
+  iterationsCopy = iterations;
+  v11 = probeCopy;
+  dispatch_async(queue, v12);
 }
 
 void __76__ProbeManager_icmpPingProbe_completedIterations_successfulCount_withError___block_invoke(uint64_t a1)
@@ -1408,21 +1408,21 @@ void __76__ProbeManager_icmpPingProbe_completedIterations_successfulCount_withEr
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)icmpPingProbe:(id)a3 echoResponseReceived:(id)a4 success:(BOOL)a5
+- (void)icmpPingProbe:(id)probe echoResponseReceived:(id)received success:(BOOL)success
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(ProbeManager *)self queue];
+  probeCopy = probe;
+  receivedCopy = received;
+  queue = [(ProbeManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__ProbeManager_icmpPingProbe_echoResponseReceived_success___block_invoke;
   block[3] = &unk_27898A328;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = probeCopy;
+  v14 = receivedCopy;
+  v10 = receivedCopy;
+  v11 = probeCopy;
+  dispatch_async(queue, block);
 }
 
 void __59__ProbeManager_icmpPingProbe_echoResponseReceived_success___block_invoke(uint64_t a1)

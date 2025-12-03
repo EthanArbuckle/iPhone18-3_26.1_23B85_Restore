@@ -1,15 +1,15 @@
 @interface SiriTTSService_TTSAXResourceManager
 + (id)sharedInstance;
 - (SiriTTSService_TTSAXResourceManager)init;
-- (id)allCompactResourcesForLanguage:(id)a3;
+- (id)allCompactResourcesForLanguage:(id)language;
 @end
 
 @implementation SiriTTSService_TTSAXResourceManager
 
-- (id)allCompactResourcesForLanguage:(id)a3
+- (id)allCompactResourcesForLanguage:(id)language
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  languageCopy = language;
   allCompactResources = self->_allCompactResources;
   if (allCompactResources)
   {
@@ -18,7 +18,7 @@
 
   else
   {
-    v25 = self;
+    selfCopy = self;
     v7 = [(TTSAXResourceManager *)self->_axManager resourcesWithType:4 subType:2];
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v26 = 0u;
@@ -43,20 +43,20 @@
           v14 = *(*(&v26 + 1) + 8 * i);
           if ([v14 isInstalled])
           {
-            v15 = [v14 primaryLanguage];
-            v16 = [v15 isEqualToString:v4];
+            primaryLanguage = [v14 primaryLanguage];
+            v16 = [primaryLanguage isEqualToString:languageCopy];
 
             if (v16)
             {
               v17 = objc_alloc_init(CompactVoice);
-              v18 = [v14 primaryLanguage];
-              [(CompactVoice *)v17 setLanguage:v18];
+              primaryLanguage2 = [v14 primaryLanguage];
+              [(CompactVoice *)v17 setLanguage:primaryLanguage2];
 
-              v19 = [v14 name];
-              [(CompactVoice *)v17 setName:v19];
+              name = [v14 name];
+              [(CompactVoice *)v17 setName:name];
 
-              v20 = [v14 contentPath];
-              [(CompactVoice *)v17 setPath:v20];
+              contentPath = [v14 contentPath];
+              [(CompactVoice *)v17 setPath:contentPath];
 
               [(NSArray *)v8 addObject:v17];
             }
@@ -69,11 +69,11 @@
       while (v11);
     }
 
-    v21 = v25->_allCompactResources;
-    v25->_allCompactResources = v8;
+    v21 = selfCopy->_allCompactResources;
+    selfCopy->_allCompactResources = v8;
     v22 = v8;
 
-    v6 = v25->_allCompactResources;
+    v6 = selfCopy->_allCompactResources;
   }
 
   v23 = *MEMORY[0x277D85DE8];

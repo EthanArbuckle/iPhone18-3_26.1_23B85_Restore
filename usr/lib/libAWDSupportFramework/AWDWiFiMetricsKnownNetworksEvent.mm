@@ -1,20 +1,20 @@
 @interface AWDWiFiMetricsKnownNetworksEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasColocatedState:(BOOL)a3;
-- (void)setHasEventType:(BOOL)a3;
-- (void)setHasNetworkScore:(BOOL)a3;
-- (void)setHasNetworkSecurity:(BOOL)a3;
-- (void)setHasNetworkTypeBitMap:(BOOL)a3;
-- (void)setHasSwitchToCount:(BOOL)a3;
-- (void)setHasSwitchedAwayFromCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasColocatedState:(BOOL)state;
+- (void)setHasEventType:(BOOL)type;
+- (void)setHasNetworkScore:(BOOL)score;
+- (void)setHasNetworkSecurity:(BOOL)security;
+- (void)setHasNetworkTypeBitMap:(BOOL)map;
+- (void)setHasSwitchToCount:(BOOL)count;
+- (void)setHasSwitchedAwayFromCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsKnownNetworksEvent
@@ -28,9 +28,9 @@
   [(AWDWiFiMetricsKnownNetworksEvent *)&v3 dealloc];
 }
 
-- (void)setHasEventType:(BOOL)a3
+- (void)setHasEventType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -43,9 +43,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNetworkTypeBitMap:(BOOL)a3
+- (void)setHasNetworkTypeBitMap:(BOOL)map
 {
-  if (a3)
+  if (map)
   {
     v3 = 32;
   }
@@ -58,9 +58,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasNetworkSecurity:(BOOL)a3
+- (void)setHasNetworkSecurity:(BOOL)security
 {
-  if (a3)
+  if (security)
   {
     v3 = 16;
   }
@@ -73,9 +73,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasColocatedState:(BOOL)a3
+- (void)setHasColocatedState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -88,9 +88,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSwitchedAwayFromCount:(BOOL)a3
+- (void)setHasSwitchedAwayFromCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x80;
   }
@@ -103,9 +103,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasSwitchToCount:(BOOL)a3
+- (void)setHasSwitchToCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -118,9 +118,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasNetworkScore:(BOOL)a3
+- (void)setHasNetworkScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 8;
   }
@@ -142,11 +142,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -165,7 +165,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_eventType), @"eventType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_eventType), @"eventType"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -179,24 +179,24 @@ LABEL_4:
   }
 
 LABEL_18:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_networkTypeBitMap), @"networkTypeBitMap"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_networkTypeBitMap), @"networkTypeBitMap"}];
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_5:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_networkSecurity), @"networkSecurity"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_networkSecurity), @"networkSecurity"}];
   }
 
 LABEL_6:
   oui = self->_oui;
   if (oui)
   {
-    [v3 setObject:oui forKey:@"oui"];
+    [dictionary setObject:oui forKey:@"oui"];
   }
 
   v6 = self->_has;
   if ((v6 & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_colocatedState), @"colocatedState"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_colocatedState), @"colocatedState"}];
     v6 = self->_has;
     if ((v6 & 0x80) == 0)
     {
@@ -215,7 +215,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_switchedAwayFromCount), @"switchedAwayFromCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_switchedAwayFromCount), @"switchedAwayFromCount"}];
   v6 = self->_has;
   if ((v6 & 0x40) == 0)
   {
@@ -229,24 +229,24 @@ LABEL_11:
   }
 
 LABEL_22:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_switchToCount), @"switchToCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_switchToCount), @"switchToCount"}];
   if ((*&self->_has & 8) != 0)
   {
 LABEL_12:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_networkScore), @"networkScore"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_networkScore), @"networkScore"}];
   }
 
 LABEL_13:
   bundleID = self->_bundleID;
   if (bundleID)
   {
-    [v3 setObject:bundleID forKey:@"bundleID"];
+    [dictionary setObject:bundleID forKey:@"bundleID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -356,13 +356,13 @@ LABEL_13:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 64) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 64) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -381,8 +381,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 7) = self->_eventType;
-  *(a3 + 64) |= 4u;
+  *(to + 7) = self->_eventType;
+  *(to + 64) |= 4u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -396,26 +396,26 @@ LABEL_4:
   }
 
 LABEL_19:
-  *(a3 + 10) = self->_networkTypeBitMap;
-  *(a3 + 64) |= 0x20u;
+  *(to + 10) = self->_networkTypeBitMap;
+  *(to + 64) |= 0x20u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_5:
-    *(a3 + 9) = self->_networkSecurity;
-    *(a3 + 64) |= 0x10u;
+    *(to + 9) = self->_networkSecurity;
+    *(to + 64) |= 0x10u;
   }
 
 LABEL_6:
   if (self->_oui)
   {
-    [a3 setOui:?];
+    [to setOui:?];
   }
 
   v6 = self->_has;
   if ((v6 & 2) != 0)
   {
-    *(a3 + 6) = self->_colocatedState;
-    *(a3 + 64) |= 2u;
+    *(to + 6) = self->_colocatedState;
+    *(to + 64) |= 2u;
     v6 = self->_has;
     if ((v6 & 0x80) == 0)
     {
@@ -434,8 +434,8 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  *(a3 + 15) = self->_switchedAwayFromCount;
-  *(a3 + 64) |= 0x80u;
+  *(to + 15) = self->_switchedAwayFromCount;
+  *(to + 64) |= 0x80u;
   v6 = self->_has;
   if ((v6 & 0x40) == 0)
   {
@@ -449,26 +449,26 @@ LABEL_11:
   }
 
 LABEL_23:
-  *(a3 + 14) = self->_switchToCount;
-  *(a3 + 64) |= 0x40u;
+  *(to + 14) = self->_switchToCount;
+  *(to + 64) |= 0x40u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_12:
-    *(a3 + 8) = self->_networkScore;
-    *(a3 + 64) |= 8u;
+    *(to + 8) = self->_networkScore;
+    *(to + 64) |= 8u;
   }
 
 LABEL_13:
   if (self->_bundleID)
   {
 
-    [a3 setBundleID:?];
+    [to setBundleID:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -519,7 +519,7 @@ LABEL_5:
 
 LABEL_6:
 
-  *(v6 + 48) = [(NSData *)self->_oui copyWithZone:a3];
+  *(v6 + 48) = [(NSData *)self->_oui copyWithZone:zone];
   v8 = self->_has;
   if ((v8 & 2) != 0)
   {
@@ -569,71 +569,71 @@ LABEL_10:
 
 LABEL_11:
 
-  *(v6 + 16) = [(NSString *)self->_bundleID copyWithZone:a3];
+  *(v6 + 16) = [(NSString *)self->_bundleID copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 64);
+    v7 = *(equal + 64);
     if (has)
     {
-      if ((*(a3 + 64) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 64) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_47;
       }
     }
 
-    else if (*(a3 + 64))
+    else if (*(equal + 64))
     {
       goto LABEL_47;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 64) & 4) == 0 || self->_eventType != *(a3 + 7))
+      if ((*(equal + 64) & 4) == 0 || self->_eventType != *(equal + 7))
       {
         goto LABEL_47;
       }
     }
 
-    else if ((*(a3 + 64) & 4) != 0)
+    else if ((*(equal + 64) & 4) != 0)
     {
       goto LABEL_47;
     }
 
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 64) & 0x20) == 0 || self->_networkTypeBitMap != *(a3 + 10))
+      if ((*(equal + 64) & 0x20) == 0 || self->_networkTypeBitMap != *(equal + 10))
       {
         goto LABEL_47;
       }
     }
 
-    else if ((*(a3 + 64) & 0x20) != 0)
+    else if ((*(equal + 64) & 0x20) != 0)
     {
       goto LABEL_47;
     }
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 64) & 0x10) == 0 || self->_networkSecurity != *(a3 + 9))
+      if ((*(equal + 64) & 0x10) == 0 || self->_networkSecurity != *(equal + 9))
       {
         goto LABEL_47;
       }
     }
 
-    else if ((*(a3 + 64) & 0x10) != 0)
+    else if ((*(equal + 64) & 0x10) != 0)
     {
       goto LABEL_47;
     }
 
     oui = self->_oui;
-    if (oui | *(a3 + 6))
+    if (oui | *(equal + 6))
     {
       v5 = [(NSData *)oui isEqual:?];
       if (!v5)
@@ -644,29 +644,29 @@ LABEL_11:
       has = self->_has;
     }
 
-    v9 = *(a3 + 64);
+    v9 = *(equal + 64);
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 64) & 2) == 0 || self->_colocatedState != *(a3 + 6))
+      if ((*(equal + 64) & 2) == 0 || self->_colocatedState != *(equal + 6))
       {
         goto LABEL_47;
       }
     }
 
-    else if ((*(a3 + 64) & 2) != 0)
+    else if ((*(equal + 64) & 2) != 0)
     {
       goto LABEL_47;
     }
 
     if (has < 0)
     {
-      if ((*(a3 + 64) & 0x80) == 0 || self->_switchedAwayFromCount != *(a3 + 15))
+      if ((*(equal + 64) & 0x80) == 0 || self->_switchedAwayFromCount != *(equal + 15))
       {
         goto LABEL_47;
       }
     }
 
-    else if ((*(a3 + 64) & 0x80) != 0)
+    else if ((*(equal + 64) & 0x80) != 0)
     {
 LABEL_47:
       LOBYTE(v5) = 0;
@@ -675,32 +675,32 @@ LABEL_47:
 
     if ((has & 0x40) != 0)
     {
-      if ((*(a3 + 64) & 0x40) == 0 || self->_switchToCount != *(a3 + 14))
+      if ((*(equal + 64) & 0x40) == 0 || self->_switchToCount != *(equal + 14))
       {
         goto LABEL_47;
       }
     }
 
-    else if ((*(a3 + 64) & 0x40) != 0)
+    else if ((*(equal + 64) & 0x40) != 0)
     {
       goto LABEL_47;
     }
 
     if ((has & 8) != 0)
     {
-      if ((*(a3 + 64) & 8) == 0 || self->_networkScore != *(a3 + 8))
+      if ((*(equal + 64) & 8) == 0 || self->_networkScore != *(equal + 8))
       {
         goto LABEL_47;
       }
     }
 
-    else if ((*(a3 + 64) & 8) != 0)
+    else if ((*(equal + 64) & 8) != 0)
     {
       goto LABEL_47;
     }
 
     bundleID = self->_bundleID;
-    if (bundleID | *(a3 + 2))
+    if (bundleID | *(equal + 2))
     {
 
       LOBYTE(v5) = [(NSString *)bundleID isEqual:?];
@@ -820,14 +820,14 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ v6 ^ v8 ^ v9 ^ v10 ^ v11 ^ v7 ^ [(NSString *)self->_bundleID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 64);
+  v5 = *(from + 64);
   if (v5)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 64);
+    v5 = *(from + 64);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -840,14 +840,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 64) & 4) == 0)
+  else if ((*(from + 64) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_eventType = *(a3 + 7);
+  self->_eventType = *(from + 7);
   *&self->_has |= 4u;
-  v5 = *(a3 + 64);
+  v5 = *(from + 64);
   if ((v5 & 0x20) == 0)
   {
 LABEL_4:
@@ -860,27 +860,27 @@ LABEL_4:
   }
 
 LABEL_19:
-  self->_networkTypeBitMap = *(a3 + 10);
+  self->_networkTypeBitMap = *(from + 10);
   *&self->_has |= 0x20u;
-  if ((*(a3 + 64) & 0x10) != 0)
+  if ((*(from + 64) & 0x10) != 0)
   {
 LABEL_5:
-    self->_networkSecurity = *(a3 + 9);
+    self->_networkSecurity = *(from + 9);
     *&self->_has |= 0x10u;
   }
 
 LABEL_6:
-  if (*(a3 + 6))
+  if (*(from + 6))
   {
     [(AWDWiFiMetricsKnownNetworksEvent *)self setOui:?];
   }
 
-  v6 = *(a3 + 64);
+  v6 = *(from + 64);
   if ((v6 & 2) != 0)
   {
-    self->_colocatedState = *(a3 + 6);
+    self->_colocatedState = *(from + 6);
     *&self->_has |= 2u;
-    v6 = *(a3 + 64);
+    v6 = *(from + 64);
     if ((v6 & 0x80) == 0)
     {
 LABEL_10:
@@ -893,14 +893,14 @@ LABEL_10:
     }
   }
 
-  else if ((*(a3 + 64) & 0x80) == 0)
+  else if ((*(from + 64) & 0x80) == 0)
   {
     goto LABEL_10;
   }
 
-  self->_switchedAwayFromCount = *(a3 + 15);
+  self->_switchedAwayFromCount = *(from + 15);
   *&self->_has |= 0x80u;
-  v6 = *(a3 + 64);
+  v6 = *(from + 64);
   if ((v6 & 0x40) == 0)
   {
 LABEL_11:
@@ -913,17 +913,17 @@ LABEL_11:
   }
 
 LABEL_23:
-  self->_switchToCount = *(a3 + 14);
+  self->_switchToCount = *(from + 14);
   *&self->_has |= 0x40u;
-  if ((*(a3 + 64) & 8) != 0)
+  if ((*(from + 64) & 8) != 0)
   {
 LABEL_12:
-    self->_networkScore = *(a3 + 8);
+    self->_networkScore = *(from + 8);
     *&self->_has |= 8u;
   }
 
 LABEL_13:
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
 
     [(AWDWiFiMetricsKnownNetworksEvent *)self setBundleID:?];

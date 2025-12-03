@@ -2,13 +2,13 @@
 + (id)defaultServiceTypes;
 + (id)logCategory;
 - (BOOL)isAirPlay;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHAP;
 - (BOOL)isMatter;
 - (BOOL)isTCP;
 - (BOOL)isUDP;
-- (HMFNetworkServiceInfo)initWithEndpoint:(id)a3 txtRecord:(id)a4;
-- (HMFNetworkServiceInfo)initWithServiceName:(id)a3 serviceType:(id)a4 serviceDomain:(id)a5 txtRecord:(id)a6;
+- (HMFNetworkServiceInfo)initWithEndpoint:(id)endpoint txtRecord:(id)record;
+- (HMFNetworkServiceInfo)initWithServiceName:(id)name serviceType:(id)type serviceDomain:(id)domain txtRecord:(id)record;
 - (NSDictionary)txtRecord;
 - (NSString)category;
 - (NSString)configNumber;
@@ -16,34 +16,34 @@
 - (NSString)model;
 - (NSString)stateNumber;
 - (NSString)statusFlag;
-- (void)updateWithServiceInfo:(id)a3;
+- (void)updateWithServiceInfo:(id)info;
 @end
 
 @implementation HMFNetworkServiceInfo
 
-- (HMFNetworkServiceInfo)initWithEndpoint:(id)a3 txtRecord:(id)a4
+- (HMFNetworkServiceInfo)initWithEndpoint:(id)endpoint txtRecord:(id)record
 {
-  v6 = a3;
-  v7 = a4;
-  bonjour_service_name = nw_endpoint_get_bonjour_service_name(v6);
+  endpointCopy = endpoint;
+  recordCopy = record;
+  bonjour_service_name = nw_endpoint_get_bonjour_service_name(endpointCopy);
   if (bonjour_service_name)
   {
     bonjour_service_name = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:bonjour_service_name];
   }
 
-  bonjour_service_type = nw_endpoint_get_bonjour_service_type(v6);
+  bonjour_service_type = nw_endpoint_get_bonjour_service_type(endpointCopy);
   if (bonjour_service_type)
   {
     bonjour_service_type = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:bonjour_service_type];
   }
 
-  bonjour_service_domain = nw_endpoint_get_bonjour_service_domain(v6);
+  bonjour_service_domain = nw_endpoint_get_bonjour_service_domain(endpointCopy);
   if (bonjour_service_domain)
   {
     bonjour_service_domain = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:bonjour_service_domain];
   }
 
-  v11 = v7;
+  v11 = recordCopy;
   v12 = v11;
   if (v11)
   {
@@ -74,14 +74,14 @@
   return v16;
 }
 
-- (HMFNetworkServiceInfo)initWithServiceName:(id)a3 serviceType:(id)a4 serviceDomain:(id)a5 txtRecord:(id)a6
+- (HMFNetworkServiceInfo)initWithServiceName:(id)name serviceType:(id)type serviceDomain:(id)domain txtRecord:(id)record
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = 0;
-  if (v11 && v12 && v13)
+  nameCopy = name;
+  typeCopy = type;
+  domainCopy = domain;
+  recordCopy = record;
+  selfCopy = 0;
+  if (nameCopy && typeCopy && domainCopy)
   {
     v19.receiver = self;
     v19.super_class = HMFNetworkServiceInfo;
@@ -89,17 +89,17 @@
     p_isa = &v16->super.super.isa;
     if (v16)
     {
-      objc_storeStrong(&v16->_serviceName, a3);
-      objc_storeStrong(p_isa + 4, a4);
-      objc_storeStrong(p_isa + 5, a5);
-      objc_storeStrong(p_isa + 2, a6);
+      objc_storeStrong(&v16->_serviceName, name);
+      objc_storeStrong(p_isa + 4, type);
+      objc_storeStrong(p_isa + 5, domain);
+      objc_storeStrong(p_isa + 2, record);
     }
 
     self = p_isa;
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (NSDictionary)txtRecord
@@ -115,18 +115,18 @@
 {
   if ([(HMFNetworkServiceInfo *)self isAirPlay])
   {
-    v3 = [(HMFNetworkServiceInfo *)self txtRecord];
-    v4 = v3;
+    txtRecord = [(HMFNetworkServiceInfo *)self txtRecord];
+    v4 = txtRecord;
     v5 = @"deviceid";
   }
 
   else
   {
-    v6 = [(HMFNetworkServiceInfo *)self serviceType];
-    v7 = [v6 containsString:@"_companion-link._tcp"];
+    serviceType = [(HMFNetworkServiceInfo *)self serviceType];
+    v7 = [serviceType containsString:@"_companion-link._tcp"];
 
-    v3 = [(HMFNetworkServiceInfo *)self txtRecord];
-    v4 = v3;
+    txtRecord = [(HMFNetworkServiceInfo *)self txtRecord];
+    v4 = txtRecord;
     if (v7)
     {
       v5 = @"rpBA";
@@ -138,7 +138,7 @@
     }
   }
 
-  v8 = [v3 hmf_stringForKey:v5];
+  v8 = [txtRecord hmf_stringForKey:v5];
 
   return v8;
 }
@@ -147,18 +147,18 @@
 {
   if ([(HMFNetworkServiceInfo *)self isAirPlay])
   {
-    v3 = [(HMFNetworkServiceInfo *)self txtRecord];
-    v4 = v3;
+    txtRecord = [(HMFNetworkServiceInfo *)self txtRecord];
+    v4 = txtRecord;
     v5 = @"model";
   }
 
   else
   {
-    v6 = [(HMFNetworkServiceInfo *)self serviceType];
-    v7 = [v6 containsString:@"_companion-link._tcp"];
+    serviceType = [(HMFNetworkServiceInfo *)self serviceType];
+    v7 = [serviceType containsString:@"_companion-link._tcp"];
 
-    v3 = [(HMFNetworkServiceInfo *)self txtRecord];
-    v4 = v3;
+    txtRecord = [(HMFNetworkServiceInfo *)self txtRecord];
+    v4 = txtRecord;
     if (v7)
     {
       v5 = @"rpMd";
@@ -170,39 +170,39 @@
     }
   }
 
-  v8 = [v3 hmf_stringForKey:v5];
+  v8 = [txtRecord hmf_stringForKey:v5];
 
   return v8;
 }
 
 - (NSString)category
 {
-  v2 = [(HMFNetworkServiceInfo *)self txtRecord];
-  v3 = [v2 hmf_stringForKey:@"ci"];
+  txtRecord = [(HMFNetworkServiceInfo *)self txtRecord];
+  v3 = [txtRecord hmf_stringForKey:@"ci"];
 
   return v3;
 }
 
 - (NSString)statusFlag
 {
-  v2 = [(HMFNetworkServiceInfo *)self txtRecord];
-  v3 = [v2 hmf_stringForKey:@"sf"];
+  txtRecord = [(HMFNetworkServiceInfo *)self txtRecord];
+  v3 = [txtRecord hmf_stringForKey:@"sf"];
 
   return v3;
 }
 
 - (NSString)stateNumber
 {
-  v2 = [(HMFNetworkServiceInfo *)self txtRecord];
-  v3 = [v2 hmf_stringForKey:@"s#"];
+  txtRecord = [(HMFNetworkServiceInfo *)self txtRecord];
+  v3 = [txtRecord hmf_stringForKey:@"s#"];
 
   return v3;
 }
 
 - (NSString)configNumber
 {
-  v2 = [(HMFNetworkServiceInfo *)self txtRecord];
-  v3 = [v2 hmf_stringForKey:@"c#"];
+  txtRecord = [(HMFNetworkServiceInfo *)self txtRecord];
+  v3 = [txtRecord hmf_stringForKey:@"c#"];
 
   return v3;
 }
@@ -214,40 +214,40 @@
     return 1;
   }
 
-  v4 = [(HMFNetworkServiceInfo *)self serviceType];
-  v5 = [v4 hasSuffix:@"._udp"];
+  serviceType = [(HMFNetworkServiceInfo *)self serviceType];
+  v5 = [serviceType hasSuffix:@"._udp"];
 
   return v5;
 }
 
 - (BOOL)isTCP
 {
-  v2 = [(HMFNetworkServiceInfo *)self serviceType];
-  v3 = [v2 hasSuffix:@"._tcp"];
+  serviceType = [(HMFNetworkServiceInfo *)self serviceType];
+  v3 = [serviceType hasSuffix:@"._tcp"];
 
   return v3;
 }
 
 - (BOOL)isAirPlay
 {
-  v2 = [(HMFNetworkServiceInfo *)self serviceType];
-  v3 = [v2 isEqualToString:@"_airplay._tcp"];
+  serviceType = [(HMFNetworkServiceInfo *)self serviceType];
+  v3 = [serviceType isEqualToString:@"_airplay._tcp"];
 
   return v3;
 }
 
 - (BOOL)isHAP
 {
-  v3 = [(HMFNetworkServiceInfo *)self serviceType];
-  if ([v3 isEqualToString:@"_hap._tcp"])
+  serviceType = [(HMFNetworkServiceInfo *)self serviceType];
+  if ([serviceType isEqualToString:@"_hap._tcp"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(HMFNetworkServiceInfo *)self serviceType];
-    v4 = [v5 isEqualToString:@"_hap._udp"];
+    serviceType2 = [(HMFNetworkServiceInfo *)self serviceType];
+    v4 = [serviceType2 isEqualToString:@"_hap._udp"];
   }
 
   return v4;
@@ -255,28 +255,28 @@
 
 - (BOOL)isMatter
 {
-  v3 = [(HMFNetworkServiceInfo *)self serviceType];
-  if ([v3 isEqualToString:@"_matter._tcp"])
+  serviceType = [(HMFNetworkServiceInfo *)self serviceType];
+  if ([serviceType isEqualToString:@"_matter._tcp"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(HMFNetworkServiceInfo *)self serviceType];
-    v4 = [v5 isEqualToString:@"_matterc._udp"];
+    serviceType2 = [(HMFNetworkServiceInfo *)self serviceType];
+    v4 = [serviceType2 isEqualToString:@"_matterc._udp"];
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -291,33 +291,33 @@
     goto LABEL_9;
   }
 
-  v8 = [v6 serviceName];
-  v9 = [(HMFNetworkServiceInfo *)self serviceName];
-  v10 = HMFEqualObjects(v8, v9);
+  serviceName = [v6 serviceName];
+  serviceName2 = [(HMFNetworkServiceInfo *)self serviceName];
+  v10 = HMFEqualObjects(serviceName, serviceName2);
 
   if (!v10)
   {
     goto LABEL_9;
   }
 
-  v11 = [v7 serviceType];
-  v12 = [(HMFNetworkServiceInfo *)self serviceType];
-  v13 = HMFEqualObjects(v11, v12);
+  serviceType = [v7 serviceType];
+  serviceType2 = [(HMFNetworkServiceInfo *)self serviceType];
+  v13 = HMFEqualObjects(serviceType, serviceType2);
 
   if (!v13)
   {
     goto LABEL_9;
   }
 
-  v14 = [v7 serviceDomain];
-  v15 = [(HMFNetworkServiceInfo *)self serviceDomain];
-  v16 = HMFEqualObjects(v14, v15);
+  serviceDomain = [v7 serviceDomain];
+  serviceDomain2 = [(HMFNetworkServiceInfo *)self serviceDomain];
+  v16 = HMFEqualObjects(serviceDomain, serviceDomain2);
 
   if (v16)
   {
-    v17 = [v7 txtRecord];
-    v18 = [(HMFNetworkServiceInfo *)self txtRecord];
-    v19 = HMFEqualObjects(v17, v18);
+    txtRecord = [v7 txtRecord];
+    txtRecord2 = [(HMFNetworkServiceInfo *)self txtRecord];
+    v19 = HMFEqualObjects(txtRecord, txtRecord2);
   }
 
   else
@@ -329,56 +329,56 @@ LABEL_9:
   return v19;
 }
 
-- (void)updateWithServiceInfo:(id)a3
+- (void)updateWithServiceInfo:(id)info
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   os_unfair_lock_lock_with_options();
-  v5 = [v4 serviceName];
-  v6 = HMFEqualObjects(v5, self->_serviceName);
+  serviceName = [infoCopy serviceName];
+  v6 = HMFEqualObjects(serviceName, self->_serviceName);
 
   if (!v6)
   {
     goto LABEL_5;
   }
 
-  v7 = [v4 serviceType];
-  v8 = HMFEqualObjects(v7, self->_serviceType);
+  serviceType = [infoCopy serviceType];
+  v8 = HMFEqualObjects(serviceType, self->_serviceType);
 
   if (!v8)
   {
     goto LABEL_5;
   }
 
-  v9 = [v4 serviceDomain];
-  v10 = HMFEqualObjects(v9, self->_serviceDomain);
+  serviceDomain = [infoCopy serviceDomain];
+  v10 = HMFEqualObjects(serviceDomain, self->_serviceDomain);
 
   if (!v10)
   {
     goto LABEL_5;
   }
 
-  v11 = [v4 txtRecord];
-  v12 = HMFEqualObjects(v11, self->_txtRecord);
+  txtRecord = [infoCopy txtRecord];
+  v12 = HMFEqualObjects(txtRecord, self->_txtRecord);
 
   if ((v12 & 1) == 0)
   {
-    v14 = [v4 txtRecord];
+    txtRecord2 = [infoCopy txtRecord];
     txtRecord = self->_txtRecord;
-    self->_txtRecord = v14;
+    self->_txtRecord = txtRecord2;
 
     os_unfair_lock_unlock(&self->_lock);
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      v19 = HMFGetLogIdentifier(v17);
-      v20 = [v4 txtRecord];
+      v19 = HMFGetLogIdentifier(selfCopy);
+      txtRecord3 = [infoCopy txtRecord];
       v21 = 138543618;
       v22 = v19;
       v23 = 2112;
-      v24 = v20;
+      v24 = txtRecord3;
       _os_log_impl(&dword_22ADEC000, v18, OS_LOG_TYPE_INFO, "%{public}@Updating with new txt record: %@", &v21, 0x16u);
     }
 

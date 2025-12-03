@@ -1,6 +1,6 @@
 @interface WLPairingCodeViewController
-- (WLPairingCodeViewController)initWithPairingCode:(id)a3 wifiPSK:(id)a4 ssid:(id)a5 welcomeController:(id)a6;
-- (void)_appleInternalOptionsTapped:(id)a3;
+- (WLPairingCodeViewController)initWithPairingCode:(id)code wifiPSK:(id)k ssid:(id)ssid welcomeController:(id)controller;
+- (void)_appleInternalOptionsTapped:(id)tapped;
 - (void)_importLocalContent;
 - (void)cancel;
 - (void)showActivityIndicatorView;
@@ -9,13 +9,13 @@
 
 @implementation WLPairingCodeViewController
 
-- (WLPairingCodeViewController)initWithPairingCode:(id)a3 wifiPSK:(id)a4 ssid:(id)a5 welcomeController:(id)a6
+- (WLPairingCodeViewController)initWithPairingCode:(id)code wifiPSK:(id)k ssid:(id)ssid welcomeController:(id)controller
 {
   v63[4] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v61 = a5;
-  v60 = a6;
+  codeCopy = code;
+  kCopy = k;
+  ssidCopy = ssid;
+  controllerCopy = controller;
   v12 = WLLocalizedString();
   v13 = WLLocalizedString();
   v14 = MEMORY[0x277D755B8];
@@ -27,13 +27,13 @@
 
   if (v17)
   {
-    v59 = v11;
-    objc_storeStrong(&v17->_wifiPSK, a4);
-    objc_storeStrong(&v17->_ssid, a5);
+    v59 = kCopy;
+    objc_storeStrong(&v17->_wifiPSK, k);
+    objc_storeStrong(&v17->_ssid, ssid);
     v18 = v17;
-    objc_storeStrong(&v17->_welcomeController, a6);
-    v19 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v10];
-    if ([v10 length] != 1)
+    objc_storeStrong(&v17->_welcomeController, controller);
+    v19 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:codeCopy];
+    if ([codeCopy length] != 1)
     {
       v20 = 0;
       v21 = *MEMORY[0x277D740D0];
@@ -58,17 +58,17 @@
         ++v20;
       }
 
-      while (v23 < [v10 length] - 1);
+      while (v23 < [codeCopy length] - 1);
     }
 
     v26 = objc_alloc_init(MEMORY[0x277D756B8]);
     [v26 setAttributedText:v19];
     [v26 setNumberOfLines:0];
-    v27 = [MEMORY[0x277D75348] labelColor];
-    [v26 setTextColor:v27];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [v26 setTextColor:labelColor];
 
-    v28 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v26 setBackgroundColor:v28];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [v26 setBackgroundColor:systemBackgroundColor];
 
     v29 = [MEMORY[0x277D74300] monospacedSystemFontOfSize:32.0 weight:*MEMORY[0x277D74410]];
     [v26 setFont:v29];
@@ -77,71 +77,71 @@
     [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v26 setAccessibilityIdentifier:@"PairingCode"];
     v30 = v18;
-    v31 = [(WLPairingCodeViewController *)v18 contentView];
-    [v31 addSubview:v26];
+    contentView = [(WLPairingCodeViewController *)v18 contentView];
+    [contentView addSubview:v26];
 
     v50 = MEMORY[0x277CCAAD0];
-    v57 = [v26 leadingAnchor];
-    v58 = [(WLPairingCodeViewController *)v18 contentView];
-    v56 = [v58 leadingAnchor];
-    v55 = [v57 constraintEqualToAnchor:v56];
+    leadingAnchor = [v26 leadingAnchor];
+    contentView2 = [(WLPairingCodeViewController *)v18 contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v55 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v63[0] = v55;
-    v53 = [v26 trailingAnchor];
-    v54 = [(WLPairingCodeViewController *)v18 contentView];
-    v52 = [v54 trailingAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    trailingAnchor = [v26 trailingAnchor];
+    contentView3 = [(WLPairingCodeViewController *)v18 contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v51 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v63[1] = v51;
-    v48 = [v26 bottomAnchor];
-    v49 = [(WLPairingCodeViewController *)v18 contentView];
-    v47 = [v49 bottomAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    bottomAnchor = [v26 bottomAnchor];
+    contentView4 = [(WLPairingCodeViewController *)v18 contentView];
+    bottomAnchor2 = [contentView4 bottomAnchor];
+    v46 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v63[2] = v46;
-    v32 = [v26 lastBaselineAnchor];
-    v33 = [(WLPairingCodeViewController *)v18 contentView];
-    v34 = [v33 topAnchor];
-    v35 = [MEMORY[0x277D75418] currentDevice];
-    v36 = [v35 userInterfaceIdiom];
+    lastBaselineAnchor = [v26 lastBaselineAnchor];
+    contentView5 = [(WLPairingCodeViewController *)v18 contentView];
+    topAnchor = [contentView5 topAnchor];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
     v37 = 96.0;
-    if (v36 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v37 = 106.0;
     }
 
-    v38 = [v32 constraintEqualToAnchor:v34 constant:v37];
+    v38 = [lastBaselineAnchor constraintEqualToAnchor:topAnchor constant:v37];
     v63[3] = v38;
     v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v63 count:4];
     [v50 activateConstraints:v39];
 
-    v40 = [v26 centerXAnchor];
-    v41 = [(WLPairingCodeViewController *)v30 contentView];
-    v42 = [v41 centerXAnchor];
-    v43 = [v40 constraintEqualToAnchor:v42];
+    centerXAnchor = [v26 centerXAnchor];
+    contentView6 = [(WLPairingCodeViewController *)v30 contentView];
+    centerXAnchor2 = [contentView6 centerXAnchor];
+    v43 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v43 setActive:1];
 
     v17 = v30;
-    v11 = v59;
+    kCopy = v59;
   }
 
   v44 = *MEMORY[0x277D85DE8];
   return v17;
 }
 
-- (void)_appleInternalOptionsTapped:(id)a3
+- (void)_appleInternalOptionsTapped:(id)tapped
 {
   if ([MEMORY[0x277D7B890] isInternal])
   {
-    v4 = [(WLPairingCodeViewController *)self getLocalImportOptionsHandler];
+    getLocalImportOptionsHandler = [(WLPairingCodeViewController *)self getLocalImportOptionsHandler];
 
-    if (v4)
+    if (getLocalImportOptionsHandler)
     {
       [(OBLinkTrayButton *)self->_appleInternalOptionsButton setEnabled:0];
-      v5 = [(WLPairingCodeViewController *)self getLocalImportOptionsHandler];
+      getLocalImportOptionsHandler2 = [(WLPairingCodeViewController *)self getLocalImportOptionsHandler];
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __59__WLPairingCodeViewController__appleInternalOptionsTapped___block_invoke;
       v6[3] = &unk_279EB8DF0;
       v6[4] = self;
-      (v5)[2](v5, v6);
+      (getLocalImportOptionsHandler2)[2](getLocalImportOptionsHandler2, v6);
     }
   }
 }
@@ -212,12 +212,12 @@ LABEL_6:
 
 - (void)_importLocalContent
 {
-  v3 = [(WLPairingCodeViewController *)self importLocalContentHandler];
+  importLocalContentHandler = [(WLPairingCodeViewController *)self importLocalContentHandler];
 
-  if (v3)
+  if (importLocalContentHandler)
   {
-    v4 = [(WLPairingCodeViewController *)self importLocalContentHandler];
-    v4[2]();
+    importLocalContentHandler2 = [(WLPairingCodeViewController *)self importLocalContentHandler];
+    importLocalContentHandler2[2]();
   }
 }
 
@@ -229,8 +229,8 @@ LABEL_6:
   if (self->_showCancelButton)
   {
     v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancel];
-    v4 = [(OBBaseWelcomeController *)self navigationItem];
-    [v4 setLeftBarButtonItem:v3];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v3];
   }
 }
 
@@ -252,8 +252,8 @@ LABEL_6:
 
   else
   {
-    v5 = [(WLPairingCodeViewController *)self navigationController];
-    v4 = [v5 popViewControllerAnimated:1];
+    navigationController = [(WLPairingCodeViewController *)self navigationController];
+    v4 = [navigationController popViewControllerAnimated:1];
   }
 }
 
@@ -268,8 +268,8 @@ void __37__WLPairingCodeViewController_cancel__block_invoke(uint64_t a1)
   v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   [v5 startAnimating];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v5];
-  v4 = [(OBBaseWelcomeController *)self navigationItem];
-  [v4 setLeftBarButtonItem:v3];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v3];
 }
 
 @end

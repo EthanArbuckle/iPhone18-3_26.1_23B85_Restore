@@ -1,46 +1,46 @@
 @interface TSCEFunction_TIMEVALUE
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_TIMEVALUE
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v7 = **a5;
-  v11 = objc_msgSend_deepType_(v7, v8, a3, v9, v10);
+  v7 = **arguments;
+  v11 = objc_msgSend_deepType_(v7, v8, context, v9, v10);
   if (v11 == 5 || v11 == 0)
   {
-    v29 = objc_msgSend_functionName(a4, v12, v13, v14, v15);
+    v29 = objc_msgSend_functionName(spec, v12, v13, v14, v15);
     v60 = 0;
-    v19 = objc_msgSend_asString_outError_(v7, v17, a3, &v60, v18);
+    v19 = objc_msgSend_asString_outError_(v7, v17, context, &v60, v18);
     v20 = v60;
     v23 = objc_msgSend_stringDoesNotRepresentDateErrorForFunctionName_string_(TSCEError, v21, v29, v19, v22);
-    v27 = objc_msgSend_raiseErrorOrConvert_(a3, v24, v23, v25, v26);
+    v27 = objc_msgSend_raiseErrorOrConvert_(context, v24, v23, v25, v26);
 
 LABEL_7:
     goto LABEL_8;
   }
 
   v59 = 0;
-  v29 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v7, v12, a3, a4, 0, &v59);
+  v29 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v7, v12, context, spec, 0, &v59);
   v30 = v59;
   if (v30)
   {
     v35 = v30;
     if (objc_msgSend_errorType(v30, v31, v32, v33, v34) == 8)
     {
-      v19 = objc_msgSend_functionName(a4, v36, v37, v38, v39);
+      v19 = objc_msgSend_functionName(spec, v36, v37, v38, v39);
       v58 = v35;
-      v42 = objc_msgSend_asString_outError_(v7, v40, a3, &v58, v41);
+      v42 = objc_msgSend_asString_outError_(v7, v40, context, &v58, v41);
       v20 = v58;
 
       v45 = objc_msgSend_stringDoesNotRepresentDateErrorForFunctionName_string_(TSCEError, v43, v19, v42, v44);
-      v27 = objc_msgSend_raiseErrorOrConvert_(a3, v46, v45, v47, v48);
+      v27 = objc_msgSend_raiseErrorOrConvert_(context, v46, v45, v47, v48);
 
       goto LABEL_7;
     }
 
-    v27 = objc_msgSend_raiseErrorOrConvert_(a3, v36, v35, v38, v39);
+    v27 = objc_msgSend_raiseErrorOrConvert_(context, v36, v35, v38, v39);
     v20 = v35;
   }
 

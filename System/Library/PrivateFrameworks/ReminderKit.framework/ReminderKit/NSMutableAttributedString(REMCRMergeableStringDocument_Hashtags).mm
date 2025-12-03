@@ -16,13 +16,13 @@
     {
       v23.location = a4;
       v23.length = a5;
-      [NSMutableAttributedString(REMCRMergeableStringDocument_Hashtags) rem_addHashtag:a1 range:v23];
+      [NSMutableAttributedString(REMCRMergeableStringDocument_Hashtags) rem_addHashtag:self range:v23];
     }
 
     goto LABEL_12;
   }
 
-  v9 = [a1 length];
+  v9 = [self length];
   if (a4 >= v9)
   {
     a4 = v9;
@@ -36,10 +36,10 @@
   if (a5)
   {
     v10 = objc_alloc_init(TTREMHashtag);
-    v11 = [v8 objectIdentifier];
-    [(TTREMHashtag *)v10 setObjectIdentifier:v11];
+    objectIdentifier = [v8 objectIdentifier];
+    [(TTREMHashtag *)v10 setObjectIdentifier:objectIdentifier];
 
-    [a1 addAttribute:@"_TTREMHashtag" value:v10 range:{a4, a5}];
+    [self addAttribute:@"_TTREMHashtag" value:v10 range:{a4, a5}];
     v12 = +[REMLog crdt];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -47,7 +47,7 @@
       v22.length = a5;
       v13 = NSStringFromRange(v22);
       v15 = 134218498;
-      v16 = a1;
+      selfCopy = self;
       v17 = 2112;
       v18 = v10;
       v19 = 2112;
@@ -63,7 +63,7 @@ LABEL_12:
 
 - (unint64_t)rem_removeHashtagInRange:()REMCRMergeableStringDocument_Hashtags
 {
-  result = [a1 length];
+  result = [self length];
   if (a3 >= result)
   {
     v8 = result;
@@ -87,7 +87,7 @@ LABEL_12:
   if (v9)
   {
 
-    return [a1 removeAttribute:@"_TTREMHashtag" range:?];
+    return [self removeAttribute:@"_TTREMHashtag" range:?];
   }
 
   return result;

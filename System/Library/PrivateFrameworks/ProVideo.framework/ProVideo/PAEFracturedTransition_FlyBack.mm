@@ -1,14 +1,14 @@
 @interface PAEFracturedTransition_FlyBack
-- (PAEFracturedTransition_FlyBack)initWithAPIManager:(id)a3;
+- (PAEFracturedTransition_FlyBack)initWithAPIManager:(id)manager;
 @end
 
 @implementation PAEFracturedTransition_FlyBack
 
-- (PAEFracturedTransition_FlyBack)initWithAPIManager:(id)a3
+- (PAEFracturedTransition_FlyBack)initWithAPIManager:(id)manager
 {
   v11.receiver = self;
   v11.super_class = PAEFracturedTransition_FlyBack;
-  result = [(PAEFracturedTransition *)&v11 initWithAPIManager:a3];
+  result = [(PAEFracturedTransition *)&v11 initWithAPIManager:manager];
   if (result)
   {
     fxParams = result->super._fxParams;

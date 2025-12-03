@@ -1,10 +1,10 @@
 @interface MAAutoAssetControlStagerInformation
-+ (id)previousOTASituationName:(int64_t)a3;
++ (id)previousOTASituationName:(int64_t)name;
 - (MAAutoAssetControlStagerInformation)init;
-- (MAAutoAssetControlStagerInformation)initWithCoder:(id)a3;
+- (MAAutoAssetControlStagerInformation)initWithCoder:(id)coder;
 - (id)description;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MAAutoAssetControlStagerInformation
@@ -86,289 +86,289 @@
   return v3;
 }
 
-- (MAAutoAssetControlStagerInformation)initWithCoder:(id)a3
+- (MAAutoAssetControlStagerInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = MAAutoAssetControlStagerInformation;
   v5 = [(MAAutoAssetControlStagerInformation *)&v33 init];
   if (v5)
   {
-    v5->_persistedStateCount = [v4 decodeIntegerForKey:@"persistedStateCount"];
-    v5->_persistedTargetLookupResultsCount = [v4 decodeInt64ForKey:@"persistedTargetLookupResultsCount"];
-    v5->_persistedAvailableForStagingByTargetCount = [v4 decodeInt64ForKey:@"persistedAvailableForStagingByTargetCount"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startupLastStagingFromOSVersion"];
+    v5->_persistedStateCount = [coderCopy decodeIntegerForKey:@"persistedStateCount"];
+    v5->_persistedTargetLookupResultsCount = [coderCopy decodeInt64ForKey:@"persistedTargetLookupResultsCount"];
+    v5->_persistedAvailableForStagingByTargetCount = [coderCopy decodeInt64ForKey:@"persistedAvailableForStagingByTargetCount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startupLastStagingFromOSVersion"];
     startupLastStagingFromOSVersion = v5->_startupLastStagingFromOSVersion;
     v5->_startupLastStagingFromOSVersion = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startupLastStagingFromBuildVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startupLastStagingFromBuildVersion"];
     startupLastStagingFromBuildVersion = v5->_startupLastStagingFromBuildVersion;
     v5->_startupLastStagingFromBuildVersion = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startupAssetTargetOSVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startupAssetTargetOSVersion"];
     startupAssetTargetOSVersion = v5->_startupAssetTargetOSVersion;
     v5->_startupAssetTargetOSVersion = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startupAssetTargetBuildVersion"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startupAssetTargetBuildVersion"];
     startupAssetTargetBuildVersion = v5->_startupAssetTargetBuildVersion;
     v5->_startupAssetTargetBuildVersion = v12;
 
-    v5->_startupCandidateAssetCount = [v4 decodeInt64ForKey:@"startupCandidateAssetCount"];
-    v5->_startupDeterminedAvailableAssetCount = [v4 decodeInt64ForKey:@"startupDeterminedAvailableAssetCount"];
-    v5->_startupActivelyStagingAssetCount = [v4 decodeInt64ForKey:@"startupActivelyStagingAssetCount"];
-    v5->_startupAwaitingStagingAssetCount = [v4 decodeInt64ForKey:@"startupAwaitingStagingAssetCount"];
-    v5->_startupStagedAssetCount = [v4 decodeInt64ForKey:@"startupStagedAssetCount"];
-    v5->_startupStagedAssetTotalContentBytes = [v4 decodeInt64ForKey:@"startupStagedAssetTotalContentBytes"];
-    v5->_startupPreviousOTASituation = [v4 decodeIntegerForKey:@"startupPreviousOTASituation"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagingFromOSVersion"];
+    v5->_startupCandidateAssetCount = [coderCopy decodeInt64ForKey:@"startupCandidateAssetCount"];
+    v5->_startupDeterminedAvailableAssetCount = [coderCopy decodeInt64ForKey:@"startupDeterminedAvailableAssetCount"];
+    v5->_startupActivelyStagingAssetCount = [coderCopy decodeInt64ForKey:@"startupActivelyStagingAssetCount"];
+    v5->_startupAwaitingStagingAssetCount = [coderCopy decodeInt64ForKey:@"startupAwaitingStagingAssetCount"];
+    v5->_startupStagedAssetCount = [coderCopy decodeInt64ForKey:@"startupStagedAssetCount"];
+    v5->_startupStagedAssetTotalContentBytes = [coderCopy decodeInt64ForKey:@"startupStagedAssetTotalContentBytes"];
+    v5->_startupPreviousOTASituation = [coderCopy decodeIntegerForKey:@"startupPreviousOTASituation"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagingFromOSVersion"];
     stagingFromOSVersion = v5->_stagingFromOSVersion;
     v5->_stagingFromOSVersion = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagingFromBuildVersion"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagingFromBuildVersion"];
     stagingFromBuildVersion = v5->_stagingFromBuildVersion;
     v5->_stagingFromBuildVersion = v16;
 
-    v5->_loadPersistedPostponed = [v4 decodeBoolForKey:@"loadPersistedPostponed"];
-    v5->_alwaysPromoteStagedAssets = [v4 decodeBoolForKey:@"alwaysPromoteStagedAssets"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetTargetOSVersion"];
+    v5->_loadPersistedPostponed = [coderCopy decodeBoolForKey:@"loadPersistedPostponed"];
+    v5->_alwaysPromoteStagedAssets = [coderCopy decodeBoolForKey:@"alwaysPromoteStagedAssets"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetTargetOSVersion"];
     assetTargetOSVersion = v5->_assetTargetOSVersion;
     v5->_assetTargetOSVersion = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetTargetBuildVersion"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetTargetBuildVersion"];
     assetTargetBuildVersion = v5->_assetTargetBuildVersion;
     v5->_assetTargetBuildVersion = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetTargetTrainName"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetTargetTrainName"];
     assetTargetTrainName = v5->_assetTargetTrainName;
     v5->_assetTargetTrainName = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetTargetRestoreVersion"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetTargetRestoreVersion"];
     assetTargetRestoreVersion = v5->_assetTargetRestoreVersion;
     v5->_assetTargetRestoreVersion = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"optionalAssetSizeAllowed"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"optionalAssetSizeAllowed"];
     optionalAssetSizeAllowed = v5->_optionalAssetSizeAllowed;
     v5->_optionalAssetSizeAllowed = v26;
 
-    v5->_activeTargetOTASituation = [v4 decodeIntegerForKey:@"activeTargetOTASituation"];
-    v5->_activeTargetCandidatesForStagingRequiredCount = [v4 decodeInt64ForKey:@"activeTargetCandidatesForStagingRequiredCount"];
-    v5->_activeTargetCandidatesForStagingOptionalCount = [v4 decodeInt64ForKey:@"activeTargetCandidatesForStagingOptionalCount"];
-    v5->_activeTargetCandidateSetConfigurationsRequiredCount = [v4 decodeInt64ForKey:@"activeTargetCandidateSetConfigurationsRequiredCount"];
-    v5->_activeTargetCandidateSetConfigurationsOptionalCount = [v4 decodeInt64ForKey:@"activeTargetCandidateSetConfigurationsOptionalCount"];
-    v5->_activeTargetAvailableForStagingRequiredCount = [v4 decodeInt64ForKey:@"activeTargetAvailableForStagingRequiredCount"];
-    v5->_activeTargetAvailableForStagingOptionalCount = [v4 decodeInt64ForKey:@"activeTargetAvailableForStagingOptionalCount"];
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"otherTargetName"];
+    v5->_activeTargetOTASituation = [coderCopy decodeIntegerForKey:@"activeTargetOTASituation"];
+    v5->_activeTargetCandidatesForStagingRequiredCount = [coderCopy decodeInt64ForKey:@"activeTargetCandidatesForStagingRequiredCount"];
+    v5->_activeTargetCandidatesForStagingOptionalCount = [coderCopy decodeInt64ForKey:@"activeTargetCandidatesForStagingOptionalCount"];
+    v5->_activeTargetCandidateSetConfigurationsRequiredCount = [coderCopy decodeInt64ForKey:@"activeTargetCandidateSetConfigurationsRequiredCount"];
+    v5->_activeTargetCandidateSetConfigurationsOptionalCount = [coderCopy decodeInt64ForKey:@"activeTargetCandidateSetConfigurationsOptionalCount"];
+    v5->_activeTargetAvailableForStagingRequiredCount = [coderCopy decodeInt64ForKey:@"activeTargetAvailableForStagingRequiredCount"];
+    v5->_activeTargetAvailableForStagingOptionalCount = [coderCopy decodeInt64ForKey:@"activeTargetAvailableForStagingOptionalCount"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"otherTargetName"];
     otherTargetName = v5->_otherTargetName;
     v5->_otherTargetName = v28;
 
-    v5->_otherTargetOTASituation = [v4 decodeIntegerForKey:@"otherTargetOTASituation"];
-    v5->_otherTargetCandidatesForStagingRequiredCount = [v4 decodeInt64ForKey:@"otherTargetCandidatesForStagingRequiredCount"];
-    v5->_otherTargetCandidatesForStagingOptionalCount = [v4 decodeInt64ForKey:@"otherTargetCandidatesForStagingOptionalCount"];
-    v5->_otherTargetCandidateSetConfigurationsRequiredCount = [v4 decodeInt64ForKey:@"otherTargetCandidateSetConfigurationsRequiredCount"];
-    v5->_otherTargetCandidateSetConfigurationsOptionalCount = [v4 decodeInt64ForKey:@"otherTargetCandidateSetConfigurationsOptionalCount"];
-    v5->_otherTargetAvailableForStagingRequiredCount = [v4 decodeInt64ForKey:@"otherTargetAvailableForStagingRequiredCount"];
-    v5->_otherTargetAvailableForStagingOptionalCount = [v4 decodeInt64ForKey:@"otherTargetAvailableForStagingOptionalCount"];
-    v5->_stagingClientDetermineRequestsCount = [v4 decodeInt64ForKey:@"stagingClientDetermineRequestsCount"];
-    v5->_stagingClientDownloadRequestActive = [v4 decodeBoolForKey:@"stagingClientDownloadRequestActive"];
-    v5->_stagingClientRequestActive = [v4 decodeBoolForKey:@"stagingClientRequestActive"];
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagingClientName"];
+    v5->_otherTargetOTASituation = [coderCopy decodeIntegerForKey:@"otherTargetOTASituation"];
+    v5->_otherTargetCandidatesForStagingRequiredCount = [coderCopy decodeInt64ForKey:@"otherTargetCandidatesForStagingRequiredCount"];
+    v5->_otherTargetCandidatesForStagingOptionalCount = [coderCopy decodeInt64ForKey:@"otherTargetCandidatesForStagingOptionalCount"];
+    v5->_otherTargetCandidateSetConfigurationsRequiredCount = [coderCopy decodeInt64ForKey:@"otherTargetCandidateSetConfigurationsRequiredCount"];
+    v5->_otherTargetCandidateSetConfigurationsOptionalCount = [coderCopy decodeInt64ForKey:@"otherTargetCandidateSetConfigurationsOptionalCount"];
+    v5->_otherTargetAvailableForStagingRequiredCount = [coderCopy decodeInt64ForKey:@"otherTargetAvailableForStagingRequiredCount"];
+    v5->_otherTargetAvailableForStagingOptionalCount = [coderCopy decodeInt64ForKey:@"otherTargetAvailableForStagingOptionalCount"];
+    v5->_stagingClientDetermineRequestsCount = [coderCopy decodeInt64ForKey:@"stagingClientDetermineRequestsCount"];
+    v5->_stagingClientDownloadRequestActive = [coderCopy decodeBoolForKey:@"stagingClientDownloadRequestActive"];
+    v5->_stagingClientRequestActive = [coderCopy decodeBoolForKey:@"stagingClientRequestActive"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagingClientName"];
     stagingClientName = v5->_stagingClientName;
     v5->_stagingClientName = v30;
 
-    v5->_setConfigurationsCount = [v4 decodeInt64ForKey:@"setConfigurationsCount"];
-    v5->_setTargetsCount = [v4 decodeInt64ForKey:@"setTargetsCount"];
-    v5->_scheduledJobsCount = [v4 decodeInt64ForKey:@"scheduledJobsCount"];
-    v5->_candidatesForStagingCount = [v4 decodeInt64ForKey:@"candidatesForStagingCount"];
-    v5->_candidateSetConfigurationsCount = [v4 decodeInt64ForKey:@"candidateSetConfigurationsCount"];
-    v5->_setLookupResultsCount = [v4 decodeInt64ForKey:@"setLookupResultsCount"];
-    v5->_baseForStagingDescriptorsCount = [v4 decodeInt64ForKey:@"baseForStagingDescriptorsCount"];
-    v5->_determiningBySelectorCount = [v4 decodeInt64ForKey:@"determiningBySelectorCount"];
-    v5->_availableForStagingCount = [v4 decodeInt64ForKey:@"availableForStagingCount"];
-    v5->_awaitingStagingAttemptCount = [v4 decodeInt64ForKey:@"awaitingStagingAttemptCount"];
-    v5->_successfullyStagedCount = [v4 decodeInt64ForKey:@"successfullyStagedCount"];
-    v5->_overallStagedTotalExpectedBytes = [v4 decodeInt64ForKey:@"overallStagedTotalExpectedBytes"];
-    v5->_overallStagedDownloadedSoFarBytes = [v4 decodeInt64ForKey:@"overallStagedDownloadedSoFarBytes"];
-    v5->_currentStagedLastWrittenBytes = [v4 decodeInt64ForKey:@"currentStagedLastWrittenBytes"];
-    v5->_currentStagedRemainingBytes = [v4 decodeInt64ForKey:@"currentStagedRemainingBytes"];
-    v5->_eliminationSelectorsCount = [v4 decodeInt64ForKey:@"eliminationSelectorsCount"];
-    v5->_eliminationSetConfigurationCurrentJob = [v4 decodeBoolForKey:@"eliminationSetConfigurationCurrentJob"];
-    v5->_eliminationSelectorsAcknowledgedCount = [v4 decodeInt64ForKey:@"eliminationSelectorsAcknowledgedCount"];
+    v5->_setConfigurationsCount = [coderCopy decodeInt64ForKey:@"setConfigurationsCount"];
+    v5->_setTargetsCount = [coderCopy decodeInt64ForKey:@"setTargetsCount"];
+    v5->_scheduledJobsCount = [coderCopy decodeInt64ForKey:@"scheduledJobsCount"];
+    v5->_candidatesForStagingCount = [coderCopy decodeInt64ForKey:@"candidatesForStagingCount"];
+    v5->_candidateSetConfigurationsCount = [coderCopy decodeInt64ForKey:@"candidateSetConfigurationsCount"];
+    v5->_setLookupResultsCount = [coderCopy decodeInt64ForKey:@"setLookupResultsCount"];
+    v5->_baseForStagingDescriptorsCount = [coderCopy decodeInt64ForKey:@"baseForStagingDescriptorsCount"];
+    v5->_determiningBySelectorCount = [coderCopy decodeInt64ForKey:@"determiningBySelectorCount"];
+    v5->_availableForStagingCount = [coderCopy decodeInt64ForKey:@"availableForStagingCount"];
+    v5->_awaitingStagingAttemptCount = [coderCopy decodeInt64ForKey:@"awaitingStagingAttemptCount"];
+    v5->_successfullyStagedCount = [coderCopy decodeInt64ForKey:@"successfullyStagedCount"];
+    v5->_overallStagedTotalExpectedBytes = [coderCopy decodeInt64ForKey:@"overallStagedTotalExpectedBytes"];
+    v5->_overallStagedDownloadedSoFarBytes = [coderCopy decodeInt64ForKey:@"overallStagedDownloadedSoFarBytes"];
+    v5->_currentStagedLastWrittenBytes = [coderCopy decodeInt64ForKey:@"currentStagedLastWrittenBytes"];
+    v5->_currentStagedRemainingBytes = [coderCopy decodeInt64ForKey:@"currentStagedRemainingBytes"];
+    v5->_eliminationSelectorsCount = [coderCopy decodeInt64ForKey:@"eliminationSelectorsCount"];
+    v5->_eliminationSetConfigurationCurrentJob = [coderCopy decodeBoolForKey:@"eliminationSetConfigurationCurrentJob"];
+    v5->_eliminationSelectorsAcknowledgedCount = [coderCopy decodeInt64ForKey:@"eliminationSelectorsAcknowledgedCount"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v17 = a3;
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation persistedStateCount](self forKey:{"persistedStateCount"), @"persistedStateCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation persistedTargetLookupResultsCount](self forKey:{"persistedTargetLookupResultsCount"), @"persistedTargetLookupResultsCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation persistedAvailableForStagingByTargetCount](self forKey:{"persistedAvailableForStagingByTargetCount"), @"persistedAvailableForStagingByTargetCount"}];
-  v4 = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromOSVersion];
-  [v17 encodeObject:v4 forKey:@"startupLastStagingFromOSVersion"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation persistedStateCount](self forKey:{"persistedStateCount"), @"persistedStateCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation persistedTargetLookupResultsCount](self forKey:{"persistedTargetLookupResultsCount"), @"persistedTargetLookupResultsCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation persistedAvailableForStagingByTargetCount](self forKey:{"persistedAvailableForStagingByTargetCount"), @"persistedAvailableForStagingByTargetCount"}];
+  startupLastStagingFromOSVersion = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromOSVersion];
+  [coderCopy encodeObject:startupLastStagingFromOSVersion forKey:@"startupLastStagingFromOSVersion"];
 
-  v5 = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromBuildVersion];
-  [v17 encodeObject:v5 forKey:@"startupLastStagingFromBuildVersion"];
+  startupLastStagingFromBuildVersion = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromBuildVersion];
+  [coderCopy encodeObject:startupLastStagingFromBuildVersion forKey:@"startupLastStagingFromBuildVersion"];
 
-  v6 = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetOSVersion];
-  [v17 encodeObject:v6 forKey:@"startupAssetTargetOSVersion"];
+  startupAssetTargetOSVersion = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetOSVersion];
+  [coderCopy encodeObject:startupAssetTargetOSVersion forKey:@"startupAssetTargetOSVersion"];
 
-  v7 = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetBuildVersion];
-  [v17 encodeObject:v7 forKey:@"startupAssetTargetBuildVersion"];
+  startupAssetTargetBuildVersion = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetBuildVersion];
+  [coderCopy encodeObject:startupAssetTargetBuildVersion forKey:@"startupAssetTargetBuildVersion"];
 
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation startupCandidateAssetCount](self forKey:{"startupCandidateAssetCount"), @"startupCandidateAssetCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation startupDeterminedAvailableAssetCount](self forKey:{"startupDeterminedAvailableAssetCount"), @"startupDeterminedAvailableAssetCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation startupActivelyStagingAssetCount](self forKey:{"startupActivelyStagingAssetCount"), @"startupActivelyStagingAssetCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation startupAwaitingStagingAssetCount](self forKey:{"startupAwaitingStagingAssetCount"), @"startupAwaitingStagingAssetCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation startupStagedAssetCount](self forKey:{"startupStagedAssetCount"), @"startupStagedAssetCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation startupStagedAssetTotalContentBytes](self forKey:{"startupStagedAssetTotalContentBytes"), @"startupStagedAssetTotalContentBytes"}];
-  [v17 encodeInteger:-[MAAutoAssetControlStagerInformation startupPreviousOTASituation](self forKey:{"startupPreviousOTASituation"), @"startupPreviousOTASituation"}];
-  v8 = [(MAAutoAssetControlStagerInformation *)self stagingFromOSVersion];
-  [v17 encodeObject:v8 forKey:@"stagingFromOSVersion"];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation startupCandidateAssetCount](self forKey:{"startupCandidateAssetCount"), @"startupCandidateAssetCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation startupDeterminedAvailableAssetCount](self forKey:{"startupDeterminedAvailableAssetCount"), @"startupDeterminedAvailableAssetCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation startupActivelyStagingAssetCount](self forKey:{"startupActivelyStagingAssetCount"), @"startupActivelyStagingAssetCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation startupAwaitingStagingAssetCount](self forKey:{"startupAwaitingStagingAssetCount"), @"startupAwaitingStagingAssetCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation startupStagedAssetCount](self forKey:{"startupStagedAssetCount"), @"startupStagedAssetCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation startupStagedAssetTotalContentBytes](self forKey:{"startupStagedAssetTotalContentBytes"), @"startupStagedAssetTotalContentBytes"}];
+  [coderCopy encodeInteger:-[MAAutoAssetControlStagerInformation startupPreviousOTASituation](self forKey:{"startupPreviousOTASituation"), @"startupPreviousOTASituation"}];
+  stagingFromOSVersion = [(MAAutoAssetControlStagerInformation *)self stagingFromOSVersion];
+  [coderCopy encodeObject:stagingFromOSVersion forKey:@"stagingFromOSVersion"];
 
-  v9 = [(MAAutoAssetControlStagerInformation *)self stagingFromBuildVersion];
-  [v17 encodeObject:v9 forKey:@"stagingFromBuildVersion"];
+  stagingFromBuildVersion = [(MAAutoAssetControlStagerInformation *)self stagingFromBuildVersion];
+  [coderCopy encodeObject:stagingFromBuildVersion forKey:@"stagingFromBuildVersion"];
 
-  [v17 encodeBool:-[MAAutoAssetControlStagerInformation loadPersistedPostponed](self forKey:{"loadPersistedPostponed"), @"loadPersistedPostponed"}];
-  [v17 encodeBool:-[MAAutoAssetControlStagerInformation alwaysPromoteStagedAssets](self forKey:{"alwaysPromoteStagedAssets"), @"alwaysPromoteStagedAssets"}];
-  v10 = [(MAAutoAssetControlStagerInformation *)self assetTargetOSVersion];
-  [v17 encodeObject:v10 forKey:@"assetTargetOSVersion"];
+  [coderCopy encodeBool:-[MAAutoAssetControlStagerInformation loadPersistedPostponed](self forKey:{"loadPersistedPostponed"), @"loadPersistedPostponed"}];
+  [coderCopy encodeBool:-[MAAutoAssetControlStagerInformation alwaysPromoteStagedAssets](self forKey:{"alwaysPromoteStagedAssets"), @"alwaysPromoteStagedAssets"}];
+  assetTargetOSVersion = [(MAAutoAssetControlStagerInformation *)self assetTargetOSVersion];
+  [coderCopy encodeObject:assetTargetOSVersion forKey:@"assetTargetOSVersion"];
 
-  v11 = [(MAAutoAssetControlStagerInformation *)self assetTargetBuildVersion];
-  [v17 encodeObject:v11 forKey:@"assetTargetBuildVersion"];
+  assetTargetBuildVersion = [(MAAutoAssetControlStagerInformation *)self assetTargetBuildVersion];
+  [coderCopy encodeObject:assetTargetBuildVersion forKey:@"assetTargetBuildVersion"];
 
-  v12 = [(MAAutoAssetControlStagerInformation *)self assetTargetTrainName];
-  [v17 encodeObject:v12 forKey:@"assetTargetTrainName"];
+  assetTargetTrainName = [(MAAutoAssetControlStagerInformation *)self assetTargetTrainName];
+  [coderCopy encodeObject:assetTargetTrainName forKey:@"assetTargetTrainName"];
 
-  v13 = [(MAAutoAssetControlStagerInformation *)self assetTargetRestoreVersion];
-  [v17 encodeObject:v13 forKey:@"assetTargetRestoreVersion"];
+  assetTargetRestoreVersion = [(MAAutoAssetControlStagerInformation *)self assetTargetRestoreVersion];
+  [coderCopy encodeObject:assetTargetRestoreVersion forKey:@"assetTargetRestoreVersion"];
 
-  v14 = [(MAAutoAssetControlStagerInformation *)self optionalAssetSizeAllowed];
-  [v17 encodeObject:v14 forKey:@"optionalAssetSizeAllowed"];
+  optionalAssetSizeAllowed = [(MAAutoAssetControlStagerInformation *)self optionalAssetSizeAllowed];
+  [coderCopy encodeObject:optionalAssetSizeAllowed forKey:@"optionalAssetSizeAllowed"];
 
-  [v17 encodeInteger:-[MAAutoAssetControlStagerInformation activeTargetOTASituation](self forKey:{"activeTargetOTASituation"), @"activeTargetOTASituation"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation activeTargetCandidatesForStagingRequiredCount](self forKey:{"activeTargetCandidatesForStagingRequiredCount"), @"activeTargetCandidatesForStagingRequiredCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation activeTargetCandidatesForStagingOptionalCount](self forKey:{"activeTargetCandidatesForStagingOptionalCount"), @"activeTargetCandidatesForStagingOptionalCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation activeTargetCandidateSetConfigurationsRequiredCount](self forKey:{"activeTargetCandidateSetConfigurationsRequiredCount"), @"activeTargetCandidateSetConfigurationsRequiredCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation activeTargetCandidateSetConfigurationsOptionalCount](self forKey:{"activeTargetCandidateSetConfigurationsOptionalCount"), @"activeTargetCandidateSetConfigurationsOptionalCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation activeTargetAvailableForStagingRequiredCount](self forKey:{"activeTargetAvailableForStagingRequiredCount"), @"activeTargetAvailableForStagingRequiredCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation activeTargetAvailableForStagingOptionalCount](self forKey:{"activeTargetAvailableForStagingOptionalCount"), @"activeTargetAvailableForStagingOptionalCount"}];
-  v15 = [(MAAutoAssetControlStagerInformation *)self otherTargetName];
-  [v17 encodeObject:v15 forKey:@"otherTargetName"];
+  [coderCopy encodeInteger:-[MAAutoAssetControlStagerInformation activeTargetOTASituation](self forKey:{"activeTargetOTASituation"), @"activeTargetOTASituation"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation activeTargetCandidatesForStagingRequiredCount](self forKey:{"activeTargetCandidatesForStagingRequiredCount"), @"activeTargetCandidatesForStagingRequiredCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation activeTargetCandidatesForStagingOptionalCount](self forKey:{"activeTargetCandidatesForStagingOptionalCount"), @"activeTargetCandidatesForStagingOptionalCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation activeTargetCandidateSetConfigurationsRequiredCount](self forKey:{"activeTargetCandidateSetConfigurationsRequiredCount"), @"activeTargetCandidateSetConfigurationsRequiredCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation activeTargetCandidateSetConfigurationsOptionalCount](self forKey:{"activeTargetCandidateSetConfigurationsOptionalCount"), @"activeTargetCandidateSetConfigurationsOptionalCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation activeTargetAvailableForStagingRequiredCount](self forKey:{"activeTargetAvailableForStagingRequiredCount"), @"activeTargetAvailableForStagingRequiredCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation activeTargetAvailableForStagingOptionalCount](self forKey:{"activeTargetAvailableForStagingOptionalCount"), @"activeTargetAvailableForStagingOptionalCount"}];
+  otherTargetName = [(MAAutoAssetControlStagerInformation *)self otherTargetName];
+  [coderCopy encodeObject:otherTargetName forKey:@"otherTargetName"];
 
-  [v17 encodeInteger:-[MAAutoAssetControlStagerInformation otherTargetOTASituation](self forKey:{"otherTargetOTASituation"), @"otherTargetOTASituation"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation otherTargetCandidatesForStagingRequiredCount](self forKey:{"otherTargetCandidatesForStagingRequiredCount"), @"otherTargetCandidatesForStagingRequiredCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation otherTargetCandidatesForStagingOptionalCount](self forKey:{"otherTargetCandidatesForStagingOptionalCount"), @"otherTargetCandidatesForStagingOptionalCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation otherTargetCandidateSetConfigurationsRequiredCount](self forKey:{"otherTargetCandidateSetConfigurationsRequiredCount"), @"otherTargetCandidateSetConfigurationsRequiredCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation otherTargetCandidateSetConfigurationsOptionalCount](self forKey:{"otherTargetCandidateSetConfigurationsOptionalCount"), @"otherTargetCandidateSetConfigurationsOptionalCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation otherTargetAvailableForStagingRequiredCount](self forKey:{"otherTargetAvailableForStagingRequiredCount"), @"otherTargetAvailableForStagingRequiredCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation otherTargetAvailableForStagingOptionalCount](self forKey:{"otherTargetAvailableForStagingOptionalCount"), @"otherTargetAvailableForStagingOptionalCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation stagingClientDetermineRequestsCount](self forKey:{"stagingClientDetermineRequestsCount"), @"stagingClientDetermineRequestsCount"}];
-  [v17 encodeBool:-[MAAutoAssetControlStagerInformation stagingClientDownloadRequestActive](self forKey:{"stagingClientDownloadRequestActive"), @"stagingClientDownloadRequestActive"}];
-  [v17 encodeBool:-[MAAutoAssetControlStagerInformation stagingClientRequestActive](self forKey:{"stagingClientRequestActive"), @"stagingClientRequestActive"}];
-  v16 = [(MAAutoAssetControlStagerInformation *)self stagingClientName];
-  [v17 encodeObject:v16 forKey:@"stagingClientName"];
+  [coderCopy encodeInteger:-[MAAutoAssetControlStagerInformation otherTargetOTASituation](self forKey:{"otherTargetOTASituation"), @"otherTargetOTASituation"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation otherTargetCandidatesForStagingRequiredCount](self forKey:{"otherTargetCandidatesForStagingRequiredCount"), @"otherTargetCandidatesForStagingRequiredCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation otherTargetCandidatesForStagingOptionalCount](self forKey:{"otherTargetCandidatesForStagingOptionalCount"), @"otherTargetCandidatesForStagingOptionalCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation otherTargetCandidateSetConfigurationsRequiredCount](self forKey:{"otherTargetCandidateSetConfigurationsRequiredCount"), @"otherTargetCandidateSetConfigurationsRequiredCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation otherTargetCandidateSetConfigurationsOptionalCount](self forKey:{"otherTargetCandidateSetConfigurationsOptionalCount"), @"otherTargetCandidateSetConfigurationsOptionalCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation otherTargetAvailableForStagingRequiredCount](self forKey:{"otherTargetAvailableForStagingRequiredCount"), @"otherTargetAvailableForStagingRequiredCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation otherTargetAvailableForStagingOptionalCount](self forKey:{"otherTargetAvailableForStagingOptionalCount"), @"otherTargetAvailableForStagingOptionalCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation stagingClientDetermineRequestsCount](self forKey:{"stagingClientDetermineRequestsCount"), @"stagingClientDetermineRequestsCount"}];
+  [coderCopy encodeBool:-[MAAutoAssetControlStagerInformation stagingClientDownloadRequestActive](self forKey:{"stagingClientDownloadRequestActive"), @"stagingClientDownloadRequestActive"}];
+  [coderCopy encodeBool:-[MAAutoAssetControlStagerInformation stagingClientRequestActive](self forKey:{"stagingClientRequestActive"), @"stagingClientRequestActive"}];
+  stagingClientName = [(MAAutoAssetControlStagerInformation *)self stagingClientName];
+  [coderCopy encodeObject:stagingClientName forKey:@"stagingClientName"];
 
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation setConfigurationsCount](self forKey:{"setConfigurationsCount"), @"setConfigurationsCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation setTargetsCount](self forKey:{"setTargetsCount"), @"setTargetsCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation scheduledJobsCount](self forKey:{"scheduledJobsCount"), @"scheduledJobsCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation candidatesForStagingCount](self forKey:{"candidatesForStagingCount"), @"candidatesForStagingCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation candidateSetConfigurationsCount](self forKey:{"candidateSetConfigurationsCount"), @"candidateSetConfigurationsCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation setLookupResultsCount](self forKey:{"setLookupResultsCount"), @"setLookupResultsCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation baseForStagingDescriptorsCount](self forKey:{"baseForStagingDescriptorsCount"), @"baseForStagingDescriptorsCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation determiningBySelectorCount](self forKey:{"determiningBySelectorCount"), @"determiningBySelectorCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation availableForStagingCount](self forKey:{"availableForStagingCount"), @"availableForStagingCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation awaitingStagingAttemptCount](self forKey:{"awaitingStagingAttemptCount"), @"awaitingStagingAttemptCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation successfullyStagedCount](self forKey:{"successfullyStagedCount"), @"successfullyStagedCount"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation overallStagedTotalExpectedBytes](self forKey:{"overallStagedTotalExpectedBytes"), @"overallStagedTotalExpectedBytes"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation overallStagedDownloadedSoFarBytes](self forKey:{"overallStagedDownloadedSoFarBytes"), @"overallStagedDownloadedSoFarBytes"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation currentStagedLastWrittenBytes](self forKey:{"currentStagedLastWrittenBytes"), @"currentStagedLastWrittenBytes"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation currentStagedRemainingBytes](self forKey:{"currentStagedRemainingBytes"), @"currentStagedRemainingBytes"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation eliminationSelectorsCount](self forKey:{"eliminationSelectorsCount"), @"eliminationSelectorsCount"}];
-  [v17 encodeBool:-[MAAutoAssetControlStagerInformation eliminationSetConfigurationCurrentJob](self forKey:{"eliminationSetConfigurationCurrentJob"), @"eliminationSetConfigurationCurrentJob"}];
-  [v17 encodeInt64:-[MAAutoAssetControlStagerInformation eliminationSelectorsAcknowledgedCount](self forKey:{"eliminationSelectorsAcknowledgedCount"), @"eliminationSelectorsAcknowledgedCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation setConfigurationsCount](self forKey:{"setConfigurationsCount"), @"setConfigurationsCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation setTargetsCount](self forKey:{"setTargetsCount"), @"setTargetsCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation scheduledJobsCount](self forKey:{"scheduledJobsCount"), @"scheduledJobsCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation candidatesForStagingCount](self forKey:{"candidatesForStagingCount"), @"candidatesForStagingCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation candidateSetConfigurationsCount](self forKey:{"candidateSetConfigurationsCount"), @"candidateSetConfigurationsCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation setLookupResultsCount](self forKey:{"setLookupResultsCount"), @"setLookupResultsCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation baseForStagingDescriptorsCount](self forKey:{"baseForStagingDescriptorsCount"), @"baseForStagingDescriptorsCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation determiningBySelectorCount](self forKey:{"determiningBySelectorCount"), @"determiningBySelectorCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation availableForStagingCount](self forKey:{"availableForStagingCount"), @"availableForStagingCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation awaitingStagingAttemptCount](self forKey:{"awaitingStagingAttemptCount"), @"awaitingStagingAttemptCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation successfullyStagedCount](self forKey:{"successfullyStagedCount"), @"successfullyStagedCount"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation overallStagedTotalExpectedBytes](self forKey:{"overallStagedTotalExpectedBytes"), @"overallStagedTotalExpectedBytes"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation overallStagedDownloadedSoFarBytes](self forKey:{"overallStagedDownloadedSoFarBytes"), @"overallStagedDownloadedSoFarBytes"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation currentStagedLastWrittenBytes](self forKey:{"currentStagedLastWrittenBytes"), @"currentStagedLastWrittenBytes"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation currentStagedRemainingBytes](self forKey:{"currentStagedRemainingBytes"), @"currentStagedRemainingBytes"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation eliminationSelectorsCount](self forKey:{"eliminationSelectorsCount"), @"eliminationSelectorsCount"}];
+  [coderCopy encodeBool:-[MAAutoAssetControlStagerInformation eliminationSetConfigurationCurrentJob](self forKey:{"eliminationSetConfigurationCurrentJob"), @"eliminationSetConfigurationCurrentJob"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStagerInformation eliminationSelectorsAcknowledgedCount](self forKey:{"eliminationSelectorsAcknowledgedCount"), @"eliminationSelectorsAcknowledgedCount"}];
 }
 
 - (id)description
 {
   v65 = MEMORY[0x1E696AEC0];
-  v64 = [(MAAutoAssetControlStagerInformation *)self persistedStateCount];
-  v63 = [(MAAutoAssetControlStagerInformation *)self persistedTargetLookupResultsCount];
-  v62 = [(MAAutoAssetControlStagerInformation *)self persistedAvailableForStagingByTargetCount];
-  v3 = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromOSVersion];
-  if (v3)
+  persistedStateCount = [(MAAutoAssetControlStagerInformation *)self persistedStateCount];
+  persistedTargetLookupResultsCount = [(MAAutoAssetControlStagerInformation *)self persistedTargetLookupResultsCount];
+  persistedAvailableForStagingByTargetCount = [(MAAutoAssetControlStagerInformation *)self persistedAvailableForStagingByTargetCount];
+  startupLastStagingFromOSVersion = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromOSVersion];
+  if (startupLastStagingFromOSVersion)
   {
-    v4 = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromOSVersion];
+    startupLastStagingFromOSVersion2 = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromOSVersion];
   }
 
   else
   {
-    v4 = @"N";
+    startupLastStagingFromOSVersion2 = @"N";
   }
 
-  v71 = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromBuildVersion];
-  if (v71)
+  startupLastStagingFromBuildVersion = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromBuildVersion];
+  if (startupLastStagingFromBuildVersion)
   {
-    v70 = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromBuildVersion];
+    startupLastStagingFromBuildVersion2 = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromBuildVersion];
   }
 
   else
   {
-    v70 = @"N";
+    startupLastStagingFromBuildVersion2 = @"N";
   }
 
-  v5 = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetOSVersion];
-  if (v5)
+  startupAssetTargetOSVersion = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetOSVersion];
+  if (startupAssetTargetOSVersion)
   {
-    v6 = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetOSVersion];
+    startupAssetTargetOSVersion2 = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetOSVersion];
   }
 
   else
   {
-    v6 = @"N";
+    startupAssetTargetOSVersion2 = @"N";
   }
 
-  v7 = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetBuildVersion];
-  v72 = v4;
-  v73 = v3;
-  if (v7)
+  startupAssetTargetBuildVersion = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetBuildVersion];
+  v72 = startupLastStagingFromOSVersion2;
+  v73 = startupLastStagingFromOSVersion;
+  if (startupAssetTargetBuildVersion)
   {
-    v8 = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetBuildVersion];
+    startupAssetTargetBuildVersion2 = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetBuildVersion];
   }
 
   else
   {
-    v8 = @"N";
+    startupAssetTargetBuildVersion2 = @"N";
   }
 
-  v60 = [(MAAutoAssetControlStagerInformation *)self startupCandidateAssetCount];
-  v59 = [(MAAutoAssetControlStagerInformation *)self startupDeterminedAvailableAssetCount];
-  v58 = [(MAAutoAssetControlStagerInformation *)self startupActivelyStagingAssetCount];
-  v57 = [(MAAutoAssetControlStagerInformation *)self startupAwaitingStagingAssetCount];
-  v56 = [(MAAutoAssetControlStagerInformation *)self startupStagedAssetCount];
-  v55 = [(MAAutoAssetControlStagerInformation *)self startupStagedAssetTotalContentBytes];
+  startupCandidateAssetCount = [(MAAutoAssetControlStagerInformation *)self startupCandidateAssetCount];
+  startupDeterminedAvailableAssetCount = [(MAAutoAssetControlStagerInformation *)self startupDeterminedAvailableAssetCount];
+  startupActivelyStagingAssetCount = [(MAAutoAssetControlStagerInformation *)self startupActivelyStagingAssetCount];
+  startupAwaitingStagingAssetCount = [(MAAutoAssetControlStagerInformation *)self startupAwaitingStagingAssetCount];
+  startupStagedAssetCount = [(MAAutoAssetControlStagerInformation *)self startupStagedAssetCount];
+  startupStagedAssetTotalContentBytes = [(MAAutoAssetControlStagerInformation *)self startupStagedAssetTotalContentBytes];
   v9 = [MAAutoAssetControlStagerInformation previousOTASituationName:[(MAAutoAssetControlStagerInformation *)self startupPreviousOTASituation]];
-  v90 = [(MAAutoAssetControlStagerInformation *)self stagingFromOSVersion];
-  if (v90)
+  stagingFromOSVersion = [(MAAutoAssetControlStagerInformation *)self stagingFromOSVersion];
+  if (stagingFromOSVersion)
   {
-    v81 = [(MAAutoAssetControlStagerInformation *)self stagingFromOSVersion];
+    stagingFromOSVersion2 = [(MAAutoAssetControlStagerInformation *)self stagingFromOSVersion];
   }
 
   else
   {
-    v81 = @"N";
+    stagingFromOSVersion2 = @"N";
   }
 
   [(MAAutoAssetControlStagerInformation *)self stagingFromBuildVersion];
-  v89 = v10 = @"N";
+  v89 = assetTargetOSVersion2 = @"N";
   if (v89)
   {
-    v80 = [(MAAutoAssetControlStagerInformation *)self stagingFromBuildVersion];
+    stagingFromBuildVersion = [(MAAutoAssetControlStagerInformation *)self stagingFromBuildVersion];
   }
 
   else
   {
-    v80 = @"N";
+    stagingFromBuildVersion = @"N";
   }
 
   if ([(MAAutoAssetControlStagerInformation *)self loadPersistedPostponed])
@@ -393,84 +393,84 @@
   }
 
   v53 = v12;
-  v88 = [(MAAutoAssetControlStagerInformation *)self assetTargetOSVersion];
-  if (v88)
+  assetTargetOSVersion = [(MAAutoAssetControlStagerInformation *)self assetTargetOSVersion];
+  if (assetTargetOSVersion)
   {
-    v10 = [(MAAutoAssetControlStagerInformation *)self assetTargetOSVersion];
+    assetTargetOSVersion2 = [(MAAutoAssetControlStagerInformation *)self assetTargetOSVersion];
   }
 
-  v87 = [(MAAutoAssetControlStagerInformation *)self assetTargetBuildVersion];
-  if (v87)
+  assetTargetBuildVersion = [(MAAutoAssetControlStagerInformation *)self assetTargetBuildVersion];
+  if (assetTargetBuildVersion)
   {
-    v78 = [(MAAutoAssetControlStagerInformation *)self assetTargetBuildVersion];
-  }
-
-  else
-  {
-    v78 = @"N";
-  }
-
-  v86 = [(MAAutoAssetControlStagerInformation *)self assetTargetTrainName];
-  if (v86)
-  {
-    v77 = [(MAAutoAssetControlStagerInformation *)self assetTargetTrainName];
+    assetTargetBuildVersion2 = [(MAAutoAssetControlStagerInformation *)self assetTargetBuildVersion];
   }
 
   else
   {
-    v77 = @"N";
+    assetTargetBuildVersion2 = @"N";
   }
 
-  v85 = [(MAAutoAssetControlStagerInformation *)self assetTargetRestoreVersion];
-  if (v85)
+  assetTargetTrainName = [(MAAutoAssetControlStagerInformation *)self assetTargetTrainName];
+  if (assetTargetTrainName)
   {
-    v76 = [(MAAutoAssetControlStagerInformation *)self assetTargetRestoreVersion];
-  }
-
-  else
-  {
-    v76 = @"N";
-  }
-
-  v84 = [(MAAutoAssetControlStagerInformation *)self optionalAssetSizeAllowed];
-  v79 = v10;
-  if (v84)
-  {
-    v75 = [(MAAutoAssetControlStagerInformation *)self optionalAssetSizeAllowed];
+    assetTargetTrainName2 = [(MAAutoAssetControlStagerInformation *)self assetTargetTrainName];
   }
 
   else
   {
-    v75 = @"N";
+    assetTargetTrainName2 = @"N";
+  }
+
+  assetTargetRestoreVersion = [(MAAutoAssetControlStagerInformation *)self assetTargetRestoreVersion];
+  if (assetTargetRestoreVersion)
+  {
+    assetTargetRestoreVersion2 = [(MAAutoAssetControlStagerInformation *)self assetTargetRestoreVersion];
+  }
+
+  else
+  {
+    assetTargetRestoreVersion2 = @"N";
+  }
+
+  optionalAssetSizeAllowed = [(MAAutoAssetControlStagerInformation *)self optionalAssetSizeAllowed];
+  v79 = assetTargetOSVersion2;
+  if (optionalAssetSizeAllowed)
+  {
+    optionalAssetSizeAllowed2 = [(MAAutoAssetControlStagerInformation *)self optionalAssetSizeAllowed];
+  }
+
+  else
+  {
+    optionalAssetSizeAllowed2 = @"N";
   }
 
   v83 = [MAAutoAssetControlStagerInformation previousOTASituationName:[(MAAutoAssetControlStagerInformation *)self activeTargetOTASituation]];
-  v52 = [(MAAutoAssetControlStagerInformation *)self activeTargetCandidatesForStagingRequiredCount];
-  v51 = [(MAAutoAssetControlStagerInformation *)self activeTargetCandidatesForStagingOptionalCount];
-  v50 = [(MAAutoAssetControlStagerInformation *)self activeTargetCandidateSetConfigurationsRequiredCount];
-  v49 = [(MAAutoAssetControlStagerInformation *)self activeTargetCandidateSetConfigurationsOptionalCount];
-  v48 = [(MAAutoAssetControlStagerInformation *)self activeTargetAvailableForStagingRequiredCount];
-  v47 = [(MAAutoAssetControlStagerInformation *)self activeTargetAvailableForStagingOptionalCount];
+  activeTargetCandidatesForStagingRequiredCount = [(MAAutoAssetControlStagerInformation *)self activeTargetCandidatesForStagingRequiredCount];
+  activeTargetCandidatesForStagingOptionalCount = [(MAAutoAssetControlStagerInformation *)self activeTargetCandidatesForStagingOptionalCount];
+  activeTargetCandidateSetConfigurationsRequiredCount = [(MAAutoAssetControlStagerInformation *)self activeTargetCandidateSetConfigurationsRequiredCount];
+  activeTargetCandidateSetConfigurationsOptionalCount = [(MAAutoAssetControlStagerInformation *)self activeTargetCandidateSetConfigurationsOptionalCount];
+  activeTargetAvailableForStagingRequiredCount = [(MAAutoAssetControlStagerInformation *)self activeTargetAvailableForStagingRequiredCount];
+  activeTargetAvailableForStagingOptionalCount = [(MAAutoAssetControlStagerInformation *)self activeTargetAvailableForStagingOptionalCount];
   [(MAAutoAssetControlStagerInformation *)self otherTargetName];
   v82 = v13 = @"N";
   if (v82)
   {
-    v74 = [(MAAutoAssetControlStagerInformation *)self otherTargetName];
+    otherTargetName = [(MAAutoAssetControlStagerInformation *)self otherTargetName];
   }
 
   else
   {
-    v74 = @"N";
+    otherTargetName = @"N";
   }
 
   v14 = [MAAutoAssetControlStagerInformation previousOTASituationName:[(MAAutoAssetControlStagerInformation *)self otherTargetOTASituation]];
-  v45 = [(MAAutoAssetControlStagerInformation *)self otherTargetCandidatesForStagingRequiredCount];
-  v43 = [(MAAutoAssetControlStagerInformation *)self otherTargetCandidatesForStagingOptionalCount];
-  v42 = [(MAAutoAssetControlStagerInformation *)self otherTargetCandidateSetConfigurationsRequiredCount];
-  v41 = [(MAAutoAssetControlStagerInformation *)self otherTargetCandidateSetConfigurationsOptionalCount];
-  v39 = [(MAAutoAssetControlStagerInformation *)self otherTargetAvailableForStagingRequiredCount];
-  v38 = [(MAAutoAssetControlStagerInformation *)self otherTargetAvailableForStagingOptionalCount];
-  v37 = [(MAAutoAssetControlStagerInformation *)self stagingClientDetermineRequestsCount];
+  otherTargetCandidatesForStagingRequiredCount = [(MAAutoAssetControlStagerInformation *)self otherTargetCandidatesForStagingRequiredCount];
+  otherTargetCandidatesForStagingOptionalCount = [(MAAutoAssetControlStagerInformation *)self otherTargetCandidatesForStagingOptionalCount];
+  otherTargetCandidateSetConfigurationsRequiredCount = [(MAAutoAssetControlStagerInformation *)self otherTargetCandidateSetConfigurationsRequiredCount];
+  otherTargetCandidateSetConfigurationsOptionalCount = [(MAAutoAssetControlStagerInformation *)self otherTargetCandidateSetConfigurationsOptionalCount];
+  otherTargetAvailableForStagingRequiredCount = [(MAAutoAssetControlStagerInformation *)self otherTargetAvailableForStagingRequiredCount];
+  otherTargetAvailableForStagingOptionalCount = [(MAAutoAssetControlStagerInformation *)self otherTargetAvailableForStagingOptionalCount];
+  stagingClientDetermineRequestsCount = [(MAAutoAssetControlStagerInformation *)self stagingClientDetermineRequestsCount];
   if ([(MAAutoAssetControlStagerInformation *)self stagingClientDownloadRequestActive])
   {
     v15 = @"Y";
@@ -493,46 +493,46 @@
   }
 
   v35 = v16;
-  v44 = [(MAAutoAssetControlStagerInformation *)self stagingClientName];
-  v69 = v5;
-  v68 = v6;
-  v67 = v7;
-  v66 = v8;
+  stagingClientName = [(MAAutoAssetControlStagerInformation *)self stagingClientName];
+  v69 = startupAssetTargetOSVersion;
+  v68 = startupAssetTargetOSVersion2;
+  v67 = startupAssetTargetBuildVersion;
+  v66 = startupAssetTargetBuildVersion2;
   v61 = v9;
   v46 = v14;
-  if (v44)
+  if (stagingClientName)
   {
-    v40 = [(MAAutoAssetControlStagerInformation *)self stagingClientName];
+    stagingClientName2 = [(MAAutoAssetControlStagerInformation *)self stagingClientName];
   }
 
   else
   {
-    v40 = @"N";
+    stagingClientName2 = @"N";
   }
 
-  v34 = [(MAAutoAssetControlStagerInformation *)self setConfigurationsCount];
-  v33 = [(MAAutoAssetControlStagerInformation *)self setTargetsCount];
-  v32 = [(MAAutoAssetControlStagerInformation *)self scheduledJobsCount];
-  v31 = [(MAAutoAssetControlStagerInformation *)self candidatesForStagingCount];
-  v30 = [(MAAutoAssetControlStagerInformation *)self candidateSetConfigurationsCount];
-  v29 = [(MAAutoAssetControlStagerInformation *)self setLookupResultsCount];
-  v28 = [(MAAutoAssetControlStagerInformation *)self baseForStagingDescriptorsCount];
-  v27 = [(MAAutoAssetControlStagerInformation *)self determiningBySelectorCount];
-  v17 = [(MAAutoAssetControlStagerInformation *)self availableForStagingCount];
-  v18 = [(MAAutoAssetControlStagerInformation *)self awaitingStagingAttemptCount];
-  v19 = [(MAAutoAssetControlStagerInformation *)self successfullyStagedCount];
-  v20 = [(MAAutoAssetControlStagerInformation *)self overallStagedTotalExpectedBytes];
-  v21 = [(MAAutoAssetControlStagerInformation *)self overallStagedDownloadedSoFarBytes];
-  v22 = [(MAAutoAssetControlStagerInformation *)self currentStagedLastWrittenBytes];
-  v23 = [(MAAutoAssetControlStagerInformation *)self currentStagedRemainingBytes];
-  v24 = [(MAAutoAssetControlStagerInformation *)self eliminationSelectorsCount];
+  setConfigurationsCount = [(MAAutoAssetControlStagerInformation *)self setConfigurationsCount];
+  setTargetsCount = [(MAAutoAssetControlStagerInformation *)self setTargetsCount];
+  scheduledJobsCount = [(MAAutoAssetControlStagerInformation *)self scheduledJobsCount];
+  candidatesForStagingCount = [(MAAutoAssetControlStagerInformation *)self candidatesForStagingCount];
+  candidateSetConfigurationsCount = [(MAAutoAssetControlStagerInformation *)self candidateSetConfigurationsCount];
+  setLookupResultsCount = [(MAAutoAssetControlStagerInformation *)self setLookupResultsCount];
+  baseForStagingDescriptorsCount = [(MAAutoAssetControlStagerInformation *)self baseForStagingDescriptorsCount];
+  determiningBySelectorCount = [(MAAutoAssetControlStagerInformation *)self determiningBySelectorCount];
+  availableForStagingCount = [(MAAutoAssetControlStagerInformation *)self availableForStagingCount];
+  awaitingStagingAttemptCount = [(MAAutoAssetControlStagerInformation *)self awaitingStagingAttemptCount];
+  successfullyStagedCount = [(MAAutoAssetControlStagerInformation *)self successfullyStagedCount];
+  overallStagedTotalExpectedBytes = [(MAAutoAssetControlStagerInformation *)self overallStagedTotalExpectedBytes];
+  overallStagedDownloadedSoFarBytes = [(MAAutoAssetControlStagerInformation *)self overallStagedDownloadedSoFarBytes];
+  currentStagedLastWrittenBytes = [(MAAutoAssetControlStagerInformation *)self currentStagedLastWrittenBytes];
+  currentStagedRemainingBytes = [(MAAutoAssetControlStagerInformation *)self currentStagedRemainingBytes];
+  eliminationSelectorsCount = [(MAAutoAssetControlStagerInformation *)self eliminationSelectorsCount];
   if ([(MAAutoAssetControlStagerInformation *)self eliminationSetConfigurationCurrentJob])
   {
     v13 = @"Y";
   }
 
-  v25 = [v65 stringWithFormat:@">>>\nPERSISTED COUNTS:\n                            General: %llu\n                TargetLookupResults: %llu\n        AvailableForStagingByTarget: %llu\n\nSTARTUP:\n           LastStagingFromOSVersion: %@\n        LastStagingFromBuildVersion: %@\n               AssetTargetOSVersion: %@\n            AssetTargetBuildVersion: %@\n                CandidateAssetCount: %llu\n      DeterminedAvailableAssetCount: %llu\n          ActivelyStagingAssetCount: %llu\n          AwaitingStagingAssetCount: %llu\n                   StagedAssetCount: %llu\n       StagedAssetTotalContentBytes: %llu\n               PreviousOTASituation: %@\n               StagingFromOSVersion: %@\n            StagingFromBuildVersion: %@\n\nCONTROL:\n             LoadPersistedPostponed: %@\n          AlwaysPromoteStagedAssets: %@\n\nMOST-RECENT TARGET:\n               AssetTargetOSVersion: %@\n            AssetTargetBuildVersion: %@\n               AssetTargetTrainName: %@\n          AssetTargetRestoreVersion: %@\n           OptionalAssetSizeAllowed: %@\n           ActiveTargetOTASituation: %@\n      ActiveCandidatesRequiredCount: %llu\n      ActiveCandidatesOptionalCount: %llu\n      ActiveSetConfigsRequiredCount: %llu\n      ActiveSetConfigsOptionalCount: %llu\n       ActiveAvailableRequiredCount: %llu\n       ActiveAvaialbleOptionalCount: %llu\n\nOTHER TARGET:\n                    OtherTargetName: %@\n            OtherTargetOTASituation: %@\n       OtherCandidatesRequiredCount: %llu\n       OtherCandidatesOptionalCount: %llu\n       OtherSetConfigsRequiredCount: %llu\n       OtherSetConfigsOptionalCount: %llu\n        OtherAvailableRequiredCount: %llu\n        OtherAvaialbleOptionalCount: %llu\n\nSTAGING-CLIENT REQUESTS:\n                     DetermineCount: %llu\n                     DownloadActive: %@\n                             Active: %@\n                               Name: %@\n\nDETERMINE:\n             SetConfigurationsCount: %llu\n                    SetTargetsCount: %llu\n                 ScheduledJobsCount: %llu\n\nCANDIDATES:\n          CandidatesForStagingCount: %llu\n             SetConfigurationsCount: %llu\n              SetLookupResultsCount: %llu\n     BaseForStagingDescriptorsCount: %llu\n         DeterminingBySelectorCount: %llu\n\nAVAILABLE-OR-STAGED:\n           AvailableForStagingCount: %llu\n        AwaitingStagingAttemptCount: %llu\n            SuccessfullyStagedCount: %llu\n\nPROGRESS:\n    OverallStagedTotalExpectedBytes: %llu\n  OverallStagedDownloadedSoFarBytes: %llu\n      CurrentStagedLastWrittenBytes: %llu\n        CurrentStagedRemainingBytes: %llu\n\nELIMINATION:\n    SelectorsCount: %llu\n    SetConfigurationCurrentJob: %@\n    SelectorsAcknowledgedCount: %llu\n<<<]", v64, v63, v62, v72, v70, v68, v66, v60, v59, v58, v57, v56, v55, v61, v81, v80, v54, v53, v79, v78, v77, v76, v75, v83, v52, v51, v50, v49, v48, v47, v74, v46, v45, v43, v42, v41, v39, v38, v37, v36, v35, v40, v34, v33, v32, v31, v30, v29, v28, v27, v17, v18, v19, v20, v21, v22, v23, v24, v13, -[MAAutoAssetControlStagerInformation eliminationSelectorsAcknowledgedCount](self, "eliminationSelectorsAcknowledgedCount")];
-  if (v44)
+  v25 = [v65 stringWithFormat:@">>>\nPERSISTED COUNTS:\n                            General: %llu\n                TargetLookupResults: %llu\n        AvailableForStagingByTarget: %llu\n\nSTARTUP:\n           LastStagingFromOSVersion: %@\n        LastStagingFromBuildVersion: %@\n               AssetTargetOSVersion: %@\n            AssetTargetBuildVersion: %@\n                CandidateAssetCount: %llu\n      DeterminedAvailableAssetCount: %llu\n          ActivelyStagingAssetCount: %llu\n          AwaitingStagingAssetCount: %llu\n                   StagedAssetCount: %llu\n       StagedAssetTotalContentBytes: %llu\n               PreviousOTASituation: %@\n               StagingFromOSVersion: %@\n            StagingFromBuildVersion: %@\n\nCONTROL:\n             LoadPersistedPostponed: %@\n          AlwaysPromoteStagedAssets: %@\n\nMOST-RECENT TARGET:\n               AssetTargetOSVersion: %@\n            AssetTargetBuildVersion: %@\n               AssetTargetTrainName: %@\n          AssetTargetRestoreVersion: %@\n           OptionalAssetSizeAllowed: %@\n           ActiveTargetOTASituation: %@\n      ActiveCandidatesRequiredCount: %llu\n      ActiveCandidatesOptionalCount: %llu\n      ActiveSetConfigsRequiredCount: %llu\n      ActiveSetConfigsOptionalCount: %llu\n       ActiveAvailableRequiredCount: %llu\n       ActiveAvaialbleOptionalCount: %llu\n\nOTHER TARGET:\n                    OtherTargetName: %@\n            OtherTargetOTASituation: %@\n       OtherCandidatesRequiredCount: %llu\n       OtherCandidatesOptionalCount: %llu\n       OtherSetConfigsRequiredCount: %llu\n       OtherSetConfigsOptionalCount: %llu\n        OtherAvailableRequiredCount: %llu\n        OtherAvaialbleOptionalCount: %llu\n\nSTAGING-CLIENT REQUESTS:\n                     DetermineCount: %llu\n                     DownloadActive: %@\n                             Active: %@\n                               Name: %@\n\nDETERMINE:\n             SetConfigurationsCount: %llu\n                    SetTargetsCount: %llu\n                 ScheduledJobsCount: %llu\n\nCANDIDATES:\n          CandidatesForStagingCount: %llu\n             SetConfigurationsCount: %llu\n              SetLookupResultsCount: %llu\n     BaseForStagingDescriptorsCount: %llu\n         DeterminingBySelectorCount: %llu\n\nAVAILABLE-OR-STAGED:\n           AvailableForStagingCount: %llu\n        AwaitingStagingAttemptCount: %llu\n            SuccessfullyStagedCount: %llu\n\nPROGRESS:\n    OverallStagedTotalExpectedBytes: %llu\n  OverallStagedDownloadedSoFarBytes: %llu\n      CurrentStagedLastWrittenBytes: %llu\n        CurrentStagedRemainingBytes: %llu\n\nELIMINATION:\n    SelectorsCount: %llu\n    SetConfigurationCurrentJob: %@\n    SelectorsAcknowledgedCount: %llu\n<<<]", persistedStateCount, persistedTargetLookupResultsCount, persistedAvailableForStagingByTargetCount, v72, startupLastStagingFromBuildVersion2, v68, v66, startupCandidateAssetCount, startupDeterminedAvailableAssetCount, startupActivelyStagingAssetCount, startupAwaitingStagingAssetCount, startupStagedAssetCount, startupStagedAssetTotalContentBytes, v61, stagingFromOSVersion2, stagingFromBuildVersion, v54, v53, v79, assetTargetBuildVersion2, assetTargetTrainName2, assetTargetRestoreVersion2, optionalAssetSizeAllowed2, v83, activeTargetCandidatesForStagingRequiredCount, activeTargetCandidatesForStagingOptionalCount, activeTargetCandidateSetConfigurationsRequiredCount, activeTargetCandidateSetConfigurationsOptionalCount, activeTargetAvailableForStagingRequiredCount, activeTargetAvailableForStagingOptionalCount, otherTargetName, v46, otherTargetCandidatesForStagingRequiredCount, otherTargetCandidatesForStagingOptionalCount, otherTargetCandidateSetConfigurationsRequiredCount, otherTargetCandidateSetConfigurationsOptionalCount, otherTargetAvailableForStagingRequiredCount, otherTargetAvailableForStagingOptionalCount, stagingClientDetermineRequestsCount, v36, v35, stagingClientName2, setConfigurationsCount, setTargetsCount, scheduledJobsCount, candidatesForStagingCount, candidateSetConfigurationsCount, setLookupResultsCount, baseForStagingDescriptorsCount, determiningBySelectorCount, availableForStagingCount, awaitingStagingAttemptCount, successfullyStagedCount, overallStagedTotalExpectedBytes, overallStagedDownloadedSoFarBytes, currentStagedLastWrittenBytes, currentStagedRemainingBytes, eliminationSelectorsCount, v13, -[MAAutoAssetControlStagerInformation eliminationSelectorsAcknowledgedCount](self, "eliminationSelectorsAcknowledgedCount")];
+  if (stagingClientName)
   {
   }
 
@@ -540,23 +540,23 @@
   {
   }
 
-  if (v84)
+  if (optionalAssetSizeAllowed)
   {
   }
 
-  if (v85)
+  if (assetTargetRestoreVersion)
   {
   }
 
-  if (v86)
+  if (assetTargetTrainName)
   {
   }
 
-  if (v87)
+  if (assetTargetBuildVersion)
   {
   }
 
-  if (v88)
+  if (assetTargetOSVersion)
   {
   }
 
@@ -564,7 +564,7 @@
   {
   }
 
-  if (v90)
+  if (stagingFromOSVersion)
   {
   }
 
@@ -576,7 +576,7 @@
   {
   }
 
-  if (v71)
+  if (startupLastStagingFromBuildVersion)
   {
   }
 
@@ -590,129 +590,129 @@
 - (id)summary
 {
   v24 = MEMORY[0x1E696AEC0];
-  v3 = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromOSVersion];
-  if (v3)
+  startupLastStagingFromOSVersion = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromOSVersion];
+  if (startupLastStagingFromOSVersion)
   {
-    v4 = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromOSVersion];
+    startupLastStagingFromOSVersion2 = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromOSVersion];
   }
 
   else
   {
-    v4 = @"N";
+    startupLastStagingFromOSVersion2 = @"N";
   }
 
-  v5 = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromBuildVersion];
-  if (v5)
+  startupLastStagingFromBuildVersion = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromBuildVersion];
+  if (startupLastStagingFromBuildVersion)
   {
-    v6 = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromBuildVersion];
+    startupLastStagingFromBuildVersion2 = [(MAAutoAssetControlStagerInformation *)self startupLastStagingFromBuildVersion];
   }
 
   else
   {
-    v6 = @"N";
+    startupLastStagingFromBuildVersion2 = @"N";
   }
 
-  v7 = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetOSVersion];
-  if (v7)
+  startupAssetTargetOSVersion = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetOSVersion];
+  if (startupAssetTargetOSVersion)
   {
-    v8 = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetOSVersion];
+    startupAssetTargetOSVersion2 = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetOSVersion];
   }
 
   else
   {
-    v8 = @"N";
+    startupAssetTargetOSVersion2 = @"N";
   }
 
-  v25 = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetBuildVersion];
-  v29 = v3;
-  v27 = v5;
-  if (v25)
+  startupAssetTargetBuildVersion = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetBuildVersion];
+  v29 = startupLastStagingFromOSVersion;
+  v27 = startupLastStagingFromBuildVersion;
+  if (startupAssetTargetBuildVersion)
   {
-    v34 = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetBuildVersion];
+    startupAssetTargetBuildVersion2 = [(MAAutoAssetControlStagerInformation *)self startupAssetTargetBuildVersion];
   }
 
   else
   {
-    v34 = @"N";
+    startupAssetTargetBuildVersion2 = @"N";
   }
 
-  v22 = [(MAAutoAssetControlStagerInformation *)self startupDeterminedAvailableAssetCount];
-  v21 = [(MAAutoAssetControlStagerInformation *)self startupStagedAssetCount];
-  v20 = [(MAAutoAssetControlStagerInformation *)self startupStagedAssetTotalContentBytes];
+  startupDeterminedAvailableAssetCount = [(MAAutoAssetControlStagerInformation *)self startupDeterminedAvailableAssetCount];
+  startupStagedAssetCount = [(MAAutoAssetControlStagerInformation *)self startupStagedAssetCount];
+  startupStagedAssetTotalContentBytes = [(MAAutoAssetControlStagerInformation *)self startupStagedAssetTotalContentBytes];
   v36 = [MAAutoAssetControlStagerInformation previousOTASituationName:[(MAAutoAssetControlStagerInformation *)self startupPreviousOTASituation]];
-  v9 = [(MAAutoAssetControlStagerInformation *)self stagingFromOSVersion];
-  if (v9)
+  stagingFromOSVersion = [(MAAutoAssetControlStagerInformation *)self stagingFromOSVersion];
+  if (stagingFromOSVersion)
   {
-    v33 = [(MAAutoAssetControlStagerInformation *)self stagingFromOSVersion];
+    stagingFromOSVersion2 = [(MAAutoAssetControlStagerInformation *)self stagingFromOSVersion];
   }
 
   else
   {
-    v33 = @"N";
+    stagingFromOSVersion2 = @"N";
   }
 
-  v10 = [(MAAutoAssetControlStagerInformation *)self stagingFromBuildVersion];
-  if (v10)
+  stagingFromBuildVersion = [(MAAutoAssetControlStagerInformation *)self stagingFromBuildVersion];
+  if (stagingFromBuildVersion)
   {
-    v32 = [(MAAutoAssetControlStagerInformation *)self stagingFromBuildVersion];
-  }
-
-  else
-  {
-    v32 = @"N";
-  }
-
-  v35 = [(MAAutoAssetControlStagerInformation *)self assetTargetOSVersion];
-  if (v35)
-  {
-    v31 = [(MAAutoAssetControlStagerInformation *)self assetTargetOSVersion];
+    stagingFromBuildVersion2 = [(MAAutoAssetControlStagerInformation *)self stagingFromBuildVersion];
   }
 
   else
   {
-    v31 = @"N";
+    stagingFromBuildVersion2 = @"N";
   }
 
-  v19 = [(MAAutoAssetControlStagerInformation *)self assetTargetBuildVersion];
-  v28 = v4;
-  v26 = v8;
-  v23 = v10;
-  if (v19)
+  assetTargetOSVersion = [(MAAutoAssetControlStagerInformation *)self assetTargetOSVersion];
+  if (assetTargetOSVersion)
   {
-    v30 = [(MAAutoAssetControlStagerInformation *)self assetTargetBuildVersion];
+    assetTargetOSVersion2 = [(MAAutoAssetControlStagerInformation *)self assetTargetOSVersion];
   }
 
   else
   {
-    v30 = @"N";
+    assetTargetOSVersion2 = @"N";
+  }
+
+  assetTargetBuildVersion = [(MAAutoAssetControlStagerInformation *)self assetTargetBuildVersion];
+  v28 = startupLastStagingFromOSVersion2;
+  v26 = startupAssetTargetOSVersion2;
+  v23 = stagingFromBuildVersion;
+  if (assetTargetBuildVersion)
+  {
+    assetTargetBuildVersion2 = [(MAAutoAssetControlStagerInformation *)self assetTargetBuildVersion];
+  }
+
+  else
+  {
+    assetTargetBuildVersion2 = @"N";
   }
 
   v11 = [MAAutoAssetControlStagerInformation previousOTASituationName:[(MAAutoAssetControlStagerInformation *)self activeTargetOTASituation]];
-  v12 = [(MAAutoAssetControlStagerInformation *)self activeTargetAvailableForStagingRequiredCount];
-  v13 = [(MAAutoAssetControlStagerInformation *)self activeTargetAvailableForStagingOptionalCount];
-  v14 = [(MAAutoAssetControlStagerInformation *)self otherTargetName];
-  if (v14)
+  activeTargetAvailableForStagingRequiredCount = [(MAAutoAssetControlStagerInformation *)self activeTargetAvailableForStagingRequiredCount];
+  activeTargetAvailableForStagingOptionalCount = [(MAAutoAssetControlStagerInformation *)self activeTargetAvailableForStagingOptionalCount];
+  otherTargetName = [(MAAutoAssetControlStagerInformation *)self otherTargetName];
+  if (otherTargetName)
   {
-    v15 = [(MAAutoAssetControlStagerInformation *)self otherTargetName];
+    otherTargetName2 = [(MAAutoAssetControlStagerInformation *)self otherTargetName];
   }
 
   else
   {
-    v15 = @"N";
+    otherTargetName2 = @"N";
   }
 
   v16 = [MAAutoAssetControlStagerInformation previousOTASituationName:[(MAAutoAssetControlStagerInformation *)self otherTargetOTASituation]];
-  v17 = [v24 stringWithFormat:@"STARTUP{lastStagingFrom:%@(%@)|target:%@(%@)|determined:%llu|staged:%llu(%llu bytes)|situation:%@|from:%@(%@)}|MOST-RECENT{target:%@(%@)|situation:%@|(available)R:%llu, O:%llu}|OTHER{target:%@|situation:%@|(available)R:%llu, O:%llu}|staged:%llu", v28, v6, v26, v34, v22, v21, v20, v36, v33, v32, v31, v30, v11, v12, v13, v15, v16, -[MAAutoAssetControlStagerInformation otherTargetAvailableForStagingRequiredCount](self, "otherTargetAvailableForStagingRequiredCount"), -[MAAutoAssetControlStagerInformation otherTargetAvailableForStagingOptionalCount](self, "otherTargetAvailableForStagingOptionalCount"), -[MAAutoAssetControlStagerInformation successfullyStagedCount](self, "successfullyStagedCount")];
+  v17 = [v24 stringWithFormat:@"STARTUP{lastStagingFrom:%@(%@)|target:%@(%@)|determined:%llu|staged:%llu(%llu bytes)|situation:%@|from:%@(%@)}|MOST-RECENT{target:%@(%@)|situation:%@|(available)R:%llu, O:%llu}|OTHER{target:%@|situation:%@|(available)R:%llu, O:%llu}|staged:%llu", v28, startupLastStagingFromBuildVersion2, v26, startupAssetTargetBuildVersion2, startupDeterminedAvailableAssetCount, startupStagedAssetCount, startupStagedAssetTotalContentBytes, v36, stagingFromOSVersion2, stagingFromBuildVersion2, assetTargetOSVersion2, assetTargetBuildVersion2, v11, activeTargetAvailableForStagingRequiredCount, activeTargetAvailableForStagingOptionalCount, otherTargetName2, v16, -[MAAutoAssetControlStagerInformation otherTargetAvailableForStagingRequiredCount](self, "otherTargetAvailableForStagingRequiredCount"), -[MAAutoAssetControlStagerInformation otherTargetAvailableForStagingOptionalCount](self, "otherTargetAvailableForStagingOptionalCount"), -[MAAutoAssetControlStagerInformation successfullyStagedCount](self, "successfullyStagedCount")];
 
-  if (v14)
+  if (otherTargetName)
   {
   }
 
-  if (v19)
+  if (assetTargetBuildVersion)
   {
   }
 
-  if (v35)
+  if (assetTargetOSVersion)
   {
   }
 
@@ -720,15 +720,15 @@
   {
   }
 
-  if (v9)
+  if (stagingFromOSVersion)
   {
   }
 
-  if (v25)
+  if (startupAssetTargetBuildVersion)
   {
   }
 
-  if (v7)
+  if (startupAssetTargetOSVersion)
   {
   }
 
@@ -743,105 +743,105 @@
   return v17;
 }
 
-+ (id)previousOTASituationName:(int64_t)a3
++ (id)previousOTASituationName:(int64_t)name
 {
   v3 = @"UNKNOWN";
-  if (a3 > 299)
+  if (name > 299)
   {
     v4 = @"STAGED_PARTIAL";
     v9 = @"STAGED_ALL_DESIRED";
-    if (a3 != 501)
+    if (name != 501)
     {
       v9 = @"UNKNOWN";
     }
 
-    if (a3 != 500)
+    if (name != 500)
     {
       v4 = v9;
     }
 
     v10 = @"DOWNLOADED_EMPTIED";
     v11 = @"DOWNLOADED_BLOCKED";
-    if (a3 != 403)
+    if (name != 403)
     {
       v11 = @"UNKNOWN";
     }
 
-    if (a3 != 402)
+    if (name != 402)
     {
       v10 = v11;
     }
 
-    if (a3 <= 499)
+    if (name <= 499)
     {
       v4 = v10;
     }
 
-    if (a3 == 401)
+    if (name == 401)
     {
       v3 = @"DOWNLOADED_NOTHING";
     }
 
-    if (a3 == 301)
+    if (name == 301)
     {
       v3 = @"CLIENT_SET_TARGET";
     }
 
-    if (a3 == 300)
+    if (name == 300)
     {
       v3 = @"CLIENT_ALTERED";
     }
 
-    v8 = a3 <= 401;
+    v8 = name <= 401;
   }
 
   else
   {
     v4 = @"DETERMINED_AVAILABLE";
     v5 = @"DETERMINED_PURGED";
-    if (a3 != 204)
+    if (name != 204)
     {
       v5 = @"UNKNOWN";
     }
 
-    if (a3 != 203)
+    if (name != 203)
     {
       v4 = v5;
     }
 
     v6 = @"DETERMINED_NO_NEWER";
     v7 = @"DETERMINED_BLOCKED";
-    if (a3 != 202)
+    if (name != 202)
     {
       v7 = @"UNKNOWN";
     }
 
-    if (a3 != 201)
+    if (name != 201)
     {
       v6 = v7;
     }
 
-    if (a3 <= 202)
+    if (name <= 202)
     {
       v4 = v6;
     }
 
-    if (a3 == 200)
+    if (name == 200)
     {
       v3 = @"DETERMINED_PARTIAL";
     }
 
-    if (a3 == 101)
+    if (name == 101)
     {
       v3 = @"OTA_FROM_LEGACY";
     }
 
-    if (a3 == 100)
+    if (name == 100)
     {
       v3 = @"OTA_NEVER";
     }
 
-    v8 = a3 <= 200;
+    v8 = name <= 200;
   }
 
   if (v8)

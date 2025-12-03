@@ -1,9 +1,9 @@
 @interface TUIHostingView
-+ (id)renderModelIdentifier:(id)a3 size:(CGSize)a4 requestedSize:(CGSize)a5 usingGeometry:(BOOL)a6 insets:(UIEdgeInsets)a7 hostingIdentifier:(id)a8 hostingProperties:(id)a9 anchorPoint:(CGPoint)a10;
++ (id)renderModelIdentifier:(id)identifier size:(CGSize)size requestedSize:(CGSize)requestedSize usingGeometry:(BOOL)geometry insets:(UIEdgeInsets)insets hostingIdentifier:(id)hostingIdentifier hostingProperties:(id)properties anchorPoint:(CGPoint)self0;
 - (TUIHostingView)init;
 - (void)_cleanup;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)setNeedsHostingUpdate;
@@ -26,21 +26,21 @@
   return v2;
 }
 
-+ (id)renderModelIdentifier:(id)a3 size:(CGSize)a4 requestedSize:(CGSize)a5 usingGeometry:(BOOL)a6 insets:(UIEdgeInsets)a7 hostingIdentifier:(id)a8 hostingProperties:(id)a9 anchorPoint:(CGPoint)a10
++ (id)renderModelIdentifier:(id)identifier size:(CGSize)size requestedSize:(CGSize)requestedSize usingGeometry:(BOOL)geometry insets:(UIEdgeInsets)insets hostingIdentifier:(id)hostingIdentifier hostingProperties:(id)properties anchorPoint:(CGPoint)self0
 {
-  bottom = a7.bottom;
-  right = a7.right;
-  left = a7.left;
-  top = a7.top;
-  v13 = a6;
-  height = a5.height;
-  width = a5.width;
-  v16 = a4.height;
-  v17 = a4.width;
-  v19 = a9;
-  v20 = a8;
-  v21 = a3;
-  v22 = [[_TUIlHostingRenderModel alloc] initWithIdentifier:v21 size:v13 requestedSize:v20 usingGeometry:v19 insets:v17 hostingIdentifier:v16 hostingProperties:width anchorPoint:height, top, left, bottom, right, v27, v28];
+  bottom = insets.bottom;
+  right = insets.right;
+  left = insets.left;
+  top = insets.top;
+  geometryCopy = geometry;
+  height = requestedSize.height;
+  width = requestedSize.width;
+  v16 = size.height;
+  v17 = size.width;
+  propertiesCopy = properties;
+  hostingIdentifierCopy = hostingIdentifier;
+  identifierCopy = identifier;
+  v22 = [[_TUIlHostingRenderModel alloc] initWithIdentifier:identifierCopy size:geometryCopy requestedSize:hostingIdentifierCopy usingGeometry:propertiesCopy insets:v17 hostingIdentifier:v16 hostingProperties:width anchorPoint:height, top, left, bottom, right, v27, v28];
 
   return v22;
 }
@@ -60,9 +60,9 @@
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = TUIHostingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -71,20 +71,20 @@
 
   v22.receiver = self;
   v22.super_class = TUIHostingView;
-  [(TUIReusableBaseView *)&v22 applyLayoutAttributes:v4];
+  [(TUIReusableBaseView *)&v22 applyLayoutAttributes:attributesCopy];
 
-  v6 = [(TUIReusableBaseView *)self layoutAttributes];
-  v7 = [v6 renderModel];
+  layoutAttributes = [(TUIReusableBaseView *)self layoutAttributes];
+  renderModel = [layoutAttributes renderModel];
 
-  v8 = [v7 hostingIdentifier];
-  v9 = [v7 hostingProperties];
+  hostingIdentifier = [renderModel hostingIdentifier];
+  hostingProperties = [renderModel hostingProperties];
   hostingIdentifier = self->_hostingIdentifier;
-  if ((hostingIdentifier == v8 || [(TUIHostingIdentifier *)hostingIdentifier isEqual:v8]) && ((hostingProperties = self->_hostingProperties, hostingProperties == v9) || [(TUIHostingProperties *)hostingProperties isEqual:v9]))
+  if ((hostingIdentifier == hostingIdentifier || [(TUIHostingIdentifier *)hostingIdentifier isEqual:hostingIdentifier]) && ((hostingProperties = self->_hostingProperties, hostingProperties == hostingProperties) || [(TUIHostingProperties *)hostingProperties isEqual:hostingProperties]))
   {
-    [v7 requestedSize];
+    [renderModel requestedSize];
     if (self->_requestedSize.width != v13 || self->_requestedSize.height != v12)
     {
-      [v7 requestedSize];
+      [renderModel requestedSize];
       self->_requestedSize.width = v15;
       self->_requestedSize.height = v16;
 LABEL_20:
@@ -106,22 +106,22 @@ LABEL_20:
       sub_19AD14(self);
     }
 
-    v18 = [(TUIReusableBaseView *)self feedControllerHost];
-    v19 = [v18 hostingController];
+    feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+    hostingController = [feedControllerHost hostingController];
 
     if (self->_hostingIdentifier)
     {
-      [v19 removeProviderObserver:self forIdentifier:?];
+      [hostingController removeProviderObserver:self forIdentifier:?];
     }
 
-    objc_storeStrong(&self->_hostingIdentifier, v8);
-    objc_storeStrong(&self->_hostingProperties, v9);
-    [v7 requestedSize];
+    objc_storeStrong(&self->_hostingIdentifier, hostingIdentifier);
+    objc_storeStrong(&self->_hostingProperties, hostingProperties);
+    [renderModel requestedSize];
     self->_requestedSize.width = v20;
     self->_requestedSize.height = v21;
     if (self->_hostingIdentifier)
     {
-      [v19 addProviderObserver:self forIdentifier:?];
+      [hostingController addProviderObserver:self forIdentifier:?];
     }
 
     [(TUIHostingView *)self setNeedsHostingUpdate];
@@ -130,14 +130,14 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(TUIReusableBaseView *)self feedControllerHost];
-  v9 = [v6 hostingController];
+  collectionCopy = collection;
+  feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+  hostingController = [feedControllerHost hostingController];
 
-  v7 = [(TUIHostingView *)self traitCollection];
-  v8 = [v9 needsGeometryUpdateWithOldTraitCollection:v7 newTraitCollection:v5];
+  traitCollection = [(TUIHostingView *)self traitCollection];
+  v8 = [hostingController needsGeometryUpdateWithOldTraitCollection:traitCollection newTraitCollection:collectionCopy];
 
   if (v8)
   {
@@ -153,27 +153,27 @@ LABEL_21:
     sub_19ADC8(self, v3);
   }
 
-  v4 = [(TUIReusableBaseView *)self feedControllerHost];
-  v5 = [v4 hostingController];
+  feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+  hostingController = [feedControllerHost hostingController];
 
   needsHostingUpdate = self->_flags.needsHostingUpdate;
   if (needsHostingUpdate)
   {
     self->_flags.needsHostingUpdate = 0;
-    v7 = [v5 viewStateForIdentifier:self->_hostingIdentifier];
+    v7 = [hostingController viewStateForIdentifier:self->_hostingIdentifier];
     v8 = TUIHostingLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v32 = [(TUIReusableBaseView *)self feedControllerHost];
-      v33 = [v32 feedId];
+      feedControllerHost2 = [(TUIReusableBaseView *)self feedControllerHost];
+      feedId = [feedControllerHost2 feedId];
       hostingIdentifier = self->_hostingIdentifier;
       hostedViewState = self->_hostedViewState;
       *buf = 134219010;
-      v41 = v33;
+      v41 = feedId;
       v42 = 2112;
       v43 = hostingIdentifier;
       v44 = 2048;
-      v45 = self;
+      selfCopy = self;
       v46 = 2114;
       v47 = hostedViewState;
       v48 = 2114;
@@ -189,7 +189,7 @@ LABEL_21:
 
     if (v9)
     {
-      [v5 runDisappearanceTransitionForViewState:?];
+      [hostingController runDisappearanceTransitionForViewState:?];
     }
 
     objc_storeStrong(&self->_hostedViewState, v7);
@@ -205,7 +205,7 @@ LABEL_12:
 
     else
     {
-      [v5 runAppearanceTransitionForViewState:v11 superview:self];
+      [hostingController runAppearanceTransitionForViewState:v11 superview:self];
       v12 = 1;
     }
   }
@@ -215,25 +215,25 @@ LABEL_12:
     v12 = 0;
   }
 
-  v13 = [(TUIReusableBaseView *)self layoutAttributes];
-  v14 = [v13 renderModel];
+  layoutAttributes = [(TUIReusableBaseView *)self layoutAttributes];
+  renderModel = [layoutAttributes renderModel];
 
-  [v14 insets];
+  [renderModel insets];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [v14 usingGeometry];
-  [v14 anchorPoint];
+  usingGeometry = [renderModel usingGeometry];
+  [renderModel anchorPoint];
   [(TUIHostingViewState *)self->_hostedViewState setAnchorPoint:?];
   if (self->_hostedViewState)
   {
-    [v5 updateFrameIfNeeded:needsHostingUpdate | v23 ^ 1 forViewState:self->_requestedSize.width requestedSize:self->_requestedSize.height insets:{v16, v18, v20, v22}];
+    [hostingController updateFrameIfNeeded:needsHostingUpdate | usingGeometry ^ 1 forViewState:self->_requestedSize.width requestedSize:self->_requestedSize.height insets:{v16, v18, v20, v22}];
   }
 
-  if ([v14 usingGeometry] && self->_hostedViewState)
+  if ([renderModel usingGeometry] && self->_hostedViewState)
   {
-    [v5 runAppearanceAnimationIfNeededForViewState:?];
+    [hostingController runAppearanceAnimationIfNeededForViewState:?];
   }
 
   v39.receiver = self;
@@ -241,26 +241,26 @@ LABEL_12:
   [(TUIHostingView *)&v39 layoutSubviews];
   if (self->_hostedViewState)
   {
-    [v5 updateGeometryForViewState:self->_requestedSize.width requestedSize:self->_requestedSize.height insets:{v16, v18, v20, v22}];
+    [hostingController updateGeometryForViewState:self->_requestedSize.width requestedSize:self->_requestedSize.height insets:{v16, v18, v20, v22}];
   }
 
   if (v12)
   {
-    v24 = [(TUIHostingViewState *)self->_hostedViewState visibilityOptions];
-    if (v24)
+    visibilityOptions = [(TUIHostingViewState *)self->_hostedViewState visibilityOptions];
+    if (visibilityOptions)
     {
       v25 = self->_hostingIdentifier;
-      v26 = [(TUIReusableBaseView *)self feedControllerHost];
-      v27 = [v26 viewVisibilityController];
-      v28 = [(TUIHostingViewState *)self->_hostedViewState view];
+      feedControllerHost3 = [(TUIReusableBaseView *)self feedControllerHost];
+      viewVisibilityController = [feedControllerHost3 viewVisibilityController];
+      view = [(TUIHostingViewState *)self->_hostedViewState view];
       v36[0] = _NSConcreteStackBlock;
       v36[1] = 3221225472;
       v36[2] = sub_B8B40;
       v36[3] = &unk_260F20;
-      v37 = v5;
+      v37 = hostingController;
       v38 = v25;
       v29 = v25;
-      v30 = [v27 observeView:v28 options:v24 block:v36];
+      v30 = [viewVisibilityController observeView:view options:visibilityOptions block:v36];
       v31 = self->_hostedViewVisibilityCancellable;
       self->_hostedViewVisibilityCancellable = v30;
     }
@@ -285,15 +285,15 @@ LABEL_12:
 
 - (void)_cleanup
 {
-  v3 = [(TUIReusableBaseView *)self feedControllerHost];
-  v4 = [v3 hostingController];
+  feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+  hostingController = [feedControllerHost hostingController];
 
   hostingIdentifier = self->_hostingIdentifier;
-  if (v4)
+  if (hostingController)
   {
     if (hostingIdentifier)
     {
-      [v4 removeProviderObserver:self forIdentifier:?];
+      [hostingController removeProviderObserver:self forIdentifier:?];
       v6 = self->_hostingIdentifier;
       self->_hostingIdentifier = 0;
 
@@ -306,7 +306,7 @@ LABEL_12:
       hostedViewVisibilityCancellable = self->_hostedViewVisibilityCancellable;
       self->_hostedViewVisibilityCancellable = 0;
 
-      [v4 didEndDisplayForViewState:self->_hostedViewState];
+      [hostingController didEndDisplayForViewState:self->_hostedViewState];
       hostedViewState = self->_hostedViewState;
       self->_hostedViewState = 0;
     }

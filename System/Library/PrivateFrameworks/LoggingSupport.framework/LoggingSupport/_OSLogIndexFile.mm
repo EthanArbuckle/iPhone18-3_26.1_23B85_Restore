@@ -1,10 +1,10 @@
 @interface _OSLogIndexFile
 - (BOOL)_determineTimespan;
 - (BOOL)_loadCatalogMetadataForTimespan;
-- (BOOL)_loadHeaderMetadata:(id)a3;
-- (_OSLogIndexFile)initWithChunkStore:(id)a3 error:(id *)a4;
-- (_OSLogIndexFile)initWithTraceFile:(id)a3 error:(id *)a4;
-- (id)copyMappedChunkStore:(id *)a3;
+- (BOOL)_loadHeaderMetadata:(id)metadata;
+- (_OSLogIndexFile)initWithChunkStore:(id)store error:(id *)error;
+- (_OSLogIndexFile)initWithTraceFile:(id)file error:(id *)error;
+- (id)copyMappedChunkStore:(id *)store;
 - (void)dealloc;
 @end
 
@@ -122,7 +122,7 @@ LABEL_14:
   return v7;
 }
 
-- (id)copyMappedChunkStore:(id *)a3
+- (id)copyMappedChunkStore:(id *)store
 {
   cs = self->_cs;
   if (cs)
@@ -133,7 +133,7 @@ LABEL_14:
   result = self->_cfr;
   if (result)
   {
-    return [result copyMappedChunkFile:a3];
+    return [result copyMappedChunkFile:store];
   }
 
   qword_27DA52778 = "BUG IN LIBTRACE: _OSLogIndexFile had no backing store or file reference";
@@ -141,9 +141,9 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)_loadHeaderMetadata:(id)a3
+- (BOOL)_loadHeaderMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -154,7 +154,7 @@ LABEL_14:
   v6[3] = &unk_2787ADD00;
   v6[4] = self;
   v6[5] = &v7;
-  [v4 enumerateChunksUsingBlock:v6];
+  [metadataCopy enumerateChunksUsingBlock:v6];
   LOBYTE(self) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -169,14 +169,14 @@ LABEL_14:
   [(_OSLogIndexFile *)&v3 dealloc];
 }
 
-- (_OSLogIndexFile)initWithChunkStore:(id)a3 error:(id *)a4
+- (_OSLogIndexFile)initWithChunkStore:(id)store error:(id *)error
 {
-  v6 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = _OSLogIndexFile;
   v7 = [(_OSLogIndexFile *)&v11 init];
   v8 = v7;
-  if (!v7 || (objc_storeStrong(&v7->_cs, a3), v8->_cot_header = -1, v8->_cot = -1, v8->_timespanDetermined = 0, v8->_ot = -1, v8->_path = 0, v9 = 0, [(_OSLogIndexFile *)v8 _loadHeaderMetadata:v6]))
+  if (!v7 || (objc_storeStrong(&v7->_cs, store), v8->_cot_header = -1, v8->_cot = -1, v8->_timespanDetermined = 0, v8->_ot = -1, v8->_path = 0, v9 = 0, [(_OSLogIndexFile *)v8 _loadHeaderMetadata:storeCopy]))
   {
     v9 = v8;
   }
@@ -184,9 +184,9 @@ LABEL_14:
   return v9;
 }
 
-- (_OSLogIndexFile)initWithTraceFile:(id)a3 error:(id *)a4
+- (_OSLogIndexFile)initWithTraceFile:(id)file error:(id *)error
 {
-  v7 = a3;
+  fileCopy = file;
   v13.receiver = self;
   v13.super_class = _OSLogIndexFile;
   v8 = [(_OSLogIndexFile *)&v13 init];
@@ -198,7 +198,7 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  objc_storeStrong(&v8->_cfr, a3);
+  objc_storeStrong(&v8->_cfr, file);
   v9->_ot = -1;
   v9->_cot_header = -1;
   v9->_cot = -1;
@@ -206,7 +206,7 @@ LABEL_4:
   [(_OSLogChunkFileReference *)v9->_cfr path];
   strlen([(_OSLogChunkFileReference *)v9->_cfr path]);
   v9->_path = _os_trace_memdup();
-  v10 = [(_OSLogChunkFileReference *)v9->_cfr copyMappedChunkFile:a4];
+  v10 = [(_OSLogChunkFileReference *)v9->_cfr copyMappedChunkFile:error];
   if (v10)
   {
     v11 = [(_OSLogIndexFile *)v9 _loadHeaderMetadata:v10];

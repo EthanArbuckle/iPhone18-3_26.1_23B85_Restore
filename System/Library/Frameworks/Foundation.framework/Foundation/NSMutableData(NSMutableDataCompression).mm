@@ -19,9 +19,9 @@
   v10[1] = 3221225472;
   v10[2] = __84__NSMutableData_NSMutableDataCompression___compressUsingCompressionAlgorithm_error___block_invoke;
   v10[3] = &unk_1E69F2BD8;
-  v10[4] = a1;
+  v10[4] = self;
   v10[5] = &v11;
-  [a1 _produceDataWithCompressionOperation:0 algorithm:a3 handler:v10];
+  [self _produceDataWithCompressionOperation:0 algorithm:a3 handler:v10];
   objc_autoreleasePoolPop(v7);
   v8 = *(v12 + 24);
   if (a4 && (v12[3] & 1) == 0)
@@ -46,9 +46,9 @@
   v10[1] = 3221225472;
   v10[2] = __86__NSMutableData_NSMutableDataCompression___decompressUsingCompressionAlgorithm_error___block_invoke;
   v10[3] = &unk_1E69F2BD8;
-  v10[4] = a1;
+  v10[4] = self;
   v10[5] = &v11;
-  [a1 _produceDataWithCompressionOperation:1 algorithm:a3 handler:v10];
+  [self _produceDataWithCompressionOperation:1 algorithm:a3 handler:v10];
   objc_autoreleasePoolPop(v7);
   v8 = *(v12 + 24);
   if (a4 && (v12[3] & 1) == 0)
@@ -65,14 +65,14 @@
 {
   v6 = _NSAlgToCompAlg(a3);
 
-  return [a1 _compressUsingCompressionAlgorithm:v6 error:a4];
+  return [self _compressUsingCompressionAlgorithm:v6 error:a4];
 }
 
 - (uint64_t)decompressUsingAlgorithm:()NSMutableDataCompression error:
 {
   v6 = _NSAlgToCompAlg(a3);
 
-  return [a1 _decompressUsingCompressionAlgorithm:v6 error:a4];
+  return [self _decompressUsingCompressionAlgorithm:v6 error:a4];
 }
 
 @end

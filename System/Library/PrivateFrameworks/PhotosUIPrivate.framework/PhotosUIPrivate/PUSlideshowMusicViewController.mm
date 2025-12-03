@@ -2,10 +2,10 @@
 - (BOOL)_needsUpdate;
 - (PUSlideshowMusicDelegate)delegate;
 - (PUSlideshowMusicViewController)init;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_didFinish;
-- (void)_didPickMediaItem:(id)a3;
+- (void)_didPickMediaItem:(id)item;
 - (void)_invalidateBackgroundView;
 - (void)_invalidateSpec;
 - (void)_invalidateTableView;
@@ -14,16 +14,16 @@
 - (void)_updateSpecIfNeeded;
 - (void)_updateTableViewIfNeeded;
 - (void)dealloc;
-- (void)mediaPicker:(id)a3 didPickMediaItems:(id)a4;
-- (void)setCurrentMediaItem:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewControllerSpec:(id)a3 didChange:(id)a4;
+- (void)mediaPicker:(id)picker didPickMediaItems:(id)items;
+- (void)setCurrentMediaItem:(id)item;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewControllerSpec:(id)spec didChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PUSlideshowMusicViewController
@@ -35,9 +35,9 @@
   return WeakRetained;
 }
 
-- (void)viewControllerSpec:(id)a3 didChange:(id)a4
+- (void)viewControllerSpec:(id)spec didChange:(id)change
 {
-  if ([a4 traitCollectionChanged])
+  if ([change traitCollectionChanged])
   {
     [(PUSlideshowMusicViewController *)self setEdgesForExtendedLayout:[(PUSlideshowSettingsViewControllerSpec *)self->_spec rectEdgeForExtendedLayout]];
     [(PUSlideshowMusicViewController *)self _invalidateTableView];
@@ -47,49 +47,49 @@
   }
 }
 
-- (void)mediaPicker:(id)a3 didPickMediaItems:(id)a4
+- (void)mediaPicker:(id)picker didPickMediaItems:(id)items
 {
-  v8 = a3;
-  if (a4)
+  pickerCopy = picker;
+  if (items)
   {
-    v6 = [a4 representativeItem];
-    v7 = [[PUSlideshowMediaItem alloc] initWitMediaItem:v6];
+    representativeItem = [items representativeItem];
+    v7 = [[PUSlideshowMediaItem alloc] initWitMediaItem:representativeItem];
     [(PUSlideshowMusicViewController *)self _didPickMediaItem:v7];
     [(UITableView *)self->_tableView reloadData];
   }
 
-  [v8 dismissModalViewControllerWithTransition:2];
+  [pickerCopy dismissModalViewControllerWithTransition:2];
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v7 = a4;
-  v8 = [a3 backgroundColor];
-  [v7 setTintColor:v8];
+  headerViewCopy = headerView;
+  backgroundColor = [view backgroundColor];
+  [headerViewCopy setTintColor:backgroundColor];
 
-  v11 = [v7 textLabel];
+  textLabel = [headerViewCopy textLabel];
 
   v9 = [MEMORY[0x1E69DB878] defaultFontForTextStyle:*MEMORY[0x1E69DDD08]];
-  [v11 setFont:v9];
+  [textLabel setFont:v9];
 
-  v10 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v11 setTintColor:v10];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [textLabel setTintColor:secondaryLabelColor];
 
-  [v11 _setTextColorFollowsTintColor:1];
-  [v11 setHidden:a5 != 0];
+  [textLabel _setTextColorFollowsTintColor:1];
+  [textLabel setHidden:section != 0];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = a4;
-  [a3 deselectRowAtIndexPath:v8 animated:1];
-  if ([v8 section])
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  if ([pathCopy section])
   {
     v6 = [objc_alloc(MEMORY[0x1E69705F8]) initWithMediaTypes:1];
     [v6 setShowsItemsWithProtectedAssets:0];
-    v7 = [v6 view];
+    view = [v6 view];
     [(UITableView *)self->_tableView frame];
-    [v7 setFrame:?];
+    [view setFrame:?];
 
     [(UITableView *)self->_tableView contentSize];
     [v6 setPreferredContentSize:?];
@@ -101,23 +101,23 @@
 
   else
   {
-    v6 = -[NSArray objectAtIndexedSubscript:](self->_mediaItems, "objectAtIndexedSubscript:", [v8 item]);
+    v6 = -[NSArray objectAtIndexedSubscript:](self->_mediaItems, "objectAtIndexedSubscript:", [pathCopy item]);
     [(PUSlideshowMusicViewController *)self _didPickMediaItem:v6];
     [(PUSlideshowMusicViewController *)self _didFinish];
   }
 }
 
-- (void)_didPickMediaItem:(id)a3
+- (void)_didPickMediaItem:(id)item
 {
-  v8 = a3;
-  objc_storeStrong(&self->_currentMediaItem, a3);
+  itemCopy = item;
+  objc_storeStrong(&self->_currentMediaItem, item);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 musicPicker:self didPickMediaItem:v8];
+    [v7 musicPicker:self didPickMediaItem:itemCopy];
   }
 }
 
@@ -138,17 +138,17 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  if (![v6 section])
+  pathCopy = path;
+  viewCopy = view;
+  if (![pathCopy section])
   {
-    v8 = [v7 dequeueReusableCellWithIdentifier:@"PUSlideshowThemeMusicCell"];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"PUSlideshowThemeMusicCell"];
 
-    v13 = -[NSArray objectAtIndexedSubscript:](self->_mediaItems, "objectAtIndexedSubscript:", [v6 item]);
-    v12 = [v13 localizedName];
-    if ([(PUSlideshowMediaItem *)self->_currentMediaItem isEqual:v13])
+    detailTextLabel2 = -[NSArray objectAtIndexedSubscript:](self->_mediaItems, "objectAtIndexedSubscript:", [pathCopy item]);
+    localizedName = [detailTextLabel2 localizedName];
+    if ([(PUSlideshowMediaItem *)self->_currentMediaItem isEqual:detailTextLabel2])
     {
       v15 = 3;
     }
@@ -161,23 +161,23 @@
     goto LABEL_9;
   }
 
-  v8 = [v7 dequeueReusableCellWithIdentifier:@"PUSlideshowItunesMusicCell"];
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"PUSlideshowItunesMusicCell"];
 
   if (!v8)
   {
     v8 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:1 reuseIdentifier:@"PUSlideshowItunesMusicCell"];
-    v9 = [v8 detailTextLabel];
-    v10 = [v8 textLabel];
-    v11 = [v10 textColor];
-    [v9 setTextColor:v11];
+    detailTextLabel = [v8 detailTextLabel];
+    textLabel = [v8 textLabel];
+    textColor = [textLabel textColor];
+    [detailTextLabel setTextColor:textColor];
   }
 
-  v12 = PULocalizedString(@"SLIDESHOW_SETTINGS_MUSIC_LIBRARY");
+  localizedName = PULocalizedString(@"SLIDESHOW_SETTINGS_MUSIC_LIBRARY");
   if ([(PUSlideshowMediaItem *)self->_currentMediaItem type]== 1)
   {
-    v13 = [v8 detailTextLabel];
-    v14 = [(PUSlideshowMediaItem *)self->_currentMediaItem localizedName];
-    [v13 setText:v14];
+    detailTextLabel2 = [v8 detailTextLabel];
+    localizedName2 = [(PUSlideshowMediaItem *)self->_currentMediaItem localizedName];
+    [detailTextLabel2 setText:localizedName2];
 
     v15 = 1;
 LABEL_9:
@@ -188,18 +188,18 @@ LABEL_9:
   v15 = 1;
 LABEL_11:
   [v8 setAccessoryType:v15];
-  v16 = [v8 textLabel];
-  [v16 setText:v12];
+  textLabel2 = [v8 textLabel];
+  [textLabel2 setText:localizedName];
 
-  v17 = [(PUSlideshowSettingsViewControllerSpec *)self->_spec cellBackgroundColor];
-  [v8 setBackgroundColor:v17];
+  cellBackgroundColor = [(PUSlideshowSettingsViewControllerSpec *)self->_spec cellBackgroundColor];
+  [v8 setBackgroundColor:cellBackgroundColor];
 
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 1;
   }
@@ -227,8 +227,8 @@ LABEL_11:
   {
     [(PUSlideshowMusicViewController *)self _setNeedsUpdateBackgroundView:0];
     tableView = self->_tableView;
-    v4 = [(PUSlideshowSettingsViewControllerSpec *)self->_spec tableViewBackgroundColor];
-    [(UITableView *)tableView setBackgroundColor:v4];
+    tableViewBackgroundColor = [(PUSlideshowSettingsViewControllerSpec *)self->_spec tableViewBackgroundColor];
+    [(UITableView *)tableView setBackgroundColor:tableViewBackgroundColor];
   }
 }
 
@@ -237,8 +237,8 @@ LABEL_11:
   if ([(PUSlideshowMusicViewController *)self _needsUpdateSpec])
   {
     [(PUSlideshowMusicViewController *)self _setNeedsUpdateSpec:0];
-    v3 = [(PUSlideshowMusicViewController *)self presentingViewController];
-    v4 = [v3 traitCollection];
+    presentingViewController = [(PUSlideshowMusicViewController *)self presentingViewController];
+    traitCollection = [presentingViewController traitCollection];
 
     spec = self->_spec;
     v7[0] = MEMORY[0x1E69E9820];
@@ -246,8 +246,8 @@ LABEL_11:
     v7[2] = __53__PUSlideshowMusicViewController__updateSpecIfNeeded__block_invoke;
     v7[3] = &unk_1E7B80C38;
     v7[4] = self;
-    v8 = v4;
-    v6 = v4;
+    v8 = traitCollection;
+    v6 = traitCollection;
     [(PUViewControllerSpec *)spec performChanges:v7];
   }
 }
@@ -261,8 +261,8 @@ LABEL_11:
     [(PUSlideshowMusicViewController *)self _updateBackgroundViewIfNeeded];
     if ([(PUSlideshowMusicViewController *)self _needsUpdate])
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:a2 object:self file:@"PUSlideshowMusicViewController.m" lineNumber:170 description:@"updates still needed after an update cycle"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUSlideshowMusicViewController.m" lineNumber:170 description:@"updates still needed after an update cycle"];
     }
   }
 }
@@ -298,24 +298,24 @@ LABEL_11:
   return [(PUSlideshowMusicViewController *)self _needsUpdateBackgroundView];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PUSlideshowMusicViewController;
-  [(PUSlideshowMusicViewController *)&v4 traitCollectionDidChange:a3];
+  [(PUSlideshowMusicViewController *)&v4 traitCollectionDidChange:change];
   [(PUSlideshowMusicViewController *)self _invalidateSpec];
   [(PUSlideshowMusicViewController *)self _updateIfNeeded];
 }
 
-- (void)setCurrentMediaItem:(id)a3
+- (void)setCurrentMediaItem:(id)item
 {
-  v5 = a3;
-  if (self->_currentMediaItem != v5)
+  itemCopy = item;
+  if (self->_currentMediaItem != itemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_currentMediaItem, a3);
+    v6 = itemCopy;
+    objc_storeStrong(&self->_currentMediaItem, item);
     [(UITableView *)self->_tableView reloadData];
-    v5 = v6;
+    itemCopy = v6;
   }
 }
 
@@ -325,28 +325,28 @@ LABEL_11:
   v6.super_class = PUSlideshowMusicViewController;
   [(PUSlideshowMusicViewController *)&v6 viewDidLayoutSubviews];
   tableView = self->_tableView;
-  v4 = [(PUSlideshowMusicViewController *)self view];
-  [v4 bounds];
+  view = [(PUSlideshowMusicViewController *)self view];
+  [view bounds];
   [(UITableView *)tableView setFrame:?];
 
-  v5 = [(PUSlideshowMusicViewController *)self navigationController];
+  navigationController = [(PUSlideshowMusicViewController *)self navigationController];
   [(UITableView *)self->_tableView contentSize];
-  [v5 setPreferredContentSize:?];
+  [navigationController setPreferredContentSize:?];
 
   [(PUSlideshowMusicViewController *)self _invalidateSpec];
   [(PUSlideshowMusicViewController *)self _updateIfNeeded];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = PUSlideshowMusicViewController;
-  [(PUSlideshowMusicViewController *)&v7 viewWillDisappear:a3];
+  [(PUSlideshowMusicViewController *)&v7 viewWillDisappear:disappear];
   if ([(PUSlideshowSettingsViewControllerSpec *)self->_spec shouldUseBlurredBackground])
   {
-    v4 = [(PUSlideshowMusicViewController *)self navigationController];
-    v5 = [v4 viewControllers];
-    if ([v5 containsObject:self])
+    navigationController = [(PUSlideshowMusicViewController *)self navigationController];
+    viewControllers = [navigationController viewControllers];
+    if ([viewControllers containsObject:self])
     {
       shouldHideTableViewWhenViewWillDisappear = self->_shouldHideTableViewWhenViewWillDisappear;
 
@@ -364,11 +364,11 @@ LABEL_11:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PUSlideshowMusicViewController;
-  [(PUSlideshowMusicViewController *)&v4 viewWillAppear:a3];
+  [(PUSlideshowMusicViewController *)&v4 viewWillAppear:appear];
   [(UIViewController *)self pu_setupInitialBarsVisibilityOnViewWillAppearAnimated:0];
   self->_shouldHideTableViewWhenViewWillDisappear = 0;
   [(UITableView *)self->_tableView setHidden:0];
@@ -383,9 +383,9 @@ LABEL_11:
   v11.receiver = self;
   v11.super_class = PUSlideshowMusicViewController;
   [(PUSlideshowMusicViewController *)&v11 viewDidLoad];
-  v3 = [(PUSlideshowMusicViewController *)self navigationItem];
+  navigationItem = [(PUSlideshowMusicViewController *)self navigationItem];
   v4 = PULocalizedString(@"SLIDESHOW_SETTINGS_NAVBAR_MUSIC_TITLE");
-  [v3 setTitle:v4];
+  [navigationItem setTitle:v4];
 
   v5 = objc_alloc(MEMORY[0x1E69DD020]);
   v6 = [v5 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -400,8 +400,8 @@ LABEL_11:
   [(UITableView *)v8 setTableFooterView:v9];
 
   [(UITableView *)self->_tableView setSectionHeaderHeight:44.0];
-  v10 = [(PUSlideshowMusicViewController *)self view];
-  [v10 addSubview:self->_tableView];
+  view = [(PUSlideshowMusicViewController *)self view];
+  [view addSubview:self->_tableView];
 }
 
 - (void)dealloc

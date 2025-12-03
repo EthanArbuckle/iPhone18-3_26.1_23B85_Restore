@@ -1,12 +1,12 @@
 @interface BWSemanticStyleColorCubeCache
-- (BWSemanticStyleColorCubeCache)initWithColorLookupCache:(id)a3;
-- (id)filtersForSemanticStyle:(id)a3 sceneType:(int)a4 personSegmentationEnabled:(BOOL)a5 maskVisualizationEnabled:(BOOL)a6 applyStyleBackgroundToEntireFrame:(BOOL)a7 filtersToCombine:(id)a8;
+- (BWSemanticStyleColorCubeCache)initWithColorLookupCache:(id)cache;
+- (id)filtersForSemanticStyle:(id)style sceneType:(int)type personSegmentationEnabled:(BOOL)enabled maskVisualizationEnabled:(BOOL)visualizationEnabled applyStyleBackgroundToEntireFrame:(BOOL)frame filtersToCombine:(id)combine;
 - (void)dealloc;
 @end
 
 @implementation BWSemanticStyleColorCubeCache
 
-- (BWSemanticStyleColorCubeCache)initWithColorLookupCache:(id)a3
+- (BWSemanticStyleColorCubeCache)initWithColorLookupCache:(id)cache
 {
   v6.receiver = self;
   v6.super_class = BWSemanticStyleColorCubeCache;
@@ -17,7 +17,7 @@
     v4->_recentFilterCacheKeys = objc_alloc_init(MEMORY[0x1E695DF70]);
     v4->_filterCacheLock._os_unfair_lock_opaque = 0;
     v4->_cachingEnabled = 1;
-    v4->_colorLookupCache = a3;
+    v4->_colorLookupCache = cache;
     v4->_cacheMaxSize = 10;
   }
 
@@ -31,18 +31,18 @@
   [(BWSemanticStyleColorCubeCache *)&v3 dealloc];
 }
 
-- (id)filtersForSemanticStyle:(id)a3 sceneType:(int)a4 personSegmentationEnabled:(BOOL)a5 maskVisualizationEnabled:(BOOL)a6 applyStyleBackgroundToEntireFrame:(BOOL)a7 filtersToCombine:(id)a8
+- (id)filtersForSemanticStyle:(id)style sceneType:(int)type personSegmentationEnabled:(BOOL)enabled maskVisualizationEnabled:(BOOL)visualizationEnabled applyStyleBackgroundToEntireFrame:(BOOL)frame filtersToCombine:(id)combine
 {
-  v32 = a6;
-  v33 = a7;
-  v30 = a5;
-  v11 = [MEMORY[0x1E696AD60] string];
-  [v11 appendString:@"{"];
+  visualizationEnabledCopy = visualizationEnabled;
+  frameCopy = frame;
+  enabledCopy = enabled;
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendString:@"{"];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v12 = [a8 countByEnumeratingWithState:&v35 objects:v34 count:16];
+  v12 = [combine countByEnumeratingWithState:&v35 objects:v34 count:16];
   if (v12)
   {
     v13 = v12;
@@ -54,41 +54,41 @@
       {
         if (*v36 != v14)
         {
-          objc_enumerationMutation(a8);
+          objc_enumerationMutation(combine);
         }
 
         v17 = *(*(&v35 + 1) + 8 * i);
         if ((v15 & 1) == 0)
         {
-          [v11 appendString:{@", "}];
+          [string appendString:{@", "}];
         }
 
-        [v11 appendString:{objc_msgSend(v17, "name")}];
+        [string appendString:{objc_msgSend(v17, "name")}];
         v15 = 0;
       }
 
-      v13 = [a8 countByEnumeratingWithState:&v35 objects:v34 count:16];
+      v13 = [combine countByEnumeratingWithState:&v35 objects:v34 count:16];
       v15 = 0;
     }
 
     while (v13);
   }
 
-  [v11 appendString:@"}"];
+  [string appendString:@"}"];
   v18 = MEMORY[0x1E696AEC0];
-  if (a4 > 3)
+  if (type > 3)
   {
     v19 = @"semanticStyleSceneType-unknown";
   }
 
   else
   {
-    v19 = off_1E798FC58[a4];
+    v19 = off_1E798FC58[type];
   }
 
-  if (v32 || v33)
+  if (visualizationEnabledCopy || frameCopy)
   {
-    if (v32)
+    if (visualizationEnabledCopy)
     {
       v20 = @"-mask-visualization";
     }
@@ -101,13 +101,13 @@
     v19 = [(__CFString *)v19 stringByAppendingString:v20];
   }
 
-  [a3 toneBias];
+  [style toneBias];
   v22 = v21;
-  [a3 warmthBias];
-  v24 = [v18 stringWithFormat:@"%@-%f, %f, %@", v19, *&v22, v23, v11];
-  if (!a3 || !self->_cachingEnabled || !v30)
+  [style warmthBias];
+  v24 = [v18 stringWithFormat:@"%@-%f, %f, %@", v19, *&v22, v23, string];
+  if (!style || !self->_cachingEnabled || !enabledCopy)
   {
-    return BWSemanticStyleFiltersForSemanticStyleAndFilterToCombine(a3, a4, v30, v32, v33, self->_colorLookupCache, a8);
+    return BWSemanticStyleFiltersForSemanticStyleAndFilterToCombine(style, type, enabledCopy, visualizationEnabledCopy, frameCopy, self->_colorLookupCache, combine);
   }
 
   v25 = v24;
@@ -123,15 +123,15 @@
   else
   {
     os_unfair_lock_unlock(&self->_filterCacheLock);
-    v27 = BWSemanticStyleFiltersForSemanticStyleAndFilterToCombine(a3, a4, 1, v32, v33, self->_colorLookupCache, a8);
+    v27 = BWSemanticStyleFiltersForSemanticStyleAndFilterToCombine(style, type, 1, visualizationEnabledCopy, frameCopy, self->_colorLookupCache, combine);
     os_unfair_lock_lock(&self->_filterCacheLock);
     [(NSMutableDictionary *)self->_cubeFilterCache setObject:v27 forKeyedSubscript:v25];
     [(NSMutableArray *)self->_recentFilterCacheKeys addObject:v25];
     if ([(NSMutableArray *)self->_recentFilterCacheKeys count]> self->_cacheMaxSize)
     {
-      v28 = [(NSMutableArray *)self->_recentFilterCacheKeys firstObject];
+      firstObject = [(NSMutableArray *)self->_recentFilterCacheKeys firstObject];
       [(NSMutableArray *)self->_recentFilterCacheKeys removeObjectAtIndex:0];
-      [(NSMutableDictionary *)self->_cubeFilterCache setObject:0 forKeyedSubscript:v28];
+      [(NSMutableDictionary *)self->_cubeFilterCache setObject:0 forKeyedSubscript:firstObject];
     }
   }
 

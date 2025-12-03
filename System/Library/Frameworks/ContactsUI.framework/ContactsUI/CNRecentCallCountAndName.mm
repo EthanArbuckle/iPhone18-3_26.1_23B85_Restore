@@ -1,17 +1,17 @@
 @interface CNRecentCallCountAndName
-+ (id)instanceWithName:(id)a3 callCount:(unint64_t)a4;
++ (id)instanceWithName:(id)name callCount:(unint64_t)count;
 @end
 
 @implementation CNRecentCallCountAndName
 
-+ (id)instanceWithName:(id)a3 callCount:(unint64_t)a4
++ (id)instanceWithName:(id)name callCount:(unint64_t)count
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = objc_alloc_init(CNRecentCallCountAndName);
   v7 = v6;
-  if (v5)
+  if (nameCopy)
   {
-    v8 = v5;
+    v8 = nameCopy;
   }
 
   else
@@ -21,7 +21,7 @@
 
   objc_storeStrong(&v6->_speakableName, v8);
 
-  v7->_callCount = a4;
+  v7->_callCount = count;
 
   return v7;
 }

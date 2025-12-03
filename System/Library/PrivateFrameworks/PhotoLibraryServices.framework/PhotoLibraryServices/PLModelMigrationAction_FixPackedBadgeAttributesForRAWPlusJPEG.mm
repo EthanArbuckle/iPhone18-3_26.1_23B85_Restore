@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_FixPackedBadgeAttributesForRAWPlusJPEG
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_FixPackedBadgeAttributesForRAWPlusJPEG
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v104[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLInternalResource entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -29,20 +29,20 @@
   [v9 setRelationshipKeyPathsForPrefetching:v16];
 
   v67 = 0;
-  v17 = [v6 executeFetchRequest:v9 error:&v67];
+  v17 = [contextCopy executeFetchRequest:v9 error:&v67];
   v18 = v67;
   v19 = -[PLModelMigrationActionCore cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:](self, "cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:", [v17 count], 0);
   v20 = v19;
   if (v17)
   {
-    v63 = a4;
+    errorCopy = error;
     v65[0] = MEMORY[0x1E69E9820];
     v65[1] = 3221225472;
     v65[2] = __109__PLModelMigrationAction_FixPackedBadgeAttributesForRAWPlusJPEG_performActionWithManagedObjectContext_error___block_invoke;
     v65[3] = &unk_1E756DBB8;
     v21 = v19;
     v66 = v21;
-    v22 = [v6 enumerateWithIncrementalSaveUsingObjects:v17 withBlock:v65];
+    v22 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v17 withBlock:v65];
     v23 = v22;
     if (!v22 || v18)
     {
@@ -51,9 +51,9 @@
 
       if (v42)
       {
-        v43 = [(PLModelMigrationActionCore *)self logger];
+        logger = [(PLModelMigrationActionCore *)self logger];
 
-        if (v43)
+        if (logger)
         {
           v101 = 0u;
           v102 = 0u;
@@ -90,11 +90,11 @@
           os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT);
           v45 = objc_opt_class();
           v46 = NSStringFromClass(v45);
-          v47 = [v21 completedUnitCount];
+          completedUnitCount = [v21 completedUnitCount];
           v68 = 138543618;
           v69 = v46;
           v70 = 2048;
-          v71 = v47;
+          v71 = completedUnitCount;
           LODWORD(v62) = 22;
           v48 = _os_log_send_and_compose_impl();
 
@@ -114,11 +114,11 @@
           {
             v54 = objc_opt_class();
             v55 = NSStringFromClass(v54);
-            v56 = [v21 completedUnitCount];
+            completedUnitCount2 = [v21 completedUnitCount];
             *buf = 138543618;
             *&buf[4] = v55;
             *&buf[12] = 2048;
-            *&buf[14] = v56;
+            *&buf[14] = completedUnitCount2;
             _os_log_impl(&dword_19BF1F000, v53, OS_LOG_TYPE_DEFAULT, "%{public}@: Added RAW packed badge attributes to %llu assets", buf, 0x16u);
           }
         }
@@ -135,9 +135,9 @@
 
       if (v25)
       {
-        v26 = [(PLModelMigrationActionCore *)self logger];
+        logger2 = [(PLModelMigrationActionCore *)self logger];
 
-        if (v26)
+        if (logger2)
         {
           v101 = 0u;
           v102 = 0u;
@@ -209,7 +209,7 @@
       v40 = 3;
     }
 
-    a4 = v63;
+    error = errorCopy;
 
     goto LABEL_30;
   }
@@ -224,9 +224,9 @@ LABEL_20:
     goto LABEL_30;
   }
 
-  v34 = [(PLModelMigrationActionCore *)self logger];
+  logger3 = [(PLModelMigrationActionCore *)self logger];
 
-  if (!v34)
+  if (!logger3)
   {
     v50 = PLMigrationGetLog();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
@@ -243,7 +243,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v64 = a4;
+  errorCopy2 = error;
   v101 = 0u;
   v102 = 0u;
   v99 = 0u;
@@ -295,13 +295,13 @@ LABEL_20:
   }
 
   v40 = 3;
-  a4 = v64;
+  error = errorCopy2;
 LABEL_30:
   [(PLModelMigrationActionCore *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
     v60 = v18;
-    *a4 = v18;
+    *error = v18;
   }
 
   return v40;

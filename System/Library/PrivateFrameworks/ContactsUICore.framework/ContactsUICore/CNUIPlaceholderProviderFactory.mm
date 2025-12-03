@@ -1,8 +1,8 @@
 @interface CNUIPlaceholderProviderFactory
 - (CNUIPRLikenessProvider)loadingPlaceholderProvider;
 - (CNUIPlaceholderProviderFactory)init;
-- (id)loadingGroupPlaceholderProviderWithBackgroundStyle:(unint64_t)a3;
-- (id)placeholderProviderForContact:(id)a3;
+- (id)loadingGroupPlaceholderProviderWithBackgroundStyle:(unint64_t)style;
+- (id)placeholderProviderForContact:(id)contact;
 @end
 
 @implementation CNUIPlaceholderProviderFactory
@@ -36,14 +36,14 @@
   v10 = __Block_byref_object_copy__8;
   v11 = __Block_byref_object_dispose__8;
   v12 = 0;
-  v3 = [(CNUIPlaceholderProviderFactory *)self highPriorityLock];
+  highPriorityLock = [(CNUIPlaceholderProviderFactory *)self highPriorityLock];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__CNUIPlaceholderProviderFactory_loadingPlaceholderProvider__block_invoke;
   v6[3] = &unk_1E76E80A0;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performBlock:v6];
+  [highPriorityLock performBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -69,25 +69,25 @@ void __60__CNUIPlaceholderProviderFactory_loadingPlaceholderProvider__block_invo
   objc_storeStrong(v6, v2);
 }
 
-- (id)placeholderProviderForContact:(id)a3
+- (id)placeholderProviderForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__8;
   v17 = __Block_byref_object_dispose__8;
   v18 = 0;
-  v5 = [(CNUIPlaceholderProviderFactory *)self resourceLock];
+  resourceLock = [(CNUIPlaceholderProviderFactory *)self resourceLock];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__CNUIPlaceholderProviderFactory_placeholderProviderForContact___block_invoke;
   v9[3] = &unk_1E76E8A48;
-  v6 = v4;
+  v6 = contactCopy;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
-  [v5 performBlock:v9];
+  [resourceLock performBlock:v9];
 
   v7 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -133,7 +133,7 @@ LABEL_8:
   objc_storeStrong(v7, v3);
 }
 
-- (id)loadingGroupPlaceholderProviderWithBackgroundStyle:(unint64_t)a3
+- (id)loadingGroupPlaceholderProviderWithBackgroundStyle:(unint64_t)style
 {
   v9 = 0;
   v10 = &v9;
@@ -141,15 +141,15 @@ LABEL_8:
   v12 = __Block_byref_object_copy__8;
   v13 = __Block_byref_object_dispose__8;
   v14 = 0;
-  v5 = [(CNUIPlaceholderProviderFactory *)self highPriorityLock];
+  highPriorityLock = [(CNUIPlaceholderProviderFactory *)self highPriorityLock];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __85__CNUIPlaceholderProviderFactory_loadingGroupPlaceholderProviderWithBackgroundStyle___block_invoke;
   v8[3] = &unk_1E76EA440;
   v8[5] = &v9;
-  v8[6] = a3;
+  v8[6] = style;
   v8[4] = self;
-  [v5 performBlock:v8];
+  [highPriorityLock performBlock:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);

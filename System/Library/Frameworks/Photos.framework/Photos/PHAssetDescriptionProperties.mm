@@ -1,24 +1,24 @@
 @interface PHAssetDescriptionProperties
 + (id)propertiesToFetch;
-- (PHAssetDescriptionProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetDescriptionProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetDescriptionProperties
 
-- (PHAssetDescriptionProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetDescriptionProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  prefetchedCopy = prefetched;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v26.receiver = self;
   v26.super_class = PHAssetDescriptionProperties;
   v10 = [(PHAssetDescriptionProperties *)&v26 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->super._asset, v9);
-    v12 = !v5;
-    if (v5)
+    objc_storeWeak(&v10->super._asset, assetCopy);
+    v12 = !prefetchedCopy;
+    if (prefetchedCopy)
     {
       v13 = @"additionalAttributes.title";
     }
@@ -28,7 +28,7 @@
       v13 = @"title";
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v14 = @"additionalAttributes.assetDescription.longDescription";
     }
@@ -48,17 +48,17 @@
       v15 = @"additionalAttributes.accessibilityDescription";
     }
 
-    v16 = [v8 objectForKeyedSubscript:v13];
+    v16 = [dictionaryCopy objectForKeyedSubscript:v13];
     v17 = [v16 copy];
     title = v11->_title;
     v11->_title = v17;
 
-    v19 = [v8 objectForKeyedSubscript:v14];
+    v19 = [dictionaryCopy objectForKeyedSubscript:v14];
     v20 = [v19 copy];
     assetDescription = v11->_assetDescription;
     v11->_assetDescription = v20;
 
-    v22 = [v8 objectForKeyedSubscript:v15];
+    v22 = [dictionaryCopy objectForKeyedSubscript:v15];
     v23 = [v22 copy];
     accessibilityDescription = v11->_accessibilityDescription;
     v11->_accessibilityDescription = v23;

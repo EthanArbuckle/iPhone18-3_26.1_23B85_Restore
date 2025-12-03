@@ -1,39 +1,39 @@
 @interface AMSFDSService
-+ (id)cacheFDS:(id)a3 forPurchaseInfo:(id)a4;
-+ (id)cachedFDSForPurchaseInfo:(id)a3;
-+ (id)didConsumeFDSForPurchaseInfo:(id)a3;
-+ (id)generateFDSWithRequest:(id)a3;
-+ (id)partialFDSAssessmentForRequest:(id)a3;
++ (id)cacheFDS:(id)s forPurchaseInfo:(id)info;
++ (id)cachedFDSForPurchaseInfo:(id)info;
++ (id)didConsumeFDSForPurchaseInfo:(id)info;
++ (id)generateFDSWithRequest:(id)request;
++ (id)partialFDSAssessmentForRequest:(id)request;
 @end
 
 @implementation AMSFDSService
 
-+ (id)cacheFDS:(id)a3 forPurchaseInfo:(id)a4
++ (id)cacheFDS:(id)s forPurchaseInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  sCopy = s;
+  infoCopy = info;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__28;
   v21 = __Block_byref_object_dispose__28;
   v22 = objc_alloc_init(AMSDaemonConnection);
-  v7 = [v18[5] purchaseServiceProxy];
+  purchaseServiceProxy = [v18[5] purchaseServiceProxy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __42__AMSFDSService_cacheFDS_forPurchaseInfo___block_invoke;
   v13[3] = &unk_1E73B7928;
-  v8 = v6;
+  v8 = infoCopy;
   v14 = v8;
-  v9 = v5;
+  v9 = sCopy;
   v15 = v9;
   v16 = &v17;
-  v10 = [v7 thenWithBlock:v13];
-  v11 = [v10 binaryPromiseAdapter];
+  v10 = [purchaseServiceProxy thenWithBlock:v13];
+  binaryPromiseAdapter = [v10 binaryPromiseAdapter];
 
   _Block_object_dispose(&v17, 8);
 
-  return v11;
+  return binaryPromiseAdapter;
 }
 
 AMSMutablePromise *__42__AMSFDSService_cacheFDS_forPurchaseInfo___block_invoke(uint64_t a1, void *a2)
@@ -104,25 +104,25 @@ void __42__AMSFDSService_cacheFDS_forPurchaseInfo___block_invoke_6(uint64_t a1, 
   *(v4 + 40) = 0;
 }
 
-+ (id)cachedFDSForPurchaseInfo:(id)a3
++ (id)cachedFDSForPurchaseInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__28;
   v17 = __Block_byref_object_dispose__28;
   v18 = objc_alloc_init(AMSDaemonConnection);
-  v5 = [v14[5] purchaseServiceProxy];
+  purchaseServiceProxy = [v14[5] purchaseServiceProxy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __42__AMSFDSService_cachedFDSForPurchaseInfo___block_invoke;
   v9[3] = &unk_1E73B7978;
-  v6 = v4;
+  v6 = infoCopy;
   v11 = &v13;
-  v12 = a1;
+  selfCopy = self;
   v10 = v6;
-  v7 = [v5 thenWithBlock:v9];
+  v7 = [purchaseServiceProxy thenWithBlock:v9];
 
   _Block_object_dispose(&v13, 8);
 
@@ -219,29 +219,29 @@ LABEL_5:
   *(v8 + 40) = 0;
 }
 
-+ (id)didConsumeFDSForPurchaseInfo:(id)a3
++ (id)didConsumeFDSForPurchaseInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__28;
   v19 = __Block_byref_object_dispose__28;
   v20 = objc_alloc_init(AMSDaemonConnection);
-  v4 = [v16[5] purchaseServiceProxy];
+  purchaseServiceProxy = [v16[5] purchaseServiceProxy];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __46__AMSFDSService_didConsumeFDSForPurchaseInfo___block_invoke;
   v12 = &unk_1E73B79A0;
-  v5 = v3;
+  v5 = infoCopy;
   v13 = v5;
   v14 = &v15;
-  v6 = [v4 thenWithBlock:&v9];
-  v7 = [v6 binaryPromiseAdapter];
+  v6 = [purchaseServiceProxy thenWithBlock:&v9];
+  binaryPromiseAdapter = [v6 binaryPromiseAdapter];
 
   _Block_object_dispose(&v15, 8);
 
-  return v7;
+  return binaryPromiseAdapter;
 }
 
 AMSMutablePromise *__46__AMSFDSService_didConsumeFDSForPurchaseInfo___block_invoke(uint64_t a1, void *a2)
@@ -311,24 +311,24 @@ void __46__AMSFDSService_didConsumeFDSForPurchaseInfo___block_invoke_14(uint64_t
   *(v4 + 40) = 0;
 }
 
-+ (id)generateFDSWithRequest:(id)a3
++ (id)generateFDSWithRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__28;
   v15 = __Block_byref_object_dispose__28;
   v16 = objc_alloc_init(AMSDaemonConnection);
-  v4 = [v12[5] purchaseServiceProxy];
+  purchaseServiceProxy = [v12[5] purchaseServiceProxy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __40__AMSFDSService_generateFDSWithRequest___block_invoke;
   v8[3] = &unk_1E73B79A0;
-  v5 = v3;
+  v5 = requestCopy;
   v9 = v5;
   v10 = &v11;
-  v6 = [v4 thenWithBlock:v8];
+  v6 = [purchaseServiceProxy thenWithBlock:v8];
 
   _Block_object_dispose(&v11, 8);
 
@@ -371,24 +371,24 @@ void __40__AMSFDSService_generateFDSWithRequest___block_invoke_2(uint64_t a1, ui
   *(v5 + 40) = 0;
 }
 
-+ (id)partialFDSAssessmentForRequest:(id)a3
++ (id)partialFDSAssessmentForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__28;
   v15 = __Block_byref_object_dispose__28;
   v16 = objc_alloc_init(AMSDaemonConnection);
-  v4 = [v12[5] purchaseServiceProxy];
+  purchaseServiceProxy = [v12[5] purchaseServiceProxy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__AMSFDSService_partialFDSAssessmentForRequest___block_invoke;
   v8[3] = &unk_1E73B79A0;
-  v5 = v3;
+  v5 = requestCopy;
   v9 = v5;
   v10 = &v11;
-  v6 = [v4 thenWithBlock:v8];
+  v6 = [purchaseServiceProxy thenWithBlock:v8];
 
   _Block_object_dispose(&v11, 8);
 

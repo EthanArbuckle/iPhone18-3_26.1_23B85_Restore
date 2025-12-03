@@ -1,20 +1,20 @@
 @interface CPNavigationWaypoint
 - ($1AB5FA073B851C12C2339EC22442E995)centerPoint;
-- (CPNavigationWaypoint)initWithCenterPoint:(id)a3 locationThreshold:(unsigned int)a4 name:(id)a5 address:(id)a6 entryPoints:(id *)a7 entryPointsCount:(unint64_t)a8;
-- (CPNavigationWaypoint)initWithCoder:(id)a3;
+- (CPNavigationWaypoint)initWithCenterPoint:(id)point locationThreshold:(unsigned int)threshold name:(id)name address:(id)address entryPoints:(id *)points entryPointsCount:(unint64_t)count;
+- (CPNavigationWaypoint)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPNavigationWaypoint
 
-- (CPNavigationWaypoint)initWithCenterPoint:(id)a3 locationThreshold:(unsigned int)a4 name:(id)a5 address:(id)a6 entryPoints:(id *)a7 entryPointsCount:(unint64_t)a8
+- (CPNavigationWaypoint)initWithCenterPoint:(id)point locationThreshold:(unsigned int)threshold name:(id)name address:(id)address entryPoints:(id *)points entryPointsCount:(unint64_t)count
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v16 = a5;
-  v17 = a6;
+  var2 = point.var2;
+  var1 = point.var1;
+  var0 = point.var0;
+  nameCopy = name;
+  addressCopy = address;
   v26.receiver = self;
   v26.super_class = CPNavigationWaypoint;
   v18 = [(CPNavigationWaypoint *)&v26 init];
@@ -24,27 +24,27 @@
     v18->_centerPoint.latitude = var0;
     v18->_centerPoint.longitude = var1;
     v18->_centerPoint.altitude = var2;
-    v18->_locationThreshold = a4;
-    v20 = [v16 copy];
+    v18->_locationThreshold = threshold;
+    v20 = [nameCopy copy];
     name = v19->_name;
     v19->_name = v20;
 
-    v22 = [v17 copy];
+    v22 = [addressCopy copy];
     address = v19->_address;
     v19->_address = v22;
 
     v19->_entryPoints = 0;
     v19->_entryPointsCount = 0;
-    if (a7)
+    if (points)
     {
-      if (a8 - 0xAAAAAAAAAAAAAABLL >= 0xF555555555555556)
+      if (count - 0xAAAAAAAAAAAAAABLL >= 0xF555555555555556)
       {
-        v24 = malloc_type_malloc(24 * a8, 0xBB43FBE5uLL);
+        v24 = malloc_type_malloc(24 * count, 0xBB43FBE5uLL);
         v19->_entryPoints = v24;
         if (v24)
         {
-          memcpy(v24, a7, 24 * a8);
-          v19->_entryPointsCount = a8;
+          memcpy(v24, points, 24 * count);
+          v19->_entryPointsCount = count;
         }
       }
     }
@@ -67,31 +67,31 @@
   [(CPNavigationWaypoint *)&v4 dealloc];
 }
 
-- (CPNavigationWaypoint)initWithCoder:(id)a3
+- (CPNavigationWaypoint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = CPNavigationWaypoint;
   v5 = [(CPNavigationWaypoint *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPNavigationWaypointCenterPointKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPNavigationWaypointCenterPointKey"];
     v7 = v6;
     if (v6 && [v6 length] == 24)
     {
       [v7 getBytes:&v5->_centerPoint length:24];
     }
 
-    v5->_locationThreshold = [v4 decodeInt32ForKey:@"kCPNavigationWaypointLocationThresholdKey"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPNavigationWaypointNameKey"];
+    v5->_locationThreshold = [coderCopy decodeInt32ForKey:@"kCPNavigationWaypointLocationThresholdKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPNavigationWaypointNameKey"];
     name = v5->_name;
     v5->_name = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPNavigationWaypointAddressKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPNavigationWaypointAddressKey"];
     address = v5->_address;
     v5->_address = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPNavigationWaypointEntryPointsKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPNavigationWaypointEntryPointsKey"];
     v13 = v12;
     v5->_entryPoints = 0;
     v5->_entryPointsCount = 0;
@@ -117,18 +117,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x277CBEA90] dataWithBytes:&self->_centerPoint length:24];
-  [v6 encodeObject:v4 forKey:@"kCPNavigationWaypointCenterPointKey"];
-  [v6 encodeInt32:self->_locationThreshold forKey:@"kCPNavigationWaypointLocationThresholdKey"];
-  [v6 encodeObject:self->_name forKey:@"kCPNavigationWaypointNameKey"];
-  [v6 encodeObject:self->_address forKey:@"kCPNavigationWaypointAddressKey"];
+  [coderCopy encodeObject:v4 forKey:@"kCPNavigationWaypointCenterPointKey"];
+  [coderCopy encodeInt32:self->_locationThreshold forKey:@"kCPNavigationWaypointLocationThresholdKey"];
+  [coderCopy encodeObject:self->_name forKey:@"kCPNavigationWaypointNameKey"];
+  [coderCopy encodeObject:self->_address forKey:@"kCPNavigationWaypointAddressKey"];
   if (self->_entryPoints && self->_entryPointsCount)
   {
     v5 = [MEMORY[0x277CBEA90] dataWithBytes:? length:?];
-    [v6 encodeObject:v5 forKey:@"kCPNavigationWaypointEntryPointsKey"];
+    [coderCopy encodeObject:v5 forKey:@"kCPNavigationWaypointEntryPointsKey"];
   }
 }
 

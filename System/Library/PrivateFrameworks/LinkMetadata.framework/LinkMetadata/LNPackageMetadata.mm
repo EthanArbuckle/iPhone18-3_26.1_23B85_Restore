@@ -1,20 +1,20 @@
 @interface LNPackageMetadata
-- (BOOL)isEqual:(id)a3;
-- (BOOL)resolveWithImagePath:(id)a3 executablePath:(id)a4 rpaths:(id)a5 partialResults:(id)a6 error:(id *)a7;
-- (LNPackageMetadata)initWithCoder:(id)a3;
-- (LNPackageMetadata)initWithIncludes:(id)a3;
-- (id)_initWithMetadataFileURL:(id)a3 bundleURL:(id)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)resolveWithImagePath:(id)path executablePath:(id)executablePath rpaths:(id)rpaths partialResults:(id)results error:(id *)error;
+- (LNPackageMetadata)initWithCoder:(id)coder;
+- (LNPackageMetadata)initWithIncludes:(id)includes;
+- (id)_initWithMetadataFileURL:(id)l bundleURL:(id)rL error:(id *)error;
 - (id)description;
 - (id)linkerSymbolNames;
-- (id)resolveWithBundle:(id)a3 error:(id *)a4;
+- (id)resolveWithBundle:(id)bundle error:(id *)error;
 - (id)verboseDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNPackageMetadata
 
-- (id)_initWithMetadataFileURL:(id)a3 bundleURL:(id)a4 error:(id *)a5
+- (id)_initWithMetadataFileURL:(id)l bundleURL:(id)rL error:(id *)error
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EACB72C8, &qword_18F0AAE80);
   v7 = *(*(v6 - 8) + 64);
@@ -27,7 +27,7 @@
   v15 = &v18[-((v14 + 15) & 0xFFFFFFFFFFFFFFF0)];
   MEMORY[0x1EEE9AC00](v13);
   sub_18F09327C();
-  if (a4)
+  if (rL)
   {
     sub_18F09327C();
     (*(v11 + 32))(v9, v15, v10);
@@ -44,15 +44,15 @@
   return result;
 }
 
-- (BOOL)resolveWithImagePath:(id)a3 executablePath:(id)a4 rpaths:(id)a5 partialResults:(id)a6 error:(id *)a7
+- (BOOL)resolveWithImagePath:(id)path executablePath:(id)executablePath rpaths:(id)rpaths partialResults:(id)results error:(id *)error
 {
   v89 = *MEMORY[0x1E69E9840];
-  v58 = a3;
-  v57 = a4;
-  v53 = a5;
-  v56 = a6;
-  v54 = [(LNPackageMetadata *)self linkerSymbolNames];
-  if ([v54 count])
+  pathCopy = path;
+  executablePathCopy = executablePath;
+  rpathsCopy = rpaths;
+  resultsCopy = results;
+  linkerSymbolNames = [(LNPackageMetadata *)self linkerSymbolNames];
+  if ([linkerSymbolNames count])
   {
     v77 = 0;
     v78 = &v77;
@@ -70,28 +70,28 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v86 = v58;
+      v86 = pathCopy;
       v87 = 2112;
-      v88 = v54;
+      v88 = linkerSymbolNames;
       _os_log_impl(&dword_18EF7E000, v11, OS_LOG_TYPE_DEBUG, "resolving %@ looking for symbols %@", buf, 0x16u);
     }
 
-    v12 = v58;
-    v13 = a7;
-    v14 = [v58 fileSystemRepresentation];
+    v12 = pathCopy;
+    errorCopy = error;
+    fileSystemRepresentation = [pathCopy fileSystemRepresentation];
     v67[0] = MEMORY[0x1E69E9820];
     v67[1] = 3221225472;
     v67[2] = __85__LNPackageMetadata_resolveWithImagePath_executablePath_rpaths_partialResults_error___block_invoke;
     v67[3] = &unk_1E72B14F0;
-    v68 = v54;
+    v68 = linkerSymbolNames;
     v69 = &v77;
     v70 = &v71;
-    v15 = macho_good_enough_slice(v14, v67);
+    v15 = macho_good_enough_slice(fileSystemRepresentation, v67);
     v16 = v15;
     if (v72[5] && v78[5])
     {
-      v17 = [v53 arrayByAddingObjectsFromArray:?];
-      v18 = [MEMORY[0x1E695DF70] array];
+      v17 = [rpathsCopy arrayByAddingObjectsFromArray:?];
+      array = [MEMORY[0x1E695DF70] array];
       v65 = 0u;
       v66 = 0u;
       v63 = 0u;
@@ -113,8 +113,8 @@
             v23 = *(*(&v63 + 1) + 8 * i);
             if ([v23 length])
             {
-              v24 = [v58 stringByDeletingLastPathComponent];
-              v25 = _URLFromLibraryName(v23, 0, v24, v57, v17);
+              stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
+              v25 = _URLFromLibraryName(v23, 0, stringByDeletingLastPathComponent, executablePathCopy, v17);
 
               if (!v25)
               {
@@ -128,10 +128,10 @@
                   _os_log_impl(&dword_18EF7E000, v44, OS_LOG_TYPE_ERROR, "could not resolve library name %@ to path: tried %@", buf, 0x16u);
                 }
 
-                if (a7)
+                if (error)
                 {
-                  [MEMORY[0x1E696ABC0] errorWithErrno:85 forFilePath:v58];
-                  *a7 = LOBYTE(v39) = 0;
+                  [MEMORY[0x1E696ABC0] errorWithErrno:85 forFilePath:pathCopy];
+                  *error = LOBYTE(v39) = 0;
                 }
 
                 else
@@ -144,11 +144,11 @@ LABEL_59:
               }
 
               v26 = _CFBundleCopyBundleURLForExecutableURL();
-              v27 = [v26 absoluteURL];
+              absoluteURL = [v26 absoluteURL];
 
-              if (([v18 containsObject:v27] & 1) == 0)
+              if (([array containsObject:absoluteURL] & 1) == 0)
               {
-                [v18 addObject:v27];
+                [array addObject:absoluteURL];
               }
             }
           }
@@ -167,7 +167,7 @@ LABEL_59:
       v62 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v19 = v18;
+      v19 = array;
       v28 = [v19 countByEnumeratingWithState:&v59 objects:v83 count:16];
       if (v28)
       {
@@ -184,50 +184,50 @@ LABEL_59:
             }
 
             v31 = *(*(&v59 + 1) + 8 * j);
-            if (([v56 containsObject:{v31, v51}] & 1) == 0)
+            if (([resultsCopy containsObject:{v31, v51}] & 1) == 0)
             {
-              [v56 addObject:v31];
+              [resultsCopy addObject:v31];
               v32 = [objc_alloc(MEMORY[0x1E696AAE8]) _initUniqueWithURL:v31];
-              v33 = [[LNPackageMetadata alloc] initFrom:v32 error:a7];
+              v33 = [[LNPackageMetadata alloc] initFrom:v32 error:error];
               if (!v33)
               {
                 v34 = getLNLogCategoryMetadata();
                 if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
                 {
-                  v35 = [v31 path];
-                  v36 = v35;
-                  v37 = a7;
-                  if (a7)
+                  path = [v31 path];
+                  v36 = path;
+                  errorCopy2 = error;
+                  if (error)
                   {
-                    v37 = *a7;
+                    errorCopy2 = *error;
                   }
 
                   *buf = v51;
-                  v86 = v35;
+                  v86 = path;
                   v87 = 2112;
-                  v88 = v37;
+                  v88 = errorCopy2;
                   _os_log_impl(&dword_18EF7E000, v34, OS_LOG_TYPE_ERROR, "could not get package metadata from bundle %@, %@", buf, 0x16u);
                 }
               }
 
-              v38 = [v32 executablePathWithError:a7];
+              v38 = [v32 executablePathWithError:error];
               if (!v38)
               {
                 v45 = getLNLogCategoryMetadata();
                 if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
                 {
-                  v46 = [v31 path];
-                  v47 = v46;
-                  v48 = a7;
-                  if (a7)
+                  path2 = [v31 path];
+                  v47 = path2;
+                  errorCopy3 = error;
+                  if (error)
                   {
-                    v48 = *a7;
+                    errorCopy3 = *error;
                   }
 
                   *buf = v51;
-                  v86 = v46;
+                  v86 = path2;
                   v87 = 2112;
-                  v88 = v48;
+                  v88 = errorCopy3;
                   _os_log_impl(&dword_18EF7E000, v45, OS_LOG_TYPE_ERROR, "bundle %@ has no executable, %@", buf, 0x16u);
                 }
 
@@ -242,7 +242,7 @@ LABEL_58:
                 goto LABEL_58;
               }
 
-              v39 = [v33 resolveWithImagePath:v38 executablePath:v57 rpaths:v17 partialResults:v56 error:a7];
+              v39 = [v33 resolveWithImagePath:v38 executablePath:executablePathCopy rpaths:v17 partialResults:resultsCopy error:error];
 
               if (!v39)
               {
@@ -264,10 +264,10 @@ LABEL_58:
       v19 = getLNLogCategoryMetadata();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
-        v40 = [v56 allObjects];
-        v41 = [v40 if_map:&__block_literal_global_38_8624];
+        allObjects = [resultsCopy allObjects];
+        v41 = [allObjects if_map:&__block_literal_global_38_8624];
         *buf = 138412546;
-        v86 = v58;
+        v86 = pathCopy;
         v87 = 2112;
         v88 = v41;
         _os_log_impl(&dword_18EF7E000, v19, OS_LOG_TYPE_DEBUG, "success: %@ includes %@", buf, 0x16u);
@@ -279,7 +279,7 @@ LABEL_60:
 
     else
     {
-      if (a7)
+      if (error)
       {
         v42 = MEMORY[0x1E696ABC0];
         if (!v15)
@@ -287,16 +287,16 @@ LABEL_60:
           v16 = *__error();
         }
 
-        [v42 errorWithErrno:v16 forFilePath:v58];
-        *a7 = v13 = a7;
+        [v42 errorWithErrno:v16 forFilePath:pathCopy];
+        *error = errorCopy = error;
       }
 
       v17 = getLNLogCategoryMetadata();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        if (v13)
+        if (errorCopy)
         {
-          v43 = *v13;
+          v43 = *errorCopy;
         }
 
         else
@@ -305,7 +305,7 @@ LABEL_60:
         }
 
         *buf = 138412546;
-        v86 = v58;
+        v86 = pathCopy;
         v87 = 2112;
         v88 = v43;
         _os_log_impl(&dword_18EF7E000, v17, OS_LOG_TYPE_DEBUG, "could not resolve package includes in %@ - %@", buf, 0x16u);
@@ -451,46 +451,46 @@ LABEL_27:
 
 - (id)linkerSymbolNames
 {
-  v2 = [(LNPackageMetadata *)self includes];
-  v3 = [v2 if_map:&__block_literal_global_8635];
+  includes = [(LNPackageMetadata *)self includes];
+  v3 = [includes if_map:&__block_literal_global_8635];
 
   return v3;
 }
 
-- (id)resolveWithBundle:(id)a3 error:(id *)a4
+- (id)resolveWithBundle:(id)bundle error:(id *)error
 {
-  v6 = [a3 executablePathWithError:a4];
+  v6 = [bundle executablePathWithError:error];
   v7 = [MEMORY[0x1E695DFA8] set];
   if (!v6)
   {
-    v16 = 0;
+    allObjects = 0;
     goto LABEL_9;
   }
 
-  v8 = [v6 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [v6 stringByDeletingLastPathComponent];
   v25 = 0;
   v9 = MEMORY[0x1E695E0F0];
-  v10 = [(LNPackageMetadata *)self resolveWithImagePath:v6 executablePath:v8 rpaths:MEMORY[0x1E695E0F0] partialResults:v7 error:&v25];
+  v10 = [(LNPackageMetadata *)self resolveWithImagePath:v6 executablePath:stringByDeletingLastPathComponent rpaths:MEMORY[0x1E695E0F0] partialResults:v7 error:&v25];
   v11 = v25;
 
   v12 = [v6 stringByAppendingString:@".debug.dylib"];
-  v13 = [v6 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent2 = [v6 stringByDeletingLastPathComponent];
   v24 = 0;
-  LOBYTE(v9) = [(LNPackageMetadata *)self resolveWithImagePath:v12 executablePath:v13 rpaths:v9 partialResults:v7 error:&v24];
+  LOBYTE(v9) = [(LNPackageMetadata *)self resolveWithImagePath:v12 executablePath:stringByDeletingLastPathComponent2 rpaths:v9 partialResults:v7 error:&v24];
   v14 = v24;
 
   if (v9)
   {
     v15 = v14;
 LABEL_6:
-    v16 = [v7 allObjects];
+    allObjects = [v7 allObjects];
     goto LABEL_7;
   }
 
   v17 = [v6 stringByAppendingString:@".preview.dylib"];
-  v18 = [v6 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent3 = [v6 stringByDeletingLastPathComponent];
   v23 = v14;
-  v19 = [(LNPackageMetadata *)self resolveWithImagePath:v17 executablePath:v18 rpaths:MEMORY[0x1E695E0F0] partialResults:v7 error:&v23];
+  v19 = [(LNPackageMetadata *)self resolveWithImagePath:v17 executablePath:stringByDeletingLastPathComponent3 rpaths:MEMORY[0x1E695E0F0] partialResults:v7 error:&v23];
   v15 = v23;
 
   if (v10 || v19)
@@ -501,21 +501,21 @@ LABEL_6:
   if (v11)
   {
     v21 = v11;
-    v16 = 0;
-    *a4 = v11;
+    allObjects = 0;
+    *error = v11;
   }
 
   else
   {
     if (!v15)
     {
-      v16 = 0;
+      allObjects = 0;
       goto LABEL_8;
     }
 
     v22 = v15;
-    v16 = 0;
-    *a4 = v15;
+    allObjects = 0;
+    *error = v15;
   }
 
 LABEL_7:
@@ -523,57 +523,57 @@ LABEL_7:
 LABEL_8:
 LABEL_9:
 
-  return v16;
+  return allObjects;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(LNPackageMetadata *)self includes];
-        v8 = [(LNPackageMetadata *)v6 includes];
+        includes = [(LNPackageMetadata *)self includes];
+        includes2 = [(LNPackageMetadata *)v6 includes];
 
-        if (v7 == v8)
+        if (includes == includes2)
         {
           v18 = 1;
           goto LABEL_12;
         }
 
-        v9 = [(LNPackageMetadata *)self includes];
-        if (!v9 || (v10 = v9, [(LNPackageMetadata *)v6 includes], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
+        includes3 = [(LNPackageMetadata *)self includes];
+        if (!includes3 || (v10 = includes3, [(LNPackageMetadata *)v6 includes], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
         {
           v18 = 0;
           goto LABEL_12;
         }
 
         v12 = MEMORY[0x1E695DFD8];
-        v13 = [(LNPackageMetadata *)self includes];
-        v14 = [v12 setWithArray:v13];
+        includes4 = [(LNPackageMetadata *)self includes];
+        v14 = [v12 setWithArray:includes4];
         v15 = MEMORY[0x1E695DFD8];
-        v16 = [(LNPackageMetadata *)v6 includes];
-        v17 = [v15 setWithArray:v16];
+        includes5 = [(LNPackageMetadata *)v6 includes];
+        v17 = [v15 setWithArray:includes5];
         v18 = [v14 isEqualToSet:v17];
       }
 
       else
       {
         v18 = 0;
-        v13 = v6;
+        includes4 = v6;
         v6 = 0;
       }
     }
 
     else
     {
-      v13 = 0;
+      includes4 = 0;
       v18 = 0;
     }
 
@@ -589,8 +589,8 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v2 = [(LNPackageMetadata *)self includes];
-  v3 = [v2 hash];
+  includes = [(LNPackageMetadata *)self includes];
+  v3 = [includes hash];
 
   return v3;
 }
@@ -600,8 +600,8 @@ LABEL_13:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNPackageMetadata *)self includes];
-  v7 = [v3 stringWithFormat:@"<%@: %p, includes: %@>", v5, self, v6];
+  includes = [(LNPackageMetadata *)self includes];
+  v7 = [v3 stringWithFormat:@"<%@: %p, includes: %@>", v5, self, includes];
 
   return v7;
 }
@@ -611,50 +611,50 @@ LABEL_13:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNPackageMetadata *)self includes];
-  v7 = [v3 stringWithFormat:@"<%@: %p, includes: %lu>", v5, self, objc_msgSend(v6, "count")];
+  includes = [(LNPackageMetadata *)self includes];
+  v7 = [v3 stringWithFormat:@"<%@: %p, includes: %lu>", v5, self, objc_msgSend(includes, "count")];
 
   return v7;
 }
 
-- (LNPackageMetadata)initWithCoder:(id)a3
+- (LNPackageMetadata)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"includes"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"includes"];
 
   if (v8)
   {
     self = [(LNPackageMetadata *)self initWithIncludes:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNPackageMetadata *)self includes];
-  [v4 encodeObject:v5 forKey:@"includes"];
+  coderCopy = coder;
+  includes = [(LNPackageMetadata *)self includes];
+  [coderCopy encodeObject:includes forKey:@"includes"];
 }
 
-- (LNPackageMetadata)initWithIncludes:(id)a3
+- (LNPackageMetadata)initWithIncludes:(id)includes
 {
-  v4 = a3;
+  includesCopy = includes;
   v10.receiver = self;
   v10.super_class = LNPackageMetadata;
   v5 = [(LNPackageMetadata *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [includesCopy copy];
     includes = v5->_includes;
     v5->_includes = v6;
 

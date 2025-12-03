@@ -12,8 +12,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(WiFiAvailabilityNearbySource *)self recommendedNetworks];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  recommendedNetworks = [(WiFiAvailabilityNearbySource *)self recommendedNetworks];
+  v5 = [recommendedNetworks countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -24,21 +24,21 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(recommendedNetworks);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = objc_alloc_init(WiFiAvailabilityNearbyCandidateNetwork);
-        v11 = [v9 networkName];
-        [(WiFiAvailabilityNearbyCandidateNetwork *)v10 setSSID:v11];
+        networkName = [v9 networkName];
+        [(WiFiAvailabilityNearbyCandidateNetwork *)v10 setSSID:networkName];
 
-        v12 = [v9 receivedFromDeviceName];
-        [(WiFiAvailabilityNearbyCandidateNetwork *)v10 setReceivedFromDeviceName:v12];
+        receivedFromDeviceName = [v9 receivedFromDeviceName];
+        [(WiFiAvailabilityNearbyCandidateNetwork *)v10 setReceivedFromDeviceName:receivedFromDeviceName];
 
         [v3 addObject:v10];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [recommendedNetworks countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);

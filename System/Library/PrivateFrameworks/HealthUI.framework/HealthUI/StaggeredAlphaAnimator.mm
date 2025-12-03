@@ -2,7 +2,7 @@
 - (_TtC8HealthUIP33_2CCCC3E80CB68C77458B1C83C70AE82122StaggeredAlphaAnimator)init;
 - (double)fractionComplete;
 - (int64_t)state;
-- (void)finishAnimationAtPosition:(int64_t)a3;
+- (void)finishAnimationAtPosition:(int64_t)position;
 @end
 
 @implementation StaggeredAlphaAnimator
@@ -32,9 +32,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = [*(&self->super.isa + OBJC_IVAR____TtC8HealthUIP33_2CCCC3E80CB68C77458B1C83C70AE82122StaggeredAlphaAnimator_foregroundAnimator) state];
+  state = [*(&self->super.isa + OBJC_IVAR____TtC8HealthUIP33_2CCCC3E80CB68C77458B1C83C70AE82122StaggeredAlphaAnimator_foregroundAnimator) state];
 
-  return v3;
+  return state;
 }
 
 - (double)fractionComplete
@@ -53,7 +53,7 @@
   return v4;
 }
 
-- (void)finishAnimationAtPosition:(int64_t)a3
+- (void)finishAnimationAtPosition:(int64_t)position
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -64,9 +64,9 @@
   }
 
   v5 = *(&self->super.isa + OBJC_IVAR____TtC8HealthUIP33_2CCCC3E80CB68C77458B1C83C70AE82122StaggeredAlphaAnimator_backgroundAnimator);
-  v6 = self;
+  selfCopy = self;
   [v5 finishAnimationAtPosition_];
-  [*(&v6->super.isa + OBJC_IVAR____TtC8HealthUIP33_2CCCC3E80CB68C77458B1C83C70AE82122StaggeredAlphaAnimator_foregroundAnimator) finishAnimationAtPosition_];
+  [*(&selfCopy->super.isa + OBJC_IVAR____TtC8HealthUIP33_2CCCC3E80CB68C77458B1C83C70AE82122StaggeredAlphaAnimator_foregroundAnimator) finishAnimationAtPosition_];
 }
 
 @end

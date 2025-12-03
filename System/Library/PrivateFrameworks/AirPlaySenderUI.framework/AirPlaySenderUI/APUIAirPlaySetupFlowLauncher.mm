@@ -1,15 +1,15 @@
 @interface APUIAirPlaySetupFlowLauncher
-+ (BOOL)launchAirPlayAutomaticSetupFlowWithConfiguration:(id)a3;
-+ (BOOL)launchAirPlayManualSetupFlowForDiscoveryBroker:(id)a3;
-+ (void)launchAirPlaySetupFlowWithUserInfo:(id)a3;
++ (BOOL)launchAirPlayAutomaticSetupFlowWithConfiguration:(id)configuration;
++ (BOOL)launchAirPlayManualSetupFlowForDiscoveryBroker:(id)broker;
++ (void)launchAirPlaySetupFlowWithUserInfo:(id)info;
 @end
 
 @implementation APUIAirPlaySetupFlowLauncher
 
-+ (BOOL)launchAirPlayAutomaticSetupFlowWithConfiguration:(id)a3
++ (BOOL)launchAirPlayAutomaticSetupFlowWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  configurationCopy = configuration;
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   if (APSSettingsIsFeatureEnabled())
   {
     if (gLogCategory_APUIAirPlaySetupFlowLauncher <= 50 && (gLogCategory_APUIAirPlaySetupFlowLauncher != -1 || _LogCategory_Initialize()))
@@ -17,10 +17,10 @@
       +[APUIAirPlaySetupFlowLauncher launchAirPlayAutomaticSetupFlowWithConfiguration:];
     }
 
-    v5 = [v3 urlString];
-    if (v5)
+    urlString = [configurationCopy urlString];
+    if (urlString)
     {
-      v6 = [MEMORY[0x277CBEBC0] URLWithString:v5];
+      v6 = [MEMORY[0x277CBEBC0] URLWithString:urlString];
       if (v6)
       {
         v7 = v6;
@@ -29,15 +29,15 @@
           +[APUIAirPlaySetupFlowLauncher launchAirPlayAutomaticSetupFlowWithConfiguration:];
         }
 
-        [v4 openSensitiveURL:v7 withOptions:0];
+        [defaultWorkspace openSensitiveURL:v7 withOptions:0];
 
-        LOBYTE(v5) = 1;
+        LOBYTE(urlString) = 1;
       }
 
       else
       {
-        [APUIAirPlaySetupFlowLauncher launchAirPlayAutomaticSetupFlowWithConfiguration:v5];
-        LOBYTE(v5) = 0;
+        [APUIAirPlaySetupFlowLauncher launchAirPlayAutomaticSetupFlowWithConfiguration:urlString];
+        LOBYTE(urlString) = 0;
       }
     }
 
@@ -50,34 +50,34 @@
   else
   {
     [gLogCategory_APUIAirPlaySetupFlowLauncher launchAirPlayAutomaticSetupFlowWithConfiguration:?];
-    LOBYTE(v5) = v9;
+    LOBYTE(urlString) = v9;
   }
 
-  return v5;
+  return urlString;
 }
 
-+ (BOOL)launchAirPlayManualSetupFlowForDiscoveryBroker:(id)a3
++ (BOOL)launchAirPlayManualSetupFlowForDiscoveryBroker:(id)broker
 {
-  v3 = a3;
+  brokerCopy = broker;
   if (gLogCategory_APUIAirPlaySetupFlowLauncher <= 50 && (gLogCategory_APUIAirPlaySetupFlowLauncher != -1 || _LogCategory_Initialize()))
   {
-    [APUIAirPlaySetupFlowLauncher launchAirPlayManualSetupFlowForDiscoveryBroker:v3];
+    [APUIAirPlaySetupFlowLauncher launchAirPlayManualSetupFlowForDiscoveryBroker:brokerCopy];
   }
 
   return 0;
 }
 
-+ (void)launchAirPlaySetupFlowWithUserInfo:(id)a3
++ (void)launchAirPlaySetupFlowWithUserInfo:(id)info
 {
-  v7 = a3;
+  infoCopy = info;
   v3 = [objc_alloc(MEMORY[0x277D66BD8]) initWithServiceName:@"com.apple.APSUIApp" viewControllerClassName:@"APUISetupViewController"];
   v4 = objc_alloc_init(MEMORY[0x277D66BD0]);
   v5 = objc_alloc_init(MEMORY[0x277D66BC0]);
   [v5 setReason:@"Display AirPlay user experience"];
-  [v5 setUserInfo:v7];
+  [v5 setUserInfo:infoCopy];
   if (gLogCategory_APUIAirPlaySetupFlowLauncher <= 50 && (gLogCategory_APUIAirPlaySetupFlowLauncher != -1 || _LogCategory_Initialize()))
   {
-    [APUIAirPlaySetupFlowLauncher launchAirPlaySetupFlowWithUserInfo:v7];
+    [APUIAirPlaySetupFlowLauncher launchAirPlaySetupFlowWithUserInfo:infoCopy];
   }
 
   v6 = [MEMORY[0x277D66BF0] newHandleWithDefinition:v3 configurationContext:v4];

@@ -2,10 +2,10 @@
 + (Class)instanceClass;
 + (id)_databaseBundleDirectory;
 + (id)lockForPath;
-+ (id)pathForName:(id)a3;
++ (id)pathForName:(id)name;
 + (id)pathToNameDictionary;
 + (void)_clearCachedPaths;
-- (APDatabasePath)initWithDatabaseName:(id)a3;
+- (APDatabasePath)initWithDatabaseName:(id)name;
 - (id)databaseDirectory;
 - (id)databaseFilePath;
 - (id)migrationScriptsPath;
@@ -13,20 +13,20 @@
 
 @implementation APDatabasePath
 
-+ (id)pathForName:(id)a3
++ (id)pathForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8 = objc_msgSend_lockForPath(APDatabasePath, v5, v6, v7);
   objc_msgSend_lock(v8, v9, v10, v11);
-  v15 = objc_msgSend_pathToNameDictionary(a1, v12, v13, v14);
-  v18 = objc_msgSend_objectForKey_(v15, v16, v4, v17);
+  v15 = objc_msgSend_pathToNameDictionary(self, v12, v13, v14);
+  v18 = objc_msgSend_objectForKey_(v15, v16, nameCopy, v17);
 
   if (!v18)
   {
-    v22 = objc_alloc(objc_msgSend_instanceClass(a1, v19, v20, v21));
-    v18 = objc_msgSend_initWithDatabaseName_(v22, v23, v4, v24);
-    v28 = objc_msgSend_pathToNameDictionary(a1, v25, v26, v27);
-    objc_msgSend_setObject_forKey_(v28, v29, v18, v4);
+    v22 = objc_alloc(objc_msgSend_instanceClass(self, v19, v20, v21));
+    v18 = objc_msgSend_initWithDatabaseName_(v22, v23, nameCopy, v24);
+    v28 = objc_msgSend_pathToNameDictionary(self, v25, v26, v27);
+    objc_msgSend_setObject_forKey_(v28, v29, v18, nameCopy);
   }
 
   objc_msgSend_unlock(v8, v19, v20, v21);
@@ -87,16 +87,16 @@
   return v20;
 }
 
-- (APDatabasePath)initWithDatabaseName:(id)a3
+- (APDatabasePath)initWithDatabaseName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = APDatabasePath;
   v6 = [(APDatabasePath *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_databaseName, a3);
+    objc_storeStrong(&v6->_databaseName, name);
   }
 
   return v7;

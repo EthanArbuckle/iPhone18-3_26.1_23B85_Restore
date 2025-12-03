@@ -1,13 +1,13 @@
 @interface _UIPinchGestureRecognizerDriver
 - (_UIPinchGestureRecognizerDriver)init;
-- (void)_applyScale:(CGFloat)a3 atLocation:(double)a4 touchDistance:(double)a5 withEvent:(double)a6;
+- (void)_applyScale:(CGFloat)scale atLocation:(double)location touchDistance:(double)distance withEvent:(double)event;
 - (void)reset;
-- (void)setScale:(double *)a1;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)transformChangedWithEvent:(id)a3;
+- (void)setScale:(double *)scale;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)transformChangedWithEvent:(id)event;
 @end
 
 @implementation _UIPinchGestureRecognizerDriver
@@ -56,27 +56,27 @@
   *&self->_flags &= ~2u;
 }
 
-- (void)setScale:(double *)a1
+- (void)setScale:(double *)scale
 {
-  if (a1)
+  if (scale)
   {
-    v4 = [a1 context];
-    v5 = [v4 activeEventOfType:0];
+    context = [scale context];
+    v5 = [context activeEventOfType:0];
 
     if (v5)
     {
-      a1[5] = a1[12] * a1[5] / a2;
+      scale[5] = scale[12] * scale[5] / a2;
     }
 
-    a1[6] = a2;
-    a1[12] = a2;
+    scale[6] = a2;
+    scale[12] = a2;
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = [(_UIGestureRecognizerDriver *)self context];
-  v12 = [v6 activeComponentsForEvent:a4];
+  context = [(_UIGestureRecognizerDriver *)self context];
+  v12 = [context activeComponentsForEvent:event];
 
   if ([v12 count] == 2)
   {
@@ -91,11 +91,11 @@
     }
 
     self->_initialScale = a;
-    v8 = [v12 allObjects];
-    _UIGestureRecognizerDistanceBetweenTouches(v8);
+    allObjects = [v12 allObjects];
+    _UIGestureRecognizerDistanceBetweenTouches(allObjects);
     self->_initialTouchDistance = v9 / self->_initialScale;
 
-    [a4 timestamp];
+    [event timestamp];
     self->_lastEventTime = v10;
     self->_anchorPoint.x = _CentroidOfTouches(v12, 1);
     self->_anchorPoint.y = v11;
@@ -104,16 +104,16 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = [(_UIGestureRecognizerDriver *)self context];
-  v7 = [v6 activeComponentsForEvent:a4];
+  context = [(_UIGestureRecognizerDriver *)self context];
+  v7 = [context activeComponentsForEvent:event];
 
   if ([v7 count] == 2)
   {
-    v8 = [v7 allObjects];
-    _UIGestureRecognizerDistanceBetweenTouches(v8);
+    allObjects = [v7 allObjects];
+    _UIGestureRecognizerDistanceBetweenTouches(allObjects);
     v10 = v9;
 
     [(_UIGestureRecognizerTransformAnalyzer *)self->_transformAnalyzer analyzeTouches:v7];
@@ -123,7 +123,7 @@
 LABEL_4:
       v12 = v10 / initialTouchDistance;
       v13 = _CentroidOfTouches(v7, 1);
-      [(_UIPinchGestureRecognizerDriver *)self _applyScale:a4 atLocation:v12 touchDistance:v13 withEvent:v14, v10];
+      [(_UIPinchGestureRecognizerDriver *)self _applyScale:event atLocation:v12 touchDistance:v13 withEvent:v14, v10];
       goto LABEL_29;
     }
 
@@ -196,9 +196,9 @@ LABEL_4:
 LABEL_18:
     if (vabdd_f64(self->_initialTouchDistance * self->_initialScale, v10) > hysteresis)
     {
-      v22 = [(_UIGestureRecognizerDriver *)self context];
-      v23 = [v22 eventReceivingWindow];
-      [v23 _usableBounds];
+      context2 = [(_UIGestureRecognizerDriver *)self context];
+      eventReceivingWindow = [context2 eventReceivingWindow];
+      [eventReceivingWindow _usableBounds];
       v25 = v24;
       v27 = v26;
       v29 = v28;
@@ -212,7 +212,7 @@ LABEL_18:
       if (v33)
       {
         v34 = v33;
-        v41 = v22;
+        v41 = context2;
         v35 = *v43;
         while (2)
         {
@@ -223,7 +223,7 @@ LABEL_18:
               objc_enumerationMutation(v32);
             }
 
-            v48.x = [(UITouch *)*(*(&v42 + 1) + 8 * j) _locationInWindow:v23];
+            v48.x = [(UITouch *)*(*(&v42 + 1) + 8 * j) _locationInWindow:eventReceivingWindow];
             v48.y = v37;
             v49.origin.x = v25;
             v49.origin.y = v27;
@@ -245,7 +245,7 @@ LABEL_18:
           break;
         }
 
-        v22 = v41;
+        context2 = v41;
       }
 
       else
@@ -268,17 +268,17 @@ LABEL_18:
 LABEL_29:
 }
 
-- (void)_applyScale:(CGFloat)a3 atLocation:(double)a4 touchDistance:(double)a5 withEvent:(double)a6
+- (void)_applyScale:(CGFloat)scale atLocation:(double)location touchDistance:(double)distance withEvent:(double)event
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v12 = *(a1 + 96);
+  v12 = *(self + 96);
   [a2 timestamp];
   v14 = v13;
-  v15 = *(a1 + 88);
+  v15 = *(self + 88);
   if (v15 == 1.0)
   {
     v16 = 0;
@@ -286,34 +286,34 @@ LABEL_29:
 
   else
   {
-    v17 = v15 <= 1.0 || v15 >= a3;
-    v16 = (v15 >= 1.0 || v15 <= a3) && v17;
+    v17 = v15 <= 1.0 || v15 >= scale;
+    v16 = (v15 >= 1.0 || v15 <= scale) && v17;
   }
 
-  v19 = *(a1 + 56);
-  *(a1 + 168) = a4;
-  *(a1 + 176) = a5;
-  *(a1 + 72) = *(a1 + 64);
+  v19 = *(self + 56);
+  *(self + 168) = location;
+  *(self + 176) = distance;
+  *(self + 72) = *(self + 64);
   [a2 timestamp];
-  *(a1 + 56) = v20;
-  if ([a2 type] || objc_msgSend(*(a1 + 152), "dominantComponent") == 2)
+  *(self + 56) = v20;
+  if ([a2 type] || objc_msgSend(*(self + 152), "dominantComponent") == 2)
   {
     v21 = v14 - v19;
-    CGAffineTransformMakeScale(&v30, a3, a3);
+    CGAffineTransformMakeScale(&v30, scale, scale);
     v22 = *&v30.c;
-    *(a1 + 96) = *&v30.a;
-    *(a1 + 112) = v22;
-    *(a1 + 128) = *&v30.tx;
+    *(self + 96) = *&v30.a;
+    *(self + 112) = v22;
+    *(self + 128) = *&v30.tx;
     if ([a2 type])
     {
-      v23 = [a2 type];
-      v24 = a3 - v12;
-      if (a3 - v12 < 0.0)
+      type = [a2 type];
+      v24 = scale - v12;
+      if (scale - v12 < 0.0)
       {
-        v24 = -(a3 - v12);
+        v24 = -(scale - v12);
       }
 
-      v25 = v23 == 14 && v24 > 0.0;
+      v25 = type == 14 && v24 > 0.0;
     }
 
     else
@@ -323,17 +323,17 @@ LABEL_29:
 
     if (v21 <= 0.0)
     {
-      if (v21 != 0.0 || (v21 = *(a1 + 80), v21 <= 0.0))
+      if (v21 != 0.0 || (v21 = *(self + 80), v21 <= 0.0))
       {
-        v26 = [objc_opt_self() mainScreen];
-        [v26 _refreshRate];
+        mainScreen = [objc_opt_self() mainScreen];
+        [mainScreen _refreshRate];
         v21 = v27;
       }
     }
 
     else
     {
-      *(a1 + 80) = v21;
+      *(self + 80) = v21;
     }
 
     if (!v25)
@@ -341,18 +341,18 @@ LABEL_29:
       goto LABEL_31;
     }
 
-    v28 = (a3 - v12) / v21;
+    v28 = (scale - v12) / v21;
   }
 
   else
   {
-    *(a1 + 40) = a6 / *(a1 + 96);
+    *(self + 40) = event / *(self + 96);
     v28 = 0.0;
   }
 
-  *(a1 + 64) = v28;
+  *(self + 64) = v28;
 LABEL_31:
-  if ([a1 state])
+  if ([self state])
   {
     v29 = 1;
   }
@@ -364,23 +364,23 @@ LABEL_31:
 
   if ((v29 & 1) == 0)
   {
-    [(_UIGestureRecognizerDriver *)a1 _setState:1 notifyDelegate:?];
+    [(_UIGestureRecognizerDriver *)self _setState:1 notifyDelegate:?];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = [(_UIGestureRecognizerDriver *)self context];
-  v10 = [v6 activeComponentsForEvent:a4];
+  context = [(_UIGestureRecognizerDriver *)self context];
+  v10 = [context activeComponentsForEvent:event];
 
   v7 = [v10 count];
   if (v7)
   {
     if (v7 == 1 && (*&self->_flags & 1) != 0)
     {
-      v8 = [(_UIGestureRecognizerDriver *)self state];
+      state = [(_UIGestureRecognizerDriver *)self state];
 LABEL_6:
-      if (v8 == 1)
+      if (state == 1)
       {
         v9 = 2;
       }
@@ -402,7 +402,7 @@ LABEL_6:
 
   else
   {
-    v8 = [(_UIGestureRecognizerDriver *)self state];
+    state = [(_UIGestureRecognizerDriver *)self state];
     if (self)
     {
       goto LABEL_6;
@@ -412,10 +412,10 @@ LABEL_6:
 LABEL_10:
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = [(_UIGestureRecognizerDriver *)self context];
-  v8 = [v6 activeComponentsForEvent:a4];
+  context = [(_UIGestureRecognizerDriver *)self context];
+  v8 = [context activeComponentsForEvent:event];
 
   v7 = [v8 count];
   if (!v7)
@@ -437,30 +437,30 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)transformChangedWithEvent:(id)a3
+- (void)transformChangedWithEvent:(id)event
 {
-  v5 = [(_UIGestureRecognizerDriver *)self context];
-  [a3 locationInView:0];
+  context = [(_UIGestureRecognizerDriver *)self context];
+  [event locationInView:0];
   v7 = v6;
   v9 = v8;
-  v10 = [a3 _allWindows];
-  v11 = [v10 anyObject];
-  [v5 convertPoint:v11 toSceneReferenceCoordinatesFromView:{v7, v9}];
+  _allWindows = [event _allWindows];
+  anyObject = [_allWindows anyObject];
+  [context convertPoint:anyObject toSceneReferenceCoordinatesFromView:{v7, v9}];
   v13 = v12;
   v15 = v14;
 
-  v16 = [a3 phase];
-  if (v16 > 2)
+  phase = [event phase];
+  if (phase > 2)
   {
-    if (v16 == 3)
+    if (phase == 3)
     {
-      v23 = [(_UIGestureRecognizerDriver *)self state];
+      state = [(_UIGestureRecognizerDriver *)self state];
       if (!self)
       {
         return;
       }
 
-      if (v23 == 1)
+      if (state == 1)
       {
         v20 = 2;
       }
@@ -470,24 +470,24 @@ LABEL_7:
         v20 = 3;
       }
 
-      v19 = self;
+      selfCopy2 = self;
     }
 
     else
     {
-      if (v16 != 4 || !self)
+      if (phase != 4 || !self)
       {
         return;
       }
 
-      v19 = self;
+      selfCopy2 = self;
       v20 = 3;
     }
 
-    [(_UIGestureRecognizerDriver *)v19 _setState:v20 notifyDelegate:1];
+    [(_UIGestureRecognizerDriver *)selfCopy2 _setState:v20 notifyDelegate:1];
   }
 
-  else if (v16 == 1)
+  else if (phase == 1)
   {
     if (self)
     {
@@ -500,7 +500,7 @@ LABEL_7:
     }
 
     self->_initialScale = a;
-    [a3 timestamp];
+    [event timestamp];
     self->_lastEventTime = v22;
     self->_anchorPoint.x = v13;
     self->_anchorPoint.y = v15;
@@ -508,12 +508,12 @@ LABEL_7:
     self->_initialAnchorPoint.y = v15;
   }
 
-  else if (v16 == 2)
+  else if (phase == 2)
   {
-    [a3 scale];
+    [event scale];
     v18 = v17 * self->_initialScale;
 
-    [(_UIPinchGestureRecognizerDriver *)self _applyScale:a3 atLocation:v18 touchDistance:v13 withEvent:v15, 0.0];
+    [(_UIPinchGestureRecognizerDriver *)self _applyScale:event atLocation:v18 touchDistance:v13 withEvent:v15, 0.0];
   }
 }
 

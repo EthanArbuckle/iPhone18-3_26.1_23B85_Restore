@@ -1,14 +1,14 @@
 @interface InteractionController
-- (void)handleInteraction:(id)a3;
+- (void)handleInteraction:(id)interaction;
 @end
 
 @implementation InteractionController
 
-- (void)handleInteraction:(id)a3
+- (void)handleInteraction:(id)interaction
 {
-  v3 = a3;
+  interactionCopy = interaction;
 
-  sub_100658D84(v3);
+  sub_100658D84(interactionCopy);
 }
 
 @end

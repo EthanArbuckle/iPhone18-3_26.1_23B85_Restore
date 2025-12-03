@@ -7,11 +7,11 @@
 
 - (double)score
 {
-  v1 = [a1 metaInfo];
-  v2 = v1;
-  if (v1)
+  metaInfo = [self metaInfo];
+  v2 = metaInfo;
+  if (metaInfo)
   {
-    v3 = [v1 dataUsingEncoding:4];
+    v3 = [metaInfo dataUsingEncoding:4];
     v11 = 0;
     v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v3 options:0 error:&v11];
     v5 = v11;
@@ -78,7 +78,7 @@
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
   _os_log_error_impl(&dword_22CD0B000, log, OS_LOG_TYPE_ERROR, "Failed to get seq2seq score, unable to decode json encoded meta info dictionary %@:%@", &v4, 0x16u);

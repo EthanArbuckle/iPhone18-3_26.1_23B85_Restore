@@ -1,33 +1,33 @@
 @interface VideoDefringingTuningParameters
-+ ($6B6A6628744B4DF06B73A717F4EE0DD2)defaultRadialParams:(SEL)a3;
-+ ($B5339CD3011AE9733252D32A415F0BF1)defaultCorrectionParams:(SEL)a3;
-+ ($E2C29196C7A5C696474C6955C5A9CE06)defaultLUTParams:(unint64_t)a3;
-+ (BOOL)_validateTuning:(id)a3 mode:(unint64_t)a4 parameterKey:(id)a5;
-+ (id)_tuningHeaderForMode:(unint64_t)a3;
++ ($6B6A6628744B4DF06B73A717F4EE0DD2)defaultRadialParams:(SEL)params;
++ ($B5339CD3011AE9733252D32A415F0BF1)defaultCorrectionParams:(SEL)params;
++ ($E2C29196C7A5C696474C6955C5A9CE06)defaultLUTParams:(unint64_t)params;
++ (BOOL)_validateTuning:(id)tuning mode:(unint64_t)mode parameterKey:(id)key;
++ (id)_tuningHeaderForMode:(unint64_t)mode;
 + (id)defaultTuningDictionary;
 - ($6B6A6628744B4DF06B73A717F4EE0DD2)radialParams;
 - ($B5339CD3011AE9733252D32A415F0BF1)correctionParams;
 - ($E2C29196C7A5C696474C6955C5A9CE06)desaturationParams;
-- (VideoDefringingTuningParameters)initWithTuningParameters:(id)a3;
-- (int)_parseCorrectionTuning:(id)a3;
-- (int)_parseDesaturateTuning:(id)a3;
-- (int)_parseRadialTuning:(id)a3;
-- (int)selectParametersForTuningMode:(unint64_t)a3;
+- (VideoDefringingTuningParameters)initWithTuningParameters:(id)parameters;
+- (int)_parseCorrectionTuning:(id)tuning;
+- (int)_parseDesaturateTuning:(id)tuning;
+- (int)_parseRadialTuning:(id)tuning;
+- (int)selectParametersForTuningMode:(unint64_t)mode;
 - (void)setDefaults;
-- (void)setMetadataGain:(float)a3 exposureTime:(float)a4 AWBRGain:(float)a5 AWBBGain:(float)a6;
-- (void)setRadialParamsForWidth:(unint64_t)a3 height:(unint64_t)a4;
+- (void)setMetadataGain:(float)gain exposureTime:(float)time AWBRGain:(float)rGain AWBBGain:(float)bGain;
+- (void)setRadialParamsForWidth:(unint64_t)width height:(unint64_t)height;
 @end
 
 @implementation VideoDefringingTuningParameters
 
-+ ($6B6A6628744B4DF06B73A717F4EE0DD2)defaultRadialParams:(SEL)a3
++ ($6B6A6628744B4DF06B73A717F4EE0DD2)defaultRadialParams:(SEL)params
 {
   *retstr = *ymmword_2959D61D0;
   retstr[1] = *ymmword_2959D61F0;
   return result;
 }
 
-+ ($E2C29196C7A5C696474C6955C5A9CE06)defaultLUTParams:(unint64_t)a3
++ ($E2C29196C7A5C696474C6955C5A9CE06)defaultLUTParams:(unint64_t)params
 {
   v3 = 0.8;
   v4 = 0.4;
@@ -38,7 +38,7 @@
   return result;
 }
 
-+ ($B5339CD3011AE9733252D32A415F0BF1)defaultCorrectionParams:(SEL)a3
++ ($B5339CD3011AE9733252D32A415F0BF1)defaultCorrectionParams:(SEL)params
 {
   if (!a4)
   {
@@ -106,13 +106,13 @@ LABEL_5:
   return v3;
 }
 
-- (VideoDefringingTuningParameters)initWithTuningParameters:(id)a3
+- (VideoDefringingTuningParameters)initWithTuningParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v13.receiver = self;
   v13.super_class = VideoDefringingTuningParameters;
   v8 = [(VideoDefringingTuningParameters *)&v13 init];
-  if (v8 && (!v4 ? (objc_msgSend_defaultTuningDictionary(VideoDefringingTuningParameters, v5, v6, v7), v9 = objc_claimAutoreleasedReturnValue()) : (v9 = v4), tuningParameters = v8->_tuningParameters, v8->_tuningParameters = v9, tuningParameters, !v8->_tuningParameters))
+  if (v8 && (!parametersCopy ? (objc_msgSend_defaultTuningDictionary(VideoDefringingTuningParameters, v5, v6, v7), v9 = objc_claimAutoreleasedReturnValue()) : (v9 = parametersCopy), tuningParameters = v8->_tuningParameters, v8->_tuningParameters = v9, tuningParameters, !v8->_tuningParameters))
   {
     sub_2958BC5C0();
     v11 = 0;
@@ -126,11 +126,11 @@ LABEL_5:
   return v11;
 }
 
-+ (id)_tuningHeaderForMode:(unint64_t)a3
++ (id)_tuningHeaderForMode:(unint64_t)mode
 {
-  if (a3 < 3)
+  if (mode < 3)
   {
-    return *(&off_29EDDC438 + a3);
+    return *(&off_29EDDC438 + mode);
   }
 
   fig_log_get_emitter();
@@ -138,11 +138,11 @@ LABEL_5:
   return 0;
 }
 
-+ (BOOL)_validateTuning:(id)a3 mode:(unint64_t)a4 parameterKey:(id)a5
++ (BOOL)_validateTuning:(id)tuning mode:(unint64_t)mode parameterKey:(id)key
 {
-  v7 = a3;
-  v10 = a5;
-  if (!v7)
+  tuningCopy = tuning;
+  keyCopy = key;
+  if (!tuningCopy)
   {
     sub_2958BC734();
     v14 = 0;
@@ -151,7 +151,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v14 = objc_msgSend__tuningHeaderForMode_(VideoDefringingTuningParameters, v8, a4, v9);
+  v14 = objc_msgSend__tuningHeaderForMode_(VideoDefringingTuningParameters, v8, mode, v9);
   if (!v14)
   {
     sub_2958BC6B8();
@@ -160,7 +160,7 @@ LABEL_18:
 
   v15 = objc_msgSend_defaultTuningDictionary(VideoDefringingTuningParameters, v11, v12, v13);
   v18 = objc_msgSend_objectForKeyedSubscript_(v15, v16, v14, v17);
-  v21 = objc_msgSend_objectForKeyedSubscript_(v18, v19, v10, v20);
+  v21 = objc_msgSend_objectForKeyedSubscript_(v18, v19, keyCopy, v20);
   v25 = objc_msgSend_allKeys(v21, v22, v23, v24);
 
   v40 = 0u;
@@ -183,7 +183,7 @@ LABEL_18:
           objc_enumerationMutation(v26);
         }
 
-        v35 = objc_msgSend_objectForKeyedSubscript_(v7, v29, *(*(&v38 + 1) + 8 * i), v30);
+        v35 = objc_msgSend_objectForKeyedSubscript_(tuningCopy, v29, *(*(&v38 + 1) + 8 * i), v30);
 
         if (!v35)
         {
@@ -213,9 +213,9 @@ LABEL_19:
   return v32;
 }
 
-- (int)_parseDesaturateTuning:(id)a3
+- (int)_parseDesaturateTuning:(id)tuning
 {
-  v5 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"DesaturateParameters", v3);
+  v5 = objc_msgSend_objectForKeyedSubscript_(tuning, a2, @"DesaturateParameters", v3);
   if (objc_msgSend__validateTuning_mode_parameterKey_(VideoDefringingTuningParameters, v6, v5, self->_mode, @"DesaturateParameters"))
   {
     sub_2958BC7B0();
@@ -249,9 +249,9 @@ LABEL_6:
   return v28;
 }
 
-- (int)_parseRadialTuning:(id)a3
+- (int)_parseRadialTuning:(id)tuning
 {
-  v5 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"RadialParameters", v3);
+  v5 = objc_msgSend_objectForKeyedSubscript_(tuning, a2, @"RadialParameters", v3);
   if (objc_msgSend__validateTuning_mode_parameterKey_(VideoDefringingTuningParameters, v6, v5, self->_mode, @"RadialParameters"))
   {
     sub_2958BC830();
@@ -271,17 +271,17 @@ LABEL_5:
   objc_msgSend_floatValue(v9, v10, v11, v12);
   self->_radialParams.a0 = v13;
 
-  v16 = objc_msgSend_objectForKeyedSubscript_(v5, v14, @"a1", v15);
+  v16 = objc_msgSend_objectForKeyedSubscript_(v5, v14, @"self", v15);
   objc_msgSend_floatValue(v16, v17, v18, v19);
-  self->_radialParams.a1 = v20;
+  self->_radialParams.self = v20;
 
   v23 = objc_msgSend_objectForKeyedSubscript_(v5, v21, @"a2", v22);
   objc_msgSend_floatValue(v23, v24, v25, v26);
   self->_radialParams.a2 = v27;
 
-  v30 = objc_msgSend_objectForKeyedSubscript_(v5, v28, @"a3", v29);
+  v30 = objc_msgSend_objectForKeyedSubscript_(v5, v28, @"tuning", v29);
   objc_msgSend_floatValue(v30, v31, v32, v33);
-  self->_radialParams.a3 = v34;
+  self->_radialParams.tuning = v34;
 
   *self->_anon_40 = self->_radialParams;
   v37 = objc_msgSend_objectForKeyedSubscript_(v5, v35, @"MinCoefficient", v36);
@@ -294,9 +294,9 @@ LABEL_6:
   return v42;
 }
 
-- (int)_parseCorrectionTuning:(id)a3
+- (int)_parseCorrectionTuning:(id)tuning
 {
-  v5 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"CorrectionParameters", v3);
+  v5 = objc_msgSend_objectForKeyedSubscript_(tuning, a2, @"CorrectionParameters", v3);
   v9 = objc_msgSend__validateTuning_mode_parameterKey_(VideoDefringingTuningParameters, v6, v5, self->_mode, @"CorrectionParameters");
   if (v9)
   {
@@ -671,27 +671,27 @@ LABEL_16:
   *&self->_anon_40[32] = *&v11.blueCrTh0;
 }
 
-- (void)setRadialParamsForWidth:(unint64_t)a3 height:(unint64_t)a4
+- (void)setRadialParamsForWidth:(unint64_t)width height:(unint64_t)height
 {
-  *&self->_anon_40[32] = sqrtf((a3 * a3 + a4 * a4)) * 0.5;
-  v4.i64[0] = a3;
-  v4.i64[1] = a4;
+  *&self->_anon_40[32] = sqrtf((width * width + height * height)) * 0.5;
+  v4.i64[0] = width;
+  v4.i64[1] = height;
   *v4.i8 = vmul_f32(vcvt_f32_f64(vcvtq_f64_u64(v4)), 0x3F0000003F000000);
   *&self->_anon_40[16] = v4.i64[0];
   *&self->_anon_40[24] = v4.i64[0];
 }
 
-- (void)setMetadataGain:(float)a3 exposureTime:(float)a4 AWBRGain:(float)a5 AWBBGain:(float)a6
+- (void)setMetadataGain:(float)gain exposureTime:(float)time AWBRGain:(float)rGain AWBBGain:(float)bGain
 {
-  if (a6 < 0.000001)
+  if (bGain < 0.000001)
   {
-    a6 = 0.000001;
+    bGain = 0.000001;
   }
 
-  v6.f32[0] = a5 / a6;
+  v6.f32[0] = rGain / bGain;
   v7.i32[0] = LODWORD(self->_correctionParams.awbRatioThr0);
   v8.i32[0] = LODWORD(self->_correctionParams.awbRatioThr1);
-  v6.f32[1] = a3 * a4;
+  v6.f32[1] = gain * time;
   v7.i32[1] = LODWORD(self->_correctionParams.eitThr0);
   v8.i32[1] = LODWORD(self->_correctionParams.eitThr1);
   v9 = vdiv_f32(vsub_f32(v6, v7), vsub_f32(v8, v7));
@@ -706,10 +706,10 @@ LABEL_16:
   LODWORD(self->_correctionParams.correctionStrength) = vmul_lane_f32(v19, v19, 1).u32[0];
 }
 
-- (int)selectParametersForTuningMode:(unint64_t)a3
+- (int)selectParametersForTuningMode:(unint64_t)mode
 {
-  self->_mode = a3;
-  v5 = objc_msgSend__tuningHeaderForMode_(VideoDefringingTuningParameters, a2, a3, v3);
+  self->_mode = mode;
+  v5 = objc_msgSend__tuningHeaderForMode_(VideoDefringingTuningParameters, a2, mode, v3);
   v8 = objc_msgSend_objectForKeyedSubscript_(self->_tuningParameters, v6, v5, v7);
   v11 = v8;
   if (!v8)

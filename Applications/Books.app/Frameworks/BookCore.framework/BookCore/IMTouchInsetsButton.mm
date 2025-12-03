@@ -1,15 +1,15 @@
 @interface IMTouchInsetsButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (UIEdgeInsets)touchInsets;
 - (void)tintColorDidChange;
 @end
 
 @implementation IMTouchInsetsButton
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(IMTouchInsetsButton *)self bounds];
   top = self->_touchInsets.top;
   left = self->_touchInsets.left;
@@ -30,8 +30,8 @@
   [(IMTouchInsetsButton *)&v4 tintColorDidChange];
   if (!self->_titleDoesNotFollowTintColor)
   {
-    v3 = [(IMTouchInsetsButton *)self tintColor];
-    [(IMTouchInsetsButton *)self setTitleColor:v3 forState:0];
+    tintColor = [(IMTouchInsetsButton *)self tintColor];
+    [(IMTouchInsetsButton *)self setTitleColor:tintColor forState:0];
   }
 }
 

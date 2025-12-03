@@ -6,10 +6,10 @@
 
 - (__n128)CGSizeValue
 {
-  v5 = a1;
+  selfCopy = self;
   v4 = a2;
   v3 = 0uLL;
-  _getNSValueBytes(a1, &v3, 16, "CGSize");
+  _getNSValueBytes(self, &v3, 16, "CGSize");
   return v3;
 }
 

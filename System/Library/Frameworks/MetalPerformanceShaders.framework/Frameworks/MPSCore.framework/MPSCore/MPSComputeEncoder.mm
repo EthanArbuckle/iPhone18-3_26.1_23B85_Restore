@@ -1,11 +1,11 @@
 @interface MPSComputeEncoder
-- (BOOL)respondsToSelector:(SEL)a3;
-- (MPSComputeEncoder)initWithCommandBuffer:(id)a3 withDispatchType:(unint64_t)a4 compilationOnly:(BOOL)a5;
-- (MPSComputeEncoder)initWithComputeCommandEncoder:(id)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (MPSComputeEncoder)initWithCommandBuffer:(id)buffer withDispatchType:(unint64_t)type compilationOnly:(BOOL)only;
+- (MPSComputeEncoder)initWithComputeCommandEncoder:(id)encoder;
+- (id)forwardingTargetForSelector:(SEL)selector;
 - (void)dealloc;
-- (void)dispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4;
-- (void)dispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4;
+- (void)dispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup;
+- (void)dispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup;
 @end
 
 @implementation MPSComputeEncoder
@@ -17,17 +17,17 @@
   [(MPSComputeEncoder *)&v3 dealloc];
 }
 
-- (MPSComputeEncoder)initWithCommandBuffer:(id)a3 withDispatchType:(unint64_t)a4 compilationOnly:(BOOL)a5
+- (MPSComputeEncoder)initWithCommandBuffer:(id)buffer withDispatchType:(unint64_t)type compilationOnly:(BOOL)only
 {
   v40.receiver = self;
   v40.super_class = MPSComputeEncoder;
   v8 = [(MPSComputeEncoder *)&v40 init];
   v9 = objc_autoreleasePoolPush();
-  v8->_encoder = objc_msgSend_computeCommandEncoderWithDispatchType_(a3, v10, a4, v11, v12);
+  v8->_encoder = objc_msgSend_computeCommandEncoderWithDispatchType_(buffer, v10, type, v11, v12);
   objc_autoreleasePoolPop(v9);
-  v8->_dispatchType = a4;
+  v8->_dispatchType = type;
   v17 = objc_msgSend_globalTraceObjectID(v8->_encoder, v13, v14, v15, v16);
-  v22 = objc_msgSend_userDictionary(a3, v18, v19, v20, v21);
+  v22 = objc_msgSend_userDictionary(buffer, v18, v19, v20, v21);
   v29 = objc_msgSend_objectForKey_(v22, v23, @"_MPSCommandBufferEncoderIDListKey", v24, v25);
   if (!v29)
   {
@@ -39,28 +39,28 @@
     v41[2] = sub_22E2F1848;
     v41[3] = &unk_2787BE7E8;
     v41[4] = @"_MPSCommandBufferEncoderIDListKey";
-    objc_msgSend_addCompletedHandler_(a3, v32, v41, v33, v34);
+    objc_msgSend_addCompletedHandler_(buffer, v32, v41, v33, v34);
   }
 
   v35 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x277CCABB0], v26, v17, v27, v28);
   objc_msgSend_addObject_(v29, v36, v35, v37, v38);
   v8->_isMultiDispatch = 0;
-  v8->_compilationOnly = a5;
+  v8->_compilationOnly = only;
   return v8;
 }
 
-- (MPSComputeEncoder)initWithComputeCommandEncoder:(id)a3
+- (MPSComputeEncoder)initWithComputeCommandEncoder:(id)encoder
 {
   v10.receiver = self;
   v10.super_class = MPSComputeEncoder;
   v4 = [(MPSComputeEncoder *)&v10 init];
-  v4->_encoder = a3;
-  v4->_dispatchType = objc_msgSend_dispatchType(a3, v5, v6, v7, v8);
+  v4->_encoder = encoder;
+  v4->_dispatchType = objc_msgSend_dispatchType(encoder, v5, v6, v7, v8);
   v4->_isMultiDispatch = 0;
   return v4;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   if (objc_opt_respondsToSelector())
   {
@@ -73,23 +73,23 @@
   }
 }
 
-- (void)dispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)dispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup
 {
   v30 = *MEMORY[0x277D85DE8];
   if (!self->_compilationOnly)
   {
     if (self->_isMultiDispatch && self->_dispatchType == 1)
     {
-      objc_msgSend_memoryBarrierWithScope_(self->_encoder, a2, 3, a4, v4);
+      objc_msgSend_memoryBarrierWithScope_(self->_encoder, a2, 3, threadgroup, v4);
     }
 
     state = self->_state;
-    var0 = a4->var0;
-    var1 = a4->var1;
-    var2 = a4->var2;
-    v12 = a3->var0;
-    v19 = a3->var1;
-    v20 = a3->var2;
+    var0 = threadgroup->var0;
+    var1 = threadgroup->var1;
+    var2 = threadgroup->var2;
+    v12 = threadgroups->var0;
+    v19 = threadgroups->var1;
+    v20 = threadgroups->var2;
     *buf = MEMORY[0x277D85DD0];
     *&buf[8] = 0x40000000;
     *&buf[16] = sub_22E2EE648;
@@ -139,27 +139,27 @@ LABEL_7:
     }
 
     encoder = self->_encoder;
-    *buf = *&a3->var0;
-    *&buf[16] = a3->var2;
-    v21 = *&a4->var0;
-    v22 = a4->var2;
+    *buf = *&threadgroups->var0;
+    *&buf[16] = threadgroups->var2;
+    v21 = *&threadgroup->var0;
+    v22 = threadgroup->var2;
     objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(encoder, v14, buf, &v21, v15, v19, v20);
     self->_isMultiDispatch = 1;
   }
 }
 
-- (void)dispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)dispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup
 {
   if (!self->_compilationOnly)
   {
     encoder = self->_encoder;
-    v7 = *a3;
-    v6 = *a4;
+    v7 = *threads;
+    v6 = *threadgroup;
     objc_msgSend_dispatchThreads_threadsPerThreadgroup_(encoder, a2, &v7, &v6, v4);
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   if (objc_opt_respondsToSelector())
   {
@@ -168,7 +168,7 @@ LABEL_7:
 
   v6.receiver = self;
   v6.super_class = MPSComputeEncoder;
-  return [(MPSComputeEncoder *)&v6 respondsToSelector:a3];
+  return [(MPSComputeEncoder *)&v6 respondsToSelector:selector];
 }
 
 @end

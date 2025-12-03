@@ -1,37 +1,37 @@
 @interface HDMobilityWalkingSteadinessOnboardingAcknowledgementMigrationManager
-- (HDMobilityWalkingSteadinessOnboardingAcknowledgementMigrationManager)initWithProfile:(id)a3 delegate:(id)a4;
+- (HDMobilityWalkingSteadinessOnboardingAcknowledgementMigrationManager)initWithProfile:(id)profile delegate:(id)delegate;
 - (HDMobilityWalkingSteadinessOnboardingAcknowledgementMigrationManagerDelegate)delegate;
 - (id)_queue_fetchFirstOnboardingCompletion;
 - (void)_enqueueMigration;
 - (void)_queue_fetchFirstOnboardingCompletion;
 - (void)_queue_migrateNotificationOnboardingCompletionToOnboardingAcknowledgement;
-- (void)_queue_migrateOnboardingAcknowledgementToNotificationOnboardingCompletionWithClassificationCompletion:(id)a3;
+- (void)_queue_migrateOnboardingAcknowledgementToNotificationOnboardingCompletionWithClassificationCompletion:(id)completion;
 - (void)_queue_reconcileFeatures;
 - (void)_startObservation;
-- (void)daemonReady:(id)a3;
-- (void)featureSettingsManager:(id)a3 didUpdateSettingsForFeatureIdentifier:(id)a4;
-- (void)onboardingCompletionManager:(id)a3 didUpdateOnboardingCompletionsForFeatureIdentifier:(id)a4;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)daemonReady:(id)ready;
+- (void)featureSettingsManager:(id)manager didUpdateSettingsForFeatureIdentifier:(id)identifier;
+- (void)onboardingCompletionManager:(id)manager didUpdateOnboardingCompletionsForFeatureIdentifier:(id)identifier;
+- (void)profileDidBecomeReady:(id)ready;
 @end
 
 @implementation HDMobilityWalkingSteadinessOnboardingAcknowledgementMigrationManager
 
-- (HDMobilityWalkingSteadinessOnboardingAcknowledgementMigrationManager)initWithProfile:(id)a3 delegate:(id)a4
+- (HDMobilityWalkingSteadinessOnboardingAcknowledgementMigrationManager)initWithProfile:(id)profile delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = HDMobilityWalkingSteadinessOnboardingAcknowledgementMigrationManager;
   v8 = [(HDMobilityWalkingSteadinessOnboardingAcknowledgementMigrationManager *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
+    objc_storeWeak(&v8->_profile, profileCopy);
     v10 = HKCreateSerialDispatchQueue();
     queue = v9->_queue;
     v9->_queue = v10;
 
-    objc_storeWeak(&v9->_delegate, v7);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     WeakRetained = objc_loadWeakRetained(&v9->_profile);
     [WeakRetained registerProfileReadyObserver:v9 queue:0];
   }
@@ -39,13 +39,13 @@
   return v9;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
-  v4 = [a3 daemon];
-  [v4 registerDaemonReadyObserver:self queue:0];
+  daemon = [ready daemon];
+  [daemon registerDaemonReadyObserver:self queue:0];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   [(HDMobilityWalkingSteadinessOnboardingAcknowledgementMigrationManager *)self _enqueueMigration];
 
@@ -55,15 +55,15 @@
 - (void)_startObservation
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained featureSettingsManager];
-  [v4 registerObserver:self featureIdentifier:*MEMORY[0x277CCC110] queue:self->_queue];
+  featureSettingsManager = [WeakRetained featureSettingsManager];
+  [featureSettingsManager registerObserver:self featureIdentifier:*MEMORY[0x277CCC110] queue:self->_queue];
 
   v6 = objc_loadWeakRetained(&self->_profile);
-  v5 = [v6 onboardingCompletionManager];
-  [v5 registerObserver:self featureIdentifier:*MEMORY[0x277CCC118] queue:self->_queue];
+  onboardingCompletionManager = [v6 onboardingCompletionManager];
+  [onboardingCompletionManager registerObserver:self featureIdentifier:*MEMORY[0x277CCC118] queue:self->_queue];
 }
 
-- (void)featureSettingsManager:(id)a3 didUpdateSettingsForFeatureIdentifier:(id)a4
+- (void)featureSettingsManager:(id)manager didUpdateSettingsForFeatureIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -71,7 +71,7 @@
   if (os_log_type_enabled(*MEMORY[0x277CCC2F8], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_251962000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Feature settings changed for classifications, triggering migration", &v7, 0xCu);
   }
 
@@ -79,7 +79,7 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)onboardingCompletionManager:(id)a3 didUpdateOnboardingCompletionsForFeatureIdentifier:(id)a4
+- (void)onboardingCompletionManager:(id)manager didUpdateOnboardingCompletionsForFeatureIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -87,7 +87,7 @@
   if (os_log_type_enabled(*MEMORY[0x277CCC2F8], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_251962000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Onboarding completion changed for notifications, triggering migration", &v7, 0xCu);
   }
 
@@ -98,14 +98,14 @@
 - (void)_enqueueMigration
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained database];
+  database = [WeakRetained database];
   queue = self->_queue;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __89__HDMobilityWalkingSteadinessOnboardingAcknowledgementMigrationManager__enqueueMigration__block_invoke;
   v6[3] = &unk_2796D9460;
   v6[4] = self;
-  [v4 performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:queue block:v6];
+  [database performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:queue block:v6];
 }
 
 void __89__HDMobilityWalkingSteadinessOnboardingAcknowledgementMigrationManager__enqueueMigration__block_invoke(uint64_t a1)
@@ -134,27 +134,27 @@ void __89__HDMobilityWalkingSteadinessOnboardingAcknowledgementMigrationManager_
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_migrateOnboardingAcknowledgementToNotificationOnboardingCompletionWithClassificationCompletion:(id)a3
+- (void)_queue_migrateOnboardingAcknowledgementToNotificationOnboardingCompletionWithClassificationCompletion:(id)completion
 {
   queue = self->_queue;
-  v5 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(queue);
   v6 = objc_alloc(MEMORY[0x277CCD740]);
   v7 = *MEMORY[0x277CCC118];
-  v8 = [v5 completionDate];
-  v9 = [v5 countryCode];
+  completionDate = [completionCopy completionDate];
+  countryCode = [completionCopy countryCode];
 
-  v10 = [v6 initWithFeatureIdentifier:v7 version:1 completionDate:v8 countryCode:v9 countryCodeProvenance:3];
+  v10 = [v6 initWithFeatureIdentifier:v7 version:1 completionDate:completionDate countryCode:countryCode countryCodeProvenance:3];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v12 = [WeakRetained onboardingCompletionManager];
+  onboardingCompletionManager = [WeakRetained onboardingCompletionManager];
   v16 = 0;
-  LOBYTE(v9) = [v12 insertOnboardingCompletion:v10 error:&v16];
+  LOBYTE(countryCode) = [onboardingCompletionManager insertOnboardingCompletion:v10 error:&v16];
   v13 = v16;
 
   _HKInitializeLogging();
   v14 = *MEMORY[0x277CCC2F8];
   v15 = *MEMORY[0x277CCC2F8];
-  if (v9)
+  if (countryCode)
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
@@ -172,7 +172,7 @@ void __89__HDMobilityWalkingSteadinessOnboardingAcknowledgementMigrationManager_
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_251962000, a2, OS_LOG_TYPE_DEBUG, "[%{public}@] Onboarding acknowledgement saved to feature settings to reflect notification onboarding completion", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -180,15 +180,15 @@ void __89__HDMobilityWalkingSteadinessOnboardingAcknowledgementMigrationManager_
 - (id)_queue_fetchFirstOnboardingCompletion
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v3 = [WeakRetained onboardingCompletionManager];
+  onboardingCompletionManager = [WeakRetained onboardingCompletionManager];
   v4 = *MEMORY[0x277CCC110];
   v9 = 0;
-  v5 = [v3 onboardingCompletionsForHighestVersionOfFeatureIdentifier:v4 error:&v9];
+  v5 = [onboardingCompletionManager onboardingCompletionsForHighestVersionOfFeatureIdentifier:v4 error:&v9];
   v6 = v9;
 
   if (v5)
   {
-    v7 = [v5 firstObject];
+    firstObject = [v5 firstObject];
   }
 
   else
@@ -199,10 +199,10 @@ void __89__HDMobilityWalkingSteadinessOnboardingAcknowledgementMigrationManager_
       [HDMobilityWalkingSteadinessOnboardingAcknowledgementMigrationManager _queue_fetchFirstOnboardingCompletion];
     }
 
-    v7 = 0;
+    firstObject = 0;
   }
 
-  return v7;
+  return firstObject;
 }
 
 - (HDMobilityWalkingSteadinessOnboardingAcknowledgementMigrationManagerDelegate)delegate

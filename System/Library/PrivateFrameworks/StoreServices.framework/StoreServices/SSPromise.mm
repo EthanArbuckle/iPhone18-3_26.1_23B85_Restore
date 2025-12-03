@@ -1,33 +1,33 @@
 @interface SSPromise
-+ (BOOL)_errorIsCanceledError:(id)a3;
-+ (SSPromise)promiseWithAll:(id)a3;
-+ (SSPromise)promiseWithAny:(id)a3;
-+ (SSPromise)promiseWithError:(id)a3;
-+ (SSPromise)promiseWithResult:(id)a3;
++ (BOOL)_errorIsCanceledError:(id)error;
++ (SSPromise)promiseWithAll:(id)all;
++ (SSPromise)promiseWithAny:(id)any;
++ (SSPromise)promiseWithError:(id)error;
++ (SSPromise)promiseWithResult:(id)result;
 + (id)_globalPromiseStorage;
 + (id)_globalPromiseStorageAccessQueue;
-+ (void)_configureAllPromise:(id)a3 withResults:(id)a4 promises:(id)a5 currentPromiseIndex:(unint64_t)a6;
-+ (void)_configureAnyPromise:(id)a3 withPomises:(id)a4 currentPromiseIndex:(unint64_t)a5;
-+ (void)_finishPromise:(id)a3 withPromise:(id)a4;
++ (void)_configureAllPromise:(id)promise withResults:(id)results promises:(id)promises currentPromiseIndex:(unint64_t)index;
++ (void)_configureAnyPromise:(id)promise withPomises:(id)pomises currentPromiseIndex:(unint64_t)index;
++ (void)_finishPromise:(id)promise withPromise:(id)withPromise;
 - (BOOL)_isFinished;
 - (BOOL)cancel;
-- (BOOL)finishWithResult:(id)a3 error:(id)a4;
+- (BOOL)finishWithResult:(id)result error:(id)error;
 - (BOOL)isCancelled;
 - (BOOL)isFinished;
 - (SSPromise)init;
 - (id)BOOLCompletionHandlerAdapter;
-- (id)catchWithBlock:(id)a3;
+- (id)catchWithBlock:(id)block;
 - (id)completionHandlerAdapter;
 - (id)errorOnlyCompletionHandlerAdapter;
 - (id)nilValueCompletionHandlerAdapter;
-- (id)resultBeforeDate:(id)a3 error:(id *)a4;
-- (id)resultWithError:(id *)a3;
-- (id)resultWithTimeout:(double)a3 error:(id *)a4;
-- (id)thenWithBlock:(id)a3;
-- (void)_addBlock:(id)a3 orCallWithResult:(id)a4;
-- (void)addErrorBlock:(id)a3;
-- (void)addFinishBlock:(id)a3;
-- (void)addSuccessBlock:(id)a3;
+- (id)resultBeforeDate:(id)date error:(id *)error;
+- (id)resultWithError:(id *)error;
+- (id)resultWithTimeout:(double)timeout error:(id *)error;
+- (id)thenWithBlock:(id)block;
+- (void)_addBlock:(id)block orCallWithResult:(id)result;
+- (void)addErrorBlock:(id)block;
+- (void)addFinishBlock:(id)block;
+- (void)addSuccessBlock:(id)block;
 @end
 
 @implementation SSPromise
@@ -128,54 +128,54 @@ void __37__SSPromise_completionHandlerAdapter__block_invoke(uint64_t a1, void *a
   [WeakRetained finishWithResult:v6 error:v5];
 }
 
-+ (SSPromise)promiseWithError:(id)a3
++ (SSPromise)promiseWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 finishWithError:v3];
+  [v4 finishWithError:errorCopy];
 
   return v4;
 }
 
-+ (SSPromise)promiseWithResult:(id)a3
++ (SSPromise)promiseWithResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 finishWithResult:v3];
+  [v4 finishWithResult:resultCopy];
 
   return v4;
 }
 
-+ (SSPromise)promiseWithAll:(id)a3
++ (SSPromise)promiseWithAll:(id)all
 {
-  v3 = a3;
+  allCopy = all;
   v4 = objc_alloc_init(objc_opt_class());
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [objc_opt_class() _configureAllPromise:v4 withResults:v5 promises:v3 currentPromiseIndex:0];
+  [objc_opt_class() _configureAllPromise:v4 withResults:v5 promises:allCopy currentPromiseIndex:0];
 
   return v4;
 }
 
-+ (SSPromise)promiseWithAny:(id)a3
++ (SSPromise)promiseWithAny:(id)any
 {
-  v3 = a3;
+  anyCopy = any;
   v4 = objc_alloc_init(objc_opt_class());
-  [objc_opt_class() _configureAnyPromise:v4 withPomises:v3 currentPromiseIndex:0];
+  [objc_opt_class() _configureAnyPromise:v4 withPomises:anyCopy currentPromiseIndex:0];
 
   return v4;
 }
 
 - (BOOL)isCancelled
 {
-  v3 = [(SSPromise *)self stateLock];
-  [v3 lock];
+  stateLock = [(SSPromise *)self stateLock];
+  [stateLock lock];
 
   if ([(SSPromise *)self _isFinished])
   {
     v4 = objc_opt_class();
-    v5 = [(SSPromise *)self promiseResult];
-    v6 = [v5 error];
-    v7 = [v4 _errorIsCanceledError:v6];
+    promiseResult = [(SSPromise *)self promiseResult];
+    error = [promiseResult error];
+    v7 = [v4 _errorIsCanceledError:error];
   }
 
   else
@@ -183,34 +183,34 @@ void __37__SSPromise_completionHandlerAdapter__block_invoke(uint64_t a1, void *a
     v7 = 0;
   }
 
-  v8 = [(SSPromise *)self stateLock];
-  [v8 unlock];
+  stateLock2 = [(SSPromise *)self stateLock];
+  [stateLock2 unlock];
 
   return v7;
 }
 
 - (BOOL)isFinished
 {
-  v3 = [(SSPromise *)self stateLock];
-  [v3 lock];
+  stateLock = [(SSPromise *)self stateLock];
+  [stateLock lock];
 
-  LOBYTE(v3) = [(SSPromise *)self _isFinished];
-  v4 = [(SSPromise *)self stateLock];
-  [v4 unlock];
+  LOBYTE(stateLock) = [(SSPromise *)self _isFinished];
+  stateLock2 = [(SSPromise *)self stateLock];
+  [stateLock2 unlock];
 
-  return v3;
+  return stateLock;
 }
 
-- (void)addErrorBlock:(id)a3
+- (void)addErrorBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SSPromise *)self completionBlocks];
+  blockCopy = block;
+  completionBlocks = [(SSPromise *)self completionBlocks];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __27__SSPromise_addErrorBlock___block_invoke;
   v11[3] = &unk_1E84AC360;
-  v12 = v5;
-  v13 = v4;
+  v12 = completionBlocks;
+  v13 = blockCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __27__SSPromise_addErrorBlock___block_invoke_2;
@@ -222,16 +222,16 @@ void __37__SSPromise_completionHandlerAdapter__block_invoke(uint64_t a1, void *a
   [(SSPromise *)self _addBlock:v11 orCallWithResult:v8];
 }
 
-- (void)addFinishBlock:(id)a3
+- (void)addFinishBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SSPromise *)self completionBlocks];
+  blockCopy = block;
+  completionBlocks = [(SSPromise *)self completionBlocks];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __28__SSPromise_addFinishBlock___block_invoke;
   v11[3] = &unk_1E84AC360;
-  v12 = v5;
-  v13 = v4;
+  v12 = completionBlocks;
+  v13 = blockCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __28__SSPromise_addFinishBlock___block_invoke_2;
@@ -243,16 +243,16 @@ void __37__SSPromise_completionHandlerAdapter__block_invoke(uint64_t a1, void *a
   [(SSPromise *)self _addBlock:v11 orCallWithResult:v8];
 }
 
-- (void)addSuccessBlock:(id)a3
+- (void)addSuccessBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SSPromise *)self completionBlocks];
+  blockCopy = block;
+  completionBlocks = [(SSPromise *)self completionBlocks];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __29__SSPromise_addSuccessBlock___block_invoke;
   v11[3] = &unk_1E84AC360;
-  v12 = v5;
-  v13 = v4;
+  v12 = completionBlocks;
+  v13 = blockCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __29__SSPromise_addSuccessBlock___block_invoke_2;
@@ -264,61 +264,61 @@ void __37__SSPromise_completionHandlerAdapter__block_invoke(uint64_t a1, void *a
   [(SSPromise *)self _addBlock:v11 orCallWithResult:v8];
 }
 
-- (id)resultBeforeDate:(id)a3 error:(id *)a4
+- (id)resultBeforeDate:(id)date error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SSPromise *)self stateLock];
-  v8 = [v7 lockWhenCondition:1 beforeDate:v6];
+  dateCopy = date;
+  stateLock = [(SSPromise *)self stateLock];
+  v8 = [stateLock lockWhenCondition:1 beforeDate:dateCopy];
 
   if (v8)
   {
-    v9 = [(SSPromise *)self promiseResult];
-    v10 = [(SSPromise *)self stateLock];
-    [v10 unlock];
+    promiseResult = [(SSPromise *)self promiseResult];
+    stateLock2 = [(SSPromise *)self stateLock];
+    [stateLock2 unlock];
 
-    v11 = [v9 result];
+    result = [promiseResult result];
 
-    if (a4 && !v11)
+    if (error && !result)
     {
-      *a4 = [v9 error];
+      *error = [promiseResult error];
     }
 
-    v12 = [v9 result];
+    result2 = [promiseResult result];
   }
 
-  else if (a4)
+  else if (error)
   {
     SSError(@"SSErrorDomain", 149, 0, 0);
-    *a4 = v12 = 0;
+    *error = result2 = 0;
   }
 
   else
   {
-    v12 = 0;
+    result2 = 0;
   }
 
-  return v12;
+  return result2;
 }
 
-- (id)resultWithError:(id *)a3
+- (id)resultWithError:(id *)error
 {
-  v5 = [MEMORY[0x1E695DF00] distantFuture];
-  v6 = [(SSPromise *)self resultBeforeDate:v5 error:a3];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  v6 = [(SSPromise *)self resultBeforeDate:distantFuture error:error];
 
   return v6;
 }
 
-- (id)resultWithTimeout:(double)a3 error:(id *)a4
+- (id)resultWithTimeout:(double)timeout error:(id *)error
 {
-  v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:a3];
-  v7 = [(SSPromise *)self resultBeforeDate:v6 error:a4];
+  v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:timeout];
+  v7 = [(SSPromise *)self resultBeforeDate:v6 error:error];
 
   return v7;
 }
 
-- (id)catchWithBlock:(id)a3
+- (id)catchWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(SSPromise);
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
@@ -326,7 +326,7 @@ void __37__SSPromise_completionHandlerAdapter__block_invoke(uint64_t a1, void *a
   v11[2] = __28__SSPromise_catchWithBlock___block_invoke;
   v11[3] = &unk_1E84B2278;
   objc_copyWeak(&v14, &location);
-  v6 = v4;
+  v6 = blockCopy;
   v13 = v6;
   v7 = v5;
   v12 = v7;
@@ -358,9 +358,9 @@ void __28__SSPromise_catchWithBlock___block_invoke(uint64_t a1, void *a2, void *
   [objc_opt_class() _finishPromise:*(a1 + 32) withPromise:v7];
 }
 
-- (id)thenWithBlock:(id)a3
+- (id)thenWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(SSPromise);
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
@@ -368,7 +368,7 @@ void __28__SSPromise_catchWithBlock___block_invoke(uint64_t a1, void *a2, void *
   v11[2] = __27__SSPromise_thenWithBlock___block_invoke;
   v11[3] = &unk_1E84B2278;
   objc_copyWeak(&v14, &location);
-  v6 = v4;
+  v6 = blockCopy;
   v13 = v6;
   v7 = v5;
   v12 = v7;
@@ -408,15 +408,15 @@ void __27__SSPromise_thenWithBlock___block_invoke(uint64_t a1, void *a2, void *a
   return self;
 }
 
-- (BOOL)finishWithResult:(id)a3 error:(id)a4
+- (BOOL)finishWithResult:(id)result error:(id)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  resultCopy = result;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (!resultCopy || !errorCopy)
   {
-    if (v6 | v7)
+    if (resultCopy | errorCopy)
     {
       goto LABEL_26;
     }
@@ -427,19 +427,19 @@ void __27__SSPromise_thenWithBlock___block_invoke(uint64_t a1, void *a2, void *a
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v22 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v23 = v22 | 2;
+      v23 = shouldLog | 2;
     }
 
     else
     {
-      v23 = v22;
+      v23 = shouldLog;
     }
 
-    v12 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v23 &= 2u;
     }
@@ -472,19 +472,19 @@ LABEL_24:
     v9 = +[SSLogConfig sharedConfig];
   }
 
-  v10 = [v9 shouldLog];
+  shouldLog2 = [v9 shouldLog];
   if ([v9 shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog2 | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog2;
   }
 
-  v12 = [v9 OSLogObject];
-  if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v9 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v11 &= 2u;
   }
@@ -497,7 +497,7 @@ LABEL_24:
   *location = 138543874;
   *&location[4] = objc_opt_class();
   v51 = 2114;
-  v52 = v6;
+  v52 = resultCopy;
   v53 = 2114;
   v54 = v8;
   v13 = *&location[4];
@@ -516,13 +516,13 @@ LABEL_12:
 LABEL_25:
 
 LABEL_26:
-  v25 = [(SSPromise *)self stateLock];
-  [v25 lock];
+  stateLock = [(SSPromise *)self stateLock];
+  [stateLock lock];
 
-  v26 = [(SSPromise *)self stateLock];
-  v27 = [v26 condition];
+  stateLock2 = [(SSPromise *)self stateLock];
+  condition = [stateLock2 condition];
 
-  if (v27 == 1)
+  if (condition == 1)
   {
     v32 = SSPromiseLogConfig();
     if (!v32)
@@ -530,19 +530,19 @@ LABEL_26:
       v32 = +[SSLogConfig sharedConfig];
     }
 
-    v33 = [v32 shouldLog];
+    shouldLog3 = [v32 shouldLog];
     if ([v32 shouldLogToDisk])
     {
-      v34 = v33 | 2;
+      v34 = shouldLog3 | 2;
     }
 
     else
     {
-      v34 = v33;
+      v34 = shouldLog3;
     }
 
-    v35 = [v32 OSLogObject];
-    if (!os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v32 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       v34 &= 2u;
     }
@@ -560,26 +560,26 @@ LABEL_26:
       {
 LABEL_39:
 
-        v28 = [(SSPromise *)self stateLock];
-        [(SSPromiseResult *)v28 unlock];
+        stateLock3 = [(SSPromise *)self stateLock];
+        [(SSPromiseResult *)stateLock3 unlock];
         goto LABEL_40;
       }
 
-      v35 = [MEMORY[0x1E696AEC0] stringWithCString:v38 encoding:{4, location, v47}];
+      oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v38 encoding:{4, location, v47}];
       free(v38);
-      SSFileLog(v32, @"%@", v39, v40, v41, v42, v43, v44, v35);
+      SSFileLog(v32, @"%@", v39, v40, v41, v42, v43, v44, oSLogObject2);
     }
 
     goto LABEL_39;
   }
 
-  v28 = [[SSPromiseResult alloc] initWithResult:v6 error:v8];
-  [(SSPromise *)self setPromiseResult:v28];
-  v29 = [(SSPromise *)self stateLock];
-  [v29 unlockWithCondition:1];
+  stateLock3 = [[SSPromiseResult alloc] initWithResult:resultCopy error:v8];
+  [(SSPromise *)self setPromiseResult:stateLock3];
+  stateLock4 = [(SSPromise *)self stateLock];
+  [stateLock4 unlockWithCondition:1];
 
-  v30 = [(SSPromise *)self completionBlocks];
-  [v30 flushCompletionBlocksWithPromiseResult:v28];
+  completionBlocks = [(SSPromise *)self completionBlocks];
+  [completionBlocks flushCompletionBlocksWithPromiseResult:stateLock3];
 
   objc_initWeak(location, self);
   v31 = +[SSPromise _globalPromiseStorageAccessQueue];
@@ -594,7 +594,7 @@ LABEL_39:
   objc_destroyWeak(location);
 LABEL_40:
 
-  return v27 != 1;
+  return condition != 1;
 }
 
 void __36__SSPromise_finishWithResult_error___block_invoke(uint64_t a1)
@@ -714,55 +714,55 @@ void __45__SSPromise_nilValueCompletionHandlerAdapter__block_invoke(uint64_t a1,
   }
 }
 
-- (void)_addBlock:(id)a3 orCallWithResult:(id)a4
+- (void)_addBlock:(id)block orCallWithResult:(id)result
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(SSPromise *)self stateLock];
-  [v7 lock];
+  blockCopy = block;
+  resultCopy = result;
+  stateLock = [(SSPromise *)self stateLock];
+  [stateLock lock];
 
-  v8 = [(SSPromise *)self promiseResult];
-  if (v8)
+  promiseResult = [(SSPromise *)self promiseResult];
+  if (promiseResult)
   {
-    v9 = [(SSPromise *)self stateLock];
-    [v9 unlock];
+    stateLock2 = [(SSPromise *)self stateLock];
+    [stateLock2 unlock];
 
-    v6[2](v6, v8);
+    resultCopy[2](resultCopy, promiseResult);
   }
 
   else
   {
-    v11[2]();
-    v10 = [(SSPromise *)self stateLock];
-    [v10 unlock];
+    blockCopy[2]();
+    stateLock3 = [(SSPromise *)self stateLock];
+    [stateLock3 unlock];
   }
 }
 
-+ (void)_configureAllPromise:(id)a3 withResults:(id)a4 promises:(id)a5 currentPromiseIndex:(unint64_t)a6
++ (void)_configureAllPromise:(id)promise withResults:(id)results promises:(id)promises currentPromiseIndex:(unint64_t)index
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 objectAtIndexedSubscript:a6];
-  objc_initWeak(&location, a1);
+  promiseCopy = promise;
+  resultsCopy = results;
+  promisesCopy = promises;
+  v13 = [promisesCopy objectAtIndexedSubscript:index];
+  objc_initWeak(&location, self);
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __75__SSPromise__configureAllPromise_withResults_promises_currentPromiseIndex___block_invoke;
   v23[3] = &unk_1E84B22A0;
   objc_copyWeak(v27, &location);
-  v14 = v11;
+  v14 = resultsCopy;
   v24 = v14;
-  v27[1] = a6;
-  v15 = v12;
+  v27[1] = index;
+  v15 = promisesCopy;
   v25 = v15;
-  v16 = v10;
+  v16 = promiseCopy;
   v26 = v16;
   [v13 addSuccessBlock:v23];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __75__SSPromise__configureAllPromise_withResults_promises_currentPromiseIndex___block_invoke_2;
   v19[3] = &unk_1E84B22C8;
-  v22 = a6;
+  indexCopy = index;
   v17 = v15;
   v20 = v17;
   v18 = v16;
@@ -803,20 +803,20 @@ void __75__SSPromise__configureAllPromise_withResults_promises_currentPromiseInd
   [*(a1 + 40) finishWithError:v5];
 }
 
-+ (void)_configureAnyPromise:(id)a3 withPomises:(id)a4 currentPromiseIndex:(unint64_t)a5
++ (void)_configureAnyPromise:(id)promise withPomises:(id)pomises currentPromiseIndex:(unint64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 objectAtIndexedSubscript:a5];
-  objc_initWeak(&location, a1);
+  promiseCopy = promise;
+  pomisesCopy = pomises;
+  v10 = [pomisesCopy objectAtIndexedSubscript:index];
+  objc_initWeak(&location, self);
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __66__SSPromise__configureAnyPromise_withPomises_currentPromiseIndex___block_invoke;
   v19[3] = &unk_1E84B22F0;
-  v22 = a5;
-  v11 = v9;
+  indexCopy = index;
+  v11 = pomisesCopy;
   v20 = v11;
-  v12 = v8;
+  v12 = promiseCopy;
   v21 = v12;
   [v10 addSuccessBlock:v19];
   v15[0] = MEMORY[0x1E69E9820];
@@ -824,7 +824,7 @@ void __75__SSPromise__configureAllPromise_withResults_promises_currentPromiseInd
   v15[2] = __66__SSPromise__configureAnyPromise_withPomises_currentPromiseIndex___block_invoke_2;
   v15[3] = &unk_1E84B2318;
   objc_copyWeak(v18, &location);
-  v18[1] = a5;
+  v18[1] = index;
   v13 = v11;
   v16 = v13;
   v14 = v12;
@@ -863,13 +863,13 @@ void __66__SSPromise__configureAnyPromise_withPomises_currentPromiseIndex___bloc
   }
 }
 
-+ (BOOL)_errorIsCanceledError:(id)a3
++ (BOOL)_errorIsCanceledError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x1E696A250]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
-    v5 = [v3 code] == 3072;
+    v5 = [errorCopy code] == 3072;
   }
 
   else
@@ -880,30 +880,30 @@ void __66__SSPromise__configureAnyPromise_withPomises_currentPromiseIndex___bloc
   return v5;
 }
 
-+ (void)_finishPromise:(id)a3 withPromise:(id)a4
++ (void)_finishPromise:(id)promise withPromise:(id)withPromise
 {
-  v5 = a3;
+  promiseCopy = promise;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __40__SSPromise__finishPromise_withPromise___block_invoke;
   v11[3] = &unk_1E84B2340;
-  v6 = v5;
+  v6 = promiseCopy;
   v12 = v6;
-  v7 = a4;
-  [v7 addSuccessBlock:v11];
+  withPromiseCopy = withPromise;
+  [withPromiseCopy addSuccessBlock:v11];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __40__SSPromise__finishPromise_withPromise___block_invoke_2;
   v9[3] = &unk_1E84AD730;
   v10 = v6;
   v8 = v6;
-  [v7 addErrorBlock:v9];
+  [withPromiseCopy addErrorBlock:v9];
 }
 
 - (BOOL)_isFinished
 {
-  v2 = [(SSPromise *)self stateLock];
-  v3 = [v2 condition] == 1;
+  stateLock = [(SSPromise *)self stateLock];
+  v3 = [stateLock condition] == 1;
 
   return v3;
 }

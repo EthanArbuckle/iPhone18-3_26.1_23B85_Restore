@@ -1,10 +1,10 @@
 @interface AMSDPrivateIdentifiersXPCServerCreator
-+ (id)serverWithError:(id *)a3;
++ (id)serverWithError:(id *)error;
 @end
 
 @implementation AMSDPrivateIdentifiersXPCServerCreator
 
-+ (id)serverWithError:(id *)a3
++ (id)serverWithError:(id *)error
 {
   sub_1001A5FC8(v5);
   sub_10000C4FC(v5, v5[3]);

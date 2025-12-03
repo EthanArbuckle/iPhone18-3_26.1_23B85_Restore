@@ -1,21 +1,21 @@
 @interface SDUnlockClassALongTermKeyResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSessionID:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSessionID:(BOOL)d;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SDUnlockClassALongTermKeyResponse
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSessionID:(BOOL)a3
+- (void)setHasSessionID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -48,8 +48,8 @@
   v7.receiver = self;
   v7.super_class = SDUnlockClassALongTermKeyResponse;
   v3 = [(SDUnlockClassALongTermKeyResponse *)&v7 description];
-  v4 = [(SDUnlockClassALongTermKeyResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SDUnlockClassALongTermKeyResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -87,9 +87,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -116,40 +116,40 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[7] = self->_version;
-    *(v4 + 32) |= 4u;
+    toCopy[7] = self->_version;
+    *(toCopy + 32) |= 4u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[6] = self->_sessionID;
-    *(v4 + 32) |= 2u;
+    toCopy[6] = self->_sessionID;
+    *(toCopy + 32) |= 2u;
   }
 
   if (self->_longTermKey)
   {
-    v6 = v4;
-    [v4 setLongTermKey:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setLongTermKey:?];
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    v4[2] = self->_errorCode;
-    *(v4 + 32) |= 1u;
+    toCopy[2] = self->_errorCode;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -165,7 +165,7 @@
     *(v5 + 32) |= 2u;
   }
 
-  v8 = [(NSData *)self->_longTermKey copyWithZone:a3];
+  v8 = [(NSData *)self->_longTermKey copyWithZone:zone];
   v9 = v6[2];
   v6[2] = v8;
 
@@ -178,44 +178,44 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_version != *(v4 + 7))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_version != *(equalCopy + 7))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_sessionID != *(v4 + 6))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_sessionID != *(equalCopy + 6))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   longTermKey = self->_longTermKey;
-  if (longTermKey | *(v4 + 2))
+  if (longTermKey | *(equalCopy + 2))
   {
     if (![(NSData *)longTermKey isEqual:?])
     {
@@ -227,10 +227,10 @@ LABEL_19:
     has = self->_has;
   }
 
-  v8 = (*(v4 + 32) & 1) == 0;
+  v8 = (*(equalCopy + 32) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_errorCode != *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_errorCode != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
@@ -281,33 +281,33 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if ((v5 & 4) != 0)
   {
-    self->_version = *(v4 + 7);
+    self->_version = *(fromCopy + 7);
     *&self->_has |= 4u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_sessionID = *(v4 + 6);
+    self->_sessionID = *(fromCopy + 6);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(SDUnlockClassALongTermKeyResponse *)self setLongTermKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
-    self->_errorCode = *(v4 + 2);
+    self->_errorCode = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 }

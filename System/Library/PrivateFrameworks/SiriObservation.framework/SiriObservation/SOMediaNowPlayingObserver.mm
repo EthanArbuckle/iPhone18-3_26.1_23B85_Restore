@@ -1,34 +1,34 @@
 @interface SOMediaNowPlayingObserver
 + (id)defaultObserver;
 - (BOOL)_isProxyGroupPlayer;
-- (SOMediaNowPlayingObserver)initWithQueue:(id)a3;
-- (SOMediaNowPlayingObserver)initWithQueue:(id)a3 instanceContext:(id)a4;
+- (SOMediaNowPlayingObserver)initWithQueue:(id)queue;
+- (SOMediaNowPlayingObserver)initWithQueue:(id)queue instanceContext:(id)context;
 - (int64_t)playbackState;
 - (void)_beginGroup;
 - (void)_endGroup;
-- (void)_fetchLastPlayingDateWithCompletion:(id)a3;
-- (void)_fetchNowPlayingAppPlaybackStateForReason:(id)a3 completion:(id)a4;
-- (void)_handleGroupIdentifierUpdatesFromMediaRemoteActiveDeviceInfo:(id)a3;
-- (void)_handleNowPlayingApplicationPlaybackStateChange:(int64_t)a3;
+- (void)_fetchLastPlayingDateWithCompletion:(id)completion;
+- (void)_fetchNowPlayingAppPlaybackStateForReason:(id)reason completion:(id)completion;
+- (void)_handleGroupIdentifierUpdatesFromMediaRemoteActiveDeviceInfo:(id)info;
+- (void)_handleNowPlayingApplicationPlaybackStateChange:(int64_t)change;
 - (void)_startObservingNowPlayingAppPlaybackState;
 - (void)_stopObservingNowPlayingAppPlaybackState;
 - (void)_updateProxyGroupPlayerState;
-- (void)addListener:(id)a3;
-- (void)controller:(id)a3 didFailWithError:(id)a4;
-- (void)controller:(id)a3 didLoadResponse:(id)a4;
-- (void)controller:(id)a3 playbackQueueDidChangeFrom:(id)a4 to:(id)a5;
-- (void)controller:(id)a3 playbackStateDidChangeFrom:(unsigned int)a4 to:(unsigned int)a5;
-- (void)controllerWillReloadForInvalidation:(id)a3;
+- (void)addListener:(id)listener;
+- (void)controller:(id)controller didFailWithError:(id)error;
+- (void)controller:(id)controller didLoadResponse:(id)response;
+- (void)controller:(id)controller playbackQueueDidChangeFrom:(id)from to:(id)to;
+- (void)controller:(id)controller playbackStateDidChangeFrom:(unsigned int)from to:(unsigned int)to;
+- (void)controllerWillReloadForInvalidation:(id)invalidation;
 - (void)dealloc;
-- (void)getNowPlayingApplicationBundleIdentifier:(id)a3;
-- (void)getNowPlayingInfoForCurrentItemWithCompletion:(id)a3;
-- (void)getPlaybackStateAndLastPlayingDateWithCompletion:(id)a3;
-- (void)getPlaybackStateWithCompletion:(id)a3;
-- (void)getProxyGroupPlayerStateWithCompletion:(id)a3;
-- (void)mediaRemoteActiveDeviceInfoDidChange:(id)a3;
-- (void)mediaRemoteNowPlayingApplicationPlaybackStateDidChange:(id)a3;
-- (void)mediaRemoteNowPlayingInfoDidChange:(id)a3;
-- (void)removeListener:(id)a3;
+- (void)getNowPlayingApplicationBundleIdentifier:(id)identifier;
+- (void)getNowPlayingInfoForCurrentItemWithCompletion:(id)completion;
+- (void)getPlaybackStateAndLastPlayingDateWithCompletion:(id)completion;
+- (void)getPlaybackStateWithCompletion:(id)completion;
+- (void)getProxyGroupPlayerStateWithCompletion:(id)completion;
+- (void)mediaRemoteActiveDeviceInfoDidChange:(id)change;
+- (void)mediaRemoteNowPlayingApplicationPlaybackStateDidChange:(id)change;
+- (void)mediaRemoteNowPlayingInfoDidChange:(id)change;
+- (void)removeListener:(id)listener;
 @end
 
 @implementation SOMediaNowPlayingObserver
@@ -61,14 +61,14 @@
       v9 = 136315394;
       v10 = "[SOMediaNowPlayingObserver _startObservingNowPlayingAppPlaybackState]";
       v11 = 2048;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_26858F000, v3, OS_LOG_TYPE_INFO, "%s %p", &v9, 0x16u);
     }
 
     if ([(SOMediaNowPlayingObserver *)self _supportsProxyGroupPlayer])
     {
-      v4 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v4 addObserver:self selector:sel_mediaRemoteActiveDeviceInfoDidChange_ name:*MEMORY[0x277D27A20] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_mediaRemoteActiveDeviceInfoDidChange_ name:*MEMORY[0x277D27A20] object:0];
     }
 
     nowPlayingController = self->_nowPlayingController;
@@ -79,11 +79,11 @@
 
     else
     {
-      v6 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v6 addObserver:self selector:sel_mediaRemoteNowPlayingApplicationPlaybackStateDidChange_ name:*MEMORY[0x277D27B50] object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel_mediaRemoteNowPlayingApplicationPlaybackStateDidChange_ name:*MEMORY[0x277D27B50] object:0];
 
-      v7 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v7 addObserver:self selector:sel_mediaRemoteNowPlayingInfoDidChange_ name:*MEMORY[0x277D27BC8] object:0];
+      defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter3 addObserver:self selector:sel_mediaRemoteNowPlayingInfoDidChange_ name:*MEMORY[0x277D27BC8] object:0];
 
       MRMediaRemoteSetWantsNowPlayingNotifications();
     }
@@ -105,14 +105,14 @@
       v9 = 136315394;
       v10 = "[SOMediaNowPlayingObserver _stopObservingNowPlayingAppPlaybackState]";
       v11 = 2048;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_26858F000, v3, OS_LOG_TYPE_INFO, "%s %p", &v9, 0x16u);
     }
 
     if ([(SOMediaNowPlayingObserver *)self _supportsProxyGroupPlayer])
     {
-      v4 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v4 removeObserver:self name:*MEMORY[0x277D27A20] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277D27A20] object:0];
     }
 
     nowPlayingController = self->_nowPlayingController;
@@ -123,11 +123,11 @@
 
     else
     {
-      v6 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v6 removeObserver:self name:*MEMORY[0x277D27B50] object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 removeObserver:self name:*MEMORY[0x277D27B50] object:0];
 
-      v7 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v7 removeObserver:self name:*MEMORY[0x277D27BC8] object:0];
+      defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter3 removeObserver:self name:*MEMORY[0x277D27BC8] object:0];
 
       MRMediaRemoteSetWantsNowPlayingNotifications();
     }
@@ -142,9 +142,9 @@
 {
   v17 = *MEMORY[0x277D85DE8];
   isProxyGroupPlayer = self->_isProxyGroupPlayer;
-  v4 = [(SOMediaNowPlayingObserver *)self _isProxyGroupPlayer];
-  self->_isProxyGroupPlayer = v4;
-  if (isProxyGroupPlayer != v4)
+  _isProxyGroupPlayer = [(SOMediaNowPlayingObserver *)self _isProxyGroupPlayer];
+  self->_isProxyGroupPlayer = _isProxyGroupPlayer;
+  if (isProxyGroupPlayer != _isProxyGroupPlayer)
   {
     v14 = 0u;
     v15 = 0u;
@@ -211,7 +211,7 @@
       v9 = 136315650;
       v10 = "[SOMediaNowPlayingObserver _isProxyGroupPlayer]";
       v11 = 2048;
-      v12 = self;
+      selfCopy = self;
       v13 = 1024;
       v14 = v5;
       _os_log_debug_impl(&dword_26858F000, v6, OS_LOG_TYPE_DEBUG, "%s %p isProxyGroupPlayer = %d", &v9, 0x1Cu);
@@ -252,17 +252,17 @@
   return v3;
 }
 
-- (void)_fetchLastPlayingDateWithCompletion:(id)a3
+- (void)_fetchLastPlayingDateWithCompletion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __65__SOMediaNowPlayingObserver__fetchLastPlayingDateWithCompletion___block_invoke;
   v19[3] = &unk_279C3D170;
   objc_copyWeak(&v21, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v20 = v5;
   v6 = MEMORY[0x26D61D070](v19);
   nowPlayingController = self->_nowPlayingController;
@@ -275,7 +275,7 @@
       *buf = 136315394;
       v24 = "[SOMediaNowPlayingObserver _fetchLastPlayingDateWithCompletion:]";
       v25 = 2048;
-      v26 = self;
+      selfCopy2 = self;
       _os_log_debug_impl(&dword_26858F000, v8, OS_LOG_TYPE_DEBUG, "%s %p Calling [MRNowPlayingController performRequestWithCompletion:]...", buf, 0x16u);
     }
 
@@ -298,7 +298,7 @@
       *buf = 136315394;
       v24 = "[SOMediaNowPlayingObserver _fetchLastPlayingDateWithCompletion:]";
       v25 = 2048;
-      v26 = self;
+      selfCopy2 = self;
       _os_log_debug_impl(&dword_26858F000, v8, OS_LOG_TYPE_DEBUG, "%s %p Calling MRMediaRemote C APIs...", buf, 0x16u);
     }
 
@@ -438,20 +438,20 @@ void __65__SOMediaNowPlayingObserver__fetchLastPlayingDateWithCompletion___block
   }
 }
 
-- (void)_fetchNowPlayingAppPlaybackStateForReason:(id)a3 completion:(id)a4
+- (void)_fetchNowPlayingAppPlaybackStateForReason:(id)reason completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  completionCopy = completion;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v21 = "[SOMediaNowPlayingObserver _fetchNowPlayingAppPlaybackStateForReason:completion:]";
     v22 = 2048;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
-    v25 = v6;
+    v25 = reasonCopy;
     _os_log_impl(&dword_26858F000, v8, OS_LOG_TYPE_INFO, "%s %p reason = %@", buf, 0x20u);
   }
 
@@ -462,11 +462,11 @@ void __65__SOMediaNowPlayingObserver__fetchLastPlayingDateWithCompletion___block
   v16[2] = __82__SOMediaNowPlayingObserver__fetchNowPlayingAppPlaybackStateForReason_completion___block_invoke;
   v16[3] = &unk_279C3D148;
   v16[4] = self;
-  v10 = v6;
+  v10 = reasonCopy;
   v17 = v10;
   v19[1] = v9;
   objc_copyWeak(v19, buf);
-  v11 = v7;
+  v11 = completionCopy;
   v18 = v11;
   v12 = MEMORY[0x26D61D070](v16);
   queue = self->_queue;
@@ -529,11 +529,11 @@ uint64_t __82__SOMediaNowPlayingObserver__fetchNowPlayingAppPlaybackStateForReas
   return result;
 }
 
-- (void)_handleNowPlayingApplicationPlaybackStateChange:(int64_t)a3
+- (void)_handleNowPlayingApplicationPlaybackStateChange:(int64_t)change
 {
   v28 = *MEMORY[0x277D85DE8];
   playbackState = self->_playbackState;
-  if (playbackState != a3)
+  if (playbackState != change)
   {
     v6 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
@@ -545,7 +545,7 @@ uint64_t __82__SOMediaNowPlayingObserver__fetchNowPlayingAppPlaybackStateForReas
       *buf = 136316162;
       v19 = "[SOMediaNowPlayingObserver _handleNowPlayingApplicationPlaybackStateChange:]";
       v20 = 2048;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
       v23 = instanceContext;
       v24 = 2112;
@@ -557,11 +557,11 @@ uint64_t __82__SOMediaNowPlayingObserver__fetchNowPlayingAppPlaybackStateForReas
       playbackState = self->_playbackState;
     }
 
-    self->_playbackState = a3;
-    if (a3 == 1 || playbackState == 1)
+    self->_playbackState = change;
+    if (change == 1 || playbackState == 1)
     {
-      v11 = [MEMORY[0x277CBEAA8] date];
-      [(SOMediaNowPlayingObserver *)self _handleLastPlayingDateChangedTo:v11];
+      date = [MEMORY[0x277CBEAA8] date];
+      [(SOMediaNowPlayingObserver *)self _handleLastPlayingDateChangedTo:date];
     }
 
     v17[0] = MEMORY[0x277D85DD0];
@@ -570,7 +570,7 @@ uint64_t __82__SOMediaNowPlayingObserver__fetchNowPlayingAppPlaybackStateForReas
     v17[3] = &unk_279C3D0F8;
     v17[4] = self;
     v17[5] = playbackState;
-    v17[6] = a3;
+    v17[6] = change;
     v12 = MEMORY[0x26D61D070](v17);
     v13 = v12;
     if (self->_lastPlayingDate)
@@ -677,19 +677,19 @@ uint64_t __77__SOMediaNowPlayingObserver__handleNowPlayingApplicationPlaybackSta
   return result;
 }
 
-- (void)mediaRemoteActiveDeviceInfoDidChange:(id)a3
+- (void)mediaRemoteActiveDeviceInfoDidChange:(id)change
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v12 = "[SOMediaNowPlayingObserver mediaRemoteActiveDeviceInfoDidChange:]";
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v4;
+    v16 = changeCopy;
     _os_log_impl(&dword_26858F000, v5, OS_LOG_TYPE_INFO, "%s %p notification = %@", buf, 0x20u);
   }
 
@@ -699,8 +699,8 @@ uint64_t __77__SOMediaNowPlayingObserver__handleNowPlayingApplicationPlaybackSta
   v9[2] = __66__SOMediaNowPlayingObserver_mediaRemoteActiveDeviceInfoDidChange___block_invoke;
   v9[3] = &unk_279C3D598;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = changeCopy;
+  v7 = changeCopy;
   dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -715,28 +715,28 @@ uint64_t __66__SOMediaNowPlayingObserver_mediaRemoteActiveDeviceInfoDidChange___
   return [v2 _handleGroupIdentifierUpdatesFromMediaRemoteActiveDeviceInfo:v3];
 }
 
-- (void)_handleGroupIdentifierUpdatesFromMediaRemoteActiveDeviceInfo:(id)a3
+- (void)_handleGroupIdentifierUpdatesFromMediaRemoteActiveDeviceInfo:(id)info
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277D27E80]];
+  userInfo = [info userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D27E80]];
 
   if (v5)
   {
-    v6 = [v5 airPlayGroupUID];
+    airPlayGroupUID = [v5 airPlayGroupUID];
     v7 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
     {
       *buf = 136315650;
       v23 = "[SOMediaNowPlayingObserver _handleGroupIdentifierUpdatesFromMediaRemoteActiveDeviceInfo:]";
       v24 = 2048;
-      v25 = self;
+      selfCopy = self;
       v26 = 2112;
-      v27 = v6;
+      v27 = airPlayGroupUID;
       _os_log_impl(&dword_26858F000, v7, OS_LOG_TYPE_INFO, "%s #hal %p airPlayGroupUID from kMRActiveDeviceInfoDidChangeNotification: %@", buf, 0x20u);
     }
 
-    if ([v6 length])
+    if ([airPlayGroupUID length])
     {
       v19 = 0u;
       v20 = 0u;
@@ -758,7 +758,7 @@ uint64_t __66__SOMediaNowPlayingObserver_mediaRemoteActiveDeviceInfoDidChange___
             }
 
             v13 = *(*(&v17 + 1) + 8 * i);
-            if ((objc_opt_respondsToSelector() & 1) != 0 && ([v13 nowPlayingObserver:self isGroupIdentifierFromMediaRemoteActiveDeviceInfoIdenticalToContext:{v6, v17}] & 1) == 0)
+            if ((objc_opt_respondsToSelector() & 1) != 0 && ([v13 nowPlayingObserver:self isGroupIdentifierFromMediaRemoteActiveDeviceInfoIdenticalToContext:{airPlayGroupUID, v17}] & 1) == 0)
             {
               v15 = *MEMORY[0x277CEF098];
               if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
@@ -805,19 +805,19 @@ LABEL_21:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mediaRemoteNowPlayingInfoDidChange:(id)a3
+- (void)mediaRemoteNowPlayingInfoDidChange:(id)change
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v10 = "[SOMediaNowPlayingObserver mediaRemoteNowPlayingInfoDidChange:]";
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v4;
+    v14 = changeCopy;
     _os_log_impl(&dword_26858F000, v5, OS_LOG_TYPE_INFO, "%s %p notification = %@", buf, 0x20u);
   }
 
@@ -874,19 +874,19 @@ void __64__SOMediaNowPlayingObserver_mediaRemoteNowPlayingInfoDidChange___block_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mediaRemoteNowPlayingApplicationPlaybackStateDidChange:(id)a3
+- (void)mediaRemoteNowPlayingApplicationPlaybackStateDidChange:(id)change
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v13 = "[SOMediaNowPlayingObserver mediaRemoteNowPlayingApplicationPlaybackStateDidChange:]";
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v4;
+    v17 = changeCopy;
     _os_log_impl(&dword_26858F000, v5, OS_LOG_TYPE_INFO, "%s %p notification = %@", buf, 0x20u);
   }
 
@@ -895,9 +895,9 @@ void __64__SOMediaNowPlayingObserver_mediaRemoteNowPlayingInfoDidChange___block_
   v9[1] = 3221225472;
   v9[2] = __84__SOMediaNowPlayingObserver_mediaRemoteNowPlayingApplicationPlaybackStateDidChange___block_invoke;
   v9[3] = &unk_279C3D598;
-  v10 = v4;
-  v11 = self;
-  v7 = v4;
+  v10 = changeCopy;
+  selfCopy2 = self;
+  v7 = changeCopy;
   dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -923,19 +923,19 @@ void __84__SOMediaNowPlayingObserver_mediaRemoteNowPlayingApplicationPlaybackSta
   [v3 _handleNowPlayingApplicationPlaybackStateChange:v5];
 }
 
-- (void)controller:(id)a3 didFailWithError:(id)a4
+- (void)controller:(id)controller didFailWithError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
   {
     *buf = 136315650;
     v12 = "[SOMediaNowPlayingObserver controller:didFailWithError:]";
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v6;
+    v16 = errorCopy;
     _os_log_error_impl(&dword_26858F000, v7, OS_LOG_TYPE_ERROR, "%s %p %@", buf, 0x20u);
   }
 
@@ -985,7 +985,7 @@ void __57__SOMediaNowPlayingObserver_controller_didFailWithError___block_invoke(
   }
 }
 
-- (void)controllerWillReloadForInvalidation:(id)a3
+- (void)controllerWillReloadForInvalidation:(id)invalidation
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
@@ -994,7 +994,7 @@ void __57__SOMediaNowPlayingObserver_controller_didFailWithError___block_invoke(
     *buf = 136315394;
     v10 = "[SOMediaNowPlayingObserver controllerWillReloadForInvalidation:]";
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26858F000, v5, OS_LOG_TYPE_INFO, "%s %p", buf, 0x16u);
   }
 
@@ -1017,10 +1017,10 @@ void __65__SOMediaNowPlayingObserver_controllerWillReloadForInvalidation___block
   [v2 _fetchNowPlayingAppPlaybackStateForReason:v3 completion:0];
 }
 
-- (void)controller:(id)a3 didLoadResponse:(id)a4
+- (void)controller:(id)controller didLoadResponse:(id)response
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [a4 playbackState];
+  playbackState = [response playbackState];
   v6 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
@@ -1029,13 +1029,13 @@ void __65__SOMediaNowPlayingObserver_controllerWillReloadForInvalidation___block
     *buf = 136315650;
     v15 = "[SOMediaNowPlayingObserver controller:didLoadResponse:]";
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = v8;
     _os_log_impl(&dword_26858F000, v7, OS_LOG_TYPE_INFO, "%s %p %@", buf, 0x20u);
   }
 
-  v9 = (v5 - 1);
+  v9 = (playbackState - 1);
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -1057,22 +1057,22 @@ void __65__SOMediaNowPlayingObserver_controllerWillReloadForInvalidation___block
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)controller:(id)a3 playbackQueueDidChangeFrom:(id)a4 to:(id)a5
+- (void)controller:(id)controller playbackQueueDidChangeFrom:(id)from to:(id)to
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  fromCopy = from;
+  toCopy = to;
   v9 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v14 = "[SOMediaNowPlayingObserver controller:playbackQueueDidChangeFrom:to:]";
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
-    v18 = v7;
+    v18 = fromCopy;
     v19 = 2112;
-    v20 = v8;
+    v20 = toCopy;
     _os_log_impl(&dword_26858F000, v9, OS_LOG_TYPE_INFO, "%s %p playback queue changed from %@ to %@", buf, 0x2Au);
   }
 
@@ -1129,10 +1129,10 @@ void __70__SOMediaNowPlayingObserver_controller_playbackQueueDidChangeFrom_to___
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)controller:(id)a3 playbackStateDidChangeFrom:(unsigned int)a4 to:(unsigned int)a5
+- (void)controller:(id)controller playbackStateDidChangeFrom:(unsigned int)from to:(unsigned int)to
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  controllerCopy = controller;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
@@ -1143,7 +1143,7 @@ void __70__SOMediaNowPlayingObserver_controller_playbackQueueDidChangeFrom_to___
     *buf = 136315906;
     v19 = "[SOMediaNowPlayingObserver controller:playbackStateDidChangeFrom:to:]";
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
     v23 = v10;
     v24 = 2112;
@@ -1151,7 +1151,7 @@ void __70__SOMediaNowPlayingObserver_controller_playbackQueueDidChangeFrom_to___
     _os_log_impl(&dword_26858F000, v9, OS_LOG_TYPE_INFO, "%s %p %@ -> %@", buf, 0x2Au);
   }
 
-  v13 = a5 - 1;
+  v13 = to - 1;
   queue = self->_queue;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -1174,11 +1174,11 @@ void __70__SOMediaNowPlayingObserver_controller_playbackQueueDidChangeFrom_to___
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  listenerCopy = listener;
+  v5 = listenerCopy;
+  if (listenerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -1186,7 +1186,7 @@ void __70__SOMediaNowPlayingObserver_controller_playbackQueueDidChangeFrom_to___
     v7[2] = __44__SOMediaNowPlayingObserver_removeListener___block_invoke;
     v7[3] = &unk_279C3D598;
     v7[4] = self;
-    v8 = v4;
+    v8 = listenerCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -1215,11 +1215,11 @@ uint64_t __44__SOMediaNowPlayingObserver_removeListener___block_invoke(uint64_t 
   return result;
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  listenerCopy = listener;
+  v5 = listenerCopy;
+  if (listenerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -1227,7 +1227,7 @@ uint64_t __44__SOMediaNowPlayingObserver_removeListener___block_invoke(uint64_t 
     v7[2] = __41__SOMediaNowPlayingObserver_addListener___block_invoke;
     v7[3] = &unk_279C3D598;
     v7[4] = self;
-    v8 = v4;
+    v8 = listenerCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -1252,11 +1252,11 @@ uint64_t __41__SOMediaNowPlayingObserver_addListener___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)getProxyGroupPlayerStateWithCompletion:(id)a3
+- (void)getProxyGroupPlayerStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -1264,16 +1264,16 @@ uint64_t __41__SOMediaNowPlayingObserver_addListener___block_invoke(uint64_t a1)
     v7[2] = __68__SOMediaNowPlayingObserver_getProxyGroupPlayerStateWithCompletion___block_invoke;
     v7[3] = &unk_279C3D548;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)getNowPlayingApplicationBundleIdentifier:(id)a3
+- (void)getNowPlayingApplicationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -1281,16 +1281,16 @@ uint64_t __41__SOMediaNowPlayingObserver_addListener___block_invoke(uint64_t a1)
     v7[2] = __70__SOMediaNowPlayingObserver_getNowPlayingApplicationBundleIdentifier___block_invoke;
     v7[3] = &unk_279C3D548;
     v7[4] = self;
-    v8 = v4;
+    v8 = identifierCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)getNowPlayingInfoForCurrentItemWithCompletion:(id)a3
+- (void)getNowPlayingInfoForCurrentItemWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -1298,16 +1298,16 @@ uint64_t __41__SOMediaNowPlayingObserver_addListener___block_invoke(uint64_t a1)
     v7[2] = __75__SOMediaNowPlayingObserver_getNowPlayingInfoForCurrentItemWithCompletion___block_invoke;
     v7[3] = &unk_279C3D548;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)getPlaybackStateAndLastPlayingDateWithCompletion:(id)a3
+- (void)getPlaybackStateAndLastPlayingDateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -1315,7 +1315,7 @@ uint64_t __41__SOMediaNowPlayingObserver_addListener___block_invoke(uint64_t a1)
     v7[2] = __78__SOMediaNowPlayingObserver_getPlaybackStateAndLastPlayingDateWithCompletion___block_invoke;
     v7[3] = &unk_279C3D548;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -1348,17 +1348,17 @@ void __78__SOMediaNowPlayingObserver_getPlaybackStateAndLastPlayingDateWithCompl
   }
 }
 
-- (void)getPlaybackStateWithCompletion:(id)a3
+- (void)getPlaybackStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __60__SOMediaNowPlayingObserver_getPlaybackStateWithCompletion___block_invoke;
     v6[3] = &unk_279C3D0D0;
-    v7 = v4;
+    v7 = completionCopy;
     [(SOMediaNowPlayingObserver *)self getPlaybackStateAndLastPlayingDateWithCompletion:v6];
   }
 }
@@ -1393,7 +1393,7 @@ void __78__SOMediaNowPlayingObserver_getPlaybackStateAndLastPlayingDateWithCompl
     *buf = 136315650;
     v8 = "[SOMediaNowPlayingObserver dealloc]";
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = instanceContext;
     _os_log_impl(&dword_26858F000, v3, OS_LOG_TYPE_INFO, "%s %p %@", buf, 0x20u);
@@ -1405,41 +1405,41 @@ void __78__SOMediaNowPlayingObserver_getPlaybackStateAndLastPlayingDateWithCompl
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (SOMediaNowPlayingObserver)initWithQueue:(id)a3
+- (SOMediaNowPlayingObserver)initWithQueue:(id)queue
 {
   v4 = MEMORY[0x277CEF2C8];
-  v5 = a3;
-  v6 = [v4 currentContext];
-  v7 = [(SOMediaNowPlayingObserver *)self initWithQueue:v5 instanceContext:v6];
+  queueCopy = queue;
+  currentContext = [v4 currentContext];
+  v7 = [(SOMediaNowPlayingObserver *)self initWithQueue:queueCopy instanceContext:currentContext];
 
   return v7;
 }
 
-- (SOMediaNowPlayingObserver)initWithQueue:(id)a3 instanceContext:(id)a4
+- (SOMediaNowPlayingObserver)initWithQueue:(id)queue instanceContext:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  queueCopy = queue;
+  contextCopy = context;
   v24.receiver = self;
   v24.super_class = SOMediaNowPlayingObserver;
   v10 = [(SOMediaNowPlayingObserver *)&v24 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_queue, a3);
+    objc_storeStrong(&v10->_queue, queue);
     v11->_playbackStateGroupDepth = 0;
-    if (v9)
+    if (contextCopy)
     {
-      v12 = v9;
+      defaultContext = contextCopy;
     }
 
     else
     {
-      v12 = [MEMORY[0x277CEF2C8] defaultContext];
+      defaultContext = [MEMORY[0x277CEF2C8] defaultContext];
     }
 
     instanceContext = v11->_instanceContext;
-    v11->_instanceContext = v12;
+    v11->_instanceContext = defaultContext;
 
     v14 = [objc_alloc(MEMORY[0x277CCAA50]) initWithOptions:5 capacity:0];
     listeners = v11->_listeners;

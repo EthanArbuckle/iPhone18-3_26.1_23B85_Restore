@@ -1,22 +1,22 @@
 @interface CSStudiesServerUploaderIgneous
 - (BOOL)readManifestFromFile;
-- (BOOL)startMonitoringWithError:(id *)a3;
-- (CSStudiesServerUploaderIgneous)initWithSpoolerFolder:(id)a3 serverConfiguration:(id)a4 retentionPeriodInSeconds:(unint64_t)a5 outOfBandMetadataTimeout:(double)a6 defaultsKeyPostfix:(id)a7;
-- (unsigned)checkWithManifest:(id)a3;
+- (BOOL)startMonitoringWithError:(id *)error;
+- (CSStudiesServerUploaderIgneous)initWithSpoolerFolder:(id)folder serverConfiguration:(id)configuration retentionPeriodInSeconds:(unint64_t)seconds outOfBandMetadataTimeout:(double)timeout defaultsKeyPostfix:(id)postfix;
+- (unsigned)checkWithManifest:(id)manifest;
 - (void)dealloc;
 - (void)updateParametersFromDefaultsConfig;
 @end
 
 @implementation CSStudiesServerUploaderIgneous
 
-- (CSStudiesServerUploaderIgneous)initWithSpoolerFolder:(id)a3 serverConfiguration:(id)a4 retentionPeriodInSeconds:(unint64_t)a5 outOfBandMetadataTimeout:(double)a6 defaultsKeyPostfix:(id)a7
+- (CSStudiesServerUploaderIgneous)initWithSpoolerFolder:(id)folder serverConfiguration:(id)configuration retentionPeriodInSeconds:(unint64_t)seconds outOfBandMetadataTimeout:(double)timeout defaultsKeyPostfix:(id)postfix
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  folderCopy = folder;
+  configurationCopy = configuration;
+  postfixCopy = postfix;
   v28.receiver = self;
   v28.super_class = CSStudiesServerUploaderIgneous;
-  v15 = [(CSStudiesServerUploader *)&v28 initWithSpoolerFolder:v12 serverConfiguration:v13 registrationPeriodInSeconds:0 retentionPeriodInSeconds:a5 outOfBandMetadataTimeout:v14 defaultsKeyPostfix:a6];
+  v15 = [(CSStudiesServerUploader *)&v28 initWithSpoolerFolder:folderCopy serverConfiguration:configurationCopy registrationPeriodInSeconds:0 retentionPeriodInSeconds:seconds outOfBandMetadataTimeout:postfixCopy defaultsKeyPostfix:timeout];
   v16 = v15;
   if (v15)
   {
@@ -37,23 +37,23 @@
     v19 = qword_1004568E0;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v20 = [(CSStudiesServerUploader *)v16 registered];
-      v21 = [(CSStudiesServerUploader *)v16 monitoring];
+      registered = [(CSStudiesServerUploader *)v16 registered];
+      monitoring = [(CSStudiesServerUploader *)v16 monitoring];
       [(CSStudiesServerUploaderIgneous *)v16 harvestTimeWindowSec];
       v23 = v22;
       [(CSStudiesServerUploaderIgneous *)v16 readManifestTimeoutSec];
       v25 = v24;
-      v26 = [(CSStudiesServerUploader *)v16 retentionPeriodInSeconds];
+      retentionPeriodInSeconds = [(CSStudiesServerUploader *)v16 retentionPeriodInSeconds];
       *buf = 67110144;
-      v30 = v20;
+      v30 = registered;
       v31 = 1024;
-      v32 = v21;
+      v32 = monitoring;
       v33 = 2048;
       v34 = v23;
       v35 = 2048;
       v36 = v25;
       v37 = 2048;
-      v38 = v26;
+      v38 = retentionPeriodInSeconds;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Initialized Igneous uploader: registered %d, monitoring %d, harvestTimeWindowSec %.0f, readManifestTimeoutSec %.0f, retentionPeriod %llu", buf, 0x2Cu);
     }
   }
@@ -80,7 +80,7 @@
   [(CSStudiesServerUploaderIgneous *)self setReadManifestTimeoutSec:v4];
 }
 
-- (BOOL)startMonitoringWithError:(id *)a3
+- (BOOL)startMonitoringWithError:(id *)error
 {
   if ([(CSStudiesServerUploader *)self monitoring])
   {
@@ -89,7 +89,7 @@ LABEL_10:
     return v5;
   }
 
-  v5 = sub_10001B724(self, a3, @"starter");
+  v5 = sub_10001B724(self, error, @"starter");
   if (v5)
   {
     objc_initWeak(&location, self);
@@ -100,11 +100,11 @@ LABEL_10:
     v32[4] = self;
     v6 = objc_retainBlock(v32);
     v7 = [CSFolderMonitor alloc];
-    v8 = [(CSStudiesServerUploader *)self folderURL];
-    v9 = [v8 path];
+    folderURL = [(CSStudiesServerUploader *)self folderURL];
+    path = [folderURL path];
     v10 = dispatch_get_global_queue(0, 0);
-    v11 = [(CSStudiesServerUploader *)self postfix];
-    v12 = [(CSFolderMonitor *)v7 initWithFolder:v9 fileExtension:@"metadata" queue:v10 postfix:v11 andAction:v6];
+    postfix = [(CSStudiesServerUploader *)self postfix];
+    v12 = [(CSFolderMonitor *)v7 initWithFolder:path fileExtension:@"metadata" queue:v10 postfix:postfix andAction:v6];
     [(CSStudiesServerUploaderIgneous *)self setFilePickMonitor:v12];
 
     v13 = +[CSPersistentConfiguration sharedConfiguration];
@@ -112,15 +112,15 @@ LABEL_10:
 
     if (v14)
     {
-      v15 = [[CSFolderMonitorBackgroundScanningConfiguration alloc] initWithFileProtectionType:NSFileProtectionCompleteUnlessOpen allowBattery:1 periodInseconds:XPC_ACTIVITY_INTERVAL_1_HOUR];
-      v16 = [(CSStudiesServerUploaderIgneous *)self filePickMonitor];
-      [v16 setupRecurringScanningWithConfiguration:v15 runNow:1];
+      filePickMonitor2 = [[CSFolderMonitorBackgroundScanningConfiguration alloc] initWithFileProtectionType:NSFileProtectionCompleteUnlessOpen allowBattery:1 periodInseconds:XPC_ACTIVITY_INTERVAL_1_HOUR];
+      filePickMonitor = [(CSStudiesServerUploaderIgneous *)self filePickMonitor];
+      [filePickMonitor setupRecurringScanningWithConfiguration:filePickMonitor2 runNow:1];
     }
 
     else
     {
-      v15 = [(CSStudiesServerUploaderIgneous *)self filePickMonitor];
-      [(CSFolderMonitorBackgroundScanningConfiguration *)v15 registerForFolderMonitorActivity];
+      filePickMonitor2 = [(CSStudiesServerUploaderIgneous *)self filePickMonitor];
+      [(CSFolderMonitorBackgroundScanningConfiguration *)filePickMonitor2 registerForFolderMonitorActivity];
     }
 
     v26 = _NSConcreteStackBlock;
@@ -128,26 +128,26 @@ LABEL_10:
     v28 = sub_100023F1C;
     v29 = &unk_1004130A8;
     objc_copyWeak(&v31, &location);
-    v30 = self;
+    selfCopy = self;
     v17 = objc_retainBlock(&v26);
     v18 = [CSFolderMonitor alloc];
     v19 = [(CSStudiesServerUploader *)self folderURL:v26];
-    v20 = [v19 path];
-    v21 = [(CSStudiesServerUploader *)self postfix];
-    v22 = [(CSFolderMonitor *)v18 initWithFolder:v20 fileExtension:@"upload" queue:v10 postfix:v21 andAction:v17];
+    path2 = [v19 path];
+    postfix2 = [(CSStudiesServerUploader *)self postfix];
+    v22 = [(CSFolderMonitor *)v18 initWithFolder:path2 fileExtension:@"upload" queue:v10 postfix:postfix2 andAction:v17];
     [(CSStudiesServerUploader *)self setSubmitMonitor:v22];
 
     if (v14)
     {
-      v23 = [[CSFolderMonitorBackgroundScanningConfiguration alloc] initWithFileProtectionType:NSFileProtectionCompleteUnlessOpen allowBattery:1 periodInseconds:XPC_ACTIVITY_INTERVAL_1_HOUR];
-      v24 = [(CSStudiesServerUploader *)self submitMonitor];
-      [v24 setupRecurringScanningWithConfiguration:v23 runNow:1];
+      submitMonitor2 = [[CSFolderMonitorBackgroundScanningConfiguration alloc] initWithFileProtectionType:NSFileProtectionCompleteUnlessOpen allowBattery:1 periodInseconds:XPC_ACTIVITY_INTERVAL_1_HOUR];
+      submitMonitor = [(CSStudiesServerUploader *)self submitMonitor];
+      [submitMonitor setupRecurringScanningWithConfiguration:submitMonitor2 runNow:1];
     }
 
     else
     {
-      v23 = [(CSStudiesServerUploader *)self submitMonitor];
-      [(CSFolderMonitorBackgroundScanningConfiguration *)v23 registerForFolderMonitorActivity];
+      submitMonitor2 = [(CSStudiesServerUploader *)self submitMonitor];
+      [(CSFolderMonitorBackgroundScanningConfiguration *)submitMonitor2 registerForFolderMonitorActivity];
     }
 
     [(CSStudiesServerUploader *)self setMonitoring:1];
@@ -180,9 +180,9 @@ LABEL_10:
   {
     v10 = v9;
     v41 = [NSURL fileURLWithFileSystemRepresentation:v9 isDirectory:1 relativeToURL:0];
-    v11 = [v41 path];
+    path = [v41 path];
     v12 = [NSString stringWithUTF8String:"eq_history_manifest_v1.txt"];
-    v13 = [v11 stringByAppendingPathComponent:v12];
+    v13 = [path stringByAppendingPathComponent:v12];
 
     free(v10);
     v40 = v13;
@@ -414,10 +414,10 @@ LABEL_61:
   return 0;
 }
 
-- (unsigned)checkWithManifest:(id)a3
+- (unsigned)checkWithManifest:(id)manifest
 {
-  v4 = [a3 keyValuePairs];
-  v5 = [NSDictionary dictionaryWithDictionary:v4];
+  keyValuePairs = [manifest keyValuePairs];
+  v5 = [NSDictionary dictionaryWithDictionary:keyValuePairs];
 
   if (!v5)
   {
@@ -548,11 +548,11 @@ LABEL_26:
 
 - (void)dealloc
 {
-  v3 = [(CSStudiesServerUploaderIgneous *)self filePickMonitor];
-  [v3 stopRecurringScanning];
+  filePickMonitor = [(CSStudiesServerUploaderIgneous *)self filePickMonitor];
+  [filePickMonitor stopRecurringScanning];
 
-  v4 = [(CSStudiesServerUploader *)self submitMonitor];
-  [v4 stopRecurringScanning];
+  submitMonitor = [(CSStudiesServerUploader *)self submitMonitor];
+  [submitMonitor stopRecurringScanning];
 
   v5.receiver = self;
   v5.super_class = CSStudiesServerUploaderIgneous;

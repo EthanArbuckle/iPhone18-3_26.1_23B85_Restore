@@ -1,8 +1,8 @@
 @interface ApplePMPPerfStateControl
 - (BOOL)_disableConsistentPerfState;
-- (BOOL)_enableConsistentPerfState:(unsigned int)a3;
-- (BOOL)_open:(unsigned int)a3;
-- (BOOL)setupConnectionForPowerState:(unsigned int)a3;
+- (BOOL)_enableConsistentPerfState:(unsigned int)state;
+- (BOOL)_open:(unsigned int)_open;
+- (BOOL)setupConnectionForPowerState:(unsigned int)state;
 - (void)_copySelectorsForService;
 - (void)tearDown;
 @end
@@ -29,12 +29,12 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_enableConsistentPerfState:(unsigned int)a3
+- (BOOL)_enableConsistentPerfState:(unsigned int)state
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (a3 <= 2)
+  if (state <= 2)
   {
-    self->_powerState = a3;
+    self->_powerState = state;
     *input = 0u;
     v27 = 0u;
     v28 = 0xFFFFFFFFLL;
@@ -43,15 +43,15 @@
       v5 = 0;
       v6 = 0;
       stateValues = self->_domainInfos[0].stateValues;
-      v8 = a3;
+      stateCopy = state;
       do
       {
         v9 = stateValues[2];
-        v10 = &stateValues[v8];
+        v10 = &stateValues[stateCopy];
         v11 = v9 == 0;
         if (v9)
         {
-          v12 = &stateValues[v8];
+          v12 = &stateValues[stateCopy];
         }
 
         else
@@ -186,9 +186,9 @@
   return result;
 }
 
-- (BOOL)_open:(unsigned int)a3
+- (BOOL)_open:(unsigned int)_open
 {
-  v3 = IOServiceOpen(a3, *MEMORY[0x277D85F48], 0, &self->_connection);
+  v3 = IOServiceOpen(_open, *MEMORY[0x277D85F48], 0, &self->_connection);
   if (v3 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [ApplePMPPerfStateControl _open:v3];
@@ -234,7 +234,7 @@
   while (v5);
 }
 
-- (BOOL)setupConnectionForPowerState:(unsigned int)a3
+- (BOOL)setupConnectionForPowerState:(unsigned int)state
 {
   v57 = *MEMORY[0x277D85DE8];
   self->_currentPMPVersion = 0;
@@ -300,7 +300,7 @@ LABEL_12:
     self->_nDomains = *buf;
     if (v14)
     {
-      v39 = a3;
+      stateCopy = state;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         nDomains = self->_nDomains;
@@ -477,7 +477,7 @@ LABEL_47:
       else
       {
 LABEL_48:
-        LOBYTE(v9) = [(ApplePMPPerfStateControl *)self _enableConsistentPerfState:v39];
+        LOBYTE(v9) = [(ApplePMPPerfStateControl *)self _enableConsistentPerfState:stateCopy];
       }
     }
 

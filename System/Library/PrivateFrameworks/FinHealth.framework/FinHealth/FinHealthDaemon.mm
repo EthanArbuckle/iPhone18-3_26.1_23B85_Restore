@@ -1,14 +1,14 @@
 @interface FinHealthDaemon
-- (void)didReceiveInsightChangeUpdate:(unint64_t)a3 completion:(id)a4;
+- (void)didReceiveInsightChangeUpdate:(unint64_t)update completion:(id)completion;
 @end
 
 @implementation FinHealthDaemon
 
-- (void)didReceiveInsightChangeUpdate:(unint64_t)a3 completion:(id)a4
+- (void)didReceiveInsightChangeUpdate:(unint64_t)update completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = update;
   v7[3] = v6;
   v7[4] = self;
 

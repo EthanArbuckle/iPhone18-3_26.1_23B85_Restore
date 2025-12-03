@@ -1,32 +1,32 @@
 @interface TSCH3DRetargetRenderProcessor
-+ (id)processorWithOriginal:(id)a3;
++ (id)processorWithOriginal:(id)original;
 - (BOOL)canRenderPrefilteredLines;
 - (RenderHints)renderHints;
 - (RenderState)renderState;
-- (TSCH3DRetargetRenderProcessor)initWithOriginal:(id)a3;
+- (TSCH3DRetargetRenderProcessor)initWithOriginal:(id)original;
 @end
 
 @implementation TSCH3DRetargetRenderProcessor
 
-+ (id)processorWithOriginal:(id)a3
++ (id)processorWithOriginal:(id)original
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithOriginal_(v5, v6, v7, v8, v9, v4);
+  originalCopy = original;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithOriginal_(v5, v6, v7, v8, v9, originalCopy);
 
   return v10;
 }
 
-- (TSCH3DRetargetRenderProcessor)initWithOriginal:(id)a3
+- (TSCH3DRetargetRenderProcessor)initWithOriginal:(id)original
 {
-  v5 = a3;
+  originalCopy = original;
   v9.receiver = self;
   v9.super_class = TSCH3DRetargetRenderProcessor;
   v6 = [(TSCH3DRetargetRenderProcessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_original, a3);
+    objc_storeStrong(&v6->_original, original);
   }
 
   return v7;

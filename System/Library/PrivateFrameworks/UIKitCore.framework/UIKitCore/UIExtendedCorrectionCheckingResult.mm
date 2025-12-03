@@ -1,26 +1,26 @@
 @interface UIExtendedCorrectionCheckingResult
-- (UIExtendedCorrectionCheckingResult)initWithRange:(_NSRange)a3 replacementString:(id)a4 sentenceRange:(_NSRange)a5 detail:(id)a6;
+- (UIExtendedCorrectionCheckingResult)initWithRange:(_NSRange)range replacementString:(id)string sentenceRange:(_NSRange)sentenceRange detail:(id)detail;
 - (_NSRange)sentenceRange;
 @end
 
 @implementation UIExtendedCorrectionCheckingResult
 
-- (UIExtendedCorrectionCheckingResult)initWithRange:(_NSRange)a3 replacementString:(id)a4 sentenceRange:(_NSRange)a5 detail:(id)a6
+- (UIExtendedCorrectionCheckingResult)initWithRange:(_NSRange)range replacementString:(id)string sentenceRange:(_NSRange)sentenceRange detail:(id)detail
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a3.length;
-  v10 = a3.location;
-  v12 = a6;
+  length = sentenceRange.length;
+  location = sentenceRange.location;
+  v9 = range.length;
+  v10 = range.location;
+  detailCopy = detail;
   v18.receiver = self;
   v18.super_class = UIExtendedCorrectionCheckingResult;
-  v13 = [(NSSubstitutionCheckingResult *)&v18 initWithRange:v10 replacementString:v9, a4];
-  v14 = v13;
-  if (v13)
+  string = [(NSSubstitutionCheckingResult *)&v18 initWithRange:v10 replacementString:v9, string];
+  v14 = string;
+  if (string)
   {
-    v13->_sentenceRange.location = location;
-    v13->_sentenceRange.length = length;
-    v15 = [v12 copy];
+    string->_sentenceRange.location = location;
+    string->_sentenceRange.length = length;
+    v15 = [detailCopy copy];
     detail = v14->_detail;
     v14->_detail = v15;
   }

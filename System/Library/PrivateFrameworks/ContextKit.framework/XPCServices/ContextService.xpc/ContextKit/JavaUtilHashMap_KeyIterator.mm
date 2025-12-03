@@ -6,13 +6,13 @@
 
 - (id)next
 {
-  v2 = [(JavaUtilHashMap_HashIterator *)self nextEntry];
-  if (!v2)
+  nextEntry = [(JavaUtilHashMap_HashIterator *)self nextEntry];
+  if (!nextEntry)
   {
     JreThrowNullPointerException();
   }
 
-  return v2[1];
+  return nextEntry[1];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface HRSpeedBumpViewController
-- (HRSpeedBumpViewController)initWithSpeedBumpItem:(id)a3 onboarding:(BOOL)a4 upgradingFromAlgorithmVersion:(int64_t)a5;
+- (HRSpeedBumpViewController)initWithSpeedBumpItem:(id)item onboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version;
 - (double)_titleLastBaselineToBodyTop;
 - (id)identifierBundle;
-- (void)_scrollBubbleViewToVisible:(id)a3;
+- (void)_scrollBubbleViewToVisible:(id)visible;
 - (void)_setStackedButtonViewAsFooterView;
 - (void)_setUpBodyConstraints;
 - (void)_setUpBodyLabel;
@@ -11,28 +11,28 @@
 - (void)_setUpStackedButtonView;
 - (void)_setUpTitleConstraints;
 - (void)_setUpTitleLabel;
-- (void)_updateContentViewBottomConstraintWithAnchor:(id)a3 constant:(double)a4;
-- (void)_updateUIWithLatestVisibleBubbleView:(id)a3 animated:(BOOL)a4;
-- (void)scrollViewWillBeginDragging:(id)a3;
+- (void)_updateContentViewBottomConstraintWithAnchor:(id)anchor constant:(double)constant;
+- (void)_updateUIWithLatestVisibleBubbleView:(id)view animated:(BOOL)animated;
+- (void)scrollViewWillBeginDragging:(id)dragging;
 - (void)setUpConstraints;
 - (void)setUpUI;
-- (void)stackedButtonView:(id)a3 didTapButtonAtIndex:(int64_t)a4;
+- (void)stackedButtonView:(id)view didTapButtonAtIndex:(int64_t)index;
 - (void)viewDidLoad;
 @end
 
 @implementation HRSpeedBumpViewController
 
-- (HRSpeedBumpViewController)initWithSpeedBumpItem:(id)a3 onboarding:(BOOL)a4 upgradingFromAlgorithmVersion:(int64_t)a5
+- (HRSpeedBumpViewController)initWithSpeedBumpItem:(id)item onboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version
 {
-  v6 = a4;
-  v9 = a3;
+  onboardingCopy = onboarding;
+  itemCopy = item;
   v13.receiver = self;
   v13.super_class = HRSpeedBumpViewController;
-  v10 = [(HRSpeedBumpViewController *)&v13 initForOnboarding:v6 upgradingFromAlgorithmVersion:a5];
+  v10 = [(HRSpeedBumpViewController *)&v13 initForOnboarding:onboardingCopy upgradingFromAlgorithmVersion:version];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_item, a3);
+    objc_storeStrong(&v10->_item, item);
   }
 
   return v11;
@@ -43,19 +43,19 @@
   v9.receiver = self;
   v9.super_class = HRSpeedBumpViewController;
   [(HRSpeedBumpViewController *)&v9 setUpUI];
-  v3 = [(HRSpeedBumpViewController *)self scrollView];
-  [v3 setDelegate:self];
+  scrollView = [(HRSpeedBumpViewController *)self scrollView];
+  [scrollView setDelegate:self];
 
-  v4 = [(HRSpeedBumpViewController *)self identifierBundle];
-  v5 = [v4 stringByAppendingString:@".EntireView"];
-  v6 = [(HRSpeedBumpViewController *)self scrollView];
-  [v6 setAccessibilityIdentifier:v5];
+  identifierBundle = [(HRSpeedBumpViewController *)self identifierBundle];
+  v5 = [identifierBundle stringByAppendingString:@".EntireView"];
+  scrollView2 = [(HRSpeedBumpViewController *)self scrollView];
+  [scrollView2 setAccessibilityIdentifier:v5];
 
   [(HRSpeedBumpViewController *)self _setUpTitleLabel];
-  v7 = [(HRSpeedBumpViewController *)self item];
-  v8 = [v7 body];
+  item = [(HRSpeedBumpViewController *)self item];
+  body = [item body];
 
-  if (v8)
+  if (body)
   {
     [(HRSpeedBumpViewController *)self _setUpBodyLabel];
   }
@@ -69,17 +69,17 @@
   v9.super_class = HRSpeedBumpViewController;
   [(HRSpeedBumpViewController *)&v9 setUpConstraints];
   [(HRSpeedBumpViewController *)self _setUpTitleConstraints];
-  v3 = [(HRSpeedBumpViewController *)self item];
-  v4 = [v3 body];
+  item = [(HRSpeedBumpViewController *)self item];
+  body = [item body];
 
-  if (v4)
+  if (body)
   {
     [(HRSpeedBumpViewController *)self _setUpBodyConstraints];
   }
 
   [(HRSpeedBumpViewController *)self _setUpBubbleViewConstraints];
-  v5 = [(HRSpeedBumpViewController *)self contentView];
-  v6 = [v5 _bottomVisibleView];
+  contentView = [(HRSpeedBumpViewController *)self contentView];
+  _bottomVisibleView = [contentView _bottomVisibleView];
 
   if ([(HRSpeedBumpViewController *)self isOnboarding])
   {
@@ -91,8 +91,8 @@
     v7 = *MEMORY[0x277D12778];
   }
 
-  v8 = [v6 bottomAnchor];
-  [(HRSpeedBumpViewController *)self _updateContentViewBottomConstraintWithAnchor:v8 constant:v7];
+  bottomAnchor = [_bottomVisibleView bottomAnchor];
+  [(HRSpeedBumpViewController *)self _updateContentViewBottomConstraintWithAnchor:bottomAnchor constant:v7];
 }
 
 - (void)viewDidLoad
@@ -100,25 +100,25 @@
   v9.receiver = self;
   v9.super_class = HRSpeedBumpViewController;
   [(HRSpeedBumpViewController *)&v9 viewDidLoad];
-  v3 = [(HRSpeedBumpViewController *)self isOnboarding];
-  v4 = [(HRSpeedBumpViewController *)self bubbleViews];
-  v5 = v4;
-  if (v3)
+  isOnboarding = [(HRSpeedBumpViewController *)self isOnboarding];
+  bubbleViews = [(HRSpeedBumpViewController *)self bubbleViews];
+  v5 = bubbleViews;
+  if (isOnboarding)
   {
-    v6 = [v4 firstObject];
-    [(HRSpeedBumpViewController *)self setLatestVisibleBubbleView:v6];
+    firstObject = [bubbleViews firstObject];
+    [(HRSpeedBumpViewController *)self setLatestVisibleBubbleView:firstObject];
 
     [(HRSpeedBumpViewController *)self setInitialContentOffset:1.79769313e308];
   }
 
   else
   {
-    v7 = [v4 lastObject];
-    [(HRSpeedBumpViewController *)self setLatestVisibleBubbleView:v7];
+    lastObject = [bubbleViews lastObject];
+    [(HRSpeedBumpViewController *)self setLatestVisibleBubbleView:lastObject];
   }
 
-  v8 = [(HRSpeedBumpViewController *)self latestVisibleBubbleView];
-  [(HRSpeedBumpViewController *)self _updateUIWithLatestVisibleBubbleView:v8 animated:0];
+  latestVisibleBubbleView = [(HRSpeedBumpViewController *)self latestVisibleBubbleView];
+  [(HRSpeedBumpViewController *)self _updateUIWithLatestVisibleBubbleView:latestVisibleBubbleView animated:0];
 
   if ([(HRSpeedBumpViewController *)self isOnboarding])
   {
@@ -127,94 +127,94 @@
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   [(HRSpeedBumpViewController *)self initialContentOffset];
   if (v4 == 1.79769313e308)
   {
-    v6 = [(HRSpeedBumpViewController *)self scrollView];
-    [v6 contentOffset];
+    scrollView = [(HRSpeedBumpViewController *)self scrollView];
+    [scrollView contentOffset];
     [(HRSpeedBumpViewController *)self setInitialContentOffset:v5];
   }
 }
 
-- (void)stackedButtonView:(id)a3 didTapButtonAtIndex:(int64_t)a4
+- (void)stackedButtonView:(id)view didTapButtonAtIndex:(int64_t)index
 {
-  if (!a4 && ![(HRSpeedBumpViewController *)self stateAnimating])
+  if (!index && ![(HRSpeedBumpViewController *)self stateAnimating])
   {
-    v5 = [(HRSpeedBumpViewController *)self latestVisibleBubbleView];
-    v6 = [(HRSpeedBumpViewController *)self bubbleViews];
-    v7 = [v6 lastObject];
+    latestVisibleBubbleView = [(HRSpeedBumpViewController *)self latestVisibleBubbleView];
+    bubbleViews = [(HRSpeedBumpViewController *)self bubbleViews];
+    lastObject = [bubbleViews lastObject];
 
-    if (v5 == v7)
+    if (latestVisibleBubbleView == lastObject)
     {
-      v21 = [(HRSpeedBumpViewController *)self delegate];
-      [v21 stepForward];
+      delegate = [(HRSpeedBumpViewController *)self delegate];
+      [delegate stepForward];
     }
 
     else
     {
-      v8 = [(HRSpeedBumpViewController *)self bubbleViews];
-      v9 = [(HRSpeedBumpViewController *)self latestVisibleBubbleView];
-      v10 = [v8 indexOfObject:v9];
+      bubbleViews2 = [(HRSpeedBumpViewController *)self bubbleViews];
+      latestVisibleBubbleView2 = [(HRSpeedBumpViewController *)self latestVisibleBubbleView];
+      v10 = [bubbleViews2 indexOfObject:latestVisibleBubbleView2];
 
-      v11 = [(HRSpeedBumpViewController *)self bubbleViews];
-      v12 = [v11 objectAtIndexedSubscript:v10 + 1];
+      bubbleViews3 = [(HRSpeedBumpViewController *)self bubbleViews];
+      v12 = [bubbleViews3 objectAtIndexedSubscript:v10 + 1];
       [(HRSpeedBumpViewController *)self setLatestVisibleBubbleView:v12];
 
-      v13 = [(HRSpeedBumpViewController *)self latestVisibleBubbleView];
-      [(HRSpeedBumpViewController *)self _updateUIWithLatestVisibleBubbleView:v13 animated:1];
+      latestVisibleBubbleView3 = [(HRSpeedBumpViewController *)self latestVisibleBubbleView];
+      [(HRSpeedBumpViewController *)self _updateUIWithLatestVisibleBubbleView:latestVisibleBubbleView3 animated:1];
 
-      v14 = [(HRSpeedBumpViewController *)self latestVisibleBubbleView];
-      v15 = [(HRSpeedBumpViewController *)self bubbleViews];
-      v16 = [v15 lastObject];
+      latestVisibleBubbleView4 = [(HRSpeedBumpViewController *)self latestVisibleBubbleView];
+      bubbleViews4 = [(HRSpeedBumpViewController *)self bubbleViews];
+      lastObject2 = [bubbleViews4 lastObject];
 
-      if (v14 != v16)
+      if (latestVisibleBubbleView4 != lastObject2)
       {
         return;
       }
 
-      v21 = [(HRSpeedBumpViewController *)self stackedButtonView];
-      v17 = [v21 buttons];
-      v18 = [v17 firstObject];
+      delegate = [(HRSpeedBumpViewController *)self stackedButtonView];
+      buttons = [delegate buttons];
+      firstObject = [buttons firstObject];
       v19 = HRHeartRhythmUIFrameworkBundle();
       v20 = [v19 localizedStringForKey:@"ONBOARDING_CONTINUE" value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable"];
-      [v18 setTitle:v20 forState:0];
+      [firstObject setTitle:v20 forState:0];
     }
   }
 }
 
-- (void)_updateUIWithLatestVisibleBubbleView:(id)a3 animated:(BOOL)a4
+- (void)_updateUIWithLatestVisibleBubbleView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HRSpeedBumpViewController *)self isOnboarding];
+  animatedCopy = animated;
+  viewCopy = view;
+  isOnboarding = [(HRSpeedBumpViewController *)self isOnboarding];
   v8 = MEMORY[0x277D127A0];
-  if (!v7)
+  if (!isOnboarding)
   {
     v8 = MEMORY[0x277D12778];
   }
 
   v9 = *v8;
-  v10 = [v6 bottomAnchor];
-  [(HRSpeedBumpViewController *)self _updateContentViewBottomConstraintWithAnchor:v10 constant:v9];
+  bottomAnchor = [viewCopy bottomAnchor];
+  [(HRSpeedBumpViewController *)self _updateContentViewBottomConstraintWithAnchor:bottomAnchor constant:v9];
 
-  v11 = [(HRSpeedBumpViewController *)self view];
-  [v11 layoutIfNeeded];
+  view = [(HRSpeedBumpViewController *)self view];
+  [view layoutIfNeeded];
 
-  if (v4)
+  if (animatedCopy)
   {
-    [(HRSpeedBumpViewController *)self _scrollBubbleViewToVisible:v6];
-    if (v6)
+    [(HRSpeedBumpViewController *)self _scrollBubbleViewToVisible:viewCopy];
+    if (viewCopy)
     {
-      [v6 setAlpha:0.0];
+      [viewCopy setAlpha:0.0];
       [(HRSpeedBumpViewController *)self setStateAnimating:1];
       v12 = objc_alloc(MEMORY[0x277D75D40]);
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __75__HRSpeedBumpViewController__updateUIWithLatestVisibleBubbleView_animated___block_invoke;
       v24[3] = &unk_2796FB778;
-      v25 = v6;
+      v25 = viewCopy;
       v13 = [v12 initWithDuration:0 curve:v24 animations:0.5];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
@@ -228,24 +228,24 @@
 
   else
   {
-    v14 = [(HRSpeedBumpViewController *)self bubbleViews];
-    v15 = [v14 indexOfObject:v6];
+    bubbleViews = [(HRSpeedBumpViewController *)self bubbleViews];
+    v15 = [bubbleViews indexOfObject:viewCopy];
 
-    v16 = [(HRSpeedBumpViewController *)self bubbleViews];
-    v17 = [v16 count];
+    bubbleViews2 = [(HRSpeedBumpViewController *)self bubbleViews];
+    v17 = [bubbleViews2 count];
 
     if (v17)
     {
       v18 = 0;
       do
       {
-        v19 = [(HRSpeedBumpViewController *)self bubbleViews];
-        v20 = [v19 objectAtIndexedSubscript:v18];
+        bubbleViews3 = [(HRSpeedBumpViewController *)self bubbleViews];
+        v20 = [bubbleViews3 objectAtIndexedSubscript:v18];
         [v20 setHidden:v18 > v15];
 
         ++v18;
-        v21 = [(HRSpeedBumpViewController *)self bubbleViews];
-        v22 = [v21 count];
+        bubbleViews4 = [(HRSpeedBumpViewController *)self bubbleViews];
+        v22 = [bubbleViews4 count];
       }
 
       while (v18 < v22);
@@ -264,8 +264,8 @@ uint64_t __75__HRSpeedBumpViewController__updateUIWithLatestVisibleBubbleView_an
 - (id)identifierBundle
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HRSpeedBumpViewController *)self item];
-  v4 = [v2 healthAccessibilityIdentifier:objc_msgSend(v3 suffix:{"category"), @"Onboarding.FourThings"}];
+  item = [(HRSpeedBumpViewController *)self item];
+  v4 = [v2 healthAccessibilityIdentifier:objc_msgSend(item suffix:{"category"), @"Onboarding.FourThings"}];
 
   return v4;
 }
@@ -275,32 +275,32 @@ uint64_t __75__HRSpeedBumpViewController__updateUIWithLatestVisibleBubbleView_an
   v3 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HRSpeedBumpViewController *)self setTitleLabel:v3];
 
-  v4 = [(HRSpeedBumpViewController *)self item];
-  v5 = [v4 title];
-  v6 = [(HRSpeedBumpViewController *)self titleLabel];
-  [v6 setText:v5];
+  item = [(HRSpeedBumpViewController *)self item];
+  title = [item title];
+  titleLabel = [(HRSpeedBumpViewController *)self titleLabel];
+  [titleLabel setText:title];
 
-  v7 = [(HRSpeedBumpViewController *)self titleLabel];
-  [v7 setTextAlignment:4];
+  titleLabel2 = [(HRSpeedBumpViewController *)self titleLabel];
+  [titleLabel2 setTextAlignment:4];
 
-  v8 = [(HRSpeedBumpViewController *)self titleFont];
-  v9 = [(HRSpeedBumpViewController *)self titleLabel];
-  [v9 setFont:v8];
+  titleFont = [(HRSpeedBumpViewController *)self titleFont];
+  titleLabel3 = [(HRSpeedBumpViewController *)self titleLabel];
+  [titleLabel3 setFont:titleFont];
 
-  v10 = [(HRSpeedBumpViewController *)self titleLabel];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel4 = [(HRSpeedBumpViewController *)self titleLabel];
+  [titleLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(HRSpeedBumpViewController *)self titleLabel];
-  [v11 setNumberOfLines:0];
+  titleLabel5 = [(HRSpeedBumpViewController *)self titleLabel];
+  [titleLabel5 setNumberOfLines:0];
 
-  v12 = [(HRSpeedBumpViewController *)self identifierBundle];
-  v13 = [v12 stringByAppendingString:@".Title"];
-  v14 = [(HRSpeedBumpViewController *)self titleLabel];
-  [v14 setAccessibilityIdentifier:v13];
+  identifierBundle = [(HRSpeedBumpViewController *)self identifierBundle];
+  v13 = [identifierBundle stringByAppendingString:@".Title"];
+  titleLabel6 = [(HRSpeedBumpViewController *)self titleLabel];
+  [titleLabel6 setAccessibilityIdentifier:v13];
 
-  v16 = [(HRSpeedBumpViewController *)self contentView];
-  v15 = [(HRSpeedBumpViewController *)self titleLabel];
-  [v16 addSubview:v15];
+  contentView = [(HRSpeedBumpViewController *)self contentView];
+  titleLabel7 = [(HRSpeedBumpViewController *)self titleLabel];
+  [contentView addSubview:titleLabel7];
 }
 
 - (void)_setUpBodyLabel
@@ -308,115 +308,115 @@ uint64_t __75__HRSpeedBumpViewController__updateUIWithLatestVisibleBubbleView_an
   v3 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HRSpeedBumpViewController *)self setBodyLabel:v3];
 
-  v4 = [(HRSpeedBumpViewController *)self item];
-  v5 = [v4 body];
-  v6 = [(HRSpeedBumpViewController *)self bodyLabel];
-  [v6 setText:v5];
+  item = [(HRSpeedBumpViewController *)self item];
+  body = [item body];
+  bodyLabel = [(HRSpeedBumpViewController *)self bodyLabel];
+  [bodyLabel setText:body];
 
-  v7 = [(HRSpeedBumpViewController *)self bodyLabel];
-  [v7 setTextAlignment:4];
+  bodyLabel2 = [(HRSpeedBumpViewController *)self bodyLabel];
+  [bodyLabel2 setTextAlignment:4];
 
-  v8 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v9 = [(HRSpeedBumpViewController *)self bodyLabel];
-  [v9 setTextColor:v8];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  bodyLabel3 = [(HRSpeedBumpViewController *)self bodyLabel];
+  [bodyLabel3 setTextColor:secondaryLabelColor];
 
-  v10 = [(HRSpeedBumpViewController *)self _bodyFont];
-  v11 = [(HRSpeedBumpViewController *)self bodyLabel];
-  [v11 setFont:v10];
+  _bodyFont = [(HRSpeedBumpViewController *)self _bodyFont];
+  bodyLabel4 = [(HRSpeedBumpViewController *)self bodyLabel];
+  [bodyLabel4 setFont:_bodyFont];
 
-  v12 = [(HRSpeedBumpViewController *)self bodyLabel];
-  [v12 setAdjustsFontForContentSizeCategory:1];
+  bodyLabel5 = [(HRSpeedBumpViewController *)self bodyLabel];
+  [bodyLabel5 setAdjustsFontForContentSizeCategory:1];
 
-  v13 = [(HRSpeedBumpViewController *)self bodyLabel];
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bodyLabel6 = [(HRSpeedBumpViewController *)self bodyLabel];
+  [bodyLabel6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v14 = [(HRSpeedBumpViewController *)self bodyLabel];
-  [v14 setNumberOfLines:0];
+  bodyLabel7 = [(HRSpeedBumpViewController *)self bodyLabel];
+  [bodyLabel7 setNumberOfLines:0];
 
-  v15 = [(HRSpeedBumpViewController *)self identifierBundle];
-  v16 = [v15 stringByAppendingString:@".Description"];
-  v17 = [(HRSpeedBumpViewController *)self bodyLabel];
-  [v17 setAccessibilityIdentifier:v16];
+  identifierBundle = [(HRSpeedBumpViewController *)self identifierBundle];
+  v16 = [identifierBundle stringByAppendingString:@".Description"];
+  bodyLabel8 = [(HRSpeedBumpViewController *)self bodyLabel];
+  [bodyLabel8 setAccessibilityIdentifier:v16];
 
-  v19 = [(HRSpeedBumpViewController *)self contentView];
-  v18 = [(HRSpeedBumpViewController *)self bodyLabel];
-  [v19 addSubview:v18];
+  contentView = [(HRSpeedBumpViewController *)self contentView];
+  bodyLabel9 = [(HRSpeedBumpViewController *)self bodyLabel];
+  [contentView addSubview:bodyLabel9];
 }
 
 - (void)_setUpTitleConstraints
 {
-  v3 = [(HRSpeedBumpViewController *)self titleLabel];
-  v4 = [(HRSpeedBumpViewController *)self contentView];
+  titleLabel = [(HRSpeedBumpViewController *)self titleLabel];
+  contentView = [(HRSpeedBumpViewController *)self contentView];
   HKHealthUIBuddyDirectionalEdgeInsets();
-  [v3 hk_alignHorizontalConstraintsWithView:v4 insets:?];
+  [titleLabel hk_alignHorizontalConstraintsWithView:contentView insets:?];
 
-  v9 = [(HRSpeedBumpViewController *)self titleLabel];
-  v5 = [v9 topAnchor];
-  v6 = [(HRSpeedBumpViewController *)self contentView];
-  v7 = [v6 topAnchor];
+  titleLabel2 = [(HRSpeedBumpViewController *)self titleLabel];
+  topAnchor = [titleLabel2 topAnchor];
+  contentView2 = [(HRSpeedBumpViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
   [(HRSpeedBumpViewController *)self contentTop];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:?];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   [v8 setActive:1];
 }
 
 - (void)_setUpBodyConstraints
 {
-  v3 = [(HRSpeedBumpViewController *)self bodyLabel];
-  v4 = [(HRSpeedBumpViewController *)self contentView];
+  bodyLabel = [(HRSpeedBumpViewController *)self bodyLabel];
+  contentView = [(HRSpeedBumpViewController *)self contentView];
   HKHealthUIBuddyDirectionalEdgeInsets();
-  [v3 hk_alignHorizontalConstraintsWithView:v4 insets:?];
+  [bodyLabel hk_alignHorizontalConstraintsWithView:contentView insets:?];
 
-  v9 = [(HRSpeedBumpViewController *)self bodyLabel];
-  v5 = [v9 topAnchor];
-  v6 = [(HRSpeedBumpViewController *)self titleLabel];
-  v7 = [v6 lastBaselineAnchor];
+  bodyLabel2 = [(HRSpeedBumpViewController *)self bodyLabel];
+  topAnchor = [bodyLabel2 topAnchor];
+  titleLabel = [(HRSpeedBumpViewController *)self titleLabel];
+  lastBaselineAnchor = [titleLabel lastBaselineAnchor];
   [(HRSpeedBumpViewController *)self _titleLastBaselineToBodyTop];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:?];
+  v8 = [topAnchor constraintEqualToAnchor:lastBaselineAnchor constant:?];
   [v8 setActive:1];
 }
 
 - (void)_setUpBubbleViews
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(HRSpeedBumpViewController *)self item];
-  v5 = [v4 bubbles];
-  v28 = [v3 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  item = [(HRSpeedBumpViewController *)self item];
+  bubbles = [item bubbles];
+  v28 = [v3 arrayWithCapacity:{objc_msgSend(bubbles, "count")}];
 
-  v6 = [(HRSpeedBumpViewController *)self item];
-  v7 = [v6 bubbles];
-  v8 = [v7 count];
+  item2 = [(HRSpeedBumpViewController *)self item];
+  bubbles2 = [item2 bubbles];
+  v8 = [bubbles2 count];
 
   if (v8)
   {
     v9 = 0;
     do
     {
-      v10 = [(HRSpeedBumpViewController *)self item];
-      v11 = [v10 bubbles];
-      v12 = [v11 objectAtIndexedSubscript:v9];
+      item3 = [(HRSpeedBumpViewController *)self item];
+      bubbles3 = [item3 bubbles];
+      v12 = [bubbles3 objectAtIndexedSubscript:v9];
 
-      v13 = [(HRSpeedBumpViewController *)self identifierBundle];
+      identifierBundle = [(HRSpeedBumpViewController *)self identifierBundle];
       v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"s.Item%d.Title", ++v9];
-      v15 = [v13 stringByAppendingString:v14];
+      v15 = [identifierBundle stringByAppendingString:v14];
 
-      v16 = [(HRSpeedBumpViewController *)self identifierBundle];
+      identifierBundle2 = [(HRSpeedBumpViewController *)self identifierBundle];
       v17 = [MEMORY[0x277CCACA8] stringWithFormat:@".Item%d.Description", v9];
-      v18 = [v16 stringByAppendingString:v17];
+      v18 = [identifierBundle2 stringByAppendingString:v17];
 
       v19 = objc_opt_class();
-      v20 = [v12 title];
-      v21 = [v12 body];
-      v22 = [v19 createBubbleViewTitledListItem:v20 titleAccessibilityIdentifier:v15 listBody:v21 bodyAccessibilityIdentifier:v18 itemNumber:v9];
+      title = [v12 title];
+      body = [v12 body];
+      v22 = [v19 createBubbleViewTitledListItem:title titleAccessibilityIdentifier:v15 listBody:body bodyAccessibilityIdentifier:v18 itemNumber:v9];
 
       [v22 setHidden:1];
       [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v23 = [(HRSpeedBumpViewController *)self contentView];
-      [v23 addSubview:v22];
+      contentView = [(HRSpeedBumpViewController *)self contentView];
+      [contentView addSubview:v22];
 
       [v28 addObject:v22];
-      v24 = [(HRSpeedBumpViewController *)self item];
-      v25 = [v24 bubbles];
-      v26 = [v25 count];
+      item4 = [(HRSpeedBumpViewController *)self item];
+      bubbles4 = [item4 bubbles];
+      v26 = [bubbles4 count];
     }
 
     while (v26 > v9);
@@ -428,8 +428,8 @@ uint64_t __75__HRSpeedBumpViewController__updateUIWithLatestVisibleBubbleView_an
 
 - (void)_setUpBubbleViewConstraints
 {
-  v3 = [(HRSpeedBumpViewController *)self bubbleViews];
-  v4 = [v3 count];
+  bubbleViews = [(HRSpeedBumpViewController *)self bubbleViews];
+  v4 = [bubbleViews count];
 
   if (v4)
   {
@@ -440,22 +440,22 @@ uint64_t __75__HRSpeedBumpViewController__updateUIWithLatestVisibleBubbleView_an
     v9 = *(MEMORY[0x277D75060] + 24);
     do
     {
-      v10 = [(HRSpeedBumpViewController *)self bubbleViews];
-      v11 = [v10 objectAtIndexedSubscript:v5];
+      bubbleViews2 = [(HRSpeedBumpViewController *)self bubbleViews];
+      v11 = [bubbleViews2 objectAtIndexedSubscript:v5];
 
       if (v5)
       {
-        v12 = [(HRSpeedBumpViewController *)self bubbleViews];
-        v13 = [v12 objectAtIndexedSubscript:v5 - 1];
+        bubbleViews3 = [(HRSpeedBumpViewController *)self bubbleViews];
+        v13 = [bubbleViews3 objectAtIndexedSubscript:v5 - 1];
 
         v14 = 10.0;
       }
 
       else
       {
-        v15 = [(HRSpeedBumpViewController *)self bodyLabel];
+        bodyLabel = [(HRSpeedBumpViewController *)self bodyLabel];
 
-        if (v15)
+        if (bodyLabel)
         {
           [(HRSpeedBumpViewController *)self bodyLabel];
         }
@@ -468,21 +468,21 @@ uint64_t __75__HRSpeedBumpViewController__updateUIWithLatestVisibleBubbleView_an
         v14 = 34.0;
       }
 
-      v16 = [v13 lastBaselineAnchor];
+      lastBaselineAnchor = [v13 lastBaselineAnchor];
 
       [v11 hk_onboardingListEdgeInsets];
       [v11 setLayoutMargins:?];
-      v17 = [v11 bubbleContent];
-      v18 = [(HRSpeedBumpViewController *)self titleLabel];
-      [v17 hk_alignHorizontalConstraintsWithView:v18 insets:{v6, v7, v8, v9}];
+      bubbleContent = [v11 bubbleContent];
+      titleLabel = [(HRSpeedBumpViewController *)self titleLabel];
+      [bubbleContent hk_alignHorizontalConstraintsWithView:titleLabel insets:{v6, v7, v8, v9}];
 
-      v19 = [v11 topAnchor];
-      v20 = [v19 constraintEqualToAnchor:v16 constant:v14];
+      topAnchor = [v11 topAnchor];
+      v20 = [topAnchor constraintEqualToAnchor:lastBaselineAnchor constant:v14];
       [v20 setActive:1];
 
       ++v5;
-      v21 = [(HRSpeedBumpViewController *)self bubbleViews];
-      v22 = [v21 count];
+      bubbleViews4 = [(HRSpeedBumpViewController *)self bubbleViews];
+      v22 = [bubbleViews4 count];
     }
 
     while (v22 > v5);
@@ -499,72 +499,72 @@ uint64_t __75__HRSpeedBumpViewController__updateUIWithLatestVisibleBubbleView_an
   v6 = [HRStackedButtonView buddyStackedButtonViewWithTitles:v5 footerText:0 boldFooterText:0 delegate:self];
   [(HRSpeedBumpViewController *)self setStackedButtonView:v6];
 
-  v7 = [(HRSpeedBumpViewController *)self stackedButtonView];
-  [v7 setBlurHidden:0];
+  stackedButtonView = [(HRSpeedBumpViewController *)self stackedButtonView];
+  [stackedButtonView setBlurHidden:0];
 
-  v8 = [(HRSpeedBumpViewController *)self stackedButtonView];
-  [v8 setFixedBottomButtonSpacing:1];
+  stackedButtonView2 = [(HRSpeedBumpViewController *)self stackedButtonView];
+  [stackedButtonView2 setFixedBottomButtonSpacing:1];
 
-  v9 = [(HRSpeedBumpViewController *)self stackedButtonView];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackedButtonView3 = [(HRSpeedBumpViewController *)self stackedButtonView];
+  [stackedButtonView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (void)_setStackedButtonViewAsFooterView
 {
-  v3 = [(HRSpeedBumpViewController *)self stackedButtonView];
+  stackedButtonView = [(HRSpeedBumpViewController *)self stackedButtonView];
   HKHealthUIBuddyDirectionalEdgeInsets();
-  [(HRSpeedBumpViewController *)self setFooterView:v3 insets:?];
+  [(HRSpeedBumpViewController *)self setFooterView:stackedButtonView insets:?];
 
-  v4 = [(HRSpeedBumpViewController *)self stackedButtonView];
-  [v4 setClipsToBounds:0];
+  stackedButtonView2 = [(HRSpeedBumpViewController *)self stackedButtonView];
+  [stackedButtonView2 setClipsToBounds:0];
 
-  v5 = [(HRSpeedBumpViewController *)self stackedButtonView];
-  v6 = [(HRSpeedBumpViewController *)self view];
-  [v5 alignBlurViewHorizontalConstraintsWithView:v6];
+  stackedButtonView3 = [(HRSpeedBumpViewController *)self stackedButtonView];
+  view = [(HRSpeedBumpViewController *)self view];
+  [stackedButtonView3 alignBlurViewHorizontalConstraintsWithView:view];
 
   v7 = objc_alloc(MEMORY[0x277D76220]);
-  v8 = [(HRSpeedBumpViewController *)self scrollView];
-  v10 = [v7 initWithScrollView:v8 edge:4 style:0];
+  scrollView = [(HRSpeedBumpViewController *)self scrollView];
+  v10 = [v7 initWithScrollView:scrollView edge:4 style:0];
 
-  v9 = [(HRSpeedBumpViewController *)self stackedButtonView];
-  [v9 addInteraction:v10];
+  stackedButtonView4 = [(HRSpeedBumpViewController *)self stackedButtonView];
+  [stackedButtonView4 addInteraction:v10];
 }
 
-- (void)_updateContentViewBottomConstraintWithAnchor:(id)a3 constant:(double)a4
+- (void)_updateContentViewBottomConstraintWithAnchor:(id)anchor constant:(double)constant
 {
-  v6 = a3;
-  v7 = [(HRSpeedBumpViewController *)self contentViewBottomConstraint];
-  [v7 setActive:0];
+  anchorCopy = anchor;
+  contentViewBottomConstraint = [(HRSpeedBumpViewController *)self contentViewBottomConstraint];
+  [contentViewBottomConstraint setActive:0];
 
   [(HRSpeedBumpViewController *)self setContentViewBottomConstraint:0];
-  v8 = [(HRSpeedBumpViewController *)self contentView];
-  v9 = [v8 bottomAnchor];
-  v10 = [v9 constraintEqualToAnchor:v6 constant:a4];
+  contentView = [(HRSpeedBumpViewController *)self contentView];
+  bottomAnchor = [contentView bottomAnchor];
+  v10 = [bottomAnchor constraintEqualToAnchor:anchorCopy constant:constant];
 
   [(HRSpeedBumpViewController *)self setContentViewBottomConstraint:v10];
-  v11 = [(HRSpeedBumpViewController *)self contentViewBottomConstraint];
-  [v11 setActive:1];
+  contentViewBottomConstraint2 = [(HRSpeedBumpViewController *)self contentViewBottomConstraint];
+  [contentViewBottomConstraint2 setActive:1];
 }
 
-- (void)_scrollBubbleViewToVisible:(id)a3
+- (void)_scrollBubbleViewToVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   [(HRSpeedBumpViewController *)self initialContentOffset];
   if (v5 == 1.79769313e308)
   {
-    v6 = [(HRSpeedBumpViewController *)self scrollView];
-    [v6 contentOffset];
+    scrollView = [(HRSpeedBumpViewController *)self scrollView];
+    [scrollView contentOffset];
     [(HRSpeedBumpViewController *)self setInitialContentOffset:v7];
   }
 
-  v8 = [(HRSpeedBumpViewController *)self scrollView];
-  [v8 bounds];
+  scrollView2 = [(HRSpeedBumpViewController *)self scrollView];
+  [scrollView2 bounds];
   Height = CGRectGetHeight(v32);
-  v10 = [(HRSpeedBumpViewController *)self stackedButtonView];
-  [v10 bounds];
+  stackedButtonView = [(HRSpeedBumpViewController *)self stackedButtonView];
+  [stackedButtonView bounds];
   v11 = Height - CGRectGetHeight(v33);
 
-  [v4 frame];
+  [visibleCopy frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -575,29 +575,29 @@ uint64_t __75__HRSpeedBumpViewController__updateUIWithLatestVisibleBubbleView_an
   v34.size.width = v17;
   v34.size.height = v19;
   MaxY = CGRectGetMaxY(v34);
-  v21 = [(HRSpeedBumpViewController *)self navigationController];
-  v22 = [v21 navigationBar];
-  [v22 bounds];
+  navigationController = [(HRSpeedBumpViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar bounds];
   v23 = MaxY + CGRectGetHeight(v35);
 
   v24 = v23 - v11 + 20.0;
   if (v24 > 0.0)
   {
-    v25 = [(HRSpeedBumpViewController *)self scrollView];
-    [v25 contentOffset];
+    scrollView3 = [(HRSpeedBumpViewController *)self scrollView];
+    [scrollView3 contentOffset];
     v27 = v26;
     [(HRSpeedBumpViewController *)self initialContentOffset];
     v29 = v24 + v28;
 
-    v30 = [(HRSpeedBumpViewController *)self scrollView];
-    [v30 setContentOffset:1 animated:{v27, v29}];
+    scrollView4 = [(HRSpeedBumpViewController *)self scrollView];
+    [scrollView4 setContentOffset:1 animated:{v27, v29}];
   }
 }
 
 - (double)_titleLastBaselineToBodyTop
 {
-  v2 = [(HRSpeedBumpViewController *)self titleFont];
-  [v2 _scaledValueForValue:24.0];
+  titleFont = [(HRSpeedBumpViewController *)self titleFont];
+  [titleFont _scaledValueForValue:24.0];
   v4 = v3;
 
   return v4;

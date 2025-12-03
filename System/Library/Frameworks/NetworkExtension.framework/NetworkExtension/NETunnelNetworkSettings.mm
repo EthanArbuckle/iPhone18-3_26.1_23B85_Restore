@@ -1,19 +1,19 @@
 @interface NETunnelNetworkSettings
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
-- (NETunnelNetworkSettings)initWithCoder:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
+- (NETunnelNetworkSettings)initWithCoder:(id)coder;
 - (NETunnelNetworkSettings)initWithTunnelRemoteAddress:(NSString *)address;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromLegacyDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromLegacyDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NETunnelNetworkSettings
 
-- (id)initFromLegacyDictionary:(id)a3
+- (id)initFromLegacyDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || (v6 = CFDICTIONARY_TYPE, CFGetTypeID(v4) != v6))
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (!dictionaryCopy || (v6 = CFDICTIONARY_TYPE, CFGetTypeID(dictionaryCopy) != v6))
   {
     v17 = ne_log_obj();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -96,15 +96,15 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
-  v4 = a3;
-  v5 = [(NETunnelNetworkSettings *)self tunnelRemoteAddress];
+  errorsCopy = errors;
+  tunnelRemoteAddress = [(NETunnelNetworkSettings *)self tunnelRemoteAddress];
 
-  if (v5)
+  if (tunnelRemoteAddress)
   {
-    v6 = [(NETunnelNetworkSettings *)self tunnelRemoteAddress];
-    v7 = NEGetAddressFamilyFromString(v6);
+    tunnelRemoteAddress2 = [(NETunnelNetworkSettings *)self tunnelRemoteAddress];
+    v7 = NEGetAddressFamilyFromString(tunnelRemoteAddress2);
 
     if (v7)
     {
@@ -120,25 +120,25 @@ LABEL_16:
     v9 = @"Missing NETunnelNetworkSettings tunnelRemoteAddress";
   }
 
-  [NEConfiguration addError:v9 toList:v4];
+  [NEConfiguration addError:v9 toList:errorsCopy];
   v8 = 0;
 LABEL_7:
-  v10 = [(NETunnelNetworkSettings *)self DNSSettings];
-  if (v10)
+  dNSSettings = [(NETunnelNetworkSettings *)self DNSSettings];
+  if (dNSSettings)
   {
-    v11 = v10;
-    v12 = [(NETunnelNetworkSettings *)self DNSSettings];
-    v13 = [v12 checkValidityAndCollectErrors:v4];
+    v11 = dNSSettings;
+    dNSSettings2 = [(NETunnelNetworkSettings *)self DNSSettings];
+    v13 = [dNSSettings2 checkValidityAndCollectErrors:errorsCopy];
 
     v8 &= v13;
   }
 
-  v14 = [(NETunnelNetworkSettings *)self proxySettings];
-  if (v14)
+  proxySettings = [(NETunnelNetworkSettings *)self proxySettings];
+  if (proxySettings)
   {
-    v15 = v14;
-    v16 = [(NETunnelNetworkSettings *)self proxySettings];
-    v17 = [v16 checkValidityAndCollectErrors:v4];
+    v15 = proxySettings;
+    proxySettings2 = [(NETunnelNetworkSettings *)self proxySettings];
+    v17 = [proxySettings2 checkValidityAndCollectErrors:errorsCopy];
 
     v8 &= v17;
   }
@@ -146,51 +146,51 @@ LABEL_7:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(NETunnelNetworkSettings *)self tunnelRemoteAddress];
-  v6 = [v4 initWithTunnelRemoteAddress:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  tunnelRemoteAddress = [(NETunnelNetworkSettings *)self tunnelRemoteAddress];
+  v6 = [v4 initWithTunnelRemoteAddress:tunnelRemoteAddress];
 
-  v7 = [(NETunnelNetworkSettings *)self DNSSettings];
-  [v6 setDNSSettings:v7];
+  dNSSettings = [(NETunnelNetworkSettings *)self DNSSettings];
+  [v6 setDNSSettings:dNSSettings];
 
-  v8 = [(NETunnelNetworkSettings *)self proxySettings];
-  [v6 setProxySettings:v8];
+  proxySettings = [(NETunnelNetworkSettings *)self proxySettings];
+  [v6 setProxySettings:proxySettings];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NETunnelNetworkSettings *)self tunnelRemoteAddress];
-  [v4 encodeObject:v5 forKey:@"tunnelRemoteAddress"];
+  coderCopy = coder;
+  tunnelRemoteAddress = [(NETunnelNetworkSettings *)self tunnelRemoteAddress];
+  [coderCopy encodeObject:tunnelRemoteAddress forKey:@"tunnelRemoteAddress"];
 
-  v6 = [(NETunnelNetworkSettings *)self DNSSettings];
-  [v4 encodeObject:v6 forKey:@"DNSSettings"];
+  dNSSettings = [(NETunnelNetworkSettings *)self DNSSettings];
+  [coderCopy encodeObject:dNSSettings forKey:@"DNSSettings"];
 
-  v7 = [(NETunnelNetworkSettings *)self proxySettings];
-  [v4 encodeObject:v7 forKey:@"proxySettings"];
+  proxySettings = [(NETunnelNetworkSettings *)self proxySettings];
+  [coderCopy encodeObject:proxySettings forKey:@"proxySettings"];
 }
 
-- (NETunnelNetworkSettings)initWithCoder:(id)a3
+- (NETunnelNetworkSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NETunnelNetworkSettings;
   v5 = [(NETunnelNetworkSettings *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tunnelRemoteAddress"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tunnelRemoteAddress"];
     tunnelRemoteAddress = v5->_tunnelRemoteAddress;
     v5->_tunnelRemoteAddress = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DNSSettings"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DNSSettings"];
     DNSSettings = v5->_DNSSettings;
     v5->_DNSSettings = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxySettings"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxySettings"];
     proxySettings = v5->_proxySettings;
     v5->_proxySettings = v10;
   }

@@ -1,23 +1,23 @@
 @interface _UIBannerView
-- (_UIBannerView)initWithFrame:(CGRect)a3;
+- (_UIBannerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setContent:(id)a3;
-- (void)setHighlighted:(BOOL)a3 initialPress:(BOOL)a4;
+- (void)setContent:(id)content;
+- (void)setHighlighted:(BOOL)highlighted initialPress:(BOOL)press;
 - (void)updateConstraints;
 @end
 
 @implementation _UIBannerView
 
-- (_UIBannerView)initWithFrame:(CGRect)a3
+- (_UIBannerView)initWithFrame:(CGRect)frame
 {
   v36.receiver = self;
   v36.super_class = _UIBannerView;
-  v3 = [(UIView *)&v36 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v36 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     backgroundLayer = v3->_backgroundLayer;
-    v3->_backgroundLayer = v4;
+    v3->_backgroundLayer = layer;
 
     v6 = *MEMORY[0x1E69796E8];
     [(CALayer *)v3->_backgroundLayer setCornerCurve:*MEMORY[0x1E69796E8]];
@@ -29,8 +29,8 @@
     [(CALayer *)v3->_backgroundLayer setShadowOffset:0.0, 5.0];
     LODWORD(v8) = 1045220557;
     [(CALayer *)v3->_backgroundLayer setShadowOpacity:v8];
-    v9 = [(UIView *)v3 layer];
-    [v9 addSublayer:v3->_backgroundLayer];
+    layer2 = [(UIView *)v3 layer];
+    [layer2 addSublayer:v3->_backgroundLayer];
 
     v10 = [UILabel alloc];
     v11 = *MEMORY[0x1E695F058];
@@ -80,13 +80,13 @@
     [(UIView *)v3->_highlightView setBackgroundColor:v30];
 
     [(UIView *)v3->_highlightView setAlpha:0.0];
-    v31 = [(UIView *)v3->_highlightView layer];
-    [v31 setCornerCurve:v6];
+    layer3 = [(UIView *)v3->_highlightView layer];
+    [layer3 setCornerCurve:v6];
 
     [(CALayer *)v3->_backgroundLayer cornerRadius];
     v33 = v32;
-    v34 = [(UIView *)v3->_highlightView layer];
-    [v34 setCornerRadius:v33];
+    layer4 = [(UIView *)v3->_highlightView layer];
+    [layer4 setCornerRadius:v33];
 
     [(UIView *)v3 addSubview:v3->_highlightView];
     [(UIView *)v3 setNeedsUpdateConstraints];
@@ -100,58 +100,58 @@
   v34.receiver = self;
   v34.super_class = _UIBannerView;
   [(UIView *)&v34 updateConstraints];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(UIView *)self->_imageView topAnchor];
-  v5 = [(UIView *)self topAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5 constant:16.0];
-  [v3 addObject:v6];
+  array = [MEMORY[0x1E695DF70] array];
+  topAnchor = [(UIView *)self->_imageView topAnchor];
+  topAnchor2 = [(UIView *)self topAnchor];
+  v6 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
+  [array addObject:v6];
 
-  v7 = [(UIView *)self->_imageView leadingAnchor];
-  v8 = [(UIView *)self leadingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8 constant:16.0];
-  [v3 addObject:v9];
+  leadingAnchor = [(UIView *)self->_imageView leadingAnchor];
+  leadingAnchor2 = [(UIView *)self leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
+  [array addObject:v9];
 
-  v10 = [(UIView *)self->_imageView bottomAnchor];
-  v11 = [(UIView *)self bottomAnchor];
-  v12 = [v10 constraintLessThanOrEqualToAnchor:v11 constant:-16.0];
-  [v3 addObject:v12];
+  bottomAnchor = [(UIView *)self->_imageView bottomAnchor];
+  bottomAnchor2 = [(UIView *)self bottomAnchor];
+  v12 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-16.0];
+  [array addObject:v12];
 
-  v13 = [(UIView *)self->_titleLabel firstBaselineAnchor];
-  v14 = [(UIView *)self topAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:28.0];
-  [v3 addObject:v15];
+  firstBaselineAnchor = [(UIView *)self->_titleLabel firstBaselineAnchor];
+  topAnchor3 = [(UIView *)self topAnchor];
+  v15 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor3 constant:28.0];
+  [array addObject:v15];
 
-  v16 = [(UIView *)self->_titleLabel leadingAnchor];
-  v17 = [(UIView *)self->_imageView trailingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17 constant:12.0];
-  [v3 addObject:v18];
+  leadingAnchor3 = [(UIView *)self->_titleLabel leadingAnchor];
+  trailingAnchor = [(UIView *)self->_imageView trailingAnchor];
+  v18 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:12.0];
+  [array addObject:v18];
 
-  v19 = [(UIView *)self->_titleLabel trailingAnchor];
-  v20 = [(UIView *)self trailingAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20 constant:-16.0];
-  [v3 addObject:v21];
+  trailingAnchor2 = [(UIView *)self->_titleLabel trailingAnchor];
+  trailingAnchor3 = [(UIView *)self trailingAnchor];
+  v21 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-16.0];
+  [array addObject:v21];
 
-  v22 = [(UIView *)self->_bodyLabel firstBaselineAnchor];
-  v23 = [(UIView *)self->_titleLabel lastBaselineAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23 constant:20.0];
-  [v3 addObject:v24];
+  firstBaselineAnchor2 = [(UIView *)self->_bodyLabel firstBaselineAnchor];
+  lastBaselineAnchor = [(UIView *)self->_titleLabel lastBaselineAnchor];
+  v24 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:20.0];
+  [array addObject:v24];
 
-  v25 = [(UIView *)self->_bodyLabel leadingAnchor];
-  v26 = [(UIView *)self->_titleLabel leadingAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
-  [v3 addObject:v27];
+  leadingAnchor4 = [(UIView *)self->_bodyLabel leadingAnchor];
+  leadingAnchor5 = [(UIView *)self->_titleLabel leadingAnchor];
+  v27 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
+  [array addObject:v27];
 
-  v28 = [(UIView *)self->_bodyLabel trailingAnchor];
-  v29 = [(UIView *)self->_titleLabel trailingAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
-  [v3 addObject:v30];
+  trailingAnchor4 = [(UIView *)self->_bodyLabel trailingAnchor];
+  trailingAnchor5 = [(UIView *)self->_titleLabel trailingAnchor];
+  v30 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
+  [array addObject:v30];
 
-  v31 = [(UIView *)self->_bodyLabel lastBaselineAnchor];
-  v32 = [(UIView *)self bottomAnchor];
-  v33 = [v31 constraintLessThanOrEqualToAnchor:v32 constant:-16.0];
-  [v3 addObject:v33];
+  lastBaselineAnchor2 = [(UIView *)self->_bodyLabel lastBaselineAnchor];
+  bottomAnchor3 = [(UIView *)self bottomAnchor];
+  v33 = [lastBaselineAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3 constant:-16.0];
+  [array addObject:v33];
 
-  [MEMORY[0x1E69977A0] activateConstraints:v3];
+  [MEMORY[0x1E69977A0] activateConstraints:array];
 }
 
 - (void)layoutSubviews
@@ -159,8 +159,8 @@
   v12.receiver = self;
   v12.super_class = _UIBannerView;
   [(UIView *)&v12 layoutSubviews];
-  v3 = [(UIView *)self layer];
-  [v3 bounds];
+  layer = [(UIView *)self layer];
+  [layer bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -170,31 +170,31 @@
   [(UIView *)self->_highlightView setFrame:v5, v7, v9, v11];
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v4 = a3;
-  v5 = [v4 title];
-  [(UILabel *)self->_titleLabel setText:v5];
+  contentCopy = content;
+  title = [contentCopy title];
+  [(UILabel *)self->_titleLabel setText:title];
 
-  v6 = [v4 contentColor];
-  [(UILabel *)self->_titleLabel setTextColor:v6];
+  contentColor = [contentCopy contentColor];
+  [(UILabel *)self->_titleLabel setTextColor:contentColor];
 
-  v7 = [v4 body];
-  [(UILabel *)self->_bodyLabel setText:v7];
+  body = [contentCopy body];
+  [(UILabel *)self->_bodyLabel setText:body];
 
-  v8 = [v4 contentColor];
-  [(UILabel *)self->_bodyLabel setTextColor:v8];
+  contentColor2 = [contentCopy contentColor];
+  [(UILabel *)self->_bodyLabel setTextColor:contentColor2];
 
-  v9 = [v4 image];
-  [(UIImageView *)self->_imageView setImage:v9];
+  image = [contentCopy image];
+  [(UIImageView *)self->_imageView setImage:image];
 
-  v10 = [v4 contentColor];
-  [(UIView *)self->_imageView setTintColor:v10];
+  contentColor3 = [contentCopy contentColor];
+  [(UIView *)self->_imageView setTintColor:contentColor3];
 
-  v13 = [v4 backgroundColor];
+  backgroundColor = [contentCopy backgroundColor];
 
-  v11 = v13;
-  if (!v13)
+  v11 = backgroundColor;
+  if (!backgroundColor)
   {
     v11 = +[UIColor grayColor];
   }
@@ -204,23 +204,23 @@
   -[CALayer setBackgroundColor:](self->_backgroundLayer, "setBackgroundColor:", [v14 CGColor]);
 }
 
-- (void)setHighlighted:(BOOL)a3 initialPress:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted initialPress:(BOOL)press
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    v4 = a4;
-    v5 = a3;
-    self->_highlighted = a3;
+    pressCopy = press;
+    highlightedCopy = highlighted;
+    self->_highlighted = highlighted;
     v10[0] = self;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __45___UIBannerView_setHighlighted_initialPress___block_invoke;
     v8[3] = &unk_1E711F440;
-    v9 = v5;
+    v9 = highlightedCopy;
     v8[4] = self;
-    [UIButton _setVisuallyHighlighted:v5 forViews:v7 initialPress:v4 highlightBlock:v8];
+    [UIButton _setVisuallyHighlighted:highlightedCopy forViews:v7 initialPress:pressCopy highlightBlock:v8];
   }
 }
 

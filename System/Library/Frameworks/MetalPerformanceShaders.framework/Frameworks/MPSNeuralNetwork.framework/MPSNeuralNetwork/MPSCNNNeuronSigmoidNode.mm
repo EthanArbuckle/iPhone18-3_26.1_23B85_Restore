@@ -7,7 +7,7 @@
 
 + (MPSCNNNeuronSigmoidNode)nodeWithSource:(MPSNNImageNode *)sourceNode
 {
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   v11 = objc_msgSend_initWithSource_(v4, v5, sourceNode, v6, v7, v8, v9, v10);
 
   return v11;

@@ -1,16 +1,16 @@
 @interface AAUIBaseDataclassDetailViewController
-- (AAUIBaseDataclassDetailViewController)initWithBundleID:(id)a3 account:(id)a4;
-- (id)accountsForAccountManager:(id)a3;
+- (AAUIBaseDataclassDetailViewController)initWithBundleID:(id)d account:(id)account;
+- (id)accountsForAccountManager:(id)manager;
 - (id)specifiers;
 - (void)_loadNotesDetailViewController;
 @end
 
 @implementation AAUIBaseDataclassDetailViewController
 
-- (AAUIBaseDataclassDetailViewController)initWithBundleID:(id)a3 account:(id)a4
+- (AAUIBaseDataclassDetailViewController)initWithBundleID:(id)d account:(id)account
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  accountCopy = account;
   v17.receiver = self;
   v17.super_class = AAUIBaseDataclassDetailViewController;
   v9 = [(AAUIBaseDataclassDetailViewController *)&v17 init];
@@ -29,8 +29,8 @@
     v9->_accountManager = v14;
 
     [(AIDAAccountManager *)v9->_accountManager setDelegate:v9];
-    objc_storeStrong(&v9->_bundleID, a3);
-    [(AAUIBaseDataclassDetailViewController *)v9 setAccount:v8];
+    objc_storeStrong(&v9->_bundleID, d);
+    [(AAUIBaseDataclassDetailViewController *)v9 setAccount:accountCopy];
   }
 
   return v9;
@@ -38,22 +38,22 @@
 
 - (void)_loadNotesDetailViewController
 {
-  v15 = [(AAUIBaseDataclassDetailViewController *)self _notesDataclassDetailViewController];
-  [(AAUIBaseDataclassDetailViewController *)self addChildViewController:v15];
-  v3 = [(AAUIBaseDataclassDetailViewController *)self view];
-  [v3 bounds];
+  _notesDataclassDetailViewController = [(AAUIBaseDataclassDetailViewController *)self _notesDataclassDetailViewController];
+  [(AAUIBaseDataclassDetailViewController *)self addChildViewController:_notesDataclassDetailViewController];
+  view = [(AAUIBaseDataclassDetailViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v15 view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [_notesDataclassDetailViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(AAUIBaseDataclassDetailViewController *)self view];
-  v14 = [v15 view];
-  [v13 addSubview:v14];
+  view3 = [(AAUIBaseDataclassDetailViewController *)self view];
+  view4 = [_notesDataclassDetailViewController view];
+  [view3 addSubview:view4];
 
-  [v15 didMoveToParentViewController:self];
+  [_notesDataclassDetailViewController didMoveToParentViewController:self];
 }
 
 - (id)specifiers
@@ -111,7 +111,7 @@ LABEL_11:
   return v14;
 }
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
   v4 = objc_opt_new();
   v5 = AIDAServiceTypeCloud;

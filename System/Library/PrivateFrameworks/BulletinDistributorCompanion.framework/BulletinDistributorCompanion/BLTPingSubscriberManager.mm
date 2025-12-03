@@ -1,22 +1,22 @@
 @interface BLTPingSubscriberManager
 - (BLTBulletinDistributorSubscriberDeviceDelegate)deviceDelegate;
-- (BLTPingSubscriberManager)initWithDeviceDelegate:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)_loadPingSubscriberBundles:(id)a3;
+- (BLTPingSubscriberManager)initWithDeviceDelegate:(id)delegate;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)_loadPingSubscriberBundles:(id)bundles;
 @end
 
 @implementation BLTPingSubscriberManager
 
-- (BLTPingSubscriberManager)initWithDeviceDelegate:(id)a3
+- (BLTPingSubscriberManager)initWithDeviceDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = BLTPingSubscriberManager;
   v5 = [(BLTPingSubscriberManager *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_deviceDelegate, v4);
+    objc_storeWeak(&v5->_deviceDelegate, delegateCopy);
     v7 = objc_alloc_init(BLTBulletinDistributorSubscriberList);
     subscribers = v6->_subscribers;
     v6->_subscribers = v7;
@@ -34,28 +34,28 @@
   return v6;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.bulletindistributord.server"];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.bulletindistributord.server"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v6 BOOLValue])
   {
-    v7 = [[BLTSubscriberRemoteClient alloc] initWithConnection:v5];
+    v7 = [[BLTSubscriberRemoteClient alloc] initWithConnection:connectionCopy];
     v8 = [[BLTBulletinDistributorSubscriber alloc] initWithClient:v7];
-    v9 = [(BLTPingSubscriberManager *)self deviceDelegate];
-    [(BLTBulletinDistributorSubscriber *)v8 setDeviceDelegate:v9];
+    deviceDelegate = [(BLTPingSubscriberManager *)self deviceDelegate];
+    [(BLTBulletinDistributorSubscriber *)v8 setDeviceDelegate:deviceDelegate];
 
-    [v5 setExportedObject:v8];
+    [connectionCopy setExportedObject:v8];
     v10 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28544E800];
     v11 = MEMORY[0x277CBEB98];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
     v14 = 1;
     [v10 setClasses:v13 forSelector:sel_getWillNanoPresentNotificationForSectionID_subsectionIDs_completion_ argumentIndex:1 ofReply:0];
-    [v5 setExportedInterface:v10];
+    [connectionCopy setExportedInterface:v10];
     v15 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_285454D28];
-    [v5 setRemoteObjectInterface:v15];
+    [connectionCopy setRemoteObjectInterface:v15];
 
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -64,7 +64,7 @@
     v21[4] = self;
     v16 = v8;
     v22 = v16;
-    [v5 setInvalidationHandler:v21];
+    [connectionCopy setInvalidationHandler:v21];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __63__BLTPingSubscriberManager_listener_shouldAcceptNewConnection___block_invoke_2;
@@ -72,8 +72,8 @@
     v19[4] = self;
     v20 = v16;
     v17 = v16;
-    [v5 setInterruptionHandler:v19];
-    [v5 resume];
+    [connectionCopy setInterruptionHandler:v19];
+    [connectionCopy resume];
     [(BLTBulletinDistributorSubscriberList *)self->_subscribers addSubscriber:v17];
   }
 
@@ -91,13 +91,13 @@
   return v14;
 }
 
-- (void)_loadPingSubscriberBundles:(id)a3
+- (void)_loadPingSubscriberBundles:(id)bundles
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  bundlesCopy = bundles;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v35 = 0;
-  v6 = [v5 contentsOfDirectoryAtPath:v4 error:&v35];
+  v6 = [defaultManager contentsOfDirectoryAtPath:bundlesCopy error:&v35];
   v7 = v35;
 
   if (v7)
@@ -125,8 +125,8 @@
       v11 = 0x277CCA000uLL;
       v12 = &selRef_hasShowsOnExternalDevices;
       v27 = *v32;
-      v28 = self;
-      v26 = v4;
+      selfCopy = self;
+      v26 = bundlesCopy;
       do
       {
         v13 = 0;
@@ -138,18 +138,18 @@
             objc_enumerationMutation(obj);
           }
 
-          v14 = [v4 stringByAppendingPathComponent:*(*(&v31 + 1) + 8 * v13)];
+          v14 = [bundlesCopy stringByAppendingPathComponent:*(*(&v31 + 1) + 8 * v13)];
           v15 = [*(v11 + 2264) bundleWithPath:v14];
-          v16 = [v15 principalClass];
-          if (v16)
+          principalClass = [v15 principalClass];
+          if (principalClass)
           {
-            v17 = v16;
-            if ([(objc_class *)v16 conformsToProtocol:v12[441]])
+            v17 = principalClass;
+            if ([(objc_class *)principalClass conformsToProtocol:v12[441]])
             {
               v18 = objc_alloc_init(BLTLocalPingSubscriberService);
               v19 = [[v17 alloc] initWithService:v18];
               v20 = [[BLTBulletinDistributorSubscriber alloc] initWithClient:v19];
-              [(BLTPingSubscriberManager *)v28 deviceDelegate];
+              [(BLTPingSubscriberManager *)selfCopy deviceDelegate];
               v21 = v12;
               v23 = v22 = v11;
               [(BLTBulletinDistributorSubscriber *)v20 setDeviceDelegate:v23];
@@ -157,9 +157,9 @@
               v11 = v22;
               v12 = v21;
               [(BLTLocalPingSubscriberService *)v18 setSubscriber:v20];
-              v4 = v26;
+              bundlesCopy = v26;
               v9 = v29;
-              [(BLTBulletinDistributorSubscriberList *)v28->_subscribers addSubscriber:v20];
+              [(BLTBulletinDistributorSubscriberList *)selfCopy->_subscribers addSubscriber:v20];
               [v19 pingSubscriberDidLoad];
 
               v10 = v27;

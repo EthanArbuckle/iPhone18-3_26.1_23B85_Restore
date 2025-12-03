@@ -1,17 +1,17 @@
 @interface SBFlexibleWindowingArcSwipeSwitcherModifier
-- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)a3;
-- (BOOL)shouldAsyncRenderUntilDelay:(double *)a3;
-- (SBFlexibleWindowingArcSwipeSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 pinSpaceCornerRadiiToDisplayCornerRadii:(BOOL)a6;
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
+- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)index;
+- (BOOL)shouldAsyncRenderUntilDelay:(double *)delay;
+- (SBFlexibleWindowingArcSwipeSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout pinSpaceCornerRadiiToDisplayCornerRadii:(BOOL)radii;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
 - (double)fadeInDelayForSplitViewHandles;
 - (id)_layoutSettings;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)appLayoutsToCacheFullsizeSnapshots;
 - (id)appLayoutsToCacheSnapshots;
 - (id)appLayoutsToResignActive;
-- (id)handleTimerEvent:(id)a3;
+- (id)handleTimerEvent:(id)event;
 - (id)keyboardSuppressionMode;
 - (id)transitionDidEnd;
 - (id)transitionWillBegin;
@@ -23,27 +23,27 @@
 
 @implementation SBFlexibleWindowingArcSwipeSwitcherModifier
 
-- (SBFlexibleWindowingArcSwipeSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 pinSpaceCornerRadiiToDisplayCornerRadii:(BOOL)a6
+- (SBFlexibleWindowingArcSwipeSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout pinSpaceCornerRadiiToDisplayCornerRadii:(BOOL)radii
 {
-  v12 = a4;
-  v13 = a5;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
   v21.receiver = self;
   v21.super_class = SBFlexibleWindowingArcSwipeSwitcherModifier;
-  v14 = [(SBTransitionSwitcherModifier *)&v21 initWithTransitionID:a3];
+  v14 = [(SBTransitionSwitcherModifier *)&v21 initWithTransitionID:d];
   if (v14)
   {
-    if (!v13)
+    if (!appLayoutCopy)
     {
       [SBFlexibleWindowingArcSwipeSwitcherModifier initWithTransitionID:a2 fromAppLayout:v14 toAppLayout:? pinSpaceCornerRadiiToDisplayCornerRadii:?];
     }
 
-    objc_storeStrong(&v14->_fromAppLayout, a4);
-    objc_storeStrong(&v14->_toAppLayout, a5);
-    v14->_pinSpaceCornerRadiiToDisplayCornerRadii = a6;
+    objc_storeStrong(&v14->_fromAppLayout, layout);
+    objc_storeStrong(&v14->_toAppLayout, appLayout);
+    v14->_pinSpaceCornerRadiiToDisplayCornerRadii = radii;
     v15 = MEMORY[0x277CCACA8];
-    v16 = [MEMORY[0x277CCAD78] UUID];
-    v17 = [v16 UUIDString];
-    v18 = [v15 stringWithFormat:@"%@-%@", @"SBFlexibleWindowingArcSwipeTimerReason", v17];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v18 = [v15 stringWithFormat:@"%@-%@", @"SBFlexibleWindowingArcSwipeTimerReason", uUIDString];
     uniqueTimerReason = v14->_uniqueTimerReason;
     v14->_uniqueTimerReason = v18;
   }
@@ -55,15 +55,15 @@
 {
   v11.receiver = self;
   v11.super_class = SBFlexibleWindowingArcSwipeSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v11 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v11 transitionWillBegin];
   v4 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:2];
-  v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+  v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionWillBegin];
 
   if (!self->_systemApertureSuppressionIdentifier)
   {
-    v6 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     systemApertureSuppressionIdentifier = self->_systemApertureSuppressionIdentifier;
-    self->_systemApertureSuppressionIdentifier = v6;
+    self->_systemApertureSuppressionIdentifier = uUID;
 
     v8 = [[SBRequestSystemApertureElementSuppressionEventResponse alloc] initWithAppLayout:self->_toAppLayout wantsGlobalSuppression:0 wantsKeyLineEnabled:0 invalidationIdentifier:self->_systemApertureSuppressionIdentifier];
     v9 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v8 toResponse:v5];
@@ -78,15 +78,15 @@
 {
   v11.receiver = self;
   v11.super_class = SBFlexibleWindowingArcSwipeSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v11 transitionWillUpdate];
+  transitionWillUpdate = [(SBTransitionSwitcherModifier *)&v11 transitionWillUpdate];
   self->_hideSplitViewHandles = 1;
   v4 = [SBTimerEventSwitcherEventResponse alloc];
   v5 = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self animationAttributesForLayoutElement:self->_toAppLayout];
-  v6 = [v5 layoutSettings];
-  [v6 settlingDuration];
+  layoutSettings = [v5 layoutSettings];
+  [layoutSettings settlingDuration];
   v8 = [(SBTimerEventSwitcherEventResponse *)v4 initWithDelay:0 validator:self->_uniqueTimerReason reason:v7 * 0.3];
 
-  v9 = SBAppendSwitcherModifierResponse(v8, v3);
+  v9 = SBAppendSwitcherModifierResponse(v8, transitionWillUpdate);
 
   return v9;
 }
@@ -95,31 +95,31 @@
 {
   v8.receiver = self;
   v8.super_class = SBFlexibleWindowingArcSwipeSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v8 transitionDidEnd];
+  transitionDidEnd = [(SBTransitionSwitcherModifier *)&v8 transitionDidEnd];
   if (self->_systemApertureSuppressionIdentifier)
   {
     v4 = [[SBRelinquishSystemApertureElementSuppressionEventResponse alloc] initWithInvalidationIdentifier:self->_systemApertureSuppressionIdentifier];
-    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionDidEnd];
 
     systemApertureSuppressionIdentifier = self->_systemApertureSuppressionIdentifier;
     self->_systemApertureSuppressionIdentifier = 0;
 
-    v3 = v5;
+    transitionDidEnd = v5;
   }
 
-  return v3;
+  return transitionDidEnd;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBFlexibleWindowingArcSwipeSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v10 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBTransitionSwitcherModifier *)&v10 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
-  LODWORD(v4) = BSEqualStrings();
-  if (v4)
+  LODWORD(eventCopy) = BSEqualStrings();
+  if (eventCopy)
   {
     self->_hideSplitViewHandles = 0;
     v7 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:16 updateMode:3];
@@ -131,21 +131,21 @@
   return v5;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
-  v4 = a3;
-  v5 = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self desktopSpaceDisplayItems];
+  layoutsCopy = layouts;
+  desktopSpaceDisplayItems = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self desktopSpaceDisplayItems];
   v12.receiver = self;
   v12.super_class = SBFlexibleWindowingArcSwipeSwitcherModifier;
-  v6 = [(SBTransitionSwitcherModifier *)&v12 adjustedAppLayoutsForAppLayouts:v4];
+  v6 = [(SBTransitionSwitcherModifier *)&v12 adjustedAppLayoutsForAppLayouts:layoutsCopy];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __79__SBFlexibleWindowingArcSwipeSwitcherModifier_adjustedAppLayoutsForAppLayouts___block_invoke;
   v10[3] = &unk_2783AEDB8;
   v10[4] = self;
-  v11 = v5;
-  v7 = v5;
+  v11 = desktopSpaceDisplayItems;
+  v7 = desktopSpaceDisplayItems;
   v8 = [v6 bs_filter:v10];
 
   return v8;
@@ -200,18 +200,18 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)shouldAsyncRenderUntilDelay:(double *)a3
+- (BOOL)shouldAsyncRenderUntilDelay:(double *)delay
 {
-  v5 = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self switcherSettings];
-  v6 = [v5 animationSettings];
-  [v6 disableAsyncRenderingTransitionPercentage];
+  switcherSettings = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings disableAsyncRenderingTransitionPercentage];
   v8 = v7;
 
-  v9 = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self _layoutSettings];
-  [v9 settlingDuration];
+  _layoutSettings = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self _layoutSettings];
+  [_layoutSettings settlingDuration];
   v11 = v8 * v10;
   UIAnimationDragCoefficient();
-  *a3 = v11 * v12;
+  *delay = v11 * v12;
 
   return 1;
 }
@@ -220,8 +220,8 @@ LABEL_14:
 {
   v6.receiver = self;
   v6.super_class = SBFlexibleWindowingArcSwipeSwitcherModifier;
-  v3 = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)&v6 visibleAppLayouts];
-  v4 = [v3 mutableCopy];
+  visibleAppLayouts = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)&v6 visibleAppLayouts];
+  v4 = [visibleAppLayouts mutableCopy];
 
   [v4 addObject:self->_toAppLayout];
   if (self->_fromAppLayout)
@@ -232,54 +232,54 @@ LABEL_14:
   return v4;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v8.receiver = self;
   v8.super_class = SBFlexibleWindowingArcSwipeSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self _layoutSettings];
-  [v5 setLayoutSettings:v6];
+  _layoutSettings = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self _layoutSettings];
+  [v5 setLayoutSettings:_layoutSettings];
 
   return v5;
 }
 
 - (id)_layoutSettings
 {
-  v3 = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self windowManagementContext];
-  if ([v3 isFlexibleWindowingEnabled] && (objc_msgSend(v3, "isAutomaticStageCreationEnabled") & 1) == 0)
+  windowManagementContext = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self windowManagementContext];
+  if ([windowManagementContext isFlexibleWindowingEnabled] && (objc_msgSend(windowManagementContext, "isAutomaticStageCreationEnabled") & 1) == 0)
   {
-    v6 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-    [v6 setResponse:0.54];
-    [v6 setDampingRatio:0.8];
+    initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+    [initWithDefaultValues setResponse:0.54];
+    [initWithDefaultValues setDampingRatio:0.8];
   }
 
   else
   {
-    v4 = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self switcherSettings];
-    v5 = [v4 animationSettings];
+    switcherSettings = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
 
     if (([(SBFlexibleWindowingArcSwipeSwitcherModifier *)self isReduceMotionEnabled]& 1) != 0)
     {
-      [v5 reduceMotionArcSwipeSettings];
+      [animationSettings reduceMotionArcSwipeSettings];
     }
 
     else
     {
-      [v5 arcSwipeSettings];
+      [animationSettings arcSwipeSettings];
     }
-    v6 = ;
+    initWithDefaultValues = ;
   }
 
-  return v6;
+  return initWithDefaultValues;
 }
 
-- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)a3
+- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)index
 {
   toAppLayout = self->_toAppLayout;
-  v5 = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
   LOBYTE(toAppLayout) = [(SBAppLayout *)toAppLayout isEqual:v6];
 
   return toAppLayout;
@@ -287,13 +287,13 @@ LABEL_14:
 
 - (double)fadeInDelayForSplitViewHandles
 {
-  v2 = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self switcherSettings];
-  v3 = [v2 windowingSettings];
-  [v3 percentageOfTransitionForSplitViewHandleFadeInDelay];
+  switcherSettings = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  [windowingSettings percentageOfTransitionForSplitViewHandleFadeInDelay];
   v5 = v4;
-  v6 = [v2 animationSettings];
-  v7 = [v6 layoutSettings];
-  [v7 settlingDuration];
+  animationSettings = [switcherSettings animationSettings];
+  layoutSettings = [animationSettings layoutSettings];
+  [layoutSettings settlingDuration];
   v9 = v5 * v8;
 
   return v9;
@@ -303,44 +303,44 @@ LABEL_14:
 {
   if (self->_hideSplitViewHandles)
   {
-    v2 = [MEMORY[0x277CBEB98] set];
+    visibleSplitViewHandleNubViews = [MEMORY[0x277CBEB98] set];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = SBFlexibleWindowingArcSwipeSwitcherModifier;
-    v2 = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)&v4 visibleSplitViewHandleNubViews];
+    visibleSplitViewHandleNubViews = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)&v4 visibleSplitViewHandleNubViews];
   }
 
-  return v2;
+  return visibleSplitViewHandleNubViews;
 }
 
 - (id)visibleSplitViewHandleDimmingViews
 {
   if (self->_hideSplitViewHandles)
   {
-    v2 = [MEMORY[0x277CBEB98] set];
+    visibleSplitViewHandleDimmingViews = [MEMORY[0x277CBEB98] set];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = SBFlexibleWindowingArcSwipeSwitcherModifier;
-    v2 = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)&v4 visibleSplitViewHandleDimmingViews];
+    visibleSplitViewHandleDimmingViews = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)&v4 visibleSplitViewHandleDimmingViews];
   }
 
-  return v2;
+  return visibleSplitViewHandleDimmingViews;
 }
 
 - (id)appLayoutsToCacheSnapshots
 {
-  v3 = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self appLayouts];
-  if ([v3 count])
+  appLayouts = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self appLayouts];
+  if ([appLayouts count])
   {
-    v4 = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self appLayouts];
-    v5 = [v4 indexOfObject:self->_toAppLayout];
-    if (v5 == 0x7FFFFFFFFFFFFFFFLL && (v11[0] = MEMORY[0x277D85DD0], v11[1] = 3221225472, v11[2] = __73__SBFlexibleWindowingArcSwipeSwitcherModifier_appLayoutsToCacheSnapshots__block_invoke, v11[3] = &unk_2783AE1A0, v11[4] = self, v5 = [v4 indexOfObjectPassingTest:v11], v5 == 0x7FFFFFFFFFFFFFFFLL))
+    appLayouts2 = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self appLayouts];
+    v5 = [appLayouts2 indexOfObject:self->_toAppLayout];
+    if (v5 == 0x7FFFFFFFFFFFFFFFLL && (v11[0] = MEMORY[0x277D85DD0], v11[1] = 3221225472, v11[2] = __73__SBFlexibleWindowingArcSwipeSwitcherModifier_appLayoutsToCacheSnapshots__block_invoke, v11[3] = &unk_2783AE1A0, v11[4] = self, v5 = [appLayouts2 indexOfObjectPassingTest:v11], v5 == 0x7FFFFFFFFFFFFFFFLL))
     {
       v6 = MEMORY[0x277CBEBF8];
     }
@@ -348,14 +348,14 @@ LABEL_14:
     else
     {
       v7 = v5;
-      v8 = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self switcherSettings];
-      v9 = [v8 numberOfSnapshotsToAlwaysKeepAround];
-      if (!v9)
+      switcherSettings = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self switcherSettings];
+      numberOfSnapshotsToAlwaysKeepAround = [switcherSettings numberOfSnapshotsToAlwaysKeepAround];
+      if (!numberOfSnapshotsToAlwaysKeepAround)
       {
-        v9 = [v8 numberOfSnapshotsToCacheInSwitcher];
+        numberOfSnapshotsToAlwaysKeepAround = [switcherSettings numberOfSnapshotsToCacheInSwitcher];
       }
 
-      v6 = [(SBSwitcherModifier *)self appLayoutsToCacheSnapshotsWithVisibleRange:v7 numberOfSnapshotsToCache:1 biasForward:v9, 1];
+      v6 = [(SBSwitcherModifier *)self appLayoutsToCacheSnapshotsWithVisibleRange:v7 numberOfSnapshotsToCache:1 biasForward:numberOfSnapshotsToAlwaysKeepAround, 1];
     }
   }
 
@@ -385,11 +385,11 @@ uint64_t __73__SBFlexibleWindowingArcSwipeSwitcherModifier_appLayoutsToCacheSnap
 
 - (id)appLayoutsToCacheFullsizeSnapshots
 {
-  v3 = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self appLayouts];
-  v4 = v3;
+  appLayouts = [(SBFlexibleWindowingArcSwipeSwitcherModifier *)self appLayouts];
+  v4 = appLayouts;
   if (self->_fromAppLayout)
   {
-    v5 = [v3 indexOfObject:self->_toAppLayout];
+    v5 = [appLayouts indexOfObject:self->_toAppLayout];
     if (v5 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v11[0] = MEMORY[0x277D85DD0];
@@ -454,7 +454,7 @@ uint64_t __81__SBFlexibleWindowingArcSwipeSwitcherModifier_appLayoutsToCacheFull
   return v4;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   if (self->_pinSpaceCornerRadiiToDisplayCornerRadii)
   {
@@ -467,7 +467,7 @@ uint64_t __81__SBFlexibleWindowingArcSwipeSwitcherModifier_appLayoutsToCacheFull
   {
     v7.receiver = self;
     v7.super_class = SBFlexibleWindowingArcSwipeSwitcherModifier;
-    [(SBFlexibleWindowingArcSwipeSwitcherModifier *)&v7 cornerRadiiForIndex:a3];
+    [(SBFlexibleWindowingArcSwipeSwitcherModifier *)&v7 cornerRadiiForIndex:index];
   }
 
   result.topRight = v6;
@@ -481,41 +481,41 @@ uint64_t __81__SBFlexibleWindowingArcSwipeSwitcherModifier_appLayoutsToCacheFull
 {
   if ([(SBAppLayout *)self->_fromAppLayout isEqual:self->_toAppLayout])
   {
-    v3 = MEMORY[0x277CBEC10];
+    appLayoutsToResignActive = MEMORY[0x277CBEC10];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SBFlexibleWindowingArcSwipeSwitcherModifier;
-    v3 = [(SBTransitionSwitcherModifier *)&v5 appLayoutsToResignActive];
+    appLayoutsToResignActive = [(SBTransitionSwitcherModifier *)&v5 appLayoutsToResignActive];
   }
 
-  return v3;
+  return appLayoutsToResignActive;
 }
 
 - (id)keyboardSuppressionMode
 {
   if ([(SBAppLayout *)self->_fromAppLayout isEqual:self->_toAppLayout])
   {
-    v3 = +[SBSwitcherKeyboardSuppressionMode suppressionModeNone];
+    keyboardSuppressionMode = +[SBSwitcherKeyboardSuppressionMode suppressionModeNone];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SBFlexibleWindowingArcSwipeSwitcherModifier;
-    v3 = [(SBTransitionSwitcherModifier *)&v5 keyboardSuppressionMode];
+    keyboardSuppressionMode = [(SBTransitionSwitcherModifier *)&v5 keyboardSuppressionMode];
   }
 
-  return v3;
+  return keyboardSuppressionMode;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
   v7.receiver = self;
   v7.super_class = SBFlexibleWindowingArcSwipeSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v7 asyncRenderingAttributesForAppLayout:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v7 asyncRenderingAttributesForAppLayout:layout];
   if (self->_fromAppLayout == self->_toAppLayout)
   {
     v5 = 0;

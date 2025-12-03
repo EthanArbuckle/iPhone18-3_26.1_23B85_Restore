@@ -1,33 +1,33 @@
 @interface WBSTabOrderManager
 - (BOOL)_newTabPositionPreferenceAppliesToSwawnedTabs;
-- (BOOL)_tab:(id)a3 isRelatedOrEqualToTab:(id)a4;
+- (BOOL)_tab:(id)_tab isRelatedOrEqualToTab:(id)tab;
 - (BOOL)newBlankTabPositionAppliesToAllBlankTabs;
 - (BOOL)newTabPositionAppliesToSpawnedTabs;
 - (BOOL)suppressRelatingNewBlankTabs;
-- (BOOL)tab:(id)a3 isInSameSetAsTab:(id)a4;
+- (BOOL)tab:(id)tab isInSameSetAsTab:(id)asTab;
 - (WBSTabOrderManager)init;
 - (WBSTabOrderPreferenceProviding)preferenceProvider;
 - (WBSTabOrderProvider)tabOrderProvider;
 - (double)minimumDelayForRelatingNewBlankTab;
-- (id)_insertionHintWithIndexOfTabToInsertAfter:(unint64_t)a3 relation:(unint64_t)a4;
-- (id)_insertionHintWithTabToInsertAfter:(id)a3 relation:(unint64_t)a4;
-- (id)_nextNonClosedTabAdjacentToIndex:(unint64_t)a3 inAscendingOrder:(BOOL)a4;
-- (id)_tabInsertionHintForNewBlankTabWithRecommendedPosition:(unint64_t)a3;
-- (id)_tabInsertionHintForNewTabAfterTab:(id)a3 relation:(unint64_t)a4;
-- (id)_tabInsertionHintForPosition:(unint64_t)a3 isBlankTab:(BOOL)a4;
-- (id)simplifiedIdentifierForDisplayInTabTitle:(id)a3;
+- (id)_insertionHintWithIndexOfTabToInsertAfter:(unint64_t)after relation:(unint64_t)relation;
+- (id)_insertionHintWithTabToInsertAfter:(id)after relation:(unint64_t)relation;
+- (id)_nextNonClosedTabAdjacentToIndex:(unint64_t)index inAscendingOrder:(BOOL)order;
+- (id)_tabInsertionHintForNewBlankTabWithRecommendedPosition:(unint64_t)position;
+- (id)_tabInsertionHintForNewTabAfterTab:(id)tab relation:(unint64_t)relation;
+- (id)_tabInsertionHintForPosition:(unint64_t)position isBlankTab:(BOOL)tab;
+- (id)simplifiedIdentifierForDisplayInTabTitle:(id)title;
 - (id)tabInsertionHintForNewBlankTab;
 - (id)tabInsertionHintForNewBlankTabInCurrentContext;
-- (id)tabInsertionHintForNewTabOfType:(int64_t)a3;
+- (id)tabInsertionHintForNewTabOfType:(int64_t)type;
 - (id)tabInsertionHintForSpawnedTab;
 - (id)tabToInsertNewBlankTabAfter;
-- (id)tabToInsertNewTabAfterForPosition:(unint64_t)a3;
+- (id)tabToInsertNewTabAfterForPosition:(unint64_t)position;
 - (id)tabToInsertSpawnedTabAfter;
-- (id)tabToSelectBeforeClosingTabs:(id)a3;
+- (id)tabToSelectBeforeClosingTabs:(id)tabs;
 - (unint64_t)_indexOfLastRelatedTab;
 - (unint64_t)_indexOfTabToInsertNewTabAfter;
-- (unint64_t)_relationConsideringUserPreferenceForRelation:(unint64_t)a3 isBlankTab:(BOOL)a4;
-- (unint64_t)_userPreferredNewBlankTabPositionInCurrentContext:(BOOL)a3;
+- (unint64_t)_relationConsideringUserPreferenceForRelation:(unint64_t)relation isBlankTab:(BOOL)tab;
+- (unint64_t)_userPreferredNewBlankTabPositionInCurrentContext:(BOOL)context;
 - (unint64_t)_userPreferredNewSpawnedTabPosition;
 - (unint64_t)newTabPosition;
 @end
@@ -41,9 +41,9 @@
   v2 = [(WBSTabOrderManager *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     simplifiedIdentifierMap = v2->_simplifiedIdentifierMap;
-    v2->_simplifiedIdentifierMap = v3;
+    v2->_simplifiedIdentifierMap = dictionary;
 
     objc_storeWeak(&v2->_preferenceProvider, v2);
     v5 = v2;
@@ -52,58 +52,58 @@
   return v2;
 }
 
-- (id)tabToInsertNewTabAfterForPosition:(unint64_t)a3
+- (id)tabToInsertNewTabAfterForPosition:(unint64_t)position
 {
-  v3 = [(WBSTabOrderManager *)self tabInsertionHintForPosition:a3];
-  v4 = [v3 tabToInsertAfter];
+  v3 = [(WBSTabOrderManager *)self tabInsertionHintForPosition:position];
+  tabToInsertAfter = [v3 tabToInsertAfter];
 
-  return v4;
+  return tabToInsertAfter;
 }
 
-- (id)_tabInsertionHintForPosition:(unint64_t)a3 isBlankTab:(BOOL)a4
+- (id)_tabInsertionHintForPosition:(unint64_t)position isBlankTab:(BOOL)tab
 {
-  v4 = a4;
-  v7 = [(WBSTabOrderManager *)self tabOrderProvider];
-  v8 = [v7 selectedTabForTabOrderProvider];
-  if (!v8)
+  tabCopy = tab;
+  tabOrderProvider = [(WBSTabOrderManager *)self tabOrderProvider];
+  selectedTabForTabOrderProvider = [tabOrderProvider selectedTabForTabOrderProvider];
+  if (!selectedTabForTabOrderProvider)
   {
     goto LABEL_12;
   }
 
-  if (![v7 numberOfTabs])
+  if (![tabOrderProvider numberOfTabs])
   {
     v11 = [[WBSTabOrderInsertionHint alloc] initWithTabToInsertAfter:0 insertionIndex:0 relation:0];
     goto LABEL_20;
   }
 
-  if (a3 <= 1)
+  if (position <= 1)
   {
-    if (!a3)
+    if (!position)
     {
-      v11 = [(WBSTabOrderManager *)self _tabInsertionHintForNewTabAfterTab:v8 relation:0];
+      v11 = [(WBSTabOrderManager *)self _tabInsertionHintForNewTabAfterTab:selectedTabForTabOrderProvider relation:0];
       goto LABEL_20;
     }
 
-    if (a3 == 1)
+    if (position == 1)
     {
-      v9 = [(WBSTabOrderManager *)self _indexOfTabToInsertNewTabAfter];
-      v10 = !v4 || v9 != [v7 numberOfTabs] - 1;
+      _indexOfTabToInsertNewTabAfter = [(WBSTabOrderManager *)self _indexOfTabToInsertNewTabAfter];
+      v10 = !tabCopy || _indexOfTabToInsertNewTabAfter != [tabOrderProvider numberOfTabs] - 1;
 LABEL_18:
-      v14 = [(WBSTabOrderManager *)self _relationConsideringUserPreferenceForRelation:v10 isBlankTab:v4];
-      v13 = self;
-      v12 = v9;
+      v14 = [(WBSTabOrderManager *)self _relationConsideringUserPreferenceForRelation:v10 isBlankTab:tabCopy];
+      selfCopy2 = self;
+      v12 = _indexOfTabToInsertNewTabAfter;
       goto LABEL_19;
     }
 
     goto LABEL_12;
   }
 
-  if (a3 == 2)
+  if (position == 2)
   {
-    v9 = [(WBSTabOrderManager *)self _indexOfLastRelatedTab];
-    if (v4)
+    _indexOfTabToInsertNewTabAfter = [(WBSTabOrderManager *)self _indexOfLastRelatedTab];
+    if (tabCopy)
     {
-      v10 = 2 * (v9 != [v7 numberOfTabs] - 1);
+      v10 = 2 * (_indexOfTabToInsertNewTabAfter != [tabOrderProvider numberOfTabs] - 1);
     }
 
     else
@@ -114,47 +114,47 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (a3 != 3)
+  if (position != 3)
   {
 LABEL_12:
     v11 = [(WBSTabOrderManager *)self _insertionHintWithTabToInsertAfter:0 relation:0];
     goto LABEL_20;
   }
 
-  v12 = [v7 numberOfTabs] - 1;
-  v13 = self;
+  v12 = [tabOrderProvider numberOfTabs] - 1;
+  selfCopy2 = self;
   v14 = 0;
 LABEL_19:
-  v11 = [(WBSTabOrderManager *)v13 _insertionHintWithIndexOfTabToInsertAfter:v12 relation:v14];
+  v11 = [(WBSTabOrderManager *)selfCopy2 _insertionHintWithIndexOfTabToInsertAfter:v12 relation:v14];
 LABEL_20:
   v15 = v11;
 
   return v15;
 }
 
-- (id)_tabInsertionHintForNewTabAfterTab:(id)a3 relation:(unint64_t)a4
+- (id)_tabInsertionHintForNewTabAfterTab:(id)tab relation:(unint64_t)relation
 {
-  v6 = a3;
-  if ([v6 isPinnedTab])
+  tabCopy = tab;
+  if ([tabCopy isPinnedTab])
   {
-    v7 = [(WBSTabOrderManager *)self tabOrderProvider];
-    v8 = [v7 indexForTab:v6];
-    v9 = [v7 numberOfTabs];
-    if (v8 >= v9)
+    tabOrderProvider = [(WBSTabOrderManager *)self tabOrderProvider];
+    v8 = [tabOrderProvider indexForTab:tabCopy];
+    numberOfTabs = [tabOrderProvider numberOfTabs];
+    if (v8 >= numberOfTabs)
     {
       v11 = v8;
     }
 
     else
     {
-      v10 = v9;
+      v10 = numberOfTabs;
       v11 = v8;
       do
       {
-        v12 = [v7 tabAtIndex:v8];
-        v13 = [v12 isPinnedTab];
+        v12 = [tabOrderProvider tabAtIndex:v8];
+        isPinnedTab = [v12 isPinnedTab];
 
-        if (v13)
+        if (isPinnedTab)
         {
           v11 = v8;
         }
@@ -165,12 +165,12 @@ LABEL_20:
       while (v10 != v8);
     }
 
-    v14 = [(WBSTabOrderManager *)self _insertionHintWithIndexOfTabToInsertAfter:v11 relation:a4];
+    v14 = [(WBSTabOrderManager *)self _insertionHintWithIndexOfTabToInsertAfter:v11 relation:relation];
   }
 
   else
   {
-    v14 = [(WBSTabOrderManager *)self _insertionHintWithTabToInsertAfter:v6 relation:a4];
+    v14 = [(WBSTabOrderManager *)self _insertionHintWithTabToInsertAfter:tabCopy relation:relation];
   }
 
   return v14;
@@ -178,38 +178,38 @@ LABEL_20:
 
 - (unint64_t)_indexOfTabToInsertNewTabAfter
 {
-  v2 = [(WBSTabOrderManager *)self tabOrderProvider];
-  v3 = [v2 selectedTabForTabOrderProvider];
-  v4 = [v2 numberOfTabs];
-  v5 = [v3 identifier];
-  v6 = [v2 indexOfSelectedTab];
-  if (v6 >= v4)
+  tabOrderProvider = [(WBSTabOrderManager *)self tabOrderProvider];
+  selectedTabForTabOrderProvider = [tabOrderProvider selectedTabForTabOrderProvider];
+  numberOfTabs = [tabOrderProvider numberOfTabs];
+  identifier = [selectedTabForTabOrderProvider identifier];
+  indexOfSelectedTab = [tabOrderProvider indexOfSelectedTab];
+  if (indexOfSelectedTab >= numberOfTabs)
   {
     goto LABEL_18;
   }
 
-  v7 = v6;
+  v7 = indexOfSelectedTab;
   v8 = 0;
-  v16 = v3;
+  v16 = selectedTabForTabOrderProvider;
   v17 = 0x7FFFFFFFFFFFFFFFLL;
   v9 = 0x7FFFFFFFFFFFFFFFLL;
   do
   {
-    v10 = [v2 tabAtIndex:{v7, v16}];
+    v10 = [tabOrderProvider tabAtIndex:{v7, v16}];
     if ([v10 isPinnedTab])
     {
       goto LABEL_13;
     }
 
-    v11 = [v10 identifier];
-    if ([v11 isEqualToString:v5])
+    identifier2 = [v10 identifier];
+    if ([identifier2 isEqualToString:identifier])
     {
     }
 
     else
     {
-      v12 = [v10 ancestorTabIdentifiers];
-      v13 = [v12 containsObject:v5];
+      ancestorTabIdentifiers = [v10 ancestorTabIdentifiers];
+      v13 = [ancestorTabIdentifiers containsObject:identifier];
 
       if ((v13 & 1) == 0)
       {
@@ -228,7 +228,7 @@ LABEL_20:
     if (v9 != 0x7FFFFFFFFFFFFFFFLL && v7 - 1 != v9)
     {
 
-      v3 = v16;
+      selectedTabForTabOrderProvider = v16;
       goto LABEL_17;
     }
 
@@ -238,8 +238,8 @@ LABEL_13:
     ++v7;
   }
 
-  while (v4 != v7);
-  v3 = v16;
+  while (numberOfTabs != v7);
+  selectedTabForTabOrderProvider = v16;
   if (v8)
   {
     goto LABEL_19;
@@ -249,7 +249,7 @@ LABEL_17:
   if (v17 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_18:
-    v9 = v4 - 1;
+    v9 = numberOfTabs - 1;
   }
 
   else
@@ -264,23 +264,23 @@ LABEL_19:
 
 - (unint64_t)_indexOfLastRelatedTab
 {
-  v2 = self;
-  v3 = [(WBSTabOrderManager *)self tabOrderProvider];
-  v4 = [v3 selectedTabForTabOrderProvider];
-  v5 = [v3 numberOfTabs];
-  v6 = [v3 indexOfSelectedTab];
-  if (v6 >= v5)
+  selfCopy = self;
+  tabOrderProvider = [(WBSTabOrderManager *)self tabOrderProvider];
+  selectedTabForTabOrderProvider = [tabOrderProvider selectedTabForTabOrderProvider];
+  numberOfTabs = [tabOrderProvider numberOfTabs];
+  indexOfSelectedTab = [tabOrderProvider indexOfSelectedTab];
+  if (indexOfSelectedTab >= numberOfTabs)
   {
     v8 = 0;
     goto LABEL_18;
   }
 
-  v7 = v6;
+  v7 = indexOfSelectedTab;
   v8 = 1;
   v9 = 0x7FFFFFFFFFFFFFFFLL;
   while (1)
   {
-    v10 = [v3 tabAtIndex:v7];
+    v10 = [tabOrderProvider tabAtIndex:v7];
     if (([v10 isPinnedTab] & 1) == 0)
     {
       break;
@@ -288,15 +288,15 @@ LABEL_19:
 
 LABEL_10:
 
-    v8 = ++v7 < v5;
-    if (v5 == v7)
+    v8 = ++v7 < numberOfTabs;
+    if (numberOfTabs == v7)
     {
       v8 = 0;
       goto LABEL_17;
     }
   }
 
-  if ([(WBSTabOrderManager *)v2 _tab:v10 isRelatedOrEqualToTab:v4])
+  if ([(WBSTabOrderManager *)selfCopy _tab:v10 isRelatedOrEqualToTab:selectedTabForTabOrderProvider])
   {
     if (v7 - 1 == v9 || v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -308,24 +308,24 @@ LABEL_10:
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v2 = (v5 - 1);
+    selfCopy = (numberOfTabs - 1);
   }
 
   else
   {
-    v2 = v9;
+    selfCopy = v9;
   }
 
 LABEL_17:
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_18:
-    v9 = v5 - 1;
+    v9 = numberOfTabs - 1;
   }
 
   if (v8)
   {
-    v12 = v2;
+    v12 = selfCopy;
   }
 
   else
@@ -338,10 +338,10 @@ LABEL_18:
 
 - (id)tabToInsertNewBlankTabAfter
 {
-  v2 = [(WBSTabOrderManager *)self tabInsertionHintForNewBlankTab];
-  v3 = [v2 tabToInsertAfter];
+  tabInsertionHintForNewBlankTab = [(WBSTabOrderManager *)self tabInsertionHintForNewBlankTab];
+  tabToInsertAfter = [tabInsertionHintForNewBlankTab tabToInsertAfter];
 
-  return v3;
+  return tabToInsertAfter;
 }
 
 - (id)tabInsertionHintForNewBlankTab
@@ -351,11 +351,11 @@ LABEL_18:
   return [(WBSTabOrderManager *)self _tabInsertionHintForNewBlankTabWithRecommendedPosition:v3];
 }
 
-- (id)_tabInsertionHintForNewBlankTabWithRecommendedPosition:(unint64_t)a3
+- (id)_tabInsertionHintForNewBlankTabWithRecommendedPosition:(unint64_t)position
 {
-  v5 = [(WBSTabOrderManager *)self tabOrderProvider];
-  v6 = [v5 selectedTabForTabOrderProvider];
-  if ([v6 isPinnedTab])
+  tabOrderProvider = [(WBSTabOrderManager *)self tabOrderProvider];
+  selectedTabForTabOrderProvider = [tabOrderProvider selectedTabForTabOrderProvider];
+  if ([selectedTabForTabOrderProvider isPinnedTab])
   {
     v7 = [(WBSTabOrderManager *)self _tabInsertionHintForPosition:3 isBlankTab:1];
   }
@@ -365,20 +365,20 @@ LABEL_18:
     WeakRetained = objc_loadWeakRetained(&self->_preferenceProvider);
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v10 = v9;
-    [v6 lastActivationTime];
+    [selectedTabForTabOrderProvider lastActivationTime];
     v12 = v11;
     [WeakRetained minimumDelayForRelatingNewBlankTab];
     if (v10 - v12 >= v13 || v12 == 0.0)
     {
-      v15 = a3;
+      positionCopy = position;
     }
 
     else
     {
-      v15 = 3;
+      positionCopy = 3;
     }
 
-    v7 = [(WBSTabOrderManager *)self _tabInsertionHintForPosition:v15 isBlankTab:1];
+    v7 = [(WBSTabOrderManager *)self _tabInsertionHintForPosition:positionCopy isBlankTab:1];
   }
 
   return v7;
@@ -393,62 +393,62 @@ LABEL_18:
 
 - (id)tabToInsertSpawnedTabAfter
 {
-  v2 = [(WBSTabOrderManager *)self tabInsertionHintForSpawnedTab];
-  v3 = [v2 tabToInsertAfter];
+  tabInsertionHintForSpawnedTab = [(WBSTabOrderManager *)self tabInsertionHintForSpawnedTab];
+  tabToInsertAfter = [tabInsertionHintForSpawnedTab tabToInsertAfter];
 
-  return v3;
+  return tabToInsertAfter;
 }
 
 - (id)tabInsertionHintForSpawnedTab
 {
-  v3 = [(WBSTabOrderManager *)self _userPreferredNewSpawnedTabPosition];
+  _userPreferredNewSpawnedTabPosition = [(WBSTabOrderManager *)self _userPreferredNewSpawnedTabPosition];
 
-  return [(WBSTabOrderManager *)self _tabInsertionHintForPosition:v3 isBlankTab:0];
+  return [(WBSTabOrderManager *)self _tabInsertionHintForPosition:_userPreferredNewSpawnedTabPosition isBlankTab:0];
 }
 
-- (id)tabInsertionHintForNewTabOfType:(int64_t)a3
+- (id)tabInsertionHintForNewTabOfType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
-    v3 = [(WBSTabOrderManager *)self tabInsertionHintForSpawnedTab];
+    tabInsertionHintForSpawnedTab = [(WBSTabOrderManager *)self tabInsertionHintForSpawnedTab];
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
-    v3 = [(WBSTabOrderManager *)self tabInsertionHintForNewBlankTabInCurrentContext];
+    tabInsertionHintForSpawnedTab = [(WBSTabOrderManager *)self tabInsertionHintForNewBlankTabInCurrentContext];
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       goto LABEL_8;
     }
 
-    v3 = [(WBSTabOrderManager *)self tabInsertionHintForNewBlankTab];
+    tabInsertionHintForSpawnedTab = [(WBSTabOrderManager *)self tabInsertionHintForNewBlankTab];
   }
 
-  a2 = v3;
+  a2 = tabInsertionHintForSpawnedTab;
 LABEL_8:
 
   return a2;
 }
 
-- (unint64_t)_userPreferredNewBlankTabPositionInCurrentContext:(BOOL)a3
+- (unint64_t)_userPreferredNewBlankTabPositionInCurrentContext:(BOOL)context
 {
   WeakRetained = objc_loadWeakRetained(&self->_preferenceProvider);
-  v5 = [WeakRetained newBlankTabPositionAppliesToAllBlankTabs];
-  if (a3 || v5)
+  newBlankTabPositionAppliesToAllBlankTabs = [WeakRetained newBlankTabPositionAppliesToAllBlankTabs];
+  if (context || newBlankTabPositionAppliesToAllBlankTabs)
   {
-    v6 = [WeakRetained newTabPosition];
+    newTabPosition = [WeakRetained newTabPosition];
   }
 
   else
   {
-    v6 = 3;
+    newTabPosition = 3;
   }
 
-  return v6;
+  return newTabPosition;
 }
 
 - (unint64_t)_userPreferredNewSpawnedTabPosition
@@ -464,22 +464,22 @@ LABEL_8:
 - (BOOL)_newTabPositionPreferenceAppliesToSwawnedTabs
 {
   WeakRetained = objc_loadWeakRetained(&self->_preferenceProvider);
-  v3 = [WeakRetained newTabPositionAppliesToSpawnedTabs];
+  newTabPositionAppliesToSpawnedTabs = [WeakRetained newTabPositionAppliesToSpawnedTabs];
 
-  return v3;
+  return newTabPositionAppliesToSpawnedTabs;
 }
 
-- (id)tabToSelectBeforeClosingTabs:(id)a3
+- (id)tabToSelectBeforeClosingTabs:(id)tabs
 {
-  v4 = a3;
-  v5 = [(WBSTabOrderManager *)self tabOrderProvider];
-  if ([v5 numberOfTabs] < 2)
+  tabsCopy = tabs;
+  tabOrderProvider = [(WBSTabOrderManager *)self tabOrderProvider];
+  if ([tabOrderProvider numberOfTabs] < 2)
   {
     v6 = 0;
     goto LABEL_18;
   }
 
-  v7 = [MEMORY[0x1E695DFD8] setWithArray:v4];
+  v7 = [MEMORY[0x1E695DFD8] setWithArray:tabsCopy];
   closingTabs = self->_closingTabs;
   self->_closingTabs = v7;
 
@@ -490,20 +490,20 @@ LABEL_8:
   v29[3] = &unk_1E7FB6D90;
   v29[4] = self;
   [v9 setHandler:v29];
-  v10 = [v5 selectedTabForTabOrderProvider];
-  if (v10)
+  selectedTabForTabOrderProvider = [tabOrderProvider selectedTabForTabOrderProvider];
+  if (selectedTabForTabOrderProvider)
   {
-    if ([(NSSet *)self->_closingTabs containsObject:v10])
+    if ([(NSSet *)self->_closingTabs containsObject:selectedTabForTabOrderProvider])
     {
-      if ([v10 shouldSelectOriginatingTabWhenClosed])
+      if ([selectedTabForTabOrderProvider shouldSelectOriginatingTabWhenClosed])
       {
-        v11 = [v5 originatingTabForTab:v10];
+        v11 = [tabOrderProvider originatingTabForTab:selectedTabForTabOrderProvider];
         v6 = v11;
         if (v11)
         {
-          v12 = [v11 windowIdentifier];
-          v13 = [v10 windowIdentifier];
-          v14 = [v12 isEqualToString:v13];
+          windowIdentifier = [v11 windowIdentifier];
+          windowIdentifier2 = [selectedTabForTabOrderProvider windowIdentifier];
+          v14 = [windowIdentifier isEqualToString:windowIdentifier2];
 
           if (v14)
           {
@@ -512,19 +512,19 @@ LABEL_8:
         }
       }
 
-      v15 = [v5 indexOfSelectedTab];
-      v16 = [v5 numberOfTabs];
-      if (v15)
+      indexOfSelectedTab = [tabOrderProvider indexOfSelectedTab];
+      numberOfTabs = [tabOrderProvider numberOfTabs];
+      if (indexOfSelectedTab)
       {
-        if (v15 != v16 - 1)
+        if (indexOfSelectedTab != numberOfTabs - 1)
         {
-          v22 = [(WBSTabOrderManager *)self _nextNonClosedTabAdjacentToIndex:v15 inAscendingOrder:1];
-          v23 = [(WBSTabOrderManager *)self _nextNonClosedTabAdjacentToIndex:v15 inAscendingOrder:0];
+          v22 = [(WBSTabOrderManager *)self _nextNonClosedTabAdjacentToIndex:indexOfSelectedTab inAscendingOrder:1];
+          v23 = [(WBSTabOrderManager *)self _nextNonClosedTabAdjacentToIndex:indexOfSelectedTab inAscendingOrder:0];
           v24 = v23;
           if (v22 && v23)
           {
-            v25 = [(WBSTabOrderManager *)self tab:v10 isInSameSetAsTab:v23];
-            v26 = [(WBSTabOrderManager *)self tab:v10 isInSameSetAsTab:v22];
+            v25 = [(WBSTabOrderManager *)self tab:selectedTabForTabOrderProvider isInSameSetAsTab:v23];
+            v26 = [(WBSTabOrderManager *)self tab:selectedTabForTabOrderProvider isInSameSetAsTab:v22];
             if (!v25 || v26)
             {
               v27 = v22;
@@ -537,8 +537,8 @@ LABEL_8:
 
             if ((!v25 || v26) && !v26)
             {
-              v28 = [(WBSTabOrderManager *)self _tab:v10 isRelatedOrEqualToTab:v24];
-              if (((v28 | [(WBSTabOrderManager *)self _tab:v10 isRelatedOrEqualToTab:v22]) & v28) != 0)
+              v28 = [(WBSTabOrderManager *)self _tab:selectedTabForTabOrderProvider isRelatedOrEqualToTab:v24];
+              if (((v28 | [(WBSTabOrderManager *)self _tab:selectedTabForTabOrderProvider isRelatedOrEqualToTab:v22]) & v28) != 0)
               {
                 v27 = v24;
               }
@@ -565,24 +565,24 @@ LABEL_8:
           goto LABEL_17;
         }
 
-        v17 = self;
-        v18 = v15;
+        selfCopy2 = self;
+        v18 = indexOfSelectedTab;
         v19 = 0;
       }
 
       else
       {
-        v17 = self;
+        selfCopy2 = self;
         v18 = 0;
         v19 = 1;
       }
 
-      v20 = [(WBSTabOrderManager *)v17 _nextNonClosedTabAdjacentToIndex:v18 inAscendingOrder:v19];
+      v20 = [(WBSTabOrderManager *)selfCopy2 _nextNonClosedTabAdjacentToIndex:v18 inAscendingOrder:v19];
     }
 
     else
     {
-      v20 = v10;
+      v20 = selectedTabForTabOrderProvider;
     }
 
     v6 = v20;
@@ -607,46 +607,46 @@ void __51__WBSTabOrderManager_tabToSelectBeforeClosingTabs___block_invoke(uint64
   *(v1 + 8) = 0;
 }
 
-- (BOOL)tab:(id)a3 isInSameSetAsTab:(id)a4
+- (BOOL)tab:(id)tab isInSameSetAsTab:(id)asTab
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 ancestorTabIdentifiers];
-  v9 = [v7 ancestorTabIdentifiers];
-  if ([v8 count] || objc_msgSend(v9, "count"))
+  tabCopy = tab;
+  asTabCopy = asTab;
+  ancestorTabIdentifiers = [tabCopy ancestorTabIdentifiers];
+  ancestorTabIdentifiers2 = [asTabCopy ancestorTabIdentifiers];
+  if ([ancestorTabIdentifiers count] || objc_msgSend(ancestorTabIdentifiers2, "count"))
   {
-    v10 = [v8 count];
-    if (v10 == [v9 count])
+    lastObject = [ancestorTabIdentifiers count];
+    if (lastObject == [ancestorTabIdentifiers2 count])
     {
-      v10 = [v8 lastObject];
-      v4 = [v9 lastObject];
-      v11 = [v10 isEqualToString:v4];
+      lastObject = [ancestorTabIdentifiers lastObject];
+      lastObject2 = [ancestorTabIdentifiers2 lastObject];
+      v11 = [lastObject isEqualToString:lastObject2];
 LABEL_15:
 
       goto LABEL_16;
     }
 
-    v12 = [v8 count];
+    v12 = [ancestorTabIdentifiers count];
     if (v12)
     {
-      v10 = [v8 lastObject];
-      v4 = [v7 identifier];
-      if ([v10 isEqualToString:v4])
+      lastObject = [ancestorTabIdentifiers lastObject];
+      lastObject2 = [asTabCopy identifier];
+      if ([lastObject isEqualToString:lastObject2])
       {
         v11 = 1;
         goto LABEL_15;
       }
 
-      if (![v9 count])
+      if (![ancestorTabIdentifiers2 count])
       {
         v11 = 0;
         goto LABEL_15;
       }
 
 LABEL_12:
-      v13 = [v9 lastObject];
-      v14 = [v6 identifier];
-      v11 = [v13 isEqualToString:v14];
+      lastObject3 = [ancestorTabIdentifiers2 lastObject];
+      identifier = [tabCopy identifier];
+      v11 = [lastObject3 isEqualToString:identifier];
 
       if (!v12)
       {
@@ -656,7 +656,7 @@ LABEL_12:
       goto LABEL_15;
     }
 
-    if ([v9 count])
+    if ([ancestorTabIdentifiers2 count])
     {
       goto LABEL_12;
     }
@@ -674,27 +674,27 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)_tab:(id)a3 isRelatedOrEqualToTab:(id)a4
+- (BOOL)_tab:(id)_tab isRelatedOrEqualToTab:(id)tab
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 ancestorTabIdentifiers];
-  v9 = [v7 ancestorTabIdentifiers];
-  v10 = [v6 identifier];
-  v11 = [v7 identifier];
-  if (([v10 isEqualToString:v11] & 1) == 0)
+  _tabCopy = _tab;
+  tabCopy = tab;
+  ancestorTabIdentifiers = [_tabCopy ancestorTabIdentifiers];
+  ancestorTabIdentifiers2 = [tabCopy ancestorTabIdentifiers];
+  identifier = [_tabCopy identifier];
+  identifier2 = [tabCopy identifier];
+  if (([identifier isEqualToString:identifier2] & 1) == 0)
   {
-    if (![v8 count] && !objc_msgSend(v9, "count"))
+    if (![ancestorTabIdentifiers count] && !objc_msgSend(ancestorTabIdentifiers2, "count"))
     {
       v12 = 0;
       goto LABEL_19;
     }
 
-    v13 = [v8 count];
+    v13 = [ancestorTabIdentifiers count];
     if (v13)
     {
-      v4 = [v7 identifier];
-      if ([v8 containsObject:v4])
+      identifier3 = [tabCopy identifier];
+      if ([ancestorTabIdentifiers containsObject:identifier3])
       {
         v12 = 1;
 LABEL_18:
@@ -702,17 +702,17 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      if ([v9 count])
+      if ([ancestorTabIdentifiers2 count])
       {
         goto LABEL_11;
       }
     }
 
-    else if ([v9 count])
+    else if ([ancestorTabIdentifiers2 count])
     {
 LABEL_11:
-      v14 = [v6 identifier];
-      v15 = [v9 containsObject:v14];
+      identifier4 = [_tabCopy identifier];
+      v15 = [ancestorTabIdentifiers2 containsObject:identifier4];
 
       if (v13)
       {
@@ -724,11 +724,11 @@ LABEL_11:
       }
     }
 
-    [v8 count];
-    [v9 count];
-    v4 = [v8 firstObject];
-    v16 = [v9 firstObject];
-    v12 = [v4 isEqualToString:v16];
+    [ancestorTabIdentifiers count];
+    [ancestorTabIdentifiers2 count];
+    identifier3 = [ancestorTabIdentifiers firstObject];
+    firstObject = [ancestorTabIdentifiers2 firstObject];
+    v12 = [identifier3 isEqualToString:firstObject];
 
     goto LABEL_18;
   }
@@ -740,10 +740,10 @@ LABEL_19:
   return v12;
 }
 
-- (id)simplifiedIdentifierForDisplayInTabTitle:(id)a3
+- (id)simplifiedIdentifierForDisplayInTabTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_simplifiedIdentifierMap objectForKeyedSubscript:v4];
+  titleCopy = title;
+  v5 = [(NSMutableDictionary *)self->_simplifiedIdentifierMap objectForKeyedSubscript:titleCopy];
   v6 = v5;
   if (v5)
   {
@@ -753,7 +753,7 @@ LABEL_19:
   else
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%li", self->_nextSimplifiedIdentifier];
-    [(NSMutableDictionary *)self->_simplifiedIdentifierMap setObject:v7 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_simplifiedIdentifierMap setObject:v7 forKeyedSubscript:titleCopy];
     ++self->_nextSimplifiedIdentifier;
   }
 
@@ -762,20 +762,20 @@ LABEL_19:
 
 - (unint64_t)newTabPosition
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 safari_numberForKey:@"WBSNewTabPositionPreferenceKey"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults safari_numberForKey:@"WBSNewTabPositionPreferenceKey"];
 
   if (v3)
   {
-    v4 = [v3 unsignedIntegerValue];
-    if (v4 >= 4)
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
+    if (unsignedIntegerValue >= 4)
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = v4;
+      v5 = unsignedIntegerValue;
     }
   }
 
@@ -789,87 +789,87 @@ LABEL_19:
 
 - (BOOL)newTabPositionAppliesToSpawnedTabs
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"WBSNewTabPositionAppliesToSpawnedTabsPreferenceKey"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"WBSNewTabPositionAppliesToSpawnedTabsPreferenceKey"];
 
   return v3;
 }
 
 - (BOOL)newBlankTabPositionAppliesToAllBlankTabs
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"WBSNewBlankTabPositionAppliesToAllBlankTabsPreferenceKey"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"WBSNewBlankTabPositionAppliesToAllBlankTabsPreferenceKey"];
 
   return v3;
 }
 
 - (BOOL)suppressRelatingNewBlankTabs
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"WBSTabOrderManagerSuppressRelatingNewBlankTabsPreferenceKey"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"WBSTabOrderManagerSuppressRelatingNewBlankTabsPreferenceKey"];
 
   return v3;
 }
 
 - (double)minimumDelayForRelatingNewBlankTab
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"WBSNewBlankTabPositionDelayPreferenceKey"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"WBSNewBlankTabPositionDelayPreferenceKey"];
   v4 = v3;
 
   return v4;
 }
 
-- (id)_insertionHintWithIndexOfTabToInsertAfter:(unint64_t)a3 relation:(unint64_t)a4
+- (id)_insertionHintWithIndexOfTabToInsertAfter:(unint64_t)after relation:(unint64_t)relation
 {
   v7 = [WBSTabOrderInsertionHint alloc];
-  v8 = [(WBSTabOrderManager *)self tabOrderProvider];
-  v9 = [v8 tabAtIndex:a3];
-  v10 = [(WBSTabOrderInsertionHint *)v7 initWithTabToInsertAfter:v9 insertionIndex:a3 + 1 relation:a4];
+  tabOrderProvider = [(WBSTabOrderManager *)self tabOrderProvider];
+  v9 = [tabOrderProvider tabAtIndex:after];
+  v10 = [(WBSTabOrderInsertionHint *)v7 initWithTabToInsertAfter:v9 insertionIndex:after + 1 relation:relation];
 
   return v10;
 }
 
-- (id)_insertionHintWithTabToInsertAfter:(id)a3 relation:(unint64_t)a4
+- (id)_insertionHintWithTabToInsertAfter:(id)after relation:(unint64_t)relation
 {
-  v6 = a3;
+  afterCopy = after;
   v7 = [WBSTabOrderInsertionHint alloc];
   v8 = v7;
-  if (v6)
+  if (afterCopy)
   {
-    v9 = [(WBSTabOrderManager *)self tabOrderProvider];
-    v10 = -[WBSTabOrderInsertionHint initWithTabToInsertAfter:insertionIndex:relation:](v8, "initWithTabToInsertAfter:insertionIndex:relation:", v6, [v9 indexForTab:v6] + 1, a4);
+    tabOrderProvider = [(WBSTabOrderManager *)self tabOrderProvider];
+    v10 = -[WBSTabOrderInsertionHint initWithTabToInsertAfter:insertionIndex:relation:](v8, "initWithTabToInsertAfter:insertionIndex:relation:", afterCopy, [tabOrderProvider indexForTab:afterCopy] + 1, relation);
   }
 
   else
   {
-    v10 = [(WBSTabOrderInsertionHint *)v7 initWithTabToInsertAfter:0 relation:a4];
+    v10 = [(WBSTabOrderInsertionHint *)v7 initWithTabToInsertAfter:0 relation:relation];
   }
 
   return v10;
 }
 
-- (unint64_t)_relationConsideringUserPreferenceForRelation:(unint64_t)a3 isBlankTab:(BOOL)a4
+- (unint64_t)_relationConsideringUserPreferenceForRelation:(unint64_t)relation isBlankTab:(BOOL)tab
 {
-  v4 = a3;
-  if (a4 && a3)
+  relationCopy = relation;
+  if (tab && relation)
   {
     WeakRetained = objc_loadWeakRetained(&self->_preferenceProvider);
     if ([WeakRetained suppressRelatingNewBlankTabs])
     {
-      v4 = 0;
+      relationCopy = 0;
     }
   }
 
-  return v4;
+  return relationCopy;
 }
 
-- (id)_nextNonClosedTabAdjacentToIndex:(unint64_t)a3 inAscendingOrder:(BOOL)a4
+- (id)_nextNonClosedTabAdjacentToIndex:(unint64_t)index inAscendingOrder:(BOOL)order
 {
-  v4 = a4;
-  v7 = [(WBSTabOrderManager *)self tabOrderProvider];
+  orderCopy = order;
+  tabOrderProvider = [(WBSTabOrderManager *)self tabOrderProvider];
   v8 = objc_opt_respondsToSelector();
-  if (v4)
+  if (orderCopy)
   {
     v9 = 1;
   }
@@ -879,24 +879,24 @@ LABEL_19:
     v9 = -1;
   }
 
-  v10 = [v7 numberOfTabs];
+  numberOfTabs = [tabOrderProvider numberOfTabs];
   v11 = 0;
-  v12 = v9 + a3;
-  if ((v9 + a3) < v10 && (v12 & 0x8000000000000000) == 0)
+  v12 = v9 + index;
+  if ((v9 + index) < numberOfTabs && (v12 & 0x8000000000000000) == 0)
   {
-    v13 = v10;
-    v14 = a3 + 2 * v9;
+    v13 = numberOfTabs;
+    v14 = index + 2 * v9;
     do
     {
       v15 = v14;
       if (v8)
       {
-        [v7 tabAtIndex:v12 inAllTabs:0];
+        [tabOrderProvider tabAtIndex:v12 inAllTabs:0];
       }
 
       else
       {
-        [v7 tabAtIndex:v12];
+        [tabOrderProvider tabAtIndex:v12];
       }
       v11 = ;
       if (v11 && ![(NSSet *)self->_closingTabs containsObject:v11])

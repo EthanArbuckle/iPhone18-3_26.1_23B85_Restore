@@ -1,6 +1,6 @@
 @interface AVGlassBackedGroupView
-- (AVGlassBackedGroupView)initWithCoder:(id)a3;
-- (AVGlassBackedGroupView)initWithFrame:(CGRect)a3;
+- (AVGlassBackedGroupView)initWithCoder:(id)coder;
+- (AVGlassBackedGroupView)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
 @end
 
@@ -19,23 +19,23 @@
   sub_18B6C5A1C();
 }
 
-- (AVGlassBackedGroupView)initWithFrame:(CGRect)a3
+- (AVGlassBackedGroupView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for AVGlassBackedGroupView();
   return [(AVView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (AVGlassBackedGroupView)initWithCoder:(id)a3
+- (AVGlassBackedGroupView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for AVGlassBackedGroupView();
-  v4 = a3;
-  v5 = [(AVView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AVView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

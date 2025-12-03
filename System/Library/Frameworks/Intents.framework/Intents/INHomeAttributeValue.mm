@@ -1,57 +1,57 @@
 @interface INHomeAttributeValue
-- (BOOL)isEqual:(id)a3;
-- (INHomeAttributeValue)initWithBoolValue:(BOOL)a3;
-- (INHomeAttributeValue)initWithCoder:(id)a3;
-- (INHomeAttributeValue)initWithDoubleValue:(double)a3 unit:(int64_t)a4;
-- (INHomeAttributeValue)initWithIntegerValue:(int64_t)a3 unit:(int64_t)a4;
-- (INHomeAttributeValue)initWithLimitValue:(int64_t)a3;
-- (INHomeAttributeValue)initWithRangeValue:(id)a3;
-- (INHomeAttributeValue)initWithStringValue:(id)a3 unit:(int64_t)a4;
-- (INHomeAttributeValue)initWithType:(int64_t)a3 BOOLValue:(BOOL)a4 doubleValue:(double)a5 integerValue:(int64_t)a6 stringValue:(id)a7 limitValue:(int64_t)a8 unit:(int64_t)a9 rangeValue:(id)a10;
+- (BOOL)isEqual:(id)equal;
+- (INHomeAttributeValue)initWithBoolValue:(BOOL)value;
+- (INHomeAttributeValue)initWithCoder:(id)coder;
+- (INHomeAttributeValue)initWithDoubleValue:(double)value unit:(int64_t)unit;
+- (INHomeAttributeValue)initWithIntegerValue:(int64_t)value unit:(int64_t)unit;
+- (INHomeAttributeValue)initWithLimitValue:(int64_t)value;
+- (INHomeAttributeValue)initWithRangeValue:(id)value;
+- (INHomeAttributeValue)initWithStringValue:(id)value unit:(int64_t)unit;
+- (INHomeAttributeValue)initWithType:(int64_t)type BOOLValue:(BOOL)value doubleValue:(double)doubleValue integerValue:(int64_t)integerValue stringValue:(id)stringValue limitValue:(int64_t)limitValue unit:(int64_t)unit rangeValue:(id)self0;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INHomeAttributeValue
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeBool:self->_BOOLValue forKey:@"BOOLValue"];
-  [v5 encodeDouble:@"doubleValue" forKey:self->_doubleValue];
-  [v5 encodeDouble:@"integerValue" forKey:self->_integerValue];
-  [v5 encodeObject:self->_stringValue forKey:@"stringValue"];
-  [v5 encodeInteger:self->_limitValue forKey:@"limitValue"];
-  [v5 encodeInteger:self->_unit forKey:@"unit"];
-  [v5 encodeObject:self->_rangeValue forKey:@"rangeValue"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeBool:self->_BOOLValue forKey:@"BOOLValue"];
+  [coderCopy encodeDouble:@"doubleValue" forKey:self->_doubleValue];
+  [coderCopy encodeDouble:@"integerValue" forKey:self->_integerValue];
+  [coderCopy encodeObject:self->_stringValue forKey:@"stringValue"];
+  [coderCopy encodeInteger:self->_limitValue forKey:@"limitValue"];
+  [coderCopy encodeInteger:self->_unit forKey:@"unit"];
+  [coderCopy encodeObject:self->_rangeValue forKey:@"rangeValue"];
 }
 
-- (INHomeAttributeValue)initWithCoder:(id)a3
+- (INHomeAttributeValue)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
-  v6 = [v4 decodeBoolForKey:@"BOOLValue"];
-  [v4 decodeDoubleForKey:@"doubleValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
+  v6 = [coderCopy decodeBoolForKey:@"BOOLValue"];
+  [coderCopy decodeDoubleForKey:@"doubleValue"];
   v8 = v7;
-  v9 = [v4 decodeIntegerForKey:@"integerValue"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
-  v11 = [v4 decodeIntegerForKey:@"limitValue"];
-  v12 = [v4 decodeIntegerForKey:@"unit"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rangeValue"];
+  v9 = [coderCopy decodeIntegerForKey:@"integerValue"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
+  v11 = [coderCopy decodeIntegerForKey:@"limitValue"];
+  v12 = [coderCopy decodeIntegerForKey:@"unit"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rangeValue"];
 
   v14 = [(INHomeAttributeValue *)self initWithType:v5 BOOLValue:v6 doubleValue:v9 integerValue:v10 stringValue:v11 limitValue:v12 unit:v8 rangeValue:v13];
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     v9 = 0;
     if (self->_type == v5[2] && self->_BOOLValue == *(v5 + 8) && self->_doubleValue == *(v5 + 3) && self->_integerValue == v5[4])
@@ -83,119 +83,119 @@
   return v3 ^ [(NSString *)self->_stringValue hash]^ self->_limitValue ^ self->_unit ^ doubleValue;
 }
 
-- (INHomeAttributeValue)initWithType:(int64_t)a3 BOOLValue:(BOOL)a4 doubleValue:(double)a5 integerValue:(int64_t)a6 stringValue:(id)a7 limitValue:(int64_t)a8 unit:(int64_t)a9 rangeValue:(id)a10
+- (INHomeAttributeValue)initWithType:(int64_t)type BOOLValue:(BOOL)value doubleValue:(double)doubleValue integerValue:(int64_t)integerValue stringValue:(id)stringValue limitValue:(int64_t)limitValue unit:(int64_t)unit rangeValue:(id)self0
 {
-  v17 = a7;
-  v18 = a10;
+  stringValueCopy = stringValue;
+  rangeValueCopy = rangeValue;
   v24.receiver = self;
   v24.super_class = INHomeAttributeValue;
   v19 = [(INHomeAttributeValue *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    v19->_type = a3;
-    v19->_BOOLValue = a4;
-    v19->_doubleValue = a5;
-    v19->_integerValue = a6;
-    v21 = [v17 copy];
+    v19->_type = type;
+    v19->_BOOLValue = value;
+    v19->_doubleValue = doubleValue;
+    v19->_integerValue = integerValue;
+    v21 = [stringValueCopy copy];
     stringValue = v20->_stringValue;
     v20->_stringValue = v21;
 
-    v20->_limitValue = a8;
-    v20->_unit = a9;
-    objc_storeStrong(&v20->_rangeValue, a10);
+    v20->_limitValue = limitValue;
+    v20->_unit = unit;
+    objc_storeStrong(&v20->_rangeValue, rangeValue);
   }
 
   return v20;
 }
 
-- (INHomeAttributeValue)initWithRangeValue:(id)a3
+- (INHomeAttributeValue)initWithRangeValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = INHomeAttributeValue;
   v6 = [(INHomeAttributeValue *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rangeValue, a3);
+    objc_storeStrong(&v6->_rangeValue, value);
     v7->_type = 6;
   }
 
   return v7;
 }
 
-- (INHomeAttributeValue)initWithLimitValue:(int64_t)a3
+- (INHomeAttributeValue)initWithLimitValue:(int64_t)value
 {
   v5.receiver = self;
   v5.super_class = INHomeAttributeValue;
   result = [(INHomeAttributeValue *)&v5 init];
   if (result)
   {
-    result->_limitValue = a3;
+    result->_limitValue = value;
     result->_type = 5;
   }
 
   return result;
 }
 
-- (INHomeAttributeValue)initWithStringValue:(id)a3 unit:(int64_t)a4
+- (INHomeAttributeValue)initWithStringValue:(id)value unit:(int64_t)unit
 {
-  v6 = a3;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = INHomeAttributeValue;
   v7 = [(INHomeAttributeValue *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [valueCopy copy];
     stringValue = v7->_stringValue;
     v7->_stringValue = v8;
 
     v7->_type = 3;
-    v7->_unit = a4;
+    v7->_unit = unit;
   }
 
   return v7;
 }
 
-- (INHomeAttributeValue)initWithIntegerValue:(int64_t)a3 unit:(int64_t)a4
+- (INHomeAttributeValue)initWithIntegerValue:(int64_t)value unit:(int64_t)unit
 {
   v7.receiver = self;
   v7.super_class = INHomeAttributeValue;
   result = [(INHomeAttributeValue *)&v7 init];
   if (result)
   {
-    result->_integerValue = a3;
+    result->_integerValue = value;
     result->_type = 4;
-    result->_unit = a4;
+    result->_unit = unit;
   }
 
   return result;
 }
 
-- (INHomeAttributeValue)initWithDoubleValue:(double)a3 unit:(int64_t)a4
+- (INHomeAttributeValue)initWithDoubleValue:(double)value unit:(int64_t)unit
 {
   v7.receiver = self;
   v7.super_class = INHomeAttributeValue;
   result = [(INHomeAttributeValue *)&v7 init];
   if (result)
   {
-    result->_doubleValue = a3;
+    result->_doubleValue = value;
     result->_type = 2;
-    result->_unit = a4;
+    result->_unit = unit;
   }
 
   return result;
 }
 
-- (INHomeAttributeValue)initWithBoolValue:(BOOL)a3
+- (INHomeAttributeValue)initWithBoolValue:(BOOL)value
 {
   v5.receiver = self;
   v5.super_class = INHomeAttributeValue;
   result = [(INHomeAttributeValue *)&v5 init];
   if (result)
   {
-    result->_BOOLValue = a3;
+    result->_BOOLValue = value;
     result->_type = 1;
   }
 

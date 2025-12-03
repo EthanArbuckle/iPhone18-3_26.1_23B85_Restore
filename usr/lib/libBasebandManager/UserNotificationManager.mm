@@ -1,12 +1,12 @@
 @interface UserNotificationManager
 + (id)sharedInstance:()basic_string<char;
-- (BOOL)setActionForHeader:(UserNotificationManager *)self notificationContent:(SEL)a2 callbackData:(NotificationInfo *)a3;
+- (BOOL)setActionForHeader:(UserNotificationManager *)self notificationContent:(SEL)content callbackData:(NotificationInfo *)data;
 - (id).cxx_construct;
 - (id)init:()basic_string<char;
-- (void)setUpNotificationCenter:(id)a3;
-- (void)showNotification:(NotificationInfo *)a3 withCallBackData:;
-- (void)updateAnalyticsEvent:(const void *)a3 withUserReponse:(BOOL)a4;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)setUpNotificationCenter:(id)center;
+- (void)showNotification:(NotificationInfo *)notification withCallBackData:;
+- (void)updateAnalyticsEvent:(const void *)event withUserReponse:(BOOL)reponse;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation UserNotificationManager
@@ -141,14 +141,14 @@ LABEL_6:
   return v4;
 }
 
-- (void)setUpNotificationCenter:(id)a3
+- (void)setUpNotificationCenter:(id)center
 {
   v12 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  centerCopy = center;
   if (!self->fUserNotificationCenter)
   {
-    v5 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"com.apple.telephony.%@", v4];
-    v6 = [objc_alloc(MEMORY[0x29EDBCCF0]) initWithBundleIdentifier:v5];
+    centerCopy = [MEMORY[0x29EDBA0F8] stringWithFormat:@"com.apple.telephony.%@", centerCopy];
+    v6 = [objc_alloc(MEMORY[0x29EDBCCF0]) initWithBundleIdentifier:centerCopy];
     fUserNotificationCenter = self->fUserNotificationCenter;
     self->fUserNotificationCenter = v6;
 
@@ -183,7 +183,7 @@ LABEL_6:
     }
 
     *buf = 138412290;
-    v11 = v5;
+    v11 = centerCopy;
     _os_log_impl(&dword_296FF7000, v8, OS_LOG_TYPE_INFO, "UserNotificationCenter created with bundleID %@", buf, 0xCu);
     goto LABEL_6;
   }
@@ -193,7 +193,7 @@ LABEL_7:
   v9 = *MEMORY[0x29EDCA608];
 }
 
-- (BOOL)setActionForHeader:(UserNotificationManager *)self notificationContent:(SEL)a2 callbackData:(NotificationInfo *)a3
+- (BOOL)setActionForHeader:(UserNotificationManager *)self notificationContent:(SEL)content callbackData:(NotificationInfo *)data
 {
   v124 = v4;
   v127 = *MEMORY[0x29EDCA608];
@@ -261,14 +261,14 @@ LABEL_7:
   v9 = ;
   [v8 setIcon:v9];
 
-  v10 = a3 + 1;
-  v11 = *(&a3[1].var0.var0.var1 + 23);
+  v10 = data + 1;
+  v11 = *(&data[1].var0.var0.var1 + 23);
   var1 = v11;
-  var0 = a3 + 1;
+  var0 = data + 1;
   if ((v11 & 0x8000000000000000) != 0)
   {
-    var0 = a3[1].var0.var0.var1.var0;
-    var1 = a3[1].var0.var0.var1.var1;
+    var0 = data[1].var0.var0.var1.var0;
+    var1 = data[1].var0.var0.var1.var1;
   }
 
   if (var1 >= 0x14)
@@ -285,11 +285,11 @@ LABEL_7:
   if (var1 != 20 || v15)
   {
     v16 = v11;
-    v17 = a3 + 1;
+    v17 = data + 1;
     if ((v11 & 0x80000000) != 0)
     {
-      v17 = a3[1].var0.var0.var1.var0;
-      v16 = a3[1].var0.var0.var1.var1;
+      v17 = data[1].var0.var0.var1.var0;
+      v16 = data[1].var0.var0.var1.var1;
     }
 
     if (v16 >= 0x1D)
@@ -309,11 +309,11 @@ LABEL_7:
     }
 
     v20 = v11;
-    v21 = a3 + 1;
+    v21 = data + 1;
     if ((v11 & 0x80000000) != 0)
     {
-      v21 = a3[1].var0.var0.var1.var0;
-      v20 = a3[1].var0.var0.var1.var1;
+      v21 = data[1].var0.var0.var1.var0;
+      v20 = data[1].var0.var0.var1.var1;
     }
 
     v22 = v20 >= 0x1B ? 27 : v20;
@@ -324,11 +324,11 @@ LABEL_7:
     }
 
     v24 = v11;
-    v25 = a3 + 1;
+    v25 = data + 1;
     if ((v11 & 0x80000000) != 0)
     {
-      v25 = a3[1].var0.var0.var1.var0;
-      v24 = a3[1].var0.var0.var1.var1;
+      v25 = data[1].var0.var0.var1.var0;
+      v24 = data[1].var0.var0.var1.var1;
     }
 
     v26 = v24 >= 0x17 ? 23 : v24;
@@ -339,11 +339,11 @@ LABEL_7:
     }
 
     v28 = v11;
-    v29 = a3 + 1;
+    v29 = data + 1;
     if ((v11 & 0x80000000) != 0)
     {
-      v29 = a3[1].var0.var0.var1.var0;
-      v28 = a3[1].var0.var0.var1.var1;
+      v29 = data[1].var0.var0.var1.var0;
+      v28 = data[1].var0.var0.var1.var1;
     }
 
     v30 = v28 >= 0x17 ? 23 : v28;
@@ -353,11 +353,11 @@ LABEL_7:
       goto LABEL_51;
     }
 
-    v32 = a3 + 1;
+    v32 = data + 1;
     if ((v11 & 0x80000000) != 0)
     {
-      v32 = a3[1].var0.var0.var1.var0;
-      v11 = a3[1].var0.var0.var1.var1;
+      v32 = data[1].var0.var0.var1.var0;
+      v11 = data[1].var0.var0.var1.var1;
     }
 
     v33 = v11 >= 0x16 ? 22 : v11;
@@ -398,7 +398,7 @@ LABEL_237:
       }
     }
 
-    if (*(&a3[1].var0.var0.var1 + 23) < 0)
+    if (*(&data[1].var0.var0.var1 + 23) < 0)
     {
       v10 = v10->var0.var0.var1.var0;
     }
@@ -419,18 +419,18 @@ LABEL_237:
   [v8 setIcon:v11];
 LABEL_52:
 
-  LOBYTE(v11) = *(&a3[1].var0.var0.var1 + 23);
+  LOBYTE(v11) = *(&data[1].var0.var0.var1 + 23);
 LABEL_53:
   if ((v11 & 0x80) != 0)
   {
-    v36 = a3[1].var0.var0.var1.var0;
-    v35 = a3[1].var0.var0.var1.var1;
+    v36 = data[1].var0.var0.var1.var0;
+    v35 = data[1].var0.var0.var1.var1;
   }
 
   else
   {
     v35 = v11;
-    v36 = a3 + 1;
+    v36 = data + 1;
   }
 
   if (v35 >= 0x16)
@@ -444,18 +444,18 @@ LABEL_53:
   }
 
   v38 = memcmp(v36, "Telephony_Dump_Started", v37);
-  if ((v35 != 22 || v38) && ((v11 & 0x80) != 0 ? (v40 = a3[1].var0.var0.var1.var0, v39 = a3[1].var0.var0.var1.var1) : (v39 = v11, v40 = a3 + 1), v39 >= 0x14 ? (v41 = 20) : (v41 = v39), (v42 = memcmp(v40, "Telephony_Dump_Ready", v41), v39 != 20) || v42))
+  if ((v35 != 22 || v38) && ((v11 & 0x80) != 0 ? (v40 = data[1].var0.var0.var1.var0, v39 = data[1].var0.var0.var1.var1) : (v39 = v11, v40 = data + 1), v39 >= 0x14 ? (v41 = 20) : (v41 = v39), (v42 = memcmp(v40, "Telephony_Dump_Ready", v41), v39 != 20) || v42))
   {
     if ((v11 & 0x80) != 0)
     {
-      v72 = a3[1].var0.var0.var1.var0;
-      v71 = a3[1].var0.var0.var1.var1;
+      v72 = data[1].var0.var0.var1.var0;
+      v71 = data[1].var0.var0.var1.var1;
     }
 
     else
     {
       v71 = v11;
-      v72 = a3 + 1;
+      v72 = data + 1;
     }
 
     if (v71 >= 0x1B)
@@ -473,14 +473,14 @@ LABEL_53:
     {
       if ((v11 & 0x80) != 0)
       {
-        v98 = a3[1].var0.var0.var1.var0;
-        v97 = a3[1].var0.var0.var1.var1;
+        v98 = data[1].var0.var0.var1.var0;
+        v97 = data[1].var0.var0.var1.var1;
       }
 
       else
       {
         v97 = v11;
-        v98 = a3 + 1;
+        v98 = data + 1;
       }
 
       if (v97 >= 0x17)
@@ -498,8 +498,8 @@ LABEL_53:
       {
         if ((v11 & 0x80) != 0)
         {
-          v10 = a3[1].var0.var0.var1.var0;
-          v112 = a3[1].var0.var0.var1.var1;
+          v10 = data[1].var0.var0.var1.var0;
+          v112 = data[1].var0.var0.var1.var1;
         }
 
         else
@@ -520,16 +520,16 @@ LABEL_53:
         v114 = memcmp(v10, "Baseband_Config_Updated", v113);
         if (v112 != 23 || v114)
         {
-          v115 = *(&a3[2].var0.var0.var1 + 23);
+          v115 = *(&data[2].var0.var0.var1 + 23);
           if ((v115 & 0x8000000000000000) != 0)
           {
-            v116 = a3[2].var0.var0.var1.var0;
-            v115 = a3[2].var0.var0.var1.var1;
+            v116 = data[2].var0.var0.var1.var0;
+            v115 = data[2].var0.var0.var1.var1;
           }
 
           else
           {
-            v116 = a3 + 2;
+            v116 = data + 2;
           }
 
           if (v115 >= 0x21)
@@ -580,7 +580,7 @@ LABEL_53:
   }
 
 LABEL_71:
-  v123 = self;
+  selfCopy = self;
   left = self->fCallBackMapWithQueue.__tree_.__end_node_.__left_;
   p_end_node = &self->fCallBackMapWithQueue.__tree_.__end_node_;
   v44 = left;
@@ -599,25 +599,25 @@ LABEL_71:
     goto LABEL_124;
   }
 
-  v48 = *(&a3->var0.var0.var1 + 23);
+  v48 = *(&data->var0.var0.var1 + 23);
   if (v48 >= 0)
   {
-    v49 = a3;
+    dataCopy = data;
   }
 
   else
   {
-    v49 = a3->var0.var0.var1.var0;
+    dataCopy = data->var0.var0.var1.var0;
   }
 
   if (v48 >= 0)
   {
-    v50 = *(&a3->var0.var0.var1 + 23);
+    v50 = *(&data->var0.var0.var1 + 23);
   }
 
   else
   {
-    v50 = a3->var0.var0.var1.var1;
+    v50 = data->var0.var0.var1.var1;
   }
 
   v51 = p_end_node;
@@ -630,7 +630,7 @@ LABEL_71:
       v54 = left_high >= 0 ? &v52[4] : v52[4].__left_;
       v55 = left_high >= 0 ? HIBYTE(v52[6].__left_) : v52[5].__left_;
       v56 = v50 >= v55 ? v55 : v50;
-      v57 = memcmp(v54, v49, v56);
+      v57 = memcmp(v54, dataCopy, v56);
       if (v57)
       {
         break;
@@ -694,7 +694,7 @@ LABEL_94:
       v61 = v60;
     }
 
-    v62 = memcmp(v49, v59, v61);
+    v62 = memcmp(dataCopy, v59, v61);
     if (v62)
     {
       if ((v62 & 0x80000000) == 0)
@@ -823,26 +823,26 @@ LABEL_127:
     v78 = v70[5].__left_;
   }
 
-  v79 = *(&a3->var0.var0.var1 + 23);
+  v79 = *(&data->var0.var0.var1 + 23);
   v122 = v79;
   if (v79 >= 0)
   {
-    v80 = a3;
+    dataCopy2 = data;
   }
 
   else
   {
-    v80 = a3->var0.var0.var1.var0;
+    dataCopy2 = data->var0.var0.var1.var0;
   }
 
   if (v79 >= 0)
   {
-    v81 = *(&a3->var0.var0.var1 + 23);
+    v81 = *(&data->var0.var0.var1 + 23);
   }
 
   else
   {
-    v81 = a3->var0.var0.var1.var1;
+    v81 = data->var0.var0.var1.var1;
   }
 
   if (v81 >= v78)
@@ -855,7 +855,7 @@ LABEL_127:
     v82 = v81;
   }
 
-  v83 = memcmp(v77, v80, v82);
+  v83 = memcmp(v77, dataCopy2, v82);
   if (!v83)
   {
     v84 = v78 >= v81;
@@ -889,10 +889,10 @@ LABEL_170:
     }
 
 LABEL_176:
-    v93 = v123;
+    v93 = selfCopy;
     if (!p_end_node->__left_)
     {
-      v94 = *(&a3->var0.var0.var1 + 23);
+      v94 = *(&data->var0.var0.var1 + 23);
       goto LABEL_196;
     }
 
@@ -949,7 +949,7 @@ LABEL_147:
         v89 = v88;
       }
 
-      v90 = memcmp(v80, v87, v89);
+      v90 = memcmp(dataCopy2, v87, v89);
       if (v90)
       {
         if (v90 < 0)
@@ -963,7 +963,7 @@ LABEL_147:
       if (v81 >= v88)
       {
 LABEL_163:
-        v91 = memcmp(v87, v80, v89);
+        v91 = memcmp(v87, dataCopy2, v89);
         if (v91)
         {
           if ((v91 & 0x80000000) == 0)
@@ -1002,7 +1002,7 @@ LABEL_163:
 
   p_end_node = v85;
 LABEL_195:
-  v93 = v123;
+  v93 = selfCopy;
   v94 = v122;
 LABEL_196:
   v101 = operator new(0x60uLL);
@@ -1012,13 +1012,13 @@ LABEL_196:
   v126 = 0;
   if (v94 < 0)
   {
-    std::string::__init_copy_ctor_external((v101 + 32), a3->var0.var0.var1.var0, a3->var0.var0.var1.var1);
+    std::string::__init_copy_ctor_external((v101 + 32), data->var0.var0.var1.var0, data->var0.var0.var1.var1);
   }
 
   else
   {
-    *(v101 + 2) = *a3->var0.var0.var0.var0;
-    *(v101 + 6) = *(&a3->var0.var0.var1 + 2);
+    *(v101 + 2) = *data->var0.var0.var0.var0;
+    *(v101 + 6) = *(&data->var0.var0.var1 + 2);
   }
 
   v103 = _Block_copy(*v124);
@@ -1070,13 +1070,13 @@ LABEL_207:
   v107 = 1;
   if (os_log_type_enabled(qword_2A18B77B0, OS_LOG_TYPE_INFO))
   {
-    if (*(&a3->var0.var0.var1 + 23) < 0)
+    if (*(&data->var0.var0.var1 + 23) < 0)
     {
-      a3 = a3->var0.var0.var1.var0;
+      data = data->var0.var0.var1.var0;
     }
 
     LODWORD(buf) = 136315138;
-    *(&buf + 4) = a3;
+    *(&buf + 4) = data;
     _os_log_impl(&dword_296FF7000, v106, OS_LOG_TYPE_INFO, "Added callback for id: %s", &buf, 0xCu);
   }
 
@@ -1086,7 +1086,7 @@ LABEL_214:
   return v107;
 }
 
-- (void)showNotification:(NotificationInfo *)a3 withCallBackData:
+- (void)showNotification:(NotificationInfo *)notification withCallBackData:
 {
   v4 = v3;
   block[0] = MEMORY[0x29EDCA5F8];
@@ -1094,34 +1094,34 @@ LABEL_214:
   block[2] = __61__UserNotificationManager_showNotification_withCallBackData___block_invoke;
   block[3] = &unk_2A1E23AE8;
   block[4] = self;
-  if (*(&a3->var0.var0.var1 + 23) < 0)
+  if (*(&notification->var0.var0.var1 + 23) < 0)
   {
-    std::string::__init_copy_ctor_external(&v10, a3->var0.var0.var1.var0, a3->var0.var0.var1.var1);
+    std::string::__init_copy_ctor_external(&v10, notification->var0.var0.var1.var0, notification->var0.var0.var1.var1);
   }
 
   else
   {
-    v10 = *a3;
+    v10 = *notification;
   }
 
-  if (*(&a3[1].var0.var0.var1 + 23) < 0)
+  if (*(&notification[1].var0.var0.var1 + 23) < 0)
   {
-    std::string::__init_copy_ctor_external(&v11, a3[1].var0.var0.var1.var0, a3[1].var0.var0.var1.var1);
-  }
-
-  else
-  {
-    v11 = a3[1];
-  }
-
-  if (*(&a3[2].var0.var0.var1 + 23) < 0)
-  {
-    std::string::__init_copy_ctor_external(&v12, a3[2].var0.var0.var1.var0, a3[2].var0.var0.var1.var1);
+    std::string::__init_copy_ctor_external(&v11, notification[1].var0.var0.var1.var0, notification[1].var0.var0.var1.var1);
   }
 
   else
   {
-    v12 = a3[2];
+    v11 = notification[1];
+  }
+
+  if (*(&notification[2].var0.var0.var1 + 23) < 0)
+  {
+    std::string::__init_copy_ctor_external(&v12, notification[2].var0.var0.var1.var0, notification[2].var0.var0.var1.var1);
+  }
+
+  else
+  {
+    v12 = notification[2];
   }
 
   v7 = _Block_copy(*v4);
@@ -1506,9 +1506,9 @@ LABEL_60:
   v37 = *MEMORY[0x29EDCA608];
 }
 
-- (void)updateAnalyticsEvent:(const void *)a3 withUserReponse:(BOOL)a4
+- (void)updateAnalyticsEvent:(const void *)event withUserReponse:(BOOL)reponse
 {
-  v4 = a4;
+  reponseCopy = reponse;
   v40 = *MEMORY[0x29EDCA608];
   v35 = 0xAAAAAAAAAAAAAAAALL;
   v6 = xpc_dictionary_create(0, 0, 0);
@@ -1541,17 +1541,17 @@ LABEL_8:
   v35 = v8;
 LABEL_9:
   xpc_release(v7);
-  if (*(a3 + 23) >= 0)
+  if (*(event + 23) >= 0)
   {
-    v9 = a3;
+    eventCopy = event;
   }
 
   else
   {
-    v9 = *a3;
+    eventCopy = *event;
   }
 
-  v10 = xpc_string_create(v9);
+  v10 = xpc_string_create(eventCopy);
   if (!v10)
   {
     v10 = xpc_null_create();
@@ -1561,8 +1561,8 @@ LABEL_9:
   v11 = xpc_null_create();
   xpc_release(v10);
   xpc_release(v11);
-  v14 = *(a3 + 3);
-  v13 = a3 + 24;
+  v14 = *(event + 3);
+  v13 = event + 24;
   v12 = v14;
   if (v13[23] >= 0)
   {
@@ -1584,7 +1584,7 @@ LABEL_9:
   v17 = xpc_null_create();
   xpc_release(v16);
   xpc_release(v17);
-  if (v4)
+  if (reponseCopy)
   {
     v18 = "userResponded";
   }
@@ -1740,20 +1740,20 @@ LABEL_49:
   v29 = *MEMORY[0x29EDCA608];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  responseCopy = response;
+  handlerCopy = handler;
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
   block[2] = __103__UserNotificationManager_userNotificationCenter_didReceiveNotificationResponse_withCompletionHandler___block_invoke;
   block[3] = &unk_29EE63758;
-  v14 = self;
-  v15 = v8;
-  v13 = v7;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v13 = responseCopy;
   fObj = self->fQueue.fObj.fObj;
-  v10 = v8;
-  v11 = v7;
+  v10 = handlerCopy;
+  v11 = responseCopy;
   dispatch_async(fObj, block);
 }
 

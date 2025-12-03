@@ -1,39 +1,39 @@
 @interface _HDValueRange
-- (BOOL)contains:(double)a3;
-- (BOOL)isEqual:(id)a3;
-- (_HDValueRange)initWithMinimum:(double)a3 maximum:(double)a4 isMinimumInclusive:(BOOL)a5 isMaximumInclusive:(BOOL)a6;
+- (BOOL)contains:(double)contains;
+- (BOOL)isEqual:(id)equal;
+- (_HDValueRange)initWithMinimum:(double)minimum maximum:(double)maximum isMinimumInclusive:(BOOL)inclusive isMaximumInclusive:(BOOL)maximumInclusive;
 @end
 
 @implementation _HDValueRange
 
-- (_HDValueRange)initWithMinimum:(double)a3 maximum:(double)a4 isMinimumInclusive:(BOOL)a5 isMaximumInclusive:(BOOL)a6
+- (_HDValueRange)initWithMinimum:(double)minimum maximum:(double)maximum isMinimumInclusive:(BOOL)inclusive isMaximumInclusive:(BOOL)maximumInclusive
 {
   v11.receiver = self;
   v11.super_class = _HDValueRange;
   result = [(_HDValueRange *)&v11 init];
   if (result)
   {
-    result->_minimum = a3;
-    result->_maximum = a4;
-    result->_isMinimumInclusive = a5;
-    result->_isMaximumInclusive = a6;
+    result->_minimum = minimum;
+    result->_maximum = maximum;
+    result->_isMinimumInclusive = inclusive;
+    result->_isMaximumInclusive = maximumInclusive;
   }
 
   return result;
 }
 
-- (BOOL)contains:(double)a3
+- (BOOL)contains:(double)contains
 {
   minimum = self->_minimum;
   if (self->_isMinimumInclusive)
   {
-    if (minimum > a3)
+    if (minimum > contains)
     {
       return 0;
     }
   }
 
-  else if (minimum >= a3)
+  else if (minimum >= contains)
   {
     return 0;
   }
@@ -41,26 +41,26 @@
   maximum = self->_maximum;
   if (self->_isMaximumInclusive)
   {
-    return maximum >= a3;
+    return maximum >= contains;
   }
 
   else
   {
-    return maximum > a3;
+    return maximum > contains;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
-  else if ([(_HDValueRange *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(_HDValueRange *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     minimum = self->_minimum;
     [(_HDValueRange *)v5 minimum];
     if (minimum == v7 && (maximum = self->_maximum, [(_HDValueRange *)v5 maximum], maximum == v9) && (isMinimumInclusive = self->_isMinimumInclusive, isMinimumInclusive == [(_HDValueRange *)v5 isMinimumInclusive]))

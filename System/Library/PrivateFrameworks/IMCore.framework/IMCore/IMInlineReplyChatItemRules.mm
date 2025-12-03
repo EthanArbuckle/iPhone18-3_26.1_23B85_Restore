@@ -1,23 +1,23 @@
 @interface IMInlineReplyChatItemRules
 - (BOOL)_hasEarlierMessagesToLoad;
 - (BOOL)_hasRecentMessagesToLoad;
-- (IMInlineReplyChatItemRules)initWithChat:(id)a3 threadIdentifier:(id)a4;
+- (IMInlineReplyChatItemRules)initWithChat:(id)chat threadIdentifier:(id)identifier;
 - (_NSRange)threadOriginatorRange;
-- (id)_filteredChatItemsForNewChatItems:(id)a3;
+- (id)_filteredChatItemsForNewChatItems:(id)items;
 @end
 
 @implementation IMInlineReplyChatItemRules
 
-- (IMInlineReplyChatItemRules)initWithChat:(id)a3 threadIdentifier:(id)a4
+- (IMInlineReplyChatItemRules)initWithChat:(id)chat threadIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = IMInlineReplyChatItemRules;
-  v7 = [(IMTranscriptChatItemRules *)&v15 _initWithChat:a3];
+  v7 = [(IMTranscriptChatItemRules *)&v15 _initWithChat:chat];
   v9 = v7;
   if (v7)
   {
-    objc_msgSend_setThreadIdentifier_(v7, v8, v6);
+    objc_msgSend_setThreadIdentifier_(v7, v8, identifierCopy);
     v10 = IMMessageThreadIdentifierGetOriginatorGUID();
     objc_msgSend_setThreadOriginatorMessageGUID_(v9, v11, v10);
 
@@ -58,10 +58,10 @@
   return hasRecentMessagesToLoad;
 }
 
-- (id)_filteredChatItemsForNewChatItems:(id)a3
+- (id)_filteredChatItemsForNewChatItems:(id)items
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_1A831484C;
@@ -71,8 +71,8 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v39 = v4;
-    v6 = v4;
+    v39 = itemsCopy;
+    v6 = itemsCopy;
     v7 = objc_alloc(MEMORY[0x1E695DF70]);
     v10 = objc_msgSend_count(v6, v8, v9);
     v12 = objc_msgSend_initWithCapacity_(v7, v11, v10);
@@ -164,12 +164,12 @@
       while (v16);
     }
 
-    v4 = v39;
+    itemsCopy = v39;
   }
 
   else
   {
-    v12 = v5[2](v5, v4);
+    v12 = v5[2](v5, itemsCopy);
   }
 
   v37 = *MEMORY[0x1E69E9840];

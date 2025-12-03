@@ -1,18 +1,18 @@
 @interface GuidedAccessTimeRestrictionsTonePickerViewController
-- (GuidedAccessTimeRestrictionsTonePickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (GuidedAccessTimeRestrictionsTonePickerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (TKTonePickerViewController)tonePickerViewController;
 - (void)dealloc;
 - (void)loadView;
-- (void)tonePickerViewController:(id)a3 selectedToneWithIdentifier:(id)a4;
+- (void)tonePickerViewController:(id)controller selectedToneWithIdentifier:(id)identifier;
 @end
 
 @implementation GuidedAccessTimeRestrictionsTonePickerViewController
 
-- (GuidedAccessTimeRestrictionsTonePickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (GuidedAccessTimeRestrictionsTonePickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = GuidedAccessTimeRestrictionsTonePickerViewController;
-  v4 = [(GuidedAccessTimeRestrictionsTonePickerViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(GuidedAccessTimeRestrictionsTonePickerViewController *)&v7 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = GAXSTimeRestrictionsLocString(@"GUIDED_ACCESS_TIME_RESTRICTIONS_SOUND_TITLE");
@@ -24,15 +24,15 @@
 
 - (void)dealloc
 {
-  v3 = [(GuidedAccessTimeRestrictionsTonePickerViewController *)self tonePickerViewController];
-  [v3 willMoveToParentViewController:0];
-  if ([v3 isViewLoaded])
+  tonePickerViewController = [(GuidedAccessTimeRestrictionsTonePickerViewController *)self tonePickerViewController];
+  [tonePickerViewController willMoveToParentViewController:0];
+  if ([tonePickerViewController isViewLoaded])
   {
-    v4 = [v3 view];
-    [v4 removeFromSuperview];
+    view = [tonePickerViewController view];
+    [view removeFromSuperview];
   }
 
-  [v3 removeFromParentViewController];
+  [tonePickerViewController removeFromParentViewController];
 
   v5.receiver = self;
   v5.super_class = GuidedAccessTimeRestrictionsTonePickerViewController;
@@ -48,11 +48,11 @@
     v5 = [[TKTonePickerViewController alloc] initWithAlertType:2];
     [v5 setShowsNone:1];
     [v5 setNoneAtTop:1];
-    v6 = [v4 guidedAccessDefaultToneIdentifierForTimeRestrictionEvents];
-    [v5 setDefaultToneIdentifier:v6];
+    guidedAccessDefaultToneIdentifierForTimeRestrictionEvents = [v4 guidedAccessDefaultToneIdentifierForTimeRestrictionEvents];
+    [v5 setDefaultToneIdentifier:guidedAccessDefaultToneIdentifierForTimeRestrictionEvents];
 
-    v7 = [v4 guidedAccessToneIdentifierForTimeRestrictionEvents];
-    [v5 setSelectedToneIdentifier:v7];
+    guidedAccessToneIdentifierForTimeRestrictionEvents = [v4 guidedAccessToneIdentifierForTimeRestrictionEvents];
+    [v5 setSelectedToneIdentifier:guidedAccessToneIdentifierForTimeRestrictionEvents];
 
     [v5 setSelectedVibrationIdentifier:TLVibrationIdentifierNone];
     [v5 setDelegate:self];
@@ -70,39 +70,39 @@
 - (void)loadView
 {
   v10 = objc_opt_new();
-  v3 = [(GuidedAccessTimeRestrictionsTonePickerViewController *)self tonePickerViewController];
-  v4 = [v3 view];
+  tonePickerViewController = [(GuidedAccessTimeRestrictionsTonePickerViewController *)self tonePickerViewController];
+  view = [tonePickerViewController view];
   [v10 bounds];
-  [v4 setFrame:?];
-  [v4 setAutoresizingMask:18];
+  [view setFrame:?];
+  [view setAutoresizingMask:18];
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-  if (v6 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     PSTableViewSideInsetPad();
     v8 = v7;
-    v9 = [v3 tableView];
-    [v9 _setSectionContentInset:{UITableViewAutomaticDimension, v8, UITableViewAutomaticDimension, v8}];
+    tableView = [tonePickerViewController tableView];
+    [tableView _setSectionContentInset:{UITableViewAutomaticDimension, v8, UITableViewAutomaticDimension, v8}];
   }
 
-  [v10 addSubview:v4];
+  [v10 addSubview:view];
   [(GuidedAccessTimeRestrictionsTonePickerViewController *)self setView:v10];
 }
 
-- (void)tonePickerViewController:(id)a3 selectedToneWithIdentifier:(id)a4
+- (void)tonePickerViewController:(id)controller selectedToneWithIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v9 = +[AXSettings sharedInstance];
-  [v9 setGuidedAccessToneIdentifierForTimeRestrictionEvents:v5];
+  [v9 setGuidedAccessToneIdentifierForTimeRestrictionEvents:identifierCopy];
 
-  v6 = [(GuidedAccessTimeRestrictionsTonePickerViewController *)self parentController];
+  parentController = [(GuidedAccessTimeRestrictionsTonePickerViewController *)self parentController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [(GuidedAccessTimeRestrictionsTonePickerViewController *)self specifier];
-    [v7 reloadSpecifier:v8];
+    v7 = parentController;
+    specifier = [(GuidedAccessTimeRestrictionsTonePickerViewController *)self specifier];
+    [v7 reloadSpecifier:specifier];
   }
 }
 

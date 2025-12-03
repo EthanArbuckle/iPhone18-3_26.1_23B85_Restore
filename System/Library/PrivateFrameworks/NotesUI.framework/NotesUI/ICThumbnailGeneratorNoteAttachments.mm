@@ -1,37 +1,37 @@
 @interface ICThumbnailGeneratorNoteAttachments
-- (void)generateThumbnailWithConfiguration:(id)a3 completion:(id)a4;
-- (void)postProcessThumbnail:(id)a3 configuration:(id)a4;
+- (void)generateThumbnailWithConfiguration:(id)configuration completion:(id)completion;
+- (void)postProcessThumbnail:(id)thumbnail configuration:(id)configuration;
 @end
 
 @implementation ICThumbnailGeneratorNoteAttachments
 
-- (void)generateThumbnailWithConfiguration:(id)a3 completion:(id)a4
+- (void)generateThumbnailWithConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[ICThumbnailDescription alloc] initWithConfiguration:v6];
+  configurationCopy = configuration;
+  completionCopy = completion;
+  v8 = [[ICThumbnailDescription alloc] initWithConfiguration:configurationCopy];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__11;
   v28 = __Block_byref_object_dispose__11;
   v29 = 0;
-  v9 = [(ICThumbnailGenerator *)self managedObjectContext];
+  managedObjectContext = [(ICThumbnailGenerator *)self managedObjectContext];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __85__ICThumbnailGeneratorNoteAttachments_generateThumbnailWithConfiguration_completion___block_invoke;
   v20[3] = &unk_1E8469190;
-  v10 = v6;
+  v10 = configurationCopy;
   v21 = v10;
-  v22 = self;
+  selfCopy = self;
   v23 = &v24;
-  [v9 performBlockAndWait:v20];
+  [managedObjectContext performBlockAndWait:v20];
 
   if (v25[5])
   {
     v11 = [ICThumbnailGeneratorAttachment alloc];
-    v12 = [(ICThumbnailGenerator *)self managedObjectContext];
-    v13 = [(ICThumbnailGenerator *)v11 initWithManagedObjectContext:v12];
+    managedObjectContext2 = [(ICThumbnailGenerator *)self managedObjectContext];
+    v13 = [(ICThumbnailGenerator *)v11 initWithManagedObjectContext:managedObjectContext2];
 
     v14 = v25[5];
     v15[0] = MEMORY[0x1E69E9820];
@@ -39,15 +39,15 @@
     v15[2] = __85__ICThumbnailGeneratorNoteAttachments_generateThumbnailWithConfiguration_completion___block_invoke_2;
     v15[3] = &unk_1E8469D28;
     v16 = v8;
-    v17 = self;
+    selfCopy2 = self;
     v18 = v10;
-    v19 = v7;
+    v19 = completionCopy;
     [(ICThumbnailGeneratorAttachment *)v13 generateThumbnailWithConfiguration:v14 completion:v15];
   }
 
   else
   {
-    (*(v7 + 2))(v7, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
   }
 
   _Block_object_dispose(&v24, 8);
@@ -167,30 +167,30 @@ void __85__ICThumbnailGeneratorNoteAttachments_generateThumbnailWithConfiguratio
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)postProcessThumbnail:(id)a3 configuration:(id)a4
+- (void)postProcessThumbnail:(id)thumbnail configuration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 image];
-  [v6 preferredSize];
+  thumbnailCopy = thumbnail;
+  configurationCopy = configuration;
+  image = [thumbnailCopy image];
+  [configurationCopy preferredSize];
   v9 = v8;
   v11 = v10;
-  v12 = [MEMORY[0x1E69DCA80] defaultFormat];
-  [v6 scale];
-  [v12 setScale:?];
-  v13 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v12 format:{v9, v11}];
+  defaultFormat = [MEMORY[0x1E69DCA80] defaultFormat];
+  [configurationCopy scale];
+  [defaultFormat setScale:?];
+  v13 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:defaultFormat format:{v9, v11}];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __74__ICThumbnailGeneratorNoteAttachments_postProcessThumbnail_configuration___block_invoke;
   v18[3] = &unk_1E8469D78;
   v22 = v9;
   v23 = v11;
-  v19 = v6;
-  v20 = v5;
-  v21 = v7;
-  v14 = v7;
-  v15 = v5;
-  v16 = v6;
+  v19 = configurationCopy;
+  v20 = thumbnailCopy;
+  v21 = image;
+  v14 = image;
+  v15 = thumbnailCopy;
+  v16 = configurationCopy;
   v17 = [v13 imageWithActions:v18];
   [v15 setImage:v17];
 }

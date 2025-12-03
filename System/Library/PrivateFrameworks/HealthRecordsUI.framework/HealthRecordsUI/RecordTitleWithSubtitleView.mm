@@ -1,11 +1,11 @@
 @interface RecordTitleWithSubtitleView
-- (_TtC15HealthRecordsUI27RecordTitleWithSubtitleView)initWithCoder:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC15HealthRecordsUI27RecordTitleWithSubtitleView)initWithCoder:(id)coder;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation RecordTitleWithSubtitleView
 
-- (_TtC15HealthRecordsUI27RecordTitleWithSubtitleView)initWithCoder:(id)a3
+- (_TtC15HealthRecordsUI27RecordTitleWithSubtitleView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI27RecordTitleWithSubtitleView_needsToLayoutFirstHeader) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI27RecordTitleWithSubtitleView____lazy_storage___recordsHeadingLabel) = 0;
@@ -21,11 +21,11 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D12BB6D8(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1D12BB6D8(change);
 }
 
 @end

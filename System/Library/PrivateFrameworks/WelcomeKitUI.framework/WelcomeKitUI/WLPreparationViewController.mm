@@ -1,5 +1,5 @@
 @interface WLPreparationViewController
-- (WLPreparationViewController)initWithWelcomeController:(id)a3;
+- (WLPreparationViewController)initWithWelcomeController:(id)controller;
 - (void)cancel;
 - (void)showActivityIndicatorView;
 - (void)viewDidLoad;
@@ -7,9 +7,9 @@
 
 @implementation WLPreparationViewController
 
-- (WLPreparationViewController)initWithWelcomeController:(id)a3
+- (WLPreparationViewController)initWithWelcomeController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = WLLocalizedString();
   v11.receiver = self;
   v11.super_class = WLPreparationViewController;
@@ -17,12 +17,12 @@
 
   if (v7)
   {
-    objc_storeStrong(&v7->_welcomeController, a3);
-    v8 = [(OBBaseWelcomeController *)v7 navigationItem];
-    [v8 setTitle:&stru_2882D7420];
+    objc_storeStrong(&v7->_welcomeController, controller);
+    navigationItem = [(OBBaseWelcomeController *)v7 navigationItem];
+    [navigationItem setTitle:&stru_2882D7420];
 
-    v9 = [(OBBaseWelcomeController *)v7 navigationItem];
-    [v9 setHidesBackButton:1 animated:0];
+    navigationItem2 = [(OBBaseWelcomeController *)v7 navigationItem];
+    [navigationItem2 setHidesBackButton:1 animated:0];
   }
 
   return v7;
@@ -36,11 +36,11 @@
   if (self->_showCancelButton)
   {
     v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancel];
-    v4 = [(OBBaseWelcomeController *)self navigationItem];
-    [v4 setHidesBackButton:1];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setHidesBackButton:1];
 
-    v5 = [(OBBaseWelcomeController *)self navigationItem];
-    [v5 setLeftBarButtonItem:v3];
+    navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v3];
   }
 }
 
@@ -62,8 +62,8 @@
 
   else
   {
-    v5 = [(WLPreparationViewController *)self navigationController];
-    v4 = [v5 popViewControllerAnimated:1];
+    navigationController = [(WLPreparationViewController *)self navigationController];
+    v4 = [navigationController popViewControllerAnimated:1];
   }
 }
 
@@ -78,8 +78,8 @@ void __37__WLPreparationViewController_cancel__block_invoke(uint64_t a1)
   v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   [v5 startAnimating];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v5];
-  v4 = [(OBBaseWelcomeController *)self navigationItem];
-  [v4 setLeftBarButtonItem:v3];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v3];
 }
 
 @end

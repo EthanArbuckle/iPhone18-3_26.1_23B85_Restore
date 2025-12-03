@@ -47,8 +47,8 @@ uint64_t __32__FSFCallKitUtil_sharedInstance__block_invoke()
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(CXCallObserver *)self->_callCenter calls];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  calls = [(CXCallObserver *)self->_callCenter calls];
+  v3 = [calls countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -58,7 +58,7 @@ uint64_t __32__FSFCallKitUtil_sharedInstance__block_invoke()
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(calls);
         }
 
         if (![*(*(&v8 + 1) + 8 * i) hasEnded])
@@ -68,7 +68,7 @@ uint64_t __32__FSFCallKitUtil_sharedInstance__block_invoke()
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [calls countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;

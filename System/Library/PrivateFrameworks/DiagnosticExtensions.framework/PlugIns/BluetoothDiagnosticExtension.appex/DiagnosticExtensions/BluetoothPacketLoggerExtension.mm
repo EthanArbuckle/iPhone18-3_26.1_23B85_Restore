@@ -1,14 +1,14 @@
 @interface BluetoothPacketLoggerExtension
 - (BOOL)shouldAllowCoreCapture;
-- (id)attachmentsForParameters:(id)a3;
-- (id)getFilesAtPathSortedByModificationDate:(id)a3 numberOfFirstNFiles:(int)a4;
+- (id)attachmentsForParameters:(id)parameters;
+- (id)getFilesAtPathSortedByModificationDate:(id)date numberOfFirstNFiles:(int)files;
 @end
 
 @implementation BluetoothPacketLoggerExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v50 = a3;
+  parametersCopy = parameters;
   v81 = 0;
   v80 = -1;
   sub_100001B04(buf, "HCITraces");
@@ -37,7 +37,7 @@
     operator delete(*buf);
   }
 
-  v48 = [v50 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  v48 = [parametersCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
   if ([v48 isEqualToString:@"com.apple.taptoradard"])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -116,8 +116,8 @@
             }
 
             v19 = *(*(&v68 + 1) + 8 * j);
-            v20 = [v19 filesize];
-            v21 = [v20 unsignedIntegerValue] < 0xC800001;
+            filesize = [v19 filesize];
+            v21 = [filesize unsignedIntegerValue] < 0xC800001;
 
             if (v21)
             {
@@ -186,14 +186,14 @@
                     v59 = 0;
                     [v32 getResourceValue:&v59 forKey:NSURLNameKey error:0];
                     v33 = v59;
-                    v34 = [v32 lastPathComponent];
+                    lastPathComponent = [v32 lastPathComponent];
                     v35 = +[NSFileManager defaultManager];
-                    v36 = [v32 path];
-                    v37 = [v35 attributesOfItemAtPath:v36 error:0];
+                    path = [v32 path];
+                    v37 = [v35 attributesOfItemAtPath:path error:0];
 
-                    v38 = [v37 fileModificationDate];
+                    fileModificationDate = [v37 fileModificationDate];
                     v39 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v37 fileSize]);
-                    v40 = [DEAttachmentItem attachmentWithPath:v32 withDisplayName:v34 modificationDate:v38 andFilesize:v39];
+                    v40 = [DEAttachmentItem attachmentWithPath:v32 withDisplayName:lastPathComponent modificationDate:fileModificationDate andFilesize:v39];
 
                     [v58 addObject:v40];
                   }
@@ -228,21 +228,21 @@
   return v58;
 }
 
-- (id)getFilesAtPathSortedByModificationDate:(id)a3 numberOfFirstNFiles:(int)a4
+- (id)getFilesAtPathSortedByModificationDate:(id)date numberOfFirstNFiles:(int)files
 {
-  v5 = [a3 sortedArrayUsingComparator:&stru_100004210];
+  v5 = [date sortedArrayUsingComparator:&stru_100004210];
   v6 = [v5 count];
-  if (v6 >= a4)
+  if (v6 >= files)
   {
-    v7 = a4;
+    filesCopy = files;
   }
 
   else
   {
-    v7 = v6;
+    filesCopy = v6;
   }
 
-  if (v7)
+  if (filesCopy)
   {
     [v5 subarrayWithRange:0];
   }

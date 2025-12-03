@@ -1,12 +1,12 @@
 @interface ShortcutDetailsViewModel
-- (void)healthFeatureAvailability:(id)a3 sleepOnboardingStatusDidChange:(unint64_t)a4;
+- (void)healthFeatureAvailability:(id)availability sleepOnboardingStatusDidChange:(unint64_t)change;
 @end
 
 @implementation ShortcutDetailsViewModel
 
-- (void)healthFeatureAvailability:(id)a3 sleepOnboardingStatusDidChange:(unint64_t)a4
+- (void)healthFeatureAvailability:(id)availability sleepOnboardingStatusDidChange:(unint64_t)change
 {
-  v4 = a3;
+  availabilityCopy = availability;
 
   sub_27475E60C();
 }

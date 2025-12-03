@@ -7,8 +7,8 @@
 
 + (__CFString)remotemanagement_mirroringContainerIdentifier
 {
-  v0 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v1 = [v0 BOOLForKey:@"UseValidationContainer"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v1 = [standardUserDefaults BOOLForKey:@"UseValidationContainer"];
 
   if (v1)
   {
@@ -24,8 +24,8 @@
 + (id)remotemanagement_mirroringContainer
 {
   v1 = MEMORY[0x1E695B888];
-  v2 = [a1 remotemanagement_mirroringContainerIdentifier];
-  v3 = [v1 containerWithIdentifier:v2];
+  remotemanagement_mirroringContainerIdentifier = [self remotemanagement_mirroringContainerIdentifier];
+  v3 = [v1 containerWithIdentifier:remotemanagement_mirroringContainerIdentifier];
 
   return v3;
 }

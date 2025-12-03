@@ -1,12 +1,12 @@
 @interface TSCellularPlanQRCodeScannerView
-- (CGPoint)pointForCaptureDevicePointOfInterest:(CGPoint)a3;
-- (TSCellularPlanQRCodeScannerView)initWithDelegate:(id)a3;
+- (CGPoint)pointForCaptureDevicePointOfInterest:(CGPoint)interest;
+- (TSCellularPlanQRCodeScannerView)initWithDelegate:(id)delegate;
 - (id)getAVCaptureMetadataOutput;
 - (void)_changeCameraConfiguration;
-- (void)_handleRuntimeError:(id)a3;
+- (void)_handleRuntimeError:(id)error;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setOrientation:(int64_t)a3;
+- (void)setOrientation:(int64_t)orientation;
 - (void)setupCameraSession;
 - (void)startRunning;
 - (void)stopRunning;
@@ -15,14 +15,14 @@
 
 @implementation TSCellularPlanQRCodeScannerView
 
-- (TSCellularPlanQRCodeScannerView)initWithDelegate:(id)a3
+- (TSCellularPlanQRCodeScannerView)initWithDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = TSCellularPlanQRCodeScannerView;
   result = [(TSCellularPlanQRCodeScannerView *)&v5 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (result)
   {
-    result->_delegate = a3;
+    result->_delegate = delegate;
   }
 
   return result;
@@ -30,8 +30,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   metadataQueue = self->_metadataQueue;
   self->_metadataQueue = 0;
@@ -44,7 +44,7 @@
 - (void)setupCameraSession
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_0(&dword_262AA8000, a1, a3, "[E]failed to get camera @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_262AA8000, self, a3, "[E]failed to get camera @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -53,16 +53,16 @@
   v4.receiver = self;
   v4.super_class = TSCellularPlanQRCodeScannerView;
   [(TSCellularPlanQRCodeScannerView *)&v4 layoutSubviews];
-  v3 = [(AVCaptureVideoPreviewLayer *)self->_previewLayer superlayer];
-  [v3 bounds];
+  superlayer = [(AVCaptureVideoPreviewLayer *)self->_previewLayer superlayer];
+  [superlayer bounds];
   [(AVCaptureVideoPreviewLayer *)self->_previewLayer setFrame:?];
   [(TSCellularPlanQRCodeScannerView *)self updateRectOfInterest];
 }
 
 - (void)startRunning
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__handleRuntimeError_ name:*MEMORY[0x277CE59C0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleRuntimeError_ name:*MEMORY[0x277CE59C0] object:0];
 
   if (self->_canUseCamera)
   {
@@ -107,8 +107,8 @@ void __47__TSCellularPlanQRCodeScannerView_startRunning__block_invoke(uint64_t a
     objc_destroyWeak(&location);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277CE59C0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CE59C0] object:0];
 }
 
 void __46__TSCellularPlanQRCodeScannerView_stopRunning__block_invoke(uint64_t a1)
@@ -122,21 +122,21 @@ void __46__TSCellularPlanQRCodeScannerView_stopRunning__block_invoke(uint64_t a1
   }
 }
 
-- (CGPoint)pointForCaptureDevicePointOfInterest:(CGPoint)a3
+- (CGPoint)pointForCaptureDevicePointOfInterest:(CGPoint)interest
 {
-  [(AVCaptureVideoPreviewLayer *)self->_previewLayer pointForCaptureDevicePointOfInterest:a3.x, a3.y];
+  [(AVCaptureVideoPreviewLayer *)self->_previewLayer pointForCaptureDevicePointOfInterest:interest.x, interest.y];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (void)_handleRuntimeError:(id)a3
+- (void)_handleRuntimeError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _TSLogDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(TSCellularPlanQRCodeScannerView *)v4 _handleRuntimeError:v5];
+    [(TSCellularPlanQRCodeScannerView *)errorCopy _handleRuntimeError:v5];
   }
 
   block[0] = MEMORY[0x277D85DD0];
@@ -177,33 +177,33 @@ uint64_t __55__TSCellularPlanQRCodeScannerView__handleRuntimeError___block_invok
 {
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v3 = [(AVCaptureDeviceInput *)self->_deviceInput device];
+  device = [(AVCaptureDeviceInput *)self->_deviceInput device];
   v5 = 0;
-  [v3 lockForConfiguration:&v5];
+  [device lockForConfiguration:&v5];
   v4 = v5;
-  if ([v3 isFocusModeSupported:2])
+  if ([device isFocusModeSupported:2])
   {
-    [v3 setFocusPointOfInterest:{0.5, 0.5}];
-    [v3 setFocusMode:2];
+    [device setFocusPointOfInterest:{0.5, 0.5}];
+    [device setFocusMode:2];
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v3 isAutoFocusRangeRestrictionSupported])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [device isAutoFocusRangeRestrictionSupported])
   {
-    [v3 setAutoFocusRangeRestriction:1];
+    [device setAutoFocusRangeRestriction:1];
   }
 
-  if ([v3 isWhiteBalanceModeSupported:2])
+  if ([device isWhiteBalanceModeSupported:2])
   {
-    [v3 setWhiteBalanceMode:2];
+    [device setWhiteBalanceMode:2];
   }
 
-  if ([v3 isExposureModeSupported:2])
+  if ([device isExposureModeSupported:2])
   {
-    [v3 setExposurePointOfInterest:{0.5, 0.5}];
-    [v3 setExposureMode:2];
+    [device setExposurePointOfInterest:{0.5, 0.5}];
+    [device setExposureMode:2];
   }
 
-  [v3 unlockForConfiguration];
+  [device unlockForConfiguration];
   [MEMORY[0x277CD9FF0] commit];
 }
 
@@ -214,8 +214,8 @@ uint64_t __55__TSCellularPlanQRCodeScannerView__handleRuntimeError___block_invok
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(AVCaptureSession *)self->_captureSession outputs];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  outputs = [(AVCaptureSession *)self->_captureSession outputs];
+  v3 = [outputs countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -225,7 +225,7 @@ uint64_t __55__TSCellularPlanQRCodeScannerView__handleRuntimeError___block_invok
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(outputs);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
@@ -237,7 +237,7 @@ uint64_t __55__TSCellularPlanQRCodeScannerView__handleRuntimeError___block_invok
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [outputs countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -256,42 +256,42 @@ LABEL_11:
 
 - (void)updateRectOfInterest
 {
-  v3 = [(TSCellularPlanQRCodeScannerView *)self getAVCaptureMetadataOutput];
-  if (v3)
+  getAVCaptureMetadataOutput = [(TSCellularPlanQRCodeScannerView *)self getAVCaptureMetadataOutput];
+  if (getAVCaptureMetadataOutput)
   {
-    v9 = v3;
+    v9 = getAVCaptureMetadataOutput;
     [(AVCaptureVideoPreviewLayer *)self->_previewLayer frame];
     v5 = v4;
     [(AVCaptureVideoPreviewLayer *)self->_previewLayer frame];
     [(AVCaptureVideoPreviewLayer *)self->_previewLayer metadataOutputRectOfInterestForRect:10.0, 10.0, v5 + -20.0, v6 + -20.0];
-    v3 = v9;
+    getAVCaptureMetadataOutput = v9;
     if (v8 != 0.0 && v7 != 0.0)
     {
       [v9 setRectOfInterest:?];
-      v3 = v9;
+      getAVCaptureMetadataOutput = v9;
     }
   }
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [(TSCellularPlanQRCodeScannerView *)self previewLayer];
-  v5 = [v4 connection];
+  previewLayer = [(TSCellularPlanQRCodeScannerView *)self previewLayer];
+  connection = [previewLayer connection];
 
-  if ([v5 isVideoOrientationSupported])
+  if ([connection isVideoOrientationSupported])
   {
     v6 = _TSLogDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134218242;
-      v9 = a3;
+      orientationCopy = orientation;
       v10 = 2080;
       v11 = "[TSCellularPlanQRCodeScannerView setOrientation:]";
       _os_log_impl(&dword_262AA8000, v6, OS_LOG_TYPE_DEFAULT, "Set new orientation:%ld @%s", &v8, 0x16u);
     }
 
-    [v5 setVideoOrientation:a3];
+    [connection setVideoOrientation:orientation];
   }
 
   v7 = *MEMORY[0x277D85DE8];

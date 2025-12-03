@@ -1,14 +1,14 @@
 @interface LocalEmojiAndStickerCollectionViewController
-- (_TtC10StickerKit44LocalEmojiAndStickerCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC10StickerKit44LocalEmojiAndStickerCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (uint64_t)viewDidAppear:;
-- (void)didBeginDragWithShouldDismiss:(BOOL)a3;
-- (void)didSelectEmoji:(id)a3;
-- (void)didSelectEmoji:(id)a3 dismiss:(BOOL)a4;
-- (void)didTapToPresentRestrictedContentAlertNotification:(id)a3;
-- (void)handleKeyEvent:(id)a3;
-- (void)handleWithPinch:(id)a3;
+- (void)didBeginDragWithShouldDismiss:(BOOL)dismiss;
+- (void)didSelectEmoji:(id)emoji;
+- (void)didSelectEmoji:(id)emoji dismiss:(BOOL)dismiss;
+- (void)didTapToPresentRestrictedContentAlertNotification:(id)notification;
+- (void)handleKeyEvent:(id)event;
+- (void)handleWithPinch:(id)pinch;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewWillDisappear:;
 @end
 
@@ -16,17 +16,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A79ED84();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = self;
+  selfCopy = self;
   sub_19A7A689C();
 }
 
-- (void)handleKeyEvent:(id)a3
+- (void)handleKeyEvent:(id)event
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC10StickerKit44LocalEmojiAndStickerCollectionViewController_uiEmojiAndStickerCollectionViewController);
   if (v3)
@@ -35,68 +35,68 @@
   }
 }
 
-- (void)didSelectEmoji:(id)a3
+- (void)didSelectEmoji:(id)emoji
 {
   v4 = sub_19A7AB014();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_19A7A096C(v4, v6);
 }
 
-- (void)didSelectEmoji:(id)a3 dismiss:(BOOL)a4
+- (void)didSelectEmoji:(id)emoji dismiss:(BOOL)dismiss
 {
   v6 = sub_19A7AB014();
   v8 = v7;
-  v9 = self;
-  sub_19A7A0AF8(v6, v8, a4);
+  selfCopy = self;
+  sub_19A7A0AF8(v6, v8, dismiss);
 }
 
-- (void)didBeginDragWithShouldDismiss:(BOOL)a3
+- (void)didBeginDragWithShouldDismiss:(BOOL)dismiss
 {
-  v7 = self;
-  v4 = [(LocalEmojiAndStickerCollectionViewController *)v7 _hostedWindowScene];
-  if (v4)
+  selfCopy = self;
+  _hostedWindowScene = [(LocalEmojiAndStickerCollectionViewController *)selfCopy _hostedWindowScene];
+  if (_hostedWindowScene)
   {
-    v5 = v4;
-    v6 = sub_19A7A6270(9, a3, 0, 0);
+    v5 = _hostedWindowScene;
+    v6 = sub_19A7A6270(9, dismiss, 0, 0);
     [v5 sendAction_];
   }
 }
 
-- (void)didTapToPresentRestrictedContentAlertNotification:(id)a3
+- (void)didTapToPresentRestrictedContentAlertNotification:(id)notification
 {
   v4 = sub_19A7A8C04();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_19A7A8BC4();
-  v8 = self;
+  selfCopy = self;
   sub_19A7A2E40();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)handleWithPinch:(id)a3
+- (void)handleWithPinch:(id)pinch
 {
-  v4 = a3;
-  v10 = self;
-  if ([v4 state] == 3)
+  pinchCopy = pinch;
+  selfCopy = self;
+  if ([pinchCopy state] == 3)
   {
-    [v4 scale];
+    [pinchCopy scale];
     v6 = v5;
-    v7 = [(LocalEmojiAndStickerCollectionViewController *)v10 _hostedWindowScene];
-    if (v7)
+    _hostedWindowScene = [(LocalEmojiAndStickerCollectionViewController *)selfCopy _hostedWindowScene];
+    if (_hostedWindowScene)
     {
-      v8 = v7;
+      v8 = _hostedWindowScene;
       v9 = sub_19A7A657C(v6, 8, 0, 0);
       [v8 sendAction_];
     }
   }
 }
 
-- (_TtC10StickerKit44LocalEmojiAndStickerCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10StickerKit44LocalEmojiAndStickerCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_19A7AB014();
     v7 = v6;
@@ -108,8 +108,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return LocalEmojiAndStickerCollectionViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return LocalEmojiAndStickerCollectionViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 - (void)viewWillDisappear:
@@ -136,8 +136,8 @@
     swift_once();
   }
 
-  v4 = [objc_allocWithZone(MEMORY[0x1E699BAF0]) initWithMachName_];
-  [v4 writeEmojiDefaults];
+  initWithMachName_ = [objc_allocWithZone(MEMORY[0x1E699BAF0]) initWithMachName_];
+  [initWithMachName_ writeEmojiDefaults];
 }
 
 - (uint64_t)viewDidAppear:

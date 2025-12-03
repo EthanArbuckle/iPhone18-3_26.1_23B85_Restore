@@ -1,22 +1,22 @@
 @interface PKPaymentCredentialMetadataDate
-- (BOOL)_isEqualToMetadata:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentCredentialMetadataDate)initWithConfiguration:(id)a3;
+- (BOOL)_isEqualToMetadata:(id)metadata;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentCredentialMetadataDate)initWithConfiguration:(id)configuration;
 - (id)displayString;
 - (unint64_t)hash;
 @end
 
 @implementation PKPaymentCredentialMetadataDate
 
-- (PKPaymentCredentialMetadataDate)initWithConfiguration:(id)a3
+- (PKPaymentCredentialMetadataDate)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = PKPaymentCredentialMetadataDate;
-  v5 = [(PKPaymentCredentialMetadata *)&v11 initWithConfiguration:v4];
+  v5 = [(PKPaymentCredentialMetadata *)&v11 initWithConfiguration:configurationCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"displayFormat"];
+    v6 = [configurationCopy objectForKey:@"displayFormat"];
     displayFormat = v5->_displayFormat;
     v5->_displayFormat = v6;
 
@@ -45,13 +45,13 @@
   }
 
   v3 = MEMORY[0x1E696AB78];
-  v4 = [(PKPaymentCredentialMetadataDate *)self displayFormat];
-  v5 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  v6 = [v3 dateFormatFromTemplate:v4 options:0 locale:v5];
+  displayFormat = [(PKPaymentCredentialMetadataDate *)self displayFormat];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  v6 = [v3 dateFormatFromTemplate:displayFormat options:0 locale:autoupdatingCurrentLocale];
 
   [_MergedGlobals_227 setDateFormat:v6];
-  v7 = [(PKPaymentCredentialMetadata *)self value];
-  v8 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(v7, 0, 0);
+  value = [(PKPaymentCredentialMetadata *)self value];
+  v8 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(value, 0, 0);
 
   v9 = [_MergedGlobals_227 stringFromDate:v8];
 
@@ -69,10 +69,10 @@ void __48__PKPaymentCredentialMetadataDate_displayString__block_invoke()
   [v2 setLocale:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -80,20 +80,20 @@ void __48__PKPaymentCredentialMetadataDate_displayString__block_invoke()
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKPaymentCredentialMetadataDate *)self _isEqualToMetadata:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKPaymentCredentialMetadataDate *)self _isEqualToMetadata:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_isEqualToMetadata:(id)a3
+- (BOOL)_isEqualToMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v12.receiver = self;
   v12.super_class = PKPaymentCredentialMetadataDate;
-  if ([(PKPaymentCredentialMetadata *)&v12 _isEqualToMetadata:v4])
+  if ([(PKPaymentCredentialMetadata *)&v12 _isEqualToMetadata:metadataCopy])
   {
-    v5 = v4[3];
+    v5 = metadataCopy[3];
     v6 = self->_displayFormat;
     v7 = v5;
     v8 = v7;

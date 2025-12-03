@@ -1,19 +1,19 @@
 @interface _ANEProcedureData
-+ (id)procedureDataWithSymbol:(id)a3 weightArray:(id)a4;
-- (_ANEProcedureData)initWithCoder:(id)a3;
-- (_ANEProcedureData)initWithProcedure:(id)a3 weightArray:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)procedureDataWithSymbol:(id)symbol weightArray:(id)array;
+- (_ANEProcedureData)initWithCoder:(id)coder;
+- (_ANEProcedureData)initWithProcedure:(id)procedure weightArray:(id)array;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _ANEProcedureData
 
-+ (id)procedureDataWithSymbol:(id)a3 weightArray:(id)a4
++ (id)procedureDataWithSymbol:(id)symbol weightArray:(id)array
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithProcedure:v7 weightArray:v6];
+  arrayCopy = array;
+  symbolCopy = symbol;
+  v8 = [[self alloc] initWithProcedure:symbolCopy weightArray:arrayCopy];
 
   return v8;
 }
@@ -23,49 +23,49 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_ANEProcedureData *)self procedureSymbol];
-  v7 = [v3 stringWithFormat:@"%@: { procedureSymbol=%@ }", v5, v6];
+  procedureSymbol = [(_ANEProcedureData *)self procedureSymbol];
+  v7 = [v3 stringWithFormat:@"%@: { procedureSymbol=%@ }", v5, procedureSymbol];
 
   return v7;
 }
 
-- (_ANEProcedureData)initWithProcedure:(id)a3 weightArray:(id)a4
+- (_ANEProcedureData)initWithProcedure:(id)procedure weightArray:(id)array
 {
-  v7 = a3;
-  v8 = a4;
+  procedureCopy = procedure;
+  arrayCopy = array;
   v12.receiver = self;
   v12.super_class = _ANEProcedureData;
   v9 = [(_ANEProcedureData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_procedureSymbol, a3);
-    objc_storeStrong(&v10->_weightArray, a4);
+    objc_storeStrong(&v9->_procedureSymbol, procedure);
+    objc_storeStrong(&v10->_weightArray, array);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v6 = +[_ANELog common];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [(_ANEProcedureData *)a2 encodeWithCoder:?];
   }
 
-  v7 = [(_ANEProcedureData *)self procedureSymbol];
-  [v5 encodeObject:v7 forKey:@"procedureSymbol"];
+  procedureSymbol = [(_ANEProcedureData *)self procedureSymbol];
+  [coderCopy encodeObject:procedureSymbol forKey:@"procedureSymbol"];
 
-  v8 = [(_ANEProcedureData *)self weightArray];
-  [v5 encodeObject:v8 forKey:@"weightArray"];
+  weightArray = [(_ANEProcedureData *)self weightArray];
+  [coderCopy encodeObject:weightArray forKey:@"weightArray"];
 }
 
-- (_ANEProcedureData)initWithCoder:(id)a3
+- (_ANEProcedureData)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"procedureSymbol"];
+  coderCopy = coder;
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"procedureSymbol"];
   v7 = +[_ANELog common];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -75,13 +75,13 @@
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [v5 decodeObjectOfClasses:v10 forKey:@"weightArray"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"weightArray"];
   v12 = [(_ANEProcedureData *)self initWithProcedure:v6 weightArray:v11];
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = +[_ANELog common];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))

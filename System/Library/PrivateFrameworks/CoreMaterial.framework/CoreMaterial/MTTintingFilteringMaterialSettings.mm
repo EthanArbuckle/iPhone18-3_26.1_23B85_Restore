@@ -1,8 +1,8 @@
 @interface MTTintingFilteringMaterialSettings
 - (CAColorMatrix)colorMatrix;
-- (MTTintingFilteringMaterialSettings)initWithMaterialDescription:(id)a3 andDescendantDescriptions:(id)a4 bundle:(id)a5;
-- (void)_processMaterialFilteringDescription:(id)a3 defaultingToIdentity:(BOOL)a4 bundle:(id)a5;
-- (void)_processUserInfoDescription:(id)a3;
+- (MTTintingFilteringMaterialSettings)initWithMaterialDescription:(id)description andDescendantDescriptions:(id)descriptions bundle:(id)bundle;
+- (void)_processMaterialFilteringDescription:(id)description defaultingToIdentity:(BOOL)identity bundle:(id)bundle;
+- (void)_processUserInfoDescription:(id)description;
 - (void)dealloc;
 @end
 
@@ -20,29 +20,29 @@
   return self;
 }
 
-- (MTTintingFilteringMaterialSettings)initWithMaterialDescription:(id)a3 andDescendantDescriptions:(id)a4 bundle:(id)a5
+- (MTTintingFilteringMaterialSettings)initWithMaterialDescription:(id)description andDescendantDescriptions:(id)descriptions bundle:(id)bundle
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 objectForKey:@"tinting"];
-  v12 = [v9 valueForKey:@"tinting"];
+  descriptionCopy = description;
+  descriptionsCopy = descriptions;
+  bundleCopy = bundle;
+  v11 = [descriptionCopy objectForKey:@"tinting"];
+  v12 = [descriptionsCopy valueForKey:@"tinting"];
   v41.receiver = self;
   v41.super_class = MTTintingFilteringMaterialSettings;
   v13 = [(MTTintingMaterialSettings *)&v41 initWithTintingDescription:v11 andDescendantDescriptions:v12];
 
   if (v13)
   {
-    v32 = v8;
-    v14 = [v8 objectForKey:@"materialFiltering"];
-    [(MTTintingFilteringMaterialSettings *)v13 _processMaterialFilteringDescription:v14 defaultingToIdentity:1 bundle:v10];
+    v32 = descriptionCopy;
+    v14 = [descriptionCopy objectForKey:@"materialFiltering"];
+    [(MTTintingFilteringMaterialSettings *)v13 _processMaterialFilteringDescription:v14 defaultingToIdentity:1 bundle:bundleCopy];
 
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v15 = [v9 valueForKey:@"materialFiltering"];
+    v15 = [descriptionsCopy valueForKey:@"materialFiltering"];
     v16 = [v15 countByEnumeratingWithState:&v37 objects:v43 count:16];
     if (v16)
     {
@@ -59,11 +59,11 @@
           }
 
           v20 = *(*(&v37 + 1) + 8 * v19);
-          v21 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
 
-          if (v20 != v21)
+          if (v20 != null)
           {
-            [(MTTintingFilteringMaterialSettings *)v13 _processMaterialFilteringDescription:v20 defaultingToIdentity:0 bundle:v10];
+            [(MTTintingFilteringMaterialSettings *)v13 _processMaterialFilteringDescription:v20 defaultingToIdentity:0 bundle:bundleCopy];
           }
 
           ++v19;
@@ -83,7 +83,7 @@
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v23 = [v9 valueForKey:@"userInfo"];
+    v23 = [descriptionsCopy valueForKey:@"userInfo"];
     v24 = [v23 countByEnumeratingWithState:&v33 objects:v42 count:16];
     if (v24)
     {
@@ -100,9 +100,9 @@
           }
 
           v28 = *(*(&v33 + 1) + 8 * v27);
-          v29 = [MEMORY[0x1E695DFB0] null];
+          null2 = [MEMORY[0x1E695DFB0] null];
 
-          if (v28 != v29)
+          if (v28 != null2)
           {
             [(MTTintingFilteringMaterialSettings *)v13 _processUserInfoDescription:v28];
           }
@@ -117,7 +117,7 @@
       while (v25);
     }
 
-    v8 = v32;
+    descriptionCopy = v32;
   }
 
   v30 = *MEMORY[0x1E69E9840];
@@ -137,15 +137,15 @@
   [(MTTintingMaterialSettings *)&v4 dealloc];
 }
 
-- (void)_processMaterialFilteringDescription:(id)a3 defaultingToIdentity:(BOOL)a4 bundle:(id)a5
+- (void)_processMaterialFilteringDescription:(id)description defaultingToIdentity:(BOOL)identity bundle:(id)bundle
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 objectForKey:@"luminanceAmount"];
+  identityCopy = identity;
+  descriptionCopy = description;
+  bundleCopy = bundle;
+  v10 = [descriptionCopy objectForKey:@"luminanceAmount"];
   if (v10)
   {
-    v11 = [v8 objectForKey:@"luminanceAmount"];
+    v11 = [descriptionCopy objectForKey:@"luminanceAmount"];
 LABEL_5:
     v12 = v11;
     [v11 floatValue];
@@ -154,7 +154,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v6)
+  if (identityCopy)
   {
     v11 = [MEMORY[0x1E696AD98] mt_identityValueForMaterialSettingsProperty:@"luminanceAmount"];
     goto LABEL_5;
@@ -162,12 +162,12 @@ LABEL_5:
 
 LABEL_6:
 
-  v14 = [v8 objectForKey:@"luminanceValues"];
+  v14 = [descriptionCopy objectForKey:@"luminanceValues"];
   luminanceValues = v14;
   if (!v14)
   {
     luminanceValues = 0;
-    if (!v6)
+    if (!identityCopy)
     {
       luminanceValues = self->_luminanceValues;
     }
@@ -175,15 +175,15 @@ LABEL_6:
 
   objc_storeStrong(&self->_luminanceValues, luminanceValues);
 
-  v16 = [v8 objectForKey:@"blurRadius"];
+  v16 = [descriptionCopy objectForKey:@"blurRadius"];
   if (v16)
   {
-    v17 = [v8 objectForKey:@"blurRadius"];
+    v17 = [descriptionCopy objectForKey:@"blurRadius"];
   }
 
   else
   {
-    if (!v6)
+    if (!identityCopy)
     {
       goto LABEL_14;
     }
@@ -196,15 +196,15 @@ LABEL_6:
   self->_blurRadius = v19;
 
 LABEL_14:
-  v20 = [v8 objectForKey:@"averageColorEnabled"];
+  v20 = [descriptionCopy objectForKey:@"averageColorEnabled"];
   if (v20)
   {
-    v21 = [v8 objectForKey:@"averageColorEnabled"];
+    v21 = [descriptionCopy objectForKey:@"averageColorEnabled"];
   }
 
   else
   {
-    if (!v6)
+    if (!identityCopy)
     {
       goto LABEL_19;
     }
@@ -216,15 +216,15 @@ LABEL_14:
   self->_averageColorEnabled = [v21 BOOLValue];
 
 LABEL_19:
-  v23 = [v8 objectForKey:@"saturation"];
+  v23 = [descriptionCopy objectForKey:@"saturation"];
   if (v23)
   {
-    v24 = [v8 objectForKey:@"saturation"];
+    v24 = [descriptionCopy objectForKey:@"saturation"];
   }
 
   else
   {
-    if (!v6)
+    if (!identityCopy)
     {
       goto LABEL_24;
     }
@@ -237,15 +237,15 @@ LABEL_19:
   self->_saturation = v26;
 
 LABEL_24:
-  v27 = [v8 objectForKey:@"brightness"];
+  v27 = [descriptionCopy objectForKey:@"brightness"];
   if (v27)
   {
-    v28 = [v8 objectForKey:@"brightness"];
+    v28 = [descriptionCopy objectForKey:@"brightness"];
   }
 
   else
   {
-    if (!v6)
+    if (!identityCopy)
     {
       goto LABEL_29;
     }
@@ -258,10 +258,10 @@ LABEL_24:
   self->_brightness = v30;
 
 LABEL_29:
-  v31 = [v8 objectForKey:@"colorMatrix"];
+  v31 = [descriptionCopy objectForKey:@"colorMatrix"];
   if (v31)
   {
-    v32 = [v8 objectForKey:@"colorMatrix"];
+    v32 = [descriptionCopy objectForKey:@"colorMatrix"];
     MTCAColorMatrixMakeWithDictionaryRepresentation(v32, &v55);
 LABEL_31:
     v33 = v58;
@@ -275,7 +275,7 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if (v6)
+  if (identityCopy)
   {
     v37 = [MEMORY[0x1E696B098] mt_identityValueForFilter:*MEMORY[0x1E6979880]];
     v32 = v37;
@@ -298,15 +298,15 @@ LABEL_31:
 
 LABEL_32:
 
-  v35 = [v8 objectForKey:@"zoom"];
+  v35 = [descriptionCopy objectForKey:@"zoom"];
   if (v35)
   {
-    v36 = [v8 objectForKey:@"zoom"];
+    v36 = [descriptionCopy objectForKey:@"zoom"];
   }
 
   else
   {
-    if (!v6)
+    if (!identityCopy)
     {
       goto LABEL_40;
     }
@@ -319,10 +319,10 @@ LABEL_32:
   self->_zoom = v39;
 
 LABEL_40:
-  v40 = [v8 objectForKey:@"backdropScale"];
+  v40 = [descriptionCopy objectForKey:@"backdropScale"];
   if (v40)
   {
-    v41 = [v8 objectForKey:@"backdropScale"];
+    v41 = [descriptionCopy objectForKey:@"backdropScale"];
 LABEL_44:
     v42 = v41;
     [v41 floatValue];
@@ -331,7 +331,7 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  if (v6)
+  if (identityCopy)
   {
     v41 = [MEMORY[0x1E696AD98] mt_identityValueForMaterialSettingsProperty:@"backdropScale"];
     goto LABEL_44;
@@ -339,9 +339,9 @@ LABEL_44:
 
 LABEL_45:
 
-  v44 = [v8 objectForKey:@"blurInputQuality"];
+  v44 = [descriptionCopy objectForKey:@"blurInputQuality"];
   v45 = v44;
-  if (v44 || v6)
+  if (v44 || identityCopy)
   {
     if (v44)
     {
@@ -361,10 +361,10 @@ LABEL_45:
 
   objc_storeStrong(&self->_blurInputQuality, blurInputQuality);
 
-  v47 = [v8 objectForKey:@"blurAtEnd"];
+  v47 = [descriptionCopy objectForKey:@"blurAtEnd"];
   if (v47)
   {
-    v48 = [v8 objectForKey:@"blurAtEnd"];
+    v48 = [descriptionCopy objectForKey:@"blurAtEnd"];
 LABEL_55:
     v49 = v48;
     self->_blurAtEnd = [v48 BOOLValue];
@@ -372,7 +372,7 @@ LABEL_55:
     goto LABEL_56;
   }
 
-  if (v6)
+  if (identityCopy)
   {
     v48 = [MEMORY[0x1E696AD98] mt_identityValueForMaterialSettingsProperty:@"blurAtEnd"];
     goto LABEL_55;
@@ -380,12 +380,12 @@ LABEL_55:
 
 LABEL_56:
 
-  v50 = [v8 objectForKey:@"variableBlurInputMaskName"];
+  v50 = [descriptionCopy objectForKey:@"variableBlurInputMaskName"];
   variableBlurInputMaskName = v50;
   if (!v50)
   {
     variableBlurInputMaskName = 0;
-    if (!v6)
+    if (!identityCopy)
     {
       variableBlurInputMaskName = self->_variableBlurInputMaskName;
     }
@@ -402,15 +402,15 @@ LABEL_56:
       v52 = self->_variableBlurInputMaskName;
     }
 
-    self->_variableBlurInputMask = MTCGImageCreateWithName(v52, v9, 0.0);
+    self->_variableBlurInputMask = MTCGImageCreateWithName(v52, bundleCopy, 0.0);
   }
 
-  v53 = [v8 objectForKey:{@"curvesValues", v55, v56, v57, v58, v59}];
+  v53 = [descriptionCopy objectForKey:{@"curvesValues", v55, v56, v57, v58, v59}];
   curvesValues = v53;
   if (!v53)
   {
     curvesValues = 0;
-    if (!v6)
+    if (!identityCopy)
     {
       curvesValues = self->_curvesValues;
     }
@@ -419,11 +419,11 @@ LABEL_56:
   objc_storeStrong(&self->_curvesValues, curvesValues);
 }
 
-- (void)_processUserInfoDescription:(id)a3
+- (void)_processUserInfoDescription:(id)description
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  descriptionCopy = description;
+  if ([descriptionCopy count])
   {
     userInfo = self->_userInfo;
     if (userInfo)
@@ -441,7 +441,7 @@ LABEL_56:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v4;
+    v8 = descriptionCopy;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {

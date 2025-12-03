@@ -2,8 +2,8 @@
 - (BOOL)validatePermDatabase;
 - (BOOL)validateTempDatabase;
 - (BOOL)willMoveCallsFromTempDatabase;
-- (CallDBManagerClient)initWithProcessHandle:(id)a3;
-- (id)permDBLocation:(unsigned __int8 *)a3;
+- (CallDBManagerClient)initWithProcessHandle:(id)handle;
+- (id)permDBLocation:(unsigned __int8 *)location;
 - (void)createHelperConnection;
 - (void)createPermanent;
 - (void)createTemporary;
@@ -18,7 +18,7 @@
 - (void)createPermanent
 {
   v10 = *MEMORY[0x1E69E9840];
-  v1 = getDBLErrorCodeAsString(*a1);
+  v1 = getDBLErrorCodeAsString(*self);
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0(&dword_1C3E90000, v2, v3, "Got error code: %{public}@ while getting permanent data store database location", v4, v5, v6, v7, v9);
 
@@ -35,8 +35,8 @@
   v4.receiver = self;
   v4.super_class = CallDBManagerClient;
   [(CallDBManager *)&v4 handlePermanentCreated];
-  v3 = [(CallDBManagerClient *)self helperConnection];
-  [v3 invalidate];
+  helperConnection = [(CallDBManagerClient *)self helperConnection];
+  [helperConnection invalidate];
 }
 
 - (void)moveCallsFromTempDatabase
@@ -44,9 +44,9 @@
   if ([(CallDBManagerClient *)self willMoveCallsFromTempDatabase])
   {
     [(CallDBManagerClient *)self createHelperConnection];
-    v4 = [(CallDBManagerClient *)self helperConnection];
-    v3 = [v4 remoteObjectProxy];
-    [v3 moveCallsFromTempDatabase];
+    helperConnection = [(CallDBManagerClient *)self helperConnection];
+    remoteObjectProxy = [helperConnection remoteObjectProxy];
+    [remoteObjectProxy moveCallsFromTempDatabase];
   }
 }
 
@@ -56,8 +56,8 @@
   if (v2)
   {
     v3 = [CallDBMetaInfo alloc];
-    v4 = [v2 URLByDeletingLastPathComponent];
-    v5 = [(CallDBMetaInfo *)v3 initWithURL:v4];
+    uRLByDeletingLastPathComponent = [v2 URLByDeletingLastPathComponent];
+    v5 = [(CallDBMetaInfo *)v3 initWithURL:uRLByDeletingLastPathComponent];
 
     if ([v5 readDatabaseVersion:1]!= 42)
     {
@@ -81,16 +81,16 @@
     {
       if ([v7 addDataStoreAtLocation:v2 isEncrypted:0])
       {
-        v9 = [v8 createManagedObjectContext];
-        if (v9)
+        createManagedObjectContext = [v8 createManagedObjectContext];
+        if (createManagedObjectContext)
         {
-          v10 = [DBManager entityDescriptionHavingName:@"CallRecord" forContext:v9];
+          v10 = [DBManager entityDescriptionHavingName:@"CallRecord" forContext:createManagedObjectContext];
           if (v10)
           {
             v11 = objc_alloc_init(MEMORY[0x1E695D5E0]);
             [v11 setEntity:v10];
             v24 = 0;
-            v12 = [v9 executeFetchRequest:v11 error:&v24];
+            v12 = [createManagedObjectContext executeFetchRequest:v11 error:&v24];
             v13 = v12;
             if (v24)
             {
@@ -142,9 +142,9 @@
       }
 
       v20 = +[CHLogServer sharedInstance];
-      v9 = [v20 logHandleForDomain:"ch.calldbm"];
+      createManagedObjectContext = [v20 logHandleForDomain:"ch.calldbm"];
 
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(createManagedObjectContext, OS_LOG_TYPE_ERROR))
       {
         [CallDBManagerClient willMoveCallsFromTempDatabase];
       }
@@ -153,9 +153,9 @@
     else
     {
       v19 = +[CHLogServer sharedInstance];
-      v9 = [v19 logHandleForDomain:"ch.calldbm"];
+      createManagedObjectContext = [v19 logHandleForDomain:"ch.calldbm"];
 
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(createManagedObjectContext, OS_LOG_TYPE_ERROR))
       {
         [CallDBManagerClient willMoveCallsFromTempDatabase];
       }
@@ -182,7 +182,7 @@ LABEL_34:
   return v16;
 }
 
-- (CallDBManagerClient)initWithProcessHandle:(id)a3
+- (CallDBManagerClient)initWithProcessHandle:(id)handle
 {
   v7.receiver = self;
   v7.super_class = CallDBManagerClient;
@@ -199,17 +199,17 @@ LABEL_34:
 
 - (void)createHelperConnection
 {
-  v3 = [(CallDBManagerClient *)self helperConnection];
+  helperConnection = [(CallDBManagerClient *)self helperConnection];
 
-  if (!v3)
+  if (!helperConnection)
   {
     v4 = objc_alloc(MEMORY[0x1E696B0B8]);
     v5 = [v4 initWithMachServiceName:kSyncHelperServiceIdentifier options:0];
     [(CallDBManagerClient *)self setHelperConnection:v5];
 
     v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F43B38F0];
-    v7 = [(CallDBManagerClient *)self helperConnection];
-    [v7 setRemoteObjectInterface:v6];
+    helperConnection2 = [(CallDBManagerClient *)self helperConnection];
+    [helperConnection2 setRemoteObjectInterface:v6];
 
     objc_initWeak(&location, self);
     v13[0] = MEMORY[0x1E69E9820];
@@ -217,19 +217,19 @@ LABEL_34:
     v13[2] = __45__CallDBManagerClient_createHelperConnection__block_invoke;
     v13[3] = &unk_1E81DBF80;
     objc_copyWeak(&v14, &location);
-    v8 = [(CallDBManagerClient *)self helperConnection];
-    [v8 setInterruptionHandler:v13];
+    helperConnection3 = [(CallDBManagerClient *)self helperConnection];
+    [helperConnection3 setInterruptionHandler:v13];
 
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __45__CallDBManagerClient_createHelperConnection__block_invoke_64;
     v11[3] = &unk_1E81DBF80;
     objc_copyWeak(&v12, &location);
-    v9 = [(CallDBManagerClient *)self helperConnection];
-    [v9 setInvalidationHandler:v11];
+    helperConnection4 = [(CallDBManagerClient *)self helperConnection];
+    [helperConnection4 setInvalidationHandler:v11];
 
-    v10 = [(CallDBManagerClient *)self helperConnection];
-    [v10 resume];
+    helperConnection5 = [(CallDBManagerClient *)self helperConnection];
+    [helperConnection5 resume];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&v14);
@@ -358,8 +358,8 @@ void __45__CallDBManagerClient_createHelperConnection__block_invoke_64(uint64_t 
   else
   {
     v8 = [CallDBMetaInfo alloc];
-    v9 = [v7 URLByDeletingLastPathComponent];
-    v10 = [(CallDBMetaInfo *)v8 initWithURL:v9];
+    uRLByDeletingLastPathComponent = [v7 URLByDeletingLastPathComponent];
+    v10 = [(CallDBMetaInfo *)v8 initWithURL:uRLByDeletingLastPathComponent];
 
     v11 = [(CallDBMetaInfo *)v10 readDatabaseVersion:1];
     if (v11 == 42)
@@ -380,8 +380,8 @@ void __45__CallDBManagerClient_createHelperConnection__block_invoke_64(uint64_t 
 
       else
       {
-        v27 = [(CallDBManager *)self dbManager];
-        v28 = [v27 addDataStoreAtLocation:v7 isEncrypted:0];
+        dbManager = [(CallDBManager *)self dbManager];
+        v28 = [dbManager addDataStoreAtLocation:v7 isEncrypted:0];
 
         if (v28)
         {
@@ -421,8 +421,8 @@ void __45__CallDBManagerClient_createHelperConnection__block_invoke_64(uint64_t 
   if (!v8)
   {
     v4 = [CallDBMetaInfo alloc];
-    v5 = [v2 URLByDeletingLastPathComponent];
-    v6 = [(CallDBMetaInfo *)v4 initWithURL:v5];
+    uRLByDeletingLastPathComponent = [v2 URLByDeletingLastPathComponent];
+    v6 = [(CallDBMetaInfo *)v4 initWithURL:uRLByDeletingLastPathComponent];
 
     v3 = [(CallDBMetaInfo *)v6 validateInfo:0];
   }
@@ -438,8 +438,8 @@ void __45__CallDBManagerClient_createHelperConnection__block_invoke_64(uint64_t 
   if (!v8)
   {
     v4 = [CallDBMetaInfo alloc];
-    v5 = [v2 URLByDeletingLastPathComponent];
-    v6 = [(CallDBMetaInfo *)v4 initWithURL:v5];
+    uRLByDeletingLastPathComponent = [v2 URLByDeletingLastPathComponent];
+    v6 = [(CallDBMetaInfo *)v4 initWithURL:uRLByDeletingLastPathComponent];
 
     v3 = [(CallDBMetaInfo *)v6 validateInfo:1];
   }
@@ -460,14 +460,14 @@ void __45__CallDBManagerClient_createHelperConnection__block_invoke_64(uint64_t 
   }
 
   objc_initWeak(buf, self);
-  v5 = [(CallDBManagerClient *)self helperConnection];
-  v6 = [v5 remoteObjectProxy];
+  helperConnection = [(CallDBManagerClient *)self helperConnection];
+  remoteObjectProxy = [helperConnection remoteObjectProxy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__CallDBManagerClient_pokeSyncHelperToInitDB__block_invoke;
   v7[3] = &unk_1E81DBFA8;
   objc_copyWeak(&v8, buf);
-  [v6 bootUp:v7];
+  [remoteObjectProxy bootUp:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(buf);
@@ -552,7 +552,7 @@ LABEL_17:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)permDBLocation:(unsigned __int8 *)a3
+- (id)permDBLocation:(unsigned __int8 *)location
 {
   v13 = *MEMORY[0x1E69E9840];
   v4 = +[CHLogServer sharedInstance];
@@ -564,7 +564,7 @@ LABEL_17:
     _os_log_impl(&dword_1C3E90000, v5, OS_LOG_TYPE_DEFAULT, "CallDBManagerClient: fetching permDBURL", &v11, 2u);
   }
 
-  v6 = [CallDBManager getDBLocationIsSandboxed:1 isTemporary:0 error:a3];
+  v6 = [CallDBManager getDBLocationIsSandboxed:1 isTemporary:0 error:location];
   v7 = +[CHLogServer sharedInstance];
   v8 = [v7 logHandleForDomain:"ch.calldbm"];
 

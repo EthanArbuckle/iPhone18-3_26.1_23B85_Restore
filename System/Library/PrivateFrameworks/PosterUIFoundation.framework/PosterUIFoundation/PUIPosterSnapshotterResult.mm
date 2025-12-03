@@ -1,28 +1,28 @@
 @interface PUIPosterSnapshotterResult
 - (PUIPosterSnapshotterResult)init;
-- (PUIPosterSnapshotterResult)initWithRequest:(id)a3 snapshotBundle:(id)a4 destination:(id)a5 executionTime:(double)a6;
-- (void)appendURLForCleanup:(id)a3;
+- (PUIPosterSnapshotterResult)initWithRequest:(id)request snapshotBundle:(id)bundle destination:(id)destination executionTime:(double)time;
+- (void)appendURLForCleanup:(id)cleanup;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation PUIPosterSnapshotterResult
 
-- (PUIPosterSnapshotterResult)initWithRequest:(id)a3 snapshotBundle:(id)a4 destination:(id)a5 executionTime:(double)a6
+- (PUIPosterSnapshotterResult)initWithRequest:(id)request snapshotBundle:(id)bundle destination:(id)destination executionTime:(double)time
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  requestCopy = request;
+  bundleCopy = bundle;
+  destinationCopy = destination;
   v17.receiver = self;
   v17.super_class = PUIPosterSnapshotterResult;
   v14 = [(PUIPosterSnapshotterResult *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_request, a3);
-    v15->_executionTime = a6;
-    objc_storeStrong(&v15->_snapshotBundle, a4);
-    objc_storeStrong(&v15->_destination, a5);
+    objc_storeStrong(&v14->_request, request);
+    v15->_executionTime = time;
+    objc_storeStrong(&v15->_snapshotBundle, bundle);
+    objc_storeStrong(&v15->_destination, destination);
   }
 
   return v15;
@@ -43,18 +43,18 @@
   [(PUIPosterSnapshotterResult *)&v3 dealloc];
 }
 
-- (void)appendURLForCleanup:(id)a3
+- (void)appendURLForCleanup:(id)cleanup
 {
   cleanupURLs = self->_cleanupURLs;
   if (cleanupURLs)
   {
 
-    [(NSMutableSet *)cleanupURLs addObject:a3];
+    [(NSMutableSet *)cleanupURLs addObject:cleanup];
   }
 
   else
   {
-    self->_cleanupURLs = [MEMORY[0x1E695DFA8] setWithObject:a3];
+    self->_cleanupURLs = [MEMORY[0x1E695DFA8] setWithObject:cleanup];
 
     MEMORY[0x1EEE66BB8]();
   }
@@ -94,8 +94,8 @@
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
-        v12 = [MEMORY[0x1E696AC08] defaultManager];
-        [v12 removeItemAtURL:v11 error:0];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        [defaultManager removeItemAtURL:v11 error:0];
 
         ++v10;
       }

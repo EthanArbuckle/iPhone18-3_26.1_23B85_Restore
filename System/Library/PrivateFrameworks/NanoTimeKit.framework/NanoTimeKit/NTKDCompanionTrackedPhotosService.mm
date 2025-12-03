@@ -1,14 +1,14 @@
 @interface NTKDCompanionTrackedPhotosService
 + (id)sharedService;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)_init;
-- (id)_priorityListFromCollection:(id)a3;
-- (void)_addTrackedPhotosContentToList:(id)a3 forFace:(id)a4;
-- (void)_queue_appendCompletionHandler:(id)a3;
-- (void)_queue_fetchTrackedPhotosPriorityList:(id)a3;
-- (void)_queue_handlePriorityList:(id)a3;
+- (id)_priorityListFromCollection:(id)collection;
+- (void)_addTrackedPhotosContentToList:(id)list forFace:(id)face;
+- (void)_queue_appendCompletionHandler:(id)handler;
+- (void)_queue_fetchTrackedPhotosPriorityList:(id)list;
+- (void)_queue_handlePriorityList:(id)list;
 - (void)_queue_startFetchingLibrary;
-- (void)fetchTrackedPhotosPriorityList:(id)a3;
+- (void)fetchTrackedPhotosPriorityList:(id)list;
 - (void)start;
 @end
 
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = sub_100021A94;
   block[3] = &unk_10005CB30;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100066C78 != -1)
   {
     dispatch_once(&qword_100066C78, block);
@@ -72,35 +72,35 @@
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v7;
+    v17 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Got XPC connection: %@ request for Tracked Photos service", buf, 0xCu);
   }
 
-  v9 = [v7 valueForEntitlement:@"com.apple.nanotimekit.trackedphotos"];
-  v10 = [v9 BOOLValue];
+  v9 = [connectionCopy valueForEntitlement:@"com.apple.nanotimekit.trackedphotos"];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     v11 = NTKTrackedPhotosServerInterface();
-    [v7 setExportedInterface:v11];
+    [connectionCopy setExportedInterface:v11];
 
-    [v7 setExportedObject:self];
-    objc_initWeak(buf, v7);
+    [connectionCopy setExportedObject:self];
+    objc_initWeak(buf, connectionCopy);
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100021F44;
     v14[3] = &unk_10005CA48;
     objc_copyWeak(&v15, buf);
-    [v7 setInvalidationHandler:v14];
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:v14];
+    [connectionCopy resume];
     objc_destroyWeak(&v15);
     objc_destroyWeak(buf);
   }
@@ -111,17 +111,17 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v7;
+      v17 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "XPC connection: %@ is not entitled for Tracked Photos service, declining connection", buf, 0xCu);
     }
   }
 
-  return v10;
+  return bOOLValue;
 }
 
-- (void)fetchTrackedPhotosPriorityList:(id)a3
+- (void)fetchTrackedPhotosPriorityList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -129,7 +129,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Asked for Tracked Photos Priority List", buf, 2u);
   }
 
-  if (v4)
+  if (listCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -137,17 +137,17 @@
     v7[2] = sub_100022080;
     v7[3] = &unk_10005CAC0;
     v7[4] = self;
-    v8 = v4;
+    v8 = listCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)_queue_fetchTrackedPhotosPriorityList:(id)a3
+- (void)_queue_fetchTrackedPhotosPriorityList:(id)list
 {
   queue = self->_queue;
-  v5 = a3;
+  listCopy = list;
   dispatch_assert_queue_V2(queue);
-  [(NTKDCompanionTrackedPhotosService *)self _queue_appendCompletionHandler:v5];
+  [(NTKDCompanionTrackedPhotosService *)self _queue_appendCompletionHandler:listCopy];
 
   if (!self->_state)
   {
@@ -156,13 +156,13 @@
   }
 }
 
-- (void)_queue_appendCompletionHandler:(id)a3
+- (void)_queue_appendCompletionHandler:(id)handler
 {
   queue = self->_queue;
-  v5 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(queue);
   completionHandlers = self->_completionHandlers;
-  v7 = objc_retainBlock(v5);
+  v7 = objc_retainBlock(handlerCopy);
 
   [(NSMutableArray *)completionHandlers addObject:v7];
 }
@@ -174,10 +174,10 @@
   {
     self->_state = 1;
     v3 = +[CLKDevice currentDevice];
-    v4 = [v3 pdrDevice];
-    v5 = [v4 pairingID];
+    pdrDevice = [v3 pdrDevice];
+    pairingID = [pdrDevice pairingID];
     v6 = [NTKPersistentFaceCollection alloc];
-    v7 = [v6 initWithCollectionIdentifier:NTKCollectionIdentifierLibraryFaces deviceUUID:v5];
+    v7 = [v6 initWithCollectionIdentifier:NTKCollectionIdentifierLibraryFaces deviceUUID:pairingID];
     v8 = [[NTKDLoadOnceCollectionObserver alloc] initWithCollection:v7];
     collectionObserver = self->_collectionObserver;
     self->_collectionObserver = v8;
@@ -192,9 +192,9 @@
   }
 }
 
-- (void)_queue_handlePriorityList:(id)a3
+- (void)_queue_handlePriorityList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   dispatch_assert_queue_V2(self->_queue);
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -260,21 +260,21 @@
   }
 }
 
-- (id)_priorityListFromCollection:(id)a3
+- (id)_priorityListFromCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = +[NSMutableArray array];
-  v6 = [v4 selectedFace];
-  [(NTKDCompanionTrackedPhotosService *)self _addTrackedPhotosContentToList:v5 forFace:v6];
+  selectedFace = [collectionCopy selectedFace];
+  [(NTKDCompanionTrackedPhotosService *)self _addTrackedPhotosContentToList:v5 forFace:selectedFace];
 
-  v7 = [v4 selectedFaceIndex];
-  v8 = [v4 selectedFaceIndex];
-  v9 = [v4 orderedUUIDs];
-  v10 = [v9 count];
+  selectedFaceIndex = [collectionCopy selectedFaceIndex];
+  selectedFaceIndex2 = [collectionCopy selectedFaceIndex];
+  orderedUUIDs = [collectionCopy orderedUUIDs];
+  v10 = [orderedUUIDs count];
   v11 = v10 - 1;
 
-  v12 = v8 + 1;
-  v13 = v7 - 1;
+  v12 = selectedFaceIndex2 + 1;
+  v13 = selectedFaceIndex - 1;
   if (v13 >= 0)
   {
     do
@@ -284,9 +284,9 @@
         break;
       }
 
-      v14 = [v4 faceAtIndex:v13];
+      v14 = [collectionCopy faceAtIndex:v13];
       [(NTKDCompanionTrackedPhotosService *)self _addTrackedPhotosContentToList:v5 forFace:v14];
-      v15 = [v4 faceAtIndex:v12];
+      v15 = [collectionCopy faceAtIndex:v12];
       [(NTKDCompanionTrackedPhotosService *)self _addTrackedPhotosContentToList:v5 forFace:v15];
 
       ++v12;
@@ -299,7 +299,7 @@
   {
     do
     {
-      v17 = [v4 faceAtIndex:v13];
+      v17 = [collectionCopy faceAtIndex:v13];
       [(NTKDCompanionTrackedPhotosService *)self _addTrackedPhotosContentToList:v5 forFace:v17];
       --v13;
     }
@@ -311,7 +311,7 @@
   {
     do
     {
-      v18 = [v4 faceAtIndex:v12];
+      v18 = [collectionCopy faceAtIndex:v12];
       [(NTKDCompanionTrackedPhotosService *)self _addTrackedPhotosContentToList:v5 forFace:v18];
       ++v12;
     }
@@ -322,19 +322,19 @@
   return v5;
 }
 
-- (void)_addTrackedPhotosContentToList:(id)a3 forFace:(id)a4
+- (void)_addTrackedPhotosContentToList:(id)list forFace:(id)face
 {
-  v5 = a3;
-  if (a4)
+  listCopy = list;
+  if (face)
   {
-    v7 = v5;
-    v6 = [a4 trackedPhotosContent];
-    if (v6)
+    v7 = listCopy;
+    trackedPhotosContent = [face trackedPhotosContent];
+    if (trackedPhotosContent)
     {
-      [v7 addObject:v6];
+      [v7 addObject:trackedPhotosContent];
     }
 
-    v5 = v7;
+    listCopy = v7;
   }
 }
 

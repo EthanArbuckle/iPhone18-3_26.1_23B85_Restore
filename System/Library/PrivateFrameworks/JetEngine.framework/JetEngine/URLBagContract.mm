@@ -17,21 +17,21 @@
 - (id)guidSchemes
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC9JetEngine14URLBagContract_backing);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1AB460514();
-  v5 = [v2 arrayForKey_];
+  arrayForKey_ = [v2 arrayForKey_];
 
-  return v5;
+  return arrayForKey_;
 }
 
 - (id)storefrontSuffix
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC9JetEngine14URLBagContract_backing);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1AB460514();
-  v5 = [v2 stringForKey_];
+  stringForKey_ = [v2 stringForKey_];
 
-  return v5;
+  return stringForKey_;
 }
 
 - (AMSMescalBagContract)mescalContract
@@ -44,71 +44,71 @@
 - (id)TLSSamplingPercentage
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC9JetEngine14URLBagContract_backing);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1AB460514();
-  v5 = [v2 doubleForKey_];
+  doubleForKey_ = [v2 doubleForKey_];
 
-  return v5;
+  return doubleForKey_;
 }
 
 - (id)TLSSamplingSessionDuration
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC9JetEngine14URLBagContract_backing);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1AB460514();
-  v5 = [v2 integerForKey_];
+  integerForKey_ = [v2 integerForKey_];
 
-  return v5;
+  return integerForKey_;
 }
 
 - (id)TFOSamplingPercentage
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC9JetEngine14URLBagContract_backing);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1AB460514();
-  v5 = [v2 doubleForKey_];
+  doubleForKey_ = [v2 doubleForKey_];
 
-  return v5;
+  return doubleForKey_;
 }
 
 - (id)TFOSamplingSessionDuration
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC9JetEngine14URLBagContract_backing);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1AB460514();
-  v5 = [v2 integerForKey_];
+  integerForKey_ = [v2 integerForKey_];
 
-  return v5;
+  return integerForKey_;
 }
 
 - (id)apsEnabledPatterns
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC9JetEngine14URLBagContract_backing);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1AB460514();
-  v5 = [v2 arrayForKey_];
+  arrayForKey_ = [v2 arrayForKey_];
 
-  return v5;
+  return arrayForKey_;
 }
 
 - (id)apsSamplingPercent
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC9JetEngine14URLBagContract_backing);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1AB460514();
-  v5 = [v2 integerForKey_];
+  integerForKey_ = [v2 integerForKey_];
 
-  return v5;
+  return integerForKey_;
 }
 
 - (id)metricsURL
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC9JetEngine14URLBagContract_backing);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1AB460514();
-  v5 = [v2 URLForKey_];
+  uRLForKey_ = [v2 URLForKey_];
 
-  return v5;
+  return uRLForKey_;
 }
 
 - (_TtC9JetEngine14URLBagContract)init

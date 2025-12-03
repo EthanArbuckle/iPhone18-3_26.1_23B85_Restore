@@ -1,17 +1,17 @@
 @interface StabilizeParams
 + (id)stabilizeParams;
-+ (id)stabilizeParamsFromNSDictionary:(id)a3;
-+ (id)stabilizeParamsFromURL:(id)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeForFrame:(SEL)a3;
-- (BOOL)writeToURL:(id)a3;
++ (id)stabilizeParamsFromNSDictionary:(id)dictionary;
++ (id)stabilizeParamsFromURL:(id)l;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeForFrame:(SEL)frame;
+- (BOOL)writeToURL:(id)l;
 - (CGRect)cropRect;
 - (StabilizeParams)init;
 - (id).cxx_construct;
 - (id)infoAsDict;
-- (id)initFromDict:(id)a3;
-- (void)append:(id *)a3;
+- (id)initFromDict:(id)dict;
+- (void)append:(id *)append;
 - (void)frameTimes;
-- (void)getFrameInfo:(unsigned int)a3 frameInfo:(id *)a4;
+- (void)getFrameInfo:(unsigned int)info frameInfo:(id *)frameInfo;
 @end
 
 @implementation StabilizeParams
@@ -47,9 +47,9 @@
   return v2;
 }
 
-+ (id)stabilizeParamsFromURL:(id)a3
++ (id)stabilizeParamsFromURL:(id)l
 {
-  v3 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:a3];
+  v3 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:l];
   if (v3)
   {
     v4 = [[StabilizeParams alloc] initFromDict:v3];
@@ -63,7 +63,7 @@
   return v4;
 }
 
-- (void)append:(id *)a3
+- (void)append:(id *)append
 {
   end = self->mFrameInfo.__end_;
   cap = self->mFrameInfo.__cap_;
@@ -99,10 +99,10 @@
     }
 
     v15 = 60 * v11;
-    v16 = *a3->var0;
-    v17 = *&a3->var0[4];
-    v18 = *&a3->var0[8];
-    *(v15 + 44) = *(&a3->var1.var0 + 4);
+    v16 = *append->var0;
+    v17 = *&append->var0[4];
+    v18 = *&append->var0[8];
+    *(v15 + 44) = *(&append->var1.var0 + 4);
     *(v15 + 16) = v17;
     *(v15 + 32) = v18;
     *v15 = v16;
@@ -123,10 +123,10 @@
 
   else
   {
-    v6 = *a3->var0;
-    v7 = *&a3->var0[4];
-    v8 = *&a3->var0[8];
-    *(end + 44) = *(&a3->var1.var0 + 4);
+    v6 = *append->var0;
+    v7 = *&append->var0[4];
+    v8 = *&append->var0[8];
+    *(end + 44) = *(&append->var1.var0 + 4);
     *(end + 1) = v7;
     *(end + 2) = v8;
     *end = v6;
@@ -137,31 +137,31 @@
   ++self->numFrames;
 }
 
-- (void)getFrameInfo:(unsigned int)a3 frameInfo:(id *)a4
+- (void)getFrameInfo:(unsigned int)info frameInfo:(id *)frameInfo
 {
   begin = self->mFrameInfo.__begin_;
-  if (0xEEEEEEEEEEEEEEEFLL * ((self->mFrameInfo.__end_ - begin) >> 2) <= a3)
+  if (0xEEEEEEEEEEEEEEEFLL * ((self->mFrameInfo.__end_ - begin) >> 2) <= info)
   {
-    sub_241905D34(a4);
+    sub_241905D34(frameInfo);
     v10 = MEMORY[0x277CC08F0];
-    *&a4->var0[9] = *MEMORY[0x277CC08F0];
-    *&a4->var1.var2 = *(v10 + 16);
+    *&frameInfo->var0[9] = *MEMORY[0x277CC08F0];
+    *&frameInfo->var1.var2 = *(v10 + 16);
   }
 
   else
   {
-    v6 = (begin + 60 * a3);
+    v6 = (begin + 60 * info);
     v7 = *v6;
     v8 = v6[1];
     v9 = v6[2];
-    *(&a4->var1.var0 + 4) = *(v6 + 44);
-    *&a4->var0[4] = v8;
-    *&a4->var0[8] = v9;
-    *a4->var0 = v7;
+    *(&frameInfo->var1.var0 + 4) = *(v6 + 44);
+    *&frameInfo->var0[4] = v8;
+    *&frameInfo->var0[8] = v9;
+    *frameInfo->var0 = v7;
   }
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeForFrame:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeForFrame:(SEL)frame
 {
   v4 = *&self->var1;
   v5 = 0xEEEEEEEEEEEEEEEFLL * ((self->var3 - v4) >> 2);
@@ -180,14 +180,14 @@
   return self;
 }
 
-- (BOOL)writeToURL:(id)a3
+- (BOOL)writeToURL:(id)l
 {
-  v4 = a3;
-  v5 = [(StabilizeParams *)self infoAsDict];
-  v6 = v5;
-  if (v5)
+  lCopy = l;
+  infoAsDict = [(StabilizeParams *)self infoAsDict];
+  v6 = infoAsDict;
+  if (infoAsDict)
   {
-    v7 = [v5 writeToURL:v4 atomically:1];
+    v7 = [infoAsDict writeToURL:lCopy atomically:1];
   }
 
   else
@@ -265,10 +265,10 @@
   return v13;
 }
 
-- (id)initFromDict:(id)a3
+- (id)initFromDict:(id)dict
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"Version"];
+  dictCopy = dict;
+  v5 = [dictCopy objectForKeyedSubscript:@"Version"];
   v6 = v5;
   if (!v5)
   {
@@ -276,17 +276,17 @@
     goto LABEL_16;
   }
 
-  v7 = [v5 unsignedIntegerValue];
-  self->version = v7;
-  if (v7 <= 1)
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
+  self->version = unsignedIntegerValue;
+  if (unsignedIntegerValue <= 1)
   {
-    NSLog(&cfstr_Stabilizeparam_1.isa, v7);
-    v8 = 0;
+    NSLog(&cfstr_Stabilizeparam_1.isa, unsignedIntegerValue);
+    selfCopy = 0;
     v9 = v6;
     goto LABEL_17;
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"CropRectX"];
+  v10 = [dictCopy objectForKeyedSubscript:@"CropRectX"];
 
   if (!v10)
   {
@@ -296,7 +296,7 @@
 
   [v10 doubleValue];
   self->cropRect.origin.x = v11;
-  v12 = [v4 objectForKeyedSubscript:@"CropRectY"];
+  v12 = [dictCopy objectForKeyedSubscript:@"CropRectY"];
 
   if (!v12)
   {
@@ -306,7 +306,7 @@
 
   [v12 doubleValue];
   self->cropRect.origin.y = v13;
-  v14 = [v4 objectForKeyedSubscript:@"CropRectWidth"];
+  v14 = [dictCopy objectForKeyedSubscript:@"CropRectWidth"];
 
   if (!v14)
   {
@@ -316,7 +316,7 @@
 
   [v14 doubleValue];
   self->cropRect.size.width = v15;
-  v9 = [v4 objectForKeyedSubscript:@"CropRectHeight"];
+  v9 = [dictCopy objectForKeyedSubscript:@"CropRectHeight"];
 
   if (!v9)
   {
@@ -326,17 +326,17 @@
 
   [v9 doubleValue];
   self->cropRect.size.height = v16;
-  v17 = [v4 objectForKeyedSubscript:@"ROIStartV"];
-  v18 = [v4 objectForKeyedSubscript:@"ROIStartS"];
+  v17 = [dictCopy objectForKeyedSubscript:@"ROIStartV"];
+  v18 = [dictCopy objectForKeyedSubscript:@"ROIStartS"];
   v19 = sub_24190CEA4(v17, v18, (&self->version + 1));
 
-  if (v19 || ([v4 objectForKeyedSubscript:@"ROILengthV"], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "objectForKeyedSubscript:", @"ROILengthS"), v21 = objc_claimAutoreleasedReturnValue(), v22 = sub_24190CEA4(v20, v21, (&self->roiStart.epoch + 4)), v21, v20, v22))
+  if (v19 || ([dictCopy objectForKeyedSubscript:@"ROILengthV"], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(dictCopy, "objectForKeyedSubscript:", @"ROILengthS"), v21 = objc_claimAutoreleasedReturnValue(), v22 = sub_24190CEA4(v20, v21, (&self->roiStart.epoch + 4)), v21, v20, v22))
   {
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
-  v24 = [v4 objectForKeyedSubscript:@"PassThrough"];
+  v24 = [dictCopy objectForKeyedSubscript:@"PassThrough"];
 
   if (!v24)
   {
@@ -345,7 +345,7 @@
   }
 
   self->passThrough = [v24 BOOLValue];
-  v9 = [v4 objectForKeyedSubscript:@"Sparse"];
+  v9 = [dictCopy objectForKeyedSubscript:@"Sparse"];
 
   if (!v9)
   {
@@ -357,13 +357,13 @@
     NSLog(&cfstr_Stabilizeparam_7.isa);
 LABEL_16:
     v9 = 0;
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
   self->sparseFrames = [v9 BOOLValue];
 LABEL_24:
-  v25 = [v4 objectForKeyedSubscript:@"FrameArray"];
+  v25 = [dictCopy objectForKeyedSubscript:@"FrameArray"];
   v26 = v25;
   v41 = v25;
   if (v25)
@@ -377,7 +377,7 @@ LABEL_24:
     {
       if (i >= [(StabilizeParams *)self numFrames])
       {
-        v8 = self;
+        selfCopy = self;
         goto LABEL_39;
       }
 
@@ -430,11 +430,11 @@ LABEL_37:
     NSLog(&cfstr_Stabilizeparam_8.isa);
   }
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_39:
 
 LABEL_17:
-  return v8;
+  return selfCopy;
 }
 
 - (void)frameTimes
@@ -464,10 +464,10 @@ LABEL_17:
   return p_mFrameTimeArray;
 }
 
-+ (id)stabilizeParamsFromNSDictionary:(id)a3
++ (id)stabilizeParamsFromNSDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[StabilizeParams alloc] initFromDict:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[StabilizeParams alloc] initFromDict:dictionaryCopy];
 
   return v4;
 }

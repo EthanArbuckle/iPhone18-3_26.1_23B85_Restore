@@ -1,7 +1,7 @@
 @interface JPSignatureVerifier
-+ (id)signatureVerifierWithCertificate:(id)a3;
++ (id)signatureVerifierWithCertificate:(id)certificate;
 + (id)unsafeIgnoreSignatureVerifier;
-- (JPSignatureVerifier)initWithBacking:(JetPackSignatureVerifier *)a3 releaseOnDealloc:(BOOL)a4;
+- (JPSignatureVerifier)initWithBacking:(JetPackSignatureVerifier *)backing releaseOnDealloc:(BOOL)dealloc;
 - (void)dealloc;
 @end
 
@@ -9,7 +9,7 @@
 
 + (id)unsafeIgnoreSignatureVerifier
 {
-  v2 = [[JPSignatureVerifier alloc] initWithBacking:JetPackSignatureVerifierCreateUnsafeIgnoreSignatureVerifier(a1 releaseOnDealloc:a2), 1];
+  v2 = [[JPSignatureVerifier alloc] initWithBacking:JetPackSignatureVerifierCreateUnsafeIgnoreSignatureVerifier(self releaseOnDealloc:a2), 1];
 
   return v2;
 }
@@ -26,27 +26,27 @@
   [(JPSignatureVerifier *)&v3 dealloc];
 }
 
-- (JPSignatureVerifier)initWithBacking:(JetPackSignatureVerifier *)a3 releaseOnDealloc:(BOOL)a4
+- (JPSignatureVerifier)initWithBacking:(JetPackSignatureVerifier *)backing releaseOnDealloc:(BOOL)dealloc
 {
   v7.receiver = self;
   v7.super_class = JPSignatureVerifier;
   result = [(JPSignatureVerifier *)&v7 init];
   if (result)
   {
-    result->_backing = a3;
-    result->_releaseBackingOnDealloc = a4;
+    result->_backing = backing;
+    result->_releaseBackingOnDealloc = dealloc;
   }
 
   return result;
 }
 
-+ (id)signatureVerifierWithCertificate:(id)a3
++ (id)signatureVerifierWithCertificate:(id)certificate
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
+  certificateCopy = certificate;
+  bytes = [certificateCopy bytes];
+  v5 = [certificateCopy length];
 
-  JetPackSignatureVerifierCreateWithCertificateData(v4, v5);
+  JetPackSignatureVerifierCreateWithCertificateData(bytes, v5);
 }
 
 @end

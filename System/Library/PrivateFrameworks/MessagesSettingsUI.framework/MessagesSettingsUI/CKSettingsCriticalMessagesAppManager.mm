@@ -1,8 +1,8 @@
 @interface CKSettingsCriticalMessagesAppManager
 - (CKSettingsCriticalMessagesAppManager)init;
-- (id)criticalMessagesAppForBundleID:(id)a3;
+- (id)criticalMessagesAppForBundleID:(id)d;
 - (id)criticalMessagesApps;
-- (void)setActive:(BOOL)a3 forPhoneNumber:(id)a4 inAppForBundle:(id)a5;
+- (void)setActive:(BOOL)active forPhoneNumber:(id)number inAppForBundle:(id)bundle;
 @end
 
 @implementation CKSettingsCriticalMessagesAppManager
@@ -15,7 +15,7 @@
   v21 = [(CKSettingsCriticalMessagesAppManager *)&v34 init];
   if (v21)
   {
-    v2 = [MEMORY[0x277D1A8C8] appBundleIDs];
+    appBundleIDs = [MEMORY[0x277D1A8C8] appBundleIDs];
     v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
     [(CKSettingsCriticalMessagesAppManager *)v21 setAppList:v3];
 
@@ -23,7 +23,7 @@
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    obj = v2;
+    obj = appBundleIDs;
     v23 = [obj countByEnumeratingWithState:&v30 objects:v36 count:16];
     if (v23)
     {
@@ -46,8 +46,8 @@
           v27 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v7 = [v5 allKeys];
-          v8 = [v7 countByEnumeratingWithState:&v26 objects:v35 count:16];
+          allKeys = [v5 allKeys];
+          v8 = [allKeys countByEnumeratingWithState:&v26 objects:v35 count:16];
           if (v8)
           {
             v9 = v8;
@@ -58,21 +58,21 @@
               {
                 if (*v27 != v10)
                 {
-                  objc_enumerationMutation(v7);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v12 = *(*(&v26 + 1) + 8 * i);
                 v13 = [v5 objectForKey:v12];
-                v14 = [v13 intValue];
+                intValue = [v13 intValue];
 
-                v15 = [[CKSettingsCriticalMessagesAppRecipient alloc] initWithRecipient:v12 isActive:v14 == 2];
+                v15 = [[CKSettingsCriticalMessagesAppRecipient alloc] initWithRecipient:v12 isActive:intValue == 2];
                 if (v15)
                 {
                   [v6 addObject:v15];
                 }
               }
 
-              v9 = [v7 countByEnumeratingWithState:&v26 objects:v35 count:16];
+              v9 = [allKeys countByEnumeratingWithState:&v26 objects:v35 count:16];
             }
 
             while (v9);
@@ -81,8 +81,8 @@
           v16 = [[CKSettingsCriticalMessagesApp alloc] initWithBundleID:v24 recipients:v6];
           if (v16)
           {
-            v17 = [(CKSettingsCriticalMessagesAppManager *)v21 appList];
-            [v17 addObject:v16];
+            appList = [(CKSettingsCriticalMessagesAppManager *)v21 appList];
+            [appList addObject:v16];
           }
 
           v4 = v25 + 1;
@@ -107,16 +107,16 @@
   return v2;
 }
 
-- (id)criticalMessagesAppForBundleID:(id)a3
+- (id)criticalMessagesAppForBundleID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(CKSettingsCriticalMessagesAppManager *)self criticalMessagesApps];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  criticalMessagesApps = [(CKSettingsCriticalMessagesAppManager *)self criticalMessagesApps];
+  v6 = [criticalMessagesApps countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -126,12 +126,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(criticalMessagesApps);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 bundleID];
-        v11 = [v10 isEqualToString:v4];
+        bundleID = [v9 bundleID];
+        v11 = [bundleID isEqualToString:dCopy];
 
         if (v11)
         {
@@ -140,7 +140,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [criticalMessagesApps countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -157,12 +157,12 @@ LABEL_11:
   return v6;
 }
 
-- (void)setActive:(BOOL)a3 forPhoneNumber:(id)a4 inAppForBundle:(id)a5
+- (void)setActive:(BOOL)active forPhoneNumber:(id)number inAppForBundle:(id)bundle
 {
-  v6 = a3;
+  activeCopy = active;
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  numberCopy = number;
+  bundleCopy = bundle;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -174,8 +174,8 @@ LABEL_11:
     v12 = v11;
     v13 = *v39;
     v32 = v10;
-    v33 = v9;
-    v31 = v6;
+    v33 = bundleCopy;
+    v31 = activeCopy;
     v30 = *v39;
     do
     {
@@ -187,8 +187,8 @@ LABEL_11:
         }
 
         v15 = *(*(&v38 + 1) + 8 * i);
-        v16 = [v15 bundleID];
-        v17 = [v16 isEqualToString:v9];
+        bundleID = [v15 bundleID];
+        v17 = [bundleID isEqualToString:bundleCopy];
 
         if (v17)
         {
@@ -196,8 +196,8 @@ LABEL_11:
           v37 = 0u;
           v34 = 0u;
           v35 = 0u;
-          v18 = [v15 recipients];
-          v19 = [v18 countByEnumeratingWithState:&v34 objects:v42 count:16];
+          recipients = [v15 recipients];
+          v19 = [recipients countByEnumeratingWithState:&v34 objects:v42 count:16];
           if (v19)
           {
             v20 = v19;
@@ -208,33 +208,33 @@ LABEL_11:
               {
                 if (*v35 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(recipients);
                 }
 
                 v23 = *(*(&v34 + 1) + 8 * j);
-                v24 = [v23 number];
-                v25 = [v8 isEqual:v24];
+                number = [v23 number];
+                v25 = [numberCopy isEqual:number];
 
                 if (v25)
                 {
                   if ([v23 isActive] != v31)
                   {
                     [v23 setActive:v31];
-                    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-                    [v26 postNotificationName:@"CKSettingsCriticalMessagesAppsChangedNotification" object:0];
+                    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+                    [defaultCenter postNotificationName:@"CKSettingsCriticalMessagesAppsChangedNotification" object:0];
                   }
 
                   v27 = MEMORY[0x277D1A8C8];
-                  v28 = [v23 getIMRecipient];
-                  v9 = v33;
-                  [v27 toggleEnablement:v31 forRecipient:v28 inAppBundleID:v33];
+                  getIMRecipient = [v23 getIMRecipient];
+                  bundleCopy = v33;
+                  [v27 toggleEnablement:v31 forRecipient:getIMRecipient inAppBundleID:v33];
 
                   v10 = v32;
                   goto LABEL_22;
                 }
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v34 objects:v42 count:16];
+              v20 = [recipients countByEnumeratingWithState:&v34 objects:v42 count:16];
               if (v20)
               {
                 continue;
@@ -245,7 +245,7 @@ LABEL_11:
           }
 
           v10 = v32;
-          v9 = v33;
+          bundleCopy = v33;
           v13 = v30;
         }
       }

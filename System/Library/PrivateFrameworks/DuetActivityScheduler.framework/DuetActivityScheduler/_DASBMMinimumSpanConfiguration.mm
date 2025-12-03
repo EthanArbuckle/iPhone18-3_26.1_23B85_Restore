@@ -1,11 +1,11 @@
 @interface _DASBMMinimumSpanConfiguration
-+ (id)configurationWithMinimumDuration:(double)a3 aggregationKey:(id)a4 spanMarker:(id)a5;
++ (id)configurationWithMinimumDuration:(double)duration aggregationKey:(id)key spanMarker:(id)marker;
 - (_DASBMMinimumSpanConfiguration)init;
-- (id)deriveSpanTuplesWithMinimumDurationOnStream:(id)a3;
-- (id)deriveSpansWithMinimumDurationOnStream:(id)a3;
-- (id)deriveSpansWithMinimumDurationOnStream_array:(id)a3;
-- (id)deriveSpansWithMinimumDurationOnStream_heap:(id)a3;
-- (id)publisherWithSpansMeetingMinimumDuration:(id)a3;
+- (id)deriveSpanTuplesWithMinimumDurationOnStream:(id)stream;
+- (id)deriveSpansWithMinimumDurationOnStream:(id)stream;
+- (id)deriveSpansWithMinimumDurationOnStream_array:(id)stream_array;
+- (id)deriveSpansWithMinimumDurationOnStream_heap:(id)stream_heap;
+- (id)publisherWithSpansMeetingMinimumDuration:(id)duration;
 @end
 
 @implementation _DASBMMinimumSpanConfiguration
@@ -25,34 +25,34 @@
   return v2;
 }
 
-+ (id)configurationWithMinimumDuration:(double)a3 aggregationKey:(id)a4 spanMarker:(id)a5
++ (id)configurationWithMinimumDuration:(double)duration aggregationKey:(id)key spanMarker:(id)marker
 {
-  v7 = a5;
-  v8 = a4;
+  markerCopy = marker;
+  keyCopy = key;
   v9 = objc_opt_new();
-  [v9 setMinimumSpanDuration:a3];
-  [v9 setAggregationKeyBlock:v8];
+  [v9 setMinimumSpanDuration:duration];
+  [v9 setAggregationKeyBlock:keyCopy];
 
-  [v9 setSpanMarkerBlock:v7];
+  [v9 setSpanMarkerBlock:markerCopy];
 
   return v9;
 }
 
-- (id)publisherWithSpansMeetingMinimumDuration:(id)a3
+- (id)publisherWithSpansMeetingMinimumDuration:(id)duration
 {
-  v4 = a3;
+  durationCopy = duration;
   v5 = objc_autoreleasePoolPush();
   if (self->_spanMarkerBlock)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __75___DASBMMinimumSpanConfiguration_publisherWithSpansMeetingMinimumDuration___block_invoke;
     v20[3] = &unk_1E7C8F3B8;
     v20[4] = self;
-    v21 = v6;
-    v7 = v6;
-    v8 = [v4 mapWithTransform:v20];
+    v21 = dictionary;
+    v7 = dictionary;
+    v8 = [durationCopy mapWithTransform:v20];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __75___DASBMMinimumSpanConfiguration_publisherWithSpansMeetingMinimumDuration___block_invoke_6;
@@ -69,7 +69,7 @@
       [(_DASBMMinimumSpanConfiguration *)log publisherWithSpansMeetingMinimumDuration:v11, v12, v13, v14, v15, v16, v17];
     }
 
-    v9 = v4;
+    v9 = durationCopy;
   }
 
   objc_autoreleasePoolPop(v5);
@@ -77,48 +77,48 @@
   return v9;
 }
 
-- (id)deriveSpansWithMinimumDurationOnStream:(id)a3
+- (id)deriveSpansWithMinimumDurationOnStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   if (_os_feature_enabled_impl())
   {
-    [(_DASBMMinimumSpanConfiguration *)self deriveSpansWithMinimumDurationOnStream_heap:v4];
+    [(_DASBMMinimumSpanConfiguration *)self deriveSpansWithMinimumDurationOnStream_heap:streamCopy];
   }
 
   else
   {
-    [(_DASBMMinimumSpanConfiguration *)self deriveSpansWithMinimumDurationOnStream_array:v4];
+    [(_DASBMMinimumSpanConfiguration *)self deriveSpansWithMinimumDurationOnStream_array:streamCopy];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)deriveSpansWithMinimumDurationOnStream_array:(id)a3
+- (id)deriveSpansWithMinimumDurationOnStream_array:(id)stream_array
 {
-  v4 = a3;
+  stream_arrayCopy = stream_array;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(_DASBMMinimumSpanConfiguration *)self publisherWithSpansMeetingMinimumDuration:v4];
+  v6 = [(_DASBMMinimumSpanConfiguration *)self publisherWithSpansMeetingMinimumDuration:stream_arrayCopy];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__0;
   v20 = __Block_byref_object_dispose__0;
   v21 = 0;
-  v7 = [v6 collect];
+  collect = [v6 collect];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79___DASBMMinimumSpanConfiguration_deriveSpansWithMinimumDurationOnStream_array___block_invoke;
   v14[3] = &unk_1E7C8F408;
   v14[4] = self;
-  v8 = v4;
+  v8 = stream_arrayCopy;
   v15 = v8;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79___DASBMMinimumSpanConfiguration_deriveSpansWithMinimumDurationOnStream_array___block_invoke_11;
   v13[3] = &unk_1E7C8F430;
   v13[4] = &v16;
-  v9 = [v7 sinkWithCompletion:v14 receiveInput:v13];
+  v9 = [collect sinkWithCompletion:v14 receiveInput:v13];
 
   [v17[5] sortUsingComparator:&__block_literal_global_1];
   v10 = objc_alloc(MEMORY[0x1E698F0E8]);
@@ -130,22 +130,22 @@
   return v11;
 }
 
-- (id)deriveSpansWithMinimumDurationOnStream_heap:(id)a3
+- (id)deriveSpansWithMinimumDurationOnStream_heap:(id)stream_heap
 {
-  v4 = a3;
+  stream_heapCopy = stream_heap;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(_DASBMMinimumSpanConfiguration *)self publisherWithSpansMeetingMinimumDuration:v4];
+  v6 = [(_DASBMMinimumSpanConfiguration *)self publisherWithSpansMeetingMinimumDuration:stream_heapCopy];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v7 = [v6 collect];
+  collect = [v6 collect];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __78___DASBMMinimumSpanConfiguration_deriveSpansWithMinimumDurationOnStream_heap___block_invoke;
   v20[3] = &unk_1E7C8F408;
   v20[4] = self;
-  v8 = v4;
+  v8 = stream_heapCopy;
   v21 = v8;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -153,7 +153,7 @@
   v19[3] = &unk_1E7C8F478;
   v19[4] = self;
   v19[5] = &v22;
-  v9 = [v7 sinkWithCompletion:v20 receiveInput:v19];
+  v9 = [collect sinkWithCompletion:v20 receiveInput:v19];
 
   v10 = v23[3];
   if (v10)
@@ -199,9 +199,9 @@
   return v16;
 }
 
-- (id)deriveSpanTuplesWithMinimumDurationOnStream:(id)a3
+- (id)deriveSpanTuplesWithMinimumDurationOnStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = objc_autoreleasePoolPush();
   v16 = 0;
   v17 = &v16;
@@ -209,21 +209,21 @@
   v19 = __Block_byref_object_copy__0;
   v20 = __Block_byref_object_dispose__0;
   v21 = 0;
-  v6 = [(_DASBMMinimumSpanConfiguration *)self publisherWithSpansMeetingMinimumDuration:v4];
-  v7 = [v6 collect];
+  v6 = [(_DASBMMinimumSpanConfiguration *)self publisherWithSpansMeetingMinimumDuration:streamCopy];
+  collect = [v6 collect];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __78___DASBMMinimumSpanConfiguration_deriveSpanTuplesWithMinimumDurationOnStream___block_invoke;
   v14[3] = &unk_1E7C8F408;
   v14[4] = self;
-  v8 = v4;
+  v8 = streamCopy;
   v15 = v8;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __78___DASBMMinimumSpanConfiguration_deriveSpanTuplesWithMinimumDurationOnStream___block_invoke_17;
   v13[3] = &unk_1E7C8F430;
   v13[4] = &v16;
-  v9 = [v7 sinkWithCompletion:v14 receiveInput:v13];
+  v9 = [collect sinkWithCompletion:v14 receiveInput:v13];
 
   [v17[5] sortUsingComparator:&__block_literal_global_20];
   v10 = objc_alloc(MEMORY[0x1E698F0E8]);

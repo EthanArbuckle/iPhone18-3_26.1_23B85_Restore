@@ -1,25 +1,25 @@
 @interface MacOSTrackpadHIDEventProcessor
-- (BOOL)checkForMomentumCancellation:(id)a3;
-- (BOOL)checkForMomentumInitiation:(id)a3 triggerEvent:(id)a4;
-- (BOOL)shouldDispatchEvent:(id)a3;
-- (MacOSTrackpadHIDEventProcessor)initWithDeviceID:(unint64_t)a3 deviceType:(unsigned __int8)a4;
+- (BOOL)checkForMomentumCancellation:(id)cancellation;
+- (BOOL)checkForMomentumInitiation:(id)initiation triggerEvent:(id)event;
+- (BOOL)shouldDispatchEvent:(id)event;
+- (MacOSTrackpadHIDEventProcessor)initWithDeviceID:(unint64_t)d deviceType:(unsigned __int8)type;
 - (id)debugDictionary;
-- (id)getMomentumEnableEvent:(id)a3;
-- (id)handleHIDEvent:(id)a3;
-- (void)_handleMomentumStateEvent:(id)a3;
-- (void)appendDeviceInfoTo:(id)a3;
+- (id)getMomentumEnableEvent:(id)event;
+- (id)handleHIDEvent:(id)event;
+- (void)_handleMomentumStateEvent:(id)event;
+- (void)appendDeviceInfoTo:(id)to;
 - (void)cancelMomentum;
-- (void)handleConsume:(id)a3;
-- (void)startMomentumWithSubtype:(int)a3 event:(id)a4;
+- (void)handleConsume:(id)consume;
+- (void)startMomentumWithSubtype:(int)subtype event:(id)event;
 @end
 
 @implementation MacOSTrackpadHIDEventProcessor
 
-- (MacOSTrackpadHIDEventProcessor)initWithDeviceID:(unint64_t)a3 deviceType:(unsigned __int8)a4
+- (MacOSTrackpadHIDEventProcessor)initWithDeviceID:(unint64_t)d deviceType:(unsigned __int8)type
 {
   v8.receiver = self;
   v8.super_class = MacOSTrackpadHIDEventProcessor;
-  v4 = [(TrackpadHIDEventProcessor *)&v8 initWithDeviceID:a3 deviceType:a4];
+  v4 = [(TrackpadHIDEventProcessor *)&v8 initWithDeviceID:d deviceType:type];
   v5 = v4;
   if (v4)
   {
@@ -32,13 +32,13 @@
   return v5;
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = consumeCopy;
   }
 
   else
@@ -48,22 +48,22 @@
 
   if (v5)
   {
-    [(MacOSTrackpadHIDEventProcessor *)self _handleMomentumStateEvent:v4];
+    [(MacOSTrackpadHIDEventProcessor *)self _handleMomentumStateEvent:consumeCopy];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = MacOSTrackpadHIDEventProcessor;
-    [(TrackpadHIDEventProcessor *)&v6 handleConsume:v4];
+    [(TrackpadHIDEventProcessor *)&v6 handleConsume:consumeCopy];
   }
 }
 
-- (id)handleHIDEvent:(id)a3
+- (id)handleHIDEvent:(id)event
 {
-  v47 = a3;
+  eventCopy = event;
   v4 = objc_opt_new();
-  if ([v47 type] != 11)
+  if ([eventCopy type] != 11)
   {
     v6 = MTLoggingPlugin();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -75,14 +75,14 @@
       v59 = 2080;
       v60 = "[MacOSTrackpadHIDEventProcessor handleHIDEvent:]";
       v61 = 1024;
-      v62 = [v47 type];
+      type = [eventCopy type];
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_ERROR, "[HID] [MT] %s%s%s Unexpected event type: %u Eating it.", buf, 0x26u);
     }
 
     goto LABEL_12;
   }
 
-  if ([v47 integerValueForField:720918] != &dword_0 + 1)
+  if ([eventCopy integerValueForField:720918] != &dword_0 + 1)
   {
     v6 = MTLoggingPlugin();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -99,9 +99,9 @@
     goto LABEL_12;
   }
 
-  v5 = [v47 parent];
+  parent = [eventCopy parent];
 
-  if (v5)
+  if (parent)
   {
     v6 = MTLoggingPlugin();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -122,12 +122,12 @@ LABEL_12:
   }
 
   v49 = v4;
-  v9 = v47;
+  v9 = eventCopy;
   v46 = [v9 conformsToEventType:2];
   v10 = [v9 conformsToEventType:3];
   v11 = [(MacOSTrackpadHIDEventProcessor *)self checkForMomentumCancellation:v9];
-  v12 = [v9 children];
-  v13 = [v12 copy];
+  children = [v9 children];
+  v13 = [children copy];
 
   v52 = 0u;
   v53 = 0u;
@@ -163,13 +163,13 @@ LABEL_12:
         v24 = v23;
         if (![(MacOSTrackpadHIDEventProcessor *)self checkForMomentumInitiation:v9 triggerEvent:v20]&& ![(TrackpadHIDEventProcessor *)self noPointing])
         {
-          v25 = [(TrackpadHIDEventProcessor *)self previousButtonState];
+          previousButtonState = [(TrackpadHIDEventProcessor *)self previousButtonState];
           if ([(TrackpadHIDEventProcessor *)self hostClickControl])
           {
-            v25 = [v20 integerValueForField:1114115];
+            previousButtonState = [v20 integerValueForField:1114115];
           }
 
-          if ([(TrackpadHIDEventProcessor *)self previousButtonState]!= v25)
+          if ([(TrackpadHIDEventProcessor *)self previousButtonState]!= previousButtonState)
           {
             v26 = MTLoggingPlugin();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -181,16 +181,16 @@ LABEL_12:
               v59 = 2080;
               v60 = "[MacOSTrackpadHIDEventProcessor handleHIDEvent:]";
               v61 = 1024;
-              v62 = v46;
+              type = v46;
               _os_log_impl(&dword_0, v26, OS_LOG_TYPE_ERROR, "[HID] [MT] %s%s%s Pointer event processed with different button mask before button event(isPresent? %d)", buf, 0x26u);
             }
           }
 
           v27 = mach_absolute_time();
-          v28 = [v20 options];
+          options = [v20 options];
           v29 = v22;
           v30 = v24;
-          v31 = [(TrackpadHIDEventProcessor *)self createPointingEventWithDeltaX:v25 deltaY:v27 buttonMask:@"HostAlgs-Pointer" timestamp:v28 source:v29 options:v30];
+          v31 = [(TrackpadHIDEventProcessor *)self createPointingEventWithDeltaX:previousButtonState deltaY:v27 buttonMask:@"HostAlgs-Pointer" timestamp:options source:v29 options:v30];
           if (v31)
           {
             goto LABEL_31;
@@ -297,26 +297,26 @@ LABEL_13:
   return v4;
 }
 
-- (void)_handleMomentumStateEvent:(id)a3
+- (void)_handleMomentumStateEvent:(id)event
 {
-  v4 = a3;
-  self->_momentumActive = [v4 isMomentumActive];
+  eventCopy = event;
+  self->_momentumActive = [eventCopy isMomentumActive];
   v5.receiver = self;
   v5.super_class = MacOSTrackpadHIDEventProcessor;
-  [(TrackpadHIDEventProcessor *)&v5 handleConsume:v4];
+  [(TrackpadHIDEventProcessor *)&v5 handleConsume:eventCopy];
 }
 
-- (BOOL)shouldDispatchEvent:(id)a3
+- (BOOL)shouldDispatchEvent:(id)event
 {
-  v4 = a3;
-  if (![(TrackpadHIDEventProcessor *)self isDigitizerCollectionHIDEvent:v4])
+  eventCopy = event;
+  if (![(TrackpadHIDEventProcessor *)self isDigitizerCollectionHIDEvent:eventCopy])
   {
     v7 = 0;
     goto LABEL_20;
   }
 
-  v5 = [v4 integerValueForField:720903];
-  v6 = [v4 integerValueForField:720920];
+  v5 = [eventCopy integerValueForField:720903];
+  v6 = [eventCopy integerValueForField:720920];
   if ([(TrackpadHIDEventProcessor *)self deviceType]!= 1)
   {
     if ([(TrackpadHIDEventProcessor *)self deviceType]!= 2 || (v5 & 0x108) == 0)
@@ -339,8 +339,8 @@ LABEL_9:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v4 children];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  children = [eventCopy children];
+  v9 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = *v16;
@@ -350,7 +350,7 @@ LABEL_9:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(children);
         }
 
         v12 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [*(*(&v15 + 1) + 8 * i) type]);
@@ -363,7 +363,7 @@ LABEL_9:
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         continue;
@@ -380,31 +380,31 @@ LABEL_20:
   return v7;
 }
 
-- (void)appendDeviceInfoTo:(id)a3
+- (void)appendDeviceInfoTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v8 = 0u;
   v9 = 0u;
-  v7 = [(TrackpadHIDEventProcessor *)self deviceID];
+  deviceID = [(TrackpadHIDEventProcessor *)self deviceID];
   LODWORD(v6) = 0;
-  v5 = +[HIDEvent vendorDefinedEvent:usagePage:usage:version:data:length:options:](HIDEvent, "vendorDefinedEvent:usagePage:usage:version:data:length:options:", [v4 timestamp], 65280, 6007, 1, &v7, 40, v6);
+  v5 = +[HIDEvent vendorDefinedEvent:usagePage:usage:version:data:length:options:](HIDEvent, "vendorDefinedEvent:usagePage:usage:version:data:length:options:", [toCopy timestamp], 65280, 6007, 1, &deviceID, 40, v6);
   if (v5)
   {
-    [v4 appendEvent:v5];
+    [toCopy appendEvent:v5];
   }
 }
 
-- (id)getMomentumEnableEvent:(id)a3
+- (id)getMomentumEnableEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 conformsToEventType:1])
+  eventCopy = event;
+  if ([eventCopy conformsToEventType:1])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [v3 children];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    children = [eventCopy children];
+    v5 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v6 = *v15;
@@ -414,7 +414,7 @@ LABEL_20:
         {
           if (*v15 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(children);
           }
 
           v8 = *(*(&v14 + 1) + 8 * i);
@@ -427,7 +427,7 @@ LABEL_20:
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v5 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v5)
         {
           continue;
@@ -448,10 +448,10 @@ LABEL_19:
   return v5;
 }
 
-- (BOOL)checkForMomentumInitiation:(id)a3 triggerEvent:(id)a4
+- (BOOL)checkForMomentumInitiation:(id)initiation triggerEvent:(id)event
 {
-  v6 = a4;
-  v7 = [(MacOSTrackpadHIDEventProcessor *)self getMomentumEnableEvent:a3];
+  eventCopy = event;
+  v7 = [(MacOSTrackpadHIDEventProcessor *)self getMomentumEnableEvent:initiation];
   v8 = v7;
   if (!v7)
   {
@@ -471,7 +471,7 @@ LABEL_19:
     if (v9[2] == 1)
     {
       [(MacOSTrackpadHIDEventProcessor *)self cancelMomentum];
-      [(MacOSTrackpadHIDEventProcessor *)self startMomentumWithSubtype:v11 event:v6];
+      [(MacOSTrackpadHIDEventProcessor *)self startMomentumWithSubtype:v11 event:eventCopy];
       v10 = 1;
       goto LABEL_9;
     }
@@ -485,12 +485,12 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)checkForMomentumCancellation:(id)a3
+- (BOOL)checkForMomentumCancellation:(id)cancellation
 {
-  v4 = a3;
+  cancellationCopy = cancellation;
   if (self->_momentumActive)
   {
-    v5 = [(MacOSTrackpadHIDEventProcessor *)self getMomentumEnableEvent:v4];
+    v5 = [(MacOSTrackpadHIDEventProcessor *)self getMomentumEnableEvent:cancellationCopy];
     v6 = v5;
     if (v5 && (v7 = [v5 dataValueForField:65540], objc_msgSend(v6, "integerValueForField:", 65539) >= 3) && *v7 == 1 && !v7[2])
     {
@@ -508,18 +508,18 @@ LABEL_9:
       v8 = 0;
     }
 
-    v9 = [v4 conformsToEventType:17];
-    v10 = [v4 conformsToEventType:2];
-    v11 = [v4 conformsToEventType:3];
+    v9 = [cancellationCopy conformsToEventType:17];
+    v10 = [cancellationCopy conformsToEventType:2];
+    v11 = [cancellationCopy conformsToEventType:3];
     if (!v8 && ((v9 | v10 | v11) & 1) != 0)
     {
       if (v9)
       {
-        if (self->_momentumSubtype != 1 && [v4 integerValueForField:1114115] == self->_momentumDragButton)
+        if (self->_momentumSubtype != 1 && [cancellationCopy integerValueForField:1114115] == self->_momentumDragButton)
         {
-          [v4 doubleValueForField:1114112];
+          [cancellationCopy doubleValueForField:1114112];
           v13 = v12;
-          [v4 doubleValueForField:1114113];
+          [cancellationCopy doubleValueForField:1114113];
           v15 = v14;
           v16 = objc_opt_new();
           v17 = v13;
@@ -561,12 +561,12 @@ LABEL_9:
   return v8;
 }
 
-- (void)startMomentumWithSubtype:(int)a3 event:(id)a4
+- (void)startMomentumWithSubtype:(int)subtype event:(id)event
 {
-  v6 = a4;
-  if ([v6 type] == 6)
+  eventCopy = event;
+  if ([eventCopy type] == 6)
   {
-    v7 = v6;
+    v7 = eventCopy;
   }
 
   else
@@ -575,9 +575,9 @@ LABEL_9:
   }
 
   v8 = v7;
-  if ([v6 type] == 17)
+  if ([eventCopy type] == 17)
   {
-    v9 = v6;
+    v9 = eventCopy;
   }
 
   else
@@ -591,7 +591,7 @@ LABEL_9:
     v11 = objc_opt_new();
     v12 = v11;
     *(v11 + 8) = 0;
-    *(v11 + 12) = a3;
+    *(v11 + 12) = subtype;
     if (v8)
     {
       *(v11 + 24) = 0;
@@ -608,7 +608,7 @@ LABEL_9:
 
     *(v12 + 20) = v13;
     self->_momentumDragButton = *(v12 + 24);
-    self->_momentumSubtype = a3;
+    self->_momentumSubtype = subtype;
     v14 = objc_opt_new();
     objc_storeStrong(v14 + 2, v12);
     v15 = MTLoggingPlugin();
@@ -657,8 +657,8 @@ LABEL_9:
 {
   v9.receiver = self;
   v9.super_class = MacOSTrackpadHIDEventProcessor;
-  v3 = [(TrackpadHIDEventProcessor *)&v9 debugDictionary];
-  v4 = [v3 mutableCopy];
+  debugDictionary = [(TrackpadHIDEventProcessor *)&v9 debugDictionary];
+  v4 = [debugDictionary mutableCopy];
 
   v5 = [NSNumber numberWithBool:self->_momentumActive];
   [v4 setObject:v5 forKeyedSubscript:@"MomentumActive"];

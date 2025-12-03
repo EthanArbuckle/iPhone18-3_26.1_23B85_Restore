@@ -1,35 +1,35 @@
 @interface ACActivityContent
-- (ACActivityContent)initWithContentData:(id)a3 staleDate:(id)a4 relevanceScore:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ACActivityContent)initWithContentData:(id)data staleDate:(id)date relevanceScore:(double)score;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ACActivityContent
 
-- (ACActivityContent)initWithContentData:(id)a3 staleDate:(id)a4 relevanceScore:(double)a5
+- (ACActivityContent)initWithContentData:(id)data staleDate:(id)date relevanceScore:(double)score
 {
-  v9 = a3;
-  v10 = a4;
+  dataCopy = data;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = ACActivityContent;
   v11 = [(ACActivityContent *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_contentData, a3);
-    objc_storeStrong(&v12->_staleDate, a4);
-    v12->_relevanceScore = a5;
+    objc_storeStrong(&v11->_contentData, data);
+    objc_storeStrong(&v12->_staleDate, date);
+    v12->_relevanceScore = score;
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ACActivityContent alloc];
-  v5 = [(ACActivityContent *)self contentData];
-  v6 = [(ACActivityContent *)self staleDate];
+  contentData = [(ACActivityContent *)self contentData];
+  staleDate = [(ACActivityContent *)self staleDate];
   [(ACActivityContent *)self relevanceScore];
-  v7 = [(ACActivityContent *)v4 initWithContentData:v5 staleDate:v6 relevanceScore:?];
+  v7 = [(ACActivityContent *)v4 initWithContentData:contentData staleDate:staleDate relevanceScore:?];
 
   return v7;
 }

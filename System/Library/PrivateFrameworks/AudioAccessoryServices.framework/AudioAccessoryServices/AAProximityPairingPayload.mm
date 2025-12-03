@@ -1,25 +1,25 @@
 @interface AAProximityPairingPayload
-+ (id)proximityPairingPayloadWithData:(id)a3;
-- (AAProximityPairingPayload)initWithData:(id)a3;
++ (id)proximityPairingPayloadWithData:(id)data;
+- (AAProximityPairingPayload)initWithData:(id)data;
 - (id)describeProperties;
 @end
 
 @implementation AAProximityPairingPayload
 
-- (AAProximityPairingPayload)initWithData:(id)a3
+- (AAProximityPairingPayload)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v16.receiver = self;
   v16.super_class = AAProximityPairingPayload;
-  v5 = [(AAAdvertisementPayload *)&v16 initWithData:v4];
+  v5 = [(AAAdvertisementPayload *)&v16 initWithData:dataCopy];
   v6 = v5;
   if (!v5)
   {
     goto LABEL_8;
   }
 
-  v7 = [(AAAdvertisementPayload *)v5 payloadData];
-  v8 = [v7 length];
+  payloadData = [(AAAdvertisementPayload *)v5 payloadData];
+  v8 = [payloadData length];
 
   if (v8 <= 4)
   {
@@ -31,11 +31,11 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [(AAAdvertisementPayload *)v6 payloadData];
-  v6->_pid = *([v9 bytes] + 3);
+  payloadData2 = [(AAAdvertisementPayload *)v6 payloadData];
+  v6->_pid = *([payloadData2 bytes] + 3);
 
-  v10 = [(AAAdvertisementPayload *)v6 payloadData];
-  v11 = [v10 length];
+  payloadData3 = [(AAAdvertisementPayload *)v6 payloadData];
+  v11 = [payloadData3 length];
 
   if (v11 <= 2)
   {
@@ -43,8 +43,8 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v12 = [(AAAdvertisementPayload *)v6 payloadData];
-  v6->_subType = *([v12 bytes] + 2);
+  payloadData4 = [(AAAdvertisementPayload *)v6 payloadData];
+  v6->_subType = *([payloadData4 bytes] + 2);
 
   v13 = v6;
 LABEL_9:
@@ -56,41 +56,41 @@ LABEL_9:
 {
   v9.receiver = self;
   v9.super_class = AAProximityPairingPayload;
-  v3 = [(AAAdvertisementPayload *)&v9 describeProperties];
+  describeProperties = [(AAAdvertisementPayload *)&v9 describeProperties];
   v4 = [(AAProximityPairingPayload *)self pid];
   if (v4)
   {
     v8 = v4;
     NSAppendPrintF_safe();
-    v5 = v3;
+    v5 = describeProperties;
 
-    v3 = v5;
+    describeProperties = v5;
   }
 
   if ([(AAProximityPairingPayload *)self subType])
   {
     NSAppendPrintF_safe();
-    v6 = v3;
+    v6 = describeProperties;
 
-    v3 = v6;
+    describeProperties = v6;
   }
 
-  return v3;
+  return describeProperties;
 }
 
-+ (id)proximityPairingPayloadWithData:(id)a3
++ (id)proximityPairingPayloadWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[AAProximityPairingPayload alloc] initWithData:v3];
-  v5 = [(AAProximityPairingPayload *)v4 subType];
-  if (v5 == 6)
+  dataCopy = data;
+  v4 = [[AAProximityPairingPayload alloc] initWithData:dataCopy];
+  subType = [(AAProximityPairingPayload *)v4 subType];
+  if (subType == 6)
   {
-    v6 = [[AAProximityPairingAccessoryStatusPayload alloc] initWithData:v3];
+    v6 = [[AAProximityPairingAccessoryStatusPayload alloc] initWithData:dataCopy];
   }
 
-  else if (v5 == 1)
+  else if (subType == 1)
   {
-    v6 = [AAProximityPairingStatusPayloadGeneral proximityPairingStatusPayloadWithData:v3 pid:[(AAProximityPairingPayload *)v4 pid]];
+    v6 = [AAProximityPairingStatusPayloadGeneral proximityPairingStatusPayloadWithData:dataCopy pid:[(AAProximityPairingPayload *)v4 pid]];
   }
 
   else

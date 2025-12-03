@@ -1,10 +1,10 @@
 @interface SOExtensionFinder
 - (SOExtensionFinder)init;
-- (id)_soExtensionsForExtensions:(id)a3;
-- (void)beginMatchingExtensionsWithCompletion:(id)a3;
+- (id)_soExtensionsForExtensions:(id)extensions;
+- (void)beginMatchingExtensionsWithCompletion:(id)completion;
 - (void)endMatchingExtensions;
-- (void)findExtensionWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)findExtensionsWithCompletion:(id)a3;
+- (void)findExtensionWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)findExtensionsWithCompletion:(id)completion;
 @end
 
 @implementation SOExtensionFinder
@@ -24,17 +24,17 @@
   return v2;
 }
 
-- (void)findExtensionsWithCompletion:(id)a3
+- (void)findExtensionsWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = SO_LOG_SOExtensionFinder();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v12 = "[SOExtensionFinder findExtensionsWithCompletion:]";
     v13 = 2112;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
@@ -44,8 +44,8 @@
   v9[2] = __50__SOExtensionFinder_findExtensionsWithCompletion___block_invoke;
   v9[3] = &unk_1E813E450;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = completionCopy;
+  v7 = completionCopy;
   dispatch_sync(extensionFinderQueue, v9);
 
   v8 = *MEMORY[0x1E69E9840];
@@ -97,20 +97,20 @@ void __50__SOExtensionFinder_findExtensionsWithCompletion___block_invoke(uint64_
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)findExtensionWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)findExtensionWithBundleIdentifier:(id)identifier completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = SO_LOG_SOExtensionFinder();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v18 = "[SOExtensionFinder findExtensionWithBundleIdentifier:completion:]";
     v19 = 2114;
-    v20 = v6;
+    v20 = identifierCopy;
     v21 = 2112;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v8, OS_LOG_TYPE_DEFAULT, "%s %{public}@ on %@", buf, 0x20u);
   }
 
@@ -119,11 +119,11 @@ void __50__SOExtensionFinder_findExtensionsWithCompletion___block_invoke(uint64_
   block[1] = 3221225472;
   block[2] = __66__SOExtensionFinder_findExtensionWithBundleIdentifier_completion___block_invoke;
   block[3] = &unk_1E813E478;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = identifierCopy;
+  selfCopy2 = self;
+  v16 = completionCopy;
+  v10 = completionCopy;
+  v11 = identifierCopy;
   dispatch_sync(extensionFinderQueue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -205,17 +205,17 @@ void __66__SOExtensionFinder_findExtensionWithBundleIdentifier_completion___bloc
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)beginMatchingExtensionsWithCompletion:(id)a3
+- (void)beginMatchingExtensionsWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = SO_LOG_SOExtensionFinder();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v26 = "[SOExtensionFinder beginMatchingExtensionsWithCompletion:]";
     v27 = 2112;
-    v28 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
@@ -227,10 +227,10 @@ void __66__SOExtensionFinder_findExtensionWithBundleIdentifier_completion___bloc
       [(SOExtensionFinder *)v6 beginMatchingExtensionsWithCompletion:v7, v8, v9, v10, v11, v12, v13];
     }
 
-    if (v4)
+    if (completionCopy)
     {
       v14 = [getSOErrorHelperClass_5() silentInternalErrorWithMessage:{@"Extension matching is already in progress, ignoring request"}];
-      v4[2](v4, 0, v14);
+      completionCopy[2](completionCopy, 0, v14);
     }
   }
 
@@ -246,7 +246,7 @@ void __66__SOExtensionFinder_findExtensionWithBundleIdentifier_completion___bloc
     v20[2] = __59__SOExtensionFinder_beginMatchingExtensionsWithCompletion___block_invoke;
     v20[3] = &unk_1E813EEB8;
     objc_copyWeak(&v22, buf);
-    v21 = v4;
+    v21 = completionCopy;
     v17 = [v15 beginMatchingExtensionsWithAttributes:v16 completion:v20];
     matchingContext = self->_matchingContext;
     self->_matchingContext = v17;
@@ -348,7 +348,7 @@ void __59__SOExtensionFinder_beginMatchingExtensionsWithCompletion___block_invok
     v13 = 136315394;
     v14 = "[SOExtensionFinder endMatchingExtensions]";
     v15 = 2112;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v13, 0x16u);
   }
 
@@ -371,16 +371,16 @@ void __59__SOExtensionFinder_beginMatchingExtensionsWithCompletion___block_invok
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_soExtensionsForExtensions:(id)a3
+- (id)_soExtensionsForExtensions:(id)extensions
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  extensionsCopy = extensions;
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = extensionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -398,7 +398,7 @@ void __59__SOExtensionFinder_beginMatchingExtensionsWithCompletion___block_invok
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [SOExtension alloc];
         v12 = [(SOExtension *)v11 initWithExtension:v10, v15];
-        [v4 addObject:v12];
+        [array addObject:v12];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -409,7 +409,7 @@ void __59__SOExtensionFinder_beginMatchingExtensionsWithCompletion___block_invok
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return array;
 }
 
 void __50__SOExtensionFinder_findExtensionsWithCompletion___block_invoke_cold_1()

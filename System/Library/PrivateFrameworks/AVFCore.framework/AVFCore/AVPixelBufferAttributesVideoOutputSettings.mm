@@ -1,8 +1,8 @@
 @interface AVPixelBufferAttributesVideoOutputSettings
-+ (id)_videoOutputSettingsWithVideoSettingsDictionary:(id)a3 exceptionReason:(id *)a4;
++ (id)_videoOutputSettingsWithVideoSettingsDictionary:(id)dictionary exceptionReason:(id *)reason;
 + (id)eligibleOutputSettingsDictionaryKeys;
-- (AVPixelBufferAttributesVideoOutputSettings)initWithPixelBufferAttributes:(id)a3 exceptionReason:(id *)a4;
-- (AVPixelBufferAttributesVideoOutputSettings)initWithTrustedPixelBufferAttributes:(id)a3;
+- (AVPixelBufferAttributesVideoOutputSettings)initWithPixelBufferAttributes:(id)attributes exceptionReason:(id *)reason;
+- (AVPixelBufferAttributesVideoOutputSettings)initWithTrustedPixelBufferAttributes:(id)attributes;
 - (NSDictionary)pixelBufferAttributes;
 - (NSString)fieldMode;
 - (int)height;
@@ -20,24 +20,24 @@
   return [valid setByAddingObjectsFromSet:v3];
 }
 
-+ (id)_videoOutputSettingsWithVideoSettingsDictionary:(id)a3 exceptionReason:(id *)a4
++ (id)_videoOutputSettingsWithVideoSettingsDictionary:(id)dictionary exceptionReason:(id *)reason
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithPixelBufferAttributes:a3 exceptionReason:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithPixelBufferAttributes:dictionary exceptionReason:reason];
 
   return v4;
 }
 
-- (AVPixelBufferAttributesVideoOutputSettings)initWithPixelBufferAttributes:(id)a3 exceptionReason:(id *)a4
+- (AVPixelBufferAttributesVideoOutputSettings)initWithPixelBufferAttributes:(id)attributes exceptionReason:(id *)reason
 {
   v31.receiver = self;
   v31.super_class = AVPixelBufferAttributesVideoOutputSettings;
   v32 = 0;
-  v6 = [(AVVideoOutputSettings *)&v31 initWithVideoSettingsDictionary:a3 exceptionReason:&v32];
+  v6 = [(AVVideoOutputSettings *)&v31 initWithVideoSettingsDictionary:attributes exceptionReason:&v32];
   v7 = v6;
-  if (a3 && v6)
+  if (attributes && v6)
   {
-    v8 = [a3 objectForKey:*MEMORY[0x1E6966208]];
-    v9 = [a3 objectForKey:*MEMORY[0x1E69660B8]];
+    v8 = [attributes objectForKey:*MEMORY[0x1E6966208]];
+    v9 = [attributes objectForKey:*MEMORY[0x1E69660B8]];
     if (v8 && [v8 integerValue] < 0 || v9 && objc_msgSend(v9, "integerValue") < 0)
     {
       v10 = 0;
@@ -49,12 +49,12 @@
       v10 = 1;
     }
 
-    v11 = [a3 objectForKey:@"AVVideoScalingModeKey"];
-    v12 = [objc_opt_class() _validValuesForScalingMode];
+    v11 = [attributes objectForKey:@"AVVideoScalingModeKey"];
+    _validValuesForScalingMode = [objc_opt_class() _validValuesForScalingMode];
     if (v10 && v11)
     {
-      v13 = v12;
-      if ([v12 containsObject:v11])
+      v13 = _validValuesForScalingMode;
+      if ([_validValuesForScalingMode containsObject:v11])
       {
         v10 = 1;
       }
@@ -66,7 +66,7 @@
       }
     }
 
-    v14 = [a3 objectForKey:@"AVVideoPixelAspectRatioKey"];
+    v14 = [attributes objectForKey:@"AVVideoPixelAspectRatioKey"];
     if (v10 && v14)
     {
       v30 = 0;
@@ -74,7 +74,7 @@
       v7->_VTPixelAspectRatioDictionary = [v30 copy];
     }
 
-    v15 = [a3 objectForKey:@"AVVideoCleanApertureKey"];
+    v15 = [attributes objectForKey:@"AVVideoCleanApertureKey"];
     if (v10 && v15)
     {
       v30 = 0;
@@ -82,13 +82,13 @@
       v7->_VTCleanApertureDictionary = [v30 copy];
     }
 
-    v16 = [a3 objectForKey:@"AVVideoColorPropertiesKey"];
+    v16 = [attributes objectForKey:@"AVVideoColorPropertiesKey"];
     if (v10 && v16)
     {
       v10 = AVVideoOutputSettingsValidateVideoColorProperties(v16, &v32);
     }
 
-    v17 = [a3 objectForKey:@"AVVideoAllowWideColorKey"];
+    v17 = [attributes objectForKey:@"AVVideoAllowWideColorKey"];
     if (v10 && v17)
     {
       objc_opt_class();
@@ -104,19 +104,19 @@
       }
     }
 
-    v18 = [a3 objectForKey:@"AVVideoMinimumFrameDuration"];
+    v18 = [attributes objectForKey:@"AVVideoMinimumFrameDuration"];
     if (v10 && v18)
     {
       v10 = AVVideoOutputSettingsValidateMinimumFrameDuration(v18, &v32);
     }
 
-    v19 = [a3 objectForKey:@"AVVideoFrameRateConversionAlgorithm"];
+    v19 = [attributes objectForKey:@"AVVideoFrameRateConversionAlgorithm"];
     if (v10 && v19)
     {
       v10 = AVVideoOutputSettingsValidateFrameRateConversionAlgorithm(v19, &v32);
     }
 
-    v20 = [a3 objectForKey:@"AVVideoDecompressionPropertiesKey"];
+    v20 = [attributes objectForKey:@"AVVideoDecompressionPropertiesKey"];
     v21 = [v20 objectForKey:*MEMORY[0x1E6983938]];
     if (v10)
     {
@@ -146,7 +146,7 @@
     }
 
 LABEL_45:
-    v24 = [a3 objectForKey:@"AVVideoDecompressionPropertiesKey"];
+    v24 = [attributes objectForKey:@"AVVideoDecompressionPropertiesKey"];
     v25 = [v24 objectForKey:*MEMORY[0x1E6983998]];
     if (v10 && v25)
     {
@@ -163,19 +163,19 @@ LABEL_45:
       }
     }
 
-    v26 = [a3 objectForKey:@"AVVideoEmitSequencesAtSyncFramesOnly"];
+    v26 = [attributes objectForKey:@"AVVideoEmitSequencesAtSyncFramesOnly"];
     if (v10 && v26)
     {
       v10 = AVVideoOutputSettingsValidateEmitSequencesAtSyncFramesOnly(v26, &v32);
     }
 
-    v27 = [a3 objectForKey:@"AVVideoMinimumIntervalForSyncFrames"];
+    v27 = [attributes objectForKey:@"AVVideoMinimumIntervalForSyncFrames"];
     if (v10 && v27)
     {
       v10 = AVVideoOutputSettingsValidateMinimumFrameDuration(v27, &v32);
     }
 
-    v28 = [a3 objectForKey:*MEMORY[0x1E6966100]];
+    v28 = [attributes objectForKey:*MEMORY[0x1E6966100]];
     if (v10 && v28 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v32 = @"Value for kCVPixelBufferMetalCompatibilityKey must be an NSNumber wrapping a BOOL";
@@ -190,26 +190,26 @@ LABEL_45:
   }
 
 LABEL_63:
-  if (a4)
+  if (reason)
   {
-    *a4 = v32;
+    *reason = v32;
   }
 
   return v7;
 }
 
-- (AVPixelBufferAttributesVideoOutputSettings)initWithTrustedPixelBufferAttributes:(id)a3
+- (AVPixelBufferAttributesVideoOutputSettings)initWithTrustedPixelBufferAttributes:(id)attributes
 {
   v8.receiver = self;
   v8.super_class = AVPixelBufferAttributesVideoOutputSettings;
-  v4 = [(AVVideoOutputSettings *)&v8 initWithVideoSettingsDictionary:a3 exceptionReason:0];
-  v5 = [a3 objectForKey:@"AVVideoPixelAspectRatioKey"];
+  v4 = [(AVVideoOutputSettings *)&v8 initWithVideoSettingsDictionary:attributes exceptionReason:0];
+  v5 = [attributes objectForKey:@"AVVideoPixelAspectRatioKey"];
   if (v5)
   {
     v4->_VTPixelAspectRatioDictionary = [AVVideoOutputSettingsVTPASPDictionaryForAVPASPDictionary(v5) copy];
   }
 
-  v6 = [a3 objectForKey:@"AVVideoCleanApertureKey"];
+  v6 = [attributes objectForKey:@"AVVideoCleanApertureKey"];
   if (v6)
   {
     v4->_VTCleanApertureDictionary = [AVVideoOutputSettingsVTCLAPDictionaryForAVCLAPDictionary(v6) copy];
@@ -227,8 +227,8 @@ LABEL_63:
 
 - (int)width
 {
-  v2 = [(AVOutputSettings *)self outputSettingsDictionary];
-  v3 = [(NSDictionary *)v2 objectForKey:*MEMORY[0x1E6966208]];
+  outputSettingsDictionary = [(AVOutputSettings *)self outputSettingsDictionary];
+  v3 = [(NSDictionary *)outputSettingsDictionary objectForKey:*MEMORY[0x1E6966208]];
   if (v3)
   {
     LODWORD(v3) = [v3 integerValue];
@@ -239,8 +239,8 @@ LABEL_63:
 
 - (int)height
 {
-  v2 = [(AVOutputSettings *)self outputSettingsDictionary];
-  v3 = [(NSDictionary *)v2 objectForKey:*MEMORY[0x1E69660B8]];
+  outputSettingsDictionary = [(AVOutputSettings *)self outputSettingsDictionary];
+  v3 = [(NSDictionary *)outputSettingsDictionary objectForKey:*MEMORY[0x1E69660B8]];
   if (v3)
   {
     LODWORD(v3) = [v3 integerValue];
@@ -251,12 +251,12 @@ LABEL_63:
 
 - (NSDictionary)pixelBufferAttributes
 {
-  v2 = [(AVVideoOutputSettings *)self videoSettingsDictionary];
-  v3 = [MEMORY[0x1E695DFA8] setWithArray:{-[NSDictionary allKeys](v2, "allKeys")}];
+  videoSettingsDictionary = [(AVVideoOutputSettings *)self videoSettingsDictionary];
+  v3 = [MEMORY[0x1E695DFA8] setWithArray:{-[NSDictionary allKeys](videoSettingsDictionary, "allKeys")}];
   [v3 intersectSet:AVVideoOutputSettingsValidPixelBufferAttributesKeys()];
-  v4 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
-  return [(NSDictionary *)v2 dictionaryWithValuesForKeys:v4];
+  return [(NSDictionary *)videoSettingsDictionary dictionaryWithValuesForKeys:allObjects];
 }
 
 - (NSString)fieldMode

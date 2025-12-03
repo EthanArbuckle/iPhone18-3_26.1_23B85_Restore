@@ -9,7 +9,7 @@
 - (id)blt_sha256
 {
   v5 = *MEMORY[0x277D85DE8];
-  v1 = CC_SHA256([a1 bytes], objc_msgSend(a1, "length"), md);
+  v1 = CC_SHA256([self bytes], objc_msgSend(self, "length"), md);
   if (v1)
   {
     v1 = [MEMORY[0x277CBEA90] dataWithBytes:md length:32];
@@ -22,8 +22,8 @@
 
 - (id)blt_sha256String
 {
-  v1 = [a1 blt_sha256];
-  v2 = [v1 base64EncodedStringWithOptions:0];
+  blt_sha256 = [self blt_sha256];
+  v2 = [blt_sha256 base64EncodedStringWithOptions:0];
 
   return v2;
 }
@@ -35,10 +35,10 @@
     [NSData(MD5) MD5:];
   }
 
-  v5 = [a1 bytes];
-  v6 = [a1 length];
+  bytes = [self bytes];
+  v6 = [self length];
 
-  return CC_MD5(v5, v6, a3);
+  return CC_MD5(bytes, v6, a3);
 }
 
 @end

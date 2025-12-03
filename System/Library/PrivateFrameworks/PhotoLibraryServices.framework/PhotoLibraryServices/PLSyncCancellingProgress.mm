@@ -1,7 +1,7 @@
 @interface PLSyncCancellingProgress
-+ (id)discreteProgressWithTotalUnitCount:(int64_t)a3;
++ (id)discreteProgressWithTotalUnitCount:(int64_t)count;
 - (void)cancel;
-- (void)setCancellationHandler:(id)a3;
+- (void)setCancellationHandler:(id)handler;
 @end
 
 @implementation PLSyncCancellingProgress
@@ -11,31 +11,31 @@
   v5.receiver = self;
   v5.super_class = PLSyncCancellingProgress;
   [(PLSyncCancellingProgress *)&v5 cancel];
-  v3 = [(PLSyncCancellingProgress *)self pl_cancellationHandler];
-  v4 = v3;
-  if (v3)
+  pl_cancellationHandler = [(PLSyncCancellingProgress *)self pl_cancellationHandler];
+  v4 = pl_cancellationHandler;
+  if (pl_cancellationHandler)
   {
-    (*(v3 + 16))(v3);
+    (*(pl_cancellationHandler + 16))(pl_cancellationHandler);
   }
 }
 
-- (void)setCancellationHandler:(id)a3
+- (void)setCancellationHandler:(id)handler
 {
-  v6 = a3;
-  [(PLSyncCancellingProgress *)self setPl_cancellationHandler:v6];
-  v4 = [(PLSyncCancellingProgress *)self isCancelled];
-  v5 = v6;
-  if (v6 && v4)
+  handlerCopy = handler;
+  [(PLSyncCancellingProgress *)self setPl_cancellationHandler:handlerCopy];
+  isCancelled = [(PLSyncCancellingProgress *)self isCancelled];
+  v5 = handlerCopy;
+  if (handlerCopy && isCancelled)
   {
-    (*(v6 + 2))(v6);
-    v5 = v6;
+    (*(handlerCopy + 2))(handlerCopy);
+    v5 = handlerCopy;
   }
 }
 
-+ (id)discreteProgressWithTotalUnitCount:(int64_t)a3
++ (id)discreteProgressWithTotalUnitCount:(int64_t)count
 {
   v4 = [[PLSyncCancellingProgress alloc] initWithParent:0 userInfo:0];
-  [(PLSyncCancellingProgress *)v4 setTotalUnitCount:a3];
+  [(PLSyncCancellingProgress *)v4 setTotalUnitCount:count];
 
   return v4;
 }

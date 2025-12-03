@@ -1,31 +1,31 @@
 @interface AMSBiometricsSignatureTask
-+ (__SecKey)copyPrivateKeyWithStyle:(unint64_t)a3 context:(id)a4 account:(id)a5 options:(id)a6 error:(id *)a7;
-+ (id)fetchDataToSignWithPublicKeyData:(id)a3 challenge:(id)a4 error:(id *)a5;
-+ (id)fetchPublicKeyDataFromPrivateKey:(__SecKey *)a3 error:(id *)a4;
-+ (id)signDataWithPrivateKey:(__SecKey *)a3 dataToSign:(id)a4 error:(id *)a5;
-- (AMSBiometricsSignatureTask)initWithRequest:(id)a3;
-- (BOOL)_fetchCardEnrollmentConfigurations:(id *)a3;
-- (BOOL)_performCardEnrollmentCheck:(id *)a3;
++ (__SecKey)copyPrivateKeyWithStyle:(unint64_t)style context:(id)context account:(id)account options:(id)options error:(id *)error;
++ (id)fetchDataToSignWithPublicKeyData:(id)data challenge:(id)challenge error:(id *)error;
++ (id)fetchPublicKeyDataFromPrivateKey:(__SecKey *)key error:(id *)error;
++ (id)signDataWithPrivateKey:(__SecKey *)key dataToSign:(id)sign error:(id *)error;
+- (AMSBiometricsSignatureTask)initWithRequest:(id)request;
+- (BOOL)_fetchCardEnrollmentConfigurations:(id *)configurations;
+- (BOOL)_performCardEnrollmentCheck:(id *)check;
 - (id)_performSignatureInProcess;
 - (id)_performSignatureOutOfProcess;
 - (id)performSignature;
 - (id)performSignatureFromService;
-- (id)signWithPrivateKey:(__SecKey *)a3 error:(id *)a4;
+- (id)signWithPrivateKey:(__SecKey *)key error:(id *)error;
 - (void)regenerateAttestationKeys;
 @end
 
 @implementation AMSBiometricsSignatureTask
 
-- (AMSBiometricsSignatureTask)initWithRequest:(id)a3
+- (AMSBiometricsSignatureTask)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = AMSBiometricsSignatureTask;
   v6 = [(AMSTask *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
   }
 
   return v7;
@@ -40,8 +40,8 @@
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
@@ -50,7 +50,7 @@
     v23 = v5;
     v24 = 2114;
     v25 = v7;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Perform signature task - determine the context", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Perform signature task - determine the context", buf, 0x16u);
   }
 
   v21 = 0;
@@ -58,22 +58,22 @@
   v9 = v21;
   if (v8)
   {
-    v10 = [(AMSBiometricsSignatureTask *)self request];
-    v11 = [v10 keychainOptions];
-    if ([v11 purpose] == 1)
+    request = [(AMSBiometricsSignatureTask *)self request];
+    keychainOptions = [request keychainOptions];
+    if ([keychainOptions purpose] == 1)
     {
-      v12 = [MEMORY[0x1E696AE30] processInfo];
-      v13 = [v12 processName];
-      if ([v13 isEqualToString:@"Music"])
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
+      if ([processName isEqualToString:@"Music"])
       {
         v14 = 1;
       }
 
       else
       {
-        v16 = [MEMORY[0x1E696AE30] processInfo];
-        v17 = [v16 processName];
-        v14 = [v17 isEqualToString:@"AppStore"];
+        processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+        processName2 = [processInfo2 processName];
+        v14 = [processName2 isEqualToString:@"AppStore"];
       }
     }
 
@@ -85,21 +85,21 @@
     v18 = AMSIsEntitledForDirectKeychainAccess();
     if ((v14 & 1) != 0 || !v18)
     {
-      v15 = [(AMSBiometricsSignatureTask *)self _performSignatureOutOfProcess];
+      _performSignatureOutOfProcess = [(AMSBiometricsSignatureTask *)self _performSignatureOutOfProcess];
     }
 
     else
     {
-      v15 = [(AMSBiometricsSignatureTask *)self _performSignatureInProcess];
+      _performSignatureOutOfProcess = [(AMSBiometricsSignatureTask *)self _performSignatureInProcess];
     }
   }
 
   else
   {
-    v15 = [AMSPromise promiseWithError:v9];
+    _performSignatureOutOfProcess = [AMSPromise promiseWithError:v9];
   }
 
-  v19 = v15;
+  v19 = _performSignatureOutOfProcess;
 
   return v19;
 }
@@ -113,8 +113,8 @@
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
@@ -123,12 +123,12 @@
     v11 = v5;
     v12 = 2114;
     v13 = v7;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Perform signature task from service", &v10, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Perform signature task from service", &v10, 0x16u);
   }
 
-  v8 = [(AMSBiometricsSignatureTask *)self _performSignatureInProcess];
+  _performSignatureInProcess = [(AMSBiometricsSignatureTask *)self _performSignatureInProcess];
 
-  return v8;
+  return _performSignatureInProcess;
 }
 
 - (id)_performSignatureOutOfProcess
@@ -140,8 +140,8 @@
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
@@ -150,7 +150,7 @@
     *&buf[4] = v5;
     *&buf[12] = 2114;
     *&buf[14] = v7;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting OOP signature operation", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting OOP signature operation", buf, 0x16u);
   }
 
   *buf = 0;
@@ -164,10 +164,10 @@
   v13[2] = 0x3032000000;
   v13[3] = __Block_byref_object_copy__10;
   v13[4] = __Block_byref_object_dispose__10;
-  v14 = [(AMSBiometricsSignatureTask *)self request];
+  request = [(AMSBiometricsSignatureTask *)self request];
   v8 = *(*&buf[8] + 40);
-  v9 = [(AMSBiometricsSignatureTask *)self request];
-  v10 = [v8 signatureForRequest:v9];
+  request2 = [(AMSBiometricsSignatureTask *)self request];
+  v10 = [v8 signatureForRequest:request2];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -204,28 +204,28 @@ void __59__AMSBiometricsSignatureTask__performSignatureOutOfProcess__block_invok
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v29 = objc_opt_class();
     v30 = 2114;
     v31 = v3;
     v6 = v29;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting signature operation", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting signature operation", buf, 0x16u);
   }
 
   v22 = objc_alloc_init(AMSMutablePromise);
   v7 = objc_alloc_init(AMSPromise);
-  v8 = [(AMSBiometricsSignatureTask *)self request];
-  [v8 localAuthContext];
+  request = [(AMSBiometricsSignatureTask *)self request];
+  [request localAuthContext];
   v10 = v9 = v3;
-  v11 = [(AMSBiometricsSignatureTask *)self request];
-  v12 = [v11 localAuthAccessControlRef];
-  v13 = [(AMSBiometricsSignatureTask *)self request];
-  v14 = [v13 localAuthOptions];
-  v15 = [(AMSPromise *)v7 completionHandlerAdapter];
-  [v10 evaluateAccessControl:v12 operation:3 options:v14 reply:v15];
+  request2 = [(AMSBiometricsSignatureTask *)self request];
+  localAuthAccessControlRef = [request2 localAuthAccessControlRef];
+  request3 = [(AMSBiometricsSignatureTask *)self request];
+  localAuthOptions = [request3 localAuthOptions];
+  completionHandlerAdapter = [(AMSPromise *)v7 completionHandlerAdapter];
+  [v10 evaluateAccessControl:localAuthAccessControlRef operation:3 options:localAuthOptions reply:completionHandlerAdapter];
 
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
@@ -433,7 +433,7 @@ void __56__AMSBiometricsSignatureTask__performSignatureInProcess__block_invoke_1
   }
 }
 
-- (BOOL)_fetchCardEnrollmentConfigurations:(id *)a3
+- (BOOL)_fetchCardEnrollmentConfigurations:(id *)configurations
 {
   v49 = *MEMORY[0x1E69E9840];
   v5 = AMSSetLogKeyIfNeeded();
@@ -443,47 +443,47 @@ void __56__AMSBiometricsSignatureTask__performSignatureInProcess__block_invoke_1
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = MEMORY[0x1E696AD98];
     v10 = v8;
-    v11 = [(AMSBiometricsSignatureTask *)self request];
-    v12 = [v9 numberWithBool:{objc_msgSend(v11, "isDualAction")}];
+    request = [(AMSBiometricsSignatureTask *)self request];
+    v12 = [v9 numberWithBool:{objc_msgSend(request, "isDualAction")}];
     v41 = 138543874;
     v42 = v8;
     v43 = 2114;
     v44 = v5;
     v45 = 2112;
     v46 = v12;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Start fetch CardEnrollment setting for dual-action=%@", &v41, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Start fetch CardEnrollment setting for dual-action=%@", &v41, 0x20u);
   }
 
-  v13 = [(AMSBiometricsSignatureTask *)self request];
-  v14 = [v13 isDualAction];
+  request2 = [(AMSBiometricsSignatureTask *)self request];
+  isDualAction = [request2 isDualAction];
 
-  if (!v14)
+  if (!isDualAction)
   {
     goto LABEL_12;
   }
 
-  v15 = [(AMSBiometricsSignatureTask *)self request];
-  v16 = [v15 bag];
+  request3 = [(AMSBiometricsSignatureTask *)self request];
+  v16 = [request3 bag];
 
   if (v16)
   {
-    v17 = [(AMSBiometricsSignatureTask *)self request];
-    v18 = [v17 bag];
+    request4 = [(AMSBiometricsSignatureTask *)self request];
+    v18 = [request4 bag];
     v19 = [AMSCardEnrollment shouldUseApplePayClassicWithBag:v18];
-    v20 = [(AMSBiometricsSignatureTask *)self request];
-    [v20 setUseApplePayClassic:v19];
+    request5 = [(AMSBiometricsSignatureTask *)self request];
+    [request5 setUseApplePayClassic:v19];
 
-    v21 = [(AMSBiometricsSignatureTask *)self request];
-    v22 = [v21 bag];
+    request6 = [(AMSBiometricsSignatureTask *)self request];
+    v22 = [request6 bag];
     v23 = [AMSCardEnrollment shouldUseAutoEnrollmentWithBag:v22];
-    v24 = [(AMSBiometricsSignatureTask *)self request];
-    [v24 setUseAutoEnrollment:v23];
+    request7 = [(AMSBiometricsSignatureTask *)self request];
+    [request7 setUseAutoEnrollment:v23];
 
     v25 = +[AMSLogConfig sharedBiometricsConfig];
     if (!v25)
@@ -491,17 +491,17 @@ void __56__AMSBiometricsSignatureTask__performSignatureInProcess__block_invoke_1
       v25 = +[AMSLogConfig sharedConfig];
     }
 
-    v26 = [v25 OSLogObject];
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v25 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v27 = objc_opt_class();
       v28 = MEMORY[0x1E696AD98];
       v29 = v27;
-      v30 = [(AMSBiometricsSignatureTask *)self request];
-      v31 = [v28 numberWithBool:{objc_msgSend(v30, "shouldUseApplePayClassic")}];
+      request8 = [(AMSBiometricsSignatureTask *)self request];
+      v31 = [v28 numberWithBool:{objc_msgSend(request8, "shouldUseApplePayClassic")}];
       v32 = MEMORY[0x1E696AD98];
-      v33 = [(AMSBiometricsSignatureTask *)self request];
-      v34 = [v32 numberWithBool:{objc_msgSend(v33, "shouldUseAutoEnrollment")}];
+      request9 = [(AMSBiometricsSignatureTask *)self request];
+      v34 = [v32 numberWithBool:{objc_msgSend(request9, "shouldUseAutoEnrollment")}];
       v41 = 138544130;
       v42 = v27;
       v43 = 2114;
@@ -510,7 +510,7 @@ void __56__AMSBiometricsSignatureTask__performSignatureInProcess__block_invoke_1
       v46 = v31;
       v47 = 2112;
       v48 = v34;
-      _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Get CardEnrollment setting for dual-action, useApplePayClassic=%@, useAutoEnrollment=%@", &v41, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Get CardEnrollment setting for dual-action, useApplePayClassic=%@, useAutoEnrollment=%@", &v41, 0x2Au);
     }
 
 LABEL_12:
@@ -524,8 +524,8 @@ LABEL_12:
     v37 = +[AMSLogConfig sharedConfig];
   }
 
-  v38 = [v37 OSLogObject];
-  if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
+  oSLogObject3 = [v37 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
   {
     v39 = objc_opt_class();
     v41 = 138543618;
@@ -533,13 +533,13 @@ LABEL_12:
     v43 = 2114;
     v44 = v5;
     v40 = v39;
-    _os_log_impl(&dword_192869000, v38, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Buy params indicate a dual-action buy but no bag available", &v41, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Buy params indicate a dual-action buy but no bag available", &v41, 0x16u);
   }
 
-  if (a3)
+  if (configurations)
   {
     AMSError(601, @"Biometric Signature Failure", @"No bag available for dual-action buy", 0);
-    *a3 = v35 = 0;
+    *configurations = v35 = 0;
   }
 
   else
@@ -552,14 +552,14 @@ LABEL_13:
   return v35;
 }
 
-- (BOOL)_performCardEnrollmentCheck:(id *)a3
+- (BOOL)_performCardEnrollmentCheck:(id *)check
 {
   v40 = *MEMORY[0x1E69E9840];
   v5 = AMSSetLogKeyIfNeeded();
-  v6 = [(AMSBiometricsSignatureTask *)self request];
-  v7 = [v6 isDualAction];
+  request = [(AMSBiometricsSignatureTask *)self request];
+  isDualAction = [request isDualAction];
 
-  if (!v7)
+  if (!isDualAction)
   {
     v19 = +[AMSLogConfig sharedBiometricsConfig];
     if (!v19)
@@ -567,24 +567,24 @@ LABEL_13:
       v19 = +[AMSLogConfig sharedConfig];
     }
 
-    v20 = [v19 OSLogObject];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v19 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       *v39 = 138543618;
       *&v39[4] = objc_opt_class();
       *&v39[12] = 2114;
       *&v39[14] = v5;
       v21 = *&v39[4];
-      _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping card enrollment check for no dual-action buy", v39, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping card enrollment check for no dual-action buy", v39, 0x16u);
     }
 
     goto LABEL_21;
   }
 
-  v8 = [(AMSBiometricsSignatureTask *)self request];
-  v9 = [v8 localAuthAccessControlRef];
+  request2 = [(AMSBiometricsSignatureTask *)self request];
+  localAuthAccessControlRef = [request2 localAuthAccessControlRef];
 
-  if (v9)
+  if (localAuthAccessControlRef)
   {
     goto LABEL_3;
   }
@@ -595,15 +595,15 @@ LABEL_13:
     v32 = +[AMSLogConfig sharedConfig];
   }
 
-  v33 = [v32 OSLogObject];
-  if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v32 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     *v39 = 138543618;
     *&v39[4] = objc_opt_class();
     *&v39[12] = 2114;
     *&v39[14] = v5;
     v34 = *&v39[4];
-    _os_log_impl(&dword_192869000, v33, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Signature failed for dual-action buy for no ACL", v39, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Signature failed for dual-action buy for no ACL", v39, 0x16u);
   }
 
   v29 = AMSError(601, @"Biometric Signature Failure", @"No ACL available for dual-action buy", 0);
@@ -611,9 +611,9 @@ LABEL_13:
   {
 LABEL_3:
     v10 = [(AMSBiometricsSignatureTask *)self request:*v39];
-    v11 = [v10 shouldUseApplePayClassic];
+    shouldUseApplePayClassic = [v10 shouldUseApplePayClassic];
 
-    if (v11)
+    if (shouldUseApplePayClassic)
     {
       v12 = +[AMSLogConfig sharedBiometricsConfig];
       if (!v12)
@@ -621,8 +621,8 @@ LABEL_3:
         v12 = +[AMSLogConfig sharedConfig];
       }
 
-      v13 = [v12 OSLogObject];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [v12 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
         v14 = objc_opt_class();
         *v39 = 138543618;
@@ -630,20 +630,20 @@ LABEL_3:
         *&v39[12] = 2114;
         *&v39[14] = v5;
         v15 = v14;
-        _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Checking dual-action buy ACL for apple-pay-classic capability", v39, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Checking dual-action buy ACL for apple-pay-classic capability", v39, 0x16u);
       }
 
-      v16 = [(AMSBiometricsSignatureTask *)self request];
-      v17 = [v16 localAuthAccessControlRef];
+      request3 = [(AMSBiometricsSignatureTask *)self request];
+      localAuthAccessControlRef2 = [request3 localAuthAccessControlRef];
       v18 = 4;
     }
 
     else
     {
-      v22 = [(AMSBiometricsSignatureTask *)self request];
-      v23 = [v22 shouldUseAutoEnrollment];
+      request4 = [(AMSBiometricsSignatureTask *)self request];
+      shouldUseAutoEnrollment = [request4 shouldUseAutoEnrollment];
 
-      if (!v23)
+      if (!shouldUseAutoEnrollment)
       {
 LABEL_21:
         v29 = 0;
@@ -656,8 +656,8 @@ LABEL_21:
         v24 = +[AMSLogConfig sharedConfig];
       }
 
-      v25 = [v24 OSLogObject];
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+      oSLogObject4 = [v24 OSLogObject];
+      if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
       {
         v26 = objc_opt_class();
         *v39 = 138543618;
@@ -665,15 +665,15 @@ LABEL_21:
         *&v39[12] = 2114;
         *&v39[14] = v5;
         v27 = v26;
-        _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Checking dual-action buy ACL for auto-enrollment capability", v39, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Checking dual-action buy ACL for auto-enrollment capability", v39, 0x16u);
       }
 
-      v16 = [(AMSBiometricsSignatureTask *)self request];
-      v17 = [v16 localAuthAccessControlRef];
+      request3 = [(AMSBiometricsSignatureTask *)self request];
+      localAuthAccessControlRef2 = [request3 localAuthAccessControlRef];
       v18 = 3;
     }
 
-    v28 = [AMSBiometrics isActionSupported:v18 withAccessControl:v17];
+    v28 = [AMSBiometrics isActionSupported:v18 withAccessControl:localAuthAccessControlRef2];
 
     if (v28)
     {
@@ -686,8 +686,8 @@ LABEL_21:
       v35 = +[AMSLogConfig sharedConfig];
     }
 
-    v36 = [v35 OSLogObject];
-    if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
+    oSLogObject5 = [v35 OSLogObject];
+    if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
     {
       v37 = objc_opt_class();
       *v39 = 138543618;
@@ -695,17 +695,17 @@ LABEL_21:
       *&v39[12] = 2114;
       *&v39[14] = v5;
       v38 = v37;
-      _os_log_impl(&dword_192869000, v36, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Signature failed dual-action buy for insufficient ACL capabilities", v39, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Signature failed dual-action buy for insufficient ACL capabilities", v39, 0x16u);
     }
 
     v29 = AMSError(601, @"Biometric Signature Failure", @"ACL does not support dual-action buy", 0);
   }
 
 LABEL_22:
-  if (a3)
+  if (check)
   {
     v30 = v29;
-    *a3 = v29;
+    *check = v29;
   }
 
   return v29 == 0;
@@ -720,8 +720,8 @@ LABEL_22:
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
@@ -730,24 +730,24 @@ LABEL_22:
     v26 = v5;
     v27 = 2114;
     v28 = v7;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Required to regenerate attestation.", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Required to regenerate attestation.", buf, 0x16u);
   }
 
-  v8 = [(AMSBiometricsSignatureTask *)self request];
-  v9 = [v8 keychainOptions];
-  v10 = [v9 copy];
+  request = [(AMSBiometricsSignatureTask *)self request];
+  keychainOptions = [request keychainOptions];
+  v10 = [keychainOptions copy];
 
   [v10 setRegenerateKeys:1];
-  v11 = [(AMSBiometricsSignatureTask *)self request];
-  v12 = [v11 account];
-  v13 = [AMSCertificateManager shouldUseAccountSpecificCertificatesForAccount:v12];
+  request2 = [(AMSBiometricsSignatureTask *)self request];
+  account = [request2 account];
+  v13 = [AMSCertificateManager shouldUseAccountSpecificCertificatesForAccount:account];
 
   if (v13)
   {
-    v14 = [(AMSBiometricsSignatureTask *)self request];
-    v15 = [v14 account];
+    request3 = [(AMSBiometricsSignatureTask *)self request];
+    account2 = [request3 account];
     v24 = 0;
-    v16 = [AMSAttestation attestationWithAccount:v15 options:v10 error:&v24];
+    v16 = [AMSAttestation attestationWithAccount:account2 options:v10 error:&v24];
     v17 = v24;
 
     if (!v16)
@@ -779,8 +779,8 @@ LABEL_10:
     v18 = +[AMSLogConfig sharedConfig];
   }
 
-  v19 = [v18 OSLogObject];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v18 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v20 = objc_opt_class();
     v21 = v20;
@@ -791,31 +791,31 @@ LABEL_10:
     v28 = v22;
     v29 = 2114;
     v30 = v17;
-    _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Re-attestation failed. error: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Re-attestation failed. error: %{public}@", buf, 0x20u);
   }
 
 LABEL_15:
 }
 
-- (id)signWithPrivateKey:(__SecKey *)a3 error:(id *)a4
+- (id)signWithPrivateKey:(__SecKey *)key error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
   v44 = 0;
-  v7 = [objc_opt_class() fetchPublicKeyDataFromPrivateKey:a3 error:&v44];
+  v7 = [objc_opt_class() fetchPublicKeyDataFromPrivateKey:key error:&v44];
   v8 = v44;
   if (v7)
   {
     v9 = objc_opt_class();
-    v10 = [(AMSBiometricsSignatureTask *)self request];
-    v11 = [v10 challenge];
+    request = [(AMSBiometricsSignatureTask *)self request];
+    challenge = [request challenge];
     v43 = v8;
-    v12 = [v9 fetchDataToSignWithPublicKeyData:v7 challenge:v11 error:&v43];
+    v12 = [v9 fetchDataToSignWithPublicKeyData:v7 challenge:challenge error:&v43];
     v13 = v43;
 
     if (v12)
     {
       v42 = v13;
-      v14 = [objc_opt_class() signDataWithPrivateKey:a3 dataToSign:v12 error:&v42];
+      v14 = [objc_opt_class() signDataWithPrivateKey:key dataToSign:v12 error:&v42];
       v8 = v42;
 
       if (v14)
@@ -834,8 +834,8 @@ LABEL_15:
             v33 = +[AMSLogConfig sharedConfig];
           }
 
-          v34 = [v33 OSLogObject];
-          if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+          oSLogObject = [v33 OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
           {
             v35 = objc_opt_class();
             v41 = v35;
@@ -844,13 +844,13 @@ LABEL_15:
             v46 = v35;
             v47 = 2114;
             v48 = v36;
-            _os_log_impl(&dword_192869000, v34, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode the signed string", buf, 0x16u);
+            _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode the signed string", buf, 0x16u);
           }
 
-          if (a4)
+          if (error)
           {
             AMSError(0, @"Signature Failed", @"Failed to encode the signed string.", 0);
-            *a4 = v16 = 0;
+            *error = v16 = 0;
           }
 
           else
@@ -868,8 +868,8 @@ LABEL_15:
           v27 = +[AMSLogConfig sharedConfig];
         }
 
-        v28 = [v27 OSLogObject];
-        if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+        oSLogObject2 = [v27 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
         {
           v29 = objc_opt_class();
           v40 = v29;
@@ -880,11 +880,11 @@ LABEL_15:
           v48 = v30;
           v49 = 2114;
           v50 = v8;
-          _os_log_impl(&dword_192869000, v28, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Signature failed fatal error when signing data with error: %{public}@", buf, 0x20u);
+          _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Signature failed fatal error when signing data with error: %{public}@", buf, 0x20u);
         }
 
-        v31 = [v8 domain];
-        if ([v31 isEqualToString:*MEMORY[0x1E696EE30]])
+        domain = [v8 domain];
+        if ([domain isEqualToString:*MEMORY[0x1E696EE30]])
         {
           v32 = [v8 code] != -2;
         }
@@ -894,8 +894,8 @@ LABEL_15:
           v32 = 0;
         }
 
-        v37 = [v8 domain];
-        if ([v37 isEqualToString:*MEMORY[0x1E6966708]])
+        domain2 = [v8 domain];
+        if ([domain2 isEqualToString:*MEMORY[0x1E6966708]])
         {
           v38 = [v8 code] == -3;
         }
@@ -910,10 +910,10 @@ LABEL_15:
           [(AMSBiometricsSignatureTask *)self regenerateAttestationKeys];
         }
 
-        if (a4)
+        if (error)
         {
           AMSError(602, @"Signature Failed", @"Fatal error when signing data.", v8);
-          *a4 = v16 = 0;
+          *error = v16 = 0;
         }
 
         else
@@ -931,8 +931,8 @@ LABEL_15:
         v22 = +[AMSLogConfig sharedConfig];
       }
 
-      v23 = [v22 OSLogObject];
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [v22 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         v24 = objc_opt_class();
         v25 = v24;
@@ -943,13 +943,13 @@ LABEL_15:
         v48 = v26;
         v49 = 2114;
         v50 = v13;
-        _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch the data to sign from the challenge with error: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch the data to sign from the challenge with error: %{public}@", buf, 0x20u);
       }
 
-      if (a4)
+      if (error)
       {
         AMSError(0, @"Signature Failed", @"Failed to fetch the data to sign from the challenge.", v13);
-        *a4 = v16 = 0;
+        *error = v16 = 0;
       }
 
       else
@@ -969,8 +969,8 @@ LABEL_15:
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    oSLogObject4 = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
     {
       v19 = objc_opt_class();
       v20 = v19;
@@ -981,13 +981,13 @@ LABEL_15:
       v48 = v21;
       v49 = 2114;
       v50 = v8;
-      _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch the public key for the private key with error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch the public key for the private key with error: %{public}@", buf, 0x20u);
     }
 
-    if (a4)
+    if (error)
     {
       AMSError(0, @"Signature Failed", @"Failed to fetch the public key for the private key.", v8);
-      *a4 = v16 = 0;
+      *error = v16 = 0;
     }
 
     else
@@ -999,24 +999,24 @@ LABEL_15:
   return v16;
 }
 
-+ (__SecKey)copyPrivateKeyWithStyle:(unint64_t)a3 context:(id)a4 account:(id)a5 options:(id)a6 error:(id *)a7
++ (__SecKey)copyPrivateKeyWithStyle:(unint64_t)style context:(id)context account:(id)account options:(id)options error:(id *)error
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([AMSCertificateManager shouldUseAccountSpecificCertificatesForAccount:v12])
+  contextCopy = context;
+  accountCopy = account;
+  optionsCopy = options;
+  if ([AMSCertificateManager shouldUseAccountSpecificCertificatesForAccount:accountCopy])
   {
-    v14 = +[AMSCertificateManager privateKeyForAccount:withContext:forSignaturePurpose:](AMSCertificateManager, "privateKeyForAccount:withContext:forSignaturePurpose:", v12, v11, [v13 purpose]);
+    v14 = +[AMSCertificateManager privateKeyForAccount:withContext:forSignaturePurpose:](AMSCertificateManager, "privateKeyForAccount:withContext:forSignaturePurpose:", accountCopy, contextCopy, [optionsCopy purpose]);
   }
 
-  else if (a3)
+  else if (style)
   {
-    v14 = [AMSKeychain copyPrivateKeyWithContext:v11 account:v12 options:v13 error:a7];
+    v14 = [AMSKeychain copyPrivateKeyWithContext:contextCopy account:accountCopy options:optionsCopy error:error];
   }
 
   else
   {
-    v14 = [AMSKeychain copyCertificatePrivateKeyWithContext:v11 account:v12 options:v13 error:a7];
+    v14 = [AMSKeychain copyCertificatePrivateKeyWithContext:contextCopy account:accountCopy options:optionsCopy error:error];
   }
 
   v15 = v14;
@@ -1024,16 +1024,16 @@ LABEL_15:
   return v15;
 }
 
-+ (id)fetchPublicKeyDataFromPrivateKey:(__SecKey *)a3 error:(id *)a4
++ (id)fetchPublicKeyDataFromPrivateKey:(__SecKey *)key error:(id *)error
 {
   error = 0;
-  v5 = SecKeyCopyPublicKey(a3);
+  v5 = SecKeyCopyPublicKey(key);
   if (v5)
   {
     v6 = v5;
     v7 = SecKeyCopyExternalRepresentation(v5, &error);
     CFRelease(v6);
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -1042,10 +1042,10 @@ LABEL_15:
   }
 
   v7 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_3:
-    *a4 = error;
+    *error = error;
   }
 
 LABEL_4:
@@ -1053,10 +1053,10 @@ LABEL_4:
   return v7;
 }
 
-+ (id)fetchDataToSignWithPublicKeyData:(id)a3 challenge:(id)a4 error:(id *)a5
++ (id)fetchDataToSignWithPublicKeyData:(id)data challenge:(id)challenge error:(id *)error
 {
-  v7 = a4;
-  v8 = [a3 base64EncodedStringWithOptions:0];
+  challengeCopy = challenge;
+  v8 = [data base64EncodedStringWithOptions:0];
   v9 = v8;
   if (v8)
   {
@@ -1068,25 +1068,25 @@ LABEL_4:
     v10 = &stru_1F071BA78;
   }
 
-  v11 = [v7 stringByAppendingString:v10];
+  v11 = [challengeCopy stringByAppendingString:v10];
 
   v12 = [v11 dataUsingEncoding:4];
   v13 = [v12 length];
-  if (a5 && !v13)
+  if (error && !v13)
   {
-    *a5 = AMSError(0, @"Signature Failed", @"No data to sign", 0);
+    *error = AMSError(0, @"Signature Failed", @"No data to sign", 0);
   }
 
   return v12;
 }
 
-+ (id)signDataWithPrivateKey:(__SecKey *)a3 dataToSign:(id)a4 error:(id *)a5
++ (id)signDataWithPrivateKey:(__SecKey *)key dataToSign:(id)sign error:(id *)error
 {
   error = 0;
-  v6 = SecKeyCreateSignature(a3, *MEMORY[0x1E697B128], a4, &error);
-  if (a5)
+  v6 = SecKeyCreateSignature(key, *MEMORY[0x1E697B128], sign, &error);
+  if (error)
   {
-    *a5 = error;
+    *error = error;
   }
 
   return v6;

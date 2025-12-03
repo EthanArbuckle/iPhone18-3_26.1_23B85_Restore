@@ -1,29 +1,29 @@
 @interface CUSPAKEVerifier
-- (CUSPAKEVerifier)initWithPasswordCString:(const char *)a3;
-- (CUSPAKEVerifier)initWithPasswordPtr:(const void *)a3 passwordLength:(unint64_t)a4;
-- (CUSPAKEVerifier)initWithPasswordString:(id)a3;
-- (id)finishWithM3:(id)a3 error:(id *)a4;
-- (id)generateM2WithM1:(id)a3 error:(id *)a4;
+- (CUSPAKEVerifier)initWithPasswordCString:(const char *)string;
+- (CUSPAKEVerifier)initWithPasswordPtr:(const void *)ptr passwordLength:(unint64_t)length;
+- (CUSPAKEVerifier)initWithPasswordString:(id)string;
+- (id)finishWithM3:(id)m3 error:(id *)error;
+- (id)generateM2WithM1:(id)m1 error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation CUSPAKEVerifier
 
-- (id)finishWithM3:(id)a3 error:(id *)a4
+- (id)finishWithM3:(id)m3 error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v12 = v6;
+  m3Copy = m3;
+  v12 = m3Copy;
   if (!self->_spakeContext)
   {
-    if (a4)
+    if (error)
     {
       v24 = *MEMORY[0x1E696A768];
       v25 = "no spake context";
       v26 = 4294960551;
 LABEL_13:
       NSErrorF_safe(v24, v26, v25, v7, v8, v9, v10, v11, v27);
-      *a4 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_6;
     }
 
@@ -32,15 +32,15 @@ LABEL_16:
     goto LABEL_6;
   }
 
-  v13 = [v6 confirmPData];
-  [v13 length];
-  v14 = [v12 confirmPData];
-  [v14 bytes];
+  confirmPData = [m3Copy confirmPData];
+  [confirmPData length];
+  confirmPData2 = [v12 confirmPData];
+  [confirmPData2 bytes];
   session_key = ccspake_mac_verify_and_get_session_key();
 
   if (session_key)
   {
-    if (a4)
+    if (error)
     {
       v24 = *MEMORY[0x1E696A768];
       v27 = session_key;
@@ -64,9 +64,9 @@ LABEL_16:
     v22 = v16;
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960568, "generate session key failed", v17, v18, v19, v20, v21, v27);
+    *error = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960568, "generate session key failed", v17, v18, v19, v20, v21, v27);
   }
 
 LABEL_6:
@@ -74,10 +74,10 @@ LABEL_6:
   return v16;
 }
 
-- (id)generateM2WithM1:(id)a3 error:(id *)a4
+- (id)generateM2WithM1:(id)m1 error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  m1Copy = m1;
   ccspake_cp_256_rfc();
   if (![CUSPAKECommon scryptWithPasswordData:"scryptWithPasswordData:outputPtr:outputLen:error:" outputPtr:self->_passwordData outputLen:&v55[-((2 * (ccspake_sizeof_w() + 8) + 15) & 0xFFFFFFFFFFFFFFF0) - 8] error:?])
   {
@@ -87,11 +87,11 @@ LABEL_6:
   v7 = ccspake_reduce_w();
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       NSErrorF_safe(*MEMORY[0x1E696A768], 4294960596, "ccspake_reduce_w failed w0: %d", v8, v9, v10, v11, v12, v7);
 LABEL_20:
-      *a4 = v43 = 0;
+      *error = v43 = 0;
       goto LABEL_13;
     }
 
@@ -103,7 +103,7 @@ LABEL_21:
   v13 = ccspake_reduce_w();
   if (v13)
   {
-    if (a4)
+    if (error)
     {
       NSErrorF_safe(*MEMORY[0x1E696A768], 4294960596, "ccspake_reduce_w failed w1: %d", v14, v15, v16, v17, v18, v13);
       goto LABEL_20;
@@ -117,7 +117,7 @@ LABEL_21:
   ccrng();
   if (ccspake_generate_L())
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_38;
     }
@@ -129,7 +129,7 @@ LABEL_26:
     v50 = NSErrorF_safe(v47, v49, v48, v20, v21, v22, v23, v24, v54);
 LABEL_37:
     v43 = 0;
-    *a4 = v50;
+    *error = v50;
     goto LABEL_13;
   }
 
@@ -145,7 +145,7 @@ LABEL_37:
   self->_spakeContext = v26;
   if (!v26)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_38;
     }
@@ -160,7 +160,7 @@ LABEL_37:
   v27 = ccspake_verifier_initialize();
   if (v27)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_38;
     }
@@ -176,7 +176,7 @@ LABEL_35:
   v33 = ccspake_kex_generate();
   if (v33)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_38;
     }
@@ -187,15 +187,15 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  v34 = [v6 sharePData];
-  [v34 length];
-  v35 = [v6 sharePData];
-  [v35 bytes];
+  sharePData = [m1Copy sharePData];
+  [sharePData length];
+  sharePData2 = [m1Copy sharePData];
+  [sharePData2 bytes];
   v36 = ccspake_kex_process();
 
   if (v36)
   {
-    if (a4)
+    if (error)
     {
       NSErrorF_safe(*MEMORY[0x1E696A768], 4294960596, "ccspake_kex_process failed: %d", v37, v38, v39, v40, v41, v36);
       v50 = LABEL_36:;
@@ -218,7 +218,7 @@ LABEL_35:
       goto LABEL_13;
     }
 
-    if (a4)
+    if (error)
     {
       v51 = *MEMORY[0x1E696A768];
       v53 = v42;
@@ -250,16 +250,16 @@ LABEL_13:
   [(CUSPAKEVerifier *)&v3 dealloc];
 }
 
-- (CUSPAKEVerifier)initWithPasswordString:(id)a3
+- (CUSPAKEVerifier)initWithPasswordString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v11.receiver = self;
   v11.super_class = CUSPAKEVerifier;
   v5 = [(CUSPAKEVerifier *)&v11 init];
   if (v5)
   {
-    v6 = [v4 UTF8String];
-    v7 = [MEMORY[0x1E695DEF0] _newZeroingDataWithBytes:v6 length:strlen(v6)];
+    uTF8String = [stringCopy UTF8String];
+    v7 = [MEMORY[0x1E695DEF0] _newZeroingDataWithBytes:uTF8String length:strlen(uTF8String)];
     passwordData = v5->_passwordData;
     v5->_passwordData = v7;
 
@@ -269,14 +269,14 @@ LABEL_13:
   return v5;
 }
 
-- (CUSPAKEVerifier)initWithPasswordPtr:(const void *)a3 passwordLength:(unint64_t)a4
+- (CUSPAKEVerifier)initWithPasswordPtr:(const void *)ptr passwordLength:(unint64_t)length
 {
   v11.receiver = self;
   v11.super_class = CUSPAKEVerifier;
   v6 = [(CUSPAKEVerifier *)&v11 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DEF0] _newZeroingDataWithBytes:a3 length:a4];
+    v7 = [MEMORY[0x1E695DEF0] _newZeroingDataWithBytes:ptr length:length];
     passwordData = v6->_passwordData;
     v6->_passwordData = v7;
 
@@ -286,14 +286,14 @@ LABEL_13:
   return v6;
 }
 
-- (CUSPAKEVerifier)initWithPasswordCString:(const char *)a3
+- (CUSPAKEVerifier)initWithPasswordCString:(const char *)string
 {
   v9.receiver = self;
   v9.super_class = CUSPAKEVerifier;
   v4 = [(CUSPAKEVerifier *)&v9 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DEF0] _newZeroingDataWithBytes:a3 length:strlen(a3)];
+    v5 = [MEMORY[0x1E695DEF0] _newZeroingDataWithBytes:string length:strlen(string)];
     passwordData = v4->_passwordData;
     v4->_passwordData = v5;
 

@@ -6,7 +6,7 @@
 
 + (id)messageDeliveryFactory
 {
-  v2 = [a1 registeredObjectForProtocol:&OBJC_PROTOCOL___IDSMessageDeliveryFactory];
+  v2 = [self registeredObjectForProtocol:&OBJC_PROTOCOL___IDSMessageDeliveryFactory];
   v3 = v2;
   if (v2)
   {

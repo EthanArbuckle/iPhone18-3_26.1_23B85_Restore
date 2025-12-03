@@ -1,29 +1,29 @@
 @interface PXFeedSectionInfosManager
-- (BOOL)_shouldPerformFullReloadForFeedEntriesChangeNotifications:(id)a3 commentsChangeNotifications:(id)a4;
+- (BOOL)_shouldPerformFullReloadForFeedEntriesChangeNotifications:(id)notifications commentsChangeNotifications:(id)changeNotifications;
 - (BOOL)hasEnoughCloudFeedAssetEntriesToDisplay;
-- (BOOL)reconfigureToIncludeCloudFeedEntry:(id)a3;
-- (PXFeedSectionInfosManager)initWithPhotoLibrary:(id)a3 configurationBlock:(id)a4;
-- (PXFeedSectionInfosManager)initWithPhotoLibraryForTesting:(id)a3 filter:(int64_t)a4;
+- (BOOL)reconfigureToIncludeCloudFeedEntry:(id)entry;
+- (PXFeedSectionInfosManager)initWithPhotoLibrary:(id)library configurationBlock:(id)block;
+- (PXFeedSectionInfosManager)initWithPhotoLibraryForTesting:(id)testing filter:(int64_t)filter;
 - (PXFeedSectionInfosManagerDelegate)delegate;
 - (id)_sectionInfoSortingComparator;
 - (id)indexesOfInvitationsReceivedSectionInfos;
-- (id)indexesOfUnloadedSectionInfosAtIndexes:(id)a3;
-- (id)sectionInfoAtIndex:(int64_t)a3;
-- (id)sectionInfoWithIdentifier:(id)a3;
-- (int64_t)indexOfSectionInfoForCloudFeedEntry:(id)a3;
+- (id)indexesOfUnloadedSectionInfosAtIndexes:(id)indexes;
+- (id)sectionInfoAtIndex:(int64_t)index;
+- (id)sectionInfoWithIdentifier:(id)identifier;
+- (int64_t)indexOfSectionInfoForCloudFeedEntry:(id)entry;
 - (int64_t)numberOfInvitationsReceived;
-- (void)_didFinishPostingNotifications:(id)a3;
-- (void)_getEarliestDate:(id *)a3 mostRecentEntries:(id *)a4 forBatchWithLatestDate:(id)a5;
+- (void)_didFinishPostingNotifications:(id)notifications;
+- (void)_getEarliestDate:(id *)date mostRecentEntries:(id *)entries forBatchWithLatestDate:(id)latestDate;
 - (void)_rebuildSectionInfos;
-- (void)_updateSectionInfosForFeedEntriesChangeNotifications:(id)a3 commentsChangeNotifications:(id)a4 assetsChangeNotifications:(id)a5;
-- (void)cloudCommentsDidChange:(id)a3;
-- (void)cloudFeedEntriesDidChange:(id)a3;
+- (void)_updateSectionInfosForFeedEntriesChangeNotifications:(id)notifications commentsChangeNotifications:(id)changeNotifications assetsChangeNotifications:(id)assetsChangeNotifications;
+- (void)cloudCommentsDidChange:(id)change;
+- (void)cloudFeedEntriesDidChange:(id)change;
 - (void)dealloc;
-- (void)loadSectionInfosAtIndexes:(id)a3;
-- (void)photoLibraryDidChange:(id)a3;
-- (void)reconfigure:(id)a3;
-- (void)shouldReload:(id)a3;
-- (void)updateObservedAssetsFromEntry:(id)a3 outObservedAssetOIDs:(id *)a4;
+- (void)loadSectionInfosAtIndexes:(id)indexes;
+- (void)photoLibraryDidChange:(id)change;
+- (void)reconfigure:(id)reconfigure;
+- (void)shouldReload:(id)reload;
+- (void)updateObservedAssetsFromEntry:(id)entry outObservedAssetOIDs:(id *)ds;
 @end
 
 @implementation PXFeedSectionInfosManager
@@ -35,18 +35,18 @@
   return WeakRetained;
 }
 
-- (PXFeedSectionInfosManager)initWithPhotoLibraryForTesting:(id)a3 filter:(int64_t)a4
+- (PXFeedSectionInfosManager)initWithPhotoLibraryForTesting:(id)testing filter:(int64_t)filter
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  testingCopy = testing;
   v26.receiver = self;
   v26.super_class = PXFeedSectionInfosManager;
   v8 = [(PXFeedSectionInfosManager *)&v26 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_photoLibrary, a3);
-    v9->_entryFilter = a4;
+    objc_storeStrong(&v8->_photoLibrary, testing);
+    v9->_entryFilter = filter;
     v10 = [(PXFeedTestSectionInfo *)[PXFeedTestInvitationSectionInfo alloc] initWithPhotoLibrary:v9->_photoLibrary];
     v11 = [(PXFeedTestSectionInfo *)[PXFeedTestInvitationSectionInfo alloc] initWithPhotoLibrary:v9->_photoLibrary];
     v12 = [(PXFeedTestSectionInfo *)[PXFeedTestCommentsSectionInfo alloc] initWithPhotoLibrary:v9->_photoLibrary];
@@ -134,12 +134,12 @@ uint64_t __58__PXFeedSectionInfosManager__sectionInfoSortingComparator__block_in
   return v9;
 }
 
-- (void)_updateSectionInfosForFeedEntriesChangeNotifications:(id)a3 commentsChangeNotifications:(id)a4 assetsChangeNotifications:(id)a5
+- (void)_updateSectionInfosForFeedEntriesChangeNotifications:(id)notifications commentsChangeNotifications:(id)changeNotifications assetsChangeNotifications:(id)assetsChangeNotifications
 {
   v83 = *MEMORY[0x1E69E9840];
-  v46 = a3;
-  v9 = a4;
-  v10 = a5;
+  notificationsCopy = notifications;
+  changeNotificationsCopy = changeNotifications;
+  assetsChangeNotificationsCopy = assetsChangeNotifications;
   v11 = PLCloudFeedGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -149,27 +149,27 @@ uint64_t __58__PXFeedSectionInfosManager__sectionInfoSortingComparator__block_in
     _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEBUG, "will %@", &buf, 0xCu);
   }
 
-  v13 = [(PXFeedSectionInfosManager *)self earliestDate];
-  v14 = v13;
-  if (v13)
+  earliestDate = [(PXFeedSectionInfosManager *)self earliestDate];
+  v14 = earliestDate;
+  if (earliestDate)
   {
-    v15 = v13;
+    distantPast = earliestDate;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
   }
 
-  v16 = v15;
+  v16 = distantPast;
 
   v44 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v42 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v40 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v17 = [(PXFeedSectionInfosManager *)self _sectionInfoSortingComparator];
+  _sectionInfoSortingComparator = [(PXFeedSectionInfosManager *)self _sectionInfoSortingComparator];
   v38 = self->_sectionInfosByCloudFeedEntry;
   v18 = [(NSMutableArray *)self->_sectionInfos mutableCopy];
-  v36 = v17;
+  v36 = _sectionInfoSortingComparator;
   v72 = 0;
   v73 = &v72;
   v74 = 0x2020000000;
@@ -195,7 +195,7 @@ uint64_t __58__PXFeedSectionInfosManager__sectionInfoSortingComparator__block_in
   v48[1] = 3221225472;
   v48[2] = __136__PXFeedSectionInfosManager__updateSectionInfosForFeedEntriesChangeNotifications_commentsChangeNotifications_assetsChangeNotifications___block_invoke;
   v48[3] = &unk_1E7734B28;
-  v32 = v46;
+  v32 = notificationsCopy;
   v49 = v32;
   v33 = v16;
   v50 = v33;
@@ -211,7 +211,7 @@ uint64_t __58__PXFeedSectionInfosManager__sectionInfoSortingComparator__block_in
   v55 = v47;
   v23 = v19;
   v56 = v23;
-  v57 = self;
+  selfCopy = self;
   v43 = v36;
   v62 = v43;
   v24 = v20;
@@ -219,10 +219,10 @@ uint64_t __58__PXFeedSectionInfosManager__sectionInfoSortingComparator__block_in
   v25 = v21;
   v59 = v25;
   v63 = &v72;
-  v37 = v9;
+  v37 = changeNotificationsCopy;
   v60 = v37;
   p_buf = &buf;
-  v26 = v10;
+  v26 = assetsChangeNotificationsCopy;
   v61 = v26;
   v65 = &v66;
   [(PLPhotoLibrary *)photoLibrary performBlockAndWait:v48];
@@ -243,8 +243,8 @@ uint64_t __58__PXFeedSectionInfosManager__sectionInfoSortingComparator__block_in
     [(PXFeedSectionInfosChange *)v28 setUpdatedAssets:v67[5]];
   }
 
-  v29 = [(PXFeedSectionInfosManager *)self delegate];
-  [v29 feedSectionInfosManager:self sectionInfosDidChange:v28];
+  delegate = [(PXFeedSectionInfosManager *)self delegate];
+  [delegate feedSectionInfosManager:self sectionInfosDidChange:v28];
 
   v30 = PLCloudFeedGetLog();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -708,15 +708,15 @@ LABEL_77:
   }
 }
 
-- (BOOL)_shouldPerformFullReloadForFeedEntriesChangeNotifications:(id)a3 commentsChangeNotifications:(id)a4
+- (BOOL)_shouldPerformFullReloadForFeedEntriesChangeNotifications:(id)notifications commentsChangeNotifications:(id)changeNotifications
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  notificationsCopy = notifications;
+  v5 = [notificationsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -726,7 +726,7 @@ LABEL_77:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(notificationsCopy);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) shouldReload])
@@ -742,7 +742,7 @@ LABEL_77:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [notificationsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -757,7 +757,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)_didFinishPostingNotifications:(id)a3
+- (void)_didFinishPostingNotifications:(id)notifications
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = PLCloudFeedGetLog();
@@ -807,7 +807,7 @@ LABEL_13:
   }
 }
 
-- (void)shouldReload:(id)a3
+- (void)shouldReload:(id)reload
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = PLCloudFeedGetLog();
@@ -825,36 +825,36 @@ LABEL_13:
   [(PXFeedSectionInfosManager *)self _rebuildSectionInfos];
 }
 
-- (void)cloudCommentsDidChange:(id)a3
+- (void)cloudCommentsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if ([(PXFeedSectionInfosManager *)self entryFilter]!= 1)
   {
-    [(NSMutableArray *)self->_pendingCommentsChangeNotifications addObject:v4];
+    [(NSMutableArray *)self->_pendingCommentsChangeNotifications addObject:changeCopy];
   }
 }
 
-- (void)cloudFeedEntriesDidChange:(id)a3
+- (void)cloudFeedEntriesDidChange:(id)change
 {
-  v13 = a3;
-  v4 = [(PXFeedSectionInfosManager *)self entryFilter];
-  if (([v13 shouldReload] & 1) != 0 || !v4)
+  changeCopy = change;
+  entryFilter = [(PXFeedSectionInfosManager *)self entryFilter];
+  if (([changeCopy shouldReload] & 1) != 0 || !entryFilter)
   {
-    [(NSMutableArray *)self->_pendingFeedEntriesChangeNotifications addObject:v13];
+    [(NSMutableArray *)self->_pendingFeedEntriesChangeNotifications addObject:changeCopy];
   }
 
   else
   {
-    v5 = [v13 insertedEntries];
-    v6 = [v5 mutableCopy];
+    insertedEntries = [changeCopy insertedEntries];
+    v6 = [insertedEntries mutableCopy];
 
-    v7 = [v13 updatedEntries];
-    v8 = [v7 mutableCopy];
+    updatedEntries = [changeCopy updatedEntries];
+    v8 = [updatedEntries mutableCopy];
 
-    v9 = [v13 deletedEntries];
-    v10 = [v9 mutableCopy];
+    deletedEntries = [changeCopy deletedEntries];
+    v10 = [deletedEntries mutableCopy];
 
-    v11 = [MEMORY[0x1E69BE320] notificationPredicateForFilter:v4];
+    v11 = [MEMORY[0x1E69BE320] notificationPredicateForFilter:entryFilter];
     [v6 filterUsingPredicate:v11];
     [v8 filterUsingPredicate:v11];
     [v10 filterUsingPredicate:v11];
@@ -863,21 +863,21 @@ LABEL_13:
   }
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if ([MEMORY[0x1E6978AB0] sensitiveContentAnalysisEnabled])
   {
-    v5 = [v4 updatedObjectIDs];
-    if ([(NSMutableSet *)self->_observedAssetOIDs intersectsSet:v5])
+    updatedObjectIDs = [changeCopy updatedObjectIDs];
+    if ([(NSMutableSet *)self->_observedAssetOIDs intersectsSet:updatedObjectIDs])
     {
       photoLibrary = self->_photoLibrary;
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __51__PXFeedSectionInfosManager_photoLibraryDidChange___block_invoke;
       v7[3] = &unk_1E774C620;
-      v8 = v5;
-      v9 = self;
+      v8 = updatedObjectIDs;
+      selfCopy = self;
       [(PLPhotoLibrary *)photoLibrary performBlockAndWait:v7];
     }
   }
@@ -891,11 +891,11 @@ void __51__PXFeedSectionInfosManager_photoLibraryDidChange___block_invoke(uint64
   [v2 feedSectionInfosManager:*(a1 + 40) sectionInfosDidChange:v3];
 }
 
-- (void)_getEarliestDate:(id *)a3 mostRecentEntries:(id *)a4 forBatchWithLatestDate:(id)a5
+- (void)_getEarliestDate:(id *)date mostRecentEntries:(id *)entries forBatchWithLatestDate:(id)latestDate
 {
-  v8 = a5;
-  v9 = [(PXFeedSectionInfosManager *)self entryFilter];
-  if (v9 == 5)
+  latestDateCopy = latestDate;
+  entryFilter = [(PXFeedSectionInfosManager *)self entryFilter];
+  if (entryFilter == 5)
   {
     v10 = 0;
   }
@@ -923,21 +923,21 @@ void __51__PXFeedSectionInfosManager_photoLibraryDidChange___block_invoke(uint64
   v13[2] = __87__PXFeedSectionInfosManager__getEarliestDate_mostRecentEntries_forBatchWithLatestDate___block_invoke;
   v13[3] = &unk_1E7734B00;
   v13[4] = self;
-  v12 = v8;
+  v12 = latestDateCopy;
   v17 = v10;
-  v18 = v9;
+  v18 = entryFilter;
   v14 = v12;
   v15 = &v25;
   v16 = &v19;
   [(PLPhotoLibrary *)photoLibrary performBlockAndWait:v13];
-  if (a3)
+  if (date)
   {
-    *a3 = v26[5];
+    *date = v26[5];
   }
 
-  if (a4)
+  if (entries)
   {
-    *a4 = v20[5];
+    *entries = v20[5];
   }
 
   _Block_object_dispose(&v19, 8);
@@ -991,14 +991,14 @@ void __87__PXFeedSectionInfosManager__getEarliestDate_mostRecentEntries_forBatch
   }
 }
 
-- (void)updateObservedAssetsFromEntry:(id)a3 outObservedAssetOIDs:(id *)a4
+- (void)updateObservedAssetsFromEntry:(id)entry outObservedAssetOIDs:(id *)ds
 {
-  v8 = a3;
-  v4 = [MEMORY[0x1E6978AB0] sensitiveContentAnalysisEnabled];
-  v5 = v8;
-  if (v4)
+  entryCopy = entry;
+  sensitiveContentAnalysisEnabled = [MEMORY[0x1E6978AB0] sensitiveContentAnalysisEnabled];
+  v5 = entryCopy;
+  if (sensitiveContentAnalysisEnabled)
   {
-    v6 = v8;
+    v6 = entryCopy;
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v7 = v6;
@@ -1016,7 +1016,7 @@ void __87__PXFeedSectionInfosManager__getEarliestDate_mostRecentEntries_forBatch
       v7 = 0;
     }
 
-    v5 = v8;
+    v5 = entryCopy;
   }
 }
 
@@ -1030,9 +1030,9 @@ void __87__PXFeedSectionInfosManager__getEarliestDate_mostRecentEntries_forBatch
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEBUG, "will rebuild section infos", buf, 2u);
   }
 
-  v4 = [(PXFeedSectionInfosManager *)self earliestDate];
-  v25 = v4;
-  if (v4)
+  earliestDate = [(PXFeedSectionInfosManager *)self earliestDate];
+  v25 = earliestDate;
+  if (earliestDate)
   {
     *buf = 0;
     v38 = buf;
@@ -1047,7 +1047,7 @@ void __87__PXFeedSectionInfosManager__getEarliestDate_mostRecentEntries_forBatch
     v34[3] = &unk_1E7746448;
     v36 = buf;
     v34[4] = self;
-    v35 = v4;
+    v35 = earliestDate;
     [(PLPhotoLibrary *)photoLibrary performBlockAndWait:v34, v25];
     v27 = *(v38 + 5);
 
@@ -1072,7 +1072,7 @@ void __87__PXFeedSectionInfosManager__getEarliestDate_mostRecentEntries_forBatch
   sectionInfosByCloudFeedEntry = self->_sectionInfosByCloudFeedEntry;
   self->_sectionInfosByCloudFeedEntry = v9;
 
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -1085,7 +1085,7 @@ void __87__PXFeedSectionInfosManager__getEarliestDate_mostRecentEntries_forBatch
     do
     {
       v14 = 0;
-      v15 = v11;
+      v15 = array;
       do
       {
         if (*v31 != v13)
@@ -1096,16 +1096,16 @@ void __87__PXFeedSectionInfosManager__getEarliestDate_mostRecentEntries_forBatch
         v16 = *(*(&v30 + 1) + 8 * v14);
         v17 = [PXFeedSectionInfo sectionInfoWithCloudFeedEntry:v16 inPhotoLibrary:self->_phPhotoLibrary];
         v18 = self->_sectionInfosByCloudFeedEntry;
-        v19 = [v16 objectID];
-        [(NSMutableDictionary *)v18 setObject:v17 forKey:v19];
+        objectID = [v16 objectID];
+        [(NSMutableDictionary *)v18 setObject:v17 forKey:objectID];
 
         [(NSMutableArray *)self->_sectionInfos addObject:v17];
         v29 = v15;
         [(PXFeedSectionInfosManager *)self updateObservedAssetsFromEntry:v16 outObservedAssetOIDs:&v29];
-        v11 = v29;
+        array = v29;
 
         ++v14;
-        v15 = v11;
+        v15 = array;
       }
 
       while (v12 != v14);
@@ -1116,13 +1116,13 @@ void __87__PXFeedSectionInfosManager__getEarliestDate_mostRecentEntries_forBatch
   }
 
   observedAssetOIDs = self->_observedAssetOIDs;
-  v21 = [MEMORY[0x1E695DFD8] setWithArray:v11];
+  v21 = [MEMORY[0x1E695DFD8] setWithArray:array];
   [(NSMutableSet *)observedAssetOIDs unionSet:v21];
 
   v22 = objc_alloc_init(PXFeedSectionInfosChange);
   [(PXFeedSectionInfosChange *)v22 setShouldReload:1];
-  v23 = [(PXFeedSectionInfosManager *)self delegate];
-  [v23 feedSectionInfosManager:self sectionInfosDidChange:v22];
+  delegate = [(PXFeedSectionInfosManager *)self delegate];
+  [delegate feedSectionInfosManager:self sectionInfosDidChange:v22];
 
   v24 = PLCloudFeedGetLog();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -1175,25 +1175,25 @@ uint64_t __69__PXFeedSectionInfosManager_indexesOfInvitationsReceivedSectionInfo
 
 - (int64_t)numberOfInvitationsReceived
 {
-  v2 = [(PXFeedSectionInfosManager *)self indexesOfInvitationsReceivedSectionInfos];
-  v3 = [v2 count];
+  indexesOfInvitationsReceivedSectionInfos = [(PXFeedSectionInfosManager *)self indexesOfInvitationsReceivedSectionInfos];
+  v3 = [indexesOfInvitationsReceivedSectionInfos count];
 
   return v3;
 }
 
-- (BOOL)reconfigureToIncludeCloudFeedEntry:(id)a3
+- (BOOL)reconfigureToIncludeCloudFeedEntry:(id)entry
 {
-  v4 = [a3 entryDate];
-  v5 = [v4 dateByAddingTimeInterval:-1.0];
+  entryDate = [entry entryDate];
+  v5 = [entryDate dateByAddingTimeInterval:-1.0];
 
-  v6 = [(NSMutableArray *)self->_sectionInfos lastObject];
-  v7 = [v6 cloudFeedEntry];
-  v8 = [v7 entryDate];
+  lastObject = [(NSMutableArray *)self->_sectionInfos lastObject];
+  cloudFeedEntry = [lastObject cloudFeedEntry];
+  entryDate2 = [cloudFeedEntry entryDate];
 
   v9 = 0;
-  if (v5 && v8)
+  if (v5 && entryDate2)
   {
-    if ([v5 compare:v8] == -1)
+    if ([v5 compare:entryDate2] == -1)
     {
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
@@ -1222,17 +1222,17 @@ void __64__PXFeedSectionInfosManager_reconfigureToIncludeCloudFeedEntry___block_
   [v3 setFetchLimit:0];
 }
 
-- (void)reconfigure:(id)a3
+- (void)reconfigure:(id)reconfigure
 {
-  (*(a3 + 2))(a3, self);
+  (*(reconfigure + 2))(reconfigure, self);
 
   [(PXFeedSectionInfosManager *)self _rebuildSectionInfos];
 }
 
-- (void)loadSectionInfosAtIndexes:(id)a3
+- (void)loadSectionInfosAtIndexes:(id)indexes
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  indexesCopy = indexes;
   v5 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v6 = objc_alloc_init(MEMORY[0x1E696AD50]);
   sectionInfos = self->_sectionInfos;
@@ -1242,21 +1242,21 @@ void __64__PXFeedSectionInfosManager_reconfigureToIncludeCloudFeedEntry___block_
   v41[3] = &unk_1E774BCB0;
   v8 = v6;
   v42 = v8;
-  [(NSMutableArray *)sectionInfos enumerateObjectsAtIndexes:v4 options:0 usingBlock:v41];
-  v9 = [(PXFeedSectionInfosManager *)self entryFilter];
-  if ([v4 containsIndex:0])
+  [(NSMutableArray *)sectionInfos enumerateObjectsAtIndexes:indexesCopy options:0 usingBlock:v41];
+  entryFilter = [(PXFeedSectionInfosManager *)self entryFilter];
+  if ([indexesCopy containsIndex:0])
   {
     if ([(PXFeedSectionInfosManager *)self fetchLimit])
     {
       v10 = [(NSMutableArray *)self->_sectionInfos count];
-      if (v10 < [(PXFeedSectionInfosManager *)self fetchLimit]&& v9 != 5)
+      if (v10 < [(PXFeedSectionInfosManager *)self fetchLimit]&& entryFilter != 5)
       {
         v11 = PLCloudFeedGetLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
-          v12 = [MEMORY[0x1E696AF00] callStackSymbols];
+          callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
           *buf = 138412290;
-          v45 = v12;
+          v45 = callStackSymbols;
           _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEBUG, "will load next batch of sections %@", buf, 0xCu);
         }
 
@@ -1295,8 +1295,8 @@ void __64__PXFeedSectionInfosManager_reconfigureToIncludeCloudFeedEntry___block_
               v21 = *(*(&v35 + 1) + 8 * v19);
               v22 = [PXFeedSectionInfo sectionInfoWithCloudFeedEntry:v21 inPhotoLibrary:self->_phPhotoLibrary];
               sectionInfosByCloudFeedEntry = self->_sectionInfosByCloudFeedEntry;
-              v24 = [v21 objectID];
-              [(NSMutableDictionary *)sectionInfosByCloudFeedEntry setObject:v22 forKey:v24];
+              objectID = [v21 objectID];
+              [(NSMutableDictionary *)sectionInfosByCloudFeedEntry setObject:v22 forKey:objectID];
 
               [(NSMutableArray *)self->_sectionInfos insertObject:v22 atIndex:0];
               v34 = v20;
@@ -1337,8 +1337,8 @@ void __64__PXFeedSectionInfosManager_reconfigureToIncludeCloudFeedEntry___block_
     v28 = objc_alloc_init(PXFeedSectionInfosChange);
     [(PXFeedSectionInfosChange *)v28 setInsertedIndexes:v5];
     [(PXFeedSectionInfosChange *)v28 setUpdatedIndexes:v8];
-    v29 = [(PXFeedSectionInfosManager *)self delegate];
-    [v29 feedSectionInfosManager:self sectionInfosDidChange:v28];
+    delegate = [(PXFeedSectionInfosManager *)self delegate];
+    [delegate feedSectionInfosManager:self sectionInfosDidChange:v28];
   }
 }
 
@@ -1352,10 +1352,10 @@ void __55__PXFeedSectionInfosManager_loadSectionInfosAtIndexes___block_invoke(ui
   }
 }
 
-- (id)indexesOfUnloadedSectionInfosAtIndexes:(id)a3
+- (id)indexesOfUnloadedSectionInfosAtIndexes:(id)indexes
 {
   v4 = MEMORY[0x1E696AD50];
-  v5 = a3;
+  indexesCopy = indexes;
   v6 = objc_alloc_init(v4);
   sectionInfos = self->_sectionInfos;
   v10[0] = MEMORY[0x1E69E9820];
@@ -1364,7 +1364,7 @@ void __55__PXFeedSectionInfosManager_loadSectionInfosAtIndexes___block_invoke(ui
   v10[3] = &unk_1E774BCB0;
   v8 = v6;
   v11 = v8;
-  [(NSMutableArray *)sectionInfos enumerateObjectsAtIndexes:v5 options:0 usingBlock:v10];
+  [(NSMutableArray *)sectionInfos enumerateObjectsAtIndexes:indexesCopy options:0 usingBlock:v10];
 
   return v8;
 }
@@ -1382,20 +1382,20 @@ uint64_t __68__PXFeedSectionInfosManager_indexesOfUnloadedSectionInfosAtIndexes_
   return result;
 }
 
-- (int64_t)indexOfSectionInfoForCloudFeedEntry:(id)a3
+- (int64_t)indexOfSectionInfoForCloudFeedEntry:(id)entry
 {
   sectionInfosByCloudFeedEntry = self->_sectionInfosByCloudFeedEntry;
-  v5 = [a3 objectID];
-  v6 = [(NSMutableDictionary *)sectionInfosByCloudFeedEntry objectForKey:v5];
+  objectID = [entry objectID];
+  v6 = [(NSMutableDictionary *)sectionInfosByCloudFeedEntry objectForKey:objectID];
 
   v7 = [(NSMutableArray *)self->_sectionInfos indexOfObject:v6];
   return v7;
 }
 
-- (id)sectionInfoWithIdentifier:(id)a3
+- (id)sectionInfoWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1415,8 +1415,8 @@ uint64_t __68__PXFeedSectionInfosManager_indexesOfUnloadedSectionInfosAtIndexes_
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 transientIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        transientIdentifier = [v9 transientIdentifier];
+        v11 = [transientIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -1440,23 +1440,23 @@ LABEL_11:
   return v6;
 }
 
-- (id)sectionInfoAtIndex:(int64_t)a3
+- (id)sectionInfoAtIndex:(int64_t)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     v6 = 0;
   }
 
   else
   {
-    if ([(NSMutableArray *)self->_sectionInfos count]<= a3)
+    if ([(NSMutableArray *)self->_sectionInfos count]<= index)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = [(NSMutableArray *)self->_sectionInfos objectAtIndexedSubscript:a3];
+      v6 = [(NSMutableArray *)self->_sectionInfos objectAtIndexedSubscript:index];
     }
   }
 
@@ -1485,12 +1485,12 @@ LABEL_11:
           objc_enumerationMutation(v2);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) cloudFeedEntry];
+        cloudFeedEntry = [*(*(&v10 + 1) + 8 * i) cloudFeedEntry];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v8 = [v7 entryAssets];
-          v4 += [v8 count];
+          entryAssets = [cloudFeedEntry entryAssets];
+          v4 += [entryAssets count];
 
           if (v4 >= 4)
           {
@@ -1518,31 +1518,31 @@ LABEL_12:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E69BE2F0] defaultCenter];
-  [v3 removeCloudFeedEntriesObserver:self];
-  [v3 removeCloudCommentsChangeObserver:self asset:0];
-  [v3 removeAssetChangeObserver:self];
-  [v3 removeShouldReloadObserver:self];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69BE918] object:0];
+  defaultCenter = [MEMORY[0x1E69BE2F0] defaultCenter];
+  [defaultCenter removeCloudFeedEntriesObserver:self];
+  [defaultCenter removeCloudCommentsChangeObserver:self asset:0];
+  [defaultCenter removeAssetChangeObserver:self];
+  [defaultCenter removeShouldReloadObserver:self];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69BE918] object:0];
 
   v5.receiver = self;
   v5.super_class = PXFeedSectionInfosManager;
   [(PXFeedSectionInfosManager *)&v5 dealloc];
 }
 
-- (PXFeedSectionInfosManager)initWithPhotoLibrary:(id)a3 configurationBlock:(id)a4
+- (PXFeedSectionInfosManager)initWithPhotoLibrary:(id)library configurationBlock:(id)block
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  libraryCopy = library;
+  blockCopy = block;
   v28.receiver = self;
   v28.super_class = PXFeedSectionInfosManager;
   v10 = [(PXFeedSectionInfosManager *)&v28 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_photoLibrary, a3);
+    objc_storeStrong(&v10->_photoLibrary, library);
     if (v11->_photoLibrary)
     {
       v12 = [objc_alloc(MEMORY[0x1E69789A8]) initWithPLPhotoLibrary:v11->_photoLibrary];
@@ -1569,9 +1569,9 @@ LABEL_12:
     observedAssetOIDs = v11->_observedAssetOIDs;
     v11->_observedAssetOIDs = v15;
 
-    if (v9)
+    if (blockCopy)
     {
-      v9[2](v9, v11);
+      blockCopy[2](blockCopy, v11);
     }
 
     v17 = PLCloudFeedGetLog();
@@ -1596,13 +1596,13 @@ LABEL_12:
     pendingAssetsChangeNotifications = v11->_pendingAssetsChangeNotifications;
     v11->_pendingAssetsChangeNotifications = v23;
 
-    v25 = [MEMORY[0x1E69BE2F0] defaultCenter];
-    [v25 addCloudFeedEntriesObserver:v11];
-    [v25 addCloudCommentsChangeObserver:v11 asset:0];
-    [v25 addAssetChangeObserver:v11];
-    [v25 addShouldReloadObserver:v11];
-    v26 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v26 addObserver:v11 selector:sel__didFinishPostingNotifications_ name:*MEMORY[0x1E69BE918] object:0];
+    defaultCenter = [MEMORY[0x1E69BE2F0] defaultCenter];
+    [defaultCenter addCloudFeedEntriesObserver:v11];
+    [defaultCenter addCloudCommentsChangeObserver:v11 asset:0];
+    [defaultCenter addAssetChangeObserver:v11];
+    [defaultCenter addShouldReloadObserver:v11];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v11 selector:sel__didFinishPostingNotifications_ name:*MEMORY[0x1E69BE918] object:0];
 
     [(PHPhotoLibrary *)v11->_phPhotoLibrary registerChangeObserver:v11];
   }

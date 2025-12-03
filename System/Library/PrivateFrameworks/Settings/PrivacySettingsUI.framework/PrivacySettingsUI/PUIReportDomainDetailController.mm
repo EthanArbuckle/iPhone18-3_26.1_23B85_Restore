@@ -1,11 +1,11 @@
 @interface PUIReportDomainDetailController
 - (PUIReportDomainDetailController)init;
-- (id)appSpecifiersFromResults:(id)a3;
-- (id)iconForContext:(id)a3;
-- (id)nameForAppID:(id)a3;
+- (id)appSpecifiersFromResults:(id)results;
+- (id)iconForContext:(id)context;
+- (id)nameForAppID:(id)d;
 - (id)specifiers;
-- (id)timeStringForDate:(id)a3;
-- (id)websiteSpecifiersFromResults:(id)a3;
+- (id)timeStringForDate:(id)date;
+- (id)websiteSpecifiersFromResults:(id)results;
 - (void)dataDidChange;
 - (void)didTapLearnMore;
 - (void)reloadAsyncSpecifiers;
@@ -20,8 +20,8 @@
   v2 = [(PUIReportDomainDetailController *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_dataDidChange name:*MEMORY[0x277D76648] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_dataDidChange name:*MEMORY[0x277D76648] object:0];
 
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
@@ -38,27 +38,27 @@
   if (!v4)
   {
     v5 = objc_opt_new();
-    v6 = [(PUIReportDomainDetailController *)self domain];
+    domain = [(PUIReportDomainDetailController *)self domain];
 
-    if (!v6)
+    if (!domain)
     {
-      v7 = [(PUIReportDomainDetailController *)self specifier];
-      v8 = [v7 objectForKeyedSubscript:@"PUIReportDomainKey"];
+      specifier = [(PUIReportDomainDetailController *)self specifier];
+      v8 = [specifier objectForKeyedSubscript:@"PUIReportDomainKey"];
       [(PUIReportDomainDetailController *)self setDomain:v8];
     }
 
-    v9 = [(PUIReportDomainDetailController *)self specifier];
-    v10 = [v9 objectForKeyedSubscript:@"PUIReportDomainDetailTrackerTypeKey"];
-    v11 = [v10 integerValue];
+    specifier2 = [(PUIReportDomainDetailController *)self specifier];
+    v10 = [specifier2 objectForKeyedSubscript:@"PUIReportDomainDetailTrackerTypeKey"];
+    integerValue = [v10 integerValue];
 
-    v12 = [(PUIReportDomainDetailController *)self specifier];
-    v39 = [v12 objectForKeyedSubscript:@"PUIReportDomainDetailOwnerKey"];
+    specifier3 = [(PUIReportDomainDetailController *)self specifier];
+    v39 = [specifier3 objectForKeyedSubscript:@"PUIReportDomainDetailOwnerKey"];
 
-    v13 = [(PUIReportDomainDetailController *)self domain];
+    domain2 = [(PUIReportDomainDetailController *)self domain];
     v14 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"OWNED_BY_GROUP"];
     v15 = PUI_LocalizedStringForAppReport(@"OWNED_BY_FOOTER_LINK");
     v16 = MEMORY[0x277CCACA8];
-    if (v11 == 1)
+    if (integerValue == 1)
     {
       v17 = @"OWNED_BY_TRACKER_FOOTER";
     }
@@ -94,7 +94,7 @@
 
     [v27 setIdentifier:@"DOMAIN"];
     [v27 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
-    [v27 setObject:v13 forKeyedSubscript:*MEMORY[0x277D401A8]];
+    [v27 setObject:domain2 forKeyedSubscript:*MEMORY[0x277D401A8]];
     if ([v39 length])
     {
       v28 = MEMORY[0x277CCACA8];
@@ -150,9 +150,9 @@
   v9 = objc_opt_new();
   v10 = *MEMORY[0x277D6B668];
   [v9 setObject:&unk_28772B438 forKeyedSubscript:*MEMORY[0x277D6B668]];
-  v11 = [(PUIReportDomainDetailController *)self domain];
+  domain = [(PUIReportDomainDetailController *)self domain];
   v12 = *MEMORY[0x277D6B650];
-  [v9 setObject:v11 forKeyedSubscript:*MEMORY[0x277D6B650]];
+  [v9 setObject:domain forKeyedSubscript:*MEMORY[0x277D6B650]];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -165,8 +165,8 @@
   dispatch_group_enter(v13);
   v14 = objc_opt_new();
   [v14 setObject:&unk_28772B450 forKeyedSubscript:v10];
-  v15 = [(PUIReportDomainDetailController *)self domain];
-  [v14 setObject:v15 forKeyedSubscript:v12];
+  domain2 = [(PUIReportDomainDetailController *)self domain];
+  [v14 setObject:domain2 forKeyedSubscript:v12];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -267,39 +267,39 @@ void __48__PUIReportDomainDetailController_dataDidChange__block_invoke_3(uint64_
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v3 = [(PUIReportDomainDetailController *)self specifierForID:@"DOMAIN"];
-  v4 = [(PUIReportDomainDetailController *)self appRows];
-  v5 = [(PUIReportDomainDetailController *)self appRowsAwaitingDisplay];
-  v6 = [(PUIReportDomainDetailController *)self appHeader];
-  v18[0] = v6;
+  appRows = [(PUIReportDomainDetailController *)self appRows];
+  appRowsAwaitingDisplay = [(PUIReportDomainDetailController *)self appRowsAwaitingDisplay];
+  appHeader = [(PUIReportDomainDetailController *)self appHeader];
+  v18[0] = appHeader;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-  v8 = [(PSListController *)self pui_replaceRows:v4 withRows:v5 header:v7 insertPoint:v3];
+  v8 = [(PSListController *)self pui_replaceRows:appRows withRows:appRowsAwaitingDisplay header:v7 insertPoint:v3];
 
-  v9 = [(PUIReportDomainDetailController *)self appRowsAwaitingDisplay];
-  [(PUIReportDomainDetailController *)self setAppRows:v9];
+  appRowsAwaitingDisplay2 = [(PUIReportDomainDetailController *)self appRowsAwaitingDisplay];
+  [(PUIReportDomainDetailController *)self setAppRows:appRowsAwaitingDisplay2];
 
-  v10 = [(PUIReportDomainDetailController *)self websiteRows];
-  v11 = [(PUIReportDomainDetailController *)self websiteRowsAwaitingDisplay];
-  v12 = [(PUIReportDomainDetailController *)self websiteHeader];
-  v17 = v12;
+  websiteRows = [(PUIReportDomainDetailController *)self websiteRows];
+  websiteRowsAwaitingDisplay = [(PUIReportDomainDetailController *)self websiteRowsAwaitingDisplay];
+  websiteHeader = [(PUIReportDomainDetailController *)self websiteHeader];
+  v17 = websiteHeader;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
-  v14 = [(PSListController *)self pui_replaceRows:v10 withRows:v11 header:v13 insertPoint:v8];
+  v14 = [(PSListController *)self pui_replaceRows:websiteRows withRows:websiteRowsAwaitingDisplay header:v13 insertPoint:v8];
 
-  v15 = [(PUIReportDomainDetailController *)self websiteRowsAwaitingDisplay];
-  [(PUIReportDomainDetailController *)self setWebsiteRows:v15];
+  websiteRowsAwaitingDisplay2 = [(PUIReportDomainDetailController *)self websiteRowsAwaitingDisplay];
+  [(PUIReportDomainDetailController *)self setWebsiteRows:websiteRowsAwaitingDisplay2];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)appSpecifiersFromResults:(id)a3
+- (id)appSpecifiersFromResults:(id)results
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v25 = objc_opt_new();
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v4;
+  obj = resultsCopy;
   v5 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v5)
   {
@@ -348,16 +348,16 @@ void __48__PUIReportDomainDetailController_dataDidChange__block_invoke_3(uint64_
   return v19;
 }
 
-- (id)websiteSpecifiersFromResults:(id)a3
+- (id)websiteSpecifiersFromResults:(id)results
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v23 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v4;
+  obj = resultsCopy;
   v5 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v5)
   {
@@ -423,8 +423,8 @@ void __48__PUIReportDomainDetailController_dataDidChange__block_invoke_3(uint64_
   v10 = [v8 actionWithHandler:v14];
   v11 = [v7 initWithBarButtonSystemItem:0 primaryAction:v10];
 
-  v12 = [v9 navigationItem];
-  [v12 setRightBarButtonItem:v11];
+  navigationItem = [v9 navigationItem];
+  [navigationItem setRightBarButtonItem:v11];
 
   v13 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v9];
   [(PUIReportDomainDetailController *)self presentModalViewController:v13 withTransition:3];
@@ -436,43 +436,43 @@ void __50__PUIReportDomainDetailController_didTapLearnMore__block_invoke(uint64_
   [v1 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)nameForAppID:(id)a3
+- (id)nameForAppID:(id)d
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v3 allowPlaceholder:1 error:0];
+  dCopy = d;
+  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:dCopy allowPlaceholder:1 error:0];
   if (!v4)
   {
-    v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifierOfSystemPlaceholder:v3 error:0];
+    v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifierOfSystemPlaceholder:dCopy error:0];
   }
 
-  v5 = [v4 localizedName];
-  if (!v5)
+  localizedName = [v4 localizedName];
+  if (!localizedName)
   {
-    v5 = v3;
+    localizedName = dCopy;
   }
 
-  return v5;
+  return localizedName;
 }
 
-- (id)timeStringForDate:(id)a3
+- (id)timeStringForDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = objc_opt_new();
   [v4 setTimeStyle:1];
   [v4 setDateStyle:1];
-  v5 = [v4 stringFromDate:v3];
+  v5 = [v4 stringFromDate:dateCopy];
 
   return v5;
 }
 
-- (id)iconForContext:(id)a3
+- (id)iconForContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = PUIWebsiteIconView();
-  v5 = [v3 substringWithRange:{0, 1}];
+  v5 = [contextCopy substringWithRange:{0, 1}];
 
-  v6 = [v5 localizedUppercaseString];
-  [v4 setText:v6];
+  localizedUppercaseString = [v5 localizedUppercaseString];
+  [v4 setText:localizedUppercaseString];
 
   v7 = PUIImageFromLabel(v4);
 

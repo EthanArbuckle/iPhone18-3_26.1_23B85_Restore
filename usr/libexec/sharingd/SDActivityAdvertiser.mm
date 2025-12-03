@@ -8,32 +8,32 @@
 - (id)encryptedAdvertisingInformation;
 - (id)exportedInterface;
 - (id)remoteObjectInterface;
-- (void)activityPayloadForAdvertisementPayload:(id)a3 command:(id)a4 requestedByDevice:(id)a5 withCompletionHandler:(id)a6;
-- (void)activityServiceDevicesChanged:(id)a3;
+- (void)activityPayloadForAdvertisementPayload:(id)payload command:(id)command requestedByDevice:(id)device withCompletionHandler:(id)handler;
+- (void)activityServiceDevicesChanged:(id)changed;
 - (void)addObservers;
-- (void)advertiseAdvertisementPayload:(id)a3 options:(id)a4 withErrorHandler:(id)a5;
-- (void)connectionEstablished:(id)a3;
-- (void)connectionInvalidated:(id)a3;
-- (void)consoleUserChanged:(id)a3;
-- (void)continuity:(id)a3 didFailToStartAdvertisingOfType:(int64_t)a4 withError:(id)a5;
-- (void)continuity:(id)a3 didStartAdvertisingOfType:(int64_t)a4;
-- (void)continuity:(id)a3 didStopAdvertisingOfType:(int64_t)a4;
-- (void)continuity:(id)a3 didStopAdvertisingOfType:(int64_t)a4 withError:(id)a5;
-- (void)continuityDidUpdateState:(id)a3;
-- (void)didSendPayloadForActivityIdentifier:(id)a3 toDevice:(id)a4 error:(id)a5;
-- (void)goodbyeTimeoutFired:(id)a3;
+- (void)advertiseAdvertisementPayload:(id)payload options:(id)options withErrorHandler:(id)handler;
+- (void)connectionEstablished:(id)established;
+- (void)connectionInvalidated:(id)invalidated;
+- (void)consoleUserChanged:(id)changed;
+- (void)continuity:(id)continuity didFailToStartAdvertisingOfType:(int64_t)type withError:(id)error;
+- (void)continuity:(id)continuity didStartAdvertisingOfType:(int64_t)type;
+- (void)continuity:(id)continuity didStopAdvertisingOfType:(int64_t)type;
+- (void)continuity:(id)continuity didStopAdvertisingOfType:(int64_t)type withError:(id)error;
+- (void)continuityDidUpdateState:(id)state;
+- (void)didSendPayloadForActivityIdentifier:(id)identifier toDevice:(id)device error:(id)error;
+- (void)goodbyeTimeoutFired:(id)fired;
 - (void)invalidateGoodbyeTimer;
-- (void)loginIDWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)pairedSFPeerDevicesWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)peerForUUID:(id)a3 completionHandler:(id)a4;
+- (void)loginIDWithOptions:(id)options completionHandler:(id)handler;
+- (void)pairedSFPeerDevicesWithOptions:(id)options completionHandler:(id)handler;
+- (void)peerForUUID:(id)d completionHandler:(id)handler;
 - (void)preventIdleSleepAssertion;
 - (void)releaseIdleSleepAssertion;
 - (void)removeObservers;
-- (void)resumeForReason:(id)a3;
+- (void)resumeForReason:(id)reason;
 - (void)startGoodbyeTimer;
 - (void)stop;
-- (void)stopForReason:(id)a3;
-- (void)systemWillSleep:(id)a3;
+- (void)stopForReason:(id)reason;
+- (void)systemWillSleep:(id)sleep;
 @end
 
 @implementation SDActivityAdvertiser
@@ -178,9 +178,9 @@
   {
     if (!self->_rawAdvertisementData)
     {
-      v4 = [(SDActivityAdvertiser *)self encryptedAdvertisingInformation];
+      encryptedAdvertisingInformation = [(SDActivityAdvertiser *)self encryptedAdvertisingInformation];
       rawAdvertisementData = self->_rawAdvertisementData;
-      self->_rawAdvertisementData = v4;
+      self->_rawAdvertisementData = encryptedAdvertisingInformation;
     }
 
     if (!currentAdvertisementPayload)
@@ -273,9 +273,9 @@
       }
 
       v22 = [(NSMutableSet *)self->_shouldNotAdvertiseRequesters count];
-      v23 = [(SDActivityController *)self shouldStart];
+      shouldStart = [(SDActivityController *)self shouldStart];
       *v26 = 138413570;
-      if (v23)
+      if (shouldStart)
       {
         v24 = @"YES";
       }
@@ -327,9 +327,9 @@
   self->_currentErrorHandler = 0;
 }
 
-- (void)stopForReason:(id)a3
+- (void)stopForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = handoff_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -340,20 +340,20 @@
     v10 = 2112;
     v11 = v7;
     v12 = 2112;
-    v13 = v4;
+    v13 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s %@ + %@", &v8, 0x20u);
   }
 
-  [(NSMutableSet *)self->_shouldNotAdvertiseRequesters addObject:v4];
+  [(NSMutableSet *)self->_shouldNotAdvertiseRequesters addObject:reasonCopy];
   if ([(NSMutableSet *)self->_shouldNotAdvertiseRequesters count]== 1)
   {
     [(SDActivityAdvertiser *)self restart];
   }
 }
 
-- (void)resumeForReason:(id)a3
+- (void)resumeForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = handoff_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -364,13 +364,13 @@
     v10 = 2112;
     v11 = v7;
     v12 = 2112;
-    v13 = v4;
+    v13 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s %@ - %@", &v8, 0x20u);
   }
 
-  if ([(NSMutableSet *)self->_shouldNotAdvertiseRequesters containsObject:v4])
+  if ([(NSMutableSet *)self->_shouldNotAdvertiseRequesters containsObject:reasonCopy])
   {
-    [(NSMutableSet *)self->_shouldNotAdvertiseRequesters removeObject:v4];
+    [(NSMutableSet *)self->_shouldNotAdvertiseRequesters removeObject:reasonCopy];
     if (![(NSMutableSet *)self->_shouldNotAdvertiseRequesters count])
     {
       [(SDActivityAdvertiser *)self restart];
@@ -378,15 +378,15 @@
   }
 }
 
-- (void)activityServiceDevicesChanged:(id)a3
+- (void)activityServiceDevicesChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v4 = +[NSMutableSet set];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = changedCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -406,8 +406,8 @@
         if (v10)
         {
           v11 = +[SDActivityEncryptionManager sharedEncryptionManager];
-          v12 = [v10 uniqueID];
-          v13 = [v11 cachedDecryptionKeyForDeviceIdentifier:v12];
+          uniqueID = [v10 uniqueID];
+          v13 = [v11 cachedDecryptionKeyForDeviceIdentifier:uniqueID];
 
           if (v13)
           {
@@ -472,7 +472,7 @@
   return v2;
 }
 
-- (void)connectionEstablished:(id)a3
+- (void)connectionEstablished:(id)established
 {
   v3 = handoff_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -481,7 +481,7 @@
   }
 }
 
-- (void)connectionInvalidated:(id)a3
+- (void)connectionInvalidated:(id)invalidated
 {
   v4 = handoff_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -489,8 +489,8 @@
     sub_1000CFA04();
   }
 
-  v5 = [(SDXPCDaemon *)self activeConnections];
-  v6 = [v5 count];
+  activeConnections = [(SDXPCDaemon *)self activeConnections];
+  v6 = [activeConnections count];
 
   if (!v6)
   {
@@ -498,35 +498,35 @@
   }
 }
 
-- (void)didSendPayloadForActivityIdentifier:(id)a3 toDevice:(id)a4 error:(id)a5
+- (void)didSendPayloadForActivityIdentifier:(id)identifier toDevice:(id)device error:(id)error
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000CD954;
   v11[3] = &unk_1008CFA88;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v8 = v14;
-  v9 = v13;
-  v10 = v12;
+  identifierCopy = identifier;
+  deviceCopy = device;
+  errorCopy = error;
+  v8 = errorCopy;
+  v9 = deviceCopy;
+  v10 = identifierCopy;
   [(SDActivityAdvertiser *)self _enumerateRemoteObjectProxiesUsingBlock:v11];
 }
 
-- (void)activityPayloadForAdvertisementPayload:(id)a3 command:(id)a4 requestedByDevice:(id)a5 withCompletionHandler:(id)a6
+- (void)activityPayloadForAdvertisementPayload:(id)payload command:(id)command requestedByDevice:(id)device withCompletionHandler:(id)handler
 {
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000CDA6C;
   v14[3] = &unk_1008CFAB0;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v10 = v18;
-  v11 = v17;
-  v12 = v16;
-  v13 = v15;
+  payloadCopy = payload;
+  commandCopy = command;
+  deviceCopy = device;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  v11 = deviceCopy;
+  v12 = commandCopy;
+  v13 = payloadCopy;
   [(SDActivityAdvertiser *)self _enumerateRemoteObjectProxiesUsingBlock:v14];
 }
 
@@ -543,7 +543,7 @@
   [v3 removeObserver:self];
 }
 
-- (void)systemWillSleep:(id)a3
+- (void)systemWillSleep:(id)sleep
 {
   v4 = handoff_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -556,7 +556,7 @@
   [(SDActivityAdvertiser *)self stop];
 }
 
-- (void)consoleUserChanged:(id)a3
+- (void)consoleUserChanged:(id)changed
 {
   if (![(SDStatusMonitor *)self->_monitor currentConsoleUser])
   {
@@ -583,8 +583,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 intValue];
-      if (v7 == powerAssertionClientPID)
+      intValue = [v6 intValue];
+      if (intValue == powerAssertionClientPID)
       {
         v8 = handoff_log();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -599,14 +599,14 @@ LABEL_19:
 
     else
     {
-      v7 = 0;
+      intValue = 0;
     }
 
     v16 = handoff_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 67109376;
-      v18 = v7;
+      v18 = intValue;
       v19 = 1024;
       v20 = powerAssertionClientPID;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Creating new power assertion for PID change (%d -> %d)", &v17, 0xEu);
@@ -701,7 +701,7 @@ LABEL_20:
   }
 }
 
-- (void)goodbyeTimeoutFired:(id)a3
+- (void)goodbyeTimeoutFired:(id)fired
 {
   [(SDActivityAdvertiser *)self invalidateGoodbyeTimer];
   if (!self->_currentAdvertisementPayload)
@@ -718,9 +718,9 @@ LABEL_20:
 
 - (BOOL)updateAdvertiser
 {
-  v3 = [(SDActivityAdvertiser *)self createAdvertisingInformation];
+  createAdvertisingInformation = [(SDActivityAdvertiser *)self createAdvertisingInformation];
   advertisementData = self->_advertisementData;
-  self->_advertisementData = v3;
+  self->_advertisementData = createAdvertisingInformation;
 
   rawAdvertisementData = self->_rawAdvertisementData;
   self->_rawAdvertisementData = 0;
@@ -732,11 +732,11 @@ LABEL_20:
 {
   v3 = [NSMutableData dataWithCapacity:14];
   [v3 setLength:14];
-  v4 = [v3 mutableBytes];
+  mutableBytes = [v3 mutableBytes];
   v5 = [(NSDictionary *)self->_currentAdvertisementOptions objectForKeyedSubscript:SFActivityAdvertiserOptionFlagCopyPasteKey];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = 8;
   }
@@ -746,21 +746,21 @@ LABEL_20:
     v7 = 0;
   }
 
-  *v4 = v7;
+  *mutableBytes = v7;
   currentAdvertisementOptions = self->_currentAdvertisementOptions;
   v9 = off_100970760();
   v10 = [(NSDictionary *)currentAdvertisementOptions objectForKeyedSubscript:v9];
-  v11 = [v10 BOOLValue];
+  bOOLValue2 = [v10 BOOLValue];
 
-  v4[4] = v11;
+  mutableBytes[4] = bOOLValue2;
   v12 = [(NSData *)self->_currentAdvertisementPayload length];
   currentAdvertisementPayload = self->_currentAdvertisementPayload;
   if (v12 == 9)
   {
-    v14 = [(NSData *)currentAdvertisementPayload bytes];
-    v15 = v14[8];
-    *(v4 + 5) = *v14;
-    v4[13] = v15;
+    bytes = [(NSData *)currentAdvertisementPayload bytes];
+    v15 = bytes[8];
+    *(mutableBytes + 5) = *bytes;
+    mutableBytes[13] = v15;
   }
 
   else if (currentAdvertisementPayload)
@@ -778,25 +778,25 @@ LABEL_20:
 - (id)encryptedAdvertisingInformation
 {
   v2 = [(NSData *)self->_advertisementData mutableCopy];
-  v3 = [v2 mutableBytes];
-  v4 = [NSData dataWithBytes:v3 + 4 length:10];
+  mutableBytes = [v2 mutableBytes];
+  v4 = [NSData dataWithBytes:mutableBytes + 4 length:10];
   v5 = +[SDActivityEncryptionManager sharedEncryptionManager];
-  v6 = *v3;
+  v6 = *mutableBytes;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000CE518;
   v9[3] = &unk_1008CFAD8;
   v10 = v4;
-  v11 = v3;
+  v11 = mutableBytes;
   v7 = v4;
-  [v5 getTagAndCounterWhileEncryptingBytesInPlace:v3 + 4 forAdvertisementWithVersion:v6 handler:v9];
+  [v5 getTagAndCounterWhileEncryptingBytesInPlace:mutableBytes + 4 forAdvertisementWithVersion:v6 handler:v9];
 
   return v2;
 }
 
-- (void)continuityDidUpdateState:(id)a3
+- (void)continuityDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = _os_activity_create(&_mh_execute_header, "Sharing/SDActivityAdvertiser/continuityDidUpdateState", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v11.opaque[0] = 0;
   v11.opaque[1] = 0;
@@ -804,23 +804,23 @@ LABEL_20:
   v6 = handoff_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    if (([v4 state] & 0x8000000000000000) != 0 || objc_msgSend(v4, "state") > 3)
+    if (([stateCopy state] & 0x8000000000000000) != 0 || objc_msgSend(stateCopy, "state") > 3)
     {
       v7 = "UnexpectedState";
     }
 
     else
     {
-      v7 = off_1008CFA38[[v4 state]];
+      v7 = off_1008CFA38[[stateCopy state]];
     }
 
     sub_1000CFD80(v7, buf, v6);
   }
 
-  v8 = [v4 state];
-  if (v8 > 1)
+  state = [stateCopy state];
+  if (state > 1)
   {
-    if (v8 == 2)
+    if (state == 2)
     {
       v9 = handoff_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -831,7 +831,7 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    if (v8 == 3)
+    if (state == 3)
     {
       v10 = handoff_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -845,7 +845,7 @@ LABEL_20:
 
   else
   {
-    if (!v8)
+    if (!state)
     {
       v9 = handoff_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -856,7 +856,7 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    if (v8 == 1)
+    if (state == 1)
     {
       v9 = handoff_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -871,14 +871,14 @@ LABEL_21:
   os_activity_scope_leave(&v11);
 }
 
-- (void)continuity:(id)a3 didStartAdvertisingOfType:(int64_t)a4
+- (void)continuity:(id)continuity didStartAdvertisingOfType:(int64_t)type
 {
-  v6 = a3;
+  continuityCopy = continuity;
   v7 = _os_activity_create(&_mh_execute_header, "Sharing/SDActivityAdvertiser/continuityDidStartAdvertisingOfType", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v7, &v10);
-  if (!a4)
+  if (!type)
   {
     self->_isAdvertising = 1;
   }
@@ -886,7 +886,7 @@ LABEL_21:
   v8 = handoff_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000CFEA4(a4, v8);
+    sub_1000CFEA4(type, v8);
   }
 
   if (self->_isAdvertising)
@@ -898,14 +898,14 @@ LABEL_21:
   os_activity_scope_leave(&v10);
 }
 
-- (void)continuity:(id)a3 didStopAdvertisingOfType:(int64_t)a4
+- (void)continuity:(id)continuity didStopAdvertisingOfType:(int64_t)type
 {
-  v6 = a3;
+  continuityCopy = continuity;
   v7 = _os_activity_create(&_mh_execute_header, "Sharing/SDActivityAdvertiser/continuityDidStopAdvertisingOfType", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v7, &v10);
-  if (!a4)
+  if (!type)
   {
     self->_isAdvertising = 0;
   }
@@ -913,7 +913,7 @@ LABEL_21:
   v8 = handoff_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000CFF3C(a4, v8);
+    sub_1000CFF3C(type, v8);
   }
 
   if (!self->_isAdvertising)
@@ -925,15 +925,15 @@ LABEL_21:
   os_activity_scope_leave(&v10);
 }
 
-- (void)continuity:(id)a3 didStopAdvertisingOfType:(int64_t)a4 withError:(id)a5
+- (void)continuity:(id)continuity didStopAdvertisingOfType:(int64_t)type withError:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  continuityCopy = continuity;
+  errorCopy = error;
   v10 = _os_activity_create(&_mh_execute_header, "Sharing/SDActivityAdvertiser/continuityDidStopAdvertisingOfTypeWithError", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v10, &state);
-  if (!a4)
+  if (!type)
   {
     self->_isAdvertising = 0;
   }
@@ -941,12 +941,12 @@ LABEL_21:
   v11 = handoff_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000CFFD4(a4, v9, v11);
+    sub_1000CFFD4(type, errorCopy, v11);
   }
 
-  v12 = [v9 domain];
+  domain = [errorCopy domain];
   v13 = WPErrorDomain;
-  v14 = v12;
+  v14 = domain;
   v15 = v13;
   v16 = v15;
   if (v14 == v15)
@@ -970,9 +970,9 @@ LABEL_15:
     }
   }
 
-  v18 = [v9 code];
+  code = [errorCopy code];
 
-  if (v18 == 28)
+  if (code == 28)
   {
     v19 = handoff_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -994,15 +994,15 @@ LABEL_16:
   os_activity_scope_leave(&state);
 }
 
-- (void)continuity:(id)a3 didFailToStartAdvertisingOfType:(int64_t)a4 withError:(id)a5
+- (void)continuity:(id)continuity didFailToStartAdvertisingOfType:(int64_t)type withError:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  continuityCopy = continuity;
+  errorCopy = error;
   v10 = _os_activity_create(&_mh_execute_header, "Sharing/SDActivityAdvertiser/continuityDidFailToStartAdvertisingOfType", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v15.opaque[0] = 0;
   v15.opaque[1] = 0;
   os_activity_scope_enter(v10, &v15);
-  if (!a4)
+  if (!type)
   {
     self->_isAdvertising = 0;
   }
@@ -1010,80 +1010,80 @@ LABEL_16:
   v11 = handoff_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    if (a4 > 3)
+    if (type > 3)
     {
       v12 = "UnexpectedType";
     }
 
     else
     {
-      v12 = off_1008CFAF8[a4];
+      v12 = off_1008CFAF8[type];
     }
 
-    v13 = [v9 localizedDescription];
-    sub_1000D007C(v12, v13, buf, v11);
+    localizedDescription = [errorCopy localizedDescription];
+    sub_1000D007C(v12, localizedDescription, buf, v11);
   }
 
   currentErrorHandler = self->_currentErrorHandler;
   if (currentErrorHandler)
   {
-    currentErrorHandler[2](currentErrorHandler, v9);
+    currentErrorHandler[2](currentErrorHandler, errorCopy);
   }
 
   os_activity_scope_leave(&v15);
 }
 
-- (void)advertiseAdvertisementPayload:(id)a3 options:(id)a4 withErrorHandler:(id)a5
+- (void)advertiseAdvertisementPayload:(id)payload options:(id)options withErrorHandler:(id)handler
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000CEEBC;
   v11[3] = &unk_1008CFB48;
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  v15 = a5;
-  v8 = v15;
-  v9 = v13;
-  v10 = v12;
+  payloadCopy = payload;
+  optionsCopy = options;
+  selfCopy = self;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  v9 = optionsCopy;
+  v10 = payloadCopy;
   dispatch_async(&_dispatch_main_q, v11);
 }
 
-- (void)loginIDWithOptions:(id)a3 completionHandler:(id)a4
+- (void)loginIDWithOptions:(id)options completionHandler:(id)handler
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000CF330;
   v5[3] = &unk_1008CF578;
   v5[4] = self;
-  v6 = a4;
-  v4 = v6;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)peerForUUID:(id)a3 completionHandler:(id)a4
+- (void)peerForUUID:(id)d completionHandler:(id)handler
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000CF454;
   block[3] = &unk_1008CE730;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  dCopy = d;
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  v6 = dCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)pairedSFPeerDevicesWithOptions:(id)a3 completionHandler:(id)a4
+- (void)pairedSFPeerDevicesWithOptions:(id)options completionHandler:(id)handler
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000CF600;
   v5[3] = &unk_1008CE708;
   v5[4] = self;
-  v6 = a4;
-  v4 = v6;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 

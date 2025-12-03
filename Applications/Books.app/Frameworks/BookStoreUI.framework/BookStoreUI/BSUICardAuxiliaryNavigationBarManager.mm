@@ -1,8 +1,8 @@
 @interface BSUICardAuxiliaryNavigationBarManager
 - (BSUICardAuxiliaryNavigationBarManager)init;
 - (id)viewControllerIfAvailable;
-- (void)createViewControllerForFeedViewController:(BSUIFeedViewController *)a3 shouldReportFigaro:(BOOL)a4 completionHandler:(id)a5;
-- (void)viewControllerWhenAvailable:(id)a3;
+- (void)createViewControllerForFeedViewController:(BSUIFeedViewController *)controller shouldReportFigaro:(BOOL)figaro completionHandler:(id)handler;
+- (void)viewControllerWhenAvailable:(id)available;
 @end
 
 @implementation BSUICardAuxiliaryNavigationBarManager
@@ -16,15 +16,15 @@
   return [(BSUICardAuxiliaryNavigationBarManager *)&v4 init];
 }
 
-- (void)createViewControllerForFeedViewController:(BSUIFeedViewController *)a3 shouldReportFigaro:(BOOL)a4 completionHandler:(id)a5
+- (void)createViewControllerForFeedViewController:(BSUIFeedViewController *)controller shouldReportFigaro:(BOOL)figaro completionHandler:(id)handler
 {
   v9 = sub_6620C(&unk_3BDBB0);
   __chkstk_darwin(v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
-  *(v13 + 24) = a4;
+  *(v13 + 16) = controller;
+  *(v13 + 24) = figaro;
   *(v13 + 32) = v12;
   *(v13 + 40) = self;
   v14 = sub_2C5C58();
@@ -39,24 +39,24 @@
   v16[3] = 0;
   v16[4] = &unk_2ED3D0;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1CDB58(0, 0, v11, &unk_2E47F0, v16);
 }
 
-- (void)viewControllerWhenAvailable:(id)a3
+- (void)viewControllerWhenAvailable:(id)available
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(available);
   _Block_copy(v4);
-  v5 = self;
-  sub_298B78(v5, v4);
+  selfCopy = self;
+  sub_298B78(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
 - (id)viewControllerIfAvailable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_294A8C();
 
   return v3;

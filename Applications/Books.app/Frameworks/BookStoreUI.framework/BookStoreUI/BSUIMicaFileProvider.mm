@@ -1,15 +1,15 @@
 @interface BSUIMicaFileProvider
 - (BSUIMicaFileProvider)init;
-- (id)dataFor:(id)a3;
+- (id)dataFor:(id)for;
 @end
 
 @implementation BSUIMicaFileProvider
 
-- (id)dataFor:(id)a3
+- (id)dataFor:(id)for
 {
   v4 = sub_2C58C8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_135B8C(v4, v6);
   v10 = v9;
 

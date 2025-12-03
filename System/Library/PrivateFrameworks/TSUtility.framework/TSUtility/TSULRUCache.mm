@@ -1,17 +1,17 @@
 @interface TSULRUCache
-- (TSULRUCache)initWithMaxSize:(unint64_t)a3;
-- (id)objectForKey:(id)a3;
+- (TSULRUCache)initWithMaxSize:(unint64_t)size;
+- (id)objectForKey:(id)key;
 - (void)dealloc;
 - (void)p_removeOldestObject;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setEvictionCallbackTarget:(id)a3 selector:(SEL)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setEvictionCallbackTarget:(id)target selector:(SEL)selector;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation TSULRUCache
 
-- (TSULRUCache)initWithMaxSize:(unint64_t)a3
+- (TSULRUCache)initWithMaxSize:(unint64_t)size
 {
   v7.receiver = self;
   v7.super_class = TSULRUCache;
@@ -19,9 +19,9 @@
   v5 = v4;
   if (v4)
   {
-    v4->mMax = a3;
-    v4->mData = [[TSUNoCopyDictionary alloc] initWithCapacity:a3];
-    v5->mOrderedKeys = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a3];
+    v4->mMax = size;
+    v4->mData = [[TSUNoCopyDictionary alloc] initWithCapacity:size];
+    v5->mOrderedKeys = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:size];
   }
 
   return v5;
@@ -41,32 +41,32 @@
   [(TSULRUCache *)&v5 dealloc];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   if ([(NSMutableArray *)self->mOrderedKeys count]>= self->mMax)
   {
     [(TSULRUCache *)self p_removeOldestObject];
   }
 
-  v8 = [(NSMutableArray *)self->mOrderedKeys indexOfObject:a4];
+  v8 = [(NSMutableArray *)self->mOrderedKeys indexOfObject:key];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NSMutableArray *)self->mOrderedKeys removeObjectAtIndex:v8];
   }
 
-  [(TSUNoCopyDictionary *)self->mData setObject:a3 forKey:a4];
-  [(NSMutableArray *)self->mOrderedKeys addObject:a4];
+  [(TSUNoCopyDictionary *)self->mData setObject:object forKey:key];
+  [(NSMutableArray *)self->mOrderedKeys addObject:key];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   v5 = [(NSMutableArray *)self->mOrderedKeys indexOfObject:?];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = v5;
-    [(TSUNoCopyDictionary *)self->mData removeObjectForKey:a3];
+    [(TSUNoCopyDictionary *)self->mData removeObjectForKey:key];
     mOrderedKeys = self->mOrderedKeys;
 
     [(NSMutableArray *)mOrderedKeys removeObjectAtIndex:v6];
@@ -81,7 +81,7 @@
   [(TSUNoCopyDictionary *)mData removeAllObjects];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   v5 = [(NSMutableArray *)self->mOrderedKeys indexOfObject:?];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
@@ -90,28 +90,28 @@
   }
 
   v7 = v5;
-  v8 = [(TSUNoCopyDictionary *)self->mData objectForKey:a3];
-  v9 = a3;
-  [(NSMutableArray *)self->mOrderedKeys addObject:a3];
+  v8 = [(TSUNoCopyDictionary *)self->mData objectForKey:key];
+  keyCopy = key;
+  [(NSMutableArray *)self->mOrderedKeys addObject:key];
   [(NSMutableArray *)self->mOrderedKeys removeObjectAtIndex:v7];
 
   return v8;
 }
 
-- (void)setEvictionCallbackTarget:(id)a3 selector:(SEL)a4
+- (void)setEvictionCallbackTarget:(id)target selector:(SEL)selector
 {
-  self->mCallbackTarget = a3;
-  if (a4)
+  self->mCallbackTarget = target;
+  if (selector)
   {
-    v4 = a4;
+    selectorCopy = selector;
   }
 
   else
   {
-    v4 = 0;
+    selectorCopy = 0;
   }
 
-  self->mCallback = v4;
+  self->mCallback = selectorCopy;
 }
 
 - (void)p_removeOldestObject

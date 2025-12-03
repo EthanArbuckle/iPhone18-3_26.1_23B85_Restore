@@ -1,47 +1,47 @@
 @interface CAMLibrarySelectionController
-- (BOOL)_resultQueue_needsLocationShiftingForLocation:(id)a3;
-- (CAMLibrarySelectionController)initWithLocationProvider:(id)a3;
+- (BOOL)_resultQueue_needsLocationShiftingForLocation:(id)location;
+- (CAMLibrarySelectionController)initWithLocationProvider:(id)provider;
 - (CAMLibrarySelectionSignalResult)acquiredSignalResults;
 - (CAMPeopleProximityControllerProtocol)proximityController;
-- (id)_diagnosticsForLocation:(id)a3 currentLocation:(id)a4;
+- (id)_diagnosticsForLocation:(id)location currentLocation:(id)currentLocation;
 - (id)_retrieveMetadata;
 - (id)librarySelectionDiagnostics;
 - (id)tapToRadarAlertController;
 - (void)_ensureProximityController;
-- (void)_newSessionWithDelegate:(id)a3;
+- (void)_newSessionWithDelegate:(id)delegate;
 - (void)_ppt_callChangeHandler;
 - (void)_resultQueue_clearAcquiredSignals;
-- (void)_resultQueue_currentLocationUpdatedAndShiftedIfNeeded:(id)a3;
-- (void)_resultQueue_shiftCoordinatesForLocation:(id)a3;
+- (void)_resultQueue_currentLocationUpdatedAndShiftedIfNeeded:(id)needed;
+- (void)_resultQueue_shiftCoordinatesForLocation:(id)location;
 - (void)_resultQueue_startDiscovery;
 - (void)_resultQueue_stopDiscovery;
 - (void)_resultQueue_updateAcquiredSignalResults;
-- (void)_stopAcquiringSignalsAndClear:(BOOL)a3;
-- (void)authorizationStatusUpdated:(int)a3;
-- (void)currentLocationUpdated:(id)a3;
-- (void)didDiscoverIdentity:(id)a3;
-- (void)didLoseIdentity:(id)a3;
-- (void)ppt_installChangeHandler:(id)a3;
-- (void)setAcquiredSignalResults:(id)a3;
+- (void)_stopAcquiringSignalsAndClear:(BOOL)clear;
+- (void)authorizationStatusUpdated:(int)updated;
+- (void)currentLocationUpdated:(id)updated;
+- (void)didDiscoverIdentity:(id)identity;
+- (void)didLoseIdentity:(id)identity;
+- (void)ppt_installChangeHandler:(id)handler;
+- (void)setAcquiredSignalResults:(id)results;
 - (void)startAcquiringSignals;
 - (void)startNewSession;
 - (void)stopAcquiringSignals;
 - (void)stopAndClearAcquiredSignals;
-- (void)userDidPickSharedLibraryMode:(int64_t)a3;
+- (void)userDidPickSharedLibraryMode:(int64_t)mode;
 @end
 
 @implementation CAMLibrarySelectionController
 
-- (CAMLibrarySelectionController)initWithLocationProvider:(id)a3
+- (CAMLibrarySelectionController)initWithLocationProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = CAMLibrarySelectionController;
   v6 = [(CAMLibrarySelectionController *)&v16 init];
   if (v6)
   {
     v7 = +[CAMCaptureCapabilities capabilities];
-    objc_storeStrong(&v6->_locationProvider, a3);
+    objc_storeStrong(&v6->_locationProvider, provider);
     v8 = objc_opt_class();
     smartSharingMetadataProvider = v6->_smartSharingMetadataProvider;
     v6->_smartSharingMetadataProvider = v8;
@@ -71,32 +71,32 @@
   return proximityController;
 }
 
-- (void)userDidPickSharedLibraryMode:(int64_t)a3
+- (void)userDidPickSharedLibraryMode:(int64_t)mode
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3 & 0xFFFFFFFFFFFFFFFELL;
+  v5 = mode & 0xFFFFFFFFFFFFFFFELL;
   v6 = os_log_create("com.apple.camera", "SharedLibrary");
   v7 = v6;
   if (v5 == 2)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = CAMSharedLibraryModeDescription(a3);
+      v8 = CAMSharedLibraryModeDescription(mode);
       v17 = 138543362;
       v18 = v8;
       _os_log_impl(&dword_1A3640000, v7, OS_LOG_TYPE_DEFAULT, "[CAMLibrarySelectionController] userDidPickSharedLibraryMode: %{public}@", &v17, 0xCu);
     }
 
-    v9 = [(CAMLibrarySelectionController *)self session];
-    [v9 updateWithMode:a3];
+    session = [(CAMLibrarySelectionController *)self session];
+    [session updateWithMode:mode];
 
-    v10 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v11 = +[CAMUserPreferences preferences];
-    [v11 setSharedLibraryLastUserActionDate:v10];
+    [v11 setSharedLibraryLastUserActionDate:date];
 
-    v12 = [(CAMLibrarySelectionController *)self acquiredSignalResults];
-    v13 = [v12 currentLocation];
-    v14 = [v13 copy];
+    acquiredSignalResults = [(CAMLibrarySelectionController *)self acquiredSignalResults];
+    currentLocation = [acquiredSignalResults currentLocation];
+    v14 = [currentLocation copy];
     v15 = +[CAMUserPreferences preferences];
     [v15 setSharedLibraryLastUserActionLocation:v14];
 
@@ -114,7 +114,7 @@
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(CAMLibrarySelectionController *)a3 userDidPickSharedLibraryMode:v7];
+      [(CAMLibrarySelectionController *)mode userDidPickSharedLibraryMode:v7];
     }
   }
 }
@@ -128,8 +128,8 @@
     _os_log_impl(&dword_1A3640000, v3, OS_LOG_TYPE_DEFAULT, "[CAMLibrarySelectionController] startNewSession", v5, 2u);
   }
 
-  v4 = [(CAMLibrarySelectionSession *)self->_session delegate];
-  [(CAMLibrarySelectionController *)self _newSessionWithDelegate:v4];
+  delegate = [(CAMLibrarySelectionSession *)self->_session delegate];
+  [(CAMLibrarySelectionController *)self _newSessionWithDelegate:delegate];
 
   [(CAMLibrarySelectionSession *)self->_session notifyResetIfNeeded];
 }
@@ -187,9 +187,9 @@ void __54__CAMLibrarySelectionController_startAcquiringSignals__block_invoke(uin
   [(CAMLibrarySelectionController *)self _stopAcquiringSignalsAndClear:1];
 }
 
-- (void)_stopAcquiringSignalsAndClear:(BOOL)a3
+- (void)_stopAcquiringSignalsAndClear:(BOOL)clear
 {
-  v3 = a3;
+  clearCopy = clear;
   [(CAMLibrarySelectionController *)self _ensureProximityController];
   [(CAMLibrarySelectionLocationProvider *)self->_locationProvider removeListenerForLocationUpdates:self];
   objc_initWeak(&location, self);
@@ -199,9 +199,9 @@ void __54__CAMLibrarySelectionController_startAcquiringSignals__block_invoke(uin
   block[2] = __63__CAMLibrarySelectionController__stopAcquiringSignalsAndClear___block_invoke;
   block[3] = &unk_1E76F88B0;
   objc_copyWeak(&v7, &location);
-  v8 = v3;
+  v8 = clearCopy;
   dispatch_async(resultQueue, block);
-  if (v3)
+  if (clearCopy)
   {
     [(CAMLibrarySelectionController *)self setAcquiredSignalResults:0];
   }
@@ -230,44 +230,44 @@ void __63__CAMLibrarySelectionController__stopAcquiringSignalsAndClear___block_i
   return acquiredSignalResults;
 }
 
-- (void)didDiscoverIdentity:(id)a3
+- (void)didDiscoverIdentity:(id)identity
 {
   resultQueue = self->_resultQueue;
-  v5 = a3;
+  identityCopy = identity;
   dispatch_assert_queue_V2(resultQueue);
-  [(NSMutableSet *)self->__resultQueue_identitiesInProximity addObject:v5];
+  [(NSMutableSet *)self->__resultQueue_identitiesInProximity addObject:identityCopy];
 
   [(CAMLibrarySelectionController *)self _resultQueue_updateAcquiredSignalResults];
 
   [(CAMLibrarySelectionController *)self _ppt_callChangeHandler];
 }
 
-- (void)didLoseIdentity:(id)a3
+- (void)didLoseIdentity:(id)identity
 {
   resultQueue = self->_resultQueue;
-  v5 = a3;
+  identityCopy = identity;
   dispatch_assert_queue_V2(resultQueue);
-  [(NSMutableSet *)self->__resultQueue_identitiesInProximity removeObject:v5];
+  [(NSMutableSet *)self->__resultQueue_identitiesInProximity removeObject:identityCopy];
 
   [(CAMLibrarySelectionController *)self _resultQueue_updateAcquiredSignalResults];
 }
 
-- (void)authorizationStatusUpdated:(int)a3
+- (void)authorizationStatusUpdated:(int)updated
 {
   v8 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_resultQueue);
-  if (self->__resultQueue_authorizationStatus != a3)
+  if (self->__resultQueue_authorizationStatus != updated)
   {
     v5 = os_log_create("com.apple.camera", "SharedLibrary");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7[0] = 67109120;
-      v7[1] = a3;
+      v7[1] = updated;
       _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "[CAMLibrarySelectionController] Retrieved authorization status update: %d", v7, 8u);
     }
 
-    self->__resultQueue_authorizationStatus = a3;
-    if (!CAMCanAccessLocationWithAuthorizationStatus(a3))
+    self->__resultQueue_authorizationStatus = updated;
+    if (!CAMCanAccessLocationWithAuthorizationStatus(updated))
     {
       resultQueue_currentLocation = self->__resultQueue_currentLocation;
       self->__resultQueue_currentLocation = 0;
@@ -277,36 +277,36 @@ void __63__CAMLibrarySelectionController__stopAcquiringSignalsAndClear___block_i
   }
 }
 
-- (void)currentLocationUpdated:(id)a3
+- (void)currentLocationUpdated:(id)updated
 {
   resultQueue = self->_resultQueue;
-  v5 = a3;
+  updatedCopy = updated;
   dispatch_assert_queue_V2(resultQueue);
-  if ([(CAMLibrarySelectionController *)self _resultQueue_needsLocationShiftingForLocation:v5])
+  if ([(CAMLibrarySelectionController *)self _resultQueue_needsLocationShiftingForLocation:updatedCopy])
   {
-    [(CAMLibrarySelectionController *)self _resultQueue_shiftCoordinatesForLocation:v5];
+    [(CAMLibrarySelectionController *)self _resultQueue_shiftCoordinatesForLocation:updatedCopy];
   }
 
   else
   {
-    [(CAMLibrarySelectionController *)self _resultQueue_currentLocationUpdatedAndShiftedIfNeeded:v5];
+    [(CAMLibrarySelectionController *)self _resultQueue_currentLocationUpdatedAndShiftedIfNeeded:updatedCopy];
   }
 }
 
-- (void)_newSessionWithDelegate:(id)a3
+- (void)_newSessionWithDelegate:(id)delegate
 {
-  v9 = a3;
+  delegateCopy = delegate;
   v4 = +[CAMUserPreferences preferences];
-  v5 = [v4 captureConfiguration];
-  v6 = [v5 sharedLibraryMode];
+  captureConfiguration = [v4 captureConfiguration];
+  sharedLibraryMode = [captureConfiguration sharedLibraryMode];
 
-  v7 = [[CAMLibrarySelectionSession alloc] initWithMode:v6];
+  v7 = [[CAMLibrarySelectionSession alloc] initWithMode:sharedLibraryMode];
   session = self->_session;
   self->_session = v7;
 
-  if (v9)
+  if (delegateCopy)
   {
-    [(CAMLibrarySelectionSession *)self->_session setDelegate:v9];
+    [(CAMLibrarySelectionSession *)self->_session setDelegate:delegateCopy];
   }
 }
 
@@ -327,26 +327,26 @@ void __63__CAMLibrarySelectionController__stopAcquiringSignalsAndClear___block_i
 {
   v32 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_resultQueue);
-  v3 = [(CAMLibrarySelectionController *)self _retrieveMetadata];
+  _retrieveMetadata = [(CAMLibrarySelectionController *)self _retrieveMetadata];
   v4 = os_log_create("com.apple.camera", "SharedLibrary");
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (_retrieveMetadata)
   {
     if (v5)
     {
       *buf = 138477827;
-      v31 = v3;
+      v31 = _retrieveMetadata;
       _os_log_impl(&dword_1A3640000, v4, OS_LOG_TYPE_DEFAULT, "[CAMLibrarySelectionController] Retrieved smart sharing metadata: %{private}@", buf, 0xCu);
     }
 
-    [(CAMLibrarySelectionController *)self set_resultQueue_smartSharingMetadata:v3];
+    [(CAMLibrarySelectionController *)self set_resultQueue_smartSharingMetadata:_retrieveMetadata];
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v7 = [v3 identities];
-    v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    identities = [_retrieveMetadata identities];
+    v8 = [identities countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v8)
     {
       v9 = *v26;
@@ -357,7 +357,7 @@ void __63__CAMLibrarySelectionController__stopAcquiringSignalsAndClear___block_i
         {
           if (*v26 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(identities);
           }
 
           v11 = [CAMLibrarySelectionIdentity identityWithPhotosIdentity:*(*(&v25 + 1) + 8 * v10)];
@@ -367,27 +367,27 @@ void __63__CAMLibrarySelectionController__stopAcquiringSignalsAndClear___block_i
         }
 
         while (v8 != v10);
-        v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v8 = [identities countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v8);
     }
 
     v12 = +[CAMCaptureCapabilities capabilities];
-    v13 = [v12 peopleProximityDetectAdditionalEmail];
-    v14 = [v13 length] == 0;
+    peopleProximityDetectAdditionalEmail = [v12 peopleProximityDetectAdditionalEmail];
+    v14 = [peopleProximityDetectAdditionalEmail length] == 0;
 
     if (!v14)
     {
       v15 = [CAMLibrarySelectionIdentity alloc];
-      v16 = [v12 peopleProximityDetectAdditionalEmail];
-      v17 = [(CAMLibrarySelectionIdentity *)v15 initWithPhoneNumber:0 emailAddress:v16 contactIdentifiers:0];
+      peopleProximityDetectAdditionalEmail2 = [v12 peopleProximityDetectAdditionalEmail];
+      v17 = [(CAMLibrarySelectionIdentity *)v15 initWithPhoneNumber:0 emailAddress:peopleProximityDetectAdditionalEmail2 contactIdentifiers:0];
 
       [v6 addObject:v17];
     }
 
-    v18 = [(CAMLibrarySelectionController *)self proximityController];
-    [v18 startDiscoveryForIdentities:v6];
+    proximityController = [(CAMLibrarySelectionController *)self proximityController];
+    [proximityController startDiscoveryForIdentities:v6];
 
     objc_initWeak(buf, self);
     v19 = MEMORY[0x1E69E9820];
@@ -421,8 +421,8 @@ void __60__CAMLibrarySelectionController__resultQueue_startDiscovery__block_invo
 - (void)_resultQueue_stopDiscovery
 {
   dispatch_assert_queue_V2(self->_resultQueue);
-  v3 = [(CAMLibrarySelectionController *)self proximityController];
-  [v3 stopDiscovery];
+  proximityController = [(CAMLibrarySelectionController *)self proximityController];
+  [proximityController stopDiscovery];
 }
 
 - (void)_resultQueue_clearAcquiredSignals
@@ -439,16 +439,16 @@ void __60__CAMLibrarySelectionController__resultQueue_startDiscovery__block_invo
 - (void)_resultQueue_updateAcquiredSignalResults
 {
   dispatch_assert_queue_V2(self->_resultQueue);
-  v3 = [(NSMutableSet *)self->__resultQueue_identitiesInProximity allObjects];
+  allObjects = [(NSMutableSet *)self->__resultQueue_identitiesInProximity allObjects];
   resultQueue_authorizationStatus = self->__resultQueue_authorizationStatus;
   v5 = self->__resultQueue_currentLocation;
-  v6 = [(CAMLibrarySelectionController *)self _resultQueue_smartSharingMetadata];
-  v7 = [v6 homeLocations];
+  _resultQueue_smartSharingMetadata = [(CAMLibrarySelectionController *)self _resultQueue_smartSharingMetadata];
+  homeLocations = [_resultQueue_smartSharingMetadata homeLocations];
 
-  v8 = [(CAMLibrarySelectionController *)self _resultQueue_smartSharingMetadata];
-  v9 = [v8 frequentLocations];
+  _resultQueue_smartSharingMetadata2 = [(CAMLibrarySelectionController *)self _resultQueue_smartSharingMetadata];
+  frequentLocations = [_resultQueue_smartSharingMetadata2 frequentLocations];
 
-  v10 = [CAMLibrarySelectionSignalResult librarySelectionSignalResultWithIdentitiesInProximity:v3 currentLocation:v5 locationAuthorizationStatus:resultQueue_authorizationStatus homeLocations:v7 frequentLocations:v9];
+  v10 = [CAMLibrarySelectionSignalResult librarySelectionSignalResultWithIdentitiesInProximity:allObjects currentLocation:v5 locationAuthorizationStatus:resultQueue_authorizationStatus homeLocations:homeLocations frequentLocations:frequentLocations];
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -470,32 +470,32 @@ void __73__CAMLibrarySelectionController__resultQueue_updateAcquiredSignalResult
   [WeakRetained setAcquiredSignalResults:v1];
 }
 
-- (void)_resultQueue_currentLocationUpdatedAndShiftedIfNeeded:(id)a3
+- (void)_resultQueue_currentLocationUpdatedAndShiftedIfNeeded:(id)needed
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  neededCopy = needed;
   dispatch_assert_queue_V2(self->_resultQueue);
   p_resultQueue_currentLocation = &self->__resultQueue_currentLocation;
   resultQueue_currentLocation = self->__resultQueue_currentLocation;
-  if (!resultQueue_currentLocation || (-[CLLocation coordinate](resultQueue_currentLocation, "coordinate"), v9 = v8, [v5 coordinate], v9 < v10) || v9 > v10 || (-[CLLocation coordinate](*p_resultQueue_currentLocation, "coordinate"), v12 = v11, objc_msgSend(v5, "coordinate"), v12 < v13) || v12 > v13 || (-[CLLocation horizontalAccuracy](*p_resultQueue_currentLocation, "horizontalAccuracy"), v15 = v14, objc_msgSend(v5, "horizontalAccuracy"), v15 < v16) || v15 > v16 || (-[CLLocation timestamp](*p_resultQueue_currentLocation, "timestamp"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "timeIntervalSinceNow"), v19 = v18, v17, v19 >= 5.0))
+  if (!resultQueue_currentLocation || (-[CLLocation coordinate](resultQueue_currentLocation, "coordinate"), v9 = v8, [neededCopy coordinate], v9 < v10) || v9 > v10 || (-[CLLocation coordinate](*p_resultQueue_currentLocation, "coordinate"), v12 = v11, objc_msgSend(neededCopy, "coordinate"), v12 < v13) || v12 > v13 || (-[CLLocation horizontalAccuracy](*p_resultQueue_currentLocation, "horizontalAccuracy"), v15 = v14, objc_msgSend(neededCopy, "horizontalAccuracy"), v15 < v16) || v15 > v16 || (-[CLLocation timestamp](*p_resultQueue_currentLocation, "timestamp"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "timeIntervalSinceNow"), v19 = v18, v17, v19 >= 5.0))
   {
     v20 = os_log_create("com.apple.camera", "SharedLibrary");
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138477827;
-      v22 = v5;
+      v22 = neededCopy;
       _os_log_impl(&dword_1A3640000, v20, OS_LOG_TYPE_DEFAULT, "[CAMLibrarySelectionController] Retrieved current location update: %{private}@", &v21, 0xCu);
     }
 
-    objc_storeStrong(&self->__resultQueue_currentLocation, a3);
+    objc_storeStrong(&self->__resultQueue_currentLocation, needed);
     [(CAMLibrarySelectionController *)self _resultQueue_updateAcquiredSignalResults];
   }
 }
 
-- (BOOL)_resultQueue_needsLocationShiftingForLocation:(id)a3
+- (BOOL)_resultQueue_needsLocationShiftingForLocation:(id)location
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   dispatch_assert_queue_V2(self->_resultQueue);
   resultQueue_needsLocationShifting = self->__resultQueue_needsLocationShifting;
   if (!resultQueue_needsLocationShifting)
@@ -504,12 +504,12 @@ void __73__CAMLibrarySelectionController__resultQueue_updateAcquiredSignalResult
     v20 = 3221225472;
     v21 = __79__CAMLibrarySelectionController__resultQueue_needsLocationShiftingForLocation___block_invoke;
     v22 = &unk_1E76F88D8;
-    v23 = self;
-    v24 = v4;
+    selfCopy = self;
+    v24 = locationCopy;
     v6 = _Block_copy(&v19);
     v7 = MEMORY[0x1E696AD98];
     v12 = v6[2](v6, v8, v9, v10, v11);
-    v13 = [v7 numberWithBool:{v12, v19, v20, v21, v22, v23}];
+    v13 = [v7 numberWithBool:{v12, v19, v20, v21, v22, selfCopy}];
     v14 = self->__resultQueue_needsLocationShifting;
     self->__resultQueue_needsLocationShifting = v13;
 
@@ -525,9 +525,9 @@ void __73__CAMLibrarySelectionController__resultQueue_updateAcquiredSignalResult
     resultQueue_needsLocationShifting = self->__resultQueue_needsLocationShifting;
   }
 
-  v17 = [(NSNumber *)resultQueue_needsLocationShifting BOOLValue];
+  bOOLValue = [(NSNumber *)resultQueue_needsLocationShifting BOOLValue];
 
-  return v17;
+  return bOOLValue;
 }
 
 uint64_t __79__CAMLibrarySelectionController__resultQueue_needsLocationShiftingForLocation___block_invoke(uint64_t a1)
@@ -570,9 +570,9 @@ uint64_t __79__CAMLibrarySelectionController__resultQueue_needsLocationShiftingF
   }
 }
 
-- (void)_resultQueue_shiftCoordinatesForLocation:(id)a3
+- (void)_resultQueue_shiftCoordinatesForLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   dispatch_assert_queue_V2(self->_resultQueue);
   if (!self->__resultQueue_locationShifter)
   {
@@ -581,9 +581,9 @@ uint64_t __79__CAMLibrarySelectionController__resultQueue_needsLocationShiftingF
     self->__resultQueue_locationShifter = v5;
   }
 
-  [v4 coordinate];
+  [locationCopy coordinate];
   v8 = v7;
-  [v4 coordinate];
+  [locationCopy coordinate];
   v10 = v9;
   objc_initWeak(&location, self);
   v11 = self->__resultQueue_locationShifter;
@@ -591,7 +591,7 @@ uint64_t __79__CAMLibrarySelectionController__resultQueue_needsLocationShiftingF
   v13[1] = 3221225472;
   v13[2] = __74__CAMLibrarySelectionController__resultQueue_shiftCoordinatesForLocation___block_invoke;
   v13[3] = &unk_1E76F8900;
-  v12 = v4;
+  v12 = locationCopy;
   v14 = v12;
   objc_copyWeak(&v15, &location);
   [(GEOLocationShifter *)v11 shiftCoordinate:v13 accuracy:0 withCompletionHandler:&__block_literal_global_8 mustGoToNetworkCallback:self->_resultQueue errorHandler:v8 callbackQueue:v10, 0.0];
@@ -634,16 +634,16 @@ void __74__CAMLibrarySelectionController__resultQueue_shiftCoordinatesForLocatio
   }
 }
 
-- (void)setAcquiredSignalResults:(id)a3
+- (void)setAcquiredSignalResults:(id)results
 {
-  v5 = a3;
+  resultsCopy = results;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  objc_storeStrong(&self->_acquiredSignalResults, a3);
-  if (v5)
+  objc_storeStrong(&self->_acquiredSignalResults, results);
+  if (resultsCopy)
   {
-    v6 = [v5 suggestsSharing];
-    [(CAMLibrarySelectionSession *)self->_session updateWithResult:v5];
-    if (v6)
+    suggestsSharing = [resultsCopy suggestsSharing];
+    [(CAMLibrarySelectionSession *)self->_session updateWithResult:resultsCopy];
+    if (suggestsSharing)
     {
       v7 = os_log_create("com.apple.camera", "SharedLibrary");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -656,23 +656,23 @@ void __74__CAMLibrarySelectionController__resultQueue_shiftCoordinatesForLocatio
     }
 
     v8 = +[CAMUserPreferences preferences];
-    if (v6)
+    if (suggestsSharing)
     {
-      v9 = [MEMORY[0x1E695DF00] date];
-      [v8 setSharedLibraryLastDiscoveryDate:v9];
+      date = [MEMORY[0x1E695DF00] date];
+      [v8 setSharedLibraryLastDiscoveryDate:date];
     }
 
-    if ([v5 cameraHasAccessToLocation])
+    if ([resultsCopy cameraHasAccessToLocation])
     {
-      v10 = [v5 currentLocation];
-      v11 = v10;
-      if (v10)
+      currentLocation = [resultsCopy currentLocation];
+      v11 = currentLocation;
+      if (currentLocation)
       {
-        v12 = [v10 copy];
+        v12 = [currentLocation copy];
         [v8 setSharedLibraryLastLocation:v12];
 
-        [v8 setSharedLibraryLastLocationAcquiredDuringTrip:{objc_msgSend(v5, "isOnTrip")}];
-        if (v6)
+        [v8 setSharedLibraryLastLocationAcquiredDuringTrip:{objc_msgSend(resultsCopy, "isOnTrip")}];
+        if (suggestsSharing)
         {
           v13 = [v11 copy];
           [v8 setSharedLibraryLastDiscoveryLocation:v13];
@@ -680,7 +680,7 @@ void __74__CAMLibrarySelectionController__resultQueue_shiftCoordinatesForLocatio
       }
     }
 
-    else if (!CAMLocationAccessPendingOrNotDeterminedWithAuthorizationStatus([v5 locationAuthorizationStatus]))
+    else if (!CAMLocationAccessPendingOrNotDeterminedWithAuthorizationStatus([resultsCopy locationAuthorizationStatus]))
     {
       [v8 setSharedLibraryLastLocation:0];
       [v8 setSharedLibraryLastUserActionLocation:0];
@@ -694,9 +694,9 @@ void __74__CAMLibrarySelectionController__resultQueue_shiftCoordinatesForLocatio
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 librarySelectionMockAutomationModeEnabled];
+  librarySelectionMockAutomationModeEnabled = [v3 librarySelectionMockAutomationModeEnabled];
 
-  if (v4)
+  if (librarySelectionMockAutomationModeEnabled)
   {
     v5 = os_log_create("com.apple.camera", "SharedLibrary");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -705,49 +705,49 @@ void __74__CAMLibrarySelectionController__resultQueue_shiftCoordinatesForLocatio
       _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "[CAMLibrarySelectionController] mockAutomationMode is enabled, providing mock PHCameraSmartSharingMetadata", v17, 2u);
     }
 
-    v6 = [objc_alloc(MEMORY[0x1E6978720]) initWithPhoneNumber:0 emailAddress:@"mockAutomationMode@example.com" contactIdentifiers:0];
+    smartSharingMetadataProvider = [objc_alloc(MEMORY[0x1E6978720]) initWithPhoneNumber:0 emailAddress:@"mockAutomationMode@example.com" contactIdentifiers:0];
     v7 = objc_alloc(MEMORY[0x1E695FBB0]);
     v8 = CLLocationCoordinate2DMake(1.0, 2.0);
     v9 = [v7 initWithCenter:@"mockAutomationModeHome" radius:v8.latitude identifier:{v8.longitude, 3.0}];
     v10 = +[CAMCaptureCapabilities capabilities];
-    v11 = [v10 librarySelectionMockLocationShiftingEnabled];
+    librarySelectionMockLocationShiftingEnabled = [v10 librarySelectionMockLocationShiftingEnabled];
 
     v12 = objc_alloc(MEMORY[0x1E6978728]);
-    v19[0] = v6;
+    v19[0] = smartSharingMetadataProvider;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
     v18 = v9;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
-    v15 = [v12 initWithLibraryScopeIdentifier:@"mockAutomationModeLibraryScopeIdentifier" identities:v13 homeLocations:v14 frequentLocations:0 locationShiftingRequired:v11];
+    v15 = [v12 initWithLibraryScopeIdentifier:@"mockAutomationModeLibraryScopeIdentifier" identities:v13 homeLocations:v14 frequentLocations:0 locationShiftingRequired:librarySelectionMockLocationShiftingEnabled];
   }
 
   else
   {
-    v6 = [(CAMLibrarySelectionController *)self smartSharingMetadataProvider];
-    v15 = [v6 retrieveMetadataForPhotoLibrary:0];
+    smartSharingMetadataProvider = [(CAMLibrarySelectionController *)self smartSharingMetadataProvider];
+    v15 = [smartSharingMetadataProvider retrieveMetadataForPhotoLibrary:0];
   }
 
   return v15;
 }
 
-- (void)ppt_installChangeHandler:(id)a3
+- (void)ppt_installChangeHandler:(id)handler
 {
-  [(CAMLibrarySelectionController *)self setPpt_changeHandler:a3];
+  [(CAMLibrarySelectionController *)self setPpt_changeHandler:handler];
 
   [(CAMLibrarySelectionController *)self _ppt_callChangeHandler];
 }
 
 - (void)_ppt_callChangeHandler
 {
-  v3 = [(CAMLibrarySelectionController *)self ppt_changeHandler];
-  v4 = v3;
-  if (v3)
+  ppt_changeHandler = [(CAMLibrarySelectionController *)self ppt_changeHandler];
+  v4 = ppt_changeHandler;
+  if (ppt_changeHandler)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __55__CAMLibrarySelectionController__ppt_callChangeHandler__block_invoke;
     v5[3] = &unk_1E76F83B0;
     v5[4] = self;
-    v6 = v3;
+    v6 = ppt_changeHandler;
     dispatch_async(MEMORY[0x1E69E96A0], v5);
   }
 }
@@ -756,9 +756,9 @@ void __74__CAMLibrarySelectionController__resultQueue_shiftCoordinatesForLocatio
 {
   v97[9] = *MEMORY[0x1E69E9840];
   v85 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v83 = [(CAMLibrarySelectionController *)self acquiredSignalResults];
-  v3 = [v83 resultDiagnostics];
-  [v85 setObject:v3 forKeyedSubscript:@"acquiredSignalResults"];
+  acquiredSignalResults = [(CAMLibrarySelectionController *)self acquiredSignalResults];
+  resultDiagnostics = [acquiredSignalResults resultDiagnostics];
+  [v85 setObject:resultDiagnostics forKeyedSubscript:@"acquiredSignalResults"];
 
   v4 = +[CAMCaptureCapabilities capabilities];
   v96[0] = @"librarySelectionSupported";
@@ -795,8 +795,8 @@ void __74__CAMLibrarySelectionController__resultQueue_shiftCoordinatesForLocatio
   v97[7] = v15;
   v96[8] = @"deviceProximityDetectAdditionalEmail";
   v82 = v4;
-  v16 = [v4 peopleProximityDetectAdditionalEmail];
-  v17 = [v16 length];
+  peopleProximityDetectAdditionalEmail = [v4 peopleProximityDetectAdditionalEmail];
+  v17 = [peopleProximityDetectAdditionalEmail length];
   v18 = @"yes";
   if (!v17)
   {
@@ -826,31 +826,31 @@ void __74__CAMLibrarySelectionController__resultQueue_shiftCoordinatesForLocatio
   v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v95 forKeys:v94 count:5];
   [v85 setObject:v26 forKeyedSubscript:@"preferencesDiagnostics"];
 
-  v27 = [(CAMLibrarySelectionController *)self acquiredSignalResults];
-  v28 = [v27 currentLocation];
-  v29 = v28;
-  if (v28)
+  acquiredSignalResults2 = [(CAMLibrarySelectionController *)self acquiredSignalResults];
+  currentLocation = [acquiredSignalResults2 currentLocation];
+  v29 = currentLocation;
+  if (currentLocation)
   {
-    v30 = v28;
+    sharedLibraryLastLocation = currentLocation;
   }
 
   else
   {
-    v30 = [v20 sharedLibraryLastLocation];
+    sharedLibraryLastLocation = [v20 sharedLibraryLastLocation];
   }
 
-  v31 = v30;
+  v31 = sharedLibraryLastLocation;
 
   v92[0] = @"sharedLibraryLastLocation";
-  v78 = [v20 sharedLibraryLastLocation];
-  v77 = [(CAMLibrarySelectionController *)self _diagnosticsForLocation:v78 currentLocation:v31];
+  sharedLibraryLastLocation2 = [v20 sharedLibraryLastLocation];
+  v77 = [(CAMLibrarySelectionController *)self _diagnosticsForLocation:sharedLibraryLastLocation2 currentLocation:v31];
   v93[0] = v77;
   v92[1] = @"sharedLibraryLastLocationAcquiredDuringTrip";
   v76 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v20, "sharedLibraryLastLocationAcquiredDuringTrip")}];
   v93[1] = v76;
   v92[2] = @"sharedLibraryLastDiscoveryDate";
-  v75 = [v20 sharedLibraryLastDiscoveryDate];
-  v32 = [v75 description];
+  sharedLibraryLastDiscoveryDate = [v20 sharedLibraryLastDiscoveryDate];
+  v32 = [sharedLibraryLastDiscoveryDate description];
   v33 = v32;
   if (v32)
   {
@@ -865,19 +865,19 @@ void __74__CAMLibrarySelectionController__resultQueue_shiftCoordinatesForLocatio
   v93[2] = v34;
   v92[3] = @"sharedLibraryLastDiscoveryTimeInterval";
   v35 = MEMORY[0x1E696AD98];
-  v74 = [v20 sharedLibraryLastDiscoveryDate];
-  [v74 timeIntervalSinceNow];
+  sharedLibraryLastDiscoveryDate2 = [v20 sharedLibraryLastDiscoveryDate];
+  [sharedLibraryLastDiscoveryDate2 timeIntervalSinceNow];
   v73 = [v35 numberWithDouble:?];
   v93[3] = v73;
   v92[4] = @"sharedLibraryLastDiscoveryLocation";
-  v36 = [v20 sharedLibraryLastDiscoveryLocation];
+  sharedLibraryLastDiscoveryLocation = [v20 sharedLibraryLastDiscoveryLocation];
   v37 = v31;
   v79 = v31;
-  v38 = [(CAMLibrarySelectionController *)self _diagnosticsForLocation:v36 currentLocation:v31];
+  v38 = [(CAMLibrarySelectionController *)self _diagnosticsForLocation:sharedLibraryLastDiscoveryLocation currentLocation:v31];
   v93[4] = v38;
   v92[5] = @"sharedLibraryLastUserActionDate";
-  v39 = [v20 sharedLibraryLastUserActionDate];
-  v40 = [v39 description];
+  sharedLibraryLastUserActionDate = [v20 sharedLibraryLastUserActionDate];
+  v40 = [sharedLibraryLastUserActionDate description];
   v41 = v40;
   if (v40)
   {
@@ -899,56 +899,56 @@ void __74__CAMLibrarySelectionController__resultQueue_shiftCoordinatesForLocatio
   v46 = [v43 numberWithDouble:?];
   v93[6] = v46;
   v92[7] = @"sharedLibraryLastUserActionLocation";
-  v47 = [v44 sharedLibraryLastUserActionLocation];
-  v48 = [(CAMLibrarySelectionController *)self _diagnosticsForLocation:v47 currentLocation:v37];
+  sharedLibraryLastUserActionLocation = [v44 sharedLibraryLastUserActionLocation];
+  v48 = [(CAMLibrarySelectionController *)self _diagnosticsForLocation:sharedLibraryLastUserActionLocation currentLocation:v37];
   v93[7] = v48;
   v49 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v93 forKeys:v92 count:8];
   [v85 setObject:v49 forKeyedSubscript:@"preferencesAlgorithmsDiagnostics"];
 
-  v50 = [(CAMLibrarySelectionController *)self session];
+  session = [(CAMLibrarySelectionController *)self session];
   v91[0] = &unk_1F16C7C40;
   v90[0] = @"algorithmVersion";
   v90[1] = @"initialMode";
-  v51 = CAMSharedLibraryModeDescription([v50 initialMode]);
+  v51 = CAMSharedLibraryModeDescription([session initialMode]);
   v91[1] = v51;
   v90[2] = @"currentMode";
-  v52 = CAMSharedLibraryModeDescription([v50 currentMode]);
+  v52 = CAMSharedLibraryModeDescription([session currentMode]);
   v91[2] = v52;
   v90[3] = @"overriddenByUser";
-  v53 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v50, "overriddenByUser")}];
+  v53 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(session, "overriddenByUser")}];
   v91[3] = v53;
   v90[4] = @"userWasPreviouslyOnTrip";
-  v54 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v50, "userWasPreviouslyOnTrip")}];
+  v54 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(session, "userWasPreviouslyOnTrip")}];
   v91[4] = v54;
   v90[5] = @"canResetToDefaultMode";
-  v55 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v50, "canResetToDefaultMode")}];
+  v55 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(session, "canResetToDefaultMode")}];
   v91[5] = v55;
   v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v91 forKeys:v90 count:6];
   [v85 setObject:v56 forKeyedSubscript:@"sessionDiagnostics"];
 
   v88[0] = @"timeToDetectDevicesInProximity";
   v57 = MEMORY[0x1E696AD98];
-  [v50 timeToDetectDevicesInProximity];
+  [session timeToDetectDevicesInProximity];
   v58 = [v57 numberWithDouble:?];
   v89[0] = v58;
   v88[1] = @"timeToAcquireFirstLocation";
   v59 = MEMORY[0x1E696AD98];
-  [v50 timeToAcquireFirstLocation];
+  [session timeToAcquireFirstLocation];
   v60 = [v59 numberWithDouble:?];
   v89[1] = v60;
   v88[2] = @"timeToAcquireFirstPreciseLocation";
   v61 = MEMORY[0x1E696AD98];
-  [v50 timeToAcquireFirstPreciseLocation];
+  [session timeToAcquireFirstPreciseLocation];
   v62 = [v61 numberWithDouble:?];
   v89[2] = v62;
   v88[3] = @"timeForSmartSharingAutoDecision";
   v63 = MEMORY[0x1E696AD98];
-  [v50 timeForSmartSharingAutoDecision];
+  [session timeForSmartSharingAutoDecision];
   v64 = [v63 numberWithDouble:?];
   v89[3] = v64;
   v88[4] = @"timeForUserManualOverride";
   v65 = MEMORY[0x1E696AD98];
-  [v50 timeForUserManualOverride];
+  [session timeForUserManualOverride];
   v66 = [v65 numberWithDouble:?];
   v89[4] = v66;
   v67 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v89 forKeys:v88 count:5];
@@ -956,8 +956,8 @@ void __74__CAMLibrarySelectionController__resultQueue_shiftCoordinatesForLocatio
 
   v86 = @"countOfIdentities";
   v68 = MEMORY[0x1E696AD98];
-  v69 = [(CAMLibrarySelectionController *)self identitiesToScan];
-  v70 = [v68 numberWithUnsignedInteger:{objc_msgSend(v69, "count")}];
+  identitiesToScan = [(CAMLibrarySelectionController *)self identitiesToScan];
+  v70 = [v68 numberWithUnsignedInteger:{objc_msgSend(identitiesToScan, "count")}];
   v87 = v70;
   v71 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
   [v85 setObject:v71 forKeyedSubscript:@"scannerDiagnostics"];
@@ -965,17 +965,17 @@ void __74__CAMLibrarySelectionController__resultQueue_shiftCoordinatesForLocatio
   return v85;
 }
 
-- (id)_diagnosticsForLocation:(id)a3 currentLocation:(id)a4
+- (id)_diagnosticsForLocation:(id)location currentLocation:(id)currentLocation
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  locationCopy = location;
+  currentLocationCopy = currentLocation;
+  v7 = currentLocationCopy;
+  if (locationCopy)
   {
-    if (v6)
+    if (currentLocationCopy)
     {
-      [v6 distanceFromLocation:v5];
+      [currentLocationCopy distanceFromLocation:locationCopy];
       v9 = v8;
     }
 
@@ -986,7 +986,7 @@ void __74__CAMLibrarySelectionController__resultQueue_shiftCoordinatesForLocatio
 
     v17[0] = @"coordinateIsValid";
     v11 = MEMORY[0x1E696AD98];
-    [v5 coordinate];
+    [locationCopy coordinate];
     v12 = [v11 numberWithBool:CLLocationCoordinate2DIsValid(v20)];
     v18[0] = v12;
     v17[1] = @"distanceFromCurrentLocation";
@@ -994,7 +994,7 @@ void __74__CAMLibrarySelectionController__resultQueue_shiftCoordinatesForLocatio
     v18[1] = v13;
     v17[2] = @"horizontalAccuracy";
     v14 = MEMORY[0x1E696AD98];
-    [v5 horizontalAccuracy];
+    [locationCopy horizontalAccuracy];
     v15 = [v14 numberWithDouble:?];
     v18[2] = v15;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:3];
@@ -1012,19 +1012,19 @@ void __74__CAMLibrarySelectionController__resultQueue_shiftCoordinatesForLocatio
 {
   v41[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(CAMLibrarySelectionController *)self sharedLibraryMode];
-  v5 = v4;
-  if (v4 > 5)
+  sharedLibraryMode = [(CAMLibrarySelectionController *)self sharedLibraryMode];
+  v5 = sharedLibraryMode;
+  if (sharedLibraryMode > 5)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = off_1E76FB3D8[v4];
+    v6 = off_1E76FB3D8[sharedLibraryMode];
   }
 
-  if (CAMSharedLibraryModeIsOn(v4))
+  if (CAMSharedLibraryModeIsOn(sharedLibraryMode))
   {
     [v3 addObject:@"I am not near a participant"];
     v7 = @"I am not interested to share in this context";
@@ -1053,9 +1053,9 @@ void __74__CAMLibrarySelectionController__resultQueue_shiftCoordinatesForLocatio
   [v3 addObject:v9];
 LABEL_12:
   v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[Goldilocks] [Live-on Feedback] Unexpected state while '%@'", v6];
-  v26 = [(CAMLibrarySelectionController *)self librarySelectionDiagnostics];
+  librarySelectionDiagnostics = [(CAMLibrarySelectionController *)self librarySelectionDiagnostics];
   v10 = [CAMTapToRadarUtilities writeDictionary:"writeDictionary:toPlistFileWithName:" toPlistFileWithName:?];
-  v27 = self;
+  selfCopy = self;
   v25 = v10;
   if (v10)
   {
@@ -1113,7 +1113,7 @@ LABEL_12:
   v31[1] = 3221225472;
   v31[2] = __70__CAMLibrarySelectionController_TapToRadar__tapToRadarAlertController__block_invoke_2;
   v31[3] = &unk_1E76F89F0;
-  v31[4] = v27;
+  v31[4] = selfCopy;
   v21 = [MEMORY[0x1E69DC648] actionWithTitle:@"Reset to default (personal)" style:2 handler:v31];
   [v11 addAction:v21];
 
@@ -1121,7 +1121,7 @@ LABEL_12:
   v30[1] = 3221225472;
   v30[2] = __70__CAMLibrarySelectionController_TapToRadar__tapToRadarAlertController__block_invoke_3;
   v30[3] = &unk_1E76F89F0;
-  v30[4] = v27;
+  v30[4] = selfCopy;
   v22 = [MEMORY[0x1E69DC648] actionWithTitle:@"Reset and rescan" style:2 handler:v30];
   [v11 addAction:v22];
 

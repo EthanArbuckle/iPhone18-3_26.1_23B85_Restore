@@ -1,20 +1,20 @@
 @interface CLPCReportingClient
-- (BOOL)enableStats:(id)a3 error:(id *)a4;
-- (BOOL)setTGSortingMetric:(unint64_t)a3 error:(id *)a4;
+- (BOOL)enableStats:(id)stats error:(id *)error;
+- (BOOL)setTGSortingMetric:(unint64_t)metric error:(id *)error;
 - (__n128)buildSchemas:error:;
 - (id).cxx_construct;
-- (id)buildSchemas:(void *)a3 error:;
+- (id)buildSchemas:(void *)schemas error:;
 - (id)clearSchemas;
-- (id)convertSampleList:(uint64_t)a1 error:;
+- (id)convertSampleList:(uint64_t)list error:;
 - (id)enabledStats;
-- (id)init:(id *)a3;
-- (id)readDeltaStats:(id *)a3;
-- (id)readStats:(id *)a3;
+- (id)init:(id *)init;
+- (id)readDeltaStats:(id *)stats;
+- (id)readStats:(id *)stats;
 - (id)supportedStats;
 - (uint64_t)buildSchemas:error:;
-- (uint64_t)decodeTGRawData:(char)a3 delta:(void *)a4 error:;
+- (uint64_t)decodeTGRawData:(char)data delta:(void *)delta error:;
 - (uint64_t)ensureStatsEnabled:(uint64_t)result;
-- (unint64_t)schemaIDForStatID:(unint64_t)a3 error:(id *)a4;
+- (unint64_t)schemaIDForStatID:(unint64_t)d error:(id *)error;
 - (void)buildSchemas:error:;
 - (void)clearSchemas;
 - (void)convertSampleList:error:;
@@ -37,9 +37,9 @@
 
 - (void)clearSchemas
 {
-  v3 = [MEMORY[0x277CBEA60] array];
+  array = [MEMORY[0x277CBEA60] array];
   v4 = *(a2 + 368);
-  *(a2 + 368) = v3;
+  *(a2 + 368) = array;
 
   v5 = (a2 + 376);
   v6 = 440;
@@ -54,7 +54,7 @@
   return result;
 }
 
-- (id)init:(id *)a3
+- (id)init:(id *)init
 {
   v117[9] = *MEMORY[0x277D85DE8];
   v108.receiver = self;
@@ -76,19 +76,19 @@
         v87 = v8;
         if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v9 = [v8 unsignedIntValue];
-          v109[10] = v9;
+          unsignedIntValue = [v8 unsignedIntValue];
+          v109[10] = unsignedIntValue;
           v10 = IORegistryEntryCreateCFProperty(v109[4], @"#cpu-num-cores", v5, 0);
           v86 = v10;
           if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
-            v11 = [v10 unsignedIntValue];
-            v109[13] = v11;
+            unsignedIntValue2 = [v10 unsignedIntValue];
+            v109[13] = unsignedIntValue2;
             v81 = clpc::user::iokit::RegistryEntry::createProperty((v109 + 2), @"#ane-num-clusters");
             if (v81 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
-              v12 = [v81 unsignedIntValue];
-              v109[11] = v12;
+              unsignedIntValue3 = [v81 unsignedIntValue];
+              v109[11] = unsignedIntValue3;
               for (v109[12] = 1; ; ++v109[12])
               {
                 v13 = v109;
@@ -166,7 +166,7 @@
               }
 
               v26 = CCDigestCreate();
-              v82 = [(io_registry_entry_t *)v109 reportingObfuscationData:a3];
+              v82 = [(io_registry_entry_t *)v109 reportingObfuscationData:init];
               if (v26 && v82 && [v82 length] > 0x1F)
               {
                 memset(v106, 0, sizeof(v106));
@@ -426,25 +426,25 @@
                         v66 = [*(v109 + 128) objectForKeyedSubscript:v65];
                         v67 = [v66 objectForKeyedSubscript:@"name"];
                         v68 = v109;
-                        v89 = [v65 unsignedLongLongValue];
-                        v94 = &v89;
-                        v69 = std::__hash_table<std::__hash_value_type<CLPCReportingStatID,NSString * {__strong}>,std::__unordered_map_hasher<CLPCReportingStatID,std::__hash_value_type<CLPCReportingStatID,NSString * {__strong}>,std::hash<CLPCReportingStatID>,std::equal_to<CLPCReportingStatID>,true>,std::__unordered_map_equal<CLPCReportingStatID,std::__hash_value_type<CLPCReportingStatID,NSString * {__strong}>,std::equal_to<CLPCReportingStatID>,std::hash<CLPCReportingStatID>,true>,std::allocator<std::__hash_value_type<CLPCReportingStatID,NSString * {__strong}>>>::__emplace_unique_key_args<CLPCReportingStatID,std::piecewise_construct_t const&,std::tuple<CLPCReportingStatID&&>,std::tuple<>>(v68 + 110, &v89);
+                        unsignedLongLongValue = [v65 unsignedLongLongValue];
+                        v94 = &unsignedLongLongValue;
+                        v69 = std::__hash_table<std::__hash_value_type<CLPCReportingStatID,NSString * {__strong}>,std::__unordered_map_hasher<CLPCReportingStatID,std::__hash_value_type<CLPCReportingStatID,NSString * {__strong}>,std::hash<CLPCReportingStatID>,std::equal_to<CLPCReportingStatID>,true>,std::__unordered_map_equal<CLPCReportingStatID,std::__hash_value_type<CLPCReportingStatID,NSString * {__strong}>,std::equal_to<CLPCReportingStatID>,std::hash<CLPCReportingStatID>,true>,std::allocator<std::__hash_value_type<CLPCReportingStatID,NSString * {__strong}>>>::__emplace_unique_key_args<CLPCReportingStatID,std::piecewise_construct_t const&,std::tuple<CLPCReportingStatID&&>,std::tuple<>>(v68 + 110, &unsignedLongLongValue);
                         v70 = v69[3];
                         v69[3] = v67;
 
                         v71 = [v66 objectForKeyedSubscript:@"type"];
-                        v72 = [v71 unsignedLongLongValue];
+                        unsignedLongLongValue2 = [v71 unsignedLongLongValue];
                         v73 = v109;
-                        v89 = [v65 unsignedLongLongValue];
-                        v94 = &v89;
-                        std::__hash_table<std::__hash_value_type<unsigned long long,unsigned long>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,unsigned long>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,unsigned long>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,unsigned long>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(v73 + 120, &v89)[3] = v72;
+                        unsignedLongLongValue = [v65 unsignedLongLongValue];
+                        v94 = &unsignedLongLongValue;
+                        std::__hash_table<std::__hash_value_type<unsigned long long,unsigned long>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,unsigned long>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,unsigned long>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,unsigned long>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(v73 + 120, &unsignedLongLongValue)[3] = unsignedLongLongValue2;
 
                         v74 = [v66 objectForKeyedSubscript:@"format"];
-                        v75 = [v74 unsignedLongLongValue];
+                        unsignedLongLongValue3 = [v74 unsignedLongLongValue];
                         v76 = v109;
-                        v89 = [v65 unsignedLongLongValue];
-                        v94 = &v89;
-                        std::__hash_table<std::__hash_value_type<unsigned long long,unsigned long>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,unsigned long>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,unsigned long>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,unsigned long>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(v76 + 115, &v89)[3] = v75;
+                        unsignedLongLongValue = [v65 unsignedLongLongValue];
+                        v94 = &unsignedLongLongValue;
+                        std::__hash_table<std::__hash_value_type<unsigned long long,unsigned long>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,unsigned long>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,unsigned long>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,unsigned long>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(v76 + 115, &unsignedLongLongValue)[3] = unsignedLongLongValue3;
 
                         v10 = v86;
                       }
@@ -550,10 +550,10 @@ LABEL_78:
   return v16;
 }
 
-- (unint64_t)schemaIDForStatID:(unint64_t)a3 error:(id *)a4
+- (unint64_t)schemaIDForStatID:(unint64_t)d error:(id *)error
 {
-  result = HIDWORD(a3);
-  if (HIDWORD(a3) >= 0xB)
+  result = HIDWORD(d);
+  if (HIDWORD(d) >= 0xB)
   {
     return 0;
   }
@@ -588,10 +588,10 @@ LABEL_78:
   return v4;
 }
 
-- (BOOL)enableStats:(id)a3 error:(id *)a4
+- (BOOL)enableStats:(id)stats error:(id *)error
 {
   v67[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  statsCopy = stats;
   p_configured_stat_ids = &self->configured_stat_ids;
   self->configured_stat_ids.__end_ = self->configured_stat_ids.__begin_;
   channels = self->reporting_channels.channels;
@@ -612,7 +612,7 @@ LABEL_78:
   v51 = 0u;
   v52 = 0u;
   v53 = 1065353216;
-  [(CLPCReportingStatSelection *)v6 selectedStats];
+  [(CLPCReportingStatSelection *)statsCopy selectedStats];
   for (i = v65; i; i = *i)
   {
     *&v48 = *(i + 2);
@@ -644,7 +644,7 @@ LABEL_78:
   }
 
   self->thread_group_stats_requested = v12;
-  [v6 deselectAll];
+  [statsCopy deselectAll];
   v48 = 0u;
   v49 = 0u;
   v50 = 1065353216;
@@ -653,7 +653,7 @@ LABEL_78:
   if (!v55)
   {
 LABEL_22:
-    v41 = v6;
+    v41 = statsCopy;
     clpc::user::ioreport::ChannelList::fromProvider(&self->super.clpc, &obj);
     if (v47)
     {
@@ -707,7 +707,7 @@ LABEL_22:
         {
           std::vector<CLPCReportingStatID>::reserve(&self->configured_stat_ids.__begin_, *(&v55 + 1));
           v20 = 0;
-          v21 = v6 + 8;
+          v21 = statsCopy + 8;
           do
           {
             if (std::__hash_table<CLPCReportingStatID,std::hash<CLPCReportingStatID>,std::equal_to<CLPCReportingStatID>,std::allocator<CLPCReportingStatID>>::find<CLPCReportingStatID>(&v54, &v43) || std::__hash_table<CLPCReportingStatID,std::hash<CLPCReportingStatID>,std::equal_to<CLPCReportingStatID>,std::allocator<CLPCReportingStatID>>::find<CLPCReportingStatID>(&v51, &v43))
@@ -755,7 +755,7 @@ LABEL_22:
                   operator delete(v32);
                 }
 
-                v6 = v41;
+                statsCopy = v41;
               }
 
               else
@@ -765,7 +765,7 @@ LABEL_22:
               }
 
               self->configured_stat_ids.__end_ = v24;
-              if (v6)
+              if (statsCopy)
               {
                 v33 = 0;
                 {
@@ -791,12 +791,12 @@ LABEL_51:
           v64 = 0;
         }
 
-        else if (a4)
+        else if (error)
         {
           v57 = *MEMORY[0x277CCA068];
           v58 = @"Failed to subscribe to AppleCLPC IOReporting channels.";
           v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
-          *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLPCErrorDomain" code:-536870212 userInfo:v38];
+          *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLPCErrorDomain" code:-536870212 userInfo:v38];
         }
 
         if (v66 == 1)
@@ -808,12 +808,12 @@ LABEL_51:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       v61 = *MEMORY[0x277CCA068];
       v62 = @"Failed to list AppleCLPC IOReporting channels.";
       v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLPCErrorDomain" code:-536870212 userInfo:v35];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLPCErrorDomain" code:-536870212 userInfo:v35];
     }
 
     v19 = 0;
@@ -897,7 +897,7 @@ LABEL_60:
   return result;
 }
 
-- (id)buildSchemas:(void *)a3 error:
+- (id)buildSchemas:(void *)schemas error:
 {
   v24[14] = *MEMORY[0x277D85DE8];
   v20[0] = result;
@@ -1017,7 +1017,7 @@ LABEL_30:
 - (uint64_t)buildSchemas:error:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -1026,11 +1026,11 @@ LABEL_30:
   }
 }
 
-- (id)convertSampleList:(uint64_t)a1 error:
+- (id)convertSampleList:(uint64_t)list error:
 {
   v12 = *MEMORY[0x277D85DE8];
-  v10 = a1;
-  if (a1)
+  listCopy = list;
+  if (list)
   {
     v1 = 0;
     v9 = 0;
@@ -1038,12 +1038,12 @@ LABEL_30:
     memset(v7, 0, sizeof(v7));
     while (1)
     {
-      v2 = *(v10 + 280 + v1);
+      v2 = *(listCopy + 280 + v1);
       if (v2 && [*(v2 + 24) count])
       {
-        v3 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v4 = *(v7 + v1);
-        *(v7 + v1) = v3;
+        *(v7 + v1) = array;
       }
 
       v1 += 8;
@@ -1063,12 +1063,12 @@ LABEL_30:
 - (void)convertSampleList:error:
 {
   v17 = a5;
-  v9 = [*(**a1 + 280 + 8 * a2) columns];
-  v10 = [v9 count];
+  columns = [*(**self + 280 + 8 * a2) columns];
+  v10 = [columns count];
 
   if (v10 > a4)
   {
-    v11 = *(a1 + 8);
+    v11 = *(self + 8);
     while ([*(v11 + 8 * a2) count] <= a3)
     {
       v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:v10];
@@ -1084,23 +1084,23 @@ LABEL_30:
 
     if (v17)
     {
-      v15 = [*(v11 + 8 * a2) objectAtIndexedSubscript:a3];
-      [v15 setObject:v17 atIndexedSubscript:a4];
+      null = [*(v11 + 8 * a2) objectAtIndexedSubscript:a3];
+      [null setObject:v17 atIndexedSubscript:a4];
     }
 
     else
     {
-      v15 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
       v16 = [*(v11 + 8 * a2) objectAtIndexedSubscript:a3];
-      [v16 setObject:v15 atIndexedSubscript:a4];
+      [v16 setObject:null atIndexedSubscript:a4];
     }
   }
 }
 
-- (id)readStats:(id *)a3
+- (id)readStats:(id *)stats
 {
   v24[3] = *MEMORY[0x277D85DE8];
-  if ([(CLPCReportingClient *)self ensureStatsEnabled:a3]&& (v20[0] = 0, subscription = self->reporting_subscription.subscription, subscribed_channels = self->reporting_subscription.subscribed_channels, (Samples = IOReportCreateSamples()) != 0))
+  if ([(CLPCReportingClient *)self ensureStatsEnabled:stats]&& (v20[0] = 0, subscription = self->reporting_subscription.subscription, subscribed_channels = self->reporting_subscription.subscribed_channels, (Samples = IOReportCreateSamples()) != 0))
   {
     if (self->thread_group_stats_requested)
     {
@@ -1123,18 +1123,18 @@ LABEL_30:
 
       clpc::user::iokit::CLPC::performRPC(&self->super.clpc, @"getThreadGroup", v9, v20);
       v12 = v20[0];
-      if (a3 && !v20[0])
+      if (stats && !v20[0])
       {
         v21 = *MEMORY[0x277CCA068];
         v22 = @"Unable to query thread groups.";
         v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-        *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLPCErrorDomain" code:-536870199 userInfo:v13];
+        *stats = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLPCErrorDomain" code:-536870199 userInfo:v13];
 
         v12 = v20[0];
       }
 
       v11 = v12;
-      [(CLPCReportingClient *)self decodeTGRawData:v11 delta:0 error:a3];
+      [(CLPCReportingClient *)self decodeTGRawData:v11 delta:0 error:stats];
     }
 
     else
@@ -1144,7 +1144,7 @@ LABEL_30:
 
     v14 = Samples;
     v19 = v14;
-    v15 = [(CLPCReportingClient *)&self->super.super.isa buildSchemas:a3 error:?];
+    v15 = [(CLPCReportingClient *)&self->super.super.isa buildSchemas:stats error:?];
 
     if (v15)
     {
@@ -1168,12 +1168,12 @@ LABEL_30:
   return v10;
 }
 
-- (uint64_t)decodeTGRawData:(char)a3 delta:(void *)a4 error:
+- (uint64_t)decodeTGRawData:(char)data delta:(void *)delta error:
 {
   v105 = *MEMORY[0x277D85DE8];
   v5 = a2;
   v73 = v5;
-  if (a1)
+  if (self)
   {
     v97 = 0;
     v98 = 0;
@@ -1190,7 +1190,7 @@ LABEL_30:
     if (v6)
     {
       v7 = *v90;
-      v79 = a1;
+      selfCopy = self;
       v76 = *v90;
       do
       {
@@ -1221,7 +1221,7 @@ LABEL_30:
             v12 = [v9 length];
             v13 = 16 * v11;
             v14 = 16 * v11 + *(&v103[2] + 5);
-            a1 = v79;
+            self = selfCopy;
             if (v12 >= v14)
             {
               v82[0] = &v101 + 1;
@@ -1246,7 +1246,7 @@ LABEL_30:
               std::vector<clpc::shared::rpc::ThreadGroupReportingCPUCluster>::vector[abi:ne200100](v82, *(&v103[1] + 9));
               std::vector<clpc::shared::rpc::ThreadGroupReportingANECluster>::vector[abi:ne200100](__p, *(&v103[2] + 1));
               [v9 getBytes:v82[0] range:{*(&v103[1] + 13), 40 * v10}];
-              a1 = v79;
+              self = selfCopy;
               [v9 getBytes:__p[0] range:{*(&v103[2] + 5), v13}];
               if (*(&v103[1] + 9))
               {
@@ -1301,11 +1301,11 @@ LABEL_30:
                 while (v29 < *(&v103[2] + 1));
               }
 
-              if (a3)
+              if (data)
               {
-                if (std::__hash_table<CLPCReportingStatID,std::hash<CLPCReportingStatID>,std::equal_to<CLPCReportingStatID>,std::allocator<CLPCReportingStatID>>::find<CLPCReportingStatID>((v79 + 1032), (&v101 + 1)) && std::__hash_table<CLPCReportingStatID,std::hash<CLPCReportingStatID>,std::equal_to<CLPCReportingStatID>,std::allocator<CLPCReportingStatID>>::find<CLPCReportingStatID>((v79 + 1072), (&v101 + 1)))
+                if (std::__hash_table<CLPCReportingStatID,std::hash<CLPCReportingStatID>,std::equal_to<CLPCReportingStatID>,std::allocator<CLPCReportingStatID>>::find<CLPCReportingStatID>((selfCopy + 1032), (&v101 + 1)) && std::__hash_table<CLPCReportingStatID,std::hash<CLPCReportingStatID>,std::equal_to<CLPCReportingStatID>,std::allocator<CLPCReportingStatID>>::find<CLPCReportingStatID>((selfCopy + 1072), (&v101 + 1)))
                 {
-                  if (![CLPCReportingClient computeTGDiff:v79 cluster_acc:&v86 tg_id:&v83 error:*(&v101 + 1)])
+                  if (![CLPCReportingClient computeTGDiff:selfCopy cluster_acc:&v86 tg_id:&v83 error:*(&v101 + 1)])
                   {
                   }
                 }
@@ -1313,7 +1313,7 @@ LABEL_30:
                 else
                 {
                   v100 = (&v101 + 1);
-                  v36 = std::__hash_table<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>((v79 + 1032), (&v101 + 1));
+                  v36 = std::__hash_table<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>((selfCopy + 1032), (&v101 + 1));
                   if (v36 + 3 != &v86)
                   {
                     *(v36 + 14) = v88;
@@ -1321,7 +1321,7 @@ LABEL_30:
                   }
 
                   v100 = (&v101 + 1);
-                  v37 = std::__hash_table<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>((v79 + 1072), (&v101 + 1));
+                  v37 = std::__hash_table<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>((selfCopy + 1072), (&v101 + 1));
                   if (v37 + 3 != &v83)
                   {
                     *(v37 + 14) = v85;
@@ -1333,7 +1333,7 @@ LABEL_30:
               else
               {
                 v100 = (&v101 + 1);
-                v34 = std::__hash_table<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>((v79 + 1032), (&v101 + 1));
+                v34 = std::__hash_table<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>((selfCopy + 1032), (&v101 + 1));
                 if (v34 + 3 != &v86)
                 {
                   *(v34 + 14) = v88;
@@ -1341,7 +1341,7 @@ LABEL_30:
                 }
 
                 v100 = (&v101 + 1);
-                v35 = std::__hash_table<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>((v79 + 1072), (&v101 + 1));
+                v35 = std::__hash_table<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>((selfCopy + 1072), (&v101 + 1));
                 if (v35 + 3 != &v83)
                 {
                   *(v35 + 14) = v85;
@@ -1350,20 +1350,20 @@ LABEL_30:
               }
 
               v100 = (&v101 + 1);
-              v38 = std::__hash_table<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>((v79 + 1112), (&v101 + 1));
+              v38 = std::__hash_table<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>((selfCopy + 1112), (&v101 + 1));
               std::__hash_table<std::__hash_value_type<unsigned long long,CLPCReportingStatID>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,CLPCReportingStatID>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,CLPCReportingStatID>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,CLPCReportingStatID>>>::__move_assign((v38 + 3), &v86);
               v100 = (&v101 + 1);
-              v39 = std::__hash_table<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>((v79 + 1152), (&v101 + 1));
+              v39 = std::__hash_table<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>((selfCopy + 1152), (&v101 + 1));
               std::__hash_table<std::__hash_value_type<CLPCReportingStatID,std::vector<unsigned long long>>,std::__unordered_map_hasher<CLPCReportingStatID,std::__hash_value_type<CLPCReportingStatID,std::vector<unsigned long long>>,std::hash<CLPCReportingStatID>,std::equal_to<CLPCReportingStatID>,true>,std::__unordered_map_equal<CLPCReportingStatID,std::__hash_value_type<CLPCReportingStatID,std::vector<unsigned long long>>,std::equal_to<CLPCReportingStatID>,std::hash<CLPCReportingStatID>,true>,std::allocator<std::__hash_value_type<CLPCReportingStatID,std::vector<unsigned long long>>>>::__move_assign((v39 + 3), &v83);
               v40 = *(&v101 + 1);
-              v41 = *(v79 + 1200);
+              v41 = *(selfCopy + 1200);
               if (HIDWORD(v41) <= 0xA && (v41 & 0xFFFFFFFF00000000) == 0xA00000000)
               {
                 v100 = (&v101 + 1);
-                v42 = std::__hash_table<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>((v79 + 1152), (&v101 + 1));
-                v100 = (v79 + 1200);
-                v43 = std::__hash_table<std::__hash_value_type<CLPCReportingStatID,std::vector<unsigned long long>>,std::__unordered_map_hasher<CLPCReportingStatID,std::__hash_value_type<CLPCReportingStatID,std::vector<unsigned long long>>,std::hash<CLPCReportingStatID>,std::equal_to<CLPCReportingStatID>,true>,std::__unordered_map_equal<CLPCReportingStatID,std::__hash_value_type<CLPCReportingStatID,std::vector<unsigned long long>>,std::equal_to<CLPCReportingStatID>,std::hash<CLPCReportingStatID>,true>,std::allocator<std::__hash_value_type<CLPCReportingStatID,std::vector<unsigned long long>>>>::__emplace_unique_key_args<CLPCReportingStatID,std::piecewise_construct_t const&,std::tuple<CLPCReportingStatID const&>,std::tuple<>>(v42 + 3, (v79 + 1200));
-                v44 = *(v79 + 40);
+                v42 = std::__hash_table<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,std::vector<unsigned long long>>>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>((selfCopy + 1152), (&v101 + 1));
+                v100 = (selfCopy + 1200);
+                v43 = std::__hash_table<std::__hash_value_type<CLPCReportingStatID,std::vector<unsigned long long>>,std::__unordered_map_hasher<CLPCReportingStatID,std::__hash_value_type<CLPCReportingStatID,std::vector<unsigned long long>>,std::hash<CLPCReportingStatID>,std::equal_to<CLPCReportingStatID>,true>,std::__unordered_map_equal<CLPCReportingStatID,std::__hash_value_type<CLPCReportingStatID,std::vector<unsigned long long>>,std::equal_to<CLPCReportingStatID>,std::hash<CLPCReportingStatID>,true>,std::allocator<std::__hash_value_type<CLPCReportingStatID,std::vector<unsigned long long>>>>::__emplace_unique_key_args<CLPCReportingStatID,std::piecewise_construct_t const&,std::tuple<CLPCReportingStatID const&>,std::tuple<>>(v42 + 3, (selfCopy + 1200));
+                v44 = *(selfCopy + 40);
                 if (v44)
                 {
                   v45 = 0;
@@ -1387,9 +1387,9 @@ LABEL_30:
               else
               {
                 v100 = (&v101 + 1);
-                v48 = std::__hash_table<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>((v79 + 1112), (&v101 + 1));
-                v100 = (v79 + 1200);
-                v45 = std::__hash_table<std::__hash_value_type<unsigned long long,unsigned long>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,unsigned long>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,unsigned long>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,unsigned long>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(v48 + 3, (v79 + 1200))[3];
+                v48 = std::__hash_table<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unordered_map<CLPCReportingStatID,unsigned long long>>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>((selfCopy + 1112), (&v101 + 1));
+                v100 = (selfCopy + 1200);
+                v45 = std::__hash_table<std::__hash_value_type<unsigned long long,unsigned long>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,unsigned long>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,unsigned long>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,unsigned long>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(v48 + 3, (selfCopy + 1200))[3];
               }
 
               v49 = v94;
@@ -1436,7 +1436,7 @@ LABEL_30:
                   operator delete(v59);
                 }
 
-                a1 = v79;
+                self = selfCopy;
               }
 
               else
@@ -1489,10 +1489,10 @@ LABEL_30:
 
     std::__introsort<std::_ClassicAlgPolicy,[CLPCReportingClient decodeTGRawData:delta:error:]::$_10 &,std::pair<unsigned long long,unsigned long long> *,false>(__src, v94, v61, 1);
     v62 = __src;
-    v63 = *(a1 + 56);
+    v63 = *(self + 56);
     if ((v94 - __src) >> 4 >= v63)
     {
-      v64 = *(a1 + 56);
+      v64 = *(self + 56);
     }
 
     else
@@ -1524,13 +1524,13 @@ LABEL_30:
       while (v65 < (v94 - __src) >> 4);
     }
 
-    v67 = a1 + 1008;
-    std::__tree<std::__value_type<unsigned long long,clpc::shared::rpc::ThreadGroupReporting>,std::__map_value_compare<unsigned long long,std::__value_type<unsigned long long,clpc::shared::rpc::ThreadGroupReporting>,std::less<unsigned long long>,true>,std::allocator<std::__value_type<unsigned long long,clpc::shared::rpc::ThreadGroupReporting>>>::destroy(a1 + 1000, *(a1 + 1008));
+    v67 = self + 1008;
+    std::__tree<std::__value_type<unsigned long long,clpc::shared::rpc::ThreadGroupReporting>,std::__map_value_compare<unsigned long long,std::__value_type<unsigned long long,clpc::shared::rpc::ThreadGroupReporting>,std::less<unsigned long long>,true>,std::allocator<std::__value_type<unsigned long long,clpc::shared::rpc::ThreadGroupReporting>>>::destroy(self + 1000, *(self + 1008));
     v68 = v97;
-    *(a1 + 1000) = v96;
-    *(a1 + 1008) = v68;
+    *(self + 1000) = v96;
+    *(self + 1008) = v68;
     v69 = v98;
-    *(a1 + 1016) = v98;
+    *(self + 1016) = v98;
     if (v69)
     {
       v68[2] = v67;
@@ -1542,7 +1542,7 @@ LABEL_30:
 
     else
     {
-      *(a1 + 1000) = v67;
+      *(self + 1000) = v67;
     }
 
     v99 = 1;
@@ -1566,10 +1566,10 @@ LABEL_30:
   return v70;
 }
 
-- (id)readDeltaStats:(id *)a3
+- (id)readDeltaStats:(id *)stats
 {
   v32[3] = *MEMORY[0x277D85DE8];
-  if ([(CLPCReportingClient *)self ensureStatsEnabled:a3]&& (v28[0] = 0, subscription = self->reporting_subscription.subscription, subscribed_channels = self->reporting_subscription.subscribed_channels, (v7 = IOReportCreateSamples()) != 0))
+  if ([(CLPCReportingClient *)self ensureStatsEnabled:stats]&& (v28[0] = 0, subscription = self->reporting_subscription.subscription, subscribed_channels = self->reporting_subscription.subscribed_channels, (v7 = IOReportCreateSamples()) != 0))
   {
     if (self->thread_group_stats_requested)
     {
@@ -1594,12 +1594,12 @@ LABEL_30:
       clpc::user::iokit::CLPC::performRPC(&self->super.clpc, v12, v9, v28);
 
       v13 = v28[0];
-      if (a3 && !v28[0])
+      if (stats && !v28[0])
       {
         v29 = *MEMORY[0x277CCA068];
         v30 = @"Unable to query thread groups.";
         v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-        *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLPCErrorDomain" code:-536870199 userInfo:v14];
+        *stats = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLPCErrorDomain" code:-536870199 userInfo:v14];
 
         v13 = v28[0];
       }
@@ -1615,7 +1615,7 @@ LABEL_30:
         v15 = self->prev_report_cluster_acc.__table_.__size_ != 0;
       }
 
-      [(CLPCReportingClient *)self decodeTGRawData:v11 delta:v15 error:a3];
+      [(CLPCReportingClient *)self decodeTGRawData:v11 delta:v15 error:stats];
     }
 
     else
@@ -1625,7 +1625,7 @@ LABEL_30:
 
     v16 = v7;
     v27 = v16;
-    v17 = [(CLPCReportingClient *)&self->super.super.isa buildSchemas:a3 error:?];
+    v17 = [(CLPCReportingClient *)&self->super.super.isa buildSchemas:stats error:?];
 
     if (v17)
     {
@@ -1637,7 +1637,7 @@ LABEL_30:
         SamplesDelta = IOReportCreateSamplesDelta();
         if (v28[0])
         {
-          *a3 = v28[0];
+          *stats = v28[0];
         }
 
         if (SamplesDelta)
@@ -1682,22 +1682,22 @@ LABEL_30:
   return v10;
 }
 
-- (BOOL)setTGSortingMetric:(unint64_t)a3 error:(id *)a4
+- (BOOL)setTGSortingMetric:(unint64_t)metric error:(id *)error
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = HIDWORD(a3) < 0xB && HIDWORD(a3) == 9;
+  v4 = HIDWORD(metric) < 0xB && HIDWORD(metric) == 9;
   v5 = v4;
   if (v4)
   {
-    self->tg_sorting_metric = a3;
+    self->tg_sorting_metric = metric;
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = *MEMORY[0x277CCA068];
     v11[0] = @"Invalid stat ID provided to sort TG stats by.";
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLPCErrorDomain" code:-536870206 userInfo:v7];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLPCErrorDomain" code:-536870206 userInfo:v7];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -1779,8 +1779,8 @@ LABEL_30:
 - (__n128)buildSchemas:error:
 {
   *a2 = &unk_287018748;
-  result = *(a1 + 8);
-  *(a2 + 24) = *(a1 + 24);
+  result = *(self + 8);
+  *(a2 + 24) = *(self + 24);
   *(a2 + 8) = result;
   return result;
 }
@@ -1792,18 +1792,18 @@ LABEL_30:
   v13 = &unk_2870186A0;
   v14 = v3;
   ChannelID = IOReportChannelGetChannelID();
-  v5 = **(a1 + 8);
+  v5 = **(self + 8);
   v15 = ChannelID;
   v6 = std::__hash_table<std::__hash_value_type<unsigned long long,CLPCReportingStatID>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,CLPCReportingStatID>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,CLPCReportingStatID>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,CLPCReportingStatID>>>::find<unsigned long long>((v5 + 72), &v15);
-  if (v6 && v6[3] == **(a1 + 16))
+  if (v6 && v6[3] == **(self + 16))
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%u", ChannelID, v13, v14];
-    v8 = *(a1 + 24);
+    v8 = *(self + 24);
     v9 = *v8;
     *v8 = v7;
 
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:ChannelID];
-    v11 = *(a1 + 32);
+    v11 = *(self + 32);
     v12 = *v11;
     *v11 = v10;
   }

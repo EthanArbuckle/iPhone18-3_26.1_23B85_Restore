@@ -1,17 +1,17 @@
 @interface SFAirDropIconView
-- (SFAirDropIconView)initWithFrame:(CGRect)a3;
+- (SFAirDropIconView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)loadImageIfNeeded;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation SFAirDropIconView
 
-- (SFAirDropIconView)initWithFrame:(CGRect)a3
+- (SFAirDropIconView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = SFAirDropIconView;
-  v3 = [(SFAirDropIconView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFAirDropIconView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
@@ -39,17 +39,17 @@
 
 - (void)loadImageIfNeeded
 {
-  v3 = [(UIImageView *)self->_imageView image];
+  image = [(UIImageView *)self->_imageView image];
 
-  if (!v3)
+  if (!image)
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v10 = [v4 bundleURL];
+    bundleURL = [v4 bundleURL];
 
-    v5 = [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:"AirDrop-inactive.png" isDirectory:0 relativeToURL:v10];
+    v5 = [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:"AirDrop-inactive.png" isDirectory:0 relativeToURL:bundleURL];
     v6 = MEMORY[0x1E69DCAB8];
-    v7 = [v5 path];
-    v8 = [v6 imageWithContentsOfFile:v7];
+    path = [v5 path];
+    v8 = [v6 imageWithContentsOfFile:path];
 
     v9 = [MEMORY[0x1E69CD9E8] _activityImageForActionRepresentationImage:v8];
     [(UIImageView *)self->_imageView setImage:v9];
@@ -65,13 +65,13 @@
   [(SFAirDropIconView *)&v3 layoutSubviews];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = SFAirDropIconView;
   [(SFAirDropIconView *)&v6 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
     v5 = 2;
   }

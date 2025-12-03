@@ -7,53 +7,53 @@
 
 - (id)nc_presentationControllerIfPresented
 {
-  v2 = [a1 presentingViewController];
-  if (v2)
+  presentingViewController = [self presentingViewController];
+  if (presentingViewController)
   {
-    v3 = [a1 parentViewController];
-    if (v3)
+    parentViewController = [self parentViewController];
+    if (parentViewController)
     {
-      v4 = 0;
+      presentationController = 0;
     }
 
     else
     {
-      v4 = [a1 presentationController];
+      presentationController = [self presentationController];
     }
   }
 
   else
   {
-    v4 = 0;
+    presentationController = 0;
   }
 
-  return v4;
+  return presentationController;
 }
 
 - (id)nc_presentationContextDefiningViewController
 {
-  v1 = a1;
-  v2 = v1;
-  if (v1)
+  selfCopy = self;
+  v2 = selfCopy;
+  if (selfCopy)
   {
-    v3 = v1;
-    if (([v1 definesPresentationContext] & 1) == 0)
+    parentViewController = selfCopy;
+    if (([selfCopy definesPresentationContext] & 1) == 0)
     {
       do
       {
         v4 = v2;
-        v2 = v3;
+        v2 = parentViewController;
 
-        v3 = [v2 parentViewController];
+        parentViewController = [v2 parentViewController];
       }
 
-      while (([v2 definesPresentationContext] & 1) == 0 && v3);
+      while (([v2 definesPresentationContext] & 1) == 0 && parentViewController);
     }
   }
 
   else
   {
-    v3 = 0;
+    parentViewController = 0;
   }
 
   if ([v2 definesPresentationContext])
@@ -61,18 +61,18 @@
     v5 = v2;
     if (v5)
     {
-      v6 = v5;
+      presentedViewController = v5;
       v7 = v5;
       do
       {
-        v2 = v6;
+        v2 = presentedViewController;
 
-        v6 = [v2 presentedViewController];
+        presentedViewController = [v2 presentedViewController];
 
         v7 = v2;
       }
 
-      while (v6);
+      while (presentedViewController);
     }
 
     else

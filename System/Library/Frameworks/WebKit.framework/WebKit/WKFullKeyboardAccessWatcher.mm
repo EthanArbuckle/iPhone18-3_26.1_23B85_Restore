@@ -2,7 +2,7 @@
 + (BOOL)fullKeyboardAccessEnabled;
 - (WKFullKeyboardAccessWatcher)init;
 - (void)notifyAllProcessPools;
-- (void)retrieveKeyboardUIModeFromPreferences:(id)a3;
+- (void)retrieveKeyboardUIModeFromPreferences:(id)preferences;
 @end
 
 @implementation WKFullKeyboardAccessWatcher
@@ -33,11 +33,11 @@
   if (v2)
   {
     [(WKFullKeyboardAccessWatcher *)v2 retrieveKeyboardUIModeFromPreferences:0];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    v5 = v4;
-    if (v4)
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v5 = defaultCenter;
+    if (defaultCenter)
     {
-      v6 = v4;
+      v6 = defaultCenter;
     }
 
     v7 = *MEMORY[0x1E69E4D28];
@@ -76,7 +76,7 @@
   WTF::Vector<WTF::Ref<WebKit::WebProcessPool,WTF::RawPtrTraits<WebKit::WebProcessPool>,WTF::DefaultRefDerefTraits<WebKit::WebProcessPool>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v7, v3);
 }
 
-- (void)retrieveKeyboardUIModeFromPreferences:(id)a3
+- (void)retrieveKeyboardUIModeFromPreferences:(id)preferences
 {
   fullKeyboardAccessEnabled = self->fullKeyboardAccessEnabled;
   v5 = _AXSFullKeyboardAccessEnabled() != 0;

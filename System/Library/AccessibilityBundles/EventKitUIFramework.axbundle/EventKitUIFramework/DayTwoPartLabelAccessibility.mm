@@ -1,18 +1,18 @@
 @interface DayTwoPartLabelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation DayTwoPartLabelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DayTwoPartLabel" hasInstanceVariable:@"_firstLabel" withType:"UILabel"];
-  [v3 validateClass:@"DayTwoPartLabel" hasInstanceVariable:@"_secondLabel" withType:"UILabel"];
-  [v3 validateClass:@"DayTwoPartLabel" hasInstanceVariable:@"_entireString" withType:"UILabel"];
-  [v3 validateClass:@"DayTwoPartLabel" hasInstanceVariable:@"_overlayLabel" withType:"UILabel"];
-  [v3 validateClass:@"DayTwoPartLabel" hasInstanceVariable:@"_useSeparateFormat" withType:"B"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DayTwoPartLabel" hasInstanceVariable:@"_firstLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"DayTwoPartLabel" hasInstanceVariable:@"_secondLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"DayTwoPartLabel" hasInstanceVariable:@"_entireString" withType:"UILabel"];
+  [validationsCopy validateClass:@"DayTwoPartLabel" hasInstanceVariable:@"_overlayLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"DayTwoPartLabel" hasInstanceVariable:@"_useSeparateFormat" withType:"B"];
 }
 
 - (id)accessibilityLabel
@@ -39,9 +39,9 @@
   }
 
   v6 = [(DayTwoPartLabelAccessibility *)self safeValueForKey:v4];
-  v7 = [v6 accessibilityLabel];
+  accessibilityLabel = [v6 accessibilityLabel];
   v8 = [(DayTwoPartLabelAccessibility *)self safeValueForKey:v5];
-  v11 = [v8 accessibilityLabel];
+  accessibilityLabel2 = [v8 accessibilityLabel];
   v9 = __UIAXStringForVariables();
 
   return v9;

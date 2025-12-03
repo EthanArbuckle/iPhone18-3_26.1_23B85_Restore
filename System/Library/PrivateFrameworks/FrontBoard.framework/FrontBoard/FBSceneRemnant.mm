@@ -2,7 +2,7 @@
 - (FBSceneRemnant)init;
 - (FBWorkspace)_workspace;
 - (NSString)description;
-- (id)_initWithIdentity:(id)a3 client:(id)a4 workspace:(id)a5 parameters:(id)a6 assertionQueue:(id)a7 assertion:(id)a8;
+- (id)_initWithIdentity:(id)identity client:(id)client workspace:(id)workspace parameters:(id)parameters assertionQueue:(id)queue assertion:(id)assertion;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -14,12 +14,12 @@
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FBSceneRemnant must be invalidated before dealloc"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v5 = OUTLINED_FUNCTION_12();
     v6 = NSStringFromClass(v5);
     v7 = 138544642;
-    v8 = a1;
+    selfCopy = self;
     v9 = 2114;
     v10 = v6;
     v11 = 2048;
@@ -51,7 +51,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"FBSceneRemnant.m";
     v17 = 1024;
@@ -91,15 +91,15 @@
   }
 }
 
-- (id)_initWithIdentity:(id)a3 client:(id)a4 workspace:(id)a5 parameters:(id)a6 assertionQueue:(id)a7 assertion:(id)a8
+- (id)_initWithIdentity:(id)identity client:(id)client workspace:(id)workspace parameters:(id)parameters assertionQueue:(id)queue assertion:(id)assertion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = v14;
+  identityCopy = identity;
+  clientCopy = client;
+  workspaceCopy = workspace;
+  parametersCopy = parameters;
+  queueCopy = queue;
+  assertionCopy = assertion;
+  v20 = identityCopy;
   NSClassFromString(&cfstr_Fbssceneidenti.isa);
   if (!v20)
   {
@@ -111,7 +111,7 @@
     [FBSceneRemnant _initWithIdentity:a2 client:? workspace:? parameters:? assertionQueue:? assertion:?];
   }
 
-  v21 = v15;
+  v21 = clientCopy;
   NSClassFromString(&cfstr_Fbssceneclient.isa);
   if (!v21)
   {
@@ -123,12 +123,12 @@
     [FBSceneRemnant _initWithIdentity:a2 client:? workspace:? parameters:? assertionQueue:? assertion:?];
   }
 
-  if (!v16)
+  if (!workspaceCopy)
   {
     [FBSceneRemnant _initWithIdentity:a2 client:? workspace:? parameters:? assertionQueue:? assertion:?];
   }
 
-  v22 = v17;
+  v22 = parametersCopy;
   NSClassFromString(&cfstr_Fbssceneparame.isa);
   if (!v22)
   {
@@ -140,7 +140,7 @@
     [FBSceneRemnant _initWithIdentity:a2 client:? workspace:? parameters:? assertionQueue:? assertion:?];
   }
 
-  v23 = v19;
+  v23 = assertionCopy;
   if (v23)
   {
     NSClassFromString(&cfstr_Bssimpleassert.isa);
@@ -158,22 +158,22 @@
     v25 = objc_alloc_init(MEMORY[0x1E699FB50]);
     [v25 setIdentity:v20];
     [v22 specification];
-    obja = a8;
-    v27 = v26 = v18;
+    obja = assertion;
+    v27 = v26 = queueCopy;
     [v25 setSpecification:v27];
 
-    v18 = v26;
+    queueCopy = v26;
     [v25 setClientIdentity:v21];
     v28 = [v25 copy];
     definition = v24->_definition;
     v24->_definition = v28;
 
-    objc_storeWeak(&v24->_workspace, v16);
+    objc_storeWeak(&v24->_workspace, workspaceCopy);
     v30 = [v22 copy];
     parameters = v24->_parameters;
     v24->_parameters = v30;
 
-    objc_storeStrong(&v24->_assertionQueue, a7);
+    objc_storeStrong(&v24->_assertionQueue, queue);
     objc_storeStrong(&v24->_assertion, obja);
     v32 = objc_opt_new();
     invalidated = v24->_invalidated;
@@ -187,11 +187,11 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(FBSSceneDefinition *)self->_definition identity];
-  v6 = [(FBSSceneDefinition *)self->_definition clientIdentity];
+  identity = [(FBSSceneDefinition *)self->_definition identity];
+  clientIdentity = [(FBSSceneDefinition *)self->_definition clientIdentity];
   [(BSSimpleAssertion *)self->_assertion isValid];
   v7 = NSStringFromBOOL();
-  v8 = [v3 stringWithFormat:@"<%@:%p %@ -> %@ valid=%@>", v4, self, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"<%@:%p %@ -> %@ valid=%@>", v4, self, identity, clientIdentity, v7];
 
   return v8;
 }

@@ -1,18 +1,18 @@
 @interface SRFaceMetrics
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)partialFaceExpressions;
 - (NSArray)wholeFaceExpressions;
 - (NSString)description;
 - (SRFaceMetrics)init;
-- (SRFaceMetrics)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SRFaceMetrics)initWithCoder:(id)a3;
-- (SRFaceMetrics)initWithHAFacialMetricsPacket:(id)a3;
-- (SRFaceMetrics)initWithVersion:(id)a3 sessionIdentifier:(id)a4 context:(unint64_t)a5 faceAnchor:(id)a6 wholeFaceExpressions:(id)a7 partialFaceExpressions:(id)a8;
-- (SRFaceMetrics)initWithVersion:(id)a3 sessionIdentifier:(id)a4 context:(unint64_t)a5 faceIdentifier:(id)a6 trackingData:(id)a7 wholeFaceExpressions:(id)a8 partialFaceExpressions:(id)a9;
+- (SRFaceMetrics)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SRFaceMetrics)initWithCoder:(id)coder;
+- (SRFaceMetrics)initWithHAFacialMetricsPacket:(id)packet;
+- (SRFaceMetrics)initWithVersion:(id)version sessionIdentifier:(id)identifier context:(unint64_t)context faceAnchor:(id)anchor wholeFaceExpressions:(id)expressions partialFaceExpressions:(id)faceExpressions;
+- (SRFaceMetrics)initWithVersion:(id)version sessionIdentifier:(id)identifier context:(unint64_t)context faceIdentifier:(id)faceIdentifier trackingData:(id)data wholeFaceExpressions:(id)expressions partialFaceExpressions:(id)faceExpressions;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRFaceMetrics
@@ -26,34 +26,34 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogFaceMetrics = os_log_create("com.apple.SensorKit", "SRLogFaceMetrics");
   }
 }
 
-- (SRFaceMetrics)initWithVersion:(id)a3 sessionIdentifier:(id)a4 context:(unint64_t)a5 faceAnchor:(id)a6 wholeFaceExpressions:(id)a7 partialFaceExpressions:(id)a8
+- (SRFaceMetrics)initWithVersion:(id)version sessionIdentifier:(id)identifier context:(unint64_t)context faceAnchor:(id)anchor wholeFaceExpressions:(id)expressions partialFaceExpressions:(id)faceExpressions
 {
   v16.receiver = self;
   v16.super_class = SRFaceMetrics;
   v14 = [(SRFaceMetrics *)&v16 init];
   if (v14)
   {
-    v14->_version = [a3 copy];
-    v14->_sessionIdentifier = [a4 copy];
-    v14->_context = a5;
-    v14->_faceAnchor = a6;
-    v14->_mutableWholeFaceExpressions = [a7 mutableCopy];
-    v14->_mutablePartialFaceExpressions = [a8 mutableCopy];
+    v14->_version = [version copy];
+    v14->_sessionIdentifier = [identifier copy];
+    v14->_context = context;
+    v14->_faceAnchor = anchor;
+    v14->_mutableWholeFaceExpressions = [expressions mutableCopy];
+    v14->_mutablePartialFaceExpressions = [faceExpressions mutableCopy];
   }
 
   return v14;
 }
 
-- (SRFaceMetrics)initWithHAFacialMetricsPacket:(id)a3
+- (SRFaceMetrics)initWithHAFacialMetricsPacket:(id)packet
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = [SRFaceMetricsPacket packetWithData:a3];
+  v4 = [SRFaceMetricsPacket packetWithData:packet];
   v5 = SRLogFaceMetrics;
   if (v4)
   {
@@ -61,7 +61,7 @@
     if (os_log_type_enabled(SRLogFaceMetrics, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v10 = [(SRFaceMetricsPacket *)v6 version];
+      version = [(SRFaceMetricsPacket *)v6 version];
       _os_log_impl(&dword_1C914D000, v5, OS_LOG_TYPE_INFO, "Legacy data support: got %@ version of HAFacialMetricsPacket", buf, 0xCu);
     }
 
@@ -83,14 +83,14 @@
   return result;
 }
 
-- (SRFaceMetrics)initWithVersion:(id)a3 sessionIdentifier:(id)a4 context:(unint64_t)a5 faceIdentifier:(id)a6 trackingData:(id)a7 wholeFaceExpressions:(id)a8 partialFaceExpressions:(id)a9
+- (SRFaceMetrics)initWithVersion:(id)version sessionIdentifier:(id)identifier context:(unint64_t)context faceIdentifier:(id)faceIdentifier trackingData:(id)data wholeFaceExpressions:(id)expressions partialFaceExpressions:(id)faceExpressions
 {
-  v15 = [objc_alloc(MEMORY[0x1E6986468]) initWithTrackingData:a7 anchorIdentifier:a6];
-  v16 = [objc_alloc(MEMORY[0x1E6986450]) initWithIdentifier:a6 faceTrackingData:v15];
+  v15 = [objc_alloc(MEMORY[0x1E6986468]) initWithTrackingData:data anchorIdentifier:faceIdentifier];
+  v16 = [objc_alloc(MEMORY[0x1E6986450]) initWithIdentifier:faceIdentifier faceTrackingData:v15];
   if (v16)
   {
 
-    return [(SRFaceMetrics *)self initWithVersion:a3 sessionIdentifier:a4 context:a5 faceAnchor:v16 wholeFaceExpressions:a8 partialFaceExpressions:a9];
+    return [(SRFaceMetrics *)self initWithVersion:version sessionIdentifier:identifier context:context faceAnchor:v16 wholeFaceExpressions:expressions partialFaceExpressions:faceExpressions];
   }
 
   else
@@ -114,9 +114,9 @@
   }
 
   v3 = MEMORY[0x1E695DEC8];
-  v4 = [(SRFaceMetrics *)self mutableWholeFaceExpressions];
+  mutableWholeFaceExpressions = [(SRFaceMetrics *)self mutableWholeFaceExpressions];
 
-  return [v3 arrayWithArray:v4];
+  return [v3 arrayWithArray:mutableWholeFaceExpressions];
 }
 
 - (NSArray)partialFaceExpressions
@@ -127,9 +127,9 @@
   }
 
   v3 = MEMORY[0x1E695DEC8];
-  v4 = [(SRFaceMetrics *)self mutablePartialFaceExpressions];
+  mutablePartialFaceExpressions = [(SRFaceMetrics *)self mutablePartialFaceExpressions];
 
-  return [v3 arrayWithArray:v4];
+  return [v3 arrayWithArray:mutablePartialFaceExpressions];
 }
 
 - (void)dealloc
@@ -139,40 +139,40 @@
   [(SRFaceMetrics *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeObject:-[SRFaceMetrics version](self forKey:{"version"), @"version"}];
-  [a3 encodeObject:-[SRFaceMetrics sessionIdentifier](self forKey:{"sessionIdentifier"), @"sessionIdentifier"}];
-  [a3 encodeInteger:-[SRFaceMetrics context](self forKey:{"context"), @"context"}];
-  [a3 encodeObject:-[SRFaceMetrics faceAnchor](self forKey:{"faceAnchor"), @"faceAnchor"}];
-  [a3 encodeObject:-[SRFaceMetrics mutableWholeFaceExpressions](self forKey:{"mutableWholeFaceExpressions"), @"wholeFaceExpressions"}];
-  v6 = [(SRFaceMetrics *)self mutablePartialFaceExpressions];
+  [coder encodeObject:-[SRFaceMetrics version](self forKey:{"version"), @"version"}];
+  [coder encodeObject:-[SRFaceMetrics sessionIdentifier](self forKey:{"sessionIdentifier"), @"sessionIdentifier"}];
+  [coder encodeInteger:-[SRFaceMetrics context](self forKey:{"context"), @"context"}];
+  [coder encodeObject:-[SRFaceMetrics faceAnchor](self forKey:{"faceAnchor"), @"faceAnchor"}];
+  [coder encodeObject:-[SRFaceMetrics mutableWholeFaceExpressions](self forKey:{"mutableWholeFaceExpressions"), @"wholeFaceExpressions"}];
+  mutablePartialFaceExpressions = [(SRFaceMetrics *)self mutablePartialFaceExpressions];
 
-  [a3 encodeObject:v6 forKey:@"partialFaceExpressions"];
+  [coder encodeObject:mutablePartialFaceExpressions forKey:@"partialFaceExpressions"];
 }
 
-- (SRFaceMetrics)initWithCoder:(id)a3
+- (SRFaceMetrics)initWithCoder:(id)coder
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
-  v7 = [a3 decodeIntegerForKey:@"context"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+  v7 = [coder decodeIntegerForKey:@"context"];
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
-  v10 = [a3 decodeObjectOfClasses:objc_msgSend(v8 forKey:{"setWithObjects:", v9, objc_opt_class(), 0), @"wholeFaceExpressions"}];
+  v10 = [coder decodeObjectOfClasses:objc_msgSend(v8 forKey:{"setWithObjects:", v9, objc_opt_class(), 0), @"wholeFaceExpressions"}];
   v11 = MEMORY[0x1E695DFD8];
   v12 = objc_opt_class();
-  v13 = [a3 decodeObjectOfClasses:objc_msgSend(v11 forKey:{"setWithObjects:", v12, objc_opt_class(), 0), @"partialFaceExpressions"}];
-  v14 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
+  v13 = [coder decodeObjectOfClasses:objc_msgSend(v11 forKey:{"setWithObjects:", v12, objc_opt_class(), 0), @"partialFaceExpressions"}];
+  v14 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
   if (!v14)
   {
     v19 = SRLogFaceMetrics;
@@ -192,7 +192,7 @@ LABEL_13:
   }
 
   v15 = v14;
-  v16 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"faceAnchor"];
+  v16 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"faceAnchor"];
   if (!v16)
   {
     v19 = SRLogFaceMetrics;
@@ -212,15 +212,15 @@ LABEL_13:
   return [(SRFaceMetrics *)self initWithVersion:v6 sessionIdentifier:v15 context:v7 faceAnchor:v16 wholeFaceExpressions:v10 partialFaceExpressions:v13];
 }
 
-- (SRFaceMetrics)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRFaceMetrics)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (![a3 length])
+  if (![representation length])
   {
     goto LABEL_18;
   }
 
-  if ([a3 length] != 2348 && objc_msgSend(a3, "length") != 2352 && objc_msgSend(a3, "length") != 2384 && objc_msgSend(a3, "length") != 368 && objc_msgSend(a3, "length") != 424 && objc_msgSend(a3, "length") != 436)
+  if ([representation length] != 2348 && objc_msgSend(representation, "length") != 2352 && objc_msgSend(representation, "length") != 2384 && objc_msgSend(representation, "length") != 368 && objc_msgSend(representation, "length") != 424 && objc_msgSend(representation, "length") != 436)
   {
     v18.receiver = self;
     v18.super_class = SRFaceMetrics;
@@ -234,7 +234,7 @@ LABEL_19:
 
     self = result;
     v17 = 0;
-    v9 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v17];
+    v9 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:representation error:&v17];
     if (v9)
     {
       v10 = v9;
@@ -276,7 +276,7 @@ LABEL_18:
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return [(SRFaceMetrics *)self initWithHAFacialMetricsPacket:a3];
+  return [(SRFaceMetrics *)self initWithHAFacialMetricsPacket:representation];
 }
 
 - (NSString)description
@@ -508,9 +508,9 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
     return v5;
@@ -522,36 +522,36 @@ LABEL_18:
     goto LABEL_12;
   }
 
-  v5 = -[NSString isEqualToString:](-[SRFaceMetrics version](self, "version"), "isEqualToString:", [a3 version]);
+  v5 = -[NSString isEqualToString:](-[SRFaceMetrics version](self, "version"), "isEqualToString:", [equal version]);
   if (!v5)
   {
     return v5;
   }
 
-  v5 = -[NSString isEqualToString:](-[SRFaceMetrics sessionIdentifier](self, "sessionIdentifier"), "isEqualToString:", [a3 sessionIdentifier]);
+  v5 = -[NSString isEqualToString:](-[SRFaceMetrics sessionIdentifier](self, "sessionIdentifier"), "isEqualToString:", [equal sessionIdentifier]);
   if (!v5)
   {
     return v5;
   }
 
-  v6 = [(SRFaceMetrics *)self context];
-  if (v6 != [a3 context])
+  context = [(SRFaceMetrics *)self context];
+  if (context != [equal context])
   {
 LABEL_12:
     LOBYTE(v5) = 0;
     return v5;
   }
 
-  v5 = -[ARFaceAnchor isEqual:](-[SRFaceMetrics faceAnchor](self, "faceAnchor"), "isEqual:", [a3 faceAnchor]);
+  v5 = -[ARFaceAnchor isEqual:](-[SRFaceMetrics faceAnchor](self, "faceAnchor"), "isEqual:", [equal faceAnchor]);
   if (v5)
   {
-    v5 = -[NSArray isEqual:](-[SRFaceMetrics wholeFaceExpressions](self, "wholeFaceExpressions"), "isEqual:", [a3 wholeFaceExpressions]);
+    v5 = -[NSArray isEqual:](-[SRFaceMetrics wholeFaceExpressions](self, "wholeFaceExpressions"), "isEqual:", [equal wholeFaceExpressions]);
     if (v5)
     {
-      v7 = [(SRFaceMetrics *)self partialFaceExpressions];
-      v8 = [a3 partialFaceExpressions];
+      partialFaceExpressions = [(SRFaceMetrics *)self partialFaceExpressions];
+      partialFaceExpressions2 = [equal partialFaceExpressions];
 
-      LOBYTE(v5) = [(NSArray *)v7 isEqual:v8];
+      LOBYTE(v5) = [(NSArray *)partialFaceExpressions isEqual:partialFaceExpressions2];
     }
   }
 
@@ -562,8 +562,8 @@ LABEL_12:
 {
   v3 = [(NSString *)[(SRFaceMetrics *)self version] hash];
   v4 = [(NSString *)[(SRFaceMetrics *)self sessionIdentifier] hash]^ v3;
-  v5 = [(SRFaceMetrics *)self context];
-  v6 = v4 ^ v5 ^ [(NSArray *)[(SRFaceMetrics *)self wholeFaceExpressions] hash];
+  context = [(SRFaceMetrics *)self context];
+  v6 = v4 ^ context ^ [(NSArray *)[(SRFaceMetrics *)self wholeFaceExpressions] hash];
   v7 = [(NSArray *)[(SRFaceMetrics *)self partialFaceExpressions] hash];
   return v6 ^ v7 ^ [(ARFaceAnchor *)[(SRFaceMetrics *)self faceAnchor] hash];
 }

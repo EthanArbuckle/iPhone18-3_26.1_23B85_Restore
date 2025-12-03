@@ -1,13 +1,13 @@
 @interface DebugFormatDebuggerSourceMetricView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC8NewsFeed35DebugFormatDebuggerSourceMetricView)initWithCoder:(id)a3;
-- (_TtC8NewsFeed35DebugFormatDebuggerSourceMetricView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC8NewsFeed35DebugFormatDebuggerSourceMetricView)initWithCoder:(id)coder;
+- (_TtC8NewsFeed35DebugFormatDebuggerSourceMetricView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation DebugFormatDebuggerSourceMetricView
 
-- (_TtC8NewsFeed35DebugFormatDebuggerSourceMetricView)initWithCoder:(id)a3
+- (_TtC8NewsFeed35DebugFormatDebuggerSourceMetricView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8NewsFeed35DebugFormatDebuggerSourceMetricView_label;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E69DCC10]) initWithFrame_];
@@ -26,16 +26,16 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D60D144C();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed35DebugFormatDebuggerSourceMetricView_label);
-  v6 = self;
+  selfCopy = self;
   [v5 sizeThatFits_];
   sub_1D7262E2C();
   sub_1D726335C();
@@ -51,7 +51,7 @@
   return result;
 }
 
-- (_TtC8NewsFeed35DebugFormatDebuggerSourceMetricView)initWithFrame:(CGRect)a3
+- (_TtC8NewsFeed35DebugFormatDebuggerSourceMetricView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

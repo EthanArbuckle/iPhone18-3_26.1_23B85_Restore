@@ -1,7 +1,7 @@
 @interface CNGroupMembershipCell
 - (CNPropertyCellDelegate)delegate;
 - (id)labelView;
-- (void)setCardGroupItem:(id)a3;
+- (void)setCardGroupItem:(id)item;
 - (void)updateConstraints;
 @end
 
@@ -22,25 +22,25 @@
   -[UILabel setNumberOfLines:](self->_parentGroupNameLabel, "setNumberOfLines:", [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory] ^ 1);
 }
 
-- (void)setCardGroupItem:(id)a3
+- (void)setCardGroupItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = CNGroupMembershipCell;
-  v5 = [(CNContactCell *)&v11 cardGroupItem];
+  cardGroupItem = [(CNContactCell *)&v11 cardGroupItem];
 
-  if (v5 != v4)
+  if (cardGroupItem != itemCopy)
   {
     v10.receiver = self;
     v10.super_class = CNGroupMembershipCell;
-    [(CNContactCell *)&v10 setCardGroupItem:v4];
-    v6 = [v4 group];
-    v7 = v6;
-    if (v6)
+    [(CNContactCell *)&v10 setCardGroupItem:itemCopy];
+    group = [itemCopy group];
+    v7 = group;
+    if (group)
     {
-      v8 = [v6 name];
-      v9 = [(CNGroupMembershipCell *)self parentGroupNameLabel];
-      [v9 setText:v8];
+      name = [group name];
+      parentGroupNameLabel = [(CNGroupMembershipCell *)self parentGroupNameLabel];
+      [parentGroupNameLabel setText:name];
     }
   }
 }
@@ -50,9 +50,9 @@
   parentGroupNameLabel = self->_parentGroupNameLabel;
   if (!parentGroupNameLabel)
   {
-    v4 = [(CNLabeledCell *)self standardLabelView];
+    standardLabelView = [(CNLabeledCell *)self standardLabelView];
     v5 = self->_parentGroupNameLabel;
-    self->_parentGroupNameLabel = v4;
+    self->_parentGroupNameLabel = standardLabelView;
 
     parentGroupNameLabel = self->_parentGroupNameLabel;
   }

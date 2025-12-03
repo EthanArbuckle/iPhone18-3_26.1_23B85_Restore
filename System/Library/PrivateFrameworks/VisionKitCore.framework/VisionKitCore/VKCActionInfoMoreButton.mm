@@ -1,15 +1,15 @@
 @interface VKCActionInfoMoreButton
-- (void)_moreButtonAction:(id)a3;
+- (void)_moreButtonAction:(id)action;
 @end
 
 @implementation VKCActionInfoMoreButton
 
-- (void)_moreButtonAction:(id)a3
+- (void)_moreButtonAction:(id)action
 {
   [(VKCActionInfoMoreButton *)self setIsShowingSingleTapMenu:1];
-  v4 = [(VKCActionInfoMoreButton *)self contextMenuInteraction];
+  contextMenuInteraction = [(VKCActionInfoMoreButton *)self contextMenuInteraction];
   [(VKCActionInfoMoreButton *)self bounds];
-  [v4 _presentMenuAtLocation:{v5 * 0.5, 0.0}];
+  [contextMenuInteraction _presentMenuAtLocation:{v5 * 0.5, 0.0}];
 
   [(VKCActionInfoMoreButton *)self setIsShowingSingleTapMenu:0];
 }

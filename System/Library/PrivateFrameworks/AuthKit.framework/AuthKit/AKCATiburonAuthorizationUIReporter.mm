@@ -1,41 +1,41 @@
 @interface AKCATiburonAuthorizationUIReporter
-- (AKCATiburonAuthorizationUIReporter)initWithRequestID:(id)a3;
-- (void)didSelectAnonymousEmail:(BOOL)a3 didCancel:(BOOL)a4;
+- (AKCATiburonAuthorizationUIReporter)initWithRequestID:(id)d;
+- (void)didSelectAnonymousEmail:(BOOL)email didCancel:(BOOL)cancel;
 @end
 
 @implementation AKCATiburonAuthorizationUIReporter
 
-- (AKCATiburonAuthorizationUIReporter)initWithRequestID:(id)a3
+- (AKCATiburonAuthorizationUIReporter)initWithRequestID:(id)d
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, d);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = AKCATiburonAuthorizationUIReporter;
   v6 = [(AKCAReporter *)&v7 initWithEvent:@"com.apple.AuthKit.TiburonAuthorizationUI"];
-  v9 = v6;
-  objc_storeStrong(&v9, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    [(AKCAReporter *)v9 setObject:location[0] forKeyedSubscript:@"requestID"];
-    [(AKCAReporter *)v9 setObject:&__kCFBooleanFalse forKeyedSubscript:@"modifiedName"];
+    [(AKCAReporter *)selfCopy setObject:location[0] forKeyedSubscript:@"requestID"];
+    [(AKCAReporter *)selfCopy setObject:&__kCFBooleanFalse forKeyedSubscript:@"modifiedName"];
   }
 
-  v5 = _objc_retain(v9);
+  v5 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (void)didSelectAnonymousEmail:(BOOL)a3 didCancel:(BOOL)a4
+- (void)didSelectAnonymousEmail:(BOOL)email didCancel:(BOOL)cancel
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:email];
   [AKCAReporter setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
   _objc_release(v4);
-  v5 = [NSNumber numberWithBool:a4];
+  v5 = [NSNumber numberWithBool:cancel];
   [AKCAReporter setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
   _objc_release(v5);
 }

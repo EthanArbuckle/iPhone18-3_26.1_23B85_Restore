@@ -1,26 +1,26 @@
 @interface TTSSchemaTTSClientEventMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (TTSSchemaTTSClientEventMetadata)initWithDictionary:(id)a3;
-- (TTSSchemaTTSClientEventMetadata)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (TTSSchemaTTSClientEventMetadata)initWithDictionary:(id)dictionary;
+- (TTSSchemaTTSClientEventMetadata)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TTSSchemaTTSClientEventMetadata
 
-- (TTSSchemaTTSClientEventMetadata)initWithDictionary:(id)a3
+- (TTSSchemaTTSClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = TTSSchemaTTSClientEventMetadata;
   v5 = [(TTSSchemaTTSClientEventMetadata *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ttsId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"ttsId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(TTSSchemaTTSClientEventMetadata *)v5 setTtsId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"requestId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"requestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(TTSSchemaTTSClientEventMetadata *)v5 setRequestId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"clientId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"clientId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(TTSSchemaTTSClientEventMetadata *)v5 setClientId:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"subRequestId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"subRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(TTSSchemaTTSClientEventMetadata *)v5 setSubRequestId:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"aceViewId"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"aceViewId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,30 +66,30 @@
   return v5;
 }
 
-- (TTSSchemaTTSClientEventMetadata)initWithJSON:(id)a3
+- (TTSSchemaTTSClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(TTSSchemaTTSClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(TTSSchemaTTSClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(TTSSchemaTTSClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -102,81 +102,81 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_aceViewId)
   {
-    v4 = [(TTSSchemaTTSClientEventMetadata *)self aceViewId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    aceViewId = [(TTSSchemaTTSClientEventMetadata *)self aceViewId];
+    dictionaryRepresentation = [aceViewId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"aceViewId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"aceViewId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"aceViewId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"aceViewId"];
     }
   }
 
   if (self->_clientId)
   {
-    v7 = [(TTSSchemaTTSClientEventMetadata *)self clientId];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"clientId"];
+    clientId = [(TTSSchemaTTSClientEventMetadata *)self clientId];
+    v8 = [clientId copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"clientId"];
   }
 
   if (self->_requestId)
   {
-    v9 = [(TTSSchemaTTSClientEventMetadata *)self requestId];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    requestId = [(TTSSchemaTTSClientEventMetadata *)self requestId];
+    dictionaryRepresentation2 = [requestId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"requestId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"requestId"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"requestId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"requestId"];
     }
   }
 
   if (self->_subRequestId)
   {
-    v12 = [(TTSSchemaTTSClientEventMetadata *)self subRequestId];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    subRequestId = [(TTSSchemaTTSClientEventMetadata *)self subRequestId];
+    dictionaryRepresentation3 = [subRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"subRequestId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"subRequestId"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"subRequestId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"subRequestId"];
     }
   }
 
   if (self->_ttsId)
   {
-    v15 = [(TTSSchemaTTSClientEventMetadata *)self ttsId];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    ttsId = [(TTSSchemaTTSClientEventMetadata *)self ttsId];
+    dictionaryRepresentation4 = [ttsId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"ttsId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"ttsId"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"ttsId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"ttsId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -188,28 +188,28 @@
   return v6 ^ [(SISchemaUUID *)self->_aceViewId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(TTSSchemaTTSClientEventMetadata *)self ttsId];
-  v6 = [v4 ttsId];
-  if ((v5 != 0) == (v6 == 0))
+  ttsId = [(TTSSchemaTTSClientEventMetadata *)self ttsId];
+  ttsId2 = [equalCopy ttsId];
+  if ((ttsId != 0) == (ttsId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(TTSSchemaTTSClientEventMetadata *)self ttsId];
-  if (v7)
+  ttsId3 = [(TTSSchemaTTSClientEventMetadata *)self ttsId];
+  if (ttsId3)
   {
-    v8 = v7;
-    v9 = [(TTSSchemaTTSClientEventMetadata *)self ttsId];
-    v10 = [v4 ttsId];
-    v11 = [v9 isEqual:v10];
+    v8 = ttsId3;
+    ttsId4 = [(TTSSchemaTTSClientEventMetadata *)self ttsId];
+    ttsId5 = [equalCopy ttsId];
+    v11 = [ttsId4 isEqual:ttsId5];
 
     if (!v11)
     {
@@ -221,20 +221,20 @@
   {
   }
 
-  v5 = [(TTSSchemaTTSClientEventMetadata *)self requestId];
-  v6 = [v4 requestId];
-  if ((v5 != 0) == (v6 == 0))
+  ttsId = [(TTSSchemaTTSClientEventMetadata *)self requestId];
+  ttsId2 = [equalCopy requestId];
+  if ((ttsId != 0) == (ttsId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(TTSSchemaTTSClientEventMetadata *)self requestId];
-  if (v12)
+  requestId = [(TTSSchemaTTSClientEventMetadata *)self requestId];
+  if (requestId)
   {
-    v13 = v12;
-    v14 = [(TTSSchemaTTSClientEventMetadata *)self requestId];
-    v15 = [v4 requestId];
-    v16 = [v14 isEqual:v15];
+    v13 = requestId;
+    requestId2 = [(TTSSchemaTTSClientEventMetadata *)self requestId];
+    requestId3 = [equalCopy requestId];
+    v16 = [requestId2 isEqual:requestId3];
 
     if (!v16)
     {
@@ -246,20 +246,20 @@
   {
   }
 
-  v5 = [(TTSSchemaTTSClientEventMetadata *)self clientId];
-  v6 = [v4 clientId];
-  if ((v5 != 0) == (v6 == 0))
+  ttsId = [(TTSSchemaTTSClientEventMetadata *)self clientId];
+  ttsId2 = [equalCopy clientId];
+  if ((ttsId != 0) == (ttsId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(TTSSchemaTTSClientEventMetadata *)self clientId];
-  if (v17)
+  clientId = [(TTSSchemaTTSClientEventMetadata *)self clientId];
+  if (clientId)
   {
-    v18 = v17;
-    v19 = [(TTSSchemaTTSClientEventMetadata *)self clientId];
-    v20 = [v4 clientId];
-    v21 = [v19 isEqual:v20];
+    v18 = clientId;
+    clientId2 = [(TTSSchemaTTSClientEventMetadata *)self clientId];
+    clientId3 = [equalCopy clientId];
+    v21 = [clientId2 isEqual:clientId3];
 
     if (!v21)
     {
@@ -271,20 +271,20 @@
   {
   }
 
-  v5 = [(TTSSchemaTTSClientEventMetadata *)self subRequestId];
-  v6 = [v4 subRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  ttsId = [(TTSSchemaTTSClientEventMetadata *)self subRequestId];
+  ttsId2 = [equalCopy subRequestId];
+  if ((ttsId != 0) == (ttsId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(TTSSchemaTTSClientEventMetadata *)self subRequestId];
-  if (v22)
+  subRequestId = [(TTSSchemaTTSClientEventMetadata *)self subRequestId];
+  if (subRequestId)
   {
-    v23 = v22;
-    v24 = [(TTSSchemaTTSClientEventMetadata *)self subRequestId];
-    v25 = [v4 subRequestId];
-    v26 = [v24 isEqual:v25];
+    v23 = subRequestId;
+    subRequestId2 = [(TTSSchemaTTSClientEventMetadata *)self subRequestId];
+    subRequestId3 = [equalCopy subRequestId];
+    v26 = [subRequestId2 isEqual:subRequestId3];
 
     if (!v26)
     {
@@ -296,12 +296,12 @@
   {
   }
 
-  v5 = [(TTSSchemaTTSClientEventMetadata *)self aceViewId];
-  v6 = [v4 aceViewId];
-  if ((v5 != 0) != (v6 == 0))
+  ttsId = [(TTSSchemaTTSClientEventMetadata *)self aceViewId];
+  ttsId2 = [equalCopy aceViewId];
+  if ((ttsId != 0) != (ttsId2 == 0))
   {
-    v27 = [(TTSSchemaTTSClientEventMetadata *)self aceViewId];
-    if (!v27)
+    aceViewId = [(TTSSchemaTTSClientEventMetadata *)self aceViewId];
+    if (!aceViewId)
     {
 
 LABEL_30:
@@ -309,10 +309,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(TTSSchemaTTSClientEventMetadata *)self aceViewId];
-    v30 = [v4 aceViewId];
-    v31 = [v29 isEqual:v30];
+    v28 = aceViewId;
+    aceViewId2 = [(TTSSchemaTTSClientEventMetadata *)self aceViewId];
+    aceViewId3 = [equalCopy aceViewId];
+    v31 = [aceViewId2 isEqual:aceViewId3];
 
     if (v31)
     {
@@ -332,90 +332,90 @@ LABEL_28:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
-  v4 = [(TTSSchemaTTSClientEventMetadata *)self ttsId];
+  toCopy = to;
+  ttsId = [(TTSSchemaTTSClientEventMetadata *)self ttsId];
 
-  if (v4)
+  if (ttsId)
   {
-    v5 = [(TTSSchemaTTSClientEventMetadata *)self ttsId];
+    ttsId2 = [(TTSSchemaTTSClientEventMetadata *)self ttsId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(TTSSchemaTTSClientEventMetadata *)self requestId];
+  requestId = [(TTSSchemaTTSClientEventMetadata *)self requestId];
 
-  if (v6)
+  if (requestId)
   {
-    v7 = [(TTSSchemaTTSClientEventMetadata *)self requestId];
+    requestId2 = [(TTSSchemaTTSClientEventMetadata *)self requestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(TTSSchemaTTSClientEventMetadata *)self clientId];
+  clientId = [(TTSSchemaTTSClientEventMetadata *)self clientId];
 
-  if (v8)
+  if (clientId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(TTSSchemaTTSClientEventMetadata *)self subRequestId];
+  subRequestId = [(TTSSchemaTTSClientEventMetadata *)self subRequestId];
 
-  if (v9)
+  if (subRequestId)
   {
-    v10 = [(TTSSchemaTTSClientEventMetadata *)self subRequestId];
+    subRequestId2 = [(TTSSchemaTTSClientEventMetadata *)self subRequestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(TTSSchemaTTSClientEventMetadata *)self aceViewId];
+  aceViewId = [(TTSSchemaTTSClientEventMetadata *)self aceViewId];
 
-  v12 = v14;
-  if (v11)
+  v12 = toCopy;
+  if (aceViewId)
   {
-    v13 = [(TTSSchemaTTSClientEventMetadata *)self aceViewId];
+    aceViewId2 = [(TTSSchemaTTSClientEventMetadata *)self aceViewId];
     PBDataWriterWriteSubmessage();
 
-    v12 = v14;
+    v12 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = TTSSchemaTTSClientEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(TTSSchemaTTSClientEventMetadata *)self ttsId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  ttsId = [(TTSSchemaTTSClientEventMetadata *)self ttsId];
+  v7 = [ttsId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(TTSSchemaTTSClientEventMetadata *)self deleteTtsId];
   }
 
-  v9 = [(TTSSchemaTTSClientEventMetadata *)self requestId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  requestId = [(TTSSchemaTTSClientEventMetadata *)self requestId];
+  v10 = [requestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(TTSSchemaTTSClientEventMetadata *)self deleteRequestId];
   }
 
-  v12 = [(TTSSchemaTTSClientEventMetadata *)self subRequestId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  subRequestId = [(TTSSchemaTTSClientEventMetadata *)self subRequestId];
+  v13 = [subRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(TTSSchemaTTSClientEventMetadata *)self deleteSubRequestId];
   }
 
-  v15 = [(TTSSchemaTTSClientEventMetadata *)self aceViewId];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  aceViewId = [(TTSSchemaTTSClientEventMetadata *)self aceViewId];
+  v16 = [aceViewId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(TTSSchemaTTSClientEventMetadata *)self deleteAceViewId];
   }

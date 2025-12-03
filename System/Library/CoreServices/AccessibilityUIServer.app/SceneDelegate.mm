@@ -1,27 +1,27 @@
 @interface SceneDelegate
-- (BOOL)_isWindowSceneExternalDisplay:(id)a3;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
+- (BOOL)_isWindowSceneExternalDisplay:(id)display;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation SceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 userActivities];
-  v12 = [v11 anyObject];
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  userActivities = [optionsCopy userActivities];
+  anyObject = [userActivities anyObject];
 
-  v13 = [v12 activityType];
+  activityType = [anyObject activityType];
   sceneClientIdentifier = self->_sceneClientIdentifier;
-  self->_sceneClientIdentifier = v13;
+  self->_sceneClientIdentifier = activityType;
 
   buf[0] = 0;
   objc_opt_class();
   v15 = +[UIApplication sharedApplication];
-  v16 = [v15 delegate];
+  delegate = [v15 delegate];
   v17 = __UIAccessibilityCastAsClass();
 
   if (self->_sceneClientIdentifier)
@@ -40,20 +40,20 @@
     v21 = AXLogUI();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      sub_100007D50(v8, v21);
+      sub_100007D50(sceneCopy, v21);
     }
 
     goto LABEL_31;
   }
 
-  v18 = [v8 screen];
-  v19 = [v18 displayIdentity];
-  v20 = [v19 type];
+  screen = [sceneCopy screen];
+  displayIdentity = [screen displayIdentity];
+  type = [displayIdentity type];
 
-  if (v20 != 8)
+  if (type != 8)
   {
-    v23 = [v8 _sceneIdentifier];
-    if ([v23 hasPrefix:@"SUIS"])
+    _sceneIdentifier = [sceneCopy _sceneIdentifier];
+    if ([_sceneIdentifier hasPrefix:@"SUIS"])
     {
     }
 
@@ -76,37 +76,37 @@
     }
 
     v21 = +[AXUIServiceManager sharedServiceManager];
-    v25 = [v8 screen];
-    v26 = [v25 _isEmbeddedScreen];
+    screen2 = [sceneCopy screen];
+    _isEmbeddedScreen = [screen2 _isEmbeddedScreen];
 
-    if (v26)
+    if (_isEmbeddedScreen)
     {
       v27 = AXLogUI();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         v28 = self->_sceneClientIdentifier;
         *buf = 134218242;
-        v40 = v8;
+        v40 = sceneCopy;
         v41 = 2112;
         v42 = v28;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "willConnect scene: %p sceneClientIdentifier: %@", buf, 0x16u);
       }
 
-      v29 = [v21 displayManager];
-      [v29 _windowSceneConnected:v8 forSceneClientIdentifier:self->_sceneClientIdentifier];
+      displayManager = [v21 displayManager];
+      [displayManager _windowSceneConnected:sceneCopy forSceneClientIdentifier:self->_sceneClientIdentifier];
     }
 
     else
     {
-      if (![(SceneDelegate *)self _isWindowSceneExternalDisplay:v8])
+      if (![(SceneDelegate *)self _isWindowSceneExternalDisplay:sceneCopy])
       {
 LABEL_24:
-        v32 = [v12 userInfo];
+        userInfo = [anyObject userInfo];
 
-        if (v32)
+        if (userInfo)
         {
-          v33 = [v12 userInfo];
-          v34 = [v33 objectForKeyedSubscript:@"AXUIServerPreferredLevelKey"];
+          userInfo2 = [anyObject userInfo];
+          v34 = [userInfo2 objectForKeyedSubscript:@"AXUIServerPreferredLevelKey"];
 
           if (v34)
           {
@@ -125,13 +125,13 @@ LABEL_24:
           v36 = 10000002.0;
         }
 
-        v37 = [v8 _FBSScene];
+        _FBSScene = [sceneCopy _FBSScene];
         v38[0] = _NSConcreteStackBlock;
         v38[1] = 3221225472;
         v38[2] = sub_100003580;
         v38[3] = &unk_100010848;
         *&v38[4] = v36;
-        [v37 updateClientSettingsWithBlock:v38];
+        [_FBSScene updateClientSettingsWithBlock:v38];
 
         goto LABEL_31;
       }
@@ -141,14 +141,14 @@ LABEL_24:
       {
         v31 = self->_sceneClientIdentifier;
         *buf = 134218242;
-        v40 = v8;
+        v40 = sceneCopy;
         v41 = 2112;
         v42 = v31;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "willConnect external scene: %p sceneClientIdentifier: %@", buf, 0x16u);
       }
 
-      v29 = [v21 displayManager];
-      [v29 _externalDisplaySceneConnected:v8 forSceneClientIdentifier:self->_sceneClientIdentifier];
+      displayManager = [v21 displayManager];
+      [displayManager _externalDisplaySceneConnected:sceneCopy forSceneClientIdentifier:self->_sceneClientIdentifier];
     }
 
     goto LABEL_24;
@@ -166,32 +166,32 @@ LABEL_8:
 LABEL_31:
 }
 
-- (BOOL)_isWindowSceneExternalDisplay:(id)a3
+- (BOOL)_isWindowSceneExternalDisplay:(id)display
 {
-  v3 = a3;
-  v4 = [v3 session];
-  v5 = [v4 role];
-  if ([v5 isEqualToString:UIWindowSceneSessionRoleApplication])
+  displayCopy = display;
+  session = [displayCopy session];
+  role = [session role];
+  if ([role isEqualToString:UIWindowSceneSessionRoleApplication])
   {
-    v6 = [v3 _FBSScene];
-    v16 = [v6 settings];
-    v7 = [v16 displayIdentity];
-    v8 = [v7 rootIdentity];
+    _FBSScene = [displayCopy _FBSScene];
+    settings = [_FBSScene settings];
+    displayIdentity = [settings displayIdentity];
+    rootIdentity = [displayIdentity rootIdentity];
     v9 = +[UIScreen mainScreen];
-    v10 = [v9 displayIdentity];
-    v11 = [v10 rootIdentity];
-    if ([v8 isEqual:v11])
+    displayIdentity2 = [v9 displayIdentity];
+    rootIdentity2 = [displayIdentity2 rootIdentity];
+    if ([rootIdentity isEqual:rootIdentity2])
     {
       LOBYTE(v12) = 0;
     }
 
     else
     {
-      [v3 screen];
-      v13 = v15 = v6;
+      [displayCopy screen];
+      v13 = v15 = _FBSScene;
       v12 = [v13 _isEmbeddedScreen] ^ 1;
 
-      v6 = v15;
+      _FBSScene = v15;
     }
   }
 
@@ -203,51 +203,51 @@ LABEL_31:
   return v12;
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = +[AXUIServiceManager sharedServiceManager];
-    v6 = [v4 screen];
-    v7 = [v6 _isEmbeddedScreen];
+    screen = [disconnectCopy screen];
+    _isEmbeddedScreen = [screen _isEmbeddedScreen];
 
-    if (v7)
+    if (_isEmbeddedScreen)
     {
       v8 = AXLogUI();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         sceneClientIdentifier = self->_sceneClientIdentifier;
         v13 = 134218242;
-        v14 = v4;
+        v14 = disconnectCopy;
         v15 = 2112;
         v16 = sceneClientIdentifier;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "didDisconnect scene: %p sceneClientIdentifier: %@", &v13, 0x16u);
       }
 
-      v10 = [v5 displayManager];
-      [v10 _windowSceneDisconnected:v4 forSceneClientIdentifier:self->_sceneClientIdentifier];
+      displayManager = [v5 displayManager];
+      [displayManager _windowSceneDisconnected:disconnectCopy forSceneClientIdentifier:self->_sceneClientIdentifier];
 LABEL_12:
 
       goto LABEL_13;
     }
 
-    if ([(SceneDelegate *)self _isWindowSceneExternalDisplay:v4])
+    if ([(SceneDelegate *)self _isWindowSceneExternalDisplay:disconnectCopy])
     {
       v11 = AXLogUI();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v12 = self->_sceneClientIdentifier;
         v13 = 134218242;
-        v14 = v4;
+        v14 = disconnectCopy;
         v15 = 2112;
         v16 = v12;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "didDisconnect external scene: %p sceneClientIdentifier: %@", &v13, 0x16u);
       }
 
-      v10 = [v5 displayManager];
-      [v10 _externalDisplaySceneDisconnected:v4 forSceneClientIdentifier:self->_sceneClientIdentifier];
+      displayManager = [v5 displayManager];
+      [displayManager _externalDisplaySceneDisconnected:disconnectCopy forSceneClientIdentifier:self->_sceneClientIdentifier];
       goto LABEL_12;
     }
   }
@@ -257,7 +257,7 @@ LABEL_12:
     v5 = AXLogUI();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      sub_100007D50(v4, v5);
+      sub_100007D50(disconnectCopy, v5);
     }
   }
 

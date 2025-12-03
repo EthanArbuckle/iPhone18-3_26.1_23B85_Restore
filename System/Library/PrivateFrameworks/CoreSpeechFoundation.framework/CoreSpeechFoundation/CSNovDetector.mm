@@ -1,25 +1,25 @@
 @interface CSNovDetector
-- (CSNovDetector)initWithConfigPath:(id)a3 resourcePath:(id)a4;
-- (id)_getAnalyzedResultFromNdresult:(_ndresult *)a3;
-- (id)getAnalyzedResultForPhId:(unsigned int)a3;
+- (CSNovDetector)initWithConfigPath:(id)path resourcePath:(id)resourcePath;
+- (id)_getAnalyzedResultFromNdresult:(_ndresult *)ndresult;
+- (id)getAnalyzedResultForPhId:(unsigned int)id;
 - (id)getBestAnalyzedResult;
-- (id)getOptionValue:(id)a3;
-- (id)getSuperVectorWithEndPoint:(unint64_t)a3;
-- (void)analyzeWavData:(id)a3 numSamples:(unint64_t)a4;
-- (void)analyzeWavFloatData:(id)a3 numSamples:(unint64_t)a4;
+- (id)getOptionValue:(id)value;
+- (id)getSuperVectorWithEndPoint:(unint64_t)point;
+- (void)analyzeWavData:(id)data numSamples:(unint64_t)samples;
+- (void)analyzeWavFloatData:(id)data numSamples:(unint64_t)samples;
 - (void)dealloc;
 @end
 
 @implementation CSNovDetector
 
-- (id)getOptionValue:(id)a3
+- (id)getOptionValue:(id)value
 {
   v5 = 0;
-  if (a3)
+  if (value)
   {
     if (self->_novDetect)
     {
-      [a3 UTF8String];
+      [value UTF8String];
       v5 = nd_getoption();
       if (v5)
       {
@@ -33,7 +33,7 @@
   return v5;
 }
 
-- (id)getSuperVectorWithEndPoint:(unint64_t)a3
+- (id)getSuperVectorWithEndPoint:(unint64_t)point
 {
   novDetect = self->_novDetect;
   if (novDetect)
@@ -50,19 +50,19 @@
   return novDetect;
 }
 
-- (id)_getAnalyzedResultFromNdresult:(_ndresult *)a3
+- (id)_getAnalyzedResultFromNdresult:(_ndresult *)ndresult
 {
-  if (a3)
+  if (ndresult)
   {
     v4 = objc_alloc_init(CSNovDetectorResult);
-    [(CSNovDetectorResult *)v4 setSampleFed:a3->var0];
-    [(CSNovDetectorResult *)v4 setBestPhrase:a3->var3];
-    [(CSNovDetectorResult *)v4 setBestStart:a3->var1];
-    [(CSNovDetectorResult *)v4 setBestEnd:a3->var2];
-    *&v5 = a3->var4;
+    [(CSNovDetectorResult *)v4 setSampleFed:ndresult->var0];
+    [(CSNovDetectorResult *)v4 setBestPhrase:ndresult->var3];
+    [(CSNovDetectorResult *)v4 setBestStart:ndresult->var1];
+    [(CSNovDetectorResult *)v4 setBestEnd:ndresult->var2];
+    *&v5 = ndresult->var4;
     [(CSNovDetectorResult *)v4 setBestScore:v5];
-    [(CSNovDetectorResult *)v4 setEarlyWarning:a3->var5];
-    [(CSNovDetectorResult *)v4 setIsRescoring:a3->var6];
+    [(CSNovDetectorResult *)v4 setEarlyWarning:ndresult->var5];
+    [(CSNovDetectorResult *)v4 setIsRescoring:ndresult->var6];
   }
 
   else
@@ -84,7 +84,7 @@
   return novDetect;
 }
 
-- (id)getAnalyzedResultForPhId:(unsigned int)a3
+- (id)getAnalyzedResultForPhId:(unsigned int)id
 {
   novDetect = self->_novDetect;
   if (novDetect)
@@ -107,22 +107,22 @@
   return novDetect;
 }
 
-- (void)analyzeWavFloatData:(id)a3 numSamples:(unint64_t)a4
+- (void)analyzeWavFloatData:(id)data numSamples:(unint64_t)samples
 {
   novDetect = self->_novDetect;
-  v7 = a3;
-  v8 = [a3 bytes];
+  dataCopy = data;
+  bytes = [data bytes];
 
-  MEMORY[0x1EEE50838](novDetect, v8, a4);
+  MEMORY[0x1EEE50838](novDetect, bytes, samples);
 }
 
-- (void)analyzeWavData:(id)a3 numSamples:(unint64_t)a4
+- (void)analyzeWavData:(id)data numSamples:(unint64_t)samples
 {
   novDetect = self->_novDetect;
-  v7 = a3;
-  v8 = [a3 bytes];
+  dataCopy = data;
+  bytes = [data bytes];
 
-  MEMORY[0x1EEE50830](novDetect, v8, a4);
+  MEMORY[0x1EEE50830](novDetect, bytes, samples);
 }
 
 - (void)dealloc
@@ -138,11 +138,11 @@
   [(CSNovDetector *)&v3 dealloc];
 }
 
-- (CSNovDetector)initWithConfigPath:(id)a3 resourcePath:(id)a4
+- (CSNovDetector)initWithConfigPath:(id)path resourcePath:(id)resourcePath
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  resourcePathCopy = resourcePath;
   v20.receiver = self;
   v20.super_class = CSNovDetector;
   v8 = [(CSNovDetector *)&v20 init];
@@ -158,15 +158,15 @@
     *buf = 136315650;
     v22 = "[CSNovDetector initWithConfigPath:resourcePath:]";
     v23 = 2114;
-    *v24 = v6;
+    *v24 = pathCopy;
     *&v24[8] = 2114;
-    *&v24[10] = v7;
+    *&v24[10] = resourcePathCopy;
     _os_log_impl(&dword_1DDA4B000, v9, OS_LOG_TYPE_DEFAULT, "%s Initializing NDAPI using %{public}@, %{public}@", buf, 0x20u);
     novDetect = v8->_novDetect;
   }
 
-  [v6 UTF8String];
-  [v7 cStringUsingEncoding:4];
+  [pathCopy UTF8String];
+  [resourcePathCopy cStringUsingEncoding:4];
   v11 = nd_initialize();
   if (v11)
   {

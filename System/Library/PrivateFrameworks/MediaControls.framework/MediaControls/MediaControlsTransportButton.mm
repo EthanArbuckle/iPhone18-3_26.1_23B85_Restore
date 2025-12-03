@@ -1,15 +1,15 @@
 @interface MediaControlsTransportButton
-- (MediaControlsTransportButton)initWithFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (MediaControlsTransportButton)initWithFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation MediaControlsTransportButton
 
-- (MediaControlsTransportButton)initWithFrame:(CGRect)a3
+- (MediaControlsTransportButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MediaControlsTransportButton;
-  v3 = [(MPButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MPButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -45,19 +45,19 @@ id __46__MediaControlsTransportButton_initWithFrame___block_invoke(uint64_t a1, 
   return v15;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v17.receiver = self;
   v17.super_class = MediaControlsTransportButton;
   [(MediaControlsTransportButton *)&v17 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __47__MediaControlsTransportButton_setHighlighted___block_invoke;
     v15 = &unk_1E7663898;
-    v16 = self;
+    selfCopy = self;
     v5 = 0.2;
     v6 = &v12;
   }
@@ -68,12 +68,12 @@ id __46__MediaControlsTransportButton_initWithFrame___block_invoke(uint64_t a1, 
     v8 = 3221225472;
     v9 = __47__MediaControlsTransportButton_setHighlighted___block_invoke_2;
     v10 = &unk_1E7663898;
-    v11 = self;
+    selfCopy2 = self;
     v5 = 0.47;
     v6 = &v7;
   }
 
-  [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v6 options:0 animations:v5 completion:{0.0, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16}];
+  [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v6 options:0 animations:v5 completion:{0.0, v7, v8, v9, v10, selfCopy2, v12, v13, v14, v15, selfCopy}];
 }
 
 void __47__MediaControlsTransportButton_setHighlighted___block_invoke(uint64_t a1)

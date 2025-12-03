@@ -8,9 +8,9 @@
 {
   v4.receiver = self;
   v4.super_class = DMFInstalledApplicationInstallProgress;
-  v2 = [(DMFInstalledApplicationInstallProgress *)&v4 classForCoder];
+  classForCoder = [(DMFInstalledApplicationInstallProgress *)&v4 classForCoder];
 
-  return v2;
+  return classForCoder;
 }
 
 @end

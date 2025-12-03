@@ -1,15 +1,15 @@
 @interface TileImagePreviewViewController.ImagePreviewScaleModalAnimationAnimatedTransitioninHandler
 - (_TtCC9PassKitUI30TileImagePreviewViewControllerP33_C6DB725DC789A0DB9606D336BF0F8DF958ImagePreviewScaleModalAnimationAnimatedTransitioninHandler)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation TileImagePreviewViewController.ImagePreviewScaleModalAnimationAnimatedTransitioninHandler
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1BD3711E8(a3);
+  selfCopy = self;
+  sub_1BD3711E8(transition);
   swift_unknownObjectRelease();
 }
 

@@ -1,10 +1,10 @@
 @interface TTREditSectionsChangeItem.Storage
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation TTREditSectionsChangeItem.Storage
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   sub_21D5683A0(v5);
   __swift_project_boxed_opaque_existential_1(v5, v5[3]);

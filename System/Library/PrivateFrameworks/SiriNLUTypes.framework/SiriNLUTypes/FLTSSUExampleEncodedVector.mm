@@ -1,11 +1,11 @@
 @interface FLTSSUExampleEncodedVector
-- (FLTSSUExampleEncodedVector)initWithFlatbuffData:(id)a3 root:(const SSUExampleEncodedVector *)a4 verify:(BOOL)a5;
+- (FLTSSUExampleEncodedVector)initWithFlatbuffData:(id)data root:(const SSUExampleEncodedVector *)root verify:(BOOL)verify;
 - (NSArray)data;
-- (Offset<SSUExampleEncodedVector>)addObjectToBuffer:(void *)a3;
-- (id)data_objectAtIndex:(unint64_t)a3;
+- (Offset<SSUExampleEncodedVector>)addObjectToBuffer:(void *)buffer;
+- (id)data_objectAtIndex:(unint64_t)index;
 - (id)flatbuffData;
 - (unint64_t)data_count;
-- (void)data_enumerateObjectsUsingBlock:(id)a3;
+- (void)data_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation FLTSSUExampleEncodedVector
@@ -39,11 +39,11 @@ apple::aiml::flatbuffers2::DetachedBuffer *__42__FLTSSUExampleEncodedVector_flat
   return result;
 }
 
-- (Offset<SSUExampleEncodedVector>)addObjectToBuffer:(void *)a3
+- (Offset<SSUExampleEncodedVector>)addObjectToBuffer:(void *)buffer
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [(FLTSSUExampleEncodedVector *)self data];
-  v6 = [v5 count];
+  data = [(FLTSSUExampleEncodedVector *)self data];
+  v6 = [data count];
   if (v6)
   {
     if (!(v6 >> 62))
@@ -58,9 +58,9 @@ apple::aiml::flatbuffers2::DetachedBuffer *__42__FLTSSUExampleEncodedVector_flat
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(FLTSSUExampleEncodedVector *)self data];
-  v16 = a3;
-  if ([v7 countByEnumeratingWithState:&v17 objects:v21 count:16])
+  data2 = [(FLTSSUExampleEncodedVector *)self data];
+  bufferCopy = buffer;
+  if ([data2 countByEnumeratingWithState:&v17 objects:v21 count:16])
   {
     *v18;
     *v18;
@@ -73,27 +73,27 @@ apple::aiml::flatbuffers2::DetachedBuffer *__42__FLTSSUExampleEncodedVector_flat
   apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(0);
   MEMORY[0x46] = 1;
   v9 = MEMORY[0x28];
-  v10 = *(v16 + 6);
-  v11 = *(v16 + 4);
+  v10 = *(bufferCopy + 6);
+  v11 = *(bufferCopy + 4);
   if (v8)
   {
-    v12 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(v16, v8);
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(v16, 4, v12, 0);
+    v12 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(bufferCopy, v8);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(bufferCopy, 4, v12, 0);
   }
 
-  v13.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(v16, v11 - v10 + v9);
+  v13.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(bufferCopy, v11 - v10 + v9);
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (void)data_enumerateObjectsUsingBlock:(id)a3
+- (void)data_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"data"];
   v7 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -117,7 +117,7 @@ apple::aiml::flatbuffers2::DetachedBuffer *__42__FLTSSUExampleEncodedVector_flat
           {
             LODWORD(v6) = *(v15 + 4 * v13);
             v16 = [MEMORY[0x1E696AD98] numberWithFloat:v6];
-            v4[2](v4, v16, v13, &v19);
+            blockCopy[2](blockCopy, v16, v13, &v19);
             v17 = v19;
 
             if (v17)
@@ -164,13 +164,13 @@ apple::aiml::flatbuffers2::DetachedBuffer *__42__FLTSSUExampleEncodedVector_flat
   return v5;
 }
 
-- (id)data_objectAtIndex:(unint64_t)a3
+- (id)data_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"data"];
   v7 = v5;
   if (v5)
   {
-    v8 = [v5 objectAtIndexedSubscript:a3];
+    v8 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v9 = v8;
     goto LABEL_9;
@@ -184,12 +184,12 @@ LABEL_3:
     if (v12)
     {
       v13 = &root[v12 + *root[v12].var0];
-      if (*v13->var0 <= a3)
+      if (*v13->var0 <= index)
       {
         __assert_rtn("Get", "flatbuffers.h", 275, "i < size()");
       }
 
-      LODWORD(v6) = *v13[4 * a3 + 4].var0;
+      LODWORD(v6) = *v13[4 * index + 4].var0;
       v8 = [MEMORY[0x1E696AD98] numberWithFloat:v6];
       goto LABEL_3;
     }
@@ -206,12 +206,12 @@ LABEL_9:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"data"];
   if (!v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __34__FLTSSUExampleEncodedVector_data__block_invoke;
     v6[3] = &unk_1E8328338;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FLTSSUExampleEncodedVector *)self data_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"data"];
@@ -220,10 +220,10 @@ LABEL_9:
   return v3;
 }
 
-- (FLTSSUExampleEncodedVector)initWithFlatbuffData:(id)a3 root:(const SSUExampleEncodedVector *)a4 verify:(BOOL)a5
+- (FLTSSUExampleEncodedVector)initWithFlatbuffData:(id)data root:(const SSUExampleEncodedVector *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FLTSSUExampleEncodedVector;
   v10 = [(FLTSSUExampleEncodedVector *)&v25 init];
@@ -232,35 +232,35 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_14;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_15;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_1C8C15D50;
   v23 = 0;

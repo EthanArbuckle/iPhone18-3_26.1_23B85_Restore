@@ -1,34 +1,34 @@
 @interface SBHScrollableIconViewInteraction
 - (SBHScrollableIconViewContaining)container;
-- (SBHScrollableIconViewInteraction)initWithContainer:(id)a3;
+- (SBHScrollableIconViewInteraction)initWithContainer:(id)container;
 - (id)_findInteractingIconView;
-- (void)clippingScrollViewDidScroll:(id)a3;
-- (void)updateScrolling:(BOOL)a3;
+- (void)clippingScrollViewDidScroll:(id)scroll;
+- (void)updateScrolling:(BOOL)scrolling;
 @end
 
 @implementation SBHScrollableIconViewInteraction
 
-- (SBHScrollableIconViewInteraction)initWithContainer:(id)a3
+- (SBHScrollableIconViewInteraction)initWithContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v8.receiver = self;
   v8.super_class = SBHScrollableIconViewInteraction;
   v5 = [(SBHScrollableIconViewInteraction *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_container, v4);
+    objc_storeWeak(&v5->_container, containerCopy);
   }
 
   return v6;
 }
 
-- (void)updateScrolling:(BOOL)a3
+- (void)updateScrolling:(BOOL)scrolling
 {
-  if (a3)
+  if (scrolling)
   {
-    v5 = [(SBHScrollableIconViewInteraction *)self _findInteractingIconView];
-    objc_storeWeak(&self->_cachedInteractingIconView, v5);
+    _findInteractingIconView = [(SBHScrollableIconViewInteraction *)self _findInteractingIconView];
+    objc_storeWeak(&self->_cachedInteractingIconView, _findInteractingIconView);
   }
 
   else
@@ -39,16 +39,16 @@
   }
 }
 
-- (void)clippingScrollViewDidScroll:(id)a3
+- (void)clippingScrollViewDidScroll:(id)scroll
 {
-  v38 = a3;
+  scrollCopy = scroll;
   WeakRetained = objc_loadWeakRetained(&self->_cachedInteractingIconView);
   v5 = WeakRetained;
   if (WeakRetained)
   {
-    v6 = [WeakRetained superview];
+    superview = [WeakRetained superview];
     [v5 frame];
-    [v6 convertRect:v38 toView:?];
+    [superview convertRect:scrollCopy toView:?];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -65,7 +65,7 @@
     x = v41.origin.x;
     height = v41.size.height;
     width = v41.size.width;
-    [v38 bounds];
+    [scrollCopy bounds];
     v18 = v17;
     v20 = v19;
     v22 = v21;

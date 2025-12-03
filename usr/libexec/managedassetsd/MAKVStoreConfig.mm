@@ -1,29 +1,29 @@
 @interface MAKVStoreConfig
-- (MAKVStoreConfig)initWithName:(id)a3 group:(id)a4 assetType:(unint64_t)a5 syncToCloud:(BOOL)a6 hasStaging:(BOOL)a7 hasAutoUpdateTime:(BOOL)a8 autoInsertUpdatedDate:(BOOL)a9 isCoreRXDataSharingStore:(BOOL)a10 recordHandleField:(id)a11;
+- (MAKVStoreConfig)initWithName:(id)name group:(id)group assetType:(unint64_t)type syncToCloud:(BOOL)cloud hasStaging:(BOOL)staging hasAutoUpdateTime:(BOOL)time autoInsertUpdatedDate:(BOOL)date isCoreRXDataSharingStore:(BOOL)self0 recordHandleField:(id)self1;
 @end
 
 @implementation MAKVStoreConfig
 
-- (MAKVStoreConfig)initWithName:(id)a3 group:(id)a4 assetType:(unint64_t)a5 syncToCloud:(BOOL)a6 hasStaging:(BOOL)a7 hasAutoUpdateTime:(BOOL)a8 autoInsertUpdatedDate:(BOOL)a9 isCoreRXDataSharingStore:(BOOL)a10 recordHandleField:(id)a11
+- (MAKVStoreConfig)initWithName:(id)name group:(id)group assetType:(unint64_t)type syncToCloud:(BOOL)cloud hasStaging:(BOOL)staging hasAutoUpdateTime:(BOOL)time autoInsertUpdatedDate:(BOOL)date isCoreRXDataSharingStore:(BOOL)self0 recordHandleField:(id)self1
 {
-  v18 = a3;
-  v19 = a4;
-  v23 = a11;
+  nameCopy = name;
+  groupCopy = group;
+  fieldCopy = field;
   v24.receiver = self;
   v24.super_class = MAKVStoreConfig;
   v20 = [(MAKVStoreConfig *)&v24 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_name, a3);
-    objc_storeStrong(&v21->_group, a4);
-    v21->_assetType = a5;
-    v21->_syncToCloud = a6;
-    v21->_hasStaging = a7;
-    v21->_autoUpdateTimeStamp = a8;
-    v21->_autoInsertUpdatedDate = a9;
-    v21->_isCoreRXDataSharingStore = a10;
-    objc_storeStrong(&v21->_recordHandleField, a11);
+    objc_storeStrong(&v20->_name, name);
+    objc_storeStrong(&v21->_group, group);
+    v21->_assetType = type;
+    v21->_syncToCloud = cloud;
+    v21->_hasStaging = staging;
+    v21->_autoUpdateTimeStamp = time;
+    v21->_autoInsertUpdatedDate = date;
+    v21->_isCoreRXDataSharingStore = store;
+    objc_storeStrong(&v21->_recordHandleField, field);
   }
 
   return v21;

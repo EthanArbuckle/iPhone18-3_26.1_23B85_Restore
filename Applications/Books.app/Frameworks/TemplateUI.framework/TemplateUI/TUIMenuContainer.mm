@@ -1,29 +1,29 @@
 @interface TUIMenuContainer
-- (TUIMenuContainer)initWithTitle:(id)a3 imageModel:(id)a4 isInline:(BOOL)a5;
+- (TUIMenuContainer)initWithTitle:(id)title imageModel:(id)model isInline:(BOOL)inline;
 - (TUIModelContaining)parentModel;
 - (id)imageModelsToLoad;
-- (void)appendObjectsWithProtocol:(id)a3 toArray:(id)a4;
+- (void)appendObjectsWithProtocol:(id)protocol toArray:(id)array;
 - (void)onContainedModelsChanged;
-- (void)updateModelChildren:(id)a3;
+- (void)updateModelChildren:(id)children;
 @end
 
 @implementation TUIMenuContainer
 
-- (TUIMenuContainer)initWithTitle:(id)a3 imageModel:(id)a4 isInline:(BOOL)a5
+- (TUIMenuContainer)initWithTitle:(id)title imageModel:(id)model isInline:(BOOL)inline
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  modelCopy = model;
   v14.receiver = self;
   v14.super_class = TUIMenuContainer;
   v10 = [(TUIMenuContainer *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [titleCopy copy];
     title = v10->_title;
     v10->_title = v11;
 
-    objc_storeStrong(&v10->_imageModel, a4);
-    v10->_isInline = a5;
+    objc_storeStrong(&v10->_imageModel, model);
+    v10->_isInline = inline;
   }
 
   return v10;
@@ -39,12 +39,12 @@
   return v5;
 }
 
-- (void)updateModelChildren:(id)a3
+- (void)updateModelChildren:(id)children
 {
   children = self->_children;
-  v5 = a3;
+  childrenCopy = children;
   [(NSArray *)children enumerateObjectsUsingBlock:&stru_2625E8];
-  v6 = [v5 copy];
+  v6 = [childrenCopy copy];
 
   v7 = self->_children;
   self->_children = v6;
@@ -78,14 +78,14 @@
   [WeakRetained onContainedModelsChanged];
 }
 
-- (void)appendObjectsWithProtocol:(id)a3 toArray:(id)a4
+- (void)appendObjectsWithProtocol:(id)protocol toArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  protocolCopy = protocol;
+  arrayCopy = array;
+  v8 = arrayCopy;
   if (self->_menuModel)
   {
-    v9 = &OBJC_PROTOCOL___TUIMenuItemModel == v6;
+    v9 = &OBJC_PROTOCOL___TUIMenuItemModel == protocolCopy;
   }
 
   else
@@ -95,10 +95,10 @@
 
   if (v9)
   {
-    [v7 addObject:?];
+    [arrayCopy addObject:?];
   }
 
-  if (&OBJC_PROTOCOL___TUIImageModel == v6)
+  if (&OBJC_PROTOCOL___TUIImageModel == protocolCopy)
   {
     if (self->_imageModel)
     {

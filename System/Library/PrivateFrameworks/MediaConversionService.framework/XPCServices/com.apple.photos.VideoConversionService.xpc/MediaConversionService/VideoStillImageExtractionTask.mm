@@ -1,5 +1,5 @@
 @interface VideoStillImageExtractionTask
-- (double)posterFrameScaleFactorForCGImage:(CGImage *)a3;
+- (double)posterFrameScaleFactorForCGImage:(CGImage *)image;
 - (void)extractStillImage;
 - (void)performConversion;
 - (void)storeImage;
@@ -9,35 +9,35 @@
 
 - (void)storeImage
 {
-  v3 = [(VideoStillImageExtractionTask *)self imageData];
+  imageData = [(VideoStillImageExtractionTask *)self imageData];
 
-  if (v3)
+  if (imageData)
   {
     if ([(VideoConversionTask *)self wantsResultAsData])
     {
-      v4 = [(VideoStillImageExtractionTask *)self imageData];
-      v5 = [(VideoConversionTask *)self resultInformation];
-      [v5 setObject:v4 forKeyedSubscript:@"PAMediaConversionServiceResultDataKey"];
+      imageData2 = [(VideoStillImageExtractionTask *)self imageData];
+      resultInformation = [(VideoConversionTask *)self resultInformation];
+      [resultInformation setObject:imageData2 forKeyedSubscript:@"PAMediaConversionServiceResultDataKey"];
 
 LABEL_6:
-      v10 = [(VideoStillImageExtractionTask *)self imageData];
-      v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 length]);
-      v12 = [(VideoConversionTask *)self resultInformation];
-      [v12 setObject:v11 forKeyedSubscript:@"PAMediaConversionServiceFileSizeKey"];
+      imageData3 = [(VideoStillImageExtractionTask *)self imageData];
+      v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [imageData3 length]);
+      resultInformation2 = [(VideoConversionTask *)self resultInformation];
+      [resultInformation2 setObject:v11 forKeyedSubscript:@"PAMediaConversionServiceFileSizeKey"];
 
       [(VideoConversionTask *)self setStatus:1];
       return;
     }
 
-    v6 = [(VideoConversionTask *)self outputMainResourceURL];
+    outputMainResourceURL = [(VideoConversionTask *)self outputMainResourceURL];
 
-    if (v6)
+    if (outputMainResourceURL)
     {
-      v7 = [(VideoStillImageExtractionTask *)self imageData];
-      v8 = [(VideoConversionTask *)self outputMainResourceURL];
+      imageData4 = [(VideoStillImageExtractionTask *)self imageData];
+      outputMainResourceURL2 = [(VideoConversionTask *)self outputMainResourceURL];
       v17 = 0;
-      v9 = [v7 writeToURL:v8 options:1 error:&v17];
-      v4 = v17;
+      v9 = [imageData4 writeToURL:outputMainResourceURL2 options:1 error:&v17];
+      imageData2 = v17;
 
       if (v9)
       {
@@ -47,7 +47,7 @@ LABEL_6:
       v20[0] = NSLocalizedDescriptionKey;
       v20[1] = NSUnderlyingErrorKey;
       v21[0] = @"Unable to write output data";
-      v21[1] = v4;
+      v21[1] = imageData2;
       v15 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:2];
       v16 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:2 userInfo:v15];
       [(VideoConversionTask *)self setError:v16];
@@ -64,18 +64,18 @@ LABEL_6:
   }
 }
 
-- (double)posterFrameScaleFactorForCGImage:(CGImage *)a3
+- (double)posterFrameScaleFactorForCGImage:(CGImage *)image
 {
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
-  v7 = [(VideoConversionTask *)self options];
-  v8 = [v7 objectForKeyedSubscript:@"PAMediaConversionServiceOptionBoundingBoxKey"];
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
+  options = [(VideoConversionTask *)self options];
+  v8 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionBoundingBoxKey"];
 
-  v9 = [(VideoConversionTask *)self options];
-  v10 = v9;
+  options2 = [(VideoConversionTask *)self options];
+  v10 = options2;
   if (v8)
   {
-    v11 = [v9 objectForKeyedSubscript:@"PAMediaConversionServiceOptionBoundingBoxKey"];
+    v11 = [options2 objectForKeyedSubscript:@"PAMediaConversionServiceOptionBoundingBoxKey"];
 
     v13 = NSSizeFromString(v11);
     v12 = v13.width;
@@ -126,15 +126,15 @@ LABEL_6:
     return v19;
   }
 
-  v21 = [v9 objectForKeyedSubscript:@"PAMediaConversionServiceOptionMaximumPixelCountKey"];
+  v21 = [options2 objectForKeyedSubscript:@"PAMediaConversionServiceOptionMaximumPixelCountKey"];
 
   if (!v21)
   {
     return 1.0;
   }
 
-  v22 = [(VideoConversionTask *)self options];
-  v23 = [v22 objectForKeyedSubscript:@"PAMediaConversionServiceOptionMaximumPixelCountKey"];
+  options3 = [(VideoConversionTask *)self options];
+  v23 = [options3 objectForKeyedSubscript:@"PAMediaConversionServiceOptionMaximumPixelCountKey"];
   [v23 integerValue];
 
   PFScaleFactorForMaximumPixelCount();
@@ -143,10 +143,10 @@ LABEL_6:
 
 - (void)extractStillImage
 {
-  v3 = [(VideoConversionTask *)self asset];
-  if (v3)
+  asset = [(VideoConversionTask *)self asset];
+  if (asset)
   {
-    v4 = [[AVAssetImageGenerator alloc] initWithAsset:v3];
+    v4 = [[AVAssetImageGenerator alloc] initWithAsset:asset];
     [v4 setAppliesPreferredTrackTransform:1];
     memset(v60, 0, sizeof(v60));
     v56 = *&kCMTimeZero.value;
@@ -161,37 +161,37 @@ LABEL_6:
       CFAutorelease(arg);
       [(VideoStillImageExtractionTask *)self posterFrameScaleFactorForCGImage:arg];
       v8 = v7;
-      v9 = [(VideoConversionTask *)self options];
-      v10 = [v9 objectForKeyedSubscript:@"PAMediaConversionServiceOptionColorSpaceKey"];
+      options = [(VideoConversionTask *)self options];
+      v10 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionColorSpaceKey"];
 
       if (!v10 || (-[VideoConversionTask options](self, "options"), v11 = objc_claimAutoreleasedReturnValue(), [v11 objectForKeyedSubscript:@"PAMediaConversionServiceOptionColorSpaceKey"], v12 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v12, "integerValue"), v12, v11, v10 < 3))
       {
-        v13 = [(VideoConversionTask *)self options];
-        v14 = [v13 objectForKeyedSubscript:@"PAMediaConversionServiceOptionOutputFileTypeKey"];
+        options2 = [(VideoConversionTask *)self options];
+        v14 = [options2 objectForKeyedSubscript:@"PAMediaConversionServiceOptionOutputFileTypeKey"];
 
         if (!v14)
         {
-          v15 = [(VideoConversionTask *)self outputURLCollection];
-          v16 = [v15 typeIdentifierForResourceURLWithRole:@"PAMediaConversionResourceRoleMainResource"];
+          outputURLCollection = [(VideoConversionTask *)self outputURLCollection];
+          v16 = [outputURLCollection typeIdentifierForResourceURLWithRole:@"PAMediaConversionResourceRoleMainResource"];
           v17 = v16;
           if (v16)
           {
-            v18 = v16;
+            identifier = v16;
           }
 
           else
           {
-            v18 = [UTTypeJPEG identifier];
+            identifier = [UTTypeJPEG identifier];
           }
 
-          v14 = v18;
+          v14 = identifier;
         }
 
         if ([(VideoConversionTask *)self requiresPhotosAdjustmentRendering])
         {
           +[PAMediaConversionServiceSharedUtilitiesServiceSide registerPhotosAdjustmentsSubsystems];
-          v21 = [(VideoConversionTask *)self options];
-          v22 = [v21 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAdjustmentInformationKey"];
+          options3 = [(VideoConversionTask *)self options];
+          v22 = [options3 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAdjustmentInformationKey"];
 
           v54 = [CIImage imageWithCGImage:arg];
           v23 = [PIPhotoEditHelper imageSourceWithCIImage:"imageSourceWithCIImage:orientation:" orientation:?];
@@ -210,7 +210,7 @@ LABEL_6:
             if (v27 || (width = v56.width, v56.width == CGSizeZero.width) && (width = v56.height, v56.height == CGSizeZero.height))
             {
               [(VideoStillImageExtractionTask *)self setImageData:v27];
-              v29 = [(VideoConversionTask *)self resultInformation];
+              resultInformation = [(VideoConversionTask *)self resultInformation];
               v69[0] = @"PAMediaConversionServicePixelWidthKey";
               v51 = [NSNumber numberWithInteger:v56.width];
               v69[1] = @"PAMediaConversionServicePixelHeightKey";
@@ -225,7 +225,7 @@ LABEL_6:
               v34 = v26;
               v35 = v22;
               v37 = v36 = v14;
-              [v29 addEntriesFromDictionary:v37];
+              [resultInformation addEntriesFromDictionary:v37];
 
               v14 = v36;
               v22 = v35;
@@ -242,11 +242,11 @@ LABEL_6:
             {
               v71 = NSLocalizedDescriptionKey;
               v72 = @"Unable to render video still frame or determine output size";
-              v29 = [NSDictionary dictionaryWithObjects:&v72 forKeys:&v71 count:1, width];
-              v49 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:2 userInfo:v29];
-              v50 = self;
+              resultInformation = [NSDictionary dictionaryWithObjects:&v72 forKeys:&v71 count:1, width];
+              v49 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:2 userInfo:resultInformation];
+              selfCopy = self;
               v38 = v49;
-              [(VideoConversionTask *)v50 setError:v49];
+              [(VideoConversionTask *)selfCopy setError:v49];
             }
           }
 
@@ -255,7 +255,7 @@ LABEL_6:
             [(VideoConversionTask *)self setError:v25];
           }
 
-          v44 = v54;
+          resultInformation2 = v54;
           goto LABEL_32;
         }
 
@@ -267,8 +267,8 @@ LABEL_6:
             v67 = NSLocalizedDescriptionKey;
             v68 = @"Unable to rotate image to preferred orientation";
             v22 = [NSDictionary dictionaryWithObjects:&v68 forKeys:&v67 count:1];
-            v44 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:2 userInfo:v22];
-            [(VideoConversionTask *)self setError:v44];
+            resultInformation2 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:2 userInfo:v22];
+            [(VideoConversionTask *)self setError:resultInformation2];
 LABEL_31:
             v25 = v6;
 LABEL_32:
@@ -293,7 +293,7 @@ LABEL_32:
           if (v43)
           {
             [(VideoStillImageExtractionTask *)self setImageData:v22];
-            v44 = [(VideoConversionTask *)self resultInformation];
+            resultInformation2 = [(VideoConversionTask *)self resultInformation];
             v61[0] = @"PAMediaConversionServicePixelWidthKey";
             v45 = [NSNumber numberWithUnsignedLong:CGImageGetWidth(arg)];
             v61[1] = @"PAMediaConversionServicePixelHeightKey";
@@ -301,15 +301,15 @@ LABEL_32:
             v46 = [NSNumber numberWithUnsignedLong:CGImageGetHeight(arg)];
             v62[1] = v46;
             v47 = [NSDictionary dictionaryWithObjects:v62 forKeys:v61 count:2];
-            [v44 addEntriesFromDictionary:v47];
+            [resultInformation2 addEntriesFromDictionary:v47];
           }
 
           else
           {
             v63 = NSLocalizedDescriptionKey;
             v64 = @"Unable to finalize image";
-            v44 = [NSDictionary dictionaryWithObjects:&v64 forKeys:&v63 count:1];
-            v45 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:2 userInfo:v44];
+            resultInformation2 = [NSDictionary dictionaryWithObjects:&v64 forKeys:&v63 count:1];
+            v45 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:2 userInfo:resultInformation2];
             [(VideoConversionTask *)self setError:v45];
           }
         }
@@ -318,8 +318,8 @@ LABEL_32:
         {
           v65 = NSLocalizedDescriptionKey;
           v66 = @"Unable to create image destination";
-          v44 = [NSDictionary dictionaryWithObjects:&v66 forKeys:&v65 count:1];
-          v48 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:2 userInfo:v44];
+          resultInformation2 = [NSDictionary dictionaryWithObjects:&v66 forKeys:&v65 count:1];
+          v48 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:2 userInfo:resultInformation2];
           [(VideoConversionTask *)self setError:v48];
         }
 

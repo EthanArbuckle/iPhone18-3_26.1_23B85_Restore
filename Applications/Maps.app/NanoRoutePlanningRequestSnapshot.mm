@@ -1,23 +1,23 @@
 @interface NanoRoutePlanningRequestSnapshot
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NanoRoutePlanningRequestSnapshot)init;
-- (id)deltaFromSnapshot:(id)a3;
+- (id)deltaFromSnapshot:(id)snapshot;
 @end
 
 @implementation NanoRoutePlanningRequestSnapshot
 
-- (id)deltaFromSnapshot:(id)a3
+- (id)deltaFromSnapshot:(id)snapshot
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  snapshotCopy = snapshot;
+  if (snapshotCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = snapshotCopy;
     v6 = objc_alloc_init(NanoRoutePlanningRequestDelta);
     -[NanoRoutePlanningRequestDelta setTransportTypeChanged:](v6, "setTransportTypeChanged:", -[NanoRoutePlanningRequestSnapshot transportType](self, "transportType") != [v5 transportType]);
-    v7 = [(NanoRoutePlanningRequestSnapshot *)self waypoints];
-    v8 = [v5 waypoints];
+    waypoints = [(NanoRoutePlanningRequestSnapshot *)self waypoints];
+    waypoints2 = [v5 waypoints];
 
-    [(NanoRoutePlanningRequestDelta *)v6 setWaypointsChanged:[MNComparison isValue:v7 equalTo:v8]^ 1];
+    [(NanoRoutePlanningRequestDelta *)v6 setWaypointsChanged:[MNComparison isValue:waypoints equalTo:waypoints2]^ 1];
   }
 
   else
@@ -28,18 +28,18 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(NanoRoutePlanningRequestSnapshot *)self transportType];
-    if (v6 == [v5 transportType])
+    v5 = equalCopy;
+    transportType = [(NanoRoutePlanningRequestSnapshot *)self transportType];
+    if (transportType == [v5 transportType])
     {
-      v7 = [(NanoRoutePlanningRequestSnapshot *)self waypoints];
-      v8 = [v5 waypoints];
-      v9 = [MNComparison isValue:v7 equalTo:v8];
+      waypoints = [(NanoRoutePlanningRequestSnapshot *)self waypoints];
+      waypoints2 = [v5 waypoints];
+      v9 = [MNComparison isValue:waypoints equalTo:waypoints2];
     }
 
     else

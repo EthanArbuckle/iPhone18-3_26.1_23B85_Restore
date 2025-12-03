@@ -6,8 +6,8 @@
 
 - (PKRulerTool)init
 {
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  v4 = [PKInk inkWithIdentifier:@"com.apple.ink.custom" color:v3 weight:0.0];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  v4 = [PKInk inkWithIdentifier:@"com.apple.ink.custom" color:clearColor weight:0.0];
 
   v5 = [PKToolConfiguration defaultConfigurationForToolWithIdentifier:@"com.apple.tool.ruler"];
   v8.receiver = self;

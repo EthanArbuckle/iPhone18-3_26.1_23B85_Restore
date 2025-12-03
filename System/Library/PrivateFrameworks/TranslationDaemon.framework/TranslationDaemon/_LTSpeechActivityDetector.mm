@@ -1,26 +1,26 @@
 @interface _LTSpeechActivityDetector
-- (_LTSpeechActivityDetector)initWithDelegate:(id)a3;
+- (_LTSpeechActivityDetector)initWithDelegate:(id)delegate;
 - (id)nativeAudioFormat;
-- (void)addSpeechAudioData:(id)a3;
-- (void)request:(id)a3 didFailWithError:(id)a4;
-- (void)request:(id)a3 didProduceResult:(id)a4;
+- (void)addSpeechAudioData:(id)data;
+- (void)request:(id)request didFailWithError:(id)error;
+- (void)request:(id)request didProduceResult:(id)result;
 @end
 
 @implementation _LTSpeechActivityDetector
 
-- (_LTSpeechActivityDetector)initWithDelegate:(id)a3
+- (_LTSpeechActivityDetector)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = _LTSpeechActivityDetector;
   v5 = [(_LTSpeechActivityDetector *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = objc_alloc(MEMORY[0x277CDC8F0]);
-    v8 = [(_LTSpeechActivityDetector *)v6 nativeAudioFormat];
-    v9 = [v7 initWithFormat:v8];
+    nativeAudioFormat = [(_LTSpeechActivityDetector *)v6 nativeAudioFormat];
+    v9 = [v7 initWithFormat:nativeAudioFormat];
     streamAnalyzer = v6->_streamAnalyzer;
     v6->_streamAnalyzer = v9;
 
@@ -44,23 +44,23 @@
   return v2;
 }
 
-- (void)addSpeechAudioData:(id)a3
+- (void)addSpeechAudioData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48___LTSpeechActivityDetector_addSpeechAudioData___block_invoke;
   v7[3] = &unk_2789B5990;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dataCopy;
+  selfCopy = self;
+  v6 = dataCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)request:(id)a3 didProduceResult:(id)a4
+- (void)request:(id)request didProduceResult:(id)result
 {
-  if ([a4 detected])
+  if ([result detected])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v6 = objc_opt_respondsToSelector();
@@ -73,13 +73,13 @@
   }
 }
 
-- (void)request:(id)a3 didFailWithError:(id)a4
+- (void)request:(id)request didFailWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = _LTOSLogSpeech();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [_LTSpeechActivityDetector request:v4 didFailWithError:v5];
+    [_LTSpeechActivityDetector request:errorCopy didFailWithError:v5];
   }
 }
 

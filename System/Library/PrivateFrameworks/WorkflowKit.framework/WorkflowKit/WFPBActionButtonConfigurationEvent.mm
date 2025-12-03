@@ -1,48 +1,48 @@
 @interface WFPBActionButtonConfigurationEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFPBActionButtonConfigurationEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(WFPBActionButtonConfigurationEvent *)self setKey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(WFPBActionButtonConfigurationEvent *)self setSectionIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(WFPBActionButtonConfigurationEvent *)self setBundleIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(WFPBActionButtonConfigurationEvent *)self setIntentIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[44])
+  if (fromCopy[44])
   {
-    self->_success = v4[40];
+    self->_success = fromCopy[40];
     *&self->_has |= 1u;
   }
 }
@@ -66,16 +66,16 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   key = self->_key;
-  if (key | *(v4 + 3))
+  if (key | *(equalCopy + 3))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -84,7 +84,7 @@
   }
 
   sectionIdentifier = self->_sectionIdentifier;
-  if (sectionIdentifier | *(v4 + 4))
+  if (sectionIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)sectionIdentifier isEqual:?])
     {
@@ -93,7 +93,7 @@
   }
 
   bundleIdentifier = self->_bundleIdentifier;
-  if (bundleIdentifier | *(v4 + 1))
+  if (bundleIdentifier | *(equalCopy + 1))
   {
     if (![(NSString *)bundleIdentifier isEqual:?])
     {
@@ -102,7 +102,7 @@
   }
 
   intentIdentifier = self->_intentIdentifier;
-  if (intentIdentifier | *(v4 + 2))
+  if (intentIdentifier | *(equalCopy + 2))
   {
     if (![(NSString *)intentIdentifier isEqual:?])
     {
@@ -110,10 +110,10 @@
     }
   }
 
-  v9 = (*(v4 + 44) & 1) == 0;
+  v9 = (*(equalCopy + 44) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0)
+    if ((*(equalCopy + 44) & 1) == 0)
     {
 LABEL_12:
       v9 = 0;
@@ -122,13 +122,13 @@ LABEL_12:
 
     if (self->_success)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_12;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_12;
     }
@@ -141,22 +141,22 @@ LABEL_13:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_sectionIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_sectionIdentifier copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
-  v12 = [(NSString *)self->_intentIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_intentIdentifier copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
@@ -169,85 +169,85 @@ LABEL_13:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v5;
+    [toCopy setKey:?];
+    toCopy = v5;
   }
 
   if (self->_sectionIdentifier)
   {
     [v5 setSectionIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_bundleIdentifier)
   {
     [v5 setBundleIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_intentIdentifier)
   {
     [v5 setIntentIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[40] = self->_success;
-    v4[44] |= 1u;
+    toCopy[40] = self->_success;
+    toCopy[44] |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sectionIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_intentIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     success = self->_success;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   sectionIdentifier = self->_sectionIdentifier;
@@ -283,8 +283,8 @@ LABEL_13:
   v8.receiver = self;
   v8.super_class = WFPBActionButtonConfigurationEvent;
   v4 = [(WFPBActionButtonConfigurationEvent *)&v8 description];
-  v5 = [(WFPBActionButtonConfigurationEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFPBActionButtonConfigurationEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

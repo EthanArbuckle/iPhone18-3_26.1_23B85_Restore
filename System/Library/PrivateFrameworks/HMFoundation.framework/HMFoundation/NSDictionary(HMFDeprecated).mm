@@ -17,7 +17,7 @@
   v46 = *MEMORY[0x277D85DE8];
   v7 = a3;
   v8 = a5;
-  v9 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v10 = @"\n";
   if (!a4)
   {
@@ -28,18 +28,18 @@
   v33 = v11;
   if (v7)
   {
-    [v9 appendFormat:@"%@%@{\n", v11, v7];
+    [string appendFormat:@"%@%@{\n", v11, v7];
     [(__CFString *)v7 indentationByLevels:1];
   }
 
   else
   {
-    [v9 appendFormat:@"%@{\n", v11];
+    [string appendFormat:@"%@{\n", v11];
     +[HMFStringIndentation indentation];
   }
   v12 = ;
   v34 = v7;
-  [a1 allKeys];
+  [self allKeys];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -102,28 +102,28 @@ LABEL_17:
         v25 = *(*(&v36 + 1) + 8 * v24);
         if (([v8 containsObject:v25] & 1) == 0)
         {
-          [v9 appendFormat:@"%@%@ = ", v12, v25];
-          v26 = [a1 objectForKeyedSubscript:v25];
+          [string appendFormat:@"%@%@ = ", v12, v25];
+          v26 = [self objectForKeyedSubscript:v25];
           objc_opt_class();
           if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
           {
-            v27 = [v26 secureDescriptionWithIndent:v12 newLine:1 blacklistedKeys:v8];
+            shortDescription = [v26 secureDescriptionWithIndent:v12 newLine:1 blacklistedKeys:v8];
           }
 
           else if ([v26 conformsToProtocol:&unk_283ED27D0] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
-            v27 = [v26 shortDescription];
+            shortDescription = [v26 shortDescription];
           }
 
           else
           {
-            v27 = [v26 description];
+            shortDescription = [v26 description];
           }
 
-          v28 = v27;
-          [v9 appendString:v27];
+          v28 = shortDescription;
+          [string appendString:shortDescription];
 
-          [v9 appendString:{@", \n"}];
+          [string appendString:{@", \n"}];
         }
 
         ++v24;
@@ -143,16 +143,16 @@ LABEL_17:
     v30 = v34;
   }
 
-  [v9 appendFormat:@"%@}", v30];
+  [string appendFormat:@"%@}", v30];
 
   v31 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return string;
 }
 
 - (id)uuidFromStringForKey:()HMFDeprecated
 {
-  v1 = [a1 hmf_stringForKey:?];
+  v1 = [self hmf_stringForKey:?];
   if (v1)
   {
     v2 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v1];
@@ -168,16 +168,16 @@ LABEL_17:
 
 - (id)timeZoneFromDataForKey:()HMFDeprecated
 {
-  v1 = [a1 hmf_dataForKey:?];
-  v2 = [v1 decodeTimeZone];
+  v1 = [self hmf_dataForKey:?];
+  decodeTimeZone = [v1 decodeTimeZone];
 
-  return v2;
+  return decodeTimeZone;
 }
 
 - (id)dateComponentsForKey:()HMFDeprecated
 {
   v4 = a3;
-  v5 = [a1 hmf_dateComponentsForKey:v4];
+  v5 = [self hmf_dateComponentsForKey:v4];
   v6 = v5;
   if (v5)
   {
@@ -186,7 +186,7 @@ LABEL_17:
 
   else
   {
-    v7 = [a1 dateComponentsFromDataForKey:v4];
+    v7 = [self dateComponentsFromDataForKey:v4];
   }
 
   v8 = v7;
@@ -196,15 +196,15 @@ LABEL_17:
 
 - (id)dateComponentsFromDataForKey:()HMFDeprecated
 {
-  v1 = [a1 hmf_dataForKey:?];
-  v2 = [v1 decodeDateComponents];
+  v1 = [self hmf_dataForKey:?];
+  decodeDateComponents = [v1 decodeDateComponents];
 
-  return v2;
+  return decodeDateComponents;
 }
 
 - (id)errorFromDataForKey:()HMFDeprecated
 {
-  v1 = [a1 hmf_dataForKey:?];
+  v1 = [self hmf_dataForKey:?];
   if (v1)
   {
     v2 = MEMORY[0x277CCAAC8];
@@ -232,16 +232,16 @@ LABEL_17:
 
 - (id)calendarFromDataForKey:()HMFDeprecated
 {
-  v1 = [a1 hmf_dataForKey:?];
-  v2 = [v1 decodeCalendar];
+  v1 = [self hmf_dataForKey:?];
+  decodeCalendar = [v1 decodeCalendar];
 
-  return v2;
+  return decodeCalendar;
 }
 
 - (id)predicateFromDataForKey:()HMFDeprecated
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v1 = [a1 hmf_dataForKey:?];
+  v1 = [self hmf_dataForKey:?];
   if (v1)
   {
     v2 = MEMORY[0x277CCAAC8];
@@ -275,10 +275,10 @@ LABEL_17:
 
 - (id)arrayOfDateComponentsFromDataForKey:()HMFDeprecated
 {
-  v1 = [a1 hmf_dataForKey:?];
-  v2 = [v1 decodeArrayOfDateComponents];
+  v1 = [self hmf_dataForKey:?];
+  decodeArrayOfDateComponents = [v1 decodeArrayOfDateComponents];
 
-  return v2;
+  return decodeArrayOfDateComponents;
 }
 
 @end

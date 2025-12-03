@@ -1,77 +1,77 @@
 @interface SBPPTRunner
-+ (BOOL)isAppLibraryTest:(id)a3;
-+ (BOOL)isFocusModeTest:(id)a3;
-+ (BOOL)isPageManagementTest:(id)a3;
++ (BOOL)isAppLibraryTest:(id)test;
++ (BOOL)isFocusModeTest:(id)test;
++ (BOOL)isPageManagementTest:(id)test;
 + (id)sharedInstance;
-- (BOOL)_runCoverSheetTestWithName:(id)a3 options:(id)a4;
-- (BOOL)_runDashBoardTestWithName:(id)a3 options:(id)a4;
-- (BOOL)runTestWithName:(id)a3 options:(id)a4;
+- (BOOL)_runCoverSheetTestWithName:(id)name options:(id)options;
+- (BOOL)_runDashBoardTestWithName:(id)name options:(id)options;
+- (BOOL)runTestWithName:(id)name options:(id)options;
 - (id)_libraryViewController;
 - (id)_mainDisplayWindowScene;
-- (id)_operationToDismissCoverSheetForTestWithName:(id)a3;
-- (id)_operationToPresentCoverSheetForTestWithName:(id)a3;
-- (void)_configureParams:(id)a3 forScrollView:(id)a4;
-- (void)_runAppLibraryPadPresentTestWithOptions:(id)a3;
-- (void)_runAppLibraryTestWithName:(id)a3 options:(id)a4;
-- (void)_runCoverSheetDismissTestWithOptions:(id)a3;
-- (void)_runCoverSheetDismissToSafariTestWithOptions:(id)a3;
-- (void)_runCoverSheetPresentOverSafariTestWithOptions:(id)a3;
-- (void)_runCoverSheetPresentTestWithOptions:(id)a3;
-- (void)_runDashBoardDismissTestWithOptions:(id)a3;
-- (void)_runFloatingDockBringupTestWithOptions:(id)a3;
-- (void)_runFloatingDockDismissTestWithOptions:(id)a3;
-- (void)_runFocusModePresentTestWithName:(id)a3 options:(id)a4;
-- (void)_runFocusModeTestWithName:(id)a3 options:(id)a4;
-- (void)_runLibrarySearchTestWithOptions:(id)a3;
-- (void)_runNotificationBannerTransitionTestWithOptions:(id)a3;
-- (void)_runNotificationClearLongLookTransitionTestWithOptions:(id)a3;
-- (void)_runNotificationReParkLongLookTransitionTestWithOptions:(id)a3;
-- (void)_runNotificationShortToLongLookTransitionTestWithOptions:(id)a3;
-- (void)_runPIPAutoStashByEnteringSwitcherTestWithOptions:(id)a3;
-- (void)_runPIPAutoUnstashAndRestoreByExitingSwitcherBackToAppTestWithOptions:(id)a3;
-- (void)_runPIPBasicRestoreTestWithOptions:(id)a3;
-- (void)_runPIPManualStashTestWithOptions:(id)a3;
-- (void)_runPIPManualUnstashTestWithOptions:(id)a3;
-- (void)_runPageManagementPresentTestWithName:(id)a3 options:(id)a4;
-- (void)_runPageManagementTestWithName:(id)a3 options:(id)a4;
-- (void)_runPullToAppLibrarySearchTestWithOptions:(id)a3;
-- (void)_runScrollDeweyTestWithOptions:(id)a3;
-- (void)_runScrollWithinExpandedPodTestWithOptions:(id)a3;
-- (void)_runSiriTestWithName:(id)a3 options:(id)a4;
-- (void)_runSwipeFromDeweyTestWithOptions:(id)a3;
-- (void)_runSwipeToDeweyTestWithOptions:(id)a3;
-- (void)_setCoverSheetPresentationManagerTransitionCallbacksForTestName:(id)a3 operation:(id)a4;
-- (void)assistantDidAppear:(id)a3 windowScene:(id)a4;
-- (void)assistantWillAppear:(id)a3 windowScene:(id)a4;
-- (void)longLookDidDismissForNotificationViewController:(id)a3;
-- (void)longLookDidPresentForNotificationViewController:(id)a3;
-- (void)longLookWillDismissForNotificationViewController:(id)a3;
-- (void)longLookWillPresentForNotificationViewController:(id)a3;
-- (void)prepareForControlCenterPPTHostState:(unint64_t)a3 completionHandler:(id)a4;
+- (id)_operationToDismissCoverSheetForTestWithName:(id)name;
+- (id)_operationToPresentCoverSheetForTestWithName:(id)name;
+- (void)_configureParams:(id)params forScrollView:(id)view;
+- (void)_runAppLibraryPadPresentTestWithOptions:(id)options;
+- (void)_runAppLibraryTestWithName:(id)name options:(id)options;
+- (void)_runCoverSheetDismissTestWithOptions:(id)options;
+- (void)_runCoverSheetDismissToSafariTestWithOptions:(id)options;
+- (void)_runCoverSheetPresentOverSafariTestWithOptions:(id)options;
+- (void)_runCoverSheetPresentTestWithOptions:(id)options;
+- (void)_runDashBoardDismissTestWithOptions:(id)options;
+- (void)_runFloatingDockBringupTestWithOptions:(id)options;
+- (void)_runFloatingDockDismissTestWithOptions:(id)options;
+- (void)_runFocusModePresentTestWithName:(id)name options:(id)options;
+- (void)_runFocusModeTestWithName:(id)name options:(id)options;
+- (void)_runLibrarySearchTestWithOptions:(id)options;
+- (void)_runNotificationBannerTransitionTestWithOptions:(id)options;
+- (void)_runNotificationClearLongLookTransitionTestWithOptions:(id)options;
+- (void)_runNotificationReParkLongLookTransitionTestWithOptions:(id)options;
+- (void)_runNotificationShortToLongLookTransitionTestWithOptions:(id)options;
+- (void)_runPIPAutoStashByEnteringSwitcherTestWithOptions:(id)options;
+- (void)_runPIPAutoUnstashAndRestoreByExitingSwitcherBackToAppTestWithOptions:(id)options;
+- (void)_runPIPBasicRestoreTestWithOptions:(id)options;
+- (void)_runPIPManualStashTestWithOptions:(id)options;
+- (void)_runPIPManualUnstashTestWithOptions:(id)options;
+- (void)_runPageManagementPresentTestWithName:(id)name options:(id)options;
+- (void)_runPageManagementTestWithName:(id)name options:(id)options;
+- (void)_runPullToAppLibrarySearchTestWithOptions:(id)options;
+- (void)_runScrollDeweyTestWithOptions:(id)options;
+- (void)_runScrollWithinExpandedPodTestWithOptions:(id)options;
+- (void)_runSiriTestWithName:(id)name options:(id)options;
+- (void)_runSwipeFromDeweyTestWithOptions:(id)options;
+- (void)_runSwipeToDeweyTestWithOptions:(id)options;
+- (void)_setCoverSheetPresentationManagerTransitionCallbacksForTestName:(id)name operation:(id)operation;
+- (void)assistantDidAppear:(id)appear windowScene:(id)scene;
+- (void)assistantWillAppear:(id)appear windowScene:(id)scene;
+- (void)longLookDidDismissForNotificationViewController:(id)controller;
+- (void)longLookDidPresentForNotificationViewController:(id)controller;
+- (void)longLookWillDismissForNotificationViewController:(id)controller;
+- (void)longLookWillPresentForNotificationViewController:(id)controller;
+- (void)prepareForControlCenterPPTHostState:(unint64_t)state completionHandler:(id)handler;
 @end
 
 @implementation SBPPTRunner
 
-- (BOOL)_runDashBoardTestWithName:(id)a3 options:(id)a4
+- (BOOL)_runDashBoardTestWithName:(id)name options:(id)options
 {
-  v6 = a4;
-  v7 = [a3 isEqualToString:@"DashBoardSwipeDismissWhileAuthenticated"];
+  optionsCopy = options;
+  v7 = [name isEqualToString:@"DashBoardSwipeDismissWhileAuthenticated"];
   if (v7)
   {
-    [(SBPPTRunner *)self _runDashBoardDismissTestWithOptions:v6];
+    [(SBPPTRunner *)self _runDashBoardDismissTestWithOptions:optionsCopy];
   }
 
   return v7;
 }
 
-- (void)_runDashBoardDismissTestWithOptions:(id)a3
+- (void)_runDashBoardDismissTestWithOptions:(id)options
 {
   v10[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[SBPPTOperation operationToLockInterface];
   v6 = [SBPPTOperation operationToUnlockInterfaceFinishingUIUnlock:0, v5];
   v10[1] = v6;
-  v7 = [v4 objectForKey:@"testName"];
+  v7 = [optionsCopy objectForKey:@"testName"];
 
   v8 = [(SBPPTRunner *)self _operationToDismissDashBoardForTestWithName:v7];
   v10[2] = v8;
@@ -85,18 +85,18 @@ void __74__SBPPTRunner_DashBoardPPTs___operationToDismissDashBoardForTestWithNam
   SBPPTSynthesizeEventsForEventActions(v0, 0);
 }
 
-- (void)prepareForControlCenterPPTHostState:(unint64_t)a3 completionHandler:(id)a4
+- (void)prepareForControlCenterPPTHostState:(unint64_t)state completionHandler:(id)handler
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  handlerCopy = handler;
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __94__SBPPTRunner_ControlCenterPPTSupport__prepareForControlCenterPPTHostState_completionHandler___block_invoke;
   v18 = &unk_2783B2FF8;
-  v6 = v5;
+  v6 = handlerCopy;
   v19 = v6;
   v7 = [SBPPTBlockOperation operationWithBlock:&v15];
-  switch(a3)
+  switch(state)
   {
     case 2uLL:
       v8 = [SBPPTOperation operationToPreventSystemIdle:v15];
@@ -153,10 +153,10 @@ void __94__SBPPTRunner_ControlCenterPPTSupport__prepareForControlCenterPPTHostSt
   [v4 finish];
 }
 
-- (void)_runFloatingDockBringupTestWithOptions:(id)a3
+- (void)_runFloatingDockBringupTestWithOptions:(id)options
 {
   v18[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[SBPPTOperation operationToUnlockInterface];
   v18[0] = v5;
   v6 = [SBPPTOperation operationToActivateApplicationWithBundleIdentifier:@"com.apple.mobilesafari"];
@@ -167,9 +167,9 @@ void __94__SBPPTRunner_ControlCenterPPTSupport__prepareForControlCenterPPTHostSt
   v13 = 3221225472;
   v14 = __64__SBPPTRunner_DockPPTs___runFloatingDockBringupTestWithOptions___block_invoke;
   v15 = &unk_2783BC300;
-  v16 = self;
-  v17 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v17 = optionsCopy;
+  v8 = optionsCopy;
   v9 = [SBPPTBlockOperation operationWithBlock:&v12];
   v18[3] = v9;
   v10 = [SBPPTOperation operationToTransitionToHomeScreen:v12];
@@ -204,10 +204,10 @@ uint64_t __64__SBPPTRunner_DockPPTs___runFloatingDockBringupTestWithOptions___bl
   return [v2 finish];
 }
 
-- (void)_runFloatingDockDismissTestWithOptions:(id)a3
+- (void)_runFloatingDockDismissTestWithOptions:(id)options
 {
   v18[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[SBPPTOperation operationToUnlockInterface];
   v18[0] = v5;
   v6 = [SBPPTOperation operationToActivateApplicationWithBundleIdentifier:@"com.apple.mobilesafari"];
@@ -218,9 +218,9 @@ uint64_t __64__SBPPTRunner_DockPPTs___runFloatingDockBringupTestWithOptions___bl
   v13 = 3221225472;
   v14 = __64__SBPPTRunner_DockPPTs___runFloatingDockDismissTestWithOptions___block_invoke;
   v15 = &unk_2783BC300;
-  v16 = self;
-  v17 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v17 = optionsCopy;
+  v8 = optionsCopy;
   v9 = [SBPPTBlockOperation operationWithBlock:&v12];
   v18[3] = v9;
   v10 = [SBPPTOperation operationToTransitionToHomeScreen:v12];
@@ -255,10 +255,10 @@ uint64_t __64__SBPPTRunner_DockPPTs___runFloatingDockDismissTestWithOptions___bl
   return [v2 finish];
 }
 
-- (void)_runNotificationShortToLongLookTransitionTestWithOptions:(id)a3
+- (void)_runNotificationShortToLongLookTransitionTestWithOptions:(id)options
 {
   v16[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[SBPPTOperation operationToUnlockInterface];
   v16[0] = v5;
   v6 = +[SBPPTOperation operationToPresentBannerNotification];
@@ -267,9 +267,9 @@ uint64_t __64__SBPPTRunner_DockPPTs___runFloatingDockDismissTestWithOptions___bl
   v11 = 3221225472;
   v12 = __90__SBPPTRunner_NotificationPPTs___runNotificationShortToLongLookTransitionTestWithOptions___block_invoke;
   v13 = &unk_2783BC300;
-  v14 = v4;
-  v15 = self;
-  v7 = v4;
+  v14 = optionsCopy;
+  selfCopy = self;
+  v7 = optionsCopy;
   v8 = [SBPPTBlockOperation operationWithBlock:&v10];
   v16[2] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:{3, v10, v11, v12, v13}];
@@ -347,10 +347,10 @@ void __90__SBPPTRunner_NotificationPPTs___runNotificationShortToLongLookTransiti
   [WeakRetained _recapDismissLongLookViaTapOutside];
 }
 
-- (void)_runNotificationReParkLongLookTransitionTestWithOptions:(id)a3
+- (void)_runNotificationReParkLongLookTransitionTestWithOptions:(id)options
 {
   v18[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[SBPPTOperation operationToUnlockInterface];
   v18[0] = v5;
   v6 = +[SBPPTOperation operationToActivateNullOffscreenApp];
@@ -361,9 +361,9 @@ void __90__SBPPTRunner_NotificationPPTs___runNotificationShortToLongLookTransiti
   v13 = 3221225472;
   v14 = __89__SBPPTRunner_NotificationPPTs___runNotificationReParkLongLookTransitionTestWithOptions___block_invoke;
   v15 = &unk_2783BC300;
-  v16 = v4;
-  v17 = self;
-  v8 = v4;
+  v16 = optionsCopy;
+  selfCopy = self;
+  v8 = optionsCopy;
   v9 = [SBPPTBlockOperation operationWithBlock:&v12];
   v18[3] = v9;
   v10 = [SBPPTOperation operationToTerminateNullOffscreenApp:v12];
@@ -441,10 +441,10 @@ uint64_t __89__SBPPTRunner_NotificationPPTs___runNotificationReParkLongLookTrans
   return [v3 finish];
 }
 
-- (void)_runNotificationClearLongLookTransitionTestWithOptions:(id)a3
+- (void)_runNotificationClearLongLookTransitionTestWithOptions:(id)options
 {
   v16[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[SBPPTOperation operationToUnlockInterface];
   v16[0] = v5;
   v6 = +[SBPPTOperation operationToPresentBannerNotification];
@@ -453,9 +453,9 @@ uint64_t __89__SBPPTRunner_NotificationPPTs___runNotificationReParkLongLookTrans
   v11 = 3221225472;
   v12 = __88__SBPPTRunner_NotificationPPTs___runNotificationClearLongLookTransitionTestWithOptions___block_invoke;
   v13 = &unk_2783BC300;
-  v14 = v4;
-  v15 = self;
-  v7 = v4;
+  v14 = optionsCopy;
+  selfCopy = self;
+  v7 = optionsCopy;
   v8 = [SBPPTBlockOperation operationWithBlock:&v10];
   v16[2] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:{3, v10, v11, v12, v13}];
@@ -531,18 +531,18 @@ uint64_t __88__SBPPTRunner_NotificationPPTs___runNotificationClearLongLookTransi
   return [v3 finish];
 }
 
-- (void)_runNotificationBannerTransitionTestWithOptions:(id)a3
+- (void)_runNotificationBannerTransitionTestWithOptions:(id)options
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  optionsCopy = options;
   v4 = +[SBPPTOperation operationToUnlockInterface];
-  v10 = v3;
+  v10 = optionsCopy;
   v11[0] = v4;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __81__SBPPTRunner_NotificationPPTs___runNotificationBannerTransitionTestWithOptions___block_invoke;
   v9[3] = &unk_2783B2FA8;
-  v5 = v3;
+  v5 = optionsCopy;
   v6 = [SBPPTBlockOperation operationWithBlock:v9];
   v11[1] = v6;
   v7 = +[SBPPTOperation operationToDismissBannerNotification];
@@ -604,72 +604,72 @@ uint64_t __81__SBPPTRunner_NotificationPPTs___runNotificationBannerTransitionTes
   return [v3 finish];
 }
 
-- (void)longLookWillPresentForNotificationViewController:(id)a3
+- (void)longLookWillPresentForNotificationViewController:(id)controller
 {
-  v4 = a3;
-  v3 = [v4 pptLongLookWillPresentBlock];
-  if (v3)
+  controllerCopy = controller;
+  pptLongLookWillPresentBlock = [controllerCopy pptLongLookWillPresentBlock];
+  if (pptLongLookWillPresentBlock)
   {
-    [v4 setPPTLongLookWillPresentBlock:0];
-    v3[2](v3);
+    [controllerCopy setPPTLongLookWillPresentBlock:0];
+    pptLongLookWillPresentBlock[2](pptLongLookWillPresentBlock);
   }
 }
 
-- (void)longLookDidPresentForNotificationViewController:(id)a3
+- (void)longLookDidPresentForNotificationViewController:(id)controller
 {
-  v4 = a3;
-  v3 = [v4 pptLongLookDidPresentBlock];
-  if (v3)
+  controllerCopy = controller;
+  pptLongLookDidPresentBlock = [controllerCopy pptLongLookDidPresentBlock];
+  if (pptLongLookDidPresentBlock)
   {
-    [v4 setPPTLongLookDidPresentBlock:0];
-    v3[2](v3);
+    [controllerCopy setPPTLongLookDidPresentBlock:0];
+    pptLongLookDidPresentBlock[2](pptLongLookDidPresentBlock);
   }
 }
 
-- (void)longLookWillDismissForNotificationViewController:(id)a3
+- (void)longLookWillDismissForNotificationViewController:(id)controller
 {
-  v4 = a3;
-  v3 = [v4 pptLongLookWillDismissBlock];
-  if (v3)
+  controllerCopy = controller;
+  pptLongLookWillDismissBlock = [controllerCopy pptLongLookWillDismissBlock];
+  if (pptLongLookWillDismissBlock)
   {
-    [v4 setPPTLongLookWillDismissBlock:0];
-    v3[2](v3);
+    [controllerCopy setPPTLongLookWillDismissBlock:0];
+    pptLongLookWillDismissBlock[2](pptLongLookWillDismissBlock);
   }
 }
 
-- (void)longLookDidDismissForNotificationViewController:(id)a3
+- (void)longLookDidDismissForNotificationViewController:(id)controller
 {
-  v4 = a3;
-  v3 = [v4 pptLongLookDidDismissBlock];
-  if (v3)
+  controllerCopy = controller;
+  pptLongLookDidDismissBlock = [controllerCopy pptLongLookDidDismissBlock];
+  if (pptLongLookDidDismissBlock)
   {
-    [v4 setPPTLongLookDidDismissBlock:0];
-    v3[2](v3);
+    [controllerCopy setPPTLongLookDidDismissBlock:0];
+    pptLongLookDidDismissBlock[2](pptLongLookDidDismissBlock);
   }
 }
 
-- (void)_runSiriTestWithName:(id)a3 options:(id)a4
+- (void)_runSiriTestWithName:(id)name options:(id)options
 {
-  v15 = a3;
-  v6 = a4;
+  nameCopy = name;
+  optionsCopy = options;
   v7 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v8 = [v7 policyAggregator];
-  v9 = [v8 allowsCapability:5];
+  policyAggregator = [v7 policyAggregator];
+  v9 = [policyAggregator allowsCapability:5];
 
   if (v9)
   {
-    if ([v15 hasPrefix:@"SiriBringup"])
+    if ([nameCopy hasPrefix:@"SiriBringup"])
     {
       v10 = +[SBAssistantController sharedInstance];
       [v10 addObserver:self];
 
-      [*MEMORY[0x277D76620] startedIPTest:v15];
+      [*MEMORY[0x277D76620] startedIPTest:nameCopy];
     }
 
     v11 = MEMORY[0x277CBEC10];
-    if (v6)
+    if (optionsCopy)
     {
-      v11 = v6;
+      v11 = optionsCopy;
     }
 
     v12 = v11;
@@ -680,38 +680,38 @@ uint64_t __81__SBPPTRunner_NotificationPPTs___runNotificationBannerTransitionTes
   }
 }
 
-- (void)assistantWillAppear:(id)a3 windowScene:(id)a4
+- (void)assistantWillAppear:(id)appear windowScene:(id)scene
 {
-  v4 = [SBApplicationTestingManager sharedInstance:a3];
-  v5 = [v4 currentTestName];
+  v4 = [SBApplicationTestingManager sharedInstance:appear];
+  currentTestName = [v4 currentTestName];
 
   v6 = *MEMORY[0x277D76620];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__SBPPTRunner_SiriPPTSupport__assistantWillAppear_windowScene___block_invoke;
   v8[3] = &unk_2783A8C18;
-  v9 = v5;
-  v7 = v5;
+  v9 = currentTestName;
+  v7 = currentTestName;
   [v6 _performBlockAfterCATransactionCommits:v8];
 }
 
-- (void)assistantDidAppear:(id)a3 windowScene:(id)a4
+- (void)assistantDidAppear:(id)appear windowScene:(id)scene
 {
-  v5 = [SBAssistantController sharedInstance:a3];
+  v5 = [SBAssistantController sharedInstance:appear];
   [v5 removeObserver:self];
 
   v6 = +[SBApplicationTestingManager sharedInstance];
-  v7 = [v6 currentTestName];
+  currentTestName = [v6 currentTestName];
 
-  [*MEMORY[0x277D76620] finishedSubTest:@"appear" forTest:v7];
+  [*MEMORY[0x277D76620] finishedSubTest:@"appear" forTest:currentTestName];
   v8 = dispatch_time(0, 2000000000);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__SBPPTRunner_SiriPPTSupport__assistantDidAppear_windowScene___block_invoke;
   v10[3] = &unk_2783A92D8;
-  v11 = v7;
-  v12 = self;
-  v9 = v7;
+  v11 = currentTestName;
+  selfCopy = self;
+  v9 = currentTestName;
   dispatch_after(v8, MEMORY[0x277D85CD0], v10);
 }
 
@@ -756,16 +756,16 @@ uint64_t __62__SBPPTRunner_SiriPPTSupport__assistantDidAppear_windowScene___bloc
   return [v4 finishedTest:v5];
 }
 
-+ (BOOL)isFocusModeTest:(id)a3
++ (BOOL)isFocusModeTest:(id)test
 {
   v3 = isFocusModeTest__onceToken;
-  v4 = a3;
+  testCopy = test;
   if (v3 != -1)
   {
     +[SBPPTRunner(FocusModePPTSupport) isFocusModeTest:];
   }
 
-  v5 = [isFocusModeTest__focusModePPTTests containsObject:v4];
+  v5 = [isFocusModeTest__focusModePPTTests containsObject:testCopy];
 
   return v5;
 }
@@ -781,44 +781,44 @@ void __52__SBPPTRunner_FocusModePPTSupport__isFocusModeTest___block_invoke()
   isFocusModeTest__focusModePPTTests = v2;
 }
 
-- (void)_runFocusModeTestWithName:(id)a3 options:(id)a4
+- (void)_runFocusModeTestWithName:(id)name options:(id)options
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v7 isEqualToString:@"FocusMode"])
+  nameCopy = name;
+  optionsCopy = options;
+  if ([nameCopy isEqualToString:@"FocusMode"])
   {
-    [(SBPPTRunner *)self _runFocusModePresentTestWithName:v7 options:v6];
+    [(SBPPTRunner *)self _runFocusModePresentTestWithName:nameCopy options:optionsCopy];
   }
 }
 
-- (void)_runFocusModePresentTestWithName:(id)a3 options:(id)a4
+- (void)_runFocusModePresentTestWithName:(id)name options:(id)options
 {
   v11[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = +[SBPPTOperation operationToUnlockInterface];
   v6 = +[SBPPTOperation operationToTransitionToHomeScreen];
   v11[1] = v6;
-  v7 = [SBPPTOperation operationToStartTest:v4];
+  v7 = [SBPPTOperation operationToStartTest:nameCopy];
   v11[2] = v7;
-  v8 = [SBPPTOperation operationToUpdateHomeScreenPagesForActiveFocusModeForTestWithName:v4];
+  v8 = [SBPPTOperation operationToUpdateHomeScreenPagesForActiveFocusModeForTestWithName:nameCopy];
   v11[3] = v8;
-  v9 = [SBPPTOperation operationToFinishTest:v4];
+  v9 = [SBPPTOperation operationToFinishTest:nameCopy];
 
   v11[4] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:5];
   [SBPPTOperation enqueueOperations:v10];
 }
 
-+ (BOOL)isPageManagementTest:(id)a3
++ (BOOL)isPageManagementTest:(id)test
 {
   v3 = isPageManagementTest__onceToken;
-  v4 = a3;
+  testCopy = test;
   if (v3 != -1)
   {
     +[SBPPTRunner(PageManagementPPTSupport) isPageManagementTest:];
   }
 
-  v5 = [isPageManagementTest__pageManagementPPTTests containsObject:v4];
+  v5 = [isPageManagementTest__pageManagementPPTTests containsObject:testCopy];
 
   return v5;
 }
@@ -834,66 +834,66 @@ void __62__SBPPTRunner_PageManagementPPTSupport__isPageManagementTest___block_in
   isPageManagementTest__pageManagementPPTTests = v2;
 }
 
-- (void)_runPageManagementTestWithName:(id)a3 options:(id)a4
+- (void)_runPageManagementTestWithName:(id)name options:(id)options
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v7 isEqualToString:@"PresentPageManagement"])
+  nameCopy = name;
+  optionsCopy = options;
+  if ([nameCopy isEqualToString:@"PresentPageManagement"])
   {
-    [(SBPPTRunner *)self _runPageManagementPresentTestWithName:v7 options:v6];
+    [(SBPPTRunner *)self _runPageManagementPresentTestWithName:nameCopy options:optionsCopy];
   }
 }
 
-- (void)_runPageManagementPresentTestWithName:(id)a3 options:(id)a4
+- (void)_runPageManagementPresentTestWithName:(id)name options:(id)options
 {
   v13[7] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = +[SBPPTOperation operationToUnlockInterface];
   v6 = +[SBPPTOperation operationToTransitionToHomeScreen];
   v13[1] = v6;
-  v7 = [SBPPTOperation operationToStartTest:v4];
+  v7 = [SBPPTOperation operationToStartTest:nameCopy];
   v13[2] = v7;
-  v8 = [SBPPTOperation operationToPresentPageManagementForTestWithName:v4];
+  v8 = [SBPPTOperation operationToPresentPageManagementForTestWithName:nameCopy];
   v13[3] = v8;
   v9 = [SBPPTOperation operationToWaitForTimeInterval:2.0];
   v13[4] = v9;
-  v10 = [SBPPTOperation operationToDismissPageManagementForTestWithName:v4];
+  v10 = [SBPPTOperation operationToDismissPageManagementForTestWithName:nameCopy];
   v13[5] = v10;
-  v11 = [SBPPTOperation operationToFinishTest:v4];
+  v11 = [SBPPTOperation operationToFinishTest:nameCopy];
 
   v13[6] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:7];
   [SBPPTOperation enqueueOperations:v12];
 }
 
-- (BOOL)_runCoverSheetTestWithName:(id)a3 options:(id)a4
+- (BOOL)_runCoverSheetTestWithName:(id)name options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"CoverSheetPresent"])
+  nameCopy = name;
+  optionsCopy = options;
+  if ([nameCopy isEqualToString:@"CoverSheetPresent"])
   {
-    [(SBPPTRunner *)self _runCoverSheetPresentTestWithOptions:v7];
+    [(SBPPTRunner *)self _runCoverSheetPresentTestWithOptions:optionsCopy];
   }
 
-  else if ([v6 isEqualToString:@"CoverSheetPresentOverSafari"])
+  else if ([nameCopy isEqualToString:@"CoverSheetPresentOverSafari"])
   {
-    [(SBPPTRunner *)self _runCoverSheetPresentOverSafariTestWithOptions:v7];
+    [(SBPPTRunner *)self _runCoverSheetPresentOverSafariTestWithOptions:optionsCopy];
   }
 
-  else if ([v6 isEqualToString:@"CoverSheetDismiss"])
+  else if ([nameCopy isEqualToString:@"CoverSheetDismiss"])
   {
-    [(SBPPTRunner *)self _runCoverSheetDismissTestWithOptions:v7];
+    [(SBPPTRunner *)self _runCoverSheetDismissTestWithOptions:optionsCopy];
   }
 
   else
   {
-    if (![v6 isEqualToString:@"CoverSheetDismissToSafari"])
+    if (![nameCopy isEqualToString:@"CoverSheetDismissToSafari"])
     {
       v8 = 0;
       goto LABEL_10;
     }
 
-    [(SBPPTRunner *)self _runCoverSheetDismissToSafariTestWithOptions:v7];
+    [(SBPPTRunner *)self _runCoverSheetDismissToSafariTestWithOptions:optionsCopy];
   }
 
   v8 = 1;
@@ -902,15 +902,15 @@ LABEL_10:
   return v8;
 }
 
-- (void)_runCoverSheetPresentTestWithOptions:(id)a3
+- (void)_runCoverSheetPresentTestWithOptions:(id)options
 {
   v11[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[SBPPTOperation operationToUnlockInterface];
   v11[0] = v5;
   v6 = +[SBPPTOperation operationToTransitionToHomeScreen];
   v11[1] = v6;
-  v7 = [v4 objectForKey:@"testName"];
+  v7 = [optionsCopy objectForKey:@"testName"];
 
   v8 = [(SBPPTRunner *)self _operationToPresentCoverSheetForTestWithName:v7];
   v11[2] = v8;
@@ -920,17 +920,17 @@ LABEL_10:
   [SBPPTOperation enqueueOperations:v10];
 }
 
-- (void)_runCoverSheetDismissTestWithOptions:(id)a3
+- (void)_runCoverSheetDismissTestWithOptions:(id)options
 {
   v11[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[SBPPTOperation operationToUnlockInterface];
   v11[0] = v5;
   v6 = +[SBPPTOperation operationToTransitionToHomeScreen];
   v11[1] = v6;
   v7 = +[SBPPTOperation operationToPresentCoverSheet];
   v11[2] = v7;
-  v8 = [v4 objectForKey:@"testName"];
+  v8 = [optionsCopy objectForKey:@"testName"];
 
   v9 = [(SBPPTRunner *)self _operationToDismissCoverSheetForTestWithName:v8];
   v11[3] = v9;
@@ -938,15 +938,15 @@ LABEL_10:
   [SBPPTOperation enqueueOperations:v10];
 }
 
-- (void)_runCoverSheetPresentOverSafariTestWithOptions:(id)a3
+- (void)_runCoverSheetPresentOverSafariTestWithOptions:(id)options
 {
   v11[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[SBPPTOperation operationToUnlockInterface];
   v11[0] = v5;
   v6 = [SBPPTOperation operationToActivateApplicationWithBundleIdentifier:@"com.apple.mobilesafari"];
   v11[1] = v6;
-  v7 = [v4 objectForKey:@"testName"];
+  v7 = [optionsCopy objectForKey:@"testName"];
 
   v8 = [(SBPPTRunner *)self _operationToPresentCoverSheetForTestWithName:v7];
   v11[2] = v8;
@@ -956,17 +956,17 @@ LABEL_10:
   [SBPPTOperation enqueueOperations:v10];
 }
 
-- (void)_runCoverSheetDismissToSafariTestWithOptions:(id)a3
+- (void)_runCoverSheetDismissToSafariTestWithOptions:(id)options
 {
   v11[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[SBPPTOperation operationToUnlockInterface];
   v11[0] = v5;
   v6 = [SBPPTOperation operationToActivateApplicationWithBundleIdentifier:@"com.apple.mobilesafari"];
   v11[1] = v6;
   v7 = +[SBPPTOperation operationToPresentCoverSheet];
   v11[2] = v7;
-  v8 = [v4 objectForKey:@"testName"];
+  v8 = [optionsCopy objectForKey:@"testName"];
 
   v9 = [(SBPPTRunner *)self _operationToDismissCoverSheetForTestWithName:v8];
   v11[3] = v9;
@@ -974,16 +974,16 @@ LABEL_10:
   [SBPPTOperation enqueueOperations:v10];
 }
 
-- (id)_operationToPresentCoverSheetForTestWithName:(id)a3
+- (id)_operationToPresentCoverSheetForTestWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__SBPPTRunner_CoverSheetPPTs___operationToPresentCoverSheetForTestWithName___block_invoke;
   v8[3] = &unk_2783BC300;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = nameCopy;
+  v5 = nameCopy;
   v6 = [SBPPTBlockOperation operationWithBlock:v8];
 
   return v6;
@@ -996,16 +996,16 @@ void __76__SBPPTRunner_CoverSheetPPTs___operationToPresentCoverSheetForTestWithN
   SBPPTSynthesizeEventsForEventActions(v2, 0);
 }
 
-- (id)_operationToDismissCoverSheetForTestWithName:(id)a3
+- (id)_operationToDismissCoverSheetForTestWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__SBPPTRunner_CoverSheetPPTs___operationToDismissCoverSheetForTestWithName___block_invoke;
   v8[3] = &unk_2783BC300;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = nameCopy;
+  v5 = nameCopy;
   v6 = [SBPPTBlockOperation operationWithBlock:v8];
 
   return v6;
@@ -1018,16 +1018,16 @@ void __76__SBPPTRunner_CoverSheetPPTs___operationToDismissCoverSheetForTestWithN
   SBPPTSynthesizeEventsForCommandString(@"b h", 0);
 }
 
-- (void)_setCoverSheetPresentationManagerTransitionCallbacksForTestName:(id)a3 operation:(id)a4
+- (void)_setCoverSheetPresentationManagerTransitionCallbacksForTestName:(id)name operation:(id)operation
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  operationCopy = operation;
   v7 = +[SBCoverSheetPresentationManager sharedInstance];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __105__SBPPTRunner_CoverSheetPPTs___setCoverSheetPresentationManagerTransitionCallbacksForTestName_operation___block_invoke;
   v14[3] = &unk_2783A8C18;
-  v8 = v5;
+  v8 = nameCopy;
   v15 = v8;
   [v7 setPpt_transitionBeginsCallback:v14];
   v11[0] = MEMORY[0x277D85DD0];
@@ -1035,8 +1035,8 @@ void __76__SBPPTRunner_CoverSheetPPTs___operationToDismissCoverSheetForTestWithN
   v11[2] = __105__SBPPTRunner_CoverSheetPPTs___setCoverSheetPresentationManagerTransitionCallbacksForTestName_operation___block_invoke_3;
   v11[3] = &unk_2783A92D8;
   v12 = v8;
-  v13 = v6;
-  v9 = v6;
+  v13 = operationCopy;
+  v9 = operationCopy;
   v10 = v8;
   [v7 setPpt_transitionEndsCallback:v11];
 }
@@ -1122,20 +1122,20 @@ void __53__SBPPTRunner_PIPPPTs___operationToUnstashStashedPIP__block_invoke(uint
   [v4 finish];
 }
 
-- (void)_runPIPBasicRestoreTestWithOptions:(id)a3
+- (void)_runPIPBasicRestoreTestWithOptions:(id)options
 {
   v15[8] = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKey:@"testName"];
+  v3 = [options objectForKey:@"testName"];
   v14 = +[SBPPTOperation operationToUnlockInterface];
   v15[0] = v14;
   v13 = [SBPPTOperation operationToActivateApplicationWithBundleIdentifier:@"com.apple.test.FullscreenVideoPlayer"];
   v15[1] = v13;
-  v12 = [objc_opt_class() _operationToPutVideoInPIP];
-  v15[2] = v12;
+  _operationToPutVideoInPIP = [objc_opt_class() _operationToPutVideoInPIP];
+  v15[2] = _operationToPutVideoInPIP;
   v4 = [SBPPTOperation operationToWaitForNotificationName:@"SBApplicationTestingPIPIsActive" object:0 timeout:10.0];
   v15[3] = v4;
-  v5 = [objc_opt_class() _operationToRestoreVideoFromPIP];
-  v6 = [v5 markStartedTest:v3];
+  _operationToRestoreVideoFromPIP = [objc_opt_class() _operationToRestoreVideoFromPIP];
+  v6 = [_operationToRestoreVideoFromPIP markStartedTest:v3];
   v15[4] = v6;
   v7 = [SBPPTOperation operationToWaitForNotificationName:@"SBApplicationTestingPIPIsNoLongerActive" object:0 timeout:10.0];
   v8 = [v7 markFinishedTest:v3];
@@ -1148,26 +1148,26 @@ void __53__SBPPTRunner_PIPPPTs___operationToUnstashStashedPIP__block_invoke(uint
   [SBPPTOperation enqueueOperations:v11];
 }
 
-- (void)_runPIPManualStashTestWithOptions:(id)a3
+- (void)_runPIPManualStashTestWithOptions:(id)options
 {
   v16[9] = *MEMORY[0x277D85DE8];
-  v12 = [a3 objectForKey:@"testName"];
+  v12 = [options objectForKey:@"testName"];
   v15 = +[SBPPTOperation operationToUnlockInterface];
   v16[0] = v15;
   v14 = [SBPPTOperation operationToActivateApplicationWithBundleIdentifier:@"com.apple.test.FullscreenVideoPlayer"];
   v16[1] = v14;
-  v13 = [objc_opt_class() _operationToPutVideoInPIP];
-  v16[2] = v13;
+  _operationToPutVideoInPIP = [objc_opt_class() _operationToPutVideoInPIP];
+  v16[2] = _operationToPutVideoInPIP;
   v3 = [SBPPTOperation operationToWaitForNotificationName:@"SBApplicationTestingPIPIsActive" object:0 timeout:10.0];
   v16[3] = v3;
-  v4 = [objc_opt_class() _operationToStashPIP];
-  v5 = [v4 markStartedTest:v12];
+  _operationToStashPIP = [objc_opt_class() _operationToStashPIP];
+  v5 = [_operationToStashPIP markStartedTest:v12];
   v16[4] = v5;
   v6 = [SBPPTOperation operationToWaitForNotificationName:@"SBApplicationTestingPIPIsStashed" object:0 timeout:10.0];
   v7 = [v6 markFinishedTest:v12];
   v16[5] = v7;
-  v8 = [objc_opt_class() _operationToUnstashStashedPIP];
-  v16[6] = v8;
+  _operationToUnstashStashedPIP = [objc_opt_class() _operationToUnstashStashedPIP];
+  v16[6] = _operationToUnstashStashedPIP;
   v9 = +[SBPPTOperation operationToTransitionToHomeScreen];
   v16[7] = v9;
   v10 = [SBPPTOperation operationToTerminateApplicationWithBundleIdentifier:@"com.apple.test.FullscreenVideoPlayer"];
@@ -1176,25 +1176,25 @@ void __53__SBPPTRunner_PIPPPTs___operationToUnstashStashedPIP__block_invoke(uint
   [SBPPTOperation enqueueOperations:v11];
 }
 
-- (void)_runPIPManualUnstashTestWithOptions:(id)a3
+- (void)_runPIPManualUnstashTestWithOptions:(id)options
 {
   v18[10] = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKey:@"testName"];
+  v3 = [options objectForKey:@"testName"];
   v17 = +[SBPPTOperation operationToUnlockInterface];
   v18[0] = v17;
   v16 = [SBPPTOperation operationToActivateApplicationWithBundleIdentifier:@"com.apple.test.FullscreenVideoPlayer"];
   v18[1] = v16;
-  v15 = [objc_opt_class() _operationToPutVideoInPIP];
-  v18[2] = v15;
+  _operationToPutVideoInPIP = [objc_opt_class() _operationToPutVideoInPIP];
+  v18[2] = _operationToPutVideoInPIP;
   v14 = [SBPPTOperation operationToWaitForNotificationName:@"SBApplicationTestingPIPIsActive" object:0 timeout:10.0];
   v18[3] = v14;
-  v4 = [objc_opt_class() _operationToStashPIP];
-  v18[4] = v4;
+  _operationToStashPIP = [objc_opt_class() _operationToStashPIP];
+  v18[4] = _operationToStashPIP;
   v5 = [SBPPTOperation operationToWaitForNotificationName:@"SBApplicationTestingPIPIsStashed" object:0 timeout:10.0];
   v18[5] = v5;
-  v6 = [objc_opt_class() _operationToUnstashStashedPIP];
+  _operationToUnstashStashedPIP = [objc_opt_class() _operationToUnstashStashedPIP];
   v13 = v3;
-  v7 = [v6 markStartedTest:v3];
+  v7 = [_operationToUnstashStashedPIP markStartedTest:v3];
   v18[6] = v7;
   v8 = [SBPPTOperation operationToWaitForNotificationName:@"SBApplicationTestingPIPIsNoLongerStashed" object:0 timeout:10.0];
   v9 = [v8 markFinishedTest:v3];
@@ -1207,16 +1207,16 @@ void __53__SBPPTRunner_PIPPPTs___operationToUnstashStashedPIP__block_invoke(uint
   [SBPPTOperation enqueueOperations:v12];
 }
 
-- (void)_runPIPAutoStashByEnteringSwitcherTestWithOptions:(id)a3
+- (void)_runPIPAutoStashByEnteringSwitcherTestWithOptions:(id)options
 {
   v16[8] = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKey:@"testName"];
+  v3 = [options objectForKey:@"testName"];
   v15 = +[SBPPTOperation operationToUnlockInterface];
   v16[0] = v15;
   v14 = [SBPPTOperation operationToActivateApplicationWithBundleIdentifier:@"com.apple.test.FullscreenVideoPlayer"];
   v16[1] = v14;
-  v13 = [objc_opt_class() _operationToPutVideoInPIP];
-  v16[2] = v13;
+  _operationToPutVideoInPIP = [objc_opt_class() _operationToPutVideoInPIP];
+  v16[2] = _operationToPutVideoInPIP;
   v4 = [SBPPTOperation operationToWaitForNotificationName:@"SBApplicationTestingPIPIsActive" object:0 timeout:10.0];
   v16[3] = v4;
   v5 = +[SBPPTOperation operationToPresentAppSwitcher];
@@ -1234,16 +1234,16 @@ void __53__SBPPTRunner_PIPPPTs___operationToUnstashStashedPIP__block_invoke(uint
   [SBPPTOperation enqueueOperations:v11];
 }
 
-- (void)_runPIPAutoUnstashAndRestoreByExitingSwitcherBackToAppTestWithOptions:(id)a3
+- (void)_runPIPAutoUnstashAndRestoreByExitingSwitcherBackToAppTestWithOptions:(id)options
 {
   v19[11] = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKey:@"testName"];
+  v3 = [options objectForKey:@"testName"];
   v18 = +[SBPPTOperation operationToUnlockInterface];
   v19[0] = v18;
   v17 = [SBPPTOperation operationToActivateApplicationWithBundleIdentifier:@"com.apple.test.FullscreenVideoPlayer"];
   v19[1] = v17;
-  v16 = [objc_opt_class() _operationToPutVideoInPIP];
-  v19[2] = v16;
+  _operationToPutVideoInPIP = [objc_opt_class() _operationToPutVideoInPIP];
+  v19[2] = _operationToPutVideoInPIP;
   v15 = [SBPPTOperation operationToWaitForNotificationName:@"SBApplicationTestingPIPIsActive" object:0 timeout:10.0];
   v19[3] = v15;
   v4 = +[SBPPTOperation operationToPresentAppSwitcher];
@@ -1267,16 +1267,16 @@ void __53__SBPPTRunner_PIPPPTs___operationToUnstashStashedPIP__block_invoke(uint
   [SBPPTOperation enqueueOperations:v13];
 }
 
-+ (BOOL)isAppLibraryTest:(id)a3
++ (BOOL)isAppLibraryTest:(id)test
 {
   v3 = isAppLibraryTest__onceToken;
-  v4 = a3;
+  testCopy = test;
   if (v3 != -1)
   {
     +[SBPPTRunner(AppLibraryPPTSupport) isAppLibraryTest:];
   }
 
-  v5 = [isAppLibraryTest__appLibraryTests containsObject:v4];
+  v5 = [isAppLibraryTest__appLibraryTests containsObject:testCopy];
 
   return v5;
 }
@@ -1298,50 +1298,50 @@ void __54__SBPPTRunner_AppLibraryPPTSupport__isAppLibraryTest___block_invoke()
   isAppLibraryTest__appLibraryTests = v2;
 }
 
-- (void)_runAppLibraryTestWithName:(id)a3 options:(id)a4
+- (void)_runAppLibraryTestWithName:(id)name options:(id)options
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v7 isEqualToString:@"SwipeToDewey"])
+  nameCopy = name;
+  optionsCopy = options;
+  if ([nameCopy isEqualToString:@"SwipeToDewey"])
   {
-    [(SBPPTRunner *)self _runSwipeToDeweyTestWithOptions:v6];
+    [(SBPPTRunner *)self _runSwipeToDeweyTestWithOptions:optionsCopy];
   }
 
-  else if ([v7 isEqualToString:@"SwipeFromDewey"])
+  else if ([nameCopy isEqualToString:@"SwipeFromDewey"])
   {
-    [(SBPPTRunner *)self _runSwipeFromDeweyTestWithOptions:v6];
+    [(SBPPTRunner *)self _runSwipeFromDeweyTestWithOptions:optionsCopy];
   }
 
-  else if ([v7 isEqualToString:@"ScrollDewey"])
+  else if ([nameCopy isEqualToString:@"ScrollDewey"])
   {
-    [(SBPPTRunner *)self _runScrollDeweyTestWithOptions:v6];
+    [(SBPPTRunner *)self _runScrollDeweyTestWithOptions:optionsCopy];
   }
 
-  else if ([v7 isEqualToString:@"ScrollDeweyLibrarySearch"])
+  else if ([nameCopy isEqualToString:@"ScrollDeweyLibrarySearch"])
   {
-    [(SBPPTRunner *)self _runLibrarySearchTestWithOptions:v6];
+    [(SBPPTRunner *)self _runLibrarySearchTestWithOptions:optionsCopy];
   }
 
-  else if ([v7 isEqualToString:@"ScrollDeweyWithinExpandedPod"])
+  else if ([nameCopy isEqualToString:@"ScrollDeweyWithinExpandedPod"])
   {
-    [(SBPPTRunner *)self _runScrollWithinExpandedPodTestWithOptions:v6];
+    [(SBPPTRunner *)self _runScrollWithinExpandedPodTestWithOptions:optionsCopy];
   }
 
-  else if ([v7 isEqualToString:@"DeweyPullToLibrarySearch"])
+  else if ([nameCopy isEqualToString:@"DeweyPullToLibrarySearch"])
   {
-    [(SBPPTRunner *)self _runPullToAppLibrarySearchTestWithOptions:v6];
+    [(SBPPTRunner *)self _runPullToAppLibrarySearchTestWithOptions:optionsCopy];
   }
 
-  else if ([v7 isEqualToString:@"PresentAppLibraryPad"])
+  else if ([nameCopy isEqualToString:@"PresentAppLibraryPad"])
   {
-    [(SBPPTRunner *)self _runAppLibraryPadPresentTestWithOptions:v6];
+    [(SBPPTRunner *)self _runAppLibraryPadPresentTestWithOptions:optionsCopy];
   }
 }
 
-- (void)_runAppLibraryPadPresentTestWithOptions:(id)a3
+- (void)_runAppLibraryPadPresentTestWithOptions:(id)options
 {
   v12[7] = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKey:@"testName"];
+  v3 = [options objectForKey:@"testName"];
   v4 = +[SBPPTOperation operationToUnlockInterface];
   v5 = [SBPPTOperation dismissOverlaysAndResetHomeScreenToLastIconPageAnimated:1, v4];
   v12[1] = v5;
@@ -1359,10 +1359,10 @@ void __54__SBPPTRunner_AppLibraryPPTSupport__isAppLibraryTest___block_invoke()
   [SBPPTOperation enqueueOperations:v11];
 }
 
-- (void)_runSwipeToDeweyTestWithOptions:(id)a3
+- (void)_runSwipeToDeweyTestWithOptions:(id)options
 {
   v11[6] = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKey:@"testName"];
+  v3 = [options objectForKey:@"testName"];
   v4 = +[SBPPTOperation operationToUnlockInterface];
   v11[0] = v4;
   v5 = [SBPPTOperation dismissOverlaysAndResetHomeScreenToLastIconPageAnimated:1];
@@ -1379,10 +1379,10 @@ void __54__SBPPTRunner_AppLibraryPPTSupport__isAppLibraryTest___block_invoke()
   [SBPPTOperation enqueueOperations:v10];
 }
 
-- (void)_runSwipeFromDeweyTestWithOptions:(id)a3
+- (void)_runSwipeFromDeweyTestWithOptions:(id)options
 {
   v12[7] = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKey:@"testName"];
+  v3 = [options objectForKey:@"testName"];
   v4 = +[SBPPTOperation operationToUnlockInterface];
   v5 = [SBPPTOperation dismissOverlaysAndResetHomeScreenToLastIconPageAnimated:1, v4];
   v12[1] = v5;
@@ -1400,10 +1400,10 @@ void __54__SBPPTRunner_AppLibraryPPTSupport__isAppLibraryTest___block_invoke()
   [SBPPTOperation enqueueOperations:v11];
 }
 
-- (void)_runScrollDeweyTestWithOptions:(id)a3
+- (void)_runScrollDeweyTestWithOptions:(id)options
 {
   v20[7] = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKey:@"testName"];
+  v4 = [options objectForKey:@"testName"];
   v5 = +[SBPPTOperation operationToUnlockInterface];
   v20[0] = v5;
   v6 = [SBPPTOperation dismissOverlaysAndResetHomeScreenToLastIconPageAnimated:1];
@@ -1418,7 +1418,7 @@ void __54__SBPPTRunner_AppLibraryPPTSupport__isAppLibraryTest___block_invoke()
   v15 = 3221225472;
   v16 = __68__SBPPTRunner_AppLibraryPPTSupport___runScrollDeweyTestWithOptions___block_invoke;
   v17 = &unk_2783C46F8;
-  v18 = self;
+  selfCopy = self;
   v19 = v4;
   v10 = v4;
   v11 = [SBPPTRecapPerformanceTestingOperation scrollViewRecapPerformanceTestOperationWithBlock:&v14];
@@ -1459,18 +1459,18 @@ void __68__SBPPTRunner_AppLibraryPPTSupport___runScrollDeweyTestWithOptions___bl
   [v1 ppt_setDisablePullToSearch:0];
 }
 
-- (void)_runLibrarySearchTestWithOptions:(id)a3
+- (void)_runLibrarySearchTestWithOptions:(id)options
 {
   v21[8] = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKey:@"testName"];
-  v5 = [(SBPPTRunner *)self _mainDisplayWindowScene];
-  v6 = [v5 homeScreenController];
-  v18 = [v6 iconManager];
+  v4 = [options objectForKey:@"testName"];
+  _mainDisplayWindowScene = [(SBPPTRunner *)self _mainDisplayWindowScene];
+  homeScreenController = [_mainDisplayWindowScene homeScreenController];
+  iconManager = [homeScreenController iconManager];
 
-  v17 = [v18 rootFolderController];
+  rootFolderController = [iconManager rootFolderController];
   v7 = +[SBPPTOperation operationToUnlockInterface];
   v21[0] = v7;
-  v8 = +[SBPPTOperation dismissOverlaysAndResetHomeScreenToPage:animated:completion:](SBPPTOperation, "dismissOverlaysAndResetHomeScreenToPage:animated:completion:", [v17 lastIconPageIndex], 1, 0);
+  v8 = +[SBPPTOperation dismissOverlaysAndResetHomeScreenToPage:animated:completion:](SBPPTOperation, "dismissOverlaysAndResetHomeScreenToPage:animated:completion:", [rootFolderController lastIconPageIndex], 1, 0);
   v21[1] = v8;
   v9 = [SBPPTOperation presentAppLibraryForTestWithName:v4];
   v21[2] = v9;
@@ -1506,10 +1506,10 @@ id __70__SBPPTRunner_AppLibraryPPTSupport___runLibrarySearchTestWithOptions___bl
   return v4;
 }
 
-- (void)_runScrollWithinExpandedPodTestWithOptions:(id)a3
+- (void)_runScrollWithinExpandedPodTestWithOptions:(id)options
 {
   v23[10] = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKey:@"testName"];
+  v4 = [options objectForKey:@"testName"];
   v20 = +[SBPPTOperation operationToUnlockInterface];
   v23[0] = v20;
   v19 = [SBPPTOperation dismissOverlaysAndResetHomeScreenToLastIconPageAnimated:0];
@@ -1563,10 +1563,10 @@ id __80__SBPPTRunner_AppLibraryPPTSupport___runScrollWithinExpandedPodTestWithOp
   return v5;
 }
 
-- (void)_runPullToAppLibrarySearchTestWithOptions:(id)a3
+- (void)_runPullToAppLibrarySearchTestWithOptions:(id)options
 {
   v14[9] = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKey:@"testName"];
+  v3 = [options objectForKey:@"testName"];
   v13 = +[SBPPTOperation operationToUnlockInterface];
   v14[0] = v13;
   v12 = [SBPPTOperation dismissOverlaysAndResetHomeScreenToLastIconPageAnimated:1];
@@ -1589,20 +1589,20 @@ id __80__SBPPTRunner_AppLibraryPPTSupport___runScrollWithinExpandedPodTestWithOp
   [SBPPTOperation enqueueOperations:v11];
 }
 
-- (void)_configureParams:(id)a3 forScrollView:(id)a4
+- (void)_configureParams:(id)params forScrollView:(id)view
 {
-  v25 = a3;
-  v6 = a4;
-  [v25 setPreventSheetDismissal:1];
+  paramsCopy = params;
+  viewCopy = view;
+  [paramsCopy setPreventSheetDismissal:1];
   RPTAmplitudeFromPagesOfView();
-  [v25 setAmplitude:?];
-  v7 = [(SBPPTRunner *)self _libraryViewController];
-  v8 = [v6 window];
+  [paramsCopy setAmplitude:?];
+  _libraryViewController = [(SBPPTRunner *)self _libraryViewController];
+  window = [viewCopy window];
 
-  [v8 bounds];
-  v9 = [v7 containerViewController];
-  v10 = [v9 searchBar];
-  [v10 frame];
+  [window bounds];
+  containerViewController = [_libraryViewController containerViewController];
+  searchBar = [containerViewController searchBar];
+  [searchBar frame];
   CGRectGetMaxY(v27);
   UIRectInset();
 
@@ -1611,10 +1611,10 @@ id __80__SBPPTRunner_AppLibraryPPTSupport___runScrollWithinExpandedPodTestWithOp
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [MEMORY[0x277D75418] currentDevice];
-  v20 = [v19 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v20 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     UIRectInset();
     v12 = v21;
@@ -1623,34 +1623,34 @@ id __80__SBPPTRunner_AppLibraryPPTSupport___runScrollWithinExpandedPodTestWithOp
     v18 = v24;
   }
 
-  [v25 setScrollingBounds:{v12, v14, v16, v18}];
+  [paramsCopy setScrollingBounds:{v12, v14, v16, v18}];
 }
 
 - (id)_mainDisplayWindowScene
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 connectedWindowScenes];
-  v4 = [v3 bs_firstObjectPassingTest:&__block_literal_global_61_7];
+  windowSceneManager = [SBApp windowSceneManager];
+  connectedWindowScenes = [windowSceneManager connectedWindowScenes];
+  v4 = [connectedWindowScenes bs_firstObjectPassingTest:&__block_literal_global_61_7];
 
   return v4;
 }
 
 - (id)_libraryViewController
 {
-  v2 = [(SBPPTRunner *)self _mainDisplayWindowScene];
-  v3 = [v2 homeScreenController];
-  if ([v3 isModalAppLibrarySupported])
+  _mainDisplayWindowScene = [(SBPPTRunner *)self _mainDisplayWindowScene];
+  homeScreenController = [_mainDisplayWindowScene homeScreenController];
+  if ([homeScreenController isModalAppLibrarySupported])
   {
-    v4 = [v2 modalLibraryController];
-    v5 = [v4 libraryViewController];
+    modalLibraryController = [_mainDisplayWindowScene modalLibraryController];
+    libraryViewController = [modalLibraryController libraryViewController];
   }
 
   else
   {
-    v5 = [v3 overlayLibraryViewController];
+    libraryViewController = [homeScreenController overlayLibraryViewController];
   }
 
-  return v5;
+  return libraryViewController;
 }
 
 + (id)sharedInstance
@@ -1659,7 +1659,7 @@ id __80__SBPPTRunner_AppLibraryPPTSupport___runScrollWithinExpandedPodTestWithOp
   block[1] = 3221225472;
   block[2] = __29__SBPPTRunner_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance___once_12 != -1)
   {
     dispatch_once(&sharedInstance___once_12, block);
@@ -1677,54 +1677,54 @@ void __29__SBPPTRunner_sharedInstance__block_invoke(uint64_t a1)
   sharedInstance___sharedInstance_31 = v1;
 }
 
-- (BOOL)runTestWithName:(id)a3 options:(id)a4
+- (BOOL)runTestWithName:(id)name options:(id)options
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  optionsCopy = options;
   v8 = SBLogPPT();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v18 = v6;
+    v18 = nameCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = optionsCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[SBPPTRunner runTestWithName:%@]", buf, 0x16u);
   }
 
-  v9 = [SBApp windowSceneManager];
-  v10 = [v9 embeddedDisplayWindowScene];
-  v11 = [v10 controlCenterController];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
+  controlCenterController = [embeddedDisplayWindowScene controlCenterController];
 
-  v12 = [v11 viewController];
-  LOBYTE(v10) = [v12 runTest:v6 options:v7 delegate:self];
+  viewController = [controlCenterController viewController];
+  LOBYTE(embeddedDisplayWindowScene) = [viewController runTest:nameCopy options:optionsCopy delegate:self];
 
-  if ((v10 & 1) == 0 && ![(SBPPTRunner *)self _runCoverSheetTestWithName:v6 options:v7]&& ![(SBPPTRunner *)self _runDashBoardTestWithName:v6 options:v7])
+  if ((embeddedDisplayWindowScene & 1) == 0 && ![(SBPPTRunner *)self _runCoverSheetTestWithName:nameCopy options:optionsCopy]&& ![(SBPPTRunner *)self _runDashBoardTestWithName:nameCopy options:optionsCopy])
   {
-    if ([v6 hasPrefix:@"Siri"])
+    if ([nameCopy hasPrefix:@"Siri"])
     {
-      [(SBPPTRunner *)self _runSiriTestWithName:v6 options:v7];
+      [(SBPPTRunner *)self _runSiriTestWithName:nameCopy options:optionsCopy];
     }
 
-    else if ([objc_opt_class() isAppLibraryTest:v6])
+    else if ([objc_opt_class() isAppLibraryTest:nameCopy])
     {
-      [(SBPPTRunner *)self _runAppLibraryTestWithName:v6 options:v7];
+      [(SBPPTRunner *)self _runAppLibraryTestWithName:nameCopy options:optionsCopy];
     }
 
-    else if ([objc_opt_class() isFocusModeTest:v6])
+    else if ([objc_opt_class() isFocusModeTest:nameCopy])
     {
-      [(SBPPTRunner *)self _runFocusModeTestWithName:v6 options:v7];
+      [(SBPPTRunner *)self _runFocusModeTestWithName:nameCopy options:optionsCopy];
     }
 
-    else if ([objc_opt_class() isPageManagementTest:v6])
+    else if ([objc_opt_class() isPageManagementTest:nameCopy])
     {
-      [(SBPPTRunner *)self _runPageManagementTestWithName:v6 options:v7];
+      [(SBPPTRunner *)self _runPageManagementTestWithName:nameCopy options:optionsCopy];
     }
 
     else
     {
-      v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"_run%@TestWithOptions:", v6];
-      v14 = NSSelectorFromString(v13);
+      nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"_run%@TestWithOptions:", nameCopy];
+      v14 = NSSelectorFromString(nameCopy);
 
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
@@ -1732,7 +1732,7 @@ void __29__SBPPTRunner_sharedInstance__block_invoke(uint64_t a1)
         goto LABEL_17;
       }
 
-      ([(SBPPTRunner *)self methodForSelector:v14])(self, v14, v7);
+      ([(SBPPTRunner *)self methodForSelector:v14])(self, v14, optionsCopy);
     }
   }
 

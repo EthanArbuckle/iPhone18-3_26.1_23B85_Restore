@@ -1,18 +1,18 @@
 @interface PlaceSummaryTableViewCell
 + (NSString)reuseIdentifier;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (PersonalizedItem)personalizedItemForQuickActionMenu;
-- (_TtC4Maps25PlaceSummaryTableViewCell)initWithCoder:(id)a3;
-- (_TtC4Maps25PlaceSummaryTableViewCell)initWithReuseIdentifier:(id)a3;
-- (_TtC4Maps25PlaceSummaryTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC4Maps25PlaceSummaryTableViewCell)initWithCoder:(id)coder;
+- (_TtC4Maps25PlaceSummaryTableViewCell)initWithReuseIdentifier:(id)identifier;
+- (_TtC4Maps25PlaceSummaryTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (_TtC4Maps28PlaceSummaryAsyncDataManager)asyncDataManager;
 - (_TtP4Maps33PlaceSummaryTableViewCellDelegate_)delegate;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 - (void)prepareForReuse;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setViewModel:(id)a3;
-- (void)setViewModel:(id)a3 delegate:(id)a4 asyncDataManager:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setViewModel:(id)model;
+- (void)setViewModel:(id)model delegate:(id)delegate asyncDataManager:(id)manager;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PlaceSummaryTableViewCell
@@ -38,21 +38,21 @@
   return v2;
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps25PlaceSummaryTableViewCell_viewModel);
-  *(self + OBJC_IVAR____TtC4Maps25PlaceSummaryTableViewCell_viewModel) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR____TtC4Maps25PlaceSummaryTableViewCell_viewModel) = model;
+  modelCopy = model;
+  selfCopy = self;
 
   sub_100521960();
 }
 
-- (_TtC4Maps25PlaceSummaryTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC4Maps25PlaceSummaryTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -61,10 +61,10 @@
     v6 = 0;
   }
 
-  return sub_100521A48(a3, a4, v6);
+  return sub_100521A48(style, identifier, v6);
 }
 
-- (_TtC4Maps25PlaceSummaryTableViewCell)initWithCoder:(id)a3
+- (_TtC4Maps25PlaceSummaryTableViewCell)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
@@ -75,7 +75,7 @@
   return result;
 }
 
-- (_TtC4Maps25PlaceSummaryTableViewCell)initWithReuseIdentifier:(id)a3
+- (_TtC4Maps25PlaceSummaryTableViewCell)initWithReuseIdentifier:(id)identifier
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
@@ -99,17 +99,17 @@
   swift_unknownObjectWeakAssign();
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10 = objc_opt_self();
-  v11 = self;
+  selfCopy = self;
   [v10 setFrameStallSkipRequest:1];
-  v20.receiver = v11;
+  v20.receiver = selfCopy;
   v20.super_class = type metadata accessor for PlaceSummaryTableViewCell();
-  *&v12 = a4;
-  *&v13 = a5;
+  *&v12 = priority;
+  *&v13 = fittingPriority;
   [(PlaceSummaryTableViewCell *)&v20 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v12, v13];
   v15 = v14;
   v17 = v16;
@@ -121,59 +121,59 @@
   return result;
 }
 
-- (void)setViewModel:(id)a3 delegate:(id)a4 asyncDataManager:(id)a5
+- (void)setViewModel:(id)model delegate:(id)delegate asyncDataManager:(id)manager
 {
-  v8 = a3;
+  modelCopy = model;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_100521EB0(v8, a4, a5);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_100521EB0(modelCopy, delegate, manager);
 
   swift_unknownObjectRelease();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_100523EFC();
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_10052212C();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  selectedCopy = selected;
   v7 = *(self + OBJC_IVAR____TtC4Maps25PlaceSummaryTableViewCell_viewModel);
   if (v7)
   {
     swift_getKeyPath();
     swift_getKeyPath();
-    v8 = self;
+    selfCopy = self;
     v9 = v7;
     static Published.subscript.setter();
   }
 
   else
   {
-    v10 = self;
+    selfCopy2 = self;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for PlaceSummaryTableViewCell();
-  [(PlaceSummaryTableViewCell *)&v11 setSelected:v5 animated:v4];
+  [(PlaceSummaryTableViewCell *)&v11 setSelected:selectedCopy animated:animatedCopy];
 }
 
 - (PersonalizedItem)personalizedItemForQuickActionMenu

@@ -1,22 +1,22 @@
 @interface SeymourDiscoverySheetCoordinator
 - (_TtC10FitnessApp32SeymourDiscoverySheetCoordinator)init;
-- (_TtC10FitnessApp32SeymourDiscoverySheetCoordinator)initWithAppContext:(id)a3 badgingProvider:(id)a4 delegate:(id)a5;
+- (_TtC10FitnessApp32SeymourDiscoverySheetCoordinator)initWithAppContext:(id)context badgingProvider:(id)provider delegate:(id)delegate;
 - (void)activate;
 @end
 
 @implementation SeymourDiscoverySheetCoordinator
 
-- (_TtC10FitnessApp32SeymourDiscoverySheetCoordinator)initWithAppContext:(id)a3 badgingProvider:(id)a4 delegate:(id)a5
+- (_TtC10FitnessApp32SeymourDiscoverySheetCoordinator)initWithAppContext:(id)context badgingProvider:(id)provider delegate:(id)delegate
 {
-  v7 = a3;
+  contextCopy = context;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return sub_100324BD4(v7, a4, a5);
+  return sub_100324BD4(contextCopy, provider, delegate);
 }
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   sub_100324DBC();
 }
 

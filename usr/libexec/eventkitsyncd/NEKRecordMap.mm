@@ -1,23 +1,23 @@
 @interface NEKRecordMap
-- (BOOL)isIdentifierPresent:(id)a3 forRecordID:(id)a4;
-- (BOOL)recordChanged:(id)a3;
-- (NEKRecordMap)initWithDatabaseManager:(id)a3;
-- (id)identifierForRecordID:(id)a3;
+- (BOOL)isIdentifierPresent:(id)present forRecordID:(id)d;
+- (BOOL)recordChanged:(id)changed;
+- (NEKRecordMap)initWithDatabaseManager:(id)manager;
+- (id)identifierForRecordID:(id)d;
 - (int)_schemaVersion;
 - (unint64_t)count;
-- (void)_setSchemaVersion:(int64_t)a3;
+- (void)_setSchemaVersion:(int64_t)version;
 - (void)createTables;
-- (void)deleteIdentifierForRecordID:(id)a3;
+- (void)deleteIdentifierForRecordID:(id)d;
 - (void)dumpToLog;
 - (void)removeAllRecords;
-- (void)setIdentifier:(id)a3 masterRowID:(int64_t)a4 summary:(id)a5 location:(id)a6 startTime:(double)a7 forRecordID:(id)a8;
+- (void)setIdentifier:(id)identifier masterRowID:(int64_t)d summary:(id)summary location:(id)location startTime:(double)time forRecordID:(id)iD;
 @end
 
 @implementation NEKRecordMap
 
-- (NEKRecordMap)initWithDatabaseManager:(id)a3
+- (NEKRecordMap)initWithDatabaseManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = NEKRecordMap;
   v5 = [(NEKRecordMap *)&v11 init];
@@ -27,7 +27,7 @@
     log = v5->_log;
     v5->_log = v6;
 
-    v8 = [v4 syncStateDBPathFor:@"RecordMap.db"];
+    v8 = [managerCopy syncStateDBPathFor:@"RecordMap.db"];
     v5->_os_lock._os_unfair_lock_opaque = 0;
     v9 = [[NDTSQFile alloc] initWithPath:v8];
     [(NDTSQFile *)v9 addSchema:v5];
@@ -41,8 +41,8 @@
   [(NDTSQSchema *)self executeSql:@"CREATE TABLE IF NOT EXISTS record(rowid INTEGER PRIMARY KEY ASC, entityType INT, entityRowID INT, UUID TEXT)"];
   [(NDTSQSchema *)self executeSql:@"CREATE UNIQUE INDEX IF NOT EXISTS entityIndex ON record (entityType, entityRowID)"];
   [(NDTSQSchema *)self executeSql:@"CREATE VIEW IF NOT EXISTS record_utc AS SELECT rowid, datetime(timestamp, 'unixepoch') stamp, entityType, entityRowID, masterRowID, uuid FROM record ORDER BY timestamp, entityType, uuid"];
-  v3 = [(NEKRecordMap *)self _schemaVersion];
-  if (v3 <= 0)
+  _schemaVersion = [(NEKRecordMap *)self _schemaVersion];
+  if (_schemaVersion <= 0)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -57,9 +57,9 @@
     [(NDTSQSchema *)self commit];
   }
 
-  else if (v3 != 1)
+  else if (_schemaVersion != 1)
   {
-    if (v3 > 2)
+    if (_schemaVersion > 2)
     {
       return;
     }
@@ -117,15 +117,15 @@ LABEL_10:
   return v2;
 }
 
-- (void)_setSchemaVersion:(int64_t)a3
+- (void)_setSchemaVersion:(int64_t)version
 {
-  v4 = [NSString stringWithFormat:@"PRAGMA user_version = %d", a3];
-  [(NDTSQSchema *)self executeSql:v4];
+  version = [NSString stringWithFormat:@"PRAGMA user_version = %d", version];
+  [(NDTSQSchema *)self executeSql:version];
 }
 
-- (id)identifierForRecordID:(id)a3
+- (id)identifierForRecordID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -137,7 +137,7 @@ LABEL_10:
   v14 = 3221225472;
   v15 = sub_10003114C;
   v16 = &unk_1000B4EE0;
-  v5 = v4;
+  v5 = dCopy;
   v17 = v5;
   v18 = &v19;
   [(NDTSQSchema *)self parseSql:@"SELECT UUID FROM record WHERE entityType = ? AND entityRowID = ? AND entityDatabaseID = ?" andRun:&v13];
@@ -146,17 +146,17 @@ LABEL_10:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v9 = v20[5];
-    v10 = [v5 entityType];
-    v11 = [v5 rowID];
-    v12 = [v5 databaseID];
+    entityType = [v5 entityType];
+    rowID = [v5 rowID];
+    databaseID = [v5 databaseID];
     *buf = 138544130;
     v26 = v9;
     v27 = 1024;
-    v28 = v10;
+    v28 = entityType;
     v29 = 1024;
-    v30 = v11;
+    v30 = rowID;
     v31 = 1024;
-    v32 = v12;
+    v32 = databaseID;
     _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "read id:%{public}@ %d/%d/%d", buf, 0x1Eu);
   }
 
@@ -166,33 +166,33 @@ LABEL_10:
   return v7;
 }
 
-- (void)setIdentifier:(id)a3 masterRowID:(int64_t)a4 summary:(id)a5 location:(id)a6 startTime:(double)a7 forRecordID:(id)a8
+- (void)setIdentifier:(id)identifier masterRowID:(int64_t)d summary:(id)summary location:(id)location startTime:(double)time forRecordID:(id)iD
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  if (v14)
+  identifierCopy = identifier;
+  summaryCopy = summary;
+  locationCopy = location;
+  iDCopy = iD;
+  if (identifierCopy)
   {
-    v18 = sub_1000313C8(v16);
+    v18 = sub_1000313C8(locationCopy);
 
-    v19 = sub_1000313C8(v15);
+    v19 = sub_1000313C8(summaryCopy);
 
     [(NEKRecordMap *)self lock];
     v24 = _NSConcreteStackBlock;
     v25 = 3221225472;
     v26 = sub_1000314B8;
     v27 = &unk_1000B55E0;
-    v20 = v17;
+    v20 = iDCopy;
     v28 = v20;
-    v21 = v14;
+    v21 = identifierCopy;
     v29 = v21;
-    v32 = a4;
-    v15 = v19;
-    v30 = v15;
-    v16 = v18;
-    v31 = v16;
-    v33 = a7;
+    dCopy = d;
+    summaryCopy = v19;
+    v30 = summaryCopy;
+    locationCopy = v18;
+    v31 = locationCopy;
+    timeCopy = time;
     [(NDTSQSchema *)self parseSql:@"INSERT OR REPLACE INTO record(entityType andRun:entityRowID, entityDatabaseID, UUID, timestamp, masterRowID, summary_hash, location_hash, start_time, mark) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, 1)", &v24];
     [(NEKRecordMap *)self unlock:v24];
     log = self->_log;
@@ -207,38 +207,38 @@ LABEL_10:
     v23 = self->_log;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      sub_100071E0C(v23, v17);
+      sub_100071E0C(v23, iDCopy);
     }
   }
 }
 
-- (BOOL)isIdentifierPresent:(id)a3 forRecordID:(id)a4
+- (BOOL)isIdentifierPresent:(id)present forRecordID:(id)d
 {
-  v6 = a3;
-  v7 = [(NEKRecordMap *)self identifierForRecordID:a4];
-  LOBYTE(self) = [v7 isEqualToString:v6];
+  presentCopy = present;
+  v7 = [(NEKRecordMap *)self identifierForRecordID:d];
+  LOBYTE(self) = [v7 isEqualToString:presentCopy];
 
   return self;
 }
 
-- (BOOL)recordChanged:(id)a3
+- (BOOL)recordChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 1;
-  v5 = [v4 location];
-  v6 = sub_1000313C8(v5);
+  location = [changedCopy location];
+  v6 = sub_1000313C8(location);
 
-  v7 = [v4 title];
-  v8 = sub_1000313C8(v7);
+  title = [changedCopy title];
+  v8 = sub_1000313C8(title);
 
-  v9 = [v4 startDate];
-  [v9 timeIntervalSinceReferenceDate];
+  startDate = [changedCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v11 = v10;
 
-  [v4 objectID];
+  [changedCopy objectID];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000317A0;
@@ -257,16 +257,16 @@ LABEL_10:
   return self;
 }
 
-- (void)deleteIdentifierForRecordID:(id)a3
+- (void)deleteIdentifierForRecordID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(NEKRecordMap *)self lock];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100031950;
   v6[3] = &unk_1000B4F80;
-  v7 = v4;
-  v5 = v4;
+  v7 = dCopy;
+  v5 = dCopy;
   [(NDTSQSchema *)self parseSql:@"DELETE FROM record WHERE entityType = ? and entityRowID = ? and entityDatabaseID = ?" andRun:v6];
   [(NEKRecordMap *)self unlock];
 }

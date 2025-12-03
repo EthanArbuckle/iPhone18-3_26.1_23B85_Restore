@@ -1,12 +1,12 @@
 @interface MockOnOffCluster
-- (_TtC13HomeDataModel16MockOnOffCluster)initWithDevice:(id)a3 endpoint:(unsigned __int16)a4 queue:(id)a5;
-- (_TtC13HomeDataModel16MockOnOffCluster)initWithDevice:(id)a3 endpointID:(id)a4 queue:(id)a5;
-- (id)readAttributeOnOffWithParams:(id)a3;
+- (_TtC13HomeDataModel16MockOnOffCluster)initWithDevice:(id)device endpoint:(unsigned __int16)endpoint queue:(id)queue;
+- (_TtC13HomeDataModel16MockOnOffCluster)initWithDevice:(id)device endpointID:(id)d queue:(id)queue;
+- (id)readAttributeOnOffWithParams:(id)params;
 @end
 
 @implementation MockOnOffCluster
 
-- (id)readAttributeOnOffWithParams:(id)a3
+- (id)readAttributeOnOffWithParams:(id)params
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC648318, &unk_1D1E8D030);
   inited = swift_initStackObject();
@@ -14,7 +14,7 @@
   v5 = *MEMORY[0x1E696F568];
   *(inited + 32) = sub_1D1E6781C();
   *(inited + 40) = v6;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1D19F86D0();
   *(inited + 72) = MEMORY[0x1E69E6370];
   *(inited + 48) = v8 & 1;
@@ -27,14 +27,14 @@
   return v9;
 }
 
-- (_TtC13HomeDataModel16MockOnOffCluster)initWithDevice:(id)a3 endpointID:(id)a4 queue:(id)a5
+- (_TtC13HomeDataModel16MockOnOffCluster)initWithDevice:(id)device endpointID:(id)d queue:(id)queue
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC13HomeDataModel16MockOnOffCluster)initWithDevice:(id)a3 endpoint:(unsigned __int16)a4 queue:(id)a5
+- (_TtC13HomeDataModel16MockOnOffCluster)initWithDevice:(id)device endpoint:(unsigned __int16)endpoint queue:(id)queue
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

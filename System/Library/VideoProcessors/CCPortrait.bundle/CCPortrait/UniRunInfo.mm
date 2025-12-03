@@ -3,19 +3,19 @@
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)getThreadsPerThreadgroup;
 - (CGRect)outputExtent;
 - (UniImage)image;
-- (UniRunInfo)initWithExtent:(CGRect)a3;
-- (UniRunInfo)initWithGridSize:(id *)a3 kernel:(id)a4;
-- (UniRunInfo)initWithGridSize:(id *)a3 threadsPerThreadGroup:(id *)a4;
-- (UniRunInfo)initWithImage:(id)a3;
-- (UniRunInfo)initWithImageDiv2:(id)a3;
-- (UniRunInfo)initWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerThreadgroup:(id *)a5;
-- (UniRunInfo)initWithThreadgroupsPerGrid:(id *)a3 threadsPerThreadGroup:(id *)a4;
+- (UniRunInfo)initWithExtent:(CGRect)extent;
+- (UniRunInfo)initWithGridSize:(id *)size kernel:(id)kernel;
+- (UniRunInfo)initWithGridSize:(id *)size threadsPerThreadGroup:(id *)group;
+- (UniRunInfo)initWithImage:(id)image;
+- (UniRunInfo)initWithImageDiv2:(id)div2;
+- (UniRunInfo)initWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerThreadgroup:(id *)threadgroup;
+- (UniRunInfo)initWithThreadgroupsPerGrid:(id *)grid threadsPerThreadGroup:(id *)group;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugQuickLookObject;
 - (id)description;
-- (void)dispatchOn:(id)a3;
-- (void)setCoreImageOutputExtent:(CGRect)a3;
+- (void)dispatchOn:(id)on;
+- (void)setCoreImageOutputExtent:(CGRect)extent;
 @end
 
 @implementation UniRunInfo
@@ -52,10 +52,10 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v12 = objc_msgSend__init(v7, v8, v9);
   if (v12)
   {
@@ -84,23 +84,23 @@
   return v12;
 }
 
-- (UniRunInfo)initWithImage:(id)a3
+- (UniRunInfo)initWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v9 = objc_msgSend__init(self, v5, v6);
   if (v9)
   {
-    v10 = objc_msgSend_texture(v4, v7, v8);
-    v13 = objc_msgSend_kernel(v4, v11, v12);
+    v10 = objc_msgSend_texture(imageCopy, v7, v8);
+    v13 = objc_msgSend_kernel(imageCopy, v11, v12);
     if (v13)
     {
       v16 = v13;
-      v17 = objc_msgSend_kernel(v4, v14, v15);
+      v17 = objc_msgSend_kernel(imageCopy, v14, v15);
       v20 = objc_msgSend_mk(v17, v18, v19);
 
       if (v10 && v20)
       {
-        objc_msgSend_setImage_(v9, v21, v4);
+        objc_msgSend_setImage_(v9, v21, imageCopy);
         objc_msgSend_setIndirectBuffer_(v9, v22, 0);
         objc_msgSend_setIndirectBufferOffset_(v9, v23, 0);
         v24 = MEMORY[0x29EDBA070];
@@ -128,7 +128,7 @@
         objc_msgSend_setThreadsPerThreadgroup_(v9, v56, v55);
 
         objc_msgSend_setThreadgroupsPerGrid_(v9, v57, 0);
-        v60 = objc_msgSend_image(v4, v58, v59);
+        v60 = objc_msgSend_image(imageCopy, v58, v59);
         v61 = sub_2956C20F4(v60);
         objc_msgSend_setExtent_(v9, v62, v61);
 
@@ -149,23 +149,23 @@ LABEL_8:
   return v9;
 }
 
-- (UniRunInfo)initWithImageDiv2:(id)a3
+- (UniRunInfo)initWithImageDiv2:(id)div2
 {
-  v4 = a3;
+  div2Copy = div2;
   v9 = objc_msgSend__init(self, v5, v6);
   if (v9)
   {
-    v10 = objc_msgSend_texture(v4, v7, v8);
-    v13 = objc_msgSend_kernel(v4, v11, v12);
+    v10 = objc_msgSend_texture(div2Copy, v7, v8);
+    v13 = objc_msgSend_kernel(div2Copy, v11, v12);
     if (v13)
     {
       v16 = v13;
-      v17 = objc_msgSend_kernel(v4, v14, v15);
+      v17 = objc_msgSend_kernel(div2Copy, v14, v15);
       v20 = objc_msgSend_mk(v17, v18, v19);
 
       if (v10 && v20)
       {
-        objc_msgSend_setImage_(v9, v21, v4);
+        objc_msgSend_setImage_(v9, v21, div2Copy);
         objc_msgSend_setIndirectBuffer_(v9, v22, 0);
         objc_msgSend_setIndirectBufferOffset_(v9, v23, 0);
         v24 = MEMORY[0x29EDBA070];
@@ -193,7 +193,7 @@ LABEL_8:
         objc_msgSend_setThreadsPerThreadgroup_(v9, v56, v55);
 
         objc_msgSend_setThreadgroupsPerGrid_(v9, v57, 0);
-        v60 = objc_msgSend_image(v4, v58, v59);
+        v60 = objc_msgSend_image(div2Copy, v58, v59);
         v61 = sub_2956C20F4(v60);
         objc_msgSend_setExtent_(v9, v62, v61);
 
@@ -214,9 +214,9 @@ LABEL_8:
   return v9;
 }
 
-- (UniRunInfo)initWithThreadgroupsPerGrid:(id *)a3 threadsPerThreadGroup:(id *)a4
+- (UniRunInfo)initWithThreadgroupsPerGrid:(id *)grid threadsPerThreadGroup:(id *)group
 {
-  v6 = objc_msgSend__init(self, a2, a3);
+  v6 = objc_msgSend__init(self, a2, grid);
   v8 = v6;
   if (v6)
   {
@@ -225,9 +225,9 @@ LABEL_8:
     objc_msgSend_setIndirectBufferOffset_(v8, v10, 0);
     v11 = MEMORY[0x29EDB8E90];
     objc_msgSend_setThreadsPerGrid_(v8, v12, MEMORY[0x29EDB8E90]);
-    var0 = a4->var0;
-    var1 = a4->var1;
-    var2 = a4->var2;
+    var0 = group->var0;
+    var1 = group->var1;
+    var2 = group->var2;
     v17 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x29EDBA070], v16, var0);
     v39 = v17;
     v19 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x29EDBA070], v18, var1);
@@ -237,9 +237,9 @@ LABEL_8:
     v23 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x29EDB8D80], v22, &v39, 3);
 
     objc_msgSend_setThreadsPerThreadgroup_(v8, v24, v23);
-    v25 = a3->var0;
-    v26 = a3->var1;
-    v27 = a3->var2;
+    v25 = grid->var0;
+    v26 = grid->var1;
+    v27 = grid->var2;
     v29 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x29EDBA070], v28, v25);
     v39 = v29;
     v31 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x29EDBA070], v30, v26);
@@ -255,12 +255,12 @@ LABEL_8:
   return v8;
 }
 
-- (void)setCoreImageOutputExtent:(CGRect)a3
+- (void)setCoreImageOutputExtent:(CGRect)extent
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  v8 = objc_msgSend_numberWithDouble_(MEMORY[0x29EDBA070], a2, v3, a3.origin.x);
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  v8 = objc_msgSend_numberWithDouble_(MEMORY[0x29EDBA070], a2, v3, extent.origin.x);
   v11 = objc_msgSend_numberWithDouble_(MEMORY[0x29EDBA070], v9, v10, y, v8);
   v21[1] = v11;
   v14 = objc_msgSend_numberWithDouble_(MEMORY[0x29EDBA070], v12, v13, width);
@@ -271,18 +271,18 @@ LABEL_8:
   objc_msgSend_setExtent_(self, v20, v19);
 }
 
-- (UniRunInfo)initWithGridSize:(id *)a3 threadsPerThreadGroup:(id *)a4
+- (UniRunInfo)initWithGridSize:(id *)size threadsPerThreadGroup:(id *)group
 {
-  v6 = objc_msgSend__init(self, a2, a3);
+  v6 = objc_msgSend__init(self, a2, size);
   v8 = v6;
   if (v6)
   {
     objc_msgSend_setImage_(v6, v7, 0);
     objc_msgSend_setIndirectBuffer_(v8, v9, 0);
     objc_msgSend_setIndirectBufferOffset_(v8, v10, 0);
-    var0 = a3->var0;
-    var1 = a3->var1;
-    var2 = a3->var2;
+    var0 = size->var0;
+    var1 = size->var1;
+    var2 = size->var2;
     v15 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x29EDBA070], v14, var0);
     v38 = v15;
     v17 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x29EDBA070], v16, var1);
@@ -292,9 +292,9 @@ LABEL_8:
     v21 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x29EDB8D80], v20, &v38, 3);
 
     objc_msgSend_setThreadsPerGrid_(v8, v22, v21);
-    v23 = a4->var0;
-    v24 = a4->var1;
-    v25 = a4->var2;
+    v23 = group->var0;
+    v24 = group->var1;
+    v25 = group->var2;
     v27 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x29EDBA070], v26, v23);
     v38 = v27;
     v29 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x29EDBA070], v28, v24);
@@ -311,19 +311,19 @@ LABEL_8:
   return v8;
 }
 
-- (UniRunInfo)initWithGridSize:(id *)a3 kernel:(id)a4
+- (UniRunInfo)initWithGridSize:(id *)size kernel:(id)kernel
 {
-  v6 = a4;
+  kernelCopy = kernel;
   v11 = objc_msgSend__init(self, v7, v8);
   if (v11)
   {
-    v12 = objc_msgSend_mk(v6, v9, v10);
+    v12 = objc_msgSend_mk(kernelCopy, v9, v10);
     objc_msgSend_setImage_(v11, v13, 0);
     objc_msgSend_setIndirectBuffer_(v11, v14, 0);
     objc_msgSend_setIndirectBufferOffset_(v11, v15, 0);
-    var0 = a3->var0;
-    var1 = a3->var1;
-    var2 = a3->var2;
+    var0 = size->var0;
+    var1 = size->var1;
+    var2 = size->var2;
     v20 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x29EDBA070], v19, var0);
     v50[0] = v20;
     v22 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x29EDBA070], v21, var1);
@@ -352,12 +352,12 @@ LABEL_8:
   return v11;
 }
 
-- (UniRunInfo)initWithExtent:(CGRect)a3
+- (UniRunInfo)initWithExtent:(CGRect)extent
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  x = extent.origin.x;
   v8 = objc_msgSend__init(self, a2, v3);
   v10 = v8;
   if (v8)
@@ -383,10 +383,10 @@ LABEL_8:
   return v10;
 }
 
-- (UniRunInfo)initWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerThreadgroup:(id *)a5
+- (UniRunInfo)initWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerThreadgroup:(id *)threadgroup
 {
-  v8 = a3;
-  if (v8 && a5->var0 && a5->var1 && a5->var2)
+  bufferCopy = buffer;
+  if (bufferCopy && threadgroup->var0 && threadgroup->var1 && threadgroup->var2)
   {
     v34.receiver = self;
     v34.super_class = UniRunInfo;
@@ -394,13 +394,13 @@ LABEL_8:
     v11 = v9;
     if (v9)
     {
-      objc_msgSend_setIndirectBuffer_(v9, v10, v8);
-      v13 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x29EDBA070], v12, a4);
+      objc_msgSend_setIndirectBuffer_(v9, v10, bufferCopy);
+      v13 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x29EDBA070], v12, offset);
       objc_msgSend_setIndirectBufferOffset_(v11, v14, v13);
 
-      var0 = a5->var0;
-      var1 = a5->var1;
-      var2 = a5->var2;
+      var0 = threadgroup->var0;
+      var1 = threadgroup->var1;
+      var2 = threadgroup->var2;
       v19 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x29EDBA070], v18, var0);
       v35[0] = v19;
       v21 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x29EDBA070], v20, var1);
@@ -418,15 +418,15 @@ LABEL_8:
     }
 
     self = v11;
-    v32 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v32 = 0;
+    selfCopy = 0;
   }
 
-  return v32;
+  return selfCopy;
 }
 
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)getThreadsPerThreadgroup
@@ -479,10 +479,10 @@ LABEL_8:
   return self;
 }
 
-- (void)dispatchOn:(id)a3
+- (void)dispatchOn:(id)on
 {
-  v4 = a3;
-  if (v4)
+  onCopy = on;
+  if (onCopy)
   {
     v29 = 0uLL;
     v30 = 0;
@@ -555,7 +555,7 @@ LABEL_8:
           sub_2956CF0DC();
         }
 
-        v17 = objc_msgSend_device(v4, v12, v13);
+        v17 = objc_msgSend_device(onCopy, v12, v13);
         v20 = objc_msgSend_supportsNonUniformThreadgroupSize(v17, v18, v19);
 
         if (v20)
@@ -564,7 +564,7 @@ LABEL_8:
           v24 = v28;
           v21 = v29;
           v22 = v30;
-          objc_msgSend_dispatchThreads_threadsPerThreadgroup_(v4, v12, &v23, &v21);
+          objc_msgSend_dispatchThreads_threadsPerThreadgroup_(onCopy, v12, &v23, &v21);
           goto LABEL_21;
         }
 
@@ -577,14 +577,14 @@ LABEL_8:
       }
 
       v22 = v16;
-      objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v4, v12, &v23, &v21);
+      objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(onCopy, v12, &v23, &v21);
       goto LABEL_21;
     }
 
     v10 = objc_msgSend_unsignedIntegerValue(self->_indirectBufferOffset, v5, v6);
     v27 = v29;
     v28 = v30;
-    objc_msgSend_dispatchThreadgroupsWithIndirectBuffer_indirectBufferOffset_threadsPerThreadgroup_(v4, v11, indirectBuffer, v10, &v27);
+    objc_msgSend_dispatchThreadgroupsWithIndirectBuffer_indirectBufferOffset_threadsPerThreadgroup_(onCopy, v11, indirectBuffer, v10, &v27);
   }
 
 LABEL_21:

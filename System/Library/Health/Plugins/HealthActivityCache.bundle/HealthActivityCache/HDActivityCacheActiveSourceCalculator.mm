@@ -3,8 +3,8 @@
 - (HDActivityCacheActiveSourceCalculator)init;
 - (id).cxx_construct;
 - (vector<HDActivityCacheActiveSource,)createActiveSourceLog;
-- (void)setActivationLogEntries:(void *)a3;
-- (void)setWorkouts:(void *)a3;
+- (void)setActivationLogEntries:(void *)entries;
+- (void)setWorkouts:(void *)workouts;
 @end
 
 @implementation HDActivityCacheActiveSourceCalculator
@@ -22,21 +22,21 @@
   return result;
 }
 
-- (void)setWorkouts:(void *)a3
+- (void)setWorkouts:(void *)workouts
 {
   p_workouts = &self->_workouts;
-  if (p_workouts != a3)
+  if (p_workouts != workouts)
   {
-    sub_A6B8(p_workouts, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 6);
+    sub_A6B8(p_workouts, *workouts, *(workouts + 1), (*(workouts + 1) - *workouts) >> 6);
   }
 }
 
-- (void)setActivationLogEntries:(void *)a3
+- (void)setActivationLogEntries:(void *)entries
 {
   p_activationLogEntries = &self->_activationLogEntries;
-  if (p_activationLogEntries != a3)
+  if (p_activationLogEntries != entries)
   {
-    sub_A868(p_activationLogEntries, *a3, *(a3 + 1), 0xCCCCCCCCCCCCCCCDLL * ((*(a3 + 1) - *a3) >> 3));
+    sub_A868(p_activationLogEntries, *entries, *(entries + 1), 0xCCCCCCCCCCCCCCCDLL * ((*(entries + 1) - *entries) >> 3));
   }
 }
 

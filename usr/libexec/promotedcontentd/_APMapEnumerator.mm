@@ -6,13 +6,13 @@
 
 - (id)nextObject
 {
-  v3 = [(_APMapEnumerator *)self srcEnumerator];
-  v4 = [v3 nextObject];
+  srcEnumerator = [(_APMapEnumerator *)self srcEnumerator];
+  nextObject = [srcEnumerator nextObject];
 
-  if (v4)
+  if (nextObject)
   {
-    v5 = [(_APMapEnumerator *)self transformationBlock];
-    v6 = (v5)[2](v5, v4);
+    transformationBlock = [(_APMapEnumerator *)self transformationBlock];
+    v6 = (transformationBlock)[2](transformationBlock, nextObject);
   }
 
   else

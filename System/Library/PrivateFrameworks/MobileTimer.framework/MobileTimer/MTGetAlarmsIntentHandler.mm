@@ -1,28 +1,28 @@
 @interface MTGetAlarmsIntentHandler
-- (void)confirmGetAlarms:(id)a3 completion:(id)a4;
-- (void)handleGetAlarms:(id)a3 completion:(id)a4;
+- (void)confirmGetAlarms:(id)alarms completion:(id)completion;
+- (void)handleGetAlarms:(id)alarms completion:(id)completion;
 @end
 
 @implementation MTGetAlarmsIntentHandler
 
-- (void)confirmGetAlarms:(id)a3 completion:(id)a4
+- (void)confirmGetAlarms:(id)alarms completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = [[MTGetAlarmsIntentResponse alloc] initWithCode:1 userActivity:0];
-  (*(a4 + 2))(v5, v6);
+  (*(completion + 2))(completionCopy, v6);
 }
 
-- (void)handleGetAlarms:(id)a3 completion:(id)a4
+- (void)handleGetAlarms:(id)alarms completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(MTAlarmIntentHandler *)self alarmManager];
-  v7 = [v6 alarmsIncludingSleepAlarm:1];
+  completionCopy = completion;
+  alarmManager = [(MTAlarmIntentHandler *)self alarmManager];
+  v7 = [alarmManager alarmsIncludingSleepAlarm:1];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __55__MTGetAlarmsIntentHandler_handleGetAlarms_completion___block_invoke;
   v14[3] = &unk_1E7B0C688;
-  v8 = v5;
+  v8 = completionCopy;
   v15 = v8;
   v9 = [v7 addFailureBlock:v14];
   v12[0] = MEMORY[0x1E69E9820];

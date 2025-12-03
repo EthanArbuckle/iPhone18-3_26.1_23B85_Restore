@@ -1,5 +1,5 @@
 @interface PXPreheatInfo
-- (PXPreheatInfo)initWithFetchResult:(id)a3 origin:(int64_t)a4;
+- (PXPreheatInfo)initWithFetchResult:(id)result origin:(int64_t)origin;
 - (void)markAsFinished;
 @end
 
@@ -14,9 +14,9 @@
   self->_fetchResult = 0;
 }
 
-- (PXPreheatInfo)initWithFetchResult:(id)a3 origin:(int64_t)a4
+- (PXPreheatInfo)initWithFetchResult:(id)result origin:(int64_t)origin
 {
-  v7 = a3;
+  resultCopy = result;
   v12.receiver = self;
   v12.super_class = PXPreheatInfo;
   v8 = [(PXPreheatInfo *)&v12 init];
@@ -26,8 +26,8 @@
     preheatedIndexes = v8->_preheatedIndexes;
     v8->_preheatedIndexes = v9;
 
-    objc_storeStrong(&v8->_fetchResult, a3);
-    v8->_preheatOrigin = a4;
+    objc_storeStrong(&v8->_fetchResult, result);
+    v8->_preheatOrigin = origin;
   }
 
   return v8;

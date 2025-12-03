@@ -1,10 +1,10 @@
 @interface NSRegularExpression
 + (NSRegularExpression)regularExpressionWithPattern:(NSString *)pattern options:(NSRegularExpressionOptions)options error:(NSError *)error;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)matchesInString:(NSString *)string options:(NSMatchingOptions)options range:(NSRange)range;
 - (NSRange)rangeOfFirstMatchInString:(NSString *)string options:(NSMatchingOptions)options range:(NSRange)range;
-- (NSRegularExpression)initWithCoder:(id)a3;
+- (NSRegularExpression)initWithCoder:(id)coder;
 - (NSRegularExpression)initWithPattern:(NSString *)pattern options:(NSRegularExpressionOptions)options error:(NSError *)error;
 - (NSString)pattern;
 - (NSString)replacementStringForResult:(NSTextCheckingResult *)result inString:(NSString *)string offset:(NSInteger)offset template:(NSString *)templ;
@@ -14,9 +14,9 @@
 - (NSUInteger)numberOfMatchesInString:(NSString *)string options:(NSMatchingOptions)options range:(NSRange)range;
 - (NSUInteger)replaceMatchesInString:(NSMutableString *)string options:(NSMatchingOptions)options range:(NSRange)range withTemplate:(NSString *)templ;
 - (id)description;
-- (unint64_t)_captureGroupNumberWithName:(id)a3;
+- (unint64_t)_captureGroupNumberWithName:(id)name;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)enumerateMatchesInString:(NSString *)string options:(NSMatchingOptions)options range:(NSRange)range usingBlock:(void *)block;
 @end
 
@@ -53,16 +53,16 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 setVersion:1];
+    [self setVersion:1];
   }
 }
 
 + (NSRegularExpression)regularExpressionWithPattern:(NSString *)pattern options:(NSRegularExpressionOptions)options error:(NSError *)error
 {
-  v5 = [[a1 alloc] initWithPattern:pattern options:options error:error];
+  v5 = [[self alloc] initWithPattern:pattern options:options error:error];
 
   return v5;
 }
@@ -174,43 +174,43 @@ LABEL_10:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v5 = [(NSRegularExpression *)self pattern];
-  v6 = [(NSRegularExpression *)self options];
-  if ([a3 allowsKeyedCoding])
+  pattern = [(NSRegularExpression *)self pattern];
+  options = [(NSRegularExpression *)self options];
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeObject:v5 forKey:@"NSPattern"];
+    [coder encodeObject:pattern forKey:@"NSPattern"];
 
-    [a3 encodeInt64:v6 forKey:@"NSOptions"];
+    [coder encodeInt64:options forKey:@"NSOptions"];
   }
 
   else
   {
-    [a3 encodeObject:{v5, v6}];
-    [a3 encodeValueOfObjCType:"Q" at:v7];
+    [coder encodeObject:{pattern, options}];
+    [coder encodeValueOfObjCType:"Q" at:v7];
   }
 }
 
-- (NSRegularExpression)initWithCoder:(id)a3
+- (NSRegularExpression)initWithCoder:(id)coder
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSPattern"];
-    v7 = [a3 decodeInt64ForKey:@"NSOptions"];
-    return [(NSRegularExpression *)self initWithPattern:v6 options:v7 error:0];
+    decodeObject = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSPattern"];
+    v7 = [coder decodeInt64ForKey:@"NSOptions"];
+    return [(NSRegularExpression *)self initWithPattern:decodeObject options:v7 error:0];
   }
 
   v12[0] = 0;
-  v8 = [a3 versionForClassName:@"NSRegularExpression"];
+  v8 = [coder versionForClassName:@"NSRegularExpression"];
   if (v8 == 1)
   {
-    v6 = [a3 decodeObject];
-    [a3 decodeValueOfObjCType:"Q" at:v12 size:8];
+    decodeObject = [coder decodeObject];
+    [coder decodeValueOfObjCType:"Q" at:v12 size:8];
     v7 = v12[0];
-    return [(NSRegularExpression *)self initWithPattern:v6 options:v7 error:0];
+    return [(NSRegularExpression *)self initWithPattern:decodeObject options:v7 error:0];
   }
 
   v10 = v8;
@@ -220,20 +220,20 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
   }
 
-  else if (a3 && (objc_opt_isKindOfClass() & 1) != 0)
+  else if (equal && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = -[NSString isEqual:](-[NSRegularExpression pattern](self, "pattern"), "isEqual:", [a3 pattern]);
+    v5 = -[NSString isEqual:](-[NSRegularExpression pattern](self, "pattern"), "isEqual:", [equal pattern]);
     if (v5)
     {
-      v6 = [(NSRegularExpression *)self options];
-      LOBYTE(v5) = v6 == [a3 options];
+      options = [(NSRegularExpression *)self options];
+      LOBYTE(v5) = options == [equal options];
     }
   }
 
@@ -260,10 +260,10 @@ LABEL_10:
   return v2;
 }
 
-- (unint64_t)_captureGroupNumberWithName:(id)a3
+- (unint64_t)_captureGroupNumberWithName:(id)name
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [a3 length];
+  v5 = [name length];
   status = U_ZERO_ERROR;
   if (self->_internal)
   {
@@ -281,13 +281,13 @@ LABEL_10:
   }
 
   v8 = v5;
-  CharactersPtr = CFStringGetCharactersPtr(a3);
+  CharactersPtr = CFStringGetCharactersPtr(name);
   if (!CharactersPtr)
   {
     if (v8 <= 0x100)
     {
       v10 = v17;
-      [a3 getCharacters:v17 range:{0, v8}];
+      [name getCharacters:v17 range:{0, v8}];
       goto LABEL_11;
     }
 
@@ -295,7 +295,7 @@ LABEL_10:
     if (v15)
     {
       v10 = v15;
-      [a3 getCharacters:v15 range:{0, v8}];
+      [name getCharacters:v15 range:{0, v8}];
       v11 = 1;
       goto LABEL_12;
     }
@@ -333,7 +333,7 @@ LABEL_12:
   v9 = options;
   v61[63] = *MEMORY[0x1E69E9840];
   v13 = [(NSString *)string length];
-  v14 = [(NSRegularExpression *)self numberOfCaptureGroups];
+  numberOfCaptureGroups = [(NSRegularExpression *)self numberOfCaptureGroups];
   v55 = 0;
   v54 = U_ZERO_ERROR;
   if (!string)
@@ -353,7 +353,7 @@ LABEL_118:
     objc_exception_throw([v50 exceptionWithName:*v51 reason:v49 userInfo:0]);
   }
 
-  v15 = v14;
+  v15 = numberOfCaptureGroups;
   v16 = 0x7FFFFFFFFFFFFFFFLL;
   if ((v9 & 4) != 0)
   {
@@ -742,14 +742,14 @@ LABEL_54:
   length = range.length;
   location = range.location;
   v12[5] = *MEMORY[0x1E69E9840];
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__NSRegularExpression_NSMatching__matchesInString_options_range___block_invoke;
   v12[3] = &unk_1E69F7740;
-  v12[4] = v10;
+  v12[4] = array;
   [(NSRegularExpression *)self enumerateMatchesInString:string options:options & 0xFFFFFFFFFFFFFFFCLL range:location usingBlock:length, v12];
-  return v10;
+  return array;
 }
 
 uint64_t __65__NSRegularExpression_NSMatching__matchesInString_options_range___block_invoke(uint64_t result, uint64_t a2)
@@ -882,14 +882,14 @@ uint64_t __75__NSRegularExpression_NSMatching__rangeOfFirstMatchInString_options
   {
     v16 = v15;
     v31 = v14;
-    v17 = self;
-    v18 = 0;
+    selfCopy = self;
+    range = 0;
     v19 = 0;
     v20 = *v37;
     do
     {
       v21 = 0;
-      v22 = v18;
+      v22 = range;
       v23 = v19;
       do
       {
@@ -899,18 +899,18 @@ uint64_t __75__NSRegularExpression_NSMatching__rangeOfFirstMatchInString_options
         }
 
         v24 = *(*(&v36 + 1) + 8 * v21);
-        v18 = [v24 range];
+        range = [v24 range];
         v19 = v25;
-        v26 = [(NSRegularExpression *)v17 replacementStringForResult:v24 inString:string offset:0 template:v33];
-        v27 = v18 - (v22 + v23);
-        if (v18 > v22 + v23)
+        v26 = [(NSRegularExpression *)selfCopy replacementStringForResult:v24 inString:string offset:0 template:v33];
+        v27 = range - (v22 + v23);
+        if (range > v22 + v23)
         {
           [(NSString *)v34 appendString:[(NSString *)string substringWithRange:v22 + v23, v27]];
         }
 
         [(NSString *)v34 appendString:v26, v27];
         ++v21;
-        v22 = v18;
+        v22 = range;
         v23 = v19;
       }
 
@@ -919,7 +919,7 @@ uint64_t __75__NSRegularExpression_NSMatching__rangeOfFirstMatchInString_options
     }
 
     while (v16);
-    v28 = v18 + v19;
+    v28 = range + v19;
     v14 = v31;
   }
 
@@ -971,10 +971,10 @@ uint64_t __75__NSRegularExpression_NSMatching__rangeOfFirstMatchInString_options
       }
 
       v15 = *(*(&v25 + 1) + 8 * i);
-      v16 = [v15 range];
+      range = [v15 range];
       v18 = v17;
       v19 = [(NSRegularExpression *)self replacementStringForResult:v15 inString:string offset:v12 template:templ];
-      [(NSMutableString *)string replaceCharactersInRange:v16 + v12 withString:v18, v19];
+      [(NSMutableString *)string replaceCharactersInRange:range + v12 withString:v18, v19];
       v12 += [(NSString *)v19 length]- v18;
     }
 
@@ -988,7 +988,7 @@ uint64_t __75__NSRegularExpression_NSMatching__rangeOfFirstMatchInString_options
 
 - (NSString)replacementStringForResult:(NSTextCheckingResult *)result inString:(NSString *)string offset:(NSInteger)offset template:(NSString *)templ
 {
-  v11 = [(NSTextCheckingResult *)result numberOfRanges];
+  numberOfRanges = [(NSTextCheckingResult *)result numberOfRanges];
   v38 = result;
   if (!result || !string || !templ)
   {
@@ -996,7 +996,7 @@ uint64_t __75__NSRegularExpression_NSMatching__rangeOfFirstMatchInString_options
     objc_exception_throw(v36);
   }
 
-  v12 = v11;
+  v12 = numberOfRanges;
   v13 = &_MergedGlobals_143;
   if (!replacementStringForResult_inString_offset_template__characterSet)
   {

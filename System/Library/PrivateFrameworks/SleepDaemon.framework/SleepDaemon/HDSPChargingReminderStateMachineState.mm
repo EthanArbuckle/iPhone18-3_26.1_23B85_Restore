@@ -9,10 +9,10 @@
 - (void)updateState
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(HKSPStateMachineState *)self stateMachine];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
   if ([(HDSPChargingReminderStateMachineState *)self isChargingReminderDisabled])
   {
-    v4 = [v3 disabledState];
+    disabledState = [stateMachine disabledState];
   }
 
   else if ([(HDSPChargingReminderStateMachineState *)self inMonitoringWindow])
@@ -26,16 +26,16 @@
       _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] in monitoring window", v9, 0xCu);
     }
 
-    v4 = [v3 monitoringState];
+    disabledState = [stateMachine monitoringState];
   }
 
   else
   {
-    v4 = [v3 waitingState];
+    disabledState = [stateMachine waitingState];
   }
 
-  v7 = v4;
-  [v3 enterState:{v4, *v9}];
+  v7 = disabledState;
+  [stateMachine enterState:{disabledState, *v9}];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -43,13 +43,13 @@
 - (BOOL)isChargingReminderDisabled
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v3 infoProvider];
-  v5 = [v4 sleepScheduleModel];
-  if ([v5 chargingRemindersEnabledWithLogObject:self])
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
+  if ([sleepScheduleModel chargingRemindersEnabledWithLogObject:self])
   {
-    v6 = [v5 sleepSchedule];
-    [v6 windDownTime];
+    sleepSchedule = [sleepScheduleModel sleepSchedule];
+    [sleepSchedule windDownTime];
     if (v7 >= 3600.0)
     {
       v8 = HKSPLogForCategory();
@@ -65,7 +65,7 @@
 
     else
     {
-      if (![v4 isCharging])
+      if (![infoProvider isCharging])
       {
         v11 = 0;
         goto LABEL_12;
@@ -98,12 +98,12 @@ LABEL_13:
 
 - (BOOL)inMonitoringWindow
 {
-  v2 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [v2 infoProvider];
-  v4 = [v3 currentDate];
-  v5 = [v3 monitoringWindowAfterDate:v4];
-  v6 = [v3 currentDate];
-  v7 = [v5 hksp_containsDate:v6];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
+  currentDate = [infoProvider currentDate];
+  v5 = [infoProvider monitoringWindowAfterDate:currentDate];
+  currentDate2 = [infoProvider currentDate];
+  v7 = [v5 hksp_containsDate:currentDate2];
 
   return v7;
 }

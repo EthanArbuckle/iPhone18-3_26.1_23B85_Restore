@@ -3,34 +3,34 @@
 - (CGRect)focusEffectBounds;
 - (CGRect)visibleBounds;
 - (SBHLibraryCategoryStackView)categoryStackView;
-- (SBHLibraryIconViewController)initWithListLayoutProvider:(id)a3;
+- (SBHLibraryIconViewController)initWithListLayoutProvider:(id)provider;
 - (UIView)dismissalView;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)_reloadCategoryViewsForDataSourceChangeAnimated:(BOOL)a3;
+- (void)_reloadCategoryViewsForDataSourceChangeAnimated:(BOOL)animated;
 - (void)dealloc;
-- (void)setBrightness:(double)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
-- (void)setLibraryDataSource:(id)a3;
-- (void)setOverlapping:(BOOL)a3;
-- (void)setPrefersFlatImageLayers:(BOOL)a3;
+- (void)setBrightness:(double)brightness;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
+- (void)setLibraryDataSource:(id)source;
+- (void)setOverlapping:(BOOL)overlapping;
+- (void)setPrefersFlatImageLayers:(BOOL)layers;
 - (void)viewDidLoad;
 @end
 
 @implementation SBHLibraryIconViewController
 
-- (SBHLibraryIconViewController)initWithListLayoutProvider:(id)a3
+- (SBHLibraryIconViewController)initWithListLayoutProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = SBHLibraryIconViewController;
   v6 = [(SBHLibraryIconViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listLayoutProvider, a3);
+    objc_storeStrong(&v6->_listLayoutProvider, provider);
   }
 
   return v7;
@@ -49,14 +49,14 @@
   v8.receiver = self;
   v8.super_class = SBHLibraryIconViewController;
   [(SBHLibraryIconViewController *)&v8 viewDidLoad];
-  v3 = [(SBHLibraryIconViewController *)self view];
+  view = [(SBHLibraryIconViewController *)self view];
   v4 = [SBHLibraryCategoryStackView alloc];
-  [v3 bounds];
+  [view bounds];
   v5 = [(SBHLibraryCategoryStackView *)v4 initWithFrame:?];
   [(SBHLibraryCategoryStackView *)v5 setAutoresizingMask:18];
   [(SBHLibraryCategoryStackView *)v5 setIconImageInfo:self->_iconImageInfo.size.width, self->_iconImageInfo.size.height, self->_iconImageInfo.scale, self->_iconImageInfo.continuousCornerRadius];
   [(SBHLibraryCategoryStackView *)v5 setPrefersFlatImageLayers:[(SBHLibraryIconViewController *)self prefersFlatImageLayers]];
-  [v3 addSubview:v5];
+  [view addSubview:v5];
   categoryStackView = self->_categoryStackView;
   self->_categoryStackView = v5;
   v7 = v5;
@@ -65,27 +65,27 @@
   [(SBHLibraryIconViewController *)self _reloadCategoryViewsForDataSourceChangeAnimated:0];
 }
 
-- (void)setLibraryDataSource:(id)a3
+- (void)setLibraryDataSource:(id)source
 {
-  v5 = a3;
-  v6 = v5;
+  sourceCopy = source;
+  v6 = sourceCopy;
   libraryDataSource = self->_libraryDataSource;
-  if (libraryDataSource != v5)
+  if (libraryDataSource != sourceCopy)
   {
-    v8 = v5;
+    v8 = sourceCopy;
     [(SBHLibraryCategoriesFolderDataSource *)self->_libraryDataSource removeObserver:self];
-    objc_storeStrong(&self->_libraryDataSource, a3);
+    objc_storeStrong(&self->_libraryDataSource, source);
     [(SBHLibraryCategoriesFolderDataSource *)v8 addObserver:self];
-    v5 = [(SBHLibraryIconViewController *)self isViewLoaded];
+    sourceCopy = [(SBHLibraryIconViewController *)self isViewLoaded];
     v6 = v8;
-    if (v5)
+    if (sourceCopy)
     {
-      v5 = [(SBHLibraryIconViewController *)self _reloadCategoryViewsForDataSourceChangeAnimated:libraryDataSource != 0];
+      sourceCopy = [(SBHLibraryIconViewController *)self _reloadCategoryViewsForDataSourceChangeAnimated:libraryDataSource != 0];
       v6 = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](sourceCopy, v6);
 }
 
 - (SBHLibraryCategoryStackView)categoryStackView
@@ -104,7 +104,7 @@
   return dismissalView;
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
@@ -124,33 +124,33 @@
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
+    self->_editing = editing;
     [(SBHLibraryCategoryStackView *)self->_categoryStackView setEditing:?];
   }
 }
 
-- (void)setOverlapping:(BOOL)a3
+- (void)setOverlapping:(BOOL)overlapping
 {
-  if (self->_overlapping != a3)
+  if (self->_overlapping != overlapping)
   {
-    self->_overlapping = a3;
+    self->_overlapping = overlapping;
     [(SBHLibraryCategoryStackView *)self->_categoryStackView setOverlapping:?];
   }
 }
 
-- (void)setBrightness:(double)a3
+- (void)setBrightness:(double)brightness
 {
-  if (self->_brightness != a3)
+  if (self->_brightness != brightness)
   {
-    self->_brightness = a3;
+    self->_brightness = brightness;
     [(SBHLibraryCategoryStackView *)self->_categoryStackView setHighlighted:BSFloatIsOne() ^ 1];
     dismissalView = self->_dismissalView;
 
-    [(SBHLibraryDismissalView *)dismissalView setBrightness:a3];
+    [(SBHLibraryDismissalView *)dismissalView setBrightness:brightness];
   }
 }
 
@@ -174,11 +174,11 @@
   return result;
 }
 
-- (void)setPrefersFlatImageLayers:(BOOL)a3
+- (void)setPrefersFlatImageLayers:(BOOL)layers
 {
-  if (self->_prefersFlatImageLayers != a3)
+  if (self->_prefersFlatImageLayers != layers)
   {
-    self->_prefersFlatImageLayers = a3;
+    self->_prefersFlatImageLayers = layers;
     [(SBHLibraryCategoryStackView *)self->_categoryStackView setPrefersFlatImageLayers:?];
   }
 }
@@ -197,13 +197,13 @@
   return result;
 }
 
-- (void)_reloadCategoryViewsForDataSourceChangeAnimated:(BOOL)a3
+- (void)_reloadCategoryViewsForDataSourceChangeAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [(SBHLibraryCategoriesFolderDataSource *)self->_libraryDataSource categoryIdentifiers];
+  categoryIdentifiers = [(SBHLibraryCategoriesFolderDataSource *)self->_libraryDataSource categoryIdentifiers];
   categoryStackView = self->_categoryStackView;
-  v7 = [v5 count];
+  v7 = [categoryIdentifiers count];
   if (v7 <= 1)
   {
     v8 = 1;
@@ -226,53 +226,53 @@
 
   [(SBHLibraryCategoryStackView *)categoryStackView setNumberOfCategories:v9];
   libraryDataSource = self->_libraryDataSource;
-  v11 = [v5 firstObject];
-  v12 = [(SBHLibraryCategoriesFolderDataSource *)libraryDataSource categoryForIdentifier:v11];
+  firstObject = [categoryIdentifiers firstObject];
+  v12 = [(SBHLibraryCategoriesFolderDataSource *)libraryDataSource categoryForIdentifier:firstObject];
 
   v13 = SBLogLibrary();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412546;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = v12;
     _os_log_impl(&dword_1BEB18000, v13, OS_LOG_TYPE_DEFAULT, "[%@] reloading pod icons for updated topmost category: %@", &v17, 0x16u);
   }
 
-  v14 = [v12 compactPodFolder];
+  compactPodFolder = [v12 compactPodFolder];
   v15 = self->_categoryStackView;
-  v16 = [v14 icons];
-  [(SBHLibraryCategoryStackView *)v15 setInnerIcons:v16 animated:v3];
+  icons = [compactPodFolder icons];
+  [(SBHLibraryCategoryStackView *)v15 setInnerIcons:icons animated:animatedCopy];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBHLibraryIconViewController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHLibraryIconViewController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHLibraryIconViewController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHLibraryIconViewController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBHLibraryIconViewController *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBHLibraryIconViewController *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__SBHLibraryIconViewController_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E8088F18;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

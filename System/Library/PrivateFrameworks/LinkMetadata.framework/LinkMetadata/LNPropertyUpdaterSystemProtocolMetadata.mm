@@ -1,35 +1,35 @@
 @interface LNPropertyUpdaterSystemProtocolMetadata
-- (BOOL)isEqual:(id)a3;
-- (LNPropertyUpdaterSystemProtocolMetadata)initWithCoder:(id)a3;
-- (LNPropertyUpdaterSystemProtocolMetadata)initWithEntityIdentifier:(id)a3 entityProperty:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNPropertyUpdaterSystemProtocolMetadata)initWithCoder:(id)coder;
+- (LNPropertyUpdaterSystemProtocolMetadata)initWithEntityIdentifier:(id)identifier entityProperty:(id)property;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNPropertyUpdaterSystemProtocolMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(LNPropertyUpdaterSystemProtocolMetadata *)self entityIdentifier];
-      v8 = [(LNPropertyUpdaterSystemProtocolMetadata *)v6 entityIdentifier];
-      if ([v7 isEqualToString:v8])
+      entityIdentifier = [(LNPropertyUpdaterSystemProtocolMetadata *)self entityIdentifier];
+      entityIdentifier2 = [(LNPropertyUpdaterSystemProtocolMetadata *)v6 entityIdentifier];
+      if ([entityIdentifier isEqualToString:entityIdentifier2])
       {
-        v9 = [(LNPropertyUpdaterSystemProtocolMetadata *)self entityProperty];
-        v10 = [(LNPropertyUpdaterSystemProtocolMetadata *)v6 entityProperty];
-        v11 = [v9 isEqualToString:v10];
+        entityProperty = [(LNPropertyUpdaterSystemProtocolMetadata *)self entityProperty];
+        entityProperty2 = [(LNPropertyUpdaterSystemProtocolMetadata *)v6 entityProperty];
+        v11 = [entityProperty isEqualToString:entityProperty2];
       }
 
       else
@@ -49,10 +49,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(LNPropertyUpdaterSystemProtocolMetadata *)self entityIdentifier];
-  v4 = [v3 hash];
-  v5 = [(LNPropertyUpdaterSystemProtocolMetadata *)self entityProperty];
-  v6 = [v5 hash];
+  entityIdentifier = [(LNPropertyUpdaterSystemProtocolMetadata *)self entityIdentifier];
+  v4 = [entityIdentifier hash];
+  entityProperty = [(LNPropertyUpdaterSystemProtocolMetadata *)self entityProperty];
+  v6 = [entityProperty hash];
 
   return v6 ^ v4;
 }
@@ -62,45 +62,45 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNPropertyUpdaterSystemProtocolMetadata *)self entityIdentifier];
-  v7 = [(LNPropertyUpdaterSystemProtocolMetadata *)self entityProperty];
-  v8 = [v3 stringWithFormat:@"<%@: %p, entity: %@, property: %@>", v5, self, v6, v7];
+  entityIdentifier = [(LNPropertyUpdaterSystemProtocolMetadata *)self entityIdentifier];
+  entityProperty = [(LNPropertyUpdaterSystemProtocolMetadata *)self entityProperty];
+  v8 = [v3 stringWithFormat:@"<%@: %p, entity: %@, property: %@>", v5, self, entityIdentifier, entityProperty];
 
   return v8;
 }
 
-- (LNPropertyUpdaterSystemProtocolMetadata)initWithCoder:(id)a3
+- (LNPropertyUpdaterSystemProtocolMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entityIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entityProperty"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityProperty"];
 
   v7 = [(LNPropertyUpdaterSystemProtocolMetadata *)self initWithEntityIdentifier:v5 entityProperty:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNPropertyUpdaterSystemProtocolMetadata *)self entityIdentifier];
-  [v4 encodeObject:v5 forKey:@"entityIdentifier"];
+  coderCopy = coder;
+  entityIdentifier = [(LNPropertyUpdaterSystemProtocolMetadata *)self entityIdentifier];
+  [coderCopy encodeObject:entityIdentifier forKey:@"entityIdentifier"];
 
-  v6 = [(LNPropertyUpdaterSystemProtocolMetadata *)self entityProperty];
-  [v4 encodeObject:v6 forKey:@"entityProperty"];
+  entityProperty = [(LNPropertyUpdaterSystemProtocolMetadata *)self entityProperty];
+  [coderCopy encodeObject:entityProperty forKey:@"entityProperty"];
 }
 
-- (LNPropertyUpdaterSystemProtocolMetadata)initWithEntityIdentifier:(id)a3 entityProperty:(id)a4
+- (LNPropertyUpdaterSystemProtocolMetadata)initWithEntityIdentifier:(id)identifier entityProperty:(id)property
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  propertyCopy = property;
   v13.receiver = self;
   v13.super_class = LNPropertyUpdaterSystemProtocolMetadata;
   v9 = [(LNPropertyUpdaterSystemProtocolMetadata *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_entityIdentifier, a3);
-    objc_storeStrong(&v10->_entityProperty, a4);
+    objc_storeStrong(&v9->_entityIdentifier, identifier);
+    objc_storeStrong(&v10->_entityProperty, property);
     v11 = v10;
   }
 

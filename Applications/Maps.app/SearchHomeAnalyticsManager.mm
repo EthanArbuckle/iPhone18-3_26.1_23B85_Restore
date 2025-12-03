@@ -1,30 +1,30 @@
 @interface SearchHomeAnalyticsManager
-- (SearchHomeAnalyticsManager)initWithSearchAlongRoute:(BOOL)a3;
+- (SearchHomeAnalyticsManager)initWithSearchAlongRoute:(BOOL)route;
 - (id)curatedCollectionEventDebugDescription;
-- (void)autocompleteSessionsStartedWithVisibleSuggestions:(id)a3;
+- (void)autocompleteSessionsStartedWithVisibleSuggestions:(id)suggestions;
 - (void)cityGuidesMoreButtonTapped;
 - (void)cleanup;
-- (void)curatedCollectionsTappedWithMuid:(unint64_t)a3 horizontalIndex:(unint64_t)a4 isCurrentlySaved:(BOOL)a5;
+- (void)curatedCollectionsTappedWithMuid:(unint64_t)muid horizontalIndex:(unint64_t)index isCurrentlySaved:(BOOL)saved;
 - (void)exploreGuidesButtonTapped;
-- (void)guideLocationTappedWithMuid:(unint64_t)a3 horizontalIndex:(unint64_t)a4;
+- (void)guideLocationTappedWithMuid:(unint64_t)muid horizontalIndex:(unint64_t)index;
 - (void)logRecentEvent;
-- (void)publisherTappedWithMuid:(unint64_t)a3 verticalIndex:(unint64_t)a4;
-- (void)recentTappedAtIndex:(unint64_t)a3 visibleSuggestions:(id)a4;
+- (void)publisherTappedWithMuid:(unint64_t)muid verticalIndex:(unint64_t)index;
+- (void)recentTappedAtIndex:(unint64_t)index visibleSuggestions:(id)suggestions;
 - (void)showAllCollectionsTapped;
 @end
 
 @implementation SearchHomeAnalyticsManager
 
-- (void)autocompleteSessionsStartedWithVisibleSuggestions:(id)a3
+- (void)autocompleteSessionsStartedWithVisibleSuggestions:(id)suggestions
 {
-  v5 = a3;
-  if (v5)
+  suggestionsCopy = suggestions;
+  if (suggestionsCopy)
   {
-    v6 = v5;
+    v6 = suggestionsCopy;
     [(SearchHomeAnalyticsManager *)self cleanup];
-    objc_storeStrong(&self->_noTypingACEvent.suggestions, a3);
+    objc_storeStrong(&self->_noTypingACEvent.suggestions, suggestions);
     [(SearchHomeAnalyticsManager *)self logNoTypingACEvent];
-    v5 = v6;
+    suggestionsCopy = v6;
   }
 }
 
@@ -38,15 +38,15 @@
   }
 }
 
-- (void)recentTappedAtIndex:(unint64_t)a3 visibleSuggestions:(id)a4
+- (void)recentTappedAtIndex:(unint64_t)index visibleSuggestions:(id)suggestions
 {
-  v6 = a4;
+  suggestionsCopy = suggestions;
   [(SearchHomeAnalyticsManager *)self cleanup];
   suggestions = self->_recentEvent.suggestions;
-  self->_recentEvent.suggestions = v6;
-  v8 = v6;
+  self->_recentEvent.suggestions = suggestionsCopy;
+  v8 = suggestionsCopy;
 
-  v9 = [NSNumber numberWithUnsignedInteger:a3];
+  v9 = [NSNumber numberWithUnsignedInteger:index];
   selectedIndex = self->_recentEvent.selectedIndex;
   self->_recentEvent.selectedIndex = v9;
 
@@ -7209,33 +7209,33 @@ LABEL_1995:
   [(SearchHomeAnalyticsManager *)self logCuratedCollectionsEvent];
 }
 
-- (void)guideLocationTappedWithMuid:(unint64_t)a3 horizontalIndex:(unint64_t)a4
+- (void)guideLocationTappedWithMuid:(unint64_t)muid horizontalIndex:(unint64_t)index
 {
   [(SearchHomeAnalyticsManager *)self cleanup];
   self->_curatedCollectionEvent.action = 177;
-  v7 = [NSNumber numberWithUnsignedLongLong:a3];
-  v8 = [v7 stringValue];
+  v7 = [NSNumber numberWithUnsignedLongLong:muid];
+  stringValue = [v7 stringValue];
   value = self->_curatedCollectionEvent.value;
-  self->_curatedCollectionEvent.value = v8;
+  self->_curatedCollectionEvent.value = stringValue;
 
-  v10 = [NSNumber numberWithUnsignedInteger:a4];
+  v10 = [NSNumber numberWithUnsignedInteger:index];
   horizontalIndex = self->_curatedCollectionEvent.horizontalIndex;
   self->_curatedCollectionEvent.horizontalIndex = v10;
 
   [(SearchHomeAnalyticsManager *)self logCuratedCollectionsEvent];
 }
 
-- (void)publisherTappedWithMuid:(unint64_t)a3 verticalIndex:(unint64_t)a4
+- (void)publisherTappedWithMuid:(unint64_t)muid verticalIndex:(unint64_t)index
 {
   [(SearchHomeAnalyticsManager *)self cleanup];
   self->_curatedCollectionEvent.action = 2102;
-  v7 = [NSNumber numberWithUnsignedLongLong:a3];
+  v7 = [NSNumber numberWithUnsignedLongLong:muid];
   v12 = v7;
   v8 = [NSArray arrayWithObjects:&v12 count:1];
   publisherIds = self->_curatedCollectionEvent.publisherIds;
   self->_curatedCollectionEvent.publisherIds = v8;
 
-  v10 = [NSNumber numberWithUnsignedInteger:a4];
+  v10 = [NSNumber numberWithUnsignedInteger:index];
   verticalIndex = self->_curatedCollectionEvent.verticalIndex;
   self->_curatedCollectionEvent.verticalIndex = v10;
 
@@ -7250,20 +7250,20 @@ LABEL_1995:
   [(SearchHomeAnalyticsManager *)self logCuratedCollectionsEvent];
 }
 
-- (void)curatedCollectionsTappedWithMuid:(unint64_t)a3 horizontalIndex:(unint64_t)a4 isCurrentlySaved:(BOOL)a5
+- (void)curatedCollectionsTappedWithMuid:(unint64_t)muid horizontalIndex:(unint64_t)index isCurrentlySaved:(BOOL)saved
 {
-  v5 = a5;
+  savedCopy = saved;
   [(SearchHomeAnalyticsManager *)self cleanup];
   self->_curatedCollectionEvent.action = 2099;
-  v9 = [NSNumber numberWithUnsignedLongLong:a3];
+  v9 = [NSNumber numberWithUnsignedLongLong:muid];
   collectionId = self->_curatedCollectionEvent.collectionId;
   self->_curatedCollectionEvent.collectionId = v9;
 
-  v11 = [NSNumber numberWithUnsignedInteger:a4];
+  v11 = [NSNumber numberWithUnsignedInteger:index];
   horizontalIndex = self->_curatedCollectionEvent.horizontalIndex;
   self->_curatedCollectionEvent.horizontalIndex = v11;
 
-  v13 = [NSNumber numberWithBool:v5];
+  v13 = [NSNumber numberWithBool:savedCopy];
   collectionCurrentlySaved = self->_curatedCollectionEvent.collectionCurrentlySaved;
   self->_curatedCollectionEvent.collectionCurrentlySaved = v13;
 
@@ -7304,15 +7304,15 @@ LABEL_1995:
   self->_noTypingACEvent.suggestions = 0;
 }
 
-- (SearchHomeAnalyticsManager)initWithSearchAlongRoute:(BOOL)a3
+- (SearchHomeAnalyticsManager)initWithSearchAlongRoute:(BOOL)route
 {
-  v3 = a3;
+  routeCopy = route;
   v6.receiver = self;
   v6.super_class = SearchHomeAnalyticsManager;
   result = [(SearchHomeAnalyticsManager *)&v6 init];
   if (result)
   {
-    if (v3)
+    if (routeCopy)
     {
       v5 = 742;
     }

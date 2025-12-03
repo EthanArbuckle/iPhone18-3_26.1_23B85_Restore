@@ -2,10 +2,10 @@
 + (void)initialize;
 - (WeatherCompanionBridgeSettingsController)init;
 - (WeatherPrefsMonitor)weatherPrefsMonitor;
-- (id)defaultCity:(id)a3;
+- (id)defaultCity:(id)city;
 - (id)localizedPaneTitle;
 - (id)specifiers;
-- (void)monitorObservedReload:(id)a3;
+- (void)monitorObservedReload:(id)reload;
 @end
 
 @implementation WeatherCompanionBridgeSettingsController
@@ -31,29 +31,29 @@
   return result;
 }
 
-- (id)defaultCity:(id)a3
+- (id)defaultCity:(id)city
 {
-  v3 = [(WeatherCompanionBridgeSettingsController *)self weatherPrefsMonitor];
-  v4 = [v3 selectedCity];
-  v5 = v4;
-  if (v4)
+  weatherPrefsMonitor = [(WeatherCompanionBridgeSettingsController *)self weatherPrefsMonitor];
+  selectedCity = [weatherPrefsMonitor selectedCity];
+  v5 = selectedCity;
+  if (selectedCity)
   {
-    v6 = [v4 name];
+    name = [selectedCity name];
   }
 
-  else if ([v3 areLocationServicesResolved])
+  else if ([weatherPrefsMonitor areLocationServicesResolved])
   {
-    v7 = [v3 cities];
-    v8 = [v7 firstObject];
-    v6 = [v8 name];
+    cities = [weatherPrefsMonitor cities];
+    firstObject = [cities firstObject];
+    name = [firstObject name];
   }
 
   else
   {
-    v6 = &stru_8488;
+    name = &stru_8488;
   }
 
-  return v6;
+  return name;
 }
 
 - (id)localizedPaneTitle
@@ -98,11 +98,11 @@
 
     v29.receiver = self;
     v29.super_class = WeatherCompanionBridgeSettingsController;
-    v17 = [(WeatherCompanionBridgeSettingsController *)&v29 specifiers];
-    v18 = v17;
-    if (v17)
+    specifiers = [(WeatherCompanionBridgeSettingsController *)&v29 specifiers];
+    v18 = specifiers;
+    if (specifiers)
     {
-      v19 = v17;
+      v19 = specifiers;
     }
 
     else
@@ -127,7 +127,7 @@
   return v3;
 }
 
-- (void)monitorObservedReload:(id)a3
+- (void)monitorObservedReload:(id)reload
 {
   v4 = qword_CB00;
   if (os_log_type_enabled(qword_CB00, OS_LOG_TYPE_DEBUG))

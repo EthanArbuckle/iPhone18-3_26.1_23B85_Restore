@@ -1,40 +1,40 @@
 @interface QLRoundProgressLayer
-+ (BOOL)needsDisplayForKey:(id)a3;
-- (QLRoundProgressLayer)initWithLayer:(id)a3;
++ (BOOL)needsDisplayForKey:(id)key;
+- (QLRoundProgressLayer)initWithLayer:(id)layer;
 @end
 
 @implementation QLRoundProgressLayer
 
-+ (BOOL)needsDisplayForKey:(id)a3
++ (BOOL)needsDisplayForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"progress"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"progress"])
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___QLRoundProgressLayer;
-    v5 = objc_msgSendSuper2(&v7, sel_needsDisplayForKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_needsDisplayForKey_, keyCopy);
   }
 
   return v5;
 }
 
-- (QLRoundProgressLayer)initWithLayer:(id)a3
+- (QLRoundProgressLayer)initWithLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   v8.receiver = self;
   v8.super_class = QLRoundProgressLayer;
-  v5 = [(QLRoundProgressLayer *)&v8 initWithLayer:v4];
+  v5 = [(QLRoundProgressLayer *)&v8 initWithLayer:layerCopy];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v4 progress];
+      [layerCopy progress];
       [(QLRoundProgressLayer *)v5 setProgress:?];
     }
 

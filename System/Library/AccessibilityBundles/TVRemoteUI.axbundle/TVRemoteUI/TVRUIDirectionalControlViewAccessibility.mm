@@ -1,20 +1,20 @@
 @interface TVRUIDirectionalControlViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation TVRUIDirectionalControlViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TVRUIDirectionalControlView" hasInstanceMethod:@"selectIndicator" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRUIDirectionalControlView" hasInstanceMethod:@"upImageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRUIDirectionalControlView" hasInstanceMethod:@"rightImageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRUIDirectionalControlView" hasInstanceMethod:@"downImageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRUIDirectionalControlView" hasInstanceMethod:@"leftImageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRUIDirectionalControlView" hasInstanceMethod:@"directionControlsWrapperView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TVRUIDirectionalControlView" hasInstanceMethod:@"selectIndicator" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRUIDirectionalControlView" hasInstanceMethod:@"upImageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRUIDirectionalControlView" hasInstanceMethod:@"rightImageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRUIDirectionalControlView" hasInstanceMethod:@"downImageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRUIDirectionalControlView" hasInstanceMethod:@"leftImageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRUIDirectionalControlView" hasInstanceMethod:@"directionControlsWrapperView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -3,10 +3,10 @@
 - (CCUIContentModuleContentViewController)contentViewController;
 - (double)CCUIMenuModuleViewHeight;
 - (double)CCUIMenuModuleViewWidth;
-- (void)automaticMicModeButtonTapped:(id)a3;
-- (void)handleAVControlCenterNotification:(id)a3;
-- (void)setAutomaticMicModeGlyphState:(BOOL)a3;
-- (void)setAutomaticMicModeSubtitle:(BOOL)a3;
+- (void)automaticMicModeButtonTapped:(id)tapped;
+- (void)handleAVControlCenterNotification:(id)notification;
+- (void)setAutomaticMicModeGlyphState:(BOOL)state;
+- (void)setAutomaticMicModeSubtitle:(BOOL)subtitle;
 - (void)setupAutomaticMicModeButton;
 - (void)setupMicModeNotifications;
 - (void)setupSupportedLabel;
@@ -15,7 +15,7 @@
 - (void)updateSupportedLabelConstraints;
 - (void)updateSupportedLabelFont;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -46,9 +46,9 @@
       [(RPCCAudioSettingsModuleBackgroundViewController *)self setupSupportedLabel];
       [(RPCCAudioSettingsModuleBackgroundViewController *)self setupMicModeNotifications];
       v10 = +[RPFeatureFlagUtility sharedInstance];
-      v11 = [v10 audioDSPAutomaticMicModeEnabled];
+      audioDSPAutomaticMicModeEnabled = [v10 audioDSPAutomaticMicModeEnabled];
 
-      if (v11)
+      if (audioDSPAutomaticMicModeEnabled)
       {
         [(RPCCAudioSettingsModuleBackgroundViewController *)self setupAutomaticMicModeButton];
         [(RPCCAudioSettingsModuleBackgroundViewController *)self updateAutoMicModeState];
@@ -61,18 +61,18 @@
   self->_packageDescription = v12;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v5 = [(CCUIContentModuleContext *)self->_contentModuleContext sensorActivityDataForActiveSensorType:1];
+  sensorActivityDataEligibleForInactiveMicModeSelection = [(CCUIContentModuleContext *)self->_contentModuleContext sensorActivityDataForActiveSensorType:1];
   v6 = [(CCUIContentModuleContext *)self->_contentModuleContext sensorActivityDataForActiveSensorType:0];
-  if (v5)
+  if (sensorActivityDataEligibleForInactiveMicModeSelection)
   {
     goto LABEL_2;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(CCUIContentModuleContext *)self->_contentModuleContext sensorActivityDataEligibleForInactiveMicModeSelection];
+    sensorActivityDataEligibleForInactiveMicModeSelection = [(CCUIContentModuleContext *)self->_contentModuleContext sensorActivityDataEligibleForInactiveMicModeSelection];
     if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 136446722;
@@ -80,42 +80,42 @@
       v22 = 1024;
       v23 = 111;
       v24 = 2112;
-      v25 = v5;
+      v25 = sensorActivityDataEligibleForInactiveMicModeSelection;
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d replacing applicationMicData with %@", &v20, 0x1Cu);
     }
 
-    if (v5)
+    if (sensorActivityDataEligibleForInactiveMicModeSelection)
     {
 LABEL_2:
-      v7 = [v5 displayName];
+      displayName = [sensorActivityDataEligibleForInactiveMicModeSelection displayName];
       applicationDisplayName = self->_applicationDisplayName;
-      self->_applicationDisplayName = v7;
+      self->_applicationDisplayName = displayName;
 
-      applicationBundleID = [v5 bundleIdentifier];
+      applicationBundleID = [sensorActivityDataEligibleForInactiveMicModeSelection bundleIdentifier];
       v10 = [applicationBundleID isEqualToString:@"com.apple.TelephonyUtilities"];
       if (v10)
       {
         v11 = 0;
-        v12 = @"com.apple.facetime";
+        bundleIdentifier2 = @"com.apple.facetime";
       }
 
       else
       {
-        v3 = [v5 bundleIdentifier];
-        v12 = @"com.apple.facetime";
-        if ([v3 isEqualToString:@"com.apple.facetime"])
+        bundleIdentifier = [sensorActivityDataEligibleForInactiveMicModeSelection bundleIdentifier];
+        bundleIdentifier2 = @"com.apple.facetime";
+        if ([bundleIdentifier isEqualToString:@"com.apple.facetime"])
         {
           v11 = 0;
         }
 
         else
         {
-          v12 = [v5 bundleIdentifier];
+          bundleIdentifier2 = [sensorActivityDataEligibleForInactiveMicModeSelection bundleIdentifier];
           v11 = 1;
         }
       }
 
-      objc_storeStrong(&self->_applicationBundleID, v12);
+      objc_storeStrong(&self->_applicationBundleID, bundleIdentifier2);
       if (v11)
       {
       }
@@ -128,16 +128,16 @@ LABEL_2:
     }
   }
 
-  v13 = [v6 bundleIdentifier];
-  if ([v13 isEqualToString:@"com.apple.TelephonyUtilities"])
+  bundleIdentifier3 = [v6 bundleIdentifier];
+  if ([bundleIdentifier3 isEqualToString:@"com.apple.TelephonyUtilities"])
   {
 
 LABEL_19:
-    v16 = [v6 displayName];
+    displayName2 = [v6 displayName];
     v17 = self->_applicationDisplayName;
-    self->_applicationDisplayName = v16;
+    self->_applicationDisplayName = displayName2;
 
-    v5 = 0;
+    sensorActivityDataEligibleForInactiveMicModeSelection = 0;
     applicationBundleID = self->_applicationBundleID;
     self->_applicationBundleID = @"com.apple.facetime";
 LABEL_20:
@@ -145,23 +145,23 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v14 = [v6 bundleIdentifier];
-  v15 = [v14 isEqualToString:@"com.apple.facetime"];
+  bundleIdentifier4 = [v6 bundleIdentifier];
+  v15 = [bundleIdentifier4 isEqualToString:@"com.apple.facetime"];
 
   if (v15)
   {
     goto LABEL_19;
   }
 
-  v5 = 0;
+  sensorActivityDataEligibleForInactiveMicModeSelection = 0;
 LABEL_21:
   [(RPCCAudioSettingsModuleBackgroundViewController *)self setupSupportedLabel];
   [(RPCCAudioSettingsModuleBackgroundViewController *)self setupMicModeNotifications];
   [(RPCCAudioSettingsModuleBackgroundViewController *)self updateSupportedLabelConstraints];
   v18 = +[RPFeatureFlagUtility sharedInstance];
-  v19 = [v18 audioDSPAutomaticMicModeEnabled];
+  audioDSPAutomaticMicModeEnabled = [v18 audioDSPAutomaticMicModeEnabled];
 
-  if (v19)
+  if (audioDSPAutomaticMicModeEnabled)
   {
     [(RPCCAudioSettingsModuleBackgroundViewController *)self setupAutomaticMicModeButton];
     [(RPCCAudioSettingsModuleBackgroundViewController *)self updateAutoMicModeState];
@@ -225,11 +225,11 @@ LABEL_21:
   }
 }
 
-- (void)handleAVControlCenterNotification:(id)a3
+- (void)handleAVControlCenterNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:AVControlCenterModulesNotificationBundleIdentifierKey];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:AVControlCenterModulesNotificationBundleIdentifierKey];
 
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -238,14 +238,14 @@ LABEL_21:
     v17 = 1024;
     v18 = 170;
     v19 = 2112;
-    v20 = v4;
+    v20 = notificationCopy;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Received Notification: %@", buf, 0x1Cu);
   }
 
   if (v6 && [v6 isEqualToString:self->_applicationBundleID])
   {
-    v7 = [v4 name];
-    v8 = [v7 isEqualToString:AVControlCenterMicrophoneModesModuleSupportedMicrophoneModesDidChangeNotification];
+    name = [notificationCopy name];
+    v8 = [name isEqualToString:AVControlCenterMicrophoneModesModuleSupportedMicrophoneModesDidChangeNotification];
 
     if (v8)
     {
@@ -260,8 +260,8 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v10 = [v4 name];
-    if ([v10 isEqualToString:AVControlCenterMicrophoneModesModuleAutoEnabledDidChangeNotification])
+    name2 = [notificationCopy name];
+    if ([name2 isEqualToString:AVControlCenterMicrophoneModesModuleAutoEnabledDidChangeNotification])
     {
 
 LABEL_12:
@@ -274,8 +274,8 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v11 = [v4 name];
-    v12 = [v11 isEqualToString:AVControlCenterMicrophoneModesModuleActiveMicrophoneModeDidChangeNotification];
+    name3 = [notificationCopy name];
+    v12 = [name3 isEqualToString:AVControlCenterMicrophoneModesModuleActiveMicrophoneModeDidChangeNotification];
 
     if (v12)
     {
@@ -495,8 +495,8 @@ LABEL_47:
 
   if (v32)
   {
-    v37 = [(RPCCAudioSettingsModuleBackgroundViewController *)self view];
-    [v37 addSubview:self->_supportedLabel];
+    view = [(RPCCAudioSettingsModuleBackgroundViewController *)self view];
+    [view addSubview:self->_supportedLabel];
   }
 }
 
@@ -559,8 +559,8 @@ LABEL_11:
 
 - (void)updateSupportedLabelConstraints
 {
-  v3 = [(RPCCAudioSettingsModuleBackgroundViewController *)self view];
-  [v3 bounds];
+  view = [(RPCCAudioSettingsModuleBackgroundViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -578,7 +578,7 @@ LABEL_11:
   }
 
   [(UILabel *)self->_supportedLabel setNumberOfLines:0];
-  v14 = [(RPCCAudioSettingsModuleBackgroundViewController *)self view];
+  view2 = [(RPCCAudioSettingsModuleBackgroundViewController *)self view];
   v41.origin.x = v5;
   v41.origin.y = v7;
   v41.size.width = v9;
@@ -589,7 +589,7 @@ LABEL_11:
   v42.size.width = v9;
   v42.size.height = v11;
   v16 = 0.0;
-  [v14 _inscribedRectInBoundingPathByInsettingRect:10 onEdges:1 withOptions:{0.0, MidY, CGRectGetWidth(v42), 1.0}];
+  [view2 _inscribedRectInBoundingPathByInsettingRect:10 onEdges:1 withOptions:{0.0, MidY, CGRectGetWidth(v42), 1.0}];
   MinX = CGRectGetMinX(v43);
 
   v44.origin.x = v5;
@@ -605,8 +605,8 @@ LABEL_11:
   IsValid = CGFloatIsValid();
   if (v12)
   {
-    v20 = [(RPCCAudioSettingsModuleBackgroundViewController *)self view];
-    [v20 safeAreaInsets];
+    view3 = [(RPCCAudioSettingsModuleBackgroundViewController *)self view];
+    [view3 safeAreaInsets];
     v22 = v21;
     v39 = v21;
 
@@ -646,8 +646,8 @@ LABEL_11:
     Width = CGRectGetWidth(v47);
     [(RPCCAudioSettingsModuleBackgroundViewController *)self CCUIMenuModuleViewWidth];
     v27 = (Width - v35) * 0.5 - v16 + -20.0;
-    v36 = [(RPCCAudioSettingsModuleBackgroundViewController *)self view];
-    [v36 frame];
+    view4 = [(RPCCAudioSettingsModuleBackgroundViewController *)self view];
+    [view4 frame];
     v30 = v16 + CGRectGetMinX(v48) + 10.0;
     v49.origin.x = v5;
     v49.origin.y = v7;
@@ -676,8 +676,8 @@ LABEL_11:
     automaticMicModeButton = self->_automaticMicModeButton;
     self->_automaticMicModeButton = v5;
 
-    v7 = [(CCUILabeledRoundButtonViewController *)self->_automaticMicModeButton button];
-    [v7 setEnabled:1];
+    button = [(CCUILabeledRoundButtonViewController *)self->_automaticMicModeButton button];
+    [button setEnabled:1];
 
     [(CCUILabeledRoundButtonViewController *)self->_automaticMicModeButton setTitle:@"Automatic Mic Mode"];
     v8 = self->_automaticMicModeButton;
@@ -686,15 +686,15 @@ LABEL_11:
 
     [(CCUILabeledRoundButtonViewController *)self->_automaticMicModeButton setLabelsVisible:1];
     [(CCUILabeledRoundButtonViewController *)self->_automaticMicModeButton setGlyphState:@"Base State"];
-    v10 = [(CCUILabeledRoundButtonViewController *)self->_automaticMicModeButton button];
-    [v10 setUserInteractionEnabled:1];
+    button2 = [(CCUILabeledRoundButtonViewController *)self->_automaticMicModeButton button];
+    [button2 setUserInteractionEnabled:1];
 
-    v11 = [(CCUILabeledRoundButtonViewController *)self->_automaticMicModeButton button];
-    [v11 addTarget:self action:"automaticMicModeButtonTapped:" forControlEvents:64];
+    button3 = [(CCUILabeledRoundButtonViewController *)self->_automaticMicModeButton button];
+    [button3 addTarget:self action:"automaticMicModeButtonTapped:" forControlEvents:64];
 
-    v12 = [(RPCCAudioSettingsModuleBackgroundViewController *)self view];
-    v13 = [(CCUILabeledRoundButtonViewController *)self->_automaticMicModeButton view];
-    [v12 addSubview:v13];
+    view = [(RPCCAudioSettingsModuleBackgroundViewController *)self view];
+    view2 = [(CCUILabeledRoundButtonViewController *)self->_automaticMicModeButton view];
+    [view addSubview:view2];
   }
 }
 
@@ -736,8 +736,8 @@ LABEL_11:
 
 - (void)updateAutoMicModeState
 {
-  v3 = [(RPCCAudioSettingsModuleBackgroundViewController *)self autoMicModeSupported];
-  if (v3)
+  autoMicModeSupported = [(RPCCAudioSettingsModuleBackgroundViewController *)self autoMicModeSupported];
+  if (autoMicModeSupported)
   {
     if (sub_C1A4())
     {
@@ -766,7 +766,7 @@ LABEL_11:
 
   automaticMicModeButton = self->_automaticMicModeButton;
 
-  [(CCUILabeledRoundButtonViewController *)automaticMicModeButton setInoperative:v3 ^ 1];
+  [(CCUILabeledRoundButtonViewController *)automaticMicModeButton setInoperative:autoMicModeSupported ^ 1];
 }
 
 - (void)updateAutomaticMicModeButtonConstraints
@@ -774,17 +774,17 @@ LABEL_11:
   automaticMicModeButton = self->_automaticMicModeButton;
   if (automaticMicModeButton)
   {
-    v14 = [(CCUILabeledRoundButtonViewController *)automaticMicModeButton view];
-    [v14 sizeToFit];
-    v4 = [(RPCCAudioSettingsModuleBackgroundViewController *)self view];
-    [v4 bounds];
+    view = [(CCUILabeledRoundButtonViewController *)automaticMicModeButton view];
+    [view sizeToFit];
+    view2 = [(RPCCAudioSettingsModuleBackgroundViewController *)self view];
+    [view2 bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
 
-    [v14 frame];
-    [v14 setFrame:?];
+    [view frame];
+    [view setFrame:?];
     v13 = +[UIDevice currentDevice];
     [v13 userInterfaceIdiom];
 
@@ -799,13 +799,13 @@ LABEL_11:
     v17.size.height = v12;
     CGRectGetHeight(v17);
     UIPointRoundToViewScale();
-    [v14 setCenter:?];
+    [view setCenter:?];
   }
 }
 
-- (void)automaticMicModeButtonTapped:(id)a3
+- (void)automaticMicModeButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136446466;
@@ -822,17 +822,17 @@ LABEL_11:
   {
     if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(CCUILabeledRoundButtonViewController *)self->_automaticMicModeButton isEnabled];
+      isEnabled = [(CCUILabeledRoundButtonViewController *)self->_automaticMicModeButton isEnabled];
       v9 = 136446722;
       v10 = "[RPCCAudioSettingsModuleBackgroundViewController automaticMicModeButtonTapped:]";
       v11 = 1024;
       v12 = 387;
       v13 = 1024;
-      v14 = v5;
+      v14 = isEnabled;
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %d", &v9, 0x18u);
     }
 
-    v6 = [(CCUILabeledRoundButtonViewController *)self->_automaticMicModeButton isEnabled];
+    isEnabled2 = [(CCUILabeledRoundButtonViewController *)self->_automaticMicModeButton isEnabled];
     v7 = self->_applicationBundleID;
     v8 = sub_C6F8();
     if (!v8)
@@ -840,13 +840,13 @@ LABEL_11:
       sub_1EFEC();
     }
 
-    v8(v6, v7);
+    v8(isEnabled2, v7);
   }
 }
 
-- (void)setAutomaticMicModeSubtitle:(BOOL)a3
+- (void)setAutomaticMicModeSubtitle:(BOOL)subtitle
 {
-  if (a3)
+  if (subtitle)
   {
     v4 = @"CONTROL_CENTER_MICROPHONE_ON";
   }
@@ -860,9 +860,9 @@ LABEL_11:
   [(CCUILabeledRoundButtonViewController *)self->_automaticMicModeButton setSubtitle:v5];
 }
 
-- (void)setAutomaticMicModeGlyphState:(BOOL)a3
+- (void)setAutomaticMicModeGlyphState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = @"animating";
   }

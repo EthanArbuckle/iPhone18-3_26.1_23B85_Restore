@@ -1,21 +1,21 @@
 @interface _EARLmModel
 + (void)initialize;
-+ (void)removeWithDirectory:(id)a3;
-- (BOOL)trainWithData:(id)a3;
-- (BOOL)writeToDirectory:(id)a3;
-- (_EARLmModel)initWithConfiguration:(id)a3 root:(id)a4;
++ (void)removeWithDirectory:(id)directory;
+- (BOOL)trainWithData:(id)data;
+- (BOOL)writeToDirectory:(id)directory;
+- (_EARLmModel)initWithConfiguration:(id)configuration root:(id)root;
 - (double)age;
 - (float)weight;
 - (id).cxx_construct;
-- (id)_initWithModel:(shared_ptr<quasar::LmModel2>)a3;
-- (id)deserializeModelData:(id)a3;
+- (id)_initWithModel:(shared_ptr<quasar::LmModel2>)model;
+- (id)deserializeModelData:(id)data;
 - (id)handle;
-- (id)initFromDirectory:(id)a3;
+- (id)initFromDirectory:(id)directory;
 - (id)metrics;
-- (id)serializedModelWithLanguage:(id)a3 modelData:(id)a4 oovs:(id)a5;
+- (id)serializedModelWithLanguage:(id)language modelData:(id)data oovs:(id)oovs;
 - (shared_ptr<quasar::LmBuildConfig>)buildConfig;
 - (shared_ptr<quasar::LmModel2>)model;
-- (void)setWeight:(float)a3;
+- (void)setWeight:(float)weight;
 @end
 
 @implementation _EARLmModel
@@ -23,19 +23,19 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (id)_initWithModel:(shared_ptr<quasar::LmModel2>)a3
+- (id)_initWithModel:(shared_ptr<quasar::LmModel2>)model
 {
-  ptr = a3.__ptr_;
+  ptr = model.__ptr_;
   v10.receiver = self;
   v10.super_class = _EARLmModel;
-  v4 = [(_EARLmModel *)&v10 init:a3.__ptr_];
+  v4 = [(_EARLmModel *)&v10 init:model.__ptr_];
   v5 = v4;
   if (v4)
   {
@@ -58,25 +58,25 @@
   return v5;
 }
 
-- (_EARLmModel)initWithConfiguration:(id)a3 root:(id)a4
+- (_EARLmModel)initWithConfiguration:(id)configuration root:(id)root
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  rootCopy = root;
   v14.receiver = self;
   v14.super_class = _EARLmModel;
   v8 = [(_EARLmModel *)&v14 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v9 fileExistsAtPath:v6];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v10 = [defaultManager fileExistsAtPath:configurationCopy];
 
     if (v10)
     {
-      if (v6)
+      if (configurationCopy)
       {
-        [v6 ear_toString];
-        if (!v7)
+        [configurationCopy ear_toString];
+        if (!rootCopy)
         {
           goto LABEL_10;
         }
@@ -86,14 +86,14 @@
       {
         buf = 0uLL;
         v16 = 0;
-        if (!v7)
+        if (!rootCopy)
         {
 LABEL_10:
           quasar::makeLmBuildConfig();
         }
       }
 
-      [v7 ear_toString];
+      [rootCopy ear_toString];
       goto LABEL_10;
     }
 
@@ -101,7 +101,7 @@ LABEL_10:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v6;
+      *(&buf + 4) = configurationCopy;
       _os_log_impl(&dword_1B501D000, v11, OS_LOG_TYPE_DEFAULT, "File does not exist %@", &buf, 0xCu);
     }
 
@@ -116,17 +116,17 @@ LABEL_10:
   return v12;
 }
 
-- (id)initFromDirectory:(id)a3
+- (id)initFromDirectory:(id)directory
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  directoryCopy = directory;
   v15.receiver = self;
   v15.super_class = _EARLmModel;
   v5 = [(_EARLmModel *)&v15 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v7 = [v6 fileExistsAtPath:v4];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v7 = [defaultManager fileExistsAtPath:directoryCopy];
 
     if (v7)
     {
@@ -134,9 +134,9 @@ LABEL_10:
       v17 = 0;
       LOBYTE(v13) = 0;
       v14 = 0;
-      if (v4)
+      if (directoryCopy)
       {
-        [v4 ear_toString];
+        [directoryCopy ear_toString];
       }
 
       else
@@ -152,7 +152,7 @@ LABEL_10:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v4;
+      *(&buf + 4) = directoryCopy;
       _os_log_impl(&dword_1B501D000, v8, OS_LOG_TYPE_DEFAULT, "File does not exist %@", &buf, 0xCu);
     }
 
@@ -207,14 +207,14 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)trainWithData:(id)a3
+- (BOOL)trainWithData:(id)data
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy)
   {
-    [v4 data];
+    [dataCopy data];
     v6 = v11;
   }
 
@@ -254,25 +254,25 @@ LABEL_10:
   return v9;
 }
 
-- (void)setWeight:(float)a3
+- (void)setWeight:(float)weight
 {
   ptr = self->_model.__ptr_;
   if (ptr)
   {
-    quasar::LmModel2::setWeight(ptr, a3);
+    quasar::LmModel2::setWeight(ptr, weight);
   }
 }
 
-- (BOOL)writeToDirectory:(id)a3
+- (BOOL)writeToDirectory:(id)directory
 {
   __p[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  directoryCopy = directory;
   ptr = self->_model.__ptr_;
   if (ptr)
   {
-    if (v4)
+    if (directoryCopy)
     {
-      [v4 ear_toString];
+      [directoryCopy ear_toString];
     }
 
     else
@@ -286,13 +286,13 @@ LABEL_10:
   return 0;
 }
 
-+ (void)removeWithDirectory:(id)a3
++ (void)removeWithDirectory:(id)directory
 {
   __p[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  directoryCopy = directory;
+  if (directoryCopy)
   {
-    [v3 ear_toString];
+    [directoryCopy ear_toString];
   }
 
   else
@@ -350,13 +350,13 @@ LABEL_10:
   }
 }
 
-- (id)serializedModelWithLanguage:(id)a3 modelData:(id)a4 oovs:(id)a5
+- (id)serializedModelWithLanguage:(id)language modelData:(id)data oovs:(id)oovs
 {
   v25[5] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+  languageCopy = language;
+  dataCopy = data;
+  oovsCopy = oovs;
+  v11 = [languageCopy stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
 
   ptr = self->_buildConfig.__ptr_;
   if (ptr)
@@ -368,9 +368,9 @@ LABEL_10:
     }
 
     v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v13];
-    v15 = [v9 _ear_sha256];
-    v16 = v15;
-    if (v10 && v11 && v14 && v15)
+    _ear_sha256 = [dataCopy _ear_sha256];
+    v16 = _ear_sha256;
+    if (oovsCopy && v11 && v14 && _ear_sha256)
     {
       v24[0] = @"language";
       v24[1] = @"assetVersion";
@@ -378,10 +378,10 @@ LABEL_10:
       v25[1] = v14;
       v24[2] = @"modelTrainingData";
       v24[3] = @"dataHash";
-      v25[2] = v9;
-      v25[3] = v15;
+      v25[2] = dataCopy;
+      v25[3] = _ear_sha256;
       v24[4] = @"oovs";
-      v25[4] = v10;
+      v25[4] = oovsCopy;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:5];
       v23 = 0;
       v18 = [MEMORY[0x1E696AE40] dataWithPropertyList:v17 format:200 options:0 error:&v23];
@@ -422,10 +422,10 @@ LABEL_10:
   return v18;
 }
 
-- (id)deserializeModelData:(id)a3
+- (id)deserializeModelData:(id)data
 {
   v8 = 0;
-  v3 = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:0 format:0 error:&v8];
+  v3 = [MEMORY[0x1E696AE40] propertyListWithData:data options:0 format:0 error:&v8];
   v4 = v8;
   if (v3)
   {

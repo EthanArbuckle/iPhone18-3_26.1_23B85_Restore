@@ -1,15 +1,15 @@
 @interface RBTargetPropertyDomainRestriction
-- (BOOL)allowsContext:(id)a3 withError:(id *)a4;
+- (BOOL)allowsContext:(id)context withError:(id *)error;
 @end
 
 @implementation RBTargetPropertyDomainRestriction
 
-- (BOOL)allowsContext:(id)a3 withError:(id *)a4
+- (BOOL)allowsContext:(id)context withError:(id *)error
 {
-  v6 = [a3 targetProperties];
-  LOBYTE(a4) = [(RBPropertyDomainRestriction *)self allowsWithProperties:v6 error:a4];
+  targetProperties = [context targetProperties];
+  LOBYTE(error) = [(RBPropertyDomainRestriction *)self allowsWithProperties:targetProperties error:error];
 
-  return a4;
+  return error;
 }
 
 @end

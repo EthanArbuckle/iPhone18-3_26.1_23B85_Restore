@@ -1,13 +1,13 @@
 @interface MPCAssistantSetVolume
-- (void)executeWithUIDs:(id)a3 action:(unint64_t)a4 volumeValue:(float)a5 completion:(id)a6;
+- (void)executeWithUIDs:(id)ds action:(unint64_t)action volumeValue:(float)value completion:(id)completion;
 @end
 
 @implementation MPCAssistantSetVolume
 
-- (void)executeWithUIDs:(id)a3 action:(unint64_t)a4 volumeValue:(float)a5 completion:(id)a6
+- (void)executeWithUIDs:(id)ds action:(unint64_t)action volumeValue:(float)value completion:(id)completion
 {
-  v10 = a3;
-  v35 = a6;
+  dsCopy = ds;
+  completionCopy = completion;
   v11 = objc_alloc(MEMORY[0x1E69B0AE0]);
   v12 = [v11 initWithInitiator:*MEMORY[0x1E69B0968] requestID:0 reason:@"MPCAssistantSetVolume"];
   v13 = dispatch_group_create();
@@ -25,7 +25,7 @@
   v76 = v77;
   v37 = v12;
   v73 = v37;
-  v74 = self;
+  selfCopy = self;
   v16 = v14;
   v75 = v16;
   v17 = _Block_copy(aBlock);
@@ -33,10 +33,10 @@
   v66[1] = 3221225472;
   v66[2] = __71__MPCAssistantSetVolume_executeWithUIDs_action_volumeValue_completion___block_invoke_4;
   v66[3] = &unk_1E8231578;
-  v70 = a5;
-  v18 = v10;
+  valueCopy = value;
+  v18 = dsCopy;
   v67 = v18;
-  v69 = a4;
+  actionCopy = action;
   v34 = v17;
   v68 = v34;
   v36 = _Block_copy(v66);
@@ -50,15 +50,15 @@
   v61 = v19;
   v20 = v15;
   v62 = v20;
-  v64 = a4;
-  v65 = a5;
+  actionCopy2 = action;
+  valueCopy2 = value;
   v21 = _Block_copy(v60);
-  v22 = [MEMORY[0x1E69B0A20] localDeviceInfo];
+  localDeviceInfo = [MEMORY[0x1E69B0A20] localDeviceInfo];
   v58[0] = MEMORY[0x1E69E9820];
   v58[1] = 3221225472;
   v58[2] = __71__MPCAssistantSetVolume_executeWithUIDs_action_volumeValue_completion___block_invoke_11;
   v58[3] = &unk_1E8232998;
-  v23 = v22;
+  v23 = localDeviceInfo;
   v59 = v23;
   v24 = _Block_copy(v58);
   v56[0] = MEMORY[0x1E69E9820];
@@ -112,10 +112,10 @@
   block[3] = &unk_1E8236138;
   block[4] = self;
   v39 = v19;
-  v40 = v35;
+  v40 = completionCopy;
   v41 = &v48;
   v42 = v77;
-  v32 = v35;
+  v32 = completionCopy;
   v33 = v19;
   dispatch_group_notify(v20, MEMORY[0x1E69E96A0], block);
 

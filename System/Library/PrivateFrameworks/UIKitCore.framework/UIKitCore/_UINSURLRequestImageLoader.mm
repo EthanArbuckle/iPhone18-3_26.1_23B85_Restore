@@ -1,41 +1,41 @@
 @interface _UINSURLRequestImageLoader
 - (BOOL)_really_cancel;
-- (_UINSURLRequestImageLoader)initWithURLRequest:(id)a3 session:(id)a4;
+- (_UINSURLRequestImageLoader)initWithURLRequest:(id)request session:(id)session;
 - (id)_error;
-- (void)_really_loadImage:(id)a3;
+- (void)_really_loadImage:(id)image;
 @end
 
 @implementation _UINSURLRequestImageLoader
 
-- (_UINSURLRequestImageLoader)initWithURLRequest:(id)a3 session:(id)a4
+- (_UINSURLRequestImageLoader)initWithURLRequest:(id)request session:(id)session
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  sessionCopy = session;
   v12.receiver = self;
   v12.super_class = _UINSURLRequestImageLoader;
   v9 = [(_UIImageLoader *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
-    objc_storeStrong(&v10->_session, a4);
+    objc_storeStrong(&v9->_request, request);
+    objc_storeStrong(&v10->_session, session);
   }
 
   return v10;
 }
 
-- (void)_really_loadImage:(id)a3
+- (void)_really_loadImage:(id)image
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  imageCopy = image;
   session = self->_session;
   request = self->_request;
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __48___UINSURLRequestImageLoader__really_loadImage___block_invoke;
   v15 = &unk_1E7106530;
-  v16 = self;
-  v7 = v4;
+  selfCopy = self;
+  v7 = imageCopy;
   v17 = v7;
   v8 = [(NSURLSession *)session dataTaskWithRequest:request completionHandler:&v12];
   objc_storeWeak(&self->_task, v8);
@@ -45,7 +45,7 @@
     v10 = [(NSURLRequest *)self->_request HTTPMethod:v12];
     v11 = [(NSURLRequest *)self->_request URL];
     *buf = 134218499;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2113;
     v21 = v10;
     v22 = 2113;
@@ -68,15 +68,15 @@
 {
   v6.receiver = self;
   v6.super_class = _UINSURLRequestImageLoader;
-  v2 = [(_UIImageLoader *)&v6 _error];
-  if ([v2 code] == -999)
+  _error = [(_UIImageLoader *)&v6 _error];
+  if ([_error code] == -999)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = v2;
+    v3 = _error;
   }
 
   v4 = v3;

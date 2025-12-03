@@ -1,17 +1,17 @@
 @interface MRUVisualStylingProvider
 + (id)stylingProviderForLockScreenPlatters;
-- (MRUVisualStylingProvider)initWithLightVisualStylingProvider:(id)a3 darkVisualStylingProvider:(id)a4;
-- (MRUVisualStylingProvider)initWithTraitCollection:(id)a3;
-- (MRUVisualStylingProvider)initWithVisualStylingProvider:(id)a3;
-- (double)alphaForNowPlayingStyle:(int64_t)a3;
-- (id)colorForNowPlayingStyle:(int64_t)a3;
-- (id)colorForStyle:(int64_t)a3 traitCollection:(id)a4;
-- (id)initForRecipe:(int64_t)a3 category:(int64_t)a4;
-- (id)resolvedForTraitCollection:(id)a3;
-- (int64_t)blendModeForNowPlayingStyle:(int64_t)a3;
-- (int64_t)visualStyleForNowPlayingStyle:(int64_t)a3;
-- (void)applyBlendModeToView:(id)a3;
-- (void)applyStyle:(int64_t)a3 toView:(id)a4 traitCollection:(id)a5;
+- (MRUVisualStylingProvider)initWithLightVisualStylingProvider:(id)provider darkVisualStylingProvider:(id)stylingProvider;
+- (MRUVisualStylingProvider)initWithTraitCollection:(id)collection;
+- (MRUVisualStylingProvider)initWithVisualStylingProvider:(id)provider;
+- (double)alphaForNowPlayingStyle:(int64_t)style;
+- (id)colorForNowPlayingStyle:(int64_t)style;
+- (id)colorForStyle:(int64_t)style traitCollection:(id)collection;
+- (id)initForRecipe:(int64_t)recipe category:(int64_t)category;
+- (id)resolvedForTraitCollection:(id)collection;
+- (int64_t)blendModeForNowPlayingStyle:(int64_t)style;
+- (int64_t)visualStyleForNowPlayingStyle:(int64_t)style;
+- (void)applyBlendModeToView:(id)view;
+- (void)applyStyle:(int64_t)style toView:(id)view traitCollection:(id)collection;
 @end
 
 @implementation MRUVisualStylingProvider
@@ -23,52 +23,52 @@
   return v2;
 }
 
-- (MRUVisualStylingProvider)initWithVisualStylingProvider:(id)a3
+- (MRUVisualStylingProvider)initWithVisualStylingProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = MRUVisualStylingProvider;
   v5 = [(MRUVisualStylingProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MRUVisualStylingProvider *)v5 setLightVisualStylingProvider:v4];
-    [(MRUVisualStylingProvider *)v6 setDarkVisualStylingProvider:v4];
+    [(MRUVisualStylingProvider *)v5 setLightVisualStylingProvider:providerCopy];
+    [(MRUVisualStylingProvider *)v6 setDarkVisualStylingProvider:providerCopy];
     [(MRUVisualStylingProvider *)v6 setSupportsVibrancy:1];
   }
 
   return v6;
 }
 
-- (MRUVisualStylingProvider)initWithLightVisualStylingProvider:(id)a3 darkVisualStylingProvider:(id)a4
+- (MRUVisualStylingProvider)initWithLightVisualStylingProvider:(id)provider darkVisualStylingProvider:(id)stylingProvider
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  stylingProviderCopy = stylingProvider;
   v11.receiver = self;
   v11.super_class = MRUVisualStylingProvider;
   v8 = [(MRUVisualStylingProvider *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(MRUVisualStylingProvider *)v8 setLightVisualStylingProvider:v6];
-    [(MRUVisualStylingProvider *)v9 setDarkVisualStylingProvider:v7];
+    [(MRUVisualStylingProvider *)v8 setLightVisualStylingProvider:providerCopy];
+    [(MRUVisualStylingProvider *)v9 setDarkVisualStylingProvider:stylingProviderCopy];
     [(MRUVisualStylingProvider *)v9 setSupportsVibrancy:1];
   }
 
   return v9;
 }
 
-- (id)initForRecipe:(int64_t)a3 category:(int64_t)a4
+- (id)initForRecipe:(int64_t)recipe category:(int64_t)category
 {
   v10.receiver = self;
   v10.super_class = MRUVisualStylingProvider;
   v6 = [(MRUVisualStylingProvider *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E69AE170] _visualStylingProviderForRecipe:a3 category:a4 andUserInterfaceStyle:1];
+    v7 = [MEMORY[0x1E69AE170] _visualStylingProviderForRecipe:recipe category:category andUserInterfaceStyle:1];
     [(MRUVisualStylingProvider *)v6 setLightVisualStylingProvider:v7];
 
-    v8 = [MEMORY[0x1E69AE170] _visualStylingProviderForRecipe:a3 category:a4 andUserInterfaceStyle:2];
+    v8 = [MEMORY[0x1E69AE170] _visualStylingProviderForRecipe:recipe category:category andUserInterfaceStyle:2];
     [(MRUVisualStylingProvider *)v6 setDarkVisualStylingProvider:v8];
 
     [(MRUVisualStylingProvider *)v6 setSupportsVibrancy:1];
@@ -77,34 +77,34 @@
   return v6;
 }
 
-- (MRUVisualStylingProvider)initWithTraitCollection:(id)a3
+- (MRUVisualStylingProvider)initWithTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = [(MRUVisualStylingProvider *)self init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E69DC888] labelColor];
-    v7 = [v6 resolvedColorWithTraitCollection:v4];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v7 = [labelColor resolvedColorWithTraitCollection:collectionCopy];
     primaryColor = v5->_primaryColor;
     v5->_primaryColor = v7;
 
-    v9 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v10 = [v9 resolvedColorWithTraitCollection:v4];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v10 = [secondaryLabelColor resolvedColorWithTraitCollection:collectionCopy];
     secondaryColor = v5->_secondaryColor;
     v5->_secondaryColor = v10;
 
-    v12 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    v13 = [v12 resolvedColorWithTraitCollection:v4];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    v13 = [tertiaryLabelColor resolvedColorWithTraitCollection:collectionCopy];
     tertiaryColor = v5->_tertiaryColor;
     v5->_tertiaryColor = v13;
 
-    v15 = [MEMORY[0x1E69DC888] quaternaryLabelColor];
-    v16 = [v15 resolvedColorWithTraitCollection:v4];
+    quaternaryLabelColor = [MEMORY[0x1E69DC888] quaternaryLabelColor];
+    v16 = [quaternaryLabelColor resolvedColorWithTraitCollection:collectionCopy];
     quaternaryColor = v5->_quaternaryColor;
     v5->_quaternaryColor = v16;
 
-    v18 = [MEMORY[0x1E69DC888] labelColor];
-    v19 = [v18 resolvedColorWithTraitCollection:v4];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    v19 = [labelColor2 resolvedColorWithTraitCollection:collectionCopy];
     separatorColor = v5->_separatorColor;
     v5->_separatorColor = v19;
   }
@@ -112,50 +112,50 @@
   return v5;
 }
 
-- (void)applyStyle:(int64_t)a3 toView:(id)a4 traitCollection:(id)a5
+- (void)applyStyle:(int64_t)style toView:(id)view traitCollection:(id)collection
 {
-  v8 = a4;
-  v11 = [(MRUVisualStylingProvider *)self resolvedForTraitCollection:a5];
+  viewCopy = view;
+  v11 = [(MRUVisualStylingProvider *)self resolvedForTraitCollection:collection];
   if (v11)
   {
-    v9 = [v11 _visualStylingForStyle:{-[MRUVisualStylingProvider visualStyleForNowPlayingStyle:](self, "visualStyleForNowPlayingStyle:", a3)}];
-    [v8 mt_replaceVisualStyling:v9];
+    v9 = [v11 _visualStylingForStyle:{-[MRUVisualStylingProvider visualStyleForNowPlayingStyle:](self, "visualStyleForNowPlayingStyle:", style)}];
+    [viewCopy mt_replaceVisualStyling:v9];
   }
 
   else
   {
-    v9 = [(MRUVisualStylingProvider *)self colorForNowPlayingStyle:a3];
-    [(MRUVisualStylingProvider *)self alphaForNowPlayingStyle:a3];
-    [v8 mru_applyVisualStylingWithColor:v9 alpha:-[MRUVisualStylingProvider blendModeForNowPlayingStyle:](self blendMode:{"blendModeForNowPlayingStyle:", a3), v10}];
+    v9 = [(MRUVisualStylingProvider *)self colorForNowPlayingStyle:style];
+    [(MRUVisualStylingProvider *)self alphaForNowPlayingStyle:style];
+    [viewCopy mru_applyVisualStylingWithColor:v9 alpha:-[MRUVisualStylingProvider blendModeForNowPlayingStyle:](self blendMode:{"blendModeForNowPlayingStyle:", style), v10}];
   }
 }
 
-- (id)colorForStyle:(int64_t)a3 traitCollection:(id)a4
+- (id)colorForStyle:(int64_t)style traitCollection:(id)collection
 {
-  v6 = [(MRUVisualStylingProvider *)self resolvedForTraitCollection:a4];
+  v6 = [(MRUVisualStylingProvider *)self resolvedForTraitCollection:collection];
   if (v6)
   {
-    v7 = [v6 _visualStylingForStyle:{-[MRUVisualStylingProvider visualStyleForNowPlayingStyle:](self, "visualStyleForNowPlayingStyle:", a3)}];
-    v8 = [v7 color];
+    v7 = [v6 _visualStylingForStyle:{-[MRUVisualStylingProvider visualStyleForNowPlayingStyle:](self, "visualStyleForNowPlayingStyle:", style)}];
+    color = [v7 color];
   }
 
   else
   {
-    v8 = [(MRUVisualStylingProvider *)self colorForNowPlayingStyle:a3];
+    color = [(MRUVisualStylingProvider *)self colorForNowPlayingStyle:style];
   }
 
-  return v8;
+  return color;
 }
 
-- (void)applyBlendModeToView:(id)a3
+- (void)applyBlendModeToView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   if ([(MRUVisualStylingProvider *)self supportsVibrancy])
   {
-    v4 = [v7 traitCollection];
-    v5 = [v4 userInterfaceStyle];
+    traitCollection = [viewCopy traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5 == 2)
+    if (userInterfaceStyle == 2)
     {
       v6 = 2;
     }
@@ -171,14 +171,14 @@
     v6 = 0;
   }
 
-  [v7 _setDrawsAsBackdropOverlayWithBlendMode:v6];
+  [viewCopy _setDrawsAsBackdropOverlayWithBlendMode:v6];
 }
 
-- (id)resolvedForTraitCollection:(id)a3
+- (id)resolvedForTraitCollection:(id)collection
 {
-  v4 = [a3 userInterfaceStyle];
+  userInterfaceStyle = [collection userInterfaceStyle];
   v5 = 56;
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     v5 = 64;
   }
@@ -188,24 +188,24 @@
   return v6;
 }
 
-- (int64_t)visualStyleForNowPlayingStyle:(int64_t)a3
+- (int64_t)visualStyleForNowPlayingStyle:(int64_t)style
 {
-  if ((a3 - 1) > 3)
+  if ((style - 1) > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_1A2307FB8[a3 - 1];
+    return qword_1A2307FB8[style - 1];
   }
 }
 
-- (id)colorForNowPlayingStyle:(int64_t)a3
+- (id)colorForNowPlayingStyle:(int64_t)style
 {
-  if (a3 > 1)
+  if (style > 1)
   {
-    switch(a3)
+    switch(style)
     {
       case 2:
         tertiaryColor = self->_tertiaryColor;
@@ -240,9 +240,9 @@
     goto LABEL_16;
   }
 
-  if (a3)
+  if (style)
   {
-    if (a3 != 1)
+    if (style != 1)
     {
       goto LABEL_17;
     }
@@ -272,11 +272,11 @@ LABEL_17:
   return self;
 }
 
-- (int64_t)blendModeForNowPlayingStyle:(int64_t)a3
+- (int64_t)blendModeForNowPlayingStyle:(int64_t)style
 {
-  if ([(MRUVisualStylingProvider *)self supportsVibrancy]&& (a3 - 1) <= 3)
+  if ([(MRUVisualStylingProvider *)self supportsVibrancy]&& (style - 1) <= 3)
   {
-    return qword_1A2307FD8[a3 - 1];
+    return qword_1A2307FD8[style - 1];
   }
 
   else
@@ -285,13 +285,13 @@ LABEL_17:
   }
 }
 
-- (double)alphaForNowPlayingStyle:(int64_t)a3
+- (double)alphaForNowPlayingStyle:(int64_t)style
 {
-  v4 = [(MRUVisualStylingProvider *)self supportsVibrancy];
+  supportsVibrancy = [(MRUVisualStylingProvider *)self supportsVibrancy];
   result = 1.0;
-  if (v4 && (a3 - 1) <= 3)
+  if (supportsVibrancy && (style - 1) <= 3)
   {
-    return dbl_1A2307FF8[a3 - 1];
+    return dbl_1A2307FF8[style - 1];
   }
 
   return result;

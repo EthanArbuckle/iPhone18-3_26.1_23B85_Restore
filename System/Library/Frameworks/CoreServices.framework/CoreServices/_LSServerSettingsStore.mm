@@ -1,17 +1,17 @@
 @interface _LSServerSettingsStore
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)resetUserElectionsWithError:(id *)a3;
-- (BOOL)setUserElection:(unsigned __int8)a3 forExtensionKey:(id)a4 error:(id *)a5;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)resetUserElectionsWithError:(id *)error;
+- (BOOL)setUserElection:(unsigned __int8)election forExtensionKey:(id)key error:(id *)error;
 - (_LSServerSettingsStore)init;
-- (id)settingsStoreConfigurationForProcessWithAuditToken:(id *)a3;
+- (id)settingsStoreConfigurationForProcessWithAuditToken:(id *)token;
 - (void)_internalQueue_initializeDatabase;
-- (void)_internalQueue_insertIdentifier:(id)a3 userElection:(unsigned __int8)a4 timestamp:(double)a5;
+- (void)_internalQueue_insertIdentifier:(id)identifier userElection:(unsigned __int8)election timestamp:(double)timestamp;
 - (void)_internalQueue_loadDatabase;
 - (void)_internalQueue_loadPluginKitDatabase;
 - (void)_internalQueue_resetUserElection;
 - (void)postSettingsChangeNotification;
-- (void)resetUserElectionsWithReply:(id)a3;
-- (void)userElectionForExtensionKey:(id)a3 reply:(id)a4;
+- (void)resetUserElectionsWithReply:(id)reply;
+- (void)userElectionForExtensionKey:(id)key reply:(id)reply;
 @end
 
 @implementation _LSServerSettingsStore
@@ -19,13 +19,13 @@
 - (void)_internalQueue_loadDatabase
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(_LSInProcessSettingsStore *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(_LSInProcessSettingsStore *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v4 = [__LSDefaultsGetSharedInstance() settingsStoreFileURL];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v4 path];
-  v7 = [v5 fileExistsAtPath:v6];
+  settingsStoreFileURL = [__LSDefaultsGetSharedInstance() settingsStoreFileURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [settingsStoreFileURL path];
+  v7 = [defaultManager fileExistsAtPath:path];
 
   if ((v7 & 1) == 0)
   {
@@ -40,15 +40,15 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *v12 = 138412546;
-    *&v12[4] = v4;
+    *&v12[4] = settingsStoreFileURL;
     v13 = 1024;
     v14 = v7 ^ 1;
     _os_log_impl(&dword_18162D000, v9, OS_LOG_TYPE_INFO, "Loading readwrite settings database from: '%@', will initialize: %d", v12, 0x12u);
   }
 
   *v12 = 0;
-  v10 = v4;
-  sqlite3_open_v2([v4 fileSystemRepresentation], v12, 6, 0);
+  v10 = settingsStoreFileURL;
+  sqlite3_open_v2([settingsStoreFileURL fileSystemRepresentation], v12, 6, 0);
   [(_LSInProcessSettingsStore *)self setDatabase:*v12];
   if ((v7 & 1) == 0)
   {
@@ -69,9 +69,9 @@
   v2 = [(_LSInProcessSettingsStore *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696B0D8] anonymousListener];
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     listener = v2->_listener;
-    v2->_listener = v3;
+    v2->_listener = anonymousListener;
 
     [(NSXPCListener *)v2->_listener setDelegate:v2];
     [(NSXPCListener *)v2->_listener resume];
@@ -80,42 +80,42 @@
   return v2;
 }
 
-- (id)settingsStoreConfigurationForProcessWithAuditToken:(id *)a3
+- (id)settingsStoreConfigurationForProcessWithAuditToken:(id *)token
 {
   v4 = [LSSettingsStoreConfiguration alloc];
-  v5 = [(_LSServerSettingsStore *)self listener];
-  v6 = [v5 endpoint];
-  v7 = [(LSSettingsStoreConfiguration *)v4 initWithEndpoint:v6];
+  listener = [(_LSServerSettingsStore *)self listener];
+  endpoint = [listener endpoint];
+  v7 = [(LSSettingsStoreConfiguration *)v4 initWithEndpoint:endpoint];
 
   return v7;
 }
 
-- (BOOL)setUserElection:(unsigned __int8)a3 forExtensionKey:(id)a4 error:(id *)a5
+- (BOOL)setUserElection:(unsigned __int8)election forExtensionKey:(id)key error:(id *)error
 {
-  v7 = a4;
-  v8 = [(_LSInProcessSettingsStore *)self internalQueue];
+  keyCopy = key;
+  internalQueue = [(_LSInProcessSettingsStore *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64___LSServerSettingsStore_setUserElection_forExtensionKey_error___block_invoke;
   block[3] = &unk_1E6A1CF98;
   block[4] = self;
-  v12 = v7;
-  v13 = a3;
-  v9 = v7;
-  dispatch_sync(v8, block);
+  v12 = keyCopy;
+  electionCopy = election;
+  v9 = keyCopy;
+  dispatch_sync(internalQueue, block);
 
   return 1;
 }
 
-- (BOOL)resetUserElectionsWithError:(id *)a3
+- (BOOL)resetUserElectionsWithError:(id *)error
 {
-  v4 = [(_LSInProcessSettingsStore *)self internalQueue];
+  internalQueue = [(_LSInProcessSettingsStore *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54___LSServerSettingsStore_resetUserElectionsWithError___block_invoke;
   block[3] = &unk_1E6A1A830;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(internalQueue, block);
 
   return 1;
 }
@@ -131,19 +131,19 @@
 - (void)_internalQueue_initializeDatabase
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_5();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0x12u);
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_internalQueue_insertIdentifier:(id)a3 userElection:(unsigned __int8)a4 timestamp:(double)a5
+- (void)_internalQueue_insertIdentifier:(id)identifier userElection:(unsigned __int8)election timestamp:(double)timestamp
 {
-  v6 = a4;
+  electionCopy = election;
   v19 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [(_LSInProcessSettingsStore *)self internalQueue];
-  dispatch_assert_queue_V2(v10);
+  identifierCopy = identifier;
+  internalQueue = [(_LSInProcessSettingsStore *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   ppStmt = 0;
   if (sqlite3_prepare_v2([(_LSInProcessSettingsStore *)self database], "INSERT OR REPLACE INTO LegacyElection (identifier, userElection, pkTimestamp) VALUES (?, ?, ?)", -1, &ppStmt, 0))
@@ -159,16 +159,16 @@
   else
   {
     v13 = ppStmt;
-    v14 = v9;
-    sqlite3_bind_text(v13, 1, [v9 UTF8String], -1, 0);
-    sqlite3_bind_int64(ppStmt, 2, v6);
-    sqlite3_bind_double(ppStmt, 3, a5);
+    v14 = identifierCopy;
+    sqlite3_bind_text(v13, 1, [identifierCopy UTF8String], -1, 0);
+    sqlite3_bind_int64(ppStmt, 2, electionCopy);
+    sqlite3_bind_double(ppStmt, 3, timestamp);
   }
 
   if (sqlite3_step(ppStmt) != 101)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"LSSettingsStore.mm" lineNumber:525 description:{@"failed to import user elcection '%ld' for extension record: %@", v6, v9}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSSettingsStore.mm" lineNumber:525 description:{@"failed to import user elcection '%ld' for extension record: %@", electionCopy, identifierCopy}];
   }
 
   sqlite3_finalize(ppStmt);
@@ -179,8 +179,8 @@
 - (void)_internalQueue_resetUserElection
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [(_LSInProcessSettingsStore *)self internalQueue];
-  dispatch_assert_queue_V2(v4);
+  internalQueue = [(_LSInProcessSettingsStore *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   ppStmt = 0;
   if (sqlite3_prepare_v2([(_LSInProcessSettingsStore *)self database], "DELETE FROM Election", -1, &ppStmt, 0))
@@ -196,48 +196,48 @@
   v7 = sqlite3_step(ppStmt);
   if (v7 != 8 && v7 != 101)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"LSSettingsStore.mm" lineNumber:545 description:@"failed to reset user election"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSSettingsStore.mm" lineNumber:545 description:@"failed to reset user election"];
   }
 
   sqlite3_finalize(ppStmt);
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
-  v7 = v6;
+  connectionCopy = connection;
+  v7 = connectionCopy;
   listener = self->_listener;
-  if (listener == a3)
+  if (listener == listener)
   {
-    [v6 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v9 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1EEFB22B0];
     [v7 setExportedInterface:v9];
 
     [v7 resume];
   }
 
-  return listener == a3;
+  return listener == listener;
 }
 
-- (void)userElectionForExtensionKey:(id)a3 reply:(id)a4
+- (void)userElectionForExtensionKey:(id)key reply:(id)reply
 {
-  v7 = a3;
-  v6 = a4;
-  (*(v6 + 2))(v6, [(_LSInProcessSettingsStore *)self userElectionForExtensionKey:v7], 0);
+  keyCopy = key;
+  replyCopy = reply;
+  (*(replyCopy + 2))(replyCopy, [(_LSInProcessSettingsStore *)self userElectionForExtensionKey:keyCopy], 0);
 }
 
-- (void)resetUserElectionsWithReply:(id)a3
+- (void)resetUserElectionsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v10 = 0u;
   v11 = 0u;
-  v5 = [MEMORY[0x1E696B0B8] currentConnection];
-  v6 = v5;
-  if (v5)
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v6 = currentConnection;
+  if (currentConnection)
   {
-    [v5 auditToken];
+    [currentConnection auditToken];
   }
 
   else
@@ -256,13 +256,13 @@
       [(_LSServerSettingsStore *)self postSettingsChangeNotification];
     }
 
-    v4[2](v4, v8);
+    replyCopy[2](replyCopy, v8);
   }
 
   else
   {
     v8 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[_LSServerSettingsStore resetUserElectionsWithReply:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/SettingsStore/LSSettingsStore.mm", 599);
-    v4[2](v4, v8);
+    replyCopy[2](replyCopy, v8);
   }
 }
 

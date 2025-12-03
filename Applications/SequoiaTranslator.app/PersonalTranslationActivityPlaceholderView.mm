@@ -1,19 +1,19 @@
 @interface PersonalTranslationActivityPlaceholderView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
-- (_TtC17SequoiaTranslator42PersonalTranslationActivityPlaceholderView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
+- (_TtC17SequoiaTranslator42PersonalTranslationActivityPlaceholderView)initWithCoder:(id)coder;
 @end
 
 @implementation PersonalTranslationActivityPlaceholderView
 
-- (_TtC17SequoiaTranslator42PersonalTranslationActivityPlaceholderView)initWithCoder:(id)a3
+- (_TtC17SequoiaTranslator42PersonalTranslationActivityPlaceholderView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
   v4 = 40.0;
   v5 = 30.0;

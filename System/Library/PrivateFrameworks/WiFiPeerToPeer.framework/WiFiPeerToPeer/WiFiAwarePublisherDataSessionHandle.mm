@@ -1,55 +1,55 @@
 @interface WiFiAwarePublisherDataSessionHandle
-- (BOOL)isEqual:(id)a3;
-- (WiFiAwarePublisherDataSessionHandle)initWithCoder:(id)a3;
-- (WiFiAwarePublisherDataSessionHandle)initWithDatapathID:(unsigned __int8)a3 initiatorDataAddress:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (WiFiAwarePublisherDataSessionHandle)initWithCoder:(id)coder;
+- (WiFiAwarePublisherDataSessionHandle)initWithDatapathID:(unsigned __int8)d initiatorDataAddress:(id)address;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WiFiAwarePublisherDataSessionHandle
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedChar:{-[WiFiAwarePublisherDataSessionHandle datapathID](self, "datapathID")}];
-  [v5 encodeObject:v6 forKey:@"WiFiAwarePublisherDataSessionHandle.datapathID"];
+  [coderCopy encodeObject:v6 forKey:@"WiFiAwarePublisherDataSessionHandle.datapathID"];
 
-  v7 = [(WiFiAwarePublisherDataSessionHandle *)self initiatorDataAddress];
-  [v5 encodeObject:v7 forKey:@"WiFiAwarePublisherDataSessionHandle.initiatorDataAddress"];
+  initiatorDataAddress = [(WiFiAwarePublisherDataSessionHandle *)self initiatorDataAddress];
+  [coderCopy encodeObject:initiatorDataAddress forKey:@"WiFiAwarePublisherDataSessionHandle.initiatorDataAddress"];
 }
 
-- (WiFiAwarePublisherDataSessionHandle)initWithCoder:(id)a3
+- (WiFiAwarePublisherDataSessionHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = decodeInstanceIDFrom(v4, @"WiFiAwarePublisherDataSessionHandle.datapathID");
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublisherDataSessionHandle.initiatorDataAddress"];
+  coderCopy = coder;
+  v5 = decodeInstanceIDFrom(coderCopy, @"WiFiAwarePublisherDataSessionHandle.datapathID");
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublisherDataSessionHandle.initiatorDataAddress"];
 
   v7 = [(WiFiAwarePublisherDataSessionHandle *)self initWithDatapathID:v5 initiatorDataAddress:v6];
   return v7;
 }
 
-- (WiFiAwarePublisherDataSessionHandle)initWithDatapathID:(unsigned __int8)a3 initiatorDataAddress:(id)a4
+- (WiFiAwarePublisherDataSessionHandle)initWithDatapathID:(unsigned __int8)d initiatorDataAddress:(id)address
 {
-  v7 = a4;
+  addressCopy = address;
   v11.receiver = self;
   v11.super_class = WiFiAwarePublisherDataSessionHandle;
   v8 = [(WiFiAwarePublisherDataSessionHandle *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_datapathID = a3;
-    objc_storeStrong(&v8->_initiatorDataAddress, a4);
+    v8->_datapathID = d;
+    objc_storeStrong(&v8->_initiatorDataAddress, address);
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 0;
 LABEL_7:
@@ -65,13 +65,13 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v5 = v4;
-  v6 = [(WiFiAwarePublisherDataSessionHandle *)self datapathID];
-  if (v6 == [(WiFiAwarePublisherDataSessionHandle *)v5 datapathID])
+  v5 = equalCopy;
+  datapathID = [(WiFiAwarePublisherDataSessionHandle *)self datapathID];
+  if (datapathID == [(WiFiAwarePublisherDataSessionHandle *)v5 datapathID])
   {
-    v7 = [(WiFiAwarePublisherDataSessionHandle *)self initiatorDataAddress];
-    v8 = [(WiFiAwarePublisherDataSessionHandle *)v5 initiatorDataAddress];
-    v9 = [v7 isEqual:v8];
+    initiatorDataAddress = [(WiFiAwarePublisherDataSessionHandle *)self initiatorDataAddress];
+    initiatorDataAddress2 = [(WiFiAwarePublisherDataSessionHandle *)v5 initiatorDataAddress];
+    v9 = [initiatorDataAddress isEqual:initiatorDataAddress2];
 
     if (v9)
     {
@@ -89,8 +89,8 @@ LABEL_9:
 {
   v3 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{-[WiFiAwarePublisherDataSessionHandle datapathID](self, "datapathID")}];
   v4 = [v3 hash];
-  v5 = [(WiFiAwarePublisherDataSessionHandle *)self initiatorDataAddress];
-  v6 = [v5 hash];
+  initiatorDataAddress = [(WiFiAwarePublisherDataSessionHandle *)self initiatorDataAddress];
+  v6 = [initiatorDataAddress hash];
 
   return v6 ^ v4;
 }
@@ -98,9 +98,9 @@ LABEL_9:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(WiFiAwarePublisherDataSessionHandle *)self datapathID];
-  v5 = [(WiFiAwarePublisherDataSessionHandle *)self initiatorDataAddress];
-  v6 = [v3 stringWithFormat:@"<WiFiAwarePublisherDataSessionHandle: ID=%u, initiator=%@>", v4, v5];
+  datapathID = [(WiFiAwarePublisherDataSessionHandle *)self datapathID];
+  initiatorDataAddress = [(WiFiAwarePublisherDataSessionHandle *)self initiatorDataAddress];
+  v6 = [v3 stringWithFormat:@"<WiFiAwarePublisherDataSessionHandle: ID=%u, initiator=%@>", datapathID, initiatorDataAddress];
 
   return v6;
 }

@@ -1,10 +1,10 @@
 @interface PXHitTestTransparentView
-- (BOOL)_isPoint:(CGPoint)a3 insideView:(id)a4 withEvent:(id)a5 adjustedPoint:(CGPoint *)a6;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (PXHitTestTransparentView)initWithFrame:(CGRect)a3;
+- (BOOL)_isPoint:(CGPoint)point insideView:(id)view withEvent:(id)event adjustedPoint:(CGPoint *)adjustedPoint;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (PXHitTestTransparentView)initWithFrame:(CGRect)frame;
 - (PXHitTestTransparentViewDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (int64_t)_hitTestBehaviorForView:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (int64_t)_hitTestBehaviorForView:(id)view;
 @end
 
 @implementation PXHitTestTransparentView
@@ -16,46 +16,46 @@
   return WeakRetained;
 }
 
-- (int64_t)_hitTestBehaviorForView:(id)a3
+- (int64_t)_hitTestBehaviorForView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  viewCopy = view;
+  v5 = viewCopy;
+  if (viewCopy == self)
   {
     v7 = 1;
   }
 
-  else if (([(PXHitTestTransparentView *)v4 isHidden]& 1) != 0 || ([(PXHitTestTransparentView *)v5 alpha], v6 == 0.0))
+  else if (([(PXHitTestTransparentView *)viewCopy isHidden]& 1) != 0 || ([(PXHitTestTransparentView *)v5 alpha], v6 == 0.0))
   {
     v7 = 2;
   }
 
   else
   {
-    v8 = [(PXHitTestTransparentView *)self delegate];
-    v7 = [v8 hitTestTransparentView:self hitTestBehaviorForView:v5];
+    delegate = [(PXHitTestTransparentView *)self delegate];
+    v7 = [delegate hitTestTransparentView:self hitTestBehaviorForView:v5];
   }
 
   return v7;
 }
 
-- (BOOL)_isPoint:(CGPoint)a3 insideView:(id)a4 withEvent:(id)a5 adjustedPoint:(CGPoint *)a6
+- (BOOL)_isPoint:(CGPoint)point insideView:(id)view withEvent:(id)event adjustedPoint:(CGPoint *)adjustedPoint
 {
-  v7 = a4;
-  v8 = a5;
-  [v7 bounds];
+  viewCopy = view;
+  eventCopy = event;
+  [viewCopy bounds];
   CGRectInset(v10, 1.0, 1.0);
   PXRectClampPoint();
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v22.receiver = self;
   v22.super_class = PXHitTestTransparentView;
-  if ([(PXHitTestTransparentView *)&v22 pointInside:v8 withEvent:x, y])
+  if ([(PXHitTestTransparentView *)&v22 pointInside:eventCopy withEvent:x, y])
   {
     v18 = 0;
     v19 = &v18;
@@ -74,7 +74,7 @@
     v14 = a2;
     v15 = x;
     v16 = y;
-    v12 = v8;
+    v12 = eventCopy;
     v13 = &v18;
     [(PXHitTestTransparentView *)self px_enumerateDescendantSubviewsPassingTest:v17 usingBlock:v11];
     v9 = *(v19 + 24);
@@ -118,15 +118,15 @@ void __50__PXHitTestTransparentView_pointInside_withEvent___block_invoke_2(uint6
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  eventCopy = event;
   v26.receiver = self;
   v26.super_class = PXHitTestTransparentView;
-  v8 = [(PXHitTestTransparentView *)&v26 hitTest:v7 withEvent:x, y];
+  v8 = [(PXHitTestTransparentView *)&v26 hitTest:eventCopy withEvent:x, y];
   v9 = v8;
   if (v8 == self)
   {
@@ -134,8 +134,8 @@ void __50__PXHitTestTransparentView_pointInside_withEvent___block_invoke_2(uint6
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = [(PXHitTestTransparentView *)self subviews];
-    v12 = [v11 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    subviews = [(PXHitTestTransparentView *)self subviews];
+    v12 = [subviews countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v12)
     {
       v13 = v12;
@@ -146,22 +146,22 @@ void __50__PXHitTestTransparentView_pointInside_withEvent___block_invoke_2(uint6
         {
           if (*v23 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(subviews);
           }
 
           v16 = *(*(&v22 + 1) + 8 * i);
           [v16 convertPoint:self fromView:{x, y, 0, 0}];
           v20 = v17;
           v21 = v18;
-          if ([(PXHitTestTransparentView *)self _isPoint:v16 insideView:v7 withEvent:&v20 adjustedPoint:?])
+          if ([(PXHitTestTransparentView *)self _isPoint:v16 insideView:eventCopy withEvent:&v20 adjustedPoint:?])
           {
-            v10 = [v16 hitTest:v7 withEvent:{v20, v21}];
+            v10 = [v16 hitTest:eventCopy withEvent:{v20, v21}];
 
             goto LABEL_13;
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v13 = [subviews countByEnumeratingWithState:&v22 objects:v27 count:16];
         if (v13)
         {
           continue;
@@ -184,15 +184,15 @@ LABEL_13:
   return v10;
 }
 
-- (PXHitTestTransparentView)initWithFrame:(CGRect)a3
+- (PXHitTestTransparentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PXHitTestTransparentView;
-  v3 = [(PXHitTestTransparentView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXHitTestTransparentView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [(PXHitTestTransparentView *)v3 layer];
-    [v4 setAllowsGroupOpacity:0];
+    layer = [(PXHitTestTransparentView *)v3 layer];
+    [layer setAllowsGroupOpacity:0];
 
     sub_1A524D1F4();
   }

@@ -1,15 +1,15 @@
 @interface CDMUaaPNLModelBundleFilter
-+ (id)selectModelBundlesForLoadedAppModelBundles:(id)a3;
++ (id)selectModelBundlesForLoadedAppModelBundles:(id)bundles;
 @end
 
 @implementation CDMUaaPNLModelBundleFilter
 
-+ (id)selectModelBundlesForLoadedAppModelBundles:(id)a3
++ (id)selectModelBundlesForLoadedAppModelBundles:(id)bundles
 {
-  v3 = a3;
-  if ([v3 count])
+  bundlesCopy = bundles;
+  if ([bundlesCopy count])
   {
-    v4 = v3;
+    v4 = bundlesCopy;
   }
 
   else

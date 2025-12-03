@@ -1,26 +1,26 @@
 @interface FavoriteItem
 + (OS_os_log)log;
-+ (id)itemForAccount:(id)a3;
++ (id)itemForAccount:(id)account;
 + (id)itemForOutbox;
-+ (id)itemFromDictionary:(id)a3;
++ (id)itemFromDictionary:(id)dictionary;
 - (BOOL)isExpandable;
 - (BOOL)isExpanded;
-- (FavoriteItem)initWithDictionary:(id)a3;
-- (FavoriteItem)initWithType:(int64_t)a3;
+- (FavoriteItem)initWithDictionary:(id)dictionary;
+- (FavoriteItem)initWithType:(int64_t)type;
 - (NSString)ef_publicDescription;
 - (NSString)itemID;
 - (NSString)itemURLString;
 - (NSString)itemUUID;
-- (id)_descriptionFullyRedacted:(BOOL)a3;
+- (id)_descriptionFullyRedacted:(BOOL)redacted;
 - (id)badgeCountString;
 - (id)countQueryPredicate;
 - (id)dictionaryRepresentation;
 - (id)dictionaryRepresentationRemovingSyncKeys;
 - (id)representingMailboxes;
 - (id)serverCountMailboxScope;
-- (void)setExpanded:(BOOL)a3;
-- (void)wasAddedToCollection:(id)a3;
-- (void)wasRemovedFromCollecion:(id)a3;
+- (void)setExpanded:(BOOL)expanded;
+- (void)wasAddedToCollection:(id)collection;
+- (void)wasRemovedFromCollecion:(id)collecion;
 @end
 
 @implementation FavoriteItem
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000142FC;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100185528 != -1)
   {
     dispatch_once(&qword_100185528, block);
@@ -42,10 +42,10 @@
   return v2;
 }
 
-+ (id)itemForAccount:(id)a3
++ (id)itemForAccount:(id)account
 {
-  v3 = a3;
-  v4 = [[FavoriteItem_Account alloc] initWithAccount:v3];
+  accountCopy = account;
+  v4 = [[FavoriteItem_Account alloc] initWithAccount:accountCopy];
 
   return v4;
 }
@@ -57,7 +57,7 @@
   return v2;
 }
 
-- (FavoriteItem)initWithType:(int64_t)a3
+- (FavoriteItem)initWithType:(int64_t)type
 {
   v7.receiver = self;
   v7.super_class = FavoriteItem;
@@ -65,7 +65,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
+    v4->_type = type;
     v4->_lock._os_unfair_lock_opaque = 0;
     v4->_shouldSync = [objc_opt_class() _defaultShouldSync];
     v5->_showUnreadCount = 1;
@@ -74,20 +74,20 @@
   return v5;
 }
 
-- (FavoriteItem)initWithDictionary:(id)a3
+- (FavoriteItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = FavoriteItem;
   v5 = [(FavoriteItem *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"type"];
+    v6 = [dictionaryCopy objectForKey:@"type"];
     v5->_type = [v6 integerValue];
 
     v5->_lock._os_unfair_lock_opaque = 0;
     v5->_showUnreadCount = 1;
-    v7 = [v4 valueForKey:@"selected"];
+    v7 = [dictionaryCopy valueForKey:@"selected"];
     if (v7)
     {
       [(FavoriteItem *)v5 setSelected:NSBOOLFromString()];
@@ -98,51 +98,51 @@
       [(FavoriteItem *)v5 setSelected:1];
     }
 
-    v8 = [v4 valueForKey:@"shouldSync"];
+    v8 = [dictionaryCopy valueForKey:@"shouldSync"];
 
     if (v8)
     {
-      v9 = NSBOOLFromString();
+      _defaultShouldSync = NSBOOLFromString();
     }
 
     else
     {
-      v9 = [objc_opt_class() _defaultShouldSync];
+      _defaultShouldSync = [objc_opt_class() _defaultShouldSync];
     }
 
-    v5->_shouldSync = v9;
-    v10 = [v4 valueForKey:@"expanded"];
+    v5->_shouldSync = _defaultShouldSync;
+    v10 = [dictionaryCopy valueForKey:@"expanded"];
 
     if (v10)
     {
-      v11 = NSBOOLFromString();
+      _defaultShouldExpand = NSBOOLFromString();
     }
 
     else
     {
-      v11 = [objc_opt_class() _defaultShouldExpand];
+      _defaultShouldExpand = [objc_opt_class() _defaultShouldExpand];
     }
 
-    v5->_expanded = v11;
+    v5->_expanded = _defaultShouldExpand;
   }
 
   return v5;
 }
 
-+ (id)itemFromDictionary:(id)a3
++ (id)itemFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"type"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"type"];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
-    if ((v6 - 7) <= 0xFFFFFFFFFFFFFFF9)
+    integerValue = [v4 integerValue];
+    if ((integerValue - 7) <= 0xFFFFFFFFFFFFFFF9)
     {
       __assert_rtn("+[FavoriteItem itemFromDictionary:]", "FavoriteItem.m", 169, "type > 0 && type < FavoriteItemTypeMaxValue");
     }
 
-    v7 = [objc_alloc(*off_100156BA8[v6 - 1]) initWithDictionary:v3];
+    v7 = [objc_alloc(*off_100156BA8[integerValue - 1]) initWithDictionary:dictionaryCopy];
   }
 
   else
@@ -182,18 +182,18 @@
       [v3 setObject:v7 forKey:@"shouldSync"];
     }
 
-    v8 = +[EFDevice currentDevice];
-    if ([v8 isInternal])
+    displayName2 = +[EFDevice currentDevice];
+    if ([displayName2 isInternal])
     {
-      v9 = [(FavoriteItem *)self displayName];
+      displayName = [(FavoriteItem *)self displayName];
 
-      if (!v9)
+      if (!displayName)
       {
         goto LABEL_10;
       }
 
-      v8 = [(FavoriteItem *)self displayName];
-      [v3 setObject:v8 forKey:@"displayName"];
+      displayName2 = [(FavoriteItem *)self displayName];
+      [v3 setObject:displayName2 forKey:@"displayName"];
     }
   }
 
@@ -209,8 +209,8 @@ LABEL_10:
 
 - (id)dictionaryRepresentationRemovingSyncKeys
 {
-  v2 = [(FavoriteItem *)self dictionaryRepresentation];
-  v3 = [v2 mutableCopy];
+  dictionaryRepresentation = [(FavoriteItem *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation mutableCopy];
 
   v4 = NSStringFromBOOL();
   [v3 setObject:v4 forKeyedSubscript:@"shouldSync"];
@@ -235,8 +235,8 @@ LABEL_10:
       collectionID = &stru_10015BEC8;
     }
 
-    v5 = [(FavoriteItem *)self itemUUID];
-    v6 = [NSString stringWithFormat:@"%@-%@", collectionID, v5];
+    itemUUID = [(FavoriteItem *)self itemUUID];
+    v6 = [NSString stringWithFormat:@"%@-%@", collectionID, itemUUID];
     v7 = self->_itemID;
     self->_itemID = v6;
 
@@ -263,26 +263,26 @@ LABEL_10:
 
 - (NSString)itemURLString
 {
-  v2 = [(FavoriteItem *)self representingMailbox];
-  v3 = [v2 URLString];
+  representingMailbox = [(FavoriteItem *)self representingMailbox];
+  uRLString = [representingMailbox URLString];
 
-  return v3;
+  return uRLString;
 }
 
 - (id)badgeCountString
 {
   v3 = [NSBundle bundleWithIdentifier:@"com.apple.Message"];
   v4 = [v3 localizedStringForKey:@"UNREAD_COUNT_FORMAT%1$lu" value:&stru_10015BEC8 table:@"Main"];
-  v5 = [(FavoriteItem *)self badgeCount];
-  v6 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v4, [v5 integerValue]);
+  badgeCount = [(FavoriteItem *)self badgeCount];
+  v6 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v4, [badgeCount integerValue]);
 
   return v6;
 }
 
 - (id)countQueryPredicate
 {
-  v2 = [(FavoriteItem *)self representingMailboxes];
-  v3 = [v2 ef_mapSelector:"objectID"];
+  representingMailboxes = [(FavoriteItem *)self representingMailboxes];
+  v3 = [representingMailboxes ef_mapSelector:"objectID"];
 
   v4 = [EMMessageListItemPredicates predicateForMessagesInMailboxesWithObjectIDs:v3];
   v5 = +[EMMessageListItemPredicates predicateForUnreadMessages];
@@ -296,8 +296,8 @@ LABEL_10:
 
 - (id)serverCountMailboxScope
 {
-  v2 = [(FavoriteItem *)self representingMailboxes];
-  v3 = [v2 ef_mapSelector:"objectID"];
+  representingMailboxes = [(FavoriteItem *)self representingMailboxes];
+  v3 = [representingMailboxes ef_mapSelector:"objectID"];
   v4 = [EMMailboxScope mailboxScopeForMailboxObjectIDs:v3 forExclusion:0];
 
   return v4;
@@ -305,11 +305,11 @@ LABEL_10:
 
 - (id)representingMailboxes
 {
-  v2 = [(FavoriteItem *)self representingMailbox];
-  v3 = v2;
-  if (v2)
+  representingMailbox = [(FavoriteItem *)self representingMailbox];
+  v3 = representingMailbox;
+  if (representingMailbox)
   {
-    v6 = v2;
+    v6 = representingMailbox;
     v4 = [NSArray arrayWithObjects:&v6 count:1];
   }
 
@@ -321,15 +321,15 @@ LABEL_10:
   return v4;
 }
 
-- (void)wasAddedToCollection:(id)a3
+- (void)wasAddedToCollection:(id)collection
 {
-  v6 = a3;
-  v4 = [v6 uniqueId];
+  collectionCopy = collection;
+  uniqueId = [collectionCopy uniqueId];
   collectionID = self->_collectionID;
-  self->_collectionID = v4;
+  self->_collectionID = uniqueId;
 }
 
-- (void)wasRemovedFromCollecion:(id)a3
+- (void)wasRemovedFromCollecion:(id)collecion
 {
   collectionID = self->_collectionID;
   self->_collectionID = 0;
@@ -337,10 +337,10 @@ LABEL_10:
 
 - (BOOL)isExpandable
 {
-  v2 = [(FavoriteItem *)self representingMailbox];
-  v3 = [v2 hasChildren];
+  representingMailbox = [(FavoriteItem *)self representingMailbox];
+  hasChildren = [representingMailbox hasChildren];
 
-  return v3;
+  return hasChildren;
 }
 
 - (BOOL)isExpanded
@@ -351,30 +351,30 @@ LABEL_10:
   return expanded;
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  v3 = a3;
-  if (![(FavoriteItem *)self isExpandable]&& v3)
+  expandedCopy = expanded;
+  if (![(FavoriteItem *)self isExpandable]&& expandedCopy)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_1000D12EC();
     }
 
-    LOBYTE(v3) = 0;
+    LOBYTE(expandedCopy) = 0;
   }
 
   os_unfair_lock_lock(&self->_lock);
-  self->_expanded = v3;
+  self->_expanded = expandedCopy;
   os_unfair_lock_unlock(&self->_lock);
 }
 
 - (NSString)ef_publicDescription
 {
   v3 = +[EFDevice currentDevice];
-  v4 = [v3 isInternal];
+  isInternal = [v3 isInternal];
 
-  if (v4)
+  if (isInternal)
   {
     [(FavoriteItem *)self debugDescription];
   }
@@ -388,22 +388,22 @@ LABEL_10:
   return v5;
 }
 
-- (id)_descriptionFullyRedacted:(BOOL)a3
+- (id)_descriptionFullyRedacted:(BOOL)redacted
 {
-  v3 = a3;
-  v5 = [(FavoriteItem *)self _displayNameShouldBeRedacted];
+  redactedCopy = redacted;
+  _displayNameShouldBeRedacted = [(FavoriteItem *)self _displayNameShouldBeRedacted];
   v6 = [(FavoriteItem *)self type]- 1;
   if (v6 <= 6)
   {
     v7 = off_100156BD8[v6];
-    if (v5)
+    if (_displayNameShouldBeRedacted)
     {
       goto LABEL_6;
     }
 
 LABEL_5:
-    v8 = [(FavoriteItem *)self displayName];
-    if (v8)
+    displayName = [(FavoriteItem *)self displayName];
+    if (displayName)
     {
       goto LABEL_10;
     }
@@ -412,34 +412,34 @@ LABEL_5:
   }
 
   v7 = 0;
-  if ((v5 & 1) == 0)
+  if ((_displayNameShouldBeRedacted & 1) == 0)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
-  v9 = [(FavoriteItem *)self displayName];
-  if (v3)
+  displayName2 = [(FavoriteItem *)self displayName];
+  if (redactedCopy)
   {
-    [EFPrivacy fullyRedactedStringForString:v9];
+    [EFPrivacy fullyRedactedStringForString:displayName2];
   }
 
   else
   {
-    [EFPrivacy partiallyRedactedStringForString:v9];
+    [EFPrivacy partiallyRedactedStringForString:displayName2];
   }
   v10 = ;
 
-  v8 = v10;
+  displayName = v10;
 LABEL_10:
   v11 = &stru_10015BEC8;
   if (objc_opt_respondsToSelector())
   {
-    v12 = [(FavoriteItem *)self unreadCountToken];
-    v11 = [NSString stringWithFormat:@"unreadCountToken:%@", v12];
+    unreadCountToken = [(FavoriteItem *)self unreadCountToken];
+    v11 = [NSString stringWithFormat:@"unreadCountToken:%@", unreadCountToken];
   }
 
-  v13 = [NSString stringWithFormat:@"<%@: %p type = %@; visible:%d selected:%d expanded:%d displayName:%@ %@>", objc_opt_class(), self, v7, [(FavoriteItem *)self isVisible], [(FavoriteItem *)self isSelected], [(FavoriteItem *)self isExpanded], v8, v11];;
+  v13 = [NSString stringWithFormat:@"<%@: %p type = %@; visible:%d selected:%d expanded:%d displayName:%@ %@>", objc_opt_class(), self, v7, [(FavoriteItem *)self isVisible], [(FavoriteItem *)self isSelected], [(FavoriteItem *)self isExpanded], displayName, v11];;
 
   return v13;
 }

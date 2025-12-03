@@ -1,17 +1,17 @@
 @interface CKCheckInAppVisibilityManager
-+ (BOOL)isCheckInVisibleInConversation:(id)a3;
++ (BOOL)isCheckInVisibleInConversation:(id)conversation;
 - (CKCheckInAppVisibilityManager)init;
 @end
 
 @implementation CKCheckInAppVisibilityManager
 
-+ (BOOL)isCheckInVisibleInConversation:(id)a3
++ (BOOL)isCheckInVisibleInConversation:(id)conversation
 {
-  v3 = a3;
-  v4 = a3;
-  LOBYTE(v3) = _s7ChatKit23CheckInSendMenuListItemC09isVisibleD12ConversationySbSo14CKConversationCSgFZ_0(v3);
+  conversationCopy = conversation;
+  conversationCopy2 = conversation;
+  LOBYTE(conversationCopy) = _s7ChatKit23CheckInSendMenuListItemC09isVisibleD12ConversationySbSo14CKConversationCSgFZ_0(conversationCopy);
 
-  return v3 & 1;
+  return conversationCopy & 1;
 }
 
 - (CKCheckInAppVisibilityManager)init

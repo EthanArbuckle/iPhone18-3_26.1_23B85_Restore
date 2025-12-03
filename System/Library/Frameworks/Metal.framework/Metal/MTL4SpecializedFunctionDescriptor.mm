@@ -1,7 +1,7 @@
 @interface MTL4SpecializedFunctionDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4SpecializedFunctionDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -22,20 +22,20 @@
   [(MTL4FunctionDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MTL4SpecializedFunctionDescriptor;
-  v4 = [(MTL4FunctionDescriptor *)&v6 copyWithZone:a3];
+  v4 = [(MTL4FunctionDescriptor *)&v6 copyWithZone:zone];
   [v4 setFunctionDescriptor:{-[MTL4SpecializedFunctionDescriptor functionDescriptor](self, "functionDescriptor")}];
   [v4 setSpecializedName:{-[MTL4SpecializedFunctionDescriptor specializedName](self, "specializedName")}];
   [v4 setConstantValues:{-[MTL4SpecializedFunctionDescriptor constantValues](self, "constantValues")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
   }
@@ -45,21 +45,21 @@
     v14 = v3;
     v15 = v4;
     Class = object_getClass(self);
-    if (Class == object_getClass(a3))
+    if (Class == object_getClass(equal))
     {
       v13.receiver = self;
       v13.super_class = MTL4SpecializedFunctionDescriptor;
-      v8 = [(MTL4FunctionDescriptor *)&v13 isEqual:a3];
+      v8 = [(MTL4FunctionDescriptor *)&v13 isEqual:equal];
       if (v8)
       {
         functionDescriptor = self->_functionDescriptor;
-        if (functionDescriptor == *(a3 + 2) || (v8 = [(MTL4FunctionDescriptor *)functionDescriptor isEqual:?]) != 0)
+        if (functionDescriptor == *(equal + 2) || (v8 = [(MTL4FunctionDescriptor *)functionDescriptor isEqual:?]) != 0)
         {
           specializedName = self->_specializedName;
-          if (specializedName == *(a3 + 3) || (v8 = [(NSString *)specializedName isEqual:?]) != 0)
+          if (specializedName == *(equal + 3) || (v8 = [(NSString *)specializedName isEqual:?]) != 0)
           {
             constantValues = self->_constantValues;
-            if (constantValues == *(a3 + 4))
+            if (constantValues == *(equal + 4))
             {
               LOBYTE(v8) = 1;
             }

@@ -1,13 +1,13 @@
 @interface SBBannerShortcutsNonAnimatedTransitionAnimator
-- (void)prepareForTransition:(id)a3;
+- (void)prepareForTransition:(id)transition;
 @end
 
 @implementation SBBannerShortcutsNonAnimatedTransitionAnimator
 
-- (void)prepareForTransition:(id)a3
+- (void)prepareForTransition:(id)transition
 {
-  v3 = [a3 transitionView];
-  [v3 setClipsToBounds:0];
+  transitionView = [transition transitionView];
+  [transitionView setClipsToBounds:0];
 }
 
 @end

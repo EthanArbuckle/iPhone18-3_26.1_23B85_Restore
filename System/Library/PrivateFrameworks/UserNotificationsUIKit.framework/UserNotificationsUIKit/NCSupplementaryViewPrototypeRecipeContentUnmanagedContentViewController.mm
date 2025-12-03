@@ -1,7 +1,7 @@
 @interface NCSupplementaryViewPrototypeRecipeContentUnmanagedContentViewController
 - (NCSupplementaryViewPrototypeRecipeContentUnmanagedContentViewController)init;
 - (void)loadView;
-- (void)unmanagedContentViewControllerView:(id)a3 setContainsUnmanagedContent:(BOOL)a4;
+- (void)unmanagedContentViewControllerView:(id)view setContainsUnmanagedContent:(BOOL)content;
 @end
 
 @implementation NCSupplementaryViewPrototypeRecipeContentUnmanagedContentViewController
@@ -28,13 +28,13 @@
   [(NCSupplementaryViewPrototypeRecipeContentUnmanagedContentViewController *)self setView:v3];
 }
 
-- (void)unmanagedContentViewControllerView:(id)a3 setContainsUnmanagedContent:(BOOL)a4
+- (void)unmanagedContentViewControllerView:(id)view setContainsUnmanagedContent:(BOOL)content
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __138__NCSupplementaryViewPrototypeRecipeContentUnmanagedContentViewController_unmanagedContentViewControllerView_setContainsUnmanagedContent___block_invoke;
   v4[3] = &__block_descriptor_33_e65_v16__0__NCNotificationListMutableSupplementaryViewConfiguration_8l;
-  v5 = a4;
+  contentCopy = content;
   [(NCSupplementaryViewPrototypeRecipeViewController *)self updateConfiguration:v4];
 }
 

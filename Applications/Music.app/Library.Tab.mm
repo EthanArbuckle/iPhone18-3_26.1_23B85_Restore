@@ -1,26 +1,26 @@
 @interface Library.Tab
-- (id)musicTabBarController:(id)a3 tab:(id)a4 itemsForBeginningDragSession:(id)a5;
-- (id)tabBarController:(id)a3 displayedViewControllersForTab:(id)a4 proposedViewControllers:(id)a5;
-- (id)tabBarController:(id)a3 sidebar:(id)a4 itemForRequest:(id)a5;
-- (unint64_t)musicTabBarController:(id)a3 sidebarAction:(id)a4 group:(id)a5 operationForAcceptingItemsFromDropSession:(id)a6;
-- (unint64_t)tabBarController:(id)a3 tab:(id)a4 operationForAcceptingItemsFromDropSession:(id)a5;
+- (id)musicTabBarController:(id)controller tab:(id)tab itemsForBeginningDragSession:(id)session;
+- (id)tabBarController:(id)controller displayedViewControllersForTab:(id)tab proposedViewControllers:(id)controllers;
+- (id)tabBarController:(id)controller sidebar:(id)sidebar itemForRequest:(id)request;
+- (unint64_t)musicTabBarController:(id)controller sidebarAction:(id)action group:(id)group operationForAcceptingItemsFromDropSession:(id)session;
+- (unint64_t)tabBarController:(id)controller tab:(id)tab operationForAcceptingItemsFromDropSession:(id)session;
 - (void)dealloc;
-- (void)musicTabBarController:(id)a3 sidebarAction:(id)a4 group:(id)a5 acceptItemsFromDropSession:(id)a6;
-- (void)tabBarController:(id)a3 didSelectTab:(id)a4 previousTab:(id)a5;
-- (void)tabBarController:(id)a3 displayOrderDidChangeForGroup:(id)a4;
-- (void)tabBarController:(id)a3 sidebar:(id)a4 didEndDisplayingTab:(id)a5;
-- (void)tabBarController:(id)a3 sidebar:(id)a4 willBeginDisplayingTab:(id)a5;
-- (void)tabBarController:(id)a3 tab:(id)a4 acceptItemsFromDropSession:(id)a5;
-- (void)tabBarController:(id)a3 visibilityDidChangeForTabs:(id)a4;
+- (void)musicTabBarController:(id)controller sidebarAction:(id)action group:(id)group acceptItemsFromDropSession:(id)session;
+- (void)tabBarController:(id)controller didSelectTab:(id)tab previousTab:(id)previousTab;
+- (void)tabBarController:(id)controller displayOrderDidChangeForGroup:(id)group;
+- (void)tabBarController:(id)controller sidebar:(id)sidebar didEndDisplayingTab:(id)tab;
+- (void)tabBarController:(id)controller sidebar:(id)sidebar willBeginDisplayingTab:(id)tab;
+- (void)tabBarController:(id)controller tab:(id)tab acceptItemsFromDropSession:(id)session;
+- (void)tabBarController:(id)controller visibilityDidChangeForTabs:(id)tabs;
 @end
 
 @implementation Library.Tab
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   v3 = *(**CloudLibrary.StatusObserver.shared.unsafeMutableAddressor() + 224);
-  v4 = v2;
+  v4 = selfCopy;
 
   v3(v4, &off_1010AA668);
 
@@ -29,13 +29,13 @@
   [(Library.Tab *)&v5 dealloc];
 }
 
-- (id)musicTabBarController:(id)a3 tab:(id)a4 itemsForBeginningDragSession:(id)a5
+- (id)musicTabBarController:(id)controller tab:(id)tab itemsForBeginningDragSession:(id)session
 {
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  tabCopy = tab;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_1006AF5D0(v9, a5);
+  selfCopy = self;
+  sub_1006AF5D0(tabCopy, session);
 
   swift_unknownObjectRelease();
   sub_1006B0DCC();
@@ -44,20 +44,20 @@
   return v11.super.isa;
 }
 
-- (unint64_t)tabBarController:(id)a3 tab:(id)a4 operationForAcceptingItemsFromDropSession:(id)a5
+- (unint64_t)tabBarController:(id)controller tab:(id)tab operationForAcceptingItemsFromDropSession:(id)session
 {
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  tabCopy = tab;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_1006ACE10(v9, v8, &v16);
+  selfCopy = self;
+  sub_1006ACE10(tabCopy, controllerCopy, &v16);
   if (v17)
   {
     sub_100059A8C(&v16, v18);
     v11 = v19;
     v12 = v20;
     v13 = sub_10000954C(v18, v19);
-    v14 = sub_1006AF7B4(v13, v9, a5, v11, v12);
+    v14 = sub_1006AF7B4(v13, tabCopy, session, v11, v12);
 
     swift_unknownObjectRelease();
     sub_10000959C(v18);
@@ -74,108 +74,108 @@
   return v14;
 }
 
-- (void)tabBarController:(id)a3 tab:(id)a4 acceptItemsFromDropSession:(id)a5
+- (void)tabBarController:(id)controller tab:(id)tab acceptItemsFromDropSession:(id)session
 {
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  tabCopy = tab;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_1006AD904(v8, v9, a5);
+  selfCopy = self;
+  sub_1006AD904(controllerCopy, tabCopy, session);
 
   swift_unknownObjectRelease();
 }
 
-- (unint64_t)musicTabBarController:(id)a3 sidebarAction:(id)a4 group:(id)a5 operationForAcceptingItemsFromDropSession:(id)a6
+- (unint64_t)musicTabBarController:(id)controller sidebarAction:(id)action group:(id)group operationForAcceptingItemsFromDropSession:(id)session
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  controllerCopy = controller;
+  actionCopy = action;
+  groupCopy = group;
   swift_unknownObjectRetain();
-  v13 = self;
-  v14 = sub_1006B03A0(v10, v11, a6);
+  selfCopy = self;
+  v14 = sub_1006B03A0(controllerCopy, actionCopy, session);
 
   swift_unknownObjectRelease();
   return v14;
 }
 
-- (void)musicTabBarController:(id)a3 sidebarAction:(id)a4 group:(id)a5 acceptItemsFromDropSession:(id)a6
+- (void)musicTabBarController:(id)controller sidebarAction:(id)action group:(id)group acceptItemsFromDropSession:(id)session
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  controllerCopy = controller;
+  actionCopy = action;
+  groupCopy = group;
   swift_unknownObjectRetain();
-  v13 = self;
-  sub_1006B05C4(v10, v11, a6);
+  selfCopy = self;
+  sub_1006B05C4(controllerCopy, actionCopy, session);
 
   swift_unknownObjectRelease();
 }
 
-- (void)tabBarController:(id)a3 visibilityDidChangeForTabs:(id)a4
+- (void)tabBarController:(id)controller visibilityDidChangeForTabs:(id)tabs
 {
   sub_100009F78(0, &qword_101181F70);
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = self;
+  selfCopy = self;
   sub_1003DCE8C(v5);
 }
 
-- (void)tabBarController:(id)a3 displayOrderDidChangeForGroup:(id)a4
+- (void)tabBarController:(id)controller displayOrderDidChangeForGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1006E5330(v7);
+  controllerCopy = controller;
+  groupCopy = group;
+  selfCopy = self;
+  sub_1006E5330(groupCopy);
 }
 
-- (void)tabBarController:(id)a3 didSelectTab:(id)a4 previousTab:(id)a5
+- (void)tabBarController:(id)controller didSelectTab:(id)tab previousTab:(id)previousTab
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1006E55A0(v9);
+  controllerCopy = controller;
+  tabCopy = tab;
+  previousTabCopy = previousTab;
+  selfCopy = self;
+  sub_1006E55A0(tabCopy);
 }
 
-- (id)tabBarController:(id)a3 displayedViewControllersForTab:(id)a4 proposedViewControllers:(id)a5
+- (id)tabBarController:(id)controller displayedViewControllersForTab:(id)tab proposedViewControllers:(id)controllers
 {
   sub_100009F78(0, &qword_101183D40);
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_1006E42D0(v9, v10, v8);
+  controllerCopy = controller;
+  tabCopy = tab;
+  selfCopy = self;
+  sub_1006E42D0(controllerCopy, tabCopy, v8);
 
   v12.super.isa = Array._bridgeToObjectiveC()().super.isa;
 
   return v12.super.isa;
 }
 
-- (id)tabBarController:(id)a3 sidebar:(id)a4 itemForRequest:(id)a5
+- (id)tabBarController:(id)controller sidebar:(id)sidebar itemForRequest:(id)request
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_1006E58A8(v10);
+  controllerCopy = controller;
+  sidebarCopy = sidebar;
+  requestCopy = request;
+  selfCopy = self;
+  v12 = sub_1006E58A8(requestCopy);
 
   return v12;
 }
 
-- (void)tabBarController:(id)a3 sidebar:(id)a4 willBeginDisplayingTab:(id)a5
+- (void)tabBarController:(id)controller sidebar:(id)sidebar willBeginDisplayingTab:(id)tab
 {
   swift_beginAccess();
-  v7 = a5;
-  v8 = self;
-  sub_1003B4FFC(&v10, v7);
+  tabCopy = tab;
+  selfCopy = self;
+  sub_1003B4FFC(&v10, tabCopy);
   v9 = v10;
   swift_endAccess();
 }
 
-- (void)tabBarController:(id)a3 sidebar:(id)a4 didEndDisplayingTab:(id)a5
+- (void)tabBarController:(id)controller sidebar:(id)sidebar didEndDisplayingTab:(id)tab
 {
   swift_beginAccess();
-  v7 = a5;
-  v8 = self;
-  v9 = sub_100196024(v7);
+  tabCopy = tab;
+  selfCopy = self;
+  v9 = sub_100196024(tabCopy);
   swift_endAccess();
 }
 

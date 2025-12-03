@@ -1,36 +1,36 @@
 @interface UISHandleCloudKitShareAction
-+ (id)cloudKitShareActionWithShareMetadata:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
++ (id)cloudKitShareActionWithShareMetadata:(id)metadata;
+- (BOOL)isKindOfClass:(Class)class;
 - (CKShareMetadata)shareMetadata;
-- (UISHandleCloudKitShareAction)initWithShareMetadata:(id)a3;
+- (UISHandleCloudKitShareAction)initWithShareMetadata:(id)metadata;
 - (id)data;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 @end
 
 @implementation UISHandleCloudKitShareAction
 
-+ (id)cloudKitShareActionWithShareMetadata:(id)a3
++ (id)cloudKitShareActionWithShareMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithShareMetadata:v4];
+  metadataCopy = metadata;
+  v5 = [[self alloc] initWithShareMetadata:metadataCopy];
 
   return v5;
 }
 
-- (UISHandleCloudKitShareAction)initWithShareMetadata:(id)a3
+- (UISHandleCloudKitShareAction)initWithShareMetadata:(id)metadata
 {
-  v5 = a3;
-  if (!v5)
+  metadataCopy = metadata;
+  if (!metadataCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UISHandleCloudKitShareAction.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"shareMetadata"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISHandleCloudKitShareAction.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"shareMetadata"}];
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E698E700]);
   v7 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
-  [v7 encodeObject:v5 forKey:@"CKShareMetadataObjectKey"];
-  v8 = [v7 encodedData];
-  [v6 setObject:v8 forSetting:1];
+  [v7 encodeObject:metadataCopy forKey:@"CKShareMetadataObjectKey"];
+  encodedData = [v7 encodedData];
+  [v6 setObject:encodedData forSetting:1];
 
   v12.receiver = self;
   v12.super_class = UISHandleCloudKitShareAction;
@@ -41,8 +41,8 @@
 
 - (id)data
 {
-  v2 = [(UISHandleCloudKitShareAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(UISHandleCloudKitShareAction *)self info];
+  v3 = [info objectForSetting:1];
 
   return v3;
 }
@@ -55,10 +55,10 @@
     goto LABEL_4;
   }
 
-  v4 = [(UISHandleCloudKitShareAction *)self data];
-  if (v4)
+  data = [(UISHandleCloudKitShareAction *)self data];
+  if (data)
   {
-    v5 = v4;
+    v5 = data;
     CKShareMetadataClass = getCKShareMetadataClass();
     v7 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v5 error:0];
     [v7 _enableStrictSecureDecodingMode];
@@ -80,9 +80,9 @@ LABEL_5:
   return v10;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"data";
   }
@@ -93,7 +93,7 @@ LABEL_5:
   }
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = UISHandleCloudKitShareAction;
@@ -104,7 +104,7 @@ LABEL_5:
 
   else
   {
-    return [(objc_class *)a3 isSubclassOfClass:objc_opt_class()];
+    return [(objc_class *)class isSubclassOfClass:objc_opt_class()];
   }
 }
 

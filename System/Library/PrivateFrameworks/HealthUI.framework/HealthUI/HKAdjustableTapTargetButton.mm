@@ -1,14 +1,14 @@
 @interface HKAdjustableTapTargetButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (UIEdgeInsets)hitTargetInsets;
 @end
 
 @implementation HKAdjustableTapTargetButton
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(HKAdjustableTapTargetButton *)self bounds];
   if (self->_insetSet)
   {

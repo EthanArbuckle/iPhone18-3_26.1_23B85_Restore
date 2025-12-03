@@ -1,18 +1,18 @@
 @interface FigIrisAutoTrimmerMotionSample
 - ($01BB1521EC52D44A8E7628F5261DCEC8)accel;
 - ($01BB1521EC52D44A8E7628F5261DCEC8)attitude;
-- ($01BB1521EC52D44A8E7628F5261DCEC8)attitudeRelativeTo:(id)a3;
+- ($01BB1521EC52D44A8E7628F5261DCEC8)attitudeRelativeTo:(id)to;
 - ($01BB1521EC52D44A8E7628F5261DCEC8)delta;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)originatingFrameTime;
 - ($E2C29196C7A5C696474C6955C5A9CE06)gravity;
-- (FigIrisAutoTrimmerMotionSample)initWithAttitude:(id *)a3 gravity:(id *)a4 motionTimestamp:(double)a5 frameTimestamp:(id *)a6 previousSample:(id)a7;
+- (FigIrisAutoTrimmerMotionSample)initWithAttitude:(id *)attitude gravity:(id *)gravity motionTimestamp:(double)timestamp frameTimestamp:(id *)frameTimestamp previousSample:(id)sample;
 - (void)dealloc;
-- (void)prepareIntermediates:(int64_t)a3;
+- (void)prepareIntermediates:(int64_t)intermediates;
 @end
 
 @implementation FigIrisAutoTrimmerMotionSample
 
-- (FigIrisAutoTrimmerMotionSample)initWithAttitude:(id *)a3 gravity:(id *)a4 motionTimestamp:(double)a5 frameTimestamp:(id *)a6 previousSample:(id)a7
+- (FigIrisAutoTrimmerMotionSample)initWithAttitude:(id *)attitude gravity:(id *)gravity motionTimestamp:(double)timestamp frameTimestamp:(id *)frameTimestamp previousSample:(id)sample
 {
   v26.receiver = self;
   v26.super_class = FigIrisAutoTrimmerMotionSample;
@@ -20,28 +20,28 @@
   v13 = v12;
   if (v12)
   {
-    v14 = *&a3->var0;
-    *(v12 + 104) = *&a3->var2;
+    v14 = *&attitude->var0;
+    *(v12 + 104) = *&attitude->var2;
     *(v12 + 88) = v14;
-    v15 = *&a4->var0;
-    *(v12 + 14) = LODWORD(a4->var2);
+    v15 = *&gravity->var0;
+    *(v12 + 14) = LODWORD(gravity->var2);
     *(v12 + 6) = v15;
-    *(v12 + 2) = a5;
-    v16 = *&a6->var0;
-    *(v12 + 76) = a6->var3;
+    *(v12 + 2) = timestamp;
+    v16 = *&frameTimestamp->var0;
+    *(v12 + 76) = frameTimestamp->var3;
     *(v12 + 60) = v16;
-    if (a7)
+    if (sample)
     {
-      *(v12 + 15) = FigMotionMultiplyByInverseOfQuaternion(&a3->var0, a7 + 11);
+      *(v12 + 15) = FigMotionMultiplyByInverseOfQuaternion(&attitude->var0, sample + 11);
       v13->_delta.x = v17;
       v13->_delta.y = v18;
       v13->_delta.z = v19;
-      v13->_accel.w = FigMotionMultiplyByInverseOfQuaternion(&v13->_delta.w, a7 + 15);
+      v13->_accel.w = FigMotionMultiplyByInverseOfQuaternion(&v13->_delta.w, sample + 15);
       v13->_accel.x = v20;
       v13->_accel.y = v21;
       v13->_accel.z = v22;
-      [a7 timestamp];
-      v24 = a5 - v23;
+      [sample timestamp];
+      v24 = timestamp - v23;
     }
 
     else
@@ -61,9 +61,9 @@
   return v13;
 }
 
-- ($01BB1521EC52D44A8E7628F5261DCEC8)attitudeRelativeTo:(id)a3
+- ($01BB1521EC52D44A8E7628F5261DCEC8)attitudeRelativeTo:(id)to
 {
-  v3 = FigMotionMultiplyByInverseOfQuaternion(&self->_attitude.w, a3 + 11);
+  v3 = FigMotionMultiplyByInverseOfQuaternion(&self->_attitude.w, to + 11);
   result.var3 = v6;
   result.var2 = v5;
   result.var1 = v4;
@@ -78,11 +78,11 @@
   [(FigIrisAutoTrimmerMotionSample *)&v3 dealloc];
 }
 
-- (void)prepareIntermediates:(int64_t)a3
+- (void)prepareIntermediates:(int64_t)intermediates
 {
   if (!self->_intermediateCalculations)
   {
-    self->_intermediateCalculations = [MEMORY[0x1E695DF90] dictionaryWithCapacity:a3];
+    self->_intermediateCalculations = [MEMORY[0x1E695DF90] dictionaryWithCapacity:intermediates];
   }
 }
 

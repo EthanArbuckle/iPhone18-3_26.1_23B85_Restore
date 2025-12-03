@@ -1,32 +1,32 @@
 @interface _HKSPQueueBackedScheduler
-- (_HKSPQueueBackedScheduler)initWithQueue:(id)a3;
-- (_HKSPQueueBackedScheduler)initWithScheduler:(id)a3 queue:(id)a4;
+- (_HKSPQueueBackedScheduler)initWithQueue:(id)queue;
+- (_HKSPQueueBackedScheduler)initWithScheduler:(id)scheduler queue:(id)queue;
 @end
 
 @implementation _HKSPQueueBackedScheduler
 
-- (_HKSPQueueBackedScheduler)initWithQueue:(id)a3
+- (_HKSPQueueBackedScheduler)initWithQueue:(id)queue
 {
   v4 = MEMORY[0x277D2C938];
-  v5 = a3;
-  v6 = [v4 schedulerWithDispatchQueue:v5];
-  v7 = [(_HKSPQueueBackedScheduler *)self initWithScheduler:v6 queue:v5];
+  queueCopy = queue;
+  v6 = [v4 schedulerWithDispatchQueue:queueCopy];
+  v7 = [(_HKSPQueueBackedScheduler *)self initWithScheduler:v6 queue:queueCopy];
 
   return v7;
 }
 
-- (_HKSPQueueBackedScheduler)initWithScheduler:(id)a3 queue:(id)a4
+- (_HKSPQueueBackedScheduler)initWithScheduler:(id)scheduler queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  schedulerCopy = scheduler;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = _HKSPQueueBackedScheduler;
   v9 = [(_HKSPQueueBackedScheduler *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_scheduler, a3);
-    objc_storeStrong(&v10->_queue, a4);
+    objc_storeStrong(&v9->_scheduler, scheduler);
+    objc_storeStrong(&v10->_queue, queue);
     v11 = v10;
   }
 

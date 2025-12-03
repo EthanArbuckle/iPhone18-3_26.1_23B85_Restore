@@ -1,20 +1,20 @@
 @interface LNChoiceOption
-- (BOOL)isEqual:(id)a3;
-- (LNChoiceOption)initWithCoder:(id)a3;
-- (LNChoiceOption)initWithIdentifier:(id)a3 title:(id)a4 style:(int64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (LNChoiceOption)initWithCoder:(id)coder;
+- (LNChoiceOption)initWithIdentifier:(id)identifier title:(id)title style:(int64_t)style;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNChoiceOption
 
-- (LNChoiceOption)initWithCoder:(id)a3
+- (LNChoiceOption)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v7 = [v4 decodeIntegerForKey:@"style"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v7 = [coderCopy decodeIntegerForKey:@"style"];
 
   if (v5)
   {
@@ -28,37 +28,37 @@
 
   if (v8)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LNChoiceOption *)self initWithIdentifier:v5 title:v6 style:v7];
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(LNChoiceOption *)self identifier];
-  [v6 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(LNChoiceOption *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(LNChoiceOption *)self title];
-  [v6 encodeObject:v5 forKey:@"title"];
+  title = [(LNChoiceOption *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  [v6 encodeInteger:-[LNChoiceOption style](self forKey:{"style"), @"style"}];
+  [coderCopy encodeInteger:-[LNChoiceOption style](self forKey:{"style"), @"style"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v13 = 0;
@@ -67,10 +67,10 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v7 = [(LNChoiceOption *)self title];
-    v8 = [(LNChoiceOption *)v6 title];
-    v9 = v7;
-    v10 = v8;
+    title = [(LNChoiceOption *)self title];
+    title2 = [(LNChoiceOption *)v6 title];
+    v9 = title;
+    v10 = title2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -94,8 +94,8 @@ LABEL_14:
       }
     }
 
-    v14 = [(LNChoiceOption *)self style];
-    v13 = v14 == [(LNChoiceOption *)v6 style];
+    style = [(LNChoiceOption *)self style];
+    v13 = style == [(LNChoiceOption *)v6 style];
 LABEL_15:
 
     goto LABEL_16;
@@ -109,8 +109,8 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v2 = [(LNChoiceOption *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(LNChoiceOption *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -120,33 +120,33 @@ LABEL_17:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNChoiceOption *)self identifier];
-  v7 = [(LNChoiceOption *)self title];
-  v8 = [(LNChoiceOption *)self style];
+  identifier = [(LNChoiceOption *)self identifier];
+  title = [(LNChoiceOption *)self title];
+  style = [(LNChoiceOption *)self style];
   v9 = @"Default";
-  if (v8 == 1)
+  if (style == 1)
   {
     v9 = @"Cancel";
   }
 
-  if (v8 == 2)
+  if (style == 2)
   {
     v9 = @"Destructive";
   }
 
-  v10 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, title: %@, style: %@>", v5, self, v6, v7, v9];
+  v10 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, title: %@, style: %@>", v5, self, identifier, title, v9];
 
   return v10;
 }
 
-- (LNChoiceOption)initWithIdentifier:(id)a3 title:(id)a4 style:(int64_t)a5
+- (LNChoiceOption)initWithIdentifier:(id)identifier title:(id)title style:(int64_t)style
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (v10)
+  identifierCopy = identifier;
+  titleCopy = title;
+  v12 = titleCopy;
+  if (identifierCopy)
   {
-    if (v11)
+    if (titleCopy)
     {
       goto LABEL_3;
     }
@@ -154,8 +154,8 @@ LABEL_17:
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"LNChoiceOption.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNChoiceOption.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
     if (v12)
     {
@@ -163,8 +163,8 @@ LABEL_17:
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"LNChoiceOption.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"title"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNChoiceOption.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"title"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -173,9 +173,9 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_identifier, a3);
-    objc_storeStrong(&v14->_title, a4);
-    v14->_style = a5;
+    objc_storeStrong(&v13->_identifier, identifier);
+    objc_storeStrong(&v14->_title, title);
+    v14->_style = style;
     v15 = v14;
   }
 

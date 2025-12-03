@@ -1,31 +1,31 @@
 @interface REElementUserActivityAction
-- (BOOL)isEqual:(id)a3;
-- (REElementUserActivityAction)initWithUserActivity:(id)a3 applicationID:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REElementUserActivityAction)initWithUserActivity:(id)activity applicationID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_performWithContext:(id)a3;
+- (void)_performWithContext:(id)context;
 @end
 
 @implementation REElementUserActivityAction
 
-- (REElementUserActivityAction)initWithUserActivity:(id)a3 applicationID:(id)a4
+- (REElementUserActivityAction)initWithUserActivity:(id)activity applicationID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  activityCopy = activity;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = REElementUserActivityAction;
   v9 = [(REElementUserActivityAction *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_userActivity, a3);
-    objc_storeStrong(&v10->_applicationID, a4);
+    objc_storeStrong(&v9->_userActivity, activity);
+    objc_storeStrong(&v10->_applicationID, d);
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = REElementUserActivityAction;
@@ -35,7 +35,7 @@
   return v4;
 }
 
-- (void)_performWithContext:(id)a3
+- (void)_performWithContext:(id)context
 {
   userActivity = self->_userActivity;
   if (userActivity)
@@ -70,13 +70,13 @@ uint64_t __51__REElementUserActivityAction__performWithContext___block_invoke(ui
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[3];
     v7 = self->_userActivity;
     v8 = v7;

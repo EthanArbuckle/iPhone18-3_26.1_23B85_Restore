@@ -1,13 +1,13 @@
 @interface MSNanoPreferencesSyncDomainAccessorFactory
-+ (id)createAccessorWithDomain:(id)a3;
++ (id)createAccessorWithDomain:(id)domain;
 @end
 
 @implementation MSNanoPreferencesSyncDomainAccessorFactory
 
-+ (id)createAccessorWithDomain:(id)a3
++ (id)createAccessorWithDomain:(id)domain
 {
-  v3 = a3;
-  v4 = [[NPSDomainAccessor alloc] initWithDomain:v3];
+  domainCopy = domain;
+  v4 = [[NPSDomainAccessor alloc] initWithDomain:domainCopy];
 
   return v4;
 }

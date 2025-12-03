@@ -1,5 +1,5 @@
 @interface PaperTextAttachmentCanvasView
-- (_TtC8PaperKit29PaperTextAttachmentCanvasView)initWithFrame:(CGRect)a3;
+- (_TtC8PaperKit29PaperTextAttachmentCanvasView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -15,7 +15,7 @@
   PaperTextAttachmentCanvasView.updateSubviews(bounds:)(v4);
 }
 
-- (_TtC8PaperKit29PaperTextAttachmentCanvasView)initWithFrame:(CGRect)a3
+- (_TtC8PaperKit29PaperTextAttachmentCanvasView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -5,44 +5,44 @@
 - (NSString)imageProfile;
 - (NSString)keyProfile;
 - (NSString)storeFrontSuffix;
-- (SSVPlatformRequestOperation)initWithPlatformContext:(id)a3;
+- (SSVPlatformRequestOperation)initWithPlatformContext:(id)context;
 - (id)_URLBagContext;
 - (id)_callerValue;
-- (id)_lookupWithRequest:(id)a3 error:(id *)a4;
+- (id)_lookupWithRequest:(id)request error:(id *)error;
 - (id)responseBlock;
-- (id)valueForHTTPHeaderField:(id)a3;
-- (id)valueForRequestParameter:(id)a3;
+- (id)valueForHTTPHeaderField:(id)field;
+- (id)valueForRequestParameter:(id)parameter;
 - (int64_t)personalizationStyle;
-- (void)_enumerateQueryParametersUsingBlock:(id)a3;
+- (void)_enumerateQueryParametersUsingBlock:(id)block;
 - (void)_makeLocalJSSignRequest;
 - (void)_makeLocalMescalRequest;
-- (void)_makeLookupRequestWithPersonalizationStyle:(int64_t)a3;
-- (void)_setCaller:(id)a3;
-- (void)_setUserAgent:(id)a3;
+- (void)_makeLookupRequestWithPersonalizationStyle:(int64_t)style;
+- (void)_setCaller:(id)caller;
+- (void)_setUserAgent:(id)agent;
 - (void)main;
-- (void)setBundleIdentifiers:(id)a3;
-- (void)setImageProfile:(id)a3;
-- (void)setItemIdentifiers:(id)a3;
-- (void)setKeyProfile:(id)a3;
-- (void)setPersonalizationStyle:(int64_t)a3;
-- (void)setResponseBlock:(id)a3;
-- (void)setStoreFrontSuffix:(id)a3;
-- (void)setTimeoutInterval:(id)a3;
-- (void)setValue:(id)a3 forHTTPHeaderField:(id)a4;
-- (void)setValue:(id)a3 forRequestParameter:(id)a4;
+- (void)setBundleIdentifiers:(id)identifiers;
+- (void)setImageProfile:(id)profile;
+- (void)setItemIdentifiers:(id)identifiers;
+- (void)setKeyProfile:(id)profile;
+- (void)setPersonalizationStyle:(int64_t)style;
+- (void)setResponseBlock:(id)block;
+- (void)setStoreFrontSuffix:(id)suffix;
+- (void)setTimeoutInterval:(id)interval;
+- (void)setValue:(id)value forHTTPHeaderField:(id)field;
+- (void)setValue:(id)value forRequestParameter:(id)parameter;
 @end
 
 @implementation SSVPlatformRequestOperation
 
-- (SSVPlatformRequestOperation)initWithPlatformContext:(id)a3
+- (SSVPlatformRequestOperation)initWithPlatformContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = SSVPlatformRequestOperation;
   v5 = [(SSVPlatformRequestOperation *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contextCopy copy];
     context = v5->_context;
     v5->_context = v6;
 
@@ -196,17 +196,17 @@ void __44__SSVPlatformRequestOperation_responseBlock__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setImageProfile:(id)a3
+- (void)setImageProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__SSVPlatformRequestOperation_setImageProfile___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = profileCopy;
+  v6 = profileCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -223,17 +223,17 @@ void __47__SSVPlatformRequestOperation_setImageProfile___block_invoke(uint64_t a
   }
 }
 
-- (void)setItemIdentifiers:(id)a3
+- (void)setItemIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__SSVPlatformRequestOperation_setItemIdentifiers___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -250,17 +250,17 @@ void __50__SSVPlatformRequestOperation_setItemIdentifiers___block_invoke(uint64_
   }
 }
 
-- (void)setBundleIdentifiers:(id)a3
+- (void)setBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__SSVPlatformRequestOperation_setBundleIdentifiers___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -277,17 +277,17 @@ void __52__SSVPlatformRequestOperation_setBundleIdentifiers___block_invoke(uint6
   }
 }
 
-- (void)setKeyProfile:(id)a3
+- (void)setKeyProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__SSVPlatformRequestOperation_setKeyProfile___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = profileCopy;
+  v6 = profileCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -304,7 +304,7 @@ void __45__SSVPlatformRequestOperation_setKeyProfile___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPersonalizationStyle:(int64_t)a3
+- (void)setPersonalizationStyle:(int64_t)style
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -312,21 +312,21 @@ void __45__SSVPlatformRequestOperation_setKeyProfile___block_invoke(uint64_t a1)
   v4[2] = __55__SSVPlatformRequestOperation_setPersonalizationStyle___block_invoke;
   v4[3] = &unk_1E84ADDB8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = style;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setResponseBlock:(id)a3
+- (void)setResponseBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__SSVPlatformRequestOperation_setResponseBlock___block_invoke;
   v7[3] = &unk_1E84AC360;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -343,17 +343,17 @@ void __48__SSVPlatformRequestOperation_setResponseBlock___block_invoke(uint64_t 
   }
 }
 
-- (void)setStoreFrontSuffix:(id)a3
+- (void)setStoreFrontSuffix:(id)suffix
 {
-  v4 = a3;
+  suffixCopy = suffix;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__SSVPlatformRequestOperation_setStoreFrontSuffix___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = suffixCopy;
+  v6 = suffixCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -370,17 +370,17 @@ void __51__SSVPlatformRequestOperation_setStoreFrontSuffix___block_invoke(uint64
   }
 }
 
-- (void)setTimeoutInterval:(id)a3
+- (void)setTimeoutInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__SSVPlatformRequestOperation_setTimeoutInterval___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = intervalCopy;
+  v6 = intervalCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -397,20 +397,20 @@ void __50__SSVPlatformRequestOperation_setTimeoutInterval___block_invoke(uint64_
   }
 }
 
-- (void)setValue:(id)a3 forRequestParameter:(id)a4
+- (void)setValue:(id)value forRequestParameter:(id)parameter
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  parameterCopy = parameter;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__SSVPlatformRequestOperation_setValue_forRequestParameter___block_invoke;
   block[3] = &unk_1E84AC078;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = valueCopy;
+  v13 = parameterCopy;
+  v9 = parameterCopy;
+  v10 = valueCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -440,20 +440,20 @@ uint64_t __60__SSVPlatformRequestOperation_setValue_forRequestParameter___block_
   }
 }
 
-- (void)setValue:(id)a3 forHTTPHeaderField:(id)a4
+- (void)setValue:(id)value forHTTPHeaderField:(id)field
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  fieldCopy = field;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__SSVPlatformRequestOperation_setValue_forHTTPHeaderField___block_invoke;
   block[3] = &unk_1E84AC078;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = valueCopy;
+  v13 = fieldCopy;
+  v9 = fieldCopy;
+  v10 = valueCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -527,9 +527,9 @@ uint64_t __59__SSVPlatformRequestOperation_setValue_forHTTPHeaderField___block_i
   return v3;
 }
 
-- (id)valueForRequestParameter:(id)a3
+- (id)valueForRequestParameter:(id)parameter
 {
-  v4 = a3;
+  parameterCopy = parameter;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -541,10 +541,10 @@ uint64_t __59__SSVPlatformRequestOperation_setValue_forHTTPHeaderField___block_i
   block[1] = 3221225472;
   block[2] = __56__SSVPlatformRequestOperation_valueForRequestParameter___block_invoke;
   block[3] = &unk_1E84ABF90;
-  v10 = v4;
+  v10 = parameterCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = parameterCopy;
   dispatch_sync(dispatchQueue, block);
   v7 = v13[5];
 
@@ -561,9 +561,9 @@ void __56__SSVPlatformRequestOperation_valueForRequestParameter___block_invoke(v
   *(v3 + 40) = v2;
 }
 
-- (id)valueForHTTPHeaderField:(id)a3
+- (id)valueForHTTPHeaderField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -575,10 +575,10 @@ void __56__SSVPlatformRequestOperation_valueForRequestParameter___block_invoke(v
   block[1] = 3221225472;
   block[2] = __55__SSVPlatformRequestOperation_valueForHTTPHeaderField___block_invoke;
   block[3] = &unk_1E84ABF90;
-  v10 = v4;
+  v10 = fieldCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = fieldCopy;
   dispatch_sync(dispatchQueue, block);
   v7 = v13[5];
 
@@ -597,9 +597,9 @@ void __55__SSVPlatformRequestOperation_valueForHTTPHeaderField___block_invoke(vo
 
 - (void)main
 {
-  v3 = [(SSVPlatformContext *)self->_context SAPContext];
+  sAPContext = [(SSVPlatformContext *)self->_context SAPContext];
 
-  if (v3)
+  if (sAPContext)
   {
 
     [(SSVPlatformRequestOperation *)self _makeLocalMescalRequest];
@@ -607,8 +607,8 @@ void __55__SSVPlatformRequestOperation_valueForHTTPHeaderField___block_invoke(vo
 
   else
   {
-    v4 = [(SSVPlatformRequestOperation *)self personalizationStyle];
-    if (v4 == 2)
+    personalizationStyle = [(SSVPlatformRequestOperation *)self personalizationStyle];
+    if (personalizationStyle == 2)
     {
 
       [(SSVPlatformRequestOperation *)self _makeLocalJSSignRequest];
@@ -617,22 +617,22 @@ void __55__SSVPlatformRequestOperation_valueForHTTPHeaderField___block_invoke(vo
     else
     {
 
-      [(SSVPlatformRequestOperation *)self _makeLookupRequestWithPersonalizationStyle:v4];
+      [(SSVPlatformRequestOperation *)self _makeLookupRequestWithPersonalizationStyle:personalizationStyle];
     }
   }
 }
 
-- (void)_setCaller:(id)a3
+- (void)_setCaller:(id)caller
 {
-  v4 = a3;
+  callerCopy = caller;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__SSVPlatformRequestOperation__setCaller___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = callerCopy;
+  v6 = callerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -649,17 +649,17 @@ void __42__SSVPlatformRequestOperation__setCaller___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setUserAgent:(id)a3
+- (void)_setUserAgent:(id)agent
 {
-  v4 = a3;
+  agentCopy = agent;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__SSVPlatformRequestOperation__setUserAgent___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = agentCopy;
+  v6 = agentCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -695,18 +695,18 @@ void __45__SSVPlatformRequestOperation__setUserAgent___block_invoke(uint64_t a1)
   v3 = v14[5];
   if (!v3)
   {
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     v6 = v14[5];
-    v14[5] = v5;
+    v14[5] = bundleIdentifier;
 
     v3 = v14[5];
     if (!v3)
     {
-      v7 = [MEMORY[0x1E696AE30] processInfo];
-      v8 = [v7 processName];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
       v9 = v14[5];
-      v14[5] = v8;
+      v14[5] = processName;
 
       v3 = v14[5];
     }
@@ -730,45 +730,45 @@ void __43__SSVPlatformRequestOperation__callerValue__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_enumerateQueryParametersUsingBlock:(id)a3
+- (void)_enumerateQueryParametersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v5 = [(SSVPlatformRequestOperation *)self _callerValue];
-  if (v5)
+  _callerValue = [(SSVPlatformRequestOperation *)self _callerValue];
+  if (_callerValue)
   {
-    v4[2](v4, @"caller", v5, v18[3]++);
+    blockCopy[2](blockCopy, @"caller", _callerValue, v18[3]++);
   }
 
-  v6 = [(SSVPlatformRequestOperation *)self itemIdentifiers];
-  v7 = [v6 componentsJoinedByString:{@", "}];
+  itemIdentifiers = [(SSVPlatformRequestOperation *)self itemIdentifiers];
+  v7 = [itemIdentifiers componentsJoinedByString:{@", "}];
 
   if (v7)
   {
-    v4[2](v4, @"id", v7, v18[3]++);
+    blockCopy[2](blockCopy, @"id", v7, v18[3]++);
   }
 
-  v8 = [(SSVPlatformRequestOperation *)self bundleIdentifiers];
-  v9 = [v8 componentsJoinedByString:{@", "}];
+  bundleIdentifiers = [(SSVPlatformRequestOperation *)self bundleIdentifiers];
+  v9 = [bundleIdentifiers componentsJoinedByString:{@", "}];
 
   if (v9)
   {
-    v4[2](v4, @"bundleId", v9, v18[3]++);
+    blockCopy[2](blockCopy, @"bundleId", v9, v18[3]++);
   }
 
-  v10 = [(SSVPlatformRequestOperation *)self keyProfile];
-  if (v10)
+  keyProfile = [(SSVPlatformRequestOperation *)self keyProfile];
+  if (keyProfile)
   {
-    v4[2](v4, @"p", v10, v18[3]++);
+    blockCopy[2](blockCopy, @"p", keyProfile, v18[3]++);
   }
 
-  v11 = [(SSVPlatformRequestOperation *)self imageProfile];
-  if (v11)
+  imageProfile = [(SSVPlatformRequestOperation *)self imageProfile];
+  if (imageProfile)
   {
-    v4[2](v4, @"artwork", v11, v18[3]++);
+    blockCopy[2](blockCopy, @"artwork", imageProfile, v18[3]++);
   }
 
   dispatchQueue = self->_dispatchQueue;
@@ -777,9 +777,9 @@ void __43__SSVPlatformRequestOperation__callerValue__block_invoke(uint64_t a1)
   block[2] = __67__SSVPlatformRequestOperation__enumerateQueryParametersUsingBlock___block_invoke;
   block[3] = &unk_1E84B3518;
   block[4] = self;
-  v15 = v4;
+  v15 = blockCopy;
   v16 = &v17;
-  v13 = v4;
+  v13 = blockCopy;
   dispatch_sync(dispatchQueue, block);
 
   _Block_object_dispose(&v17, 8);
@@ -810,9 +810,9 @@ void __67__SSVPlatformRequestOperation__enumerateQueryParametersUsingBlock___blo
   }
 }
 
-- (id)_lookupWithRequest:(id)a3 error:(id *)a4
+- (id)_lookupWithRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -831,7 +831,7 @@ void __67__SSVPlatformRequestOperation__enumerateQueryParametersUsingBlock___blo
   block[2] = __56__SSVPlatformRequestOperation__lookupWithRequest_error___block_invoke;
   block[3] = &unk_1E84AC028;
   block[4] = self;
-  v8 = v6;
+  v8 = requestCopy;
   v21 = v8;
   dispatch_sync(dispatchQueue, block);
   v9 = [[SSVLoadURLOperation alloc] initWithURLRequest:v8];
@@ -839,18 +839,18 @@ void __67__SSVPlatformRequestOperation__enumerateQueryParametersUsingBlock___blo
   [(SSVLoadURLOperation *)v9 setDataConsumer:v10];
 
   [(SSVLoadURLOperation *)v9 setITunesStoreRequest:1];
-  v11 = [(SSVPlatformRequestOperation *)self storeFrontSuffix];
-  [(SSVLoadURLOperation *)v9 setStoreFrontSuffix:v11];
+  storeFrontSuffix = [(SSVPlatformRequestOperation *)self storeFrontSuffix];
+  [(SSVLoadURLOperation *)v9 setStoreFrontSuffix:storeFrontSuffix];
 
   [(SSVLoadURLOperation *)v9 setShouldSuppressUserInfo:[(SSVPlatformRequestOperation *)self shouldSuppressUserInfo]];
   [(SSVLoadURLOperation *)v9 setShouldSuppressCookies:[(SSVPlatformRequestOperation *)self shouldSuppressCookies]];
   [(SSVLoadURLOperation *)v9 setAttribution:[(SSVPlatformRequestOperation *)self attribution]];
-  v12 = [(SSVPlatformRequestOperation *)self mainDocumentURL];
+  mainDocumentURL = [(SSVPlatformRequestOperation *)self mainDocumentURL];
 
-  if (v12)
+  if (mainDocumentURL)
   {
-    v13 = [(SSVPlatformRequestOperation *)self mainDocumentURL];
-    [(SSVLoadURLOperation *)v9 setMainDocumentURL:v13];
+    mainDocumentURL2 = [(SSVPlatformRequestOperation *)self mainDocumentURL];
+    [(SSVLoadURLOperation *)v9 setMainDocumentURL:mainDocumentURL2];
   }
 
   v19[0] = MEMORY[0x1E69E9820];
@@ -862,13 +862,13 @@ void __67__SSVPlatformRequestOperation__enumerateQueryParametersUsingBlock___blo
   [(SSVLoadURLOperation *)v9 setOutputBlock:v19];
   [(SSVLoadURLOperation *)v9 main];
   v14 = v23[5];
-  v15 = [(SSVLoadURLOperation *)v9 metricsPageEvent];
-  [v14 _setMetricsPageEvent:v15];
+  metricsPageEvent = [(SSVLoadURLOperation *)v9 metricsPageEvent];
+  [v14 _setMetricsPageEvent:metricsPageEvent];
 
   v16 = v23[5];
-  if (a4 && !v16)
+  if (error && !v16)
   {
-    *a4 = v29[5];
+    *error = v29[5];
     v16 = v23[5];
   }
 
@@ -920,8 +920,8 @@ void __56__SSVPlatformRequestOperation__lookupWithRequest_error___block_invoke_3
 - (void)_makeLocalJSSignRequest
 {
   v56[3] = *MEMORY[0x1E69E9840];
-  v3 = [(SSVPlatformContext *)self->_context unpersonalizedLookupURLString];
-  v4 = [v3 mutableCopy];
+  unpersonalizedLookupURLString = [(SSVPlatformContext *)self->_context unpersonalizedLookupURLString];
+  v4 = [unpersonalizedLookupURLString mutableCopy];
 
   if (v4)
   {
@@ -937,8 +937,8 @@ void __56__SSVPlatformRequestOperation__lookupWithRequest_error___block_invoke_3
 
   else
   {
-    v7 = [(SSVPlatformRequestOperation *)self _URLBagContext];
-    v6 = [SSURLBag URLBagForContext:v7];
+    _URLBagContext = [(SSVPlatformRequestOperation *)self _URLBagContext];
+    v6 = [SSURLBag URLBagForContext:_URLBagContext];
 
     v8 = [v6 valueForKey:@"storeplatform-lookup-url-unpersonalized" error:0];
     v4 = [v8 mutableCopy];
@@ -952,16 +952,16 @@ LABEL_6:
     v11 = objc_alloc_init(MEMORY[0x1E696AD68]);
     v12 = objc_alloc_init(MEMORY[0x1E696AD60]);
     [v4 appendString:@"?"];
-    v13 = [(SSVPlatformRequestOperation *)self timeoutInterval];
-    v14 = v13;
-    if (v13)
+    timeoutInterval = [(SSVPlatformRequestOperation *)self timeoutInterval];
+    v14 = timeoutInterval;
+    if (timeoutInterval)
     {
-      [v13 doubleValue];
+      [timeoutInterval doubleValue];
       [v11 setTimeoutInterval:?];
     }
 
-    v15 = [MEMORY[0x1E695DF00] date];
-    [v15 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     v17 = v16;
 
     [v12 appendFormat:@"%.0f", v17];
@@ -969,15 +969,15 @@ LABEL_6:
     [v9 addObject:v18];
 
     v19 = +[SSAccountStore defaultStore];
-    v20 = [v19 activeAccount];
-    v21 = SSVStoreFrontIdentifierForAccount(v20);
+    activeAccount = [v19 activeAccount];
+    v21 = SSVStoreFrontIdentifierForAccount(activeAccount);
 
     if (v21)
     {
-      v22 = [(SSVPlatformRequestOperation *)self storeFrontSuffix];
-      if (v22)
+      storeFrontSuffix = [(SSVPlatformRequestOperation *)self storeFrontSuffix];
+      if (storeFrontSuffix)
       {
-        v23 = [v21 stringByAppendingString:v22];
+        v23 = [v21 stringByAppendingString:storeFrontSuffix];
 
         v21 = v23;
       }
@@ -1038,10 +1038,10 @@ LABEL_6:
       while (v28);
     }
 
-    v32 = [v12 UTF8String];
-    if (v32)
+    uTF8String = [v12 UTF8String];
+    if (uTF8String)
     {
-      v33 = v32;
+      v33 = uTF8String;
       v34 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:20];
       CC_SHA1(v33, [v12 length], objc_msgSend(v34, "mutableBytes"));
       [v34 setLength:16];
@@ -1063,12 +1063,12 @@ LABEL_6:
     v38 = [MEMORY[0x1E695DFF8] URLWithString:v4];
     [v11 setURL:v38];
 
-    v39 = [(SSVPlatformRequestOperation *)self mainDocumentURL];
+    mainDocumentURL = [(SSVPlatformRequestOperation *)self mainDocumentURL];
 
-    if (v39)
+    if (mainDocumentURL)
     {
-      v40 = [(SSVPlatformRequestOperation *)self mainDocumentURL];
-      [v11 setMainDocumentURL:v40];
+      mainDocumentURL2 = [(SSVPlatformRequestOperation *)self mainDocumentURL];
+      [v11 setMainDocumentURL:mainDocumentURL2];
     }
 
     [v11 setAttribution:{-[SSVPlatformRequestOperation attribution](self, "attribution")}];
@@ -1083,11 +1083,11 @@ LABEL_6:
     v41 = 0;
   }
 
-  v43 = [(SSVPlatformRequestOperation *)self responseBlock];
-  v44 = v43;
-  if (v43)
+  responseBlock = [(SSVPlatformRequestOperation *)self responseBlock];
+  v44 = responseBlock;
+  if (responseBlock)
   {
-    (*(v43 + 16))(v43, v41, v42);
+    (*(responseBlock + 16))(responseBlock, v41, v42);
     [(SSVPlatformRequestOperation *)self setResponseBlock:0];
   }
 }
@@ -1113,58 +1113,58 @@ void __54__SSVPlatformRequestOperation__makeLocalJSSignRequest__block_invoke(uin
   v3 = objc_alloc_init(MEMORY[0x1E696AD68]);
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(SSVPlatformRequestOperation *)self timeoutInterval];
-  v7 = v6;
-  if (v6)
+  timeoutInterval = [(SSVPlatformRequestOperation *)self timeoutInterval];
+  v7 = timeoutInterval;
+  if (timeoutInterval)
   {
-    [v6 doubleValue];
+    [timeoutInterval doubleValue];
     [v3 setTimeoutInterval:?];
   }
 
   v50 = v7;
-  v8 = [(SSVPlatformContext *)self->_context lookupURLString];
-  v9 = [v8 mutableCopy];
+  lookupURLString = [(SSVPlatformContext *)self->_context lookupURLString];
+  v9 = [lookupURLString mutableCopy];
 
   [v9 appendString:@"?"];
   v10 = +[SSAccountStore defaultStore];
-  v11 = [v10 activeAccount];
+  activeAccount = [v10 activeAccount];
 
-  v12 = [v11 uniqueIdentifier];
-  v13 = [v12 stringValue];
+  uniqueIdentifier = [activeAccount uniqueIdentifier];
+  stringValue = [uniqueIdentifier stringValue];
 
-  v51 = v13;
-  if (v13 && ![(SSVPlatformRequestOperation *)self shouldSuppressUserInfo])
+  v51 = stringValue;
+  if (stringValue && ![(SSVPlatformRequestOperation *)self shouldSuppressUserInfo])
   {
-    v14 = [@"X-Dsid" lowercaseString];
-    [v4 setObject:v51 forKey:v14];
+    lowercaseString = [@"X-Dsid" lowercaseString];
+    [v4 setObject:v51 forKey:lowercaseString];
 
     [v3 setValue:v51 forHTTPHeaderField:@"X-Dsid"];
   }
 
-  v15 = SSVStoreFrontIdentifierForAccount(v11);
+  v15 = SSVStoreFrontIdentifierForAccount(activeAccount);
   if (v15)
   {
     v16 = v15;
-    v17 = [(SSVPlatformRequestOperation *)self storeFrontSuffix];
-    if (v17)
+    storeFrontSuffix = [(SSVPlatformRequestOperation *)self storeFrontSuffix];
+    if (storeFrontSuffix)
     {
-      v18 = [v16 stringByAppendingString:v17];
+      v18 = [v16 stringByAppendingString:storeFrontSuffix];
 
       v16 = v18;
     }
 
-    v19 = [@"X-Apple-Store-Front" lowercaseString];
-    [v4 setObject:v16 forKey:v19];
+    lowercaseString2 = [@"X-Apple-Store-Front" lowercaseString];
+    [v4 setObject:v16 forKey:lowercaseString2];
 
     [v3 setValue:v16 forHTTPHeaderField:@"X-Apple-Store-Front"];
   }
 
-  v49 = v11;
+  v49 = activeAccount;
   v20 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v20 setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZ"];
-  v21 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v48 = v20;
-  v22 = [v20 stringFromDate:v21];
+  v22 = [v20 stringFromDate:date];
 
   if (v22)
   {
@@ -1191,12 +1191,12 @@ void __54__SSVPlatformRequestOperation__makeLocalJSSignRequest__block_invoke(uin
 
   v52 = v3;
   v25 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v26 = [(SSVPlatformContext *)self->_context signedHeaders];
+  signedHeaders = [(SSVPlatformContext *)self->_context signedHeaders];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v27 = [v26 countByEnumeratingWithState:&v59 objects:v67 count:16];
+  v27 = [signedHeaders countByEnumeratingWithState:&v59 objects:v67 count:16];
   if (v27)
   {
     v28 = v27;
@@ -1207,7 +1207,7 @@ void __54__SSVPlatformRequestOperation__makeLocalJSSignRequest__block_invoke(uin
       {
         if (*v60 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(signedHeaders);
         }
 
         v31 = [v4 objectForKey:*(*(&v59 + 1) + 8 * i)];
@@ -1217,18 +1217,18 @@ void __54__SSVPlatformRequestOperation__makeLocalJSSignRequest__block_invoke(uin
         }
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v59 objects:v67 count:16];
+      v28 = [signedHeaders countByEnumeratingWithState:&v59 objects:v67 count:16];
     }
 
     while (v28);
   }
 
-  v32 = [(SSVPlatformContext *)self->_context signedQueryParameters];
+  signedQueryParameters = [(SSVPlatformContext *)self->_context signedQueryParameters];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v33 = [v32 countByEnumeratingWithState:&v55 objects:v66 count:16];
+  v33 = [signedQueryParameters countByEnumeratingWithState:&v55 objects:v66 count:16];
   if (v33)
   {
     v34 = v33;
@@ -1239,7 +1239,7 @@ void __54__SSVPlatformRequestOperation__makeLocalJSSignRequest__block_invoke(uin
       {
         if (*v56 != v35)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(signedQueryParameters);
         }
 
         v37 = [v23 objectForKey:*(*(&v55 + 1) + 8 * j)];
@@ -1249,7 +1249,7 @@ void __54__SSVPlatformRequestOperation__makeLocalJSSignRequest__block_invoke(uin
         }
       }
 
-      v34 = [v32 countByEnumeratingWithState:&v55 objects:v66 count:16];
+      v34 = [signedQueryParameters countByEnumeratingWithState:&v55 objects:v66 count:16];
     }
 
     while (v34);
@@ -1258,8 +1258,8 @@ void __54__SSVPlatformRequestOperation__makeLocalJSSignRequest__block_invoke(uin
   v38 = [v25 dataUsingEncoding:4];
   if (v38)
   {
-    v39 = [(SSVPlatformContext *)self->_context SAPContext];
-    v40 = [v39 signatureWithData:v38 error:0];
+    sAPContext = [(SSVPlatformContext *)self->_context SAPContext];
+    v40 = [sAPContext signatureWithData:v38 error:0];
 
     v41 = [v40 base64EncodedStringWithOptions:0];
     if (v41)
@@ -1274,11 +1274,11 @@ void __54__SSVPlatformRequestOperation__makeLocalJSSignRequest__block_invoke(uin
   v54 = 0;
   v43 = [(SSVPlatformRequestOperation *)self _lookupWithRequest:v52 error:&v54];
   v44 = v54;
-  v45 = [(SSVPlatformRequestOperation *)self responseBlock];
-  v46 = v45;
-  if (v45)
+  responseBlock = [(SSVPlatformRequestOperation *)self responseBlock];
+  v46 = responseBlock;
+  if (responseBlock)
   {
-    (*(v45 + 16))(v45, v43, v44);
+    (*(responseBlock + 16))(responseBlock, v43, v44);
     [(SSVPlatformRequestOperation *)self setResponseBlock:0];
   }
 }
@@ -1299,18 +1299,18 @@ void __54__SSVPlatformRequestOperation__makeLocalMescalRequest__block_invoke(uin
   [*(a1 + 40) setObject:v7 forKey:v10];
 }
 
-- (void)_makeLookupRequestWithPersonalizationStyle:(int64_t)a3
+- (void)_makeLookupRequestWithPersonalizationStyle:(int64_t)style
 {
   v5 = objc_alloc_init(SSLookupRequest);
-  v6 = [(SSVPlatformRequestOperation *)self keyProfile];
-  [(SSLookupRequest *)v5 setKeyProfile:v6];
+  keyProfile = [(SSVPlatformRequestOperation *)self keyProfile];
+  [(SSLookupRequest *)v5 setKeyProfile:keyProfile];
 
-  [(SSLookupRequest *)v5 setPersonalizationStyle:a3];
-  v7 = [(SSVPlatformRequestOperation *)self timeoutInterval];
-  [(SSLookupRequest *)v5 _setTimeoutInterval:v7];
+  [(SSLookupRequest *)v5 setPersonalizationStyle:style];
+  timeoutInterval = [(SSVPlatformRequestOperation *)self timeoutInterval];
+  [(SSLookupRequest *)v5 _setTimeoutInterval:timeoutInterval];
 
-  v8 = [(SSVPlatformRequestOperation *)self itemIdentifiers];
-  [(SSLookupRequest *)v5 setValue:v8 forRequestParameter:@"id"];
+  itemIdentifiers = [(SSVPlatformRequestOperation *)self itemIdentifiers];
+  [(SSLookupRequest *)v5 setValue:itemIdentifiers forRequestParameter:@"id"];
 
   additionalParameters = self->_additionalParameters;
   v34[0] = MEMORY[0x1E69E9820];

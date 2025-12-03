@@ -1,41 +1,41 @@
 @interface SXUnitConverter
-- (SXUnitConverter)initWithComponentWidth:(double)a3 parentWidth:(double)a4 documentGutter:(double)a5 documentMargin:(double)a6 viewportSize:(CGSize)a7 contentScaleFactor:(double)a8;
-- (double)convertValueToPoints:(_SXConvertibleValue)a3 allowNegativeValues:(BOOL)a4;
+- (SXUnitConverter)initWithComponentWidth:(double)width parentWidth:(double)parentWidth documentGutter:(double)gutter documentMargin:(double)margin viewportSize:(CGSize)size contentScaleFactor:(double)factor;
+- (double)convertValueToPoints:(_SXConvertibleValue)points allowNegativeValues:(BOOL)values;
 @end
 
 @implementation SXUnitConverter
 
-- (SXUnitConverter)initWithComponentWidth:(double)a3 parentWidth:(double)a4 documentGutter:(double)a5 documentMargin:(double)a6 viewportSize:(CGSize)a7 contentScaleFactor:(double)a8
+- (SXUnitConverter)initWithComponentWidth:(double)width parentWidth:(double)parentWidth documentGutter:(double)gutter documentMargin:(double)margin viewportSize:(CGSize)size contentScaleFactor:(double)factor
 {
-  height = a7.height;
-  width = a7.width;
+  height = size.height;
+  width = size.width;
   v16.receiver = self;
   v16.super_class = SXUnitConverter;
   result = [(SXUnitConverter *)&v16 init];
   if (result)
   {
-    result->_componentWidth = a3;
-    result->_parentWidth = a4;
-    result->_documentGutter = a5;
-    result->_documentMargin = a6;
+    result->_componentWidth = width;
+    result->_parentWidth = parentWidth;
+    result->_documentGutter = gutter;
+    result->_documentMargin = margin;
     result->_viewportSize.width = width;
     result->_viewportSize.height = height;
-    result->_contentScaleFactor = a8;
+    result->_contentScaleFactor = factor;
   }
 
   return result;
 }
 
-- (double)convertValueToPoints:(_SXConvertibleValue)a3 allowNegativeValues:(BOOL)a4
+- (double)convertValueToPoints:(_SXConvertibleValue)points allowNegativeValues:(BOOL)values
 {
   v4 = 0.0;
-  if (a3.value > 0.0 || a4)
+  if (points.value > 0.0 || values)
   {
-    switch(a3.unit)
+    switch(points.unit)
     {
       case 0uLL:
       case 1uLL:
-        v4 = self->_contentScaleFactor * a3.value;
+        v4 = self->_contentScaleFactor * points.value;
         return round(v4);
       case 2uLL:
         if (!self)
@@ -53,7 +53,7 @@
 
         height = self->_viewportSize.width;
 LABEL_18:
-        v6 = a3.value / 100.0;
+        v6 = points.value / 100.0;
         goto LABEL_24;
       case 4uLL:
         if (!self)
@@ -61,7 +61,7 @@ LABEL_18:
           goto LABEL_33;
         }
 
-        v6 = OUTLINED_FUNCTION_2(a3.value);
+        v6 = OUTLINED_FUNCTION_2(points.value);
         if (!v9)
         {
           height = v8;
@@ -71,7 +71,7 @@ LABEL_18:
       case 5uLL:
         if (self)
         {
-          v6 = OUTLINED_FUNCTION_2(a3.value);
+          v6 = OUTLINED_FUNCTION_2(points.value);
           if (v9)
           {
             height = v11;
@@ -126,7 +126,7 @@ LABEL_33:
         }
 
 LABEL_30:
-        v12 = a3.value / 100.0;
+        v12 = points.value / 100.0;
 LABEL_31:
         v4 = v12 * contentScaleFactor;
         break;

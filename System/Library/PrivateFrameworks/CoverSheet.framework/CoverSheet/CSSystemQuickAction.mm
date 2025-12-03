@@ -1,11 +1,11 @@
 @interface CSSystemQuickAction
-- (BOOL)_intentIsCameraCaptureIntent:(id)a3;
+- (BOOL)_intentIsCameraCaptureIntent:(id)intent;
 - (BOOL)allowsInteraction;
-- (BOOL)controlInstance:(id)a3 handlePerformAction:(id)a4;
+- (BOOL)controlInstance:(id)instance handlePerformAction:(id)action;
 - (CHUISControlViewModel)viewModel;
-- (CSSystemQuickAction)initWithQuickActionControlIdentity:(id)a3 instance:(id)a4 delegate:(id)a5;
+- (CSSystemQuickAction)initWithQuickActionControlIdentity:(id)identity instance:(id)instance delegate:(id)delegate;
 - (int64_t)appearance;
-- (void)controlInstanceViewModelDidChange:(id)a3;
+- (void)controlInstanceViewModelDidChange:(id)change;
 - (void)dealloc;
 - (void)fireAction;
 - (void)touchBegan;
@@ -14,20 +14,20 @@
 
 @implementation CSSystemQuickAction
 
-- (CSSystemQuickAction)initWithQuickActionControlIdentity:(id)a3 instance:(id)a4 delegate:(id)a5
+- (CSSystemQuickAction)initWithQuickActionControlIdentity:(id)identity instance:(id)instance delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identityCopy = identity;
+  instanceCopy = instance;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = CSSystemQuickAction;
   v12 = [(CSSystemQuickAction *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_controlIdentity, a3);
-    objc_storeStrong(&v13->_controlInstance, a4);
-    objc_storeWeak(&v13->_systemQuickActionDelegate, v11);
+    objc_storeStrong(&v12->_controlIdentity, identity);
+    objc_storeStrong(&v13->_controlInstance, instance);
+    objc_storeWeak(&v13->_systemQuickActionDelegate, delegateCopy);
     [(CHUISControlInstance *)v13->_controlInstance setDelegate:v13];
     [(CHUISControlInstance *)v13->_controlInstance registerObserver:v13];
   }
@@ -45,38 +45,38 @@
 
 - (int64_t)appearance
 {
-  v3 = [(CSSystemQuickAction *)self viewModel];
-  v4 = [v3 isDisabled];
+  viewModel = [(CSSystemQuickAction *)self viewModel];
+  isDisabled = [viewModel isDisabled];
 
-  if (v4)
+  if (isDisabled)
   {
     return 2;
   }
 
-  v6 = [(CSSystemQuickAction *)self viewModel];
-  v7 = [v6 isRedacted];
+  viewModel2 = [(CSSystemQuickAction *)self viewModel];
+  isRedacted = [viewModel2 isRedacted];
 
-  return v7;
+  return isRedacted;
 }
 
 - (BOOL)allowsInteraction
 {
-  v2 = [(CSSystemQuickAction *)self viewModel];
-  v3 = [v2 isDisabled];
+  viewModel = [(CSSystemQuickAction *)self viewModel];
+  isDisabled = [viewModel isDisabled];
 
-  return v3 ^ 1;
+  return isDisabled ^ 1;
 }
 
-- (BOOL)_intentIsCameraCaptureIntent:(id)a3
+- (BOOL)_intentIsCameraCaptureIntent:(id)intent
 {
-  if (!a3)
+  if (!intent)
   {
     return 0;
   }
 
-  v3 = [a3 linkAction];
-  v4 = [v3 systemProtocols];
-  v5 = [v4 bs_firstObjectPassingTest:&__block_literal_global_20];
+  linkAction = [intent linkAction];
+  systemProtocols = [linkAction systemProtocols];
+  v5 = [systemProtocols bs_firstObjectPassingTest:&__block_literal_global_20];
 
   v6 = v5 != 0;
   return v6;
@@ -104,11 +104,11 @@ uint64_t __52__CSSystemQuickAction__intentIsCameraCaptureIntent___block_invoke(u
   v3 = SBLogDashBoard();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CHSControlIdentity *)self->_controlIdentity kind];
+    kind = [(CHSControlIdentity *)self->_controlIdentity kind];
     *buf = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v4;
+    v10 = kind;
     _os_log_impl(&dword_21EB05000, v3, OS_LOG_TYPE_DEFAULT, "[Quick Action] Will fire action %{public}@: %{public}@", buf, 0x16u);
   }
 
@@ -156,43 +156,43 @@ void __33__CSSystemQuickAction_fireAction__block_invoke(uint64_t a1, void *a2)
   [WeakRetained systemQuickActionTouchEnded:self];
 }
 
-- (BOOL)controlInstance:(id)a3 handlePerformAction:(id)a4
+- (BOOL)controlInstance:(id)instance handlePerformAction:(id)action
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  instanceCopy = instance;
   v6 = SBLogDashBoard();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(CHSControlIdentity *)self->_controlIdentity kind];
+    kind = [(CHSControlIdentity *)self->_controlIdentity kind];
     v18 = 138543618;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
-    v21 = v7;
+    v21 = kind;
     _os_log_impl(&dword_21EB05000, v6, OS_LOG_TYPE_DEFAULT, "[Quick Action] Handling perform action %{public}@: %{public}@", &v18, 0x16u);
   }
 
-  v8 = [v5 descriptor];
-  v9 = [v8 actionMetadata];
-  v10 = [v9 isCameraCapture];
+  descriptor = [instanceCopy descriptor];
+  actionMetadata = [descriptor actionMetadata];
+  isCameraCapture = [actionMetadata isCameraCapture];
 
-  if (v10)
+  if (isCameraCapture)
   {
-    v11 = [v5 control];
-    v12 = [v11 extensionIdentity];
-    v13 = [v12 containerBundleIdentifier];
+    control = [instanceCopy control];
+    extensionIdentity = [control extensionIdentity];
+    containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
 
     v14 = SBLogDashBoard();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138543362;
-      v19 = v13;
+      selfCopy = containerBundleIdentifier;
       _os_log_impl(&dword_21EB05000, v14, OS_LOG_TYPE_DEFAULT, "[Quick Action] Launching capture application/extension for containing bundle identifier: %{public}@", &v18, 0xCu);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_systemQuickActionDelegate);
     if (objc_opt_respondsToSelector())
     {
-      v16 = [WeakRetained systemQuickActionLaunchCaptureApplication:v13];
+      v16 = [WeakRetained systemQuickActionLaunchCaptureApplication:containerBundleIdentifier];
     }
 
     else
@@ -209,18 +209,18 @@ void __33__CSSystemQuickAction_fireAction__block_invoke(uint64_t a1, void *a2)
   return v16;
 }
 
-- (void)controlInstanceViewModelDidChange:(id)a3
+- (void)controlInstanceViewModelDidChange:(id)change
 {
-  v4 = [(CSQuickAction *)self delegate];
-  [v4 isSelectedDidChangeForAction:self];
-  [v4 allowsInteractionDidChangeForAction:self];
+  delegate = [(CSQuickAction *)self delegate];
+  [delegate isSelectedDidChangeForAction:self];
+  [delegate allowsInteractionDidChangeForAction:self];
 }
 
 - (CHUISControlViewModel)viewModel
 {
-  v3 = [(CSSystemQuickAction *)self controlInstance];
+  controlInstance = [(CSSystemQuickAction *)self controlInstance];
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = controlInstance;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -243,14 +243,14 @@ void __33__CSSystemQuickAction_fireAction__block_invoke(uint64_t a1, void *a2)
 
   if (v7)
   {
-    v8 = [v7 viewModel];
+    viewModel = [v7 viewModel];
   }
 
   else
   {
-    v9 = [(CSSystemQuickAction *)self controlInstance];
+    controlInstance2 = [(CSSystemQuickAction *)self controlInstance];
     v10 = objc_opt_class();
-    v11 = v9;
+    v11 = controlInstance2;
     if (v10)
     {
       if (objc_opt_isKindOfClass())
@@ -273,16 +273,16 @@ void __33__CSSystemQuickAction_fireAction__block_invoke(uint64_t a1, void *a2)
 
     if (v13)
     {
-      v8 = [v13 viewModel];
+      viewModel = [v13 viewModel];
     }
 
     else
     {
-      v8 = 0;
+      viewModel = 0;
     }
   }
 
-  return v8;
+  return viewModel;
 }
 
 void __33__CSSystemQuickAction_fireAction__block_invoke_cold_1(void *a1, NSObject *a2)

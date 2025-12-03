@@ -1,25 +1,25 @@
 @interface MADCacheDeleteManager
 + (id)_generateCacheDeleteManagerStateTable;
 + (id)sharedManager;
-- (BOOL)maCacheDeleteSupported:(id *)a3;
+- (BOOL)maCacheDeleteSupported:(id *)supported;
 - (MADCacheDeleteManager)init;
-- (int64_t)actionUnknownAction:(id)a3 error:(id *)a4;
-- (int64_t)action_Activate:(id)a3 error:(id *)a4;
-- (int64_t)action_CheckFileSystem:(id)a3 error:(id *)a4;
-- (int64_t)action_CheckPendingRequest:(id)a3 error:(id *)a4;
-- (int64_t)action_CheckPurgeable:(id)a3 error:(id *)a4;
-- (int64_t)action_NotifyEnoughSpace:(id)a3 error:(id *)a4;
-- (int64_t)action_NotifyNotEnoughSpaceAfterCheck:(id)a3 error:(id *)a4;
-- (int64_t)action_NotifyNotEnoughSpaceAfterPurge:(id)a3 error:(id *)a4;
-- (int64_t)action_NotifyOperationError:(id)a3 error:(id *)a4;
-- (int64_t)action_PerformPurgeBasePath:(id)a3 error:(id *)a4;
-- (int64_t)action_PerformPurgeSharedPath:(id)a3 error:(id *)a4;
-- (int64_t)action_QueueRequest:(id)a3 error:(id *)a4;
-- (int64_t)action_RemoveCompletedDownload:(id)a3 error:(id *)a4;
-- (int64_t)performAction:(id)a3 onEvent:(id)a4 inState:(id)a5 withInfo:(id)a6 nextState:(id)a7 error:(id *)a8;
-- (void)checkAvailableSpace:(unint64_t)a3 allowPurgeWithUrgency:(int)a4 withCompletionQueue:(id)a5 completion:(id)a6;
-- (void)notifyDownloadCompleted:(id)a3;
-- (void)notifyDownloadCompleted:(id)a3 withSpaceNoLongerNeeded:(unint64_t)a4;
+- (int64_t)actionUnknownAction:(id)action error:(id *)error;
+- (int64_t)action_Activate:(id)activate error:(id *)error;
+- (int64_t)action_CheckFileSystem:(id)system error:(id *)error;
+- (int64_t)action_CheckPendingRequest:(id)request error:(id *)error;
+- (int64_t)action_CheckPurgeable:(id)purgeable error:(id *)error;
+- (int64_t)action_NotifyEnoughSpace:(id)space error:(id *)error;
+- (int64_t)action_NotifyNotEnoughSpaceAfterCheck:(id)check error:(id *)error;
+- (int64_t)action_NotifyNotEnoughSpaceAfterPurge:(id)purge error:(id *)error;
+- (int64_t)action_NotifyOperationError:(id)error error:(id *)a4;
+- (int64_t)action_PerformPurgeBasePath:(id)path error:(id *)error;
+- (int64_t)action_PerformPurgeSharedPath:(id)path error:(id *)error;
+- (int64_t)action_QueueRequest:(id)request error:(id *)error;
+- (int64_t)action_RemoveCompletedDownload:(id)download error:(id *)error;
+- (int64_t)performAction:(id)action onEvent:(id)event inState:(id)state withInfo:(id)info nextState:(id)nextState error:(id *)error;
+- (void)checkAvailableSpace:(unint64_t)space allowPurgeWithUrgency:(int)urgency withCompletionQueue:(id)queue completion:(id)completion;
+- (void)notifyDownloadCompleted:(id)completed;
+- (void)notifyDownloadCompleted:(id)completed withSpaceNoLongerNeeded:(unint64_t)needed;
 @end
 
 @implementation MADCacheDeleteManager
@@ -240,80 +240,80 @@
   return v13;
 }
 
-- (int64_t)performAction:(id)a3 onEvent:(id)a4 inState:(id)a5 withInfo:(id)a6 nextState:(id)a7 error:(id *)a8
+- (int64_t)performAction:(id)action onEvent:(id)event inState:(id)state withInfo:(id)info nextState:(id)nextState error:(id *)error
 {
-  v11 = a3;
-  v12 = a6;
-  if ([v11 isEqualToString:kSUCoreFSMActionNoOp])
+  actionCopy = action;
+  infoCopy = info;
+  if ([actionCopy isEqualToString:kSUCoreFSMActionNoOp])
   {
     v13 = 0;
   }
 
   else
   {
-    if ([v11 isEqualToString:@"Activate"])
+    if ([actionCopy isEqualToString:@"Activate"])
     {
-      v14 = [(MADCacheDeleteManager *)self action_Activate:v12 error:a8];
+      v14 = [(MADCacheDeleteManager *)self action_Activate:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"QueueRequest"])
+    else if ([actionCopy isEqualToString:@"QueueRequest"])
     {
-      v14 = [(MADCacheDeleteManager *)self action_QueueRequest:v12 error:a8];
+      v14 = [(MADCacheDeleteManager *)self action_QueueRequest:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"RemoveCompletedDownload"])
+    else if ([actionCopy isEqualToString:@"RemoveCompletedDownload"])
     {
-      v14 = [(MADCacheDeleteManager *)self action_RemoveCompletedDownload:v12 error:a8];
+      v14 = [(MADCacheDeleteManager *)self action_RemoveCompletedDownload:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"CheckPendingRequest"])
+    else if ([actionCopy isEqualToString:@"CheckPendingRequest"])
     {
-      v14 = [(MADCacheDeleteManager *)self action_CheckPendingRequest:v12 error:a8];
+      v14 = [(MADCacheDeleteManager *)self action_CheckPendingRequest:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"CheckFileSystem"])
+    else if ([actionCopy isEqualToString:@"CheckFileSystem"])
     {
-      v14 = [(MADCacheDeleteManager *)self action_CheckFileSystem:v12 error:a8];
+      v14 = [(MADCacheDeleteManager *)self action_CheckFileSystem:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"CheckPurgeable"])
+    else if ([actionCopy isEqualToString:@"CheckPurgeable"])
     {
-      v14 = [(MADCacheDeleteManager *)self action_CheckPurgeable:v12 error:a8];
+      v14 = [(MADCacheDeleteManager *)self action_CheckPurgeable:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"PerformPurgeBasePath"])
+    else if ([actionCopy isEqualToString:@"PerformPurgeBasePath"])
     {
-      v14 = [(MADCacheDeleteManager *)self action_PerformPurgeBasePath:v12 error:a8];
+      v14 = [(MADCacheDeleteManager *)self action_PerformPurgeBasePath:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"PerformPurgeSharedPath"])
+    else if ([actionCopy isEqualToString:@"PerformPurgeSharedPath"])
     {
-      v14 = [(MADCacheDeleteManager *)self action_PerformPurgeSharedPath:v12 error:a8];
+      v14 = [(MADCacheDeleteManager *)self action_PerformPurgeSharedPath:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"NotifyEnoughSpace"])
+    else if ([actionCopy isEqualToString:@"NotifyEnoughSpace"])
     {
-      v14 = [(MADCacheDeleteManager *)self action_NotifyEnoughSpace:v12 error:a8];
+      v14 = [(MADCacheDeleteManager *)self action_NotifyEnoughSpace:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"NotifyNotEnoughSpaceAfterCheck"])
+    else if ([actionCopy isEqualToString:@"NotifyNotEnoughSpaceAfterCheck"])
     {
-      v14 = [(MADCacheDeleteManager *)self action_NotifyNotEnoughSpaceAfterCheck:v12 error:a8];
+      v14 = [(MADCacheDeleteManager *)self action_NotifyNotEnoughSpaceAfterCheck:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"NotifyNotEnoughSpaceAfterPurge"])
+    else if ([actionCopy isEqualToString:@"NotifyNotEnoughSpaceAfterPurge"])
     {
-      v14 = [(MADCacheDeleteManager *)self action_NotifyNotEnoughSpaceAfterPurge:v12 error:a8];
+      v14 = [(MADCacheDeleteManager *)self action_NotifyNotEnoughSpaceAfterPurge:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"NotifyOperationError"])
+    else if ([actionCopy isEqualToString:@"NotifyOperationError"])
     {
-      v14 = [(MADCacheDeleteManager *)self action_NotifyOperationError:v12 error:a8];
+      v14 = [(MADCacheDeleteManager *)self action_NotifyOperationError:infoCopy error:error];
     }
 
     else
     {
-      v14 = [(MADCacheDeleteManager *)self actionUnknownAction:v11 error:a8];
+      v14 = [(MADCacheDeleteManager *)self actionUnknownAction:actionCopy error:error];
     }
 
     v13 = v14;
@@ -322,96 +322,96 @@
   return v13;
 }
 
-- (int64_t)action_Activate:(id)a3 error:(id *)a4
+- (int64_t)action_Activate:(id)activate error:(id *)error
 {
-  v4 = [(MADCacheDeleteManager *)self stateMachine:a3];
-  v5 = [v4 extendedStateQueue];
-  dispatch_assert_queue_V2(v5);
+  v4 = [(MADCacheDeleteManager *)self stateMachine:activate];
+  extendedStateQueue = [v4 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   return 0;
 }
 
-- (int64_t)action_QueueRequest:(id)a3 error:(id *)a4
+- (int64_t)action_QueueRequest:(id)request error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADCacheDeleteManager *)self stateMachine];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  requestCopy = request;
+  stateMachine = [(MADCacheDeleteManager *)self stateMachine];
+  extendedStateQueue = [stateMachine extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [(MADCacheDeleteManager *)self spaceCheckRequestsLock];
-  [v8 lock];
+  spaceCheckRequestsLock = [(MADCacheDeleteManager *)self spaceCheckRequestsLock];
+  [spaceCheckRequestsLock lock];
 
-  v9 = [(MADCacheDeleteManager *)self spaceCheckRequests];
-  [v9 addObject:v5];
+  spaceCheckRequests = [(MADCacheDeleteManager *)self spaceCheckRequests];
+  [spaceCheckRequests addObject:requestCopy];
 
-  v10 = [(MADCacheDeleteManager *)self spaceCheckRequestsLock];
-  [v10 unlock];
+  spaceCheckRequestsLock2 = [(MADCacheDeleteManager *)self spaceCheckRequestsLock];
+  [spaceCheckRequestsLock2 unlock];
 
   return 0;
 }
 
-- (int64_t)action_RemoveCompletedDownload:(id)a3 error:(id *)a4
+- (int64_t)action_RemoveCompletedDownload:(id)download error:(id *)error
 {
-  v4 = [(MADCacheDeleteManager *)self stateMachine:a3];
-  v5 = [v4 extendedStateQueue];
-  dispatch_assert_queue_V2(v5);
+  v4 = [(MADCacheDeleteManager *)self stateMachine:download];
+  extendedStateQueue = [v4 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   return 0;
 }
 
-- (int64_t)action_CheckPendingRequest:(id)a3 error:(id *)a4
+- (int64_t)action_CheckPendingRequest:(id)request error:(id *)error
 {
-  v5 = [(MADCacheDeleteManager *)self stateMachine:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADCacheDeleteManager *)self stateMachine:request];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADCacheDeleteManager *)self spaceCheckRequestsLock];
-  [v7 lock];
+  spaceCheckRequestsLock = [(MADCacheDeleteManager *)self spaceCheckRequestsLock];
+  [spaceCheckRequestsLock lock];
 
   v8 = _MADLog(@"AutoSet");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(MADCacheDeleteManager *)self spaceCheckRequests];
+    spaceCheckRequests = [(MADCacheDeleteManager *)self spaceCheckRequests];
     v23 = 134217984;
-    v24 = [v9 count];
+    v24 = [spaceCheckRequests count];
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Before serving, number of request waiting: %lu", &v23, 0xCu);
   }
 
-  v10 = [(MADCacheDeleteManager *)self spaceCheckRequests];
-  v11 = [v10 count];
+  spaceCheckRequests2 = [(MADCacheDeleteManager *)self spaceCheckRequests];
+  v11 = [spaceCheckRequests2 count];
 
   if (v11)
   {
-    v12 = [(MADCacheDeleteManager *)self spaceCheckRequests];
-    v13 = [v12 firstObject];
+    spaceCheckRequests3 = [(MADCacheDeleteManager *)self spaceCheckRequests];
+    firstObject = [spaceCheckRequests3 firstObject];
 
-    v14 = [(MADCacheDeleteManager *)self spaceCheckRequests];
-    [v14 removeObjectAtIndex:0];
+    spaceCheckRequests4 = [(MADCacheDeleteManager *)self spaceCheckRequests];
+    [spaceCheckRequests4 removeObjectAtIndex:0];
   }
 
   else
   {
-    v13 = 0;
+    firstObject = 0;
   }
 
   v15 = _MADLog(@"AutoSet");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(MADCacheDeleteManager *)self spaceCheckRequests];
-    v17 = [v16 count];
+    spaceCheckRequests5 = [(MADCacheDeleteManager *)self spaceCheckRequests];
+    v17 = [spaceCheckRequests5 count];
     v23 = 134217984;
     v24 = v17;
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "After serving, number of request waiting: %lu", &v23, 0xCu);
   }
 
-  v18 = [(MADCacheDeleteManager *)self spaceCheckRequestsLock];
-  [v18 unlock];
+  spaceCheckRequestsLock2 = [(MADCacheDeleteManager *)self spaceCheckRequestsLock];
+  [spaceCheckRequestsLock2 unlock];
 
-  v19 = [(MADCacheDeleteManager *)self stateMachine];
-  v20 = v19;
-  if (v13)
+  stateMachine = [(MADCacheDeleteManager *)self stateMachine];
+  v20 = stateMachine;
+  if (firstObject)
   {
-    [v19 postEvent:@"CheckFileSystem" withInfo:v13];
+    [stateMachine postEvent:@"CheckFileSystem" withInfo:firstObject];
   }
 
   else
@@ -423,17 +423,17 @@
   return 0;
 }
 
-- (int64_t)action_CheckFileSystem:(id)a3 error:(id *)a4
+- (int64_t)action_CheckFileSystem:(id)system error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADCacheDeleteManager *)self stateMachine];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  systemCopy = system;
+  stateMachine = [(MADCacheDeleteManager *)self stateMachine];
+  extendedStateQueue = [stateMachine extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v8 = _MADLog(@"AutoSet");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v5 description];
+    v9 = [systemCopy description];
     buf.f_bsize = 138412290;
     *&buf.f_iosize = v9;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Requesting to check filesystem: %@", &buf, 0xCu);
@@ -450,9 +450,9 @@
       v11 = [MADCacheDeleteManagerError buildError:1 fromOperation:@"CheckFileSystemForAvailableSpace" underlyingError:0 withDescription:v13];
       if (v11)
       {
-        [v5 setError:v11];
-        v14 = [(MADCacheDeleteManager *)self stateMachine];
-        [v14 postEvent:@"OperationError" withInfo:v5];
+        [systemCopy setError:v11];
+        stateMachine2 = [(MADCacheDeleteManager *)self stateMachine];
+        [stateMachine2 postEvent:@"OperationError" withInfo:systemCopy];
 
         goto LABEL_26;
       }
@@ -477,31 +477,31 @@
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "[SPACE] Using FAKE available space set by the %{public}@ default. Free space available: %{public}llu", &buf, 0x16u);
     }
 
-    [v5 setCacheDeleteUrgency:0xFFFFFFFFLL];
+    [systemCopy setCacheDeleteUrgency:0xFFFFFFFFLL];
     v13 = 0;
   }
 
-  v15 = -[MADCacheDeleteManager totalSpaceRequired:](self, "totalSpaceRequired:", [v5 totalRequiredFreeSpace]);
-  [v5 setTotalRequiredSpaceForAllRequests:v15];
-  [v5 setTotalAvailableOnFS:v11];
+  v15 = -[MADCacheDeleteManager totalSpaceRequired:](self, "totalSpaceRequired:", [systemCopy totalRequiredFreeSpace]);
+  [systemCopy setTotalRequiredSpaceForAllRequests:v15];
+  [systemCopy setTotalAvailableOnFS:v11];
   v16 = _MADLog(@"AutoSet");
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
   if (v11 >= v15)
   {
     if (v17)
     {
-      v24 = [v5 totalRequiredFreeSpace];
+      totalRequiredFreeSpace = [systemCopy totalRequiredFreeSpace];
       buf.f_bsize = 134349568;
       *&buf.f_iosize = v15;
       WORD2(buf.f_blocks) = 2050;
-      *(&buf.f_blocks + 6) = v24;
+      *(&buf.f_blocks + 6) = totalRequiredFreeSpace;
       HIWORD(buf.f_bfree) = 2050;
       buf.f_bavail = v11;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "FS Check: Enough free space.  Grand Total Required: %{public}llu, Required space for request: %{public}llu, Available Space: %{public}llu", &buf, 0x20u);
     }
 
-    v22 = [(MADCacheDeleteManager *)self stateMachine];
-    v11 = v22;
+    stateMachine3 = [(MADCacheDeleteManager *)self stateMachine];
+    v11 = stateMachine3;
     v23 = @"FileSystemHasEnoughSpace";
   }
 
@@ -509,20 +509,20 @@
   {
     if (v17)
     {
-      v18 = [v5 totalRequiredFreeSpace];
+      totalRequiredFreeSpace2 = [systemCopy totalRequiredFreeSpace];
       buf.f_bsize = 134349568;
       *&buf.f_iosize = v15;
       WORD2(buf.f_blocks) = 2050;
-      *(&buf.f_blocks + 6) = v18;
+      *(&buf.f_blocks + 6) = totalRequiredFreeSpace2;
       HIWORD(buf.f_bfree) = 2050;
       buf.f_bavail = v11;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "FS Check: NOT enough free space.  Grand Total Required: %{public}llu, Required space for request: %{public}llu, Available Space: %{public}llu", &buf, 0x20u);
     }
 
-    v19 = [v5 cacheDeleteUrgency];
+    cacheDeleteUrgency = [systemCopy cacheDeleteUrgency];
     v20 = _MADLog(@"AutoSet");
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
-    if (v19 == -1)
+    if (cacheDeleteUrgency == -1)
     {
       if (v21)
       {
@@ -530,8 +530,8 @@
         _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "Cache delete level is undefined.  Not attempting any cache delete", &buf, 2u);
       }
 
-      v22 = [(MADCacheDeleteManager *)self stateMachine];
-      v11 = v22;
+      stateMachine3 = [(MADCacheDeleteManager *)self stateMachine];
+      v11 = stateMachine3;
       v23 = @"NotEnoughPurgeable";
     }
 
@@ -543,37 +543,37 @@
         _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "Will be checking for purgeable", &buf, 2u);
       }
 
-      v22 = [(MADCacheDeleteManager *)self stateMachine];
-      v11 = v22;
+      stateMachine3 = [(MADCacheDeleteManager *)self stateMachine];
+      v11 = stateMachine3;
       v23 = @"CheckPurgeable";
     }
   }
 
-  [v22 postEvent:v23 withInfo:v5];
+  [stateMachine3 postEvent:v23 withInfo:systemCopy];
 LABEL_26:
 
   return 0;
 }
 
-- (int64_t)action_CheckPurgeable:(id)a3 error:(id *)a4
+- (int64_t)action_CheckPurgeable:(id)purgeable error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADCacheDeleteManager *)self stateMachine];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  purgeableCopy = purgeable;
+  stateMachine = [(MADCacheDeleteManager *)self stateMachine];
+  extendedStateQueue = [stateMachine extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v46[0] = @"/var/mobile";
   v45[0] = @"CACHE_DELETE_VOLUME";
   v45[1] = @"CACHE_DELETE_URGENCY";
-  v8 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v5 cacheDeleteUrgency]);
+  v8 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [purgeableCopy cacheDeleteUrgency]);
   v46[1] = v8;
   v45[2] = @"CACHE_DELETE_PURGE_TIMEOUT";
   v9 = [NSNumber numberWithInt:300];
   v46[2] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v46 forKeys:v45 count:3];
 
-  v11 = [v5 totalRequiredSpaceForAllRequests];
-  v12 = v11 - [v5 totalAvailableOnFS];
+  totalRequiredSpaceForAllRequests = [purgeableCopy totalRequiredSpaceForAllRequests];
+  v12 = totalRequiredSpaceForAllRequests - [purgeableCopy totalAvailableOnFS];
   v13 = _MADLog(@"AutoSet");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -597,9 +597,9 @@ LABEL_12:
   TypeID = CFDictionaryGetTypeID();
   if (TypeID != CFGetTypeID(v15))
   {
-    v21 = [(MADCacheDeleteManager *)self stateMachine];
-    v22 = [v21 diag];
-    [v22 trackAnomaly:@"cacheDeletePurgeable" forReason:@"result provided by CacheDeleteCopyPurgeableSpaceWithInfo is not CFDictionary type - ignored" withResult:0 withError:0];
+    stateMachine2 = [(MADCacheDeleteManager *)self stateMachine];
+    diag = [stateMachine2 diag];
+    [diag trackAnomaly:@"cacheDeletePurgeable" forReason:@"result provided by CacheDeleteCopyPurgeableSpaceWithInfo is not CFDictionary type - ignored" withResult:0 withError:0];
 
     CFRelease(v15);
     v20 = @"invalid results type provided on cache delete purgeable complete";
@@ -617,7 +617,7 @@ LABEL_12:
   v18 = [v15 objectForKey:@"CACHE_DELETE_AMOUNT"];
   if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    [v5 setTotalAvailableFromCD:{objc_msgSend(v18, "unsignedLongLongValue")}];
+    [purgeableCopy setTotalAvailableFromCD:{objc_msgSend(v18, "unsignedLongLongValue")}];
     v19 = 0;
   }
 
@@ -629,31 +629,31 @@ LABEL_12:
 LABEL_15:
   if (v19)
   {
-    [v5 setError:v19];
+    [purgeableCopy setError:v19];
     v23 = @"OperationError";
   }
 
   else
   {
-    v24 = [v5 totalAvailableFromCD];
+    totalAvailableFromCD = [purgeableCopy totalAvailableFromCD];
     v25 = _MADLog(@"AutoSet");
     v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
-    if (v24 >= v12)
+    if (totalAvailableFromCD >= v12)
     {
       if (v26)
       {
-        v31 = [v5 totalRequiredSpaceForAllRequests];
-        v32 = [v5 totalRequiredFreeSpace];
-        v33 = [v5 totalAvailableOnFS];
-        v34 = [v5 totalAvailableFromCD];
+        totalRequiredSpaceForAllRequests2 = [purgeableCopy totalRequiredSpaceForAllRequests];
+        totalRequiredFreeSpace = [purgeableCopy totalRequiredFreeSpace];
+        totalAvailableOnFS = [purgeableCopy totalAvailableOnFS];
+        totalAvailableFromCD2 = [purgeableCopy totalAvailableFromCD];
         v37 = 134349824;
-        v38 = v31;
+        v38 = totalRequiredSpaceForAllRequests2;
         v39 = 2050;
-        v40 = v32;
+        v40 = totalRequiredFreeSpace;
         v41 = 2050;
-        v42 = v33;
+        v42 = totalAvailableOnFS;
         v43 = 2050;
-        v44 = v34;
+        v44 = totalAvailableFromCD2;
         _os_log_impl(&dword_0, v25, OS_LOG_TYPE_DEFAULT, "CD Check: Enough space.  Grand Total Required:%{public}llu, Required for request:%{public}llu, Avail FS:%{public}llu, Avail CD:%{public}llu", &v37, 0x2Au);
       }
 
@@ -664,18 +664,18 @@ LABEL_15:
     {
       if (v26)
       {
-        v27 = [v5 totalRequiredSpaceForAllRequests];
-        v28 = [v5 totalRequiredFreeSpace];
-        v29 = [v5 totalAvailableOnFS];
-        v30 = [v5 totalAvailableFromCD];
+        totalRequiredSpaceForAllRequests3 = [purgeableCopy totalRequiredSpaceForAllRequests];
+        totalRequiredFreeSpace2 = [purgeableCopy totalRequiredFreeSpace];
+        totalAvailableOnFS2 = [purgeableCopy totalAvailableOnFS];
+        totalAvailableFromCD3 = [purgeableCopy totalAvailableFromCD];
         v37 = 134349824;
-        v38 = v27;
+        v38 = totalRequiredSpaceForAllRequests3;
         v39 = 2050;
-        v40 = v28;
+        v40 = totalRequiredFreeSpace2;
         v41 = 2050;
-        v42 = v29;
+        v42 = totalAvailableOnFS2;
         v43 = 2050;
-        v44 = v30;
+        v44 = totalAvailableFromCD3;
         _os_log_impl(&dword_0, v25, OS_LOG_TYPE_DEFAULT, "CD Check: NOT enough space.  Grand Total Required:%{public}llu, Required for request:%{public}llu, Avail FS:%{public}llu, Avail CD:%{public}llu", &v37, 0x2Au);
       }
 
@@ -683,23 +683,23 @@ LABEL_15:
     }
   }
 
-  v35 = [(MADCacheDeleteManager *)self stateMachine];
-  [v35 postEvent:v23 withInfo:v5];
+  stateMachine3 = [(MADCacheDeleteManager *)self stateMachine];
+  [stateMachine3 postEvent:v23 withInfo:purgeableCopy];
 
   return 0;
 }
 
-- (int64_t)action_PerformPurgeBasePath:(id)a3 error:(id *)a4
+- (int64_t)action_PerformPurgeBasePath:(id)path error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADCacheDeleteManager *)self stateMachine];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  pathCopy = path;
+  stateMachine = [(MADCacheDeleteManager *)self stateMachine];
+  extendedStateQueue = [stateMachine extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 totalRequiredSpaceForAllRequests];
-  v9 = [v5 totalAvailableOnFS];
-  v10 = v8 <= v9;
-  v11 = v8 - v9;
+  totalRequiredSpaceForAllRequests = [pathCopy totalRequiredSpaceForAllRequests];
+  totalAvailableOnFS = [pathCopy totalAvailableOnFS];
+  v10 = totalRequiredSpaceForAllRequests <= totalAvailableOnFS;
+  v11 = totalRequiredSpaceForAllRequests - totalAvailableOnFS;
   if (v10)
   {
     v17 = _MADLog(@"AutoSet");
@@ -708,12 +708,12 @@ LABEL_15:
       *v29 = 134349312;
       *&v29[4] = v11;
       *&v29[12] = 2050;
-      *&v29[14] = [v5 totalRequiredSpaceForAllRequests];
+      *&v29[14] = [pathCopy totalRequiredSpaceForAllRequests];
       _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "There's enough space, no need to purge base path. Space needed: %{public}lld, total required: %{public}llu", v29, 0x16u);
     }
 
-    v18 = [(MADCacheDeleteManager *)self stateMachine];
-    [v18 postEvent:@"PurgeCompletedSuccess" withInfo:v5];
+    stateMachine2 = [(MADCacheDeleteManager *)self stateMachine];
+    [stateMachine2 postEvent:@"PurgeCompletedSuccess" withInfo:pathCopy];
   }
 
   else
@@ -734,7 +734,7 @@ LABEL_15:
     v12 = [NSNumber numberWithLongLong:v11];
     v28[1] = v12;
     v27[2] = @"CACHE_DELETE_URGENCY_LIMIT";
-    v13 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v5 cacheDeleteUrgency]);
+    v13 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [pathCopy cacheDeleteUrgency]);
     v28[2] = v13;
     v27[3] = @"CACHE_DELETE_PURGE_TIMEOUT";
     v14 = [NSNumber numberWithInt:300];
@@ -749,7 +749,7 @@ LABEL_15:
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "Triggering CacheDeletePurge on base path with info: %{public}@", buf, 0xCu);
     }
 
-    v20 = v5;
+    v20 = pathCopy;
     v22[3] = CacheDeletePurgeSpaceWithInfo();
 
     _Block_object_dispose(&v21, 8);
@@ -855,16 +855,16 @@ LABEL_14:
   [v19 postEvent:v22 withInfo:v21];
 }
 
-- (int64_t)action_PerformPurgeSharedPath:(id)a3 error:(id *)a4
+- (int64_t)action_PerformPurgeSharedPath:(id)path error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADCacheDeleteManager *)self stateMachine];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  pathCopy = path;
+  stateMachine = [(MADCacheDeleteManager *)self stateMachine];
+  extendedStateQueue = [stateMachine extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 totalRequiredSpaceForAllRequests];
-  v9 = [v5 totalAvailableOnFS];
-  v10 = v8 - ([v5 totalCDBasePath] + v9);
+  totalRequiredSpaceForAllRequests = [pathCopy totalRequiredSpaceForAllRequests];
+  totalAvailableOnFS = [pathCopy totalAvailableOnFS];
+  v10 = totalRequiredSpaceForAllRequests - ([pathCopy totalCDBasePath] + totalAvailableOnFS);
   if (v10 <= 0)
   {
     v16 = _MADLog(@"AutoSet");
@@ -873,14 +873,14 @@ LABEL_14:
       *v28 = 134349568;
       *&v28[4] = v10;
       *&v28[12] = 2050;
-      *&v28[14] = [v5 totalRequiredSpaceForAllRequests];
+      *&v28[14] = [pathCopy totalRequiredSpaceForAllRequests];
       *&v28[22] = 2050;
-      v29 = [v5 totalAvailableOnFS];
+      totalAvailableOnFS2 = [pathCopy totalAvailableOnFS];
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "There's enough space, no need to purge shared path. Space needed: %{public}lld, total required: %{public}llu, available on FS: %{public}llu", v28, 0x20u);
     }
 
-    v17 = [(MADCacheDeleteManager *)self stateMachine];
-    [v17 postEvent:@"PurgeCompletedSuccess" withInfo:v5];
+    stateMachine2 = [(MADCacheDeleteManager *)self stateMachine];
+    [stateMachine2 postEvent:@"PurgeCompletedSuccess" withInfo:pathCopy];
   }
 
   else
@@ -888,7 +888,7 @@ LABEL_14:
     *v28 = 0;
     *&v28[8] = v28;
     *&v28[16] = 0x3032000000;
-    v29 = __Block_byref_object_copy__15;
+    totalAvailableOnFS2 = __Block_byref_object_copy__15;
     v30 = __Block_byref_object_dispose__15;
     v31 = 0;
     v20 = 0;
@@ -901,7 +901,7 @@ LABEL_14:
     v11 = [NSNumber numberWithLongLong:v10];
     v27[1] = v11;
     v26[2] = @"CACHE_DELETE_URGENCY_LIMIT";
-    v12 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v5 cacheDeleteUrgency]);
+    v12 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [pathCopy cacheDeleteUrgency]);
     v27[2] = v12;
     v26[3] = @"CACHE_DELETE_PURGE_TIMEOUT";
     v13 = [NSNumber numberWithInt:300];
@@ -916,7 +916,7 @@ LABEL_14:
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "Triggering CacheDeletePurge on shared path with info: %{public}@", buf, 0xCu);
     }
 
-    v19 = v5;
+    v19 = pathCopy;
     v21[3] = CacheDeletePurgeSpaceWithInfo();
 
     _Block_object_dispose(&v20, 8);
@@ -1011,26 +1011,26 @@ LABEL_14:
   [v20 postEvent:v19 withInfo:*(a1 + 32)];
 }
 
-- (int64_t)action_NotifyEnoughSpace:(id)a3 error:(id *)a4
+- (int64_t)action_NotifyEnoughSpace:(id)space error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADCacheDeleteManager *)self stateMachine];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  spaceCopy = space;
+  stateMachine = [(MADCacheDeleteManager *)self stateMachine];
+  extendedStateQueue = [stateMachine extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v8 = +[NSUUID UUID];
-  v9 = [v8 UUIDString];
+  uUIDString = [v8 UUIDString];
 
-  v10 = [v5 completionQueue];
+  completionQueue = [spaceCopy completionQueue];
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = __56__MADCacheDeleteManager_action_NotifyEnoughSpace_error___block_invoke;
   v19 = &unk_4B2B18;
-  v20 = v5;
-  v21 = v9;
-  v11 = v9;
-  v12 = v5;
-  dispatch_async(v10, &v16);
+  v20 = spaceCopy;
+  v21 = uUIDString;
+  v11 = uUIDString;
+  v12 = spaceCopy;
+  dispatch_async(completionQueue, &v16);
 
   v13 = [(MADCacheDeleteManager *)self stateMachine:v16];
   v14 = objc_alloc_init(MADCacheDeleteManagerEventInfo);
@@ -1045,25 +1045,25 @@ void __56__MADCacheDeleteManager_action_NotifyEnoughSpace_error___block_invoke(u
   (*(v2 + 2))(v2, 1, [*(a1 + 32) totalRequiredFreeSpace], *(a1 + 40), 0);
 }
 
-- (int64_t)action_NotifyNotEnoughSpaceAfterCheck:(id)a3 error:(id *)a4
+- (int64_t)action_NotifyNotEnoughSpaceAfterCheck:(id)check error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADCacheDeleteManager *)self stateMachine];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  checkCopy = check;
+  stateMachine = [(MADCacheDeleteManager *)self stateMachine];
+  extendedStateQueue = [stateMachine extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 completionQueue];
+  completionQueue = [checkCopy completionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __69__MADCacheDeleteManager_action_NotifyNotEnoughSpaceAfterCheck_error___block_invoke;
   block[3] = &unk_4B2AA0;
-  v14 = v5;
-  v9 = v5;
-  dispatch_async(v8, block);
+  v14 = checkCopy;
+  v9 = checkCopy;
+  dispatch_async(completionQueue, block);
 
-  v10 = [(MADCacheDeleteManager *)self stateMachine];
+  stateMachine2 = [(MADCacheDeleteManager *)self stateMachine];
   v11 = objc_alloc_init(MADCacheDeleteManagerEventInfo);
-  [v10 followupEvent:@"CheckPendingRequest" withInfo:v11];
+  [stateMachine2 followupEvent:@"CheckPendingRequest" withInfo:v11];
 
   return 0;
 }
@@ -1076,25 +1076,25 @@ void __69__MADCacheDeleteManager_action_NotifyNotEnoughSpaceAfterCheck_error___b
   (*(v4 + 2))(v4, 0, &v2[v3], 0, 0);
 }
 
-- (int64_t)action_NotifyNotEnoughSpaceAfterPurge:(id)a3 error:(id *)a4
+- (int64_t)action_NotifyNotEnoughSpaceAfterPurge:(id)purge error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADCacheDeleteManager *)self stateMachine];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  purgeCopy = purge;
+  stateMachine = [(MADCacheDeleteManager *)self stateMachine];
+  extendedStateQueue = [stateMachine extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 completionQueue];
+  completionQueue = [purgeCopy completionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __69__MADCacheDeleteManager_action_NotifyNotEnoughSpaceAfterPurge_error___block_invoke;
   block[3] = &unk_4B2AA0;
-  v14 = v5;
-  v9 = v5;
-  dispatch_async(v8, block);
+  v14 = purgeCopy;
+  v9 = purgeCopy;
+  dispatch_async(completionQueue, block);
 
-  v10 = [(MADCacheDeleteManager *)self stateMachine];
+  stateMachine2 = [(MADCacheDeleteManager *)self stateMachine];
   v11 = objc_alloc_init(MADCacheDeleteManagerEventInfo);
-  [v10 followupEvent:@"CheckPendingRequest" withInfo:v11];
+  [stateMachine2 followupEvent:@"CheckPendingRequest" withInfo:v11];
 
   return 0;
 }
@@ -1108,36 +1108,36 @@ void __69__MADCacheDeleteManager_action_NotifyNotEnoughSpaceAfterPurge_error___b
   (*(v5 + 2))(v5, 0, &v4[v3], 0, 0);
 }
 
-- (int64_t)action_NotifyOperationError:(id)a3 error:(id *)a4
+- (int64_t)action_NotifyOperationError:(id)error error:(id *)a4
 {
-  v5 = a3;
-  v6 = [(MADCacheDeleteManager *)self stateMachine];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  errorCopy = error;
+  stateMachine = [(MADCacheDeleteManager *)self stateMachine];
+  extendedStateQueue = [stateMachine extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 error];
+  error = [errorCopy error];
 
-  if (v8)
+  if (error)
   {
-    v9 = [v5 completionQueue];
+    completionQueue = [errorCopy completionQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __59__MADCacheDeleteManager_action_NotifyOperationError_error___block_invoke;
     block[3] = &unk_4B2AA0;
-    v16 = v5;
-    dispatch_async(v9, block);
+    v16 = errorCopy;
+    dispatch_async(completionQueue, block);
   }
 
   else
   {
-    v10 = [(MADCacheDeleteManager *)self stateMachine];
-    v11 = [v10 diag];
-    [v11 trackAnomaly:@"NotifyOperationError" forReason:@"error is nil when notify operation error is called" withResult:0 withError:0];
+    stateMachine2 = [(MADCacheDeleteManager *)self stateMachine];
+    diag = [stateMachine2 diag];
+    [diag trackAnomaly:@"NotifyOperationError" forReason:@"error is nil when notify operation error is called" withResult:0 withError:0];
   }
 
-  v12 = [(MADCacheDeleteManager *)self stateMachine];
+  stateMachine3 = [(MADCacheDeleteManager *)self stateMachine];
   v13 = objc_alloc_init(MADCacheDeleteManagerEventInfo);
-  [v12 followupEvent:@"CheckPendingRequest" withInfo:v13];
+  [stateMachine3 followupEvent:@"CheckPendingRequest" withInfo:v13];
 
   return 0;
 }
@@ -1149,22 +1149,22 @@ void __59__MADCacheDeleteManager_action_NotifyOperationError_error___block_invok
   (*(v3 + 2))(v3, 0, 0, 0, v2);
 }
 
-- (int64_t)actionUnknownAction:(id)a3 error:(id *)a4
+- (int64_t)actionUnknownAction:(id)action error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADCacheDeleteManager *)self stateMachine];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  actionCopy = action;
+  stateMachine = [(MADCacheDeleteManager *)self stateMachine];
+  extendedStateQueue = [stateMachine extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v8 = +[SUCoreDiag sharedDiag];
-  v9 = [[NSString alloc] initWithFormat:@"unknown FSM action(%@)", v5];
-  [v8 trackAnomaly:@"[CACHE_DELETE_MANAGER]" forReason:v9 withResult:8116 withError:0];
+  actionCopy = [[NSString alloc] initWithFormat:@"unknown FSM action(%@)", actionCopy];
+  [v8 trackAnomaly:@"[CACHE_DELETE_MANAGER]" forReason:actionCopy withResult:8116 withError:0];
 
   v10 = _MADLog(@"AutoSet");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v13 = v5;
+    v13 = actionCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "Unknown FSM action(%@)", buf, 0xCu);
   }
 
@@ -1225,9 +1225,9 @@ void __38__MADCacheDeleteManager_sharedManager__block_invoke(id a1)
       +[MADCacheDeleteManagerError mapCacheDeleteManagerErrorIndications];
     }
 
-    v12 = [objc_opt_class() _generateCacheDeleteManagerStateTable];
+    _generateCacheDeleteManagerStateTable = [objc_opt_class() _generateCacheDeleteManagerStateTable];
     stateTable = v2->_stateTable;
-    v2->_stateTable = v12;
+    v2->_stateTable = _generateCacheDeleteManagerStateTable;
 
     v14 = [[SUCoreFSM alloc] initMachine:@"MADCacheDeleteManager" withTable:v2->_stateTable startingIn:@"Startup" usingDelegate:v2 registeringAllInfoClass:objc_opt_class()];
     stateMachine = v2->_stateMachine;
@@ -1239,9 +1239,9 @@ void __38__MADCacheDeleteManager_sharedManager__block_invoke(id a1)
       goto LABEL_13;
     }
 
-    v16 = [(MADCacheDeleteManager *)v2 stateMachine];
+    stateMachine = [(MADCacheDeleteManager *)v2 stateMachine];
     v17 = objc_alloc_init(MADCacheDeleteManagerEventInfo);
-    [v16 postEvent:@"Activate" withInfo:v17];
+    [stateMachine postEvent:@"Activate" withInfo:v17];
 
     v18 = _MADLog(@"AutoSet");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1257,11 +1257,11 @@ LABEL_13:
   return v19;
 }
 
-- (BOOL)maCacheDeleteSupported:(id *)a3
+- (BOOL)maCacheDeleteSupported:(id *)supported
 {
   if (!&_os_variant_uses_ephemeral_storage)
   {
-    if (a3)
+    if (supported)
     {
       v4 = 0;
       v5 = @"MobileAsset space check disabled because unable to determine whether mobileassetd is running in NeRD or not";
@@ -1273,12 +1273,12 @@ LABEL_13:
 
   if (os_variant_uses_ephemeral_storage())
   {
-    if (a3)
+    if (supported)
     {
       v4 = 0;
       v5 = @"MobileAsset space check is not supported in NeRD";
 LABEL_7:
-      *a3 = v5;
+      *supported = v5;
       return v4;
     }
 
@@ -1351,9 +1351,9 @@ LABEL_23:
   }
 
   v4 = 0;
-  if (a3)
+  if (supported)
   {
-    *a3 = @"MobileAsset space check disabled because MobileAsset does not have entitlements to call cache delete";
+    *supported = @"MobileAsset space check disabled because MobileAsset does not have entitlements to call cache delete";
   }
 
 LABEL_26:
@@ -1361,20 +1361,20 @@ LABEL_26:
   return v4;
 }
 
-- (void)checkAvailableSpace:(unint64_t)a3 allowPurgeWithUrgency:(int)a4 withCompletionQueue:(id)a5 completion:(id)a6
+- (void)checkAvailableSpace:(unint64_t)space allowPurgeWithUrgency:(int)urgency withCompletionQueue:(id)queue completion:(id)completion
 {
-  v7 = *&a4;
-  v10 = a6;
+  v7 = *&urgency;
+  completionCopy = completion;
   v22 = 0;
-  v11 = a5;
+  queueCopy = queue;
   v12 = [(MADCacheDeleteManager *)self maCacheDeleteSupported:&v22];
   v13 = v22;
   if (v12)
   {
-    v14 = [[MADCacheDeleteManagerEventInfo alloc] initWithTotalRequiredFreeSpace:a3 cacheDeleteUrgency:v7 completionQueue:v11 completion:v10];
+    v14 = [[MADCacheDeleteManagerEventInfo alloc] initWithTotalRequiredFreeSpace:space cacheDeleteUrgency:v7 completionQueue:queueCopy completion:completionCopy];
 
-    v15 = [(MADCacheDeleteManager *)self stateMachine];
-    [v15 postEvent:@"ClientSpaceCheckRequest" withInfo:v14];
+    stateMachine = [(MADCacheDeleteManager *)self stateMachine];
+    [stateMachine postEvent:@"ClientSpaceCheckRequest" withInfo:v14];
   }
 
   else
@@ -1399,31 +1399,31 @@ LABEL_26:
     block[2] = __98__MADCacheDeleteManager_checkAvailableSpace_allowPurgeWithUrgency_withCompletionQueue_completion___block_invoke;
     block[3] = &unk_4B31D8;
     v20 = v16;
-    v21 = v10;
+    v21 = completionCopy;
     v14 = v16;
-    dispatch_async(v11, block);
+    dispatch_async(queueCopy, block);
 
-    v15 = v21;
+    stateMachine = v21;
   }
 }
 
-- (void)notifyDownloadCompleted:(id)a3
+- (void)notifyDownloadCompleted:(id)completed
 {
-  v4 = a3;
-  v6 = [[MADCacheDeleteManagerEventInfo alloc] initWithSpaceCheckedID:v4];
+  completedCopy = completed;
+  v6 = [[MADCacheDeleteManagerEventInfo alloc] initWithSpaceCheckedID:completedCopy];
 
-  v5 = [(MADCacheDeleteManager *)self stateMachine];
-  [v5 postEvent:@"ClientDownloadCompleted" withInfo:v6];
+  stateMachine = [(MADCacheDeleteManager *)self stateMachine];
+  [stateMachine postEvent:@"ClientDownloadCompleted" withInfo:v6];
 }
 
-- (void)notifyDownloadCompleted:(id)a3 withSpaceNoLongerNeeded:(unint64_t)a4
+- (void)notifyDownloadCompleted:(id)completed withSpaceNoLongerNeeded:(unint64_t)needed
 {
-  v6 = a3;
-  v8 = [[MADCacheDeleteManagerEventInfo alloc] initWithSpaceCheckedID:v6];
+  completedCopy = completed;
+  v8 = [[MADCacheDeleteManagerEventInfo alloc] initWithSpaceCheckedID:completedCopy];
 
-  [(MADCacheDeleteManagerEventInfo *)v8 setSpaceNoLongerNeeded:a4];
-  v7 = [(MADCacheDeleteManager *)self stateMachine];
-  [v7 postEvent:@"ClientDownloadCompleted" withInfo:v8];
+  [(MADCacheDeleteManagerEventInfo *)v8 setSpaceNoLongerNeeded:needed];
+  stateMachine = [(MADCacheDeleteManager *)self stateMachine];
+  [stateMachine postEvent:@"ClientDownloadCompleted" withInfo:v8];
 }
 
 @end

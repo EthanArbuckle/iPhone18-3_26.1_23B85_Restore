@@ -1,11 +1,11 @@
 @interface SKGLocation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isParent:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isParent:(id)parent;
 - (NSArray)expansions;
-- (double)distance:(id)a3;
+- (double)distance:(id)distance;
 - (id)description;
 - (unint64_t)hash;
-- (void)addExpansion:(id)a3;
+- (void)addExpansion:(id)expansion;
 @end
 
 @implementation SKGLocation
@@ -23,53 +23,53 @@
   }
 }
 
-- (void)addExpansion:(id)a3
+- (void)addExpansion:(id)expansion
 {
-  v4 = a3;
-  v8 = v4;
+  expansionCopy = expansion;
+  v8 = expansionCopy;
   if (!self->_expansions)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     expansions = self->_expansions;
     self->_expansions = v5;
 
-    v4 = v8;
+    expansionCopy = v8;
   }
 
-  if (v4)
+  if (expansionCopy)
   {
     v7 = [(NSMutableArray *)self->_expansions containsObject:v8];
-    v4 = v8;
+    expansionCopy = v8;
     if ((v7 & 1) == 0)
     {
       [(NSMutableArray *)self->_expansions addObject:v8];
-      v4 = v8;
+      expansionCopy = v8;
     }
   }
 }
 
-- (double)distance:(id)a3
+- (double)distance:(id)distance
 {
-  v4 = a3;
-  [v4 lat];
+  distanceCopy = distance;
+  [distanceCopy lat];
   v6 = v5;
   [(SKGLocation *)self lat];
   v8 = (v6 - v7) * 3.14159265 / 180.0;
-  [v4 lng];
+  [distanceCopy lng];
   v10 = v9;
   [(SKGLocation *)self lng];
   v12 = (v10 - v11) * 3.14159265 / 180.0;
   [(SKGLocation *)self lat];
   [(SKGLocation *)self setLat:v13 * 3.14159265 / 180.0];
-  [v4 lat];
-  [v4 setLat:v14 * 3.14159265 / 180.0];
+  [distanceCopy lat];
+  [distanceCopy setLat:v14 * 3.14159265 / 180.0];
   v15 = sin(v8 * 0.5);
   v16 = v15 * v15;
   v17 = sin(v12 * 0.5);
   v18 = v17 * v17;
   [(SKGLocation *)self lat];
   v20 = v18 * cos(v19);
-  [v4 lat];
+  [distanceCopy lat];
   v22 = v21;
 
   v23 = cos(v22);
@@ -77,15 +77,15 @@
   return (v24 + v24) * 6371.0;
 }
 
-- (BOOL)isParent:(id)a3
+- (BOOL)isParent:(id)parent
 {
-  v4 = a3;
-  [v4 lat];
+  parentCopy = parent;
+  [parentCopy lat];
   v6 = v5;
   [(SKGLocation *)self minLat];
-  if (v6 >= v7 && ([v4 lat], v9 = v8, -[SKGLocation maxLat](self, "maxLat"), v9 <= v10) && (objc_msgSend(v4, "lng"), v12 = v11, -[SKGLocation minLng](self, "minLng"), v12 >= v13))
+  if (v6 >= v7 && ([parentCopy lat], v9 = v8, -[SKGLocation maxLat](self, "maxLat"), v9 <= v10) && (objc_msgSend(parentCopy, "lng"), v12 = v11, -[SKGLocation minLng](self, "minLng"), v12 >= v13))
   {
-    [v4 lng];
+    [parentCopy lng];
     v17 = v16;
     [(SKGLocation *)self maxLng];
     v14 = v17 <= v18;
@@ -99,13 +99,13 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = MEMORY[0x277CCABB0];
     [(SKGLocation *)self lat];
     v7 = [v6 numberWithDouble:?];

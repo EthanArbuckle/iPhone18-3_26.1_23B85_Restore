@@ -1,14 +1,14 @@
 @interface _UIContentUnavailableViewCacheKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCacheKey:(id)a3;
-- (_UIContentUnavailableViewCacheKey)initWithStyle:(unint64_t)a3 color:(CGColor *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCacheKey:(id)key;
+- (_UIContentUnavailableViewCacheKey)initWithStyle:(unint64_t)style color:(CGColor *)color;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation _UIContentUnavailableViewCacheKey
 
-- (_UIContentUnavailableViewCacheKey)initWithStyle:(unint64_t)a3 color:(CGColor *)a4
+- (_UIContentUnavailableViewCacheKey)initWithStyle:(unint64_t)style color:(CGColor *)color
 {
   v9.receiver = self;
   v9.super_class = _UIContentUnavailableViewCacheKey;
@@ -16,9 +16,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_style = a3;
-    CGColorRetain(a4);
-    v7->_color = a4;
+    v6->_style = style;
+    CGColorRetain(color);
+    v7->_color = color;
   }
 
   return v7;
@@ -36,10 +36,10 @@
   return color ^ style;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -47,17 +47,17 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_UIContentUnavailableViewCacheKey *)self isEqualToCacheKey:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_UIContentUnavailableViewCacheKey *)self isEqualToCacheKey:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToCacheKey:(id)a3
+- (BOOL)isEqualToCacheKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = v4 && self->_style == v4[1] && CGColorEqualToColor(self->_color, v4[2]);
+  keyCopy = key;
+  v5 = keyCopy;
+  v6 = keyCopy && self->_style == keyCopy[1] && CGColorEqualToColor(self->_color, keyCopy[2]);
 
   return v6;
 }

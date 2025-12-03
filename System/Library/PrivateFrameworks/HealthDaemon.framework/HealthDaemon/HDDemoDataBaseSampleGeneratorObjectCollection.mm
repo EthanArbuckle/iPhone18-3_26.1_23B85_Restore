@@ -1,9 +1,9 @@
 @interface HDDemoDataBaseSampleGeneratorObjectCollection
 - (HDDemoDataBaseSampleGeneratorObjectCollection)init;
 - (id)objectsFromPhoneApps;
-- (void)addObjects:(id)a3 fromPhoneAppWithBundleIdentifier:(id)a4;
-- (void)enumerateLooseObjectAssociations:(id)a3;
-- (void)enumerateObjectAssociations:(id)a3;
+- (void)addObjects:(id)objects fromPhoneAppWithBundleIdentifier:(id)identifier;
+- (void)enumerateLooseObjectAssociations:(id)associations;
+- (void)enumerateObjectAssociations:(id)associations;
 @end
 
 @implementation HDDemoDataBaseSampleGeneratorObjectCollection
@@ -39,22 +39,22 @@
   return v2;
 }
 
-- (void)addObjects:(id)a3 fromPhoneAppWithBundleIdentifier:(id)a4
+- (void)addObjects:(id)objects fromPhoneAppWithBundleIdentifier:(id)identifier
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_objectsFromPhoneApps objectForKeyedSubscript:v6];
+  objectsCopy = objects;
+  identifierCopy = identifier;
+  v7 = [(NSMutableDictionary *)self->_objectsFromPhoneApps objectForKeyedSubscript:identifierCopy];
 
   if (v7)
   {
-    v8 = [(NSMutableDictionary *)self->_objectsFromPhoneApps objectForKeyedSubscript:v6];
-    [v8 addObjectsFromArray:v9];
+    v8 = [(NSMutableDictionary *)self->_objectsFromPhoneApps objectForKeyedSubscript:identifierCopy];
+    [v8 addObjectsFromArray:objectsCopy];
   }
 
   else
   {
-    v8 = [v9 mutableCopy];
-    [(NSMutableDictionary *)self->_objectsFromPhoneApps setObject:v8 forKeyedSubscript:v6];
+    v8 = [objectsCopy mutableCopy];
+    [(NSMutableDictionary *)self->_objectsFromPhoneApps setObject:v8 forKeyedSubscript:identifierCopy];
   }
 }
 
@@ -80,29 +80,29 @@ void __69__HDDemoDataBaseSampleGeneratorObjectCollection_objectsFromPhoneApps__b
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (void)enumerateObjectAssociations:(id)a3
+- (void)enumerateObjectAssociations:(id)associations
 {
-  v4 = a3;
+  associationsCopy = associations;
   objectUUIDToAssocatedObjectUUIDs = self->_objectUUIDToAssocatedObjectUUIDs;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__HDDemoDataBaseSampleGeneratorObjectCollection_enumerateObjectAssociations___block_invoke;
   v7[3] = &unk_27862F6D8;
-  v8 = v4;
-  v6 = v4;
+  v8 = associationsCopy;
+  v6 = associationsCopy;
   [(NSMutableDictionary *)objectUUIDToAssocatedObjectUUIDs enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)enumerateLooseObjectAssociations:(id)a3
+- (void)enumerateLooseObjectAssociations:(id)associations
 {
-  v4 = a3;
+  associationsCopy = associations;
   objectUUIDToLooseAssocatedObjectUUIDs = self->_objectUUIDToLooseAssocatedObjectUUIDs;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __82__HDDemoDataBaseSampleGeneratorObjectCollection_enumerateLooseObjectAssociations___block_invoke;
   v7[3] = &unk_27862F6D8;
-  v8 = v4;
-  v6 = v4;
+  v8 = associationsCopy;
+  v6 = associationsCopy;
   [(NSMutableDictionary *)objectUUIDToLooseAssocatedObjectUUIDs enumerateKeysAndObjectsUsingBlock:v7];
 }
 

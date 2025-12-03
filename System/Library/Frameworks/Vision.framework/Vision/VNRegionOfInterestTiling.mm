@@ -1,12 +1,12 @@
 @interface VNRegionOfInterestTiling
-+ (id)tilingForRegionOfInterest:(CGRect)a3 inPixelBounds:(CGRect)a4 tileAspectRatio:(double)a5 options:(id)a6;
-+ (id)tilingForRegionOfInterest:(CGRect)a3 inPixelWidth:(unint64_t)a4 height:(unint64_t)a5 tileAspectRatio:(double)a6 options:(id)a7;
++ (id)tilingForRegionOfInterest:(CGRect)interest inPixelBounds:(CGRect)bounds tileAspectRatio:(double)ratio options:(id)options;
++ (id)tilingForRegionOfInterest:(CGRect)interest inPixelWidth:(unint64_t)width height:(unint64_t)height tileAspectRatio:(double)ratio options:(id)options;
 - (CGRect)pixelBounds;
 - (CGRect)pixelRegionOfInterest;
 - (CGRect)regionOfInterest;
-- (id)_initWithPixelOriginX:(unint64_t)a3 Y:(unint64_t)a4 width:(unint64_t)a5 height:(unint64_t)a6 regionOfInterest:(CGRect)a7;
-- (void)_calculateTilesHorizontally:(BOOL)a3 vertically:(BOOL)a4 tileAspectRatio:(double)a5 overlapPercentage:(double)a6 tileOverflowCount:(unint64_t)a7 addTileBlock:(id)a8 columnCount:(unint64_t *)a9 rowCount:(unint64_t *)a10;
-- (void)_calculateTilesWithAspectRatio:(double)a3 options:(id)a4;
+- (id)_initWithPixelOriginX:(unint64_t)x Y:(unint64_t)y width:(unint64_t)width height:(unint64_t)height regionOfInterest:(CGRect)interest;
+- (void)_calculateTilesHorizontally:(BOOL)horizontally vertically:(BOOL)vertically tileAspectRatio:(double)ratio overlapPercentage:(double)percentage tileOverflowCount:(unint64_t)count addTileBlock:(id)block columnCount:(unint64_t *)columnCount rowCount:(unint64_t *)self0;
+- (void)_calculateTilesWithAspectRatio:(double)ratio options:(id)options;
 @end
 
 @implementation VNRegionOfInterestTiling
@@ -52,13 +52,13 @@
   return result;
 }
 
-- (void)_calculateTilesWithAspectRatio:(double)a3 options:(id)a4
+- (void)_calculateTilesWithAspectRatio:(double)ratio options:(id)options
 {
-  v6 = a4;
-  v7 = v6;
+  optionsCopy = options;
+  v7 = optionsCopy;
   if (self->_pixelRegionOfInterest.size.width >= 1.0 && self->_pixelRegionOfInterest.size.height >= 1.0)
   {
-    if (!v6)
+    if (!optionsCopy)
     {
       v7 = objc_alloc_init(VNRegionOfInterestTilingOptions);
     }
@@ -80,7 +80,7 @@
     v19 = 0;
     v20 = 0;
     [(VNRegionOfInterestTilingOptions *)v7 tileOverlapPercentage];
-    [(VNRegionOfInterestTiling *)self _calculateTilesHorizontally:v11 vertically:v10 tileAspectRatio:[(VNRegionOfInterestTilingOptions *)v7 tileOverflowCount] overlapPercentage:v14 tileOverflowCount:&v20 addTileBlock:&v19 columnCount:a3 rowCount:v15];
+    [(VNRegionOfInterestTiling *)self _calculateTilesHorizontally:v11 vertically:v10 tileAspectRatio:[(VNRegionOfInterestTilingOptions *)v7 tileOverflowCount] overlapPercentage:v14 tileOverflowCount:&v20 addTileBlock:&v19 columnCount:ratio rowCount:v15];
     v16 = [v13 copy];
     tiles = self->_tiles;
     self->_tiles = v16;
@@ -98,13 +98,13 @@ void __67__VNRegionOfInterestTiling__calculateTilesWithAspectRatio_options___blo
   [*(a1 + 40) addObject:v6];
 }
 
-- (void)_calculateTilesHorizontally:(BOOL)a3 vertically:(BOOL)a4 tileAspectRatio:(double)a5 overlapPercentage:(double)a6 tileOverflowCount:(unint64_t)a7 addTileBlock:(id)a8 columnCount:(unint64_t *)a9 rowCount:(unint64_t *)a10
+- (void)_calculateTilesHorizontally:(BOOL)horizontally vertically:(BOOL)vertically tileAspectRatio:(double)ratio overlapPercentage:(double)percentage tileOverflowCount:(unint64_t)count addTileBlock:(id)block columnCount:(unint64_t *)columnCount rowCount:(unint64_t *)self0
 {
-  v15 = a4;
-  v16 = a3;
-  v18 = a8;
-  *a9 = 0;
-  *a10 = 0;
+  verticallyCopy = vertically;
+  horizontallyCopy = horizontally;
+  blockCopy = block;
+  *columnCount = 0;
+  *rowCount = 0;
   width = self->_pixelRegionOfInterest.size.width;
   if (width >= 1.0)
   {
@@ -113,39 +113,39 @@ void __67__VNRegionOfInterestTiling__calculateTilesWithAspectRatio_options___blo
     {
       v21 = width;
       v22 = height;
-      if (v16)
+      if (horizontallyCopy)
       {
         v23 = v22;
-        v24 = v22 - (v22 * a6);
+        v24 = v22 - (v22 * percentage);
         v25 = (v21 + v24 - 1) / v24;
-        if (v25 > a7)
+        if (v25 > count)
         {
           goto LABEL_26;
         }
 
-        v44 = a10;
-        width = trunc(height * a5);
+        rowCountCopy2 = rowCount;
+        width = trunc(height * ratio);
         v26 = v24;
         v27 = 1;
       }
 
       else
       {
-        if (!v15)
+        if (!verticallyCopy)
         {
           goto LABEL_26;
         }
 
         v26 = v21;
-        v28 = v21 - (v21 * a6);
+        v28 = v21 - (v21 * percentage);
         v27 = (v28 + v22 - 1) / v28;
-        if (v27 > a7)
+        if (v27 > count)
         {
           goto LABEL_26;
         }
 
-        v44 = a10;
-        height = trunc(width / a5);
+        rowCountCopy2 = rowCount;
+        height = trunc(width / ratio);
         v23 = v28;
         v25 = 1;
       }
@@ -154,7 +154,7 @@ void __67__VNRegionOfInterestTiling__calculateTilesWithAspectRatio_options___blo
       v30 = (v25 >> 1) + 1;
       v31 = v27 >> 1;
       y = self->_pixelRegionOfInterest.origin.y;
-      v45 = v18;
+      v45 = blockCopy;
       do
       {
         x = self->_pixelRegionOfInterest.origin.x;
@@ -242,69 +242,69 @@ void __67__VNRegionOfInterestTiling__calculateTilesWithAspectRatio_options___blo
         while (v38 != v27);
       }
 
-      *a9 = v25;
-      v18 = v45;
-      *v44 = v27;
+      *columnCount = v25;
+      blockCopy = v45;
+      *rowCountCopy2 = v27;
     }
   }
 
 LABEL_26:
 }
 
-- (id)_initWithPixelOriginX:(unint64_t)a3 Y:(unint64_t)a4 width:(unint64_t)a5 height:(unint64_t)a6 regionOfInterest:(CGRect)a7
+- (id)_initWithPixelOriginX:(unint64_t)x Y:(unint64_t)y width:(unint64_t)width height:(unint64_t)height regionOfInterest:(CGRect)interest
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v16.receiver = self;
   v16.super_class = VNRegionOfInterestTiling;
   result = [(VNRegionOfInterestTiling *)&v16 init];
   if (result)
   {
-    *(result + 1) = a3;
-    *(result + 2) = a4;
-    *(result + 3) = a5;
-    *(result + 4) = a6;
+    *(result + 1) = x;
+    *(result + 2) = y;
+    *(result + 3) = width;
+    *(result + 4) = height;
     *(result + 5) = x;
     *(result + 6) = y;
     *(result + 7) = width;
     *(result + 8) = height;
-    *(result + 9) = x * a5;
-    *(result + 10) = y * a6;
-    *(result + 11) = width * a5;
-    *(result + 12) = height * a6;
+    *(result + 9) = x * width;
+    *(result + 10) = y * height;
+    *(result + 11) = width * width;
+    *(result + 12) = height * height;
   }
 
   return result;
 }
 
-+ (id)tilingForRegionOfInterest:(CGRect)a3 inPixelWidth:(unint64_t)a4 height:(unint64_t)a5 tileAspectRatio:(double)a6 options:(id)a7
++ (id)tilingForRegionOfInterest:(CGRect)interest inPixelWidth:(unint64_t)width height:(unint64_t)height tileAspectRatio:(double)ratio options:(id)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a7;
-  v16 = [[a1 alloc] _initWithPixelOriginX:0 Y:0 width:a4 height:a5 regionOfInterest:{x, y, width, height}];
-  [v16 _calculateTilesWithAspectRatio:v15 options:a6];
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  optionsCopy = options;
+  v16 = [[self alloc] _initWithPixelOriginX:0 Y:0 width:width height:height regionOfInterest:{x, y, width, height}];
+  [v16 _calculateTilesWithAspectRatio:optionsCopy options:ratio];
 
   return v16;
 }
 
-+ (id)tilingForRegionOfInterest:(CGRect)a3 inPixelBounds:(CGRect)a4 tileAspectRatio:(double)a5 options:(id)a6
++ (id)tilingForRegionOfInterest:(CGRect)interest inPixelBounds:(CGRect)bounds tileAspectRatio:(double)ratio options:(id)options
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
-  v15 = a6;
-  v16 = [[a1 alloc] _initWithPixelOriginX:x Y:y width:width height:height regionOfInterest:{v13, v12, v11, v10}];
-  [v16 _calculateTilesWithAspectRatio:v15 options:a5];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v10 = interest.size.height;
+  v11 = interest.size.width;
+  v12 = interest.origin.y;
+  v13 = interest.origin.x;
+  optionsCopy = options;
+  v16 = [[self alloc] _initWithPixelOriginX:x Y:y width:width height:height regionOfInterest:{v13, v12, v11, v10}];
+  [v16 _calculateTilesWithAspectRatio:optionsCopy options:ratio];
 
   return v16;
 }

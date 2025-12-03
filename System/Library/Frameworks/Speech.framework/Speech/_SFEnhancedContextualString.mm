@@ -1,55 +1,55 @@
 @interface _SFEnhancedContextualString
-- (_SFEnhancedContextualString)initWithCoder:(id)a3;
-- (_SFEnhancedContextualString)initWithContext:(id)a3 tagName:(id)a4 isLoggable:(BOOL)a5;
-- (void)encodeWithCoder:(id)a3;
+- (_SFEnhancedContextualString)initWithCoder:(id)coder;
+- (_SFEnhancedContextualString)initWithContext:(id)context tagName:(id)name isLoggable:(BOOL)loggable;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SFEnhancedContextualString
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   context = self->_context;
-  v5 = a3;
-  [v5 encodeObject:context forKey:@"_context"];
-  [v5 encodeObject:self->_tagName forKey:@"_tagName"];
-  [v5 encodeBool:self->_isLoggable forKey:@"_isLoggable"];
+  coderCopy = coder;
+  [coderCopy encodeObject:context forKey:@"_context"];
+  [coderCopy encodeObject:self->_tagName forKey:@"_tagName"];
+  [coderCopy encodeBool:self->_isLoggable forKey:@"_isLoggable"];
 }
 
-- (_SFEnhancedContextualString)initWithCoder:(id)a3
+- (_SFEnhancedContextualString)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _SFEnhancedContextualString;
   v5 = [(_SFEnhancedContextualString *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_context"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_context"];
     context = v5->_context;
     v5->_context = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_tagName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_tagName"];
     tagName = v5->_tagName;
     v5->_tagName = v8;
 
-    v5->_isLoggable = [v4 decodeBoolForKey:@"_isLoggable"];
+    v5->_isLoggable = [coderCopy decodeBoolForKey:@"_isLoggable"];
   }
 
   return v5;
 }
 
-- (_SFEnhancedContextualString)initWithContext:(id)a3 tagName:(id)a4 isLoggable:(BOOL)a5
+- (_SFEnhancedContextualString)initWithContext:(id)context tagName:(id)name isLoggable:(BOOL)loggable
 {
-  v9 = a3;
-  v10 = a4;
+  contextCopy = context;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = _SFEnhancedContextualString;
   v11 = [(_SFEnhancedContextualString *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_context, a3);
-    objc_storeStrong(&v12->_tagName, a4);
-    v12->_isLoggable = a5;
+    objc_storeStrong(&v11->_context, context);
+    objc_storeStrong(&v12->_tagName, name);
+    v12->_isLoggable = loggable;
   }
 
   return v12;

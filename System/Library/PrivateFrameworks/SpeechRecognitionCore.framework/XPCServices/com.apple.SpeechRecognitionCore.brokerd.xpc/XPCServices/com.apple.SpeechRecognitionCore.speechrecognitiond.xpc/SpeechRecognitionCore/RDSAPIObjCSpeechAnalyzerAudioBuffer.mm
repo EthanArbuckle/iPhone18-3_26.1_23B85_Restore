@@ -1,49 +1,49 @@
 @interface RDSAPIObjCSpeechAnalyzerAudioBuffer
-- (RDSAPIObjCSpeechAnalyzerAudioBuffer)initWithSwiftSpeechAnalyzer:(id)a3 task:(id)a4;
-- (void)addAudioSamples:(const signed __int16 *)a3 count:(unint64_t)a4;
+- (RDSAPIObjCSpeechAnalyzerAudioBuffer)initWithSwiftSpeechAnalyzer:(id)analyzer task:(id)task;
+- (void)addAudioSamples:(const signed __int16 *)samples count:(unint64_t)count;
 - (void)cancelRecognition;
 - (void)dealloc;
 - (void)endAudio;
 - (void)newUtteranceBegins;
-- (void)startRecognition:(id)a3;
+- (void)startRecognition:(id)recognition;
 @end
 
 @implementation RDSAPIObjCSpeechAnalyzerAudioBuffer
 
-- (RDSAPIObjCSpeechAnalyzerAudioBuffer)initWithSwiftSpeechAnalyzer:(id)a3 task:(id)a4
+- (RDSAPIObjCSpeechAnalyzerAudioBuffer)initWithSwiftSpeechAnalyzer:(id)analyzer task:(id)task
 {
-  v6 = a3;
-  v7 = a4;
+  analyzerCopy = analyzer;
+  taskCopy = task;
   v28.receiver = self;
   v28.super_class = RDSAPIObjCSpeechAnalyzerAudioBuffer;
   v8 = [(RDSAPIObjCSpeechAnalyzerAudioBuffer *)&v28 init];
   v9 = v8;
   if (v8)
   {
-    [(RDSAPIObjCSpeechAnalyzerAudioBuffer *)v8 setSwiftSpeechAnalyzer:v6];
+    [(RDSAPIObjCSpeechAnalyzerAudioBuffer *)v8 setSwiftSpeechAnalyzer:analyzerCopy];
   }
 
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 1;
-  v10 = [(RDSAPIObjCSpeechAnalyzerAudioBuffer *)v9 currentTask];
+  currentTask = [(RDSAPIObjCSpeechAnalyzerAudioBuffer *)v9 currentTask];
 
-  if (v10 != v7)
+  if (currentTask != taskCopy)
   {
     v11 = dispatch_time(0, 10000000000);
     v12 = dispatch_semaphore_create(0);
-    v13 = [(RDSAPIObjCSpeechAnalyzerAudioBuffer *)v9 swiftSpeechAnalyzer];
+    swiftSpeechAnalyzer = [(RDSAPIObjCSpeechAnalyzerAudioBuffer *)v9 swiftSpeechAnalyzer];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100002E74;
     v19[3] = &unk_1000FDC90;
     v20 = v9;
-    v21 = v7;
+    v21 = taskCopy;
     v23 = &v24;
     v14 = v12;
     v22 = v14;
-    [v13 attachTranscriberWithTask:v21 completionHandler:v19];
+    [swiftSpeechAnalyzer attachTranscriberWithTask:v21 completionHandler:v19];
 
     if (dispatch_semaphore_wait(v14, v11))
     {
@@ -73,37 +73,37 @@
   return v16;
 }
 
-- (void)startRecognition:(id)a3
+- (void)startRecognition:(id)recognition
 {
-  v4 = a3;
-  v5 = [(RDSAPIObjCSpeechAnalyzerAudioBuffer *)self swiftSpeechAnalyzer];
-  [v5 startRecognitionWithTranscriberModuleWrapper:v4];
+  recognitionCopy = recognition;
+  swiftSpeechAnalyzer = [(RDSAPIObjCSpeechAnalyzerAudioBuffer *)self swiftSpeechAnalyzer];
+  [swiftSpeechAnalyzer startRecognitionWithTranscriberModuleWrapper:recognitionCopy];
 }
 
 - (void)newUtteranceBegins
 {
-  v2 = [(RDSAPIObjCSpeechAnalyzerAudioBuffer *)self swiftSpeechAnalyzer];
-  [v2 newUtteranceBegins];
+  swiftSpeechAnalyzer = [(RDSAPIObjCSpeechAnalyzerAudioBuffer *)self swiftSpeechAnalyzer];
+  [swiftSpeechAnalyzer newUtteranceBegins];
 }
 
-- (void)addAudioSamples:(const signed __int16 *)a3 count:(unint64_t)a4
+- (void)addAudioSamples:(const signed __int16 *)samples count:(unint64_t)count
 {
-  v4 = a4;
-  for (i = [[NSMutableArray alloc] initWithCapacity:a4]; v4; --v4)
+  countCopy = count;
+  for (i = [[NSMutableArray alloc] initWithCapacity:count]; countCopy; --countCopy)
   {
-    v7 = *a3++;
+    v7 = *samples++;
     v8 = [NSNumber numberWithInt:v7];
     [i addObject:v8];
   }
 
-  v9 = [(RDSAPIObjCSpeechAnalyzerAudioBuffer *)self swiftSpeechAnalyzer];
-  [v9 addAudioSamplesWithAudio:i];
+  swiftSpeechAnalyzer = [(RDSAPIObjCSpeechAnalyzerAudioBuffer *)self swiftSpeechAnalyzer];
+  [swiftSpeechAnalyzer addAudioSamplesWithAudio:i];
 }
 
 - (void)endAudio
 {
-  v2 = [(RDSAPIObjCSpeechAnalyzerAudioBuffer *)self swiftSpeechAnalyzer];
-  [v2 endAudio];
+  swiftSpeechAnalyzer = [(RDSAPIObjCSpeechAnalyzerAudioBuffer *)self swiftSpeechAnalyzer];
+  [swiftSpeechAnalyzer endAudio];
 
   v3 = RXOSLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -115,8 +115,8 @@
 
 - (void)cancelRecognition
 {
-  v2 = [(RDSAPIObjCSpeechAnalyzerAudioBuffer *)self swiftSpeechAnalyzer];
-  [v2 cancelRecognition];
+  swiftSpeechAnalyzer = [(RDSAPIObjCSpeechAnalyzerAudioBuffer *)self swiftSpeechAnalyzer];
+  [swiftSpeechAnalyzer cancelRecognition];
 
   v3 = RXOSLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

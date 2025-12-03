@@ -10,7 +10,7 @@
   block[1] = 3221225472;
   block[2] = __30__SpringFactory_sharedFactory__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedFactory_onceToken != -1)
   {
     dispatch_once(&sharedFactory_onceToken, block);

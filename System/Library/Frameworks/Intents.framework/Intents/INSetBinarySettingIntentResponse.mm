@@ -1,22 +1,22 @@
 @interface INSetBinarySettingIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-- (INSetBinarySettingIntentResponse)initWithBackingStore:(id)a3;
-- (INSetBinarySettingIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (INSetBinarySettingIntentResponse)initWithCoder:(id)a3;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
+- (INSetBinarySettingIntentResponse)initWithBackingStore:(id)store;
+- (INSetBinarySettingIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity;
+- (INSetBinarySettingIntentResponse)initWithCoder:(id)coder;
 - (NSString)errorDetail;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
 - (int64_t)code;
 - (int64_t)oldValue;
 - (int64_t)updatedValue;
-- (void)encodeWithCoder:(id)a3;
-- (void)setErrorDetail:(id)a3;
-- (void)setOldValue:(int64_t)a3;
-- (void)setUpdatedValue:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setErrorDetail:(id)detail;
+- (void)setOldValue:(int64_t)value;
+- (void)setUpdatedValue:(int64_t)value;
 @end
 
 @implementation INSetBinarySettingIntentResponse
@@ -25,60 +25,60 @@
 {
   v19[4] = *MEMORY[0x1E69E9840];
   v18[0] = @"code";
-  v3 = [(INSetBinarySettingIntentResponse *)self code];
-  v4 = v3;
-  if (v3 < 9)
+  code = [(INSetBinarySettingIntentResponse *)self code];
+  v4 = code;
+  if (code < 9)
   {
-    v5 = *(&off_1E7287D10 + v3);
-    v6 = v5;
+    null = *(&off_1E7287D10 + code);
+    v6 = null;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v6 = 0;
   }
 
-  v19[0] = v5;
+  v19[0] = null;
   v18[1] = @"oldValue";
-  v7 = [(INSetBinarySettingIntentResponse *)self oldValue];
-  if ((v7 - 1) > 2)
+  oldValue = [(INSetBinarySettingIntentResponse *)self oldValue];
+  if ((oldValue - 1) > 2)
   {
     v8 = @"unknown";
   }
 
   else
   {
-    v8 = *(&off_1E7287C40 + v7 - 1);
+    v8 = *(&off_1E7287C40 + oldValue - 1);
   }
 
   v9 = v8;
   v19[1] = v9;
   v18[2] = @"updatedValue";
-  v10 = [(INSetBinarySettingIntentResponse *)self updatedValue];
-  if ((v10 - 1) > 2)
+  updatedValue = [(INSetBinarySettingIntentResponse *)self updatedValue];
+  if ((updatedValue - 1) > 2)
   {
     v11 = @"unknown";
   }
 
   else
   {
-    v11 = *(&off_1E7287C40 + v10 - 1);
+    v11 = *(&off_1E7287C40 + updatedValue - 1);
   }
 
   v12 = v11;
   v19[2] = v12;
   v18[3] = @"errorDetail";
-  v13 = [(INSetBinarySettingIntentResponse *)self errorDetail];
-  v14 = v13;
-  if (!v13)
+  errorDetail = [(INSetBinarySettingIntentResponse *)self errorDetail];
+  null2 = errorDetail;
+  if (!errorDetail)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[3] = v14;
+  v19[3] = null2;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:4];
-  if (!v13)
+  if (!errorDetail)
   {
   }
 
@@ -91,75 +91,75 @@
   return v15;
 }
 
-- (void)setErrorDetail:(id)a3
+- (void)setErrorDetail:(id)detail
 {
-  v4 = a3;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  [v5 setErrorDetail:v4];
+  detailCopy = detail;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  [_responseMessagePBRepresentation setErrorDetail:detailCopy];
 
-  v7 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = [v7 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
-- (void)setUpdatedValue:(int64_t)a3
+- (void)setUpdatedValue:(int64_t)value
 {
-  v4 = a3 - 1;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = v5;
+  v4 = value - 1;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  v6 = _responseMessagePBRepresentation;
   if (v4 > 2)
   {
-    [v5 setHasUpdatedValue:0];
+    [_responseMessagePBRepresentation setHasUpdatedValue:0];
   }
 
   else
   {
-    [v5 setUpdatedValue:?];
+    [_responseMessagePBRepresentation setUpdatedValue:?];
   }
 
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
-- (void)setOldValue:(int64_t)a3
+- (void)setOldValue:(int64_t)value
 {
-  v4 = a3 - 1;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = v5;
+  v4 = value - 1;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  v6 = _responseMessagePBRepresentation;
   if (v4 > 2)
   {
-    [v5 setHasOldValue:0];
+    [_responseMessagePBRepresentation setHasOldValue:0];
   }
 
   else
   {
-    [v5 setOldValue:?];
+    [_responseMessagePBRepresentation setOldValue:?];
   }
 
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (NSString)errorDetail
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 errorDetail];
-  v4 = [v3 copy];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  errorDetail = [_responseMessagePBRepresentation errorDetail];
+  v4 = [errorDetail copy];
 
   return v4;
 }
 
 - (int64_t)updatedValue
 {
-  v3 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v4 = [v3 hasUpdatedValue];
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = [v5 updatedValue];
-  if (((v6 - 1 < 3) & v4) != 0)
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  hasUpdatedValue = [_responseMessagePBRepresentation hasUpdatedValue];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  updatedValue = [_responseMessagePBRepresentation2 updatedValue];
+  if (((updatedValue - 1 < 3) & hasUpdatedValue) != 0)
   {
-    v7 = v6;
+    v7 = updatedValue;
   }
 
   else
@@ -172,13 +172,13 @@
 
 - (int64_t)oldValue
 {
-  v3 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v4 = [v3 hasOldValue];
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = [v5 oldValue];
-  if (((v6 - 1 < 3) & v4) != 0)
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  hasOldValue = [_responseMessagePBRepresentation hasOldValue];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  oldValue = [_responseMessagePBRepresentation2 oldValue];
+  if (((oldValue - 1 < 3) & hasOldValue) != 0)
   {
-    v7 = v6;
+    v7 = oldValue;
   }
 
   else
@@ -189,37 +189,37 @@
   return v7;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INSetBinarySettingIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INSetBinarySettingIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INSetBinarySettingIntentResponseCodeInProgress"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INSetBinarySettingIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INSetBinarySettingIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INSetBinarySettingIntentResponseCodeInProgress"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INSetBinarySettingIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INSetBinarySettingIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INSetBinarySettingIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INSetBinarySettingIntentResponseCodeFailure"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"INSetBinarySettingIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INSetBinarySettingIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v4 = 5;
   }
 
-  if ([v3 isEqualToString:@"INSetBinarySettingIntentResponseCodeFailureInvalidTrigger"])
+  if ([nameCopy isEqualToString:@"INSetBinarySettingIntentResponseCodeFailureInvalidTrigger"])
   {
     v4 = 6;
   }
 
-  if ([v3 isEqualToString:@"INSetBinarySettingIntentResponseCodeFailureUnsupported"])
+  if ([nameCopy isEqualToString:@"INSetBinarySettingIntentResponseCodeFailureUnsupported"])
   {
     v5 = 7;
   }
@@ -229,7 +229,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INSetBinarySettingIntentResponseCodeFailureOtherWithReason"];
+  v6 = [nameCopy isEqualToString:@"INSetBinarySettingIntentResponseCodeFailureOtherWithReason"];
 
   if (v6)
   {
@@ -244,30 +244,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INSetBinarySettingIntentResponse *)self code];
-  if ((v2 - 1) > 7)
+  code = [(INSetBinarySettingIntentResponse *)self code];
+  if ((code - 1) > 7)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5FAA0[v2 - 1];
+    return qword_18EE5FAA0[code - 1];
   }
 }
 
-- (INSetBinarySettingIntentResponse)initWithCoder:(id)a3
+- (INSetBinarySettingIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INSetBinarySettingIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INSetBinarySettingIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (int64_t)code
@@ -277,63 +277,63 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INSetBinarySettingIntentResponse)initWithBackingStore:(id)a3
+- (INSetBinarySettingIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INSetBinarySettingIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INSetBinarySettingIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
-- (INSetBinarySettingIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4
+- (INSetBinarySettingIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  activityCopy = activity;
   v7 = INSiriLogContextIntents;
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
   {
     v8 = v7;
-    if (a3 > 8)
+    if (code > 8)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = *(&off_1E7287D10 + a3);
+      v9 = *(&off_1E7287D10 + code);
     }
 
     v10 = v9;
     *buf = 136315906;
     v16 = "[INSetBinarySettingIntentResponse initWithCode:userActivity:]";
     v17 = 2048;
-    v18 = a3;
+    codeCopy = code;
     v19 = 2112;
     v20 = v10;
     v21 = 2112;
-    v22 = v6;
+    v22 = activityCopy;
     _os_log_impl(&dword_18E991000, v8, OS_LOG_TYPE_INFO, "%s code = %zd (%@), userActivity = %@", buf, 0x2Au);
   }
 
   v14.receiver = self;
   v14.super_class = INSetBinarySettingIntentResponse;
-  v11 = [(INIntentResponse *)&v14 _initWithCode:a3 userActivity:v6];
+  v11 = [(INIntentResponse *)&v14 _initWithCode:code userActivity:activityCopy];
 
   v12 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if ((a3 - 6) < 3)
+  if ((code - 6) < 3)
   {
-    return a3 - 5;
+    return code - 5;
   }
 
   else
@@ -342,55 +342,55 @@
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 7)
+  if ((code - 1) > 7)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5FA80[a3 - 1];
+    return dword_18EE5FA80[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 2;
-  if (a3 != 2)
+  if (type != 2)
   {
-    v5 = a3 == 5;
+    v5 = type == 5;
   }
 
   v6 = 3;
   v7 = 4;
-  if (a5)
+  if (requested)
   {
     v7 = 5;
   }
 
-  if ((a4 - 1) >= 3)
+  if ((code - 1) >= 3)
   {
     v8 = v7;
   }
 
   else
   {
-    v8 = (a4 + 5);
+    v8 = (code + 5);
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v8 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v6 = v8;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v6;
   }

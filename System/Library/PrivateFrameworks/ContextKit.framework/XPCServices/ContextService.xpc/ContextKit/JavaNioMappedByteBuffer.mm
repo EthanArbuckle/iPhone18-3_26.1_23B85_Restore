@@ -17,14 +17,14 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(JavaNioMemoryBlock *)block toLong];
-  v5 = [(JavaNioMemoryBlock *)self->block_ getSize];
-  if (!v5)
+  toLong = [(JavaNioMemoryBlock *)block toLong];
+  getSize = [(JavaNioMemoryBlock *)self->block_ getSize];
+  if (!getSize)
   {
     return 1;
   }
 
-  v6 = v5;
+  v6 = getSize;
   if ((atomic_load_explicit(LibcoreIoLibcore__initialized, memory_order_acquire) & 1) == 0)
   {
     objc_opt_class();
@@ -36,8 +36,8 @@
   }
 
   v7 = [LibcoreIoLibcore_os_ sysconfWithInt:29];
-  v8 = v4 / v7 * v7;
-  v9 = v4 % v7 + v6;
+  v8 = toLong / v7 * v7;
+  v9 = toLong % v7 + v6;
   v10 = [IOSByteArray arrayWithLength:((v9 + v7 - 1) / v7)];
   if ((atomic_load_explicit(LibcoreIoLibcore__initialized, memory_order_acquire) & 1) == 0)
   {

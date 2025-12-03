@@ -1,18 +1,18 @@
 @interface UIScreenEdgePanGestureRecognizer
-- (UIScreenEdgePanGestureRecognizer)initWithCoder:(id)a3;
-- (UIScreenEdgePanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (UIScreenEdgePanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 type:(int64_t)a5 options:(unint64_t)a6;
-- (id)_beginRequiringIgnoresHIDEdgeFlagsForReason:(id)a3;
+- (UIScreenEdgePanGestureRecognizer)initWithCoder:(id)coder;
+- (UIScreenEdgePanGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (UIScreenEdgePanGestureRecognizer)initWithTarget:(id)target action:(SEL)action type:(int64_t)type options:(unint64_t)options;
+- (id)_beginRequiringIgnoresHIDEdgeFlagsForReason:(id)reason;
 - (int64_t)_touchInterfaceOrientation;
-- (void)_setHysteresis:(double)a3;
+- (void)_setHysteresis:(double)hysteresis;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)featureDidChangeState:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)featureDidChangeState:(id)state;
 - (void)reset;
-- (void)setMinimumNumberOfTouches:(unint64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setMinimumNumberOfTouches:(unint64_t)touches;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UIScreenEdgePanGestureRecognizer
@@ -33,11 +33,11 @@
 
 - (int64_t)_touchInterfaceOrientation
 {
-  v2 = [(UIGestureRecognizer *)self view];
-  v3 = [v2 window];
-  v4 = [v3 interfaceOrientation];
+  view = [(UIGestureRecognizer *)self view];
+  window = [view window];
+  interfaceOrientation = [window interfaceOrientation];
 
-  return v4;
+  return interfaceOrientation;
 }
 
 - (void)reset
@@ -54,11 +54,11 @@
   [(UIGestureRecognizer *)&v4 reset];
 }
 
-- (UIScreenEdgePanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (UIScreenEdgePanGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v8.receiver = self;
   v8.super_class = UIScreenEdgePanGestureRecognizer;
-  v4 = [(UIPanGestureRecognizer *)&v8 initWithTarget:a3 action:a4];
+  v4 = [(UIPanGestureRecognizer *)&v8 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -71,16 +71,16 @@
   return v5;
 }
 
-- (UIScreenEdgePanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 type:(int64_t)a5 options:(unint64_t)a6
+- (UIScreenEdgePanGestureRecognizer)initWithTarget:(id)target action:(SEL)action type:(int64_t)type options:(unint64_t)options
 {
-  v6 = a6;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = UIScreenEdgePanGestureRecognizer;
-  v8 = [(UIPanGestureRecognizer *)&v12 initWithTarget:a3 action:a4];
+  v8 = [(UIPanGestureRecognizer *)&v12 initWithTarget:target action:action];
   v9 = v8;
   if (v8)
   {
-    _commonInit(v8, a5, v6);
+    _commonInit(v8, type, optionsCopy);
     [(UIPanGestureRecognizer *)v9 setMaximumNumberOfTouches:1];
     [(UIGestureRecognizer *)v9 setDelaysTouchesBegan:1];
     v10 = v9;
@@ -89,7 +89,7 @@
   return v9;
 }
 
-- (UIScreenEdgePanGestureRecognizer)initWithCoder:(id)a3
+- (UIScreenEdgePanGestureRecognizer)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = UIScreenEdgePanGestureRecognizer;
@@ -98,9 +98,9 @@
   if (v4)
   {
     _commonInit(v4, 1, 0);
-    if ([a3 containsValueForKey:@"UIScreenEdgePanGestureRecognizer.edges"])
+    if ([coder containsValueForKey:@"UIScreenEdgePanGestureRecognizer.edges"])
     {
-      -[UIScreenEdgePanGestureRecognizer setEdges:](v5, "setEdges:", [a3 decodeIntegerForKey:@"UIScreenEdgePanGestureRecognizer.edges"]);
+      -[UIScreenEdgePanGestureRecognizer setEdges:](v5, "setEdges:", [coder decodeIntegerForKey:@"UIScreenEdgePanGestureRecognizer.edges"]);
     }
 
     v6 = v5;
@@ -109,15 +109,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UIScreenEdgePanGestureRecognizer;
   [(UIPanGestureRecognizer *)&v5 encodeWithCoder:?];
-  [a3 encodeInteger:-[UIScreenEdgePanGestureRecognizer edges](self forKey:{"edges"), @"UIScreenEdgePanGestureRecognizer.edges"}];
+  [coder encodeInteger:-[UIScreenEdgePanGestureRecognizer edges](self forKey:{"edges"), @"UIScreenEdgePanGestureRecognizer.edges"}];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v37 = *MEMORY[0x1E69E9840];
   if (self->_rootFeature)
@@ -125,20 +125,20 @@
     goto LABEL_18;
   }
 
-  v7 = [(UIGestureRecognizer *)self view];
-  v8 = [v7 _window];
-  [v8 _sceneReferenceBounds];
+  view = [(UIGestureRecognizer *)self view];
+  _window = [view _window];
+  [_window _sceneReferenceBounds];
   [(_UISEGestureFeatureSettings *)self->_settings setBounds:?];
 
-  v9 = [(UIScreenEdgePanGestureRecognizer *)self _touchInterfaceOrientation];
+  _touchInterfaceOrientation = [(UIScreenEdgePanGestureRecognizer *)self _touchInterfaceOrientation];
   edges = self->_edges;
-  if (v9 == 4)
+  if (_touchInterfaceOrientation == 4)
   {
     [(_UISEGestureFeatureSettings *)self->_settings setTargetEdges:_rotatedEdgesGivenOrientationInDegrees(edges, 90)];
     v11 = 8;
   }
 
-  else if (v9 == 3)
+  else if (_touchInterfaceOrientation == 3)
   {
     [(_UISEGestureFeatureSettings *)self->_settings setTargetEdges:_rotatedEdgesGivenOrientationInDegrees(edges, -90)];
     v11 = 2;
@@ -146,7 +146,7 @@
 
   else
   {
-    if (v9 == 1)
+    if (_touchInterfaceOrientation == 1)
     {
       [(_UISEGestureFeatureSettings *)self->_settings setTargetEdges:_rotatedEdgesGivenOrientationInDegrees(edges, 0)];
 LABEL_13:
@@ -154,7 +154,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if (v9 == 2)
+    if (_touchInterfaceOrientation == 2)
     {
       v12 = -180;
     }
@@ -165,7 +165,7 @@ LABEL_13:
     }
 
     [(_UISEGestureFeatureSettings *)self->_settings setTargetEdges:_rotatedEdgesGivenOrientationInDegrees(edges, v12)];
-    if (v9 != 2)
+    if (_touchInterfaceOrientation != 2)
     {
       goto LABEL_13;
     }
@@ -189,8 +189,8 @@ LABEL_18:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v16 = a3;
-  v17 = [v16 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  beganCopy = began;
+  v17 = [beganCopy countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v17)
   {
     v18 = v17;
@@ -202,7 +202,7 @@ LABEL_18:
       {
         if (*v33 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(beganCopy);
         }
 
         v21 = *(*(&v32 + 1) + 8 * v20);
@@ -211,19 +211,19 @@ LABEL_18:
         v28 = 0u;
         v29 = 0u;
         v22 = v21;
-        v23 = [v22 phase];
-        if (v23 >= 2)
+        phase = [v22 phase];
+        if (phase >= 2)
         {
-          if (v23 != 3)
+          if (phase != 3)
           {
             abort();
           }
 
-          v23 = 2;
+          phase = 2;
         }
 
         *&v29 = 0;
-        *&v28 = v23;
+        *&v28 = phase;
         *(&v28 + 1) = [v22 _edgeAim];
         LOBYTE(v29) = [v22 _edgeForceActive];
         *(&v29 + 1) = [v22 _edgeType];
@@ -239,7 +239,7 @@ LABEL_18:
       }
 
       while (v18 != v20);
-      v18 = [v16 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v18 = [beganCopy countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v18);
@@ -247,18 +247,18 @@ LABEL_18:
 
   v27.receiver = self;
   v27.super_class = UIScreenEdgePanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v27 touchesBegan:v16 withEvent:a4];
+  [(UIPanGestureRecognizer *)&v27 touchesBegan:beganCopy withEvent:event];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v27 = *MEMORY[0x1E69E9840];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  movedCopy = moved;
+  v7 = [movedCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -270,7 +270,7 @@ LABEL_18:
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(movedCopy);
         }
 
         v11 = *(*(&v22 + 1) + 8 * v10);
@@ -279,19 +279,19 @@ LABEL_18:
         v18 = 0u;
         v19 = 0u;
         v12 = v11;
-        v13 = [v12 phase];
-        if (v13 >= 2)
+        phase = [v12 phase];
+        if (phase >= 2)
         {
-          if (v13 != 3)
+          if (phase != 3)
           {
             abort();
           }
 
-          v13 = 2;
+          phase = 2;
         }
 
         *&v19 = 0;
-        *&v18 = v13;
+        *&v18 = phase;
         *(&v18 + 1) = [v12 _edgeAim];
         LOBYTE(v19) = [v12 _edgeForceActive];
         *(&v19 + 1) = [v12 _edgeType];
@@ -307,7 +307,7 @@ LABEL_18:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v8 = [movedCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v8);
@@ -315,18 +315,18 @@ LABEL_18:
 
   v17.receiver = self;
   v17.super_class = UIScreenEdgePanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v17 touchesMoved:v6 withEvent:a4];
+  [(UIPanGestureRecognizer *)&v17 touchesMoved:movedCopy withEvent:event];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v27 = *MEMORY[0x1E69E9840];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  endedCopy = ended;
+  v7 = [endedCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -338,7 +338,7 @@ LABEL_18:
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(endedCopy);
         }
 
         v11 = *(*(&v22 + 1) + 8 * v10);
@@ -347,19 +347,19 @@ LABEL_18:
         v18 = 0u;
         v19 = 0u;
         v12 = v11;
-        v13 = [v12 phase];
-        if (v13 >= 2)
+        phase = [v12 phase];
+        if (phase >= 2)
         {
-          if (v13 != 3)
+          if (phase != 3)
           {
             abort();
           }
 
-          v13 = 2;
+          phase = 2;
         }
 
         *&v19 = 0;
-        *&v18 = v13;
+        *&v18 = phase;
         *(&v18 + 1) = [v12 _edgeAim];
         LOBYTE(v19) = [v12 _edgeForceActive];
         *(&v19 + 1) = [v12 _edgeType];
@@ -375,7 +375,7 @@ LABEL_18:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v8 = [endedCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v8);
@@ -383,29 +383,29 @@ LABEL_18:
 
   v17.receiver = self;
   v17.super_class = UIScreenEdgePanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v17 touchesEnded:v6 withEvent:a4];
+  [(UIPanGestureRecognizer *)&v17 touchesEnded:endedCopy withEvent:event];
 }
 
-- (void)featureDidChangeState:(id)a3
+- (void)featureDidChangeState:(id)state
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = [(_UISEGestureFeature *)self->_rootFeature state];
-  if (v4 == 2)
+  state = [(_UISEGestureFeature *)self->_rootFeature state];
+  if (state == 2)
   {
     self->_touchedEdges = 0;
 
     [(UIGestureRecognizer *)self setState:5];
   }
 
-  else if (v4 == 1)
+  else if (state == 1)
   {
     [(UIPanGestureRecognizer *)self _removeHysteresisFromTranslation];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = [(_UISEMuxGestureFeature *)self->_rootFeature subfeatures];
-    v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    subfeatures = [(_UISEMuxGestureFeature *)self->_rootFeature subfeatures];
+    v6 = [subfeatures countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v6)
     {
       v7 = v6;
@@ -417,12 +417,12 @@ LABEL_18:
         {
           if (*v21 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subfeatures);
           }
 
           v11 = *(*(&v20 + 1) + 8 * i);
-          v12 = [(_UISEMuxGestureFeature *)self->_rootFeature subfeatures];
-          v13 = [v12 objectForKeyedSubscript:v11];
+          subfeatures2 = [(_UISEMuxGestureFeature *)self->_rootFeature subfeatures];
+          v13 = [subfeatures2 objectForKeyedSubscript:v11];
 
           if ([v13 state] == 1)
           {
@@ -431,7 +431,7 @@ LABEL_18:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v7 = [subfeatures countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v7);
@@ -442,26 +442,26 @@ LABEL_18:
       v9 = 15;
     }
 
-    v15 = [(UIScreenEdgePanGestureRecognizer *)self _touchInterfaceOrientation];
+    _touchInterfaceOrientation = [(UIScreenEdgePanGestureRecognizer *)self _touchInterfaceOrientation];
     v16 = 90;
     v17 = -90;
     v18 = 180;
-    if (v15 != 2)
+    if (_touchInterfaceOrientation != 2)
     {
       v18 = 0;
     }
 
-    if (v15 != 4)
+    if (_touchInterfaceOrientation != 4)
     {
       v17 = v18;
     }
 
-    if (v15 != 3)
+    if (_touchInterfaceOrientation != 3)
     {
       v16 = v17;
     }
 
-    if (v15 == 1)
+    if (_touchInterfaceOrientation == 1)
     {
       v19 = 0;
     }
@@ -476,23 +476,23 @@ LABEL_18:
   }
 }
 
-- (void)_setHysteresis:(double)a3
+- (void)_setHysteresis:(double)hysteresis
 {
   [(_UISEGestureFeatureSettings *)self->_settings setHysteresis:?];
   v5.receiver = self;
   v5.super_class = UIScreenEdgePanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v5 _setHysteresis:a3];
+  [(UIPanGestureRecognizer *)&v5 _setHysteresis:hysteresis];
 }
 
-- (void)setMinimumNumberOfTouches:(unint64_t)a3
+- (void)setMinimumNumberOfTouches:(unint64_t)touches
 {
   [(_UISEGestureFeatureSettings *)self->_settings setMinimumNumberOfSubfeatures:?];
   v5.receiver = self;
   v5.super_class = UIScreenEdgePanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v5 setMinimumNumberOfTouches:a3];
+  [(UIPanGestureRecognizer *)&v5 setMinimumNumberOfTouches:touches];
 }
 
-- (id)_beginRequiringIgnoresHIDEdgeFlagsForReason:(id)a3
+- (id)_beginRequiringIgnoresHIDEdgeFlagsForReason:(id)reason
 {
   ignoreHIDEdgeFlagsAssertionController = self->_ignoreHIDEdgeFlagsAssertionController;
   if (!ignoreHIDEdgeFlagsAssertionController)
@@ -504,7 +504,7 @@ LABEL_18:
     ignoreHIDEdgeFlagsAssertionController = self->_ignoreHIDEdgeFlagsAssertionController;
   }
 
-  return [(_UIAssertionController *)ignoreHIDEdgeFlagsAssertionController vendAssertionOfType:1 initialState:1 reason:a3 requiresExplicitInvalidation:0];
+  return [(_UIAssertionController *)ignoreHIDEdgeFlagsAssertionController vendAssertionOfType:1 initialState:1 reason:reason requiresExplicitInvalidation:0];
 }
 
 @end

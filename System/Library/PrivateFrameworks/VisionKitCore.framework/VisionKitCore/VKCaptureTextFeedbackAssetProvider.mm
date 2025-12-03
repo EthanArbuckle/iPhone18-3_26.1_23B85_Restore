@@ -1,48 +1,48 @@
 @interface VKCaptureTextFeedbackAssetProvider
-- (BOOL)saveAssetsToFeedbackAttachmentsFolder:(id)a3 error:(id *)a4;
-- (VKCaptureTextFeedbackAssetProvider)initWithRequest:(id)a3 detectionResult:(id)a4;
+- (BOOL)saveAssetsToFeedbackAttachmentsFolder:(id)folder error:(id *)error;
+- (VKCaptureTextFeedbackAssetProvider)initWithRequest:(id)request detectionResult:(id)result;
 @end
 
 @implementation VKCaptureTextFeedbackAssetProvider
 
-- (VKCaptureTextFeedbackAssetProvider)initWithRequest:(id)a3 detectionResult:(id)a4
+- (VKCaptureTextFeedbackAssetProvider)initWithRequest:(id)request detectionResult:(id)result
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  resultCopy = result;
   v12.receiver = self;
   v12.super_class = VKCaptureTextFeedbackAssetProvider;
   v9 = [(VKCaptureTextFeedbackAssetProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
-    objc_storeStrong(&v10->_detectionResult, a4);
+    objc_storeStrong(&v9->_request, request);
+    objc_storeStrong(&v10->_detectionResult, result);
   }
 
   return v10;
 }
 
-- (BOOL)saveAssetsToFeedbackAttachmentsFolder:(id)a3 error:(id *)a4
+- (BOOL)saveAssetsToFeedbackAttachmentsFolder:(id)folder error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(VKCaptureTextFeedbackAssetProvider *)self request];
-  if ([v7 saveAssetsToFeedbackAttachmentsFolder:v6 error:a4])
+  folderCopy = folder;
+  request = [(VKCaptureTextFeedbackAssetProvider *)self request];
+  if ([request saveAssetsToFeedbackAttachmentsFolder:folderCopy error:error])
   {
-    v8 = [v7 image];
-    [v8 size];
+    image = [request image];
+    [image size];
     UIGraphicsBeginImageContext(v46);
-    [v8 drawAtPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
-    v9 = [(VKCaptureTextFeedbackAssetProvider *)self detectionResult];
-    v10 = [MEMORY[0x1E69DC888] magentaColor];
-    [v10 setStroke];
+    [image drawAtPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+    detectionResult = [(VKCaptureTextFeedbackAssetProvider *)self detectionResult];
+    magentaColor = [MEMORY[0x1E69DC888] magentaColor];
+    [magentaColor setStroke];
 
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v11 = [v9 lineQuads];
-    v12 = [v11 countByEnumeratingWithState:&v39 objects:v44 count:16];
+    lineQuads = [detectionResult lineQuads];
+    v12 = [lineQuads countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v12)
     {
       v13 = v12;
@@ -53,28 +53,28 @@
         {
           if (*v40 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(lineQuads);
           }
 
-          v16 = [*(*(&v39 + 1) + 8 * i) path];
-          [v16 stroke];
+          path = [*(*(&v39 + 1) + 8 * i) path];
+          [path stroke];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v39 objects:v44 count:16];
+        v13 = [lineQuads countByEnumeratingWithState:&v39 objects:v44 count:16];
       }
 
       while (v13);
     }
 
-    v17 = [MEMORY[0x1E69DC888] redColor];
-    [v17 setStroke];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    [redColor setStroke];
 
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v18 = [v9 blockQuads];
-    v19 = [v18 countByEnumeratingWithState:&v35 objects:v43 count:16];
+    blockQuads = [detectionResult blockQuads];
+    v19 = [blockQuads countByEnumeratingWithState:&v35 objects:v43 count:16];
     if (v19)
     {
       v20 = v19;
@@ -85,38 +85,38 @@
         {
           if (*v36 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(blockQuads);
           }
 
-          v23 = [*(*(&v35 + 1) + 8 * j) path];
-          [v23 stroke];
+          path2 = [*(*(&v35 + 1) + 8 * j) path];
+          [path2 stroke];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v35 objects:v43 count:16];
+        v20 = [blockQuads countByEnumeratingWithState:&v35 objects:v43 count:16];
       }
 
       while (v20);
     }
 
-    v24 = [MEMORY[0x1E69DC888] blueColor];
-    [v24 setStroke];
+    blueColor = [MEMORY[0x1E69DC888] blueColor];
+    [blueColor setStroke];
 
-    v25 = [v9 boundingQuad];
-    v26 = [v25 path];
-    [v26 stroke];
+    boundingQuad = [detectionResult boundingQuad];
+    path3 = [boundingQuad path];
+    [path3 stroke];
 
-    v27 = [MEMORY[0x1E69DC888] yellowColor];
-    [v27 setStroke];
+    yellowColor = [MEMORY[0x1E69DC888] yellowColor];
+    [yellowColor setStroke];
 
-    v28 = [v7 focusQuad];
-    v29 = [v28 path];
-    [v29 stroke];
+    focusQuad = [request focusQuad];
+    path4 = [focusQuad path];
+    [path4 stroke];
 
     v30 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    v31 = [v30 vk_PNGData];
-    v32 = [v6 URLByAppendingPathComponent:@"RequestAssetAnnotated.png"];
-    v33 = [v31 writeToURL:v32 options:2 error:a4];
+    vk_PNGData = [v30 vk_PNGData];
+    v32 = [folderCopy URLByAppendingPathComponent:@"RequestAssetAnnotated.png"];
+    v33 = [vk_PNGData writeToURL:v32 options:2 error:error];
   }
 
   else

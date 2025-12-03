@@ -1,8 +1,8 @@
 @interface TDDoubleProperty
 - (double)doubleValue;
-- (void)addToDictionary:(id)a3;
+- (void)addToDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)setDoubleValue:(double)a3;
+- (void)setDoubleValue:(double)value;
 @end
 
 @implementation TDDoubleProperty
@@ -22,22 +22,22 @@
   return doubleValue;
 }
 
-- (void)setDoubleValue:(double)a3
+- (void)setDoubleValue:(double)value
 {
   [(TDDoubleProperty *)self willChangeValueForKey:@"doubleValue"];
-  self->_doubleValue = a3;
+  self->_doubleValue = value;
 
   [(TDDoubleProperty *)self didChangeValueForKey:@"doubleValue"];
 }
 
-- (void)addToDictionary:(id)a3
+- (void)addToDictionary:(id)dictionary
 {
   v5 = MEMORY[0x277CCABB0];
   [(TDDoubleProperty *)self doubleValue];
   v6 = [v5 numberWithDouble:?];
-  v7 = [(TDProperty *)self name];
+  name = [(TDProperty *)self name];
 
-  [a3 setObject:v6 forKey:v7];
+  [dictionary setObject:v6 forKey:name];
 }
 
 @end

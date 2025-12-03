@@ -1,35 +1,35 @@
 @interface VFXShape
-+ (id)shapeWithPath:(id)a3 extrusionDepth:(float)a4;
++ (id)shapeWithPath:(id)path extrusionDepth:(float)depth;
 - ($CB22053AE18FFFAA163CB47F1C1927D8)params;
-- (BOOL)getBoundingBoxMin:(VFXShape *)self max:(SEL)a2;
-- (BOOL)getBoundingSphereCenter:(VFXShape *)self radius:(SEL)a2;
+- (BOOL)getBoundingBoxMin:(VFXShape *)self max:(SEL)max;
+- (BOOL)getBoundingSphereCenter:(VFXShape *)self radius:(SEL)radius;
 - (UIBezierPath)chamferProfile;
 - (UIBezierPath)path;
 - (VFXShape)init;
-- (VFXShape)initWithCoder:(id)a3;
+- (VFXShape)initWithCoder:(id)coder;
 - (float)chamferRadius;
 - (float)discretizedStraightLineMaxLength;
 - (float)extrusionDepth;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initPresentationShapeGeometryWithShapeGeometryRef:(__CFXShapeGeometry *)a3;
+- (id)initPresentationShapeGeometryWithShapeGeometryRef:(__CFXShapeGeometry *)ref;
 - (id)presentationModel;
 - (int64_t)chamferMode;
 - (int64_t)primitiveType;
 - (uint64_t)__createCFObject;
-- (void)_customDecodingOfVFXShape:(id)a3;
-- (void)_customEncodingOfVFXShape:(id)a3;
-- (void)_updateModelFromPresentation:(__CFXShapeGeometry *)a3;
+- (void)_customDecodingOfVFXShape:(id)shape;
+- (void)_customEncodingOfVFXShape:(id)shape;
+- (void)_updateModelFromPresentation:(__CFXShapeGeometry *)presentation;
 - (void)_updatePresentationFromModel;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setChamferMode:(int64_t)a3;
-- (void)setChamferProfile:(id)a3;
-- (void)setChamferRadius:(float)a3;
-- (void)setDiscretizedStraightLineMaxLength:(float)a3;
-- (void)setExtrusionDepth:(float)a3;
-- (void)setPath:(id)a3;
-- (void)setPrimitiveType:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setChamferMode:(int64_t)mode;
+- (void)setChamferProfile:(id)profile;
+- (void)setChamferRadius:(float)radius;
+- (void)setDiscretizedStraightLineMaxLength:(float)length;
+- (void)setExtrusionDepth:(float)depth;
+- (void)setPath:(id)path;
+- (void)setPrimitiveType:(int64_t)type;
 @end
 
 @implementation VFXShape
@@ -53,15 +53,15 @@
   return v0;
 }
 
-- (void)_updateModelFromPresentation:(__CFXShapeGeometry *)a3
+- (void)_updateModelFromPresentation:(__CFXShapeGeometry *)presentation
 {
-  self->_primitiveType = sub_1AF1C5A20(a3);
-  self->_chamferRadius = sub_1AF1C5804(a3);
-  self->_extrusionDepth = sub_1AF1C596C(a3);
-  self->_chamferProfile = sub_1AF1C5AD4(a3);
-  self->_discretizedStraightLineMaxLength = sub_1AF1C58B8(a3);
-  self->_path = sub_1AF16F0D8(a3);
-  self->_chamferMode = sub_1AF1C5750(a3);
+  self->_primitiveType = sub_1AF1C5A20(presentation);
+  self->_chamferRadius = sub_1AF1C5804(presentation);
+  self->_extrusionDepth = sub_1AF1C596C(presentation);
+  self->_chamferProfile = sub_1AF1C5AD4(presentation);
+  self->_discretizedStraightLineMaxLength = sub_1AF1C58B8(presentation);
+  self->_path = sub_1AF16F0D8(presentation);
+  self->_chamferMode = sub_1AF1C5750(presentation);
 }
 
 - (void)_updatePresentationFromModel
@@ -94,11 +94,11 @@
   return v5;
 }
 
-- (id)initPresentationShapeGeometryWithShapeGeometryRef:(__CFXShapeGeometry *)a3
+- (id)initPresentationShapeGeometryWithShapeGeometryRef:(__CFXShapeGeometry *)ref
 {
   v4.receiver = self;
   v4.super_class = VFXShape;
-  return [(VFXModel *)&v4 initPresentationModelWithModelRef:a3];
+  return [(VFXModel *)&v4 initPresentationModelWithModelRef:ref];
 }
 
 - (id)presentationModel
@@ -110,12 +110,12 @@
   return inited;
 }
 
-+ (id)shapeWithPath:(id)a3 extrusionDepth:(float)a4
++ (id)shapeWithPath:(id)path extrusionDepth:(float)depth
 {
-  v6 = objc_alloc_init(a1);
-  *&v7 = a4;
+  v6 = objc_alloc_init(self);
+  *&v7 = depth;
   objc_msgSend_setExtrusionDepth_(v6, v8, v9, v10, v7);
-  objc_msgSend_setPath_(v6, v11, a3, v12);
+  objc_msgSend_setPath_(v6, v11, path, v12);
   return v6;
 }
 
@@ -128,9 +128,9 @@
   return objc_msgSend_stringWithFormat_(v5, v15, @"<%@ | path=%@ extrusionDepth=%.3f> ", v16, v6, v10, v14);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = objc_msgSend_path(self, a2, a3, v3);
+  v5 = objc_msgSend_path(self, a2, zone, v3);
   objc_msgSend_extrusionDepth(self, v6, v7, v8);
   v32 = objc_msgSend_shapeWithPath_extrusionDepth_(VFXShape, v9, v5, v10);
   v14 = objc_msgSend_chamferMode(self, v11, v12, v13);
@@ -168,19 +168,19 @@
   return v14;
 }
 
-- (void)setChamferMode:(int64_t)a3
+- (void)setChamferMode:(int64_t)mode
 {
-  if (self->_chamferMode != a3)
+  if (self->_chamferMode != mode)
   {
     v5[6] = v3;
     v5[7] = v4;
-    self->_chamferMode = a3;
+    self->_chamferMode = mode;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF32BBC4;
     v5[3] = &unk_1E7A7E248;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = mode;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v5);
   }
 }
@@ -209,19 +209,19 @@
   return v14;
 }
 
-- (void)setChamferRadius:(float)a3
+- (void)setChamferRadius:(float)radius
 {
-  if (self->_chamferRadius != a3)
+  if (self->_chamferRadius != radius)
   {
     v7 = v3;
     v8 = v4;
-    self->_chamferRadius = a3;
+    self->_chamferRadius = radius;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF32BD18;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    radiusCopy = radius;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"chamferRadius", v5);
   }
 }
@@ -250,19 +250,19 @@
   return v14;
 }
 
-- (void)setDiscretizedStraightLineMaxLength:(float)a3
+- (void)setDiscretizedStraightLineMaxLength:(float)length
 {
-  if (self->_discretizedStraightLineMaxLength != a3)
+  if (self->_discretizedStraightLineMaxLength != length)
   {
     v7 = v3;
     v8 = v4;
-    self->_discretizedStraightLineMaxLength = a3;
+    self->_discretizedStraightLineMaxLength = length;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF32BE64;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    lengthCopy = length;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v5);
   }
 }
@@ -291,19 +291,19 @@
   return v14;
 }
 
-- (void)setExtrusionDepth:(float)a3
+- (void)setExtrusionDepth:(float)depth
 {
-  if (self->_extrusionDepth != a3)
+  if (self->_extrusionDepth != depth)
   {
     v7 = v3;
     v8 = v4;
-    self->_extrusionDepth = a3;
+    self->_extrusionDepth = depth;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF32BFB8;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    depthCopy = depth;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"extrusionDepth", v5);
   }
 }
@@ -332,19 +332,19 @@
   return v14;
 }
 
-- (void)setPrimitiveType:(int64_t)a3
+- (void)setPrimitiveType:(int64_t)type
 {
-  if (self->_primitiveType != a3)
+  if (self->_primitiveType != type)
   {
     v5[6] = v3;
     v5[7] = v4;
-    self->_primitiveType = a3;
+    self->_primitiveType = type;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF32C0FC;
     v5[3] = &unk_1E7A7E248;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = type;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v5);
   }
 }
@@ -378,9 +378,9 @@
   return v15;
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  self->_path = objc_msgSend_copy(a3, v5, v6, v7);
+  self->_path = objc_msgSend_copy(path, v5, v6, v7);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1AF32C268;
@@ -418,9 +418,9 @@
   return v15;
 }
 
-- (void)setChamferProfile:(id)a3
+- (void)setChamferProfile:(id)profile
 {
-  self->_chamferProfile = objc_msgSend_copy(a3, v5, v6, v7);
+  self->_chamferProfile = objc_msgSend_copy(profile, v5, v6, v7);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1AF32C3E0;
@@ -460,11 +460,11 @@
   return result;
 }
 
-- (BOOL)getBoundingBoxMin:(VFXShape *)self max:(SEL)a2
+- (BOOL)getBoundingBoxMin:(VFXShape *)self max:(SEL)max
 {
   v4 = v3;
   v5 = v2;
-  v7 = objc_msgSend_worldRef(self, a2, v2, v3);
+  v7 = objc_msgSend_worldRef(self, max, v2, v3);
   v11 = v7;
   if (v7)
   {
@@ -509,11 +509,11 @@
   return v16;
 }
 
-- (BOOL)getBoundingSphereCenter:(VFXShape *)self radius:(SEL)a2
+- (BOOL)getBoundingSphereCenter:(VFXShape *)self radius:(SEL)radius
 {
   v4 = v3;
   v5 = v2;
-  v7 = objc_msgSend_worldRef(self, a2, v2, v3);
+  v7 = objc_msgSend_worldRef(self, radius, v2, v3);
   v11 = v7;
   if (v7)
   {
@@ -562,24 +562,24 @@
   [(VFXModel *)&v3 dealloc];
 }
 
-- (void)_customDecodingOfVFXShape:(id)a3
+- (void)_customDecodingOfVFXShape:(id)shape
 {
-  v5 = sub_1AF3723C4(a3, @"chamferProfile");
+  v5 = sub_1AF3723C4(shape, @"chamferProfile");
   objc_msgSend_setChamferProfile_(self, v6, v5, v7);
-  v9 = sub_1AF3723C4(a3, @"path");
+  v9 = sub_1AF3723C4(shape, @"path");
 
   objc_msgSend_setPath_(self, v8, v9, v10);
 }
 
-- (void)_customEncodingOfVFXShape:(id)a3
+- (void)_customEncodingOfVFXShape:(id)shape
 {
-  sub_1AF3721F0(a3, self->_chamferProfile, @"chamferProfile", v3);
+  sub_1AF3721F0(shape, self->_chamferProfile, @"chamferProfile", v3);
   path = self->_path;
 
-  sub_1AF3721F0(a3, path, @"path", v6);
+  sub_1AF3721F0(shape, path, @"path", v6);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v25.receiver = self;
   v25.super_class = VFXShape;
@@ -590,18 +590,18 @@
     objc_msgSend__updateModelFromPresentation_(self, v12, v11, v13);
   }
 
-  objc_msgSend__customEncodingOfVFXShape_(self, v8, a3, v10);
+  objc_msgSend__customEncodingOfVFXShape_(self, v8, coder, v10);
   *&v14 = self->_chamferRadius;
-  objc_msgSend_encodeFloat_forKey_(a3, v15, @"chamferRadius", v16, v14);
+  objc_msgSend_encodeFloat_forKey_(coder, v15, @"chamferRadius", v16, v14);
   *&v17 = self->_extrusionDepth;
-  objc_msgSend_encodeFloat_forKey_(a3, v18, @"extrusionDepth", v19, v17);
+  objc_msgSend_encodeFloat_forKey_(coder, v18, @"extrusionDepth", v19, v17);
   *&v20 = self->_discretizedStraightLineMaxLength;
-  objc_msgSend_encodeFloat_forKey_(a3, v21, @"discretizedStraightLineMaxLength", v22, v20);
-  objc_msgSend_encodeInteger_forKey_(a3, v23, self->_primitiveType, @"primitiveType");
-  objc_msgSend_encodeInteger_forKey_(a3, v24, self->_chamferMode, @"chamferMode");
+  objc_msgSend_encodeFloat_forKey_(coder, v21, @"discretizedStraightLineMaxLength", v22, v20);
+  objc_msgSend_encodeInteger_forKey_(coder, v23, self->_primitiveType, @"primitiveType");
+  objc_msgSend_encodeInteger_forKey_(coder, v24, self->_chamferMode, @"chamferMode");
 }
 
-- (VFXShape)initWithCoder:(id)a3
+- (VFXShape)initWithCoder:(id)coder
 {
   v41.receiver = self;
   v41.super_class = VFXShape;
@@ -610,16 +610,16 @@
   {
     v8 = objc_msgSend_immediateMode(VFXTransaction, v4, v5, v6);
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
-    objc_msgSend__customDecodingOfVFXShape_(v7, v11, a3, v12);
-    objc_msgSend_decodeFloatForKey_(a3, v13, @"chamferRadius", v14);
+    objc_msgSend__customDecodingOfVFXShape_(v7, v11, coder, v12);
+    objc_msgSend_decodeFloatForKey_(coder, v13, @"chamferRadius", v14);
     objc_msgSend_setChamferRadius_(v7, v15, v16, v17);
-    objc_msgSend_decodeFloatForKey_(a3, v18, @"extrusionDepth", v19);
+    objc_msgSend_decodeFloatForKey_(coder, v18, @"extrusionDepth", v19);
     objc_msgSend_setExtrusionDepth_(v7, v20, v21, v22);
-    objc_msgSend_decodeFloatForKey_(a3, v23, @"discretizedStraightLineMaxLength", v24);
+    objc_msgSend_decodeFloatForKey_(coder, v23, @"discretizedStraightLineMaxLength", v24);
     objc_msgSend_setDiscretizedStraightLineMaxLength_(v7, v25, v26, v27);
-    v30 = objc_msgSend_decodeIntegerForKey_(a3, v28, @"primitiveType", v29);
+    v30 = objc_msgSend_decodeIntegerForKey_(coder, v28, @"primitiveType", v29);
     objc_msgSend_setPrimitiveType_(v7, v31, v30, v32);
-    v35 = objc_msgSend_decodeIntegerForKey_(a3, v33, @"chamferMode", v34);
+    v35 = objc_msgSend_decodeIntegerForKey_(coder, v33, @"chamferMode", v34);
     objc_msgSend_setChamferMode_(v7, v36, v35, v37);
     objc_msgSend_setImmediateMode_(VFXTransaction, v38, v8, v39);
   }

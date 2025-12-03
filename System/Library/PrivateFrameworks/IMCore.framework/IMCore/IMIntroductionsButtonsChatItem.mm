@@ -1,10 +1,10 @@
 @interface IMIntroductionsButtonsChatItem
-- (id)_initWithChatWantsIntroductionsLabel:(BOOL)a3;
+- (id)_initWithChatWantsIntroductionsLabel:(BOOL)label;
 @end
 
 @implementation IMIntroductionsButtonsChatItem
 
-- (id)_initWithChatWantsIntroductionsLabel:(BOOL)a3
+- (id)_initWithChatWantsIntroductionsLabel:(BOOL)label
 {
   v8.receiver = self;
   v8.super_class = IMIntroductionsButtonsChatItem;
@@ -12,7 +12,7 @@
   v6 = v4;
   if (v4)
   {
-    v4[56] = a3;
+    v4[56] = label;
     objc_msgSend__setGUID_(v4, v5, @"itr:");
   }
 

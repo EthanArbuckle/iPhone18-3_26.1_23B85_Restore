@@ -7,9 +7,9 @@
 - (id)ad_error
 {
   v2 = AFSiriSpeechErrorDomain;
-  v3 = [(SASSpeechFailure *)self errorCode];
+  errorCode = [(SASSpeechFailure *)self errorCode];
 
-  return [NSError errorWithDomain:v2 code:v3 userInfo:0];
+  return [NSError errorWithDomain:v2 code:errorCode userInfo:0];
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface RSSSchemaRSSClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RSSSchemaRSSClientEvent)initWithDictionary:(id)a3;
-- (RSSSchemaRSSClientEvent)initWithJSON:(id)a3;
+- (RSSSchemaRSSClientEvent)initWithDictionary:(id)dictionary;
+- (RSSSchemaRSSClientEvent)initWithJSON:(id)n;
 - (RSSSchemaRSSSiriVocabSyncCompanionSyncPluginSyncObjectAcquisitionStarted)companionSyncPluginSyncObjectAcquisitionStarted;
 - (RSSSchemaRSSSiriVocabSyncCompanionSyncPluginSyncRequested)companionSyncPluginSyncRequested;
 - (RSSSchemaRSSSiriVocabSyncCompanionSyncUploadStarted)companionSyncUploadStarted;
@@ -13,7 +13,7 @@
 - (RSSSchemaRSSSiriVocabSyncTokenFetchRequestReceived)syncTokenFetchRequestReceived;
 - (RSSSchemaRSSSiriVocabSyncTokenReceived)syncTokenReceived;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -27,28 +27,28 @@
 - (void)deleteSyncDataUpdatedNotificationReceived;
 - (void)deleteSyncTokenFetchRequestReceived;
 - (void)deleteSyncTokenReceived;
-- (void)setCompanionSyncPluginSyncObjectAcquisitionStarted:(id)a3;
-- (void)setCompanionSyncPluginSyncRequested:(id)a3;
-- (void)setCompanionSyncUploadStarted:(id)a3;
-- (void)setSyncDataDonationFailed:(id)a3;
-- (void)setSyncDataDownloadContext:(id)a3;
-- (void)setSyncDataUpdatedNotificationReceived:(id)a3;
-- (void)setSyncTokenFetchRequestReceived:(id)a3;
-- (void)setSyncTokenReceived:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCompanionSyncPluginSyncObjectAcquisitionStarted:(id)started;
+- (void)setCompanionSyncPluginSyncRequested:(id)requested;
+- (void)setCompanionSyncUploadStarted:(id)started;
+- (void)setSyncDataDonationFailed:(id)failed;
+- (void)setSyncDataDownloadContext:(id)context;
+- (void)setSyncDataUpdatedNotificationReceived:(id)received;
+- (void)setSyncTokenFetchRequestReceived:(id)received;
+- (void)setSyncTokenReceived:(id)received;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RSSSchemaRSSClientEvent
 
-- (RSSSchemaRSSClientEvent)initWithDictionary:(id)a3
+- (RSSSchemaRSSClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = RSSSchemaRSSClientEvent;
   v5 = [(RSSSchemaRSSClientEvent *)&v28 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,7 +57,7 @@
     }
 
     v27 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"syncDataDownloadContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"syncDataDownloadContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       [(RSSSchemaRSSClientEvent *)v5 setSyncDataDownloadContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:{@"syncTokenReceived", v8}];
+    v10 = [dictionaryCopy objectForKeyedSubscript:{@"syncTokenReceived", v8}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,7 +73,7 @@
       [(RSSSchemaRSSClientEvent *)v5 setSyncTokenReceived:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"syncTokenFetchRequestReceived"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"syncTokenFetchRequestReceived"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,7 +81,7 @@
       [(RSSSchemaRSSClientEvent *)v5 setSyncTokenFetchRequestReceived:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"syncDataUpdatedNotificationReceived"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"syncDataUpdatedNotificationReceived"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,7 +89,7 @@
       [(RSSSchemaRSSClientEvent *)v5 setSyncDataUpdatedNotificationReceived:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"syncDataDonationFailed"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"syncDataDonationFailed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -97,7 +97,7 @@
       [(RSSSchemaRSSClientEvent *)v5 setSyncDataDonationFailed:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"companionSyncPluginSyncRequested"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"companionSyncPluginSyncRequested"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,7 +105,7 @@
       [(RSSSchemaRSSClientEvent *)v5 setCompanionSyncPluginSyncRequested:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"companionSyncPluginSyncObjectAcquisitionStarted"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"companionSyncPluginSyncObjectAcquisitionStarted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -113,7 +113,7 @@
       [(RSSSchemaRSSClientEvent *)v5 setCompanionSyncPluginSyncObjectAcquisitionStarted:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"companionSyncUploadStarted"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"companionSyncUploadStarted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -127,30 +127,30 @@
   return v5;
 }
 
-- (RSSSchemaRSSClientEvent)initWithJSON:(id)a3
+- (RSSSchemaRSSClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RSSSchemaRSSClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RSSSchemaRSSClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RSSSchemaRSSClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -163,154 +163,154 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_companionSyncPluginSyncObjectAcquisitionStarted)
   {
-    v4 = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncObjectAcquisitionStarted];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    companionSyncPluginSyncObjectAcquisitionStarted = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncObjectAcquisitionStarted];
+    dictionaryRepresentation = [companionSyncPluginSyncObjectAcquisitionStarted dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"companionSyncPluginSyncObjectAcquisitionStarted"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"companionSyncPluginSyncObjectAcquisitionStarted"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"companionSyncPluginSyncObjectAcquisitionStarted"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"companionSyncPluginSyncObjectAcquisitionStarted"];
     }
   }
 
   if (self->_companionSyncPluginSyncRequested)
   {
-    v7 = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncRequested];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    companionSyncPluginSyncRequested = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncRequested];
+    dictionaryRepresentation2 = [companionSyncPluginSyncRequested dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"companionSyncPluginSyncRequested"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"companionSyncPluginSyncRequested"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"companionSyncPluginSyncRequested"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"companionSyncPluginSyncRequested"];
     }
   }
 
   if (self->_companionSyncUploadStarted)
   {
-    v10 = [(RSSSchemaRSSClientEvent *)self companionSyncUploadStarted];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    companionSyncUploadStarted = [(RSSSchemaRSSClientEvent *)self companionSyncUploadStarted];
+    dictionaryRepresentation3 = [companionSyncUploadStarted dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"companionSyncUploadStarted"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"companionSyncUploadStarted"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"companionSyncUploadStarted"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"companionSyncUploadStarted"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v13 = [(RSSSchemaRSSClientEvent *)self eventMetadata];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    eventMetadata = [(RSSSchemaRSSClientEvent *)self eventMetadata];
+    dictionaryRepresentation4 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"eventMetadata"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_syncDataDonationFailed)
   {
-    v16 = [(RSSSchemaRSSClientEvent *)self syncDataDonationFailed];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    syncDataDonationFailed = [(RSSSchemaRSSClientEvent *)self syncDataDonationFailed];
+    dictionaryRepresentation5 = [syncDataDonationFailed dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"syncDataDonationFailed"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"syncDataDonationFailed"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"syncDataDonationFailed"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"syncDataDonationFailed"];
     }
   }
 
   if (self->_syncDataDownloadContext)
   {
-    v19 = [(RSSSchemaRSSClientEvent *)self syncDataDownloadContext];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    syncDataDownloadContext = [(RSSSchemaRSSClientEvent *)self syncDataDownloadContext];
+    dictionaryRepresentation6 = [syncDataDownloadContext dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"syncDataDownloadContext"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"syncDataDownloadContext"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"syncDataDownloadContext"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"syncDataDownloadContext"];
     }
   }
 
   if (self->_syncDataUpdatedNotificationReceived)
   {
-    v22 = [(RSSSchemaRSSClientEvent *)self syncDataUpdatedNotificationReceived];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    syncDataUpdatedNotificationReceived = [(RSSSchemaRSSClientEvent *)self syncDataUpdatedNotificationReceived];
+    dictionaryRepresentation7 = [syncDataUpdatedNotificationReceived dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"syncDataUpdatedNotificationReceived"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"syncDataUpdatedNotificationReceived"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"syncDataUpdatedNotificationReceived"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"syncDataUpdatedNotificationReceived"];
     }
   }
 
   if (self->_syncTokenFetchRequestReceived)
   {
-    v25 = [(RSSSchemaRSSClientEvent *)self syncTokenFetchRequestReceived];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    syncTokenFetchRequestReceived = [(RSSSchemaRSSClientEvent *)self syncTokenFetchRequestReceived];
+    dictionaryRepresentation8 = [syncTokenFetchRequestReceived dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"syncTokenFetchRequestReceived"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"syncTokenFetchRequestReceived"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"syncTokenFetchRequestReceived"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"syncTokenFetchRequestReceived"];
     }
   }
 
   if (self->_syncTokenReceived)
   {
-    v28 = [(RSSSchemaRSSClientEvent *)self syncTokenReceived];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    syncTokenReceived = [(RSSSchemaRSSClientEvent *)self syncTokenReceived];
+    dictionaryRepresentation9 = [syncTokenReceived dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"syncTokenReceived"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"syncTokenReceived"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"syncTokenReceived"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"syncTokenReceived"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -326,34 +326,34 @@
   return v9 ^ v10 ^ [(RSSSchemaRSSSiriVocabSyncCompanionSyncUploadStarted *)self->_companionSyncUploadStarted hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_48;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_48;
   }
 
-  v6 = [(RSSSchemaRSSClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RSSSchemaRSSClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v8 = [(RSSSchemaRSSClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(RSSSchemaRSSClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(RSSSchemaRSSClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(RSSSchemaRSSClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -365,20 +365,20 @@
   {
   }
 
-  v6 = [(RSSSchemaRSSClientEvent *)self syncDataDownloadContext];
-  v7 = [v4 syncDataDownloadContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RSSSchemaRSSClientEvent *)self syncDataDownloadContext];
+  eventMetadata2 = [equalCopy syncDataDownloadContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v13 = [(RSSSchemaRSSClientEvent *)self syncDataDownloadContext];
-  if (v13)
+  syncDataDownloadContext = [(RSSSchemaRSSClientEvent *)self syncDataDownloadContext];
+  if (syncDataDownloadContext)
   {
-    v14 = v13;
-    v15 = [(RSSSchemaRSSClientEvent *)self syncDataDownloadContext];
-    v16 = [v4 syncDataDownloadContext];
-    v17 = [v15 isEqual:v16];
+    v14 = syncDataDownloadContext;
+    syncDataDownloadContext2 = [(RSSSchemaRSSClientEvent *)self syncDataDownloadContext];
+    syncDataDownloadContext3 = [equalCopy syncDataDownloadContext];
+    v17 = [syncDataDownloadContext2 isEqual:syncDataDownloadContext3];
 
     if (!v17)
     {
@@ -390,20 +390,20 @@
   {
   }
 
-  v6 = [(RSSSchemaRSSClientEvent *)self syncTokenReceived];
-  v7 = [v4 syncTokenReceived];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RSSSchemaRSSClientEvent *)self syncTokenReceived];
+  eventMetadata2 = [equalCopy syncTokenReceived];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v18 = [(RSSSchemaRSSClientEvent *)self syncTokenReceived];
-  if (v18)
+  syncTokenReceived = [(RSSSchemaRSSClientEvent *)self syncTokenReceived];
+  if (syncTokenReceived)
   {
-    v19 = v18;
-    v20 = [(RSSSchemaRSSClientEvent *)self syncTokenReceived];
-    v21 = [v4 syncTokenReceived];
-    v22 = [v20 isEqual:v21];
+    v19 = syncTokenReceived;
+    syncTokenReceived2 = [(RSSSchemaRSSClientEvent *)self syncTokenReceived];
+    syncTokenReceived3 = [equalCopy syncTokenReceived];
+    v22 = [syncTokenReceived2 isEqual:syncTokenReceived3];
 
     if (!v22)
     {
@@ -415,20 +415,20 @@
   {
   }
 
-  v6 = [(RSSSchemaRSSClientEvent *)self syncTokenFetchRequestReceived];
-  v7 = [v4 syncTokenFetchRequestReceived];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RSSSchemaRSSClientEvent *)self syncTokenFetchRequestReceived];
+  eventMetadata2 = [equalCopy syncTokenFetchRequestReceived];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v23 = [(RSSSchemaRSSClientEvent *)self syncTokenFetchRequestReceived];
-  if (v23)
+  syncTokenFetchRequestReceived = [(RSSSchemaRSSClientEvent *)self syncTokenFetchRequestReceived];
+  if (syncTokenFetchRequestReceived)
   {
-    v24 = v23;
-    v25 = [(RSSSchemaRSSClientEvent *)self syncTokenFetchRequestReceived];
-    v26 = [v4 syncTokenFetchRequestReceived];
-    v27 = [v25 isEqual:v26];
+    v24 = syncTokenFetchRequestReceived;
+    syncTokenFetchRequestReceived2 = [(RSSSchemaRSSClientEvent *)self syncTokenFetchRequestReceived];
+    syncTokenFetchRequestReceived3 = [equalCopy syncTokenFetchRequestReceived];
+    v27 = [syncTokenFetchRequestReceived2 isEqual:syncTokenFetchRequestReceived3];
 
     if (!v27)
     {
@@ -440,20 +440,20 @@
   {
   }
 
-  v6 = [(RSSSchemaRSSClientEvent *)self syncDataUpdatedNotificationReceived];
-  v7 = [v4 syncDataUpdatedNotificationReceived];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RSSSchemaRSSClientEvent *)self syncDataUpdatedNotificationReceived];
+  eventMetadata2 = [equalCopy syncDataUpdatedNotificationReceived];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v28 = [(RSSSchemaRSSClientEvent *)self syncDataUpdatedNotificationReceived];
-  if (v28)
+  syncDataUpdatedNotificationReceived = [(RSSSchemaRSSClientEvent *)self syncDataUpdatedNotificationReceived];
+  if (syncDataUpdatedNotificationReceived)
   {
-    v29 = v28;
-    v30 = [(RSSSchemaRSSClientEvent *)self syncDataUpdatedNotificationReceived];
-    v31 = [v4 syncDataUpdatedNotificationReceived];
-    v32 = [v30 isEqual:v31];
+    v29 = syncDataUpdatedNotificationReceived;
+    syncDataUpdatedNotificationReceived2 = [(RSSSchemaRSSClientEvent *)self syncDataUpdatedNotificationReceived];
+    syncDataUpdatedNotificationReceived3 = [equalCopy syncDataUpdatedNotificationReceived];
+    v32 = [syncDataUpdatedNotificationReceived2 isEqual:syncDataUpdatedNotificationReceived3];
 
     if (!v32)
     {
@@ -465,20 +465,20 @@
   {
   }
 
-  v6 = [(RSSSchemaRSSClientEvent *)self syncDataDonationFailed];
-  v7 = [v4 syncDataDonationFailed];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RSSSchemaRSSClientEvent *)self syncDataDonationFailed];
+  eventMetadata2 = [equalCopy syncDataDonationFailed];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v33 = [(RSSSchemaRSSClientEvent *)self syncDataDonationFailed];
-  if (v33)
+  syncDataDonationFailed = [(RSSSchemaRSSClientEvent *)self syncDataDonationFailed];
+  if (syncDataDonationFailed)
   {
-    v34 = v33;
-    v35 = [(RSSSchemaRSSClientEvent *)self syncDataDonationFailed];
-    v36 = [v4 syncDataDonationFailed];
-    v37 = [v35 isEqual:v36];
+    v34 = syncDataDonationFailed;
+    syncDataDonationFailed2 = [(RSSSchemaRSSClientEvent *)self syncDataDonationFailed];
+    syncDataDonationFailed3 = [equalCopy syncDataDonationFailed];
+    v37 = [syncDataDonationFailed2 isEqual:syncDataDonationFailed3];
 
     if (!v37)
     {
@@ -490,20 +490,20 @@
   {
   }
 
-  v6 = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncRequested];
-  v7 = [v4 companionSyncPluginSyncRequested];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncRequested];
+  eventMetadata2 = [equalCopy companionSyncPluginSyncRequested];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v38 = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncRequested];
-  if (v38)
+  companionSyncPluginSyncRequested = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncRequested];
+  if (companionSyncPluginSyncRequested)
   {
-    v39 = v38;
-    v40 = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncRequested];
-    v41 = [v4 companionSyncPluginSyncRequested];
-    v42 = [v40 isEqual:v41];
+    v39 = companionSyncPluginSyncRequested;
+    companionSyncPluginSyncRequested2 = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncRequested];
+    companionSyncPluginSyncRequested3 = [equalCopy companionSyncPluginSyncRequested];
+    v42 = [companionSyncPluginSyncRequested2 isEqual:companionSyncPluginSyncRequested3];
 
     if (!v42)
     {
@@ -515,20 +515,20 @@
   {
   }
 
-  v6 = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncObjectAcquisitionStarted];
-  v7 = [v4 companionSyncPluginSyncObjectAcquisitionStarted];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncObjectAcquisitionStarted];
+  eventMetadata2 = [equalCopy companionSyncPluginSyncObjectAcquisitionStarted];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v43 = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncObjectAcquisitionStarted];
-  if (v43)
+  companionSyncPluginSyncObjectAcquisitionStarted = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncObjectAcquisitionStarted];
+  if (companionSyncPluginSyncObjectAcquisitionStarted)
   {
-    v44 = v43;
-    v45 = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncObjectAcquisitionStarted];
-    v46 = [v4 companionSyncPluginSyncObjectAcquisitionStarted];
-    v47 = [v45 isEqual:v46];
+    v44 = companionSyncPluginSyncObjectAcquisitionStarted;
+    companionSyncPluginSyncObjectAcquisitionStarted2 = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncObjectAcquisitionStarted];
+    companionSyncPluginSyncObjectAcquisitionStarted3 = [equalCopy companionSyncPluginSyncObjectAcquisitionStarted];
+    v47 = [companionSyncPluginSyncObjectAcquisitionStarted2 isEqual:companionSyncPluginSyncObjectAcquisitionStarted3];
 
     if (!v47)
     {
@@ -540,12 +540,12 @@
   {
   }
 
-  v6 = [(RSSSchemaRSSClientEvent *)self companionSyncUploadStarted];
-  v7 = [v4 companionSyncUploadStarted];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(RSSSchemaRSSClientEvent *)self companionSyncUploadStarted];
+  eventMetadata2 = [equalCopy companionSyncUploadStarted];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v48 = [(RSSSchemaRSSClientEvent *)self companionSyncUploadStarted];
-    if (!v48)
+    companionSyncUploadStarted = [(RSSSchemaRSSClientEvent *)self companionSyncUploadStarted];
+    if (!companionSyncUploadStarted)
     {
 
 LABEL_51:
@@ -553,10 +553,10 @@ LABEL_51:
       goto LABEL_49;
     }
 
-    v49 = v48;
-    v50 = [(RSSSchemaRSSClientEvent *)self companionSyncUploadStarted];
-    v51 = [v4 companionSyncUploadStarted];
-    v52 = [v50 isEqual:v51];
+    v49 = companionSyncUploadStarted;
+    companionSyncUploadStarted2 = [(RSSSchemaRSSClientEvent *)self companionSyncUploadStarted];
+    companionSyncUploadStarted3 = [equalCopy companionSyncUploadStarted];
+    v52 = [companionSyncUploadStarted2 isEqual:companionSyncUploadStarted3];
 
     if (v52)
     {
@@ -576,82 +576,82 @@ LABEL_49:
   return v53;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v23 = a3;
-  v4 = [(RSSSchemaRSSClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(RSSSchemaRSSClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(RSSSchemaRSSClientEvent *)self eventMetadata];
+    eventMetadata2 = [(RSSSchemaRSSClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(RSSSchemaRSSClientEvent *)self syncDataDownloadContext];
+  syncDataDownloadContext = [(RSSSchemaRSSClientEvent *)self syncDataDownloadContext];
 
-  if (v6)
+  if (syncDataDownloadContext)
   {
-    v7 = [(RSSSchemaRSSClientEvent *)self syncDataDownloadContext];
+    syncDataDownloadContext2 = [(RSSSchemaRSSClientEvent *)self syncDataDownloadContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(RSSSchemaRSSClientEvent *)self syncTokenReceived];
+  syncTokenReceived = [(RSSSchemaRSSClientEvent *)self syncTokenReceived];
 
-  if (v8)
+  if (syncTokenReceived)
   {
-    v9 = [(RSSSchemaRSSClientEvent *)self syncTokenReceived];
+    syncTokenReceived2 = [(RSSSchemaRSSClientEvent *)self syncTokenReceived];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(RSSSchemaRSSClientEvent *)self syncTokenFetchRequestReceived];
+  syncTokenFetchRequestReceived = [(RSSSchemaRSSClientEvent *)self syncTokenFetchRequestReceived];
 
-  if (v10)
+  if (syncTokenFetchRequestReceived)
   {
-    v11 = [(RSSSchemaRSSClientEvent *)self syncTokenFetchRequestReceived];
+    syncTokenFetchRequestReceived2 = [(RSSSchemaRSSClientEvent *)self syncTokenFetchRequestReceived];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(RSSSchemaRSSClientEvent *)self syncDataUpdatedNotificationReceived];
+  syncDataUpdatedNotificationReceived = [(RSSSchemaRSSClientEvent *)self syncDataUpdatedNotificationReceived];
 
-  if (v12)
+  if (syncDataUpdatedNotificationReceived)
   {
-    v13 = [(RSSSchemaRSSClientEvent *)self syncDataUpdatedNotificationReceived];
+    syncDataUpdatedNotificationReceived2 = [(RSSSchemaRSSClientEvent *)self syncDataUpdatedNotificationReceived];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(RSSSchemaRSSClientEvent *)self syncDataDonationFailed];
+  syncDataDonationFailed = [(RSSSchemaRSSClientEvent *)self syncDataDonationFailed];
 
-  if (v14)
+  if (syncDataDonationFailed)
   {
-    v15 = [(RSSSchemaRSSClientEvent *)self syncDataDonationFailed];
+    syncDataDonationFailed2 = [(RSSSchemaRSSClientEvent *)self syncDataDonationFailed];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncRequested];
+  companionSyncPluginSyncRequested = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncRequested];
 
-  if (v16)
+  if (companionSyncPluginSyncRequested)
   {
-    v17 = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncRequested];
+    companionSyncPluginSyncRequested2 = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncRequested];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncObjectAcquisitionStarted];
+  companionSyncPluginSyncObjectAcquisitionStarted = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncObjectAcquisitionStarted];
 
-  if (v18)
+  if (companionSyncPluginSyncObjectAcquisitionStarted)
   {
-    v19 = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncObjectAcquisitionStarted];
+    companionSyncPluginSyncObjectAcquisitionStarted2 = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncObjectAcquisitionStarted];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(RSSSchemaRSSClientEvent *)self companionSyncUploadStarted];
+  companionSyncUploadStarted = [(RSSSchemaRSSClientEvent *)self companionSyncUploadStarted];
 
-  v21 = v23;
-  if (v20)
+  v21 = toCopy;
+  if (companionSyncUploadStarted)
   {
-    v22 = [(RSSSchemaRSSClientEvent *)self companionSyncUploadStarted];
+    companionSyncUploadStarted2 = [(RSSSchemaRSSClientEvent *)self companionSyncUploadStarted];
     PBDataWriterWriteSubmessage();
 
-    v21 = v23;
+    v21 = toCopy;
   }
 }
 
@@ -680,9 +680,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setCompanionSyncUploadStarted:(id)a3
+- (void)setCompanionSyncUploadStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   syncDataDownloadContext = self->_syncDataDownloadContext;
   self->_syncDataDownloadContext = 0;
 
@@ -705,14 +705,14 @@ LABEL_49:
   self->_companionSyncPluginSyncObjectAcquisitionStarted = 0;
 
   v12 = 108;
-  if (!v4)
+  if (!startedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   companionSyncUploadStarted = self->_companionSyncUploadStarted;
-  self->_companionSyncUploadStarted = v4;
+  self->_companionSyncUploadStarted = startedCopy;
 }
 
 - (void)deleteCompanionSyncPluginSyncObjectAcquisitionStarted
@@ -740,9 +740,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setCompanionSyncPluginSyncObjectAcquisitionStarted:(id)a3
+- (void)setCompanionSyncPluginSyncObjectAcquisitionStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   syncDataDownloadContext = self->_syncDataDownloadContext;
   self->_syncDataDownloadContext = 0;
 
@@ -765,14 +765,14 @@ LABEL_49:
   self->_companionSyncUploadStarted = 0;
 
   v12 = 107;
-  if (!v4)
+  if (!startedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   companionSyncPluginSyncObjectAcquisitionStarted = self->_companionSyncPluginSyncObjectAcquisitionStarted;
-  self->_companionSyncPluginSyncObjectAcquisitionStarted = v4;
+  self->_companionSyncPluginSyncObjectAcquisitionStarted = startedCopy;
 }
 
 - (void)deleteCompanionSyncPluginSyncRequested
@@ -800,9 +800,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setCompanionSyncPluginSyncRequested:(id)a3
+- (void)setCompanionSyncPluginSyncRequested:(id)requested
 {
-  v4 = a3;
+  requestedCopy = requested;
   syncDataDownloadContext = self->_syncDataDownloadContext;
   self->_syncDataDownloadContext = 0;
 
@@ -825,14 +825,14 @@ LABEL_49:
   self->_companionSyncUploadStarted = 0;
 
   v12 = 106;
-  if (!v4)
+  if (!requestedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   companionSyncPluginSyncRequested = self->_companionSyncPluginSyncRequested;
-  self->_companionSyncPluginSyncRequested = v4;
+  self->_companionSyncPluginSyncRequested = requestedCopy;
 }
 
 - (void)deleteSyncDataDonationFailed
@@ -860,9 +860,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setSyncDataDonationFailed:(id)a3
+- (void)setSyncDataDonationFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   syncDataDownloadContext = self->_syncDataDownloadContext;
   self->_syncDataDownloadContext = 0;
 
@@ -885,14 +885,14 @@ LABEL_49:
   self->_companionSyncUploadStarted = 0;
 
   v12 = 105;
-  if (!v4)
+  if (!failedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   syncDataDonationFailed = self->_syncDataDonationFailed;
-  self->_syncDataDonationFailed = v4;
+  self->_syncDataDonationFailed = failedCopy;
 }
 
 - (void)deleteSyncDataUpdatedNotificationReceived
@@ -920,9 +920,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setSyncDataUpdatedNotificationReceived:(id)a3
+- (void)setSyncDataUpdatedNotificationReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   syncDataDownloadContext = self->_syncDataDownloadContext;
   self->_syncDataDownloadContext = 0;
 
@@ -945,14 +945,14 @@ LABEL_49:
   self->_companionSyncUploadStarted = 0;
 
   v12 = 104;
-  if (!v4)
+  if (!receivedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   syncDataUpdatedNotificationReceived = self->_syncDataUpdatedNotificationReceived;
-  self->_syncDataUpdatedNotificationReceived = v4;
+  self->_syncDataUpdatedNotificationReceived = receivedCopy;
 }
 
 - (void)deleteSyncTokenFetchRequestReceived
@@ -980,9 +980,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setSyncTokenFetchRequestReceived:(id)a3
+- (void)setSyncTokenFetchRequestReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   syncDataDownloadContext = self->_syncDataDownloadContext;
   self->_syncDataDownloadContext = 0;
 
@@ -1005,14 +1005,14 @@ LABEL_49:
   self->_companionSyncUploadStarted = 0;
 
   v12 = 103;
-  if (!v4)
+  if (!receivedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   syncTokenFetchRequestReceived = self->_syncTokenFetchRequestReceived;
-  self->_syncTokenFetchRequestReceived = v4;
+  self->_syncTokenFetchRequestReceived = receivedCopy;
 }
 
 - (void)deleteSyncTokenReceived
@@ -1040,9 +1040,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setSyncTokenReceived:(id)a3
+- (void)setSyncTokenReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   syncDataDownloadContext = self->_syncDataDownloadContext;
   self->_syncDataDownloadContext = 0;
 
@@ -1065,14 +1065,14 @@ LABEL_49:
   self->_companionSyncUploadStarted = 0;
 
   v12 = 102;
-  if (!v4)
+  if (!receivedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   syncTokenReceived = self->_syncTokenReceived;
-  self->_syncTokenReceived = v4;
+  self->_syncTokenReceived = receivedCopy;
 }
 
 - (void)deleteSyncDataDownloadContext
@@ -1100,9 +1100,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setSyncDataDownloadContext:(id)a3
+- (void)setSyncDataDownloadContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   syncTokenReceived = self->_syncTokenReceived;
   self->_syncTokenReceived = 0;
 
@@ -1125,113 +1125,113 @@ LABEL_49:
   self->_companionSyncUploadStarted = 0;
 
   v12 = 101;
-  if (!v4)
+  if (!contextCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   syncDataDownloadContext = self->_syncDataDownloadContext;
-  self->_syncDataDownloadContext = v4;
+  self->_syncDataDownloadContext = contextCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(RSSSchemaRSSClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 7)
+  whichEvent_Type = [(RSSSchemaRSSClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 7)
   {
     return @"com.apple.aiml.siri.rss.RSSClientEvent";
   }
 
   else
   {
-    return off_1E78E21B8[v2 - 101];
+    return off_1E78E21B8[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v34.receiver = self;
   v34.super_class = RSSSchemaRSSClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v34 applySensitiveConditionsPolicy:v4];
-  v6 = [(RSSSchemaRSSClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v34 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(RSSSchemaRSSClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(RSSSchemaRSSClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(RSSSchemaRSSClientEvent *)self syncDataDownloadContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  syncDataDownloadContext = [(RSSSchemaRSSClientEvent *)self syncDataDownloadContext];
+  v10 = [syncDataDownloadContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(RSSSchemaRSSClientEvent *)self deleteSyncDataDownloadContext];
   }
 
-  v12 = [(RSSSchemaRSSClientEvent *)self syncTokenReceived];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  syncTokenReceived = [(RSSSchemaRSSClientEvent *)self syncTokenReceived];
+  v13 = [syncTokenReceived applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(RSSSchemaRSSClientEvent *)self deleteSyncTokenReceived];
   }
 
-  v15 = [(RSSSchemaRSSClientEvent *)self syncTokenFetchRequestReceived];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  syncTokenFetchRequestReceived = [(RSSSchemaRSSClientEvent *)self syncTokenFetchRequestReceived];
+  v16 = [syncTokenFetchRequestReceived applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(RSSSchemaRSSClientEvent *)self deleteSyncTokenFetchRequestReceived];
   }
 
-  v18 = [(RSSSchemaRSSClientEvent *)self syncDataUpdatedNotificationReceived];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  syncDataUpdatedNotificationReceived = [(RSSSchemaRSSClientEvent *)self syncDataUpdatedNotificationReceived];
+  v19 = [syncDataUpdatedNotificationReceived applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(RSSSchemaRSSClientEvent *)self deleteSyncDataUpdatedNotificationReceived];
   }
 
-  v21 = [(RSSSchemaRSSClientEvent *)self syncDataDonationFailed];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  syncDataDonationFailed = [(RSSSchemaRSSClientEvent *)self syncDataDonationFailed];
+  v22 = [syncDataDonationFailed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(RSSSchemaRSSClientEvent *)self deleteSyncDataDonationFailed];
   }
 
-  v24 = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncRequested];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  companionSyncPluginSyncRequested = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncRequested];
+  v25 = [companionSyncPluginSyncRequested applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(RSSSchemaRSSClientEvent *)self deleteCompanionSyncPluginSyncRequested];
   }
 
-  v27 = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncObjectAcquisitionStarted];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  companionSyncPluginSyncObjectAcquisitionStarted = [(RSSSchemaRSSClientEvent *)self companionSyncPluginSyncObjectAcquisitionStarted];
+  v28 = [companionSyncPluginSyncObjectAcquisitionStarted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(RSSSchemaRSSClientEvent *)self deleteCompanionSyncPluginSyncObjectAcquisitionStarted];
   }
 
-  v30 = [(RSSSchemaRSSClientEvent *)self companionSyncUploadStarted];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  companionSyncUploadStarted = [(RSSSchemaRSSClientEvent *)self companionSyncUploadStarted];
+  v31 = [companionSyncUploadStarted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(RSSSchemaRSSClientEvent *)self deleteCompanionSyncUploadStarted];
   }
@@ -1249,65 +1249,65 @@ LABEL_49:
 
 - (id)getComponentId
 {
-  v2 = [(RSSSchemaRSSClientEvent *)self eventMetadata];
-  v3 = [v2 rssId];
+  eventMetadata = [(RSSSchemaRSSClientEvent *)self eventMetadata];
+  rssId = [eventMetadata rssId];
 
-  if (!v3)
+  if (!rssId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [rssId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [rssId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = rssId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(RSSSchemaRSSClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 7)
+  whichEvent_Type = [(RSSSchemaRSSClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 7)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EAF88[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EAF88[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 7)
+  if (tag - 101 > 7)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EAFC8[a3 - 101];
+    return off_1E78EAFC8[tag - 101];
   }
 }
 

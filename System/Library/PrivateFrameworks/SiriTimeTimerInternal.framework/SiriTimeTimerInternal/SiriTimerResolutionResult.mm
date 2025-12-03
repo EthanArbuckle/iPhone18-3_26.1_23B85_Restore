@@ -1,25 +1,25 @@
 @interface SiriTimerResolutionResult
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3;
-+ (id)confirmationRequiredWithSiriTimerToConfirm:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)disambiguationWithSiriTimersToDisambiguate:(id)a3;
-+ (id)successWithResolvedObject:(id)a3;
-+ (id)successWithResolvedSiriTimer:(id)a3;
-- (SiriTimerResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4;
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm;
++ (id)confirmationRequiredWithSiriTimerToConfirm:(id)confirm;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithSiriTimersToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedObject:(id)object;
++ (id)successWithResolvedSiriTimer:(id)timer;
+- (SiriTimerResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent;
 @end
 
 @implementation SiriTimerResolutionResult
 
-+ (id)successWithResolvedSiriTimer:(id)a3
++ (id)successWithResolvedSiriTimer:(id)timer
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_2693B1178(v4);
+  timerCopy = timer;
+  v5 = sub_2693B1178(timerCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithSiriTimersToDisambiguate:(id)a3
++ (id)disambiguationWithSiriTimersToDisambiguate:(id)disambiguate
 {
   type metadata accessor for SiriTimer();
   v3 = sub_2693B3820();
@@ -29,45 +29,45 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithSiriTimerToConfirm:(id)a3
++ (id)confirmationRequiredWithSiriTimerToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_2693B13DC(a3);
+  confirmCopy = confirm;
+  v5 = sub_2693B13DC(confirm);
 
   return v5;
 }
 
-+ (id)successWithResolvedObject:(id)a3
++ (id)successWithResolvedObject:(id)object
 {
   result = sub_2693B3C50();
   __break(1u);
   return result;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   result = sub_2693B3C50();
   __break(1u);
   return result;
 }
 
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm
 {
   result = sub_2693B3C50();
   __break(1u);
   return result;
 }
 
-- (SiriTimerResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4
+- (SiriTimerResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent
 {
   sub_2693B3720();
-  v6 = a4;
+  intentCopy = intent;
   v7 = sub_2693B3710();
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for SiriTimerResolutionResult();
-  v8 = [(SiriTimerResolutionResult *)&v10 initWithJSONDictionary:v7 forIntent:v6];
+  v8 = [(SiriTimerResolutionResult *)&v10 initWithJSONDictionary:v7 forIntent:intentCopy];
 
   if (v8)
   {

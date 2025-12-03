@@ -1,24 +1,24 @@
 @interface ICQLinkHandler
-+ (id)urlFromUserActivity:(id)a3;
-+ (int64_t)resultFromURL:(id)a3;
-+ (int64_t)resultFromURL:(id)a3 store:(id)a4;
++ (id)urlFromUserActivity:(id)activity;
++ (int64_t)resultFromURL:(id)l;
++ (int64_t)resultFromURL:(id)l store:(id)store;
 @end
 
 @implementation ICQLinkHandler
 
-+ (id)urlFromUserActivity:(id)a3
++ (id)urlFromUserActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 activityType];
-  v5 = [v4 isEqual:NSUserActivityTypeBrowsingWeb];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  v5 = [activityType isEqual:NSUserActivityTypeBrowsingWeb];
 
   if (v5)
   {
-    v6 = [v3 webpageURL];
-    v7 = v6;
-    if (v6)
+    webpageURL = [activityCopy webpageURL];
+    v7 = webpageURL;
+    if (webpageURL)
     {
-      v7 = v6;
+      v7 = webpageURL;
       v8 = v7;
     }
 
@@ -50,63 +50,63 @@
   return v8;
 }
 
-+ (int64_t)resultFromURL:(id)a3
++ (int64_t)resultFromURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[ACAccountStore defaultStore];
-  v6 = [a1 resultFromURL:v4 store:v5];
+  v6 = [self resultFromURL:lCopy store:v5];
 
   return v6;
 }
 
-+ (int64_t)resultFromURL:(id)a3 store:(id)a4
++ (int64_t)resultFromURL:(id)l store:(id)store
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  lCopy = l;
+  storeCopy = store;
+  if (lCopy)
   {
-    v7 = [[NSURLComponents alloc] initWithURL:v5 resolvingAgainstBaseURL:1];
+    v7 = [[NSURLComponents alloc] initWithURL:lCopy resolvingAgainstBaseURL:1];
     v8 = v7;
     if (!v7)
     {
-      v9 = _ICQGetLogSystem();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      queryItems = _ICQGetLogSystem();
+      if (os_log_type_enabled(queryItems, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v29) = 0;
-        _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "missing urlComponents", &v29, 2u);
+        _os_log_impl(&_mh_execute_header, queryItems, OS_LOG_TYPE_DEFAULT, "missing urlComponents", &v29, 2u);
       }
 
       goto LABEL_25;
     }
 
-    v9 = [v7 queryItems];
+    queryItems = [v7 queryItems];
     v10 = _ICQGetLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v29 = 138412290;
-      v30 = v9;
+      v30 = queryItems;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "queryItems = %@", &v29, 0xCu);
     }
 
-    v11 = [v9 firstObject];
-    v12 = [v11 name];
-    if ([v12 isEqualToString:@"context"])
+    firstObject = [queryItems firstObject];
+    name = [firstObject name];
+    if ([name isEqualToString:@"context"])
     {
-      v13 = [v8 host];
-      if (([v13 isEqualToString:@"icq.icloud.com"] & 1) == 0)
+      host = [v8 host];
+      if (([host isEqualToString:@"icq.icloud.com"] & 1) == 0)
       {
-        v14 = [v8 scheme];
-        if ([v14 caseInsensitiveCompare:@"icq"])
+        scheme = [v8 scheme];
+        if ([scheme caseInsensitiveCompare:@"icq"])
         {
-          v15 = [v8 host];
-          v16 = [v15 isEqualToString:@"launch"];
+          host2 = [v8 host];
+          v16 = [host2 isEqualToString:@"launch"];
 
           if (v16)
           {
 LABEL_28:
-            v24 = [v9 firstObject];
-            v25 = [v24 value];
-            v26 = [v25 isEqualToString:ICQActionParameterSkipCFUKey];
+            firstObject2 = [queryItems firstObject];
+            value = [firstObject2 value];
+            v26 = [value isEqualToString:ICQActionParameterSkipCFUKey];
 
             if (v26)
             {
@@ -115,9 +115,9 @@ LABEL_28:
 
             else
             {
-              v27 = [v6 aa_primaryAppleAccount];
+              aa_primaryAppleAccount = [storeCopy aa_primaryAppleAccount];
 
-              if (v27)
+              if (aa_primaryAppleAccount)
               {
                 v17 = 1;
               }
@@ -139,8 +139,8 @@ LABEL_28:
     }
 
 LABEL_16:
-    v18 = [v8 host];
-    v19 = [v18 isEqualToString:@"icq.postpurchase.icloud.com"];
+    host3 = [v8 host];
+    v19 = [host3 isEqualToString:@"icq.postpurchase.icloud.com"];
 
     if (v19)
     {
@@ -150,11 +150,11 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    v20 = [v8 host];
-    if ([v20 isEqualToString:@"c.apple.com"])
+    host4 = [v8 host];
+    if ([host4 isEqualToString:@"c.apple.com"])
     {
-      v21 = [v8 path];
-      v22 = [v21 hasSuffix:@"icq"];
+      path = [v8 path];
+      v22 = [path hasSuffix:@"icq"];
 
       if (v22)
       {

@@ -1,85 +1,85 @@
 @interface WLKRemoveFavoriteRequest
-- (WLKRemoveFavoriteRequest)initWithBundleID:(id)a3 externalID:(id)a4;
-- (WLKRemoveFavoriteRequest)initWithCanonicalID:(id)a3;
-- (WLKRemoveFavoriteRequest)initWithStatsID:(id)a3;
-- (void)makeRequestWithCompletion:(id)a3;
+- (WLKRemoveFavoriteRequest)initWithBundleID:(id)d externalID:(id)iD;
+- (WLKRemoveFavoriteRequest)initWithCanonicalID:(id)d;
+- (WLKRemoveFavoriteRequest)initWithStatsID:(id)d;
+- (void)makeRequestWithCompletion:(id)completion;
 @end
 
 @implementation WLKRemoveFavoriteRequest
 
-- (WLKRemoveFavoriteRequest)initWithCanonicalID:(id)a3
+- (WLKRemoveFavoriteRequest)initWithCanonicalID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v10.receiver = self;
     v10.super_class = WLKRemoveFavoriteRequest;
     v5 = [(WLKRemoveFavoriteRequest *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [dCopy copy];
       canonicalID = v5->_canonicalID;
       v5->_canonicalID = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"canonicalID is required"];
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (WLKRemoveFavoriteRequest)initWithStatsID:(id)a3
+- (WLKRemoveFavoriteRequest)initWithStatsID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v10.receiver = self;
     v10.super_class = WLKRemoveFavoriteRequest;
     v5 = [(WLKRemoveFavoriteRequest *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [dCopy copy];
       statsID = v5->_statsID;
       v5->_statsID = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"statsID is required"];
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (WLKRemoveFavoriteRequest)initWithBundleID:(id)a3 externalID:(id)a4
+- (WLKRemoveFavoriteRequest)initWithBundleID:(id)d externalID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  dCopy = d;
+  iDCopy = iD;
+  v8 = iDCopy;
+  if (!dCopy)
   {
     v19 = MEMORY[0x277CBEAD8];
     v20 = *MEMORY[0x277CBE660];
     v21 = @"bundleID is required";
 LABEL_9:
     [v19 raise:v20 format:v21];
-    v18 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
-  if (!v7)
+  if (!iDCopy)
   {
     v19 = MEMORY[0x277CBEAD8];
     v20 = *MEMORY[0x277CBE660];
@@ -88,7 +88,7 @@ LABEL_9:
   }
 
   v9 = +[WLKChannelUtilities sharedInstance];
-  v10 = [v9 channelIDForBundleID:v6];
+  v10 = [v9 channelIDForBundleID:dCopy];
 
   if (v10)
   {
@@ -97,7 +97,7 @@ LABEL_9:
     v11 = [(WLKRemoveFavoriteRequest *)&v23 init];
     if (v11)
     {
-      v12 = [v6 copy];
+      v12 = [dCopy copy];
       bundleID = v11->_bundleID;
       v11->_bundleID = v12;
 
@@ -111,33 +111,33 @@ LABEL_9:
     }
 
     self = v11;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    NSLog(&cfstr_ErrorUnableToR.isa, v6);
-    v18 = 0;
+    NSLog(&cfstr_ErrorUnableToR.isa, dCopy);
+    selfCopy = 0;
   }
 
 LABEL_12:
-  return v18;
+  return selfCopy;
 }
 
-- (void)makeRequestWithCompletion:(id)a3
+- (void)makeRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[WLKSettingsStore sharedSettings];
-  v6 = [v5 optedIn];
+  optedIn = [v5 optedIn];
 
-  if (v6)
+  if (optedIn)
   {
     if (self->_canonicalID)
     {
       v7 = [WLKWatchListModificationRequestOperation alloc];
       canonicalID = self->_canonicalID;
-      v9 = [(WLKRequest *)self caller];
-      v10 = [(WLKWatchListModificationRequestOperation *)v7 initWithAction:1 canonicalID:canonicalID caller:v9];
+      caller = [(WLKRequest *)self caller];
+      v10 = [(WLKWatchListModificationRequestOperation *)v7 initWithAction:1 canonicalID:canonicalID caller:caller];
     }
 
     else
@@ -149,8 +149,8 @@ LABEL_12:
           v17 = [WLKWatchListModificationRequestOperation alloc];
           channelID = self->_channelID;
           externalID = self->_externalID;
-          v20 = [(WLKRequest *)self caller];
-          v15 = [(WLKWatchListModificationRequestOperation *)v17 initWithAction:1 channelID:channelID externalID:externalID caller:v20];
+          caller2 = [(WLKRequest *)self caller];
+          v15 = [(WLKWatchListModificationRequestOperation *)v17 initWithAction:1 channelID:channelID externalID:externalID caller:caller2];
         }
 
         else
@@ -164,8 +164,8 @@ LABEL_12:
 
       v13 = [WLKWatchListModificationRequestOperation alloc];
       statsID = self->_statsID;
-      v9 = [(WLKRequest *)self caller];
-      v10 = [(WLKWatchListModificationRequestOperation *)v13 initWithAction:1 statsID:statsID caller:v9];
+      caller = [(WLKRequest *)self caller];
+      v10 = [(WLKWatchListModificationRequestOperation *)v13 initWithAction:1 statsID:statsID caller:caller];
     }
 
     v15 = v10;
@@ -179,12 +179,12 @@ LABEL_8:
     v21[3] = &unk_279E5FD58;
     objc_copyWeak(&v24, &from);
     objc_copyWeak(&v25, &location);
-    v23 = v4;
+    v23 = completionCopy;
     v12 = v15;
     v22 = v12;
     [(WLKWatchListModificationRequestOperation *)v12 setCompletionBlock:v21];
-    v16 = [MEMORY[0x277CCABD8] wlkDefaultQueue];
-    [v16 addOperation:v12];
+    wlkDefaultQueue = [MEMORY[0x277CCABD8] wlkDefaultQueue];
+    [wlkDefaultQueue addOperation:v12];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(&v24);
@@ -198,7 +198,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __54__WLKRemoveFavoriteRequest_makeRequestWithCompletion___block_invoke;
   block[3] = &unk_279E5EA90;
-  v29 = v4;
+  v29 = completionCopy;
   dispatch_async(v11, block);
 
   v12 = v29;

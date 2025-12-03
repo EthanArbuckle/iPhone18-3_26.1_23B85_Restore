@@ -1,21 +1,21 @@
 @interface SPRecommendationDatastore
-- (id)performQuery:(id)a3;
+- (id)performQuery:(id)query;
 @end
 
 @implementation SPRecommendationDatastore
 
-- (id)performQuery:(id)a3
+- (id)performQuery:(id)query
 {
-  v4 = a3;
-  if ([v4 isPeopleSearch] & 1) != 0 || (objc_msgSend(v4, "isScopedAppSearch"))
+  queryCopy = query;
+  if ([queryCopy isPeopleSearch] & 1) != 0 || (objc_msgSend(queryCopy, "isScopedAppSearch"))
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v4 disabledBundles];
-    v7 = [v6 containsObject:@"com.apple.Music"];
+    disabledBundles = [queryCopy disabledBundles];
+    v7 = [disabledBundles containsObject:@"com.apple.Music"];
 
     if (v7)
     {
@@ -37,10 +37,10 @@
       }
 
       v9 = SPLogForSPLogCategoryTelemetry();
-      v10 = [v4 externalID];
-      if (v10)
+      externalID = [queryCopy externalID];
+      if (externalID)
       {
-        v11 = v10;
+        v11 = externalID;
         if (os_signpost_enabled(v9))
         {
           *buf = 0;
@@ -49,7 +49,7 @@
       }
 
       v13 = [[SPRecommendationDatastoreToken alloc] initWithStore:self];
-      v14 = v4;
+      v14 = queryCopy;
       md_tracing_dispatch_async_propagating();
       v8 = v13;
 

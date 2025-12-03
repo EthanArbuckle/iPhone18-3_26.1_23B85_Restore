@@ -1,5 +1,5 @@
 @interface MTAWorldClockViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityElementShouldBeInvalid;
 - (BOOL)_axDeleteClock;
 - (BOOL)isAccessibilityElement;
@@ -9,32 +9,32 @@
 
 @implementation MTAWorldClockViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTAWorldClockView" hasInstanceMethod:@"cityNameLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAWorldClockView" hasInstanceMethod:@"timeZoneOffsetLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAWorldClockView" hasInstanceMethod:@"sunriseLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAWorldClockView" hasInstanceMethod:@"sunsetLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAWorldClockCollectionCell" hasInstanceMethod:@"deleteTapped:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTAWorldClockView" hasInstanceMethod:@"cityNameLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAWorldClockView" hasInstanceMethod:@"timeZoneOffsetLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAWorldClockView" hasInstanceMethod:@"sunriseLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAWorldClockView" hasInstanceMethod:@"sunsetLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAWorldClockCollectionCell" hasInstanceMethod:@"deleteTapped:" withFullSignature:{"v", "@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(MTAWorldClockViewAccessibility *)self safeValueForKey:@"cityNameLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(MTAWorldClockViewAccessibility *)self safeValueForKey:@"analogClock"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
 
   v7 = [(MTAWorldClockViewAccessibility *)self safeValueForKey:@"timeZoneOffsetLabel"];
-  v8 = [v7 accessibilityLabel];
+  accessibilityLabel3 = [v7 accessibilityLabel];
 
   v9 = [(MTAWorldClockViewAccessibility *)self safeValueForKey:@"sunriseLabel"];
-  v10 = [v9 accessibilityLabel];
+  accessibilityLabel4 = [v9 accessibilityLabel];
 
   v11 = [(MTAWorldClockViewAccessibility *)self safeValueForKey:@"sunsetLabel"];
-  v12 = [v11 accessibilityLabel];
+  accessibilityLabel5 = [v11 accessibilityLabel];
 
   v13 = __UIAXStringForVariables();
 
@@ -43,10 +43,10 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(MTAWorldClockViewAccessibility *)self _accessibilityElementShouldBeInvalid];
+  _accessibilityElementShouldBeInvalid = [(MTAWorldClockViewAccessibility *)self _accessibilityElementShouldBeInvalid];
   v4 = [(MTAWorldClockViewAccessibility *)self _accessibilityAncestorIsKindOf:MEMORY[0x29C2E1AE0](@"FullScreenWorldClockCollectionCell")];
 
-  return v4 == 0 && !v3;
+  return v4 == 0 && !_accessibilityElementShouldBeInvalid;
 }
 
 - (BOOL)_accessibilityElementShouldBeInvalid
@@ -60,22 +60,22 @@
     [v5 floatValue];
     if (v6 <= 0.0)
     {
-      v8 = 1;
+      bOOLValue = 1;
     }
 
     else
     {
       v7 = [(MTAWorldClockViewAccessibility *)self safeValueForKey:@"isHidden"];
-      v8 = [v7 BOOLValue];
+      bOOLValue = [v7 BOOLValue];
     }
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
 - (id)accessibilityCustomActions
@@ -83,8 +83,8 @@
   v3 = MEMORY[0x29EDB8DE8];
   v10.receiver = self;
   v10.super_class = MTAWorldClockViewAccessibility;
-  v4 = [(MTAWorldClockViewAccessibility *)&v10 accessibilityCustomActions];
-  v5 = [v3 arrayWithArray:v4];
+  accessibilityCustomActions = [(MTAWorldClockViewAccessibility *)&v10 accessibilityCustomActions];
+  v5 = [v3 arrayWithArray:accessibilityCustomActions];
 
   v6 = objc_alloc(MEMORY[0x29EDC78E0]);
   v7 = accessibilityLocalizedString(@"clock.delete");

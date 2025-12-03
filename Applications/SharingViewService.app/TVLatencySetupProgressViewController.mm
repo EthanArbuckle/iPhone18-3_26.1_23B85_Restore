@@ -1,15 +1,15 @@
 @interface TVLatencySetupProgressViewController
-- (void)handleDismissButton:(id)a3;
-- (void)handleProgressEvent:(unsigned int)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)handleDismissButton:(id)button;
+- (void)handleProgressEvent:(unsigned int)event;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TVLatencySetupProgressViewController
 
-- (void)handleProgressEvent:(unsigned int)a3
+- (void)handleProgressEvent:(unsigned int)event
 {
-  if (a3 == 277)
+  if (event == 277)
   {
     v8 = +[NSBundle mainBundle];
     v9 = sub_1001279D0(v8, @"Localizable-TVLatency", @"TLV_LISTENING_TITLE");
@@ -22,7 +22,7 @@
 
   else
   {
-    if (a3 != 260)
+    if (event != 260)
     {
       return;
     }
@@ -38,9 +38,9 @@
   }
 }
 
-- (void)handleDismissButton:(id)a3
+- (void)handleDismissButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BF2B8 <= 30 && (dword_1001BF2B8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -49,9 +49,9 @@
   [self->super.super._mainController dismiss:5];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BF2B8 <= 30 && (dword_1001BF2B8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -59,12 +59,12 @@
 
   v5.receiver = self;
   v5.super_class = TVLatencySetupProgressViewController;
-  [(TVLatencySetupProgressViewController *)&v5 viewDidDisappear:v3];
+  [(TVLatencySetupProgressViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BF2B8 <= 30 && (dword_1001BF2B8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -72,7 +72,7 @@
 
   v12.receiver = self;
   v12.super_class = TVLatencySetupProgressViewController;
-  [(TVLatencySetupBaseViewController *)&v12 viewWillAppear:v3];
+  [(TVLatencySetupBaseViewController *)&v12 viewWillAppear:appearCopy];
   v5 = +[NSBundle mainBundle];
   v6 = sub_1001279D0(v5, @"Localizable-TVLatency", @"TLV_PREPARING_TITLE");
   [*(&self->super.super._didReactivateContainerViewAfterLayingOut + 1) setText:v6];

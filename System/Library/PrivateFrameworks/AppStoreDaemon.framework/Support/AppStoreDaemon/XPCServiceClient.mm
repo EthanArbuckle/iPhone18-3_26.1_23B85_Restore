@@ -1,46 +1,46 @@
 @interface XPCServiceClient
 - (ASDSupportedDialogHandlers)supportedDialogHandlers;
-- (void)deliverAlertPresentationRequest:(id)a3 resultHandler:(id)a4;
-- (void)deliverAuthenticateRequest:(id)a3 withResultHandler:(id)a4;
-- (void)deliverDialogRequest:(id)a3 withResultHandler:(id)a4;
-- (void)deliverEngagementRequest:(id)a3 withResultHandler:(id)a4;
-- (void)deliverNotifications:(id)a3 withBarrierBlock:(id)a4;
-- (void)deliverProgress:(id)a3 withBarrierBlock:(id)a4;
-- (void)deliverViewPresentationRequest:(id)a3 resultHandler:(id)a4;
-- (void)getAppCapabilitiesServiceWithReplyHandler:(id)a3;
-- (void)getAppStoreServiceWithReplyHandler:(id)a3;
-- (void)getBackgroundAssetsServiceWithReplyHandler:(id)a3;
-- (void)getClipServiceWithReplyHandler:(id)a3;
-- (void)getCrossfireServiceWithReplyHandler:(id)a3;
-- (void)getDiagnosticServiceWithReplyHandler:(id)a3;
-- (void)getFairPlayServiceWithReplyHandler:(id)a3;
-- (void)getIAPHistoryServiceWithReplyHandler:(id)a3;
-- (void)getInstallAttributionServiceWithReplyHandler:(id)a3;
-- (void)getInstallWebAttributionServiceWithReplyHandler:(id)a3;
-- (void)getInstallationServiceWithReplyHandler:(id)a3;
-- (void)getLibraryServiceWithReplyHandler:(id)a3;
-- (void)getManagedAppServiceWithReplyHandler:(id)a3;
-- (void)getMetricsServiceWithReplyHandler:(id)a3;
-- (void)getOcelotServiceWithReplyHandler:(id)a3;
-- (void)getPersonalizationServiceWithReplyHandler:(id)a3;
-- (void)getPurchaseHistoryServiceWithReplyHandler:(id)a3;
-- (void)getPurchaseServiceWithReplyHandler:(id)a3;
-- (void)getRepairServiceWithReplyHandler:(id)a3;
-- (void)getRestoreServiceWithReplyHandler:(id)a3;
-- (void)getSKANInteropServiceWithReplyHandler:(id)a3;
-- (void)getSkannerServiceWithReplyHandler:(id)a3;
-- (void)getStoreKitExternalNotificationServiceWithReplyHandler:(id)a3;
-- (void)getTestFlightFeedbackServiceWithReplyHandler:(id)a3;
-- (void)getUpdatesServiceWithReplyHandler:(id)a3;
-- (void)setSupportedNotificationDelivery:(id)a3;
+- (void)deliverAlertPresentationRequest:(id)request resultHandler:(id)handler;
+- (void)deliverAuthenticateRequest:(id)request withResultHandler:(id)handler;
+- (void)deliverDialogRequest:(id)request withResultHandler:(id)handler;
+- (void)deliverEngagementRequest:(id)request withResultHandler:(id)handler;
+- (void)deliverNotifications:(id)notifications withBarrierBlock:(id)block;
+- (void)deliverProgress:(id)progress withBarrierBlock:(id)block;
+- (void)deliverViewPresentationRequest:(id)request resultHandler:(id)handler;
+- (void)getAppCapabilitiesServiceWithReplyHandler:(id)handler;
+- (void)getAppStoreServiceWithReplyHandler:(id)handler;
+- (void)getBackgroundAssetsServiceWithReplyHandler:(id)handler;
+- (void)getClipServiceWithReplyHandler:(id)handler;
+- (void)getCrossfireServiceWithReplyHandler:(id)handler;
+- (void)getDiagnosticServiceWithReplyHandler:(id)handler;
+- (void)getFairPlayServiceWithReplyHandler:(id)handler;
+- (void)getIAPHistoryServiceWithReplyHandler:(id)handler;
+- (void)getInstallAttributionServiceWithReplyHandler:(id)handler;
+- (void)getInstallWebAttributionServiceWithReplyHandler:(id)handler;
+- (void)getInstallationServiceWithReplyHandler:(id)handler;
+- (void)getLibraryServiceWithReplyHandler:(id)handler;
+- (void)getManagedAppServiceWithReplyHandler:(id)handler;
+- (void)getMetricsServiceWithReplyHandler:(id)handler;
+- (void)getOcelotServiceWithReplyHandler:(id)handler;
+- (void)getPersonalizationServiceWithReplyHandler:(id)handler;
+- (void)getPurchaseHistoryServiceWithReplyHandler:(id)handler;
+- (void)getPurchaseServiceWithReplyHandler:(id)handler;
+- (void)getRepairServiceWithReplyHandler:(id)handler;
+- (void)getRestoreServiceWithReplyHandler:(id)handler;
+- (void)getSKANInteropServiceWithReplyHandler:(id)handler;
+- (void)getSkannerServiceWithReplyHandler:(id)handler;
+- (void)getStoreKitExternalNotificationServiceWithReplyHandler:(id)handler;
+- (void)getTestFlightFeedbackServiceWithReplyHandler:(id)handler;
+- (void)getUpdatesServiceWithReplyHandler:(id)handler;
+- (void)setSupportedNotificationDelivery:(id)delivery;
 @end
 
 @implementation XPCServiceClient
 
-- (void)getAppStoreServiceWithReplyHandler:(id)a3
+- (void)getAppStoreServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 8, 1);
@@ -53,13 +53,13 @@
 
   v10 = Property;
   v8 = sub_10023AF14(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getAppCapabilitiesServiceWithReplyHandler:(id)a3
+- (void)getAppCapabilitiesServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 24, 1);
@@ -72,13 +72,13 @@
 
   v10 = Property;
   v8 = sub_10023B12C(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getBackgroundAssetsServiceWithReplyHandler:(id)a3
+- (void)getBackgroundAssetsServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 32, 1);
@@ -91,13 +91,13 @@
 
   v10 = Property;
   v8 = sub_10023B20C(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getClipServiceWithReplyHandler:(id)a3
+- (void)getClipServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 40, 1);
@@ -110,13 +110,13 @@
 
   v10 = Property;
   v8 = sub_10023B2EC(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getDiagnosticServiceWithReplyHandler:(id)a3
+- (void)getDiagnosticServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 16, 1);
@@ -129,13 +129,13 @@
 
   v10 = Property;
   v8 = sub_10023B04C(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getFairPlayServiceWithReplyHandler:(id)a3
+- (void)getFairPlayServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 56, 1);
@@ -148,13 +148,13 @@
 
   v10 = Property;
   v8 = sub_10023B4AC(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getIAPHistoryServiceWithReplyHandler:(id)a3
+- (void)getIAPHistoryServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 64, 1);
@@ -167,13 +167,13 @@
 
   v10 = Property;
   v8 = sub_10000450C(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getInstallationServiceWithReplyHandler:(id)a3
+- (void)getInstallationServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 72, 1);
@@ -186,13 +186,13 @@
 
   v10 = Property;
   v8 = sub_10023B61C(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getInstallAttributionServiceWithReplyHandler:(id)a3
+- (void)getInstallAttributionServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 80, 1);
@@ -205,13 +205,13 @@
 
   v10 = Property;
   v8 = sub_10023B6FC(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getInstallWebAttributionServiceWithReplyHandler:(id)a3
+- (void)getInstallWebAttributionServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 88, 1);
@@ -224,13 +224,13 @@
 
   v10 = Property;
   v8 = sub_10023B7DC(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getSKANInteropServiceWithReplyHandler:(id)a3
+- (void)getSKANInteropServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 96, 1);
@@ -243,13 +243,13 @@
 
   v10 = Property;
   v8 = sub_10023B8BC(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getLibraryServiceWithReplyHandler:(id)a3
+- (void)getLibraryServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 104, 1);
@@ -262,13 +262,13 @@
 
   v10 = Property;
   v8 = sub_10023B99C(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getCrossfireServiceWithReplyHandler:(id)a3
+- (void)getCrossfireServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 48, 1);
@@ -281,13 +281,13 @@
 
   v10 = Property;
   v8 = sub_10023B3CC(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getManagedAppServiceWithReplyHandler:(id)a3
+- (void)getManagedAppServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 120, 1);
@@ -300,13 +300,13 @@
 
   v10 = Property;
   v8 = sub_10023BB5C(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getOcelotServiceWithReplyHandler:(id)a3
+- (void)getOcelotServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 128, 1);
@@ -319,13 +319,13 @@
 
   v10 = Property;
   v8 = sub_10023BBAC(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getMetricsServiceWithReplyHandler:(id)a3
+- (void)getMetricsServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 112, 1);
@@ -338,13 +338,13 @@
 
   v10 = Property;
   v8 = sub_10023BA7C(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getPurchaseHistoryServiceWithReplyHandler:(id)a3
+- (void)getPurchaseHistoryServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 144, 1);
@@ -357,13 +357,13 @@
 
   v10 = Property;
   v8 = sub_10023BD6C(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getPurchaseServiceWithReplyHandler:(id)a3
+- (void)getPurchaseServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 152, 1);
@@ -376,13 +376,13 @@
 
   v10 = Property;
   v8 = sub_10023BE4C(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getRepairServiceWithReplyHandler:(id)a3
+- (void)getRepairServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 160, 1);
@@ -395,13 +395,13 @@
 
   v10 = Property;
   v8 = sub_10023BF2C(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getRestoreServiceWithReplyHandler:(id)a3
+- (void)getRestoreServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 168, 1);
@@ -414,13 +414,13 @@
 
   v10 = Property;
   v8 = sub_10023C00C(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getSkannerServiceWithReplyHandler:(id)a3
+- (void)getSkannerServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 176, 1);
@@ -433,13 +433,13 @@
 
   v10 = Property;
   v8 = sub_10023C0EC(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getStoreKitExternalNotificationServiceWithReplyHandler:(id)a3
+- (void)getStoreKitExternalNotificationServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 184, 1);
@@ -452,13 +452,13 @@
 
   v10 = Property;
   v8 = sub_10023C1CC(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getTestFlightFeedbackServiceWithReplyHandler:(id)a3
+- (void)getTestFlightFeedbackServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 192, 1);
@@ -471,13 +471,13 @@
 
   v10 = Property;
   v8 = sub_10023C2AC(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)getUpdatesServiceWithReplyHandler:(id)a3
+- (void)getUpdatesServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 200, 1);
@@ -490,133 +490,133 @@
 
   v10 = Property;
   v8 = sub_10023C38C(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
-- (void)setSupportedNotificationDelivery:(id)a3
+- (void)setSupportedNotificationDelivery:(id)delivery
 {
-  v4 = a3;
+  deliveryCopy = delivery;
   obj = self;
   objc_sync_enter(obj);
   supportedDialogHandlers = obj->_supportedDialogHandlers;
-  obj->_supportedDialogHandlers = v4;
+  obj->_supportedDialogHandlers = deliveryCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)deliverAlertPresentationRequest:(id)a3 resultHandler:(id)a4
+- (void)deliverAlertPresentationRequest:(id)request resultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1002A8978;
   v11[3] = &unk_10051B548;
-  v12 = v6;
-  v9 = v6;
+  v12 = handlerCopy;
+  v9 = handlerCopy;
   v10 = [WeakRetained remoteObjectProxyWithErrorHandler:v11];
-  [v10 deliverAlertPresentationRequest:v7 resultHandler:v9];
+  [v10 deliverAlertPresentationRequest:requestCopy resultHandler:v9];
 }
 
-- (void)deliverAuthenticateRequest:(id)a3 withResultHandler:(id)a4
+- (void)deliverAuthenticateRequest:(id)request withResultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1002A8A68;
   v11[3] = &unk_10051B548;
-  v12 = v6;
-  v9 = v6;
+  v12 = handlerCopy;
+  v9 = handlerCopy;
   v10 = [WeakRetained remoteObjectProxyWithErrorHandler:v11];
-  [v10 deliverAuthenticateRequest:v7 withResultHandler:v9];
+  [v10 deliverAuthenticateRequest:requestCopy withResultHandler:v9];
 }
 
-- (void)deliverDialogRequest:(id)a3 withResultHandler:(id)a4
+- (void)deliverDialogRequest:(id)request withResultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1002A8B58;
   v11[3] = &unk_10051B548;
-  v12 = v6;
-  v9 = v6;
+  v12 = handlerCopy;
+  v9 = handlerCopy;
   v10 = [WeakRetained remoteObjectProxyWithErrorHandler:v11];
-  [v10 deliverDialogRequest:v7 withResultHandler:v9];
+  [v10 deliverDialogRequest:requestCopy withResultHandler:v9];
 }
 
-- (void)deliverEngagementRequest:(id)a3 withResultHandler:(id)a4
+- (void)deliverEngagementRequest:(id)request withResultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1002A8C48;
   v11[3] = &unk_10051B548;
-  v12 = v6;
-  v9 = v6;
+  v12 = handlerCopy;
+  v9 = handlerCopy;
   v10 = [WeakRetained remoteObjectProxyWithErrorHandler:v11];
-  [v10 deliverEngagementRequest:v7 withResultHandler:v9];
+  [v10 deliverEngagementRequest:requestCopy withResultHandler:v9];
 }
 
-- (void)deliverNotifications:(id)a3 withBarrierBlock:(id)a4
+- (void)deliverNotifications:(id)notifications withBarrierBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  notificationsCopy = notifications;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  v9 = [WeakRetained _unboostingRemoteObjectProxy];
-  [v9 deliverNotifications:v7];
+  _unboostingRemoteObjectProxy = [WeakRetained _unboostingRemoteObjectProxy];
+  [_unboostingRemoteObjectProxy deliverNotifications:notificationsCopy];
 
   v10 = objc_loadWeakRetained(&self->_connection);
-  [v10 addBarrierBlock:v6];
+  [v10 addBarrierBlock:blockCopy];
 }
 
-- (void)deliverProgress:(id)a3 withBarrierBlock:(id)a4
+- (void)deliverProgress:(id)progress withBarrierBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  progressCopy = progress;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  v9 = [WeakRetained _unboostingRemoteObjectProxy];
-  [v9 deliverProgress:v7];
+  _unboostingRemoteObjectProxy = [WeakRetained _unboostingRemoteObjectProxy];
+  [_unboostingRemoteObjectProxy deliverProgress:progressCopy];
 
   v10 = objc_loadWeakRetained(&self->_connection);
-  [v10 addBarrierBlock:v6];
+  [v10 addBarrierBlock:blockCopy];
 }
 
-- (void)deliverViewPresentationRequest:(id)a3 resultHandler:(id)a4
+- (void)deliverViewPresentationRequest:(id)request resultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1002A8E80;
   v11[3] = &unk_10051B548;
-  v12 = v6;
-  v9 = v6;
+  v12 = handlerCopy;
+  v9 = handlerCopy;
   v10 = [WeakRetained remoteObjectProxyWithErrorHandler:v11];
-  [v10 deliverViewPresentationRequest:v7 resultHandler:v9];
+  [v10 deliverViewPresentationRequest:requestCopy resultHandler:v9];
 }
 
 - (ASDSupportedDialogHandlers)supportedDialogHandlers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_supportedDialogHandlers;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_supportedDialogHandlers;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)getPersonalizationServiceWithReplyHandler:(id)a3
+- (void)getPersonalizationServiceWithReplyHandler:(id)handler
 {
   catalog = self->_catalog;
-  v6 = a3;
+  handlerCopy = handler;
   if (catalog)
   {
     Property = objc_getProperty(catalog, v5, 136, 1);
@@ -629,7 +629,7 @@
 
   v10 = Property;
   v8 = sub_10023BC8C(self->_catalog);
-  sub_1002A785C(self, v10, v8, v9, v6);
+  sub_1002A785C(self, v10, v8, v9, handlerCopy);
 }
 
 @end

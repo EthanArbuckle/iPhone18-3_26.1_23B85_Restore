@@ -1,16 +1,16 @@
 @interface CAMCreativeCameraButton
-- (CAMCreativeCameraButton)initWithLayoutStyle:(int64_t)a3;
+- (CAMCreativeCameraButton)initWithLayoutStyle:(int64_t)style;
 - (UIEdgeInsets)tappableEdgeInsets;
 - (id)initForOverContent;
 @end
 
 @implementation CAMCreativeCameraButton
 
-- (CAMCreativeCameraButton)initWithLayoutStyle:(int64_t)a3
+- (CAMCreativeCameraButton)initWithLayoutStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = CAMCreativeCameraButton;
-  v3 = [(CAMCreativeCameraButton *)&v7 initWithFrame:a3, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  v3 = [(CAMCreativeCameraButton *)&v7 initWithFrame:style, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v4 = v3;
   if (v3)
   {

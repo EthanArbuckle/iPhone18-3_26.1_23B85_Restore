@@ -6,9 +6,9 @@
 
 - (uint64_t)DERItem
 {
-  v2 = [a1 bytes];
-  [a1 length];
-  return v2;
+  bytes = [self bytes];
+  [self length];
+  return bytes;
 }
 
 @end

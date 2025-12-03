@@ -1,36 +1,36 @@
 @interface ComposeBodyFieldBundleController
 + (id)log;
-- (BOOL)_webProcessPlugInBrowserContextController:(id)a3 shouldChangeSelectedRange:(id)a4 toRange:(id)a5 affinity:(int64_t)a6 stillSelecting:(BOOL)a7;
-- (ComposeBodyFieldBundleController)initWithPlugIn:(id)a3 contextController:(id)a4;
+- (BOOL)_webProcessPlugInBrowserContextController:(id)controller shouldChangeSelectedRange:(id)range toRange:(id)toRange affinity:(int64_t)affinity stillSelecting:(BOOL)selecting;
+- (ComposeBodyFieldBundleController)initWithPlugIn:(id)in contextController:(id)controller;
 - (MFComposeBodyFieldObserver)observerProxy;
-- (id)webProcessPlugInBrowserContextController:(id)a3 frame:(id)a4 willSendRequestForResource:(unint64_t)a5 request:(id)a6 redirectResponse:(id)a7;
-- (void)_performSignatureControllerMethodOnPage:(id)a3 withArguments:(id)a4;
-- (void)_webProcessPlugInBrowserContextControllerDidChangeByEditing:(id)a3;
-- (void)addLink:(id)a3;
-- (void)addMarkupString:(id)a3 quote:(BOOL)a4 emptyFirst:(BOOL)a5 prepended:(BOOL)a6 composeType:(int64_t)a7 attachmentInfoByURL:(id)a8;
-- (void)addTextDescriptionToLink:(id)a3;
-- (void)appendOrReplace:(id)a3 withMarkupString:(id)a4 quote:(BOOL)a5 composeType:(int64_t)a6 attachmentInfoByURL:(id)a7 completionHandler:(id)a8;
-- (void)containsRichText:(id)a3;
-- (void)countDuplicatedAttachments:(id)a3 completionHandler:(id)a4;
-- (void)displayAttachmentWithIdentifierAsSinglePagePDF:(id)a3 completionHandler:(id)a4;
-- (void)finalizeSignature:(id)a3;
-- (void)getCaretPosition:(id)a3;
-- (void)htmlStringUsingAttachmentInfoByIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)htmlStringsAttachmentURLsAndPlainTextAlternativeRemovingSignature:(BOOL)a3 attachmentInfoByIdentifier:(id)a4 completion:(id)a5;
-- (void)initializeBodyField:(id)a3;
+- (id)webProcessPlugInBrowserContextController:(id)controller frame:(id)frame willSendRequestForResource:(unint64_t)resource request:(id)request redirectResponse:(id)response;
+- (void)_performSignatureControllerMethodOnPage:(id)page withArguments:(id)arguments;
+- (void)_webProcessPlugInBrowserContextControllerDidChangeByEditing:(id)editing;
+- (void)addLink:(id)link;
+- (void)addMarkupString:(id)string quote:(BOOL)quote emptyFirst:(BOOL)first prepended:(BOOL)prepended composeType:(int64_t)type attachmentInfoByURL:(id)l;
+- (void)addTextDescriptionToLink:(id)link;
+- (void)appendOrReplace:(id)replace withMarkupString:(id)string quote:(BOOL)quote composeType:(int64_t)type attachmentInfoByURL:(id)l completionHandler:(id)handler;
+- (void)containsRichText:(id)text;
+- (void)countDuplicatedAttachments:(id)attachments completionHandler:(id)handler;
+- (void)displayAttachmentWithIdentifierAsSinglePagePDF:(id)f completionHandler:(id)handler;
+- (void)finalizeSignature:(id)signature;
+- (void)getCaretPosition:(id)position;
+- (void)htmlStringUsingAttachmentInfoByIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)htmlStringsAttachmentURLsAndPlainTextAlternativeRemovingSignature:(BOOL)signature attachmentInfoByIdentifier:(id)identifier completion:(id)completion;
+- (void)initializeBodyField:(id)field;
 - (void)initializeGlobalObject;
-- (void)insertAttachmentAsImage:(BOOL)a3 isSinglePagePDF:(BOOL)a4 contentType:(id)a5 completionHandler:(id)a6;
-- (void)insertString:(id)a3;
+- (void)insertAttachmentAsImage:(BOOL)image isSinglePagePDF:(BOOL)f contentType:(id)type completionHandler:(id)handler;
+- (void)insertString:(id)string;
 - (void)invalidate;
-- (void)plainTextContentUsingAttachmentInfoByIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)removeMediaAttachment:(id)a3 completionHandler:(id)a4;
-- (void)replaceFilenamePlaceholderWithAttachment:(id)a3 identifier:(id)a4;
-- (void)replaceFilenamePlaceholderWithImage:(id)a3 completionHandler:(id)a4;
-- (void)replaceRichLinkPlaceholderImage:(id)a3 completionHandler:(id)a4;
-- (void)setCaretPosition:(unint64_t)a3;
-- (void)setDirty:(BOOL)a3 completionHandler:(id)a4;
-- (void)setReplacementFilenamesByContentID:(id)a3;
-- (void)updateSignature:(id)a3;
+- (void)plainTextContentUsingAttachmentInfoByIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)removeMediaAttachment:(id)attachment completionHandler:(id)handler;
+- (void)replaceFilenamePlaceholderWithAttachment:(id)attachment identifier:(id)identifier;
+- (void)replaceFilenamePlaceholderWithImage:(id)image completionHandler:(id)handler;
+- (void)replaceRichLinkPlaceholderImage:(id)image completionHandler:(id)handler;
+- (void)setCaretPosition:(unint64_t)position;
+- (void)setDirty:(BOOL)dirty completionHandler:(id)handler;
+- (void)setReplacementFilenamesByContentID:(id)d;
+- (void)updateSignature:(id)signature;
 @end
 
 @implementation ComposeBodyFieldBundleController
@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = sub_1030;
   block[3] = &unk_182B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1E168 != -1)
   {
     dispatch_once(&qword_1E168, block);
@@ -52,18 +52,18 @@
   return v2;
 }
 
-- (ComposeBodyFieldBundleController)initWithPlugIn:(id)a3 contextController:(id)a4
+- (ComposeBodyFieldBundleController)initWithPlugIn:(id)in contextController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  inCopy = in;
+  controllerCopy = controller;
   v38.receiver = self;
   v38.super_class = ComposeBodyFieldBundleController;
-  v8 = [(ComposeBodyFieldBundleController *)&v38 initWithPlugIn:v6 contextController:v7];
+  v8 = [(ComposeBodyFieldBundleController *)&v38 initWithPlugIn:inCopy contextController:controllerCopy];
   if (v8)
   {
-    [v7 _setEditingDelegate:v8];
-    [v7 setLoadDelegate:v8];
-    v37 = [v7 _remoteObjectRegistry];
+    [controllerCopy _setEditingDelegate:v8];
+    [controllerCopy setLoadDelegate:v8];
+    _remoteObjectRegistry = [controllerCopy _remoteObjectRegistry];
     v9 = [_WKRemoteObjectInterface remoteObjectInterfaceWithProtocol:&OBJC_PROTOCOL___MFComposeBodyFieldController];
     bodyFieldInterface = v8->_bodyFieldInterface;
     v8->_bodyFieldInterface = v9;
@@ -103,12 +103,12 @@
     v33 = [NSSet setWithObjects:v31, v32, objc_opt_class(), 0];
     [(_WKRemoteObjectInterface *)v30 setClasses:v33 forSelector:"htmlStringUsingAttachmentInfoByIdentifier:completionHandler:" argumentIndex:0 ofReply:0];
 
-    [v37 registerExportedObject:v8 interface:v8->_bodyFieldInterface];
+    [_remoteObjectRegistry registerExportedObject:v8 interface:v8->_bodyFieldInterface];
     v34 = [_WKRemoteObjectInterface remoteObjectInterfaceWithProtocol:&OBJC_PROTOCOL___MFMailSignatureController];
     signatureControllerInterface = v8->_signatureControllerInterface;
     v8->_signatureControllerInterface = v34;
 
-    [v37 registerExportedObject:v8 interface:v8->_signatureControllerInterface];
+    [_remoteObjectRegistry registerExportedObject:v8 interface:v8->_signatureControllerInterface];
   }
 
   return v8;
@@ -116,12 +116,12 @@
 
 - (void)invalidate
 {
-  v3 = [(ComposeBodyFieldBundleController *)self controller];
-  [v3 _setEditingDelegate:0];
-  [v3 setLoadDelegate:0];
-  v4 = [v3 _remoteObjectRegistry];
-  [v4 unregisterExportedObject:self interface:self->_bodyFieldInterface];
-  [v4 unregisterExportedObject:self interface:self->_signatureControllerInterface];
+  controller = [(ComposeBodyFieldBundleController *)self controller];
+  [controller _setEditingDelegate:0];
+  [controller setLoadDelegate:0];
+  _remoteObjectRegistry = [controller _remoteObjectRegistry];
+  [_remoteObjectRegistry unregisterExportedObject:self interface:self->_bodyFieldInterface];
+  [_remoteObjectRegistry unregisterExportedObject:self interface:self->_signatureControllerInterface];
   jsSignatureController = self->_jsSignatureController;
   self->_jsSignatureController = 0;
 
@@ -135,10 +135,10 @@
   v28.receiver = self;
   v28.super_class = ComposeBodyFieldBundleController;
   [(ComposeBodyFieldBundleController *)&v28 initializeGlobalObject];
-  v3 = [(ComposeBodyFieldBundleController *)self jsContext];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"MFMessageBodyParser"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"MessageBodyDOMParser"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"MessageBodyDOMQuoteSubparser"];
+  jsContext = [(ComposeBodyFieldBundleController *)self jsContext];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"MFMessageBodyParser"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"MessageBodyDOMParser"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"MessageBodyDOMQuoteSubparser"];
   v4 = 0;
   v33[0] = "BodyField.js";
   v33[1] = aCopyrightCTime;
@@ -181,17 +181,17 @@
     v5 = [[NSString alloc] initWithBytes:v33[v4 + 1] length:v33[v4 + 2] encoding:4];
     v6 = [NSString stringWithUTF8String:v33[v4]];
     v7 = [NSURL URLWithString:v6];
-    v8 = [v3 evaluateScript:v5 withSourceURL:v7];
+    v8 = [jsContext evaluateScript:v5 withSourceURL:v7];
 
     v4 += 3;
   }
 
   while (v4 != 36);
-  v9 = [v3 objectForKeyedSubscript:@"BodyFieldIOS"];
+  v9 = [jsContext objectForKeyedSubscript:@"BodyFieldIOS"];
   v10 = [v9 constructWithArguments:&__NSArray0__struct];
 
   [(ComposeBodyFieldBundleController *)self initializeBodyField:v10];
-  v11 = [v3 objectForKeyedSubscript:@"SignatureController"];
+  v11 = [jsContext objectForKeyedSubscript:@"SignatureController"];
   v12 = [v11 constructWithArguments:&__NSArray0__struct];
   jsSignatureController = self->_jsSignatureController;
   self->_jsSignatureController = v12;
@@ -202,10 +202,10 @@
   v27[3] = &unk_182E0;
   v27[4] = self;
   v14 = objc_retainBlock(v27);
-  [v3 setObject:v14 forKeyedSubscript:@"IS_PAD"];
+  [jsContext setObject:v14 forKeyedSubscript:@"IS_PAD"];
 
-  [v3 setObject:&stru_18320 forKeyedSubscript:@"MFCreateURLForContentID"];
-  v15 = [v3 globalObject];
+  [jsContext setObject:&stru_18320 forKeyedSubscript:@"MFCreateURLForContentID"];
+  globalObject = [jsContext globalObject];
   v32[0] = &__kCFBooleanTrue;
   v31[0] = JSPropertyDescriptorEnumerableKey;
   v31[1] = JSPropertyDescriptorGetKey;
@@ -217,9 +217,9 @@
   v16 = objc_retainBlock(v26);
   v32[1] = v16;
   v17 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:2];
-  [v15 defineProperty:@"defaultComposeFontPixelSize" descriptor:v17];
+  [globalObject defineProperty:@"defaultComposeFontPixelSize" descriptor:v17];
 
-  v18 = [v3 globalObject];
+  globalObject2 = [jsContext globalObject];
   v29[1] = JSPropertyDescriptorGetKey;
   v30[0] = &__kCFBooleanTrue;
   v29[0] = JSPropertyDescriptorEnumerableKey;
@@ -231,26 +231,26 @@
   v19 = objc_retainBlock(v25);
   v30[1] = v19;
   v20 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:2];
-  [v18 defineProperty:@"defaultComposeFontFamily" descriptor:v20];
+  [globalObject2 defineProperty:@"defaultComposeFontFamily" descriptor:v20];
 
-  [v3 setObject:&stru_183B0 forKeyedSubscript:@"charsetForString"];
-  v21 = [v3 objectForKeyedSubscript:@"Range"];
+  [jsContext setObject:&stru_183B0 forKeyedSubscript:@"charsetForString"];
+  v21 = [jsContext objectForKeyedSubscript:@"Range"];
   v22 = [v21 objectForKeyedSubscript:@"prototype"];
 
   [v22 setObject:&stru_183F0 forKeyedSubscript:@"linkify"];
-  v23 = [v3 objectForKeyedSubscript:@"String"];
+  v23 = [jsContext objectForKeyedSubscript:@"String"];
   v24 = [v23 objectForKeyedSubscript:@"prototype"];
 
   [v24 setObject:&stru_18430 forKeyedSubscript:@"mf_isAttribution"];
   [v24 setObject:&stru_18450 forKeyedSubscript:@"mf_isForwardSeparator"];
 }
 
-- (void)initializeBodyField:(id)a3
+- (void)initializeBodyField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   v28.receiver = self;
   v28.super_class = ComposeBodyFieldBundleController;
-  [(ComposeBodyFieldBundleController *)&v28 initializeBodyField:v4];
+  [(ComposeBodyFieldBundleController *)&v28 initializeBodyField:fieldCopy];
   objc_initWeak(&location, self);
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
@@ -258,7 +258,7 @@
   v25[3] = &unk_18478;
   objc_copyWeak(&v26, &location);
   v5 = objc_retainBlock(v25);
-  [v4 setObject:v5 forKeyedSubscript:@"_selectedAttachmentIdentifiersDidChange"];
+  [fieldCopy setObject:v5 forKeyedSubscript:@"_selectedAttachmentIdentifiersDidChange"];
 
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
@@ -266,7 +266,7 @@
   v23[3] = &unk_184A0;
   objc_copyWeak(&v24, &location);
   v6 = objc_retainBlock(v23);
-  [v4 setObject:v6 forKeyedSubscript:@"_attachmentWasTapped"];
+  [fieldCopy setObject:v6 forKeyedSubscript:@"_attachmentWasTapped"];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
@@ -274,7 +274,7 @@
   v21[3] = &unk_184C8;
   objc_copyWeak(&v22, &location);
   v7 = objc_retainBlock(v21);
-  [v4 setObject:v7 forKeyedSubscript:@"_selectionContainsLinkStateDidChange"];
+  [fieldCopy setObject:v7 forKeyedSubscript:@"_selectionContainsLinkStateDidChange"];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
@@ -282,7 +282,7 @@
   v19[3] = &unk_184C8;
   objc_copyWeak(&v20, &location);
   v8 = objc_retainBlock(v19);
-  [v4 setObject:v8 forKeyedSubscript:@"_selectedLinkTextDidChange"];
+  [fieldCopy setObject:v8 forKeyedSubscript:@"_selectedLinkTextDidChange"];
 
   v30[0] = JSPropertyDescriptorEnumerableKey;
   v30[1] = JSPropertyDescriptorConfigurableKey;
@@ -305,14 +305,14 @@
   v10 = objc_retainBlock(v17);
   v31[3] = v10;
   v11 = [NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:4];
-  [v4 defineProperty:@"_dirty" descriptor:v11];
+  [fieldCopy defineProperty:@"_dirty" descriptor:v11];
 
   v12 = [NSBundle bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"ACCESSIBILITY_BODY_LABEL" value:&stru_189B0 table:@"Localizable"];
-  [v4 setObject:v13 forKeyedSubscript:@"_localizedAccessibilityLabel"];
+  [fieldCopy setObject:v13 forKeyedSubscript:@"_localizedAccessibilityLabel"];
 
-  v14 = [(ComposeBodyFieldBundleController *)self plugIn];
-  v15 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v14 blockRemoteContent] ^ 1);
+  plugIn = [(ComposeBodyFieldBundleController *)self plugIn];
+  v15 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [plugIn blockRemoteContent] ^ 1);
   v29 = v15;
   v16 = [NSArray arrayWithObjects:&v29 count:1];
   [(ComposeBodyFieldBundleController *)self performBodyFieldMethodOnPage:@"remoteContentEnabled" withArguments:v16];
@@ -329,10 +329,10 @@
   observerProxy = self->_observerProxy;
   if (!observerProxy)
   {
-    v4 = [(ComposeBodyFieldBundleController *)self controller];
-    v5 = [v4 _remoteObjectRegistry];
+    controller = [(ComposeBodyFieldBundleController *)self controller];
+    _remoteObjectRegistry = [controller _remoteObjectRegistry];
     v6 = [_WKRemoteObjectInterface remoteObjectInterfaceWithProtocol:&OBJC_PROTOCOL___MFComposeBodyFieldObserver];
-    v7 = [v5 remoteObjectProxyWithInterface:v6];
+    v7 = [_remoteObjectRegistry remoteObjectProxyWithInterface:v6];
     v8 = self->_observerProxy;
     self->_observerProxy = v7;
 
@@ -342,359 +342,359 @@
   return observerProxy;
 }
 
-- (void)addMarkupString:(id)a3 quote:(BOOL)a4 emptyFirst:(BOOL)a5 prepended:(BOOL)a6 composeType:(int64_t)a7 attachmentInfoByURL:(id)a8
+- (void)addMarkupString:(id)string quote:(BOOL)quote emptyFirst:(BOOL)first prepended:(BOOL)prepended composeType:(int64_t)type attachmentInfoByURL:(id)l
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_2FE4;
   v15[3] = &unk_18540;
-  v16 = self;
-  v17 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v18 = a8;
-  v19 = a7;
-  v13 = v18;
-  v14 = v17;
-  [(ComposeBodyFieldBundleController *)v16 performOnPage:v15];
+  selfCopy = self;
+  stringCopy = string;
+  quoteCopy = quote;
+  firstCopy = first;
+  prependedCopy = prepended;
+  lCopy = l;
+  typeCopy = type;
+  v13 = lCopy;
+  v14 = stringCopy;
+  [(ComposeBodyFieldBundleController *)selfCopy performOnPage:v15];
 }
 
-- (void)appendOrReplace:(id)a3 withMarkupString:(id)a4 quote:(BOOL)a5 composeType:(int64_t)a6 attachmentInfoByURL:(id)a7 completionHandler:(id)a8
+- (void)appendOrReplace:(id)replace withMarkupString:(id)string quote:(BOOL)quote composeType:(int64_t)type attachmentInfoByURL:(id)l completionHandler:(id)handler
 {
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_317C;
   v17[3] = &unk_18568;
-  v18 = self;
-  v19 = a3;
-  v24 = a5;
-  v20 = a4;
-  v21 = a7;
-  v22 = a8;
-  v23 = a6;
-  v13 = v22;
-  v14 = v21;
-  v15 = v20;
-  v16 = v19;
-  [(ComposeBodyFieldBundleController *)v18 performOnPage:v17];
+  selfCopy = self;
+  replaceCopy = replace;
+  quoteCopy = quote;
+  stringCopy = string;
+  lCopy = l;
+  handlerCopy = handler;
+  typeCopy = type;
+  v13 = handlerCopy;
+  v14 = lCopy;
+  v15 = stringCopy;
+  v16 = replaceCopy;
+  [(ComposeBodyFieldBundleController *)selfCopy performOnPage:v17];
 }
 
-- (void)setReplacementFilenamesByContentID:(id)a3
+- (void)setReplacementFilenamesByContentID:(id)d
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_33F8;
   v4[3] = &unk_18590;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(ComposeBodyFieldBundleController *)v5 performOnPage:v4];
+  selfCopy = self;
+  dCopy = d;
+  v3 = dCopy;
+  [(ComposeBodyFieldBundleController *)selfCopy performOnPage:v4];
 }
 
-- (void)containsRichText:(id)a3
+- (void)containsRichText:(id)text
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_3524;
   v4[3] = &unk_185B8;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(ComposeBodyFieldBundleController *)v5 performOnPage:v4];
+  selfCopy = self;
+  textCopy = text;
+  v3 = textCopy;
+  [(ComposeBodyFieldBundleController *)selfCopy performOnPage:v4];
 }
 
-- (void)plainTextContentUsingAttachmentInfoByIdentifier:(id)a3 completionHandler:(id)a4
+- (void)plainTextContentUsingAttachmentInfoByIdentifier:(id)identifier completionHandler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_36AC;
   v8[3] = &unk_185E0;
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8[4] = self;
-  v6 = v9;
-  v7 = v10;
+  v6 = identifierCopy;
+  v7 = handlerCopy;
   [(ComposeBodyFieldBundleController *)self performOnPage:v8];
 }
 
-- (void)htmlStringUsingAttachmentInfoByIdentifier:(id)a3 completionHandler:(id)a4
+- (void)htmlStringUsingAttachmentInfoByIdentifier:(id)identifier completionHandler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_38B8;
   v8[3] = &unk_185E0;
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8[4] = self;
-  v6 = v9;
-  v7 = v10;
+  v6 = identifierCopy;
+  v7 = handlerCopy;
   [(ComposeBodyFieldBundleController *)self performOnPage:v8];
 }
 
-- (void)htmlStringsAttachmentURLsAndPlainTextAlternativeRemovingSignature:(BOOL)a3 attachmentInfoByIdentifier:(id)a4 completion:(id)a5
+- (void)htmlStringsAttachmentURLsAndPlainTextAlternativeRemovingSignature:(BOOL)signature attachmentInfoByIdentifier:(id)identifier completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_3AC8;
   v8[3] = &unk_18608;
-  v12 = a3;
-  v9 = self;
-  v10 = a4;
-  v11 = a5;
-  v6 = v11;
-  v7 = v10;
-  [(ComposeBodyFieldBundleController *)v9 performOnPage:v8];
+  signatureCopy = signature;
+  selfCopy = self;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v6 = completionCopy;
+  v7 = identifierCopy;
+  [(ComposeBodyFieldBundleController *)selfCopy performOnPage:v8];
 }
 
-- (void)setCaretPosition:(unint64_t)a3
+- (void)setCaretPosition:(unint64_t)position
 {
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:position];
   v6 = v4;
   v5 = [NSArray arrayWithObjects:&v6 count:1];
   [(ComposeBodyFieldBundleController *)self performBodyFieldMethodOnPage:@"setCaretPosition" withArguments:v5];
 }
 
-- (void)getCaretPosition:(id)a3
+- (void)getCaretPosition:(id)position
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_40D0;
   v4[3] = &unk_185B8;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(ComposeBodyFieldBundleController *)v5 performOnPage:v4];
+  selfCopy = self;
+  positionCopy = position;
+  v3 = positionCopy;
+  [(ComposeBodyFieldBundleController *)selfCopy performOnPage:v4];
 }
 
-- (void)insertAttachmentAsImage:(BOOL)a3 isSinglePagePDF:(BOOL)a4 contentType:(id)a5 completionHandler:(id)a6
+- (void)insertAttachmentAsImage:(BOOL)image isSinglePagePDF:(BOOL)f contentType:(id)type completionHandler:(id)handler
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_4290;
   v12[3] = &unk_18630;
-  v13 = a5;
-  v14 = a6;
-  v15 = a3;
-  v16 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
+  imageCopy = image;
+  fCopy = f;
   v12[4] = self;
-  v10 = v13;
-  v11 = v14;
+  v10 = typeCopy;
+  v11 = handlerCopy;
   [(ComposeBodyFieldBundleController *)self performOnPage:v12];
 }
 
-- (void)countDuplicatedAttachments:(id)a3 completionHandler:(id)a4
+- (void)countDuplicatedAttachments:(id)attachments completionHandler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_44F4;
   v8[3] = &unk_185E0;
-  v9 = a3;
-  v10 = a4;
+  attachmentsCopy = attachments;
+  handlerCopy = handler;
   v8[4] = self;
-  v6 = v9;
-  v7 = v10;
+  v6 = attachmentsCopy;
+  v7 = handlerCopy;
   [(ComposeBodyFieldBundleController *)self performOnPage:v8];
 }
 
-- (void)replaceFilenamePlaceholderWithImage:(id)a3 completionHandler:(id)a4
+- (void)replaceFilenamePlaceholderWithImage:(id)image completionHandler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_4700;
   v8[3] = &unk_185E0;
-  v9 = a3;
-  v10 = a4;
+  imageCopy = image;
+  handlerCopy = handler;
   v8[4] = self;
-  v6 = v9;
-  v7 = v10;
+  v6 = imageCopy;
+  v7 = handlerCopy;
   [(ComposeBodyFieldBundleController *)self performOnPage:v8];
 }
 
-- (void)replaceFilenamePlaceholderWithAttachment:(id)a3 identifier:(id)a4
+- (void)replaceFilenamePlaceholderWithAttachment:(id)attachment identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v9[0] = v6;
-  v9[1] = v7;
+  attachmentCopy = attachment;
+  identifierCopy = identifier;
+  v9[0] = attachmentCopy;
+  v9[1] = identifierCopy;
   v8 = [NSArray arrayWithObjects:v9 count:2];
   [(ComposeBodyFieldBundleController *)self performBodyFieldMethodOnPage:@"replaceFilenamePlaceholderWithAttachment" withArguments:v8];
 }
 
-- (void)replaceRichLinkPlaceholderImage:(id)a3 completionHandler:(id)a4
+- (void)replaceRichLinkPlaceholderImage:(id)image completionHandler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_49E4;
   v8[3] = &unk_185E0;
-  v9 = a3;
-  v10 = a4;
+  imageCopy = image;
+  handlerCopy = handler;
   v8[4] = self;
-  v6 = v9;
-  v7 = v10;
+  v6 = imageCopy;
+  v7 = handlerCopy;
   [(ComposeBodyFieldBundleController *)self performOnPage:v8];
 }
 
-- (void)removeMediaAttachment:(id)a3 completionHandler:(id)a4
+- (void)removeMediaAttachment:(id)attachment completionHandler:(id)handler
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_4BEC;
   v7[3] = &unk_18658;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(ComposeBodyFieldBundleController *)v8 performOnPage:v7];
+  selfCopy = self;
+  attachmentCopy = attachment;
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  v6 = attachmentCopy;
+  [(ComposeBodyFieldBundleController *)selfCopy performOnPage:v7];
 }
 
-- (void)displayAttachmentWithIdentifierAsSinglePagePDF:(id)a3 completionHandler:(id)a4
+- (void)displayAttachmentWithIdentifierAsSinglePagePDF:(id)f completionHandler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_4DBC;
   v8[3] = &unk_185E0;
-  v9 = a3;
-  v10 = a4;
+  fCopy = f;
+  handlerCopy = handler;
   v8[4] = self;
-  v6 = v9;
-  v7 = v10;
+  v6 = fCopy;
+  v7 = handlerCopy;
   [(ComposeBodyFieldBundleController *)self performOnPage:v8];
 }
 
-- (void)setDirty:(BOOL)a3 completionHandler:(id)a4
+- (void)setDirty:(BOOL)dirty completionHandler:(id)handler
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_4FA8;
   v5[3] = &unk_18680;
-  v8 = a3;
-  v6 = self;
-  v7 = a4;
-  v4 = v7;
-  [(ComposeBodyFieldBundleController *)v6 performOnPage:v5];
+  dirtyCopy = dirty;
+  selfCopy = self;
+  handlerCopy = handler;
+  v4 = handlerCopy;
+  [(ComposeBodyFieldBundleController *)selfCopy performOnPage:v5];
 }
 
-- (void)addLink:(id)a3
+- (void)addLink:(id)link
 {
-  v4 = a3;
-  v6 = v4;
+  linkCopy = link;
+  v6 = linkCopy;
   v5 = [NSArray arrayWithObjects:&v6 count:1];
   [(ComposeBodyFieldBundleController *)self performBodyFieldMethodOnPage:@"updateLink" withArguments:v5];
 }
 
-- (void)addTextDescriptionToLink:(id)a3
+- (void)addTextDescriptionToLink:(id)link
 {
-  v4 = a3;
-  v6 = v4;
+  linkCopy = link;
+  v6 = linkCopy;
   v5 = [NSArray arrayWithObjects:&v6 count:1];
   [(ComposeBodyFieldBundleController *)self performBodyFieldMethodOnPage:@"addTextDescriptionToLink" withArguments:v5];
 }
 
-- (void)insertString:(id)a3
+- (void)insertString:(id)string
 {
-  v4 = a3;
-  v6 = v4;
+  stringCopy = string;
+  v6 = stringCopy;
   v5 = [NSArray arrayWithObjects:&v6 count:1];
   [(ComposeBodyFieldBundleController *)self performBodyFieldMethodOnPage:@"insertString" withArguments:v5];
 }
 
-- (void)_performSignatureControllerMethodOnPage:(id)a3 withArguments:(id)a4
+- (void)_performSignatureControllerMethodOnPage:(id)page withArguments:(id)arguments
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_5418;
   v7[3] = &unk_186A8;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(ComposeBodyFieldBundleController *)v8 performOnPage:v7];
+  selfCopy = self;
+  pageCopy = page;
+  argumentsCopy = arguments;
+  v5 = argumentsCopy;
+  v6 = pageCopy;
+  [(ComposeBodyFieldBundleController *)selfCopy performOnPage:v7];
 }
 
-- (void)updateSignature:(id)a3
+- (void)updateSignature:(id)signature
 {
-  v4 = a3;
-  v6 = v4;
+  signatureCopy = signature;
+  v6 = signatureCopy;
   v5 = [NSArray arrayWithObjects:&v6 count:1];
   [(ComposeBodyFieldBundleController *)self _performSignatureControllerMethodOnPage:@"updateSignature" withArguments:v5];
 }
 
-- (void)finalizeSignature:(id)a3
+- (void)finalizeSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   [(ComposeBodyFieldBundleController *)self _performSignatureControllerMethodOnPage:@"finalizeSignature" withArguments:&__NSArray0__struct];
-  v4[2]();
+  signatureCopy[2]();
 }
 
-- (BOOL)_webProcessPlugInBrowserContextController:(id)a3 shouldChangeSelectedRange:(id)a4 toRange:(id)a5 affinity:(int64_t)a6 stillSelecting:(BOOL)a7
+- (BOOL)_webProcessPlugInBrowserContextController:(id)controller shouldChangeSelectedRange:(id)range toRange:(id)toRange affinity:(int64_t)affinity stillSelecting:(BOOL)selecting
 {
-  v8 = a5;
-  v9 = [v8 _copyBundleRangeHandleRef];
-  v10 = [v9 frame];
+  toRangeCopy = toRange;
+  _copyBundleRangeHandleRef = [toRangeCopy _copyBundleRangeHandleRef];
+  frame = [_copyBundleRangeHandleRef frame];
   v11 = +[WKWebProcessPlugInScriptWorld normalWorld];
-  v12 = [v10 jsRangeForRangeHandle:v9 inWorld:v11];
+  v12 = [frame jsRangeForRangeHandle:_copyBundleRangeHandleRef inWorld:v11];
 
   if (v12)
   {
-    v13 = [(ComposeBodyFieldBundleController *)self jsBodyField];
+    jsBodyField = [(ComposeBodyFieldBundleController *)self jsBodyField];
     v19[0] = v12;
     v14 = [NSNumber numberWithBool:self->_shouldForceSelectionFromSecondToFirstLine];
     v19[1] = v14;
     v15 = [NSArray arrayWithObjects:v19 count:2];
-    v16 = [v13 invokeMethod:@"shouldChangeSelectedRange" withArguments:v15];
+    v16 = [jsBodyField invokeMethod:@"shouldChangeSelectedRange" withArguments:v15];
 
     self->_shouldForceSelectionFromSecondToFirstLine = 0;
-    v17 = [v16 toBool];
+    toBool = [v16 toBool];
   }
 
   else
   {
-    v17 = 0;
+    toBool = 0;
   }
 
-  return v17;
+  return toBool;
 }
 
-- (void)_webProcessPlugInBrowserContextControllerDidChangeByEditing:(id)a3
+- (void)_webProcessPlugInBrowserContextControllerDidChangeByEditing:(id)editing
 {
   [(ComposeBodyFieldBundleController *)self _setDirty:1];
-  v4 = [(ComposeBodyFieldBundleController *)self observerProxy];
-  [v4 composeBodyFieldDidChange];
+  observerProxy = [(ComposeBodyFieldBundleController *)self observerProxy];
+  [observerProxy composeBodyFieldDidChange];
 }
 
-- (id)webProcessPlugInBrowserContextController:(id)a3 frame:(id)a4 willSendRequestForResource:(unint64_t)a5 request:(id)a6 redirectResponse:(id)a7
+- (id)webProcessPlugInBrowserContextController:(id)controller frame:(id)frame willSendRequestForResource:(unint64_t)resource request:(id)request redirectResponse:(id)response
 {
-  v8 = a6;
-  v9 = [v8 URL];
-  v10 = [v9 scheme];
-  v11 = [v10 lowercaseString];
+  requestCopy = request;
+  v9 = [requestCopy URL];
+  scheme = [v9 scheme];
+  lowercaseString = [scheme lowercaseString];
 
   v26[0] = MSContentIDURLScheme;
   v26[1] = MSBlobURLScheme;
   v26[2] = MSDataURLScheme;
   v26[3] = MSFileURLScheme;
   v12 = [NSArray arrayWithObjects:v26 count:4];
-  v13 = [v12 containsObject:v11];
+  v13 = [v12 containsObject:lowercaseString];
 
   if (v13)
   {
-    v14 = v8;
+    v14 = requestCopy;
     goto LABEL_13;
   }
 
-  v15 = [(ComposeBodyFieldBundleController *)self plugIn];
-  if ([v15 blockRemoteContent])
+  plugIn = [(ComposeBodyFieldBundleController *)self plugIn];
+  if ([plugIn blockRemoteContent])
   {
 
-    v16 = +[ComposeBodyFieldBundleController log];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+    remoteContentProxySchemePrefix = +[ComposeBodyFieldBundleController log];
+    if (os_log_type_enabled(remoteContentProxySchemePrefix, OS_LOG_TYPE_DEBUG))
     {
       v17 = [0 URL];
-      v18 = [v17 absoluteString];
-      sub_6DD4(v18, v25, v16, v17);
+      absoluteString = [v17 absoluteString];
+      sub_6DD4(absoluteString, v25, remoteContentProxySchemePrefix, v17);
     }
 
     v19 = 0;
@@ -702,15 +702,15 @@
 
   else
   {
-    if (![v9 ef_isHTTPOrHTTPSURL] || (objc_msgSend(v15, "remoteContentProxySchemePrefix"), v20 = objc_claimAutoreleasedReturnValue(), v21 = v20 == 0, v20, v21))
+    if (![v9 ef_isHTTPOrHTTPSURL] || (objc_msgSend(plugIn, "remoteContentProxySchemePrefix"), v20 = objc_claimAutoreleasedReturnValue(), v21 = v20 == 0, v20, v21))
     {
-      v19 = v8;
+      v19 = requestCopy;
       goto LABEL_12;
     }
 
-    v16 = [v15 remoteContentProxySchemePrefix];
-    v19 = [v8 mutableCopy];
-    v22 = [v16 stringByAppendingString:v11];
+    remoteContentProxySchemePrefix = [plugIn remoteContentProxySchemePrefix];
+    v19 = [requestCopy mutableCopy];
+    v22 = [remoteContentProxySchemePrefix stringByAppendingString:lowercaseString];
     v23 = [v9 ef_urlByReplacingSchemeWithScheme:v22];
     [v19 setURL:v23];
   }

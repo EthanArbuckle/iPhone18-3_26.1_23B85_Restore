@@ -1,29 +1,29 @@
 @interface _UIStatusBarIdentifier
-+ (id)displayIdentifierFromStringRepresentation:(id)a3;
-+ (id)identifierForObject:(id)a3 string:(id)a4;
-+ (id)uninternedIdentifierForObject:(id)a3 string:(id)a4;
++ (id)displayIdentifierFromStringRepresentation:(id)representation;
++ (id)identifierForObject:(id)object string:(id)string;
++ (id)uninternedIdentifierForObject:(id)object string:(id)string;
 - (NSString)stringRepresentation;
 - (id)description;
 @end
 
 @implementation _UIStatusBarIdentifier
 
-+ (id)identifierForObject:(id)a3 string:(id)a4
++ (id)identifierForObject:(id)object string:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  objectCopy = object;
+  stringCopy = string;
+  v7 = stringCopy;
   v8 = &stru_1EFB14550;
-  if (v6)
+  if (stringCopy)
   {
-    v8 = v6;
+    v8 = stringCopy;
   }
 
   v9 = v8;
-  v10 = objc_getAssociatedObject(v5, 0);
+  v10 = objc_getAssociatedObject(objectCopy, 0);
   if (v10)
   {
-    v11 = v10;
+    dictionary = v10;
     v12 = [v10 objectForKeyedSubscript:v9];
     if (v12)
     {
@@ -33,27 +33,27 @@
 
   else
   {
-    v11 = [MEMORY[0x1E695DF90] dictionary];
-    objc_setAssociatedObject(v5, 0, v11, 1);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    objc_setAssociatedObject(objectCopy, 0, dictionary, 1);
   }
 
   v12 = objc_alloc_init(_UIStatusBarIdentifier);
-  [(_UIStatusBarIdentifier *)v12 setObject:v5];
+  [(_UIStatusBarIdentifier *)v12 setObject:objectCopy];
   [(_UIStatusBarIdentifier *)v12 setString:v7];
-  [v11 setObject:v12 forKeyedSubscript:v9];
+  [dictionary setObject:v12 forKeyedSubscript:v9];
 LABEL_8:
 
   return v12;
 }
 
-+ (id)uninternedIdentifierForObject:(id)a3 string:(id)a4
++ (id)uninternedIdentifierForObject:(id)object string:(id)string
 {
-  v5 = a4;
-  v6 = a3;
+  stringCopy = string;
+  objectCopy = object;
   v7 = objc_alloc_init(_UIStatusBarIdentifier);
-  [(_UIStatusBarIdentifier *)v7 setObject:v6];
+  [(_UIStatusBarIdentifier *)v7 setObject:objectCopy];
 
-  [(_UIStatusBarIdentifier *)v7 setString:v5];
+  [(_UIStatusBarIdentifier *)v7 setString:stringCopy];
 
   return v7;
 }
@@ -64,7 +64,7 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(_UIStatusBarIdentifier *)self stringRepresentation];
+    stringRepresentation = [(_UIStatusBarIdentifier *)self stringRepresentation];
   }
 
   else
@@ -74,19 +74,19 @@ LABEL_8:
     v5 = NSStringFromSelector(sel_string);
     v8[1] = v5;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
-    v3 = [UIDescriptionBuilder descriptionForObject:self keys:v6];
+    stringRepresentation = [UIDescriptionBuilder descriptionForObject:self keys:v6];
   }
 
-  return v3;
+  return stringRepresentation;
 }
 
-+ (id)displayIdentifierFromStringRepresentation:(id)a3
++ (id)displayIdentifierFromStringRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"."];
+  representationCopy = representation;
+  v4 = [representationCopy rangeOfString:@"."];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = v3;
+    v6 = representationCopy;
     v7 = 0;
   }
 
@@ -94,8 +94,8 @@ LABEL_8:
   {
     v8 = v4;
     v9 = v5;
-    v6 = [v3 substringToIndex:v4];
-    v7 = [v3 substringFromIndex:v8 + v9];
+    v6 = [representationCopy substringToIndex:v4];
+    v7 = [representationCopy substringFromIndex:v8 + v9];
   }
 
   v10 = v6;
@@ -138,15 +138,15 @@ LABEL_8:
   if (isKindOfClass)
   {
     v5 = object;
-    v6 = [v5 string];
-    v7 = [v6 length];
+    string = [v5 string];
+    v7 = [string length];
 
     if (v7)
     {
       v8 = MEMORY[0x1E696AEC0];
       v9 = NSStringFromClass([v5 object]);
-      v10 = [v5 string];
-      v11 = [v8 stringWithFormat:@"%@/%@", v9, v10];
+      string2 = [v5 string];
+      v11 = [v8 stringWithFormat:@"%@/%@", v9, string2];
     }
 
     else

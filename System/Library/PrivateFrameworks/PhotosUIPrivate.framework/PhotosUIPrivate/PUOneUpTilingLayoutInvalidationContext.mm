@@ -1,15 +1,15 @@
 @interface PUOneUpTilingLayoutInvalidationContext
-- (void)_setInvalidatedContentInsets:(BOOL)a3;
+- (void)_setInvalidatedContentInsets:(BOOL)insets;
 @end
 
 @implementation PUOneUpTilingLayoutInvalidationContext
 
-- (void)_setInvalidatedContentInsets:(BOOL)a3
+- (void)_setInvalidatedContentInsets:(BOOL)insets
 {
-  if (self->_invalidatedContentInsets != a3)
+  if (self->_invalidatedContentInsets != insets)
   {
-    self->_invalidatedContentInsets = a3;
-    if (a3)
+    self->_invalidatedContentInsets = insets;
+    if (insets)
     {
       [(PUTilingLayoutInvalidationContext *)self setInvalidatedAnyTile:1];
     }

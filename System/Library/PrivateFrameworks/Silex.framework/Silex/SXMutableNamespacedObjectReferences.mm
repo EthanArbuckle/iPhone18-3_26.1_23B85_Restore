@@ -1,15 +1,15 @@
 @interface SXMutableNamespacedObjectReferences
-- (void)addNamespacedIdentifier:(id)a3 forIdentifier:(id)a4 component:(id)a5 map:(id)a6;
+- (void)addNamespacedIdentifier:(id)identifier forIdentifier:(id)forIdentifier component:(id)component map:(id)map;
 @end
 
 @implementation SXMutableNamespacedObjectReferences
 
-- (void)addNamespacedIdentifier:(id)a3 forIdentifier:(id)a4 component:(id)a5 map:(id)a6
+- (void)addNamespacedIdentifier:(id)identifier forIdentifier:(id)forIdentifier component:(id)component map:(id)map
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [(SXNamespacedObjectReferences *)self referencesForComponent:a5 map:a6];
-  [v12 setObject:v11 forKey:v10];
+  forIdentifierCopy = forIdentifier;
+  identifierCopy = identifier;
+  v12 = [(SXNamespacedObjectReferences *)self referencesForComponent:component map:map];
+  [v12 setObject:identifierCopy forKey:forIdentifierCopy];
 }
 
 @end

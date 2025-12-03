@@ -1,12 +1,12 @@
 @interface HDDataTypeSourceOrderEntity
-+ (BOOL)enumerateOrderedSourceIDsForType:(id)a3 profile:(id)a4 error:(id *)a5 block:(id)a6;
-+ (BOOL)enumerateOrderedSourceIDsForType:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6 block:(id)a7;
-+ (BOOL)saveOrderedSourceIDs:(id)a3 type:(id)a4 userOrdered:(BOOL)a5 profile:(id)a6 error:(id *)a7;
-+ (BOOL)updateOrderedSourcesForType:(id)a3 profile:(id)a4 error:(id *)a5 updateHandler:(id)a6;
++ (BOOL)enumerateOrderedSourceIDsForType:(id)type profile:(id)profile error:(id *)error block:(id)block;
++ (BOOL)enumerateOrderedSourceIDsForType:(id)type profile:(id)profile transaction:(id)transaction error:(id *)error block:(id)block;
++ (BOOL)saveOrderedSourceIDs:(id)ds type:(id)type userOrdered:(BOOL)ordered profile:(id)profile error:(id *)error;
++ (BOOL)updateOrderedSourcesForType:(id)type profile:(id)profile error:(id *)error updateHandler:(id)handler;
 + (id)foreignKeys;
 + (id)indices;
-+ (id)joinClausesForProperty:(id)a3;
-+ (id)orderedSourceIDsForType:(id)a3 userOrdered:(BOOL *)a4 profile:(id)a5 error:(id *)a6;
++ (id)joinClausesForProperty:(id)property;
++ (id)orderedSourceIDsForType:(id)type userOrdered:(BOOL *)ordered profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDDataTypeSourceOrderEntity
@@ -43,48 +43,48 @@
   return v7;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
-  v4 = a3;
-  if (([v4 isEqualToString:@"so_source.uuid"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"so_source.provenance"))
+  propertyCopy = property;
+  if (([propertyCopy isEqualToString:@"so_source.uuid"] & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToString:", @"so_source.provenance"))
   {
     v5 = MEMORY[0x277D10B50];
-    v6 = [a1 disambiguatedDatabaseTable];
-    v7 = [v5 innerJoinClauseFromTable:v6 toTargetEntity:objc_opt_class() as:@"so_source" localReference:@"source" targetKey:*MEMORY[0x277D10A40]];
+    disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+    v7 = [v5 innerJoinClauseFromTable:disambiguatedDatabaseTable toTargetEntity:objc_opt_class() as:@"so_source" localReference:@"source" targetKey:*MEMORY[0x277D10A40]];
 
     v8 = [MEMORY[0x277CBEB98] setWithObject:v7];
   }
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___HDDataTypeSourceOrderEntity;
-    v8 = objc_msgSendSuper2(&v10, sel_joinClausesForProperty_, v4);
+    v8 = objc_msgSendSuper2(&v10, sel_joinClausesForProperty_, propertyCopy);
   }
 
   return v8;
 }
 
-+ (BOOL)updateOrderedSourcesForType:(id)a3 profile:(id)a4 error:(id *)a5 updateHandler:(id)a6
++ (BOOL)updateOrderedSourcesForType:(id)type profile:(id)profile error:(id *)error updateHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v11 database];
+  typeCopy = type;
+  profileCopy = profile;
+  handlerCopy = handler;
+  database = [profileCopy database];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __87__HDDataTypeSourceOrderEntity_updateOrderedSourcesForType_profile_error_updateHandler___block_invoke;
   v18[3] = &unk_27861F2A0;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = a1;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  LOBYTE(a5) = [a1 performWriteTransactionWithHealthDatabase:v13 error:a5 block:v18];
+  v19 = typeCopy;
+  v20 = profileCopy;
+  v21 = handlerCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v15 = profileCopy;
+  v16 = typeCopy;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v18];
 
-  return a5;
+  return error;
 }
 
 uint64_t __87__HDDataTypeSourceOrderEntity_updateOrderedSourcesForType_profile_error_updateHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -225,23 +225,23 @@ uint64_t __100__HDDataTypeSourceOrderEntity__updateOrderedSourcesForType_profile
   return sqlite3_bind_double(a2, 5, v4);
 }
 
-+ (BOOL)saveOrderedSourceIDs:(id)a3 type:(id)a4 userOrdered:(BOOL)a5 profile:(id)a6 error:(id *)a7
++ (BOOL)saveOrderedSourceIDs:(id)ds type:(id)type userOrdered:(BOOL)ordered profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a4;
+  dsCopy = ds;
+  profileCopy = profile;
+  typeCopy = type;
   Current = CFAbsoluteTimeGetCurrent();
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __83__HDDataTypeSourceOrderEntity_saveOrderedSourceIDs_type_userOrdered_profile_error___block_invoke;
   v18[3] = &unk_278624D50;
-  v19 = v12;
-  v21 = a5;
+  v19 = dsCopy;
+  orderedCopy = ordered;
   v20 = Current;
-  v16 = v12;
-  LOBYTE(a7) = [a1 updateOrderedSourcesForType:v14 profile:v13 error:a7 updateHandler:v18];
+  v16 = dsCopy;
+  LOBYTE(error) = [self updateOrderedSourcesForType:typeCopy profile:profileCopy error:error updateHandler:v18];
 
-  return a7;
+  return error;
 }
 
 void __83__HDDataTypeSourceOrderEntity_saveOrderedSourceIDs_type_userOrdered_profile_error___block_invoke(uint64_t a1, void *a2)
@@ -281,54 +281,54 @@ void __83__HDDataTypeSourceOrderEntity_saveOrderedSourceIDs_type_userOrdered_pro
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)enumerateOrderedSourceIDsForType:(id)a3 profile:(id)a4 error:(id *)a5 block:(id)a6
++ (BOOL)enumerateOrderedSourceIDsForType:(id)type profile:(id)profile error:(id *)error block:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v11 database];
+  typeCopy = type;
+  profileCopy = profile;
+  blockCopy = block;
+  database = [profileCopy database];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __84__HDDataTypeSourceOrderEntity_enumerateOrderedSourceIDsForType_profile_error_block___block_invoke;
   v18[3] = &unk_27861F2A0;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = a1;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  LOBYTE(a5) = [a1 performReadTransactionWithHealthDatabase:v13 error:a5 block:v18];
+  v19 = typeCopy;
+  v20 = profileCopy;
+  v21 = blockCopy;
+  selfCopy = self;
+  v14 = blockCopy;
+  v15 = profileCopy;
+  v16 = typeCopy;
+  LOBYTE(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v18];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)enumerateOrderedSourceIDsForType:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6 block:(id)a7
++ (BOOL)enumerateOrderedSourceIDsForType:(id)type profile:(id)profile transaction:(id)transaction error:(id *)error block:(id)block
 {
-  v11 = a3;
-  v12 = a7;
+  typeCopy = type;
+  blockCopy = block;
   v13 = MEMORY[0x277CCACA8];
-  v14 = a5;
-  v15 = [a1 disambiguatedDatabaseTable];
-  v16 = [v13 stringWithFormat:@"SELECT %@, %@, %@ FROM %@ WHERE %@ = ? ORDER BY %@ ASC", @"source", @"user_preferred", @"modification_date", v15, @"data_type", *MEMORY[0x277D10A40]];
+  transactionCopy = transaction;
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  v16 = [v13 stringWithFormat:@"SELECT %@, %@, %@ FROM %@ WHERE %@ = ? ORDER BY %@ ASC", @"source", @"user_preferred", @"modification_date", disambiguatedDatabaseTable, @"data_type", *MEMORY[0x277D10A40]];
 
-  v17 = [v14 databaseForEntityClass:a1];
+  v17 = [transactionCopy databaseForEntityClass:self];
 
-  v22 = v12;
+  v22 = blockCopy;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __96__HDDataTypeSourceOrderEntity_enumerateOrderedSourceIDsForType_profile_transaction_error_block___block_invoke;
   v23[3] = &unk_278614860;
-  v24 = v11;
+  v24 = typeCopy;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __96__HDDataTypeSourceOrderEntity_enumerateOrderedSourceIDsForType_profile_transaction_error_block___block_invoke_2;
   v21[3] = &unk_278613B30;
-  v18 = v12;
-  v19 = v11;
-  LOBYTE(a6) = [v17 executeSQL:v16 error:a6 bindingHandler:v23 enumerationHandler:v21];
+  v18 = blockCopy;
+  v19 = typeCopy;
+  LOBYTE(error) = [v17 executeSQL:v16 error:error bindingHandler:v23 enumerationHandler:v21];
 
-  return a6;
+  return error;
 }
 
 uint64_t __96__HDDataTypeSourceOrderEntity_enumerateOrderedSourceIDsForType_profile_transaction_error_block___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -348,22 +348,22 @@ uint64_t __96__HDDataTypeSourceOrderEntity_enumerateOrderedSourceIDsForType_prof
   return v4();
 }
 
-+ (id)orderedSourceIDsForType:(id)a3 userOrdered:(BOOL *)a4 profile:(id)a5 error:(id *)a6
++ (id)orderedSourceIDsForType:(id)type userOrdered:(BOOL *)ordered profile:(id)profile error:(id *)error
 {
   v10 = MEMORY[0x277CBEB18];
-  v11 = a5;
-  v12 = a3;
+  profileCopy = profile;
+  typeCopy = type;
   v13 = objc_alloc_init(v10);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __81__HDDataTypeSourceOrderEntity_orderedSourceIDsForType_userOrdered_profile_error___block_invoke;
   v18[3] = &unk_278624D78;
   v19 = v13;
-  v20 = a4;
+  orderedCopy = ordered;
   v14 = v13;
-  LODWORD(a6) = [a1 enumerateOrderedSourceIDsForType:v12 profile:v11 error:a6 block:v18];
+  LODWORD(error) = [self enumerateOrderedSourceIDsForType:typeCopy profile:profileCopy error:error block:v18];
 
-  if (a6)
+  if (error)
   {
     v15 = v14;
   }

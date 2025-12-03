@@ -1,51 +1,51 @@
 @interface WFStandaloneShortcutRepresentation
-- (WFStandaloneShortcutRepresentation)initWithINShortcut:(id)a3;
-- (WFStandaloneShortcutRepresentation)initWithINShortcut:(id)a3 title:(id)a4;
-- (WFStandaloneShortcutRepresentation)initWithTitle:(id)a3 associatedAppBundleIdentifier:(id)a4 launchIdForCurrentPlatform:(id)a5 activityBundleIdentifier:(id)a6;
+- (WFStandaloneShortcutRepresentation)initWithINShortcut:(id)shortcut;
+- (WFStandaloneShortcutRepresentation)initWithINShortcut:(id)shortcut title:(id)title;
+- (WFStandaloneShortcutRepresentation)initWithTitle:(id)title associatedAppBundleIdentifier:(id)identifier launchIdForCurrentPlatform:(id)platform activityBundleIdentifier:(id)bundleIdentifier;
 @end
 
 @implementation WFStandaloneShortcutRepresentation
 
-- (WFStandaloneShortcutRepresentation)initWithTitle:(id)a3 associatedAppBundleIdentifier:(id)a4 launchIdForCurrentPlatform:(id)a5 activityBundleIdentifier:(id)a6
+- (WFStandaloneShortcutRepresentation)initWithTitle:(id)title associatedAppBundleIdentifier:(id)identifier launchIdForCurrentPlatform:(id)platform activityBundleIdentifier:(id)bundleIdentifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  titleCopy = title;
+  identifierCopy = identifier;
+  platformCopy = platform;
+  bundleIdentifierCopy = bundleIdentifier;
   v19.receiver = self;
   v19.super_class = WFStandaloneShortcutRepresentation;
   v15 = [(WFStandaloneShortcutRepresentation *)&v19 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_title, a3);
-    objc_storeStrong(&v16->_associatedAppBundleIdentifier, a4);
-    objc_storeStrong(&v16->_launchIdForCurrentPlatform, a5);
-    objc_storeStrong(&v16->_activityBundleIdentifier, a6);
+    objc_storeStrong(&v15->_title, title);
+    objc_storeStrong(&v16->_associatedAppBundleIdentifier, identifier);
+    objc_storeStrong(&v16->_launchIdForCurrentPlatform, platform);
+    objc_storeStrong(&v16->_activityBundleIdentifier, bundleIdentifier);
     v17 = v16;
   }
 
   return v16;
 }
 
-- (WFStandaloneShortcutRepresentation)initWithINShortcut:(id)a3 title:(id)a4
+- (WFStandaloneShortcutRepresentation)initWithINShortcut:(id)shortcut title:(id)title
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 _associatedAppBundleIdentifier];
-  v9 = [v7 intent];
-  v10 = [v9 _intents_launchIdForCurrentPlatform];
-  v11 = [v7 activityBundleIdentifier];
+  titleCopy = title;
+  shortcutCopy = shortcut;
+  _associatedAppBundleIdentifier = [shortcutCopy _associatedAppBundleIdentifier];
+  intent = [shortcutCopy intent];
+  _intents_launchIdForCurrentPlatform = [intent _intents_launchIdForCurrentPlatform];
+  activityBundleIdentifier = [shortcutCopy activityBundleIdentifier];
 
-  v12 = [(WFStandaloneShortcutRepresentation *)self initWithTitle:v6 associatedAppBundleIdentifier:v8 launchIdForCurrentPlatform:v10 activityBundleIdentifier:v11];
+  v12 = [(WFStandaloneShortcutRepresentation *)self initWithTitle:titleCopy associatedAppBundleIdentifier:_associatedAppBundleIdentifier launchIdForCurrentPlatform:_intents_launchIdForCurrentPlatform activityBundleIdentifier:activityBundleIdentifier];
   return v12;
 }
 
-- (WFStandaloneShortcutRepresentation)initWithINShortcut:(id)a3
+- (WFStandaloneShortcutRepresentation)initWithINShortcut:(id)shortcut
 {
-  v4 = a3;
-  v5 = [v4 _title];
-  v6 = [(WFStandaloneShortcutRepresentation *)self initWithINShortcut:v4 title:v5];
+  shortcutCopy = shortcut;
+  _title = [shortcutCopy _title];
+  v6 = [(WFStandaloneShortcutRepresentation *)self initWithINShortcut:shortcutCopy title:_title];
 
   return v6;
 }

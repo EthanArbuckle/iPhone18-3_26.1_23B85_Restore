@@ -3,13 +3,13 @@
 - (_APRSBiomeEventAnalyzer)init;
 - (id)allAppActivationTimeInfo;
 - (id)allAppKillsInfo;
-- (id)appActivationPublisherForEventsFrom:(id)a3;
-- (id)appActivationTimeInfoStartingAtDate:(id)a3 withBookmarkKey:(id)a4;
-- (id)appKillsInfoPublisherForEventsFrom:(id)a3;
-- (id)appKillsInfoStartingAtDate:(id)a3 withBookmarkKey:(id)a4;
+- (id)appActivationPublisherForEventsFrom:(id)from;
+- (id)appActivationTimeInfoStartingAtDate:(id)date withBookmarkKey:(id)key;
+- (id)appKillsInfoPublisherForEventsFrom:(id)from;
+- (id)appKillsInfoStartingAtDate:(id)date withBookmarkKey:(id)key;
 - (id)meanDeltaTimeBetweenColdLaunchAndResume;
-- (id)meanDeltaTimeBetweenColdLaunchAndResumeStartingAtDate:(id)a3 withBookmarkKey:(id)a4;
-- (void)logCompletion:(id)a3 forAnalysisName:(id)a4;
+- (id)meanDeltaTimeBetweenColdLaunchAndResumeStartingAtDate:(id)date withBookmarkKey:(id)key;
+- (void)logCompletion:(id)completion forAnalysisName:(id)name;
 - (void)setupDailyTask;
 @end
 
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = sub_100055EC4;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B218 != -1)
   {
     dispatch_once(&qword_10020B218, block);
@@ -56,12 +56,12 @@
   return v2;
 }
 
-- (void)logCompletion:(id)a3 forAnalysisName:(id)a4
+- (void)logCompletion:(id)completion forAnalysisName:(id)name
 {
-  v6 = a4;
-  v7 = [a3 state];
+  nameCopy = name;
+  state = [completion state];
   log = self->_log;
-  if (v7)
+  if (state)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
@@ -119,12 +119,12 @@
   return v4;
 }
 
-- (id)meanDeltaTimeBetweenColdLaunchAndResumeStartingAtDate:(id)a3 withBookmarkKey:(id)a4
+- (id)meanDeltaTimeBetweenColdLaunchAndResumeStartingAtDate:(id)date withBookmarkKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  keyCopy = key;
   v8 = os_transaction_create();
-  v9 = [NSString stringWithFormat:@"App Activation Metrics - Mean calculation - start date: %@", v6];
+  dateCopy = [NSString stringWithFormat:@"App Activation Metrics - Mean calculation - start date: %@", dateCopy];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -137,13 +137,13 @@
   block[2] = sub_1000568BC;
   block[3] = &unk_1001B67F8;
   block[4] = self;
-  v17 = v7;
-  v18 = v6;
-  v19 = v9;
+  v17 = keyCopy;
+  v18 = dateCopy;
+  v19 = dateCopy;
   v20 = &v21;
-  v11 = v9;
-  v12 = v6;
-  v13 = v7;
+  v11 = dateCopy;
+  v12 = dateCopy;
+  v13 = keyCopy;
   dispatch_sync(v10, block);
   v14 = v22[5];
 
@@ -160,12 +160,12 @@
   return v4;
 }
 
-- (id)appActivationTimeInfoStartingAtDate:(id)a3 withBookmarkKey:(id)a4
+- (id)appActivationTimeInfoStartingAtDate:(id)date withBookmarkKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  keyCopy = key;
   v8 = os_transaction_create();
-  v9 = [NSString stringWithFormat:@"App Activation Metrics - Info calculation - start date: %@", v6];
+  dateCopy = [NSString stringWithFormat:@"App Activation Metrics - Info calculation - start date: %@", dateCopy];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -178,13 +178,13 @@
   block[2] = sub_100056DF4;
   block[3] = &unk_1001B67F8;
   block[4] = self;
-  v17 = v7;
-  v18 = v6;
-  v19 = v9;
+  v17 = keyCopy;
+  v18 = dateCopy;
+  v19 = dateCopy;
   v20 = &v21;
-  v11 = v9;
-  v12 = v6;
-  v13 = v7;
+  v11 = dateCopy;
+  v12 = dateCopy;
+  v13 = keyCopy;
   dispatch_sync(v10, block);
   v14 = v22[5];
 
@@ -193,11 +193,11 @@
   return v14;
 }
 
-- (id)appActivationPublisherForEventsFrom:(id)a3
+- (id)appActivationPublisherForEventsFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [(_APRSBiomeBase *)_APRSBiomeAppLaunchTimeEvent publisherForEventsStartingFromDate:v3];
+  v5 = [(_APRSBiomeBase *)_APRSBiomeAppLaunchTimeEvent publisherForEventsStartingFromDate:fromCopy];
 
   v6 = [v5 filterWithIsIncluded:&stru_1001B6818];
   v7 = [v6 reduceWithInitial:v4 nextPartialResult:&stru_1001B6858];
@@ -213,12 +213,12 @@
   return v4;
 }
 
-- (id)appKillsInfoStartingAtDate:(id)a3 withBookmarkKey:(id)a4
+- (id)appKillsInfoStartingAtDate:(id)date withBookmarkKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  keyCopy = key;
   v8 = os_transaction_create();
-  v9 = [NSString stringWithFormat:@"App Kill Metrics - Info calculation - start date: %@", v6];
+  dateCopy = [NSString stringWithFormat:@"App Kill Metrics - Info calculation - start date: %@", dateCopy];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -231,13 +231,13 @@
   block[2] = sub_100057460;
   block[3] = &unk_1001B67F8;
   block[4] = self;
-  v17 = v7;
-  v18 = v6;
-  v19 = v9;
+  v17 = keyCopy;
+  v18 = dateCopy;
+  v19 = dateCopy;
   v20 = &v21;
-  v11 = v9;
-  v12 = v6;
-  v13 = v7;
+  v11 = dateCopy;
+  v12 = dateCopy;
+  v13 = keyCopy;
   dispatch_sync(v10, block);
   v14 = v22[5];
 
@@ -246,9 +246,9 @@
   return v14;
 }
 
-- (id)appKillsInfoPublisherForEventsFrom:(id)a3
+- (id)appKillsInfoPublisherForEventsFrom:(id)from
 {
-  v3 = [(_APRSBiomeBase *)_APRSBiomeAppKillEvent publisherForEventsStartingFromDate:a3];
+  v3 = [(_APRSBiomeBase *)_APRSBiomeAppKillEvent publisherForEventsStartingFromDate:from];
   v4 = [v3 filterWithIsIncluded:&stru_1001B68B8];
   v5 = objc_alloc_init(NSMutableDictionary);
   v6 = [v4 reduceWithInitial:v5 nextPartialResult:&stru_1001B68D8];

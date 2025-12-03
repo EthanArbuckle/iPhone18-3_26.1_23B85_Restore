@@ -2,7 +2,7 @@
 - (BOOL)validateOperation;
 - (FCCKPrivateBatchedDeleteRecordsOperation)init;
 - (void)_continueModifying;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -37,9 +37,9 @@
 - (BOOL)validateOperation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(FCCKPrivateBatchedDeleteRecordsOperation *)self database];
+  database = [(FCCKPrivateBatchedDeleteRecordsOperation *)self database];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!database && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"modify operation must have a database"];
     v9 = 136315906;
@@ -53,8 +53,8 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v9, 0x26u);
   }
 
-  v4 = [(FCCKPrivateBatchedDeleteRecordsOperation *)self database];
-  v5 = v4 != 0;
+  database2 = [(FCCKPrivateBatchedDeleteRecordsOperation *)self database];
+  v5 = database2 != 0;
 
   v6 = *MEMORY[0x1E69E9840];
   return v5;
@@ -62,52 +62,52 @@
 
 - (void)performOperation
 {
-  v3 = [(FCCKPrivateBatchedDeleteRecordsOperation *)self recordIDsToDelete];
-  v4 = [v3 count];
+  recordIDsToDelete = [(FCCKPrivateBatchedDeleteRecordsOperation *)self recordIDsToDelete];
+  v4 = [recordIDsToDelete count];
 
   if (v4)
   {
-    v5 = [(FCCKPrivateBatchedDeleteRecordsOperation *)self remainingBatchesOfRecordIDsToDelete];
-    v6 = [(FCCKPrivateBatchedDeleteRecordsOperation *)self recordIDsToDelete];
-    [v5 addObject:v6];
+    remainingBatchesOfRecordIDsToDelete = [(FCCKPrivateBatchedDeleteRecordsOperation *)self remainingBatchesOfRecordIDsToDelete];
+    recordIDsToDelete2 = [(FCCKPrivateBatchedDeleteRecordsOperation *)self recordIDsToDelete];
+    [remainingBatchesOfRecordIDsToDelete addObject:recordIDsToDelete2];
   }
 
   [(FCCKPrivateBatchedDeleteRecordsOperation *)self _continueModifying];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v5 = [(FCCKPrivateBatchedDeleteRecordsOperation *)self resultErrorsByRecordID];
-    v6 = [v5 count];
+    resultErrorsByRecordID = [(FCCKPrivateBatchedDeleteRecordsOperation *)self resultErrorsByRecordID];
+    v6 = [resultErrorsByRecordID count];
 
     if (v6)
     {
       v7 = MEMORY[0x1E696ABC0];
       v8 = *MEMORY[0x1E695B740];
       v15 = *MEMORY[0x1E695B798];
-      v9 = [(FCCKPrivateBatchedDeleteRecordsOperation *)self resultErrorsByRecordID];
-      v16[0] = v9;
+      resultErrorsByRecordID2 = [(FCCKPrivateBatchedDeleteRecordsOperation *)self resultErrorsByRecordID];
+      v16[0] = resultErrorsByRecordID2;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-      v4 = [v7 errorWithDomain:v8 code:2 userInfo:v10];
+      errorCopy = [v7 errorWithDomain:v8 code:2 userInfo:v10];
     }
 
     else
     {
-      v4 = 0;
+      errorCopy = 0;
     }
   }
 
-  v11 = [(FCCKPrivateBatchedDeleteRecordsOperation *)self deleteRecordsCompletionBlock];
+  deleteRecordsCompletionBlock = [(FCCKPrivateBatchedDeleteRecordsOperation *)self deleteRecordsCompletionBlock];
 
-  if (v11)
+  if (deleteRecordsCompletionBlock)
   {
-    v12 = [(FCCKPrivateBatchedDeleteRecordsOperation *)self deleteRecordsCompletionBlock];
-    v13 = [(FCCKPrivateBatchedDeleteRecordsOperation *)self resultDeletedRecordIDs];
-    (v12)[2](v12, v13, v4);
+    deleteRecordsCompletionBlock2 = [(FCCKPrivateBatchedDeleteRecordsOperation *)self deleteRecordsCompletionBlock];
+    resultDeletedRecordIDs = [(FCCKPrivateBatchedDeleteRecordsOperation *)self resultDeletedRecordIDs];
+    (deleteRecordsCompletionBlock2)[2](deleteRecordsCompletionBlock2, resultDeletedRecordIDs, errorCopy);
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -115,13 +115,13 @@
 
 - (void)_continueModifying
 {
-  v3 = [(FCCKPrivateBatchedDeleteRecordsOperation *)self remainingBatchesOfRecordIDsToDelete];
-  v4 = [v3 firstObject];
+  remainingBatchesOfRecordIDsToDelete = [(FCCKPrivateBatchedDeleteRecordsOperation *)self remainingBatchesOfRecordIDsToDelete];
+  firstObject = [remainingBatchesOfRecordIDsToDelete firstObject];
 
-  if ([v4 count])
+  if ([firstObject count])
   {
     v5 = objc_alloc_init(FCCKPrivateDeleteRecordsOperation);
-    [(FCCKPrivateDeleteRecordsOperation *)v5 setRecordIDsToDelete:v4];
+    [(FCCKPrivateDeleteRecordsOperation *)v5 setRecordIDsToDelete:firstObject];
     [(FCCKPrivateDatabaseOperation *)v5 setSkipPreflight:[(FCCKPrivateBatchedDeleteRecordsOperation *)self skipPreflight]];
     [(FCCKPrivateDatabaseOperation *)v5 setHandleIdentityLoss:[(FCCKPrivateBatchedDeleteRecordsOperation *)self handleIdentityLoss]];
     v7[0] = MEMORY[0x1E69E9820];
@@ -131,8 +131,8 @@
     v7[4] = self;
     [(FCCKPrivateDeleteRecordsOperation *)v5 setDeleteRecordsCompletionBlock:v7];
     [(FCOperation *)self associateChildOperation:v5];
-    v6 = [(FCCKPrivateBatchedDeleteRecordsOperation *)self database];
-    [(FCCKPrivateDatabase *)v6 addOperation:v5];
+    database = [(FCCKPrivateBatchedDeleteRecordsOperation *)self database];
+    [(FCCKPrivateDatabase *)database addOperation:v5];
   }
 
   else

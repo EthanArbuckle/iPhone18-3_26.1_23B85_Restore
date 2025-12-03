@@ -1,6 +1,6 @@
 @interface __NSSKGraph
-- (BOOL)addEdgeWithH1:(unint64_t)a3 withH2:(unint64_t)a4;
-- (__NSSKGraph)initWithNumberOfVertices:(int64_t)a3 numberOfEdges:(int64_t)a4;
+- (BOOL)addEdgeWithH1:(unint64_t)h1 withH2:(unint64_t)h2;
+- (__NSSKGraph)initWithNumberOfVertices:(int64_t)vertices numberOfEdges:(int64_t)edges;
 - (edge)isAcyclic;
 - (void)dealloc;
 @end
@@ -230,7 +230,7 @@ LABEL_46:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (__NSSKGraph)initWithNumberOfVertices:(int64_t)a3 numberOfEdges:(int64_t)a4
+- (__NSSKGraph)initWithNumberOfVertices:(int64_t)vertices numberOfEdges:(int64_t)edges
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -238,12 +238,12 @@ LABEL_46:
   v6 = [(__NSSKGraph *)&v9 init];
   if (v6)
   {
-    v6->_vertices = malloc_type_calloc(a3, 0x18uLL, 0x1010040A79CA2DEuLL);
-    v6->_edges = malloc_type_calloc(a4, 0x20uLL, 0x1000040E0EAB150uLL);
-    v6->_numV = a3;
-    v6->_numE = a4;
+    v6->_vertices = malloc_type_calloc(vertices, 0x18uLL, 0x1010040A79CA2DEuLL);
+    v6->_edges = malloc_type_calloc(edges, 0x20uLL, 0x1000040E0EAB150uLL);
+    v6->_numV = vertices;
+    v6->_numE = edges;
     v6->_currE = 0;
-    v6->_dump = a4 + 1;
+    v6->_dump = edges + 1;
     v6->_l_end = 0;
   }
 
@@ -251,17 +251,17 @@ LABEL_46:
   return v6;
 }
 
-- (BOOL)addEdgeWithH1:(unint64_t)a3 withH2:(unint64_t)a4
+- (BOOL)addEdgeWithH1:(unint64_t)h1 withH2:(unint64_t)h2
 {
   currE = self->_currE;
   edges = self->_edges;
   vertices = self->_vertices;
   v9 = &edges[currE];
   v9->var0 = currE;
-  v9->var1[0] = a3;
-  edges[self->_currE].var1[1] = a4;
+  v9->var1[0] = h1;
+  edges[self->_currE].var1[1] = h2;
   edges[self->_currE].var2 = 0x7FFFFFFFFFFFFFFFLL;
-  v10 = &vertices[a3];
+  v10 = &vertices[h1];
   if (v10->var0)
   {
     var1 = v10->var1;
@@ -293,7 +293,7 @@ LABEL_46:
   v14 = v10->var0 + 1;
   v10->var0 = v14;
   var2[v14] = 0x7FFFFFFFFFFFFFFFLL;
-  v15 = &self->_vertices[a4];
+  v15 = &self->_vertices[h2];
   if (v15->var0)
   {
     v16 = v15->var1;

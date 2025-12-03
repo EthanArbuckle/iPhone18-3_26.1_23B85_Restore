@@ -15,9 +15,9 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  if ([a1 isKeyAvailable:*MEMORY[0x1E695C208]])
+  if ([self isKeyAvailable:*MEMORY[0x1E695C208]])
   {
-    [a1 emailAddresses];
+    [self emailAddresses];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -38,8 +38,8 @@
           v9 = *(*(&v14 + 1) + 8 * i);
           if (([v9 tuIsSuggested] & 1) == 0)
           {
-            v10 = [v9 value];
-            v11 = [v10 isEqualToString:v4];
+            value = [v9 value];
+            v11 = [value isEqualToString:v4];
 
             if (v11)
             {
@@ -75,36 +75,36 @@ LABEL_14:
 - (id)tu_labeledValueForHandle:()TelephonyUtilities
 {
   v4 = a3;
-  v5 = [v4 type];
-  if (v5 != 1)
+  type = [v4 type];
+  if (type != 1)
   {
-    if (v5 == 2)
+    if (type == 2)
     {
-      v9 = [v4 normalizedValue];
-      if (v9 || ([v4 value], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+      normalizedValue = [v4 normalizedValue];
+      if (normalizedValue || ([v4 value], (normalizedValue = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v6 = v9;
+        normalizedValue2 = normalizedValue;
         v10 = objc_alloc(MEMORY[0x1E695CF50]);
-        v11 = [v4 isoCountryCode];
-        v7 = [v10 initWithStringValue:v6 countryCode:v11];
+        isoCountryCode = [v4 isoCountryCode];
+        value = [v10 initWithStringValue:normalizedValue2 countryCode:isoCountryCode];
 
-        v12 = [a1 tu_labeledValueForPhoneNumber:v7];
+        v12 = [self tu_labeledValueForPhoneNumber:value];
 LABEL_15:
 
         goto LABEL_16;
       }
     }
 
-    else if (v5 == 3)
+    else if (type == 3)
     {
-      v6 = [v4 normalizedValue];
-      v7 = v6;
-      if (!v6)
+      normalizedValue2 = [v4 normalizedValue];
+      value = normalizedValue2;
+      if (!normalizedValue2)
       {
-        v7 = [v4 value];
+        value = [v4 value];
       }
 
-      v8 = [a1 tu_labeledValueForEmailAddress:v7];
+      v8 = [self tu_labeledValueForEmailAddress:value];
       goto LABEL_14;
     }
 
@@ -112,17 +112,17 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  v6 = [v4 normalizedValue];
-  v7 = v6;
-  if (!v6)
+  normalizedValue2 = [v4 normalizedValue];
+  value = normalizedValue2;
+  if (!normalizedValue2)
   {
-    v7 = [v4 value];
+    value = [v4 value];
   }
 
-  v8 = [a1 tu_labeledValueForSocialProfileWithUsername:v7];
+  v8 = [self tu_labeledValueForSocialProfileWithUsername:value];
 LABEL_14:
   v12 = v8;
-  if (!v6)
+  if (!normalizedValue2)
   {
     goto LABEL_15;
   }
@@ -138,9 +138,9 @@ LABEL_17:
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  if ([a1 isKeyAvailable:*MEMORY[0x1E695C330]])
+  if ([self isKeyAvailable:*MEMORY[0x1E695C330]])
   {
-    [a1 phoneNumbers];
+    [self phoneNumbers];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -161,8 +161,8 @@ LABEL_17:
           v9 = *(*(&v14 + 1) + 8 * i);
           if (([v9 tuIsSuggested] & 1) == 0)
           {
-            v10 = [v9 value];
-            v11 = [v10 isLikePhoneNumber:v4];
+            value = [v9 value];
+            v11 = [value isLikePhoneNumber:v4];
 
             if (v11)
             {
@@ -199,9 +199,9 @@ LABEL_14:
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  if ([a1 isKeyAvailable:*MEMORY[0x1E695C3D0]])
+  if ([self isKeyAvailable:*MEMORY[0x1E695C3D0]])
   {
-    [a1 socialProfiles];
+    [self socialProfiles];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -220,9 +220,9 @@ LABEL_14:
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
-          v10 = [v9 value];
-          v11 = [v10 username];
-          v12 = [v11 isEqualToString:v4];
+          value = [v9 value];
+          username = [value username];
+          v12 = [username isEqualToString:v4];
 
           if (v12)
           {
@@ -258,31 +258,31 @@ LABEL_13:
 - (id)tu_localizedDisplayStringForHandle:()TelephonyUtilities
 {
   v4 = a3;
-  v5 = [v4 type];
-  if (v5 == 1)
+  type = [v4 type];
+  if (type == 1)
   {
-    v21 = [v4 normalizedValue];
-    v22 = v21;
-    if (!v21)
+    normalizedValue = [v4 normalizedValue];
+    value = normalizedValue;
+    if (!normalizedValue)
     {
-      v22 = [v4 value];
+      value = [v4 value];
     }
 
-    v8 = [a1 tu_labeledValueForSocialProfileWithUsername:v22];
-    if (!v21)
+    v8 = [self tu_labeledValueForSocialProfileWithUsername:value];
+    if (!normalizedValue)
     {
     }
 
     v23 = objc_opt_respondsToSelector();
     v10 = MEMORY[0x1E695CEE0];
-    v11 = [v8 label];
+    label = [v8 label];
     if (v23)
     {
       v12 = MEMORY[0x1E695C3D0];
       goto LABEL_21;
     }
 
-    v20 = [v10 localizedStringForLabel:v11];
+    v20 = [v10 localizedStringForLabel:label];
 
     if ([v20 length])
     {
@@ -290,7 +290,7 @@ LABEL_13:
     }
 
     v24 = TUBundle();
-    v11 = v24;
+    label = v24;
     v25 = @"CONTACTS_SOCIAL_PROFILE_LABEL";
 LABEL_26:
     v26 = [v24 localizedStringForKey:v25 value:&stru_1F098C218 table:@"TelephonyUtilities"];
@@ -299,35 +299,35 @@ LABEL_26:
     goto LABEL_31;
   }
 
-  if (v5 == 2)
+  if (type == 2)
   {
-    v13 = [v4 normalizedValue];
-    if (!v13)
+    normalizedValue2 = [v4 normalizedValue];
+    if (!normalizedValue2)
     {
-      v13 = [v4 value];
-      if (!v13)
+      normalizedValue2 = [v4 value];
+      if (!normalizedValue2)
       {
         goto LABEL_14;
       }
     }
 
-    v11 = v13;
+    label = normalizedValue2;
     v14 = objc_alloc(MEMORY[0x1E695CF50]);
-    v15 = [v4 isoCountryCode];
-    v16 = [v14 initWithStringValue:v11 countryCode:v15];
+    isoCountryCode = [v4 isoCountryCode];
+    v16 = [v14 initWithStringValue:label countryCode:isoCountryCode];
 
-    v8 = [a1 tu_labeledValueForPhoneNumber:v16];
+    v8 = [self tu_labeledValueForPhoneNumber:v16];
     v17 = objc_opt_respondsToSelector();
     v18 = MEMORY[0x1E695CEE0];
-    v19 = [v8 label];
+    label2 = [v8 label];
     if (v17)
     {
-      v20 = [v18 localizedDisplayStringForLabel:v19 propertyName:*MEMORY[0x1E695C330]];
+      v20 = [v18 localizedDisplayStringForLabel:label2 propertyName:*MEMORY[0x1E695C330]];
     }
 
     else
     {
-      v20 = [v18 localizedStringForLabel:v19];
+      v20 = [v18 localizedStringForLabel:label2];
 
       if ([v20 length])
       {
@@ -336,8 +336,8 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v19 = TUBundle();
-      v27 = [v19 localizedStringForKey:@"CONTACTS_PHONE_LABEL" value:&stru_1F098C218 table:@"TelephonyUtilities"];
+      label2 = TUBundle();
+      v27 = [label2 localizedStringForKey:@"CONTACTS_PHONE_LABEL" value:&stru_1F098C218 table:@"TelephonyUtilities"];
 
       v20 = v27;
     }
@@ -345,7 +345,7 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  if (v5 != 3)
+  if (type != 3)
   {
 LABEL_14:
     v8 = 0;
@@ -353,24 +353,24 @@ LABEL_14:
     goto LABEL_32;
   }
 
-  v6 = [v4 normalizedValue];
-  v7 = v6;
-  if (!v6)
+  normalizedValue3 = [v4 normalizedValue];
+  value2 = normalizedValue3;
+  if (!normalizedValue3)
   {
-    v7 = [v4 value];
+    value2 = [v4 value];
   }
 
-  v8 = [a1 tu_labeledValueForEmailAddress:v7];
-  if (!v6)
+  v8 = [self tu_labeledValueForEmailAddress:value2];
+  if (!normalizedValue3)
   {
   }
 
   v9 = objc_opt_respondsToSelector();
   v10 = MEMORY[0x1E695CEE0];
-  v11 = [v8 label];
+  label = [v8 label];
   if ((v9 & 1) == 0)
   {
-    v20 = [v10 localizedStringForLabel:v11];
+    v20 = [v10 localizedStringForLabel:label];
 
     if ([v20 length])
     {
@@ -378,14 +378,14 @@ LABEL_14:
     }
 
     v24 = TUBundle();
-    v11 = v24;
+    label = v24;
     v25 = @"CONTACTS_EMAIL_LABEL";
     goto LABEL_26;
   }
 
   v12 = MEMORY[0x1E695C208];
 LABEL_21:
-  v20 = [v10 localizedDisplayStringForLabel:v11 propertyName:*v12];
+  v20 = [v10 localizedDisplayStringForLabel:label propertyName:*v12];
 LABEL_31:
 
 LABEL_32:
@@ -401,8 +401,8 @@ LABEL_32:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [a1 phoneNumbers];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  phoneNumbers = [self phoneNumbers];
+  v4 = [phoneNumbers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -413,16 +413,16 @@ LABEL_32:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(phoneNumbers);
         }
 
-        v8 = [*(*(&v16 + 1) + 8 * i) value];
-        v9 = v8;
-        if (v8)
+        value = [*(*(&v16 + 1) + 8 * i) value];
+        v9 = value;
+        if (value)
         {
-          v10 = [v8 stringValue];
-          v11 = [v9 countryCode];
-          v12 = [TUHandle normalizedPhoneNumberHandleForValue:v10 isoCountryCode:v11];
+          stringValue = [value stringValue];
+          countryCode = [v9 countryCode];
+          v12 = [TUHandle normalizedPhoneNumberHandleForValue:stringValue isoCountryCode:countryCode];
 
           if (v12)
           {
@@ -431,17 +431,17 @@ LABEL_32:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [phoneNumbers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
   }
 
-  v13 = [v2 array];
+  array = [v2 array];
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v13;
+  return array;
 }
 
 - (id)tuHandlesForEmailAddresses
@@ -452,8 +452,8 @@ LABEL_32:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [a1 emailAddresses];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  emailAddresses = [self emailAddresses];
+  v4 = [emailAddresses countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -464,13 +464,13 @@ LABEL_32:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(emailAddresses);
         }
 
-        v8 = [*(*(&v13 + 1) + 8 * i) value];
-        if ([v8 length])
+        value = [*(*(&v13 + 1) + 8 * i) value];
+        if ([value length])
         {
-          v9 = [TUHandle normalizedEmailAddressHandleForValue:v8];
+          v9 = [TUHandle normalizedEmailAddressHandleForValue:value];
           if (v9)
           {
             [v2 addObject:v9];
@@ -478,26 +478,26 @@ LABEL_32:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [emailAddresses countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
   }
 
-  v10 = [v2 array];
+  array = [v2 array];
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return array;
 }
 
 - (id)allTUHandles
 {
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [a1 tuHandlesForPhoneNumbers];
-  v4 = [a1 tuHandlesForEmailAddresses];
-  [v2 addObjectsFromArray:v3];
-  [v2 addObjectsFromArray:v4];
+  tuHandlesForPhoneNumbers = [self tuHandlesForPhoneNumbers];
+  tuHandlesForEmailAddresses = [self tuHandlesForEmailAddresses];
+  [v2 addObjectsFromArray:tuHandlesForPhoneNumbers];
+  [v2 addObjectsFromArray:tuHandlesForEmailAddresses];
   v5 = [v2 copy];
 
   return v5;

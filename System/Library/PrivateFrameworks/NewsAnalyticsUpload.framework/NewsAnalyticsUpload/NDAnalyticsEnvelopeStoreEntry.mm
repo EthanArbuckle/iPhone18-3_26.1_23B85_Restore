@@ -1,8 +1,8 @@
 @interface NDAnalyticsEnvelopeStoreEntry
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NDAnalyticsEnvelopeStoreEntry)init;
-- (NDAnalyticsEnvelopeStoreEntry)initWithStringRepresentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NDAnalyticsEnvelopeStoreEntry)initWithStringRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)stringRepresentation;
 - (unint64_t)hash;
@@ -17,15 +17,15 @@
   return [(NDAnalyticsEnvelopeStoreEntry *)&v3 init];
 }
 
-- (NDAnalyticsEnvelopeStoreEntry)initWithStringRepresentation:(id)a3
+- (NDAnalyticsEnvelopeStoreEntry)initWithStringRepresentation:(id)representation
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  representationCopy = representation;
+  if (!representationCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsEnvelopeStoreEntry initWithStringRepresentation:];
   }
 
-  v5 = [v4 componentsSeparatedByString:@"$"];
+  v5 = [representationCopy componentsSeparatedByString:@"$"];
   if ([v5 count] < 3)
   {
     v6 = 0;
@@ -59,11 +59,11 @@ LABEL_9:
   v18[3] = *MEMORY[0x277D85DE8];
   v18[0] = self->_envelopeIdentifier;
   v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_submissionDateMillisecondsSince1970];
-  v4 = [v3 stringValue];
-  v18[1] = v4;
+  stringValue = [v3 stringValue];
+  v18[1] = stringValue;
   v5 = [MEMORY[0x277CCABB0] numberWithInt:self->_envelopeContentType];
-  v6 = [v5 stringValue];
-  v18[2] = v6;
+  stringValue2 = [v5 stringValue];
+  v18[2] = stringValue2;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:3];
 
   v8 = objc_opt_new();
@@ -97,24 +97,24 @@ uint64_t __53__NDAnalyticsEnvelopeStoreEntry_stringRepresentation__block_invoke(
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = FCDynamicCast();
 
   if (v5)
   {
-    v6 = [(NDAnalyticsEnvelopeStoreEntry *)self envelopeIdentifier];
-    v7 = [v5 envelopeIdentifier];
-    if ([v6 isEqualToString:v7])
+    envelopeIdentifier = [(NDAnalyticsEnvelopeStoreEntry *)self envelopeIdentifier];
+    envelopeIdentifier2 = [v5 envelopeIdentifier];
+    if ([envelopeIdentifier isEqualToString:envelopeIdentifier2])
     {
-      v8 = [(NDAnalyticsEnvelopeStoreEntry *)self envelopeSubmissionDate];
-      v9 = [v5 envelopeSubmissionDate];
-      if ([v8 isEqualToDate:v9])
+      envelopeSubmissionDate = [(NDAnalyticsEnvelopeStoreEntry *)self envelopeSubmissionDate];
+      envelopeSubmissionDate2 = [v5 envelopeSubmissionDate];
+      if ([envelopeSubmissionDate isEqualToDate:envelopeSubmissionDate2])
       {
-        v10 = [(NDAnalyticsEnvelopeStoreEntry *)self envelopeContentType];
-        v11 = v10 == [v5 envelopeContentType];
+        envelopeContentType = [(NDAnalyticsEnvelopeStoreEntry *)self envelopeContentType];
+        v11 = envelopeContentType == [v5 envelopeContentType];
       }
 
       else
@@ -139,20 +139,20 @@ uint64_t __53__NDAnalyticsEnvelopeStoreEntry_stringRepresentation__block_invoke(
 
 - (unint64_t)hash
 {
-  v3 = [(NDAnalyticsEnvelopeStoreEntry *)self envelopeIdentifier];
-  v4 = [v3 hash];
-  v5 = [(NDAnalyticsEnvelopeStoreEntry *)self envelopeSubmissionDate];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(NDAnalyticsEnvelopeStoreEntry *)self envelopeContentType];
+  envelopeIdentifier = [(NDAnalyticsEnvelopeStoreEntry *)self envelopeIdentifier];
+  v4 = [envelopeIdentifier hash];
+  envelopeSubmissionDate = [(NDAnalyticsEnvelopeStoreEntry *)self envelopeSubmissionDate];
+  v6 = [envelopeSubmissionDate hash] ^ v4;
+  envelopeContentType = [(NDAnalyticsEnvelopeStoreEntry *)self envelopeContentType];
 
-  return v6 ^ v7;
+  return v6 ^ envelopeContentType;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(NDAnalyticsEnvelopeStoreEntry *)self stringRepresentation];
-  v6 = [v4 initWithStringRepresentation:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  stringRepresentation = [(NDAnalyticsEnvelopeStoreEntry *)self stringRepresentation];
+  v6 = [v4 initWithStringRepresentation:stringRepresentation];
 
   return v6;
 }
@@ -160,18 +160,18 @@ uint64_t __53__NDAnalyticsEnvelopeStoreEntry_stringRepresentation__block_invoke(
 - (id)description
 {
   v3 = [MEMORY[0x277D30F48] descriptionWithObject:self];
-  v4 = [(NDAnalyticsEnvelopeStoreEntry *)self envelopeIdentifier];
-  [v3 addField:@"identifier" object:v4];
+  envelopeIdentifier = [(NDAnalyticsEnvelopeStoreEntry *)self envelopeIdentifier];
+  [v3 addField:@"identifier" object:envelopeIdentifier];
 
-  v5 = [(NDAnalyticsEnvelopeStoreEntry *)self envelopeSubmissionDate];
-  [v3 addField:@"submissionDate" object:v5];
+  envelopeSubmissionDate = [(NDAnalyticsEnvelopeStoreEntry *)self envelopeSubmissionDate];
+  [v3 addField:@"submissionDate" object:envelopeSubmissionDate];
 
   v6 = [MEMORY[0x277CCABB0] numberWithInt:{-[NDAnalyticsEnvelopeStoreEntry envelopeContentType](self, "envelopeContentType")}];
   [v3 addField:@"contentType" object:v6];
 
-  v7 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v7;
+  return descriptionString;
 }
 
 - (void)initWithStringRepresentation:.cold.1()

@@ -1,28 +1,28 @@
 @interface ICDelegationProviderServiceAssertion
-- (BOOL)isEqual:(id)a3;
-- (ICDelegationProviderServiceAssertion)initWithCoder:(id)a3;
-- (ICDelegationProviderServiceAssertion)initWithName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICDelegationProviderServiceAssertion)initWithCoder:(id)coder;
+- (ICDelegationProviderServiceAssertion)initWithName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICDelegationProviderServiceAssertion
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(NSString *)self->_name copyWithZone:a3];
+    v6 = [(NSString *)self->_name copyWithZone:zone];
     v7 = v5[2];
     v5[2] = v6;
 
-    v8 = [(NSUUID *)self->_uniqueIdentifier copyWithZone:a3];
+    v8 = [(NSUUID *)self->_uniqueIdentifier copyWithZone:zone];
     v9 = v5[3];
     v5[3] = v8;
 
-    v10 = [(NSDate *)self->_expirationDate copyWithZone:a3];
+    v10 = [(NSDate *)self->_expirationDate copyWithZone:zone];
     v11 = v5[1];
     v5[1] = v10;
   }
@@ -30,10 +30,10 @@
   return v5;
 }
 
-- (ICDelegationProviderServiceAssertion)initWithCoder:(id)a3
+- (ICDelegationProviderServiceAssertion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
   if (v5)
   {
     v13.receiver = self;
@@ -41,7 +41,7 @@
     v6 = [(ICDelegationProviderServiceAssertion *)&v13 init];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
       v8 = v7;
       if (v7)
       {
@@ -56,7 +56,7 @@
       objc_storeStrong(&v6->_name, v9);
 
       objc_storeStrong(&v6->_uniqueIdentifier, v5);
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
       expirationDate = v6->_expirationDate;
       v6->_expirationDate = v10;
     }
@@ -71,19 +71,19 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_uniqueIdentifier forKey:@"uniqueIdentifier"];
-  [v5 encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_uniqueIdentifier forKey:@"uniqueIdentifier"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_11;
   }
@@ -95,7 +95,7 @@
   }
 
   uniqueIdentifier = self->_uniqueIdentifier;
-  v6 = v4->_uniqueIdentifier;
+  v6 = equalCopy->_uniqueIdentifier;
   if (uniqueIdentifier != v6)
   {
     v7 = 0;
@@ -113,7 +113,7 @@ LABEL_12:
   }
 
   expirationDate = self->_expirationDate;
-  v9 = v4->_expirationDate;
+  v9 = equalCopy->_expirationDate;
   if (expirationDate == v9)
   {
 LABEL_11:
@@ -157,21 +157,21 @@ LABEL_13:
   return v9;
 }
 
-- (ICDelegationProviderServiceAssertion)initWithName:(id)a3
+- (ICDelegationProviderServiceAssertion)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = ICDelegationProviderServiceAssertion;
   v5 = [(ICDelegationProviderServiceAssertion *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     uniqueIdentifier = v5->_uniqueIdentifier;
-    v5->_uniqueIdentifier = v8;
+    v5->_uniqueIdentifier = uUID;
   }
 
   return v5;

@@ -1,28 +1,28 @@
 @interface TSSStylePromise
-+ (id)promiseForStyle:(id)a3;
-- (TSSStylePromise)initWithStyle:(id)a3;
-- (void)addPromisee:(id)a3;
++ (id)promiseForStyle:(id)style;
+- (TSSStylePromise)initWithStyle:(id)style;
+- (void)addPromisee:(id)promisee;
 - (void)dealloc;
-- (void)fulfillWithStyle:(id)a3;
+- (void)fulfillWithStyle:(id)style;
 @end
 
 @implementation TSSStylePromise
 
-+ (id)promiseForStyle:(id)a3
++ (id)promiseForStyle:(id)style
 {
-  v3 = [[TSSStylePromise alloc] initWithStyle:a3];
+  v3 = [[TSSStylePromise alloc] initWithStyle:style];
 
   return v3;
 }
 
-- (TSSStylePromise)initWithStyle:(id)a3
+- (TSSStylePromise)initWithStyle:(id)style
 {
   v6.receiver = self;
   v6.super_class = TSSStylePromise;
   v4 = [(TSSStylePromise *)&v6 init];
   if (v4)
   {
-    v4->_sourceStyle = a3;
+    v4->_sourceStyle = style;
   }
 
   return v4;
@@ -35,7 +35,7 @@
   [(TSSStylePromise *)&v3 dealloc];
 }
 
-- (void)addPromisee:(id)a3
+- (void)addPromisee:(id)promisee
 {
   promisees = self->_promisees;
   if (!promisees)
@@ -44,10 +44,10 @@
     self->_promisees = promisees;
   }
 
-  [(NSMutableArray *)promisees addObject:a3];
+  [(NSMutableArray *)promisees addObject:promisee];
 }
 
-- (void)fulfillWithStyle:(id)a3
+- (void)fulfillWithStyle:(id)style
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -75,7 +75,7 @@
         v11[2] = __36__TSSStylePromise_fulfillWithStyle___block_invoke;
         v11[3] = &unk_279D48180;
         v11[4] = self;
-        v11[5] = a3;
+        v11[5] = style;
         [v10 replaceReferencedStylesUsingBlock:v11];
       }
 

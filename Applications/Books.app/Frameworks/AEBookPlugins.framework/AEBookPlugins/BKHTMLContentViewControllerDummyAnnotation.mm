@@ -32,30 +32,30 @@
   dummyLocation2 = self->_dummyLocation2;
   if (dummyLocation2)
   {
-    v4 = [(BKEpubCFILocation *)dummyLocation2 cfiString];
+    cfiString = [(BKEpubCFILocation *)dummyLocation2 cfiString];
   }
 
   else
   {
-    v4 = self->_cfi;
+    cfiString = self->_cfi;
   }
 
-  return v4;
+  return cfiString;
 }
 
 - (NSString)redactedAnnotationLocation
 {
-  v2 = [(BKHTMLContentViewControllerDummyAnnotation *)self annotationLocation];
-  v3 = [v2 bc_redactedCFIString];
+  annotationLocation = [(BKHTMLContentViewControllerDummyAnnotation *)self annotationLocation];
+  bc_redactedCFIString = [annotationLocation bc_redactedCFIString];
 
-  return v3;
+  return bc_redactedCFIString;
 }
 
 - (BOOL)annotationHasNote
 {
-  v2 = [(BKHTMLContentViewControllerDummyAnnotation *)self annotationNote];
+  annotationNote = [(BKHTMLContentViewControllerDummyAnnotation *)self annotationNote];
   v3 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  v4 = [annotationNote stringByTrimmingCharactersInSet:v3];
   v5 = [v4 length] != 0;
 
   return v5;
@@ -63,10 +63,10 @@
 
 - (int64_t)ordinal
 {
-  v2 = [(BKHTMLContentViewControllerDummyAnnotation *)self location];
-  v3 = [v2 ordinal];
+  location = [(BKHTMLContentViewControllerDummyAnnotation *)self location];
+  ordinal = [location ordinal];
 
-  return v3;
+  return ordinal;
 }
 
 - (_NSRange)annotationSelectedTextRange

@@ -1,5 +1,5 @@
 @interface ContactQuickActionView
-- (void)buttonTapped:(id)a3;
+- (void)buttonTapped:(id)tapped;
 - (void)layoutSubviews;
 @end
 
@@ -11,17 +11,17 @@
   v4.super_class = type metadata accessor for ContactQuickActionView();
   v2 = v4.receiver;
   [(ContactQuickActionView *)&v4 layoutSubviews];
-  v3 = [v2 layer];
+  layer = [v2 layer];
   [v2 bounds];
-  [v3 setCornerRadius_];
+  [layer setCornerRadius_];
 
   [v2 setClipsToBounds_];
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_1BA3C01E4();
 }
 

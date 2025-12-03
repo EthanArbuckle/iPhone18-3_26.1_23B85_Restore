@@ -2,18 +2,18 @@
 + (id)instance;
 + (void)disposeInstance;
 - (TCBundleResourceManager)init;
-- (_xmlDoc)xmlDocumentForResource:(id)a3 ofType:(id)a4 inPackage:(id)a5;
-- (id)dataForResource:(id)a3 ofType:(id)a4 inPackage:(id)a5 cacheResult:(BOOL)a6;
-- (id)packageEntryForResource:(id)a3 ofType:(id)a4 inPackage:(id)a5;
-- (id)packageWithName:(id)a3 cacheResult:(BOOL)a4;
+- (_xmlDoc)xmlDocumentForResource:(id)resource ofType:(id)type inPackage:(id)package;
+- (id)dataForResource:(id)resource ofType:(id)type inPackage:(id)package cacheResult:(BOOL)result;
+- (id)packageEntryForResource:(id)resource ofType:(id)type inPackage:(id)package;
+- (id)packageWithName:(id)name cacheResult:(BOOL)result;
 @end
 
 @implementation TCBundleResourceManager
 
 + (id)instance
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = sInstance;
   if (!sInstance)
   {
@@ -25,14 +25,14 @@
   }
 
   v6 = v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 + (void)disposeInstance
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   v2 = sInstance;
   if (sInstance)
@@ -60,48 +60,48 @@
   return v2;
 }
 
-- (id)dataForResource:(id)a3 ofType:(id)a4 inPackage:(id)a5 cacheResult:(BOOL)a6
+- (id)dataForResource:(id)resource ofType:(id)type inPackage:(id)package cacheResult:(BOOL)result
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  [TCBundleResourceDebugEntry addEntry:v10 ofType:v11 inPackage:v12 cacheResult:v6];
-  v13 = [(TCBundleResourceManager *)self packageWithName:v12 cacheResult:v6];
+  resultCopy = result;
+  resourceCopy = resource;
+  typeCopy = type;
+  packageCopy = package;
+  [TCBundleResourceDebugEntry addEntry:resourceCopy ofType:typeCopy inPackage:packageCopy cacheResult:resultCopy];
+  v13 = [(TCBundleResourceManager *)self packageWithName:packageCopy cacheResult:resultCopy];
   if (v13)
   {
-    v14 = [v10 stringByAppendingPathExtension:v11];
-    v15 = [v13 entryWithName:v14 cacheResult:v6];
+    v14 = [resourceCopy stringByAppendingPathExtension:typeCopy];
+    v15 = [v13 entryWithName:v14 cacheResult:resultCopy];
     if (!v15)
     {
-      [TCBundleResourceException raise:@"TCBundleResourcePackageEntryNotFoundError" format:@"Entry %@ not found in package %@", v14, v12];
+      [TCBundleResourceException raise:@"TCBundleResourcePackageEntryNotFoundError" format:@"Entry %@ not found in package %@", v14, packageCopy];
     }
 
-    v16 = [v15 data];
+    data = [v15 data];
   }
 
   else
   {
-    v16 = 0;
+    data = 0;
   }
 
-  return v16;
+  return data;
 }
 
-- (id)packageEntryForResource:(id)a3 ofType:(id)a4 inPackage:(id)a5
+- (id)packageEntryForResource:(id)resource ofType:(id)type inPackage:(id)package
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [TCBundleResourceDebugEntry addEntry:v8 ofType:v9 inPackage:v10 cacheResult:0];
-  v11 = [(TCBundleResourceManager *)self packageWithName:v10 cacheResult:0];
+  resourceCopy = resource;
+  typeCopy = type;
+  packageCopy = package;
+  [TCBundleResourceDebugEntry addEntry:resourceCopy ofType:typeCopy inPackage:packageCopy cacheResult:0];
+  v11 = [(TCBundleResourceManager *)self packageWithName:packageCopy cacheResult:0];
   if (v11)
   {
-    v12 = [v8 stringByAppendingPathExtension:v9];
+    v12 = [resourceCopy stringByAppendingPathExtension:typeCopy];
     v13 = [v11 entryWithName:v12 cacheResult:0];
     if (!v13)
     {
-      [TCBundleResourceException raise:@"TCBundleResourcePackageEntryNotFoundError" format:@"Entry %@ not found in package %@", v12, v10];
+      [TCBundleResourceException raise:@"TCBundleResourcePackageEntryNotFoundError" format:@"Entry %@ not found in package %@", v12, packageCopy];
     }
   }
 
@@ -113,59 +113,59 @@
   return v13;
 }
 
-- (_xmlDoc)xmlDocumentForResource:(id)a3 ofType:(id)a4 inPackage:(id)a5
+- (_xmlDoc)xmlDocumentForResource:(id)resource ofType:(id)type inPackage:(id)package
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [TCBundleResourceDebugEntry addEntry:v8 ofType:v9 inPackage:v10 cacheResult:1];
-  v11 = [(TCBundleResourceManager *)self packageWithName:v10 cacheResult:1];
+  resourceCopy = resource;
+  typeCopy = type;
+  packageCopy = package;
+  [TCBundleResourceDebugEntry addEntry:resourceCopy ofType:typeCopy inPackage:packageCopy cacheResult:1];
+  v11 = [(TCBundleResourceManager *)self packageWithName:packageCopy cacheResult:1];
   if (v11)
   {
-    v12 = [v8 stringByAppendingPathExtension:v9];
+    v12 = [resourceCopy stringByAppendingPathExtension:typeCopy];
     v13 = [v11 entryWithName:v12 cacheResult:1];
     if (!v13)
     {
-      [TCBundleResourceException raise:@"TCBundleResourcePackageEntryNotFoundError" format:@"Entry %@ not found in package %@", v12, v10];
+      [TCBundleResourceException raise:@"TCBundleResourcePackageEntryNotFoundError" format:@"Entry %@ not found in package %@", v12, packageCopy];
     }
 
-    v14 = [v13 xmlDocument];
+    xmlDocument = [v13 xmlDocument];
   }
 
   else
   {
-    v14 = 0;
+    xmlDocument = 0;
   }
 
-  return v14;
+  return xmlDocument;
 }
 
-- (id)packageWithName:(id)a3 cacheResult:(BOOL)a4
+- (id)packageWithName:(id)name cacheResult:(BOOL)result
 {
-  v4 = a4;
-  v6 = a3;
+  resultCopy = result;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(NSMutableDictionary *)self->mPackageMap objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->mPackageMap objectForKey:nameCopy];
   if (!v7)
   {
     v8 = TCBundle();
-    v9 = [v8 pathForResource:v6 ofType:@"zip"];
+    v9 = [v8 pathForResource:nameCopy ofType:@"zip"];
 
     if (!v9)
     {
       os_unfair_lock_unlock(&self->_lock);
-      [TCBundleResourceException raise:@"TCBundleResourcePackageNotFound" format:@"Couldn't find bundle resource package named %@", v6];
+      [TCBundleResourceException raise:@"TCBundleResourcePackageNotFound" format:@"Couldn't find bundle resource package named %@", nameCopy];
     }
 
     v10 = [[OISFUZipArchive alloc] initWithPath:v9 collapseCommonRootDirectory:0];
     if (v10)
     {
       v7 = [[TCBundleResourcePackage alloc] initWithZipArchive:v10];
-      if (v4)
+      if (resultCopy)
       {
         v11 = self->mPackageMap;
         objc_sync_enter(v11);
-        [(NSMutableDictionary *)self->mPackageMap setObject:v7 forKey:v6];
+        [(NSMutableDictionary *)self->mPackageMap setObject:v7 forKey:nameCopy];
         objc_sync_exit(v11);
       }
     }

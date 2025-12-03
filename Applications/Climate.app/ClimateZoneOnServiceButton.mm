@@ -1,6 +1,6 @@
 @interface ClimateZoneOnServiceButton
 - (_TtC7Climate26ClimateZoneOnServiceButton)init;
-- (void)zoneOnService:(id)a3 didUpdateOn:(BOOL)a4;
+- (void)zoneOnService:(id)service didUpdateOn:(BOOL)on;
 @end
 
 @implementation ClimateZoneOnServiceButton
@@ -12,10 +12,10 @@
   return result;
 }
 
-- (void)zoneOnService:(id)a3 didUpdateOn:(BOOL)a4
+- (void)zoneOnService:(id)service didUpdateOn:(BOOL)on
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   sub_10000B008();
 }
 

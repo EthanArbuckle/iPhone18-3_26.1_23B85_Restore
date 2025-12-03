@@ -1,13 +1,13 @@
 @interface WFParameterSummaryToken
-- (WFParameterSummaryToken)initWithDisplayName:(id)a3 icon:(id)a4 isAvailable:(BOOL)a5;
+- (WFParameterSummaryToken)initWithDisplayName:(id)name icon:(id)icon isAvailable:(BOOL)available;
 @end
 
 @implementation WFParameterSummaryToken
 
-- (WFParameterSummaryToken)initWithDisplayName:(id)a3 icon:(id)a4 isAvailable:(BOOL)a5
+- (WFParameterSummaryToken)initWithDisplayName:(id)name icon:(id)icon isAvailable:(BOOL)available
 {
   sub_1C840CDDC();
-  v6 = a4;
+  iconCopy = icon;
   sub_1C83A9FE4();
 }
 

@@ -1,31 +1,31 @@
 @interface ICSAPSession
-+ (id)sharedSAPSessionWithVersion:(unsigned int)a3 URLBag:(id)a4 requestContext:(id)a5;
-- (id)_initWithVersion:(unsigned int)a3 certificateURL:(id)a4 setupURL:(id)a5 requestContext:(id)a6;
-- (void)signData:(id)a3 withCompletionHandler:(id)a4;
-- (void)verifySignatureData:(id)a3 forData:(id)a4 withCompletionHandler:(id)a5;
++ (id)sharedSAPSessionWithVersion:(unsigned int)version URLBag:(id)bag requestContext:(id)context;
+- (id)_initWithVersion:(unsigned int)version certificateURL:(id)l setupURL:(id)rL requestContext:(id)context;
+- (void)signData:(id)data withCompletionHandler:(id)handler;
+- (void)verifySignatureData:(id)data forData:(id)forData withCompletionHandler:(id)handler;
 @end
 
 @implementation ICSAPSession
 
-- (void)verifySignatureData:(id)a3 forData:(id)a4 withCompletionHandler:(id)a5
+- (void)verifySignatureData:(id)data forData:(id)forData withCompletionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  forDataCopy = forData;
+  dataCopy = data;
   v11 = objc_alloc_init(ICSAPSessionVerifySignatureOperation);
   [(ICSAPSessionAbstractOperation *)v11 setSapSession:self];
-  [(ICSAPSessionVerifySignatureOperation *)v11 setData:v9];
+  [(ICSAPSessionVerifySignatureOperation *)v11 setData:forDataCopy];
 
-  [(ICSAPSessionVerifySignatureOperation *)v11 setSignatureData:v10];
+  [(ICSAPSessionVerifySignatureOperation *)v11 setSignatureData:dataCopy];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __66__ICSAPSession_verifySignatureData_forData_withCompletionHandler___block_invoke;
   v16 = &unk_1E7BF98C0;
-  v17 = self;
-  v18 = v8;
-  v12 = v8;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
   [(ICSAPSessionVerifySignatureOperation *)v11 setResponseHandler:&v13];
-  [(NSOperationQueue *)self->_operationQueue addOperation:v11, v13, v14, v15, v16, v17];
+  [(NSOperationQueue *)self->_operationQueue addOperation:v11, v13, v14, v15, v16, selfCopy];
 }
 
 void __66__ICSAPSession_verifySignatureData_forData_withCompletionHandler___block_invoke(uint64_t a1, char a2, void *a3)
@@ -44,23 +44,23 @@ void __66__ICSAPSession_verifySignatureData_forData_withCompletionHandler___bloc
   dispatch_async(v6, block);
 }
 
-- (void)signData:(id)a3 withCompletionHandler:(id)a4
+- (void)signData:(id)data withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  dataCopy = data;
   v8 = objc_alloc_init(ICSAPSessionSignDataOperation);
   [(ICSAPSessionAbstractOperation *)v8 setSapSession:self];
-  [(ICSAPSessionSignDataOperation *)v8 setData:v7];
+  [(ICSAPSessionSignDataOperation *)v8 setData:dataCopy];
 
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __47__ICSAPSession_signData_withCompletionHandler___block_invoke;
   v13 = &unk_1E7BF9FB0;
-  v14 = self;
-  v15 = v6;
-  v9 = v6;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v9 = handlerCopy;
   [(ICSAPSessionSignDataOperation *)v8 setResponseHandler:&v10];
-  [(NSOperationQueue *)self->_operationQueue addOperation:v8, v10, v11, v12, v13, v14];
+  [(NSOperationQueue *)self->_operationQueue addOperation:v8, v10, v11, v12, v13, selfCopy];
 }
 
 void __47__ICSAPSession_signData_withCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -81,29 +81,29 @@ void __47__ICSAPSession_signData_withCompletionHandler___block_invoke(uint64_t a
   dispatch_async(v7, block);
 }
 
-- (id)_initWithVersion:(unsigned int)a3 certificateURL:(id)a4 setupURL:(id)a5 requestContext:(id)a6
+- (id)_initWithVersion:(unsigned int)version certificateURL:(id)l setupURL:(id)rL requestContext:(id)context
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  lCopy = l;
+  rLCopy = rL;
+  contextCopy = context;
   v27.receiver = self;
   v27.super_class = ICSAPSession;
   v13 = [(ICSAPSession *)&v27 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [lCopy copy];
     certificateURL = v13->_certificateURL;
     v13->_certificateURL = v14;
 
-    v16 = [v11 copy];
+    v16 = [rLCopy copy];
     setupURL = v13->_setupURL;
     v13->_setupURL = v16;
 
-    v18 = [v12 copyWithBlock:&__block_literal_global_8];
+    v18 = [contextCopy copyWithBlock:&__block_literal_global_8];
     requestContext = v13->_requestContext;
     v13->_requestContext = v18;
 
-    v13->_sapVersion = a3;
+    v13->_sapVersion = version;
     v20 = dispatch_queue_create("com.apple.iTunesCloud.ICSAPSession.calloutQueue", 0);
     calloutQueue = v13->_calloutQueue;
     v13->_calloutQueue = v20;
@@ -127,12 +127,12 @@ void __47__ICSAPSession_signData_withCompletionHandler___block_invoke(uint64_t a
   return v13;
 }
 
-+ (id)sharedSAPSessionWithVersion:(unsigned int)a3 URLBag:(id)a4 requestContext:(id)a5
++ (id)sharedSAPSessionWithVersion:(unsigned int)version URLBag:(id)bag requestContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [v8 urlForBagKey:@"sign-sap-setup-cert"];
-  v10 = [v8 urlForBagKey:@"sign-sap-setup"];
+  contextCopy = context;
+  bagCopy = bag;
+  v9 = [bagCopy urlForBagKey:@"sign-sap-setup-cert"];
+  v10 = [bagCopy urlForBagKey:@"sign-sap-setup"];
 
   v11 = 0;
   if (v9 && v10)
@@ -146,7 +146,7 @@ void __47__ICSAPSession_signData_withCompletionHandler___block_invoke(uint64_t a
     v36[1] = 3221225472;
     v36[2] = __66__ICSAPSession_sharedSAPSessionWithVersion_URLBag_requestContext___block_invoke_2;
     v36[3] = &unk_1E7BF36E8;
-    v39 = a3;
+    versionCopy = version;
     v12 = v9;
     v37 = v12;
     v13 = v10;
@@ -177,10 +177,10 @@ void __47__ICSAPSession_signData_withCompletionHandler___block_invoke(uint64_t a
       v20[3] = &unk_1E7BF3710;
       v25 = &v30;
       v24 = v16;
-      v26 = a3;
+      versionCopy2 = version;
       v21 = v12;
       v22 = v13;
-      v23 = v7;
+      v23 = contextCopy;
       dispatch_barrier_sync(v18, v20);
 
       v17 = v31[5];

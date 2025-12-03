@@ -1,87 +1,87 @@
 @interface MOContextPredicate
-+ (id)contextPredicateForContextType:(unint64_t)a3 withMetadata:(id)a4 startDate:(id)a5 endDate:(id)a6;
-+ (id)contextPredicateForContextType:(unint64_t)a3 withMetadata:(id)a4 startDate:(id)a5 endDate:(id)a6 aroundLocation:(id)a7 withDistanceThreshold:(double)a8;
-- (MOContextPredicate)initWithCoder:(id)a3;
-- (MOContextPredicate)initWithPredicate:(id)a3 filter:(id)a4 metadataTypes:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)contextPredicateForContextType:(unint64_t)type withMetadata:(id)metadata startDate:(id)date endDate:(id)endDate;
++ (id)contextPredicateForContextType:(unint64_t)type withMetadata:(id)metadata startDate:(id)date endDate:(id)endDate aroundLocation:(id)location withDistanceThreshold:(double)threshold;
+- (MOContextPredicate)initWithCoder:(id)coder;
+- (MOContextPredicate)initWithPredicate:(id)predicate filter:(id)filter metadataTypes:(id)types;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOContextPredicate
 
-- (MOContextPredicate)initWithPredicate:(id)a3 filter:(id)a4 metadataTypes:(id)a5
+- (MOContextPredicate)initWithPredicate:(id)predicate filter:(id)filter metadataTypes:(id)types
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  predicateCopy = predicate;
+  filterCopy = filter;
+  typesCopy = types;
   v15.receiver = self;
   v15.super_class = MOContextPredicate;
   v12 = [(MOContextPredicate *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_fetchRequestPredicate, a3);
-    objc_storeStrong(&v13->_filterCriteriaMap, a4);
-    objc_storeStrong(&v13->_metadataTypes, a5);
+    objc_storeStrong(&v12->_fetchRequestPredicate, predicate);
+    objc_storeStrong(&v13->_filterCriteriaMap, filter);
+    objc_storeStrong(&v13->_metadataTypes, types);
   }
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   fetchRequestPredicate = self->_fetchRequestPredicate;
-  v5 = a3;
-  [v5 encodeObject:fetchRequestPredicate forKey:@"requestPredicate"];
-  [v5 encodeObject:self->_filterCriteriaMap forKey:@"criteriaMap"];
-  [v5 encodeObject:self->_metadataTypes forKey:@"metadataTypes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:fetchRequestPredicate forKey:@"requestPredicate"];
+  [coderCopy encodeObject:self->_filterCriteriaMap forKey:@"criteriaMap"];
+  [coderCopy encodeObject:self->_metadataTypes forKey:@"metadataTypes"];
 }
 
-- (MOContextPredicate)initWithCoder:(id)a3
+- (MOContextPredicate)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [v4 setWithObjects:{v6, v7, v8, objc_opt_class(), 0}];
-  v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"requestPredicate"];
-  v11 = [v5 decodeObjectOfClasses:v9 forKey:@"criteriaMap"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestPredicate"];
+  v11 = [coderCopy decodeObjectOfClasses:v9 forKey:@"criteriaMap"];
   v12 = MEMORY[0x277CBEB98];
   v13 = objc_opt_class();
   v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-  v15 = [v5 decodeObjectOfClasses:v14 forKey:@"metadataTypes"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"metadataTypes"];
 
   v16 = [(MOContextPredicate *)self initWithPredicate:v10 filter:v11 metadataTypes:v15];
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MOContextPredicate alloc];
-  v5 = [(MOContextPredicate *)self fetchRequestPredicate];
-  v6 = [(MOContextPredicate *)self filterCriteriaMap];
-  v7 = [(MOContextPredicate *)self metadataTypes];
-  v8 = [(MOContextPredicate *)v4 initWithPredicate:v5 filter:v6 metadataTypes:v7];
+  fetchRequestPredicate = [(MOContextPredicate *)self fetchRequestPredicate];
+  filterCriteriaMap = [(MOContextPredicate *)self filterCriteriaMap];
+  metadataTypes = [(MOContextPredicate *)self metadataTypes];
+  v8 = [(MOContextPredicate *)v4 initWithPredicate:fetchRequestPredicate filter:filterCriteriaMap metadataTypes:metadataTypes];
 
   return v8;
 }
 
-+ (id)contextPredicateForContextType:(unint64_t)a3 withMetadata:(id)a4 startDate:(id)a5 endDate:(id)a6
++ (id)contextPredicateForContextType:(unint64_t)type withMetadata:(id)metadata startDate:(id)date endDate:(id)endDate
 {
   v30[3] = *MEMORY[0x277D85DE8];
   v9 = MEMORY[0x277CCA9C0];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  endDateCopy = endDate;
+  dateCopy = date;
+  metadataCopy = metadata;
   v29 = [v9 expressionForKeyPath:@"startDate"];
   v28 = [MEMORY[0x277CCA9C0] expressionForKeyPath:@"endDate"];
   v13 = [MEMORY[0x277CCA9C0] expressionForKeyPath:@"contextType"];
-  v26 = [MEMORY[0x277CCA9C0] expressionForConstantValue:v11];
+  v26 = [MEMORY[0x277CCA9C0] expressionForConstantValue:dateCopy];
 
-  v27 = [MEMORY[0x277CCA9C0] expressionForConstantValue:v10];
+  v27 = [MEMORY[0x277CCA9C0] expressionForConstantValue:endDateCopy];
 
-  v14 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:a3];
+  v14 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:type];
   v15 = [MEMORY[0x277CCA9C0] expressionForConstantValue:v14];
   v16 = [MOContextPredicateBuilder createPredicateWithLeftExpression:v29 rightExpression:v27 operation:4];
   v17 = [MOContextPredicateBuilder createPredicateWithLeftExpression:v28 rightExpression:v26 operation:3];
@@ -94,29 +94,29 @@
 
   v21 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v20 requiringSecureCoding:1 error:0];
   v22 = [MOContextPredicate alloc];
-  v23 = [(MOContextPredicate *)v22 initWithPredicate:v21 filter:MEMORY[0x277CBEC10] metadataTypes:v12];
+  v23 = [(MOContextPredicate *)v22 initWithPredicate:v21 filter:MEMORY[0x277CBEC10] metadataTypes:metadataCopy];
 
   v24 = *MEMORY[0x277D85DE8];
 
   return v23;
 }
 
-+ (id)contextPredicateForContextType:(unint64_t)a3 withMetadata:(id)a4 startDate:(id)a5 endDate:(id)a6 aroundLocation:(id)a7 withDistanceThreshold:(double)a8
++ (id)contextPredicateForContextType:(unint64_t)type withMetadata:(id)metadata startDate:(id)date endDate:(id)endDate aroundLocation:(id)location withDistanceThreshold:(double)threshold
 {
   v43[3] = *MEMORY[0x277D85DE8];
   v13 = MEMORY[0x277CCA9C0];
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v38 = a4;
+  locationCopy = location;
+  endDateCopy = endDate;
+  dateCopy = date;
+  metadataCopy = metadata;
   v37 = [v13 expressionForKeyPath:@"startDate"];
   v35 = [MEMORY[0x277CCA9C0] expressionForKeyPath:@"endDate"];
   v32 = [MEMORY[0x277CCA9C0] expressionForKeyPath:@"contextType"];
-  v33 = [MEMORY[0x277CCA9C0] expressionForConstantValue:v16];
+  v33 = [MEMORY[0x277CCA9C0] expressionForConstantValue:dateCopy];
 
-  v34 = [MEMORY[0x277CCA9C0] expressionForConstantValue:v15];
+  v34 = [MEMORY[0x277CCA9C0] expressionForConstantValue:endDateCopy];
 
-  v36 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:a3];
+  v36 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:type];
   v17 = [MEMORY[0x277CCA9C0] expressionForConstantValue:v36];
   v18 = [MOContextPredicateBuilder createPredicateWithLeftExpression:v37 rightExpression:v34 operation:4];
   v19 = [MOContextPredicateBuilder createPredicateWithLeftExpression:v35 rightExpression:v33 operation:3];
@@ -129,19 +129,19 @@
   v23 = [MOContextPredicateBuilder createAndPredicate:v22];
 
   v24 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v23 requiringSecureCoding:1 error:0];
-  v25 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v14 requiringSecureCoding:1 error:0];
+  v25 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:locationCopy requiringSecureCoding:1 error:0];
 
   v41 = @"distanceFromLocation";
   v39[0] = @"targetLocation";
   v39[1] = @"maxDistance";
   v40[0] = v25;
-  v26 = [MEMORY[0x277CCABB0] numberWithDouble:a8];
+  v26 = [MEMORY[0x277CCABB0] numberWithDouble:threshold];
   v40[1] = v26;
   v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:v39 count:2];
   v42 = v27;
   v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
 
-  v29 = [[MOContextPredicate alloc] initWithPredicate:v24 filter:v28 metadataTypes:v38];
+  v29 = [[MOContextPredicate alloc] initWithPredicate:v24 filter:v28 metadataTypes:metadataCopy];
   v30 = *MEMORY[0x277D85DE8];
 
   return v29;

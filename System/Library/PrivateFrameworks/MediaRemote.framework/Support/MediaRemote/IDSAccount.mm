@@ -12,8 +12,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [v2 accounts];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  accounts = [v2 accounts];
+  v4 = [accounts countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -23,7 +23,7 @@
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accounts);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -31,8 +31,8 @@
         {
           if ([v7 isActive])
           {
-            v8 = [v7 accountRegisteredURIs];
-            v9 = [v8 count];
+            accountRegisteredURIs = [v7 accountRegisteredURIs];
+            v9 = [accountRegisteredURIs count];
 
             if (v9)
             {
@@ -43,7 +43,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [accounts countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;
@@ -61,9 +61,9 @@ LABEL_13:
 + (id)mr_localGroupSessionHandle
 {
   v2 = +[IDSAccount mr_activeGroupSessionAccount];
-  v3 = [v2 loginID];
+  loginID = [v2 loginID];
 
-  if (v3)
+  if (loginID)
   {
     v4 = IDSCopyIDForEmailAddress();
   }

@@ -1,34 +1,34 @@
 @interface SidecarDisplaySession
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)sidecarRequest:(id)a3 receivedItems:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)sidecarRequest:(id)request receivedItems:(id)items;
 @end
 
 @implementation SidecarDisplaySession
 
-- (void)sidecarRequest:(id)a3 receivedItems:(id)a4
+- (void)sidecarRequest:(id)request receivedItems:(id)items
 {
   sub_100005A1C(0, &unk_10007FAA0);
   v6 = sub_100057BF0();
-  v7 = a3;
-  v8 = self;
-  SidecarDisplaySession.sidecarRequest(_:receivedItems:)(v8, v6);
+  requestCopy = request;
+  selfCopy = self;
+  SidecarDisplaySession.sidecarRequest(_:receivedItems:)(selfCopy, v6);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a3)
+  if (path)
   {
     sub_100057A50();
-    if (a4)
+    if (object)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     memset(v13, 0, sizeof(v13));
-    v11 = a5;
-    v12 = self;
-    if (!a5)
+    changeCopy = change;
+    selfCopy = self;
+    if (!change)
     {
       goto LABEL_7;
     }
@@ -36,18 +36,18 @@ LABEL_6:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!object)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
+  changeCopy2 = change;
+  selfCopy2 = self;
   sub_100057FE0();
   swift_unknownObjectRelease();
-  if (a5)
+  if (change)
   {
 LABEL_4:
     type metadata accessor for NSKeyValueChangeKey(0);

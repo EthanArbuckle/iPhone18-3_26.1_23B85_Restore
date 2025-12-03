@@ -1,19 +1,19 @@
 @interface PTRaytracingV3001
-- (PTRaytracingV3001)initWithMetalContext:(id)a3 colorSize:(CGSize)a4 disparitySize:(CGSize)a5 debugRendering:(int64_t)a6 verbose:(BOOL)a7 options:(id)a8 quality:(int)a9;
-- (int)renderContinuousWithSource:(id)a3 renderRequest:(id)a4;
+- (PTRaytracingV3001)initWithMetalContext:(id)context colorSize:(CGSize)size disparitySize:(CGSize)disparitySize debugRendering:(int64_t)rendering verbose:(BOOL)verbose options:(id)options quality:(int)quality;
+- (int)renderContinuousWithSource:(id)source renderRequest:(id)request;
 @end
 
 @implementation PTRaytracingV3001
 
-- (PTRaytracingV3001)initWithMetalContext:(id)a3 colorSize:(CGSize)a4 disparitySize:(CGSize)a5 debugRendering:(int64_t)a6 verbose:(BOOL)a7 options:(id)a8 quality:(int)a9
+- (PTRaytracingV3001)initWithMetalContext:(id)context colorSize:(CGSize)size disparitySize:(CGSize)disparitySize debugRendering:(int64_t)rendering verbose:(BOOL)verbose options:(id)options quality:(int)quality
 {
-  v9 = *&a9;
-  width = a5.width;
-  height = a5.height;
-  v283 = a4.height;
-  v284 = a4.width;
-  v14 = a3;
-  v15 = a8;
+  v9 = *&quality;
+  width = disparitySize.width;
+  height = disparitySize.height;
+  v283 = size.height;
+  v284 = size.width;
+  contextCopy = context;
+  optionsCopy = options;
   v289.receiver = self;
   v289.super_class = PTRaytracingV3001;
   v16 = [(PTRaytracingV3001 *)&v289 init];
@@ -23,10 +23,10 @@
   }
 
   PTKTraceInit();
-  objc_storeStrong(v16 + 5, a3);
-  *(v16 + 4) = a6;
-  objc_storeStrong(v16 + 1, a8);
-  v17 = [PTQualitySettings createWithQuality:v9 options:v15];
+  objc_storeStrong(v16 + 5, context);
+  *(v16 + 4) = rendering;
+  objc_storeStrong(v16 + 1, options);
+  v17 = [PTQualitySettings createWithQuality:v9 options:optionsCopy];
   v18 = *(v16 + 11);
   *(v16 + 11) = v17;
 
@@ -47,9 +47,9 @@
   *(v16 + 16) = v21;
   *(v16 + 13) = 1082130432;
   v16[144] = 0;
-  v22 = [*(v16 + 11) quality];
+  quality = [*(v16 + 11) quality];
   v23 = v16[144];
-  if (v22 >= 100)
+  if (quality >= 100)
   {
     v16[49] = 0;
     v24 = v16 + 49;
@@ -84,10 +84,10 @@
     goto LABEL_75;
   }
 
-  v35 = [*(v16 + 5) textureUtil];
-  v36 = [v35 createWithSize:115 pixelFormat:v284, v283];
+  textureUtil = [*(v16 + 5) textureUtil];
+  v283 = [textureUtil createWithSize:115 pixelFormat:v284, v283];
   v37 = *(v16 + 17);
-  *(v16 + 17) = v36;
+  *(v16 + 17) = v283;
 
   if (!*(v16 + 17))
   {
@@ -101,12 +101,12 @@
   }
 
 LABEL_11:
-  v38 = [v15 objectForKeyedSubscript:&unk_2837F3010];
+  v38 = [optionsCopy objectForKeyedSubscript:&unk_2837F3010];
   v16[48] = v38 != 0;
 
   if (v16[48] == 1)
   {
-    v39 = [v15 objectForKeyedSubscript:&unk_2837F3010];
+    v39 = [optionsCopy objectForKeyedSubscript:&unk_2837F3010];
     v40 = *(v16 + 2);
     *(v16 + 2) = v39;
 
@@ -148,9 +148,9 @@ LABEL_14:
           if (*(v16 + 21))
           {
             v16[264] = 0;
-            v53 = [*(v16 + 11) doMacroApertureLimit];
+            doMacroApertureLimit = [*(v16 + 11) doMacroApertureLimit];
             v54 = 0.0051429;
-            if (v53)
+            if (doMacroApertureLimit)
             {
               v54 = 0.00043025;
             }
@@ -181,20 +181,20 @@ LABEL_14:
             *(v16 + 34) = vcvt_f32_f64(v59);
             *(v16 + 35) = vcvt_f32_f64(v61);
             *(v16 + 292) = 0x3F6666663F99999ALL;
-            v62 = [v15 objectForKeyedSubscript:&unk_2837F3028];
+            v62 = [optionsCopy objectForKeyedSubscript:&unk_2837F3028];
 
             if (v62)
             {
-              v63 = [v15 objectForKeyedSubscript:&unk_2837F3028];
+              v63 = [optionsCopy objectForKeyedSubscript:&unk_2837F3028];
               [v63 floatValue];
               *(v16 + 73) = v64;
             }
 
-            v65 = [v15 objectForKeyedSubscript:&unk_2837F3040];
+            v65 = [optionsCopy objectForKeyedSubscript:&unk_2837F3040];
 
             if (v65)
             {
-              v66 = [v15 objectForKeyedSubscript:&unk_2837F3040];
+              v66 = [optionsCopy objectForKeyedSubscript:&unk_2837F3040];
               [v66 floatValue];
               *(v16 + 74) = v67;
             }
@@ -203,7 +203,7 @@ LABEL_14:
 
             *(v16 + 72) = 1059732849;
             *(v16 + 75) = 1020054733;
-            v288 = [*(v16 + 11) rayMarch];
+            rayMarch = [*(v16 + 11) rayMarch];
             [*(v16 + 11) renderDownscale];
             v73 = 3.0;
             if (v74 <= 3.0)
@@ -223,7 +223,7 @@ LABEL_14:
             v280 = v78;
             v79 = objc_opt_new();
             [v79 setConstantValue:v16 + 268 type:29 withName:@"kRaycount"];
-            [v79 setConstantValue:&v288 type:53 withName:@"kRayMarch"];
+            [v79 setConstantValue:&rayMarch type:53 withName:@"kRayMarch"];
             [v79 setConstantValue:v24 type:53 withName:@"kSkipFullSizeLayer"];
             LODWORD(v80) = _S8;
             [v79 setConstantFloat:@"kRadiusLocal_float" withName:v80];
@@ -255,9 +255,9 @@ LABEL_14:
 
             if ([*(v16 + 11) rayMarch])
             {
-              v88 = [[PTGlobalReduction alloc] initWithMetalContext:*(v16 + 5) textureSize:width, height];
+              height = [[PTGlobalReduction alloc] initWithMetalContext:*(v16 + 5) textureSize:width, height];
               v89 = *(v16 + 14);
-              *(v16 + 14) = v88;
+              *(v16 + 14) = height;
 
               if (!*(v16 + 14))
               {
@@ -270,8 +270,8 @@ LABEL_14:
                 goto LABEL_102;
               }
 
-              v90 = [*(v16 + 5) device];
-              v91 = [v90 newBufferWithLength:8 options:0];
+              device = [*(v16 + 5) device];
+              v91 = [device newBufferWithLength:8 options:0];
               v92 = *(v16 + 22);
               *(v16 + 22) = v91;
 
@@ -286,10 +286,10 @@ LABEL_14:
                 goto LABEL_102;
               }
 
-              v93 = [*(v16 + 5) textureUtil];
-              v94 = [v93 createWithSize:10 pixelFormat:width, height];
+              textureUtil2 = [*(v16 + 5) textureUtil];
+              height2 = [textureUtil2 createWithSize:10 pixelFormat:width, height];
               v95 = *(v16 + 23);
-              *(v16 + 23) = v94;
+              *(v16 + 23) = height2;
 
               if (!*(v16 + 23))
               {
@@ -302,10 +302,10 @@ LABEL_14:
                 goto LABEL_102;
               }
 
-              v96 = [*(v16 + 5) textureUtil];
-              v97 = [v96 createWithSize:10 pixelFormat:width, height];
+              textureUtil3 = [*(v16 + 5) textureUtil];
+              height3 = [textureUtil3 createWithSize:10 pixelFormat:width, height];
               v98 = *(v16 + 24);
-              *(v16 + 24) = v97;
+              *(v16 + 24) = height3;
 
               if (!*(v16 + 24))
               {
@@ -348,10 +348,10 @@ LABEL_14:
                 goto LABEL_102;
               }
 
-              v109 = [*(v16 + 5) textureUtil];
-              v110 = [v109 createWithSize:25 pixelFormat:v100, v102];
+              textureUtil4 = [*(v16 + 5) textureUtil];
+              v102 = [textureUtil4 createWithSize:25 pixelFormat:v100, v102];
               v111 = *(v16 + 27);
-              *(v16 + 27) = v110;
+              *(v16 + 27) = v102;
 
               v112 = *(v16 + 27);
               if (!v112)
@@ -366,10 +366,10 @@ LABEL_14:
               }
 
               v113 = *(v16 + 2);
-              v114 = [v112 width];
-              v115 = [*(v16 + 27) height];
-              v285 = v114;
-              v286 = v115;
+              width = [v112 width];
+              height4 = [*(v16 + 27) height];
+              v285 = width;
+              v286 = height4;
               v287 = 1;
               v116 = [v113 findMipmapLevelLargerThan:&v285];
               v117 = *(v16 + 32);
@@ -389,10 +389,10 @@ LABEL_14:
               goto LABEL_106;
             }
 
-            v121 = [*(v16 + 5) textureUtil];
-            v122 = [v121 createWithSize:25 pixelFormat:width, height];
+            textureUtil5 = [*(v16 + 5) textureUtil];
+            height5 = [textureUtil5 createWithSize:25 pixelFormat:width, height];
             v123 = *(v16 + 26);
-            *(v16 + 26) = v122;
+            *(v16 + 26) = height5;
 
             if (!*(v16 + 26))
             {
@@ -405,10 +405,10 @@ LABEL_14:
               goto LABEL_102;
             }
 
-            v124 = [*(v16 + 5) textureUtil];
-            v125 = [v124 createWithSize:25 pixelFormat:width, height];
+            textureUtil6 = [*(v16 + 5) textureUtil];
+            height6 = [textureUtil6 createWithSize:25 pixelFormat:width, height];
             v126 = *(v16 + 25);
-            *(v16 + 25) = v125;
+            *(v16 + 25) = height6;
 
             if (!*(v16 + 25))
             {
@@ -427,8 +427,8 @@ LABEL_14:
               }
 
 LABEL_106:
-              v127 = [*(v16 + 5) textureUtil];
-              v128 = v127;
+              textureUtil7 = [*(v16 + 5) textureUtil];
+              v128 = textureUtil7;
               v129 = *(v16 + 27);
               v130 = width;
               if (v129)
@@ -446,9 +446,9 @@ LABEL_106:
                 v130 = v100;
               }
 
-              v132 = [v127 createWithSize:25 pixelFormat:v130, v131];
+              v131 = [textureUtil7 createWithSize:25 pixelFormat:v130, v131];
               v133 = *(v16 + 28);
-              *(v16 + 28) = v132;
+              *(v16 + 28) = v131;
 
               if (!*(v16 + 28))
               {
@@ -462,11 +462,11 @@ LABEL_106:
               else
               {
 LABEL_53:
-                v134 = [*(v16 + 5) textureUtil];
+                textureUtil8 = [*(v16 + 5) textureUtil];
                 [*(v16 + 11) renderDownscale];
                 v136 = (v284 / v135);
                 [*(v16 + 11) renderDownscale];
-                v138 = [v134 createWithWidth:v136 height:(v283 / v137) pixelFormat:objc_msgSend(*(v16 + 11), "intermediatePixelFormat")];
+                v138 = [textureUtil8 createWithWidth:v136 height:(v283 / v137) pixelFormat:objc_msgSend(*(v16 + 11), "intermediatePixelFormat")];
                 v139 = *(v16 + 29);
                 *(v16 + 29) = v138;
 
@@ -569,15 +569,15 @@ LABEL_77:
   return v145;
 }
 
-- (int)renderContinuousWithSource:(id)a3 renderRequest:(id)a4
+- (int)renderContinuousWithSource:(id)source renderRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 renderState];
-  [v8 quality];
-  [v7 fNumber];
-  [v7 focusDisparity];
-  [v7 alphaLowLight];
+  sourceCopy = source;
+  requestCopy = request;
+  renderState = [requestCopy renderState];
+  [renderState quality];
+  [requestCopy fNumber];
+  [requestCopy focusDisparity];
+  [requestCopy alphaLowLight];
   kdebug_trace();
 
   v92 = 0u;
@@ -586,38 +586,38 @@ LABEL_77:
   *&v9 = self->_radialObstructionFactor;
   *&v10 = self->_circleOfConfusionReference;
   *&v11 = self->_fNumberLimitWeight;
-  [PTRaytracingUtils createFocusObject:v7 anamorphicFactor:COERCE_DOUBLE(LODWORD(self->_anamorphicFactor)) radialObstructionFactor:v9 colorSize:*self->_sourceColorSize circleOfConfusionReference:v10 fNumberLimitWeight:v11];
+  [PTRaytracingUtils createFocusObject:requestCopy anamorphicFactor:COERCE_DOUBLE(LODWORD(self->_anamorphicFactor)) radialObstructionFactor:v9 colorSize:*self->_sourceColorSize circleOfConfusionReference:v10 fNumberLimitWeight:v11];
   memset(v90, 0, sizeof(v90));
-  v12 = [v7 sourceDisparity];
+  sourceDisparity = [requestCopy sourceDisparity];
   if (!self->_injectedRGBAPyramid)
   {
-    v13 = [v7 sourceColor];
-    [(PTPyramid *)self->_rgbaPyramid updatePyramid:v6 inPTTexture:v13];
+    sourceColor = [requestCopy sourceColor];
+    [(PTPyramid *)self->_rgbaPyramid updatePyramid:sourceCopy inPTTexture:sourceColor];
   }
 
-  v14 = [(PTQualitySettings *)self->_qualitySettings doCenterDisparity];
-  v15 = v12;
-  if (v14)
+  doCenterDisparity = [(PTQualitySettings *)self->_qualitySettings doCenterDisparity];
+  v15 = sourceDisparity;
+  if (doCenterDisparity)
   {
     v16 = (*&v91 + *&v91) * *(&v91 + 2);
     *&v16 = v16;
     v17 = vdiv_f32(*&self->_circleOfConfusionLimitBgFg[4], vdup_lane_s32(*&v16, 0));
     v18 = -v17.f32[0];
     v19 = v17.i32[1];
-    v20 = [(PTQualitySettings *)self->_qualitySettings portraitPreviewDeadzone];
+    portraitPreviewDeadzone = [(PTQualitySettings *)self->_qualitySettings portraitPreviewDeadzone];
     raytracingUtils = self->_raytracingUtils;
     disparityDiff = self->_disparityDiff;
     *&v23 = -*(&v91 + 1);
     *&v24 = v18;
     LODWORD(v25) = v19;
-    if (v20)
+    if (portraitPreviewDeadzone)
     {
-      [(PTRaytracingUtils *)raytracingUtils disparityPortraitPreviewDeadzone:v6 inDisparity:v12 outDisparity:disparityDiff postModifier:v23, v24, v25];
+      [(PTRaytracingUtils *)raytracingUtils disparityPortraitPreviewDeadzone:sourceCopy inDisparity:sourceDisparity outDisparity:disparityDiff postModifier:v23, v24, v25];
     }
 
     else
     {
-      [(PTRaytracingUtils *)raytracingUtils disparityApplyPostModifier:v6 inDisparity:v12 outDisparity:disparityDiff postModifier:v23, v24, v25];
+      [(PTRaytracingUtils *)raytracingUtils disparityApplyPostModifier:sourceCopy inDisparity:sourceDisparity outDisparity:disparityDiff postModifier:v23, v24, v25];
     }
 
     v15 = self->_disparityDiff;
@@ -627,7 +627,7 @@ LABEL_77:
   globalReduction = self->_globalReduction;
   if (globalReduction)
   {
-    [(PTGlobalReduction *)globalReduction parallelReductionMinMax:v6 inTexture:v26 globalMinMaxBuffer:self->_disparityDiffGlobalMinMax];
+    [(PTGlobalReduction *)globalReduction parallelReductionMinMax:sourceCopy inTexture:v26 globalMinMaxBuffer:self->_disparityDiffGlobalMinMax];
     v32 = self->_raytracingUtils;
     disparityEdges = self->_disparityEdges;
     disparityEdgesTemp = self->_disparityEdgesTemp;
@@ -636,7 +636,7 @@ LABEL_77:
     v87 = v91;
     v88 = v92;
     v89 = v93;
-    [(PTRaytracingUtils *)v32 detectDilatedEdges:v6 inDisparity:v26 tempEdges:disparityEdgesTemp outEdges:disparityEdges focusObject:&v87 disparityDiffMinMax:disparityDiffGlobalMinMax edgeTolerance:v36];
+    [(PTRaytracingUtils *)v32 detectDilatedEdges:sourceCopy inDisparity:v26 tempEdges:disparityEdgesTemp outEdges:disparityEdges focusObject:&v87 disparityDiffMinMax:disparityDiffGlobalMinMax edgeTolerance:v36];
   }
 
   guidedFilter = self->_guidedFilter;
@@ -645,8 +645,8 @@ LABEL_77:
     guideRGBACoefficients = self->_guideRGBACoefficients;
     guideRGBAUpscale = self->_guideRGBAUpscale;
     disparityDiffUpscaled = self->_disparityDiffUpscaled;
-    v41 = [v7 renderState];
-    -[PTGuidedFilter guidedFilter:image:guideRGBACoefficients:guideRGBAUpscale:upscaledImage:sourceColorBitDepth:postModifierPtr:](guidedFilter, "guidedFilter:image:guideRGBACoefficients:guideRGBAUpscale:upscaledImage:sourceColorBitDepth:postModifierPtr:", v6, v26, guideRGBACoefficients, guideRGBAUpscale, disparityDiffUpscaled, [v41 sourceColorBitDepth], 0);
+    renderState2 = [requestCopy renderState];
+    -[PTGuidedFilter guidedFilter:image:guideRGBACoefficients:guideRGBAUpscale:upscaledImage:sourceColorBitDepth:postModifierPtr:](guidedFilter, "guidedFilter:image:guideRGBACoefficients:guideRGBAUpscale:upscaledImage:sourceColorBitDepth:postModifierPtr:", sourceCopy, v26, guideRGBACoefficients, guideRGBAUpscale, disparityDiffUpscaled, [renderState2 sourceColorBitDepth], 0);
 
     v42 = self->_disparityDiffUpscaled;
     v26 = v42;
@@ -658,14 +658,14 @@ LABEL_77:
     *&v28 = self->_focusEdge.gradientThreshold;
     *&v29 = self->_focusEdge.gradientWeight;
     *&v30 = self->_focusEdge.minMaxThreshold;
-    [(PTRaytracingUtils *)self->_raytracingUtils focusEdgeMask:v6 inDisparityDiff:v26 focusEdge:v27 outFocusEdgeMask:v28, v29, v30];
+    [(PTRaytracingUtils *)self->_raytracingUtils focusEdgeMask:sourceCopy inDisparityDiff:v26 focusEdge:v27 outFocusEdgeMask:v28, v29, v30];
   }
 
   v87 = 0u;
   v88 = 0u;
-  if (v7)
+  if (requestCopy)
   {
-    [v7 scissorRect];
+    [requestCopy scissorRect];
   }
 
   else
@@ -674,8 +674,8 @@ LABEL_77:
     v86 = 0uLL;
   }
 
-  v43 = [v7 destinationColor];
-  +[PTImageblockConfig adjustScissorRectToImageBlocks:imageBlockSize:](PTImageblockConfig, "adjustScissorRectToImageBlocks:imageBlockSize:", &v85, [v43 imageBlockSize]);
+  destinationColor = [requestCopy destinationColor];
+  +[PTImageblockConfig adjustScissorRectToImageBlocks:imageBlockSize:](PTImageblockConfig, "adjustScissorRectToImageBlocks:imageBlockSize:", &v85, [destinationColor imageBlockSize]);
 
   v79 = v87;
   [(PTQualitySettings *)self->_qualitySettings renderDownscale];
@@ -687,28 +687,28 @@ LABEL_77:
   v52 = vmovn_s64(vcvtq_s64_f64(vmaxnmq_f64(vrndmq_f64(vaddq_f64(vcvtq_f64_f32(vdiv_f32(v45, __PAIR64__(v46, v80))), _Q1)), 0)));
   v84[1] = v52.i16[2];
   v84[0] = v52.i16[0];
-  v53 = [(MTLTexture *)self->_raytracedRGBWeight width];
+  width = [(MTLTexture *)self->_raytracedRGBWeight width];
   v45.f32[0] = v88;
   [(PTQualitySettings *)self->_qualitySettings renderDownscale];
   v55 = ceil((v45.f32[0] / v54) + 0.5);
-  if (v55 > v53)
+  if (v55 > width)
   {
-    v55 = v53;
+    v55 = width;
   }
 
   v56 = v55;
-  v57 = [(MTLTexture *)self->_raytracedRGBWeight height];
+  height = [(MTLTexture *)self->_raytracedRGBWeight height];
   v58 = *(&v88 + 1);
   [(PTQualitySettings *)self->_qualitySettings renderDownscale];
   v60 = ceil((v58 / v59) + 0.5);
-  if (v60 > v57)
+  if (v60 > height)
   {
-    v60 = v57;
+    v60 = height;
   }
 
   v61 = v60;
-  v62 = [v6 computeCommandEncoder];
-  if (!v62)
+  computeCommandEncoder = [sourceCopy computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     v63 = _PTLogSystem();
     if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
@@ -717,33 +717,33 @@ LABEL_77:
     }
   }
 
-  [v62 setComputePipelineState:self->_raytracingSDOF];
-  v71 = [(PTPyramid *)self->_rgbaPyramid mipmapTexture];
-  [v62 setTexture:v71 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_raytracingSDOF];
+  mipmapTexture = [(PTPyramid *)self->_rgbaPyramid mipmapTexture];
+  [computeCommandEncoder setTexture:mipmapTexture atIndex:0];
 
-  [v62 setTexture:v26 atIndex:1];
-  [v62 setTexture:self->_disparityEdges atIndex:2];
-  [v62 setTexture:self->_raytracedRGBWeight atIndex:3];
-  [v62 setTexture:self->_focusEdgeMask atIndex:4];
-  [v62 setBytes:v90 length:24 atIndex:0];
-  [v62 setBuffer:self->_aperturePoints.xy offset:0 atIndex:1];
-  [v62 setBuffer:self->_randomUChars offset:0 atIndex:2];
-  [v62 setBuffer:self->_disparityDiffGlobalMinMax offset:0 atIndex:3];
-  [v62 setBytes:self->_sourceColorSize length:8 atIndex:4];
-  [v62 setBytes:self->_sourceDisparitySize length:8 atIndex:5];
-  [v62 setBytes:v84 length:4 atIndex:6];
+  [computeCommandEncoder setTexture:v26 atIndex:1];
+  [computeCommandEncoder setTexture:self->_disparityEdges atIndex:2];
+  [computeCommandEncoder setTexture:self->_raytracedRGBWeight atIndex:3];
+  [computeCommandEncoder setTexture:self->_focusEdgeMask atIndex:4];
+  [computeCommandEncoder setBytes:v90 length:24 atIndex:0];
+  [computeCommandEncoder setBuffer:self->_aperturePoints.xy offset:0 atIndex:1];
+  [computeCommandEncoder setBuffer:self->_randomUChars offset:0 atIndex:2];
+  [computeCommandEncoder setBuffer:self->_disparityDiffGlobalMinMax offset:0 atIndex:3];
+  [computeCommandEncoder setBytes:self->_sourceColorSize length:8 atIndex:4];
+  [computeCommandEncoder setBytes:self->_sourceDisparitySize length:8 atIndex:5];
+  [computeCommandEncoder setBytes:v84 length:4 atIndex:6];
   *&v85 = v56;
   *(&v85 + 1) = v61;
   *&v86 = 1;
   v82 = vdupq_n_s64(8uLL);
   v83 = 1;
-  [v62 dispatchThreads:&v85 threadsPerThreadgroup:&v82];
-  [v62 endEncoding];
+  [computeCommandEncoder dispatchThreads:&v85 threadsPerThreadgroup:&v82];
+  [computeCommandEncoder endEncoding];
   v72 = self->_raytracedRGBWeight;
   if (self->_raytracedRGBWeightUpscaled)
   {
-    v73 = [(PTMetalContext *)self->_metalContext textureUtil];
-    [v73 copy:v6 inTex:self->_raytracedRGBWeight outTex:self->_raytracedRGBWeightUpscaled];
+    textureUtil = [(PTMetalContext *)self->_metalContext textureUtil];
+    [textureUtil copy:sourceCopy inTex:self->_raytracedRGBWeight outTex:self->_raytracedRGBWeightUpscaled];
 
     v74 = self->_raytracedRGBWeightUpscaled;
     v72 = v74;
@@ -752,14 +752,14 @@ LABEL_77:
   raytracingInterpolateResult = self->_raytracingInterpolateResult;
   if (self->_skipFullSizeLayer)
   {
-    [(PTRaytracingInterpolateResult *)self->_raytracingInterpolateResult interpolateRGBWeightUsingSourceToDest:v6 renderRequest:v7 inRGBWeight:v72];
+    [(PTRaytracingInterpolateResult *)self->_raytracingInterpolateResult interpolateRGBWeightUsingSourceToDest:sourceCopy renderRequest:requestCopy inRGBWeight:v72];
   }
 
   else
   {
-    v76 = [(PTPyramid *)self->_rgbaPyramid mipmapLevels];
-    v77 = [v76 objectAtIndexedSubscript:0];
-    [(PTRaytracingInterpolateResult *)raytracingInterpolateResult interpolateRGBWeightUsingRGBALinearToDest:v6 renderRequest:v7 inRGBWeight:v72 inRGBA:v77];
+    mipmapLevels = [(PTPyramid *)self->_rgbaPyramid mipmapLevels];
+    v77 = [mipmapLevels objectAtIndexedSubscript:0];
+    [(PTRaytracingInterpolateResult *)raytracingInterpolateResult interpolateRGBWeightUsingRGBALinearToDest:sourceCopy renderRequest:requestCopy inRGBWeight:v72 inRGBA:v77];
   }
 
   if (kdebug_is_enabled())
@@ -769,7 +769,7 @@ LABEL_77:
     v81[2] = __62__PTRaytracingV3001_renderContinuousWithSource_renderRequest___block_invoke;
     v81[3] = &unk_278522E68;
     v81[4] = self;
-    [v6 addCompletedHandler:v81];
+    [sourceCopy addCompletedHandler:v81];
   }
 
   return 0;

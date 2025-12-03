@@ -1,26 +1,26 @@
 @interface WFDiagnosticsResultItemAWDL
-- (WFDiagnosticsResultItemAWDL)initWithResults:(id)a3;
+- (WFDiagnosticsResultItemAWDL)initWithResults:(id)results;
 @end
 
 @implementation WFDiagnosticsResultItemAWDL
 
-- (WFDiagnosticsResultItemAWDL)initWithResults:(id)a3
+- (WFDiagnosticsResultItemAWDL)initWithResults:(id)results
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v49.receiver = self;
   v49.super_class = WFDiagnosticsResultItemAWDL;
   v5 = [(WFDiagnosticsResultItemAWDL *)&v49 init];
-  v6 = [v4 awdlDiagnosticsResults];
-  [(WFDiagnosticsResultItemAWDL *)v5 setResults:v6];
+  awdlDiagnosticsResults = [resultsCopy awdlDiagnosticsResults];
+  [(WFDiagnosticsResultItemAWDL *)v5 setResults:awdlDiagnosticsResults];
 
   v7 = objc_opt_new();
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v8 = [(WFDiagnosticsResultItemAWDL *)v5 results];
-  v9 = [v8 countByEnumeratingWithState:&v45 objects:v51 count:16];
+  results = [(WFDiagnosticsResultItemAWDL *)v5 results];
+  v9 = [results countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v9)
   {
     v10 = v9;
@@ -32,7 +32,7 @@
       {
         if (*v46 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(results);
         }
 
         v14 = *(*(&v45 + 1) + 8 * i);
@@ -55,7 +55,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v45 objects:v51 count:16];
+      v10 = [results countByEnumeratingWithState:&v45 objects:v51 count:16];
       if (v10)
       {
         continue;
@@ -76,8 +76,8 @@ LABEL_18:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v17 = [(WFDiagnosticsResultItemAWDL *)v5 results];
-  v18 = [v17 countByEnumeratingWithState:&v40 objects:v50 count:16];
+  results2 = [(WFDiagnosticsResultItemAWDL *)v5 results];
+  v18 = [results2 countByEnumeratingWithState:&v40 objects:v50 count:16];
   if (v18)
   {
     v19 = v18;
@@ -89,7 +89,7 @@ LABEL_18:
       {
         if (*v41 != v21)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(results2);
         }
 
         v23 = *(*(&v40 + 1) + 8 * j);
@@ -114,7 +114,7 @@ LABEL_18:
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v40 objects:v50 count:16];
+      v19 = [results2 countByEnumeratingWithState:&v40 objects:v50 count:16];
       if (v19)
       {
         continue;

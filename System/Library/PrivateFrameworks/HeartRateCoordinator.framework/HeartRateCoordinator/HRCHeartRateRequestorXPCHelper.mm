@@ -2,28 +2,28 @@
 - (HRCXPCConnectionHelperDelegate)delegate;
 - (NSXPCConnection)connection;
 - (void)connect;
-- (void)handleHeartRateData:(id)a3;
+- (void)handleHeartRateData:(id)data;
 - (void)invalidateConnection;
-- (void)requestStreamingMode:(unint64_t)a3;
-- (void)setUserWorkoutActivityType:(unint64_t)a3 locationType:(int64_t)a4;
-- (void)setupWithDelegate:(id)a3 onQueue:(id)a4;
-- (void)updateProcessName:(id)a3;
+- (void)requestStreamingMode:(unint64_t)mode;
+- (void)setUserWorkoutActivityType:(unint64_t)type locationType:(int64_t)locationType;
+- (void)setupWithDelegate:(id)delegate onQueue:(id)queue;
+- (void)updateProcessName:(id)name;
 @end
 
 @implementation HRCHeartRateRequestorXPCHelper
 
-- (void)setupWithDelegate:(id)a3 onQueue:(id)a4
+- (void)setupWithDelegate:(id)delegate onQueue:(id)queue
 {
-  v6 = a4;
-  objc_storeWeak(&self->_delegate, a3);
+  queueCopy = queue;
+  objc_storeWeak(&self->_delegate, delegate);
   primaryQueue = self->_primaryQueue;
-  self->_primaryQueue = v6;
+  self->_primaryQueue = queueCopy;
 }
 
 - (void)connect
 {
-  v3 = [(HRCHeartRateRequestorXPCHelper *)self primaryQueue];
-  dispatch_assert_queue_V2(v3);
+  primaryQueue = [(HRCHeartRateRequestorXPCHelper *)self primaryQueue];
+  dispatch_assert_queue_V2(primaryQueue);
 
   v4 = hws_get_framework_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -124,44 +124,44 @@ void __41__HRCHeartRateRequestorXPCHelper_connect__block_invoke_2()
   }
 }
 
-- (void)updateProcessName:(id)a3
+- (void)updateProcessName:(id)name
 {
-  v4 = a3;
-  v5 = [(HRCHeartRateRequestorXPCHelper *)self primaryQueue];
-  dispatch_assert_queue_V2(v5);
+  nameCopy = name;
+  primaryQueue = [(HRCHeartRateRequestorXPCHelper *)self primaryQueue];
+  dispatch_assert_queue_V2(primaryQueue);
 
-  v7 = [(HRCHeartRateRequestorXPCHelper *)self connection];
-  v6 = [v7 remoteObjectProxy];
-  [v6 updateProcessName:v4];
+  connection = [(HRCHeartRateRequestorXPCHelper *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy updateProcessName:nameCopy];
 }
 
-- (void)requestStreamingMode:(unint64_t)a3
+- (void)requestStreamingMode:(unint64_t)mode
 {
-  v5 = [(HRCHeartRateRequestorXPCHelper *)self primaryQueue];
-  dispatch_assert_queue_V2(v5);
+  primaryQueue = [(HRCHeartRateRequestorXPCHelper *)self primaryQueue];
+  dispatch_assert_queue_V2(primaryQueue);
 
-  v7 = [(HRCHeartRateRequestorXPCHelper *)self connection];
-  v6 = [v7 remoteObjectProxy];
-  [v6 requestStreamingMode:a3];
+  connection = [(HRCHeartRateRequestorXPCHelper *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy requestStreamingMode:mode];
 }
 
-- (void)setUserWorkoutActivityType:(unint64_t)a3 locationType:(int64_t)a4
+- (void)setUserWorkoutActivityType:(unint64_t)type locationType:(int64_t)locationType
 {
-  v7 = [(HRCHeartRateRequestorXPCHelper *)self primaryQueue];
-  dispatch_assert_queue_V2(v7);
+  primaryQueue = [(HRCHeartRateRequestorXPCHelper *)self primaryQueue];
+  dispatch_assert_queue_V2(primaryQueue);
 
-  v9 = [(HRCHeartRateRequestorXPCHelper *)self connection];
-  v8 = [v9 remoteObjectProxy];
-  [v8 setUserWorkoutActivityType:a3 locationType:a4];
+  connection = [(HRCHeartRateRequestorXPCHelper *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy setUserWorkoutActivityType:type locationType:locationType];
 }
 
 - (void)invalidateConnection
 {
-  v3 = [(HRCHeartRateRequestorXPCHelper *)self primaryQueue];
-  dispatch_assert_queue_V2(v3);
+  primaryQueue = [(HRCHeartRateRequestorXPCHelper *)self primaryQueue];
+  dispatch_assert_queue_V2(primaryQueue);
 
-  v4 = [(HRCHeartRateRequestorXPCHelper *)self connection];
-  if (v4)
+  connection = [(HRCHeartRateRequestorXPCHelper *)self connection];
+  if (connection)
   {
   }
 
@@ -177,18 +177,18 @@ void __41__HRCHeartRateRequestorXPCHelper_connect__block_invoke_2()
     _os_log_impl(&dword_2521DF000, v5, OS_LOG_TYPE_DEFAULT, "closing connection to server", v7, 2u);
   }
 
-  v6 = [(HRCHeartRateRequestorXPCHelper *)self connection];
-  [v6 invalidate];
+  connection2 = [(HRCHeartRateRequestorXPCHelper *)self connection];
+  [connection2 invalidate];
 
   [(HRCHeartRateRequestorXPCHelper *)self setConnection:0];
   [(HRCHeartRateRequestorXPCHelper *)self setConnected:0];
 }
 
-- (void)handleHeartRateData:(id)a3
+- (void)handleHeartRateData:(id)data
 {
-  v4 = a3;
-  v5 = [(HRCHeartRateRequestorXPCHelper *)self delegate];
-  [v5 handleHeartRateData:v4];
+  dataCopy = data;
+  delegate = [(HRCHeartRateRequestorXPCHelper *)self delegate];
+  [delegate handleHeartRateData:dataCopy];
 }
 
 - (NSXPCConnection)connection

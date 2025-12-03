@@ -1,16 +1,16 @@
 @interface GPHostSideExportedObject
-- (void)pickerWantsToStartCreationWithIsTransitionSupported:(BOOL)a3 replyHandler:(id)a4;
+- (void)pickerWantsToStartCreationWithIsTransitionSupported:(BOOL)supported replyHandler:(id)handler;
 @end
 
 @implementation GPHostSideExportedObject
 
-- (void)pickerWantsToStartCreationWithIsTransitionSupported:(BOOL)a3 replyHandler:(id)a4
+- (void)pickerWantsToStartCreationWithIsTransitionSupported:(BOOL)supported replyHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
 
-  sub_1D2A5C380(a3, sub_1D2A605BC, v6);
+  sub_1D2A5C380(supported, sub_1D2A605BC, v6);
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface HRUITableViewSectionConfiguration
 - (HRUITableViewSectionConfiguration)init;
 - (NSString)description;
-- (id)addSectionWithIdentifier:(id)a3 firstRowReuseIdentifier:(id)a4;
-- (id)addSectionWithIdentifier:(id)a3 rowReuseIdentifiers:(id)a4;
-- (id)rowAtIndexPath:(id)a3;
-- (int64_t)numberOfRowsInSection:(int64_t)a3;
+- (id)addSectionWithIdentifier:(id)identifier firstRowReuseIdentifier:(id)reuseIdentifier;
+- (id)addSectionWithIdentifier:(id)identifier rowReuseIdentifiers:(id)identifiers;
+- (id)rowAtIndexPath:(id)path;
+- (int64_t)numberOfRowsInSection:(int64_t)section;
 - (void)removeAllSections;
 @end
 
@@ -18,13 +18,13 @@
   return [(HRUITableViewSectionConfiguration *)&v3 init];
 }
 
-- (id)addSectionWithIdentifier:(id)a3 firstRowReuseIdentifier:(id)a4
+- (id)addSectionWithIdentifier:(id)identifier firstRowReuseIdentifier:(id)reuseIdentifier
 {
-  if (a3)
+  if (identifier)
   {
     v6 = sub_1D139016C();
     v8 = v7;
-    if (a4)
+    if (reuseIdentifier)
     {
 LABEL_3:
       v9 = sub_1D139016C();
@@ -42,7 +42,7 @@ LABEL_3:
   {
     v6 = 0;
     v8 = 0;
-    if (a4)
+    if (reuseIdentifier)
     {
       goto LABEL_3;
     }
@@ -50,15 +50,15 @@ LABEL_3:
 
   v12 = MEMORY[0x1E69E7CC0];
 LABEL_6:
-  v13 = self;
+  selfCopy = self;
   v14 = sub_1D125B4E0(v6, v8, v12);
 
   return v14;
 }
 
-- (id)addSectionWithIdentifier:(id)a3 rowReuseIdentifiers:(id)a4
+- (id)addSectionWithIdentifier:(id)identifier rowReuseIdentifiers:(id)identifiers
 {
-  if (a3)
+  if (identifier)
   {
     v5 = sub_1D139016C();
     v7 = v6;
@@ -71,7 +71,7 @@ LABEL_6:
   }
 
   v8 = sub_1D139045C();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_1D125B4E0(v5, v7, v8);
 
   return v10;
@@ -84,26 +84,26 @@ LABEL_6:
   *(self + v3) = MEMORY[0x1E69E7CC0];
 }
 
-- (int64_t)numberOfRowsInSection:(int64_t)a3
+- (int64_t)numberOfRowsInSection:(int64_t)section
 {
-  v4 = self;
-  v5 = sub_1D125B9B0(a3);
+  selfCopy = self;
+  v5 = sub_1D125B9B0(section);
 
   return v5;
 }
 
-- (id)rowAtIndexPath:(id)a3
+- (id)rowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1D125BB30(v4);
+  pathCopy = path;
+  selfCopy = self;
+  v6 = sub_1D125BB30(pathCopy);
 
   return v6;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D125BDE4();
 
   v3 = sub_1D139012C();

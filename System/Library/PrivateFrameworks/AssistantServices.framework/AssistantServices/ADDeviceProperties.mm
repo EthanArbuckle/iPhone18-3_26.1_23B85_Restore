@@ -1,15 +1,15 @@
 @interface ADDeviceProperties
 - (ADDeviceProperties)init;
-- (void)_getODDiOSDevicePropertiesWithGeneral:(id)a3 assistant:(id)a4 dictation:(id)a5 iOSGeneral:(id)a6 iOSAssistant:(id)a7 completion:(id)a8;
-- (void)_getODDmacOSDevicePropertiesWithGeneral:(id)a3 assistant:(id)a4 dictation:(id)a5 macOS:(id)a6 completion:(id)a7;
-- (void)_getODDtvOSDevicePropertiesWithGeneral:(id)a3 assistant:(id)a4 dictation:(id)a5 tvOS:(id)a6 completion:(id)a7;
-- (void)_getODDvisionOSDevicePropertiesWithGeneral:(id)a3 assistant:(id)a4 dictation:(id)a5 completion:(id)a6;
-- (void)_getODDwatchOSDevicePropertiesWithGeneral:(id)a3 assistant:(id)a4 dictation:(id)a5 watchOS:(id)a6 completion:(id)a7;
-- (void)_populateDevicePropertiesForClientEvent:(id)a3 withCompletion:(id)a4;
-- (void)_populateEventMetadataForClientEvent:(id)a3 withCompletion:(id)a4;
+- (void)_getODDiOSDevicePropertiesWithGeneral:(id)general assistant:(id)assistant dictation:(id)dictation iOSGeneral:(id)sGeneral iOSAssistant:(id)sAssistant completion:(id)completion;
+- (void)_getODDmacOSDevicePropertiesWithGeneral:(id)general assistant:(id)assistant dictation:(id)dictation macOS:(id)s completion:(id)completion;
+- (void)_getODDtvOSDevicePropertiesWithGeneral:(id)general assistant:(id)assistant dictation:(id)dictation tvOS:(id)s completion:(id)completion;
+- (void)_getODDvisionOSDevicePropertiesWithGeneral:(id)general assistant:(id)assistant dictation:(id)dictation completion:(id)completion;
+- (void)_getODDwatchOSDevicePropertiesWithGeneral:(id)general assistant:(id)assistant dictation:(id)dictation watchOS:(id)s completion:(id)completion;
+- (void)_populateDevicePropertiesForClientEvent:(id)event withCompletion:(id)completion;
+- (void)_populateEventMetadataForClientEvent:(id)event withCompletion:(id)completion;
 - (void)_triggerReportingForNullDeviceAggregationId;
-- (void)getODDDeviceAggregationIdWithCompletion:(id)a3;
-- (void)getODDDevicePropertiesWithCompletion:(id)a3;
+- (void)getODDDeviceAggregationIdWithCompletion:(id)completion;
+- (void)getODDDevicePropertiesWithCompletion:(id)completion;
 @end
 
 @implementation ADDeviceProperties
@@ -27,16 +27,16 @@
 
   v3 = +[SiriCoreSymptomsReporter sharedInstance];
   v4 = +[NSProcessInfo processInfo];
-  v5 = [v4 processIdentifier];
-  [v3 reportIssueForType:@"ODDDeviceProperties" subType:@"null_deviceAggregationId" context:&__NSDictionary0__struct processIdentifier:v5 walkboutStatus:byte_100590548];
+  processIdentifier = [v4 processIdentifier];
+  [v3 reportIssueForType:@"ODDDeviceProperties" subType:@"null_deviceAggregationId" context:&__NSDictionary0__struct processIdentifier:processIdentifier walkboutStatus:byte_100590548];
 }
 
-- (void)_getODDvisionOSDevicePropertiesWithGeneral:(id)a3 assistant:(id)a4 dictation:(id)a5 completion:(id)a6
+- (void)_getODDvisionOSDevicePropertiesWithGeneral:(id)general assistant:(id)assistant dictation:(id)dictation completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  generalCopy = general;
+  assistantCopy = assistant;
+  dictationCopy = dictation;
+  completionCopy = completion;
   v13 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -46,30 +46,30 @@
   }
 
   v14 = objc_alloc_init(ODDSiriSchemaODDvisionOSDevicePropertiesReported);
-  v15 = [v10 getODDAssistantProperties];
-  [v14 setAssistant:v15];
+  getODDAssistantProperties = [assistantCopy getODDAssistantProperties];
+  [v14 setAssistant:getODDAssistantProperties];
 
-  v16 = [v11 getODDDictationProperties];
-  [v14 setDictation:v16];
+  getODDDictationProperties = [dictationCopy getODDDictationProperties];
+  [v14 setDictation:getODDDictationProperties];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10013D05C;
   v19[3] = &unk_100512CC8;
   v20 = v14;
-  v21 = v12;
-  v17 = v12;
+  v21 = completionCopy;
+  v17 = completionCopy;
   v18 = v14;
-  [v9 getODDGeneralPropertiesWithCompletion:v19];
+  [generalCopy getODDGeneralPropertiesWithCompletion:v19];
 }
 
-- (void)_getODDmacOSDevicePropertiesWithGeneral:(id)a3 assistant:(id)a4 dictation:(id)a5 macOS:(id)a6 completion:(id)a7
+- (void)_getODDmacOSDevicePropertiesWithGeneral:(id)general assistant:(id)assistant dictation:(id)dictation macOS:(id)s completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  generalCopy = general;
+  assistantCopy = assistant;
+  dictationCopy = dictation;
+  sCopy = s;
+  completionCopy = completion;
   v16 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -79,33 +79,33 @@
   }
 
   v17 = objc_alloc_init(ODDSiriSchemaODDmacOSDevicePropertiesReported);
-  v18 = [v12 getODDAssistantProperties];
-  [v17 setAssistant:v18];
+  getODDAssistantProperties = [assistantCopy getODDAssistantProperties];
+  [v17 setAssistant:getODDAssistantProperties];
 
-  v19 = [v13 getODDDictationProperties];
-  [v17 setDictation:v19];
+  getODDDictationProperties = [dictationCopy getODDDictationProperties];
+  [v17 setDictation:getODDDictationProperties];
 
-  v20 = [v14 getODDmacOSAssistantProperties];
-  [v17 setMacOSAssistant:v20];
+  getODDmacOSAssistantProperties = [sCopy getODDmacOSAssistantProperties];
+  [v17 setMacOSAssistant:getODDmacOSAssistantProperties];
 
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10013D2B0;
   v23[3] = &unk_100512CC8;
   v24 = v17;
-  v25 = v15;
-  v21 = v15;
+  v25 = completionCopy;
+  v21 = completionCopy;
   v22 = v17;
-  [v11 getODDGeneralPropertiesWithCompletion:v23];
+  [generalCopy getODDGeneralPropertiesWithCompletion:v23];
 }
 
-- (void)_getODDtvOSDevicePropertiesWithGeneral:(id)a3 assistant:(id)a4 dictation:(id)a5 tvOS:(id)a6 completion:(id)a7
+- (void)_getODDtvOSDevicePropertiesWithGeneral:(id)general assistant:(id)assistant dictation:(id)dictation tvOS:(id)s completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  generalCopy = general;
+  assistantCopy = assistant;
+  dictationCopy = dictation;
+  sCopy = s;
+  completionCopy = completion;
   v17 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -116,11 +116,11 @@
 
   v18 = dispatch_group_create();
   v19 = objc_alloc_init(ODDSiriSchemaODDtvOSDevicePropertiesReported);
-  v20 = [v13 getODDAssistantProperties];
-  [v19 setAssistant:v20];
+  getODDAssistantProperties = [assistantCopy getODDAssistantProperties];
+  [v19 setAssistant:getODDAssistantProperties];
 
-  v21 = [v14 getODDDictationProperties];
-  [v19 setDictation:v21];
+  getODDDictationProperties = [dictationCopy getODDDictationProperties];
+  [v19 setDictation:getODDDictationProperties];
 
   dispatch_group_enter(v18);
   v35[0] = _NSConcreteStackBlock;
@@ -131,7 +131,7 @@
   v36 = v22;
   v23 = v18;
   v37 = v23;
-  [v12 getODDGeneralPropertiesWithCompletion:v35];
+  [generalCopy getODDGeneralPropertiesWithCompletion:v35];
   dispatch_group_enter(v23);
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
@@ -141,26 +141,26 @@
   v33 = v24;
   v34 = v23;
   v25 = v23;
-  [v15 getODDtvOSAssistantPropertiesWithCompletion:v32];
+  [sCopy getODDtvOSAssistantPropertiesWithCompletion:v32];
   queue = self->_queue;
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_10013D678;
   v29[3] = &unk_10051E038;
   v30 = v24;
-  v31 = v16;
+  v31 = completionCopy;
   v27 = v24;
-  v28 = v16;
+  v28 = completionCopy;
   dispatch_group_notify(v25, queue, v29);
 }
 
-- (void)_getODDwatchOSDevicePropertiesWithGeneral:(id)a3 assistant:(id)a4 dictation:(id)a5 watchOS:(id)a6 completion:(id)a7
+- (void)_getODDwatchOSDevicePropertiesWithGeneral:(id)general assistant:(id)assistant dictation:(id)dictation watchOS:(id)s completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  generalCopy = general;
+  assistantCopy = assistant;
+  dictationCopy = dictation;
+  sCopy = s;
+  completionCopy = completion;
   v16 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -170,34 +170,34 @@
   }
 
   v17 = objc_alloc_init(ODDSiriSchemaODDwatchOSDevicePropertiesReported);
-  v18 = [v12 getODDAssistantProperties];
-  [v17 setAssistant:v18];
+  getODDAssistantProperties = [assistantCopy getODDAssistantProperties];
+  [v17 setAssistant:getODDAssistantProperties];
 
-  v19 = [v13 getODDDictationProperties];
-  [v17 setDictation:v19];
+  getODDDictationProperties = [dictationCopy getODDDictationProperties];
+  [v17 setDictation:getODDDictationProperties];
 
-  v20 = [v14 getODDwatchOSAssistantProperties];
-  [v17 setWatchOSAssistant:v20];
+  getODDwatchOSAssistantProperties = [sCopy getODDwatchOSAssistantProperties];
+  [v17 setWatchOSAssistant:getODDwatchOSAssistantProperties];
 
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10013D890;
   v23[3] = &unk_100512CC8;
   v24 = v17;
-  v25 = v15;
-  v21 = v15;
+  v25 = completionCopy;
+  v21 = completionCopy;
   v22 = v17;
-  [v11 getODDGeneralPropertiesWithCompletion:v23];
+  [generalCopy getODDGeneralPropertiesWithCompletion:v23];
 }
 
-- (void)_getODDiOSDevicePropertiesWithGeneral:(id)a3 assistant:(id)a4 dictation:(id)a5 iOSGeneral:(id)a6 iOSAssistant:(id)a7 completion:(id)a8
+- (void)_getODDiOSDevicePropertiesWithGeneral:(id)general assistant:(id)assistant dictation:(id)dictation iOSGeneral:(id)sGeneral iOSAssistant:(id)sAssistant completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  generalCopy = general;
+  assistantCopy = assistant;
+  dictationCopy = dictation;
+  sGeneralCopy = sGeneral;
+  sAssistantCopy = sAssistant;
+  completionCopy = completion;
   v20 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -208,14 +208,14 @@
 
   v21 = dispatch_group_create();
   v22 = objc_alloc_init(ODDSiriSchemaODDiOSDevicePropertiesReported);
-  v23 = [v15 getODDAssistantProperties];
-  [v22 setAssistant:v23];
+  getODDAssistantProperties = [assistantCopy getODDAssistantProperties];
+  [v22 setAssistant:getODDAssistantProperties];
 
-  v24 = [v16 getODDDictationProperties];
-  [v22 setDictation:v24];
+  getODDDictationProperties = [dictationCopy getODDDictationProperties];
+  [v22 setDictation:getODDDictationProperties];
 
-  v25 = [v17 getODDiOSGeneralProperties];
-  [v22 setIOSGeneral:v25];
+  getODDiOSGeneralProperties = [sGeneralCopy getODDiOSGeneralProperties];
+  [v22 setIOSGeneral:getODDiOSGeneralProperties];
 
   dispatch_group_enter(v21);
   v39[0] = _NSConcreteStackBlock;
@@ -226,7 +226,7 @@
   v40 = v26;
   v27 = v21;
   v41 = v27;
-  [v14 getODDGeneralPropertiesWithCompletion:v39];
+  [generalCopy getODDGeneralPropertiesWithCompletion:v39];
   dispatch_group_enter(v27);
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
@@ -236,23 +236,23 @@
   v37 = v28;
   v38 = v27;
   v29 = v27;
-  [v18 getODDiOSAssistantPropertiesWithCompletion:v36];
+  [sAssistantCopy getODDiOSAssistantPropertiesWithCompletion:v36];
   queue = self->_queue;
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_10013DC88;
   v33[3] = &unk_10051E038;
   v34 = v28;
-  v35 = v19;
+  v35 = completionCopy;
   v31 = v28;
-  v32 = v19;
+  v32 = completionCopy;
   dispatch_group_notify(v29, queue, v33);
 }
 
-- (void)_populateDevicePropertiesForClientEvent:(id)a3 withCompletion:(id)a4
+- (void)_populateDevicePropertiesForClientEvent:(id)event withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   v8 = [[ADGeneralProperties alloc] initWithQueue:self->_queue];
   v9 = objc_alloc_init(ADAssistantProperties);
   v10 = objc_alloc_init(ADDictationProperties);
@@ -262,33 +262,33 @@
   v15[1] = 3221225472;
   v15[2] = sub_10013DE00;
   v15[3] = &unk_100512C50;
-  v16 = v6;
-  v17 = v7;
-  v13 = v7;
-  v14 = v6;
+  v16 = eventCopy;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = eventCopy;
   [(ADDeviceProperties *)self _getODDiOSDevicePropertiesWithGeneral:v8 assistant:v9 dictation:v10 iOSGeneral:v11 iOSAssistant:v12 completion:v15];
 }
 
-- (void)_populateEventMetadataForClientEvent:(id)a3 withCompletion:(id)a4
+- (void)_populateEventMetadataForClientEvent:(id)event withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10013DF1C;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = eventCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = eventCopy;
   dispatch_async(queue, block);
 }
 
-- (void)getODDDeviceAggregationIdWithCompletion:(id)a3
+- (void)getODDDeviceAggregationIdWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -315,28 +315,28 @@
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
     {
       v16 = v11;
-      v17 = [v7 dictionaryRepresentation];
+      dictionaryRepresentation = [v7 dictionaryRepresentation];
       *buf = 136315394;
       v21 = "[ADDeviceProperties getODDDeviceAggregationIdWithCompletion:]";
       v22 = 2112;
-      v23 = v17;
+      v23 = dictionaryRepresentation;
       _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "%s Successfully populated EventMetadataForClientEvent event %@", buf, 0x16u);
 
-      if (!v4)
+      if (!completionCopy)
       {
         goto LABEL_11;
       }
     }
 
-    else if (!v4)
+    else if (!completionCopy)
     {
       goto LABEL_11;
     }
 
 LABEL_10:
-    v12 = [v7 eventMetadata];
-    v13 = [v12 deviceAggregationId];
-    v4[2](v4, v13);
+    eventMetadata = [v7 eventMetadata];
+    deviceAggregationId = [eventMetadata deviceAggregationId];
+    completionCopy[2](completionCopy, deviceAggregationId);
 
     goto LABEL_11;
   }
@@ -344,16 +344,16 @@ LABEL_10:
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
   {
     v14 = v11;
-    v15 = [v7 dictionaryRepresentation];
+    dictionaryRepresentation2 = [v7 dictionaryRepresentation];
     *buf = 136315394;
     v21 = "[ADDeviceProperties getODDDeviceAggregationIdWithCompletion:]";
     v22 = 2112;
-    v23 = v15;
+    v23 = dictionaryRepresentation2;
     _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s Timed out waiting to populate EventMetadataForClientEvent event %@", buf, 0x16u);
   }
 
   AnalyticsSendEvent();
-  if (v4)
+  if (completionCopy)
   {
     goto LABEL_10;
   }
@@ -361,9 +361,9 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)getODDDevicePropertiesWithCompletion:(id)a3
+- (void)getODDDevicePropertiesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -398,42 +398,42 @@ LABEL_11:
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
     {
       v15 = v12;
-      v16 = [v7 dictionaryRepresentation];
+      dictionaryRepresentation = [v7 dictionaryRepresentation];
       *buf = 136315394;
       v25 = "[ADDeviceProperties getODDDevicePropertiesWithCompletion:]";
       v26 = 2112;
-      v27 = v16;
+      v27 = dictionaryRepresentation;
       _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%s Successfully populated ODDDeviceProperties event %@", buf, 0x16u);
 
-      if (!v4)
+      if (!completionCopy)
       {
         goto LABEL_11;
       }
     }
 
-    else if (!v4)
+    else if (!completionCopy)
     {
       goto LABEL_11;
     }
 
 LABEL_10:
-    v4[2](v4, v7);
+    completionCopy[2](completionCopy, v7);
     goto LABEL_11;
   }
 
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
   {
     v13 = v12;
-    v14 = [v7 dictionaryRepresentation];
+    dictionaryRepresentation2 = [v7 dictionaryRepresentation];
     *buf = 136315394;
     v25 = "[ADDeviceProperties getODDDevicePropertiesWithCompletion:]";
     v26 = 2112;
-    v27 = v14;
+    v27 = dictionaryRepresentation2;
     _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s Timed out waiting to populate ODDDeviceProperties event %@", buf, 0x16u);
   }
 
   AnalyticsSendEvent();
-  if (v4)
+  if (completionCopy)
   {
     goto LABEL_10;
   }

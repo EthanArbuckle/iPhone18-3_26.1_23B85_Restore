@@ -1,13 +1,13 @@
 @interface MUHikingTipSectionController
-- (BOOL)displayHikingTipWithViewModel:(id)a3;
+- (BOOL)displayHikingTipWithViewModel:(id)model;
 - (BOOL)hasContent;
 - (BOOL)hasContentBeforePersonalizedSuggestionArbitration;
 - (CLLocationCoordinate2D)coordinateForTooltip;
-- (MUHikingTipSectionController)initWithMapItem:(id)a3;
-- (MUHikingTipSectionController)initWithPlaceItem:(id)a3 tipDelegate:(id)a4;
+- (MUHikingTipSectionController)initWithMapItem:(id)item;
+- (MUHikingTipSectionController)initWithPlaceItem:(id)item tipDelegate:(id)delegate;
 - (NSArray)sectionViews;
 - (void)fetchHikingTip;
-- (void)requestHikingToolTipRegionIDForLocationCoordinate:(CLLocationCoordinate2D)a3;
+- (void)requestHikingToolTipRegionIDForLocationCoordinate:(CLLocationCoordinate2D)coordinate;
 - (void)tipTapped;
 @end
 
@@ -23,11 +23,11 @@
   return v3;
 }
 
-- (MUHikingTipSectionController)initWithPlaceItem:(id)a3 tipDelegate:(id)a4
+- (MUHikingTipSectionController)initWithPlaceItem:(id)item tipDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return HikingTipSectionController.init(placeItem:tipDelegate:)(a3);
+  return HikingTipSectionController.init(placeItem:tipDelegate:)(item);
 }
 
 - (BOOL)hasContentBeforePersonalizedSuggestionArbitration
@@ -48,24 +48,24 @@
 
 - (BOOL)hasContent
 {
-  v2 = self;
-  v3 = [(MUPlaceSectionController *)v2 personalizedSuggestionsArbiterDelegate];
-  if (v3)
+  selfCopy = self;
+  personalizedSuggestionsArbiterDelegate = [(MUPlaceSectionController *)selfCopy personalizedSuggestionsArbiterDelegate];
+  if (personalizedSuggestionsArbiterDelegate)
   {
-    v4 = [(MUPersonalizedSuggestionSectionArbiterDelegate *)v3 shouldShowHikingTipSection];
+    shouldShowHikingTipSection = [(MUPersonalizedSuggestionSectionArbiterDelegate *)personalizedSuggestionsArbiterDelegate shouldShowHikingTipSection];
     swift_unknownObjectRelease();
 
-    return v4;
+    return shouldShowHikingTipSection;
   }
 
   else
   {
-    v6 = *(&v2->super.super.isa + OBJC_IVAR___MUHikingTipSectionController__sectionViews);
+    v6 = *(&selfCopy->super.super.isa + OBJC_IVAR___MUHikingTipSectionController__sectionViews);
     if (v6 >> 62)
     {
       if (v6 < 0)
       {
-        v8 = *(&v2->super.super.isa + OBJC_IVAR___MUHikingTipSectionController__sectionViews);
+        v8 = *(&selfCopy->super.super.isa + OBJC_IVAR___MUHikingTipSectionController__sectionViews);
       }
 
       v7 = sub_1C584FB90();
@@ -82,17 +82,17 @@
 
 - (void)fetchHikingTip
 {
-  v2 = self;
+  selfCopy = self;
   HikingTipSectionController.fetchHikingTip()();
 }
 
 - (void)tipTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C570C6AC();
 }
 
-- (MUHikingTipSectionController)initWithMapItem:(id)a3
+- (MUHikingTipSectionController)initWithMapItem:(id)item
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -101,9 +101,9 @@
 
 - (CLLocationCoordinate2D)coordinateForTooltip
 {
-  v2 = self;
-  v3 = [(MUPlaceSectionController *)v2 mapItem];
-  [(MKMapItem *)v3 _coordinate];
+  selfCopy = self;
+  mapItem = [(MUPlaceSectionController *)selfCopy mapItem];
+  [(MKMapItem *)mapItem _coordinate];
   v5 = v4;
   v7 = v6;
 
@@ -114,21 +114,21 @@
   return result;
 }
 
-- (BOOL)displayHikingTipWithViewModel:(id)a3
+- (BOOL)displayHikingTipWithViewModel:(id)model
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C570C190(v4);
-  LOBYTE(self) = v4[OBJC_IVAR___MUHikingTipViewModel_usesOriginMapItem];
+  modelCopy = model;
+  selfCopy = self;
+  sub_1C570C190(modelCopy);
+  LOBYTE(self) = modelCopy[OBJC_IVAR___MUHikingTipViewModel_usesOriginMapItem];
 
-  *(&v5->super.super.isa + OBJC_IVAR___MUHikingTipSectionController_usesOriginMapItem) = self;
+  *(&selfCopy->super.super.isa + OBJC_IVAR___MUHikingTipSectionController_usesOriginMapItem) = self;
   return 1;
 }
 
-- (void)requestHikingToolTipRegionIDForLocationCoordinate:(CLLocationCoordinate2D)a3
+- (void)requestHikingToolTipRegionIDForLocationCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {

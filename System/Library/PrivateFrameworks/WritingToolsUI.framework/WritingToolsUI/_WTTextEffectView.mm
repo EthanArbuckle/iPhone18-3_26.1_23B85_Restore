@@ -1,32 +1,32 @@
 @interface _WTTextEffectView
-- (BOOL)_shouldApplyRemainderEffectForEffect:(id)a3;
-- (BOOL)hasActiveEffect:(id)a3;
+- (BOOL)_shouldApplyRemainderEffectForEffect:(id)effect;
+- (BOOL)hasActiveEffect:(id)effect;
 - (BOOL)hasActiveEffects;
 - (CGRect)cachedBounds;
 - (CGRect)cachedFrame;
 - (CGRect)cachedVisibleRect;
-- (_WTTextEffectView)initWithAsyncSource:(id)a3;
-- (_WTTextEffectView)initWithSource:(id)a3;
+- (_WTTextEffectView)initWithAsyncSource:(id)source;
+- (_WTTextEffectView)initWithSource:(id)source;
 - (_WTTextPreviewAsyncSource)asyncSource;
 - (_WTTextPreviewSource)source;
-- (id)addEffect:(id)a3;
-- (id)removeEffect:(id)a3 animated:(BOOL)a4;
-- (void)_cacheHeightOfPreviews:(id)a3 forEffect:(id)a4;
+- (id)addEffect:(id)effect;
+- (id)removeEffect:(id)effect animated:(BOOL)animated;
+- (void)_cacheHeightOfPreviews:(id)previews forEffect:(id)effect;
 - (void)_commonLayoutSubviews;
-- (void)_handleAddEffect:(id)a3 forAsyncSource:(id)a4;
-- (void)_handleAddEffect:(id)a3 forSource:(id)a4;
+- (void)_handleAddEffect:(id)effect forAsyncSource:(id)source;
+- (void)_handleAddEffect:(id)effect forSource:(id)source;
 - (void)dealloc;
-- (void)removeAllEffectsAnimated:(BOOL)a3;
-- (void)updateSnapshotForEffect:(id)a3;
-- (void)updateSnapshotForEffectID:(id)a3;
+- (void)removeAllEffectsAnimated:(BOOL)animated;
+- (void)updateSnapshotForEffect:(id)effect;
+- (void)updateSnapshotForEffectID:(id)d;
 - (void)updateSnapshots;
 @end
 
 @implementation _WTTextEffectView
 
-- (_WTTextEffectView)initWithSource:(id)a3
+- (_WTTextEffectView)initWithSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = _WTTextEffectView;
   v5 = [(_WTView *)&v9 init];
@@ -36,16 +36,16 @@
     [(_WTTextEffectView *)v5 setTextEffects:v6];
 
     [(_WTTextEffectView *)v5 setSourceIsAsync:0];
-    [(_WTTextEffectView *)v5 setSource:v4];
+    [(_WTTextEffectView *)v5 setSource:sourceCopy];
     v7 = v5;
   }
 
   return v5;
 }
 
-- (_WTTextEffectView)initWithAsyncSource:(id)a3
+- (_WTTextEffectView)initWithAsyncSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = _WTTextEffectView;
   v5 = [(_WTView *)&v9 init];
@@ -55,7 +55,7 @@
     [(_WTTextEffectView *)v5 setTextEffects:v6];
 
     [(_WTTextEffectView *)v5 setSourceIsAsync:1];
-    [(_WTTextEffectView *)v5 setAsyncSource:v4];
+    [(_WTTextEffectView *)v5 setAsyncSource:sourceCopy];
     v7 = v5;
   }
 
@@ -69,10 +69,10 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(_WTTextEffectView *)self textEffects];
-  v4 = [v3 allValues];
+  textEffects = [(_WTTextEffectView *)self textEffects];
+  allValues = [textEffects allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -84,14 +84,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * v8++) invalidate:0];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -102,54 +102,54 @@
   [(_WTTextEffectView *)&v9 dealloc];
 }
 
-- (id)addEffect:(id)a3
+- (id)addEffect:(id)effect
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = [(_WTTextEffectView *)self textEffects];
-  [v6 setObject:v4 forKey:v5];
+  effectCopy = effect;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  textEffects = [(_WTTextEffectView *)self textEffects];
+  [textEffects setObject:effectCopy forKey:uUID];
 
-  [v4 setIdentifier:v5];
+  [effectCopy setIdentifier:uUID];
   if ([(_WTTextEffectView *)self sourceIsAsync])
   {
-    v7 = [(_WTTextEffectView *)self asyncSource];
-    [(_WTTextEffectView *)self _handleAddEffect:v4 forAsyncSource:v7];
+    asyncSource = [(_WTTextEffectView *)self asyncSource];
+    [(_WTTextEffectView *)self _handleAddEffect:effectCopy forAsyncSource:asyncSource];
   }
 
   else
   {
-    v7 = [(_WTTextEffectView *)self source];
-    [(_WTTextEffectView *)self _handleAddEffect:v4 forSource:v7];
+    asyncSource = [(_WTTextEffectView *)self source];
+    [(_WTTextEffectView *)self _handleAddEffect:effectCopy forSource:asyncSource];
   }
 
-  return v5;
+  return uUID;
 }
 
-- (void)_handleAddEffect:(id)a3 forSource:(id)a4
+- (void)_handleAddEffect:(id)effect forSource:(id)source
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 chunk];
-  v9 = [v7 textPreviewsForChunk:v8];
+  effectCopy = effect;
+  sourceCopy = source;
+  chunk = [effectCopy chunk];
+  v9 = [sourceCopy textPreviewsForChunk:chunk];
 
-  [v6 updateEffectWith:v9];
-  if ([v6 hidesOriginal])
+  [effectCopy updateEffectWith:v9];
+  if ([effectCopy hidesOriginal])
   {
-    v10 = [v6 chunk];
-    [v7 updateIsTextVisible:0 forChunk:v10];
+    chunk2 = [effectCopy chunk];
+    [sourceCopy updateIsTextVisible:0 forChunk:chunk2];
   }
 
-  [(_WTTextEffectView *)self _cacheHeightOfPreviews:v9 forEffect:v6];
-  if ([(_WTTextEffectView *)self _shouldApplyRemainderEffectForEffect:v6])
+  [(_WTTextEffectView *)self _cacheHeightOfPreviews:v9 forEffect:effectCopy];
+  if ([(_WTTextEffectView *)self _shouldApplyRemainderEffectForEffect:effectCopy])
   {
     v11 = [[_WTTextRangeChunk alloc] initWithRange:0, 0];
     v12 = [(_WTReplaceTextEffect *)[_WTReplaceRemainderTextEffect alloc] initWithChunk:v11 effectView:self];
-    v13 = [MEMORY[0x1E696AFB0] UUID];
-    v14 = [(_WTTextEffectView *)self textEffects];
-    [v14 setObject:v12 forKey:v13];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    textEffects = [(_WTTextEffectView *)self textEffects];
+    [textEffects setObject:v12 forKey:uUID];
 
-    [(_WTTextEffect *)v12 setIdentifier:v13];
+    [(_WTTextEffect *)v12 setIdentifier:uUID];
     [(_WTTextEffectView *)self replaceSourceDuration];
     v16 = v15;
     [(_WTTextEffectView *)self replaceDestinationDuration];
@@ -159,12 +159,12 @@
     }
 
     [(_WTReplaceRemainderTextEffect *)v12 setDurationOverride:v17];
-    v18 = [(_WTTextEffectView *)self replaceSourceRect];
-    [v18 platformCGRectValue];
+    replaceSourceRect = [(_WTTextEffectView *)self replaceSourceRect];
+    [replaceSourceRect platformCGRectValue];
     v20 = v19;
 
-    v21 = [(_WTTextEffectView *)self replaceDestinationRect];
-    [v21 platformCGRectValue];
+    replaceDestinationRect = [(_WTTextEffectView *)self replaceDestinationRect];
+    [replaceDestinationRect platformCGRectValue];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -194,7 +194,7 @@
     [(_WTTextEffectView *)self setReplaceDestinationDuration:0.0];
     if (v39 > 0.0)
     {
-      v41 = [v7 textPreviewForRect:{v31, MaxY + v33, v35, v39}];
+      v41 = [sourceCopy textPreviewForRect:{v31, MaxY + v33, v35, v39}];
       v42 = v41;
       if (v41)
       {
@@ -204,18 +204,18 @@
 
         if ([(_WTTextEffect *)v12 hidesOriginal])
         {
-          v44 = [(_WTTextEffect *)v12 chunk];
-          [v7 updateIsTextVisible:0 forChunk:v44];
+          chunk3 = [(_WTTextEffect *)v12 chunk];
+          [sourceCopy updateIsTextVisible:0 forChunk:chunk3];
         }
       }
     }
   }
 }
 
-- (void)_handleAddEffect:(id)a3 forAsyncSource:(id)a4
+- (void)_handleAddEffect:(id)effect forAsyncSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  effectCopy = effect;
+  sourceCopy = source;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x4010000000;
@@ -227,30 +227,30 @@
   *(&v21 + 1) = v9;
   *&v22 = v10;
   *(&v22 + 1) = v11;
-  v12 = [v6 chunk];
+  chunk = [effectCopy chunk];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __53___WTTextEffectView__handleAddEffect_forAsyncSource___block_invoke;
   v15[3] = &unk_1E8481110;
-  v13 = v6;
+  v13 = effectCopy;
   v16 = v13;
-  v17 = self;
+  selfCopy = self;
   v19 = v20;
-  v14 = v7;
+  v14 = sourceCopy;
   v18 = v14;
-  [v14 textPreviewsForChunk:v12 completion:v15];
+  [v14 textPreviewsForChunk:chunk completion:v15];
 
   _Block_object_dispose(v20, 8);
 }
 
-- (BOOL)_shouldApplyRemainderEffectForEffect:(id)a3
+- (BOOL)_shouldApplyRemainderEffectForEffect:(id)effect
 {
-  v4 = a3;
-  v5 = [(_WTTextEffectView *)self replaceSourceRect];
-  if (v5)
+  effectCopy = effect;
+  replaceSourceRect = [(_WTTextEffectView *)self replaceSourceRect];
+  if (replaceSourceRect)
   {
-    v6 = [(_WTTextEffectView *)self replaceDestinationRect];
-    v7 = v6 != 0;
+    replaceDestinationRect = [(_WTTextEffectView *)self replaceDestinationRect];
+    v7 = replaceDestinationRect != 0;
   }
 
   else
@@ -261,24 +261,24 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v4 isDestination];
+    isDestination = [effectCopy isDestination];
   }
 
   else
   {
-    v8 = 0;
+    isDestination = 0;
   }
 
-  return v7 & v8;
+  return v7 & isDestination;
 }
 
-- (void)_cacheHeightOfPreviews:(id)a3 forEffect:(id)a4
+- (void)_cacheHeightOfPreviews:(id)previews forEffect:(id)effect
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 firstObject];
-  [v8 presentationFrame];
+  previewsCopy = previews;
+  effectCopy = effect;
+  firstObject = [previewsCopy firstObject];
+  [firstObject presentationFrame];
   x = v9;
   y = v11;
   width = v13;
@@ -288,7 +288,7 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v17 = v6;
+  v17 = previewsCopy;
   v18 = [v17 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v18)
   {
@@ -328,13 +328,13 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = [v7 isDestination];
+    isDestination = [effectCopy isDestination];
     v27 = [MEMORY[0x1E696B098] valueWithPlatformCGRect:{x, y, width, height}];
-    if (v26)
+    if (isDestination)
     {
       [(_WTTextEffectView *)self setReplaceDestinationRect:v27];
 
-      [v7 sweepDuration];
+      [effectCopy sweepDuration];
       [(_WTTextEffectView *)self setReplaceDestinationDuration:?];
     }
 
@@ -342,23 +342,23 @@
     {
       [(_WTTextEffectView *)self setReplaceSourceRect:v27];
 
-      [v7 sweepDuration];
+      [effectCopy sweepDuration];
       [(_WTTextEffectView *)self setReplaceSourceDuration:?];
     }
   }
 }
 
-- (void)removeAllEffectsAnimated:(BOOL)a3
+- (void)removeAllEffectsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(_WTTextEffectView *)self textEffects];
-  v6 = [v5 allKeys];
-  v7 = [v6 copy];
+  textEffects = [(_WTTextEffectView *)self textEffects];
+  allKeys = [textEffects allKeys];
+  v7 = [allKeys copy];
 
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
@@ -375,7 +375,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [(_WTTextEffectView *)self removeEffect:*(*(&v13 + 1) + 8 * v11++) animated:v3];
+        v12 = [(_WTTextEffectView *)self removeEffect:*(*(&v13 + 1) + 8 * v11++) animated:animatedCopy];
       }
 
       while (v9 != v11);
@@ -386,43 +386,43 @@
   }
 }
 
-- (id)removeEffect:(id)a3 animated:(BOOL)a4
+- (id)removeEffect:(id)effect animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(_WTTextEffectView *)self textEffects];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  animatedCopy = animated;
+  effectCopy = effect;
+  textEffects = [(_WTTextEffectView *)self textEffects];
+  v8 = [textEffects objectForKeyedSubscript:effectCopy];
 
-  v9 = [v8 chunk];
-  v10 = [v9 copy];
+  chunk = [v8 chunk];
+  v10 = [chunk copy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v8 isDestination];
+    isDestination = [v8 isDestination];
   }
 
   else
   {
-    v11 = 1;
+    isDestination = 1;
   }
 
-  v12 = [v8 hidesOriginal] & v11;
+  v12 = [v8 hidesOriginal] & isDestination;
   if ([(_WTTextEffectView *)self sourceIsAsync])
   {
     if (v12)
     {
-      v13 = [(_WTTextEffectView *)self asyncSource];
-      v14 = [v8 chunk];
+      asyncSource = [(_WTTextEffectView *)self asyncSource];
+      chunk2 = [v8 chunk];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __43___WTTextEffectView_removeEffect_animated___block_invoke;
       v19[3] = &unk_1E8481138;
-      v23 = v4;
+      v23 = animatedCopy;
       v20 = v8;
-      v21 = self;
-      v22 = v6;
-      [v13 updateIsTextVisible:1 forChunk:v14 completion:v19];
+      selfCopy = self;
+      v22 = effectCopy;
+      [asyncSource updateIsTextVisible:1 forChunk:chunk2 completion:v19];
 
       goto LABEL_10;
     }
@@ -430,14 +430,14 @@
 
   else if (v12)
   {
-    v15 = [(_WTTextEffectView *)self source];
-    v16 = [v8 chunk];
-    [v15 updateIsTextVisible:1 forChunk:v16];
+    source = [(_WTTextEffectView *)self source];
+    chunk3 = [v8 chunk];
+    [source updateIsTextVisible:1 forChunk:chunk3];
   }
 
-  [v8 invalidate:v4];
-  v17 = [(_WTTextEffectView *)self textEffects];
-  [v17 removeObjectForKey:v6];
+  [v8 invalidate:animatedCopy];
+  textEffects2 = [(_WTTextEffectView *)self textEffects];
+  [textEffects2 removeObjectForKey:effectCopy];
 
 LABEL_10:
 
@@ -446,17 +446,17 @@ LABEL_10:
 
 - (BOOL)hasActiveEffects
 {
-  v2 = [(_WTTextEffectView *)self textEffects];
-  v3 = [v2 count] != 0;
+  textEffects = [(_WTTextEffectView *)self textEffects];
+  v3 = [textEffects count] != 0;
 
   return v3;
 }
 
-- (BOOL)hasActiveEffect:(id)a3
+- (BOOL)hasActiveEffect:(id)effect
 {
-  v4 = a3;
-  v5 = [(_WTTextEffectView *)self textEffects];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  effectCopy = effect;
+  textEffects = [(_WTTextEffectView *)self textEffects];
+  v6 = [textEffects objectForKeyedSubscript:effectCopy];
 
   return v6 != 0;
 }
@@ -487,10 +487,10 @@ LABEL_10:
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v39 = [(_WTTextEffectView *)self textEffects];
-    v40 = [v39 allValues];
+    textEffects = [(_WTTextEffectView *)self textEffects];
+    allValues = [textEffects allValues];
 
-    v41 = [v40 countByEnumeratingWithState:&v46 objects:v51 count:16];
+    v41 = [allValues countByEnumeratingWithState:&v46 objects:v51 count:16];
     if (v41)
     {
       v42 = v41;
@@ -501,7 +501,7 @@ LABEL_10:
         {
           if (*v47 != v43)
           {
-            objc_enumerationMutation(v40);
+            objc_enumerationMutation(allValues);
           }
 
           v45 = *(*(&v46 + 1) + 8 * i);
@@ -511,7 +511,7 @@ LABEL_10:
           }
         }
 
-        v42 = [v40 countByEnumeratingWithState:&v46 objects:v51 count:16];
+        v42 = [allValues countByEnumeratingWithState:&v46 objects:v51 count:16];
       }
 
       while (v42);
@@ -533,10 +533,10 @@ LABEL_10:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(_WTTextEffectView *)self textEffects];
-  v4 = [v3 allKeys];
+  textEffects = [(_WTTextEffectView *)self textEffects];
+  allKeys = [textEffects allKeys];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -548,57 +548,57 @@ LABEL_10:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         [(_WTTextEffectView *)self updateSnapshotForEffectID:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)updateSnapshotForEffectID:(id)a3
+- (void)updateSnapshotForEffectID:(id)d
 {
-  v4 = a3;
-  v6 = [(_WTTextEffectView *)self textEffects];
-  v5 = [v6 objectForKeyedSubscript:v4];
+  dCopy = d;
+  textEffects = [(_WTTextEffectView *)self textEffects];
+  v5 = [textEffects objectForKeyedSubscript:dCopy];
 
   [(_WTTextEffectView *)self updateSnapshotForEffect:v5];
 }
 
-- (void)updateSnapshotForEffect:(id)a3
+- (void)updateSnapshotForEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   if ([(_WTTextEffectView *)self sourceIsAsync])
   {
-    v5 = [(_WTTextEffectView *)self asyncSource];
-    v6 = [v4 chunk];
+    asyncSource = [(_WTTextEffectView *)self asyncSource];
+    chunk = [effectCopy chunk];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __45___WTTextEffectView_updateSnapshotForEffect___block_invoke;
     v12[3] = &unk_1E8481160;
-    v13 = v4;
-    v14 = self;
-    [v5 textPreviewsForChunk:v6 completion:v12];
+    v13 = effectCopy;
+    selfCopy = self;
+    [asyncSource textPreviewsForChunk:chunk completion:v12];
   }
 
   else
   {
-    v7 = [(_WTTextEffectView *)self source];
-    v8 = [v4 chunk];
-    v9 = [v7 textPreviewsForChunk:v8];
-    [v4 updateEffectWith:v9];
+    source = [(_WTTextEffectView *)self source];
+    chunk2 = [effectCopy chunk];
+    v9 = [source textPreviewsForChunk:chunk2];
+    [effectCopy updateEffectWith:v9];
 
-    if ([v4 hidesOriginal])
+    if ([effectCopy hidesOriginal])
     {
-      v10 = [(_WTTextEffectView *)self source];
-      v11 = [v4 chunk];
-      [v10 updateIsTextVisible:0 forChunk:v11];
+      source2 = [(_WTTextEffectView *)self source];
+      chunk3 = [effectCopy chunk];
+      [source2 updateIsTextVisible:0 forChunk:chunk3];
     }
   }
 }

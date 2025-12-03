@@ -1,5 +1,5 @@
 @interface HDCloudSyncUpdateSharingStatusOperation
-- (void)_finishOperationWithParticipantSharingStatus:(void *)a1;
+- (void)_finishOperationWithParticipantSharingStatus:(void *)status;
 - (void)main;
 @end
 
@@ -8,29 +8,29 @@
 - (void)main
 {
   v59 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 repository];
-  v5 = [v4 syncAvailability];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  syncAvailability = [repository syncAvailability];
 
-  if ([v5 shouldSyncSummarySharingPull] & 1) != 0 || (objc_msgSend(v5, "shouldSyncSummarySharingPush"))
+  if ([syncAvailability shouldSyncSummarySharingPull] & 1) != 0 || (objc_msgSend(syncAvailability, "shouldSyncSummarySharingPush"))
   {
-    v6 = [(HDCloudSyncOperation *)self configuration];
-    v7 = [v6 cachedCloudState];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
+    cachedCloudState = [configuration2 cachedCloudState];
     v50 = 0;
-    v8 = [v7 zonesByIdentifierWithError:&v50];
+    v8 = [cachedCloudState zonesByIdentifierWithError:&v50];
     v9 = v50;
 
     if (v8 || !v9)
     {
-      v11 = [v8 allValues];
-      v12 = v11;
-      if (v11)
+      allValues = [v8 allValues];
+      v12 = allValues;
+      if (allValues)
       {
         v48 = 0u;
         v49 = 0u;
         v46 = 0u;
         v47 = 0u;
-        obj = v11;
+        obj = allValues;
         v39 = [obj countByEnumeratingWithState:&v46 objects:v58 count:16];
         if (v39)
         {
@@ -75,8 +75,8 @@
                   v44 = 0u;
                   v41 = 0u;
                   v42 = 0u;
-                  v22 = [v18 participants];
-                  v23 = [v22 countByEnumeratingWithState:&v41 objects:v51 count:16];
+                  participants = [v18 participants];
+                  v23 = [participants countByEnumeratingWithState:&v41 objects:v51 count:16];
                   if (v23)
                   {
                     v24 = v23;
@@ -87,7 +87,7 @@
                       {
                         if (*v42 != v25)
                         {
-                          objc_enumerationMutation(v22);
+                          objc_enumerationMutation(participants);
                         }
 
                         v27 = *(*(&v41 + 1) + 8 * i);
@@ -102,7 +102,7 @@
                         }
                       }
 
-                      v24 = [v22 countByEnumeratingWithState:&v41 objects:v51 count:16];
+                      v24 = [participants countByEnumeratingWithState:&v41 objects:v51 count:16];
                       v15 = v38;
                       if (v24)
                       {
@@ -124,11 +124,11 @@
                 if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
                 {
                   v30 = v28;
-                  v31 = [v17 zoneIdentifier];
+                  zoneIdentifier = [v17 zoneIdentifier];
                   *buf = v34;
-                  v53 = self;
+                  selfCopy3 = self;
                   v54 = 2114;
-                  v55 = v31;
+                  v55 = zoneIdentifier;
                   v56 = 2114;
                   v57 = v20;
                   _os_log_error_impl(&dword_228986000, v30, OS_LOG_TYPE_ERROR, "%{public}@ Failed to retrieve cached CKShare for zone %{public}@, %{public}@", buf, 0x20u);
@@ -160,7 +160,7 @@ LABEL_40:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v53 = self;
+        selfCopy3 = self;
         v54 = 2114;
         v55 = v9;
         _os_log_error_impl(&dword_228986000, v10, OS_LOG_TYPE_ERROR, "%{public}@: Failed to retrieve cached zones, %{public}@", buf, 0x16u);
@@ -177,7 +177,7 @@ LABEL_40:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v53 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_228986000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@ Skipping operation because platform/profile does not support summary sharing", buf, 0xCu);
     }
 
@@ -187,19 +187,19 @@ LABEL_40:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishOperationWithParticipantSharingStatus:(void *)a1
+- (void)_finishOperationWithParticipantSharingStatus:(void *)status
 {
-  if (a1)
+  if (status)
   {
-    v4 = [a1 profile];
-    v5 = HDTinkerProtectedKeyValueDomainWithProfile(v4);
+    profile = [status profile];
+    v5 = HDTinkerProtectedKeyValueDomainWithProfile(profile);
 
     v6 = [MEMORY[0x277CCABB0] numberWithInteger:a2];
     v9 = 0;
     v7 = [v5 setNumber:v6 forKey:@"HDCloudSyncSharingStatusKey" error:&v9];
     v8 = v9;
 
-    [a1 finishWithSuccess:v7 error:v8];
+    [status finishWithSuccess:v7 error:v8];
   }
 }
 

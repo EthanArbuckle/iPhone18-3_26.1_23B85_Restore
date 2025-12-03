@@ -1,13 +1,13 @@
 @interface CNMapObservable
-+ (id)observableWithBlock:(id)a3;
++ (id)observableWithBlock:(id)block;
 @end
 
 @implementation CNMapObservable
 
-+ (id)observableWithBlock:(id)a3
++ (id)observableWithBlock:(id)block
 {
-  v3 = a3;
-  v4 = [(_CNBlockObservable *)[CNMapObservable alloc] initWithBlock:v3];
+  blockCopy = block;
+  v4 = [(_CNBlockObservable *)[CNMapObservable alloc] initWithBlock:blockCopy];
 
   v5 = [(CNObservable *)v4 pipelineDescription:&__block_literal_global_35];
 

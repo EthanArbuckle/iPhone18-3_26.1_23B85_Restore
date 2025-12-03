@@ -1,6 +1,6 @@
 @interface AUMessageChannel_XPC
-- (AUMessageChannel_XPC)initWithListenerEndpoint:(id)a3;
-- (id)callAudioUnit:(id)a3;
+- (AUMessageChannel_XPC)initWithListenerEndpoint:(id)endpoint;
+- (id)callAudioUnit:(id)unit;
 - (void)dealloc;
 @end
 
@@ -40,14 +40,14 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)callAudioUnit:(id)a3
+- (id)callAudioUnit:(id)unit
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  unitCopy = unit;
   caulk::xpc::sync_message<objc_object  {objcproto33AUAudioUnitMessageChannelProtocol}* {__strong},NSDictionary * {__strong}>::sync_message(&v11, self->_xpcConnection);
   v5 = caulk::xpc::message<objc_object  {objcproto33AUAudioUnitMessageChannelProtocol}* {__strong},NSDictionary * {__strong}>::sync_proxy(&v11);
   v6 = caulk::xpc::message<objc_object  {objcproto33AUAudioUnitMessageChannelProtocol}* {__strong},NSDictionary * {__strong}>::reply(&v11);
-  [v5 onCallRemoteAU:v4 reply:v6];
+  [v5 onCallRemoteAU:unitCopy reply:v6];
 
   v7 = v14;
   if (v13)
@@ -66,15 +66,15 @@
   return v8;
 }
 
-- (AUMessageChannel_XPC)initWithListenerEndpoint:(id)a3
+- (AUMessageChannel_XPC)initWithListenerEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v13.receiver = self;
   v13.super_class = AUMessageChannel_XPC;
   v5 = [(AUMessageChannel_XPC *)&v13 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v4];
+    v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
     xpcConnection = v5->_xpcConnection;
     v5->_xpcConnection = v6;
 

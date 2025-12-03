@@ -6,8 +6,8 @@
 
 - (double)requiredBatteryCharge
 {
-  v1 = [a1 requiredCharge];
-  [v1 doubleValue];
+  requiredCharge = [self requiredCharge];
+  [requiredCharge doubleValue];
   v3 = v2;
 
   return v3;

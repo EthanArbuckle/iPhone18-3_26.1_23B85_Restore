@@ -4,26 +4,26 @@
 + (id)autoupdatingActiveAccount;
 + (id)autoupdatingActiveLockerAccount;
 + (id)autoupdatingDefaultMediaIdentity;
-+ (id)carrierBundleWithDeviceIdentifier:(id)a3;
++ (id)carrierBundleWithDeviceIdentifier:(id)identifier;
 + (id)defaultMediaIdentity;
 + (id)nullIdentity;
-+ (id)specificAccountWithAltDSID:(id)a3;
-+ (id)specificAccountWithDSID:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToIdentity:(id)a3 inStore:(id)a4;
++ (id)specificAccountWithAltDSID:(id)d;
++ (id)specificAccountWithDSID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToIdentity:(id)identity inStore:(id)store;
 - (ICUserIdentity)init;
-- (ICUserIdentity)initWithCoder:(id)a3;
+- (ICUserIdentity)initWithCoder:(id)coder;
 - (NSString)accountDSID;
 - (NSString)description;
 - (NSString)deviceIdentifier;
-- (id)_resolvedDSIDUsingSpecificIdentityStore:(id)a3;
-- (id)identityAllowingDelegation:(BOOL)a3;
-- (id)identityAllowingEstablishment:(BOOL)a3;
+- (id)_resolvedDSIDUsingSpecificIdentityStore:(id)store;
+- (id)identityAllowingDelegation:(BOOL)delegation;
+- (id)identityAllowingEstablishment:(BOOL)establishment;
 - (unint64_t)hash;
-- (unint64_t)hashInStore:(id)a3;
-- (void)_performEncodingTaskUsingSpecificIdentityStore:(id)a3 encodingHandler:(id)a4;
-- (void)_setResolvedDSID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (unint64_t)hashInStore:(id)store;
+- (void)_performEncodingTaskUsingSpecificIdentityStore:(id)store encodingHandler:(id)handler;
+- (void)_setResolvedDSID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICUserIdentity
@@ -191,14 +191,14 @@ LABEL_27:
 
 - (NSString)accountDSID
 {
-  v3 = [(ICUserIdentity *)self DSID];
+  dSID = [(ICUserIdentity *)self DSID];
 
-  if (v3)
+  if (dSID)
   {
-    v4 = [(ICUserIdentity *)self DSID];
-    v5 = v4;
+    dSID2 = [(ICUserIdentity *)self DSID];
+    v5 = dSID2;
 LABEL_3:
-    v6 = [v4 stringValue];
+    stringValue = [dSID2 stringValue];
     goto LABEL_5;
   }
 
@@ -207,16 +207,16 @@ LABEL_3:
   v5 = [v7 DSIDForUserIdentity:self outError:&v10];
   v8 = v10;
 
-  v6 = 0;
+  stringValue = 0;
   if (!v8)
   {
-    v4 = v5;
+    dSID2 = v5;
     goto LABEL_3;
   }
 
 LABEL_5:
 
-  return v6;
+  return stringValue;
 }
 
 + (id)defaultMediaIdentity
@@ -239,10 +239,10 @@ LABEL_5:
   return v2;
 }
 
-- (id)_resolvedDSIDUsingSpecificIdentityStore:(id)a3
+- (id)_resolvedDSIDUsingSpecificIdentityStore:(id)store
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = self->_DSID;
   type = self->_type;
   v7 = type > 8;
@@ -250,7 +250,7 @@ LABEL_5:
   v9 = v7 || v8 == 0;
   if (!v9 && !self->_hasResolvedDSID)
   {
-    v10 = v4;
+    v10 = storeCopy;
     if (!v10)
     {
       if (!self->_isEncodingUsingSpecificIdentityStore)
@@ -276,7 +276,7 @@ LABEL_5:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v18 = self;
+        selfCopy = self;
         v19 = 2114;
         v20 = v13;
         _os_log_impl(&dword_1B4491000, v14, OS_LOG_TYPE_ERROR, "ICUserIdentity - Unable to retrieve DSID for userIdentity=%{public}@ - error=%{public}@", buf, 0x16u);
@@ -289,44 +289,44 @@ LABEL_5:
   return v5;
 }
 
-- (void)_performEncodingTaskUsingSpecificIdentityStore:(id)a3 encodingHandler:(id)a4
+- (void)_performEncodingTaskUsingSpecificIdentityStore:(id)store encodingHandler:(id)handler
 {
   isEncodingUsingSpecificIdentityStore = self->_isEncodingUsingSpecificIdentityStore;
-  self->_isEncodingUsingSpecificIdentityStore = a3 != 0 || isEncodingUsingSpecificIdentityStore;
-  v7 = a4;
-  [(ICUserIdentity *)self _ensureResolvedDSIDUsingSpecificIdentityStore:a3];
-  v7[2](v7);
+  self->_isEncodingUsingSpecificIdentityStore = store != 0 || isEncodingUsingSpecificIdentityStore;
+  handlerCopy = handler;
+  [(ICUserIdentity *)self _ensureResolvedDSIDUsingSpecificIdentityStore:store];
+  handlerCopy[2](handlerCopy);
 
   self->_isEncodingUsingSpecificIdentityStore = isEncodingUsingSpecificIdentityStore;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   [(ICUserIdentity *)self _ensureResolvedDSIDUsingSpecificIdentityStore:0];
-  [v5 encodeBool:self->_allowsDelegation forKey:@"delegation"];
+  [coderCopy encodeBool:self->_allowsDelegation forKey:@"delegation"];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_creationTime];
-  [v5 encodeObject:v4 forKey:@"time"];
+  [coderCopy encodeObject:v4 forKey:@"time"];
 
-  [v5 encodeObject:self->_deviceIdentifier forKey:@"deviceID"];
-  [v5 encodeObject:self->_DSID forKey:@"dsid"];
-  [v5 encodeObject:self->_altDSID forKey:@"altDSID"];
-  [v5 encodeBool:self->_hasResolvedDSID forKey:@"hasResolvedDSID"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeObject:self->_deviceIdentifier forKey:@"deviceID"];
+  [coderCopy encodeObject:self->_DSID forKey:@"dsid"];
+  [coderCopy encodeObject:self->_altDSID forKey:@"altDSID"];
+  [coderCopy encodeBool:self->_hasResolvedDSID forKey:@"hasResolvedDSID"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
 }
 
-- (ICUserIdentity)initWithCoder:(id)a3
+- (ICUserIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = ICUserIdentity;
   v5 = [(ICUserIdentity *)&v14 init];
   if (v5)
   {
-    v5->_allowsDelegation = [v4 decodeBoolForKey:@"delegation"];
-    if ([v4 containsValueForKey:@"time"])
+    v5->_allowsDelegation = [coderCopy decodeBoolForKey:@"delegation"];
+    if ([coderCopy containsValueForKey:@"time"])
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"time"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"time"];
       v5->_creationTime = [v6 unsignedLongLongValue];
     }
 
@@ -335,29 +335,29 @@ LABEL_5:
       v5->_creationTime = mach_absolute_time();
     }
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
     deviceIdentifier = v5->_deviceIdentifier;
     v5->_deviceIdentifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dsid"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dsid"];
     DSID = v5->_DSID;
     v5->_DSID = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v11;
 
-    v5->_hasResolvedDSID = [v4 decodeBoolForKey:@"hasResolvedDSID"];
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_hasResolvedDSID = [coderCopy decodeBoolForKey:@"hasResolvedDSID"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -367,7 +367,7 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = +[ICUserIdentityStore defaultIdentityStore];
       v7 = [(ICUserIdentity *)self isEqualToIdentity:v5 inStore:v6];
     }
@@ -381,46 +381,46 @@ LABEL_5:
   return v7;
 }
 
-- (unint64_t)hashInStore:(id)a3
+- (unint64_t)hashInStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   if ([(ICUserIdentity *)self _isComparableUsingResolvedDSID])
   {
-    v5 = [(ICUserIdentity *)self _resolvedDSIDUsingSpecificIdentityStore:v4];
-    v6 = [v5 hash];
+    deviceIdentifier = [(ICUserIdentity *)self _resolvedDSIDUsingSpecificIdentityStore:storeCopy];
+    v6 = [deviceIdentifier hash];
   }
 
   else
   {
     type = self->_type;
-    v5 = [(ICUserIdentity *)self deviceIdentifier];
-    v6 = [v5 hash] ^ type;
+    deviceIdentifier = [(ICUserIdentity *)self deviceIdentifier];
+    v6 = [deviceIdentifier hash] ^ type;
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToIdentity:(id)a3 inStore:(id)a4
+- (BOOL)isEqualToIdentity:(id)identity inStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identityCopy = identity;
+  storeCopy = store;
+  if (!identityCopy)
   {
     goto LABEL_10;
   }
 
-  if (self == v6)
+  if (self == identityCopy)
   {
     v11 = 1;
     goto LABEL_14;
   }
 
-  if (![(ICUserIdentity *)self _isComparableUsingResolvedDSID]|| ![(ICUserIdentity *)v6 _isComparableUsingResolvedDSID])
+  if (![(ICUserIdentity *)self _isComparableUsingResolvedDSID]|| ![(ICUserIdentity *)identityCopy _isComparableUsingResolvedDSID])
   {
-    if (self->_type == v6->_type)
+    if (self->_type == identityCopy->_type)
     {
-      v8 = [(ICUserIdentity *)self deviceIdentifier];
-      v9 = [(ICUserIdentity *)v6 deviceIdentifier];
+      deviceIdentifier = [(ICUserIdentity *)self deviceIdentifier];
+      deviceIdentifier2 = [(ICUserIdentity *)identityCopy deviceIdentifier];
       goto LABEL_8;
     }
 
@@ -429,102 +429,102 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v8 = [(ICUserIdentity *)self _resolvedDSIDUsingSpecificIdentityStore:v7];
-  v9 = [(ICUserIdentity *)v6 _resolvedDSIDUsingSpecificIdentityStore:v7];
+  deviceIdentifier = [(ICUserIdentity *)self _resolvedDSIDUsingSpecificIdentityStore:storeCopy];
+  deviceIdentifier2 = [(ICUserIdentity *)identityCopy _resolvedDSIDUsingSpecificIdentityStore:storeCopy];
 LABEL_8:
-  v10 = v9;
-  if (v8 == v9)
+  v10 = deviceIdentifier2;
+  if (deviceIdentifier == deviceIdentifier2)
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = [v8 isEqual:v9];
+    v11 = [deviceIdentifier isEqual:deviceIdentifier2];
   }
 
 LABEL_14:
   return v11;
 }
 
-- (void)_setResolvedDSID:(id)a3
+- (void)_setResolvedDSID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   DSID = self->_DSID;
   self->_DSID = v4;
 
   self->_hasResolvedDSID = 1;
 }
 
-- (id)identityAllowingEstablishment:(BOOL)a3
+- (id)identityAllowingEstablishment:(BOOL)establishment
 {
-  if (self->_allowsAccountEstablishment == a3)
+  if (self->_allowsAccountEstablishment == establishment)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = objc_alloc_init(objc_opt_class());
-    v4->_allowsAccountEstablishment = a3;
-    v4->_allowsDelegation = self->_allowsDelegation;
-    v4->_creationTime = self->_creationTime;
+    selfCopy = objc_alloc_init(objc_opt_class());
+    selfCopy->_allowsAccountEstablishment = establishment;
+    selfCopy->_allowsDelegation = self->_allowsDelegation;
+    selfCopy->_creationTime = self->_creationTime;
     v6 = [(NSString *)self->_deviceIdentifier copy];
-    deviceIdentifier = v4->_deviceIdentifier;
-    v4->_deviceIdentifier = v6;
+    deviceIdentifier = selfCopy->_deviceIdentifier;
+    selfCopy->_deviceIdentifier = v6;
 
     v8 = [(NSNumber *)self->_DSID copy];
-    DSID = v4->_DSID;
-    v4->_DSID = v8;
+    DSID = selfCopy->_DSID;
+    selfCopy->_DSID = v8;
 
     v10 = [(NSString *)self->_altDSID copy];
-    altDSID = v4->_altDSID;
-    v4->_altDSID = v10;
+    altDSID = selfCopy->_altDSID;
+    selfCopy->_altDSID = v10;
 
-    v4->_hasResolvedDSID = self->_hasResolvedDSID;
-    v4->_type = self->_type;
+    selfCopy->_hasResolvedDSID = self->_hasResolvedDSID;
+    selfCopy->_type = self->_type;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)identityAllowingDelegation:(BOOL)a3
+- (id)identityAllowingDelegation:(BOOL)delegation
 {
-  if (self->_allowsDelegation == a3)
+  if (self->_allowsDelegation == delegation)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = objc_alloc_init(objc_opt_class());
-    v4->_allowsDelegation = a3;
-    v4->_allowsAccountEstablishment = self->_allowsAccountEstablishment;
-    v4->_creationTime = self->_creationTime;
+    selfCopy = objc_alloc_init(objc_opt_class());
+    selfCopy->_allowsDelegation = delegation;
+    selfCopy->_allowsAccountEstablishment = self->_allowsAccountEstablishment;
+    selfCopy->_creationTime = self->_creationTime;
     v6 = [(NSString *)self->_deviceIdentifier copy];
-    deviceIdentifier = v4->_deviceIdentifier;
-    v4->_deviceIdentifier = v6;
+    deviceIdentifier = selfCopy->_deviceIdentifier;
+    selfCopy->_deviceIdentifier = v6;
 
     v8 = [(NSNumber *)self->_DSID copy];
-    DSID = v4->_DSID;
-    v4->_DSID = v8;
+    DSID = selfCopy->_DSID;
+    selfCopy->_DSID = v8;
 
     v10 = [(NSString *)self->_altDSID copy];
-    altDSID = v4->_altDSID;
-    v4->_altDSID = v10;
+    altDSID = selfCopy->_altDSID;
+    selfCopy->_altDSID = v10;
 
-    v4->_hasResolvedDSID = self->_hasResolvedDSID;
-    v4->_type = self->_type;
+    selfCopy->_hasResolvedDSID = self->_hasResolvedDSID;
+    selfCopy->_type = self->_type;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-+ (id)specificAccountWithAltDSID:(id)a3
++ (id)specificAccountWithAltDSID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v3 copy];
+  v5 = [dCopy copy];
 
   v6 = v4[6];
   v4[6] = v5;
@@ -534,11 +534,11 @@ LABEL_14:
   return v4;
 }
 
-+ (id)specificAccountWithDSID:(id)a3
++ (id)specificAccountWithDSID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v3 copy];
+  v5 = [dCopy copy];
 
   v6 = v4[5];
   v4[5] = v5;
@@ -549,11 +549,11 @@ LABEL_14:
   return v4;
 }
 
-+ (id)carrierBundleWithDeviceIdentifier:(id)a3
++ (id)carrierBundleWithDeviceIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v3 copy];
+  v5 = [identifierCopy copy];
 
   v6 = v4[1];
   v4[1] = v5;

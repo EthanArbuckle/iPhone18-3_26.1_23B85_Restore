@@ -1,24 +1,24 @@
 @interface SBHWidgetWrapperBackgroundView
-- (SBHWidgetWrapperBackgroundView)initWithUnderlyingBackgroundView:(id)a3 widgetBackgroundView:(id)a4;
+- (SBHWidgetWrapperBackgroundView)initWithUnderlyingBackgroundView:(id)view widgetBackgroundView:(id)backgroundView;
 @end
 
 @implementation SBHWidgetWrapperBackgroundView
 
-- (SBHWidgetWrapperBackgroundView)initWithUnderlyingBackgroundView:(id)a3 widgetBackgroundView:(id)a4
+- (SBHWidgetWrapperBackgroundView)initWithUnderlyingBackgroundView:(id)view widgetBackgroundView:(id)backgroundView
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  backgroundViewCopy = backgroundView;
   v11.receiver = self;
   v11.super_class = SBHWidgetWrapperBackgroundView;
   v9 = [(SBHWidgetWrapperBackgroundView *)&v11 init];
   if (v9)
   {
-    [v7 setAutoresizingMask:18];
-    [(SBHWidgetWrapperBackgroundView *)v9 addSubview:v7];
-    objc_storeStrong(&v9->_underlyingBackgroundView, a3);
-    [v8 setAutoresizingMask:18];
-    [(SBHWidgetWrapperBackgroundView *)v9 addSubview:v8];
-    objc_storeStrong(&v9->_widgetBackgroundView, a4);
+    [viewCopy setAutoresizingMask:18];
+    [(SBHWidgetWrapperBackgroundView *)v9 addSubview:viewCopy];
+    objc_storeStrong(&v9->_underlyingBackgroundView, view);
+    [backgroundViewCopy setAutoresizingMask:18];
+    [(SBHWidgetWrapperBackgroundView *)v9 addSubview:backgroundViewCopy];
+    objc_storeStrong(&v9->_widgetBackgroundView, backgroundView);
   }
 
   return v9;

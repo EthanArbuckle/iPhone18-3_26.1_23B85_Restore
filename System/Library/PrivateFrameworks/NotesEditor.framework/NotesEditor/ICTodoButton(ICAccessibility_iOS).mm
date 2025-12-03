@@ -22,15 +22,15 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v1 = [a1 window];
-  v2 = v1 != 0;
+  window = [self window];
+  v2 = window != 0;
 
   return v2;
 }
 
 - (id)accessibilityContainer
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &off_282810170;
   v1 = objc_msgSendSuper2(&v6, sel_accessibilityContainer);
   v2 = v1;
@@ -39,10 +39,10 @@
     v3 = v1;
     while (![v3 conformsToProtocol:&unk_28282EDC0])
     {
-      v4 = [v3 accessibilityContainer];
+      accessibilityContainer = [v3 accessibilityContainer];
 
-      v3 = v4;
-      if (!v4)
+      v3 = accessibilityContainer;
+      if (!accessibilityContainer)
       {
         goto LABEL_8;
       }
@@ -65,10 +65,10 @@ LABEL_8:
 
 - (id)icaxBaseAccessibilityLabel
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Checklist item" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Checklist item" value:&stru_282757698 table:0];
 
-  v6 = [a1 icaxCorrespondingParagraphText];
+  icaxCorrespondingParagraphText = [self icaxCorrespondingParagraphText];
   v4 = __ICAccessibilityStringForVariables();
 
   return v4;
@@ -76,10 +76,10 @@ LABEL_8:
 
 - (id)accessibilityAttributedLabel
 {
-  v2 = [a1 isDone];
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = v3;
-  if (v2)
+  isDone = [self isDone];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = mainBundle;
+  if (isDone)
   {
     v5 = @"completed";
   }
@@ -89,10 +89,10 @@ LABEL_8:
     v5 = @"incomplete";
   }
 
-  v6 = [v3 localizedStringForKey:v5 value:&stru_282757698 table:0];
+  v6 = [mainBundle localizedStringForKey:v5 value:&stru_282757698 table:0];
 
-  v7 = [a1 icaxBaseAccessibilityLabel];
-  v8 = [v7 icaxAttributedStringWithLowPitchPrefix:v6];
+  icaxBaseAccessibilityLabel = [self icaxBaseAccessibilityLabel];
+  v8 = [icaxBaseAccessibilityLabel icaxAttributedStringWithLowPitchPrefix:v6];
 
   return v8;
 }
@@ -101,9 +101,9 @@ LABEL_8:
 {
   v2 = objc_alloc(MEMORY[0x277CBEB18]);
   v3 = [v2 initWithArray:MEMORY[0x277CBEBF8]];
-  v4 = [a1 icaxCorrespondingParagraphText];
+  icaxCorrespondingParagraphText = [self icaxCorrespondingParagraphText];
   v5 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@" -"];
-  v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+  v6 = [icaxCorrespondingParagraphText componentsSeparatedByCharactersInSet:v5];
   if ([v6 count] >= 5)
   {
     v7 = [v6 subarrayWithRange:{0, 4}];
@@ -114,17 +114,17 @@ LABEL_8:
     }
   }
 
-  if (v4)
+  if (icaxCorrespondingParagraphText)
   {
-    [v3 addObject:v4];
+    [v3 addObject:icaxCorrespondingParagraphText];
   }
 
-  v9 = [a1 accessibilityAttributedLabel];
-  v10 = [v9 string];
+  accessibilityAttributedLabel = [self accessibilityAttributedLabel];
+  string = [accessibilityAttributedLabel string];
 
-  if ([v10 length])
+  if ([string length])
   {
-    [v3 addObject:v10];
+    [v3 addObject:string];
   }
 
   return v3;
@@ -132,50 +132,50 @@ LABEL_8:
 
 - (id)icaxDragSourceName
 {
-  v0 = [MEMORY[0x277CCA8D8] mainBundle];
-  v1 = [v0 localizedStringForKey:@"Checklist item" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v1 = [mainBundle localizedStringForKey:@"Checklist item" value:&stru_282757698 table:0];
 
   return v1;
 }
 
 - (id)accessibilityDragSourceDescriptors
 {
-  v1 = [a1 _icaxParentTextView];
-  v2 = [v1 accessibilityDragSourceDescriptors];
+  _icaxParentTextView = [self _icaxParentTextView];
+  accessibilityDragSourceDescriptors = [_icaxParentTextView accessibilityDragSourceDescriptors];
 
-  return v2;
+  return accessibilityDragSourceDescriptors;
 }
 
 - (id)accessibilityDropPointDescriptors
 {
-  v1 = [a1 _icaxParentTextView];
-  v2 = [v1 accessibilityDropPointDescriptors];
+  _icaxParentTextView = [self _icaxParentTextView];
+  accessibilityDropPointDescriptors = [_icaxParentTextView accessibilityDropPointDescriptors];
 
-  return v2;
+  return accessibilityDropPointDescriptors;
 }
 
 - (uint64_t)_accessibilitySupportsActivateAction
 {
-  v1 = [a1 _icaxNote];
-  v2 = [v1 isEditable];
+  _icaxNote = [self _icaxNote];
+  isEditable = [_icaxNote isEditable];
 
-  return v2;
+  return isEditable;
 }
 
 - (uint64_t)accessibilityActivate
 {
-  v2 = [a1 _icaxParentTextView];
-  v3 = [a1 _icaxNote];
-  v4 = [v3 isEditable];
+  _icaxParentTextView = [self _icaxParentTextView];
+  _icaxNote = [self _icaxNote];
+  isEditable = [_icaxNote isEditable];
 
-  if (v4)
+  if (isEditable)
   {
-    if (([a1 accessibilityElementIsFocused] & 1) != 0 || objc_msgSend(v2, "isFirstResponder"))
+    if (([self accessibilityElementIsFocused] & 1) != 0 || objc_msgSend(_icaxParentTextView, "isFirstResponder"))
     {
-      v5 = [a1 isDone];
-      v6 = [MEMORY[0x277CCA8D8] mainBundle];
-      v7 = v6;
-      if (v5)
+      isDone = [self isDone];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v7 = mainBundle;
+      if (isDone)
       {
         v8 = @"incomplete: %@";
       }
@@ -185,93 +185,93 @@ LABEL_8:
         v8 = @"completed: %@";
       }
 
-      v9 = [v6 localizedStringForKey:v8 value:&stru_282757698 table:0];
+      v9 = [mainBundle localizedStringForKey:v8 value:&stru_282757698 table:0];
 
       v10 = MEMORY[0x277CCACA8];
-      v11 = [a1 icaxCorrespondingParagraphText];
-      v12 = [v10 localizedStringWithFormat:v9, v11];
+      icaxCorrespondingParagraphText = [self icaxCorrespondingParagraphText];
+      v12 = [v10 localizedStringWithFormat:v9, icaxCorrespondingParagraphText];
 
-      [a1 sendActionsForControlEvents:64];
+      [self sendActionsForControlEvents:64];
       ICAccessibilityPostHighPriorityAnnouncementNotification();
     }
 
     else if (UIAccessibilityIsSwitchControlRunning())
     {
-      [a1 sendActionsForControlEvents:64];
+      [self sendActionsForControlEvents:64];
     }
 
     else
     {
-      [a1 _icaxBeginEditingAtEndOfCorrespondingParagraph];
+      [self _icaxBeginEditingAtEndOfCorrespondingParagraph];
     }
   }
 
-  return v4;
+  return isEditable;
 }
 
 - (id)accessibilityCustomActions
 {
-  v2 = [MEMORY[0x277CBEB18] array];
-  v3 = [a1 _icaxNote];
-  v4 = [v3 isEditable];
+  array = [MEMORY[0x277CBEB18] array];
+  _icaxNote = [self _icaxNote];
+  isEditable = [_icaxNote isEditable];
 
-  if (v4)
+  if (isEditable)
   {
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Edit checklist item" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Edit checklist item" value:&stru_282757698 table:0];
 
-    v7 = [objc_alloc(MEMORY[0x277D75088]) initWithName:v6 target:a1 selector:sel__icaxBeginEditingAtEndOfCorrespondingParagraph];
-    [v2 addObject:v7];
+    v7 = [objc_alloc(MEMORY[0x277D75088]) initWithName:v6 target:self selector:sel__icaxBeginEditingAtEndOfCorrespondingParagraph];
+    [array addObject:v7];
   }
 
-  v8 = [v2 copy];
+  v8 = [array copy];
 
   return v8;
 }
 
 - (id)accessibilityCustomRotors
 {
-  v1 = [a1 _icaxParentTextView];
-  v2 = [v1 editorController];
+  _icaxParentTextView = [self _icaxParentTextView];
+  editorController = [_icaxParentTextView editorController];
   v3 = +[ICAccessibilityCustomRotorController sharedInstance];
-  [v3 setNoteEditorViewController:v2];
+  [v3 setNoteEditorViewController:editorController];
 
   v4 = +[ICAccessibilityCustomRotorController sharedInstance];
-  v5 = [v4 sharedTextViewRotors];
+  sharedTextViewRotors = [v4 sharedTextViewRotors];
 
-  return v5;
+  return sharedTextViewRotors;
 }
 
 - (id)_icaxParentTextView
 {
-  v1 = [a1 superview];
+  superview = [self superview];
   objc_opt_class();
-  while ((objc_opt_isKindOfClass() & 1) == 0 && v1)
+  while ((objc_opt_isKindOfClass() & 1) == 0 && superview)
   {
-    v2 = v1;
-    v1 = [v1 superview];
+    v2 = superview;
+    superview = [superview superview];
 
     objc_opt_class();
   }
 
-  return v1;
+  return superview;
 }
 
 - (uint64_t)_icaxBeginEditingAtEndOfCorrespondingParagraph
 {
-  v2 = [a1 _icaxParentTextView];
-  v3 = [a1 trackedParagraph];
-  v4 = [v3 characterRange];
+  _icaxParentTextView = [self _icaxParentTextView];
+  trackedParagraph = [self trackedParagraph];
+  characterRange = [trackedParagraph characterRange];
   v6 = v5;
 
-  if ([v2 isFirstResponder])
+  if ([_icaxParentTextView isFirstResponder])
   {
-    [v2 setSelectedRange:{v6 + v4 - 1, 0}];
+    [_icaxParentTextView setSelectedRange:{v6 + characterRange - 1, 0}];
   }
 
   else
   {
-    [v2 icaxBeginEditingInStorageRange:{v6 + v4 - 1, 0}];
+    [_icaxParentTextView icaxBeginEditingInStorageRange:{v6 + characterRange - 1, 0}];
   }
 
   return 1;
@@ -279,11 +279,11 @@ LABEL_8:
 
 - (id)_icaxNote
 {
-  v1 = [a1 _icaxParentTextView];
-  v2 = [v1 editorController];
-  v3 = [v2 note];
+  _icaxParentTextView = [self _icaxParentTextView];
+  editorController = [_icaxParentTextView editorController];
+  note = [editorController note];
 
-  return v3;
+  return note;
 }
 
 - (id)supportedRotorTypes
@@ -297,10 +297,10 @@ LABEL_8:
 
 - (uint64_t)textRangeInNote
 {
-  v1 = [a1 trackedParagraph];
-  v2 = [v1 characterRange];
+  trackedParagraph = [self trackedParagraph];
+  characterRange = [trackedParagraph characterRange];
 
-  return v2;
+  return characterRange;
 }
 
 @end

@@ -19,19 +19,19 @@
 {
   v26[1] = *MEMORY[0x29EDCA608];
   objc_opt_class();
-  v2 = [a1 safeValueForKey:@"_tabBarController"];
+  v2 = [self safeValueForKey:@"_tabBarController"];
   v3 = __UIAccessibilityCastAsClass();
 
-  v4 = [v3 selectedViewController];
+  selectedViewController = [v3 selectedViewController];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
   v5 = [v3 safeValueForKey:@"stopwatchViewController"];
   v6 = [v3 safeValueForKey:@"timerViewController"];
-  if (v4)
+  if (selectedViewController)
   {
-    v26[0] = v4;
+    v26[0] = selectedViewController;
     v7 = [MEMORY[0x29EDB8D80] arrayWithObjects:v26 count:1];
     v8 = [v7 mutableCopy];
   }
@@ -43,9 +43,9 @@
 
   while ([v8 count])
   {
-    v9 = [v8 firstObject];
-    v10 = v9;
-    if (v9 == v5)
+    firstObject = [v8 firstObject];
+    v10 = firstObject;
+    if (firstObject == v5)
     {
       MEMORY[0x29C2E1AE0](@"MTAStopwatchViewController");
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -54,9 +54,9 @@
       }
 
       v12 = [v5 safeValueForKey:@"_mode"];
-      v13 = [v12 intValue];
+      intValue = [v12 intValue];
 
-      switch(v13)
+      switch(intValue)
       {
         case 1:
           v14 = v20;
@@ -99,7 +99,7 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    if (v9 == v6)
+    if (firstObject == v6)
     {
       v14 = v18;
       v18[0] = MEMORY[0x29EDCA5F8];
@@ -112,9 +112,9 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    [v8 removeObject:v9];
-    v11 = [v10 childViewControllers];
-    [v8 addObjectsFromArray:v11];
+    [v8 removeObject:firstObject];
+    childViewControllers = [v10 childViewControllers];
+    [v8 addObjectsFromArray:childViewControllers];
   }
 
 LABEL_16:

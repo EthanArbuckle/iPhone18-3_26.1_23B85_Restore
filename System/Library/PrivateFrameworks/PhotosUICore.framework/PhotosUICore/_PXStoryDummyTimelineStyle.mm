@@ -1,16 +1,16 @@
 @interface _PXStoryDummyTimelineStyle
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)defaultDisplayAssetPresentationDuration;
-- ($654D12A5B96C89A393ABE69D6FE3CC0A)audioInfoForDisplayAsset:(SEL)a3;
-- ($7566BBA16C4E03ED15B4F2B623931C37)durationInfoForSegmentWithDisplayAssets:(SEL)a3 startTime:(id)a4;
-- ($D23540E3B197441F7781E3353E3BC035)transitionInfoForSegmentWithClipComposition:(SEL)a3 displayAssets:(id)a4;
-- (_PXStoryDummyTimelineStyle)initWithStyle:(id)a3 spec:(id)a4 allowedClipCompositions:(id)a5;
-- (void)enumerateAllowedKenBurnsEffectParametersForSegmentWithClipComposition:(id)a3 displayAssets:(id)a4 assetContentInfos:(id *)a5 finalPlaybackStyles:(const int64_t *)a6 startTime:(id *)a7 durationInfo:(id *)a8 separatorEffectParameters:(id *)a9 separatorEffectContext:(int64_t)a10 buffer:(id *)a11 usingBlock:(id)a12;
-- (void)enumerateAllowedSeparatorEffectParametersForSegmentWithClipComposition:(id)a3 displayAssets:(id)a4 finalPlaybackStyles:(const int64_t *)a5 startTime:(id *)a6 durationInfo:(id *)a7 buffer:(id *)a8 usingBlock:(id)a9;
+- ($654D12A5B96C89A393ABE69D6FE3CC0A)audioInfoForDisplayAsset:(SEL)asset;
+- ($7566BBA16C4E03ED15B4F2B623931C37)durationInfoForSegmentWithDisplayAssets:(SEL)assets startTime:(id)time;
+- ($D23540E3B197441F7781E3353E3BC035)transitionInfoForSegmentWithClipComposition:(SEL)composition displayAssets:(id)assets;
+- (_PXStoryDummyTimelineStyle)initWithStyle:(id)style spec:(id)spec allowedClipCompositions:(id)compositions;
+- (void)enumerateAllowedKenBurnsEffectParametersForSegmentWithClipComposition:(id)composition displayAssets:(id)assets assetContentInfos:(id *)infos finalPlaybackStyles:(const int64_t *)styles startTime:(id *)time durationInfo:(id *)info separatorEffectParameters:(id *)parameters separatorEffectContext:(int64_t)self0 buffer:(id *)self1 usingBlock:(id)self2;
+- (void)enumerateAllowedSeparatorEffectParametersForSegmentWithClipComposition:(id)composition displayAssets:(id)assets finalPlaybackStyles:(const int64_t *)styles startTime:(id *)time durationInfo:(id *)info buffer:(id *)buffer usingBlock:(id)block;
 @end
 
 @implementation _PXStoryDummyTimelineStyle
 
-- ($654D12A5B96C89A393ABE69D6FE3CC0A)audioInfoForDisplayAsset:(SEL)a3
+- ($654D12A5B96C89A393ABE69D6FE3CC0A)audioInfoForDisplayAsset:(SEL)asset
 {
   retstr->var6 = 0.0;
   *&retstr->var2 = 0u;
@@ -19,12 +19,12 @@
   return self;
 }
 
-- ($D23540E3B197441F7781E3353E3BC035)transitionInfoForSegmentWithClipComposition:(SEL)a3 displayAssets:(id)a4
+- ($D23540E3B197441F7781E3353E3BC035)transitionInfoForSegmentWithClipComposition:(SEL)composition displayAssets:(id)assets
 {
   result = self->_style;
   if (result)
   {
-    return [($D23540E3B197441F7781E3353E3BC035 *)result transitionInfo:a4];
+    return [($D23540E3B197441F7781E3353E3BC035 *)result transitionInfo:assets];
   }
 
   *&retstr->var3 = 0;
@@ -33,33 +33,33 @@
   return result;
 }
 
-- (void)enumerateAllowedKenBurnsEffectParametersForSegmentWithClipComposition:(id)a3 displayAssets:(id)a4 assetContentInfos:(id *)a5 finalPlaybackStyles:(const int64_t *)a6 startTime:(id *)a7 durationInfo:(id *)a8 separatorEffectParameters:(id *)a9 separatorEffectContext:(int64_t)a10 buffer:(id *)a11 usingBlock:(id)a12
+- (void)enumerateAllowedKenBurnsEffectParametersForSegmentWithClipComposition:(id)composition displayAssets:(id)assets assetContentInfos:(id *)infos finalPlaybackStyles:(const int64_t *)styles startTime:(id *)time durationInfo:(id *)info separatorEffectParameters:(id *)parameters separatorEffectContext:(int64_t)self0 buffer:(id *)self1 usingBlock:(id)self2
 {
-  v14 = a3;
-  v15 = a12;
-  v16 = a4;
-  v17 = [v16 resourcesDataSource];
-  v18 = [v17 croppingContext];
+  compositionCopy = composition;
+  blockCopy = block;
+  assetsCopy = assets;
+  resourcesDataSource = [assetsCopy resourcesDataSource];
+  croppingContext = [resourcesDataSource croppingContext];
 
   spec = self->_spec;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __242___PXStoryDummyTimelineStyle_enumerateAllowedKenBurnsEffectParametersForSegmentWithClipComposition_displayAssets_assetContentInfos_finalPlaybackStyles_startTime_durationInfo_separatorEffectParameters_separatorEffectContext_buffer_usingBlock___block_invoke;
   v24[3] = &unk_1E774BAE0;
-  v25 = v14;
-  v26 = self;
-  v27 = v15;
-  v28 = a11;
-  v20 = v15;
-  v21 = v14;
-  [PXStoryClipKenBurnsEffectFactory factoryForSpec:spec clipComposition:v21 displayAssets:v16 croppingContext:v18 croppingOptions:0 assetContentInfos:a5 playbackStyles:a6 separatorEffectParameters:a9 handler:v24];
+  v25 = compositionCopy;
+  selfCopy = self;
+  v27 = blockCopy;
+  bufferCopy = buffer;
+  v20 = blockCopy;
+  v21 = compositionCopy;
+  [PXStoryClipKenBurnsEffectFactory factoryForSpec:spec clipComposition:v21 displayAssets:assetsCopy croppingContext:croppingContext croppingOptions:0 assetContentInfos:infos playbackStyles:styles separatorEffectParameters:parameters handler:v24];
 }
 
-- (void)enumerateAllowedSeparatorEffectParametersForSegmentWithClipComposition:(id)a3 displayAssets:(id)a4 finalPlaybackStyles:(const int64_t *)a5 startTime:(id *)a6 durationInfo:(id *)a7 buffer:(id *)a8 usingBlock:(id)a9
+- (void)enumerateAllowedSeparatorEffectParametersForSegmentWithClipComposition:(id)composition displayAssets:(id)assets finalPlaybackStyles:(const int64_t *)styles startTime:(id *)time durationInfo:(id *)info buffer:(id *)buffer usingBlock:(id)block
 {
-  v9 = a3;
-  v10 = a9;
-  [v9 mainDividerAxis];
+  compositionCopy = composition;
+  blockCopy = block;
+  [compositionCopy mainDividerAxis];
   PXAxisTransposed();
 }
 
@@ -70,9 +70,9 @@
   return CMTimeMakeWithSeconds(retstr, v4, 600);
 }
 
-- ($7566BBA16C4E03ED15B4F2B623931C37)durationInfoForSegmentWithDisplayAssets:(SEL)a3 startTime:(id)a4
+- ($7566BBA16C4E03ED15B4F2B623931C37)durationInfoForSegmentWithDisplayAssets:(SEL)assets startTime:(id)time
 {
-  result = [(_PXStoryDummyTimelineStyle *)self defaultDisplayAssetPresentationDuration:a4];
+  result = [(_PXStoryDummyTimelineStyle *)self defaultDisplayAssetPresentationDuration:time];
   retstr->var0.var3 = 0;
   *&retstr->var0.var0 = PXStoryTimeZero;
   retstr->var2.var3 = 0;
@@ -83,20 +83,20 @@
   return result;
 }
 
-- (_PXStoryDummyTimelineStyle)initWithStyle:(id)a3 spec:(id)a4 allowedClipCompositions:(id)a5
+- (_PXStoryDummyTimelineStyle)initWithStyle:(id)style spec:(id)spec allowedClipCompositions:(id)compositions
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  styleCopy = style;
+  specCopy = spec;
+  compositionsCopy = compositions;
   v15.receiver = self;
   v15.super_class = _PXStoryDummyTimelineStyle;
   v12 = [(_PXStoryDummyTimelineStyle *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_style, a3);
-    objc_storeStrong(&v13->_spec, a4);
-    objc_storeStrong(&v13->_allowedClipCompositions, a5);
+    objc_storeStrong(&v12->_style, style);
+    objc_storeStrong(&v13->_spec, spec);
+    objc_storeStrong(&v13->_allowedClipCompositions, compositions);
   }
 
   return v13;

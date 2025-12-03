@@ -1,20 +1,20 @@
 @interface AFUITouchInputView
 - (AFUITouchInputViewDelegate)delegate;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation AFUITouchInputView
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = [(AFUITouchInputView *)self delegate:a3];
+  v5 = [(AFUITouchInputView *)self delegate:began];
   [v5 touchesBeganForInputView:self];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = [(AFUITouchInputView *)self delegate:a3];
+  v5 = [(AFUITouchInputView *)self delegate:ended];
   [v5 touchesEndedForInputView:self];
 }
 

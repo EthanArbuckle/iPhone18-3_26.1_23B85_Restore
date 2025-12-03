@@ -1,35 +1,35 @@
 @interface NTKArgonManager
-- (NTKArgonManager)initWithKeyDatabase:(id)a3 fetchers:(id)a4 extractor:(id)a5;
+- (NTKArgonManager)initWithKeyDatabase:(id)database fetchers:(id)fetchers extractor:(id)extractor;
 - (id)_queue_extractedKeyDescriptors;
-- (void)_queue_extractKnownKeyDescriptorsIfNeededWithCompletion:(id)a3;
-- (void)addArgonManagerObserver:(id)a3;
-- (void)extractKnownKeyDescriptorsIfNeededWithCompletion:(id)a3;
-- (void)refreshWithReason:(int64_t)a3;
-- (void)removeArgonManagerObserver:(id)a3;
+- (void)_queue_extractKnownKeyDescriptorsIfNeededWithCompletion:(id)completion;
+- (void)addArgonManagerObserver:(id)observer;
+- (void)extractKnownKeyDescriptorsIfNeededWithCompletion:(id)completion;
+- (void)refreshWithReason:(int64_t)reason;
+- (void)removeArgonManagerObserver:(id)observer;
 @end
 
 @implementation NTKArgonManager
 
-- (NTKArgonManager)initWithKeyDatabase:(id)a3 fetchers:(id)a4 extractor:(id)a5
+- (NTKArgonManager)initWithKeyDatabase:(id)database fetchers:(id)fetchers extractor:(id)extractor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  databaseCopy = database;
+  fetchersCopy = fetchers;
+  extractorCopy = extractor;
   v22.receiver = self;
   v22.super_class = NTKArgonManager;
   v12 = [(NTKArgonManager *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_keyDatabase, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_keyDatabase, database);
+    v14 = [fetchersCopy copy];
     fetchers = v13->_fetchers;
     v13->_fetchers = v14;
 
-    objc_storeStrong(&v13->_extractor, a5);
-    v16 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v13->_extractor, extractor);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v13->_observers;
-    v13->_observers = v16;
+    v13->_observers = weakObjectsHashTable;
 
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v19 = dispatch_queue_create("com.apple.nanotimekit.facesupport.manager", v18);
@@ -43,17 +43,17 @@
 - (id)_queue_extractedKeyDescriptors
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = [(NTKArgonManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(NTKArgonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v37 = [MEMORY[0x277CBEB58] set];
-  v4 = [(NTKArgonManager *)self extractor];
-  v40 = [v4 extractionPath];
+  extractor = [(NTKArgonManager *)self extractor];
+  extractionPath = [extractor extractionPath];
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [(NTKArgonManager *)self extractor];
-  v7 = [v6 extractionPath];
-  v8 = [v5 enumeratorAtPath:v7];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  extractor2 = [(NTKArgonManager *)self extractor];
+  extractionPath2 = [extractor2 extractionPath];
+  v8 = [defaultManager enumeratorAtPath:extractionPath2];
 
   [v8 skipDescendants];
   v43 = 0u;
@@ -82,19 +82,19 @@
         }
 
         v17 = *(*(&v41 + 1) + 8 * v16);
-        v18 = [v9 fileAttributes];
-        v19 = [v18 fileType];
-        v20 = [v19 isEqualToString:v15];
+        fileAttributes = [v9 fileAttributes];
+        fileType = [fileAttributes fileType];
+        v20 = [fileType isEqualToString:v15];
 
         if (v20)
         {
-          v21 = [v17 pathExtension];
-          v22 = [v21 isEqualToString:v13];
+          pathExtension = [v17 pathExtension];
+          v22 = [pathExtension isEqualToString:v13];
 
           if (v22)
           {
             v23 = v13;
-            v24 = [v40 stringByAppendingPathComponent:v17];
+            v24 = [extractionPath stringByAppendingPathComponent:v17];
             v25 = [v24 stringByAppendingPathComponent:@"Info.plist"];
 
             v26 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v25];
@@ -185,7 +185,7 @@
   return v33;
 }
 
-- (void)refreshWithReason:(int64_t)a3
+- (void)refreshWithReason:(int64_t)reason
 {
   v76 = *MEMORY[0x277D85DE8];
   queue = [(NTKArgonManager *)self workQueue];
@@ -206,8 +206,8 @@
   v3[2](v3, @"TL/Q1YYFljbn/n5bqLhisDb9QNanzHRT5EaNf+ZMCiM=", @"56d4a6adb4b04c9917f0c1ae56cf70e6044de7e91d6fd6fc5e9113148f8619d0.aea");
   v3[2](v3, @"dEc80tVMljpKxC/0UaPLLcbNZMatPSFK8pYhVp8a9f8=", @"520971cc499189d3cb8042fb7551a727effccfc6201fcf32bedab306ac668881.aea");
   v4 = objc_alloc(MEMORY[0x277CBEB38]);
-  v5 = [(NTKArgonManager *)self fetchers];
-  v38 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+  fetchers = [(NTKArgonManager *)self fetchers];
+  v38 = [v4 initWithCapacity:{objc_msgSend(fetchers, "count")}];
 
   v69[0] = 0;
   v69[1] = v69;
@@ -220,15 +220,15 @@
   v67[2] = 0x2020000000;
   v68 = 0;
   v6 = objc_alloc(MEMORY[0x277CBEB58]);
-  v7 = [(NTKArgonManager *)self fetchers];
-  v8 = [v6 initWithCapacity:{objc_msgSend(v7, "count")}];
+  fetchers2 = [(NTKArgonManager *)self fetchers];
+  v8 = [v6 initWithCapacity:{objc_msgSend(fetchers2, "count")}];
 
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v9 = [(NTKArgonManager *)self fetchers];
-  v10 = [v9 countByEnumeratingWithState:&v63 objects:v75 count:16];
+  fetchers3 = [(NTKArgonManager *)self fetchers];
+  v10 = [fetchers3 countByEnumeratingWithState:&v63 objects:v75 count:16];
   if (v10)
   {
     v11 = *v64;
@@ -239,7 +239,7 @@
       {
         if (*v64 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(fetchers3);
         }
 
         v13 = objc_opt_class();
@@ -250,7 +250,7 @@
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v63 objects:v75 count:16];
+      v10 = [fetchers3 countByEnumeratingWithState:&v63 objects:v75 count:16];
     }
 
     while (v10);
@@ -261,12 +261,12 @@
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v16 = [(NTKArgonManager *)self fetchers];
-  v17 = [v16 countByEnumeratingWithState:&v59 objects:v74 count:16];
+  fetchers4 = [(NTKArgonManager *)self fetchers];
+  v17 = [fetchers4 countByEnumeratingWithState:&v59 objects:v74 count:16];
   if (v17)
   {
     v18 = *v60;
-    obj = v16;
+    obj = fetchers4;
     do
     {
       v19 = 0;
@@ -281,10 +281,10 @@
         dispatch_group_enter(v15);
         v21 = objc_opt_class();
         v22 = NSStringFromClass(v21);
-        v23 = [(NTKArgonManager *)self keyDatabase];
-        v24 = [v23 latestChangeTokenForServerIdentifier:v22];
+        keyDatabase = [(NTKArgonManager *)self keyDatabase];
+        v24 = [keyDatabase latestChangeTokenForServerIdentifier:v22];
 
-        v25 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
         v49[0] = MEMORY[0x277D85DD0];
         v49[1] = 3221225472;
         v49[2] = __37__NTKArgonManager_refreshWithReason___block_invoke_2;
@@ -293,20 +293,20 @@
         v56 = v67;
         v26 = v22;
         v51 = v26;
-        v27 = v25;
+        v27 = date;
         v52 = v27;
         v53 = v8;
         v57 = v72;
         v54 = v38;
         v58 = v69;
         v55 = v15;
-        [v20 fetchNewRecordsSinceChangeToken:v24 forReason:a3 completion:v49];
+        [v20 fetchNewRecordsSinceChangeToken:v24 forReason:reason completion:v49];
 
         ++v19;
       }
 
       while (v17 != v19);
-      v16 = obj;
+      fetchers4 = obj;
       v17 = [obj countByEnumeratingWithState:&v59 objects:v74 count:16];
     }
 
@@ -661,72 +661,72 @@ void __37__NTKArgonManager_refreshWithReason___block_invoke_57(uint64_t a1)
   objc_sync_exit(v2);
 }
 
-- (void)extractKnownKeyDescriptorsIfNeededWithCompletion:(id)a3
+- (void)extractKnownKeyDescriptorsIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NTKArgonManager *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(NTKArgonManager *)self workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __68__NTKArgonManager_extractKnownKeyDescriptorsIfNeededWithCompletion___block_invoke;
   v8[3] = &unk_27877FF60;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = completionCopy;
+  v6 = completionCopy;
   v7 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INTERACTIVE, 0, v8);
-  dispatch_async(v5, v7);
+  dispatch_async(workQueue, v7);
 }
 
-- (void)addArgonManagerObserver:(id)a3
+- (void)addArgonManagerObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v7 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NTKArgonManager *)v5 observers];
-    [v6 addObject:v7];
+    v7 = observerCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    observers = [(NTKArgonManager *)selfCopy observers];
+    [observers addObject:v7];
 
-    objc_sync_exit(v5);
-    v4 = v7;
+    objc_sync_exit(selfCopy);
+    observerCopy = v7;
   }
 }
 
-- (void)removeArgonManagerObserver:(id)a3
+- (void)removeArgonManagerObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v7 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NTKArgonManager *)v5 observers];
-    [v6 removeObject:v7];
+    v7 = observerCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    observers = [(NTKArgonManager *)selfCopy observers];
+    [observers removeObject:v7];
 
-    objc_sync_exit(v5);
-    v4 = v7;
+    objc_sync_exit(selfCopy);
+    observerCopy = v7;
   }
 }
 
-- (void)_queue_extractKnownKeyDescriptorsIfNeededWithCompletion:(id)a3
+- (void)_queue_extractKnownKeyDescriptorsIfNeededWithCompletion:(id)completion
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NTKArgonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  workQueue = [(NTKArgonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v44[0] = 0;
   v44[1] = v44;
   v44[2] = 0x2810000000;
   v44[3] = &unk_22DD390E3;
   v45 = 0;
-  v6 = [(NTKArgonManager *)self _queue_extractedKeyDescriptors];
-  v7 = [v6 mutableCopy];
+  _queue_extractedKeyDescriptors = [(NTKArgonManager *)self _queue_extractedKeyDescriptors];
+  v7 = [_queue_extractedKeyDescriptors mutableCopy];
 
   v8 = MEMORY[0x277CBEBC0];
-  v9 = [(NTKArgonManager *)self extractor];
-  v10 = [v9 sourcePath];
-  v11 = [v8 fileURLWithPath:v10];
+  extractor = [(NTKArgonManager *)self extractor];
+  sourcePath = [extractor sourcePath];
+  v11 = [v8 fileURLWithPath:sourcePath];
 
   v12 = [NTKArgonEncryptedBundleEnumerator alloc];
   v47[0] = v11;
@@ -753,8 +753,8 @@ void __37__NTKArgonManager_refreshWithReason___block_invoke_57(uint64_t a1)
           objc_enumerationMutation(v16);
         }
 
-        v20 = [*(*(&v40 + 1) + 8 * v19) lastPathComponent];
-        [v15 addObject:v20];
+        lastPathComponent = [*(*(&v40 + 1) + 8 * v19) lastPathComponent];
+        [v15 addObject:lastPathComponent];
 
         ++v19;
       }
@@ -768,7 +768,7 @@ void __37__NTKArgonManager_refreshWithReason___block_invoke_57(uint64_t a1)
 
   v21 = dispatch_group_create();
   dispatch_group_enter(v21);
-  v22 = [(NTKArgonManager *)self keyDatabase];
+  keyDatabase = [(NTKArgonManager *)self keyDatabase];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __75__NTKArgonManager__queue_extractKnownKeyDescriptorsIfNeededWithCompletion___block_invoke;
@@ -780,21 +780,21 @@ void __37__NTKArgonManager_refreshWithReason___block_invoke_57(uint64_t a1)
   v36 = v24;
   v25 = v21;
   v37 = v25;
-  v38 = self;
-  [v22 enumerateKeyDescriptors:v34];
+  selfCopy = self;
+  [keyDatabase enumerateKeyDescriptors:v34];
 
-  v26 = [(NTKArgonManager *)self workQueue];
+  workQueue2 = [(NTKArgonManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__NTKArgonManager__queue_extractKnownKeyDescriptorsIfNeededWithCompletion___block_invoke_64;
   block[3] = &unk_278781740;
   v30 = v23;
-  v31 = self;
-  v32 = v4;
+  selfCopy2 = self;
+  v32 = completionCopy;
   v33 = v44;
-  v27 = v4;
+  v27 = completionCopy;
   v28 = v23;
-  dispatch_group_notify(v25, v26, block);
+  dispatch_group_notify(v25, workQueue2, block);
 
   dispatch_group_leave(v25);
   _Block_object_dispose(v44, 8);

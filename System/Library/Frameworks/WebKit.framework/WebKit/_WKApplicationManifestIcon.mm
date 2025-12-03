@@ -1,20 +1,20 @@
 @interface _WKApplicationManifestIcon
-- (_WKApplicationManifestIcon)initWithCoder:(id)a3;
-- (_WKApplicationManifestIcon)initWithCoreIcon:(const void *)a3;
+- (_WKApplicationManifestIcon)initWithCoder:(id)coder;
+- (_WKApplicationManifestIcon)initWithCoreIcon:(const void *)icon;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _WKApplicationManifestIcon
 
-- (_WKApplicationManifestIcon)initWithCoder:(id)a3
+- (_WKApplicationManifestIcon)initWithCoder:(id)coder
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v4 = [(_WKApplicationManifestIcon *)self init];
   if (v4)
   {
-    v5 = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"src", "copy"}];
+    v5 = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"src", "copy"}];
     m_ptr = v4->_src.m_ptr;
     v4->_src.m_ptr = v5;
     if (m_ptr)
@@ -24,14 +24,14 @@
     v7 = MEMORY[0x1E695DFD8];
     v17[0] = objc_opt_class();
     v17[1] = objc_opt_class();
-    v8 = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v7 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v17, 2)), @"sizes", "copy"}];
+    v8 = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v7 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v17, 2)), @"sizes", "copy"}];
     v9 = v4->_sizes.m_ptr;
     v4->_sizes.m_ptr = v8;
     if (v9)
     {
     }
 
-    v10 = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"type", "copy"}];
+    v10 = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"type", "copy"}];
     v11 = v4->_type.m_ptr;
     v4->_type.m_ptr = v10;
     if (v11)
@@ -41,7 +41,7 @@
     v12 = MEMORY[0x1E695DFD8];
     v16[0] = objc_opt_class();
     v16[1] = objc_opt_class();
-    v13 = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v12 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v16, 2)), @"purposes", "copy"}];
+    v13 = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v12 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v16, 2)), @"purposes", "copy"}];
     v14 = v4->_purposes.m_ptr;
     v4->_purposes.m_ptr = v13;
     if (v14)
@@ -52,15 +52,15 @@
   return v4;
 }
 
-- (_WKApplicationManifestIcon)initWithCoreIcon:(const void *)a3
+- (_WKApplicationManifestIcon)initWithCoreIcon:(const void *)icon
 {
   v28.receiver = self;
   v28.super_class = _WKApplicationManifestIcon;
   v4 = [(_WKApplicationManifestIcon *)&v28 init];
   v5 = v4;
-  if (a3 && v4)
+  if (icon && v4)
   {
-    WTF::URL::createCFURL(&v29, a3);
+    WTF::URL::createCFURL(&v29, icon);
     v6 = v29;
     v29 = 0;
     m_ptr = v5->_src.m_ptr;
@@ -75,11 +75,11 @@
       }
     }
 
-    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:*(a3 + 13)];
-    v10 = *(a3 + 13);
+    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:*(icon + 13)];
+    v10 = *(icon + 13);
     if (v10)
     {
-      v11 = *(a3 + 5);
+      v11 = *(icon + 5);
       v12 = 8 * v10;
       do
       {
@@ -123,7 +123,7 @@
     {
     }
 
-    v18 = *(a3 + 7);
+    v18 = *(icon + 7);
     if (v18)
     {
       atomic_fetch_add_explicit(v18, 2u, memory_order_relaxed);
@@ -154,7 +154,7 @@
       }
     }
 
-    v24 = *(a3 + 64);
+    v24 = *(icon + 64);
     v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (v24)
     {
@@ -177,14 +177,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_src.m_ptr forKey:@"src"];
-  [a3 encodeObject:self->_sizes.m_ptr forKey:@"sizes"];
-  [a3 encodeObject:self->_type.m_ptr forKey:@"type"];
+  [coder encodeObject:self->_src.m_ptr forKey:@"src"];
+  [coder encodeObject:self->_sizes.m_ptr forKey:@"sizes"];
+  [coder encodeObject:self->_type.m_ptr forKey:@"type"];
   m_ptr = self->_purposes.m_ptr;
 
-  [a3 encodeObject:m_ptr forKey:@"purposes"];
+  [coder encodeObject:m_ptr forKey:@"purposes"];
 }
 
 - (void)dealloc

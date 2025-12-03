@@ -1,26 +1,26 @@
 @interface CSVoiceProfileRetrainManager
 + (CSVoiceProfileRetrainManager)sharedInstance;
 - (CSVoiceProfileRetrainManager)init;
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4;
-- (void)CSVoiceTriggerEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4;
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed;
+- (void)CSVoiceTriggerEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled;
 - (void)_migrateTDVoiceProfileCallback;
-- (void)_retrainingVoiceProfile:(id)a3 voiceProfile:(id)a4 asset:(id)a5 secureAsset:(id)a6;
-- (void)_runRetrainerWithAssets:(id)a3 withSecureAsset:(id)a4 languageCode:(id)a5;
-- (void)_runVoiceProfileRetrainerWithAsset:(id)a3 withSecureAsset:(id)a4 withLanguageCode:(id)a5;
+- (void)_retrainingVoiceProfile:(id)profile voiceProfile:(id)voiceProfile asset:(id)asset secureAsset:(id)secureAsset;
+- (void)_runRetrainerWithAssets:(id)assets withSecureAsset:(id)asset languageCode:(id)code;
+- (void)_runVoiceProfileRetrainerWithAsset:(id)asset withSecureAsset:(id)secureAsset withLanguageCode:(id)code;
 - (void)_speakerRecognitionCleanupDuplicatedProfilesCallback;
 - (void)_speakerRecognitionModelRetrainCallback;
-- (void)triggerVoiceProfileRetrainingWithAsset:(id)a3 withSecureAsset:(id)a4;
+- (void)triggerVoiceProfileRetrainingWithAsset:(id)asset withSecureAsset:(id)secureAsset;
 @end
 
 @implementation CSVoiceProfileRetrainManager
 
-- (void)_retrainingVoiceProfile:(id)a3 voiceProfile:(id)a4 asset:(id)a5 secureAsset:(id)a6
+- (void)_retrainingVoiceProfile:(id)profile voiceProfile:(id)voiceProfile asset:(id)asset secureAsset:(id)secureAsset
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v11 || (+[CSUtils needRetrainingForExclaveOnly]& 1) != 0)
+  profileCopy = profile;
+  voiceProfileCopy = voiceProfile;
+  assetCopy = asset;
+  secureAssetCopy = secureAsset;
+  if (assetCopy || (+[CSUtils needRetrainingForExclaveOnly]& 1) != 0)
   {
     v13 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -28,22 +28,22 @@
       *buf = 136315394;
       v22 = "[CSVoiceProfileRetrainManager _retrainingVoiceProfile:voiceProfile:asset:secureAsset:]";
       v23 = 2112;
-      v24 = v11;
+      v24 = assetCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s recognitionAsset:%@", buf, 0x16u);
     }
 
-    [v9 pruneImplicitUtterancesOfProfile:v10 withAsset:v11];
+    [profileCopy pruneImplicitUtterancesOfProfile:voiceProfileCopy withAsset:assetCopy];
     v14 = objc_alloc_init(NSMutableDictionary);
-    [v14 setObject:v10 forKeyedSubscript:SSRVoiceRetrainingVoiceProfileKey];
+    [v14 setObject:voiceProfileCopy forKeyedSubscript:SSRVoiceRetrainingVoiceProfileKey];
     [v14 setObject:&__kCFBooleanTrue forKeyedSubscript:SSRVoiceRetrainingFilterToVoiceTriggerUtterancesKey];
-    if (v11)
+    if (assetCopy)
     {
-      [v14 setObject:v11 forKeyedSubscript:SSRVoiceRetrainingAssetKey];
+      [v14 setObject:assetCopy forKeyedSubscript:SSRVoiceRetrainingAssetKey];
     }
 
-    if (v12)
+    if (secureAssetCopy)
     {
-      [v14 setObject:v12 forKeyedSubscript:SSRVoiceRetrainingSecureAssetKey];
+      [v14 setObject:secureAssetCopy forKeyedSubscript:SSRVoiceRetrainingSecureAssetKey];
     }
 
     v20 = 0;
@@ -53,8 +53,8 @@
     v18[1] = 3221225472;
     v18[2] = sub_100152494;
     v18[3] = &unk_100252FD8;
-    v19 = v10;
-    [v9 triggerRetrainingVoiceProfile:v19 withContext:v15 withCompletion:v18];
+    v19 = voiceProfileCopy;
+    [profileCopy triggerRetrainingVoiceProfile:v19 withContext:v15 withCompletion:v18];
   }
 
   else
@@ -69,11 +69,11 @@
   }
 }
 
-- (void)_runRetrainerWithAssets:(id)a3 withSecureAsset:(id)a4 languageCode:(id)a5
+- (void)_runRetrainerWithAssets:(id)assets withSecureAsset:(id)asset languageCode:(id)code
 {
-  v26 = a3;
-  v25 = a4;
-  v30 = a5;
+  assetsCopy = assets;
+  assetCopy = asset;
+  codeCopy = code;
   v7 = +[SSRVoiceProfileManager sharedInstance];
   v48[0] = 0;
   v48[1] = v48;
@@ -82,7 +82,7 @@
   v48[4] = sub_100152BE0;
   v49 = 0;
   v8 = +[CSVoiceTriggerEnabledMonitor sharedInstance];
-  v9 = [v8 isEnabled];
+  isEnabled = [v8 isEnabled];
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -93,7 +93,7 @@
   v47 = v48;
   if (qword_10029E588 == -1)
   {
-    if ((v9 & 1) == 0)
+    if ((isEnabled & 1) == 0)
     {
       goto LABEL_3;
     }
@@ -102,7 +102,7 @@
   else
   {
     dispatch_once(&qword_10029E588, block);
-    if ((v9 & 1) == 0)
+    if ((isEnabled & 1) == 0)
     {
 LABEL_3:
       if (!+[CSUtils supportsSpeakerRecognitionAssets])
@@ -113,8 +113,8 @@ LABEL_3:
   }
 
   context = objc_autoreleasePoolPush();
-  [v10 cleanupVoiceProfileModelFilesForLocale:v30 withAssets:v26];
-  v11 = [v10 provisionedVoiceProfilesForAppDomain:SSRSpeakerRecognitionSiriAppDomain withLocale:v30];
+  [v10 cleanupVoiceProfileModelFilesForLocale:codeCopy withAssets:assetsCopy];
+  v11 = [v10 provisionedVoiceProfilesForAppDomain:SSRSpeakerRecognitionSiriAppDomain withLocale:codeCopy];
   v12 = CSLogContextFacilityCoreSpeech;
   v13 = os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT);
   v24 = v11;
@@ -125,11 +125,11 @@ LABEL_3:
       *buf = 136315906;
       *&buf[4] = "[CSVoiceProfileRetrainManager _runRetrainerWithAssets:withSecureAsset:languageCode:]";
       *&buf[12] = 2114;
-      *&buf[14] = v30;
+      *&buf[14] = codeCopy;
       *&buf[22] = 2114;
       v53 = v11;
       LOWORD(v54) = 2112;
-      *(&v54 + 2) = v26;
+      *(&v54 + 2) = assetsCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s languageCode:  %{public}@ -voiceProfileArray: %{public}@, _currentAssets:%@", buf, 0x2Au);
     }
 
@@ -154,7 +154,7 @@ LABEL_3:
           v14 = *(*(&v41 + 1) + 8 * i);
           if (+[CSUtils needRetrainingForExclaveOnly])
           {
-            [(CSVoiceProfileRetrainManager *)self _retrainingVoiceProfile:v10 voiceProfile:v14 asset:0 secureAsset:v25];
+            [(CSVoiceProfileRetrainManager *)self _retrainingVoiceProfile:v10 voiceProfile:v14 asset:0 secureAsset:assetCopy];
           }
 
           else
@@ -163,7 +163,7 @@ LABEL_3:
             v40 = 0u;
             v37 = 0u;
             v38 = 0u;
-            v15 = v26;
+            v15 = assetsCopy;
             v16 = [v15 countByEnumeratingWithState:&v37 objects:v55 count:16];
             if (v16)
             {
@@ -195,7 +195,7 @@ LABEL_3:
                     v33[4] = self;
                     v34 = v10;
                     v35 = v14;
-                    [v20 getSpeakerRecognitionAssetWithLanguage:v30 completion:v33];
+                    [v20 getSpeakerRecognitionAssetWithLanguage:codeCopy completion:v33];
                   }
 
                   else
@@ -263,22 +263,22 @@ LABEL_38:
   _Block_object_dispose(v48, 8);
 }
 
-- (void)_runVoiceProfileRetrainerWithAsset:(id)a3 withSecureAsset:(id)a4 withLanguageCode:(id)a5
+- (void)_runVoiceProfileRetrainerWithAsset:(id)asset withSecureAsset:(id)secureAsset withLanguageCode:(id)code
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  assetCopy = asset;
+  secureAssetCopy = secureAsset;
+  codeCopy = code;
   v10 = objc_alloc_init(NSMutableArray);
   v11 = v10;
-  if (v14)
+  if (assetCopy)
   {
-    [v10 addObject:v14];
+    [v10 addObject:assetCopy];
   }
 
   if (+[CSUtils isExclaveHardware](CSUtils, "isExclaveHardware") && +[CSUtils supportsPersonalizedHeySiri])
   {
     v12 = +[CSAssetManager sharedManager];
-    v13 = [v12 installedCompactAssetOfType:0 language:v9];
+    v13 = [v12 installedCompactAssetOfType:0 language:codeCopy];
 
     if (v13)
     {
@@ -286,7 +286,7 @@ LABEL_38:
     }
   }
 
-  [(CSVoiceProfileRetrainManager *)self _runRetrainerWithAssets:v11 withSecureAsset:v8 languageCode:v9];
+  [(CSVoiceProfileRetrainManager *)self _runRetrainerWithAssets:v11 withSecureAsset:secureAssetCopy languageCode:codeCopy];
 }
 
 - (void)_migrateTDVoiceProfileCallback
@@ -298,9 +298,9 @@ LABEL_38:
 - (void)_speakerRecognitionCleanupDuplicatedProfilesCallback
 {
   v3 = +[CSVoiceTriggerEnabledMonitor sharedInstance];
-  v4 = [v3 isEnabled];
+  isEnabled = [v3 isEnabled];
 
-  if (CSIsIOS() && v4)
+  if (CSIsIOS() && isEnabled)
   {
     v5 = +[SSRVoiceProfileManager sharedInstance];
     v6 = CSLogContextFacilityCoreSpeech;
@@ -349,16 +349,16 @@ LABEL_38:
   [v5 getSpeakerRecognitionAssetWithLanguage:v6 completion:v7];
 }
 
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v12 = "[CSVoiceProfileRetrainManager CSLanguageCodeUpdateMonitor:didReceiveLanguageCodeChanged:]";
     v13 = 2114;
-    v14 = v5;
+    v14 = changedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s Language Changed to %{public}@ - Triggering voice profile retraining", buf, 0x16u);
   }
 
@@ -368,34 +368,34 @@ LABEL_38:
   v9[2] = sub_100153E88;
   v9[3] = &unk_100252F60;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = changedCopy;
+  v8 = changedCopy;
   [v7 getVoiceTriggerAssetWithEndpointId:0 completion:v9];
 }
 
-- (void)CSVoiceTriggerEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4
+- (void)CSVoiceTriggerEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100154134;
   v5[3] = &unk_100253BF8;
-  v6 = a4;
+  enabledCopy = enabled;
   v5[4] = self;
   dispatch_async(queue, v5);
 }
 
-- (void)triggerVoiceProfileRetrainingWithAsset:(id)a3 withSecureAsset:(id)a4
+- (void)triggerVoiceProfileRetrainingWithAsset:(id)asset withSecureAsset:(id)secureAsset
 {
-  v5 = a3;
+  assetCopy = asset;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100154580;
   v8[3] = &unk_100253C48;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = assetCopy;
+  selfCopy = self;
+  v7 = assetCopy;
   dispatch_async(queue, v8);
 }
 

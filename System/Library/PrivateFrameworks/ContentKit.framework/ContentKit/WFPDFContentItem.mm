@@ -1,34 +1,34 @@
 @interface WFPDFContentItem
 + (id)contentCategories;
-+ (id)itemWithPrintFormatters:(id)a3 names:(id)a4;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)itemWithPrintFormatters:(id)formatters names:(id)names;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
-+ (void)getPDFFromPrintFormatters:(id)a3 nameIfKnown:(id)a4 matchingInputSize:(BOOL)a5 withMargin:(BOOL)a6 startingAtPage:(int64_t)a7 endingAtPage:(int64_t)a8 completionHandler:(id)a9;
-- (void)createImageWithFileType:(id)a3 colorspace:(CGColorSpace *)a4 resolution:(double)a5 completion:(id)a6;
-- (void)enumeratePagesInDocument:(id)a3 block:(id)a4;
-- (void)generateFileRepresentations:(id)a3 options:(id)a4 forType:(id)a5;
-- (void)generateObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5;
-- (void)getPDF:(id)a3 matchingInputSize:(BOOL)a4 withMargin:(BOOL)a5 startingAtPage:(int64_t)a6 endingAtPage:(int64_t)a7;
++ (void)getPDFFromPrintFormatters:(id)formatters nameIfKnown:(id)known matchingInputSize:(BOOL)size withMargin:(BOOL)margin startingAtPage:(int64_t)page endingAtPage:(int64_t)atPage completionHandler:(id)handler;
+- (void)createImageWithFileType:(id)type colorspace:(CGColorSpace *)colorspace resolution:(double)resolution completion:(id)completion;
+- (void)enumeratePagesInDocument:(id)document block:(id)block;
+- (void)generateFileRepresentations:(id)representations options:(id)options forType:(id)type;
+- (void)generateObjectRepresentations:(id)representations options:(id)options forClass:(Class)class;
+- (void)getPDF:(id)f matchingInputSize:(BOOL)size withMargin:(BOOL)margin startingAtPage:(int64_t)page endingAtPage:(int64_t)atPage;
 @end
 
 @implementation WFPDFContentItem
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"PDFs", @"PDFs");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"PDF", @"PDF");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -68,25 +68,25 @@
   return v5;
 }
 
-+ (void)getPDFFromPrintFormatters:(id)a3 nameIfKnown:(id)a4 matchingInputSize:(BOOL)a5 withMargin:(BOOL)a6 startingAtPage:(int64_t)a7 endingAtPage:(int64_t)a8 completionHandler:(id)a9
++ (void)getPDFFromPrintFormatters:(id)formatters nameIfKnown:(id)known matchingInputSize:(BOOL)size withMargin:(BOOL)margin startingAtPage:(int64_t)page endingAtPage:(int64_t)atPage completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a9;
+  formattersCopy = formatters;
+  knownCopy = known;
+  handlerCopy = handler;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __133__WFPDFContentItem_getPDFFromPrintFormatters_nameIfKnown_matchingInputSize_withMargin_startingAtPage_endingAtPage_completionHandler___block_invoke;
   v20[3] = &unk_278348108;
-  v26 = a5;
-  v27 = a6;
-  v21 = v14;
-  v22 = v15;
-  v24 = a7;
-  v25 = a8;
-  v23 = v16;
-  v17 = v16;
-  v18 = v15;
-  v19 = v14;
+  sizeCopy = size;
+  marginCopy = margin;
+  v21 = formattersCopy;
+  v22 = knownCopy;
+  pageCopy = page;
+  atPageCopy = atPage;
+  v23 = handlerCopy;
+  v17 = handlerCopy;
+  v18 = knownCopy;
+  v19 = formattersCopy;
   dispatch_async(MEMORY[0x277D85CD0], v20);
 }
 
@@ -221,22 +221,22 @@ void __133__WFPDFContentItem_getPDFFromPrintFormatters_nameIfKnown_matchingInput
   (*(a1[6] + 16))();
 }
 
-+ (id)itemWithPrintFormatters:(id)a3 names:(id)a4
++ (id)itemWithPrintFormatters:(id)formatters names:(id)names
 {
-  v6 = a4;
+  namesCopy = names;
   v7 = getUIPrintFormatterClass_17393;
-  v8 = a3;
+  formattersCopy = formatters;
   v7();
   v9 = objc_opt_new();
-  v10 = [a1 itemWithObject:v9];
+  v10 = [self itemWithObject:v9];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __50__WFPDFContentItem_itemWithPrintFormatters_names___block_invoke;
   v14[3] = &unk_27834A228;
-  v15 = v6;
-  v11 = v6;
-  v12 = [v8 if_map:v14];
+  v15 = namesCopy;
+  v11 = namesCopy;
+  v12 = [formattersCopy if_map:v14];
 
   [v10 setObjectRepresentations:v12 forClass:getUIPrintFormatterClass_17393()];
 
@@ -253,52 +253,52 @@ id __50__WFPDFContentItem_itemWithPrintFormatters_names___block_invoke(uint64_t 
   return v7;
 }
 
-- (void)enumeratePagesInDocument:(id)a3 block:(id)a4
+- (void)enumeratePagesInDocument:(id)document block:(id)block
 {
-  v8 = a3;
-  v5 = a4;
-  if ([v8 pageCount])
+  documentCopy = document;
+  blockCopy = block;
+  if ([documentCopy pageCount])
   {
     v6 = 0;
     do
     {
-      v7 = [v8 pageAtIndex:v6];
-      v5[2](v5, v7);
+      v7 = [documentCopy pageAtIndex:v6];
+      blockCopy[2](blockCopy, v7);
 
       ++v6;
     }
 
-    while (v6 < [v8 pageCount]);
+    while (v6 < [documentCopy pageCount]);
   }
 }
 
-- (void)generateObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)generateObjectRepresentations:(id)representations options:(id)options forClass:(Class)class
 {
-  v8 = a3;
-  v9 = a4;
-  if (objc_opt_class() == a5)
+  representationsCopy = representations;
+  optionsCopy = options;
+  if (objc_opt_class() == class)
   {
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __67__WFPDFContentItem_generateObjectRepresentations_options_forClass___block_invoke;
     v27[3] = &unk_278348180;
-    v29 = v8;
+    v29 = representationsCopy;
     v27[4] = self;
-    v28 = v9;
+    v28 = optionsCopy;
     [(WFContentItem *)self getObjectRepresentation:v27 forClass:getPDFDocumentClass()];
 
     v13 = v29;
   }
 
-  else if (objc_opt_class() == a5)
+  else if (objc_opt_class() == class)
   {
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __67__WFPDFContentItem_generateObjectRepresentations_options_forClass___block_invoke_3;
     v24[3] = &unk_278348180;
-    v26 = v8;
+    v26 = representationsCopy;
     v24[4] = self;
-    v25 = v9;
+    v25 = optionsCopy;
     [(WFContentItem *)self getObjectRepresentation:v24 forClass:getPDFDocumentClass()];
 
     v13 = v26;
@@ -306,7 +306,7 @@ id __50__WFPDFContentItem_itemWithPrintFormatters_names___block_invoke(uint64_t 
 
   else
   {
-    v10 = NSStringFromClass(a5);
+    v10 = NSStringFromClass(class);
     v11 = [@"UIPrintFormatter" isEqualToString:v10];
 
     if (v11)
@@ -315,9 +315,9 @@ id __50__WFPDFContentItem_itemWithPrintFormatters_names___block_invoke(uint64_t 
       v20[1] = 3221225472;
       v20[2] = __67__WFPDFContentItem_generateObjectRepresentations_options_forClass___block_invoke_5;
       v20[3] = &unk_278349FC8;
-      v21 = v9;
-      v22 = self;
-      v23 = v8;
+      v21 = optionsCopy;
+      selfCopy = self;
+      v23 = representationsCopy;
       v12 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1E08]];
       [(WFContentItem *)self getFileRepresentation:v20 forType:v12];
 
@@ -326,13 +326,13 @@ id __50__WFPDFContentItem_itemWithPrintFormatters_names___block_invoke(uint64_t 
 
     else
     {
-      v14 = NSStringFromClass(a5);
+      v14 = NSStringFromClass(class);
       v15 = [@"PDFDocument" isEqualToString:v14];
 
       if (!v15)
       {
-        v17 = [objc_opt_class() badCoercionErrorForObjectClass:a5];
-        (*(v8 + 2))(v8, 0, v17);
+        v17 = [objc_opt_class() badCoercionErrorForObjectClass:class];
+        (*(representationsCopy + 2))(representationsCopy, 0, v17);
 
         goto LABEL_10;
       }
@@ -342,7 +342,7 @@ id __50__WFPDFContentItem_itemWithPrintFormatters_names___block_invoke(uint64_t 
       v18[2] = __67__WFPDFContentItem_generateObjectRepresentations_options_forClass___block_invoke_7;
       v18[3] = &unk_278348570;
       v18[4] = self;
-      v19 = v8;
+      v19 = representationsCopy;
       v16 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1E08]];
       [(WFContentItem *)self getFileRepresentation:v18 forType:v16];
 
@@ -594,34 +594,34 @@ void __67__WFPDFContentItem_generateObjectRepresentations_options_forClass___blo
   }
 }
 
-- (void)generateFileRepresentations:(id)a3 options:(id)a4 forType:(id)a5
+- (void)generateFileRepresentations:(id)representations options:(id)options forType:(id)type
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v8 conformsToUTType:*MEMORY[0x277CE1E08]])
+  representationsCopy = representations;
+  typeCopy = type;
+  if ([typeCopy conformsToUTType:*MEMORY[0x277CE1E08]])
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __64__WFPDFContentItem_generateFileRepresentations_options_forType___block_invoke;
     v12[3] = &unk_278349F78;
-    v13 = v7;
+    v13 = representationsCopy;
     [(WFPDFContentItem *)self getPDF:v12 matchingInputSize:1 withMargin:1 startingAtPage:1 endingAtPage:0x7FFFFFFFFFFFFFFFLL];
   }
 
   else
   {
     v9 = +[WFImageContentItem imageTypes];
-    v10 = [v8 conformsToTypes:v9];
+    v10 = [typeCopy conformsToTypes:v9];
 
     if (v10)
     {
-      [(WFPDFContentItem *)self createImageWithFileType:v8 colorspace:0 resolution:v7 completion:300.0];
+      [(WFPDFContentItem *)self createImageWithFileType:typeCopy colorspace:0 resolution:representationsCopy completion:300.0];
     }
 
     else
     {
-      v11 = [objc_opt_class() badCoercionErrorForType:v8];
-      (*(v7 + 2))(v7, 0, v11);
+      v11 = [objc_opt_class() badCoercionErrorForType:typeCopy];
+      (*(representationsCopy + 2))(representationsCopy, 0, v11);
     }
   }
 }
@@ -649,23 +649,23 @@ void __64__WFPDFContentItem_generateFileRepresentations_options_forType___block_
   }
 }
 
-- (void)createImageWithFileType:(id)a3 colorspace:(CGColorSpace *)a4 resolution:(double)a5 completion:(id)a6
+- (void)createImageWithFileType:(id)type colorspace:(CGColorSpace *)colorspace resolution:(double)resolution completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  typeCopy = type;
+  completionCopy = completion;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __77__WFPDFContentItem_createImageWithFileType_colorspace_resolution_completion___block_invoke;
   v17[3] = &unk_278348130;
-  v18 = v10;
-  v19 = v11;
-  v20 = a5;
-  v21 = a4;
+  v18 = typeCopy;
+  v19 = completionCopy;
+  resolutionCopy = resolution;
+  colorspaceCopy = colorspace;
   v17[4] = self;
   v12 = MEMORY[0x277D79F68];
   v13 = *MEMORY[0x277CE1E08];
-  v14 = v10;
-  v15 = v11;
+  v14 = typeCopy;
+  v15 = completionCopy;
   v16 = [v12 typeWithUTType:v13];
   [(WFContentItem *)self getFileRepresentation:v17 forType:v16];
 }
@@ -801,16 +801,16 @@ LABEL_6:
 LABEL_16:
 }
 
-- (void)getPDF:(id)a3 matchingInputSize:(BOOL)a4 withMargin:(BOOL)a5 startingAtPage:(int64_t)a6 endingAtPage:(int64_t)a7
+- (void)getPDF:(id)f matchingInputSize:(BOOL)size withMargin:(BOOL)margin startingAtPage:(int64_t)page endingAtPage:(int64_t)atPage
 {
-  v9 = a5;
-  v10 = a4;
+  marginCopy = margin;
+  sizeCopy = size;
   v12 = getUIPrintFormatterClass_17393;
-  v13 = a3;
+  fCopy = f;
   v16 = [(WFContentItem *)self objectsForClass:v12()];
   v14 = objc_opt_class();
-  v15 = [(WFContentItem *)self name];
-  [v14 getPDFFromPrintFormatters:v16 nameIfKnown:v15 matchingInputSize:v10 withMargin:v9 startingAtPage:a6 endingAtPage:a7 completionHandler:v13];
+  name = [(WFContentItem *)self name];
+  [v14 getPDFFromPrintFormatters:v16 nameIfKnown:name matchingInputSize:sizeCopy withMargin:marginCopy startingAtPage:page endingAtPage:atPage completionHandler:fCopy];
 }
 
 @end

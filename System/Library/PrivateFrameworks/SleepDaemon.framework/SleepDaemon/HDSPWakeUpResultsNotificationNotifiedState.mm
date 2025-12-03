@@ -8,23 +8,23 @@
 
 - (id)expirationDate
 {
-  v3 = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
-  v4 = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
-  v5 = [v4 currentDate];
-  v6 = [v3 notificationAttemptWindowForWakeUpBeforeDate:v5];
-  v7 = [v6 endDate];
+  infoProvider = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
+  infoProvider2 = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
+  currentDate = [infoProvider2 currentDate];
+  v6 = [infoProvider notificationAttemptWindowForWakeUpBeforeDate:currentDate];
+  endDate = [v6 endDate];
 
-  return v7;
+  return endDate;
 }
 
 - (void)didEnter
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v3 currentContext];
-  v5 = [v4 hasStateTransitionAndNotInitializing];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  currentContext = [stateMachine currentContext];
+  hasStateTransitionAndNotInitializing = [currentContext hasStateTransitionAndNotInitializing];
 
-  if (v5)
+  if (hasStateTransitionAndNotInitializing)
   {
     v6 = HKSPLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -35,8 +35,8 @@
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Sending notification", &v10, 0xCu);
     }
 
-    v8 = [(HKSPStateMachineState *)self stateMachine];
-    [v8 postResultsNotification];
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    [stateMachine2 postResultsNotification];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -54,10 +54,10 @@
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received posting notification completion event", &v9, 0xCu);
   }
 
-  v5 = [(HKSPStateMachineState *)self stateMachine];
-  v6 = [(HKSPStateMachineState *)self stateMachine];
-  v7 = [v6 waitingForWakeUpState];
-  [v5 enterState:v7];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+  waitingForWakeUpState = [stateMachine2 waitingForWakeUpState];
+  [stateMachine enterState:waitingForWakeUpState];
 
   v8 = *MEMORY[0x277D85DE8];
 }

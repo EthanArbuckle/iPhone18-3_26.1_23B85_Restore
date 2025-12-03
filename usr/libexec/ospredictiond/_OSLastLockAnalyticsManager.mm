@@ -1,7 +1,7 @@
 @interface _OSLastLockAnalyticsManager
 + (id)sharedInstance;
 - (_OSLastLockAnalyticsManager)init;
-- (void)submitPredictionEventForLastLockWithOutput:(id)a3;
+- (void)submitPredictionEventForLastLockWithOutput:(id)output;
 - (void)submitTask;
 @end
 
@@ -35,7 +35,7 @@
   }
 }
 
-- (void)submitPredictionEventForLastLockWithOutput:(id)a3
+- (void)submitPredictionEventForLastLockWithOutput:(id)output
 {
   v3 = os_log_type_enabled(0, OS_LOG_TYPE_ERROR);
   if (v3)

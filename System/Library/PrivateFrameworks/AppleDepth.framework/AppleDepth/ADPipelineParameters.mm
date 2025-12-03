@@ -1,7 +1,7 @@
 @interface ADPipelineParameters
 - (ADPipelineParameters)init;
-- (id)initForDevice:(id)a3;
-- (void)setOutputDepthUnits:(unint64_t)a3;
+- (id)initForDevice:(id)device;
+- (void)setOutputDepthUnits:(unint64_t)units;
 @end
 
 @implementation ADPipelineParameters
@@ -14,7 +14,7 @@
   return v4;
 }
 
-- (void)setOutputDepthUnits:(unint64_t)a3
+- (void)setOutputDepthUnits:(unint64_t)units
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -23,16 +23,16 @@
   }
 }
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = ADPipelineParameters;
   v6 = [(ADPipelineParameters *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_deviceName, a3);
+    objc_storeStrong(&v6->_deviceName, device);
   }
 
   return v7;

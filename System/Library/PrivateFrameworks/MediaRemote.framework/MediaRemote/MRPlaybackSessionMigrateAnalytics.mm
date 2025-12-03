@@ -24,32 +24,32 @@
 - (unint64_t)handoffInitiator;
 - (unint64_t)handoffSourceDeviceType;
 - (unint64_t)handoffSourcePerformanceClass;
-- (void)setHandoffAppBundleFromString:(id)a3;
-- (void)setHandoffDestinationFromMRDeviceClass:(int64_t)a3;
-- (void)setHandoffInitiatorFromString:(id)a3;
-- (void)setHandoffSourceFromMRDeviceClass:(int64_t)a3;
-- (void)set_durationApply:(id)a3;
-- (void)set_durationApply_SetPlaybackSession:(id)a3;
-- (void)set_durationDetermineRecipe:(id)a3;
-- (void)set_durationFinalize:(id)a3;
-- (void)set_durationPrepare:(id)a3;
-- (void)set_errorLevelCore_0:(id)a3;
-- (void)set_errorLevelCore_1:(id)a3;
-- (void)set_errorLevel_0:(id)a3;
-- (void)set_errorLevel_1:(id)a3;
-- (void)set_errorOnion:(id)a3;
-- (void)set_handoffAppBundle:(unint64_t)a3;
-- (void)set_handoffDestinationDeviceType:(unint64_t)a3;
-- (void)set_handoffDestinationPerformanceClass:(unint64_t)a3;
-- (void)set_handoffInitiator:(unint64_t)a3;
-- (void)set_handoffQueueSize:(id)a3;
-- (void)set_handoffSourceDeviceType:(unint64_t)a3;
-- (void)set_handoffSourcePerformanceClass:(unint64_t)a3;
-- (void)set_isSuccess:(id)a3;
-- (void)set_postDuration:(id)a3;
-- (void)set_preDuration:(id)a3;
-- (void)set_userPerceivedAudioContinuity:(id)a3;
-- (void)set_userPerceivedHandoffTime:(id)a3;
+- (void)setHandoffAppBundleFromString:(id)string;
+- (void)setHandoffDestinationFromMRDeviceClass:(int64_t)class;
+- (void)setHandoffInitiatorFromString:(id)string;
+- (void)setHandoffSourceFromMRDeviceClass:(int64_t)class;
+- (void)set_durationApply:(id)apply;
+- (void)set_durationApply_SetPlaybackSession:(id)session;
+- (void)set_durationDetermineRecipe:(id)recipe;
+- (void)set_durationFinalize:(id)finalize;
+- (void)set_durationPrepare:(id)prepare;
+- (void)set_errorLevelCore_0:(id)core_0;
+- (void)set_errorLevelCore_1:(id)core_1;
+- (void)set_errorLevel_0:(id)level_0;
+- (void)set_errorLevel_1:(id)level_1;
+- (void)set_errorOnion:(id)onion;
+- (void)set_handoffAppBundle:(unint64_t)bundle;
+- (void)set_handoffDestinationDeviceType:(unint64_t)type;
+- (void)set_handoffDestinationPerformanceClass:(unint64_t)class;
+- (void)set_handoffInitiator:(unint64_t)initiator;
+- (void)set_handoffQueueSize:(id)size;
+- (void)set_handoffSourceDeviceType:(unint64_t)type;
+- (void)set_handoffSourcePerformanceClass:(unint64_t)class;
+- (void)set_isSuccess:(id)success;
+- (void)set_postDuration:(id)duration;
+- (void)set_preDuration:(id)duration;
+- (void)set_userPerceivedAudioContinuity:(id)continuity;
+- (void)set_userPerceivedHandoffTime:(id)time;
 @end
 
 @implementation MRPlaybackSessionMigrateAnalytics
@@ -73,361 +73,361 @@
 
 - (unint64_t)handoffSourceDeviceType
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"handoffSourceDeviceType"];
-  v4 = [v3 intValue];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"handoffSourceDeviceType"];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)set_handoffSourceDeviceType:(unint64_t)a3
+- (void)set_handoffSourceDeviceType:(unint64_t)type
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v4 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v4 setObject:v5 forKeyedSubscript:@"handoffSourceDeviceType"];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:v5 forKeyedSubscript:@"handoffSourceDeviceType"];
 }
 
 - (unint64_t)handoffDestinationDeviceType
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"handoffDestinationDeviceType"];
-  v4 = [v3 intValue];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"handoffDestinationDeviceType"];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)set_handoffDestinationDeviceType:(unint64_t)a3
+- (void)set_handoffDestinationDeviceType:(unint64_t)type
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v4 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v4 setObject:v5 forKeyedSubscript:@"handoffDestinationDeviceType"];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:v5 forKeyedSubscript:@"handoffDestinationDeviceType"];
 }
 
 - (unint64_t)handoffInitiator
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"handoffInitiator"];
-  v4 = [v3 intValue];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"handoffInitiator"];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)set_handoffInitiator:(unint64_t)a3
+- (void)set_handoffInitiator:(unint64_t)initiator
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v4 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v4 setObject:v5 forKeyedSubscript:@"handoffInitiator"];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:initiator];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:v5 forKeyedSubscript:@"handoffInitiator"];
 }
 
 - (unint64_t)handoffAppBundle
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"handoffAppBundle"];
-  v4 = [v3 intValue];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"handoffAppBundle"];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)set_handoffAppBundle:(unint64_t)a3
+- (void)set_handoffAppBundle:(unint64_t)bundle
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v4 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v4 setObject:v5 forKeyedSubscript:@"handoffAppBundle"];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:bundle];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:v5 forKeyedSubscript:@"handoffAppBundle"];
 }
 
 - (unint64_t)handoffDestinationPerformanceClass
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"handoffDestinationPerformanceClass"];
-  v4 = [v3 intValue];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"handoffDestinationPerformanceClass"];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)set_handoffDestinationPerformanceClass:(unint64_t)a3
+- (void)set_handoffDestinationPerformanceClass:(unint64_t)class
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v4 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v4 setObject:v5 forKeyedSubscript:@"handoffDestinationPerformanceClass"];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:class];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:v5 forKeyedSubscript:@"handoffDestinationPerformanceClass"];
 }
 
 - (unint64_t)handoffSourcePerformanceClass
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"handoffSourcePerformanceClass"];
-  v4 = [v3 intValue];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"handoffSourcePerformanceClass"];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)set_handoffSourcePerformanceClass:(unint64_t)a3
+- (void)set_handoffSourcePerformanceClass:(unint64_t)class
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v4 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v4 setObject:v5 forKeyedSubscript:@"handoffSourcePerformanceClass"];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:class];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:v5 forKeyedSubscript:@"handoffSourcePerformanceClass"];
 }
 
 - (NSNumber)handoffQueueSize
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"handoffQueueSize"];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"handoffQueueSize"];
 
   return v3;
 }
 
-- (void)set_handoffQueueSize:(id)a3
+- (void)set_handoffQueueSize:(id)size
 {
-  v4 = a3;
-  v5 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"handoffQueueSize"];
+  sizeCopy = size;
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:sizeCopy forKeyedSubscript:@"handoffQueueSize"];
 }
 
 - (NSNumber)isSuccess
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"isSuccess"];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"isSuccess"];
 
   return v3;
 }
 
-- (void)set_isSuccess:(id)a3
+- (void)set_isSuccess:(id)success
 {
-  v4 = a3;
-  v5 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"isSuccess"];
+  successCopy = success;
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:successCopy forKeyedSubscript:@"isSuccess"];
 }
 
 - (NSNumber)preDuration
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"preDuration"];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"preDuration"];
 
   return v3;
 }
 
-- (void)set_preDuration:(id)a3
+- (void)set_preDuration:(id)duration
 {
-  v4 = a3;
-  v5 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"preDuration"];
+  durationCopy = duration;
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:durationCopy forKeyedSubscript:@"preDuration"];
 }
 
 - (NSNumber)durationDetermineRecipe
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"durationDetermineRecipe"];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"durationDetermineRecipe"];
 
   return v3;
 }
 
-- (void)set_durationDetermineRecipe:(id)a3
+- (void)set_durationDetermineRecipe:(id)recipe
 {
-  v4 = a3;
-  v5 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"durationDetermineRecipe"];
+  recipeCopy = recipe;
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:recipeCopy forKeyedSubscript:@"durationDetermineRecipe"];
 }
 
 - (NSNumber)durationPrepare
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"durationPrepare"];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"durationPrepare"];
 
   return v3;
 }
 
-- (void)set_durationPrepare:(id)a3
+- (void)set_durationPrepare:(id)prepare
 {
-  v4 = a3;
-  v5 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"durationPrepare"];
+  prepareCopy = prepare;
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:prepareCopy forKeyedSubscript:@"durationPrepare"];
 }
 
 - (NSNumber)durationApply
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"durationApply"];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"durationApply"];
 
   return v3;
 }
 
-- (void)set_durationApply:(id)a3
+- (void)set_durationApply:(id)apply
 {
-  v4 = a3;
-  v5 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"durationApply"];
+  applyCopy = apply;
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:applyCopy forKeyedSubscript:@"durationApply"];
 }
 
 - (NSNumber)durationFinalize
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"durationFinalize"];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"durationFinalize"];
 
   return v3;
 }
 
-- (void)set_durationFinalize:(id)a3
+- (void)set_durationFinalize:(id)finalize
 {
-  v4 = a3;
-  v5 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"durationFinalize"];
+  finalizeCopy = finalize;
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:finalizeCopy forKeyedSubscript:@"durationFinalize"];
 }
 
 - (NSNumber)durationApply_SetPlaybackSession
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"durationApply_SetPlaybackSession"];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"durationApply_SetPlaybackSession"];
 
   return v3;
 }
 
-- (void)set_durationApply_SetPlaybackSession:(id)a3
+- (void)set_durationApply_SetPlaybackSession:(id)session
 {
-  v4 = a3;
-  v5 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"durationApply_SetPlaybackSession"];
+  sessionCopy = session;
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:sessionCopy forKeyedSubscript:@"durationApply_SetPlaybackSession"];
 }
 
 - (NSNumber)postDuration
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"postDuration"];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"postDuration"];
 
   return v3;
 }
 
-- (void)set_postDuration:(id)a3
+- (void)set_postDuration:(id)duration
 {
-  v4 = a3;
-  v5 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"postDuration"];
+  durationCopy = duration;
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:durationCopy forKeyedSubscript:@"postDuration"];
 }
 
 - (NSNumber)userPerceivedHandoffTime
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"userPerceivedHandoffTime"];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"userPerceivedHandoffTime"];
 
   return v3;
 }
 
-- (void)set_userPerceivedHandoffTime:(id)a3
+- (void)set_userPerceivedHandoffTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"userPerceivedHandoffTime"];
+  timeCopy = time;
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"userPerceivedHandoffTime"];
 }
 
 - (NSNumber)userPerceivedAudioContinuity
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"userPerceivedAudioContinuity"];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"userPerceivedAudioContinuity"];
 
   return v3;
 }
 
-- (void)set_userPerceivedAudioContinuity:(id)a3
+- (void)set_userPerceivedAudioContinuity:(id)continuity
 {
-  v4 = a3;
-  v5 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"userPerceivedAudioContinuity"];
+  continuityCopy = continuity;
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:continuityCopy forKeyedSubscript:@"userPerceivedAudioContinuity"];
 }
 
 - (NSString)errorLevel_0
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"errorLevel_0"];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"errorLevel_0"];
 
   return v3;
 }
 
-- (void)set_errorLevel_0:(id)a3
+- (void)set_errorLevel_0:(id)level_0
 {
-  v4 = a3;
-  v5 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"errorLevel_0"];
+  level_0Copy = level_0;
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:level_0Copy forKeyedSubscript:@"errorLevel_0"];
 }
 
 - (NSString)errorLevel_1
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"errorLevel_1"];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"errorLevel_1"];
 
   return v3;
 }
 
-- (void)set_errorLevel_1:(id)a3
+- (void)set_errorLevel_1:(id)level_1
 {
-  v4 = a3;
-  v5 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"errorLevel_1"];
+  level_1Copy = level_1;
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:level_1Copy forKeyedSubscript:@"errorLevel_1"];
 }
 
 - (NSString)errorLevelCore_1
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"errorLevelCore_1"];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"errorLevelCore_1"];
 
   return v3;
 }
 
-- (void)set_errorLevelCore_1:(id)a3
+- (void)set_errorLevelCore_1:(id)core_1
 {
-  v4 = a3;
-  v5 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"errorLevelCore_1"];
+  core_1Copy = core_1;
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:core_1Copy forKeyedSubscript:@"errorLevelCore_1"];
 }
 
 - (NSString)errorLevelCore_0
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"errorLevelCore_0"];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"errorLevelCore_0"];
 
   return v3;
 }
 
-- (void)set_errorLevelCore_0:(id)a3
+- (void)set_errorLevelCore_0:(id)core_0
 {
-  v4 = a3;
-  v5 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"errorLevelCore_0"];
+  core_0Copy = core_0;
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:core_0Copy forKeyedSubscript:@"errorLevelCore_0"];
 }
 
 - (NSString)errorOnion
 {
-  v2 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"errorOnion"];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v3 = [data objectForKeyedSubscript:@"errorOnion"];
 
   return v3;
 }
 
-- (void)set_errorOnion:(id)a3
+- (void)set_errorOnion:(id)onion
 {
-  v4 = a3;
-  v5 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"errorOnion"];
+  onionCopy = onion;
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  [data setObject:onionCopy forKeyedSubscript:@"errorOnion"];
 }
 
-- (void)setHandoffInitiatorFromString:(id)a3
+- (void)setHandoffInitiatorFromString:(id)string
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"proximity"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"proximity"])
   {
     v4 = 1;
   }
 
-  else if ([v5 isEqualToString:@"routePicker"])
+  else if ([stringCopy isEqualToString:@"routePicker"])
   {
     v4 = 2;
   }
 
-  else if ([v5 isEqualToString:@"shortcuts"])
+  else if ([stringCopy isEqualToString:@"shortcuts"])
   {
     v4 = 3;
   }
 
   else
   {
-    if (![v5 isEqualToString:@"papika"])
+    if (![stringCopy isEqualToString:@"papika"])
     {
       goto LABEL_10;
     }
@@ -439,35 +439,35 @@
 LABEL_10:
 }
 
-- (void)setHandoffAppBundleFromString:(id)a3
+- (void)setHandoffAppBundleFromString:(id)string
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"com.apple.Music"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"com.apple.Music"])
   {
     v4 = 1;
   }
 
-  else if ([v5 isEqualToString:@"com.apple.TVMusic"])
+  else if ([stringCopy isEqualToString:@"com.apple.TVMusic"])
   {
     v4 = 2;
   }
 
-  else if ([v5 isEqualToString:@"com.apple.NanoMusic"])
+  else if ([stringCopy isEqualToString:@"com.apple.NanoMusic"])
   {
     v4 = 3;
   }
 
-  else if ([v5 isEqualToString:@"com.apple.SonicMusic"])
+  else if ([stringCopy isEqualToString:@"com.apple.SonicMusic"])
   {
     v4 = 4;
   }
 
-  else if ([v5 isEqualToString:@"com.apple.SonicPodcasts"])
+  else if ([stringCopy isEqualToString:@"com.apple.SonicPodcasts"])
   {
     v4 = 101;
   }
 
-  else if ([v5 isEqualToString:@"com.apple.Podcasts"])
+  else if ([stringCopy isEqualToString:@"com.apple.Podcasts"])
   {
     v4 = 100;
   }
@@ -482,11 +482,11 @@ LABEL_10:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [(MRPlaybackSessionMigrateAnalytics *)self data];
-  v4 = [v3 mutableCopy];
+  data = [(MRPlaybackSessionMigrateAnalytics *)self data];
+  v4 = [data mutableCopy];
 
-  v5 = [(MRPlaybackSessionMigrateAnalytics *)self playPerfFields];
-  [v4 addEntriesFromDictionary:v5];
+  playPerfFields = [(MRPlaybackSessionMigrateAnalytics *)self playPerfFields];
+  [v4 addEntriesFromDictionary:playPerfFields];
 
   return v4;
 }
@@ -509,16 +509,16 @@ LABEL_10:
   return result;
 }
 
-- (void)setHandoffSourceFromMRDeviceClass:(int64_t)a3
+- (void)setHandoffSourceFromMRDeviceClass:(int64_t)class
 {
-  v4 = [(MRPlaybackSessionMigrateAnalytics *)self deviceTypeFromMRDeviceClass:a3];
+  v4 = [(MRPlaybackSessionMigrateAnalytics *)self deviceTypeFromMRDeviceClass:class];
 
   [(MRPlaybackSessionMigrateAnalytics *)self set_handoffSourceDeviceType:v4];
 }
 
-- (void)setHandoffDestinationFromMRDeviceClass:(int64_t)a3
+- (void)setHandoffDestinationFromMRDeviceClass:(int64_t)class
 {
-  v4 = [(MRPlaybackSessionMigrateAnalytics *)self deviceTypeFromMRDeviceClass:a3];
+  v4 = [(MRPlaybackSessionMigrateAnalytics *)self deviceTypeFromMRDeviceClass:class];
 
   [(MRPlaybackSessionMigrateAnalytics *)self set_handoffDestinationDeviceType:v4];
 }

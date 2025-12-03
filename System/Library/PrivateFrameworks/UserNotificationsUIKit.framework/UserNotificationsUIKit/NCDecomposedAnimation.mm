@@ -1,11 +1,11 @@
 @interface NCDecomposedAnimation
 - (NCDecomposedAnimation)init;
-- (NCDecomposedAnimation)initWithAnimationBlock:(id)a3 settings:(id)a4 name:(id)a5;
+- (NCDecomposedAnimation)initWithAnimationBlock:(id)block settings:(id)settings name:(id)name;
 - (NSString)name;
 - (id)animationBlock;
-- (void)setAnimationBlock:(id)a3;
-- (void)setName:(id)a3;
-- (void)setSettings:(id)a3;
+- (void)setAnimationBlock:(id)block;
+- (void)setName:(id)name;
+- (void)setSettings:(id)settings;
 @end
 
 @implementation NCDecomposedAnimation
@@ -24,9 +24,9 @@
   return v3;
 }
 
-- (void)setAnimationBlock:(id)a3
+- (void)setAnimationBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR___NCDecomposedAnimation_animationBlock);
@@ -34,11 +34,11 @@
   v6[1] = v5;
 }
 
-- (void)setSettings:(id)a3
+- (void)setSettings:(id)settings
 {
   v4 = *(self + OBJC_IVAR___NCDecomposedAnimation_settings);
-  *(self + OBJC_IVAR___NCDecomposedAnimation_settings) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NCDecomposedAnimation_settings) = settings;
+  settingsCopy = settings;
 }
 
 - (NSString)name
@@ -49,7 +49,7 @@
   return v2;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v4 = sub_21E92A458();
   v5 = (self + OBJC_IVAR___NCDecomposedAnimation_name);
@@ -57,22 +57,22 @@
   v5[1] = v6;
 }
 
-- (NCDecomposedAnimation)initWithAnimationBlock:(id)a3 settings:(id)a4 name:(id)a5
+- (NCDecomposedAnimation)initWithAnimationBlock:(id)block settings:(id)settings name:(id)name
 {
-  v7 = _Block_copy(a3);
+  v7 = _Block_copy(block);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   v9 = sub_21E92A458();
   v10 = (self + OBJC_IVAR___NCDecomposedAnimation_animationBlock);
   *v10 = sub_21E79E1A4;
   v10[1] = v8;
-  *(self + OBJC_IVAR___NCDecomposedAnimation_settings) = a4;
+  *(self + OBJC_IVAR___NCDecomposedAnimation_settings) = settings;
   v11 = (self + OBJC_IVAR___NCDecomposedAnimation_name);
   *v11 = v9;
   v11[1] = v12;
   v15.receiver = self;
   v15.super_class = NCDecomposedAnimation;
-  v13 = a4;
+  settingsCopy = settings;
   return [(NCDecomposedAnimation *)&v15 init];
 }
 

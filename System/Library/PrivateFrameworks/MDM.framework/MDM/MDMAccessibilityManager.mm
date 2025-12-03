@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (BOOL)touchAccommodationsEnabled;
 - (int64_t)textSize;
-- (void)setTextSize:(int64_t)a3;
+- (void)setTextSize:(int64_t)size;
 @end
 
 @implementation MDMAccessibilityManager
@@ -28,10 +28,10 @@ uint64_t __41__MDMAccessibilityManager_sharedInstance__block_invoke()
 
 - (BOOL)touchAccommodationsEnabled
 {
-  v2 = [MEMORY[0x277CE7E20] sharedInstance];
-  v3 = [v2 touchAccommodationsEnabled];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  touchAccommodationsEnabled = [mEMORY[0x277CE7E20] touchAccommodationsEnabled];
 
-  return v3;
+  return touchAccommodationsEnabled;
 }
 
 - (int64_t)textSize
@@ -67,12 +67,12 @@ uint64_t __35__MDMAccessibilityManager_textSize__block_invoke(uint64_t a1, void 
   return result;
 }
 
-- (void)setTextSize:(int64_t)a3
+- (void)setTextSize:(int64_t)size
 {
   v15 = *MEMORY[0x277D85DE8];
   if ([(MDMAccessibilityManager *)self isValidTextSize:?])
   {
-    v10 = [&unk_2868502F0 objectAtIndexedSubscript:a3];
+    v10 = [&unk_2868502F0 objectAtIndexedSubscript:size];
     _AXSSetPreferredContentSizeCategoryName();
     v4 = *MEMORY[0x277D85DE8];
   }
@@ -88,7 +88,7 @@ uint64_t __35__MDMAccessibilityManager_textSize__block_invoke(uint64_t a1, void 
       *buf = 138543618;
       v12 = v8;
       v13 = 1024;
-      v14 = a3;
+      sizeCopy = size;
       _os_log_impl(&dword_2561F5000, v6, OS_LOG_TYPE_ERROR, "%{public}@ text size is out of range (%d)", buf, 0x12u);
     }
 

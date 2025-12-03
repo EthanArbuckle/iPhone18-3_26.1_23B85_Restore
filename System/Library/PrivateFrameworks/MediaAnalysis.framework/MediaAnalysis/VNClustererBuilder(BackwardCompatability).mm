@@ -9,7 +9,7 @@
   v6 = a3;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [a1 updateModelByAddingFaces:v6 andRemovingFaces:0 canceller:0 error:a4];
+    v7 = [self updateModelByAddingFaces:v6 andRemovingFaces:0 canceller:0 error:a4];
 LABEL_5:
     v8 = v7;
     goto LABEL_7;
@@ -17,7 +17,7 @@ LABEL_5:
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [a1 updateModelByAddingFaces:v6 error:a4];
+    v7 = [self updateModelByAddingFaces:v6 error:a4];
     goto LABEL_5;
   }
 

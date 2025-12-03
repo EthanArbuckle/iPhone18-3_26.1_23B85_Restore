@@ -1,7 +1,7 @@
 @interface VGExternalAccessoryState
 - (NSString)name;
 - (id)description;
-- (void)_updateWithVehicleInfo:(id)a3;
+- (void)_updateWithVehicleInfo:(id)info;
 @end
 
 @implementation VGExternalAccessoryState
@@ -27,121 +27,121 @@
   return v6;
 }
 
-- (void)_updateWithVehicleInfo:(id)a3
+- (void)_updateWithVehicleInfo:(id)info
 {
   v129 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = *MEMORY[0x277CC5F00];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277CC5F00]];
+  v6 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC5F00]];
 
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:v5];
+    v7 = [infoCopy objectForKeyedSubscript:v5];
     v8 = [v7 copy];
     displayName = self->_displayName;
     self->_displayName = v8;
   }
 
   v10 = *MEMORY[0x277CC5F20];
-  v11 = [v4 objectForKeyedSubscript:*MEMORY[0x277CC5F20]];
+  v11 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC5F20]];
 
   if (v11)
   {
-    v12 = [v4 objectForKeyedSubscript:v10];
+    v12 = [infoCopy objectForKeyedSubscript:v10];
     v13 = [v12 copy];
     mapsDisplayName = self->_mapsDisplayName;
     self->_mapsDisplayName = v13;
   }
 
   v15 = *MEMORY[0x277CC5F18];
-  v16 = [v4 objectForKeyedSubscript:*MEMORY[0x277CC5F18]];
+  v16 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC5F18]];
 
   if (v16)
   {
-    v17 = [v4 objectForKeyedSubscript:v15];
+    v17 = [infoCopy objectForKeyedSubscript:v15];
     v18 = [v17 copy];
     manufacturer = self->_manufacturer;
     self->_manufacturer = v18;
   }
 
   v20 = *MEMORY[0x277CC5F40];
-  v21 = [v4 objectForKeyedSubscript:*MEMORY[0x277CC5F40]];
+  v21 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC5F40]];
 
   if (v21)
   {
-    v22 = [v4 objectForKeyedSubscript:v20];
+    v22 = [infoCopy objectForKeyedSubscript:v20];
     v23 = [v22 copy];
     model = self->_model;
     self->_model = v23;
   }
 
   v25 = *MEMORY[0x277CC5FA0];
-  v26 = [v4 objectForKeyedSubscript:*MEMORY[0x277CC5FA0]];
+  v26 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC5FA0]];
 
   if (v26)
   {
-    v27 = [v4 objectForKeyedSubscript:v25];
+    v27 = [infoCopy objectForKeyedSubscript:v25];
     v28 = [v27 copy];
     year = self->_year;
     self->_year = v28;
   }
 
   v30 = *MEMORY[0x277CC5F98];
-  v31 = [v4 objectForKeyedSubscript:*MEMORY[0x277CC5F98]];
+  v31 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC5F98]];
 
   if (v31)
   {
-    v32 = [v4 objectForKeyedSubscript:v30];
+    v32 = [infoCopy objectForKeyedSubscript:v30];
     v33 = [v32 copy];
     colorHex = self->_colorHex;
     self->_colorHex = v33;
   }
 
   v35 = *MEMORY[0x277CC5F30];
-  v36 = [v4 objectForKeyedSubscript:*MEMORY[0x277CC5F30]];
+  v36 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC5F30]];
 
   v37 = 0x277CCA000uLL;
   if (v36)
   {
-    v38 = [v4 objectForKeyedSubscript:v35];
+    v38 = [infoCopy objectForKeyedSubscript:v35];
     [v38 doubleValue];
     v40 = v39;
 
     v41 = objc_alloc(MEMORY[0x277CCAB10]);
-    v42 = [MEMORY[0x277CCAE20] kilometers];
-    v43 = [v41 initWithDoubleValue:v42 unit:v40];
+    kilometers = [MEMORY[0x277CCAE20] kilometers];
+    v43 = [v41 initWithDoubleValue:kilometers unit:v40];
     maxEVRange = self->_maxEVRange;
     self->_maxEVRange = v43;
   }
 
   v45 = *MEMORY[0x277CC5EF0];
-  v46 = [v4 objectForKeyedSubscript:*MEMORY[0x277CC5EF0]];
+  v46 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC5EF0]];
 
   if (v46)
   {
-    v47 = [v4 objectForKeyedSubscript:v45];
+    v47 = [infoCopy objectForKeyedSubscript:v45];
     v48 = [v47 copy];
     consumptionArguments = self->_consumptionArguments;
     self->_consumptionArguments = v48;
   }
 
   v50 = *MEMORY[0x277CC5EE8];
-  v51 = [v4 objectForKeyedSubscript:*MEMORY[0x277CC5EE8]];
+  v51 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC5EE8]];
 
   if (v51)
   {
-    v52 = [v4 objectForKeyedSubscript:v50];
+    v52 = [infoCopy objectForKeyedSubscript:v50];
     v53 = [v52 copy];
     chargingArguments = self->_chargingArguments;
     self->_chargingArguments = v53;
   }
 
   v55 = *MEMORY[0x277CC5F08];
-  v56 = [v4 objectForKeyedSubscript:*MEMORY[0x277CC5F08]];
+  v56 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC5F08]];
 
   if (v56)
   {
-    v57 = [v4 objectForKeyedSubscript:v55];
+    v57 = [infoCopy objectForKeyedSubscript:v55];
     v58 = MEMORY[0x277CCABB0];
     [v57 doubleValue];
     v60 = [v58 numberWithDouble:v59 * 0.00001];
@@ -150,59 +150,59 @@
   }
 
   v62 = *MEMORY[0x277CC5F38];
-  v63 = [v4 objectForKeyedSubscript:*MEMORY[0x277CC5F38]];
+  v63 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC5F38]];
 
   if (v63)
   {
-    v64 = [v4 objectForKeyedSubscript:v62];
+    v64 = [infoCopy objectForKeyedSubscript:v62];
     [v64 doubleValue];
     v66 = v65 * 0.001;
 
     v67 = objc_alloc(MEMORY[0x277CCAB10]);
-    v68 = [MEMORY[0x277CCADF8] kilowattHours];
-    v69 = [v67 initWithDoubleValue:v68 unit:v66];
+    kilowattHours = [MEMORY[0x277CCADF8] kilowattHours];
+    v69 = [v67 initWithDoubleValue:kilowattHours unit:v66];
     minBatteryCapacity = self->_minBatteryCapacity;
     self->_minBatteryCapacity = v69;
   }
 
   v71 = *MEMORY[0x277CC5EF8];
-  v72 = [v4 objectForKeyedSubscript:*MEMORY[0x277CC5EF8]];
+  v72 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC5EF8]];
 
   if (v72)
   {
-    v73 = [v4 objectForKeyedSubscript:v71];
+    v73 = [infoCopy objectForKeyedSubscript:v71];
     [v73 doubleValue];
     v75 = v74 * 0.001;
 
     v76 = objc_alloc(MEMORY[0x277CCAB10]);
-    v77 = [MEMORY[0x277CCADF8] kilowattHours];
-    v78 = [v76 initWithDoubleValue:v77 unit:v75];
+    kilowattHours2 = [MEMORY[0x277CCADF8] kilowattHours];
+    v78 = [v76 initWithDoubleValue:kilowattHours2 unit:v75];
     currentBatteryCapacity = self->_currentBatteryCapacity;
     self->_currentBatteryCapacity = v78;
   }
 
   v80 = *MEMORY[0x277CC5F28];
-  v81 = [v4 objectForKeyedSubscript:*MEMORY[0x277CC5F28]];
+  v81 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC5F28]];
 
   if (v81)
   {
-    v82 = [v4 objectForKeyedSubscript:v80];
+    v82 = [infoCopy objectForKeyedSubscript:v80];
     [v82 doubleValue];
     v84 = v83 * 0.001;
 
     v85 = objc_alloc(MEMORY[0x277CCAB10]);
-    v86 = [MEMORY[0x277CCADF8] kilowattHours];
-    v87 = [v85 initWithDoubleValue:v86 unit:v84];
+    kilowattHours3 = [MEMORY[0x277CCADF8] kilowattHours];
+    v87 = [v85 initWithDoubleValue:kilowattHours3 unit:v84];
     maxBatteryCapacity = self->_maxBatteryCapacity;
     self->_maxBatteryCapacity = v87;
   }
 
   v89 = *MEMORY[0x277CC5F90];
-  v90 = [v4 objectForKeyedSubscript:*MEMORY[0x277CC5F90]];
+  v90 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC5F90]];
 
   if (v90)
   {
-    self->_supportedConnectors = [v4 objectForKeyedSubscript:v89];
+    self->_supportedConnectors = [infoCopy objectForKeyedSubscript:v89];
   }
 
   powerByConnector = self->_powerByConnector;
@@ -216,7 +216,7 @@
     v92 = objc_opt_new();
   }
 
-  v122 = self;
+  selfCopy = self;
   v123 = v92;
   if (_updateWithVehicleInfo__onceToken != -1)
   {
@@ -243,13 +243,13 @@
         }
 
         v98 = *(*(&v124 + 1) + 8 * i);
-        v99 = [v4 objectForKeyedSubscript:{v98, v122}];
+        v99 = [infoCopy objectForKeyedSubscript:{v98, selfCopy}];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           [v99 doubleValue];
           v101 = v100;
-          v102 = v4;
+          v102 = infoCopy;
           v103 = objc_alloc(*(v37 + 2832));
           [MEMORY[0x277CCAE30] watts];
           v105 = v104 = v37;
@@ -257,7 +257,7 @@
           v107 = [_updateWithVehicleInfo__powerKeys objectForKeyedSubscript:v98];
           [v123 setObject:v106 forKeyedSubscript:v107];
 
-          v4 = v102;
+          infoCopy = v102;
           v37 = v104;
         }
       }
@@ -269,32 +269,32 @@
   }
 
   v108 = [v123 copy];
-  v109 = v122;
-  v110 = v122->_powerByConnector;
-  v122->_powerByConnector = v108;
+  v109 = selfCopy;
+  v110 = selfCopy->_powerByConnector;
+  selfCopy->_powerByConnector = v108;
 
   v111 = *MEMORY[0x277CC5F10];
-  v112 = [v4 objectForKeyedSubscript:*MEMORY[0x277CC5F10]];
+  v112 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC5F10]];
   if (v112)
   {
     v113 = v112;
-    v114 = [v4 objectForKeyedSubscript:v111];
+    v114 = [infoCopy objectForKeyedSubscript:v111];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v116 = [v4 objectForKeyedSubscript:v111];
-      v122->_isCharging = [v116 BOOLValue];
+      v116 = [infoCopy objectForKeyedSubscript:v111];
+      selfCopy->_isCharging = [v116 BOOLValue];
     }
   }
 
   v117 = *MEMORY[0x277CC5EE0];
-  v118 = [v4 objectForKeyedSubscript:{*MEMORY[0x277CC5EE0], v122}];
+  v118 = [infoCopy objectForKeyedSubscript:{*MEMORY[0x277CC5EE0], selfCopy}];
 
   if (v118)
   {
-    v119 = [v4 objectForKeyedSubscript:v117];
+    v119 = [infoCopy objectForKeyedSubscript:v117];
     activeConnector = v109->_activeConnector;
     v109->_activeConnector = v119;
   }

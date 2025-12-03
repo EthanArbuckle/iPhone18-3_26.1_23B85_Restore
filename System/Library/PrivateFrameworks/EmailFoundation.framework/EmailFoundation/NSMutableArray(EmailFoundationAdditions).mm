@@ -23,10 +23,10 @@
 - (BOOL)ef_addObjectIfAbsent:()EmailFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 indexOfObjectIdenticalTo:v4];
+  v5 = [self indexOfObjectIdenticalTo:v4];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a1 addObject:v4];
+    [self addObject:v4];
   }
 
   return v5 == 0x7FFFFFFFFFFFFFFFLL;
@@ -35,10 +35,10 @@
 - (BOOL)ef_addObjectIfAbsentAccordingToEquals:()EmailFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 indexOfObject:v4];
+  v5 = [self indexOfObject:v4];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a1 addObject:v4];
+    [self addObject:v4];
   }
 
   return v5 == 0x7FFFFFFFFFFFFFFFLL;
@@ -51,13 +51,13 @@
     a3 = a4;
   }
 
-  return [a1 addObject:a3];
+  return [self addObject:a3];
 }
 
 - (void)ef_moveObjectAtIndex:()EmailFoundationAdditions toIndex:
 {
-  v8 = [a1 objectAtIndex:?];
-  [a1 insertObject:? atIndex:?];
+  v8 = [self objectAtIndex:?];
+  [self insertObject:? atIndex:?];
   if (a4 > a3)
   {
     v7 = a3;
@@ -68,7 +68,7 @@
     v7 = a3 + 1;
   }
 
-  [a1 removeObjectAtIndex:v7];
+  [self removeObjectAtIndex:v7];
 }
 
 - (void)ef_addAbsentObjectsFromArrayAccordingToEquals:()EmailFoundationAdditions
@@ -93,7 +93,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [a1 ef_addObjectIfAbsentAccordingToEquals:{*(*(&v9 + 1) + 8 * v7++), v9}];
+        [self ef_addObjectIfAbsentAccordingToEquals:{*(*(&v9 + 1) + 8 * v7++), v9}];
       }
 
       while (v5 != v7);
@@ -108,8 +108,8 @@
 
 - (void)ef_reverseObjects
 {
-  v2 = [a1 count];
-  v3 = [a1 count];
+  v2 = [self count];
+  v3 = [self count];
   if (v2 >= 2)
   {
     v4 = 0;
@@ -117,10 +117,10 @@
     v6 = v3 - 1;
     do
     {
-      v7 = [a1 objectAtIndexedSubscript:v4];
-      v8 = [a1 objectAtIndexedSubscript:v6];
-      [a1 setObject:v7 atIndexedSubscript:v6];
-      [a1 setObject:v8 atIndexedSubscript:v4];
+      v7 = [self objectAtIndexedSubscript:v4];
+      v8 = [self objectAtIndexedSubscript:v6];
+      [self setObject:v7 atIndexedSubscript:v6];
+      [self setObject:v8 atIndexedSubscript:v4];
 
       ++v4;
       --v6;
@@ -141,7 +141,7 @@
   v7 = v6;
   v8 = a3;
   v9 = _Block_copy(aBlock);
-  v10 = [a1 ef_insertObject:v8 usingComparator:v9 allowDuplicates:1];
+  v10 = [self ef_insertObject:v8 usingComparator:v9 allowDuplicates:1];
 
   return v10;
 }
@@ -150,11 +150,11 @@
 {
   v8 = a3;
   v9 = a4;
-  v10 = [a1 ef_indexWhereObjectWouldBeInserted:v8 usingComparator:v9];
+  v10 = [self ef_indexWhereObjectWouldBeInserted:v8 usingComparator:v9];
   v11 = v10;
-  if ((a5 & 1) != 0 || !v10 || v10 > [a1 count] || (objc_msgSend(a1, "objectAtIndex:", v11 - 1), v12 = objc_claimAutoreleasedReturnValue(), v13 = v9[2](v9, v12, v8), v12, v13))
+  if ((a5 & 1) != 0 || !v10 || v10 > [self count] || (objc_msgSend(self, "objectAtIndex:", v11 - 1), v12 = objc_claimAutoreleasedReturnValue(), v13 = v9[2](v9, v12, v8), v12, v13))
   {
-    [a1 insertObject:v8 atIndex:v11];
+    [self insertObject:v8 atIndex:v11];
   }
 
   else
@@ -175,7 +175,7 @@
   v17 = a5;
   v8 = a3;
   v9 = _Block_copy(&v12);
-  v10 = [a1 ef_insertObject:v8 usingComparator:v9 allowDuplicates:{a6, v12, v13, v14, v15, v16, v17}];
+  v10 = [self ef_insertObject:v8 usingComparator:v9 allowDuplicates:{a6, v12, v13, v14, v15, v16, v17}];
 
   return v10;
 }
@@ -184,16 +184,16 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 count];
-  v9 = [a1 indexOfObject:v6 inSortedRange:0 options:v8 usingComparator:{1280, v7}];
-  if (v9 < v8 && ([a1 objectAtIndexedSubscript:v9], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqual:", v6), v10, (v11 & 1) != 0))
+  v8 = [self count];
+  v9 = [self indexOfObject:v6 inSortedRange:0 options:v8 usingComparator:{1280, v7}];
+  if (v9 < v8 && ([self objectAtIndexedSubscript:v9], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqual:", v6), v10, (v11 & 1) != 0))
   {
     v9 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    [a1 insertObject:v6 atIndex:v9];
+    [self insertObject:v6 atIndex:v9];
   }
 
   return v9;
@@ -203,10 +203,10 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 ef_indexOfObject:v6 usingComparator:v7];
+  v8 = [self ef_indexOfObject:v6 usingComparator:v7];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a1 removeObjectAtIndex:v8];
+    [self removeObjectAtIndex:v8];
   }
 
   return v8;
@@ -222,7 +222,7 @@
   v15 = a5;
   v6 = a3;
   v7 = _Block_copy(&v10);
-  v8 = [a1 ef_removeObject:v6 usingComparator:{v7, v10, v11, v12, v13, v14, v15}];
+  v8 = [self ef_removeObject:v6 usingComparator:{v7, v10, v11, v12, v13, v14, v15}];
 
   return v8;
 }
@@ -232,7 +232,7 @@
   v4 = a3;
   if (v4)
   {
-    [a1 addObject:v4];
+    [self addObject:v4];
   }
 }
 
@@ -241,13 +241,13 @@
   v6 = a3;
   if (v6)
   {
-    [a1 insertObject:v6 atIndex:a4];
+    [self insertObject:v6 atIndex:a4];
   }
 }
 
 - (unint64_t)ef_trimToCount:()EmailFoundationAdditions fromStart:
 {
-  result = [a1 count];
+  result = [self count];
   if (result > a3)
   {
     if (a4)
@@ -260,7 +260,7 @@
       v8 = a3;
     }
 
-    return [a1 removeObjectsInRange:{v8, result - a3}];
+    return [self removeObjectsInRange:{v8, result - a3}];
   }
 
   return result;
@@ -268,10 +268,10 @@
 
 - (id)ef_removeFirst
 {
-  if ([a1 count])
+  if ([self count])
   {
-    v2 = [a1 objectAtIndex:0];
-    [a1 removeObjectAtIndex:0];
+    v2 = [self objectAtIndex:0];
+    [self removeObjectAtIndex:0];
   }
 
   else
@@ -284,11 +284,11 @@
 
 - (id)ef_popElement
 {
-  v2 = [a1 count];
+  v2 = [self count];
   if (v2)
   {
-    v3 = [a1 objectAtIndex:v2 - 1];
-    [a1 removeLastObject];
+    v3 = [self objectAtIndex:v2 - 1];
+    [self removeLastObject];
   }
 
   else

@@ -1,46 +1,46 @@
 @interface IPARegion
 + (id)region;
-+ (id)regionWithRect:(CGRect)a3;
-+ (id)regionWithRectArray:(id)a3;
-+ (id)regionWithRegion:(id)a3;
-- (BOOL)includesRect:(CGRect)a3;
-- (BOOL)intersectsRect:(CGRect)a3;
-- (BOOL)intersectsRegion:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRegion:(id)a3;
++ (id)regionWithRect:(CGRect)rect;
++ (id)regionWithRectArray:(id)array;
++ (id)regionWithRegion:(id)region;
+- (BOOL)includesRect:(CGRect)rect;
+- (BOOL)intersectsRect:(CGRect)rect;
+- (BOOL)intersectsRegion:(id)region;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRegion:(id)region;
 - (CGRect)bounds;
 - (IPARegion)init;
-- (IPARegion)initWithRect:(CGRect)a3;
-- (IPARegion)initWithRectArray:(id)a3;
-- (IPARegion)initWithRegion:(id)a3;
+- (IPARegion)initWithRect:(CGRect)rect;
+- (IPARegion)initWithRectArray:(id)array;
+- (IPARegion)initWithRegion:(id)region;
 - (double)area;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)regionByAddingRect:(CGRect)a3;
-- (id)regionByAddingRectArray:(id)a3;
-- (id)regionByAddingRegion:(id)a3;
-- (id)regionByApplyingAffineTransform:(CGAffineTransform *)a3;
-- (id)regionByApplyingOrientation:(int64_t)a3 imageSize:(CGSize)a4;
-- (id)regionByClippingToRect:(CGRect)a3;
-- (id)regionByClippingToRectArray:(id)a3;
-- (id)regionByClippingToRegion:(id)a3;
-- (id)regionByExcludingRect:(CGRect)a3;
-- (id)regionByExcludingRegion:(id)a3;
-- (id)regionByFlippingInRect:(CGRect)a3;
-- (id)regionByGrowingBy:(CGPoint)a3;
-- (id)regionByGrowingBy:(CGPoint)a3 inRect:(CGRect)a4;
-- (id)regionByRemovingRect:(CGRect)a3;
-- (id)regionByRemovingRectArray:(id)a3;
-- (id)regionByRemovingRegion:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)regionByAddingRect:(CGRect)rect;
+- (id)regionByAddingRectArray:(id)array;
+- (id)regionByAddingRegion:(id)region;
+- (id)regionByApplyingAffineTransform:(CGAffineTransform *)transform;
+- (id)regionByApplyingOrientation:(int64_t)orientation imageSize:(CGSize)size;
+- (id)regionByClippingToRect:(CGRect)rect;
+- (id)regionByClippingToRectArray:(id)array;
+- (id)regionByClippingToRegion:(id)region;
+- (id)regionByExcludingRect:(CGRect)rect;
+- (id)regionByExcludingRegion:(id)region;
+- (id)regionByFlippingInRect:(CGRect)rect;
+- (id)regionByGrowingBy:(CGPoint)by;
+- (id)regionByGrowingBy:(CGPoint)by inRect:(CGRect)rect;
+- (id)regionByRemovingRect:(CGRect)rect;
+- (id)regionByRemovingRectArray:(id)array;
+- (id)regionByRemovingRegion:(id)region;
 - (id)regionByRoundingDown;
 - (id)regionByRoundingUp;
-- (id)regionByScalingBy:(CGPoint)a3;
-- (id)regionByShrinkingBy:(CGPoint)a3;
-- (id)regionByShrinkingBy:(CGPoint)a3 inRect:(CGRect)a4;
-- (id)regionByTranslatingBy:(CGPoint)a3;
+- (id)regionByScalingBy:(CGPoint)by;
+- (id)regionByShrinkingBy:(CGPoint)by;
+- (id)regionByShrinkingBy:(CGPoint)by inRect:(CGRect)rect;
+- (id)regionByTranslatingBy:(CGPoint)by;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)enumerateRects:(id)a3;
+- (void)enumerateRects:(id)rects;
 @end
 
 @implementation IPARegion
@@ -64,21 +64,21 @@
   return result;
 }
 
-- (BOOL)includesRect:(CGRect)a3
+- (BOOL)includesRect:(CGRect)rect
 {
   imp = self->_imp;
-  v5 = a3;
-  PA::Region::Region(v6, &v5);
+  rectCopy = rect;
+  PA::Region::Region(v6, &rectCopy);
   LOBYTE(imp) = PA::Region::Includes(imp, v6);
   std::__hash_table<PA::RegionRect,PA::RectHash,PA::RectEqualTo,std::allocator<PA::RegionRect>>::~__hash_table(v6);
   return imp;
 }
 
-- (BOOL)intersectsRegion:(id)a3
+- (BOOL)intersectsRegion:(id)region
 {
-  if (a3)
+  if (region)
   {
-    return PA::Region::Intersects(*(self->_imp + 2), *(a3 + 1));
+    return PA::Region::Intersects(*(self->_imp + 2), *(region + 1));
   }
 
   else
@@ -87,11 +87,11 @@
   }
 }
 
-- (BOOL)intersectsRect:(CGRect)a3
+- (BOOL)intersectsRect:(CGRect)rect
 {
   imp = self->_imp;
-  v5 = a3;
-  PA::Region::Region(v6, &v5);
+  rectCopy = rect;
+  PA::Region::Region(v6, &rectCopy);
   LOBYTE(imp) = PA::Region::Intersects(imp[2], v6);
   std::__hash_table<PA::RegionRect,PA::RectHash,PA::RectEqualTo,std::allocator<PA::RegionRect>>::~__hash_table(v6);
   return imp;
@@ -107,23 +107,23 @@
   return result;
 }
 
-- (void)enumerateRects:(id)a3
+- (void)enumerateRects:(id)rects
 {
   for (i = *(self->_imp + 2); i; i = *i)
   {
-    (*(a3 + 2))(a3, a2, i[2], i[3], i[4], i[5]);
+    (*(rects + 2))(rects, a2, i[2], i[3], i[4], i[5]);
   }
 }
 
-- (BOOL)isEqualToRegion:(id)a3
+- (BOOL)isEqualToRegion:(id)region
 {
-  if (!a3)
+  if (!region)
   {
     return 0;
   }
 
   imp = self->_imp;
-  v4 = *(a3 + 1);
+  v4 = *(region + 1);
   if (imp[3] == v4[3])
   {
     v5 = imp + 2;
@@ -223,13 +223,13 @@ LABEL_20:
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 isEqualToRegion:self];
+    v5 = [equalCopy isEqualToRegion:self];
   }
 
   else
@@ -261,51 +261,51 @@ LABEL_20:
   return result;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [IPAMutableRegion allocWithZone:a3];
+  v4 = [IPAMutableRegion allocWithZone:zone];
 
   return [(IPARegion *)v4 initWithRegion:self];
 }
 
-+ (id)regionWithRegion:(id)a3
++ (id)regionWithRegion:(id)region
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithRegion:v4];
+  regionCopy = region;
+  v5 = [[self alloc] initWithRegion:regionCopy];
 
   return v5;
 }
 
-+ (id)regionWithRectArray:(id)a3
++ (id)regionWithRectArray:(id)array
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithRectArray:v4];
+  arrayCopy = array;
+  v5 = [[self alloc] initWithRectArray:arrayCopy];
 
   return v5;
 }
 
-+ (id)regionWithRect:(CGRect)a3
++ (id)regionWithRect:(CGRect)rect
 {
-  v3 = [[a1 alloc] initWithRect:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v3 = [[self alloc] initWithRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
 
   return v3;
 }
 
 + (id)region
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __24__IPARegion_description__block_invoke;
   v11[3] = &unk_279A263C8;
-  v4 = v3;
+  v4 = array;
   v12 = v4;
   [(IPARegion *)self enumerateRects:v11];
   v5 = MEMORY[0x277CCACA8];
@@ -337,10 +337,10 @@ void __24__IPARegion_description__block_invoke(uint64_t a1, double a2, double a3
   [(IPARegion *)&v5 dealloc];
 }
 
-- (IPARegion)initWithRectArray:(id)a3
+- (IPARegion)initWithRectArray:(id)array
 {
-  v4 = a3;
-  if (v4)
+  arrayCopy = array;
+  if (arrayCopy)
   {
     v6.receiver = self;
     v6.super_class = IPARegion;
@@ -371,10 +371,10 @@ uint64_t __31__IPARegion_initWithRectArray___block_invoke(uint64_t a1, double a2
   return PA::Region::Add(v5, v7);
 }
 
-- (IPARegion)initWithRegion:(id)a3
+- (IPARegion)initWithRegion:(id)region
 {
-  v4 = a3;
-  if (v4)
+  regionCopy = region;
+  if (regionCopy)
   {
     v6.receiver = self;
     v6.super_class = IPARegion;
@@ -395,9 +395,9 @@ uint64_t __31__IPARegion_initWithRectArray___block_invoke(uint64_t a1, double a2
   return result;
 }
 
-- (IPARegion)initWithRect:(CGRect)a3
+- (IPARegion)initWithRect:(CGRect)rect
 {
-  if (CGRectIsInfinite(a3))
+  if (CGRectIsInfinite(rect))
   {
     result = _PFAssertFailHandler();
     __break(1u);
@@ -430,36 +430,36 @@ uint64_t __31__IPARegion_initWithRectArray___block_invoke(uint64_t a1, double a2
   return 0;
 }
 
-- (id)regionByFlippingInRect:(CGRect)a3
+- (id)regionByFlippingInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = [(IPARegion *)self mutableCopy];
   [v7 flipInRect:{x, y, width, height}];
 
   return v7;
 }
 
-- (id)regionByApplyingAffineTransform:(CGAffineTransform *)a3
+- (id)regionByApplyingAffineTransform:(CGAffineTransform *)transform
 {
   v4 = [(IPARegion *)self mutableCopy];
-  v5 = *&a3->c;
-  v7[0] = *&a3->a;
+  v5 = *&transform->c;
+  v7[0] = *&transform->a;
   v7[1] = v5;
-  v7[2] = *&a3->tx;
+  v7[2] = *&transform->tx;
   [v4 applyAffineTransform:v7];
 
   return v4;
 }
 
-- (id)regionByApplyingOrientation:(int64_t)a3 imageSize:(CGSize)a4
+- (id)regionByApplyingOrientation:(int64_t)orientation imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v7 = [(IPARegion *)self mutableCopy];
-  [v7 applyOrientation:a3 imageSize:{width, height}];
+  [v7 applyOrientation:orientation imageSize:{width, height}];
 
   return v7;
 }
@@ -480,179 +480,179 @@ uint64_t __31__IPARegion_initWithRectArray___block_invoke(uint64_t a1, double a2
   return v2;
 }
 
-- (id)regionByShrinkingBy:(CGPoint)a3 inRect:(CGRect)a4
+- (id)regionByShrinkingBy:(CGPoint)by inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.y;
-  v9 = a3.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = by.y;
+  v9 = by.x;
   v10 = [(IPARegion *)self mutableCopy];
   [v10 shrinkBy:v9 inRect:{v8, x, y, width, height}];
 
   return v10;
 }
 
-- (id)regionByShrinkingBy:(CGPoint)a3
+- (id)regionByShrinkingBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
+  y = by.y;
+  x = by.x;
   v5 = [(IPARegion *)self mutableCopy];
   [v5 shrinkBy:{x, y}];
 
   return v5;
 }
 
-- (id)regionByGrowingBy:(CGPoint)a3 inRect:(CGRect)a4
+- (id)regionByGrowingBy:(CGPoint)by inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.y;
-  v9 = a3.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = by.y;
+  v9 = by.x;
   v10 = [(IPARegion *)self mutableCopy];
   [v10 growBy:v9 inRect:{v8, x, y, width, height}];
 
   return v10;
 }
 
-- (id)regionByGrowingBy:(CGPoint)a3
+- (id)regionByGrowingBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
+  y = by.y;
+  x = by.x;
   v5 = [(IPARegion *)self mutableCopy];
   [v5 growBy:{x, y}];
 
   return v5;
 }
 
-- (id)regionByTranslatingBy:(CGPoint)a3
+- (id)regionByTranslatingBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
+  y = by.y;
+  x = by.x;
   v5 = [(IPARegion *)self mutableCopy];
   [v5 translateBy:{x, y}];
 
   return v5;
 }
 
-- (id)regionByScalingBy:(CGPoint)a3
+- (id)regionByScalingBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
+  y = by.y;
+  x = by.x;
   v5 = [(IPARegion *)self mutableCopy];
   [v5 scaleBy:{x, y}];
 
   return v5;
 }
 
-- (id)regionByExcludingRegion:(id)a3
+- (id)regionByExcludingRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v5 = [(IPARegion *)self mutableCopy];
-  [v5 diffWithRegion:v4];
+  [v5 diffWithRegion:regionCopy];
 
   return v5;
 }
 
-- (id)regionByExcludingRect:(CGRect)a3
+- (id)regionByExcludingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = [(IPARegion *)self mutableCopy];
   [v7 diffWithRect:{x, y, width, height}];
 
   return v7;
 }
 
-- (id)regionByClippingToRectArray:(id)a3
+- (id)regionByClippingToRectArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = [(IPARegion *)self mutableCopy];
-  [v5 clipToRectArray:v4];
+  [v5 clipToRectArray:arrayCopy];
 
   return v5;
 }
 
-- (id)regionByClippingToRegion:(id)a3
+- (id)regionByClippingToRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v5 = [(IPARegion *)self mutableCopy];
-  [v5 clipToRegion:v4];
+  [v5 clipToRegion:regionCopy];
 
   return v5;
 }
 
-- (id)regionByClippingToRect:(CGRect)a3
+- (id)regionByClippingToRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = [(IPARegion *)self mutableCopy];
   [v7 clipToRect:{x, y, width, height}];
 
   return v7;
 }
 
-- (id)regionByRemovingRectArray:(id)a3
+- (id)regionByRemovingRectArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = [(IPARegion *)self mutableCopy];
-  [v5 removeRectArray:v4];
+  [v5 removeRectArray:arrayCopy];
 
   return v5;
 }
 
-- (id)regionByRemovingRegion:(id)a3
+- (id)regionByRemovingRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v5 = [(IPARegion *)self mutableCopy];
-  [v5 removeRegion:v4];
+  [v5 removeRegion:regionCopy];
 
   return v5;
 }
 
-- (id)regionByRemovingRect:(CGRect)a3
+- (id)regionByRemovingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = [(IPARegion *)self mutableCopy];
   [v7 removeRect:{x, y, width, height}];
 
   return v7;
 }
 
-- (id)regionByAddingRectArray:(id)a3
+- (id)regionByAddingRectArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = [(IPARegion *)self mutableCopy];
-  [v5 addRectArray:v4];
+  [v5 addRectArray:arrayCopy];
 
   return v5;
 }
 
-- (id)regionByAddingRegion:(id)a3
+- (id)regionByAddingRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v5 = [(IPARegion *)self mutableCopy];
-  [v5 addRegion:v4];
+  [v5 addRegion:regionCopy];
 
   return v5;
 }
 
-- (id)regionByAddingRect:(CGRect)a3
+- (id)regionByAddingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = [(IPARegion *)self mutableCopy];
   [v7 addRect:{x, y, width, height}];
 

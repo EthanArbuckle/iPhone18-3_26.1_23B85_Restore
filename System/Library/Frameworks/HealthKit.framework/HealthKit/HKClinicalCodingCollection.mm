@@ -1,9 +1,9 @@
 @interface HKClinicalCodingCollection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKClinicalCodingCollection)init;
-- (HKClinicalCodingCollection)initWithCoder:(id)a3;
-- (HKClinicalCodingCollection)initWithText:(id)a3 codings:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (HKClinicalCodingCollection)initWithCoder:(id)coder;
+- (HKClinicalCodingCollection)initWithText:(id)text codings:(id)codings;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalCodingCollection
@@ -18,20 +18,20 @@
   return 0;
 }
 
-- (HKClinicalCodingCollection)initWithText:(id)a3 codings:(id)a4
+- (HKClinicalCodingCollection)initWithText:(id)text codings:(id)codings
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  codingsCopy = codings;
   v14.receiver = self;
   v14.super_class = HKClinicalCodingCollection;
   v8 = [(HKClinicalCodingCollection *)&v14 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [codingsCopy copy];
     codings = v8->_codings;
     v8->_codings = v9;
 
-    v11 = [v6 copy];
+    v11 = [textCopy copy];
     text = v8->_text;
     v8->_text = v11;
   }
@@ -39,10 +39,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -52,26 +52,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKClinicalCodingCollection *)v5 codings];
-      v7 = [(HKClinicalCodingCollection *)self codings];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      codings = [(HKClinicalCodingCollection *)v5 codings];
+      codings2 = [(HKClinicalCodingCollection *)self codings];
+      v8 = codings2;
+      if (codings == codings2)
       {
       }
 
       else
       {
-        v9 = [(HKClinicalCodingCollection *)self codings];
-        if (!v9)
+        codings3 = [(HKClinicalCodingCollection *)self codings];
+        if (!codings3)
         {
           goto LABEL_14;
         }
 
-        v10 = v9;
-        v11 = [(HKClinicalCodingCollection *)v5 codings];
-        v12 = [(HKClinicalCodingCollection *)self codings];
-        v13 = [v11 isEqualToSet:v12];
+        v10 = codings3;
+        codings4 = [(HKClinicalCodingCollection *)v5 codings];
+        codings5 = [(HKClinicalCodingCollection *)self codings];
+        v13 = [codings4 isEqualToSet:codings5];
 
         if (!v13)
         {
@@ -79,10 +79,10 @@
         }
       }
 
-      v6 = [(HKClinicalCodingCollection *)v5 text];
-      v15 = [(HKClinicalCodingCollection *)self text];
-      v8 = v15;
-      if (v6 == v15)
+      codings = [(HKClinicalCodingCollection *)v5 text];
+      text = [(HKClinicalCodingCollection *)self text];
+      v8 = text;
+      if (codings == text)
       {
 
 LABEL_17:
@@ -90,13 +90,13 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v16 = [(HKClinicalCodingCollection *)self text];
-      if (v16)
+      text2 = [(HKClinicalCodingCollection *)self text];
+      if (text2)
       {
-        v17 = v16;
-        v18 = [(HKClinicalCodingCollection *)v5 text];
-        v19 = [(HKClinicalCodingCollection *)self text];
-        v20 = [v18 isEqualToString:v19];
+        v17 = text2;
+        text3 = [(HKClinicalCodingCollection *)v5 text];
+        text4 = [(HKClinicalCodingCollection *)self text];
+        v20 = [text3 isEqualToString:text4];
 
         if (v20)
         {
@@ -123,30 +123,30 @@ LABEL_19:
   return v14;
 }
 
-- (HKClinicalCodingCollection)initWithCoder:(id)a3
+- (HKClinicalCodingCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = HKClinicalCodingCollection;
   v5 = [(HKClinicalCodingCollection *)&v15 init];
   if (v5)
   {
-    if (([v4 containsValueForKey:@"CodingsKey"] & 1) == 0)
+    if (([coderCopy containsValueForKey:@"CodingsKey"] & 1) == 0)
     {
       v12 = objc_alloc(MEMORY[0x1E696ABC0]);
       v13 = [v12 initWithDomain:*MEMORY[0x1E696A250] code:4865 userInfo:0];
-      [v4 failWithError:v13];
+      [coderCopy failWithError:v13];
 
       v11 = 0;
       goto LABEL_6;
     }
 
     v6 = [MEMORY[0x1E695DFD8] hk_typesForSetOf:objc_opt_class()];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"CodingsKey"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"CodingsKey"];
     codings = v5->_codings;
     v5->_codings = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TextKey"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TextKey"];
     text = v5->_text;
     v5->_text = v9;
   }
@@ -157,12 +157,12 @@ LABEL_6:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   codings = self->_codings;
-  v5 = a3;
-  [v5 encodeObject:codings forKey:@"CodingsKey"];
-  [v5 encodeObject:self->_text forKey:@"TextKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:codings forKey:@"CodingsKey"];
+  [coderCopy encodeObject:self->_text forKey:@"TextKey"];
 }
 
 @end

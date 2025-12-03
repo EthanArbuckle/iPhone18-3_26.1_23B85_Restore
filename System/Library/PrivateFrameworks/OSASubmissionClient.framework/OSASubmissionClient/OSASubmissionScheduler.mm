@@ -1,14 +1,14 @@
 @interface OSASubmissionScheduler
 + (double)_lastSuccessTime;
-+ (id)_calculateNewCadenceParametersWithPermissive:(BOOL)a3 fastLane:(BOOL)a4;
-+ (id)_getCurrentCadenceParametersFromActivity:(id)a3;
++ (id)_calculateNewCadenceParametersWithPermissive:(BOOL)permissive fastLane:(BOOL)lane;
++ (id)_getCurrentCadenceParametersFromActivity:(id)activity;
 + (int64_t)_retryCount;
 + (void)_incrementRetryCount;
 + (void)_resetRetryCount;
 + (void)_saveLastSuccessTime;
-+ (void)_scheduleSubmissionWithPermissive:(BOOL)a3;
-+ (void)_updateCadenceForActivity:(id)a3 newCadenceParameters:(id)a4;
-+ (void)scheduleCleanupForUser:(id)a3;
++ (void)_scheduleSubmissionWithPermissive:(BOOL)permissive;
++ (void)_updateCadenceForActivity:(id)activity newCadenceParameters:(id)parameters;
++ (void)scheduleCleanupForUser:(id)user;
 + (void)scheduleSubmission;
 @end
 
@@ -21,7 +21,7 @@
   [OSASubmissionScheduler _scheduleSubmissionWithPermissive:0];
 }
 
-+ (void)_scheduleSubmissionWithPermissive:(BOOL)a3
++ (void)_scheduleSubmissionWithPermissive:(BOOL)permissive
 {
   v3 = "com.apple.osanalytics.submissions.submit";
   v4 = *MEMORY[0x277D86238];
@@ -29,13 +29,13 @@
   v5[1] = 3221225472;
   v5[2] = __60__OSASubmissionScheduler__scheduleSubmissionWithPermissive___block_invoke;
   v5[3] = &__block_descriptor_41_e33_v16__0__NSObject_OS_xpc_object__8l;
-  if (a3)
+  if (permissive)
   {
     v3 = "com.apple.osanalytics.submissions.submit-permissive";
   }
 
-  v6 = a3;
-  v5[4] = a1;
+  permissiveCopy = permissive;
+  v5[4] = self;
   xpc_activity_register(v3, v4, v5);
 }
 
@@ -232,16 +232,16 @@ id __60__OSASubmissionScheduler__scheduleSubmissionWithPermissive___block_invoke
   return v2;
 }
 
-+ (void)scheduleCleanupForUser:(id)a3
++ (void)scheduleCleanupForUser:(id)user
 {
-  v3 = a3;
+  userCopy = user;
   v4 = *MEMORY[0x277D86238];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __49__OSASubmissionScheduler_scheduleCleanupForUser___block_invoke;
   handler[3] = &unk_2799BF748;
-  v7 = v3;
-  v5 = v3;
+  v7 = userCopy;
+  v5 = userCopy;
   xpc_activity_register("com.apple.osanalytics.submissions.cleanup", v4, handler);
 }
 
@@ -266,15 +266,15 @@ void __49__OSASubmissionScheduler_scheduleCleanupForUser___block_invoke(uint64_t
   }
 }
 
-+ (id)_calculateNewCadenceParametersWithPermissive:(BOOL)a3 fastLane:(BOOL)a4
++ (id)_calculateNewCadenceParametersWithPermissive:(BOOL)permissive fastLane:(BOOL)lane
 {
-  v4 = a4;
-  v5 = a3;
+  laneCopy = lane;
+  permissiveCopy = permissive;
   v22[3] = *MEMORY[0x277D85DE8];
   v6 = +[OSASubmissionScheduler _retryCount];
   v7 = *MEMORY[0x277D862A0];
   v8 = 3 * *MEMORY[0x277D862A0];
-  if (v5 && v4)
+  if (permissiveCopy && laneCopy)
   {
     v9 = 12 * *MEMORY[0x277D862A0];
 LABEL_5:
@@ -285,12 +285,12 @@ LABEL_6:
   }
 
   v9 = *MEMORY[0x277D86298];
-  if (v5)
+  if (permissiveCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4)
+  if (laneCopy)
   {
     v8 = *MEMORY[0x277D862B0];
   }
@@ -341,10 +341,10 @@ LABEL_7:
   return v16;
 }
 
-+ (id)_getCurrentCadenceParametersFromActivity:(id)a3
++ (id)_getCurrentCadenceParametersFromActivity:(id)activity
 {
   v17[3] = *MEMORY[0x277D85DE8];
-  v3 = xpc_activity_copy_criteria(a3);
+  v3 = xpc_activity_copy_criteria(activity);
   v4 = *MEMORY[0x277D86250];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:*MEMORY[0x277D86250]];
   v16[0] = v5;
@@ -367,12 +367,12 @@ LABEL_7:
   return v13;
 }
 
-+ (void)_updateCadenceForActivity:(id)a3 newCadenceParameters:(id)a4
++ (void)_updateCadenceForActivity:(id)activity newCadenceParameters:(id)parameters
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _getCurrentCadenceParametersFromActivity:v6];
+  activityCopy = activity;
+  parametersCopy = parameters;
+  v8 = [self _getCurrentCadenceParametersFromActivity:activityCopy];
   v9 = xpc_activity_copy_identifier();
   if (v9)
   {
@@ -386,7 +386,7 @@ LABEL_7:
     v11 = 0;
   }
 
-  state = xpc_activity_get_state(v6);
+  state = xpc_activity_get_state(activityCopy);
   if (!state)
   {
     goto LABEL_11;
@@ -397,12 +397,12 @@ LABEL_7:
     goto LABEL_15;
   }
 
-  if (xpc_activity_set_state(v6, 5))
+  if (xpc_activity_set_state(activityCopy, 5))
   {
     usleep(0xAu);
   }
 
-  if ([v8 isEqualToDictionary:v7])
+  if ([v8 isEqualToDictionary:parametersCopy])
   {
 LABEL_15:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -418,23 +418,23 @@ LABEL_15:
   else
   {
 LABEL_11:
-    v13 = xpc_activity_copy_criteria(v6);
+    v13 = xpc_activity_copy_criteria(activityCopy);
     v14 = *MEMORY[0x277D86250];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:*MEMORY[0x277D86250]];
-    v16 = [v7 objectForKeyedSubscript:v15];
+    v16 = [parametersCopy objectForKeyedSubscript:v15];
     xpc_dictionary_set_int64(v13, v14, [v16 longLongValue]);
 
     v17 = *MEMORY[0x277D86288];
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:*MEMORY[0x277D86288]];
-    v19 = [v7 objectForKeyedSubscript:v18];
+    v19 = [parametersCopy objectForKeyedSubscript:v18];
     xpc_dictionary_set_int64(v13, v17, [v19 longLongValue]);
 
     v20 = *MEMORY[0x277D86270];
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:*MEMORY[0x277D86270]];
-    v22 = [v7 objectForKeyedSubscript:v21];
+    v22 = [parametersCopy objectForKeyedSubscript:v21];
     xpc_dictionary_set_int64(v13, v20, [v22 longLongValue]);
 
-    xpc_activity_set_criteria(v6, v13);
+    xpc_activity_set_criteria(activityCopy, v13);
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -442,15 +442,15 @@ LABEL_11:
 
 + (void)_saveLastSuccessTime
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-  [v2 setDouble:@"lastSuccess" forKey:?];
+  [standardUserDefaults setDouble:@"lastSuccess" forKey:?];
 }
 
 + (double)_lastSuccessTime
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 doubleForKey:@"lastSuccess"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"lastSuccess"];
   v4 = v3;
 
   return v4;
@@ -458,8 +458,8 @@ LABEL_11:
 
 + (int64_t)_retryCount
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 integerForKey:@"retryCount"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"retryCount"];
 
   return v3;
 }
@@ -475,21 +475,21 @@ LABEL_11:
       _os_log_impl(&dword_25D125000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Maxed out on retries. Resetting retry count", buf, 2u);
     }
 
-    [a1 _resetRetryCount];
+    [self _resetRetryCount];
   }
 
   else
   {
     v4 = v3;
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v5 setInteger:v4 + 1 forKey:@"retryCount"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setInteger:v4 + 1 forKey:@"retryCount"];
   }
 }
 
 + (void)_resetRetryCount
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 setInteger:0 forKey:@"retryCount"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setInteger:0 forKey:@"retryCount"];
 }
 
 @end

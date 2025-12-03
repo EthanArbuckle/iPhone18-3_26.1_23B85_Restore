@@ -1,23 +1,23 @@
 @interface OrgApacheLuceneSearchTopTermsRewrite_ScoreTerm
-- (OrgApacheLuceneSearchTopTermsRewrite_ScoreTerm)initWithOrgApacheLuceneIndexTermContext:(id)a3;
-- (int)compareToWithId:(id)a3;
+- (OrgApacheLuceneSearchTopTermsRewrite_ScoreTerm)initWithOrgApacheLuceneIndexTermContext:(id)context;
+- (int)compareToWithId:(id)id;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchTopTermsRewrite_ScoreTerm
 
-- (OrgApacheLuceneSearchTopTermsRewrite_ScoreTerm)initWithOrgApacheLuceneIndexTermContext:(id)a3
+- (OrgApacheLuceneSearchTopTermsRewrite_ScoreTerm)initWithOrgApacheLuceneIndexTermContext:(id)context
 {
   v5 = new_OrgApacheLuceneUtilBytesRefBuilder_init();
   JreStrongAssignAndConsume(&self->bytes_, v5);
-  JreStrongAssign(&self->termState_, a3);
+  JreStrongAssign(&self->termState_, context);
   return self;
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     goto LABEL_12;
   }
@@ -28,10 +28,10 @@
   }
 
   boost = self->boost_;
-  v6 = *(a3 + 4);
+  v6 = *(id + 4);
   if (boost == v6)
   {
-    v7 = *(a3 + 1);
+    v7 = *(id + 1);
     if (v7)
     {
       v8 = [v7 get];

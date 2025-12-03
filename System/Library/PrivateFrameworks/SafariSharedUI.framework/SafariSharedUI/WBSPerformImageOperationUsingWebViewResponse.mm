@@ -1,24 +1,24 @@
 @interface WBSPerformImageOperationUsingWebViewResponse
-- (WBSPerformImageOperationUsingWebViewResponse)initWithImageType:(id)a3 availableImageSizes:(id)a4;
-- (WBSPerformImageOperationUsingWebViewResponse)initWithMultiResolutionImageData:(id)a3 didGenerateResolutions:(BOOL)a4;
+- (WBSPerformImageOperationUsingWebViewResponse)initWithImageType:(id)type availableImageSizes:(id)sizes;
+- (WBSPerformImageOperationUsingWebViewResponse)initWithMultiResolutionImageData:(id)data didGenerateResolutions:(BOOL)resolutions;
 @end
 
 @implementation WBSPerformImageOperationUsingWebViewResponse
 
-- (WBSPerformImageOperationUsingWebViewResponse)initWithImageType:(id)a3 availableImageSizes:(id)a4
+- (WBSPerformImageOperationUsingWebViewResponse)initWithImageType:(id)type availableImageSizes:(id)sizes
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  sizesCopy = sizes;
   v15.receiver = self;
   v15.super_class = WBSPerformImageOperationUsingWebViewResponse;
   v8 = [(WBSSiteMetadataResponse *)&v15 initWithURL:0];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [typeCopy copy];
     imageType = v8->_imageType;
     v8->_imageType = v9;
 
-    v11 = [v7 copy];
+    v11 = [sizesCopy copy];
     availableImageSizes = v8->_availableImageSizes;
     v8->_availableImageSizes = v11;
 
@@ -28,19 +28,19 @@
   return v8;
 }
 
-- (WBSPerformImageOperationUsingWebViewResponse)initWithMultiResolutionImageData:(id)a3 didGenerateResolutions:(BOOL)a4
+- (WBSPerformImageOperationUsingWebViewResponse)initWithMultiResolutionImageData:(id)data didGenerateResolutions:(BOOL)resolutions
 {
-  v6 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = WBSPerformImageOperationUsingWebViewResponse;
   v7 = [(WBSSiteMetadataResponse *)&v12 initWithURL:0];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dataCopy copy];
     multiResolutionImageData = v7->_multiResolutionImageData;
     v7->_multiResolutionImageData = v8;
 
-    v7->_didGenerateResolutions = a4;
+    v7->_didGenerateResolutions = resolutions;
     v10 = v7;
   }
 

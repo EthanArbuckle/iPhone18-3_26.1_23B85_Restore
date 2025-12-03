@@ -1,16 +1,16 @@
 @interface ApsListener
-- (void)connection:(id)a3 channelSubscriptionsFailedWithFailures:(id)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)connection:(id)connection channelSubscriptionsFailedWithFailures:(id)failures;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 @end
 
 @implementation ApsListener
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = self;
+  connectionCopy = connection;
+  tokenCopy = token;
+  selfCopy = self;
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
 
@@ -18,24 +18,24 @@
   sub_100008BAC(v8, v10);
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  connectionCopy = connection;
+  messageCopy = message;
+  selfCopy = self;
   sub_10000FB88();
 }
 
-- (void)connection:(id)a3 channelSubscriptionsFailedWithFailures:(id)a4
+- (void)connection:(id)connection channelSubscriptionsFailedWithFailures:(id)failures
 {
-  if (a4)
+  if (failures)
   {
     sub_10001BDC0(0, &qword_1000DC598, APSChannelSubscriptionFailure_ptr);
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
+  connectionCopy = connection;
+  selfCopy = self;
   sub_100015DEC();
 }
 

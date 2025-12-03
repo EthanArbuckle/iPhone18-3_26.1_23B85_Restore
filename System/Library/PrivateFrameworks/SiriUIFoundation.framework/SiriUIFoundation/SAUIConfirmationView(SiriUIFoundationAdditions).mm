@@ -6,8 +6,8 @@
 
 - (BOOL)sruif_hasButton
 {
-  v1 = [a1 allConfirmationOptions];
-  v2 = [v1 count] != 0;
+  allConfirmationOptions = [self allConfirmationOptions];
+  v2 = [allConfirmationOptions count] != 0;
 
   return v2;
 }

@@ -1,6 +1,6 @@
 @interface CRKASMCredentialStoreFactory
 + (CRKASMCredentialStore)instructorCredentialStoreWithoutKeychain;
-+ (id)makeCredentialStoreWithRole:(id)a3 keychainOverride:(id)a4;
++ (id)makeCredentialStoreWithRole:(id)role keychainOverride:(id)override;
 @end
 
 @implementation CRKASMCredentialStoreFactory
@@ -8,30 +8,30 @@
 + (CRKASMCredentialStore)instructorCredentialStoreWithoutKeychain
 {
   v3 = objc_opt_new();
-  v4 = [a1 makeInstructorCredentialStoreWithKeychainOverride:v3];
+  v4 = [self makeInstructorCredentialStoreWithKeychainOverride:v3];
 
   return v4;
 }
 
-+ (id)makeCredentialStoreWithRole:(id)a3 keychainOverride:(id)a4
++ (id)makeCredentialStoreWithRole:(id)role keychainOverride:(id)override
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 storageKeyWithRole:v7 suffix:@"certificates"];
-  v9 = [a1 storageKeyWithRole:v7 suffix:@"identities"];
+  overrideCopy = override;
+  roleCopy = role;
+  v8 = [self storageKeyWithRole:roleCopy suffix:@"certificates"];
+  v9 = [self storageKeyWithRole:roleCopy suffix:@"identities"];
 
-  if (v6)
+  if (overrideCopy)
   {
-    v10 = v6;
+    keychain = overrideCopy;
   }
 
   else
   {
     v11 = +[CRKKeychainProvider sharedProvider];
-    v10 = [v11 keychain];
+    keychain = [v11 keychain];
   }
 
-  v12 = [[CRKASMCredentialStore alloc] initWithKeychain:v10 accessGroup:@"com.apple.classroom" certificateManifestStorageKey:v8 identityManifestStorageKey:v9];
+  v12 = [[CRKASMCredentialStore alloc] initWithKeychain:keychain accessGroup:@"com.apple.classroom" certificateManifestStorageKey:v8 identityManifestStorageKey:v9];
 
   return v12;
 }

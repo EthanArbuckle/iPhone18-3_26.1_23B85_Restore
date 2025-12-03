@@ -1,30 +1,30 @@
 @interface WGWidgetAttributionView
 + (id)widgetAttributionIDsInOrder;
-+ (void)requestAttributedStringForIdentifier:(id)a3 withHandler:(id)a4;
-- (WGWidgetAttributionView)initWithWidgetAttributedString:(id)a3;
++ (void)requestAttributedStringForIdentifier:(id)identifier withHandler:(id)handler;
+- (WGWidgetAttributionView)initWithWidgetAttributedString:(id)string;
 - (id)_attributionFont;
 - (id)_paragraphStyle;
 - (void)_configureAttributedString;
 - (void)layoutSubviews;
-- (void)setLegibilityTextColor:(id)a3;
+- (void)setLegibilityTextColor:(id)color;
 @end
 
 @implementation WGWidgetAttributionView
 
-+ (void)requestAttributedStringForIdentifier:(id)a3 withHandler:(id)a4
++ (void)requestAttributedStringForIdentifier:(id)identifier withHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"com.apple.weather.WeatherAppTodayWidget"])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if ([identifierCopy isEqualToString:@"com.apple.weather.WeatherAppTodayWidget"])
   {
-    if (v6)
+    if (handlerCopy)
     {
       v7 = dispatch_get_global_queue(25, 0);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __76__WGWidgetAttributionView_requestAttributedStringForIdentifier_withHandler___block_invoke;
       block[3] = &unk_279ED0C88;
-      v13 = v6;
+      v13 = handlerCopy;
       dispatch_async(v7, block);
 
       v8 = v13;
@@ -32,16 +32,16 @@ LABEL_7:
     }
   }
 
-  else if ([v5 isEqualToString:@"com.apple.stocks.widget"])
+  else if ([identifierCopy isEqualToString:@"com.apple.stocks.widget"])
   {
-    if (v6)
+    if (handlerCopy)
     {
       v9 = dispatch_get_global_queue(25, 0);
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __76__WGWidgetAttributionView_requestAttributedStringForIdentifier_withHandler___block_invoke_2;
       v10[3] = &unk_279ED0C88;
-      v11 = v6;
+      v11 = handlerCopy;
       dispatch_async(v9, v10);
 
       v8 = v11;
@@ -49,9 +49,9 @@ LABEL_7:
     }
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -79,21 +79,21 @@ void __76__WGWidgetAttributionView_requestAttributedStringForIdentifier_withHand
   return v2;
 }
 
-- (WGWidgetAttributionView)initWithWidgetAttributedString:(id)a3
+- (WGWidgetAttributionView)initWithWidgetAttributedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v10.receiver = self;
   v10.super_class = WGWidgetAttributionView;
   v5 = [(WGWidgetAttributionView *)&v10 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:v4];
+    v6 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:stringCopy];
     widgetAttributedString = v5->_widgetAttributedString;
     v5->_widgetAttributedString = v6;
 
     [(WGWidgetAttributionView *)v5 _configureAttributedString];
-    v8 = [(WGWidgetAttributionView *)v5 _attributionBackgroundColor];
-    [(WGWidgetAttributionView *)v5 setBackgroundColor:v8];
+    _attributionBackgroundColor = [(WGWidgetAttributionView *)v5 _attributionBackgroundColor];
+    [(WGWidgetAttributionView *)v5 setBackgroundColor:_attributionBackgroundColor];
 
     [(WGWidgetAttributionView *)v5 setOpaque:0];
     [(WGWidgetAttributionView *)v5 setEditable:0];
@@ -104,8 +104,8 @@ void __76__WGWidgetAttributionView_requestAttributedStringForIdentifier_withHand
 
 - (id)_attributionFont
 {
-  v2 = [MEMORY[0x277CF0D60] preferredFontProvider];
-  v3 = [v2 preferredFontForTextStyle:*MEMORY[0x277D76940] hiFontStyle:1];
+  preferredFontProvider = [MEMORY[0x277CF0D60] preferredFontProvider];
+  v3 = [preferredFontProvider preferredFontForTextStyle:*MEMORY[0x277D76940] hiFontStyle:1];
 
   return v3;
 }
@@ -127,32 +127,32 @@ void __76__WGWidgetAttributionView_requestAttributedStringForIdentifier_withHand
   v5 = *MEMORY[0x277D740A8];
   [(NSMutableAttributedString *)self->_widgetAttributedString removeAttribute:*MEMORY[0x277D740A8] range:0, v3];
   widgetAttributedString = self->_widgetAttributedString;
-  v7 = [(WGWidgetAttributionView *)self _attributionFont];
-  [(NSMutableAttributedString *)widgetAttributedString addAttribute:v5 value:v7 range:0, v3];
+  _attributionFont = [(WGWidgetAttributionView *)self _attributionFont];
+  [(NSMutableAttributedString *)widgetAttributedString addAttribute:v5 value:_attributionFont range:0, v3];
 
   v8 = self->_widgetAttributedString;
   v9 = *MEMORY[0x277D74118];
-  v10 = [(WGWidgetAttributionView *)self _paragraphStyle];
-  [(NSMutableAttributedString *)v8 addAttribute:v9 value:v10 range:0, v3];
+  _paragraphStyle = [(WGWidgetAttributionView *)self _paragraphStyle];
+  [(NSMutableAttributedString *)v8 addAttribute:v9 value:_paragraphStyle range:0, v3];
 
-  v11 = [(WGWidgetAttributionView *)self legibilityTextColor];
+  legibilityTextColor = [(WGWidgetAttributionView *)self legibilityTextColor];
 
-  if (v11)
+  if (legibilityTextColor)
   {
     v12 = self->_widgetAttributedString;
-    v13 = [(WGWidgetAttributionView *)self legibilityTextColor];
-    [(NSMutableAttributedString *)v12 addAttribute:v4 value:v13 range:0, v3];
+    legibilityTextColor2 = [(WGWidgetAttributionView *)self legibilityTextColor];
+    [(NSMutableAttributedString *)v12 addAttribute:v4 value:legibilityTextColor2 range:0, v3];
 
     v20[0] = v4;
-    v14 = [(WGWidgetAttributionView *)self legibilityTextColor];
+    legibilityTextColor3 = [(WGWidgetAttributionView *)self legibilityTextColor];
     v15 = *MEMORY[0x277D741F0];
-    v21[0] = v14;
+    v21[0] = legibilityTextColor3;
     v21[1] = &unk_28834F148;
     v16 = *MEMORY[0x277D741E8];
     v20[1] = v15;
     v20[2] = v16;
-    v17 = [(WGWidgetAttributionView *)self legibilityTextColor];
-    v18 = [v17 colorWithAlphaComponent:0.4];
+    legibilityTextColor4 = [(WGWidgetAttributionView *)self legibilityTextColor];
+    v18 = [legibilityTextColor4 colorWithAlphaComponent:0.4];
     v21[2] = v18;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:3];
     [(WGWidgetAttributionView *)self setLinkTextAttributes:v19];
@@ -171,9 +171,9 @@ void __76__WGWidgetAttributionView_requestAttributedStringForIdentifier_withHand
   [(WGWidgetAttributionView *)self sizeToFit];
 }
 
-- (void)setLegibilityTextColor:(id)a3
+- (void)setLegibilityTextColor:(id)color
 {
-  v4 = [a3 copy];
+  v4 = [color copy];
   legibilityTextColor = self->_legibilityTextColor;
   self->_legibilityTextColor = v4;
 

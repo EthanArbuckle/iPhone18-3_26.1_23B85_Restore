@@ -1,6 +1,6 @@
 @interface MTROccupancySensingClusterHoldTimeLimitsStruct
 - (MTROccupancySensingClusterHoldTimeLimitsStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROccupancySensingClusterHoldTimeLimitsStruct);
-  v5 = [(MTROccupancySensingClusterHoldTimeLimitsStruct *)self holdTimeMin];
-  [(MTROccupancySensingClusterHoldTimeLimitsStruct *)v4 setHoldTimeMin:v5];
+  holdTimeMin = [(MTROccupancySensingClusterHoldTimeLimitsStruct *)self holdTimeMin];
+  [(MTROccupancySensingClusterHoldTimeLimitsStruct *)v4 setHoldTimeMin:holdTimeMin];
 
-  v6 = [(MTROccupancySensingClusterHoldTimeLimitsStruct *)self holdTimeMax];
-  [(MTROccupancySensingClusterHoldTimeLimitsStruct *)v4 setHoldTimeMax:v6];
+  holdTimeMax = [(MTROccupancySensingClusterHoldTimeLimitsStruct *)self holdTimeMax];
+  [(MTROccupancySensingClusterHoldTimeLimitsStruct *)v4 setHoldTimeMax:holdTimeMax];
 
-  v7 = [(MTROccupancySensingClusterHoldTimeLimitsStruct *)self holdTimeDefault];
-  [(MTROccupancySensingClusterHoldTimeLimitsStruct *)v4 setHoldTimeDefault:v7];
+  holdTimeDefault = [(MTROccupancySensingClusterHoldTimeLimitsStruct *)self holdTimeDefault];
+  [(MTROccupancySensingClusterHoldTimeLimitsStruct *)v4 setHoldTimeDefault:holdTimeDefault];
 
   return v4;
 }

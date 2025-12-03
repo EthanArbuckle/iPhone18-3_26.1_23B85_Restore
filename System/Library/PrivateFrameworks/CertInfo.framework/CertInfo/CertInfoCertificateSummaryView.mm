@@ -1,21 +1,21 @@
 @interface CertInfoCertificateSummaryView
-- (CertInfoCertificateSummaryView)initWithFrame:(CGRect)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_cellForReuseIdentifier:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_configureCell:(id)a3;
-- (void)setMoreDetailsSelectedBlock:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (CertInfoCertificateSummaryView)initWithFrame:(CGRect)frame;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_cellForReuseIdentifier:(id)identifier;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_configureCell:(id)cell;
+- (void)setMoreDetailsSelectedBlock:(id)block;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation CertInfoCertificateSummaryView
 
-- (CertInfoCertificateSummaryView)initWithFrame:(CGRect)a3
+- (CertInfoCertificateSummaryView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = CertInfoCertificateSummaryView;
-  v3 = [(CertInfoCertificateSummaryView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CertInfoCertificateSummaryView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -34,13 +34,13 @@
   return v4;
 }
 
-- (void)setMoreDetailsSelectedBlock:(id)a3
+- (void)setMoreDetailsSelectedBlock:(id)block
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  blockCopy = block;
+  v9 = blockCopy;
+  if (blockCopy)
   {
-    v5 = [v4 copy];
+    v5 = [blockCopy copy];
   }
 
   else
@@ -60,9 +60,9 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 0;
   }
@@ -73,15 +73,15 @@
   }
 }
 
-- (id)_cellForReuseIdentifier:(id)a3
+- (id)_cellForReuseIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"kCertInfoCertificateSummaryHeaderIdentifier"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"kCertInfoCertificateSummaryHeaderIdentifier"])
   {
     headerCell = self->_headerCell;
     if (!headerCell)
     {
-      v6 = [[CertInfoCertificateHeaderCell alloc] initWithStyle:0 reuseIdentifier:v4];
+      v6 = [[CertInfoCertificateHeaderCell alloc] initWithStyle:0 reuseIdentifier:identifierCopy];
       [(CertInfoCertificateHeaderCell *)v6 setSelectionStyle:0];
       [(CertInfoCertificateSummaryView *)self setHeaderCell:v6];
       goto LABEL_11;
@@ -90,7 +90,7 @@
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"kCertInfoCertificateSummaryDescriptionIdentifier"])
+  if ([identifierCopy isEqualToString:@"kCertInfoCertificateSummaryDescriptionIdentifier"])
   {
     headerCell = self->_descriptionCell;
     if (headerCell)
@@ -100,18 +100,18 @@ LABEL_6:
       goto LABEL_11;
     }
 
-    v6 = [[CertInfoCertificateSummaryDescriptionCell alloc] initWithStyle:0 reuseIdentifier:v4];
+    v6 = [[CertInfoCertificateSummaryDescriptionCell alloc] initWithStyle:0 reuseIdentifier:identifierCopy];
     [(CertInfoCertificateHeaderCell *)v6 setSelectionStyle:0];
     [(CertInfoCertificateSummaryView *)self setDescriptionCell:v6];
   }
 
-  else if ([v4 isEqualToString:@"kCertInfoCertificateSummaryMoreDetailsIdentifier"])
+  else if ([identifierCopy isEqualToString:@"kCertInfoCertificateSummaryMoreDetailsIdentifier"])
   {
-    v6 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:v4];
-    v7 = [(CertInfoCertificateHeaderCell *)v6 textLabel];
+    v6 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:identifierCopy];
+    textLabel = [(CertInfoCertificateHeaderCell *)v6 textLabel];
     v8 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CertInfo"];
     v9 = [v8 localizedStringForKey:@"MORE_DETAILS" value:&stru_28561D260 table:@"CertInfo"];
-    [v7 setText:v9];
+    [textLabel setText:v9];
 
     [(CertInfoCertificateHeaderCell *)v6 setAccessoryType:1];
   }
@@ -126,48 +126,48 @@ LABEL_11:
   return v6;
 }
 
-- (void)_configureCell:(id)a3
+- (void)_configureCell:(id)cell
 {
-  v17 = a3;
-  v4 = [v17 reuseIdentifier];
-  if ([v4 isEqualToString:@"kCertInfoCertificateSummaryHeaderIdentifier"])
+  cellCopy = cell;
+  reuseIdentifier = [cellCopy reuseIdentifier];
+  if ([reuseIdentifier isEqualToString:@"kCertInfoCertificateSummaryHeaderIdentifier"])
   {
-    v5 = v17;
-    v6 = [(CertInfoCertificateSummaryView *)self trustTitle];
-    [v5 setTrustTitle:v6];
+    v5 = cellCopy;
+    trustTitle = [(CertInfoCertificateSummaryView *)self trustTitle];
+    [v5 setTrustTitle:trustTitle];
 
-    v7 = [(CertInfoCertificateSummaryView *)self trustSubtitle];
-    [v5 setTrustSubtitle:v7];
+    trustSubtitle = [(CertInfoCertificateSummaryView *)self trustSubtitle];
+    [v5 setTrustSubtitle:trustSubtitle];
 
-    v8 = [(CertInfoCertificateSummaryView *)self expirationDate];
-    [v8 timeIntervalSinceNow];
+    expirationDate = [(CertInfoCertificateSummaryView *)self expirationDate];
+    [expirationDate timeIntervalSinceNow];
     [v5 setExpired:v9 < 0.0];
   }
 
   else
   {
-    if (![v4 isEqualToString:@"kCertInfoCertificateSummaryDescriptionIdentifier"])
+    if (![reuseIdentifier isEqualToString:@"kCertInfoCertificateSummaryDescriptionIdentifier"])
     {
       goto LABEL_12;
     }
 
-    v8 = v17;
+    expirationDate = cellCopy;
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v10 = [(CertInfoCertificateSummaryView *)self purpose];
-    if (v10)
+    purpose = [(CertInfoCertificateSummaryView *)self purpose];
+    if (purpose)
     {
       v11 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CertInfo"];
       v12 = [v11 localizedStringForKey:@"DESCRIPTION" value:&stru_28561D260 table:@"CertInfo"];
       [v5 addObject:v12];
 
-      [v5 addObject:v10];
+      [v5 addObject:purpose];
     }
 
-    v13 = [(CertInfoCertificateSummaryView *)self expirationDate];
+    expirationDate2 = [(CertInfoCertificateSummaryView *)self expirationDate];
 
-    if (v13)
+    if (expirationDate2)
     {
-      v14 = [MEMORY[0x277CCA968] localizedStringFromDate:v13 dateStyle:2 timeStyle:2];
+      v14 = [MEMORY[0x277CCA968] localizedStringFromDate:expirationDate2 dateStyle:2 timeStyle:2];
       if (v14)
       {
         v15 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CertInfo"];
@@ -178,35 +178,35 @@ LABEL_11:
       }
     }
 
-    [v8 setLabelsAndValues:v5];
+    [expirationDate setLabelsAndValues:v5];
   }
 
 LABEL_12:
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section])
   {
     v8 = 0;
   }
 
   else
   {
-    if ([v7 row] > 2)
+    if ([pathCopy row] > 2)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = *sOrderedCellIdentifiers[[v7 row]];
+      v9 = *sOrderedCellIdentifiers[[pathCopy row]];
     }
 
     v10 = v9;
-    v8 = [v6 dequeueReusableCellWithIdentifier:v10];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:v10];
     if (!v8)
     {
       v8 = [(CertInfoCertificateSummaryView *)self _cellForReuseIdentifier:v10];
@@ -218,17 +218,17 @@ LABEL_12:
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = a4;
-  if ([v8 row] > 2)
+  pathCopy = path;
+  if ([pathCopy row] > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = *sOrderedCellIdentifiers[[v8 row]];
+    v5 = *sOrderedCellIdentifiers[[pathCopy row]];
   }
 
   v6 = v5;
@@ -242,19 +242,19 @@ LABEL_12:
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 rowHeight];
+  pathCopy = path;
+  [view rowHeight];
   v8 = v7;
-  if ([v6 row] > 2)
+  if ([pathCopy row] > 2)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = *sOrderedCellIdentifiers[[v6 row]];
+    v9 = *sOrderedCellIdentifiers[[pathCopy row]];
   }
 
   v10 = v9;

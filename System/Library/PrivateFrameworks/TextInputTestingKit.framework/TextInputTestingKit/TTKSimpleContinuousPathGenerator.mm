@@ -1,21 +1,21 @@
 @interface TTKSimpleContinuousPathGenerator
-- (TTKSimpleContinuousPathGenerator)initWithParams:(id)a3;
-- (id)generatePathFromInflectionPoints:(id)a3 timestamp:(double)a4 duration:(double)a5 segmentTiming:(id)a6 keys:(id)a7 string:(id)a8 layout:(id)a9;
+- (TTKSimpleContinuousPathGenerator)initWithParams:(id)params;
+- (id)generatePathFromInflectionPoints:(id)points timestamp:(double)timestamp duration:(double)duration segmentTiming:(id)timing keys:(id)keys string:(id)string layout:(id)layout;
 @end
 
 @implementation TTKSimpleContinuousPathGenerator
 
-- (id)generatePathFromInflectionPoints:(id)a3 timestamp:(double)a4 duration:(double)a5 segmentTiming:(id)a6 keys:(id)a7 string:(id)a8 layout:(id)a9
+- (id)generatePathFromInflectionPoints:(id)points timestamp:(double)timestamp duration:(double)duration segmentTiming:(id)timing keys:(id)keys string:(id)string layout:(id)layout
 {
-  v13 = a3;
-  v14 = a6;
+  pointsCopy = points;
+  timingCopy = timing;
   v15 = objc_alloc_init(TIContinuousPath);
-  self->_currentTimestamp = a4;
+  self->_currentTimestamp = timestamp;
   [(TTKDefaultContinuousPathGenerator *)self timeDelta];
   v17 = v16;
-  if (a5 != -1.0)
+  if (duration != -1.0)
   {
-    v18 = [v13 count];
+    v18 = [pointsCopy count];
     v19 = 0.0;
     if (v18 >= 2)
     {
@@ -23,32 +23,32 @@
       v21 = 1;
       do
       {
-        v22 = [v14 objectAtIndexedSubscript:{v21 - 1, v19}];
+        v22 = [timingCopy objectAtIndexedSubscript:{v21 - 1, v19}];
         v20 += [v22 count];
 
         ++v21;
       }
 
-      while (v21 < [v13 count]);
+      while (v21 < [pointsCopy count]);
       v19 = v20;
     }
 
-    v17 = a5 / v19;
+    v17 = duration / v19;
   }
 
   v46 = 0uLL;
-  v23 = [v13 objectAtIndexedSubscript:0];
+  v23 = [pointsCopy objectAtIndexedSubscript:0];
   [v23 getValue:&v46];
 
-  if ([v13 count] >= 2)
+  if ([pointsCopy count] >= 2)
   {
     v24 = 1;
     do
     {
-      v25 = [v13 objectAtIndexedSubscript:{v24, 0, 0}];
+      v25 = [pointsCopy objectAtIndexedSubscript:{v24, 0, 0}];
       [v25 getValue:&v45];
 
-      v26 = [v14 objectAtIndexedSubscript:v24 - 1];
+      v26 = [timingCopy objectAtIndexedSubscript:v24 - 1];
       if ([v26 count])
       {
         v27 = 0;
@@ -82,17 +82,17 @@
       ++v24;
     }
 
-    while (v24 < [v13 count]);
+    while (v24 < [pointsCopy count]);
   }
 
   return v15;
 }
 
-- (TTKSimpleContinuousPathGenerator)initWithParams:(id)a3
+- (TTKSimpleContinuousPathGenerator)initWithParams:(id)params
 {
   v4.receiver = self;
   v4.super_class = TTKSimpleContinuousPathGenerator;
-  return [(TTKDefaultContinuousPathGenerator *)&v4 initWithParams:a3];
+  return [(TTKDefaultContinuousPathGenerator *)&v4 initWithParams:params];
 }
 
 @end

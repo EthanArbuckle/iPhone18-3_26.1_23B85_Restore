@@ -1,10 +1,10 @@
 @interface RPExtensionHostContext
-- (void)didConnectToVendor:(id)a3;
+- (void)didConnectToVendor:(id)vendor;
 @end
 
 @implementation RPExtensionHostContext
 
-- (void)didConnectToVendor:(id)a3
+- (void)didConnectToVendor:(id)vendor
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {

@@ -1,25 +1,25 @@
 @interface ATXProactiveSuggestionPartialIntentHandlingPublisher
-- (ATXProactiveSuggestionPartialIntentHandlingPublisher)initWithUIFeedbackPublisher:(id)a3 appLaunchPublisher:(id)a4 intentPublisher:(id)a5;
-- (id)_timestampFromEvent:(id)a3;
+- (ATXProactiveSuggestionPartialIntentHandlingPublisher)initWithUIFeedbackPublisher:(id)publisher appLaunchPublisher:(id)launchPublisher intentPublisher:(id)intentPublisher;
+- (id)_timestampFromEvent:(id)event;
 - (id)partialIntentUIFeedbackPublisher;
 @end
 
 @implementation ATXProactiveSuggestionPartialIntentHandlingPublisher
 
-- (ATXProactiveSuggestionPartialIntentHandlingPublisher)initWithUIFeedbackPublisher:(id)a3 appLaunchPublisher:(id)a4 intentPublisher:(id)a5
+- (ATXProactiveSuggestionPartialIntentHandlingPublisher)initWithUIFeedbackPublisher:(id)publisher appLaunchPublisher:(id)launchPublisher intentPublisher:(id)intentPublisher
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  publisherCopy = publisher;
+  launchPublisherCopy = launchPublisher;
+  intentPublisherCopy = intentPublisher;
   v15.receiver = self;
   v15.super_class = ATXProactiveSuggestionPartialIntentHandlingPublisher;
   v12 = [(ATXProactiveSuggestionPartialIntentHandlingPublisher *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_uiFeedbackPublisher, a3);
-    objc_storeStrong(&v13->_appLaunchPublisher, a4);
-    objc_storeStrong(&v13->_intentPublisher, a5);
+    objc_storeStrong(&v12->_uiFeedbackPublisher, publisher);
+    objc_storeStrong(&v13->_appLaunchPublisher, launchPublisher);
+    objc_storeStrong(&v13->_intentPublisher, intentPublisher);
   }
 
   return v13;
@@ -130,14 +130,14 @@ id __88__ATXProactiveSuggestionPartialIntentHandlingPublisher_partialIntentUIFee
   return v6;
 }
 
-- (id)_timestampFromEvent:(id)a3
+- (id)_timestampFromEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = MEMORY[0x277CCABB0];
-    [v5 timestamp];
+    [eventCopy timestamp];
     v7 = [v6 numberWithDouble:?];
   }
 
@@ -146,19 +146,19 @@ id __88__ATXProactiveSuggestionPartialIntentHandlingPublisher_partialIntentUIFee
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v5;
-      v9 = [v8 session];
-      v10 = [v9 sessionEndDate];
+      v8 = eventCopy;
+      session = [v8 session];
+      sessionEndDate = [session sessionEndDate];
 
-      if (!v10)
+      if (!sessionEndDate)
       {
         [(ATXProactiveSuggestionPartialIntentHandlingPublisher *)a2 _timestampFromEvent:v8];
       }
 
       v11 = MEMORY[0x277CCABB0];
-      v12 = [v8 session];
-      v13 = [v12 sessionEndDate];
-      [v13 timeIntervalSinceReferenceDate];
+      session2 = [v8 session];
+      sessionEndDate2 = [session2 sessionEndDate];
+      [sessionEndDate2 timeIntervalSinceReferenceDate];
       v7 = [v11 numberWithDouble:?];
     }
 
@@ -167,14 +167,14 @@ id __88__ATXProactiveSuggestionPartialIntentHandlingPublisher_partialIntentUIFee
       v14 = __atxlog_handle_blending_ecosystem();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [(ATXProactiveSuggestionPartialIntentHandlingPublisher *)self _timestampFromEvent:v5, v14];
+        [(ATXProactiveSuggestionPartialIntentHandlingPublisher *)self _timestampFromEvent:eventCopy, v14];
       }
 
       v15 = MEMORY[0x277CBEAD8];
       v16 = *MEMORY[0x277CBE658];
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
-      [v15 raise:v16 format:{@"%@ - _timestampFromEvent invoked with unknown object: %@", v18, v5}];
+      [v15 raise:v16 format:{@"%@ - _timestampFromEvent invoked with unknown object: %@", v18, eventCopy}];
 
       v7 = &unk_283A57098;
     }

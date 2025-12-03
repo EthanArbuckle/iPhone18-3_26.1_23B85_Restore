@@ -1,22 +1,22 @@
 @interface DockCoreObservation
 - (_TtC11DockKitCore19DockCoreObservation)init;
-- (_TtC11DockKitCore19DockCoreObservation)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC11DockKitCore19DockCoreObservation)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DockCoreObservation
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_22461D514(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_22461D514(coderCopy);
 }
 
-- (_TtC11DockKitCore19DockCoreObservation)initWithCoder:(id)a3
+- (_TtC11DockKitCore19DockCoreObservation)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_22461F2C8(v3);
+  coderCopy = coder;
+  v4 = sub_22461F2C8(coderCopy);
 
   return v4;
 }

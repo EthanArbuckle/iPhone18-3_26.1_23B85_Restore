@@ -1,14 +1,14 @@
 @interface TextSizeControlViewController
 - (CGSize)preferredContentSize;
-- (_TtC12NewsArticles29TextSizeControlViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC12NewsArticles29TextSizeControlViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation TextSizeControlViewController
 
-- (_TtC12NewsArticles29TextSizeControlViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles29TextSizeControlViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -17,24 +17,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7AF86C0();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(TextSizeControlViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
+  [(TextSizeControlViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
   sub_1D7AF9284();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7AF8FA8();
 }
 

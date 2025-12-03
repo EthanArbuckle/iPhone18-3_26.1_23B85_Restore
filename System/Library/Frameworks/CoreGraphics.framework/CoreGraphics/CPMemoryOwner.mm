@@ -1,5 +1,5 @@
 @interface CPMemoryOwner
-- (CPMemoryOwner)initWithAllocatedMemory:(void *)a3;
+- (CPMemoryOwner)initWithAllocatedMemory:(void *)memory;
 - (void)dealloc;
 - (void)finalize;
 @end
@@ -22,14 +22,14 @@
   [(CPMemoryOwner *)&v3 finalize];
 }
 
-- (CPMemoryOwner)initWithAllocatedMemory:(void *)a3
+- (CPMemoryOwner)initWithAllocatedMemory:(void *)memory
 {
   v5.receiver = self;
   v5.super_class = CPMemoryOwner;
   result = [(CPMemoryOwner *)&v5 init];
   if (result)
   {
-    result->memory = a3;
+    result->memory = memory;
   }
 
   return result;

@@ -1,25 +1,25 @@
 @interface ATXLocationOfInterest
-- (ATXLocationOfInterest)initWithCoder:(id)a3;
-- (ATXLocationOfInterest)initWithUUID:(id)a3 visits:(id)a4 coordinate:(CLLocationCoordinate2D)a5 type:(int64_t)a6 city:(id)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLocation:(id)a3;
+- (ATXLocationOfInterest)initWithCoder:(id)coder;
+- (ATXLocationOfInterest)initWithUUID:(id)d visits:(id)visits coordinate:(CLLocationCoordinate2D)coordinate type:(int64_t)type city:(id)city;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLocation:(id)location;
 - (CLLocationCoordinate2D)coordinate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)addVisitFrom:(unint64_t)a3 to:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)addVisitFrom:(unint64_t)from to:(unint64_t)to;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXLocationOfInterest
 
-- (ATXLocationOfInterest)initWithUUID:(id)a3 visits:(id)a4 coordinate:(CLLocationCoordinate2D)a5 type:(int64_t)a6 city:(id)a7
+- (ATXLocationOfInterest)initWithUUID:(id)d visits:(id)visits coordinate:(CLLocationCoordinate2D)coordinate type:(int64_t)type city:(id)city
 {
-  longitude = a5.longitude;
-  latitude = a5.latitude;
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  if (!v15)
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  dCopy = d;
+  visitsCopy = visits;
+  cityCopy = city;
+  if (!dCopy)
   {
     [ATXLocationOfInterest initWithUUID:a2 visits:self coordinate:? type:? city:?];
   }
@@ -30,10 +30,10 @@
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_uuid, a3);
-    if (v16)
+    objc_storeStrong(&v18->_uuid, d);
+    if (visitsCopy)
     {
-      v20 = v16;
+      v20 = visitsCopy;
     }
 
     else
@@ -44,46 +44,46 @@
     visits = v19->_visits;
     v19->_visits = v20;
 
-    v19->_type = a6;
+    v19->_type = type;
     v19->_coordinate.latitude = latitude;
     v19->_coordinate.longitude = longitude;
-    objc_storeStrong(&v19->_city, a7);
+    objc_storeStrong(&v19->_city, city);
   }
 
   return v19;
 }
 
-- (void)addVisitFrom:(unint64_t)a3 to:(unint64_t)a4
+- (void)addVisitFrom:(unint64_t)from to:(unint64_t)to
 {
   visits = self->_visits;
-  v8 = [MEMORY[0x277CCAE60] valueWithRange:{a3, a4 - a3}];
+  v8 = [MEMORY[0x277CCAE60] valueWithRange:{from, to - from}];
   v6 = [(NSArray *)visits arrayByAddingObject:v8];
   v7 = self->_visits;
   self->_visits = v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXLocationOfInterest *)self isEqualToLocation:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXLocationOfInterest *)self isEqualToLocation:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToLocation:(id)a3
+- (BOOL)isEqualToLocation:(id)location
 {
   v4 = self->_uuid;
   v5 = v4;
-  if (v4 == *(a3 + 1))
+  if (v4 == *(location + 1))
   {
     v6 = 1;
   }
@@ -96,13 +96,13 @@
   return v6;
 }
 
-- (ATXLocationOfInterest)initWithCoder:(id)a3
+- (ATXLocationOfInterest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
-  if ([v4 containsValueForKey:@"type"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  if ([coderCopy containsValueForKey:@"type"])
   {
-    v6 = [v4 decodeIntegerForKey:@"type"];
+    v6 = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   else
@@ -110,35 +110,35 @@
     v6 = -1;
   }
 
-  [v4 decodeDoubleForKey:@"latitude"];
+  [coderCopy decodeDoubleForKey:@"latitude"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"longitude"];
+  [coderCopy decodeDoubleForKey:@"longitude"];
   v10 = CLLocationCoordinate2DMake(v8, v9);
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"city"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"city"];
   v12 = [(ATXLocationOfInterest *)self initWithUUID:v5 visits:0 coordinate:v6 type:v11 city:v10.latitude, v10.longitude];
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_uuid forKey:@"uuid"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeDouble:@"latitude" forKey:self->_coordinate.latitude];
-  [v5 encodeDouble:@"longitude" forKey:self->_coordinate.longitude];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_uuid forKey:@"uuid"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeDouble:@"latitude" forKey:self->_coordinate.latitude];
+  [coderCopy encodeDouble:@"longitude" forKey:self->_coordinate.longitude];
   city = self->_city;
   if (city)
   {
-    [v5 encodeObject:city forKey:@"city"];
+    [coderCopy encodeObject:city forKey:@"city"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSUUID *)self->_uuid copyWithZone:a3];
-  v7 = [(NSArray *)self->_visits copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSUUID *)self->_uuid copyWithZone:zone];
+  v7 = [(NSArray *)self->_visits copyWithZone:zone];
   v8 = [v5 initWithUUID:v6 visits:v7 coordinate:self->_type type:self->_city city:{self->_coordinate.latitude, self->_coordinate.longitude}];
 
   return v8;
@@ -147,8 +147,8 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSUUID *)self->_uuid UUIDString];
-  v5 = [v3 stringWithFormat:@"ATXLocationOfInterest uuid:%@ visits:%@ type:%ld lat:%f long:%f city:%@", v4, self->_visits, self->_type, *&self->_coordinate.latitude, *&self->_coordinate.longitude, self->_city];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  v5 = [v3 stringWithFormat:@"ATXLocationOfInterest uuid:%@ visits:%@ type:%ld lat:%f long:%f city:%@", uUIDString, self->_visits, self->_type, *&self->_coordinate.latitude, *&self->_coordinate.longitude, self->_city];
 
   return v5;
 }

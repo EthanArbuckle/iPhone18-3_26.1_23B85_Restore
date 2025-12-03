@@ -1,6 +1,6 @@
 @interface DeactivateSignalIntent
 - (DeactivateSignalIntent)init;
-- (DeactivateSignalIntent)initWithCoder:(id)a3;
+- (DeactivateSignalIntent)initWithCoder:(id)coder;
 @end
 
 @implementation DeactivateSignalIntent
@@ -12,12 +12,12 @@
   return [(DeactivateSignalIntent *)&v3 init];
 }
 
-- (DeactivateSignalIntent)initWithCoder:(id)a3
+- (DeactivateSignalIntent)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for DeactivateSignalIntent();
-  v4 = a3;
-  v5 = [(DeactivateSignalIntent *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(DeactivateSignalIntent *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

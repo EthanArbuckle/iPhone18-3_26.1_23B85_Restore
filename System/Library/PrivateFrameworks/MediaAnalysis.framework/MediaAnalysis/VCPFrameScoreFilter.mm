@@ -1,21 +1,21 @@
 @interface VCPFrameScoreFilter
-- (VCPFrameScoreFilter)initWithFilterTabs:(int)a3 distanceVariance:(float)a4 diffVariance:(float)a5;
-- (float)processFrameScore:(float)a3 validScore:(BOOL)a4;
+- (VCPFrameScoreFilter)initWithFilterTabs:(int)tabs distanceVariance:(float)variance diffVariance:(float)diffVariance;
+- (float)processFrameScore:(float)score validScore:(BOOL)validScore;
 - (void)dealloc;
 @end
 
 @implementation VCPFrameScoreFilter
 
-- (VCPFrameScoreFilter)initWithFilterTabs:(int)a3 distanceVariance:(float)a4 diffVariance:(float)a5
+- (VCPFrameScoreFilter)initWithFilterTabs:(int)tabs distanceVariance:(float)variance diffVariance:(float)diffVariance
 {
   v10.receiver = self;
   v10.super_class = VCPFrameScoreFilter;
   v8 = [(VCPFrameScoreFilter *)&v10 init];
   if (v8)
   {
-    v8->_numFilterTabs = a3;
-    v8->_distanceVariance = a4;
-    v8->_diffVariance = a5;
+    v8->_numFilterTabs = tabs;
+    v8->_distanceVariance = variance;
+    v8->_diffVariance = diffVariance;
     v8->_numOfScores = 0;
     operator new[]();
   }
@@ -36,9 +36,9 @@
   [(VCPFrameScoreFilter *)&v4 dealloc];
 }
 
-- (float)processFrameScore:(float)a3 validScore:(BOOL)a4
+- (float)processFrameScore:(float)score validScore:(BOOL)validScore
 {
-  v5 = a4;
+  validScoreCopy = validScore;
   numOfScores = self->_numOfScores;
   if (numOfScores < 1)
   {
@@ -58,8 +58,8 @@
     {
       v15 = *scoreArray++;
       v16 = v15;
-      v17 = vabds_f32(a3, v15);
-      if (!v5)
+      v17 = vabds_f32(score, v15);
+      if (!validScoreCopy)
       {
         v17 = 0.0;
       }
@@ -98,13 +98,13 @@
   }
 
   v27 = v14 + 1.0;
-  if (!v5)
+  if (!validScoreCopy)
   {
     v27 = v14;
   }
 
-  v28 = v13 + a3;
-  if (!v5)
+  v28 = v13 + score;
+  if (!validScoreCopy)
   {
     v28 = v13;
   }
@@ -112,7 +112,7 @@
   v29 = v28 / v27;
   if (v27 <= 0.0)
   {
-    result = a3;
+    result = score;
   }
 
   else
@@ -120,17 +120,17 @@
     result = v29;
   }
 
-  if (v5)
+  if (validScoreCopy)
   {
-    v31 = a3;
+    scoreCopy = score;
   }
 
   else
   {
-    v31 = result;
+    scoreCopy = result;
   }
 
-  *v22 = v31;
+  *v22 = scoreCopy;
   if (numFilterTabs >= numOfScores + 1)
   {
     LODWORD(numFilterTabs) = numOfScores + 1;

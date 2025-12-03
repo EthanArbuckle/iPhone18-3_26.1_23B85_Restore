@@ -1,30 +1,30 @@
 @interface SULoadNetworkSectionsOperation
-- (BOOL)_loadArtworkForResponse:(id)a3;
+- (BOOL)_loadArtworkForResponse:(id)response;
 - (ISStoreURLOperation)baseOperation;
 - (NSString)expectedVersionString;
-- (SULoadNetworkSectionsOperation)initWithURL:(id)a3 clientInterface:(id)a4;
+- (SULoadNetworkSectionsOperation)initWithURL:(id)l clientInterface:(id)interface;
 - (SUSectionsResponse)sectionsResponse;
-- (id)_bestItemImageForImages:(id)a3 withImageKind:(id)a4;
-- (id)_copyImageWithURL:(id)a3 scale:(float)a4 error:(id *)a5;
-- (id)_copyLoadedItemImage:(id)a3 error:(id *)a4;
-- (void)_setSectionsResponse:(id)a3;
+- (id)_bestItemImageForImages:(id)images withImageKind:(id)kind;
+- (id)_copyImageWithURL:(id)l scale:(float)scale error:(id *)error;
+- (id)_copyLoadedItemImage:(id)image error:(id *)error;
+- (void)_setSectionsResponse:(id)response;
 - (void)dealloc;
 - (void)run;
-- (void)setBaseOperation:(id)a3;
-- (void)setExpectedVersionString:(id)a3;
+- (void)setBaseOperation:(id)operation;
+- (void)setExpectedVersionString:(id)string;
 @end
 
 @implementation SULoadNetworkSectionsOperation
 
-- (SULoadNetworkSectionsOperation)initWithURL:(id)a3 clientInterface:(id)a4
+- (SULoadNetworkSectionsOperation)initWithURL:(id)l clientInterface:(id)interface
 {
   v6 = [(SULoadNetworkSectionsOperation *)self init];
   if (v6)
   {
-    v6->_clientInterface = a4;
-    if (a3)
+    v6->_clientInterface = interface;
+    if (l)
     {
-      v7 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:a3];
+      v7 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:l];
       v8 = objc_alloc_init(MEMORY[0x1E69E47E0]);
       v6->_baseOperation = v8;
       [(ISStoreURLOperation *)v8 setTracksPerformanceMetrics:SSDebugShouldTrackPerformance()];
@@ -66,27 +66,27 @@
   return v3;
 }
 
-- (void)setBaseOperation:(id)a3
+- (void)setBaseOperation:(id)operation
 {
   [(SULoadNetworkSectionsOperation *)self lock];
   baseOperation = self->_baseOperation;
-  if (baseOperation != a3)
+  if (baseOperation != operation)
   {
 
-    self->_baseOperation = a3;
+    self->_baseOperation = operation;
   }
 
   [(SULoadNetworkSectionsOperation *)self unlock];
 }
 
-- (void)setExpectedVersionString:(id)a3
+- (void)setExpectedVersionString:(id)string
 {
   [(SULoadNetworkSectionsOperation *)self lock];
   expectedVersionString = self->_expectedVersionString;
-  if (expectedVersionString != a3)
+  if (expectedVersionString != string)
   {
 
-    self->_expectedVersionString = a3;
+    self->_expectedVersionString = string;
   }
 
   [(SULoadNetworkSectionsOperation *)self unlock];
@@ -116,19 +116,19 @@
 
     else
     {
-      v9 = [MEMORY[0x1E69D4938] sharedConfig];
-      v10 = [v9 shouldLog];
-      if ([v9 shouldLogToDisk])
+      mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+      if ([mEMORY[0x1E69D4938] shouldLogToDisk])
       {
-        v11 = v10 | 2;
+        v11 = shouldLog | 2;
       }
 
       else
       {
-        v11 = v10;
+        v11 = shouldLog;
       }
 
-      if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
       {
         v11 &= 2u;
       }
@@ -164,7 +164,7 @@
   }
 }
 
-- (id)_bestItemImageForImages:(id)a3 withImageKind:(id)a4
+- (id)_bestItemImageForImages:(id)images withImageKind:(id)kind
 {
   v27 = *MEMORY[0x1E69E9840];
   [objc_msgSend(MEMORY[0x1E69DCEB0] "mainScreen")];
@@ -173,7 +173,7 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v8 = [images countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v8)
   {
     return 0;
@@ -189,7 +189,7 @@
     {
       if (*v23 != v11)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(images);
       }
 
       v14 = *(*(&v22 + 1) + 8 * i);
@@ -215,34 +215,34 @@
       }
     }
 
-    v9 = [a3 countByEnumeratingWithState:&v22 objects:v26 count:{16, v18}];
+    v9 = [images countByEnumeratingWithState:&v22 objects:v26 count:{16, v18}];
   }
 
   while (v9);
   return v10;
 }
 
-- (id)_copyImageWithURL:(id)a3 scale:(float)a4 error:(id *)a5
+- (id)_copyImageWithURL:(id)l scale:(float)scale error:(id *)error
 {
   v15 = 0;
-  if ([objc_msgSend(a3 "scheme")])
+  if ([objc_msgSend(l "scheme")])
   {
-    v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:a3 options:0 error:&v15];
+    v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:l options:0 error:&v15];
     if (v9)
     {
-      v10 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithData:v9 scale:a4];
-      if (!a5)
+      output = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithData:v9 scale:scale];
+      if (!error)
       {
-        return v10;
+        return output;
       }
     }
 
     else
     {
-      v10 = 0;
-      if (!a5)
+      output = 0;
+      if (!error)
       {
-        return v10;
+        return output;
       }
     }
 
@@ -251,49 +251,49 @@
 
   v11 = objc_alloc_init(MEMORY[0x1E69E47E0]);
   v12 = objc_alloc_init(SUImageDataProvider);
-  [(SUImageDataProvider *)v12 setInputImageScale:a4];
+  [(SUImageDataProvider *)v12 setInputImageScale:scale];
   [v11 setDataProvider:v12];
-  v13 = [objc_alloc(MEMORY[0x1E69D4970]) initWithURL:a3];
+  v13 = [objc_alloc(MEMORY[0x1E69D4970]) initWithURL:l];
   [v13 setCachePolicy:1];
   [v11 setRequestProperties:v13];
 
   if (([(SULoadNetworkSectionsOperation *)self runSubOperation:v11 returningError:&v15]& 1) != 0)
   {
-    v10 = [(ISDataProvider *)v12 output];
+    output = [(ISDataProvider *)v12 output];
   }
 
   else
   {
     [(SULoadNetworkSectionsOperation *)self setError:v15];
-    v10 = 0;
+    output = 0;
   }
 
-  if (a5)
+  if (error)
   {
 LABEL_9:
-    *a5 = v15;
+    *error = v15;
   }
 
-  return v10;
+  return output;
 }
 
-- (id)_copyLoadedItemImage:(id)a3 error:(id *)a4
+- (id)_copyLoadedItemImage:(id)image error:(id *)error
 {
-  v7 = [a3 URL];
-  [a3 imageScale];
+  v7 = [image URL];
+  [image imageScale];
   *&v8 = v8;
 
-  return [(SULoadNetworkSectionsOperation *)self _copyImageWithURL:v7 scale:a4 error:v8];
+  return [(SULoadNetworkSectionsOperation *)self _copyImageWithURL:v7 scale:error error:v8];
 }
 
-- (BOOL)_loadArtworkForResponse:(id)a3
+- (BOOL)_loadArtworkForResponse:(id)response
 {
   v86 = *MEMORY[0x1E69E9840];
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  obj = [a3 allSections];
+  obj = [response allSections];
   v66 = [obj countByEnumeratingWithState:&v75 objects:v85 count:16];
   if (v66)
   {
@@ -362,12 +362,12 @@ LABEL_9:
           [v5 setSelectedMoreListImage:v14];
         }
 
-        v15 = [v5 leftSectionButtons];
+        leftSectionButtons = [v5 leftSectionButtons];
         v71 = 0u;
         v72 = 0u;
         v73 = 0u;
         v74 = 0u;
-        v16 = [v15 countByEnumeratingWithState:&v71 objects:v84 count:16];
+        v16 = [leftSectionButtons countByEnumeratingWithState:&v71 objects:v84 count:16];
         if (v16)
         {
           v17 = v16;
@@ -378,14 +378,14 @@ LABEL_9:
             {
               if (*v72 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(leftSectionButtons);
               }
 
               v20 = *(*(&v71 + 1) + 8 * j);
-              v21 = [v20 imageURL];
-              if (v21)
+              imageURL = [v20 imageURL];
+              if (imageURL)
               {
-                v22 = v21;
+                v22 = imageURL;
                 [v20 imageURLScale];
                 v23 = [(SULoadNetworkSectionsOperation *)self _copyImageWithURL:v22 scale:0 error:?];
                 v8 &= v23 != 0;
@@ -393,18 +393,18 @@ LABEL_9:
               }
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v71 objects:v84 count:16];
+            v17 = [leftSectionButtons countByEnumeratingWithState:&v71 objects:v84 count:16];
           }
 
           while (v17);
         }
 
-        v24 = [v5 rightSectionButtons];
+        rightSectionButtons = [v5 rightSectionButtons];
         v67 = 0u;
         v68 = 0u;
         v69 = 0u;
         v70 = 0u;
-        v25 = [v24 countByEnumeratingWithState:&v67 objects:v83 count:16];
+        v25 = [rightSectionButtons countByEnumeratingWithState:&v67 objects:v83 count:16];
         if (v25)
         {
           v26 = v25;
@@ -415,14 +415,14 @@ LABEL_9:
             {
               if (*v68 != v27)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(rightSectionButtons);
               }
 
               v29 = *(*(&v67 + 1) + 8 * k);
-              v30 = [v29 imageURL];
-              if (v30)
+              imageURL2 = [v29 imageURL];
+              if (imageURL2)
               {
-                v31 = v30;
+                v31 = imageURL2;
                 [v29 imageURLScale];
                 v32 = [(SULoadNetworkSectionsOperation *)self _copyImageWithURL:v31 scale:0 error:?];
                 v8 &= v32 != 0;
@@ -430,7 +430,7 @@ LABEL_9:
               }
             }
 
-            v26 = [v24 countByEnumeratingWithState:&v67 objects:v83 count:16];
+            v26 = [rightSectionButtons countByEnumeratingWithState:&v67 objects:v83 count:16];
           }
 
           while (v26);
@@ -438,19 +438,19 @@ LABEL_9:
 
         if ((v8 & 1) == 0)
         {
-          v33 = [MEMORY[0x1E69D4938] sharedConfig];
-          v34 = [v33 shouldLog];
-          if ([v33 shouldLogToDisk])
+          mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+          shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+          if ([mEMORY[0x1E69D4938] shouldLogToDisk])
           {
-            v34 |= 2u;
+            shouldLog |= 2u;
           }
 
-          if (!os_log_type_enabled([v33 OSLogObject], OS_LOG_TYPE_DEFAULT))
+          if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
           {
-            v34 &= 2u;
+            shouldLog &= 2u;
           }
 
-          if (v34)
+          if (shouldLog)
           {
             v35 = objc_opt_class();
             v79 = 138412546;
@@ -485,23 +485,23 @@ LABEL_9:
     v59 = 1;
   }
 
-  v39 = [objc_msgSend(a3 moreListImageCollection];
-  if (![v39 count])
+  moreListImageCollection = [objc_msgSend(response moreListImageCollection];
+  if (![moreListImageCollection count])
   {
     return v59;
   }
 
-  v40 = [(SULoadNetworkSectionsOperation *)self _bestItemImageForImages:v39 withImageKind:*MEMORY[0x1E69D4CA8]];
+  v40 = [(SULoadNetworkSectionsOperation *)self _bestItemImageForImages:moreListImageCollection withImageKind:*MEMORY[0x1E69D4CA8]];
   if (!v40)
   {
-    v45 = [(SULoadNetworkSectionsOperation *)self _bestItemImageForImages:v39 withImageKind:*MEMORY[0x1E69D4CC0]];
+    v45 = [(SULoadNetworkSectionsOperation *)self _bestItemImageForImages:moreListImageCollection withImageKind:*MEMORY[0x1E69D4CC0]];
     if (v45)
     {
       v44 = v45;
       v42 = 1;
 LABEL_58:
       v46 = [(SULoadNetworkSectionsOperation *)self _copyLoadedItemImage:v44 error:0];
-      [a3 setMoreListSelectedImage:v46];
+      [response setMoreListSelectedImage:v46];
 
       v47 = !v42 || v46 == 0;
       v48 = v59;
@@ -518,9 +518,9 @@ LABEL_58:
 
   v41 = [(SULoadNetworkSectionsOperation *)self _copyLoadedItemImage:v40 error:0];
   v42 = v41 != 0;
-  [a3 setMoreListImage:v41];
+  [response setMoreListImage:v41];
 
-  v43 = [(SULoadNetworkSectionsOperation *)self _bestItemImageForImages:v39 withImageKind:*MEMORY[0x1E69D4CC0]];
+  v43 = [(SULoadNetworkSectionsOperation *)self _bestItemImageForImages:moreListImageCollection withImageKind:*MEMORY[0x1E69D4CC0]];
   if (v43)
   {
     v44 = v43;
@@ -534,19 +534,19 @@ LABEL_58:
   }
 
 LABEL_65:
-  v49 = [MEMORY[0x1E69D4938] sharedConfig];
-  v50 = [v49 shouldLog];
-  if ([v49 shouldLogToDisk])
+  mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+  if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
   {
-    v51 = v50 | 2;
+    v51 = shouldLog2 | 2;
   }
 
   else
   {
-    v51 = v50;
+    v51 = shouldLog2;
   }
 
-  if (!os_log_type_enabled([v49 OSLogObject], OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938]2 OSLogObject], OS_LOG_TYPE_DEFAULT))
   {
     v51 &= 2u;
   }
@@ -570,14 +570,14 @@ LABEL_65:
   return 0;
 }
 
-- (void)_setSectionsResponse:(id)a3
+- (void)_setSectionsResponse:(id)response
 {
   [(SULoadNetworkSectionsOperation *)self lock];
   sectionsResponse = self->_sectionsResponse;
-  if (sectionsResponse != a3)
+  if (sectionsResponse != response)
   {
 
-    self->_sectionsResponse = a3;
+    self->_sectionsResponse = response;
   }
 
   [(SULoadNetworkSectionsOperation *)self unlock];

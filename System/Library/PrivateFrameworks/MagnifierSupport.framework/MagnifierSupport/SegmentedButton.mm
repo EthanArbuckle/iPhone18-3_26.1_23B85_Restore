@@ -1,12 +1,12 @@
 @interface SegmentedButton
-- (BOOL)clickPresentationInteractionShouldBegin:(id)a3;
-- (BOOL)clickPresentationInteractionShouldPresent:(id)a3;
-- (_TtC16MagnifierSupport15SegmentedButton)initWithFrame:(CGRect)a3;
-- (id)clickPresentationInteraction:(id)a3 presentationForPresentingViewController:(id)a4;
-- (id)clickPresentationInteraction:(id)a3 previewForHighlightingAtLocation:(CGPoint)a4;
-- (void)clickPresentationInteractionEnded:(id)a3 wasCancelled:(BOOL)a4;
-- (void)didSelectSegment:(id)a3;
-- (void)didTap:(id)a3;
+- (BOOL)clickPresentationInteractionShouldBegin:(id)begin;
+- (BOOL)clickPresentationInteractionShouldPresent:(id)present;
+- (_TtC16MagnifierSupport15SegmentedButton)initWithFrame:(CGRect)frame;
+- (id)clickPresentationInteraction:(id)interaction presentationForPresentingViewController:(id)controller;
+- (id)clickPresentationInteraction:(id)interaction previewForHighlightingAtLocation:(CGPoint)location;
+- (void)clickPresentationInteractionEnded:(id)ended wasCancelled:(BOOL)cancelled;
+- (void)didSelectSegment:(id)segment;
+- (void)didTap:(id)tap;
 - (void)layoutSubviews;
 - (void)removeFromSuperview;
 @end
@@ -15,11 +15,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_257DBB364();
 }
 
-- (void)didTap:(id)a3
+- (void)didTap:(id)tap
 {
   v5 = self + OBJC_IVAR____TtC16MagnifierSupport15SegmentedButton_delegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -27,76 +27,76 @@
     v6 = *(v5 + 1);
     swift_getObjectType();
     v7 = *(v6 + 8);
-    v8 = a3;
-    v9 = self;
+    tapCopy = tap;
+    selfCopy = self;
     v7();
 
     swift_unknownObjectRelease();
   }
 }
 
-- (void)didSelectSegment:(id)a3
+- (void)didSelectSegment:(id)segment
 {
-  v4 = a3;
-  v5 = self;
+  segmentCopy = segment;
+  selfCopy = self;
   sub_257DBB670();
 }
 
 - (void)removeFromSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_257DBBA54();
 }
 
-- (_TtC16MagnifierSupport15SegmentedButton)initWithFrame:(CGRect)a3
+- (_TtC16MagnifierSupport15SegmentedButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)clickPresentationInteraction:(id)a3 presentationForPresentingViewController:(id)a4
+- (id)clickPresentationInteraction:(id)interaction presentationForPresentingViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_257DBCA00(v6);
+  interactionCopy = interaction;
+  controllerCopy = controller;
+  selfCopy = self;
+  v9 = sub_257DBCA00(interactionCopy);
 
   return v9;
 }
 
-- (BOOL)clickPresentationInteractionShouldBegin:(id)a3
+- (BOOL)clickPresentationInteractionShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  sub_257DBBF04(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  sub_257DBBF04(beginCopy);
   LOBYTE(self) = v6;
 
   return self & 1;
 }
 
-- (BOOL)clickPresentationInteractionShouldPresent:(id)a3
+- (BOOL)clickPresentationInteractionShouldPresent:(id)present
 {
-  v4 = a3;
-  v5 = self;
-  sub_257DBC1E8(v4);
+  presentCopy = present;
+  selfCopy = self;
+  sub_257DBC1E8(presentCopy);
   LOBYTE(self) = v6;
 
   return self & 1;
 }
 
-- (void)clickPresentationInteractionEnded:(id)a3 wasCancelled:(BOOL)a4
+- (void)clickPresentationInteractionEnded:(id)ended wasCancelled:(BOOL)cancelled
 {
-  v6 = a3;
-  v7 = self;
-  sub_257DBCC98(a4);
+  endedCopy = ended;
+  selfCopy = self;
+  sub_257DBCC98(cancelled);
 }
 
-- (id)clickPresentationInteraction:(id)a3 previewForHighlightingAtLocation:(CGPoint)a4
+- (id)clickPresentationInteraction:(id)interaction previewForHighlightingAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_257DBC568(v5);
+  interactionCopy = interaction;
+  selfCopy = self;
+  v7 = sub_257DBC568(interactionCopy);
 
   return v7;
 }

@@ -1,42 +1,42 @@
 @interface MPServerObjectDatabaseStorePlatformImportRequest
-+ (id)_childKeyForParentType:(id)a3 type:(id)a4;
-+ (id)_entityTypeForObject:(id)a3;
++ (id)_childKeyForParentType:(id)type type:(id)a4;
++ (id)_entityTypeForObject:(id)object;
 + (id)_unsupportedParentChildRelationships;
 + (id)_unsupportedStorePlatformKinds;
-- (MPServerObjectDatabaseStorePlatformImportRequest)initWithPayload:(id)a3;
-- (id)performWithDatabaseOperations:(id)a3 augmentingPayload:(id *)a4;
+- (MPServerObjectDatabaseStorePlatformImportRequest)initWithPayload:(id)payload;
+- (id)performWithDatabaseOperations:(id)operations augmentingPayload:(id *)payload;
 @end
 
 @implementation MPServerObjectDatabaseStorePlatformImportRequest
 
-- (id)performWithDatabaseOperations:(id)a3 augmentingPayload:(id *)a4
+- (id)performWithDatabaseOperations:(id)operations augmentingPayload:(id *)payload
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  operationsCopy = operations;
   v7 = objc_alloc_init(MPStorePlatformEntityTranslatorContext);
-  v8 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-  v9 = [(MPServerObjectDatabaseImportRequest *)self userIdentity];
-  v10 = [v8 DSIDForUserIdentity:v9 outError:0];
-  v11 = [v10 stringValue];
-  [(MPStorePlatformEntityTranslatorContext *)v7 setPersonID:v11];
+  defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+  userIdentity = [(MPServerObjectDatabaseImportRequest *)self userIdentity];
+  v10 = [defaultIdentityStore DSIDForUserIdentity:userIdentity outError:0];
+  stringValue = [v10 stringValue];
+  [(MPStorePlatformEntityTranslatorContext *)v7 setPersonID:stringValue];
 
-  v12 = [(MPStorePlatformEntityTranslatorContext *)v7 personID];
-  v13 = [v12 length];
+  personID = [(MPStorePlatformEntityTranslatorContext *)v7 personID];
+  v13 = [personID length];
 
   if (!v13)
   {
     [(MPStorePlatformEntityTranslatorContext *)v7 setPersonID:*MEMORY[0x1E69E4388]];
   }
 
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
   v43 = __Block_byref_object_copy__35967;
   v44 = __Block_byref_object_dispose__35968;
   v45 = 0;
-  v15 = [MEMORY[0x1E695DF70] array];
-  v16 = [(MPServerObjectDatabaseImportRequest *)self payload];
+  array2 = [MEMORY[0x1E695DF70] array];
+  payload = [(MPServerObjectDatabaseImportRequest *)self payload];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __100__MPServerObjectDatabaseStorePlatformImportRequest_performWithDatabaseOperations_augmentingPayload___block_invoke;
@@ -45,13 +45,13 @@
   v17 = v7;
   v35 = v17;
   v39 = &v40;
-  v18 = v6;
+  v18 = operationsCopy;
   v36 = v18;
-  v19 = v15;
+  v19 = array2;
   v37 = v19;
-  v20 = v14;
+  v20 = array;
   v38 = v20;
-  _MPServerObjectDatabaseMetadataImportEnumerateObjects(v16, a4, @"kind", 0, 0, 0, 0, v34);
+  _MPServerObjectDatabaseMetadataImportEnumerateObjects(payload, payload, @"kind", 0, 0, 0, 0, v34);
 
   v21 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -74,7 +74,7 @@
   v33 = &v40;
   [v19 enumerateObjectsUsingBlock:&v28];
   v25 = [MPServerObjectDatabaseImportResult alloc];
-  v26 = -[MPServerObjectDatabaseImportResult initWithAnnotatedPayload:playableAssetIdentifiers:importedIdentifiers:assetsCount:hlsAssetsCount:error:](v25, "initWithAnnotatedPayload:playableAssetIdentifiers:importedIdentifiers:assetsCount:hlsAssetsCount:error:", a4, 0, v20, [v24 importedAssetsCount], objc_msgSend(v24, "importedHLSAssetsCount"), 0);
+  v26 = -[MPServerObjectDatabaseImportResult initWithAnnotatedPayload:playableAssetIdentifiers:importedIdentifiers:assetsCount:hlsAssetsCount:error:](v25, "initWithAnnotatedPayload:playableAssetIdentifiers:importedIdentifiers:assetsCount:hlsAssetsCount:error:", payload, 0, v20, [v24 importedAssetsCount], objc_msgSend(v24, "importedHLSAssetsCount"), 0);
 
   _Block_object_dispose(&v40, 8);
 
@@ -381,16 +381,16 @@ void __100__MPServerObjectDatabaseStorePlatformImportRequest_performWithDatabase
   [v3 setAdamID:{objc_msgSend(v2, "longLongValue")}];
 }
 
-- (MPServerObjectDatabaseStorePlatformImportRequest)initWithPayload:(id)a3
+- (MPServerObjectDatabaseStorePlatformImportRequest)initWithPayload:(id)payload
 {
   v4.receiver = self;
   v4.super_class = MPServerObjectDatabaseStorePlatformImportRequest;
-  return [(MPServerObjectDatabaseImportRequest *)&v4 _initWithPayload:a3];
+  return [(MPServerObjectDatabaseImportRequest *)&v4 _initWithPayload:payload];
 }
 
-+ (id)_entityTypeForObject:(id)a3
++ (id)_entityTypeForObject:(id)object
 {
-  v3 = [a3 objectForKeyedSubscript:@"kind"];
+  v3 = [object objectForKeyedSubscript:@"kind"];
   v4 = v3;
   if (v3)
   {
@@ -458,12 +458,12 @@ LABEL_10:
   return v7;
 }
 
-+ (id)_childKeyForParentType:(id)a3 type:(id)a4
++ (id)_childKeyForParentType:(id)type type:(id)a4
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  typeCopy = type;
   v7 = a4;
-  if ([v6 isEqualToString:@"song"])
+  if ([typeCopy isEqualToString:@"song"])
   {
     if ([v7 isEqualToString:@"album"])
     {
@@ -480,7 +480,7 @@ LABEL_19:
     }
   }
 
-  if ([v6 isEqualToString:@"album"])
+  if ([typeCopy isEqualToString:@"album"])
   {
     if ([v7 isEqualToString:@"song"])
     {
@@ -501,32 +501,32 @@ LABEL_19:
     }
   }
 
-  if ([v6 isEqualToString:@"artist"] && objc_msgSend(v7, "isEqualToString:", @"album"))
+  if ([typeCopy isEqualToString:@"artist"] && objc_msgSend(v7, "isEqualToString:", @"album"))
   {
     v8 = @"MPModelChildArtistAlbums";
     goto LABEL_19;
   }
 
-  if ([v6 isEqualToString:@"playlist"] && objc_msgSend(v7, "isEqualToString:", @"song"))
+  if ([typeCopy isEqualToString:@"playlist"] && objc_msgSend(v7, "isEqualToString:", @"song"))
   {
     v8 = @"MPModelChildPlaylistEntries";
     goto LABEL_19;
   }
 
-  v11 = [a1 _unsupportedParentChildRelationships];
-  v19[0] = v6;
+  _unsupportedParentChildRelationships = [self _unsupportedParentChildRelationships];
+  v19[0] = typeCopy;
   v19[1] = v7;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v13 = [v12 componentsJoinedByString:@"|"];
 
-  if (([v11 containsObject:v13] & 1) == 0)
+  if (([_unsupportedParentChildRelationships containsObject:v13] & 1) == 0)
   {
-    [v11 addObject:v13];
+    [_unsupportedParentChildRelationships addObject:v13];
     v14 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412546;
-      v16 = v6;
+      v16 = typeCopy;
       v17 = 2112;
       v18 = v7;
       _os_log_impl(&dword_1A238D000, v14, OS_LOG_TYPE_ERROR, "Encountered unexpected store platform relationship parent=%@ type=%@", &v15, 0x16u);

@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneIndexFieldInfos
-- (id)fieldInfoWithNSString:(id)a3;
+- (id)fieldInfoWithNSString:(id)string;
 - (id)iterator;
 - (int)size;
 - (void)dealloc;
@@ -29,7 +29,7 @@
   return [(JavaUtilCollection *)values iterator];
 }
 
-- (id)fieldInfoWithNSString:(id)a3
+- (id)fieldInfoWithNSString:(id)string
 {
   byName = self->byName_;
   if (!byName)
@@ -37,7 +37,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilHashMap *)byName getWithId:a3];
+  return [(JavaUtilHashMap *)byName getWithId:string];
 }
 
 - (void)dealloc

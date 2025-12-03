@@ -1,17 +1,17 @@
 @interface TSTCellStyleHandle
-+ (id)handleForCellStyle:(id)a3;
-- (TSTCellStyleHandle)initWithCellStyle:(id)a3;
++ (id)handleForCellStyle:(id)style;
+- (TSTCellStyleHandle)initWithCellStyle:(id)style;
 @end
 
 @implementation TSTCellStyleHandle
 
-+ (id)handleForCellStyle:(id)a3
++ (id)handleForCellStyle:(id)style
 {
-  if (a3)
+  if (style)
   {
-    v4 = a3;
-    v5 = [a1 alloc];
-    v9 = objc_msgSend_initWithCellStyle_(v5, v6, v4, v7, v8);
+    styleCopy = style;
+    v5 = [self alloc];
+    v9 = objc_msgSend_initWithCellStyle_(v5, v6, styleCopy, v7, v8);
   }
 
   else
@@ -22,10 +22,10 @@
   return v9;
 }
 
-- (TSTCellStyleHandle)initWithCellStyle:(id)a3
+- (TSTCellStyleHandle)initWithCellStyle:(id)style
 {
-  v8 = a3;
-  if (v8)
+  styleCopy = style;
+  if (styleCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -38,7 +38,7 @@
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v20, v13, v17, 27, 0, "expected cell style got %{public}@", v19);
 
       objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v21, v22, v23, v24);
-      v25 = 0;
+      selfCopy = 0;
       goto LABEL_8;
     }
   }
@@ -59,13 +59,13 @@
   v38 = v37;
   if (v37)
   {
-    objc_storeStrong(&v37->_cellStyle, a3);
-    v38->_isVariation = objc_msgSend_isVariation(v8, v39, v40, v41, v42);
-    v38->_cellWraps = (objc_msgSend_intValueForProperty_(v8, v43, 896, v44, v45) & 0x7FFFFFFF) != 0;
-    v38->_verticalAlignment = objc_msgSend_intValueForProperty_(v8, v46, 903, v47, v48);
-    v38->_overridesPadding = objc_msgSend_overridesProperty_(v8, v49, 904, v50, v51);
+    objc_storeStrong(&v37->_cellStyle, style);
+    v38->_isVariation = objc_msgSend_isVariation(styleCopy, v39, v40, v41, v42);
+    v38->_cellWraps = (objc_msgSend_intValueForProperty_(styleCopy, v43, 896, v44, v45) & 0x7FFFFFFF) != 0;
+    v38->_verticalAlignment = objc_msgSend_intValueForProperty_(styleCopy, v46, 903, v47, v48);
+    v38->_overridesPadding = objc_msgSend_overridesProperty_(styleCopy, v49, 904, v50, v51);
     objc_opt_class();
-    v55 = objc_msgSend_valueForProperty_(v8, v52, 904, v53, v54);
+    v55 = objc_msgSend_valueForProperty_(styleCopy, v52, 904, v53, v54);
     v56 = TSUCheckedDynamicCast();
     v61 = objc_msgSend_copy(v56, v57, v58, v59, v60);
     padding = v38->_padding;
@@ -73,10 +73,10 @@
   }
 
   self = v38;
-  v25 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v25;
+  return selfCopy;
 }
 
 @end

@@ -7,10 +7,10 @@
 + (id)_loadedInitialContext
 {
   v0 = +[_UIApplicationConfigurationLoader sharedLoader];
-  v1 = [v0 applicationInitializationContext];
-  v2 = [v1 displayContext];
+  applicationInitializationContext = [v0 applicationInitializationContext];
+  displayContext = [applicationInitializationContext displayContext];
 
-  return v2;
+  return displayContext;
 }
 
 @end

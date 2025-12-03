@@ -1,25 +1,25 @@
 @interface HKFeatureAvailabilityRequirementWatchAppIsInstalled
-- (BOOL)isEqual:(id)a3;
-- (HKFeatureAvailabilityRequirementWatchAppIsInstalled)initWithBundleIdentifier:(id)a3;
-- (HKFeatureAvailabilityRequirementWatchAppIsInstalled)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKFeatureAvailabilityRequirementWatchAppIsInstalled)initWithBundleIdentifier:(id)identifier;
+- (HKFeatureAvailabilityRequirementWatchAppIsInstalled)initWithCoder:(id)coder;
 - (NSArray)requiredEntitlements;
 - (unint64_t)hash;
-- (void)registerObserver:(id)a3 forDataSource:(id)a4;
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4;
+- (void)registerObserver:(id)observer forDataSource:(id)source;
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source;
 @end
 
 @implementation HKFeatureAvailabilityRequirementWatchAppIsInstalled
 
-- (HKFeatureAvailabilityRequirementWatchAppIsInstalled)initWithBundleIdentifier:(id)a3
+- (HKFeatureAvailabilityRequirementWatchAppIsInstalled)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HKFeatureAvailabilityRequirementWatchAppIsInstalled;
   v6 = [(HKFeatureAvailabilityRequirementWatchAppIsInstalled *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleIdentifier, a3);
+    objc_storeStrong(&v6->_bundleIdentifier, identifier);
   }
 
   return v7;
@@ -37,17 +37,17 @@
   return v3;
 }
 
-- (void)registerObserver:(id)a3 forDataSource:(id)a4
+- (void)registerObserver:(id)observer forDataSource:(id)source
 {
-  v6 = a3;
-  v7 = [a4 watchAppInstallationDataSource];
+  observerCopy = observer;
+  watchAppInstallationDataSource = [source watchAppInstallationDataSource];
   bundleIdentifier = self->_bundleIdentifier;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __86__HKFeatureAvailabilityRequirementWatchAppIsInstalled_registerObserver_forDataSource___block_invoke;
   v9[3] = &unk_1E737C118;
   v9[4] = self;
-  [v7 registerObserver:v6 forKey:bundleIdentifier newValueHandler:v9];
+  [watchAppInstallationDataSource registerObserver:observerCopy forKey:bundleIdentifier newValueHandler:v9];
 }
 
 void __86__HKFeatureAvailabilityRequirementWatchAppIsInstalled_registerObserver_forDataSource___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -57,22 +57,22 @@ void __86__HKFeatureAvailabilityRequirementWatchAppIsInstalled_registerObserver_
   [v5 featureAvailabilityRequirement:v4 didUpdateSatisfaction:{objc_msgSend(a3, "BOOLValue")}];
 }
 
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source
 {
-  v6 = a3;
-  v7 = [a4 watchAppInstallationDataSource];
-  [v7 unregisterObserver:v6 forKey:self->_bundleIdentifier];
+  observerCopy = observer;
+  watchAppInstallationDataSource = [source watchAppInstallationDataSource];
+  [watchAppInstallationDataSource unregisterObserver:observerCopy forKey:self->_bundleIdentifier];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     bundleIdentifier = self->_bundleIdentifier;
-    v6 = [v4 bundleIdentifier];
-    v7 = [(NSString *)bundleIdentifier isEqual:v6];
+    bundleIdentifier = [equalCopy bundleIdentifier];
+    v7 = [(NSString *)bundleIdentifier isEqual:bundleIdentifier];
   }
 
   else
@@ -93,10 +93,10 @@ void __86__HKFeatureAvailabilityRequirementWatchAppIsInstalled_registerObserver_
   return v6 ^ v5;
 }
 
-- (HKFeatureAvailabilityRequirementWatchAppIsInstalled)initWithCoder:(id)a3
+- (HKFeatureAvailabilityRequirementWatchAppIsInstalled)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
 
   v6 = [(HKFeatureAvailabilityRequirementWatchAppIsInstalled *)self initWithBundleIdentifier:v5];
   return v6;

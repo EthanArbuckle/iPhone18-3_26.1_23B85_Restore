@@ -1,6 +1,6 @@
 @interface CDMMDSUaaPNLService
 + (id)getCDMServiceAssetConfig;
-- (id)setup:(id)a3;
+- (id)setup:(id)setup;
 @end
 
 @implementation CDMMDSUaaPNLService
@@ -22,20 +22,20 @@
   return v2;
 }
 
-- (id)setup:(id)a3
+- (id)setup:(id)setup
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setupCopy = setup;
   self->super.super.super._serviceState = 2;
   if ([objc_opt_class() isEnabled])
   {
-    v5 = [v4 dynamicConfig];
-    v6 = [v5 getAssetForFactorName:@"com.apple.siri.nl.uaap.mds"];
+    dynamicConfig = [setupCopy dynamicConfig];
+    v6 = [dynamicConfig getAssetForFactorName:@"com.apple.siri.nl.uaap.mds"];
     nlAsset = self->_nlAsset;
     self->_nlAsset = v6;
 
-    v8 = [v4 dynamicConfig];
-    v9 = [v8 getAssetBundlePathForFactorName:@"com.apple.siri.nl.uaap.mds"];
+    dynamicConfig2 = [setupCopy dynamicConfig];
+    v9 = [dynamicConfig2 getAssetBundlePathForFactorName:@"com.apple.siri.nl.uaap.mds"];
 
     v10 = CDMOSLoggerForCategory(0);
     v11 = v10;
@@ -48,8 +48,8 @@
         _os_log_debug_impl(&dword_1DC287000, v11, OS_LOG_TYPE_DEBUG, "%s Fetching app model configurations", buf, 0xCu);
       }
 
-      v12 = [v9 bundleURL];
-      v13 = [v12 URLByAppendingPathComponent:@"customLU" isDirectory:1];
+      bundleURL = [v9 bundleURL];
+      v13 = [bundleURL URLByAppendingPathComponent:@"customLU" isDirectory:1];
 
       v39 = 0;
       v14 = [MEMORY[0x1E69D14C8] configurationFromDirectoryUrl:v13 error:&v39];
@@ -93,7 +93,7 @@
           _os_log_impl(&dword_1DC287000, v23, OS_LOG_TYPE_INFO, "%s [WARN]: Failed to load MDS model bundle (despite having configurations)", buf, 0xCu);
         }
 
-        v25 = [(CDMBaseService *)self createSetupResponseCommand];
+        createSetupResponseCommand = [(CDMBaseService *)self createSetupResponseCommand];
       }
 
       else
@@ -102,15 +102,15 @@
         v26 = v13;
         v27 = MEMORY[0x1E696AEC0];
         v28 = v15;
-        v29 = [v15 localizedDescription];
-        v30 = [v27 stringWithFormat:@"Failed to find MDS configuration: %@", v29];
+        localizedDescription = [v15 localizedDescription];
+        v30 = [v27 stringWithFormat:@"Failed to find MDS configuration: %@", localizedDescription];
 
         v31 = [MEMORY[0x1E695DFD8] set];
         v32 = self->super.__appModelBundles;
         self->super.__appModelBundles = v31;
 
         self->super.super.super._serviceState = 4;
-        v25 = [(CDMBaseService *)self createSetupResponseCommand];
+        createSetupResponseCommand = [(CDMBaseService *)self createSetupResponseCommand];
         v33 = CDMOSLoggerForCategory(0);
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
@@ -122,7 +122,7 @@
         }
 
         v34 = [(CDMBaseService *)self createErrorWithCode:0 description:v30];
-        [v25 setCmdError:v34];
+        [createSetupResponseCommand setCmdError:v34];
 
         v15 = v28;
         v13 = v26;
@@ -142,21 +142,21 @@
       }
 
       self->super.super.super._serviceState = 4;
-      v25 = [(CDMBaseService *)self createSetupResponseCommand];
+      createSetupResponseCommand = [(CDMBaseService *)self createSetupResponseCommand];
       v35 = [(CDMBaseService *)self createErrorWithCode:0 description:@"Failed to find an asset for service"];
-      [v25 setCmdError:v35];
+      [createSetupResponseCommand setCmdError:v35];
     }
   }
 
   else
   {
     self->super.super.super._serviceState = 4;
-    v25 = [(CDMBaseService *)self createSetupResponseCommand];
+    createSetupResponseCommand = [(CDMBaseService *)self createSetupResponseCommand];
   }
 
   v36 = *MEMORY[0x1E69E9840];
 
-  return v25;
+  return createSetupResponseCommand;
 }
 
 @end

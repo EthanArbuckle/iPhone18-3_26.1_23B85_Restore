@@ -1,15 +1,15 @@
 @interface _MFAtomTextAttachment
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
 - (MFComposeRecipient)recipient;
-- (_MFAtomTextAttachment)initWithAtomView:(id)a3;
-- (id)attributedStringWithBaseAttributes:(id)a3;
+- (_MFAtomTextAttachment)initWithAtomView:(id)view;
+- (id)attributedStringWithBaseAttributes:(id)attributes;
 @end
 
 @implementation _MFAtomTextAttachment
 
-- (_MFAtomTextAttachment)initWithAtomView:(id)a3
+- (_MFAtomTextAttachment)initWithAtomView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = _MFAtomTextAttachment;
   v5 = [(_MFAtomTextAttachment *)&v8 initWithData:0 ofType:0];
@@ -17,7 +17,7 @@
   if (v5)
   {
     [(_MFAtomTextAttachment *)v5 setIsPlaceholder:0];
-    [(_MFAtomTextAttachment *)v6 setAtomView:v4];
+    [(_MFAtomTextAttachment *)v6 setAtomView:viewCopy];
   }
 
   return v6;
@@ -25,37 +25,37 @@
 
 - (MFComposeRecipient)recipient
 {
-  v2 = [(_MFAtomTextAttachment *)self atomView];
-  v3 = [v2 recipient];
+  atomView = [(_MFAtomTextAttachment *)self atomView];
+  recipient = [atomView recipient];
 
-  return v3;
+  return recipient;
 }
 
-- (id)attributedStringWithBaseAttributes:(id)a3
+- (id)attributedStringWithBaseAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v10 = -4;
   v5 = [MEMORY[0x1E696AEC0] stringWithCharacters:&v10 length:1];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  [v6 setObject:self forKeyedSubscript:*MEMORY[0x1E69DB5F8]];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self forKeyedSubscript:*MEMORY[0x1E69DB5F8]];
   v7 = +[MFModernAtomView defaultFont];
-  [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69DB648]];
+  [dictionary setObject:v7 forKeyedSubscript:*MEMORY[0x1E69DB648]];
 
-  if (v4)
+  if (attributesCopy)
   {
-    [v6 setValuesForKeysWithDictionary:v4];
+    [dictionary setValuesForKeysWithDictionary:attributesCopy];
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v5 attributes:v6];
+  v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v5 attributes:dictionary];
 
   return v8;
 }
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  if ([(_MFAtomTextAttachment *)self isPlaceholder:a3])
+  height = fragment.size.height;
+  width = fragment.size.width;
+  if ([(_MFAtomTextAttachment *)self isPlaceholder:container])
   {
     [(_MFAtomTextAttachment *)self bounds];
     v10 = v9;

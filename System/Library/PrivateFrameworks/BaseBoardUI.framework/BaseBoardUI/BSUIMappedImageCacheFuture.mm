@@ -2,42 +2,42 @@
 - (BSUIMappedImageCacheFuture)init;
 - (os_unfair_lock_s)cacheImage;
 - (void)dealloc;
-- (void)submitWorkBlock:(uint64_t)a1;
+- (void)submitWorkBlock:(uint64_t)block;
 @end
 
 @implementation BSUIMappedImageCacheFuture
 
 - (os_unfair_lock_s)cacheImage
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    os_unfair_lock_lock(a1 + 2);
-    v2 = *&v1[8]._os_unfair_lock_opaque;
+    selfCopy = self;
+    os_unfair_lock_lock(self + 2);
+    v2 = *&selfCopy[8]._os_unfair_lock_opaque;
     if (v2)
     {
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __40__BSUIMappedImageCacheFuture_cacheImage__block_invoke;
       v7[3] = &unk_1E76B7FB8;
-      v7[4] = v1;
+      v7[4] = selfCopy;
       (*(v2 + 16))(v2, v7);
-      if ((v1[10]._os_unfair_lock_opaque & 1) == 0)
+      if ((selfCopy[10]._os_unfair_lock_opaque & 1) == 0)
       {
-        v5 = [MEMORY[0x1E696AAA8] currentHandler];
-        v6 = MEMORY[0x1A58E5D00](*&v1[8]._os_unfair_lock_opaque);
-        [v5 handleFailureInMethod:sel_cacheImage object:v1 file:@"BSUIMappedImageCacheFuture.m" lineNumber:72 description:{@"workCompletion of BSUIMappedImageCacheFuture was not called synchronously within its work block : %@", v6}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        v6 = MEMORY[0x1A58E5D00](*&selfCopy[8]._os_unfair_lock_opaque);
+        [currentHandler handleFailureInMethod:sel_cacheImage object:selfCopy file:@"BSUIMappedImageCacheFuture.m" lineNumber:72 description:{@"workCompletion of BSUIMappedImageCacheFuture was not called synchronously within its work block : %@", v6}];
       }
 
-      v3 = *&v1[8]._os_unfair_lock_opaque;
-      *&v1[8]._os_unfair_lock_opaque = 0;
+      v3 = *&selfCopy[8]._os_unfair_lock_opaque;
+      *&selfCopy[8]._os_unfair_lock_opaque = 0;
     }
 
-    os_unfair_lock_unlock(v1 + 2);
-    a1 = *&v1[12]._os_unfair_lock_opaque;
+    os_unfair_lock_unlock(selfCopy + 2);
+    self = *&selfCopy[12]._os_unfair_lock_opaque;
   }
 
-  return a1;
+  return self;
 }
 
 - (BSUIMappedImageCacheFuture)init
@@ -53,9 +53,9 @@
     submitted = v3->_submitted;
     v3->_submitted = v4;
 
-    v6 = [MEMORY[0x1E696AF00] currentThread];
+    currentThread = [MEMORY[0x1E696AF00] currentThread];
     submissionThread = v3->_submissionThread;
-    v3->_submissionThread = v6;
+    v3->_submissionThread = currentThread;
 
     v8 = dispatch_get_global_queue(9, 0);
     workQueue = v3->_workQueue;
@@ -78,14 +78,14 @@ void __40__BSUIMappedImageCacheFuture_cacheImage__block_invoke(uint64_t a1, void
 {
   if (([(BSAtomicSignal *)self->_submitted hasBeenSignalled]& 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"BSUIMappedImageCacheFuture.m" lineNumber:40 description:@"work was never submitted to future"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSUIMappedImageCacheFuture.m" lineNumber:40 description:@"work was never submitted to future"];
   }
 
   if (!self->_lock_workCompletionWasCalled)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"BSUIMappedImageCacheFuture.m" lineNumber:41 description:@"work completion was never called for future"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"BSUIMappedImageCacheFuture.m" lineNumber:41 description:@"work completion was never called for future"];
   }
 
   v6.receiver = self;
@@ -93,48 +93,48 @@ void __40__BSUIMappedImageCacheFuture_cacheImage__block_invoke(uint64_t a1, void
   [(BSUIMappedImageCacheFuture *)&v6 dealloc];
 }
 
-- (void)submitWorkBlock:(uint64_t)a1
+- (void)submitWorkBlock:(uint64_t)block
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (block)
   {
     if (!v3)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:sel_submitWorkBlock_ object:a1 file:@"BSUIMappedImageCacheFuture.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"workBlock"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_submitWorkBlock_ object:block file:@"BSUIMappedImageCacheFuture.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"workBlock"}];
     }
 
-    if (([*(a1 + 16) signal] & 1) == 0)
+    if (([*(block + 16) signal] & 1) == 0)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:sel_submitWorkBlock_ object:a1 file:@"BSUIMappedImageCacheFuture.m" lineNumber:51 description:@"attempted to submit more than one workBlock"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel_submitWorkBlock_ object:block file:@"BSUIMappedImageCacheFuture.m" lineNumber:51 description:@"attempted to submit more than one workBlock"];
     }
 
-    v5 = *(a1 + 24);
-    v6 = [MEMORY[0x1E696AF00] currentThread];
-    LOBYTE(v5) = [v5 isEqual:v6];
+    v5 = *(block + 24);
+    currentThread = [MEMORY[0x1E696AF00] currentThread];
+    LOBYTE(v5) = [v5 isEqual:currentThread];
 
     if ((v5 & 1) == 0)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:sel_submitWorkBlock_ object:a1 file:@"BSUIMappedImageCacheFuture.m" lineNumber:52 description:@"attempted to submit the workBlock on a different thread than the initializer"];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:sel_submitWorkBlock_ object:block file:@"BSUIMappedImageCacheFuture.m" lineNumber:52 description:@"attempted to submit the workBlock on a different thread than the initializer"];
     }
 
-    v7 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v7 = *(block + 24);
+    *(block + 24) = 0;
 
     v8 = [v4 copy];
-    v9 = *(a1 + 32);
-    *(a1 + 32) = v8;
+    v9 = *(block + 32);
+    *(block + 32) = v8;
 
-    os_unfair_lock_unlock((a1 + 8));
-    v10 = *(a1 + 56);
+    os_unfair_lock_unlock((block + 8));
+    v10 = *(block + 56);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __46__BSUIMappedImageCacheFuture_submitWorkBlock___block_invoke;
     block[3] = &unk_1E76B7BA8;
-    block[4] = a1;
+    block[4] = block;
     dispatch_async(v10, block);
   }
 }

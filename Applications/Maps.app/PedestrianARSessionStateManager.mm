@@ -1,20 +1,20 @@
 @interface PedestrianARSessionStateManager
-- (BOOL)shouldCreateMonitor:(Class)a3;
+- (BOOL)shouldCreateMonitor:(Class)monitor;
 - (NSString)debugDescription;
-- (PedestrianARSessionStateManager)initWithPlatformController:(id)a3;
+- (PedestrianARSessionStateManager)initWithPlatformController:(id)controller;
 - (PlatformController)platformController;
 - (id)allMonitors;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)calculateState;
 - (void)createEnabledMonitors;
-- (void)createMonitorIfNecessary:(Class)a3 configurationBlock:(id)a4;
+- (void)createMonitorIfNecessary:(Class)necessary configurationBlock:(id)block;
 - (void)dealloc;
 - (void)listenForGEOConfigKeyChanges;
-- (void)monitor:(id)a3 didChangeState:(BOOL)a4;
+- (void)monitor:(id)monitor didChangeState:(BOOL)state;
 - (void)removeDisabledMonitors;
-- (void)removeObserver:(id)a3;
-- (void)setShouldShowPedestrianAR:(BOOL)a3;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)setShouldShowPedestrianAR:(BOOL)r;
+- (void)valueChangedForGEOConfigKey:(id)key;
 @end
 
 @implementation PedestrianARSessionStateManager
@@ -26,13 +26,13 @@
   return WeakRetained;
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
   v4 = sub_1005FF7D0();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] One of the monitors' enablement geo config key changed; updating monitors and global state", &v5, 0xCu);
   }
 
@@ -42,16 +42,16 @@
   [(PedestrianARSessionStateManager *)self calculateState];
 }
 
-- (void)monitor:(id)a3 didChangeState:(BOOL)a4
+- (void)monitor:(id)monitor didChangeState:(BOOL)state
 {
-  v5 = a3;
+  monitorCopy = monitor;
   v6 = sub_1005FF7D0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = 134349314;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v8;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%{public}p] Monitor (%@) changed state; recalculating global state", &v9, 0x16u);
@@ -62,23 +62,23 @@
 
 - (id)allMonitors
 {
-  v2 = [(PedestrianARSessionStateManager *)self monitors];
-  v3 = [v2 copy];
+  monitors = [(PedestrianARSessionStateManager *)self monitors];
+  v3 = [monitors copy];
 
   return v3;
 }
 
 - (NSString)debugDescription
 {
-  v3 = [(PedestrianARSessionStateManager *)self allMonitors];
-  v4 = [v3 allObjects];
-  v5 = [v4 sortedArrayUsingComparator:&stru_101623C20];
+  allMonitors = [(PedestrianARSessionStateManager *)self allMonitors];
+  allObjects = [allMonitors allObjects];
+  v5 = [allObjects sortedArrayUsingComparator:&stru_101623C20];
 
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(PedestrianARSessionStateManager *)self shouldShowPedestrianAR];
+  shouldShowPedestrianAR = [(PedestrianARSessionStateManager *)self shouldShowPedestrianAR];
   v9 = @"NO";
-  if (v8)
+  if (shouldShowPedestrianAR)
   {
     v9 = @"YES";
   }
@@ -90,11 +90,11 @@
   return v12;
 }
 
-- (void)setShouldShowPedestrianAR:(BOOL)a3
+- (void)setShouldShowPedestrianAR:(BOOL)r
 {
-  if (self->_shouldShowPedestrianAR != a3)
+  if (self->_shouldShowPedestrianAR != r)
   {
-    self->_shouldShowPedestrianAR = a3;
+    self->_shouldShowPedestrianAR = r;
     v4 = sub_1005FF7D0();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -110,14 +110,14 @@
 
       v6 = v5;
       v8 = 134349314;
-      v9 = self;
+      selfCopy = self;
       v10 = 2112;
       v11 = v6;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Updating global state: %@", &v8, 0x16u);
     }
 
-    v7 = [(PedestrianARSessionStateManager *)self observers];
-    [v7 stateManager:self didChangeState:self->_shouldShowPedestrianAR];
+    observers = [(PedestrianARSessionStateManager *)self observers];
+    [observers stateManager:self didChangeState:self->_shouldShowPedestrianAR];
   }
 }
 
@@ -129,7 +129,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134349056;
-      v16 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Calculating state", buf, 0xCu);
     }
 
@@ -137,8 +137,8 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(PedestrianARSessionStateManager *)self monitors];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v19 count:16];
+    monitors = [(PedestrianARSessionStateManager *)self monitors];
+    v5 = [monitors countByEnumeratingWithState:&v11 objects:v19 count:16];
     if (v5)
     {
       v6 = v5;
@@ -149,7 +149,7 @@
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(monitors);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
@@ -159,7 +159,7 @@
             if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
             {
               *buf = 134349314;
-              v16 = self;
+              selfCopy2 = self;
               v17 = 2112;
               v18 = v9;
               _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}p] Monitor is requesting to disable the feature: %@", buf, 0x16u);
@@ -170,7 +170,7 @@
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v19 count:16];
+        v6 = [monitors countByEnumeratingWithState:&v11 objects:v19 count:16];
         if (v6)
         {
           continue;
@@ -190,7 +190,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v29 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Removing newly disabled monitors", buf, 0xCu);
   }
 
@@ -199,8 +199,8 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [(PedestrianARSessionStateManager *)self monitors];
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v33 count:16];
+  monitors = [(PedestrianARSessionStateManager *)self monitors];
+  v6 = [monitors countByEnumeratingWithState:&v24 objects:v33 count:16];
   if (v6)
   {
     v7 = v6;
@@ -211,7 +211,7 @@
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(monitors);
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
@@ -221,7 +221,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v24 objects:v33 count:16];
+      v7 = [monitors countByEnumeratingWithState:&v24 objects:v33 count:16];
     }
 
     while (v7);
@@ -251,17 +251,17 @@
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
           *buf = 134349314;
-          v29 = self;
+          selfCopy2 = self;
           v30 = 2112;
           v31 = v16;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[%{public}p] Removing newly disabled monitor: %@", buf, 0x16u);
         }
 
-        v18 = [(PedestrianARSessionStateManager *)self classMonitorMap];
-        [v18 removeObjectForKey:objc_opt_class()];
+        classMonitorMap = [(PedestrianARSessionStateManager *)self classMonitorMap];
+        [classMonitorMap removeObjectForKey:objc_opt_class()];
 
-        v19 = [(PedestrianARSessionStateManager *)self monitors];
-        [v19 removeObject:v16];
+        monitors2 = [(PedestrianARSessionStateManager *)self monitors];
+        [monitors2 removeObject:v16];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v20 objects:v32 count:16];
@@ -271,16 +271,16 @@
   }
 }
 
-- (BOOL)shouldCreateMonitor:(Class)a3
+- (BOOL)shouldCreateMonitor:(Class)monitor
 {
-  if (([(objc_class *)a3 isEnabled]& 1) == 0)
+  if (([(objc_class *)monitor isEnabled]& 1) == 0)
   {
     v7 = sub_1005FF7D0();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v9 = NSStringFromClass(a3);
+      v9 = NSStringFromClass(monitor);
       v14 = 134349314;
-      v15 = self;
+      selfCopy3 = self;
       v16 = 2112;
       v17 = v9;
       v10 = "[%{public}p] %@ is not enabled; should not create";
@@ -292,8 +292,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v5 = [(PedestrianARSessionStateManager *)self classMonitorMap];
-  v6 = [v5 objectForKey:a3];
+  classMonitorMap = [(PedestrianARSessionStateManager *)self classMonitorMap];
+  v6 = [classMonitorMap objectForKey:monitor];
 
   v7 = sub_1005FF7D0();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
@@ -301,9 +301,9 @@ LABEL_8:
   {
     if (v8)
     {
-      v9 = NSStringFromClass(a3);
+      v9 = NSStringFromClass(monitor);
       v14 = 134349314;
-      v15 = self;
+      selfCopy3 = self;
       v16 = 2112;
       v17 = v9;
       v10 = "[%{public}p] %@ already exists; should not create";
@@ -318,9 +318,9 @@ LABEL_7:
 
   if (v8)
   {
-    v13 = NSStringFromClass(a3);
+    v13 = NSStringFromClass(monitor);
     v14 = 134349314;
-    v15 = self;
+    selfCopy3 = self;
     v16 = 2112;
     v17 = v13;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[%{public}p] %@ should be created", &v14, 0x16u);
@@ -332,30 +332,30 @@ LABEL_9:
   return v11;
 }
 
-- (void)createMonitorIfNecessary:(Class)a3 configurationBlock:(id)a4
+- (void)createMonitorIfNecessary:(Class)necessary configurationBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(PedestrianARSessionStateManager *)self shouldCreateMonitor:a3];
+  blockCopy = block;
+  v7 = [(PedestrianARSessionStateManager *)self shouldCreateMonitor:necessary];
   v8 = sub_1005FF7D0();
   v9 = v8;
   if (v7)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v10 = NSStringFromClass(a3);
+      v10 = NSStringFromClass(necessary);
       v16 = 134349314;
-      v17 = self;
+      selfCopy3 = self;
       v18 = 2112;
       v19 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "[%{public}p] Creating monitor: %@", &v16, 0x16u);
     }
 
-    v9 = v6[2](v6);
-    v11 = [(PedestrianARSessionStateManager *)self monitors];
-    [v11 addObject:v9];
+    v9 = blockCopy[2](blockCopy);
+    monitors = [(PedestrianARSessionStateManager *)self monitors];
+    [monitors addObject:v9];
 
-    v12 = [(PedestrianARSessionStateManager *)self classMonitorMap];
-    [v12 setObject:v9 forKey:a3];
+    classMonitorMap = [(PedestrianARSessionStateManager *)self classMonitorMap];
+    [classMonitorMap setObject:v9 forKey:necessary];
 
     v13 = sub_1005FF7D0();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -364,7 +364,7 @@ LABEL_9:
     }
 
     v16 = 134349314;
-    v17 = self;
+    selfCopy3 = self;
     v18 = 2112;
     v19 = v9;
     v14 = "[%{public}p] Created monitor: %@";
@@ -378,9 +378,9 @@ LABEL_9:
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v13 = NSStringFromClass(a3);
+    v13 = NSStringFromClass(necessary);
     v16 = 134349314;
-    v17 = self;
+    selfCopy3 = self;
     v18 = 2112;
     v19 = v13;
     v14 = "[%{public}p] NOT creating monitor: %@";
@@ -397,7 +397,7 @@ LABEL_10:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v19 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Creating newly enabled monitors", buf, 0xCu);
   }
 
@@ -477,11 +477,11 @@ LABEL_10:
   v4 = sub_1005FF7D0();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [(PedestrianARSessionStateManager *)self monitors];
+    monitors = [(PedestrianARSessionStateManager *)self monitors];
     *buf = 134349314;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2112;
-    v21 = v5;
+    v21 = monitors;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%{public}p] Finished creating monitors: %@", buf, 0x16u);
   }
 }
@@ -512,43 +512,43 @@ LABEL_10:
   _GEOConfigAddDelegateListenerForKey();
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     v5 = sub_1005FF7D0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v7 = 134349314;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
-      v10 = v4;
+      v10 = observerCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Removing observer: %@", &v7, 0x16u);
     }
 
-    v6 = [(PedestrianARSessionStateManager *)self observers];
-    [v6 unregisterObserver:v4];
+    observers = [(PedestrianARSessionStateManager *)self observers];
+    [observers unregisterObserver:observerCopy];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     v5 = sub_1005FF7D0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v7 = 134349314;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
-      v10 = v4;
+      v10 = observerCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Adding observer: %@", &v7, 0x16u);
     }
 
-    v6 = [(PedestrianARSessionStateManager *)self observers];
-    [v6 registerObserver:v4];
+    observers = [(PedestrianARSessionStateManager *)self observers];
+    [observers registerObserver:observerCopy];
   }
 }
 
@@ -558,7 +558,7 @@ LABEL_10:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Deallocing", buf, 0xCu);
   }
 
@@ -568,10 +568,10 @@ LABEL_10:
   [(PedestrianARSessionStateManager *)&v4 dealloc];
 }
 
-- (PedestrianARSessionStateManager)initWithPlatformController:(id)a3
+- (PedestrianARSessionStateManager)initWithPlatformController:(id)controller
 {
-  v4 = a3;
-  if (!v4)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     v14 = sub_10006D178();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -613,7 +613,7 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    objc_storeWeak(&v5->_platformController, v4);
+    objc_storeWeak(&v5->_platformController, controllerCopy);
     v7 = [[GEOObserverHashTable alloc] initWithProtocol:&OBJC_PROTOCOL___PedestrianARSessionStateManagerDelegate queue:0];
     observers = v5->_observers;
     v5->_observers = v7;

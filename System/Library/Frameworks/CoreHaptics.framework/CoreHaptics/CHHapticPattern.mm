@@ -1,15 +1,15 @@
 @interface CHHapticPattern
-+ (id)addHapticsForWheelsOfTime:(id)a3;
-+ (id)patternForKey:(id)a3 error:(id *)a4;
-- (BOOL)doInitWithDictionary:(id)a3 error:(id *)a4;
++ (id)addHapticsForWheelsOfTime:(id)time;
++ (id)patternForKey:(id)key error:(id *)error;
+- (BOOL)doInitWithDictionary:(id)dictionary error:(id *)error;
 - (CHHapticPattern)initWithContentsOfURL:(NSURL *)ahapURL error:(NSError *)outError;
 - (CHHapticPattern)initWithDictionary:(NSDictionary *)patternDict error:(NSError *)outError;
 - (CHHapticPattern)initWithEvents:(NSArray *)events parameterCurves:(NSArray *)parameterCurves error:(NSError *)outError;
 - (CHHapticPattern)initWithEvents:(NSArray *)events parameters:(NSArray *)parameters error:(NSError *)outError;
 - (NSDictionary)exportDictionaryAndReturnError:(NSError *)outError;
 - (NSTimeInterval)duration;
-- (id)exportDictionaryWithConfigurationAndReturnError:(id *)a3;
-- (id)resolveExternalResources:(id)a3 error:(id *)a4;
+- (id)exportDictionaryWithConfigurationAndReturnError:(id *)error;
+- (id)resolveExternalResources:(id)resources error:(id *)error;
 @end
 
 @implementation CHHapticPattern
@@ -116,8 +116,8 @@
         v39 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v27 = [v24 controlPoints];
-        v28 = [v27 countByEnumeratingWithState:&v36 objects:v52 count:16];
+        controlPoints = [v24 controlPoints];
+        v28 = [controlPoints countByEnumeratingWithState:&v36 objects:v52 count:16];
         if (v28)
         {
           v29 = *v37;
@@ -127,7 +127,7 @@
             {
               if (*v37 != v29)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(controlPoints);
               }
 
               v31 = *(*(&v36 + 1) + 8 * m);
@@ -139,7 +139,7 @@
               }
             }
 
-            v28 = [v27 countByEnumeratingWithState:&v36 objects:v52 count:16];
+            v28 = [controlPoints countByEnumeratingWithState:&v36 objects:v52 count:16];
           }
 
           while (v28);
@@ -217,12 +217,12 @@
   return v8;
 }
 
-- (BOOL)doInitWithDictionary:(id)a3 error:(id *)a4
+- (BOOL)doInitWithDictionary:(id)dictionary error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v7 = objc_alloc_init(HapticDictionaryReader);
-  v8 = [(HapticDictionaryReader *)v7 readAndVerifyVersion:v6 error:a4];
+  v8 = [(HapticDictionaryReader *)v7 readAndVerifyVersion:dictionaryCopy error:error];
   version = self->_version;
   self->_version = v8;
 
@@ -241,7 +241,7 @@
       if (!v11)
       {
 LABEL_11:
-        v14 = [(HapticDictionaryReader *)v7 parseConfiguration:v6 error:a4];
+        v14 = [(HapticDictionaryReader *)v7 parseConfiguration:dictionaryCopy error:error];
         configurationDictionary = self->_configurationDictionary;
         self->_configurationDictionary = v14;
 
@@ -278,7 +278,7 @@ LABEL_12:
   *&buf[24] = __Block_byref_object_copy__2;
   *&buf[32] = __Block_byref_object_dispose__2;
   v24 = 0;
-  v16 = [(HapticDictionaryReader *)v7 scanForEmbeddedResources:v6];
+  v16 = [(HapticDictionaryReader *)v7 scanForEmbeddedResources:dictionaryCopy];
   embeddedResourceInfo = self->_embeddedResourceInfo;
   self->_embeddedResourceInfo = v16;
 
@@ -289,12 +289,12 @@ LABEL_12:
   v22[3] = &unk_2781C9528;
   v22[4] = self;
   v22[5] = buf;
-  [(HapticDictionaryReader *)v7 parseEventsAndParameters:v6 withBaseURL:ahapBaseURL reply:v22];
+  [(HapticDictionaryReader *)v7 parseEventsAndParameters:dictionaryCopy withBaseURL:ahapBaseURL reply:v22];
   v19 = *(*&buf[8] + 40);
   v12 = v19 == 0;
-  if (a4 && v19)
+  if (error && v19)
   {
-    *a4 = v19;
+    *error = v19;
   }
 
   _Block_object_dispose(buf, 8);
@@ -340,30 +340,30 @@ void __46__CHHapticPattern_doInitWithDictionary_error___block_invoke(uint64_t a1
   v7 = [(CHHapticPattern *)&v33 init];
   if (v7)
   {
-    v8 = [(NSURL *)v6 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [(NSURL *)v6 URLByDeletingLastPathComponent];
     ahapBaseURL = v7->_ahapBaseURL;
-    v7->_ahapBaseURL = v8;
+    v7->_ahapBaseURL = uRLByDeletingLastPathComponent;
 
     if ([(NSURL *)v6 isFileURL])
     {
-      v10 = [(NSURL *)v6 path];
-      v11 = [v10 pathExtension];
-      if ([v11 isEqualToString:@"json"])
+      path = [(NSURL *)v6 path];
+      pathExtension = [path pathExtension];
+      if ([pathExtension isEqualToString:@"json"])
       {
 
         goto LABEL_9;
       }
 
-      v14 = [(NSURL *)v6 path];
-      v15 = [v14 pathExtension];
-      v16 = [v15 isEqualToString:@"ahap"];
+      path2 = [(NSURL *)v6 path];
+      pathExtension2 = [path2 pathExtension];
+      v16 = [pathExtension2 isEqualToString:@"ahap"];
 
       if (v16)
       {
 LABEL_9:
         v17 = MEMORY[0x277CBEA90];
-        v18 = [(NSURL *)v6 path];
-        v19 = [v17 dataWithContentsOfFile:v18];
+        path3 = [(NSURL *)v6 path];
+        v19 = [v17 dataWithContentsOfFile:path3];
 
         v32 = 0;
         v20 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v19 options:0 error:&v32];
@@ -519,7 +519,7 @@ LABEL_30:
   return v5;
 }
 
-- (id)exportDictionaryWithConfigurationAndReturnError:(id *)a3
+- (id)exportDictionaryWithConfigurationAndReturnError:(id *)error
 {
   v4 = objc_alloc_init(HapticDictionaryWriter);
   v5 = [(HapticDictionaryWriter *)v4 patternToDictionary:self->_version events:self->_events parameters:self->_parameters parameterCurves:self->_parameterCurves embeddedResourceInfo:self->_embeddedResourceInfo configuration:self->_configurationDictionary];
@@ -527,21 +527,21 @@ LABEL_30:
   return v5;
 }
 
-- (id)resolveExternalResources:(id)a3 error:(id *)a4
+- (id)resolveExternalResources:(id)resources error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v36 = a3;
+  resourcesCopy = resources;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [v36 serverConfig];
-  v34 = [v6 supportsAudioPlayback];
+  serverConfig = [resourcesCopy serverConfig];
+  supportsAudioPlayback = [serverConfig supportsAudioPlayback];
 
   v7 = 0;
   *&v8 = 136315650;
   v33 = v8;
   while (1)
   {
-    v9 = [(CHHapticPattern *)self events];
-    v10 = v7 < [v9 count];
+    events = [(CHHapticPattern *)self events];
+    v10 = v7 < [events count];
 
     if (!v10)
     {
@@ -549,22 +549,22 @@ LABEL_30:
       goto LABEL_27;
     }
 
-    v11 = [(CHHapticPattern *)self events];
-    v12 = [v11 objectAtIndexedSubscript:v7];
+    events2 = [(CHHapticPattern *)self events];
+    v12 = [events2 objectAtIndexedSubscript:v7];
 
-    v13 = [v12 type];
-    if ([v13 isEqualToString:CHHapticEventTypeAudioResourceIndex])
+    type = [v12 type];
+    if ([type isEqualToString:CHHapticEventTypeAudioResourceIndex])
     {
       break;
     }
 
-    if ([v13 isEqualToString:CHHapticEventTypeAudioCustom])
+    if ([type isEqualToString:CHHapticEventTypeAudioCustom])
     {
-      v24 = [v36 doReferenceAudioResourceByID:{objc_msgSend(v12, "audioResID")}];
-      v25 = a4 ? v24 : 1;
+      v24 = [resourcesCopy doReferenceAudioResourceByID:{objc_msgSend(v12, "audioResID")}];
+      v25 = error ? v24 : 1;
       if ((v25 & 1) == 0)
       {
-        *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreHaptics" code:-4824 userInfo:0];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreHaptics" code:-4824 userInfo:0];
         goto LABEL_26;
       }
     }
@@ -575,7 +575,7 @@ LABEL_22:
     ++v7;
   }
 
-  if (!v34)
+  if (!supportsAudioPlayback)
   {
     if (kHAPIScope)
     {
@@ -585,10 +585,10 @@ LABEL_22:
 LABEL_20:
         v28 = [CHHapticEvent alloc];
         v29 = CHHapticEventTypeAudioContinuous;
-        v17 = [v12 eventParameters];
+        eventParameters = [v12 eventParameters];
         [v12 relativeTime];
-        v19 = [CHHapticEvent initWithEventType:v28 parameters:"initWithEventType:parameters:relativeTime:duration:" relativeTime:v29 duration:v17];
-        [v5 addObject:v19];
+        options = [CHHapticEvent initWithEventType:v28 parameters:"initWithEventType:parameters:relativeTime:duration:" relativeTime:v29 duration:eventParameters];
+        [v5 addObject:options];
         goto LABEL_21;
       }
     }
@@ -613,21 +613,21 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v14 = [v12 audioResID];
-  v15 = [(NSMutableArray *)self->_embeddedResourceInfo objectAtIndexedSubscript:v14];
+  audioResID = [v12 audioResID];
+  v15 = [(NSMutableArray *)self->_embeddedResourceInfo objectAtIndexedSubscript:audioResID];
   v16 = [v15 url];
-  v17 = FullURLPathFromURL(v16, self->_ahapBaseURL);
+  eventParameters = FullURLPathFromURL(v16, self->_ahapBaseURL);
 
-  v18 = [(NSMutableArray *)self->_embeddedResourceInfo objectAtIndexedSubscript:v14];
-  v19 = [v18 options];
+  v18 = [(NSMutableArray *)self->_embeddedResourceInfo objectAtIndexedSubscript:audioResID];
+  options = [v18 options];
 
-  v20 = [v36 doRegisterAudioResource:v17 options:v19 fromPattern:1 error:a4];
+  v20 = [resourcesCopy doRegisterAudioResource:eventParameters options:options fromPattern:1 error:error];
   if (v20)
   {
     v21 = [CHHapticEvent alloc];
-    v22 = [v12 eventParameters];
+    eventParameters2 = [v12 eventParameters];
     [v12 relativeTime];
-    v23 = [(CHHapticEvent *)v21 initWithAudioResourceID:v20 parameters:v22 relativeTime:?];
+    v23 = [(CHHapticEvent *)v21 initWithAudioResourceID:v20 parameters:eventParameters2 relativeTime:?];
     [v5 addObject:v23];
 
 LABEL_21:
@@ -643,17 +643,17 @@ LABEL_27:
   return v30;
 }
 
-+ (id)addHapticsForWheelsOfTime:(id)a3
++ (id)addHapticsForWheelsOfTime:(id)time
 {
   v61 = *MEMORY[0x277D85DE8];
   v56 = 0;
-  v38 = a3;
+  timeCopy = time;
   [CHHapticEvent parameterValuesFromLegacyEventType:26453 sharpness:&v56 + 4 fullness:&v56 error:0];
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = [v38 mutableCopy];
+  obj = [timeCopy mutableCopy];
   v4 = [obj countByEnumeratingWithState:&v52 objects:v60 count:16];
   if (v4)
   {
@@ -669,8 +669,8 @@ LABEL_27:
         }
 
         v6 = *(*(&v52 + 1) + 8 * i);
-        v7 = [v6 type];
-        v8 = [v7 isEqualToString:CHHapticEventTypeWheelsOfTime];
+        type = [v6 type];
+        v8 = [type isEqualToString:CHHapticEventTypeWheelsOfTime];
 
         if (v8)
         {
@@ -680,8 +680,8 @@ LABEL_27:
           v51 = 0u;
           v48 = 0u;
           v49 = 0u;
-          v11 = [v6 eventParameters];
-          v12 = [v11 countByEnumeratingWithState:&v48 objects:v59 count:16];
+          eventParameters = [v6 eventParameters];
+          v12 = [eventParameters countByEnumeratingWithState:&v48 objects:v59 count:16];
           v13 = -1.0;
           if (v12)
           {
@@ -692,12 +692,12 @@ LABEL_27:
               {
                 if (*v49 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(eventParameters);
                 }
 
                 v16 = *(*(&v48 + 1) + 8 * j);
-                v17 = [v16 parameterID];
-                v18 = [v17 isEqualToString:CHHapticEventParameterIDHapticIntensity];
+                parameterID = [v16 parameterID];
+                v18 = [parameterID isEqualToString:CHHapticEventParameterIDHapticIntensity];
 
                 if (v18)
                 {
@@ -707,7 +707,7 @@ LABEL_27:
                 }
               }
 
-              v12 = [v11 countByEnumeratingWithState:&v48 objects:v59 count:16];
+              v12 = [eventParameters countByEnumeratingWithState:&v48 objects:v59 count:16];
               if (v12)
               {
                 continue;
@@ -780,10 +780,10 @@ LABEL_17:
   return obj;
 }
 
-+ (id)patternForKey:(id)a3 error:(id *)a4
++ (id)patternForKey:(id)key error:(id *)error
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  keyCopy = key;
   if (kHAPIScope)
   {
     v7 = *kHAPIScope;
@@ -808,7 +808,7 @@ LABEL_17:
     v54 = 2080;
     v55 = "+[CHHapticPattern patternForKey:error:]";
     v56 = 2112;
-    v57 = v6;
+    v57 = keyCopy;
     _os_log_impl(&dword_21569A000, v7, OS_LOG_TYPE_INFO, "%25s:%-5d %s: Creating pattern for key '%@'", buf, 0x26u);
   }
 
@@ -856,7 +856,7 @@ LABEL_15:
 LABEL_26:
         v17 = v13;
         v18 = 0;
-        *a4 = v13;
+        *error = v13;
         goto LABEL_102;
       }
     }
@@ -944,7 +944,7 @@ LABEL_31:
     }
 
 LABEL_47:
-    v27 = [(__CFString *)v20 objectForKeyedSubscript:v6];
+    v27 = [(__CFString *)v20 objectForKeyedSubscript:keyCopy];
     if (v27)
     {
       if (kHAPIScope)
@@ -971,7 +971,7 @@ LABEL_47:
         v54 = 2080;
         v55 = "+[CHHapticPattern patternForKey:error:]";
         v56 = 2112;
-        v57 = v6;
+        v57 = keyCopy;
         v58 = 2112;
         v59 = v27;
         _os_log_impl(&dword_21569A000, v28, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: '%@' path: %@", buf, 0x30u);
@@ -1007,7 +1007,7 @@ LABEL_58:
           v54 = 2080;
           v55 = "+[CHHapticPattern patternForKey:error:]";
           v56 = 2112;
-          v57 = v6;
+          v57 = keyCopy;
           _os_log_impl(&dword_21569A000, v32, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: Read '%@' pattern data", buf, 0x26u);
         }
 
@@ -1023,8 +1023,8 @@ LABEL_80:
             if (!v39)
             {
 LABEL_97:
-              v18 = [[CHHapticPattern alloc] initWithDictionary:v38 error:a4];
-              objc_storeStrong(&v18->_patternID, a3);
+              v18 = [[CHHapticPattern alloc] initWithDictionary:v38 error:error];
+              objc_storeStrong(&v18->_patternID, key);
               goto LABEL_98;
             }
           }
@@ -1044,7 +1044,7 @@ LABEL_97:
             v54 = 2080;
             v55 = "+[CHHapticPattern patternForKey:error:]";
             v56 = 2112;
-            v57 = v6;
+            v57 = keyCopy;
             _os_log_impl(&dword_21569A000, v39, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: Serialized '%@' pattern dict", buf, 0x26u);
           }
 
@@ -1059,7 +1059,7 @@ LABEL_97:
 LABEL_92:
             v42 = v13;
             v18 = 0;
-            *a4 = v13;
+            *error = v13;
 LABEL_98:
 
             goto LABEL_99;
@@ -1096,7 +1096,7 @@ LABEL_98:
 LABEL_75:
           v36 = v13;
           v18 = 0;
-          *a4 = v13;
+          *error = v13;
 LABEL_99:
 
           goto LABEL_100;
@@ -1133,7 +1133,7 @@ LABEL_99:
 LABEL_70:
         [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreHaptics" code:-4851 userInfo:0];
         v13 = 0;
-        *a4 = v18 = 0;
+        *error = v18 = 0;
 LABEL_100:
 
         goto LABEL_101;
@@ -1155,7 +1155,7 @@ LABEL_100:
       v54 = 2080;
       v55 = "+[CHHapticPattern patternForKey:error:]";
       v56 = 2112;
-      v57 = v6;
+      v57 = keyCopy;
       _os_log_impl(&dword_21569A000, v29, OS_LOG_TYPE_ERROR, "%25s:%-5d %s: Haptic pattern with key '%@' not found", buf, 0x26u);
     }
 
@@ -1190,7 +1190,7 @@ LABEL_39:
 
   v25 = v13;
   v18 = 0;
-  *a4 = v13;
+  *error = v13;
 LABEL_101:
 
 LABEL_102:

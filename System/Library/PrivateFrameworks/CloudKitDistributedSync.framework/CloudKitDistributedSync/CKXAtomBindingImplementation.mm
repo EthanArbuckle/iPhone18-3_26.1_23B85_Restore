@@ -1,9 +1,9 @@
 @interface CKXAtomBindingImplementation
 - (CKXAtomBindingImplementation)init;
-- (Class)mutableProxyClassForStructToken:(unint64_t)a3;
-- (Class)proxyClassForStructToken:(unint64_t)a3;
+- (Class)mutableProxyClassForStructToken:(unint64_t)token;
+- (Class)proxyClassForStructToken:(unint64_t)token;
 - (id)orcHelpers;
-- (unint64_t)structTokenForClass:(Class)a3;
+- (unint64_t)structTokenForClass:(Class)class;
 @end
 
 @implementation CKXAtomBindingImplementation
@@ -23,56 +23,56 @@
   return v2;
 }
 
-- (unint64_t)structTokenForClass:(Class)a3
+- (unint64_t)structTokenForClass:(Class)class
 {
-  if (objc_opt_class() == a3 || objc_opt_class() == a3)
+  if (objc_opt_class() == class || objc_opt_class() == class)
   {
     return self->tokens.siteIdentifier;
   }
 
-  if (objc_opt_class() == a3 || objc_opt_class() == a3)
+  if (objc_opt_class() == class || objc_opt_class() == class)
   {
     return self->tokens.timestamp;
   }
 
-  if (objc_opt_class() == a3 || objc_opt_class() == a3)
+  if (objc_opt_class() == class || objc_opt_class() == class)
   {
     return self->tokens.location;
   }
 
-  if (objc_opt_class() == a3 || objc_opt_class() == a3)
+  if (objc_opt_class() == class || objc_opt_class() == class)
   {
     return self->tokens.reference;
   }
 
-  if (objc_opt_class() == a3 || objc_opt_class() == a3)
+  if (objc_opt_class() == class || objc_opt_class() == class)
   {
     return self->tokens.atom;
   }
 
-  if (objc_opt_class() == a3 || objc_opt_class() == a3)
+  if (objc_opt_class() == class || objc_opt_class() == class)
   {
     return self->tokens.topLevelContainer;
   }
 
   v12 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v6, v7, v8, v9, v10, v11);
-  v13 = NSStringFromClass(a3);
+  v13 = NSStringFromClass(class);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v14, a2, self, @"CKAtomSerialization.mm", 90, @"Unexpected class %@", v13);
 
   return -1;
 }
 
-- (Class)proxyClassForStructToken:(unint64_t)a3
+- (Class)proxyClassForStructToken:(unint64_t)token
 {
-  if (self->tokens.siteIdentifier == a3 || self->tokens.timestamp == a3 || self->tokens.location == a3 || self->tokens.reference == a3 || self->tokens.atom == a3 || self->tokens.topLevelContainer == a3)
+  if (self->tokens.siteIdentifier == token || self->tokens.timestamp == token || self->tokens.location == token || self->tokens.reference == token || self->tokens.atom == token || self->tokens.topLevelContainer == token)
   {
     v9 = objc_opt_class();
   }
 
   else
   {
-    v12 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3, v3, v4, v5, v6);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"CKAtomSerialization.mm", 108, @"Unexpected struct token %ld", a3);
+    v12 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, token, v3, v4, v5, v6);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"CKAtomSerialization.mm", 108, @"Unexpected struct token %ld", token);
 
     v9 = 0;
   }
@@ -80,17 +80,17 @@
   return v9;
 }
 
-- (Class)mutableProxyClassForStructToken:(unint64_t)a3
+- (Class)mutableProxyClassForStructToken:(unint64_t)token
 {
-  if (self->tokens.siteIdentifier == a3 || self->tokens.timestamp == a3 || self->tokens.location == a3 || self->tokens.reference == a3 || self->tokens.atom == a3 || self->tokens.topLevelContainer == a3)
+  if (self->tokens.siteIdentifier == token || self->tokens.timestamp == token || self->tokens.location == token || self->tokens.reference == token || self->tokens.atom == token || self->tokens.topLevelContainer == token)
   {
     v9 = objc_opt_class();
   }
 
   else
   {
-    v12 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3, v3, v4, v5, v6);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"CKAtomSerialization.mm", 126, @"Unexpected struct token %ld", a3);
+    v12 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, token, v3, v4, v5, v6);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"CKAtomSerialization.mm", 126, @"Unexpected struct token %ld", token);
 
     v9 = 0;
   }

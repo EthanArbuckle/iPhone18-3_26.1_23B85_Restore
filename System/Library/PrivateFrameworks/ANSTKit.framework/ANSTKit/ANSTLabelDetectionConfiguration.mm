@@ -1,15 +1,15 @@
 @interface ANSTLabelDetectionConfiguration
-- (ANSTLabelDetectionConfiguration)initWithVersion:(unint64_t)a3;
+- (ANSTLabelDetectionConfiguration)initWithVersion:(unint64_t)version;
 - (id)description;
 @end
 
 @implementation ANSTLabelDetectionConfiguration
 
-- (ANSTLabelDetectionConfiguration)initWithVersion:(unint64_t)a3
+- (ANSTLabelDetectionConfiguration)initWithVersion:(unint64_t)version
 {
   v4.receiver = self;
   v4.super_class = ANSTLabelDetectionConfiguration;
-  result = [(ANSTConfiguration *)&v4 initWithVersion:a3];
+  result = [(ANSTConfiguration *)&v4 initWithVersion:version];
   if (result)
   {
     result->_networkResolution = 0;

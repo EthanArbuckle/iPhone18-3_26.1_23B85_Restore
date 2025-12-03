@@ -1,7 +1,7 @@
 @interface HMExecuteRequest
-+ (id)executeRequestWithActionSet:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMExecuteRequest)initWithActionSet:(id)a3;
++ (id)executeRequestWithActionSet:(id)set;
+- (BOOL)isEqual:(id)equal;
+- (HMExecuteRequest)initWithActionSet:(id)set;
 - (unint64_t)hash;
 @end
 
@@ -9,16 +9,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMExecuteRequest *)self actionSet];
-  v3 = [v2 hash];
+  actionSet = [(HMExecuteRequest *)self actionSet];
+  v3 = [actionSet hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -28,7 +28,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -39,9 +39,9 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMExecuteRequest *)self actionSet];
-      v8 = [(HMExecuteRequest *)v6 actionSet];
-      v9 = [v7 isEqual:v8];
+      actionSet = [(HMExecuteRequest *)self actionSet];
+      actionSet2 = [(HMExecuteRequest *)v6 actionSet];
+      v9 = [actionSet isEqual:actionSet2];
     }
 
     else
@@ -53,25 +53,25 @@
   return v9;
 }
 
-- (HMExecuteRequest)initWithActionSet:(id)a3
+- (HMExecuteRequest)initWithActionSet:(id)set
 {
-  v5 = a3;
+  setCopy = set;
   v9.receiver = self;
   v9.super_class = HMExecuteRequest;
-  v6 = [(HMRequestBase *)&v9 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(HMRequestBase *)&v9 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(_init + 1, set);
   }
 
   return v7;
 }
 
-+ (id)executeRequestWithActionSet:(id)a3
++ (id)executeRequestWithActionSet:(id)set
 {
-  v3 = a3;
-  v4 = [[HMExecuteRequest alloc] initWithActionSet:v3];
+  setCopy = set;
+  v4 = [[HMExecuteRequest alloc] initWithActionSet:setCopy];
 
   return v4;
 }

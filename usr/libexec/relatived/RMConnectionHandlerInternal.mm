@@ -1,19 +1,19 @@
 @interface RMConnectionHandlerInternal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation RMConnectionHandlerInternal
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     msgHandler = self->_msgHandler;
-    if (v4)
+    if (equalCopy)
     {
-      v6 = *(v4 + 1);
+      v6 = *(equalCopy + 1);
       if (msgHandler != v6)
       {
 LABEL_4:
@@ -23,7 +23,7 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      v8 = *(v4 + 2);
+      v8 = *(equalCopy + 2);
     }
 
     else

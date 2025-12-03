@@ -1,12 +1,12 @@
 @interface BodyWriter
-- (void)sendBodyDataWithContext:(id)a3;
+- (void)sendBodyDataWithContext:(id)context;
 @end
 
 @implementation BodyWriter
 
-- (void)sendBodyDataWithContext:(id)a3
+- (void)sendBodyDataWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -16,12 +16,12 @@
   v12[2] = __38__BodyWriter_sendBodyDataWithContext___block_invoke;
   v12[3] = &unk_279969650;
   v12[4] = self;
-  v5 = v4;
+  v5 = contextCopy;
   v13 = v5;
   v14 = &v15;
   v6 = MEMORY[0x25F873620](v12);
-  v7 = [(BodyWriter *)self postData];
-  size = dispatch_data_get_size(v7);
+  postData = [(BodyWriter *)self postData];
+  size = dispatch_data_get_size(postData);
   if ([(BodyWriter *)self bytesLeftToPost]>= size)
   {
     v11 = *(v16 + 24);
@@ -29,15 +29,15 @@
 
   else
   {
-    v9 = [(BodyWriter *)self postData];
-    subrange = dispatch_data_create_subrange(v9, 0, [(BodyWriter *)self bytesLeftToPost]);
+    postData2 = [(BodyWriter *)self postData];
+    subrange = dispatch_data_create_subrange(postData2, 0, [(BodyWriter *)self bytesLeftToPost]);
 
     v11 = 1;
     *(v16 + 24) = 1;
-    v7 = subrange;
+    postData = subrange;
   }
 
-  (v6)[2](v6, v7, v11 & 1);
+  (v6)[2](v6, postData, v11 & 1);
 
   _Block_object_dispose(&v15, 8);
 }

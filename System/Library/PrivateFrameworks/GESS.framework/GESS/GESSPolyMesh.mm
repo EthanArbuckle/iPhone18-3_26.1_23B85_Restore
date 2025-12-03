@@ -1,13 +1,13 @@
 @interface GESSPolyMesh
-- (BOOL)cloneFrom:(id)a3;
-- (BOOL)getFaceData:(id)a3;
-- (BOOL)getFaceGroupIDData:(id)a3;
-- (BOOL)getFaceVertexNormalIndexData:(id)a3;
-- (BOOL)getFaceVertexUVIndexData:(id)a3;
-- (BOOL)getPositionData:(id)a3;
-- (BOOL)getUVData:(id)a3;
-- (BOOL)getVertexColorData:(id)a3;
-- (BOOL)getVertexNormalData:(id)a3;
+- (BOOL)cloneFrom:(id)from;
+- (BOOL)getFaceData:(id)data;
+- (BOOL)getFaceGroupIDData:(id)data;
+- (BOOL)getFaceVertexNormalIndexData:(id)data;
+- (BOOL)getFaceVertexUVIndexData:(id)data;
+- (BOOL)getPositionData:(id)data;
+- (BOOL)getUVData:(id)data;
+- (BOOL)getVertexColorData:(id)data;
+- (BOOL)getVertexNormalData:(id)data;
 - (BOOL)typeValid;
 - (BOOL)valid;
 - (GESSPolyMesh)init;
@@ -17,8 +17,8 @@
 - (unsigned)uvSize;
 - (unsigned)vertexNormalSize;
 - (unsigned)vertexSize;
-- (void)setMaterialImpl:(const void *)a3;
-- (void)setMeshImpl:(const void *)a3;
+- (void)setMaterialImpl:(const void *)impl;
+- (void)setMeshImpl:(const void *)impl;
 @end
 
 @implementation GESSPolyMesh
@@ -37,10 +37,10 @@
   return v5;
 }
 
-- (void)setMeshImpl:(const void *)a3
+- (void)setMeshImpl:(const void *)impl
 {
-  v4 = *a3;
-  v3 = *(a3 + 1);
+  v4 = *impl;
+  v3 = *(impl + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -55,10 +55,10 @@
   }
 }
 
-- (void)setMaterialImpl:(const void *)a3
+- (void)setMaterialImpl:(const void *)impl
 {
-  v4 = *a3;
-  v3 = *(a3 + 1);
+  v4 = *impl;
+  v3 = *(impl + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -263,12 +263,12 @@
   return result;
 }
 
-- (BOOL)getPositionData:(id)a3
+- (BOOL)getPositionData:(id)data
 {
-  v4 = a3;
-  if ((objc_msgSend_valid(self, v5, v6, v7) & 1) != 0 && (objc_msgSend_meshType(self, v8, v9, v10) == 1 || objc_msgSend_meshType(self, v11, v12, v13) == 11) && (v14 = objc_msgSend_vertexSize(self, v11, v12, v13), objc_msgSend_length(v4, v15, v16, v17) == 12 * v14))
+  dataCopy = data;
+  if ((objc_msgSend_valid(self, v5, v6, v7) & 1) != 0 && (objc_msgSend_meshType(self, v8, v9, v10) == 1 || objc_msgSend_meshType(self, v11, v12, v13) == 11) && (v14 = objc_msgSend_vertexSize(self, v11, v12, v13), objc_msgSend_length(dataCopy, v15, v16, v17) == 12 * v14))
   {
-    v18 = v4;
+    v18 = dataCopy;
     v22 = objc_msgSend_bytes(v18, v19, v20, v21);
     v26 = objc_msgSend_meshImpl(self, v23, v24, v25);
     v27 = (*(v26 + 8) + 16 * *(v26 + 176));
@@ -308,15 +308,15 @@
   return v33;
 }
 
-- (BOOL)getFaceData:(id)a3
+- (BOOL)getFaceData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ((objc_msgSend_valid(self, v5, v6, v7) & 1) != 0 && objc_msgSend_meshType(self, v8, v9, v10) == 1)
   {
     v14 = objc_msgSend_faceSize(self, v11, v12, v13);
-    if (objc_msgSend_length(v4, v15, v16, v17) == 4 * (3 * v14))
+    if (objc_msgSend_length(dataCopy, v15, v16, v17) == 4 * (3 * v14))
     {
-      v18 = v4;
+      v18 = dataCopy;
       v22 = objc_msgSend_bytes(v18, v19, v20, v21);
       sub_24BCB2008(__p, 3uLL);
       if (v14)
@@ -362,9 +362,9 @@ LABEL_9:
   return v30;
 }
 
-- (BOOL)getUVData:(id)a3
+- (BOOL)getUVData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ((objc_msgSend_valid(self, v5, v6, v7) & 1) == 0 || objc_msgSend_meshType(self, v8, v9, v10) != 1 && objc_msgSend_meshType(self, v11, v12, v13) != 11)
   {
     goto LABEL_16;
@@ -394,9 +394,9 @@ LABEL_9:
   }
 
   v19 = (*(*v18 + 16))(v18);
-  if (objc_msgSend_length(v4, v20, v21, v22) == 8 * (v19 & 0x7FFFFFFF))
+  if (objc_msgSend_length(dataCopy, v20, v21, v22) == 8 * (v19 & 0x7FFFFFFF))
   {
-    v23 = v4;
+    v23 = dataCopy;
     v27 = objc_msgSend_bytes(v23, v24, v25, v26);
     v28 = v19;
     if (v19)
@@ -436,9 +436,9 @@ LABEL_16:
   return v36;
 }
 
-- (BOOL)getFaceVertexUVIndexData:(id)a3
+- (BOOL)getFaceVertexUVIndexData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ((objc_msgSend_valid(self, v5, v6, v7) & 1) == 0)
   {
     goto LABEL_30;
@@ -468,7 +468,7 @@ LABEL_16:
       }
 
       v44 = objc_msgSend_faceSize(self, v40, v41, v42);
-      v45 = v4;
+      v45 = dataCopy;
       v49 = objc_msgSend_bytes(v45, v46, v47, v48);
       if (v44)
       {
@@ -515,7 +515,7 @@ LABEL_16:
         v66 = 0;
       }
 
-      if (objc_msgSend_length(v4, v50, v51, v52) == v66)
+      if (objc_msgSend_length(dataCopy, v50, v51, v52) == v66)
       {
         goto LABEL_29;
       }
@@ -542,12 +542,12 @@ LABEL_30:
   }
 
   v19 = objc_msgSend_faceSize(self, v15, v16, v17);
-  if (objc_msgSend_length(v4, v20, v21, v22) != 12 * v19)
+  if (objc_msgSend_length(dataCopy, v20, v21, v22) != 12 * v19)
   {
     goto LABEL_30;
   }
 
-  v23 = v4;
+  v23 = dataCopy;
   v27 = objc_msgSend_bytes(v23, v24, v25, v26);
   if (v19)
   {
@@ -582,16 +582,16 @@ LABEL_31:
   return v67;
 }
 
-- (BOOL)getVertexNormalData:(id)a3
+- (BOOL)getVertexNormalData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ((objc_msgSend_valid(self, v5, v6, v7) & 1) == 0 || objc_msgSend_meshType(self, v8, v9, v10) != 1 && objc_msgSend_meshType(self, v11, v12, v13) != 11)
   {
     goto LABEL_51;
   }
 
   v14 = objc_msgSend_meshImpl(self, v11, v12, v13);
-  v15 = v4;
+  v15 = dataCopy;
   v19 = objc_msgSend_bytes(v15, v16, v17, v18);
   v86 = 0;
   sub_24BD3B790(v14, &v86);
@@ -616,7 +616,7 @@ LABEL_31:
     }
 
     v61 = (*(*v60 + 16))(v60);
-    if (objc_msgSend_length(v4, v62, v63, v64) != 12 * v61)
+    if (objc_msgSend_length(dataCopy, v62, v63, v64) != 12 * v61)
     {
       goto LABEL_51;
     }
@@ -624,7 +624,7 @@ LABEL_31:
     v65 = v61;
     if (v61)
     {
-      v83 = v4;
+      v83 = dataCopy;
       v66 = 0;
       v67 = 0;
       v68 = 0;
@@ -687,7 +687,7 @@ LABEL_31:
   if (v86 == 2)
   {
     v40 = *(v14 + 160) - *(v14 + 152);
-    if (objc_msgSend_length(v4, v20, v21, v22) != 12 * (v40 >> 2))
+    if (objc_msgSend_length(dataCopy, v20, v21, v22) != 12 * (v40 >> 2))
     {
 LABEL_51:
       v81 = 0;
@@ -705,7 +705,7 @@ LABEL_51:
 
     if ((v40 & 0x3FFFFFFFCLL) != 0)
     {
-      v83 = v4;
+      v83 = dataCopy;
       v42 = 0;
       v43 = 0;
       v44 = 0;
@@ -774,7 +774,7 @@ LABEL_53:
   }
 
   v23 = *(v14 + 112) - *(v14 + 104);
-  if (objc_msgSend_length(v4, v20, v21, v22) != 12 * (v23 >> 2))
+  if (objc_msgSend_length(dataCopy, v20, v21, v22) != 12 * (v23 >> 2))
   {
     goto LABEL_51;
   }
@@ -793,7 +793,7 @@ LABEL_53:
     goto LABEL_53;
   }
 
-  v83 = v4;
+  v83 = dataCopy;
   v25 = 0;
   v26 = 0;
   v27 = 0;
@@ -850,15 +850,15 @@ LABEL_53:
   while (v28);
 LABEL_50:
   v81 = 1;
-  v4 = v83;
+  dataCopy = v83;
 LABEL_52:
 
   return v81;
 }
 
-- (BOOL)getFaceVertexNormalIndexData:(id)a3
+- (BOOL)getFaceVertexNormalIndexData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ((objc_msgSend_valid(self, v5, v6, v7) & 1) == 0)
   {
     goto LABEL_22;
@@ -874,7 +874,7 @@ LABEL_52:
     v30 = objc_msgSend_meshImpl(self, v27, v28, v29);
     v32 = *(v30 + 152);
     v31 = *(v30 + 160);
-    v33 = v4;
+    v33 = dataCopy;
     v37 = objc_msgSend_bytes(v33, v34, v35, v36);
     LODWORD(v92) = 0;
     sub_24BD3B790(v30, &v92);
@@ -1024,21 +1024,21 @@ LABEL_43:
 
     v45 = 0;
 LABEL_61:
-    v52 = objc_msgSend_length(v4, v38, v39, v40) == 4 * v45;
+    v52 = objc_msgSend_length(dataCopy, v38, v39, v40) == 4 * v45;
     goto LABEL_23;
   }
 
   v14 = objc_msgSend_meshImpl(self, v11, v12, v13);
   v18 = *(v14 + 160) - *(v14 + 152);
   v19 = v18 >> 2;
-  if (objc_msgSend_length(v4, v15, v16, v17) != 12 * (v18 >> 2))
+  if (objc_msgSend_length(dataCopy, v15, v16, v17) != 12 * (v18 >> 2))
   {
 LABEL_22:
     v52 = 0;
     goto LABEL_23;
   }
 
-  v20 = v4;
+  v20 = dataCopy;
   v24 = objc_msgSend_bytes(v20, v21, v22, v23);
   v91 = 0;
   sub_24BD3B790(v14, &v91);
@@ -1120,7 +1120,7 @@ LABEL_64:
     goto LABEL_64;
   }
 
-  v87 = v4;
+  v87 = dataCopy;
   v55 = 0;
   v56 = 0;
   do
@@ -1172,15 +1172,15 @@ LABEL_64:
 
   while (3 * (v18 >> 2) != v55);
   v52 = 1;
-  v4 = v87;
+  dataCopy = v87;
 LABEL_23:
 
   return v52;
 }
 
-- (BOOL)getVertexColorData:(id)a3
+- (BOOL)getVertexColorData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ((objc_msgSend_valid(self, v5, v6, v7) & 1) == 0 || objc_msgSend_meshType(self, v8, v9, v10) != 1)
   {
     goto LABEL_13;
@@ -1196,9 +1196,9 @@ LABEL_23:
     operator delete(__p[0]);
   }
 
-  if (v18 != -1 && (v19 = objc_msgSend_vertexSize(self, v15, v16, v17), objc_msgSend_length(v4, v20, v21, v22) == 12 * v19))
+  if (v18 != -1 && (v19 = objc_msgSend_vertexSize(self, v15, v16, v17), objc_msgSend_length(dataCopy, v20, v21, v22) == 12 * v19))
   {
-    v23 = v4;
+    v23 = dataCopy;
     v27 = objc_msgSend_bytes(v23, v24, v25, v26);
     if (v19)
     {
@@ -1240,21 +1240,21 @@ LABEL_13:
   return v36;
 }
 
-- (BOOL)getFaceGroupIDData:(id)a3
+- (BOOL)getFaceGroupIDData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ((objc_msgSend_valid(self, v5, v6, v7) & 1) == 0 || objc_msgSend_meshType(self, v8, v9, v10) != 1 && objc_msgSend_meshType(self, v11, v12, v13) != 11)
   {
     goto LABEL_14;
   }
 
   v14 = objc_msgSend_faceSize(self, v11, v12, v13);
-  if (objc_msgSend_length(v4, v15, v16, v17) != 2 * v14)
+  if (objc_msgSend_length(dataCopy, v15, v16, v17) != 2 * v14)
   {
     goto LABEL_14;
   }
 
-  v18 = v4;
+  v18 = dataCopy;
   v22 = objc_msgSend_bytes(v18, v19, v20, v21);
   v26 = objc_msgSend_meshImpl(self, v23, v24, v25);
   sub_24BC836D4(__p, off_27F078FC8[0]);
@@ -1302,13 +1302,13 @@ LABEL_14:
   return v37;
 }
 
-- (BOOL)cloneFrom:(id)a3
+- (BOOL)cloneFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (self != v4)
+  fromCopy = from;
+  v8 = fromCopy;
+  if (self != fromCopy)
   {
-    if (objc_msgSend_valid(v4, v5, v6, v7))
+    if (objc_msgSend_valid(fromCopy, v5, v6, v7))
     {
       v12 = objc_msgSend_meshType(self, v9, v10, v11);
       if (v12 == objc_msgSend_meshType(v8, v13, v14, v15))

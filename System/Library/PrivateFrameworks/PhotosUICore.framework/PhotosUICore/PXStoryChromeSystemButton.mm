@@ -1,11 +1,11 @@
 @interface PXStoryChromeSystemButton
 - (CGRect)clippingRect;
 - (NSCopying)userData;
-- (_TtC12PhotosUICore25PXStoryChromeSystemButton)initWithCoder:(id)a3;
-- (_TtC12PhotosUICore25PXStoryChromeSystemButton)initWithFrame:(CGRect)a3;
+- (_TtC12PhotosUICore25PXStoryChromeSystemButton)initWithCoder:(id)coder;
+- (_TtC12PhotosUICore25PXStoryChromeSystemButton)initWithFrame:(CGRect)frame;
 - (void)prepareForReuse;
-- (void)setClippingRect:(CGRect)a3;
-- (void)setUserData:(id)a3;
+- (void)setClippingRect:(CGRect)rect;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXStoryChromeSystemButton
@@ -18,14 +18,14 @@
   return v2;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
   v5 = OBJC_IVAR____TtC12PhotosUICore25PXStoryChromeSystemButton_userData;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.isa + v5) = data;
   swift_unknownObjectRetain_n();
-  v7 = self;
+  selfCopy = self;
   sub_1A441A57C(v6);
   swift_unknownObjectRelease();
 
@@ -47,12 +47,12 @@
   return result;
 }
 
-- (void)setClippingRect:(CGRect)a3
+- (void)setClippingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = (self + OBJC_IVAR____TtC12PhotosUICore25PXStoryChromeSystemButton_clippingRect);
   swift_beginAccess();
   *v7 = x;
@@ -64,16 +64,16 @@
 - (void)prepareForReuse
 {
   v2 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.super.super.isa) + 0x68);
-  v3 = self;
+  selfCopy = self;
   v2(0);
 }
 
-- (_TtC12PhotosUICore25PXStoryChromeSystemButton)initWithFrame:(CGRect)a3
+- (_TtC12PhotosUICore25PXStoryChromeSystemButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore25PXStoryChromeSystemButton_userData) = 0;
   v8 = (self + OBJC_IVAR____TtC12PhotosUICore25PXStoryChromeSystemButton_clippingRect);
   v9 = type metadata accessor for PXStoryChromeSystemButton();
@@ -84,7 +84,7 @@
   return [(PXStoryChromeSystemButton *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC12PhotosUICore25PXStoryChromeSystemButton)initWithCoder:(id)a3
+- (_TtC12PhotosUICore25PXStoryChromeSystemButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore25PXStoryChromeSystemButton_userData) = 0;
   v4 = (self + OBJC_IVAR____TtC12PhotosUICore25PXStoryChromeSystemButton_clippingRect);
@@ -92,8 +92,8 @@
   v4[1] = 0u;
   v8.receiver = self;
   v8.super_class = type metadata accessor for PXStoryChromeSystemButton();
-  v5 = a3;
-  v6 = [(PXStoryChromeSystemButton *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(PXStoryChromeSystemButton *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

@@ -1,7 +1,7 @@
 @interface TIDPReporterMock
-- (BOOL)record:(id)a3;
-- (BOOL)recordNumbersVectors:(id)a3 metadata:(id)a4;
-- (BOOL)recordTokenFrequency:(id)a3 withLocale:(id)a4 withTokenType:(id)a5;
+- (BOOL)record:(id)record;
+- (BOOL)recordNumbersVectors:(id)vectors metadata:(id)metadata;
+- (BOOL)recordTokenFrequency:(id)frequency withLocale:(id)locale withTokenType:(id)type;
 - (NSArray)recordsWritten;
 - (TIDPReporterMock)init;
 @end
@@ -15,25 +15,25 @@
   return v2;
 }
 
-- (BOOL)recordTokenFrequency:(id)a3 withLocale:(id)a4 withTokenType:(id)a5
+- (BOOL)recordTokenFrequency:(id)frequency withLocale:(id)locale withTokenType:(id)type
 {
   v6 = MEMORY[0x277CBEA60];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithObjects:{v7, 0}];
+  frequencyCopy = frequency;
+  v8 = [[v6 alloc] initWithObjects:{frequencyCopy, 0}];
 
   [(TIDPReporterMock *)self record:v8];
   return 1;
 }
 
-- (BOOL)recordNumbersVectors:(id)a3 metadata:(id)a4
+- (BOOL)recordNumbersVectors:(id)vectors metadata:(id)metadata
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  vectorsCopy = vectors;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [vectorsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -45,14 +45,14 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(vectorsCopy);
         }
 
         [(TIDPReporterMock *)self record:*(*(&v12 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [vectorsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -62,15 +62,15 @@
   return 1;
 }
 
-- (BOOL)record:(id)a3
+- (BOOL)record:(id)record
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [recordCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -82,14 +82,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(recordCopy);
         }
 
         [(NSMutableArray *)self->_recordsWritten addObject:*(*(&v11 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [recordCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);

@@ -1,8 +1,8 @@
 @interface StickerCollectionViewCell
 - (NSString)accessibilityIdentifier;
 - (NSString)accessibilityLabel;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)handleLongPress;
 - (void)handleTap;
 - (void)prepareForReuse;
@@ -20,7 +20,7 @@
   }
 
   v4 = qword_1ED8B2A98;
-  v6 = self;
+  selfCopy = self;
   if (v4 != -1)
   {
     result = swift_once();
@@ -72,38 +72,38 @@ LABEL_5:
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A6EC86C();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_19A6ECB58(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_19A6ECB58(event, x, y);
 
   return v10;
 }
 
 - (void)handleTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A6ED20C();
 }
 
 - (void)handleLongPress
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A6ED38C();
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  selfCopy = self;
   v10 = sub_19A6F060C();
 
   return v10;

@@ -3,39 +3,39 @@
 - (BOOL)_useCompactMode;
 - (BOOL)controllerNeedsToRun;
 - (DeviceRestoreChoiceController)init;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (void)_invalidatePendingProximityFinishSetupRequest;
 - (void)_migrateFromiOSSelected;
 - (void)_populateRestoreChoices;
 - (void)connectionTerminated;
-- (void)didSelectChoice:(id)a3;
-- (void)flowItemDidAppear:(BOOL)a3;
-- (void)proximitySetupCompleted:(id)a3;
-- (void)selectChoiceForIdentifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)didSelectChoice:(id)choice;
+- (void)flowItemDidAppear:(BOOL)appear;
+- (void)proximitySetupCompleted:(id)completed;
+- (void)selectChoiceForIdentifier:(id)identifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DeviceRestoreChoiceController
 
 - (DeviceRestoreChoiceController)init
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = @"iphone.on.rectangle.portrait.dashed";
   v2 = +[UIDevice currentDevice];
-  v3 = [(UIDevice *)v2 userInterfaceIdiom];
+  userInterfaceIdiom = [(UIDevice *)v2 userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     objc_storeStrong(location, @"apps.ipad.on.rectangle.portrait.dashed");
   }
@@ -44,16 +44,16 @@
   v5 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"DEVICE_RESTORE_APPS_DATA"];
   v31 = [(NSBundle *)v4 localizedStringForKey:v5 value:&stru_10032F900 table:@"Localizable"];
 
-  v6 = v33;
+  v6 = selfCopy;
   v7 = +[NSBundle mainBundle];
   v8 = [(NSBundle *)v7 localizedStringForKey:@"DEVICE_RESTORE_DETAIL" value:&stru_10032F900 table:@"Localizable"];
-  v33 = 0;
+  selfCopy = 0;
   v30.receiver = v6;
   v30.super_class = DeviceRestoreChoiceController;
-  v33 = [(DeviceRestoreChoiceController *)&v30 initWithTitle:v31 detailText:v8 symbolName:location[0] adoptTableViewScrollView:1];
-  objc_storeStrong(&v33, v33);
+  selfCopy = [(DeviceRestoreChoiceController *)&v30 initWithTitle:v31 detailText:v8 symbolName:location[0] adoptTableViewScrollView:1];
+  objc_storeStrong(&selfCopy, selfCopy);
 
-  if (v33)
+  if (selfCopy)
   {
     v9 = [BuddyTableChoiceManager alloc];
     v24 = _NSConcreteStackBlock;
@@ -61,53 +61,53 @@
     v26 = 0;
     v27 = sub_100111A70;
     v28 = &unk_10032D060;
-    v29 = v33;
+    v29 = selfCopy;
     v10 = [(BuddyTableChoiceManager *)v9 initWithCellConstructor:&v24 allowManualRowHeight:1];
-    v11 = *(v33 + 19);
-    *(v33 + 19) = v10;
+    v11 = *(selfCopy + 19);
+    *(selfCopy + 19) = v10;
 
-    [*(v33 + 19) setChooseableDelegate:?];
+    [*(selfCopy + 19) setChooseableDelegate:?];
     v12 = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    v13 = *(v33 + 21);
-    *(v33 + 21) = v12;
+    v13 = *(selfCopy + 21);
+    *(selfCopy + 21) = v12;
 
-    v14 = [*(v33 + 19) tableViewDelegate];
-    [*(v33 + 21) setDelegate:v14];
+    tableViewDelegate = [*(selfCopy + 19) tableViewDelegate];
+    [*(selfCopy + 21) setDelegate:tableViewDelegate];
 
-    v15 = [*(v33 + 19) tableViewDataSource];
-    [*(v33 + 21) setDataSource:v15];
+    tableViewDataSource = [*(selfCopy + 19) tableViewDataSource];
+    [*(selfCopy + 21) setDataSource:tableViewDataSource];
 
-    [*(v33 + 21) setEstimatedRowHeight:0.0];
+    [*(selfCopy + 21) setEstimatedRowHeight:0.0];
     v23 = sub_100111EBC();
-    [*(v33 + 21) setDirectionalLayoutMargins:{v23, v16, v17, v18, *&v23, *&v16, *&v17, *&v18}];
+    [*(selfCopy + 21) setDirectionalLayoutMargins:{v23, v16, v17, v18, *&v23, *&v16, *&v17, *&v18}];
     v19 = +[NSMutableDictionary dictionary];
-    v20 = *(v33 + 22);
-    *(v33 + 22) = v19;
+    v20 = *(selfCopy + 22);
+    *(selfCopy + 22) = v19;
 
     objc_storeStrong(&v29, 0);
   }
 
-  v21 = v33;
+  v21 = selfCopy;
   objc_storeStrong(&v31, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v33, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v21;
 }
 
 - (BOOL)controllerNeedsToRun
 {
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
-  v2 = [(DeviceRestoreChoiceController *)self suspendTask];
-  [(BuddySuspendTask *)v2 preheat];
+  suspendTask = [(DeviceRestoreChoiceController *)self suspendTask];
+  [(BuddySuspendTask *)suspendTask preheat];
 
-  v3 = [(DeviceRestoreChoiceController *)v24 buddyPreferencesExcludedFromBackup];
-  v4 = [(DeviceRestoreChoiceController *)v24 runState];
-  v5 = [BuddyMigrationStateProvider validateAndResolveMigrationStateUsingPreferences:v3 didCompleteInitialRun:[(BYRunState *)v4 hasCompletedInitialRun]& 1];
-  LOBYTE(v2) = v5 != 0;
+  buddyPreferencesExcludedFromBackup = [(DeviceRestoreChoiceController *)selfCopy buddyPreferencesExcludedFromBackup];
+  runState = [(DeviceRestoreChoiceController *)selfCopy runState];
+  v5 = [BuddyMigrationStateProvider validateAndResolveMigrationStateUsingPreferences:buddyPreferencesExcludedFromBackup didCompleteInitialRun:[(BYRunState *)runState hasCompletedInitialRun]& 1];
+  LOBYTE(suspendTask) = v5 != 0;
 
-  v22 = v2 & 1;
-  if (v2)
+  v22 = suspendTask & 1;
+  if (suspendTask)
   {
     oslog = _BYLoggingFacility();
     v20 = OS_LOG_TYPE_DEFAULT;
@@ -125,13 +125,13 @@
 
   else
   {
-    v8 = [(DeviceRestoreChoiceController *)v24 buddyPreferences];
-    v9 = [(BYPreferencesController *)v8 BOOLForKey:@"RestoreChoice"];
+    buddyPreferences = [(DeviceRestoreChoiceController *)selfCopy buddyPreferences];
+    v9 = [(BYPreferencesController *)buddyPreferences BOOLForKey:@"RestoreChoice"];
 
     v18 = v9 & 1;
     v17 = BYSetupAssistantHasCompletedInitialRun() & 1;
-    v10 = [(DeviceRestoreChoiceController *)v24 buddyPreferences];
-    v11 = [(BYPreferencesController *)v10 BOOLForKey:BYBuddyDoneKey];
+    buddyPreferences2 = [(DeviceRestoreChoiceController *)selfCopy buddyPreferences];
+    v11 = [(BYPreferencesController *)buddyPreferences2 BOOLForKey:BYBuddyDoneKey];
 
     v16 = v11 & 1;
     v12 = 0;
@@ -159,15 +159,15 @@
 
 - (void)_populateRestoreChoices
 {
-  v109 = self;
+  selfCopy = self;
   v108 = a2;
-  v2 = [(DeviceRestoreChoiceController *)self flowItemDispositionProvider];
-  v3 = ([(BuddyFlowItemDispositionProvider *)v2 dispositions]>> 4) & 1;
+  flowItemDispositionProvider = [(DeviceRestoreChoiceController *)self flowItemDispositionProvider];
+  v3 = ([(BuddyFlowItemDispositionProvider *)flowItemDispositionProvider dispositions]>> 4) & 1;
 
   v107 = v3 & 1;
   v106 = +[NSMutableArray array];
-  v4 = [(DeviceRestoreChoiceController *)v109 managedConfiguration];
-  LOBYTE(v3) = [(MCProfileConnection *)v4 effectiveBoolValueForSetting:MCFeatureAccountModificationAllowed]!= 2;
+  managedConfiguration = [(DeviceRestoreChoiceController *)selfCopy managedConfiguration];
+  LOBYTE(v3) = [(MCProfileConnection *)managedConfiguration effectiveBoolValueForSetting:MCFeatureAccountModificationAllowed]!= 2;
 
   v105 = v3 & 1;
   if (v3)
@@ -176,19 +176,19 @@
     v6 = +[NSBundle mainBundle];
     v7 = [(NSBundle *)v6 localizedStringForKey:@"RESTORE_FROM_OTA_BACKUP" value:&stru_10032F900 table:@"Localizable"];
     v8 = [(BuddyChoice *)v5 initWithTitle:v7 nextItemClass:0];
-    [(DeviceRestoreChoiceController *)v109 setCloudRestoreChoice:v8];
+    [(DeviceRestoreChoiceController *)selfCopy setCloudRestoreChoice:v8];
 
-    v9 = [(DeviceRestoreChoiceController *)v109 cloudRestoreChoice];
-    [(BuddyChoice *)v9 setSymbolName:@"icloud"];
+    cloudRestoreChoice = [(DeviceRestoreChoiceController *)selfCopy cloudRestoreChoice];
+    [(BuddyChoice *)cloudRestoreChoice setSymbolName:@"icloud"];
 
-    v10 = [(DeviceRestoreChoiceController *)v109 cloudRestoreChoice];
-    v11 = [(DeviceRestoreChoiceController *)v109 choiceMap];
-    [(NSMutableDictionary *)v11 setObject:v10 forKeyedSubscript:@"restoreFromiCloudBackup"];
+    cloudRestoreChoice2 = [(DeviceRestoreChoiceController *)selfCopy cloudRestoreChoice];
+    choiceMap = [(DeviceRestoreChoiceController *)selfCopy choiceMap];
+    [(NSMutableDictionary *)choiceMap setObject:cloudRestoreChoice2 forKeyedSubscript:@"restoreFromiCloudBackup"];
 
-    v12 = [(DeviceRestoreChoiceController *)v109 networkProvider];
-    v104 = [BuddyRestoreNetworkAlertController alertControllerForUnsupportedNetworkWithCellularRestoreSupport:[(BuddyNetworkProvider *)v12 deviceSupportsCellularRestore]];
+    networkProvider = [(DeviceRestoreChoiceController *)selfCopy networkProvider];
+    v104 = [BuddyRestoreNetworkAlertController alertControllerForUnsupportedNetworkWithCellularRestoreSupport:[(BuddyNetworkProvider *)networkProvider deviceSupportsCellularRestore]];
 
-    objc_initWeak(&location, v109);
+    objc_initWeak(&location, selfCopy);
     v97 = _NSConcreteStackBlock;
     v98 = -1073741824;
     v99 = 0;
@@ -196,7 +196,7 @@
     v101 = &unk_10032AF58;
     objc_copyWeak(&v102, &location);
     [v104 setPresentWiFiSettings:&v97];
-    v13 = [(DeviceRestoreChoiceController *)v109 cloudRestoreChoice];
+    cloudRestoreChoice3 = [(DeviceRestoreChoiceController *)selfCopy cloudRestoreChoice];
     v14 = v104;
     v91 = _NSConcreteStackBlock;
     v92 = -1073741824;
@@ -204,11 +204,11 @@
     v94 = sub_100113410;
     v95 = &unk_10032B178;
     objc_copyWeak(&v96, &location);
-    [(BuddyChoice *)v13 setConfirmationAlert:v14 condition:&v91];
+    [(BuddyChoice *)cloudRestoreChoice3 setConfirmationAlert:v14 condition:&v91];
 
     v15 = v106;
-    v16 = [(DeviceRestoreChoiceController *)v109 cloudRestoreChoice];
-    [v15 addObject:v16];
+    cloudRestoreChoice4 = [(DeviceRestoreChoiceController *)selfCopy cloudRestoreChoice];
+    [v15 addObject:cloudRestoreChoice4];
 
     objc_destroyWeak(&v96);
     objc_destroyWeak(&v102);
@@ -223,11 +223,11 @@
     v19 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"TRANSFER_DIRECTLY"];
     v20 = [(NSBundle *)v18 localizedStringForKey:v19 value:&stru_10032F900 table:@"Localizable"];
     v21 = [(BuddyChoice *)v17 initWithTitle:v20 nextItemClass:0];
-    [(DeviceRestoreChoiceController *)v109 setMigrateFromiOSChoice:v21];
+    [(DeviceRestoreChoiceController *)selfCopy setMigrateFromiOSChoice:v21];
 
     v90 = @"apps.iphone";
-    v22 = [(DeviceRestoreChoiceController *)v109 deviceProvider];
-    LOBYTE(v21) = [(BYDeviceProvider *)v22 type]== 1;
+    deviceProvider = [(DeviceRestoreChoiceController *)selfCopy deviceProvider];
+    LOBYTE(v21) = [(BYDeviceProvider *)deviceProvider type]== 1;
 
     if (v21)
     {
@@ -235,22 +235,22 @@
     }
 
     v23 = v90;
-    v24 = [(DeviceRestoreChoiceController *)v109 migrateFromiOSChoice];
-    [(BuddyChoice *)v24 setSymbolName:v23];
+    migrateFromiOSChoice = [(DeviceRestoreChoiceController *)selfCopy migrateFromiOSChoice];
+    [(BuddyChoice *)migrateFromiOSChoice setSymbolName:v23];
 
-    v25 = [(DeviceRestoreChoiceController *)v109 migrateFromiOSChoice];
-    v26 = [(DeviceRestoreChoiceController *)v109 choiceMap];
-    [(NSMutableDictionary *)v26 setObject:v25 forKeyedSubscript:@"migrateFromiOS"];
+    migrateFromiOSChoice2 = [(DeviceRestoreChoiceController *)selfCopy migrateFromiOSChoice];
+    choiceMap2 = [(DeviceRestoreChoiceController *)selfCopy choiceMap];
+    [(NSMutableDictionary *)choiceMap2 setObject:migrateFromiOSChoice2 forKeyedSubscript:@"migrateFromiOS"];
 
     v27 = v106;
-    v28 = [(DeviceRestoreChoiceController *)v109 migrateFromiOSChoice];
-    [v27 addObject:v28];
+    migrateFromiOSChoice3 = [(DeviceRestoreChoiceController *)selfCopy migrateFromiOSChoice];
+    [v27 addObject:migrateFromiOSChoice3];
 
     objc_storeStrong(&v90, 0);
   }
 
-  v29 = [(DeviceRestoreChoiceController *)v109 enrollmentCoordinator];
-  v30 = [(BuddyEnrollmentCoordinator *)v29 mdmEnrollmentChannel]== 2;
+  enrollmentCoordinator = [(DeviceRestoreChoiceController *)selfCopy enrollmentCoordinator];
+  v30 = [(BuddyEnrollmentCoordinator *)enrollmentCoordinator mdmEnrollmentChannel]== 2;
 
   v89 = v30;
   v31 = 0;
@@ -266,18 +266,18 @@
     v33 = +[NSBundle mainBundle];
     v34 = [(NSBundle *)v33 localizedStringForKey:@"RESTORE_FROM_MAC_OR_PC" value:&stru_10032F900 table:@"Localizable"];
     v35 = [(BuddyChoice *)v32 initWithTitle:v34 nextItemClass:objc_opt_class()];
-    [(DeviceRestoreChoiceController *)v109 setITunesRestoreChoice:v35];
+    [(DeviceRestoreChoiceController *)selfCopy setITunesRestoreChoice:v35];
 
-    v36 = [(DeviceRestoreChoiceController *)v109 iTunesRestoreChoice];
-    [(BuddyChoice *)v36 setSymbolName:@"macbook"];
+    iTunesRestoreChoice = [(DeviceRestoreChoiceController *)selfCopy iTunesRestoreChoice];
+    [(BuddyChoice *)iTunesRestoreChoice setSymbolName:@"macbook"];
 
     v37 = [UIImageSymbolConfiguration configurationWithPointSize:14.5];
-    v38 = [(DeviceRestoreChoiceController *)v109 iTunesRestoreChoice];
-    [(BuddyChoice *)v38 setSymbolConfiguration:v37];
+    iTunesRestoreChoice2 = [(DeviceRestoreChoiceController *)selfCopy iTunesRestoreChoice];
+    [(BuddyChoice *)iTunesRestoreChoice2 setSymbolConfiguration:v37];
 
-    v39 = [(DeviceRestoreChoiceController *)v109 iTunesRestoreChoice];
-    v40 = [(DeviceRestoreChoiceController *)v109 choiceMap];
-    [(NSMutableDictionary *)v40 setObject:v39 forKeyedSubscript:@"restoreFromiTunesBackup"];
+    iTunesRestoreChoice3 = [(DeviceRestoreChoiceController *)selfCopy iTunesRestoreChoice];
+    choiceMap3 = [(DeviceRestoreChoiceController *)selfCopy choiceMap];
+    [(NSMutableDictionary *)choiceMap3 setObject:iTunesRestoreChoice3 forKeyedSubscript:@"restoreFromiTunesBackup"];
 
     v41 = +[NSBundle mainBundle];
     v42 = [(NSBundle *)v41 localizedStringForKey:@"RESTORE_FROM_ITUNES_VERSION_WARNING_TITLE" value:&stru_10032F900 table:@"Localizable"];
@@ -286,34 +286,34 @@
     v45 = [(NSBundle *)v43 localizedStringForKey:v44 value:&stru_10032F900 table:@"Localizable"];
     v87 = [UIAlertController alertControllerWithTitle:v42 message:v45 preferredStyle:1];
 
-    v46 = [(DeviceRestoreChoiceController *)v109 iTunesRestoreChoice];
+    iTunesRestoreChoice4 = [(DeviceRestoreChoiceController *)selfCopy iTunesRestoreChoice];
     v47 = +[NSBundle mainBundle];
     v48 = [(NSBundle *)v47 localizedStringForKey:@"OK" value:&stru_10032F900 table:@"Localizable"];
-    v49 = [(BuddyChoice *)v46 confirmationAcceptActionWithTitle:v48 style:0 action:0];
+    v49 = [(BuddyChoice *)iTunesRestoreChoice4 confirmationAcceptActionWithTitle:v48 style:0 action:0];
     [v87 addAction:v49];
 
-    v50 = [(DeviceRestoreChoiceController *)v109 iTunesRestoreChoice];
+    iTunesRestoreChoice5 = [(DeviceRestoreChoiceController *)selfCopy iTunesRestoreChoice];
     v51 = +[NSBundle mainBundle];
     v52 = [(NSBundle *)v51 localizedStringForKey:@"CANCEL" value:&stru_10032F900 table:@"Localizable"];
-    v53 = [(BuddyChoice *)v50 confirmationCancelActionWithTitle:v52 style:1 action:0];
+    v53 = [(BuddyChoice *)iTunesRestoreChoice5 confirmationCancelActionWithTitle:v52 style:1 action:0];
     [v87 addAction:v53];
 
-    v86 = [(DeviceRestoreChoiceController *)v109 proximitySetupController];
-    v54 = [(DeviceRestoreChoiceController *)v109 iTunesRestoreChoice];
+    proximitySetupController = [(DeviceRestoreChoiceController *)selfCopy proximitySetupController];
+    iTunesRestoreChoice6 = [(DeviceRestoreChoiceController *)selfCopy iTunesRestoreChoice];
     v80 = _NSConcreteStackBlock;
     v81 = -1073741824;
     v82 = 0;
     v83 = sub_100113480;
     v84 = &unk_10032CEB0;
-    v85 = v86;
-    [(BuddyChoice *)v54 setConfirmationAlert:v87 condition:&v80];
+    v85 = proximitySetupController;
+    [(BuddyChoice *)iTunesRestoreChoice6 setConfirmationAlert:v87 condition:&v80];
 
     v55 = v106;
-    v56 = [(DeviceRestoreChoiceController *)v109 iTunesRestoreChoice];
-    [v55 addObject:v56];
+    iTunesRestoreChoice7 = [(DeviceRestoreChoiceController *)selfCopy iTunesRestoreChoice];
+    [v55 addObject:iTunesRestoreChoice7];
 
     objc_storeStrong(&v85, 0);
-    objc_storeStrong(&v86, 0);
+    objc_storeStrong(&proximitySetupController, 0);
     objc_storeStrong(&v87, 0);
   }
 
@@ -323,29 +323,29 @@
     v58 = +[NSBundle mainBundle];
     v59 = [(NSBundle *)v58 localizedStringForKey:@"MIGRATE_FROM_ANDROID_DEVICE" value:&stru_10032F900 table:@"Localizable"];
     v60 = [(BuddyChoice *)v57 initWithTitle:v59 nextItemClass:objc_opt_class()];
-    [(DeviceRestoreChoiceController *)v109 setMigrateFromAndroidChoice:v60];
+    [(DeviceRestoreChoiceController *)selfCopy setMigrateFromAndroidChoice:v60];
 
-    v61 = [(DeviceRestoreChoiceController *)v109 migrateFromAndroidChoice];
-    [(BuddyChoice *)v61 setSymbolName:@"smartphone"];
+    migrateFromAndroidChoice = [(DeviceRestoreChoiceController *)selfCopy migrateFromAndroidChoice];
+    [(BuddyChoice *)migrateFromAndroidChoice setSymbolName:@"smartphone"];
 
-    v62 = [(DeviceRestoreChoiceController *)v109 migrateFromAndroidChoice];
-    v63 = [(DeviceRestoreChoiceController *)v109 choiceMap];
-    [(NSMutableDictionary *)v63 setObject:v62 forKeyedSubscript:@"migrateFromAndroid"];
+    migrateFromAndroidChoice2 = [(DeviceRestoreChoiceController *)selfCopy migrateFromAndroidChoice];
+    choiceMap4 = [(DeviceRestoreChoiceController *)selfCopy choiceMap];
+    [(NSMutableDictionary *)choiceMap4 setObject:migrateFromAndroidChoice2 forKeyedSubscript:@"migrateFromAndroid"];
 
     v64 = v106;
-    v65 = [(DeviceRestoreChoiceController *)v109 migrateFromAndroidChoice];
-    [v64 addObject:v65];
+    migrateFromAndroidChoice3 = [(DeviceRestoreChoiceController *)selfCopy migrateFromAndroidChoice];
+    [v64 addObject:migrateFromAndroidChoice3];
   }
 
   v66 = [BuddyChoice alloc];
   v67 = +[NSBundle mainBundle];
   v68 = [(NSBundle *)v67 localizedStringForKey:@"DONT_TRANSFER_APPS_DATA" value:&stru_10032F900 table:@"Localizable"];
   v69 = [(BuddyChoice *)v66 initWithTitle:v68 nextItemClass:0];
-  [(DeviceRestoreChoiceController *)v109 setSetUpAsNewChoice:v69];
+  [(DeviceRestoreChoiceController *)selfCopy setSetUpAsNewChoice:v69];
 
   v79 = @"iphone.on.rectangle.portrait.dashed.slash";
-  v70 = [(DeviceRestoreChoiceController *)v109 deviceProvider];
-  LOBYTE(v69) = [(BYDeviceProvider *)v70 type]== 1;
+  deviceProvider2 = [(DeviceRestoreChoiceController *)selfCopy deviceProvider];
+  LOBYTE(v69) = [(BYDeviceProvider *)deviceProvider2 type]== 1;
 
   if (v69)
   {
@@ -353,201 +353,201 @@
   }
 
   v71 = v79;
-  v72 = [(DeviceRestoreChoiceController *)v109 setUpAsNewChoice];
-  [(BuddyChoice *)v72 setSymbolName:v71];
+  setUpAsNewChoice = [(DeviceRestoreChoiceController *)selfCopy setUpAsNewChoice];
+  [(BuddyChoice *)setUpAsNewChoice setSymbolName:v71];
 
-  v73 = [(DeviceRestoreChoiceController *)v109 setUpAsNewChoice];
-  v74 = [(DeviceRestoreChoiceController *)v109 choiceMap];
-  [(NSMutableDictionary *)v74 setObject:v73 forKeyedSubscript:@"setUpAsNew"];
+  setUpAsNewChoice2 = [(DeviceRestoreChoiceController *)selfCopy setUpAsNewChoice];
+  choiceMap5 = [(DeviceRestoreChoiceController *)selfCopy choiceMap];
+  [(NSMutableDictionary *)choiceMap5 setObject:setUpAsNewChoice2 forKeyedSubscript:@"setUpAsNew"];
 
-  v75 = [(DeviceRestoreChoiceController *)v109 choiceManager];
+  choiceManager = [(DeviceRestoreChoiceController *)selfCopy choiceManager];
   v111[0] = v106;
-  v76 = [(DeviceRestoreChoiceController *)v109 setUpAsNewChoice];
-  v110 = v76;
+  setUpAsNewChoice3 = [(DeviceRestoreChoiceController *)selfCopy setUpAsNewChoice];
+  v110 = setUpAsNewChoice3;
   v77 = [NSArray arrayWithObjects:&v110 count:1];
   v111[1] = v77;
   v78 = [NSArray arrayWithObjects:v111 count:2];
-  [(BuddyTableChoiceManager *)v75 setChoices:v78];
+  [(BuddyTableChoiceManager *)choiceManager setChoices:v78];
 
   objc_storeStrong(&v79, 0);
   objc_storeStrong(&v106, 0);
 }
 
-- (void)didSelectChoice:(id)a3
+- (void)didSelectChoice:(id)choice
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, choice);
   v3 = location[0];
-  v4 = [(DeviceRestoreChoiceController *)v15 migrateFromiOSChoice];
+  migrateFromiOSChoice = [(DeviceRestoreChoiceController *)selfCopy migrateFromiOSChoice];
 
-  if (v3 == v4)
+  if (v3 == migrateFromiOSChoice)
   {
-    [(DeviceRestoreChoiceController *)v15 _migrateFromiOSSelected];
+    [(DeviceRestoreChoiceController *)selfCopy _migrateFromiOSSelected];
   }
 
   else
   {
     v5 = location[0];
-    v6 = [(DeviceRestoreChoiceController *)v15 cloudRestoreChoice];
+    cloudRestoreChoice = [(DeviceRestoreChoiceController *)selfCopy cloudRestoreChoice];
 
-    if (v5 == v6)
+    if (v5 == cloudRestoreChoice)
     {
-      v7 = [(DeviceRestoreChoiceController *)v15 setupMethod];
-      [(BuddySetupMethod *)v7 setIntendedDataTransferMethod:1];
+      setupMethod = [(DeviceRestoreChoiceController *)selfCopy setupMethod];
+      [(BuddySetupMethod *)setupMethod setIntendedDataTransferMethod:1];
     }
 
     else
     {
       v8 = location[0];
-      v9 = [(DeviceRestoreChoiceController *)v15 setUpAsNewChoice];
+      setUpAsNewChoice = [(DeviceRestoreChoiceController *)selfCopy setUpAsNewChoice];
 
-      if (v8 == v9)
+      if (v8 == setUpAsNewChoice)
       {
-        v10 = [(DeviceRestoreChoiceController *)v15 setupMethod];
-        [(BuddySetupMethod *)v10 setDataTransferMethod:0];
+        setupMethod2 = [(DeviceRestoreChoiceController *)selfCopy setupMethod];
+        [(BuddySetupMethod *)setupMethod2 setDataTransferMethod:0];
       }
 
-      v11 = [(DeviceRestoreChoiceController *)v15 pendingRestoreState];
-      [(BuddyPendingRestoreState *)v11 clearBackupItem];
+      pendingRestoreState = [(DeviceRestoreChoiceController *)selfCopy pendingRestoreState];
+      [(BuddyPendingRestoreState *)pendingRestoreState clearBackupItem];
     }
 
-    v12 = [(DeviceRestoreChoiceController *)v15 buddyPreferences];
-    [(BYPreferencesController *)v12 setObject:&__kCFBooleanTrue forKey:@"RestoreChoice"];
+    buddyPreferences = [(DeviceRestoreChoiceController *)selfCopy buddyPreferences];
+    [(BYPreferencesController *)buddyPreferences setObject:&__kCFBooleanTrue forKey:@"RestoreChoice"];
 
-    v13 = [(DeviceRestoreChoiceController *)v15 delegate];
-    -[BFFFlowItemDelegate flowItemDone:nextItemClass:](v13, "flowItemDone:nextItemClass:", v15, [location[0] nextControllerClass]);
+    delegate = [(DeviceRestoreChoiceController *)selfCopy delegate];
+    -[BFFFlowItemDelegate flowItemDone:nextItemClass:](delegate, "flowItemDone:nextItemClass:", selfCopy, [location[0] nextControllerClass]);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = DeviceRestoreChoiceController;
-  [(DeviceRestoreChoiceController *)&v5 viewWillAppear:a3];
-  if ([(DeviceRestoreChoiceController *)v8 _useCompactMode])
+  [(DeviceRestoreChoiceController *)&v5 viewWillAppear:appear];
+  if ([(DeviceRestoreChoiceController *)selfCopy _useCompactMode])
   {
-    v3 = [(DeviceRestoreChoiceController *)v8 choiceManager];
-    [(BuddyTableChoiceManager *)v3 setFixedRowHeight:44.0];
+    choiceManager = [(DeviceRestoreChoiceController *)selfCopy choiceManager];
+    [(BuddyTableChoiceManager *)choiceManager setFixedRowHeight:44.0];
   }
 
   else
   {
-    v3 = [(DeviceRestoreChoiceController *)v8 choiceManager];
-    [(BuddyTableChoiceManager *)v3 setFixedRowHeight:52.0];
+    choiceManager = [(DeviceRestoreChoiceController *)selfCopy choiceManager];
+    [(BuddyTableChoiceManager *)choiceManager setFixedRowHeight:52.0];
   }
 
-  v4 = [(DeviceRestoreChoiceController *)v8 choiceTable];
-  [(UITableView *)v4 reloadData];
+  choiceTable = [(DeviceRestoreChoiceController *)selfCopy choiceTable];
+  [(UITableView *)choiceTable reloadData];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   v3.receiver = self;
   v3.super_class = DeviceRestoreChoiceController;
-  [(DeviceRestoreChoiceController *)&v3 viewDidAppear:a3];
-  [(DeviceRestoreChoiceController *)v6 flowItemDidAppear:v4];
+  [(DeviceRestoreChoiceController *)&v3 viewDidAppear:appear];
+  [(DeviceRestoreChoiceController *)selfCopy flowItemDidAppear:appearCopy];
 }
 
 - (void)viewDidLoad
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   v14.receiver = self;
   v14.super_class = DeviceRestoreChoiceController;
   [(DeviceRestoreChoiceController *)&v14 viewDidLoad];
-  [(DeviceRestoreChoiceController *)v16 _populateRestoreChoices];
-  v2 = [(DeviceRestoreChoiceController *)v16 choiceTable];
-  [(UITableView *)v2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(DeviceRestoreChoiceController *)selfCopy _populateRestoreChoices];
+  choiceTable = [(DeviceRestoreChoiceController *)selfCopy choiceTable];
+  [(UITableView *)choiceTable setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v3 = v16;
-  v4 = [(DeviceRestoreChoiceController *)v16 choiceTable];
-  [(DeviceRestoreChoiceController *)v3 setTableView:v4];
+  v3 = selfCopy;
+  choiceTable2 = [(DeviceRestoreChoiceController *)selfCopy choiceTable];
+  [(DeviceRestoreChoiceController *)v3 setTableView:choiceTable2];
 
-  v5 = [(DeviceRestoreChoiceController *)v16 choiceTable];
-  [(UITableView *)v5 reloadData];
+  choiceTable3 = [(DeviceRestoreChoiceController *)selfCopy choiceTable];
+  [(UITableView *)choiceTable3 reloadData];
 
-  v6 = [(DeviceRestoreChoiceController *)v16 choiceTable];
-  [(UITableView *)v6 layoutIfNeeded];
+  choiceTable4 = [(DeviceRestoreChoiceController *)selfCopy choiceTable];
+  [(UITableView *)choiceTable4 layoutIfNeeded];
 
-  v7 = [(DeviceRestoreChoiceController *)v16 choiceTable];
-  v8 = [(UITableView *)v7 heightAnchor];
-  v9 = [(DeviceRestoreChoiceController *)v16 choiceTable];
-  [(UITableView *)v9 contentSize];
-  v12 = [v8 constraintEqualToConstant:{v11, v10, *&v11}];
-  [(DeviceRestoreChoiceController *)v16 setTableHeightAnchor:v12];
+  choiceTable5 = [(DeviceRestoreChoiceController *)selfCopy choiceTable];
+  heightAnchor = [(UITableView *)choiceTable5 heightAnchor];
+  choiceTable6 = [(DeviceRestoreChoiceController *)selfCopy choiceTable];
+  [(UITableView *)choiceTable6 contentSize];
+  v12 = [heightAnchor constraintEqualToConstant:{v11, v10, *&v11}];
+  [(DeviceRestoreChoiceController *)selfCopy setTableHeightAnchor:v12];
 
-  v13 = [(DeviceRestoreChoiceController *)v16 tableHeightAnchor];
-  [(NSLayoutConstraint *)v13 setActive:1];
+  tableHeightAnchor = [(DeviceRestoreChoiceController *)selfCopy tableHeightAnchor];
+  [(NSLayoutConstraint *)tableHeightAnchor setActive:1];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v2 = [(DeviceRestoreChoiceController *)self tableView];
-  [v2 reloadData];
+  tableView = [(DeviceRestoreChoiceController *)self tableView];
+  [tableView reloadData];
 
-  v3 = [(DeviceRestoreChoiceController *)v13 view];
-  [v3 layoutIfNeeded];
+  view = [(DeviceRestoreChoiceController *)selfCopy view];
+  [view layoutIfNeeded];
 
-  v4 = [(DeviceRestoreChoiceController *)v13 tableView];
-  [v4 contentSize];
+  tableView2 = [(DeviceRestoreChoiceController *)selfCopy tableView];
+  [tableView2 contentSize];
   v10 = v5;
   v11 = v6;
   v7 = v6;
-  v8 = [(DeviceRestoreChoiceController *)v13 tableHeightAnchor];
-  [(NSLayoutConstraint *)v8 setConstant:v7];
+  tableHeightAnchor = [(DeviceRestoreChoiceController *)selfCopy tableHeightAnchor];
+  [(NSLayoutConstraint *)tableHeightAnchor setConstant:v7];
 
-  v9.receiver = v13;
+  v9.receiver = selfCopy;
   v9.super_class = DeviceRestoreChoiceController;
   [(DeviceRestoreChoiceController *)&v9 viewDidLayoutSubviews];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8.receiver = v10;
+  objc_storeStrong(location, change);
+  v8.receiver = selfCopy;
   v8.super_class = DeviceRestoreChoiceController;
   [(DeviceRestoreChoiceController *)&v8 traitCollectionDidChange:location[0]];
-  v3 = [(DeviceRestoreChoiceController *)v10 choiceTable];
-  [(UITableView *)v3 layoutIfNeeded];
+  choiceTable = [(DeviceRestoreChoiceController *)selfCopy choiceTable];
+  [(UITableView *)choiceTable layoutIfNeeded];
 
-  v4 = [(DeviceRestoreChoiceController *)v10 choiceTable];
-  [(UITableView *)v4 contentSize];
+  choiceTable2 = [(DeviceRestoreChoiceController *)selfCopy choiceTable];
+  [(UITableView *)choiceTable2 contentSize];
   v6 = v5;
-  v7 = [(DeviceRestoreChoiceController *)v10 tableHeightAnchor];
-  [(NSLayoutConstraint *)v7 setConstant:v6];
+  tableHeightAnchor = [(DeviceRestoreChoiceController *)selfCopy tableHeightAnchor];
+  [(NSLayoutConstraint *)tableHeightAnchor setConstant:v6];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)selectChoiceForIdentifier:(id)a3
+- (void)selectChoiceForIdentifier:(id)identifier
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(DeviceRestoreChoiceController *)v10 choiceMap];
-  v4 = [(NSMutableDictionary *)v3 objectForKey:location[0]];
+  objc_storeStrong(location, identifier);
+  choiceMap = [(DeviceRestoreChoiceController *)selfCopy choiceMap];
+  v4 = [(NSMutableDictionary *)choiceMap objectForKey:location[0]];
 
   if (v4)
   {
-    v5 = v10;
-    v6 = [(DeviceRestoreChoiceController *)v10 choiceMap];
-    v7 = [(NSMutableDictionary *)v6 objectForKeyedSubscript:location[0]];
+    v5 = selfCopy;
+    choiceMap2 = [(DeviceRestoreChoiceController *)selfCopy choiceMap];
+    v7 = [(NSMutableDictionary *)choiceMap2 objectForKeyedSubscript:location[0]];
     [(DeviceRestoreChoiceController *)v5 didSelectChoice:v7];
   }
 
@@ -556,7 +556,7 @@
     oslog = _BYLoggingFacility();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      sub_100078180(buf, v10, location[0]);
+      sub_100078180(buf, selfCopy, location[0]);
       _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "%@ cannot finish with controller identifier choice %@", buf, 0x16u);
     }
 
@@ -568,7 +568,7 @@
 
 - (void)_migrateFromiOSSelected
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _BYLoggingFacility();
   v14 = OS_LOG_TYPE_DEFAULT;
@@ -581,18 +581,18 @@
   }
 
   objc_storeStrong(location, 0);
-  v4 = [(DeviceRestoreChoiceController *)v16 view];
-  v5 = [v4 window];
-  [v5 setUserInteractionEnabled:0];
+  view = [(DeviceRestoreChoiceController *)selfCopy view];
+  window = [view window];
+  [window setUserInteractionEnabled:0];
 
-  [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:v16 identifier:@"com.apple.buddy.migrateFromiOSChoice.spinner"];
+  [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:selfCopy identifier:@"com.apple.buddy.migrateFromiOSChoice.spinner"];
   v6 = +[BuddyAccountTools sharedBuddyAccountTools];
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
   v10 = sub_100113F38;
   v11 = &unk_10032BAE8;
-  v12 = v16;
+  v12 = selfCopy;
   [v6 removeAccountsCreatedByProximityWithCompletion:&v7];
 
   objc_storeStrong(&v12, 0);
@@ -600,30 +600,30 @@
 
 - (BOOL)_useCompactMode
 {
-  v2 = [(DeviceRestoreChoiceController *)self view];
-  [v2 bounds];
+  view = [(DeviceRestoreChoiceController *)self view];
+  [view bounds];
   v4 = v3 < 760.0;
 
   return v4;
 }
 
-- (void)flowItemDidAppear:(BOOL)a3
+- (void)flowItemDidAppear:(BOOL)appear
 {
-  v3 = [(DeviceRestoreChoiceController *)self buddyPreferences];
-  [(BYPreferencesController *)v3 setObject:&__kCFBooleanFalse forKey:@"RestoreChoice"];
+  buddyPreferences = [(DeviceRestoreChoiceController *)self buddyPreferences];
+  [(BYPreferencesController *)buddyPreferences setObject:&__kCFBooleanFalse forKey:@"RestoreChoice"];
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v5 = [(DeviceRestoreChoiceController *)v12 choiceManager];
-  v6 = [(BuddyTableChoiceManager *)v5 tableViewDelegate];
-  [v6 tableView:location[0] estimatedHeightForRowAtIndexPath:v10];
+  objc_storeStrong(&v10, path);
+  choiceManager = [(DeviceRestoreChoiceController *)selfCopy choiceManager];
+  tableViewDelegate = [(BuddyTableChoiceManager *)choiceManager tableViewDelegate];
+  [tableViewDelegate tableView:location[0] estimatedHeightForRowAtIndexPath:v10];
   v8 = v7;
 
   objc_storeStrong(&v10, 0);
@@ -631,17 +631,17 @@
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v5 = [(DeviceRestoreChoiceController *)v12 choiceManager];
-  v6 = [(BuddyTableChoiceManager *)v5 tableViewDelegate];
-  [v6 tableView:location[0] heightForRowAtIndexPath:v10];
+  objc_storeStrong(&v10, path);
+  choiceManager = [(DeviceRestoreChoiceController *)selfCopy choiceManager];
+  tableViewDelegate = [(BuddyTableChoiceManager *)choiceManager tableViewDelegate];
+  [tableViewDelegate tableView:location[0] heightForRowAtIndexPath:v10];
   v8 = v7;
 
   objc_storeStrong(&v10, 0);
@@ -649,39 +649,39 @@
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  v5 = [(DeviceRestoreChoiceController *)v9 choiceManager];
-  v6 = [(BuddyTableChoiceManager *)v5 tableViewDelegate];
-  [v6 tableView:location[0] didSelectRowAtIndexPath:v7];
+  objc_storeStrong(&v7, path);
+  choiceManager = [(DeviceRestoreChoiceController *)selfCopy choiceManager];
+  tableViewDelegate = [(BuddyTableChoiceManager *)choiceManager tableViewDelegate];
+  [tableViewDelegate tableView:location[0] didSelectRowAtIndexPath:v7];
 
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   objc_storeStrong(location, 0);
   return 0;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(DeviceRestoreChoiceController *)v6 _useCompactMode])
+  objc_storeStrong(location, view);
+  if ([(DeviceRestoreChoiceController *)selfCopy _useCompactMode])
   {
     v7 = 10.0;
   }
@@ -695,23 +695,23 @@
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   objc_storeStrong(location, 0);
   return 0;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(DeviceRestoreChoiceController *)v6 _useCompactMode])
+  objc_storeStrong(location, view);
+  if ([(DeviceRestoreChoiceController *)selfCopy _useCompactMode])
   {
     v7 = 0.0;
   }
@@ -732,12 +732,12 @@
   return WeakRetained;
 }
 
-- (void)proximitySetupCompleted:(id)a3
+- (void)proximitySetupCompleted:(id)completed
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completed);
   v14 = _BYLoggingFacility();
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -755,7 +755,7 @@
   v8 = 0;
   v9 = sub_10011577C;
   v10 = &unk_10032B0D0;
-  v11 = v16;
+  v11 = selfCopy;
   dispatch_async(v5, &block);
 
   objc_storeStrong(&v11, 0);
@@ -781,8 +781,8 @@
 
 - (void)_invalidatePendingProximityFinishSetupRequest
 {
-  v2 = [(DeviceRestoreChoiceController *)self proximitySetupController];
-  [(ProximitySetupController *)v2 removeObserver:self];
+  proximitySetupController = [(DeviceRestoreChoiceController *)self proximitySetupController];
+  [(ProximitySetupController *)proximitySetupController removeObserver:self];
 }
 
 @end

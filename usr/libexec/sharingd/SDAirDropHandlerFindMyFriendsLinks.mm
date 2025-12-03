@@ -1,17 +1,17 @@
 @interface SDAirDropHandlerFindMyFriendsLinks
 - (BOOL)canHandleTransfer;
-- (SDAirDropHandlerFindMyFriendsLinks)initWithTransfer:(id)a3;
+- (SDAirDropHandlerFindMyFriendsLinks)initWithTransfer:(id)transfer;
 - (id)suitableContentsDescription;
 - (int64_t)transferTypes;
 @end
 
 @implementation SDAirDropHandlerFindMyFriendsLinks
 
-- (SDAirDropHandlerFindMyFriendsLinks)initWithTransfer:(id)a3
+- (SDAirDropHandlerFindMyFriendsLinks)initWithTransfer:(id)transfer
 {
   v4.receiver = self;
   v4.super_class = SDAirDropHandlerFindMyFriendsLinks;
-  return [(SDAirDropHandler *)&v4 initWithTransfer:a3 bundleIdentifier:@"com.apple.findmy"];
+  return [(SDAirDropHandler *)&v4 initWithTransfer:transfer bundleIdentifier:@"com.apple.findmy"];
 }
 
 - (BOOL)canHandleTransfer
@@ -25,10 +25,10 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 completedURLs];
+  transfer = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer completedURLs];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [completedURLs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -39,11 +39,11 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(completedURLs);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) scheme];
-        v10 = [v9 lowercaseString];
+        scheme = [*(*(&v14 + 1) + 8 * i) scheme];
+        lowercaseString = [scheme lowercaseString];
         MyFriendsLink = SFIsFindMyFriendsLink();
 
         if (!MyFriendsLink)
@@ -53,7 +53,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [completedURLs countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -78,10 +78,10 @@ LABEL_13:
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
+  senderName = [(SDAirDropHandler *)self senderName];
   v4 = [(SDAirDropHandler *)self alertMessageLocalizedKeyForTypeDicts:&off_10090FFF8];
   v5 = SFLocalizedStringForKey();
-  v6 = [NSString localizedStringWithFormat:v5, v3];
+  v6 = [NSString localizedStringWithFormat:v5, senderName];
 
   return v6;
 }

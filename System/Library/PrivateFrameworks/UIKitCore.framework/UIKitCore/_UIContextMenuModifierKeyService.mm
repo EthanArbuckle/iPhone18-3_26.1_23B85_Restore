@@ -1,21 +1,21 @@
 @interface _UIContextMenuModifierKeyService
 + (_UIContextMenuModifierKeyService)sharedService;
-- (void)addObserver:(id)a3;
-- (void)applicationWillResignActiveWithNotification:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)applicationWillResignActiveWithNotification:(id)notification;
 - (void)dealloc;
-- (void)handleKeyboardEvent:(id)a3;
-- (void)modifierListener:(id)a3 didUpdateModifierFlag:(int64_t)a4;
-- (void)removeObserver:(id)a3;
+- (void)handleKeyboardEvent:(id)event;
+- (void)modifierListener:(id)listener didUpdateModifierFlag:(int64_t)flag;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation _UIContextMenuModifierKeyService
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   swift_beginAccess();
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_188D7809C(a3, v6);
+  selfCopy = self;
+  sub_188D7809C(observer, v6);
   swift_endAccess();
   swift_unknownObjectRelease();
 
@@ -37,16 +37,16 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4 name:@"UIApplicationWillResignActiveNotification" object:UIApp];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:@"UIApplicationWillResignActiveNotification" object:UIApp];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = _UIContextMenuModifierKeyService;
   [(_UIContextMenuModifierKeyService *)&v6 dealloc];
 }
 
-- (void)applicationWillResignActiveWithNotification:(id)a3
+- (void)applicationWillResignActiveWithNotification:(id)notification
 {
   v4 = sub_18A4A2458();
   v5 = *(v4 - 8);
@@ -54,48 +54,48 @@
   v7 = &v10 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18A4A2418();
   v8 = *(&self->super.isa + OBJC_IVAR____UIContextMenuModifierKeyService_modifierKeyListener);
-  v9 = self;
+  selfCopy = self;
   [v8 setCurrentModifierFlags_];
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)handleKeyboardEvent:(id)a3
+- (void)handleKeyboardEvent:(id)event
 {
-  v8 = a3;
-  v4 = self;
-  v5 = [(_UIContextMenuModifierKeyService *)v8 _cloneEvent];
-  if (v5)
+  eventCopy = event;
+  selfCopy = self;
+  _cloneEvent = [(_UIContextMenuModifierKeyService *)eventCopy _cloneEvent];
+  if (_cloneEvent)
   {
-    v6 = v5;
-    [v5 _privatize];
-    [*(&v4->super.isa + OBJC_IVAR____UIContextMenuModifierKeyService_modifierKeyListener) handleKeyboardEvent_];
+    v6 = _cloneEvent;
+    [_cloneEvent _privatize];
+    [*(&selfCopy->super.isa + OBJC_IVAR____UIContextMenuModifierKeyService_modifierKeyListener) handleKeyboardEvent_];
 
-    v7 = v4;
+    v7 = selfCopy;
   }
 
   else
   {
-    v7 = v8;
-    v8 = v4;
+    v7 = eventCopy;
+    eventCopy = selfCopy;
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   swift_unknownObjectWeakInit();
   v6[8] = 0;
   swift_beginAccess();
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_188F288E4(v6, a3);
+  selfCopy = self;
+  sub_188F288E4(v6, observer);
   swift_endAccess();
   swift_unknownObjectRelease();
 }
 
-- (void)modifierListener:(id)a3 didUpdateModifierFlag:(int64_t)a4
+- (void)modifierListener:(id)listener didUpdateModifierFlag:(int64_t)flag
 {
-  v5 = a3;
-  v6 = self;
+  listenerCopy = listener;
+  selfCopy = self;
   sub_188F489E4();
 }
 

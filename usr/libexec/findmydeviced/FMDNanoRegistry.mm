@@ -1,7 +1,7 @@
 @interface FMDNanoRegistry
 - (FMDCompanionRegistryDelegate)delegate;
 - (FMDNanoRegistry)init;
-- (id)accessoriesWithProperty:(id)a3;
+- (id)accessoriesWithProperty:(id)property;
 - (id)activePairedDevice;
 - (id)allAccessories;
 - (id)migratableAccessories;
@@ -9,9 +9,9 @@
 - (id)pairedAccessories;
 - (void)addObservers;
 - (void)dealloc;
-- (void)deviceDidPair:(id)a3;
-- (void)deviceDidUnpair:(id)a3;
-- (void)getAccessoriesWithCompletion:(id)a3;
+- (void)deviceDidPair:(id)pair;
+- (void)deviceDidUnpair:(id)unpair;
+- (void)getAccessoriesWithCompletion:(id)completion;
 @end
 
 @implementation FMDNanoRegistry
@@ -49,22 +49,22 @@
   [v4 addObserver:self selector:"deviceDidUnpair:" name:@"nano.devicedidunpair" object:0];
 }
 
-- (void)getAccessoriesWithCompletion:(id)a3
+- (void)getAccessoriesWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v5 = a3;
-    v6 = [(FMDNanoRegistry *)self allAccessories];
-    (*(a3 + 2))(v5, v6, 0);
+    completionCopy = completion;
+    allAccessories = [(FMDNanoRegistry *)self allAccessories];
+    (*(completion + 2))(completionCopy, allAccessories, 0);
   }
 }
 
 - (id)activePairedDevice
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  getActivePairedDevice = [v2 getActivePairedDevice];
 
-  v4 = [[FMDNanoRegistryAccessory alloc] initWithNRDevice:v3];
+  v4 = [[FMDNanoRegistryAccessory alloc] initWithNRDevice:getActivePairedDevice];
 
   return v4;
 }
@@ -99,10 +99,10 @@
 
 - (id)migratableAccessories
 {
-  v2 = [(FMDNanoRegistry *)self migratableAccessoriesByIdentifier];
-  v3 = [v2 allValues];
+  migratableAccessoriesByIdentifier = [(FMDNanoRegistry *)self migratableAccessoriesByIdentifier];
+  allValues = [migratableAccessoriesByIdentifier allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (id)migratableAccessoriesByIdentifier
@@ -116,22 +116,22 @@
 
   v3 = +[NSMutableDictionary dictionary];
   v4 = +[NRMigrator sharedMigrator];
-  v5 = [v4 migratableDevices];
-  v6 = v5;
+  migratableDevices = [v4 migratableDevices];
+  v6 = migratableDevices;
   v7 = &__NSArray0__struct;
-  if (v5)
+  if (migratableDevices)
   {
-    v7 = v5;
+    v7 = migratableDevices;
   }
 
   v8 = v7;
 
   v9 = +[NRMigrator sharedMigrator];
-  v10 = [v9 migratableDevicesRequiringConsent];
+  migratableDevicesRequiringConsent = [v9 migratableDevicesRequiringConsent];
 
-  if (v10)
+  if (migratableDevicesRequiringConsent)
   {
-    v11 = [v8 arrayByAddingObjectsFromArray:v10];
+    v11 = [v8 arrayByAddingObjectsFromArray:migratableDevicesRequiringConsent];
 
     v8 = v11;
   }
@@ -147,45 +147,45 @@
   return v12;
 }
 
-- (id)accessoriesWithProperty:(id)a3
+- (id)accessoriesWithProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(FMDNanoRegistry *)self migratableAccessoriesByIdentifier];
+  propertyCopy = property;
+  migratableAccessoriesByIdentifier = [(FMDNanoRegistry *)self migratableAccessoriesByIdentifier];
   v6 = +[NRPairedDeviceRegistry sharedInstance];
-  v7 = [v6 getAllDevices];
+  getAllDevices = [v6 getAllDevices];
 
   +[NSMutableArray array];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100151774;
   v14[3] = &unk_1002CE4C0;
-  v15 = v4;
-  v8 = v16 = v5;
+  v15 = propertyCopy;
+  v8 = v16 = migratableAccessoriesByIdentifier;
   v17 = v8;
-  v9 = v5;
-  v10 = v4;
-  [v7 enumerateObjectsUsingBlock:v14];
+  v9 = migratableAccessoriesByIdentifier;
+  v10 = propertyCopy;
+  [getAllDevices enumerateObjectsUsingBlock:v14];
   v11 = v17;
   v12 = v8;
 
   return v8;
 }
 
-- (void)deviceDidPair:(id)a3
+- (void)deviceDidPair:(id)pair
 {
-  v4 = [(FMDNanoRegistry *)self delegate];
+  delegate = [(FMDNanoRegistry *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 companionRegistryDidUpdateAccessories:self];
+    [delegate companionRegistryDidUpdateAccessories:self];
   }
 }
 
-- (void)deviceDidUnpair:(id)a3
+- (void)deviceDidUnpair:(id)unpair
 {
-  v4 = [(FMDNanoRegistry *)self delegate];
+  delegate = [(FMDNanoRegistry *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 companionRegistryDidUpdateAccessories:self];
+    [delegate companionRegistryDidUpdateAccessories:self];
   }
 }
 

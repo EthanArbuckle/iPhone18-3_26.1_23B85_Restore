@@ -3,15 +3,15 @@
 - (BOOL)isBuiltinSpeakerMuted;
 - (CSBuiltinSpeakerStateMonitor)init;
 - (unint64_t)currentBuiltinSpeakerState;
-- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)a3;
-- (void)_didReceiveBuiltinSpeakerStateChangeNotification:(unint64_t)a3;
-- (void)_didReceiveSpeakerMuteStateChangeNotification:(BOOL)a3;
+- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)restart;
+- (void)_didReceiveBuiltinSpeakerStateChangeNotification:(unint64_t)notification;
+- (void)_didReceiveSpeakerMuteStateChangeNotification:(BOOL)notification;
 - (void)_fetchSpeakerStateActiveInfo;
 - (void)_fetchSpeakerStateMutedInfo;
-- (void)_notifyObserver:(id)a3 withBuiltinSpeakerState:(unint64_t)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_notifyObserver:(id)observer withBuiltinSpeakerState:(unint64_t)state;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)setBuiltInSpeakerState:(unint64_t)a3;
+- (void)setBuiltInSpeakerState:(unint64_t)state;
 @end
 
 @implementation CSBuiltinSpeakerStateMonitor
@@ -78,14 +78,14 @@ uint64_t __46__CSBuiltinSpeakerStateMonitor_sharedInstance__block_invoke()
 {
   v3 = dispatch_group_create();
   dispatch_group_enter(v3);
-  v4 = [(CSBuiltinSpeakerStateMonitor *)self _getIsSpeakerMutedDefaultVal];
+  _getIsSpeakerMutedDefaultVal = [(CSBuiltinSpeakerStateMonitor *)self _getIsSpeakerMutedDefaultVal];
   v5 = +[CSAVVoiceTriggerClientManager sharedVoiceTriggerClient];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__CSBuiltinSpeakerStateMonitor__fetchSpeakerStateMutedInfo__block_invoke;
   v11[3] = &unk_1E865AFA0;
   v11[4] = self;
-  v13 = v4;
+  v13 = _getIsSpeakerMutedDefaultVal;
   v6 = v3;
   v12 = v6;
   [v5 speakerStateMutedCompletionBlock:v11];
@@ -98,13 +98,13 @@ uint64_t __46__CSBuiltinSpeakerStateMonitor_sharedInstance__block_invoke()
     block[1] = 3221225472;
     block[2] = __59__CSBuiltinSpeakerStateMonitor__fetchSpeakerStateMutedInfo__block_invoke_15;
     block[3] = &unk_1E865B178;
-    v10 = v4;
+    v10 = _getIsSpeakerMutedDefaultVal;
     block[4] = self;
     dispatch_async(queue, block);
   }
 }
 
-- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)a3
+- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)restart
 {
   v3 = +[CSAVVoiceTriggerClientManager sharedVoiceTriggerClient];
   [v3 enableSpeakerStateListening:1 completionBlock:&__block_literal_global_49];
@@ -132,41 +132,41 @@ void __81__CSBuiltinSpeakerStateMonitor_CSAudioServerCrashMonitorDidReceiveServe
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_didReceiveSpeakerMuteStateChangeNotification:(BOOL)a3
+- (void)_didReceiveSpeakerMuteStateChangeNotification:(BOOL)notification
 {
-  self->_isSpeakerMuted = a3;
+  self->_isSpeakerMuted = notification;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __78__CSBuiltinSpeakerStateMonitor__didReceiveSpeakerMuteStateChangeNotification___block_invoke;
   v3[3] = &unk_1E865CA18;
   v3[4] = self;
-  v4 = a3;
+  notificationCopy = notification;
   [(CSEventMonitor *)self enumerateObserversInQueue:v3];
 }
 
-- (void)_notifyObserver:(id)a3 withBuiltinSpeakerState:(unint64_t)a4
+- (void)_notifyObserver:(id)observer withBuiltinSpeakerState:(unint64_t)state
 {
-  v6 = a3;
-  [(CSEventMonitor *)self notifyObserver:v6];
+  observerCopy = observer;
+  [(CSEventMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v6 CSBuiltinSpeakerStateMonitor:self didReceiveBuiltinSpeakerStateChange:a4];
+    [observerCopy CSBuiltinSpeakerStateMonitor:self didReceiveBuiltinSpeakerStateChange:state];
   }
 }
 
-- (void)_didReceiveBuiltinSpeakerStateChangeNotification:(unint64_t)a3
+- (void)_didReceiveBuiltinSpeakerStateChangeNotification:(unint64_t)notification
 {
-  self->_builtInSpeakerState = a3;
+  self->_builtInSpeakerState = notification;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __81__CSBuiltinSpeakerStateMonitor__didReceiveBuiltinSpeakerStateChangeNotification___block_invoke;
   v3[3] = &unk_1E865CA68;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = notification;
   [(CSEventMonitor *)self enumerateObserversInQueue:v3];
 }
 
-- (void)setBuiltInSpeakerState:(unint64_t)a3
+- (void)setBuiltInSpeakerState:(unint64_t)state
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -174,7 +174,7 @@ void __81__CSBuiltinSpeakerStateMonitor_CSAudioServerCrashMonitorDidReceiveServe
   v4[2] = __55__CSBuiltinSpeakerStateMonitor_setBuiltInSpeakerState___block_invoke;
   v4[3] = &unk_1E865CC58;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = state;
   dispatch_async(queue, v4);
 }
 
@@ -218,10 +218,10 @@ void __47__CSBuiltinSpeakerStateMonitor__stopMonitoring__block_invoke(uint64_t a
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   v5 = +[CSAVVoiceTriggerClientManager sharedVoiceTriggerClient];
   v11[0] = MEMORY[0x1E69E9820];

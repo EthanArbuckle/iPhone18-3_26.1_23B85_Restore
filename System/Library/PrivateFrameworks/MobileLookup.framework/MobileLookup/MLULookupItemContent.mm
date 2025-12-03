@@ -1,19 +1,19 @@
 @interface MLULookupItemContent
-+ (id)contentWithAttachments:(id)a3 currentAttachmentIndex:(unint64_t)a4;
-+ (id)contentWithText:(id)a3 range:(_NSRange)a4;
-+ (id)contentWithURL:(id)a3 result:(__DDResult *)a4 documentProperties:(id)a5;
-- (BOOL)commitPreviewInController:(id)a3;
++ (id)contentWithAttachments:(id)attachments currentAttachmentIndex:(unint64_t)index;
++ (id)contentWithText:(id)text range:(_NSRange)range;
++ (id)contentWithURL:(id)l result:(__DDResult *)result documentProperties:(id)properties;
+- (BOOL)commitPreviewInController:(id)controller;
 - (void)dismissViewController;
 - (void)setupViewControllerInCommitMode;
 @end
 
 @implementation MLULookupItemContent
 
-+ (id)contentWithURL:(id)a3 result:(__DDResult *)a4 documentProperties:(id)a5
++ (id)contentWithURL:(id)l result:(__DDResult *)result documentProperties:(id)properties
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[MLULookupItemDDContent alloc] initWithURL:v8 result:a4 documentProperties:v7];
+  propertiesCopy = properties;
+  lCopy = l;
+  v9 = [[MLULookupItemDDContent alloc] initWithURL:lCopy result:result documentProperties:propertiesCopy];
 
   if ([(MLULookupItemContent *)v9 valid])
   {
@@ -28,48 +28,48 @@
   return v10;
 }
 
-+ (id)contentWithAttachments:(id)a3 currentAttachmentIndex:(unint64_t)a4
++ (id)contentWithAttachments:(id)attachments currentAttachmentIndex:(unint64_t)index
 {
-  v5 = a3;
-  v6 = [[MLULookupItemAttachmentContent alloc] initWithAttachments:v5 currentAttachmentIndex:a4];
+  attachmentsCopy = attachments;
+  v6 = [[MLULookupItemAttachmentContent alloc] initWithAttachments:attachmentsCopy currentAttachmentIndex:index];
 
   return v6;
 }
 
-+ (id)contentWithText:(id)a3 range:(_NSRange)a4
++ (id)contentWithText:(id)text range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
-  v7 = [[MLULookupItemRawTextContent alloc] initWithText:v6 range:location, length];
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  v7 = [[MLULookupItemRawTextContent alloc] initWithText:textCopy range:location, length];
 
   return v7;
 }
 
 - (void)setupViewControllerInCommitMode
 {
-  v3 = [(MLULookupItemContent *)self previewViewController];
+  previewViewController = [(MLULookupItemContent *)self previewViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [(MLULookupItemContent *)self previewViewController];
-    v5 = [v8 visibleViewController];
+    previewViewController2 = [(MLULookupItemContent *)self previewViewController];
+    visibleViewController = [previewViewController2 visibleViewController];
     v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_dismissViewController];
-    v7 = [v5 navigationItem];
-    [v7 setRightBarButtonItem:v6];
+    navigationItem = [visibleViewController navigationItem];
+    [navigationItem setRightBarButtonItem:v6];
 
-    [v8 setNavigationBarHidden:0];
-    [v8 setNeedsStatusBarAppearanceUpdate];
+    [previewViewController2 setNavigationBarHidden:0];
+    [previewViewController2 setNeedsStatusBarAppearanceUpdate];
   }
 }
 
-- (BOOL)commitPreviewInController:(id)a3
+- (BOOL)commitPreviewInController:(id)controller
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(MLULookupItemContent *)self commitType];
-  if (v4 == 2)
+  commitType = [(MLULookupItemContent *)self commitType];
+  if (commitType == 2)
   {
     [(MLULookupItemContent *)self setupViewControllerInCommitMode];
     result = 1;
@@ -77,18 +77,18 @@
 
   else
   {
-    if (v4 == 4)
+    if (commitType == 4)
     {
-      v5 = [(MLULookupItemContent *)self commitURL];
-      v6 = [MEMORY[0x277D75128] sharedApplication];
-      v7 = v6;
-      if (v5 && [v6 canOpenURL:v5])
+      commitURL = [(MLULookupItemContent *)self commitURL];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      v7 = mEMORY[0x277D75128];
+      if (commitURL && [mEMORY[0x277D75128] canOpenURL:commitURL])
       {
-        v8 = [MEMORY[0x277CC1E80] defaultWorkspace];
+        defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
         v12 = *MEMORY[0x277D67150];
         v13[0] = MEMORY[0x277CBEC38];
         v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-        [v8 openURL:v5 withOptions:v9];
+        [defaultWorkspace openURL:commitURL withOptions:v9];
       }
     }
 
@@ -101,8 +101,8 @@
 
 - (void)dismissViewController
 {
-  v2 = [(MLULookupItemContent *)self previewViewController];
-  [v2 dismissViewControllerAnimated:1 completion:&__block_literal_global];
+  previewViewController = [(MLULookupItemContent *)self previewViewController];
+  [previewViewController dismissViewControllerAnimated:1 completion:&__block_literal_global];
 }
 
 @end

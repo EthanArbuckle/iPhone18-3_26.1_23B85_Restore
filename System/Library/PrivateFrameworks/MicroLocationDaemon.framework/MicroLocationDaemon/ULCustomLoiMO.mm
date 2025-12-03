@@ -1,19 +1,19 @@
 @interface ULCustomLoiMO
-+ (id)createFromDO:(const void *)a3 withServiceMO:(id)a4 loiMO:(id)a5 inManagedObjectContext:(id)a6;
++ (id)createFromDO:(const void *)o withServiceMO:(id)mO loiMO:(id)loiMO inManagedObjectContext:(id)context;
 - (optional<ULCustomLoiDO>)convertToDO;
 @end
 
 @implementation ULCustomLoiMO
 
-+ (id)createFromDO:(const void *)a3 withServiceMO:(id)a4 loiMO:(id)a5 inManagedObjectContext:(id)a6
++ (id)createFromDO:(const void *)o withServiceMO:(id)mO loiMO:(id)loiMO inManagedObjectContext:(id)context
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [[ULCustomLoiMO alloc] initWithContext:v11];
-  [(ULCustomLoiMO *)v12 setService:v9];
-  [(ULCustomLoiMO *)v12 setLoi:v10];
-  [(ULCustomLoiMO *)v12 setLastSeenTimeStamp:*(a3 + 4)];
+  mOCopy = mO;
+  loiMOCopy = loiMO;
+  contextCopy = context;
+  v12 = [[ULCustomLoiMO alloc] initWithContext:contextCopy];
+  [(ULCustomLoiMO *)v12 setService:mOCopy];
+  [(ULCustomLoiMO *)v12 setLoi:loiMOCopy];
+  [(ULCustomLoiMO *)v12 setLastSeenTimeStamp:*(o + 4)];
 
   return v12;
 }
@@ -24,11 +24,11 @@
   [(ULCustomLoiMO *)self lastSeenTimeStamp];
   v5 = v4;
   v6 = [(ULCustomLoiMO *)self loi];
-  v7 = [v6 loiId];
-  v8 = v7;
-  if (v7)
+  loiId = [v6 loiId];
+  v8 = loiId;
+  if (loiId)
   {
-    [v7 boostUUID];
+    [loiId boostUUID];
   }
 
   else
@@ -60,12 +60,12 @@
     }
   }
 
-  v10 = [(ULCustomLoiMO *)self service];
-  v11 = [v10 serviceUUID];
-  v12 = v11;
-  if (v11)
+  service = [(ULCustomLoiMO *)self service];
+  serviceUUID = [service serviceUUID];
+  v12 = serviceUUID;
+  if (serviceUUID)
   {
-    [v11 boostUUID];
+    [serviceUUID boostUUID];
   }
 
   else

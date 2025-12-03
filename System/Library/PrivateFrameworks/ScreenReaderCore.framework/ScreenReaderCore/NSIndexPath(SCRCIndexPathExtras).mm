@@ -24,7 +24,7 @@
     }
   }
 
-  v11 = [a1 initWithIndexes:v8 length:v7];
+  v11 = [self initWithIndexes:v8 length:v7];
   free(v8);
 
   return v11;
@@ -33,13 +33,13 @@
 - (id)stringValue
 {
   v2 = [MEMORY[0x277CCAB68] stringWithString:@"["];
-  v3 = [a1 length];
+  v3 = [self length];
   if (v3)
   {
     v4 = v3;
     for (i = 0; i != v4; ++i)
     {
-      v6 = [a1 indexAtPosition:i];
+      v6 = [self indexAtPosition:i];
       if ([v2 length] == 1)
       {
         v7 = @"%i";
@@ -62,7 +62,7 @@
 - (id)indexPathByInsertingFirstIndex:()SCRCIndexPathExtras
 {
   v2 = [MEMORY[0x277CCAA70] indexPathWithIndex:?];
-  v3 = [v2 indexPathByConcatenatingIndexPath:a1];
+  v3 = [v2 indexPathByConcatenatingIndexPath:self];
 
   return v3;
 }
@@ -72,15 +72,15 @@
   v4 = a3;
   if ([v4 length])
   {
-    if ([a1 length])
+    if ([self length])
     {
       v5 = [v4 length];
-      v6 = [a1 length];
+      v6 = [self length];
       v7 = 8 * v5;
       v8 = malloc_type_malloc(8 * v5, 0x100004000313F17uLL);
       [v4 getIndexes:v8];
       v9 = malloc_type_malloc(8 * v6, 0x100004000313F17uLL);
-      [a1 getIndexes:v9];
+      [self getIndexes:v9];
       v10 = v6 + v5;
       v11 = malloc_type_malloc(8 * (v6 + v5), 0x100004000313F17uLL);
       memcpy(v11, v9, 8 * v6);
@@ -92,15 +92,15 @@
       goto LABEL_7;
     }
 
-    v13 = v4;
+    selfCopy = v4;
   }
 
   else
   {
-    v13 = a1;
+    selfCopy = self;
   }
 
-  v12 = v13;
+  v12 = selfCopy;
 LABEL_7:
 
   return v12;

@@ -1,19 +1,19 @@
 @interface HKHRAFibBurdenHeader
-- (HKHRAFibBurdenHeader)initWithText:(id)a3;
+- (HKHRAFibBurdenHeader)initWithText:(id)text;
 @end
 
 @implementation HKHRAFibBurdenHeader
 
-- (HKHRAFibBurdenHeader)initWithText:(id)a3
+- (HKHRAFibBurdenHeader)initWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v9.receiver = self;
   v9.super_class = HKHRAFibBurdenHeader;
   v5 = [(HKHRAFibBurdenHeader *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(HKHRAFibBurdenHeader *)v5 setHeaderText:v4];
+    [(HKHRAFibBurdenHeader *)v5 setHeaderText:textCopy];
     v7 = v6;
   }
 

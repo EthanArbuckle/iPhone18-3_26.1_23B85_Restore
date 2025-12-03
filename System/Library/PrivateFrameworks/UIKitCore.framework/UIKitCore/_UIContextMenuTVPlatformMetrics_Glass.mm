@@ -39,9 +39,9 @@
     [(_UIContextMenuPlatformMetrics *)v3 setSectionInsets:0.0, 21.0, 0.0, 21.0];
     [(_UIContextMenuPlatformMetrics *)v3 setSectionSeparatorHeight:1.0];
     [(_UIContextMenuPlatformMetrics *)v3 setItemPrimaryColorProvider:&__block_literal_global_7_3];
-    v7 = [(_UIContextMenuPlatformMetrics *)v3 gradientMaskingConfiguration];
-    [v7 setSpacerHeaderFooterHeight:21.0];
-    [(_UIContextMenuPlatformMetrics *)v3 setGradientMaskingConfiguration:v7];
+    gradientMaskingConfiguration = [(_UIContextMenuPlatformMetrics *)v3 gradientMaskingConfiguration];
+    [gradientMaskingConfiguration setSpacerHeaderFooterHeight:21.0];
+    [(_UIContextMenuPlatformMetrics *)v3 setGradientMaskingConfiguration:gradientMaskingConfiguration];
     v8 = [UIImageSymbolConfiguration configurationWithTextStyle:@"UICTFontTextStyleBody" scale:1];
     [(_UIContextMenuPlatformMetrics *)v3 setDecorationViewSymbolConfiguration:v8];
 

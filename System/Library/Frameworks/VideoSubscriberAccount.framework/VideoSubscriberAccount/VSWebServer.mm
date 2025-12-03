@@ -1,5 +1,5 @@
 @interface VSWebServer
-- (VSWebServer)initWithPort:(unsigned __int16)a3;
+- (VSWebServer)initWithPort:(unsigned __int16)port;
 - (VSWebServerDelegate)delegate;
 - (id)description;
 - (id)name;
@@ -13,7 +13,7 @@
 
 @implementation VSWebServer
 
-- (VSWebServer)initWithPort:(unsigned __int16)a3
+- (VSWebServer)initWithPort:(unsigned __int16)port
 {
   v6.receiver = self;
   v6.super_class = VSWebServer;
@@ -97,18 +97,18 @@
 {
   [(VSWebServer *)self server];
   v2 = _CFHTTPServerCopyProperty();
-  v3 = [v2 unsignedShortValue];
+  unsignedShortValue = [v2 unsignedShortValue];
 
-  return v3;
+  return unsignedShortValue;
 }
 
 - (void)resume
 {
-  v3 = [(VSWebServer *)self privateQueue];
-  v5 = v3;
-  if (v3)
+  privateQueue = [(VSWebServer *)self privateQueue];
+  v5 = privateQueue;
+  if (privateQueue)
   {
-    dispatch_resume(v3);
+    dispatch_resume(privateQueue);
   }
 
   else
@@ -122,15 +122,15 @@
 
 - (void)suspend
 {
-  v2 = [(VSWebServer *)self privateQueue];
-  dispatch_suspend(v2);
+  privateQueue = [(VSWebServer *)self privateQueue];
+  dispatch_suspend(privateQueue);
 }
 
 - (void)invalidate
 {
-  v2 = [(VSWebServer *)self server];
+  server = [(VSWebServer *)self server];
 
-  MEMORY[0x28210D0F8](v2);
+  MEMORY[0x28210D0F8](server);
 }
 
 - (id)description

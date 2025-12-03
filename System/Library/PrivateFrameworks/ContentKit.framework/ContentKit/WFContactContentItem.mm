@@ -1,40 +1,40 @@
 @interface WFContactContentItem
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3;
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance;
 + (id)cachedContactGroups;
 + (id)coercions;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 + (id)stringConversionBehavior;
-+ (void)runQuery:(id)a3 withItems:(id)a4 permissionRequestor:(id)a5 completionHandler:(id)a6;
-- (BOOL)canGenerateRepresentationForType:(id)a3;
-- (BOOL)getListSubtitle:(id)a3;
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4;
++ (void)runQuery:(id)query withItems:(id)items permissionRequestor:(id)requestor completionHandler:(id)handler;
+- (BOOL)canGenerateRepresentationForType:(id)type;
+- (BOOL)getListSubtitle:(id)subtitle;
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size;
 - (WFContact)contact;
 - (id)changeTransaction;
-- (id)defaultSourceForRepresentation:(id)a3;
-- (id)generateFileRepresentationForType:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)generateObjectRepresentationsForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)defaultSourceForRepresentation:(id)representation;
+- (id)generateFileRepresentationForType:(id)type options:(id)options error:(id *)error;
+- (id)generateObjectRepresentationsForClass:(Class)class options:(id)options error:(id *)error;
 @end
 
 @implementation WFContactContentItem
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Contacts (plural)", @"Contacts");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Contact (singular)", @"Contact");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -88,48 +88,48 @@ id __49__WFContactContentItem_linkEntityCoercionHandler__block_invoke(uint64_t a
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v3 = [WFObjectType typeWithClassName:@"LNEntity" frameworkName:@"LinkMetadata" location:1];
-  v4 = [a1 linkEntityCoercionHandler];
-  v5 = [WFCoercion coercionToType:v3 handler:v4];
+  linkEntityCoercionHandler = [self linkEntityCoercionHandler];
+  v5 = [WFCoercion coercionToType:v3 handler:linkEntityCoercionHandler];
   v8[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
 
   return v6;
 }
 
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance
 {
-  v4 = a3;
-  if ([v4 conformsToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v4, "conformsToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(v4, "conformsToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(v4, "conformsToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(v4, "conformsToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(v4, "conformsToClass:", objc_opt_class()))
+  instanceCopy = instance;
+  if ([instanceCopy conformsToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(instanceCopy, "conformsToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(instanceCopy, "conformsToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(instanceCopy, "conformsToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(instanceCopy, "conformsToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(instanceCopy, "conformsToClass:", objc_opt_class()))
   {
     v5 = 1;
   }
 
-  else if ([v4 conformsToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v4, "conformsToClass:", objc_opt_class()))
+  else if ([instanceCopy conformsToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(instanceCopy, "conformsToClass:", objc_opt_class()))
   {
     v5 = 0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___WFContactContentItem;
-    v5 = objc_msgSendSuper2(&v7, sel_supportedTypeMustBeDeterminedByInstance_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_supportedTypeMustBeDeterminedByInstance_, instanceCopy);
   }
 
   return v5;
 }
 
-+ (void)runQuery:(id)a3 withItems:(id)a4 permissionRequestor:(id)a5 completionHandler:(id)a6
++ (void)runQuery:(id)query withItems:(id)items permissionRequestor:(id)requestor completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v11 count])
+  queryCopy = query;
+  itemsCopy = items;
+  requestorCopy = requestor;
+  handlerCopy = handler;
+  if ([itemsCopy count])
   {
-    v19.receiver = a1;
+    v19.receiver = self;
     v19.super_class = &OBJC_METACLASS___WFContactContentItem;
-    objc_msgSendSuper2(&v19, sel_runQuery_withItems_permissionRequestor_completionHandler_, v10, v11, v12, v13);
+    objc_msgSendSuper2(&v19, sel_runQuery_withItems_permissionRequestor_completionHandler_, queryCopy, itemsCopy, requestorCopy, handlerCopy);
   }
 
   else
@@ -138,10 +138,10 @@ id __49__WFContactContentItem_linkEntityCoercionHandler__block_invoke(uint64_t a
     v14[1] = 3221225472;
     v14[2] = __81__WFContactContentItem_runQuery_withItems_permissionRequestor_completionHandler___block_invoke;
     v14[3] = &unk_278345F10;
-    v15 = v10;
-    v16 = v12;
-    v17 = v13;
-    v18 = a1;
+    v15 = queryCopy;
+    v16 = requestorCopy;
+    v17 = handlerCopy;
+    selfCopy = self;
     [v16 allowContactsAccessWithCompletionHandler:v14];
   }
 }
@@ -158,64 +158,64 @@ void __81__WFContactContentItem_runQuery_withItems_permissionRequestor_completio
   objc_msgSendSuper2(&v8, sel_runQuery_withItems_permissionRequestor_completionHandler_, v5, v4, v6, v7);
 }
 
-- (id)defaultSourceForRepresentation:(id)a3
+- (id)defaultSourceForRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 wfType];
-  v6 = [v5 conformsToClass:objc_opt_class()];
+  representationCopy = representation;
+  wfType = [representationCopy wfType];
+  v6 = [wfType conformsToClass:objc_opt_class()];
 
   if (v6)
   {
-    v7 = [v4 object];
+    object = [representationCopy object];
 
-    v8 = [(WFContentItem *)self cachingIdentifier];
-    v9 = [v7 attributionSetWithCachingIdentifier:v8];
+    cachingIdentifier = [(WFContentItem *)self cachingIdentifier];
+    v9 = [object attributionSetWithCachingIdentifier:cachingIdentifier];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = WFContactContentItem;
-    v9 = [(WFContentItem *)&v11 defaultSourceForRepresentation:v4];
+    v9 = [(WFContentItem *)&v11 defaultSourceForRepresentation:representationCopy];
   }
 
   return v9;
 }
 
-- (id)generateFileRepresentationForType:(id)a3 options:(id)a4 error:(id *)a5
+- (id)generateFileRepresentationForType:(id)type options:(id)options error:(id *)error
 {
   v6 = MEMORY[0x277D79F68];
   v7 = *MEMORY[0x277CE1EB8];
-  v8 = a3;
+  typeCopy = type;
   v9 = [v6 typeWithUTType:v7];
-  LODWORD(v7) = [v8 conformsToType:v9];
+  LODWORD(v7) = [typeCopy conformsToType:v9];
 
   if (v7)
   {
-    v10 = [(WFContactContentItem *)self contact];
-    v11 = [v10 vCardRepresentation];
+    contact = [(WFContactContentItem *)self contact];
+    vCardRepresentation = [contact vCardRepresentation];
   }
 
   else
   {
-    v11 = 0;
+    vCardRepresentation = 0;
   }
 
-  return v11;
+  return vCardRepresentation;
 }
 
-- (id)generateObjectRepresentationsForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationsForClass:(Class)class options:(id)options error:(id *)error
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v8 = [(WFContactContentItem *)self contact];
-    v9 = [v8 imageData];
+    contact = [(WFContactContentItem *)self contact];
+    imageData = [contact imageData];
 
-    if (v9)
+    if (imageData)
     {
-      v10 = [MEMORY[0x277D79FC8] imageWithData:v9];
-      v11 = [WFObjectRepresentation object:v10];
+      uRLs = [MEMORY[0x277D79FC8] imageWithData:imageData];
+      v11 = [WFObjectRepresentation object:uRLs];
       v33[0] = v11;
       v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
 
@@ -228,36 +228,36 @@ LABEL_19:
 
   else
   {
-    if (objc_opt_class() != a3)
+    if (objc_opt_class() != class)
     {
-      if (objc_opt_class() == a3)
+      if (objc_opt_class() == class)
       {
-        v9 = [(WFContactContentItem *)self contact];
-        v18 = [(WFProcessedContacts *)v9 streetAddresses];
+        imageData = [(WFContactContentItem *)self contact];
+        streetAddresses = [(WFProcessedContacts *)imageData streetAddresses];
       }
 
-      else if (objc_opt_class() == a3)
+      else if (objc_opt_class() == class)
       {
-        v9 = [(WFContactContentItem *)self contact];
-        v18 = [(WFProcessedContacts *)v9 phoneNumbers];
+        imageData = [(WFContactContentItem *)self contact];
+        streetAddresses = [(WFProcessedContacts *)imageData phoneNumbers];
       }
 
       else
       {
-        if (objc_opt_class() != a3)
+        if (objc_opt_class() != class)
         {
-          if (objc_opt_class() == a3)
+          if (objc_opt_class() == class)
           {
-            v9 = [(WFContactContentItem *)self contact];
-            v10 = [(WFProcessedContacts *)v9 URLs];
-            v19 = [(WFContactContentItem *)self objectRepresentationsFromLabeledValues:v10];
+            imageData = [(WFContactContentItem *)self contact];
+            uRLs = [(WFProcessedContacts *)imageData URLs];
+            v19 = [(WFContactContentItem *)self objectRepresentationsFromLabeledValues:uRLs];
           }
 
           else
           {
-            if (objc_opt_class() != a3)
+            if (objc_opt_class() != class)
             {
-              if (objc_opt_class() == a3)
+              if (objc_opt_class() == class)
               {
                 v26 = [(WFContentItem *)self objectForClass:objc_opt_class()];
                 if (v26)
@@ -267,9 +267,9 @@ LABEL_19:
 
                 else
                 {
-                  v28 = [(WFContactContentItem *)self contact];
-                  v29 = [v28 INPersonRepresentation];
-                  v27 = [WFObjectRepresentation object:v29];
+                  contact2 = [(WFContactContentItem *)self contact];
+                  iNPersonRepresentation = [contact2 INPersonRepresentation];
+                  v27 = [WFObjectRepresentation object:iNPersonRepresentation];
                 }
 
                 v30 = v27;
@@ -286,38 +286,38 @@ LABEL_19:
 
             v21 = [WFProcessedContacts alloc];
             v22 = [WFContactFieldEntry alloc];
-            v23 = [(WFContactContentItem *)self contact];
-            v24 = [(WFContactFieldEntry *)v22 initWithContact:v23];
+            contact3 = [(WFContactContentItem *)self contact];
+            v24 = [(WFContactFieldEntry *)v22 initWithContact:contact3];
             v32 = v24;
             v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v32 count:1];
-            v9 = [(WFProcessedContacts *)v21 initWithEntries:v25];
+            imageData = [(WFProcessedContacts *)v21 initWithEntries:v25];
 
-            v10 = [WFObjectRepresentation object:v9];
-            v31 = v10;
+            uRLs = [WFObjectRepresentation object:imageData];
+            v31 = uRLs;
             v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
           }
 
           goto LABEL_18;
         }
 
-        v9 = [(WFContactContentItem *)self contact];
-        v18 = [(WFProcessedContacts *)v9 emailAddresses];
+        imageData = [(WFContactContentItem *)self contact];
+        streetAddresses = [(WFProcessedContacts *)imageData emailAddresses];
       }
 
-      v10 = v18;
-      v19 = [(WFContactContentItem *)self unnamedObjectRepresentationsFromLabeledValues:v18];
+      uRLs = streetAddresses;
+      v19 = [(WFContactContentItem *)self unnamedObjectRepresentationsFromLabeledValues:streetAddresses];
 LABEL_18:
       v7 = v19;
       goto LABEL_19;
     }
 
     v12 = MEMORY[0x277CBEA60];
-    v9 = [(WFContactContentItem *)self contact];
-    v13 = [(WFProcessedContacts *)v9 birthday];
-    v14 = [v12 arrayWithObjects:{v13, 0}];
-    v15 = [(WFContactContentItem *)self contact];
-    v16 = [v15 dates];
-    v17 = [v14 arrayByAddingObjectsFromArray:v16];
+    imageData = [(WFContactContentItem *)self contact];
+    birthday = [(WFProcessedContacts *)imageData birthday];
+    v14 = [v12 arrayWithObjects:{birthday, 0}];
+    contact4 = [(WFContactContentItem *)self contact];
+    dates = [contact4 dates];
+    v17 = [v14 arrayByAddingObjectsFromArray:dates];
     v7 = [(WFContactContentItem *)self objectRepresentationsFromLabeledValues:v17];
   }
 
@@ -347,72 +347,72 @@ id __63__WFContactContentItem_objectRepresentationsFromLabeledValues___block_inv
   return v5;
 }
 
-- (BOOL)canGenerateRepresentationForType:(id)a3
+- (BOOL)canGenerateRepresentationForType:(id)type
 {
-  v4 = a3;
-  if ([v4 conformsToClass:objc_opt_class()])
+  typeCopy = type;
+  if ([typeCopy conformsToClass:objc_opt_class()])
   {
-    v5 = [(WFContactContentItem *)self contact];
-    v6 = [v5 hasImageData];
+    contact = [(WFContactContentItem *)self contact];
+    hasImageData = [contact hasImageData];
 LABEL_16:
-    v7 = v6;
+    v7 = hasImageData;
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  if ([v4 conformsToClass:objc_opt_class()])
+  if ([typeCopy conformsToClass:objc_opt_class()])
   {
-    v5 = [(WFContactContentItem *)self contact];
-    if ([v5 hasValueForPropertyID:17])
+    contact = [(WFContactContentItem *)self contact];
+    if ([contact hasValueForPropertyID:17])
     {
       v7 = 1;
     }
 
     else
     {
-      v10 = [(WFContactContentItem *)self contact];
-      v7 = [v10 hasValueForPropertyID:12];
+      contact2 = [(WFContactContentItem *)self contact];
+      v7 = [contact2 hasValueForPropertyID:12];
     }
 
     goto LABEL_17;
   }
 
-  if ([v4 conformsToClass:objc_opt_class()])
+  if ([typeCopy conformsToClass:objc_opt_class()])
   {
-    v8 = [(WFContactContentItem *)self contact];
-    v5 = v8;
+    contact3 = [(WFContactContentItem *)self contact];
+    contact = contact3;
     v9 = 22;
 LABEL_15:
-    v6 = [v8 hasValueForPropertyID:v9];
+    hasImageData = [contact3 hasValueForPropertyID:v9];
     goto LABEL_16;
   }
 
-  if ([v4 conformsToClass:objc_opt_class()])
+  if ([typeCopy conformsToClass:objc_opt_class()])
   {
-    v8 = [(WFContactContentItem *)self contact];
-    v5 = v8;
+    contact3 = [(WFContactContentItem *)self contact];
+    contact = contact3;
     v9 = 5;
     goto LABEL_15;
   }
 
-  if ([v4 conformsToClass:objc_opt_class()])
+  if ([typeCopy conformsToClass:objc_opt_class()])
   {
-    v8 = [(WFContactContentItem *)self contact];
-    v5 = v8;
+    contact3 = [(WFContactContentItem *)self contact];
+    contact = contact3;
     v9 = 3;
     goto LABEL_15;
   }
 
-  if ([v4 conformsToClass:objc_opt_class()])
+  if ([typeCopy conformsToClass:objc_opt_class()])
   {
-    v8 = [(WFContactContentItem *)self contact];
-    v5 = v8;
+    contact3 = [(WFContactContentItem *)self contact];
+    contact = contact3;
     v9 = 4;
     goto LABEL_15;
   }
 
-  if ([v4 conformsToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v4, "conformsToClass:", objc_opt_class()))
+  if ([typeCopy conformsToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(typeCopy, "conformsToClass:", objc_opt_class()))
   {
     v7 = 1;
   }
@@ -421,7 +421,7 @@ LABEL_15:
   {
     v12.receiver = self;
     v12.super_class = WFContactContentItem;
-    v7 = [(WFGenericFileContentItem *)&v12 canGenerateRepresentationForType:v4];
+    v7 = [(WFGenericFileContentItem *)&v12 canGenerateRepresentationForType:typeCopy];
   }
 
 LABEL_18:
@@ -438,11 +438,11 @@ LABEL_18:
 
 - (WFContact)contact
 {
-  v3 = [(WFContactContentItem *)self cachedContact];
+  cachedContact = [(WFContactContentItem *)self cachedContact];
 
-  if (v3)
+  if (cachedContact)
   {
-    v4 = [(WFContactContentItem *)self cachedContact];
+    cachedContact2 = [(WFContactContentItem *)self cachedContact];
   }
 
   else
@@ -457,11 +457,11 @@ LABEL_18:
     {
       [(WFContentItem *)self objectForClass:objc_opt_class()];
     }
-    v4 = ;
-    [(WFContactContentItem *)self setCachedContact:v4];
+    cachedContact2 = ;
+    [(WFContactContentItem *)self setCachedContact:cachedContact2];
   }
 
-  return v4;
+  return cachedContact2;
 }
 
 + (id)stringConversionBehavior
@@ -535,8 +535,8 @@ LABEL_18:
   v87 = [WFContentPropertyBuilder block:&__block_literal_global_275 name:v88 class:objc_opt_class()];
   v85 = [v87 multipleValues:1];
   v86 = objc_opt_new();
-  v84 = [v86 allUsedRelationLabels];
-  v83 = [v85 possibleValues:v84];
+  allUsedRelationLabels = [v86 allUsedRelationLabels];
+  v83 = [v85 possibleValues:allUsedRelationLabels];
   v140[8] = v83;
   v82 = WFLocalizedContentPropertyNameMarker(@"Contact Photo");
   v81 = [WFContentPropertyBuilder block:&__block_literal_global_284 name:v82 class:objc_opt_class()];
@@ -626,7 +626,7 @@ LABEL_18:
   v139[1] = 3221225472;
   v139[2] = __40__WFContactContentItem_propertyBuilders__block_invoke_2_412;
   v139[3] = &__block_descriptor_40_e43_v32__0__WFContactContentItem_8_16___v____24l;
-  v139[4] = a1;
+  v139[4] = self;
   v12 = WFLocalizedContentPropertyNameMarker(@"Group");
   v13 = [WFContentPropertyBuilder block:v139 name:v12 class:objc_opt_class()];
   v14 = [v13 multipleValues:1];
@@ -634,7 +634,7 @@ LABEL_18:
   v138[1] = 3221225472;
   v138[2] = __40__WFContactContentItem_propertyBuilders__block_invoke_4_418;
   v138[3] = &__block_descriptor_40_e14___NSArray_8__0l;
-  v138[4] = a1;
+  v138[4] = self;
   v15 = [v14 possibleValuesGetter:v138];
   v16 = [v15 userInfo:@"WFContactItemGroupProperty"];
   v17 = [v16 gettable:0];
@@ -1086,14 +1086,14 @@ uint64_t __43__WFContactContentItem_cachedContactGroups__block_invoke(uint64_t a
   return [WFContact removeContactsChangeObserver:v3];
 }
 
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v49[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(WFContactContentItem *)self contact];
-  if (![v8 hasImageData] || (objc_msgSend(v8, "thumbnailImageData"), v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
+  thumbnailCopy = thumbnail;
+  contact = [(WFContactContentItem *)self contact];
+  if (![contact hasImageData] || (objc_msgSend(contact, "thumbnailImageData"), v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1102,15 +1102,15 @@ uint64_t __43__WFContactContentItem_cachedContactGroups__block_invoke(uint64_t a
       goto LABEL_22;
     }
 
-    if (v7)
+    if (thumbnailCopy)
     {
-      v12 = [v8 contact];
-      v25 = [MEMORY[0x277D79F18] currentDevice];
-      [v25 screenScale];
+      v8Contact = [contact contact];
+      currentDevice = [MEMORY[0x277D79F18] currentDevice];
+      [currentDevice screenScale];
       v27 = v26;
 
       v28 = +[WFApplicationContext sharedContext];
-      v29 = [v28 shouldReverseLayoutDirection];
+      shouldReverseLayoutDirection = [v28 shouldReverseLayoutDirection];
 
       v43 = 0;
       v44 = &v43;
@@ -1130,7 +1130,7 @@ uint64_t __43__WFContactContentItem_cachedContactGroups__block_invoke(uint64_t a
 
       v31 = v30;
       _Block_object_dispose(&v43, 8);
-      v23 = [v30 scopeWithPointSize:v29 scale:0 rightToLeft:width style:{height, v27}];
+      v23 = [v30 scopeWithPointSize:shouldReverseLayoutDirection scale:0 rightToLeft:width style:{height, v27}];
       v43 = 0;
       v44 = &v43;
       v45 = 0x2050000000;
@@ -1149,7 +1149,7 @@ uint64_t __43__WFContactContentItem_cachedContactGroups__block_invoke(uint64_t a
 
       v33 = v32;
       _Block_object_dispose(&v43, 8);
-      v34 = [v32 defaultSettings];
+      defaultSettings = [v32 defaultSettings];
       v43 = 0;
       v44 = &v43;
       v45 = 0x2050000000;
@@ -1168,8 +1168,8 @@ uint64_t __43__WFContactContentItem_cachedContactGroups__block_invoke(uint64_t a
 
       v36 = v35;
       _Block_object_dispose(&v43, 8);
-      v37 = [[v35 alloc] initWithSettings:v34];
-      v47 = v12;
+      v37 = [[v35 alloc] initWithSettings:defaultSettings];
+      v47 = v8Contact;
       v38 = [MEMORY[0x277CBEA60] arrayWithObjects:&v47 count:1];
       v39 = [v37 avatarImageForContacts:v38 scope:v23];
 
@@ -1177,7 +1177,7 @@ uint64_t __43__WFContactContentItem_cachedContactGroups__block_invoke(uint64_t a
       if (v39)
       {
         v40 = [objc_alloc(MEMORY[0x277D79FC8]) initWithPlatformImage:v39];
-        v7[2](v7, v40, 0);
+        thumbnailCopy[2](thumbnailCopy, v40, 0);
       }
 
       goto LABEL_19;
@@ -1188,17 +1188,17 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (!v7)
+  if (!thumbnailCopy)
   {
     goto LABEL_21;
   }
 
   v10 = MEMORY[0x277D79FC8];
-  v11 = [v8 thumbnailImageData];
-  v12 = [v10 imageWithData:v11];
+  thumbnailImageData = [contact thumbnailImageData];
+  v8Contact = [v10 imageWithData:thumbnailImageData];
 
-  v13 = [MEMORY[0x277D79F18] currentDevice];
-  [v13 screenScale];
+  currentDevice2 = [MEMORY[0x277D79F18] currentDevice];
+  [currentDevice2 screenScale];
   v15 = v14;
 
   CGAffineTransformMakeScale(&v42, v15, v15);
@@ -1206,22 +1206,22 @@ LABEL_21:
   b = v42.b;
   c = v42.c;
   d = v42.d;
-  [v12 sizeInPixels];
+  [v8Contact sizeInPixels];
   if (v20 > height * c + a * width)
   {
-    [v12 sizeInPixels];
+    [v8Contact sizeInPixels];
     if (v21 > height * d + b * width)
     {
-      v22 = [v12 resizedImageWithSizeInPoints:width scale:{height, v15}];
+      v22 = [v8Contact resizedImageWithSizeInPoints:width scale:{height, v15}];
 
-      v12 = v22;
+      v8Contact = v22;
     }
   }
 
   v48 = *MEMORY[0x277D7A398];
   v49[0] = &unk_282F7A2D0;
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:&v48 count:1];
-  (v7)[2](v7, v12, v23);
+  (thumbnailCopy)[2](thumbnailCopy, v8Contact, v23);
   v24 = 1;
 LABEL_19:
 
@@ -1229,19 +1229,19 @@ LABEL_22:
   return v24;
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  if (a3)
+  if (subtitle)
   {
-    v5 = a3;
-    v6 = [(WFContactContentItem *)self contact];
-    v7 = [v6 organization];
-    (*(a3 + 2))(v5, v7);
+    subtitleCopy = subtitle;
+    contact = [(WFContactContentItem *)self contact];
+    organization = [contact organization];
+    (*(subtitle + 2))(subtitleCopy, organization);
   }
 
-  v8 = [(WFContactContentItem *)self contact];
-  v9 = [v8 organization];
-  v10 = v9 != 0;
+  contact2 = [(WFContactContentItem *)self contact];
+  organization2 = [contact2 organization];
+  v10 = organization2 != 0;
 
   return v10;
 }

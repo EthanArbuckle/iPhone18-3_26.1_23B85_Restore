@@ -1,14 +1,14 @@
 @interface HSPCPINCodeViewController
-- (HSPCPINCodeViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCPINCodeViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)commitConfiguration;
 @end
 
 @implementation HSPCPINCodeViewController
 
-- (HSPCPINCodeViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCPINCodeViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v9 = [[HUIconView alloc] initWithFrame:1 contentMode:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   v24.receiver = self;
   v24.super_class = HSPCPINCodeViewController;
@@ -16,26 +16,26 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_config, a4);
-    objc_storeStrong(&v11->_coordinator, a3);
+    objc_storeStrong(&v10->_config, config);
+    objc_storeStrong(&v11->_coordinator, coordinator);
     v12 = sub_100063A44(@"HSProximityCardPINCodeTitle");
     [(HSPCPINCodeViewController *)v11 setTitle:v12];
 
     v13 = sub_100063A44(@"HSProximityCardPINCodeSubtitle");
     [(HSPCPINCodeViewController *)v11 setSubtitle:v13];
 
-    v14 = [v8 home];
-    v15 = [v14 hf_currentUserIsRestrictedGuest];
+    home = [configCopy home];
+    hf_currentUserIsRestrictedGuest = [home hf_currentUserIsRestrictedGuest];
 
-    if (v15)
+    if (hf_currentUserIsRestrictedGuest)
     {
       v16 = sub_100063A44(@"HSProximityCardPINCodeSubtitle_RestrictedGuest");
       [(HSPCPINCodeViewController *)v11 setSubtitle:v16];
     }
 
     v17 = [(HSPCPINCodeViewController *)v11 addProminentButtonWithTitleKey:@"HUContinueTitle" target:v11 futureSelector:"commitConfiguration"];
-    v18 = [v8 home];
-    v19 = [HFWalletUtilities packageIconIdentifierForHome:v18 shouldUseKeyholeAsset:0];
+    home2 = [configCopy home];
+    v19 = [HFWalletUtilities packageIconIdentifierForHome:home2 shouldUseKeyholeAsset:0];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100019700;
@@ -54,7 +54,7 @@
   {
     v5 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
     v34 = v5;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "(%@:%@) User tapped Continue button", buf, 0x16u);
@@ -64,19 +64,19 @@
   if ((+[HFUtilities isUsingiCloud]& 1) != 0)
   {
     v7 = +[HFHomeKitDispatcher sharedDispatcher];
-    v8 = [(HSPCPINCodeViewController *)self config];
-    v9 = [v8 home];
-    v10 = [v7 pinCodeManagerForHome:v9];
+    config = [(HSPCPINCodeViewController *)self config];
+    home = [config home];
+    v10 = [v7 pinCodeManagerForHome:home];
 
     objc_initWeak(buf, self);
-    v11 = [v10 hasValidConstraints];
+    hasValidConstraints = [v10 hasValidConstraints];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100019C68;
     v22[3] = &unk_1000C60C0;
     objc_copyWeak(&v24, buf);
     v23 = v6;
-    v12 = [v11 flatMap:v22];
+    v12 = [hasValidConstraints flatMap:v22];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(buf);

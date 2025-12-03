@@ -12,8 +12,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 shape];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  shape = [v4 shape];
+  v6 = [shape countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -25,13 +25,13 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(shape);
         }
 
         v9 *= [*(*(&v13 + 1) + 8 * i) unsignedIntegerValue];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [shape countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -42,7 +42,7 @@
     v9 = 1;
   }
 
-  v11 = [a1 initWithFloats:objc_msgSend(v4 count:{"dataPointer"), v9}];
+  v11 = [self initWithFloats:objc_msgSend(v4 count:{"dataPointer"), v9}];
   return v11;
 }
 

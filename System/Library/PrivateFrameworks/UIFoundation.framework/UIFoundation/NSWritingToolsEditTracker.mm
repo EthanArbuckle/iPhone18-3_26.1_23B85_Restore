@@ -1,23 +1,23 @@
 @interface NSWritingToolsEditTracker
-- (NSWritingToolsEditTracker)initWithContextRange:(_NSRange)a3;
-- (_NSRange)_indirect_adjustRange:(_NSRange)a3 forUUID:(id)a4;
-- (_NSRange)adjustRange:(_NSRange)a3;
+- (NSWritingToolsEditTracker)initWithContextRange:(_NSRange)range;
+- (_NSRange)_indirect_adjustRange:(_NSRange)range forUUID:(id)d;
+- (_NSRange)adjustRange:(_NSRange)range;
 - (_NSRange)currentContextRange;
-- (_NSRange)rangeOfSuggestionWithRange:(_NSRange)a3 UUID:(id)a4 applyDelta:(BOOL)a5;
-- (uint64_t)_addRange:(NSUInteger)a3 delta:(uint64_t)a4 uuid:(void *)a5;
-- (unint64_t)_adjustLocation:(unint64_t)a3;
-- (unint64_t)_adjustRange:(uint64_t)a3 forUUID:(void *)a4;
-- (void)_removeRange:(uint64_t)a1;
-- (void)addEditForSuggestionWithRange:(_NSRange)a3 lengthDelta:(int64_t)a4 UUID:(id)a5;
-- (void)removeEditForSuggestionWithUUID:(id)a3;
+- (_NSRange)rangeOfSuggestionWithRange:(_NSRange)range UUID:(id)d applyDelta:(BOOL)delta;
+- (uint64_t)_addRange:(NSUInteger)range delta:(uint64_t)delta uuid:(void *)uuid;
+- (unint64_t)_adjustLocation:(unint64_t)location;
+- (unint64_t)_adjustRange:(uint64_t)range forUUID:(void *)d;
+- (void)_removeRange:(uint64_t)range;
+- (void)addEditForSuggestionWithRange:(_NSRange)range lengthDelta:(int64_t)delta UUID:(id)d;
+- (void)removeEditForSuggestionWithUUID:(id)d;
 @end
 
 @implementation NSWritingToolsEditTracker
 
-- (NSWritingToolsEditTracker)initWithContextRange:(_NSRange)a3
+- (NSWritingToolsEditTracker)initWithContextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v12.receiver = self;
   v12.super_class = NSWritingToolsEditTracker;
   v5 = [(NSWritingToolsEditTracker *)&v12 init];
@@ -32,15 +32,15 @@
     edits = v6->_edits;
     v6->_edits = v7;
 
-    v9 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     uuidToEdit = v6->_uuidToEdit;
-    v6->_uuidToEdit = v9;
+    v6->_uuidToEdit = strongToStrongObjectsMapTable;
   }
 
   return v6;
 }
 
-- (unint64_t)_adjustLocation:(unint64_t)a3
+- (unint64_t)_adjustLocation:(unint64_t)location
 {
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
@@ -64,8 +64,8 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * v10);
-        v12 = [(__NSWritingToolsEdit *)v11 range];
-        if (v12 + v13 <= a3)
+        range = [(__NSWritingToolsEdit *)v11 range];
+        if (range + v13 <= location)
         {
           if (v11)
           {
@@ -76,13 +76,13 @@
             }
 
 LABEL_12:
-            a3 += v14;
+            location += v14;
             goto LABEL_13;
           }
 
           v14 = 0;
 LABEL_9:
-          if (a3 < -v14)
+          if (location < -v14)
           {
             [(NSWritingToolsEditTracker *)a2 _adjustLocation:?];
             if (v11)
@@ -114,13 +114,13 @@ LABEL_13:
     while (v15);
   }
 
-  return a3;
+  return location;
 }
 
-- (_NSRange)adjustRange:(_NSRange)a3
+- (_NSRange)adjustRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v7 = [(NSWritingToolsEditTracker *)self _adjustLocation:?];
   v8 = [(NSWritingToolsEditTracker *)self _adjustLocation:location + length];
   v9 = v8 - v7;
@@ -146,47 +146,47 @@ LABEL_13:
   return result;
 }
 
-- (uint64_t)_addRange:(NSUInteger)a3 delta:(uint64_t)a4 uuid:(void *)a5
+- (uint64_t)_addRange:(NSUInteger)range delta:(uint64_t)delta uuid:(void *)uuid
 {
-  location = a5;
+  location = uuid;
   v10 = location;
-  if (a1)
+  if (self)
   {
     v34 = location;
-    if (a4 <= 0 && a2 + a3 < -a4)
+    if (delta <= 0 && a2 + range < -delta)
     {
-      v32 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v32 handleFailureInMethod:sel__addRange_delta_uuid_ object:a1 file:@"NSWritingToolsEditTracker.m" lineNumber:101 description:@"delta exceeds range length"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__addRange_delta_uuid_ object:self file:@"NSWritingToolsEditTracker.m" lineNumber:101 description:@"delta exceeds range length"];
 
       v10 = v34;
     }
 
-    v11 = [*(a1 + 16) objectForKey:v10];
+    v11 = [*(self + 16) objectForKey:v10];
 
     v10 = v34;
     if (!v11)
     {
-      v12.location = *(a1 + 40);
-      if (a3)
+      v12.location = *(self + 40);
+      if (range)
       {
-        v12.length = *(a1 + 48);
+        v12.length = *(self + 48);
         v36.location = a2;
-        v36.length = a3;
+        v36.length = range;
         length = NSIntersectionRange(v36, v12).length;
-        v39.length = *(a1 + 40);
+        v39.length = *(self + 40);
         v37.location = a2;
-        v37.length = a3;
+        v37.length = range;
         v39.location = 0;
         v14 = NSIntersectionRange(v37, v39).length;
-        v40.location = *(a1 + 48) + *(a1 + 40);
+        v40.location = *(self + 48) + *(self + 40);
         v40.length = ~v40.location;
         v38.location = a2;
-        v38.length = a3;
+        v38.length = range;
         v15 = NSIntersectionRange(v38, v40);
         location = v15.location;
         if (v15.length && length)
         {
-          if (v15.length >= -a4)
+          if (v15.length >= -delta)
           {
             v16 = 0;
           }
@@ -196,45 +196,45 @@ LABEL_13:
             v16 = v15.length;
           }
 
-          v17 = v16 + a4;
-          if (a4 < 0)
+          v17 = v16 + delta;
+          if (delta < 0)
           {
-            a4 = v17;
+            delta = v17;
           }
 
           else
           {
-            a4 = 0;
+            delta = 0;
           }
         }
 
         v10 = v34;
         if (v14 && length)
         {
-          if (length < -a4)
+          if (length < -delta)
           {
-            v18 = a4 + length;
+            deltaCopy5 = delta + length;
           }
 
           else
           {
-            v18 = 0;
+            deltaCopy5 = 0;
           }
 
-          if (length < -a4)
+          if (length < -delta)
           {
-            v19 = -length;
+            deltaCopy6 = -length;
           }
 
           else
           {
-            v19 = a4;
+            deltaCopy6 = delta;
           }
 
-          if (a4 >= 0)
+          if (delta >= 0)
           {
-            v18 = 0;
-            v19 = a4;
+            deltaCopy5 = 0;
+            deltaCopy6 = delta;
           }
         }
 
@@ -242,25 +242,25 @@ LABEL_13:
         {
           if (v14)
           {
-            v18 = a4;
+            deltaCopy5 = delta;
           }
 
           else
           {
-            v18 = 0;
+            deltaCopy5 = 0;
           }
 
           if (v14)
           {
-            v19 = 0;
+            deltaCopy6 = 0;
           }
 
           else
           {
-            v19 = a4;
+            deltaCopy6 = delta;
           }
 
-          if (!length && !(v19 | v14) && !v18)
+          if (!length && !(deltaCopy6 | v14) && !deltaCopy5)
           {
             goto LABEL_53;
           }
@@ -269,7 +269,7 @@ LABEL_13:
         goto LABEL_50;
       }
 
-      v20 = *(a1 + 48);
+      v20 = *(self + 48);
       v21 = a2 == v12.location;
       if (v20)
       {
@@ -281,12 +281,12 @@ LABEL_13:
       v24 = v20 + v12.location;
       if (v23)
       {
-        v18 = 0;
+        deltaCopy5 = 0;
       }
 
       else
       {
-        v18 = a4;
+        deltaCopy5 = delta;
       }
 
       if (a2 >= v24)
@@ -296,27 +296,27 @@ LABEL_13:
 
       if (v21 || v22)
       {
-        v19 = a4;
+        deltaCopy6 = delta;
       }
 
       else
       {
-        v19 = 0;
+        deltaCopy6 = 0;
       }
 
-      if (a4)
+      if (delta)
       {
 LABEL_50:
-        v25 = *(a1 + 48) + v19;
-        *(a1 + 40) += v18;
-        *(a1 + 48) = v25;
+        v25 = *(self + 48) + deltaCopy6;
+        *(self + 40) += deltaCopy5;
+        *(self + 48) = v25;
         v26 = [__NSWritingToolsEdit alloc];
         OUTLINED_FUNCTION_0_1();
         v31 = [(__NSWritingToolsEdit *)v27 initWithRange:v28 delta:v29 identifier:v30, v34];
-        [*(a1 + 8) addObject:v31];
+        [*(self + 8) addObject:v31];
         if (v34)
         {
-          [*(a1 + 16) setObject:v31 forKey:v34];
+          [*(self + 16) setObject:v31 forKey:v34];
         }
 
         v10 = v34;
@@ -329,38 +329,38 @@ LABEL_53:
   return MEMORY[0x1EEE66BB8](location, v10);
 }
 
-- (void)_removeRange:(uint64_t)a1
+- (void)_removeRange:(uint64_t)range
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (range)
   {
     if (!v3)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       OUTLINED_FUNCTION_0_1();
       [v15 handleFailureInMethod:@"uuid" object:? file:? lineNumber:? description:?];
     }
 
-    v5 = [*(a1 + 16) objectForKey:v4];
+    v5 = [*(range + 16) objectForKey:v4];
     if (v5)
     {
       objc_copyStruct(&dest, v5 + 3, 16, 1, 0);
       v6 = dest;
       v7 = v5[1];
-      [*(a1 + 16) removeObjectForKey:v4];
-      v8 = [*(a1 + 8) indexOfObject:v5];
-      v9 = [*(a1 + 8) count];
+      [*(range + 16) removeObjectForKey:v4];
+      v8 = [*(range + 8) indexOfObject:v5];
+      v9 = [*(range + 8) count];
       if (v8 < v9)
       {
         v10 = v9;
-        [*(a1 + 8) removeObjectAtIndex:v8];
+        [*(range + 8) removeObjectAtIndex:v8];
         v11 = v10 - 1;
         if (v8 < v11)
         {
           do
           {
-            v12 = [*(a1 + 8) objectAtIndexedSubscript:v8];
+            v12 = [*(range + 8) objectAtIndexedSubscript:v8];
             if (v12)
             {
               v13 = v12[3];
@@ -377,29 +377,29 @@ LABEL_53:
         }
       }
 
-      *(a1 + 48) -= v7;
+      *(range + 48) -= v7;
     }
   }
 }
 
-- (unint64_t)_adjustRange:(uint64_t)a3 forUUID:(void *)a4
+- (unint64_t)_adjustRange:(uint64_t)range forUUID:(void *)d
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
-  if (a1)
+  dCopy = d;
+  v8 = dCopy;
+  if (self)
   {
-    if (!v7)
+    if (!dCopy)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:sel__adjustRange_forUUID_ object:a1 file:@"NSWritingToolsEditTracker.m" lineNumber:235 description:{@"Invalid parameter not satisfying: %@", @"uuid"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__adjustRange_forUUID_ object:self file:@"NSWritingToolsEditTracker.m" lineNumber:235 description:{@"Invalid parameter not satisfying: %@", @"uuid"}];
     }
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v9 = *(a1 + 8);
+    v9 = *(self + 8);
     v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v10)
     {
@@ -434,8 +434,8 @@ LABEL_53:
             goto LABEL_12;
           }
 
-          v19 = [(__NSWritingToolsEdit *)v16 range];
-          if (&v11[v19] <= a2)
+          range = [(__NSWritingToolsEdit *)v16 range];
+          if (&v11[range] <= a2)
           {
             a2 += v17;
 LABEL_12:
@@ -443,8 +443,8 @@ LABEL_12:
             goto LABEL_13;
           }
 
-          v20 = v19 <= v14 && &v11[v19] > v14;
-          if (v20 || (v14 <= v19 ? (v21 = v14 + a3 > v19) : (v21 = 0), v21))
+          v20 = range <= v14 && &v11[range] > v14;
+          if (v20 || (v14 <= range ? (v21 = v14 + range > range) : (v21 = 0), v21))
           {
             a2 = 0x7FFFFFFFFFFFFFFFLL;
             goto LABEL_31;
@@ -473,66 +473,66 @@ LABEL_31:
   return a2;
 }
 
-- (void)addEditForSuggestionWithRange:(_NSRange)a3 lengthDelta:(int64_t)a4 UUID:(id)a5
+- (void)addEditForSuggestionWithRange:(_NSRange)range lengthDelta:(int64_t)delta UUID:(id)d
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a5;
-  v15 = v9;
-  if (!v9)
+  length = range.length;
+  location = range.location;
+  dCopy = d;
+  v15 = dCopy;
+  if (!dCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     OUTLINED_FUNCTION_0_1();
     [v12 handleFailureInMethod:@"uuid" object:? file:? lineNumber:? description:?];
 
-    v9 = 0;
+    dCopy = 0;
   }
 
-  [(NSWritingToolsEditTracker *)self _adjustRange:length forUUID:v9];
+  [(NSWritingToolsEditTracker *)self _adjustRange:length forUUID:dCopy];
   OUTLINED_FUNCTION_1_1();
   if (v10)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     OUTLINED_FUNCTION_0_1();
     [v14 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
   }
 
-  [(NSWritingToolsEditTracker *)self _addRange:location delta:a4 uuid:v15];
+  [(NSWritingToolsEditTracker *)self _addRange:location delta:delta uuid:v15];
 }
 
-- (void)removeEditForSuggestionWithUUID:(id)a3
+- (void)removeEditForSuggestionWithUUID:(id)d
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  dCopy = d;
+  v7 = dCopy;
+  if (!dCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"NSWritingToolsEditTracker.m" lineNumber:321 description:{@"Invalid parameter not satisfying: %@", @"uuid"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSWritingToolsEditTracker.m" lineNumber:321 description:{@"Invalid parameter not satisfying: %@", @"uuid"}];
 
-    v5 = 0;
+    dCopy = 0;
   }
 
-  [(NSWritingToolsEditTracker *)self _removeRange:v5];
+  [(NSWritingToolsEditTracker *)self _removeRange:dCopy];
 }
 
-- (_NSRange)rangeOfSuggestionWithRange:(_NSRange)a3 UUID:(id)a4 applyDelta:(BOOL)a5
+- (_NSRange)rangeOfSuggestionWithRange:(_NSRange)range UUID:(id)d applyDelta:(BOOL)delta
 {
-  v5 = a5;
-  length = a3.length;
-  location = a3.location;
-  v10 = a4;
-  if (!v10)
+  deltaCopy = delta;
+  length = range.length;
+  location = range.location;
+  dCopy = d;
+  if (!dCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"NSWritingToolsEditTracker.m" lineNumber:341 description:{@"Invalid parameter not satisfying: %@", @"uuid"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSWritingToolsEditTracker.m" lineNumber:341 description:{@"Invalid parameter not satisfying: %@", @"uuid"}];
   }
 
-  [(NSWritingToolsEditTracker *)self _adjustRange:length forUUID:v10];
+  [(NSWritingToolsEditTracker *)self _adjustRange:length forUUID:dCopy];
   OUTLINED_FUNCTION_1_1();
-  v11 = v11 || !v5;
+  v11 = v11 || !deltaCopy;
   if (!v11)
   {
-    v12 = [(NSMapTable *)self->_uuidToEdit objectForKey:v10];
+    v12 = [(NSMapTable *)self->_uuidToEdit objectForKey:dCopy];
     if (v12)
     {
       location += v12[1];
@@ -546,9 +546,9 @@ LABEL_31:
   return result;
 }
 
-- (_NSRange)_indirect_adjustRange:(_NSRange)a3 forUUID:(id)a4
+- (_NSRange)_indirect_adjustRange:(_NSRange)range forUUID:(id)d
 {
-  v4 = [(NSWritingToolsEditTracker *)self _adjustRange:a3.length forUUID:a4];
+  v4 = [(NSWritingToolsEditTracker *)self _adjustRange:range.length forUUID:d];
   result.length = v5;
   result.location = v4;
   return result;

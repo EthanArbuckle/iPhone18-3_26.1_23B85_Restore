@@ -1,5 +1,5 @@
 @interface CollectionTableViewCell
-- (_TtC22SubscribePageExtension23CollectionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC22SubscribePageExtension23CollectionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
@@ -25,8 +25,8 @@
   if (v3)
   {
     v4 = v3;
-    v5 = [v2 contentView];
-    [v5 bounds];
+    contentView = [v2 contentView];
+    [contentView bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -37,11 +37,11 @@
   }
 }
 
-- (_TtC22SubscribePageExtension23CollectionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC22SubscribePageExtension23CollectionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_100753094();
+    identifier = sub_100753094();
     v6 = v5;
   }
 
@@ -50,7 +50,7 @@
     v6 = 0;
   }
 
-  return sub_100225DE8(a3, a4, v6);
+  return sub_100225DE8(style, identifier, v6);
 }
 
 @end

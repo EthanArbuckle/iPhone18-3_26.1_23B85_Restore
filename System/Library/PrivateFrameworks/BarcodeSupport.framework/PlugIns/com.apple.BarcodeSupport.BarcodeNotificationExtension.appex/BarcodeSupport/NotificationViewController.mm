@@ -1,10 +1,10 @@
 @interface NotificationViewController
-- (id)_launchURLForActionIdentifier:(id)a3;
+- (id)_launchURLForActionIdentifier:(id)identifier;
 - (id)_notificationServiceConnection;
 - (int64_t)_previewContentType;
 - (void)_showContentViewControllerIfNeeded;
-- (void)didReceiveNotification:(id)a3;
-- (void)didReceiveNotificationResponse:(id)a3 completionHandler:(id)a4;
+- (void)didReceiveNotification:(id)notification;
+- (void)didReceiveNotificationResponse:(id)response completionHandler:(id)handler;
 @end
 
 @implementation NotificationViewController
@@ -17,15 +17,15 @@
     {
       v3 = [[TextPreviewViewController alloc] initWithPreviewText:self->_extraPreviewText footerTitle:self->_previewFooterTitle footerSubtitle:self->_previewFooterSubtitle];
 LABEL_13:
-      v11 = [(TextPreviewViewController *)v3 view];
-      [v11 setTranslatesAutoresizingMaskIntoConstraints:1];
-      [v11 setAutoresizingMask:18];
-      v12 = [(NotificationViewController *)self view];
-      [v12 bounds];
+      view = [(TextPreviewViewController *)v3 view];
+      [view setTranslatesAutoresizingMaskIntoConstraints:1];
+      [view setAutoresizingMask:18];
+      view2 = [(NotificationViewController *)self view];
+      [view2 bounds];
       Width = CGRectGetWidth(v32);
-      v14 = [(NotificationViewController *)self view];
-      [v14 bounds];
-      [v11 setFrame:{0.0, 0.0, Width, CGRectGetHeight(v33)}];
+      view3 = [(NotificationViewController *)self view];
+      [view3 bounds];
+      [view setFrame:{0.0, 0.0, Width, CGRectGetHeight(v33)}];
 
       if (self->_extraPreviewText)
       {
@@ -33,14 +33,14 @@ LABEL_13:
         v18 = 3221225472;
         v19 = sub_100001E84;
         v20 = &unk_1000082C8;
-        v21 = self;
+        selfCopy = self;
         v22 = v3;
         [UIView performWithoutAnimation:&v17];
       }
 
-      [(NotificationViewController *)self addChildViewController:v3, v17, v18, v19, v20, v21];
-      v15 = [(NotificationViewController *)self view];
-      [v15 addSubview:v11];
+      [(NotificationViewController *)self addChildViewController:v3, v17, v18, v19, v20, selfCopy];
+      view4 = [(NotificationViewController *)self view];
+      [view4 addSubview:view];
 
       [(TextPreviewViewController *)v3 didMoveToParentViewController:self];
       v16 = +[BCSAWDLogger sharedLogger];
@@ -67,22 +67,22 @@ LABEL_13:
 
     v5 = v4;
     _Block_object_dispose(&v28, 8);
-    v6 = [v4 sharedController];
-    v7 = [v6 barcodePreviewActionForContext:0 URL:self->_defaultURL result:-[DDScannerResult coreResult](self->_scannerResult contact:"coreResult") ics:{self->_contact, self->_icsString}];
+    sharedController = [v4 sharedController];
+    v7 = [sharedController barcodePreviewActionForContext:0 URL:self->_defaultURL result:-[DDScannerResult coreResult](self->_scannerResult contact:"coreResult") ics:{self->_contact, self->_icsString}];
     previewAction = self->_previewAction;
     self->_previewAction = v7;
 
     v9 = self->_previewAction;
     if (v9)
     {
-      v10 = [(DDPreviewAction *)v9 viewController];
+      viewController = [(DDPreviewAction *)v9 viewController];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v10 _setShowingLinkPreviewWithMinimalUI:1];
+        [viewController _setShowingLinkPreviewWithMinimalUI:1];
       }
 
-      v3 = [[PreviewWithFooterViewController alloc] initWithPreviewViewController:v10 footerTitle:self->_previewFooterTitle footerSubtitle:self->_previewFooterSubtitle];
+      v3 = [[PreviewWithFooterViewController alloc] initWithPreviewViewController:viewController footerTitle:self->_previewFooterTitle footerSubtitle:self->_previewFooterSubtitle];
 
       goto LABEL_13;
     }
@@ -100,20 +100,20 @@ LABEL_13:
   }
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v4 = [a3 request];
-  v5 = [v4 content];
+  request = [notification request];
+  content = [request content];
 
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKey:BCSBarcodeNotificationPayloadURLKey];
+  userInfo = [content userInfo];
+  v7 = [userInfo objectForKey:BCSBarcodeNotificationPayloadURLKey];
 
   v8 = [NSURL URLWithString:v7];
   defaultURL = self->_defaultURL;
   self->_defaultURL = v8;
 
-  v10 = [v5 userInfo];
-  v11 = [v10 objectForKey:BCSBarcodeNotificationPayloadKey];
+  userInfo2 = [content userInfo];
+  v11 = [userInfo2 objectForKey:BCSBarcodeNotificationPayloadKey];
 
   if (!v11)
   {
@@ -166,8 +166,8 @@ LABEL_6:
     self->_notificationActions = v32;
 
     v34 = self->_notificationActions;
-    v35 = [(NotificationViewController *)self extensionContext];
-    [v35 setNotificationActions:v34];
+    extensionContext = [(NotificationViewController *)self extensionContext];
+    [extensionContext setNotificationActions:v34];
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
@@ -217,9 +217,9 @@ LABEL_10:
   return notificationServiceConnection;
 }
 
-- (id)_launchURLForActionIdentifier:(id)a3
+- (id)_launchURLForActionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -239,8 +239,8 @@ LABEL_10:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -264,39 +264,39 @@ LABEL_11:
   return v6;
 }
 
-- (void)didReceiveNotificationResponse:(id)a3 completionHandler:(id)a4
+- (void)didReceiveNotificationResponse:(id)response completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 actionIdentifier];
+  responseCopy = response;
+  handlerCopy = handler;
+  actionIdentifier = [responseCopy actionIdentifier];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v15 = v8;
+    v15 = actionIdentifier;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "NotificationViewController: did receive notification response with action identifier %{public}@", buf, 0xCu);
   }
 
-  v9 = [(NotificationViewController *)self _launchURLForActionIdentifier:v8];
+  v9 = [(NotificationViewController *)self _launchURLForActionIdentifier:actionIdentifier];
   if (v9)
   {
-    v10 = [(NotificationViewController *)self extensionContext];
+    extensionContext = [(NotificationViewController *)self extensionContext];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000026A8;
     v12[3] = &unk_1000082F0;
     v13 = v9;
-    [v10 openURL:v13 completionHandler:v12];
+    [extensionContext openURL:v13 completionHandler:v12];
 
-    v11 = v13;
+    _notificationServiceConnection = v13;
   }
 
   else
   {
-    v11 = [(NotificationViewController *)self _notificationServiceConnection];
-    [v11 didReceiveNotificationResponse:v6];
+    _notificationServiceConnection = [(NotificationViewController *)self _notificationServiceConnection];
+    [_notificationServiceConnection didReceiveNotificationResponse:responseCopy];
   }
 
-  v7[2](v7, 1);
+  handlerCopy[2](handlerCopy, 1);
 }
 
 - (int64_t)_previewContentType

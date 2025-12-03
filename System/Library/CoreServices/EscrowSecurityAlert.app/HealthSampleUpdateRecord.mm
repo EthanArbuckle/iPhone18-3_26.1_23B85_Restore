@@ -1,6 +1,6 @@
 @interface HealthSampleUpdateRecord
-- (HealthSampleUpdateRecord)initWithCoder:(id)a3;
-- (HealthSampleUpdateRecord)initWithRecordType:(unint64_t)a3 initialSample:(id)a4;
+- (HealthSampleUpdateRecord)initWithCoder:(id)coder;
+- (HealthSampleUpdateRecord)initWithRecordType:(unint64_t)type initialSample:(id)sample;
 - (NSDateInterval)currentStateDuration;
 - (NSDateInterval)previousStateDuration;
 - (NSError)currentStateError;
@@ -8,15 +8,15 @@
 - (NSNumber)currentState;
 - (NSNumber)previousState;
 - (id)dict;
-- (id)updatedRecordWithHealthSample:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)updatedRecordWithHealthSample:(id)sample;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HealthSampleUpdateRecord
 
-- (HealthSampleUpdateRecord)initWithRecordType:(unint64_t)a3 initialSample:(id)a4
+- (HealthSampleUpdateRecord)initWithRecordType:(unint64_t)type initialSample:(id)sample
 {
-  v7 = a4;
+  sampleCopy = sample;
   v13.receiver = self;
   v13.super_class = HealthSampleUpdateRecord;
   v8 = [(HealthSampleUpdateRecord *)&v13 init];
@@ -24,84 +24,84 @@
   if (v8)
   {
     previousStateFirstSample = v8->_previousStateFirstSample;
-    v8->_type = a3;
+    v8->_type = type;
     v8->_previousStateFirstSample = 0;
 
     previousStateLastSample = v9->_previousStateLastSample;
     v9->_previousStateLastSample = 0;
 
-    objc_storeStrong(&v9->_currentStateFirstSample, a4);
-    objc_storeStrong(&v9->_currentStateMostRecentSample, a4);
+    objc_storeStrong(&v9->_currentStateFirstSample, sample);
+    objc_storeStrong(&v9->_currentStateMostRecentSample, sample);
   }
 
   return v9;
 }
 
-- (id)updatedRecordWithHealthSample:(id)a3
+- (id)updatedRecordWithHealthSample:(id)sample
 {
-  v4 = a3;
+  sampleCopy = sample;
   v5 = objc_alloc_init(HealthSampleUpdateRecord);
   v5->_type = [(HealthSampleUpdateRecord *)self type];
-  v6 = [(HealthSampleUpdateRecord *)self currentStateMostRecentSample];
-  v7 = [v6 sameValueAndErrorAsHealthSample:v4 forType:{-[HealthSampleUpdateRecord type](self, "type")}];
+  currentStateMostRecentSample = [(HealthSampleUpdateRecord *)self currentStateMostRecentSample];
+  v7 = [currentStateMostRecentSample sameValueAndErrorAsHealthSample:sampleCopy forType:{-[HealthSampleUpdateRecord type](self, "type")}];
 
   if (v7)
   {
-    v8 = [(HealthSampleUpdateRecord *)self previousStateFirstSample];
+    previousStateFirstSample = [(HealthSampleUpdateRecord *)self previousStateFirstSample];
     previousStateFirstSample = v5->_previousStateFirstSample;
-    v5->_previousStateFirstSample = v8;
+    v5->_previousStateFirstSample = previousStateFirstSample;
 
-    v10 = [(HealthSampleUpdateRecord *)self previousStateLastSample];
+    previousStateLastSample = [(HealthSampleUpdateRecord *)self previousStateLastSample];
     previousStateLastSample = v5->_previousStateLastSample;
-    v5->_previousStateLastSample = v10;
+    v5->_previousStateLastSample = previousStateLastSample;
 
-    v12 = [(HealthSampleUpdateRecord *)self currentStateFirstSample];
+    currentStateFirstSample = [(HealthSampleUpdateRecord *)self currentStateFirstSample];
   }
 
   else
   {
-    v13 = [(HealthSampleUpdateRecord *)self currentStateFirstSample];
+    currentStateFirstSample2 = [(HealthSampleUpdateRecord *)self currentStateFirstSample];
     v14 = v5->_previousStateFirstSample;
-    v5->_previousStateFirstSample = v13;
+    v5->_previousStateFirstSample = currentStateFirstSample2;
 
-    v15 = [(HealthSampleUpdateRecord *)self currentStateMostRecentSample];
+    currentStateMostRecentSample2 = [(HealthSampleUpdateRecord *)self currentStateMostRecentSample];
     v16 = v5->_previousStateLastSample;
-    v5->_previousStateLastSample = v15;
+    v5->_previousStateLastSample = currentStateMostRecentSample2;
 
-    v12 = v4;
+    currentStateFirstSample = sampleCopy;
   }
 
   currentStateFirstSample = v5->_currentStateFirstSample;
-  v5->_currentStateFirstSample = v12;
+  v5->_currentStateFirstSample = currentStateFirstSample;
 
   currentStateMostRecentSample = v5->_currentStateMostRecentSample;
-  v5->_currentStateMostRecentSample = v4;
+  v5->_currentStateMostRecentSample = sampleCopy;
 
   return v5;
 }
 
-- (HealthSampleUpdateRecord)initWithCoder:(id)a3
+- (HealthSampleUpdateRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = HealthSampleUpdateRecord;
   v5 = [(HealthSampleUpdateRecord *)&v15 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previousStateFirstSample"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previousStateFirstSample"];
     previousStateFirstSample = v5->_previousStateFirstSample;
     v5->_previousStateFirstSample = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previousStateLastSample"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previousStateLastSample"];
     previousStateLastSample = v5->_previousStateLastSample;
     v5->_previousStateLastSample = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentStateFirstSample"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentStateFirstSample"];
     currentStateFirstSample = v5->_currentStateFirstSample;
     v5->_currentStateFirstSample = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentStateMostRecentSample"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentStateMostRecentSample"];
     currentStateMostRecentSample = v5->_currentStateMostRecentSample;
     v5->_currentStateMostRecentSample = v12;
   }
@@ -109,21 +109,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[HealthSampleUpdateRecord type](self forKey:{"type"), @"type"}];
-  v5 = [(HealthSampleUpdateRecord *)self previousStateFirstSample];
-  [v4 encodeObject:v5 forKey:@"previousStateFirstSample"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[HealthSampleUpdateRecord type](self forKey:{"type"), @"type"}];
+  previousStateFirstSample = [(HealthSampleUpdateRecord *)self previousStateFirstSample];
+  [coderCopy encodeObject:previousStateFirstSample forKey:@"previousStateFirstSample"];
 
-  v6 = [(HealthSampleUpdateRecord *)self previousStateLastSample];
-  [v4 encodeObject:v6 forKey:@"previousStateLastSample"];
+  previousStateLastSample = [(HealthSampleUpdateRecord *)self previousStateLastSample];
+  [coderCopy encodeObject:previousStateLastSample forKey:@"previousStateLastSample"];
 
-  v7 = [(HealthSampleUpdateRecord *)self currentStateFirstSample];
-  [v4 encodeObject:v7 forKey:@"currentStateFirstSample"];
+  currentStateFirstSample = [(HealthSampleUpdateRecord *)self currentStateFirstSample];
+  [coderCopy encodeObject:currentStateFirstSample forKey:@"currentStateFirstSample"];
 
-  v8 = [(HealthSampleUpdateRecord *)self currentStateMostRecentSample];
-  [v4 encodeObject:v8 forKey:@"currentStateMostRecentSample"];
+  currentStateMostRecentSample = [(HealthSampleUpdateRecord *)self currentStateMostRecentSample];
+  [coderCopy encodeObject:currentStateMostRecentSample forKey:@"currentStateMostRecentSample"];
 }
 
 - (NSNumber)previousState
@@ -139,8 +139,8 @@
     v4 = *(&off_100010710 + v3);
   }
 
-  v5 = [(HealthSampleUpdateRecord *)self previousStateLastSample];
-  v6 = [v5 valueForKeyPath:v4];
+  previousStateLastSample = [(HealthSampleUpdateRecord *)self previousStateLastSample];
+  v6 = [previousStateLastSample valueForKeyPath:v4];
 
   return v6;
 }
@@ -148,23 +148,23 @@
 - (NSError)previousStateError
 {
   v3 = sub_1000061E8([(HealthSampleUpdateRecord *)self type]);
-  v4 = [(HealthSampleUpdateRecord *)self previousStateLastSample];
-  v5 = [v4 valueForKeyPath:v3];
+  previousStateLastSample = [(HealthSampleUpdateRecord *)self previousStateLastSample];
+  v5 = [previousStateLastSample valueForKeyPath:v3];
 
   return v5;
 }
 
 - (NSDateInterval)previousStateDuration
 {
-  v3 = [(HealthSampleUpdateRecord *)self previousStateFirstSample];
-  if (v3 && (v4 = v3, [(HealthSampleUpdateRecord *)self previousStateLastSample], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  previousStateFirstSample = [(HealthSampleUpdateRecord *)self previousStateFirstSample];
+  if (previousStateFirstSample && (v4 = previousStateFirstSample, [(HealthSampleUpdateRecord *)self previousStateLastSample], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = [NSDateInterval alloc];
-    v7 = [(HealthSampleUpdateRecord *)self previousStateFirstSample];
-    v8 = [v7 timestamp];
-    v9 = [(HealthSampleUpdateRecord *)self previousStateLastSample];
-    v10 = [v9 timestamp];
-    v11 = [v6 initWithStartDate:v8 endDate:v10];
+    previousStateFirstSample2 = [(HealthSampleUpdateRecord *)self previousStateFirstSample];
+    timestamp = [previousStateFirstSample2 timestamp];
+    previousStateLastSample = [(HealthSampleUpdateRecord *)self previousStateLastSample];
+    timestamp2 = [previousStateLastSample timestamp];
+    v11 = [v6 initWithStartDate:timestamp endDate:timestamp2];
   }
 
   else
@@ -188,8 +188,8 @@
     v4 = *(&off_100010710 + v3);
   }
 
-  v5 = [(HealthSampleUpdateRecord *)self currentStateMostRecentSample];
-  v6 = [v5 valueForKeyPath:v4];
+  currentStateMostRecentSample = [(HealthSampleUpdateRecord *)self currentStateMostRecentSample];
+  v6 = [currentStateMostRecentSample valueForKeyPath:v4];
 
   return v6;
 }
@@ -197,8 +197,8 @@
 - (NSError)currentStateError
 {
   v3 = sub_1000061E8([(HealthSampleUpdateRecord *)self type]);
-  v4 = [(HealthSampleUpdateRecord *)self currentStateMostRecentSample];
-  v5 = [v4 valueForKeyPath:v3];
+  currentStateMostRecentSample = [(HealthSampleUpdateRecord *)self currentStateMostRecentSample];
+  v5 = [currentStateMostRecentSample valueForKeyPath:v3];
 
   return v5;
 }
@@ -206,11 +206,11 @@
 - (NSDateInterval)currentStateDuration
 {
   v3 = [NSDateInterval alloc];
-  v4 = [(HealthSampleUpdateRecord *)self currentStateFirstSample];
-  v5 = [v4 timestamp];
-  v6 = [(HealthSampleUpdateRecord *)self currentStateMostRecentSample];
-  v7 = [v6 timestamp];
-  v8 = [v3 initWithStartDate:v5 endDate:v7];
+  currentStateFirstSample = [(HealthSampleUpdateRecord *)self currentStateFirstSample];
+  timestamp = [currentStateFirstSample timestamp];
+  currentStateMostRecentSample = [(HealthSampleUpdateRecord *)self currentStateMostRecentSample];
+  timestamp2 = [currentStateMostRecentSample timestamp];
+  v8 = [v3 initWithStartDate:timestamp endDate:timestamp2];
 
   return v8;
 }

@@ -1,10 +1,10 @@
 @interface ZoomSlugActionDetailController
-- (BOOL)isActionAvailable:(int64_t)a3;
+- (BOOL)isActionAvailable:(int64_t)available;
 - (id)specifiers;
-- (int64_t)actionForSpecifier:(id)a3;
+- (int64_t)actionForSpecifier:(id)specifier;
 - (int64_t)currentAction;
 - (void)_updateSpeakFingerSetting;
-- (void)updateCurrentAction:(int64_t)a3;
+- (void)updateCurrentAction:(int64_t)action;
 @end
 
 @implementation ZoomSlugActionDetailController
@@ -67,25 +67,25 @@
   return v4;
 }
 
-- (int64_t)actionForSpecifier:(id)a3
+- (int64_t)actionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  if (self->_noneActionSpecifier == v4)
+  specifierCopy = specifier;
+  if (self->_noneActionSpecifier == specifierCopy)
   {
     v5 = 0;
   }
 
-  else if (self->_showZoomMenuSpecifier == v4)
+  else if (self->_showZoomMenuSpecifier == specifierCopy)
   {
     v5 = 1;
   }
 
-  else if (self->_toggleZoomInOutSpecifier == v4)
+  else if (self->_toggleZoomInOutSpecifier == specifierCopy)
   {
     v5 = 2;
   }
 
-  else if (self->_speakContentSpecifier == v4)
+  else if (self->_speakContentSpecifier == specifierCopy)
   {
     v5 = 3;
   }
@@ -98,15 +98,15 @@
   return v5;
 }
 
-- (BOOL)isActionAvailable:(int64_t)a3
+- (BOOL)isActionAvailable:(int64_t)available
 {
-  if (!a3 || [(ZoomSlugActionDetailController *)self currentAction]== a3)
+  if (!available || [(ZoomSlugActionDetailController *)self currentAction]== available)
   {
     return 1;
   }
 
   v5 = +[AXSettings sharedInstance];
-  if ([v5 zoomSlugSingleTapAction] == a3)
+  if ([v5 zoomSlugSingleTapAction] == available)
   {
     v4 = 0;
   }
@@ -114,7 +114,7 @@
   else
   {
     v6 = +[AXSettings sharedInstance];
-    if ([v6 zoomSlugDoubleTapAction] == a3)
+    if ([v6 zoomSlugDoubleTapAction] == available)
     {
       v4 = 0;
     }
@@ -122,7 +122,7 @@
     else
     {
       v7 = +[AXSettings sharedInstance];
-      v4 = [v7 zoomSlugTripleTapAction] != a3;
+      v4 = [v7 zoomSlugTripleTapAction] != available;
     }
   }
 
@@ -131,19 +131,19 @@
 
 - (int64_t)currentAction
 {
-  v2 = [(ZoomSlugActionDetailController *)self specifier];
-  v3 = [v2 propertyForKey:@"SlugGesture"];
+  specifier = [(ZoomSlugActionDetailController *)self specifier];
+  v3 = [specifier propertyForKey:@"SlugGesture"];
 
   if ([v3 isEqualToString:@"SingleTap"])
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 zoomSlugSingleTapAction];
+    zoomSlugSingleTapAction = [v4 zoomSlugSingleTapAction];
   }
 
   else if ([v3 isEqualToString:@"DoubleTap"])
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 zoomSlugDoubleTapAction];
+    zoomSlugSingleTapAction = [v4 zoomSlugDoubleTapAction];
   }
 
   else
@@ -155,36 +155,36 @@
     }
 
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 zoomSlugTripleTapAction];
+    zoomSlugSingleTapAction = [v4 zoomSlugTripleTapAction];
   }
 
-  v6 = v5;
+  v6 = zoomSlugSingleTapAction;
 
 LABEL_8:
   return v6;
 }
 
-- (void)updateCurrentAction:(int64_t)a3
+- (void)updateCurrentAction:(int64_t)action
 {
-  v5 = [(ZoomSlugActionDetailController *)self specifier];
-  v9 = [v5 propertyForKey:@"SlugGesture"];
+  specifier = [(ZoomSlugActionDetailController *)self specifier];
+  v9 = [specifier propertyForKey:@"SlugGesture"];
 
   if ([v9 isEqualToString:@"SingleTap"])
   {
     v6 = +[AXSettings sharedInstance];
-    [v6 setZoomSlugSingleTapAction:a3];
+    [v6 setZoomSlugSingleTapAction:action];
   }
 
   if ([v9 isEqualToString:@"DoubleTap"])
   {
     v7 = +[AXSettings sharedInstance];
-    [v7 setZoomSlugDoubleTapAction:a3];
+    [v7 setZoomSlugDoubleTapAction:action];
   }
 
   if ([v9 isEqualToString:@"TripleTap"])
   {
     v8 = +[AXSettings sharedInstance];
-    [v8 setZoomSlugTripleTapAction:a3];
+    [v8 setZoomSlugTripleTapAction:action];
   }
 
   [(ZoomSlugActionDetailController *)self _updateSpeakFingerSetting];

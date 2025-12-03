@@ -1,16 +1,16 @@
 @interface CDXPrioritizeExtensionsOperation
-- (CDXPrioritizeExtensionsOperation)initWithPrioritizedExtensionIdentifiers:(id)a3 store:(id)a4;
-- (CDXPrioritizeExtensionsOperation)initWithPrioritizedExtensionIdentifiers:(id)a3 store:(id)a4 identificationEntriesChangedNotifier:(id)a5;
-- (void)performWithCompletionHandler:(id)a3;
+- (CDXPrioritizeExtensionsOperation)initWithPrioritizedExtensionIdentifiers:(id)identifiers store:(id)store;
+- (CDXPrioritizeExtensionsOperation)initWithPrioritizedExtensionIdentifiers:(id)identifiers store:(id)store identificationEntriesChangedNotifier:(id)notifier;
+- (void)performWithCompletionHandler:(id)handler;
 @end
 
 @implementation CDXPrioritizeExtensionsOperation
 
-- (CDXPrioritizeExtensionsOperation)initWithPrioritizedExtensionIdentifiers:(id)a3 store:(id)a4 identificationEntriesChangedNotifier:(id)a5
+- (CDXPrioritizeExtensionsOperation)initWithPrioritizedExtensionIdentifiers:(id)identifiers store:(id)store identificationEntriesChangedNotifier:(id)notifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  storeCopy = store;
+  notifierCopy = notifier;
   v17.receiver = self;
   v17.super_class = CDXPrioritizeExtensionsOperation;
   v11 = [(CDXPrioritizeExtensionsOperation *)&v17 init];
@@ -20,40 +20,40 @@
     queue = v11->_queue;
     v11->_queue = v12;
 
-    objc_storeStrong(&v11->_store, a4);
-    v14 = [v8 copy];
+    objc_storeStrong(&v11->_store, store);
+    v14 = [identifiersCopy copy];
     prioritizedExtensionIdentifiers = v11->_prioritizedExtensionIdentifiers;
     v11->_prioritizedExtensionIdentifiers = v14;
 
-    objc_storeStrong(&v11->_identificationEntriesChangedNotifier, a5);
+    objc_storeStrong(&v11->_identificationEntriesChangedNotifier, notifier);
   }
 
   return v11;
 }
 
-- (CDXPrioritizeExtensionsOperation)initWithPrioritizedExtensionIdentifiers:(id)a3 store:(id)a4
+- (CDXPrioritizeExtensionsOperation)initWithPrioritizedExtensionIdentifiers:(id)identifiers store:(id)store
 {
-  v6 = a4;
-  v7 = a3;
+  storeCopy = store;
+  identifiersCopy = identifiers;
   v8 = [CDXNotifydNotifier alloc];
   v9 = [(CDXNotifydNotifier *)v8 initWithNotificationName:CXCallDirectoryManagerIdentificationEntriesChangedNotification];
-  v10 = [(CDXPrioritizeExtensionsOperation *)self initWithPrioritizedExtensionIdentifiers:v7 store:v6 identificationEntriesChangedNotifier:v9];
+  v10 = [(CDXPrioritizeExtensionsOperation *)self initWithPrioritizedExtensionIdentifiers:identifiersCopy store:storeCopy identificationEntriesChangedNotifier:v9];
 
   return v10;
 }
 
-- (void)performWithCompletionHandler:(id)a3
+- (void)performWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CDXPrioritizeExtensionsOperation *)self queue];
+  handlerCopy = handler;
+  queue = [(CDXPrioritizeExtensionsOperation *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100011A78;
   v7[3] = &unk_100034B80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 @end

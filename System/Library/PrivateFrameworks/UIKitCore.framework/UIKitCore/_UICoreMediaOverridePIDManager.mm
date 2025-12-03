@@ -1,7 +1,7 @@
 @interface _UICoreMediaOverridePIDManager
 + (id)sharedInstance;
 - (_UICoreMediaOverridePIDManager)init;
-- (id)acquireOverrideAssertionWithPID:(void *)a3 forReason:;
+- (id)acquireOverrideAssertionWithPID:(void *)d forReason:;
 - (id)debugDescription;
 - (id)succinctDescription;
 - (void)evaluateActiveOverridePID;
@@ -35,7 +35,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"_UICoreMediaOverridePIDManager.m";
     v17 = 1024;
@@ -51,11 +51,11 @@
   return result;
 }
 
-- (id)acquireOverrideAssertionWithPID:(void *)a3 forReason:
+- (id)acquireOverrideAssertionWithPID:(void *)d forReason:
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
     BSDispatchQueueAssertMain();
     if (a2 <= 0)
@@ -71,7 +71,7 @@
         v20 = 2114;
         v21 = v14;
         v22 = 2048;
-        v23 = a1;
+        selfCopy = self;
         v24 = 2114;
         v25 = @"_UICoreMediaOverridePIDManager.m";
         v26 = 1024;
@@ -88,8 +88,8 @@
       JUMPOUT(0x189621448);
     }
 
-    v6 = [[_UICoreMediaOverridePIDAssertionToken alloc] initWithPID:a2 reason:v5];
-    objc_initWeak(location, a1);
+    v6 = [[_UICoreMediaOverridePIDAssertionToken alloc] initWithPID:a2 reason:dCopy];
+    objc_initWeak(location, self);
     v7 = objc_alloc(MEMORY[0x1E698E778]);
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -98,9 +98,9 @@
     objc_copyWeak(&v18, location);
     v8 = v6;
     v17 = v8;
-    v9 = [v7 initWithIdentifier:@"com.apple.UIKit._UICoreMediaOverridePIDManager" forReason:v5 invalidationBlock:v16];
-    [a1[2] addObject:v8];
-    [(_UICoreMediaOverridePIDManager *)a1 evaluateActiveOverridePID];
+    v9 = [v7 initWithIdentifier:@"com.apple.UIKit._UICoreMediaOverridePIDManager" forReason:dCopy invalidationBlock:v16];
+    [self[2] addObject:v8];
+    [(_UICoreMediaOverridePIDManager *)self evaluateActiveOverridePID];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(location);
@@ -118,29 +118,29 @@
 {
   v33 = *MEMORY[0x1E69E9840];
   BSDispatchQueueAssertMain();
-  v2 = [*(a1 + 16) lastObject];
-  v24 = v2;
-  if (v2)
+  lastObject = [*(self + 16) lastObject];
+  v24 = lastObject;
+  if (lastObject)
   {
-    if (*(a1 + 8) == v2[2])
+    if (*(self + 8) == lastObject[2])
     {
       goto LABEL_21;
     }
 
-    v3 = v2;
-    *(a1 + 8) = v24[2];
+    v3 = lastObject;
+    *(self + 8) = v24[2];
     v4 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   }
 
   else
   {
-    if (*(a1 + 8) == -1)
+    if (*(self + 8) == -1)
     {
       goto LABEL_21;
     }
 
     v4 = 0;
-    *(a1 + 8) = -1;
+    *(self + 8) = -1;
   }
 
   v5 = *(__UILogGetCategoryCachedImpl("UICoreMediaOverridePIDManager", &qword_1ED49D810) + 8);
@@ -190,7 +190,7 @@
 
   v12 = v11;
   _Block_object_dispose(&v26, 8);
-  v13 = [v11 sharedAVSystemController];
+  sharedAVSystemController = [v11 sharedAVSystemController];
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -213,9 +213,9 @@
   _Block_object_dispose(&v26, 8);
   if (!v14)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getAVSystemController_PIDToInheritApplicationStateFrom(void)"];
-    [v22 handleFailureInFunction:v23 file:@"_UICoreMediaOverridePIDManager.m" lineNumber:19 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v23 file:@"_UICoreMediaOverridePIDManager.m" lineNumber:19 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -223,7 +223,7 @@
   v17 = *v14;
   v25 = 0;
   v18 = v17;
-  v19 = [v13 setAttribute:v4 forKey:v18 error:&v25];
+  v19 = [sharedAVSystemController setAttribute:v4 forKey:v18 error:&v25];
   v20 = v25;
 
   if ((v19 & 1) == 0)
@@ -245,8 +245,8 @@ LABEL_21:
 - (id)succinctDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
@@ -254,8 +254,8 @@ LABEL_21:
 - (id)debugDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x1E698E690] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }

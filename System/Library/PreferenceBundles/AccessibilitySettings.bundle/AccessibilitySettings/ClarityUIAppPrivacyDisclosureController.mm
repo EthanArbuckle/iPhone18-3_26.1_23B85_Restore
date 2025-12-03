@@ -1,50 +1,50 @@
 @interface ClarityUIAppPrivacyDisclosureController
-- (ClarityUIAppPrivacyDisclosureController)initWithApplicationTitle:(id)a3 icon:(id)a4 bundleIdentifier:(id)a5;
+- (ClarityUIAppPrivacyDisclosureController)initWithApplicationTitle:(id)title icon:(id)icon bundleIdentifier:(id)identifier;
 - (ClarityUIAppPrivacyDisclosureControllerDelegate)delegate;
-- (void)_didTapCancelButton:(id)a3;
-- (void)_didTapOpenAppButton:(id)a3;
+- (void)_didTapCancelButton:(id)button;
+- (void)_didTapOpenAppButton:(id)button;
 @end
 
 @implementation ClarityUIAppPrivacyDisclosureController
 
-- (ClarityUIAppPrivacyDisclosureController)initWithApplicationTitle:(id)a3 icon:(id)a4 bundleIdentifier:(id)a5
+- (ClarityUIAppPrivacyDisclosureController)initWithApplicationTitle:(id)title icon:(id)icon bundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  titleCopy = title;
+  identifierCopy = identifier;
+  iconCopy = icon;
   v11 = settingsLocString(@"ACCEPT_PRIVACY_TERMS_FOR_APP", @"ClarityUISettings");
-  v12 = [NSString localizedStringWithFormat:v11, v8, v8];
+  titleCopy = [NSString localizedStringWithFormat:v11, titleCopy, titleCopy];
 
   v21.receiver = self;
   v21.super_class = ClarityUIAppPrivacyDisclosureController;
-  v13 = [(ClarityUIAppPrivacyDisclosureController *)&v21 initWithTitle:v8 detailText:v12 icon:v10 contentLayout:2];
+  v13 = [(ClarityUIAppPrivacyDisclosureController *)&v21 initWithTitle:titleCopy detailText:titleCopy icon:iconCopy contentLayout:2];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_bundleIdentifier, a5);
+    objc_storeStrong(&v13->_bundleIdentifier, identifier);
     v14 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:v13 action:"_didTapCancelButton:"];
-    v15 = [(ClarityUIAppPrivacyDisclosureController *)v13 navigationItem];
-    [v15 setRightBarButtonItem:v14];
+    navigationItem = [(ClarityUIAppPrivacyDisclosureController *)v13 navigationItem];
+    [navigationItem setRightBarButtonItem:v14];
 
     v16 = +[OBBoldTrayButton boldButton];
     v17 = settingsLocString(@"OPEN_APP_TITLE", @"ClarityUISettings");
-    v18 = [NSString localizedStringWithFormat:v17, v8];
-    [v16 setTitle:v18 forState:0];
+    titleCopy2 = [NSString localizedStringWithFormat:v17, titleCopy];
+    [v16 setTitle:titleCopy2 forState:0];
 
     [v16 addTarget:v13 action:"_didTapOpenAppButton:" forControlEvents:0x2000];
-    v19 = [(ClarityUIAppPrivacyDisclosureController *)v13 buttonTray];
-    [v19 addButton:v16];
+    buttonTray = [(ClarityUIAppPrivacyDisclosureController *)v13 buttonTray];
+    [buttonTray addButton:v16];
   }
 
   return v13;
 }
 
-- (void)_didTapOpenAppButton:(id)a3
+- (void)_didTapOpenAppButton:(id)button
 {
   v4 = +[FBSOpenApplicationService serviceWithDefaultShellEndpoint];
   v5 = +[CLFAppAvailabilityChecker sharedInstance];
-  v6 = [(ClarityUIAppPrivacyDisclosureController *)self bundleIdentifier];
-  v7 = [v5 standardBundleIdentifierForClarityBundleIdentifier:v6];
+  bundleIdentifier = [(ClarityUIAppPrivacyDisclosureController *)self bundleIdentifier];
+  v7 = [v5 standardBundleIdentifierForClarityBundleIdentifier:bundleIdentifier];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __64__ClarityUIAppPrivacyDisclosureController__didTapOpenAppButton___block_invoke;
@@ -100,10 +100,10 @@ void __64__ClarityUIAppPrivacyDisclosureController__didTapOpenAppButton___block_
 LABEL_12:
 }
 
-- (void)_didTapCancelButton:(id)a3
+- (void)_didTapCancelButton:(id)button
 {
-  v4 = [(ClarityUIAppPrivacyDisclosureController *)self delegate];
-  [v4 cancelButtonTappedForPrivacyDisclosureController:self];
+  delegate = [(ClarityUIAppPrivacyDisclosureController *)self delegate];
+  [delegate cancelButtonTappedForPrivacyDisclosureController:self];
 }
 
 - (ClarityUIAppPrivacyDisclosureControllerDelegate)delegate

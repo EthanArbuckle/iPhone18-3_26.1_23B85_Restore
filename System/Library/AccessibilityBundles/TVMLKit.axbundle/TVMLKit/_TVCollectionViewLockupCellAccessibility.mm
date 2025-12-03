@@ -1,5 +1,5 @@
 @interface _TVCollectionViewLockupCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)_accessibilityFocusableFrameForZoom;
 - (id)_accessibilityFrameDelegate;
 - (id)accessibilityLabel;
@@ -7,14 +7,14 @@
 
 @implementation _TVCollectionViewLockupCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TVListTemplateView"];
-  [v3 validateClass:@"_TVStackingPosterView"];
-  [v3 validateClass:@"_TVListTemplateView" hasInstanceMethod:@"listView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_TVStackingPosterView" hasInstanceMethod:@"animatedLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UICollectionViewCell" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TVListTemplateView"];
+  [validationsCopy validateClass:@"_TVStackingPosterView"];
+  [validationsCopy validateClass:@"_TVListTemplateView" hasInstanceMethod:@"listView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_TVStackingPosterView" hasInstanceMethod:@"animatedLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UICollectionViewCell" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilityFrameDelegate
@@ -24,23 +24,23 @@
   v3 = [(_TVCollectionViewLockupCellAccessibility *)self safeValueForKey:@"contentView"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 subviews];
-  v6 = [v5 count];
+  subviews = [v4 subviews];
+  v6 = [subviews count];
 
   if (v6 == 1)
   {
-    v7 = [v4 subviews];
-    v8 = [v7 firstObject];
+    subviews2 = [v4 subviews];
+    firstObject = [subviews2 firstObject];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = _TVCollectionViewLockupCellAccessibility;
-    v8 = [(_TVCollectionViewLockupCellAccessibility *)&v10 _accessibilityFrameDelegate];
+    firstObject = [(_TVCollectionViewLockupCellAccessibility *)&v10 _accessibilityFrameDelegate];
   }
 
-  return v8;
+  return firstObject;
 }
 
 - (CGRect)_accessibilityFocusableFrameForZoom
@@ -52,9 +52,9 @@
   v5 = __UIAccessibilityCastAsClass();
 
   v6 = [v5 axFilterObjectsUsingBlock:&__block_literal_global_2];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  v8 = [v7 safeValueForKey:@"animatedLabel"];
+  v8 = [firstObject safeValueForKey:@"animatedLabel"];
   v9 = v8;
   if (!v8)
   {
@@ -97,22 +97,22 @@ LABEL_3:
 
 - (id)accessibilityLabel
 {
-  v3 = [(_TVCollectionViewLockupCellAccessibility *)self _atvaccessibilityITMLAccessibilityContent];
+  _atvaccessibilityITMLAccessibilityContent = [(_TVCollectionViewLockupCellAccessibility *)self _atvaccessibilityITMLAccessibilityContent];
   objc_opt_class();
   v4 = [(_TVCollectionViewLockupCellAccessibility *)self safeValueForKey:@"contentView"];
   v5 = __UIAccessibilityCastAsClass();
 
   v15 = 0;
   objc_opt_class();
-  v6 = [v5 subviews];
+  subviews = [v5 subviews];
   v7 = __UIAccessibilityCastAsClass();
 
   v8 = [v7 axFilterObjectsUsingBlock:&__block_literal_global_318];
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
 
-  if (v9)
+  if (firstObject)
   {
-    v10 = [v9 _accessibilityLabelIncludingFallbackPlaceholder:0 usesSubviewsForComponents:1];
+    v10 = [firstObject _accessibilityLabelIncludingFallbackPlaceholder:0 usesSubviewsForComponents:1];
   }
 
   else
@@ -124,12 +124,12 @@ LABEL_3:
   {
     v14.receiver = self;
     v14.super_class = _TVCollectionViewLockupCellAccessibility;
-    v11 = [(_TVCollectionViewLockupCellAccessibility *)&v14 accessibilityLabel];
+    accessibilityLabel = [(_TVCollectionViewLockupCellAccessibility *)&v14 accessibilityLabel];
 
-    v10 = v11;
+    v10 = accessibilityLabel;
   }
 
-  v12 = [MEMORY[0x29EDBDE00] textByReconcilingClientText:v10 withServerText:v3];
+  v12 = [MEMORY[0x29EDBDE00] textByReconcilingClientText:v10 withServerText:_atvaccessibilityITMLAccessibilityContent];
 
   return v12;
 }

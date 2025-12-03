@@ -1,9 +1,9 @@
 @interface MKMapSnapshotFeatureAnnotation
 - ($F24F406B2B787EFB06265DBA3D28CBD5)coordinate;
-- (MKMapSnapshotFeatureAnnotation)initWithCoder:(id)a3;
-- (MKMapSnapshotFeatureAnnotation)initWithCoordinate:(CLLocationCoordinate2D)a3 title:(id)a4 representation:(int64_t)a5;
+- (MKMapSnapshotFeatureAnnotation)initWithCoder:(id)coder;
+- (MKMapSnapshotFeatureAnnotation)initWithCoordinate:(CLLocationCoordinate2D)coordinate title:(id)title representation:(int64_t)representation;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MKMapSnapshotFeatureAnnotation
@@ -40,45 +40,45 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   latitude = self->_coordinate.latitude;
-  v5 = a3;
-  [v5 encodeDouble:@"coordinate.latitude" forKey:latitude];
-  [v5 encodeDouble:@"coordinate.longitude" forKey:self->_coordinate.longitude];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeInteger:self->_representation forKey:@"representation"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"coordinate.latitude" forKey:latitude];
+  [coderCopy encodeDouble:@"coordinate.longitude" forKey:self->_coordinate.longitude];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeInteger:self->_representation forKey:@"representation"];
 }
 
-- (MKMapSnapshotFeatureAnnotation)initWithCoder:(id)a3
+- (MKMapSnapshotFeatureAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"coordinate.latitude"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"coordinate.latitude"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"coordinate.longitude"];
+  [coderCopy decodeDoubleForKey:@"coordinate.longitude"];
   v8 = v7;
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v10 = [v4 decodeIntegerForKey:@"representation"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v10 = [coderCopy decodeIntegerForKey:@"representation"];
 
   v11 = [(MKMapSnapshotFeatureAnnotation *)self initWithCoordinate:v9 title:v10 representation:v6, v8];
   return v11;
 }
 
-- (MKMapSnapshotFeatureAnnotation)initWithCoordinate:(CLLocationCoordinate2D)a3 title:(id)a4 representation:(int64_t)a5
+- (MKMapSnapshotFeatureAnnotation)initWithCoordinate:(CLLocationCoordinate2D)coordinate title:(id)title representation:(int64_t)representation
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v9 = a4;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  titleCopy = title;
   v20.receiver = self;
   v20.super_class = MKMapSnapshotFeatureAnnotation;
   v10 = [(MKMapSnapshotFeatureAnnotation *)&v20 init];
   v11 = v10;
   if (v10)
   {
-    v10->_representation = a5;
+    v10->_representation = representation;
     v10->_coordinate.latitude = latitude;
     v10->_coordinate.longitude = longitude;
-    v12 = [v9 copy];
+    v12 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v12;
 
@@ -87,17 +87,17 @@
     v11->_customFeature = v14;
 
     [(VKCustomFeature *)v11->_customFeature setSortKey:0];
-    if ([v9 length])
+    if ([titleCopy length])
     {
-      [(VKCustomFeature *)v11->_customFeature setText:v9 locale:0];
+      [(VKCustomFeature *)v11->_customFeature setText:titleCopy locale:0];
     }
 
-    v16 = [MEMORY[0x1E69A1DB0] annotationViewProvidedCustomFeatureStyleAttributes];
-    v17 = v16;
-    if (a5 == 2)
+    annotationViewProvidedCustomFeatureStyleAttributes = [MEMORY[0x1E69A1DB0] annotationViewProvidedCustomFeatureStyleAttributes];
+    v17 = annotationViewProvidedCustomFeatureStyleAttributes;
+    if (representation == 2)
     {
       v19 = 0x100010022;
-      [v16 replaceAttributes:&v19 count:1];
+      [annotationViewProvidedCustomFeatureStyleAttributes replaceAttributes:&v19 count:1];
     }
 
     [(VKCustomFeature *)v11->_customFeature setStyleAttributes:v17];

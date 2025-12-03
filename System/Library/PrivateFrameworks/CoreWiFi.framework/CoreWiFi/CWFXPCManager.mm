@@ -1,31 +1,31 @@
 @interface CWFXPCManager
 - (CWFXPCManager)init;
-- (CWFXPCManager)initWithServiceTypes:(id)a3;
-- (id)__wifiNetworkSharingAppXPCConnectionWithBundleID:(id)a3;
+- (CWFXPCManager)initWithServiceTypes:(id)types;
+- (id)__wifiNetworkSharingAppXPCConnectionWithBundleID:(id)d;
 - (id)__wifiNetworkSharingAppexXPCConnections;
 - (id)__wifiNetworkSharingUIServiceXPCConnection;
 - (id)__wifiUserAgentXPCConnection;
-- (id)endpointWithServiceType:(int64_t)a3;
-- (id)localXPCClientWithServiceType:(int64_t)a3;
+- (id)endpointWithServiceType:(int64_t)type;
+- (id)localXPCClientWithServiceType:(int64_t)type;
 - (id)registeredActivities;
 - (id)registeredEventIDs;
-- (void)XPCListener:(id)a3 XPCConnection:(id)a4 completedXPCRequest:(id)a5;
-- (void)XPCListener:(id)a3 XPCConnection:(id)a4 receivedXPCRequest:(id)a5;
-- (void)XPCListener:(id)a3 XPCConnection:(id)a4 updatedRegisteredEventIDs:(id)a5;
-- (void)XPCRequestProxy:(id)a3 XPCConnection:(id)a4 canceledXPCRequestsWithUUID:(id)a5;
-- (void)XPCRequestProxy:(id)a3 XPCConnection:(id)a4 receivedXPCRequest:(id)a5;
-- (void)XPCRequestProxy:(id)a3 invalidatedXPCConnection:(id)a4;
-- (void)XPCRequestProxy:(id)a3 sendXPCEvent:(id)a4 reply:(id)a5;
+- (void)XPCListener:(id)listener XPCConnection:(id)connection completedXPCRequest:(id)request;
+- (void)XPCListener:(id)listener XPCConnection:(id)connection receivedXPCRequest:(id)request;
+- (void)XPCListener:(id)listener XPCConnection:(id)connection updatedRegisteredEventIDs:(id)ds;
+- (void)XPCRequestProxy:(id)proxy XPCConnection:(id)connection canceledXPCRequestsWithUUID:(id)d;
+- (void)XPCRequestProxy:(id)proxy XPCConnection:(id)connection receivedXPCRequest:(id)request;
+- (void)XPCRequestProxy:(id)proxy invalidatedXPCConnection:(id)connection;
+- (void)XPCRequestProxy:(id)proxy sendXPCEvent:(id)event reply:(id)reply;
 - (void)__checkKeybagLockStatus;
 - (void)__startMonitoringKeybagLockStatus;
 - (void)__stopMonitoringKeybagLockStatus;
 - (void)__updateProcessMonitorConfiguration;
-- (void)__updateProcessStateForXPCConnection:(id)a3;
+- (void)__updateProcessStateForXPCConnection:(id)connection;
 - (void)activate;
 - (void)invalidate;
 - (void)resume;
-- (void)setAssociatedNetwork:(id)a3;
-- (void)setLocation:(id)a3;
+- (void)setAssociatedNetwork:(id)network;
+- (void)setLocation:(id)location;
 - (void)suspend;
 @end
 
@@ -33,15 +33,15 @@
 
 - (id)registeredActivities
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   mutexQueue = self->_mutexQueue;
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = sub_1E0BC0E1C;
   v11 = &unk_1E86E6420;
-  v12 = self;
-  v13 = v3;
-  v5 = v3;
+  selfCopy = self;
+  v13 = array;
+  v5 = array;
   dispatch_sync(mutexQueue, &v8);
   v6 = [v5 copy];
 
@@ -56,7 +56,7 @@
   v9 = 3221225472;
   v10 = sub_1E0BCAFF0;
   v11 = &unk_1E86E6420;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v5 = v3;
   dispatch_sync(mutexQueue, &v8);
@@ -76,10 +76,10 @@
   dispatch_async(mutexQueue, block);
 }
 
-- (CWFXPCManager)initWithServiceTypes:(id)a3
+- (CWFXPCManager)initWithServiceTypes:(id)types
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typesCopy = types;
   v46.receiver = self;
   v46.super_class = CWFXPCManager;
   v5 = [(CWFXPCManager *)&v46 init];
@@ -143,9 +143,9 @@ LABEL_25:
 
   if (objc_opt_class())
   {
-    v13 = [MEMORY[0x1E69C75F8] monitor];
+    monitor = [MEMORY[0x1E69C75F8] monitor];
     processMonitor = v5->_processMonitor;
-    v5->_processMonitor = v13;
+    v5->_processMonitor = monitor;
 
     if (!v5->_processMonitor)
     {
@@ -175,7 +175,7 @@ LABEL_25:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v19 = v4;
+  v19 = typesCopy;
   v20 = [v19 countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v20)
   {
@@ -531,10 +531,10 @@ LABEL_27:
   return v7;
 }
 
-- (id)__wifiNetworkSharingAppXPCConnectionWithBundleID:(id)a3
+- (id)__wifiNetworkSharingAppXPCConnectionWithBundleID:(id)d
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -547,7 +547,7 @@ LABEL_27:
   block[2] = sub_1E0C59400;
   block[3] = &unk_1E86E7188;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v16 = v6;
   v17 = &v18;
   dispatch_sync(mutexQueue, block);
@@ -569,9 +569,9 @@ LABEL_27:
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v6 redactedForWiFi];
+      redactedForWiFi = [v6 redactedForWiFi];
       v24 = 138543362;
-      v25 = v11;
+      v25 = redactedForWiFi;
       _os_log_send_and_compose_impl();
     }
 
@@ -586,7 +586,7 @@ LABEL_27:
   return v12;
 }
 
-- (id)localXPCClientWithServiceType:(int64_t)a3
+- (id)localXPCClientWithServiceType:(int64_t)type
 {
   v7 = 0;
   v8 = &v7;
@@ -600,7 +600,7 @@ LABEL_27:
   block[2] = sub_1E0C59754;
   block[3] = &unk_1E86E71B0;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = type;
   block[4] = self;
   dispatch_sync(mutexQueue, block);
   v4 = v8[5];
@@ -609,7 +609,7 @@ LABEL_27:
   return v4;
 }
 
-- (id)endpointWithServiceType:(int64_t)a3
+- (id)endpointWithServiceType:(int64_t)type
 {
   v7 = 0;
   v8 = &v7;
@@ -623,7 +623,7 @@ LABEL_27:
   block[2] = sub_1E0C59988;
   block[3] = &unk_1E86E71B0;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = type;
   block[4] = self;
   dispatch_sync(mutexQueue, block);
   v4 = v8[5];
@@ -632,77 +632,77 @@ LABEL_27:
   return v4;
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
   XPCRequestProxy = self->_XPCRequestProxy;
-  v5 = a3;
-  [(CWFXPCRequestProxy *)XPCRequestProxy setLocation:v5];
-  v6 = [(CWFXPCManager *)self autoJoinManagerCached];
-  [v6 setLocation:v5];
+  locationCopy = location;
+  [(CWFXPCRequestProxy *)XPCRequestProxy setLocation:locationCopy];
+  autoJoinManagerCached = [(CWFXPCManager *)self autoJoinManagerCached];
+  [autoJoinManagerCached setLocation:locationCopy];
 
-  v7 = [(CWFXPCManager *)self wifiNetworkSharingManager];
-  [v7 setLocation:v5];
+  wifiNetworkSharingManager = [(CWFXPCManager *)self wifiNetworkSharingManager];
+  [wifiNetworkSharingManager setLocation:locationCopy];
 }
 
-- (void)setAssociatedNetwork:(id)a3
+- (void)setAssociatedNetwork:(id)network
 {
   XPCRequestProxy = self->_XPCRequestProxy;
-  v5 = a3;
-  [(CWFXPCRequestProxy *)XPCRequestProxy setAssociatedNetwork:v5];
-  v6 = [(CWFXPCManager *)self autoJoinManagerCached];
-  [v6 setAssociatedNetwork:v5];
+  networkCopy = network;
+  [(CWFXPCRequestProxy *)XPCRequestProxy setAssociatedNetwork:networkCopy];
+  autoJoinManagerCached = [(CWFXPCManager *)self autoJoinManagerCached];
+  [autoJoinManagerCached setAssociatedNetwork:networkCopy];
 
-  v7 = [(CWFXPCManager *)self wifiNetworkSharingManager];
-  [v7 setAssociatedNetwork:v5];
+  wifiNetworkSharingManager = [(CWFXPCManager *)self wifiNetworkSharingManager];
+  [wifiNetworkSharingManager setAssociatedNetwork:networkCopy];
 }
 
-- (void)__updateProcessStateForXPCConnection:(id)a3
+- (void)__updateProcessStateForXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   mutexQueue = self->_mutexQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1E0C59CC8;
   v7[3] = &unk_1E86E6420;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = connectionCopy;
+  selfCopy = self;
+  v6 = connectionCopy;
   dispatch_async(mutexQueue, v7);
 }
 
-- (void)XPCListener:(id)a3 XPCConnection:(id)a4 receivedXPCRequest:(id)a5
+- (void)XPCListener:(id)listener XPCConnection:(id)connection receivedXPCRequest:(id)request
 {
   XPCRequestProxy = self->_XPCRequestProxy;
-  v8 = a4;
-  [(CWFXPCRequestProxy *)XPCRequestProxy XPCManager:self XPCConnection:v8 receivedXPCRequest:a5];
-  [(CWFXPCManager *)self __updateProcessStateForXPCConnection:v8];
+  connectionCopy = connection;
+  [(CWFXPCRequestProxy *)XPCRequestProxy XPCManager:self XPCConnection:connectionCopy receivedXPCRequest:request];
+  [(CWFXPCManager *)self __updateProcessStateForXPCConnection:connectionCopy];
 }
 
-- (void)XPCListener:(id)a3 XPCConnection:(id)a4 completedXPCRequest:(id)a5
+- (void)XPCListener:(id)listener XPCConnection:(id)connection completedXPCRequest:(id)request
 {
   XPCRequestProxy = self->_XPCRequestProxy;
-  v8 = a4;
-  [(CWFXPCRequestProxy *)XPCRequestProxy XPCManager:self XPCConnection:v8 completedXPCRequest:a5];
-  [(CWFXPCManager *)self __updateProcessStateForXPCConnection:v8];
+  connectionCopy = connection;
+  [(CWFXPCRequestProxy *)XPCRequestProxy XPCManager:self XPCConnection:connectionCopy completedXPCRequest:request];
+  [(CWFXPCManager *)self __updateProcessStateForXPCConnection:connectionCopy];
 }
 
-- (void)XPCListener:(id)a3 XPCConnection:(id)a4 updatedRegisteredEventIDs:(id)a5
+- (void)XPCListener:(id)listener XPCConnection:(id)connection updatedRegisteredEventIDs:(id)ds
 {
   XPCRequestProxy = self->_XPCRequestProxy;
-  v8 = a4;
-  [(CWFXPCRequestProxy *)XPCRequestProxy XPCManager:self XPCConnection:v8 updatedRegisteredEventIDs:a5];
-  [(CWFXPCManager *)self __updateProcessStateForXPCConnection:v8];
+  connectionCopy = connection;
+  [(CWFXPCRequestProxy *)XPCRequestProxy XPCManager:self XPCConnection:connectionCopy updatedRegisteredEventIDs:ds];
+  [(CWFXPCManager *)self __updateProcessStateForXPCConnection:connectionCopy];
 }
 
-- (void)XPCRequestProxy:(id)a3 XPCConnection:(id)a4 receivedXPCRequest:(id)a5
+- (void)XPCRequestProxy:(id)proxy XPCConnection:(id)connection receivedXPCRequest:(id)request
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CWFXPCManager *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && (-[CWFXPCManager supportedRequestTypes](self, "supportedRequestTypes"), v10 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "type")}], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "containsObject:", v11), v11, v10, v12))
+  connectionCopy = connection;
+  requestCopy = request;
+  delegate = [(CWFXPCManager *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && (-[CWFXPCManager supportedRequestTypes](self, "supportedRequestTypes"), v10 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(requestCopy, "type")}], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "containsObject:", v11), v11, v10, v12))
   {
-    [v9 XPCManager:self XPCConnection:v7 receivedXPCRequest:v8];
+    [delegate XPCManager:self XPCConnection:connectionCopy receivedXPCRequest:requestCopy];
   }
 
   else
@@ -721,60 +721,60 @@ LABEL_27:
 
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v22 = sub_1E0BC2FCC([v8 type]);
+      v22 = sub_1E0BC2FCC([requestCopy type]);
       _os_log_send_and_compose_impl();
     }
 
-    v16 = [v8 response];
+    response = [requestCopy response];
 
-    if (v16)
+    if (response)
     {
-      v17 = [v8 response];
+      response2 = [requestCopy response];
       v18 = *MEMORY[0x1E696A798];
       v19 = CWFErrorDescription(*MEMORY[0x1E696A798], 0x2DuLL);
       v20 = CWFErrorWithDescription(v18, 45, v19);
-      (v17)[2](v17, v20, 0);
+      (response2)[2](response2, v20, 0);
     }
   }
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)XPCRequestProxy:(id)a3 XPCConnection:(id)a4 canceledXPCRequestsWithUUID:(id)a5
+- (void)XPCRequestProxy:(id)proxy XPCConnection:(id)connection canceledXPCRequestsWithUUID:(id)d
 {
-  v9 = a4;
-  v7 = a5;
-  v8 = [(CWFXPCManager *)self delegate];
+  connectionCopy = connection;
+  dCopy = d;
+  delegate = [(CWFXPCManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 XPCManager:self XPCConnection:v9 canceledXPCRequestsWithUUID:v7];
+    [delegate XPCManager:self XPCConnection:connectionCopy canceledXPCRequestsWithUUID:dCopy];
   }
 }
 
-- (void)XPCRequestProxy:(id)a3 invalidatedXPCConnection:(id)a4
+- (void)XPCRequestProxy:(id)proxy invalidatedXPCConnection:(id)connection
 {
-  v6 = a4;
-  v5 = [(CWFXPCManager *)self delegate];
+  connectionCopy = connection;
+  delegate = [(CWFXPCManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 XPCManager:self invalidatedXPCConnection:v6];
+    [delegate XPCManager:self invalidatedXPCConnection:connectionCopy];
   }
 }
 
-- (void)XPCRequestProxy:(id)a3 sendXPCEvent:(id)a4 reply:(id)a5
+- (void)XPCRequestProxy:(id)proxy sendXPCEvent:(id)event reply:(id)reply
 {
-  v7 = a4;
-  v8 = a5;
+  eventCopy = event;
+  replyCopy = reply;
   mutexQueue = self->_mutexQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0C5A474;
   block[3] = &unk_1E86E7228;
-  v13 = v7;
-  v14 = v8;
+  v13 = eventCopy;
+  v14 = replyCopy;
   block[4] = self;
-  v10 = v7;
-  v11 = v8;
+  v10 = eventCopy;
+  v11 = replyCopy;
   dispatch_async(mutexQueue, block);
 }
 

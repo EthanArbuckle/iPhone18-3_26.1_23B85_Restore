@@ -1,10 +1,10 @@
 @interface BKIntegerEventStatistic
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)reset;
-- (void)setValue:(int64_t)a3;
+- (void)setValue:(int64_t)value;
 @end
 
 @implementation BKIntegerEventStatistic
@@ -17,44 +17,44 @@
   self->_value = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = BKIntegerEventStatistic;
-  result = [(BKEventStatistic *)&v5 copyWithZone:a3];
+  result = [(BKEventStatistic *)&v5 copyWithZone:zone];
   *(result + 4) = self->_value;
   return result;
 }
 
-- (void)setValue:(int64_t)a3
+- (void)setValue:(int64_t)value
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
-    self->_value = a3;
+    self->_value = value;
     [(BKEventStatistic *)self setNeedsLogging:1];
   }
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   value = self->_value;
   if (value)
   {
-    v5 = a3;
-    v6 = [(BKEventStatistic *)self label];
-    v7 = [v5 appendInteger:value withName:v6];
+    formatterCopy = formatter;
+    label = [(BKEventStatistic *)self label];
+    v7 = [formatterCopy appendInteger:value withName:label];
 
     v8.receiver = self;
     v8.super_class = BKIntegerEventStatistic;
-    [(BKEventStatistic *)&v8 appendDescriptionToFormatter:v5];
+    [(BKEventStatistic *)&v8 appendDescriptionToFormatter:formatterCopy];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -75,8 +75,8 @@
 
   v8 = v7;
 
-  v9 = [v8 value];
-  v10 = v9 == self->_value;
+  value = [v8 value];
+  v10 = value == self->_value;
 
   return v10;
 }

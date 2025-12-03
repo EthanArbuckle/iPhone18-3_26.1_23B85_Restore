@@ -1,22 +1,22 @@
 @interface NCAppPickerViewFooter
-+ (double)preferredHeightForWidth:(double)a3 showMoreButton:(BOOL)a4;
++ (double)preferredHeightForWidth:(double)width showMoreButton:(BOOL)button;
 + (id)_footnoteText;
 + (id)_showMoreButtonFont;
 + (id)_showMoreButtonText;
-- (NCAppPickerViewFooter)initWithFrame:(CGRect)a3;
+- (NCAppPickerViewFooter)initWithFrame:(CGRect)frame;
 - (NCAppPickerViewFooterDelegate)delegate;
-- (void)_showMoreButtonPressed:(id)a3;
-- (void)configureWithShowMoreButton:(BOOL)a3 delegate:(id)a4;
+- (void)_showMoreButtonPressed:(id)pressed;
+- (void)configureWithShowMoreButton:(BOOL)button delegate:(id)delegate;
 - (void)prepareForReuse;
 @end
 
 @implementation NCAppPickerViewFooter
 
-- (NCAppPickerViewFooter)initWithFrame:(CGRect)a3
+- (NCAppPickerViewFooter)initWithFrame:(CGRect)frame
 {
   v45.receiver = self;
   v45.super_class = NCAppPickerViewFooter;
-  v3 = [(NCAppPickerViewFooter *)&v45 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NCAppPickerViewFooter *)&v45 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75220]);
@@ -31,16 +31,16 @@
     [(UIButton *)v3->_showMoreButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)v3->_showMoreButton addTarget:v3 action:sel__showMoreButtonPressed_ forControlEvents:64];
     v11 = v3->_showMoreButton;
-    v12 = [objc_opt_class() _showMoreButtonText];
-    [(UIButton *)v11 setTitle:v12 forState:0];
+    _showMoreButtonText = [objc_opt_class() _showMoreButtonText];
+    [(UIButton *)v11 setTitle:_showMoreButtonText forState:0];
 
-    v13 = [(UIButton *)v3->_showMoreButton titleLabel];
-    v14 = [objc_opt_class() _showMoreButtonFont];
-    [v13 setFont:v14];
+    titleLabel = [(UIButton *)v3->_showMoreButton titleLabel];
+    _showMoreButtonFont = [objc_opt_class() _showMoreButtonFont];
+    [titleLabel setFont:_showMoreButtonFont];
 
     v15 = v3->_showMoreButton;
-    v16 = [MEMORY[0x277D75348] systemBlueColor];
-    [(UIButton *)v15 setTitleColor:v16 forState:0];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [(UIButton *)v15 setTitleColor:systemBlueColor forState:0];
 
     [(NCAppPickerViewFooter *)v3 addSubview:v3->_showMoreButton];
     v17 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v5, v6, v7, v8}];
@@ -49,49 +49,49 @@
 
     [(UILabel *)v3->_footnoteLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     v19 = v3->_footnoteLabel;
-    v20 = [objc_opt_class() _footnoteText];
-    [(UILabel *)v19 setText:v20];
+    _footnoteText = [objc_opt_class() _footnoteText];
+    [(UILabel *)v19 setText:_footnoteText];
 
     v21 = v3->_footnoteLabel;
-    v22 = [objc_opt_class() _footnoteFont];
-    [(UILabel *)v21 setFont:v22];
+    _footnoteFont = [objc_opt_class() _footnoteFont];
+    [(UILabel *)v21 setFont:_footnoteFont];
 
     [(UILabel *)v3->_footnoteLabel setNumberOfLines:0];
     v23 = v3->_footnoteLabel;
-    v24 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v23 setTextColor:v24];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v23 setTextColor:secondaryLabelColor];
 
     [(UILabel *)v3->_footnoteLabel setTextAlignment:1];
     [(NCAppPickerViewFooter *)v3 addSubview:v3->_footnoteLabel];
     v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v26 = [(UIButton *)v3->_showMoreButton topAnchor];
-    v27 = [(NCAppPickerViewFooter *)v3 topAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27 constant:8.0];
+    topAnchor = [(UIButton *)v3->_showMoreButton topAnchor];
+    topAnchor2 = [(NCAppPickerViewFooter *)v3 topAnchor];
+    v28 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:8.0];
     [v25 addObject:v28];
 
-    v29 = [(UIButton *)v3->_showMoreButton leadingAnchor];
-    v30 = [(NCAppPickerViewFooter *)v3 leadingAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    leadingAnchor = [(UIButton *)v3->_showMoreButton leadingAnchor];
+    leadingAnchor2 = [(NCAppPickerViewFooter *)v3 leadingAnchor];
+    v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v25 addObject:v31];
 
-    v32 = [(NCAppPickerViewFooter *)v3 trailingAnchor];
-    v33 = [(UIButton *)v3->_showMoreButton trailingAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    trailingAnchor = [(NCAppPickerViewFooter *)v3 trailingAnchor];
+    trailingAnchor2 = [(UIButton *)v3->_showMoreButton trailingAnchor];
+    v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v25 addObject:v34];
 
-    v35 = [(UILabel *)v3->_footnoteLabel leadingAnchor];
-    v36 = [(NCAppPickerViewFooter *)v3 leadingAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    leadingAnchor3 = [(UILabel *)v3->_footnoteLabel leadingAnchor];
+    leadingAnchor4 = [(NCAppPickerViewFooter *)v3 leadingAnchor];
+    v37 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v25 addObject:v37];
 
-    v38 = [(NCAppPickerViewFooter *)v3 trailingAnchor];
-    v39 = [(UILabel *)v3->_footnoteLabel trailingAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    trailingAnchor3 = [(NCAppPickerViewFooter *)v3 trailingAnchor];
+    trailingAnchor4 = [(UILabel *)v3->_footnoteLabel trailingAnchor];
+    v40 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     [v25 addObject:v40];
 
-    v41 = [(NCAppPickerViewFooter *)v3 bottomAnchor];
-    v42 = [(UILabel *)v3->_footnoteLabel bottomAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42 constant:4.0];
+    bottomAnchor = [(NCAppPickerViewFooter *)v3 bottomAnchor];
+    bottomAnchor2 = [(UILabel *)v3->_footnoteLabel bottomAnchor];
+    v43 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:4.0];
     [v25 addObject:v43];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v25];
@@ -108,7 +108,7 @@
   [(NCAppPickerViewFooter *)self setDelegate:0];
 }
 
-+ (double)preferredHeightForWidth:(double)a3 showMoreButton:(BOOL)a4
++ (double)preferredHeightForWidth:(double)width showMoreButton:(BOOL)button
 {
   v21[1] = *MEMORY[0x277D85DE8];
   if (!preferredHeightForWidth_showMoreButton____drawingContext)
@@ -120,15 +120,15 @@
     [preferredHeightForWidth_showMoreButton____drawingContext setWantsNumberOfLineFragments:1];
   }
 
-  if (a4)
+  if (button)
   {
-    v8 = [objc_opt_class() _showMoreButtonText];
+    _showMoreButtonText = [objc_opt_class() _showMoreButtonText];
     v9 = *MEMORY[0x277D740A8];
     v20 = *MEMORY[0x277D740A8];
-    v10 = [objc_opt_class() _showMoreButtonFont];
-    v21[0] = v10;
+    _showMoreButtonFont = [objc_opt_class() _showMoreButtonFont];
+    v21[0] = _showMoreButtonFont;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-    [v8 boundingRectWithSize:1 options:v11 attributes:preferredHeightForWidth_showMoreButton____drawingContext context:{a3, 0.0}];
+    [_showMoreButtonText boundingRectWithSize:1 options:v11 attributes:preferredHeightForWidth_showMoreButton____drawingContext context:{width, 0.0}];
     v12 = CGRectGetHeight(v22) + 8.0;
   }
 
@@ -138,24 +138,24 @@
     v12 = 0.0;
   }
 
-  v13 = [objc_opt_class() _footnoteText];
+  _footnoteText = [objc_opt_class() _footnoteText];
   v18 = v9;
-  v14 = [objc_opt_class() _footnoteFont];
-  v19 = v14;
+  _footnoteFont = [objc_opt_class() _footnoteFont];
+  v19 = _footnoteFont;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-  [v13 boundingRectWithSize:1 options:v15 attributes:preferredHeightForWidth_showMoreButton____drawingContext context:{a3, 0.0}];
+  [_footnoteText boundingRectWithSize:1 options:v15 attributes:preferredHeightForWidth_showMoreButton____drawingContext context:{width, 0.0}];
   Height = CGRectGetHeight(v23);
 
   return v12 + Height + 16.0 + 4.0;
 }
 
-- (void)configureWithShowMoreButton:(BOOL)a3 delegate:(id)a4
+- (void)configureWithShowMoreButton:(BOOL)button delegate:(id)delegate
 {
-  v4 = a3;
+  buttonCopy = button;
   showMoreButton = self->_showMoreButton;
-  v7 = a4;
-  [(UIButton *)showMoreButton setHidden:!v4];
-  [(NCAppPickerViewFooter *)self setDelegate:v7];
+  delegateCopy = delegate;
+  [(UIButton *)showMoreButton setHidden:!buttonCopy];
+  [(NCAppPickerViewFooter *)self setDelegate:delegateCopy];
 }
 
 + (id)_footnoteText
@@ -184,12 +184,12 @@
   return v4;
 }
 
-- (void)_showMoreButtonPressed:(id)a3
+- (void)_showMoreButtonPressed:(id)pressed
 {
-  v4 = [(NCAppPickerViewFooter *)self delegate];
+  delegate = [(NCAppPickerViewFooter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 appPickViewFooterShowMoreButtonPressed:self];
+    [delegate appPickViewFooterShowMoreButtonPressed:self];
   }
 }
 

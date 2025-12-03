@@ -1,21 +1,21 @@
 @interface RTBluePOIMetadata
-- (BOOL)isEqual:(id)a3;
-- (RTBluePOIMetadata)initWithCoder:(id)a3;
-- (RTBluePOIMetadata)initWithIdentifier:(id)a3 categoryDenyList:(id)a4 geoCacheInfo:(id)a5 modelCalibrationParameters:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTBluePOIMetadata)initWithCoder:(id)coder;
+- (RTBluePOIMetadata)initWithIdentifier:(id)identifier categoryDenyList:(id)list geoCacheInfo:(id)info modelCalibrationParameters:(id)parameters;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTBluePOIMetadata
 
-- (RTBluePOIMetadata)initWithIdentifier:(id)a3 categoryDenyList:(id)a4 geoCacheInfo:(id)a5 modelCalibrationParameters:(id)a6
+- (RTBluePOIMetadata)initWithIdentifier:(id)identifier categoryDenyList:(id)list geoCacheInfo:(id)info modelCalibrationParameters:(id)parameters
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  identifierCopy = identifier;
+  listCopy = list;
+  infoCopy = info;
+  parametersCopy = parameters;
+  if (identifierCopy)
   {
     v20.receiver = self;
     v20.super_class = RTBluePOIMetadata;
@@ -23,14 +23,14 @@
     p_isa = &v15->super.isa;
     if (v15)
     {
-      objc_storeStrong(&v15->_identifier, a3);
-      objc_storeStrong(p_isa + 2, a4);
-      objc_storeStrong(p_isa + 3, a5);
-      objc_storeStrong(p_isa + 4, a6);
+      objc_storeStrong(&v15->_identifier, identifier);
+      objc_storeStrong(p_isa + 2, list);
+      objc_storeStrong(p_isa + 3, info);
+      objc_storeStrong(p_isa + 4, parameters);
     }
 
     self = p_isa;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
@@ -42,71 +42,71 @@
       _os_log_error_impl(&dword_1BF1C4000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: identifier", buf, 2u);
     }
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(RTBluePOIMetadata *)self identifier];
-  v5 = [(RTBluePOIMetadata *)self modelCalibrationParameters];
-  v6 = [(RTBluePOIMetadata *)self categoryDenyList];
-  v7 = [v6 count];
-  v8 = [(RTBluePOIMetadata *)self geoCacheInfo];
-  v9 = [v3 stringWithFormat:@"identifier, %@, model calibration parameters, %@, category deny list count, %lu, geoCacheInfo, %@", v4, v5, v7, v8];
+  identifier = [(RTBluePOIMetadata *)self identifier];
+  modelCalibrationParameters = [(RTBluePOIMetadata *)self modelCalibrationParameters];
+  categoryDenyList = [(RTBluePOIMetadata *)self categoryDenyList];
+  v7 = [categoryDenyList count];
+  geoCacheInfo = [(RTBluePOIMetadata *)self geoCacheInfo];
+  v9 = [v3 stringWithFormat:@"identifier, %@, model calibration parameters, %@, category deny list count, %lu, geoCacheInfo, %@", identifier, modelCalibrationParameters, v7, geoCacheInfo];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [RTBluePOIMetadata alloc];
-  v5 = [(RTBluePOIMetadata *)self identifier];
-  v6 = [(RTBluePOIMetadata *)self categoryDenyList];
-  v7 = [(RTBluePOIMetadata *)self geoCacheInfo];
-  v8 = [(RTBluePOIMetadata *)self modelCalibrationParameters];
-  v9 = [(RTBluePOIMetadata *)v4 initWithIdentifier:v5 categoryDenyList:v6 geoCacheInfo:v7 modelCalibrationParameters:v8];
+  identifier = [(RTBluePOIMetadata *)self identifier];
+  categoryDenyList = [(RTBluePOIMetadata *)self categoryDenyList];
+  geoCacheInfo = [(RTBluePOIMetadata *)self geoCacheInfo];
+  modelCalibrationParameters = [(RTBluePOIMetadata *)self modelCalibrationParameters];
+  v9 = [(RTBluePOIMetadata *)v4 initWithIdentifier:identifier categoryDenyList:categoryDenyList geoCacheInfo:geoCacheInfo modelCalibrationParameters:modelCalibrationParameters];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_categoryDenyList forKey:@"categoryDenyList"];
-  [v5 encodeObject:self->_geoCacheInfo forKey:@"geoCacheInfo"];
-  [v5 encodeObject:self->_modelCalibrationParameters forKey:@"modelCalibrationParameters"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_categoryDenyList forKey:@"categoryDenyList"];
+  [coderCopy encodeObject:self->_geoCacheInfo forKey:@"geoCacheInfo"];
+  [coderCopy encodeObject:self->_modelCalibrationParameters forKey:@"modelCalibrationParameters"];
 }
 
-- (RTBluePOIMetadata)initWithCoder:(id)a3
+- (RTBluePOIMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"categoryDenyList"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"categoryDenyList"];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"geoCacheInfo"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"geoCacheInfo"];
   v11 = MEMORY[0x1E695DFD8];
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = [v11 setWithObjects:{v12, v13, objc_opt_class(), 0}];
-  v15 = [v4 decodeObjectOfClasses:v14 forKey:@"modelCalibrationParameters"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"modelCalibrationParameters"];
 
   v16 = [(RTBluePOIMetadata *)self initWithIdentifier:v5 categoryDenyList:v9 geoCacheInfo:v10 modelCalibrationParameters:v15];
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -116,11 +116,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTBluePOIMetadata *)self identifier];
-      v7 = [(RTBluePOIMetadata *)v5 identifier];
+      v5 = equalCopy;
+      identifier = [(RTBluePOIMetadata *)self identifier];
+      identifier2 = [(RTBluePOIMetadata *)v5 identifier];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [identifier isEqual:identifier2];
     }
 
     else

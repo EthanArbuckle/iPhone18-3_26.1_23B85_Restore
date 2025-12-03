@@ -1,8 +1,8 @@
 @interface VCPClientManager
 + (id)sharedManager;
 - (VCPClientManager)init;
-- (void)addClientHandler:(id)a3;
-- (void)removeClientHandler:(id)a3;
+- (void)addClientHandler:(id)handler;
+- (void)removeClientHandler:(id)handler;
 @end
 
 @implementation VCPClientManager
@@ -38,11 +38,11 @@
   return v2;
 }
 
-- (void)addClientHandler:(id)a3
+- (void)addClientHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     managementQueue = self->_managementQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -50,16 +50,16 @@
     v7[2] = sub_100018A3C;
     v7[3] = &unk_100282F50;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     dispatch_sync(managementQueue, v7);
   }
 }
 
-- (void)removeClientHandler:(id)a3
+- (void)removeClientHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     managementQueue = self->_managementQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -67,7 +67,7 @@
     v7[2] = sub_100018BBC;
     v7[3] = &unk_100282F50;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     dispatch_sync(managementQueue, v7);
   }
 }

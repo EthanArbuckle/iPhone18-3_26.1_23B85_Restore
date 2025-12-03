@@ -1,18 +1,18 @@
 @interface ASDDSPGraph
 - (ASDDSPGraph)init;
-- (ASDDSPGraph)initWithDSPGraph:(shared_ptr<DSPGraph::Graph>)a3;
+- (ASDDSPGraph)initWithDSPGraph:(shared_ptr<DSPGraph::Graph>)graph;
 - (BOOL)configure;
 - (BOOL)configured;
-- (BOOL)getParameter:(float *)a3 forID:(unsigned int)a4;
-- (BOOL)getProperty:(void *)a3 withSize:(unsigned int *)a4 forID:(unsigned int)a5;
-- (BOOL)hasParameter:(unsigned int)a3;
+- (BOOL)getParameter:(float *)parameter forID:(unsigned int)d;
+- (BOOL)getProperty:(void *)property withSize:(unsigned int *)size forID:(unsigned int)d;
+- (BOOL)hasParameter:(unsigned int)parameter;
 - (BOOL)initialize;
 - (BOOL)initialized;
 - (BOOL)reset;
-- (BOOL)setAUStrip:(id)a3;
-- (BOOL)setProperty:(const void *)a3 withSize:(unsigned int)a4 forID:(unsigned int)a5;
-- (BOOL)setPropertyStrip:(id)a3;
-- (BOOL)setVariableSliceDuration:(int64_t)a3 forSampleRate:(int64_t)a4;
+- (BOOL)setAUStrip:(id)strip;
+- (BOOL)setProperty:(const void *)property withSize:(unsigned int)size forID:(unsigned int)d;
+- (BOOL)setPropertyStrip:(id)strip;
+- (BOOL)setVariableSliceDuration:(int64_t)duration forSampleRate:(int64_t)rate;
 - (BOOL)unconfigure;
 - (BOOL)uninitialize;
 - (NSSet)boxes;
@@ -20,12 +20,12 @@
 - (NSSet)outputs;
 - (NSString)name;
 - (id).cxx_construct;
-- (id)boxWithName:(id)a3;
+- (id)boxWithName:(id)name;
 - (int64_t)sliceDurationInSamples;
 - (shared_ptr<DSPGraph::Graph>)graph;
 - (unint64_t)numberOfInputs;
 - (unint64_t)numberOfOutputs;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 @end
 
 @implementation ASDDSPGraph
@@ -39,19 +39,19 @@
   return 0;
 }
 
-- (ASDDSPGraph)initWithDSPGraph:(shared_ptr<DSPGraph::Graph>)a3
+- (ASDDSPGraph)initWithDSPGraph:(shared_ptr<DSPGraph::Graph>)graph
 {
-  ptr = a3.__ptr_;
+  ptr = graph.__ptr_;
   v11.receiver = self;
   v11.super_class = ASDDSPGraph;
-  v5 = [(ASDDSPGraph *)&v11 init:a3.__ptr_];
+  v5 = [(ASDDSPGraph *)&v11 init:graph.__ptr_];
   if (v5)
   {
     v6 = *ptr;
     if (!*ptr)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
-      [v10 handleFailureInMethod:a2 object:v5 file:@"ASDDSPGraph.mm" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"graph"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v5 file:@"ASDDSPGraph.mm" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"graph"}];
 
       v6 = *ptr;
     }
@@ -74,7 +74,7 @@
   return v5;
 }
 
-- (BOOL)setVariableSliceDuration:(int64_t)a3 forSampleRate:(int64_t)a4
+- (BOOL)setVariableSliceDuration:(int64_t)duration forSampleRate:(int64_t)rate
 {
   v11 = *MEMORY[0x277D85DE8];
   v7[0] = MEMORY[0x277D85DD0];
@@ -82,8 +82,8 @@
   v7[2] = __54__ASDDSPGraph_setVariableSliceDuration_forSampleRate___block_invoke;
   v7[3] = &unk_278CE3A80;
   v7[4] = self;
-  v7[5] = a3;
-  v7[6] = a4;
+  v7[5] = duration;
+  v7[6] = rate;
   v8 = &unk_2853444C8;
   v9 = 0;
   v10 = &v8;
@@ -428,19 +428,19 @@ uint64_t __20__ASDDSPGraph_reset__block_invoke(uint64_t a1)
   return 1;
 }
 
-- (BOOL)setAUStrip:(id)a3
+- (BOOL)setAUStrip:(id)strip
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stripCopy = strip;
+  v5 = stripCopy;
+  if (stripCopy)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __26__ASDDSPGraph_setAUStrip___block_invoke;
     v9[3] = &unk_278CE3AF8;
     v9[4] = self;
-    v10 = v4;
+    v10 = stripCopy;
     v11 = &unk_2853444C8;
     v12 = 0;
     v13 = &v11;
@@ -485,19 +485,19 @@ BOOL __26__ASDDSPGraph_setAUStrip___block_invoke(uint64_t a1)
   return v3 == 0;
 }
 
-- (BOOL)setPropertyStrip:(id)a3
+- (BOOL)setPropertyStrip:(id)strip
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stripCopy = strip;
+  v5 = stripCopy;
+  if (stripCopy)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __32__ASDDSPGraph_setPropertyStrip___block_invoke;
     v9[3] = &unk_278CE3AF8;
     v9[4] = self;
-    v10 = v4;
+    v10 = stripCopy;
     v11 = &unk_2853444C8;
     v12 = 0;
     v13 = &v11;
@@ -542,7 +542,7 @@ uint64_t __32__ASDDSPGraph_setPropertyStrip___block_invoke(uint64_t a1)
   return 1;
 }
 
-- (BOOL)getParameter:(float *)a3 forID:(unsigned int)a4
+- (BOOL)getParameter:(float *)parameter forID:(unsigned int)d
 {
   v12 = *MEMORY[0x277D85DE8];
   v7[0] = MEMORY[0x277D85DD0];
@@ -550,8 +550,8 @@ uint64_t __32__ASDDSPGraph_setPropertyStrip___block_invoke(uint64_t a1)
   v7[2] = __34__ASDDSPGraph_getParameter_forID___block_invoke;
   v7[3] = &unk_278CE3B20;
   v7[4] = self;
-  v7[5] = a3;
-  v8 = a4;
+  v7[5] = parameter;
+  dCopy = d;
   v9 = &unk_2853444C8;
   v10 = 0;
   v11 = &v9;
@@ -584,7 +584,7 @@ uint64_t __34__ASDDSPGraph_getParameter_forID___block_invoke(uint64_t a1)
   return 1;
 }
 
-- (BOOL)hasParameter:(unsigned int)a3
+- (BOOL)hasParameter:(unsigned int)parameter
 {
   [(ASDDSPGraph *)self graph];
   hasParameter = DSPGraph::Graph::hasParameter(v5);
@@ -637,17 +637,17 @@ uint64_t __34__ASDDSPGraph_setParameter_forID___block_invoke(uint64_t a1)
   return 1;
 }
 
-- (BOOL)getProperty:(void *)a3 withSize:(unsigned int *)a4 forID:(unsigned int)a5
+- (BOOL)getProperty:(void *)property withSize:(unsigned int *)size forID:(unsigned int)d
 {
   v13 = *MEMORY[0x277D85DE8];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__ASDDSPGraph_getProperty_withSize_forID___block_invoke;
   v8[3] = &unk_278CE3B70;
-  v8[5] = a4;
-  v8[6] = a3;
+  v8[5] = size;
+  v8[6] = property;
   v8[4] = self;
-  v9 = a5;
+  dCopy = d;
   v10 = &unk_2853444C8;
   v11 = 0;
   v12 = &v10;
@@ -694,17 +694,17 @@ uint64_t __42__ASDDSPGraph_getProperty_withSize_forID___block_invoke(uint64_t a1
   return 1;
 }
 
-- (BOOL)setProperty:(const void *)a3 withSize:(unsigned int)a4 forID:(unsigned int)a5
+- (BOOL)setProperty:(const void *)property withSize:(unsigned int)size forID:(unsigned int)d
 {
   v14 = *MEMORY[0x277D85DE8];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__ASDDSPGraph_setProperty_withSize_forID___block_invoke;
   v8[3] = &unk_278CE3A80;
-  v9 = a5;
-  v10 = a4;
+  dCopy = d;
+  sizeCopy = size;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = property;
   v11 = &unk_2853444C8;
   v12 = 0;
   v13 = &v11;
@@ -737,20 +737,20 @@ uint64_t __42__ASDDSPGraph_setProperty_withSize_forID___block_invoke(uint64_t a1
   return 1;
 }
 
-- (id)boxWithName:(id)a3
+- (id)boxWithName:(id)name
 {
   v11[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __27__ASDDSPGraph_boxWithName___block_invoke;
   v9[3] = &unk_278CE3B98;
   v9[4] = self;
-  v10 = v4;
+  v10 = nameCopy;
   v11[0] = &unk_285344510;
   v11[1] = 0;
   v11[3] = v11;
-  v5 = v4;
+  v5 = nameCopy;
   v6 = ASDDSP::exceptionBarrier<objc_object *({block_pointer} {__strong})(void)>(v9);
   std::__function::__value_func<objc_object * ()(void)>::~__value_func[abi:ne200100](v11);
 
@@ -978,19 +978,19 @@ id __22__ASDDSPGraph_outputs__block_invoke(uint64_t a1)
   return [MEMORY[0x277CCACA8] stringWithUTF8String:v3];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v9[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __23__ASDDSPGraph_setName___block_invoke;
   v7[3] = &unk_278CE3BE8;
   v7[4] = self;
-  v8 = v4;
+  v8 = nameCopy;
   v9[0] = &unk_285344558;
   v9[3] = v9;
-  v5 = v4;
+  v5 = nameCopy;
   ASDDSP::exceptionBarrier<void({block_pointer} {__strong})(void)>(v7);
   std::__function::__value_func<void ()(void)>::~__value_func[abi:ne200100](v9);
 

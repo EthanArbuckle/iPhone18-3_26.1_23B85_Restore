@@ -14,17 +14,17 @@
 - (uint64_t)mp_deepCopyLayer
 {
   v42 = *MEMORY[0x277D85DE8];
-  v37 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  v35 = [objc_alloc(objc_opt_class()) initWithLayer:a1];
+  v35 = [objc_alloc(objc_opt_class()) initWithLayer:self];
   if (v35)
   {
-    v33 = [v37 sublayers];
-    if (v33)
+    sublayers = [selfCopy sublayers];
+    if (sublayers)
     {
       memset(__b, 0, sizeof(__b));
-      obj = MEMORY[0x277D82BE0](v33);
+      obj = MEMORY[0x277D82BE0](sublayers);
       v23 = [obj countByEnumeratingWithState:__b objects:v41 count:16];
       if (v23)
       {
@@ -40,13 +40,13 @@
           }
 
           objc_storeStrong(location, *(__b[1] + 8 * v20));
-          v31 = [location[0] mp_deepCopyLayer];
-          if (v31)
+          mp_deepCopyLayer = [location[0] mp_deepCopyLayer];
+          if (mp_deepCopyLayer)
           {
-            [v35 addSublayer:v31];
+            [v35 addSublayer:mp_deepCopyLayer];
           }
 
-          objc_storeStrong(&v31, 0);
+          objc_storeStrong(&mp_deepCopyLayer, 0);
           ++v20;
           if (v18 + 1 >= v21)
           {
@@ -64,21 +64,21 @@
       MEMORY[0x277D82BD8](obj);
     }
 
-    v30 = [v37 mask];
-    if (v30)
+    mask = [selfCopy mask];
+    if (mask)
     {
-      v29 = [v30 mp_deepCopyLayer];
-      if (v29)
+      mp_deepCopyLayer2 = [mask mp_deepCopyLayer];
+      if (mp_deepCopyLayer2)
       {
-        [v35 setMask:v29];
+        [v35 setMask:mp_deepCopyLayer2];
       }
 
-      objc_storeStrong(&v29, 0);
+      objc_storeStrong(&mp_deepCopyLayer2, 0);
     }
 
     memset(v27, 0, sizeof(v27));
-    v16 = [v37 mp_propertiesToCopy];
-    v17 = [v16 countByEnumeratingWithState:v27 objects:v40 count:16];
+    mp_propertiesToCopy = [selfCopy mp_propertiesToCopy];
+    v17 = [mp_propertiesToCopy countByEnumeratingWithState:v27 objects:v40 count:16];
     if (v17)
     {
       v13 = *v27[2];
@@ -89,14 +89,14 @@
         v12 = v14;
         if (*v27[2] != v13)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(mp_propertiesToCopy);
         }
 
         v28 = *(v27[1] + 8 * v14);
-        if ([v28 isEqualToString:@"sublayers"] & 1) == 0 && (objc_msgSend(v28, "isEqualToString:", @"mask") & 1) == 0 && (objc_msgSend(v37, "shouldArchiveValueForKey:", v28))
+        if ([v28 isEqualToString:@"sublayers"] & 1) == 0 && (objc_msgSend(v28, "isEqualToString:", @"mask") & 1) == 0 && (objc_msgSend(selfCopy, "shouldArchiveValueForKey:", v28))
         {
           v10 = v35;
-          v11 = [v37 valueForKey:v28];
+          v11 = [selfCopy valueForKey:v28];
           [v10 setValue:? forKey:?];
           MEMORY[0x277D82BD8](v11);
         }
@@ -105,7 +105,7 @@
         if (v12 + 1 >= v15)
         {
           v14 = 0;
-          v15 = [v16 countByEnumeratingWithState:v27 objects:v40 count:16];
+          v15 = [mp_propertiesToCopy countByEnumeratingWithState:v27 objects:v40 count:16];
           if (!v15)
           {
             break;
@@ -114,20 +114,20 @@
       }
     }
 
-    *&v2 = MEMORY[0x277D82BD8](v16).n128_u64[0];
-    if ([v37 needsDisplay])
+    *&v2 = MEMORY[0x277D82BD8](mp_propertiesToCopy).n128_u64[0];
+    if ([selfCopy needsDisplay])
     {
       [v35 setNeedsDisplay];
     }
 
-    if ([v37 needsLayout])
+    if ([selfCopy needsLayout])
     {
       [v35 setNeedsLayout];
     }
 
     memset(v25, 0, sizeof(v25));
-    v8 = [v37 animationKeys];
-    v9 = [v8 countByEnumeratingWithState:v25 objects:v39 count:16];
+    animationKeys = [selfCopy animationKeys];
+    v9 = [animationKeys countByEnumeratingWithState:v25 objects:v39 count:16];
     if (v9)
     {
       v5 = *v25[2];
@@ -138,11 +138,11 @@
         v4 = v6;
         if (*v25[2] != v5)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(animationKeys);
         }
 
         v26 = *(v25[1] + 8 * v6);
-        v24 = [v37 animationForKey:v26];
+        v24 = [selfCopy animationForKey:v26];
         if (([v24 isRemovedOnCompletion] & 1) == 0)
         {
           [v35 addAnimation:v24 forKey:v26];
@@ -153,7 +153,7 @@
         if (v4 + 1 >= v7)
         {
           v6 = 0;
-          v7 = [v8 countByEnumeratingWithState:v25 objects:v39 count:16];
+          v7 = [animationKeys countByEnumeratingWithState:v25 objects:v39 count:16];
           if (!v7)
           {
             break;
@@ -162,11 +162,11 @@
       }
     }
 
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](animationKeys);
     v38 = MEMORY[0x277D82BE0](v35);
     v34 = 1;
-    objc_storeStrong(&v30, 0);
-    objc_storeStrong(&v33, 0);
+    objc_storeStrong(&mask, 0);
+    objc_storeStrong(&sublayers, 0);
   }
 
   else
@@ -183,7 +183,7 @@
 
 - (id)mp_basicPropertiesToCopy
 {
-  v8[2] = a1;
+  v8[2] = self;
   v8[1] = a2;
   v5 = 0;
   v2 = [MEMORY[0x277CBEB58] setWithObjects:{@"bounds", @"position", @"zPosition", @"anchorPoint", @"anchorPointZ", @"transform", @"hidden", @"doubleSided", @"geometryFlipped", @"sublayerTransform", @"masksToBounds", @"contents", @"contentsRect", @"contentsGravity", @"contentsScale", @"contentsCenter", @"minificationFilter", @"magnificationFilter", @"minificationFilterBias", @"opaque", @"needsDisplayOnBoundsChange", @"edgeAntialiasingMask", @"backgroundColor", @"cornerRadius", @"borderWidth", @"borderColor", @"opacity", @"compositingFilter", @"filters", @"backgroundFilters", @"shouldRasterize", @"rasterizationScale", @"shadowColor", @"shadowOpacity", @"shadowOffset", @"shadowRadius", @"shadowPath", @"shadowPathIsBounds", @"invertsShadow", @"actions", @"name", @"style", @"beginTime", @"duration", @"speed", @"timeOffset", @"repeatCount", @"repeatDuration", @"autoreverses", @"fillMode", 0}];
@@ -198,14 +198,14 @@
 
 - (id)mp_propertiesToCopy
 {
-  v8 = a1;
+  selfCopy = self;
   v7[1] = a2;
   if (!mp_propertiesToCopy_sCAShapeLayerClass)
   {
     mp_propertiesToCopy_sCAShapeLayerClass = NSClassFromString(&cfstr_Cashapelayer.isa);
   }
 
-  v7[0] = [v8 mp_basicPropertiesToCopy];
+  v7[0] = [selfCopy mp_basicPropertiesToCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -249,10 +249,10 @@
 
 - (id)mp_allLayersInTree
 {
-  v5 = a1;
+  selfCopy = self;
   v4[1] = a2;
   v4[0] = [MEMORY[0x277CBEB18] array];
-  [v5 mp_addLayerAndSublayersToArray:v4[0] allowHiddenLayers:1];
+  [selfCopy mp_addLayerAndSublayersToArray:v4[0] allowHiddenLayers:1];
   v3 = MEMORY[0x277D82BE0](v4[0]);
   objc_storeStrong(v4, 0);
 
@@ -262,25 +262,25 @@
 - (void)mp_addLayerAndSublayersToArray:()AKUIMicaPlayerAdditions allowHiddenLayers:
 {
   v21 = *MEMORY[0x277D85DE8];
-  v19 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v17 = a4;
-  if ((a4 & 1) != 0 || ([v19 isHidden] & 1) == 0)
+  if ((a4 & 1) != 0 || ([selfCopy isHidden] & 1) == 0)
   {
-    [location[0] addObject:v19];
-    v13 = [v19 mask];
-    *&v4 = MEMORY[0x277D82BD8](v13).n128_u64[0];
-    if (v13)
+    [location[0] addObject:selfCopy];
+    mask = [selfCopy mask];
+    *&v4 = MEMORY[0x277D82BD8](mask).n128_u64[0];
+    if (mask)
     {
-      v12 = [v19 mask];
-      [v12 mp_addLayerAndSublayersToArray:location[0] allowHiddenLayers:v17 & 1];
-      MEMORY[0x277D82BD8](v12);
+      mask2 = [selfCopy mask];
+      [mask2 mp_addLayerAndSublayersToArray:location[0] allowHiddenLayers:v17 & 1];
+      MEMORY[0x277D82BD8](mask2);
     }
 
     memset(__b, 0, sizeof(__b));
-    obja = [v19 sublayers];
+    obja = [selfCopy sublayers];
     v11 = [obja countByEnumeratingWithState:__b objects:v20 count:16];
     if (v11)
     {
@@ -321,14 +321,14 @@
 - (id)mp_allLayersWhoseNamesContainString:()AKUIMicaPlayerAdditions
 {
   v23 = *MEMORY[0x277D85DE8];
-  v21 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  v19 = [v21 mp_allLayersInTree];
-  v18 = [MEMORY[0x277CBEB18] array];
+  mp_allLayersInTree = [selfCopy mp_allLayersInTree];
+  array = [MEMORY[0x277CBEB18] array];
   memset(__b, 0, sizeof(__b));
-  obja = MEMORY[0x277D82BE0](v19);
+  obja = MEMORY[0x277D82BE0](mp_allLayersInTree);
   v13 = [obja countByEnumeratingWithState:__b objects:v22 count:16];
   if (v13)
   {
@@ -344,25 +344,25 @@
       }
 
       v17 = *(__b[1] + 8 * v10);
-      v6 = [v17 name];
+      name = [v17 name];
       v14 = 0;
       v7 = 0;
-      if (v6)
+      if (name)
       {
-        v15 = [v17 name];
+        name2 = [v17 name];
         v14 = 1;
-        v7 = [v15 containsString:location[0]];
+        v7 = [name2 containsString:location[0]];
       }
 
       if (v14)
       {
-        MEMORY[0x277D82BD8](v15);
+        MEMORY[0x277D82BD8](name2);
       }
 
-      *&v3 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+      *&v3 = MEMORY[0x277D82BD8](name).n128_u64[0];
       if (v7)
       {
-        [v18 addObject:{v17, v3}];
+        [array addObject:{v17, v3}];
       }
 
       ++v10;
@@ -379,9 +379,9 @@
   }
 
   MEMORY[0x277D82BD8](obja);
-  v5 = MEMORY[0x277D82BE0](v18);
-  objc_storeStrong(&v18, 0);
-  objc_storeStrong(&v19, 0);
+  v5 = MEMORY[0x277D82BE0](array);
+  objc_storeStrong(&array, 0);
+  objc_storeStrong(&mp_allLayersInTree, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 
@@ -391,10 +391,10 @@
 - (id)mp_allAnimationsInTree
 {
   v26 = *MEMORY[0x277D85DE8];
-  v23[2] = a1;
+  v23[2] = self;
   v23[1] = a2;
-  v23[0] = [a1 mp_allLayersInTree];
-  v22 = [MEMORY[0x277CBEB18] array];
+  v23[0] = [self mp_allLayersInTree];
+  array = [MEMORY[0x277CBEB18] array];
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](v23[0]);
   v16 = [obj countByEnumeratingWithState:__b objects:v25 count:16];
@@ -413,8 +413,8 @@
 
       v21 = *(__b[1] + 8 * v13);
       memset(v18, 0, sizeof(v18));
-      v9 = [v21 animationKeys];
-      v10 = [v9 countByEnumeratingWithState:v18 objects:v24 count:16];
+      animationKeys = [v21 animationKeys];
+      v10 = [animationKeys countByEnumeratingWithState:v18 objects:v24 count:16];
       if (v10)
       {
         v6 = *v18[2];
@@ -425,18 +425,18 @@
           v5 = v7;
           if (*v18[2] != v6)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(animationKeys);
           }
 
           v19 = *(v18[1] + 8 * v7);
           v17 = [v21 animationForKey:v19];
-          [v22 addObject:v17];
+          [array addObject:v17];
           objc_storeStrong(&v17, 0);
           ++v7;
           if (v5 + 1 >= v8)
           {
             v7 = 0;
-            v8 = [v9 countByEnumeratingWithState:v18 objects:v24 count:16];
+            v8 = [animationKeys countByEnumeratingWithState:v18 objects:v24 count:16];
             if (!v8)
             {
               break;
@@ -445,7 +445,7 @@
         }
       }
 
-      *&v2 = MEMORY[0x277D82BD8](v9).n128_u64[0];
+      *&v2 = MEMORY[0x277D82BD8](animationKeys).n128_u64[0];
       ++v13;
       if (v11 + 1 >= v14)
       {
@@ -460,8 +460,8 @@
   }
 
   MEMORY[0x277D82BD8](obj);
-  v4 = MEMORY[0x277D82BE0](v22);
-  objc_storeStrong(&v22, 0);
+  v4 = MEMORY[0x277D82BE0](array);
+  objc_storeStrong(&array, 0);
   objc_storeStrong(v23, 0);
   *MEMORY[0x277D85DE8];
 
@@ -470,7 +470,7 @@
 
 - (void)mp_moveAndResizeWithinParentLayer:()AKUIMicaPlayerAdditions usingGravity:geometryFlipped:retinaScale:animate:
 {
-  v49 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -489,7 +489,7 @@
   v38 = 0uLL;
   v38 = *MEMORY[0x277CBF348];
   v37 = 0x3EE4F8B588E368F1;
-  [v49 bounds];
+  [selfCopy bounds];
   v33 = v11;
   v34 = v12;
   *&v35 = v13;
@@ -675,11 +675,11 @@
 
   CATransform3DMakeScale(&v26, v40, v39, 1.0);
   memcpy(__dst, &v26, sizeof(__dst));
-  [v49 setTransform:__dst];
-  [v49 frame];
-  [v49 frame];
+  [selfCopy setTransform:__dst];
+  [selfCopy frame];
+  [selfCopy frame];
   CGRectMake_3();
-  [v49 setFrame:{v15, v16, v17, v18}];
+  [selfCopy setFrame:{v15, v16, v17, v18}];
   if ((v44 & 1) == 0)
   {
     [MEMORY[0x277CD9FF0] commit];

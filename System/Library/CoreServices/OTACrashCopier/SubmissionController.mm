@@ -1,9 +1,9 @@
 @interface SubmissionController
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SubmissionController)init;
 - (void)handleOptInChange;
-- (void)overrideSubmissionServiceMountPath:(id)a3 withReply:(id)a4;
-- (void)submitWithOptions:(id)a3 resultsCallback:(id)a4;
+- (void)overrideSubmissionServiceMountPath:(id)path withReply:(id)reply;
+- (void)submitWithOptions:(id)options resultsCallback:(id)callback;
 @end
 
 @implementation SubmissionController
@@ -45,11 +45,11 @@
 - (void)handleOptInChange
 {
   v3 = +[OSASystemConfiguration sharedInstance];
-  v4 = [v3 optInApple];
+  optInApple = [v3 optInApple];
 
   v5 = +[NSDate date];
   one_shot_events = self->_one_shot_events;
-  if (v4)
+  if (optInApple)
   {
     [(NSMutableDictionary *)one_shot_events setObject:v5 forKeyedSubscript:@"opt-in"];
 
@@ -74,21 +74,21 @@
   }
 
   v7 = +[OSASystemConfiguration sharedInstance];
-  v8 = [v7 logDomain];
+  logDomain = [v7 logDomain];
 
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(logDomain, OS_LOG_TYPE_DEFAULT))
   {
     v9 = +[OSASystemConfiguration sharedInstance];
-    v10 = [v9 optInApple];
+    optInApple2 = [v9 optInApple];
     v11 = @"OUT";
-    if (v10)
+    if (optInApple2)
     {
       v11 = @"IN";
     }
 
     *buf = 138412290;
     v23 = v11;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "OptInChange (%@); purging logs", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logDomain, OS_LOG_TYPE_DEFAULT, "OptInChange (%@); purging logs", buf, 0xCu);
   }
 
   [OSALog createRetiredDirectoriesForUser:0];
@@ -124,24 +124,24 @@
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___OSASubmissionServices];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
-  [v5 _setQueue:&_dispatch_main_q];
-  [v5 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy _setQueue:&_dispatch_main_q];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)submitWithOptions:(id)a3 resultsCallback:(id)a4
+- (void)submitWithOptions:(id)options resultsCallback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"checkEntitlement"];
+  optionsCopy = options;
+  callbackCopy = callback;
+  v8 = [optionsCopy objectForKeyedSubscript:@"checkEntitlement"];
   if (([v8 BOOLValue] & 1) == 0)
   {
 
@@ -150,9 +150,9 @@
 
   v9 = +[NSXPCConnection currentConnection];
   v10 = [v9 valueForEntitlement:@"com.apple.private.osanalytics.SubmitLogs.allow"];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
 LABEL_7:
     requestQueue = self->_requestQueue;
@@ -160,9 +160,9 @@ LABEL_7:
     block[1] = 3221225472;
     block[2] = sub_100001CBC;
     block[3] = &unk_100008380;
-    v14 = v6;
-    v15 = self;
-    v16 = v7;
+    v14 = optionsCopy;
+    selfCopy = self;
+    v16 = callbackCopy;
     dispatch_async(requestQueue, block);
 
     goto LABEL_8;
@@ -171,7 +171,7 @@ LABEL_7:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100002498();
-    if (!v7)
+    if (!callbackCopy)
     {
       goto LABEL_8;
     }
@@ -179,19 +179,19 @@ LABEL_7:
     goto LABEL_5;
   }
 
-  if (v7)
+  if (callbackCopy)
   {
 LABEL_5:
-    (*(v7 + 2))(v7, &off_1000086A0);
+    (*(callbackCopy + 2))(callbackCopy, &off_1000086A0);
   }
 
 LABEL_8:
 }
 
-- (void)overrideSubmissionServiceMountPath:(id)a3 withReply:(id)a4
+- (void)overrideSubmissionServiceMountPath:(id)path withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  replyCopy = reply;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -201,11 +201,11 @@ LABEL_8:
   if (v8)
   {
     v10 = [v8 valueForEntitlement:@"com.apple.private.osanalytics.MountPathOverride.allow"];
-    v11 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
 
-    if (v11)
+    if (bOOLValue)
     {
-      if (v6)
+      if (pathCopy)
       {
         requestQueue = self->_requestQueue;
         v14[0] = _NSConcreteStackBlock;
@@ -213,7 +213,7 @@ LABEL_8:
         v14[2] = sub_100002370;
         v14[3] = &unk_1000083A8;
         v16 = &v17;
-        v15 = v6;
+        v15 = pathCopy;
         dispatch_sync(requestQueue, v14);
       }
 
@@ -233,7 +233,7 @@ LABEL_8:
     }
   }
 
-  v7[2](v7, *(v18 + 24));
+  replyCopy[2](replyCopy, *(v18 + 24));
 
   _Block_object_dispose(&v17, 8);
 }

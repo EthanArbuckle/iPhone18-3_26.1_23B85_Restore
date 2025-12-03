@@ -1,8 +1,8 @@
 @interface CPLCloudKitExitSharedLibraryTask
 + (NSDictionary)exitStageMapping;
-- (CPLCloudKitExitSharedLibraryTask)initWithController:(id)a3 cloudKitScope:(id)a4 scope:(id)a5 share:(id)a6 retentionPolicy:(int64_t)a7 exitType:(int64_t)a8 exitSource:(int64_t)a9 userIdentifiersToRemove:(id)a10 participantIDsToRemove:(id)a11 completionHandler:(id)a12;
-- (id)initRemoveParticipantsWithController:(id)a3 cloudKitScope:(id)a4 scope:(id)a5 share:(id)a6 userIdentifiersToRemove:(id)a7 participantIDsToRemove:(id)a8 retentionPolicy:(int64_t)a9 exitSource:(int64_t)a10 completionHandler:(id)a11;
-- (id)initSelfExitWithController:(id)a3 cloudKitScope:(id)a4 scope:(id)a5 share:(id)a6 retentionPolicy:(int64_t)a7 exitSource:(int64_t)a8 completionHandler:(id)a9;
+- (CPLCloudKitExitSharedLibraryTask)initWithController:(id)controller cloudKitScope:(id)scope scope:(id)a5 share:(id)share retentionPolicy:(int64_t)policy exitType:(int64_t)type exitSource:(int64_t)source userIdentifiersToRemove:(id)self0 participantIDsToRemove:(id)self1 completionHandler:(id)self2;
+- (id)initRemoveParticipantsWithController:(id)controller cloudKitScope:(id)scope scope:(id)a5 share:(id)share userIdentifiersToRemove:(id)remove participantIDsToRemove:(id)toRemove retentionPolicy:(int64_t)policy exitSource:(int64_t)self0 completionHandler:(id)self1;
+- (id)initSelfExitWithController:(id)controller cloudKitScope:(id)scope scope:(id)a5 share:(id)share retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler;
 - (void)_reallyExit;
 - (void)runOperations;
 @end
@@ -21,35 +21,35 @@
   return v3;
 }
 
-- (CPLCloudKitExitSharedLibraryTask)initWithController:(id)a3 cloudKitScope:(id)a4 scope:(id)a5 share:(id)a6 retentionPolicy:(int64_t)a7 exitType:(int64_t)a8 exitSource:(int64_t)a9 userIdentifiersToRemove:(id)a10 participantIDsToRemove:(id)a11 completionHandler:(id)a12
+- (CPLCloudKitExitSharedLibraryTask)initWithController:(id)controller cloudKitScope:(id)scope scope:(id)a5 share:(id)share retentionPolicy:(int64_t)policy exitType:(int64_t)type exitSource:(int64_t)source userIdentifiersToRemove:(id)self0 participantIDsToRemove:(id)self1 completionHandler:(id)self2
 {
-  v33 = a4;
+  scopeCopy = scope;
   v32 = a5;
-  v31 = a6;
-  v19 = a10;
-  v20 = a11;
-  v21 = a12;
+  shareCopy = share;
+  removeCopy = remove;
+  toRemoveCopy = toRemove;
+  handlerCopy = handler;
   v34.receiver = self;
   v34.super_class = CPLCloudKitExitSharedLibraryTask;
-  v22 = [(CPLCloudKitTransportTask *)&v34 initWithController:a3];
+  v22 = [(CPLCloudKitTransportTask *)&v34 initWithController:controller];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_cloudKitScope, a4);
+    objc_storeStrong(&v22->_cloudKitScope, scope);
     objc_storeStrong(&v23->_scope, a5);
-    objc_storeStrong(&v23->_share, a6);
-    v23->_retentionPolicy = a7;
-    v23->_exitType = a8;
-    v23->_exitSource = a9;
-    v24 = [v19 copy];
+    objc_storeStrong(&v23->_share, share);
+    v23->_retentionPolicy = policy;
+    v23->_exitType = type;
+    v23->_exitSource = source;
+    v24 = [removeCopy copy];
     userIdentifiersToRemove = v23->_userIdentifiersToRemove;
     v23->_userIdentifiersToRemove = v24;
 
-    v26 = [v20 copy];
+    v26 = [toRemoveCopy copy];
     participantIDsToRemove = v23->_participantIDsToRemove;
     v23->_participantIDsToRemove = v26;
 
-    v28 = [v21 copy];
+    v28 = [handlerCopy copy];
     completionHandler = v23->_completionHandler;
     v23->_completionHandler = v28;
   }
@@ -57,40 +57,40 @@
   return v23;
 }
 
-- (id)initSelfExitWithController:(id)a3 cloudKitScope:(id)a4 scope:(id)a5 share:(id)a6 retentionPolicy:(int64_t)a7 exitSource:(int64_t)a8 completionHandler:(id)a9
+- (id)initSelfExitWithController:(id)controller cloudKitScope:(id)scope scope:(id)a5 share:(id)share retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler
 {
   v13 = a5;
-  v14 = a9;
-  v15 = a6;
-  v16 = a4;
-  v17 = a3;
-  v26 = [v15 currentUserParticipant];
-  v18 = [v15 owner];
+  handlerCopy = handler;
+  shareCopy = share;
+  scopeCopy = scope;
+  controllerCopy = controller;
+  currentUserParticipant = [shareCopy currentUserParticipant];
+  owner = [shareCopy owner];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_1000AD974;
   v27[3] = &unk_100276D68;
-  v30 = v14;
+  v30 = handlerCopy;
   v31 = a2;
-  v32 = 2 * (v26 == v18);
-  v28 = self;
+  v32 = 2 * (currentUserParticipant == owner);
+  selfCopy = self;
   v29 = v13;
   v19 = v13;
-  v20 = v14;
-  v21 = [(CPLCloudKitExitSharedLibraryTask *)v28 initWithController:v17 cloudKitScope:v16 scope:v19 share:v15 retentionPolicy:a7 exitType:v32 exitSource:a8 userIdentifiersToRemove:&__NSArray0__struct participantIDsToRemove:&__NSArray0__struct completionHandler:v27];
+  v20 = handlerCopy;
+  v21 = [(CPLCloudKitExitSharedLibraryTask *)selfCopy initWithController:controllerCopy cloudKitScope:scopeCopy scope:v19 share:shareCopy retentionPolicy:policy exitType:v32 exitSource:source userIdentifiersToRemove:&__NSArray0__struct participantIDsToRemove:&__NSArray0__struct completionHandler:v27];
 
   return v21;
 }
 
-- (id)initRemoveParticipantsWithController:(id)a3 cloudKitScope:(id)a4 scope:(id)a5 share:(id)a6 userIdentifiersToRemove:(id)a7 participantIDsToRemove:(id)a8 retentionPolicy:(int64_t)a9 exitSource:(int64_t)a10 completionHandler:(id)a11
+- (id)initRemoveParticipantsWithController:(id)controller cloudKitScope:(id)scope scope:(id)a5 share:(id)share userIdentifiersToRemove:(id)remove participantIDsToRemove:(id)toRemove retentionPolicy:(int64_t)policy exitSource:(int64_t)self0 completionHandler:(id)self1
 {
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1000ADFC0;
   v21[3] = &unk_100273078;
-  v22 = a11;
-  v17 = v22;
-  v18 = [(CPLCloudKitExitSharedLibraryTask *)self initWithController:a3 cloudKitScope:a4 scope:a5 share:a6 retentionPolicy:a9 exitType:1 exitSource:a10 userIdentifiersToRemove:a7 participantIDsToRemove:a8 completionHandler:v21];
+  handlerCopy = handler;
+  v17 = handlerCopy;
+  v18 = [(CPLCloudKitExitSharedLibraryTask *)self initWithController:controller cloudKitScope:scope scope:a5 share:share retentionPolicy:policy exitType:1 exitSource:source userIdentifiersToRemove:remove participantIDsToRemove:toRemove completionHandler:v21];
 
   return v18;
 }
@@ -154,8 +154,8 @@
 
   if (!self->_cloudKitScope)
   {
-    v15 = [(CPLEngineScope *)self->_scope scopeIdentifier];
-    v16 = [(CPLCloudKitTransportTask *)self cloudKitScopeForScopeIdentifier:v15];
+    scopeIdentifier = [(CPLEngineScope *)self->_scope scopeIdentifier];
+    v16 = [(CPLCloudKitTransportTask *)self cloudKitScopeForScopeIdentifier:scopeIdentifier];
     cloudKitScope = self->_cloudKitScope;
     self->_cloudKitScope = v16;
 
@@ -169,15 +169,15 @@
   exitType = self->_exitType;
   if (exitType == 2)
   {
-    v19 = [(CPLShare *)self->_share currentUserParticipant];
-    v25 = [(CPLShare *)self->_share owner];
-    v21 = v25;
-    if (v19)
+    currentUserParticipant = [(CPLShare *)self->_share currentUserParticipant];
+    owner = [(CPLShare *)self->_share owner];
+    v21 = owner;
+    if (currentUserParticipant)
     {
-      if (v19 == v25)
+      if (currentUserParticipant == owner)
       {
-        v22 = [v19 userIdentifier];
-        v72 = v22;
+        userIdentifier = [currentUserParticipant userIdentifier];
+        v72 = userIdentifier;
         v23 = &v72;
         goto LABEL_29;
       }
@@ -221,15 +221,15 @@ LABEL_56:
       goto LABEL_52;
     }
 
-    v19 = [(CPLShare *)self->_share currentUserParticipant];
-    v20 = [(CPLShare *)self->_share owner];
-    v21 = v20;
-    if (v19)
+    currentUserParticipant = [(CPLShare *)self->_share currentUserParticipant];
+    owner2 = [(CPLShare *)self->_share owner];
+    v21 = owner2;
+    if (currentUserParticipant)
     {
-      if (v19 != v20)
+      if (currentUserParticipant != owner2)
       {
-        v22 = [v19 userIdentifier];
-        v73 = v22;
+        userIdentifier = [currentUserParticipant userIdentifier];
+        v73 = userIdentifier;
         v23 = &v73;
 LABEL_29:
         v24 = [NSArray arrayWithObjects:v23 count:1];
@@ -295,12 +295,12 @@ LABEL_35:
       v32 = v54;
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [(CPLCloudKitScope *)self->_cloudKitScope zoneID];
+        zoneID = [(CPLCloudKitScope *)self->_cloudKitScope zoneID];
         retentionPolicy = self->_retentionPolicy;
         v35 = self->_exitType;
         participantIDsToRemove = self->_participantIDsToRemove;
         *buf = 138413826;
-        *&buf[4] = v33;
+        *&buf[4] = zoneID;
         v60 = 2048;
         v61 = retentionPolicy;
         v62 = 2048;
@@ -337,12 +337,12 @@ LABEL_35:
   v31 = sub_100003BC8();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
-    v39 = [(CPLCloudKitScope *)self->_cloudKitScope zoneID];
+    zoneID2 = [(CPLCloudKitScope *)self->_cloudKitScope zoneID];
     v40 = self->_retentionPolicy;
     v41 = self->_exitType;
     v42 = self->_participantIDsToRemove;
     *buf = 138413570;
-    *&buf[4] = v39;
+    *&buf[4] = zoneID2;
     v60 = 2048;
     v61 = v40;
     v62 = 2048;
@@ -360,7 +360,7 @@ LABEL_35:
 LABEL_45:
 
 LABEL_46:
-  v43 = [(CPLCloudKitScope *)self->_cloudKitScope zoneID];
+  zoneID3 = [(CPLCloudKitScope *)self->_cloudKitScope zoneID];
   v44 = self->_retentionPolicy;
   v45 = 2 * (v44 == 2);
   v46 = v44 == 1;
@@ -386,7 +386,7 @@ LABEL_46:
   v57[2] = sub_1000AEA00;
   v57[3] = &unk_100276D90;
   v57[4] = self;
-  v50 = [CPLCKPhotosSharedLibraryOperation exitSharedLibraryOperationWithZoneID:v43 retentionPolicy:v49 exitType:v47 exitSource:v32 stopAt:v27 participantUserIDsToRemove:v53 participantIDsToRemove:v48 completionHandler:v57];
+  v50 = [CPLCKPhotosSharedLibraryOperation exitSharedLibraryOperationWithZoneID:zoneID3 retentionPolicy:v49 exitType:v47 exitSource:v32 stopAt:v27 participantUserIDsToRemove:v53 participantIDsToRemove:v48 completionHandler:v57];
 
   [(CPLCloudKitTransportTask *)self launchOperation:v50 type:CPLCloudKitOperationTypeForScope(self->_cloudKitScope) withContext:0];
 LABEL_52:

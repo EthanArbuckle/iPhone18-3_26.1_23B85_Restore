@@ -1,50 +1,50 @@
 @interface CollectionSaveSession
-- (BOOL)canRenameSelectedObjectInCollection:(id)a3;
-- (CollectionSaveSession)initWithMapItem:(id)a3 showsAddToLibrarySection:(BOOL)a4;
+- (BOOL)canRenameSelectedObjectInCollection:(id)collection;
+- (CollectionSaveSession)initWithMapItem:(id)item showsAddToLibrarySection:(BOOL)section;
 - (GEOTransitLine)transitLine;
 - (MKMapItem)mapItem;
-- (void)applyToCollection:(id)a3 completion:(id)a4;
+- (void)applyToCollection:(id)collection completion:(id)completion;
 @end
 
 @implementation CollectionSaveSession
 
-- (void)applyToCollection:(id)a3 completion:(id)a4
+- (void)applyToCollection:(id)collection completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  collectionCopy = collection;
+  completionCopy = completion;
+  if (collectionCopy)
   {
-    v8 = v6;
+    collection = collectionCopy;
   }
 
   else
   {
-    v8 = [(CollectionEditSession *)self collection];
+    collection = [(CollectionEditSession *)self collection];
   }
 
-  v9 = v8;
-  v10 = [(CollectionSaveSession *)self mapItem];
+  v9 = collection;
+  mapItem = [(CollectionSaveSession *)self mapItem];
 
-  if (v10 && v9)
+  if (mapItem && v9)
   {
     if (![(CollectionEditSession *)self suppressAnalytics])
     {
-      v11 = [(CollectionEditSession *)self analyticsTarget];
-      v12 = [(CollectionEditSession *)self collection];
+      analyticsTarget = [(CollectionEditSession *)self analyticsTarget];
+      collection2 = [(CollectionEditSession *)self collection];
 
-      v26 = v7;
+      v26 = completionCopy;
       v25 = v9;
-      if (v12 != v6)
+      if (collection2 != collectionCopy)
       {
-        v13 = [(CollectionEditSession *)self collection];
-        if ([v13 handlerType] == 3)
+        collection3 = [(CollectionEditSession *)self collection];
+        if ([collection3 handlerType] == 3)
         {
-          v11 = 256;
+          analyticsTarget = 256;
         }
 
         else
         {
-          v11 = 252;
+          analyticsTarget = 252;
         }
       }
 
@@ -67,10 +67,10 @@
               objc_enumerationMutation(obj);
             }
 
-            v18 = [*(*(&v30 + 1) + 8 * i) _identifier];
-            v19 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v18 muid]);
-            v20 = [v19 stringValue];
-            [GEOAPPortal captureUserAction:2073 target:v11 value:v20];
+            _identifier = [*(*(&v30 + 1) + 8 * i) _identifier];
+            v19 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [_identifier muid]);
+            stringValue = [v19 stringValue];
+            [GEOAPPortal captureUserAction:2073 target:analyticsTarget value:stringValue];
           }
 
           v15 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -79,50 +79,50 @@
         while (v15);
       }
 
-      v7 = v26;
+      completionCopy = v26;
       v9 = v25;
     }
 
-    v21 = [(CollectionEditSession *)self selectedObjectSet];
+    selectedObjectSet = [(CollectionEditSession *)self selectedObjectSet];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_100D18060;
     v28[3] = &unk_10165E240;
     v28[4] = self;
-    v29 = v7;
-    [v9 addObjects:v21 completion:v28];
+    v29 = completionCopy;
+    [v9 addObjects:selectedObjectSet completion:v28];
   }
 
   else
   {
     v22 = [NSError GEOErrorWithCode:0 reason:@"Nil map item or collection"];
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, v22);
+      (*(completionCopy + 2))(completionCopy, v22);
     }
 
-    v23 = [(CollectionEditSession *)self resultBlock];
+    resultBlock = [(CollectionEditSession *)self resultBlock];
 
-    if (v23)
+    if (resultBlock)
     {
-      v24 = [(CollectionEditSession *)self resultBlock];
-      (v24)[2](v24, v22);
+      resultBlock2 = [(CollectionEditSession *)self resultBlock];
+      (resultBlock2)[2](resultBlock2, v22);
     }
   }
 }
 
-- (BOOL)canRenameSelectedObjectInCollection:(id)a3
+- (BOOL)canRenameSelectedObjectInCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(CollectionEditSession *)self selectedObjectSet];
-  v6 = [v5 count];
+  collectionCopy = collection;
+  selectedObjectSet = [(CollectionEditSession *)self selectedObjectSet];
+  v6 = [selectedObjectSet count];
 
   if (v6 == 1)
   {
-    v7 = [(CollectionSaveSession *)self mapItem];
-    if ([v7 _maps_canRenameCollectionItem])
+    mapItem = [(CollectionSaveSession *)self mapItem];
+    if ([mapItem _maps_canRenameCollectionItem])
     {
-      v8 = [v4 containsItem:v7] ^ 1;
+      v8 = [collectionCopy containsItem:mapItem] ^ 1;
     }
 
     else
@@ -141,12 +141,12 @@
 
 - (GEOTransitLine)transitLine
 {
-  v2 = [(CollectionEditSession *)self selectedObjectSet];
-  v3 = [v2 anyObject];
+  selectedObjectSet = [(CollectionEditSession *)self selectedObjectSet];
+  anyObject = [selectedObjectSet anyObject];
 
-  if ([v3 conformsToProtocol:&OBJC_PROTOCOL___GEOTransitLine])
+  if ([anyObject conformsToProtocol:&OBJC_PROTOCOL___GEOTransitLine])
   {
-    v4 = v3;
+    v4 = anyObject;
   }
 
   else
@@ -159,13 +159,13 @@
 
 - (MKMapItem)mapItem
 {
-  v2 = [(CollectionEditSession *)self selectedObjectSet];
-  v3 = [v2 anyObject];
+  selectedObjectSet = [(CollectionEditSession *)self selectedObjectSet];
+  anyObject = [selectedObjectSet anyObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [MKMapItem _itemWithGeoMapItem:v3];
+    v4 = [MKMapItem _itemWithGeoMapItem:anyObject];
 LABEL_5:
     v5 = v4;
     goto LABEL_7;
@@ -174,7 +174,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = anyObject;
     goto LABEL_5;
   }
 
@@ -184,17 +184,17 @@ LABEL_7:
   return v5;
 }
 
-- (CollectionSaveSession)initWithMapItem:(id)a3 showsAddToLibrarySection:(BOOL)a4
+- (CollectionSaveSession)initWithMapItem:(id)item showsAddToLibrarySection:(BOOL)section
 {
-  v6 = a3;
+  itemCopy = item;
   v10.receiver = self;
   v10.super_class = CollectionSaveSession;
   v7 = [(CollectionEditSession *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(CollectionEditSession *)v7 addSelectedObject:v6];
-    v8->_showsAddToLibrarySection = a4;
+    [(CollectionEditSession *)v7 addSelectedObject:itemCopy];
+    v8->_showsAddToLibrarySection = section;
   }
 
   return v8;

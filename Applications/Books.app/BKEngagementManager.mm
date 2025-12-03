@@ -1,41 +1,41 @@
 @interface BKEngagementManager
-+ (void)destroyPersistentStorageInDirectory:(id)a3;
++ (void)destroyPersistentStorageInDirectory:(id)directory;
 - (BKEngagementManager)init;
 - (BKEngagementManagerAnalyticsHelper)analyticsHelper;
 - (BKEngagementManagerMetadata)metadata;
 - (BKSessionDonor)sessionDonor;
-- (id)donorWithType:(id)a3;
-- (void)downloadQueue:(id)a3 purchasedDidCompleteWithResponse:(id)a4;
-- (void)engagementEventDataForEventWithEventName:(id)a3 completion:(id)a4;
-- (void)fetchDialogRequestsFor:(id)a3 completion:(id)a4;
+- (id)donorWithType:(id)type;
+- (void)downloadQueue:(id)queue purchasedDidCompleteWithResponse:(id)response;
+- (void)engagementEventDataForEventWithEventName:(id)name completion:(id)completion;
+- (void)fetchDialogRequestsFor:(id)for completion:(id)completion;
 - (void)forcePurgeAll;
 - (void)forceSyncFromCloudKit;
 - (void)forceSyncToCloudKit;
-- (void)onCloudUpdate:(id)a3;
-- (void)onConfigurationChange:(id)a3;
-- (void)onDidReceiveAppDidBackground:(id)a3;
+- (void)onCloudUpdate:(id)update;
+- (void)onConfigurationChange:(id)change;
+- (void)onDidReceiveAppDidBackground:(id)background;
 - (void)reportAppOpenEvent;
 - (void)sendReaderEventNewSectionViaToC;
-- (void)setAnalyticsHelper:(id)a3;
-- (void)setEventController:(id)a3;
-- (void)setMetadata:(id)a3;
-- (void)setupPersonalizationEventDonor:(id)a3;
+- (void)setAnalyticsHelper:(id)helper;
+- (void)setEventController:(id)controller;
+- (void)setMetadata:(id)metadata;
+- (void)setupPersonalizationEventDonor:(id)donor;
 - (void)setupSessionDonor;
 @end
 
 @implementation BKEngagementManager
 
-- (void)setEventController:(id)a3
+- (void)setEventController:(id)controller
 {
   v4 = *(&self->super.isa + OBJC_IVAR___BKEngagementManager_eventController);
-  *(&self->super.isa + OBJC_IVAR___BKEngagementManager_eventController) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___BKEngagementManager_eventController) = controller;
+  controllerCopy = controller;
 }
 
 - (BKSessionDonor)sessionDonor
 {
   v2 = *(&self->super.isa + OBJC_IVAR___BKEngagementManager_manager);
-  v3 = self;
+  selfCopy = self;
   v4 = v2;
   v5 = sub_1007999E4();
 
@@ -64,13 +64,13 @@ LABEL_5:
   return *(&self->super.isa + v3);
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
   v5 = OBJC_IVAR___BKEngagementManager_metadata;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = metadata;
+  metadataCopy = metadata;
 }
 
 - (BKEngagementManagerAnalyticsHelper)analyticsHelper
@@ -80,16 +80,16 @@ LABEL_5:
   return *(&self->super.isa + v3);
 }
 
-- (void)setAnalyticsHelper:(id)a3
+- (void)setAnalyticsHelper:(id)helper
 {
   v5 = OBJC_IVAR___BKEngagementManager_analyticsHelper;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = helper;
+  helperCopy = helper;
 }
 
-+ (void)destroyPersistentStorageInDirectory:(id)a3
++ (void)destroyPersistentStorageInDirectory:(id)directory
 {
   v3 = sub_1007969B4();
   v4 = *(v3 - 8);
@@ -103,36 +103,36 @@ LABEL_5:
 
 - (void)setupSessionDonor
 {
-  v2 = self;
+  selfCopy = self;
   EngagementManager.setupSessionDonor()();
 }
 
-- (void)setupPersonalizationEventDonor:(id)a3
+- (void)setupPersonalizationEventDonor:(id)donor
 {
-  v4 = a3;
-  v5 = self;
-  EngagementManager.setup(personalizationEventDonor:)(v4);
+  donorCopy = donor;
+  selfCopy = self;
+  EngagementManager.setup(personalizationEventDonor:)(donorCopy);
 }
 
 - (void)reportAppOpenEvent
 {
-  v2 = self;
+  selfCopy = self;
   EngagementManager.reportAppOpenEvent()();
 }
 
 - (void)forceSyncFromCloudKit
 {
-  v2 = self;
+  selfCopy = self;
   sub_100347ADC();
 }
 
 - (void)forceSyncToCloudKit
 {
-  v2 = self;
+  selfCopy = self;
   EngagementManager.syncToCloudKit(completion:)(BKAppDelegate.enableMetricsInspectorOnDebugMode(), 0);
 }
 
-- (void)onDidReceiveAppDidBackground:(id)a3
+- (void)onDidReceiveAppDidBackground:(id)background
 {
   v4 = sub_100796594();
   v5 = *(v4 - 8);
@@ -140,14 +140,14 @@ LABEL_5:
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796564();
   v8 = *(&self->super.isa + OBJC_IVAR___BKEngagementManager_manager);
-  v9 = self;
+  selfCopy = self;
   v10 = v8;
   sub_100799964();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)onCloudUpdate:(id)a3
+- (void)onCloudUpdate:(id)update
 {
   v4 = sub_100796594();
   v5 = *(v4 - 8);
@@ -156,7 +156,7 @@ LABEL_5:
   sub_100796564();
   if (*(&self->super.isa + OBJC_IVAR___BKEngagementManager_cloudKitSyncEnabled) == 1)
   {
-    v8 = self;
+    selfCopy = self;
     sub_100347ADC();
   }
 
@@ -166,29 +166,29 @@ LABEL_5:
 - (void)forcePurgeAll
 {
   v2 = *(&self->super.isa + OBJC_IVAR___BKEngagementManager_manager);
-  v4 = self;
+  selfCopy = self;
   v3 = v2;
   sub_1007999B4();
 }
 
-- (id)donorWithType:(id)a3
+- (id)donorWithType:(id)type
 {
   sub_1007A2254();
   v4 = *(&self->super.isa + OBJC_IVAR___BKEngagementManager_manager);
-  v5 = self;
+  selfCopy = self;
   v6 = v4;
   v7 = sub_1007999E4();
 
   return v7;
 }
 
-- (void)engagementEventDataForEventWithEventName:(id)a3 completion:(id)a4
+- (void)engagementEventDataForEventWithEventName:(id)name completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   v7 = *(&self->super.isa + OBJC_IVAR___BKEngagementManager_manager);
-  v10 = self;
+  selfCopy = self;
   v8 = v7;
   sub_100799A14();
 
@@ -207,9 +207,9 @@ LABEL_5:
   return result;
 }
 
-- (void)fetchDialogRequestsFor:(id)a3 completion:(id)a4
+- (void)fetchDialogRequestsFor:(id)for completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_1007A2834();
   if (v5)
   {
@@ -223,35 +223,35 @@ LABEL_5:
     v7 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   _s5Books17EngagementManagerC19fetchDialogRequests3for10completionyShySSG_ySDySSSo16AMSDialogRequestCG_s5Error_pSgtcSgtF_0(v6, v5, v7);
   sub_100007020(v5);
 }
 
-- (void)downloadQueue:(id)a3 purchasedDidCompleteWithResponse:(id)a4
+- (void)downloadQueue:(id)queue purchasedDidCompleteWithResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100358B8C(a4);
+  queueCopy = queue;
+  responseCopy = response;
+  selfCopy = self;
+  sub_100358B8C(response);
 }
 
 - (void)sendReaderEventNewSectionViaToC
 {
   v2 = *(&self->super.isa + OBJC_IVAR___BKEngagementManager_eventController);
-  v4 = self;
+  selfCopy = self;
   v3 = v2;
   sub_10079E994();
 }
 
-- (void)onConfigurationChange:(id)a3
+- (void)onConfigurationChange:(id)change
 {
   v4 = sub_100796594();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796564();
-  v8 = self;
+  selfCopy = self;
   sub_1003548C0();
 
   (*(v5 + 8))(v7, v4);

@@ -1,41 +1,41 @@
 @interface SISchemaDailyDeviceStatus
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaDailyDeviceStatus)initWithDictionary:(id)a3;
-- (SISchemaDailyDeviceStatus)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaDailyDeviceStatus)initWithDictionary:(id)dictionary;
+- (SISchemaDailyDeviceStatus)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)installedVoicesAtIndex:(unint64_t)a3;
+- (int)installedVoicesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addEnabledDictationLocales:(id)a3;
-- (void)addInstalledVoices:(int)a3;
-- (void)addLinkedAccessoryState:(id)a3;
-- (void)setHasAssistantRecordPublishTimestampMs:(BOOL)a3;
-- (void)setHasAvailableDeviceStorageInMB:(BOOL)a3;
-- (void)setHasDeviceCapacityInGB:(BOOL)a3;
-- (void)setHasQueuedAtTimestampHourInMs:(BOOL)a3;
-- (void)setHasSiriInputLocale:(BOOL)a3;
-- (void)setHasSpokenNotificationsControlCenterModuleEnabled:(BOOL)a3;
-- (void)setHasSpokenNotificationsWhitelistSettings:(BOOL)a3;
-- (void)setHasSpokenNotificationsproxCardSeen:(BOOL)a3;
-- (void)setHasStoreCountryCode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addEnabledDictationLocales:(id)locales;
+- (void)addInstalledVoices:(int)voices;
+- (void)addLinkedAccessoryState:(id)state;
+- (void)setHasAssistantRecordPublishTimestampMs:(BOOL)ms;
+- (void)setHasAvailableDeviceStorageInMB:(BOOL)b;
+- (void)setHasDeviceCapacityInGB:(BOOL)b;
+- (void)setHasQueuedAtTimestampHourInMs:(BOOL)ms;
+- (void)setHasSiriInputLocale:(BOOL)locale;
+- (void)setHasSpokenNotificationsControlCenterModuleEnabled:(BOOL)enabled;
+- (void)setHasSpokenNotificationsWhitelistSettings:(BOOL)settings;
+- (void)setHasSpokenNotificationsproxCardSeen:(BOOL)seen;
+- (void)setHasStoreCountryCode:(BOOL)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaDailyDeviceStatus
 
-- (SISchemaDailyDeviceStatus)initWithDictionary:(id)a3
+- (SISchemaDailyDeviceStatus)initWithDictionary:(id)dictionary
 {
   v117 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v113.receiver = self;
   v113.super_class = SISchemaDailyDeviceStatus;
   v5 = [(SISchemaDailyDeviceStatus *)&v113 init];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"siriDeviceID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"siriDeviceID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(SISchemaDailyDeviceStatus *)v5 setSiriDeviceID:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"siriSpeechID"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"siriSpeechID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
     }
 
     v85 = v6;
-    v10 = [v4 objectForKeyedSubscript:@"sharedUserId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"sharedUserId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,14 +60,14 @@
       [(SISchemaDailyDeviceStatus *)v5 setSharedUserId:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"clientDeviceSamplingTimestampMs"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"clientDeviceSamplingTimestampMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaDailyDeviceStatus setClientDeviceSamplingTimestampMs:](v5, "setClientDeviceSamplingTimestampMs:", [v12 longLongValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"assistantRecordPublishTimestampMs"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"assistantRecordPublishTimestampMs"];
     objc_opt_class();
     v100 = v13;
     if (objc_opt_isKindOfClass())
@@ -75,7 +75,7 @@
       -[SISchemaDailyDeviceStatus setAssistantRecordPublishTimestampMs:](v5, "setAssistantRecordPublishTimestampMs:", [v13 longLongValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"locale"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"locale"];
     objc_opt_class();
     v99 = v14;
     if (objc_opt_isKindOfClass())
@@ -84,7 +84,7 @@
       [(SISchemaDailyDeviceStatus *)v5 setLocale:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"deviceType"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"deviceType"];
     objc_opt_class();
     v98 = v16;
     if (objc_opt_isKindOfClass())
@@ -93,7 +93,7 @@
       [(SISchemaDailyDeviceStatus *)v5 setDeviceType:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"deviceOs"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"deviceOs"];
     objc_opt_class();
     v97 = v18;
     if (objc_opt_isKindOfClass())
@@ -104,7 +104,7 @@
 
     v83 = v12;
     v84 = v8;
-    v20 = [v4 objectForKeyedSubscript:@"deviceBuild"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"deviceBuild"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -113,7 +113,7 @@
     }
 
     v82 = v20;
-    v22 = [v4 objectForKeyedSubscript:@"enabledStatus"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"enabledStatus"];
     objc_opt_class();
     v96 = v22;
     if (objc_opt_isKindOfClass())
@@ -122,7 +122,7 @@
       [(SISchemaDailyDeviceStatus *)v5 setEnabledStatus:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"activeStatus"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"activeStatus"];
     objc_opt_class();
     v95 = v24;
     if (objc_opt_isKindOfClass())
@@ -131,7 +131,7 @@
       [(SISchemaDailyDeviceStatus *)v5 setActiveStatus:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"personalization"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"personalization"];
     objc_opt_class();
     v94 = v26;
     if (objc_opt_isKindOfClass())
@@ -140,7 +140,7 @@
       [(SISchemaDailyDeviceStatus *)v5 setPersonalization:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"multiUserState"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"multiUserState"];
     objc_opt_class();
     v93 = v28;
     if (objc_opt_isKindOfClass())
@@ -149,7 +149,7 @@
       [(SISchemaDailyDeviceStatus *)v5 setMultiUserState:v29];
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"spokenNotificationsproxCardSeen"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"spokenNotificationsproxCardSeen"];
     objc_opt_class();
     v92 = v30;
     if (objc_opt_isKindOfClass())
@@ -157,7 +157,7 @@
       -[SISchemaDailyDeviceStatus setSpokenNotificationsproxCardSeen:](v5, "setSpokenNotificationsproxCardSeen:", [v30 BOOLValue]);
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"spokenNotificationsControlCenterModuleEnabled"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"spokenNotificationsControlCenterModuleEnabled"];
     objc_opt_class();
     v91 = v31;
     if (objc_opt_isKindOfClass())
@@ -165,7 +165,7 @@
       -[SISchemaDailyDeviceStatus setSpokenNotificationsControlCenterModuleEnabled:](v5, "setSpokenNotificationsControlCenterModuleEnabled:", [v31 BOOLValue]);
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"spokenNotificationsWhitelistSettings"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"spokenNotificationsWhitelistSettings"];
     objc_opt_class();
     v90 = v32;
     if (objc_opt_isKindOfClass())
@@ -173,7 +173,7 @@
       -[SISchemaDailyDeviceStatus setSpokenNotificationsWhitelistSettings:](v5, "setSpokenNotificationsWhitelistSettings:", [v32 intValue]);
     }
 
-    v33 = [v4 objectForKeyedSubscript:@"aggregatedMetrics"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"aggregatedMetrics"];
     objc_opt_class();
     v89 = v33;
     if (objc_opt_isKindOfClass())
@@ -182,12 +182,12 @@
       [(SISchemaDailyDeviceStatus *)v5 setAggregatedMetrics:v34];
     }
 
-    v35 = [v4 objectForKeyedSubscript:@"linkedAccessoryState"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"linkedAccessoryState"];
     objc_opt_class();
     v88 = v35;
     if (objc_opt_isKindOfClass())
     {
-      v36 = v4;
+      v36 = dictionaryCopy;
       v111 = 0u;
       v112 = 0u;
       v109 = 0u;
@@ -222,17 +222,17 @@
         while (v39);
       }
 
-      v4 = v36;
+      dictionaryCopy = v36;
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"siriInputLocale"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"siriInputLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaDailyDeviceStatus setSiriInputLocale:](v5, "setSiriInputLocale:", [v44 intValue]);
     }
 
-    v45 = [v4 objectForKeyedSubscript:@"multiUserSetup"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"multiUserSetup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -240,14 +240,14 @@
       [(SISchemaDailyDeviceStatus *)v5 setMultiUserSetup:v46];
     }
 
-    v47 = [v4 objectForKeyedSubscript:@"queuedAtTimestampHourInMs"];
+    v47 = [dictionaryCopy objectForKeyedSubscript:@"queuedAtTimestampHourInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaDailyDeviceStatus setQueuedAtTimestampHourInMs:](v5, "setQueuedAtTimestampHourInMs:", [v47 unsignedLongLongValue]);
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"storeCountryCode"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"storeCountryCode"];
     objc_opt_class();
     v87 = v48;
     if (objc_opt_isKindOfClass())
@@ -255,7 +255,7 @@
       -[SISchemaDailyDeviceStatus setStoreCountryCode:](v5, "setStoreCountryCode:", [v48 intValue]);
     }
 
-    v49 = [v4 objectForKeyedSubscript:@"enabledDictationLocales"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"enabledDictationLocales"];
     objc_opt_class();
     v86 = v49;
     v80 = v45;
@@ -263,7 +263,7 @@
     v79 = v47;
     if (objc_opt_isKindOfClass())
     {
-      v50 = v4;
+      v50 = dictionaryCopy;
       v107 = 0u;
       v108 = 0u;
       v105 = 0u;
@@ -298,12 +298,12 @@
         while (v53);
       }
 
-      v4 = v50;
+      dictionaryCopy = v50;
       v44 = v81;
       v47 = v79;
     }
 
-    v58 = [v4 objectForKeyedSubscript:@"deviceCapacityInGB"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"deviceCapacityInGB"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -311,7 +311,7 @@
     }
 
     v78 = v58;
-    v59 = [v4 objectForKeyedSubscript:@"availableDeviceStorageInMB"];
+    v59 = [dictionaryCopy objectForKeyedSubscript:@"availableDeviceStorageInMB"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -320,7 +320,7 @@
     }
 
     v77 = v59;
-    v60 = [v4 objectForKeyedSubscript:@"modelNumber"];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"modelNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -329,7 +329,7 @@
     }
 
     v76 = v60;
-    v62 = [v4 objectForKeyedSubscript:@"regionInfo"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"regionInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -337,7 +337,7 @@
       [(SISchemaDailyDeviceStatus *)v5 setRegionInfo:v63];
     }
 
-    v64 = [v4 objectForKeyedSubscript:@"storefrontId"];
+    v64 = [dictionaryCopy objectForKeyedSubscript:@"storefrontId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -345,11 +345,11 @@
       [(SISchemaDailyDeviceStatus *)v5 setStorefrontId:v65];
     }
 
-    v66 = [v4 objectForKeyedSubscript:@"installedVoices"];
+    v66 = [dictionaryCopy objectForKeyedSubscript:@"installedVoices"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v75 = v4;
+      v75 = dictionaryCopy;
       v103 = 0u;
       v104 = 0u;
       v101 = 0u;
@@ -383,7 +383,7 @@
         while (v69);
       }
 
-      v4 = v75;
+      dictionaryCopy = v75;
       v45 = v80;
       v44 = v81;
       v47 = v79;
@@ -395,30 +395,30 @@
   return v5;
 }
 
-- (SISchemaDailyDeviceStatus)initWithJSON:(id)a3
+- (SISchemaDailyDeviceStatus)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaDailyDeviceStatus *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaDailyDeviceStatus *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaDailyDeviceStatus *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -432,36 +432,36 @@
 - (id)dictionaryRepresentation
 {
   v89 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_activeStatus)
   {
-    v4 = [(SISchemaDailyDeviceStatus *)self activeStatus];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    activeStatus = [(SISchemaDailyDeviceStatus *)self activeStatus];
+    dictionaryRepresentation = [activeStatus dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"activeStatus"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"activeStatus"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"activeStatus"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"activeStatus"];
     }
   }
 
   if (self->_aggregatedMetrics)
   {
-    v7 = [(SISchemaDailyDeviceStatus *)self aggregatedMetrics];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    aggregatedMetrics = [(SISchemaDailyDeviceStatus *)self aggregatedMetrics];
+    dictionaryRepresentation2 = [aggregatedMetrics dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"aggregatedMetrics"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"aggregatedMetrics"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"aggregatedMetrics"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"aggregatedMetrics"];
     }
   }
 
@@ -470,7 +470,7 @@
   if ((has & 2) != 0)
   {
     v30 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[SISchemaDailyDeviceStatus assistantRecordPublishTimestampMs](self, "assistantRecordPublishTimestampMs")}];
-    [v3 setObject:v30 forKeyedSubscript:@"assistantRecordPublishTimestampMs"];
+    [dictionary setObject:v30 forKeyedSubscript:@"assistantRecordPublishTimestampMs"];
 
     has = self->_has;
     if ((has & 0x200) == 0)
@@ -493,46 +493,46 @@ LABEL_13:
   v31 = MEMORY[0x1E696AD98];
   [(SISchemaDailyDeviceStatus *)self availableDeviceStorageInMB];
   v32 = [v31 numberWithDouble:?];
-  [v3 setObject:v32 forKeyedSubscript:@"availableDeviceStorageInMB"];
+  [dictionary setObject:v32 forKeyedSubscript:@"availableDeviceStorageInMB"];
 
   if (*&self->_has)
   {
 LABEL_14:
     v12 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[SISchemaDailyDeviceStatus clientDeviceSamplingTimestampMs](self, "clientDeviceSamplingTimestampMs")}];
-    [v3 setObject:v12 forKeyedSubscript:@"clientDeviceSamplingTimestampMs"];
+    [dictionary setObject:v12 forKeyedSubscript:@"clientDeviceSamplingTimestampMs"];
   }
 
 LABEL_15:
   if (self->_deviceBuild)
   {
-    v13 = [(SISchemaDailyDeviceStatus *)self deviceBuild];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"deviceBuild"];
+    deviceBuild = [(SISchemaDailyDeviceStatus *)self deviceBuild];
+    v14 = [deviceBuild copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"deviceBuild"];
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SISchemaDailyDeviceStatus deviceCapacityInGB](self, "deviceCapacityInGB")}];
-    [v3 setObject:v15 forKeyedSubscript:@"deviceCapacityInGB"];
+    [dictionary setObject:v15 forKeyedSubscript:@"deviceCapacityInGB"];
   }
 
   if (self->_deviceOs)
   {
-    v16 = [(SISchemaDailyDeviceStatus *)self deviceOs];
-    v17 = [v16 copy];
-    [v3 setObject:v17 forKeyedSubscript:@"deviceOs"];
+    deviceOs = [(SISchemaDailyDeviceStatus *)self deviceOs];
+    v17 = [deviceOs copy];
+    [dictionary setObject:v17 forKeyedSubscript:@"deviceOs"];
   }
 
   if (self->_deviceType)
   {
-    v18 = [(SISchemaDailyDeviceStatus *)self deviceType];
-    v19 = [v18 copy];
-    [v3 setObject:v19 forKeyedSubscript:@"deviceType"];
+    deviceType = [(SISchemaDailyDeviceStatus *)self deviceType];
+    v19 = [deviceType copy];
+    [dictionary setObject:v19 forKeyedSubscript:@"deviceType"];
   }
 
   if ([(NSArray *)self->_enabledDictationLocales count])
   {
-    v20 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
@@ -552,16 +552,16 @@ LABEL_15:
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v83 + 1) + 8 * i) dictionaryRepresentation];
-          if (v26)
+          dictionaryRepresentation3 = [*(*(&v83 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v20 addObject:v26];
+            [array addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v27 = [MEMORY[0x1E695DFB0] null];
-            [v20 addObject:v27];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null3];
           }
         }
 
@@ -571,36 +571,36 @@ LABEL_15:
       while (v23);
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"enabledDictationLocales"];
+    [dictionary setObject:array forKeyedSubscript:@"enabledDictationLocales"];
     v11 = 0x1E696A000;
   }
 
   if (self->_enabledStatus)
   {
-    v28 = [(SISchemaDailyDeviceStatus *)self enabledStatus];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    enabledStatus = [(SISchemaDailyDeviceStatus *)self enabledStatus];
+    dictionaryRepresentation4 = [enabledStatus dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"enabledStatus"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"enabledStatus"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"enabledStatus"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"enabledStatus"];
     }
   }
 
   if ([(NSArray *)self->_installedVoices count])
   {
-    v34 = [(SISchemaDailyDeviceStatus *)self installedVoices];
-    v35 = [v34 copy];
-    [v3 setObject:v35 forKeyedSubscript:@"installedVoices"];
+    installedVoices = [(SISchemaDailyDeviceStatus *)self installedVoices];
+    v35 = [installedVoices copy];
+    [dictionary setObject:v35 forKeyedSubscript:@"installedVoices"];
   }
 
   if ([(NSArray *)self->_linkedAccessoryStates count])
   {
-    v36 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v79 = 0u;
     v80 = 0u;
     v81 = 0u;
@@ -620,16 +620,16 @@ LABEL_15:
             objc_enumerationMutation(v37);
           }
 
-          v42 = [*(*(&v79 + 1) + 8 * j) dictionaryRepresentation];
-          if (v42)
+          dictionaryRepresentation5 = [*(*(&v79 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation5)
           {
-            [v36 addObject:v42];
+            [array2 addObject:dictionaryRepresentation5];
           }
 
           else
           {
-            v43 = [MEMORY[0x1E695DFB0] null];
-            [v36 addObject:v43];
+            null5 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null5];
           }
         }
 
@@ -639,97 +639,97 @@ LABEL_15:
       while (v39);
     }
 
-    [v3 setObject:v36 forKeyedSubscript:@"linkedAccessoryState"];
+    [dictionary setObject:array2 forKeyedSubscript:@"linkedAccessoryState"];
     v11 = 0x1E696A000uLL;
   }
 
   if (self->_locale)
   {
-    v44 = [(SISchemaDailyDeviceStatus *)self locale];
-    v45 = [v44 copy];
-    [v3 setObject:v45 forKeyedSubscript:@"locale"];
+    locale = [(SISchemaDailyDeviceStatus *)self locale];
+    v45 = [locale copy];
+    [dictionary setObject:v45 forKeyedSubscript:@"locale"];
   }
 
   if (self->_modelNumber)
   {
-    v46 = [(SISchemaDailyDeviceStatus *)self modelNumber];
-    v47 = [v46 copy];
-    [v3 setObject:v47 forKeyedSubscript:@"modelNumber"];
+    modelNumber = [(SISchemaDailyDeviceStatus *)self modelNumber];
+    v47 = [modelNumber copy];
+    [dictionary setObject:v47 forKeyedSubscript:@"modelNumber"];
   }
 
   if (self->_multiUserSetup)
   {
-    v48 = [(SISchemaDailyDeviceStatus *)self multiUserSetup];
-    v49 = [v48 dictionaryRepresentation];
-    if (v49)
+    multiUserSetup = [(SISchemaDailyDeviceStatus *)self multiUserSetup];
+    dictionaryRepresentation6 = [multiUserSetup dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v49 forKeyedSubscript:@"multiUserSetup"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"multiUserSetup"];
     }
 
     else
     {
-      v50 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v50 forKeyedSubscript:@"multiUserSetup"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"multiUserSetup"];
     }
   }
 
   if (self->_multiUserState)
   {
-    v51 = [(SISchemaDailyDeviceStatus *)self multiUserState];
-    v52 = [v51 dictionaryRepresentation];
-    if (v52)
+    multiUserState = [(SISchemaDailyDeviceStatus *)self multiUserState];
+    dictionaryRepresentation7 = [multiUserState dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v52 forKeyedSubscript:@"multiUserState"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"multiUserState"];
     }
 
     else
     {
-      v53 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v53 forKeyedSubscript:@"multiUserState"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"multiUserState"];
     }
   }
 
   if (self->_personalization)
   {
-    v54 = [(SISchemaDailyDeviceStatus *)self personalization];
-    v55 = [v54 dictionaryRepresentation];
-    if (v55)
+    personalization = [(SISchemaDailyDeviceStatus *)self personalization];
+    dictionaryRepresentation8 = [personalization dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v55 forKeyedSubscript:@"personalization"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"personalization"];
     }
 
     else
     {
-      v56 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v56 forKeyedSubscript:@"personalization"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"personalization"];
     }
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
     v57 = [*(v11 + 3480) numberWithUnsignedLongLong:{-[SISchemaDailyDeviceStatus queuedAtTimestampHourInMs](self, "queuedAtTimestampHourInMs")}];
-    [v3 setObject:v57 forKeyedSubscript:@"queuedAtTimestampHourInMs"];
+    [dictionary setObject:v57 forKeyedSubscript:@"queuedAtTimestampHourInMs"];
   }
 
   if (self->_regionInfo)
   {
-    v58 = [(SISchemaDailyDeviceStatus *)self regionInfo];
-    v59 = [v58 copy];
-    [v3 setObject:v59 forKeyedSubscript:@"regionInfo"];
+    regionInfo = [(SISchemaDailyDeviceStatus *)self regionInfo];
+    v59 = [regionInfo copy];
+    [dictionary setObject:v59 forKeyedSubscript:@"regionInfo"];
   }
 
   if (self->_sharedUserId)
   {
-    v60 = [(SISchemaDailyDeviceStatus *)self sharedUserId];
-    v61 = [v60 copy];
-    [v3 setObject:v61 forKeyedSubscript:@"sharedUserId"];
+    sharedUserId = [(SISchemaDailyDeviceStatus *)self sharedUserId];
+    v61 = [sharedUserId copy];
+    [dictionary setObject:v61 forKeyedSubscript:@"sharedUserId"];
   }
 
   if (self->_siriDeviceID)
   {
-    v62 = [(SISchemaDailyDeviceStatus *)self siriDeviceID];
-    v63 = [v62 copy];
-    [v3 setObject:v63 forKeyedSubscript:@"siriDeviceID"];
+    siriDeviceID = [(SISchemaDailyDeviceStatus *)self siriDeviceID];
+    v63 = [siriDeviceID copy];
+    [dictionary setObject:v63 forKeyedSubscript:@"siriDeviceID"];
   }
 
   if ((*&self->_has & 0x20) != 0)
@@ -745,21 +745,21 @@ LABEL_15:
       v65 = off_1E78E3E80[v64];
     }
 
-    [v3 setObject:v65 forKeyedSubscript:@"siriInputLocale"];
+    [dictionary setObject:v65 forKeyedSubscript:@"siriInputLocale"];
   }
 
   if (self->_siriSpeechID)
   {
-    v66 = [(SISchemaDailyDeviceStatus *)self siriSpeechID];
-    v67 = [v66 copy];
-    [v3 setObject:v67 forKeyedSubscript:@"siriSpeechID"];
+    siriSpeechID = [(SISchemaDailyDeviceStatus *)self siriSpeechID];
+    v67 = [siriSpeechID copy];
+    [dictionary setObject:v67 forKeyedSubscript:@"siriSpeechID"];
   }
 
   v68 = self->_has;
   if ((v68 & 8) != 0)
   {
     v69 = [*(v11 + 3480) numberWithBool:{-[SISchemaDailyDeviceStatus spokenNotificationsControlCenterModuleEnabled](self, "spokenNotificationsControlCenterModuleEnabled")}];
-    [v3 setObject:v69 forKeyedSubscript:@"spokenNotificationsControlCenterModuleEnabled"];
+    [dictionary setObject:v69 forKeyedSubscript:@"spokenNotificationsControlCenterModuleEnabled"];
 
     v68 = self->_has;
     if ((v68 & 0x10) == 0)
@@ -772,7 +772,7 @@ LABEL_93:
 
 LABEL_101:
       v72 = [*(v11 + 3480) numberWithBool:{-[SISchemaDailyDeviceStatus spokenNotificationsproxCardSeen](self, "spokenNotificationsproxCardSeen")}];
-      [v3 setObject:v72 forKeyedSubscript:@"spokenNotificationsproxCardSeen"];
+      [dictionary setObject:v72 forKeyedSubscript:@"spokenNotificationsproxCardSeen"];
 
       if ((*&self->_has & 0x80) == 0)
       {
@@ -791,7 +791,7 @@ LABEL_102:
         v74 = off_1E78E4090[v73];
       }
 
-      [v3 setObject:v74 forKeyedSubscript:@"storeCountryCode"];
+      [dictionary setObject:v74 forKeyedSubscript:@"storeCountryCode"];
       goto LABEL_106;
     }
   }
@@ -812,7 +812,7 @@ LABEL_102:
     v71 = off_1E78E4070[v70];
   }
 
-  [v3 setObject:v71 forKeyedSubscript:@"spokenNotificationsWhitelistSettings"];
+  [dictionary setObject:v71 forKeyedSubscript:@"spokenNotificationsWhitelistSettings"];
   v68 = self->_has;
   if ((v68 & 4) != 0)
   {
@@ -828,15 +828,15 @@ LABEL_94:
 LABEL_106:
   if (self->_storefrontId)
   {
-    v75 = [(SISchemaDailyDeviceStatus *)self storefrontId];
-    v76 = [v75 copy];
-    [v3 setObject:v76 forKeyedSubscript:@"storefrontId"];
+    storefrontId = [(SISchemaDailyDeviceStatus *)self storefrontId];
+    v76 = [storefrontId copy];
+    [dictionary setObject:v76 forKeyedSubscript:@"storefrontId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v77 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v77 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -1002,28 +1002,28 @@ LABEL_29:
   return v21 ^ v24 ^ [(NSArray *)self->_installedVoices hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_132;
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self siriDeviceID];
-  v6 = [v4 siriDeviceID];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self siriDeviceID];
+  siriDeviceID2 = [equalCopy siriDeviceID];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
     goto LABEL_131;
   }
 
-  v7 = [(SISchemaDailyDeviceStatus *)self siriDeviceID];
-  if (v7)
+  siriDeviceID3 = [(SISchemaDailyDeviceStatus *)self siriDeviceID];
+  if (siriDeviceID3)
   {
-    v8 = v7;
-    v9 = [(SISchemaDailyDeviceStatus *)self siriDeviceID];
-    v10 = [v4 siriDeviceID];
-    v11 = [v9 isEqual:v10];
+    v8 = siriDeviceID3;
+    siriDeviceID4 = [(SISchemaDailyDeviceStatus *)self siriDeviceID];
+    siriDeviceID5 = [equalCopy siriDeviceID];
+    v11 = [siriDeviceID4 isEqual:siriDeviceID5];
 
     if (!v11)
     {
@@ -1035,20 +1035,20 @@ LABEL_29:
   {
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self siriSpeechID];
-  v6 = [v4 siriSpeechID];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self siriSpeechID];
+  siriDeviceID2 = [equalCopy siriSpeechID];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
     goto LABEL_131;
   }
 
-  v12 = [(SISchemaDailyDeviceStatus *)self siriSpeechID];
-  if (v12)
+  siriSpeechID = [(SISchemaDailyDeviceStatus *)self siriSpeechID];
+  if (siriSpeechID)
   {
-    v13 = v12;
-    v14 = [(SISchemaDailyDeviceStatus *)self siriSpeechID];
-    v15 = [v4 siriSpeechID];
-    v16 = [v14 isEqual:v15];
+    v13 = siriSpeechID;
+    siriSpeechID2 = [(SISchemaDailyDeviceStatus *)self siriSpeechID];
+    siriSpeechID3 = [equalCopy siriSpeechID];
+    v16 = [siriSpeechID2 isEqual:siriSpeechID3];
 
     if (!v16)
     {
@@ -1060,20 +1060,20 @@ LABEL_29:
   {
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self sharedUserId];
-  v6 = [v4 sharedUserId];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self sharedUserId];
+  siriDeviceID2 = [equalCopy sharedUserId];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
     goto LABEL_131;
   }
 
-  v17 = [(SISchemaDailyDeviceStatus *)self sharedUserId];
-  if (v17)
+  sharedUserId = [(SISchemaDailyDeviceStatus *)self sharedUserId];
+  if (sharedUserId)
   {
-    v18 = v17;
-    v19 = [(SISchemaDailyDeviceStatus *)self sharedUserId];
-    v20 = [v4 sharedUserId];
-    v21 = [v19 isEqual:v20];
+    v18 = sharedUserId;
+    sharedUserId2 = [(SISchemaDailyDeviceStatus *)self sharedUserId];
+    sharedUserId3 = [equalCopy sharedUserId];
+    v21 = [sharedUserId2 isEqual:sharedUserId3];
 
     if (!v21)
     {
@@ -1086,7 +1086,7 @@ LABEL_29:
   }
 
   has = self->_has;
-  v23 = v4[112];
+  v23 = equalCopy[112];
   if ((*&has & 1) != (v23 & 1))
   {
     goto LABEL_132;
@@ -1095,13 +1095,13 @@ LABEL_29:
   if (*&has)
   {
     clientDeviceSamplingTimestampMs = self->_clientDeviceSamplingTimestampMs;
-    if (clientDeviceSamplingTimestampMs != [v4 clientDeviceSamplingTimestampMs])
+    if (clientDeviceSamplingTimestampMs != [equalCopy clientDeviceSamplingTimestampMs])
     {
       goto LABEL_132;
     }
 
     has = self->_has;
-    v23 = v4[112];
+    v23 = equalCopy[112];
   }
 
   v25 = (*&has >> 1) & 1;
@@ -1113,26 +1113,26 @@ LABEL_29:
   if (v25)
   {
     assistantRecordPublishTimestampMs = self->_assistantRecordPublishTimestampMs;
-    if (assistantRecordPublishTimestampMs != [v4 assistantRecordPublishTimestampMs])
+    if (assistantRecordPublishTimestampMs != [equalCopy assistantRecordPublishTimestampMs])
     {
       goto LABEL_132;
     }
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self locale];
-  v6 = [v4 locale];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self locale];
+  siriDeviceID2 = [equalCopy locale];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
     goto LABEL_131;
   }
 
-  v27 = [(SISchemaDailyDeviceStatus *)self locale];
-  if (v27)
+  locale = [(SISchemaDailyDeviceStatus *)self locale];
+  if (locale)
   {
-    v28 = v27;
-    v29 = [(SISchemaDailyDeviceStatus *)self locale];
-    v30 = [v4 locale];
-    v31 = [v29 isEqual:v30];
+    v28 = locale;
+    locale2 = [(SISchemaDailyDeviceStatus *)self locale];
+    locale3 = [equalCopy locale];
+    v31 = [locale2 isEqual:locale3];
 
     if (!v31)
     {
@@ -1144,20 +1144,20 @@ LABEL_29:
   {
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self deviceType];
-  v6 = [v4 deviceType];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self deviceType];
+  siriDeviceID2 = [equalCopy deviceType];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
     goto LABEL_131;
   }
 
-  v32 = [(SISchemaDailyDeviceStatus *)self deviceType];
-  if (v32)
+  deviceType = [(SISchemaDailyDeviceStatus *)self deviceType];
+  if (deviceType)
   {
-    v33 = v32;
-    v34 = [(SISchemaDailyDeviceStatus *)self deviceType];
-    v35 = [v4 deviceType];
-    v36 = [v34 isEqual:v35];
+    v33 = deviceType;
+    deviceType2 = [(SISchemaDailyDeviceStatus *)self deviceType];
+    deviceType3 = [equalCopy deviceType];
+    v36 = [deviceType2 isEqual:deviceType3];
 
     if (!v36)
     {
@@ -1169,20 +1169,20 @@ LABEL_29:
   {
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self deviceOs];
-  v6 = [v4 deviceOs];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self deviceOs];
+  siriDeviceID2 = [equalCopy deviceOs];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
     goto LABEL_131;
   }
 
-  v37 = [(SISchemaDailyDeviceStatus *)self deviceOs];
-  if (v37)
+  deviceOs = [(SISchemaDailyDeviceStatus *)self deviceOs];
+  if (deviceOs)
   {
-    v38 = v37;
-    v39 = [(SISchemaDailyDeviceStatus *)self deviceOs];
-    v40 = [v4 deviceOs];
-    v41 = [v39 isEqual:v40];
+    v38 = deviceOs;
+    deviceOs2 = [(SISchemaDailyDeviceStatus *)self deviceOs];
+    deviceOs3 = [equalCopy deviceOs];
+    v41 = [deviceOs2 isEqual:deviceOs3];
 
     if (!v41)
     {
@@ -1194,20 +1194,20 @@ LABEL_29:
   {
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self deviceBuild];
-  v6 = [v4 deviceBuild];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self deviceBuild];
+  siriDeviceID2 = [equalCopy deviceBuild];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
     goto LABEL_131;
   }
 
-  v42 = [(SISchemaDailyDeviceStatus *)self deviceBuild];
-  if (v42)
+  deviceBuild = [(SISchemaDailyDeviceStatus *)self deviceBuild];
+  if (deviceBuild)
   {
-    v43 = v42;
-    v44 = [(SISchemaDailyDeviceStatus *)self deviceBuild];
-    v45 = [v4 deviceBuild];
-    v46 = [v44 isEqual:v45];
+    v43 = deviceBuild;
+    deviceBuild2 = [(SISchemaDailyDeviceStatus *)self deviceBuild];
+    deviceBuild3 = [equalCopy deviceBuild];
+    v46 = [deviceBuild2 isEqual:deviceBuild3];
 
     if (!v46)
     {
@@ -1219,20 +1219,20 @@ LABEL_29:
   {
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self enabledStatus];
-  v6 = [v4 enabledStatus];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self enabledStatus];
+  siriDeviceID2 = [equalCopy enabledStatus];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
     goto LABEL_131;
   }
 
-  v47 = [(SISchemaDailyDeviceStatus *)self enabledStatus];
-  if (v47)
+  enabledStatus = [(SISchemaDailyDeviceStatus *)self enabledStatus];
+  if (enabledStatus)
   {
-    v48 = v47;
-    v49 = [(SISchemaDailyDeviceStatus *)self enabledStatus];
-    v50 = [v4 enabledStatus];
-    v51 = [v49 isEqual:v50];
+    v48 = enabledStatus;
+    enabledStatus2 = [(SISchemaDailyDeviceStatus *)self enabledStatus];
+    enabledStatus3 = [equalCopy enabledStatus];
+    v51 = [enabledStatus2 isEqual:enabledStatus3];
 
     if (!v51)
     {
@@ -1244,20 +1244,20 @@ LABEL_29:
   {
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self activeStatus];
-  v6 = [v4 activeStatus];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self activeStatus];
+  siriDeviceID2 = [equalCopy activeStatus];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
     goto LABEL_131;
   }
 
-  v52 = [(SISchemaDailyDeviceStatus *)self activeStatus];
-  if (v52)
+  activeStatus = [(SISchemaDailyDeviceStatus *)self activeStatus];
+  if (activeStatus)
   {
-    v53 = v52;
-    v54 = [(SISchemaDailyDeviceStatus *)self activeStatus];
-    v55 = [v4 activeStatus];
-    v56 = [v54 isEqual:v55];
+    v53 = activeStatus;
+    activeStatus2 = [(SISchemaDailyDeviceStatus *)self activeStatus];
+    activeStatus3 = [equalCopy activeStatus];
+    v56 = [activeStatus2 isEqual:activeStatus3];
 
     if (!v56)
     {
@@ -1269,20 +1269,20 @@ LABEL_29:
   {
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self personalization];
-  v6 = [v4 personalization];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self personalization];
+  siriDeviceID2 = [equalCopy personalization];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
     goto LABEL_131;
   }
 
-  v57 = [(SISchemaDailyDeviceStatus *)self personalization];
-  if (v57)
+  personalization = [(SISchemaDailyDeviceStatus *)self personalization];
+  if (personalization)
   {
-    v58 = v57;
-    v59 = [(SISchemaDailyDeviceStatus *)self personalization];
-    v60 = [v4 personalization];
-    v61 = [v59 isEqual:v60];
+    v58 = personalization;
+    personalization2 = [(SISchemaDailyDeviceStatus *)self personalization];
+    personalization3 = [equalCopy personalization];
+    v61 = [personalization2 isEqual:personalization3];
 
     if (!v61)
     {
@@ -1294,20 +1294,20 @@ LABEL_29:
   {
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self multiUserState];
-  v6 = [v4 multiUserState];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self multiUserState];
+  siriDeviceID2 = [equalCopy multiUserState];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
     goto LABEL_131;
   }
 
-  v62 = [(SISchemaDailyDeviceStatus *)self multiUserState];
-  if (v62)
+  multiUserState = [(SISchemaDailyDeviceStatus *)self multiUserState];
+  if (multiUserState)
   {
-    v63 = v62;
-    v64 = [(SISchemaDailyDeviceStatus *)self multiUserState];
-    v65 = [v4 multiUserState];
-    v66 = [v64 isEqual:v65];
+    v63 = multiUserState;
+    multiUserState2 = [(SISchemaDailyDeviceStatus *)self multiUserState];
+    multiUserState3 = [equalCopy multiUserState];
+    v66 = [multiUserState2 isEqual:multiUserState3];
 
     if (!v66)
     {
@@ -1321,7 +1321,7 @@ LABEL_29:
 
   v67 = self->_has;
   v68 = (*&v67 >> 2) & 1;
-  v69 = v4[112];
+  v69 = equalCopy[112];
   if (v68 != ((v69 >> 2) & 1))
   {
     goto LABEL_132;
@@ -1330,13 +1330,13 @@ LABEL_29:
   if (v68)
   {
     spokenNotificationsproxCardSeen = self->_spokenNotificationsproxCardSeen;
-    if (spokenNotificationsproxCardSeen != [v4 spokenNotificationsproxCardSeen])
+    if (spokenNotificationsproxCardSeen != [equalCopy spokenNotificationsproxCardSeen])
     {
       goto LABEL_132;
     }
 
     v67 = self->_has;
-    v69 = v4[112];
+    v69 = equalCopy[112];
   }
 
   v71 = (*&v67 >> 3) & 1;
@@ -1348,13 +1348,13 @@ LABEL_29:
   if (v71)
   {
     spokenNotificationsControlCenterModuleEnabled = self->_spokenNotificationsControlCenterModuleEnabled;
-    if (spokenNotificationsControlCenterModuleEnabled != [v4 spokenNotificationsControlCenterModuleEnabled])
+    if (spokenNotificationsControlCenterModuleEnabled != [equalCopy spokenNotificationsControlCenterModuleEnabled])
     {
       goto LABEL_132;
     }
 
     v67 = self->_has;
-    v69 = v4[112];
+    v69 = equalCopy[112];
   }
 
   v73 = (*&v67 >> 4) & 1;
@@ -1366,26 +1366,26 @@ LABEL_29:
   if (v73)
   {
     spokenNotificationsWhitelistSettings = self->_spokenNotificationsWhitelistSettings;
-    if (spokenNotificationsWhitelistSettings != [v4 spokenNotificationsWhitelistSettings])
+    if (spokenNotificationsWhitelistSettings != [equalCopy spokenNotificationsWhitelistSettings])
     {
       goto LABEL_132;
     }
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self aggregatedMetrics];
-  v6 = [v4 aggregatedMetrics];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self aggregatedMetrics];
+  siriDeviceID2 = [equalCopy aggregatedMetrics];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
     goto LABEL_131;
   }
 
-  v75 = [(SISchemaDailyDeviceStatus *)self aggregatedMetrics];
-  if (v75)
+  aggregatedMetrics = [(SISchemaDailyDeviceStatus *)self aggregatedMetrics];
+  if (aggregatedMetrics)
   {
-    v76 = v75;
-    v77 = [(SISchemaDailyDeviceStatus *)self aggregatedMetrics];
-    v78 = [v4 aggregatedMetrics];
-    v79 = [v77 isEqual:v78];
+    v76 = aggregatedMetrics;
+    aggregatedMetrics2 = [(SISchemaDailyDeviceStatus *)self aggregatedMetrics];
+    aggregatedMetrics3 = [equalCopy aggregatedMetrics];
+    v79 = [aggregatedMetrics2 isEqual:aggregatedMetrics3];
 
     if (!v79)
     {
@@ -1397,20 +1397,20 @@ LABEL_29:
   {
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self linkedAccessoryStates];
-  v6 = [v4 linkedAccessoryStates];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self linkedAccessoryStates];
+  siriDeviceID2 = [equalCopy linkedAccessoryStates];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
     goto LABEL_131;
   }
 
-  v80 = [(SISchemaDailyDeviceStatus *)self linkedAccessoryStates];
-  if (v80)
+  linkedAccessoryStates = [(SISchemaDailyDeviceStatus *)self linkedAccessoryStates];
+  if (linkedAccessoryStates)
   {
-    v81 = v80;
-    v82 = [(SISchemaDailyDeviceStatus *)self linkedAccessoryStates];
-    v83 = [v4 linkedAccessoryStates];
-    v84 = [v82 isEqual:v83];
+    v81 = linkedAccessoryStates;
+    linkedAccessoryStates2 = [(SISchemaDailyDeviceStatus *)self linkedAccessoryStates];
+    linkedAccessoryStates3 = [equalCopy linkedAccessoryStates];
+    v84 = [linkedAccessoryStates2 isEqual:linkedAccessoryStates3];
 
     if (!v84)
     {
@@ -1423,7 +1423,7 @@ LABEL_29:
   }
 
   v85 = (*&self->_has >> 5) & 1;
-  if (v85 != ((v4[112] >> 5) & 1))
+  if (v85 != ((equalCopy[112] >> 5) & 1))
   {
     goto LABEL_132;
   }
@@ -1431,26 +1431,26 @@ LABEL_29:
   if (v85)
   {
     siriInputLocale = self->_siriInputLocale;
-    if (siriInputLocale != [v4 siriInputLocale])
+    if (siriInputLocale != [equalCopy siriInputLocale])
     {
       goto LABEL_132;
     }
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self multiUserSetup];
-  v6 = [v4 multiUserSetup];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self multiUserSetup];
+  siriDeviceID2 = [equalCopy multiUserSetup];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
     goto LABEL_131;
   }
 
-  v87 = [(SISchemaDailyDeviceStatus *)self multiUserSetup];
-  if (v87)
+  multiUserSetup = [(SISchemaDailyDeviceStatus *)self multiUserSetup];
+  if (multiUserSetup)
   {
-    v88 = v87;
-    v89 = [(SISchemaDailyDeviceStatus *)self multiUserSetup];
-    v90 = [v4 multiUserSetup];
-    v91 = [v89 isEqual:v90];
+    v88 = multiUserSetup;
+    multiUserSetup2 = [(SISchemaDailyDeviceStatus *)self multiUserSetup];
+    multiUserSetup3 = [equalCopy multiUserSetup];
+    v91 = [multiUserSetup2 isEqual:multiUserSetup3];
 
     if (!v91)
     {
@@ -1464,7 +1464,7 @@ LABEL_29:
 
   v92 = self->_has;
   v93 = (*&v92 >> 6) & 1;
-  v94 = v4[112];
+  v94 = equalCopy[112];
   if (v93 != ((v94 >> 6) & 1))
   {
     goto LABEL_132;
@@ -1473,13 +1473,13 @@ LABEL_29:
   if (v93)
   {
     queuedAtTimestampHourInMs = self->_queuedAtTimestampHourInMs;
-    if (queuedAtTimestampHourInMs != [v4 queuedAtTimestampHourInMs])
+    if (queuedAtTimestampHourInMs != [equalCopy queuedAtTimestampHourInMs])
     {
       goto LABEL_132;
     }
 
     v92 = self->_has;
-    v94 = v4[112];
+    v94 = equalCopy[112];
   }
 
   v96 = (*&v92 >> 7) & 1;
@@ -1491,26 +1491,26 @@ LABEL_29:
   if (v96)
   {
     storeCountryCode = self->_storeCountryCode;
-    if (storeCountryCode != [v4 storeCountryCode])
+    if (storeCountryCode != [equalCopy storeCountryCode])
     {
       goto LABEL_132;
     }
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self enabledDictationLocales];
-  v6 = [v4 enabledDictationLocales];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self enabledDictationLocales];
+  siriDeviceID2 = [equalCopy enabledDictationLocales];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
     goto LABEL_131;
   }
 
-  v98 = [(SISchemaDailyDeviceStatus *)self enabledDictationLocales];
-  if (v98)
+  enabledDictationLocales = [(SISchemaDailyDeviceStatus *)self enabledDictationLocales];
+  if (enabledDictationLocales)
   {
-    v99 = v98;
-    v100 = [(SISchemaDailyDeviceStatus *)self enabledDictationLocales];
-    v101 = [v4 enabledDictationLocales];
-    v102 = [v100 isEqual:v101];
+    v99 = enabledDictationLocales;
+    enabledDictationLocales2 = [(SISchemaDailyDeviceStatus *)self enabledDictationLocales];
+    enabledDictationLocales3 = [equalCopy enabledDictationLocales];
+    v102 = [enabledDictationLocales2 isEqual:enabledDictationLocales3];
 
     if (!v102)
     {
@@ -1524,7 +1524,7 @@ LABEL_29:
 
   v103 = self->_has;
   v104 = (*&v103 >> 8) & 1;
-  v105 = v4[112];
+  v105 = equalCopy[112];
   if (v104 != ((v105 >> 8) & 1))
   {
     goto LABEL_132;
@@ -1533,13 +1533,13 @@ LABEL_29:
   if (v104)
   {
     deviceCapacityInGB = self->_deviceCapacityInGB;
-    if (deviceCapacityInGB != [v4 deviceCapacityInGB])
+    if (deviceCapacityInGB != [equalCopy deviceCapacityInGB])
     {
       goto LABEL_132;
     }
 
     v103 = self->_has;
-    v105 = v4[112];
+    v105 = equalCopy[112];
   }
 
   v107 = (*&v103 >> 9) & 1;
@@ -1551,27 +1551,27 @@ LABEL_29:
   if (v107)
   {
     availableDeviceStorageInMB = self->_availableDeviceStorageInMB;
-    [v4 availableDeviceStorageInMB];
+    [equalCopy availableDeviceStorageInMB];
     if (availableDeviceStorageInMB != v109)
     {
       goto LABEL_132;
     }
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self modelNumber];
-  v6 = [v4 modelNumber];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self modelNumber];
+  siriDeviceID2 = [equalCopy modelNumber];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
     goto LABEL_131;
   }
 
-  v110 = [(SISchemaDailyDeviceStatus *)self modelNumber];
-  if (v110)
+  modelNumber = [(SISchemaDailyDeviceStatus *)self modelNumber];
+  if (modelNumber)
   {
-    v111 = v110;
-    v112 = [(SISchemaDailyDeviceStatus *)self modelNumber];
-    v113 = [v4 modelNumber];
-    v114 = [v112 isEqual:v113];
+    v111 = modelNumber;
+    modelNumber2 = [(SISchemaDailyDeviceStatus *)self modelNumber];
+    modelNumber3 = [equalCopy modelNumber];
+    v114 = [modelNumber2 isEqual:modelNumber3];
 
     if (!v114)
     {
@@ -1583,20 +1583,20 @@ LABEL_29:
   {
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self regionInfo];
-  v6 = [v4 regionInfo];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self regionInfo];
+  siriDeviceID2 = [equalCopy regionInfo];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
     goto LABEL_131;
   }
 
-  v115 = [(SISchemaDailyDeviceStatus *)self regionInfo];
-  if (v115)
+  regionInfo = [(SISchemaDailyDeviceStatus *)self regionInfo];
+  if (regionInfo)
   {
-    v116 = v115;
-    v117 = [(SISchemaDailyDeviceStatus *)self regionInfo];
-    v118 = [v4 regionInfo];
-    v119 = [v117 isEqual:v118];
+    v116 = regionInfo;
+    regionInfo2 = [(SISchemaDailyDeviceStatus *)self regionInfo];
+    regionInfo3 = [equalCopy regionInfo];
+    v119 = [regionInfo2 isEqual:regionInfo3];
 
     if (!v119)
     {
@@ -1608,20 +1608,20 @@ LABEL_29:
   {
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self storefrontId];
-  v6 = [v4 storefrontId];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self storefrontId];
+  siriDeviceID2 = [equalCopy storefrontId];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
     goto LABEL_131;
   }
 
-  v120 = [(SISchemaDailyDeviceStatus *)self storefrontId];
-  if (v120)
+  storefrontId = [(SISchemaDailyDeviceStatus *)self storefrontId];
+  if (storefrontId)
   {
-    v121 = v120;
-    v122 = [(SISchemaDailyDeviceStatus *)self storefrontId];
-    v123 = [v4 storefrontId];
-    v124 = [v122 isEqual:v123];
+    v121 = storefrontId;
+    storefrontId2 = [(SISchemaDailyDeviceStatus *)self storefrontId];
+    storefrontId3 = [equalCopy storefrontId];
+    v124 = [storefrontId2 isEqual:storefrontId3];
 
     if (!v124)
     {
@@ -1633,17 +1633,17 @@ LABEL_29:
   {
   }
 
-  v5 = [(SISchemaDailyDeviceStatus *)self installedVoices];
-  v6 = [v4 installedVoices];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self installedVoices];
+  siriDeviceID2 = [equalCopy installedVoices];
+  if ((siriDeviceID != 0) == (siriDeviceID2 == 0))
   {
 LABEL_131:
 
     goto LABEL_132;
   }
 
-  v125 = [(SISchemaDailyDeviceStatus *)self installedVoices];
-  if (!v125)
+  installedVoices = [(SISchemaDailyDeviceStatus *)self installedVoices];
+  if (!installedVoices)
   {
 
 LABEL_135:
@@ -1651,10 +1651,10 @@ LABEL_135:
     goto LABEL_133;
   }
 
-  v126 = v125;
-  v127 = [(SISchemaDailyDeviceStatus *)self installedVoices];
-  v128 = [v4 installedVoices];
-  v129 = [v127 isEqual:v128];
+  v126 = installedVoices;
+  installedVoices2 = [(SISchemaDailyDeviceStatus *)self installedVoices];
+  installedVoices3 = [equalCopy installedVoices];
+  v129 = [installedVoices2 isEqual:installedVoices3];
 
   if (v129)
   {
@@ -1668,27 +1668,27 @@ LABEL_133:
   return v130;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v61 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SISchemaDailyDeviceStatus *)self siriDeviceID];
+  toCopy = to;
+  siriDeviceID = [(SISchemaDailyDeviceStatus *)self siriDeviceID];
 
-  if (v5)
+  if (siriDeviceID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(SISchemaDailyDeviceStatus *)self siriSpeechID];
+  siriSpeechID = [(SISchemaDailyDeviceStatus *)self siriSpeechID];
 
-  if (v6)
+  if (siriSpeechID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(SISchemaDailyDeviceStatus *)self sharedUserId];
+  sharedUserId = [(SISchemaDailyDeviceStatus *)self sharedUserId];
 
-  if (v7)
+  if (sharedUserId)
   {
     PBDataWriterWriteStringField();
   }
@@ -1705,63 +1705,63 @@ LABEL_133:
     PBDataWriterWriteInt64Field();
   }
 
-  v9 = [(SISchemaDailyDeviceStatus *)self locale];
+  locale = [(SISchemaDailyDeviceStatus *)self locale];
 
-  if (v9)
+  if (locale)
   {
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(SISchemaDailyDeviceStatus *)self deviceType];
+  deviceType = [(SISchemaDailyDeviceStatus *)self deviceType];
 
-  if (v10)
+  if (deviceType)
   {
     PBDataWriterWriteStringField();
   }
 
-  v11 = [(SISchemaDailyDeviceStatus *)self deviceOs];
+  deviceOs = [(SISchemaDailyDeviceStatus *)self deviceOs];
 
-  if (v11)
+  if (deviceOs)
   {
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(SISchemaDailyDeviceStatus *)self deviceBuild];
+  deviceBuild = [(SISchemaDailyDeviceStatus *)self deviceBuild];
 
-  if (v12)
+  if (deviceBuild)
   {
     PBDataWriterWriteStringField();
   }
 
-  v13 = [(SISchemaDailyDeviceStatus *)self enabledStatus];
+  enabledStatus = [(SISchemaDailyDeviceStatus *)self enabledStatus];
 
-  if (v13)
+  if (enabledStatus)
   {
-    v14 = [(SISchemaDailyDeviceStatus *)self enabledStatus];
+    enabledStatus2 = [(SISchemaDailyDeviceStatus *)self enabledStatus];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(SISchemaDailyDeviceStatus *)self activeStatus];
+  activeStatus = [(SISchemaDailyDeviceStatus *)self activeStatus];
 
-  if (v15)
+  if (activeStatus)
   {
-    v16 = [(SISchemaDailyDeviceStatus *)self activeStatus];
+    activeStatus2 = [(SISchemaDailyDeviceStatus *)self activeStatus];
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(SISchemaDailyDeviceStatus *)self personalization];
+  personalization = [(SISchemaDailyDeviceStatus *)self personalization];
 
-  if (v17)
+  if (personalization)
   {
-    v18 = [(SISchemaDailyDeviceStatus *)self personalization];
+    personalization2 = [(SISchemaDailyDeviceStatus *)self personalization];
     PBDataWriterWriteSubmessage();
   }
 
-  v19 = [(SISchemaDailyDeviceStatus *)self multiUserState];
+  multiUserState = [(SISchemaDailyDeviceStatus *)self multiUserState];
 
-  if (v19)
+  if (multiUserState)
   {
-    v20 = [(SISchemaDailyDeviceStatus *)self multiUserState];
+    multiUserState2 = [(SISchemaDailyDeviceStatus *)self multiUserState];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1795,11 +1795,11 @@ LABEL_30:
   }
 
 LABEL_31:
-  v22 = [(SISchemaDailyDeviceStatus *)self aggregatedMetrics];
+  aggregatedMetrics = [(SISchemaDailyDeviceStatus *)self aggregatedMetrics];
 
-  if (v22)
+  if (aggregatedMetrics)
   {
-    v23 = [(SISchemaDailyDeviceStatus *)self aggregatedMetrics];
+    aggregatedMetrics2 = [(SISchemaDailyDeviceStatus *)self aggregatedMetrics];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1836,11 +1836,11 @@ LABEL_31:
     PBDataWriterWriteInt32Field();
   }
 
-  v29 = [(SISchemaDailyDeviceStatus *)self multiUserSetup];
+  multiUserSetup = [(SISchemaDailyDeviceStatus *)self multiUserSetup];
 
-  if (v29)
+  if (multiUserSetup)
   {
-    v30 = [(SISchemaDailyDeviceStatus *)self multiUserSetup];
+    multiUserSetup2 = [(SISchemaDailyDeviceStatus *)self multiUserSetup];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1896,23 +1896,23 @@ LABEL_31:
     PBDataWriterWriteDoubleField();
   }
 
-  v38 = [(SISchemaDailyDeviceStatus *)self modelNumber];
+  modelNumber = [(SISchemaDailyDeviceStatus *)self modelNumber];
 
-  if (v38)
+  if (modelNumber)
   {
     PBDataWriterWriteStringField();
   }
 
-  v39 = [(SISchemaDailyDeviceStatus *)self regionInfo];
+  regionInfo = [(SISchemaDailyDeviceStatus *)self regionInfo];
 
-  if (v39)
+  if (regionInfo)
   {
     PBDataWriterWriteStringField();
   }
 
-  v40 = [(SISchemaDailyDeviceStatus *)self storefrontId];
+  storefrontId = [(SISchemaDailyDeviceStatus *)self storefrontId];
 
-  if (v40)
+  if (storefrontId)
   {
     PBDataWriterWriteStringField();
   }
@@ -1947,23 +1947,23 @@ LABEL_31:
   }
 }
 
-- (int)installedVoicesAtIndex:(unint64_t)a3
+- (int)installedVoicesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_installedVoices objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_installedVoices objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addInstalledVoices:(int)a3
+- (void)addInstalledVoices:(int)voices
 {
-  v3 = *&a3;
+  v3 = *&voices;
   installedVoices = self->_installedVoices;
   if (!installedVoices)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_installedVoices;
-    self->_installedVoices = v6;
+    self->_installedVoices = array;
 
     installedVoices = self->_installedVoices;
   }
@@ -1972,9 +1972,9 @@ LABEL_31:
   [(NSArray *)installedVoices addObject:v8];
 }
 
-- (void)setHasAvailableDeviceStorageInMB:(BOOL)a3
+- (void)setHasAvailableDeviceStorageInMB:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 512;
   }
@@ -1987,9 +1987,9 @@ LABEL_31:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasDeviceCapacityInGB:(BOOL)a3
+- (void)setHasDeviceCapacityInGB:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 256;
   }
@@ -2002,27 +2002,27 @@ LABEL_31:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)addEnabledDictationLocales:(id)a3
+- (void)addEnabledDictationLocales:(id)locales
 {
-  v4 = a3;
+  localesCopy = locales;
   enabledDictationLocales = self->_enabledDictationLocales;
-  v8 = v4;
+  v8 = localesCopy;
   if (!enabledDictationLocales)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_enabledDictationLocales;
-    self->_enabledDictationLocales = v6;
+    self->_enabledDictationLocales = array;
 
-    v4 = v8;
+    localesCopy = v8;
     enabledDictationLocales = self->_enabledDictationLocales;
   }
 
-  [(NSArray *)enabledDictationLocales addObject:v4];
+  [(NSArray *)enabledDictationLocales addObject:localesCopy];
 }
 
-- (void)setHasStoreCountryCode:(BOOL)a3
+- (void)setHasStoreCountryCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 128;
   }
@@ -2035,9 +2035,9 @@ LABEL_31:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasQueuedAtTimestampHourInMs:(BOOL)a3
+- (void)setHasQueuedAtTimestampHourInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 64;
   }
@@ -2050,9 +2050,9 @@ LABEL_31:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasSiriInputLocale:(BOOL)a3
+- (void)setHasSiriInputLocale:(BOOL)locale
 {
-  if (a3)
+  if (locale)
   {
     v3 = 32;
   }
@@ -2065,27 +2065,27 @@ LABEL_31:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)addLinkedAccessoryState:(id)a3
+- (void)addLinkedAccessoryState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   linkedAccessoryStates = self->_linkedAccessoryStates;
-  v8 = v4;
+  v8 = stateCopy;
   if (!linkedAccessoryStates)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_linkedAccessoryStates;
-    self->_linkedAccessoryStates = v6;
+    self->_linkedAccessoryStates = array;
 
-    v4 = v8;
+    stateCopy = v8;
     linkedAccessoryStates = self->_linkedAccessoryStates;
   }
 
-  [(NSArray *)linkedAccessoryStates addObject:v4];
+  [(NSArray *)linkedAccessoryStates addObject:stateCopy];
 }
 
-- (void)setHasSpokenNotificationsWhitelistSettings:(BOOL)a3
+- (void)setHasSpokenNotificationsWhitelistSettings:(BOOL)settings
 {
-  if (a3)
+  if (settings)
   {
     v3 = 16;
   }
@@ -2098,9 +2098,9 @@ LABEL_31:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasSpokenNotificationsControlCenterModuleEnabled:(BOOL)a3
+- (void)setHasSpokenNotificationsControlCenterModuleEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 8;
   }
@@ -2113,9 +2113,9 @@ LABEL_31:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasSpokenNotificationsproxCardSeen:(BOOL)a3
+- (void)setHasSpokenNotificationsproxCardSeen:(BOOL)seen
 {
-  if (a3)
+  if (seen)
   {
     v3 = 4;
   }
@@ -2128,9 +2128,9 @@ LABEL_31:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasAssistantRecordPublishTimestampMs:(BOOL)a3
+- (void)setHasAssistantRecordPublishTimestampMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }
@@ -2143,79 +2143,79 @@ LABEL_31:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v29.receiver = self;
   v29.super_class = SISchemaDailyDeviceStatus;
-  v5 = [(SISchemaInstrumentationMessage *)&v29 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:8])
+  v5 = [(SISchemaInstrumentationMessage *)&v29 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:8])
   {
     [(SISchemaDailyDeviceStatus *)self deleteSiriDeviceID];
     [(SISchemaDailyDeviceStatus *)self deleteSiriSpeechID];
     [(SISchemaDailyDeviceStatus *)self deleteSharedUserId];
   }
 
-  v6 = [(SISchemaDailyDeviceStatus *)self enabledStatus];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  enabledStatus = [(SISchemaDailyDeviceStatus *)self enabledStatus];
+  v7 = [enabledStatus applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SISchemaDailyDeviceStatus *)self deleteEnabledStatus];
   }
 
-  v9 = [(SISchemaDailyDeviceStatus *)self activeStatus];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  activeStatus = [(SISchemaDailyDeviceStatus *)self activeStatus];
+  v10 = [activeStatus applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SISchemaDailyDeviceStatus *)self deleteActiveStatus];
   }
 
-  v12 = [(SISchemaDailyDeviceStatus *)self personalization];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  personalization = [(SISchemaDailyDeviceStatus *)self personalization];
+  v13 = [personalization applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(SISchemaDailyDeviceStatus *)self deletePersonalization];
   }
 
-  v15 = [(SISchemaDailyDeviceStatus *)self multiUserState];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  multiUserState = [(SISchemaDailyDeviceStatus *)self multiUserState];
+  v16 = [multiUserState applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(SISchemaDailyDeviceStatus *)self deleteMultiUserState];
   }
 
-  v18 = [(SISchemaDailyDeviceStatus *)self aggregatedMetrics];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  aggregatedMetrics = [(SISchemaDailyDeviceStatus *)self aggregatedMetrics];
+  v19 = [aggregatedMetrics applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(SISchemaDailyDeviceStatus *)self deleteAggregatedMetrics];
   }
 
-  v21 = [(SISchemaDailyDeviceStatus *)self linkedAccessoryStates];
-  v22 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v21 underConditions:v4];
+  linkedAccessoryStates = [(SISchemaDailyDeviceStatus *)self linkedAccessoryStates];
+  v22 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:linkedAccessoryStates underConditions:policyCopy];
   [(SISchemaDailyDeviceStatus *)self setLinkedAccessoryStates:v22];
 
-  v23 = [(SISchemaDailyDeviceStatus *)self multiUserSetup];
-  v24 = [v23 applySensitiveConditionsPolicy:v4];
-  v25 = [v24 suppressMessage];
+  multiUserSetup = [(SISchemaDailyDeviceStatus *)self multiUserSetup];
+  v24 = [multiUserSetup applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v24 suppressMessage];
 
-  if (v25)
+  if (suppressMessage6)
   {
     [(SISchemaDailyDeviceStatus *)self deleteMultiUserSetup];
   }
 
-  v26 = [(SISchemaDailyDeviceStatus *)self enabledDictationLocales];
-  v27 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v26 underConditions:v4];
+  enabledDictationLocales = [(SISchemaDailyDeviceStatus *)self enabledDictationLocales];
+  v27 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:enabledDictationLocales underConditions:policyCopy];
   [(SISchemaDailyDeviceStatus *)self setEnabledDictationLocales:v27];
 
   return v5;

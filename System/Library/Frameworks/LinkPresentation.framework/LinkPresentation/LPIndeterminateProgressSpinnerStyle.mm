@@ -1,17 +1,17 @@
 @interface LPIndeterminateProgressSpinnerStyle
-- (LPIndeterminateProgressSpinnerStyle)initWithPlatform:(int64_t)a3 sizeClass:(unint64_t)a4 fontScalingFactor:(double)a5;
+- (LPIndeterminateProgressSpinnerStyle)initWithPlatform:(int64_t)platform sizeClass:(unint64_t)class fontScalingFactor:(double)factor;
 @end
 
 @implementation LPIndeterminateProgressSpinnerStyle
 
-- (LPIndeterminateProgressSpinnerStyle)initWithPlatform:(int64_t)a3 sizeClass:(unint64_t)a4 fontScalingFactor:(double)a5
+- (LPIndeterminateProgressSpinnerStyle)initWithPlatform:(int64_t)platform sizeClass:(unint64_t)class fontScalingFactor:(double)factor
 {
   v26.receiver = self;
   v26.super_class = LPIndeterminateProgressSpinnerStyle;
   v8 = [(LPIndeterminateProgressSpinnerStyle *)&v26 init];
   if (v8)
   {
-    if (a3 == 5)
+    if (platform == 5)
     {
       [MEMORY[0x1E69DC888] quaternaryLabelColor];
     }
@@ -25,9 +25,9 @@
     v8->_indicatorColor = v9;
 
     v8->_useLargeIndicatorStyle = 1;
-    v11 = [[LPTextViewStyle alloc] initWithPlatform:a3 fontScalingFactor:a5];
+    v11 = [[LPTextViewStyle alloc] initWithPlatform:platform fontScalingFactor:factor];
     [(LPTextViewStyle *)v11 setTextAlignment:2];
-    if (a3 == 5)
+    if (platform == 5)
     {
       [MEMORY[0x1E69DC888] quaternaryLabelColor];
     }
@@ -46,7 +46,7 @@
 
     else
     {
-      fontWithTraits(*MEMORY[0x1E69DDD28], 0x8000, a4);
+      fontWithTraits(*MEMORY[0x1E69DDD28], 0x8000, class);
     }
     v13 = ;
     [(LPTextViewStyle *)v11 setFont:v13];

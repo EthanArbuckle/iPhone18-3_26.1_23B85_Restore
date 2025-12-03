@@ -1,13 +1,13 @@
 @interface KGPropertyValueArray
-- (KGPropertyValueArray)initWithValues:(id)a3 elementIdentifiers:(id)a4;
-- (void)enumerateUsingBlock:(id)a3;
+- (KGPropertyValueArray)initWithValues:(id)values elementIdentifiers:(id)identifiers;
+- (void)enumerateUsingBlock:(id)block;
 @end
 
 @implementation KGPropertyValueArray
 
-- (void)enumerateUsingBlock:(id)a3
+- (void)enumerateUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
@@ -19,7 +19,7 @@
   v7[3] = &unk_2797FF868;
   v7[4] = self;
   v9 = v10;
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
   [(KGElementIdentifierSet *)elementIdentifiers enumerateIdentifiersWithBlock:v7];
 
@@ -34,18 +34,18 @@ void __44__KGPropertyValueArray_enumerateUsingBlock___block_invoke(void *a1)
   (*(a1[5] + 16))();
 }
 
-- (KGPropertyValueArray)initWithValues:(id)a3 elementIdentifiers:(id)a4
+- (KGPropertyValueArray)initWithValues:(id)values elementIdentifiers:(id)identifiers
 {
-  v7 = a3;
-  v8 = a4;
+  valuesCopy = values;
+  identifiersCopy = identifiers;
   v12.receiver = self;
   v12.super_class = KGPropertyValueArray;
   v9 = [(KGPropertyValueArray *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_values, a3);
-    objc_storeStrong(&v10->_elementIdentifiers, a4);
+    objc_storeStrong(&v9->_values, values);
+    objc_storeStrong(&v10->_elementIdentifiers, identifiers);
   }
 
   return v10;

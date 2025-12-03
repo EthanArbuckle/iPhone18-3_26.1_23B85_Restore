@@ -1,6 +1,6 @@
 @interface CNUIBackgroundColors
 - (CNUIBackgroundColors)init;
-- (CNUIBackgroundColors)initWithData:(id)a3;
+- (CNUIBackgroundColors)initWithData:(id)data;
 - (NSData)data;
 @end
 
@@ -23,16 +23,16 @@
   return v3;
 }
 
-- (CNUIBackgroundColors)initWithData:(id)a3
+- (CNUIBackgroundColors)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(CNUIBackgroundColors *)self init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (dataCopy)
     {
-      v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v4 encoding:4];
+      v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:dataCopy encoding:4];
       if (v7)
       {
         v8 = (*(*MEMORY[0x1E6996598] + 16))();
@@ -107,11 +107,11 @@
 - (NSData)data
 {
   v3 = *MEMORY[0x1E6996530];
-  v4 = [(CNUIBackgroundColors *)self contactImage];
-  v5 = (*(v3 + 16))(v3, v4);
+  contactImage = [(CNUIBackgroundColors *)self contactImage];
+  v5 = (*(v3 + 16))(v3, contactImage);
 
-  v6 = [(CNUIBackgroundColors *)self contactPoster];
-  v7 = (*(v3 + 16))(v3, v6);
+  contactPoster = [(CNUIBackgroundColors *)self contactPoster];
+  v7 = (*(v3 + 16))(v3, contactPoster);
 
   if (v5 && (v7 & 1) != 0)
   {
@@ -122,16 +122,16 @@
   v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
   if ((v5 & 1) == 0)
   {
-    v10 = [(CNUIBackgroundColors *)self contactImage];
-    v11 = [CNUIColorSerialization dictionariesForColors:v10];
+    contactImage2 = [(CNUIBackgroundColors *)self contactImage];
+    v11 = [CNUIColorSerialization dictionariesForColors:contactImage2];
 
     [v9 setObject:v11 forKeyedSubscript:@"contactImage"];
   }
 
   if ((v7 & 1) == 0)
   {
-    v12 = [(CNUIBackgroundColors *)self contactPoster];
-    v13 = [CNUIColorSerialization dictionariesForColors:v12];
+    contactPoster2 = [(CNUIBackgroundColors *)self contactPoster];
+    v13 = [CNUIColorSerialization dictionariesForColors:contactPoster2];
 
     [v9 setObject:v13 forKeyedSubscript:@"contactPoster"];
   }

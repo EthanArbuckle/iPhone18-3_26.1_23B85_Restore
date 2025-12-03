@@ -1,7 +1,7 @@
 @interface EKEventDetailAttendeesCell
 - (BOOL)update;
 - (EKEventDetailAttendeeCellDelegate)attendeeCellDelegate;
-- (EKEventDetailAttendeesCell)initWithEvent:(id)a3 model:(id)a4;
+- (EKEventDetailAttendeesCell)initWithEvent:(id)event model:(id)model;
 - (double)displayHeight;
 - (double)footerInset;
 - (double)headerInset;
@@ -9,78 +9,78 @@
 - (id)_attendeesListView;
 - (void)_attendeesDidFinishLoadingForTest;
 - (void)eventDetailAttendeeCellModelBlockedParticipantsUpdated;
-- (void)layoutForWidth:(double)a3 position:(int)a4;
+- (void)layoutForWidth:(double)width position:(int)position;
 - (void)updateAttendees;
 @end
 
 @implementation EKEventDetailAttendeesCell
 
-- (EKEventDetailAttendeesCell)initWithEvent:(id)a3 model:(id)a4
+- (EKEventDetailAttendeesCell)initWithEvent:(id)event model:(id)model
 {
-  v6 = a4;
+  modelCopy = model;
   v71.receiver = self;
   v71.super_class = EKEventDetailAttendeesCell;
-  v7 = [(EKEventDetailCell *)&v71 initWithEvent:a3 editable:1 style:1];
+  v7 = [(EKEventDetailCell *)&v71 initWithEvent:event editable:1 style:1];
   model = v7->_model;
-  v7->_model = v6;
-  v70 = v6;
+  v7->_model = modelCopy;
+  v70 = modelCopy;
 
   [(EKEventDetailAttendeesCellModel *)v7->_model setDelegate:v7];
   v9 = objc_opt_new();
   titleLabel = v7->_titleLabel;
   v7->_titleLabel = v9;
 
-  v11 = [(EKEventDetailAttendeesCell *)v7 textLabel];
-  v12 = [v11 font];
-  [(UILabel *)v7->_titleLabel setFont:v12];
+  textLabel = [(EKEventDetailAttendeesCell *)v7 textLabel];
+  font = [textLabel font];
+  [(UILabel *)v7->_titleLabel setFont:font];
 
-  v13 = [(EKEventDetailAttendeesCell *)v7 textLabel];
-  v14 = [v13 textColor];
-  [(UILabel *)v7->_titleLabel setTextColor:v14];
+  textLabel2 = [(EKEventDetailAttendeesCell *)v7 textLabel];
+  textColor = [textLabel2 textColor];
+  [(UILabel *)v7->_titleLabel setTextColor:textColor];
 
   [(UILabel *)v7->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   v15 = EventKitUIBundle();
   v16 = [v15 localizedStringForKey:@"Invitees" value:&stru_1F4EF6790 table:0];
   [(UILabel *)v7->_titleLabel setText:v16];
 
-  v17 = [(EKEventDetailAttendeesCell *)v7 contentView];
-  [v17 addSubview:v7->_titleLabel];
+  contentView = [(EKEventDetailAttendeesCell *)v7 contentView];
+  [contentView addSubview:v7->_titleLabel];
 
   v18 = objc_opt_new();
   countLabel = v7->_countLabel;
   v7->_countLabel = v18;
 
-  v20 = [(EKEventDetailAttendeesCell *)v7 detailTextLabel];
-  v21 = [v20 font];
-  [(UILabel *)v7->_countLabel setFont:v21];
+  detailTextLabel = [(EKEventDetailAttendeesCell *)v7 detailTextLabel];
+  font2 = [detailTextLabel font];
+  [(UILabel *)v7->_countLabel setFont:font2];
 
-  v22 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)v7->_countLabel setTextColor:v22];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)v7->_countLabel setTextColor:secondaryLabelColor];
 
   [(UILabel *)v7->_countLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v23 = [(EKEventDetailAttendeesCell *)v7 contentView];
-  [v23 addSubview:v7->_countLabel];
+  contentView2 = [(EKEventDetailAttendeesCell *)v7 contentView];
+  [contentView2 addSubview:v7->_countLabel];
 
   v24 = objc_alloc(MEMORY[0x1E69DCAE0]);
-  v25 = [(EKEventDetailAttendeesCell *)v7 traitCollection];
-  v26 = TableViewDisclosureIndicatorImage(v25);
+  traitCollection = [(EKEventDetailAttendeesCell *)v7 traitCollection];
+  v26 = TableViewDisclosureIndicatorImage(traitCollection);
   v27 = [v24 initWithImage:v26];
   disclosure = v7->_disclosure;
   v7->_disclosure = v27;
 
   [(UIImageView *)v7->_disclosure setTranslatesAutoresizingMaskIntoConstraints:0];
-  v29 = [(EKEventDetailAttendeesCell *)v7 contentView];
-  [v29 addSubview:v7->_disclosure];
+  contentView3 = [(EKEventDetailAttendeesCell *)v7 contentView];
+  [contentView3 addSubview:v7->_disclosure];
 
-  v30 = [(EKEventDetailAttendeesCell *)v7 _attendeesListView];
+  _attendeesListView = [(EKEventDetailAttendeesCell *)v7 _attendeesListView];
   attendeesListView = v7->_attendeesListView;
-  v7->_attendeesListView = v30;
+  v7->_attendeesListView = _attendeesListView;
 
   [(EKEventDetailAttendeesListView *)v7->_attendeesListView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(EKEventDetailAttendeesCell *)v7 headerInset];
   [(EKEventDetailAttendeesListView *)v7->_attendeesListView setBottomSpacingForSpinner:?];
-  v32 = [(EKEventDetailAttendeesCell *)v7 contentView];
-  [v32 addSubview:v7->_attendeesListView];
+  contentView4 = [(EKEventDetailAttendeesCell *)v7 contentView];
+  [contentView4 addSubview:v7->_attendeesListView];
 
   v33 = MEMORY[0x1E696ACD8];
   v34 = v7->_titleLabel;
@@ -88,10 +88,10 @@
   v36 = [v33 constraintWithItem:v34 attribute:11 relatedBy:0 toItem:v7 attribute:3 multiplier:1.0 constant:v35];
   [v36 setActive:1];
 
-  v37 = [(UILabel *)v7->_titleLabel leadingAnchor];
-  v38 = [(EKEventDetailAttendeesCell *)v7 layoutMarginsGuide];
-  v39 = [v38 leadingAnchor];
-  v40 = [v37 constraintEqualToAnchor:v39];
+  leadingAnchor = [(UILabel *)v7->_titleLabel leadingAnchor];
+  layoutMarginsGuide = [(EKEventDetailAttendeesCell *)v7 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v40 setActive:1];
 
   v41 = [MEMORY[0x1E696ACD8] constraintWithItem:v7->_countLabel attribute:11 relatedBy:0 toItem:v7->_titleLabel attribute:11 multiplier:1.0 constant:0.0];
@@ -100,15 +100,15 @@
   v42 = MEMORY[0x1E696ACD8];
   v43 = v7->_countLabel;
   v44 = v7->_disclosure;
-  v45 = [(UILabel *)v43 font];
-  [v45 _scaledValueForValue:-8.0];
+  font3 = [(UILabel *)v43 font];
+  [font3 _scaledValueForValue:-8.0];
   v47 = [v42 constraintWithItem:v43 attribute:6 relatedBy:0 toItem:v44 attribute:5 multiplier:1.0 constant:v46];
   [v47 setActive:1];
 
-  v48 = [(UIImageView *)v7->_disclosure trailingAnchor];
-  v49 = [(EKEventDetailAttendeesCell *)v7 layoutMarginsGuide];
-  v50 = [v49 trailingAnchor];
-  v51 = [v48 constraintEqualToAnchor:v50];
+  trailingAnchor = [(UIImageView *)v7->_disclosure trailingAnchor];
+  layoutMarginsGuide2 = [(EKEventDetailAttendeesCell *)v7 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v51 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v51 setActive:1];
 
   v52 = [MEMORY[0x1E696ACD8] constraintWithItem:v7->_disclosure attribute:10 relatedBy:0 toItem:v7->_titleLabel attribute:10 multiplier:1.0 constant:0.0];
@@ -130,10 +130,10 @@
   v62 = [MEMORY[0x1E696ACD8] constraintWithItem:v7->_attendeesListView attribute:5 relatedBy:0 toItem:v7->_titleLabel attribute:5 multiplier:1.0 constant:0.0];
   [v62 setActive:1];
 
-  v63 = [(EKEventDetailAttendeesListView *)v7->_attendeesListView trailingAnchor];
-  v64 = [(EKEventDetailAttendeesCell *)v7 safeAreaLayoutGuide];
-  v65 = [v64 trailingAnchor];
-  v66 = [v63 constraintEqualToAnchor:v65 constant:-10.0];
+  trailingAnchor3 = [(EKEventDetailAttendeesListView *)v7->_attendeesListView trailingAnchor];
+  safeAreaLayoutGuide = [(EKEventDetailAttendeesCell *)v7 safeAreaLayoutGuide];
+  trailingAnchor4 = [safeAreaLayoutGuide trailingAnchor];
+  v66 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-10.0];
   [v66 setActive:1];
 
   v67 = [MEMORY[0x1E696ACD8] constraintWithItem:v7->_attendeesListView attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
@@ -151,8 +151,8 @@
     return 21.0;
   }
 
-  v4 = [(UILabel *)self->_titleLabel font];
-  [v4 _scaledValueForValue:28.0];
+  font = [(UILabel *)self->_titleLabel font];
+  [font _scaledValueForValue:28.0];
   v6 = v5;
 
   return v6;
@@ -160,8 +160,8 @@
 
 - (double)listToTitle
 {
-  v2 = [(UILabel *)self->_titleLabel font];
-  [v2 _scaledValueForValue:12.0];
+  font = [(UILabel *)self->_titleLabel font];
+  [font _scaledValueForValue:12.0];
   v4 = v3;
 
   return v4;
@@ -169,8 +169,8 @@
 
 - (double)footerInset
 {
-  v2 = [(UILabel *)self->_titleLabel font];
-  [v2 _scaledValueForValue:12.0];
+  font = [(UILabel *)self->_titleLabel font];
+  [font _scaledValueForValue:12.0];
   v4 = v3;
 
   return v4;
@@ -178,8 +178,8 @@
 
 - (double)displayHeight
 {
-  v3 = [(EKEventDetailAttendeesCellModel *)self->_model attendeesNotIncludingOrganizerOrLocationsOrResources];
-  v4 = [v3 count];
+  attendeesNotIncludingOrganizerOrLocationsOrResources = [(EKEventDetailAttendeesCellModel *)self->_model attendeesNotIncludingOrganizerOrLocationsOrResources];
+  v4 = [attendeesNotIncludingOrganizerOrLocationsOrResources count];
 
   [(EKEventDetailAttendeesCell *)self headerInset];
   v6 = v5;
@@ -195,8 +195,8 @@
 
   else
   {
-    v13 = [(UILabel *)self->_titleLabel font];
-    [v13 _scaledValueForValue:22.0];
+    font = [(UILabel *)self->_titleLabel font];
+    [font _scaledValueForValue:22.0];
     v12 = v6 + v14;
   }
 
@@ -205,31 +205,31 @@
 
 - (BOOL)update
 {
-  v2 = self;
+  selfCopy = self;
   [(EKEventDetailAttendeesCell *)self updateAttendees];
-  v3 = [(EKEventDetailAttendeesCellModel *)v2->_model attendeesNotIncludingOrganizerOrLocationsOrResources];
-  [v3 count];
+  attendeesNotIncludingOrganizerOrLocationsOrResources = [(EKEventDetailAttendeesCellModel *)selfCopy->_model attendeesNotIncludingOrganizerOrLocationsOrResources];
+  [attendeesNotIncludingOrganizerOrLocationsOrResources count];
   v4 = CUIKLocalizedStringForInteger();
-  [(UILabel *)v2->_countLabel setText:v4];
+  [(UILabel *)selfCopy->_countLabel setText:v4];
 
-  [(EKEventDetailAttendeesListView *)v2->_attendeesListView intrinsicContentSize];
-  [(NSLayoutConstraint *)v2->_listHeight setConstant:v5];
-  [(NSLayoutConstraint *)v2->_listHeight setActive:1];
-  [(EKEventDetailAttendeesCell *)v2 bounds];
+  [(EKEventDetailAttendeesListView *)selfCopy->_attendeesListView intrinsicContentSize];
+  [(NSLayoutConstraint *)selfCopy->_listHeight setConstant:v5];
+  [(NSLayoutConstraint *)selfCopy->_listHeight setActive:1];
+  [(EKEventDetailAttendeesCell *)selfCopy bounds];
   Width = CGRectGetWidth(v9);
-  [(EKEventDetailAttendeesCell *)v2 displayHeight];
-  [(EKEventDetailAttendeesCell *)v2 setFrame:0.0, 0.0, Width, v7];
-  LOBYTE(v2) = [v3 count] != 0;
+  [(EKEventDetailAttendeesCell *)selfCopy displayHeight];
+  [(EKEventDetailAttendeesCell *)selfCopy setFrame:0.0, 0.0, Width, v7];
+  LOBYTE(selfCopy) = [attendeesNotIncludingOrganizerOrLocationsOrResources count] != 0;
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)_attendeesDidFinishLoadingForTest
 {
   if ([*MEMORY[0x1E69DDA98] isRunningTest])
   {
-    v2 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v2 postNotificationName:@"EventDetailsDidFinishLoadingAndDisplayingAttendeesNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"EventDetailsDidFinishLoadingAndDisplayingAttendeesNotification" object:0];
   }
 }
 
@@ -251,8 +251,8 @@
   *(v8 + 24) = !v4;
   if (!v4)
   {
-    v5 = [(EKEventDetailAttendeesCell *)self _attendeesListView];
-    [v5 showSpinner];
+    _attendeesListView = [(EKEventDetailAttendeesCell *)self _attendeesListView];
+    [_attendeesListView showSpinner];
   }
 
   _Block_object_dispose(&v7, 8);
@@ -329,8 +329,8 @@ void __45__EKEventDetailAttendeesCell_updateAttendees__block_invoke(uint64_t a1,
 
     [(EKEventDetailAttendeesListView *)self->_attendeesListView setContentMode:3];
     v7 = self->_attendeesListView;
-    v8 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(EKEventDetailAttendeesListView *)v7 setTextColor:v8];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(EKEventDetailAttendeesListView *)v7 setTextColor:secondaryLabelColor];
 
     [(EKEventDetailAttendeesListView *)self->_attendeesListView setBackgroundColor:0];
     [(EKEventDetailAttendeesListView *)self->_attendeesListView setOpaque:0];
@@ -340,11 +340,11 @@ void __45__EKEventDetailAttendeesCell_updateAttendees__block_invoke(uint64_t a1,
   return attendeesListView;
 }
 
-- (void)layoutForWidth:(double)a3 position:(int)a4
+- (void)layoutForWidth:(double)width position:(int)position
 {
   v5.receiver = self;
   v5.super_class = EKEventDetailAttendeesCell;
-  [(EKEventDetailCell *)&v5 layoutForWidth:*&a4 position:a3];
+  [(EKEventDetailCell *)&v5 layoutForWidth:*&position position:width];
   [(EKEventDetailAttendeesCell *)self setNeedsDisplay];
 }
 

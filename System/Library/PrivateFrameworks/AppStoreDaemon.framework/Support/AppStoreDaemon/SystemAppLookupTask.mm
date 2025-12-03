@@ -6,12 +6,12 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [[NSMutableArray alloc] initWithCapacity:{-[NSArray count](self->_bundleIDs, "count")}];
   v4 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    bundleIDs = v2->_bundleIDs;
+    bundleIDs = selfCopy->_bundleIDs;
     LODWORD(buf) = 138543362;
     *(&buf + 4) = bundleIDs;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Looking up system apps for bundle IDs: %{public}@", &buf, 0xCu);
@@ -32,25 +32,25 @@
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v10 = v2->_bundleIDs;
+  v10 = selfCopy->_bundleIDs;
   v42 = [(NSArray *)v10 countByEnumeratingWithState:&v43 objects:v51 count:16];
   if (!v42)
   {
 
     v11 = 0;
 LABEL_40:
-    [(Task *)v2 lock];
+    [(Task *)selfCopy lock];
     v35 = [v3 copy];
-    lookupResults = v2->_lookupResults;
-    v2->_lookupResults = v35;
+    lookupResults = selfCopy->_lookupResults;
+    selfCopy->_lookupResults = v35;
 
-    [(Task *)v2 unlock];
-    [(Task *)v2 completeWithSuccess];
+    [(Task *)selfCopy unlock];
+    [(Task *)selfCopy completeWithSuccess];
     goto LABEL_41;
   }
 
   v37 = v8;
-  v38 = v2;
+  v38 = selfCopy;
   v11 = 0;
   v12 = 0;
   obj = v10;
@@ -76,8 +76,8 @@ LABEL_40:
 
       if (v16 != 2)
       {
-        v18 = [v15 results];
-        if ([v18 count])
+        results = [v15 results];
+        if ([results count])
         {
           v19 = [v15 isCatalogFetchedWithinThePastFewDays:1];
 
@@ -124,14 +124,14 @@ LABEL_40:
       v11 = v22;
 LABEL_18:
       v24 = ASDLogHandleForCategory();
-      v25 = v24;
+      firstObject = v24;
       if (v17)
       {
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
           LODWORD(buf) = 134217984;
           *(&buf + 4) = v17;
-          _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "MAAssetQuery failed with error %ld", &buf, 0xCu);
+          _os_log_error_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_ERROR, "MAAssetQuery failed with error %ld", &buf, 0xCu);
         }
       }
 
@@ -139,31 +139,31 @@ LABEL_18:
       {
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
         {
-          v26 = [v15 results];
-          v27 = [v26 count];
+          results2 = [v15 results];
+          v27 = [results2 count];
           LODWORD(buf) = 134217984;
           *(&buf + 4) = v27;
-          _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Received %lu system app asset(s)", &buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_INFO, "Received %lu system app asset(s)", &buf, 0xCu);
         }
 
-        v28 = [v15 results];
-        v25 = [v28 firstObject];
+        results3 = [v15 results];
+        firstObject = [results3 firstObject];
 
         v29 = ASDLogHandleForCategory();
-        v30 = v29;
-        if (v25)
+        assetServerUrl = v29;
+        if (firstObject)
         {
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
           {
             LODWORD(buf) = 138543362;
-            *(&buf + 4) = v25;
-            _os_log_debug_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "Discovered matching asset: %{public}@", &buf, 0xCu);
+            *(&buf + 4) = firstObject;
+            _os_log_debug_impl(&_mh_execute_header, assetServerUrl, OS_LOG_TYPE_DEBUG, "Discovered matching asset: %{public}@", &buf, 0xCu);
           }
 
           v31 = [SystemAppLookupItem alloc];
-          v30 = [v25 assetServerUrl];
-          v32 = [v25 attributes];
-          v33 = sub_100281388(&v31->super.isa, v30, v32);
+          assetServerUrl = [firstObject assetServerUrl];
+          attributes = [firstObject attributes];
+          v33 = sub_100281388(&v31->super.isa, assetServerUrl, attributes);
           [v3 addObject:v33];
         }
 
@@ -171,7 +171,7 @@ LABEL_18:
         {
           LODWORD(buf) = 138543362;
           *(&buf + 4) = v14;
-          _os_log_error_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "Asset for %{public}@ not found in catalog.", &buf, 0xCu);
+          _os_log_error_impl(&_mh_execute_header, assetServerUrl, OS_LOG_TYPE_ERROR, "Asset for %{public}@ not found in catalog.", &buf, 0xCu);
         }
       }
     }
@@ -183,11 +183,11 @@ LABEL_18:
 
   if (!v11)
   {
-    v2 = v38;
+    selfCopy = v38;
     goto LABEL_39;
   }
 
-  v2 = v38;
+  selfCopy = v38;
   if ([v3 count])
   {
 LABEL_39:

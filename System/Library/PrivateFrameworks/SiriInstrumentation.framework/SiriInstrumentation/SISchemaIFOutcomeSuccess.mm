@@ -1,34 +1,34 @@
 @interface SISchemaIFOutcomeSuccess
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaIFOutcomeSuccess)initWithDictionary:(id)a3;
-- (SISchemaIFOutcomeSuccess)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaIFOutcomeSuccess)initWithDictionary:(id)dictionary;
+- (SISchemaIFOutcomeSuccess)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasShouldOpen:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasShouldOpen:(BOOL)open;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaIFOutcomeSuccess
 
-- (SISchemaIFOutcomeSuccess)initWithDictionary:(id)a3
+- (SISchemaIFOutcomeSuccess)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SISchemaIFOutcomeSuccess;
   v5 = [(SISchemaIFOutcomeSuccess *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"didShowInAppResult"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"didShowInAppResult"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaIFOutcomeSuccess setDidShowInAppResult:](v5, "setDidShowInAppResult:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"followUpActionBundleId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"followUpActionBundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(SISchemaIFOutcomeSuccess *)v5 setFollowUpActionBundleId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"shouldOpen"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"shouldOpen"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (SISchemaIFOutcomeSuccess)initWithJSON:(id)a3
+- (SISchemaIFOutcomeSuccess)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaIFOutcomeSuccess *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaIFOutcomeSuccess *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaIFOutcomeSuccess *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,29 +85,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*(&self->_shouldOpen + 1))
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaIFOutcomeSuccess didShowInAppResult](self, "didShowInAppResult")}];
-    [v3 setObject:v4 forKeyedSubscript:@"didShowInAppResult"];
+    [dictionary setObject:v4 forKeyedSubscript:@"didShowInAppResult"];
   }
 
   if (self->_followUpActionBundleId)
   {
-    v5 = [(SISchemaIFOutcomeSuccess *)self followUpActionBundleId];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"followUpActionBundleId"];
+    followUpActionBundleId = [(SISchemaIFOutcomeSuccess *)self followUpActionBundleId];
+    v6 = [followUpActionBundleId copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"followUpActionBundleId"];
   }
 
   if ((*(&self->_shouldOpen + 1) & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaIFOutcomeSuccess shouldOpen](self, "shouldOpen")}];
-    [v3 setObject:v7 forKeyedSubscript:@"shouldOpen"];
+    [dictionary setObject:v7 forKeyedSubscript:@"shouldOpen"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -136,15 +136,15 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if (*(&self->_shouldOpen + 1) != (v4[25] & 1))
+  if (*(&self->_shouldOpen + 1) != (equalCopy[25] & 1))
   {
     goto LABEL_15;
   }
@@ -152,16 +152,16 @@
   if (*(&self->_shouldOpen + 1))
   {
     didShowInAppResult = self->_didShowInAppResult;
-    if (didShowInAppResult != [v4 didShowInAppResult])
+    if (didShowInAppResult != [equalCopy didShowInAppResult])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(SISchemaIFOutcomeSuccess *)self followUpActionBundleId];
-  v7 = [v4 followUpActionBundleId];
-  v8 = v7;
-  if ((v6 != 0) == (v7 == 0))
+  followUpActionBundleId = [(SISchemaIFOutcomeSuccess *)self followUpActionBundleId];
+  followUpActionBundleId2 = [equalCopy followUpActionBundleId];
+  v8 = followUpActionBundleId2;
+  if ((followUpActionBundleId != 0) == (followUpActionBundleId2 == 0))
   {
 
 LABEL_15:
@@ -169,13 +169,13 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v9 = [(SISchemaIFOutcomeSuccess *)self followUpActionBundleId];
-  if (v9)
+  followUpActionBundleId3 = [(SISchemaIFOutcomeSuccess *)self followUpActionBundleId];
+  if (followUpActionBundleId3)
   {
-    v10 = v9;
-    v11 = [(SISchemaIFOutcomeSuccess *)self followUpActionBundleId];
-    v12 = [v4 followUpActionBundleId];
-    v13 = [v11 isEqual:v12];
+    v10 = followUpActionBundleId3;
+    followUpActionBundleId4 = [(SISchemaIFOutcomeSuccess *)self followUpActionBundleId];
+    followUpActionBundleId5 = [equalCopy followUpActionBundleId];
+    v13 = [followUpActionBundleId4 isEqual:followUpActionBundleId5];
 
     if (!v13)
     {
@@ -188,7 +188,7 @@ LABEL_15:
   }
 
   v14 = (*(&self->_shouldOpen + 1) >> 1) & 1;
-  if (v14 != ((v4[25] >> 1) & 1))
+  if (v14 != ((equalCopy[25] >> 1) & 1))
   {
     goto LABEL_15;
   }
@@ -196,7 +196,7 @@ LABEL_15:
   if (v14)
   {
     shouldOpen = self->_shouldOpen;
-    if (shouldOpen != [v4 shouldOpen])
+    if (shouldOpen != [equalCopy shouldOpen])
     {
       goto LABEL_15;
     }
@@ -208,17 +208,17 @@ LABEL_16:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if (*(&self->_shouldOpen + 1))
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v4 = [(SISchemaIFOutcomeSuccess *)self followUpActionBundleId];
+  followUpActionBundleId = [(SISchemaIFOutcomeSuccess *)self followUpActionBundleId];
 
-  if (v4)
+  if (followUpActionBundleId)
   {
     PBDataWriterWriteStringField();
   }
@@ -229,9 +229,9 @@ LABEL_16:
   }
 }
 
-- (void)setHasShouldOpen:(BOOL)a3
+- (void)setHasShouldOpen:(BOOL)open
 {
-  if (a3)
+  if (open)
   {
     v3 = 2;
   }
@@ -244,13 +244,13 @@ LABEL_16:
   *(&self->_shouldOpen + 1) = *(&self->_shouldOpen + 1) & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v8.receiver = self;
   v8.super_class = SISchemaIFOutcomeSuccess;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:v4];
-  v6 = [v4 isConditionSet:{4, v8.receiver, v8.super_class}];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:policyCopy];
+  v6 = [policyCopy isConditionSet:{4, v8.receiver, v8.super_class}];
 
   if (v6)
   {

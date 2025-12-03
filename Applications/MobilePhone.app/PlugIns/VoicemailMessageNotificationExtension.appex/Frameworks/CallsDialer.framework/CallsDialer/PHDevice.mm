@@ -5,12 +5,12 @@
 - (BOOL)isRingerSwitchEnabled;
 - (PHDevice)init;
 - (RadiosPreferences)radiosPreferences;
-- (unint64_t)stateForNotifyToken:(int)a3;
+- (unint64_t)stateForNotifyToken:(int)token;
 - (void)airplaneModeChanged;
 - (void)dealloc;
 - (void)registerForRingerStateNotifications;
-- (void)setCellularRadioEnabled:(BOOL)a3;
-- (void)setRingerSwitchEnabled:(BOOL)a3;
+- (void)setCellularRadioEnabled:(BOOL)enabled;
+- (void)setRingerSwitchEnabled:(BOOL)enabled;
 - (void)unregisterForRingerStateNotifications;
 @end
 
@@ -80,13 +80,13 @@ void __25__PHDevice_currentDevice__block_invoke(id a1)
     v2->_ringerStateNotifyToken = -1;
     v2->_ringerSwitchEnabled = 0;
     [(PHDevice *)v2 registerForRingerStateNotifications];
-    v5 = [(PHDevice *)v2 dispatchQueue];
+    dispatchQueue = [(PHDevice *)v2 dispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __16__PHDevice_init__block_invoke;
     block[3] = &unk_4C668;
     v8 = v2;
-    dispatch_barrier_async(v5, block);
+    dispatch_barrier_async(dispatchQueue, block);
   }
 
   return v2;
@@ -121,35 +121,35 @@ id __16__PHDevice_init__block_invoke(uint64_t a1)
 
 - (BOOL)isCellularRadioEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(PHDevice *)self dispatchQueue];
+  dispatchQueue = [(PHDevice *)self dispatchQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __34__PHDevice_isCellularRadioEnabled__block_invoke;
   v5[3] = &unk_4C6F8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(dispatchQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setCellularRadioEnabled:(BOOL)a3
+- (void)setCellularRadioEnabled:(BOOL)enabled
 {
-  v5 = [(PHDevice *)self dispatchQueue];
+  dispatchQueue = [(PHDevice *)self dispatchQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __36__PHDevice_setCellularRadioEnabled___block_invoke;
   v6[3] = &unk_4C720;
   v6[4] = self;
-  v7 = a3;
-  dispatch_barrier_async(v5, v6);
+  enabledCopy = enabled;
+  dispatch_barrier_async(dispatchQueue, v6);
 }
 
 void __36__PHDevice_setCellularRadioEnabled___block_invoke(uint64_t a1)
@@ -178,35 +178,35 @@ void __36__PHDevice_setCellularRadioEnabled___block_invoke_2(uint64_t a1)
 
 - (BOOL)isRingerSwitchEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(PHDevice *)self dispatchQueue];
+  dispatchQueue = [(PHDevice *)self dispatchQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __33__PHDevice_isRingerSwitchEnabled__block_invoke;
   v5[3] = &unk_4C6F8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(dispatchQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setRingerSwitchEnabled:(BOOL)a3
+- (void)setRingerSwitchEnabled:(BOOL)enabled
 {
-  v5 = [(PHDevice *)self dispatchQueue];
+  dispatchQueue = [(PHDevice *)self dispatchQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __35__PHDevice_setRingerSwitchEnabled___block_invoke;
   v6[3] = &unk_4C720;
   v6[4] = self;
-  v7 = a3;
-  dispatch_barrier_async(v5, v6);
+  enabledCopy = enabled;
+  dispatch_barrier_async(dispatchQueue, v6);
 }
 
 void __35__PHDevice_setRingerSwitchEnabled___block_invoke(uint64_t a1)
@@ -241,14 +241,14 @@ void __35__PHDevice_setRingerSwitchEnabled___block_invoke_2(uint64_t a1)
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(PHDevice *)self dispatchQueue];
+  dispatchQueue = [(PHDevice *)self dispatchQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __29__PHDevice_radiosPreferences__block_invoke;
   v6[3] = &unk_4C6F8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(dispatchQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -261,14 +261,14 @@ void __35__PHDevice_setRingerSwitchEnabled___block_invoke_2(uint64_t a1)
   if ([(PHDevice *)self ringerStateNotifyToken]== -1)
   {
     objc_initWeak(&location, self);
-    v3 = [@"com.apple.springboard.ringerstate" UTF8String];
-    v4 = [(PHDevice *)self dispatchQueue];
+    uTF8String = [@"com.apple.springboard.ringerstate" UTF8String];
+    dispatchQueue = [(PHDevice *)self dispatchQueue];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = __47__PHDevice_registerForRingerStateNotifications__block_invoke;
     v5[3] = &unk_4C748;
     objc_copyWeak(&v6, &location);
-    notify_register_dispatch(v3, &self->_ringerStateNotifyToken, v4, v5);
+    notify_register_dispatch(uTF8String, &self->_ringerStateNotifyToken, dispatchQueue, v5);
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
@@ -291,23 +291,23 @@ void __47__PHDevice_registerForRingerStateNotifications__block_invoke(uint64_t a
   }
 }
 
-- (unint64_t)stateForNotifyToken:(int)a3
+- (unint64_t)stateForNotifyToken:(int)token
 {
   state64 = 0;
-  if (a3 == -1)
+  if (token == -1)
   {
     return 0;
   }
 
-  notify_get_state(a3, &state64);
+  notify_get_state(token, &state64);
   return state64;
 }
 
 - (void)airplaneModeChanged
 {
-  v3 = [(PHDevice *)self fetchCellularRadioEnabled];
+  fetchCellularRadioEnabled = [(PHDevice *)self fetchCellularRadioEnabled];
 
-  [(PHDevice *)self setCellularRadioEnabled:v3];
+  [(PHDevice *)self setCellularRadioEnabled:fetchCellularRadioEnabled];
 }
 
 void __27__PHDevice_isGeminiCapable__block_invoke_cold_1(int *a1, NSObject *a2)

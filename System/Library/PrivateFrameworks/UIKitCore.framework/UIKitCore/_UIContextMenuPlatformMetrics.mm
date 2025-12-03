@@ -19,9 +19,9 @@
 - (double)previewActionsStyleDragTearOffThreshold;
 - (double)previewRubberbandingCoefficient;
 - (id)menuHeaderBackgroundProvider;
-- (void)setMenuHeaderBackgroundProvider:(id)a3;
-- (void)setPreviewActionsStyleDragTearOffThreshold:(double)a3;
-- (void)setPreviewRubberbandingCoefficient:(double)a3;
+- (void)setMenuHeaderBackgroundProvider:(id)provider;
+- (void)setPreviewActionsStyleDragTearOffThreshold:(double)threshold;
+- (void)setPreviewRubberbandingCoefficient:(double)coefficient;
 @end
 
 @implementation _UIContextMenuPlatformMetrics
@@ -42,8 +42,8 @@
     [(_UIContextMenuPlatformMetrics *)v3 setApplySubmenuScaling:1];
     [(_UIContextMenuPlatformMetrics *)v3 setTrailingCascadedSubmenuOffset:-11.0, 1.0, 0.0];
     [(_UIContextMenuPlatformMetrics *)v3 setLeadingCascadedSubmenuOffset:-5.0, 1.0, 0.0];
-    v5 = [objc_opt_self() mainScreen];
-    [v5 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     [(_UIContextMenuPlatformMetrics *)v3 setSubmenuTitleSeparatorHeight:1.0 / v6];
 
     [(_UIContextMenuPlatformMetrics *)v3 setDefaultMenuWidth:250.0];
@@ -65,8 +65,8 @@
     v11 = +[UIColor tertiaryLabelColor];
     [(_UIContextMenuPlatformMetrics *)v3 setItemKeyboardShortcutColor:v11];
 
-    v12 = [objc_opt_self() mainScreen];
-    [v12 scale];
+    mainScreen2 = [objc_opt_self() mainScreen];
+    [mainScreen2 scale];
     [(_UIContextMenuPlatformMetrics *)v3 setItemSeparatorHeight:1.0 / v13];
 
     [(_UIContextMenuPlatformMetrics *)v3 setSectionSeparatorHeight:8.0];
@@ -324,7 +324,7 @@
   return result;
 }
 
-- (void)setPreviewRubberbandingCoefficient:(double)a3
+- (void)setPreviewRubberbandingCoefficient:(double)coefficient
 {
   if (_UIInternalPreferencesRevisionOnce != -1)
   {
@@ -333,7 +333,7 @@
 
   if (_UIInternalPreferencesRevisionVar >= 1)
   {
-    qword_1EA95E940 = *&a3;
+    qword_1EA95E940 = *&coefficient;
     _UIInternalPreference_PlatterRubberbandingCoefficient = 0x7FFFFFFF;
     if (&_UIInternalPreferencesListener___COUNTER__ != &webGeolocationCacheFileAccessQueue)
     {
@@ -349,7 +349,7 @@
   }
 }
 
-- (void)setPreviewActionsStyleDragTearOffThreshold:(double)a3
+- (void)setPreviewActionsStyleDragTearOffThreshold:(double)threshold
 {
   if (_UIInternalPreferencesRevisionOnce != -1)
   {
@@ -358,7 +358,7 @@
 
   if (_UIInternalPreferencesRevisionVar >= 1)
   {
-    qword_1EA95E950 = *&a3;
+    qword_1EA95E950 = *&threshold;
     _UIInternalPreference_PlatterActionsStyleDragTearOffThreshold = 0x7FFFFFFF;
     if (&_UIInternalPreferencesListener___COUNTER__ != &webGeolocationCacheFileAccessQueue)
     {
@@ -381,9 +381,9 @@
   return v2;
 }
 
-- (void)setMenuHeaderBackgroundProvider:(id)a3
+- (void)setMenuHeaderBackgroundProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   menuTitleBackgroundProvider = self->_menuTitleBackgroundProvider;
   self->_menuTitleBackgroundProvider = v4;
 }

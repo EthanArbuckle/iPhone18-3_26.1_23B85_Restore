@@ -1,14 +1,14 @@
 @interface GTPerfStatsHelper
 - (BOOL)_collectOperatingPoints;
-- (GTPerfStatsHelper)initWithConfigurationVariables:(id)a3;
-- (GTPerfStatsHelper)initWithOutputPath:(id)a3;
+- (GTPerfStatsHelper)initWithConfigurationVariables:(id)variables;
+- (GTPerfStatsHelper)initWithOutputPath:(id)path;
 - (id).cxx_construct;
-- (id)_frequenciesForStateName:(const char *)a3 forReg:(unsigned int)a4;
+- (id)_frequenciesForStateName:(const char *)name forReg:(unsigned int)reg;
 - (id)exportStats;
 - (void)gatherStats;
 - (void)reset;
 - (void)setup;
-- (void)startCollectingPerfStatsAtInterval:(unint64_t)a3 andPeriodicSamplesAtInterval:(unint64_t)a4;
+- (void)startCollectingPerfStatsAtInterval:(unint64_t)interval andPeriodicSamplesAtInterval:(unint64_t)atInterval;
 - (void)stopCollectingStats;
 @end
 
@@ -125,9 +125,9 @@ LABEL_13:
         v19 = 0;
         v20 = &v19;
         v21 = 0x2020000000;
-        v9 = [*(begin + 5) firstObject];
+        firstObject = [*(begin + 5) firstObject];
 
-        v22 = v9;
+        v22 = firstObject;
         v7 = objc_alloc_init(MEMORY[0x277CCABB8]);
         [v7 setNumberStyle:1];
         v10 = *(begin + 5);
@@ -156,9 +156,9 @@ LABEL_13:
         v19 = 0;
         v20 = &v19;
         v21 = 0x2020000000;
-        v6 = [*(begin + 5) firstObject];
+        firstObject2 = [*(begin + 5) firstObject];
 
-        v22 = v6;
+        v22 = firstObject2;
         v7 = objc_alloc_init(MEMORY[0x277CCABB8]);
         [v7 setNumberStyle:1];
         v8 = *(begin + 5);
@@ -177,9 +177,9 @@ LABEL_13:
       v19 = 0;
       v20 = &v19;
       v21 = 0x2020000000;
-      v11 = [*(begin + 5) firstObject];
+      firstObject3 = [*(begin + 5) firstObject];
 
-      v22 = v11;
+      v22 = firstObject3;
       v7 = objc_alloc_init(MEMORY[0x277CCABB8]);
       [v7 setNumberStyle:1];
       v12 = *(begin + 5);
@@ -212,13 +212,13 @@ LABEL_13:
   }
 }
 
-- (void)startCollectingPerfStatsAtInterval:(unint64_t)a3 andPeriodicSamplesAtInterval:(unint64_t)a4
+- (void)startCollectingPerfStatsAtInterval:(unint64_t)interval andPeriodicSamplesAtInterval:(unint64_t)atInterval
 {
   begin = self->_perfStateGroups.__begin_;
   end = self->_perfStateGroups.__end_;
   if (begin != end)
   {
-    v8 = a4 != 0;
+    v8 = atInterval != 0;
     v22 = v30;
     v23 = v25;
     do
@@ -227,26 +227,26 @@ LABEL_13:
       v9 = *(begin + 19);
       if (v9 != 1)
       {
-        if (!a4)
+        if (!atInterval)
         {
           goto LABEL_18;
         }
 
         if (!v9)
         {
-          v10 = a4;
+          intervalCopy = atInterval;
 LABEL_9:
           v11 = *(begin + 36);
           if (v11 >= 1)
           {
             if (v9 == 2)
             {
-              v12 = v10 >> 2;
+              v12 = intervalCopy >> 2;
             }
 
             else
             {
-              v12 = v10;
+              v12 = intervalCopy;
             }
 
             v13 = *(begin + 1);
@@ -301,8 +301,8 @@ LABEL_9:
         }
       }
 
-      v10 = a3;
-      if (a3)
+      intervalCopy = interval;
+      if (interval)
       {
         goto LABEL_9;
       }
@@ -334,7 +334,7 @@ LABEL_18:
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:&v59 count:1];
   v8 = v7;
   v48 = v7;
-  v9 = self;
+  selfCopy2 = self;
   end = self->_perfStateGroups.__end_;
   v11 = 678152731 * ((end - self->_perfStateGroups.__begin_) >> 3);
   LODWORD(v52[0]) = v11;
@@ -342,7 +342,7 @@ LABEL_18:
   if (end >= self->_perfStateGroups.__cap_)
   {
     v13 = std::vector<GTPerfStateGroup>::__emplace_back_slow_path<NSString * {__strong},NSDictionary * {__strong},GTPerfStateGroup::eGTPerfStateGroup,GTPerfStateGroup::eGTPerfStateGroupType>(p_perfStateGroups, v49, &v48, v52, v51);
-    v9 = self;
+    selfCopy2 = self;
   }
 
   else
@@ -366,7 +366,7 @@ LABEL_18:
     self->_perfStateGroups.__end_ = (end + 152);
   }
 
-  v9->_perfStateGroups.__end_ = v13;
+  selfCopy2->_perfStateGroups.__end_ = v13;
 
   v47 = @"GPU Stats";
   v57 = @"GPU";
@@ -375,7 +375,7 @@ LABEL_18:
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
   v16 = v15;
   v46 = v15;
-  v17 = self;
+  selfCopy4 = self;
   v18 = self->_perfStateGroups.__end_;
   v19 = 678152731 * ((v18 - self->_perfStateGroups.__begin_) >> 3);
   LODWORD(v52[0]) = v19;
@@ -383,7 +383,7 @@ LABEL_18:
   if (v18 >= self->_perfStateGroups.__cap_)
   {
     v21 = std::vector<GTPerfStateGroup>::__emplace_back_slow_path<NSString * {__strong},NSDictionary * {__strong},GTPerfStateGroup::eGTPerfStateGroup,GTPerfStateGroup::eGTPerfStateGroupType>(p_perfStateGroups, &v47, &v46, v52, v51);
-    v17 = self;
+    selfCopy4 = self;
   }
 
   else
@@ -407,7 +407,7 @@ LABEL_18:
     self->_perfStateGroups.__end_ = (v18 + 152);
   }
 
-  v17->_perfStateGroups.__end_ = v21;
+  selfCopy4->_perfStateGroups.__end_ = v21;
 
   v45 = @"SoC Stats";
   v55 = @"Events";
@@ -472,7 +472,7 @@ LABEL_18:
         *(v31 - 68) = v50;
 
         v35 = [*(v31 - 68) objectForKeyedSubscript:@"IOReportChannels"];
-        v36 = [&unk_2860D6150 allKeys];
+        allKeys = [&unk_2860D6150 allKeys];
         if (v35)
         {
           v37 = [MEMORY[0x277CBEB18] arrayWithCapacity:(*(v31 + 17) + 1)];
@@ -543,25 +543,25 @@ LABEL_18:
   v70 = v52;
   [v51 enumerateKeysAndObjectsUsingBlock:v69];
   v7 = [(NSDictionary *)self->_configVariables objectForKeyedSubscript:@"num_cores"];
-  v8 = [v7 unsignedIntValue];
+  unsignedIntValue = [v7 unsignedIntValue];
 
   v9 = [(NSDictionary *)self->_configVariables objectForKeyedSubscript:@"num_mgpus"];
-  v10 = [v9 unsignedIntValue];
+  unsignedIntValue2 = [v9 unsignedIntValue];
 
   v11 = [(NSDictionary *)self->_configVariables objectForKeyedSubscript:@"gpu_gen"];
-  v12 = [v11 unsignedIntValue];
+  unsignedIntValue3 = [v11 unsignedIntValue];
 
-  if (v10 <= 1)
+  if (unsignedIntValue2 <= 1)
   {
     v13 = 1;
   }
 
   else
   {
-    v13 = v10;
+    v13 = unsignedIntValue2;
   }
 
-  v14 = v8 / v13 + 1;
+  v14 = unsignedIntValue / v13 + 1;
   if ((v14 & 0xFFFFFFFC) != 0)
   {
     v15 = v14 & 0xFFFFFFFC;
@@ -615,15 +615,15 @@ LABEL_18:
   v53->_socBlockBandwidths = v19;
 
   [(NSMutableDictionary *)v53->_socBlockBandwidths setObject:&unk_2860D5AF8 forKeyedSubscript:@"WriteReadRatio"];
-  v21 = (v10 * v18) << 6;
+  v21 = (unsignedIntValue2 * v18) << 6;
   v22 = 2 * v21;
   if (v17 == 2)
   {
-    if (v12 <= 0xD)
+    if (unsignedIntValue3 <= 0xD)
     {
-      if (v12 != 13 || v10 < 2)
+      if (unsignedIntValue3 != 13 || unsignedIntValue2 < 2)
       {
-        if (v12 == 13)
+        if (unsignedIntValue3 == 13)
         {
           v24 = v78;
         }
@@ -640,7 +640,7 @@ LABEL_18:
       [(NSMutableDictionary *)v53->_socBlockBandwidths setObject:&unk_2860D5B10 forKeyedSubscript:@"WriteReadRatio"];
     }
 
-    else if (v10 < 2)
+    else if (unsignedIntValue2 < 2)
     {
       v23 = v66;
       v24 = __p;
@@ -650,7 +650,7 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    if (v12 <= 0xD)
+    if (unsignedIntValue3 <= 0xD)
     {
       v25 = 2 * v21;
     }
@@ -681,10 +681,10 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  if (v12 >= 0xE)
+  if (unsignedIntValue3 >= 0xE)
   {
     v23 = v66;
-    if (v12 == 14)
+    if (unsignedIntValue3 == 14)
     {
       v23 = v68;
     }
@@ -693,7 +693,7 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  if (v12 == 10)
+  if (unsignedIntValue3 == 10)
   {
     v25 = v21;
   }
@@ -703,7 +703,7 @@ LABEL_25:
     v25 = 2 * v21;
   }
 
-  v22 = v21 >> (v12 == 10);
+  v22 = v21 >> (unsignedIntValue3 == 10);
   v23 = v68;
   v24 = v64;
 LABEL_26:
@@ -711,7 +711,7 @@ LABEL_26:
   v28 = v23[1];
   if (*v23 != v28)
   {
-    v29 = 2000000 * v10 * v15;
+    v29 = 2000000 * unsignedIntValue2 * v15;
     do
     {
       v30 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v29 * *v27];
@@ -895,11 +895,11 @@ void __44__GTPerfStatsHelper__collectOperatingPoints__block_invoke(uint64_t a1, 
   }
 }
 
-- (id)_frequenciesForStateName:(const char *)a3 forReg:(unsigned int)a4
+- (id)_frequenciesForStateName:(const char *)name forReg:(unsigned int)reg
 {
   v5 = *MEMORY[0x277CBECE8];
-  v6 = CFStringCreateWithCString(*MEMORY[0x277CBECE8], a3, 0x600u);
-  CFProperty = IORegistryEntryCreateCFProperty(a4, v6, v5, 0);
+  v6 = CFStringCreateWithCString(*MEMORY[0x277CBECE8], name, 0x600u);
+  CFProperty = IORegistryEntryCreateCFProperty(reg, v6, v5, 0);
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:10];
   if (CFProperty)
   {
@@ -917,16 +917,16 @@ void __44__GTPerfStatsHelper__collectOperatingPoints__block_invoke(uint64_t a1, 
   return v8;
 }
 
-- (GTPerfStatsHelper)initWithOutputPath:(id)a3
+- (GTPerfStatsHelper)initWithOutputPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = GTPerfStatsHelper;
   v6 = [(GTPerfStatsHelper *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_outputPath, a3);
+    objc_storeStrong(&v6->_outputPath, path);
     v8 = v7;
   }
 
@@ -946,15 +946,15 @@ void __44__GTPerfStatsHelper__collectOperatingPoints__block_invoke(uint64_t a1, 
   }
 }
 
-- (GTPerfStatsHelper)initWithConfigurationVariables:(id)a3
+- (GTPerfStatsHelper)initWithConfigurationVariables:(id)variables
 {
-  v4 = a3;
+  variablesCopy = variables;
   v9.receiver = self;
   v9.super_class = GTPerfStatsHelper;
   v5 = [(GTPerfStatsHelper *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [variablesCopy copy];
     configVariables = v5->_configVariables;
     v5->_configVariables = v6;
   }

@@ -1,22 +1,22 @@
 @interface __RCFolderContentsDelegate
-- (void)controllerDidChangeContent:(id)a3;
+- (void)controllerDidChangeContent:(id)content;
 @end
 
 @implementation __RCFolderContentsDelegate
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
-  v6 = [a3 folder];
-  v4 = [v6 folderType];
+  folder = [content folder];
+  folderType = [folder folderType];
   foldersController = self->_foldersController;
-  if (v4 == 4)
+  if (folderType == 4)
   {
-    [(RCFoldersFetchedResultsController *)foldersController reloadUserFolder:v6];
+    [(RCFoldersFetchedResultsController *)foldersController reloadUserFolder:folder];
   }
 
   else
   {
-    [(RCFoldersFetchedResultsController *)foldersController reloadBuiltinFolder:v6];
+    [(RCFoldersFetchedResultsController *)foldersController reloadBuiltinFolder:folder];
   }
 }
 

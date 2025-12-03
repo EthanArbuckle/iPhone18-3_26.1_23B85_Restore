@@ -1,14 +1,14 @@
 @interface GQUOutputBundleFactory
-+ (id)createOutputBundleForType:(int)a3 outputPath:(__CFString *)a4 progressiveHelper:(id)a5;
++ (id)createOutputBundleForType:(int)type outputPath:(__CFString *)path progressiveHelper:(id)helper;
 @end
 
 @implementation GQUOutputBundleFactory
 
-+ (id)createOutputBundleForType:(int)a3 outputPath:(__CFString *)a4 progressiveHelper:(id)a5
++ (id)createOutputBundleForType:(int)type outputPath:(__CFString *)path progressiveHelper:(id)helper
 {
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (!a3)
+    if (!type)
     {
       v12 = GQUQuicklookOutputBundle;
 LABEL_18:
@@ -16,7 +16,7 @@ LABEL_18:
       return objc_alloc_init(v12);
     }
 
-    if (a3 != 1)
+    if (type != 1)
     {
       return 0;
     }
@@ -29,15 +29,15 @@ LABEL_18:
 
   else
   {
-    if (a3 != 2)
+    if (type != 2)
     {
-      if (a3 != 3)
+      if (type != 3)
       {
-        if (a3 == 4)
+        if (type == 4)
         {
           v6 = [GQUProgressiveOutputBundle alloc];
 
-          return [(GQUProgressiveOutputBundle *)v6 initWithHandler:a5];
+          return [(GQUProgressiveOutputBundle *)v6 initWithHandler:helper];
         }
 
         return 0;
@@ -49,7 +49,7 @@ LABEL_18:
 
     v11 = [GQUFileOutputBundle alloc];
 
-    return [(GQUFileOutputBundle *)v11 initWithOutputPath:a4];
+    return [(GQUFileOutputBundle *)v11 initWithOutputPath:path];
   }
 }
 

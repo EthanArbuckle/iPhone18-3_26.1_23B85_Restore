@@ -1,14 +1,14 @@
 @interface CAMPreviewLayerEnabledCommand
-- (CAMPreviewLayerEnabledCommand)initWithCoder:(id)a3;
-- (CAMPreviewLayerEnabledCommand)initWithPreviewLayerEnabled:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMPreviewLayerEnabledCommand)initWithCoder:(id)coder;
+- (CAMPreviewLayerEnabledCommand)initWithPreviewLayerEnabled:(BOOL)enabled;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMPreviewLayerEnabledCommand
 
-- (CAMPreviewLayerEnabledCommand)initWithPreviewLayerEnabled:(BOOL)a3
+- (CAMPreviewLayerEnabledCommand)initWithPreviewLayerEnabled:(BOOL)enabled
 {
   v8.receiver = self;
   v8.super_class = CAMPreviewLayerEnabledCommand;
@@ -16,57 +16,57 @@
   v5 = v4;
   if (v4)
   {
-    v4->__enabled = a3;
+    v4->__enabled = enabled;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (CAMPreviewLayerEnabledCommand)initWithCoder:(id)a3
+- (CAMPreviewLayerEnabledCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CAMPreviewLayerEnabledCommand;
   v5 = [(CAMCaptureCommand *)&v8 init];
   if (v5)
   {
-    v5->__enabled = [v4 decodeBoolForKey:@"CAMPreviewLayerEnabled"];
+    v5->__enabled = [coderCopy decodeBoolForKey:@"CAMPreviewLayerEnabled"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CAMPreviewLayerEnabledCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[CAMPreviewLayerEnabledCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMPreviewLayerEnabled"}];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[CAMPreviewLayerEnabledCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMPreviewLayerEnabled"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMPreviewLayerEnabledCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[24] = [(CAMPreviewLayerEnabledCommand *)self _isEnabled];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CAMPreviewLayerEnabledCommand *)self _isEnabled];
-  v8 = [v4 currentVideoPreviewLayer];
+  contextCopy = context;
+  _isEnabled = [(CAMPreviewLayerEnabledCommand *)self _isEnabled];
+  currentVideoPreviewLayer = [contextCopy currentVideoPreviewLayer];
 
-  v6 = [v8 connection];
-  v7 = v6;
-  if (v6 && v5 != [v6 isEnabled])
+  connection = [currentVideoPreviewLayer connection];
+  v7 = connection;
+  if (connection && _isEnabled != [connection isEnabled])
   {
-    [v7 setEnabled:v5];
+    [v7 setEnabled:_isEnabled];
   }
 }
 

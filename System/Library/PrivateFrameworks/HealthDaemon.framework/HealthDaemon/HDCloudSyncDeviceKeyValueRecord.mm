@@ -1,30 +1,30 @@
 @interface HDCloudSyncDeviceKeyValueRecord
-+ (BOOL)hasFutureSchema:(id)a3;
-+ (BOOL)isDeviceKeyValueRecord:(id)a3;
-+ (BOOL)isDeviceKeyValueRecordID:(id)a3;
++ (BOOL)hasFutureSchema:(id)schema;
++ (BOOL)isDeviceKeyValueRecord:(id)record;
++ (BOOL)isDeviceKeyValueRecordID:(id)d;
 + (id)fieldsForUnprotectedSerialization;
-- (BOOL)isEqual:(id)a3;
-- (HDCloudSyncDeviceKeyValueRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (HDCloudSyncDeviceKeyValueRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version;
 - (id)deviceContextRecordID;
-- (id)deviceKeyValueEntry:(id *)a3;
-- (id)initInZone:(id)a3 deviceKeyValueEntry:(id)a4 deviceContextRecord:(id)a5 UUID:(id)a6;
+- (id)deviceKeyValueEntry:(id *)entry;
+- (id)initInZone:(id)zone deviceKeyValueEntry:(id)entry deviceContextRecord:(id)record UUID:(id)d;
 - (id)syncIdentity;
 @end
 
 @implementation HDCloudSyncDeviceKeyValueRecord
 
-+ (BOOL)isDeviceKeyValueRecord:(id)a3
++ (BOOL)isDeviceKeyValueRecord:(id)record
 {
-  v3 = [a3 recordType];
-  v4 = [v3 isEqualToString:@"CloudSyncDeviceKeyValueRecordType"];
+  recordType = [record recordType];
+  v4 = [recordType isEqualToString:@"CloudSyncDeviceKeyValueRecordType"];
 
   return v4;
 }
 
-+ (BOOL)isDeviceKeyValueRecordID:(id)a3
++ (BOOL)isDeviceKeyValueRecordID:(id)d
 {
-  v3 = [a3 recordName];
-  v4 = [v3 componentsSeparatedByString:@"/"];
+  recordName = [d recordName];
+  v4 = [recordName componentsSeparatedByString:@"/"];
 
   if ([v4 count] == 2)
   {
@@ -42,18 +42,18 @@
 
 - (id)deviceContextRecordID
 {
-  v2 = [(HDCloudSyncRecord *)self record];
-  v3 = [v2 objectForKeyedSubscript:@"HDCloudSyncDeviceContextRecordReference"];
+  record = [(HDCloudSyncRecord *)self record];
+  v3 = [record objectForKeyedSubscript:@"HDCloudSyncDeviceContextRecordReference"];
 
-  v4 = [v3 recordID];
+  recordID = [v3 recordID];
 
-  return v4;
+  return recordID;
 }
 
 + (id)fieldsForUnprotectedSerialization
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___HDCloudSyncDeviceKeyValueRecord;
   v2 = objc_msgSendSuper2(&v9, sel_fieldsForUnprotectedSerialization);
   v10 = objc_opt_class();
@@ -68,23 +68,23 @@
   return v6;
 }
 
-- (id)initInZone:(id)a3 deviceKeyValueEntry:(id)a4 deviceContextRecord:(id)a5 UUID:(id)a6
+- (id)initInZone:(id)zone deviceKeyValueEntry:(id)entry deviceContextRecord:(id)record UUID:(id)d
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
+  entryCopy = entry;
+  recordCopy = record;
+  dCopy = d;
+  zoneCopy = zone;
   objc_opt_self();
   v14 = MEMORY[0x277CCACA8];
-  v15 = [v12 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v16 = [v14 stringWithFormat:@"%@/%@", @"CloudSyncDeviceKeyValueRecord", v15];
+  v16 = [v14 stringWithFormat:@"%@/%@", @"CloudSyncDeviceKeyValueRecord", uUIDString];
 
-  v17 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v16 zoneID:v13];
+  v17 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v16 zoneID:zoneCopy];
   v18 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"CloudSyncDeviceKeyValueRecordType" recordID:v17];
   v32 = 0;
-  v19 = [v11 deviceContextWithError:&v32];
+  v19 = [recordCopy deviceContextWithError:&v32];
   v20 = v32;
   if (v20)
   {
@@ -97,7 +97,7 @@
       _os_log_fault_impl(&dword_228986000, v21, OS_LOG_TYPE_FAULT, "Error %@ fetching device context from record", buf, 0xCu);
     }
 
-    v22 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -106,39 +106,39 @@
     if (v23)
     {
       v24 = objc_alloc(MEMORY[0x277CBC620]);
-      v25 = [v11 record];
-      v26 = [v25 recordID];
-      v27 = [v24 initWithRecordID:v26 action:1];
+      record = [recordCopy record];
+      recordID = [record recordID];
+      v27 = [v24 initWithRecordID:recordID action:1];
       [v18 setObject:v27 forKeyedSubscript:@"HDCloudSyncDeviceContextRecordReference"];
 
-      v28 = [v19 syncIdentity];
-      v29 = [v28 codableSyncIdentity];
-      [(HDCloudSyncCodableDeviceKeyValue *)v23->_underlyingDeviceKeyValue setSyncIdentity:v29];
+      syncIdentity = [v19 syncIdentity];
+      codableSyncIdentity = [syncIdentity codableSyncIdentity];
+      [(HDCloudSyncCodableDeviceKeyValue *)v23->_underlyingDeviceKeyValue setSyncIdentity:codableSyncIdentity];
 
-      setUnderlyingDeviceKeyValue(v23->_underlyingDeviceKeyValue, v10);
+      setUnderlyingDeviceKeyValue(v23->_underlyingDeviceKeyValue, entryCopy);
     }
 
     self = v23;
-    v22 = self;
+    selfCopy = self;
   }
 
   v30 = *MEMORY[0x277D85DE8];
-  return v22;
+  return selfCopy;
 }
 
-- (HDCloudSyncDeviceKeyValueRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4
+- (HDCloudSyncDeviceKeyValueRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version
 {
   v15.receiver = self;
   v15.super_class = HDCloudSyncDeviceKeyValueRecord;
-  v4 = [(HDCloudSyncRecord *)&v15 initWithCKRecord:a3 schemaVersion:a4];
+  v4 = [(HDCloudSyncRecord *)&v15 initWithCKRecord:record schemaVersion:version];
   v5 = v4;
   if (!v4)
   {
     goto LABEL_9;
   }
 
-  v6 = [(HDCloudSyncRecord *)v4 underlyingMessage];
-  if (!v6)
+  underlyingMessage = [(HDCloudSyncRecord *)v4 underlyingMessage];
+  if (!underlyingMessage)
   {
     v11 = objc_alloc_init(HDCloudSyncCodableDeviceKeyValue);
     underlyingDeviceKeyValue = v5->_underlyingDeviceKeyValue;
@@ -147,7 +147,7 @@
     goto LABEL_8;
   }
 
-  v7 = [[HDCloudSyncCodableDeviceKeyValue alloc] initWithData:v6];
+  v7 = [[HDCloudSyncCodableDeviceKeyValue alloc] initWithData:underlyingMessage];
   v8 = v5->_underlyingDeviceKeyValue;
   v5->_underlyingDeviceKeyValue = v7;
 
@@ -177,9 +177,9 @@ LABEL_10:
 - (id)syncIdentity
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = [(HDCloudSyncCodableDeviceKeyValue *)self->_underlyingDeviceKeyValue syncIdentity];
+  syncIdentity = [(HDCloudSyncCodableDeviceKeyValue *)self->_underlyingDeviceKeyValue syncIdentity];
   v9 = 0;
-  v3 = [HDSyncIdentity syncIdentityWithCodable:v2 error:&v9];
+  v3 = [HDSyncIdentity syncIdentityWithCodable:syncIdentity error:&v9];
   v4 = v9;
 
   if (v3)
@@ -204,14 +204,14 @@ LABEL_10:
   return v3;
 }
 
-- (id)deviceKeyValueEntry:(id *)a3
+- (id)deviceKeyValueEntry:(id *)entry
 {
   if (![(HDCloudSyncCodableDeviceKeyValue *)self->_underlyingDeviceKeyValue hasKey])
   {
     v14 = MEMORY[0x277CCA9B8];
     v15 = @"Error extracting device key value storage entry from record due to missing key";
 LABEL_14:
-    [v14 hk_assignError:a3 code:3 format:v15];
+    [v14 hk_assignError:entry code:3 format:v15];
     v13 = 0;
     goto LABEL_15;
   }
@@ -244,8 +244,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v5 = [(HDCloudSyncCodableDeviceKeyValue *)self->_underlyingDeviceKeyValue syncIdentity];
-  v6 = [HDSyncIdentity syncIdentityWithCodable:v5 error:a3];
+  syncIdentity = [(HDCloudSyncCodableDeviceKeyValue *)self->_underlyingDeviceKeyValue syncIdentity];
+  v6 = [HDSyncIdentity syncIdentityWithCodable:syncIdentity error:entry];
 
   if (!v6)
   {
@@ -256,18 +256,18 @@ LABEL_19:
 
   if (![(HDCloudSyncCodableDeviceKeyValue *)self->_underlyingDeviceKeyValue hasProtectionCategory])
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 format:@"Error extracting device key value storage entry from record due to missing protection category"];
+    [MEMORY[0x277CCA9B8] hk_assignError:entry code:3 format:@"Error extracting device key value storage entry from record due to missing protection category"];
     goto LABEL_19;
   }
 
   v7 = [HDDeviceKeyValueStorageEntry alloc];
-  v8 = [(HDCloudSyncCodableDeviceKeyValue *)self->_underlyingDeviceKeyValue domain];
+  domain = [(HDCloudSyncCodableDeviceKeyValue *)self->_underlyingDeviceKeyValue domain];
   v9 = [(HDCloudSyncCodableDeviceKeyValue *)self->_underlyingDeviceKeyValue key];
-  v10 = [(HDCloudSyncCodableDeviceKeyValue *)self->_underlyingDeviceKeyValue value];
+  value = [(HDCloudSyncCodableDeviceKeyValue *)self->_underlyingDeviceKeyValue value];
   v11 = MEMORY[0x277CBEAA8];
   [(HDCloudSyncCodableDeviceKeyValue *)self->_underlyingDeviceKeyValue modificationDate];
   v12 = [v11 dateWithTimeIntervalSinceReferenceDate:?];
-  v13 = [(HDDeviceKeyValueStorageEntry *)v7 initWithDomain:v8 key:v9 value:v10 modificationDate:v12 syncIdentity:v6 category:[(HDCloudSyncCodableDeviceKeyValue *)self->_underlyingDeviceKeyValue protectionCategory]];
+  v13 = [(HDDeviceKeyValueStorageEntry *)v7 initWithDomain:domain key:v9 value:value modificationDate:v12 syncIdentity:v6 category:[(HDCloudSyncCodableDeviceKeyValue *)self->_underlyingDeviceKeyValue protectionCategory]];
 
 LABEL_20:
 LABEL_15:
@@ -275,19 +275,19 @@ LABEL_15:
   return v13;
 }
 
-+ (BOOL)hasFutureSchema:(id)a3
++ (BOOL)hasFutureSchema:(id)schema
 {
-  v3 = [a3 encryptedValues];
-  v4 = [v3 objectForKeyedSubscript:@"Version"];
+  encryptedValues = [schema encryptedValues];
+  v4 = [encryptedValues objectForKeyedSubscript:@"Version"];
 
   v5 = v4 && [v4 integerValue] > 1;
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -297,15 +297,15 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       underlyingDeviceKeyValue = self->_underlyingDeviceKeyValue;
-      v7 = [(HDCloudSyncDeviceKeyValueRecord *)v5 underlyingDeviceKeyValue];
-      if ([(HDCloudSyncCodableDeviceKeyValue *)underlyingDeviceKeyValue isEqual:v7])
+      underlyingDeviceKeyValue = [(HDCloudSyncDeviceKeyValueRecord *)v5 underlyingDeviceKeyValue];
+      if ([(HDCloudSyncCodableDeviceKeyValue *)underlyingDeviceKeyValue isEqual:underlyingDeviceKeyValue])
       {
-        v8 = [(HDCloudSyncRecord *)self record];
-        v9 = [v8 objectForKeyedSubscript:@"HDCloudSyncDeviceContextRecordReference"];
-        v10 = [(HDCloudSyncRecord *)v5 record];
-        v11 = [v10 objectForKeyedSubscript:@"HDCloudSyncDeviceContextRecordReference"];
+        record = [(HDCloudSyncRecord *)self record];
+        v9 = [record objectForKeyedSubscript:@"HDCloudSyncDeviceContextRecordReference"];
+        record2 = [(HDCloudSyncRecord *)v5 record];
+        v11 = [record2 objectForKeyedSubscript:@"HDCloudSyncDeviceContextRecordReference"];
         v12 = [v9 isEqual:v11];
       }
 

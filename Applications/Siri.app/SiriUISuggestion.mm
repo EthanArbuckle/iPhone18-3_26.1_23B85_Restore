@@ -2,9 +2,9 @@
 - (NSString)spokenText;
 - (NSUUID)suggestionId;
 - (_TtC4Siri16SiriUISuggestion)init;
-- (void)setAddViews:(id)a3;
-- (void)setSpokenText:(id)a3;
-- (void)setSuggestionId:(id)a3;
+- (void)setAddViews:(id)views;
+- (void)setSpokenText:(id)text;
+- (void)setSuggestionId:(id)id;
 - (void)siriDidSpeakHint;
 @end
 
@@ -18,7 +18,7 @@
   return v2;
 }
 
-- (void)setSpokenText:(id)a3
+- (void)setSpokenText:(id)text
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR____TtC4Siri16SiriUISuggestion_spokenText);
@@ -41,7 +41,7 @@
   return v8.super.isa;
 }
 
-- (void)setSuggestionId:(id)a3
+- (void)setSuggestionId:(id)id
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -51,22 +51,22 @@
   v8 = OBJC_IVAR____TtC4Siri16SiriUISuggestion_suggestionId;
   swift_beginAccess();
   v9 = *(v5 + 40);
-  v10 = self;
+  selfCopy = self;
   v9(self + v8, v7, v4);
   swift_endAccess();
 }
 
-- (void)setAddViews:(id)a3
+- (void)setAddViews:(id)views
 {
   v4 = *(self + OBJC_IVAR____TtC4Siri16SiriUISuggestion_addViews);
-  *(self + OBJC_IVAR____TtC4Siri16SiriUISuggestion_addViews) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Siri16SiriUISuggestion_addViews) = views;
+  viewsCopy = views;
 }
 
 - (void)siriDidSpeakHint
 {
   v2 = *(self + OBJC_IVAR____TtC4Siri16SiriUISuggestion_exposureCallback);
-  v4 = self;
+  selfCopy = self;
 
   v2(v3);
 }

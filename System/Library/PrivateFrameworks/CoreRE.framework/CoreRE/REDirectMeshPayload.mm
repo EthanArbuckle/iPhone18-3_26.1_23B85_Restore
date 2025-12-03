@@ -1,16 +1,16 @@
 @interface REDirectMeshPayload
 - (AABB)aabb;
 - (FixedInlineArray<unsigned)payloadBufferSizes;
-- (MeshCollection)makeMeshCollection:(SEL)a3;
-- (MeshPayloadBuffers)meshPayloadBuffersWithDevice:(SEL)a3;
+- (MeshCollection)makeMeshCollection:(SEL)collection;
+- (MeshPayloadBuffers)meshPayloadBuffersWithDevice:(SEL)device;
 - (NSArray)instances;
 - (NSArray)models;
 - (NSArray)parts;
-- (REDirectMeshPayload)initWithCoder:(id)a3;
-- (REDirectMeshPayload)initWithDirectMesh:(id)a3;
+- (REDirectMeshPayload)initWithCoder:(id)coder;
+- (REDirectMeshPayload)initWithDirectMesh:(id)mesh;
 - (unint64_t)totalPayloadSize;
-- (void)encodeWithCoder:(id)a3;
-- (void)makeBoundingBoxes:(void *)a3 perPartPerInstanceBoundingBoxes:(void *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)makeBoundingBoxes:(void *)boxes perPartPerInstanceBoundingBoxes:(void *)boundingBoxes;
 @end
 
 @implementation REDirectMeshPayload
@@ -21,8 +21,8 @@
   v4.i64[1] = 0x7F0000007FLL;
   *&retstr->var0.var0.var0.var0 = vnegq_f32(v4);
   *&retstr->var1.var0.var1[1] = v4;
-  v5 = [(REDirectMeshPayload *)self directMesh];
-  if (v5)
+  directMesh = [(REDirectMeshPayload *)self directMesh];
+  if (directMesh)
   {
     PartCount = DRMeshGetPartCount();
     v21.i32[2] = 0;
@@ -78,15 +78,15 @@
   return result;
 }
 
-- (MeshCollection)makeMeshCollection:(SEL)a3
+- (MeshCollection)makeMeshCollection:(SEL)collection
 {
   v111 = *MEMORY[0x1E69E9840];
-  v4 = [(REDirectMeshPayload *)self directMesh];
+  directMesh = [(REDirectMeshPayload *)self directMesh];
   v42 = DRMeshCopyDescriptor();
   v57 = 0uLL;
   v58 = 0;
   PartCount = DRMeshGetPartCount();
-  v43 = v4;
+  v43 = directMesh;
   v6 = DRMeshCopyDescriptor();
   v56 = 0;
   v53[1] = 0;
@@ -402,7 +402,7 @@ LABEL_56:
     while (v34 != 720);
     *&v60 = 149034514;
     *(&v60 + 1) = "Model";
-    v37 = [(REDirectMeshPayload *)self aabb];
+    aabb = [(REDirectMeshPayload *)self aabb];
     v61 = v106;
     v62 = v107;
     v63 = v57;
@@ -435,18 +435,18 @@ LABEL_33:
   return result;
 }
 
-- (void)makeBoundingBoxes:(void *)a3 perPartPerInstanceBoundingBoxes:(void *)a4
+- (void)makeBoundingBoxes:(void *)boxes perPartPerInstanceBoundingBoxes:(void *)boundingBoxes
 {
   [(REDirectMeshPayload *)self aabb];
-  if (!*(a3 + 1))
+  if (!*(boxes + 1))
   {
     goto LABEL_8;
   }
 
-  v7 = *(a3 + 2);
+  v7 = *(boxes + 2);
   *v7 = v14;
   v7[1] = v15;
-  v8 = [(REDirectMeshPayload *)self directMesh];
+  directMesh = [(REDirectMeshPayload *)self directMesh];
   PartCount = DRMeshGetPartCount();
 
   if (PartCount)
@@ -456,12 +456,12 @@ LABEL_33:
     while (1)
     {
       [(REDirectMeshPayload *)self aabb];
-      if (*(a4 + 1) <= v12)
+      if (*(boundingBoxes + 1) <= v12)
       {
         break;
       }
 
-      v13 = (*(a4 + 2) + v11);
+      v13 = (*(boundingBoxes + 2) + v11);
       *v13 = v14;
       v13[1] = v15;
       ++v12;
@@ -484,16 +484,16 @@ LABEL_8:
   }
 }
 
-- (REDirectMeshPayload)initWithDirectMesh:(id)a3
+- (REDirectMeshPayload)initWithDirectMesh:(id)mesh
 {
-  v4 = a3;
+  meshCopy = mesh;
   v9.receiver = self;
   v9.super_class = REDirectMeshPayload;
   v5 = [(RESharedResourcePayload *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(REDirectMeshPayload *)v5 setDirectMesh:v4];
+    [(REDirectMeshPayload *)v5 setDirectMesh:meshCopy];
     v7 = DRMeshAsResource();
     DRResourceGetIdentifier();
   }
@@ -501,12 +501,12 @@ LABEL_8:
   return v6;
 }
 
-- (REDirectMeshPayload)initWithCoder:(id)a3
+- (REDirectMeshPayload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = REDirectMeshPayload;
-  v5 = [(RESharedResourcePayload *)&v14 initWithCoder:v4];
+  v5 = [(RESharedResourcePayload *)&v14 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_5;
@@ -515,18 +515,18 @@ LABEL_8:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
     v11 = {;
-    [v4 failWithError:v11];
+    [coderCopy failWithError:v11];
 
 LABEL_8:
     v10 = 0;
     goto LABEL_9;
   }
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   v9 = v7;
   if (!v7)
     v12 = {;
-    [v4 failWithError:v12];
+    [coderCopy failWithError:v12];
 
     goto LABEL_8;
   }
@@ -540,15 +540,15 @@ LABEL_9:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
     v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:self->_identifier];
-    [v4 encodeObject:v6 forKey:@"identifier"];
+    [coderCopy encodeObject:v6 forKey:@"identifier"];
   }
 
   else
@@ -585,7 +585,7 @@ LABEL_9:
   return vaddvq_s64(vaddq_s64(0, vaddq_s64(0, v3)));
 }
 
-- (MeshPayloadBuffers)meshPayloadBuffersWithDevice:(SEL)a3
+- (MeshPayloadBuffers)meshPayloadBuffersWithDevice:(SEL)device
 {
   v6 = a4;
   directMesh = self->_directMesh;

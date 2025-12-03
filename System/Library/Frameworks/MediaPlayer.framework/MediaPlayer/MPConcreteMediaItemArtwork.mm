@@ -1,6 +1,6 @@
 @interface MPConcreteMediaItemArtwork
 - (CGRect)bounds;
-- (MPConcreteMediaItemArtwork)initWithArtworkCatalog:(id)a3 allowsNetworking:(BOOL)a4;
+- (MPConcreteMediaItemArtwork)initWithArtworkCatalog:(id)catalog allowsNetworking:(BOOL)networking;
 @end
 
 @implementation MPConcreteMediaItemArtwork
@@ -12,15 +12,15 @@
   {
     [(MPArtworkCatalog *)self->_catalog setFittingSize:MPArtworkCatalogOriginalSize];
     catalog = self->_catalog;
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     [(MPArtworkCatalog *)catalog setDestinationScale:?];
 
-    v6 = [(MPArtworkCatalog *)self->_catalog bestImageFromDisk];
-    v7 = v6;
-    if (v6)
+    bestImageFromDisk = [(MPArtworkCatalog *)self->_catalog bestImageFromDisk];
+    v7 = bestImageFromDisk;
+    if (bestImageFromDisk)
     {
-      [v6 size];
+      [bestImageFromDisk size];
       p_bounds->origin = *MEMORY[0x1E695EFF8];
       p_bounds->size.width = v8;
       p_bounds->size.height = v9;
@@ -38,23 +38,23 @@
   return result;
 }
 
-- (MPConcreteMediaItemArtwork)initWithArtworkCatalog:(id)a3 allowsNetworking:(BOOL)a4
+- (MPConcreteMediaItemArtwork)initWithArtworkCatalog:(id)catalog allowsNetworking:(BOOL)networking
 {
-  v7 = a3;
+  catalogCopy = catalog;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __70__MPConcreteMediaItemArtwork_initWithArtworkCatalog_allowsNetworking___block_invoke;
   v13[3] = &unk_1E76797E8;
-  v8 = v7;
+  v8 = catalogCopy;
   v14 = v8;
-  v15 = a4;
+  networkingCopy = networking;
   v12.receiver = self;
   v12.super_class = MPConcreteMediaItemArtwork;
   v9 = [(MPMediaItemArtwork *)&v12 initWithBoundsSize:v13 requestHandler:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_catalog, a3);
+    objc_storeStrong(&v9->_catalog, catalog);
   }
 
   return v10;

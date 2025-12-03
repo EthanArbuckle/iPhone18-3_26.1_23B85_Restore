@@ -1,41 +1,41 @@
 @interface TSCHSymbolPathCacheKey
-- (BOOL)isEqual:(id)a3;
-- (TSCHSymbolPathCacheKey)initWithSymbolType:(int)a3 symbolSize:(double)a4 stroke:(id)a5 forHitCheck:(BOOL)a6;
+- (BOOL)isEqual:(id)equal;
+- (TSCHSymbolPathCacheKey)initWithSymbolType:(int)type symbolSize:(double)size stroke:(id)stroke forHitCheck:(BOOL)check;
 @end
 
 @implementation TSCHSymbolPathCacheKey
 
-- (TSCHSymbolPathCacheKey)initWithSymbolType:(int)a3 symbolSize:(double)a4 stroke:(id)a5 forHitCheck:(BOOL)a6
+- (TSCHSymbolPathCacheKey)initWithSymbolType:(int)type symbolSize:(double)size stroke:(id)stroke forHitCheck:(BOOL)check
 {
-  v10 = a5;
+  strokeCopy = stroke;
   v20.receiver = self;
   v20.super_class = TSCHSymbolPathCacheKey;
   v11 = [(TSCHSymbolPathCacheKey *)&v20 init];
   v16 = v11;
   if (v11)
   {
-    v11->_symbolType = a3;
-    v11->_size = a4;
-    v17 = objc_msgSend_copy(v10, v12, v13, v14, v15);
+    v11->_symbolType = type;
+    v11->_size = size;
+    v17 = objc_msgSend_copy(strokeCopy, v12, v13, v14, v15);
     stroke = v16->_stroke;
     v16->_stroke = v17;
 
-    v16->_forHitCheck = a6;
+    v16->_forHitCheck = check;
   }
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
 
-  else if (v4)
+  else if (equalCopy)
   {
     objc_opt_class();
     v6 = TSUSpecificCast();

@@ -1,22 +1,22 @@
 @interface GKLRUCache
-- (id)getValueForKey:(id)a3;
+- (id)getValueForKey:(id)key;
 - (void)clear;
-- (void)insertValue:(id)a3 forKey:(id)a4;
+- (void)insertValue:(id)value forKey:(id)key;
 @end
 
 @implementation GKLRUCache
 
 - (void)clear
 {
-  v2 = self;
+  selfCopy = self;
   GKLRUCache.clear()();
 }
 
-- (void)insertValue:(id)a3 forKey:(id)a4
+- (void)insertValue:(id)value forKey:(id)key
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  keyCopy = key;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -27,10 +27,10 @@
   sub_100005BE0(v11);
 }
 
-- (id)getValueForKey:(id)a3
+- (id)getValueForKey:(id)key
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   GKLRUCache.getValue(forKey:)();
 
   v5 = v13;

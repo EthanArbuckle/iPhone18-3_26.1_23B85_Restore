@@ -5,65 +5,65 @@
 - (NSArray)gestureRecognizers;
 - (NSArray)viewsForApplyingBorder;
 - (NSArray)viewsForApplyingCornerRadius;
-- (PUTileViewController)initWithReuseIdentifier:(id)a3;
+- (PUTileViewController)initWithReuseIdentifier:(id)identifier;
 - (UIView)originalView;
 - (UIView)view;
 - (id)loadView;
 - (id)presentationLayoutInfo;
-- (void)_handleReadinessForced:(BOOL)a3;
+- (void)_handleReadinessForced:(BOOL)forced;
 - (void)_invalidateTintView;
-- (void)_setEdgeAntialiasingEnabled:(BOOL)a3;
-- (void)_setReadyForDisplay:(BOOL)a3;
+- (void)_setEdgeAntialiasingEnabled:(BOOL)enabled;
+- (void)_setReadyForDisplay:(BOOL)display;
 - (void)_updateDynamicStateDebugging;
 - (void)_updateTintView;
 - (void)_updateVisibleRectView;
-- (void)addToTilingView:(id)a3;
-- (void)applyLayoutInfo:(id)a3;
+- (void)addToTilingView:(id)view;
+- (void)applyLayoutInfo:(id)info;
 - (void)becomeReusable;
 - (void)dealloc;
 - (void)didChangeVisibleRect;
-- (void)notifyWhenReadyForDisplayWithTimeOut:(double)a3 completionHandler:(id)a4;
+- (void)notifyWhenReadyForDisplayWithTimeOut:(double)out completionHandler:(id)handler;
 - (void)prepareForReuse;
 - (void)removeAllAnimations;
-- (void)setContentViewEnabled:(BOOL)a3;
-- (void)setIsOnPrimaryDisplay:(BOOL)a3;
+- (void)setContentViewEnabled:(BOOL)enabled;
+- (void)setIsOnPrimaryDisplay:(BOOL)display;
 @end
 
 @implementation PUTileViewController
 
-- (void)_setEdgeAntialiasingEnabled:(BOOL)a3
+- (void)_setEdgeAntialiasingEnabled:(BOOL)enabled
 {
-  if (self->__edgeAntialiasingEnabled != a3)
+  if (self->__edgeAntialiasingEnabled != enabled)
   {
-    self->__edgeAntialiasingEnabled = a3;
+    self->__edgeAntialiasingEnabled = enabled;
     [(PUTileViewController *)self setEdgeAntialiasingEnabled:?];
   }
 }
 
-- (void)_handleReadinessForced:(BOOL)a3
+- (void)_handleReadinessForced:(BOOL)forced
 {
-  v3 = a3;
-  v5 = [(PUTileViewController *)self _onReadyToDisplayBlock];
-  if (v5 && ([(PUTileViewController *)self isReadyForDisplay]|| v3))
+  forcedCopy = forced;
+  _onReadyToDisplayBlock = [(PUTileViewController *)self _onReadyToDisplayBlock];
+  if (_onReadyToDisplayBlock && ([(PUTileViewController *)self isReadyForDisplay]|| forcedCopy))
   {
     [(PUTileViewController *)self _setOnReadyToDisplayBlock:0];
-    v6 = [(PUTileViewController *)self _readinessTimer];
-    [v6 invalidate];
+    _readinessTimer = [(PUTileViewController *)self _readinessTimer];
+    [_readinessTimer invalidate];
 
     [(PUTileViewController *)self _setReadinessTimer:0];
-    v7 = v5;
+    v7 = _onReadyToDisplayBlock;
     px_dispatch_on_main_queue();
   }
 }
 
-- (void)notifyWhenReadyForDisplayWithTimeOut:(double)a3 completionHandler:(id)a4
+- (void)notifyWhenReadyForDisplayWithTimeOut:(double)out completionHandler:(id)handler
 {
-  v6 = a4;
-  [(PUTileViewController *)self _setOnReadyToDisplayBlock:v6];
+  handlerCopy = handler;
+  [(PUTileViewController *)self _setOnReadyToDisplayBlock:handlerCopy];
   [(PUTileViewController *)self _handleReadinessForced:0];
-  v7 = [(PUTileViewController *)self _onReadyToDisplayBlock];
+  _onReadyToDisplayBlock = [(PUTileViewController *)self _onReadyToDisplayBlock];
 
-  if (v7)
+  if (_onReadyToDisplayBlock)
   {
     objc_initWeak(&location, self);
     v8 = MEMORY[0x1E695DFF0];
@@ -72,7 +72,7 @@
     v12 = __79__PUTileViewController_notifyWhenReadyForDisplayWithTimeOut_completionHandler___block_invoke;
     v13 = &unk_1E7B80638;
     objc_copyWeak(&v14, &location);
-    v9 = [v8 pu_scheduledTimerWithTimeInterval:0 repeats:&v10 block:a3];
+    v9 = [v8 pu_scheduledTimerWithTimeInterval:0 repeats:&v10 block:out];
     [(PUTileViewController *)self _setReadinessTimer:v9, v10, v11, v12, v13];
 
     objc_destroyWeak(&v14);
@@ -86,11 +86,11 @@ void __79__PUTileViewController_notifyWhenReadyForDisplayWithTimeOut_completionH
   [WeakRetained _handleReadinessForced:1];
 }
 
-- (void)_setReadyForDisplay:(BOOL)a3
+- (void)_setReadyForDisplay:(BOOL)display
 {
-  if (self->_isReadyForDisplay != a3)
+  if (self->_isReadyForDisplay != display)
   {
-    self->_isReadyForDisplay = a3;
+    self->_isReadyForDisplay = display;
     [(PUTileViewController *)self _handleReadinessForced:0];
   }
 }
@@ -100,32 +100,32 @@ void __79__PUTileViewController_notifyWhenReadyForDisplayWithTimeOut_completionH
   v3 = +[PUTilingViewSettings sharedInstance];
   if ([v3 showVisibleRects])
   {
-    v4 = [(PUTileViewController *)self isViewLoaded];
+    isViewLoaded = [(PUTileViewController *)self isViewLoaded];
   }
 
   else
   {
-    v4 = 0;
+    isViewLoaded = 0;
   }
 
-  v5 = [(PUTileViewController *)self _visibleRectView];
-  if (v4)
+  _visibleRectView = [(PUTileViewController *)self _visibleRectView];
+  if (isViewLoaded)
   {
-    v16 = v5;
-    v6 = [(PUTileViewController *)self view];
+    v16 = _visibleRectView;
+    view = [(PUTileViewController *)self view];
     if (!v16)
     {
       v7 = objc_alloc_init(MEMORY[0x1E69DD250]);
       v8 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:1.0 blue:0.0 alpha:0.100000001];
       [v7 setBackgroundColor:v8];
 
-      v9 = [v7 layer];
-      v10 = [MEMORY[0x1E69DC888] greenColor];
-      [v9 setBorderColor:{objc_msgSend(v10, "CGColor")}];
+      layer = [v7 layer];
+      greenColor = [MEMORY[0x1E69DC888] greenColor];
+      [layer setBorderColor:{objc_msgSend(greenColor, "CGColor")}];
 
-      [v9 setBorderWidth:2.0];
+      [layer setBorderWidth:2.0];
       [v7 setOpaque:0];
-      [v6 addSubview:v7];
+      [view addSubview:v7];
       [(PUTileViewController *)self _setVisibleRectView:v7];
     }
 
@@ -145,24 +145,24 @@ void __79__PUTileViewController_notifyWhenReadyForDisplayWithTimeOut_completionH
 
   else
   {
-    if (!v5)
+    if (!_visibleRectView)
     {
       goto LABEL_13;
     }
 
-    v16 = v5;
-    [v5 removeFromSuperview];
+    v16 = _visibleRectView;
+    [_visibleRectView removeFromSuperview];
     [(PUTileViewController *)self _setVisibleRectView:0];
   }
 
-  v5 = v16;
+  _visibleRectView = v16;
 LABEL_13:
 }
 
 - (void)_invalidateTintView
 {
-  v3 = [(PUTileViewController *)self _tintView];
-  [v3 removeFromSuperview];
+  _tintView = [(PUTileViewController *)self _tintView];
+  [_tintView removeFromSuperview];
 
   [(PUTileViewController *)self _setTintView:0];
 }
@@ -170,31 +170,31 @@ LABEL_13:
 - (void)_updateTintView
 {
   v3 = +[PUTilingViewSettings sharedInstance];
-  v4 = [v3 tintTiles];
+  tintTiles = [v3 tintTiles];
 
-  v5 = [(PUTileViewController *)self _tintView];
-  v6 = v5;
-  if (!v4)
+  _tintView = [(PUTileViewController *)self _tintView];
+  v6 = _tintView;
+  if (!tintTiles)
   {
-    v17 = v5;
-    v5 = [(PUTileViewController *)self _invalidateTintView];
+    v17 = _tintView;
+    _tintView = [(PUTileViewController *)self _invalidateTintView];
     goto LABEL_6;
   }
 
-  if (!v5)
+  if (!_tintView)
   {
     v17 = 0;
-    v5 = [(PUTileViewController *)self isViewLoaded];
+    _tintView = [(PUTileViewController *)self isViewLoaded];
     v6 = 0;
-    if (v5)
+    if (_tintView)
     {
-      v7 = [(PUTileViewController *)self view];
+      view = [(PUTileViewController *)self view];
       v8 = objc_alloc(MEMORY[0x1E69DD250]);
-      [v7 bounds];
+      [view bounds];
       v9 = [v8 initWithFrame:?];
       [v9 setAutoresizingMask:18];
       [v9 setTranslatesAutoresizingMaskIntoConstraints:1];
-      [v7 addSubview:v9];
+      [view addSubview:v9];
       [(PUTileViewController *)self _setTintView:v9];
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       *v11.i64 = v10 / 10.0;
@@ -206,39 +206,39 @@ LABEL_13:
       [v9 setBackgroundColor:v15];
 
       [v9 setOpaque:0];
-      v16 = [v9 layer];
-      [v16 setBorderColor:{objc_msgSend(v14, "CGColor")}];
-      [v16 setBorderWidth:2.0];
+      layer = [v9 layer];
+      [layer setBorderColor:{objc_msgSend(v14, "CGColor")}];
+      [layer setBorderWidth:2.0];
 
 LABEL_6:
       v6 = v17;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](_tintView, v6);
 }
 
 - (void)_updateDynamicStateDebugging
 {
   v3 = +[PUTilingViewSettings sharedInstance];
-  v4 = [v3 showSnapshottableTiles];
+  showSnapshottableTiles = [v3 showSnapshottableTiles];
 
-  if (v4)
+  if (showSnapshottableTiles)
   {
-    v5 = [(PUTileViewController *)self view];
-    v6 = [v5 layer];
+    view = [(PUTileViewController *)self view];
+    layer = [view layer];
 
-    v7 = [MEMORY[0x1E69DC888] redColor];
-    [v6 setBorderColor:{objc_msgSend(v7, "CGColor")}];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    [layer setBorderColor:{objc_msgSend(redColor, "CGColor")}];
 
-    v8 = [(PUTileController *)self shouldAvoidInPlaceSnapshottedFadeOut];
+    shouldAvoidInPlaceSnapshottedFadeOut = [(PUTileController *)self shouldAvoidInPlaceSnapshottedFadeOut];
     v9 = 0.0;
-    if (v8)
+    if (shouldAvoidInPlaceSnapshottedFadeOut)
     {
       v9 = 10.0;
     }
 
-    [v6 setBorderWidth:v9];
+    [layer setBorderWidth:v9];
     objc_initWeak(&location, self);
     v10 = dispatch_time(0, 50000000);
     v11[0] = MEMORY[0x1E69E9820];
@@ -270,37 +270,37 @@ void __52__PUTileViewController__updateDynamicStateDebugging__block_invoke(uint6
 {
   v9.receiver = self;
   v9.super_class = PUTileViewController;
-  v3 = [(PUTileController *)&v9 wantsVisibleRectChanges];
+  wantsVisibleRectChanges = [(PUTileController *)&v9 wantsVisibleRectChanges];
   v4 = +[PUTilingViewSettings sharedInstance];
   if ([v4 showVisibleRects])
   {
-    v5 = [(PUTileController *)self layoutInfo];
-    v6 = [v5 tileKind];
-    v7 = [v6 isEqualToString:@"PUTileKindItemContent"];
+    layoutInfo = [(PUTileController *)self layoutInfo];
+    tileKind = [layoutInfo tileKind];
+    v7 = [tileKind isEqualToString:@"PUTileKindItemContent"];
 
-    v3 |= v7;
+    wantsVisibleRectChanges |= v7;
   }
 
-  return v3 & 1;
+  return wantsVisibleRectChanges & 1;
 }
 
 - (CGRect)visibleRect
 {
   if ([(PUTileViewController *)self isViewLoaded])
   {
-    v3 = [(PUTileController *)self tilingView];
-    [v3 bounds];
+    tilingView = [(PUTileController *)self tilingView];
+    [tilingView bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(PUTileViewController *)self view];
-    [v12 convertRect:v3 fromView:{v5, v7, v9, v11}];
+    view = [(PUTileViewController *)self view];
+    [view convertRect:tilingView fromView:{v5, v7, v9, v11}];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    [v12 bounds];
+    [view bounds];
     v36.origin.x = v21;
     v36.origin.y = v22;
     v36.size.width = v23;
@@ -337,12 +337,12 @@ void __52__PUTileViewController__updateDynamicStateDebugging__block_invoke(uint6
 
 - (void)removeAllAnimations
 {
-  v4 = [(PUTileViewController *)self view];
-  [v4 pu_removeAllGeometryAnimationsRecursively:0];
-  v3 = [(PUTileViewController *)self loadedView];
-  if (v4 != v3)
+  view = [(PUTileViewController *)self view];
+  [view pu_removeAllGeometryAnimationsRecursively:0];
+  loadedView = [(PUTileViewController *)self loadedView];
+  if (view != loadedView)
   {
-    [v3 pu_removeAllGeometryAnimationsRecursively:0];
+    [loadedView pu_removeAllGeometryAnimationsRecursively:0];
   }
 }
 
@@ -351,8 +351,8 @@ void __52__PUTileViewController__updateDynamicStateDebugging__block_invoke(uint6
   v6[1] = *MEMORY[0x1E69E9840];
   if ([(PUTileViewController *)self isViewLoaded])
   {
-    v3 = [(PUTileViewController *)self view];
-    v6[0] = v3;
+    view = [(PUTileViewController *)self view];
+    v6[0] = view;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   }
 
@@ -369,8 +369,8 @@ void __52__PUTileViewController__updateDynamicStateDebugging__block_invoke(uint6
   v6[1] = *MEMORY[0x1E69E9840];
   if ([(PUTileViewController *)self isViewLoaded])
   {
-    v3 = [(PUTileViewController *)self view];
-    v6[0] = v3;
+    view = [(PUTileViewController *)self view];
+    v6[0] = view;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   }
 
@@ -382,76 +382,76 @@ void __52__PUTileViewController__updateDynamicStateDebugging__block_invoke(uint6
   return v4;
 }
 
-- (void)applyLayoutInfo:(id)a3
+- (void)applyLayoutInfo:(id)info
 {
   v151 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  infoCopy = info;
+  if (!infoCopy)
   {
-    v100 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v100 handleFailureInMethod:a2 object:self file:@"PUTileViewController.m" lineNumber:266 description:{@"Invalid parameter not satisfying: %@", @"layoutInfo != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileViewController.m" lineNumber:266 description:{@"Invalid parameter not satisfying: %@", @"layoutInfo != nil"}];
   }
 
-  v6 = [(PUTileController *)self tilingView];
-  if (!v6)
+  tilingView = [(PUTileController *)self tilingView];
+  if (!tilingView)
   {
-    v101 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v101 handleFailureInMethod:a2 object:self file:@"PUTileViewController.m" lineNumber:269 description:{@"Invalid parameter not satisfying: %@", @"tilingView != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUTileViewController.m" lineNumber:269 description:{@"Invalid parameter not satisfying: %@", @"tilingView != nil"}];
   }
 
-  [v5 center];
+  [infoCopy center];
   v8 = v7;
   v10 = v9;
-  v11 = [v5 coordinateSystem];
-  v12 = [v6 contentCoordinateSystem];
-  v13 = PUConvertPointFromCoordinateSystemToCoordinateSystem(v11, v12, v8, v10);
+  coordinateSystem = [infoCopy coordinateSystem];
+  contentCoordinateSystem = [tilingView contentCoordinateSystem];
+  v13 = PUConvertPointFromCoordinateSystemToCoordinateSystem(coordinateSystem, contentCoordinateSystem, v8, v10);
   v15 = v14;
 
-  v16 = [(PUTileViewController *)self view];
-  [v16 center];
-  v116 = self;
-  v117 = v16;
+  view = [(PUTileViewController *)self view];
+  [view center];
+  selfCopy = self;
+  v117 = view;
   if (v18 != v13 || v17 != v15)
   {
     if (!CGFloatIsValid() || (CGFloatIsValid() & 1) == 0)
     {
-      v115 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v152.x = v13;
       v152.y = v15;
       v102 = NSStringFromCGPoint(v152);
-      [v5 center];
+      [infoCopy center];
       v103 = NSStringFromCGPoint(v153);
-      v104 = [v5 coordinateSystem];
-      [v104 coordinateSystemOrigin];
+      coordinateSystem2 = [infoCopy coordinateSystem];
+      [coordinateSystem2 coordinateSystemOrigin];
       v105 = NSStringFromCGPoint(v154);
-      v106 = [v6 contentCoordinateSystem];
-      [v106 coordinateSystemOrigin];
+      contentCoordinateSystem2 = [tilingView contentCoordinateSystem];
+      [contentCoordinateSystem2 coordinateSystemOrigin];
       v107 = NSStringFromCGPoint(v155);
-      [v115 handleFailureInMethod:a2 object:v116 file:@"PUTileViewController.m" lineNumber:274 description:{@"invalid converted center: %@, from %@ + coordinate origins: %@ to %@", v102, v103, v105, v107}];
+      [currentHandler3 handleFailureInMethod:a2 object:selfCopy file:@"PUTileViewController.m" lineNumber:274 description:{@"invalid converted center: %@, from %@ + coordinate origins: %@ to %@", v102, v103, v105, v107}];
 
-      self = v116;
-      v16 = v117;
+      self = selfCopy;
+      view = v117;
     }
 
-    [v16 setCenter:{v13, v15}];
+    [view setCenter:{v13, v15}];
   }
 
-  v114 = v6;
-  [v5 alpha];
-  [v16 setAlpha:?];
+  v114 = tilingView;
+  [infoCopy alpha];
+  [view setAlpha:?];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __40__PUTileViewController_applyLayoutInfo___block_invoke;
   aBlock[3] = &unk_1E7B7E928;
-  v19 = v5;
+  v19 = infoCopy;
   v146 = v19;
   v20 = _Block_copy(aBlock);
   v141 = 0u;
   v142 = 0u;
   v143 = 0u;
   v144 = 0u;
-  v21 = [(PUTileViewController *)self viewsForApplyingCornerRadius];
-  v22 = [v21 countByEnumeratingWithState:&v141 objects:v150 count:16];
+  viewsForApplyingCornerRadius = [(PUTileViewController *)self viewsForApplyingCornerRadius];
+  v22 = [viewsForApplyingCornerRadius countByEnumeratingWithState:&v141 objects:v150 count:16];
   if (v22)
   {
     v23 = v22;
@@ -462,13 +462,13 @@ void __52__PUTileViewController__updateDynamicStateDebugging__block_invoke(uint6
       {
         if (*v142 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(viewsForApplyingCornerRadius);
         }
 
         v20[2](v20, *(*(&v141 + 1) + 8 * i));
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v141 objects:v150 count:16];
+      v23 = [viewsForApplyingCornerRadius countByEnumeratingWithState:&v141 objects:v150 count:16];
     }
 
     while (v23);
@@ -476,16 +476,16 @@ void __52__PUTileViewController__updateDynamicStateDebugging__block_invoke(uint6
 
   if ([(PUTileViewController *)self isContentViewEnabled])
   {
-    v26 = [(PUTileViewController *)self contentView];
-    (v20)[2](v20, v26);
+    contentView = [(PUTileViewController *)self contentView];
+    (v20)[2](v20, contentView);
   }
 
   v139 = 0u;
   v140 = 0u;
   v137 = 0u;
   v138 = 0u;
-  v27 = [(PUTileViewController *)self viewsForApplyingBorder];
-  v28 = [v27 countByEnumeratingWithState:&v137 objects:v149 count:16];
+  viewsForApplyingBorder = [(PUTileViewController *)self viewsForApplyingBorder];
+  v28 = [viewsForApplyingBorder countByEnumeratingWithState:&v137 objects:v149 count:16];
   if (v28)
   {
     v29 = v28;
@@ -496,17 +496,17 @@ void __52__PUTileViewController__updateDynamicStateDebugging__block_invoke(uint6
       {
         if (*v138 != v30)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(viewsForApplyingBorder);
         }
 
-        v32 = [*(*(&v137 + 1) + 8 * j) layer];
+        layer = [*(*(&v137 + 1) + 8 * j) layer];
         [v19 borderWidth];
-        [v32 setBorderWidth:?];
-        v33 = [v19 borderColor];
-        [v32 setBorderColor:{objc_msgSend(v33, "CGColor")}];
+        [layer setBorderWidth:?];
+        borderColor = [v19 borderColor];
+        [layer setBorderColor:{objc_msgSend(borderColor, "CGColor")}];
       }
 
-      v29 = [v27 countByEnumeratingWithState:&v137 objects:v149 count:16];
+      v29 = [viewsForApplyingBorder countByEnumeratingWithState:&v137 objects:v149 count:16];
     }
 
     while (v29);
@@ -514,10 +514,10 @@ void __52__PUTileViewController__updateDynamicStateDebugging__block_invoke(uint6
 
   v35 = *MEMORY[0x1E695EFF8];
   v34 = *(MEMORY[0x1E695EFF8] + 8);
-  v36 = v116;
+  v36 = selfCopy;
   v108 = v34;
   v109 = *MEMORY[0x1E695EFF8];
-  if ([(PUTileViewController *)v116 isContentViewEnabled])
+  if ([(PUTileViewController *)selfCopy isContentViewEnabled])
   {
     [v19 parallaxOffset];
     v35 = -v37;
@@ -531,7 +531,7 @@ void __52__PUTileViewController__updateDynamicStateDebugging__block_invoke(uint6
   v135 = 0u;
   v136 = 0u;
   v134 = 0u;
-  if (v5)
+  if (infoCopy)
   {
     [v19 transform];
     v42 = 0uLL;
@@ -554,19 +554,19 @@ void __52__PUTileViewController__updateDynamicStateDebugging__block_invoke(uint6
   v43 = 0.0;
   CATransform3DTranslate(&m, &v131, 0.0, 0.0, v44);
   v133 = m;
-  v45 = [v117 layer];
+  layer2 = [v117 layer];
   m = v133;
-  [v45 setTransform:&m];
+  [layer2 setTransform:&m];
 
   v46 = *(&v134 + 1);
   if (*(&v134 + 1) != 0.0)
   {
     v47 = +[PUTilingViewSettings sharedInstance];
-    v48 = [v47 allowsEdgeAntialiasing];
+    allowsEdgeAntialiasing = [v47 allowsEdgeAntialiasing];
 
-    if (v48)
+    if (allowsEdgeAntialiasing)
     {
-      [(PUTileViewController *)v116 _setEdgeAntialiasingEnabled:1];
+      [(PUTileViewController *)selfCopy _setEdgeAntialiasingEnabled:1];
     }
   }
 
@@ -592,9 +592,9 @@ void __52__PUTileViewController__updateDynamicStateDebugging__block_invoke(uint6
   v62 = v61;
   [v19 normalizedLegibilityInsets];
   v64 = v63;
-  v65 = [(PUTileViewController *)v116 topLegibilityView];
-  v66 = [(PUTileViewController *)v116 bottomLegibilityView];
-  [(PUTileViewController *)v116 visibleRect];
+  topLegibilityView = [(PUTileViewController *)selfCopy topLegibilityView];
+  bottomLegibilityView = [(PUTileViewController *)selfCopy bottomLegibilityView];
+  [(PUTileViewController *)selfCopy visibleRect];
   x = v156.origin.x;
   y = v156.origin.y;
   width = v156.size.width;
@@ -615,36 +615,36 @@ void __52__PUTileViewController__updateDynamicStateDebugging__block_invoke(uint6
   v157.size.width = width;
   v157.size.height = height;
   MaxY = CGRectGetMaxY(v157);
-  if (!v65 && v73 > 0.0)
+  if (!topLegibilityView && v73 > 0.0)
   {
-    v65 = [objc_alloc(MEMORY[0x1E69C35B8]) initWithFrame:{x, y, width, v73}];
+    topLegibilityView = [objc_alloc(MEMORY[0x1E69C35B8]) initWithFrame:{x, y, width, v73}];
     v75 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.4];
     v148[0] = v75;
     v76 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.0];
     v148[1] = v76;
     v77 = [MEMORY[0x1E695DEC8] arrayWithObjects:v148 count:2];
-    [v65 setColors:v77];
+    [topLegibilityView setColors:v77];
 
-    v36 = v116;
+    v36 = selfCopy;
     v39 = v117;
-    [v65 setLocations:&unk_1F2B7D820];
-    [v65 setStartPoint:{v109, v108}];
-    [v65 setEndPoint:{0.0, 1.0}];
-    [v65 setUserInteractionEnabled:0];
-    [v117 addSubview:v65];
-    [(PUTileViewController *)v116 setTopLegibilityView:v65];
+    [topLegibilityView setLocations:&unk_1F2B7D820];
+    [topLegibilityView setStartPoint:{v109, v108}];
+    [topLegibilityView setEndPoint:{0.0, 1.0}];
+    [topLegibilityView setUserInteractionEnabled:0];
+    [v117 addSubview:topLegibilityView];
+    [(PUTileViewController *)selfCopy setTopLegibilityView:topLegibilityView];
   }
 
   v78 = v62 * v64;
-  if (v65)
+  if (topLegibilityView)
   {
-    [v39 bringSubviewToFront:v65];
+    [v39 bringSubviewToFront:topLegibilityView];
     v79 = MEMORY[0x1E69DD250];
     v125[0] = MEMORY[0x1E69E9820];
     v125[1] = 3221225472;
     v125[2] = __40__PUTileViewController_applyLayoutInfo___block_invoke_52;
     v125[3] = &unk_1E7B7FF20;
-    v80 = v65;
+    v80 = topLegibilityView;
     v126 = v80;
     v127 = x;
     v128 = y;
@@ -663,35 +663,35 @@ void __52__PUTileViewController__updateDynamicStateDebugging__block_invoke(uint6
   }
 
   v83 = v43 * v78;
-  if (!v66 && v83 > 0.0)
+  if (!bottomLegibilityView && v83 > 0.0)
   {
-    v66 = objc_alloc_init(MEMORY[0x1E69C35B8]);
+    bottomLegibilityView = objc_alloc_init(MEMORY[0x1E69C35B8]);
     v84 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.4];
     v147[0] = v84;
     v85 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.0];
     v147[1] = v85;
     v86 = [MEMORY[0x1E695DEC8] arrayWithObjects:v147 count:2];
-    [v66 setColors:v86];
+    [bottomLegibilityView setColors:v86];
 
-    v36 = v116;
+    v36 = selfCopy;
     v39 = v117;
-    [v66 setLocations:&unk_1F2B7D838];
-    [v66 setStartPoint:{0.0, 1.0}];
-    [v66 setEndPoint:{v109, v108}];
-    [v66 setUserInteractionEnabled:0];
-    [v117 addSubview:v66];
-    [(PUTileViewController *)v116 setBottomLegibilityView:v66];
+    [bottomLegibilityView setLocations:&unk_1F2B7D838];
+    [bottomLegibilityView setStartPoint:{0.0, 1.0}];
+    [bottomLegibilityView setEndPoint:{v109, v108}];
+    [bottomLegibilityView setUserInteractionEnabled:0];
+    [v117 addSubview:bottomLegibilityView];
+    [(PUTileViewController *)selfCopy setBottomLegibilityView:bottomLegibilityView];
   }
 
-  if (v66)
+  if (bottomLegibilityView)
   {
-    [v39 bringSubviewToFront:v65];
+    [v39 bringSubviewToFront:topLegibilityView];
     v87 = MEMORY[0x1E69DD250];
     v119[0] = MEMORY[0x1E69E9820];
     v119[1] = 3221225472;
     v119[2] = __40__PUTileViewController_applyLayoutInfo___block_invoke_2;
     v119[3] = &unk_1E7B7FF20;
-    v88 = v66;
+    v88 = bottomLegibilityView;
     v120 = v88;
     v121 = x;
     v122 = MaxY - v83;
@@ -709,8 +709,8 @@ void __52__PUTileViewController__updateDynamicStateDebugging__block_invoke(uint6
     [v88 setAlpha:v90];
   }
 
-  v91 = [(PUTileViewController *)v36 _maskView];
-  if (!v91)
+  _maskView = [(PUTileViewController *)v36 _maskView];
+  if (!_maskView)
   {
     v92.f64[0] = v113;
     v93.f64[0] = v112;
@@ -720,20 +720,20 @@ void __52__PUTileViewController__updateDynamicStateDebugging__block_invoke(uint6
     {
       v94 = objc_alloc(MEMORY[0x1E69DD250]);
       [v39 bounds];
-      v91 = [v94 initWithFrame:?];
-      v95 = [MEMORY[0x1E69DC888] whiteColor];
-      [v91 setBackgroundColor:v95];
+      _maskView = [v94 initWithFrame:?];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [_maskView setBackgroundColor:whiteColor];
 
-      [v91 setOpaque:1];
-      [v39 setMaskView:v91];
-      [(PUTileViewController *)v36 _setMaskView:v91];
+      [_maskView setOpaque:1];
+      [v39 setMaskView:_maskView];
+      [(PUTileViewController *)v36 _setMaskView:_maskView];
     }
   }
 
-  if (v91)
+  if (_maskView)
   {
     [v39 bounds];
-    [v91 setFrame:{v111 + v96, v113 + v97, v98 - (v111 + v110), v99 - (v113 + v112)}];
+    [_maskView setFrame:{v111 + v96, v113 + v97, v98 - (v111 + v110), v99 - (v113 + v112)}];
   }
 
   v118.receiver = v36;
@@ -763,37 +763,37 @@ void __40__PUTileViewController_applyLayoutInfo___block_invoke(uint64_t a1, void
 
 - (BOOL)isPresentationActive
 {
-  v2 = [(PUTileViewController *)self view];
-  v3 = [v2 layer];
-  v4 = [v3 presentationLayer];
+  view = [(PUTileViewController *)self view];
+  layer = [view layer];
+  presentationLayer = [layer presentationLayer];
 
-  return v4 != 0;
+  return presentationLayer != 0;
 }
 
 - (id)presentationLayoutInfo
 {
   v37.receiver = self;
   v37.super_class = PUTileViewController;
-  v4 = [(PUTileController *)&v37 presentationLayoutInfo];
-  if (!v4)
+  presentationLayoutInfo = [(PUTileController *)&v37 presentationLayoutInfo];
+  if (!presentationLayoutInfo)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PUTileViewController.m" lineNumber:233 description:@"missing layout info"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileViewController.m" lineNumber:233 description:@"missing layout info"];
   }
 
-  v5 = [(PUTileViewController *)self view];
-  if (!v5)
+  view = [(PUTileViewController *)self view];
+  if (!view)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"PUTileViewController.m" lineNumber:236 description:@"missing view"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUTileViewController.m" lineNumber:236 description:@"missing view"];
   }
 
-  v6 = [v5 layer];
-  v7 = [v6 presentationLayer];
-  v8 = v7;
-  if (!v7 || [v7 isHidden])
+  layer = [view layer];
+  presentationLayer = [layer presentationLayer];
+  v8 = presentationLayer;
+  if (!presentationLayer || [presentationLayer isHidden])
   {
-    v9 = v6;
+    v9 = layer;
 
     v8 = v9;
   }
@@ -820,23 +820,23 @@ void __40__PUTileViewController_applyLayoutInfo___block_invoke(uint64_t a1, void
   v34 = v36;
   CATransform3DGetAffineTransform(&v35, &v34);
   m43 = v36.m43;
-  v22 = [(PUTileController *)self tilingView];
-  if (!v22)
+  tilingView = [(PUTileController *)self tilingView];
+  if (!tilingView)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PUTileViewController.m" lineNumber:252 description:@"missing tiling view"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PUTileViewController.m" lineNumber:252 description:@"missing tiling view"];
   }
 
-  v23 = [v22 fixedCoordinateSystem];
-  v24 = [v22 contentCoordinateSystem];
-  v25 = PUConvertPointFromCoordinateSystemToCoordinateSystem(v24, v23, v11, v13);
+  fixedCoordinateSystem = [tilingView fixedCoordinateSystem];
+  contentCoordinateSystem = [tilingView contentCoordinateSystem];
+  v25 = PUConvertPointFromCoordinateSystemToCoordinateSystem(contentCoordinateSystem, fixedCoordinateSystem, v11, v13);
   v27 = v26;
 
-  v28 = [(PUTileController *)self layoutInfo];
+  layoutInfo = [(PUTileController *)self layoutInfo];
   *&v34.m11 = *&v35.a;
   *&v34.m13 = *&v35.c;
   *&v34.m21 = *&v35.tx;
-  v29 = [v28 layoutInfoWithCenter:&v34 size:v23 alpha:v25 transform:v27 zPosition:v15 coordinateSystem:{v17, v19, m43}];
+  v29 = [layoutInfo layoutInfoWithCenter:&v34 size:fixedCoordinateSystem alpha:v25 transform:v27 zPosition:v15 coordinateSystem:{v17, v19, m43}];
 
   return v29;
 }
@@ -846,8 +846,8 @@ void __40__PUTileViewController_applyLayoutInfo___block_invoke(uint64_t a1, void
   v4.receiver = self;
   v4.super_class = PUTileViewController;
   [(PUTileController *)&v4 prepareForReuse];
-  v3 = [(PUTileViewController *)self view];
-  [v3 setHidden:0];
+  view = [(PUTileViewController *)self view];
+  [view setHidden:0];
 
   [(PUTileViewController *)self _updateTintView];
   [(PUTileViewController *)self _handleReadinessForced:1];
@@ -859,8 +859,8 @@ void __40__PUTileViewController_applyLayoutInfo___block_invoke(uint64_t a1, void
   v4.super_class = PUTileViewController;
   [(PUTileController *)&v4 becomeReusable];
   [(PUTileViewController *)self setIsOnPrimaryDisplay:1];
-  v3 = [(PUTileViewController *)self view];
-  [v3 setHidden:1];
+  view = [(PUTileViewController *)self view];
+  [view setHidden:1];
 
   [(PUTileViewController *)self _invalidateTintView];
   [(PUTileViewController *)self _setEdgeAntialiasingEnabled:0];
@@ -871,7 +871,7 @@ void __40__PUTileViewController_applyLayoutInfo___block_invoke(uint64_t a1, void
 {
   if (![(PUTileViewController *)self isViewLoaded])
   {
-    v3 = [(PUTileViewController *)self loadView];
+    loadView = [(PUTileViewController *)self loadView];
   }
 
   gestureRecognizers = self->_gestureRecognizers;
@@ -879,11 +879,11 @@ void __40__PUTileViewController_applyLayoutInfo___block_invoke(uint64_t a1, void
   return gestureRecognizers;
 }
 
-- (void)setIsOnPrimaryDisplay:(BOOL)a3
+- (void)setIsOnPrimaryDisplay:(BOOL)display
 {
-  if (self->_isOnPrimaryDisplay != a3)
+  if (self->_isOnPrimaryDisplay != display)
   {
-    self->_isOnPrimaryDisplay = a3;
+    self->_isOnPrimaryDisplay = display;
     [(PUTileViewController *)self didChangeIsOnPrimaryDisplay];
   }
 }
@@ -891,16 +891,16 @@ void __40__PUTileViewController_applyLayoutInfo___block_invoke(uint64_t a1, void
 - (UIView)originalView
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PUTileViewController *)self view];
+  view = [(PUTileViewController *)self view];
   if ([(PUTileViewController *)self isContentViewEnabled])
   {
-    v4 = [v3 subviews];
-    [v4 count];
+    subviews = [view subviews];
+    [subviews count];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v4;
+    v5 = subviews;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -921,7 +921,7 @@ void __40__PUTileViewController_applyLayoutInfo___block_invoke(uint64_t a1, void
           {
             v11 = v10;
 
-            v3 = v11;
+            view = v11;
           }
         }
 
@@ -932,77 +932,77 @@ void __40__PUTileViewController_applyLayoutInfo___block_invoke(uint64_t a1, void
     }
   }
 
-  return v3;
+  return view;
 }
 
-- (void)setContentViewEnabled:(BOOL)a3
+- (void)setContentViewEnabled:(BOOL)enabled
 {
-  if (self->_contentViewEnabled != a3)
+  if (self->_contentViewEnabled != enabled)
   {
-    v3 = a3;
-    self->_contentViewEnabled = a3;
+    enabledCopy = enabled;
+    self->_contentViewEnabled = enabled;
     if ([(PUTileViewController *)self isViewLoaded])
     {
-      v20 = [(PUTileViewController *)self view];
-      v6 = [(PUTileViewController *)self view];
-      v7 = [v6 isHidden];
+      view = [(PUTileViewController *)self view];
+      view2 = [(PUTileViewController *)self view];
+      isHidden = [view2 isHidden];
 
-      if (v3)
+      if (enabledCopy)
       {
-        v8 = [v20 superview];
+        superview = [view superview];
         v9 = objc_alloc(MEMORY[0x1E69DD250]);
-        [v20 frame];
+        [view frame];
         v10 = [v9 initWithFrame:?];
         [v10 setClipsToBounds:1];
-        [v20 removeFromSuperview];
+        [view removeFromSuperview];
         [v10 bounds];
-        [v20 setFrame:?];
-        [v20 setAutoresizingMask:18];
-        [v20 setHidden:0];
-        [v10 addSubview:v20];
-        [v8 addSubview:v10];
+        [view setFrame:?];
+        [view setAutoresizingMask:18];
+        [view setHidden:0];
+        [v10 addSubview:view];
+        [superview addSubview:v10];
         [(PUTileViewController *)self _setView:v10];
         [(PUTileViewController *)self _setContentView:v10];
       }
 
       else
       {
-        v11 = [v20 subviews];
-        v12 = [v11 count];
+        subviews = [view subviews];
+        v12 = [subviews count];
 
         if (v12 != 1)
         {
-          v18 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v18 handleFailureInMethod:a2 object:self file:@"PUTileViewController.m" lineNumber:144 description:@"Only able to disable contentView if there is a single child view available to promote."];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileViewController.m" lineNumber:144 description:@"Only able to disable contentView if there is a single child view available to promote."];
         }
 
-        v13 = [(PUTileViewController *)self contentView];
+        contentView = [(PUTileViewController *)self contentView];
 
-        v14 = v20;
-        if (v20 != v13)
+        v14 = view;
+        if (view != contentView)
         {
-          v19 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v19 handleFailureInMethod:a2 object:self file:@"PUTileViewController.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"view == [self contentView]"}];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUTileViewController.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"view == [self contentView]"}];
 
-          v14 = v20;
+          v14 = view;
         }
 
-        v15 = [v14 subviews];
-        v8 = [v15 lastObject];
+        subviews2 = [v14 subviews];
+        superview = [subviews2 lastObject];
 
-        [v8 removeFromSuperview];
-        [v20 frame];
-        [v8 setFrame:?];
-        [v20 removeFromSuperview];
-        v16 = [(PUTileController *)self tilingView];
-        [v16 addSubview:v8];
+        [superview removeFromSuperview];
+        [view frame];
+        [superview setFrame:?];
+        [view removeFromSuperview];
+        tilingView = [(PUTileController *)self tilingView];
+        [tilingView addSubview:superview];
 
-        [(PUTileViewController *)self _setView:v20];
+        [(PUTileViewController *)self _setView:view];
         [(PUTileViewController *)self _setContentView:0];
       }
 
-      v17 = [(PUTileViewController *)self view];
-      [v17 setHidden:v7];
+      view3 = [(PUTileViewController *)self view];
+      [view3 setHidden:isHidden];
     }
   }
 }
@@ -1014,28 +1014,28 @@ void __40__PUTileViewController_applyLayoutInfo___block_invoke(uint64_t a1, void
   {
     if ([(PUTileViewController *)self _isLoadingView])
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PUTileViewController.m" lineNumber:90 description:{@"Tried to access the view property while it is loading, which isn't supported."}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileViewController.m" lineNumber:90 description:{@"Tried to access the view property while it is loading, which isn't supported."}];
     }
 
     [(PUTileViewController *)self _setLoadingView:1];
-    v5 = [(PUTileViewController *)self loadView];
-    [(PUTileViewController *)self _setLoadedView:v5];
+    loadView = [(PUTileViewController *)self loadView];
+    [(PUTileViewController *)self _setLoadedView:loadView];
     if ([(PUTileViewController *)self isContentViewEnabled])
     {
       v6 = objc_alloc(MEMORY[0x1E69DD250]);
-      [v5 frame];
+      [loadView frame];
       v7 = [v6 initWithFrame:?];
       [(UIView *)v7 setClipsToBounds:1];
       [(UIView *)v7 bounds];
-      [v5 setFrame:?];
-      [v5 setAutoresizingMask:18];
-      [(UIView *)v7 addSubview:v5];
+      [loadView setFrame:?];
+      [loadView setAutoresizingMask:18];
+      [(UIView *)v7 addSubview:loadView];
     }
 
     else
     {
-      v7 = v5;
+      v7 = loadView;
     }
 
     v8 = self->_view;
@@ -1056,8 +1056,8 @@ void __40__PUTileViewController_applyLayoutInfo___block_invoke(uint64_t a1, void
 {
   if (self->_view)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUTileViewController.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"_view == nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileViewController.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"_view == nil"}];
   }
 
   v2 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -1066,18 +1066,18 @@ void __40__PUTileViewController_applyLayoutInfo___block_invoke(uint64_t a1, void
   return v3;
 }
 
-- (void)addToTilingView:(id)a3
+- (void)addToTilingView:(id)view
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUTileViewController *)self view];
-  [v4 addSubview:v5];
-  v6 = [(PUTileViewController *)self gestureRecognizers];
+  viewCopy = view;
+  view = [(PUTileViewController *)self view];
+  [viewCopy addSubview:view];
+  gestureRecognizers = [(PUTileViewController *)self gestureRecognizers];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [gestureRecognizers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1089,14 +1089,14 @@ void __40__PUTileViewController_applyLayoutInfo___block_invoke(uint64_t a1, void
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
-        [v4 addGestureRecognizer:*(*(&v11 + 1) + 8 * v10++)];
+        [viewCopy addGestureRecognizer:*(*(&v11 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [gestureRecognizers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -1105,21 +1105,21 @@ void __40__PUTileViewController_applyLayoutInfo___block_invoke(uint64_t a1, void
 
 - (void)dealloc
 {
-  v3 = [(PUTileViewController *)self _onReadyToDisplayBlock];
-  v4 = v3;
-  if (v3)
+  _onReadyToDisplayBlock = [(PUTileViewController *)self _onReadyToDisplayBlock];
+  v4 = _onReadyToDisplayBlock;
+  if (_onReadyToDisplayBlock)
   {
     v7 = MEMORY[0x1E69E9820];
     v8 = 3221225472;
     v9 = __31__PUTileViewController_dealloc__block_invoke;
     v10 = &unk_1E7B80C88;
-    v11 = v3;
+    v11 = _onReadyToDisplayBlock;
     px_dispatch_on_main_queue();
   }
 
   [(PUTileViewController *)self _setOnReadyToDisplayBlock:0];
-  v5 = [(PUTileViewController *)self _readinessTimer];
-  [v5 invalidate];
+  _readinessTimer = [(PUTileViewController *)self _readinessTimer];
+  [_readinessTimer invalidate];
 
   [(PUTileViewController *)self _setReadinessTimer:0];
   v6.receiver = self;
@@ -1127,11 +1127,11 @@ void __40__PUTileViewController_applyLayoutInfo___block_invoke(uint64_t a1, void
   [(PUTileViewController *)&v6 dealloc];
 }
 
-- (PUTileViewController)initWithReuseIdentifier:(id)a3
+- (PUTileViewController)initWithReuseIdentifier:(id)identifier
 {
   v4.receiver = self;
   v4.super_class = PUTileViewController;
-  result = [(PUTileController *)&v4 initWithReuseIdentifier:a3];
+  result = [(PUTileController *)&v4 initWithReuseIdentifier:identifier];
   if (result)
   {
     result->_isOnPrimaryDisplay = 1;

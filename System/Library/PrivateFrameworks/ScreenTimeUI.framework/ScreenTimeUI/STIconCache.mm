@@ -4,26 +4,26 @@
 - (NSPersonNameComponentsFormatter)personNameComponentsFormatter;
 - (STIconCache)init;
 - (UIImage)imageForBlankApplicationIcon;
-- (id)_newCircleImageWithFillColor:(id)a3 fillDiameter:(double)a4 outlineColor:(id)a5 outlineWidth:(double)a6;
-- (id)_personImageWithDSID:(id)a3 fullName:(id)a4 appleID:(id)a5 forceFetch:(BOOL)a6 completionHandler:(id)a7;
-- (id)blankSpaceImageWithSize:(CGSize)a3;
-- (id)circleImageWithFillColor:(id)a3 fillDiameter:(double)a4 outlineColor:(id)a5 outlineWidth:(double)a6;
-- (id)imageForBundleIdentifier:(id)a3;
-- (id)imageForCategoryIdentifier:(id)a3;
-- (id)monogramImageForInitial:(id)a3 useDarkColors:(BOOL)a4;
-- (id)monogramImageForNameComponents:(id)a3;
-- (id)roundedImageForImageWithName:(id)a3;
-- (void)_fetchFamilyPhotoWithDSID:(id)a3 fullName:(id)a4 appleID:(id)a5 completionHandler:(id)a6;
-- (void)_fetchImageForAppInfoIfNeeded:(id)a3;
-- (void)_fetchImageForAppInfoIfNeeded:(id)a3 completionHandler:(id)a4;
-- (void)_handleiTunesResponseForAppInfo:(id)a3 response:(id)a4 data:(id)a5 error:(id)a6;
-- (void)_handleiTunesResponseForAppInfo:(id)a3 response:(id)a4 data:(id)a5 error:(id)a6 completionHandler:(id)a7;
-- (void)_updateCacheWithImage:(id)a3 bundleIdentifier:(id)a4;
-- (void)_updateCacheWithImage:(id)a3 dsid:(id)a4;
-- (void)addObserver:(id)a3 selector:(SEL)a4 bundleIdentifier:(id)a5;
+- (id)_newCircleImageWithFillColor:(id)color fillDiameter:(double)diameter outlineColor:(id)outlineColor outlineWidth:(double)width;
+- (id)_personImageWithDSID:(id)d fullName:(id)name appleID:(id)iD forceFetch:(BOOL)fetch completionHandler:(id)handler;
+- (id)blankSpaceImageWithSize:(CGSize)size;
+- (id)circleImageWithFillColor:(id)color fillDiameter:(double)diameter outlineColor:(id)outlineColor outlineWidth:(double)width;
+- (id)imageForBundleIdentifier:(id)identifier;
+- (id)imageForCategoryIdentifier:(id)identifier;
+- (id)monogramImageForInitial:(id)initial useDarkColors:(BOOL)colors;
+- (id)monogramImageForNameComponents:(id)components;
+- (id)roundedImageForImageWithName:(id)name;
+- (void)_fetchFamilyPhotoWithDSID:(id)d fullName:(id)name appleID:(id)iD completionHandler:(id)handler;
+- (void)_fetchImageForAppInfoIfNeeded:(id)needed;
+- (void)_fetchImageForAppInfoIfNeeded:(id)needed completionHandler:(id)handler;
+- (void)_handleiTunesResponseForAppInfo:(id)info response:(id)response data:(id)data error:(id)error;
+- (void)_handleiTunesResponseForAppInfo:(id)info response:(id)response data:(id)data error:(id)error completionHandler:(id)handler;
+- (void)_updateCacheWithImage:(id)image bundleIdentifier:(id)identifier;
+- (void)_updateCacheWithImage:(id)image dsid:(id)dsid;
+- (void)addObserver:(id)observer selector:(SEL)selector bundleIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)imageForBundleIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)removeObserver:(id)a3 bundleIdentifier:(id)a4;
+- (void)imageForBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)removeObserver:(id)observer bundleIdentifier:(id)identifier;
 @end
 
 @implementation STIconCache
@@ -63,28 +63,28 @@ uint64_t __26__STIconCache_sharedCache__block_invoke()
     bundleIdentifiersWithPendingRequests = v2->_bundleIdentifiersWithPendingRequests;
     v2->_bundleIdentifiersWithPendingRequests = v5;
 
-    v7 = [@"com.apple.screentime.icon-cache" UTF8String];
+    uTF8String = [@"com.apple.screentime.icon-cache" UTF8String];
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_USER_INITIATED, 0);
-    v10 = dispatch_queue_create(v7, v9);
+    v10 = dispatch_queue_create(uTF8String, v9);
     lookupQueue = v2->_lookupQueue;
     v2->_lookupQueue = v10;
 
-    v12 = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
-    v13 = [MEMORY[0x277CCACD8] sharedURLCache];
-    [v12 setURLCache:v13];
+    ephemeralSessionConfiguration = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
+    mEMORY[0x277CCACD8] = [MEMORY[0x277CCACD8] sharedURLCache];
+    [ephemeralSessionConfiguration setURLCache:mEMORY[0x277CCACD8]];
 
-    [v12 setRequestCachePolicy:2];
-    [v12 setHTTPShouldUsePipelining:1];
+    [ephemeralSessionConfiguration setRequestCachePolicy:2];
+    [ephemeralSessionConfiguration setHTTPShouldUsePipelining:1];
     v14 = objc_opt_new();
     [v14 setName:@"com.apple.screentime.icon-cache"];
     [v14 setUnderlyingQueue:v2->_lookupQueue];
-    v15 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v12 delegate:0 delegateQueue:v14];
+    v15 = [MEMORY[0x277CCAD30] sessionWithConfiguration:ephemeralSessionConfiguration delegate:0 delegateQueue:v14];
     urlSession = v2->_urlSession;
     v2->_urlSession = v15;
 
-    v17 = [v14 name];
-    [(NSURLSession *)v2->_urlSession setSessionDescription:v17];
+    name = [v14 name];
+    [(NSURLSession *)v2->_urlSession setSessionDescription:name];
   }
 
   return v2;
@@ -100,39 +100,39 @@ uint64_t __26__STIconCache_sharedCache__block_invoke()
 
 - (UIImage)imageForBlankApplicationIcon
 {
-  v3 = [(NSCache *)self->_iconByKeyCache objectForKey:@"blank-app-icon"];
-  if (!v3)
+  blankIcon = [(NSCache *)self->_iconByKeyCache objectForKey:@"blank-app-icon"];
+  if (!blankIcon)
   {
-    v3 = [MEMORY[0x277D755B8] blankIcon];
-    [(NSCache *)self->_iconByKeyCache setObject:v3 forKey:@"blank-app-icon" cost:0];
+    blankIcon = [MEMORY[0x277D755B8] blankIcon];
+    [(NSCache *)self->_iconByKeyCache setObject:blankIcon forKey:@"blank-app-icon" cost:0];
   }
 
-  return v3;
+  return blankIcon;
 }
 
-- (void)imageForBundleIdentifier:(id)a3 completionHandler:(id)a4
+- (void)imageForBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"bundle-id.%@", v6];
-  v9 = [(NSCache *)self->_iconByKeyCache objectForKey:v8];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"bundle-id.%@", identifierCopy];
+  v9 = [(NSCache *)self->_iconByKeyCache objectForKey:identifierCopy];
   if (!v9)
   {
-    v11 = [MEMORY[0x277D4B8C0] sharedCache];
-    v12 = [v11 appInfoForBundleIdentifier:v6];
+    mEMORY[0x277D4B8C0] = [MEMORY[0x277D4B8C0] sharedCache];
+    v12 = [mEMORY[0x277D4B8C0] appInfoForBundleIdentifier:identifierCopy];
 
-    v13 = [v12 platform];
-    if ([v6 isEqualToString:@"com.apple.compass"])
+    platform = [v12 platform];
+    if ([identifierCopy isEqualToString:@"com.apple.compass"])
     {
 LABEL_4:
       v14 = MEMORY[0x277D755B8];
       v15 = +[STScreenTimeUIBundle bundle];
-      v16 = [v14 imageNamed:v6 inBundle:v15];
-      v10 = [v16 iconFromPrecomposedImage:0 platform:v13];
+      v16 = [v14 imageNamed:identifierCopy inBundle:v15];
+      imageForBlankApplicationIcon = [v16 iconFromPrecomposedImage:0 platform:platform];
 
 LABEL_5:
-      [(NSCache *)self->_iconByKeyCache setObject:v10 forKey:v8 cost:10];
-      v7[2](v7, v10);
+      [(NSCache *)self->_iconByKeyCache setObject:imageForBlankApplicationIcon forKey:identifierCopy cost:10];
+      handlerCopy[2](handlerCopy, imageForBlankApplicationIcon);
 LABEL_6:
 
       goto LABEL_7;
@@ -141,23 +141,23 @@ LABEL_6:
     if ([v12 source] == 2)
     {
       v17 = MEMORY[0x277D755B8];
-      v18 = [v12 bundleIdentifier];
-      v10 = [v17 iconWithAppBundleID:v18];
+      bundleIdentifier = [v12 bundleIdentifier];
+      imageForBlankApplicationIcon = [v17 iconWithAppBundleID:bundleIdentifier];
 
-      if (v10)
+      if (imageForBlankApplicationIcon)
       {
         goto LABEL_5;
       }
 
-      v19 = [MEMORY[0x277D4BA00] appInfo];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+      appInfo = [MEMORY[0x277D4BA00] appInfo];
+      if (os_log_type_enabled(appInfo, OS_LOG_TYPE_ERROR))
       {
         [STIconCache imageForBundleIdentifier:completionHandler:];
       }
 
 LABEL_12:
 
-      v10 = [(STIconCache *)self imageForBlankApplicationIcon];
+      imageForBlankApplicationIcon = [(STIconCache *)self imageForBlankApplicationIcon];
       goto LABEL_5;
     }
 
@@ -168,12 +168,12 @@ LABEL_12:
 
     if ([v12 source] == 3)
     {
-      v20 = [v12 artworkURL];
+      artworkURL = [v12 artworkURL];
 
-      if (!v20)
+      if (!artworkURL)
       {
-        v19 = [MEMORY[0x277D4BA00] appInfo];
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+        appInfo = [MEMORY[0x277D4BA00] appInfo];
+        if (os_log_type_enabled(appInfo, OS_LOG_TYPE_ERROR))
         {
           [STIconCache imageForBundleIdentifier:completionHandler:];
         }
@@ -182,20 +182,20 @@ LABEL_12:
       }
 
       objc_initWeak(&location, self);
-      v21 = [(STIconCache *)self lookupQueue];
+      lookupQueue = [(STIconCache *)self lookupQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __58__STIconCache_imageForBundleIdentifier_completionHandler___block_invoke;
       block[3] = &unk_278338CE8;
       objc_copyWeak(&v35, &location);
       v33 = v12;
-      v34 = v7;
-      dispatch_async(v21, block);
+      v34 = handlerCopy;
+      dispatch_async(lookupQueue, block);
 
       objc_destroyWeak(&v35);
       objc_destroyWeak(&location);
 LABEL_23:
-      v10 = 0;
+      imageForBlankApplicationIcon = 0;
       goto LABEL_6;
     }
 
@@ -204,23 +204,23 @@ LABEL_23:
       goto LABEL_23;
     }
 
-    v22 = [v12 artworkData];
-    if (v22)
+    artworkData = [v12 artworkData];
+    if (artworkData)
     {
-      v23 = [objc_alloc(MEMORY[0x277D755B8]) _initWithData:v22 preserveScale:1];
-      v10 = [v23 iconFromPrecomposedImage:0 platform:v13];
+      v23 = [objc_alloc(MEMORY[0x277D755B8]) _initWithData:artworkData preserveScale:1];
+      imageForBlankApplicationIcon = [v23 iconFromPrecomposedImage:0 platform:platform];
 
-      if (v10)
+      if (imageForBlankApplicationIcon)
       {
 LABEL_31:
-        [(NSCache *)self->_iconByKeyCache setObject:v10 forKey:v8 cost:10];
-        v7[2](v7, v10);
+        [(NSCache *)self->_iconByKeyCache setObject:imageForBlankApplicationIcon forKey:identifierCopy cost:10];
+        handlerCopy[2](handlerCopy, imageForBlankApplicationIcon);
 
         goto LABEL_6;
       }
 
-      v24 = [MEMORY[0x277D4BA00] appInfo];
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+      appInfo2 = [MEMORY[0x277D4BA00] appInfo];
+      if (os_log_type_enabled(appInfo2, OS_LOG_TYPE_ERROR))
       {
         [STIconCache imageForBundleIdentifier:completionHandler:];
       }
@@ -228,38 +228,38 @@ LABEL_31:
 
     else
     {
-      v25 = [v12 artworkURL];
+      artworkURL2 = [v12 artworkURL];
 
-      if (v25)
+      if (artworkURL2)
       {
         objc_initWeak(&location, self);
-        v26 = [(STIconCache *)self lookupQueue];
+        lookupQueue2 = [(STIconCache *)self lookupQueue];
         v28[0] = MEMORY[0x277D85DD0];
         v28[1] = 3221225472;
         v28[2] = __58__STIconCache_imageForBundleIdentifier_completionHandler___block_invoke_60;
         v28[3] = &unk_278338CE8;
         objc_copyWeak(&v31, &location);
         v29 = v12;
-        v30 = v7;
-        dispatch_async(v26, v28);
+        v30 = handlerCopy;
+        dispatch_async(lookupQueue2, v28);
 
         objc_destroyWeak(&v31);
         objc_destroyWeak(&location);
       }
     }
 
-    v27 = [MEMORY[0x277D4BA00] appInfo];
-    if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+    appInfo3 = [MEMORY[0x277D4BA00] appInfo];
+    if (os_log_type_enabled(appInfo3, OS_LOG_TYPE_ERROR))
     {
       [STIconCache imageForBundleIdentifier:completionHandler:];
     }
 
-    v10 = [(STIconCache *)self imageForBlankApplicationIcon];
+    imageForBlankApplicationIcon = [(STIconCache *)self imageForBlankApplicationIcon];
     goto LABEL_31;
   }
 
-  v10 = v9;
-  v7[2](v7, v9);
+  imageForBlankApplicationIcon = v9;
+  handlerCopy[2](handlerCopy, v9);
 LABEL_7:
 }
 
@@ -275,26 +275,26 @@ void __58__STIconCache_imageForBundleIdentifier_completionHandler___block_invoke
   [WeakRetained _fetchImageForAppInfoIfNeeded:*(a1 + 32) completionHandler:*(a1 + 40)];
 }
 
-- (void)_fetchImageForAppInfoIfNeeded:(id)a3 completionHandler:(id)a4
+- (void)_fetchImageForAppInfoIfNeeded:(id)needed completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STIconCache *)self lookupQueue];
-  dispatch_assert_queue_V2(v8);
+  neededCopy = needed;
+  handlerCopy = handler;
+  lookupQueue = [(STIconCache *)self lookupQueue];
+  dispatch_assert_queue_V2(lookupQueue);
 
-  v9 = [v6 artworkURL];
+  artworkURL = [neededCopy artworkURL];
   objc_initWeak(&location, self);
-  v10 = [(STIconCache *)self urlSession];
+  urlSession = [(STIconCache *)self urlSession];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __63__STIconCache__fetchImageForAppInfoIfNeeded_completionHandler___block_invoke;
   v17 = &unk_278338D10;
   objc_copyWeak(&v20, &location);
-  v11 = v6;
+  v11 = neededCopy;
   v18 = v11;
-  v12 = v7;
+  v12 = handlerCopy;
   v19 = v12;
-  v13 = [v10 dataTaskWithURL:v9 completionHandler:&v14];
+  v13 = [urlSession dataTaskWithURL:artworkURL completionHandler:&v14];
 
   [v13 resume];
   objc_destroyWeak(&v20);
@@ -310,66 +310,66 @@ void __63__STIconCache__fetchImageForAppInfoIfNeeded_completionHandler___block_i
   [WeakRetained _handleiTunesResponseForAppInfo:*(a1 + 32) response:v8 data:v9 error:v7 completionHandler:*(a1 + 40)];
 }
 
-- (void)_handleiTunesResponseForAppInfo:(id)a3 response:(id)a4 data:(id)a5 error:(id)a6 completionHandler:(id)a7
+- (void)_handleiTunesResponseForAppInfo:(id)info response:(id)response data:(id)data error:(id)error completionHandler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(STIconCache *)self lookupQueue];
-  dispatch_assert_queue_V2(v15);
+  infoCopy = info;
+  dataCopy = data;
+  errorCopy = error;
+  handlerCopy = handler;
+  lookupQueue = [(STIconCache *)self lookupQueue];
+  dispatch_assert_queue_V2(lookupQueue);
 
-  v16 = [v11 bundleIdentifier];
-  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"bundle-id.%@", v16];
-  if (!v12 || v13)
+  bundleIdentifier = [infoCopy bundleIdentifier];
+  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"bundle-id.%@", bundleIdentifier];
+  if (!dataCopy || errorCopy)
   {
-    v21 = [MEMORY[0x277D4BA00] appInfo];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    appInfo = [MEMORY[0x277D4BA00] appInfo];
+    if (os_log_type_enabled(appInfo, OS_LOG_TYPE_ERROR))
     {
       [STIconCache _handleiTunesResponseForAppInfo:response:data:error:completionHandler:];
     }
 
-    v22 = [(STIconCache *)self imageForBlankApplicationIcon];
-    [(NSCache *)self->_iconByKeyCache setObject:v22 forKey:v17 cost:10];
+    imageForBlankApplicationIcon = [(STIconCache *)self imageForBlankApplicationIcon];
+    [(NSCache *)self->_iconByKeyCache setObject:imageForBlankApplicationIcon forKey:v17 cost:10];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __85__STIconCache__handleiTunesResponseForAppInfo_response_data_error_completionHandler___block_invoke;
     block[3] = &unk_278338D38;
-    v35 = v14;
-    v23 = v22;
+    v35 = handlerCopy;
+    v23 = imageForBlankApplicationIcon;
     v34 = v23;
-    v24 = v14;
+    v24 = handlerCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
   else
   {
-    v18 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:v12];
+    v18 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:dataCopy];
     if (v18)
     {
       v19 = v18;
-      v20 = [v18 iconFromPrecomposedImage:0 platform:{objc_msgSend(v11, "platform")}];
+      imageForBlankApplicationIcon2 = [v18 iconFromPrecomposedImage:0 platform:{objc_msgSend(infoCopy, "platform")}];
     }
 
     else
     {
-      v25 = [MEMORY[0x277D4BA00] appInfo];
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+      appInfo2 = [MEMORY[0x277D4BA00] appInfo];
+      if (os_log_type_enabled(appInfo2, OS_LOG_TYPE_ERROR))
       {
         [STIconCache _handleiTunesResponseForAppInfo:response:data:error:completionHandler:];
       }
 
-      v20 = [(STIconCache *)self imageForBlankApplicationIcon];
+      imageForBlankApplicationIcon2 = [(STIconCache *)self imageForBlankApplicationIcon];
     }
 
-    [(NSCache *)self->_iconByKeyCache setObject:v20 forKey:v17 cost:15];
-    v26 = [MEMORY[0x277D4BA00] appInfo];
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
+    [(NSCache *)self->_iconByKeyCache setObject:imageForBlankApplicationIcon2 forKey:v17 cost:15];
+    appInfo3 = [MEMORY[0x277D4BA00] appInfo];
+    if (os_log_type_enabled(appInfo3, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v37 = v16;
-      _os_log_impl(&dword_21DD93000, v26, OS_LOG_TYPE_INFO, "Added an icon for %@ to the cache", buf, 0xCu);
+      v37 = bundleIdentifier;
+      _os_log_impl(&dword_21DD93000, appInfo3, OS_LOG_TYPE_INFO, "Added an icon for %@ to the cache", buf, 0xCu);
     }
 
     objc_initWeak(buf, self);
@@ -377,12 +377,12 @@ void __63__STIconCache__fetchImageForAppInfoIfNeeded_completionHandler___block_i
     v28[1] = 3221225472;
     v28[2] = __85__STIconCache__handleiTunesResponseForAppInfo_response_data_error_completionHandler___block_invoke_62;
     v28[3] = &unk_278338D60;
-    v31 = v14;
-    v23 = v20;
+    v31 = handlerCopy;
+    v23 = imageForBlankApplicationIcon2;
     v29 = v23;
-    v27 = v14;
+    v27 = handlerCopy;
     objc_copyWeak(&v32, buf);
-    v30 = v16;
+    v30 = bundleIdentifier;
     dispatch_async(MEMORY[0x277D85CD0], v28);
 
     objc_destroyWeak(&v32);
@@ -397,25 +397,25 @@ void __85__STIconCache__handleiTunesResponseForAppInfo_response_data_error_compl
   [WeakRetained _updateCacheWithImage:*(a1 + 32) bundleIdentifier:*(a1 + 40)];
 }
 
-- (id)imageForBundleIdentifier:(id)a3
+- (id)imageForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"bundle-id.%@", v4];
-    v6 = [(NSCache *)self->_iconByKeyCache objectForKey:v5];
-    if (v6)
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"bundle-id.%@", identifierCopy];
+    imageForBlankApplicationIcon = [(NSCache *)self->_iconByKeyCache objectForKey:identifierCopy];
+    if (imageForBlankApplicationIcon)
     {
 LABEL_7:
 
       goto LABEL_9;
     }
 
-    v7 = [MEMORY[0x277D4B8C0] sharedCache];
-    v8 = [v7 appInfoForBundleIdentifier:v4];
+    mEMORY[0x277D4B8C0] = [MEMORY[0x277D4B8C0] sharedCache];
+    v8 = [mEMORY[0x277D4B8C0] appInfoForBundleIdentifier:identifierCopy];
 
-    v9 = [v8 platform];
-    if ([v4 isEqualToString:@"com.apple.compass"])
+    platform = [v8 platform];
+    if ([identifierCopy isEqualToString:@"com.apple.compass"])
     {
       goto LABEL_4;
     }
@@ -423,18 +423,18 @@ LABEL_7:
     if ([v8 source] == 2)
     {
       v14 = MEMORY[0x277D755B8];
-      v15 = [v8 bundleIdentifier];
-      v6 = [v14 iconWithAppBundleID:v15];
+      bundleIdentifier = [v8 bundleIdentifier];
+      imageForBlankApplicationIcon = [v14 iconWithAppBundleID:bundleIdentifier];
 
-      if (!v6)
+      if (!imageForBlankApplicationIcon)
       {
-        v16 = [MEMORY[0x277D4BA00] appInfo];
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+        appInfo = [MEMORY[0x277D4BA00] appInfo];
+        if (os_log_type_enabled(appInfo, OS_LOG_TYPE_ERROR))
         {
           [STIconCache imageForBundleIdentifier:completionHandler:];
         }
 
-        v6 = [(STIconCache *)self imageForBlankApplicationIcon];
+        imageForBlankApplicationIcon = [(STIconCache *)self imageForBlankApplicationIcon];
       }
 
       goto LABEL_5;
@@ -445,11 +445,11 @@ LABEL_7:
 LABEL_4:
       v10 = MEMORY[0x277D755B8];
       v11 = +[STScreenTimeUIBundle bundle];
-      v12 = [v10 imageNamed:v4 inBundle:v11];
-      v6 = [v12 iconFromPrecomposedImage:0 platform:v9];
+      v12 = [v10 imageNamed:identifierCopy inBundle:v11];
+      imageForBlankApplicationIcon = [v12 iconFromPrecomposedImage:0 platform:platform];
 
 LABEL_5:
-      [(NSCache *)self->_iconByKeyCache setObject:v6 forKey:v5 cost:10];
+      [(NSCache *)self->_iconByKeyCache setObject:imageForBlankApplicationIcon forKey:identifierCopy cost:10];
 LABEL_6:
 
       goto LABEL_7;
@@ -457,29 +457,29 @@ LABEL_6:
 
     if ([v8 source] == 3 || objc_msgSend(v8, "source") == 5)
     {
-      v17 = [v8 artworkURL];
+      artworkURL = [v8 artworkURL];
 
-      if (!v17)
+      if (!artworkURL)
       {
-        v19 = [MEMORY[0x277D4BA00] appInfo];
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+        appInfo2 = [MEMORY[0x277D4BA00] appInfo];
+        if (os_log_type_enabled(appInfo2, OS_LOG_TYPE_ERROR))
         {
           [STIconCache imageForBundleIdentifier:completionHandler:];
         }
 
-        v6 = [(STIconCache *)self imageForBlankApplicationIcon];
+        imageForBlankApplicationIcon = [(STIconCache *)self imageForBlankApplicationIcon];
         goto LABEL_6;
       }
 
       objc_initWeak(&location, self);
-      v18 = [(STIconCache *)self lookupQueue];
+      lookupQueue = [(STIconCache *)self lookupQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __40__STIconCache_imageForBundleIdentifier___block_invoke;
       block[3] = &unk_278338D88;
       objc_copyWeak(&v31, &location);
       v30 = v8;
-      dispatch_async(v18, block);
+      dispatch_async(lookupQueue, block);
 
       objc_destroyWeak(&v31);
       objc_destroyWeak(&location);
@@ -489,26 +489,26 @@ LABEL_6:
     if ([v8 source] != 4)
     {
 LABEL_31:
-      v6 = 0;
+      imageForBlankApplicationIcon = 0;
       goto LABEL_6;
     }
 
-    v20 = [v8 artworkData];
-    if (v20)
+    artworkData = [v8 artworkData];
+    if (artworkData)
     {
-      v21 = [objc_alloc(MEMORY[0x277D755B8]) _initWithData:v20 preserveScale:1];
-      v6 = [v21 iconFromPrecomposedImage:0 platform:v9];
+      v21 = [objc_alloc(MEMORY[0x277D755B8]) _initWithData:artworkData preserveScale:1];
+      imageForBlankApplicationIcon = [v21 iconFromPrecomposedImage:0 platform:platform];
 
-      if (v6)
+      if (imageForBlankApplicationIcon)
       {
 LABEL_37:
-        [(NSCache *)self->_iconByKeyCache setObject:v6 forKey:v5 cost:10];
+        [(NSCache *)self->_iconByKeyCache setObject:imageForBlankApplicationIcon forKey:identifierCopy cost:10];
 
         goto LABEL_6;
       }
 
-      v22 = [MEMORY[0x277D4BA00] appInfo];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      appInfo3 = [MEMORY[0x277D4BA00] appInfo];
+      if (os_log_type_enabled(appInfo3, OS_LOG_TYPE_ERROR))
       {
         [STIconCache imageForBundleIdentifier:completionHandler:];
       }
@@ -516,39 +516,39 @@ LABEL_37:
 
     else
     {
-      v23 = [v8 artworkURL];
+      artworkURL2 = [v8 artworkURL];
 
-      if (v23)
+      if (artworkURL2)
       {
         objc_initWeak(&location, self);
-        v24 = [(STIconCache *)self lookupQueue];
+        lookupQueue2 = [(STIconCache *)self lookupQueue];
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __40__STIconCache_imageForBundleIdentifier___block_invoke_63;
         v26[3] = &unk_278338D88;
         objc_copyWeak(&v28, &location);
         v27 = v8;
-        dispatch_async(v24, v26);
+        dispatch_async(lookupQueue2, v26);
 
         objc_destroyWeak(&v28);
         objc_destroyWeak(&location);
       }
     }
 
-    v25 = [MEMORY[0x277D4BA00] appInfo];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    appInfo4 = [MEMORY[0x277D4BA00] appInfo];
+    if (os_log_type_enabled(appInfo4, OS_LOG_TYPE_ERROR))
     {
       [STIconCache imageForBundleIdentifier:completionHandler:];
     }
 
-    v6 = [(STIconCache *)self imageForBlankApplicationIcon];
+    imageForBlankApplicationIcon = [(STIconCache *)self imageForBlankApplicationIcon];
     goto LABEL_37;
   }
 
-  v6 = 0;
+  imageForBlankApplicationIcon = 0;
 LABEL_9:
 
-  return v6;
+  return imageForBlankApplicationIcon;
 }
 
 void __40__STIconCache_imageForBundleIdentifier___block_invoke(uint64_t a1)
@@ -563,27 +563,27 @@ void __40__STIconCache_imageForBundleIdentifier___block_invoke_63(uint64_t a1)
   [WeakRetained _fetchImageForAppInfoIfNeeded:*(a1 + 32)];
 }
 
-- (void)_fetchImageForAppInfoIfNeeded:(id)a3
+- (void)_fetchImageForAppInfoIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(STIconCache *)self lookupQueue];
-  dispatch_assert_queue_V2(v5);
+  neededCopy = needed;
+  lookupQueue = [(STIconCache *)self lookupQueue];
+  dispatch_assert_queue_V2(lookupQueue);
 
-  v6 = [v4 bundleIdentifier];
-  v7 = [v4 artworkURL];
-  v8 = [(STIconCache *)self bundleIdentifiersWithPendingRequests];
-  if (([v8 containsObject:v6] & 1) == 0 && v7)
+  bundleIdentifier = [neededCopy bundleIdentifier];
+  artworkURL = [neededCopy artworkURL];
+  bundleIdentifiersWithPendingRequests = [(STIconCache *)self bundleIdentifiersWithPendingRequests];
+  if (([bundleIdentifiersWithPendingRequests containsObject:bundleIdentifier] & 1) == 0 && artworkURL)
   {
-    [v8 addObject:v6];
+    [bundleIdentifiersWithPendingRequests addObject:bundleIdentifier];
     objc_initWeak(&location, self);
-    v9 = [(STIconCache *)self urlSession];
+    urlSession = [(STIconCache *)self urlSession];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __45__STIconCache__fetchImageForAppInfoIfNeeded___block_invoke;
     v11[3] = &unk_278338DB0;
     objc_copyWeak(&v13, &location);
-    v12 = v4;
-    v10 = [v9 dataTaskWithURL:v7 completionHandler:v11];
+    v12 = neededCopy;
+    v10 = [urlSession dataTaskWithURL:artworkURL completionHandler:v11];
 
     [v10 resume];
     objc_destroyWeak(&v13);
@@ -600,23 +600,23 @@ void __45__STIconCache__fetchImageForAppInfoIfNeeded___block_invoke(uint64_t a1,
   [WeakRetained _handleiTunesResponseForAppInfo:*(a1 + 32) response:v8 data:v9 error:v7];
 }
 
-- (void)_handleiTunesResponseForAppInfo:(id)a3 response:(id)a4 data:(id)a5 error:(id)a6
+- (void)_handleiTunesResponseForAppInfo:(id)info response:(id)response data:(id)data error:(id)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(STIconCache *)self lookupQueue];
-  dispatch_assert_queue_V2(v12);
+  infoCopy = info;
+  dataCopy = data;
+  errorCopy = error;
+  lookupQueue = [(STIconCache *)self lookupQueue];
+  dispatch_assert_queue_V2(lookupQueue);
 
-  v13 = [v9 bundleIdentifier];
-  v14 = [(STIconCache *)self bundleIdentifiersWithPendingRequests];
-  [v14 removeObject:v13];
+  bundleIdentifier = [infoCopy bundleIdentifier];
+  bundleIdentifiersWithPendingRequests = [(STIconCache *)self bundleIdentifiersWithPendingRequests];
+  [bundleIdentifiersWithPendingRequests removeObject:bundleIdentifier];
 
-  if (!v10 || v11)
+  if (!dataCopy || errorCopy)
   {
-    v16 = [MEMORY[0x277D4BA00] appInfo];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    appInfo = [MEMORY[0x277D4BA00] appInfo];
+    if (os_log_type_enabled(appInfo, OS_LOG_TYPE_ERROR))
     {
       [STIconCache _handleiTunesResponseForAppInfo:response:data:error:completionHandler:];
     }
@@ -624,31 +624,31 @@ void __45__STIconCache__fetchImageForAppInfoIfNeeded___block_invoke(uint64_t a1,
 
   else
   {
-    v15 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:v10];
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"bundle-id.%@", v13];
+    v15 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:dataCopy];
+    appInfo = [MEMORY[0x277CCACA8] stringWithFormat:@"bundle-id.%@", bundleIdentifier];
     if (v15)
     {
-      v17 = [v15 iconFromPrecomposedImage:0 platform:{objc_msgSend(v9, "platform")}];
+      imageForBlankApplicationIcon = [v15 iconFromPrecomposedImage:0 platform:{objc_msgSend(infoCopy, "platform")}];
     }
 
     else
     {
-      v18 = [MEMORY[0x277D4BA00] appInfo];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      appInfo2 = [MEMORY[0x277D4BA00] appInfo];
+      if (os_log_type_enabled(appInfo2, OS_LOG_TYPE_ERROR))
       {
         [STIconCache _handleiTunesResponseForAppInfo:response:data:error:completionHandler:];
       }
 
-      v17 = [(STIconCache *)self imageForBlankApplicationIcon];
+      imageForBlankApplicationIcon = [(STIconCache *)self imageForBlankApplicationIcon];
     }
 
-    [(NSCache *)self->_iconByKeyCache setObject:v17 forKey:v16 cost:15];
-    v19 = [MEMORY[0x277D4BA00] appInfo];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    [(NSCache *)self->_iconByKeyCache setObject:imageForBlankApplicationIcon forKey:appInfo cost:15];
+    appInfo3 = [MEMORY[0x277D4BA00] appInfo];
+    if (os_log_type_enabled(appInfo3, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v26 = v13;
-      _os_log_impl(&dword_21DD93000, v19, OS_LOG_TYPE_INFO, "Added an icon for %@ to the cache", buf, 0xCu);
+      v26 = bundleIdentifier;
+      _os_log_impl(&dword_21DD93000, appInfo3, OS_LOG_TYPE_INFO, "Added an icon for %@ to the cache", buf, 0xCu);
     }
 
     objc_initWeak(buf, self);
@@ -657,9 +657,9 @@ void __45__STIconCache__fetchImageForAppInfoIfNeeded___block_invoke(uint64_t a1,
     block[2] = __67__STIconCache__handleiTunesResponseForAppInfo_response_data_error___block_invoke;
     block[3] = &unk_278338DD8;
     objc_copyWeak(&v24, buf);
-    v22 = v17;
-    v23 = v13;
-    v20 = v17;
+    v22 = imageForBlankApplicationIcon;
+    v23 = bundleIdentifier;
+    v20 = imageForBlankApplicationIcon;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
     objc_destroyWeak(&v24);
@@ -673,86 +673,86 @@ void __67__STIconCache__handleiTunesResponseForAppInfo_response_data_error___blo
   [WeakRetained _updateCacheWithImage:*(a1 + 32) bundleIdentifier:*(a1 + 40)];
 }
 
-- (id)imageForCategoryIdentifier:(id)a3
+- (id)imageForCategoryIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"category.%@", v4];
-  v6 = [(NSCache *)self->_iconByKeyCache objectForKey:v5];
+  identifierCopy = identifier;
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"category.%@", identifierCopy];
+  v6 = [(NSCache *)self->_iconByKeyCache objectForKey:identifierCopy];
   if (!v6)
   {
-    if ([v4 isEqualToString:*MEMORY[0x277CF95D8]])
+    if ([identifierCopy isEqualToString:*MEMORY[0x277CF95D8]])
     {
       v7 = @"Games";
     }
 
-    else if ([v4 isEqualToString:*MEMORY[0x277CF9608]])
+    else if ([identifierCopy isEqualToString:*MEMORY[0x277CF9608]])
     {
       v7 = @"SocialNetworking";
     }
 
-    else if ([v4 isEqualToString:*MEMORY[0x277CF95D0]])
+    else if ([identifierCopy isEqualToString:*MEMORY[0x277CF95D0]])
     {
       v7 = @"Entertainment";
     }
 
-    else if ([v4 isEqualToString:*MEMORY[0x277CF95C0]])
+    else if ([identifierCopy isEqualToString:*MEMORY[0x277CF95C0]])
     {
       v7 = @"Creativity";
     }
 
-    else if ([v4 isEqualToString:*MEMORY[0x277CF95F0]])
+    else if ([identifierCopy isEqualToString:*MEMORY[0x277CF95F0]])
     {
       v7 = @"Productivity";
     }
 
-    else if ([v4 isEqualToString:*MEMORY[0x277CF95C8]])
+    else if ([identifierCopy isEqualToString:*MEMORY[0x277CF95C8]])
     {
       v7 = @"Education";
     }
 
-    else if ([v4 isEqualToString:*MEMORY[0x277CF95F8]])
+    else if ([identifierCopy isEqualToString:*MEMORY[0x277CF95F8]])
     {
       v7 = @"BooksNewsInformation";
     }
 
-    else if ([v4 isEqualToString:*MEMORY[0x277CF95E0]])
+    else if ([identifierCopy isEqualToString:*MEMORY[0x277CF95E0]])
     {
       v7 = @"HealthFitness";
     }
 
-    else if ([v4 isEqualToString:*MEMORY[0x277CF9630]])
+    else if ([identifierCopy isEqualToString:*MEMORY[0x277CF9630]])
     {
       v7 = @"Utilities";
     }
 
-    else if ([v4 isEqualToString:*MEMORY[0x277CF9600]])
+    else if ([identifierCopy isEqualToString:*MEMORY[0x277CF9600]])
     {
       v7 = @"ShoppingAndFood";
     }
 
-    else if ([v4 isEqualToString:*MEMORY[0x277CF9628]])
+    else if ([identifierCopy isEqualToString:*MEMORY[0x277CF9628]])
     {
       v7 = @"Travel";
     }
 
-    else if ([v4 isEqualToString:*MEMORY[0x277CF95E8]])
+    else if ([identifierCopy isEqualToString:*MEMORY[0x277CF95E8]])
     {
       v7 = @"Other";
     }
 
-    else if ([v4 isEqualToString:*MEMORY[0x277D4BCC0]] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277D4BCD0]) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277D4BCC8]))
+    else if ([identifierCopy isEqualToString:*MEMORY[0x277D4BCC0]] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", *MEMORY[0x277D4BCD0]) & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", *MEMORY[0x277D4BCC8]))
     {
       v7 = @"AllApps";
     }
 
     else
     {
-      if (![v4 isEqualToString:*MEMORY[0x277D4BCD8]])
+      if (![identifierCopy isEqualToString:*MEMORY[0x277D4BCD8]])
       {
         v6 = [(STIconCache *)self blankSpaceImageWithSize:29.0, 29.0];
         iconByKeyCache = self->_iconByKeyCache;
         v11 = v6;
-        v12 = v5;
+        v12 = identifierCopy;
         v13 = 0;
         goto LABEL_31;
       }
@@ -766,7 +766,7 @@ void __67__STIconCache__handleiTunesResponseForAppInfo_response_data_error___blo
 
     iconByKeyCache = self->_iconByKeyCache;
     v11 = v6;
-    v12 = v5;
+    v12 = identifierCopy;
     v13 = 10;
 LABEL_31:
     [(NSCache *)iconByKeyCache setObject:v11 forKey:v12 cost:v13];
@@ -775,32 +775,32 @@ LABEL_31:
   return v6;
 }
 
-- (void)addObserver:(id)a3 selector:(SEL)a4 bundleIdentifier:(id)a5
+- (void)addObserver:(id)observer selector:(SEL)selector bundleIdentifier:(id)identifier
 {
-  v12 = a5;
+  identifierCopy = identifier;
   v8 = MEMORY[0x277CCAB98];
-  v9 = a3;
-  v10 = [v8 defaultCenter];
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"IconCacheDidUpdateApplicationImage-%@", v12];
-  [v10 addObserver:v9 selector:a4 name:v11 object:self];
+  observerCopy = observer;
+  defaultCenter = [v8 defaultCenter];
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"IconCacheDidUpdateApplicationImage-%@", identifierCopy];
+  [defaultCenter addObserver:observerCopy selector:selector name:identifierCopy object:self];
 }
 
-- (void)removeObserver:(id)a3 bundleIdentifier:(id)a4
+- (void)removeObserver:(id)observer bundleIdentifier:(id)identifier
 {
-  v10 = a4;
+  identifierCopy = identifier;
   v6 = MEMORY[0x277CCAB98];
-  v7 = a3;
-  v8 = [v6 defaultCenter];
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"IconCacheDidUpdateApplicationImage-%@", v10];
-  [v8 removeObserver:v7 name:v9 object:self];
+  observerCopy = observer;
+  defaultCenter = [v6 defaultCenter];
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"IconCacheDidUpdateApplicationImage-%@", identifierCopy];
+  [defaultCenter removeObserver:observerCopy name:identifierCopy object:self];
 }
 
-- (id)blankSpaceImageWithSize:(CGSize)a3
+- (id)blankSpaceImageWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = MEMORY[0x277CCACA8];
-  v7 = NSStringFromSize(a3);
+  v7 = NSStringFromSize(size);
   v8 = [v6 stringWithFormat:@"blank-image.%@", v7];
 
   v9 = [(NSCache *)self->_iconByKeyCache objectForKey:v8];
@@ -813,90 +813,90 @@ LABEL_31:
   return v9;
 }
 
-- (void)_updateCacheWithImage:(id)a3 dsid:(id)a4
+- (void)_updateCacheWithImage:(id)image dsid:(id)dsid
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  dsidCopy = dsid;
+  imageCopy = image;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [STIconCache _updateCacheWithImage:dsid:];
   }
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"person-icon.%@", v6];
-  [(NSCache *)self->_iconByKeyCache setObject:v7 forKey:v8 cost:15];
+  dsidCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"person-icon.%@", dsidCopy];
+  [(NSCache *)self->_iconByKeyCache setObject:imageCopy forKey:dsidCopy cost:15];
   v12[0] = @"STIconCacheUpdateDSIDKey";
   v12[1] = @"STIconCacheUpdateImageKey";
-  v13[0] = v6;
-  v13[1] = v7;
+  v13[0] = dsidCopy;
+  v13[1] = imageCopy;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 postNotificationName:@"STIconCacheDidUpdatePersonImageNotificationName" object:self userInfo:v9];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"STIconCacheDidUpdatePersonImageNotificationName" object:self userInfo:v9];
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v11 postNotificationName:@"STIconCacheDidUpdateNotificationName" object:self userInfo:0];
+  [defaultCenter2 postNotificationName:@"STIconCacheDidUpdateNotificationName" object:self userInfo:0];
 }
 
-- (void)_updateCacheWithImage:(id)a3 bundleIdentifier:(id)a4
+- (void)_updateCacheWithImage:(id)image bundleIdentifier:(id)identifier
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v8 = [MEMORY[0x277D4BA00] appInfo];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  appInfo = [MEMORY[0x277D4BA00] appInfo];
+  if (os_log_type_enabled(appInfo, OS_LOG_TYPE_DEBUG))
   {
     [STIconCache _updateCacheWithImage:bundleIdentifier:];
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"bundle-id.%@", v7];
-  [(NSCache *)self->_iconByKeyCache setObject:v6 forKey:v9 cost:15];
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"bundle-id.%@", identifierCopy];
+  [(NSCache *)self->_iconByKeyCache setObject:imageCopy forKey:identifierCopy cost:15];
   v14[0] = @"STIconCacheUpdateBundleIdentifierKey";
   v14[1] = @"STIconCacheUpdateImageKey";
-  v15[0] = v7;
-  v15[1] = v6;
+  v15[0] = identifierCopy;
+  v15[1] = imageCopy;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"IconCacheDidUpdateApplicationImage-%@", v7];
-  [v11 postNotificationName:v12 object:self userInfo:v10];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  identifierCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"IconCacheDidUpdateApplicationImage-%@", identifierCopy];
+  [defaultCenter postNotificationName:identifierCopy2 object:self userInfo:v10];
 
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 postNotificationName:@"STIconCacheDidUpdateNotificationName" object:self userInfo:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 postNotificationName:@"STIconCacheDidUpdateNotificationName" object:self userInfo:0];
 }
 
-- (id)circleImageWithFillColor:(id)a3 fillDiameter:(double)a4 outlineColor:(id)a5 outlineWidth:(double)a6
+- (id)circleImageWithFillColor:(id)color fillDiameter:(double)diameter outlineColor:(id)outlineColor outlineWidth:(double)width
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"circle-image.%@-%f-%@-%f", v10, *&a4, v11, *&a6];
+  colorCopy = color;
+  outlineColorCopy = outlineColor;
+  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"circle-image.%@-%f-%@-%f", colorCopy, *&diameter, outlineColorCopy, *&width];
   v13 = [(NSCache *)self->_iconByKeyCache objectForKey:v12];
   if (!v13)
   {
-    v13 = [(STIconCache *)self _newCircleImageWithFillColor:v10 fillDiameter:v11 outlineColor:a4 outlineWidth:a6];
+    v13 = [(STIconCache *)self _newCircleImageWithFillColor:colorCopy fillDiameter:outlineColorCopy outlineColor:diameter outlineWidth:width];
     [(NSCache *)self->_iconByKeyCache setObject:v13 forKey:v12 cost:0];
   }
 
   return v13;
 }
 
-- (id)_newCircleImageWithFillColor:(id)a3 fillDiameter:(double)a4 outlineColor:(id)a5 outlineWidth:(double)a6
+- (id)_newCircleImageWithFillColor:(id)color fillDiameter:(double)diameter outlineColor:(id)outlineColor outlineWidth:(double)width
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:{a4 + a6 * 2.0, a4 + a6 * 2.0}];
+  colorCopy = color;
+  outlineColorCopy = outlineColor;
+  v11 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:{diameter + width * 2.0, diameter + width * 2.0}];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __83__STIconCache__newCircleImageWithFillColor_fillDiameter_outlineColor_outlineWidth___block_invoke;
   v16[3] = &unk_278338E00;
-  v19 = a6;
-  v20 = a4;
-  v17 = v9;
-  v18 = v10;
-  v21 = a4 + a6 * 2.0;
-  v12 = v10;
-  v13 = v9;
+  widthCopy = width;
+  diameterCopy = diameter;
+  v17 = colorCopy;
+  v18 = outlineColorCopy;
+  v21 = diameter + width * 2.0;
+  v12 = outlineColorCopy;
+  v13 = colorCopy;
   v14 = [v11 imageWithActions:v16];
 
   return v14;
@@ -925,53 +925,53 @@ void __83__STIconCache__newCircleImageWithFillColor_fillDiameter_outlineColor_ou
   }
 }
 
-- (id)roundedImageForImageWithName:(id)a3
+- (id)roundedImageForImageWithName:(id)name
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [v4 stringWithFormat:@"rounded-image.%@", v5];
+  nameCopy = name;
+  nameCopy = [v4 stringWithFormat:@"rounded-image.%@", nameCopy];
   v7 = MEMORY[0x277D755B8];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v9 = [v7 imageNamed:v5 inBundle:v8];
+  v9 = [v7 imageNamed:nameCopy inBundle:v8];
 
   v10 = [v9 iconFromPrecomposedImage:1 platform:2];
-  [(NSCache *)self->_iconByKeyCache setObject:v10 forKey:v6 cost:10];
+  [(NSCache *)self->_iconByKeyCache setObject:v10 forKey:nameCopy cost:10];
 
   return v10;
 }
 
-- (id)_personImageWithDSID:(id)a3 fullName:(id)a4 appleID:(id)a5 forceFetch:(BOOL)a6 completionHandler:(id)a7
+- (id)_personImageWithDSID:(id)d fullName:(id)name appleID:(id)iD forceFetch:(BOOL)fetch completionHandler:(id)handler
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"person-icon.%@", v12];
-  v17 = [(NSCache *)self->_iconByKeyCache objectForKey:v16];
+  fetchCopy = fetch;
+  dCopy = d;
+  nameCopy = name;
+  iDCopy = iD;
+  handlerCopy = handler;
+  dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"person-icon.%@", dCopy];
+  v17 = [(NSCache *)self->_iconByKeyCache objectForKey:dCopy];
   if (!v17)
   {
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"monogram-icon.%@", v13];
-    v18 = [(NSCache *)self->_iconByKeyCache objectForKey:v19];
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"monogram-icon.%@", nameCopy];
+    v18 = [(NSCache *)self->_iconByKeyCache objectForKey:nameCopy];
     if (!v18)
     {
-      v20 = [(STIconCache *)self personNameComponentsFormatter];
-      v21 = [v20 personNameComponentsFromString:v13];
+      personNameComponentsFormatter = [(STIconCache *)self personNameComponentsFormatter];
+      v21 = [personNameComponentsFormatter personNameComponentsFromString:nameCopy];
 
       v18 = [(STIconCache *)self monogramImageForNameComponents:v21];
-      [(NSCache *)self->_iconByKeyCache setObject:v18 forKey:v19 cost:5];
+      [(NSCache *)self->_iconByKeyCache setObject:v18 forKey:nameCopy cost:5];
     }
 
     goto LABEL_9;
   }
 
   v18 = v17;
-  if (v15)
+  if (handlerCopy)
   {
-    v15[2](v15, v17);
+    handlerCopy[2](handlerCopy, v17);
   }
 
-  if (v8)
+  if (fetchCopy)
   {
 LABEL_9:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -983,11 +983,11 @@ LABEL_9:
     v23[1] = 3221225472;
     v23[2] = __82__STIconCache__personImageWithDSID_fullName_appleID_forceFetch_completionHandler___block_invoke;
     v23[3] = &unk_278338E28;
-    v26 = v15 != 0;
-    v25 = v15;
+    v26 = handlerCopy != 0;
+    v25 = handlerCopy;
     v18 = v18;
     v24 = v18;
-    [(STIconCache *)self _fetchFamilyPhotoWithDSID:v12 fullName:v13 appleID:v14 completionHandler:v23];
+    [(STIconCache *)self _fetchFamilyPhotoWithDSID:dCopy fullName:nameCopy appleID:iDCopy completionHandler:v23];
   }
 
   return v18;
@@ -1010,11 +1010,11 @@ uint64_t __82__STIconCache__personImageWithDSID_fullName_appleID_forceFetch_comp
   return result;
 }
 
-- (void)_fetchFamilyPhotoWithDSID:(id)a3 fullName:(id)a4 appleID:(id)a5 completionHandler:(id)a6
+- (void)_fetchFamilyPhotoWithDSID:(id)d fullName:(id)name appleID:(id)iD completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a6;
-  v10 = [objc_alloc(MEMORY[0x277D08290]) initWithFamilyMemberDSID:v8 size:1 localFallback:1];
+  dCopy = d;
+  handlerCopy = handler;
+  v10 = [objc_alloc(MEMORY[0x277D08290]) initWithFamilyMemberDSID:dCopy size:1 localFallback:1];
   [v10 setMonogramDiameter:40.0];
   [v10 setBackgroundType:1];
   [v10 setUseMonogramAsLastResort:0];
@@ -1022,11 +1022,11 @@ uint64_t __82__STIconCache__personImageWithDSID_fullName_appleID_forceFetch_comp
   v13[1] = 3221225472;
   v13[2] = __76__STIconCache__fetchFamilyPhotoWithDSID_fullName_appleID_completionHandler___block_invoke;
   v13[3] = &unk_278338EA0;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = dCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = dCopy;
   [v10 startRequestWithCompletionHandler:v13];
 }
 
@@ -1166,13 +1166,13 @@ uint64_t __76__STIconCache__fetchFamilyPhotoWithDSID_fullName_appleID_completion
   return v6;
 }
 
-- (id)monogramImageForNameComponents:(id)a3
+- (id)monogramImageForNameComponents:(id)components
 {
-  v4 = a3;
-  if (v4)
+  componentsCopy = components;
+  if (componentsCopy)
   {
-    v5 = [(STIconCache *)self personNameComponentsFormatter];
-    v6 = [v5 stringFromPersonNameComponents:v4];
+    personNameComponentsFormatter = [(STIconCache *)self personNameComponentsFormatter];
+    v6 = [personNameComponentsFormatter stringFromPersonNameComponents:componentsCopy];
   }
 
   else
@@ -1182,69 +1182,69 @@ uint64_t __76__STIconCache__fetchFamilyPhotoWithDSID_fullName_appleID_completion
 
   if ([v6 length])
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"monogram-icon.%@", v6];
-    v8 = [(NSCache *)self->_iconByKeyCache objectForKey:v7];
-    if (!v8)
+    monogrammer3 = [MEMORY[0x277CCACA8] stringWithFormat:@"monogram-icon.%@", v6];
+    silhouetteMonogram2 = [(NSCache *)self->_iconByKeyCache objectForKey:monogrammer3];
+    if (!silhouetteMonogram2)
     {
-      v9 = [(STIconCache *)self monogrammer];
-      v10 = [v4 givenName];
-      v11 = [v4 familyName];
-      v12 = [v9 monogramForPersonWithFirstName:v10 lastName:v11];
+      monogrammer = [(STIconCache *)self monogrammer];
+      givenName = [componentsCopy givenName];
+      familyName = [componentsCopy familyName];
+      v12 = [monogrammer monogramForPersonWithFirstName:givenName lastName:familyName];
       v13 = v12;
       if (v12)
       {
-        v14 = v12;
+        silhouetteMonogram = v12;
       }
 
       else
       {
-        v15 = [(STIconCache *)self monogrammer];
-        v14 = [v15 silhouetteMonogram];
+        monogrammer2 = [(STIconCache *)self monogrammer];
+        silhouetteMonogram = [monogrammer2 silhouetteMonogram];
       }
 
-      [(NSCache *)self->_iconByKeyCache setObject:v14 forKey:v7 cost:5];
+      [(NSCache *)self->_iconByKeyCache setObject:silhouetteMonogram forKey:monogrammer3 cost:5];
       goto LABEL_12;
     }
   }
 
   else
   {
-    v7 = [(STIconCache *)self monogrammer];
-    v8 = [v7 silhouetteMonogram];
+    monogrammer3 = [(STIconCache *)self monogrammer];
+    silhouetteMonogram2 = [monogrammer3 silhouetteMonogram];
   }
 
-  v14 = v8;
+  silhouetteMonogram = silhouetteMonogram2;
 LABEL_12:
 
-  return v14;
+  return silhouetteMonogram;
 }
 
-- (id)monogramImageForInitial:(id)a3 useDarkColors:(BOOL)a4
+- (id)monogramImageForInitial:(id)initial useDarkColors:(BOOL)colors
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 length])
+  colorsCopy = colors;
+  initialCopy = initial;
+  if ([initialCopy length])
   {
     v7 = @"light";
-    if (v4)
+    if (colorsCopy)
     {
       v7 = @"dark";
     }
 
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"monogram-icon.%@.%@", v6, v7];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"monogram-icon.%@.%@", initialCopy, v7];
     if (v8)
     {
       v9 = [(NSCache *)self->_iconByKeyCache objectForKey:v8];
       if (v9)
       {
-        v10 = v9;
+        imageForBlankApplicationIcon = v9;
 LABEL_12:
 
         goto LABEL_16;
       }
     }
 
-    if (v4)
+    if (colorsCopy)
     {
       v11 = 3;
     }
@@ -1255,17 +1255,17 @@ LABEL_12:
     }
 
     v12 = [objc_alloc(MEMORY[0x277CBDC70]) initWithStyle:v11 diameter:29.0];
-    v13 = [v12 monogramForPersonWithFirstName:v6 lastName:&stru_282F1E250];
+    v13 = [v12 monogramForPersonWithFirstName:initialCopy lastName:&stru_282F1E250];
     if (v13)
     {
-      v10 = v13;
+      imageForBlankApplicationIcon = v13;
       [(NSCache *)self->_iconByKeyCache setObject:v13 forKey:v8 cost:5];
 
       goto LABEL_12;
     }
   }
 
-  v10 = [(STIconCache *)self imageForBlankApplicationIcon];
+  imageForBlankApplicationIcon = [(STIconCache *)self imageForBlankApplicationIcon];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [STIconCache monogramImageForInitial:useDarkColors:];
@@ -1273,7 +1273,7 @@ LABEL_12:
 
 LABEL_16:
 
-  return v10;
+  return imageForBlankApplicationIcon;
 }
 
 - (void)_updateCacheWithImage:dsid:.cold.1()

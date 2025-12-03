@@ -1,30 +1,30 @@
 @interface UIKeyboardDockItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)button;
 @end
 
 @implementation UIKeyboardDockItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UIKeyboardDockItem" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
   objc_storeStrong(v4, obj);
 }
 
 - (id)button
 {
-  v43 = self;
+  selfCopy = self;
   v42[1] = a2;
   v41.receiver = self;
   v41.super_class = UIKeyboardDockItemAccessibility;
   v42[0] = [(UIKeyboardDockItemAccessibility *)&v41 button];
-  objc_initWeak(&location, v43);
+  objc_initWeak(&location, selfCopy);
   v8 = v42[0];
   v34 = MEMORY[0x29EDCA5F8];
   v35 = -1073741824;

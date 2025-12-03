@@ -1,8 +1,8 @@
 @interface FBWorkspaceAssertionAttributes
 + (id)sharedAttributes;
-- (id)selfAssertionAttributesWithForeground:(uint64_t)a3 outWorkspaceState:;
-- (void)assertionAttributesForLaunchIntent:(int)a3 assertsVisibility:(unsigned int *)a4 outWorkspaceState:(void *)a5 outProcessVisibility:;
-- (void)assertionAttributesForWorkspaceState:(int)a3 assertsVisibility:(int)a4 isBootstrapping:;
+- (id)selfAssertionAttributesWithForeground:(uint64_t)foreground outWorkspaceState:;
+- (void)assertionAttributesForLaunchIntent:(int)intent assertsVisibility:(unsigned int *)visibility outWorkspaceState:(void *)state outProcessVisibility:;
+- (void)assertionAttributesForWorkspaceState:(int)state assertsVisibility:(int)visibility isBootstrapping:;
 @end
 
 @implementation FBWorkspaceAssertionAttributes
@@ -20,17 +20,17 @@
   return v0;
 }
 
-- (void)assertionAttributesForLaunchIntent:(int)a3 assertsVisibility:(unsigned int *)a4 outWorkspaceState:(void *)a5 outProcessVisibility:
+- (void)assertionAttributesForLaunchIntent:(int)intent assertsVisibility:(unsigned int *)visibility outWorkspaceState:(void *)state outProcessVisibility:
 {
-  if (a1)
+  if (self)
   {
-    v6 = a1;
-    if (!a4)
+    selfCopy = self;
+    if (!visibility)
     {
       [FBWorkspaceAssertionAttributes assertionAttributesForLaunchIntent:? assertsVisibility:? outWorkspaceState:? outProcessVisibility:?];
     }
 
-    if (!a5)
+    if (!state)
     {
       [FBWorkspaceAssertionAttributes assertionAttributesForLaunchIntent:? assertsVisibility:? outWorkspaceState:? outProcessVisibility:?];
     }
@@ -53,43 +53,43 @@
     }
 
     v14 = FBWorkspaceStateCreate(v10, v11, v12);
-    *a4 = v14;
-    *a5 = v13;
-    a1 = [(FBWorkspaceAssertionAttributes *)v6 assertionAttributesForWorkspaceState:v14 assertsVisibility:a3 isBootstrapping:1];
+    *visibility = v14;
+    *state = v13;
+    self = [(FBWorkspaceAssertionAttributes *)selfCopy assertionAttributesForWorkspaceState:v14 assertsVisibility:intent isBootstrapping:1];
   }
 
-  return a1;
+  return self;
 }
 
-- (void)assertionAttributesForWorkspaceState:(int)a3 assertsVisibility:(int)a4 isBootstrapping:
+- (void)assertionAttributesForWorkspaceState:(int)state assertsVisibility:(int)visibility isBootstrapping:
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_64;
   }
 
-  v6 = a1;
+  selfCopy = self;
   v7 = a2;
   if (FBWorkspaceStateEqual(a2, 0))
   {
 LABEL_3:
-    a1 = 0;
+    self = 0;
     goto LABEL_64;
   }
 
   Activity = FBWorkspaceStateGetActivity(v7);
   if (Activity == 3)
   {
-    v9 = a3;
+    stateCopy = state;
   }
 
   else
   {
-    v9 = 1;
+    stateCopy = 1;
   }
 
-  if (v9)
+  if (stateCopy)
   {
     v10 = Activity;
   }
@@ -116,12 +116,12 @@ LABEL_3:
   {
     if (!ProcessRole)
     {
-      *&v19[0] = v6[3];
+      *&v19[0] = selfCopy[3];
       LOBYTE(v10) = 1;
       goto LABEL_34;
     }
 
-    *&v19[0] = v6[5];
+    *&v19[0] = selfCopy[5];
     goto LABEL_21;
   }
 
@@ -131,7 +131,7 @@ LABEL_3:
     v13 = 4;
   }
 
-  *&v19[0] = v6[v13];
+  *&v19[0] = selfCopy[v13];
   if (v10 != 3)
   {
 LABEL_21:
@@ -139,14 +139,14 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  *(&v19[0] + 1) = v6[22];
+  *(&v19[0] + 1) = selfCopy[22];
   v10 = 2;
 LABEL_22:
   if (ProcessRole <= 2)
   {
     if (ProcessRole == 1)
     {
-      v14 = v6[7];
+      v14 = selfCopy[7];
     }
 
     else
@@ -156,7 +156,7 @@ LABEL_22:
         goto LABEL_34;
       }
 
-      v14 = v6[8];
+      v14 = selfCopy[8];
     }
   }
 
@@ -165,13 +165,13 @@ LABEL_22:
     switch(ProcessRole)
     {
       case 3:
-        v14 = v6[9];
+        v14 = selfCopy[9];
         break;
       case 4:
-        v14 = v6[10];
+        v14 = selfCopy[10];
         break;
       case 5:
-        v14 = v6[11];
+        v14 = selfCopy[11];
         break;
       default:
         goto LABEL_34;
@@ -259,17 +259,17 @@ LABEL_67:
 
   v15 = 16;
 LABEL_58:
-  *(v19 + v10) = v6[v15];
+  *(v19 + v10) = selfCopy[v15];
   LOBYTE(v10) = v10 + 1;
 LABEL_59:
-  if (a4)
+  if (visibility)
   {
-    *(v19 + v10) = v6[23];
+    *(v19 + v10) = selfCopy[23];
     v16 = v10 + 1;
     if (ProcessRole == 1)
     {
       v16 = v10 + 2;
-      *(v19 + (v10 + 1)) = v6[24];
+      *(v19 + (v10 + 1)) = selfCopy[24];
     }
   }
 
@@ -278,27 +278,27 @@ LABEL_59:
     v16 = v10;
   }
 
-  a1 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:v16];
+  self = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:v16];
 LABEL_64:
   v17 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
-- (id)selfAssertionAttributesWithForeground:(uint64_t)a3 outWorkspaceState:
+- (id)selfAssertionAttributesWithForeground:(uint64_t)foreground outWorkspaceState:
 {
-  if (a1)
+  if (self)
   {
-    if (!a3)
+    if (!foreground)
     {
       [FBWorkspaceAssertionAttributes selfAssertionAttributesWithForeground:? outWorkspaceState:?];
     }
 
-    [(FBWorkspaceAssertionAttributes *)a2 selfAssertionAttributesWithForeground:a3 outWorkspaceState:a1, &v4];
-    a1 = v4;
+    [(FBWorkspaceAssertionAttributes *)a2 selfAssertionAttributesWithForeground:foreground outWorkspaceState:self, &v4];
+    self = v4;
   }
 
-  return a1;
+  return self;
 }
 
 void __50__FBWorkspaceAssertionAttributes_sharedAttributes__block_invoke()

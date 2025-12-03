@@ -2,7 +2,7 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)frameTimestamp;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)lastDetectionTimestamp;
 - (CGRect)box;
-- (char)initWithKind:(__int128 *)a3 box:(uint64_t)a4 confidence:(void *)a5 timestamp:(double)a6 identifier:(double)a7 metadata:(double)a8;
+- (char)initWithKind:(__int128 *)kind box:(uint64_t)box confidence:(void *)confidence timestamp:(double)timestamp identifier:(double)identifier metadata:(double)metadata;
 - (void)dealloc;
 @end
 
@@ -42,30 +42,30 @@
   return self;
 }
 
-- (char)initWithKind:(__int128 *)a3 box:(uint64_t)a4 confidence:(void *)a5 timestamp:(double)a6 identifier:(double)a7 metadata:(double)a8
+- (char)initWithKind:(__int128 *)kind box:(uint64_t)box confidence:(void *)confidence timestamp:(double)timestamp identifier:(double)identifier metadata:(double)metadata
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v23.receiver = a1;
+  v23.receiver = self;
   v23.super_class = BWFusionTrackerObservable;
   v19 = objc_msgSendSuper2(&v23, sel_init);
   v20 = v19;
   if (v19)
   {
     *(v19 + 5) = a2;
-    *(v19 + 1) = a6;
-    *(v19 + 2) = a7;
-    *(v19 + 3) = a8;
+    *(v19 + 1) = timestamp;
+    *(v19 + 2) = identifier;
+    *(v19 + 3) = metadata;
     *(v19 + 4) = a9;
     *(v19 + 12) = a10;
-    *(v19 + 14) = a4;
-    v21 = *a3;
-    *(v19 + 68) = *(a3 + 2);
+    *(v19 + 14) = box;
+    v21 = *kind;
+    *(v19 + 68) = *(kind + 2);
     *(v19 + 52) = v21;
-    *(v19 + 13) = a5;
+    *(v19 + 13) = confidence;
   }
 
   return v20;

@@ -1,6 +1,6 @@
 @interface CKBalloonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_axIsBalloonOfType:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_axIsBalloonOfType:(id)type;
 - (BOOL)_axIsImessage;
 - (BOOL)_axIsInNotification;
 - (BOOL)_axIsMessageFromMe;
@@ -10,7 +10,7 @@
 - (BOOL)_axIsVisibleInTapbackView;
 - (BOOL)isAccessibilityElement;
 - (id)_axAcknowledgmentDescription;
-- (id)_axActionsForMenu:(id)a3;
+- (id)_axActionsForMenu:(id)menu;
 - (id)_axBalloonViewCustomActions;
 - (id)_axBuddyNameForBalloon;
 - (id)_axChatItemForBalloon;
@@ -25,77 +25,77 @@
 - (id)accessibilityCustomActions;
 - (id)accessibilityDropPointDescriptors;
 - (void)_axTapback;
-- (void)axPerformInterfaceAction:(id)a3;
+- (void)axPerformInterfaceAction:(id)action;
 @end
 
 @implementation CKBalloonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKBalloonView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"CKBalloonView" hasInstanceMethod:@"doubleTapGestureRecognized:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKBalloonView" hasInstanceMethod:@"tapGestureRecognized:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKMessagePartChatItem" isKindOfClass:@"CKChatItem"];
-  [v3 validateProtocol:@"CKBalloonViewDelegate" hasRequiredInstanceMethod:@"balloonViewTapped:withModifierFlags:selectedText:"];
-  [v3 validateProtocol:@"CKBalloonViewDelegate" hasRequiredInstanceMethod:@"balloonViewDoubleTapped:"];
-  [v3 validateProtocol:@"CKBalloonViewDelegate" hasRequiredInstanceMethod:@"balloonViewLongTouched:"];
-  [v3 validateClass:@"CKBalloonView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0, 0, 0}];
-  [v3 validateClass:@"CKMessagePartChatItem" hasInstanceMethod:@"message" withFullSignature:{"@", 0, 0, 0}];
-  [v3 validateClass:@"IMMessage" hasInstanceMethod:@"isFromMe" withFullSignature:{"B", 0, 0, 0}];
-  [v3 validateClass:@"IMMessage" hasInstanceMethod:@"hasMention" withFullSignature:{"B", 0, 0, 0}];
-  [v3 validateClass:@"IMMessage" hasInstanceMethod:@"text" withFullSignature:{"@", 0, 0, 0}];
-  [v3 validateClass:@"IMMessage" hasInstanceMethod:@"time" withFullSignature:{"@", 0, 0, 0}];
-  [v3 validateClass:@"IMMessage" hasInstanceMethod:@"__ck_isiMessage" withFullSignature:{"B", 0, 0, 0}];
-  [v3 validateClass:@"IMMessage" hasInstanceMethod:@"__ck_isSMS" withFullSignature:{"B", 0, 0, 0}];
-  [v3 validateClass:@"CKAttachmentMessagePartChatItem" hasInstanceMethod:@"mediaObject" withFullSignature:{"@", 0, 0, 0}];
-  [v3 validateClass:@"CKMediaObject" hasInstanceMethod:@"mediaType" withFullSignature:{"i", 0}];
-  [v3 validateClass:@"CKLocationMediaObject" isKindOfClass:@"CKMediaObject"];
-  [v3 validateClass:@"CKLocationMediaObject" hasInstanceMethod:@"coordinate" withFullSignature:{"{CLLocationCoordinate2D=dd}", 0}];
-  [v3 validateClass:@"CKChatItem" hasInstanceMethod:@"IMChatItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMTranscriptPluginChatItem" conformsToProtocol:@"IMPluginChatItemProtocol"];
-  [v3 validateProtocol:@"IMPluginChatItemProtocol" hasRequiredInstanceMethod:@"type"];
-  [v3 validateProtocol:@"IMPluginChatItemProtocol" hasRequiredInstanceMethod:@"dataSource"];
-  [v3 validateClass:@"CKLocatingChatItem"];
-  [v3 validateClass:@"CKMovieMediaObject"];
-  [v3 validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIInterfaceAction" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIInterfaceAction" hasInstanceMethod:@"handler" withFullSignature:{"@?", 0}];
-  [v3 validateClass:@"CKMessagePartChatItem" hasInstanceMethod:@"visibleAssociatedMessageChatItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKChatItem" hasInstanceMethod:@"isHighlighted" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKMovieMediaObject" hasInstanceMethod:@"isJellyfishVideo" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKCoreChatController" hasInstanceMethod:@"wantsReplyButton" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"showInlineReplyControllerForChatItem:presentKeyboard:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"presentStickerDetailControllerWithIndexPath:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKFullScreenBalloonViewControllerPhone"];
-  [v3 validateClass:@"CKFullScreenBalloonViewControllerPhone" hasInstanceMethod:@"balloonView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ChatKit.TapbackPickerTintableMessageBalloonView"];
-  [v3 validateClass:@"ChatKit.TapbackPickerBalloonView"];
-  [v3 validateClass:@"CKBalloonView" hasInstanceMethod:@"invisibleInkEffectController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKInvisibleInkEffectController"];
-  [v3 validateClass:@"CKInvisibleInkEffectController" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKInvisibleInkEffectController" hasInstanceMethod:@"isSuspended" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKTranscriptBalloonCell"];
-  [v3 validateClass:@"CKTranscriptMessageCell" hasInstanceMethod:@"isReply" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKTranscriptMessageCell" hasInstanceMethod:@"isReplyContextPreview" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKRichLinkReplyPreviewBalloonView" hasInstanceMethod:@"linkView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKBalloonView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"CKBalloonView" hasInstanceMethod:@"doubleTapGestureRecognized:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKBalloonView" hasInstanceMethod:@"tapGestureRecognized:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKMessagePartChatItem" isKindOfClass:@"CKChatItem"];
+  [validationsCopy validateProtocol:@"CKBalloonViewDelegate" hasRequiredInstanceMethod:@"balloonViewTapped:withModifierFlags:selectedText:"];
+  [validationsCopy validateProtocol:@"CKBalloonViewDelegate" hasRequiredInstanceMethod:@"balloonViewDoubleTapped:"];
+  [validationsCopy validateProtocol:@"CKBalloonViewDelegate" hasRequiredInstanceMethod:@"balloonViewLongTouched:"];
+  [validationsCopy validateClass:@"CKBalloonView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0, 0, 0}];
+  [validationsCopy validateClass:@"CKMessagePartChatItem" hasInstanceMethod:@"message" withFullSignature:{"@", 0, 0, 0}];
+  [validationsCopy validateClass:@"IMMessage" hasInstanceMethod:@"isFromMe" withFullSignature:{"B", 0, 0, 0}];
+  [validationsCopy validateClass:@"IMMessage" hasInstanceMethod:@"hasMention" withFullSignature:{"B", 0, 0, 0}];
+  [validationsCopy validateClass:@"IMMessage" hasInstanceMethod:@"text" withFullSignature:{"@", 0, 0, 0}];
+  [validationsCopy validateClass:@"IMMessage" hasInstanceMethod:@"time" withFullSignature:{"@", 0, 0, 0}];
+  [validationsCopy validateClass:@"IMMessage" hasInstanceMethod:@"__ck_isiMessage" withFullSignature:{"B", 0, 0, 0}];
+  [validationsCopy validateClass:@"IMMessage" hasInstanceMethod:@"__ck_isSMS" withFullSignature:{"B", 0, 0, 0}];
+  [validationsCopy validateClass:@"CKAttachmentMessagePartChatItem" hasInstanceMethod:@"mediaObject" withFullSignature:{"@", 0, 0, 0}];
+  [validationsCopy validateClass:@"CKMediaObject" hasInstanceMethod:@"mediaType" withFullSignature:{"i", 0}];
+  [validationsCopy validateClass:@"CKLocationMediaObject" isKindOfClass:@"CKMediaObject"];
+  [validationsCopy validateClass:@"CKLocationMediaObject" hasInstanceMethod:@"coordinate" withFullSignature:{"{CLLocationCoordinate2D=dd}", 0}];
+  [validationsCopy validateClass:@"CKChatItem" hasInstanceMethod:@"IMChatItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMTranscriptPluginChatItem" conformsToProtocol:@"IMPluginChatItemProtocol"];
+  [validationsCopy validateProtocol:@"IMPluginChatItemProtocol" hasRequiredInstanceMethod:@"type"];
+  [validationsCopy validateProtocol:@"IMPluginChatItemProtocol" hasRequiredInstanceMethod:@"dataSource"];
+  [validationsCopy validateClass:@"CKLocatingChatItem"];
+  [validationsCopy validateClass:@"CKMovieMediaObject"];
+  [validationsCopy validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIInterfaceAction" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIInterfaceAction" hasInstanceMethod:@"handler" withFullSignature:{"@?", 0}];
+  [validationsCopy validateClass:@"CKMessagePartChatItem" hasInstanceMethod:@"visibleAssociatedMessageChatItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKChatItem" hasInstanceMethod:@"isHighlighted" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKMovieMediaObject" hasInstanceMethod:@"isJellyfishVideo" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKCoreChatController" hasInstanceMethod:@"wantsReplyButton" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"showInlineReplyControllerForChatItem:presentKeyboard:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"presentStickerDetailControllerWithIndexPath:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKFullScreenBalloonViewControllerPhone"];
+  [validationsCopy validateClass:@"CKFullScreenBalloonViewControllerPhone" hasInstanceMethod:@"balloonView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ChatKit.TapbackPickerTintableMessageBalloonView"];
+  [validationsCopy validateClass:@"ChatKit.TapbackPickerBalloonView"];
+  [validationsCopy validateClass:@"CKBalloonView" hasInstanceMethod:@"invisibleInkEffectController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKInvisibleInkEffectController"];
+  [validationsCopy validateClass:@"CKInvisibleInkEffectController" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKInvisibleInkEffectController" hasInstanceMethod:@"isSuspended" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKTranscriptBalloonCell"];
+  [validationsCopy validateClass:@"CKTranscriptMessageCell" hasInstanceMethod:@"isReply" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKTranscriptMessageCell" hasInstanceMethod:@"isReplyContextPreview" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKRichLinkReplyPreviewBalloonView" hasInstanceMethod:@"linkView" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(CKBalloonViewAccessibility *)self storedIsAccessibilityElement];
-  v3 = v2;
-  if (v2)
+  storedIsAccessibilityElement = [(CKBalloonViewAccessibility *)self storedIsAccessibilityElement];
+  v3 = storedIsAccessibilityElement;
+  if (storedIsAccessibilityElement)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [storedIsAccessibilityElement BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)accessibilityCustomActions
@@ -105,14 +105,14 @@
 
   if (v2)
   {
-    v21 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v3 = [(CKBalloonViewAccessibility *)self safeArrayForKey:@"_axBalloonViewCustomActions"];
-    [v21 axSafelyAddObjectsFromArray:v3];
+    [array axSafelyAddObjectsFromArray:v3];
 
     if (![(CKBalloonViewAccessibility *)self _axIsInNotification])
     {
       v4 = [(CKBalloonViewAccessibility *)self safeValueForKeyPath:@"delegate.delegate"];
-      v5 = [(CKBalloonViewAccessibility *)self _axChatItemForBalloon];
+      _axChatItemForBalloon = [(CKBalloonViewAccessibility *)self _axChatItemForBalloon];
       v48 = 0;
       v49 = &v48;
       v50 = 0x3032000000;
@@ -125,7 +125,7 @@
       v44 = &unk_29F2B09A8;
       v47 = &v48;
       v45 = v4;
-      v46 = self;
+      selfCopy = self;
       AXPerformSafeBlock();
       v6 = v49[5];
 
@@ -143,7 +143,7 @@
       v40 = &v48;
       v20 = v45;
       v37 = v20;
-      v19 = v5;
+      v19 = _axChatItemForBalloon;
       v38 = v19;
       v17 = v6;
       v39 = v17;
@@ -181,11 +181,11 @@
               v14 = v12;
               v24 = v14;
               v25 = v20;
-              v26 = self;
+              selfCopy2 = self;
               v27 = v19;
               v28 = v11;
               v15 = [v13 initWithName:v14 actionHandler:v23];
-              [v21 axSafelyAddObject:v15];
+              [array axSafelyAddObject:v15];
             }
           }
 
@@ -199,10 +199,10 @@
 
   else
   {
-    v21 = 0;
+    array = 0;
   }
 
-  return v21;
+  return array;
 }
 
 void __56__CKBalloonViewAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1)
@@ -296,17 +296,17 @@ void __56__CKBalloonViewAccessibility_accessibilityCustomActions__block_invoke_6
   [v1 showInlineReplyControllerForChatItem:v2 presentKeyboard:{1, v3, 3221225472, __56__CKBalloonViewAccessibility_accessibilityCustomActions__block_invoke_7, &unk_29F2B06F8}];
 }
 
-- (id)_axActionsForMenu:(id)a3
+- (id)_axActionsForMenu:(id)menu
 {
   v19 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = [MEMORY[0x29EDB8DE8] array];
+  menuCopy = menu;
+  array = [MEMORY[0x29EDB8DE8] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v4 children];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  children = [menuCopy children];
+  v7 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -317,7 +317,7 @@ void __56__CKBalloonViewAccessibility_accessibilityCustomActions__block_invoke_6
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(children);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -327,23 +327,23 @@ void __56__CKBalloonViewAccessibility_accessibilityCustomActions__block_invoke_6
           if ([v11 safeUnsignedIntegerForKey:@"options"])
           {
             v12 = [(CKBalloonViewAccessibility *)self _axActionsForMenu:v11];
-            [v5 axSafelyAddObjectsFromArray:v12];
+            [array axSafelyAddObjectsFromArray:v12];
           }
         }
 
         else
         {
-          [v5 axSafelyAddObject:v11];
+          [array axSafelyAddObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
 - (id)_axBalloonViewCustomActions
@@ -378,21 +378,21 @@ void __56__CKBalloonViewAccessibility_accessibilityCustomActions__block_invoke_6
   }
 }
 
-- (void)axPerformInterfaceAction:(id)a3
+- (void)axPerformInterfaceAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = [(CKBalloonViewAccessibility *)self safeValueForKey:@"superview"];
 
   if (v5 && ![(CKBalloonViewAccessibility *)self _axIsInNotification])
   {
-    v6 = [v4 safeValueForKey:@"handler"];
+    v6 = [actionCopy safeValueForKey:@"handler"];
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v8 = v6;
-        v7 = v4;
+        v7 = actionCopy;
         AXPerformSafeBlock();
       }
     }
@@ -493,11 +493,11 @@ void __51__CKBalloonViewAccessibility__axChatItemForBalloon__block_invoke(uint64
 
 - (id)_axMessageForBalloon
 {
-  v2 = [(CKBalloonViewAccessibility *)self _axChatItemForBalloon];
+  _axChatItemForBalloon = [(CKBalloonViewAccessibility *)self _axChatItemForBalloon];
   NSClassFromString(&cfstr_Ckmessagepartc.isa);
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 safeValueForKey:@"message"];
+    v3 = [_axChatItemForBalloon safeValueForKey:@"message"];
   }
 
   else
@@ -510,8 +510,8 @@ void __51__CKBalloonViewAccessibility__axChatItemForBalloon__block_invoke(uint64
 
 - (id)_axBuddyNameForBalloon
 {
-  v2 = [(CKBalloonViewAccessibility *)self _axMessageForBalloon];
-  v3 = [v2 safeValueForKey:@"sender"];
+  _axMessageForBalloon = [(CKBalloonViewAccessibility *)self _axMessageForBalloon];
+  v3 = [_axMessageForBalloon safeValueForKey:@"sender"];
   v4 = [v3 safeValueForKey:@"name"];
 
   return v4;
@@ -519,24 +519,24 @@ void __51__CKBalloonViewAccessibility__axChatItemForBalloon__block_invoke(uint64
 
 - (BOOL)_axIsMessageFromMe
 {
-  v2 = [(CKBalloonViewAccessibility *)self _axMessageForBalloon];
-  v3 = [v2 safeBoolForKey:@"isFromMe"];
+  _axMessageForBalloon = [(CKBalloonViewAccessibility *)self _axMessageForBalloon];
+  v3 = [_axMessageForBalloon safeBoolForKey:@"isFromMe"];
 
   return v3;
 }
 
 - (BOOL)_axIsImessage
 {
-  v2 = [(CKBalloonViewAccessibility *)self _axMessageForBalloon];
-  v3 = [v2 safeBoolForKey:@"__ck_isiMessage"];
+  _axMessageForBalloon = [(CKBalloonViewAccessibility *)self _axMessageForBalloon];
+  v3 = [_axMessageForBalloon safeBoolForKey:@"__ck_isiMessage"];
 
   return v3;
 }
 
 - (BOOL)_axIsTextMessage
 {
-  v2 = [(CKBalloonViewAccessibility *)self _axMessageForBalloon];
-  v3 = [v2 safeBoolForKey:@"__ck_isSMS"];
+  _axMessageForBalloon = [(CKBalloonViewAccessibility *)self _axMessageForBalloon];
+  v3 = [_axMessageForBalloon safeBoolForKey:@"__ck_isSMS"];
 
   return v3;
 }
@@ -585,35 +585,35 @@ uint64_t __49__CKBalloonViewAccessibility__axReplyDescription__block_invoke(uint
 
 - (id)_axDigitalTouchDescription
 {
-  v2 = [(CKBalloonViewAccessibility *)self _axChatItemForBalloon];
+  _axChatItemForBalloon = [(CKBalloonViewAccessibility *)self _axChatItemForBalloon];
   v3 = __UIAccessibilitySafeClass();
 
   v4 = [v3 safeValueForKeyPath:@"IMChatItem.dataSource"];
   if ((objc_opt_respondsToSelector() & 1) != 0 && ([v4 safeArrayForKey:@"createSessionMessages"], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "firstObject"), v6 = objc_claimAutoreleasedReturnValue(), v5, v6))
   {
-    v7 = [v6 accessibilityLabel];
+    accessibilityLabel = [v6 accessibilityLabel];
   }
 
   else
   {
-    v7 = 0;
+    accessibilityLabel = 0;
   }
 
-  return v7;
+  return accessibilityLabel;
 }
 
 - (id)_axMessageTime
 {
-  v2 = [(CKBalloonViewAccessibility *)self _axMessageForBalloon];
-  v3 = [v2 safeValueForKey:@"time"];
+  _axMessageForBalloon = [(CKBalloonViewAccessibility *)self _axMessageForBalloon];
+  v3 = [_axMessageForBalloon safeValueForKey:@"time"];
   v4 = AXDateStringForFormat();
 
   return v4;
 }
 
-- (BOOL)_axIsBalloonOfType:(id)a3
+- (BOOL)_axIsBalloonOfType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = [(CKBalloonViewAccessibility *)self safeValueForKey:@"_axChatItemForBalloon"];
   v6 = __UIAccessibilitySafeClass();
 
@@ -624,7 +624,7 @@ uint64_t __49__CKBalloonViewAccessibility__axReplyDescription__block_invoke(uint
   if (v9)
   {
     v10 = [v7 safeValueForKey:@"type"];
-    v11 = [v10 isEqualToString:v4];
+    v11 = [v10 isEqualToString:typeCopy];
   }
 
   else
@@ -637,13 +637,13 @@ uint64_t __49__CKBalloonViewAccessibility__axReplyDescription__block_invoke(uint
 
 - (id)_axMessageSender
 {
-  v3 = [(CKBalloonViewAccessibility *)self _axIsMessageFromMe];
-  v4 = [(CKBalloonViewAccessibility *)self _axIsImessage];
-  v5 = [(CKBalloonViewAccessibility *)self _axBuddyNameForBalloon];
-  v6 = v5;
-  if (v3)
+  _axIsMessageFromMe = [(CKBalloonViewAccessibility *)self _axIsMessageFromMe];
+  _axIsImessage = [(CKBalloonViewAccessibility *)self _axIsImessage];
+  _axBuddyNameForBalloon = [(CKBalloonViewAccessibility *)self _axBuddyNameForBalloon];
+  v6 = _axBuddyNameForBalloon;
+  if (_axIsMessageFromMe)
   {
-    if (v4)
+    if (_axIsImessage)
     {
       v7 = @"balloon.your.imessage";
     }
@@ -656,7 +656,7 @@ uint64_t __49__CKBalloonViewAccessibility__axReplyDescription__block_invoke(uint
 
   else
   {
-    if ([v5 length])
+    if ([_axBuddyNameForBalloon length])
     {
       v8 = v6;
       goto LABEL_9;
@@ -674,8 +674,8 @@ LABEL_9:
 
 - (id)_axHighlightedDescription
 {
-  v2 = [(CKBalloonViewAccessibility *)self _axChatItemForBalloon];
-  v3 = [v2 safeBoolForKey:@"isHighlighted"];
+  _axChatItemForBalloon = [(CKBalloonViewAccessibility *)self _axChatItemForBalloon];
+  v3 = [_axChatItemForBalloon safeBoolForKey:@"isHighlighted"];
 
   if (v3)
   {
@@ -693,10 +693,10 @@ LABEL_9:
 - (id)_axStickerDescription
 {
   v21 = *MEMORY[0x29EDCA608];
-  v2 = [(CKBalloonViewAccessibility *)self _axChatItemForBalloon];
+  _axChatItemForBalloon = [(CKBalloonViewAccessibility *)self _axChatItemForBalloon];
   v19 = 0;
   objc_opt_class();
-  v3 = [v2 safeValueForKey:@"visibleAssociatedMessageChatItems"];
+  v3 = [_axChatItemForBalloon safeValueForKey:@"visibleAssociatedMessageChatItems"];
   v4 = __UIAccessibilityCastAsClass();
 
   v15 = 0u;
@@ -753,8 +753,8 @@ LABEL_13:
 {
   v20 = *MEMORY[0x29EDCA608];
   objc_opt_class();
-  v3 = [(CKBalloonViewAccessibility *)self _axChatItemForBalloon];
-  v4 = [v3 safeValueForKey:@"visibleAssociatedMessageChatItems"];
+  _axChatItemForBalloon = [(CKBalloonViewAccessibility *)self _axChatItemForBalloon];
+  v4 = [_axChatItemForBalloon safeValueForKey:@"visibleAssociatedMessageChatItems"];
   v5 = __UIAccessibilityCastAsClass();
 
   v17 = 0u;
@@ -799,22 +799,22 @@ LABEL_3:
 
     if (v13)
     {
-      v12 = [v13 accessibilityLabel];
+      accessibilityLabel = [v13 accessibilityLabel];
       goto LABEL_12;
     }
 
-    v12 = 0;
+    accessibilityLabel = 0;
   }
 
   else
   {
 LABEL_9:
-    v12 = 0;
+    accessibilityLabel = 0;
     v13 = v6;
 LABEL_12:
   }
 
-  return v12;
+  return accessibilityLabel;
 }
 
 - (BOOL)_axIsInNotification
@@ -827,25 +827,25 @@ LABEL_12:
 
 - (BOOL)_axIsTapbackBalloonView
 {
-  v3 = [(CKBalloonViewAccessibility *)self _axIsVisibleInTapbackView];
-  if (v3)
+  _axIsVisibleInTapbackView = [(CKBalloonViewAccessibility *)self _axIsVisibleInTapbackView];
+  if (_axIsVisibleInTapbackView)
   {
-    v4 = [(CKBalloonViewAccessibility *)self accessibilityContainer];
-    v5 = [v4 _accessibilityViewController];
+    accessibilityContainer = [(CKBalloonViewAccessibility *)self accessibilityContainer];
+    _accessibilityViewController = [accessibilityContainer _accessibilityViewController];
 
-    v6 = [v5 safeValueForKey:@"balloonView"];
+    v6 = [_accessibilityViewController safeValueForKey:@"balloonView"];
     v7 = [v6 isEqual:self];
 
-    LOBYTE(v3) = v7;
+    LOBYTE(_axIsVisibleInTapbackView) = v7;
   }
 
-  return v3;
+  return _axIsVisibleInTapbackView;
 }
 
 - (BOOL)_axIsVisibleInTapbackView
 {
-  v3 = [(CKBalloonViewAccessibility *)self accessibilityContainer];
-  v4 = [v3 _accessibilityViewController];
+  accessibilityContainer = [(CKBalloonViewAccessibility *)self accessibilityContainer];
+  _accessibilityViewController = [accessibilityContainer _accessibilityViewController];
 
   NSClassFromString(&cfstr_Ckfullscreenba_1.isa);
   if (objc_opt_isKindOfClass())
@@ -855,7 +855,7 @@ LABEL_12:
 
   else
   {
-    v6 = [(CKBalloonViewAccessibility *)self accessibilityContainer];
+    accessibilityContainer2 = [(CKBalloonViewAccessibility *)self accessibilityContainer];
     NSClassFromString(&cfstr_ChatkitTapback_4.isa);
     if (objc_opt_isKindOfClass())
     {
@@ -864,7 +864,7 @@ LABEL_12:
 
     else
     {
-      v7 = [(CKBalloonViewAccessibility *)self accessibilityContainer];
+      accessibilityContainer3 = [(CKBalloonViewAccessibility *)self accessibilityContainer];
       NSClassFromString(&cfstr_ChatkitTapback_5.isa);
       isKindOfClass = objc_opt_isKindOfClass();
     }

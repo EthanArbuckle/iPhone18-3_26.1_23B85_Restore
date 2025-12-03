@@ -1,16 +1,16 @@
 @interface JFXThermalMonitor
 + (id)sharedInstance;
-+ (id)stringFromThermalPressureLevel:(int)a3;
-+ (void)enumerateThermalPressureLevel:(id)a3;
++ (id)stringFromThermalPressureLevel:(int)level;
++ (void)enumerateThermalPressureLevel:(id)level;
 - (BOOL)_disabledThermalTracking;
-- (BOOL)_updateThermalLevelsWithToken:(int)a3;
+- (BOOL)_updateThermalLevelsWithToken:(int)token;
 - (BOOL)thermalLevelExceededNominal;
 - (JFXThermalMonitor)init;
-- (id)_analyticValueForThermalLevelBefore:(int)a3 after:(int)a4;
+- (id)_analyticValueForThermalLevelBefore:(int)before after:(int)after;
 - (id)thermalLevelLabel;
 - (int)highestThermalLevelReached;
 - (int)thermalLevel;
-- (void)_postNotification:(id)a3;
+- (void)_postNotification:(id)notification;
 @end
 
 @implementation JFXThermalMonitor
@@ -20,23 +20,23 @@
   v20.receiver = self;
   v20.super_class = JFXThermalMonitor;
   v2 = [(JFXThermalMonitor *)&v20 init];
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.JFXThermalMonitor", v4];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.JFXThermalMonitor", bundleIdentifier];
   [(JFXThermalMonitor *)v2 setHighestThermalLevel:0];
   [(JFXThermalMonitor *)v2 setCurrentThermalLevel:0];
   v6 = dispatch_queue_create([v5 UTF8String], 0);
   [(JFXThermalMonitor *)v2 setQueue:v6];
 
-  v7 = [(JFXThermalMonitor *)v2 queue];
+  queue = [(JFXThermalMonitor *)v2 queue];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __25__JFXThermalMonitor_init__block_invoke;
   handler[3] = &unk_278D7A740;
   v8 = v2;
   v19 = v8;
-  v9 = notify_register_dispatch("com.apple.system.thermalpressurelevel", &init_s_token, v7, handler);
+  v9 = notify_register_dispatch("com.apple.system.thermalpressurelevel", &init_s_token, queue, handler);
 
   if (v9)
   {
@@ -52,14 +52,14 @@
 
   else
   {
-    v12 = [(JFXThermalMonitor *)v8 queue];
+    queue2 = [(JFXThermalMonitor *)v8 queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __25__JFXThermalMonitor_init__block_invoke_14;
     block[3] = &unk_278D79D20;
     v13 = v8;
     p_super = &v13->super;
-    dispatch_async(v12, block);
+    dispatch_async(queue2, block);
 
     v11 = v13;
     v10 = p_super;
@@ -121,13 +121,13 @@ uint64_t __35__JFXThermalMonitor_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)enumerateThermalPressureLevel:(id)a3
++ (void)enumerateThermalPressureLevel:(id)level
 {
   v4 = 0;
   do
   {
     v6 = 0;
-    (*(a3 + 2))(a3, dword_242B5BB40[v4], &v6);
+    (*(level + 2))(level, dword_242B5BB40[v4], &v6);
     if (v6)
     {
       break;
@@ -137,38 +137,38 @@ uint64_t __35__JFXThermalMonitor_sharedInstance__block_invoke()
   while (v4++ != 5);
 }
 
-+ (id)stringFromThermalPressureLevel:(int)a3
++ (id)stringFromThermalPressureLevel:(int)level
 {
   v3 = @"Nominal";
   v4 = @"Heavy";
   v5 = @"Trapping";
   v6 = @"Sleeping";
-  if (a3 != 50)
+  if (level != 50)
   {
     v6 = @"Nominal";
   }
 
-  if (a3 != 40)
+  if (level != 40)
   {
     v5 = v6;
   }
 
-  if (a3 != 30)
+  if (level != 30)
   {
     v4 = v5;
   }
 
-  if (a3 == 20)
+  if (level == 20)
   {
     v3 = @"Moderate";
   }
 
-  if (a3 == 10)
+  if (level == 10)
   {
     v3 = @"Light";
   }
 
-  if (a3 <= 29)
+  if (level <= 29)
   {
     return v3;
   }
@@ -192,14 +192,14 @@ uint64_t __35__JFXThermalMonitor_sharedInstance__block_invoke()
     v8 = &v7;
     v9 = 0x2020000000;
     v10 = 0;
-    v4 = [(JFXThermalMonitor *)self queue];
+    queue = [(JFXThermalMonitor *)self queue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __48__JFXThermalMonitor_thermalLevelExceededNominal__block_invoke;
     v6[3] = &unk_278D79C60;
     v6[4] = self;
     v6[5] = &v7;
-    dispatch_sync(v4, v6);
+    dispatch_sync(queue, v6);
 
     v3 = *(v8 + 24);
     _Block_object_dispose(&v7, 8);
@@ -226,14 +226,14 @@ uint64_t __48__JFXThermalMonitor_thermalLevelExceededNominal__block_invoke(uint6
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [(JFXThermalMonitor *)self queue];
+  queue = [(JFXThermalMonitor *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__JFXThermalMonitor_thermalLevel__block_invoke;
   v6[3] = &unk_278D79C60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v4, v6);
+  dispatch_sync(queue, v6);
 
   v3 = *(v8 + 6);
   _Block_object_dispose(&v7, 8);
@@ -258,14 +258,14 @@ uint64_t __33__JFXThermalMonitor_thermalLevel__block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [(JFXThermalMonitor *)self queue];
+  queue = [(JFXThermalMonitor *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__JFXThermalMonitor_highestThermalLevelReached__block_invoke;
   v6[3] = &unk_278D79C60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v4, v6);
+  dispatch_sync(queue, v6);
 
   v3 = *(v8 + 6);
   _Block_object_dispose(&v7, 8);
@@ -287,14 +287,14 @@ uint64_t __47__JFXThermalMonitor_highestThermalLevelReached__block_invoke(uint64
   v10 = __Block_byref_object_copy__14;
   v11 = __Block_byref_object_dispose__14;
   v12 = 0;
-  v3 = [(JFXThermalMonitor *)self queue];
+  queue = [(JFXThermalMonitor *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__JFXThermalMonitor_thermalLevelLabel__block_invoke;
   v6[3] = &unk_278D79C60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -318,15 +318,15 @@ uint64_t __38__JFXThermalMonitor_thermalLevelLabel__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)_updateThermalLevelsWithToken:(int)a3
+- (BOOL)_updateThermalLevelsWithToken:(int)token
 {
   state64 = 0;
-  state = notify_get_state(a3, &state64);
+  state = notify_get_state(token, &state64);
   if (!state)
   {
     [(JFXThermalMonitor *)self setCurrentThermalLevel:state64];
-    v5 = [(JFXThermalMonitor *)self currentThermalLevel];
-    if (v5 > [(JFXThermalMonitor *)self highestThermalLevel])
+    currentThermalLevel = [(JFXThermalMonitor *)self currentThermalLevel];
+    if (currentThermalLevel > [(JFXThermalMonitor *)self highestThermalLevel])
     {
       [(JFXThermalMonitor *)self setHighestThermalLevel:[(JFXThermalMonitor *)self currentThermalLevel]];
     }
@@ -335,15 +335,15 @@ uint64_t __38__JFXThermalMonitor_thermalLevelLabel__block_invoke(uint64_t a1)
   return state == 0;
 }
 
-- (void)_postNotification:(id)a3
+- (void)_postNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__JFXThermalMonitor__postNotification___block_invoke;
   block[3] = &unk_278D79D20;
-  v6 = v3;
-  v4 = v3;
+  v6 = notificationCopy;
+  v4 = notificationCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -369,26 +369,26 @@ void __39__JFXThermalMonitor__postNotification___block_invoke(uint64_t a1)
 
 - (BOOL)_disabledThermalTracking
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 valueForKey:@"JFXDisableThermalTrackingKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults valueForKey:@"JFXDisableThermalTrackingKey"];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (id)_analyticValueForThermalLevelBefore:(int)a3 after:(int)a4
+- (id)_analyticValueForThermalLevelBefore:(int)before after:(int)after
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&after;
+  v5 = *&before;
   if (_analyticValueForThermalLevelBefore_after__onceToken != -1)
   {
     [JFXThermalMonitor _analyticValueForThermalLevelBefore:after:];

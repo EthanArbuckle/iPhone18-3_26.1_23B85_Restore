@@ -1,47 +1,47 @@
 @interface BCUIRowView
 - (BCUIRowView)init;
-- (CGRect)_batteryViewFrameforContentSize:(id)a3 percentChargeLabelFrame:(CGRect)a4;
-- (CGRect)_glyphImageViewFrameForContentSizeCategory:(id)a3;
-- (CGRect)_nameLabelFrameForContentSize:(id)a3 percentChargeLabelFrame:(CGRect)a4;
-- (CGRect)_percentChargeLabelFrameForContentSizeCategory:(id)a3;
-- (CGRect)_sepatorFrameForContentSize:(id)a3;
+- (CGRect)_batteryViewFrameforContentSize:(id)size percentChargeLabelFrame:(CGRect)frame;
+- (CGRect)_glyphImageViewFrameForContentSizeCategory:(id)category;
+- (CGRect)_nameLabelFrameForContentSize:(id)size percentChargeLabelFrame:(CGRect)frame;
+- (CGRect)_percentChargeLabelFrameForContentSizeCategory:(id)category;
+- (CGRect)_sepatorFrameForContentSize:(id)size;
 - (id)_lazyPercentChargeFormatter;
-- (id)_percentChargeString:(int64_t)a3;
-- (id)_visualStylingProviderForCategory:(int64_t)a3;
-- (void)_beginAutomaticallyUpdatingVisualStylingForCategory:(int64_t)a3;
+- (id)_percentChargeString:(int64_t)string;
+- (id)_visualStylingProviderForCategory:(int64_t)category;
+- (void)_beginAutomaticallyUpdatingVisualStylingForCategory:(int64_t)category;
 - (void)_configureBatteryViewIfNecessary;
 - (void)_configureGlyphImageViewIfNecessary;
 - (void)_configureNameLabelIfNecessary;
 - (void)_configurePercentChargeLabelIfNecessary;
 - (void)_configureSeparatorIfNecessary;
-- (void)_stopAutomaticallyUpdatingVisualStylingForCategory:(int64_t)a3;
-- (void)_updateGlyphImageViewIfNecessary:(id)a3;
-- (void)_updateNameLabelIfNecessary:(id)a3;
-- (void)_updatePercentChargeLabelIfNecessary:(id)a3;
-- (void)_updateVisualStylingWithProvidersFromStylingProvider:(id)a3;
+- (void)_stopAutomaticallyUpdatingVisualStylingForCategory:(int64_t)category;
+- (void)_updateGlyphImageViewIfNecessary:(id)necessary;
+- (void)_updateNameLabelIfNecessary:(id)necessary;
+- (void)_updatePercentChargeLabelIfNecessary:(id)necessary;
+- (void)_updateVisualStylingWithProvidersFromStylingProvider:(id)provider;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setCharging:(BOOL)a3;
-- (void)setEmpty:(BOOL)a3;
-- (void)setGlyph:(id)a3;
-- (void)setLowCharge:(BOOL)a3;
-- (void)setLowPowerModeEnabled:(BOOL)a3;
-- (void)setName:(id)a3;
-- (void)setPercentCharge:(int64_t)a3;
-- (void)setScaleFactor:(double)a3;
-- (void)setSeparatorVisible:(BOOL)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)setCharging:(BOOL)charging;
+- (void)setEmpty:(BOOL)empty;
+- (void)setGlyph:(id)glyph;
+- (void)setLowCharge:(BOOL)charge;
+- (void)setLowPowerModeEnabled:(BOOL)enabled;
+- (void)setName:(id)name;
+- (void)setPercentCharge:(int64_t)charge;
+- (void)setScaleFactor:(double)factor;
+- (void)setSeparatorVisible:(BOOL)visible;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 @end
 
 @implementation BCUIRowView
 
-- (void)setSeparatorVisible:(BOOL)a3
+- (void)setSeparatorVisible:(BOOL)visible
 {
-  v3 = a3;
-  if ([(BCUIRowView *)self isSeparatorVisible]!= a3)
+  visibleCopy = visible;
+  if ([(BCUIRowView *)self isSeparatorVisible]!= visible)
   {
-    if (v3)
+    if (visibleCopy)
     {
       [(BCUIRowView *)self _configureSeparatorIfNecessary];
     }
@@ -57,20 +57,20 @@
   }
 }
 
-- (void)setPercentCharge:(int64_t)a3
+- (void)setPercentCharge:(int64_t)charge
 {
-  if (!self->_empty && self->_percentCharge != a3)
+  if (!self->_empty && self->_percentCharge != charge)
   {
-    self->_percentCharge = a3;
+    self->_percentCharge = charge;
     [(BCUIRowView *)self setNeedsLayout];
   }
 }
 
-- (void)setCharging:(BOOL)a3
+- (void)setCharging:(BOOL)charging
 {
-  if (!self->_empty && self->_charging != a3)
+  if (!self->_empty && self->_charging != charging)
   {
-    self->_charging = a3;
+    self->_charging = charging;
     [(BCUIRowView *)self _configureBatteryViewIfNecessary];
     [(_UIStaticBatteryView *)self->_batteryView setShowsInlineChargingIndicator:self->_charging];
 
@@ -78,12 +78,12 @@
   }
 }
 
-- (void)setLowCharge:(BOOL)a3
+- (void)setLowCharge:(BOOL)charge
 {
-  if (!self->_empty && self->_lowCharge != a3)
+  if (!self->_empty && self->_lowCharge != charge)
   {
-    self->_lowCharge = a3;
-    if (a3)
+    self->_lowCharge = charge;
+    if (charge)
     {
       v4 = 2;
     }
@@ -100,11 +100,11 @@
   }
 }
 
-- (void)setLowPowerModeEnabled:(BOOL)a3
+- (void)setLowPowerModeEnabled:(BOOL)enabled
 {
-  if (!self->_empty && self->_lowPowerModeEnabled != a3)
+  if (!self->_empty && self->_lowPowerModeEnabled != enabled)
   {
-    self->_lowPowerModeEnabled = a3;
+    self->_lowPowerModeEnabled = enabled;
     [(BCUIRowView *)self _configureBatteryViewIfNecessary];
     [(_UIStaticBatteryView *)self->_batteryView setSaverModeActive:self->_lowPowerModeEnabled];
 
@@ -112,52 +112,52 @@
   }
 }
 
-- (void)setGlyph:(id)a3
+- (void)setGlyph:(id)glyph
 {
-  v5 = a3;
-  if (!self->_empty && self->_glyph != v5)
+  glyphCopy = glyph;
+  if (!self->_empty && self->_glyph != glyphCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_glyph, a3);
+    v6 = glyphCopy;
+    objc_storeStrong(&self->_glyph, glyph);
     [(BCUIRowView *)self setNeedsLayout];
-    v5 = v6;
+    glyphCopy = v6;
   }
 }
 
-- (void)setScaleFactor:(double)a3
+- (void)setScaleFactor:(double)factor
 {
-  if (self->_scaleFactor != a3)
+  if (self->_scaleFactor != factor)
   {
-    self->_scaleFactor = a3;
+    self->_scaleFactor = factor;
     [(BCUIRowView *)self setNeedsLayout];
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v5 = a3;
-  v6 = v5;
+  nameCopy = name;
+  v6 = nameCopy;
   if (!self->_empty)
   {
-    v7 = v5;
-    v5 = [(NSString *)self->_name isEqualToString:v5];
+    v7 = nameCopy;
+    nameCopy = [(NSString *)self->_name isEqualToString:nameCopy];
     v6 = v7;
-    if ((v5 & 1) == 0)
+    if ((nameCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_name, a3);
-      v5 = [(BCUIRowView *)self setNeedsLayout];
+      objc_storeStrong(&self->_name, name);
+      nameCopy = [(BCUIRowView *)self setNeedsLayout];
       v6 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](nameCopy, v6);
 }
 
-- (void)setEmpty:(BOOL)a3
+- (void)setEmpty:(BOOL)empty
 {
-  if (self->_empty != a3)
+  if (self->_empty != empty)
   {
-    self->_empty = a3;
+    self->_empty = empty;
     [(BCUIRowView *)self setNeedsLayout];
   }
 }
@@ -186,8 +186,8 @@
   v4.receiver = self;
   v4.super_class = BCUIRowView;
   [(BCUIRowView *)&v4 didMoveToSuperview];
-  v3 = [(BCUIRowView *)self superview];
-  [(BCUIRowView *)self _updateVisualStylingWithProvidersFromStylingProvider:v3];
+  superview = [(BCUIRowView *)self superview];
+  [(BCUIRowView *)self _updateVisualStylingWithProvidersFromStylingProvider:superview];
 }
 
 - (void)didMoveToWindow
@@ -195,12 +195,12 @@
   v5.receiver = self;
   v5.super_class = BCUIRowView;
   [(BCUIRowView *)&v5 didMoveToWindow];
-  v3 = [(BCUIRowView *)self window];
+  window = [(BCUIRowView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(BCUIRowView *)self superview];
-    [(BCUIRowView *)self _updateVisualStylingWithProvidersFromStylingProvider:v4];
+    superview = [(BCUIRowView *)self superview];
+    [(BCUIRowView *)self _updateVisualStylingWithProvidersFromStylingProvider:superview];
   }
 }
 
@@ -209,8 +209,8 @@
   v37.receiver = self;
   v37.super_class = BCUIRowView;
   [(BCUIRowView *)&v37 layoutSubviews];
-  v3 = [(BCUIRowView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(BCUIRowView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
   if (self->_empty)
   {
@@ -238,8 +238,8 @@ LABEL_20:
   if (self->_glyph)
   {
     [(BCUIRowView *)self _configureGlyphImageViewIfNecessary];
-    [(BCUIRowView *)self _updateGlyphImageViewIfNecessary:v4];
-    [(BCUIRowView *)self _glyphImageViewFrameForContentSizeCategory:v4];
+    [(BCUIRowView *)self _updateGlyphImageViewIfNecessary:preferredContentSizeCategory];
+    [(BCUIRowView *)self _glyphImageViewFrameForContentSizeCategory:preferredContentSizeCategory];
     x = v38.origin.x;
     y = v38.origin.y;
     width = v38.size.width;
@@ -267,8 +267,8 @@ LABEL_20:
   }
 
   [(BCUIRowView *)self _configurePercentChargeLabelIfNecessary];
-  [(BCUIRowView *)self _updatePercentChargeLabelIfNecessary:v4];
-  [(BCUIRowView *)self _percentChargeLabelFrameForContentSizeCategory:v4];
+  [(BCUIRowView *)self _updatePercentChargeLabelIfNecessary:preferredContentSizeCategory];
+  [(BCUIRowView *)self _percentChargeLabelFrameForContentSizeCategory:preferredContentSizeCategory];
   v18 = v14;
   v19 = v15;
   v20 = v16;
@@ -300,8 +300,8 @@ LABEL_20:
   if (self->_name)
   {
     [(BCUIRowView *)self _configureNameLabelIfNecessary];
-    [(BCUIRowView *)self _updateNameLabelIfNecessary:v4];
-    [(BCUIRowView *)self _nameLabelFrameForContentSize:v4 percentChargeLabelFrame:v18, v19, v20, v21];
+    [(BCUIRowView *)self _updateNameLabelIfNecessary:preferredContentSizeCategory];
+    [(BCUIRowView *)self _nameLabelFrameForContentSize:preferredContentSizeCategory percentChargeLabelFrame:v18, v19, v20, v21];
     v23 = v39.origin.x;
     v24 = v39.origin.y;
     v25 = v39.size.width;
@@ -320,7 +320,7 @@ LABEL_20:
       [MEMORY[0x1E69DD250] performWithoutAnimation:v34];
     }
 
-    [(BCUIRowView *)self _updateNameLabelIfNecessary:v4];
+    [(BCUIRowView *)self _updateNameLabelIfNecessary:preferredContentSizeCategory];
   }
 
   else
@@ -338,7 +338,7 @@ LABEL_20:
   }
 
   [(BCUIRowView *)self _updateBatteryViewIfNeccessary];
-  [(BCUIRowView *)self _batteryViewFrameforContentSize:v4 percentChargeLabelFrame:v18, v19, v20, v21];
+  [(BCUIRowView *)self _batteryViewFrameforContentSize:preferredContentSizeCategory percentChargeLabelFrame:v18, v19, v20, v21];
   v28 = v40.origin.x;
   v29 = v40.origin.y;
   v30 = v40.size.width;
@@ -358,25 +358,25 @@ LABEL_20:
   }
 
 LABEL_21:
-  [(BCUIRowView *)self _sepatorFrameForContentSize:v4];
+  [(BCUIRowView *)self _sepatorFrameForContentSize:preferredContentSizeCategory];
   [(UIView *)self->_separator setFrame:?];
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v14 = a3;
-  if (v14)
+  providerCopy = provider;
+  if (providerCopy)
   {
-    v6 = [(BCUIRowView *)self requiredVisualStyleCategories];
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    v8 = [v6 containsObject:v7];
+    requiredVisualStyleCategories = [(BCUIRowView *)self requiredVisualStyleCategories];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:category];
+    v8 = [requiredVisualStyleCategories containsObject:v7];
 
     if (v8)
     {
-      v9 = [(BCUIRowView *)self _visualStylingProviderForCategory:a4];
-      if (v9 != v14)
+      v9 = [(BCUIRowView *)self _visualStylingProviderForCategory:category];
+      if (v9 != providerCopy)
       {
-        [(BCUIRowView *)self _stopAutomaticallyUpdatingVisualStylingForCategory:a4];
+        [(BCUIRowView *)self _stopAutomaticallyUpdatingVisualStylingForCategory:category];
         categoriesToVisualStylingProvider = self->_categoriesToVisualStylingProvider;
         if (!categoriesToVisualStylingProvider)
         {
@@ -387,28 +387,28 @@ LABEL_21:
           categoriesToVisualStylingProvider = self->_categoriesToVisualStylingProvider;
         }
 
-        v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-        [(NSMutableDictionary *)categoriesToVisualStylingProvider setObject:v14 forKey:v13];
+        v13 = [MEMORY[0x1E696AD98] numberWithInteger:category];
+        [(NSMutableDictionary *)categoriesToVisualStylingProvider setObject:providerCopy forKey:v13];
 
-        [(BCUIRowView *)self _beginAutomaticallyUpdatingVisualStylingForCategory:a4];
+        [(BCUIRowView *)self _beginAutomaticallyUpdatingVisualStylingForCategory:category];
       }
     }
   }
 }
 
-- (void)_updateGlyphImageViewIfNecessary:(id)a3
+- (void)_updateGlyphImageViewIfNecessary:(id)necessary
 {
-  v14 = a3;
-  v4 = [(UIImageView *)self->_glyphImageView image];
+  necessaryCopy = necessary;
+  image = [(UIImageView *)self->_glyphImageView image];
   glyph = self->_glyph;
 
-  if (v4 != glyph)
+  if (image != glyph)
   {
     [(UIImageView *)self->_glyphImageView setImage:self->_glyph];
     [(UIImageView *)self->_glyphImageView setContentMode:4];
     v6 = MEMORY[0x1E69DB878];
     v7 = *MEMORY[0x1E69DDD80];
-    v8 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:v14];
+    v8 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:necessaryCopy];
     v9 = [v6 preferredFontForTextStyle:v7 compatibleWithTraitCollection:v8];
 
     v10 = MEMORY[0x1E69DCAD8];
@@ -422,11 +422,11 @@ LABEL_21:
   }
 }
 
-- (void)_updatePercentChargeLabelIfNecessary:(id)a3
+- (void)_updatePercentChargeLabelIfNecessary:(id)necessary
 {
   v4 = MEMORY[0x1E69DB878];
   v5 = *MEMORY[0x1E69DDD08];
-  v6 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:a3];
+  v6 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:necessary];
   v7 = [v4 preferredFontForTextStyle:v5 compatibleWithTraitCollection:v6];
 
   [v7 pointSize];
@@ -434,8 +434,8 @@ LABEL_21:
 
   [(UILabel *)self->_percentChargeLabel setFont:v11];
   v9 = [(BCUIRowView *)self _percentChargeString:self->_percentCharge];
-  v10 = [(UILabel *)self->_percentChargeLabel text];
-  LOBYTE(v6) = [v10 isEqualToString:v9];
+  text = [(UILabel *)self->_percentChargeLabel text];
+  LOBYTE(v6) = [text isEqualToString:v9];
 
   if ((v6 & 1) == 0)
   {
@@ -444,19 +444,19 @@ LABEL_21:
   }
 }
 
-- (void)_updateNameLabelIfNecessary:(id)a3
+- (void)_updateNameLabelIfNecessary:(id)necessary
 {
   v4 = MEMORY[0x1E69DB878];
   v5 = *MEMORY[0x1E69DDD80];
-  v6 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:a3];
+  v6 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:necessary];
   v7 = [v4 preferredFontForTextStyle:v5 compatibleWithTraitCollection:v6];
 
   [v7 pointSize];
   v10 = [v7 fontWithSize:v8 * self->_scaleFactor];
 
   [(UILabel *)self->_nameLabel setFont:v10];
-  v9 = [(UILabel *)self->_nameLabel text];
-  LOBYTE(v5) = [v9 isEqualToString:self->_name];
+  text = [(UILabel *)self->_nameLabel text];
+  LOBYTE(v5) = [text isEqualToString:self->_name];
 
   if ((v5 & 1) == 0)
   {
@@ -465,10 +465,10 @@ LABEL_21:
   }
 }
 
-- (CGRect)_glyphImageViewFrameForContentSizeCategory:(id)a3
+- (CGRect)_glyphImageViewFrameForContentSizeCategory:(id)category
 {
-  v4 = a3;
-  v5 = [objc_opt_class() isAX3PlusLayoutRequiredForContentSizeCategory:v4];
+  categoryCopy = category;
+  v5 = [objc_opt_class() isAX3PlusLayoutRequiredForContentSizeCategory:categoryCopy];
 
   [(BCUIRowView *)self bounds];
   v10 = BCUI6x8ColumnWidthForBounds(v6, v7, v8, v9);
@@ -512,31 +512,31 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)_percentChargeLabelFrameForContentSizeCategory:(id)a3
+- (CGRect)_percentChargeLabelFrameForContentSizeCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(BCUIRowView *)self window];
-  if (v5)
+  categoryCopy = category;
+  window = [(BCUIRowView *)self window];
+  if (window)
   {
-    v6 = [(BCUIRowView *)self window];
-    v7 = [v6 screen];
-    [v7 scale];
+    window2 = [(BCUIRowView *)self window];
+    screen = [window2 screen];
+    [screen scale];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v6 scale];
+    window2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [window2 scale];
   }
 
   [(BCUIRowView *)self bounds];
   Height = CGRectGetHeight(v33);
-  v9 = [(BCUIRowView *)self _shouldReverseLayoutDirection];
-  v10 = [objc_opt_class() isAX3PlusLayoutRequiredForContentSizeCategory:v4];
+  _shouldReverseLayoutDirection = [(BCUIRowView *)self _shouldReverseLayoutDirection];
+  v10 = [objc_opt_class() isAX3PlusLayoutRequiredForContentSizeCategory:categoryCopy];
 
   if (v10)
   {
-    if ((v9 & 1) == 0)
+    if ((_shouldReverseLayoutDirection & 1) == 0)
     {
       [(UILabel *)self->_percentChargeLabel setTextAlignment:3];
     }
@@ -544,7 +544,7 @@ LABEL_21:
     percentChargeLabel = self->_percentChargeLabel;
     [(BCUIRowView *)self bounds];
     [(UILabel *)percentChargeLabel sizeThatFits:CGRectGetWidth(v34) + -80.0 + -8.0, Height * 0.5 + -16.0];
-    if (v9)
+    if (_shouldReverseLayoutDirection)
     {
       [(BCUIRowView *)self bounds];
       CGRectGetWidth(v35);
@@ -563,7 +563,7 @@ LABEL_21:
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    if (v9)
+    if (_shouldReverseLayoutDirection)
     {
       v23 = v16 + 16.0;
     }
@@ -582,7 +582,7 @@ LABEL_21:
     v38.origin.y = v18;
     v38.size.width = v20;
     v38.size.height = v22;
-    if (!((v32 <= CGRectGetWidth(v38)) | v9 & 1))
+    if (!((v32 <= CGRectGetWidth(v38)) | _shouldReverseLayoutDirection & 1))
     {
       v39.origin.x = v23;
       v39.origin.y = v18;
@@ -601,30 +601,30 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)_nameLabelFrameForContentSize:(id)a3 percentChargeLabelFrame:(CGRect)a4
+- (CGRect)_nameLabelFrameForContentSize:(id)size percentChargeLabelFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(BCUIRowView *)self window];
-  if (v10)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  sizeCopy = size;
+  window = [(BCUIRowView *)self window];
+  if (window)
   {
-    v11 = [(BCUIRowView *)self window];
-    v12 = [v11 screen];
-    [v12 scale];
+    window2 = [(BCUIRowView *)self window];
+    screen = [window2 screen];
+    [screen scale];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v11 scale];
+    window2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [window2 scale];
   }
 
   [(BCUIRowView *)self bounds];
   CGRectGetHeight(v23);
-  v13 = [objc_opt_class() isAX3PlusLayoutRequiredForContentSizeCategory:v9];
+  v13 = [objc_opt_class() isAX3PlusLayoutRequiredForContentSizeCategory:sizeCopy];
 
   [(BCUIRowView *)self bounds];
   if (v13)
@@ -679,21 +679,21 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)_batteryViewFrameforContentSize:(id)a3 percentChargeLabelFrame:(CGRect)a4
+- (CGRect)_batteryViewFrameforContentSize:(id)size percentChargeLabelFrame:(CGRect)frame
 {
-  v5 = a3;
-  v6 = [(BCUIRowView *)self window];
-  if (v6)
+  sizeCopy = size;
+  window = [(BCUIRowView *)self window];
+  if (window)
   {
-    v7 = [(BCUIRowView *)self window];
-    v8 = [v7 screen];
-    [v8 scale];
+    window2 = [(BCUIRowView *)self window];
+    screen = [window2 screen];
+    [screen scale];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 scale];
+    window2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [window2 scale];
   }
 
   [(BCUIRowView *)self bounds];
@@ -706,7 +706,7 @@ LABEL_21:
   v16 = v15;
   [(BCUIRowView *)self bounds];
   v21 = BCUI6x8ColumnWidthForBounds(v17, v18, v19, v20);
-  v22 = [objc_opt_class() isAX3PlusLayoutRequiredForContentSizeCategory:v5];
+  v22 = [objc_opt_class() isAX3PlusLayoutRequiredForContentSizeCategory:sizeCopy];
 
   if (v22)
   {
@@ -733,12 +733,12 @@ LABEL_21:
       v29 = CGRectGetWidth(v42) + -8.0 - v21;
     }
 
-    v30 = [(BCUIRowView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(BCUIRowView *)self _shouldReverseLayoutDirection];
     v31 = v29;
     v32 = v24;
     v33 = v26;
     v34 = v28;
-    if (v30)
+    if (_shouldReverseLayoutDirection)
     {
       CGRectGetMaxX(*&v31);
       v43.origin.x = rect;
@@ -763,27 +763,27 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)_sepatorFrameForContentSize:(id)a3
+- (CGRect)_sepatorFrameForContentSize:(id)size
 {
   if (self->_separator)
   {
-    v4 = a3;
+    sizeCopy = size;
     [(BCUIRowView *)self bounds];
     BCUI6x8ColumnWidthForBounds(v5, v6, v7, v8);
-    [objc_opt_class() isAX3PlusLayoutRequiredForContentSizeCategory:v4];
+    [objc_opt_class() isAX3PlusLayoutRequiredForContentSizeCategory:sizeCopy];
 
-    v9 = [(BCUIRowView *)self window];
-    if (v9)
+    window = [(BCUIRowView *)self window];
+    if (window)
     {
-      v10 = [(BCUIRowView *)self window];
-      v11 = [v10 screen];
-      [v11 scale];
+      window2 = [(BCUIRowView *)self window];
+      screen = [window2 screen];
+      [screen scale];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v10 scale];
+      window2 = [MEMORY[0x1E69DCEB0] mainScreen];
+      [window2 scale];
     }
 
     [(BCUIRowView *)self bounds];
@@ -901,8 +901,8 @@ LABEL_21:
     self->_separator = v3;
 
     v5 = self->_separator;
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v5 setBackgroundColor:v6];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v5 setBackgroundColor:whiteColor];
 
     [(BCUIRowView *)self addSubview:self->_separator];
     v7 = [(NSMutableDictionary *)self->_categoriesToVisualStylingProvider objectForKey:&unk_1F416AEA8];
@@ -910,27 +910,27 @@ LABEL_21:
   }
 }
 
-- (id)_visualStylingProviderForCategory:(int64_t)a3
+- (id)_visualStylingProviderForCategory:(int64_t)category
 {
   categoriesToVisualStylingProvider = self->_categoriesToVisualStylingProvider;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:category];
   v5 = [(NSMutableDictionary *)categoriesToVisualStylingProvider objectForKey:v4];
 
   return v5;
 }
 
-- (void)_updateVisualStylingWithProvidersFromStylingProvider:(id)a3
+- (void)_updateVisualStylingWithProvidersFromStylingProvider:(id)provider
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  providerCopy = provider;
+  if (providerCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(BCUIRowView *)self requiredVisualStyleCategories];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    requiredVisualStyleCategories = [(BCUIRowView *)self requiredVisualStyleCategories];
+    v6 = [requiredVisualStyleCategories countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -941,15 +941,15 @@ LABEL_21:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(requiredVisualStyleCategories);
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
-          v11 = [v4 visualStylingProviderForCategory:{objc_msgSend(v10, "integerValue")}];
+          v11 = [providerCopy visualStylingProviderForCategory:{objc_msgSend(v10, "integerValue")}];
           -[BCUIRowView setVisualStylingProvider:forCategory:](self, "setVisualStylingProvider:forCategory:", v11, [v10 integerValue]);
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [requiredVisualStyleCategories countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -957,7 +957,7 @@ LABEL_21:
   }
 }
 
-- (void)_beginAutomaticallyUpdatingVisualStylingForCategory:(int64_t)a3
+- (void)_beginAutomaticallyUpdatingVisualStylingForCategory:(int64_t)category
 {
   categoriesToVisualStylingProvider = self->_categoriesToVisualStylingProvider;
   if (!categoriesToVisualStylingProvider)
@@ -965,7 +965,7 @@ LABEL_21:
     return;
   }
 
-  if (a3 == 2)
+  if (category == 2)
   {
     if (!self->_separator)
     {
@@ -979,7 +979,7 @@ LABEL_21:
     goto LABEL_10;
   }
 
-  if (a3 == 1)
+  if (category == 1)
   {
     if (self->_percentChargeLabel)
     {
@@ -1003,7 +1003,7 @@ LABEL_10:
   }
 }
 
-- (void)_stopAutomaticallyUpdatingVisualStylingForCategory:(int64_t)a3
+- (void)_stopAutomaticallyUpdatingVisualStylingForCategory:(int64_t)category
 {
   categoriesToVisualStylingProvider = self->_categoriesToVisualStylingProvider;
   if (!categoriesToVisualStylingProvider)
@@ -1011,7 +1011,7 @@ LABEL_10:
     return;
   }
 
-  if (a3 == 2)
+  if (category == 2)
   {
     p_separator = &self->_separator;
     if (!self->_separator)
@@ -1023,7 +1023,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (a3 == 1)
+  if (category == 1)
   {
     if (self->_percentChargeLabel)
     {
@@ -1052,9 +1052,9 @@ LABEL_10:
   percentChargeFormatter = self->_percentChargeFormatter;
   if (!percentChargeFormatter)
   {
-    v4 = [MEMORY[0x1E696ADA0] bcui_newPercentChargeFormatter];
+    bcui_newPercentChargeFormatter = [MEMORY[0x1E696ADA0] bcui_newPercentChargeFormatter];
     v5 = self->_percentChargeFormatter;
-    self->_percentChargeFormatter = v4;
+    self->_percentChargeFormatter = bcui_newPercentChargeFormatter;
 
     percentChargeFormatter = self->_percentChargeFormatter;
   }
@@ -1062,11 +1062,11 @@ LABEL_10:
   return percentChargeFormatter;
 }
 
-- (id)_percentChargeString:(int64_t)a3
+- (id)_percentChargeString:(int64_t)string
 {
-  v4 = [(BCUIRowView *)self _lazyPercentChargeFormatter];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 stringFromNumber:v5];
+  _lazyPercentChargeFormatter = [(BCUIRowView *)self _lazyPercentChargeFormatter];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:string];
+  v6 = [_lazyPercentChargeFormatter stringFromNumber:v5];
 
   return v6;
 }

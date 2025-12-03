@@ -1,12 +1,12 @@
 @interface BWCoreAnalyticsReporter
-+ (__CFString)commonClientApplicationID:(uint64_t)a1;
-+ (id)geometricDistortionCorrectionSourceToShortString:(int)a3;
-+ (id)shallowDepthOfFieldEffectStatusToString:(int)a3;
++ (__CFString)commonClientApplicationID:(uint64_t)d;
++ (id)geometricDistortionCorrectionSourceToShortString:(int)string;
++ (id)shallowDepthOfFieldEffectStatusToString:(int)string;
 + (id)sharedInstance;
-+ (int)clientApplicationIDType:(id)a3;
++ (int)clientApplicationIDType:(id)type;
 - (uint64_t)_sendAutoFocusROIEventToBiome:(uint64_t)result;
-- (void)_sanitizePayloadDictionary:(uint64_t)a3 eventName:;
-- (void)sendEvent:(id)a3;
+- (void)_sanitizePayloadDictionary:(uint64_t)dictionary eventName:;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation BWCoreAnalyticsReporter
@@ -28,12 +28,12 @@ BWCoreAnalyticsReporter *__41__BWCoreAnalyticsReporter_sharedInstance__block_inv
   return result;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v5 = [a3 eventDictionary];
-  v6 = [a3 eventName];
-  v7 = [(BWCoreAnalyticsReporter *)self _sanitizePayloadDictionary:v5 eventName:v6];
-  if (v6)
+  eventDictionary = [event eventDictionary];
+  eventName = [event eventName];
+  v7 = [(BWCoreAnalyticsReporter *)self _sanitizePayloadDictionary:eventDictionary eventName:eventName];
+  if (eventName)
   {
     v8 = v7;
     if (v7)
@@ -54,7 +54,7 @@ BWCoreAnalyticsReporter *__41__BWCoreAnalyticsReporter_sharedInstance__block_inv
       else
       {
 
-        MEMORY[0x1EEDF8DB0](v6, v8);
+        MEMORY[0x1EEDF8DB0](eventName, v8);
       }
     }
   }
@@ -125,244 +125,244 @@ BWCoreAnalyticsReporter *__41__BWCoreAnalyticsReporter_sharedInstance__block_inv
   return result;
 }
 
-+ (int)clientApplicationIDType:(id)a3
++ (int)clientApplicationIDType:(id)type
 {
-  if (!a3)
+  if (!type)
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:0x1F216ED50])
+  if ([type isEqualToString:0x1F216ED50])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:0x1F2185210])
+  if ([type isEqualToString:0x1F2185210])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:0x1F2185490])
+  if ([type isEqualToString:0x1F2185490])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:0x1F2185330])
+  if ([type isEqualToString:0x1F2185330])
   {
     return 10;
   }
 
-  if ([a3 isEqualToString:0x1F21852D0])
+  if ([type isEqualToString:0x1F21852D0])
   {
     return 23;
   }
 
-  if ([a3 isEqualToString:0x1F21854F0])
+  if ([type isEqualToString:0x1F21854F0])
   {
     return 27;
   }
 
-  if ([a3 isEqualToString:0x1F21854B0])
+  if ([type isEqualToString:0x1F21854B0])
   {
     return 28;
   }
 
-  if ([a3 isEqualToString:0x1F21855B0])
+  if ([type isEqualToString:0x1F21855B0])
   {
     return 33;
   }
 
-  if ([a3 isEqualToString:0x1F2185250])
+  if ([type isEqualToString:0x1F2185250])
   {
     return 34;
   }
 
-  if ([a3 isEqualToString:0x1F2185270])
+  if ([type isEqualToString:0x1F2185270])
   {
     return 35;
   }
 
-  if ([a3 isEqualToString:0x1F2185530] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", 0x1F2185550))
+  if ([type isEqualToString:0x1F2185530] & 1) != 0 || (objc_msgSend(type, "isEqualToString:", 0x1F2185550))
   {
     return 44;
   }
 
-  if ([a3 isEqualToString:0x1F2185430])
+  if ([type isEqualToString:0x1F2185430])
   {
     return 45;
   }
 
-  if ([a3 isEqualToString:0x1F2185410])
+  if ([type isEqualToString:0x1F2185410])
   {
     return 46;
   }
 
-  if ([a3 isEqualToString:0x1F21851F0])
+  if ([type isEqualToString:0x1F21851F0])
   {
     return 48;
   }
 
-  if ([a3 hasPrefix:@"com.apple."])
+  if ([type hasPrefix:@"com.apple."])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"net.whatsapp.WhatsApp"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"desktop.WhatsApp") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"net.whatsapp.WhatsAppSMB") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"WhatsApp"))
+  if ([type isEqualToString:@"net.whatsapp.WhatsApp"] & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"desktop.WhatsApp") & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"net.whatsapp.WhatsAppSMB") & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"WhatsApp"))
   {
     return 6;
   }
 
-  if ([a3 isEqualToString:@"com.facebook.Messenger"])
+  if ([type isEqualToString:@"com.facebook.Messenger"])
   {
     return 7;
   }
 
-  if ([a3 isEqualToString:@"com.skype.skype"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.skype.SkypeForiPad"))
+  if ([type isEqualToString:@"com.skype.skype"] & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"com.skype.SkypeForiPad"))
   {
     return 8;
   }
 
-  if ([a3 isEqualToString:@"com.tencent.xin"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.tencent.xinWeChat"))
+  if ([type isEqualToString:@"com.tencent.xin"] & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"com.tencent.xinWeChat"))
   {
     return 9;
   }
 
-  if ([a3 isEqualToString:@"com.burbn.instagram"])
+  if ([type isEqualToString:@"com.burbn.instagram"])
   {
     return 11;
   }
 
-  if ([a3 isEqualToString:@"com.toyopagroup.picaboo"])
+  if ([type isEqualToString:@"com.toyopagroup.picaboo"])
   {
     return 12;
   }
 
-  if ([a3 isEqualToString:@"com.zhiliaoapp.musically"])
+  if ([type isEqualToString:@"com.zhiliaoapp.musically"])
   {
     return 13;
   }
 
-  if ([a3 isEqualToString:@"com.webex.meeting"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.webex.meetingmanager") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.cisco.squared") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.cisco.squared.intune") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.cisco.webexcalling") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"Cisco-Systems.Spark"))
+  if ([type isEqualToString:@"com.webex.meeting"] & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"com.webex.meetingmanager") & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"com.cisco.squared") & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"com.cisco.squared.intune") & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"com.cisco.webexcalling") & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"Cisco-Systems.Spark"))
   {
     return 14;
   }
 
-  if ([a3 isEqualToString:@"us.zoom.videomeetings"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"us.zoom.xos"))
+  if ([type isEqualToString:@"us.zoom.videomeetings"] & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"us.zoom.xos"))
   {
     return 15;
   }
 
-  if ([a3 isEqualToString:@"com.google.hangouts"])
+  if ([type isEqualToString:@"com.google.hangouts"])
   {
     return 16;
   }
 
-  if ([a3 isEqualToString:@"com.bluejeansnet.Blue-Jeans"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.bluejeansnet.Huddle") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.bluejeansnet.Blue"))
+  if ([type isEqualToString:@"com.bluejeansnet.Blue-Jeans"] & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"com.bluejeansnet.Huddle") & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"com.bluejeansnet.Blue"))
   {
     return 17;
   }
 
-  if ([a3 isEqualToString:@"com.logmein.gotomeeting"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.logmein.GoToMeeting"))
+  if ([type isEqualToString:@"com.logmein.gotomeeting"] & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"com.logmein.GoToMeeting"))
   {
     return 18;
   }
 
-  if ([a3 isEqualToString:@"com.logmein.joinme"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.logmein.join.me"))
+  if ([type isEqualToString:@"com.logmein.joinme"] & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"com.logmein.join.me"))
   {
     return 19;
   }
 
-  if ([a3 isEqualToString:@"com.herzick.houseparty"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.herzick.mac"))
+  if ([type isEqualToString:@"com.herzick.houseparty"] & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"com.herzick.mac"))
   {
     return 20;
   }
 
-  if ([a3 isEqualToString:@"com.cisco.jabberIM"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.cisco.jabberIMintune") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.cisco.JabberGuest") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.cisco.jabberIMbb"))
+  if ([type isEqualToString:@"com.cisco.jabberIM"] & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"com.cisco.jabberIMintune") & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"com.cisco.JabberGuest") & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"com.cisco.jabberIMbb"))
   {
     return 21;
   }
 
-  if ([a3 isEqualToString:@"com.microsoft.skype.teams"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.microsoft.teams") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.microsoft.teams2"))
+  if ([type isEqualToString:@"com.microsoft.skype.teams"] & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"com.microsoft.teams") & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"com.microsoft.teams2"))
   {
     return 22;
   }
 
-  if ([a3 isEqualToString:@"com.meetinone.meetinone"])
+  if ([type isEqualToString:@"com.meetinone.meetinone"])
   {
     return 24;
   }
 
-  if ([a3 isEqualToString:@"com.google.meetings"])
+  if ([type isEqualToString:@"com.google.meetings"])
   {
     return 25;
   }
 
-  if ([a3 isEqualToString:@"com.tinyspeck.slackmacgap"])
+  if ([type isEqualToString:@"com.tinyspeck.slackmacgap"])
   {
     return 26;
   }
 
-  if ([a3 isEqualToString:@"com.tencent.tencentmeeting"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.tencent.meeting"))
+  if ([type isEqualToString:@"com.tencent.tencentmeeting"] & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"com.tencent.meeting"))
   {
     return 29;
   }
 
-  if ([a3 isEqualToString:@"com.hnc.Discord"])
+  if ([type isEqualToString:@"com.hnc.Discord"])
   {
     return 30;
   }
 
-  if ([a3 isEqualToString:@"com.obsproject.obs-studio"])
+  if ([type isEqualToString:@"com.obsproject.obs-studio"])
   {
     return 31;
   }
 
-  if ([a3 isEqualToString:@"com.alibaba.DingTalkMac"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.alibaba.DingTalkMacLite"))
+  if ([type isEqualToString:@"com.alibaba.DingTalkMac"] & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"com.alibaba.DingTalkMacLite"))
   {
     return 32;
   }
 
-  if ([a3 isEqualToString:@"com.brave.Browser"])
+  if ([type isEqualToString:@"com.brave.Browser"])
   {
     return 36;
   }
 
-  if ([a3 isEqualToString:@"com.google.Chrome"])
+  if ([type isEqualToString:@"com.google.Chrome"])
   {
     return 37;
   }
 
-  if ([a3 isEqualToString:@"com.microsoft.edgemac"])
+  if ([type isEqualToString:@"com.microsoft.edgemac"])
   {
     return 38;
   }
 
-  if ([a3 isEqualToString:@"org.mozilla.firefox"])
+  if ([type isEqualToString:@"org.mozilla.firefox"])
   {
     return 39;
   }
 
-  if ([a3 isEqualToString:@"ru.keepcoder.Telegram"])
+  if ([type isEqualToString:@"ru.keepcoder.Telegram"])
   {
     return 40;
   }
 
-  if ([a3 isEqualToString:@"jp.naver.line.mac"])
+  if ([type isEqualToString:@"jp.naver.line.mac"])
   {
     return 41;
   }
 
-  if ([a3 isEqualToString:@"com.ecamm.EcammLive"])
+  if ([type isEqualToString:@"com.ecamm.EcammLive"])
   {
     return 42;
   }
 
-  if ([a3 isEqualToString:@"com.reincubate.macos.cam"])
+  if ([type isEqualToString:@"com.reincubate.macos.cam"])
   {
     return 43;
   }
 
-  if ([a3 isEqualToString:@"com.blackmagic-design.DaVinciCamera"])
+  if ([type isEqualToString:@"com.blackmagic-design.DaVinciCamera"])
   {
     return 47;
   }
@@ -370,7 +370,7 @@ BWCoreAnalyticsReporter *__41__BWCoreAnalyticsReporter_sharedInstance__block_inv
   return 1;
 }
 
-+ (__CFString)commonClientApplicationID:(uint64_t)a1
++ (__CFString)commonClientApplicationID:(uint64_t)d
 {
   objc_opt_self();
   if (!a2)
@@ -396,41 +396,41 @@ BWCoreAnalyticsReporter *__41__BWCoreAnalyticsReporter_sharedInstance__block_inv
   }
 }
 
-+ (id)shallowDepthOfFieldEffectStatusToString:(int)a3
++ (id)shallowDepthOfFieldEffectStatusToString:(int)string
 {
-  if (a3 > 0xF)
+  if (string > 0xF)
   {
     return @"Invalid";
   }
 
   else
   {
-    return off_1E7999B98[a3];
+    return off_1E7999B98[string];
   }
 }
 
-+ (id)geometricDistortionCorrectionSourceToShortString:(int)a3
++ (id)geometricDistortionCorrectionSourceToShortString:(int)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"Invalid";
   }
 
   else
   {
-    return off_1E7999C18[a3];
+    return off_1E7999C18[string];
   }
 }
 
-- (void)_sanitizePayloadDictionary:(uint64_t)a3 eventName:
+- (void)_sanitizePayloadDictionary:(uint64_t)dictionary eventName:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v5 = [MEMORY[0x1E695DF70] array];
-  v13 = OUTLINED_FUNCTION_2_82(v5, v6, v7, v8, v9, v10, v11, v12, v33, v35, v37, v39, v40, v42, v44, v46, v47, v49, v51, v53, v54, v55, v57, v59, v60, v61, v63, v65, v67, v69, v71, v73, v75, v77, v79, v81, v83, v85, v87, v89, v91);
+  array = [MEMORY[0x1E695DF70] array];
+  v13 = OUTLINED_FUNCTION_2_82(array, v6, v7, v8, v9, v10, v11, v12, v33, v35, v37, v39, v40, v42, v44, v46, v47, v49, v51, v53, v54, v55, v57, v59, v60, v61, v63, v65, v67, v69, v71, v73, v75, v77, v79, v81, v83, v85, v87, v89, v91);
   if (v13)
   {
     v15 = v13;
@@ -439,7 +439,7 @@ BWCoreAnalyticsReporter *__41__BWCoreAnalyticsReporter_sharedInstance__block_inv
     v45 = v14;
     *&v14 = 136315650;
     v38 = v14;
-    v43 = v5;
+    v43 = array;
     do
     {
       v16 = 0;
@@ -479,7 +479,7 @@ BWCoreAnalyticsReporter *__41__BWCoreAnalyticsReporter_sharedInstance__block_inv
               *v52 = v38;
               *&v52[4] = "[BWCoreAnalyticsReporter _sanitizePayloadDictionary:eventName:]";
               *&v52[12] = 2112;
-              *&v52[14] = a3;
+              *&v52[14] = dictionary;
               *&v52[22] = 2112;
               OUTLINED_FUNCTION_0_84();
               _os_log_send_and_compose_impl();
@@ -487,14 +487,14 @@ BWCoreAnalyticsReporter *__41__BWCoreAnalyticsReporter_sharedInstance__block_inv
 
             fig_log_call_emit_and_clean_up_after_send_and_compose();
             *v58 = v45;
-            *&v58[4] = a3;
+            *&v58[4] = dictionary;
             *&v58[12] = 2112;
             *&v58[14] = v17;
             v31 = _os_log_send_and_compose_impl();
             v36 = 0;
             FigCapturePleaseFileRadar(FrameworkRadarComponent, v31, 0, 0, "/Library/Caches/com.apple.xbs/Sources/CameraCapture/CMCapture/Sources/Graph/Utilities/BWCoreAnalyticsReporter.m", 383, @"LastShownDate:BWCoreAnalyticsReporter.m:383", @"LastShownBuild:BWCoreAnalyticsReporter.m:383", 0);
             free(v31);
-            v5 = v43;
+            array = v43;
             isKindOfClass = [v43 addObject:v17];
             v15 = v48;
           }
@@ -510,10 +510,10 @@ BWCoreAnalyticsReporter *__41__BWCoreAnalyticsReporter_sharedInstance__block_inv
     while (v15);
   }
 
-  if ([v5 count])
+  if ([array count])
   {
     a2 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a2];
-    [a2 removeObjectsForKeys:v5];
+    [a2 removeObjectsForKeys:array];
   }
 
   return a2;

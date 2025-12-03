@@ -3,8 +3,8 @@
 + (void)_saveCachedProperties;
 + (void)initialize;
 - (unint64_t)priority;
-- (void)setLargeMessageSize:(unint64_t)a3;
-- (void)setMessageSize:(unint64_t)a3;
+- (void)setLargeMessageSize:(unint64_t)size;
+- (void)setMessageSize:(unint64_t)size;
 @end
 
 @implementation APSEnvironment
@@ -304,20 +304,20 @@ LABEL_30:
   sub_1000054B8(1);
 }
 
-- (void)setMessageSize:(unint64_t)a3
+- (void)setMessageSize:(unint64_t)size
 {
-  if (self->_messageSize != a3)
+  if (self->_messageSize != size)
   {
-    self->_messageSize = a3;
+    self->_messageSize = size;
     +[APSEnvironment _saveCachedProperties];
   }
 }
 
-- (void)setLargeMessageSize:(unint64_t)a3
+- (void)setLargeMessageSize:(unint64_t)size
 {
-  if (self->_largeMessageSize != a3)
+  if (self->_largeMessageSize != size)
   {
-    self->_largeMessageSize = a3;
+    self->_largeMessageSize = size;
     +[APSEnvironment _saveCachedProperties];
   }
 }

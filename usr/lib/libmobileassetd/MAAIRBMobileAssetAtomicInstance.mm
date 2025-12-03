@@ -1,19 +1,19 @@
 @interface MAAIRBMobileAssetAtomicInstance
 - (MAAIRBMobileAssetAtomicInstance)init;
-- (MAAIRBMobileAssetAtomicInstance)initWithAssetSet:(id)a3 atomicInstanceId:(id)a4;
+- (MAAIRBMobileAssetAtomicInstance)initWithAssetSet:(id)set atomicInstanceId:(id)id;
 @end
 
 @implementation MAAIRBMobileAssetAtomicInstance
 
-- (MAAIRBMobileAssetAtomicInstance)initWithAssetSet:(id)a3 atomicInstanceId:(id)a4
+- (MAAIRBMobileAssetAtomicInstance)initWithAssetSet:(id)set atomicInstanceId:(id)id
 {
-  if (a4)
+  if (id)
   {
     sub_303948();
   }
 
-  v5 = a3;
-  v6 = sub_252810(v5);
+  setCopy = set;
+  v6 = sub_252810(setCopy);
 
   return v6;
 }

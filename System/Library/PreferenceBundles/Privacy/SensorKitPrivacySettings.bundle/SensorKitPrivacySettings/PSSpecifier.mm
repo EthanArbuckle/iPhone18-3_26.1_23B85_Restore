@@ -1,28 +1,28 @@
 @interface PSSpecifier
-+ (id)sk_appSpecifierForBundle:(id)a3 value:(id)a4 cellType:(int64_t)a5 target:(id)a6;
++ (id)sk_appSpecifierForBundle:(id)bundle value:(id)value cellType:(int64_t)type target:(id)target;
 @end
 
 @implementation PSSpecifier
 
-+ (id)sk_appSpecifierForBundle:(id)a3 value:(id)a4 cellType:(int64_t)a5 target:(id)a6
++ (id)sk_appSpecifierForBundle:(id)bundle value:(id)value cellType:(int64_t)type target:(id)target
 {
-  v8 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", [a3 sk_appName], a6, 0, NSSelectorFromString(@"valueForSpecifier:"), 0, a5, 0);
-  [v8 setUserInfo:{objc_msgSend(a3, "bundleIdentifier")}];
-  v9 = [a3 sr_bundleType];
-  if (v9 == &dword_0 + 2)
+  v8 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", [bundle sk_appName], target, 0, NSSelectorFromString(@"valueForSpecifier:"), 0, type, 0);
+  [v8 setUserInfo:{objc_msgSend(bundle, "bundleIdentifier")}];
+  sr_bundleType = [bundle sr_bundleType];
+  if (sr_bundleType == &dword_0 + 2)
   {
-    v15 = [a3 bundleIdentifier];
+    bundleIdentifier = [bundle bundleIdentifier];
     [+[UIScreen mainScreen](UIScreen scale];
-    v14 = [UIImage _applicationIconImageForBundleIdentifier:v15 format:0 scale:?];
+    v14 = [UIImage _applicationIconImageForBundleIdentifier:bundleIdentifier format:0 scale:?];
     goto LABEL_5;
   }
 
   v10 = 0;
-  if (v9 == &dword_0 + 1)
+  if (sr_bundleType == &dword_0 + 1)
   {
-    v11 = [a3 objectForInfoDictionaryKey:@"CFBundleIconFile"];
+    v11 = [bundle objectForInfoDictionaryKey:@"CFBundleIconFile"];
     v12 = [ISImageDescriptor imageDescriptorNamed:kISImageDescriptorTableUIName];
-    v13 = [UIImage imageNamed:v11 inBundle:a3 compatibleWithTraitCollection:0];
+    v13 = [UIImage imageNamed:v11 inBundle:bundle compatibleWithTraitCollection:0];
     [v12 size];
     v14 = [(UIImage *)v13 imageByPreparingThumbnailOfSize:?];
 LABEL_5:
@@ -30,7 +30,7 @@ LABEL_5:
   }
 
   [v8 setObject:v10 forKeyedSubscript:PSIconImageKey];
-  [v8 setObject:a4 forKeyedSubscript:PSValueKey];
+  [v8 setObject:value forKeyedSubscript:PSValueKey];
   return v8;
 }
 

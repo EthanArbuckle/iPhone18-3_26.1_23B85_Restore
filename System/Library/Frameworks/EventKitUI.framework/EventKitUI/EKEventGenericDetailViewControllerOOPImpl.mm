@@ -1,16 +1,16 @@
 @interface EKEventGenericDetailViewControllerOOPImpl
 - (UIColor)oopContentBackgroundColor;
-- (_TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl)initWithCoder:(id)a3;
-- (_TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl)initWithHostViewID:(id)a3;
-- (_TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)bottomStatusButtonTapped:(int64_t)a3;
-- (void)setOopContentBackgroundColor:(id)a3;
+- (_TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl)initWithCoder:(id)coder;
+- (_TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl)initWithHostViewID:(id)d;
+- (_TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl)initWithNibName:(id)name bundle:(id)bundle;
+- (void)bottomStatusButtonTapped:(int64_t)tapped;
+- (void)setOopContentBackgroundColor:(id)color;
 - (void)viewDidLoad;
 @end
 
 @implementation EKEventGenericDetailViewControllerOOPImpl
 
-- (_TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl)initWithHostViewID:(id)a3
+- (_TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl)initWithHostViewID:(id)d
 {
   v4 = sub_1D35DF384();
   v6 = v5;
@@ -30,7 +30,7 @@
   return [(EKEventGenericDetailViewControllerOOPImpl *)&v9 initWithNibName:0 bundle:0];
 }
 
-- (_TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl)initWithNibName:(id)name bundle:(id)bundle
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl_hostingController) = 0;
   v4 = self + OBJC_IVAR____TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl_hostView;
@@ -46,7 +46,7 @@
   return result;
 }
 
-- (_TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl)initWithCoder:(id)a3
+- (_TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl_hostingController) = 0;
   v3 = self + OBJC_IVAR____TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl_hostView;
@@ -64,7 +64,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D35AFB0C();
 }
 
@@ -75,14 +75,14 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setOopContentBackgroundColor:(id)a3
+- (void)setOopContentBackgroundColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D35B0868(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1D35B0868(color);
 }
 
-- (void)bottomStatusButtonTapped:(int64_t)a3
+- (void)bottomStatusButtonTapped:(int64_t)tapped
 {
   v3 = self + OBJC_IVAR____TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl_hostView;
   v4 = *(&self->super._tabElement + OBJC_IVAR____TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl_hostView);
@@ -103,9 +103,9 @@
     v8 = *(v3 + 1);
     v12 = *(v3 + 2);
     v11 = v8;
-    v9 = self;
+    selfCopy = self;
     sub_1D35B0978(v16, v10);
-    sub_1D35A037C(a3);
+    sub_1D35A037C(tapped);
 
     sub_1D35AFCA4(v16);
   }

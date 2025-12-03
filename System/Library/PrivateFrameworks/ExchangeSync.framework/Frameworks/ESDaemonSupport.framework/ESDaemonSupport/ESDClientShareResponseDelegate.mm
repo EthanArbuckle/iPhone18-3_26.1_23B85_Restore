@@ -1,24 +1,24 @@
 @interface ESDClientShareResponseDelegate
-- (ESDClientShareResponseDelegate)initWithAccountID:(id)a3 client:(id)a4 calendarID:(id)a5;
-- (void)_doResponseWithBlock:(id)a3;
+- (ESDClientShareResponseDelegate)initWithAccountID:(id)d client:(id)client calendarID:(id)iD;
+- (void)_doResponseWithBlock:(id)block;
 - (void)dealloc;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 - (void)reportAsJunk;
-- (void)respondToShareRequestWithResponse:(int64_t)a3;
+- (void)respondToShareRequestWithResponse:(int64_t)response;
 @end
 
 @implementation ESDClientShareResponseDelegate
 
-- (ESDClientShareResponseDelegate)initWithAccountID:(id)a3 client:(id)a4 calendarID:(id)a5
+- (ESDClientShareResponseDelegate)initWithAccountID:(id)d client:(id)client calendarID:(id)iD
 {
-  v8 = a5;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = ESDClientShareResponseDelegate;
-  v9 = [(ESDClientDelegate *)&v12 initWithAccountID:a3 client:a4];
+  v9 = [(ESDClientDelegate *)&v12 initWithAccountID:d client:client];
   v10 = v9;
   if (v9)
   {
-    [(ESDClientShareResponseDelegate *)v9 setCalendarID:v8];
+    [(ESDClientShareResponseDelegate *)v9 setCalendarID:iDCopy];
   }
 
   return v10;
@@ -32,14 +32,14 @@
   [(ESDClientDelegate *)&v3 dealloc];
 }
 
-- (void)respondToShareRequestWithResponse:(int64_t)a3
+- (void)respondToShareRequestWithResponse:(int64_t)response
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __68__ESDClientShareResponseDelegate_respondToShareRequestWithResponse___block_invoke;
   v3[3] = &unk_278FCE1C0;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = response;
   [(ESDClientShareResponseDelegate *)self _doResponseWithBlock:v3];
 }
 
@@ -53,19 +53,19 @@
   [(ESDClientShareResponseDelegate *)self _doResponseWithBlock:v2];
 }
 
-- (void)_doResponseWithBlock:(id)a3
+- (void)_doResponseWithBlock:(id)block
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   if (![(DADisableableObject *)self isDisabled])
   {
     v5 = +[ESDAgentManager sharedManager];
-    v6 = [(ESDClientDelegate *)self accountID];
-    v7 = [v5 accountWithAccountID:v6 andClassName:@"MobileCalDAVAccount"];
+    accountID = [(ESDClientDelegate *)self accountID];
+    v7 = [v5 accountWithAccountID:accountID andClassName:@"MobileCalDAVAccount"];
 
     if (v7)
     {
-      v8 = v4[2](v4, v7);
+      v8 = blockCopy[2](blockCopy, v7);
       [(ESDClientShareResponseDelegate *)self setShareID:v8];
     }
 
@@ -75,9 +75,9 @@
       v10 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v9, v10))
       {
-        v11 = [(ESDClientDelegate *)self accountID];
+        accountID2 = [(ESDClientDelegate *)self accountID];
         v13 = 138412290;
-        v14 = v11;
+        v14 = accountID2;
         _os_log_impl(&dword_24A184000, v9, v10, "Could not get an account with the ID %@", &v13, 0xCu);
       }
 
@@ -89,10 +89,10 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (![(DADisableableObject *)self isDisabled]&& ![(ESDClientDelegate *)self finished])
   {
     [(ESDClientDelegate *)self setFinished:1];
@@ -102,41 +102,41 @@
     if (os_log_type_enabled(v5, v7))
     {
       *buf = 138412290;
-      v30 = v4;
+      v30 = errorCopy;
       _os_log_impl(&dword_24A184000, v5, v7, "DADClientShareResponseDelegate finished with error %@", buf, 0xCu);
     }
 
-    v8 = [(ESDClientShareResponseDelegate *)self shareID];
-    if (v8)
+    shareID = [(ESDClientShareResponseDelegate *)self shareID];
+    if (shareID)
     {
-      v9 = v8;
-      v10 = [v4 domain];
-      if ([v10 isEqualToString:*MEMORY[0x277D038E0]])
+      v9 = shareID;
+      domain = [errorCopy domain];
+      if ([domain isEqualToString:*MEMORY[0x277D038E0]])
       {
-        v11 = [v4 code];
+        code = [errorCopy code];
 
-        if (v11 == -1)
+        if (code == -1)
         {
           v12 = +[ESDAgentManager sharedManager];
-          v13 = [(ESDClientDelegate *)self accountID];
-          v14 = [v12 accountWithAccountID:v13];
+          accountID = [(ESDClientDelegate *)self accountID];
+          rawConnection = [v12 accountWithAccountID:accountID];
 
-          if (v14)
+          if (rawConnection)
           {
-            v15 = [(ESDClientShareResponseDelegate *)self shareID];
-            [v14 cancelShareResponseInstance:v15 error:0];
+            shareID2 = [(ESDClientShareResponseDelegate *)self shareID];
+            [rawConnection cancelShareResponseInstance:shareID2 error:0];
           }
 
           else
           {
-            v15 = DALoggingwithCategory();
+            shareID2 = DALoggingwithCategory();
             v25 = *(v6 + 3);
-            if (os_log_type_enabled(v15, v25))
+            if (os_log_type_enabled(shareID2, v25))
             {
-              v26 = [(ESDClientDelegate *)self accountID];
+              accountID2 = [(ESDClientDelegate *)self accountID];
               *buf = 138412290;
-              v30 = v26;
-              _os_log_impl(&dword_24A184000, v15, v25, "DADClientShareResponseDelegate finished, but could not find an account with the ID %@", buf, 0xCu);
+              v30 = accountID2;
+              _os_log_impl(&dword_24A184000, shareID2, v25, "DADClientShareResponseDelegate finished, but could not find an account with the ID %@", buf, 0xCu);
             }
           }
 
@@ -149,16 +149,16 @@
       }
     }
 
-    v16 = [(ESDClientDelegate *)self client];
-    v14 = [v16 rawConnection];
+    client = [(ESDClientDelegate *)self client];
+    rawConnection = [client rawConnection];
 
-    if (!v14)
+    if (!rawConnection)
     {
 LABEL_14:
 
-      v22 = [(ESDClientDelegate *)self client];
-      v23 = [(ESDClientDelegate *)self delegateID];
-      [v22 delegateWithIDIsGoingAway:v23];
+      client2 = [(ESDClientDelegate *)self client];
+      delegateID = [(ESDClientDelegate *)self delegateID];
+      [client2 delegateWithIDIsGoingAway:delegateID];
 
       goto LABEL_15;
     }
@@ -168,15 +168,15 @@ LABEL_14:
     v18 = [(ESDClientShareResponseDelegate *)self calendarID:v17];
     v28[1] = v18;
     v27[2] = *MEMORY[0x277D03E10];
-    v19 = [(ESDClientDelegate *)self delegateID];
-    v28[2] = v19;
+    delegateID2 = [(ESDClientDelegate *)self delegateID];
+    v28[2] = delegateID2;
     v27[3] = *MEMORY[0x277D03B40];
-    v20 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4];
+    v20 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:errorCopy];
     v28[3] = v20;
-    v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:4];
+    shareID2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:4];
 
     v21 = _CFXPCCreateXPCObjectFromCFObject();
-    xpc_connection_send_message(v14, v21);
+    xpc_connection_send_message(rawConnection, v21);
 
 LABEL_13:
     goto LABEL_14;

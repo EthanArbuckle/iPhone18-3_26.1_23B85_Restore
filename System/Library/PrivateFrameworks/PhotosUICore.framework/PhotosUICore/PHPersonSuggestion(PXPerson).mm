@@ -16,94 +16,94 @@
 - (id)px_keyPhotoDate
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v1 = [a1 keyFace];
-  v2 = [v1 photoLibrary];
-  v3 = [v2 px_standardLibrarySpecificFetchOptions];
+  keyFace = [self keyFace];
+  photoLibrary = [keyFace photoLibrary];
+  px_standardLibrarySpecificFetchOptions = [photoLibrary px_standardLibrarySpecificFetchOptions];
 
-  [v3 setIncludeHiddenAssets:0];
-  [v3 setFetchLimit:1];
-  [v3 setSortDescriptors:MEMORY[0x1E695E0F0]];
+  [px_standardLibrarySpecificFetchOptions setIncludeHiddenAssets:0];
+  [px_standardLibrarySpecificFetchOptions setFetchLimit:1];
+  [px_standardLibrarySpecificFetchOptions setSortDescriptors:MEMORY[0x1E695E0F0]];
   v12[0] = *MEMORY[0x1E6978CA8];
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  [v3 addFetchPropertySets:v4];
+  [px_standardLibrarySpecificFetchOptions addFetchPropertySets:v4];
 
   v5 = MEMORY[0x1E6978630];
-  v11 = v1;
+  v11 = keyFace;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v11 count:1];
-  v7 = [v5 fetchAssetsForFaces:v6 options:v3];
+  v7 = [v5 fetchAssetsForFaces:v6 options:px_standardLibrarySpecificFetchOptions];
 
-  v8 = [v7 firstObject];
-  v9 = [v8 creationDate];
+  firstObject = [v7 firstObject];
+  creationDate = [firstObject creationDate];
 
-  return v9;
+  return creationDate;
 }
 
 - (uint64_t)px_isPet
 {
-  v1 = [a1 person];
-  v2 = [v1 px_isPet];
+  person = [self person];
+  px_isPet = [person px_isPet];
 
-  return v2;
+  return px_isPet;
 }
 
 - (uint64_t)px_isHuman
 {
-  v1 = [a1 person];
-  v2 = [v1 px_isHuman];
+  person = [self person];
+  px_isHuman = [person px_isHuman];
 
-  return v2;
+  return px_isHuman;
 }
 
 - (uint64_t)detectionType
 {
-  v1 = [a1 person];
-  v2 = [v1 detectionType];
+  person = [self person];
+  detectionType = [person detectionType];
 
-  return v2;
+  return detectionType;
 }
 
 - (id)px_localIdentifier
 {
-  v1 = [a1 keyFace];
-  v2 = [v1 localIdentifier];
+  keyFace = [self keyFace];
+  localIdentifier = [keyFace localIdentifier];
 
-  return v2;
+  return localIdentifier;
 }
 
 - (id)px_longStyleLocalizedName
 {
-  v1 = [a1 person];
-  v2 = [v1 px_longStyleLocalizedName];
+  person = [self person];
+  px_longStyleLocalizedName = [person px_longStyleLocalizedName];
 
-  return v2;
+  return px_longStyleLocalizedName;
 }
 
 - (id)px_localizedName
 {
-  v1 = [a1 person];
-  v2 = [v1 px_localizedName];
+  person = [self person];
+  px_localizedName = [person px_localizedName];
 
-  return v2;
+  return px_localizedName;
 }
 
 - (id)name
 {
-  v1 = [a1 person];
-  v2 = [v1 name];
+  person = [self person];
+  name = [person name];
 
-  return v2;
+  return name;
 }
 
 - (uint64_t)numberOfAssets
 {
-  v2 = [a1 person];
-  v3 = [v2 photoLibrary];
-  v4 = [v3 librarySpecificFetchOptions];
+  person = [self person];
+  photoLibrary = [person photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v4 setShouldPrefetchCount:1];
+  [librarySpecificFetchOptions setShouldPrefetchCount:1];
   v5 = MEMORY[0x1E6978630];
-  v6 = [a1 person];
-  v7 = [v5 fetchAssetsForPerson:v6 options:v4];
+  person2 = [self person];
+  v7 = [v5 fetchAssetsForPerson:person2 options:librarySpecificFetchOptions];
 
   v8 = [v7 count];
   return v8;
@@ -113,8 +113,8 @@
 {
   v18 = a10;
   v19 = [PXPeopleFaceCropFetchOptions alloc];
-  v20 = [a1 keyFace];
-  v21 = [(PXPeopleFaceCropFetchOptions *)v19 initWithFace:v20 targetSize:a2 displayScale:a3, a4];
+  keyFace = [self keyFace];
+  v21 = [(PXPeopleFaceCropFetchOptions *)v19 initWithFace:keyFace targetSize:a2 displayScale:a3, a4];
 
   [(PXPeopleFaceCropFetchOptions *)v21 setCropFactor:a6];
   [(PXPeopleFaceCropFetchOptions *)v21 setCornerStyle:a7];

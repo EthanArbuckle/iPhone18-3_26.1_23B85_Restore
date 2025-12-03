@@ -1,13 +1,13 @@
 @interface HMDMatterCapabilitiesFactory
-+ (id)makeInstanceForAssetFilename:(int64_t)a3;
++ (id)makeInstanceForAssetFilename:(int64_t)filename;
 - (HMDMatterCapabilitiesFactory)init;
 @end
 
 @implementation HMDMatterCapabilitiesFactory
 
-+ (id)makeInstanceForAssetFilename:(int64_t)a3
++ (id)makeInstanceForAssetFilename:(int64_t)filename
 {
-  v3 = sub_2297C4AE4(a3);
+  v3 = sub_2297C4AE4(filename);
 
   return v3;
 }

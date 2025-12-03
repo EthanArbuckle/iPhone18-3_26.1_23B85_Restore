@@ -253,9 +253,9 @@
 - (UIColor)whiteSelectionHightlightColor;
 - (UIImage)appGrabberCloseImage;
 - (UIImage)appSelectionOutline;
-- (char)applyPayCashSendButtonColorForEntryViewStyle:(int64_t)a3;
-- (char)ckAcknowledgementColorTypeForColor:(id)a3;
-- (char)messageAcknowledgmentBalloonColorTypeForStyle:(int64_t)a3;
+- (char)applyPayCashSendButtonColorForEntryViewStyle:(int64_t)style;
+- (char)ckAcknowledgementColorTypeForColor:(id)color;
+- (char)messageAcknowledgmentBalloonColorTypeForStyle:(int64_t)style;
 - (double)browserAppStripDimmedPluginCellOpacity;
 - (double)browserAppStripLightPluginCellOpacity;
 - (double)contactTableViewContactBackgroundAlpha;
@@ -265,8 +265,8 @@
 - (id)_conversationListBackgroundColor;
 - (id)_conversationListCellNewComposeCloseColor;
 - (id)_gray_balloonTranslationDividerLineColor;
-- (id)_primaryBrandColorForBrand:(id)a3 debugAssociatedObject:(id)a4;
-- (id)_secondaryBrandColorForBrand:(id)a3 debugAssociatedObject:(id)a4;
+- (id)_primaryBrandColorForBrand:(id)brand debugAssociatedObject:(id)object;
+- (id)_secondaryBrandColorForBrand:(id)brand debugAssociatedObject:(id)object;
 - (id)_transcriptBackgroundColor;
 - (id)_transcriptBigEmojiColor;
 - (id)_transcriptTextColor;
@@ -284,15 +284,15 @@
 - (id)background_sendButtonColor;
 - (id)background_unfilledBalloonColor;
 - (id)background_waveformColor;
-- (id)balloonColorsForColorType:(char)a3;
-- (id)balloonOverlayColorForColorType:(char)a3;
-- (id)balloonTextColorForColorType:(char)a3;
-- (id)balloonTextColorInPrintingPathForColorType:(char)a3;
-- (id)balloonTextLinkColorForColorType:(char)a3;
-- (id)balloonTranslationDividerLineColorForColorType:(char)a3;
-- (id)balloonTranslationDividerLineColorInPrintingPathForColorType:(char)a3;
-- (id)balloonTranslationSecondaryTextColorForColorType:(char)a3;
-- (id)balloonTranslationSecondaryTextColorInPrintingPathForColorType:(char)a3;
+- (id)balloonColorsForColorType:(char)type;
+- (id)balloonOverlayColorForColorType:(char)type;
+- (id)balloonTextColorForColorType:(char)type;
+- (id)balloonTextColorInPrintingPathForColorType:(char)type;
+- (id)balloonTextLinkColorForColorType:(char)type;
+- (id)balloonTranslationDividerLineColorForColorType:(char)type;
+- (id)balloonTranslationDividerLineColorInPrintingPathForColorType:(char)type;
+- (id)balloonTranslationSecondaryTextColorForColorType:(char)type;
+- (id)balloonTranslationSecondaryTextColorInPrintingPathForColorType:(char)type;
 - (id)black_balloonColors;
 - (id)black_balloonOverlayColor;
 - (id)black_balloonTextLinkColor;
@@ -366,11 +366,11 @@
 - (id)green_sendButtonColor;
 - (id)green_unfilledBalloonColor;
 - (id)green_waveformColor;
-- (id)materialBalloonTextColorForColorType:(char)a3;
-- (id)messageAcknowledgment:(int64_t)a3 acknowledgmentImageColor:(int64_t)a4;
-- (id)messageAcknowledgment:(int64_t)a3 selectedAcknowledgmentImageColor:(int64_t)a4;
-- (id)messageAcknowledgmentBalloonColorForStyle:(int64_t)a3;
-- (id)messageAcknowledgmentSelectedBalloonColorForStyle:(int64_t)a3 serviceName:(id)a4;
+- (id)materialBalloonTextColorForColorType:(char)type;
+- (id)messageAcknowledgment:(int64_t)acknowledgment acknowledgmentImageColor:(int64_t)color;
+- (id)messageAcknowledgment:(int64_t)acknowledgment selectedAcknowledgmentImageColor:(int64_t)color;
+- (id)messageAcknowledgmentBalloonColorForStyle:(int64_t)style;
+- (id)messageAcknowledgmentSelectedBalloonColorForStyle:(int64_t)style serviceName:(id)name;
 - (id)message_editing_black_balloonColors;
 - (id)message_editing_black_balloonOverlayColor;
 - (id)message_editing_black_balloonTextLinkColor;
@@ -399,7 +399,7 @@
 - (id)multiway_sendButtonColor;
 - (id)multiway_unfilledBalloonColor;
 - (id)multiway_waveformColor;
-- (id)nonMaterialBalloonTextColorForColorType:(char)a3;
+- (id)nonMaterialBalloonTextColorForColorType:(char)type;
 - (id)opaque_orb_gray_balloonColors;
 - (id)opaque_orb_gray_balloonOverlayColor;
 - (id)opaque_orb_gray_balloonTextLinkColor;
@@ -428,10 +428,10 @@
 - (id)pending_blue_sendButtonColor;
 - (id)pending_blue_unfilledBalloonColor;
 - (id)pending_blue_waveformColor;
-- (id)primaryBrandColorForBusinessChat:(id)a3;
-- (id)primaryBrandColorForBusinessHandle:(id)a3;
-- (id)progressViewColorForColorType:(char)a3;
-- (id)recipientTextColorForColorType:(char)a3;
+- (id)primaryBrandColorForBusinessChat:(id)chat;
+- (id)primaryBrandColorForBusinessHandle:(id)handle;
+- (id)progressViewColorForColorType:(char)type;
+- (id)recipientTextColorForColorType:(char)type;
 - (id)red_balloonColors;
 - (id)red_balloonOverlayColor;
 - (id)red_balloonTextLinkColor;
@@ -488,12 +488,12 @@
 - (id)reply_green_sendButtonColor;
 - (id)reply_green_unfilledBalloonColor;
 - (id)reply_green_waveformColor;
-- (id)secondaryBrandColorForBusinessChat:(id)a3;
-- (id)secondaryBrandColorForBusinessHandle:(id)a3;
-- (id)selectionBarColorOverrideForColorType:(char)a3;
-- (id)selectionHighlightColorOverrideForColorType:(char)a3;
-- (id)sendButtonArrowColorForColorType:(char)a3;
-- (id)sendButtonColorForColorType:(char)a3;
+- (id)secondaryBrandColorForBusinessChat:(id)chat;
+- (id)secondaryBrandColorForBusinessHandle:(id)handle;
+- (id)selectionBarColorOverrideForColorType:(char)type;
+- (id)selectionHighlightColorOverrideForColorType:(char)type;
+- (id)sendButtonArrowColorForColorType:(char)type;
+- (id)sendButtonColorForColorType:(char)type;
 - (id)siri_balloonColors;
 - (id)siri_balloonOverlayColor;
 - (id)siri_balloonTextLinkColor;
@@ -522,8 +522,8 @@
 - (id)stewie_sendButtonColor;
 - (id)stewie_unfilledBalloonColor;
 - (id)stewie_waveformColor;
-- (id)unfilledBalloonColorForColorType:(char)a3;
-- (id)waveformColorForColorType:(char)a3;
+- (id)unfilledBalloonColorForColorType:(char)type;
+- (id)waveformColorForColorType:(char)type;
 - (id)white_balloonColors;
 - (id)white_balloonOverlayColor;
 - (id)white_balloonTextLinkColor;
@@ -538,8 +538,8 @@
 - (id)white_sendButtonColor;
 - (id)white_unfilledBalloonColor;
 - (id)white_waveformColor;
-- (int64_t)_businessNavBarTextStyleForColor:(id)a3;
-- (int64_t)_businessStatusBarStyleForNavStyle:(int64_t)a3;
+- (int64_t)_businessNavBarTextStyleForColor:(id)color;
+- (int64_t)_businessStatusBarStyleForNavStyle:(int64_t)style;
 - (int64_t)appManagerStatusBarStyle;
 - (int64_t)defaultBarStyle;
 - (int64_t)detailsBackgroundBlurEffectStyle;
@@ -549,12 +549,12 @@
 - (int64_t)keyboardAppearance;
 - (int64_t)keyboardDarkAppearance;
 - (int64_t)navBarStyle;
-- (int64_t)navBarTextStyleForBusinessChat:(id)a3;
-- (int64_t)navBarTextStyleForBusinessHandle:(id)a3;
+- (int64_t)navBarTextStyleForBusinessChat:(id)chat;
+- (int64_t)navBarTextStyleForBusinessHandle:(id)handle;
 - (int64_t)scrollIndicatorStyle;
 - (int64_t)statusBarStyle;
-- (int64_t)statusBarStyleForBusinessChat:(id)a3;
-- (int64_t)statusBarStyleForBusinessHandle:(id)a3;
+- (int64_t)statusBarStyleForBusinessChat:(id)chat;
+- (int64_t)statusBarStyleForBusinessHandle:(id)handle;
 - (int64_t)toFieldBackdropStyle;
 - (int64_t)transcriptLoadingIndicatorStyle;
 @end
@@ -669,9 +669,9 @@ void __58__CKUITheme_conversationListCollectionViewBackgroundColor__block_invoke
 
   if (!v5)
   {
-    v6 = [(CKUITheme *)self grayTextColor];
+    grayTextColor = [(CKUITheme *)self grayTextColor];
     v7 = conversationListDateColor_sBehavior;
-    conversationListDateColor_sBehavior = v6;
+    conversationListDateColor_sBehavior = grayTextColor;
 
     conversationListDateColor_sIsIncreaseContrastEnabled_conversationListDateColor = v3;
     v4 = conversationListDateColor_sBehavior;
@@ -696,9 +696,9 @@ void __58__CKUITheme_conversationListCollectionViewBackgroundColor__block_invoke
 
   if (!v4)
   {
-    v5 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     v6 = grayTextColor_sBehavior;
-    grayTextColor_sBehavior = v5;
+    grayTextColor_sBehavior = secondaryLabelColor;
 
     grayTextColor_sIsIncreaseContrastEnabled_grayTextColor = v2;
     v3 = grayTextColor_sBehavior;
@@ -742,9 +742,9 @@ void __40__CKUITheme_conversationListSenderColor__block_invoke()
 
   if (!v5)
   {
-    v6 = [(CKUITheme *)self grayTextColor];
+    grayTextColor = [(CKUITheme *)self grayTextColor];
     v7 = conversationListSummaryColor_sBehavior;
-    conversationListSummaryColor_sBehavior = v6;
+    conversationListSummaryColor_sBehavior = grayTextColor;
 
     conversationListSummaryColor_sIsIncreaseContrastEnabled_conversationListSummaryColor = v3;
     v4 = conversationListSummaryColor_sBehavior;
@@ -794,9 +794,9 @@ void __31__CKUITheme_meMentionTextColor__block_invoke()
 - (UIColor)transcriptTextColor
 {
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
     +[CKPrintController printTranscriptTextColor];
   }
@@ -1119,10 +1119,10 @@ void __22__CKUITheme_linkColor__block_invoke(uint64_t a1)
 
 - (id)_conversationListBackgroundColor
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isModernSplitViewControllerEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  if (v3)
+  if (isModernSplitViewControllerEnabled)
   {
     [MEMORY[0x1E69DC888] colorWithDynamicProvider:&__block_literal_global_239];
   }
@@ -1326,20 +1326,20 @@ void __53__CKUITheme_conversationListCellNewComposeCloseColor__block_invoke(uint
 
 - (id)_conversationListCellNewComposeCloseColor
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isModernSplitViewControllerEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  if (v3)
+  if (isModernSplitViewControllerEnabled)
   {
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
   else
   {
-    v4 = 0;
+    whiteColor = 0;
   }
 
-  return v4;
+  return whiteColor;
 }
 
 - (UIColor)conversationListCellSelectedDateColor
@@ -1397,9 +1397,9 @@ void __46__CKUITheme_conversationListSelectedCellColor__block_invoke()
 
   if (!v4)
   {
-    v5 = [MEMORY[0x1E69DC888] quaternaryLabelColor];
+    quaternaryLabelColor = [MEMORY[0x1E69DC888] quaternaryLabelColor];
     v6 = conversationListEditingPinsSummaryColor_sBehavior;
-    conversationListEditingPinsSummaryColor_sBehavior = v5;
+    conversationListEditingPinsSummaryColor_sBehavior = quaternaryLabelColor;
 
     conversationListEditingPinsSummaryColor_sIsIncreaseContrastEnabled_conversationListEditingPinsSummaryColor = v2;
     v3 = conversationListEditingPinsSummaryColor_sBehavior;
@@ -1795,9 +1795,9 @@ void __28__CKUITheme_navBarGrayColor__block_invoke()
 - (UIColor)transcriptBackgroundColor
 {
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
     +[CKPrintController printBackgroundColor];
   }
@@ -2043,9 +2043,9 @@ LABEL_8:
 
   if (!v5)
   {
-    v6 = [(CKUITheme *)self transcriptTextColor];
+    transcriptTextColor = [(CKUITheme *)self transcriptTextColor];
     v7 = transcriptSatelliteSuppressedNotificationColor_sBehavior;
-    transcriptSatelliteSuppressedNotificationColor_sBehavior = v6;
+    transcriptSatelliteSuppressedNotificationColor_sBehavior = transcriptTextColor;
 
     transcriptSatelliteSuppressedNotificationColor_sIsIncreaseContrastEnabled_transcriptSatelliteSuppressedNotificationColor = v3;
     v4 = transcriptSatelliteSuppressedNotificationColor_sBehavior;
@@ -2141,8 +2141,8 @@ LABEL_10:
 
   if (!v4)
   {
-    v5 = [MEMORY[0x1E69DC888] systemIndigoColor];
-    v6 = [v5 colorWithAlphaComponent:0.6];
+    systemIndigoColor = [MEMORY[0x1E69DC888] systemIndigoColor];
+    v6 = [systemIndigoColor colorWithAlphaComponent:0.6];
     v7 = transcriptAvailabilityCapsuleColor_sBehavior;
     transcriptAvailabilityCapsuleColor_sBehavior = v6;
 
@@ -2222,9 +2222,9 @@ LABEL_8:
 
   if (!v5)
   {
-    v6 = [(CKUITheme *)self transcriptTextColor];
+    transcriptTextColor = [(CKUITheme *)self transcriptTextColor];
     v7 = transcriptAvailabilityDeemphasizedColor_sBehavior;
-    transcriptAvailabilityDeemphasizedColor_sBehavior = v6;
+    transcriptAvailabilityDeemphasizedColor_sBehavior = transcriptTextColor;
 
     transcriptAvailabilityDeemphasizedColor_sIsIncreaseContrastEnabled_transcriptAvailabilityDeemphasizedColor = v3;
     v4 = transcriptAvailabilityDeemphasizedColor_sBehavior;
@@ -2249,9 +2249,9 @@ LABEL_8:
 
   if (!v5)
   {
-    v6 = [(CKUITheme *)self transcriptTextColor];
+    transcriptTextColor = [(CKUITheme *)self transcriptTextColor];
     v7 = transcriptTranslationIndicatorColor_sBehavior;
-    transcriptTranslationIndicatorColor_sBehavior = v6;
+    transcriptTranslationIndicatorColor_sBehavior = transcriptTextColor;
 
     transcriptTranslationIndicatorColor_sIsIncreaseContrastEnabled_transcriptTranslationIndicatorColor = v3;
     v4 = transcriptTranslationIndicatorColor_sBehavior;
@@ -2276,9 +2276,9 @@ LABEL_8:
 
   if (!v5)
   {
-    v6 = [(CKUITheme *)self _transcriptTranslationIconColor];
+    _transcriptTranslationIconColor = [(CKUITheme *)self _transcriptTranslationIconColor];
     v7 = transcriptTranslationIconColor_sBehavior;
-    transcriptTranslationIconColor_sBehavior = v6;
+    transcriptTranslationIconColor_sBehavior = _transcriptTranslationIconColor;
 
     transcriptTranslationIconColor_sIsIncreaseContrastEnabled_transcriptTranslationIconColor = v3;
     v4 = transcriptTranslationIconColor_sBehavior;
@@ -2335,9 +2335,9 @@ void __40__CKUITheme_transcriptNicknameTextColor__block_invoke()
 - (id)_transcriptBigEmojiColor
 {
   v2 = MEMORY[0x1E69DC888];
-  v3 = [MEMORY[0x1E69DC888] blackColor];
-  v4 = [MEMORY[0x1E69DC888] whiteColor];
-  v5 = [v2 dynamicColorWithLightColor:v3 darkColor:v4];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v5 = [v2 dynamicColorWithLightColor:blackColor darkColor:whiteColor];
 
   return v5;
 }
@@ -2380,9 +2380,9 @@ void __36__CKUITheme_transcriptBigEmojiColor__block_invoke(uint64_t a1)
 
   if (!v5)
   {
-    v6 = [(CKUITheme *)self grayTextColor];
+    grayTextColor = [(CKUITheme *)self grayTextColor];
     v7 = transcriptDeemphasizedTextColor_sBehavior;
-    transcriptDeemphasizedTextColor_sBehavior = v6;
+    transcriptDeemphasizedTextColor_sBehavior = grayTextColor;
 
     transcriptDeemphasizedTextColor_sIsIncreaseContrastEnabled_transcriptDeemphasizedTextColor = v3;
     v4 = transcriptDeemphasizedTextColor_sBehavior;
@@ -2670,70 +2670,70 @@ id __47__CKUITheme_messageSenderAddToContactTextColor__block_invoke_2(uint64_t a
   return v5;
 }
 
-- (id)balloonColorsForColorType:(char)a3
+- (id)balloonColorsForColorType:(char)type
 {
-  switch(a3)
+  switch(type)
   {
     case -1:
-      v5 = [(CKUITheme *)self gray_balloonColors];
+      gray_balloonColors = [(CKUITheme *)self gray_balloonColors];
       goto LABEL_22;
     case 0:
-      v5 = [(CKUITheme *)self green_balloonColors];
+      gray_balloonColors = [(CKUITheme *)self green_balloonColors];
       goto LABEL_22;
     case 1:
-      v5 = [(CKUITheme *)self blue_balloonColors];
+      gray_balloonColors = [(CKUITheme *)self blue_balloonColors];
       goto LABEL_22;
     case 2:
-      v5 = [(CKUITheme *)self siri_balloonColors];
+      gray_balloonColors = [(CKUITheme *)self siri_balloonColors];
       goto LABEL_22;
     case 3:
-      v5 = [(CKUITheme *)self red_balloonColors];
+      gray_balloonColors = [(CKUITheme *)self red_balloonColors];
       goto LABEL_22;
     case 4:
-      v5 = [(CKUITheme *)self white_balloonColors];
+      gray_balloonColors = [(CKUITheme *)self white_balloonColors];
       goto LABEL_22;
     case 5:
-      v5 = [(CKUITheme *)self black_balloonColors];
+      gray_balloonColors = [(CKUITheme *)self black_balloonColors];
       goto LABEL_22;
     case 6:
-      v5 = [(CKUITheme *)self business_balloonColors];
+      gray_balloonColors = [(CKUITheme *)self business_balloonColors];
       goto LABEL_22;
     case 7:
-      v5 = [(CKUITheme *)self multiway_balloonColors];
+      gray_balloonColors = [(CKUITheme *)self multiway_balloonColors];
       goto LABEL_22;
     case 8:
-      v5 = [(CKUITheme *)self background_balloonColors];
+      gray_balloonColors = [(CKUITheme *)self background_balloonColors];
       goto LABEL_22;
     case 9:
-      v5 = [(CKUITheme *)self reply_gray_balloonColors];
+      gray_balloonColors = [(CKUITheme *)self reply_gray_balloonColors];
       goto LABEL_22;
     case 10:
-      v5 = [(CKUITheme *)self reply_blue_balloonColors];
+      gray_balloonColors = [(CKUITheme *)self reply_blue_balloonColors];
       goto LABEL_22;
     case 11:
-      v5 = [(CKUITheme *)self reply_green_balloonColors];
+      gray_balloonColors = [(CKUITheme *)self reply_green_balloonColors];
       goto LABEL_22;
     case 12:
-      v5 = [(CKUITheme *)self stewie_balloonColors];
+      gray_balloonColors = [(CKUITheme *)self stewie_balloonColors];
       goto LABEL_22;
     case 13:
-      v5 = [(CKUITheme *)self message_editing_black_balloonColors];
+      gray_balloonColors = [(CKUITheme *)self message_editing_black_balloonColors];
       goto LABEL_22;
     case 14:
-      v5 = [(CKUITheme *)self opaque_orb_gray_balloonColors];
+      gray_balloonColors = [(CKUITheme *)self opaque_orb_gray_balloonColors];
       goto LABEL_22;
     case 15:
-      v5 = [(CKUITheme *)self pending_blue_balloonColors];
+      gray_balloonColors = [(CKUITheme *)self pending_blue_balloonColors];
 LABEL_22:
 
       break;
     default:
-      v5 = 0;
+      gray_balloonColors = 0;
 
       break;
   }
 
-  return v5;
+  return gray_balloonColors;
 }
 
 - (id)opaque_orb_gray_balloonColors
@@ -3607,70 +3607,70 @@ void __46__CKUITheme_lightBalloonOutlineVibrancyFilter__block_invoke()
   lightBalloonOutlineVibrancyFilter_sBehavior = v0;
 }
 
-- (id)unfilledBalloonColorForColorType:(char)a3
+- (id)unfilledBalloonColorForColorType:(char)type
 {
-  switch(a3)
+  switch(type)
   {
     case -1:
-      v5 = [(CKUITheme *)self gray_unfilledBalloonColor];
+      gray_unfilledBalloonColor = [(CKUITheme *)self gray_unfilledBalloonColor];
       goto LABEL_22;
     case 0:
-      v5 = [(CKUITheme *)self green_unfilledBalloonColor];
+      gray_unfilledBalloonColor = [(CKUITheme *)self green_unfilledBalloonColor];
       goto LABEL_22;
     case 1:
-      v5 = [(CKUITheme *)self blue_unfilledBalloonColor];
+      gray_unfilledBalloonColor = [(CKUITheme *)self blue_unfilledBalloonColor];
       goto LABEL_22;
     case 2:
-      v5 = [(CKUITheme *)self siri_unfilledBalloonColor];
+      gray_unfilledBalloonColor = [(CKUITheme *)self siri_unfilledBalloonColor];
       goto LABEL_22;
     case 3:
-      v5 = [(CKUITheme *)self red_unfilledBalloonColor];
+      gray_unfilledBalloonColor = [(CKUITheme *)self red_unfilledBalloonColor];
       goto LABEL_22;
     case 4:
-      v5 = [(CKUITheme *)self white_unfilledBalloonColor];
+      gray_unfilledBalloonColor = [(CKUITheme *)self white_unfilledBalloonColor];
       goto LABEL_22;
     case 5:
-      v5 = [(CKUITheme *)self black_unfilledBalloonColor];
+      gray_unfilledBalloonColor = [(CKUITheme *)self black_unfilledBalloonColor];
       goto LABEL_22;
     case 6:
-      v5 = [(CKUITheme *)self business_unfilledBalloonColor];
+      gray_unfilledBalloonColor = [(CKUITheme *)self business_unfilledBalloonColor];
       goto LABEL_22;
     case 7:
-      v5 = [(CKUITheme *)self multiway_unfilledBalloonColor];
+      gray_unfilledBalloonColor = [(CKUITheme *)self multiway_unfilledBalloonColor];
       goto LABEL_22;
     case 8:
-      v5 = [(CKUITheme *)self background_unfilledBalloonColor];
+      gray_unfilledBalloonColor = [(CKUITheme *)self background_unfilledBalloonColor];
       goto LABEL_22;
     case 9:
-      v5 = [(CKUITheme *)self reply_gray_unfilledBalloonColor];
+      gray_unfilledBalloonColor = [(CKUITheme *)self reply_gray_unfilledBalloonColor];
       goto LABEL_22;
     case 10:
-      v5 = [(CKUITheme *)self reply_blue_unfilledBalloonColor];
+      gray_unfilledBalloonColor = [(CKUITheme *)self reply_blue_unfilledBalloonColor];
       goto LABEL_22;
     case 11:
-      v5 = [(CKUITheme *)self reply_green_unfilledBalloonColor];
+      gray_unfilledBalloonColor = [(CKUITheme *)self reply_green_unfilledBalloonColor];
       goto LABEL_22;
     case 12:
-      v5 = [(CKUITheme *)self stewie_unfilledBalloonColor];
+      gray_unfilledBalloonColor = [(CKUITheme *)self stewie_unfilledBalloonColor];
       goto LABEL_22;
     case 13:
-      v5 = [(CKUITheme *)self message_editing_black_unfilledBalloonColor];
+      gray_unfilledBalloonColor = [(CKUITheme *)self message_editing_black_unfilledBalloonColor];
       goto LABEL_22;
     case 14:
-      v5 = [(CKUITheme *)self opaque_orb_gray_unfilledBalloonColor];
+      gray_unfilledBalloonColor = [(CKUITheme *)self opaque_orb_gray_unfilledBalloonColor];
       goto LABEL_22;
     case 15:
-      v5 = [(CKUITheme *)self pending_blue_unfilledBalloonColor];
+      gray_unfilledBalloonColor = [(CKUITheme *)self pending_blue_unfilledBalloonColor];
 LABEL_22:
 
       break;
     default:
-      v5 = 0;
+      gray_unfilledBalloonColor = 0;
 
       break;
   }
 
-  return v5;
+  return gray_unfilledBalloonColor;
 }
 
 - (id)gray_unfilledBalloonColor
@@ -3730,10 +3730,10 @@ void __49__CKUITheme_opaque_orb_gray_unfilledBalloonColor__block_invoke(uint64_t
 
   if (!v5)
   {
-    v6 = [(CKUITheme *)self green_balloonColors];
-    v7 = [v6 lastObject];
+    green_balloonColors = [(CKUITheme *)self green_balloonColors];
+    lastObject = [green_balloonColors lastObject];
     v8 = green_unfilledBalloonColor_sBehavior;
-    green_unfilledBalloonColor_sBehavior = v7;
+    green_unfilledBalloonColor_sBehavior = lastObject;
 
     green_unfilledBalloonColor_sIsIncreaseContrastEnabled_green_unfilledBalloonColor = v3;
     v4 = green_unfilledBalloonColor_sBehavior;
@@ -3758,10 +3758,10 @@ void __49__CKUITheme_opaque_orb_gray_unfilledBalloonColor__block_invoke(uint64_t
 
   if (!v5)
   {
-    v6 = [(CKUITheme *)self blue_balloonColors];
-    v7 = [v6 lastObject];
+    blue_balloonColors = [(CKUITheme *)self blue_balloonColors];
+    lastObject = [blue_balloonColors lastObject];
     v8 = blue_unfilledBalloonColor_sBehavior;
-    blue_unfilledBalloonColor_sBehavior = v7;
+    blue_unfilledBalloonColor_sBehavior = lastObject;
 
     blue_unfilledBalloonColor_sIsIncreaseContrastEnabled_blue_unfilledBalloonColor = v3;
     v4 = blue_unfilledBalloonColor_sBehavior;
@@ -4046,77 +4046,77 @@ void __46__CKUITheme_pending_blue_unfilledBalloonColor__block_invoke()
   pending_blue_unfilledBalloonColor_sBehavior = v0;
 }
 
-- (id)balloonTextColorInPrintingPathForColorType:(char)a3
+- (id)balloonTextColorInPrintingPathForColorType:(char)type
 {
-  v3 = a3;
+  typeCopy = type;
   v5 = +[CKPrintController sharedInstance];
-  v6 = [v5 isPrinting];
+  isPrinting = [v5 isPrinting];
 
-  if (v6)
+  if (isPrinting)
   {
     +[CKPrintController printBalloonTextColor];
   }
 
   else
   {
-    [(CKUITheme *)self balloonTextColorForColorType:v3];
+    [(CKUITheme *)self balloonTextColorForColorType:typeCopy];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)balloonTranslationSecondaryTextColorInPrintingPathForColorType:(char)a3
+- (id)balloonTranslationSecondaryTextColorInPrintingPathForColorType:(char)type
 {
-  v3 = a3;
+  typeCopy = type;
   v5 = +[CKPrintController sharedInstance];
-  v6 = [v5 isPrinting];
+  isPrinting = [v5 isPrinting];
 
-  if (v6)
+  if (isPrinting)
   {
     +[CKPrintController printBalloonTextColor];
   }
 
   else
   {
-    [(CKUITheme *)self balloonTranslationSecondaryTextColorForColorType:v3];
+    [(CKUITheme *)self balloonTranslationSecondaryTextColorForColorType:typeCopy];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)balloonTranslationDividerLineColorInPrintingPathForColorType:(char)a3
+- (id)balloonTranslationDividerLineColorInPrintingPathForColorType:(char)type
 {
-  v3 = a3;
+  typeCopy = type;
   v5 = +[CKPrintController sharedInstance];
-  v6 = [v5 isPrinting];
+  isPrinting = [v5 isPrinting];
 
-  if (v6)
+  if (isPrinting)
   {
     +[CKPrintController printBalloonTextColor];
   }
 
   else
   {
-    [(CKUITheme *)self balloonTranslationDividerLineColorForColorType:v3];
+    [(CKUITheme *)self balloonTranslationDividerLineColorForColorType:typeCopy];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)balloonTextColorForColorType:(char)a3
+- (id)balloonTextColorForColorType:(char)type
 {
-  v3 = a3;
+  typeCopy = type;
   if (!balloonTextColorForColorType__colorByType)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v6 = balloonTextColorForColorType__colorByType;
-    balloonTextColorForColorType__colorByType = v5;
+    balloonTextColorForColorType__colorByType = dictionary;
   }
 
-  v7 = [MEMORY[0x1E696AD98] numberWithChar:v3];
+  v7 = [MEMORY[0x1E696AD98] numberWithChar:typeCopy];
   v8 = [balloonTextColorForColorType__colorByType objectForKeyedSubscript:v7];
   if (!v8)
   {
@@ -4125,7 +4125,7 @@ void __46__CKUITheme_pending_blue_unfilledBalloonColor__block_invoke()
     v10[2] = __42__CKUITheme_balloonTextColorForColorType___block_invoke;
     v10[3] = &unk_1E72EBD70;
     v10[4] = self;
-    v11 = v3;
+    v11 = typeCopy;
     v8 = [MEMORY[0x1E69DC888] colorWithDynamicProvider:v10];
     [balloonTextColorForColorType__colorByType setObject:v8 forKeyedSubscript:v7];
   }
@@ -4152,70 +4152,70 @@ id __42__CKUITheme_balloonTextColorForColorType___block_invoke(uint64_t a1, void
   return v6;
 }
 
-- (id)materialBalloonTextColorForColorType:(char)a3
+- (id)materialBalloonTextColorForColorType:(char)type
 {
-  switch(a3)
+  switch(type)
   {
     case -1:
-      v5 = [(CKUITheme *)self gray_materialBalloonTextColor];
+      gray_materialBalloonTextColor = [(CKUITheme *)self gray_materialBalloonTextColor];
       goto LABEL_22;
     case 0:
-      v5 = [(CKUITheme *)self green_materialBalloonTextColor];
+      gray_materialBalloonTextColor = [(CKUITheme *)self green_materialBalloonTextColor];
       goto LABEL_22;
     case 1:
-      v5 = [(CKUITheme *)self blue_materialBalloonTextColor];
+      gray_materialBalloonTextColor = [(CKUITheme *)self blue_materialBalloonTextColor];
       goto LABEL_22;
     case 2:
-      v5 = [(CKUITheme *)self siri_materialBalloonTextColor];
+      gray_materialBalloonTextColor = [(CKUITheme *)self siri_materialBalloonTextColor];
       goto LABEL_22;
     case 3:
-      v5 = [(CKUITheme *)self red_materialBalloonTextColor];
+      gray_materialBalloonTextColor = [(CKUITheme *)self red_materialBalloonTextColor];
       goto LABEL_22;
     case 4:
-      v5 = [(CKUITheme *)self white_materialBalloonTextColor];
+      gray_materialBalloonTextColor = [(CKUITheme *)self white_materialBalloonTextColor];
       goto LABEL_22;
     case 5:
-      v5 = [(CKUITheme *)self black_materialBalloonTextColor];
+      gray_materialBalloonTextColor = [(CKUITheme *)self black_materialBalloonTextColor];
       goto LABEL_22;
     case 6:
-      v5 = [(CKUITheme *)self business_materialBalloonTextColor];
+      gray_materialBalloonTextColor = [(CKUITheme *)self business_materialBalloonTextColor];
       goto LABEL_22;
     case 7:
-      v5 = [(CKUITheme *)self multiway_materialBalloonTextColor];
+      gray_materialBalloonTextColor = [(CKUITheme *)self multiway_materialBalloonTextColor];
       goto LABEL_22;
     case 8:
-      v5 = [(CKUITheme *)self background_materialBalloonTextColor];
+      gray_materialBalloonTextColor = [(CKUITheme *)self background_materialBalloonTextColor];
       goto LABEL_22;
     case 9:
-      v5 = [(CKUITheme *)self reply_gray_materialBalloonTextColor];
+      gray_materialBalloonTextColor = [(CKUITheme *)self reply_gray_materialBalloonTextColor];
       goto LABEL_22;
     case 10:
-      v5 = [(CKUITheme *)self reply_blue_materialBalloonTextColor];
+      gray_materialBalloonTextColor = [(CKUITheme *)self reply_blue_materialBalloonTextColor];
       goto LABEL_22;
     case 11:
-      v5 = [(CKUITheme *)self reply_green_materialBalloonTextColor];
+      gray_materialBalloonTextColor = [(CKUITheme *)self reply_green_materialBalloonTextColor];
       goto LABEL_22;
     case 12:
-      v5 = [(CKUITheme *)self stewie_materialBalloonTextColor];
+      gray_materialBalloonTextColor = [(CKUITheme *)self stewie_materialBalloonTextColor];
       goto LABEL_22;
     case 13:
-      v5 = [(CKUITheme *)self message_editing_black_materialBalloonTextColor];
+      gray_materialBalloonTextColor = [(CKUITheme *)self message_editing_black_materialBalloonTextColor];
       goto LABEL_22;
     case 14:
-      v5 = [(CKUITheme *)self opaque_orb_gray_materialBalloonTextColor];
+      gray_materialBalloonTextColor = [(CKUITheme *)self opaque_orb_gray_materialBalloonTextColor];
       goto LABEL_22;
     case 15:
-      v5 = [(CKUITheme *)self pending_blue_materialBalloonTextColor];
+      gray_materialBalloonTextColor = [(CKUITheme *)self pending_blue_materialBalloonTextColor];
 LABEL_22:
 
       break;
     default:
-      v5 = 0;
+      gray_materialBalloonTextColor = 0;
 
       break;
   }
 
-  return v5;
+  return gray_materialBalloonTextColor;
 }
 
 - (id)gray_materialBalloonTextColor
@@ -4586,70 +4586,70 @@ void __50__CKUITheme_pending_blue_materialBalloonTextColor__block_invoke()
   pending_blue_materialBalloonTextColor_sBehavior = v0;
 }
 
-- (id)nonMaterialBalloonTextColorForColorType:(char)a3
+- (id)nonMaterialBalloonTextColorForColorType:(char)type
 {
-  switch(a3)
+  switch(type)
   {
     case -1:
-      v5 = [(CKUITheme *)self gray_nonMaterialBalloonTextColor];
+      gray_nonMaterialBalloonTextColor = [(CKUITheme *)self gray_nonMaterialBalloonTextColor];
       goto LABEL_22;
     case 0:
-      v5 = [(CKUITheme *)self green_nonMaterialBalloonTextColor];
+      gray_nonMaterialBalloonTextColor = [(CKUITheme *)self green_nonMaterialBalloonTextColor];
       goto LABEL_22;
     case 1:
-      v5 = [(CKUITheme *)self blue_nonMaterialBalloonTextColor];
+      gray_nonMaterialBalloonTextColor = [(CKUITheme *)self blue_nonMaterialBalloonTextColor];
       goto LABEL_22;
     case 2:
-      v5 = [(CKUITheme *)self siri_nonMaterialBalloonTextColor];
+      gray_nonMaterialBalloonTextColor = [(CKUITheme *)self siri_nonMaterialBalloonTextColor];
       goto LABEL_22;
     case 3:
-      v5 = [(CKUITheme *)self red_nonMaterialBalloonTextColor];
+      gray_nonMaterialBalloonTextColor = [(CKUITheme *)self red_nonMaterialBalloonTextColor];
       goto LABEL_22;
     case 4:
-      v5 = [(CKUITheme *)self white_nonMaterialBalloonTextColor];
+      gray_nonMaterialBalloonTextColor = [(CKUITheme *)self white_nonMaterialBalloonTextColor];
       goto LABEL_22;
     case 5:
-      v5 = [(CKUITheme *)self black_nonMaterialBalloonTextColor];
+      gray_nonMaterialBalloonTextColor = [(CKUITheme *)self black_nonMaterialBalloonTextColor];
       goto LABEL_22;
     case 6:
-      v5 = [(CKUITheme *)self business_nonMaterialBalloonTextColor];
+      gray_nonMaterialBalloonTextColor = [(CKUITheme *)self business_nonMaterialBalloonTextColor];
       goto LABEL_22;
     case 7:
-      v5 = [(CKUITheme *)self multiway_nonMaterialBalloonTextColor];
+      gray_nonMaterialBalloonTextColor = [(CKUITheme *)self multiway_nonMaterialBalloonTextColor];
       goto LABEL_22;
     case 8:
-      v5 = [(CKUITheme *)self background_nonMaterialBalloonTextColor];
+      gray_nonMaterialBalloonTextColor = [(CKUITheme *)self background_nonMaterialBalloonTextColor];
       goto LABEL_22;
     case 9:
-      v5 = [(CKUITheme *)self reply_gray_nonMaterialBalloonTextColor];
+      gray_nonMaterialBalloonTextColor = [(CKUITheme *)self reply_gray_nonMaterialBalloonTextColor];
       goto LABEL_22;
     case 10:
-      v5 = [(CKUITheme *)self reply_blue_nonMaterialBalloonTextColor];
+      gray_nonMaterialBalloonTextColor = [(CKUITheme *)self reply_blue_nonMaterialBalloonTextColor];
       goto LABEL_22;
     case 11:
-      v5 = [(CKUITheme *)self reply_green_nonMaterialBalloonTextColor];
+      gray_nonMaterialBalloonTextColor = [(CKUITheme *)self reply_green_nonMaterialBalloonTextColor];
       goto LABEL_22;
     case 12:
-      v5 = [(CKUITheme *)self stewie_nonMaterialBalloonTextColor];
+      gray_nonMaterialBalloonTextColor = [(CKUITheme *)self stewie_nonMaterialBalloonTextColor];
       goto LABEL_22;
     case 13:
-      v5 = [(CKUITheme *)self message_editing_black_nonMaterialBalloonTextColor];
+      gray_nonMaterialBalloonTextColor = [(CKUITheme *)self message_editing_black_nonMaterialBalloonTextColor];
       goto LABEL_22;
     case 14:
-      v5 = [(CKUITheme *)self opaque_orb_gray_nonMaterialBalloonTextColor];
+      gray_nonMaterialBalloonTextColor = [(CKUITheme *)self opaque_orb_gray_nonMaterialBalloonTextColor];
       goto LABEL_22;
     case 15:
-      v5 = [(CKUITheme *)self pending_blue_nonMaterialBalloonTextColor];
+      gray_nonMaterialBalloonTextColor = [(CKUITheme *)self pending_blue_nonMaterialBalloonTextColor];
 LABEL_22:
 
       break;
     default:
-      v5 = 0;
+      gray_nonMaterialBalloonTextColor = 0;
 
       break;
   }
 
-  return v5;
+  return gray_nonMaterialBalloonTextColor;
 }
 
 - (id)gray_nonMaterialBalloonTextColor
@@ -4978,70 +4978,70 @@ void __53__CKUITheme_pending_blue_nonMaterialBalloonTextColor__block_invoke()
   pending_blue_nonMaterialBalloonTextColor_sBehavior = v0;
 }
 
-- (id)balloonTranslationSecondaryTextColorForColorType:(char)a3
+- (id)balloonTranslationSecondaryTextColorForColorType:(char)type
 {
-  switch(a3)
+  switch(type)
   {
     case -1:
-      v5 = [(CKUITheme *)self gray_balloonTranslationSecondaryTextColor];
+      gray_balloonTranslationSecondaryTextColor = [(CKUITheme *)self gray_balloonTranslationSecondaryTextColor];
       goto LABEL_22;
     case 0:
-      v5 = [(CKUITheme *)self green_balloonTranslationSecondaryTextColor];
+      gray_balloonTranslationSecondaryTextColor = [(CKUITheme *)self green_balloonTranslationSecondaryTextColor];
       goto LABEL_22;
     case 1:
-      v5 = [(CKUITheme *)self blue_balloonTranslationSecondaryTextColor];
+      gray_balloonTranslationSecondaryTextColor = [(CKUITheme *)self blue_balloonTranslationSecondaryTextColor];
       goto LABEL_22;
     case 2:
-      v5 = [(CKUITheme *)self siri_balloonTranslationSecondaryTextColor];
+      gray_balloonTranslationSecondaryTextColor = [(CKUITheme *)self siri_balloonTranslationSecondaryTextColor];
       goto LABEL_22;
     case 3:
-      v5 = [(CKUITheme *)self red_balloonTranslationSecondaryTextColor];
+      gray_balloonTranslationSecondaryTextColor = [(CKUITheme *)self red_balloonTranslationSecondaryTextColor];
       goto LABEL_22;
     case 4:
-      v5 = [(CKUITheme *)self white_balloonTranslationSecondaryTextColor];
+      gray_balloonTranslationSecondaryTextColor = [(CKUITheme *)self white_balloonTranslationSecondaryTextColor];
       goto LABEL_22;
     case 5:
-      v5 = [(CKUITheme *)self black_balloonTranslationSecondaryTextColor];
+      gray_balloonTranslationSecondaryTextColor = [(CKUITheme *)self black_balloonTranslationSecondaryTextColor];
       goto LABEL_22;
     case 6:
-      v5 = [(CKUITheme *)self business_balloonTranslationSecondaryTextColor];
+      gray_balloonTranslationSecondaryTextColor = [(CKUITheme *)self business_balloonTranslationSecondaryTextColor];
       goto LABEL_22;
     case 7:
-      v5 = [(CKUITheme *)self multiway_balloonTranslationSecondaryTextColor];
+      gray_balloonTranslationSecondaryTextColor = [(CKUITheme *)self multiway_balloonTranslationSecondaryTextColor];
       goto LABEL_22;
     case 8:
-      v5 = [(CKUITheme *)self background_balloonTranslationSecondaryTextColor];
+      gray_balloonTranslationSecondaryTextColor = [(CKUITheme *)self background_balloonTranslationSecondaryTextColor];
       goto LABEL_22;
     case 9:
-      v5 = [(CKUITheme *)self reply_gray_balloonTranslationSecondaryTextColor];
+      gray_balloonTranslationSecondaryTextColor = [(CKUITheme *)self reply_gray_balloonTranslationSecondaryTextColor];
       goto LABEL_22;
     case 10:
-      v5 = [(CKUITheme *)self reply_blue_balloonTranslationSecondaryTextColor];
+      gray_balloonTranslationSecondaryTextColor = [(CKUITheme *)self reply_blue_balloonTranslationSecondaryTextColor];
       goto LABEL_22;
     case 11:
-      v5 = [(CKUITheme *)self reply_green_balloonTranslationSecondaryTextColor];
+      gray_balloonTranslationSecondaryTextColor = [(CKUITheme *)self reply_green_balloonTranslationSecondaryTextColor];
       goto LABEL_22;
     case 12:
-      v5 = [(CKUITheme *)self stewie_balloonTranslationSecondaryTextColor];
+      gray_balloonTranslationSecondaryTextColor = [(CKUITheme *)self stewie_balloonTranslationSecondaryTextColor];
       goto LABEL_22;
     case 13:
-      v5 = [(CKUITheme *)self message_editing_black_balloonTranslationSecondaryTextColor];
+      gray_balloonTranslationSecondaryTextColor = [(CKUITheme *)self message_editing_black_balloonTranslationSecondaryTextColor];
       goto LABEL_22;
     case 14:
-      v5 = [(CKUITheme *)self opaque_orb_gray_balloonTranslationSecondaryTextColor];
+      gray_balloonTranslationSecondaryTextColor = [(CKUITheme *)self opaque_orb_gray_balloonTranslationSecondaryTextColor];
       goto LABEL_22;
     case 15:
-      v5 = [(CKUITheme *)self pending_blue_balloonTranslationSecondaryTextColor];
+      gray_balloonTranslationSecondaryTextColor = [(CKUITheme *)self pending_blue_balloonTranslationSecondaryTextColor];
 LABEL_22:
 
       break;
     default:
-      v5 = 0;
+      gray_balloonTranslationSecondaryTextColor = 0;
 
       break;
   }
 
-  return v5;
+  return gray_balloonTranslationSecondaryTextColor;
 }
 
 - (id)gray_balloonTranslationSecondaryTextColor
@@ -5370,70 +5370,70 @@ void __62__CKUITheme_pending_blue_balloonTranslationSecondaryTextColor__block_in
   pending_blue_balloonTranslationSecondaryTextColor_sBehavior = v0;
 }
 
-- (id)balloonTranslationDividerLineColorForColorType:(char)a3
+- (id)balloonTranslationDividerLineColorForColorType:(char)type
 {
-  switch(a3)
+  switch(type)
   {
     case -1:
-      v5 = [(CKUITheme *)self gray_balloonTranslationDividerLineColor];
+      gray_balloonTranslationDividerLineColor = [(CKUITheme *)self gray_balloonTranslationDividerLineColor];
       goto LABEL_22;
     case 0:
-      v5 = [(CKUITheme *)self green_balloonTranslationDividerLineColor];
+      gray_balloonTranslationDividerLineColor = [(CKUITheme *)self green_balloonTranslationDividerLineColor];
       goto LABEL_22;
     case 1:
-      v5 = [(CKUITheme *)self blue_balloonTranslationDividerLineColor];
+      gray_balloonTranslationDividerLineColor = [(CKUITheme *)self blue_balloonTranslationDividerLineColor];
       goto LABEL_22;
     case 2:
-      v5 = [(CKUITheme *)self siri_balloonTranslationDividerLineColor];
+      gray_balloonTranslationDividerLineColor = [(CKUITheme *)self siri_balloonTranslationDividerLineColor];
       goto LABEL_22;
     case 3:
-      v5 = [(CKUITheme *)self red_balloonTranslationDividerLineColor];
+      gray_balloonTranslationDividerLineColor = [(CKUITheme *)self red_balloonTranslationDividerLineColor];
       goto LABEL_22;
     case 4:
-      v5 = [(CKUITheme *)self white_balloonTranslationDividerLineColor];
+      gray_balloonTranslationDividerLineColor = [(CKUITheme *)self white_balloonTranslationDividerLineColor];
       goto LABEL_22;
     case 5:
-      v5 = [(CKUITheme *)self black_balloonTranslationDividerLineColor];
+      gray_balloonTranslationDividerLineColor = [(CKUITheme *)self black_balloonTranslationDividerLineColor];
       goto LABEL_22;
     case 6:
-      v5 = [(CKUITheme *)self business_balloonTranslationDividerLineColor];
+      gray_balloonTranslationDividerLineColor = [(CKUITheme *)self business_balloonTranslationDividerLineColor];
       goto LABEL_22;
     case 7:
-      v5 = [(CKUITheme *)self multiway_balloonTranslationDividerLineColor];
+      gray_balloonTranslationDividerLineColor = [(CKUITheme *)self multiway_balloonTranslationDividerLineColor];
       goto LABEL_22;
     case 8:
-      v5 = [(CKUITheme *)self background_balloonTranslationDividerLineColor];
+      gray_balloonTranslationDividerLineColor = [(CKUITheme *)self background_balloonTranslationDividerLineColor];
       goto LABEL_22;
     case 9:
-      v5 = [(CKUITheme *)self reply_gray_balloonTranslationDividerLineColor];
+      gray_balloonTranslationDividerLineColor = [(CKUITheme *)self reply_gray_balloonTranslationDividerLineColor];
       goto LABEL_22;
     case 10:
-      v5 = [(CKUITheme *)self reply_blue_balloonTranslationDividerLineColor];
+      gray_balloonTranslationDividerLineColor = [(CKUITheme *)self reply_blue_balloonTranslationDividerLineColor];
       goto LABEL_22;
     case 11:
-      v5 = [(CKUITheme *)self reply_green_balloonTranslationDividerLineColor];
+      gray_balloonTranslationDividerLineColor = [(CKUITheme *)self reply_green_balloonTranslationDividerLineColor];
       goto LABEL_22;
     case 12:
-      v5 = [(CKUITheme *)self stewie_balloonTranslationDividerLineColor];
+      gray_balloonTranslationDividerLineColor = [(CKUITheme *)self stewie_balloonTranslationDividerLineColor];
       goto LABEL_22;
     case 13:
-      v5 = [(CKUITheme *)self message_editing_black_balloonTranslationDividerLineColor];
+      gray_balloonTranslationDividerLineColor = [(CKUITheme *)self message_editing_black_balloonTranslationDividerLineColor];
       goto LABEL_22;
     case 14:
-      v5 = [(CKUITheme *)self opaque_orb_gray_balloonTranslationDividerLineColor];
+      gray_balloonTranslationDividerLineColor = [(CKUITheme *)self opaque_orb_gray_balloonTranslationDividerLineColor];
       goto LABEL_22;
     case 15:
-      v5 = [(CKUITheme *)self pending_blue_balloonTranslationDividerLineColor];
+      gray_balloonTranslationDividerLineColor = [(CKUITheme *)self pending_blue_balloonTranslationDividerLineColor];
 LABEL_22:
 
       break;
     default:
-      v5 = 0;
+      gray_balloonTranslationDividerLineColor = 0;
 
       break;
   }
 
-  return v5;
+  return gray_balloonTranslationDividerLineColor;
 }
 
 - (id)gray_balloonTranslationDividerLineColor
@@ -5813,70 +5813,70 @@ void __60__CKUITheme_pending_blue_balloonTranslationDividerLineColor__block_invo
   pending_blue_balloonTranslationDividerLineColor_sBehavior = v0;
 }
 
-- (id)balloonTextLinkColorForColorType:(char)a3
+- (id)balloonTextLinkColorForColorType:(char)type
 {
-  switch(a3)
+  switch(type)
   {
     case -1:
-      v5 = [(CKUITheme *)self gray_balloonTextLinkColor];
+      gray_balloonTextLinkColor = [(CKUITheme *)self gray_balloonTextLinkColor];
       goto LABEL_22;
     case 0:
-      v5 = [(CKUITheme *)self green_balloonTextLinkColor];
+      gray_balloonTextLinkColor = [(CKUITheme *)self green_balloonTextLinkColor];
       goto LABEL_22;
     case 1:
-      v5 = [(CKUITheme *)self blue_balloonTextLinkColor];
+      gray_balloonTextLinkColor = [(CKUITheme *)self blue_balloonTextLinkColor];
       goto LABEL_22;
     case 2:
-      v5 = [(CKUITheme *)self siri_balloonTextLinkColor];
+      gray_balloonTextLinkColor = [(CKUITheme *)self siri_balloonTextLinkColor];
       goto LABEL_22;
     case 3:
-      v5 = [(CKUITheme *)self red_balloonTextLinkColor];
+      gray_balloonTextLinkColor = [(CKUITheme *)self red_balloonTextLinkColor];
       goto LABEL_22;
     case 4:
-      v5 = [(CKUITheme *)self white_balloonTextLinkColor];
+      gray_balloonTextLinkColor = [(CKUITheme *)self white_balloonTextLinkColor];
       goto LABEL_22;
     case 5:
-      v5 = [(CKUITheme *)self black_balloonTextLinkColor];
+      gray_balloonTextLinkColor = [(CKUITheme *)self black_balloonTextLinkColor];
       goto LABEL_22;
     case 6:
-      v5 = [(CKUITheme *)self business_balloonTextLinkColor];
+      gray_balloonTextLinkColor = [(CKUITheme *)self business_balloonTextLinkColor];
       goto LABEL_22;
     case 7:
-      v5 = [(CKUITheme *)self multiway_balloonTextLinkColor];
+      gray_balloonTextLinkColor = [(CKUITheme *)self multiway_balloonTextLinkColor];
       goto LABEL_22;
     case 8:
-      v5 = [(CKUITheme *)self background_balloonTextLinkColor];
+      gray_balloonTextLinkColor = [(CKUITheme *)self background_balloonTextLinkColor];
       goto LABEL_22;
     case 9:
-      v5 = [(CKUITheme *)self reply_gray_balloonTextLinkColor];
+      gray_balloonTextLinkColor = [(CKUITheme *)self reply_gray_balloonTextLinkColor];
       goto LABEL_22;
     case 10:
-      v5 = [(CKUITheme *)self reply_blue_balloonTextLinkColor];
+      gray_balloonTextLinkColor = [(CKUITheme *)self reply_blue_balloonTextLinkColor];
       goto LABEL_22;
     case 11:
-      v5 = [(CKUITheme *)self reply_green_balloonTextLinkColor];
+      gray_balloonTextLinkColor = [(CKUITheme *)self reply_green_balloonTextLinkColor];
       goto LABEL_22;
     case 12:
-      v5 = [(CKUITheme *)self stewie_balloonTextLinkColor];
+      gray_balloonTextLinkColor = [(CKUITheme *)self stewie_balloonTextLinkColor];
       goto LABEL_22;
     case 13:
-      v5 = [(CKUITheme *)self message_editing_black_balloonTextLinkColor];
+      gray_balloonTextLinkColor = [(CKUITheme *)self message_editing_black_balloonTextLinkColor];
       goto LABEL_22;
     case 14:
-      v5 = [(CKUITheme *)self opaque_orb_gray_balloonTextLinkColor];
+      gray_balloonTextLinkColor = [(CKUITheme *)self opaque_orb_gray_balloonTextLinkColor];
       goto LABEL_22;
     case 15:
-      v5 = [(CKUITheme *)self pending_blue_balloonTextLinkColor];
+      gray_balloonTextLinkColor = [(CKUITheme *)self pending_blue_balloonTextLinkColor];
 LABEL_22:
 
       break;
     default:
-      v5 = 0;
+      gray_balloonTextLinkColor = 0;
 
       break;
   }
 
-  return v5;
+  return gray_balloonTextLinkColor;
 }
 
 - (id)gray_balloonTextLinkColor
@@ -6310,70 +6310,70 @@ void __46__CKUITheme_pending_blue_balloonTextLinkColor__block_invoke(uint64_t a1
   pending_blue_balloonTextLinkColor_sBehavior = v1;
 }
 
-- (id)balloonOverlayColorForColorType:(char)a3
+- (id)balloonOverlayColorForColorType:(char)type
 {
-  switch(a3)
+  switch(type)
   {
     case -1:
-      v5 = [(CKUITheme *)self gray_balloonOverlayColor];
+      gray_balloonOverlayColor = [(CKUITheme *)self gray_balloonOverlayColor];
       goto LABEL_22;
     case 0:
-      v5 = [(CKUITheme *)self green_balloonOverlayColor];
+      gray_balloonOverlayColor = [(CKUITheme *)self green_balloonOverlayColor];
       goto LABEL_22;
     case 1:
-      v5 = [(CKUITheme *)self blue_balloonOverlayColor];
+      gray_balloonOverlayColor = [(CKUITheme *)self blue_balloonOverlayColor];
       goto LABEL_22;
     case 2:
-      v5 = [(CKUITheme *)self siri_balloonOverlayColor];
+      gray_balloonOverlayColor = [(CKUITheme *)self siri_balloonOverlayColor];
       goto LABEL_22;
     case 3:
-      v5 = [(CKUITheme *)self red_balloonOverlayColor];
+      gray_balloonOverlayColor = [(CKUITheme *)self red_balloonOverlayColor];
       goto LABEL_22;
     case 4:
-      v5 = [(CKUITheme *)self white_balloonOverlayColor];
+      gray_balloonOverlayColor = [(CKUITheme *)self white_balloonOverlayColor];
       goto LABEL_22;
     case 5:
-      v5 = [(CKUITheme *)self black_balloonOverlayColor];
+      gray_balloonOverlayColor = [(CKUITheme *)self black_balloonOverlayColor];
       goto LABEL_22;
     case 6:
-      v5 = [(CKUITheme *)self business_balloonOverlayColor];
+      gray_balloonOverlayColor = [(CKUITheme *)self business_balloonOverlayColor];
       goto LABEL_22;
     case 7:
-      v5 = [(CKUITheme *)self multiway_balloonOverlayColor];
+      gray_balloonOverlayColor = [(CKUITheme *)self multiway_balloonOverlayColor];
       goto LABEL_22;
     case 8:
-      v5 = [(CKUITheme *)self background_balloonOverlayColor];
+      gray_balloonOverlayColor = [(CKUITheme *)self background_balloonOverlayColor];
       goto LABEL_22;
     case 9:
-      v5 = [(CKUITheme *)self reply_gray_balloonOverlayColor];
+      gray_balloonOverlayColor = [(CKUITheme *)self reply_gray_balloonOverlayColor];
       goto LABEL_22;
     case 10:
-      v5 = [(CKUITheme *)self reply_blue_balloonOverlayColor];
+      gray_balloonOverlayColor = [(CKUITheme *)self reply_blue_balloonOverlayColor];
       goto LABEL_22;
     case 11:
-      v5 = [(CKUITheme *)self reply_green_balloonOverlayColor];
+      gray_balloonOverlayColor = [(CKUITheme *)self reply_green_balloonOverlayColor];
       goto LABEL_22;
     case 12:
-      v5 = [(CKUITheme *)self stewie_balloonOverlayColor];
+      gray_balloonOverlayColor = [(CKUITheme *)self stewie_balloonOverlayColor];
       goto LABEL_22;
     case 13:
-      v5 = [(CKUITheme *)self message_editing_black_balloonOverlayColor];
+      gray_balloonOverlayColor = [(CKUITheme *)self message_editing_black_balloonOverlayColor];
       goto LABEL_22;
     case 14:
-      v5 = [(CKUITheme *)self opaque_orb_gray_balloonOverlayColor];
+      gray_balloonOverlayColor = [(CKUITheme *)self opaque_orb_gray_balloonOverlayColor];
       goto LABEL_22;
     case 15:
-      v5 = [(CKUITheme *)self pending_blue_balloonOverlayColor];
+      gray_balloonOverlayColor = [(CKUITheme *)self pending_blue_balloonOverlayColor];
 LABEL_22:
 
       break;
     default:
-      v5 = 0;
+      gray_balloonOverlayColor = 0;
 
       break;
   }
 
-  return v5;
+  return gray_balloonOverlayColor;
 }
 
 - (id)gray_balloonOverlayColor
@@ -6759,70 +6759,70 @@ void __40__CKUITheme_blueSelectionHighlightColor__block_invoke()
   blueSelectionHighlightColor_sBehavior = v0;
 }
 
-- (id)selectionHighlightColorOverrideForColorType:(char)a3
+- (id)selectionHighlightColorOverrideForColorType:(char)type
 {
-  switch(a3)
+  switch(type)
   {
     case -1:
-      v5 = [(CKUITheme *)self gray_selectionHighlightColorOverride];
+      gray_selectionHighlightColorOverride = [(CKUITheme *)self gray_selectionHighlightColorOverride];
       goto LABEL_22;
     case 0:
-      v5 = [(CKUITheme *)self green_selectionHighlightColorOverride];
+      gray_selectionHighlightColorOverride = [(CKUITheme *)self green_selectionHighlightColorOverride];
       goto LABEL_22;
     case 1:
-      v5 = [(CKUITheme *)self blue_selectionHighlightColorOverride];
+      gray_selectionHighlightColorOverride = [(CKUITheme *)self blue_selectionHighlightColorOverride];
       goto LABEL_22;
     case 2:
-      v5 = [(CKUITheme *)self siri_selectionHighlightColorOverride];
+      gray_selectionHighlightColorOverride = [(CKUITheme *)self siri_selectionHighlightColorOverride];
       goto LABEL_22;
     case 3:
-      v5 = [(CKUITheme *)self red_selectionHighlightColorOverride];
+      gray_selectionHighlightColorOverride = [(CKUITheme *)self red_selectionHighlightColorOverride];
       goto LABEL_22;
     case 4:
-      v5 = [(CKUITheme *)self white_selectionHighlightColorOverride];
+      gray_selectionHighlightColorOverride = [(CKUITheme *)self white_selectionHighlightColorOverride];
       goto LABEL_22;
     case 5:
-      v5 = [(CKUITheme *)self black_selectionHighlightColorOverride];
+      gray_selectionHighlightColorOverride = [(CKUITheme *)self black_selectionHighlightColorOverride];
       goto LABEL_22;
     case 6:
-      v5 = [(CKUITheme *)self business_selectionHighlightColorOverride];
+      gray_selectionHighlightColorOverride = [(CKUITheme *)self business_selectionHighlightColorOverride];
       goto LABEL_22;
     case 7:
-      v5 = [(CKUITheme *)self multiway_selectionHighlightColorOverride];
+      gray_selectionHighlightColorOverride = [(CKUITheme *)self multiway_selectionHighlightColorOverride];
       goto LABEL_22;
     case 8:
-      v5 = [(CKUITheme *)self background_selectionHighlightColorOverride];
+      gray_selectionHighlightColorOverride = [(CKUITheme *)self background_selectionHighlightColorOverride];
       goto LABEL_22;
     case 9:
-      v5 = [(CKUITheme *)self reply_gray_selectionHighlightColorOverride];
+      gray_selectionHighlightColorOverride = [(CKUITheme *)self reply_gray_selectionHighlightColorOverride];
       goto LABEL_22;
     case 10:
-      v5 = [(CKUITheme *)self reply_blue_selectionHighlightColorOverride];
+      gray_selectionHighlightColorOverride = [(CKUITheme *)self reply_blue_selectionHighlightColorOverride];
       goto LABEL_22;
     case 11:
-      v5 = [(CKUITheme *)self reply_green_selectionHighlightColorOverride];
+      gray_selectionHighlightColorOverride = [(CKUITheme *)self reply_green_selectionHighlightColorOverride];
       goto LABEL_22;
     case 12:
-      v5 = [(CKUITheme *)self stewie_selectionHighlightColorOverride];
+      gray_selectionHighlightColorOverride = [(CKUITheme *)self stewie_selectionHighlightColorOverride];
       goto LABEL_22;
     case 13:
-      v5 = [(CKUITheme *)self message_editing_black_selectionHighlightColorOverride];
+      gray_selectionHighlightColorOverride = [(CKUITheme *)self message_editing_black_selectionHighlightColorOverride];
       goto LABEL_22;
     case 14:
-      v5 = [(CKUITheme *)self opaque_orb_gray_selectionHighlightColorOverride];
+      gray_selectionHighlightColorOverride = [(CKUITheme *)self opaque_orb_gray_selectionHighlightColorOverride];
       goto LABEL_22;
     case 15:
-      v5 = [(CKUITheme *)self pending_blue_selectionHighlightColorOverride];
+      gray_selectionHighlightColorOverride = [(CKUITheme *)self pending_blue_selectionHighlightColorOverride];
 LABEL_22:
 
       break;
     default:
-      v5 = 0;
+      gray_selectionHighlightColorOverride = 0;
 
       break;
   }
 
-  return v5;
+  return gray_selectionHighlightColorOverride;
 }
 
 - (id)gray_selectionHighlightColorOverride
@@ -7187,70 +7187,70 @@ void __57__CKUITheme_pending_blue_selectionHighlightColorOverride__block_invoke(
   pending_blue_selectionHighlightColorOverride_sBehavior = v1;
 }
 
-- (id)selectionBarColorOverrideForColorType:(char)a3
+- (id)selectionBarColorOverrideForColorType:(char)type
 {
-  switch(a3)
+  switch(type)
   {
     case -1:
-      v5 = [(CKUITheme *)self gray_selectionBarColorOverride];
+      gray_selectionBarColorOverride = [(CKUITheme *)self gray_selectionBarColorOverride];
       goto LABEL_22;
     case 0:
-      v5 = [(CKUITheme *)self green_selectionBarColorOverride];
+      gray_selectionBarColorOverride = [(CKUITheme *)self green_selectionBarColorOverride];
       goto LABEL_22;
     case 1:
-      v5 = [(CKUITheme *)self blue_selectionBarColorOverride];
+      gray_selectionBarColorOverride = [(CKUITheme *)self blue_selectionBarColorOverride];
       goto LABEL_22;
     case 2:
-      v5 = [(CKUITheme *)self siri_selectionBarColorOverride];
+      gray_selectionBarColorOverride = [(CKUITheme *)self siri_selectionBarColorOverride];
       goto LABEL_22;
     case 3:
-      v5 = [(CKUITheme *)self red_selectionBarColorOverride];
+      gray_selectionBarColorOverride = [(CKUITheme *)self red_selectionBarColorOverride];
       goto LABEL_22;
     case 4:
-      v5 = [(CKUITheme *)self white_selectionBarColorOverride];
+      gray_selectionBarColorOverride = [(CKUITheme *)self white_selectionBarColorOverride];
       goto LABEL_22;
     case 5:
-      v5 = [(CKUITheme *)self black_selectionBarColorOverride];
+      gray_selectionBarColorOverride = [(CKUITheme *)self black_selectionBarColorOverride];
       goto LABEL_22;
     case 6:
-      v5 = [(CKUITheme *)self business_selectionBarColorOverride];
+      gray_selectionBarColorOverride = [(CKUITheme *)self business_selectionBarColorOverride];
       goto LABEL_22;
     case 7:
-      v5 = [(CKUITheme *)self multiway_selectionBarColorOverride];
+      gray_selectionBarColorOverride = [(CKUITheme *)self multiway_selectionBarColorOverride];
       goto LABEL_22;
     case 8:
-      v5 = [(CKUITheme *)self background_selectionBarColorOverride];
+      gray_selectionBarColorOverride = [(CKUITheme *)self background_selectionBarColorOverride];
       goto LABEL_22;
     case 9:
-      v5 = [(CKUITheme *)self reply_gray_selectionBarColorOverride];
+      gray_selectionBarColorOverride = [(CKUITheme *)self reply_gray_selectionBarColorOverride];
       goto LABEL_22;
     case 10:
-      v5 = [(CKUITheme *)self reply_blue_selectionBarColorOverride];
+      gray_selectionBarColorOverride = [(CKUITheme *)self reply_blue_selectionBarColorOverride];
       goto LABEL_22;
     case 11:
-      v5 = [(CKUITheme *)self reply_green_selectionBarColorOverride];
+      gray_selectionBarColorOverride = [(CKUITheme *)self reply_green_selectionBarColorOverride];
       goto LABEL_22;
     case 12:
-      v5 = [(CKUITheme *)self stewie_selectionBarColorOverride];
+      gray_selectionBarColorOverride = [(CKUITheme *)self stewie_selectionBarColorOverride];
       goto LABEL_22;
     case 13:
-      v5 = [(CKUITheme *)self message_editing_black_selectionBarColorOverride];
+      gray_selectionBarColorOverride = [(CKUITheme *)self message_editing_black_selectionBarColorOverride];
       goto LABEL_22;
     case 14:
-      v5 = [(CKUITheme *)self opaque_orb_gray_selectionBarColorOverride];
+      gray_selectionBarColorOverride = [(CKUITheme *)self opaque_orb_gray_selectionBarColorOverride];
       goto LABEL_22;
     case 15:
-      v5 = [(CKUITheme *)self pending_blue_selectionBarColorOverride];
+      gray_selectionBarColorOverride = [(CKUITheme *)self pending_blue_selectionBarColorOverride];
 LABEL_22:
 
       break;
     default:
-      v5 = 0;
+      gray_selectionBarColorOverride = 0;
 
       break;
   }
 
-  return v5;
+  return gray_selectionBarColorOverride;
 }
 
 - (id)gray_selectionBarColorOverride
@@ -7967,9 +7967,9 @@ id __41__CKUITheme_attachmentBalloonActionColor__block_invoke_2(uint64_t a1, voi
 
   if (!v5)
   {
-    v6 = [(CKUITheme *)self transcriptTextColor];
+    transcriptTextColor = [(CKUITheme *)self transcriptTextColor];
     v7 = attachmentBalloonTitleTextColor_sBehavior;
-    attachmentBalloonTitleTextColor_sBehavior = v6;
+    attachmentBalloonTitleTextColor_sBehavior = transcriptTextColor;
 
     attachmentBalloonTitleTextColor_sIsIncreaseContrastEnabled_attachmentBalloonTitleTextColor = v3;
     v4 = attachmentBalloonTitleTextColor_sBehavior;
@@ -8019,70 +8019,70 @@ void __50__CKUITheme_attachmentBalloonRichIconOutlineColor__block_invoke()
   attachmentBalloonRichIconOutlineColor_sBehavior = v0;
 }
 
-- (id)waveformColorForColorType:(char)a3
+- (id)waveformColorForColorType:(char)type
 {
-  switch(a3)
+  switch(type)
   {
     case -1:
-      v5 = [(CKUITheme *)self gray_waveformColor];
+      gray_waveformColor = [(CKUITheme *)self gray_waveformColor];
       goto LABEL_22;
     case 0:
-      v5 = [(CKUITheme *)self green_waveformColor];
+      gray_waveformColor = [(CKUITheme *)self green_waveformColor];
       goto LABEL_22;
     case 1:
-      v5 = [(CKUITheme *)self blue_waveformColor];
+      gray_waveformColor = [(CKUITheme *)self blue_waveformColor];
       goto LABEL_22;
     case 2:
-      v5 = [(CKUITheme *)self siri_waveformColor];
+      gray_waveformColor = [(CKUITheme *)self siri_waveformColor];
       goto LABEL_22;
     case 3:
-      v5 = [(CKUITheme *)self red_waveformColor];
+      gray_waveformColor = [(CKUITheme *)self red_waveformColor];
       goto LABEL_22;
     case 4:
-      v5 = [(CKUITheme *)self white_waveformColor];
+      gray_waveformColor = [(CKUITheme *)self white_waveformColor];
       goto LABEL_22;
     case 5:
-      v5 = [(CKUITheme *)self black_waveformColor];
+      gray_waveformColor = [(CKUITheme *)self black_waveformColor];
       goto LABEL_22;
     case 6:
-      v5 = [(CKUITheme *)self business_waveformColor];
+      gray_waveformColor = [(CKUITheme *)self business_waveformColor];
       goto LABEL_22;
     case 7:
-      v5 = [(CKUITheme *)self multiway_waveformColor];
+      gray_waveformColor = [(CKUITheme *)self multiway_waveformColor];
       goto LABEL_22;
     case 8:
-      v5 = [(CKUITheme *)self background_waveformColor];
+      gray_waveformColor = [(CKUITheme *)self background_waveformColor];
       goto LABEL_22;
     case 9:
-      v5 = [(CKUITheme *)self reply_gray_waveformColor];
+      gray_waveformColor = [(CKUITheme *)self reply_gray_waveformColor];
       goto LABEL_22;
     case 10:
-      v5 = [(CKUITheme *)self reply_blue_waveformColor];
+      gray_waveformColor = [(CKUITheme *)self reply_blue_waveformColor];
       goto LABEL_22;
     case 11:
-      v5 = [(CKUITheme *)self reply_green_waveformColor];
+      gray_waveformColor = [(CKUITheme *)self reply_green_waveformColor];
       goto LABEL_22;
     case 12:
-      v5 = [(CKUITheme *)self stewie_waveformColor];
+      gray_waveformColor = [(CKUITheme *)self stewie_waveformColor];
       goto LABEL_22;
     case 13:
-      v5 = [(CKUITheme *)self message_editing_black_waveformColor];
+      gray_waveformColor = [(CKUITheme *)self message_editing_black_waveformColor];
       goto LABEL_22;
     case 14:
-      v5 = [(CKUITheme *)self opaque_orb_gray_waveformColor];
+      gray_waveformColor = [(CKUITheme *)self opaque_orb_gray_waveformColor];
       goto LABEL_22;
     case 15:
-      v5 = [(CKUITheme *)self pending_blue_waveformColor];
+      gray_waveformColor = [(CKUITheme *)self pending_blue_waveformColor];
 LABEL_22:
 
       break;
     default:
-      v5 = 0;
+      gray_waveformColor = 0;
 
       break;
   }
 
-  return v5;
+  return gray_waveformColor;
 }
 
 - (id)gray_waveformColor
@@ -8411,70 +8411,70 @@ void __39__CKUITheme_pending_blue_waveformColor__block_invoke()
   pending_blue_waveformColor_sBehavior = v0;
 }
 
-- (id)progressViewColorForColorType:(char)a3
+- (id)progressViewColorForColorType:(char)type
 {
-  switch(a3)
+  switch(type)
   {
     case -1:
-      v5 = [(CKUITheme *)self gray_progressViewColor];
+      gray_progressViewColor = [(CKUITheme *)self gray_progressViewColor];
       goto LABEL_22;
     case 0:
-      v5 = [(CKUITheme *)self green_progressViewColor];
+      gray_progressViewColor = [(CKUITheme *)self green_progressViewColor];
       goto LABEL_22;
     case 1:
-      v5 = [(CKUITheme *)self blue_progressViewColor];
+      gray_progressViewColor = [(CKUITheme *)self blue_progressViewColor];
       goto LABEL_22;
     case 2:
-      v5 = [(CKUITheme *)self siri_progressViewColor];
+      gray_progressViewColor = [(CKUITheme *)self siri_progressViewColor];
       goto LABEL_22;
     case 3:
-      v5 = [(CKUITheme *)self red_progressViewColor];
+      gray_progressViewColor = [(CKUITheme *)self red_progressViewColor];
       goto LABEL_22;
     case 4:
-      v5 = [(CKUITheme *)self white_progressViewColor];
+      gray_progressViewColor = [(CKUITheme *)self white_progressViewColor];
       goto LABEL_22;
     case 5:
-      v5 = [(CKUITheme *)self black_progressViewColor];
+      gray_progressViewColor = [(CKUITheme *)self black_progressViewColor];
       goto LABEL_22;
     case 6:
-      v5 = [(CKUITheme *)self business_progressViewColor];
+      gray_progressViewColor = [(CKUITheme *)self business_progressViewColor];
       goto LABEL_22;
     case 7:
-      v5 = [(CKUITheme *)self multiway_progressViewColor];
+      gray_progressViewColor = [(CKUITheme *)self multiway_progressViewColor];
       goto LABEL_22;
     case 8:
-      v5 = [(CKUITheme *)self background_progressViewColor];
+      gray_progressViewColor = [(CKUITheme *)self background_progressViewColor];
       goto LABEL_22;
     case 9:
-      v5 = [(CKUITheme *)self reply_gray_progressViewColor];
+      gray_progressViewColor = [(CKUITheme *)self reply_gray_progressViewColor];
       goto LABEL_22;
     case 10:
-      v5 = [(CKUITheme *)self reply_blue_progressViewColor];
+      gray_progressViewColor = [(CKUITheme *)self reply_blue_progressViewColor];
       goto LABEL_22;
     case 11:
-      v5 = [(CKUITheme *)self reply_green_progressViewColor];
+      gray_progressViewColor = [(CKUITheme *)self reply_green_progressViewColor];
       goto LABEL_22;
     case 12:
-      v5 = [(CKUITheme *)self stewie_progressViewColor];
+      gray_progressViewColor = [(CKUITheme *)self stewie_progressViewColor];
       goto LABEL_22;
     case 13:
-      v5 = [(CKUITheme *)self message_editing_black_progressViewColor];
+      gray_progressViewColor = [(CKUITheme *)self message_editing_black_progressViewColor];
       goto LABEL_22;
     case 14:
-      v5 = [(CKUITheme *)self opaque_orb_gray_progressViewColor];
+      gray_progressViewColor = [(CKUITheme *)self opaque_orb_gray_progressViewColor];
       goto LABEL_22;
     case 15:
-      v5 = [(CKUITheme *)self pending_blue_progressViewColor];
+      gray_progressViewColor = [(CKUITheme *)self pending_blue_progressViewColor];
 LABEL_22:
 
       break;
     default:
-      v5 = 0;
+      gray_progressViewColor = 0;
 
       break;
   }
 
-  return v5;
+  return gray_progressViewColor;
 }
 
 - (id)gray_progressViewColor
@@ -8863,57 +8863,57 @@ void __34__CKUITheme_waveformDisabledColor__block_invoke(uint64_t a1)
   waveformDisabledColor_sBehavior = v1;
 }
 
-- (id)recipientTextColorForColorType:(char)a3
+- (id)recipientTextColorForColorType:(char)type
 {
-  switch(a3)
+  switch(type)
   {
     case -1:
     case 14:
-      v4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
       goto LABEL_14;
     case 0:
     case 11:
-      v3 = [(CKUITheme *)self green_balloonColors];
+      green_balloonColors = [(CKUITheme *)self green_balloonColors];
       goto LABEL_11;
     case 1:
     case 10:
     case 15:
-      v3 = [(CKUITheme *)self blue_balloonColors];
+      green_balloonColors = [(CKUITheme *)self blue_balloonColors];
       goto LABEL_11;
     case 2:
-      v3 = [(CKUITheme *)self siri_balloonColors];
+      green_balloonColors = [(CKUITheme *)self siri_balloonColors];
 LABEL_11:
-      v5 = v3;
-      v6 = [v3 lastObject];
+      v5 = green_balloonColors;
+      lastObject = [green_balloonColors lastObject];
 
       goto LABEL_15;
     case 3:
-      v4 = [MEMORY[0x1E69DC888] systemRedColor];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] systemRedColor];
       goto LABEL_14;
     case 4:
-      v4 = [MEMORY[0x1E69DC888] whiteColor];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] whiteColor];
       goto LABEL_14;
     case 5:
-      v4 = [MEMORY[0x1E69DC888] blackColor];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] blackColor];
       goto LABEL_14;
     case 6:
     case 7:
     case 12:
-      v4 = [MEMORY[0x1E69DC888] systemGrayColor];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] systemGrayColor];
       goto LABEL_14;
     case 9:
-      v4 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
       goto LABEL_14;
     case 13:
-      v4 = [MEMORY[0x1E69DC888] labelColor];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] labelColor];
       goto LABEL_14;
     default:
-      v4 = [MEMORY[0x1E69DC888] redColor];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] redColor];
 LABEL_14:
-      v6 = v4;
+      lastObject = secondaryLabelColor;
 LABEL_15:
 
-      return v6;
+      return lastObject;
   }
 }
 
@@ -9082,70 +9082,70 @@ void __49__CKUITheme_entryViewTransparentBackdropSettings__block_invoke()
   entryViewTransparentBackdropSettings_sBehavior = v0;
 }
 
-- (id)sendButtonColorForColorType:(char)a3
+- (id)sendButtonColorForColorType:(char)type
 {
-  switch(a3)
+  switch(type)
   {
     case -1:
-      v5 = [(CKUITheme *)self gray_sendButtonColor];
+      gray_sendButtonColor = [(CKUITheme *)self gray_sendButtonColor];
       goto LABEL_22;
     case 0:
-      v5 = [(CKUITheme *)self green_sendButtonColor];
+      gray_sendButtonColor = [(CKUITheme *)self green_sendButtonColor];
       goto LABEL_22;
     case 1:
-      v5 = [(CKUITheme *)self blue_sendButtonColor];
+      gray_sendButtonColor = [(CKUITheme *)self blue_sendButtonColor];
       goto LABEL_22;
     case 2:
-      v5 = [(CKUITheme *)self siri_sendButtonColor];
+      gray_sendButtonColor = [(CKUITheme *)self siri_sendButtonColor];
       goto LABEL_22;
     case 3:
-      v5 = [(CKUITheme *)self red_sendButtonColor];
+      gray_sendButtonColor = [(CKUITheme *)self red_sendButtonColor];
       goto LABEL_22;
     case 4:
-      v5 = [(CKUITheme *)self white_sendButtonColor];
+      gray_sendButtonColor = [(CKUITheme *)self white_sendButtonColor];
       goto LABEL_22;
     case 5:
-      v5 = [(CKUITheme *)self black_sendButtonColor];
+      gray_sendButtonColor = [(CKUITheme *)self black_sendButtonColor];
       goto LABEL_22;
     case 6:
-      v5 = [(CKUITheme *)self business_sendButtonColor];
+      gray_sendButtonColor = [(CKUITheme *)self business_sendButtonColor];
       goto LABEL_22;
     case 7:
-      v5 = [(CKUITheme *)self multiway_sendButtonColor];
+      gray_sendButtonColor = [(CKUITheme *)self multiway_sendButtonColor];
       goto LABEL_22;
     case 8:
-      v5 = [(CKUITheme *)self background_sendButtonColor];
+      gray_sendButtonColor = [(CKUITheme *)self background_sendButtonColor];
       goto LABEL_22;
     case 9:
-      v5 = [(CKUITheme *)self reply_gray_sendButtonColor];
+      gray_sendButtonColor = [(CKUITheme *)self reply_gray_sendButtonColor];
       goto LABEL_22;
     case 10:
-      v5 = [(CKUITheme *)self reply_blue_sendButtonColor];
+      gray_sendButtonColor = [(CKUITheme *)self reply_blue_sendButtonColor];
       goto LABEL_22;
     case 11:
-      v5 = [(CKUITheme *)self reply_green_sendButtonColor];
+      gray_sendButtonColor = [(CKUITheme *)self reply_green_sendButtonColor];
       goto LABEL_22;
     case 12:
-      v5 = [(CKUITheme *)self stewie_sendButtonColor];
+      gray_sendButtonColor = [(CKUITheme *)self stewie_sendButtonColor];
       goto LABEL_22;
     case 13:
-      v5 = [(CKUITheme *)self message_editing_black_sendButtonColor];
+      gray_sendButtonColor = [(CKUITheme *)self message_editing_black_sendButtonColor];
       goto LABEL_22;
     case 14:
-      v5 = [(CKUITheme *)self opaque_orb_gray_sendButtonColor];
+      gray_sendButtonColor = [(CKUITheme *)self opaque_orb_gray_sendButtonColor];
       goto LABEL_22;
     case 15:
-      v5 = [(CKUITheme *)self pending_blue_sendButtonColor];
+      gray_sendButtonColor = [(CKUITheme *)self pending_blue_sendButtonColor];
 LABEL_22:
 
       break;
     default:
-      v5 = 0;
+      gray_sendButtonColor = 0;
 
       break;
   }
 
-  return v5;
+  return gray_sendButtonColor;
 }
 
 - (id)gray_sendButtonColor
@@ -9164,9 +9164,9 @@ LABEL_22:
 
   if (!v5)
   {
-    v6 = [(CKUITheme *)self grayTextColor];
+    grayTextColor = [(CKUITheme *)self grayTextColor];
     v7 = gray_sendButtonColor_sBehavior;
-    gray_sendButtonColor_sBehavior = v6;
+    gray_sendButtonColor_sBehavior = grayTextColor;
 
     gray_sendButtonColor_sIsIncreaseContrastEnabled_gray_sendButtonColor = v3;
     v4 = gray_sendButtonColor_sBehavior;
@@ -9191,9 +9191,9 @@ LABEL_22:
 
   if (!v5)
   {
-    v6 = [(CKUITheme *)self gray_sendButtonColor];
+    gray_sendButtonColor = [(CKUITheme *)self gray_sendButtonColor];
     v7 = opaque_orb_gray_sendButtonColor_sBehavior;
-    opaque_orb_gray_sendButtonColor_sBehavior = v6;
+    opaque_orb_gray_sendButtonColor_sBehavior = gray_sendButtonColor;
 
     opaque_orb_gray_sendButtonColor_sIsIncreaseContrastEnabled_opaque_orb_gray_sendButtonColor = v3;
     v4 = opaque_orb_gray_sendButtonColor_sBehavior;
@@ -9219,9 +9219,9 @@ LABEL_22:
   if (!v5)
   {
     v6 = [(CKUITheme *)self balloonColorsForColorType:0];
-    v7 = [v6 lastObject];
+    lastObject = [v6 lastObject];
     v8 = green_sendButtonColor_sBehavior;
-    green_sendButtonColor_sBehavior = v7;
+    green_sendButtonColor_sBehavior = lastObject;
 
     green_sendButtonColor_sIsIncreaseContrastEnabled_green_sendButtonColor = v3;
     v4 = green_sendButtonColor_sBehavior;
@@ -9247,9 +9247,9 @@ LABEL_22:
   if (!v5)
   {
     v6 = [(CKUITheme *)self balloonColorsForColorType:1];
-    v7 = [v6 lastObject];
+    lastObject = [v6 lastObject];
     v8 = blue_sendButtonColor_sBehavior;
-    blue_sendButtonColor_sBehavior = v7;
+    blue_sendButtonColor_sBehavior = lastObject;
 
     blue_sendButtonColor_sIsIncreaseContrastEnabled_blue_sendButtonColor = v3;
     v4 = blue_sendButtonColor_sBehavior;
@@ -9373,9 +9373,9 @@ void __37__CKUITheme_business_sendButtonColor__block_invoke()
 
   if (!v5)
   {
-    v6 = [(CKUITheme *)self grayTextColor];
+    grayTextColor = [(CKUITheme *)self grayTextColor];
     v7 = multiway_sendButtonColor_sBehavior;
-    multiway_sendButtonColor_sBehavior = v6;
+    multiway_sendButtonColor_sBehavior = grayTextColor;
 
     multiway_sendButtonColor_sIsIncreaseContrastEnabled_multiway_sendButtonColor = v3;
     v4 = multiway_sendButtonColor_sBehavior;
@@ -9400,9 +9400,9 @@ void __37__CKUITheme_business_sendButtonColor__block_invoke()
 
   if (!v4)
   {
-    v5 = [MEMORY[0x1E69DC888] systemRedColor];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
     v6 = background_sendButtonColor_sBehavior;
-    background_sendButtonColor_sBehavior = v5;
+    background_sendButtonColor_sBehavior = systemRedColor;
 
     background_sendButtonColor_sIsIncreaseContrastEnabled_background_sendButtonColor = v2;
     v3 = background_sendButtonColor_sBehavior;
@@ -9427,9 +9427,9 @@ void __37__CKUITheme_business_sendButtonColor__block_invoke()
 
   if (!v4)
   {
-    v5 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     v6 = message_editing_black_sendButtonColor_sBehavior;
-    message_editing_black_sendButtonColor_sBehavior = v5;
+    message_editing_black_sendButtonColor_sBehavior = labelColor;
 
     message_editing_black_sendButtonColor_sIsIncreaseContrastEnabled_message_editing_black_sendButtonColor = v2;
     v3 = message_editing_black_sendButtonColor_sBehavior;
@@ -9454,9 +9454,9 @@ void __37__CKUITheme_business_sendButtonColor__block_invoke()
 
   if (!v5)
   {
-    v6 = [(CKUITheme *)self grayTextColor];
+    grayTextColor = [(CKUITheme *)self grayTextColor];
     v7 = reply_gray_sendButtonColor_sBehavior;
-    reply_gray_sendButtonColor_sBehavior = v6;
+    reply_gray_sendButtonColor_sBehavior = grayTextColor;
 
     reply_gray_sendButtonColor_sIsIncreaseContrastEnabled_reply_gray_sendButtonColor = v3;
     v4 = reply_gray_sendButtonColor_sBehavior;
@@ -9482,9 +9482,9 @@ void __37__CKUITheme_business_sendButtonColor__block_invoke()
   if (!v5)
   {
     v6 = [(CKUITheme *)self balloonColorsForColorType:1];
-    v7 = [v6 lastObject];
+    lastObject = [v6 lastObject];
     v8 = reply_blue_sendButtonColor_sBehavior;
-    reply_blue_sendButtonColor_sBehavior = v7;
+    reply_blue_sendButtonColor_sBehavior = lastObject;
 
     reply_blue_sendButtonColor_sIsIncreaseContrastEnabled_reply_blue_sendButtonColor = v3;
     v4 = reply_blue_sendButtonColor_sBehavior;
@@ -9510,9 +9510,9 @@ void __37__CKUITheme_business_sendButtonColor__block_invoke()
   if (!v5)
   {
     v6 = [(CKUITheme *)self balloonColorsForColorType:0];
-    v7 = [v6 lastObject];
+    lastObject = [v6 lastObject];
     v8 = reply_green_sendButtonColor_sBehavior;
-    reply_green_sendButtonColor_sBehavior = v7;
+    reply_green_sendButtonColor_sBehavior = lastObject;
 
     reply_green_sendButtonColor_sIsIncreaseContrastEnabled_reply_green_sendButtonColor = v3;
     v4 = reply_green_sendButtonColor_sBehavior;
@@ -9562,9 +9562,9 @@ void __41__CKUITheme_pending_blue_sendButtonColor__block_invoke()
   pending_blue_sendButtonColor_sBehavior = v0;
 }
 
-- (char)applyPayCashSendButtonColorForEntryViewStyle:(int64_t)a3
+- (char)applyPayCashSendButtonColorForEntryViewStyle:(int64_t)style
 {
-  if (CKMessageEntryViewStyleIsForDarkAppearance(a3))
+  if (CKMessageEntryViewStyleIsForDarkAppearance(style))
   {
     return 4;
   }
@@ -9575,70 +9575,70 @@ void __41__CKUITheme_pending_blue_sendButtonColor__block_invoke()
   }
 }
 
-- (id)sendButtonArrowColorForColorType:(char)a3
+- (id)sendButtonArrowColorForColorType:(char)type
 {
-  switch(a3)
+  switch(type)
   {
     case -1:
-      v5 = [(CKUITheme *)self gray_sendButtonArrowColor];
+      gray_sendButtonArrowColor = [(CKUITheme *)self gray_sendButtonArrowColor];
       goto LABEL_22;
     case 0:
-      v5 = [(CKUITheme *)self green_sendButtonArrowColor];
+      gray_sendButtonArrowColor = [(CKUITheme *)self green_sendButtonArrowColor];
       goto LABEL_22;
     case 1:
-      v5 = [(CKUITheme *)self blue_sendButtonArrowColor];
+      gray_sendButtonArrowColor = [(CKUITheme *)self blue_sendButtonArrowColor];
       goto LABEL_22;
     case 2:
-      v5 = [(CKUITheme *)self siri_sendButtonArrowColor];
+      gray_sendButtonArrowColor = [(CKUITheme *)self siri_sendButtonArrowColor];
       goto LABEL_22;
     case 3:
-      v5 = [(CKUITheme *)self red_sendButtonArrowColor];
+      gray_sendButtonArrowColor = [(CKUITheme *)self red_sendButtonArrowColor];
       goto LABEL_22;
     case 4:
-      v5 = [(CKUITheme *)self white_sendButtonArrowColor];
+      gray_sendButtonArrowColor = [(CKUITheme *)self white_sendButtonArrowColor];
       goto LABEL_22;
     case 5:
-      v5 = [(CKUITheme *)self black_sendButtonArrowColor];
+      gray_sendButtonArrowColor = [(CKUITheme *)self black_sendButtonArrowColor];
       goto LABEL_22;
     case 6:
-      v5 = [(CKUITheme *)self business_sendButtonArrowColor];
+      gray_sendButtonArrowColor = [(CKUITheme *)self business_sendButtonArrowColor];
       goto LABEL_22;
     case 7:
-      v5 = [(CKUITheme *)self multiway_sendButtonArrowColor];
+      gray_sendButtonArrowColor = [(CKUITheme *)self multiway_sendButtonArrowColor];
       goto LABEL_22;
     case 8:
-      v5 = [(CKUITheme *)self background_sendButtonArrowColor];
+      gray_sendButtonArrowColor = [(CKUITheme *)self background_sendButtonArrowColor];
       goto LABEL_22;
     case 9:
-      v5 = [(CKUITheme *)self reply_gray_sendButtonArrowColor];
+      gray_sendButtonArrowColor = [(CKUITheme *)self reply_gray_sendButtonArrowColor];
       goto LABEL_22;
     case 10:
-      v5 = [(CKUITheme *)self reply_blue_sendButtonArrowColor];
+      gray_sendButtonArrowColor = [(CKUITheme *)self reply_blue_sendButtonArrowColor];
       goto LABEL_22;
     case 11:
-      v5 = [(CKUITheme *)self reply_green_sendButtonArrowColor];
+      gray_sendButtonArrowColor = [(CKUITheme *)self reply_green_sendButtonArrowColor];
       goto LABEL_22;
     case 12:
-      v5 = [(CKUITheme *)self stewie_sendButtonArrowColor];
+      gray_sendButtonArrowColor = [(CKUITheme *)self stewie_sendButtonArrowColor];
       goto LABEL_22;
     case 13:
-      v5 = [(CKUITheme *)self message_editing_black_sendButtonArrowColor];
+      gray_sendButtonArrowColor = [(CKUITheme *)self message_editing_black_sendButtonArrowColor];
       goto LABEL_22;
     case 14:
-      v5 = [(CKUITheme *)self opaque_orb_gray_sendButtonArrowColor];
+      gray_sendButtonArrowColor = [(CKUITheme *)self opaque_orb_gray_sendButtonArrowColor];
       goto LABEL_22;
     case 15:
-      v5 = [(CKUITheme *)self pending_blue_sendButtonArrowColor];
+      gray_sendButtonArrowColor = [(CKUITheme *)self pending_blue_sendButtonArrowColor];
 LABEL_22:
 
       break;
     default:
-      v5 = 0;
+      gray_sendButtonArrowColor = 0;
 
       break;
   }
 
-  return v5;
+  return gray_sendButtonArrowColor;
 }
 
 - (id)gray_sendButtonArrowColor
@@ -11212,11 +11212,11 @@ void __45__CKUITheme_messageAcknowledgmentPinnedColor__block_invoke(uint64_t a1)
   messageAcknowledgmentPinnedColor_sBehavior = v1;
 }
 
-- (char)ckAcknowledgementColorTypeForColor:(id)a3
+- (char)ckAcknowledgementColorTypeForColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CKUITheme *)self messageAcknowledgmentWhiteColor];
-  v6 = [v4 isEqual:v5];
+  colorCopy = color;
+  messageAcknowledgmentWhiteColor = [(CKUITheme *)self messageAcknowledgmentWhiteColor];
+  v6 = [colorCopy isEqual:messageAcknowledgmentWhiteColor];
 
   if (v6)
   {
@@ -11225,8 +11225,8 @@ void __45__CKUITheme_messageAcknowledgmentPinnedColor__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [(CKUITheme *)self messageAcknowledgmentGrayColor];
-    v9 = [v4 isEqual:v8];
+    messageAcknowledgmentGrayColor = [(CKUITheme *)self messageAcknowledgmentGrayColor];
+    v9 = [colorCopy isEqual:messageAcknowledgmentGrayColor];
 
     if (v9)
     {
@@ -11235,8 +11235,8 @@ void __45__CKUITheme_messageAcknowledgmentPinnedColor__block_invoke(uint64_t a1)
 
     else
     {
-      v10 = [(CKUITheme *)self messageAcknowledgmentRedColor];
-      v11 = [v4 isEqual:v10];
+      messageAcknowledgmentRedColor = [(CKUITheme *)self messageAcknowledgmentRedColor];
+      v11 = [colorCopy isEqual:messageAcknowledgmentRedColor];
 
       if (v11)
       {
@@ -11253,55 +11253,55 @@ void __45__CKUITheme_messageAcknowledgmentPinnedColor__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)messageAcknowledgment:(int64_t)a3 acknowledgmentImageColor:(int64_t)a4
+- (id)messageAcknowledgment:(int64_t)acknowledgment acknowledgmentImageColor:(int64_t)color
 {
-  if (a4 == 1)
+  if (color == 1)
   {
-    v4 = [(CKUITheme *)self messageAcknowledgmentRedColor];
+    messageAcknowledgmentRedColor = [(CKUITheme *)self messageAcknowledgmentRedColor];
   }
 
-  else if (!a3 || a3 == 2)
+  else if (!acknowledgment || acknowledgment == 2)
   {
-    v4 = [(CKUITheme *)self messageAcknowledgmentGrayColor];
+    messageAcknowledgmentRedColor = [(CKUITheme *)self messageAcknowledgmentGrayColor];
   }
 
-  else if (a3 == 1)
+  else if (acknowledgment == 1)
   {
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
+    messageAcknowledgmentRedColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
   else
   {
-    v4 = 0;
+    messageAcknowledgmentRedColor = 0;
   }
 
-  return v4;
+  return messageAcknowledgmentRedColor;
 }
 
-- (id)messageAcknowledgment:(int64_t)a3 selectedAcknowledgmentImageColor:(int64_t)a4
+- (id)messageAcknowledgment:(int64_t)acknowledgment selectedAcknowledgmentImageColor:(int64_t)color
 {
-  if (a4 == 1)
+  if (color == 1)
   {
-    v4 = [(CKUITheme *)self messageAcknowledgmentRedColor];
+    messageAcknowledgmentRedColor = [(CKUITheme *)self messageAcknowledgmentRedColor];
   }
 
-  else if (a3 == 2)
+  else if (acknowledgment == 2)
   {
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
+    messageAcknowledgmentRedColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
   else
   {
-    v4 = 0;
+    messageAcknowledgmentRedColor = 0;
   }
 
-  return v4;
+  return messageAcknowledgmentRedColor;
 }
 
-- (char)messageAcknowledgmentBalloonColorTypeForStyle:(int64_t)a3
+- (char)messageAcknowledgmentBalloonColorTypeForStyle:(int64_t)style
 {
-  v3 = 0x401FFu >> (8 * a3);
-  if (a3 >= 3)
+  v3 = 0x401FFu >> (8 * style);
+  if (style >= 3)
   {
     LOBYTE(v3) = 0;
   }
@@ -11309,31 +11309,31 @@ void __45__CKUITheme_messageAcknowledgmentPinnedColor__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)messageAcknowledgmentBalloonColorForStyle:(int64_t)a3
+- (id)messageAcknowledgmentBalloonColorForStyle:(int64_t)style
 {
-  v3 = [(CKUITheme *)self balloonColorsForColorType:[(CKUITheme *)self messageAcknowledgmentBalloonColorTypeForStyle:a3]];
-  v4 = [v3 lastObject];
+  v3 = [(CKUITheme *)self balloonColorsForColorType:[(CKUITheme *)self messageAcknowledgmentBalloonColorTypeForStyle:style]];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
-- (id)messageAcknowledgmentSelectedBalloonColorForStyle:(int64_t)a3 serviceName:(id)a4
+- (id)messageAcknowledgmentSelectedBalloonColorForStyle:(int64_t)style serviceName:(id)name
 {
-  if (a3 == 2)
+  if (style == 2)
   {
-    v5 = [MEMORY[0x1E69A5C90] serviceWithName:a4];
-    v6 = [v5 __ck_displayColor];
+    v5 = [MEMORY[0x1E69A5C90] serviceWithName:name];
+    __ck_displayColor = [v5 __ck_displayColor];
 
-    v7 = [(CKUITheme *)self balloonColorsForColorType:v6];
-    v8 = [v7 lastObject];
+    v7 = [(CKUITheme *)self balloonColorsForColorType:__ck_displayColor];
+    lastObject = [v7 lastObject];
   }
 
   else
   {
-    v8 = 0;
+    lastObject = 0;
   }
 
-  return v8;
+  return lastObject;
 }
 
 - (UIColor)attributionViewBackgroundColor
@@ -11997,16 +11997,16 @@ void __34__CKUITheme_fsmPickerPrimaryColor__block_invoke()
     v5 = IsReduceTransparencyEnabled;
     if (v2 || IsReduceTransparencyEnabled)
     {
-      v6 = [MEMORY[0x1E69DC888] systemExtraLightGrayColor];
+      systemExtraLightGrayColor = [MEMORY[0x1E69DC888] systemExtraLightGrayColor];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69DC888] colorWithRed:0.352941176 green:0.352941176 blue:0.352941176 alpha:1.0];
+      systemExtraLightGrayColor = [MEMORY[0x1E69DC888] colorWithRed:0.352941176 green:0.352941176 blue:0.352941176 alpha:1.0];
     }
 
     v7 = fsmPickerPrimaryColorDarkEffect_sBehavior;
-    fsmPickerPrimaryColorDarkEffect_sBehavior = v6;
+    fsmPickerPrimaryColorDarkEffect_sBehavior = systemExtraLightGrayColor;
 
     fsmPickerPrimaryColorDarkEffect_sIsIncreaseContrastEnabled_fsmPickerPrimaryColorDarkEffect = v2;
     fsmPickerPrimaryColorDarkEffect_sIsReduceTransparencyEnabled_fsmPickerPrimaryColorDarkEffect = v5;
@@ -12086,16 +12086,16 @@ void __38__CKUITheme_fsmPickerPrimaryTintColor__block_invoke()
     v5 = IsReduceTransparencyEnabled;
     if (v2 || IsReduceTransparencyEnabled)
     {
-      v6 = [MEMORY[0x1E69DC888] systemExtraLightGrayColor];
+      systemExtraLightGrayColor = [MEMORY[0x1E69DC888] systemExtraLightGrayColor];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69DC888] colorWithRed:0.352941176 green:0.352941176 blue:0.352941176 alpha:1.0];
+      systemExtraLightGrayColor = [MEMORY[0x1E69DC888] colorWithRed:0.352941176 green:0.352941176 blue:0.352941176 alpha:1.0];
     }
 
     v7 = fsmPickerPrimaryTintColorDarkEffect_sBehavior;
-    fsmPickerPrimaryTintColorDarkEffect_sBehavior = v6;
+    fsmPickerPrimaryTintColorDarkEffect_sBehavior = systemExtraLightGrayColor;
 
     fsmPickerPrimaryTintColorDarkEffect_sIsIncreaseContrastEnabled_fsmPickerPrimaryTintColorDarkEffect = v2;
     fsmPickerPrimaryTintColorDarkEffect_sIsReduceTransparencyEnabled_fsmPickerPrimaryTintColorDarkEffect = v5;
@@ -12127,16 +12127,16 @@ void __48__CKUITheme_fsmPickerPrimaryTintColorDarkEffect__block_invoke()
     v5 = IsReduceTransparencyEnabled;
     if (v2 || IsReduceTransparencyEnabled)
     {
-      v6 = [MEMORY[0x1E69DC888] systemExtraLightGrayColor];
+      systemExtraLightGrayColor = [MEMORY[0x1E69DC888] systemExtraLightGrayColor];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69DC888] clearColor];
+      systemExtraLightGrayColor = [MEMORY[0x1E69DC888] clearColor];
     }
 
     v7 = fsmPickerSecondaryColor_sBehavior;
-    fsmPickerSecondaryColor_sBehavior = v6;
+    fsmPickerSecondaryColor_sBehavior = systemExtraLightGrayColor;
 
     fsmPickerSecondaryColor_sIsIncreaseContrastEnabled_fsmPickerSecondaryColor = v2;
     fsmPickerSecondaryColor_sIsReduceTransparencyEnabled_fsmPickerSecondaryColor = v5;
@@ -12176,7 +12176,7 @@ void __36__CKUITheme_fsmPickerSecondaryColor__block_invoke()
     {
       if (!IsReduceTransparencyEnabled)
       {
-        v8 = [MEMORY[0x1E69DC888] clearColor];
+        clearColor = [MEMORY[0x1E69DC888] clearColor];
         goto LABEL_13;
       }
 
@@ -12184,10 +12184,10 @@ void __36__CKUITheme_fsmPickerSecondaryColor__block_invoke()
       v7 = 0.447058824;
     }
 
-    v8 = [MEMORY[0x1E69DC888] colorWithRed:v6 green:v6 blue:v7 alpha:1.0];
+    clearColor = [MEMORY[0x1E69DC888] colorWithRed:v6 green:v6 blue:v7 alpha:1.0];
 LABEL_13:
     v9 = fsmPickerSecondaryColorDarkEffect_sBehavior;
-    fsmPickerSecondaryColorDarkEffect_sBehavior = v8;
+    fsmPickerSecondaryColorDarkEffect_sBehavior = clearColor;
 
     fsmPickerSecondaryColorDarkEffect_sIsIncreaseContrastEnabled_fsmPickerSecondaryColorDarkEffect = v2;
     fsmPickerSecondaryColorDarkEffect_sIsReduceTransparencyEnabled_fsmPickerSecondaryColorDarkEffect = v5;
@@ -12267,16 +12267,16 @@ void __40__CKUITheme_fsmPickerPageIndicatorColor__block_invoke()
     v5 = IsReduceTransparencyEnabled;
     if (v2 || IsReduceTransparencyEnabled)
     {
-      v6 = [MEMORY[0x1E69DC888] systemExtraLightGrayColor];
+      systemExtraLightGrayColor = [MEMORY[0x1E69DC888] systemExtraLightGrayColor];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69DC888] colorWithRed:0.352941176 green:0.352941176 blue:0.352941176 alpha:1.0];
+      systemExtraLightGrayColor = [MEMORY[0x1E69DC888] colorWithRed:0.352941176 green:0.352941176 blue:0.352941176 alpha:1.0];
     }
 
     v7 = fsmPickerPageIndicatorColorDarkEffect_sBehavior;
-    fsmPickerPageIndicatorColorDarkEffect_sBehavior = v6;
+    fsmPickerPageIndicatorColorDarkEffect_sBehavior = systemExtraLightGrayColor;
 
     fsmPickerPageIndicatorColorDarkEffect_sIsIncreaseContrastEnabled_fsmPickerPageIndicatorColorDarkEffect = v2;
     fsmPickerPageIndicatorColorDarkEffect_sIsReduceTransparencyEnabled_fsmPickerPageIndicatorColorDarkEffect = v5;
@@ -12308,16 +12308,16 @@ void __50__CKUITheme_fsmPickerPageIndicatorColorDarkEffect__block_invoke()
     v5 = IsReduceTransparencyEnabled;
     if (v2 || IsReduceTransparencyEnabled)
     {
-      v6 = [MEMORY[0x1E69DC888] blackColor];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69DC888] ckColorNamed:@"CKFSMPickerCurrentPageIndicatorColor2"];
+      blackColor = [MEMORY[0x1E69DC888] ckColorNamed:@"CKFSMPickerCurrentPageIndicatorColor2"];
     }
 
     v7 = fsmPickerCurrentPageIndicatorColor_sBehavior;
-    fsmPickerCurrentPageIndicatorColor_sBehavior = v6;
+    fsmPickerCurrentPageIndicatorColor_sBehavior = blackColor;
 
     fsmPickerCurrentPageIndicatorColor_sIsIncreaseContrastEnabled_fsmPickerCurrentPageIndicatorColor = v2;
     fsmPickerCurrentPageIndicatorColor_sIsReduceTransparencyEnabled_fsmPickerCurrentPageIndicatorColor = v5;
@@ -12453,16 +12453,16 @@ void __38__CKUITheme_fsmPickerCloseButtonColor__block_invoke()
     v5 = IsReduceTransparencyEnabled;
     if (v2 || IsReduceTransparencyEnabled)
     {
-      v6 = [MEMORY[0x1E69DC888] systemExtraLightGrayColor];
+      systemExtraLightGrayColor = [MEMORY[0x1E69DC888] systemExtraLightGrayColor];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69DC888] colorWithRed:0.352941176 green:0.352941176 blue:0.352941176 alpha:1.0];
+      systemExtraLightGrayColor = [MEMORY[0x1E69DC888] colorWithRed:0.352941176 green:0.352941176 blue:0.352941176 alpha:1.0];
     }
 
     v7 = fsmPickerCloseButtonColorDarkEffect_sBehavior;
-    fsmPickerCloseButtonColorDarkEffect_sBehavior = v6;
+    fsmPickerCloseButtonColorDarkEffect_sBehavior = systemExtraLightGrayColor;
 
     fsmPickerCloseButtonColorDarkEffect_sIsIncreaseContrastEnabled_fsmPickerCloseButtonColorDarkEffect = v2;
     fsmPickerCloseButtonColorDarkEffect_sIsReduceTransparencyEnabled_fsmPickerCloseButtonColorDarkEffect = v5;
@@ -12548,16 +12548,16 @@ void __37__CKUITheme_fsmPickerSendButtonColor__block_invoke(uint64_t a1)
     v5 = IsReduceTransparencyEnabled;
     if ((v2 & 1) != 0 || IsReduceTransparencyEnabled)
     {
-      v6 = [MEMORY[0x1E69DC888] systemExtraLightGrayColor];
+      systemExtraLightGrayColor = [MEMORY[0x1E69DC888] systemExtraLightGrayColor];
     }
 
     else
     {
-      v6 = 0;
+      systemExtraLightGrayColor = 0;
     }
 
     v7 = fsmPickerBackgroundColor_sBehavior;
-    fsmPickerBackgroundColor_sBehavior = v6;
+    fsmPickerBackgroundColor_sBehavior = systemExtraLightGrayColor;
 
     fsmPickerBackgroundColor_sIsIncreaseContrastEnabled_fsmPickerBackgroundColor = v2;
     fsmPickerBackgroundColor_sIsReduceTransparencyEnabled_fsmPickerBackgroundColor = v5;
@@ -12758,13 +12758,13 @@ void __49__CKUITheme_businessInfoViewDescriptionTextColor__block_invoke()
   businessInfoViewDescriptionTextColor_sBehavior = v0;
 }
 
-- (id)primaryBrandColorForBusinessChat:(id)a3
+- (id)primaryBrandColorForBusinessChat:(id)chat
 {
-  v4 = a3;
-  if ([v4 isBusinessChat])
+  chatCopy = chat;
+  if ([chatCopy isBusinessChat])
   {
-    v5 = [v4 brand];
-    v6 = [(CKUITheme *)self _primaryBrandColorForBrand:v5 debugAssociatedObject:v4];
+    brand = [chatCopy brand];
+    v6 = [(CKUITheme *)self _primaryBrandColorForBrand:brand debugAssociatedObject:chatCopy];
   }
 
   else
@@ -12775,13 +12775,13 @@ void __49__CKUITheme_businessInfoViewDescriptionTextColor__block_invoke()
   return v6;
 }
 
-- (id)secondaryBrandColorForBusinessChat:(id)a3
+- (id)secondaryBrandColorForBusinessChat:(id)chat
 {
-  v4 = a3;
-  if ([v4 isBusinessChat])
+  chatCopy = chat;
+  if ([chatCopy isBusinessChat])
   {
-    v5 = [v4 brand];
-    v6 = [(CKUITheme *)self _secondaryBrandColorForBrand:v5 debugAssociatedObject:v4];
+    brand = [chatCopy brand];
+    v6 = [(CKUITheme *)self _secondaryBrandColorForBrand:brand debugAssociatedObject:chatCopy];
   }
 
   else
@@ -12792,9 +12792,9 @@ void __49__CKUITheme_businessInfoViewDescriptionTextColor__block_invoke()
   return v6;
 }
 
-- (int64_t)statusBarStyleForBusinessChat:(id)a3
+- (int64_t)statusBarStyleForBusinessChat:(id)chat
 {
-  if ([(CKUITheme *)self navBarTextStyleForBusinessChat:a3]== 3)
+  if ([(CKUITheme *)self navBarTextStyleForBusinessChat:chat]== 3)
   {
     return 1;
   }
@@ -12805,16 +12805,16 @@ void __49__CKUITheme_businessInfoViewDescriptionTextColor__block_invoke()
   }
 }
 
-- (int64_t)statusBarStyleForBusinessHandle:(id)a3
+- (int64_t)statusBarStyleForBusinessHandle:(id)handle
 {
-  v4 = [(CKUITheme *)self navBarTextStyleForBusinessHandle:a3];
+  v4 = [(CKUITheme *)self navBarTextStyleForBusinessHandle:handle];
 
   return [(CKUITheme *)self _businessStatusBarStyleForNavStyle:v4];
 }
 
-- (int64_t)_businessStatusBarStyleForNavStyle:(int64_t)a3
+- (int64_t)_businessStatusBarStyleForNavStyle:(int64_t)style
 {
-  if (a3 == 3)
+  if (style == 3)
   {
     return 1;
   }
@@ -12825,30 +12825,30 @@ void __49__CKUITheme_businessInfoViewDescriptionTextColor__block_invoke()
   }
 }
 
-- (int64_t)navBarTextStyleForBusinessChat:(id)a3
+- (int64_t)navBarTextStyleForBusinessChat:(id)chat
 {
-  v4 = [(CKUITheme *)self primaryBrandColorForBusinessChat:a3];
+  v4 = [(CKUITheme *)self primaryBrandColorForBusinessChat:chat];
   v5 = [(CKUITheme *)self _businessNavBarTextStyleForColor:v4];
 
   return v5;
 }
 
-- (int64_t)navBarTextStyleForBusinessHandle:(id)a3
+- (int64_t)navBarTextStyleForBusinessHandle:(id)handle
 {
-  v4 = [(CKUITheme *)self primaryBrandColorForBusinessHandle:a3];
+  v4 = [(CKUITheme *)self primaryBrandColorForBusinessHandle:handle];
   v5 = [(CKUITheme *)self _businessNavBarTextStyleForColor:v4];
 
   return v5;
 }
 
-- (int64_t)_businessNavBarTextStyleForColor:(id)a3
+- (int64_t)_businessNavBarTextStyleForColor:(id)color
 {
-  v3 = a3;
-  if (v3 || ([MEMORY[0x1E69DCEB0] mainScreen], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "traitCollection"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "userInterfaceStyle"), v5, v4, v6 != 2))
+  colorCopy = color;
+  if (colorCopy || ([MEMORY[0x1E69DCEB0] mainScreen], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "traitCollection"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "userInterfaceStyle"), v5, v4, v6 != 2))
   {
     v10 = 0.0;
     v11 = 0.0;
-    [v3 getWhite:&v11 alpha:&v10];
+    [colorCopy getWhite:&v11 alpha:&v10];
     if (v10 > 0.0 && v11 < 0.55)
     {
       v7 = 3;
@@ -12868,14 +12868,14 @@ void __49__CKUITheme_businessInfoViewDescriptionTextColor__block_invoke()
   return v7;
 }
 
-- (id)_primaryBrandColorForBrand:(id)a3 debugAssociatedObject:(id)a4
+- (id)_primaryBrandColorForBrand:(id)brand debugAssociatedObject:(id)object
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 primaryBrandColor];
+  brandCopy = brand;
+  objectCopy = object;
+  primaryBrandColor = [brandCopy primaryBrandColor];
   v8 = IMOSLoggingEnabled();
-  if (v7)
+  if (primaryBrandColor)
   {
     if (!v8)
     {
@@ -12886,9 +12886,9 @@ void __49__CKUITheme_businessInfoViewDescriptionTextColor__block_invoke()
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = 138412546;
-      v12 = v5;
+      v12 = brandCopy;
       v13 = 2112;
-      v14 = v6;
+      v14 = objectCopy;
       _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "primaryBrandColorForBrand: Successfully fetched primary business color for brand %@ associated with %@", &v11, 0x16u);
     }
   }
@@ -12904,26 +12904,26 @@ void __49__CKUITheme_businessInfoViewDescriptionTextColor__block_invoke()
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = 138412546;
-      v12 = v5;
+      v12 = brandCopy;
       v13 = 2112;
-      v14 = v6;
+      v14 = objectCopy;
       _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "primaryBrandColorForBrand: Got nil color for brand %@ associated with %@", &v11, 0x16u);
     }
   }
 
 LABEL_10:
 
-  return v7;
+  return primaryBrandColor;
 }
 
-- (id)_secondaryBrandColorForBrand:(id)a3 debugAssociatedObject:(id)a4
+- (id)_secondaryBrandColorForBrand:(id)brand debugAssociatedObject:(id)object
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 secondaryBrandColor];
+  brandCopy = brand;
+  objectCopy = object;
+  secondaryBrandColor = [brandCopy secondaryBrandColor];
   v8 = IMOSLoggingEnabled();
-  if (v7)
+  if (secondaryBrandColor)
   {
     if (!v8)
     {
@@ -12934,9 +12934,9 @@ LABEL_10:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = 138412546;
-      v12 = v5;
+      v12 = brandCopy;
       v13 = 2112;
-      v14 = v6;
+      v14 = objectCopy;
       _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "secondaryBrandColorForBrand: Successfully fetched secondary business color for brand %@ associated with %@", &v11, 0x16u);
     }
   }
@@ -12952,32 +12952,32 @@ LABEL_10:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = 138412546;
-      v12 = v5;
+      v12 = brandCopy;
       v13 = 2112;
-      v14 = v6;
+      v14 = objectCopy;
       _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "secondaryBrandColorForBrand: Got nil color for brand %@ associated with %@", &v11, 0x16u);
     }
   }
 
 LABEL_10:
 
-  return v7;
+  return secondaryBrandColor;
 }
 
-- (id)primaryBrandColorForBusinessHandle:(id)a3
+- (id)primaryBrandColorForBusinessHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [v4 brand];
-  v6 = [(CKUITheme *)self _primaryBrandColorForBrand:v5 debugAssociatedObject:v4];
+  handleCopy = handle;
+  brand = [handleCopy brand];
+  v6 = [(CKUITheme *)self _primaryBrandColorForBrand:brand debugAssociatedObject:handleCopy];
 
   return v6;
 }
 
-- (id)secondaryBrandColorForBusinessHandle:(id)a3
+- (id)secondaryBrandColorForBusinessHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [v4 brand];
-  v6 = [(CKUITheme *)self _secondaryBrandColorForBrand:v5 debugAssociatedObject:v4];
+  handleCopy = handle;
+  brand = [handleCopy brand];
+  v6 = [(CKUITheme *)self _secondaryBrandColorForBrand:brand debugAssociatedObject:handleCopy];
 
   return v6;
 }
@@ -13074,9 +13074,9 @@ void __35__CKUITheme_syncProgressLabelColor__block_invoke()
 
   if (!v4)
   {
-    v5 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     v6 = syncProgressUserMessageColor_sBehavior;
-    syncProgressUserMessageColor_sBehavior = v5;
+    syncProgressUserMessageColor_sBehavior = secondaryLabelColor;
 
     syncProgressUserMessageColor_sIsIncreaseContrastEnabled_syncProgressUserMessageColor = v2;
     v3 = syncProgressUserMessageColor_sBehavior;
@@ -13102,9 +13102,9 @@ void __35__CKUITheme_syncProgressLabelColor__block_invoke()
   if (!v5)
   {
     v6 = [(CKUITheme *)self balloonColorsForColorType:1];
-    v7 = [v6 lastObject];
+    lastObject = [v6 lastObject];
     v8 = syncProgressUserActionButtonTextColor_sBehavior;
-    syncProgressUserActionButtonTextColor_sBehavior = v7;
+    syncProgressUserActionButtonTextColor_sBehavior = lastObject;
 
     syncProgressUserActionButtonTextColor_sIsIncreaseContrastEnabled_syncProgressUserActionButtonTextColor = v3;
     v4 = syncProgressUserActionButtonTextColor_sBehavior;

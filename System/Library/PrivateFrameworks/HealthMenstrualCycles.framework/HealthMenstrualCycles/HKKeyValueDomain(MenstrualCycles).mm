@@ -17,22 +17,22 @@
 - (uint64_t)hkmc_setOnboardingTileLastDismissedDate:()MenstrualCycles error:
 {
   v7 = a3;
-  v8 = [a1 domainName];
-  if (![v8 isEqualToString:@"com.apple.private.health.menstrual-cycles"])
+  domainName = [self domainName];
+  if (![domainName isEqualToString:@"com.apple.private.health.menstrual-cycles"])
   {
 
     goto LABEL_5;
   }
 
-  v9 = [a1 category];
+  category = [self category];
 
-  if (v9 != 4)
+  if (category != 4)
   {
 LABEL_5:
-    [HKKeyValueDomain(MenstrualCycles) hkmc_setOnboardingTileLastDismissedDate:a2 error:a1];
+    [HKKeyValueDomain(MenstrualCycles) hkmc_setOnboardingTileLastDismissedDate:a2 error:self];
   }
 
-  v10 = [a1 setDate:v7 forKey:@"OnboardingTileLastDismissedDate" error:a4];
+  v10 = [self setDate:v7 forKey:@"OnboardingTileLastDismissedDate" error:a4];
 
   return v10;
 }

@@ -9,13 +9,13 @@
   rootPath = self->_rootPath;
   if (rootPath)
   {
-    v3 = rootPath;
+    path = rootPath;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [v5 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.FileProvider.LocalStorage"];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v6 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.FileProvider.LocalStorage"];
 
     if (v6)
     {
@@ -33,17 +33,17 @@
       v7 = 0;
     }
 
-    v3 = [v7 path];
-    if (v3)
+    path = [v7 path];
+    if (path)
     {
-      v9 = [MEMORY[0x277CCAA00] defaultManager];
-      v10 = [v9 fileExistsAtPath:v3];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      v10 = [defaultManager2 fileExistsAtPath:path];
 
       if ((v10 & 1) == 0)
       {
-        v11 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
         v16 = 0;
-        [v11 createDirectoryAtPath:v3 withIntermediateDirectories:0 attributes:0 error:&v16];
+        [defaultManager3 createDirectoryAtPath:path withIntermediateDirectories:0 attributes:0 error:&v16];
         v12 = v16;
 
         if (v12)
@@ -56,7 +56,7 @@
         }
       }
 
-      [(MKFileProvider *)self setRootPath:v3];
+      [(MKFileProvider *)self setRootPath:path];
     }
 
     else
@@ -69,7 +69,7 @@
     }
   }
 
-  return v3;
+  return path;
 }
 
 @end

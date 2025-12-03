@@ -1,13 +1,13 @@
 @interface CKDPZoneSignedCryptoRequirements
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)version;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPZoneSignedCryptoRequirements
@@ -61,59 +61,59 @@
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     version = self->_version;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_signature)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_serializedRequirements)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[6] = self->_version;
-    *(v4 + 28) |= 1u;
+    toCopy[6] = self->_version;
+    *(toCopy + 28) |= 1u;
   }
 
   signature = self->_signature;
-  v8 = v4;
+  v8 = toCopy;
   if (signature)
   {
-    objc_msgSend_setSignature_(v4, v5, signature);
-    v4 = v8;
+    objc_msgSend_setSignature_(toCopy, v5, signature);
+    toCopy = v8;
   }
 
   serializedRequirements = self->_serializedRequirements;
   if (serializedRequirements)
   {
     objc_msgSend_setSerializedRequirements_(v8, v5, serializedRequirements);
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   if (*&self->_has)
@@ -122,36 +122,36 @@
     *(v10 + 28) |= 1u;
   }
 
-  v13 = objc_msgSend_copyWithZone_(self->_signature, v11, a3);
+  v13 = objc_msgSend_copyWithZone_(self->_signature, v11, zone);
   v14 = v12[2];
   v12[2] = v13;
 
-  v16 = objc_msgSend_copyWithZone_(self->_serializedRequirements, v15, a3);
+  v16 = objc_msgSend_copyWithZone_(self->_serializedRequirements, v15, zone);
   v17 = v12[1];
   v12[1] = v16;
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_11;
   }
 
-  v8 = *(v4 + 28);
+  v8 = *(equalCopy + 28);
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_version != *(v4 + 6))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_version != *(equalCopy + 6))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_11:
     isEqual = 0;
@@ -159,14 +159,14 @@ LABEL_11:
   }
 
   signature = self->_signature;
-  v10 = v4[2];
+  v10 = equalCopy[2];
   if (signature | v10 && !objc_msgSend_isEqual_(signature, v7, v10))
   {
     goto LABEL_11;
   }
 
   serializedRequirements = self->_serializedRequirements;
-  v12 = v4[1];
+  v12 = equalCopy[1];
   if (serializedRequirements | v12)
   {
     isEqual = objc_msgSend_isEqual_(serializedRequirements, v7, v12);
@@ -198,28 +198,28 @@ LABEL_12:
   return v5 ^ objc_msgSend_hash(self->_serializedRequirements, v6, v7);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 28))
+  fromCopy = from;
+  if (*(fromCopy + 28))
   {
-    self->_version = *(v4 + 6);
+    self->_version = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
-  v6 = *(v4 + 2);
-  v8 = v4;
+  v6 = *(fromCopy + 2);
+  v8 = fromCopy;
   if (v6)
   {
     objc_msgSend_setSignature_(self, v5, v6);
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   if (v7)
   {
     objc_msgSend_setSerializedRequirements_(self, v5, v7);
-    v4 = v8;
+    fromCopy = v8;
   }
 }
 

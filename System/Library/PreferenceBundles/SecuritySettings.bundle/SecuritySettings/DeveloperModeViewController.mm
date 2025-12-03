@@ -1,17 +1,17 @@
 @interface DeveloperModeViewController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (DeveloperModeViewController)init;
-- (id)readPreferenceValue:(id)a3;
+- (id)readPreferenceValue:(id)value;
 - (id)specifiers;
 - (id)specifiersForPairing;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)promptRebootWithCallback:(id)a3 onCancel:(id)a4;
+- (void)promptRebootWithCallback:(id)callback onCancel:(id)cancel;
 - (void)readAndSetSettings;
 - (void)reboot;
 - (void)refreshLinkStatusInParent;
-- (void)setPreferenceValue:(id)a3 forSpecifier:(id)a4;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
+- (void)setPreferenceValue:(id)value forSpecifier:(id)specifier;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -58,11 +58,11 @@
   if (!v4)
   {
     v5 = +[NSMutableArray array];
-    v6 = [(DeveloperModeViewController *)self bundle];
+    bundle = [(DeveloperModeViewController *)self bundle];
     v20 = 0;
     v21 = 0;
     v7 = [NSMutableDictionary alloc];
-    v8 = [v6 pathForResource:@"DeveloperMode" ofType:@"plist"];
+    v8 = [bundle pathForResource:@"DeveloperMode" ofType:@"plist"];
     v9 = [v7 initWithContentsOfFile:v8];
 
     v10 = [NSMutableArray alloc];
@@ -77,8 +77,8 @@
     [(DeveloperModeViewController *)self setSpecifierID:v21];
     if (_os_feature_enabled_impl() && self->settings == 1)
     {
-      v15 = [(DeveloperModeViewController *)self specifiersForPairing];
-      [v5 addObjectsFromArray:v15];
+      specifiersForPairing = [(DeveloperModeViewController *)self specifiersForPairing];
+      [v5 addObjectsFromArray:specifiersForPairing];
     }
 
     v16 = *&self->PSListController_opaque[v3];
@@ -120,18 +120,18 @@
   }
 
   v7 = [v6 objectForKeyedSubscript:@"success"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = [v6 objectForKeyedSubscript:@"writable"];
     v10 = &__kCFBooleanFalse;
     if ([v9 BOOLValue])
     {
       v11 = [v6 objectForKeyedSubscript:@"armed"];
-      v12 = [v11 BOOLValue];
+      bOOLValue2 = [v11 BOOLValue];
       v13 = &__kCFBooleanTrue;
-      if (v12)
+      if (bOOLValue2)
       {
         v13 = &__kCFBooleanFalse;
       }
@@ -181,10 +181,10 @@
   }
 }
 
-- (id)readPreferenceValue:(id)a3
+- (id)readPreferenceValue:(id)value
 {
-  v4 = [a3 identifier];
-  if ([v4 isEqual:kDeveloperModeToggle])
+  identifier = [value identifier];
+  if ([identifier isEqual:kDeveloperModeToggle])
   {
     v5 = [NSNumber numberWithUnsignedLongLong:self->settings];
   }
@@ -193,7 +193,7 @@
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_3190(v4);
+      sub_3190(identifier);
     }
 
     v5 = &__kCFBooleanFalse;
@@ -216,28 +216,28 @@
   }
 }
 
-- (void)setPreferenceValue:(id)a3 forSpecifier:(id)a4
+- (void)setPreferenceValue:(id)value forSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 identifier];
-  v9 = [v7 BOOLValue];
+  specifierCopy = specifier;
+  valueCopy = value;
+  identifier = [specifierCopy identifier];
+  bOOLValue = [valueCopy BOOLValue];
 
-  if ([v8 isEqual:kDeveloperModeToggle])
+  if ([identifier isEqual:kDeveloperModeToggle])
   {
-    if (v9)
+    if (bOOLValue)
     {
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_2318;
       v21[3] = &unk_8328;
       v21[4] = self;
-      v22 = v6;
+      v22 = specifierCopy;
       v15 = _NSConcreteStackBlock;
       v16 = 3221225472;
       v17 = sub_2454;
       v18 = &unk_8328;
-      v19 = self;
+      selfCopy = self;
       v20 = v22;
       [(DeveloperModeViewController *)self promptRebootWithCallback:v21 onCancel:&v15];
     }
@@ -245,7 +245,7 @@
     else
     {
       self->settings = 0;
-      [(DeveloperModeViewController *)self reloadSpecifier:v6 animated:1];
+      [(DeveloperModeViewController *)self reloadSpecifier:specifierCopy animated:1];
       amfidXpc = self->amfidXpc;
       v11 = dict_to_xpc_msg();
       v12 = xpc_connection_send_message_with_reply_sync(amfidXpc, v11);
@@ -257,7 +257,7 @@
         {
           v14 = [v13 description];
           *buf = 136315138;
-          v24 = [v14 UTF8String];
+          uTF8String = [v14 UTF8String];
           _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "amfid response %s", buf, 0xCu);
         }
       }
@@ -268,14 +268,14 @@
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
-    sub_3210(v8);
+    sub_3210(identifier);
   }
 }
 
-- (void)promptRebootWithCallback:(id)a3 onCancel:(id)a4
+- (void)promptRebootWithCallback:(id)callback onCancel:(id)cancel
 {
-  v6 = a3;
-  v7 = a4;
+  callbackCopy = callback;
+  cancelCopy = cancel;
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"DEV_MODE_WARNING" value:&stru_8420 table:0];
   v10 = [UIAlertController alertControllerWithTitle:0 message:v9 preferredStyle:0];
@@ -287,8 +287,8 @@
   v21[2] = sub_26F0;
   v21[3] = &unk_8350;
   v21[4] = self;
-  v22 = v6;
-  v13 = v6;
+  v22 = callbackCopy;
+  v13 = callbackCopy;
   v14 = [UIAlertAction actionWithTitle:v12 style:2 handler:v21];
   [v10 addAction:v14];
 
@@ -298,8 +298,8 @@
   v19[1] = 3221225472;
   v19[2] = sub_2738;
   v19[3] = &unk_8378;
-  v20 = v7;
-  v17 = v7;
+  v20 = cancelCopy;
+  v17 = cancelCopy;
   v18 = [UIAlertAction actionWithTitle:v16 style:0 handler:v19];
   [v10 addAction:v18];
 
@@ -410,12 +410,12 @@
   return v2;
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v11 = a4;
+  pathCopy = path;
   if (_os_feature_enabled_impl())
   {
-    v5 = [(DeveloperModeViewController *)self indexForIndexPath:v11];
+    v5 = [(DeveloperModeViewController *)self indexForIndexPath:pathCopy];
     v6 = [(DeveloperModeViewController *)self indexOfSpecifierID:@"PAIRED-DEVICES"];
     if (v5 <= 255 && v6 <= 255)
     {
@@ -433,11 +433,11 @@
   }
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (_os_feature_enabled_impl() && (-[DeveloperModeViewController specifierAtIndexPath:](self, "specifierAtIndexPath:", v7), v8 = objc_claimAutoreleasedReturnValue(), [v8 identifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "containsString:", @"PAIRED-DEVICE"), v9, v8, (v10 & 1) != 0))
+  viewCopy = view;
+  pathCopy = path;
+  if (_os_feature_enabled_impl() && (-[DeveloperModeViewController specifierAtIndexPath:](self, "specifierAtIndexPath:", pathCopy), v8 = objc_claimAutoreleasedReturnValue(), [v8 identifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "containsString:", @"PAIRED-DEVICE"), v9, v8, (v10 & 1) != 0))
   {
     v11 = 1;
   }
@@ -446,20 +446,20 @@
   {
     v13.receiver = self;
     v13.super_class = DeveloperModeViewController;
-    v11 = [(DeveloperModeViewController *)&v13 tableView:v6 canEditRowAtIndexPath:v7];
+    v11 = [(DeveloperModeViewController *)&v13 tableView:viewCopy canEditRowAtIndexPath:pathCopy];
   }
 
   return v11;
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if (_os_feature_enabled_impl())
   {
-    v6 = [(DeveloperModeViewController *)self specifierAtIndexPath:v5];
-    v7 = [v6 identifier];
-    v8 = [v7 containsString:@"PAIRED-DEVICE"];
+    v6 = [(DeveloperModeViewController *)self specifierAtIndexPath:pathCopy];
+    identifier = [v6 identifier];
+    v8 = [identifier containsString:@"PAIRED-DEVICE"];
 
     if (v8)
     {
@@ -469,14 +469,14 @@
       v17 = 3221225472;
       v18 = sub_3094;
       v19 = &unk_83A0;
-      v20 = self;
+      selfCopy = self;
       v21 = v6;
       v11 = v6;
       v12 = [UIContextualAction contextualActionWithStyle:1 title:v10 handler:&v16];
 
       v22 = v12;
-      v13 = [NSArray arrayWithObjects:&v22 count:1, v16, v17, v18, v19, v20];
-      v14 = [UISwipeActionsConfiguration configurationWithActions:v13];
+      selfCopy = [NSArray arrayWithObjects:&v22 count:1, v16, v17, v18, v19, selfCopy];
+      v14 = [UISwipeActionsConfiguration configurationWithActions:selfCopy];
 
       goto LABEL_6;
     }

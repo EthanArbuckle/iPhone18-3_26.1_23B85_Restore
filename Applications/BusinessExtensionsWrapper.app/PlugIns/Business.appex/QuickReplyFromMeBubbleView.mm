@@ -1,11 +1,11 @@
 @interface QuickReplyFromMeBubbleView
-- (_TtC8Business26QuickReplyFromMeBubbleView)initWithCoder:(id)a3;
-- (_TtC8Business26QuickReplyFromMeBubbleView)initWithFrame:(CGRect)a3;
+- (_TtC8Business26QuickReplyFromMeBubbleView)initWithCoder:(id)coder;
+- (_TtC8Business26QuickReplyFromMeBubbleView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation QuickReplyFromMeBubbleView
 
-- (_TtC8Business26QuickReplyFromMeBubbleView)initWithCoder:(id)a3
+- (_TtC8Business26QuickReplyFromMeBubbleView)initWithCoder:(id)coder
 {
   *&self->delegate[OBJC_IVAR____TtC8Business26QuickReplyFromMeBubbleView_delegate] = 0;
   swift_unknownObjectWeakInit();
@@ -14,7 +14,7 @@
   return result;
 }
 
-- (_TtC8Business26QuickReplyFromMeBubbleView)initWithFrame:(CGRect)a3
+- (_TtC8Business26QuickReplyFromMeBubbleView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,6 +1,6 @@
 @interface _PSFamilyUtilities
-+ (BOOL)contactMarkedAsFamilyInFeatureDict:(id)a3;
-+ (BOOL)featureDictionaryPassesHeuristic:(id)a3;
++ (BOOL)contactMarkedAsFamilyInFeatureDict:(id)dict;
++ (BOOL)featureDictionaryPassesHeuristic:(id)heuristic;
 + (id)featureSet;
 @end
 
@@ -13,10 +13,10 @@
   return v2;
 }
 
-+ (BOOL)contactMarkedAsFamilyInFeatureDict:(id)a3
++ (BOOL)contactMarkedAsFamilyInFeatureDict:(id)dict
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dictCopy = dict;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -35,10 +35,10 @@
           objc_enumerationMutation(&unk_1F2D8C390);
         }
 
-        v8 = [v3 objectForKeyedSubscript:*(*(&v13 + 1) + 8 * i)];
-        v9 = [v8 BOOLValue];
+        v8 = [dictCopy objectForKeyedSubscript:*(*(&v13 + 1) + 8 * i)];
+        bOOLValue = [v8 BOOLValue];
 
-        if (v9)
+        if (bOOLValue)
         {
           v10 = 1;
           goto LABEL_11;
@@ -62,17 +62,17 @@ LABEL_11:
   return v10;
 }
 
-+ (BOOL)featureDictionaryPassesHeuristic:(id)a3
++ (BOOL)featureDictionaryPassesHeuristic:(id)heuristic
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  heuristicCopy = heuristic;
+  if ([heuristicCopy count])
   {
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v4 = v3;
+    v4 = heuristicCopy;
     v5 = [v4 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v5)
     {
@@ -113,8 +113,8 @@ LABEL_11:
       }
     }
 
-    v11 = [v4 allValues];
-    v12 = [v11 valueForKeyPath:@"@sum.self"];
+    allValues = [v4 allValues];
+    v12 = [allValues valueForKeyPath:@"@sum.self"];
     [v12 doubleValue];
     v14 = v13;
 
@@ -149,9 +149,9 @@ LABEL_17:
           else
           {
             v20 = [v4 objectForKeyedSubscript:@"contactInHome"];
-            v21 = [v20 integerValue];
+            integerValue = [v20 integerValue];
 
-            if (v21 == 1)
+            if (integerValue == 1)
             {
               v16 = 1;
               goto LABEL_20;

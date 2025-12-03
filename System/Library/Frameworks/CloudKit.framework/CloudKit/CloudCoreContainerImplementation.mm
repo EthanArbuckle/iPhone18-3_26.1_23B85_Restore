@@ -1,29 +1,29 @@
 @interface CloudCoreContainerImplementation
-- (_TtC8CloudKit32CloudCoreContainerImplementation)initWithContainerID:(id)a3 options:(id)a4;
+- (_TtC8CloudKit32CloudCoreContainerImplementation)initWithContainerID:(id)d options:(id)options;
 - (id)CKPropertiesDescription;
-- (void)noteSessionInvalidation:(id)a3;
-- (void)resolvePersonaValues:(id)a3;
+- (void)noteSessionInvalidation:(id)invalidation;
+- (void)resolvePersonaValues:(id)values;
 @end
 
 @implementation CloudCoreContainerImplementation
 
-- (void)resolvePersonaValues:(id)a3
+- (void)resolvePersonaValues:(id)values
 {
-  v4 = a3;
-  v5 = self;
-  sub_1884AADC4(v4);
+  valuesCopy = values;
+  selfCopy = self;
+  sub_1884AADC4(valuesCopy);
 }
 
-- (void)noteSessionInvalidation:(id)a3
+- (void)noteSessionInvalidation:(id)invalidation
 {
-  v5 = a3;
-  v4 = self;
-  sub_1884AA480(v5);
+  invalidationCopy = invalidation;
+  selfCopy = self;
+  sub_1884AA480(invalidationCopy);
 }
 
 - (id)CKPropertiesDescription
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1884AB0D4();
   v5 = v4;
 
@@ -32,10 +32,10 @@
   return v6;
 }
 
-- (_TtC8CloudKit32CloudCoreContainerImplementation)initWithContainerID:(id)a3 options:(id)a4
+- (_TtC8CloudKit32CloudCoreContainerImplementation)initWithContainerID:(id)d options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  optionsCopy = options;
   sub_1884AB23C();
 }
 

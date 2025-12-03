@@ -1,16 +1,16 @@
 @interface ABRequestHandler
 - (ABRequestHandler)init;
-- (void)fetchProxyCredential:(id)a3 reply:(id)a4;
+- (void)fetchProxyCredential:(id)credential reply:(id)reply;
 @end
 
 @implementation ABRequestHandler
 
-- (void)fetchProxyCredential:(id)a3 reply:(id)a4
+- (void)fetchProxyCredential:(id)credential reply:(id)reply
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     buf = 138412290;
-    buf_4 = a3;
+    buf_4 = credential;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Fetching proxy credential for query %@", &buf, 0xCu);
   }
 
@@ -19,7 +19,7 @@
   v9 = 3221225472;
   v10 = sub_100003C0C;
   v11 = &unk_100008748;
-  v12 = a4;
+  replyCopy = reply;
   operator new();
 }
 

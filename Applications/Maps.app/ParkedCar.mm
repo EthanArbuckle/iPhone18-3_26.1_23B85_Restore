@@ -4,9 +4,9 @@
 - (NSString)locationDisplayString;
 - (NSString)locationName;
 - (NSString)title;
-- (ParkedCar)initWithVehicleEvent:(id)a3 geoMapItem:(id)a4;
-- (void)setMapItem:(id)a3;
-- (void)updateFromVehicleEvent:(id)a3 geoMapItem:(id)a4;
+- (ParkedCar)initWithVehicleEvent:(id)event geoMapItem:(id)item;
+- (void)setMapItem:(id)item;
+- (void)updateFromVehicleEvent:(id)event geoMapItem:(id)item;
 @end
 
 @implementation ParkedCar
@@ -22,20 +22,20 @@
 
 - (NSString)locationName
 {
-  v3 = [(RTVehicleEvent *)self->_vehicleEvent nearbyLocationOfInterest];
+  nearbyLocationOfInterest = [(RTVehicleEvent *)self->_vehicleEvent nearbyLocationOfInterest];
 
-  if (v3)
+  if (nearbyLocationOfInterest)
   {
-    v4 = [(RTVehicleEvent *)self->_vehicleEvent nearbyLocationOfInterest];
-    [v4 type];
+    nearbyLocationOfInterest2 = [(RTVehicleEvent *)self->_vehicleEvent nearbyLocationOfInterest];
+    [nearbyLocationOfInterest2 type];
     MSgLOITypeForRTLOIType();
-    v5 = [(RTVehicleEvent *)self->_vehicleEvent nearbyLocationOfInterest];
-    v6 = [v5 customLabel];
-    v3 = MapsSuggestionsRoutineLocalizedLabelLOIType();
+    nearbyLocationOfInterest3 = [(RTVehicleEvent *)self->_vehicleEvent nearbyLocationOfInterest];
+    customLabel = [nearbyLocationOfInterest3 customLabel];
+    nearbyLocationOfInterest = MapsSuggestionsRoutineLocalizedLabelLOIType();
   }
 
-  v7 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  v8 = v3;
+  _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+  v8 = nearbyLocationOfInterest;
   if ([v8 length])
   {
     v9 = v8;
@@ -43,12 +43,12 @@
 
   else
   {
-    v10 = [v7 addressObject];
-    v11 = [v10 parkingDisplayName];
+    addressObject = [_geoMapItem addressObject];
+    parkingDisplayName = [addressObject parkingDisplayName];
 
-    if ([v11 length])
+    if ([parkingDisplayName length])
     {
-      v12 = v11;
+      v12 = parkingDisplayName;
     }
 
     else
@@ -64,12 +64,12 @@
 
 - (NSString)locationDisplayString
 {
-  v2 = [(ParkedCar *)self locationName];
-  if ([v2 length])
+  locationName = [(ParkedCar *)self locationName];
+  if ([locationName length])
   {
     v3 = +[NSBundle mainBundle];
     v4 = [v3 localizedStringForKey:@"Near %@ [Widget/Proactive Tray FmC row subtitle value:with address]" table:{@"localized string not found", 0}];
-    v5 = [NSString stringWithFormat:v4, v2];
+    v5 = [NSString stringWithFormat:v4, locationName];
   }
 
   else
@@ -87,32 +87,32 @@
   return [v2 title];
 }
 
-- (void)setMapItem:(id)a3
+- (void)setMapItem:(id)item
 {
-  v4 = a3;
-  if (!v4)
+  itemCopy = item;
+  if (!itemCopy)
   {
     v5 = [[CLLocation alloc] initWithLatitude:self->_coordinate.latitude longitude:self->_coordinate.longitude];
-    v4 = [[MKMapItem alloc] initWithCLLocation:v5];
+    itemCopy = [[MKMapItem alloc] initWithCLLocation:v5];
   }
 
-  v6 = [(ParkedCar *)self title];
-  [(MKMapItem *)v4 setName:v6];
+  title = [(ParkedCar *)self title];
+  [(MKMapItem *)itemCopy setName:title];
 
   mapItem = self->_mapItem;
-  self->_mapItem = v4;
+  self->_mapItem = itemCopy;
 }
 
-- (void)updateFromVehicleEvent:(id)a3 geoMapItem:(id)a4
+- (void)updateFromVehicleEvent:(id)event geoMapItem:(id)item
 {
-  v37 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_vehicleEvent, a3);
-  v8 = [v37 notes];
-  v9 = v8;
-  if (v8)
+  eventCopy = event;
+  itemCopy = item;
+  objc_storeStrong(&self->_vehicleEvent, event);
+  notes = [eventCopy notes];
+  v9 = notes;
+  if (notes)
   {
-    v10 = v8;
+    v10 = notes;
   }
 
   else
@@ -122,18 +122,18 @@
 
   objc_storeStrong(&self->_notes, v10);
 
-  v11 = [(RTVehicleEvent *)self->_vehicleEvent location];
-  [v11 latitude];
+  location = [(RTVehicleEvent *)self->_vehicleEvent location];
+  [location latitude];
   v13 = v12;
-  v14 = [(RTVehicleEvent *)self->_vehicleEvent location];
-  [v14 longitude];
+  location2 = [(RTVehicleEvent *)self->_vehicleEvent location];
+  [location2 longitude];
   self->_coordinate = CLLocationCoordinate2DMake(v13, v15);
 
-  v16 = [v37 location];
-  self->_referenceFrame = [v16 referenceFrame];
+  location3 = [eventCopy location];
+  self->_referenceFrame = [location3 referenceFrame];
 
-  v17 = [(RTVehicleEvent *)self->_vehicleEvent location];
-  [v17 horizontalUncertainty];
+  location4 = [(RTVehicleEvent *)self->_vehicleEvent location];
+  [location4 horizontalUncertainty];
   self->_horizontalAccuracy = v18;
 
   if (__isinfd() || __isnand())
@@ -141,30 +141,30 @@
     self->_horizontalAccuracy = -1.0;
   }
 
-  v19 = [(RTVehicleEvent *)self->_vehicleEvent date];
+  date = [(RTVehicleEvent *)self->_vehicleEvent date];
   date = self->_date;
-  self->_date = v19;
+  self->_date = date;
 
-  v21 = [v37 photo];
+  photo = [eventCopy photo];
 
-  if (v21)
+  if (photo)
   {
     v22 = [UIImage alloc];
-    v23 = [v37 photo];
-    v24 = [v22 initWithData:v23];
+    photo2 = [eventCopy photo];
+    v24 = [v22 initWithData:photo2];
     image = self->_image;
     self->_image = v24;
   }
 
   else
   {
-    v23 = self->_image;
+    photo2 = self->_image;
     self->_image = 0;
   }
 
-  if (v7)
+  if (itemCopy)
   {
-    v26 = [[MKMapItem alloc] initWithGeoMapItem:v7 isPlaceHolderPlace:0];
+    v26 = [[MKMapItem alloc] initWithGeoMapItem:itemCopy isPlaceHolderPlace:0];
     mapItem = self->_mapItem;
     self->_mapItem = v26;
   }
@@ -172,11 +172,11 @@
   else
   {
     v28 = [CLLocation alloc];
-    v29 = [(RTVehicleEvent *)self->_vehicleEvent location];
-    [v29 latitude];
+    location5 = [(RTVehicleEvent *)self->_vehicleEvent location];
+    [location5 latitude];
     v31 = v30;
-    v32 = [(RTVehicleEvent *)self->_vehicleEvent location];
-    [v32 longitude];
+    location6 = [(RTVehicleEvent *)self->_vehicleEvent location];
+    [location6 longitude];
     mapItem = [v28 initWithLatitude:v31 longitude:v33];
 
     v34 = [[MKMapItem alloc] initWithCLLocation:mapItem];
@@ -184,27 +184,27 @@
     self->_mapItem = v34;
   }
 
-  v36 = [(ParkedCar *)self title];
-  [(MKMapItem *)self->_mapItem setName:v36];
+  title = [(ParkedCar *)self title];
+  [(MKMapItem *)self->_mapItem setName:title];
 }
 
-- (ParkedCar)initWithVehicleEvent:(id)a3 geoMapItem:(id)a4
+- (ParkedCar)initWithVehicleEvent:(id)event geoMapItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v11.receiver = self, v11.super_class = ParkedCar, v8 = [(ParkedCar *)&v11 init], (self = v8) != 0))
+  eventCopy = event;
+  itemCopy = item;
+  if (eventCopy && (v11.receiver = self, v11.super_class = ParkedCar, v8 = [(ParkedCar *)&v11 init], (self = v8) != 0))
   {
-    [(ParkedCar *)v8 updateFromVehicleEvent:v6 geoMapItem:v7];
+    [(ParkedCar *)v8 updateFromVehicleEvent:eventCopy geoMapItem:itemCopy];
     self = self;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 + (id)title

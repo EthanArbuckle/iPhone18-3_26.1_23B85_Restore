@@ -1,61 +1,61 @@
 @interface CKDInitiateParticipantVettingURLRequest
-- (CKDInitiateParticipantVettingURLRequest)initWithOperation:(id)a3 shareRecordID:(id)a4 encryptedKey:(id)a5 participantID:(id)a6 baseToken:(id)a7;
+- (CKDInitiateParticipantVettingURLRequest)initWithOperation:(id)operation shareRecordID:(id)d encryptedKey:(id)key participantID:(id)iD baseToken:(id)token;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDInitiateParticipantVettingURLRequest
 
-- (CKDInitiateParticipantVettingURLRequest)initWithOperation:(id)a3 shareRecordID:(id)a4 encryptedKey:(id)a5 participantID:(id)a6 baseToken:(id)a7
+- (CKDInitiateParticipantVettingURLRequest)initWithOperation:(id)operation shareRecordID:(id)d encryptedKey:(id)key participantID:(id)iD baseToken:(id)token
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  keyCopy = key;
+  iDCopy = iD;
+  tokenCopy = token;
   v20.receiver = self;
   v20.super_class = CKDInitiateParticipantVettingURLRequest;
-  v17 = [(CKDURLRequest *)&v20 initWithOperation:a3];
+  v17 = [(CKDURLRequest *)&v20 initWithOperation:operation];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_shareRecordID, a4);
-    objc_storeStrong(&v18->_encryptedKey, a5);
-    objc_storeStrong(&v18->_participantID, a6);
-    objc_storeStrong(&v18->_baseToken, a7);
+    objc_storeStrong(&v17->_shareRecordID, d);
+    objc_storeStrong(&v18->_encryptedKey, key);
+    objc_storeStrong(&v18->_participantID, iD);
+    objc_storeStrong(&v18->_baseToken, token);
   }
 
   return v18;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v13.receiver = self;
   v13.super_class = CKDInitiateParticipantVettingURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v13 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v13 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v7 = objc_msgSend_shareRecordID(self, v5, v6, v13.receiver, v13.super_class);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v8, v7, @"shareRecordID");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v8, v7, @"shareRecordID");
 
   v11 = objc_msgSend_participantID(self, v9, v10);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v12, v11, @"participantID");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v12, v11, @"participantID");
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_shareRecordID(self, v5, v6);
   v13[0] = v7;
   v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v8, v13, 1);
-  objc_msgSend_setModifyRecordIDs_(v4, v10, v9);
+  objc_msgSend_setModifyRecordIDs_(propertiesCopy, v10, v9);
 
   v12.receiver = self;
   v12.super_class = CKDInitiateParticipantVettingURLRequest;
-  [(CKDURLRequest *)&v12 fillOutRequestProperties:v4];
+  [(CKDURLRequest *)&v12 fillOutRequestProperties:propertiesCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -104,26 +104,26 @@
   return v43;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v7 = objc_msgSend_vettingInitiationRequestCompletionBlock(self, v5, v6);
 
   if (v7)
   {
-    if (objc_msgSend_hasShareVettingInitiateResponse(v4, v8, v9))
+    if (objc_msgSend_hasShareVettingInitiateResponse(objectCopy, v8, v9))
     {
       v12 = objc_msgSend_vettingInitiationRequestCompletionBlock(self, v10, v11);
 
       if (v12)
       {
-        v15 = objc_msgSend_shareVettingInitiateResponse(v4, v13, v14);
+        v15 = objc_msgSend_shareVettingInitiateResponse(objectCopy, v13, v14);
         hasVettingError = objc_msgSend_hasVettingError(v15, v16, v17);
 
         v23 = objc_msgSend_vettingInitiationRequestCompletionBlock(self, v19, v20);
         if (hasVettingError)
         {
-          v24 = objc_msgSend_shareVettingInitiateResponse(v4, v21, v22);
+          v24 = objc_msgSend_shareVettingInitiateResponse(objectCopy, v21, v22);
           v29 = objc_msgSend_vettingError(v24, v25, v26) - 2;
           if (v29 >= 4)
           {
@@ -135,13 +135,13 @@
             v30 = v29 + 2;
           }
 
-          v31 = objc_msgSend_result(v4, v27, v28);
+          v31 = objc_msgSend_result(objectCopy, v27, v28);
           (v23)[2](v23, v30, v31);
         }
 
         else
         {
-          v24 = objc_msgSend_result(v4, v21, v22);
+          v24 = objc_msgSend_result(objectCopy, v21, v22);
           (v23)[2](v23, 0, v24);
         }
 
@@ -151,13 +151,13 @@
 
     else
     {
-      v32 = objc_msgSend_result(v4, v10, v11);
+      v32 = objc_msgSend_result(objectCopy, v10, v11);
       hasError = objc_msgSend_hasError(v32, v33, v34);
 
       if (hasError)
       {
         v23 = objc_msgSend_vettingInitiationRequestCompletionBlock(self, v36, v37);
-        v24 = objc_msgSend_result(v4, v38, v39);
+        v24 = objc_msgSend_result(objectCopy, v38, v39);
         (v23)[2](v23, -1, v24);
 LABEL_12:
       }
@@ -167,15 +167,15 @@ LABEL_12:
   return 0;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
-  v13 = a3;
+  failureCopy = failure;
   v6 = objc_msgSend_vettingInitiationRequestCompletionBlock(self, v4, v5);
 
   if (v6)
   {
     v9 = objc_msgSend_vettingInitiationRequestCompletionBlock(self, v7, v8);
-    v12 = objc_msgSend_result(v13, v10, v11);
+    v12 = objc_msgSend_result(failureCopy, v10, v11);
     (v9)[2](v9, -1, v12);
   }
 }

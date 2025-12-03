@@ -1,22 +1,22 @@
 @interface VUIDebugMetricsEventControllerGenerator
-- (VUIDebugMetricsEventControllerGenerator)initWithMetrics:(id)a3;
+- (VUIDebugMetricsEventControllerGenerator)initWithMetrics:(id)metrics;
 @end
 
 @implementation VUIDebugMetricsEventControllerGenerator
 
-- (VUIDebugMetricsEventControllerGenerator)initWithMetrics:(id)a3
+- (VUIDebugMetricsEventControllerGenerator)initWithMetrics:(id)metrics
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  metricsCopy = metrics;
   v24.receiver = self;
   v24.super_class = VUIDebugMetricsEventControllerGenerator;
   v5 = [(VUIDebugMetricsEventControllerGenerator *)&v24 init];
   if (v5)
   {
     v6 = objc_alloc_init(VUIDebugMetricsTermCollector);
-    v7 = [v4 mutableCopy];
+    v7 = [metricsCopy mutableCopy];
     [v7 sortUsingComparator:&__block_literal_global_157];
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -40,7 +40,7 @@
           v14 = *(*(&v20 + 1) + 8 * v13);
           v15 = [VUIDebugMetricsEvent alloc];
           v16 = [(VUIDebugMetricsEvent *)v15 initWithEventDictionary:v14 termCollater:v6, v20];
-          [v8 addObject:v16];
+          [array addObject:v16];
 
           ++v13;
         }
@@ -52,7 +52,7 @@
       while (v11);
     }
 
-    v17 = [[VUIDebugMetricsEventListViewController alloc] initWithEvents:v8];
+    v17 = [[VUIDebugMetricsEventListViewController alloc] initWithEvents:array];
     viewController = v5->_viewController;
     v5->_viewController = &v17->super.super;
   }

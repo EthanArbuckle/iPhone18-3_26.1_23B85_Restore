@@ -4,20 +4,20 @@
 + (id)sharedFigPulseGenerator;
 + (void)initialize;
 - (FigPulseGenerator)init;
-- (int)_configureFollowSync:(SyncHandle *)a3 assertDur:(int64_t)a4 offset:(unint64_t)a5;
-- (int)_configureLeaderSync:(SyncHandle *)a3 frameRate:(id)a4 assertDur:(unint64_t)a5;
-- (int)_disciplineMSGTimeSyncClock:(id)a3;
-- (int)_getOrCreateTimeSyncMSGClockIdentifier:(id)a3 tsClockIdentifierOut:(unint64_t *)a4;
-- (int)_getTimeSyncClock:(unint64_t)a3 clockOut:(id *)a4;
+- (int)_configureFollowSync:(SyncHandle *)sync assertDur:(int64_t)dur offset:(unint64_t)offset;
+- (int)_configureLeaderSync:(SyncHandle *)sync frameRate:(id)rate assertDur:(unint64_t)dur;
+- (int)_disciplineMSGTimeSyncClock:(id)clock;
+- (int)_getOrCreateTimeSyncMSGClockIdentifier:(id)identifier tsClockIdentifierOut:(unint64_t *)out;
+- (int)_getTimeSyncClock:(unint64_t)clock clockOut:(id *)out;
 - (int)_resetMsgSyncs;
-- (int)_startSyncs:(id)a3;
-- (int)applySignalCompensationDelay:(id *)a3;
-- (int)startWithFrameRate:(id)a3 cmClock:(OpaqueCMClock *)a4 clientAudioClockDeviceUIDOut:(id *)a5 externalSync:(BOOL)a6;
+- (int)_startSyncs:(id)syncs;
+- (int)applySignalCompensationDelay:(id *)delay;
+- (int)startWithFrameRate:(id)rate cmClock:(OpaqueCMClock *)clock clientAudioClockDeviceUIDOut:(id *)out externalSync:(BOOL)sync;
 - (int)stopRunning;
-- (void)_notifyDelegate:(unint64_t)a3 withError:(int)a4;
+- (void)_notifyDelegate:(unint64_t)delegate withError:(int)error;
 - (void)_resetState;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation FigPulseGenerator
@@ -49,7 +49,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -202,20 +202,20 @@ uint64_t __32__FigPulseGenerator_isSupported__block_invoke()
   [(FigPulseGenerator *)&v6 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   os_unfair_lock_lock(&self->_configureLock);
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   self->_hasNotifiedDelegateOfClockCreation = 0;
 
   os_unfair_lock_unlock(&self->_configureLock);
 }
 
-- (int)startWithFrameRate:(id)a3 cmClock:(OpaqueCMClock *)a4 clientAudioClockDeviceUIDOut:(id *)a5 externalSync:(BOOL)a6
+- (int)startWithFrameRate:(id)rate cmClock:(OpaqueCMClock *)clock clientAudioClockDeviceUIDOut:(id *)out externalSync:(BOOL)sync
 {
-  v6 = a6;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  syncCopy = sync;
+  var1 = rate.var1;
+  var0 = rate.var0;
   if (dword_1EB58DD60)
   {
     LODWORD(v30) = 0;
@@ -225,7 +225,7 @@ uint64_t __32__FigPulseGenerator_isSupported__block_invoke()
   }
 
   os_unfair_lock_lock(&self->_configureLock);
-  if (FigCaptureFrameRateNotEqual(var0, var1, *&self->_currentFrameRate.u, self->_currentFrameRate.tag) || self->_isExternalSync != v6)
+  if (FigCaptureFrameRateNotEqual(var0, var1, *&self->_currentFrameRate.u, self->_currentFrameRate.tag) || self->_isExternalSync != syncCopy)
   {
     if (dword_1EB58DD60)
     {
@@ -236,20 +236,20 @@ uint64_t __32__FigPulseGenerator_isSupported__block_invoke()
     }
 
     [(FigPulseGenerator *)self _resetState:v26];
-    v14 = [(FigPulseGenerator *)self _startSyncs:var0, var1];
-    if (v14)
+    var1 = [(FigPulseGenerator *)self _startSyncs:var0, var1];
+    if (var1)
     {
       goto LABEL_26;
     }
   }
 
-  self->_isExternalSync = v6;
-  if (v6 && (v14 = [(FigPulseGenerator *)self _disciplineMSGTimeSyncClock:var0, var1]) != 0)
+  self->_isExternalSync = syncCopy;
+  if (syncCopy && (var1 = [(FigPulseGenerator *)self _disciplineMSGTimeSyncClock:var0, var1]) != 0)
   {
 LABEL_26:
-    v19 = v14;
+    v19 = var1;
     v28 = v29;
-    LODWORD(v26) = v14;
+    LODWORD(v26) = var1;
     FigDebugAssert3();
     LODWORD(v30) = 0;
     v21 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -258,7 +258,7 @@ LABEL_26:
 
   else
   {
-    if (!(a4 | a5))
+    if (!(clock | out))
     {
 LABEL_17:
       if (dword_1EB58DD60)
@@ -292,7 +292,7 @@ LABEL_17:
 
     v30 = *MEMORY[0x1E69DA108];
     CMClockFromTimeSyncMSGClock = [(FigPulseGenerator *)self _getOrCreateTimeSyncMSGClockIdentifier:var0 tsClockIdentifierOut:var1, &v30];
-    if (!CMClockFromTimeSyncMSGClock && (!a4 || (CMClockFromTimeSyncMSGClock = FigCaptureCreateCMClockFromTimeSyncMSGClock(v30, a4)) == 0) && (!a5 || (CMClockFromTimeSyncMSGClock = [(FigPulseGenerator *)self _getTimeSyncClock:v30 clockOut:a5]) == 0))
+    if (!CMClockFromTimeSyncMSGClock && (!clock || (CMClockFromTimeSyncMSGClock = FigCaptureCreateCMClockFromTimeSyncMSGClock(v30, clock)) == 0) && (!out || (CMClockFromTimeSyncMSGClock = [(FigPulseGenerator *)self _getTimeSyncClock:v30 clockOut:out]) == 0))
     {
       [(FigPulseGenerator *)self _notifyDelegate:v30 withError:0, v26];
       goto LABEL_17;
@@ -353,11 +353,11 @@ LABEL_25:
   return 0;
 }
 
-- (int)applySignalCompensationDelay:(id *)a3
+- (int)applySignalCompensationDelay:(id *)delay
 {
   if (self->_enabled)
   {
-    if ((a3->var2 & 0x1D) != 1)
+    if ((delay->var2 & 0x1D) != 1)
     {
       v9 = -73194;
       FigDebugAssert3();
@@ -374,14 +374,14 @@ LABEL_30:
     memset(&v28, 0, sizeof(v28));
     v6 = 1.0 / v5;
     CMTimeMakeWithSeconds(&v28, v6, 24000000);
-    v27 = *a3;
-    *time1 = *&a3->var0;
-    *&time1[16] = a3->var3;
+    v27 = *delay;
+    *time1 = *&delay->var0;
+    *&time1[16] = delay->var3;
     time2 = v28;
-    if ((CMTimeCompare(time1, &time2) & 0x80000000) == 0 || (*time1 = *&a3->var0, *&time1[16] = a3->var3, time2 = **&MEMORY[0x1E6960CC0], CMTimeCompare(time1, &time2) < 0))
+    if ((CMTimeCompare(time1, &time2) & 0x80000000) == 0 || (*time1 = *&delay->var0, *&time1[16] = delay->var3, time2 = **&MEMORY[0x1E6960CC0], CMTimeCompare(time1, &time2) < 0))
     {
-      *time1 = *&a3->var0;
-      *&time1[16] = a3->var3;
+      *time1 = *&delay->var0;
+      *&time1[16] = delay->var3;
       Seconds = CMTimeGetSeconds(time1);
       v8 = fmod(Seconds, v6);
       if (v8 < 0.0)
@@ -418,8 +418,8 @@ LABEL_30:
         goto LABEL_30;
       }
 
-      *time1 = *&a3->var0;
-      *&time1[16] = a3->var3;
+      *time1 = *&delay->var0;
+      *&time1[16] = delay->var3;
       v14 = CMTimeCopyDescription(0, time1);
       LODWORD(time2.value) = 136315394;
       *(&time2.value + 4) = "[FigPulseGenerator applySignalCompensationDelay:]";
@@ -506,12 +506,12 @@ LABEL_29:
   return v9;
 }
 
-- (int)_startSyncs:(id)a3
+- (int)_startSyncs:(id)syncs
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = a3.var1;
-  if (!FigCaptureFrameRateIsValidRational(*&a3.var0, a3.var1))
+  var1 = syncs.var1;
+  var0 = syncs.var0;
+  v7 = syncs.var1;
+  if (!FigCaptureFrameRateIsValidRational(*&syncs.var0, syncs.var1))
   {
     v14 = v3;
     LODWORD(v13) = -536870206;
@@ -556,7 +556,7 @@ LABEL_15:
   return result;
 }
 
-- (int)_getTimeSyncClock:(unint64_t)a3 clockOut:(id *)a4
+- (int)_getTimeSyncClock:(unint64_t)clock clockOut:(id *)out
 {
   if (self->_timeSyncClockRef)
   {
@@ -577,7 +577,7 @@ LABEL_15:
 LABEL_5:
     AudioClockDeviceUID = TimeSyncClockCreateAudioClockDeviceUID();
     result = 0;
-    *a4 = AudioClockDeviceUID;
+    *out = AudioClockDeviceUID;
     return result;
   }
 
@@ -768,7 +768,7 @@ LABEL_5:
   *&self->_isExternalSync = 0;
 }
 
-- (int)_disciplineMSGTimeSyncClock:(id)a3
+- (int)_disciplineMSGTimeSyncClock:(id)clock
 {
   if (self->_disciplinedMSGTimeSyncClock)
   {
@@ -809,9 +809,9 @@ LABEL_5:
   }
 }
 
-- (void)_notifyDelegate:(unint64_t)a3 withError:(int)a4
+- (void)_notifyDelegate:(unint64_t)delegate withError:(int)error
 {
-  v4 = *&a4;
+  v4 = *&error;
   if (dword_1EB58DD60)
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -828,7 +828,7 @@ LABEL_5:
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    [objc_loadWeak(&self->_delegate) pulseGenerator:self updateSynchronizationClock:a3 withError:v4];
+    [objc_loadWeak(&self->_delegate) pulseGenerator:self updateSynchronizationClock:delegate withError:v4];
     self->_hasNotifiedDelegateOfClockCreation = 1;
   }
 }
@@ -859,7 +859,7 @@ LABEL_8:
   return v4;
 }
 
-- (int)_getOrCreateTimeSyncMSGClockIdentifier:(id)a3 tsClockIdentifierOut:(unint64_t *)a4
+- (int)_getOrCreateTimeSyncMSGClockIdentifier:(id)identifier tsClockIdentifierOut:(unint64_t *)out
 {
   timeSyncMSGClockIdentifier = self->_timeSyncMSGClockIdentifier;
   if (timeSyncMSGClockIdentifier == *MEMORY[0x1E69DA108])
@@ -896,18 +896,18 @@ LABEL_8:
     v11 = self->_timeSyncMSGClockIdentifier;
   }
 
-  *a4 = v11;
+  *out = v11;
   return v8;
 }
 
-- (int)_configureLeaderSync:(SyncHandle *)a3 frameRate:(id)a4 assertDur:(unint64_t)a5
+- (int)_configureLeaderSync:(SyncHandle *)sync frameRate:(id)rate assertDur:(unint64_t)dur
 {
-  v8 = 1536000000 * a4.var0.var0.var1 % a4.var0.var0.var0;
-  LOWORD(v9) = LOWORD(a4.var0.var1);
-  if (a4.var0.var0.var0 >= 0x10000)
+  v8 = 1536000000 * rate.var0.var0.var1 % rate.var0.var0.var0;
+  LOWORD(v9) = LOWORD(rate.var0.var1);
+  if (rate.var0.var0.var0 >= 0x10000)
   {
-    var0 = a4.var0.var0.var0;
-    v11 = a4.var0.var0.var0 >> 63;
+    var0 = rate.var0.var0.var0;
+    v11 = rate.var0.var0.var0 >> 63;
     v12 = v8 >> 63;
     do
     {
@@ -936,39 +936,39 @@ LABEL_8:
   *(&v19 + 1) = v18;
   *&v19 = v17;
   *&v23[7] = 0;
-  *&v23[11] = a5;
+  *&v23[11] = dur;
   *&v23[19] = 0;
   *&v23[27] = v19 >> 6;
   v24 = v17 & 0x3F;
   v25 = v8;
   v26 = v9;
   v27 = 0;
-  return [(FigPulseGenerator *)self _leaderSyncConfig:a3 config:&v21];
+  return [(FigPulseGenerator *)self _leaderSyncConfig:sync config:&v21];
 }
 
-- (int)_configureFollowSync:(SyncHandle *)a3 assertDur:(int64_t)a4 offset:(unint64_t)a5
+- (int)_configureFollowSync:(SyncHandle *)sync assertDur:(int64_t)dur offset:(unint64_t)offset
 {
   self->_activeDerivedSyncConfig.timer_sel = 4;
   self->_activeDerivedSyncConfig.repeat = 1;
   *(&self->_activeDerivedSyncConfig.repeat + 1) = 0;
   *&self->_activeDerivedSyncConfig.start_base_frame = 0;
-  self->_activeDerivedSyncConfig.assert_duration.whole = a4;
+  self->_activeDerivedSyncConfig.assert_duration.whole = dur;
   self->_activeDerivedSyncConfig.assert_duration.frac = 0;
   *(&self->_activeDerivedSyncConfig.assert_duration.remainder_denominator + 1) = 0;
   *&self->_activeDerivedSyncConfig.assert_duration.remainder_numerator = 0;
-  self->_activeDerivedSyncConfig.offset.whole = a5;
+  self->_activeDerivedSyncConfig.offset.whole = offset;
   *&self->_activeDerivedSyncConfig.offset.frac = 0;
   v6 = 4;
   v7 = 1;
   *v8 = 0;
   *&v8[7] = 0;
-  *&v8[11] = a4;
+  *&v8[11] = dur;
   v9 = 0;
   v11 = 0;
   v10 = 0;
-  v12 = a5;
+  offsetCopy = offset;
   v13 = 0;
-  return [(FigPulseGenerator *)self _followSyncConfig:a3 config:&v6];
+  return [(FigPulseGenerator *)self _followSyncConfig:sync config:&v6];
 }
 
 - (uint64_t)_getTimeSyncClock:clockOut:.cold.1()

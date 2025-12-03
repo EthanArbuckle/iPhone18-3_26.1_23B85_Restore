@@ -1,13 +1,13 @@
 @interface CSSiriAudioFileWriter
 + (id)_generateTemporaryFileURL;
-- (id)_initWithType:(int64_t)a3 pathGenerator:(id)a4 xorFileHandle:(id)a5 priority:(unsigned int)a6;
+- (id)_initWithType:(int64_t)type pathGenerator:(id)generator xorFileHandle:(id)handle priority:(unsigned int)priority;
 - (void)_close;
 - (void)_delete;
-- (void)appendAudioData:(id)a3;
+- (void)appendAudioData:(id)data;
 - (void)cancel;
-- (void)configureWithAudioStreamBasicDescription:(const AudioStreamBasicDescription *)a3;
+- (void)configureWithAudioStreamBasicDescription:(const AudioStreamBasicDescription *)description;
 - (void)dealloc;
-- (void)flushWithCompletion:(id)a3;
+- (void)flushWithCompletion:(id)completion;
 @end
 
 @implementation CSSiriAudioFileWriter
@@ -31,17 +31,17 @@ uint64_t __31__CSSiriAudioFileWriter_cancel__block_invoke(uint64_t a1)
   return [v2 _delete];
 }
 
-- (void)flushWithCompletion:(id)a3
+- (void)flushWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__CSSiriAudioFileWriter_flushWithCompletion___block_invoke;
   v7[3] = &unk_2784C6E98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -127,17 +127,17 @@ LABEL_12:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appendAudioData:(id)a3
+- (void)appendAudioData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__CSSiriAudioFileWriter_appendAudioData___block_invoke;
   v7[3] = &unk_2784C6FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(queue, v7);
 }
 
@@ -194,13 +194,13 @@ LABEL_8:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithAudioStreamBasicDescription:(const AudioStreamBasicDescription *)a3
+- (void)configureWithAudioStreamBasicDescription:(const AudioStreamBasicDescription *)description
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = *&a3->mBytesPerPacket;
-  v13 = *&a3->mSampleRate;
+  v5 = *&description->mBytesPerPacket;
+  v13 = *&description->mSampleRate;
   v14 = v5;
-  v15 = *&a3->mBitsPerChannel;
+  v15 = *&description->mBitsPerChannel;
   v6 = *MEMORY[0x277CEF0E8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_INFO))
   {
@@ -423,10 +423,10 @@ LABEL_38:
   v15 = *MEMORY[0x277D85DE8];
   if (self->_url)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     url = self->_url;
     v10 = 0;
-    v5 = [v3 removeItemAtURL:url error:&v10];
+    v5 = [defaultManager removeItemAtURL:url error:&v10];
     v6 = v10;
 
     if ((v5 & 1) == 0)
@@ -484,14 +484,14 @@ LABEL_38:
   [(CSSiriAudioFileWriter *)&v3 dealloc];
 }
 
-- (id)_initWithType:(int64_t)a3 pathGenerator:(id)a4 xorFileHandle:(id)a5 priority:(unsigned int)a6
+- (id)_initWithType:(int64_t)type pathGenerator:(id)generator xorFileHandle:(id)handle priority:(unsigned int)priority
 {
-  v11 = a4;
-  v12 = a5;
-  if (!a3)
+  generatorCopy = generator;
+  handleCopy = handle;
+  if (!type)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"CSSiriAudioFileWriter.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"type != AFAudioFileTypeNone"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CSSiriAudioFileWriter.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"type != AFAudioFileTypeNone"}];
   }
 
   v25.receiver = self;
@@ -499,7 +499,7 @@ LABEL_38:
   v13 = [(CSSiriAudioFileWriter *)&v25 init];
   if (v13)
   {
-    v14 = dispatch_queue_attr_make_with_qos_class(0, a6, 0);
+    v14 = dispatch_queue_attr_make_with_qos_class(0, priority, 0);
     v15 = dispatch_queue_create("CSSiriAudioFileWriterQueue", v14);
 
     queue = v13->_queue;
@@ -511,9 +511,9 @@ LABEL_38:
     block[2] = __76__CSSiriAudioFileWriter__initWithType_pathGenerator_xorFileHandle_priority___block_invoke;
     block[3] = &unk_2784C4638;
     v21 = v13;
-    v24 = a3;
-    v22 = v12;
-    v23 = v11;
+    typeCopy = type;
+    v22 = handleCopy;
+    v23 = generatorCopy;
     dispatch_async(v17, block);
   }
 
@@ -611,8 +611,8 @@ LABEL_20:
 
 + (id)_generateTemporaryFileURL
 {
-  v2 = [a1 _savedAudioFilesDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"SavedAudioFile"];
+  _savedAudioFilesDirectory = [self _savedAudioFilesDirectory];
+  v3 = [_savedAudioFilesDirectory URLByAppendingPathComponent:@"SavedAudioFile"];
 
   return v3;
 }

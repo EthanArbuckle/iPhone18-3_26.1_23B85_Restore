@@ -1,48 +1,48 @@
 @interface TRICKNativeArtifactProvider
-+ (BOOL)isActivityDeferralError:(id)a3;
-+ (id)cloudkitIdentifierForContainer:(int)a3;
-+ (id)containerForIdentifier:(id)a3 serverContext:(id)a4;
-+ (id)fetchRetryDateFromErrorAndOptions:(id)a3 options:(id)a4;
-+ (id)mockSQLiteContainerWithIdentifier:(id)a3 serverContext:(id)a4 failureInjectionDelegate:(id)a5;
-+ (id)recordZoneForContainerIdentifier:(id)a3 teamId:(id)a4;
-+ (int)containerFromCkContainer:(id)a3;
-- (TRICKNativeArtifactProvider)initWithCloudKitContainer:(id)a3 zoneId:(id)a4 teamId:(id)a5 bundleId:(id)a6 dateProvider:(id)a7 namespaceDescriptorProvider:(id)a8;
-- (id)configurationFromOptions:(id)a3;
-- (id)fetchAssetsWithIndexes:(id)a3 fromTreatmentWithRecordId:(id)a4 options:(id)a5 progress:(id)a6 completion:(id)a7;
-- (id)fetchAssetsWithRecordIds:(id)a3 options:(id)a4 perRecordProgress:(id)a5 perRecordCompletionBlockOnSuccess:(id)a6 perRecordCompletionBlockOnError:(id)a7 completion:(id)a8;
-- (id)fetchDiffSourceRecordIdsWithTargetAssetIds:(id)a3 isAcceptableSourceAssetId:(id)a4 options:(id)a5 completion:(id)a6;
-- (id)fetchDiffsWithRecordIds:(id)a3 options:(id)a4 perRecordProgress:(id)a5 perRecordCompletionBlockOnSuccess:(id)a6 perRecordCompletionBlockOnError:(id)a7 completion:(id)a8;
-- (id)fetchRecordIdsForAssetsWithIds:(id)a3 options:(id)a4 completion:(id)a5;
-- (id)fetchTreatmentWithId:(id)a3 options:(id)a4 completion:(id)a5;
-- (id)queryOperationForRecordType:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5 desiredKeys:(id)a6 options:(id)a7 recordMatchedBlock:(id)a8 queryCompletionBlock:(id)a9;
-- (id)queryOperationWithCursor:(id)a3 desiredKeys:(id)a4 options:(id)a5 recordMatchedBlock:(id)a6 queryCompletionBlock:(id)a7;
-- (void)_applyBoostIfNeededToOperation:(id)a3 fromOptions:(id)a4;
-- (void)_fetchExperimentWithExperimentId:(id)a3 deploymentId:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)_fetchExperimentsWithCursor:(id)a3 withNamespaceNames:(id)a4 sinceDate:(id)a5 fetchRollbacksOnly:(BOOL)a6 options:(id)a7 resultsHandler:(id)a8;
-- (void)_fetchNotificationsWithQueryType:(unint64_t)a3 withCursor:(id)a4 withNamespaceNames:(id)a5 sinceDate:(id)a6 options:(id)a7 resultsHandler:(id)a8;
-- (void)_fetchRecordIdsForAssetsWithIds:(id)a3 options:(id)a4 cursor:(id)a5 cancelableOp:(id)a6 resultBuffer:(id)a7 completion:(id)a8;
-- (void)_fetchRolloutNotificationWithRolloutId:(id)a3 deploymentId:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)_fetchRolloutNotificationsWithCursor:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)_fetchRolloutNotificationsWithCursor:(id)a3 options:(id)a4 sinceDate:(id)a5 namespaceNames:(id)a6 resultsHandler:(id)a7;
-- (void)fetchExperimentNotificationsForLimitedCarryExperimentWithManager:(id)a3 options:(id)a4 rollbacksOnly:(BOOL)a5 completion:(id)a6;
-- (void)fetchExperimentWithExperimentDeployment:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)fetchExperimentWithLatestDeploymentForExperimentId:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)fetchFactorPackSetWithId:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)fetchRolloutNotificationWithDeployment:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)fetchRolloutNotificationsDateAscendingWithOptions:(id)a3 lastFetchDateOverride:(id)a4 namespaceNames:(id)a5 completion:(id)a6;
++ (BOOL)isActivityDeferralError:(id)error;
++ (id)cloudkitIdentifierForContainer:(int)container;
++ (id)containerForIdentifier:(id)identifier serverContext:(id)context;
++ (id)fetchRetryDateFromErrorAndOptions:(id)options options:(id)a4;
++ (id)mockSQLiteContainerWithIdentifier:(id)identifier serverContext:(id)context failureInjectionDelegate:(id)delegate;
++ (id)recordZoneForContainerIdentifier:(id)identifier teamId:(id)id;
++ (int)containerFromCkContainer:(id)container;
+- (TRICKNativeArtifactProvider)initWithCloudKitContainer:(id)container zoneId:(id)id teamId:(id)teamId bundleId:(id)bundleId dateProvider:(id)provider namespaceDescriptorProvider:(id)descriptorProvider;
+- (id)configurationFromOptions:(id)options;
+- (id)fetchAssetsWithIndexes:(id)indexes fromTreatmentWithRecordId:(id)id options:(id)options progress:(id)progress completion:(id)completion;
+- (id)fetchAssetsWithRecordIds:(id)ids options:(id)options perRecordProgress:(id)progress perRecordCompletionBlockOnSuccess:(id)success perRecordCompletionBlockOnError:(id)error completion:(id)completion;
+- (id)fetchDiffSourceRecordIdsWithTargetAssetIds:(id)ids isAcceptableSourceAssetId:(id)id options:(id)options completion:(id)completion;
+- (id)fetchDiffsWithRecordIds:(id)ids options:(id)options perRecordProgress:(id)progress perRecordCompletionBlockOnSuccess:(id)success perRecordCompletionBlockOnError:(id)error completion:(id)completion;
+- (id)fetchRecordIdsForAssetsWithIds:(id)ids options:(id)options completion:(id)completion;
+- (id)fetchTreatmentWithId:(id)id options:(id)options completion:(id)completion;
+- (id)queryOperationForRecordType:(id)type predicate:(id)predicate sortDescriptors:(id)descriptors desiredKeys:(id)keys options:(id)options recordMatchedBlock:(id)block queryCompletionBlock:(id)completionBlock;
+- (id)queryOperationWithCursor:(id)cursor desiredKeys:(id)keys options:(id)options recordMatchedBlock:(id)block queryCompletionBlock:(id)completionBlock;
+- (void)_applyBoostIfNeededToOperation:(id)operation fromOptions:(id)options;
+- (void)_fetchExperimentWithExperimentId:(id)id deploymentId:(id)deploymentId options:(id)options completion:(id)completion;
+- (void)_fetchExperimentsWithCursor:(id)cursor withNamespaceNames:(id)names sinceDate:(id)date fetchRollbacksOnly:(BOOL)only options:(id)options resultsHandler:(id)handler;
+- (void)_fetchNotificationsWithQueryType:(unint64_t)type withCursor:(id)cursor withNamespaceNames:(id)names sinceDate:(id)date options:(id)options resultsHandler:(id)handler;
+- (void)_fetchRecordIdsForAssetsWithIds:(id)ids options:(id)options cursor:(id)cursor cancelableOp:(id)op resultBuffer:(id)buffer completion:(id)completion;
+- (void)_fetchRolloutNotificationWithRolloutId:(id)id deploymentId:(id)deploymentId options:(id)options completion:(id)completion;
+- (void)_fetchRolloutNotificationsWithCursor:(id)cursor options:(id)options completion:(id)completion;
+- (void)_fetchRolloutNotificationsWithCursor:(id)cursor options:(id)options sinceDate:(id)date namespaceNames:(id)names resultsHandler:(id)handler;
+- (void)fetchExperimentNotificationsForLimitedCarryExperimentWithManager:(id)manager options:(id)options rollbacksOnly:(BOOL)only completion:(id)completion;
+- (void)fetchExperimentWithExperimentDeployment:(id)deployment options:(id)options completion:(id)completion;
+- (void)fetchExperimentWithLatestDeploymentForExperimentId:(id)id options:(id)options completion:(id)completion;
+- (void)fetchFactorPackSetWithId:(id)id options:(id)options completion:(id)completion;
+- (void)fetchRolloutNotificationWithDeployment:(id)deployment options:(id)options completion:(id)completion;
+- (void)fetchRolloutNotificationsDateAscendingWithOptions:(id)options lastFetchDateOverride:(id)override namespaceNames:(id)names completion:(id)completion;
 @end
 
 @implementation TRICKNativeArtifactProvider
 
-+ (BOOL)isActivityDeferralError:(id)a3
++ (BOOL)isActivityDeferralError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 domain];
+    domain = [errorCopy domain];
     v6 = *MEMORY[0x277CBBF50];
-    if (![v5 isEqualToString:*MEMORY[0x277CBBF50]])
+    if (![domain isEqualToString:*MEMORY[0x277CBBF50]])
     {
       v10 = 0;
 LABEL_10:
@@ -50,17 +50,17 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v7 = [v4 code];
+    code = [v4 code];
 
-    if (v7 == 20)
+    if (code == 20)
     {
-      v8 = [v4 userInfo];
-      v5 = [v8 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+      userInfo = [v4 userInfo];
+      domain = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-      v9 = [v5 domain];
-      if ([v9 isEqualToString:v6])
+      v5Domain = [domain domain];
+      if ([v5Domain isEqualToString:v6])
       {
-        v10 = [v5 code] == 131;
+        v10 = [domain code] == 131;
       }
 
       else
@@ -78,18 +78,18 @@ LABEL_11:
   return v10;
 }
 
-+ (id)fetchRetryDateFromErrorAndOptions:(id)a3 options:(id)a4
++ (id)fetchRetryDateFromErrorAndOptions:(id)options options:(id)a4
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  optionsCopy = options;
   v7 = a4;
   if (!v7)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TRICKNativeArtifactProvider fetchRetryDateFromErrorAndOptions:options:]"];
-    [v20 handleFailureInFunction:v21 file:@"TRICKNativeArtifactProvider.m" lineNumber:256 description:{@"Invalid parameter not satisfying: %@", @"options"}];
+    [currentHandler handleFailureInFunction:v21 file:@"TRICKNativeArtifactProvider.m" lineNumber:256 description:{@"Invalid parameter not satisfying: %@", @"options"}];
 
-    if (v6)
+    if (optionsCopy)
     {
       goto LABEL_3;
     }
@@ -99,7 +99,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v6)
+  if (!optionsCopy)
   {
     goto LABEL_12;
   }
@@ -110,17 +110,17 @@ LABEL_3:
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy__0;
   v29 = __Block_byref_object_dispose__0;
-  v8 = [v6 userInfo];
-  v30 = [v8 objectForKeyedSubscript:*MEMORY[0x277CBBF68]];
+  userInfo = [optionsCopy userInfo];
+  v30 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBBF68]];
 
-  v9 = [v6 userInfo];
+  userInfo2 = [optionsCopy userInfo];
   v10 = *MEMORY[0x277CBBFB0];
-  v11 = [v9 objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
+  v11 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
 
   if (v11)
   {
-    v12 = [v6 userInfo];
-    v13 = [v12 objectForKeyedSubscript:v10];
+    userInfo3 = [optionsCopy userInfo];
+    v13 = [userInfo3 objectForKeyedSubscript:v10];
 
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
@@ -130,9 +130,9 @@ LABEL_3:
     [v13 enumerateKeysAndObjectsUsingBlock:v24];
   }
 
-  hasRetryableErrorCode = _hasRetryableErrorCode(v6);
-  v15 = [v7 discretionaryBehavior];
-  v16 = +[TRIFetchRetryUtils fetchRetryDateFromRetryAfterSeconds:isDeferral:isRetryable:isNonDiscretionary:](TRIFetchRetryUtils, "fetchRetryDateFromRetryAfterSeconds:isDeferral:isRetryable:isNonDiscretionary:", v26[5], [a1 isActivityDeferralError:v6], hasRetryableErrorCode, v15 == 0);
+  hasRetryableErrorCode = _hasRetryableErrorCode(optionsCopy);
+  discretionaryBehavior = [v7 discretionaryBehavior];
+  v16 = +[TRIFetchRetryUtils fetchRetryDateFromRetryAfterSeconds:isDeferral:isRetryable:isNonDiscretionary:](TRIFetchRetryUtils, "fetchRetryDateFromRetryAfterSeconds:isDeferral:isRetryable:isNonDiscretionary:", v26[5], [self isActivityDeferralError:optionsCopy], hasRetryableErrorCode, discretionaryBehavior == 0);
   v17 = v16;
   if ((v16 != 0) | hasRetryableErrorCode & 1)
   {
@@ -145,7 +145,7 @@ LABEL_3:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v32 = v6;
+      v32 = optionsCopy;
       _os_log_impl(&dword_26F567000, v19, OS_LOG_TYPE_DEFAULT, "During download from CK, encountered non-retryable error %{public}@", buf, 0xCu);
     }
 
@@ -186,26 +186,26 @@ LABEL_6:
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)configurationFromOptions:(id)a3
+- (id)configurationFromOptions:(id)options
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = objc_opt_new();
-  v6 = [v4 downloadOptions];
-  v7 = [v6 discretionaryBehavior];
-  if (!v7)
+  downloadOptions = [optionsCopy downloadOptions];
+  discretionaryBehavior = [downloadOptions discretionaryBehavior];
+  if (!discretionaryBehavior)
   {
     goto LABEL_9;
   }
 
-  if (v7 == 2)
+  if (discretionaryBehavior == 2)
   {
-    v8 = [v6 activity];
+    activity = [downloadOptions activity];
 
-    if (v8)
+    if (activity)
     {
-      v9 = [v6 activity];
-      [v5 setXPCActivity:v9];
+      activity2 = [downloadOptions activity];
+      [v5 setXPCActivity:activity2];
 
       goto LABEL_10;
     }
@@ -238,60 +238,60 @@ LABEL_10:
   v12 = 1;
   [v5 setPreferAnonymousRequests:1];
   [v5 setAllowsCellularAccess:1];
-  [v5 setAllowsExpensiveNetworkAccess:{objc_msgSend(v6, "allowsExpensiveNetworkAccess")}];
-  if ([v6 discretionaryBehavior] == 2)
+  [v5 setAllowsExpensiveNetworkAccess:{objc_msgSend(downloadOptions, "allowsExpensiveNetworkAccess")}];
+  if ([downloadOptions discretionaryBehavior] == 2)
   {
-    v13 = [v6 activity];
-    v12 = v13 == 0;
+    activity3 = [downloadOptions activity];
+    v12 = activity3 == 0;
   }
 
-  v14 = [(TRICKNativeArtifactProvider *)self zoneID];
+  zoneID = [(TRICKNativeArtifactProvider *)self zoneID];
 
-  if (v14 && v12)
+  if (zoneID && v12)
   {
     [v5 setTimeoutIntervalForRequest:300.0];
   }
 
-  v15 = [(TRICKNativeArtifactProvider *)self zoneID];
+  zoneID2 = [(TRICKNativeArtifactProvider *)self zoneID];
 
-  if (v15)
+  if (zoneID2)
   {
     v24 = @"X-Trial-ZoneID";
-    v16 = [(TRICKNativeArtifactProvider *)self zoneID];
-    v17 = [v16 zoneName];
-    v25[0] = v17;
+    zoneID3 = [(TRICKNativeArtifactProvider *)self zoneID];
+    zoneName = [zoneID3 zoneName];
+    v25[0] = zoneName;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     [v5 setAdditionalRequestHTTPHeaders:v18];
   }
 
   [v5 setApplicationBundleIdentifierOverrideForContainerAccess:@"com.apple.triald"];
-  v19 = [(TRICKNativeArtifactProvider *)self bundleId];
-  [v5 setApplicationBundleIdentifierOverrideForNetworkAttribution:v19];
+  bundleId = [(TRICKNativeArtifactProvider *)self bundleId];
+  [v5 setApplicationBundleIdentifierOverrideForNetworkAttribution:bundleId];
 
-  v20 = [v4 cacheDeleteAvailableSpaceClass];
-  [v5 setCacheDeleteAvailableSpaceClass:v20];
+  cacheDeleteAvailableSpaceClass = [optionsCopy cacheDeleteAvailableSpaceClass];
+  [v5 setCacheDeleteAvailableSpaceClass:cacheDeleteAvailableSpaceClass];
 
   v21 = *MEMORY[0x277D85DE8];
 
   return v5;
 }
 
-- (void)_applyBoostIfNeededToOperation:(id)a3 fromOptions:(id)a4
+- (void)_applyBoostIfNeededToOperation:(id)operation fromOptions:(id)options
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([a4 boostPriority])
+  operationCopy = operation;
+  if ([options boostPriority])
   {
-    [v5 setQualityOfService:25];
-    [v5 setQueuePriority:4];
-    v6 = [v5 configuration];
-    [v6 setQualityOfService:25];
+    [operationCopy setQualityOfService:25];
+    [operationCopy setQueuePriority:4];
+    configuration = [operationCopy configuration];
+    [configuration setQualityOfService:25];
 
     v7 = TRILogCategory_Server();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v5;
+      v10 = operationCopy;
       _os_log_impl(&dword_26F567000, v7, OS_LOG_TYPE_DEFAULT, "Boosted query operation, now: %@", &v9, 0xCu);
     }
   }
@@ -299,52 +299,52 @@ LABEL_10:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)queryOperationForRecordType:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5 desiredKeys:(id)a6 options:(id)a7 recordMatchedBlock:(id)a8 queryCompletionBlock:(id)a9
+- (id)queryOperationForRecordType:(id)type predicate:(id)predicate sortDescriptors:(id)descriptors desiredKeys:(id)keys options:(id)options recordMatchedBlock:(id)block queryCompletionBlock:(id)completionBlock
 {
   v41 = *MEMORY[0x277D85DE8];
-  v15 = a4;
-  v16 = a7;
-  v17 = a9;
-  v18 = a8;
-  v19 = a6;
-  v20 = a5;
-  v21 = a3;
-  v22 = [(TRICKNativeArtifactProvider *)self queryLog];
-  [v22 logQueryWithRecordType:v21 predicate:v15 sortDescriptors:v20];
+  predicateCopy = predicate;
+  optionsCopy = options;
+  completionBlockCopy = completionBlock;
+  blockCopy = block;
+  keysCopy = keys;
+  descriptorsCopy = descriptors;
+  typeCopy = type;
+  queryLog = [(TRICKNativeArtifactProvider *)self queryLog];
+  [queryLog logQueryWithRecordType:typeCopy predicate:predicateCopy sortDescriptors:descriptorsCopy];
 
-  v23 = [objc_alloc(MEMORY[0x277CBC578]) initWithRecordType:v21 predicate:v15];
-  [v23 setSortDescriptors:v20];
+  v23 = [objc_alloc(MEMORY[0x277CBC578]) initWithRecordType:typeCopy predicate:predicateCopy];
+  [v23 setSortDescriptors:descriptorsCopy];
 
   v24 = [objc_alloc(MEMORY[0x277CBC590]) initWithQuery:v23];
-  v25 = [(TRICKNativeArtifactProvider *)self zoneID];
-  [v24 setZoneID:v25];
+  zoneID = [(TRICKNativeArtifactProvider *)self zoneID];
+  [v24 setZoneID:zoneID];
 
-  [v24 setDesiredKeys:v19];
-  [v24 setRecordMatchedBlock:v18];
+  [v24 setDesiredKeys:keysCopy];
+  [v24 setRecordMatchedBlock:blockCopy];
 
-  [v24 setQueryCompletionBlock:v17];
+  [v24 setQueryCompletionBlock:completionBlockCopy];
   [v24 setFetchAllResults:1];
-  v26 = [(TRICKNativeArtifactProvider *)self configurationFromOptions:v16];
+  v26 = [(TRICKNativeArtifactProvider *)self configurationFromOptions:optionsCopy];
   [v24 setConfiguration:v26];
-  v27 = [v16 downloadOptions];
-  [(TRICKNativeArtifactProvider *)self _applyBoostIfNeededToOperation:v24 fromOptions:v27];
+  downloadOptions = [optionsCopy downloadOptions];
+  [(TRICKNativeArtifactProvider *)self _applyBoostIfNeededToOperation:v24 fromOptions:downloadOptions];
 
   v28 = TRILogCategory_Server();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
-    v29 = [(TRICKNativeArtifactProvider *)self zoneID];
-    v30 = [v29 zoneName];
+    zoneID2 = [(TRICKNativeArtifactProvider *)self zoneID];
+    zoneName = [zoneID2 zoneName];
     v35 = 138412802;
-    v36 = v15;
+    v36 = predicateCopy;
     v37 = 2114;
-    v38 = v30;
+    v38 = zoneName;
     v39 = 2114;
     v40 = v24;
     _os_log_impl(&dword_26F567000, v28, OS_LOG_TYPE_DEFAULT, "created cloudkit query with predicate {%@} zoneID:%{public}@ operation:%{public}@", &v35, 0x20u);
   }
 
-  v31 = [v16 downloadOptions];
-  v32 = [TRICKOperationGroupFactory groupForDownloadOptions:v31];
+  downloadOptions2 = [optionsCopy downloadOptions];
+  v32 = [TRICKOperationGroupFactory groupForDownloadOptions:downloadOptions2];
   [v24 setGroup:v32];
 
   v33 = *MEMORY[0x277D85DE8];
@@ -352,19 +352,19 @@ LABEL_10:
   return v24;
 }
 
-- (TRICKNativeArtifactProvider)initWithCloudKitContainer:(id)a3 zoneId:(id)a4 teamId:(id)a5 bundleId:(id)a6 dateProvider:(id)a7 namespaceDescriptorProvider:(id)a8
+- (TRICKNativeArtifactProvider)initWithCloudKitContainer:(id)container zoneId:(id)id teamId:(id)teamId bundleId:(id)bundleId dateProvider:(id)provider namespaceDescriptorProvider:(id)descriptorProvider
 {
-  v14 = a3;
-  v15 = a4;
-  v29 = a5;
-  v16 = a6;
-  v17 = a7;
-  obj = a8;
-  v18 = a8;
-  v30 = v14;
-  if (v14)
+  containerCopy = container;
+  idCopy = id;
+  teamIdCopy = teamId;
+  bundleIdCopy = bundleId;
+  providerCopy = provider;
+  obj = descriptorProvider;
+  descriptorProviderCopy = descriptorProvider;
+  v30 = containerCopy;
+  if (containerCopy)
   {
-    if (v15)
+    if (idCopy)
     {
       goto LABEL_3;
     }
@@ -372,13 +372,13 @@ LABEL_10:
 
   else
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:471 description:{@"Invalid parameter not satisfying: %@", @"container"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:471 description:{@"Invalid parameter not satisfying: %@", @"container"}];
 
-    if (v15)
+    if (idCopy)
     {
 LABEL_3:
-      if (v16)
+      if (bundleIdCopy)
       {
         goto LABEL_4;
       }
@@ -387,22 +387,22 @@ LABEL_3:
     }
   }
 
-  v23 = [MEMORY[0x277CCA890] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:472 description:{@"Invalid parameter not satisfying: %@", @"zoneId"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:472 description:{@"Invalid parameter not satisfying: %@", @"zoneId"}];
 
-  if (v16)
+  if (bundleIdCopy)
   {
 LABEL_4:
-    if (v17)
+    if (providerCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_14:
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:474 description:{@"Invalid parameter not satisfying: %@", @"dateProvider"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:474 description:{@"Invalid parameter not satisfying: %@", @"dateProvider"}];
 
-    if (v18)
+    if (descriptorProviderCopy)
     {
       goto LABEL_6;
     }
@@ -411,23 +411,23 @@ LABEL_14:
   }
 
 LABEL_13:
-  v24 = [MEMORY[0x277CCA890] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:473 description:{@"Invalid parameter not satisfying: %@", @"bundleId"}];
+  currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:473 description:{@"Invalid parameter not satisfying: %@", @"bundleId"}];
 
-  if (!v17)
+  if (!providerCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_5:
-  if (v18)
+  if (descriptorProviderCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_15:
-  v26 = [MEMORY[0x277CCA890] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:475 description:{@"Invalid parameter not satisfying: %@", @"namespaceDescriptorProvider"}];
+  currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:475 description:{@"Invalid parameter not satisfying: %@", @"namespaceDescriptorProvider"}];
 
 LABEL_6:
   v32.receiver = self;
@@ -436,11 +436,11 @@ LABEL_6:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_container, a3);
-    objc_storeStrong(&v20->_zoneID, a4);
-    objc_storeStrong(&v20->_teamId, a5);
-    objc_storeStrong(&v20->_bundleId, a6);
-    objc_storeStrong(&v20->_dateProvider, a7);
+    objc_storeStrong(&v19->_container, container);
+    objc_storeStrong(&v20->_zoneID, id);
+    objc_storeStrong(&v20->_teamId, teamId);
+    objc_storeStrong(&v20->_bundleId, bundleId);
+    objc_storeStrong(&v20->_dateProvider, provider);
     objc_storeStrong(&v20->_namespaceDescriptorProvider, obj);
     if (qword_281597640 != -1)
     {
@@ -465,37 +465,37 @@ void __121__TRICKNativeArtifactProvider_initWithCloudKitContainer_zoneId_teamId_
   objc_autoreleasePoolPop(v0);
 }
 
-- (id)queryOperationWithCursor:(id)a3 desiredKeys:(id)a4 options:(id)a5 recordMatchedBlock:(id)a6 queryCompletionBlock:(id)a7
+- (id)queryOperationWithCursor:(id)cursor desiredKeys:(id)keys options:(id)options recordMatchedBlock:(id)block queryCompletionBlock:(id)completionBlock
 {
   v30 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  cursorCopy = cursor;
   v13 = MEMORY[0x277CBC590];
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = [[v13 alloc] initWithCursor:v12];
-  [v18 setDesiredKeys:v17];
+  completionBlockCopy = completionBlock;
+  blockCopy = block;
+  optionsCopy = options;
+  keysCopy = keys;
+  v18 = [[v13 alloc] initWithCursor:cursorCopy];
+  [v18 setDesiredKeys:keysCopy];
 
-  [v18 setRecordMatchedBlock:v15];
-  [v18 setQueryCompletionBlock:v14];
+  [v18 setRecordMatchedBlock:blockCopy];
+  [v18 setQueryCompletionBlock:completionBlockCopy];
 
   [v18 setFetchAllResults:1];
-  v19 = [(TRICKNativeArtifactProvider *)self configurationFromOptions:v16];
+  v19 = [(TRICKNativeArtifactProvider *)self configurationFromOptions:optionsCopy];
   [v18 setConfiguration:v19];
-  v20 = [v16 downloadOptions];
-  [(TRICKNativeArtifactProvider *)self _applyBoostIfNeededToOperation:v18 fromOptions:v20];
+  downloadOptions = [optionsCopy downloadOptions];
+  [(TRICKNativeArtifactProvider *)self _applyBoostIfNeededToOperation:v18 fromOptions:downloadOptions];
 
-  v21 = [v16 downloadOptions];
+  downloadOptions2 = [optionsCopy downloadOptions];
 
-  v22 = [TRICKOperationGroupFactory groupForDownloadOptions:v21];
+  v22 = [TRICKOperationGroupFactory groupForDownloadOptions:downloadOptions2];
   [v18 setGroup:v22];
 
   v23 = TRILogCategory_Server();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 138412546;
-    v27 = v12;
+    v27 = cursorCopy;
     v28 = 2114;
     v29 = v18;
     _os_log_impl(&dword_26F567000, v23, OS_LOG_TYPE_DEFAULT, "created cloudkit query with cursor: {%@} operation: %{public}@", &v26, 0x16u);
@@ -506,29 +506,29 @@ void __121__TRICKNativeArtifactProvider_initWithCloudKitContainer_zoneId_teamId_
   return v18;
 }
 
-+ (id)containerForIdentifier:(id)a3 serverContext:(id)a4
++ (id)containerForIdentifier:(id)identifier serverContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v8 = +[TRISystemConfiguration sharedInstance];
-  v9 = [v8 isInternalBuild];
+  isInternalBuild = [v8 isInternalBuild];
 
-  if (!v9)
+  if (!isInternalBuild)
   {
     v13 = 1;
 LABEL_18:
-    v11 = [MEMORY[0x277CBC218] containerIDForContainerIdentifier:v6 environment:v13];
-    v12 = [objc_alloc(MEMORY[0x277CBC218]) initWithContainerID:v11];
+    failureInjectionDelegate2 = [MEMORY[0x277CBC218] containerIDForContainerIdentifier:identifierCopy environment:v13];
+    v12 = [objc_alloc(MEMORY[0x277CBC218]) initWithContainerID:failureInjectionDelegate2];
     goto LABEL_19;
   }
 
-  v10 = [v7 failureInjectionDelegate];
+  failureInjectionDelegate = [contextCopy failureInjectionDelegate];
 
-  if (v10)
+  if (failureInjectionDelegate)
   {
-    v11 = [v7 failureInjectionDelegate];
-    v12 = [a1 mockSQLiteContainerWithIdentifier:v6 serverContext:v7 failureInjectionDelegate:v11];
+    failureInjectionDelegate2 = [contextCopy failureInjectionDelegate];
+    v12 = [self mockSQLiteContainerWithIdentifier:identifierCopy serverContext:contextCopy failureInjectionDelegate:failureInjectionDelegate2];
 LABEL_19:
     v18 = v12;
     goto LABEL_20;
@@ -536,16 +536,16 @@ LABEL_19:
 
   if ([MEMORY[0x277D737A8] hostingProcessIsTriald])
   {
-    v14 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   }
 
   else
   {
-    v14 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.triald"];
+    standardUserDefaults = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.triald"];
   }
 
-  v11 = v14;
-  v15 = [v14 valueForKey:*MEMORY[0x277D739E8]];
+  failureInjectionDelegate2 = standardUserDefaults;
+  v15 = [standardUserDefaults valueForKey:*MEMORY[0x277D739E8]];
   v16 = TRILogCategory_Server();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -565,8 +565,8 @@ LABEL_19:
     goto LABEL_16;
   }
 
-  v17 = [v15 unsignedIntegerValue];
-  if (v17 == 2)
+  unsignedIntegerValue = [v15 unsignedIntegerValue];
+  if (unsignedIntegerValue == 2)
   {
 LABEL_15:
     v13 = 2;
@@ -575,9 +575,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v17 != 5)
+  if (unsignedIntegerValue != 5)
   {
-    if (v17 == 4)
+    if (unsignedIntegerValue == 4)
     {
       goto LABEL_15;
     }
@@ -587,7 +587,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v18 = [a1 mockSQLiteContainerWithIdentifier:v6 serverContext:v7 failureInjectionDelegate:0];
+  v18 = [self mockSQLiteContainerWithIdentifier:identifierCopy serverContext:contextCopy failureInjectionDelegate:0];
 
 LABEL_20:
   v19 = *MEMORY[0x277D85DE8];
@@ -595,39 +595,39 @@ LABEL_20:
   return v18;
 }
 
-+ (id)mockSQLiteContainerWithIdentifier:(id)a3 serverContext:(id)a4 failureInjectionDelegate:(id)a5
++ (id)mockSQLiteContainerWithIdentifier:(id)identifier serverContext:(id)context failureInjectionDelegate:(id)delegate
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [a4 ensureFakeCKDatabase];
-  [v9 setDelegate:v7];
+  delegateCopy = delegate;
+  identifierCopy = identifier;
+  ensureFakeCKDatabase = [context ensureFakeCKDatabase];
+  [ensureFakeCKDatabase setDelegate:delegateCopy];
 
-  v10 = [TRISQLiteCKDatabase mockContainerWithIdentifier:v8 database:v9];
+  v10 = [TRISQLiteCKDatabase mockContainerWithIdentifier:identifierCopy database:ensureFakeCKDatabase];
 
   return v10;
 }
 
-+ (id)recordZoneForContainerIdentifier:(id)a3 teamId:(id)a4
++ (id)recordZoneForContainerIdentifier:(id)identifier teamId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 isEqualToString:*MEMORY[0x277D73818]])
+  identifierCopy = identifier;
+  idCopy = id;
+  if ([identifierCopy isEqualToString:*MEMORY[0x277D73818]])
   {
-    if (!v8)
+    if (!idCopy)
     {
-      v19 = [MEMORY[0x277CCA890] currentHandler];
-      [v19 handleFailureInMethod:a2 object:a1 file:@"TRICKNativeArtifactProvider.m" lineNumber:559 description:{@"team id required for container %@", v7}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:559 description:{@"team id required for container %@", identifierCopy}];
     }
 
     v9 = objc_alloc(MEMORY[0x277CBC5F8]);
-    v10 = [@"Zone-" stringByAppendingString:v8];
+    v10 = [@"Zone-" stringByAppendingString:idCopy];
     v11 = [v9 initWithZoneName:v10 ownerName:*MEMORY[0x277CBBF28]];
   }
 
-  else if ([v7 isEqualToString:*MEMORY[0x277D73820]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x277D73820]])
   {
-    v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v13 = [v12 objectForKey:@"com.apple.triald.testing.ck.zone"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v13 = [standardUserDefaults objectForKey:@"com.apple.triald.testing.ck.zone"];
     v14 = objc_alloc(MEMORY[0x277CBC5F8]);
     if (v13)
     {
@@ -653,41 +653,41 @@ LABEL_20:
   return v11;
 }
 
-- (void)_fetchExperimentWithExperimentId:(id)a3 deploymentId:(id)a4 options:(id)a5 completion:(id)a6
+- (void)_fetchExperimentWithExperimentId:(id)id deploymentId:(id)deploymentId options:(id)options completion:(id)completion
 {
   v73 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(TRICKNativeArtifactProvider *)self container];
-  v15 = [TRICKNativeArtifactProvider containerFromCkContainer:v14];
+  idCopy = id;
+  deploymentIdCopy = deploymentId;
+  optionsCopy = options;
+  completionCopy = completion;
+  container = [(TRICKNativeArtifactProvider *)self container];
+  v15 = [TRICKNativeArtifactProvider containerFromCkContainer:container];
 
   if (v15)
   {
     v50 = v15;
-    v54 = v12;
-    v55 = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"%K == %@", *MEMORY[0x277D738E0], v10];
+    v54 = optionsCopy;
+    idCopy = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"%K == %@", *MEMORY[0x277D738E0], idCopy];
     v16 = [MEMORY[0x277CCAC30] triLoggablePredicateWithValue:1];
     v17 = v16;
-    v53 = v13;
-    v56 = v11;
-    if (v11)
+    v53 = completionCopy;
+    v56 = deploymentIdCopy;
+    if (deploymentIdCopy)
     {
-      v18 = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"%K == %@", *MEMORY[0x277D738B8], v11];
+      deploymentIdCopy = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"%K == %@", *MEMORY[0x277D738B8], deploymentIdCopy];
     }
 
     else
     {
-      v18 = v16;
+      deploymentIdCopy = v16;
     }
 
     v20 = +[TRISystemConfiguration sharedInstance];
-    v21 = [v20 populationType];
+    populationType = [v20 populationType];
 
     v22 = MEMORY[0x277CCAC30];
     v23 = *MEMORY[0x277D738C8];
-    v24 = [MEMORY[0x277CCABB0] numberWithInt:v21];
+    v24 = [MEMORY[0x277CCABB0] numberWithInt:populationType];
     v70 = v24;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v70 count:1];
     v49 = [v22 triLoggablePredicateWithFormat:@"ANY %K IN %@", v23, v25];
@@ -696,9 +696,9 @@ LABEL_20:
     v48 = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"%K != %@", *MEMORY[0x277D738F8], &unk_287FC4450];
     v47 = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"%K != %@", v26, &unk_287FC4468];
     v27 = MEMORY[0x277CCA920];
-    v69[0] = v55;
-    v69[1] = v18;
-    v52 = v18;
+    v69[0] = idCopy;
+    v69[1] = deploymentIdCopy;
+    v52 = deploymentIdCopy;
     v69[2] = v48;
     v69[3] = v47;
     v69[4] = v49;
@@ -710,8 +710,8 @@ LABEL_20:
     v65[1] = 3221225472;
     v65[2] = __96__TRICKNativeArtifactProvider__fetchExperimentWithExperimentId_deploymentId_options_completion___block_invoke;
     v65[3] = &unk_279DDEFF0;
-    v46 = v10;
-    v31 = v10;
+    v46 = idCopy;
+    v31 = idCopy;
     v66 = v31;
     v32 = v56;
     v67 = v32;
@@ -727,8 +727,8 @@ LABEL_20:
     v59 = v32;
     v36 = v54;
     v60 = v36;
-    v13 = v53;
-    v62 = self;
+    completionCopy = v53;
+    selfCopy = self;
     v63 = v53;
     v64 = v50;
     v61 = v33;
@@ -739,16 +739,16 @@ LABEL_20:
     v40 = [(TRICKNativeArtifactProvider *)self queryOperationForRecordType:v38 predicate:v29 desiredKeys:v39 options:v36 recordMatchedBlock:v34 queryCompletionBlock:v37];
 
     v41 = v35;
-    v10 = v46;
+    idCopy = v46;
     v42 = [TRICKOperationGroupFactory groupForExperimentId:v41];
     [v40 setGroup:v42];
 
-    v43 = [(TRICKNativeArtifactProvider *)self container];
-    v44 = [v43 publicCloudDatabase];
-    [v44 addOperation:v40];
+    container2 = [(TRICKNativeArtifactProvider *)self container];
+    publicCloudDatabase = [container2 publicCloudDatabase];
+    [publicCloudDatabase addOperation:v40];
 
-    v12 = v54;
-    v11 = v56;
+    optionsCopy = v54;
+    deploymentIdCopy = v56;
   }
 
   else
@@ -757,11 +757,11 @@ LABEL_20:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v72 = v10;
+      v72 = idCopy;
       _os_log_error_impl(&dword_26F567000, v19, OS_LOG_TYPE_ERROR, "failed to fetch experiment %@ (unknown container)", buf, 0xCu);
     }
 
-    (*(v13 + 2))(v13, 0, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0);
   }
 
   v45 = *MEMORY[0x277D85DE8];
@@ -881,60 +881,60 @@ void __96__TRICKNativeArtifactProvider__fetchExperimentWithExperimentId_deployme
   }
 }
 
-- (void)fetchExperimentWithExperimentDeployment:(id)a3 options:(id)a4 completion:(id)a5
+- (void)fetchExperimentWithExperimentDeployment:(id)deployment options:(id)options completion:(id)completion
 {
-  v16 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v16;
-  if (!v16)
+  deploymentCopy = deployment;
+  optionsCopy = options;
+  completionCopy = completion;
+  v11 = deploymentCopy;
+  if (!deploymentCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:651 description:{@"Invalid parameter not satisfying: %@", @"deployment"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:651 description:{@"Invalid parameter not satisfying: %@", @"deployment"}];
 
     v11 = 0;
   }
 
   if (([v11 hasDeploymentId] & 1) == 0)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:652 description:{@"Invalid parameter not satisfying: %@", @"deployment.hasDeploymentId"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:652 description:{@"Invalid parameter not satisfying: %@", @"deployment.hasDeploymentId"}];
   }
 
-  v12 = [v16 experimentId];
-  v13 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v16, "deploymentId")}];
-  [(TRICKNativeArtifactProvider *)self _fetchExperimentWithExperimentId:v12 deploymentId:v13 options:v9 completion:v10];
+  experimentId = [deploymentCopy experimentId];
+  v13 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(deploymentCopy, "deploymentId")}];
+  [(TRICKNativeArtifactProvider *)self _fetchExperimentWithExperimentId:experimentId deploymentId:v13 options:optionsCopy completion:completionCopy];
 }
 
-- (void)fetchExperimentWithLatestDeploymentForExperimentId:(id)a3 options:(id)a4 completion:(id)a5
+- (void)fetchExperimentWithLatestDeploymentForExperimentId:(id)id options:(id)options completion:(id)completion
 {
-  v14 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v14;
-  v12 = v10;
-  if (!v14)
+  idCopy = id;
+  optionsCopy = options;
+  completionCopy = completion;
+  v11 = idCopy;
+  v12 = completionCopy;
+  if (!idCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:663 description:{@"Invalid parameter not satisfying: %@", @"experimentId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:663 description:{@"Invalid parameter not satisfying: %@", @"experimentId"}];
 
     v11 = 0;
   }
 
-  [(TRICKNativeArtifactProvider *)self _fetchExperimentWithExperimentId:v11 deploymentId:0 options:v9 completion:v12];
+  [(TRICKNativeArtifactProvider *)self _fetchExperimentWithExperimentId:v11 deploymentId:0 options:optionsCopy completion:v12];
 }
 
-- (void)_fetchExperimentsWithCursor:(id)a3 withNamespaceNames:(id)a4 sinceDate:(id)a5 fetchRollbacksOnly:(BOOL)a6 options:(id)a7 resultsHandler:(id)a8
+- (void)_fetchExperimentsWithCursor:(id)cursor withNamespaceNames:(id)names sinceDate:(id)date fetchRollbacksOnly:(BOOL)only options:(id)options resultsHandler:(id)handler
 {
-  v10 = a6;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = a8;
+  onlyCopy = only;
+  namesCopy = names;
+  dateCopy = date;
+  optionsCopy = options;
+  handlerCopy = handler;
   v17 = objc_opt_new();
-  if (v10)
+  if (onlyCopy)
   {
-    [(TRICKNativeArtifactProvider *)self _fetchNotificationsWithQueryType:1 withCursor:0 withNamespaceNames:v13 sinceDate:v14 options:v15 resultsHandler:v16];
+    [(TRICKNativeArtifactProvider *)self _fetchNotificationsWithQueryType:1 withCursor:0 withNamespaceNames:namesCopy sinceDate:dateCopy options:optionsCopy resultsHandler:handlerCopy];
   }
 
   else
@@ -943,12 +943,12 @@ void __96__TRICKNativeArtifactProvider__fetchExperimentWithExperimentId_deployme
     v18[1] = 3221225472;
     v18[2] = __130__TRICKNativeArtifactProvider__fetchExperimentsWithCursor_withNamespaceNames_sinceDate_fetchRollbacksOnly_options_resultsHandler___block_invoke;
     v18[3] = &unk_279DDF090;
-    v24 = v16;
+    v24 = handlerCopy;
     v19 = v17;
-    v20 = self;
-    v21 = v13;
-    v22 = v14;
-    v23 = v15;
+    selfCopy = self;
+    v21 = namesCopy;
+    v22 = dateCopy;
+    v23 = optionsCopy;
     [(TRICKNativeArtifactProvider *)self _fetchNotificationsWithQueryType:0 withCursor:0 withNamespaceNames:v21 sinceDate:v22 options:v23 resultsHandler:v18];
   }
 }
@@ -1072,14 +1072,14 @@ LABEL_13:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchNotificationsWithQueryType:(unint64_t)a3 withCursor:(id)a4 withNamespaceNames:(id)a5 sinceDate:(id)a6 options:(id)a7 resultsHandler:(id)a8
+- (void)_fetchNotificationsWithQueryType:(unint64_t)type withCursor:(id)cursor withNamespaceNames:(id)names sinceDate:(id)date options:(id)options resultsHandler:(id)handler
 {
   v79 = *MEMORY[0x277D85DE8];
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  cursorCopy = cursor;
+  namesCopy = names;
+  dateCopy = date;
+  optionsCopy = options;
+  handlerCopy = handler;
   v19 = *MEMORY[0x277D738A8];
   v20 = objc_opt_new();
   v74[0] = MEMORY[0x277D85DD0];
@@ -1097,18 +1097,18 @@ LABEL_13:
   v24 = v19;
   v62 = v23;
   v66 = v23;
-  v25 = v17;
+  v25 = optionsCopy;
   v67 = v25;
-  v26 = v18;
-  v27 = v14;
+  v26 = handlerCopy;
+  v27 = cursorCopy;
   v61 = v26;
   v72 = v26;
-  v73 = a3;
-  v68 = self;
+  typeCopy = type;
+  selfCopy = self;
   v69 = v24;
-  v28 = v16;
+  v28 = dateCopy;
   v70 = v28;
-  v63 = v15;
+  v63 = namesCopy;
   v71 = v63;
   v29 = MEMORY[0x2743948D0](v65);
   v30 = +[TRIClientExperimentArtifact allReferencedCKRecordKeys];
@@ -1119,7 +1119,7 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v59 = a3;
+  typeCopy2 = type;
   v60 = v24;
   if (v28)
   {
@@ -1143,12 +1143,12 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v33 = [(TRICKNativeArtifactProvider *)self container];
-  v34 = [TRICKNativeArtifactProvider containerFromCkContainer:v33];
+  container = [(TRICKNativeArtifactProvider *)self container];
+  v34 = [TRICKNativeArtifactProvider containerFromCkContainer:container];
 
   dateProvider = self->_dateProvider;
-  v36 = [(TRICKNativeArtifactProvider *)self teamId];
-  v37 = [(TRIDateProviding *)dateProvider lastFetchDateWithType:0 container:v34 teamId:v36];
+  teamId = [(TRICKNativeArtifactProvider *)self teamId];
+  v37 = [(TRIDateProviding *)dateProvider lastFetchDateWithType:0 container:v34 teamId:teamId];
 
   v28 = v37;
   v32 = objc_opt_new();
@@ -1160,28 +1160,28 @@ LABEL_6:
   v64 = 0;
 LABEL_9:
   v41 = +[TRISystemConfiguration sharedInstance];
-  v42 = [v41 populationType];
+  populationType = [v41 populationType];
 
   v43 = MEMORY[0x277CCAC30];
   v44 = *MEMORY[0x277D738C8];
-  v45 = [MEMORY[0x277CCABB0] numberWithInt:v42];
+  v45 = [MEMORY[0x277CCABB0] numberWithInt:populationType];
   v76 = v45;
   v46 = [MEMORY[0x277CBEA60] arrayWithObjects:&v76 count:1];
   v47 = [v43 triLoggablePredicateWithFormat:@"ANY %K IN %@", v44, v46];
   [v32 addObject:v47];
 
-  if (v59)
+  if (typeCopy2)
   {
-    v48 = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"%K == %@", *MEMORY[0x277D738F8], &unk_287FC4450];
-    [v32 addObject:v48];
+    allObjects = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"%K == %@", *MEMORY[0x277D738F8], &unk_287FC4450];
+    [v32 addObject:allObjects];
   }
 
   else
   {
-    v48 = [v63 allObjects];
-    if ([v48 count])
+    allObjects = [v63 allObjects];
+    if ([allObjects count])
     {
-      v49 = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"ANY %K IN %@", *MEMORY[0x277D73918], v48];
+      v49 = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"ANY %K IN %@", *MEMORY[0x277D73918], allObjects];
       [v32 addObject:v49];
     }
 
@@ -1191,9 +1191,9 @@ LABEL_9:
 
   v24 = v60;
 
-  v51 = [(TRICKNativeArtifactProvider *)self container];
-  v52 = [v51 containerIdentifier];
-  v53 = [v52 isEqualToString:*MEMORY[0x277D73818]];
+  container2 = [(TRICKNativeArtifactProvider *)self container];
+  containerIdentifier = [container2 containerIdentifier];
+  v53 = [containerIdentifier isEqualToString:*MEMORY[0x277D73818]];
 
   if ((v53 & 1) == 0)
   {
@@ -1206,9 +1206,9 @@ LABEL_9:
 
   v27 = 0;
 LABEL_17:
-  v56 = [(TRICKNativeArtifactProvider *)self container];
-  v57 = [v56 publicCloudDatabase];
-  [v57 addOperation:v31];
+  container3 = [(TRICKNativeArtifactProvider *)self container];
+  publicCloudDatabase = [container3 publicCloudDatabase];
+  [publicCloudDatabase addOperation:v31];
 
   v58 = *MEMORY[0x277D85DE8];
 }
@@ -1457,13 +1457,13 @@ BOOL __127__TRICKNativeArtifactProvider__fetchNotificationsWithQueryType_withCur
   return v5;
 }
 
-- (void)fetchExperimentNotificationsForLimitedCarryExperimentWithManager:(id)a3 options:(id)a4 rollbacksOnly:(BOOL)a5 completion:(id)a6
+- (void)fetchExperimentNotificationsForLimitedCarryExperimentWithManager:(id)manager options:(id)options rollbacksOnly:(BOOL)only completion:(id)completion
 {
-  v59 = a5;
+  onlyCopy = only;
   v92[1] = *MEMORY[0x277D85DE8];
-  v51 = a3;
-  v52 = a4;
-  v54 = a6;
+  managerCopy = manager;
+  optionsCopy = options;
+  completionCopy = completion;
   v8 = TRILogCategory_Server();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1472,9 +1472,9 @@ BOOL __127__TRICKNativeArtifactProvider__fetchNotificationsWithQueryType_withCur
   }
 
   v9 = +[TRISystemConfiguration sharedInstance];
-  v10 = [v9 populationType];
+  populationType = [v9 populationType];
 
-  if (v10 != 3)
+  if (populationType != 3)
   {
     v44 = TRILogCategory_Server();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
@@ -1490,12 +1490,12 @@ BOOL __127__TRICKNativeArtifactProvider__fetchNotificationsWithQueryType_withCur
     v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v92 forKeys:&v91 count:1];
     v50 = [v45 initWithDomain:@"TRIGeneralErrorDomain" code:2 userInfo:v46];
 
-    (*(v54 + 2))(v54, 0, 0, 0, v50);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, v50);
     goto LABEL_32;
   }
 
-  v11 = [(TRICKNativeArtifactProvider *)self container];
-  v12 = [TRICKNativeArtifactProvider containerFromCkContainer:v11];
+  container = [(TRICKNativeArtifactProvider *)self container];
+  v12 = [TRICKNativeArtifactProvider containerFromCkContainer:container];
 
   v53 = *MEMORY[0x277D738A8];
   v13 = objc_opt_new();
@@ -1517,22 +1517,22 @@ BOOL __127__TRICKNativeArtifactProvider__fetchNotificationsWithQueryType_withCur
   v74[3] = &unk_279DDF150;
   v48 = v15;
   v75 = v48;
-  v60 = v52;
+  v60 = optionsCopy;
   v76 = v60;
-  v16 = v54;
+  v16 = completionCopy;
   v80 = v16;
   v82 = v12;
-  v77 = self;
+  selfCopy = self;
   v78 = v53;
   v50 = v13;
   v79 = v50;
   v81 = buf;
   v63 = MEMORY[0x2743948D0](v74);
-  v49 = [v51 lcExperiments];
-  if (![v49 count])
+  lcExperiments = [managerCopy lcExperiments];
+  if (![lcExperiments count])
   {
     (*(v16 + 2))(v16, 4, MEMORY[0x277CBEBF8], 0, 0);
-    v43 = v49;
+    v43 = lcExperiments;
     goto LABEL_31;
   }
 
@@ -1541,7 +1541,7 @@ BOOL __127__TRICKNativeArtifactProvider__fetchNotificationsWithQueryType_withCur
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v17 = v49;
+  v17 = lcExperiments;
   v18 = [v17 countByEnumeratingWithState:&v70 objects:v90 count:16];
   if (!v18)
   {
@@ -1578,7 +1578,7 @@ BOOL __127__TRICKNativeArtifactProvider__fetchNotificationsWithQueryType_withCur
         v28 = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"%K == %@", v57, v25];
         [v23 addObject:v28];
 
-        if (v59)
+        if (onlyCopy)
         {
           v29 = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"%K == %@", v56, &unk_287FC4450];
           [v23 addObject:v29];
@@ -1634,9 +1634,9 @@ LABEL_19:
         v39 = +[TRIClientExperimentArtifact allReferencedCKRecordKeys];
         v40 = [(TRICKNativeArtifactProvider *)self queryOperationForRecordType:v35 predicate:v37 desiredKeys:v39 options:v60 recordMatchedBlock:v64 queryCompletionBlock:v63];
 
-        v41 = [(TRICKNativeArtifactProvider *)self container];
-        v42 = [v41 publicCloudDatabase];
-        [v42 addOperation:v40];
+        container2 = [(TRICKNativeArtifactProvider *)self container];
+        publicCloudDatabase = [container2 publicCloudDatabase];
+        [publicCloudDatabase addOperation:v40];
 
         objc_autoreleasePoolPop(v38);
         ++v36;
@@ -1649,7 +1649,7 @@ LABEL_19:
     while (v33);
   }
 
-  v43 = v49;
+  v43 = lcExperiments;
 LABEL_31:
 
   _Block_object_dispose(buf, 8);
@@ -1853,9 +1853,9 @@ LABEL_31:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)cloudkitIdentifierForContainer:(int)a3
++ (id)cloudkitIdentifierForContainer:(int)container
 {
-  if (a3 == 2)
+  if (container == 2)
   {
     v6 = MEMORY[0x277D73818];
 LABEL_7:
@@ -1863,14 +1863,14 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (a3 == 1)
+  if (container == 1)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v3 valueForKey:*MEMORY[0x277D739E8]];
-    v5 = [v4 unsignedIntegerValue];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults valueForKey:*MEMORY[0x277D739E8]];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
 
     v6 = MEMORY[0x277D73828];
-    if (v5 == 4)
+    if (unsignedIntegerValue == 4)
     {
       v6 = MEMORY[0x277D73820];
     }
@@ -1884,11 +1884,11 @@ LABEL_9:
   return v7;
 }
 
-+ (int)containerFromCkContainer:(id)a3
++ (int)containerFromCkContainer:(id)container
 {
-  v3 = a3;
-  v4 = [v3 containerIdentifier];
-  v5 = [v4 isEqualToString:*MEMORY[0x277D73828]];
+  containerCopy = container;
+  containerIdentifier = [containerCopy containerIdentifier];
+  v5 = [containerIdentifier isEqualToString:*MEMORY[0x277D73828]];
 
   if (v5)
   {
@@ -1897,8 +1897,8 @@ LABEL_9:
 
   else
   {
-    v7 = [v3 containerIdentifier];
-    v8 = [v7 isEqualToString:*MEMORY[0x277D73818]];
+    containerIdentifier2 = [containerCopy containerIdentifier];
+    v8 = [containerIdentifier2 isEqualToString:*MEMORY[0x277D73818]];
 
     if (v8)
     {
@@ -1907,32 +1907,32 @@ LABEL_9:
 
     else
     {
-      v9 = [v3 containerIdentifier];
-      v6 = [v9 isEqualToString:*MEMORY[0x277D73820]];
+      containerIdentifier3 = [containerCopy containerIdentifier];
+      v6 = [containerIdentifier3 isEqualToString:*MEMORY[0x277D73820]];
     }
   }
 
   return v6;
 }
 
-- (id)fetchTreatmentWithId:(id)a3 options:(id)a4 completion:(id)a5
+- (id)fetchTreatmentWithId:(id)id options:(id)options completion:(id)completion
 {
   v51[4] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  idCopy = id;
+  optionsCopy = options;
+  completionCopy = completion;
+  if (idCopy)
   {
-    if (v10)
+    if (optionsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:1060 description:{@"Invalid parameter not satisfying: %@", @"options"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:1060 description:{@"Invalid parameter not satisfying: %@", @"options"}];
 
-    if (v11)
+    if (completionCopy)
     {
       goto LABEL_4;
     }
@@ -1940,23 +1940,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v29 = [MEMORY[0x277CCA890] currentHandler];
-  [v29 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:1059 description:{@"Invalid parameter not satisfying: %@", @"treatmentId"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:1059 description:{@"Invalid parameter not satisfying: %@", @"treatmentId"}];
 
-  if (!v10)
+  if (!optionsCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (completionCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v31 = [MEMORY[0x277CCA890] currentHandler];
-  [v31 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:1061 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:1061 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_4:
   v12 = [[TRICancelableCKOperation alloc] initWithOperation:0];
@@ -1981,7 +1981,7 @@ LABEL_4:
   v41[2] = __71__TRICKNativeArtifactProvider_fetchTreatmentWithId_options_completion___block_invoke;
   v41[3] = &unk_279DDF178;
   v43 = v47;
-  v13 = v9;
+  v13 = idCopy;
   v42 = v13;
   v44 = v49;
   v45 = v46;
@@ -1992,10 +1992,10 @@ LABEL_4:
   v34[3] = &unk_279DDF1A0;
   v14 = v12;
   v35 = v14;
-  v32 = v11;
+  v32 = completionCopy;
   v37 = v32;
   v38 = v46;
-  v15 = v10;
+  v15 = optionsCopy;
   v36 = v15;
   v39 = v49;
   v40 = v47;
@@ -2011,9 +2011,9 @@ LABEL_4:
   v51[3] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:4];
   v23 = [(TRICKNativeArtifactProvider *)self queryOperationForRecordType:*MEMORY[0x277D739A8] predicate:v19 desiredKeys:v22 options:v15 recordMatchedBlock:v33 queryCompletionBlock:v16];
-  v24 = [(TRICKNativeArtifactProvider *)self container];
-  v25 = [v24 publicCloudDatabase];
-  [v25 addOperation:v23];
+  container = [(TRICKNativeArtifactProvider *)self container];
+  publicCloudDatabase = [container publicCloudDatabase];
+  [publicCloudDatabase addOperation:v23];
 
   [(TRICancelableCKOperation *)v14 addOperation:v23];
   v26 = v14;
@@ -2103,17 +2103,17 @@ void __71__TRICKNativeArtifactProvider_fetchTreatmentWithId_options_completion__
 LABEL_7:
 }
 
-- (id)fetchAssetsWithIndexes:(id)a3 fromTreatmentWithRecordId:(id)a4 options:(id)a5 progress:(id)a6 completion:(id)a7
+- (id)fetchAssetsWithIndexes:(id)indexes fromTreatmentWithRecordId:(id)id options:(id)options progress:(id)progress completion:(id)completion
 {
   v68 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v13)
+  indexesCopy = indexes;
+  idCopy = id;
+  optionsCopy = options;
+  progressCopy = progress;
+  completionCopy = completion;
+  if (indexesCopy)
   {
-    if (v14)
+    if (idCopy)
     {
       goto LABEL_3;
     }
@@ -2122,24 +2122,24 @@ LABEL_7:
   else
   {
     [MEMORY[0x277CCA890] currentHandler];
-    v42 = v41 = v17;
+    v42 = v41 = completionCopy;
     [v42 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:1123 description:{@"Invalid parameter not satisfying: %@", @"assetIndexes"}];
 
-    v17 = v41;
-    if (v14)
+    completionCopy = v41;
+    if (idCopy)
     {
 LABEL_3:
-      if (v15)
+      if (optionsCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_15:
       [MEMORY[0x277CCA890] currentHandler];
-      v46 = v45 = v17;
+      v46 = v45 = completionCopy;
       [v46 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:1125 description:{@"Invalid parameter not satisfying: %@", @"options"}];
 
-      v17 = v45;
+      completionCopy = v45;
       if (v45)
       {
         goto LABEL_5;
@@ -2150,37 +2150,37 @@ LABEL_15:
   }
 
   [MEMORY[0x277CCA890] currentHandler];
-  v44 = v43 = v17;
+  v44 = v43 = completionCopy;
   [v44 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:1124 description:{@"Invalid parameter not satisfying: %@", @"recordId"}];
 
-  v17 = v43;
-  if (!v15)
+  completionCopy = v43;
+  if (!optionsCopy)
   {
     goto LABEL_15;
   }
 
 LABEL_4:
-  if (v17)
+  if (completionCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_16:
   [MEMORY[0x277CCA890] currentHandler];
-  v48 = v47 = v17;
+  v48 = v47 = completionCopy;
   [v48 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:1126 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
-  v17 = v47;
+  completionCopy = v47;
 LABEL_5:
   v18 = [[TRICancelableCKOperation alloc] initWithOperation:0];
-  if ([v13 count])
+  if ([indexesCopy count])
   {
     v61[0] = MEMORY[0x277D85DD0];
     v61[1] = 3221225472;
     v61[2] = __108__TRICKNativeArtifactProvider_fetchAssetsWithIndexes_fromTreatmentWithRecordId_options_progress_completion___block_invoke;
     v61[3] = &unk_279DDF1C8;
-    v52 = v16;
-    v62 = v16;
+    v52 = progressCopy;
+    v62 = progressCopy;
     v19 = MEMORY[0x2743948D0](v61);
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
@@ -2188,16 +2188,16 @@ LABEL_5:
     v55[3] = &unk_279DDF1F0;
     v20 = v18;
     v56 = v20;
-    v50 = v17;
-    v60 = v17;
-    v53 = v15;
-    v21 = v15;
+    v50 = completionCopy;
+    v60 = completionCopy;
+    v53 = optionsCopy;
+    v21 = optionsCopy;
     v57 = v21;
-    v54 = v14;
-    v22 = v14;
+    v54 = idCopy;
+    v22 = idCopy;
     v58 = v22;
-    v51 = v13;
-    v23 = v13;
+    v51 = indexesCopy;
+    v23 = indexesCopy;
     v59 = v23;
     v24 = MEMORY[0x2743948D0](v55);
     context = objc_autoreleasePoolPush();
@@ -2210,8 +2210,8 @@ LABEL_5:
     [v27 setFetchRecordsCompletionBlock:v24];
     v28 = [(TRICKNativeArtifactProvider *)self configurationFromOptions:v21];
     [v27 setConfiguration:v28];
-    v29 = [v21 downloadOptions];
-    [(TRICKNativeArtifactProvider *)self _applyBoostIfNeededToOperation:v27 fromOptions:v29];
+    downloadOptions = [v21 downloadOptions];
+    [(TRICKNativeArtifactProvider *)self _applyBoostIfNeededToOperation:v27 fromOptions:downloadOptions];
 
     v30 = v23;
     v31 = objc_opt_new();
@@ -2234,24 +2234,24 @@ LABEL_5:
     v34 = [v32 arrayByAddingObject:*MEMORY[0x277D739C0]];
     [v27 setDesiredKeys:v34];
 
-    v35 = [(TRICKNativeArtifactProvider *)self container];
-    v36 = [v35 publicCloudDatabase];
-    [v36 addOperation:v27];
+    container = [(TRICKNativeArtifactProvider *)self container];
+    publicCloudDatabase = [container publicCloudDatabase];
+    [publicCloudDatabase addOperation:v27];
 
     [(TRICancelableCKOperation *)v20 addOperation:v27];
     v37 = v20;
 
     objc_autoreleasePoolPop(context);
-    v15 = v53;
-    v14 = v54;
-    v16 = v52;
-    v17 = v50;
-    v13 = v51;
+    optionsCopy = v53;
+    idCopy = v54;
+    progressCopy = v52;
+    completionCopy = v50;
+    indexesCopy = v51;
   }
 
   else
   {
-    (*(v17 + 2))(v17, 4, MEMORY[0x277CBEC10], 0, 0);
+    (*(completionCopy + 2))(completionCopy, 4, MEMORY[0x277CBEC10], 0, 0);
     v38 = v18;
   }
 
@@ -2332,37 +2332,37 @@ void __108__TRICKNativeArtifactProvider_fetchAssetsWithIndexes_fromTreatmentWith
   [v8 addObject:v9];
 }
 
-- (void)fetchRolloutNotificationsDateAscendingWithOptions:(id)a3 lastFetchDateOverride:(id)a4 namespaceNames:(id)a5 completion:(id)a6
+- (void)fetchRolloutNotificationsDateAscendingWithOptions:(id)options lastFetchDateOverride:(id)override namespaceNames:(id)names completion:(id)completion
 {
-  v18 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(TRICKNativeArtifactProvider *)self container];
-  v14 = [TRICKNativeArtifactProvider containerFromCkContainer:v13];
+  optionsCopy = options;
+  overrideCopy = override;
+  namesCopy = names;
+  completionCopy = completion;
+  container = [(TRICKNativeArtifactProvider *)self container];
+  v14 = [TRICKNativeArtifactProvider containerFromCkContainer:container];
 
-  if (v10)
+  if (overrideCopy)
   {
-    [(TRICKNativeArtifactProvider *)self _fetchRolloutNotificationsWithCursor:0 options:v18 sinceDate:v10 namespaceNames:v11 resultsHandler:v12];
+    [(TRICKNativeArtifactProvider *)self _fetchRolloutNotificationsWithCursor:0 options:optionsCopy sinceDate:overrideCopy namespaceNames:namesCopy resultsHandler:completionCopy];
   }
 
   else
   {
     dateProvider = self->_dateProvider;
-    v16 = [(TRICKNativeArtifactProvider *)self teamId];
-    v17 = [(TRIDateProviding *)dateProvider lastFetchDateWithType:1 container:v14 teamId:v16];
-    [(TRICKNativeArtifactProvider *)self _fetchRolloutNotificationsWithCursor:0 options:v18 sinceDate:v17 namespaceNames:v11 resultsHandler:v12];
+    teamId = [(TRICKNativeArtifactProvider *)self teamId];
+    v17 = [(TRIDateProviding *)dateProvider lastFetchDateWithType:1 container:v14 teamId:teamId];
+    [(TRICKNativeArtifactProvider *)self _fetchRolloutNotificationsWithCursor:0 options:optionsCopy sinceDate:v17 namespaceNames:namesCopy resultsHandler:completionCopy];
   }
 }
 
-- (void)_fetchRolloutNotificationsWithCursor:(id)a3 options:(id)a4 sinceDate:(id)a5 namespaceNames:(id)a6 resultsHandler:(id)a7
+- (void)_fetchRolloutNotificationsWithCursor:(id)cursor options:(id)options sinceDate:(id)date namespaceNames:(id)names resultsHandler:(id)handler
 {
   v69 = *MEMORY[0x277D85DE8];
-  v47 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  cursorCopy = cursor;
+  optionsCopy = options;
+  dateCopy = date;
+  namesCopy = names;
+  handlerCopy = handler;
   v63[0] = 0;
   v63[1] = v63;
   v63[2] = 0x3032000000;
@@ -2378,10 +2378,10 @@ void __108__TRICKNativeArtifactProvider_fetchAssetsWithIndexes_fromTreatmentWith
   v57[2] = __116__TRICKNativeArtifactProvider__fetchRolloutNotificationsWithCursor_options_sinceDate_namespaceNames_resultsHandler___block_invoke;
   v57[3] = &unk_279DDF240;
   v57[4] = self;
-  v16 = v13;
+  v16 = dateCopy;
   v58 = v16;
   v60 = v63;
-  v17 = v15;
+  v17 = handlerCopy;
   v59 = v17;
   v61 = v62;
   v46 = MEMORY[0x2743948D0](v57);
@@ -2390,33 +2390,33 @@ void __108__TRICKNativeArtifactProvider_fetchAssetsWithIndexes_fromTreatmentWith
   v49[2] = __116__TRICKNativeArtifactProvider__fetchRolloutNotificationsWithCursor_options_sinceDate_namespaceNames_resultsHandler___block_invoke_237;
   v49[3] = &unk_279DDF268;
   v55 = v62;
-  v18 = v12;
+  v18 = optionsCopy;
   v50 = v18;
   v45 = v17;
   v54 = v45;
-  v51 = self;
+  selfCopy = self;
   v19 = v16;
   v52 = v19;
   v56 = v63;
-  v20 = v14;
+  v20 = namesCopy;
   v53 = v20;
   v48 = MEMORY[0x2743948D0](v49);
   v21 = +[TRIClientRolloutArtifact allReferencedCKRecordKeys];
-  if (v47)
+  if (cursorCopy)
   {
-    v22 = [(TRICKNativeArtifactProvider *)self queryOperationWithCursor:v47 desiredKeys:v21 options:v18 recordMatchedBlock:v46 queryCompletionBlock:v48];
+    v22 = [(TRICKNativeArtifactProvider *)self queryOperationWithCursor:cursorCopy desiredKeys:v21 options:v18 recordMatchedBlock:v46 queryCompletionBlock:v48];
   }
 
   else
   {
     if (!v19)
     {
-      v23 = [(TRICKNativeArtifactProvider *)self container];
-      v24 = [TRICKNativeArtifactProvider containerFromCkContainer:v23];
+      container = [(TRICKNativeArtifactProvider *)self container];
+      v24 = [TRICKNativeArtifactProvider containerFromCkContainer:container];
 
       dateProvider = self->_dateProvider;
-      v26 = [(TRICKNativeArtifactProvider *)self teamId];
-      v19 = [(TRIDateProviding *)dateProvider lastFetchDateWithType:1 container:v24 teamId:v26];
+      teamId = [(TRICKNativeArtifactProvider *)self teamId];
+      v19 = [(TRIDateProviding *)dateProvider lastFetchDateWithType:1 container:v24 teamId:teamId];
     }
 
     v44 = objc_opt_new();
@@ -2436,19 +2436,19 @@ void __108__TRICKNativeArtifactProvider_fetchAssetsWithIndexes_fromTreatmentWith
     }
 
     v30 = +[TRISystemConfiguration sharedInstance];
-    v31 = [v30 populationType];
+    populationType = [v30 populationType];
 
     v32 = MEMORY[0x277CCAC30];
-    v33 = [MEMORY[0x277CCABB0] numberWithInt:v31];
+    v33 = [MEMORY[0x277CCABB0] numberWithInt:populationType];
     v66 = v33;
     v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v66 count:1];
     v35 = [v32 triLoggablePredicateWithFormat:@"ANY %K IN %@", *MEMORY[0x277D73980], v34];
     [v44 addObject:v35];
 
-    v36 = [v20 allObjects];
+    allObjects = [v20 allObjects];
     if ([v20 count])
     {
-      v37 = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"ANY %K IN %@", *MEMORY[0x277D73978], v36];
+      v37 = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"ANY %K IN %@", *MEMORY[0x277D73978], allObjects];
       [v44 addObject:v37];
     }
 
@@ -2459,9 +2459,9 @@ void __108__TRICKNativeArtifactProvider_fetchAssetsWithIndexes_fromTreatmentWith
     v22 = [(TRICKNativeArtifactProvider *)self queryOperationForRecordType:*MEMORY[0x277D73958] predicate:v38 sortDescriptors:v40 desiredKeys:v21 options:v18 recordMatchedBlock:v46 queryCompletionBlock:v48];
   }
 
-  v41 = [(TRICKNativeArtifactProvider *)self container];
-  v42 = [v41 publicCloudDatabase];
-  [v42 addOperation:v22];
+  container2 = [(TRICKNativeArtifactProvider *)self container];
+  publicCloudDatabase = [container2 publicCloudDatabase];
+  [publicCloudDatabase addOperation:v22];
 
   _Block_object_dispose(v62, 8);
   _Block_object_dispose(v63, 8);
@@ -2644,12 +2644,12 @@ void __116__TRICKNativeArtifactProvider__fetchRolloutNotificationsWithCursor_opt
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchRolloutNotificationsWithCursor:(id)a3 options:(id)a4 completion:(id)a5
+- (void)_fetchRolloutNotificationsWithCursor:(id)cursor options:(id)options completion:(id)completion
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  v8 = a4;
-  v9 = a5;
+  cursorCopy = cursor;
+  optionsCopy = options;
+  completionCopy = completion;
   context = objc_autoreleasePoolPush();
   v46[0] = 0;
   v46[1] = v46;
@@ -2664,7 +2664,7 @@ void __116__TRICKNativeArtifactProvider__fetchRolloutNotificationsWithCursor_opt
   v40[2] = __87__TRICKNativeArtifactProvider__fetchRolloutNotificationsWithCursor_options_completion___block_invoke;
   v40[3] = &unk_279DDF290;
   v40[4] = self;
-  v10 = v9;
+  v10 = completionCopy;
   v41 = v10;
   v42 = v44;
   v43 = v46;
@@ -2674,27 +2674,27 @@ void __116__TRICKNativeArtifactProvider__fetchRolloutNotificationsWithCursor_opt
   v34[2] = __87__TRICKNativeArtifactProvider__fetchRolloutNotificationsWithCursor_options_completion___block_invoke_238;
   v34[3] = &unk_279DDF2B8;
   v38 = v46;
-  v12 = v8;
+  v12 = optionsCopy;
   v35 = v12;
   v13 = v10;
   v39 = v44;
-  v36 = self;
+  selfCopy = self;
   v37 = v13;
   v14 = MEMORY[0x2743948D0](v34);
   v15 = +[TRIClientRolloutArtifact allReferencedCKRecordKeys];
-  if (v33)
+  if (cursorCopy)
   {
-    v16 = [(TRICKNativeArtifactProvider *)self queryOperationWithCursor:v33 desiredKeys:v15 options:v12 recordMatchedBlock:v11 queryCompletionBlock:v14];
+    v16 = [(TRICKNativeArtifactProvider *)self queryOperationWithCursor:cursorCopy desiredKeys:v15 options:v12 recordMatchedBlock:v11 queryCompletionBlock:v14];
   }
 
   else
   {
     v31 = objc_opt_new();
     v17 = +[TRISystemConfiguration sharedInstance];
-    v18 = [v17 populationType];
+    populationType = [v17 populationType];
 
     v19 = MEMORY[0x277CCAC30];
-    v20 = [MEMORY[0x277CCABB0] numberWithInt:v18];
+    v20 = [MEMORY[0x277CCABB0] numberWithInt:populationType];
     v48[0] = v20;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:1];
     v22 = [v19 triLoggablePredicateWithFormat:@"ANY %K IN %@", *MEMORY[0x277D73980], v21];
@@ -2706,16 +2706,16 @@ void __116__TRICKNativeArtifactProvider__fetchRolloutNotificationsWithCursor_opt
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v47 count:1];
     v16 = [(TRICKNativeArtifactProvider *)self queryOperationForRecordType:*MEMORY[0x277D73958] predicate:v23 sortDescriptors:v25 desiredKeys:v15 options:v12 recordMatchedBlock:v11 queryCompletionBlock:v14];
 
-    v26 = [v12 downloadOptions];
-    [(TRICKNativeArtifactProvider *)self _applyBoostIfNeededToOperation:v16 fromOptions:v26];
+    downloadOptions = [v12 downloadOptions];
+    [(TRICKNativeArtifactProvider *)self _applyBoostIfNeededToOperation:v16 fromOptions:downloadOptions];
   }
 
-  v27 = [v12 downloadOptions];
-  [(TRICKNativeArtifactProvider *)self _applyBoostIfNeededToOperation:v16 fromOptions:v27];
+  downloadOptions2 = [v12 downloadOptions];
+  [(TRICKNativeArtifactProvider *)self _applyBoostIfNeededToOperation:v16 fromOptions:downloadOptions2];
 
-  v28 = [(TRICKNativeArtifactProvider *)self container];
-  v29 = [v28 publicCloudDatabase];
-  [v29 addOperation:v16];
+  container = [(TRICKNativeArtifactProvider *)self container];
+  publicCloudDatabase = [container publicCloudDatabase];
+  [publicCloudDatabase addOperation:v16];
 
   _Block_object_dispose(v44, 8);
   _Block_object_dispose(v46, 8);
@@ -2813,37 +2813,37 @@ void __87__TRICKNativeArtifactProvider__fetchRolloutNotificationsWithCursor_opti
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchRolloutNotificationWithDeployment:(id)a3 options:(id)a4 completion:(id)a5
+- (void)fetchRolloutNotificationWithDeployment:(id)deployment options:(id)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v14 = [v10 rolloutId];
+  completionCopy = completion;
+  optionsCopy = options;
+  deploymentCopy = deployment;
+  rolloutId = [deploymentCopy rolloutId];
   v11 = MEMORY[0x277CCABB0];
-  v12 = [v10 deploymentId];
+  deploymentId = [deploymentCopy deploymentId];
 
-  v13 = [v11 numberWithInt:v12];
-  [(TRICKNativeArtifactProvider *)self _fetchRolloutNotificationWithRolloutId:v14 deploymentId:v13 options:v9 completion:v8];
+  v13 = [v11 numberWithInt:deploymentId];
+  [(TRICKNativeArtifactProvider *)self _fetchRolloutNotificationWithRolloutId:rolloutId deploymentId:v13 options:optionsCopy completion:completionCopy];
 }
 
-- (void)_fetchRolloutNotificationWithRolloutId:(id)a3 deploymentId:(id)a4 options:(id)a5 completion:(id)a6
+- (void)_fetchRolloutNotificationWithRolloutId:(id)id deploymentId:(id)deploymentId options:(id)options completion:(id)completion
 {
   v70 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(TRICKNativeArtifactProvider *)self container];
-  LODWORD(a6) = [TRICKNativeArtifactProvider containerFromCkContainer:v14];
+  idCopy = id;
+  deploymentIdCopy = deploymentId;
+  optionsCopy = options;
+  completionCopy = completion;
+  container = [(TRICKNativeArtifactProvider *)self container];
+  LODWORD(completion) = [TRICKNativeArtifactProvider containerFromCkContainer:container];
 
-  if (a6)
+  if (completion)
   {
-    v51 = v13;
-    v15 = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"%K == %@", *MEMORY[0x277D739A0], v10];
-    v45 = self;
-    if (v11)
+    v51 = completionCopy;
+    idCopy = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"%K == %@", *MEMORY[0x277D739A0], idCopy];
+    selfCopy = self;
+    if (deploymentIdCopy)
     {
-      [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"%K == %@", *MEMORY[0x277D73968], v11];
+      [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"%K == %@", *MEMORY[0x277D73968], deploymentIdCopy];
     }
 
     else
@@ -2852,17 +2852,17 @@ void __87__TRICKNativeArtifactProvider__fetchRolloutNotificationsWithCursor_opti
     }
     v17 = ;
     v18 = +[TRISystemConfiguration sharedInstance];
-    v19 = [v18 populationType];
+    populationType = [v18 populationType];
 
     v20 = MEMORY[0x277CCAC30];
     v21 = *MEMORY[0x277D73980];
-    v22 = [MEMORY[0x277CCABB0] numberWithInt:v19];
+    v22 = [MEMORY[0x277CCABB0] numberWithInt:populationType];
     v65 = v22;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v65 count:1];
     v46 = [v20 triLoggablePredicateWithFormat:@"ANY %K IN %@", v21, v23];
 
     v24 = MEMORY[0x277CCA920];
-    v64[0] = v15;
+    v64[0] = idCopy;
     v64[1] = v17;
     v47 = v17;
     v64[2] = v46;
@@ -2874,9 +2874,9 @@ void __87__TRICKNativeArtifactProvider__fetchRolloutNotificationsWithCursor_opti
     v59[1] = 3221225472;
     v59[2] = __102__TRICKNativeArtifactProvider__fetchRolloutNotificationWithRolloutId_deploymentId_options_completion___block_invoke;
     v59[3] = &unk_279DDEFF0;
-    v27 = v10;
+    v27 = idCopy;
     v60 = v27;
-    v28 = v11;
+    v28 = deploymentIdCopy;
     v61 = v28;
     v29 = v26;
     v62 = v29;
@@ -2888,34 +2888,34 @@ void __87__TRICKNativeArtifactProvider__fetchRolloutNotificationsWithCursor_opti
     v31 = v27;
     v53 = v31;
     v54 = v28;
-    v48 = v10;
-    v49 = v11;
-    v32 = v12;
+    v48 = idCopy;
+    v49 = deploymentIdCopy;
+    v32 = optionsCopy;
     v55 = v32;
     v56 = v29;
-    v57 = v45;
+    v57 = selfCopy;
     v58 = v51;
     v44 = v29;
     v33 = MEMORY[0x2743948D0](v52);
     v34 = *MEMORY[0x277D73958];
     [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"deploymentDate" ascending:0];
-    v36 = v35 = v12;
+    v36 = v35 = optionsCopy;
     v63 = v36;
     v37 = [MEMORY[0x277CBEA60] arrayWithObjects:&v63 count:1];
     v38 = +[TRIClientRolloutArtifact allReferencedCKRecordKeys];
-    v39 = [(TRICKNativeArtifactProvider *)v45 queryOperationForRecordType:v34 predicate:v50 sortDescriptors:v37 desiredKeys:v38 options:v32 recordMatchedBlock:v30 queryCompletionBlock:v33];
+    v39 = [(TRICKNativeArtifactProvider *)selfCopy queryOperationForRecordType:v34 predicate:v50 sortDescriptors:v37 desiredKeys:v38 options:v32 recordMatchedBlock:v30 queryCompletionBlock:v33];
 
-    v12 = v35;
+    optionsCopy = v35;
     v40 = [TRICKOperationGroupFactory groupForRolloutId:v31];
     [v39 setGroup:v40];
 
-    v41 = [(TRICKNativeArtifactProvider *)v45 container];
-    v42 = [v41 publicCloudDatabase];
-    [v42 addOperation:v39];
+    container2 = [(TRICKNativeArtifactProvider *)selfCopy container];
+    publicCloudDatabase = [container2 publicCloudDatabase];
+    [publicCloudDatabase addOperation:v39];
 
-    v13 = v51;
-    v10 = v48;
-    v11 = v49;
+    completionCopy = v51;
+    idCopy = v48;
+    deploymentIdCopy = v49;
   }
 
   else
@@ -2924,13 +2924,13 @@ void __87__TRICKNativeArtifactProvider__fetchRolloutNotificationsWithCursor_opti
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v67 = v10;
+      v67 = idCopy;
       v68 = 2112;
-      v69 = v11;
+      v69 = deploymentIdCopy;
       _os_log_error_impl(&dword_26F567000, v16, OS_LOG_TYPE_ERROR, "failed to fetch rollout %{public}@.%@ (unknown container)", buf, 0x16u);
     }
 
-    (*(v13 + 2))(v13, 0, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0);
   }
 
   v43 = *MEMORY[0x277D85DE8];
@@ -3027,11 +3027,11 @@ void __102__TRICKNativeArtifactProvider__fetchRolloutNotificationWithRolloutId_d
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchFactorPackSetWithId:(id)a3 options:(id)a4 completion:(id)a5
+- (void)fetchFactorPackSetWithId:(id)id options:(id)options completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  idCopy = id;
+  optionsCopy = options;
+  completionCopy = completion;
   v12 = objc_opt_new();
   v36[0] = 0;
   v36[1] = v36;
@@ -3048,28 +3048,28 @@ void __102__TRICKNativeArtifactProvider__fetchRolloutNotificationWithRolloutId_d
   v26[1] = 3221225472;
   v26[2] = __75__TRICKNativeArtifactProvider_fetchFactorPackSetWithId_options_completion___block_invoke_243;
   v26[3] = &unk_279DDF2E0;
-  v15 = v9;
+  v15 = idCopy;
   v27 = v15;
   v16 = v13;
   v28 = v16;
-  v17 = v10;
+  v17 = optionsCopy;
   v29 = v17;
-  v18 = v11;
+  v18 = completionCopy;
   v32 = v36;
   v33 = a2;
-  v30 = self;
+  selfCopy = self;
   v31 = v18;
   v19 = MEMORY[0x2743948D0](v26);
   v20 = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"%K == %@", *MEMORY[0x277D73948], v15];
   v21 = +[TRIFactorPackSet allReferencedCKRecordKeys];
   v22 = [(TRICKNativeArtifactProvider *)self queryOperationForRecordType:*MEMORY[0x277D73930] predicate:v20 desiredKeys:v21 options:v17 recordMatchedBlock:v14 queryCompletionBlock:v19];
 
-  v23 = [v17 downloadOptions];
-  [(TRICKNativeArtifactProvider *)self _applyBoostIfNeededToOperation:v22 fromOptions:v23];
+  downloadOptions = [v17 downloadOptions];
+  [(TRICKNativeArtifactProvider *)self _applyBoostIfNeededToOperation:v22 fromOptions:downloadOptions];
 
-  v24 = [(TRICKNativeArtifactProvider *)self container];
-  v25 = [v24 publicCloudDatabase];
-  [v25 addOperation:v22];
+  container = [(TRICKNativeArtifactProvider *)self container];
+  publicCloudDatabase = [container publicCloudDatabase];
+  [publicCloudDatabase addOperation:v22];
 
   _Block_object_dispose(v36, 8);
 }
@@ -3213,41 +3213,41 @@ LABEL_23:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchRecordIdsForAssetsWithIds:(id)a3 options:(id)a4 completion:(id)a5
+- (id)fetchRecordIdsForAssetsWithIds:(id)ids options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  idsCopy = ids;
+  optionsCopy = options;
   v10 = MEMORY[0x277CBEB38];
-  v11 = a5;
-  v12 = [[v10 alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+  completionCopy = completion;
+  v12 = [[v10 alloc] initWithCapacity:{objc_msgSend(idsCopy, "count")}];
   v13 = [[TRICancelableCKOperation alloc] initWithOperation:0];
-  if ([v8 count])
+  if ([idsCopy count])
   {
-    [(TRICKNativeArtifactProvider *)self _fetchRecordIdsForAssetsWithIds:v8 options:v9 cursor:0 cancelableOp:v13 resultBuffer:v12 completion:v11];
+    [(TRICKNativeArtifactProvider *)self _fetchRecordIdsForAssetsWithIds:idsCopy options:optionsCopy cursor:0 cancelableOp:v13 resultBuffer:v12 completion:completionCopy];
   }
 
   else
   {
-    (*(v11 + 2))(v11, 4, v12, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 4, v12, 0, 0);
   }
 
   return v13;
 }
 
-- (void)_fetchRecordIdsForAssetsWithIds:(id)a3 options:(id)a4 cursor:(id)a5 cancelableOp:(id)a6 resultBuffer:(id)a7 completion:(id)a8
+- (void)_fetchRecordIdsForAssetsWithIds:(id)ids options:(id)options cursor:(id)cursor cancelableOp:(id)op resultBuffer:(id)buffer completion:(id)completion
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  idsCopy = ids;
+  optionsCopy = options;
+  cursorCopy = cursor;
+  opCopy = op;
+  bufferCopy = buffer;
+  completionCopy = completion;
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __115__TRICKNativeArtifactProvider__fetchRecordIdsForAssetsWithIds_options_cursor_cancelableOp_resultBuffer_completion___block_invoke;
   v47[3] = &unk_279DDF0B8;
-  v20 = v18;
+  v20 = bufferCopy;
   v48 = v20;
   v21 = MEMORY[0x2743948D0](v47);
   v40[0] = MEMORY[0x277D85DD0];
@@ -3256,49 +3256,49 @@ LABEL_23:
   v40[3] = &unk_279DDF308;
   v39 = v20;
   v41 = v39;
-  v22 = v17;
+  v22 = opCopy;
   v42 = v22;
-  v38 = v19;
+  v38 = completionCopy;
   v46 = v38;
-  v23 = v15;
+  v23 = optionsCopy;
   v43 = v23;
-  v44 = self;
-  v24 = v14;
+  selfCopy = self;
+  v24 = idsCopy;
   v45 = v24;
   v25 = MEMORY[0x2743948D0](v40);
   v26 = *MEMORY[0x277D73888];
   v50[0] = *MEMORY[0x277D73888];
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:1];
   v37 = v24;
-  if (v16)
+  if (cursorCopy)
   {
-    v28 = [(TRICKNativeArtifactProvider *)self queryOperationWithCursor:v16 desiredKeys:v27 options:v23 recordMatchedBlock:v21 queryCompletionBlock:v25];
+    v28 = [(TRICKNativeArtifactProvider *)self queryOperationWithCursor:cursorCopy desiredKeys:v27 options:v23 recordMatchedBlock:v21 queryCompletionBlock:v25];
     v49 = v26;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v49 count:1];
     [v28 setDesiredKeys:v29];
 
     [v22 addOperation:v28];
-    v30 = [(TRICKNativeArtifactProvider *)self container];
-    v31 = [v30 publicCloudDatabase];
-    [v31 addOperation:v28];
+    container = [(TRICKNativeArtifactProvider *)self container];
+    publicCloudDatabase = [container publicCloudDatabase];
+    [publicCloudDatabase addOperation:v28];
   }
 
   else
   {
-    v32 = [v24 allObjects];
-    v28 = [v32 sortedArrayUsingSelector:sel_compare_];
+    allObjects = [v24 allObjects];
+    v28 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
-    v30 = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"%K IN %@", v26, v28];
-    v31 = [(TRICKNativeArtifactProvider *)self queryOperationForRecordType:*MEMORY[0x277D73840] predicate:v30 desiredKeys:v27 options:v23 recordMatchedBlock:v21 queryCompletionBlock:v25];
-    v33 = [v23 downloadOptions];
-    [(TRICKNativeArtifactProvider *)self _applyBoostIfNeededToOperation:v31 fromOptions:v33];
+    container = [MEMORY[0x277CCAC30] triLoggablePredicateWithFormat:@"%K IN %@", v26, v28];
+    publicCloudDatabase = [(TRICKNativeArtifactProvider *)self queryOperationForRecordType:*MEMORY[0x277D73840] predicate:container desiredKeys:v27 options:v23 recordMatchedBlock:v21 queryCompletionBlock:v25];
+    downloadOptions = [v23 downloadOptions];
+    [(TRICKNativeArtifactProvider *)self _applyBoostIfNeededToOperation:publicCloudDatabase fromOptions:downloadOptions];
 
-    [v22 addOperation:v31];
-    v34 = [(TRICKNativeArtifactProvider *)self container];
-    v35 = [v34 publicCloudDatabase];
-    [v35 addOperation:v31];
+    [v22 addOperation:publicCloudDatabase];
+    container2 = [(TRICKNativeArtifactProvider *)self container];
+    publicCloudDatabase2 = [container2 publicCloudDatabase];
+    [publicCloudDatabase2 addOperation:publicCloudDatabase];
 
-    v16 = 0;
+    cursorCopy = 0;
   }
 
   v36 = *MEMORY[0x277D85DE8];
@@ -3455,18 +3455,18 @@ LABEL_25:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchAssetsWithRecordIds:(id)a3 options:(id)a4 perRecordProgress:(id)a5 perRecordCompletionBlockOnSuccess:(id)a6 perRecordCompletionBlockOnError:(id)a7 completion:(id)a8
+- (id)fetchAssetsWithRecordIds:(id)ids options:(id)options perRecordProgress:(id)progress perRecordCompletionBlockOnSuccess:(id)success perRecordCompletionBlockOnError:(id)error completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  idsCopy = ids;
+  optionsCopy = options;
+  progressCopy = progress;
+  successCopy = success;
+  errorCopy = error;
+  completionCopy = completion;
   v19 = [[TRICancelableCKOperation alloc] initWithOperation:0];
-  if ([v13 count])
+  if ([idsCopy count])
   {
-    v43 = v15;
+    v43 = progressCopy;
     v65 = 0;
     v66 = &v65;
     v67 = 0x3032000000;
@@ -3477,34 +3477,34 @@ LABEL_25:
     v62[1] = 3221225472;
     v62[2] = __159__TRICKNativeArtifactProvider_fetchAssetsWithRecordIds_options_perRecordProgress_perRecordCompletionBlockOnSuccess_perRecordCompletionBlockOnError_completion___block_invoke;
     v62[3] = &unk_279DDF330;
-    v39 = v17;
-    v63 = v17;
-    v40 = v16;
-    v64 = v16;
+    v39 = errorCopy;
+    v63 = errorCopy;
+    v40 = successCopy;
+    v64 = successCopy;
     v20 = MEMORY[0x2743948D0](v62);
     v60[0] = 0;
     v60[1] = v60;
     v60[2] = 0x3032000000;
     v60[3] = __Block_byref_object_copy__0;
     v60[4] = __Block_byref_object_dispose__0;
-    v61 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v13, "count")}];
+    v61 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(idsCopy, "count")}];
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __159__TRICKNativeArtifactProvider_fetchAssetsWithRecordIds_options_perRecordProgress_perRecordCompletionBlockOnSuccess_perRecordCompletionBlockOnError_completion___block_invoke_260;
     v54[3] = &unk_279DDF3A8;
     v58 = &v65;
-    v57 = v18;
+    v57 = completionCopy;
     v21 = v19;
     v55 = v21;
-    v38 = v14;
-    v22 = v14;
+    v38 = optionsCopy;
+    v22 = optionsCopy;
     v56 = v22;
     v59 = v60;
     v23 = MEMORY[0x2743948D0](v54);
     v24 = objc_autoreleasePoolPush();
     v25 = [TRIPeekEnumerator alloc];
-    v26 = [v13 keyEnumerator];
-    v27 = [(TRIPeekEnumerator *)v25 initWithEnumerator:v26];
+    keyEnumerator = [idsCopy keyEnumerator];
+    v27 = [(TRIPeekEnumerator *)v25 initWithEnumerator:keyEnumerator];
 
     objc_autoreleasePoolPop(v24);
     v44[0] = MEMORY[0x277D85DD0];
@@ -3514,8 +3514,8 @@ LABEL_25:
     v28 = v27;
     v53 = a2;
     v45 = v28;
-    v46 = self;
-    v47 = v13;
+    selfCopy = self;
+    v47 = idsCopy;
     v48 = v22;
     v50 = v43;
     v29 = v20;
@@ -3530,8 +3530,8 @@ LABEL_25:
 
     if ((*(v66[5] + 16))())
     {
-      v37 = [MEMORY[0x277CCA890] currentHandler];
-      [v37 handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:1799 description:@"initial asset batch was unexpectedly empty"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"TRICKNativeArtifactProvider.m" lineNumber:1799 description:@"initial asset batch was unexpectedly empty"];
     }
 
     v34 = v49;
@@ -3540,15 +3540,15 @@ LABEL_25:
     _Block_object_dispose(v60, 8);
     _Block_object_dispose(&v65, 8);
 
-    v14 = v38;
-    v17 = v39;
-    v15 = v43;
-    v16 = v40;
+    optionsCopy = v38;
+    errorCopy = v39;
+    progressCopy = v43;
+    successCopy = v40;
   }
 
   else
   {
-    (*(v18 + 2))(v18, 4, MEMORY[0x277CBEC10], 0, 0);
+    (*(completionCopy + 2))(completionCopy, 4, MEMORY[0x277CBEC10], 0, 0);
   }
 
   return v19;
@@ -3810,18 +3810,18 @@ LABEL_18:
   return v25;
 }
 
-- (id)fetchDiffSourceRecordIdsWithTargetAssetIds:(id)a3 isAcceptableSourceAssetId:(id)a4 options:(id)a5 completion:(id)a6
+- (id)fetchDiffSourceRecordIdsWithTargetAssetIds:(id)ids isAcceptableSourceAssetId:(id)id options:(id)options completion:(id)completion
 {
   v73 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v46 = a4;
-  v45 = a5;
-  v10 = a6;
+  idsCopy = ids;
+  idCopy = id;
+  optionsCopy = options;
+  completionCopy = completion;
   v47 = [[TRICancelableCKOperation alloc] initWithOperation:0];
-  v37 = v9;
-  if ([v9 count])
+  v37 = idsCopy;
+  if ([idsCopy count])
   {
-    v36 = v10;
+    v36 = completionCopy;
     v11 = objc_opt_new();
     v12 = objc_opt_new();
     v13 = v11[1];
@@ -3833,7 +3833,7 @@ LABEL_18:
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
-    obj = v9;
+    obj = idsCopy;
     v48 = [obj countByEnumeratingWithState:&v66 objects:v72 count:16];
     if (v48)
     {
@@ -3865,7 +3865,7 @@ LABEL_18:
           v61[2] = __119__TRICKNativeArtifactProvider_fetchDiffSourceRecordIdsWithTargetAssetIds_isAcceptableSourceAssetId_options_completion___block_invoke;
           v61[3] = &unk_279DDF3F8;
           v63 = v64;
-          v17 = v46;
+          v17 = idCopy;
           v61[4] = v15;
           v62 = v17;
           v18 = MEMORY[0x2743948D0](v61);
@@ -3874,7 +3874,7 @@ LABEL_18:
           v55[2] = __119__TRICKNativeArtifactProvider_fetchDiffSourceRecordIdsWithTargetAssetIds_isAcceptableSourceAssetId_options_completion___block_invoke_282;
           v55[3] = &unk_279DDF448;
           v56 = v44;
-          v19 = v45;
+          v19 = optionsCopy;
           v57 = v19;
           v58 = v15;
           v60 = v64;
@@ -3889,12 +3889,12 @@ LABEL_18:
           v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v70 count:1];
           v25 = [(TRICKNativeArtifactProvider *)self queryOperationForRecordType:v39 predicate:v21 sortDescriptors:v24 desiredKeys:v22 options:v19 recordMatchedBlock:v18 queryCompletionBlock:v20];
 
-          v26 = [v19 downloadOptions];
-          [(TRICKNativeArtifactProvider *)self _applyBoostIfNeededToOperation:v25 fromOptions:v26];
+          downloadOptions = [v19 downloadOptions];
+          [(TRICKNativeArtifactProvider *)self _applyBoostIfNeededToOperation:v25 fromOptions:downloadOptions];
 
-          v27 = [(TRICKNativeArtifactProvider *)self container];
-          v28 = [v27 publicCloudDatabase];
-          [v28 addOperation:v25];
+          container = [(TRICKNativeArtifactProvider *)self container];
+          publicCloudDatabase = [container publicCloudDatabase];
+          [publicCloudDatabase addOperation:v25];
 
           [(TRICancelableCKOperation *)v47 addOperation:v25];
           _Block_object_dispose(v64, 8);
@@ -3923,12 +3923,12 @@ LABEL_18:
     v32 = v54;
     v33 = v30;
 
-    v10 = v36;
+    completionCopy = v36;
   }
 
   else
   {
-    (*(v10 + 2))(v10, 4, MEMORY[0x277CBEC10], 0, 0);
+    (*(completionCopy + 2))(completionCopy, 4, MEMORY[0x277CBEC10], 0, 0);
   }
 
   v34 = *MEMORY[0x277D85DE8];
@@ -4101,23 +4101,23 @@ void __119__TRICKNativeArtifactProvider_fetchDiffSourceRecordIdsWithTargetAssetI
   v3();
 }
 
-- (id)fetchDiffsWithRecordIds:(id)a3 options:(id)a4 perRecordProgress:(id)a5 perRecordCompletionBlockOnSuccess:(id)a6 perRecordCompletionBlockOnError:(id)a7 completion:(id)a8
+- (id)fetchDiffsWithRecordIds:(id)ids options:(id)options perRecordProgress:(id)progress perRecordCompletionBlockOnSuccess:(id)success perRecordCompletionBlockOnError:(id)error completion:(id)completion
 {
-  v14 = a3;
-  v43 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  idsCopy = ids;
+  optionsCopy = options;
+  progressCopy = progress;
+  successCopy = success;
+  errorCopy = error;
+  completionCopy = completion;
   v19 = [[TRICancelableCKOperation alloc] initWithOperation:0];
-  if ([v14 count])
+  if ([idsCopy count])
   {
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __158__TRICKNativeArtifactProvider_fetchDiffsWithRecordIds_options_perRecordProgress_perRecordCompletionBlockOnSuccess_perRecordCompletionBlockOnError_completion___block_invoke;
     v49[3] = &unk_279DDF330;
-    v50 = v17;
-    v51 = v16;
+    v50 = errorCopy;
+    v51 = successCopy;
     v20 = MEMORY[0x2743948D0](v49);
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
@@ -4125,23 +4125,23 @@ void __119__TRICKNativeArtifactProvider_fetchDiffSourceRecordIdsWithTargetAssetI
     v44[3] = &unk_279DDF4C0;
     v21 = v19;
     v45 = v21;
-    v48 = v18;
-    v22 = v43;
+    v48 = completionCopy;
+    v22 = optionsCopy;
     v46 = v22;
-    v41 = v16;
-    v23 = v14;
+    v41 = successCopy;
+    v23 = idsCopy;
     v47 = v23;
-    v40 = v18;
+    v40 = completionCopy;
     v37 = MEMORY[0x2743948D0](v44);
     context = objc_autoreleasePoolPush();
     [v23 allValues];
-    v42 = v14;
-    v25 = v24 = v15;
+    v42 = idsCopy;
+    v25 = v24 = progressCopy;
     v26 = [v25 _pas_mappedArrayWithTransform:&__block_literal_global_291];
 
     v27 = [objc_alloc(MEMORY[0x277CBC3E0]) initWithRecordIDs:v26];
     +[TRIAssetDiffArtifact allReferencedCKRecordKeys];
-    v29 = v28 = v17;
+    v29 = v28 = errorCopy;
     [v27 setDesiredKeys:v29];
 
     v30 = [(TRICKNativeArtifactProvider *)self configurationFromOptions:v22];
@@ -4152,27 +4152,27 @@ void __119__TRICKNativeArtifactProvider_fetchDiffSourceRecordIdsWithTargetAssetI
     v31 = v20;
     [v27 setPerRecordCompletionBlock:v20];
     [v27 setFetchRecordsCompletionBlock:v37];
-    v32 = [(TRICKNativeArtifactProvider *)self container];
-    v33 = [v32 publicCloudDatabase];
-    [v33 addOperation:v27];
+    container = [(TRICKNativeArtifactProvider *)self container];
+    publicCloudDatabase = [container publicCloudDatabase];
+    [publicCloudDatabase addOperation:v27];
 
-    v17 = v28;
+    errorCopy = v28;
     [(TRICancelableCKOperation *)v21 addOperation:v27];
     v34 = v21;
 
-    v15 = v24;
-    v14 = v42;
+    progressCopy = v24;
+    idsCopy = v42;
 
-    v16 = v41;
+    successCopy = v41;
     objc_autoreleasePoolPop(context);
 
-    v18 = v40;
+    completionCopy = v40;
     v19 = v39;
   }
 
   else
   {
-    (*(v18 + 2))(v18, 4, MEMORY[0x277CBEC10], 0, 0);
+    (*(completionCopy + 2))(completionCopy, 4, MEMORY[0x277CBEC10], 0, 0);
     v35 = v19;
   }
 

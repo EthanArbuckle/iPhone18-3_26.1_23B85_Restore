@@ -1,14 +1,14 @@
 @interface SKGReferenceEdge
-+ (id)edgeFromReference:(id)a3 toNode:(id)a4;
++ (id)edgeFromReference:(id)reference toNode:(id)node;
 @end
 
 @implementation SKGReferenceEdge
 
-+ (id)edgeFromReference:(id)a3 toNode:(id)a4
++ (id)edgeFromReference:(id)reference toNode:(id)node
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [(SKGEdge *)[SKGReferenceEdge alloc] initWithSourceNode:v5 targetNode:v6];
+  referenceCopy = reference;
+  nodeCopy = node;
+  v7 = [(SKGEdge *)[SKGReferenceEdge alloc] initWithSourceNode:referenceCopy targetNode:nodeCopy];
 
   return v7;
 }

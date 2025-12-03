@@ -1,17 +1,17 @@
 @interface PUParallaxDebugInfoView
-- (PUParallaxDebugInfoView)initWithViewModel:(id)a3;
+- (PUParallaxDebugInfoView)initWithViewModel:(id)model;
 - (PUParallaxLayerStackViewModel)viewModel;
 - (UILabel)debugHUDLabel;
-- (id)_rectViewForIdentifier:(id)a3;
+- (id)_rectViewForIdentifier:(id)identifier;
 - (void)_layoutWithCurrentLayoutInfo;
 - (void)_updateDebugHUDString;
-- (void)displayAdditionalDebugInfo:(id)a3;
-- (void)layoutWithInfo:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setAdditionalDebugInfo:(id)a3;
-- (void)setCurrentLayoutInfo:(id)a3;
-- (void)setDebugHUDString:(id)a3;
-- (void)setDebugTimeRect:(id)a3;
+- (void)displayAdditionalDebugInfo:(id)info;
+- (void)layoutWithInfo:(id)info;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setAdditionalDebugInfo:(id)info;
+- (void)setCurrentLayoutInfo:(id)info;
+- (void)setDebugHUDString:(id)string;
+- (void)setDebugTimeRect:(id)rect;
 @end
 
 @implementation PUParallaxDebugInfoView
@@ -23,16 +23,16 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v5 = a4;
-  v7 = a3;
-  if ((v5 & 0x200) != 0)
+  changeCopy = change;
+  observableCopy = observable;
+  if ((changeCopy & 0x200) != 0)
   {
     [(PUParallaxDebugInfoView *)self _layoutWithCurrentLayoutInfo];
   }
 
-  if ((*&v5 & 0xC0000) != 0)
+  if ((*&changeCopy & 0xC0000) != 0)
   {
     [(PUParallaxDebugInfoView *)self _invalidateDebugHUDString];
   }
@@ -40,40 +40,40 @@
 
 - (void)_layoutWithCurrentLayoutInfo
 {
-  v3 = [(PUParallaxDebugInfoView *)self currentLayoutInfo];
-  if (v3 && (-[PUParallaxDebugInfoView viewModel](self, "viewModel"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 showsDebugHUD], v4, (v5 & 1) != 0))
+  currentLayoutInfo = [(PUParallaxDebugInfoView *)self currentLayoutInfo];
+  if (currentLayoutInfo && (-[PUParallaxDebugInfoView viewModel](self, "viewModel"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 showsDebugHUD], v4, (v5 & 1) != 0))
   {
     [(PUParallaxDebugInfoView *)self setHidden:0];
-    [v3 containerFrame];
+    [currentLayoutInfo containerFrame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v14 = [(PUParallaxDebugInfoView *)self _rectViewForIdentifier:@"timeFrame"];
-    v15 = [(PUParallaxDebugInfoView *)self debugTimeRect];
-    [v15 CGRectValue];
+    debugTimeRect = [(PUParallaxDebugInfoView *)self debugTimeRect];
+    [debugTimeRect CGRectValue];
     [v14 setFrame:?];
 
-    [v3 additionalTransform];
+    [currentLayoutInfo additionalTransform];
     v58 = v59;
     [(PUParallaxDebugInfoView *)self setTransform:&v58];
-    v16 = [(PUParallaxDebugInfoView *)self debugHUDString];
-    v17 = [(PUParallaxDebugInfoView *)self debugHUDLabel];
-    [v17 setText:v16];
+    debugHUDString = [(PUParallaxDebugInfoView *)self debugHUDString];
+    debugHUDLabel = [(PUParallaxDebugInfoView *)self debugHUDLabel];
+    [debugHUDLabel setText:debugHUDString];
 
-    v18 = [(PUParallaxDebugInfoView *)self debugHUDLabel];
-    v19 = [v18 superview];
+    debugHUDLabel2 = [(PUParallaxDebugInfoView *)self debugHUDLabel];
+    superview = [debugHUDLabel2 superview];
 
-    v20 = [(PUParallaxDebugInfoView *)self debugHUDLabel];
-    [v20 sizeThatFits:{v11, v13}];
+    debugHUDLabel3 = [(PUParallaxDebugInfoView *)self debugHUDLabel];
+    [debugHUDLabel3 sizeThatFits:{v11, v13}];
     v22 = v21;
 
-    v23 = [v3 deviceOrientation];
+    deviceOrientation = [currentLayoutInfo deviceOrientation];
     v24 = v7;
     v25 = v9;
     v26 = v11;
     v27 = v13;
-    if ((v23 - 3) > 1)
+    if ((deviceOrientation - 3) > 1)
     {
       MaxY = CGRectGetMaxY(*&v24);
     }
@@ -84,16 +84,16 @@
     }
 
     v29 = MaxY;
-    [v19 safeAreaInsets];
+    [superview safeAreaInsets];
     v31 = v30;
     v60.origin.x = v7;
     v60.origin.y = v9;
     v60.size.width = v11;
     v60.size.height = v13;
     Width = CGRectGetWidth(v60);
-    v33 = [v3 deviceOrientation];
-    [v3 containerFrame];
-    PUPosterAdditionalTransformForDeviceOrientationAndContainerFrame(v33, &v58);
+    deviceOrientation2 = [currentLayoutInfo deviceOrientation];
+    [currentLayoutInfo containerFrame];
+    PUPosterAdditionalTransformForDeviceOrientationAndContainerFrame(deviceOrientation2, &v58);
     v61.origin.x = v31;
     v61.origin.y = v29 + -250.0 - v22;
     v61.size.width = Width;
@@ -103,16 +103,16 @@
     y = v62.origin.y;
     v36 = v62.size.width;
     height = v62.size.height;
-    v38 = [(PUParallaxDebugInfoView *)self debugHUDLabel];
-    [v38 setFrame:{x, y, v36, height}];
+    debugHUDLabel4 = [(PUParallaxDebugInfoView *)self debugHUDLabel];
+    [debugHUDLabel4 setFrame:{x, y, v36, height}];
 
-    [v3 visibleFrame];
-    [v3 viewFrameForLayerFrame:?];
+    [currentLayoutInfo visibleFrame];
+    [currentLayoutInfo viewFrameForLayerFrame:?];
     v40 = v39;
     v42 = v41;
     v44 = v43;
     v46 = v45;
-    [v3 additionalContentTransform];
+    [currentLayoutInfo additionalContentTransform];
     v63.origin.x = v40;
     v63.origin.y = v42;
     v63.size.width = v44;
@@ -120,17 +120,17 @@
     v64 = CGRectApplyAffineTransform(v63, &v58);
     CGRectGetHeight(v64);
     PXRectWithOriginAndSize();
-    [v3 visibilityAmount];
+    [currentLayoutInfo visibilityAmount];
     v57 = v47;
     PXRectByLinearlyInterpolatingRects();
-    [v3 visibilityEdge];
+    [currentLayoutInfo visibilityEdge];
     PXRectWithSizeAlignedToRectEdges();
     v49 = v48;
     v51 = v50;
     v53 = v52;
     v55 = v54;
-    v56 = [(PUParallaxDebugInfoView *)self maskLayer];
-    [v56 setFrame:{v49, v51, v53, v55}];
+    maskLayer = [(PUParallaxDebugInfoView *)self maskLayer];
+    [maskLayer setFrame:{v49, v51, v53, v55}];
 
     PXRectWithSize();
     [(PUParallaxDebugInfoView *)self setBounds:?];
@@ -144,15 +144,15 @@
   }
 }
 
-- (void)setDebugTimeRect:(id)a3
+- (void)setDebugTimeRect:(id)rect
 {
-  v4 = a3;
+  rectCopy = rect;
   debugTimeRect = self->_debugTimeRect;
-  if (debugTimeRect != v4)
+  if (debugTimeRect != rectCopy)
   {
-    v8 = v4;
-    debugTimeRect = [debugTimeRect isEqual:v4];
-    v4 = v8;
+    v8 = rectCopy;
+    debugTimeRect = [debugTimeRect isEqual:rectCopy];
+    rectCopy = v8;
     if ((debugTimeRect & 1) == 0)
     {
       v6 = [v8 copy];
@@ -160,22 +160,22 @@
       self->_debugTimeRect = v6;
 
       debugTimeRect = [(PUParallaxDebugInfoView *)self _layoutWithCurrentLayoutInfo];
-      v4 = v8;
+      rectCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](debugTimeRect, v4);
+  MEMORY[0x1EEE66BB8](debugTimeRect, rectCopy);
 }
 
-- (void)setDebugHUDString:(id)a3
+- (void)setDebugHUDString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   debugHUDString = self->_debugHUDString;
-  if (debugHUDString != v4)
+  if (debugHUDString != stringCopy)
   {
-    v8 = v4;
-    debugHUDString = [debugHUDString isEqual:v4];
-    v4 = v8;
+    v8 = stringCopy;
+    debugHUDString = [debugHUDString isEqual:stringCopy];
+    stringCopy = v8;
     if ((debugHUDString & 1) == 0)
     {
       v6 = [v8 copy];
@@ -183,34 +183,34 @@
       self->_debugHUDString = v6;
 
       debugHUDString = [(PUParallaxDebugInfoView *)self _layoutWithCurrentLayoutInfo];
-      v4 = v8;
+      stringCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](debugHUDString, v4);
+  MEMORY[0x1EEE66BB8](debugHUDString, stringCopy);
 }
 
 - (void)_updateDebugHUDString
 {
-  v2 = self;
+  selfCopy = self;
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [(PUParallaxDebugInfoView *)self viewModel];
-  v4 = [v3 showsDebugHUD];
+  viewModel = [(PUParallaxDebugInfoView *)self viewModel];
+  showsDebugHUD = [viewModel showsDebugHUD];
 
-  if (v4)
+  if (showsDebugHUD)
   {
-    v5 = [(PUParallaxDebugInfoView *)v2 viewModel];
-    v6 = [v5 debugHUDRepresentation];
+    viewModel2 = [(PUParallaxDebugInfoView *)selfCopy viewModel];
+    debugHUDRepresentation = [viewModel2 debugHUDRepresentation];
 
     v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    v8 = [MEMORY[0x1E696AE30] processInfo];
-    [v7 appendFormat:@"pid: %d\n", objc_msgSend(v8, "processIdentifier")];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [v7 appendFormat:@"pid: %d\n", objc_msgSend(processInfo, "processIdentifier")];
 
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v9 = v6;
+    v9 = debugHUDRepresentation;
     v10 = [v9 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v10)
     {
@@ -236,16 +236,16 @@
       while (v11);
     }
 
-    v16 = [(PUParallaxDebugInfoView *)v2 additionalDebugInfo];
-    if ([v16 count])
+    additionalDebugInfo = [(PUParallaxDebugInfoView *)selfCopy additionalDebugInfo];
+    if ([additionalDebugInfo count])
     {
-      v24 = v2;
+      v24 = selfCopy;
       [v7 appendString:@"\n"];
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v17 = v16;
+      v17 = additionalDebugInfo;
       v18 = [v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
       if (v18)
       {
@@ -271,22 +271,22 @@
         while (v19);
       }
 
-      v2 = v24;
+      selfCopy = v24;
     }
 
-    [(PUParallaxDebugInfoView *)v2 setDebugHUDString:v7];
+    [(PUParallaxDebugInfoView *)selfCopy setDebugHUDString:v7];
   }
 }
 
-- (void)setAdditionalDebugInfo:(id)a3
+- (void)setAdditionalDebugInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   additionalDebugInfo = self->_additionalDebugInfo;
-  if (additionalDebugInfo != v4)
+  if (additionalDebugInfo != infoCopy)
   {
-    v8 = v4;
-    additionalDebugInfo = [additionalDebugInfo isEqual:v4];
-    v4 = v8;
+    v8 = infoCopy;
+    additionalDebugInfo = [additionalDebugInfo isEqual:infoCopy];
+    infoCopy = v8;
     if ((additionalDebugInfo & 1) == 0)
     {
       v6 = [v8 copy];
@@ -294,20 +294,20 @@
       self->_additionalDebugInfo = v6;
 
       additionalDebugInfo = [(PUParallaxDebugInfoView *)self _invalidateDebugHUDString];
-      v4 = v8;
+      infoCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](additionalDebugInfo, v4);
+  MEMORY[0x1EEE66BB8](additionalDebugInfo, infoCopy);
 }
 
-- (void)displayAdditionalDebugInfo:(id)a3
+- (void)displayAdditionalDebugInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(PUParallaxDebugInfoView *)self additionalDebugInfo];
-  v6 = [v5 mutableCopy];
+  infoCopy = info;
+  additionalDebugInfo = [(PUParallaxDebugInfoView *)self additionalDebugInfo];
+  v6 = [additionalDebugInfo mutableCopy];
 
-  [v6 addEntriesFromDictionary:v4];
+  [v6 addEntriesFromDictionary:infoCopy];
   [(PUParallaxDebugInfoView *)self setAdditionalDebugInfo:v6];
 }
 
@@ -325,12 +325,12 @@
     v7 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.5];
     [(UILabel *)v5 setBackgroundColor:v7];
 
-    v8 = [MEMORY[0x1E69DC888] systemDarkOrangeColor];
-    [(UILabel *)v5 setTextColor:v8];
+    systemDarkOrangeColor = [MEMORY[0x1E69DC888] systemDarkOrangeColor];
+    [(UILabel *)v5 setTextColor:systemDarkOrangeColor];
 
     [(UILabel *)v5 setUserInteractionEnabled:0];
-    v9 = [(UILabel *)v5 layer];
-    [v9 setZPosition:1.79769313e308];
+    layer = [(UILabel *)v5 layer];
+    [layer setZPosition:1.79769313e308];
 
     [(UILabel *)v5 setNumberOfLines:0];
     [(PUParallaxDebugInfoView *)self addSubview:v5];
@@ -343,31 +343,31 @@
   return debugHUDLabel;
 }
 
-- (id)_rectViewForIdentifier:(id)a3
+- (id)_rectViewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PUParallaxDebugInfoView *)self rectViewsByIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  rectViewsByIdentifier = [(PUParallaxDebugInfoView *)self rectViewsByIdentifier];
+  v6 = [rectViewsByIdentifier objectForKeyedSubscript:identifierCopy];
 
   if (!v6)
   {
     v7 = [PUParallaxDebugInfoRectView alloc];
     v6 = [(PUParallaxDebugInfoRectView *)v7 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    [(PUParallaxDebugInfoRectView *)v6 setIdentifier:v4];
+    [(PUParallaxDebugInfoRectView *)v6 setIdentifier:identifierCopy];
     [(PUParallaxDebugInfoView *)self addSubview:v6];
-    v8 = [(PUParallaxDebugInfoView *)self rectViewsByIdentifier];
-    [v8 setObject:v6 forKeyedSubscript:v4];
+    rectViewsByIdentifier2 = [(PUParallaxDebugInfoView *)self rectViewsByIdentifier];
+    [rectViewsByIdentifier2 setObject:v6 forKeyedSubscript:identifierCopy];
   }
 
   return v6;
 }
 
-- (void)setCurrentLayoutInfo:(id)a3
+- (void)setCurrentLayoutInfo:(id)info
 {
-  v8 = a3;
+  infoCopy = info;
   v5 = self->_currentLayoutInfo;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == infoCopy)
   {
   }
 
@@ -377,53 +377,53 @@
 
     if (!v7)
     {
-      objc_storeStrong(&self->_currentLayoutInfo, a3);
+      objc_storeStrong(&self->_currentLayoutInfo, info);
       [(PUParallaxDebugInfoView *)self _layoutWithCurrentLayoutInfo];
     }
   }
 }
 
-- (void)layoutWithInfo:(id)a3
+- (void)layoutWithInfo:(id)info
 {
   v5.receiver = self;
   v5.super_class = PUParallaxDebugInfoView;
-  v4 = a3;
-  [(PUParallaxLayerView *)&v5 layoutWithInfo:v4];
-  [(PUParallaxDebugInfoView *)self setCurrentLayoutInfo:v4, v5.receiver, v5.super_class];
+  infoCopy = info;
+  [(PUParallaxLayerView *)&v5 layoutWithInfo:infoCopy];
+  [(PUParallaxDebugInfoView *)self setCurrentLayoutInfo:infoCopy, v5.receiver, v5.super_class];
 }
 
-- (PUParallaxDebugInfoView)initWithViewModel:(id)a3
+- (PUParallaxDebugInfoView)initWithViewModel:(id)model
 {
   v38[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modelCopy = model;
   v36.receiver = self;
   v36.super_class = PUParallaxDebugInfoView;
   v5 = [(PUParallaxDebugInfoView *)&v36 init];
   if (v5)
   {
-    if ([v4 environment] == 2)
+    if ([modelCopy environment] == 2)
     {
-      v6 = [MEMORY[0x1E6979398] layer];
-      v7 = [MEMORY[0x1E69DC888] blackColor];
-      -[CALayer setBackgroundColor:](v6, "setBackgroundColor:", [v7 CGColor]);
+      layer = [MEMORY[0x1E6979398] layer];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      -[CALayer setBackgroundColor:](layer, "setBackgroundColor:", [blackColor CGColor]);
 
       v37[0] = @"bounds";
-      v8 = [MEMORY[0x1E695DFB0] null];
-      v38[0] = v8;
+      null = [MEMORY[0x1E695DFB0] null];
+      v38[0] = null;
       v37[1] = @"position";
-      v9 = [MEMORY[0x1E695DFB0] null];
-      v38[1] = v9;
+      null2 = [MEMORY[0x1E695DFB0] null];
+      v38[1] = null2;
       v37[2] = @"frame";
-      v10 = [MEMORY[0x1E695DFB0] null];
-      v38[2] = v10;
+      null3 = [MEMORY[0x1E695DFB0] null];
+      v38[2] = null3;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:3];
-      [(CALayer *)v6 setActions:v11];
+      [(CALayer *)layer setActions:v11];
 
-      v12 = [(PUParallaxDebugInfoView *)v5 layer];
-      [v12 setMask:v6];
+      layer2 = [(PUParallaxDebugInfoView *)v5 layer];
+      [layer2 setMask:layer];
 
       maskLayer = v5->_maskLayer;
-      v5->_maskLayer = v6;
+      v5->_maskLayer = layer;
     }
 
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -434,15 +434,15 @@
     rectViewsByIdentifier = v5->_rectViewsByIdentifier;
     v5->_rectViewsByIdentifier = v16;
 
-    objc_storeWeak(&v5->_viewModel, v4);
-    v18 = [(PUParallaxDebugInfoView *)v5 viewModel];
-    v19 = [v18 currentLayerStack];
-    v20 = [v19 layout];
-    [v20 adaptiveTimeFrame];
-    v21 = [(PUParallaxDebugInfoView *)v5 viewModel];
-    v22 = [v21 currentLayerStack];
-    v23 = [v22 layout];
-    [v23 imageSize];
+    objc_storeWeak(&v5->_viewModel, modelCopy);
+    viewModel = [(PUParallaxDebugInfoView *)v5 viewModel];
+    currentLayerStack = [viewModel currentLayerStack];
+    layout = [currentLayerStack layout];
+    [layout adaptiveTimeFrame];
+    viewModel2 = [(PUParallaxDebugInfoView *)v5 viewModel];
+    currentLayerStack2 = [viewModel2 currentLayerStack];
+    layout2 = [currentLayerStack2 layout];
+    [layout2 imageSize];
     PXRectWithOriginAndSize();
     PXRectFlippedVertically();
     v25 = v24;
@@ -458,7 +458,7 @@
     debugTimeRect = v5->_debugTimeRect;
     v5->_debugTimeRect = v32;
 
-    [v4 registerChangeObserver:v5 context:"ViewModelObservationContext"];
+    [modelCopy registerChangeObserver:v5 context:"ViewModelObservationContext"];
     [(PUParallaxDebugInfoView *)v5 _invalidateDebugHUDString];
   }
 

@@ -1,15 +1,15 @@
 @interface MediaControlsRelativeVolumeStepperAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation MediaControlsRelativeVolumeStepperAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MediaControlsRelativeVolumeStepper" hasInstanceMethod:@"increaseButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MediaControlsRelativeVolumeStepper" hasInstanceMethod:@"decreaseButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MediaControlsRelativeVolumeStepper" hasInstanceMethod:@"increaseButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MediaControlsRelativeVolumeStepper" hasInstanceMethod:@"decreaseButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -6,8 +6,8 @@
 
 - (BOOL)canBecomeFocused
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom] != 3;
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = [traitCollection userInterfaceIdiom] != 3;
 
   return v3;
 }

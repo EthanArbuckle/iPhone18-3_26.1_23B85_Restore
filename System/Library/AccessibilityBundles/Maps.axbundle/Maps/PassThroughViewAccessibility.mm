@@ -1,15 +1,15 @@
 @interface PassThroughViewAccessibility
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation PassThroughViewAccessibility
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PassThroughViewAccessibility *)self hitTest:v7 withEvent:x, y];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  v8 = [(PassThroughViewAccessibility *)self hitTest:eventCopy withEvent:x, y];
   if (![v8 isAccessibilityElement])
   {
     goto LABEL_4;
@@ -32,7 +32,7 @@
 LABEL_4:
     v11.receiver = self;
     v11.super_class = PassThroughViewAccessibility;
-    v9 = [(PassThroughViewAccessibility *)&v11 _accessibilityHitTest:v7 withEvent:x, y];
+    v9 = [(PassThroughViewAccessibility *)&v11 _accessibilityHitTest:eventCopy withEvent:x, y];
     goto LABEL_6;
   }
 

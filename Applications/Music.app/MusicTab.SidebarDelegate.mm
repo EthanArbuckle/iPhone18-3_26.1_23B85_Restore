@@ -1,47 +1,47 @@
 @interface MusicTab.SidebarDelegate
 - (_TtCC5Music8MusicTab15SidebarDelegate)init;
-- (id)_tabBarController:(id)a3 sidebar:(id)a4 itemsForBeginningDragSession:(id)a5 tab:(id)a6;
-- (id)_tabBarController:(id)a3 sidebar:(id)a4 sessionPropertiesForDragSession:(id)a5;
-- (id)tabBarController:(id)a3 sidebar:(id)a4 itemForRequest:(id)a5;
-- (unint64_t)_tabBarController:(id)a3 sidebar:(id)a4 sidebarAction:(id)a5 group:(id)a6 operationForAcceptingItemsFromDropSession:(id)a7;
-- (void)_tabBarController:(id)a3 sidebar:(id)a4 sidebarAction:(id)a5 group:(id)a6 acceptItemsFromDropSession:(id)a7;
-- (void)tabBarController:(id)a3 sidebar:(id)a4 updateItem:(id)a5;
-- (void)tabBarController:(id)a3 sidebarVisibilityWillChange:(id)a4 animator:(id)a5;
+- (id)_tabBarController:(id)controller sidebar:(id)sidebar itemsForBeginningDragSession:(id)session tab:(id)tab;
+- (id)_tabBarController:(id)controller sidebar:(id)sidebar sessionPropertiesForDragSession:(id)session;
+- (id)tabBarController:(id)controller sidebar:(id)sidebar itemForRequest:(id)request;
+- (unint64_t)_tabBarController:(id)controller sidebar:(id)sidebar sidebarAction:(id)action group:(id)group operationForAcceptingItemsFromDropSession:(id)session;
+- (void)_tabBarController:(id)controller sidebar:(id)sidebar sidebarAction:(id)action group:(id)group acceptItemsFromDropSession:(id)session;
+- (void)tabBarController:(id)controller sidebar:(id)sidebar updateItem:(id)item;
+- (void)tabBarController:(id)controller sidebarVisibilityWillChange:(id)change animator:(id)animator;
 @end
 
 @implementation MusicTab.SidebarDelegate
 
-- (void)tabBarController:(id)a3 sidebarVisibilityWillChange:(id)a4 animator:(id)a5
+- (void)tabBarController:(id)controller sidebarVisibilityWillChange:(id)change animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  changeCopy = change;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_10016E250(v8, v9, a5);
+  selfCopy = self;
+  sub_10016E250(controllerCopy, changeCopy, animator);
 
   swift_unknownObjectRelease();
 }
 
-- (id)tabBarController:(id)a3 sidebar:(id)a4 itemForRequest:(id)a5
+- (id)tabBarController:(id)controller sidebar:(id)sidebar itemForRequest:(id)request
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_10016ED5C(v8, v9, v10);
+  controllerCopy = controller;
+  sidebarCopy = sidebar;
+  requestCopy = request;
+  selfCopy = self;
+  v12 = sub_10016ED5C(controllerCopy, sidebarCopy, requestCopy);
 
   return v12;
 }
 
-- (void)tabBarController:(id)a3 sidebar:(id)a4 updateItem:(id)a5
+- (void)tabBarController:(id)controller sidebar:(id)sidebar updateItem:(id)item
 {
   v8 = type metadata accessor for UITabSidebarItem.Content();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  controllerCopy = controller;
+  sidebarCopy = sidebar;
+  itemCopy = item;
   UITabSidebarItem.content.getter();
   v15 = sub_10016E910(v11);
   (*(v9 + 8))(v11, v8);
@@ -49,7 +49,7 @@
   {
     if ([v15 respondsToSelector:"tabBarController:sidebar:updateItem:"])
     {
-      [v15 tabBarController:v12 sidebar:v13 updateItem:v14];
+      [v15 tabBarController:controllerCopy sidebar:sidebarCopy updateItem:itemCopy];
     }
 
     swift_unknownObjectRelease();
@@ -63,14 +63,14 @@
   return result;
 }
 
-- (id)_tabBarController:(id)a3 sidebar:(id)a4 itemsForBeginningDragSession:(id)a5 tab:(id)a6
+- (id)_tabBarController:(id)controller sidebar:(id)sidebar itemsForBeginningDragSession:(id)session tab:(id)tab
 {
-  v10 = a3;
-  v11 = a4;
+  controllerCopy = controller;
+  sidebarCopy = sidebar;
   swift_unknownObjectRetain();
-  v12 = a6;
-  v13 = self;
-  sub_1003CF028(v10, a5, v12);
+  tabCopy = tab;
+  selfCopy = self;
+  sub_1003CF028(controllerCopy, session, tabCopy);
 
   swift_unknownObjectRelease();
   sub_100009F78(0, &qword_10118B920);
@@ -79,7 +79,7 @@
   return v14.super.isa;
 }
 
-- (id)_tabBarController:(id)a3 sidebar:(id)a4 sessionPropertiesForDragSession:(id)a5
+- (id)_tabBarController:(id)controller sidebar:(id)sidebar sessionPropertiesForDragSession:(id)session
 {
   v5 = [objc_allocWithZone(_UIDragSessionProperties) init];
   [v5 set_supportsSystemDrag:0];
@@ -87,35 +87,35 @@
   return v5;
 }
 
-- (unint64_t)_tabBarController:(id)a3 sidebar:(id)a4 sidebarAction:(id)a5 group:(id)a6 operationForAcceptingItemsFromDropSession:(id)a7
+- (unint64_t)_tabBarController:(id)controller sidebar:(id)sidebar sidebarAction:(id)action group:(id)group operationForAcceptingItemsFromDropSession:(id)session
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  controllerCopy = controller;
+  sidebarCopy = sidebar;
+  actionCopy = action;
+  groupCopy = group;
   swift_unknownObjectRetain();
-  v16 = self;
-  v17 = sub_1003CF184(v12, v14, v15, a7);
+  selfCopy = self;
+  v17 = sub_1003CF184(controllerCopy, actionCopy, groupCopy, session);
 
   swift_unknownObjectRelease();
   return v17;
 }
 
-- (void)_tabBarController:(id)a3 sidebar:(id)a4 sidebarAction:(id)a5 group:(id)a6 acceptItemsFromDropSession:(id)a7
+- (void)_tabBarController:(id)controller sidebar:(id)sidebar sidebarAction:(id)action group:(id)group acceptItemsFromDropSession:(id)session
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v13 = Strong;
-    v14 = a3;
-    v15 = a5;
-    v16 = a6;
+    controllerCopy = controller;
+    actionCopy = action;
+    groupCopy = group;
     swift_unknownObjectRetain();
-    v17 = self;
-    v18 = [v16 managingTabGroup];
-    if (!v18)
+    selfCopy = self;
+    managingTabGroup = [groupCopy managingTabGroup];
+    if (!managingTabGroup)
     {
-      v18 = v16;
+      managingTabGroup = groupCopy;
     }
 
     if (swift_dynamicCastObjCProtocolConditional())
@@ -127,11 +127,11 @@
         v20 = v19;
         if ([v19 respondsToSelector:{"musicTabBarController:sidebarAction:group:acceptItemsFromDropSession:", &OBJC_PROTOCOL____TtP5Music29MusicTabBarControllerDelegate_, &OBJC_PROTOCOL___UITabBarControllerDelegate}])
         {
-          [v20 musicTabBarController:v14 sidebarAction:v15 group:v16 acceptItemsFromDropSession:a7];
+          [v20 musicTabBarController:controllerCopy sidebarAction:actionCopy group:groupCopy acceptItemsFromDropSession:session];
         }
 
         swift_unknownObjectRelease();
-        v18 = v17;
+        managingTabGroup = selfCopy;
       }
 
       else

@@ -1,26 +1,26 @@
 @interface AMSBTLEPeripheral
-- (AMSBTLEPeripheral)initWithID:(id)a3 name:(id)a4 manager:(id)a5;
+- (AMSBTLEPeripheral)initWithID:(id)d name:(id)name manager:(id)manager;
 - (BOOL)connect;
 - (BOOL)disconnect;
 - (BOOL)updateAvailableStateChanged;
 - (CBPeripheral)peripheral;
 - (NSString)name;
 - (void)dealloc;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 @end
 
 @implementation AMSBTLEPeripheral
 
-- (AMSBTLEPeripheral)initWithID:(id)a3 name:(id)a4 manager:(id)a5
+- (AMSBTLEPeripheral)initWithID:(id)d name:(id)name manager:(id)manager
 {
   v10.receiver = self;
   v10.super_class = AMSBTLEPeripheral;
   v8 = [(AMSBTLEPeripheral *)&v10 init];
   if (v8)
   {
-    v8->uuid = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:a3];
-    v8->centralManager = a5;
-    v8->name = a4;
+    v8->uuid = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:d];
+    v8->centralManager = manager;
+    v8->name = name;
   }
 
   return v8;
@@ -33,11 +33,11 @@
   [(AMSBTLEPeripheral *)&v3 dealloc];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
 
-  self->name = a3;
+  self->name = name;
 }
 
 - (NSString)name
@@ -78,14 +78,14 @@
     return 1;
   }
 
-  v4 = [(AMSBTLEPeripheral *)self peripheral];
-  if (v4)
+  peripheral = [(AMSBTLEPeripheral *)self peripheral];
+  if (peripheral)
   {
-    v5 = v4;
+    v5 = peripheral;
     NSLog(&cfstr_ConnectingToPe.isa, self->uuid);
-    v6 = [MEMORY[0x277CBEB38] dictionary];
-    [v6 setObject:&unk_284A437A0 forKey:*MEMORY[0x277CBDE98]];
-    [(CBCentralManager *)self->centralManager connectPeripheral:v5 options:v6];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:&unk_284A437A0 forKey:*MEMORY[0x277CBDE98]];
+    [(CBCentralManager *)self->centralManager connectPeripheral:v5 options:dictionary];
     return 1;
   }
 
@@ -103,10 +103,10 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x277CBFD00] nullDevice];
-  if (v3)
+  nullDevice = [MEMORY[0x277CBFD00] nullDevice];
+  if (nullDevice)
   {
-    v4 = v3;
+    v4 = nullDevice;
     NSLog(&cfstr_InstructingThe_0.isa, self->uuid);
     return MIDIObjectSetStringProperty(v4, @"disconnect device", [(AMSBTLEPeripheral *)self uuid]) == 0;
   }

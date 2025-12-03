@@ -1,30 +1,30 @@
 @interface WLDetailItem
-+ (id)contexts:(id)a3;
-+ (id)importDescriptionForType:(int64_t)a3 import:(unint64_t)a4 total:(unint64_t)a5;
-+ (id)items:(id)a3;
-+ (id)items:(id)a3 size:(unint64_t *)a4;
-- (WLDetailItem)initWithType:(int64_t)a3 count:(unint64_t)a4 secondaryText:(id)a5 alternativeTextUsed:(BOOL)a6 symbolFilled:(BOOL)a7 symbolTintColor:(id)a8;
++ (id)contexts:(id)contexts;
++ (id)importDescriptionForType:(int64_t)type import:(unint64_t)import total:(unint64_t)total;
++ (id)items:(id)items;
++ (id)items:(id)items size:(unint64_t *)size;
+- (WLDetailItem)initWithType:(int64_t)type count:(unint64_t)count secondaryText:(id)text alternativeTextUsed:(BOOL)used symbolFilled:(BOOL)filled symbolTintColor:(id)color;
 @end
 
 @implementation WLDetailItem
 
-- (WLDetailItem)initWithType:(int64_t)a3 count:(unint64_t)a4 secondaryText:(id)a5 alternativeTextUsed:(BOOL)a6 symbolFilled:(BOOL)a7 symbolTintColor:(id)a8
+- (WLDetailItem)initWithType:(int64_t)type count:(unint64_t)count secondaryText:(id)text alternativeTextUsed:(BOOL)used symbolFilled:(BOOL)filled symbolTintColor:(id)color
 {
-  v9 = a7;
-  v12 = a5;
-  v13 = a8;
+  filledCopy = filled;
+  textCopy = text;
+  colorCopy = color;
   v21.receiver = self;
   v21.super_class = WLDetailItem;
   v14 = [(WLDetailItem *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    [(WLDetailItem *)v14 setSecondaryText:v12];
-    [(WLDetailItem *)v15 setSymbolTintColor:v13];
-    switch(a3)
+    [(WLDetailItem *)v14 setSecondaryText:textCopy];
+    [(WLDetailItem *)v15 setSymbolTintColor:colorCopy];
+    switch(type)
     {
       case 0:
-        if (v9)
+        if (filledCopy)
         {
           v16 = @"message.fill";
         }
@@ -36,7 +36,7 @@
 
         goto LABEL_47;
       case 1:
-        if (v9)
+        if (filledCopy)
         {
           v16 = @"person.2.fill";
         }
@@ -48,7 +48,7 @@
 
         goto LABEL_47;
       case 2:
-        if (v9)
+        if (filledCopy)
         {
           v16 = @"person.2.fill";
         }
@@ -63,7 +63,7 @@
         [(WLDetailItem *)v15 setSymbol:@"calendar"];
         goto LABEL_48;
       case 4:
-        if (v9)
+        if (filledCopy)
         {
           v16 = @"bookmark.fill";
         }
@@ -75,7 +75,7 @@
 
         goto LABEL_47;
       case 5:
-        if (v9)
+        if (filledCopy)
         {
           v16 = @"folder.fill";
         }
@@ -87,7 +87,7 @@
 
         goto LABEL_47;
       case 6:
-        if (v9)
+        if (filledCopy)
         {
           v16 = @"photo.fill";
         }
@@ -99,7 +99,7 @@
 
         goto LABEL_47;
       case 7:
-        if (v9)
+        if (filledCopy)
         {
           v16 = @"photo.fill";
         }
@@ -111,7 +111,7 @@
 
         goto LABEL_47;
       case 8:
-        if (v9)
+        if (filledCopy)
         {
           v16 = @"photo.fill.on.rectangle.fill";
         }
@@ -123,7 +123,7 @@
 
         goto LABEL_47;
       case 9:
-        if (v9)
+        if (filledCopy)
         {
           v16 = @"waveform.circle.fill";
         }
@@ -135,7 +135,7 @@
 
         goto LABEL_47;
       case 10:
-        if (v9)
+        if (filledCopy)
         {
           v17 = @"app.badge.fill";
         }
@@ -147,7 +147,7 @@
 
         goto LABEL_35;
       case 11:
-        if (v9)
+        if (filledCopy)
         {
           v16 = @"envelope.fill";
         }
@@ -159,7 +159,7 @@
 
         goto LABEL_47;
       case 12:
-        if (v9)
+        if (filledCopy)
         {
           v16 = @"app.badge.fill";
         }
@@ -183,7 +183,7 @@ LABEL_48:
         [(WLDetailItem *)v15 setSymbol:@"dot.arrowtriangles.up.right.down.left.circle"];
         goto LABEL_36;
       case 16:
-        if (v9)
+        if (filledCopy)
         {
           v17 = @"simcard.fill";
         }
@@ -209,60 +209,60 @@ LABEL_36:
   return v15;
 }
 
-+ (id)contexts:(id)a3
++ (id)contexts:(id)contexts
 {
   v25[17] = *MEMORY[0x277D85DE8];
   v24[0] = &unk_2882DF448;
-  v3 = a3;
-  v23 = [v3 message];
-  v25[0] = v23;
+  contextsCopy = contexts;
+  message = [contextsCopy message];
+  v25[0] = message;
   v24[1] = &unk_2882DF460;
-  v22 = [v3 contact];
-  v25[1] = v22;
+  contact = [contextsCopy contact];
+  v25[1] = contact;
   v24[2] = &unk_2882DF478;
-  v21 = [v3 callHistory];
-  v25[2] = v21;
+  callHistory = [contextsCopy callHistory];
+  v25[2] = callHistory;
   v24[3] = &unk_2882DF490;
-  v20 = [v3 calendar];
-  v25[3] = v20;
+  calendar = [contextsCopy calendar];
+  v25[3] = calendar;
   v24[4] = &unk_2882DF4A8;
-  v19 = [v3 bookmark];
-  v25[4] = v19;
+  bookmark = [contextsCopy bookmark];
+  v25[4] = bookmark;
   v24[5] = &unk_2882DF4C0;
-  v18 = [v3 file];
-  v25[5] = v18;
+  file = [contextsCopy file];
+  v25[5] = file;
   v24[6] = &unk_2882DF4D8;
-  v17 = [v3 image];
-  v25[6] = v17;
+  image = [contextsCopy image];
+  v25[6] = image;
   v24[7] = &unk_2882DF4F0;
-  v16 = [v3 video];
-  v25[7] = v16;
+  video = [contextsCopy video];
+  v25[7] = video;
   v24[8] = &unk_2882DF508;
-  v4 = [v3 album];
-  v25[8] = v4;
+  album = [contextsCopy album];
+  v25[8] = album;
   v24[9] = &unk_2882DF520;
-  v5 = [v3 voiceMemo];
-  v25[9] = v5;
+  voiceMemo = [contextsCopy voiceMemo];
+  v25[9] = voiceMemo;
   v24[10] = &unk_2882DF538;
-  v6 = [v3 account];
-  v25[10] = v6;
+  account = [contextsCopy account];
+  v25[10] = account;
   v24[11] = &unk_2882DF550;
-  v7 = [v3 application];
-  v25[11] = v7;
+  application = [contextsCopy application];
+  v25[11] = application;
   v24[12] = &unk_2882DF568;
-  v8 = [v3 placeholder];
-  v25[12] = v8;
+  placeholder = [contextsCopy placeholder];
+  v25[12] = placeholder;
   v24[13] = &unk_2882DF598;
-  v9 = [v3 accessibilitySetting];
-  v25[13] = v9;
+  accessibilitySetting = [contextsCopy accessibilitySetting];
+  v25[13] = accessibilitySetting;
   v24[14] = &unk_2882DF5B0;
-  v10 = [v3 displaySetting];
-  v25[14] = v10;
+  displaySetting = [contextsCopy displaySetting];
+  v25[14] = displaySetting;
   v24[15] = &unk_2882DF5C8;
-  v11 = [v3 container];
-  v25[15] = v11;
+  container = [contextsCopy container];
+  v25[15] = container;
   v24[16] = &unk_2882DF580;
-  v12 = [v3 sim];
+  v12 = [contextsCopy sim];
 
   v25[16] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:17];
@@ -272,14 +272,14 @@ LABEL_36:
   return v13;
 }
 
-+ (id)items:(id)a3 size:(unint64_t *)a4
++ (id)items:(id)items size:(unint64_t *)size
 {
-  v25 = a4;
+  sizeCopy = size;
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = +[WLDetailItem order];
-  v27 = v4;
-  v32 = [WLDetailItem contexts:v4];
+  v27 = itemsCopy;
+  v32 = [WLDetailItem contexts:itemsCopy];
   v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -310,14 +310,14 @@ LABEL_36:
       }
 
       v9 = *(*(&v35 + 1) + 8 * i);
-      v10 = [v9 integerValue];
+      integerValue = [v9 integerValue];
       v11 = [v32 objectForKey:v9];
       if ([v11 importCount] || objc_msgSend(v11, "importErrorCount"))
       {
         v12 = [*(v7 + 2992) numberWithUnsignedLongLong:{objc_msgSend(v11, "importCount")}];
         v13 = [v6 stringFromNumber:v12];
 
-        if (v10 == 12 && ![v11 importCount] && objc_msgSend(v11, "importErrorCount"))
+        if (integerValue == 12 && ![v11 importCount] && objc_msgSend(v11, "importErrorCount"))
         {
 
           v13 = 0;
@@ -330,12 +330,12 @@ LABEL_36:
 
         else
         {
-          v14 = (v10 - 14) >= 3;
+          v14 = (integerValue - 14) >= 3;
         }
 
         if (v14)
         {
-          v15 = -[WLDetailItem initWithType:count:secondaryText:alternativeTextUsed:symbolFilled:symbolTintColor:]([WLDetailItem alloc], "initWithType:count:secondaryText:alternativeTextUsed:symbolFilled:symbolTintColor:", v10, [v11 importCount], v13, 0, 1, 0);
+          v15 = -[WLDetailItem initWithType:count:secondaryText:alternativeTextUsed:symbolFilled:symbolTintColor:]([WLDetailItem alloc], "initWithType:count:secondaryText:alternativeTextUsed:symbolFilled:symbolTintColor:", integerValue, [v11 importCount], v13, 0, 1, 0);
           [v29 addObject:v15];
         }
 
@@ -351,11 +351,11 @@ LABEL_36:
           v18 = [v6 stringFromNumber:v17];
 
           v19 = [WLDetailItem alloc];
-          v20 = [v11 importErrorCount];
-          v21 = [MEMORY[0x277D75348] tertiaryLabelColor];
-          v22 = [(WLDetailItem *)v19 initWithType:v10 count:v20 secondaryText:v18 alternativeTextUsed:1 symbolFilled:0 symbolTintColor:v21];
+          importErrorCount = [v11 importErrorCount];
+          tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+          v22 = [(WLDetailItem *)v19 initWithType:integerValue count:importErrorCount secondaryText:v18 alternativeTextUsed:1 symbolFilled:0 symbolTintColor:tertiaryLabelColor];
 
-          if (v10 == 10 || v10 == 12)
+          if (integerValue == 10 || integerValue == 12)
           {
             v7 = v16;
 LABEL_25:
@@ -392,9 +392,9 @@ LABEL_30:
     [v26 addObject:v28];
   }
 
-  if (v25)
+  if (sizeCopy)
   {
-    *v25 = v33;
+    *sizeCopy = v33;
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -402,13 +402,13 @@ LABEL_30:
   return v26;
 }
 
-+ (id)items:(id)a3
++ (id)items:(id)items
 {
   v56 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v4 = +[WLDetailItem order];
-  v39 = v3;
-  v5 = [WLDetailItem contexts:v3];
+  v39 = itemsCopy;
+  v5 = [WLDetailItem contexts:itemsCopy];
   v6 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_2882DF550, &unk_2882DF5C8, 0}];
   v49 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_2882DF598, &unk_2882DF5B0, &unk_2882DF580, 0}];
   v43 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_2882DF4D8, &unk_2882DF4F0, &unk_2882DF520, 0}];
@@ -440,13 +440,13 @@ LABEL_30:
         }
 
         v10 = *(*(&v51 + 1) + 8 * v9);
-        v11 = [v10 integerValue];
+        integerValue = [v10 integerValue];
         v12 = [v5 objectForKeyedSubscript:v10];
         if ([v12 importCount] || objc_msgSend(v12, "importErrorCount"))
         {
           if ([v49 containsObject:v10])
           {
-            if (v11 == 16 && [v12 importErrorCount])
+            if (integerValue == 16 && [v12 importErrorCount])
             {
               v13 = WLLocalizedString();
               v14 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"DETAIL_ITEM_WARNING_DESCRIPTION_FOR_SIM"];
@@ -471,7 +471,7 @@ LABEL_17:
               v13 = [v20 localizedStringWithFormat:v21, objc_msgSend(v12, "importErrorCount") + objc_msgSend(v12, "importCount")];
 
               v22 = objc_alloc_init(MEMORY[0x277CCAB68]);
-              v23 = +[WLDetailItem importDescriptionForType:import:total:](WLDetailItem, "importDescriptionForType:import:total:", v11, [v12 importCount], objc_msgSend(v12, "importErrorCount") + objc_msgSend(v12, "importCount"));
+              v23 = +[WLDetailItem importDescriptionForType:import:total:](WLDetailItem, "importDescriptionForType:import:total:", integerValue, [v12 importCount], objc_msgSend(v12, "importErrorCount") + objc_msgSend(v12, "importCount"));
               v44 = v23;
               if ([v23 length])
               {
@@ -500,7 +500,7 @@ LABEL_17:
               else
               {
                 v30 = MEMORY[0x277CCACA8];
-                if (v11 == 8)
+                if (integerValue == 8)
                 {
                   v31 = @"DETAIL_ITEM_WARNING_DESCRITPION_IMPORTED_PHOTO_ALBUM_%lld";
                 }
@@ -522,7 +522,7 @@ LABEL_17:
               v33 = WLLocalizedString();
               [v22 appendString:v33];
 
-              v16 = [[WLDetailItem alloc] initWithType:v11 secondaryText:v13 detailText:v22 showDetailDisclosureButton:1 failed:0];
+              v16 = [[WLDetailItem alloc] initWithType:integerValue secondaryText:v13 detailText:v22 showDetailDisclosureButton:1 failed:0];
               [v45 addObject:v16];
 
               v8 = v46;
@@ -531,13 +531,13 @@ LABEL_17:
 
             v17 = MEMORY[0x277CCACA8];
             v18 = WLLocalizedString();
-            v37 = [v12 importCount];
+            importCount = [v12 importCount];
             v19 = v17;
             v8 = v46;
-            v13 = [v19 localizedStringWithFormat:v18, v37];
+            v13 = [v19 localizedStringWithFormat:v18, importCount];
           }
 
-          v16 = [[WLDetailItem alloc] initWithType:v11 secondaryText:v13 detailText:0 showDetailDisclosureButton:0 failed:0];
+          v16 = [[WLDetailItem alloc] initWithType:integerValue secondaryText:v13 detailText:0 showDetailDisclosureButton:0 failed:0];
           [v48 addObject:v16];
           goto LABEL_17;
         }
@@ -561,22 +561,22 @@ LABEL_18:
   return v45;
 }
 
-+ (id)importDescriptionForType:(int64_t)a3 import:(unint64_t)a4 total:(unint64_t)a5
++ (id)importDescriptionForType:(int64_t)type import:(unint64_t)import total:(unint64_t)total
 {
-  if (a3 <= 0xF && ((0xCFFFu >> a3) & 1) != 0)
+  if (type <= 0xF && ((0xCFFFu >> type) & 1) != 0)
   {
-    v7 = off_279EB8D18[a3];
+    v7 = off_279EB8D18[type];
     v8 = MEMORY[0x277CCACA8];
     v9 = WLLocalizedString();
-    v10 = [v8 localizedStringWithFormat:v9, a4, a5];
+    total = [v8 localizedStringWithFormat:v9, import, total];
   }
 
   else
   {
-    v10 = 0;
+    total = 0;
   }
 
-  return v10;
+  return total;
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface TSUFileIOChannel
-- (TSUFileIOChannel)initWithType:(unint64_t)a3 URL:(id)a4 oflag:(int)a5 mode:(unsigned __int16)a6;
-- (TSUFileIOChannel)initWithType:(unint64_t)a3 channel:(id)a4;
+- (TSUFileIOChannel)initWithType:(unint64_t)type URL:(id)l oflag:(int)oflag mode:(unsigned __int16)mode;
+- (TSUFileIOChannel)initWithType:(unint64_t)type channel:(id)channel;
 - (id)createRandomAccessChannel;
-- (void)addBarrier:(id)a3;
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 queue:(id)a5 handler:(id)a6;
-- (void)setLowWater:(unint64_t)a3;
-- (void)writeData:(id)a3 offset:(int64_t)a4 queue:(id)a5 handler:(id)a6;
-- (void)writeData:(id)a3 queue:(id)a4 handler:(id)a5;
+- (void)addBarrier:(id)barrier;
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length queue:(id)queue handler:(id)handler;
+- (void)setLowWater:(unint64_t)water;
+- (void)writeData:(id)data offset:(int64_t)offset queue:(id)queue handler:(id)handler;
+- (void)writeData:(id)data queue:(id)queue handler:(id)handler;
 @end
 
 @implementation TSUFileIOChannel
 
-- (TSUFileIOChannel)initWithType:(unint64_t)a3 URL:(id)a4 oflag:(int)a5 mode:(unsigned __int16)a6
+- (TSUFileIOChannel)initWithType:(unint64_t)type URL:(id)l oflag:(int)oflag mode:(unsigned __int16)mode
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = v10;
-  if (v10 && [v10 isFileURL] && (v28.receiver = self, v28.super_class = TSUFileIOChannel, (self = -[TSUFileIOChannel init](&v28, sel_init)) != 0))
+  modeCopy = mode;
+  lCopy = l;
+  v11 = lCopy;
+  if (lCopy && [lCopy isFileURL] && (v28.receiver = self, v28.super_class = TSUFileIOChannel, (self = -[TSUFileIOChannel init](&v28, sel_init)) != 0))
   {
-    v12 = [v11 path];
-    v13 = v12;
-    if (v12)
+    path = [v11 path];
+    v13 = path;
+    if (path)
     {
-      if ((a5 & 0x400) != 0)
+      if ((oflag & 0x400) != 0)
       {
-        unlink([v12 fileSystemRepresentation]);
+        unlink([path fileSystemRepresentation]);
       }
 
-      v14 = TSUOpen(v13, a5, v6);
+      v14 = TSUOpen(v13, oflag, modeCopy);
       if (v14 < 0)
       {
         v21 = __error();
@@ -44,7 +44,7 @@
         cleanup_handler[2] = __48__TSUFileIOChannel_initWithType_URL_oflag_mode___block_invoke;
         cleanup_handler[3] = &__block_descriptor_36_e8_v12__0i8l;
         v27 = v15;
-        v17 = dispatch_io_create(a3, v15, v16, cleanup_handler);
+        v17 = dispatch_io_create(type, v15, v16, cleanup_handler);
         channel = self->_channel;
         self->_channel = v17;
       }
@@ -58,15 +58,15 @@
 
     self = self;
 
-    v19 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
 void __48__TSUFileIOChannel_initWithType_URL_oflag_mode___block_invoke(uint64_t a1, int a2)
@@ -79,16 +79,16 @@ void __48__TSUFileIOChannel_initWithType_URL_oflag_mode___block_invoke(uint64_t 
   }
 }
 
-- (TSUFileIOChannel)initWithType:(unint64_t)a3 channel:(id)a4
+- (TSUFileIOChannel)initWithType:(unint64_t)type channel:(id)channel
 {
-  v6 = a4;
+  channelCopy = channel;
   v12.receiver = self;
   v12.super_class = TSUFileIOChannel;
   v7 = [(TSUFileIOChannel *)&v12 init];
   if (v7)
   {
     v8 = dispatch_get_global_queue(0, 0);
-    v9 = dispatch_io_create_with_io(a3, v6, v8, &__block_literal_global_8);
+    v9 = dispatch_io_create_with_io(type, channelCopy, v8, &__block_literal_global_8);
     channel = v7->_channel;
     v7->_channel = v9;
 
@@ -126,10 +126,10 @@ void __41__TSUFileIOChannel_initWithType_channel___block_invoke(int a1, int __er
   return v6;
 }
 
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 queue:(id)a5 handler:(id)a6
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length queue:(id)queue handler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (self->_isClosed)
   {
     v12 = +[TSUAssertionHandler currentHandler];
@@ -143,9 +143,9 @@ void __41__TSUFileIOChannel_initWithType_channel___block_invoke(int a1, int __er
   io_handler[1] = 3221225472;
   io_handler[2] = __56__TSUFileIOChannel_readFromOffset_length_queue_handler___block_invoke;
   io_handler[3] = &unk_279D66960;
-  v18 = v11;
-  v16 = v11;
-  dispatch_io_read(channel, a3, a4, v10, io_handler);
+  v18 = handlerCopy;
+  v16 = handlerCopy;
+  dispatch_io_read(channel, offset, length, queueCopy, io_handler);
 }
 
 void __56__TSUFileIOChannel_readFromOffset_length_queue_handler___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4)
@@ -164,11 +164,11 @@ void __56__TSUFileIOChannel_readFromOffset_length_queue_handler___block_invoke(u
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)writeData:(id)a3 queue:(id)a4 handler:(id)a5
+- (void)writeData:(id)data queue:(id)queue handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (self->_isClosed)
   {
     v11 = +[TSUAssertionHandler currentHandler];
@@ -182,9 +182,9 @@ void __56__TSUFileIOChannel_readFromOffset_length_queue_handler___block_invoke(u
   io_handler[1] = 3221225472;
   io_handler[2] = __44__TSUFileIOChannel_writeData_queue_handler___block_invoke;
   io_handler[3] = &unk_279D66960;
-  v17 = v10;
-  v15 = v10;
-  dispatch_io_write(channel, 0, v8, v9, io_handler);
+  v17 = handlerCopy;
+  v15 = handlerCopy;
+  dispatch_io_write(channel, 0, dataCopy, queueCopy, io_handler);
 }
 
 void __44__TSUFileIOChannel_writeData_queue_handler___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4)
@@ -203,11 +203,11 @@ void __44__TSUFileIOChannel_writeData_queue_handler___block_invoke(uint64_t a1, 
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)writeData:(id)a3 offset:(int64_t)a4 queue:(id)a5 handler:(id)a6
+- (void)writeData:(id)data offset:(int64_t)offset queue:(id)queue handler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dataCopy = data;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (self->_isClosed)
   {
     v13 = +[TSUAssertionHandler currentHandler];
@@ -221,9 +221,9 @@ void __44__TSUFileIOChannel_writeData_queue_handler___block_invoke(uint64_t a1, 
   io_handler[1] = 3221225472;
   io_handler[2] = __51__TSUFileIOChannel_writeData_offset_queue_handler___block_invoke;
   io_handler[3] = &unk_279D66960;
-  v19 = v12;
-  v17 = v12;
-  dispatch_io_write(channel, a4, v10, v11, io_handler);
+  v19 = handlerCopy;
+  v17 = handlerCopy;
+  dispatch_io_write(channel, offset, dataCopy, queueCopy, io_handler);
 }
 
 void __51__TSUFileIOChannel_writeData_offset_queue_handler___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4)
@@ -242,7 +242,7 @@ void __51__TSUFileIOChannel_writeData_offset_queue_handler___block_invoke(uint64
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setLowWater:(unint64_t)a3
+- (void)setLowWater:(unint64_t)water
 {
   if (self->_isClosed)
   {
@@ -254,12 +254,12 @@ void __51__TSUFileIOChannel_writeData_offset_queue_handler___block_invoke(uint64
 
   channel = self->_channel;
 
-  dispatch_io_set_low_water(channel, a3);
+  dispatch_io_set_low_water(channel, water);
 }
 
-- (void)addBarrier:(id)a3
+- (void)addBarrier:(id)barrier
 {
-  barrier = a3;
+  barrier = barrier;
   if (self->_isClosed)
   {
     v4 = +[TSUAssertionHandler currentHandler];

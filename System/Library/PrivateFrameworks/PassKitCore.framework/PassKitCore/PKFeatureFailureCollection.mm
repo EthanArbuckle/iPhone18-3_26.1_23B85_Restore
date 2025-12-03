@@ -1,19 +1,19 @@
 @interface PKFeatureFailureCollection
-- (BOOL)isEqual:(id)a3;
-- (PKFeatureFailureCollection)initWithArray:(id)a3;
-- (PKFeatureFailureCollection)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKFeatureFailureCollection)initWithArray:(id)array;
+- (PKFeatureFailureCollection)initWithCoder:(id)coder;
 - (id)description;
-- (id)errorForFeature:(unint64_t)a3;
+- (id)errorForFeature:(unint64_t)feature;
 - (unint64_t)hash;
 @end
 
 @implementation PKFeatureFailureCollection
 
-- (PKFeatureFailureCollection)initWithArray:(id)a3
+- (PKFeatureFailureCollection)initWithArray:(id)array
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
     v24.receiver = self;
     v24.super_class = PKFeatureFailureCollection;
@@ -28,7 +28,7 @@
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v8 = v4;
+      v8 = arrayCopy;
       v9 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
       if (v9)
       {
@@ -48,9 +48,9 @@
             if (objc_opt_isKindOfClass())
             {
               v14 = [[PKFeatureFailure alloc] initWithDictionary:v13];
-              v15 = [(PKFeatureFailure *)v14 featureIdentifier];
+              featureIdentifier = [(PKFeatureFailure *)v14 featureIdentifier];
               v16 = v5->_failuresByFeature;
-              v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v15];
+              v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:featureIdentifier];
               [(NSMutableDictionary *)v16 setObject:v14 forKey:v17];
             }
           }
@@ -63,31 +63,31 @@
     }
 
     self = v5;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (id)errorForFeature:(unint64_t)a3
+- (id)errorForFeature:(unint64_t)feature
 {
   failuresByFeature = self->_failuresByFeature;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:feature];
   v5 = [(NSMutableDictionary *)failuresByFeature objectForKey:v4];
 
-  v6 = [v5 errorRepresentation];
+  errorRepresentation = [v5 errorRepresentation];
 
-  return v6;
+  return errorRepresentation;
 }
 
-- (PKFeatureFailureCollection)initWithCoder:(id)a3
+- (PKFeatureFailureCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKFeatureFailureCollection;
   v5 = [(PKFeatureFailureCollection *)&v13 init];
@@ -97,7 +97,7 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"failuresByFeature"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"failuresByFeature"];
     failuresByFeature = v5->_failuresByFeature;
     v5->_failuresByFeature = v10;
   }
@@ -107,23 +107,23 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_failuresByFeature];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_failuresByFeature];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = 0;
-  if (v4 && (isKindOfClass & 1) != 0)
+  if (equalCopy && (isKindOfClass & 1) != 0)
   {
     failuresByFeature = self->_failuresByFeature;
-    v8 = v4[1];
+    v8 = equalCopy[1];
     if (failuresByFeature && v8)
     {
       v6 = [(NSMutableDictionary *)failuresByFeature isEqual:?];

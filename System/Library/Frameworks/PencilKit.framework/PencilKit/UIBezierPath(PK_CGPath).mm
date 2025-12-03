@@ -6,9 +6,9 @@
 
 - (CGPathRef)PK_CGPath
 {
-  v1 = [a1 CGPath];
+  cGPath = [self CGPath];
 
-  return CGPathRetain(v1);
+  return CGPathRetain(cGPath);
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface SKUIAnimatorDOMFeature
 + (id)featureName;
-+ (id)makeFeatureJSObjectForFeature:(id)a3;
++ (id)makeFeatureJSObjectForFeature:(id)feature;
 + (void)featureName;
 - (IKAppContext)appContext;
-- (SKUIAnimatorDOMFeature)initWithDOMNode:(id)a3 featureName:(id)a4;
+- (SKUIAnimatorDOMFeature)initWithDOMNode:(id)node featureName:(id)name;
 - (SKUIAnimatorDOMFeatureDelegate)delegate;
 @end
 
 @implementation SKUIAnimatorDOMFeature
 
-- (SKUIAnimatorDOMFeature)initWithDOMNode:(id)a3 featureName:(id)a4
+- (SKUIAnimatorDOMFeature)initWithDOMNode:(id)node featureName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  nameCopy = name;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -30,10 +30,10 @@
   v16 = [(SKUIAnimatorDOMFeature *)&v21 init];
   if (v16)
   {
-    v17 = [v6 appContext];
-    objc_storeWeak(&v16->_appContext, v17);
+    appContext = [nodeCopy appContext];
+    objc_storeWeak(&v16->_appContext, appContext);
 
-    v18 = [v7 copy];
+    v18 = [nameCopy copy];
     featureName = v16->_featureName;
     v16->_featureName = v18;
   }
@@ -41,9 +41,9 @@
   return v16;
 }
 
-+ (id)makeFeatureJSObjectForFeature:(id)a3
++ (id)makeFeatureJSObjectForFeature:(id)feature
 {
-  v3 = a3;
+  featureCopy = feature;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -57,8 +57,8 @@
   }
 
   v12 = [SKJSUIAnimatorDOMFeature alloc];
-  v13 = [v3 appContext];
-  v14 = [(SKJSUIAnimatorDOMFeature *)v12 initWithAppContext:v13 DOMFeature:v3];
+  appContext = [featureCopy appContext];
+  v14 = [(SKJSUIAnimatorDOMFeature *)v12 initWithAppContext:appContext DOMFeature:featureCopy];
 
   return v14;
 }

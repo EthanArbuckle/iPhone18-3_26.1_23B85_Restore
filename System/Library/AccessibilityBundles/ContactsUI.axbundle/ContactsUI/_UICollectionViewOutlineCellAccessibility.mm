@@ -1,18 +1,18 @@
 @interface _UICollectionViewOutlineCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation _UICollectionViewOutlineCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNAccountsAndGroupsViewController"];
-  [v3 validateClass:@"CNAccountsAndGroupsViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNAccountsAndGroupsViewController" hasInstanceMethod:@"diffableDataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNAccountsAndGroupsItem"];
-  [v3 validateClass:@"CNAccountsAndGroupsItem" hasProperty:@"selected" customGetter:@"isSelected" customSetter:0 withType:"B"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNAccountsAndGroupsViewController"];
+  [validationsCopy validateClass:@"CNAccountsAndGroupsViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNAccountsAndGroupsViewController" hasInstanceMethod:@"diffableDataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNAccountsAndGroupsItem"];
+  [validationsCopy validateClass:@"CNAccountsAndGroupsItem" hasProperty:@"selected" customGetter:@"isSelected" customSetter:0 withType:"B"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -40,7 +40,7 @@
     v21 = &v22;
     v8 = v7;
     v19 = v8;
-    v20 = self;
+    selfCopy = self;
     AXPerformSafeBlock();
     v9 = v23[5];
 
@@ -48,16 +48,16 @@
     v10 = [v9 safeBoolForKey:@"selected"];
     v14.receiver = self;
     v14.super_class = _UICollectionViewOutlineCellAccessibility;
-    v11 = [(_UICollectionViewOutlineCellAccessibility *)&v14 accessibilityTraits];
+    accessibilityTraits = [(_UICollectionViewOutlineCellAccessibility *)&v14 accessibilityTraits];
 
     if (v10)
     {
-      v12 = *MEMORY[0x29EDC7FC0] | v11;
+      accessibilityTraits2 = *MEMORY[0x29EDC7FC0] | accessibilityTraits;
     }
 
     else
     {
-      v12 = v11 & ~*MEMORY[0x29EDC7FC0];
+      accessibilityTraits2 = accessibilityTraits & ~*MEMORY[0x29EDC7FC0];
     }
   }
 
@@ -65,10 +65,10 @@
   {
     v28.receiver = self;
     v28.super_class = _UICollectionViewOutlineCellAccessibility;
-    v12 = [(_UICollectionViewOutlineCellAccessibility *)&v28 accessibilityTraits];
+    accessibilityTraits2 = [(_UICollectionViewOutlineCellAccessibility *)&v28 accessibilityTraits];
   }
 
-  return v12;
+  return accessibilityTraits2;
 }
 
 @end

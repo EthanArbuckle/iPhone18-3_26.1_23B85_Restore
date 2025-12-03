@@ -1,16 +1,16 @@
 @interface FPStitchingManager
-+ (id)parentIdNameKeyForItem:(id)a3;
++ (id)parentIdNameKeyForItem:(id)item;
 + (id)sharedInstance;
-- (BOOL)cleanStitchedForItemID:(id)a3 ignoreSession:(id)a4;
+- (BOOL)cleanStitchedForItemID:(id)d ignoreSession:(id)session;
 - (FPStitchingManager)init;
 - (NSArray)allPlaceholderReplacementsIDs;
 - (NSDictionary)allPlaceholderItemsByParentIdentifierAndName;
 - (NSDictionary)stitchedFieldsAndItemsByItemIDs;
 - (NSMutableArray)allDeletedIDs;
-- (id)stitchedItemsForParentID:(id)a3;
-- (void)addBouncedItem:(id)a3;
-- (void)registerStitchingSession:(id)a3;
-- (void)removeBouncedItemsWithIDs:(id)a3;
+- (id)stitchedItemsForParentID:(id)d;
+- (void)addBouncedItem:(id)item;
+- (void)registerStitchingSession:(id)session;
+- (void)removeBouncedItemsWithIDs:(id)ds;
 @end
 
 @implementation FPStitchingManager
@@ -41,13 +41,13 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
   v2 = [(FPStitchingManager *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     stitchingSessions = v2->_stitchingSessions;
-    v2->_stitchingSessions = v3;
+    v2->_stitchingSessions = weakObjectsHashTable;
 
-    v5 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     bouncedItems = v2->_bouncedItems;
-    v2->_bouncedItems = v5;
+    v2->_bouncedItems = strongToStrongObjectsMapTable;
   }
 
   return v2;
@@ -57,13 +57,13 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
 {
   v33 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v4->_stitchingSessions;
+  obj = selfCopy->_stitchingSessions;
   v21 = [(NSHashTable *)obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v21)
   {
@@ -82,8 +82,8 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v6 = [v5 placeholderItems];
-        v7 = [v6 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        placeholderItems = [v5 placeholderItems];
+        v7 = [placeholderItems countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v7)
         {
           v8 = *v24;
@@ -93,13 +93,13 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
             {
               if (*v24 != v8)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(placeholderItems);
               }
 
               v10 = *(*(&v23 + 1) + 8 * j);
-              bouncedItems = v4->_bouncedItems;
-              v12 = [v10 itemID];
-              v13 = [(NSMapTable *)bouncedItems objectForKey:v12];
+              bouncedItems = selfCopy->_bouncedItems;
+              itemID = [v10 itemID];
+              v13 = [(NSMapTable *)bouncedItems objectForKey:itemID];
 
               if (v13)
               {
@@ -116,7 +116,7 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
               [v3 setObject:v15 forKey:v16];
             }
 
-            v7 = [v6 countByEnumeratingWithState:&v23 objects:v31 count:16];
+            v7 = [placeholderItems countByEnumeratingWithState:&v23 objects:v31 count:16];
           }
 
           while (v7);
@@ -129,7 +129,7 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
     while (v21);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v17 = *MEMORY[0x1E69E9840];
 
   return v3;
@@ -139,13 +139,13 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4->_stitchingSessions;
+  v5 = selfCopy->_stitchingSessions;
   v6 = [(NSHashTable *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -159,8 +159,8 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) deletedIDs];
-        [v3 addObjectsFromArray:v9];
+        deletedIDs = [*(*(&v12 + 1) + 8 * i) deletedIDs];
+        [v3 addObjectsFromArray:deletedIDs];
       }
 
       v6 = [(NSHashTable *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -169,7 +169,7 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
     while (v6);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v10 = *MEMORY[0x1E69E9840];
 
   return v3;
@@ -179,13 +179,13 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4->_stitchingSessions;
+  v5 = selfCopy->_stitchingSessions;
   v6 = [(NSHashTable *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -199,8 +199,8 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) placeholderReplacementsIDs];
-        [v3 addObjectsFromArray:v9];
+        placeholderReplacementsIDs = [*(*(&v12 + 1) + 8 * i) placeholderReplacementsIDs];
+        [v3 addObjectsFromArray:placeholderReplacementsIDs];
       }
 
       v6 = [(NSHashTable *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -209,7 +209,7 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
     while (v6);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v10 = *MEMORY[0x1E69E9840];
 
   return v3;
@@ -219,14 +219,14 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
 {
   v34 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v19 = v4;
-  obj = v4->_stitchingSessions;
+  v19 = selfCopy;
+  obj = selfCopy->_stitchingSessions;
   v22 = [(NSHashTable *)obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v22)
   {
@@ -243,13 +243,13 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
         v5 = *(*(&v28 + 1) + 8 * i);
         if ([v5 isActive])
         {
-          v6 = [v5 stitchedFieldsAndItemsByItemIDs];
+          stitchedFieldsAndItemsByItemIDs = [v5 stitchedFieldsAndItemsByItemIDs];
           v26 = 0u;
           v27 = 0u;
           v24 = 0u;
           v25 = 0u;
-          v7 = [v6 allKeys];
-          v8 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+          allKeys = [stitchedFieldsAndItemsByItemIDs allKeys];
+          v8 = [allKeys countByEnumeratingWithState:&v24 objects:v32 count:16];
           if (v8)
           {
             v9 = *v25;
@@ -259,7 +259,7 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
               {
                 if (*v25 != v9)
                 {
-                  objc_enumerationMutation(v7);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v11 = *(*(&v24 + 1) + 8 * j);
@@ -277,13 +277,13 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
 
                 v15 = v14;
 
-                v16 = [v6 objectForKeyedSubscript:v11];
+                v16 = [stitchedFieldsAndItemsByItemIDs objectForKeyedSubscript:v11];
                 [v15 addObject:v16];
 
                 [v3 setObject:v15 forKeyedSubscript:v11];
               }
 
-              v8 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+              v8 = [allKeys countByEnumeratingWithState:&v24 objects:v32 count:16];
             }
 
             while (v8);
@@ -303,44 +303,44 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)registerStitchingSession:(id)a3
+- (void)registerStitchingSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = fp_current_or_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [FPStitchingManager registerStitchingSession:];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  [(NSHashTable *)v6->_stitchingSessions addObject:v4];
-  objc_sync_exit(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_stitchingSessions addObject:sessionCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addBouncedItem:(id)a3
+- (void)addBouncedItem:(id)item
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  bouncedItems = v4->_bouncedItems;
-  v6 = [v7 itemID];
-  [(NSMapTable *)bouncedItems setObject:v7 forKey:v6];
+  itemCopy = item;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  bouncedItems = selfCopy->_bouncedItems;
+  itemID = [itemCopy itemID];
+  [(NSMapTable *)bouncedItems setObject:itemCopy forKey:itemID];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeBouncedItemsWithIDs:(id)a3
+- (void)removeBouncedItemsWithIDs:(id)ds
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  dsCopy = ds;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -355,7 +355,7 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
           objc_enumerationMutation(v6);
         }
 
-        [(NSMapTable *)v5->_bouncedItems removeObjectForKey:*(*(&v11 + 1) + 8 * v9++), v11];
+        [(NSMapTable *)selfCopy->_bouncedItems removeObjectForKey:*(*(&v11 + 1) + 8 * v9++), v11];
       }
 
       while (v7 != v9);
@@ -365,35 +365,35 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
     while (v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)parentIdNameKeyForItem:(id)a3
++ (id)parentIdNameKeyForItem:(id)item
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [v4 parentItemIdentifier];
-  v6 = [v4 filename];
+  itemCopy = item;
+  parentItemIdentifier = [itemCopy parentItemIdentifier];
+  filename = [itemCopy filename];
 
-  v7 = [v6 uppercaseString];
-  v8 = [v3 stringWithFormat:@"%@/%@", v5, v7];
+  uppercaseString = [filename uppercaseString];
+  v8 = [v3 stringWithFormat:@"%@/%@", parentItemIdentifier, uppercaseString];
 
   return v8;
 }
 
-- (BOOL)cleanStitchedForItemID:(id)a3 ignoreSession:(id)a4
+- (BOOL)cleanStitchedForItemID:(id)d ignoreSession:(id)session
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  dCopy = d;
+  sessionCopy = session;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v8->_stitchingSessions;
+  v9 = selfCopy->_stitchingSessions;
   v10 = 0;
   v11 = [(NSHashTable *)v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
@@ -410,9 +410,9 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
         }
 
         v14 = *(*(&v17 + 1) + 8 * v13);
-        if (v14 != v7)
+        if (v14 != sessionCopy)
         {
-          v10 |= [v14 cleanStitchedItemForItemID:{v6, v17}];
+          v10 |= [v14 cleanStitchedItemForItemID:{dCopy, v17}];
         }
 
         ++v13;
@@ -425,25 +425,25 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
     while (v11);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v15 = *MEMORY[0x1E69E9840];
   return v10 & 1;
 }
 
-- (id)stitchedItemsForParentID:(id)a3
+- (id)stitchedItemsForParentID:(id)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v5 = objc_opt_new();
-    v6 = self;
-    objc_sync_enter(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v6->_stitchingSessions;
+    v7 = selfCopy->_stitchingSessions;
     v8 = [(NSHashTable *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -460,8 +460,8 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
           v11 = *(*(&v16 + 1) + 8 * i);
           if ([v11 isActive])
           {
-            v12 = [v11 stitchedItemsByParentID];
-            v13 = [v12 objectForKeyedSubscript:v4];
+            stitchedItemsByParentID = [v11 stitchedItemsByParentID];
+            v13 = [stitchedItemsByParentID objectForKeyedSubscript:dCopy];
 
             if (v13)
             {
@@ -476,7 +476,7 @@ uint64_t __36__FPStitchingManager_sharedInstance__block_invoke()
       while (v8);
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   else

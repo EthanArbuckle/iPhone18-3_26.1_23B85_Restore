@@ -1,30 +1,30 @@
 @interface SBTipsHomeScreenUsageObserver
 - (SBHIconManager)iconManager;
-- (SBTipsHomeScreenUsageObserver)initWithIconManager:(id)a3;
-- (void)homeScreenUsageAggregatorDidNoteEditingModeEntered:(id)a3;
+- (SBTipsHomeScreenUsageObserver)initWithIconManager:(id)manager;
+- (void)homeScreenUsageAggregatorDidNoteEditingModeEntered:(id)entered;
 @end
 
 @implementation SBTipsHomeScreenUsageObserver
 
-- (SBTipsHomeScreenUsageObserver)initWithIconManager:(id)a3
+- (SBTipsHomeScreenUsageObserver)initWithIconManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = SBTipsHomeScreenUsageObserver;
   v5 = [(SBTipsHomeScreenUsageObserver *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_iconManager, v4);
-    [v4 setUsageMonitoringEnabled:1];
-    v7 = [v4 usageMonitor];
-    [v7 addObserver:v6];
+    objc_storeWeak(&v5->_iconManager, managerCopy);
+    [managerCopy setUsageMonitoringEnabled:1];
+    usageMonitor = [managerCopy usageMonitor];
+    [usageMonitor addObserver:v6];
   }
 
   return v6;
 }
 
-- (void)homeScreenUsageAggregatorDidNoteEditingModeEntered:(id)a3
+- (void)homeScreenUsageAggregatorDidNoteEditingModeEntered:(id)entered
 {
   v3 = dispatch_get_global_queue(-32768, 0);
   dispatch_async(v3, &__block_literal_global_230);

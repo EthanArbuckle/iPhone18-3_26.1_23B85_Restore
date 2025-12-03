@@ -1,53 +1,53 @@
 @interface PKTitleQuery
 - (NSString)transcribedTitle;
-- (PKTitleQuery)initWithDrawing:(id)a3;
+- (PKTitleQuery)initWithDrawing:(id)drawing;
 - (PKTitleQueryDelegate)delegate;
 - (void)dealloc;
 - (void)pause;
-- (void)queryDidUpdateResult:(id)a3;
+- (void)queryDidUpdateResult:(id)result;
 - (void)start;
 @end
 
 @implementation PKTitleQuery
 
-- (PKTitleQuery)initWithDrawing:(id)a3
+- (PKTitleQuery)initWithDrawing:(id)drawing
 {
-  v5 = a3;
-  v6 = [v5 recognitionSession];
+  drawingCopy = drawing;
+  selfCopy = [drawingCopy recognitionSession];
 
-  if (v6)
+  if (selfCopy)
   {
     v15.receiver = self;
     v15.super_class = PKTitleQuery;
     v7 = [(PKTitleQuery *)&v15 init];
-    objc_storeStrong(&v7->_drawing, a3);
+    objc_storeStrong(&v7->_drawing, drawing);
     v8 = objc_alloc(MEMORY[0x1E6997BF0]);
-    v9 = [(PKTitleQuery *)v7 drawing];
-    v10 = [v9 recognitionSession];
-    v11 = [v8 initWithRecognitionSession:v10];
+    drawing = [(PKTitleQuery *)v7 drawing];
+    recognitionSession = [drawing recognitionSession];
+    v11 = [v8 initWithRecognitionSession:recognitionSession];
     titleQuery = v7->_titleQuery;
     v7->_titleQuery = v11;
 
-    v13 = [(PKTitleQuery *)v7 titleQuery];
-    [v13 setDelegate:v7];
+    titleQuery = [(PKTitleQuery *)v7 titleQuery];
+    [titleQuery setDelegate:v7];
 
     self = v7;
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)start
 {
-  v2 = [(PKTitleQuery *)self titleQuery];
-  [v2 start];
+  titleQuery = [(PKTitleQuery *)self titleQuery];
+  [titleQuery start];
 }
 
 - (void)pause
 {
-  v2 = [(PKTitleQuery *)self titleQuery];
-  [v2 pause];
+  titleQuery = [(PKTitleQuery *)self titleQuery];
+  [titleQuery pause];
 }
 
 - (void)dealloc
@@ -61,33 +61,33 @@
 
 - (NSString)transcribedTitle
 {
-  v2 = [(PKTitleQuery *)self titleQuery];
-  v3 = [v2 transcribedTitle];
+  titleQuery = [(PKTitleQuery *)self titleQuery];
+  transcribedTitle = [titleQuery transcribedTitle];
 
-  return v3;
+  return transcribedTitle;
 }
 
-- (void)queryDidUpdateResult:(id)a3
+- (void)queryDidUpdateResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 transcribedTitle];
-  v6 = [v4 titleStrokeIdentifiers];
-  v7 = [(PKTitleQuery *)self delegate];
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  resultCopy = result;
+  transcribedTitle = [resultCopy transcribedTitle];
+  titleStrokeIdentifiers = [resultCopy titleStrokeIdentifiers];
+  delegate = [(PKTitleQuery *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
     v13 = __37__PKTitleQuery_queryDidUpdateResult___block_invoke;
     v14 = &unk_1E82D75F0;
-    v15 = v6;
-    v16 = self;
-    v17 = v5;
-    v8 = v7;
+    v15 = titleStrokeIdentifiers;
+    selfCopy = self;
+    v17 = transcribedTitle;
+    v8 = delegate;
     v18 = v8;
     v9 = _Block_copy(&v11);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v8 titleQueryDrawingDispatchQueue:{self, v11, v12, v13, v14, v15, v16, v17}];
+      v10 = [v8 titleQueryDrawingDispatchQueue:{self, v11, v12, v13, v14, v15, selfCopy, v17}];
       dispatch_async(v10, v9);
     }
 

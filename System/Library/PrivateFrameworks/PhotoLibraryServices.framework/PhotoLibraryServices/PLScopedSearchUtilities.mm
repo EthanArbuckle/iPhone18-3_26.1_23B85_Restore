@@ -1,25 +1,25 @@
 @interface PLScopedSearchUtilities
-+ (id)removeGroupsWithNonExactMatchTextFromGroups:(id)a3 searchText:(id)a4;
-+ (id)removeSynonymsOfOtherGroupsInGroups:(id)a3;
-+ (void)intersectSortedArray:(const __CFArray *)a3 withOtherSortedArray:(__CFArray *)a4 intersectionLimit:(unint64_t)a5;
-+ (void)searchIndexIdsFromUUIDs:(id)a3 searchResultTypes:(unint64_t)a4 psiDatabase:(id)a5 completion:(id)a6;
++ (id)removeGroupsWithNonExactMatchTextFromGroups:(id)groups searchText:(id)text;
++ (id)removeSynonymsOfOtherGroupsInGroups:(id)groups;
++ (void)intersectSortedArray:(const __CFArray *)array withOtherSortedArray:(__CFArray *)sortedArray intersectionLimit:(unint64_t)limit;
++ (void)searchIndexIdsFromUUIDs:(id)ds searchResultTypes:(unint64_t)types psiDatabase:(id)database completion:(id)completion;
 @end
 
 @implementation PLScopedSearchUtilities
 
-+ (void)searchIndexIdsFromUUIDs:(id)a3 searchResultTypes:(unint64_t)a4 psiDatabase:(id)a5 completion:(id)a6
++ (void)searchIndexIdsFromUUIDs:(id)ds searchResultTypes:(unint64_t)types psiDatabase:(id)database completion:(id)completion
 {
-  v8 = a4;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  typesCopy = types;
+  dsCopy = ds;
+  databaseCopy = database;
+  completionCopy = completion;
+  if (!databaseCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PLScopedSearchUtilities.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"psiDatabase"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLScopedSearchUtilities.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"psiDatabase"}];
   }
 
-  if ([v11 count])
+  if ([dsCopy count])
   {
     v35 = 0;
     v36 = &v35;
@@ -32,7 +32,7 @@
     v14 = MEMORY[0x1E695E0F8];
     v33 = __Block_byref_object_dispose__8547;
     v34 = MEMORY[0x1E695E0F8];
-    if (v8)
+    if (typesCopy)
     {
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
@@ -40,7 +40,7 @@
       v28[3] = &unk_1E7566368;
       v28[4] = &v35;
       v28[5] = &v29;
-      [v12 assetIdsFromUUIDs:v11 completion:v28];
+      [databaseCopy assetIdsFromUUIDs:dsCopy completion:v28];
     }
 
     v24 = 0;
@@ -53,7 +53,7 @@
     v21 = __Block_byref_object_copy__8546;
     v22 = __Block_byref_object_dispose__8547;
     v23 = v14;
-    if ((v8 & 2) != 0)
+    if ((typesCopy & 2) != 0)
     {
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
@@ -61,7 +61,7 @@
       v17[3] = &unk_1E7566368;
       v17[4] = &v24;
       v17[5] = &v18;
-      [v12 collectionIdsFromUUIDs:v11 completion:v17];
+      [databaseCopy collectionIdsFromUUIDs:dsCopy completion:v17];
       v15 = v25[3];
       v14 = v19[5];
     }
@@ -71,7 +71,7 @@
       v15 = 0;
     }
 
-    v13[2](v13, v36[3], v15, v30[5], v14);
+    completionCopy[2](completionCopy, v36[3], v15, v30[5], v14);
     _Block_object_dispose(&v18, 8);
 
     _Block_object_dispose(&v24, 8);
@@ -82,23 +82,23 @@
 
   else
   {
-    v13[2](v13, 0, 0, MEMORY[0x1E695E0F8], MEMORY[0x1E695E0F8]);
+    completionCopy[2](completionCopy, 0, 0, MEMORY[0x1E695E0F8], MEMORY[0x1E695E0F8]);
   }
 }
 
-+ (id)removeSynonymsOfOtherGroupsInGroups:(id)a3
++ (id)removeSynonymsOfOtherGroupsInGroups:(id)groups
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  groupsCopy = groups;
+  if ([groupsCopy count])
   {
     v31 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v28 = v3;
-    obj = v3;
+    v28 = groupsCopy;
+    obj = groupsCopy;
     v32 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v32)
     {
@@ -136,14 +136,14 @@ LABEL_9:
               }
 
               v11 = *(*(&v35 + 1) + 8 * v10);
-              v12 = [v5 groupId];
-              v13 = [v11 owningGroupId];
-              v14 = [v5 owningGroupId];
-              v15 = [v11 groupId];
+              groupId = [v5 groupId];
+              owningGroupId = [v11 owningGroupId];
+              owningGroupId2 = [v5 owningGroupId];
+              groupId2 = [v11 groupId];
               if ([v5 owningGroupId])
               {
-                v16 = [v5 owningGroupId];
-                v17 = v16 == [v11 owningGroupId];
+                owningGroupId3 = [v5 owningGroupId];
+                v17 = owningGroupId3 == [v11 owningGroupId];
               }
 
               else
@@ -151,7 +151,7 @@ LABEL_9:
                 v17 = 0;
               }
 
-              v18 = v12 == v13 || v14 == v15;
+              v18 = groupId == owningGroupId || owningGroupId2 == groupId2;
               if (v18 || v17)
               {
                 break;
@@ -178,11 +178,11 @@ LABEL_9:
               goto LABEL_26;
             }
 
-            v20 = [v5 contentString];
-            v21 = [v20 length];
+            contentString = [v5 contentString];
+            v21 = [contentString length];
 
-            v22 = [v19 contentString];
-            v23 = [v22 length];
+            contentString2 = [v19 contentString];
+            v23 = [contentString2 length];
 
             if (v23 > v21)
             {
@@ -214,33 +214,33 @@ LABEL_26:
       while (v25);
     }
 
-    v26 = [v31 copy];
-    v3 = v28;
+    array = [v31 copy];
+    groupsCopy = v28;
   }
 
   else
   {
-    v26 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
-  return v26;
+  return array;
 }
 
-+ (id)removeGroupsWithNonExactMatchTextFromGroups:(id)a3 searchText:(id)a4
++ (id)removeGroupsWithNonExactMatchTextFromGroups:(id)groups searchText:(id)text
 {
-  v5 = a4;
+  textCopy = text;
   v6 = MEMORY[0x1E695DF70];
-  v7 = a3;
+  groupsCopy = groups;
   v8 = objc_alloc_init(v6);
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __82__PLScopedSearchUtilities_removeGroupsWithNonExactMatchTextFromGroups_searchText___block_invoke;
   v16 = &unk_1E7566340;
-  v17 = v5;
+  v17 = textCopy;
   v18 = v8;
   v9 = v8;
-  v10 = v5;
-  [v7 enumerateObjectsUsingBlock:&v13];
+  v10 = textCopy;
+  [groupsCopy enumerateObjectsUsingBlock:&v13];
 
   v11 = [v9 copy];
 
@@ -259,16 +259,16 @@ void __82__PLScopedSearchUtilities_removeGroupsWithNonExactMatchTextFromGroups_s
   }
 }
 
-+ (void)intersectSortedArray:(const __CFArray *)a3 withOtherSortedArray:(__CFArray *)a4 intersectionLimit:(unint64_t)a5
++ (void)intersectSortedArray:(const __CFArray *)array withOtherSortedArray:(__CFArray *)sortedArray intersectionLimit:(unint64_t)limit
 {
-  v8 = *a3;
+  v8 = *array;
   Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, 0);
-  v32 = a3;
+  arrayCopy = array;
   v33 = v8;
   if (v8)
   {
     Count = CFArrayGetCount(v8);
-    if (!a4)
+    if (!sortedArray)
     {
       goto LABEL_70;
     }
@@ -277,13 +277,13 @@ void __82__PLScopedSearchUtilities_removeGroupsWithNonExactMatchTextFromGroups_s
   else
   {
     Count = 0;
-    if (!a4)
+    if (!sortedArray)
     {
       goto LABEL_70;
     }
   }
 
-  v10 = CFArrayGetCount(a4);
+  v10 = CFArrayGetCount(sortedArray);
   if (Count)
   {
     v11 = v10;
@@ -291,14 +291,14 @@ void __82__PLScopedSearchUtilities_removeGroupsWithNonExactMatchTextFromGroups_s
     {
       if (Count >= 1 && v10 >= 1)
       {
-        v12 = a4;
+        sortedArrayCopy = sortedArray;
         v13 = 0;
         v14 = 0;
         ValueAtIndex = 0;
         v16 = 0;
         v17 = 0;
         v18 = 8;
-        v34 = a5 - 1;
+        v34 = limit - 1;
         theArray = v8;
         do
         {
@@ -314,7 +314,7 @@ void __82__PLScopedSearchUtilities_removeGroupsWithNonExactMatchTextFromGroups_s
               goto LABEL_80;
             }
 
-            v28 = v12;
+            v28 = sortedArrayCopy;
             v22 = v11;
             v21 = ValueAtIndex;
             v20 = v17;
@@ -331,15 +331,15 @@ void __82__PLScopedSearchUtilities_removeGroupsWithNonExactMatchTextFromGroups_s
 
           else
           {
-            v30 = v12;
+            v30 = sortedArrayCopy;
             ValueAtIndex = CFArrayGetValueAtIndex(theArray, v13);
-            v12 = v30;
+            sortedArrayCopy = v30;
             if (!v14)
             {
 LABEL_67:
-              v31 = v12;
-              v14 = CFArrayGetValueAtIndex(v12, v17);
-              v12 = v31;
+              v31 = sortedArrayCopy;
+              v14 = CFArrayGetValueAtIndex(sortedArrayCopy, v17);
+              sortedArrayCopy = v31;
             }
           }
 
@@ -388,7 +388,7 @@ LABEL_67:
           v23 = theArray;
           if (v19)
           {
-            v24 = v12;
+            v24 = sortedArrayCopy;
           }
 
           else
@@ -398,7 +398,7 @@ LABEL_67:
 
           if (!v19)
           {
-            v23 = v12;
+            v23 = sortedArrayCopy;
           }
 
           theArray = v23;
@@ -424,7 +424,7 @@ LABEL_67:
                   if (v14 == v27)
                   {
                     v16 = 0;
-                    v12 = v24;
+                    sortedArrayCopy = v24;
                     v11 = v22;
                     v17 = v20;
                     v18 = 8;
@@ -441,7 +441,7 @@ LABEL_67:
 
                     v18 = 0;
                     v16 = 1;
-                    v12 = v24;
+                    sortedArrayCopy = v24;
                     v11 = v22;
                     v17 = v20;
                   }
@@ -463,7 +463,7 @@ LABEL_41:
           v16 = 1;
           if (v13 >= Count)
           {
-            v12 = v28;
+            sortedArrayCopy = v28;
             goto LABEL_62;
           }
 
@@ -531,7 +531,7 @@ LABEL_56:
           v18 = -1;
           v16 = 1;
 LABEL_61:
-          v12 = v29;
+          sortedArrayCopy = v29;
 LABEL_62:
           v11 = v22;
           v17 = v20;
@@ -544,7 +544,7 @@ LABEL_62:
   }
 
 LABEL_70:
-  *v32 = Mutable;
+  *arrayCopy = Mutable;
   if (v33)
   {
 

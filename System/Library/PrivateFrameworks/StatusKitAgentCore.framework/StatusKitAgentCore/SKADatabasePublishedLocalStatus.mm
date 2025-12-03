@@ -1,65 +1,65 @@
 @interface SKADatabasePublishedLocalStatus
-- (BOOL)isEqualToStatus:(id)a3;
-- (SKADatabasePublishedLocalStatus)initWithCoreDataPublishedLocalStatus:(id)a3;
-- (SKADatabasePublishedLocalStatus)initWithIdentifier:(id)a3 creationDate:(id)a4 modificationDate:(id)a5 keyDomain:(id)a6 keyName:(id)a7 payload:(id)a8 targetDevicesFlags:(int64_t)a9;
+- (BOOL)isEqualToStatus:(id)status;
+- (SKADatabasePublishedLocalStatus)initWithCoreDataPublishedLocalStatus:(id)status;
+- (SKADatabasePublishedLocalStatus)initWithIdentifier:(id)identifier creationDate:(id)date modificationDate:(id)modificationDate keyDomain:(id)domain keyName:(id)name payload:(id)payload targetDevicesFlags:(int64_t)flags;
 @end
 
 @implementation SKADatabasePublishedLocalStatus
 
-- (SKADatabasePublishedLocalStatus)initWithCoreDataPublishedLocalStatus:(id)a3
+- (SKADatabasePublishedLocalStatus)initWithCoreDataPublishedLocalStatus:(id)status
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 creationDate];
-  v7 = [v4 modificationDate];
-  v8 = [v4 keyDomain];
-  v9 = [v4 keyName];
-  v10 = [v4 payload];
-  v11 = [v4 targetDevicesFlags];
+  statusCopy = status;
+  identifier = [statusCopy identifier];
+  creationDate = [statusCopy creationDate];
+  modificationDate = [statusCopy modificationDate];
+  keyDomain = [statusCopy keyDomain];
+  keyName = [statusCopy keyName];
+  payload = [statusCopy payload];
+  targetDevicesFlags = [statusCopy targetDevicesFlags];
 
-  v12 = [(SKADatabasePublishedLocalStatus *)self initWithIdentifier:v5 creationDate:v6 modificationDate:v7 keyDomain:v8 keyName:v9 payload:v10 targetDevicesFlags:v11];
+  v12 = [(SKADatabasePublishedLocalStatus *)self initWithIdentifier:identifier creationDate:creationDate modificationDate:modificationDate keyDomain:keyDomain keyName:keyName payload:payload targetDevicesFlags:targetDevicesFlags];
   return v12;
 }
 
-- (SKADatabasePublishedLocalStatus)initWithIdentifier:(id)a3 creationDate:(id)a4 modificationDate:(id)a5 keyDomain:(id)a6 keyName:(id)a7 payload:(id)a8 targetDevicesFlags:(int64_t)a9
+- (SKADatabasePublishedLocalStatus)initWithIdentifier:(id)identifier creationDate:(id)date modificationDate:(id)modificationDate keyDomain:(id)domain keyName:(id)name payload:(id)payload targetDevicesFlags:(int64_t)flags
 {
-  v16 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v17 = a7;
-  v18 = a8;
+  identifierCopy = identifier;
+  dateCopy = date;
+  modificationDateCopy = modificationDate;
+  domainCopy = domain;
+  nameCopy = name;
+  payloadCopy = payload;
   v25.receiver = self;
   v25.super_class = SKADatabasePublishedLocalStatus;
   v19 = [(SKADatabasePublishedLocalStatus *)&v25 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_identifier, a3);
-    objc_storeStrong(&v20->_creationDate, a4);
-    objc_storeStrong(&v20->_modificationDate, a5);
-    objc_storeStrong(&v20->_keyDomain, a6);
-    objc_storeStrong(&v20->_keyName, a7);
-    objc_storeStrong(&v20->_payload, a8);
-    v20->_targetDevicesFlags = a9;
+    objc_storeStrong(&v19->_identifier, identifier);
+    objc_storeStrong(&v20->_creationDate, date);
+    objc_storeStrong(&v20->_modificationDate, modificationDate);
+    objc_storeStrong(&v20->_keyDomain, domain);
+    objc_storeStrong(&v20->_keyName, name);
+    objc_storeStrong(&v20->_payload, payload);
+    v20->_targetDevicesFlags = flags;
   }
 
   return v20;
 }
 
-- (BOOL)isEqualToStatus:(id)a3
+- (BOOL)isEqualToStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(SKADatabasePublishedLocalStatus *)self identifier];
-  v6 = [v4 identifier];
-  if (![v5 isEqualToString:v6])
+  statusCopy = status;
+  identifier = [(SKADatabasePublishedLocalStatus *)self identifier];
+  identifier2 = [statusCopy identifier];
+  if (![identifier isEqualToString:identifier2])
   {
     goto LABEL_13;
   }
 
-  v7 = [(SKADatabasePublishedLocalStatus *)self creationDate];
-  v8 = [v4 creationDate];
-  if (![v7 isEqualToDate:v8])
+  creationDate = [(SKADatabasePublishedLocalStatus *)self creationDate];
+  creationDate2 = [statusCopy creationDate];
+  if (![creationDate isEqualToDate:creationDate2])
   {
 LABEL_12:
 
@@ -68,63 +68,63 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v9 = [(SKADatabasePublishedLocalStatus *)self modificationDate];
-  v10 = [v4 modificationDate];
-  if (![v9 isEqualToDate:v10])
+  modificationDate = [(SKADatabasePublishedLocalStatus *)self modificationDate];
+  modificationDate2 = [statusCopy modificationDate];
+  if (![modificationDate isEqualToDate:modificationDate2])
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v11 = [(SKADatabasePublishedLocalStatus *)self keyDomain];
-  v12 = [v4 keyDomain];
-  if (![v11 isEqualToString:v12])
+  keyDomain = [(SKADatabasePublishedLocalStatus *)self keyDomain];
+  keyDomain2 = [statusCopy keyDomain];
+  if (![keyDomain isEqualToString:keyDomain2])
   {
 
     goto LABEL_11;
   }
 
-  v24 = v11;
-  v13 = [(SKADatabasePublishedLocalStatus *)self keyName];
-  v14 = [v4 keyName];
-  v23 = v13;
-  v15 = v13;
-  v16 = v14;
-  if (![v15 isEqualToString:v14])
+  v24 = keyDomain;
+  keyName = [(SKADatabasePublishedLocalStatus *)self keyName];
+  keyName2 = [statusCopy keyName];
+  v23 = keyName;
+  v15 = keyName;
+  v16 = keyName2;
+  if (![v15 isEqualToString:keyName2])
   {
 
     goto LABEL_11;
   }
 
-  v22 = [(SKADatabasePublishedLocalStatus *)self targetDevicesFlags];
-  v21 = [v4 targetDevicesFlags];
+  targetDevicesFlags = [(SKADatabasePublishedLocalStatus *)self targetDevicesFlags];
+  targetDevicesFlags2 = [statusCopy targetDevicesFlags];
 
-  if (v22 != v21)
+  if (targetDevicesFlags != targetDevicesFlags2)
   {
     v18 = 0;
     goto LABEL_15;
   }
 
-  v17 = [(SKADatabasePublishedLocalStatus *)self payload];
-  if (v17)
+  payload = [(SKADatabasePublishedLocalStatus *)self payload];
+  if (payload)
   {
   }
 
   else
   {
-    v20 = [v4 payload];
+    payload2 = [statusCopy payload];
 
-    if (!v20)
+    if (!payload2)
     {
       v18 = 1;
       goto LABEL_15;
     }
   }
 
-  v5 = [(SKADatabasePublishedLocalStatus *)self payload];
-  v6 = [v4 payload];
-  v18 = [v5 isEqualToData:v6];
+  identifier = [(SKADatabasePublishedLocalStatus *)self payload];
+  identifier2 = [statusCopy payload];
+  v18 = [identifier isEqualToData:identifier2];
 LABEL_14:
 
 LABEL_15:

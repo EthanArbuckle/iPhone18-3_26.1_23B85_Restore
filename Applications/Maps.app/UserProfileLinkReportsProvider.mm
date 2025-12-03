@@ -4,7 +4,7 @@
 - (UserProfileLinkReportsProvider)init;
 - (id)createUserProfileLink;
 - (id)retrieveSubtitleText;
-- (void)_updateLinkAndNotifyObservers:(BOOL)a3;
+- (void)_updateLinkAndNotifyObservers:(BOOL)observers;
 @end
 
 @implementation UserProfileLinkReportsProvider
@@ -24,17 +24,17 @@
   return observers;
 }
 
-- (void)_updateLinkAndNotifyObservers:(BOOL)a3
+- (void)_updateLinkAndNotifyObservers:(BOOL)observers
 {
-  v3 = a3;
-  v7 = [(UserProfileLinkReportsProvider *)self retrieveSubtitleText];
-  v5 = [(UserProfileLink *)self->_newLink subtitle];
-  v6 = [v5 isEqualToString:v7];
+  observersCopy = observers;
+  retrieveSubtitleText = [(UserProfileLinkReportsProvider *)self retrieveSubtitleText];
+  subtitle = [(UserProfileLink *)self->_newLink subtitle];
+  v6 = [subtitle isEqualToString:retrieveSubtitleText];
 
   if ((v6 & 1) == 0)
   {
-    [(UserProfileLink *)self->_newLink setSubtitle:v7];
-    if (v3)
+    [(UserProfileLink *)self->_newLink setSubtitle:retrieveSubtitleText];
+    if (observersCopy)
     {
       [(GEOObserverHashTable *)self->_observers dataDidUpdateForUserProfileLinkType:[(UserProfileLinkReportsProvider *)self userProfileLinkType]];
     }
@@ -44,9 +44,9 @@
 - (id)retrieveSubtitleText
 {
   v2 = +[UserInformationManager sharedInstance];
-  v3 = [v2 loggedIn];
+  loggedIn = [v2 loggedIn];
 
-  if (v3 && (+[UserProfileReportHistoryManager sharedInstance](UserProfileReportHistoryManager, "sharedInstance"), v4 = objc_claimAutoreleasedReturnValue(), [v4 rapHistory], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v4, v6))
+  if (loggedIn && (+[UserProfileReportHistoryManager sharedInstance](UserProfileReportHistoryManager, "sharedInstance"), v4 = objc_claimAutoreleasedReturnValue(), [v4 rapHistory], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v4, v6))
   {
     v7 = [NSString localizedStringWithFormat:@"%ld", v6];
   }
@@ -77,8 +77,8 @@
   self->_newLink = v11;
 
   [(UserProfileLink *)self->_newLink setUserProfileLinkType:[(UserProfileLinkReportsProvider *)self userProfileLinkType]];
-  v13 = [(UserProfileLinkReportsProvider *)self retrieveSubtitleText];
-  [(UserProfileLink *)self->_newLink setSubtitle:v13];
+  retrieveSubtitleText = [(UserProfileLinkReportsProvider *)self retrieveSubtitleText];
+  [(UserProfileLink *)self->_newLink setSubtitle:retrieveSubtitleText];
 
   v14 = self->_newLink;
   v15 = v14;
@@ -94,12 +94,12 @@
   if (v2)
   {
     v3 = +[UserProfileReportHistoryManager sharedInstance];
-    v4 = [v3 observers];
-    [v4 registerObserver:v2];
+    observers = [v3 observers];
+    [observers registerObserver:v2];
 
     v5 = +[UserInformationManager sharedInstance];
-    v6 = [v5 observers];
-    [v6 registerObserver:v2];
+    observers2 = [v5 observers];
+    [observers2 registerObserver:v2];
   }
 
   return v2;

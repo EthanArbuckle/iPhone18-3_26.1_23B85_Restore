@@ -1,47 +1,47 @@
 @interface BCMenuConfiguringButton
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)setMenu:(id)a3;
-- (void)setupAppAnalyticsReportingUsingTracker:(id)a3 withPropertyProvider:(id)a4;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)setMenu:(id)menu;
+- (void)setupAppAnalyticsReportingUsingTracker:(id)tracker withPropertyProvider:(id)provider;
 @end
 
 @implementation BCMenuConfiguringButton
 
-- (void)setMenu:(id)a3
+- (void)setMenu:(id)menu
 {
   v4.receiver = self;
   v4.super_class = BCMenuConfiguringButton;
-  [(BCMenuConfiguringButton *)&v4 setMenu:a3];
+  [(BCMenuConfiguringButton *)&v4 setMenu:menu];
   [(BCMenuConfiguringButton *)self setPreferredMenuElementOrder:2];
 }
 
-- (void)setupAppAnalyticsReportingUsingTracker:(id)a3 withPropertyProvider:(id)a4
+- (void)setupAppAnalyticsReportingUsingTracker:(id)tracker withPropertyProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  trackerCopy = tracker;
+  providerCopy = provider;
   tracker = self->_tracker;
-  self->_tracker = v6;
-  v10 = v6;
+  self->_tracker = trackerCopy;
+  v10 = trackerCopy;
 
   propertyProvider = self->_propertyProvider;
-  self->_propertyProvider = v7;
+  self->_propertyProvider = providerCopy;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v8.receiver = self;
   v8.super_class = BCMenuConfiguringButton;
-  [(BCMenuConfiguringButton *)&v8 contextMenuInteraction:a3 willDisplayMenuForConfiguration:a4 animator:a5];
+  [(BCMenuConfiguringButton *)&v8 contextMenuInteraction:interaction willDisplayMenuForConfiguration:configuration animator:animator];
   v6 = +[NSDate date];
   appearDate = self->_appearDate;
   self->_appearDate = v6;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v8.receiver = self;
   v8.super_class = BCMenuConfiguringButton;
-  [(BCMenuConfiguringButton *)&v8 contextMenuInteraction:a3 willEndForConfiguration:a4 animator:a5];
+  [(BCMenuConfiguringButton *)&v8 contextMenuInteraction:interaction willEndForConfiguration:configuration animator:animator];
   if (self->_tracker && self->_propertyProvider && self->_appearDate)
   {
     v6 = +[BAEventReporter sharedReporter];

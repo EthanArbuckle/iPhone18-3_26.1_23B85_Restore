@@ -1,11 +1,11 @@
 @interface BundleSearchResultContentView
-- (_TtC20ProductPageExtension29BundleSearchResultContentView)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension29BundleSearchResultContentView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation BundleSearchResultContentView
 
-- (_TtC20ProductPageExtension29BundleSearchResultContentView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension29BundleSearchResultContentView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension29BundleSearchResultContentView_lockupView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(type metadata accessor for SmallSearchLockupView()) initWithFrame:{0.0, 0.0, 0.0, 0.0}];
@@ -18,7 +18,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100714B24();
 }
 

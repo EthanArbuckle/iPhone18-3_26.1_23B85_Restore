@@ -1,35 +1,35 @@
 @interface PTDisparityFilterDEMA_LKT
-- (PTDisparityFilterDEMA_LKT)initWithMetalContext:(id)a3 disparitySize:(id *)a4 disparityFilteredSize:(id *)a5 disparityPixelFormat:(unint64_t)a6 colorSize:(id *)a7 colorPixelFormat:(unint64_t)a8 sensorPort:(id)a9;
-- (PTDisparityFilterDEMA_LKT)initWithMetalContext:(id)a3 sensorPort:(id)a4;
-- (int)copyDisparity:(id)a3 inDisparity:(id)a4 outDisparity:(id)a5;
-- (int)exponentialMovingAverageFilter:(id)a3 inDisplacement:(id)a4 inDemaPrev:(id)a5 inDisparity:(id)a6 outDisparity:(id)a7 outDEMA:(id)a8;
-- (int)temporalDisparityFilter:(id)a3 inDisplacement:(id)a4 inDisparityPrev:(id)a5 inDisparity:(id)a6 outDisparity:(id)a7 disparityBias:(float)a8;
-- (int)temporalDisparityFilter:(id)a3 inDisplacement:(id)a4 inStatePrev:(id)a5 inDisparity:(id)a6 outDisparity:(id)a7 outState:(id)a8;
+- (PTDisparityFilterDEMA_LKT)initWithMetalContext:(id)context disparitySize:(id *)size disparityFilteredSize:(id *)filteredSize disparityPixelFormat:(unint64_t)format colorSize:(id *)colorSize colorPixelFormat:(unint64_t)pixelFormat sensorPort:(id)port;
+- (PTDisparityFilterDEMA_LKT)initWithMetalContext:(id)context sensorPort:(id)port;
+- (int)copyDisparity:(id)disparity inDisparity:(id)inDisparity outDisparity:(id)outDisparity;
+- (int)exponentialMovingAverageFilter:(id)filter inDisplacement:(id)displacement inDemaPrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity outDEMA:(id)a;
+- (int)temporalDisparityFilter:(id)filter inDisplacement:(id)displacement inDisparityPrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity disparityBias:(float)bias;
+- (int)temporalDisparityFilter:(id)filter inDisplacement:(id)displacement inStatePrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity outState:(id)state;
 @end
 
 @implementation PTDisparityFilterDEMA_LKT
 
-- (PTDisparityFilterDEMA_LKT)initWithMetalContext:(id)a3 sensorPort:(id)a4
+- (PTDisparityFilterDEMA_LKT)initWithMetalContext:(id)context sensorPort:(id)port
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  portCopy = port;
   v49.receiver = self;
   v49.super_class = PTDisparityFilterDEMA_LKT;
   v9 = [(PTDisparityFilterDEMA_LKT *)&v49 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_metalContext, a3);
+    objc_storeStrong(&v9->_metalContext, context);
     v10->_direction = -1.0;
-    if (([@"PortTypeFrontInfrared" isEqual:v8] & 1) == 0 && (objc_msgSend(@"PortTypeFront", "isEqual:", v8) & 1) == 0 && (objc_msgSend(@"PortTypeBackTelephoto", "isEqual:", v8) & 1) == 0)
+    if (([@"PortTypeFrontInfrared" isEqual:portCopy] & 1) == 0 && (objc_msgSend(@"PortTypeFront", "isEqual:", portCopy) & 1) == 0 && (objc_msgSend(@"PortTypeBackTelephoto", "isEqual:", portCopy) & 1) == 0)
     {
-      [@"PortTypeBack" isEqual:v8];
+      [@"PortTypeBack" isEqual:portCopy];
     }
 
     v48 = 0;
     v10->_erodeMonocularDisparity = 0.0;
     v10->_motionVisualization = 0;
-    if ([@"PortTypeFrontSuperWide" isEqual:v8])
+    if ([@"PortTypeFrontSuperWide" isEqual:portCopy])
     {
       v10->_erodeMonocularDisparity = 0.75;
       v11 = _PTLogSystem();
@@ -43,8 +43,8 @@
     [v12 setNormalizedCoordinates:1];
     [v12 setMinFilter:1];
     [v12 setMagFilter:1];
-    v13 = [v7 device];
-    v14 = [v13 newSamplerStateWithDescriptor:v12];
+    device = [contextCopy device];
+    v14 = [device newSamplerStateWithDescriptor:v12];
     samplerState = v10->_samplerState;
     v10->_samplerState = v14;
 
@@ -54,19 +54,19 @@
     *&v17 = v10->_direction;
     [v16 setConstantFloat:@"kDirection_float" withName:v17];
     [v16 setConstantValue:&v48 type:29 withName:@"kMotionCorrectionFunction"];
-    v18 = [v7 computePipelineStateFor:@"temporalFilterDEMA_LKT" withConstants:v16];
+    v18 = [contextCopy computePipelineStateFor:@"temporalFilterDEMA_LKT" withConstants:v16];
     temporalFilterDEMA_LKT = v10->_temporalFilterDEMA_LKT;
     v10->_temporalFilterDEMA_LKT = v18;
 
     if (v10->_temporalFilterDEMA_LKT)
     {
-      v20 = [v7 computePipelineStateFor:@"temporalFilterDEMA_LKT_VisualizeMotion" withConstants:v16];
+      v20 = [contextCopy computePipelineStateFor:@"temporalFilterDEMA_LKT_VisualizeMotion" withConstants:v16];
       temporalFilterDEMA_LKT_VisualizeMotion = v10->_temporalFilterDEMA_LKT_VisualizeMotion;
       v10->_temporalFilterDEMA_LKT_VisualizeMotion = v20;
 
       if (v10->_temporalFilterDEMA_LKT_VisualizeMotion)
       {
-        v22 = [v7 computePipelineStateFor:@"resampleDisparity" withConstants:v16];
+        v22 = [contextCopy computePipelineStateFor:@"resampleDisparity" withConstants:v16];
         resampleDisparity = v10->_resampleDisparity;
         v10->_resampleDisparity = v22;
 
@@ -114,25 +114,25 @@ LABEL_23:
   return v24;
 }
 
-- (PTDisparityFilterDEMA_LKT)initWithMetalContext:(id)a3 disparitySize:(id *)a4 disparityFilteredSize:(id *)a5 disparityPixelFormat:(unint64_t)a6 colorSize:(id *)a7 colorPixelFormat:(unint64_t)a8 sensorPort:(id)a9
+- (PTDisparityFilterDEMA_LKT)initWithMetalContext:(id)context disparitySize:(id *)size disparityFilteredSize:(id *)filteredSize disparityPixelFormat:(unint64_t)format colorSize:(id *)colorSize colorPixelFormat:(unint64_t)pixelFormat sensorPort:(id)port
 {
-  v13 = a3;
-  v14 = [(PTDisparityFilterDEMA_LKT *)self initWithMetalContext:v13 sensorPort:a9];
+  contextCopy = context;
+  v14 = [(PTDisparityFilterDEMA_LKT *)self initWithMetalContext:contextCopy sensorPort:port];
   v15 = v14;
   if (v14)
   {
     v14->_frameCount = 0;
-    v16 = *&a4->var0;
-    v14->_disparitySize.depth = a4->var2;
+    v16 = *&size->var0;
+    v14->_disparitySize.depth = size->var2;
     *&v14->_disparitySize.width = v16;
-    v17 = *&a5->var0;
-    v14->_disparityFilteredSize.depth = a5->var2;
+    v17 = *&filteredSize->var0;
+    v14->_disparityFilteredSize.depth = filteredSize->var2;
     *&v14->_disparityFilteredSize.width = v17;
     v18 = [PTOpticalFlow alloc];
     v19 = v15->_direction == 1.0;
-    v57 = *&a7->var0;
-    var2 = a7->var2;
-    v20 = [(PTOpticalFlow *)v18 initWithMetalContext:v13 colorSize:&v57 lktPreset:1 allocateDisplacementFWD:0 needConversionBGRA2YUVA:0 inverseFlow:v19];
+    v57 = *&colorSize->var0;
+    var2 = colorSize->var2;
+    v20 = [(PTOpticalFlow *)v18 initWithMetalContext:contextCopy colorSize:&v57 lktPreset:1 allocateDisplacementFWD:0 needConversionBGRA2YUVA:0 inverseFlow:v19];
     opticalFlow = v15->_opticalFlow;
     v15->_opticalFlow = v20;
 
@@ -147,7 +147,7 @@ LABEL_23:
       goto LABEL_14;
     }
 
-    v22 = [[PTGlobalReduction alloc] initWithMetalContext:v13 textureSize:65 pixelFormat:a4->var0, a4->var1];
+    v22 = [[PTGlobalReduction alloc] initWithMetalContext:contextCopy textureSize:65 pixelFormat:size->var0, size->var1];
     globalReduction = v15->_globalReduction;
     v15->_globalReduction = v22;
 
@@ -162,8 +162,8 @@ LABEL_23:
       goto LABEL_14;
     }
 
-    v24 = [v13 device];
-    v25 = [v24 newBufferWithLength:16 options:0];
+    device = [contextCopy device];
+    v25 = [device newBufferWithLength:16 options:0];
     avgDisplacement = v15->_avgDisplacement;
     v15->_avgDisplacement = v25;
 
@@ -195,15 +195,15 @@ LABEL_14:
   return v15;
 }
 
-- (int)temporalDisparityFilter:(id)a3 inDisplacement:(id)a4 inStatePrev:(id)a5 inDisparity:(id)a6 outDisparity:(id)a7 outState:(id)a8
+- (int)temporalDisparityFilter:(id)filter inDisplacement:(id)displacement inStatePrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity outState:(id)state
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v16 == v18)
+  filterCopy = filter;
+  displacementCopy = displacement;
+  prevCopy = prev;
+  disparityCopy = disparity;
+  outDisparityCopy = outDisparity;
+  stateCopy = state;
+  if (prevCopy == outDisparityCopy)
   {
     v21 = _PTLogSystem();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -218,13 +218,13 @@ LABEL_14:
   {
     if (self->_frameCount)
     {
-      v20 = [(PTDisparityFilterDEMA_LKT *)self exponentialMovingAverageFilter:v14 inDisplacement:v15 inDemaPrev:v16 inDisparity:v17 outDisparity:v18 outDEMA:v19];
+      v20 = [(PTDisparityFilterDEMA_LKT *)self exponentialMovingAverageFilter:filterCopy inDisplacement:displacementCopy inDemaPrev:prevCopy inDisparity:disparityCopy outDisparity:outDisparityCopy outDEMA:stateCopy];
     }
 
     else
     {
-      [(PTDisparityFilterDEMA_LKT *)self copyDisparity:v14 inDisparity:v17 outDisparity:v18];
-      [(PTDisparityFilterDEMA_LKT *)self copyDisparity:v14 inDisparity:v17 outDisparity:v19];
+      [(PTDisparityFilterDEMA_LKT *)self copyDisparity:filterCopy inDisparity:disparityCopy outDisparity:outDisparityCopy];
+      [(PTDisparityFilterDEMA_LKT *)self copyDisparity:filterCopy inDisparity:disparityCopy outDisparity:stateCopy];
       v20 = 0;
     }
 
@@ -234,23 +234,23 @@ LABEL_14:
   return v20;
 }
 
-- (int)temporalDisparityFilter:(id)a3 inDisplacement:(id)a4 inDisparityPrev:(id)a5 inDisparity:(id)a6 outDisparity:(id)a7 disparityBias:(float)a8
+- (int)temporalDisparityFilter:(id)filter inDisplacement:(id)displacement inDisparityPrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity disparityBias:(float)bias
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (a8 == 0.0)
+  filterCopy = filter;
+  displacementCopy = displacement;
+  prevCopy = prev;
+  disparityCopy = disparity;
+  outDisparityCopy = outDisparity;
+  if (bias == 0.0)
   {
     demaStates = self->_demaStates;
     if (!demaStates)
     {
       v43 = MEMORY[0x277CBEA60];
-      v29 = [(PTMetalContext *)self->_metalContext textureUtil];
-      v30 = [v29 createWithWidth:self->_disparityFilteredSize.width height:self->_disparityFilteredSize.height pixelFormat:65];
-      v31 = [(PTMetalContext *)self->_metalContext textureUtil];
-      v32 = [v31 createWithWidth:self->_disparityFilteredSize.width height:self->_disparityFilteredSize.height pixelFormat:65];
+      textureUtil = [(PTMetalContext *)self->_metalContext textureUtil];
+      v30 = [textureUtil createWithWidth:self->_disparityFilteredSize.width height:self->_disparityFilteredSize.height pixelFormat:65];
+      textureUtil2 = [(PTMetalContext *)self->_metalContext textureUtil];
+      v32 = [textureUtil2 createWithWidth:self->_disparityFilteredSize.width height:self->_disparityFilteredSize.height pixelFormat:65];
       v33 = [v43 arrayWithObjects:{v30, v32, 0}];
       v34 = self->_demaStates;
       self->_demaStates = v33;
@@ -279,7 +279,7 @@ LABEL_14:
     }
 
     v41 = [(NSArray *)self->_demaStates objectAtIndexedSubscript:v40];
-    v27 = [(PTDisparityFilterDEMA_LKT *)self temporalDisparityFilter:v14 inDisplacement:v15 inStatePrev:v36 inDisparity:v17 outDisparity:v18 outState:v41];
+    v27 = [(PTDisparityFilterDEMA_LKT *)self temporalDisparityFilter:filterCopy inDisplacement:displacementCopy inStatePrev:v36 inDisparity:disparityCopy outDisparity:outDisparityCopy outState:v41];
   }
 
   else
@@ -296,20 +296,20 @@ LABEL_14:
   return v27;
 }
 
-- (int)exponentialMovingAverageFilter:(id)a3 inDisplacement:(id)a4 inDemaPrev:(id)a5 inDisparity:(id)a6 outDisparity:(id)a7 outDEMA:(id)a8
+- (int)exponentialMovingAverageFilter:(id)filter inDisplacement:(id)displacement inDemaPrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity outDEMA:(id)a
 {
   globalReduction = self->_globalReduction;
   avgDisplacement = self->_avgDisplacement;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  [(PTGlobalReduction *)globalReduction parallelReductionAverage:v21 inTexture:v20 outGlobalAverage:avgDisplacement];
-  v22 = [v21 computeCommandEncoder];
+  aCopy = a;
+  outDisparityCopy = outDisparity;
+  disparityCopy = disparity;
+  prevCopy = prev;
+  displacementCopy = displacement;
+  filterCopy = filter;
+  [(PTGlobalReduction *)globalReduction parallelReductionAverage:filterCopy inTexture:displacementCopy outGlobalAverage:avgDisplacement];
+  computeCommandEncoder = [filterCopy computeCommandEncoder];
 
-  if (!v22)
+  if (!computeCommandEncoder)
   {
     v23 = _PTLogSystem();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -324,38 +324,38 @@ LABEL_14:
     v31 = 24;
   }
 
-  [v22 setComputePipelineState:*(&self->super.isa + v31)];
-  [v22 setTexture:v20 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:*(&self->super.isa + v31)];
+  [computeCommandEncoder setTexture:displacementCopy atIndex:0];
 
-  [v22 setTexture:v19 atIndex:1];
-  [v22 setTexture:v18 atIndex:2];
+  [computeCommandEncoder setTexture:prevCopy atIndex:1];
+  [computeCommandEncoder setTexture:disparityCopy atIndex:2];
 
-  [v22 setTexture:v17 atIndex:3];
-  [v22 setTexture:v16 atIndex:4];
+  [computeCommandEncoder setTexture:outDisparityCopy atIndex:3];
+  [computeCommandEncoder setTexture:aCopy atIndex:4];
 
-  [v22 setBuffer:self->_avgDisplacement offset:0 atIndex:0];
-  [v22 setBytes:&self->_erodeMonocularDisparity length:4 atIndex:1];
-  [v22 setSamplerState:self->_samplerState atIndex:0];
-  v32 = [v17 width];
-  v33 = [v17 height];
+  [computeCommandEncoder setBuffer:self->_avgDisplacement offset:0 atIndex:0];
+  [computeCommandEncoder setBytes:&self->_erodeMonocularDisparity length:4 atIndex:1];
+  [computeCommandEncoder setSamplerState:self->_samplerState atIndex:0];
+  width = [outDisparityCopy width];
+  height = [outDisparityCopy height];
 
-  v37[0] = v32;
-  v37[1] = v33;
+  v37[0] = width;
+  v37[1] = height;
   v37[2] = 1;
   v35 = xmmword_2244A5230;
   v36 = 1;
-  [v22 dispatchThreads:v37 threadsPerThreadgroup:&v35];
-  [v22 endEncoding];
+  [computeCommandEncoder dispatchThreads:v37 threadsPerThreadgroup:&v35];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)copyDisparity:(id)a3 inDisparity:(id)a4 outDisparity:(id)a5
+- (int)copyDisparity:(id)disparity inDisparity:(id)inDisparity outDisparity:(id)outDisparity
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 computeCommandEncoder];
-  if (!v10)
+  outDisparityCopy = outDisparity;
+  inDisparityCopy = inDisparity;
+  computeCommandEncoder = [disparity computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     v11 = _PTLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -364,21 +364,21 @@ LABEL_14:
     }
   }
 
-  [v10 setComputePipelineState:self->_resampleDisparity];
-  [v10 setTexture:v9 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_resampleDisparity];
+  [computeCommandEncoder setTexture:inDisparityCopy atIndex:0];
 
-  [v10 setTexture:v8 atIndex:1];
-  [v10 setSamplerState:self->_samplerState atIndex:0];
-  v19 = [v8 width];
-  v20 = [v8 height];
+  [computeCommandEncoder setTexture:outDisparityCopy atIndex:1];
+  [computeCommandEncoder setSamplerState:self->_samplerState atIndex:0];
+  width = [outDisparityCopy width];
+  height = [outDisparityCopy height];
 
-  v24[0] = v19;
-  v24[1] = v20;
+  v24[0] = width;
+  v24[1] = height;
   v24[2] = 1;
   v22 = xmmword_2244A5230;
   v23 = 1;
-  [v10 dispatchThreads:v24 threadsPerThreadgroup:&v22];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreads:v24 threadsPerThreadgroup:&v22];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }

@@ -2,19 +2,19 @@
 + (double)dynamicFontSizeForMainText;
 + (double)dynamicFontSizeForSecondaryText;
 + (double)isAccessibilityLayout;
-- (EKUICalendarListViewHeaderContentView)initWithFrame:(CGRect)a3;
+- (EKUICalendarListViewHeaderContentView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)reloadSubviews;
-- (void)setConfiguration:(id)a3;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation EKUICalendarListViewHeaderContentView
 
-- (EKUICalendarListViewHeaderContentView)initWithFrame:(CGRect)a3
+- (EKUICalendarListViewHeaderContentView)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = EKUICalendarListViewHeaderContentView;
-  v3 = [(EKUICalendarListViewHeaderContentView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(EKUICalendarListViewHeaderContentView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     if (CalCanvasPocketEnabled())
@@ -69,9 +69,9 @@
 
 + (double)isAccessibilityLayout
 {
-  [a1 dynamicFontSizeForMainText];
+  [self dynamicFontSizeForMainText];
   v4 = v3;
-  [a1 defaultFontSizeForMainText];
+  [self defaultFontSizeForMainText];
   v6 = v4 <= v5 + 4.0;
   result = 0.0;
   if (!v6)
@@ -85,11 +85,11 @@
 + (double)dynamicFontSizeForMainText
 {
   v3 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD10]];
-  v4 = [v3 fontDescriptor];
-  [v4 pointSize];
+  fontDescriptor = [v3 fontDescriptor];
+  [fontDescriptor pointSize];
   v6 = v5;
 
-  [a1 defaultFontSizeForMainText];
+  [self defaultFontSizeForMainText];
   CalRoundToScreenScale(v6 * (v7 / 11.0));
   return fmin(v8, 26.0);
 }
@@ -97,8 +97,8 @@
 + (double)dynamicFontSizeForSecondaryText
 {
   v2 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD10]];
-  v3 = [v2 fontDescriptor];
-  [v3 pointSize];
+  fontDescriptor = [v2 fontDescriptor];
+  [fontDescriptor pointSize];
   v5 = v4;
 
   CalRoundToScreenScale(v5 * 1.27272727);
@@ -113,9 +113,9 @@
   [(EKUICalendarListViewHeaderContentView *)self reloadSubviews];
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_configuration, a3);
+  objc_storeStrong(&self->_configuration, configuration);
 
   [(EKUICalendarListViewHeaderContentView *)self reloadSubviews];
 }
@@ -195,20 +195,20 @@
     self->_activatedConstraints = v6;
   }
 
-  v21 = [(EKUICalendarListContentConfiguration *)self->_configuration weekNumberText];
-  [(UILabel *)self->_weekNumberLabel setText:v21];
+  weekNumberText = [(EKUICalendarListContentConfiguration *)self->_configuration weekNumberText];
+  [(UILabel *)self->_weekNumberLabel setText:weekNumberText];
 
-  v22 = [(EKUICalendarListContentConfiguration *)self->_configuration secondaryTextColor];
-  [(UILabel *)self->_weekNumberLabel setTextColor:v22];
+  secondaryTextColor = [(EKUICalendarListContentConfiguration *)self->_configuration secondaryTextColor];
+  [(UILabel *)self->_weekNumberLabel setTextColor:secondaryTextColor];
 
-  v23 = [(UILabel *)self->_weekNumberLabel text];
+  text = [(UILabel *)self->_weekNumberLabel text];
   v24 = 8.0;
   v25 = 8.0;
-  if (v23)
+  if (text)
   {
-    v26 = v23;
-    v27 = [(UILabel *)self->_weekNumberLabel text];
-    v28 = [v27 isEqual:&stru_1F4EF6790];
+    v26 = text;
+    text2 = [(UILabel *)self->_weekNumberLabel text];
+    v28 = [text2 isEqual:&stru_1F4EF6790];
 
     v25 = 16.0;
     if (v28)
@@ -218,18 +218,18 @@
   }
 
   [(NSLayoutConstraint *)self->_trailingMarginConstraint setConstant:v25];
-  v29 = [(EKUICalendarListContentConfiguration *)self->_configuration altCalendarText];
-  [(UILabel *)self->_altCalendarLabel setText:v29];
+  altCalendarText = [(EKUICalendarListContentConfiguration *)self->_configuration altCalendarText];
+  [(UILabel *)self->_altCalendarLabel setText:altCalendarText];
 
-  v30 = [(EKUICalendarListContentConfiguration *)self->_configuration secondaryTextColor];
-  [(UILabel *)self->_altCalendarLabel setTextColor:v30];
+  secondaryTextColor2 = [(EKUICalendarListContentConfiguration *)self->_configuration secondaryTextColor];
+  [(UILabel *)self->_altCalendarLabel setTextColor:secondaryTextColor2];
 
-  v31 = [(UILabel *)self->_altCalendarLabel text];
-  if (v31)
+  text3 = [(UILabel *)self->_altCalendarLabel text];
+  if (text3)
   {
-    v32 = v31;
-    v33 = [(UILabel *)self->_altCalendarLabel text];
-    v34 = [v33 isEqual:&stru_1F4EF6790];
+    v32 = text3;
+    text4 = [(UILabel *)self->_altCalendarLabel text];
+    v34 = [text4 isEqual:&stru_1F4EF6790];
 
     if (v34)
     {
@@ -243,11 +243,11 @@
   }
 
   [(NSLayoutConstraint *)self->_accessibilityLeadingMarginConstraint setConstant:v24];
-  v35 = [(EKUICalendarListContentConfiguration *)self->_configuration mainTextColor];
-  [(UILabel *)self->_weekDayLabel setTextColor:v35];
+  mainTextColor = [(EKUICalendarListContentConfiguration *)self->_configuration mainTextColor];
+  [(UILabel *)self->_weekDayLabel setTextColor:mainTextColor];
 
-  v36 = [(EKUICalendarListContentConfiguration *)self->_configuration mainText];
-  [(UILabel *)self->_weekDayLabel setText:v36];
+  mainText = [(EKUICalendarListContentConfiguration *)self->_configuration mainText];
+  [(UILabel *)self->_weekDayLabel setText:mainText];
 
   [(UILabel *)self->_weekDayLabel frame];
   v38 = v37;
@@ -273,8 +273,8 @@
   [(UILabel *)weekDayLabel sizeThatFits:v54, v55];
   if (v56 > v52)
   {
-    v57 = [(EKUICalendarListContentConfiguration *)self->_configuration mainTextAbbr];
-    [(UILabel *)self->_weekDayLabel setText:v57];
+    mainTextAbbr = [(EKUICalendarListContentConfiguration *)self->_configuration mainTextAbbr];
+    [(UILabel *)self->_weekDayLabel setText:mainTextAbbr];
   }
 }
 

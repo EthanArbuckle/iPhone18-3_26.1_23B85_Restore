@@ -1,16 +1,16 @@
 @interface BKSHIDEventDeferringResolution
-+ (id)build:(id)a3;
++ (id)build:(id)build;
 - (BKSHIDEventDeferringResolution)init;
-- (BKSHIDEventDeferringResolution)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BKSHIDEventDeferringResolution)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
-- (id)_initWithCopyOf:(id *)a1;
-- (id)_initWithDisplay:(void *)a1 environment:(void *)a2 versionedPID:(void *)a3 pid:(uint64_t)a4 token:(int)a5 dispatchingTarget:(void *)a6;
-- (id)modifiedResolution:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithCopyOf:(id *)of;
+- (id)_initWithDisplay:(void *)display environment:(void *)environment versionedPID:(void *)d pid:(uint64_t)pid token:(int)token dispatchingTarget:(void *)target;
+- (id)modifiedResolution:(id)resolution;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventDeferringResolution
@@ -30,16 +30,16 @@
   return v6;
 }
 
-- (id)_initWithCopyOf:(id *)a1
+- (id)_initWithCopyOf:(id *)of
 {
   v33 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (of)
   {
-    v20.receiver = a1;
+    v20.receiver = of;
     v20.super_class = BKSHIDEventDeferringResolution;
-    a1 = objc_msgSendSuper2(&v20, sel_init);
-    if (a1)
+    of = objc_msgSendSuper2(&v20, sel_init);
+    if (of)
     {
       v4 = objc_opt_class();
       if (v4 != objc_opt_class())
@@ -58,7 +58,7 @@
             v23 = 2114;
             v24 = v19;
             v25 = 2048;
-            v26 = a1;
+            ofCopy = of;
             v27 = 2114;
             v28 = @"BKSHIDEventDeferringResolution.m";
             v29 = 1024;
@@ -76,40 +76,40 @@
       }
 
       v6 = [v3[1] copy];
-      v7 = a1[1];
-      a1[1] = v6;
+      v7 = of[1];
+      of[1] = v6;
 
       v8 = [v3[2] copy];
-      v9 = a1[2];
-      a1[2] = v8;
+      v9 = of[2];
+      of[2] = v8;
 
-      a1[3] = v3[3];
-      *(a1 + 8) = *(v3 + 8);
+      of[3] = v3[3];
+      *(of + 8) = *(v3 + 8);
       v10 = [v3[5] copy];
-      v11 = a1[5];
-      a1[5] = v10;
+      v11 = of[5];
+      of[5] = v10;
 
-      objc_storeStrong(a1 + 7, v3[7]);
+      objc_storeStrong(of + 7, v3[7]);
       v12 = [v3[6] copy];
-      v13 = a1[6];
-      a1[6] = v12;
+      v13 = of[6];
+      of[6] = v12;
     }
   }
 
   v14 = *MEMORY[0x1E69E9840];
-  return a1;
+  return of;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__BKSHIDEventDeferringResolution_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_1E6F47C78;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = streamCopy;
+  selfCopy = self;
+  v5 = streamCopy;
   [v5 appendProem:0 block:v6];
 }
 
@@ -161,16 +161,16 @@ id __60__BKSHIDEventDeferringResolution_appendDescriptionToStream___block_invoke
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x1E698E690] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -178,10 +178,10 @@ id __60__BKSHIDEventDeferringResolution_appendDescriptionToStream___block_invoke
   else
   {
     v5 = objc_opt_class();
-    if ((v5 == objc_opt_class() || (v6 = objc_opt_class(), v6 == objc_opt_class())) && (display = self->_display, v8 = v4->_display, BSEqualObjects()) && (environment = self->_environment, v10 = v4->_environment, BSEqualObjects()) && self->_pid == v4->_pid && (token = self->_token, v12 = v4->_token, BSEqualObjects()) && self->_versionedPID == v4->_versionedPID)
+    if ((v5 == objc_opt_class() || (v6 = objc_opt_class(), v6 == objc_opt_class())) && (display = self->_display, v8 = equalCopy->_display, BSEqualObjects()) && (environment = self->_environment, v10 = equalCopy->_environment, BSEqualObjects()) && self->_pid == equalCopy->_pid && (token = self->_token, v12 = equalCopy->_token, BSEqualObjects()) && self->_versionedPID == equalCopy->_versionedPID)
     {
       dispatchingTarget = self->_dispatchingTarget;
-      v14 = v4->_dispatchingTarget;
+      v14 = equalCopy->_dispatchingTarget;
       v15 = BSEqualObjects();
     }
 
@@ -194,10 +194,10 @@ id __60__BKSHIDEventDeferringResolution_appendDescriptionToStream___block_invoke
   return v15;
 }
 
-- (BKSHIDEventDeferringResolution)initWithCoder:(id)a3
+- (BKSHIDEventDeferringResolution)initWithCoder:(id)coder
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
   {
@@ -211,18 +211,18 @@ id __60__BKSHIDEventDeferringResolution_appendDescriptionToStream___block_invoke
       v27 = v9;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
       v11 = [v7 errorWithDomain:v8 code:4866 userInfo:v10];
-      [v4 failWithError:v11];
+      [coderCopy failWithError:v11];
 LABEL_9:
 
-      v21 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
   }
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"display"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
-  v12 = [v4 decodeInt64ForKey:@"versionedPID"];
-  v13 = [v4 decodeInt32ForKey:@"pid"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"display"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
+  v12 = [coderCopy decodeInt64ForKey:@"versionedPID"];
+  v13 = [coderCopy decodeInt32ForKey:@"pid"];
   v14 = v13;
   if (!v9 || !v10 || v13 <= 0 && v12 == -1)
   {
@@ -235,12 +235,12 @@ LABEL_9:
     v29[0] = v18;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
     v20 = [v15 errorWithDomain:v16 code:4866 userInfo:v19];
-    [v4 failWithError:v20];
+    [coderCopy failWithError:v20];
 
     goto LABEL_9;
   }
 
-  v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"token"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"token"];
   if (self)
   {
     v25 = [BKSHIDEventDeferringResolution _initWithDisplay:v9 environment:v10 versionedPID:v12 pid:v14 token:v24 dispatchingTarget:?];
@@ -253,20 +253,20 @@ LABEL_9:
 
   self = v25;
 
-  v21 = self;
+  selfCopy = self;
 LABEL_10:
 
   v22 = *MEMORY[0x1E69E9840];
-  return v21;
+  return selfCopy;
 }
 
-- (id)_initWithDisplay:(void *)a1 environment:(void *)a2 versionedPID:(void *)a3 pid:(uint64_t)a4 token:(int)a5 dispatchingTarget:(void *)a6
+- (id)_initWithDisplay:(void *)display environment:(void *)environment versionedPID:(void *)d pid:(uint64_t)pid token:(int)token dispatchingTarget:(void *)target
 {
   v66 = *MEMORY[0x1E69E9840];
-  v11 = a2;
-  v12 = a3;
-  v13 = a6;
-  if (!v11)
+  environmentCopy = environment;
+  dCopy = d;
+  targetCopy = target;
+  if (!environmentCopy)
   {
     v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"display != ((void *)0)"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -279,7 +279,7 @@ LABEL_10:
       v56 = 2114;
       v57 = v28;
       v58 = 2048;
-      v59 = a1;
+      displayCopy7 = display;
       v60 = 2114;
       v61 = @"BKSHIDEventDeferringResolution.m";
       v62 = 1024;
@@ -309,7 +309,7 @@ LABEL_10:
       v56 = 2114;
       v57 = v32;
       v58 = 2048;
-      v59 = a1;
+      displayCopy7 = display;
       v60 = 2114;
       v61 = @"BKSHIDEventDeferringResolution.m";
       v62 = 1024;
@@ -325,7 +325,7 @@ LABEL_10:
     JUMPOUT(0x186387488);
   }
 
-  if (!v12)
+  if (!dCopy)
   {
     v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"environment != ((void *)0)"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -338,7 +338,7 @@ LABEL_10:
       v56 = 2114;
       v57 = v36;
       v58 = 2048;
-      v59 = a1;
+      displayCopy7 = display;
       v60 = 2114;
       v61 = @"BKSHIDEventDeferringResolution.m";
       v62 = 1024;
@@ -368,7 +368,7 @@ LABEL_10:
       v56 = 2114;
       v57 = v40;
       v58 = 2048;
-      v59 = a1;
+      displayCopy7 = display;
       v60 = 2114;
       v61 = @"BKSHIDEventDeferringResolution.m";
       v62 = 1024;
@@ -384,9 +384,9 @@ LABEL_10:
     JUMPOUT(0x186387678);
   }
 
-  if (a4 == -1)
+  if (pid == -1)
   {
-    if (a5 <= 0)
+    if (token <= 0)
     {
       v49 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid pid"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -399,7 +399,7 @@ LABEL_10:
         v56 = 2114;
         v57 = v52;
         v58 = 2048;
-        v59 = a1;
+        displayCopy7 = display;
         v60 = 2114;
         v61 = @"BKSHIDEventDeferringResolution.m";
         v62 = 1024;
@@ -418,10 +418,10 @@ LABEL_10:
 
   else
   {
-    a5 = a4;
+    token = pid;
   }
 
-  if (v13)
+  if (targetCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -437,7 +437,7 @@ LABEL_10:
         v56 = 2114;
         v57 = v44;
         v58 = 2048;
-        v59 = a1;
+        displayCopy7 = display;
         v60 = 2114;
         v61 = @"BKSHIDEventDeferringResolution.m";
         v62 = 1024;
@@ -471,7 +471,7 @@ LABEL_10:
         v56 = 2114;
         v57 = v48;
         v58 = 2048;
-        v59 = a1;
+        displayCopy7 = display;
         v60 = 2114;
         v61 = @"BKSHIDEventDeferringResolution.m";
         v62 = 1024;
@@ -488,22 +488,22 @@ LABEL_10:
     }
   }
 
-  v53.receiver = a1;
+  v53.receiver = display;
   v53.super_class = BKSHIDEventDeferringResolution;
   v16 = objc_msgSendSuper2(&v53, sel_init);
   if (v16)
   {
-    v17 = [v11 copy];
+    v17 = [environmentCopy copy];
     v18 = *(v16 + 1);
     *(v16 + 1) = v17;
 
-    v19 = [v12 copy];
+    v19 = [dCopy copy];
     v20 = *(v16 + 2);
     *(v16 + 2) = v19;
 
-    *(v16 + 3) = a4;
-    *(v16 + 8) = a5;
-    v21 = [v13 copy];
+    *(v16 + 3) = pid;
+    *(v16 + 8) = token;
+    v21 = [targetCopy copy];
     v22 = *(v16 + 5);
     *(v16 + 5) = v21;
 
@@ -514,20 +514,20 @@ LABEL_10:
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   display = self->_display;
-  v5 = a3;
-  [v5 encodeObject:display forKey:@"display"];
-  [v5 encodeObject:self->_environment forKey:@"environment"];
-  [v5 encodeInt32:self->_pid forKey:@"pid"];
-  [v5 encodeInt64:self->_versionedPID forKey:@"versionedPID"];
-  [v5 encodeObject:self->_token forKey:@"token"];
+  coderCopy = coder;
+  [coderCopy encodeObject:display forKey:@"display"];
+  [coderCopy encodeObject:self->_environment forKey:@"environment"];
+  [coderCopy encodeInt32:self->_pid forKey:@"pid"];
+  [coderCopy encodeInt64:self->_versionedPID forKey:@"versionedPID"];
+  [coderCopy encodeObject:self->_token forKey:@"token"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [BKSMutableHIDEventDeferringResolution allocWithZone:a3];
+  v4 = [BKSMutableHIDEventDeferringResolution allocWithZone:zone];
 
   return [(BKSHIDEventDeferringResolution *)&v4->super.super.isa _initWithCopyOf:?];
 }
@@ -545,7 +545,7 @@ LABEL_10:
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventDeferringResolution.m";
     v17 = 1024;
@@ -561,20 +561,20 @@ LABEL_10:
   return result;
 }
 
-- (id)modifiedResolution:(id)a3
+- (id)modifiedResolution:(id)resolution
 {
-  v4 = a3;
+  resolutionCopy = resolution;
   v5 = [(BKSHIDEventDeferringResolution *)self mutableCopy];
-  v4[2](v4, v5);
+  resolutionCopy[2](resolutionCopy, v5);
 
   return v5;
 }
 
-+ (id)build:(id)a3
++ (id)build:(id)build
 {
-  v3 = a3;
+  buildCopy = build;
   v4 = objc_opt_new();
-  v3[2](v3, v4);
+  buildCopy[2](buildCopy, v4);
 
   return v4;
 }

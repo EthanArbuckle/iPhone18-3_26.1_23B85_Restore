@@ -1,21 +1,21 @@
 @interface SBSAbstractWindowingTelemetryPersonalizationMetrics
-- (id)_initWithPreviousMultitaskingMode:(int64_t)a3 currentMultitaskingMode:(int64_t)a4 source:(int64_t)a5 multitaskingBuddyPanePresentation:(int64_t)a6;
+- (id)_initWithPreviousMultitaskingMode:(int64_t)mode currentMultitaskingMode:(int64_t)multitaskingMode source:(int64_t)source multitaskingBuddyPanePresentation:(int64_t)presentation;
 - (void)emit;
 @end
 
 @implementation SBSAbstractWindowingTelemetryPersonalizationMetrics
 
-- (id)_initWithPreviousMultitaskingMode:(int64_t)a3 currentMultitaskingMode:(int64_t)a4 source:(int64_t)a5 multitaskingBuddyPanePresentation:(int64_t)a6
+- (id)_initWithPreviousMultitaskingMode:(int64_t)mode currentMultitaskingMode:(int64_t)multitaskingMode source:(int64_t)source multitaskingBuddyPanePresentation:(int64_t)presentation
 {
   v11.receiver = self;
   v11.super_class = SBSAbstractWindowingTelemetryPersonalizationMetrics;
   result = [(SBSAbstractWindowingTelemetryPersonalizationMetrics *)&v11 init];
   if (result)
   {
-    *(result + 1) = a3;
-    *(result + 2) = a4;
-    *(result + 3) = a5;
-    *(result + 4) = a6;
+    *(result + 1) = mode;
+    *(result + 2) = multitaskingMode;
+    *(result + 3) = source;
+    *(result + 4) = presentation;
   }
 
   return result;
@@ -23,8 +23,8 @@
 
 - (void)emit
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBSAbstractWindowingTelemetryPersonalizationMetrics.m" lineNumber:51 description:@"Abstract class; do not use directly"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBSAbstractWindowingTelemetryPersonalizationMetrics.m" lineNumber:51 description:@"Abstract class; do not use directly"];
 }
 
 id __59__SBSAbstractWindowingTelemetryPersonalizationMetrics_emit__block_invoke(uint64_t a1)

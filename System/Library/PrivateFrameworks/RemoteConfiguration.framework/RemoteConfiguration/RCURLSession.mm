@@ -1,11 +1,11 @@
 @interface RCURLSession
 + (id)_sharedSession;
-+ (id)backgroundSessionForFetchConfig:(id)a3 delegateReference:(id *)a4;
-+ (id)backgroundSessionWithIdentifier:(id)a3 sharedContainerIdentifier:(id)a4 timeout:(double)a5 delegateReference:(id *)a6;
++ (id)backgroundSessionForFetchConfig:(id)config delegateReference:(id *)reference;
++ (id)backgroundSessionWithIdentifier:(id)identifier sharedContainerIdentifier:(id)containerIdentifier timeout:(double)timeout delegateReference:(id *)reference;
 + (id)backgroundSessionsLock;
 + (id)sharedForegroundSession;
-+ (void)_configureURLSessionConfiguration:(id)a3;
-+ (void)cancelAllTasksOnBackgroundSessionWithFetchConfig:(id)a3 completion:(id)a4;
++ (void)_configureURLSessionConfiguration:(id)configuration;
++ (void)cancelAllTasksOnBackgroundSessionWithFetchConfig:(id)config completion:(id)completion;
 - (RCURLSession)init;
 @end
 
@@ -51,7 +51,7 @@ uint64_t __30__RCURLSession__sharedSession__block_invoke()
   block[1] = 3221225472;
   block[2] = __39__RCURLSession_sharedForegroundSession__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedForegroundSession_onceToken != -1)
   {
     dispatch_once(&sharedForegroundSession_onceToken, block);
@@ -76,26 +76,26 @@ void __39__RCURLSession_sharedForegroundSession__block_invoke(uint64_t a1)
   sharedForegroundSession_s_sharedSession = v4;
 }
 
-+ (id)backgroundSessionWithIdentifier:(id)a3 sharedContainerIdentifier:(id)a4 timeout:(double)a5 delegateReference:(id *)a6
++ (id)backgroundSessionWithIdentifier:(id)identifier sharedContainerIdentifier:(id)containerIdentifier timeout:(double)timeout delegateReference:(id *)reference
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [a1 backgroundSessionsLock];
-  [v12 lock];
+  identifierCopy = identifier;
+  containerIdentifierCopy = containerIdentifier;
+  backgroundSessionsLock = [self backgroundSessionsLock];
+  [backgroundSessionsLock lock];
 
   v13 = +[RCURLSession _sharedSession];
-  v14 = [v13 backgroundSessions];
-  v15 = [v14 objectForKeyedSubscript:v10];
+  backgroundSessions = [v13 backgroundSessions];
+  v15 = [backgroundSessions objectForKeyedSubscript:identifierCopy];
 
-  v16 = [a1 backgroundSessionsLock];
-  [v16 unlock];
+  backgroundSessionsLock2 = [self backgroundSessionsLock];
+  [backgroundSessionsLock2 unlock];
 
   if (v15)
   {
-    v17 = [v15 configuration];
-    v18 = [v17 sharedContainerIdentifier];
+    configuration = [v15 configuration];
+    sharedContainerIdentifier = [configuration sharedContainerIdentifier];
 
-    if (v18 != v11 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+    if (sharedContainerIdentifier != containerIdentifierCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       +[RCURLSession backgroundSessionWithIdentifier:sharedContainerIdentifier:timeout:delegateReference:];
     }
@@ -103,41 +103,41 @@ void __39__RCURLSession_sharedForegroundSession__block_invoke(uint64_t a1)
 
   else
   {
-    v19 = [MEMORY[0x277CCAD38] backgroundSessionConfigurationWithIdentifier:v10];
-    [a1 _configureURLSessionConfiguration:v19];
-    [v19 setTimeoutIntervalForResource:a5];
-    [v19 setSharedContainerIdentifier:v11];
+    v19 = [MEMORY[0x277CCAD38] backgroundSessionConfigurationWithIdentifier:identifierCopy];
+    [self _configureURLSessionConfiguration:v19];
+    [v19 setTimeoutIntervalForResource:timeout];
+    [v19 setSharedContainerIdentifier:containerIdentifierCopy];
 
     v20 = objc_alloc_init(MEMORY[0x277CCABD8]);
     [v20 setName:@"RCFetchOperation.backgroundFetchCallbackQueue"];
-    v21 = [MEMORY[0x277CCAC38] processInfo];
-    [v20 setMaxConcurrentOperationCount:{objc_msgSend(v21, "processorCount")}];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [v20 setMaxConcurrentOperationCount:{objc_msgSend(processInfo, "processorCount")}];
 
-    v22 = [[RCNetworkOperationURLSessionDelegate alloc] initWithSessionIdentifier:v10];
+    v22 = [[RCNetworkOperationURLSessionDelegate alloc] initWithSessionIdentifier:identifierCopy];
     v23 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v19 delegate:v22 delegateQueue:v20];
-    v24 = [a1 backgroundSessionsLock];
+    backgroundSessionsLock3 = [self backgroundSessionsLock];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __100__RCURLSession_backgroundSessionWithIdentifier_sharedContainerIdentifier_timeout_delegateReference___block_invoke;
     v29[3] = &unk_27822F130;
-    v30 = v10;
+    v30 = identifierCopy;
     v15 = v23;
     v31 = v15;
-    [v24 performWithLockSync:v29];
+    [backgroundSessionsLock3 performWithLockSync:v29];
   }
 
-  if (a6)
+  if (reference)
   {
-    v25 = [v15 delegate];
+    delegate = [v15 delegate];
 
-    if (!v25 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+    if (!delegate && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       +[RCURLSession backgroundSessionWithIdentifier:sharedContainerIdentifier:timeout:delegateReference:];
     }
 
     v26 = objc_opt_class();
-    v27 = [v15 delegate];
-    *a6 = RCCheckedDynamicCast(v26, v27);
+    delegate2 = [v15 delegate];
+    *reference = RCCheckedDynamicCast(v26, delegate2);
   }
 
   return v15;
@@ -151,42 +151,42 @@ void __100__RCURLSession_backgroundSessionWithIdentifier_sharedContainerIdentifi
   [v3 setObject:v2 forKeyedSubscript:*(a1 + 32)];
 }
 
-+ (id)backgroundSessionForFetchConfig:(id)a3 delegateReference:(id *)a4
++ (id)backgroundSessionForFetchConfig:(id)config delegateReference:(id *)reference
 {
-  v6 = a3;
-  v7 = [v6 sessionIdentifier];
-  v8 = [v6 sharedContainerIdentifier];
-  [v6 timeout];
+  configCopy = config;
+  sessionIdentifier = [configCopy sessionIdentifier];
+  sharedContainerIdentifier = [configCopy sharedContainerIdentifier];
+  [configCopy timeout];
   v10 = v9;
 
-  v11 = [a1 backgroundSessionWithIdentifier:v7 sharedContainerIdentifier:v8 timeout:a4 delegateReference:v10];
+  v11 = [self backgroundSessionWithIdentifier:sessionIdentifier sharedContainerIdentifier:sharedContainerIdentifier timeout:reference delegateReference:v10];
 
   return v11;
 }
 
-+ (void)cancelAllTasksOnBackgroundSessionWithFetchConfig:(id)a3 completion:(id)a4
++ (void)cancelAllTasksOnBackgroundSessionWithFetchConfig:(id)config completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  configCopy = config;
+  completionCopy = completion;
   v7 = RCSharedLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 sessionIdentifier];
+    sessionIdentifier = [configCopy sessionIdentifier];
     *buf = 138543362;
-    v17 = v8;
+    v17 = sessionIdentifier;
     _os_log_impl(&dword_2179FC000, v7, OS_LOG_TYPE_DEFAULT, "Will cancel all tasks on background URLSession: %{public}@", buf, 0xCu);
   }
 
-  v9 = [RCURLSession backgroundSessionForFetchConfig:v5 delegateReference:0];
+  v9 = [RCURLSession backgroundSessionForFetchConfig:configCopy delegateReference:0];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __76__RCURLSession_cancelAllTasksOnBackgroundSessionWithFetchConfig_completion___block_invoke;
   v13[3] = &unk_27822FC48;
-  v14 = v5;
-  v15 = v6;
-  v10 = v6;
-  v11 = v5;
+  v14 = configCopy;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = configCopy;
   [v9 getAllTasksWithCompletionHandler:v13];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -249,30 +249,30 @@ void __76__RCURLSession_cancelAllTasksOnBackgroundSessionWithFetchConfig_complet
 + (id)backgroundSessionsLock
 {
   v2 = +[RCURLSession _sharedSession];
-  v3 = [v2 backgroundSessionsLock];
+  backgroundSessionsLock = [v2 backgroundSessionsLock];
 
-  return v3;
+  return backgroundSessionsLock;
 }
 
-+ (void)_configureURLSessionConfiguration:(id)a3
++ (void)_configureURLSessionConfiguration:(id)configuration
 {
-  v5 = a3;
-  [v5 setAllowsCellularAccess:1];
-  [v5 setRequestCachePolicy:1];
-  [v5 setURLCache:0];
-  [v5 setTimeoutIntervalForRequest:60.0];
-  [v5 setTimeoutIntervalForResource:240.0];
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 objectForInfoDictionaryKey:@"RCNetworkAttributionBundleIdentifier"];
+  configurationCopy = configuration;
+  [configurationCopy setAllowsCellularAccess:1];
+  [configurationCopy setRequestCachePolicy:1];
+  [configurationCopy setURLCache:0];
+  [configurationCopy setTimeoutIntervalForRequest:60.0];
+  [configurationCopy setTimeoutIntervalForResource:240.0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [mainBundle objectForInfoDictionaryKey:@"RCNetworkAttributionBundleIdentifier"];
 
   if (v4)
   {
-    [v5 set_sourceApplicationBundleIdentifier:v4];
+    [configurationCopy set_sourceApplicationBundleIdentifier:v4];
   }
 
-  [v5 set_timingDataOptions:1];
-  [v5 setHTTPMaximumConnectionsPerHost:1];
-  [v5 setHTTPShouldUsePipelining:0];
+  [configurationCopy set_timingDataOptions:1];
+  [configurationCopy setHTTPMaximumConnectionsPerHost:1];
+  [configurationCopy setHTTPShouldUsePipelining:0];
 }
 
 + (void)backgroundSessionWithIdentifier:sharedContainerIdentifier:timeout:delegateReference:.cold.1()

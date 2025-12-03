@@ -1,15 +1,15 @@
 @interface PGTrendsMemoryTitleGenerator
-- (PGTrendsMemoryTitleGenerator)initWithMomentNodes:(id)a3 sceneFeatureLabel:(id)a4 cityNode:(id)a5 titleGenerationContext:(id)a6 timeTitleOptions:(id)a7;
-- (PGTrendsMemoryTitleGenerator)initWithMomentNodes:(id)a3 sceneFeatureLabel:(id)a4 personNode:(id)a5 titleGenerationContext:(id)a6 timeTitleOptions:(id)a7;
-- (PGTrendsMemoryTitleGenerator)initWithMomentNodes:(id)a3 sceneFeatureLabel:(id)a4 titleGenerationContext:(id)a5 timeTitleOptions:(id)a6;
-- (void)_generateTitleAndSubtitleWithResult:(id)a3;
+- (PGTrendsMemoryTitleGenerator)initWithMomentNodes:(id)nodes sceneFeatureLabel:(id)label cityNode:(id)node titleGenerationContext:(id)context timeTitleOptions:(id)options;
+- (PGTrendsMemoryTitleGenerator)initWithMomentNodes:(id)nodes sceneFeatureLabel:(id)label personNode:(id)node titleGenerationContext:(id)context timeTitleOptions:(id)options;
+- (PGTrendsMemoryTitleGenerator)initWithMomentNodes:(id)nodes sceneFeatureLabel:(id)label titleGenerationContext:(id)context timeTitleOptions:(id)options;
+- (void)_generateTitleAndSubtitleWithResult:(id)result;
 @end
 
 @implementation PGTrendsMemoryTitleGenerator
 
-- (void)_generateTitleAndSubtitleWithResult:(id)a3
+- (void)_generateTitleAndSubtitleWithResult:(id)result
 {
-  v26 = a3;
+  resultCopy = result;
   v4 = [@"PGTrendsMemoryTitle" stringByAppendingString:self->_sceneFeatureLabel];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:v4 value:v4 table:@"Localizable"];
@@ -22,9 +22,9 @@
   {
     v25 = v6;
     cityNode = self->_cityNode;
-    v18 = [(PGTitleGenerator *)self titleGenerationContext];
-    v19 = [v18 locationHelper];
-    v11 = [PGLocationTitleUtility beautifiedLocationNodeStringWithPlaceNode:cityNode locationHelper:v19];
+    titleGenerationContext = [(PGTitleGenerator *)self titleGenerationContext];
+    locationHelper = [titleGenerationContext locationHelper];
+    v11 = [PGLocationTitleUtility beautifiedLocationNodeStringWithPlaceNode:cityNode locationHelper:locationHelper];
 
     if (![v11 length])
     {
@@ -81,56 +81,56 @@
 LABEL_10:
 
 LABEL_11:
-  v26[2](v26, v7, v9);
+  resultCopy[2](resultCopy, v7, v9);
 }
 
-- (PGTrendsMemoryTitleGenerator)initWithMomentNodes:(id)a3 sceneFeatureLabel:(id)a4 cityNode:(id)a5 titleGenerationContext:(id)a6 timeTitleOptions:(id)a7
+- (PGTrendsMemoryTitleGenerator)initWithMomentNodes:(id)nodes sceneFeatureLabel:(id)label cityNode:(id)node titleGenerationContext:(id)context timeTitleOptions:(id)options
 {
-  v13 = a5;
-  v14 = [(PGTrendsMemoryTitleGenerator *)self initWithMomentNodes:a3 sceneFeatureLabel:a4 titleGenerationContext:a6 timeTitleOptions:a7];
+  nodeCopy = node;
+  v14 = [(PGTrendsMemoryTitleGenerator *)self initWithMomentNodes:nodes sceneFeatureLabel:label titleGenerationContext:context timeTitleOptions:options];
   v15 = v14;
   if (v14)
   {
     v14->_type = 3;
-    objc_storeStrong(&v14->_cityNode, a5);
+    objc_storeStrong(&v14->_cityNode, node);
   }
 
   return v15;
 }
 
-- (PGTrendsMemoryTitleGenerator)initWithMomentNodes:(id)a3 sceneFeatureLabel:(id)a4 personNode:(id)a5 titleGenerationContext:(id)a6 timeTitleOptions:(id)a7
+- (PGTrendsMemoryTitleGenerator)initWithMomentNodes:(id)nodes sceneFeatureLabel:(id)label personNode:(id)node titleGenerationContext:(id)context timeTitleOptions:(id)options
 {
-  v13 = a5;
-  v14 = [(PGTrendsMemoryTitleGenerator *)self initWithMomentNodes:a3 sceneFeatureLabel:a4 titleGenerationContext:a6 timeTitleOptions:a7];
+  nodeCopy = node;
+  v14 = [(PGTrendsMemoryTitleGenerator *)self initWithMomentNodes:nodes sceneFeatureLabel:label titleGenerationContext:context timeTitleOptions:options];
   v15 = v14;
   if (v14)
   {
     v14->_type = 2;
-    objc_storeStrong(&v14->_personNode, a5);
+    objc_storeStrong(&v14->_personNode, node);
   }
 
   return v15;
 }
 
-- (PGTrendsMemoryTitleGenerator)initWithMomentNodes:(id)a3 sceneFeatureLabel:(id)a4 titleGenerationContext:(id)a5 timeTitleOptions:(id)a6
+- (PGTrendsMemoryTitleGenerator)initWithMomentNodes:(id)nodes sceneFeatureLabel:(id)label titleGenerationContext:(id)context timeTitleOptions:(id)options
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nodesCopy = nodes;
+  labelCopy = label;
+  contextCopy = context;
+  optionsCopy = options;
   v20.receiver = self;
   v20.super_class = PGTrendsMemoryTitleGenerator;
-  v15 = [(PGTitleGenerator *)&v20 initWithMomentNodes:v11 type:0 titleGenerationContext:v13];
+  v15 = [(PGTitleGenerator *)&v20 initWithMomentNodes:nodesCopy type:0 titleGenerationContext:contextCopy];
   v16 = v15;
   if (v15)
   {
     v15->_type = 1;
-    objc_storeStrong(&v15->_momentNodes, a3);
-    objc_storeStrong(&v16->_sceneFeatureLabel, a4);
-    objc_storeStrong(&v16->_timeTitleOptions, a6);
-    v17 = [v13 serviceManager];
+    objc_storeStrong(&v15->_momentNodes, nodes);
+    objc_storeStrong(&v16->_sceneFeatureLabel, label);
+    objc_storeStrong(&v16->_timeTitleOptions, options);
+    serviceManager = [contextCopy serviceManager];
     serviceManager = v16->_serviceManager;
-    v16->_serviceManager = v17;
+    v16->_serviceManager = serviceManager;
   }
 
   return v16;

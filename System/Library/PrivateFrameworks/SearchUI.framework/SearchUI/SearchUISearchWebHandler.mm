@@ -1,5 +1,5 @@
 @interface SearchUISearchWebHandler
-+ (id)webSearchURLForQueryString:(id)a3;
++ (id)webSearchURLForQueryString:(id)string;
 - (id)destinationApplicationIconImage;
 - (id)destinationPunchout;
 @end
@@ -8,40 +8,40 @@
 
 - (id)destinationPunchout
 {
-  v2 = [(SearchUICommandHandler *)self command];
-  v3 = [v2 searchString];
+  command = [(SearchUICommandHandler *)self command];
+  searchString = [command searchString];
 
   v4 = MEMORY[0x1E69CA320];
-  v5 = [objc_opt_class() webSearchURLForQueryString:v3];
+  v5 = [objc_opt_class() webSearchURLForQueryString:searchString];
   v6 = [v4 punchoutWithURL:v5];
 
   return v6;
 }
 
-+ (id)webSearchURLForQueryString:(id)a3
++ (id)webSearchURLForQueryString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v3 = MEMORY[0x1E695E000];
-    v4 = a3;
-    v5 = [v3 _sf_safariSharedDefaults];
-    v6 = v5;
-    if (v5)
+    stringCopy = string;
+    _sf_safariSharedDefaults = [v3 _sf_safariSharedDefaults];
+    v6 = _sf_safariSharedDefaults;
+    if (_sf_safariSharedDefaults)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __55__SearchUISearchWebHandler_webSearchURLForQueryString___block_invoke;
       block[3] = &unk_1E85B24C8;
-      v12 = v5;
+      v12 = _sf_safariSharedDefaults;
       if (webSearchURLForQueryString__onceToken != -1)
       {
         dispatch_once(&webSearchURLForQueryString__onceToken, block);
       }
     }
 
-    v7 = [MEMORY[0x1E697A848] sharedInstance];
-    v8 = [v7 defaultSearchEngine];
-    v9 = [v8 searchURLForUserTypedString:v4];
+    mEMORY[0x1E697A848] = [MEMORY[0x1E697A848] sharedInstance];
+    defaultSearchEngine = [mEMORY[0x1E697A848] defaultSearchEngine];
+    v9 = [defaultSearchEngine searchURLForUserTypedString:stringCopy];
   }
 
   else

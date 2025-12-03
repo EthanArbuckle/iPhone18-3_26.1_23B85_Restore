@@ -1,14 +1,14 @@
 @interface VCPURLAsset
-+ (id)imageAssetWithURL:(id)a3;
-+ (id)livePhotoAssetWithImageURL:(id)a3 andMovieURL:(id)a4;
-+ (id)movieAssetWithURL:(id)a3;
-+ (id)sdofImageAssetWithURL:(id)a3;
++ (id)imageAssetWithURL:(id)l;
++ (id)livePhotoAssetWithImageURL:(id)l andMovieURL:(id)rL;
++ (id)movieAssetWithURL:(id)l;
++ (id)sdofImageAssetWithURL:(id)l;
 - ($AFC8CF76A46F37F9FB23C20884F4FD99)slomoRange;
-- (VCPURLAsset)initWithImageURL:(id)a3 andMovieURL:(id)a4;
-- (VCPURLAsset)initWithImageURL:(id)a3 isSDOF:(BOOL)a4;
-- (VCPURLAsset)initWithMovieURL:(id)a3;
-- (__CVBuffer)imageWithPreferredDimension:(unint64_t)a3;
-- (__CVBuffer)imageWithPreferredDimension:(unint64_t)a3 orientation:(unsigned int *)a4;
+- (VCPURLAsset)initWithImageURL:(id)l andMovieURL:(id)rL;
+- (VCPURLAsset)initWithImageURL:(id)l isSDOF:(BOOL)f;
+- (VCPURLAsset)initWithMovieURL:(id)l;
+- (__CVBuffer)imageWithPreferredDimension:(unint64_t)dimension;
+- (__CVBuffer)imageWithPreferredDimension:(unint64_t)dimension orientation:(unsigned int *)orientation;
 - (double)duration;
 - (float)photoOffsetSeconds;
 - (float)slowmoRate;
@@ -59,37 +59,37 @@
 - (id)scenes
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_onceScenes)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_onceScenes)
   {
     v29 = 0;
   }
 
   else
   {
-    v2->_onceScenes = 1;
-    v3 = [MEMORY[0x1E695DF90] dictionary];
-    cachedScenes = v2->_cachedScenes;
-    v2->_cachedScenes = v3;
+    selfCopy->_onceScenes = 1;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    cachedScenes = selfCopy->_cachedScenes;
+    selfCopy->_cachedScenes = dictionary;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v6 = objc_autoreleasePoolPush();
     v7 = objc_alloc(MEMORY[0x1E69845B8]);
-    v8 = [v7 initWithURL:v2->_imageURL options:MEMORY[0x1E695E0F8]];
+    v8 = [v7 initWithURL:selfCopy->_imageURL options:MEMORY[0x1E695E0F8]];
     if (v8)
     {
       v9 = objc_alloc_init(MEMORY[0x1E6984668]);
       v10 = v9;
       if (v9 && ([v9 setPreferBackgroundProcessing:1], objc_msgSend(v10, "setRevision:", 2), v35[0] = v10, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v35, 1), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v8, "performRequests:error:", v11, 0), v11, (v12 & 1) != 0))
       {
-        v13 = [v10 results];
-        v14 = v13 == 0;
+        results = [v10 results];
+        v14 = results == 0;
 
         if (!v14)
         {
-          v15 = [v10 results];
-          [v5 addObjectsFromArray:v15];
+          results2 = [v10 results];
+          [array addObjectsFromArray:results2];
         }
 
         v16 = 0;
@@ -113,27 +113,27 @@
     if (v16)
     {
 
-      objc_sync_exit(v2);
+      objc_sync_exit(selfCopy);
       goto LABEL_27;
     }
 
-    if ([v5 count])
+    if ([array count])
     {
-      if ([v5 count] >= 0xB)
+      if ([array count] >= 0xB)
       {
-        [v5 sortUsingComparator:&__block_literal_global_38];
-        v17 = [v5 subarrayWithRange:{0, 10}];
+        [array sortUsingComparator:&__block_literal_global_38];
+        v17 = [array subarrayWithRange:{0, 10}];
         v18 = [v17 mutableCopy];
 
-        v5 = v18;
+        array = v18;
       }
 
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v5 = v5;
-      v19 = [v5 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      array = array;
+      v19 = [array countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (v19)
       {
         v20 = *v31;
@@ -143,19 +143,19 @@
           {
             if (*v31 != v20)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(array);
             }
 
             v22 = *(*(&v30 + 1) + 8 * i);
-            v23 = v2->_cachedScenes;
+            v23 = selfCopy->_cachedScenes;
             v24 = MEMORY[0x1E696AD98];
             [v22 confidence];
             v25 = [v24 numberWithFloat:?];
-            v26 = [v22 identifier];
-            [(NSMutableDictionary *)v23 setObject:v25 forKey:v26];
+            identifier = [v22 identifier];
+            [(NSMutableDictionary *)v23 setObject:v25 forKey:identifier];
           }
 
-          v19 = [v5 countByEnumeratingWithState:&v30 objects:v34 count:16];
+          v19 = [array countByEnumeratingWithState:&v30 objects:v34 count:16];
         }
 
         while (v19);
@@ -163,7 +163,7 @@
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
 LABEL_27:
   if (v29)
@@ -173,7 +173,7 @@ LABEL_27:
 
   else
   {
-    v27 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v2->_cachedScenes];
+    v27 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:selfCopy->_cachedScenes];
   }
 
   return v27;
@@ -202,11 +202,11 @@ uint64_t __21__VCPURLAsset_scenes__block_invoke(uint64_t a1, void *a2, void *a3)
   return v9;
 }
 
-- (VCPURLAsset)initWithImageURL:(id)a3 isSDOF:(BOOL)a4
+- (VCPURLAsset)initWithImageURL:(id)l isSDOF:(BOOL)f
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = CGImageSourceCreateWithURL(v6, 0);
+  fCopy = f;
+  lCopy = l;
+  v7 = CGImageSourceCreateWithURL(lCopy, 0);
   if (!v7)
   {
     v18 = 0;
@@ -219,7 +219,7 @@ uint64_t __21__VCPURLAsset_scenes__block_invoke(uint64_t a1, void *a2, void *a3)
   self = v8;
   if (v8)
   {
-    v9 = [(__CFURL *)v6 copy];
+    v9 = [(__CFURL *)lCopy copy];
     imageURL = v8->_imageURL;
     v8->_imageURL = v9;
 
@@ -268,7 +268,7 @@ uint64_t __21__VCPURLAsset_scenes__block_invoke(uint64_t a1, void *a2, void *a3)
       v8->_mediaSubtypes |= 1uLL;
     }
 
-    if (v4)
+    if (fCopy)
     {
       v8->_mediaSubtypes |= 0x10uLL;
     }
@@ -293,12 +293,12 @@ LABEL_23:
   return v22;
 }
 
-+ (id)imageAssetWithURL:(id)a3
++ (id)imageAssetWithURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [objc_alloc(objc_opt_class()) initWithImageURL:v3 isSDOF:0];
+    v4 = [objc_alloc(objc_opt_class()) initWithImageURL:lCopy isSDOF:0];
   }
 
   else
@@ -309,12 +309,12 @@ LABEL_23:
   return v4;
 }
 
-+ (id)sdofImageAssetWithURL:(id)a3
++ (id)sdofImageAssetWithURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [objc_alloc(objc_opt_class()) initWithImageURL:v3 isSDOF:1];
+    v4 = [objc_alloc(objc_opt_class()) initWithImageURL:lCopy isSDOF:1];
   }
 
   else
@@ -327,45 +327,45 @@ LABEL_23:
 
 - (id)exif
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_onceExif)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_onceExif)
   {
-    v3 = [MEMORY[0x1E695DF20] vcp_exifFromImageURL:v2->_imageURL];
-    cachedExif = v2->_cachedExif;
-    v2->_cachedExif = v3;
+    v3 = [MEMORY[0x1E695DF20] vcp_exifFromImageURL:selfCopy->_imageURL];
+    cachedExif = selfCopy->_cachedExif;
+    selfCopy->_cachedExif = v3;
 
-    v2->_onceExif = 1;
+    selfCopy->_onceExif = 1;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_cachedExif;
+  v5 = selfCopy->_cachedExif;
 
   return v5;
 }
 
-- (__CVBuffer)imageWithPreferredDimension:(unint64_t)a3
+- (__CVBuffer)imageWithPreferredDimension:(unint64_t)dimension
 {
   v5 = +[VCPImageManager sharedImageManager];
-  v6 = [v5 pixelBufferWithFormat:875704422 andMaxDimension:a3 fromImageURL:self->_imageURL];
+  v6 = [v5 pixelBufferWithFormat:875704422 andMaxDimension:dimension fromImageURL:self->_imageURL];
 
   return v6;
 }
 
-- (__CVBuffer)imageWithPreferredDimension:(unint64_t)a3 orientation:(unsigned int *)a4
+- (__CVBuffer)imageWithPreferredDimension:(unint64_t)dimension orientation:(unsigned int *)orientation
 {
   v7 = +[VCPImageManager sharedImageManager];
-  v8 = [v7 pixelBufferWithFormat:875704422 andMaxDimension:a3 fromImageURL:self->_imageURL orientation:a4];
+  v8 = [v7 pixelBufferWithFormat:875704422 andMaxDimension:dimension fromImageURL:self->_imageURL orientation:orientation];
 
   return v8;
 }
 
-- (VCPURLAsset)initWithImageURL:(id)a3 andMovieURL:(id)a4
+- (VCPURLAsset)initWithImageURL:(id)l andMovieURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = CGImageSourceCreateWithURL(v6, 0);
+  lCopy = l;
+  rLCopy = rL;
+  v8 = CGImageSourceCreateWithURL(lCopy, 0);
   if (v8)
   {
     v20.receiver = self;
@@ -374,7 +374,7 @@ LABEL_23:
     self = v9;
     if (v9)
     {
-      v10 = [(__CFURL *)v6 copy];
+      v10 = [(__CFURL *)lCopy copy];
       imageURL = v9->_imageURL;
       v9->_imageURL = v10;
 
@@ -399,7 +399,7 @@ LABEL_23:
 
       else
       {
-        v15 = [MEMORY[0x1E6988168] assetWithURL:v7];
+        v15 = [MEMORY[0x1E6988168] assetWithURL:rLCopy];
         movie = v9->_movie;
         v9->_movie = v15;
 
@@ -434,15 +434,15 @@ LABEL_23:
   return v18;
 }
 
-+ (id)livePhotoAssetWithImageURL:(id)a3 andMovieURL:(id)a4
++ (id)livePhotoAssetWithImageURL:(id)l andMovieURL:(id)rL
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  lCopy = l;
+  rLCopy = rL;
+  v7 = rLCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (lCopy && rLCopy)
   {
-    v8 = [objc_alloc(objc_opt_class()) initWithImageURL:v5 andMovieURL:v6];
+    v8 = [objc_alloc(objc_opt_class()) initWithImageURL:lCopy andMovieURL:rLCopy];
   }
 
   return v8;
@@ -450,9 +450,9 @@ LABEL_23:
 
 - (float)photoOffsetSeconds
 {
-  v3 = [(VCPAsset *)self isLivePhoto];
+  isLivePhoto = [(VCPAsset *)self isLivePhoto];
   v4 = 0.0;
-  if (v3)
+  if (isLivePhoto)
   {
     memset(&v9, 0, sizeof(v9));
     movie = self->_movie;
@@ -473,9 +473,9 @@ LABEL_23:
   return *&v4;
 }
 
-- (VCPURLAsset)initWithMovieURL:(id)a3
+- (VCPURLAsset)initWithMovieURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v25.receiver = self;
   v25.super_class = VCPURLAsset;
   v5 = [(VCPURLAsset *)&v25 init];
@@ -486,7 +486,7 @@ LABEL_23:
 
   v6 = objc_autoreleasePoolPush();
   v5->_mediaType = 2;
-  v7 = [MEMORY[0x1E6988168] assetWithURL:v4];
+  v7 = [MEMORY[0x1E6988168] assetWithURL:lCopy];
   movie = v5->_movie;
   v5->_movie = v7;
 
@@ -542,10 +542,10 @@ LABEL_14:
   return v6;
 }
 
-+ (id)movieAssetWithURL:(id)a3
++ (id)movieAssetWithURL:(id)l
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithMovieURL:v3];
+  lCopy = l;
+  v4 = [objc_alloc(objc_opt_class()) initWithMovieURL:lCopy];
 
   return v4;
 }

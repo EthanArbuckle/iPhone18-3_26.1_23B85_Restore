@@ -1,14 +1,14 @@
 @interface CSPageViewController
 - (CSCoverSheetViewControllerProtocol)coverSheetViewController;
-- (CSPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CSPageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)view;
 - (int64_t)participantState;
-- (void)aggregateAppearance:(id)a3;
-- (void)aggregateBehavior:(id)a3;
-- (void)didTransitionToVisible:(BOOL)a3;
-- (void)handleAction:(id)a3 fromSender:(id)a4;
+- (void)aggregateAppearance:(id)appearance;
+- (void)aggregateBehavior:(id)behavior;
+- (void)didTransitionToVisible:(BOOL)visible;
+- (void)handleAction:(id)action fromSender:(id)sender;
 - (void)viewDidLoad;
-- (void)willTransitionToVisible:(BOOL)a3;
+- (void)willTransitionToVisible:(BOOL)visible;
 @end
 
 @implementation CSPageViewController
@@ -30,19 +30,19 @@
 {
   v4.receiver = self;
   v4.super_class = CSPageViewController;
-  v2 = [(CSPageViewController *)&v4 view];
+  view = [(CSPageViewController *)&v4 view];
 
-  return v2;
+  return view;
 }
 
-- (CSPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CSPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = CSPageViewController;
-  return [(CSPresentationViewController *)&v5 initWithNibName:a3 bundle:a4];
+  return [(CSPresentationViewController *)&v5 initWithNibName:name bundle:bundle];
 }
 
-- (void)willTransitionToVisible:(BOOL)a3
+- (void)willTransitionToVisible:(BOOL)visible
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = SBLogDashBoard();
@@ -59,7 +59,7 @@
   }
 }
 
-- (void)didTransitionToVisible:(BOOL)a3
+- (void)didTransitionToVisible:(BOOL)visible
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = SBLogDashBoard();
@@ -78,42 +78,42 @@
 
 - (void)viewDidLoad
 {
-  v3 = [(CSPageViewController *)self view];
-  [v3 setPageViewController:self];
+  view = [(CSPageViewController *)self view];
+  [view setPageViewController:self];
 
   v4.receiver = self;
   v4.super_class = CSPageViewController;
   [(CSPresentationViewController *)&v4 viewDidLoad];
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
   v3.receiver = self;
   v3.super_class = CSPageViewController;
-  [(CSPresentationViewController *)&v3 aggregateAppearance:a3];
+  [(CSPresentationViewController *)&v3 aggregateAppearance:appearance];
 }
 
-- (void)aggregateBehavior:(id)a3
+- (void)aggregateBehavior:(id)behavior
 {
   v3.receiver = self;
   v3.super_class = CSPageViewController;
-  [(CSPresentationViewController *)&v3 aggregateBehavior:a3];
+  [(CSPresentationViewController *)&v3 aggregateBehavior:behavior];
 }
 
-- (void)handleAction:(id)a3 fromSender:(id)a4
+- (void)handleAction:(id)action fromSender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type] == 1 && (-[CSPresentationViewController contentViewControllers](self, "contentViewControllers"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "containsObject:", v7), v8, v9))
+  actionCopy = action;
+  senderCopy = sender;
+  if ([actionCopy type] == 1 && (-[CSPresentationViewController contentViewControllers](self, "contentViewControllers"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "containsObject:", senderCopy), v8, v9))
   {
-    [(CSPresentationViewController *)self dismissContentViewController:v7 animated:1];
+    [(CSPresentationViewController *)self dismissContentViewController:senderCopy animated:1];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = CSPageViewController;
-    [(CSCoverSheetViewControllerBase *)&v10 handleAction:v6 fromSender:v7];
+    [(CSCoverSheetViewControllerBase *)&v10 handleAction:actionCopy fromSender:senderCopy];
   }
 }
 

@@ -6,19 +6,19 @@
 
 - (id)vui_viewControllerForFullScreenPresentation
 {
-  v2 = [a1 viewControllerForFullScreenPresentation];
-  v3 = v2;
-  if (v2)
+  viewControllerForFullScreenPresentation = [self viewControllerForFullScreenPresentation];
+  v3 = viewControllerForFullScreenPresentation;
+  if (viewControllerForFullScreenPresentation)
   {
-    v4 = v2;
+    selfCopy = viewControllerForFullScreenPresentation;
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  v5 = v4;
+  v5 = selfCopy;
 
   [v5 setVui_requiresLegacyPresentation:1];
 

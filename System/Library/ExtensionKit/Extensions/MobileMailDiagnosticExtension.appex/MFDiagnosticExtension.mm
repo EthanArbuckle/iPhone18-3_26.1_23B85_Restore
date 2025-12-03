@@ -1,9 +1,9 @@
 @interface MFDiagnosticExtension
 + (OS_os_log)log;
 - (EMDaemonInterface)daemonInterface;
-- (id)_attachmentForURL:(id)a3;
-- (id)attachmentsForParameters:(id)a3;
-- (id)requestDiagnostics:(id)a3 isSensitiveCollectionAllowed:(BOOL)a4;
+- (id)_attachmentForURL:(id)l;
+- (id)attachmentsForParameters:(id)parameters;
+- (id)requestDiagnostics:(id)diagnostics isSensitiveCollectionAllowed:(BOOL)allowed;
 - (void)dealloc;
 @end
 
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_100000DF0;
   block[3] = &unk_100004170;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100008500 != -1)
   {
     dispatch_once(&qword_100008500, block);
@@ -49,10 +49,10 @@
   return daemonInterface;
 }
 
-- (id)requestDiagnostics:(id)a3 isSensitiveCollectionAllowed:(BOOL)a4
+- (id)requestDiagnostics:(id)diagnostics isSensitiveCollectionAllowed:(BOOL)allowed
 {
-  LODWORD(v4) = a4;
-  v6 = a3;
+  LODWORD(v4) = allowed;
+  diagnosticsCopy = diagnostics;
   v7 = +[MFDiagnosticExtension log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -61,7 +61,7 @@
   }
 
   v8 = +[EFPromise promise];
-  if (([v6 isEqualToString:@"com.apple.taptoradard"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"com.apple.TapToRadar"))
+  if (([diagnosticsCopy isEqualToString:@"com.apple.taptoradard"] & 1) != 0 || objc_msgSend(diagnosticsCopy, "isEqualToString:", @"com.apple.TapToRadar"))
   {
     v4 = v4;
   }
@@ -79,27 +79,27 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Requesting diagnostics using options %lu", buf, 0xCu);
   }
 
-  v10 = [(MFDiagnosticExtension *)self daemonInterface];
-  v11 = [v10 diagnosticInfoGatherer];
+  daemonInterface = [(MFDiagnosticExtension *)self daemonInterface];
+  diagnosticInfoGatherer = [daemonInterface diagnosticInfoGatherer];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000011BC;
   v15[3] = &unk_100004198;
   v12 = v8;
   v16 = v12;
-  [v11 gatherDiagnosticsWithOptions:v4 completionHandler:v15];
+  [diagnosticInfoGatherer gatherDiagnosticsWithOptions:v4 completionHandler:v15];
 
-  v13 = [v12 future];
+  future = [v12 future];
 
-  return v13;
+  return future;
 }
 
-- (id)_attachmentForURL:(id)a3
+- (id)_attachmentForURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [DEAttachmentItem attachmentWithPathURL:v3];
+    v4 = [DEAttachmentItem attachmentWithPathURL:lCopy];
   }
 
   else
@@ -110,11 +110,11 @@
   return v4;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v23 = a3;
-  v25 = [v23 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
-  v4 = [v23 objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
+  parametersCopy = parameters;
+  v25 = [parametersCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  v4 = [parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
 
   v5 = +[MFDiagnosticExtension log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -144,9 +144,9 @@
 
   else
   {
-    v12 = [v24 startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource = [v24 startAccessingSecurityScopedResource];
     v13 = +[NSFileManager defaultManager];
-    v22 = v12;
+    v22 = startAccessingSecurityScopedResource;
     v30 = 0;
     v8 = [v13 contentsOfDirectoryAtURL:v24 includingPropertiesForKeys:0 options:0 error:&v30];
     v10 = v30;
@@ -156,8 +156,8 @@
       v14 = +[MFDiagnosticExtension log];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v15 = [v24 path];
-        sub_100001758(v15, v10, buf, v14);
+        path = [v24 path];
+        sub_100001758(path, v10, buf, v14);
       }
     }
 
@@ -202,7 +202,7 @@
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *v32 = 138412546;
-      v33 = v23;
+      v33 = parametersCopy;
       v34 = 2112;
       v35 = v6;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "attachmentsForParameters:%@ %@", v32, 0x16u);

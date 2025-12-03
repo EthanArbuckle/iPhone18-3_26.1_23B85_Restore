@@ -1,27 +1,27 @@
 @interface LNQuickLook
-- (LNQuickLook)initWithItems:(id)a3;
+- (LNQuickLook)initWithItems:(id)items;
 - (id)editedItems;
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3;
-- (int64_t)previewController:(id)a3 editingModeForPreviewItem:(id)a4;
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithError:(id)a3;
-- (void)presentOverViewController:(id)a3 completionHandler:(id)a4;
-- (void)previewController:(id)a3 didSaveEditedCopyOfPreviewItem:(id)a4 atURL:(id)a5;
-- (void)previewControllerDidDismiss:(id)a3;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller;
+- (int64_t)previewController:(id)controller editingModeForPreviewItem:(id)item;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithError:(id)error;
+- (void)presentOverViewController:(id)controller completionHandler:(id)handler;
+- (void)previewController:(id)controller didSaveEditedCopyOfPreviewItem:(id)item atURL:(id)l;
+- (void)previewControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation LNQuickLook
 
 - (id)editedItems
 {
-  v3 = [(LNQuickLook *)self items];
+  items = [(LNQuickLook *)self items];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __26__LNQuickLook_editedItems__block_invoke;
   v6[3] = &unk_1E74B16B8;
   v6[4] = self;
-  v4 = [v3 if_map:v6];
+  v4 = [items if_map:v6];
 
   return v4;
 }
@@ -49,45 +49,45 @@ id __26__LNQuickLook_editedItems__block_invoke(uint64_t a1, void *a2)
   return v9;
 }
 
-- (void)previewControllerDidDismiss:(id)a3
+- (void)previewControllerDidDismiss:(id)dismiss
 {
-  v9 = a3;
-  v4 = [(LNQuickLook *)self viewControllerForPresenting];
-  v5 = [v4 parentViewController];
+  dismissCopy = dismiss;
+  viewControllerForPresenting = [(LNQuickLook *)self viewControllerForPresenting];
+  parentViewController = [viewControllerForPresenting parentViewController];
 
-  if (v5)
+  if (parentViewController)
   {
     do
     {
-      v6 = [v4 parentViewController];
+      parentViewController2 = [viewControllerForPresenting parentViewController];
 
-      v7 = [v6 parentViewController];
+      v6ParentViewController = [parentViewController2 parentViewController];
 
-      v4 = v6;
+      viewControllerForPresenting = parentViewController2;
     }
 
-    while (v7);
+    while (v6ParentViewController);
   }
 
   else
   {
-    v6 = v4;
+    parentViewController2 = viewControllerForPresenting;
   }
 
-  v8 = [v6 view];
-  [v8 setAccessibilityElementsHidden:0];
+  view = [parentViewController2 view];
+  [view setAccessibilityElementsHidden:0];
 
-  [v9 setDataSource:0];
+  [dismissCopy setDataSource:0];
   [(LNQuickLook *)self setPreviewController:0];
   [(LNQuickLook *)self finishWithError:0];
 }
 
-- (void)previewController:(id)a3 didSaveEditedCopyOfPreviewItem:(id)a4 atURL:(id)a5
+- (void)previewController:(id)controller didSaveEditedCopyOfPreviewItem:(id)item atURL:(id)l
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(LNQuickLook *)self editedPreviewItems];
-  v12 = v7;
+  itemCopy = item;
+  lCopy = l;
+  editedPreviewItems = [(LNQuickLook *)self editedPreviewItems];
+  v12 = itemCopy;
   if (v12)
   {
     objc_opt_class();
@@ -109,12 +109,12 @@ id __26__LNQuickLook_editedItems__block_invoke(uint64_t a1, void *a2)
 
   v11 = v10;
 
-  [v9 setObject:v8 forKey:v11];
+  [editedPreviewItems setObject:lCopy forKey:v11];
 }
 
-- (int64_t)previewController:(id)a3 editingModeForPreviewItem:(id)a4
+- (int64_t)previewController:(id)controller editingModeForPreviewItem:(id)item
 {
-  v4 = [(LNQuickLook *)self editingMode:a3];
+  v4 = [(LNQuickLook *)self editingMode:controller];
   if (v4 == 2)
   {
     return 1;
@@ -126,44 +126,44 @@ id __26__LNQuickLook_editedItems__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
-  v5 = [(LNQuickLook *)self items];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  items = [(LNQuickLook *)self items];
+  v6 = [items objectAtIndexedSubscript:index];
 
   return v6;
 }
 
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller
 {
-  v3 = [(LNQuickLook *)self items];
-  v4 = [v3 count];
+  items = [(LNQuickLook *)self items];
+  v4 = [items count];
 
   return v4;
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(LNQuickLook *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(LNQuickLook *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(LNQuickLook *)self completionHandler];
-    v6 = [(LNQuickLook *)self editedItems];
-    (v5)[2](v5, v6, v7);
+    completionHandler2 = [(LNQuickLook *)self completionHandler];
+    editedItems = [(LNQuickLook *)self editedItems];
+    (completionHandler2)[2](completionHandler2, editedItems, errorCopy);
   }
 
   [(LNQuickLook *)self setCompletionHandler:0];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(UIViewController *)self->_viewControllerForPresenting presentedViewController];
+  presentedViewController = [(UIViewController *)self->_viewControllerForPresenting presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
     viewControllerForPresenting = self->_viewControllerForPresenting;
     v8[0] = MEMORY[0x1E69E9820];
@@ -171,7 +171,7 @@ id __26__LNQuickLook_editedItems__block_invoke(uint64_t a1, void *a2)
     v8[2] = __55__LNQuickLook_cancelPresentationWithCompletionHandler___block_invoke;
     v8[3] = &unk_1E74B1930;
     v8[4] = self;
-    v9 = v4;
+    v9 = handlerCopy;
     [(UIViewController *)viewControllerForPresenting dismissViewControllerAnimated:1 completion:v8];
   }
 
@@ -180,7 +180,7 @@ id __26__LNQuickLook_editedItems__block_invoke(uint64_t a1, void *a2)
     v7 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3072 userInfo:0];
     [(LNQuickLook *)self finishWithError:v7];
 
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -195,11 +195,11 @@ uint64_t __55__LNQuickLook_cancelPresentationWithCompletionHandler___block_invok
   return v4();
 }
 
-- (void)presentOverViewController:(id)a3 completionHandler:(id)a4
+- (void)presentOverViewController:(id)controller completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  [(LNQuickLook *)self setCompletionHandler:v7];
+  controllerCopy = controller;
+  handlerCopy = handler;
+  [(LNQuickLook *)self setCompletionHandler:handlerCopy];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v18 = 0;
   v19 = &v18;
@@ -231,39 +231,39 @@ uint64_t __55__LNQuickLook_cancelPresentationWithCompletionHandler___block_invok
   [v10 setCurrentPreviewItemIndex:0];
   [v10 setModalPresentationStyle:2];
   [(LNQuickLook *)self setPreviewController:v10];
-  [(LNQuickLook *)self setViewControllerForPresenting:v6];
-  v11 = v6;
-  v12 = [v11 parentViewController];
+  [(LNQuickLook *)self setViewControllerForPresenting:controllerCopy];
+  v11 = controllerCopy;
+  parentViewController = [v11 parentViewController];
 
-  v13 = v11;
-  if (v12)
+  parentViewController2 = v11;
+  if (parentViewController)
   {
     v14 = v11;
     do
     {
-      v13 = [v14 parentViewController];
+      parentViewController2 = [v14 parentViewController];
 
-      v15 = [v13 parentViewController];
+      v13ParentViewController = [parentViewController2 parentViewController];
 
-      v14 = v13;
+      v14 = parentViewController2;
     }
 
-    while (v15);
+    while (v13ParentViewController);
   }
 
-  v16 = [v13 view];
-  [v16 setAccessibilityElementsHidden:1];
+  view = [parentViewController2 view];
+  [view setAccessibilityElementsHidden:1];
 
   [v11 presentViewController:v10 animated:1 completion:0];
 }
 
-- (LNQuickLook)initWithItems:(id)a3
+- (LNQuickLook)initWithItems:(id)items
 {
-  v5 = a3;
-  if (!v5)
+  itemsCopy = items;
+  if (!itemsCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"LNQuickLook.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"items"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNQuickLook.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"items"}];
   }
 
   v14.receiver = self;
@@ -271,11 +271,11 @@ uint64_t __55__LNQuickLook_cancelPresentationWithCompletionHandler___block_invok
   v6 = [(LNQuickLook *)&v14 init];
   if (v6)
   {
-    v7 = [v5 if_map:&__block_literal_global_8956];
+    v7 = [itemsCopy if_map:&__block_literal_global_8956];
     items = v6->_items;
     v6->_items = v7;
 
-    v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v5, "count")}];
+    v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
     editedPreviewItems = v6->_editedPreviewItems;
     v6->_editedPreviewItems = v9;
 

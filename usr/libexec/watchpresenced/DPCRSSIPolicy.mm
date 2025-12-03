@@ -1,16 +1,16 @@
 @interface DPCRSSIPolicy
-- (DPCRSSIPolicy)initWithStateMachine:(id)a3;
-- (unint64_t)onRSSIChange:(id)a3;
-- (void)notifyNewEvent:(unint64_t)a3;
-- (void)onWristStateChange:(int64_t)a3;
-- (void)runRSSIAdapter:(unint64_t)a3 RSSI:(id)a4;
+- (DPCRSSIPolicy)initWithStateMachine:(id)machine;
+- (unint64_t)onRSSIChange:(id)change;
+- (void)notifyNewEvent:(unint64_t)event;
+- (void)onWristStateChange:(int64_t)change;
+- (void)runRSSIAdapter:(unint64_t)adapter RSSI:(id)i;
 @end
 
 @implementation DPCRSSIPolicy
 
-- (DPCRSSIPolicy)initWithStateMachine:(id)a3
+- (DPCRSSIPolicy)initWithStateMachine:(id)machine
 {
-  v4 = a3;
+  machineCopy = machine;
   v8.receiver = self;
   v8.super_class = DPCRSSIPolicy;
   v5 = [(DPCBasePolicy *)&v8 init];
@@ -18,101 +18,101 @@
   if (v5)
   {
     [(DPCBasePolicy *)v5 setRequireRSSI:1];
-    [(DPCBasePolicy *)v6 setStateMachine:v4];
+    [(DPCBasePolicy *)v6 setStateMachine:machineCopy];
   }
 
   return v6;
 }
 
-- (void)notifyNewEvent:(unint64_t)a3
+- (void)notifyNewEvent:(unint64_t)event
 {
   v5 = sub_100001040(off_100016898);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(DPCBasePolicy *)self stateMachine];
-    v7 = [v6 currentWatchWristState];
-    if (v7 >= 4)
+    stateMachine = [(DPCBasePolicy *)self stateMachine];
+    currentWatchWristState = [stateMachine currentWatchWristState];
+    if (currentWatchWristState >= 4)
     {
-      v8 = [NSString stringWithFormat:@"Undefined state (%ld)", v7];
+      v8 = [NSString stringWithFormat:@"Undefined state (%ld)", currentWatchWristState];
     }
 
     else
     {
-      v8 = *(&off_100010528 + v7);
+      v8 = *(&off_100010528 + currentWatchWristState);
     }
 
     v9 = v8;
-    if (a3 >= 3)
+    if (event >= 3)
     {
-      v10 = [NSString stringWithFormat:@"Undefined state (%ld)", a3];
+      event = [NSString stringWithFormat:@"Undefined state (%ld)", event];
     }
 
     else
     {
-      v10 = *(&off_100010548 + a3);
+      event = *(&off_100010548 + event);
     }
 
     *buf = 138412546;
     v20 = v9;
     v21 = 2112;
-    v22 = v10;
+    v22 = event;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Current wrist state: %@, checking if need to notify with watch state: %@", buf, 0x16u);
   }
 
-  v11 = [(DPCBasePolicy *)self stateMachine];
-  if ([v11 currentWatchWristState] == 3)
+  stateMachine2 = [(DPCBasePolicy *)self stateMachine];
+  if ([stateMachine2 currentWatchWristState] == 3)
   {
     v12 = 1;
   }
 
   else
   {
-    v13 = [(DPCBasePolicy *)self stateMachine];
-    v12 = [v13 currentWatchWristState] == 1;
+    stateMachine3 = [(DPCBasePolicy *)self stateMachine];
+    v12 = [stateMachine3 currentWatchWristState] == 1;
   }
 
-  if (a3 == 2 && v12)
+  if (event == 2 && v12)
   {
     [(DPCBasePolicy *)self scheduleSendAbsenceEvent];
   }
 
-  else if (a3 == 1)
+  else if (event == 1)
   {
     [(DPCBasePolicy *)self invalidateAbsenceEvent];
-    v14 = [(DPCBasePolicy *)self detectedNewEventBlock];
-    v14[2](v14, 1);
+    detectedNewEventBlock = [(DPCBasePolicy *)self detectedNewEventBlock];
+    detectedNewEventBlock[2](detectedNewEventBlock, 1);
 
     v15 = +[NSDate date];
     [v15 timeIntervalSince1970];
     v17 = v16;
-    v18 = [(DPCBasePolicy *)self stateMachine];
-    [v18 setLastPresenceEventTimestamp:v17];
+    stateMachine4 = [(DPCBasePolicy *)self stateMachine];
+    [stateMachine4 setLastPresenceEventTimestamp:v17];
   }
 }
 
-- (unint64_t)onRSSIChange:(id)a3
+- (unint64_t)onRSSIChange:(id)change
 {
-  v4 = a3;
-  v5 = [(DPCBasePolicy *)self stateMachine];
-  v6 = [v5 isInRSSIStreamingMode];
+  changeCopy = change;
+  stateMachine = [(DPCBasePolicy *)self stateMachine];
+  isInRSSIStreamingMode = [stateMachine isInRSSIStreamingMode];
 
-  if (v6)
+  if (isInRSSIStreamingMode)
   {
     goto LABEL_2;
   }
 
-  v8 = [(DPCBasePolicy *)self stateMachine];
-  v9 = [v8 isInDiscoveryMode];
-  if (v9 & 1) != 0 || (-[DPCBasePolicy stateMachine](self, "stateMachine"), v6 = objc_claimAutoreleasedReturnValue(), ([v6 isMonitoringAbsence]))
+  stateMachine2 = [(DPCBasePolicy *)self stateMachine];
+  isInDiscoveryMode = [stateMachine2 isInDiscoveryMode];
+  if (isInDiscoveryMode & 1) != 0 || (-[DPCBasePolicy stateMachine](self, "stateMachine"), isInRSSIStreamingMode = objc_claimAutoreleasedReturnValue(), ([isInRSSIStreamingMode isMonitoringAbsence]))
   {
-    [v4 floatValue];
+    [changeCopy floatValue];
     v11 = v10;
     v12 = +[DPCDefaults sharedInstance];
     v13 = [v12 NSNumberForDefault:@"DPCDefaultsThresholdD2"];
     [v13 floatValue];
     v15 = v14;
 
-    if ((v9 & 1) == 0)
+    if ((isInDiscoveryMode & 1) == 0)
     {
     }
 
@@ -122,37 +122,37 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v36 = 138412290;
-        v37 = v4;
+        v37 = changeCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Device Absence Detected! %@; going to monitor for Presence", &v36, 0xCu);
       }
 
-      v17 = [(DPCBasePolicy *)self stateMachine];
-      [v17 setIsInDiscoveryMode:0];
+      stateMachine3 = [(DPCBasePolicy *)self stateMachine];
+      [stateMachine3 setIsInDiscoveryMode:0];
 
-      [(DPCRSSIPolicy *)self runRSSIAdapter:2 RSSI:v4];
-      v18 = [(DPCBasePolicy *)self stateMachine];
-      [v18 lastPresenceEventTimestamp];
+      [(DPCRSSIPolicy *)self runRSSIAdapter:2 RSSI:changeCopy];
+      stateMachine4 = [(DPCBasePolicy *)self stateMachine];
+      [stateMachine4 lastPresenceEventTimestamp];
       v20 = v19;
 
       if (v20 == 0.0)
       {
-        v21 = sub_100001040(off_100016898);
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+        telemetry = sub_100001040(off_100016898);
+        if (os_log_type_enabled(telemetry, OS_LOG_TYPE_DEFAULT))
         {
           LOWORD(v36) = 0;
-          _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Ignore Absence event: Watch hasn't been back to phone in this session.", &v36, 2u);
+          _os_log_impl(&_mh_execute_header, telemetry, OS_LOG_TYPE_DEFAULT, "Ignore Absence event: Watch hasn't been back to phone in this session.", &v36, 2u);
         }
       }
 
       else
       {
         [(DPCRSSIPolicy *)self notifyNewEvent:2];
-        v21 = [(DPCBasePolicy *)self telemetry];
-        -[NSObject registerWatchEvent:rssiValue:](v21, "registerWatchEvent:rssiValue:", 2, [v4 integerValue]);
+        telemetry = [(DPCBasePolicy *)self telemetry];
+        -[NSObject registerWatchEvent:rssiValue:](telemetry, "registerWatchEvent:rssiValue:", 2, [changeCopy integerValue]);
       }
 
-      v34 = [(DPCBasePolicy *)self stateMachine];
-      [v34 setIsMonitoringAbsence:0];
+      stateMachine5 = [(DPCBasePolicy *)self stateMachine];
+      [stateMachine5 setIsMonitoringAbsence:0];
 
       v7 = 1;
       goto LABEL_25;
@@ -163,12 +163,12 @@
   {
   }
 
-  v22 = [(DPCBasePolicy *)self stateMachine];
-  v23 = [v22 isInDiscoveryMode];
-  if ((v23 & 1) == 0)
+  stateMachine6 = [(DPCBasePolicy *)self stateMachine];
+  isInDiscoveryMode2 = [stateMachine6 isInDiscoveryMode];
+  if ((isInDiscoveryMode2 & 1) == 0)
   {
-    v6 = [(DPCBasePolicy *)self stateMachine];
-    if ([v6 isMonitoringAbsence])
+    isInRSSIStreamingMode = [(DPCBasePolicy *)self stateMachine];
+    if ([isInRSSIStreamingMode isMonitoringAbsence])
     {
 
 LABEL_2:
@@ -177,14 +177,14 @@ LABEL_2:
     }
   }
 
-  [v4 floatValue];
+  [changeCopy floatValue];
   v25 = v24;
   v26 = +[DPCDefaults sharedInstance];
   v27 = [v26 NSNumberForDefault:@"DPCDefaultsThresholdD1"];
   [v27 floatValue];
   v29 = v28;
 
-  if ((v23 & 1) == 0)
+  if ((isInDiscoveryMode2 & 1) == 0)
   {
   }
 
@@ -197,20 +197,20 @@ LABEL_2:
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
     v36 = 138412290;
-    v37 = v4;
+    v37 = changeCopy;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Device Presence Detected! %@; going to monitor for Absence", &v36, 0xCu);
   }
 
-  v31 = [(DPCBasePolicy *)self stateMachine];
-  [v31 setIsInDiscoveryMode:0];
+  stateMachine7 = [(DPCBasePolicy *)self stateMachine];
+  [stateMachine7 setIsInDiscoveryMode:0];
 
-  [(DPCRSSIPolicy *)self runRSSIAdapter:1 RSSI:v4];
+  [(DPCRSSIPolicy *)self runRSSIAdapter:1 RSSI:changeCopy];
   [(DPCRSSIPolicy *)self notifyNewEvent:1];
-  v32 = [(DPCBasePolicy *)self telemetry];
-  [v32 registerWatchEvent:1 rssiValue:{objc_msgSend(v4, "integerValue")}];
+  telemetry2 = [(DPCBasePolicy *)self telemetry];
+  [telemetry2 registerWatchEvent:1 rssiValue:{objc_msgSend(changeCopy, "integerValue")}];
 
-  v33 = [(DPCBasePolicy *)self stateMachine];
-  [v33 setIsMonitoringAbsence:1];
+  stateMachine8 = [(DPCBasePolicy *)self stateMachine];
+  [stateMachine8 setIsMonitoringAbsence:1];
 
   v7 = 2;
 LABEL_25:
@@ -218,18 +218,18 @@ LABEL_25:
   return v7;
 }
 
-- (void)onWristStateChange:(int64_t)a3
+- (void)onWristStateChange:(int64_t)change
 {
-  v10 = [(DPCBasePolicy *)self stateMachine];
-  if ([v10 isRunning])
+  stateMachine = [(DPCBasePolicy *)self stateMachine];
+  if ([stateMachine isRunning])
   {
-    v5 = [(DPCBasePolicy *)self stateMachine];
-    v6 = [v5 isMonitoringAbsence];
+    stateMachine2 = [(DPCBasePolicy *)self stateMachine];
+    isMonitoringAbsence = [stateMachine2 isMonitoringAbsence];
 
-    if ((v6 & 1) == 0)
+    if ((isMonitoringAbsence & 1) == 0)
     {
       [(DPCBasePolicy *)self invalidateAbsenceEvent];
-      if (a3 == 3)
+      if (change == 3)
       {
         v9 = sub_100001040(off_100016898);
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -241,7 +241,7 @@ LABEL_25:
         [(DPCBasePolicy *)self scheduleSendAbsenceEvent];
       }
 
-      else if (a3 == 2)
+      else if (change == 2)
       {
         v7 = sub_100001040(off_100016898);
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -251,8 +251,8 @@ LABEL_25:
         }
 
         [(DPCBasePolicy *)self invalidateAbsenceEvent];
-        v8 = [(DPCBasePolicy *)self detectedNewEventBlock];
-        v8[2](v8, 1);
+        detectedNewEventBlock = [(DPCBasePolicy *)self detectedNewEventBlock];
+        detectedNewEventBlock[2](detectedNewEventBlock, 1);
       }
     }
   }
@@ -262,13 +262,13 @@ LABEL_25:
   }
 }
 
-- (void)runRSSIAdapter:(unint64_t)a3 RSSI:(id)a4
+- (void)runRSSIAdapter:(unint64_t)adapter RSSI:(id)i
 {
-  v6 = [DPCDefaults sharedInstance:a3];
+  v6 = [DPCDefaults sharedInstance:adapter];
   v7 = [v6 NSNumberForDefault:@"DPCDefaultsSessionBasedAdaptiveRSSIEnabled"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  if (!v8)
+  if (!bOOLValue)
   {
     return;
   }
@@ -277,14 +277,14 @@ LABEL_25:
   [v9 timeIntervalSince1970];
   v11 = v10;
 
-  if (a3 == 1)
+  if (adapter == 1)
   {
-    v12 = [(DPCBasePolicy *)self stateMachine];
-    [v12 lastAbsenceEventTimestamp];
+    stateMachine = [(DPCBasePolicy *)self stateMachine];
+    [stateMachine lastAbsenceEventTimestamp];
     v14 = v13;
 
-    v15 = [(DPCBasePolicy *)self stateMachine];
-    [v15 lastAbsenceEventTimestamp];
+    stateMachine2 = [(DPCBasePolicy *)self stateMachine];
+    [stateMachine2 lastAbsenceEventTimestamp];
     if (v16 == 0.0)
     {
 LABEL_6:
@@ -304,10 +304,10 @@ LABEL_6:
 
     if (v17 < v25)
     {
-      v15 = [(DPCBasePolicy *)self stateMachine];
+      stateMachine2 = [(DPCBasePolicy *)self stateMachine];
       v26 = +[DPCDefaults sharedInstance];
       v27 = [v26 NSNumberForDefault:@"DPCDefaultsD2FixedStepSize"];
-      [v15 setD2ThresholdMargin:{objc_msgSend(v15, "D2ThresholdMargin") + objc_msgSend(v27, "intValue")}];
+      [stateMachine2 setD2ThresholdMargin:{objc_msgSend(stateMachine2, "D2ThresholdMargin") + objc_msgSend(v27, "intValue")}];
 
       goto LABEL_6;
     }
@@ -316,24 +316,24 @@ LABEL_6:
 LABEL_7:
   v28 = +[DPCDefaults sharedInstance];
   v29 = [v28 NSNumberForDefault:@"DPCDefaultsSessionBasedAdaptiveRSSITwoWaysEnabled"];
-  v30 = [v29 BOOLValue];
+  bOOLValue2 = [v29 BOOLValue];
 
-  if (a3 == 2)
+  if (adapter == 2)
   {
-    if (v30)
+    if (bOOLValue2)
     {
-      v31 = [(DPCBasePolicy *)self stateMachine];
-      [v31 lastAbsenceEventTimestamp];
+      stateMachine3 = [(DPCBasePolicy *)self stateMachine];
+      [stateMachine3 lastAbsenceEventTimestamp];
       v33 = v32;
 
       if (v33 != 0.0)
       {
-        v34 = [(DPCBasePolicy *)self stateMachine];
-        [v34 lastPresenceEventTimestamp];
+        stateMachine4 = [(DPCBasePolicy *)self stateMachine];
+        [stateMachine4 lastPresenceEventTimestamp];
         v36 = v35;
 
-        v49 = [(DPCBasePolicy *)self stateMachine];
-        [v49 lastPresenceEventTimestamp];
+        stateMachine5 = [(DPCBasePolicy *)self stateMachine];
+        [stateMachine5 lastPresenceEventTimestamp];
         if (v37 != 0.0)
         {
           v38 = v11 - v36;
@@ -351,10 +351,10 @@ LABEL_7:
             return;
           }
 
-          v49 = [(DPCBasePolicy *)self stateMachine];
+          stateMachine5 = [(DPCBasePolicy *)self stateMachine];
           v47 = +[DPCDefaults sharedInstance];
           v48 = [v47 NSNumberForDefault:@"DPCDefaultsD2FixedStepSize"];
-          [v49 setD2ThresholdMargin:{objc_msgSend(v49, "D2ThresholdMargin") + objc_msgSend(v48, "intValue")}];
+          [stateMachine5 setD2ThresholdMargin:{objc_msgSend(stateMachine5, "D2ThresholdMargin") + objc_msgSend(v48, "intValue")}];
         }
       }
     }

@@ -1,47 +1,47 @@
 @interface VN6Mb1ME89lyW3HpahkEygIG
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
-+ (id)knownClassificationsForRevision:(unint64_t)a3 error:(id *)a4;
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
++ (id)knownClassificationsForRevision:(unint64_t)revision error:(id *)error;
 + (id)privateRevisionsSet;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
-- (id)supportedIdentifiersAndReturnError:(id *)a3;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
+- (id)supportedIdentifiersAndReturnError:(id *)error;
 - (unint64_t)imageCropAndScaleOption;
-- (void)setImageCropAndScaleOption:(unint64_t)a3;
+- (void)setImageCropAndScaleOption:(unint64_t)option;
 @end
 
 @implementation VN6Mb1ME89lyW3HpahkEygIG
 
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision
 {
-  if (a3 != a4)
+  if (revision != byRevision)
   {
     return 0;
   }
 
   v8 = v4;
   v9 = v5;
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___VN6Mb1ME89lyW3HpahkEygIG;
-  return objc_msgSendSuper2(&v7, sel_revision_mayAcceptResultsProducedByRevision_, a3, a3);
+  return objc_msgSendSuper2(&v7, sel_revision_mayAcceptResultsProducedByRevision_, revision, revision);
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  if (a3 - 3737841664u >= 3)
+  if (revision - 3737841664u >= 3)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___VN6Mb1ME89lyW3HpahkEygIG;
     v5 = objc_msgSendSuper2(&v7, sel_descriptionForPrivateRevision_);
   }
 
   else
   {
-    v5 = off_1E77B4648[a3 - 3737841664u];
+    v5 = off_1E77B4648[revision - 3737841664u];
   }
 
   return v5;
@@ -66,16 +66,16 @@ uint64_t __47__VN6Mb1ME89lyW3HpahkEygIG_privateRevisionsSet__block_invoke(uint64
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)knownClassificationsForRevision:(unint64_t)a3 error:(id *)a4
++ (id)knownClassificationsForRevision:(unint64_t)revision error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = objc_alloc_init(a1);
-  if ([v6 setRevision:a3 error:a4])
+  v6 = objc_alloc_init(self);
+  if ([v6 setRevision:revision error:error])
   {
-    v7 = [v6 supportedIdentifiersAndReturnError:a4];
+    v7 = [v6 supportedIdentifiersAndReturnError:error];
     if (v7)
     {
-      v8 = [v6 specifier];
+      specifier = [v6 specifier];
       v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
       v21 = 0u;
       v22 = 0u;
@@ -98,7 +98,7 @@ uint64_t __47__VN6Mb1ME89lyW3HpahkEygIG_privateRevisionsSet__block_invoke(uint64
             v14 = *(*(&v19 + 1) + 8 * i);
             v15 = [VNClassificationObservation alloc];
             LODWORD(v16) = 1.0;
-            v17 = [(VNClassificationObservation *)v15 initWithOriginatingRequestSpecifier:v8 identifier:v14 confidence:v16, v19];
+            v17 = [(VNClassificationObservation *)v15 initWithOriginatingRequestSpecifier:specifier identifier:v14 confidence:v16, v19];
             [v9 addObject:v17];
           }
 
@@ -123,25 +123,25 @@ uint64_t __47__VN6Mb1ME89lyW3HpahkEygIG_privateRevisionsSet__block_invoke(uint64
   return v9;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = [VNError errorForUnsupportedConfigurationOfRequest:self, a4];
+    *error = [VNError errorForUnsupportedConfigurationOfRequest:self, context];
   }
 
   return 0;
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VN6Mb1ME89lyW3HpahkEygIG *)self imageCropAndScaleOption];
-  if (v5 == [v4 imageCropAndScaleOption])
+  configurationCopy = configuration;
+  imageCropAndScaleOption = [(VN6Mb1ME89lyW3HpahkEygIG *)self imageCropAndScaleOption];
+  if (imageCropAndScaleOption == [configurationCopy imageCropAndScaleOption])
   {
     v8.receiver = self;
     v8.super_class = VN6Mb1ME89lyW3HpahkEygIG;
-    v6 = [(VNImageBasedRequest *)&v8 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v6 = [(VNImageBasedRequest *)&v8 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -152,17 +152,17 @@ uint64_t __47__VN6Mb1ME89lyW3HpahkEygIG_privateRevisionsSet__block_invoke(uint64
   return v6;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = VN6Mb1ME89lyW3HpahkEygIG;
-  v6 = [(VNRequest *)&v17 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
+  v6 = [(VNRequest *)&v17 newDefaultDetectorOptionsForRequestRevision:revision session:session];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[VN6Mb1ME89lyW3HpahkEygIG imageCropAndScaleOption](self, "imageCropAndScaleOption")}];
   [v6 setObject:v7 forKeyedSubscript:@"VNDetectorProcessOption_ImageCropAndScaleOption"];
 
-  v8 = [(VNRequest *)self frameworkClass];
-  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:v8 revision:a3])
+  frameworkClass = [(VNRequest *)self frameworkClass];
+  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:frameworkClass revision:revision])
   {
     v9 = [(VNCoreSceneUnderstandingDetectorFeatureConfiguration *)[VNCoreSceneUnderstandingDetectorSignificantEventConfiguration alloc] initWithObservationsRecipient:self];
     v18[0] = v9;
@@ -174,7 +174,7 @@ uint64_t __47__VN6Mb1ME89lyW3HpahkEygIG_privateRevisionsSet__block_invoke(uint64
 
   else
   {
-    v12 = [VNImageAnalyzerMultiDetector modelForRequestClass:v8 revision:a3];
+    v12 = [VNImageAnalyzerMultiDetector modelForRequestClass:frameworkClass revision:revision];
     if (v12)
     {
       v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
@@ -190,25 +190,25 @@ uint64_t __47__VN6Mb1ME89lyW3HpahkEygIG_privateRevisionsSet__block_invoke(uint64
   return v6;
 }
 
-- (void)setImageCropAndScaleOption:(unint64_t)a3
+- (void)setImageCropAndScaleOption:(unint64_t)option
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setImageCropAndScaleOption:a3];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setImageCropAndScaleOption:option];
 }
 
 - (unint64_t)imageCropAndScaleOption
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 imageCropAndScaleOption];
+  configuration = [(VNRequest *)self configuration];
+  imageCropAndScaleOption = [configuration imageCropAndScaleOption];
 
-  return v3;
+  return imageCropAndScaleOption;
 }
 
-- (id)supportedIdentifiersAndReturnError:(id *)a3
+- (id)supportedIdentifiersAndReturnError:(id *)error
 {
-  v5 = [(VNRequest *)self resolvedRevision];
+  resolvedRevision = [(VNRequest *)self resolvedRevision];
   v14 = 0;
-  v6 = [(VNRequest *)self applicableDetectorClassAndOptions:&v14 forRevision:v5 error:a3];
+  v6 = [(VNRequest *)self applicableDetectorClassAndOptions:&v14 forRevision:resolvedRevision error:error];
   v7 = v14;
   if (!v6)
   {
@@ -218,7 +218,7 @@ uint64_t __47__VN6Mb1ME89lyW3HpahkEygIG_privateRevisionsSet__block_invoke(uint64
 
   if ([(objc_class *)v6 isSubclassOfClass:objc_opt_class()])
   {
-    v8 = [(objc_class *)v6 allSignificantEventIdentifiersWithConfigurationOptions:v7 error:a3];
+    v8 = [(objc_class *)v6 allSignificantEventIdentifiersWithConfigurationOptions:v7 error:error];
 LABEL_5:
     v9 = v7;
     goto LABEL_13;
@@ -226,7 +226,7 @@ LABEL_5:
 
   v10 = objc_alloc_init(VNSession);
   v13 = v7;
-  v11 = [(VNRequest *)self applicableDetectorAndOptions:&v13 forRevision:v5 loadedInSession:v10 error:a3];
+  v11 = [(VNRequest *)self applicableDetectorAndOptions:&v13 forRevision:resolvedRevision loadedInSession:v10 error:error];
   v9 = v13;
 
   if (!v11)
@@ -237,10 +237,10 @@ LABEL_5:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a3)
+    if (error)
     {
-      [VNError errorForUnsupportedRevision:v5 ofRequest:self];
-      *a3 = v8 = 0;
+      [VNError errorForUnsupportedRevision:resolvedRevision ofRequest:self];
+      *error = v8 = 0;
       goto LABEL_12;
     }
 
@@ -249,7 +249,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v8 = [v11 allSignificantEventIdentifiersWithOptions:v9 error:a3];
+  v8 = [v11 allSignificantEventIdentifiersWithOptions:v9 error:error];
 LABEL_12:
 
 LABEL_13:
@@ -257,10 +257,10 @@ LABEL_13:
   return v8;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  v7 = [(VNRequest *)self frameworkClass];
-  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:v7 revision:a3])
+  frameworkClass = [(VNRequest *)self frameworkClass];
+  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:frameworkClass revision:revision])
   {
     v8 = @"VNCoreSceneUnderstandingDetectorType";
 LABEL_5:
@@ -268,16 +268,16 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([VNImageAnalyzerMultiDetector modelForRequestClass:v7 revision:a3])
+  if ([VNImageAnalyzerMultiDetector modelForRequestClass:frameworkClass revision:revision])
   {
     v8 = @"VNImageAnalyzerMultiDetectorType";
     goto LABEL_5;
   }
 
-  if (a4)
+  if (error)
   {
-    [VNError errorForUnsupportedRevision:a3 ofRequest:self];
-    *a4 = v8 = 0;
+    [VNError errorForUnsupportedRevision:revision ofRequest:self];
+    *error = v8 = 0;
   }
 
   else

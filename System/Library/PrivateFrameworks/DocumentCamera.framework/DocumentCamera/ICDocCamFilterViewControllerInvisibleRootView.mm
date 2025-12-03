@@ -1,22 +1,22 @@
 @interface ICDocCamFilterViewControllerInvisibleRootView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation ICDocCamFilterViewControllerInvisibleRootView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  eventCopy = event;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(ICDocCamFilterViewControllerInvisibleRootView *)self subviews];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  subviews = [(ICDocCamFilterViewControllerInvisibleRootView *)self subviews];
+  v9 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -27,19 +27,19 @@
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subviews);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
         [(ICDocCamFilterViewControllerInvisibleRootView *)self convertPoint:v13 toView:x, y];
-        if ([v13 pointInside:v7 withEvent:?])
+        if ([v13 pointInside:eventCopy withEvent:?])
         {
           v14 = 1;
           goto LABEL_11;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)
       {
         continue;
@@ -55,11 +55,11 @@ LABEL_11:
   return v14;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = ICDocCamFilterViewControllerInvisibleRootView;
-  v5 = [(ICDocCamFilterViewControllerInvisibleRootView *)&v7 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(ICDocCamFilterViewControllerInvisibleRootView *)&v7 hitTest:event withEvent:test.x, test.y];
   if (v5 == self)
   {
 

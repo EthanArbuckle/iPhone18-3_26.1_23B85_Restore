@@ -1,23 +1,23 @@
 @interface RAPSearchRecording
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAuxiliaryControls:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAuxiliaryControls:(id)controls;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RAPSearchRecording
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   request = self->_request;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (request)
   {
     if (v6)
@@ -32,7 +32,7 @@
   }
 
   response = self->_response;
-  v8 = *(v4 + 5);
+  v8 = *(fromCopy + 5);
   if (response)
   {
     if (v8)
@@ -47,7 +47,7 @@
   }
 
   correctedSearchTemplate = self->_correctedSearchTemplate;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   if (correctedSearchTemplate)
   {
     if (v10)
@@ -65,7 +65,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v11 = *(v4 + 2);
+  v11 = *(fromCopy + 2);
   v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v12)
   {
@@ -89,9 +89,9 @@
     while (v13);
   }
 
-  if (*(v4 + 48))
+  if (*(fromCopy + 48))
   {
-    self->_originatingAuxiliaryControlIndex = *(v4 + 1);
+    self->_originatingAuxiliaryControlIndex = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }
@@ -115,16 +115,16 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   request = self->_request;
-  if (request | *(v4 + 4))
+  if (request | *(equalCopy + 4))
   {
     if (![(GEOPlaceSearchRequest *)request isEqual:?])
     {
@@ -133,7 +133,7 @@
   }
 
   response = self->_response;
-  if (response | *(v4 + 5))
+  if (response | *(equalCopy + 5))
   {
     if (![(GEOPlaceSearchResponse *)response isEqual:?])
     {
@@ -142,7 +142,7 @@
   }
 
   correctedSearchTemplate = self->_correctedSearchTemplate;
-  if (correctedSearchTemplate | *(v4 + 3))
+  if (correctedSearchTemplate | *(equalCopy + 3))
   {
     if (![(GEORPCorrectedSearch *)correctedSearchTemplate isEqual:?])
     {
@@ -151,7 +151,7 @@
   }
 
   auxiliaryControls = self->_auxiliaryControls;
-  if (auxiliaryControls | *(v4 + 2))
+  if (auxiliaryControls | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)auxiliaryControls isEqual:?])
     {
@@ -159,10 +159,10 @@
     }
   }
 
-  v9 = (*(v4 + 48) & 1) == 0;
+  v9 = (*(equalCopy + 48) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) != 0 && self->_originatingAuxiliaryControlIndex == *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) != 0 && self->_originatingAuxiliaryControlIndex == *(equalCopy + 1))
     {
       v9 = 1;
       goto LABEL_15;
@@ -177,18 +177,18 @@ LABEL_15:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(GEOPlaceSearchRequest *)self->_request copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(GEOPlaceSearchRequest *)self->_request copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(GEOPlaceSearchResponse *)self->_response copyWithZone:a3];
+  v8 = [(GEOPlaceSearchResponse *)self->_response copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
-  v10 = [(GEORPCorrectedSearch *)self->_correctedSearchTemplate copyWithZone:a3];
+  v10 = [(GEORPCorrectedSearch *)self->_correctedSearchTemplate copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
@@ -212,7 +212,7 @@ LABEL_15:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v19 + 1) + 8 * v16) copyWithZone:{a3, v19}];
+        v17 = [*(*(&v19 + 1) + 8 * v16) copyWithZone:{zone, v19}];
         [v5 addAuxiliaryControls:v17];
 
         v16 = v16 + 1;
@@ -234,49 +234,49 @@ LABEL_15:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_request)
   {
-    [v8 setRequest:?];
+    [toCopy setRequest:?];
   }
 
   if (self->_response)
   {
-    [v8 setResponse:?];
+    [toCopy setResponse:?];
   }
 
   if (self->_correctedSearchTemplate)
   {
-    [v8 setCorrectedSearchTemplate:?];
+    [toCopy setCorrectedSearchTemplate:?];
   }
 
   if ([(RAPSearchRecording *)self auxiliaryControlsCount])
   {
-    [v8 clearAuxiliaryControls];
-    v4 = [(RAPSearchRecording *)self auxiliaryControlsCount];
-    if (v4)
+    [toCopy clearAuxiliaryControls];
+    auxiliaryControlsCount = [(RAPSearchRecording *)self auxiliaryControlsCount];
+    if (auxiliaryControlsCount)
     {
-      v5 = v4;
+      v5 = auxiliaryControlsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(RAPSearchRecording *)self auxiliaryControlsAtIndex:i];
-        [v8 addAuxiliaryControls:v7];
+        [toCopy addAuxiliaryControls:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v8 + 1) = self->_originatingAuxiliaryControlIndex;
-    *(v8 + 48) |= 1u;
+    *(toCopy + 1) = self->_originatingAuxiliaryControlIndex;
+    *(toCopy + 48) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_request)
   {
     PBDataWriterWriteSubmessage();
@@ -329,16 +329,16 @@ LABEL_15:
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -347,18 +347,18 @@ LABEL_15:
       while (1)
       {
         LOBYTE(v26[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v26 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v26 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v26[0] & 0x7F) << v6;
@@ -376,11 +376,11 @@ LABEL_15:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -409,18 +409,18 @@ LABEL_36:
           while (1)
           {
             LOBYTE(v26[0]) = 0;
-            v18 = [a3 position] + 1;
-            if (v18 >= [a3 position] && (v19 = objc_msgSend(a3, "position") + 1, v19 <= objc_msgSend(a3, "length")))
+            v18 = [from position] + 1;
+            if (v18 >= [from position] && (v19 = objc_msgSend(from, "position") + 1, v19 <= objc_msgSend(from, "length")))
             {
-              v20 = [a3 data];
-              [v20 getBytes:v26 range:{objc_msgSend(a3, "position"), 1}];
+              data2 = [from data];
+              [data2 getBytes:v26 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v17 |= (v26[0] & 0x7F) << v15;
@@ -438,7 +438,7 @@ LABEL_36:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v21 = 0;
           }
@@ -467,7 +467,7 @@ LABEL_40:
 LABEL_37:
       v26[0] = 0;
       v26[1] = 0;
-      if (!PBReaderPlaceMark() || ![v22 readFrom:a3])
+      if (!PBReaderPlaceMark() || ![v22 readFrom:from])
       {
 
         return 0;
@@ -476,10 +476,10 @@ LABEL_37:
       PBReaderRecallMark();
 
 LABEL_46:
-      v24 = [a3 position];
-      if (v24 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -503,7 +503,7 @@ LABEL_46:
     goto LABEL_36;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -512,22 +512,22 @@ LABEL_46:
   request = self->_request;
   if (request)
   {
-    v5 = [(GEOPlaceSearchRequest *)request dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"request"];
+    dictionaryRepresentation = [(GEOPlaceSearchRequest *)request dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"request"];
   }
 
   response = self->_response;
   if (response)
   {
-    v7 = [(GEOPlaceSearchResponse *)response dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"response"];
+    dictionaryRepresentation2 = [(GEOPlaceSearchResponse *)response dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"response"];
   }
 
   correctedSearchTemplate = self->_correctedSearchTemplate;
   if (correctedSearchTemplate)
   {
-    v9 = [(GEORPCorrectedSearch *)correctedSearchTemplate dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"correctedSearchTemplate"];
+    dictionaryRepresentation3 = [(GEORPCorrectedSearch *)correctedSearchTemplate dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"correctedSearchTemplate"];
   }
 
   if ([(NSMutableArray *)self->_auxiliaryControls count])
@@ -552,8 +552,8 @@ LABEL_46:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation4 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation4];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -579,28 +579,28 @@ LABEL_46:
   v7.receiver = self;
   v7.super_class = RAPSearchRecording;
   v3 = [(RAPSearchRecording *)&v7 description];
-  v4 = [(RAPSearchRecording *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(RAPSearchRecording *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)addAuxiliaryControls:(id)a3
+- (void)addAuxiliaryControls:(id)controls
 {
-  v4 = a3;
+  controlsCopy = controls;
   auxiliaryControls = self->_auxiliaryControls;
-  v8 = v4;
+  v8 = controlsCopy;
   if (!auxiliaryControls)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_auxiliaryControls;
     self->_auxiliaryControls = v6;
 
-    v4 = v8;
+    controlsCopy = v8;
     auxiliaryControls = self->_auxiliaryControls;
   }
 
-  [(NSMutableArray *)auxiliaryControls addObject:v4];
+  [(NSMutableArray *)auxiliaryControls addObject:controlsCopy];
 }
 
 @end

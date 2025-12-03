@@ -18,8 +18,8 @@
         self->_longTapRecognizer = v4;
       }
 
-      v6 = [(PSTableCell *)self gestureRecognizers];
-      v7 = [v6 containsObject:self->_longTapRecognizer];
+      gestureRecognizers = [(PSTableCell *)self gestureRecognizers];
+      v7 = [gestureRecognizers containsObject:self->_longTapRecognizer];
 
       if ((v7 & 1) == 0)
       {

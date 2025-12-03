@@ -1,22 +1,22 @@
 @interface BRCEventMetric
-- (BRCEventMetric)initWithEventName:(id)a3;
+- (BRCEventMetric)initWithEventName:(id)name;
 - (double)duration;
 - (id)description;
-- (void)associateWithCompletedOperation:(id)a3;
+- (void)associateWithCompletedOperation:(id)operation;
 @end
 
 @implementation BRCEventMetric
 
-- (BRCEventMetric)initWithEventName:(id)a3
+- (BRCEventMetric)initWithEventName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = BRCEventMetric;
   v6 = [(BRCEventMetric *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventName, a3);
+    objc_storeStrong(&v6->_eventName, name);
     v7->_isCKMetric = 1;
   }
 
@@ -29,8 +29,8 @@
   eventName = self->_eventName;
   [(BRCEventMetric *)self duration];
   v6 = v5;
-  v7 = [(BRCEventMetric *)self subDescription];
-  v8 = [v3 stringWithFormat:@"<%@ t:%.2fs%@>", eventName, v6, v7];
+  subDescription = [(BRCEventMetric *)self subDescription];
+  v8 = [v3 stringWithFormat:@"<%@ t:%.2fs%@>", eventName, v6, subDescription];
 
   return v8;
 }
@@ -47,8 +47,8 @@
 
   else
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
-    [v6 timeIntervalSinceDate:self->_startTime];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:self->_startTime];
     v8 = v7;
 
     return v8;
@@ -57,10 +57,10 @@
   return result;
 }
 
-- (void)associateWithCompletedOperation:(id)a3
+- (void)associateWithCompletedOperation:(id)operation
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  operationCopy = operation;
   if (self->_isCKMetric)
   {
     associatedCKEventMetricIfAvailable = self->_associatedCKEventMetricIfAvailable;
@@ -73,7 +73,7 @@
       associatedCKEventMetricIfAvailable = self->_associatedCKEventMetricIfAvailable;
     }
 
-    [associatedCKEventMetricIfAvailable associateWithCompletedOperation:v4];
+    [associatedCKEventMetricIfAvailable associateWithCompletedOperation:operationCopy];
     v8 = brc_bread_crumbs();
     v9 = brc_default_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -81,7 +81,7 @@
       v11 = 138412802;
       v12 = objc_opt_class();
       v13 = 2112;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
       v16 = v8;
       _os_log_debug_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] associated %@ to event metric %@%@", &v11, 0x20u);

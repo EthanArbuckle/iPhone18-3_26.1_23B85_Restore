@@ -3,24 +3,24 @@
 - (BOOL)downloadSelectedOfflineRegion;
 - (BOOL)wantsRouteAnnotationsControl;
 - (ChromeViewController)chromeViewController;
-- (OfflineRegionSelectorContext)initWithRegion:(id)a3 name:(id)a4;
-- (OfflineRegionSelectorContext)initWithSubscriptionInfo:(id)a3;
+- (OfflineRegionSelectorContext)initWithRegion:(id)region name:(id)name;
+- (OfflineRegionSelectorContext)initWithSubscriptionInfo:(id)info;
 - (RouteAnnotationsConfiguration)routeAnnotationsConfiguration;
 - (id)desiredCards;
 - (void)_commonInit;
 - (void)_restoreMapView;
 - (void)_saveMapViewConfiguration;
-- (void)_setMapRegion:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_setMapRegion:(id)region animated:(BOOL)animated completion:(id)completion;
 - (void)_setupMapView;
 - (void)_updateZoomRange;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
 - (void)didAdjustSelectedRegion;
 - (void)didAdjustSelectorCropHandle;
 - (void)dismiss;
-- (void)mapInsetsDidChangeAnimated:(BOOL)a3;
-- (void)mapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)setChromeViewController:(id)a3;
+- (void)mapInsetsDidChangeAnimated:(BOOL)animated;
+- (void)mapView:(id)view didStopRespondingToGesture:(int64_t)gesture zoomDirection:(int64_t)direction zoomGestureType:(int64_t)type didDecelerate:(BOOL)decelerate tiltDirection:(int64_t)tiltDirection;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)setChromeViewController:(id)controller;
 - (void)willAdjustSelectedRegion;
 @end
 
@@ -40,12 +40,12 @@
   return WeakRetained;
 }
 
-- (void)mapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8
+- (void)mapView:(id)view didStopRespondingToGesture:(int64_t)gesture zoomDirection:(int64_t)direction zoomGestureType:(int64_t)type didDecelerate:(BOOL)decelerate tiltDirection:(int64_t)tiltDirection
 {
-  v9 = [(OfflineRegionSelectorViewController *)self->_offlineRegionSelectorViewController downloadable:a3];
-  if (a4)
+  v9 = [(OfflineRegionSelectorViewController *)self->_offlineRegionSelectorViewController downloadable:view];
+  if (gesture)
   {
-    if (a4 != 1)
+    if (gesture != 1)
     {
       return;
     }
@@ -89,13 +89,13 @@
 - (void)didAdjustSelectedRegion
 {
   v3 = self->_mapRegion;
-  v4 = [(OfflineRegionSelectorOverlay *)self->_overlay host];
+  host = [(OfflineRegionSelectorOverlay *)self->_overlay host];
 
-  if (v4)
+  if (host)
   {
-    v5 = [(OfflineRegionSelectorOverlay *)self->_overlay currentMapRegion];
+    currentMapRegion = [(OfflineRegionSelectorOverlay *)self->_overlay currentMapRegion];
 
-    v3 = v5;
+    v3 = currentMapRegion;
   }
 
   v6 = (self->_regionSizeCheckGeneration + 1);
@@ -196,8 +196,8 @@
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Displaying insufficient disk space alert for attempted download of %{bytes}llu", &buf, 0xCu);
       }
 
-      v14 = [(OfflineRegionSelectorContext *)self chromeViewController];
-      [v14 _maps_topMostPresentViewController:v10 animated:1 completion:0];
+      chromeViewController = [(OfflineRegionSelectorContext *)self chromeViewController];
+      [chromeViewController _maps_topMostPresentViewController:v10 animated:1 completion:0];
 
       goto LABEL_43;
     }
@@ -206,7 +206,7 @@
     *(&buf + 1) = &buf;
     v77 = 0x2020000000;
     v78 = 0;
-    v18 = [(OfflineRegionSelectorOverlay *)self->_overlay currentMapRegion];
+    currentMapRegion = [(OfflineRegionSelectorOverlay *)self->_overlay currentMapRegion];
     objc_initWeak(&location, self);
     v71[0] = _NSConcreteStackBlock;
     v71[1] = 3221225472;
@@ -214,7 +214,7 @@
     v71[3] = &unk_101631320;
     objc_copyWeak(&v74, &location);
     p_buf = &buf;
-    v19 = v18;
+    v19 = currentMapRegion;
     v72 = v19;
     v20 = objc_retainBlock(v71);
     v68[0] = _NSConcreteStackBlock;
@@ -383,47 +383,47 @@ LABEL_38:
   offlineMapPreviewModernMapToken = self->_offlineMapPreviewModernMapToken;
   self->_offlineMapPreviewModernMapToken = 0;
 
-  v4 = [(OfflineRegionSelectorContext *)self iosChromeViewController];
-  v5 = [v4 displayedViewMode];
+  iosChromeViewController = [(OfflineRegionSelectorContext *)self iosChromeViewController];
+  displayedViewMode = [iosChromeViewController displayedViewMode];
   savedViewMode = self->_savedViewMode;
 
-  if (v5 != savedViewMode)
+  if (displayedViewMode != savedViewMode)
   {
-    v7 = [(OfflineRegionSelectorContext *)self iosChromeViewController];
-    [v7 updateViewMode:self->_savedViewMode animated:0];
+    iosChromeViewController2 = [(OfflineRegionSelectorContext *)self iosChromeViewController];
+    [iosChromeViewController2 updateViewMode:self->_savedViewMode animated:0];
   }
 
-  v8 = [(OfflineRegionSelectorContext *)self chromeViewController];
-  v10 = [v8 mapView];
+  chromeViewController = [(OfflineRegionSelectorContext *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  v9 = [v10 _mapLayer];
-  [v9 setOfflineRegionSelector:0];
+  _mapLayer = [mapView _mapLayer];
+  [_mapLayer setOfflineRegionSelector:0];
 
-  [(MapViewRestoreProperties *)self->_savedMapViewProperties applyToMapView:v10 animated:0];
+  [(MapViewRestoreProperties *)self->_savedMapViewProperties applyToMapView:mapView animated:0];
 }
 
-- (void)_setMapRegion:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_setMapRegion:(id)region animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v11 = a3;
-  v8 = a5;
-  v9 = [(OfflineRegionSelectorContext *)self chromeViewController];
-  v10 = [v9 mapView];
+  animatedCopy = animated;
+  regionCopy = region;
+  completionCopy = completion;
+  chromeViewController = [(OfflineRegionSelectorContext *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
   GEOMapRectForMapRegion();
-  [v10 mapRectThatFits:? edgePadding:?];
-  [v10 _setVisibleMapRect:v6 animated:v8 completionHandler:?];
+  [mapView mapRectThatFits:? edgePadding:?];
+  [mapView _setVisibleMapRect:animatedCopy animated:completionCopy completionHandler:?];
 }
 
 - (void)_updateZoomRange
 {
-  v2 = [(OfflineRegionSelectorContext *)self chromeViewController];
-  v16 = [v2 mapView];
+  chromeViewController = [(OfflineRegionSelectorContext *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  [v16 bounds];
+  [mapView bounds];
   v4 = v3;
   v6 = v5;
-  [v16 _edgeInsets];
+  [mapView _edgeInsets];
   v11 = 3052640.66;
   if (v4 - (v9 + v10) > 0.0 && v6 - (v7 + v8) > 0.0 && GEOConfigGetBOOL())
   {
@@ -431,83 +431,83 @@ LABEL_38:
     CLLocationCoordinate2DMake(0.0, 0.0);
     MKMapRectMakeWithRadialDistance();
     _MKMapRectThatFits();
-    v12 = [MKMapCamera _cameraLookingAtMapRect:0x4041800000000000 forViewSize:0x4041800000000000, 0x4041800000000000, 0x4041800000000000];
-    [v12 centerCoordinateDistance];
+    0x4041800000000000 = [MKMapCamera _cameraLookingAtMapRect:0x4041800000000000 forViewSize:0x4041800000000000, 0x4041800000000000, 0x4041800000000000];
+    [0x4041800000000000 centerCoordinateDistance];
     v11 = 95394.9663;
     if (v13 > 95394.9663)
     {
-      [v12 centerCoordinateDistance];
+      [0x4041800000000000 centerCoordinateDistance];
       v11 = v14;
     }
   }
 
   v15 = [[MKMapCameraZoomRange alloc] initWithMinCenterCoordinateDistance:95394.9663 maxCenterCoordinateDistance:v11];
   [v15 _setBouncesZoom:1];
-  [v16 setCameraZoomRange:v15];
+  [mapView setCameraZoomRange:v15];
 }
 
 - (void)_setupMapView
 {
-  v3 = [(OfflineRegionSelectorContext *)self chromeViewController];
-  v16 = [v3 mapView];
+  chromeViewController = [(OfflineRegionSelectorContext *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  v4 = [(OfflineRegionSelectorContext *)self iosChromeViewController];
-  v5 = [v4 acquireModernMapTokenForReason:4];
+  iosChromeViewController = [(OfflineRegionSelectorContext *)self iosChromeViewController];
+  v5 = [iosChromeViewController acquireModernMapTokenForReason:4];
   offlineMapPreviewModernMapToken = self->_offlineMapPreviewModernMapToken;
   self->_offlineMapPreviewModernMapToken = v5;
 
-  v7 = [(OfflineRegionSelectorContext *)self iosChromeViewController];
-  if ([v7 displayedViewMode])
+  iosChromeViewController2 = [(OfflineRegionSelectorContext *)self iosChromeViewController];
+  if ([iosChromeViewController2 displayedViewMode])
   {
-    v8 = [(OfflineRegionSelectorContext *)self iosChromeViewController];
-    v9 = [v8 displayedViewMode];
+    iosChromeViewController3 = [(OfflineRegionSelectorContext *)self iosChromeViewController];
+    displayedViewMode = [iosChromeViewController3 displayedViewMode];
 
-    if (v9 == 3)
+    if (displayedViewMode == 3)
     {
       goto LABEL_5;
     }
 
-    v7 = [(OfflineRegionSelectorContext *)self iosChromeViewController];
-    [v7 updateViewMode:0 animated:0];
+    iosChromeViewController2 = [(OfflineRegionSelectorContext *)self iosChromeViewController];
+    [iosChromeViewController2 updateViewMode:0 animated:0];
   }
 
 LABEL_5:
-  [v16 setRotateEnabled:0];
-  [v16 setPitchEnabled:0];
-  [v16 _setOfflineRegionVisibility:1];
-  v10 = [v16 _mapLayer];
-  [v10 setOfflineRegionSelector:1];
+  [mapView setRotateEnabled:0];
+  [mapView setPitchEnabled:0];
+  [mapView _setOfflineRegionVisibility:1];
+  _mapLayer = [mapView _mapLayer];
+  [_mapLayer setOfflineRegionSelector:1];
 
   [(OfflineRegionSelectorContext *)self _updateZoomRange];
   [(OfflineRegionSelectorContext *)self _setMapRegion:self->_mapRegion animated:0];
-  v11 = [(OfflineRegionSelectorContext *)self chromeViewController];
-  v12 = [v11 overlayController];
+  chromeViewController2 = [(OfflineRegionSelectorContext *)self chromeViewController];
+  overlayController = [chromeViewController2 overlayController];
   overlay = self->_overlay;
-  v14 = [(OfflineRegionSelectorContext *)self chromeViewController];
-  v15 = [v14 viewportLayoutGuide];
-  [v12 addOverlay:overlay inLayoutGuide:v15];
+  chromeViewController3 = [(OfflineRegionSelectorContext *)self chromeViewController];
+  viewportLayoutGuide = [chromeViewController3 viewportLayoutGuide];
+  [overlayController addOverlay:overlay inLayoutGuide:viewportLayoutGuide];
 }
 
 - (void)_saveMapViewConfiguration
 {
-  v3 = [(OfflineRegionSelectorContext *)self chromeViewController];
-  v7 = [v3 mapView];
+  chromeViewController = [(OfflineRegionSelectorContext *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  v4 = [[MapViewRestoreProperties alloc] initFromMapView:v7];
+  v4 = [[MapViewRestoreProperties alloc] initFromMapView:mapView];
   savedMapViewProperties = self->_savedMapViewProperties;
   self->_savedMapViewProperties = v4;
 
-  v6 = [(OfflineRegionSelectorContext *)self iosChromeViewController];
-  self->_savedViewMode = [v6 displayedViewMode];
+  iosChromeViewController = [(OfflineRegionSelectorContext *)self iosChromeViewController];
+  self->_savedViewMode = [iosChromeViewController displayedViewMode];
 }
 
 - (void)dismiss
 {
-  v3 = [(OfflineRegionSelectorContext *)self iosChromeViewController];
-  v4 = [v3 isCurrentContext:self];
+  iosChromeViewController = [(OfflineRegionSelectorContext *)self iosChromeViewController];
+  v4 = [iosChromeViewController isCurrentContext:self];
 
-  v5 = [(OfflineRegionSelectorContext *)self iosChromeViewController];
-  v6 = v5;
+  iosChromeViewController2 = [(OfflineRegionSelectorContext *)self iosChromeViewController];
+  v6 = iosChromeViewController2;
   if (v4)
   {
     v14[0] = _NSConcreteStackBlock;
@@ -515,11 +515,11 @@ LABEL_5:
     v14[2] = sub_1009D3E88;
     v14[3] = &unk_101661B18;
     v14[4] = self;
-    [v5 popContextAnimated:1 completion:v14];
+    [iosChromeViewController2 popContextAnimated:1 completion:v14];
 
-    v7 = [(OfflineRegionSelectorContext *)self dismissalBlock];
+    dismissalBlock = [(OfflineRegionSelectorContext *)self dismissalBlock];
 
-    if (v7)
+    if (dismissalBlock)
     {
       if (self->_didDownloadRegion)
       {
@@ -532,31 +532,31 @@ LABEL_5:
       }
 
       v11 = downloadedMapRegion;
-      v12 = [(OfflineRegionSelectorContext *)self dismissalBlock];
-      (v12)[2](v12, v11);
+      dismissalBlock2 = [(OfflineRegionSelectorContext *)self dismissalBlock];
+      (dismissalBlock2)[2](dismissalBlock2, v11);
     }
   }
 
   else
   {
-    v9 = [v5 contexts];
-    v13 = [v9 mutableCopy];
+    contexts = [iosChromeViewController2 contexts];
+    v13 = [contexts mutableCopy];
 
     [v13 removeObject:self];
-    v10 = [(OfflineRegionSelectorContext *)self iosChromeViewController];
-    [v10 setContexts:v13 animated:0 completion:0];
+    iosChromeViewController3 = [(OfflineRegionSelectorContext *)self iosChromeViewController];
+    [iosChromeViewController3 setContexts:v13 animated:0 completion:0];
   }
 }
 
 - (RouteAnnotationsConfiguration)routeAnnotationsConfiguration
 {
-  v3 = [(OfflineRegionSelectorContext *)self route];
+  route = [(OfflineRegionSelectorContext *)self route];
 
-  if (v3)
+  if (route)
   {
     v4 = [RouteAnnotationsMutableConfiguration alloc];
-    v5 = [(OfflineRegionSelectorContext *)self route];
-    v6 = [(RouteAnnotationsConfiguration *)v4 initWithRoute:v5];
+    route2 = [(OfflineRegionSelectorContext *)self route];
+    v6 = [(RouteAnnotationsConfiguration *)v4 initWithRoute:route2];
 
     [(RouteAnnotationsConfiguration *)v6 setRouteTrafficFeaturesActive:0];
     v7 = [(RouteAnnotationsMutableConfiguration *)v6 copy];
@@ -572,18 +572,18 @@ LABEL_5:
 
 - (BOOL)wantsRouteAnnotationsControl
 {
-  v2 = [(OfflineRegionSelectorContext *)self route];
-  v3 = v2 != 0;
+  route = [(OfflineRegionSelectorContext *)self route];
+  v3 = route != 0;
 
   return v3;
 }
 
-- (void)mapInsetsDidChangeAnimated:(BOOL)a3
+- (void)mapInsetsDidChangeAnimated:(BOOL)animated
 {
   changedRegion = self->_changedRegion;
-  v5 = [(OfflineRegionSelectorOverlay *)self->_overlay currentMapRegion];
-  [(OfflineRegionSelectorContext *)self _setMapRegion:v5 animated:0];
-  [(OfflineRegionSelectorOverlay *)self->_overlay setMapRegion:v5];
+  currentMapRegion = [(OfflineRegionSelectorOverlay *)self->_overlay currentMapRegion];
+  [(OfflineRegionSelectorContext *)self _setMapRegion:currentMapRegion animated:0];
+  [(OfflineRegionSelectorOverlay *)self->_overlay setMapRegion:currentMapRegion];
   [(OfflineRegionSelectorContext *)self _updateZoomRange];
   self->_changedRegion = changedRegion;
 }
@@ -600,18 +600,18 @@ LABEL_5:
   return v4;
 }
 
-- (void)setChromeViewController:(id)a3
+- (void)setChromeViewController:(id)controller
 {
-  v5 = a3;
-  v4 = objc_storeWeak(&self->_chromeViewController, v5);
-  [(OfflineRegionSelectorOverlay *)self->_overlay setMapViewProvider:v5];
+  controllerCopy = controller;
+  v4 = objc_storeWeak(&self->_chromeViewController, controllerCopy);
+  [(OfflineRegionSelectorOverlay *)self->_overlay setMapViewProvider:controllerCopy];
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 nextTopContext];
+  controllerCopy = controller;
+  animationCopy = animation;
+  nextTopContext = [controllerCopy nextTopContext];
   objc_opt_class();
   self->_aboutToBecomeBaseMode = objc_opt_isKindOfClass() & 1;
   [(GEOCancellable *)self->_currentSizeEstimationRequest cancel];
@@ -624,35 +624,35 @@ LABEL_5:
   v12[2] = sub_1009D4314;
   v12[3] = &unk_101661B98;
   objc_copyWeak(&v13, &location);
-  [v7 addPreparation:v12];
+  [animationCopy addPreparation:v12];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1009D4394;
   v10[3] = &unk_1016619A8;
   objc_copyWeak(&v11, &location);
-  [v7 addCompletion:v10];
+  [animationCopy addCompletion:v10];
   objc_destroyWeak(&v11);
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  animationCopy = animation;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1009D4568;
   v10[3] = &unk_101661B98;
   objc_copyWeak(&v11, &location);
-  [v7 addPreparation:v10];
+  [animationCopy addPreparation:v10];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1009D45AC;
   v8[3] = &unk_1016619A8;
   objc_copyWeak(&v9, &location);
-  [v7 addCompletion:v8];
+  [animationCopy addCompletion:v8];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -674,20 +674,20 @@ LABEL_5:
   [(OfflineRegionSelectorOverlay *)v7 setRegionSelectorDelegate:self];
 }
 
-- (OfflineRegionSelectorContext)initWithSubscriptionInfo:(id)a3
+- (OfflineRegionSelectorContext)initWithSubscriptionInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = OfflineRegionSelectorContext;
   v6 = [(OfflineRegionSelectorContext *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subscriptionInfo, a3);
-    v8 = [v5 subscription];
-    v9 = [v8 region];
+    objc_storeStrong(&v6->_subscriptionInfo, info);
+    subscription = [infoCopy subscription];
+    region = [subscription region];
     mapRegion = v7->_mapRegion;
-    v7->_mapRegion = v9;
+    v7->_mapRegion = region;
 
     [(OfflineRegionSelectorContext *)v7 _commonInit];
   }
@@ -695,18 +695,18 @@ LABEL_5:
   return v7;
 }
 
-- (OfflineRegionSelectorContext)initWithRegion:(id)a3 name:(id)a4
+- (OfflineRegionSelectorContext)initWithRegion:(id)region name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  regionCopy = region;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = OfflineRegionSelectorContext;
   v9 = [(OfflineRegionSelectorContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mapRegion, a3);
-    objc_storeStrong(&v10->_displayName, a4);
+    objc_storeStrong(&v9->_mapRegion, region);
+    objc_storeStrong(&v10->_displayName, name);
     [(OfflineRegionSelectorContext *)v10 _commonInit];
   }
 

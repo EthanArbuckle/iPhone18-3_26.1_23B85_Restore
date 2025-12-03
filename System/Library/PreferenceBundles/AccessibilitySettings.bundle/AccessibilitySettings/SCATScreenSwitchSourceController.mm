@@ -1,6 +1,6 @@
 @interface SCATScreenSwitchSourceController
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SCATScreenSwitchSourceController
@@ -17,9 +17,9 @@
     v25 = 0u;
     v26 = 0u;
     v6 = +[AXSettings sharedInstance];
-    v7 = [v6 assistiveTouchSwitches];
+    assistiveTouchSwitches = [v6 assistiveTouchSwitches];
 
-    v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v8 = [assistiveTouchSwitches countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v8)
     {
       v9 = v8;
@@ -32,11 +32,11 @@
         {
           if (*v24 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(assistiveTouchSwitches);
           }
 
-          v13 = [*(*(&v23 + 1) + 8 * v12) source];
-          v14 = [v13 isEqualToString:v11];
+          source = [*(*(&v23 + 1) + 8 * v12) source];
+          v14 = [source isEqualToString:v11];
 
           if (v14)
           {
@@ -48,7 +48,7 @@
         }
 
         while (v9 != v12);
-        v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v9 = [assistiveTouchSwitches countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v9)
         {
           continue;
@@ -83,16 +83,16 @@ LABEL_12:
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v16.receiver = self;
   v16.super_class = SCATScreenSwitchSourceController;
-  v5 = [(SCATScreenSwitchSourceController *)&v16 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [v5 specifier];
-  v7 = [v6 identifier];
+  v5 = [(SCATScreenSwitchSourceController *)&v16 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v5 specifier];
+  identifier = [specifier identifier];
 
   v8 = [AXSwitch switchWithAction:0 name:0 source:SCATSwitchSourceScreen type:SCATSwitchTypeOptional];
-  if ([v7 isEqualToString:@"ScreenSwitchIdentifier"])
+  if ([identifier isEqualToString:@"ScreenSwitchIdentifier"])
   {
     v9 = AXParameterizedLocalizedString();
     [v8 setName:v9];
@@ -101,25 +101,25 @@ LABEL_12:
   v10 = +[SCATOnboardingManager sharedInstance];
   if ([v10 inSCATOnboarding])
   {
-    v11 = [(SCATScreenSwitchSourceController *)self navigationController];
-    [v10 addOnboardingSwitch:v8 navigationController:v11];
+    navigationController = [(SCATScreenSwitchSourceController *)self navigationController];
+    [v10 addOnboardingSwitch:v8 navigationController:navigationController];
   }
 
   else
   {
-    v11 = [[SCATSwitchActionsController alloc] initWithSwitch:v8];
-    [(SCATSwitchActionsController *)v11 setParentController:self];
-    v12 = [(SCATScreenSwitchSourceController *)self rootController];
-    [(SCATSwitchActionsController *)v11 setRootController:v12];
+    navigationController = [[SCATSwitchActionsController alloc] initWithSwitch:v8];
+    [(SCATSwitchActionsController *)navigationController setParentController:self];
+    rootController = [(SCATScreenSwitchSourceController *)self rootController];
+    [(SCATSwitchActionsController *)navigationController setRootController:rootController];
 
     v13 = AXParameterizedLocalizedString();
     v14 = [PSSpecifier preferenceSpecifierNamed:v13 target:self set:0 get:0 detail:0 cell:-1 edit:0];
-    [(SCATSwitchActionsController *)v11 setSpecifier:v14];
+    [(SCATSwitchActionsController *)navigationController setSpecifier:v14];
 
-    v15 = [(SCATSettingsCompletionController *)self completion];
-    [(SCATSettingsCompletionController *)v11 setCompletion:v15];
+    completion = [(SCATSettingsCompletionController *)self completion];
+    [(SCATSettingsCompletionController *)navigationController setCompletion:completion];
 
-    [(SCATScreenSwitchSourceController *)self showController:v11 animate:1];
+    [(SCATScreenSwitchSourceController *)self showController:navigationController animate:1];
   }
 }
 

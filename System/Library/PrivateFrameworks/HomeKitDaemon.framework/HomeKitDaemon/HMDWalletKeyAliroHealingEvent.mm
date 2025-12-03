@@ -1,5 +1,5 @@
 @interface HMDWalletKeyAliroHealingEvent
-- (HMDWalletKeyAliroHealingEvent)initWithControllerType:(int64_t)a3 userPrivilege:(unint64_t)a4;
+- (HMDWalletKeyAliroHealingEvent)initWithControllerType:(int64_t)type userPrivilege:(unint64_t)privilege;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -19,15 +19,15 @@
   return v6;
 }
 
-- (HMDWalletKeyAliroHealingEvent)initWithControllerType:(int64_t)a3 userPrivilege:(unint64_t)a4
+- (HMDWalletKeyAliroHealingEvent)initWithControllerType:(int64_t)type userPrivilege:(unint64_t)privilege
 {
   v7.receiver = self;
   v7.super_class = HMDWalletKeyAliroHealingEvent;
   result = [(HMMLogEvent *)&v7 init];
   if (result)
   {
-    result->_controllerType = a3;
-    result->_userPrivilege = a4;
+    result->_controllerType = type;
+    result->_userPrivilege = privilege;
   }
 
   return result;

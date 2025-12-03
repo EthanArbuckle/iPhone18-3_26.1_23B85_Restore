@@ -1,77 +1,77 @@
 @interface StickerPickerServiceSceneDelegate
 - (_TtC20StickerPickerService33StickerPickerServiceSceneDelegate)init;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)setWindow:(id)a3;
-- (void)windowScene:(id)a3 didUpdateCoordinateSpace:(id)a4 interfaceOrientation:(int64_t)a5 traitCollection:(id)a6;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
+- (void)setWindow:(id)window;
+- (void)windowScene:(id)scene didUpdateCoordinateSpace:(id)space interfaceOrientation:(int64_t)orientation traitCollection:(id)collection;
 @end
 
 @implementation StickerPickerServiceSceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC20StickerPickerService33StickerPickerServiceSceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC20StickerPickerService33StickerPickerServiceSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC20StickerPickerService33StickerPickerServiceSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_10000A2BC(v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_10000A2BC(sceneCopy);
 }
 
-- (void)windowScene:(id)a3 didUpdateCoordinateSpace:(id)a4 interfaceOrientation:(int64_t)a5 traitCollection:(id)a6
+- (void)windowScene:(id)scene didUpdateCoordinateSpace:(id)space interfaceOrientation:(int64_t)orientation traitCollection:(id)collection
 {
-  v9 = a3;
+  sceneCopy = scene;
   swift_unknownObjectRetain();
-  v10 = a6;
-  v11 = self;
-  sub_10000A494(v9, a4);
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_10000A494(sceneCopy, space);
 
   swift_unknownObjectRelease();
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000093DC(v4);
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  sub_1000093DC(disconnectCopy);
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_10000A6A4(v4, "sceneDidBecomeActive %@");
+  activeCopy = active;
+  selfCopy = self;
+  sub_10000A6A4(activeCopy, "sceneDidBecomeActive %@");
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_10000A6A4(v4, "sceneWillResignActive %@");
+  activeCopy = active;
+  selfCopy = self;
+  sub_10000A6A4(activeCopy, "sceneWillResignActive %@");
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000096CC(v4);
+  foregroundCopy = foreground;
+  selfCopy = self;
+  sub_1000096CC(foregroundCopy);
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
-  sub_10000A7EC(v4);
+  backgroundCopy = background;
+  selfCopy = self;
+  sub_10000A7EC(backgroundCopy);
 }
 
 - (_TtC20StickerPickerService33StickerPickerServiceSceneDelegate)init

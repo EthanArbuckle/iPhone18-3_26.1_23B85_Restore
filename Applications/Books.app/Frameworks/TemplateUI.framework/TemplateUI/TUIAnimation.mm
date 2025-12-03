@@ -1,15 +1,15 @@
 @interface TUIAnimation
 - ($2940F3BBF0C500EC413214967FDB6F62)timing;
-- (id)_animationRenderModelForStep:(id)a3 sourceRenderModel:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_animationRenderModelForStep:(id)step sourceRenderModel:(id)model;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)generateRenderModelsFromSource:(id)a3;
-- (void)setTiming:(id *)a3;
+- (id)generateRenderModelsFromSource:(id)source;
+- (void)setTiming:(id *)timing;
 @end
 
 @implementation TUIAnimation
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TUIAnimation allocWithZone:?]];
   v5 = v4;
@@ -136,25 +136,25 @@
   return self;
 }
 
-- (void)setTiming:(id *)a3
+- (void)setTiming:(id *)timing
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var2;
-  self->_timing.initialVelocity.dy = a3->var3.dy;
+  v3 = *&timing->var0;
+  v4 = *&timing->var2;
+  self->_timing.initialVelocity.dy = timing->var3.dy;
   *&self->_timing.damping = v4;
   *&self->_timing.mass = v3;
 }
 
-- (id)generateRenderModelsFromSource:(id)a3
+- (id)generateRenderModelsFromSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_alloc_init(NSMutableArray);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [(TUIAnimation *)self steps];
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  steps = [(TUIAnimation *)self steps];
+  v7 = [steps countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -165,17 +165,17 @@
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(steps);
         }
 
-        v11 = [(TUIAnimation *)self _animationRenderModelForStep:*(*(&v23 + 1) + 8 * i) sourceRenderModel:v4];
+        v11 = [(TUIAnimation *)self _animationRenderModelForStep:*(*(&v23 + 1) + 8 * i) sourceRenderModel:sourceCopy];
         if (v11)
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v8 = [steps countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v8);
@@ -193,31 +193,31 @@
   v19 = v22;
   [(TUIAnimationRenderModel *)v12 setTiming:v18];
   [(TUIAnimationRenderModel *)v12 setModels:v5];
-  v13 = [(TUIAnimation *)self from];
-  v14 = [(TUIAnimation *)self _animationRenderModelForStep:v13 sourceRenderModel:v4];
+  from = [(TUIAnimation *)self from];
+  v14 = [(TUIAnimation *)self _animationRenderModelForStep:from sourceRenderModel:sourceCopy];
   [(TUIAnimationRenderModel *)v12 setFrom:v14];
 
   v15 = [(TUIAnimation *)self to];
-  v16 = [(TUIAnimation *)self _animationRenderModelForStep:v15 sourceRenderModel:v4];
+  v16 = [(TUIAnimation *)self _animationRenderModelForStep:v15 sourceRenderModel:sourceCopy];
   [(TUIAnimationRenderModel *)v12 setTo:v16];
 
   return v12;
 }
 
-- (id)_animationRenderModelForStep:(id)a3 sourceRenderModel:(id)a4
+- (id)_animationRenderModelForStep:(id)step sourceRenderModel:(id)model
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  stepCopy = step;
+  modelCopy = model;
+  if (stepCopy)
   {
-    v7 = [v5 values];
-    v8 = v6;
-    v9 = v7;
+    values = [stepCopy values];
+    v8 = modelCopy;
+    v9 = values;
     v10 = v8;
     v11 = v10;
     if ([v9 count])
     {
-      v32 = v5;
+      v32 = stepCopy;
       v11 = [v10 copyWithZone:0];
       v31 = v10;
 
@@ -225,8 +225,8 @@
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v12 = [v9 keyEnumerator];
-      v13 = [v12 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      keyEnumerator = [v9 keyEnumerator];
+      v13 = [keyEnumerator countByEnumeratingWithState:&v37 objects:v41 count:16];
       if (v13)
       {
         v14 = v13;
@@ -237,7 +237,7 @@
           {
             if (*v38 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(keyEnumerator);
             }
 
             v17 = *(*(&v37 + 1) + 8 * i);
@@ -279,24 +279,24 @@
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v37 objects:v41 count:16];
+          v14 = [keyEnumerator countByEnumeratingWithState:&v37 objects:v41 count:16];
         }
 
         while (v14);
       }
 
-      v5 = v32;
+      stepCopy = v32;
       v10 = v31;
     }
 
     v22 = [TUIAnimationRenderModelStep alloc];
-    [v5 startTime];
+    [stepCopy startTime];
     v24 = v23;
-    [v5 duration];
+    [stepCopy duration];
     v26 = v25;
-    v27 = [v5 values];
-    v28 = [v27 allKeys];
-    v29 = [(TUIAnimationRenderModelStep *)v22 initWithStepStartTime:v11 duration:v28 renderModel:v24 animatedKeyPaths:v26];
+    values2 = [stepCopy values];
+    allKeys = [values2 allKeys];
+    v29 = [(TUIAnimationRenderModelStep *)v22 initWithStepStartTime:v11 duration:allKeys renderModel:v24 animatedKeyPaths:v26];
   }
 
   else

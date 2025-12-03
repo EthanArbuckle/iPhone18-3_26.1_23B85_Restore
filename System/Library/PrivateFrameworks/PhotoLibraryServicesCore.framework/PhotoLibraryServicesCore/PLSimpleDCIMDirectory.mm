@@ -1,28 +1,28 @@
 @interface PLSimpleDCIMDirectory
-+ (id)migrateOldPlistToNewPlist:(id)a3;
-- (BOOL)_ensureDirectoryExists:(id)a3;
-- (PLSimpleDCIMDirectory)initWithDirectoryURL:(id)a3 subDirectorySuffix:(id)a4 perDirectoryLimit:(unint64_t)a5 userInfoPath:(id)a6;
-- (_NSRange)_fileNameNumberRangeForDirNumber:(unint64_t)a3;
-- (id)_availableFileNameNumbersInDirNumber:(unint64_t)a3;
++ (id)migrateOldPlistToNewPlist:(id)plist;
+- (BOOL)_ensureDirectoryExists:(id)exists;
+- (PLSimpleDCIMDirectory)initWithDirectoryURL:(id)l subDirectorySuffix:(id)suffix perDirectoryLimit:(unint64_t)limit userInfoPath:(id)path;
+- (_NSRange)_fileNameNumberRangeForDirNumber:(unint64_t)number;
+- (id)_availableFileNameNumbersInDirNumber:(unint64_t)number;
 - (id)_currentSubDirectory;
-- (id)_nextAvailableFileURLWithExtension:(id)a3;
-- (id)_subDirURLForNumber:(unint64_t)a3 create:(BOOL)a4 didCreate:(BOOL *)a5;
-- (id)nextAvailableFileURLWithExtension:(id)a3;
-- (void)_loadUserInfoLastUsedDirectoryNumber:(id *)a3 lastUsedFileNumber:(id *)a4;
+- (id)_nextAvailableFileURLWithExtension:(id)extension;
+- (id)_subDirURLForNumber:(unint64_t)number create:(BOOL)create didCreate:(BOOL *)didCreate;
+- (id)nextAvailableFileURLWithExtension:(id)extension;
+- (void)_loadUserInfoLastUsedDirectoryNumber:(id *)number lastUsedFileNumber:(id *)fileNumber;
 - (void)_saveUserInfo;
 - (void)reset;
 @end
 
 @implementation PLSimpleDCIMDirectory
 
-- (BOOL)_ensureDirectoryExists:(id)a3
+- (BOOL)_ensureDirectoryExists:(id)exists
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  existsCopy = exists;
   v14 = 0;
   fileManager = self->_fileManager;
-  v6 = [v4 path];
-  LODWORD(fileManager) = [(NSFileManager *)fileManager fileExistsAtPath:v6 isDirectory:&v14];
+  path = [existsCopy path];
+  LODWORD(fileManager) = [(NSFileManager *)fileManager fileExistsAtPath:path isDirectory:&v14];
   v7 = v14;
 
   if (fileManager && (v7 & 1) != 0)
@@ -34,7 +34,7 @@
   {
     v9 = self->_fileManager;
     v13 = 0;
-    v8 = [(NSFileManager *)v9 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:&v13];
+    v8 = [(NSFileManager *)v9 createDirectoryAtURL:existsCopy withIntermediateDirectories:1 attributes:0 error:&v13];
     v10 = v13;
     if ((v8 & 1) == 0)
     {
@@ -51,7 +51,7 @@
   return v8;
 }
 
-- (void)_loadUserInfoLastUsedDirectoryNumber:(id *)a3 lastUsedFileNumber:(id *)a4
+- (void)_loadUserInfoLastUsedDirectoryNumber:(id *)number lastUsedFileNumber:(id *)fileNumber
 {
   if (!self->_hasLoadedUserInfo && self->_userInfoPath)
   {
@@ -59,16 +59,16 @@
     v10 = [MEMORY[0x1E695DF90] dictionaryWithContentsOfFile:?];
     v6 = [v10 objectForKey:@"DCIMLastDirectoryNumber"];
     v7 = [v10 objectForKey:@"DCIMLastFileNumber"];
-    if (a3)
+    if (number)
     {
       v8 = v6;
-      *a3 = v6;
+      *number = v6;
     }
 
-    if (a4)
+    if (fileNumber)
     {
       v9 = v7;
-      *a4 = v7;
+      *fileNumber = v7;
     }
   }
 }
@@ -87,9 +87,9 @@
   }
 }
 
-- (_NSRange)_fileNameNumberRangeForDirNumber:(unint64_t)a3
+- (_NSRange)_fileNameNumberRangeForDirNumber:(unint64_t)number
 {
-  v3 = (1000 * a3 - 100000) % 0x2710;
+  v3 = (1000 * number - 100000) % 0x2710;
   v4 = v3 | 1;
   v5 = v3 + self->_directoryLimit;
   if (v5 >= 0x270F)
@@ -104,7 +104,7 @@
   return result;
 }
 
-- (id)_availableFileNameNumbersInDirNumber:(unint64_t)a3
+- (id)_availableFileNameNumbersInDirNumber:(unint64_t)number
 {
   v41 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AD50];
@@ -112,9 +112,9 @@
   v8 = [v5 indexSetWithIndexesInRange:{v6, v7}];
   v9 = *MEMORY[0x1E695DC30];
   v10 = [MEMORY[0x1E695DEC8] arrayWithObject:*MEMORY[0x1E695DC30]];
-  v11 = [(PLSimpleDCIMDirectory *)self _subDirURLForNumber:a3 create:0 didCreate:0];
+  v11 = [(PLSimpleDCIMDirectory *)self _subDirURLForNumber:number create:0 didCreate:0];
   v12 = [(NSFileManager *)self->_fileManager enumeratorAtURL:v11 includingPropertiesForKeys:v10 options:1 errorHandler:0];
-  v32 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+  decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -148,7 +148,7 @@
           v22 = [MEMORY[0x1E696AE88] scannerWithString:v21];
           v34 = -1;
           v33 = 0;
-          v23 = [v22 scanUpToCharactersFromSet:v32 intoString:&v33];
+          v23 = [v22 scanUpToCharactersFromSet:decimalDigitCharacterSet intoString:&v33];
           v24 = v33;
           v25 = v24;
           if (v23 && [v24 length] == 4 && objc_msgSend(v22, "scanInt:", &v34) && (v34 - 1) <= 0x270E && objc_msgSend(v22, "scanString:intoString:", @".", 0))
@@ -187,33 +187,33 @@
   return v8;
 }
 
-- (id)_subDirURLForNumber:(unint64_t)a3 create:(BOOL)a4 didCreate:(BOOL *)a5
+- (id)_subDirURLForNumber:(unint64_t)number create:(BOOL)create didCreate:(BOOL *)didCreate
 {
-  v6 = a4;
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u%@", a3, self->_subDirSuffix];
+  createCopy = create;
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u%@", number, self->_subDirSuffix];
   v9 = [(NSURL *)self->_baseURL URLByAppendingPathComponent:v8 isDirectory:1];
   v10 = v9;
-  if (v6)
+  if (createCopy)
   {
     v19 = 0;
     v11 = [v9 getResourceValue:&v19 forKey:*MEMORY[0x1E695DB20] error:0];
     v12 = v19;
     if (v11)
     {
-      *a5 = 0;
+      *didCreate = 0;
     }
 
     else
     {
-      *a5 = 1;
+      *didCreate = 1;
       fileManager = self->_fileManager;
       v18 = 0;
       v14 = [(NSFileManager *)fileManager createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:&v18];
       v15 = v18;
       if (!v14)
       {
-        v16 = [v10 path];
-        NSLog(@"Unable to create directory at '%@': %@", v16, v15);
+        path = [v10 path];
+        NSLog(@"Unable to create directory at '%@': %@", path, v15);
       }
     }
   }
@@ -251,10 +251,10 @@ LABEL_6:
   currentSubDirectoryURL = self->_currentSubDirectoryURL;
   self->_currentSubDirectoryURL = 0;
 
-  v38 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   if (v4)
   {
-    [v38 addIndex:self->_currentSubDirectoryNumber + 1];
+    [indexSet addIndex:self->_currentSubDirectoryNumber + 1];
   }
 
   self->_currentSubDirectoryNumber = 100;
@@ -301,7 +301,7 @@ LABEL_6:
           v42 = -1;
           if ([v18 scanInt:&v42] && v42 >= 0x64 && v9 > v42 && objc_msgSend(v18, "scanString:intoString:", self->_subDirSuffix, 0) && objc_msgSend(v18, "isAtEnd"))
           {
-            [v38 addIndex:v42];
+            [indexSet addIndex:v42];
           }
         }
 
@@ -314,15 +314,15 @@ LABEL_6:
     while (v11);
   }
 
-  v19 = [v38 lastIndex];
-  if (v19 == 0x7FFFFFFFFFFFFFFFLL)
+  lastIndex = [indexSet lastIndex];
+  if (lastIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v20 = 100;
   }
 
   else
   {
-    v20 = v19;
+    v20 = lastIndex;
   }
 
   v40 = 0;
@@ -332,10 +332,10 @@ LABEL_6:
   v22 = v40;
   if (v21)
   {
-    v23 = [v21 unsignedIntegerValue];
-    if ((v23 != 999 || !self->_representsCameraRoll) && v20 <= v23)
+    unsignedIntegerValue = [v21 unsignedIntegerValue];
+    if ((unsignedIntegerValue != 999 || !self->_representsCameraRoll) && v20 <= unsignedIntegerValue)
     {
-      v20 = v23;
+      v20 = unsignedIntegerValue;
     }
   }
 
@@ -416,9 +416,9 @@ void __30__PLSimpleDCIMDirectory_reset__block_invoke(uint64_t a1)
   *(v1 + 48) = 0;
 }
 
-- (id)_nextAvailableFileURLWithExtension:(id)a3
+- (id)_nextAvailableFileURLWithExtension:(id)extension
 {
-  v5 = a3;
+  extensionCopy = extension;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -441,9 +441,9 @@ void __30__PLSimpleDCIMDirectory_reset__block_invoke(uint64_t a1)
   pl_dispatch_sync(isolation, v12);
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"IMG_%04u", v14[3]];
   v8 = v7;
-  if (v5)
+  if (extensionCopy)
   {
-    v9 = [v7 stringByAppendingPathExtension:v5];
+    v9 = [v7 stringByAppendingPathExtension:extensionCopy];
 
     v8 = v9;
   }
@@ -478,15 +478,15 @@ uint64_t __60__PLSimpleDCIMDirectory__nextAvailableFileURLWithExtension___block_
   return [v5 removeIndex:v6];
 }
 
-- (id)nextAvailableFileURLWithExtension:(id)a3
+- (id)nextAvailableFileURLWithExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [(PLSimpleDCIMDirectory *)self _nextAvailableFileURLWithExtension:v4];
+  extensionCopy = extension;
+  v5 = [(PLSimpleDCIMDirectory *)self _nextAvailableFileURLWithExtension:extensionCopy];
   if (self->_shouldCheckForExistingFiles)
   {
     while ([v5 checkResourceIsReachableAndReturnError:0])
     {
-      v6 = [(PLSimpleDCIMDirectory *)self _nextAvailableFileURLWithExtension:v4];
+      v6 = [(PLSimpleDCIMDirectory *)self _nextAvailableFileURLWithExtension:extensionCopy];
 
       v5 = v6;
       if (!self->_shouldCheckForExistingFiles)
@@ -502,11 +502,11 @@ LABEL_6:
   return v6;
 }
 
-- (PLSimpleDCIMDirectory)initWithDirectoryURL:(id)a3 subDirectorySuffix:(id)a4 perDirectoryLimit:(unint64_t)a5 userInfoPath:(id)a6
+- (PLSimpleDCIMDirectory)initWithDirectoryURL:(id)l subDirectorySuffix:(id)suffix perDirectoryLimit:(unint64_t)limit userInfoPath:(id)path
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  lCopy = l;
+  suffixCopy = suffix;
+  pathCopy = path;
   v32.receiver = self;
   v32.super_class = PLSimpleDCIMDirectory;
   v14 = [(PLSimpleDCIMDirectory *)&v32 init];
@@ -518,14 +518,14 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v16 = 2000;
-  if (a5)
+  limitCopy = 2000;
+  if (limit)
   {
-    v16 = a5;
+    limitCopy = limit;
   }
 
-  v14->_directoryLimit = v16;
-  objc_storeStrong(&v14->_baseURL, a3);
+  v14->_directoryLimit = limitCopy;
+  objc_storeStrong(&v14->_baseURL, l);
   v17 = objc_alloc_init(MEMORY[0x1E696AC08]);
   fileManager = v15->_fileManager;
   v15->_fileManager = v17;
@@ -536,25 +536,25 @@ LABEL_12:
     isolation = v15->_isolation;
     v15->_isolation = v19;
 
-    if (v12)
+    if (suffixCopy)
     {
-      v21 = [v12 length];
-      v22 = [v12 uppercaseString];
-      v23 = v22;
+      v21 = [suffixCopy length];
+      uppercaseString = [suffixCopy uppercaseString];
+      v23 = uppercaseString;
       if (v21 == 5)
       {
-        v24 = [(NSString *)v22 copy];
+        v24 = [(NSString *)uppercaseString copy];
         subDirSuffix = v15->_subDirSuffix;
         v15->_subDirSuffix = v24;
       }
 
       else
       {
-        v27 = [(NSString *)v22 stringByPaddingToLength:5 withString:@"X" startingAtIndex:0];
+        v27 = [(NSString *)uppercaseString stringByPaddingToLength:5 withString:@"X" startingAtIndex:0];
 
-        v12 = [v27 substringToIndex:5];
+        suffixCopy = [v27 substringToIndex:5];
 
-        v28 = [v12 copy];
+        v28 = [suffixCopy copy];
         v23 = v15->_subDirSuffix;
         v15->_subDirSuffix = v28;
       }
@@ -566,7 +566,7 @@ LABEL_12:
       v15->_subDirSuffix = @"APPLE";
     }
 
-    v29 = [v13 copy];
+    v29 = [pathCopy copy];
     userInfoPath = v15->_userInfoPath;
     v15->_userInfoPath = v29;
 
@@ -579,10 +579,10 @@ LABEL_13:
   return v26;
 }
 
-+ (id)migrateOldPlistToNewPlist:(id)a3
++ (id)migrateOldPlistToNewPlist:(id)plist
 {
-  v3 = a3;
-  if ([v3 count])
+  plistCopy = plist;
+  if ([plistCopy count])
   {
     v16 = 0;
     v17 = &v16;
@@ -598,7 +598,7 @@ LABEL_13:
     v11[3] = &unk_1E7932630;
     v11[4] = &v16;
     v11[5] = &v12;
-    [v3 enumerateKeysAndObjectsUsingBlock:v11];
+    [plistCopy enumerateKeysAndObjectsUsingBlock:v11];
     v4 = *(v17 + 6);
     if (v4 == -1 || (v5 = *(v13 + 6), v5 == -1) || v4 <= 0x64 && v5 < 1)
     {

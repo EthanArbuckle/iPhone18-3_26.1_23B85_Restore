@@ -1,18 +1,18 @@
 @interface TRIPostUpgradeCleanupTask
-+ (id)parseFromData:(id)a3;
++ (id)parseFromData:(id)data;
 + (id)task;
-- (BOOL)_activeRolloutIsCompatible:(id)a3 upgradeNCVs:(id)a4 downloadNCVs:(id)a5;
-- (BOOL)_migrateToGlobalAssetStoreIfNeededUsingPaths:(id)a3;
-- (BOOL)_migrateTreatmentsFolderIfNeededUsingContext:(id)a3;
-- (BOOL)_removePromotionsUsingPaths:(id)a3;
-- (BOOL)_validateExperimentDescriptorsWithNamespaceCompatibilityVersions:(id)a3 database:(id)a4;
-- (BOOL)_validateRolloutNamespaceNCVs:(id)a3 downloadNCVs:(id)a4 context:(id)a5;
-- (TRIPostUpgradeCleanupTask)initWithCoder:(id)a3;
+- (BOOL)_activeRolloutIsCompatible:(id)compatible upgradeNCVs:(id)vs downloadNCVs:(id)cVs;
+- (BOOL)_migrateToGlobalAssetStoreIfNeededUsingPaths:(id)paths;
+- (BOOL)_migrateTreatmentsFolderIfNeededUsingContext:(id)context;
+- (BOOL)_removePromotionsUsingPaths:(id)paths;
+- (BOOL)_validateExperimentDescriptorsWithNamespaceCompatibilityVersions:(id)versions database:(id)database;
+- (BOOL)_validateRolloutNamespaceNCVs:(id)vs downloadNCVs:(id)cVs context:(id)context;
+- (TRIPostUpgradeCleanupTask)initWithCoder:(id)coder;
 - (id)_asPersistedTask;
-- (id)_nextTasksForRunStatus:(int)a3;
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4;
+- (id)_nextTasksForRunStatus:(int)status;
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIPostUpgradeCleanupTask
@@ -24,11 +24,11 @@
   return v2;
 }
 
-- (id)_nextTasksForRunStatus:(int)a3
+- (id)_nextTasksForRunStatus:(int)status
 {
   v4 = objc_opt_new();
-  v5 = [(NSMutableSet *)self->_invalidExperimentDeployments allObjects];
-  v6 = [v5 _pas_mappedArrayWithTransform:&__block_literal_global_42];
+  allObjects = [(NSMutableSet *)self->_invalidExperimentDeployments allObjects];
+  v6 = [allObjects _pas_mappedArrayWithTransform:&__block_literal_global_42];
   [v4 addObjectsFromArray:v6];
 
   return v4;
@@ -45,10 +45,10 @@ id __52__TRIPostUpgradeCleanupTask__nextTasksForRunStatus___block_invoke(uint64_
   return v5;
 }
 
-- (BOOL)_validateExperimentDescriptorsWithNamespaceCompatibilityVersions:(id)a3 database:(id)a4
+- (BOOL)_validateExperimentDescriptorsWithNamespaceCompatibilityVersions:(id)versions database:(id)database
 {
-  v6 = a3;
-  v7 = a4;
+  versionsCopy = versions;
+  databaseCopy = database;
   v8 = objc_opt_new();
   invalidExperimentDeployments = self->_invalidExperimentDeployments;
   self->_invalidExperimentDeployments = v8;
@@ -57,12 +57,12 @@ id __52__TRIPostUpgradeCleanupTask__nextTasksForRunStatus___block_invoke(uint64_
   v12[1] = 3221225472;
   v12[2] = __103__TRIPostUpgradeCleanupTask__validateExperimentDescriptorsWithNamespaceCompatibilityVersions_database___block_invoke;
   v12[3] = &unk_279DE08A8;
-  v13 = v6;
-  v14 = self;
-  v10 = v6;
-  LOBYTE(v6) = [v7 enumerateExperimentRecordsWithBlock:v12];
+  v13 = versionsCopy;
+  selfCopy = self;
+  v10 = versionsCopy;
+  LOBYTE(versionsCopy) = [databaseCopy enumerateExperimentRecordsWithBlock:v12];
 
-  return v6;
+  return versionsCopy;
 }
 
 void __103__TRIPostUpgradeCleanupTask__validateExperimentDescriptorsWithNamespaceCompatibilityVersions_database___block_invoke(uint64_t a1, void *a2)
@@ -137,34 +137,34 @@ LABEL_13:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_validateRolloutNamespaceNCVs:(id)a3 downloadNCVs:(id)a4 context:(id)a5
+- (BOOL)_validateRolloutNamespaceNCVs:(id)vs downloadNCVs:(id)cVs context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  vsCopy = vs;
+  cVsCopy = cVs;
+  contextCopy = context;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 1;
-  v11 = [v10 rolloutDatabase];
+  rolloutDatabase = [contextCopy rolloutDatabase];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __80__TRIPostUpgradeCleanupTask__validateRolloutNamespaceNCVs_downloadNCVs_context___block_invoke;
   v16[3] = &unk_279DE17A8;
-  v12 = v10;
+  v12 = contextCopy;
   v17 = v12;
-  v18 = self;
-  v13 = v8;
+  selfCopy = self;
+  v13 = vsCopy;
   v19 = v13;
-  v14 = v9;
+  v14 = cVsCopy;
   v20 = v14;
   v21 = &v22;
-  [v11 writeTransactionWithFailableBlock:v16];
+  [rolloutDatabase writeTransactionWithFailableBlock:v16];
 
-  LOBYTE(v8) = *(v23 + 24);
+  LOBYTE(vsCopy) = *(v23 + 24);
   _Block_object_dispose(&v22, 8);
 
-  return v8;
+  return vsCopy;
 }
 
 uint64_t __80__TRIPostUpgradeCleanupTask__validateRolloutNamespaceNCVs_downloadNCVs_context___block_invoke(uint64_t a1, void *a2)
@@ -284,21 +284,21 @@ void __80__TRIPostUpgradeCleanupTask__validateRolloutNamespaceNCVs_downloadNCVs_
   }
 }
 
-- (BOOL)_activeRolloutIsCompatible:(id)a3 upgradeNCVs:(id)a4 downloadNCVs:(id)a5
+- (BOOL)_activeRolloutIsCompatible:(id)compatible upgradeNCVs:(id)vs downloadNCVs:(id)cVs
 {
   v66 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v39 = a4;
-  v38 = a5;
-  v35 = v7;
-  v8 = [v7 artifact];
-  v33 = [v8 rollout];
+  compatibleCopy = compatible;
+  vsCopy = vs;
+  cVsCopy = cVs;
+  v35 = compatibleCopy;
+  artifact = [compatibleCopy artifact];
+  rollout = [artifact rollout];
 
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = [v33 selectedNamespaceArray];
+  obj = [rollout selectedNamespaceArray];
   v40 = [obj countByEnumeratingWithState:&v55 objects:v65 count:16];
   if (v40)
   {
@@ -316,11 +316,11 @@ void __80__TRIPostUpgradeCleanupTask__validateRolloutNamespaceNCVs_downloadNCVs_
 
         v11 = *(*(&v55 + 1) + 8 * i);
         context = objc_autoreleasePoolPush();
-        v12 = [v11 name];
-        v13 = [v39 objectForKey:v12];
+        name = [v11 name];
+        v13 = [vsCopy objectForKey:name];
 
-        v14 = [v11 name];
-        v15 = [v38 objectForKey:v14];
+        name2 = [v11 name];
+        v15 = [cVsCopy objectForKey:name2];
 
         v51 = 0;
         v52 = &v51;
@@ -330,7 +330,7 @@ void __80__TRIPostUpgradeCleanupTask__validateRolloutNamespaceNCVs_downloadNCVs_
         v48 = &v47;
         v49 = 0x2020000000;
         v50 = 0;
-        v16 = [v11 compatibilityVersionArray];
+        compatibilityVersionArray = [v11 compatibilityVersionArray];
         v42[0] = MEMORY[0x277D85DD0];
         v42[1] = 3221225472;
         v42[2] = __81__TRIPostUpgradeCleanupTask__activeRolloutIsCompatible_upgradeNCVs_downloadNCVs___block_invoke;
@@ -341,26 +341,26 @@ void __80__TRIPostUpgradeCleanupTask__validateRolloutNamespaceNCVs_downloadNCVs_
         v18 = v13;
         v44 = v18;
         v46 = &v47;
-        [v16 enumerateValuesWithBlock:v42];
+        [compatibilityVersionArray enumerateValuesWithBlock:v42];
 
         if ((v52[3] & 1) == 0)
         {
           v19 = TRILogCategory_Server();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
-            v20 = [v11 name];
-            v21 = [v35 deployment];
-            v22 = [v21 shortDesc];
-            v23 = [v17 unsignedIntValue];
-            v24 = [v11 compatibilityVersionArray];
+            name3 = [v11 name];
+            deployment = [v35 deployment];
+            shortDesc = [deployment shortDesc];
+            unsignedIntValue = [v17 unsignedIntValue];
+            compatibilityVersionArray2 = [v11 compatibilityVersionArray];
             *buf = 138544130;
-            v60 = v20;
+            v60 = name3;
             v61 = 2114;
-            v62 = v22;
+            v62 = shortDesc;
             v63 = 1024;
-            *v64 = v23;
+            *v64 = unsignedIntValue;
             *&v64[4] = 2114;
-            *&v64[6] = v24;
+            *&v64[6] = compatibilityVersionArray2;
             _os_log_impl(&dword_26F567000, v19, OS_LOG_TYPE_DEFAULT, "Namespace %{public}@ for rollout %{public}@ is no longer download compatible. Expected NCV: %u Actual: %{public}@", buf, 0x26u);
           }
 
@@ -372,18 +372,18 @@ void __80__TRIPostUpgradeCleanupTask__validateRolloutNamespaceNCVs_downloadNCVs_
           v25 = TRILogCategory_Server();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
-            v26 = [v11 name];
-            v27 = [v35 deployment];
-            v28 = [v27 shortDesc];
-            v29 = [v11 compatibilityVersionArray];
+            name4 = [v11 name];
+            deployment2 = [v35 deployment];
+            shortDesc2 = [deployment2 shortDesc];
+            compatibilityVersionArray3 = [v11 compatibilityVersionArray];
             *buf = 138544130;
-            v60 = v26;
+            v60 = name4;
             v61 = 2114;
-            v62 = v28;
+            v62 = shortDesc2;
             v63 = 2112;
             *v64 = v18;
             *&v64[8] = 2114;
-            *&v64[10] = v29;
+            *&v64[10] = compatibilityVersionArray3;
             _os_log_impl(&dword_26F567000, v25, OS_LOG_TYPE_DEFAULT, "Namespace %{public}@ for rollout %{public}@ is upgrade compatible. Upgrade NCVs: %@ Namespace NCVs: %{public}@", buf, 0x2Au);
           }
 
@@ -433,45 +433,45 @@ void __81__TRIPostUpgradeCleanupTask__activeRolloutIsCompatible_upgradeNCVs_down
   }
 }
 
-- (BOOL)_removePromotionsUsingPaths:(id)a3
+- (BOOL)_removePromotionsUsingPaths:(id)paths
 {
-  v3 = a3;
-  v4 = [[TRINamespaceResolverStorage alloc] initWithPaths:v3];
+  pathsCopy = paths;
+  v4 = [[TRINamespaceResolverStorage alloc] initWithPaths:pathsCopy];
 
-  LOBYTE(v3) = [(TRINamespaceResolverStorage *)v4 removeUnneededPromotionsWithRemovedCount:0 removeAll:1];
-  return v3;
+  LOBYTE(pathsCopy) = [(TRINamespaceResolverStorage *)v4 removeUnneededPromotionsWithRemovedCount:0 removeAll:1];
+  return pathsCopy;
 }
 
-- (BOOL)_migrateToGlobalAssetStoreIfNeededUsingPaths:(id)a3
+- (BOOL)_migrateToGlobalAssetStoreIfNeededUsingPaths:(id)paths
 {
-  v3 = a3;
-  v4 = [[TRIRemoteAssetStoreOperator alloc] initWithPaths:v3];
+  pathsCopy = paths;
+  v4 = [[TRIRemoteAssetStoreOperator alloc] initWithPaths:pathsCopy];
 
-  LOBYTE(v3) = [(TRIRemoteAssetStoreOperator *)v4 migrateToGlobalAssetStoreIfNeeded];
-  return v3;
+  LOBYTE(pathsCopy) = [(TRIRemoteAssetStoreOperator *)v4 migrateToGlobalAssetStoreIfNeeded];
+  return pathsCopy;
 }
 
-- (BOOL)_migrateTreatmentsFolderIfNeededUsingContext:(id)a3
+- (BOOL)_migrateTreatmentsFolderIfNeededUsingContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = [TRIFactorPackSetStorage alloc];
-  v5 = [v3 paths];
-  v6 = [(TRIFactorPackSetStorage *)v4 initWithPaths:v5];
+  paths = [contextCopy paths];
+  v6 = [(TRIFactorPackSetStorage *)v4 initWithPaths:paths];
 
-  LOBYTE(v5) = [(TRIFactorPackSetStorage *)v6 migrateEligibleFactorPacksToGlobalWithServerContext:v3];
-  return v5;
+  LOBYTE(paths) = [(TRIFactorPackSetStorage *)v6 migrateEligibleFactorPacksToGlobalWithServerContext:contextCopy];
+  return paths;
 }
 
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue
 {
-  v34 = self;
+  selfCopy = self;
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = MEMORY[0x277D73750];
-  v35 = v4;
-  v6 = [v4 paths];
-  v7 = [v6 namespaceDescriptorsDefaultDir];
-  v8 = [v5 descriptorsForDirectory:v7 filterBlock:0];
+  v35 = contextCopy;
+  paths = [contextCopy paths];
+  namespaceDescriptorsDefaultDir = [paths namespaceDescriptorsDefaultDir];
+  v8 = [v5 descriptorsForDirectory:namespaceDescriptorsDefaultDir filterBlock:0];
 
   v9 = objc_opt_new();
   v10 = objc_opt_new();
@@ -495,13 +495,13 @@ void __81__TRIPostUpgradeCleanupTask__activeRolloutIsCompatible_upgradeNCVs_down
         }
 
         v16 = *(*(&v36 + 1) + 8 * i);
-        v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v16, "downloadNCV", v34)}];
-        v18 = [v16 namespaceName];
-        [v9 setObject:v17 forKeyedSubscript:v18];
+        v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v16, "downloadNCV", selfCopy)}];
+        namespaceName = [v16 namespaceName];
+        [v9 setObject:v17 forKeyedSubscript:namespaceName];
 
-        v19 = [v16 upgradeNCVs];
-        v20 = [v16 namespaceName];
-        [v10 setObject:v19 forKeyedSubscript:v20];
+        upgradeNCVs = [v16 upgradeNCVs];
+        namespaceName2 = [v16 namespaceName];
+        [v10 setObject:upgradeNCVs forKeyedSubscript:namespaceName2];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -510,16 +510,16 @@ void __81__TRIPostUpgradeCleanupTask__activeRolloutIsCompatible_upgradeNCVs_down
     while (v13);
   }
 
-  v21 = [v35 experimentDatabase];
-  v22 = [(TRIPostUpgradeCleanupTask *)v34 _validateExperimentDescriptorsWithNamespaceCompatibilityVersions:v9 database:v21];
+  experimentDatabase = [v35 experimentDatabase];
+  v22 = [(TRIPostUpgradeCleanupTask *)selfCopy _validateExperimentDescriptorsWithNamespaceCompatibilityVersions:v9 database:experimentDatabase];
 
-  v23 = v22 & [(TRIPostUpgradeCleanupTask *)v34 _validateRolloutNamespaceNCVs:v10 downloadNCVs:v9 context:v35];
-  v24 = [v35 paths];
-  v25 = [(TRIPostUpgradeCleanupTask *)v34 _removePromotionsUsingPaths:v24];
+  v23 = v22 & [(TRIPostUpgradeCleanupTask *)selfCopy _validateRolloutNamespaceNCVs:v10 downloadNCVs:v9 context:v35];
+  paths2 = [v35 paths];
+  v25 = [(TRIPostUpgradeCleanupTask *)selfCopy _removePromotionsUsingPaths:paths2];
 
   v26 = [TRIAssetStore alloc];
-  v27 = [v35 paths];
-  v28 = [(TRIAssetStore *)v26 initWithPaths:v27];
+  paths3 = [v35 paths];
+  v28 = [(TRIAssetStore *)v26 initWithPaths:paths3];
 
   [(TRIAssetStore *)v28 fixFileProtectionForAssetStoreFiles];
   if ((v23 & v25) != 0)
@@ -532,8 +532,8 @@ void __81__TRIPostUpgradeCleanupTask__activeRolloutIsCompatible_upgradeNCVs_down
     v29 = 3;
   }
 
-  v30 = [(TRIPostUpgradeCleanupTask *)v34 _nextTasksForRunStatus:v29, v34];
-  v31 = [TRITaskRunResult resultWithRunStatus:v29 reportResultToServer:1 nextTasks:v30 earliestRetryDate:0];
+  selfCopy = [(TRIPostUpgradeCleanupTask *)selfCopy _nextTasksForRunStatus:v29, selfCopy];
+  v31 = [TRITaskRunResult resultWithRunStatus:v29 reportResultToServer:1 nextTasks:selfCopy earliestRetryDate:0];
 
   v32 = *MEMORY[0x277D85DE8];
 
@@ -549,25 +549,25 @@ void __81__TRIPostUpgradeCleanupTask__activeRolloutIsCompatible_upgradeNCVs_down
 
 - (id)serialize
 {
-  v4 = [(TRIPostUpgradeCleanupTask *)self _asPersistedTask];
-  v5 = [v4 data];
+  _asPersistedTask = [(TRIPostUpgradeCleanupTask *)self _asPersistedTask];
+  data = [_asPersistedTask data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIPostUpgradeCleanupTask.m" lineNumber:243 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIPostUpgradeCleanupTask.m" lineNumber:243 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v12 = *MEMORY[0x277D85DE8];
   v9 = 0;
-  v3 = [(TRIPBMessage *)TRIPostUpgradeCleanupPersistedTask parseFromData:a3 error:&v9];
+  v3 = [(TRIPBMessage *)TRIPostUpgradeCleanupPersistedTask parseFromData:data error:&v9];
   v4 = v9;
   if (v3)
   {
@@ -592,15 +592,15 @@ void __81__TRIPostUpgradeCleanupTask__activeRolloutIsCompatible_upgradeNCVs_down
   return v5;
 }
 
-- (TRIPostUpgradeCleanupTask)initWithCoder:(id)a3
+- (TRIPostUpgradeCleanupTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRIPostUpgradeCleanupTask;
   v5 = [(TRIPostUpgradeCleanupTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
     if (v6)
     {
       v7 = [objc_opt_class() parseFromData:v6];
@@ -620,18 +620,18 @@ void __81__TRIPostUpgradeCleanupTask__activeRolloutIsCompatible_upgradeNCVs_down
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIPostUpgradeCleanupTask.m" lineNumber:260 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIPostUpgradeCleanupTask.m" lineNumber:260 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
   }
 
-  v5 = [(TRIPostUpgradeCleanupTask *)self serialize];
-  [v7 encodeObject:v5 forKey:@"pb"];
+  serialize = [(TRIPostUpgradeCleanupTask *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 @end

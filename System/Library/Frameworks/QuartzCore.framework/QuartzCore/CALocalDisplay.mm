@@ -1,12 +1,12 @@
 @interface CALocalDisplay
-+ (id)displayWithDisplayId:(unsigned int)a3 name:(id)a4 deviceName:(id)a5 update:(id)a6 timings:(id)a7;
-+ (void)notifyDisplayAdded:(unsigned int)a3;
-+ (void)setDisplayLookupBlock:(id)a3;
++ (id)displayWithDisplayId:(unsigned int)id name:(id)name deviceName:(id)deviceName update:(id)update timings:(id)timings;
++ (void)notifyDisplayAdded:(unsigned int)added;
++ (void)setDisplayLookupBlock:(id)block;
 @end
 
 @implementation CALocalDisplay
 
-+ (void)notifyDisplayAdded:(unsigned int)a3
++ (void)notifyDisplayAdded:(unsigned int)added
 {
   os_unfair_lock_lock(&CA::Display::MetalLinkItem::_list_lock);
   v4 = CA::Display::MetalLinkItem::_list;
@@ -19,14 +19,14 @@
     {
       v8 = *v4;
       pthread_mutex_lock((*v4 + 136));
-      if (*(*(v8 + 16) + 104) != a3)
+      if (*(*(v8 + 16) + 104) != added)
       {
         goto LABEL_9;
       }
 
       if (!v6)
       {
-        v6 = CADisplayLookupFromDisplayId(a3);
+        v6 = CADisplayLookupFromDisplayId(added);
         v7 = *(v6 + 1);
       }
 
@@ -60,25 +60,25 @@ LABEL_9:
   os_unfair_lock_unlock(&CA::Display::MetalLinkItem::_list_lock);
 }
 
-+ (void)setDisplayLookupBlock:(id)a3
++ (void)setDisplayLookupBlock:(id)block
 {
   if (local_display_enabled(void)::once != -1)
   {
     dispatch_once(&local_display_enabled(void)::once, &__block_literal_global_998);
   }
 
-  if (local_display_enabled(void)::enabled == 1 && _local_display_lookup_block != a3)
+  if (local_display_enabled(void)::enabled == 1 && _local_display_lookup_block != block)
   {
     _Block_release(_local_display_lookup_block);
-    _local_display_lookup_block = _Block_copy(a3);
+    _local_display_lookup_block = _Block_copy(block);
   }
 }
 
-+ (id)displayWithDisplayId:(unsigned int)a3 name:(id)a4 deviceName:(id)a5 update:(id)a6 timings:(id)a7
++ (id)displayWithDisplayId:(unsigned int)id name:(id)name deviceName:(id)deviceName update:(id)update timings:(id)timings
 {
   if (local_display_enabled(void)::once == -1)
   {
-    if (!a6)
+    if (!update)
     {
       return 0;
     }
@@ -87,7 +87,7 @@ LABEL_9:
   else
   {
     dispatch_once(&local_display_enabled(void)::once, &__block_literal_global_998);
-    if (!a6)
+    if (!update)
     {
       return 0;
     }
@@ -103,7 +103,7 @@ LABEL_9:
     v11 = malloc_type_zone_calloc(malloc_zone, 1uLL, 0x308uLL, 0xDEEC3011uLL);
     if (v11)
     {
-      CA::Display::Display::Display(v11, a4, a5, a3);
+      CA::Display::Display::Display(v11, name, deviceName, id);
     }
   }
 

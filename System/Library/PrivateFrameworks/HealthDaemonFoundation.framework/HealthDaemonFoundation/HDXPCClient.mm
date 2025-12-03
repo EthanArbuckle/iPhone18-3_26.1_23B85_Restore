@@ -1,20 +1,20 @@
 @interface HDXPCClient
-+ (id)clientWithConnection:(id)a3 error:(id *)a4;
-- (HDXPCClient)initWithConnection:(id)a3 process:(id)a4;
-- (HDXPCClient)initWithProcess:(id)a3;
-- (id)_initWithConnection:(id)a3 process:(id)a4;
++ (id)clientWithConnection:(id)connection error:(id *)error;
+- (HDXPCClient)initWithConnection:(id)connection process:(id)process;
+- (HDXPCClient)initWithProcess:(id)process;
+- (id)_initWithConnection:(id)connection process:(id)process;
 - (id)description;
 @end
 
 @implementation HDXPCClient
 
-+ (id)clientWithConnection:(id)a3 error:(id *)a4
++ (id)clientWithConnection:(id)connection error:(id *)error
 {
-  v6 = a3;
-  v7 = [HDXPCProcess processWithConnection:v6 error:a4];
+  connectionCopy = connection;
+  v7 = [HDXPCProcess processWithConnection:connectionCopy error:error];
   if (v7)
   {
-    v8 = [[a1 alloc] _initWithConnection:v6 process:v7];
+    v8 = [[self alloc] _initWithConnection:connectionCopy process:v7];
   }
 
   else
@@ -25,12 +25,12 @@
   return v8;
 }
 
-- (HDXPCClient)initWithConnection:(id)a3 process:(id)a4
+- (HDXPCClient)initWithConnection:(id)connection process:(id)process
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  connectionCopy = connection;
+  processCopy = process;
+  v9 = processCopy;
+  if (!connectionCopy)
   {
     [HDXPCClient initWithConnection:a2 process:self];
     if (v9)
@@ -43,42 +43,42 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!processCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v10 = [(HDXPCClient *)self _initWithConnection:v7 process:v9];
+  v10 = [(HDXPCClient *)self _initWithConnection:connectionCopy process:v9];
 
   return v10;
 }
 
-- (HDXPCClient)initWithProcess:(id)a3
+- (HDXPCClient)initWithProcess:(id)process
 {
-  v5 = a3;
-  if (!v5)
+  processCopy = process;
+  if (!processCopy)
   {
     [(HDXPCClient *)a2 initWithProcess:?];
   }
 
-  v6 = [(HDXPCClient *)self _initWithConnection:0 process:v5];
+  v6 = [(HDXPCClient *)self _initWithConnection:0 process:processCopy];
 
   return v6;
 }
 
-- (id)_initWithConnection:(id)a3 process:(id)a4
+- (id)_initWithConnection:(id)connection process:(id)process
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  processCopy = process;
   v12.receiver = self;
   v12.super_class = HDXPCClient;
   v9 = [(HDXPCClient *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
-    objc_storeStrong(p_isa + 1, a4);
+    objc_storeStrong(&v9->_connection, connection);
+    objc_storeStrong(p_isa + 1, process);
   }
 
   return p_isa;
@@ -86,21 +86,21 @@ LABEL_3:
 
 - (id)description
 {
-  v2 = [(HDXPCClient *)self process];
-  v3 = [v2 name];
-  v4 = [v2 applicationIdentifier];
-  v5 = [v2 bundleIdentifier];
-  if ([v5 isEqualToString:v3] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", v4))
+  process = [(HDXPCClient *)self process];
+  name = [process name];
+  applicationIdentifier = [process applicationIdentifier];
+  bundleIdentifier = [process bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:name] & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", applicationIdentifier))
   {
     v6 = &stru_28637B800;
   }
 
   else
   {
-    v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@" proc-bid=%@", v5];
+    v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@" proc-bid=%@", bundleIdentifier];
   }
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@ %@(%d) app-id=%@%@>", objc_opt_class(), v3, objc_msgSend(v2, "processIdentifier"), v4, v6, 0];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@ %@(%d) app-id=%@%@>", objc_opt_class(), name, objc_msgSend(process, "processIdentifier"), applicationIdentifier, v6, 0];
 
   return v7;
 }

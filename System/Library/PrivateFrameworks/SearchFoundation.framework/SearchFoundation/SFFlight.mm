@@ -1,56 +1,56 @@
 @interface SFFlight
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFFlight)initWithCoder:(id)a3;
-- (SFFlight)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFFlight)initWithCoder:(id)coder;
+- (SFFlight)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFFlight
 
 - (unint64_t)hash
 {
-  v21 = [(SFFlight *)self flightID];
-  v3 = [v21 hash];
-  v4 = [(SFFlight *)self carrierCode];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(SFFlight *)self carrierName];
-  v7 = [v6 hash];
-  v8 = [(SFFlight *)self flightNumber];
-  v9 = v5 ^ v7 ^ [v8 hash];
-  v10 = [(SFFlight *)self legs];
-  v11 = [v10 hash];
-  v12 = [(SFFlight *)self operatorCarrierCode];
-  v13 = v11 ^ [v12 hash];
-  v14 = [(SFFlight *)self operatorFlightNumber];
-  v15 = v9 ^ v13 ^ [v14 hash];
-  v16 = [(SFFlight *)self carrierPhoneNumber];
-  v17 = [v16 hash];
-  v18 = [(SFFlight *)self carrierWebsite];
-  v19 = v17 ^ [v18 hash];
+  flightID = [(SFFlight *)self flightID];
+  v3 = [flightID hash];
+  carrierCode = [(SFFlight *)self carrierCode];
+  v5 = [carrierCode hash] ^ v3;
+  carrierName = [(SFFlight *)self carrierName];
+  v7 = [carrierName hash];
+  flightNumber = [(SFFlight *)self flightNumber];
+  v9 = v5 ^ v7 ^ [flightNumber hash];
+  legs = [(SFFlight *)self legs];
+  v11 = [legs hash];
+  operatorCarrierCode = [(SFFlight *)self operatorCarrierCode];
+  v13 = v11 ^ [operatorCarrierCode hash];
+  operatorFlightNumber = [(SFFlight *)self operatorFlightNumber];
+  v15 = v9 ^ v13 ^ [operatorFlightNumber hash];
+  carrierPhoneNumber = [(SFFlight *)self carrierPhoneNumber];
+  v17 = [carrierPhoneNumber hash];
+  carrierWebsite = [(SFFlight *)self carrierWebsite];
+  v19 = v17 ^ [carrierWebsite hash];
 
   return v15 ^ v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFFlight *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(SFFlight *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
-      v6 = [(SFFlight *)self flightID];
-      v7 = [(SFFlight *)v5 flightID];
-      if ((v6 != 0) == (v7 == 0))
+      v5 = equalCopy;
+      flightID = [(SFFlight *)self flightID];
+      flightID2 = [(SFFlight *)v5 flightID];
+      if ((flightID != 0) == (flightID2 == 0))
       {
         v11 = 0;
 LABEL_50:
@@ -58,12 +58,12 @@ LABEL_50:
         goto LABEL_51;
       }
 
-      v8 = [(SFFlight *)self flightID];
-      if (v8)
+      flightID3 = [(SFFlight *)self flightID];
+      if (flightID3)
       {
-        v9 = [(SFFlight *)self flightID];
-        v10 = [(SFFlight *)v5 flightID];
-        if (![v9 isEqual:v10])
+        flightID4 = [(SFFlight *)self flightID];
+        flightID5 = [(SFFlight *)v5 flightID];
+        if (![flightID4 isEqual:flightID5])
         {
           v11 = 0;
 LABEL_48:
@@ -71,24 +71,24 @@ LABEL_48:
           goto LABEL_49;
         }
 
-        v79 = v10;
-        v80 = v9;
+        v79 = flightID5;
+        v80 = flightID4;
       }
 
-      v12 = [(SFFlight *)self carrierCode];
-      v13 = [(SFFlight *)v5 carrierCode];
-      if ((v12 != 0) == (v13 == 0))
+      carrierCode = [(SFFlight *)self carrierCode];
+      carrierCode2 = [(SFFlight *)v5 carrierCode];
+      if ((carrierCode != 0) == (carrierCode2 == 0))
       {
         goto LABEL_46;
       }
 
-      v14 = [(SFFlight *)self carrierCode];
-      if (v14)
+      carrierCode3 = [(SFFlight *)self carrierCode];
+      if (carrierCode3)
       {
-        v15 = [(SFFlight *)self carrierCode];
-        v76 = [(SFFlight *)v5 carrierCode];
-        v77 = v15;
-        if (![v15 isEqual:v76])
+        carrierCode4 = [(SFFlight *)self carrierCode];
+        carrierCode5 = [(SFFlight *)v5 carrierCode];
+        v77 = carrierCode4;
+        if (![carrierCode4 isEqual:carrierCode5])
         {
 LABEL_44:
 
@@ -97,18 +97,18 @@ LABEL_45:
         }
       }
 
-      v78 = v14;
-      v16 = [(SFFlight *)self carrierName];
-      v17 = [(SFFlight *)v5 carrierName];
-      if ((v16 != 0) == (v17 == 0))
+      v78 = carrierCode3;
+      carrierName = [(SFFlight *)self carrierName];
+      carrierName2 = [(SFFlight *)v5 carrierName];
+      if ((carrierName != 0) == (carrierName2 == 0))
       {
 
-        if (!v14)
+        if (!carrierCode3)
         {
 LABEL_46:
 
           v11 = 0;
-          if (!v8)
+          if (!flightID3)
           {
 LABEL_49:
 
@@ -121,20 +121,20 @@ LABEL_49:
         goto LABEL_44;
       }
 
-      v73 = v16;
-      v74 = v17;
-      v75 = [(SFFlight *)self carrierName];
-      if (v75)
+      v73 = carrierName;
+      v74 = carrierName2;
+      carrierName3 = [(SFFlight *)self carrierName];
+      if (carrierName3)
       {
-        v18 = [(SFFlight *)self carrierName];
+        carrierName4 = [(SFFlight *)self carrierName];
         [(SFFlight *)v5 carrierName];
-        v72 = v71 = v18;
-        if (![v18 isEqual:v72])
+        v72 = v71 = carrierName4;
+        if (![carrierName4 isEqual:v72])
         {
 LABEL_42:
 
 LABEL_43:
-          if (!v14)
+          if (!carrierCode3)
           {
             goto LABEL_46;
           }
@@ -143,60 +143,60 @@ LABEL_43:
         }
       }
 
-      v19 = [(SFFlight *)self flightNumber];
-      v20 = v19 != 0;
-      v21 = [(SFFlight *)v5 flightNumber];
-      if (v20 == (v21 == 0))
+      flightNumber = [(SFFlight *)self flightNumber];
+      flightNumber4 = flightNumber != 0;
+      flightNumber2 = [(SFFlight *)v5 flightNumber];
+      if (flightNumber4 == (flightNumber2 == 0))
       {
 
         goto LABEL_41;
       }
 
-      v69 = v21;
-      v70 = v19;
-      v22 = [(SFFlight *)self flightNumber];
-      if (v22)
+      v69 = flightNumber2;
+      v70 = flightNumber;
+      flightNumber3 = [(SFFlight *)self flightNumber];
+      if (flightNumber3)
       {
-        v20 = [(SFFlight *)self flightNumber];
-        v67 = [(SFFlight *)v5 flightNumber];
-        if (![v20 isEqual:?])
+        flightNumber4 = [(SFFlight *)self flightNumber];
+        flightNumber5 = [(SFFlight *)v5 flightNumber];
+        if (![flightNumber4 isEqual:?])
         {
           goto LABEL_39;
         }
       }
 
-      v68 = v22;
-      v66 = v20;
-      v23 = [(SFFlight *)self legs];
-      v24 = [(SFFlight *)v5 legs];
-      if ((v23 != 0) == (v24 == 0))
+      v68 = flightNumber3;
+      v66 = flightNumber4;
+      legs = [(SFFlight *)self legs];
+      legs2 = [(SFFlight *)v5 legs];
+      if ((legs != 0) == (legs2 == 0))
       {
 
         goto LABEL_38;
       }
 
-      v64 = v23;
-      v65 = v24;
-      v25 = [(SFFlight *)self legs];
-      if (v25)
+      v64 = legs;
+      v65 = legs2;
+      legs3 = [(SFFlight *)self legs];
+      if (legs3)
       {
-        v23 = [(SFFlight *)self legs];
-        v62 = [(SFFlight *)v5 legs];
-        if (![v23 isEqual:?])
+        legs = [(SFFlight *)self legs];
+        legs4 = [(SFFlight *)v5 legs];
+        if (![legs isEqual:?])
         {
 LABEL_36:
 
 LABEL_37:
 LABEL_38:
-          v20 = v66;
-          v22 = v68;
+          flightNumber4 = v66;
+          flightNumber3 = v68;
           if (!v68)
           {
 LABEL_40:
 
 LABEL_41:
-            v14 = v78;
-            if (!v75)
+            carrierCode3 = v78;
+            if (!carrierName3)
             {
               goto LABEL_43;
             }
@@ -210,15 +210,15 @@ LABEL_39:
         }
       }
 
-      v61 = v23;
-      v63 = v25;
-      v26 = [(SFFlight *)self operatorCarrierCode];
-      v27 = [(SFFlight *)v5 operatorCarrierCode];
-      if ((v26 != 0) == (v27 == 0))
+      v61 = legs;
+      v63 = legs3;
+      operatorCarrierCode = [(SFFlight *)self operatorCarrierCode];
+      operatorCarrierCode2 = [(SFFlight *)v5 operatorCarrierCode];
+      if ((operatorCarrierCode != 0) == (operatorCarrierCode2 == 0))
       {
 
-        v23 = v61;
-        if (!v25)
+        legs = v61;
+        if (!legs3)
         {
           goto LABEL_37;
         }
@@ -226,40 +226,40 @@ LABEL_39:
         goto LABEL_36;
       }
 
-      v58 = v27;
-      v59 = v26;
-      v60 = [(SFFlight *)self operatorCarrierCode];
-      if (v60)
+      v58 = operatorCarrierCode2;
+      v59 = operatorCarrierCode;
+      operatorCarrierCode3 = [(SFFlight *)self operatorCarrierCode];
+      if (operatorCarrierCode3)
       {
-        v28 = [(SFFlight *)self operatorCarrierCode];
-        v56 = [(SFFlight *)v5 operatorCarrierCode];
-        v57 = v28;
-        if (![v28 isEqual:v56])
+        operatorCarrierCode4 = [(SFFlight *)self operatorCarrierCode];
+        operatorCarrierCode5 = [(SFFlight *)v5 operatorCarrierCode];
+        v57 = operatorCarrierCode4;
+        if (![operatorCarrierCode4 isEqual:operatorCarrierCode5])
         {
           goto LABEL_58;
         }
       }
 
-      v30 = [(SFFlight *)self operatorFlightNumber];
-      v31 = [(SFFlight *)v5 operatorFlightNumber];
-      if ((v30 != 0) == (v31 == 0))
+      operatorFlightNumber = [(SFFlight *)self operatorFlightNumber];
+      operatorFlightNumber2 = [(SFFlight *)v5 operatorFlightNumber];
+      if ((operatorFlightNumber != 0) == (operatorFlightNumber2 == 0))
       {
 
-        if (!v60)
+        if (!operatorCarrierCode3)
         {
           v35 = v68;
 LABEL_59:
 
-          if (v25)
+          if (legs3)
           {
           }
 
-          v14 = v78;
+          carrierCode3 = v78;
           if (v35)
           {
           }
 
-          if (v75)
+          if (carrierName3)
           {
           }
 
@@ -277,22 +277,22 @@ LABEL_58:
         goto LABEL_59;
       }
 
-      v54 = v30;
-      v55 = v31;
-      v32 = [(SFFlight *)self operatorFlightNumber];
-      if (v32)
+      v54 = operatorFlightNumber;
+      v55 = operatorFlightNumber2;
+      operatorFlightNumber3 = [(SFFlight *)self operatorFlightNumber];
+      if (operatorFlightNumber3)
       {
-        v33 = [(SFFlight *)self operatorFlightNumber];
-        v51 = [(SFFlight *)v5 operatorFlightNumber];
-        v52 = v33;
-        if (![v33 isEqual:?])
+        operatorFlightNumber4 = [(SFFlight *)self operatorFlightNumber];
+        operatorFlightNumber5 = [(SFFlight *)v5 operatorFlightNumber];
+        v52 = operatorFlightNumber4;
+        if (![operatorFlightNumber4 isEqual:?])
         {
           v11 = 0;
           v34 = v63;
 LABEL_82:
 
 LABEL_83:
-          if (v60)
+          if (operatorCarrierCode3)
           {
           }
 
@@ -311,7 +311,7 @@ LABEL_83:
           {
           }
 
-          if (v75)
+          if (carrierName3)
           {
           }
 
@@ -319,34 +319,34 @@ LABEL_83:
           {
           }
 
-          if (!v8)
+          if (!flightID3)
           {
             goto LABEL_49;
           }
 
 LABEL_47:
-          v10 = v79;
-          v9 = v80;
+          flightID5 = v79;
+          flightID4 = v80;
           goto LABEL_48;
         }
       }
 
-      v53 = [(SFFlight *)self carrierPhoneNumber];
-      v36 = [(SFFlight *)v5 carrierPhoneNumber];
-      if ((v53 != 0) == (v36 == 0))
+      carrierPhoneNumber = [(SFFlight *)self carrierPhoneNumber];
+      carrierPhoneNumber2 = [(SFFlight *)v5 carrierPhoneNumber];
+      if ((carrierPhoneNumber != 0) == (carrierPhoneNumber2 == 0))
       {
 
         v11 = 0;
         goto LABEL_81;
       }
 
-      v49 = v36;
-      v50 = [(SFFlight *)self carrierPhoneNumber];
-      if (!v50 || (-[SFFlight carrierPhoneNumber](self, "carrierPhoneNumber"), v37 = objc_claimAutoreleasedReturnValue(), -[SFFlight carrierPhoneNumber](v5, "carrierPhoneNumber"), v45 = objc_claimAutoreleasedReturnValue(), v46 = v37, [v37 isEqual:?]))
+      v49 = carrierPhoneNumber2;
+      carrierPhoneNumber3 = [(SFFlight *)self carrierPhoneNumber];
+      if (!carrierPhoneNumber3 || (-[SFFlight carrierPhoneNumber](self, "carrierPhoneNumber"), v37 = objc_claimAutoreleasedReturnValue(), -[SFFlight carrierPhoneNumber](v5, "carrierPhoneNumber"), v45 = objc_claimAutoreleasedReturnValue(), v46 = v37, [v37 isEqual:?]))
       {
-        v48 = [(SFFlight *)self carrierWebsite];
-        v47 = [(SFFlight *)v5 carrierWebsite];
-        if ((v48 != 0) == (v47 == 0))
+        carrierWebsite = [(SFFlight *)self carrierWebsite];
+        carrierWebsite2 = [(SFFlight *)v5 carrierWebsite];
+        if ((carrierWebsite != 0) == (carrierWebsite2 == 0))
         {
 
           v11 = 0;
@@ -354,13 +354,13 @@ LABEL_47:
 
         else
         {
-          v39 = [(SFFlight *)self carrierWebsite];
-          if (v39)
+          carrierWebsite3 = [(SFFlight *)self carrierWebsite];
+          if (carrierWebsite3)
           {
-            v40 = v39;
-            v44 = [(SFFlight *)self carrierWebsite];
-            v43 = [(SFFlight *)v5 carrierWebsite];
-            v11 = [v44 isEqual:v43];
+            v40 = carrierWebsite3;
+            carrierWebsite4 = [(SFFlight *)self carrierWebsite];
+            carrierWebsite5 = [(SFFlight *)v5 carrierWebsite];
+            v11 = [carrierWebsite4 isEqual:carrierWebsite5];
           }
 
           else
@@ -370,8 +370,8 @@ LABEL_47:
           }
         }
 
-        v38 = v50;
-        if (!v50)
+        v38 = carrierPhoneNumber3;
+        if (!carrierPhoneNumber3)
         {
           goto LABEL_80;
         }
@@ -380,13 +380,13 @@ LABEL_47:
       else
       {
         v11 = 0;
-        v38 = v50;
+        v38 = carrierPhoneNumber3;
       }
 
 LABEL_80:
 LABEL_81:
       v34 = v63;
-      if (!v32)
+      if (!operatorFlightNumber3)
       {
         goto LABEL_83;
       }
@@ -402,43 +402,43 @@ LABEL_51:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFFlight *)self flightID];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  flightID = [(SFFlight *)self flightID];
+  v6 = [flightID copy];
   [v4 setFlightID:v6];
 
-  v7 = [(SFFlight *)self carrierCode];
-  v8 = [v7 copy];
+  carrierCode = [(SFFlight *)self carrierCode];
+  v8 = [carrierCode copy];
   [v4 setCarrierCode:v8];
 
-  v9 = [(SFFlight *)self carrierName];
-  v10 = [v9 copy];
+  carrierName = [(SFFlight *)self carrierName];
+  v10 = [carrierName copy];
   [v4 setCarrierName:v10];
 
-  v11 = [(SFFlight *)self flightNumber];
-  v12 = [v11 copy];
+  flightNumber = [(SFFlight *)self flightNumber];
+  v12 = [flightNumber copy];
   [v4 setFlightNumber:v12];
 
-  v13 = [(SFFlight *)self legs];
-  v14 = [v13 copy];
+  legs = [(SFFlight *)self legs];
+  v14 = [legs copy];
   [v4 setLegs:v14];
 
-  v15 = [(SFFlight *)self operatorCarrierCode];
-  v16 = [v15 copy];
+  operatorCarrierCode = [(SFFlight *)self operatorCarrierCode];
+  v16 = [operatorCarrierCode copy];
   [v4 setOperatorCarrierCode:v16];
 
-  v17 = [(SFFlight *)self operatorFlightNumber];
-  v18 = [v17 copy];
+  operatorFlightNumber = [(SFFlight *)self operatorFlightNumber];
+  v18 = [operatorFlightNumber copy];
   [v4 setOperatorFlightNumber:v18];
 
-  v19 = [(SFFlight *)self carrierPhoneNumber];
-  v20 = [v19 copy];
+  carrierPhoneNumber = [(SFFlight *)self carrierPhoneNumber];
+  v20 = [carrierPhoneNumber copy];
   [v4 setCarrierPhoneNumber:v20];
 
-  v21 = [(SFFlight *)self carrierWebsite];
-  v22 = [v21 copy];
+  carrierWebsite = [(SFFlight *)self carrierWebsite];
+  v22 = [carrierWebsite copy];
   [v4 setCarrierWebsite:v22];
 
   return v4;
@@ -447,31 +447,31 @@ LABEL_51:
 - (NSData)jsonData
 {
   v2 = [[_SFPBFlight alloc] initWithFacade:self];
-  v3 = [(_SFPBFlight *)v2 jsonData];
+  jsonData = [(_SFPBFlight *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBFlight alloc] initWithFacade:self];
-  v3 = [(_SFPBFlight *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBFlight *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBFlight alloc] initWithFacade:self];
-  v5 = [(_SFPBFlight *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBFlight *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFFlight)initWithCoder:(id)a3
+- (SFFlight)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBFlight alloc] initWithData:v5];
   v7 = [(SFFlight *)self initWithProtobuf:v6];
@@ -479,49 +479,49 @@ LABEL_51:
   return v7;
 }
 
-- (SFFlight)initWithProtobuf:(id)a3
+- (SFFlight)initWithProtobuf:(id)protobuf
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v37.receiver = self;
   v37.super_class = SFFlight;
   v5 = [(SFFlight *)&v37 init];
   if (v5)
   {
-    v6 = [v4 flightID];
+    flightID = [protobufCopy flightID];
 
-    if (v6)
+    if (flightID)
     {
-      v7 = [v4 flightID];
-      [(SFFlight *)v5 setFlightID:v7];
+      flightID2 = [protobufCopy flightID];
+      [(SFFlight *)v5 setFlightID:flightID2];
     }
 
-    v8 = [v4 carrierCode];
+    carrierCode = [protobufCopy carrierCode];
 
-    if (v8)
+    if (carrierCode)
     {
-      v9 = [v4 carrierCode];
-      [(SFFlight *)v5 setCarrierCode:v9];
+      carrierCode2 = [protobufCopy carrierCode];
+      [(SFFlight *)v5 setCarrierCode:carrierCode2];
     }
 
-    v10 = [v4 carrierName];
+    carrierName = [protobufCopy carrierName];
 
-    if (v10)
+    if (carrierName)
     {
-      v11 = [v4 carrierName];
-      [(SFFlight *)v5 setCarrierName:v11];
+      carrierName2 = [protobufCopy carrierName];
+      [(SFFlight *)v5 setCarrierName:carrierName2];
     }
 
-    v12 = [v4 flightNumber];
+    flightNumber = [protobufCopy flightNumber];
 
-    if (v12)
+    if (flightNumber)
     {
-      v13 = [v4 flightNumber];
-      [(SFFlight *)v5 setFlightNumber:v13];
+      flightNumber2 = [protobufCopy flightNumber];
+      [(SFFlight *)v5 setFlightNumber:flightNumber2];
     }
 
-    v14 = [v4 legs];
-    if (v14)
+    legs = [protobufCopy legs];
+    if (legs)
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -535,8 +535,8 @@ LABEL_51:
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v16 = [v4 legs];
-    v17 = [v16 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    legs2 = [protobufCopy legs];
+    v17 = [legs2 countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v17)
     {
       v18 = v17;
@@ -547,7 +547,7 @@ LABEL_51:
         {
           if (*v34 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(legs2);
           }
 
           v21 = [[SFFlightLeg alloc] initWithProtobuf:*(*(&v33 + 1) + 8 * i)];
@@ -557,43 +557,43 @@ LABEL_51:
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v18 = [legs2 countByEnumeratingWithState:&v33 objects:v38 count:16];
       }
 
       while (v18);
     }
 
     [(SFFlight *)v5 setLegs:v15];
-    v22 = [v4 operatorCarrierCode];
+    operatorCarrierCode = [protobufCopy operatorCarrierCode];
 
-    if (v22)
+    if (operatorCarrierCode)
     {
-      v23 = [v4 operatorCarrierCode];
-      [(SFFlight *)v5 setOperatorCarrierCode:v23];
+      operatorCarrierCode2 = [protobufCopy operatorCarrierCode];
+      [(SFFlight *)v5 setOperatorCarrierCode:operatorCarrierCode2];
     }
 
-    v24 = [v4 operatorFlightNumber];
+    operatorFlightNumber = [protobufCopy operatorFlightNumber];
 
-    if (v24)
+    if (operatorFlightNumber)
     {
-      v25 = [v4 operatorFlightNumber];
-      [(SFFlight *)v5 setOperatorFlightNumber:v25];
+      operatorFlightNumber2 = [protobufCopy operatorFlightNumber];
+      [(SFFlight *)v5 setOperatorFlightNumber:operatorFlightNumber2];
     }
 
-    v26 = [v4 carrierPhoneNumber];
+    carrierPhoneNumber = [protobufCopy carrierPhoneNumber];
 
-    if (v26)
+    if (carrierPhoneNumber)
     {
-      v27 = [v4 carrierPhoneNumber];
-      [(SFFlight *)v5 setCarrierPhoneNumber:v27];
+      carrierPhoneNumber2 = [protobufCopy carrierPhoneNumber];
+      [(SFFlight *)v5 setCarrierPhoneNumber:carrierPhoneNumber2];
     }
 
-    v28 = [v4 carrierWebsite];
+    carrierWebsite = [protobufCopy carrierWebsite];
 
-    if (v28)
+    if (carrierWebsite)
     {
-      v29 = [v4 carrierWebsite];
-      [(SFFlight *)v5 setCarrierWebsite:v29];
+      carrierWebsite2 = [protobufCopy carrierWebsite];
+      [(SFFlight *)v5 setCarrierWebsite:carrierWebsite2];
     }
 
     v30 = v5;

@@ -1,21 +1,21 @@
 @interface VCMediaKeyIndex
 + (id)makeInvalidKey;
-+ (id)newMKIWithBytes:(char *)a3 bufferSize:(unsigned int)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isStartingWithPrefix:(id)a3;
-- (VCMediaKeyIndex)initWithBytes:(char *)a3 bufferSize:(unsigned int)a4 uniquePrefixLength:(unint64_t)a5;
-- (VCMediaKeyIndex)initWithNSUUID:(id)a3 uniquePrefixLength:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)newMKIWithBytes:(char *)bytes bufferSize:(unsigned int)size;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isStartingWithPrefix:(id)prefix;
+- (VCMediaKeyIndex)initWithBytes:(char *)bytes bufferSize:(unsigned int)size uniquePrefixLength:(unint64_t)length;
+- (VCMediaKeyIndex)initWithNSUUID:(id)d uniquePrefixLength:(unint64_t)length;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unsigned)activeSize;
 - (void)dealloc;
-- (void)fullKeyBytes:(unsigned __int8)a3[16];
-- (void)setActiveSize:(unsigned int)a3;
+- (void)fullKeyBytes:(unsigned __int8)bytes[16];
+- (void)setActiveSize:(unsigned int)size;
 @end
 
 @implementation VCMediaKeyIndex
 
-- (VCMediaKeyIndex)initWithBytes:(char *)a3 bufferSize:(unsigned int)a4 uniquePrefixLength:(unint64_t)a5
+- (VCMediaKeyIndex)initWithBytes:(char *)bytes bufferSize:(unsigned int)size uniquePrefixLength:(unint64_t)length
 {
   v25 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -24,15 +24,15 @@
   v9 = v8;
   if (v8)
   {
-    if (a3)
+    if (bytes)
     {
-      if (a4 - 17 >= 0xFFFFFFF0 && a4 >= a5)
+      if (size - 17 >= 0xFFFFFFF0 && size >= length)
       {
         *v8->_MKI = 0;
-        v8->_activeSize = a4;
-        v8->_uniquePrefixLength = a5;
+        v8->_activeSize = size;
+        v8->_uniquePrefixLength = length;
         *&v8->_MKI[8] = 0;
-        memcpy(v8->_MKI, a3, a4);
+        memcpy(v8->_MKI, bytes, size);
         return v9;
       }
 
@@ -49,9 +49,9 @@
           v19 = 1024;
           v20 = 39;
           v21 = 1024;
-          v22 = a4;
+          sizeCopy = size;
           v23 = 2048;
-          v24 = a5;
+          lengthCopy = length;
           _os_log_error_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_ERROR, " [%s] %s:%d Invalid size of input data bufferSize=%d, uniquePrefixLength=%llu", buf, 0x2Cu);
         }
       }
@@ -72,13 +72,13 @@
   return v9;
 }
 
-- (VCMediaKeyIndex)initWithNSUUID:(id)a3 uniquePrefixLength:(unint64_t)a4
+- (VCMediaKeyIndex)initWithNSUUID:(id)d uniquePrefixLength:(unint64_t)length
 {
   v7[2] = *MEMORY[0x1E69E9840];
   v7[0] = 0xAAAAAAAAAAAAAAAALL;
   v7[1] = 0xAAAAAAAAAAAAAAAALL;
-  [a3 getUUIDBytes:v7];
-  return [(VCMediaKeyIndex *)self initWithBytes:v7 bufferSize:16 uniquePrefixLength:a4];
+  [d getUUIDBytes:v7];
+  return [(VCMediaKeyIndex *)self initWithBytes:v7 bufferSize:16 uniquePrefixLength:length];
 }
 
 - (void)dealloc
@@ -89,12 +89,12 @@
   [(VCMediaKeyIndex *)&v2 dealloc];
 }
 
-+ (id)newMKIWithBytes:(char *)a3 bufferSize:(unsigned int)a4
++ (id)newMKIWithBytes:(char *)bytes bufferSize:(unsigned int)size
 {
-  v4 = *&a4;
+  v4 = *&size;
   v6 = [VCMediaKeyIndex alloc];
 
-  return [(VCMediaKeyIndex *)v6 initWithBytes:a3 bufferSize:v4];
+  return [(VCMediaKeyIndex *)v6 initWithBytes:bytes bufferSize:v4];
 }
 
 - (unsigned)activeSize
@@ -105,10 +105,10 @@
   return activeSize;
 }
 
-- (void)setActiveSize:(unsigned int)a3
+- (void)setActiveSize:(unsigned int)size
 {
   objc_sync_enter(self);
-  self->_activeSize = a3;
+  self->_activeSize = size;
 
   objc_sync_exit(self);
 }
@@ -123,10 +123,10 @@
   return v4;
 }
 
-- (void)fullKeyBytes:(unsigned __int8)a3[16]
+- (void)fullKeyBytes:(unsigned __int8)bytes[16]
 {
   objc_sync_enter(self);
-  *a3 = *self->_MKI;
+  *bytes = *self->_MKI;
 
   objc_sync_exit(self);
 }
@@ -138,13 +138,13 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isMemberOfClass:objc_opt_class()])
+  if ([equal isMemberOfClass:objc_opt_class()])
   {
 
-    return VCMediaKeyIndex_isEqual(self, a3);
+    return VCMediaKeyIndex_isEqual(self, equal);
   }
 
   else
@@ -154,13 +154,13 @@
   }
 }
 
-- (BOOL)isStartingWithPrefix:(id)a3
+- (BOOL)isStartingWithPrefix:(id)prefix
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isMemberOfClass:objc_opt_class()])
+  if ([prefix isMemberOfClass:objc_opt_class()])
   {
 
-    return VCMediaKeyIndex_isStartingWithPrefix(self, a3);
+    return VCMediaKeyIndex_isStartingWithPrefix(self, prefix);
   }
 
   else
@@ -170,7 +170,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_sync_enter(self);
   v5 = [[VCMediaKeyIndex allocWithZone:?], "initWithUUID:", self->_MKI];

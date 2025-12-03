@@ -1,55 +1,55 @@
 @interface FCRecommendedCategory
-- (BOOL)isEqual:(id)a3;
-- (FCRecommendedCategory)initWithIdentifier:(id)a3 name:(id)a4 curatedTagIDs:(id)a5 recommendedTopicTagIDs:(id)a6 recommendedChannelTagIDs:(id)a7 subcategories:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (FCRecommendedCategory)initWithIdentifier:(id)identifier name:(id)name curatedTagIDs:(id)ds recommendedTopicTagIDs:(id)iDs recommendedChannelTagIDs:(id)tagIDs subcategories:(id)subcategories;
 - (unint64_t)hash;
 @end
 
 @implementation FCRecommendedCategory
 
-- (FCRecommendedCategory)initWithIdentifier:(id)a3 name:(id)a4 curatedTagIDs:(id)a5 recommendedTopicTagIDs:(id)a6 recommendedChannelTagIDs:(id)a7 subcategories:(id)a8
+- (FCRecommendedCategory)initWithIdentifier:(id)identifier name:(id)name curatedTagIDs:(id)ds recommendedTopicTagIDs:(id)iDs recommendedChannelTagIDs:(id)tagIDs subcategories:(id)subcategories
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  identifierCopy = identifier;
+  nameCopy = name;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  tagIDsCopy = tagIDs;
+  subcategoriesCopy = subcategories;
   v35.receiver = self;
   v35.super_class = FCRecommendedCategory;
   v20 = [(FCRecommendedCategory *)&v35 init];
   if (v20)
   {
-    v21 = [v14 copy];
+    v21 = [identifierCopy copy];
     identifier = v20->_identifier;
     v20->_identifier = v21;
 
-    v23 = [v15 copy];
+    v23 = [nameCopy copy];
     name = v20->_name;
     v20->_name = v23;
 
-    if ([v16 count])
+    if ([dsCopy count])
     {
-      v25 = v16;
+      v25 = dsCopy;
     }
 
     else
     {
-      v25 = v18;
+      v25 = tagIDsCopy;
     }
 
     v26 = [v25 copy];
     curatedTagIDs = v20->_curatedTagIDs;
     v20->_curatedTagIDs = v26;
 
-    v28 = [v17 copy];
+    v28 = [iDsCopy copy];
     topicTagIDs = v20->_topicTagIDs;
     v20->_topicTagIDs = v28;
 
-    v30 = [v18 copy];
+    v30 = [tagIDsCopy copy];
     channelTagIDs = v20->_channelTagIDs;
     v20->_channelTagIDs = v30;
 
-    v32 = [v19 copy];
+    v32 = [subcategoriesCopy copy];
     subcategories = v20->_subcategories;
     v20->_subcategories = v32;
   }
@@ -57,15 +57,15 @@
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v9 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v9)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
+      v10 = equalCopy;
     }
 
     else
@@ -87,12 +87,12 @@
     goto LABEL_31;
   }
 
-  v12 = [(FCRecommendedCategory *)self identifier];
-  if (v12 || ([v11 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  identifier = [(FCRecommendedCategory *)self identifier];
+  if (identifier || ([v11 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = [(FCRecommendedCategory *)self identifier];
-    v5 = [v11 identifier];
-    if (![v4 isEqualToString:v5])
+    identifier2 = [(FCRecommendedCategory *)self identifier];
+    identifier3 = [v11 identifier];
+    if (![identifier2 isEqualToString:identifier3])
     {
       v14 = 0;
 LABEL_27:
@@ -108,12 +108,12 @@ LABEL_27:
     v13 = 0;
   }
 
-  v15 = [(FCRecommendedCategory *)self name];
-  if (v15 || ([v11 name], (v25 = objc_claimAutoreleasedReturnValue()) != 0))
+  name = [(FCRecommendedCategory *)self name];
+  if (name || ([v11 name], (v25 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v6 = [(FCRecommendedCategory *)self name];
-    v7 = [v11 name];
-    if (![v6 isEqualToString:v7])
+    name2 = [(FCRecommendedCategory *)self name];
+    name3 = [v11 name];
+    if (![name2 isEqualToString:name3])
     {
       v14 = 0;
       goto LABEL_25;
@@ -132,9 +132,9 @@ LABEL_27:
     v25 = 0;
   }
 
-  v16 = [(FCRecommendedCategory *)self topicTagIDs];
-  v17 = [v11 topicTagIDs];
-  if (![v16 isEqualToArray:v17])
+  topicTagIDs = [(FCRecommendedCategory *)self topicTagIDs];
+  topicTagIDs2 = [v11 topicTagIDs];
+  if (![topicTagIDs isEqualToArray:topicTagIDs2])
   {
 
     v14 = 0;
@@ -146,15 +146,15 @@ LABEL_27:
     goto LABEL_24;
   }
 
-  v23 = v6;
-  v18 = [(FCRecommendedCategory *)self channelTagIDs];
+  v23 = name2;
+  channelTagIDs = [(FCRecommendedCategory *)self channelTagIDs];
   [v11 channelTagIDs];
-  v22 = v24 = v18;
-  if ([v18 isEqualToArray:?])
+  v22 = v24 = channelTagIDs;
+  if ([channelTagIDs isEqualToArray:?])
   {
-    v19 = [(FCRecommendedCategory *)self subcategories];
-    v21 = [v11 subcategories];
-    v14 = [v19 isEqualToArray:v21];
+    subcategories = [(FCRecommendedCategory *)self subcategories];
+    subcategories2 = [v11 subcategories];
+    v14 = [subcategories isEqualToArray:subcategories2];
   }
 
   else
@@ -162,7 +162,7 @@ LABEL_27:
     v14 = 0;
   }
 
-  v6 = v23;
+  name2 = v23;
 
   if (v26)
   {
@@ -171,7 +171,7 @@ LABEL_24:
     v13 = v27;
 LABEL_25:
 
-    if (!v15)
+    if (!name)
     {
       goto LABEL_35;
     }
@@ -182,7 +182,7 @@ LABEL_25:
 LABEL_34:
   v3 = v28;
   v13 = v27;
-  if (!v15)
+  if (!name)
   {
 LABEL_35:
 
@@ -202,7 +202,7 @@ LABEL_26:
   }
 
 LABEL_28:
-  if (!v12)
+  if (!identifier)
   {
   }
 
@@ -212,16 +212,16 @@ LABEL_31:
 
 - (unint64_t)hash
 {
-  v3 = [(FCRecommendedCategory *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(FCRecommendedCategory *)self name];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(FCRecommendedCategory *)self topicTagIDs];
-  v8 = [v7 hash];
-  v9 = [(FCRecommendedCategory *)self channelTagIDs];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(FCRecommendedCategory *)self subcategories];
-  v12 = [v11 hash];
+  identifier = [(FCRecommendedCategory *)self identifier];
+  v4 = [identifier hash];
+  name = [(FCRecommendedCategory *)self name];
+  v6 = [name hash] ^ v4;
+  topicTagIDs = [(FCRecommendedCategory *)self topicTagIDs];
+  v8 = [topicTagIDs hash];
+  channelTagIDs = [(FCRecommendedCategory *)self channelTagIDs];
+  v10 = v6 ^ v8 ^ [channelTagIDs hash];
+  subcategories = [(FCRecommendedCategory *)self subcategories];
+  v12 = [subcategories hash];
 
   return v10 ^ v12;
 }

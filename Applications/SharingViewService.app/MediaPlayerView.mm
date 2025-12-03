@@ -1,28 +1,28 @@
 @interface MediaPlayerView
 + (Class)layerClass;
 - (AVPlayer)player;
-- (void)setPlayer:(id)a3;
+- (void)setPlayer:(id)player;
 @end
 
 @implementation MediaPlayerView
 
 - (AVPlayer)player
 {
-  v2 = self;
-  v3 = [(MediaPlayerView *)v2 layer];
+  selfCopy = self;
+  layer = [(MediaPlayerView *)selfCopy layer];
   objc_opt_self();
-  v4 = [swift_dynamicCastObjCClassUnconditional() player];
+  player = [swift_dynamicCastObjCClassUnconditional() player];
 
-  return v4;
+  return player;
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v4 = a3;
-  v6 = self;
-  v5 = [(MediaPlayerView *)v6 layer];
+  playerCopy = player;
+  selfCopy = self;
+  layer = [(MediaPlayerView *)selfCopy layer];
   objc_opt_self();
-  [swift_dynamicCastObjCClassUnconditional() setPlayer:v4];
+  [swift_dynamicCastObjCClassUnconditional() setPlayer:playerCopy];
 }
 
 + (Class)layerClass

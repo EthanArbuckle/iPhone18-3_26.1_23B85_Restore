@@ -1,87 +1,87 @@
 @interface QSSMutableGraphemeToPhonemeResponse
 - (BOOL)is_pron_guessed;
 - (QSSMutableGraphemeToPhonemeResponse)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int)return_code;
-- (void)setAot_token_prons:(id)a3;
-- (void)setG2p_model_version:(id)a3;
-- (void)setG2p_version:(id)a3;
-- (void)setJit_token_prons:(id)a3;
-- (void)setPhonemes:(id)a3;
-- (void)setPhoneset_version:(id)a3;
-- (void)setReturn_str:(id)a3;
-- (void)setSession_id:(id)a3;
+- (void)setAot_token_prons:(id)aot_token_prons;
+- (void)setG2p_model_version:(id)g2p_model_version;
+- (void)setG2p_version:(id)g2p_version;
+- (void)setJit_token_prons:(id)jit_token_prons;
+- (void)setPhonemes:(id)phonemes;
+- (void)setPhoneset_version:(id)phoneset_version;
+- (void)setReturn_str:(id)return_str;
+- (void)setSession_id:(id)session_id;
 @end
 
 @implementation QSSMutableGraphemeToPhonemeResponse
 
-- (void)setJit_token_prons:(id)a3
+- (void)setJit_token_prons:(id)jit_token_prons
 {
-  v4 = [a3 copy];
+  v4 = [jit_token_prons copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setAot_token_prons:(id)a3
+- (void)setAot_token_prons:(id)aot_token_prons
 {
-  v4 = [a3 copy];
+  v4 = [aot_token_prons copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setPhoneset_version:(id)a3
+- (void)setPhoneset_version:(id)phoneset_version
 {
-  v4 = [a3 copy];
+  v4 = [phoneset_version copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setG2p_model_version:(id)a3
+- (void)setG2p_model_version:(id)g2p_model_version
 {
-  v4 = [a3 copy];
+  v4 = [g2p_model_version copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setG2p_version:(id)a3
+- (void)setG2p_version:(id)g2p_version
 {
-  v4 = [a3 copy];
+  v4 = [g2p_version copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
 - (BOOL)is_pron_guessed
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"is_pron_guessed"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setPhonemes:(id)a3
+- (void)setPhonemes:(id)phonemes
 {
-  v4 = [a3 copy];
+  v4 = [phonemes copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setReturn_str:(id)a3
+- (void)setReturn_str:(id)return_str
 {
-  v4 = [a3 copy];
+  v4 = [return_str copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
 - (int)return_code
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"return_code"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
-- (void)setSession_id:(id)a3
+- (void)setSession_id:(id)session_id
 {
-  v4 = [a3 copy];
+  v4 = [session_id copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -96,9 +96,9 @@
   v2 = [(QSSMutableGraphemeToPhonemeResponse *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;

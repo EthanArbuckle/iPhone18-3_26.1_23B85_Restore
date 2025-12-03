@@ -1,46 +1,46 @@
 @interface CUIKAvailabilityUtils
-+ (id)_selfOrganizerForNewlyScheduledEventWithAddress:(id)a3;
-+ (id)participantsForAvailabilityViewControllerFromEvent:(id)a3;
++ (id)_selfOrganizerForNewlyScheduledEventWithAddress:(id)address;
++ (id)participantsForAvailabilityViewControllerFromEvent:(id)event;
 @end
 
 @implementation CUIKAvailabilityUtils
 
-+ (id)participantsForAvailabilityViewControllerFromEvent:(id)a3
++ (id)participantsForAvailabilityViewControllerFromEvent:(id)event
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  eventCopy = event;
   v4 = MEMORY[0x1E695DF70];
-  v5 = [v3 attendees];
-  v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count") + 1}];
+  attendees = [eventCopy attendees];
+  v6 = [v4 arrayWithCapacity:{objc_msgSend(attendees, "count") + 1}];
 
-  v7 = [v3 organizer];
-  if ([v3 isSelfOrganized] && !v7)
+  organizer = [eventCopy organizer];
+  if ([eventCopy isSelfOrganized] && !organizer)
   {
-    v8 = [v3 calendar];
-    v7 = [v8 ownerIdentityOrganizer];
+    calendar = [eventCopy calendar];
+    organizer = [calendar ownerIdentityOrganizer];
   }
 
-  v9 = [v7 URL];
-  v10 = [v9 absoluteString];
+  v9 = [organizer URL];
+  absoluteString = [v9 absoluteString];
 
-  if (v10)
+  if (absoluteString)
   {
-    [v6 addObject:v7];
+    [v6 addObject:organizer];
   }
 
   else
   {
-    v11 = [v3 calendar];
-    v12 = [v11 source];
-    v13 = [v12 ownerAddresses];
-    v10 = [v13 anyObject];
+    calendar2 = [eventCopy calendar];
+    source = [calendar2 source];
+    ownerAddresses = [source ownerAddresses];
+    absoluteString = [ownerAddresses anyObject];
 
-    if (!v10)
+    if (!absoluteString)
     {
       goto LABEL_9;
     }
 
-    v14 = [objc_opt_class() _selfOrganizerForNewlyScheduledEventWithAddress:v10];
+    v14 = [objc_opt_class() _selfOrganizerForNewlyScheduledEventWithAddress:absoluteString];
     [v6 addObject:v14];
   }
 
@@ -49,8 +49,8 @@ LABEL_9:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v15 = [v3 attendees];
-  v16 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  attendees2 = [eventCopy attendees];
+  v16 = [attendees2 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v16)
   {
     v17 = v16;
@@ -61,20 +61,20 @@ LABEL_9:
       {
         if (*v26 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(attendees2);
         }
 
         v20 = *(*(&v25 + 1) + 8 * i);
         v21 = [v20 URL];
-        v22 = [v21 absoluteString];
+        absoluteString2 = [v21 absoluteString];
 
-        if (v22 && ([v20 isEqualToParticipant:v7] & 1) == 0)
+        if (absoluteString2 && ([v20 isEqualToParticipant:organizer] & 1) == 0)
         {
           [v6 addObject:v20];
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v17 = [attendees2 countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v17);
@@ -134,14 +134,14 @@ LABEL_5:
   return v6;
 }
 
-+ (id)_selfOrganizerForNewlyScheduledEventWithAddress:(id)a3
++ (id)_selfOrganizerForNewlyScheduledEventWithAddress:(id)address
 {
   v3 = MEMORY[0x1E6992F50];
-  v4 = a3;
-  v5 = [v3 defaultProvider];
-  v6 = [v5 myFullName];
-  v7 = v6;
-  if (!v6 || ![v6 length])
+  addressCopy = address;
+  defaultProvider = [v3 defaultProvider];
+  myFullName = [defaultProvider myFullName];
+  v7 = myFullName;
+  if (!myFullName || ![myFullName length])
   {
     v8 = CUIKBundle();
     v9 = [v8 localizedStringForKey:@"You" value:&stru_1F4AA8958 table:0];
@@ -149,7 +149,7 @@ LABEL_5:
     v7 = v9;
   }
 
-  v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v4];
+  v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:addressCopy];
 
   v11 = [MEMORY[0x1E6966A78] organizerWithName:v7 emailAddress:0 phoneNumber:0 address:v10 isCurrentUser:1];
 

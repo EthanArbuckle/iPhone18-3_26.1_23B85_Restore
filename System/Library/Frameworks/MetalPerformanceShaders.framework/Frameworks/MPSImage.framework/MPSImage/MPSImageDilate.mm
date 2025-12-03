@@ -1,13 +1,13 @@
 @interface MPSImageDilate
-- (BOOL)initKernelValues:(const float *)a3;
+- (BOOL)initKernelValues:(const float *)values;
 - (MPSImageDilate)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSImageDilate)initWithDevice:(id)device;
 - (MPSImageDilate)initWithDevice:(id)device kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight values:(const float *)values;
-- (MPSRegion)sourceRegionForDestinationSize:(SEL)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (MPSRegion)sourceRegionForDestinationSize:(SEL)size;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSImageDilate
@@ -37,7 +37,7 @@
   return objc_msgSend_stringWithFormat_(v3, v17, @"%@\n\tkernelWidth: %lu\n\tkernelHeight: %lu", v18, v19, v20, v4, v10, v16);
 }
 
-- (BOOL)initKernelValues:(const float *)a3
+- (BOOL)initKernelValues:(const float *)values
 {
   kernelHeight = self->_kernelHeight;
   v6 = 6 * kernelHeight + 3;
@@ -45,7 +45,7 @@
   rleValues = malloc_type_calloc(1uLL, (v6 & 0xFFFFFFFFFFFFFFFCLL) + v7, 0x1000040274DC3F3uLL);
   self->valuesOffset = v6 & 0xFFFC;
   self->headerSize = (v6 & 0xFFFFFFFC) + v7;
-  memcpy(rleValues + (v6 & 0xFFFFFFFFFFFFFFFCLL), a3, v7);
+  memcpy(rleValues + (v6 & 0xFFFFFFFFFFFFFFFCLL), values, v7);
   v12 = self->_kernelHeight;
   if (!v12)
   {
@@ -73,7 +73,7 @@ LABEL_45:
     do
     {
       v16 = 0;
-      while (a3[v16] == 1.0)
+      while (values[v16] == 1.0)
       {
         if (kernelWidth == ++v16)
         {
@@ -100,7 +100,7 @@ LABEL_45:
       v20 = kernelWidth - 1;
       while (v20 > v16)
       {
-        v21 = a3[v20--];
+        v21 = values[v20--];
         if (v21 != 1.0)
         {
           v19 = v20 + 2;
@@ -111,11 +111,11 @@ LABEL_45:
       v22 = 0;
       v17->var1 = v19;
       v17->var2 = 1;
-      v9 = &a3[kernelWidth >> 1];
+      v9 = &values[kernelWidth >> 1];
       v23 = kernelWidth >> 1;
       do
       {
-        if (a3[v23] != 0.0)
+        if (values[v23] != 0.0)
         {
           break;
         }
@@ -132,7 +132,7 @@ LABEL_45:
       while (v23 != -1);
 LABEL_4:
       ++v14;
-      a3 += kernelWidth;
+      values += kernelWidth;
     }
 
     while (v14 != v12);
@@ -409,7 +409,7 @@ LABEL_24:
   return MEMORY[0x2821F9670](self, sel_initWithDevice_kernelWidth_kernelHeight_values_, device, 0, 0, self);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v21.receiver = self;
   v21.super_class = MPSImageDilate;
@@ -442,7 +442,7 @@ LABEL_24:
     outerMax = self->_outerMax;
     if (outerMax)
     {
-      v17 = objc_msgSend_copyWithZone_device_(outerMax, v13, a3, a4, v14, v15);
+      v17 = objc_msgSend_copyWithZone_device_(outerMax, v13, zone, device, v14, v15);
       v8[28] = v17;
       if (!v17)
       {
@@ -453,7 +453,7 @@ LABEL_24:
     innerMax = self->_innerMax;
     if (innerMax)
     {
-      v19 = objc_msgSend_copyWithZone_device_(innerMax, v13, a3, a4, v14, v15);
+      v19 = objc_msgSend_copyWithZone_device_(innerMax, v13, zone, device, v14, v15);
       v8[29] = v19;
       if (!v19)
       {
@@ -467,14 +467,14 @@ LABEL_7:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v20.receiver = self;
   v20.super_class = MPSImageDilate;
   [(MPSUnaryImageKernel *)&v20 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_kernelWidth, @"MPSDilateErode.kernelWidth", v6, v7);
-  objc_msgSend_encodeInt64_forKey_(a3, v8, self->_kernelHeight, @"MPSDilateErode.kernelHeight", v9, v10);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_kernelWidth, @"MPSDilateErode.kernelWidth", v6, v7);
+  objc_msgSend_encodeInt64_forKey_(coder, v8, self->_kernelHeight, @"MPSDilateErode.kernelHeight", v9, v10);
   v11 = 4 * self->_kernelWidth * self->_kernelHeight;
   v12 = malloc_type_malloc(v11, 0x100004052888210uLL);
   if (v12)
@@ -484,7 +484,7 @@ LABEL_7:
     kernelWidth = self->_kernelWidth;
     v16 = v12;
     MPSCopyToFromNetworkByteOrder32();
-    objc_msgSend_encodeBytes_length_forKey_(a3, v17, v16, v11, @"MPSDilateErode.kernel", v18);
+    objc_msgSend_encodeBytes_length_forKey_(coder, v17, v16, v11, @"MPSDilateErode.kernel", v18);
     free(v16);
   }
 
@@ -585,7 +585,7 @@ LABEL_15:
   return v10;
 }
 
-- (MPSRegion)sourceRegionForDestinationSize:(SEL)a3
+- (MPSRegion)sourceRegionForDestinationSize:(SEL)size
 {
   *&retstr->origin.z = 0u;
   *&retstr->size.height = 0u;

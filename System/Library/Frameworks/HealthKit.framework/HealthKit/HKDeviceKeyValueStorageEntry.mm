@@ -1,66 +1,66 @@
 @interface HKDeviceKeyValueStorageEntry
-- (HKDeviceKeyValueStorageEntry)initWithCoder:(id)a3;
-- (HKDeviceKeyValueStorageEntry)initWithDomain:(id)a3 key:(id)a4 value:(id)a5 modificationDate:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dateValue:(id *)a3;
-- (id)numberValue:(id *)a3;
-- (id)stringValue:(id *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HKDeviceKeyValueStorageEntry)initWithCoder:(id)coder;
+- (HKDeviceKeyValueStorageEntry)initWithDomain:(id)domain key:(id)key value:(id)value modificationDate:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dateValue:(id *)value;
+- (id)numberValue:(id *)value;
+- (id)stringValue:(id *)value;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKDeviceKeyValueStorageEntry
 
-- (HKDeviceKeyValueStorageEntry)initWithDomain:(id)a3 key:(id)a4 value:(id)a5 modificationDate:(id)a6
+- (HKDeviceKeyValueStorageEntry)initWithDomain:(id)domain key:(id)key value:(id)value modificationDate:(id)date
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  domainCopy = domain;
+  keyCopy = key;
+  valueCopy = value;
+  dateCopy = date;
   v18.receiver = self;
   v18.super_class = HKDeviceKeyValueStorageEntry;
   v15 = [(HKDeviceKeyValueStorageEntry *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_domain, a3);
-    objc_storeStrong(&v16->_key, a4);
-    objc_storeStrong(&v16->_value, a5);
-    objc_storeStrong(&v16->_modificationDate, a6);
+    objc_storeStrong(&v15->_domain, domain);
+    objc_storeStrong(&v16->_key, key);
+    objc_storeStrong(&v16->_value, value);
+    objc_storeStrong(&v16->_modificationDate, date);
   }
 
   return v16;
 }
 
-- (id)dateValue:(id *)a3
+- (id)dateValue:(id *)value
 {
   v5 = MEMORY[0x1E696ACD0];
   v6 = objc_opt_class();
   value = self->_value;
 
-  return [v5 unarchivedObjectOfClass:v6 fromData:value error:a3];
+  return [v5 unarchivedObjectOfClass:v6 fromData:value error:value];
 }
 
-- (id)numberValue:(id *)a3
+- (id)numberValue:(id *)value
 {
   v5 = MEMORY[0x1E696ACD0];
   v6 = objc_opt_class();
   value = self->_value;
 
-  return [v5 unarchivedObjectOfClass:v6 fromData:value error:a3];
+  return [v5 unarchivedObjectOfClass:v6 fromData:value error:value];
 }
 
-- (id)stringValue:(id *)a3
+- (id)stringValue:(id *)value
 {
   v5 = MEMORY[0x1E696ACD0];
   v6 = objc_opt_class();
   value = self->_value;
 
-  return [v5 unarchivedObjectOfClass:v6 fromData:value error:a3];
+  return [v5 unarchivedObjectOfClass:v6 fromData:value error:value];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HKDeviceKeyValueStorageEntry allocWithZone:a3];
+  v4 = [HKDeviceKeyValueStorageEntry allocWithZone:zone];
   domain = self->_domain;
   key = self->_key;
   value = self->_value;
@@ -69,23 +69,23 @@
   return [(HKDeviceKeyValueStorageEntry *)v4 initWithDomain:domain key:key value:value modificationDate:modificationDate];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   key = self->_key;
-  v5 = a3;
-  [v5 encodeObject:key forKey:@"Key"];
-  [v5 encodeObject:self->_domain forKey:@"Domain"];
-  [v5 encodeObject:self->_value forKey:@"Value"];
-  [v5 encodeObject:self->_modificationDate forKey:@"ModificationDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:key forKey:@"Key"];
+  [coderCopy encodeObject:self->_domain forKey:@"Domain"];
+  [coderCopy encodeObject:self->_value forKey:@"Value"];
+  [coderCopy encodeObject:self->_modificationDate forKey:@"ModificationDate"];
 }
 
-- (HKDeviceKeyValueStorageEntry)initWithCoder:(id)a3
+- (HKDeviceKeyValueStorageEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Key"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Domain"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ModificationDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Key"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Domain"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ModificationDate"];
 
   if (v5)
   {
@@ -99,16 +99,16 @@
 
   if (v9 || v7 == 0 || v8 == 0)
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HKDeviceKeyValueStorageEntry *)self initWithDomain:v6 key:v5 value:v7 modificationDate:v8];
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

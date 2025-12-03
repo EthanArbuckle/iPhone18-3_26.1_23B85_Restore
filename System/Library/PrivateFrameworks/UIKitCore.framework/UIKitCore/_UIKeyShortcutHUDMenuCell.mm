@@ -1,20 +1,20 @@
 @interface _UIKeyShortcutHUDMenuCell
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation _UIKeyShortcutHUDMenuCell
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
   v6.receiver = self;
   v6.super_class = _UIKeyShortcutHUDMenuCell;
-  [(_UIKeyShortcutHUDCell *)&v6 updateConfigurationUsingState:a3];
-  v4 = [(UICollectionViewCell *)self backgroundConfiguration];
+  [(_UIKeyShortcutHUDCell *)&v6 updateConfigurationUsingState:state];
+  backgroundConfiguration = [(UICollectionViewCell *)self backgroundConfiguration];
   v5 = +[UIKeyShortcutHUDMetrics currentMetrics];
   [v5 menuCellCornerRadius];
-  [v4 setCornerRadius:?];
+  [backgroundConfiguration setCornerRadius:?];
 
-  [(UICollectionViewCell *)self setBackgroundConfiguration:v4];
+  [(UICollectionViewCell *)self setBackgroundConfiguration:backgroundConfiguration];
 }
 
 @end

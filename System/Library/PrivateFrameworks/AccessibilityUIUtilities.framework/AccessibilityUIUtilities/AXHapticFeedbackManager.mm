@@ -1,11 +1,11 @@
 @interface AXHapticFeedbackManager
 + (id)sharedManager;
 - (void)_playCancelPatternFeedback;
-- (void)_playDiscreteFeedbackForType:(int64_t)a3;
-- (void)_playFeedback:(id)a3;
-- (void)_playFeedbackImpactBehaviorWithIntensity:(double)a3;
-- (void)_playPatternFeedback:(int64_t)a3 numberOfRepetitions:(int64_t)a4 atInterval:(double)a5;
-- (void)playHapticFeedbackForType:(int64_t)a3;
+- (void)_playDiscreteFeedbackForType:(int64_t)type;
+- (void)_playFeedback:(id)feedback;
+- (void)_playFeedbackImpactBehaviorWithIntensity:(double)intensity;
+- (void)_playPatternFeedback:(int64_t)feedback numberOfRepetitions:(int64_t)repetitions atInterval:(double)interval;
+- (void)playHapticFeedbackForType:(int64_t)type;
 @end
 
 @implementation AXHapticFeedbackManager
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __40__AXHapticFeedbackManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -34,7 +34,7 @@ uint64_t __40__AXHapticFeedbackManager_sharedManager__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)playHapticFeedbackForType:(int64_t)a3
+- (void)playHapticFeedbackForType:(int64_t)type
 {
   if (AXHomeClickHapticsSupported())
   {
@@ -138,17 +138,17 @@ LABEL_3:
   return result;
 }
 
-- (void)_playFeedback:(id)a3
+- (void)_playFeedback:(id)feedback
 {
-  v3 = a3;
-  [v3 setHapticOutputMode:{objc_msgSend(v3, "hapticOutputMode") | 5}];
-  v4 = [MEMORY[0x1E69DD4C0] engineForFeedback:v3];
+  feedbackCopy = feedback;
+  [feedbackCopy setHapticOutputMode:{objc_msgSend(feedbackCopy, "hapticOutputMode") | 5}];
+  v4 = [MEMORY[0x1E69DD4C0] engineForFeedback:feedbackCopy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__AXHapticFeedbackManager__playFeedback___block_invoke;
   v6[3] = &unk_1E812E4D0;
-  v7 = v3;
-  v5 = v3;
+  v7 = feedbackCopy;
+  v5 = feedbackCopy;
   [v4 runWhenReady:v6];
 }
 
@@ -162,48 +162,48 @@ uint64_t __41__AXHapticFeedbackManager__playFeedback___block_invoke(uint64_t res
   return result;
 }
 
-- (void)_playFeedbackImpactBehaviorWithIntensity:(double)a3
+- (void)_playFeedbackImpactBehaviorWithIntensity:(double)intensity
 {
   v4 = objc_alloc(MEMORY[0x1E69DCAE8]);
-  v5 = [MEMORY[0x1E69DD560] defaultConfiguration];
-  v6 = [v4 initWithConfiguration:v5 view:0];
+  defaultConfiguration = [MEMORY[0x1E69DD560] defaultConfiguration];
+  v6 = [v4 initWithConfiguration:defaultConfiguration view:0];
 
   [v6 activateWithCompletionBlock:0];
-  [v6 impactOccurredWithIntensity:a3 atLocation:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+  [v6 impactOccurredWithIntensity:intensity atLocation:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
   [v6 deactivate];
 }
 
-- (void)_playDiscreteFeedbackForType:(int64_t)a3
+- (void)_playDiscreteFeedbackForType:(int64_t)type
 {
-  v4 = [MEMORY[0x1E69DD470] discreteFeedbackForType:a3];
+  v4 = [MEMORY[0x1E69DD470] discreteFeedbackForType:type];
   [(AXHapticFeedbackManager *)self _playFeedback:v4];
 }
 
-- (void)_playPatternFeedback:(int64_t)a3 numberOfRepetitions:(int64_t)a4 atInterval:(double)a5
+- (void)_playPatternFeedback:(int64_t)feedback numberOfRepetitions:(int64_t)repetitions atInterval:(double)interval
 {
-  v11 = [MEMORY[0x1E69DD4C8] feedbackPattern];
-  if (a4 >= 1)
+  feedbackPattern = [MEMORY[0x1E69DD4C8] feedbackPattern];
+  if (repetitions >= 1)
   {
     v9 = 0;
     do
     {
-      v10 = [MEMORY[0x1E69DD470] discreteFeedbackForType:a3];
-      [v11 addFeedback:v10 atTime:v9 * a5];
+      v10 = [MEMORY[0x1E69DD470] discreteFeedbackForType:feedback];
+      [feedbackPattern addFeedback:v10 atTime:v9 * interval];
 
       ++v9;
     }
 
-    while (a4 != v9);
+    while (repetitions != v9);
   }
 
-  [(AXHapticFeedbackManager *)self _playFeedback:v11];
+  [(AXHapticFeedbackManager *)self _playFeedback:feedbackPattern];
 }
 
 - (void)_playCancelPatternFeedback
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v2 = [v3 _tapticEngine];
-  [v2 actuateFeedback:2];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  _tapticEngine = [currentDevice _tapticEngine];
+  [_tapticEngine actuateFeedback:2];
 }
 
 @end

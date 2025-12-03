@@ -1,19 +1,19 @@
 @interface MADPreWarmOCRTask
-- (BOOL)run:(id *)a3;
-- (MADPreWarmOCRTask)initWithCompletionHandler:(id)a3 cancelOrExtendTimeoutBlock:(id)a4;
+- (BOOL)run:(id *)run;
+- (MADPreWarmOCRTask)initWithCompletionHandler:(id)handler cancelOrExtendTimeoutBlock:(id)block;
 @end
 
 @implementation MADPreWarmOCRTask
 
-- (MADPreWarmOCRTask)initWithCompletionHandler:(id)a3 cancelOrExtendTimeoutBlock:(id)a4
+- (MADPreWarmOCRTask)initWithCompletionHandler:(id)handler cancelOrExtendTimeoutBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = MADPreWarmOCRTask;
-  v7 = [(MADPreWarmOCRTask *)&v11 initWithCompletionHandler:a3];
+  v7 = [(MADPreWarmOCRTask *)&v11 initWithCompletionHandler:handler];
   if (v7)
   {
-    v8 = objc_retainBlock(v6);
+    v8 = objc_retainBlock(blockCopy);
     cancelOrExtendTimeoutBlock = v7->_cancelOrExtendTimeoutBlock;
     v7->_cancelOrExtendTimeoutBlock = v8;
   }
@@ -21,7 +21,7 @@
   return v7;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   if (MediaAnalysisLogLevel() >= 5)
   {
@@ -56,8 +56,8 @@
       }
     }
 
-    v13 = [(MADPreWarmOCRTask *)self completionHandler];
-    v13[2](v13, 0, 0);
+    completionHandler = [(MADPreWarmOCRTask *)self completionHandler];
+    completionHandler[2](completionHandler, 0, 0);
     goto LABEL_14;
   }
 
@@ -73,11 +73,11 @@
     }
   }
 
-  if (a3)
+  if (run)
   {
     v16 = [v10 copy];
-    v13 = *a3;
-    *a3 = v16;
+    completionHandler = *run;
+    *run = v16;
 LABEL_14:
   }
 

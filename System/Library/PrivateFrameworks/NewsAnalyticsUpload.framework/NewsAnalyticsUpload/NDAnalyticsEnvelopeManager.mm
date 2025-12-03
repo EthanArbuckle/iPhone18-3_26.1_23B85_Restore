@@ -1,15 +1,15 @@
 @interface NDAnalyticsEnvelopeManager
 - (NDAnalyticsEnvelopeManager)init;
-- (NDAnalyticsEnvelopeManager)initWithAppConfigurationManager:(id)a3 telemetryUploader:(id)a4 storeDirectoryFileURL:(id)a5 URLSessionQueue:(id)a6;
-- (id)_handleDroppedEnvelopesForLocalReasons:(id)a3;
-- (id)_handleOutcomeOfUploadAttemptWithPayload:(id)a3 success:(BOOL)a4 error:(id)a5 willRetry:(BOOL)a6 hitEndpoint:(BOOL)a7;
+- (NDAnalyticsEnvelopeManager)initWithAppConfigurationManager:(id)manager telemetryUploader:(id)uploader storeDirectoryFileURL:(id)l URLSessionQueue:(id)queue;
+- (id)_handleDroppedEnvelopesForLocalReasons:(id)reasons;
+- (id)_handleOutcomeOfUploadAttemptWithPayload:(id)payload success:(BOOL)success error:(id)error willRetry:(BOOL)retry hitEndpoint:(BOOL)endpoint;
 - (id)_lastUploadDatesByContentType;
-- (void)_scheduleUploadIfNeededWithCompletion:(id)a3;
-- (void)_uploadTelemetryEnvelopes:(id)a3;
-- (void)envelopeStore:(id)a3 didFlushEnvelopesForEntries:(id)a4;
-- (void)handleLaunchEventForBackgroundSessionWithIdentifier:(id)a3 completion:(id)a4;
-- (void)submitEnvelopes:(id)a3 withCompletion:(id)a4;
-- (void)uploadScheduler:(id)a3 performUploadWithCompletion:(id)a4;
+- (void)_scheduleUploadIfNeededWithCompletion:(id)completion;
+- (void)_uploadTelemetryEnvelopes:(id)envelopes;
+- (void)envelopeStore:(id)store didFlushEnvelopesForEntries:(id)entries;
+- (void)handleLaunchEventForBackgroundSessionWithIdentifier:(id)identifier completion:(id)completion;
+- (void)submitEnvelopes:(id)envelopes withCompletion:(id)completion;
+- (void)uploadScheduler:(id)scheduler performUploadWithCompletion:(id)completion;
 @end
 
 @implementation NDAnalyticsEnvelopeManager
@@ -40,22 +40,22 @@
   objc_exception_throw(v6);
 }
 
-- (NDAnalyticsEnvelopeManager)initWithAppConfigurationManager:(id)a3 telemetryUploader:(id)a4 storeDirectoryFileURL:(id)a5 URLSessionQueue:(id)a6
+- (NDAnalyticsEnvelopeManager)initWithAppConfigurationManager:(id)manager telemetryUploader:(id)uploader storeDirectoryFileURL:(id)l URLSessionQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  managerCopy = manager;
+  uploaderCopy = uploader;
+  lCopy = l;
+  queueCopy = queue;
+  if (!managerCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsEnvelopeManager initWithAppConfigurationManager:telemetryUploader:storeDirectoryFileURL:URLSessionQueue:];
-    if (v12)
+    if (lCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v12)
+  else if (lCopy)
   {
     goto LABEL_6;
   }
@@ -66,7 +66,7 @@
   }
 
 LABEL_6:
-  if (!v13 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!queueCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsEnvelopeManager initWithAppConfigurationManager:telemetryUploader:storeDirectoryFileURL:URLSessionQueue:];
   }
@@ -80,33 +80,33 @@ LABEL_6:
     submissionQueue = v14->_submissionQueue;
     v14->_submissionQueue = v15;
 
-    objc_storeStrong(&v14->_URLSessionQueue, a6);
-    objc_storeStrong(&v14->_telemetryUploader, a4);
-    v17 = [[NDAnalyticsEnvelopeStore alloc] initWithStoreDirectoryFileURL:v12];
+    objc_storeStrong(&v14->_URLSessionQueue, queue);
+    objc_storeStrong(&v14->_telemetryUploader, uploader);
+    v17 = [[NDAnalyticsEnvelopeStore alloc] initWithStoreDirectoryFileURL:lCopy];
     [(NDAnalyticsEnvelopeStore *)v17 setObserver:v14];
     [(NDAnalyticsEnvelopeStore *)v17 enableFlushing];
     envelopeStore = v14->_envelopeStore;
     v14->_envelopeStore = v17;
     v19 = v17;
 
-    v20 = [[NDAppConfigAnalyticsPayloadAssemblerConfigProvider alloc] initWithAppConfigurationManager:v10];
+    v20 = [[NDAppConfigAnalyticsPayloadAssemblerConfigProvider alloc] initWithAppConfigurationManager:managerCopy];
     v21 = [[NDAnalyticsPayloadAssembler alloc] initWithConfigProvider:v20 maxPayloadSize:1000000];
     payloadAssembler = v14->_payloadAssembler;
     v14->_payloadAssembler = v21;
 
-    v23 = [[NDAnalyticsPayloadUploader alloc] initWithAppConfigurationManager:v10];
+    v23 = [[NDAnalyticsPayloadUploader alloc] initWithAppConfigurationManager:managerCopy];
     payloadUploader = v14->_payloadUploader;
     v14->_payloadUploader = v23;
 
-    v25 = [[NDAnalyticsUploadScheduler alloc] initWithURLSessionQueue:v13];
+    v25 = [[NDAnalyticsUploadScheduler alloc] initWithURLSessionQueue:queueCopy];
     [(NDAnalyticsUploadScheduler *)v25 setDelegate:v14];
     uploadScheduler = v14->_uploadScheduler;
     v14->_uploadScheduler = v25;
     v27 = v25;
 
     v28 = objc_alloc(MEMORY[0x277D310C8]);
-    v29 = [v12 path];
-    v30 = [v28 initWithName:@"last-upload" directory:v29 version:1 options:0 classRegistry:0];
+    path = [lCopy path];
+    v30 = [v28 initWithName:@"last-upload" directory:path version:1 options:0 classRegistry:0];
     lastUploadDatesByContentType = v14->_lastUploadDatesByContentType;
     v14->_lastUploadDatesByContentType = v30;
 
@@ -118,39 +118,39 @@ LABEL_6:
   return v14;
 }
 
-- (void)handleLaunchEventForBackgroundSessionWithIdentifier:(id)a3 completion:(id)a4
+- (void)handleLaunchEventForBackgroundSessionWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (!identifierCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsEnvelopeManager handleLaunchEventForBackgroundSessionWithIdentifier:completion:];
   }
 
-  v8 = [(NDAnalyticsEnvelopeManager *)self uploadScheduler];
-  [v8 handleLaunchEventForBackgroundSessionWithIdentifier:v6 completion:v7];
+  uploadScheduler = [(NDAnalyticsEnvelopeManager *)self uploadScheduler];
+  [uploadScheduler handleLaunchEventForBackgroundSessionWithIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)submitEnvelopes:(id)a3 withCompletion:(id)a4
+- (void)submitEnvelopes:(id)envelopes withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  envelopesCopy = envelopes;
+  completionCopy = completion;
+  if (!envelopesCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsEnvelopeManager submitEnvelopes:withCompletion:];
   }
 
-  v8 = [(NDAnalyticsEnvelopeManager *)self submissionQueue];
+  submissionQueue = [(NDAnalyticsEnvelopeManager *)self submissionQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __61__NDAnalyticsEnvelopeManager_submitEnvelopes_withCompletion___block_invoke;
   v11[3] = &unk_27997A510;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 enqueueBlock:v11];
+  v12 = envelopesCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = envelopesCopy;
+  [submissionQueue enqueueBlock:v11];
 }
 
 void __61__NDAnalyticsEnvelopeManager_submitEnvelopes_withCompletion___block_invoke(uint64_t a1, void *a2)
@@ -229,30 +229,30 @@ void __61__NDAnalyticsEnvelopeManager_submitEnvelopes_withCompletion___block_inv
   *(v9 + 40) = v6;
 }
 
-- (void)uploadScheduler:(id)a3 performUploadWithCompletion:(id)a4
+- (void)uploadScheduler:(id)scheduler performUploadWithCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = os_transaction_create();
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __74__NDAnalyticsEnvelopeManager_uploadScheduler_performUploadWithCompletion___block_invoke;
   aBlock[3] = &unk_27997A560;
-  v7 = v5;
+  v7 = completionCopy;
   v26 = v7;
   aBlock[4] = self;
   v8 = v6;
   v25 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [(NDAnalyticsEnvelopeManager *)self envelopeStore];
+  envelopeStore = [(NDAnalyticsEnvelopeManager *)self envelopeStore];
   v23 = 0;
-  v11 = [v10 allEntriesWithHoldToken:&v23];
+  v11 = [envelopeStore allEntriesWithHoldToken:&v23];
   v12 = v23;
   if ([v11 count])
   {
-    v13 = [(NDAnalyticsEnvelopeManager *)self payloadAssembler];
-    v14 = [(NDAnalyticsEnvelopeManager *)self _lastUploadDatesByContentType];
+    payloadAssembler = [(NDAnalyticsEnvelopeManager *)self payloadAssembler];
+    _lastUploadDatesByContentType = [(NDAnalyticsEnvelopeManager *)self _lastUploadDatesByContentType];
     v15 = [MEMORY[0x277CBEB98] setWithObject:&unk_286D791C8];
-    [v10 sizesOfEnvelopesWithEntries:v11];
+    [envelopeStore sizesOfEnvelopesWithEntries:v11];
     v19 = v8;
     v16 = v7;
     v18 = v17 = v12;
@@ -261,9 +261,9 @@ void __61__NDAnalyticsEnvelopeManager_submitEnvelopes_withCompletion___block_inv
     v20[2] = __74__NDAnalyticsEnvelopeManager_uploadScheduler_performUploadWithCompletion___block_invoke_46;
     v20[3] = &unk_27997A600;
     v20[4] = self;
-    v21 = v10;
+    v21 = envelopeStore;
     v22 = v9;
-    [v13 assemblePayloadsWithEntries:v11 lastUploadDatesByContentType:v14 droppedEnvelopeReasonsToUpload:v15 envelopeSizeByEntry:v18 completion:v20];
+    [payloadAssembler assemblePayloadsWithEntries:v11 lastUploadDatesByContentType:_lastUploadDatesByContentType droppedEnvelopeReasonsToUpload:v15 envelopeSizeByEntry:v18 completion:v20];
 
     v12 = v17;
     v7 = v16;
@@ -365,39 +365,39 @@ void __74__NDAnalyticsEnvelopeManager_uploadScheduler_performUploadWithCompletio
   [v2 saveWithCompletionHandler:v5];
 }
 
-- (void)envelopeStore:(id)a3 didFlushEnvelopesForEntries:(id)a4
+- (void)envelopeStore:(id)store didFlushEnvelopesForEntries:(id)entries
 {
-  v4 = NDAnalyticsEnvelopeSubmissionDatesByContentType(a4);
+  v4 = NDAnalyticsEnvelopeSubmissionDatesByContentType(entries);
   [NAUAnalyticsEnvelopeTracker registerEnvelopeContentTypesAsDropped:v4 forReason:3 withError:0];
 }
 
-- (void)_scheduleUploadIfNeededWithCompletion:(id)a3
+- (void)_scheduleUploadIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_transaction_create();
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__NDAnalyticsEnvelopeManager__scheduleUploadIfNeededWithCompletion___block_invoke;
   aBlock[3] = &unk_27997A628;
-  v6 = v4;
+  v6 = completionCopy;
   v17 = v6;
   v7 = v5;
   v16 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [(NDAnalyticsEnvelopeManager *)self envelopeStore];
-  v10 = [v9 allEntriesWithHoldToken:0];
+  envelopeStore = [(NDAnalyticsEnvelopeManager *)self envelopeStore];
+  v10 = [envelopeStore allEntriesWithHoldToken:0];
 
   if ([v10 count])
   {
-    v11 = [(NDAnalyticsEnvelopeManager *)self payloadAssembler];
-    v12 = [(NDAnalyticsEnvelopeManager *)self _lastUploadDatesByContentType];
+    payloadAssembler = [(NDAnalyticsEnvelopeManager *)self payloadAssembler];
+    _lastUploadDatesByContentType = [(NDAnalyticsEnvelopeManager *)self _lastUploadDatesByContentType];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __68__NDAnalyticsEnvelopeManager__scheduleUploadIfNeededWithCompletion___block_invoke_2;
     v13[3] = &unk_27997A650;
     v13[4] = self;
     v14 = v8;
-    [v11 determinePayloadDeliveryWindowForEntries:v10 withLastUploadDatesByContentType:v12 completion:v13];
+    [payloadAssembler determinePayloadDeliveryWindowForEntries:v10 withLastUploadDatesByContentType:_lastUploadDatesByContentType completion:v13];
   }
 
   else
@@ -435,17 +435,17 @@ void __68__NDAnalyticsEnvelopeManager__scheduleUploadIfNeededWithCompletion___bl
 - (id)_lastUploadDatesByContentType
 {
   v3 = objc_opt_new();
-  v4 = [(NDAnalyticsEnvelopeManager *)self keyValueStoreLock];
+  keyValueStoreLock = [(NDAnalyticsEnvelopeManager *)self keyValueStoreLock];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __59__NDAnalyticsEnvelopeManager__lastUploadDatesByContentType__block_invoke;
   v11 = &unk_27997A678;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v5 = v3;
-  [v4 performWithLockSync:&v8];
+  [keyValueStoreLock performWithLockSync:&v8];
 
-  v6 = [v5 fc_dictionaryByTransformingKeysWithBlock:{&__block_literal_global_55, v8, v9, v10, v11, v12}];
+  v6 = [v5 fc_dictionaryByTransformingKeysWithBlock:{&__block_literal_global_55, v8, v9, v10, v11, selfCopy}];
 
   return v6;
 }
@@ -464,19 +464,19 @@ uint64_t __59__NDAnalyticsEnvelopeManager__lastUploadDatesByContentType__block_i
   return [v2 numberWithInteger:v3];
 }
 
-- (id)_handleDroppedEnvelopesForLocalReasons:(id)a3
+- (id)_handleDroppedEnvelopesForLocalReasons:(id)reasons
 {
-  v3 = a3;
-  if (!v3 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  reasonsCopy = reasons;
+  if (!reasonsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsEnvelopeManager _handleDroppedEnvelopesForLocalReasons:];
   }
 
-  [v3 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_59];
-  v4 = [v3 allValues];
-  v5 = [v4 fc_arrayByFlattening];
+  [reasonsCopy enumerateKeysAndObjectsUsingBlock:&__block_literal_global_59];
+  allValues = [reasonsCopy allValues];
+  fc_arrayByFlattening = [allValues fc_arrayByFlattening];
 
-  return v5;
+  return fc_arrayByFlattening;
 }
 
 void __69__NDAnalyticsEnvelopeManager__handleDroppedEnvelopesForLocalReasons___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -502,29 +502,29 @@ void __69__NDAnalyticsEnvelopeManager__handleDroppedEnvelopesForLocalReasons___b
   [NAUAnalyticsEnvelopeTracker registerEnvelopeContentTypesAsDropped:v7 forReason:v6 withError:0];
 }
 
-- (id)_handleOutcomeOfUploadAttemptWithPayload:(id)a3 success:(BOOL)a4 error:(id)a5 willRetry:(BOOL)a6 hitEndpoint:(BOOL)a7
+- (id)_handleOutcomeOfUploadAttemptWithPayload:(id)payload success:(BOOL)success error:(id)error willRetry:(BOOL)retry hitEndpoint:(BOOL)endpoint
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a5;
-  if (!v12 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  endpointCopy = endpoint;
+  payloadCopy = payload;
+  errorCopy = error;
+  if (!payloadCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsEnvelopeManager _handleOutcomeOfUploadAttemptWithPayload:success:error:willRetry:hitEndpoint:];
   }
 
-  if (v7)
+  if (endpointCopy)
   {
-    v14 = [MEMORY[0x277CBEAA8] date];
-    v15 = [(NDAnalyticsEnvelopeManager *)self keyValueStoreLock];
+    date = [MEMORY[0x277CBEAA8] date];
+    keyValueStoreLock = [(NDAnalyticsEnvelopeManager *)self keyValueStoreLock];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __107__NDAnalyticsEnvelopeManager__handleOutcomeOfUploadAttemptWithPayload_success_error_willRetry_hitEndpoint___block_invoke;
     v36[3] = &unk_27997A708;
-    v37 = v12;
-    v38 = self;
-    v39 = v14;
-    v16 = v14;
-    [v15 performWithLockSync:v36];
+    v37 = payloadCopy;
+    selfCopy = self;
+    v39 = date;
+    v16 = date;
+    [keyValueStoreLock performWithLockSync:v36];
   }
 
   v17 = objc_opt_new();
@@ -532,18 +532,18 @@ void __69__NDAnalyticsEnvelopeManager__handleDroppedEnvelopesForLocalReasons___b
   aBlock[1] = 3221225472;
   aBlock[2] = __107__NDAnalyticsEnvelopeManager__handleOutcomeOfUploadAttemptWithPayload_success_error_willRetry_hitEndpoint___block_invoke_3;
   aBlock[3] = &unk_27997A730;
-  v34 = a4;
+  successCopy = success;
   v18 = v17;
-  v35 = a6;
+  retryCopy = retry;
   v32 = v18;
-  v33 = v13;
-  v19 = v13;
+  v33 = errorCopy;
+  v19 = errorCopy;
   v20 = _Block_copy(aBlock);
-  v21 = [v12 entriesToUpload];
-  v22 = v21;
-  if (v21)
+  entriesToUpload = [payloadCopy entriesToUpload];
+  v22 = entriesToUpload;
+  if (entriesToUpload)
   {
-    v23 = v21;
+    v23 = entriesToUpload;
   }
 
   else
@@ -553,14 +553,14 @@ void __69__NDAnalyticsEnvelopeManager__handleDroppedEnvelopesForLocalReasons___b
 
   v20[2](v20, v23);
 
-  v24 = [v12 droppedEntriesByReason];
+  droppedEntriesByReason = [payloadCopy droppedEntriesByReason];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __107__NDAnalyticsEnvelopeManager__handleOutcomeOfUploadAttemptWithPayload_success_error_willRetry_hitEndpoint___block_invoke_4;
   v29[3] = &unk_27997A758;
   v30 = v20;
   v25 = v20;
-  [v24 enumerateKeysAndObjectsUsingBlock:v29];
+  [droppedEntriesByReason enumerateKeysAndObjectsUsingBlock:v29];
 
   v26 = v30;
   v27 = v18;
@@ -643,18 +643,18 @@ void __107__NDAnalyticsEnvelopeManager__handleOutcomeOfUploadAttemptWithPayload_
   }
 }
 
-- (void)_uploadTelemetryEnvelopes:(id)a3
+- (void)_uploadTelemetryEnvelopes:(id)envelopes
 {
-  v4 = a3;
+  envelopesCopy = envelopes;
   v5 = os_transaction_create();
-  v6 = [(NDAnalyticsEnvelopeManager *)self telemetryUploader];
+  telemetryUploader = [(NDAnalyticsEnvelopeManager *)self telemetryUploader];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__NDAnalyticsEnvelopeManager__uploadTelemetryEnvelopes___block_invoke;
   v8[3] = &unk_27997A538;
   v9 = v5;
   v7 = v5;
-  [v6 uploadEnvelopes:v4 completion:v8];
+  [telemetryUploader uploadEnvelopes:envelopesCopy completion:v8];
 }
 
 - (void)initWithAppConfigurationManager:telemetryUploader:storeDirectoryFileURL:URLSessionQueue:.cold.1()

@@ -1,7 +1,7 @@
 @interface DKPasscodeViewController
 - (DKPasscodeViewController)init;
-- (id)completionButtonTitleForPasscodeViewController:(id)a3;
-- (void)passcodeViewController:(id)a3 didEnterPasscode:(id)a4;
+- (id)completionButtonTitleForPasscodeViewController:(id)controller;
+- (void)passcodeViewController:(id)controller didEnterPasscode:(id)passcode;
 @end
 
 @implementation DKPasscodeViewController
@@ -26,7 +26,7 @@
   return v8;
 }
 
-- (id)completionButtonTitleForPasscodeViewController:(id)a3
+- (id)completionButtonTitleForPasscodeViewController:(id)controller
 {
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"NEXT" value:&stru_285BC2A70 table:@"Localizable"];
@@ -34,16 +34,16 @@
   return v4;
 }
 
-- (void)passcodeViewController:(id)a3 didEnterPasscode:(id)a4
+- (void)passcodeViewController:(id)controller didEnterPasscode:(id)passcode
 {
-  v8 = a4;
-  v5 = [(DKPasscodeViewController *)self verifyPasscode];
-  v6 = (v5)[2](v5, v8);
+  passcodeCopy = passcode;
+  verifyPasscode = [(DKPasscodeViewController *)self verifyPasscode];
+  v6 = (verifyPasscode)[2](verifyPasscode, passcodeCopy);
 
   if (v6)
   {
-    v7 = [(DKPasscodeViewController *)self passcodeVerified];
-    (v7)[2](v7, v8, [(DKPasscodeViewController *)self simplePasscodeType]);
+    passcodeVerified = [(DKPasscodeViewController *)self passcodeVerified];
+    (passcodeVerified)[2](passcodeVerified, passcodeCopy, [(DKPasscodeViewController *)self simplePasscodeType]);
   }
 
   else

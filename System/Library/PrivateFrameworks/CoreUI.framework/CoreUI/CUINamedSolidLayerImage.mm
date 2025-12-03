@@ -1,28 +1,28 @@
 @interface CUINamedSolidLayerImage
 - (CGRect)frame;
-- (CUINamedSolidLayerImage)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5;
+- (CUINamedSolidLayerImage)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme;
 - (double)opacity;
-- (id)edgeDefinitionTextureWithBufferAllocator:(id)a3;
-- (id)gradientTextureWithBufferAllocator:(id)a3;
+- (id)edgeDefinitionTextureWithBufferAllocator:(id)allocator;
+- (id)gradientTextureWithBufferAllocator:(id)allocator;
 - (int)blendMode;
 - (void)dealloc;
 @end
 
 @implementation CUINamedSolidLayerImage
 
-- (CUINamedSolidLayerImage)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5
+- (CUINamedSolidLayerImage)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme
 {
   v26.receiver = self;
   v26.super_class = CUINamedSolidLayerImage;
-  v7 = [CUINamedImage initWithName:sel_initWithName_usingRenditionKey_fromTheme_ usingRenditionKey:a3 fromTheme:?];
+  v7 = [CUINamedImage initWithName:sel_initWithName_usingRenditionKey_fromTheme_ usingRenditionKey:name fromTheme:?];
   v9 = v7;
   if (v7)
   {
     v7->_opacity = 1.0;
     v7->_blendMode = 0;
-    v10 = _LookupStructuredThemeProvider(a5, v8);
-    v11 = [a4 copy];
-    v12 = [a4 copy];
+    v10 = _LookupStructuredThemeProvider(theme, v8);
+    v11 = [key copy];
+    v12 = [key copy];
     [v11 setThemeElement:41];
     [v11 setThemePart:0];
     [v11 setThemeDimension1:1];
@@ -33,7 +33,7 @@
     [v12 setThemeDimension2:0];
     if ([v10 canGetRenditionWithKey:{objc_msgSend(v11, "keyList")}])
     {
-      v9->_edgeTexture = [(CUINamedLookup *)[CUINamedTexture alloc] initWithName:[(CUINamedLookup *)v9 name] usingRenditionKey:v11 fromTheme:a5];
+      v9->_edgeTexture = [(CUINamedLookup *)[CUINamedTexture alloc] initWithName:[(CUINamedLookup *)v9 name] usingRenditionKey:v11 fromTheme:theme];
     }
 
     else
@@ -43,7 +43,7 @@
 
     if ([v10 canGetRenditionWithKey:{objc_msgSend(v12, "keyList")}])
     {
-      v9->_gradientTexture = [(CUINamedLookup *)[CUINamedTexture alloc] initWithName:[(CUINamedLookup *)v9 name] usingRenditionKey:v12 fromTheme:a5];
+      v9->_gradientTexture = [(CUINamedLookup *)[CUINamedTexture alloc] initWithName:[(CUINamedLookup *)v9 name] usingRenditionKey:v12 fromTheme:theme];
     }
 
     else
@@ -83,13 +83,13 @@
   return result;
 }
 
-- (id)edgeDefinitionTextureWithBufferAllocator:(id)a3
+- (id)edgeDefinitionTextureWithBufferAllocator:(id)allocator
 {
   edgeTexture = self->_edgeTexture;
   if (edgeTexture)
   {
 
-    return [(CUINamedTexture *)edgeTexture textureWithBufferAllocator:a3];
+    return [(CUINamedTexture *)edgeTexture textureWithBufferAllocator:allocator];
   }
 
   else
@@ -111,13 +111,13 @@
   }
 }
 
-- (id)gradientTextureWithBufferAllocator:(id)a3
+- (id)gradientTextureWithBufferAllocator:(id)allocator
 {
   gradientTexture = self->_gradientTexture;
   if (gradientTexture)
   {
 
-    return [(CUINamedTexture *)gradientTexture textureWithBufferAllocator:a3];
+    return [(CUINamedTexture *)gradientTexture textureWithBufferAllocator:allocator];
   }
 
   else

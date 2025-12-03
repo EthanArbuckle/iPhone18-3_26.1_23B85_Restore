@@ -1,29 +1,29 @@
 @interface DSErrorDescriptor
 + (void)initialize;
-- (BOOL)errorOverridesCustomTextFormatting:(id)a3;
-- (BOOL)isDSSourceError:(id)a3;
-- (BOOL)isHomeStopSharingPINFailed:(id)a3;
-- (BOOL)isStopSharingRestrictionsEnabled:(id)a3;
-- (DSErrorDescriptor)initWithFetchSharingError:(id)a3;
-- (DSErrorDescriptor)initWithStopSharingErrors:(id)a3;
-- (id)customMessageForError:(id)a3 fromSource:(id)a4 descriptorKey:(id)a5;
-- (id)customMessageForError:(id)a3 fromSources:(id)a4 descriptorKey:(id)a5;
-- (id)descriptorKeyForDSSourceErrorCode:(int64_t)a3;
-- (id)errorMessageForType:(id)a3;
-- (id)multipleDSSourceErrorMessageWithType:(id)a3 withCode:(id)a4;
-- (id)multipleNameMessageFormatForError:(id)a3;
-- (id)namelessTitleForError:(id)a3;
-- (id)singleDSSourceErrorMessageWithType:(id)a3 withCode:(id)a4;
-- (id)singleNameMessageFormatForError:(id)a3;
-- (id)singleNameTitleFormatForError:(id)a3;
-- (void)_describeErrorsWithType:(id)a3;
+- (BOOL)errorOverridesCustomTextFormatting:(id)formatting;
+- (BOOL)isDSSourceError:(id)error;
+- (BOOL)isHomeStopSharingPINFailed:(id)failed;
+- (BOOL)isStopSharingRestrictionsEnabled:(id)enabled;
+- (DSErrorDescriptor)initWithFetchSharingError:(id)error;
+- (DSErrorDescriptor)initWithStopSharingErrors:(id)errors;
+- (id)customMessageForError:(id)error fromSource:(id)source descriptorKey:(id)key;
+- (id)customMessageForError:(id)error fromSources:(id)sources descriptorKey:(id)key;
+- (id)descriptorKeyForDSSourceErrorCode:(int64_t)code;
+- (id)errorMessageForType:(id)type;
+- (id)multipleDSSourceErrorMessageWithType:(id)type withCode:(id)code;
+- (id)multipleNameMessageFormatForError:(id)error;
+- (id)namelessTitleForError:(id)error;
+- (id)singleDSSourceErrorMessageWithType:(id)type withCode:(id)code;
+- (id)singleNameMessageFormatForError:(id)error;
+- (id)singleNameTitleFormatForError:(id)error;
+- (void)_describeErrorsWithType:(id)type;
 @end
 
 @implementation DSErrorDescriptor
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = os_log_create("com.apple.DigitalSeparation", "DSErrorDescriptor");
     v3 = DSLogErrorDescriptor;
@@ -33,16 +33,16 @@
   }
 }
 
-- (DSErrorDescriptor)initWithFetchSharingError:(id)a3
+- (DSErrorDescriptor)initWithFetchSharingError:(id)error
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v9.receiver = self;
   v9.super_class = DSErrorDescriptor;
   v5 = [(DSErrorDescriptor *)&v9 init];
   if (v5)
   {
-    v10[0] = v4;
+    v10[0] = errorCopy;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
     [(DSErrorDescriptor *)v5 setErrors:v6];
 
@@ -53,61 +53,61 @@
   return v5;
 }
 
-- (DSErrorDescriptor)initWithStopSharingErrors:(id)a3
+- (DSErrorDescriptor)initWithStopSharingErrors:(id)errors
 {
-  v4 = a3;
+  errorsCopy = errors;
   v8.receiver = self;
   v8.super_class = DSErrorDescriptor;
   v5 = [(DSErrorDescriptor *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(DSErrorDescriptor *)v5 setErrors:v4];
+    [(DSErrorDescriptor *)v5 setErrors:errorsCopy];
     [(DSErrorDescriptor *)v6 _describeErrorsWithType:@"STOP_SHARING_FAILED"];
   }
 
   return v6;
 }
 
-- (void)_describeErrorsWithType:(id)a3
+- (void)_describeErrorsWithType:(id)type
 {
-  v29 = a3;
+  typeCopy = type;
   v4 = [(DSErrorDescriptor *)self errorMessageForType:?];
-  v5 = [(DSErrorDescriptor *)self localizedAppNames];
-  v6 = [v5 count];
+  localizedAppNames = [(DSErrorDescriptor *)self localizedAppNames];
+  v6 = [localizedAppNames count];
 
   if (!v6)
   {
-    v12 = [(DSErrorDescriptor *)self namelessTitleForError:v29];
+    v12 = [(DSErrorDescriptor *)self namelessTitleForError:typeCopy];
     [(DSErrorDescriptor *)self setLocalizedTitle:v12];
 
-    v10 = DSUILocStringForKey(v29);
-    v13 = self;
-    v14 = v10;
+    firstObject = DSUILocStringForKey(typeCopy);
+    selfCopy2 = self;
+    v14 = firstObject;
 LABEL_11:
-    [(DSErrorDescriptor *)v13 setLocalizedMessage:v14];
+    [(DSErrorDescriptor *)selfCopy2 setLocalizedMessage:v14];
     goto LABEL_14;
   }
 
-  v7 = [(DSErrorDescriptor *)self localizedAppNames];
-  v8 = [v7 count];
+  localizedAppNames2 = [(DSErrorDescriptor *)self localizedAppNames];
+  v8 = [localizedAppNames2 count];
 
   if (v8 == 1)
   {
-    v9 = [(DSErrorDescriptor *)self localizedAppNames];
-    v10 = [v9 firstObject];
+    localizedAppNames3 = [(DSErrorDescriptor *)self localizedAppNames];
+    firstObject = [localizedAppNames3 firstObject];
 
-    v11 = [(DSErrorDescriptor *)self localizedTitle];
-    if (v11)
+    localizedTitle = [(DSErrorDescriptor *)self localizedTitle];
+    if (localizedTitle)
     {
-      [(DSErrorDescriptor *)self setLocalizedTitle:v11];
+      [(DSErrorDescriptor *)self setLocalizedTitle:localizedTitle];
     }
 
     else
     {
       v20 = MEMORY[0x277CCACA8];
-      v21 = [(DSErrorDescriptor *)self singleNameTitleFormatForError:v29];
-      v22 = [v20 stringWithFormat:v21, v10];
+      v21 = [(DSErrorDescriptor *)self singleNameTitleFormatForError:typeCopy];
+      v22 = [v20 stringWithFormat:v21, firstObject];
       [(DSErrorDescriptor *)self setLocalizedTitle:v22];
     }
 
@@ -117,56 +117,56 @@ LABEL_11:
     }
 
     v18 = MEMORY[0x277CCACA8];
-    v19 = [(DSErrorDescriptor *)self singleNameMessageFormatForError:v29];
+    v19 = [(DSErrorDescriptor *)self singleNameMessageFormatForError:typeCopy];
   }
 
   else
   {
     v15 = MEMORY[0x277CCAAF0];
-    v16 = [(DSErrorDescriptor *)self localizedAppNames];
-    v10 = [v15 localizedStringByJoiningStrings:v16];
+    localizedAppNames4 = [(DSErrorDescriptor *)self localizedAppNames];
+    firstObject = [v15 localizedStringByJoiningStrings:localizedAppNames4];
 
-    v17 = [(DSErrorDescriptor *)self namelessTitleForError:v29];
+    v17 = [(DSErrorDescriptor *)self namelessTitleForError:typeCopy];
     [(DSErrorDescriptor *)self setLocalizedTitle:v17];
 
     if (v4)
     {
 LABEL_10:
-      v13 = self;
+      selfCopy2 = self;
       v14 = v4;
       goto LABEL_11;
     }
 
     v18 = MEMORY[0x277CCACA8];
-    v19 = [(DSErrorDescriptor *)self multipleNameMessageFormatForError:v29];
+    v19 = [(DSErrorDescriptor *)self multipleNameMessageFormatForError:typeCopy];
   }
 
   v23 = v19;
-  v24 = [v18 stringWithFormat:v19, v10];
+  v24 = [v18 stringWithFormat:v19, firstObject];
   [(DSErrorDescriptor *)self setLocalizedMessage:v24];
 
 LABEL_14:
   if (os_variant_has_internal_content())
   {
     v25 = MEMORY[0x277CCACA8];
-    v26 = [(DSErrorDescriptor *)self localizedMessage];
-    v27 = [(DSErrorDescriptor *)self errors];
-    v28 = [v25 stringWithFormat:@"%@\n\nInternal Only: %@", v26, v27];
+    localizedMessage = [(DSErrorDescriptor *)self localizedMessage];
+    errors = [(DSErrorDescriptor *)self errors];
+    v28 = [v25 stringWithFormat:@"%@\n\nInternal Only: %@", localizedMessage, errors];
     [(DSErrorDescriptor *)self setLocalizedMessage:v28];
   }
 }
 
-- (id)errorMessageForType:(id)a3
+- (id)errorMessageForType:(id)type
 {
   v62 = *MEMORY[0x277D85DE8];
-  v40 = a3;
+  typeCopy = type;
   v38 = [MEMORY[0x277CBEB58] set];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v44 = self;
+  selfCopy = self;
   obj = [(DSErrorDescriptor *)self errors];
   v41 = [obj countByEnumeratingWithState:&v55 objects:v61 count:16];
   if (v41)
@@ -183,19 +183,19 @@ LABEL_14:
         }
 
         v6 = *(*(&v55 + 1) + 8 * i);
-        v7 = [v6 ds_localizedAppNames];
-        if ([v7 count])
+        ds_localizedAppNames = [v6 ds_localizedAppNames];
+        if ([ds_localizedAppNames count])
         {
-          v42 = v7;
+          v42 = ds_localizedAppNames;
           v43 = i;
-          [v38 addObjectsFromArray:v7];
-          v8 = [v6 ds_sourcesByPresentableError];
+          [v38 addObjectsFromArray:ds_localizedAppNames];
+          ds_sourcesByPresentableError = [v6 ds_sourcesByPresentableError];
           v51 = 0u;
           v52 = 0u;
           v53 = 0u;
           v54 = 0u;
-          v9 = [v8 allKeys];
-          v10 = [v9 countByEnumeratingWithState:&v51 objects:v60 count:16];
+          allKeys = [ds_sourcesByPresentableError allKeys];
+          v10 = [allKeys countByEnumeratingWithState:&v51 objects:v60 count:16];
           if (v10)
           {
             v11 = v10;
@@ -206,17 +206,17 @@ LABEL_14:
               {
                 if (*v52 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v14 = *(*(&v51 + 1) + 8 * j);
-                v15 = [v8 objectForKeyedSubscript:v14];
+                v15 = [ds_sourcesByPresentableError objectForKeyedSubscript:v14];
                 if ([v15 count])
                 {
-                  v16 = [v4 objectForKey:v14];
+                  v16 = [dictionary objectForKey:v14];
                   if (v16)
                   {
-                    [v4 objectForKey:v14];
+                    [dictionary objectForKey:v14];
                   }
 
                   else
@@ -226,18 +226,18 @@ LABEL_14:
                   v17 = ;
 
                   [v17 addObjectsFromArray:v15];
-                  [v4 setObject:v17 forKey:v14];
+                  [dictionary setObject:v17 forKey:v14];
                   v45 += [v15 count];
                 }
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v51 objects:v60 count:16];
+              v11 = [allKeys countByEnumeratingWithState:&v51 objects:v60 count:16];
             }
 
             while (v11);
           }
 
-          v7 = v42;
+          ds_localizedAppNames = v42;
           i = v43;
         }
       }
@@ -253,19 +253,19 @@ LABEL_14:
     v45 = 0;
   }
 
-  v18 = [v38 allObjects];
-  [(DSErrorDescriptor *)v44 setLocalizedAppNames:v18];
+  allObjects = [v38 allObjects];
+  [(DSErrorDescriptor *)selfCopy setLocalizedAppNames:allObjects];
 
-  v19 = [v4 allKeys];
+  allKeys2 = [dictionary allKeys];
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
   v50[2] = __41__DSErrorDescriptor_errorMessageForType___block_invoke;
   v50[3] = &unk_278F75CA0;
-  v50[4] = v44;
-  v20 = [v19 sortedArrayUsingComparator:v50];
+  v50[4] = selfCopy;
+  v20 = [allKeys2 sortedArrayUsingComparator:v50];
 
-  v21 = [MEMORY[0x277CBEB18] array];
-  v22 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
@@ -286,14 +286,14 @@ LABEL_14:
         }
 
         v28 = *(*(&v46 + 1) + 8 * k);
-        v29 = [v4 objectForKeyedSubscript:v28];
-        v30 = [(DSErrorDescriptor *)v44 customMessageForError:v28 fromSources:v29 descriptorKey:v40];
+        v29 = [dictionary objectForKeyedSubscript:v28];
+        v30 = [(DSErrorDescriptor *)selfCopy customMessageForError:v28 fromSources:v29 descriptorKey:typeCopy];
         if (v30)
         {
-          [v21 addObject:v30];
-          if ([(DSErrorDescriptor *)v44 errorOverridesCustomTextFormatting:v28])
+          [array addObject:v30];
+          if ([(DSErrorDescriptor *)selfCopy errorOverridesCustomTextFormatting:v28])
           {
-            [v22 addObject:v30];
+            [array2 addObject:v30];
           }
         }
       }
@@ -304,37 +304,37 @@ LABEL_14:
     while (v25);
   }
 
-  if (![v21 count] || v45 != objc_msgSend(v38, "count"))
+  if (![array count] || v45 != objc_msgSend(v38, "count"))
   {
-    if (![v22 count])
+    if (![array2 count])
     {
       v33 = 0;
       goto LABEL_47;
     }
 
-    if ([v22 count] == 1)
+    if ([array2 count] == 1)
     {
-      v31 = v22;
+      v31 = array2;
       goto LABEL_41;
     }
 
-    v34 = v22;
+    v34 = array2;
 LABEL_45:
-    v32 = [v34 componentsJoinedByString:@"\n"];
+    firstObject = [v34 componentsJoinedByString:@"\n"];
     goto LABEL_46;
   }
 
-  if ([v21 count] != 1)
+  if ([array count] != 1)
   {
-    v34 = v21;
+    v34 = array;
     goto LABEL_45;
   }
 
-  v31 = v21;
+  v31 = array;
 LABEL_41:
-  v32 = [v31 firstObject];
+  firstObject = [v31 firstObject];
 LABEL_46:
-  v33 = v32;
+  v33 = firstObject;
 LABEL_47:
 
   v35 = *MEMORY[0x277D85DE8];
@@ -376,22 +376,22 @@ uint64_t __41__DSErrorDescriptor_errorMessageForType___block_invoke(uint64_t a1,
   return v9;
 }
 
-- (id)customMessageForError:(id)a3 fromSources:(id)a4 descriptorKey:(id)a5
+- (id)customMessageForError:(id)error fromSources:(id)sources descriptorKey:(id)key
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v10 count] > 1)
+  errorCopy = error;
+  sourcesCopy = sources;
+  keyCopy = key;
+  if ([sourcesCopy count] > 1)
   {
     v27 = a2;
-    v28 = v9;
-    v12 = [MEMORY[0x277CBEB18] array];
+    v28 = errorCopy;
+    array = [MEMORY[0x277CBEB18] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v14 = v10;
+    v14 = sourcesCopy;
     v15 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v15)
     {
@@ -407,9 +407,9 @@ uint64_t __41__DSErrorDescriptor_errorMessageForType___block_invoke(uint64_t a1,
           }
 
           v19 = [MEMORY[0x277D054C0] sourceDescriptorForSource:*(*(&v29 + 1) + 8 * i)];
-          v20 = [v19 localizedAppName];
+          localizedAppName = [v19 localizedAppName];
 
-          [v12 addObject:v20];
+          [array addObject:localizedAppName];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -418,11 +418,11 @@ uint64_t __41__DSErrorDescriptor_errorMessageForType___block_invoke(uint64_t a1,
       while (v16);
     }
 
-    v21 = [MEMORY[0x277CCAAF0] localizedStringByJoiningStrings:v12];
-    v9 = v28;
+    v21 = [MEMORY[0x277CCAAF0] localizedStringByJoiningStrings:array];
+    errorCopy = v28;
     if ([(DSErrorDescriptor *)self isStopSharingRestrictionsEnabled:v28])
     {
-      if (([v11 isEqualToString:@"STOP_SHARING_FAILED"] & 1) == 0)
+      if (([keyCopy isEqualToString:@"STOP_SHARING_FAILED"] & 1) == 0)
       {
         [DSErrorDescriptor customMessageForError:v27 fromSources:self descriptorKey:?];
       }
@@ -440,7 +440,7 @@ uint64_t __41__DSErrorDescriptor_errorMessageForType___block_invoke(uint64_t a1,
       }
 
       v22 = v23;
-      v24 = [(DSErrorDescriptor *)self multipleDSSourceErrorMessageWithType:v11 withCode:v23];
+      v24 = [(DSErrorDescriptor *)self multipleDSSourceErrorMessageWithType:keyCopy withCode:v23];
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:v24, v21];
     }
 
@@ -448,14 +448,14 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (![v10 count])
+  if (![sourcesCopy count])
   {
     v13 = 0;
     goto LABEL_23;
   }
 
-  v12 = [v10 firstObject];
-  v13 = [(DSErrorDescriptor *)self customMessageForError:v9 fromSource:v12 descriptorKey:v11];
+  array = [sourcesCopy firstObject];
+  v13 = [(DSErrorDescriptor *)self customMessageForError:errorCopy fromSource:array descriptorKey:keyCopy];
 LABEL_22:
 
 LABEL_23:
@@ -464,46 +464,46 @@ LABEL_23:
   return v13;
 }
 
-- (id)customMessageForError:(id)a3 fromSource:(id)a4 descriptorKey:(id)a5
+- (id)customMessageForError:(id)error fromSource:(id)source descriptorKey:(id)key
 {
-  v9 = a3;
-  v10 = a5;
+  errorCopy = error;
+  keyCopy = key;
   v11 = MEMORY[0x277D054C0];
-  v12 = a4;
-  v13 = [v11 sourceDescriptorForSource:v12];
-  v14 = [v13 localizedAppName];
+  sourceCopy = source;
+  v13 = [v11 sourceDescriptorForSource:sourceCopy];
+  localizedAppName = [v13 localizedAppName];
 
-  LODWORD(v13) = [v12 isEqualToString:*MEMORY[0x277D05460]];
-  if (!v13 || ![(DSErrorDescriptor *)self isHomeStopSharingPINFailed:v9])
+  LODWORD(v13) = [sourceCopy isEqualToString:*MEMORY[0x277D05460]];
+  if (!v13 || ![(DSErrorDescriptor *)self isHomeStopSharingPINFailed:errorCopy])
   {
-    if ([(DSErrorDescriptor *)self isStopSharingRestrictionsEnabled:v9])
+    if ([(DSErrorDescriptor *)self isStopSharingRestrictionsEnabled:errorCopy])
     {
-      if (([v10 isEqualToString:@"STOP_SHARING_FAILED"] & 1) == 0)
+      if (([keyCopy isEqualToString:@"STOP_SHARING_FAILED"] & 1) == 0)
       {
         [DSErrorDescriptor customMessageForError:a2 fromSource:self descriptorKey:?];
       }
 
       v17 = DSUILocStringForKey(@"STOP_SHARING_SOURCE_FAILED_RESTRICTIONS_SINGLE_APP");
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:v17, v14];
+      v16 = [MEMORY[0x277CCACA8] stringWithFormat:v17, localizedAppName];
     }
 
     else
     {
-      if (!-[DSErrorDescriptor isDSSourceError:](self, "isDSSourceError:", v9) || (-[DSErrorDescriptor descriptorKeyForDSSourceErrorCode:](self, "descriptorKeyForDSSourceErrorCode:", [v9 code]), (v18 = objc_claimAutoreleasedReturnValue()) == 0))
+      if (!-[DSErrorDescriptor isDSSourceError:](self, "isDSSourceError:", errorCopy) || (-[DSErrorDescriptor descriptorKeyForDSSourceErrorCode:](self, "descriptorKeyForDSSourceErrorCode:", [errorCopy code]), (v18 = objc_claimAutoreleasedReturnValue()) == 0))
       {
         v16 = 0;
         goto LABEL_15;
       }
 
       v17 = v18;
-      v19 = [(DSErrorDescriptor *)self singleDSSourceErrorMessageWithType:v10 withCode:v18];
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:v19, v14];
+      v19 = [(DSErrorDescriptor *)self singleDSSourceErrorMessageWithType:keyCopy withCode:v18];
+      v16 = [MEMORY[0x277CCACA8] stringWithFormat:v19, localizedAppName];
     }
 
     goto LABEL_15;
   }
 
-  if (([v10 isEqualToString:@"STOP_SHARING_FAILED"] & 1) == 0)
+  if (([keyCopy isEqualToString:@"STOP_SHARING_FAILED"] & 1) == 0)
   {
     [DSErrorDescriptor customMessageForError:a2 fromSource:self descriptorKey:?];
   }
@@ -517,13 +517,13 @@ LABEL_15:
   return v16;
 }
 
-- (id)namelessTitleForError:(id)a3
+- (id)namelessTitleForError:(id)error
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v10[0] = a3;
+  v10[0] = error;
   v10[1] = @"TITLE";
   v3 = MEMORY[0x277CBEA60];
-  v4 = a3;
+  errorCopy = error;
   v5 = [v3 arrayWithObjects:v10 count:2];
 
   v6 = [v5 componentsJoinedByString:@"_"];
@@ -535,17 +535,17 @@ LABEL_15:
   return v7;
 }
 
-- (id)singleNameTitleFormatForError:(id)a3
+- (id)singleNameTitleFormatForError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  errorCopy = error;
   v11 = @"TITLE";
   v12 = @"WITH_APP_NAME";
   v3 = MEMORY[0x277CBEA60];
-  v4 = a3;
-  v5 = [v3 arrayWithObjects:&v10 count:3];
+  errorCopy2 = error;
+  v5 = [v3 arrayWithObjects:&errorCopy count:3];
 
-  v6 = [v5 componentsJoinedByString:{@"_", v10, v11, v12, v13}];
+  v6 = [v5 componentsJoinedByString:{@"_", errorCopy, v11, v12, v13}];
 
   v7 = DSUILocStringForKey(v6);
 
@@ -554,13 +554,13 @@ LABEL_15:
   return v7;
 }
 
-- (id)singleNameMessageFormatForError:(id)a3
+- (id)singleNameMessageFormatForError:(id)error
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v10[0] = a3;
+  v10[0] = error;
   v10[1] = @"WITH_APP_NAME";
   v3 = MEMORY[0x277CBEA60];
-  v4 = a3;
+  errorCopy = error;
   v5 = [v3 arrayWithObjects:v10 count:2];
 
   v6 = [v5 componentsJoinedByString:@"_"];
@@ -572,13 +572,13 @@ LABEL_15:
   return v7;
 }
 
-- (id)multipleNameMessageFormatForError:(id)a3
+- (id)multipleNameMessageFormatForError:(id)error
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v10[0] = a3;
+  v10[0] = error;
   v10[1] = @"WITH_MULTIPLE_APPS";
   v3 = MEMORY[0x277CBEA60];
-  v4 = a3;
+  errorCopy = error;
   v5 = [v3 arrayWithObjects:v10 count:2];
 
   v6 = [v5 componentsJoinedByString:@"_"];
@@ -590,18 +590,18 @@ LABEL_15:
   return v7;
 }
 
-- (id)singleDSSourceErrorMessageWithType:(id)a3 withCode:(id)a4
+- (id)singleDSSourceErrorMessageWithType:(id)type withCode:(id)code
 {
   v16 = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  typeCopy = type;
   v14 = @"WITH_APP_NAME";
-  v15 = a4;
+  codeCopy = code;
   v5 = MEMORY[0x277CBEA60];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 arrayWithObjects:&v13 count:3];
+  codeCopy2 = code;
+  typeCopy2 = type;
+  v8 = [v5 arrayWithObjects:&typeCopy count:3];
 
-  v9 = [v8 componentsJoinedByString:{@"_", v13, v14, v15, v16}];
+  v9 = [v8 componentsJoinedByString:{@"_", typeCopy, v14, codeCopy, v16}];
   v10 = DSUILocStringForKey(v9);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -609,18 +609,18 @@ LABEL_15:
   return v10;
 }
 
-- (id)multipleDSSourceErrorMessageWithType:(id)a3 withCode:(id)a4
+- (id)multipleDSSourceErrorMessageWithType:(id)type withCode:(id)code
 {
   v16 = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  typeCopy = type;
   v14 = @"WITH_MULTIPLE_APPS";
-  v15 = a4;
+  codeCopy = code;
   v5 = MEMORY[0x277CBEA60];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 arrayWithObjects:&v13 count:3];
+  codeCopy2 = code;
+  typeCopy2 = type;
+  v8 = [v5 arrayWithObjects:&typeCopy count:3];
 
-  v9 = [v8 componentsJoinedByString:{@"_", v13, v14, v15, v16}];
+  v9 = [v8 componentsJoinedByString:{@"_", typeCopy, v14, codeCopy, v16}];
   v10 = DSUILocStringForKey(v9);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -628,46 +628,46 @@ LABEL_15:
   return v10;
 }
 
-- (id)descriptorKeyForDSSourceErrorCode:(int64_t)a3
+- (id)descriptorKeyForDSSourceErrorCode:(int64_t)code
 {
-  if (a3 > 2)
+  if (code > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_278F75CC0[a3];
+    return off_278F75CC0[code];
   }
 }
 
-- (BOOL)errorOverridesCustomTextFormatting:(id)a3
+- (BOOL)errorOverridesCustomTextFormatting:(id)formatting
 {
-  v3 = [a3 domain];
-  v4 = [v3 isEqualToString:*MEMORY[0x277D05448]];
+  domain = [formatting domain];
+  v4 = [domain isEqualToString:*MEMORY[0x277D05448]];
 
   return v4 ^ 1;
 }
 
-- (BOOL)isHomeStopSharingPINFailed:(id)a3
+- (BOOL)isHomeStopSharingPINFailed:(id)failed
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277D05430]])
+  failedCopy = failed;
+  domain = [failedCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277D05430]])
   {
-    v5 = [v3 underlyingErrors];
-    v6 = [v5 firstObject];
+    underlyingErrors = [failedCopy underlyingErrors];
+    firstObject = [underlyingErrors firstObject];
   }
 
   else
   {
-    v6 = v3;
+    firstObject = failedCopy;
   }
 
-  v7 = [v6 domain];
-  if ([v7 isEqualToString:@"HMDigitalSeparationErrorDomain"])
+  domain2 = [firstObject domain];
+  if ([domain2 isEqualToString:@"HMDigitalSeparationErrorDomain"])
   {
-    v8 = [v6 code] == 1;
+    v8 = [firstObject code] == 1;
   }
 
   else
@@ -678,13 +678,13 @@ LABEL_15:
   return v8;
 }
 
-- (BOOL)isStopSharingRestrictionsEnabled:(id)a3
+- (BOOL)isStopSharingRestrictionsEnabled:(id)enabled
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277D05430]])
+  enabledCopy = enabled;
+  domain = [enabledCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277D05430]])
   {
-    v5 = [v3 code] == 6;
+    v5 = [enabledCopy code] == 6;
   }
 
   else
@@ -695,10 +695,10 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)isDSSourceError:(id)a3
+- (BOOL)isDSSourceError:(id)error
 {
-  v3 = [a3 domain];
-  v4 = [v3 isEqualToString:*MEMORY[0x277D05448]];
+  domain = [error domain];
+  v4 = [domain isEqualToString:*MEMORY[0x277D05448]];
 
   return v4;
 }

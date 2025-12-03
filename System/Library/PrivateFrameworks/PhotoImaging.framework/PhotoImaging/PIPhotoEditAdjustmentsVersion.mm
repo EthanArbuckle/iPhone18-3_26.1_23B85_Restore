@@ -1,12 +1,12 @@
 @interface PIPhotoEditAdjustmentsVersion
-+ (id)versionFromString:(id)a3;
-+ (id)versionWithMajor:(unint64_t)a3 minor:(unint64_t)a4 subMinor:(unint64_t)a5 platform:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAdjustmentVersion:(id)a3;
++ (id)versionFromString:(id)string;
++ (id)versionWithMajor:(unint64_t)major minor:(unint64_t)minor subMinor:(unint64_t)subMinor platform:(id)platform;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAdjustmentVersion:(id)version;
 - (NSString)string;
-- (PIPhotoEditAdjustmentsVersion)initWithMajor:(unint64_t)a3 minor:(unint64_t)a4 subMinor:(unint64_t)a5 platform:(id)a6;
+- (PIPhotoEditAdjustmentsVersion)initWithMajor:(unint64_t)major minor:(unint64_t)minor subMinor:(unint64_t)subMinor platform:(id)platform;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 @end
 
@@ -17,53 +17,53 @@
   v7.receiver = self;
   v7.super_class = PIPhotoEditAdjustmentsVersion;
   v3 = [(PIPhotoEditAdjustmentsVersion *)&v7 description];
-  v4 = [(PIPhotoEditAdjustmentsVersion *)self string];
-  v5 = [v3 stringByAppendingFormat:@" %@", v4];
+  string = [(PIPhotoEditAdjustmentsVersion *)self string];
+  v5 = [v3 stringByAppendingFormat:@" %@", string];
 
   return v5;
 }
 
-- (BOOL)isEqualToAdjustmentVersion:(id)a3
+- (BOOL)isEqualToAdjustmentVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(PIPhotoEditAdjustmentsVersion *)self string];
-  v6 = [v4 string];
+  versionCopy = version;
+  string = [(PIPhotoEditAdjustmentsVersion *)self string];
+  string2 = [versionCopy string];
 
-  LOBYTE(v4) = [v5 caseInsensitiveCompare:v6] == 0;
-  return v4;
+  LOBYTE(versionCopy) = [string caseInsensitiveCompare:string2] == 0;
+  return versionCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PIPhotoEditAdjustmentsVersion *)self isEqualToAdjustmentVersion:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PIPhotoEditAdjustmentsVersion *)self isEqualToAdjustmentVersion:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(PIPhotoEditAdjustmentsVersion *)self string];
-  v3 = 0xAAAC9C5260601 * [v2 hash];
+  string = [(PIPhotoEditAdjustmentsVersion *)self string];
+  v3 = 0xAAAC9C5260601 * [string hash];
 
   return v3;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(PIPhotoEditAdjustmentsVersion *)self asOrderedInteger];
-  v6 = [v4 asOrderedInteger];
+  compareCopy = compare;
+  asOrderedInteger = [(PIPhotoEditAdjustmentsVersion *)self asOrderedInteger];
+  asOrderedInteger2 = [compareCopy asOrderedInteger];
 
-  if (v5 < v6)
+  if (asOrderedInteger < asOrderedInteger2)
   {
     return -1;
   }
 
   else
   {
-    return v5 != v6;
+    return asOrderedInteger != asOrderedInteger2;
   }
 }
 
@@ -72,12 +72,12 @@
   subMinorVersion = self->_subMinorVersion;
   if (subMinorVersion)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@".%lu", subMinorVersion];
+    subMinorVersion = [MEMORY[0x1E696AEC0] stringWithFormat:@".%lu", subMinorVersion];
   }
 
   else
   {
-    v4 = &stru_1F46EAF88;
+    subMinorVersion = &stru_1F46EAF88;
   }
 
   if (self->_platform)
@@ -90,24 +90,24 @@
     v5 = &stru_1F46EAF88;
   }
 
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu.%lu%@%@", self->_majorVersion, self->_minorVersion, v4, v5];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu.%lu%@%@", self->_majorVersion, self->_minorVersion, subMinorVersion, v5];
 
   return v6;
 }
 
-- (PIPhotoEditAdjustmentsVersion)initWithMajor:(unint64_t)a3 minor:(unint64_t)a4 subMinor:(unint64_t)a5 platform:(id)a6
+- (PIPhotoEditAdjustmentsVersion)initWithMajor:(unint64_t)major minor:(unint64_t)minor subMinor:(unint64_t)subMinor platform:(id)platform
 {
-  v10 = a6;
+  platformCopy = platform;
   v16.receiver = self;
   v16.super_class = PIPhotoEditAdjustmentsVersion;
   v11 = [(PIPhotoEditAdjustmentsVersion *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_majorVersion = a3;
-    v11->_minorVersion = a4;
-    v11->_subMinorVersion = a5;
-    v13 = [v10 copy];
+    v11->_majorVersion = major;
+    v11->_minorVersion = minor;
+    v11->_subMinorVersion = subMinor;
+    v13 = [platformCopy copy];
     platform = v12->_platform;
     v12->_platform = v13;
   }
@@ -115,18 +115,18 @@
   return v12;
 }
 
-+ (id)versionFromString:(id)a3
++ (id)versionFromString:(id)string
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (!stringCopy)
   {
     v22 = 0;
     goto LABEL_41;
   }
 
-  v5 = [v3 componentsSeparatedByString:@"."];
+  v5 = [stringCopy componentsSeparatedByString:@"."];
   if (![v5 count])
   {
     v6 = 0;
@@ -158,15 +158,15 @@ LABEL_35:
   do
   {
     v12 = [v5 objectAtIndexedSubscript:v7];
-    v13 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-    v14 = [v13 invertedSet];
+    decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+    invertedSet = [decimalDigitCharacterSet invertedSet];
 
-    if ([v12 length] && objc_msgSend(v12, "rangeOfCharacterFromSet:", v14) == 0x7FFFFFFFFFFFFFFFLL)
+    if ([v12 length] && objc_msgSend(v12, "rangeOfCharacterFromSet:", invertedSet) == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v15 = [v12 intValue];
+      intValue = [v12 intValue];
       if (v7 == 1)
       {
-        v16 = v15;
+        v16 = intValue;
       }
 
       else
@@ -176,7 +176,7 @@ LABEL_35:
 
       if (v7 == 1)
       {
-        v17 = (v15 >= 0) & v9;
+        v17 = (intValue >= 0) & v9;
       }
 
       else
@@ -186,7 +186,7 @@ LABEL_35:
 
       if (v7 == 2)
       {
-        v18 = v15;
+        v18 = intValue;
       }
 
       else
@@ -197,7 +197,7 @@ LABEL_35:
       if (v7 == 2)
       {
         v16 = v10;
-        v17 = (v15 >= 0) & v9;
+        v17 = (intValue >= 0) & v9;
       }
 
       if (v7)
@@ -209,8 +209,8 @@ LABEL_35:
 
       else
       {
-        v8 = v15;
-        v9 &= v15 >= 0;
+        v8 = intValue;
+        v9 &= intValue >= 0;
       }
     }
 
@@ -256,10 +256,10 @@ LABEL_41:
   return v22;
 }
 
-+ (id)versionWithMajor:(unint64_t)a3 minor:(unint64_t)a4 subMinor:(unint64_t)a5 platform:(id)a6
++ (id)versionWithMajor:(unint64_t)major minor:(unint64_t)minor subMinor:(unint64_t)subMinor platform:(id)platform
 {
-  v10 = a6;
-  v11 = [[a1 alloc] initWithMajor:a3 minor:a4 subMinor:a5 platform:v10];
+  platformCopy = platform;
+  v11 = [[self alloc] initWithMajor:major minor:minor subMinor:subMinor platform:platformCopy];
 
   return v11;
 }

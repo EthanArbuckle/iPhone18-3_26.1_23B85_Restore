@@ -1,31 +1,31 @@
 @interface PKProtobufPaymentApplication
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAuxiliary:(BOOL)a3;
-- (void)setHasAuxiliaryPaymentType:(BOOL)a3;
-- (void)setHasInAppPINRequired:(BOOL)a3;
-- (void)setHasInAppPriority:(BOOL)a3;
-- (void)setHasPaymentNetworkIdentifier:(BOOL)a3;
-- (void)setHasPaymentType:(BOOL)a3;
-- (void)setHasState:(BOOL)a3;
-- (void)setHasSupportsContactlessPayment:(BOOL)a3;
-- (void)setHasSupportsInAppPayment:(BOOL)a3;
-- (void)setHasSupportsInstantFundsIn:(BOOL)a3;
-- (void)setHasSupportsMerchantTokens:(BOOL)a3;
-- (void)setHasSupportsMultiTokensV2:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAuxiliary:(BOOL)auxiliary;
+- (void)setHasAuxiliaryPaymentType:(BOOL)type;
+- (void)setHasInAppPINRequired:(BOOL)required;
+- (void)setHasInAppPriority:(BOOL)priority;
+- (void)setHasPaymentNetworkIdentifier:(BOOL)identifier;
+- (void)setHasPaymentType:(BOOL)type;
+- (void)setHasState:(BOOL)state;
+- (void)setHasSupportsContactlessPayment:(BOOL)payment;
+- (void)setHasSupportsInAppPayment:(BOOL)payment;
+- (void)setHasSupportsInstantFundsIn:(BOOL)in;
+- (void)setHasSupportsMerchantTokens:(BOOL)tokens;
+- (void)setHasSupportsMultiTokensV2:(BOOL)v2;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufPaymentApplication
 
-- (void)setHasState:(BOOL)a3
+- (void)setHasState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 32;
   }
@@ -38,9 +38,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasSupportsContactlessPayment:(BOOL)a3
+- (void)setHasSupportsContactlessPayment:(BOOL)payment
 {
-  if (a3)
+  if (payment)
   {
     v3 = 256;
   }
@@ -53,9 +53,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasSupportsInAppPayment:(BOOL)a3
+- (void)setHasSupportsInAppPayment:(BOOL)payment
 {
-  if (a3)
+  if (payment)
   {
     v3 = 512;
   }
@@ -68,9 +68,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasPaymentNetworkIdentifier:(BOOL)a3
+- (void)setHasPaymentNetworkIdentifier:(BOOL)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = 8;
   }
@@ -83,9 +83,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasInAppPINRequired:(BOOL)a3
+- (void)setHasInAppPINRequired:(BOOL)required
 {
-  if (a3)
+  if (required)
   {
     v3 = 128;
   }
@@ -98,9 +98,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasPaymentType:(BOOL)a3
+- (void)setHasPaymentType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -113,9 +113,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasAuxiliary:(BOOL)a3
+- (void)setHasAuxiliary:(BOOL)auxiliary
 {
-  if (a3)
+  if (auxiliary)
   {
     v3 = 64;
   }
@@ -128,9 +128,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasInAppPriority:(BOOL)a3
+- (void)setHasInAppPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 2;
   }
@@ -143,9 +143,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasAuxiliaryPaymentType:(BOOL)a3
+- (void)setHasAuxiliaryPaymentType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -158,9 +158,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasSupportsMerchantTokens:(BOOL)a3
+- (void)setHasSupportsMerchantTokens:(BOOL)tokens
 {
-  if (a3)
+  if (tokens)
   {
     v3 = 2048;
   }
@@ -173,9 +173,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasSupportsMultiTokensV2:(BOOL)a3
+- (void)setHasSupportsMultiTokensV2:(BOOL)v2
 {
-  if (a3)
+  if (v2)
   {
     v3 = 4096;
   }
@@ -188,9 +188,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasSupportsInstantFundsIn:(BOOL)a3
+- (void)setHasSupportsInstantFundsIn:(BOOL)in
 {
-  if (a3)
+  if (in)
   {
     v3 = 1024;
   }
@@ -209,20 +209,20 @@
   v8.receiver = self;
   v8.super_class = PKProtobufPaymentApplication;
   v4 = [(PKProtobufPaymentApplication *)&v8 description];
-  v5 = [(PKProtobufPaymentApplication *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufPaymentApplication *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   dpanIdentifier = self->_dpanIdentifier;
   if (dpanIdentifier)
   {
-    [v3 setObject:dpanIdentifier forKey:@"dpanIdentifier"];
+    [dictionary setObject:dpanIdentifier forKey:@"dpanIdentifier"];
   }
 
   dpanSuffix = self->_dpanSuffix;
@@ -402,15 +402,15 @@ LABEL_31:
   customPrecisionInAppPINRequiredAmount = self->_customPrecisionInAppPINRequiredAmount;
   if (customPrecisionInAppPINRequiredAmount)
   {
-    v23 = [(PKProtobufCustomPrecisionAmount *)customPrecisionInAppPINRequiredAmount dictionaryRepresentation];
-    [v4 setObject:v23 forKey:@"customPrecisionInAppPINRequiredAmount"];
+    dictionaryRepresentation = [(PKProtobufCustomPrecisionAmount *)customPrecisionInAppPINRequiredAmount dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"customPrecisionInAppPINRequiredAmount"];
   }
 
   balanceInAppPINRequiredAmount = self->_balanceInAppPINRequiredAmount;
   if (balanceInAppPINRequiredAmount)
   {
-    v25 = [(PKProtobufNSDecimalNumber *)balanceInAppPINRequiredAmount dictionaryRepresentation];
-    [v4 setObject:v25 forKey:@"balanceInAppPINRequiredAmount"];
+    dictionaryRepresentation2 = [(PKProtobufNSDecimalNumber *)balanceInAppPINRequiredAmount dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"balanceInAppPINRequiredAmount"];
   }
 
   v26 = self->_has;
@@ -431,57 +431,57 @@ LABEL_31:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_dpanIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_dpanSuffix)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_sanitizedDpan)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_applicationIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_secureElementIdenfitier)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_suspendedReason)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 0x100) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
     has = self->_has;
     if ((has & 0x200) == 0)
     {
@@ -501,7 +501,7 @@ LABEL_17:
   }
 
   PBDataWriterWriteBOOLField();
-  v4 = v7;
+  toCopy = v7;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -516,7 +516,7 @@ LABEL_18:
 
 LABEL_50:
   PBDataWriterWriteUint32Field();
-  v4 = v7;
+  toCopy = v7;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -531,38 +531,38 @@ LABEL_19:
 
 LABEL_51:
   PBDataWriterWriteBOOLField();
-  v4 = v7;
+  toCopy = v7;
   if (*&self->_has)
   {
 LABEL_20:
     PBDataWriterWriteSint64Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
 LABEL_21:
   if (self->_inAppPINRequiredCurrency)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_displayName)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x40) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
     v6 = self->_has;
     if ((v6 & 2) == 0)
     {
@@ -582,109 +582,109 @@ LABEL_29:
   }
 
   PBDataWriterWriteSint64Field();
-  v4 = v7;
+  toCopy = v7;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_30:
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
 LABEL_31:
   if (self->_apanIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_apanSuffix)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_customPrecisionInAppPINRequiredAmount)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 0x1000) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_balanceInAppPINRequiredAmount)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_dpanIdentifier)
   {
-    [v4 setDpanIdentifier:?];
-    v4 = v7;
+    [toCopy setDpanIdentifier:?];
+    toCopy = v7;
   }
 
   if (self->_dpanSuffix)
   {
     [v7 setDpanSuffix:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_sanitizedDpan)
   {
     [v7 setSanitizedDpan:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_applicationIdentifier)
   {
     [v7 setApplicationIdentifier:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_secureElementIdenfitier)
   {
     [v7 setSecureElementIdenfitier:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    *(v4 + 32) = self->_state;
-    *(v4 + 76) |= 0x20u;
+    *(toCopy + 32) = self->_state;
+    *(toCopy + 76) |= 0x20u;
   }
 
   if (self->_suspendedReason)
   {
     [v7 setSuspendedReason:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 0x100) != 0)
   {
-    *(v4 + 146) = self->_supportsContactlessPayment;
-    *(v4 + 76) |= 0x100u;
+    *(toCopy + 146) = self->_supportsContactlessPayment;
+    *(toCopy + 76) |= 0x100u;
     has = self->_has;
     if ((has & 0x200) == 0)
     {
@@ -703,8 +703,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  *(v4 + 147) = self->_supportsInAppPayment;
-  *(v4 + 76) |= 0x200u;
+  *(toCopy + 147) = self->_supportsInAppPayment;
+  *(toCopy + 76) |= 0x200u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -718,8 +718,8 @@ LABEL_18:
   }
 
 LABEL_50:
-  *(v4 + 26) = self->_paymentNetworkIdentifier;
-  *(v4 + 76) |= 8u;
+  *(toCopy + 26) = self->_paymentNetworkIdentifier;
+  *(toCopy + 76) |= 8u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -733,39 +733,39 @@ LABEL_19:
   }
 
 LABEL_51:
-  *(v4 + 145) = self->_inAppPINRequired;
-  *(v4 + 76) |= 0x80u;
+  *(toCopy + 145) = self->_inAppPINRequired;
+  *(toCopy + 76) |= 0x80u;
   if (*&self->_has)
   {
 LABEL_20:
-    *(v4 + 1) = self->_inAppPINRequiredAmount;
-    *(v4 + 76) |= 1u;
+    *(toCopy + 1) = self->_inAppPINRequiredAmount;
+    *(toCopy + 76) |= 1u;
   }
 
 LABEL_21:
   if (self->_inAppPINRequiredCurrency)
   {
     [v7 setInAppPINRequiredCurrency:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    *(v4 + 27) = self->_paymentType;
-    *(v4 + 76) |= 0x10u;
+    *(toCopy + 27) = self->_paymentType;
+    *(toCopy + 76) |= 0x10u;
   }
 
   if (self->_displayName)
   {
     [v7 setDisplayName:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x40) != 0)
   {
-    *(v4 + 144) = self->_auxiliary;
-    *(v4 + 76) |= 0x40u;
+    *(toCopy + 144) = self->_auxiliary;
+    *(toCopy + 76) |= 0x40u;
     v6 = self->_has;
     if ((v6 & 2) == 0)
     {
@@ -784,79 +784,79 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  *(v4 + 2) = self->_inAppPriority;
-  *(v4 + 76) |= 2u;
+  *(toCopy + 2) = self->_inAppPriority;
+  *(toCopy + 76) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_30:
-    *(v4 + 12) = self->_auxiliaryPaymentType;
-    *(v4 + 76) |= 4u;
+    *(toCopy + 12) = self->_auxiliaryPaymentType;
+    *(toCopy + 76) |= 4u;
   }
 
 LABEL_31:
   if (self->_apanIdentifier)
   {
     [v7 setApanIdentifier:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_apanSuffix)
   {
     [v7 setApanSuffix:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    *(v4 + 149) = self->_supportsMerchantTokens;
-    *(v4 + 76) |= 0x800u;
+    *(toCopy + 149) = self->_supportsMerchantTokens;
+    *(toCopy + 76) |= 0x800u;
   }
 
   if (self->_customPrecisionInAppPINRequiredAmount)
   {
     [v7 setCustomPrecisionInAppPINRequiredAmount:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    *(v4 + 150) = self->_supportsMultiTokensV2;
-    *(v4 + 76) |= 0x1000u;
+    *(toCopy + 150) = self->_supportsMultiTokensV2;
+    *(toCopy + 76) |= 0x1000u;
   }
 
   if (self->_balanceInAppPINRequiredAmount)
   {
     [v7 setBalanceInAppPINRequiredAmount:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    *(v4 + 148) = self->_supportsInstantFundsIn;
-    *(v4 + 76) |= 0x400u;
+    *(toCopy + 148) = self->_supportsInstantFundsIn;
+    *(toCopy + 76) |= 0x400u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_dpanIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_dpanIdentifier copyWithZone:zone];
   v7 = *(v5 + 80);
   *(v5 + 80) = v6;
 
-  v8 = [(NSString *)self->_dpanSuffix copyWithZone:a3];
+  v8 = [(NSString *)self->_dpanSuffix copyWithZone:zone];
   v9 = *(v5 + 88);
   *(v5 + 88) = v8;
 
-  v10 = [(NSString *)self->_sanitizedDpan copyWithZone:a3];
+  v10 = [(NSString *)self->_sanitizedDpan copyWithZone:zone];
   v11 = *(v5 + 112);
   *(v5 + 112) = v10;
 
-  v12 = [(NSString *)self->_applicationIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_applicationIdentifier copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
-  v14 = [(NSString *)self->_secureElementIdenfitier copyWithZone:a3];
+  v14 = [(NSString *)self->_secureElementIdenfitier copyWithZone:zone];
   v15 = *(v5 + 120);
   *(v5 + 120) = v14;
 
@@ -866,7 +866,7 @@ LABEL_31:
     *(v5 + 152) |= 0x20u;
   }
 
-  v16 = [(NSString *)self->_suspendedReason copyWithZone:a3];
+  v16 = [(NSString *)self->_suspendedReason copyWithZone:zone];
   v17 = *(v5 + 136);
   *(v5 + 136) = v16;
 
@@ -933,7 +933,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  v19 = [(NSString *)self->_inAppPINRequiredCurrency copyWithZone:a3];
+  v19 = [(NSString *)self->_inAppPINRequiredCurrency copyWithZone:zone];
   v20 = *(v5 + 96);
   *(v5 + 96) = v19;
 
@@ -943,7 +943,7 @@ LABEL_9:
     *(v5 + 152) |= 0x10u;
   }
 
-  v21 = [(NSString *)self->_displayName copyWithZone:a3];
+  v21 = [(NSString *)self->_displayName copyWithZone:zone];
   v22 = *(v5 + 72);
   *(v5 + 72) = v21;
 
@@ -980,11 +980,11 @@ LABEL_14:
   }
 
 LABEL_15:
-  v24 = [(NSString *)self->_apanIdentifier copyWithZone:a3];
+  v24 = [(NSString *)self->_apanIdentifier copyWithZone:zone];
   v25 = *(v5 + 24);
   *(v5 + 24) = v24;
 
-  v26 = [(NSString *)self->_apanSuffix copyWithZone:a3];
+  v26 = [(NSString *)self->_apanSuffix copyWithZone:zone];
   v27 = *(v5 + 32);
   *(v5 + 32) = v26;
 
@@ -994,7 +994,7 @@ LABEL_15:
     *(v5 + 152) |= 0x800u;
   }
 
-  v28 = [(PKProtobufCustomPrecisionAmount *)self->_customPrecisionInAppPINRequiredAmount copyWithZone:a3];
+  v28 = [(PKProtobufCustomPrecisionAmount *)self->_customPrecisionInAppPINRequiredAmount copyWithZone:zone];
   v29 = *(v5 + 64);
   *(v5 + 64) = v28;
 
@@ -1004,7 +1004,7 @@ LABEL_15:
     *(v5 + 152) |= 0x1000u;
   }
 
-  v30 = [(PKProtobufNSDecimalNumber *)self->_balanceInAppPINRequiredAmount copyWithZone:a3];
+  v30 = [(PKProtobufNSDecimalNumber *)self->_balanceInAppPINRequiredAmount copyWithZone:zone];
   v31 = *(v5 + 56);
   *(v5 + 56) = v30;
 
@@ -1017,16 +1017,16 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_116;
   }
 
   dpanIdentifier = self->_dpanIdentifier;
-  if (dpanIdentifier | *(v4 + 10))
+  if (dpanIdentifier | *(equalCopy + 10))
   {
     if (![(NSString *)dpanIdentifier isEqual:?])
     {
@@ -1035,7 +1035,7 @@ LABEL_15:
   }
 
   dpanSuffix = self->_dpanSuffix;
-  if (dpanSuffix | *(v4 + 11))
+  if (dpanSuffix | *(equalCopy + 11))
   {
     if (![(NSString *)dpanSuffix isEqual:?])
     {
@@ -1044,7 +1044,7 @@ LABEL_15:
   }
 
   sanitizedDpan = self->_sanitizedDpan;
-  if (sanitizedDpan | *(v4 + 14))
+  if (sanitizedDpan | *(equalCopy + 14))
   {
     if (![(NSString *)sanitizedDpan isEqual:?])
     {
@@ -1053,7 +1053,7 @@ LABEL_15:
   }
 
   applicationIdentifier = self->_applicationIdentifier;
-  if (applicationIdentifier | *(v4 + 5))
+  if (applicationIdentifier | *(equalCopy + 5))
   {
     if (![(NSString *)applicationIdentifier isEqual:?])
     {
@@ -1062,7 +1062,7 @@ LABEL_15:
   }
 
   secureElementIdenfitier = self->_secureElementIdenfitier;
-  if (secureElementIdenfitier | *(v4 + 15))
+  if (secureElementIdenfitier | *(equalCopy + 15))
   {
     if (![(NSString *)secureElementIdenfitier isEqual:?])
     {
@@ -1071,10 +1071,10 @@ LABEL_15:
   }
 
   has = self->_has;
-  v11 = *(v4 + 76);
+  v11 = *(equalCopy + 76);
   if ((has & 0x20) != 0)
   {
-    if ((v11 & 0x20) == 0 || self->_state != *(v4 + 32))
+    if ((v11 & 0x20) == 0 || self->_state != *(equalCopy + 32))
     {
       goto LABEL_116;
     }
@@ -1086,7 +1086,7 @@ LABEL_15:
   }
 
   suspendedReason = self->_suspendedReason;
-  if (suspendedReason | *(v4 + 17))
+  if (suspendedReason | *(equalCopy + 17))
   {
     if (![(NSString *)suspendedReason isEqual:?])
     {
@@ -1094,7 +1094,7 @@ LABEL_15:
     }
 
     has = self->_has;
-    v11 = *(v4 + 76);
+    v11 = *(equalCopy + 76);
   }
 
   if ((has & 0x100) != 0)
@@ -1106,13 +1106,13 @@ LABEL_15:
 
     if (self->_supportsContactlessPayment)
     {
-      if ((*(v4 + 146) & 1) == 0)
+      if ((*(equalCopy + 146) & 1) == 0)
       {
         goto LABEL_116;
       }
     }
 
-    else if (*(v4 + 146))
+    else if (*(equalCopy + 146))
     {
       goto LABEL_116;
     }
@@ -1132,13 +1132,13 @@ LABEL_15:
 
     if (self->_supportsInAppPayment)
     {
-      if ((*(v4 + 147) & 1) == 0)
+      if ((*(equalCopy + 147) & 1) == 0)
       {
         goto LABEL_116;
       }
     }
 
-    else if (*(v4 + 147))
+    else if (*(equalCopy + 147))
     {
       goto LABEL_116;
     }
@@ -1151,7 +1151,7 @@ LABEL_15:
 
   if ((has & 8) != 0)
   {
-    if ((v11 & 8) == 0 || self->_paymentNetworkIdentifier != *(v4 + 26))
+    if ((v11 & 8) == 0 || self->_paymentNetworkIdentifier != *(equalCopy + 26))
     {
       goto LABEL_116;
     }
@@ -1171,13 +1171,13 @@ LABEL_15:
 
     if (self->_inAppPINRequired)
     {
-      if ((*(v4 + 145) & 1) == 0)
+      if ((*(equalCopy + 145) & 1) == 0)
       {
         goto LABEL_116;
       }
     }
 
-    else if (*(v4 + 145))
+    else if (*(equalCopy + 145))
     {
       goto LABEL_116;
     }
@@ -1190,7 +1190,7 @@ LABEL_15:
 
   if (has)
   {
-    if ((v11 & 1) == 0 || self->_inAppPINRequiredAmount != *(v4 + 1))
+    if ((v11 & 1) == 0 || self->_inAppPINRequiredAmount != *(equalCopy + 1))
     {
       goto LABEL_116;
     }
@@ -1202,7 +1202,7 @@ LABEL_15:
   }
 
   inAppPINRequiredCurrency = self->_inAppPINRequiredCurrency;
-  if (inAppPINRequiredCurrency | *(v4 + 12))
+  if (inAppPINRequiredCurrency | *(equalCopy + 12))
   {
     if (![(NSString *)inAppPINRequiredCurrency isEqual:?])
     {
@@ -1210,12 +1210,12 @@ LABEL_15:
     }
 
     has = self->_has;
-    v11 = *(v4 + 76);
+    v11 = *(equalCopy + 76);
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((v11 & 0x10) == 0 || self->_paymentType != *(v4 + 27))
+    if ((v11 & 0x10) == 0 || self->_paymentType != *(equalCopy + 27))
     {
       goto LABEL_116;
     }
@@ -1227,7 +1227,7 @@ LABEL_15:
   }
 
   displayName = self->_displayName;
-  if (displayName | *(v4 + 9))
+  if (displayName | *(equalCopy + 9))
   {
     if (![(NSString *)displayName isEqual:?])
     {
@@ -1235,7 +1235,7 @@ LABEL_15:
     }
 
     has = self->_has;
-    v11 = *(v4 + 76);
+    v11 = *(equalCopy + 76);
   }
 
   if ((has & 0x40) != 0)
@@ -1247,13 +1247,13 @@ LABEL_15:
 
     if (self->_auxiliary)
     {
-      if ((*(v4 + 144) & 1) == 0)
+      if ((*(equalCopy + 144) & 1) == 0)
       {
         goto LABEL_116;
       }
     }
 
-    else if (*(v4 + 144))
+    else if (*(equalCopy + 144))
     {
       goto LABEL_116;
     }
@@ -1266,7 +1266,7 @@ LABEL_15:
 
   if ((has & 2) != 0)
   {
-    if ((v11 & 2) == 0 || self->_inAppPriority != *(v4 + 2))
+    if ((v11 & 2) == 0 || self->_inAppPriority != *(equalCopy + 2))
     {
       goto LABEL_116;
     }
@@ -1279,7 +1279,7 @@ LABEL_15:
 
   if ((has & 4) != 0)
   {
-    if ((v11 & 4) == 0 || self->_auxiliaryPaymentType != *(v4 + 12))
+    if ((v11 & 4) == 0 || self->_auxiliaryPaymentType != *(equalCopy + 12))
     {
       goto LABEL_116;
     }
@@ -1291,13 +1291,13 @@ LABEL_15:
   }
 
   apanIdentifier = self->_apanIdentifier;
-  if (apanIdentifier | *(v4 + 3) && ![(NSString *)apanIdentifier isEqual:?])
+  if (apanIdentifier | *(equalCopy + 3) && ![(NSString *)apanIdentifier isEqual:?])
   {
     goto LABEL_116;
   }
 
   apanSuffix = self->_apanSuffix;
-  if (apanSuffix | *(v4 + 4))
+  if (apanSuffix | *(equalCopy + 4))
   {
     if (![(NSString *)apanSuffix isEqual:?])
     {
@@ -1306,35 +1306,35 @@ LABEL_15:
   }
 
   v17 = self->_has;
-  v18 = *(v4 + 76);
+  v18 = *(equalCopy + 76);
   if ((v17 & 0x800) != 0)
   {
-    if ((*(v4 + 76) & 0x800) == 0)
+    if ((*(equalCopy + 76) & 0x800) == 0)
     {
       goto LABEL_116;
     }
 
     if (self->_supportsMerchantTokens)
     {
-      if ((*(v4 + 149) & 1) == 0)
+      if ((*(equalCopy + 149) & 1) == 0)
       {
         goto LABEL_116;
       }
     }
 
-    else if (*(v4 + 149))
+    else if (*(equalCopy + 149))
     {
       goto LABEL_116;
     }
   }
 
-  else if ((*(v4 + 76) & 0x800) != 0)
+  else if ((*(equalCopy + 76) & 0x800) != 0)
   {
     goto LABEL_116;
   }
 
   customPrecisionInAppPINRequiredAmount = self->_customPrecisionInAppPINRequiredAmount;
-  if (customPrecisionInAppPINRequiredAmount | *(v4 + 8))
+  if (customPrecisionInAppPINRequiredAmount | *(equalCopy + 8))
   {
     if (![(PKProtobufCustomPrecisionAmount *)customPrecisionInAppPINRequiredAmount isEqual:?])
     {
@@ -1342,7 +1342,7 @@ LABEL_15:
     }
 
     v17 = self->_has;
-    v18 = *(v4 + 76);
+    v18 = *(equalCopy + 76);
   }
 
   if ((v17 & 0x1000) != 0)
@@ -1354,13 +1354,13 @@ LABEL_15:
 
     if (self->_supportsMultiTokensV2)
     {
-      if ((*(v4 + 150) & 1) == 0)
+      if ((*(equalCopy + 150) & 1) == 0)
       {
         goto LABEL_116;
       }
     }
 
-    else if (*(v4 + 150))
+    else if (*(equalCopy + 150))
     {
       goto LABEL_116;
     }
@@ -1372,7 +1372,7 @@ LABEL_15:
   }
 
   balanceInAppPINRequiredAmount = self->_balanceInAppPINRequiredAmount;
-  if (balanceInAppPINRequiredAmount | *(v4 + 7))
+  if (balanceInAppPINRequiredAmount | *(equalCopy + 7))
   {
     if (![(PKProtobufNSDecimalNumber *)balanceInAppPINRequiredAmount isEqual:?])
     {
@@ -1380,7 +1380,7 @@ LABEL_15:
     }
 
     v17 = self->_has;
-    v18 = *(v4 + 76);
+    v18 = *(equalCopy + 76);
   }
 
   if ((v17 & 0x400) != 0)
@@ -1389,13 +1389,13 @@ LABEL_15:
     {
       if (self->_supportsInstantFundsIn)
       {
-        if (*(v4 + 148))
+        if (*(equalCopy + 148))
         {
           goto LABEL_118;
         }
       }
 
-      else if (!*(v4 + 148))
+      else if (!*(equalCopy + 148))
       {
 LABEL_118:
         v21 = 1;
@@ -1583,58 +1583,58 @@ LABEL_25:
   return v30 ^ v31 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v11 = v4;
-  if (*(v4 + 10))
+  fromCopy = from;
+  v11 = fromCopy;
+  if (*(fromCopy + 10))
   {
     [(PKProtobufPaymentApplication *)self setDpanIdentifier:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(PKProtobufPaymentApplication *)self setDpanSuffix:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(PKProtobufPaymentApplication *)self setSanitizedDpan:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PKProtobufPaymentApplication *)self setApplicationIdentifier:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 15))
+  if (*(fromCopy + 15))
   {
     [(PKProtobufPaymentApplication *)self setSecureElementIdenfitier:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if ((*(v4 + 76) & 0x20) != 0)
+  if ((*(fromCopy + 76) & 0x20) != 0)
   {
-    self->_state = *(v4 + 32);
+    self->_state = *(fromCopy + 32);
     *&self->_has |= 0x20u;
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(PKProtobufPaymentApplication *)self setSuspendedReason:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  v5 = *(v4 + 76);
+  v5 = *(fromCopy + 76);
   if ((v5 & 0x100) != 0)
   {
-    self->_supportsContactlessPayment = *(v4 + 146);
+    self->_supportsContactlessPayment = *(fromCopy + 146);
     *&self->_has |= 0x100u;
-    v5 = *(v4 + 76);
+    v5 = *(fromCopy + 76);
     if ((v5 & 0x200) == 0)
     {
 LABEL_17:
@@ -1647,14 +1647,14 @@ LABEL_17:
     }
   }
 
-  else if ((*(v4 + 76) & 0x200) == 0)
+  else if ((*(fromCopy + 76) & 0x200) == 0)
   {
     goto LABEL_17;
   }
 
-  self->_supportsInAppPayment = *(v4 + 147);
+  self->_supportsInAppPayment = *(fromCopy + 147);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 76);
+  v5 = *(fromCopy + 76);
   if ((v5 & 8) == 0)
   {
 LABEL_18:
@@ -1667,9 +1667,9 @@ LABEL_18:
   }
 
 LABEL_42:
-  self->_paymentNetworkIdentifier = *(v4 + 26);
+  self->_paymentNetworkIdentifier = *(fromCopy + 26);
   *&self->_has |= 8u;
-  v5 = *(v4 + 76);
+  v5 = *(fromCopy + 76);
   if ((v5 & 0x80) == 0)
   {
 LABEL_19:
@@ -1682,40 +1682,40 @@ LABEL_19:
   }
 
 LABEL_43:
-  self->_inAppPINRequired = *(v4 + 145);
+  self->_inAppPINRequired = *(fromCopy + 145);
   *&self->_has |= 0x80u;
-  if (*(v4 + 76))
+  if (*(fromCopy + 76))
   {
 LABEL_20:
-    self->_inAppPINRequiredAmount = *(v4 + 1);
+    self->_inAppPINRequiredAmount = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_21:
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(PKProtobufPaymentApplication *)self setInAppPINRequiredCurrency:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if ((*(v4 + 76) & 0x10) != 0)
+  if ((*(fromCopy + 76) & 0x10) != 0)
   {
-    self->_paymentType = *(v4 + 27);
+    self->_paymentType = *(fromCopy + 27);
     *&self->_has |= 0x10u;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(PKProtobufPaymentApplication *)self setDisplayName:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  v6 = *(v4 + 76);
+  v6 = *(fromCopy + 76);
   if ((v6 & 0x40) != 0)
   {
-    self->_auxiliary = *(v4 + 144);
+    self->_auxiliary = *(fromCopy + 144);
     *&self->_has |= 0x40u;
-    v6 = *(v4 + 76);
+    v6 = *(fromCopy + 76);
     if ((v6 & 2) == 0)
     {
 LABEL_29:
@@ -1733,36 +1733,36 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  self->_inAppPriority = *(v4 + 2);
+  self->_inAppPriority = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if ((*(v4 + 76) & 4) != 0)
+  if ((*(fromCopy + 76) & 4) != 0)
   {
 LABEL_30:
-    self->_auxiliaryPaymentType = *(v4 + 12);
+    self->_auxiliaryPaymentType = *(fromCopy + 12);
     *&self->_has |= 4u;
   }
 
 LABEL_31:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PKProtobufPaymentApplication *)self setApanIdentifier:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PKProtobufPaymentApplication *)self setApanSuffix:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if ((*(v4 + 76) & 0x800) != 0)
+  if ((*(fromCopy + 76) & 0x800) != 0)
   {
-    self->_supportsMerchantTokens = *(v4 + 149);
+    self->_supportsMerchantTokens = *(fromCopy + 149);
     *&self->_has |= 0x800u;
   }
 
   customPrecisionInAppPINRequiredAmount = self->_customPrecisionInAppPINRequiredAmount;
-  v8 = *(v4 + 8);
+  v8 = *(fromCopy + 8);
   if (customPrecisionInAppPINRequiredAmount)
   {
     if (!v8)
@@ -1783,16 +1783,16 @@ LABEL_31:
     [(PKProtobufPaymentApplication *)self setCustomPrecisionInAppPINRequiredAmount:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_51:
-  if ((*(v4 + 76) & 0x1000) != 0)
+  if ((*(fromCopy + 76) & 0x1000) != 0)
   {
-    self->_supportsMultiTokensV2 = *(v4 + 150);
+    self->_supportsMultiTokensV2 = *(fromCopy + 150);
     *&self->_has |= 0x1000u;
   }
 
   balanceInAppPINRequiredAmount = self->_balanceInAppPINRequiredAmount;
-  v10 = *(v4 + 7);
+  v10 = *(fromCopy + 7);
   if (balanceInAppPINRequiredAmount)
   {
     if (!v10)
@@ -1813,11 +1813,11 @@ LABEL_51:
     [(PKProtobufPaymentApplication *)self setBalanceInAppPINRequiredAmount:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_59:
-  if ((*(v4 + 76) & 0x400) != 0)
+  if ((*(fromCopy + 76) & 0x400) != 0)
   {
-    self->_supportsInstantFundsIn = *(v4 + 148);
+    self->_supportsInstantFundsIn = *(fromCopy + 148);
     *&self->_has |= 0x400u;
   }
 }

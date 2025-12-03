@@ -19,22 +19,22 @@
 
 - (id)_accessibilityScrollStatus
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UIPageControllerScrollViewAccessibility *)self safeValueForKey:@"_pageController"];
   if (location[0])
   {
     v4 = [location[0] safeValueForKey:@"visibleIndex"];
-    v14 = [v4 integerValue];
+    integerValue = [v4 integerValue];
     v5 = [location[0] safeValueForKey:{@"pageCount", MEMORY[0x29EDC9740](v4).n128_f64[0]}];
-    v6 = [v5 integerValue];
+    integerValue2 = [v5 integerValue];
     MEMORY[0x29EDC9740](v5);
-    v13 = v6;
+    v13 = integerValue2;
     v7 = MEMORY[0x29EDBA0F8];
     v10 = accessibilityLocalizedString(@"scroll.page.summary");
     v9 = AXFormatInteger();
     v8 = AXFormatInteger();
-    v17 = [v7 stringWithFormat:v10, v9, v8];
+    _accessibilityScrollStatus = [v7 stringWithFormat:v10, v9, v8];
     MEMORY[0x29EDC9740](v8);
     MEMORY[0x29EDC9740](v9);
     MEMORY[0x29EDC9740](v10);
@@ -42,14 +42,14 @@
 
   else
   {
-    v11.receiver = v16;
+    v11.receiver = selfCopy;
     v11.super_class = UIPageControllerScrollViewAccessibility;
-    v17 = [(UIPageControllerScrollViewAccessibility *)&v11 _accessibilityScrollStatus];
+    _accessibilityScrollStatus = [(UIPageControllerScrollViewAccessibility *)&v11 _accessibilityScrollStatus];
   }
 
   v12 = 1;
   objc_storeStrong(location, 0);
-  v2 = v17;
+  v2 = _accessibilityScrollStatus;
 
   return v2;
 }

@@ -1,11 +1,11 @@
 @interface BWMovieLevelMetadataForProResRaw
 - (BWMovieLevelMetadataForProResRaw)init;
 - (id)description;
-- (id)proResRawAugmentedMovieLevelMetadataWithMovieLevelMetadata:(id)a3;
+- (id)proResRawAugmentedMovieLevelMetadataWithMovieLevelMetadata:(id)metadata;
 - (void)dealloc;
 - (void)releaseRetainedProperties;
 - (void)reset;
-- (void)updateMetadataFromSampleBuffer:(opaqueCMSampleBuffer *)a3 withCameraInfo:(id)a4;
+- (void)updateMetadataFromSampleBuffer:(opaqueCMSampleBuffer *)buffer withCameraInfo:(id)info;
 @end
 
 @implementation BWMovieLevelMetadataForProResRaw
@@ -38,19 +38,19 @@
 
 - (void)releaseRetainedProperties
 {
-  if (a1)
+  if (self)
   {
 
-    a1[2] = 0;
-    a1[3] = 0;
+    self[2] = 0;
+    self[3] = 0;
 
-    a1[4] = 0;
-    a1[5] = 0;
+    self[4] = 0;
+    self[5] = 0;
 
-    a1[7] = 0;
-    a1[6] = 0;
+    self[7] = 0;
+    self[6] = 0;
 
-    a1[12] = 0;
+    self[12] = 0;
   }
 }
 
@@ -61,12 +61,12 @@
   return [v3 stringWithFormat:@"%@: [%p] \nisoSpeedRating: %d \ncameraManufacturer: %@ \ncameraModelName: %@ \ncolorTranslationMatrices: %@ \nwhiteBalanceFactors: %@ \nshutterSpeedAngle: %f \nexposureTime: %f \nwhiteBalanceCCT: %d\n lscGains %@\n cctAndTintColorMatrices: %@\n", NSStringFromClass(v4), self, self->_isoSpeedRating, self->_cameraManufacturer, self->_cameraModelName, self->_colorTranslationMatrices, self->_whiteBalanceFactors, *&self->_shutterSpeedAngle, *&self->_exposureTime, self->_whiteBalanceCCT, self->_lscGains, self->_cctAndTintColorMatrices];
 }
 
-- (id)proResRawAugmentedMovieLevelMetadataWithMovieLevelMetadata:(id)a3
+- (id)proResRawAugmentedMovieLevelMetadataWithMovieLevelMetadata:(id)metadata
 {
-  v3 = a3;
+  metadataCopy = metadata;
   if (self->_isMetadataValid)
   {
-    v5 = FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithISOSpeedRating(a3, self->_isoSpeedRating);
+    v5 = FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithISOSpeedRating(metadata, self->_isoSpeedRating);
     v6 = FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithCameraManufacturer(v5, self->_cameraManufacturer, self->_cameraModelName);
     colorTranslationMatrices = self->_colorTranslationMatrices;
     if (colorTranslationMatrices)
@@ -94,16 +94,16 @@
 
     v11 = FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithExposureTime(v6, self->_exposureTime);
     v12 = FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithWhiteBalanceCCT(v11, self->_whiteBalanceCCT);
-    v3 = v12;
+    metadataCopy = v12;
     cctAndTintColorMatrices = self->_cctAndTintColorMatrices;
     if (cctAndTintColorMatrices)
     {
-      v3 = FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithColorCorrectionTemperatureAndTintColorCorrectionMatrices(v12, cctAndTintColorMatrices);
+      metadataCopy = FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithColorCorrectionTemperatureAndTintColorCorrectionMatrices(v12, cctAndTintColorMatrices);
     }
 
     if (self->_currentFrameRate > 60.0)
     {
-      if (![v3 count])
+      if (![metadataCopy count])
       {
         goto LABEL_27;
       }
@@ -111,15 +111,15 @@
       v14 = 0;
       v15 = *MEMORY[0x1E6971F88];
       v16 = *MEMORY[0x1E6971ED8];
-      while (([objc_msgSend(objc_msgSend(v3 objectAtIndexedSubscript:{v14), "objectForKeyedSubscript:", v15), "isEqual:", v16}] & 1) == 0)
+      while (([objc_msgSend(objc_msgSend(metadataCopy objectAtIndexedSubscript:{v14), "objectForKeyedSubscript:", v15), "isEqual:", v16}] & 1) == 0)
       {
-        if (++v14 >= [v3 count])
+        if (++v14 >= [metadataCopy count])
         {
           goto LABEL_27;
         }
       }
 
-      v17 = [v3 objectAtIndexedSubscript:v14];
+      v17 = [metadataCopy objectAtIndexedSubscript:v14];
       if (v17 && (v18 = [v17 objectForKeyedSubscript:*MEMORY[0x1E6971F90]], v27 = 0u, v28 = 0u, v29 = 0u, v30 = 0u, (v19 = objc_msgSend(v18, "countByEnumeratingWithState:objects:count:", &v27, v26, 16)) != 0))
       {
         v20 = v19;
@@ -155,26 +155,26 @@ LABEL_21:
       else
       {
 LABEL_27:
-        v3 = FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithFullFrameRatePlaybackIntent(v3, 1);
+        metadataCopy = FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithFullFrameRatePlaybackIntent(metadataCopy, 1);
       }
     }
 
     stabilizationInfo = self->_stabilizationInfo;
     if (stabilizationInfo)
     {
-      return FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithStabilizationInfo(v3, stabilizationInfo);
+      return FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithStabilizationInfo(metadataCopy, stabilizationInfo);
     }
   }
 
-  return v3;
+  return metadataCopy;
 }
 
-- (void)updateMetadataFromSampleBuffer:(opaqueCMSampleBuffer *)a3 withCameraInfo:(id)a4
+- (void)updateMetadataFromSampleBuffer:(opaqueCMSampleBuffer *)buffer withCameraInfo:(id)info
 {
   FigNote_AllowInternalDefaultLogs();
   fig_note_initialize_category_with_default_work_cf();
   fig_note_initialize_category_with_default_work_cf();
-  v7 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v7 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   if (!v7)
   {
     return;
@@ -183,11 +183,11 @@ LABEL_27:
   v8 = v7;
   v168 = 0;
   v169 = 0;
-  FigCaptureMetadataGetManufacturerAndMarketingName(a3, 0, &v169, &v168);
+  FigCaptureMetadataGetManufacturerAndMarketingName(buffer, 0, &v169, &v168);
   self->_cameraManufacturer = v169;
   self->_cameraModelName = v168;
   self->_isoSpeedRating = [objc_msgSend(v8 objectForKeyedSubscript:{*off_1E798B3B0), "intValue"}];
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   if (ImageBuffer)
   {
     v10 = ImageBuffer;
@@ -215,12 +215,12 @@ LABEL_27:
 
   [v14 floatValue];
   v17 = v16;
-  v18 = [a4 objectForKeyedSubscript:*off_1E7989E48];
+  v18 = [info objectForKeyedSubscript:*off_1E7989E48];
   v155 = *off_1E7989F30;
-  v19 = [a4 objectForKeyedSubscript:?];
+  v19 = [info objectForKeyedSubscript:?];
   v20 = [v19 count];
   v21 = 0;
-  v156 = self;
+  selfCopy = self;
   if (v17 > 0.0 && v13 > 0.0 && v20 == 2)
   {
     v23 = [v18 objectForKeyedSubscript:*off_1E798AA60];
@@ -264,8 +264,8 @@ LABEL_27:
                   v42 = [objc_msgSend(v37 objectAtIndexedSubscript:{1), "integerValue"}];
                   if (v41 < v42)
                   {
-                    v152 = a4;
-                    v153 = a3;
+                    infoCopy = info;
+                    bufferCopy = buffer;
                     v43 = v13;
                     v44 = 1.0 / v26 / v13;
                     v45 = v17;
@@ -330,14 +330,14 @@ LABEL_27:
                         v62 = v55[5];
                         v164 = v58[4];
                         v165 = v58[5];
-                        v63 = [MEMORY[0x1E695DF70] array];
+                        array = [MEMORY[0x1E695DF70] array];
                         v64 = v39;
                         if (v51 > v41)
                         {
                           v64 = v40;
                           if (v51 < v162)
                           {
-                            v65 = v63;
+                            v65 = array;
                             for (i = 0; i != 9; ++i)
                             {
                               v67 = MEMORY[0x1E696AD98];
@@ -411,7 +411,7 @@ LABEL_27:
                     {
                       [BWMovieLevelMetadataForProResRaw updateMetadataFromSampleBuffer:withCameraInfo:];
                       v21 = 0;
-                      a3 = v153;
+                      buffer = bufferCopy;
                       v8 = v154;
                     }
 
@@ -424,18 +424,18 @@ LABEL_27:
                       v172 = 256;
                       [(NSData *)v21 appendBytes:&v172 length:2];
                       v109 = 0;
-                      a3 = v153;
+                      buffer = bufferCopy;
                       v8 = v154;
                       do
                       {
                         v110 = [v105 objectAtIndexedSubscript:v109];
-                        v111 = [v110 unsignedIntValue];
+                        unsignedIntValue = [v110 unsignedIntValue];
                         v112 = [v163 objectForKeyedSubscript:v110];
                         [objc_msgSend(v112 objectAtIndexedSubscript:{0), "floatValue"}];
                         v114 = v113;
                         [objc_msgSend(v112 objectAtIndexedSubscript:{1), "floatValue"}];
                         v116 = v115;
-                        v178[0] = bswap32(v111);
+                        v178[0] = bswap32(unsignedIntValue);
                         [(NSData *)v21 appendBytes:v178 length:4];
                         v171 = bswap32(v114);
                         [(NSData *)v21 appendBytes:&v171 length:4];
@@ -447,7 +447,7 @@ LABEL_27:
                       while (v107 != v109);
                     }
 
-                    a4 = v152;
+                    info = infoCopy;
                     goto LABEL_50;
                   }
                 }
@@ -495,7 +495,7 @@ LABEL_27:
 LABEL_50:
   self->_whiteBalanceFactors = v21;
   v117 = v155;
-  v118 = [a4 objectForKeyedSubscript:v155];
+  v118 = [info objectForKeyedSubscript:v155];
   if ([v118 count] == 2 && (v119 = getColorTranslationMatrixFromCalibration(v118, 0, 2800)) != 0)
   {
     v149 = v119;
@@ -528,7 +528,7 @@ LABEL_50:
   }
 
   self->_colorTranslationMatrices = v120;
-  v121 = [a4 objectForKeyedSubscript:v117];
+  v121 = [info objectForKeyedSubscript:v117];
   if ([v121 count] == 2)
   {
     v122 = BWDNGColorCalibrations(v121, 1);
@@ -555,8 +555,8 @@ LABEL_50:
                 if (v128 < v129)
                 {
                   v131 = v8;
-                  v132 = a3;
-                  v133 = a4;
+                  bufferCopy2 = buffer;
+                  infoCopy2 = info;
                   if (v128 <= 0x7D0)
                   {
                     v134 = 2;
@@ -595,10 +595,10 @@ LABEL_50:
                     writeMatrixArrayRefDataEntry(0x3A98u, v127, v137);
                   }
 
-                  a4 = v133;
-                  a3 = v132;
+                  info = infoCopy2;
+                  buffer = bufferCopy2;
                   v8 = v131;
-                  self = v156;
+                  self = selfCopy;
                   goto LABEL_72;
                 }
               }
@@ -644,7 +644,7 @@ LABEL_72:
   self->_cctAndTintColorMatrices = v137;
   v174[0] = 0;
   v138 = [objc_msgSend(v8 objectForKeyedSubscript:{*off_1E798B540), "isEqualToString:", *off_1E798A0C0}];
-  v139 = [a4 objectForKeyedSubscript:*off_1E7989EE0];
+  v139 = [info objectForKeyedSubscript:*off_1E7989EE0];
   if (v138)
   {
     CMILSCOISAdaptation_extrapolateV2LSCTable();
@@ -668,7 +668,7 @@ LABEL_72:
 
   self->_exposureTime = v141;
   self->_whiteBalanceCCT = [objc_msgSend(v8 objectForKeyedSubscript:{*off_1E798B1D0), "intValue"}];
-  v143 = [CMGetAttachment(a3 @"VideoStabilizationMethod"];
+  v143 = [CMGetAttachment(buffer @"VideoStabilizationMethod"];
   if (v143)
   {
     v144 = objc_alloc_init(MEMORY[0x1E695DF88]);
@@ -679,7 +679,7 @@ LABEL_72:
       [(NSData *)v144 appendBytes:&v171 length:1];
       v178[0] = bswap32(v143);
       [(NSData *)v145 appendBytes:v178 length:4];
-      v146 = CMGetAttachment(a3, @"VideoStabilizationGeneratedTransformsOutputDimensionsOverride", 0);
+      v146 = CMGetAttachment(buffer, @"VideoStabilizationGeneratedTransformsOutputDimensionsOverride", 0);
       size = *MEMORY[0x1E695F060];
       CGSizeMakeWithDictionaryRepresentation(v146, &size);
       v147 = *(MEMORY[0x1E695F058] + 16);

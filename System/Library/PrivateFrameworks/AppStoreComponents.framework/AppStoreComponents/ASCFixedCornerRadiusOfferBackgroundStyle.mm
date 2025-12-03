@@ -1,19 +1,19 @@
 @interface ASCFixedCornerRadiusOfferBackgroundStyle
-- (ASCFixedCornerRadiusOfferBackgroundStyle)initWithCornerRadius:(double)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCFixedCornerRadiusOfferBackgroundStyle)initWithCornerRadius:(double)radius;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation ASCFixedCornerRadiusOfferBackgroundStyle
 
-- (ASCFixedCornerRadiusOfferBackgroundStyle)initWithCornerRadius:(double)a3
+- (ASCFixedCornerRadiusOfferBackgroundStyle)initWithCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = ASCFixedCornerRadiusOfferBackgroundStyle;
   result = [(ASCOfferBackgroundStyle *)&v5 _init];
   if (result)
   {
-    result->_cornerRadius = a3;
+    result->_cornerRadius = radius;
   }
 
   return result;
@@ -24,16 +24,16 @@
   v3 = objc_alloc_init(ASCHasher);
   [(ASCFixedCornerRadiusOfferBackgroundStyle *)self cornerRadius];
   [(ASCHasher *)v3 combineDouble:?];
-  v4 = [(ASCHasher *)v3 finalizeHash];
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
 
-  return v4;
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())

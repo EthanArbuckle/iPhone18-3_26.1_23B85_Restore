@@ -1,32 +1,32 @@
 @interface NSSet
-+ (BOOL)crl_set:(id)a3 isEqualToSet:(id)a4;
-+ (id)crl_intersectionOfSets:(id)a3;
-+ (id)crl_setWithSelectors:(SEL)a3;
-- (BOOL)crl_containsKindOfClass:(Class)a3;
-- (BOOL)crl_containsObjectIdenticalTo:(id)a3;
-- (BOOL)crl_isHomogeneousForClass:(Class)a3;
++ (BOOL)crl_set:(id)crl_set isEqualToSet:(id)set;
++ (id)crl_intersectionOfSets:(id)sets;
++ (id)crl_setWithSelectors:(SEL)selectors;
+- (BOOL)crl_containsKindOfClass:(Class)class;
+- (BOOL)crl_containsObjectIdenticalTo:(id)to;
+- (BOOL)crl_isHomogeneousForClass:(Class)class;
 - (id)crl_onlyObject;
-- (id)crl_setByIntersectingSet:(id)a3;
-- (id)crl_setByMappingObjectsUsingBlock:(id)a3;
-- (id)crl_setBySubtractingSet:(id)a3;
+- (id)crl_setByIntersectingSet:(id)set;
+- (id)crl_setByMappingObjectsUsingBlock:(id)block;
+- (id)crl_setBySubtractingSet:(id)set;
 - (id)crl_sortedArray;
 @end
 
 @implementation NSSet
 
-+ (id)crl_setWithSelectors:(SEL)a3
++ (id)crl_setWithSelectors:(SEL)selectors
 {
   v4 = objc_alloc_init(NSMutableSet);
   v9 = &v11;
-  if (a3)
+  if (selectors)
   {
     do
     {
-      v5 = NSStringFromSelector(a3);
+      v5 = NSStringFromSelector(selectors);
       [v4 addObject:v5];
 
       v6 = v9++;
-      a3 = *v6;
+      selectors = *v6;
     }
 
     while (*v6);
@@ -37,20 +37,20 @@
   return v7;
 }
 
-+ (BOOL)crl_set:(id)a3 isEqualToSet:(id)a4
++ (BOOL)crl_set:(id)crl_set isEqualToSet:(id)set
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 == v6)
+  crl_setCopy = crl_set;
+  setCopy = set;
+  v7 = setCopy;
+  if (crl_setCopy == setCopy)
   {
     v8 = 1;
     goto LABEL_6;
   }
 
-  if (!v5)
+  if (!crl_setCopy)
   {
-    v5 = +[NSSet set];
+    crl_setCopy = +[NSSet set];
     if (v7)
     {
       goto LABEL_4;
@@ -61,26 +61,26 @@ LABEL_8:
     goto LABEL_4;
   }
 
-  if (!v6)
+  if (!setCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
-  v8 = [v5 isEqualToSet:v7];
+  v8 = [crl_setCopy isEqualToSet:v7];
 LABEL_6:
 
   return v8;
 }
 
-+ (id)crl_intersectionOfSets:(id)a3
++ (id)crl_intersectionOfSets:(id)sets
 {
-  v3 = a3;
+  setsCopy = sets;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [setsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (!v4)
   {
     goto LABEL_12;
@@ -95,7 +95,7 @@ LABEL_6:
     {
       if (*v12 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(setsCopy);
       }
 
       v9 = *(*(&v11 + 1) + 8 * i);
@@ -110,7 +110,7 @@ LABEL_6:
       }
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v5 = [setsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   }
 
   while (v5);
@@ -123,15 +123,15 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)crl_containsObjectIdenticalTo:(id)a3
+- (BOOL)crl_containsObjectIdenticalTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = self;
-  v6 = [(NSSet *)v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  selfCopy = self;
+  v6 = [(NSSet *)selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -141,17 +141,17 @@ LABEL_12:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
-        if (*(*(&v10 + 1) + 8 * i) == v4)
+        if (*(*(&v10 + 1) + 8 * i) == toCopy)
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [(NSSet *)v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [(NSSet *)selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -166,14 +166,14 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)crl_containsKindOfClass:(Class)a3
+- (BOOL)crl_containsKindOfClass:(Class)class
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = self;
-  v4 = [(NSSet *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  selfCopy = self;
+  v4 = [(NSSet *)selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -184,7 +184,7 @@ LABEL_11:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         if (objc_opt_isKindOfClass())
@@ -194,7 +194,7 @@ LABEL_11:
         }
       }
 
-      v5 = [(NSSet *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [(NSSet *)selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -212,17 +212,17 @@ LABEL_11:
 
 - (id)crl_sortedArray
 {
-  v2 = [(NSSet *)self allObjects];
-  v3 = [v2 sortedArrayUsingSelector:"compare:"];
+  allObjects = [(NSSet *)self allObjects];
+  v3 = [allObjects sortedArrayUsingSelector:"compare:"];
 
   return v3;
 }
 
-- (id)crl_setByMappingObjectsUsingBlock:(id)a3
+- (id)crl_setByMappingObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = &qword_101AD5A10;
-  if (!v4)
+  if (!blockCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -272,7 +272,7 @@ LABEL_11:
           objc_enumerationMutation(obj);
         }
 
-        v13 = v4[2](v4, *(*(&v26 + 1) + 8 * v12));
+        v13 = blockCopy[2](blockCopy, *(*(&v26 + 1) + 8 * v12));
         if (v13)
         {
           [v25 addObject:v13];
@@ -340,14 +340,14 @@ LABEL_11:
   return v22;
 }
 
-- (BOOL)crl_isHomogeneousForClass:(Class)a3
+- (BOOL)crl_isHomogeneousForClass:(Class)class
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = self;
-  v4 = [(NSSet *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  selfCopy = self;
+  v4 = [(NSSet *)selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -358,7 +358,7 @@ LABEL_11:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -368,7 +368,7 @@ LABEL_11:
         }
       }
 
-      v5 = [(NSSet *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [(NSSet *)selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -415,38 +415,38 @@ LABEL_11:
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:126 isFatal:0 description:"As this method returns the only object in the set, it only makes sense if the set has at most one object."];
   }
 
-  v6 = [(NSSet *)self anyObject];
+  anyObject = [(NSSet *)self anyObject];
 
-  return v6;
+  return anyObject;
 }
 
-- (id)crl_setByIntersectingSet:(id)a3
+- (id)crl_setByIntersectingSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = [NSMutableSet setWithSet:self];
-  [v5 intersectSet:v4];
+  [v5 intersectSet:setCopy];
 
   v6 = [NSSet setWithSet:v5];
 
   return v6;
 }
 
-- (id)crl_setBySubtractingSet:(id)a3
+- (id)crl_setBySubtractingSet:(id)set
 {
-  v4 = a3;
-  if ([v4 count])
+  setCopy = set;
+  if ([setCopy count])
   {
     v5 = [NSMutableSet setWithSet:self];
-    [v5 minusSet:v4];
-    v6 = [NSSet setWithSet:v5];
+    [v5 minusSet:setCopy];
+    selfCopy = [NSSet setWithSet:v5];
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

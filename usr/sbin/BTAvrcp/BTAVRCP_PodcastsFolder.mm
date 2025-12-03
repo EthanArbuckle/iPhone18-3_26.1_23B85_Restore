@@ -1,10 +1,10 @@
 @interface BTAVRCP_PodcastsFolder
-- (id)replyAttributesForUid:(unint64_t)a3 attributeIDs:(id)a4;
-- (id)replyItemAtIndex:(unint64_t)a3 attributeIDs:(id)a4;
+- (id)replyAttributesForUid:(unint64_t)uid attributeIDs:(id)ds;
+- (id)replyItemAtIndex:(unint64_t)index attributeIDs:(id)ds;
 - (id)unplayedEpisodesFolderName;
 - (unint64_t)childrenCount;
-- (unsigned)createFolderWithUid:(unint64_t)a3 folder:(id *)a4;
-- (unsigned)playItemWithUid:(unint64_t)a3;
+- (unsigned)createFolderWithUid:(unint64_t)uid folder:(id *)folder;
+- (unsigned)playItemWithUid:(unint64_t)uid;
 @end
 
 @implementation BTAVRCP_PodcastsFolder
@@ -19,30 +19,30 @@
 
 - (unint64_t)childrenCount
 {
-  v2 = [(BTAVRCP_VFSFolder *)self query];
-  v3 = [v2 collections];
-  v4 = [v3 count];
+  query = [(BTAVRCP_VFSFolder *)self query];
+  collections = [query collections];
+  v4 = [collections count];
 
   return v4 + 1;
 }
 
-- (unsigned)createFolderWithUid:(unint64_t)a3 folder:(id *)a4
+- (unsigned)createFolderWithUid:(unint64_t)uid folder:(id *)folder
 {
-  if ([(BTAVRCP_VFSFolder *)self uid]== a3)
+  if ([(BTAVRCP_VFSFolder *)self uid]== uid)
   {
     v7 = [BTAVRCP_PodcastItemsFolder alloc];
-    v8 = [(BTAVRCP_PodcastsFolder *)self unplayedEpisodesFolderName];
-    *a4 = [(BTAVRCP_VFSFolder *)v7 initWithName:v8 uid:a3];
+    unplayedEpisodesFolderName = [(BTAVRCP_PodcastsFolder *)self unplayedEpisodesFolderName];
+    *folder = [(BTAVRCP_VFSFolder *)v7 initWithName:unplayedEpisodesFolderName uid:uid];
 
-    v9 = *a4;
+    v9 = *folder;
     v10 = [MPMediaPropertyPredicate predicateWithValue:&__kCFBooleanFalse forProperty:MPMediaItemPropertyHasBeenPlayed];
     [v9 storePredicate:v10];
   }
 
   else
   {
-    v11 = [(BTAVRCP_VFSFolder *)self query];
-    v10 = [v11 collectionWithUid:a3 property:MPMediaItemPropertyPodcastPersistentID];
+    query = [(BTAVRCP_VFSFolder *)self query];
+    v10 = [query collectionWithUid:uid property:MPMediaItemPropertyPodcastPersistentID];
 
     if (!v10)
     {
@@ -50,14 +50,14 @@
       goto LABEL_6;
     }
 
-    v12 = [v10 representativeItem];
-    v13 = [v12 valueForProperty:MPMediaItemPropertyPodcastPersistentID];
+    representativeItem = [v10 representativeItem];
+    v13 = [representativeItem valueForProperty:MPMediaItemPropertyPodcastPersistentID];
 
-    v14 = [v10 representativeItem];
-    v15 = [v14 valueForProperty:MPMediaItemPropertyPodcastTitle];
+    representativeItem2 = [v10 representativeItem];
+    v15 = [representativeItem2 valueForProperty:MPMediaItemPropertyPodcastTitle];
 
     v16 = -[BTAVRCP_VFSFolder initWithName:uid:]([BTAVRCP_PodcastItemsFolder alloc], "initWithName:uid:", v15, [v13 unsignedLongLongValue]);
-    *a4 = v16;
+    *folder = v16;
     v17 = [MPMediaPropertyPredicate predicateWithValue:v13 forProperty:MPMediaItemPropertyPodcastPersistentID];
     [(BTAVRCP_VFSFolder *)v16 storePredicate:v17];
   }
@@ -68,26 +68,26 @@ LABEL_6:
   return v18;
 }
 
-- (id)replyItemAtIndex:(unint64_t)a3 attributeIDs:(id)a4
+- (id)replyItemAtIndex:(unint64_t)index attributeIDs:(id)ds
 {
-  if (!a3)
+  if (!index)
   {
     v7 = [NSNumber numberWithUnsignedLongLong:[(BTAVRCP_VFSFolder *)self uid:0]];
-    v8 = [(BTAVRCP_PodcastsFolder *)self unplayedEpisodesFolderName];
-    v12 = [(BTAVRCP_VFSFolder *)self replyFolderWithType:1 uid:v7 name:v8];
+    unplayedEpisodesFolderName = [(BTAVRCP_PodcastsFolder *)self unplayedEpisodesFolderName];
+    v12 = [(BTAVRCP_VFSFolder *)self replyFolderWithType:1 uid:v7 name:unplayedEpisodesFolderName];
     goto LABEL_5;
   }
 
-  v5 = a3 - 1;
-  v6 = [(BTAVRCP_VFSFolder *)self query];
-  v7 = [v6 collectionAtIndex:v5];
+  v5 = index - 1;
+  query = [(BTAVRCP_VFSFolder *)self query];
+  v7 = [query collectionAtIndex:v5];
 
   if (v7)
   {
-    v8 = [v7 representativeItem];
-    v9 = [v8 valueForProperty:MPMediaItemPropertyPodcastPersistentID];
-    v10 = [v7 representativeItem];
-    v11 = [v10 valueForProperty:MPMediaItemPropertyPodcastTitle];
+    unplayedEpisodesFolderName = [v7 representativeItem];
+    v9 = [unplayedEpisodesFolderName valueForProperty:MPMediaItemPropertyPodcastPersistentID];
+    representativeItem = [v7 representativeItem];
+    v11 = [representativeItem valueForProperty:MPMediaItemPropertyPodcastTitle];
     v12 = [(BTAVRCP_VFSFolder *)self replyFolderWithType:1 uid:v9 name:v11];
 
 LABEL_5:
@@ -100,10 +100,10 @@ LABEL_7:
   return v12;
 }
 
-- (id)replyAttributesForUid:(unint64_t)a3 attributeIDs:(id)a4
+- (id)replyAttributesForUid:(unint64_t)uid attributeIDs:(id)ds
 {
-  v5 = [(BTAVRCP_VFSFolder *)self query:a3];
-  v6 = [v5 collectionWithUid:a3 property:MPMediaItemPropertyPodcastPersistentID];
+  v5 = [(BTAVRCP_VFSFolder *)self query:uid];
+  v6 = [v5 collectionWithUid:uid property:MPMediaItemPropertyPodcastPersistentID];
 
   if (v6)
   {
@@ -116,10 +116,10 @@ LABEL_7:
   }
 }
 
-- (unsigned)playItemWithUid:(unint64_t)a3
+- (unsigned)playItemWithUid:(unint64_t)uid
 {
-  v4 = [(BTAVRCP_VFSFolder *)self query];
-  v5 = [v4 collectionWithUid:a3 property:MPMediaItemPropertyPodcastPersistentID];
+  query = [(BTAVRCP_VFSFolder *)self query];
+  v5 = [query collectionWithUid:uid property:MPMediaItemPropertyPodcastPersistentID];
 
   if (v5)
   {

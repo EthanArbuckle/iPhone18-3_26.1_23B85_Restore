@@ -1,16 +1,16 @@
 @interface ScreenRecorder
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5;
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler;
 @end
 
 @implementation ScreenRecorder
 
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = v8[2];
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
+  centerCopy = center;
+  notificationCopy = notification;
+  selfCopy = self;
   v9(v8, 7);
   _Block_release(v8);
 }

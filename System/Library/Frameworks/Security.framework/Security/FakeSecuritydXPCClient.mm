@@ -1,11 +1,11 @@
 @interface FakeSecuritydXPCClient
 - (FakeSecuritydXPCClient)init;
-- (id)protocolWithSync:(BOOL)a3 errorHandler:(id)a4;
+- (id)protocolWithSync:(BOOL)sync errorHandler:(id)handler;
 @end
 
 @implementation FakeSecuritydXPCClient
 
-- (id)protocolWithSync:(BOOL)a3 errorHandler:(id)a4
+- (id)protocolWithSync:(BOOL)sync errorHandler:(id)handler
 {
   if (gSecurityd && (v5 = *(gSecurityd + 704)) != 0)
   {

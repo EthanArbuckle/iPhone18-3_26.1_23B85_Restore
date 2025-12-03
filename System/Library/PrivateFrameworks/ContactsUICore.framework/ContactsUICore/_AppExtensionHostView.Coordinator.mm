@@ -1,14 +1,14 @@
 @interface _AppExtensionHostView.Coordinator
-- (void)hostViewControllerDidActivate:(id)a3;
+- (void)hostViewControllerDidActivate:(id)activate;
 @end
 
 @implementation _AppExtensionHostView.Coordinator
 
-- (void)hostViewControllerDidActivate:(id)a3
+- (void)hostViewControllerDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A32BC870(v4);
+  activateCopy = activate;
+  selfCopy = self;
+  sub_1A32BC870(activateCopy);
 }
 
 @end

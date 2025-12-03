@@ -6,10 +6,10 @@
 
 - (id)viewIdentifier
 {
-  v1 = [a1 textAttachment];
-  v2 = [v1 viewIdentifier];
+  textAttachment = [self textAttachment];
+  viewIdentifier = [textAttachment viewIdentifier];
 
-  return v2;
+  return viewIdentifier;
 }
 
 @end

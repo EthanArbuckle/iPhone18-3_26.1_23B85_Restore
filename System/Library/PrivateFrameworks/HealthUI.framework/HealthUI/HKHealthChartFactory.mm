@@ -1,55 +1,55 @@
 @interface HKHealthChartFactory
-- (BOOL)_factorDisplayType:(id)a3 availableForPrimaryDisplayType:(id)a4;
-- (BOOL)_factorDisplayTypeHasData:(id)a3;
+- (BOOL)_factorDisplayType:(id)type availableForPrimaryDisplayType:(id)displayType;
+- (BOOL)_factorDisplayTypeHasData:(id)data;
 - (HKHealthChartFactory)init;
-- (HKHealthChartFactory)initWithHealthStore:(id)a3;
+- (HKHealthChartFactory)initWithHealthStore:(id)store;
 - (id)CHRRoomApplicationItems;
 - (id)_buildApplicationItems;
-- (id)_buildBreathingDisturbancesRemoteChartViewControllerWithDisplayType:(id)a3 apneaDisplayType:(id)a4 timeScopeRanges:(id)a5 initialTimeScope:(int64_t)a6 firstWeekday:(int64_t)a7 displayDate:(id)a8;
-- (id)_buildStandardRemoteChartViewControllerWithDisplayType:(id)a3 timeScopeRanges:(id)a4 initialTimeScope:(int64_t)a5 firstWeekday:(int64_t)a6 displayDate:(id)a7;
-- (id)_buildTrendRemoteOverlayChartViewControllerWithDisplayType:(id)a3 timeScopeRanges:(id)a4 initialTimeScope:(int64_t)a5 chartSummaryTrendModel:(id)a6 firstWeekday:(int64_t)a7 displayDate:(id)a8;
-- (id)_cardioFitnessDataSourcesForDisplayType:(id)a3 forTimeScopes:(id)a4;
-- (id)_createSleepDisplayTypeForSeriesType:(int64_t)a3;
-- (id)_defaultRemoteDataSourcesForDisplayType:(id)a3 forTimeScopes:(id)a4;
-- (id)_displayTypeForTypeIdentifier:(id)a3;
-- (id)_factorDisplayTypesForPrimaryDisplayType:(id)a3;
-- (id)_factorDisplayTypesForPrimaryTypeIdentifier:(id)a3;
-- (id)_remoteCalendarOverrideForDisplayType:(id)a3;
-- (id)_remoteChartDisplayTypeForTypeIdentifier:(id)a3;
-- (id)_remoteCustomFormatterForDisplayType:(id)a3;
-- (id)_remoteDataSourcesForDisplayType:(id)a3 forTimeScopes:(id)a4 audience:(id)a5;
-- (id)_remoteDisplayTypeConfigurationFromDataSources:(id)a3 model:(id)a4 originalDisplayType:(id)a5;
-- (id)_remoteDisplayTypeConfigurationFromDataSources:(id)a3 model:(id)a4 queryData:(id)a5 originalDisplayType:(id)a6;
-- (id)_remoteGraphSeriesForDisplayType:(id)a3 graphSeriesDataSource:(id)a4 timeScope:(int64_t)a5;
-- (id)_remoteStatisticsIntervalForDisplayType:(id)a3 timeScope:(int64_t)a4;
-- (id)_resolvedDisplayDateForDisplayType:(id)a3 displayDate:(id)a4 timeScope:(int64_t)a5 gregorianCalendar:(id)a6;
-- (id)_sleepApneaGraphSeriesForDisplayType:(id)a3 graphSeriesDataSource:(id)a4 timeScope:(int64_t)a5;
-- (id)_sleepApneaRemoteDataSourcesForDisplayType:(id)a3 forTimeScopes:(id)a4;
-- (id)_sleepRemoteDataSourcesForDisplayType:(id)a3 forTimeScopes:(id)a4 audience:(id)a5;
-- (id)_sleepRemoteGraphSeriesForDisplayType:(id)a3 graphSeriesDataSource:(id)a4 timeScope:(int64_t)a5;
-- (id)_sleepingBreathingDisturbancesGraphSeriesForDisplayType:(id)a3 graphSeriesDataSource:(id)a4 timeScope:(int64_t)a5;
-- (id)_sourceTimeZoneFromModel:(id)a3;
-- (id)_standardRemoteGraphSeriesForDisplayType:(id)a3 graphSeriesDataSource:(id)a4 timeScope:(int64_t)a5;
-- (id)activityChartForActivityMoveMode:(int64_t)a3 displayDate:(id)a4 activityOptions:(unint64_t)a5 chartSharableModel:(id)a6;
-- (id)breathingDisturbancesRemoteInteractiveChartWithBreathingDisturbancesModel:(id)a3 sleepApneaEventModel:(id)a4 sleepApneaEventChartData:(id)a5 displayDate:(id)a6;
-- (id)chartFactoryViewControllerProviderForType:(id)a3 standardProvider:(id)a4;
-- (id)chartForTypeIdentifier:(id)a3 dateRange:(id)a4 minimumSize:(CGSize)a5;
-- (id)chartForTypeIdentifier:(id)a3 dateRange:(id)a4 minimumSize:(CGSize)a5 disableXAxis:(BOOL)a6 currentCalendar:(id)a7;
-- (id)createInteractiveChartForSimpleDisplayType:(id)a3 chartOptions:(unint64_t)a4;
-- (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11;
-- (id)interactiveChartForTypeIdentifier:(id)a3 preferredOverlay:(int64_t)a4 chartOptions:(unint64_t)a5 displayDateInterval:(id)a6 restorationUserActivity:(id)a7 chartSummaryTrendModel:(id)a8;
-- (id)interactiveChartFromMeasureIdentifier:(id)a3 displayDateInterval:(id)a4;
-- (id)remoteInteractiveChartForTypeIdentifier:(id)a3 model:(id)a4 chartSummaryTrendModel:(id)a5 displayDate:(id)a6;
-- (id)staticAudiogramChartViewControllerWithAudiogramSample:(id)a3 hideEnhancedUI:(BOOL)a4;
-- (int64_t)_resolvedTimeScopeForTypeIdentifier:(id)a3 displayDateInterval:(id)a4;
-- (int64_t)_sourceFirstWeekdayFromModel:(id)a3;
-- (unint64_t)_additionalChartOptionsForDisplayDate:(id)a3 displayDateInterval:(id)a4 timeScope:(int64_t)a5;
-- (void)_executeFetchOrSkipForTimeScopes:(id)a3 timeScope:(int64_t)a4 audience:(unint64_t)a5 displayType:(id)a6 remoteDateIntervals:(id)a7 dataSources:(id)a8 gregorianCalendar:(id)a9 completion:(id)a10;
-- (void)_logFactorsForTypeIdentifier:(id)a3 factorDisplayTypes:(id)a4;
-- (void)encodeActivityChartDataForActivityMoveMode:(int64_t)a3 completion:(id)a4;
-- (void)encodeChartQueryDataForTypeIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)encodeChartQueryDataForTypeIdentifier:(id)a3 forTimeScopes:(id)a4 timeScopeReferenceDate:(id)a5 audience:(unint64_t)a6 completionHandler:(id)a7;
-- (void)updateChartSummaryTrendModel:(id)a3 viewController:(id)a4;
+- (id)_buildBreathingDisturbancesRemoteChartViewControllerWithDisplayType:(id)type apneaDisplayType:(id)displayType timeScopeRanges:(id)ranges initialTimeScope:(int64_t)scope firstWeekday:(int64_t)weekday displayDate:(id)date;
+- (id)_buildStandardRemoteChartViewControllerWithDisplayType:(id)type timeScopeRanges:(id)ranges initialTimeScope:(int64_t)scope firstWeekday:(int64_t)weekday displayDate:(id)date;
+- (id)_buildTrendRemoteOverlayChartViewControllerWithDisplayType:(id)type timeScopeRanges:(id)ranges initialTimeScope:(int64_t)scope chartSummaryTrendModel:(id)model firstWeekday:(int64_t)weekday displayDate:(id)date;
+- (id)_cardioFitnessDataSourcesForDisplayType:(id)type forTimeScopes:(id)scopes;
+- (id)_createSleepDisplayTypeForSeriesType:(int64_t)type;
+- (id)_defaultRemoteDataSourcesForDisplayType:(id)type forTimeScopes:(id)scopes;
+- (id)_displayTypeForTypeIdentifier:(id)identifier;
+- (id)_factorDisplayTypesForPrimaryDisplayType:(id)type;
+- (id)_factorDisplayTypesForPrimaryTypeIdentifier:(id)identifier;
+- (id)_remoteCalendarOverrideForDisplayType:(id)type;
+- (id)_remoteChartDisplayTypeForTypeIdentifier:(id)identifier;
+- (id)_remoteCustomFormatterForDisplayType:(id)type;
+- (id)_remoteDataSourcesForDisplayType:(id)type forTimeScopes:(id)scopes audience:(id)audience;
+- (id)_remoteDisplayTypeConfigurationFromDataSources:(id)sources model:(id)model originalDisplayType:(id)type;
+- (id)_remoteDisplayTypeConfigurationFromDataSources:(id)sources model:(id)model queryData:(id)data originalDisplayType:(id)type;
+- (id)_remoteGraphSeriesForDisplayType:(id)type graphSeriesDataSource:(id)source timeScope:(int64_t)scope;
+- (id)_remoteStatisticsIntervalForDisplayType:(id)type timeScope:(int64_t)scope;
+- (id)_resolvedDisplayDateForDisplayType:(id)type displayDate:(id)date timeScope:(int64_t)scope gregorianCalendar:(id)calendar;
+- (id)_sleepApneaGraphSeriesForDisplayType:(id)type graphSeriesDataSource:(id)source timeScope:(int64_t)scope;
+- (id)_sleepApneaRemoteDataSourcesForDisplayType:(id)type forTimeScopes:(id)scopes;
+- (id)_sleepRemoteDataSourcesForDisplayType:(id)type forTimeScopes:(id)scopes audience:(id)audience;
+- (id)_sleepRemoteGraphSeriesForDisplayType:(id)type graphSeriesDataSource:(id)source timeScope:(int64_t)scope;
+- (id)_sleepingBreathingDisturbancesGraphSeriesForDisplayType:(id)type graphSeriesDataSource:(id)source timeScope:(int64_t)scope;
+- (id)_sourceTimeZoneFromModel:(id)model;
+- (id)_standardRemoteGraphSeriesForDisplayType:(id)type graphSeriesDataSource:(id)source timeScope:(int64_t)scope;
+- (id)activityChartForActivityMoveMode:(int64_t)mode displayDate:(id)date activityOptions:(unint64_t)options chartSharableModel:(id)model;
+- (id)breathingDisturbancesRemoteInteractiveChartWithBreathingDisturbancesModel:(id)model sleepApneaEventModel:(id)eventModel sleepApneaEventChartData:(id)data displayDate:(id)date;
+- (id)chartFactoryViewControllerProviderForType:(id)type standardProvider:(id)provider;
+- (id)chartForTypeIdentifier:(id)identifier dateRange:(id)range minimumSize:(CGSize)size;
+- (id)chartForTypeIdentifier:(id)identifier dateRange:(id)range minimumSize:(CGSize)size disableXAxis:(BOOL)axis currentCalendar:(id)calendar;
+- (id)createInteractiveChartForSimpleDisplayType:(id)type chartOptions:(unint64_t)options;
+- (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1;
+- (id)interactiveChartForTypeIdentifier:(id)identifier preferredOverlay:(int64_t)overlay chartOptions:(unint64_t)options displayDateInterval:(id)interval restorationUserActivity:(id)activity chartSummaryTrendModel:(id)model;
+- (id)interactiveChartFromMeasureIdentifier:(id)identifier displayDateInterval:(id)interval;
+- (id)remoteInteractiveChartForTypeIdentifier:(id)identifier model:(id)model chartSummaryTrendModel:(id)trendModel displayDate:(id)date;
+- (id)staticAudiogramChartViewControllerWithAudiogramSample:(id)sample hideEnhancedUI:(BOOL)i;
+- (int64_t)_resolvedTimeScopeForTypeIdentifier:(id)identifier displayDateInterval:(id)interval;
+- (int64_t)_sourceFirstWeekdayFromModel:(id)model;
+- (unint64_t)_additionalChartOptionsForDisplayDate:(id)date displayDateInterval:(id)interval timeScope:(int64_t)scope;
+- (void)_executeFetchOrSkipForTimeScopes:(id)scopes timeScope:(int64_t)scope audience:(unint64_t)audience displayType:(id)type remoteDateIntervals:(id)intervals dataSources:(id)sources gregorianCalendar:(id)calendar completion:(id)self0;
+- (void)_logFactorsForTypeIdentifier:(id)identifier factorDisplayTypes:(id)types;
+- (void)encodeActivityChartDataForActivityMoveMode:(int64_t)mode completion:(id)completion;
+- (void)encodeChartQueryDataForTypeIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)encodeChartQueryDataForTypeIdentifier:(id)identifier forTimeScopes:(id)scopes timeScopeReferenceDate:(id)date audience:(unint64_t)audience completionHandler:(id)handler;
+- (void)updateChartSummaryTrendModel:(id)model viewController:(id)controller;
 @end
 
 @implementation HKHealthChartFactory
@@ -64,33 +64,33 @@
   return 0;
 }
 
-- (HKHealthChartFactory)initWithHealthStore:(id)a3
+- (HKHealthChartFactory)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v37.receiver = self;
   v37.super_class = HKHealthChartFactory;
   v6 = [(HKHealthChartFactory *)&v37 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
-    v8 = [HKDisplayTypeController sharedInstanceForHealthStore:v5];
+    objc_storeStrong(&v6->_healthStore, store);
+    v8 = [HKDisplayTypeController sharedInstanceForHealthStore:storeCopy];
     displayTypeController = v7->_displayTypeController;
     v7->_displayTypeController = v8;
 
-    v10 = [v5 profileIdentifier];
-    if ([v10 type] == 2)
+    profileIdentifier = [storeCopy profileIdentifier];
+    if ([profileIdentifier type] == 2)
     {
     }
 
     else
     {
-      v11 = [v5 profileIdentifier];
-      v12 = [v11 type];
+      profileIdentifier2 = [storeCopy profileIdentifier];
+      type = [profileIdentifier2 type];
 
-      if (v12 != 3)
+      if (type != 3)
       {
-        v17 = [objc_alloc(MEMORY[0x1E696C518]) initWithHealthStore:v5];
+        v17 = [objc_alloc(MEMORY[0x1E696C518]) initWithHealthStore:storeCopy];
         unitPreferenceController = v7->_unitPreferenceController;
         v7->_unitPreferenceController = v17;
         goto LABEL_7;
@@ -104,17 +104,17 @@
     v7->_unitPreferenceController = v15;
 
 LABEL_7:
-    v18 = [[HKSampleTypeUpdateController alloc] initWithHealthStore:v5];
+    v18 = [[HKSampleTypeUpdateController alloc] initWithHealthStore:storeCopy];
     sampleTypeUpdateController = v7->_sampleTypeUpdateController;
     v7->_sampleTypeUpdateController = v18;
 
-    v20 = [[HKChartDataCacheController alloc] initWithHealthStore:v5 unitController:v7->_unitPreferenceController updateController:v7->_sampleTypeUpdateController];
+    v20 = [[HKChartDataCacheController alloc] initWithHealthStore:storeCopy unitController:v7->_unitPreferenceController updateController:v7->_sampleTypeUpdateController];
     chartDataCacheController = v7->_chartDataCacheController;
     v7->_chartDataCacheController = v20;
 
     v22 = [HKDateCache alloc];
-    v23 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v24 = [(HKDateCache *)v22 initWithCalendar:v23];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v24 = [(HKDateCache *)v22 initWithCalendar:currentCalendar];
     dateCache = v7->_dateCache;
     v7->_dateCache = v24;
 
@@ -122,11 +122,11 @@ LABEL_7:
     selectedTimeScopeController = v7->_selectedTimeScopeController;
     v7->_selectedTimeScopeController = v26;
 
-    v28 = [objc_alloc(MEMORY[0x1E696C678]) initWithHealthStore:v5];
+    v28 = [objc_alloc(MEMORY[0x1E696C678]) initWithHealthStore:storeCopy];
     wheelchairUseCharacteristicCache = v7->_wheelchairUseCharacteristicCache;
     v7->_wheelchairUseCharacteristicCache = v28;
 
-    v30 = [[HKSampleTypeDateRangeController alloc] initWithHealthStore:v5];
+    v30 = [[HKSampleTypeDateRangeController alloc] initWithHealthStore:storeCopy];
     sampleTypeDateRangeController = v7->_sampleTypeDateRangeController;
     v7->_sampleTypeDateRangeController = v30;
 
@@ -146,45 +146,45 @@ LABEL_7:
   return v7;
 }
 
-- (id)chartForTypeIdentifier:(id)a3 dateRange:(id)a4 minimumSize:(CGSize)a5
+- (id)chartForTypeIdentifier:(id)identifier dateRange:(id)range minimumSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v9 = MEMORY[0x1E695DEE8];
-  v10 = a4;
-  v11 = a3;
-  v12 = [v9 currentCalendar];
-  v13 = [(HKHealthChartFactory *)self chartForTypeIdentifier:v11 dateRange:v10 minimumSize:0 disableXAxis:v12 currentCalendar:width, height];
+  rangeCopy = range;
+  identifierCopy = identifier;
+  currentCalendar = [v9 currentCalendar];
+  height = [(HKHealthChartFactory *)self chartForTypeIdentifier:identifierCopy dateRange:rangeCopy minimumSize:0 disableXAxis:currentCalendar currentCalendar:width, height];
 
-  return v13;
+  return height;
 }
 
-- (id)chartForTypeIdentifier:(id)a3 dateRange:(id)a4 minimumSize:(CGSize)a5 disableXAxis:(BOOL)a6 currentCalendar:(id)a7
+- (id)chartForTypeIdentifier:(id)identifier dateRange:(id)range minimumSize:(CGSize)size disableXAxis:(BOOL)axis currentCalendar:(id)calendar
 {
-  v8 = a6;
-  height = a5.height;
-  width = a5.width;
+  axisCopy = axis;
+  height = size.height;
+  width = size.width;
   v34[1] = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a7;
-  v15 = [(HKHealthChartFactory *)self standardChartDisplayTypeIdentifierForTypeIdentifier:a3];
+  rangeCopy = range;
+  calendarCopy = calendar;
+  v15 = [(HKHealthChartFactory *)self standardChartDisplayTypeIdentifierForTypeIdentifier:identifier];
   if (v15)
   {
-    v16 = [(HKHealthChartFactory *)self displayTypeController];
-    v17 = [v16 displayTypeWithIdentifier:v15];
+    displayTypeController = [(HKHealthChartFactory *)self displayTypeController];
+    v17 = [displayTypeController displayTypeWithIdentifier:v15];
 
     if (v17)
     {
-      v32 = v8;
-      v18 = [v14 firstWeekday];
-      v33 = [MEMORY[0x1E695DF00] date];
-      if (v13)
+      v32 = axisCopy;
+      firstWeekday = [calendarCopy firstWeekday];
+      date = [MEMORY[0x1E695DF00] date];
+      if (rangeCopy)
       {
-        v19 = [v13 startDate];
-        v20 = [v13 endDate];
-        v21 = HKUIMidDate(v19, v20);
+        startDate = [rangeCopy startDate];
+        endDate = [rangeCopy endDate];
+        v21 = HKUIMidDate(startDate, endDate);
 
-        v22 = [HKGraphZoomLevelConfiguration timeScopeForDateRange:v13];
+        v22 = [HKGraphZoomLevelConfiguration timeScopeForDateRange:rangeCopy];
         v23 = 1;
       }
 
@@ -192,16 +192,16 @@ LABEL_7:
       {
         v22 = 6;
         v23 = 3;
-        v21 = v33;
+        v21 = date;
       }
 
-      v25 = [HKGraphZoomLevelConfiguration chartVisibleRangeForTimeScope:v22 anchorDate:v21 alignment:v23 dataRange:0 calendar:v14 firstWeekday:v18 cadence:0 level:0];
+      v25 = [HKGraphZoomLevelConfiguration chartVisibleRangeForTimeScope:v22 anchorDate:v21 alignment:v23 dataRange:0 calendar:calendarCopy firstWeekday:firstWeekday cadence:0 level:0];
       v26 = +[HKDisplayCategory categoryWithID:](HKDisplayCategory, "categoryWithID:", [v17 categoryIdentifier]);
-      v27 = [(HKHealthChartFactory *)self unitPreferenceController];
-      v28 = [(HKHealthChartFactory *)self chartDataCacheController];
-      v29 = [v17 hk_standardSeriesForTimeScope:v22 displayCategory:v26 unitController:v27 dataCacheController:v28];
+      unitPreferenceController = [(HKHealthChartFactory *)self unitPreferenceController];
+      chartDataCacheController = [(HKHealthChartFactory *)self chartDataCacheController];
+      v29 = [v17 hk_standardSeriesForTimeScope:v22 displayCategory:v26 unitController:unitPreferenceController dataCacheController:chartDataCacheController];
 
-      v24 = [[_HKStaticDateGraphViewController alloc] initWithFixedRange:v25 currentCalendar:v14];
+      v24 = [[_HKStaticDateGraphViewController alloc] initWithFixedRange:v25 currentCalendar:calendarCopy];
       [(HKDateGraphViewController *)v24 setMinimumSize:width, height];
       v34[0] = v29;
       v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
@@ -224,21 +224,21 @@ LABEL_7:
   return v24;
 }
 
-- (id)interactiveChartForTypeIdentifier:(id)a3 preferredOverlay:(int64_t)a4 chartOptions:(unint64_t)a5 displayDateInterval:(id)a6 restorationUserActivity:(id)a7 chartSummaryTrendModel:(id)a8
+- (id)interactiveChartForTypeIdentifier:(id)identifier preferredOverlay:(int64_t)overlay chartOptions:(unint64_t)options displayDateInterval:(id)interval restorationUserActivity:(id)activity chartSummaryTrendModel:(id)model
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v33 = a8;
-  v15 = [v13 endDate];
-  v16 = [(HKHealthChartFactory *)self _resolvedTimeScopeForTypeIdentifier:v12 displayDateInterval:v13];
-  v17 = [(HKHealthChartFactory *)self selectedTimeScopeController];
-  [v17 setSelectedTimeScope:v16];
+  identifierCopy = identifier;
+  intervalCopy = interval;
+  activityCopy = activity;
+  modelCopy = model;
+  endDate = [intervalCopy endDate];
+  v16 = [(HKHealthChartFactory *)self _resolvedTimeScopeForTypeIdentifier:identifierCopy displayDateInterval:intervalCopy];
+  selectedTimeScopeController = [(HKHealthChartFactory *)self selectedTimeScopeController];
+  [selectedTimeScopeController setSelectedTimeScope:v16];
 
-  v18 = [(HKHealthChartFactory *)self _buildApplicationItems];
-  v19 = [v14 userInfo];
-  v20 = [v19 objectForKeyedSubscript:@"HKOverlayRoomViewControllerRestorationModeKey"];
-  v34 = v15;
+  _buildApplicationItems = [(HKHealthChartFactory *)self _buildApplicationItems];
+  userInfo = [activityCopy userInfo];
+  v20 = [userInfo objectForKeyedSubscript:@"HKOverlayRoomViewControllerRestorationModeKey"];
+  v34 = endDate;
   if (v20)
   {
     v21 = 0;
@@ -246,51 +246,51 @@ LABEL_7:
 
   else
   {
-    v21 = v15;
+    v21 = endDate;
   }
 
   v22 = v21;
 
-  v23 = [(NSMutableDictionary *)self->_customViewControllerProvidersByTypeIdentifier objectForKeyedSubscript:v12];
+  v23 = [(NSMutableDictionary *)self->_customViewControllerProvidersByTypeIdentifier objectForKeyedSubscript:identifierCopy];
   if (!v23)
   {
-    v23 = [(HKHealthChartFactory *)self chartFactoryViewControllerProviderForType:v12 standardProvider:self];
+    v23 = [(HKHealthChartFactory *)self chartFactoryViewControllerProviderForType:identifierCopy standardProvider:self];
   }
 
-  v24 = [(HKHealthChartFactory *)self turnOffInitialSelectionForTesting];
-  if (v24)
+  turnOffInitialSelectionForTesting = [(HKHealthChartFactory *)self turnOffInitialSelectionForTesting];
+  if (turnOffInitialSelectionForTesting)
   {
-    v25 = a5 | 0x2000;
+    optionsCopy = options | 0x2000;
   }
 
   else
   {
-    v25 = a5;
+    optionsCopy = options;
   }
 
-  if (a4 == 11 && v24)
+  if (overlay == 11 && turnOffInitialSelectionForTesting)
   {
-    v26 = 0;
+    overlayCopy = 0;
   }
 
   else
   {
-    v26 = a4;
+    overlayCopy = overlay;
   }
 
-  v27 = v25 | [(HKHealthChartFactory *)self _additionalChartOptionsForDisplayDate:v22 displayDateInterval:v13 timeScope:v16];
-  v28 = [(HKHealthChartFactory *)self _factorDisplayTypesForPrimaryTypeIdentifier:v12];
-  [(HKHealthChartFactory *)self _logFactorsForTypeIdentifier:v12 factorDisplayTypes:v28];
-  v29 = [v23 createInteractiveChartViewControllerForTypeIdentifier:v12 chartFactory:self applicationItems:v18 displayDate:v22 preferredOverlay:v26 restorationUserActivity:v14 trendModel:v33 factorDisplayTypes:v28 additionalChartOptions:v27];
+  v27 = optionsCopy | [(HKHealthChartFactory *)self _additionalChartOptionsForDisplayDate:v22 displayDateInterval:intervalCopy timeScope:v16];
+  v28 = [(HKHealthChartFactory *)self _factorDisplayTypesForPrimaryTypeIdentifier:identifierCopy];
+  [(HKHealthChartFactory *)self _logFactorsForTypeIdentifier:identifierCopy factorDisplayTypes:v28];
+  v29 = [v23 createInteractiveChartViewControllerForTypeIdentifier:identifierCopy chartFactory:self applicationItems:_buildApplicationItems displayDate:v22 preferredOverlay:overlayCopy restorationUserActivity:activityCopy trendModel:modelCopy factorDisplayTypes:v28 additionalChartOptions:v27];
 
   return v29;
 }
 
-- (void)_logFactorsForTypeIdentifier:(id)a3 factorDisplayTypes:(id)a4
+- (void)_logFactorsForTypeIdentifier:(id)identifier factorDisplayTypes:(id)types
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a4 hk_map:&__block_literal_global_2];
+  identifierCopy = identifier;
+  v6 = [types hk_map:&__block_literal_global_2];
   v7 = [v6 componentsJoinedByString:{@", "}];
   _HKInitializeLogging();
   v8 = HKLogWellnessDashboard();
@@ -302,7 +302,7 @@ LABEL_7:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = 138412546;
-      v12 = v5;
+      v12 = identifierCopy;
       v13 = 2112;
       v14 = v7;
       _os_log_impl(&dword_1C3942000, v10, OS_LOG_TYPE_INFO, "Factors for %@: [%@]", &v11, 0x16u);
@@ -310,27 +310,27 @@ LABEL_7:
   }
 }
 
-- (unint64_t)_additionalChartOptionsForDisplayDate:(id)a3 displayDateInterval:(id)a4 timeScope:(int64_t)a5
+- (unint64_t)_additionalChartOptionsForDisplayDate:(id)date displayDateInterval:(id)interval timeScope:(int64_t)scope
 {
   v5 = 0;
-  if (a3 && a5 == 4)
+  if (date && scope == 4)
   {
     v7 = MEMORY[0x1E695DEE8];
-    v8 = a4;
-    v9 = a3;
-    v10 = [v7 hk_gregorianCalendarWithLocalTimeZone];
-    [v10 rangeOfUnit:16 inUnit:8 forDate:v9];
+    intervalCopy = interval;
+    dateCopy = date;
+    hk_gregorianCalendarWithLocalTimeZone = [v7 hk_gregorianCalendarWithLocalTimeZone];
+    [hk_gregorianCalendarWithLocalTimeZone rangeOfUnit:16 inUnit:8 forDate:dateCopy];
     v12 = v11;
-    v13 = [v10 hk_startOfMonthForDate:v9];
+    v13 = [hk_gregorianCalendarWithLocalTimeZone hk_startOfMonthForDate:dateCopy];
 
-    v14 = [v8 startDate];
-    v15 = [v10 components:30 fromDate:v14];
+    startDate = [intervalCopy startDate];
+    v15 = [hk_gregorianCalendarWithLocalTimeZone components:30 fromDate:startDate];
 
-    v16 = [v8 endDate];
+    endDate = [intervalCopy endDate];
 
-    v17 = [v10 components:30 fromDate:v16];
+    v17 = [hk_gregorianCalendarWithLocalTimeZone components:30 fromDate:endDate];
 
-    v18 = [v10 components:30 fromDate:v13];
+    v18 = [hk_gregorianCalendarWithLocalTimeZone components:30 fromDate:v13];
     v19 = [v18 copy];
     [v19 setDay:v12];
     if ([v15 isEqual:v18])
@@ -355,15 +355,15 @@ LABEL_7:
   return v5;
 }
 
-- (id)_remoteChartDisplayTypeForTypeIdentifier:(id)a3
+- (id)_remoteChartDisplayTypeForTypeIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HKHealthChartFactory *)self standardChartDisplayTypeIdentifierForTypeIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(HKHealthChartFactory *)self standardChartDisplayTypeIdentifierForTypeIdentifier:identifierCopy];
   if (v5)
   {
-    v6 = [(HKHealthChartFactory *)self displayTypeController];
-    v7 = [v6 displayTypeWithIdentifier:v5];
+    displayTypeController = [(HKHealthChartFactory *)self displayTypeController];
+    v7 = [displayTypeController displayTypeWithIdentifier:v5];
   }
 
   else
@@ -378,14 +378,14 @@ LABEL_7:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v14 = 138412290;
-        v15 = v4;
+        v15 = identifierCopy;
         _os_log_impl(&dword_1C3942000, v10, OS_LOG_TYPE_INFO, "Falling back to default chart for %@", &v14, 0xCu);
       }
     }
 
     displayTypeController = self->_displayTypeController;
-    v6 = [MEMORY[0x1E696C2E0] _typeWithIdentifier:v4];
-    v7 = [(HKDisplayTypeController *)displayTypeController displayTypeForObjectType:v6];
+    displayTypeController = [MEMORY[0x1E696C2E0] _typeWithIdentifier:identifierCopy];
+    v7 = [(HKDisplayTypeController *)displayTypeController displayTypeForObjectType:displayTypeController];
   }
 
   v12 = v7;
@@ -393,32 +393,32 @@ LABEL_7:
   return v12;
 }
 
-- (id)_remoteDataSourcesForDisplayType:(id)a3 forTimeScopes:(id)a4 audience:(id)a5
+- (id)_remoteDataSourcesForDisplayType:(id)type forTimeScopes:(id)scopes audience:(id)audience
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 displayTypeIdentifier];
-  if (v11 == 276)
+  typeCopy = type;
+  scopesCopy = scopes;
+  audienceCopy = audience;
+  displayTypeIdentifier = [typeCopy displayTypeIdentifier];
+  if (displayTypeIdentifier == 276)
   {
-    v12 = [(HKHealthChartFactory *)self _sleepApneaRemoteDataSourcesForDisplayType:v8 forTimeScopes:v9];
+    v12 = [(HKHealthChartFactory *)self _sleepApneaRemoteDataSourcesForDisplayType:typeCopy forTimeScopes:scopesCopy];
   }
 
-  else if (v11 == 124)
+  else if (displayTypeIdentifier == 124)
   {
-    v12 = [(HKHealthChartFactory *)self _cardioFitnessDataSourcesForDisplayType:v8 forTimeScopes:v9];
+    v12 = [(HKHealthChartFactory *)self _cardioFitnessDataSourcesForDisplayType:typeCopy forTimeScopes:scopesCopy];
   }
 
   else
   {
-    if (v11 == 63)
+    if (displayTypeIdentifier == 63)
     {
-      [(HKHealthChartFactory *)self _sleepRemoteDataSourcesForDisplayType:v8 forTimeScopes:v9 audience:v10];
+      [(HKHealthChartFactory *)self _sleepRemoteDataSourcesForDisplayType:typeCopy forTimeScopes:scopesCopy audience:audienceCopy];
     }
 
     else
     {
-      [(HKHealthChartFactory *)self _defaultRemoteDataSourcesForDisplayType:v8 forTimeScopes:v9];
+      [(HKHealthChartFactory *)self _defaultRemoteDataSourcesForDisplayType:typeCopy forTimeScopes:scopesCopy];
     }
     v12 = ;
   }
@@ -428,26 +428,26 @@ LABEL_7:
   return v13;
 }
 
-- (id)_sleepRemoteDataSourcesForDisplayType:(id)a3 forTimeScopes:(id)a4 audience:(id)a5
+- (id)_sleepRemoteDataSourcesForDisplayType:(id)type forTimeScopes:(id)scopes audience:(id)audience
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HKHealthChartFactory *)self sleepDataSourceProvider];
+  typeCopy = type;
+  scopesCopy = scopes;
+  audienceCopy = audience;
+  sleepDataSourceProvider = [(HKHealthChartFactory *)self sleepDataSourceProvider];
 
-  if (!v11)
+  if (!sleepDataSourceProvider)
   {
     v16 = [[_HKRemoteDataSources alloc] initSupportsChartQueryDataGeneration:0];
     goto LABEL_23;
   }
 
-  v26 = v8;
-  if (!v10 || (v12 = [v10 integerValue], v12 == 1))
+  v26 = typeCopy;
+  if (!audienceCopy || (v12 = [audienceCopy integerValue], v12 == 1))
   {
-    v13 = [(HKHealthChartFactory *)self sleepDataSourceProvider];
-    v14 = [(HKHealthChartFactory *)self healthStore];
-    v15 = [v13 makeSleepDataSourceFromHealthStore:v14 representativeDisplayType:v8];
+    sleepDataSourceProvider2 = [(HKHealthChartFactory *)self sleepDataSourceProvider];
+    healthStore = [(HKHealthChartFactory *)self healthStore];
+    v15 = [sleepDataSourceProvider2 makeSleepDataSourceFromHealthStore:healthStore representativeDisplayType:typeCopy];
   }
 
   else
@@ -458,9 +458,9 @@ LABEL_7:
       goto LABEL_10;
     }
 
-    v13 = [(HKHealthChartFactory *)self sleepDataSourceProvider];
-    v14 = [(HKHealthChartFactory *)self healthStore];
-    v15 = [v13 makeSleepStagesDataSourceFromHealthStore:v14 representativeDisplayType:v8];
+    sleepDataSourceProvider2 = [(HKHealthChartFactory *)self sleepDataSourceProvider];
+    healthStore = [(HKHealthChartFactory *)self healthStore];
+    v15 = [sleepDataSourceProvider2 makeSleepStagesDataSourceFromHealthStore:healthStore representativeDisplayType:typeCopy];
   }
 
   v17 = v15;
@@ -471,7 +471,7 @@ LABEL_10:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v18 = v9;
+  v18 = scopesCopy;
   v19 = [v18 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v19)
   {
@@ -509,28 +509,28 @@ LABEL_10:
     while (v20);
   }
 
-  v8 = v26;
+  typeCopy = v26;
 LABEL_23:
 
   return v16;
 }
 
-- (id)_cardioFitnessDataSourcesForDisplayType:(id)a3 forTimeScopes:(id)a4
+- (id)_cardioFitnessDataSourcesForDisplayType:(id)type forTimeScopes:(id)scopes
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  scopesCopy = scopes;
   v8 = [HKRemoteCardioFitnessDataSource alloc];
-  v9 = [(HKHealthChartFactory *)self unitPreferenceController];
-  v10 = [(HKHealthChartFactory *)self healthStore];
-  v11 = [(HKRemoteCardioFitnessDataSource *)v8 initWithUnitController:v9 displayType:v6 healthStore:v10];
+  unitPreferenceController = [(HKHealthChartFactory *)self unitPreferenceController];
+  healthStore = [(HKHealthChartFactory *)self healthStore];
+  v11 = [(HKRemoteCardioFitnessDataSource *)v8 initWithUnitController:unitPreferenceController displayType:typeCopy healthStore:healthStore];
 
   v12 = [[_HKRemoteDataSources alloc] initSupportsChartQueryDataGeneration:1];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v13 = v7;
+  v13 = scopesCopy;
   v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v14)
   {
@@ -571,21 +571,21 @@ LABEL_23:
   return v12;
 }
 
-- (id)_sleepApneaRemoteDataSourcesForDisplayType:(id)a3 forTimeScopes:(id)a4
+- (id)_sleepApneaRemoteDataSourcesForDisplayType:(id)type forTimeScopes:(id)scopes
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  scopesCopy = scopes;
   v8 = [HKRemoteNotificationLevelCategoryDataSource alloc];
-  v9 = [(HKHealthChartFactory *)self healthStore];
-  v10 = [(HKRemoteNotificationLevelCategoryDataSource *)v8 initWithDisplayType:v6 healthStore:v9];
+  healthStore = [(HKHealthChartFactory *)self healthStore];
+  v10 = [(HKRemoteNotificationLevelCategoryDataSource *)v8 initWithDisplayType:typeCopy healthStore:healthStore];
 
   v11 = [[_HKRemoteDataSources alloc] initSupportsChartQueryDataGeneration:1];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = v7;
+  v12 = scopesCopy;
   v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v13)
   {
@@ -626,17 +626,17 @@ LABEL_23:
   return v11;
 }
 
-- (id)_defaultRemoteDataSourcesForDisplayType:(id)a3 forTimeScopes:(id)a4
+- (id)_defaultRemoteDataSourcesForDisplayType:(id)type forTimeScopes:(id)scopes
 {
   v28 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v6 = a4;
+  typeCopy = type;
+  scopesCopy = scopes;
   v7 = objc_alloc_init(_HKRemoteDataSources);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v6;
+  v8 = scopesCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v9)
   {
@@ -658,16 +658,16 @@ LABEL_23:
           v17 = HKLogWellnessDashboard();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
-            [(HKHealthChartFactory *)v25 _defaultRemoteDataSourcesForDisplayType:v20 forTimeScopes:&v26, v17];
+            [(HKHealthChartFactory *)v25 _defaultRemoteDataSourcesForDisplayType:typeCopy forTimeScopes:&v26, v17];
           }
         }
 
         else
         {
-          v14 = [v13 integerValue];
-          v15 = [(HKHealthChartFactory *)self healthStore];
-          v16 = [(HKHealthChartFactory *)self unitPreferenceController];
-          v17 = [v20 hk_healthQueryChartCacheDataSourceForTimeScope:v14 healthStore:v15 unitController:v16];
+          integerValue = [v13 integerValue];
+          healthStore = [(HKHealthChartFactory *)self healthStore];
+          unitPreferenceController = [(HKHealthChartFactory *)self unitPreferenceController];
+          v17 = [typeCopy hk_healthQueryChartCacheDataSourceForTimeScope:integerValue healthStore:healthStore unitController:unitPreferenceController];
 
           -[_HKRemoteDataSources setDataSource:forTimeScope:](v7, "setDataSource:forTimeScope:", v17, [v13 integerValue]);
         }
@@ -679,24 +679,24 @@ LABEL_23:
     while (v10);
   }
 
-  v18 = [(_HKRemoteDataSources *)v7 allDataSources];
-  if ([v18 count])
+  allDataSources = [(_HKRemoteDataSources *)v7 allDataSources];
+  if ([allDataSources count])
   {
-    -[_HKRemoteDataSources setSupportsChartQueryDataGeneration:](v7, "setSupportsChartQueryDataGeneration:", [v18 hk_allObjectsPassTest:&__block_literal_global_321]);
+    -[_HKRemoteDataSources setSupportsChartQueryDataGeneration:](v7, "setSupportsChartQueryDataGeneration:", [allDataSources hk_allObjectsPassTest:&__block_literal_global_321]);
   }
 
   return v7;
 }
 
-- (id)_remoteStatisticsIntervalForDisplayType:(id)a3 timeScope:(int64_t)a4
+- (id)_remoteStatisticsIntervalForDisplayType:(id)type timeScope:(int64_t)scope
 {
-  v5 = a3;
-  v6 = [v5 chartingRules];
-  v7 = [v6 remoteChartConfiguration];
+  typeCopy = type;
+  chartingRules = [typeCopy chartingRules];
+  remoteChartConfiguration = [chartingRules remoteChartConfiguration];
 
-  if (!v7 || ([v5 chartingRules], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "remoteChartConfiguration"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "statisticIntervalComponentsForTimeScope:", a4), v10 = objc_claimAutoreleasedReturnValue(), v9, v8, !v10))
+  if (!remoteChartConfiguration || ([typeCopy chartingRules], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "remoteChartConfiguration"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "statisticIntervalComponentsForTimeScope:", scope), v10 = objc_claimAutoreleasedReturnValue(), v9, v8, !v10))
   {
-    v11 = [v5 hk_customSeriesPointIntervalComponentsForTimeScope:a4 resolution:0];
+    v11 = [typeCopy hk_customSeriesPointIntervalComponentsForTimeScope:scope resolution:0];
     if (v11)
     {
       v10 = v11;
@@ -704,7 +704,7 @@ LABEL_23:
 
     else
     {
-      v12 = [HKGraphZoomLevelConfiguration configurationForZoomLevel:a4];
+      v12 = [HKGraphZoomLevelConfiguration configurationForZoomLevel:scope];
       v10 = [v12 seriesPointIntervalComponentsAtResolution:0];
     }
   }
@@ -712,16 +712,16 @@ LABEL_23:
   return v10;
 }
 
-- (void)encodeChartQueryDataForTypeIdentifier:(id)a3 forTimeScopes:(id)a4 timeScopeReferenceDate:(id)a5 audience:(unint64_t)a6 completionHandler:(id)a7
+- (void)encodeChartQueryDataForTypeIdentifier:(id)identifier forTimeScopes:(id)scopes timeScopeReferenceDate:(id)date audience:(unint64_t)audience completionHandler:(id)handler
 {
   v52 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = v13;
-  v17 = [v13 allObjects];
-  v18 = [v17 hk_map:&__block_literal_global_324];
+  identifierCopy = identifier;
+  scopesCopy = scopes;
+  dateCopy = date;
+  handlerCopy = handler;
+  v16 = scopesCopy;
+  allObjects = [scopesCopy allObjects];
+  v18 = [allObjects hk_map:&__block_literal_global_324];
   v34 = [v18 componentsJoinedByString:{@", "}];
 
   _HKInitializeLogging();
@@ -733,25 +733,25 @@ LABEL_23:
     v20 = HKLogWellnessDashboard();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
-      v21 = HKStringForChartDataSourceQueryRequestAudience(a6);
+      v21 = HKStringForChartDataSourceQueryRequestAudience(audience);
       *buf = 138412802;
       v47 = v21;
       v48 = 2112;
-      v49 = v12;
+      v49 = identifierCopy;
       v50 = 2112;
       v51 = v34;
       _os_log_impl(&dword_1C3942000, v20, OS_LOG_TYPE_INFO, "[RemoteCharting]_%@_%@: Starting query for timeScopes: %@", buf, 0x20u);
     }
   }
 
-  v22 = [(HKHealthChartFactory *)self _remoteChartDisplayTypeForTypeIdentifier:v12];
+  v22 = [(HKHealthChartFactory *)self _remoteChartDisplayTypeForTypeIdentifier:identifierCopy];
   if (v22)
   {
-    v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
-    v24 = [(HKHealthChartFactory *)self _remoteDataSourcesForDisplayType:v22 forTimeScopes:v13 audience:v23];
+    v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:audience];
+    v24 = [(HKHealthChartFactory *)self _remoteDataSourcesForDisplayType:v22 forTimeScopes:scopesCopy audience:v23];
 
-    v25 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
-    v26 = [[HKRemoteDateIntervals alloc] initWithDisplayType:v22 fromEndDate:v14];
+    hk_gregorianCalendarWithLocalTimeZone = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
+    v26 = [[HKRemoteDateIntervals alloc] initWithDisplayType:v22 fromEndDate:dateCopy];
     v32 = v22;
     v33 = v24;
     if ([v24 supportsChartQueryDataGeneration])
@@ -760,51 +760,51 @@ LABEL_23:
       v35[1] = 3221225472;
       v35[2] = __126__HKHealthChartFactory_encodeChartQueryDataForTypeIdentifier_forTimeScopes_timeScopeReferenceDate_audience_completionHandler___block_invoke_332;
       v35[3] = &unk_1E81B5810;
-      v45 = a6;
-      v36 = v12;
-      v37 = self;
+      audienceCopy = audience;
+      v36 = identifierCopy;
+      selfCopy = self;
       v38 = v16;
       v39 = v22;
       v40 = v26;
       v41 = v24;
-      v42 = v25;
+      v42 = hk_gregorianCalendarWithLocalTimeZone;
       v43 = v34;
-      v44 = v15;
-      [(HKHealthChartFactory *)self _executeFetchOrSkipForTimeScopes:v38 timeScope:6 audience:a6 displayType:v39 remoteDateIntervals:v40 dataSources:v41 gregorianCalendar:v42 completion:v35];
+      v44 = handlerCopy;
+      [(HKHealthChartFactory *)self _executeFetchOrSkipForTimeScopes:v38 timeScope:6 audience:audience displayType:v39 remoteDateIntervals:v40 dataSources:v41 gregorianCalendar:v42 completion:v35];
 
-      v27 = v36;
+      identifierCopy = v36;
     }
 
     else
     {
-      v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Type %@ does not support chart query data generation", v12];
+      identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Type %@ does not support chart query data generation", identifierCopy];
       _HKInitializeLogging();
       v29 = HKLogWellnessDashboard();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
-        v31 = HKStringForChartDataSourceQueryRequestAudience(a6);
+        v31 = HKStringForChartDataSourceQueryRequestAudience(audience);
         *buf = 138412802;
         v47 = v31;
         v48 = 2112;
-        v49 = v12;
+        v49 = identifierCopy;
         v50 = 2112;
-        v51 = v27;
+        v51 = identifierCopy;
         _os_log_error_impl(&dword_1C3942000, v29, OS_LOG_TYPE_ERROR, "[RemoteCharting]_%@_%@: %@", buf, 0x20u);
       }
 
-      v30 = [MEMORY[0x1E696ABC0] hk_error:11 description:v27];
-      (*(v15 + 2))(v15, 0, v30);
+      v30 = [MEMORY[0x1E696ABC0] hk_error:11 description:identifierCopy];
+      (*(handlerCopy + 2))(handlerCopy, 0, v30);
     }
 
     v22 = v32;
-    v28 = v33;
+    identifierCopy2 = v33;
   }
 
   else
   {
-    v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Type %@ does not have a valid display type.", v12];
-    v25 = [MEMORY[0x1E696ABC0] hk_error:11 description:v28];
-    (*(v15 + 2))(v15, 0, v25);
+    identifierCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Type %@ does not have a valid display type.", identifierCopy];
+    hk_gregorianCalendarWithLocalTimeZone = [MEMORY[0x1E696ABC0] hk_error:11 description:identifierCopy2];
+    (*(handlerCopy + 2))(handlerCopy, 0, hk_gregorianCalendarWithLocalTimeZone);
   }
 }
 
@@ -1036,58 +1036,58 @@ void __126__HKHealthChartFactory_encodeChartQueryDataForTypeIdentifier_forTimeSc
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)_executeFetchOrSkipForTimeScopes:(id)a3 timeScope:(int64_t)a4 audience:(unint64_t)a5 displayType:(id)a6 remoteDateIntervals:(id)a7 dataSources:(id)a8 gregorianCalendar:(id)a9 completion:(id)a10
+- (void)_executeFetchOrSkipForTimeScopes:(id)scopes timeScope:(int64_t)scope audience:(unint64_t)audience displayType:(id)type remoteDateIntervals:(id)intervals dataSources:(id)sources gregorianCalendar:(id)calendar completion:(id)self0
 {
   v63 = *MEMORY[0x1E69E9840];
-  v50 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = a10;
+  typeCopy = type;
+  intervalsCopy = intervals;
+  sourcesCopy = sources;
+  calendarCopy = calendar;
+  completionCopy = completion;
   v20 = MEMORY[0x1E696AD98];
-  v21 = a3;
-  v22 = [v20 numberWithInteger:a4];
-  v23 = [v21 member:v22];
+  scopesCopy = scopes;
+  v22 = [v20 numberWithInteger:scope];
+  v23 = [scopesCopy member:v22];
 
-  v49 = v17;
+  v49 = sourcesCopy;
   if (v23)
   {
-    v47 = a5;
-    v24 = [(HKHealthChartFactory *)self _remoteStatisticsIntervalForDisplayType:v50 timeScope:a4];
-    v25 = [v17 dataSourceForTimeScope:a4];
+    audienceCopy = audience;
+    v24 = [(HKHealthChartFactory *)self _remoteStatisticsIntervalForDisplayType:typeCopy timeScope:scope];
+    v25 = [sourcesCopy dataSourceForTimeScope:scope];
     v56 = 0;
-    v26 = [v16 dateIntervalForTimeScope:a4 withGregorianCalendar:v18 error:&v56];
+    v26 = [intervalsCopy dateIntervalForTimeScope:scope withGregorianCalendar:calendarCopy error:&v56];
     v27 = v56;
-    v28 = v16;
+    v28 = intervalsCopy;
     if (!v27 || v26)
     {
       v45 = v27;
       v30 = [HKHealthQueryChartCacheQueryRequest alloc];
       [v26 startDate];
-      v31 = self;
-      v32 = v19;
+      selfCopy = self;
+      v32 = completionCopy;
       v33 = v25;
-      v34 = v18;
+      v34 = calendarCopy;
       v36 = v35 = v24;
       [v26 endDate];
       v38 = v37 = v28;
-      v39 = [(HKHealthQueryChartCacheQueryRequest *)v30 initWithStartDate:v36 endDate:v38 statisticsInterval:v35 audience:v47];
+      v39 = [(HKHealthQueryChartCacheQueryRequest *)v30 initWithStartDate:v36 endDate:v38 statisticsInterval:v35 audience:audienceCopy];
 
       v28 = v37;
       v24 = v35;
-      v18 = v34;
+      calendarCopy = v34;
       v25 = v33;
-      v19 = v32;
-      v40 = [(HKHealthChartFactory *)v31 healthStore];
+      completionCopy = v32;
+      healthStore = [(HKHealthChartFactory *)selfCopy healthStore];
       v51[0] = MEMORY[0x1E69E9820];
       v51[1] = 3221225472;
       v51[2] = __149__HKHealthChartFactory__executeFetchOrSkipForTimeScopes_timeScope_audience_displayType_remoteDateIntervals_dataSources_gregorianCalendar_completion___block_invoke;
       v51[3] = &unk_1E81B5838;
       v52 = v26;
-      v53 = v50;
-      v54 = v18;
-      v55 = v19;
-      v41 = [v25 generateSharableQueryDataForRequest:v39 healthStore:v40 completionHandler:v51];
+      v53 = typeCopy;
+      v54 = calendarCopy;
+      v55 = completionCopy;
+      v41 = [v25 generateSharableQueryDataForRequest:v39 healthStore:healthStore completionHandler:v51];
 
       v27 = v45;
     }
@@ -1098,15 +1098,15 @@ void __126__HKHealthChartFactory_encodeChartQueryDataForTypeIdentifier_forTimeSc
       v29 = HKLogWellnessDashboard();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
-        v42 = HKStringForChartDataSourceQueryRequestAudience(v47);
-        v48 = [v50 objectType];
-        v43 = [v48 identifier];
+        v42 = HKStringForChartDataSourceQueryRequestAudience(audienceCopy);
+        objectType = [typeCopy objectType];
+        identifier = [objectType identifier];
         [v27 description];
         v44 = v46 = v27;
         *buf = 138412802;
         v58 = v42;
         v59 = 2112;
-        v60 = v43;
+        v60 = identifier;
         v61 = 2112;
         v62 = v44;
         _os_log_error_impl(&dword_1C3942000, v29, OS_LOG_TYPE_ERROR, "[RemoteCharting]_%@_%@ Error: %@", buf, 0x20u);
@@ -1114,14 +1114,14 @@ void __126__HKHealthChartFactory_encodeChartQueryDataForTypeIdentifier_forTimeSc
         v27 = v46;
       }
 
-      (*(v19 + 2))(v19, 0, 0, v27);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v27);
     }
   }
 
   else
   {
-    (*(v19 + 2))(v19, 0, 0, 0);
-    v28 = v16;
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
+    v28 = intervalsCopy;
   }
 }
 
@@ -1137,24 +1137,24 @@ void __149__HKHealthChartFactory__executeFetchOrSkipForTimeScopes_timeScope_audi
   (*(a1[7] + 16))();
 }
 
-- (void)encodeChartQueryDataForTypeIdentifier:(id)a3 completionHandler:(id)a4
+- (void)encodeChartQueryDataForTypeIdentifier:(id)identifier completionHandler:(id)handler
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v10 = [v6 setWithObjects:{&unk_1F4381F48, &unk_1F4381F60, 0}];
   v9 = [MEMORY[0x1E695DF00] now];
-  [(HKHealthChartFactory *)self encodeChartQueryDataForTypeIdentifier:v8 forTimeScopes:v10 timeScopeReferenceDate:v9 audience:0 completionHandler:v7];
+  [(HKHealthChartFactory *)self encodeChartQueryDataForTypeIdentifier:identifierCopy forTimeScopes:v10 timeScopeReferenceDate:v9 audience:0 completionHandler:handlerCopy];
 }
 
-- (id)remoteInteractiveChartForTypeIdentifier:(id)a3 model:(id)a4 chartSummaryTrendModel:(id)a5 displayDate:(id)a6
+- (id)remoteInteractiveChartForTypeIdentifier:(id)identifier model:(id)model chartSummaryTrendModel:(id)trendModel displayDate:(id)date
 {
   v48[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(HKHealthChartFactory *)self _remoteChartDisplayTypeForTypeIdentifier:v11];
+  identifierCopy = identifier;
+  modelCopy = model;
+  trendModelCopy = trendModel;
+  dateCopy = date;
+  v15 = [(HKHealthChartFactory *)self _remoteChartDisplayTypeForTypeIdentifier:identifierCopy];
   if (v15)
   {
     v16 = [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F4381F48, &unk_1F4381F60, 0}];
@@ -1162,32 +1162,32 @@ void __149__HKHealthChartFactory__executeFetchOrSkipForTimeScopes_timeScope_audi
 
     if ([v17 supportsChartQueryDataGeneration])
     {
-      v46 = v14;
+      v46 = dateCopy;
       v42 = v17;
-      v39 = [(HKHealthChartFactory *)self _remoteDisplayTypeConfigurationFromDataSources:v17 model:v12 originalDisplayType:v15];
-      v18 = [(HKHealthChartFactory *)self _sourceTimeZoneFromModel:v12];
-      v41 = [(HKHealthChartFactory *)self _sourceFirstWeekdayFromModel:v12];
-      v45 = v13;
+      v39 = [(HKHealthChartFactory *)self _remoteDisplayTypeConfigurationFromDataSources:v17 model:modelCopy originalDisplayType:v15];
+      v18 = [(HKHealthChartFactory *)self _sourceTimeZoneFromModel:modelCopy];
+      v41 = [(HKHealthChartFactory *)self _sourceFirstWeekdayFromModel:modelCopy];
+      v45 = trendModelCopy;
       v19 = MEMORY[0x1E696AB80];
-      v20 = [v12 monthDateInterval];
-      v21 = [v19 hk_dateIntervalWithCodableDateInterval:v20 sourceTimeZone:v18];
+      monthDateInterval = [modelCopy monthDateInterval];
+      v21 = [v19 hk_dateIntervalWithCodableDateInterval:monthDateInterval sourceTimeZone:v18];
 
       v22 = MEMORY[0x1E696AB80];
-      v23 = [v12 sixMonthDateInterval];
+      sixMonthDateInterval = [modelCopy sixMonthDateInterval];
       v44 = v18;
-      v24 = [v22 hk_dateIntervalWithCodableDateInterval:v23 sourceTimeZone:v18];
+      v24 = [v22 hk_dateIntervalWithCodableDateInterval:sixMonthDateInterval sourceTimeZone:v18];
 
-      v25 = [v21 startDate];
+      startDate = [v21 startDate];
       v43 = v21;
-      v26 = [v21 endDate];
-      v27 = [HKValueRange valueRangeWithMinValue:v25 maxValue:v26];
+      endDate = [v21 endDate];
+      v27 = [HKValueRange valueRangeWithMinValue:startDate maxValue:endDate];
 
-      v28 = [v24 startDate];
+      startDate2 = [v24 startDate];
       v40 = v24;
-      v29 = [v24 endDate];
-      v30 = [HKValueRange valueRangeWithMinValue:v28 maxValue:v29];
+      endDate2 = [v24 endDate];
+      v30 = [HKValueRange valueRangeWithMinValue:startDate2 maxValue:endDate2];
 
-      v13 = v45;
+      trendModelCopy = v45;
       v47[0] = &unk_1F4381F48;
       v47[1] = &unk_1F4381F60;
       v31 = v27;
@@ -1195,20 +1195,20 @@ void __149__HKHealthChartFactory__executeFetchOrSkipForTimeScopes_timeScope_audi
       v48[1] = v30;
       v32 = v39;
       v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:2];
-      v34 = [v39 remoteDisplayType];
-      v35 = [v39 initialTimeScope];
+      remoteDisplayType = [v39 remoteDisplayType];
+      initialTimeScope = [v39 initialTimeScope];
       if (v45)
       {
-        [(HKHealthChartFactory *)self _buildTrendRemoteOverlayChartViewControllerWithDisplayType:v34 timeScopeRanges:v33 initialTimeScope:v35 chartSummaryTrendModel:v45 firstWeekday:v41 displayDate:v46];
+        [(HKHealthChartFactory *)self _buildTrendRemoteOverlayChartViewControllerWithDisplayType:remoteDisplayType timeScopeRanges:v33 initialTimeScope:initialTimeScope chartSummaryTrendModel:v45 firstWeekday:v41 displayDate:v46];
       }
 
       else
       {
-        [(HKHealthChartFactory *)self _buildStandardRemoteChartViewControllerWithDisplayType:v34 timeScopeRanges:v33 initialTimeScope:v35 firstWeekday:v41 displayDate:v46];
+        [(HKHealthChartFactory *)self _buildStandardRemoteChartViewControllerWithDisplayType:remoteDisplayType timeScopeRanges:v33 initialTimeScope:initialTimeScope firstWeekday:v41 displayDate:v46];
       }
       v37 = ;
 
-      v14 = v46;
+      dateCopy = v46;
       v17 = v42;
     }
 
@@ -1218,7 +1218,7 @@ void __149__HKHealthChartFactory__executeFetchOrSkipForTimeScopes_timeScope_audi
       v32 = HKLogWellnessDashboard();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        [HKHealthChartFactory remoteInteractiveChartForTypeIdentifier:v11 model:v32 chartSummaryTrendModel:? displayDate:?];
+        [HKHealthChartFactory remoteInteractiveChartForTypeIdentifier:identifierCopy model:v32 chartSummaryTrendModel:? displayDate:?];
       }
 
       v37 = 0;
@@ -1227,8 +1227,8 @@ void __149__HKHealthChartFactory__executeFetchOrSkipForTimeScopes_timeScope_audi
 
   else
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"HKHealthChartFactory.m" lineNumber:624 description:{@"Type %@ does not have a valid display type.", v11}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKHealthChartFactory.m" lineNumber:624 description:{@"Type %@ does not have a valid display type.", identifierCopy}];
 
     v37 = 0;
   }
@@ -1236,13 +1236,13 @@ void __149__HKHealthChartFactory__executeFetchOrSkipForTimeScopes_timeScope_audi
   return v37;
 }
 
-- (id)breathingDisturbancesRemoteInteractiveChartWithBreathingDisturbancesModel:(id)a3 sleepApneaEventModel:(id)a4 sleepApneaEventChartData:(id)a5 displayDate:(id)a6
+- (id)breathingDisturbancesRemoteInteractiveChartWithBreathingDisturbancesModel:(id)model sleepApneaEventModel:(id)eventModel sleepApneaEventChartData:(id)data displayDate:(id)date
 {
   v55[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  modelCopy = model;
+  eventModelCopy = eventModel;
+  dataCopy = data;
+  dateCopy = date;
   v15 = *MEMORY[0x1E696BC50];
   v16 = [(HKHealthChartFactory *)self _remoteChartDisplayTypeForTypeIdentifier:v15];
   if (v16)
@@ -1251,35 +1251,35 @@ void __149__HKHealthChartFactory__executeFetchOrSkipForTimeScopes_timeScope_audi
     v53 = [(HKHealthChartFactory *)self _remoteChartDisplayTypeForTypeIdentifier:v17];
     if (v53)
     {
-      v50 = v14;
+      v50 = dateCopy;
       v47 = v15;
       v18 = [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F4381F48, &unk_1F4381F60, 0}];
       v48 = [(HKHealthChartFactory *)self _remoteDataSourcesForDisplayType:v16 forTimeScopes:v18];
 
-      v43 = [(HKHealthChartFactory *)self _remoteDisplayTypeConfigurationFromDataSources:v48 model:v11 originalDisplayType:v16];
-      v19 = [(HKHealthChartFactory *)self _sourceTimeZoneFromModel:v11];
-      v45 = [(HKHealthChartFactory *)self _sourceFirstWeekdayFromModel:v11];
+      v43 = [(HKHealthChartFactory *)self _remoteDisplayTypeConfigurationFromDataSources:v48 model:modelCopy originalDisplayType:v16];
+      v19 = [(HKHealthChartFactory *)self _sourceTimeZoneFromModel:modelCopy];
+      v45 = [(HKHealthChartFactory *)self _sourceFirstWeekdayFromModel:modelCopy];
       v20 = MEMORY[0x1E696AB80];
-      [v11 monthDateInterval];
-      v21 = v51 = v13;
+      [modelCopy monthDateInterval];
+      v21 = v51 = dataCopy;
       v46 = v19;
       v22 = [v20 hk_dateIntervalWithCodableDateInterval:v21 sourceTimeZone:v19];
 
       v23 = MEMORY[0x1E696AB80];
-      [v11 sixMonthDateInterval];
-      v24 = v52 = v12;
+      [modelCopy sixMonthDateInterval];
+      v24 = v52 = eventModelCopy;
       v25 = [v23 hk_dateIntervalWithCodableDateInterval:v24 sourceTimeZone:v19];
 
       v44 = v22;
-      v26 = [v22 startDate];
+      startDate = [v22 startDate];
       [v22 endDate];
       v27 = v49 = v17;
-      v41 = [HKValueRange valueRangeWithMinValue:v26 maxValue:v27];
+      v41 = [HKValueRange valueRangeWithMinValue:startDate maxValue:v27];
 
       v42 = v25;
-      v28 = [v25 startDate];
-      v29 = [v25 endDate];
-      v30 = [HKValueRange valueRangeWithMinValue:v28 maxValue:v29];
+      startDate2 = [v25 startDate];
+      endDate = [v25 endDate];
+      v30 = [HKValueRange valueRangeWithMinValue:startDate2 maxValue:endDate];
 
       v54[0] = &unk_1F4381F48;
       v54[1] = &unk_1F4381F60;
@@ -1290,22 +1290,22 @@ void __149__HKHealthChartFactory__executeFetchOrSkipForTimeScopes_timeScope_audi
       v33 = [(HKHealthChartFactory *)self _remoteDataSourcesForDisplayType:v53 forTimeScopes:v32];
 
       v34 = [(HKHealthChartFactory *)self _remoteDisplayTypeConfigurationFromDataSources:v33 model:v52 queryData:v51 originalDisplayType:v53];
-      v35 = [v43 remoteDisplayType];
-      v36 = [v34 remoteDisplayType];
-      v37 = -[HKHealthChartFactory _buildBreathingDisturbancesRemoteChartViewControllerWithDisplayType:apneaDisplayType:timeScopeRanges:initialTimeScope:firstWeekday:displayDate:](self, "_buildBreathingDisturbancesRemoteChartViewControllerWithDisplayType:apneaDisplayType:timeScopeRanges:initialTimeScope:firstWeekday:displayDate:", v35, v36, v31, [v43 initialTimeScope], v45, v50);
+      remoteDisplayType = [v43 remoteDisplayType];
+      remoteDisplayType2 = [v34 remoteDisplayType];
+      v37 = -[HKHealthChartFactory _buildBreathingDisturbancesRemoteChartViewControllerWithDisplayType:apneaDisplayType:timeScopeRanges:initialTimeScope:firstWeekday:displayDate:](self, "_buildBreathingDisturbancesRemoteChartViewControllerWithDisplayType:apneaDisplayType:timeScopeRanges:initialTimeScope:firstWeekday:displayDate:", remoteDisplayType, remoteDisplayType2, v31, [v43 initialTimeScope], v45, v50);
 
-      v13 = v51;
+      dataCopy = v51;
       v15 = v47;
-      v14 = v50;
+      dateCopy = v50;
 
-      v12 = v52;
+      eventModelCopy = v52;
       v17 = v49;
     }
 
     else
     {
-      v39 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v39 handleFailureInMethod:a2 object:self file:@"HKHealthChartFactory.m" lineNumber:686 description:{@"Type %@ does not have a valid display type.", v17}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HKHealthChartFactory.m" lineNumber:686 description:{@"Type %@ does not have a valid display type.", v17}];
 
       v37 = 0;
     }
@@ -1313,8 +1313,8 @@ void __149__HKHealthChartFactory__executeFetchOrSkipForTimeScopes_timeScope_audi
 
   else
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"HKHealthChartFactory.m" lineNumber:678 description:{@"Type %@ does not have a valid display type.", v15}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HKHealthChartFactory.m" lineNumber:678 description:{@"Type %@ does not have a valid display type.", v15}];
 
     v37 = 0;
   }
@@ -1322,87 +1322,87 @@ void __149__HKHealthChartFactory__executeFetchOrSkipForTimeScopes_timeScope_audi
   return v37;
 }
 
-- (id)_buildBreathingDisturbancesRemoteChartViewControllerWithDisplayType:(id)a3 apneaDisplayType:(id)a4 timeScopeRanges:(id)a5 initialTimeScope:(int64_t)a6 firstWeekday:(int64_t)a7 displayDate:(id)a8
+- (id)_buildBreathingDisturbancesRemoteChartViewControllerWithDisplayType:(id)type apneaDisplayType:(id)displayType timeScopeRanges:(id)ranges initialTimeScope:(int64_t)scope firstWeekday:(int64_t)weekday displayDate:(id)date
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v32 = a5;
-  v37 = a8;
-  v15 = [(HKHealthChartFactory *)self selectedTimeScopeController];
-  [v15 setSelectedTimeScope:a6];
+  typeCopy = type;
+  displayTypeCopy = displayType;
+  rangesCopy = ranges;
+  dateCopy = date;
+  selectedTimeScopeController = [(HKHealthChartFactory *)self selectedTimeScopeController];
+  [selectedTimeScopeController setSelectedTimeScope:scope];
 
-  v30 = [v13 hk_interactiveChartOptions] | 0xA0000;
-  v33 = [(HKHealthChartFactory *)self _remoteCalendarOverrideForDisplayType:v13];
+  v30 = [typeCopy hk_interactiveChartOptions] | 0xA0000;
+  v33 = [(HKHealthChartFactory *)self _remoteCalendarOverrideForDisplayType:typeCopy];
   v29 = [HKInteractiveChartOverlayViewController alloc];
-  v34 = v14;
-  v39 = v14;
+  v34 = displayTypeCopy;
+  v39 = displayTypeCopy;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1];
   v40[0] = v16;
-  v35 = v13;
-  v38 = v13;
+  v35 = typeCopy;
+  v38 = typeCopy;
   v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1];
   v40[1] = v31;
   v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
   v17 = [HKInteractiveChartStackHeight percentStackHeights:&unk_1F4381000];
-  v18 = [(HKHealthChartFactory *)self healthStore];
-  v19 = [(HKHealthChartFactory *)self unitPreferenceController];
-  v20 = [(HKHealthChartFactory *)self dateCache];
-  v21 = [(HKHealthChartFactory *)self chartDataCacheController];
-  v22 = [(HKHealthChartFactory *)self selectedTimeScopeController];
-  v23 = [(HKHealthChartFactory *)self sampleTypeDateRangeController];
-  if (v37)
+  healthStore = [(HKHealthChartFactory *)self healthStore];
+  unitPreferenceController = [(HKHealthChartFactory *)self unitPreferenceController];
+  dateCache = [(HKHealthChartFactory *)self dateCache];
+  chartDataCacheController = [(HKHealthChartFactory *)self chartDataCacheController];
+  selectedTimeScopeController2 = [(HKHealthChartFactory *)self selectedTimeScopeController];
+  sampleTypeDateRangeController = [(HKHealthChartFactory *)self sampleTypeDateRangeController];
+  if (dateCopy)
   {
-    v24 = v32;
-    v25 = [(HKInteractiveChartOverlayViewController *)v29 initWithStackedDisplayTypes:v36 primaryDisplayTypeStackIndex:&unk_1F4381F78 stackedDisplayTypeHeights:v17 healthStore:v18 unitPreferenceController:v19 dateCache:v20 chartDataCacheController:v21 selectedTimeScopeController:v22 sampleTypeDateRangeController:v23 initialXValue:v37 currentCalendarOverride:0 options:v30 timeScopeRanges:v32];
+    v24 = rangesCopy;
+    v25 = [(HKInteractiveChartOverlayViewController *)v29 initWithStackedDisplayTypes:v36 primaryDisplayTypeStackIndex:&unk_1F4381F78 stackedDisplayTypeHeights:v17 healthStore:healthStore unitPreferenceController:unitPreferenceController dateCache:dateCache chartDataCacheController:chartDataCacheController selectedTimeScopeController:selectedTimeScopeController2 sampleTypeDateRangeController:sampleTypeDateRangeController initialXValue:dateCopy currentCalendarOverride:0 options:v30 timeScopeRanges:rangesCopy];
   }
 
   else
   {
     v26 = [MEMORY[0x1E695DF00] now];
-    v25 = [(HKInteractiveChartOverlayViewController *)v29 initWithStackedDisplayTypes:v36 primaryDisplayTypeStackIndex:&unk_1F4381F78 stackedDisplayTypeHeights:v17 healthStore:v18 unitPreferenceController:v19 dateCache:v20 chartDataCacheController:v21 selectedTimeScopeController:v22 sampleTypeDateRangeController:v23 initialXValue:v26 currentCalendarOverride:0 options:v30 timeScopeRanges:v32];
+    v25 = [(HKInteractiveChartOverlayViewController *)v29 initWithStackedDisplayTypes:v36 primaryDisplayTypeStackIndex:&unk_1F4381F78 stackedDisplayTypeHeights:v17 healthStore:healthStore unitPreferenceController:unitPreferenceController dateCache:dateCache chartDataCacheController:chartDataCacheController selectedTimeScopeController:selectedTimeScopeController2 sampleTypeDateRangeController:sampleTypeDateRangeController initialXValue:v26 currentCalendarOverride:0 options:v30 timeScopeRanges:rangesCopy];
 
-    v24 = v32;
+    v24 = rangesCopy;
   }
 
   if (!v33)
   {
-    [(HKInteractiveChartViewController *)v25 setAnnotationDataSourceFirstWeekday:a7];
+    [(HKInteractiveChartViewController *)v25 setAnnotationDataSourceFirstWeekday:weekday];
   }
 
   return v25;
 }
 
-- (id)_sourceTimeZoneFromModel:(id)a3
+- (id)_sourceTimeZoneFromModel:(id)model
 {
-  v3 = a3;
-  if ([v3 hasMonthData])
+  modelCopy = model;
+  if ([modelCopy hasMonthData])
   {
-    v4 = [v3 monthData];
-    v5 = [v4 hasTimeZoneName];
+    monthData = [modelCopy monthData];
+    hasTimeZoneName = [monthData hasTimeZoneName];
 
-    if (v5)
+    if (hasTimeZoneName)
     {
       v6 = objc_alloc(MEMORY[0x1E695DFE8]);
-      v7 = [v3 monthData];
+      monthData2 = [modelCopy monthData];
 LABEL_7:
-      v10 = v7;
-      v11 = [v7 timeZoneName];
-      v12 = [v6 initWithName:v11];
+      v10 = monthData2;
+      timeZoneName = [monthData2 timeZoneName];
+      v12 = [v6 initWithName:timeZoneName];
 
       goto LABEL_9;
     }
   }
 
-  if ([v3 hasSixMonthData])
+  if ([modelCopy hasSixMonthData])
   {
-    v8 = [v3 sixMonthData];
-    v9 = [v8 hasTimeZoneName];
+    sixMonthData = [modelCopy sixMonthData];
+    hasTimeZoneName2 = [sixMonthData hasTimeZoneName];
 
-    if (v9)
+    if (hasTimeZoneName2)
     {
       v6 = objc_alloc(MEMORY[0x1E695DFE8]);
-      v7 = [v3 sixMonthData];
+      monthData2 = [modelCopy sixMonthData];
       goto LABEL_7;
     }
   }
@@ -1413,53 +1413,53 @@ LABEL_9:
   return v12;
 }
 
-- (int64_t)_sourceFirstWeekdayFromModel:(id)a3
+- (int64_t)_sourceFirstWeekdayFromModel:(id)model
 {
-  v3 = a3;
-  if ([v3 hasMonthData] && (objc_msgSend(v3, "monthData"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "hasFirstWeekday"), v4, v5))
+  modelCopy = model;
+  if ([modelCopy hasMonthData] && (objc_msgSend(modelCopy, "monthData"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "hasFirstWeekday"), v4, v5))
   {
-    v6 = [v3 monthData];
+    monthData = [modelCopy monthData];
   }
 
   else
   {
-    if (![v3 hasSixMonthData] || (objc_msgSend(v3, "sixMonthData"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "hasFirstWeekday"), v7, !v8))
+    if (![modelCopy hasSixMonthData] || (objc_msgSend(modelCopy, "sixMonthData"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "hasFirstWeekday"), v7, !v8))
     {
-      v10 = -1;
+      firstWeekday = -1;
       goto LABEL_9;
     }
 
-    v6 = [v3 sixMonthData];
+    monthData = [modelCopy sixMonthData];
   }
 
-  v9 = v6;
-  v10 = [v6 firstWeekday];
+  v9 = monthData;
+  firstWeekday = [monthData firstWeekday];
 
 LABEL_9:
-  return v10;
+  return firstWeekday;
 }
 
-- (id)_remoteDisplayTypeConfigurationFromDataSources:(id)a3 model:(id)a4 originalDisplayType:(id)a5
+- (id)_remoteDisplayTypeConfigurationFromDataSources:(id)sources model:(id)model originalDisplayType:(id)type
 {
   v47[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 monthData];
-  v12 = [v9 sixMonthData];
+  typeCopy = type;
+  modelCopy = model;
+  sourcesCopy = sources;
+  monthData = [modelCopy monthData];
+  sixMonthData = [modelCopy sixMonthData];
 
-  v13 = [v10 dataSourceForTimeScope:4];
-  v14 = [v10 dataSourceForTimeScope:3];
+  v13 = [sourcesCopy dataSourceForTimeScope:4];
+  v14 = [sourcesCopy dataSourceForTimeScope:3];
 
-  v44 = v11;
-  v15 = [v13 chartPointsFromQueryData:v11 dataIsFromRemoteSource:1];
+  v44 = monthData;
+  v15 = [v13 chartPointsFromQueryData:monthData dataIsFromRemoteSource:1];
   v45 = v14;
-  v43 = v12;
-  v16 = v12;
+  v43 = sixMonthData;
+  v16 = sixMonthData;
   v17 = v15;
   v18 = [v14 chartPointsFromQueryData:v16 dataIsFromRemoteSource:1];
-  v19 = [v17 chartPoints];
-  if (v19 && (v20 = v19, [v17 chartPoints], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "count"), v21, v20, v22))
+  chartPoints = [v17 chartPoints];
+  if (chartPoints && (v20 = chartPoints, [v17 chartPoints], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "count"), v21, v20, v22))
   {
     v23 = 4;
   }
@@ -1473,53 +1473,53 @@ LABEL_9:
   v24 = objc_alloc_init(HKRemoteChartDataSource);
   v25 = objc_alloc_init(HKRemoteChartDataSource);
   v41 = v24;
-  v26 = [(HKHealthChartFactory *)self _remoteGraphSeriesForDisplayType:v8 graphSeriesDataSource:v24 timeScope:4];
-  v27 = [(HKHealthChartFactory *)self _remoteGraphSeriesForDisplayType:v8 graphSeriesDataSource:v25 timeScope:3];
-  v28 = [v26 seriesDataSourceContext];
-  [(HKRemoteChartDataSource *)v24 setDataForTimeScope:4 seriesData:v17 dataSourceForMapping:v13 seriesDataSourceContext:v28];
+  v26 = [(HKHealthChartFactory *)self _remoteGraphSeriesForDisplayType:typeCopy graphSeriesDataSource:v24 timeScope:4];
+  v27 = [(HKHealthChartFactory *)self _remoteGraphSeriesForDisplayType:typeCopy graphSeriesDataSource:v25 timeScope:3];
+  seriesDataSourceContext = [v26 seriesDataSourceContext];
+  [(HKRemoteChartDataSource *)v24 setDataForTimeScope:4 seriesData:v17 dataSourceForMapping:v13 seriesDataSourceContext:seriesDataSourceContext];
 
-  v29 = [v27 seriesDataSourceContext];
+  seriesDataSourceContext2 = [v27 seriesDataSourceContext];
   v30 = v18;
-  [(HKRemoteChartDataSource *)v25 setDataForTimeScope:3 seriesData:v18 dataSourceForMapping:v45 seriesDataSourceContext:v29];
+  [(HKRemoteChartDataSource *)v25 setDataForTimeScope:3 seriesData:v18 dataSourceForMapping:v45 seriesDataSourceContext:seriesDataSourceContext2];
 
-  v31 = [(HKHealthChartFactory *)self _remoteCustomFormatterForDisplayType:v8];
+  v31 = [(HKHealthChartFactory *)self _remoteCustomFormatterForDisplayType:typeCopy];
   v32 = [HKInteractiveChartDisplayType alloc];
-  v33 = [v8 objectType];
+  objectType = [typeCopy objectType];
   v40 = v17;
-  v34 = [v33 code];
+  code = [objectType code];
   v46[0] = &unk_1F4381F48;
   v46[1] = &unk_1F4381F60;
   v47[0] = v26;
   v47[1] = v27;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:2];
   v35 = v39 = v13;
-  v36 = [(HKInteractiveChartDisplayType *)v32 initWithBaseDisplayType:v8 valueFormatter:v31 dataTypeCode:v34 seriesForTimeScopeMapping:v35];
+  v36 = [(HKInteractiveChartDisplayType *)v32 initWithBaseDisplayType:typeCopy valueFormatter:v31 dataTypeCode:code seriesForTimeScopeMapping:v35];
 
   v37 = [[_HKRemoteDisplayTypeConfiguration alloc] initWithInitialTimeScope:v42 remoteDisplayType:v36];
 
   return v37;
 }
 
-- (id)_remoteDisplayTypeConfigurationFromDataSources:(id)a3 model:(id)a4 queryData:(id)a5 originalDisplayType:(id)a6
+- (id)_remoteDisplayTypeConfigurationFromDataSources:(id)sources model:(id)model queryData:(id)data originalDisplayType:(id)type
 {
   v47[2] = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v13 dataSourceForTimeScope:4];
-  v15 = [v13 dataSourceForTimeScope:3];
+  typeCopy = type;
+  dataCopy = data;
+  modelCopy = model;
+  sourcesCopy = sources;
+  v14 = [sourcesCopy dataSourceForTimeScope:4];
+  v15 = [sourcesCopy dataSourceForTimeScope:3];
 
-  v16 = [(HKHealthChartFactory *)self _sourceTimeZoneFromModel:v12];
-  v17 = [v14 chartPointsFromNotificationQueryData:v11 sourceTimeZoneFromModel:v16];
+  v16 = [(HKHealthChartFactory *)self _sourceTimeZoneFromModel:modelCopy];
+  v17 = [v14 chartPointsFromNotificationQueryData:dataCopy sourceTimeZoneFromModel:v16];
 
-  v18 = [(HKHealthChartFactory *)self _sourceTimeZoneFromModel:v12];
+  v18 = [(HKHealthChartFactory *)self _sourceTimeZoneFromModel:modelCopy];
 
   v45 = v15;
-  v19 = [v15 chartPointsFromNotificationQueryData:v11 sourceTimeZoneFromModel:v18];
+  v19 = [v15 chartPointsFromNotificationQueryData:dataCopy sourceTimeZoneFromModel:v18];
 
-  v20 = [v17 chartPoints];
-  if (v20 && (v21 = v20, [v17 chartPoints], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "count"), v22, v21, v23))
+  chartPoints = [v17 chartPoints];
+  if (chartPoints && (v21 = chartPoints, [v17 chartPoints], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "count"), v22, v21, v23))
   {
     v24 = 4;
   }
@@ -1534,58 +1534,58 @@ LABEL_9:
   v26 = objc_alloc_init(HKRemoteChartDataSource);
   v27 = v25;
   v42 = v25;
-  v28 = [(HKHealthChartFactory *)self _remoteGraphSeriesForDisplayType:v10 graphSeriesDataSource:v25 timeScope:4];
-  v29 = [(HKHealthChartFactory *)self _remoteGraphSeriesForDisplayType:v10 graphSeriesDataSource:v26 timeScope:3];
-  v30 = [v28 seriesDataSourceContext];
+  v28 = [(HKHealthChartFactory *)self _remoteGraphSeriesForDisplayType:typeCopy graphSeriesDataSource:v25 timeScope:4];
+  v29 = [(HKHealthChartFactory *)self _remoteGraphSeriesForDisplayType:typeCopy graphSeriesDataSource:v26 timeScope:3];
+  seriesDataSourceContext = [v28 seriesDataSourceContext];
   v43 = v17;
-  [(HKRemoteChartDataSource *)v27 setDataForTimeScope:4 seriesData:v17 dataSourceForMapping:v14 seriesDataSourceContext:v30];
+  [(HKRemoteChartDataSource *)v27 setDataForTimeScope:4 seriesData:v17 dataSourceForMapping:v14 seriesDataSourceContext:seriesDataSourceContext];
 
-  v31 = [v29 seriesDataSourceContext];
+  seriesDataSourceContext2 = [v29 seriesDataSourceContext];
   v32 = v19;
-  [(HKRemoteChartDataSource *)v26 setDataForTimeScope:3 seriesData:v19 dataSourceForMapping:v45 seriesDataSourceContext:v31];
+  [(HKRemoteChartDataSource *)v26 setDataForTimeScope:3 seriesData:v19 dataSourceForMapping:v45 seriesDataSourceContext:seriesDataSourceContext2];
 
   v33 = [HKInteractiveChartDisplayType alloc];
-  v34 = [(HKHealthChartFactory *)self _remoteCustomFormatterForDisplayType:v10];
-  v35 = [v10 objectType];
+  v34 = [(HKHealthChartFactory *)self _remoteCustomFormatterForDisplayType:typeCopy];
+  objectType = [typeCopy objectType];
   v41 = v14;
-  v36 = [v35 code];
+  code = [objectType code];
   v46[0] = &unk_1F4381F48;
   v46[1] = &unk_1F4381F60;
   v47[0] = v28;
   v47[1] = v29;
   v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:2];
-  v38 = [(HKInteractiveChartDisplayType *)v33 initWithBaseDisplayType:v10 valueFormatter:v34 dataTypeCode:v36 seriesForTimeScopeMapping:v37];
+  v38 = [(HKInteractiveChartDisplayType *)v33 initWithBaseDisplayType:typeCopy valueFormatter:v34 dataTypeCode:code seriesForTimeScopeMapping:v37];
 
   v39 = [[_HKRemoteDisplayTypeConfiguration alloc] initWithInitialTimeScope:v44 remoteDisplayType:v38];
 
   return v39;
 }
 
-- (id)_remoteGraphSeriesForDisplayType:(id)a3 graphSeriesDataSource:(id)a4 timeScope:(int64_t)a5
+- (id)_remoteGraphSeriesForDisplayType:(id)type graphSeriesDataSource:(id)source timeScope:(int64_t)scope
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 displayTypeIdentifier];
-  if (v10 == 276)
+  typeCopy = type;
+  sourceCopy = source;
+  displayTypeIdentifier = [typeCopy displayTypeIdentifier];
+  if (displayTypeIdentifier == 276)
   {
-    v11 = [(HKHealthChartFactory *)self _sleepApneaGraphSeriesForDisplayType:v8 graphSeriesDataSource:v9 timeScope:a5];
+    v11 = [(HKHealthChartFactory *)self _sleepApneaGraphSeriesForDisplayType:typeCopy graphSeriesDataSource:sourceCopy timeScope:scope];
   }
 
-  else if (v10 == 275)
+  else if (displayTypeIdentifier == 275)
   {
-    v11 = [(HKHealthChartFactory *)self _sleepingBreathingDisturbancesGraphSeriesForDisplayType:v8 graphSeriesDataSource:v9 timeScope:a5];
+    v11 = [(HKHealthChartFactory *)self _sleepingBreathingDisturbancesGraphSeriesForDisplayType:typeCopy graphSeriesDataSource:sourceCopy timeScope:scope];
   }
 
   else
   {
-    if (v10 == 63)
+    if (displayTypeIdentifier == 63)
     {
-      [(HKHealthChartFactory *)self _sleepRemoteGraphSeriesForDisplayType:v8 graphSeriesDataSource:v9 timeScope:a5];
+      [(HKHealthChartFactory *)self _sleepRemoteGraphSeriesForDisplayType:typeCopy graphSeriesDataSource:sourceCopy timeScope:scope];
     }
 
     else
     {
-      [(HKHealthChartFactory *)self _standardRemoteGraphSeriesForDisplayType:v8 graphSeriesDataSource:v9 timeScope:a5];
+      [(HKHealthChartFactory *)self _standardRemoteGraphSeriesForDisplayType:typeCopy graphSeriesDataSource:sourceCopy timeScope:scope];
     }
     v11 = ;
   }
@@ -1595,84 +1595,84 @@ LABEL_9:
   return v12;
 }
 
-- (id)_standardRemoteGraphSeriesForDisplayType:(id)a3 graphSeriesDataSource:(id)a4 timeScope:(int64_t)a5
+- (id)_standardRemoteGraphSeriesForDisplayType:(id)type graphSeriesDataSource:(id)source timeScope:(int64_t)scope
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 displayCategory];
-  v11 = [(HKHealthChartFactory *)self unitPreferenceController];
-  v12 = [(HKHealthChartFactory *)self chartDataCacheController];
-  v13 = [v9 hk_standardSeriesForTimeScope:a5 graphSeriesDataSource:v8 displayCategory:v10 unitController:v11 dataCacheController:v12];
+  sourceCopy = source;
+  typeCopy = type;
+  displayCategory = [typeCopy displayCategory];
+  unitPreferenceController = [(HKHealthChartFactory *)self unitPreferenceController];
+  chartDataCacheController = [(HKHealthChartFactory *)self chartDataCacheController];
+  v13 = [typeCopy hk_standardSeriesForTimeScope:scope graphSeriesDataSource:sourceCopy displayCategory:displayCategory unitController:unitPreferenceController dataCacheController:chartDataCacheController];
 
   return v13;
 }
 
-- (id)_sleepRemoteGraphSeriesForDisplayType:(id)a3 graphSeriesDataSource:(id)a4 timeScope:(int64_t)a5
+- (id)_sleepRemoteGraphSeriesForDisplayType:(id)type graphSeriesDataSource:(id)source timeScope:(int64_t)scope
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(HKHealthChartFactory *)self unitPreferenceController];
-  v11 = [HKSleepUtilities buildSleepGraphSeriesForSleepSeriesType:0 sleepDisplayType:v9 unitController:v10 numericAxisConfigurationOverrides:0 timeScope:a5];
+  sourceCopy = source;
+  typeCopy = type;
+  unitPreferenceController = [(HKHealthChartFactory *)self unitPreferenceController];
+  v11 = [HKSleepUtilities buildSleepGraphSeriesForSleepSeriesType:0 sleepDisplayType:typeCopy unitController:unitPreferenceController numericAxisConfigurationOverrides:0 timeScope:scope];
 
-  [v11 setDataSource:v8];
+  [v11 setDataSource:sourceCopy];
 
   return v11;
 }
 
-- (id)_sleepingBreathingDisturbancesGraphSeriesForDisplayType:(id)a3 graphSeriesDataSource:(id)a4 timeScope:(int64_t)a5
+- (id)_sleepingBreathingDisturbancesGraphSeriesForDisplayType:(id)type graphSeriesDataSource:(id)source timeScope:(int64_t)scope
 {
-  v8 = a3;
-  v9 = [(HKHealthChartFactory *)self _standardRemoteGraphSeriesForDisplayType:v8 graphSeriesDataSource:a4 timeScope:a5];
-  v10 = [[HKBreathingDisturbancesAxis alloc] initWithDisplayType:v8];
+  typeCopy = type;
+  v9 = [(HKHealthChartFactory *)self _standardRemoteGraphSeriesForDisplayType:typeCopy graphSeriesDataSource:source timeScope:scope];
+  v10 = [[HKBreathingDisturbancesAxis alloc] initWithDisplayType:typeCopy];
 
   [v9 setYAxis:v10];
 
   return v9;
 }
 
-- (id)_sleepApneaGraphSeriesForDisplayType:(id)a3 graphSeriesDataSource:(id)a4 timeScope:(int64_t)a5
+- (id)_sleepApneaGraphSeriesForDisplayType:(id)type graphSeriesDataSource:(id)source timeScope:(int64_t)scope
 {
-  v8 = a3;
-  v9 = [(HKHealthChartFactory *)self _standardRemoteGraphSeriesForDisplayType:v8 graphSeriesDataSource:a4 timeScope:a5];
-  v10 = [[HKSleepApneaEventAxis alloc] initWithDisplayType:v8];
+  typeCopy = type;
+  v9 = [(HKHealthChartFactory *)self _standardRemoteGraphSeriesForDisplayType:typeCopy graphSeriesDataSource:source timeScope:scope];
+  v10 = [[HKSleepApneaEventAxis alloc] initWithDisplayType:typeCopy];
 
   [v9 setYAxis:v10];
 
   return v9;
 }
 
-- (id)_remoteCustomFormatterForDisplayType:(id)a3
+- (id)_remoteCustomFormatterForDisplayType:(id)type
 {
-  v4 = [a3 displayTypeIdentifier];
+  displayTypeIdentifier = [type displayTypeIdentifier];
   v5 = 0;
-  if (v4 <= 274)
+  if (displayTypeIdentifier <= 274)
   {
-    if (v4 == 63)
+    if (displayTypeIdentifier == 63)
     {
-      v10 = [(HKHealthChartFactory *)self sleepChartFormatter];
+      sleepChartFormatter = [(HKHealthChartFactory *)self sleepChartFormatter];
 LABEL_11:
-      v5 = v10;
+      v5 = sleepChartFormatter;
       goto LABEL_12;
     }
 
-    if (v4 != 124)
+    if (displayTypeIdentifier != 124)
     {
       goto LABEL_12;
     }
 
     v6 = HKInteractiveChartCardioFitnessFormatter;
 LABEL_10:
-    v10 = objc_alloc_init(v6);
+    sleepChartFormatter = objc_alloc_init(v6);
     goto LABEL_11;
   }
 
-  if (v4 == 275)
+  if (displayTypeIdentifier == 275)
   {
     v6 = HKAppleSleepingBreathingDisturbancesInteractiveChartFormatter;
     goto LABEL_10;
   }
 
-  if (v4 == 276)
+  if (displayTypeIdentifier == 276)
   {
     v7 = [HKSleepApneaEventInteractiveChartFormatter alloc];
     v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -1685,227 +1685,227 @@ LABEL_12:
   return v5;
 }
 
-- (id)_buildStandardRemoteChartViewControllerWithDisplayType:(id)a3 timeScopeRanges:(id)a4 initialTimeScope:(int64_t)a5 firstWeekday:(int64_t)a6 displayDate:(id)a7
+- (id)_buildStandardRemoteChartViewControllerWithDisplayType:(id)type timeScopeRanges:(id)ranges initialTimeScope:(int64_t)scope firstWeekday:(int64_t)weekday displayDate:(id)date
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v28 = a4;
-  v31 = a7;
-  v12 = [(HKHealthChartFactory *)self selectedTimeScopeController];
-  [v12 setSelectedTimeScope:a5];
+  typeCopy = type;
+  rangesCopy = ranges;
+  dateCopy = date;
+  selectedTimeScopeController = [(HKHealthChartFactory *)self selectedTimeScopeController];
+  [selectedTimeScopeController setSelectedTimeScope:scope];
 
-  v26 = [v11 hk_interactiveChartOptions] | 0xA0000;
-  v13 = [(HKHealthChartFactory *)self _remoteCalendarOverrideForDisplayType:v11];
+  v26 = [typeCopy hk_interactiveChartOptions] | 0xA0000;
+  v13 = [(HKHealthChartFactory *)self _remoteCalendarOverrideForDisplayType:typeCopy];
   v27 = [HKInteractiveChartViewController alloc];
-  v29 = v11;
-  v32 = v11;
+  v29 = typeCopy;
+  v32 = typeCopy;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
   v33[0] = v14;
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
-  v15 = [(HKHealthChartFactory *)self healthStore];
-  v16 = [(HKHealthChartFactory *)self unitPreferenceController];
-  v17 = [(HKHealthChartFactory *)self dateCache];
-  v18 = [(HKHealthChartFactory *)self chartDataCacheController];
-  v19 = [(HKHealthChartFactory *)self selectedTimeScopeController];
-  v20 = [(HKHealthChartFactory *)self sampleTypeDateRangeController];
-  if (v31)
+  healthStore = [(HKHealthChartFactory *)self healthStore];
+  unitPreferenceController = [(HKHealthChartFactory *)self unitPreferenceController];
+  dateCache = [(HKHealthChartFactory *)self dateCache];
+  chartDataCacheController = [(HKHealthChartFactory *)self chartDataCacheController];
+  selectedTimeScopeController2 = [(HKHealthChartFactory *)self selectedTimeScopeController];
+  sampleTypeDateRangeController = [(HKHealthChartFactory *)self sampleTypeDateRangeController];
+  if (dateCopy)
   {
-    v21 = v28;
-    v22 = [(HKInteractiveChartViewController *)v27 initWithStackedDisplayTypes:v30 primaryDisplayTypeStackIndex:0 stackedDisplayTypeHeights:0 healthStore:v15 unitPreferenceController:v16 dateCache:v17 chartDataCacheController:v18 selectedTimeScopeController:v19 sampleTypeDateRangeController:v20 initialXValue:v31 currentCalendarOverride:v13 options:v26 timeScopeRanges:v28];
+    v21 = rangesCopy;
+    v22 = [(HKInteractiveChartViewController *)v27 initWithStackedDisplayTypes:v30 primaryDisplayTypeStackIndex:0 stackedDisplayTypeHeights:0 healthStore:healthStore unitPreferenceController:unitPreferenceController dateCache:dateCache chartDataCacheController:chartDataCacheController selectedTimeScopeController:selectedTimeScopeController2 sampleTypeDateRangeController:sampleTypeDateRangeController initialXValue:dateCopy currentCalendarOverride:v13 options:v26 timeScopeRanges:rangesCopy];
   }
 
   else
   {
     v23 = [MEMORY[0x1E695DF00] now];
-    v22 = [(HKInteractiveChartViewController *)v27 initWithStackedDisplayTypes:v30 primaryDisplayTypeStackIndex:0 stackedDisplayTypeHeights:0 healthStore:v15 unitPreferenceController:v16 dateCache:v17 chartDataCacheController:v18 selectedTimeScopeController:v19 sampleTypeDateRangeController:v20 initialXValue:v23 currentCalendarOverride:v13 options:v26 timeScopeRanges:v28];
+    v22 = [(HKInteractiveChartViewController *)v27 initWithStackedDisplayTypes:v30 primaryDisplayTypeStackIndex:0 stackedDisplayTypeHeights:0 healthStore:healthStore unitPreferenceController:unitPreferenceController dateCache:dateCache chartDataCacheController:chartDataCacheController selectedTimeScopeController:selectedTimeScopeController2 sampleTypeDateRangeController:sampleTypeDateRangeController initialXValue:v23 currentCalendarOverride:v13 options:v26 timeScopeRanges:rangesCopy];
 
-    v21 = v28;
+    v21 = rangesCopy;
   }
 
   if (!v13)
   {
-    [(HKInteractiveChartViewController *)v22 setAnnotationDataSourceFirstWeekday:a6];
+    [(HKInteractiveChartViewController *)v22 setAnnotationDataSourceFirstWeekday:weekday];
   }
 
   return v22;
 }
 
-- (id)_buildTrendRemoteOverlayChartViewControllerWithDisplayType:(id)a3 timeScopeRanges:(id)a4 initialTimeScope:(int64_t)a5 chartSummaryTrendModel:(id)a6 firstWeekday:(int64_t)a7 displayDate:(id)a8
+- (id)_buildTrendRemoteOverlayChartViewControllerWithDisplayType:(id)type timeScopeRanges:(id)ranges initialTimeScope:(int64_t)scope chartSummaryTrendModel:(id)model firstWeekday:(int64_t)weekday displayDate:(id)date
 {
-  v14 = a8;
-  v15 = a6;
-  v16 = a4;
-  v17 = a3;
-  v18 = [(HKHealthChartFactory *)self _buildApplicationItems];
-  v19 = [(HKHealthChartFactory *)self _remoteCalendarOverrideForDisplayType:v17];
-  v20 = [[HKOverlayRoomFactorAndTrendViewController alloc] initWithBaseChartDisplayType:v17 trendModel:v15 factorDisplayTypes:0 displayDate:v14 applicationItems:v18 mode:1 timeScopeRanges:v16 initialTimeScope:a5 wrappedOverlay:0 overrideFirstWeekday:a7 overrideCalendar:v19 additionalChartOptions:0];
+  dateCopy = date;
+  modelCopy = model;
+  rangesCopy = ranges;
+  typeCopy = type;
+  _buildApplicationItems = [(HKHealthChartFactory *)self _buildApplicationItems];
+  v19 = [(HKHealthChartFactory *)self _remoteCalendarOverrideForDisplayType:typeCopy];
+  v20 = [[HKOverlayRoomFactorAndTrendViewController alloc] initWithBaseChartDisplayType:typeCopy trendModel:modelCopy factorDisplayTypes:0 displayDate:dateCopy applicationItems:_buildApplicationItems mode:1 timeScopeRanges:rangesCopy initialTimeScope:scope wrappedOverlay:0 overrideFirstWeekday:weekday overrideCalendar:v19 additionalChartOptions:0];
 
   return v20;
 }
 
-- (id)_remoteCalendarOverrideForDisplayType:(id)a3
+- (id)_remoteCalendarOverrideForDisplayType:(id)type
 {
-  v3 = a3;
-  v4 = [v3 displayTypeIdentifier];
+  typeCopy = type;
+  displayTypeIdentifier = [typeCopy displayTypeIdentifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 baseDisplayType];
-    v4 = [v5 displayTypeIdentifier];
+    baseDisplayType = [typeCopy baseDisplayType];
+    displayTypeIdentifier = [baseDisplayType displayTypeIdentifier];
   }
 
-  if (v4 == 248)
+  if (displayTypeIdentifier == 248)
   {
-    v6 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
-    [v6 setFirstWeekday:2];
+    hk_gregorianCalendar = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+    [hk_gregorianCalendar setFirstWeekday:2];
   }
 
   else
   {
-    v6 = 0;
+    hk_gregorianCalendar = 0;
   }
 
-  return v6;
+  return hk_gregorianCalendar;
 }
 
-- (id)_createSleepDisplayTypeForSeriesType:(int64_t)a3
+- (id)_createSleepDisplayTypeForSeriesType:(int64_t)type
 {
-  v5 = [(HKHealthChartFactory *)self displayTypeController];
-  v6 = [v5 displayTypeWithIdentifier:&unk_1F4381F90];
+  displayTypeController = [(HKHealthChartFactory *)self displayTypeController];
+  v6 = [displayTypeController displayTypeWithIdentifier:&unk_1F4381F90];
 
-  v7 = [(HKHealthChartFactory *)self sleepDataSourceProvider];
-  v8 = [(HKHealthChartFactory *)self chartDataCacheController];
-  v9 = [(HKHealthChartFactory *)self healthStore];
-  v10 = [HKSleepUtilities buildSleepChartCachesWithDisplayType:v6 dataSourceProvider:v7 cacheController:v8 healthStore:v9];
+  sleepDataSourceProvider = [(HKHealthChartFactory *)self sleepDataSourceProvider];
+  chartDataCacheController = [(HKHealthChartFactory *)self chartDataCacheController];
+  healthStore = [(HKHealthChartFactory *)self healthStore];
+  v10 = [HKSleepUtilities buildSleepChartCachesWithDisplayType:v6 dataSourceProvider:sleepDataSourceProvider cacheController:chartDataCacheController healthStore:healthStore];
 
-  v11 = [(HKHealthChartFactory *)self healthStore];
-  v12 = [(HKHealthChartFactory *)self unitPreferenceController];
-  v13 = [(HKHealthChartFactory *)self displayTypeController];
-  v14 = [(HKHealthChartFactory *)self chartDataCacheController];
-  v15 = [(HKHealthChartFactory *)self sleepChartFormatter];
+  healthStore2 = [(HKHealthChartFactory *)self healthStore];
+  unitPreferenceController = [(HKHealthChartFactory *)self unitPreferenceController];
+  displayTypeController2 = [(HKHealthChartFactory *)self displayTypeController];
+  chartDataCacheController2 = [(HKHealthChartFactory *)self chartDataCacheController];
+  sleepChartFormatter = [(HKHealthChartFactory *)self sleepChartFormatter];
   LOBYTE(v19) = 0;
-  v16 = [HKSleepUtilities sleepDisplayTypesWithHealthStore:v11 sleepDisplayType:v6 unitController:v12 displayTypeController:v13 chartCacheController:v14 sleepChartFormatter:v15 sleepSeriesType:a3 sleepChartCaches:v10 customSleepSeries:0 isStackedChart:v19];
+  v16 = [HKSleepUtilities sleepDisplayTypesWithHealthStore:healthStore2 sleepDisplayType:v6 unitController:unitPreferenceController displayTypeController:displayTypeController2 chartCacheController:chartDataCacheController2 sleepChartFormatter:sleepChartFormatter sleepSeriesType:type sleepChartCaches:v10 customSleepSeries:0 isStackedChart:v19];
 
-  v17 = [v16 firstObject];
+  firstObject = [v16 firstObject];
 
-  return v17;
+  return firstObject;
 }
 
-- (id)createInteractiveChartForSimpleDisplayType:(id)a3 chartOptions:(unint64_t)a4
+- (id)createInteractiveChartForSimpleDisplayType:(id)type chartOptions:(unint64_t)options
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  typeCopy = type;
   v7 = [HKInteractiveChartViewController alloc];
-  v17[0] = v6;
+  v17[0] = typeCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
 
-  v9 = [(HKHealthChartFactory *)self healthStore];
-  v10 = [(HKHealthChartFactory *)self unitPreferenceController];
-  v11 = [(HKHealthChartFactory *)self dateCache];
-  v12 = [(HKHealthChartFactory *)self chartDataCacheController];
-  v13 = [(HKHealthChartFactory *)self selectedTimeScopeController];
-  v14 = [(HKHealthChartFactory *)self sampleTypeDateRangeController];
-  v15 = [(HKInteractiveChartViewController *)v7 initWithDisplayTypes:v8 healthStore:v9 unitPreferenceController:v10 dateCache:v11 chartDataCacheController:v12 selectedTimeScopeController:v13 sampleTypeDateRangeController:v14 initialXValue:0 currentCalendarOverride:0 options:a4];
+  healthStore = [(HKHealthChartFactory *)self healthStore];
+  unitPreferenceController = [(HKHealthChartFactory *)self unitPreferenceController];
+  dateCache = [(HKHealthChartFactory *)self dateCache];
+  chartDataCacheController = [(HKHealthChartFactory *)self chartDataCacheController];
+  selectedTimeScopeController = [(HKHealthChartFactory *)self selectedTimeScopeController];
+  sampleTypeDateRangeController = [(HKHealthChartFactory *)self sampleTypeDateRangeController];
+  v15 = [(HKInteractiveChartViewController *)v7 initWithDisplayTypes:v8 healthStore:healthStore unitPreferenceController:unitPreferenceController dateCache:dateCache chartDataCacheController:chartDataCacheController selectedTimeScopeController:selectedTimeScopeController sampleTypeDateRangeController:sampleTypeDateRangeController initialXValue:0 currentCalendarOverride:0 options:options];
 
   return v15;
 }
 
-- (id)activityChartForActivityMoveMode:(int64_t)a3 displayDate:(id)a4 activityOptions:(unint64_t)a5 chartSharableModel:(id)a6
+- (id)activityChartForActivityMoveMode:(int64_t)mode displayDate:(id)date activityOptions:(unint64_t)options chartSharableModel:(id)model
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [(HKHealthChartFactory *)self selectedTimeScopeController];
-  [v12 setSelectedTimeScope:6];
+  modelCopy = model;
+  dateCopy = date;
+  selectedTimeScopeController = [(HKHealthChartFactory *)self selectedTimeScopeController];
+  [selectedTimeScopeController setSelectedTimeScope:6];
 
   v13 = *MEMORY[0x1E696B498];
   v14 = [(HKHealthChartFactory *)self _factorDisplayTypesForPrimaryTypeIdentifier:*MEMORY[0x1E696B498]];
   [(HKHealthChartFactory *)self _logFactorsForTypeIdentifier:v13 factorDisplayTypes:v14];
   v15 = [v14 count];
-  if (v10 || !v15)
+  if (modelCopy || !v15)
   {
     v33 = [HKInteractiveChartActivityController alloc];
-    v32 = [(HKHealthChartFactory *)self healthStore];
-    v20 = [(HKHealthChartFactory *)self unitPreferenceController];
-    v31 = [(HKHealthChartFactory *)self dateCache];
-    v23 = [(HKHealthChartFactory *)self chartDataCacheController];
+    healthStore = [(HKHealthChartFactory *)self healthStore];
+    unitPreferenceController = [(HKHealthChartFactory *)self unitPreferenceController];
+    dateCache = [(HKHealthChartFactory *)self dateCache];
+    chartDataCacheController = [(HKHealthChartFactory *)self chartDataCacheController];
     [(HKHealthChartFactory *)self selectedTimeScopeController];
-    v25 = v24 = v10;
-    v26 = [(HKHealthChartFactory *)self sampleTypeDateRangeController];
-    v27 = [(HKHealthChartFactory *)self wheelchairUseCharacteristicCache];
-    v29 = a5;
-    v21 = v32;
-    v22 = [(HKInteractiveChartActivityController *)v33 initWithHealthStore:v32 unitPreferenceController:v20 dateCache:v31 chartDataCacheController:v23 selectedTimeScopeController:v25 sampleTypeDateRangeController:v26 wheelchairUseCharacteristicCache:v27 initialXValue:v11 activityMoveMode:a3 activityOptions:v29 chartSharableModel:v24];
+    v25 = v24 = modelCopy;
+    sampleTypeDateRangeController = [(HKHealthChartFactory *)self sampleTypeDateRangeController];
+    wheelchairUseCharacteristicCache = [(HKHealthChartFactory *)self wheelchairUseCharacteristicCache];
+    optionsCopy = options;
+    v21 = healthStore;
+    v22 = [(HKInteractiveChartActivityController *)v33 initWithHealthStore:healthStore unitPreferenceController:unitPreferenceController dateCache:dateCache chartDataCacheController:chartDataCacheController selectedTimeScopeController:v25 sampleTypeDateRangeController:sampleTypeDateRangeController wheelchairUseCharacteristicCache:wheelchairUseCharacteristicCache initialXValue:dateCopy activityMoveMode:mode activityOptions:optionsCopy chartSharableModel:v24];
 
-    v10 = v24;
-    v11 = v31;
+    modelCopy = v24;
+    dateCopy = dateCache;
   }
 
   else
   {
-    v16 = [(HKHealthChartFactory *)self displayTypeController];
+    displayTypeController = [(HKHealthChartFactory *)self displayTypeController];
     v17 = [MEMORY[0x1E696C2E0] _typeWithIdentifier:v13];
-    v18 = [v16 displayTypeForObjectType:v17];
+    v18 = [displayTypeController displayTypeForObjectType:v17];
 
     v19 = [HKOverlayRoomFactorAndTrendViewController alloc];
-    v20 = [(HKHealthChartFactory *)self _buildApplicationItems];
-    v30 = a5;
+    unitPreferenceController = [(HKHealthChartFactory *)self _buildApplicationItems];
+    optionsCopy2 = options;
     v21 = v18;
-    v22 = [(HKOverlayRoomFactorAndTrendViewController *)v19 initWithBaseChartDisplayType:v18 trendModel:0 factorDisplayTypes:v14 displayDate:v11 applicationItems:v20 mode:1 timeScopeRanges:0 initialTimeScope:8 wrappedOverlay:0 overrideFirstWeekday:-1 overrideCalendar:0 additionalChartOptions:0 activityMoveMode:a3 activityOptions:v30];
+    v22 = [(HKOverlayRoomFactorAndTrendViewController *)v19 initWithBaseChartDisplayType:v18 trendModel:0 factorDisplayTypes:v14 displayDate:dateCopy applicationItems:unitPreferenceController mode:1 timeScopeRanges:0 initialTimeScope:8 wrappedOverlay:0 overrideFirstWeekday:-1 overrideCalendar:0 additionalChartOptions:0 activityMoveMode:mode activityOptions:optionsCopy2];
   }
 
   return v22;
 }
 
-- (id)staticAudiogramChartViewControllerWithAudiogramSample:(id)a3 hideEnhancedUI:(BOOL)a4
+- (id)staticAudiogramChartViewControllerWithAudiogramSample:(id)sample hideEnhancedUI:(BOOL)i
 {
-  v4 = a4;
+  iCopy = i;
   v6 = MEMORY[0x1E696C2E0];
-  v7 = a3;
-  v8 = [v6 audiogramSampleType];
-  v9 = [v8 identifier];
+  sampleCopy = sample;
+  audiogramSampleType = [v6 audiogramSampleType];
+  identifier = [audiogramSampleType identifier];
 
   v10 = [HKSingleAudiogramChartViewController alloc];
-  v11 = [(HKHealthChartFactory *)self _buildApplicationItems];
-  v12 = [(HKHealthChartFactory *)self _factorDisplayTypesForPrimaryTypeIdentifier:v9];
-  v13 = [(HKSingleAudiogramChartViewController *)v10 initWithApplicationItems:v11 staticAudiogram:v7 factorDisplayTypes:v12 hideEnhancedUI:v4];
+  _buildApplicationItems = [(HKHealthChartFactory *)self _buildApplicationItems];
+  v12 = [(HKHealthChartFactory *)self _factorDisplayTypesForPrimaryTypeIdentifier:identifier];
+  v13 = [(HKSingleAudiogramChartViewController *)v10 initWithApplicationItems:_buildApplicationItems staticAudiogram:sampleCopy factorDisplayTypes:v12 hideEnhancedUI:iCopy];
 
   return v13;
 }
 
-- (void)encodeActivityChartDataForActivityMoveMode:(int64_t)a3 completion:(id)a4
+- (void)encodeActivityChartDataForActivityMoveMode:(int64_t)mode completion:(id)completion
 {
-  v19 = a4;
+  completionCopy = completion;
   context = objc_autoreleasePoolPush();
-  v5 = [(HKHealthChartFactory *)self displayTypeController];
-  v6 = [v5 displayTypeWithIdentifier:&unk_1F4381FA8];
+  displayTypeController = [(HKHealthChartFactory *)self displayTypeController];
+  v6 = [displayTypeController displayTypeWithIdentifier:&unk_1F4381FA8];
 
   v7 = [HKRemoteDateIntervals alloc];
   v8 = [MEMORY[0x1E695DF00] now];
   v9 = [(HKRemoteDateIntervals *)v7 initWithDisplayType:v6 fromEndDate:v8];
 
-  v10 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
-  v11 = [(HKRemoteDateIntervals *)v9 dateIntervalForTimeScope:4 withGregorianCalendar:v10 error:0];
-  v12 = [(HKRemoteDateIntervals *)v9 dateIntervalForTimeScope:3 withGregorianCalendar:v10 error:0];
-  v13 = [(HKHealthChartFactory *)self healthStore];
-  v14 = [(HKHealthChartFactory *)self dateCache];
-  v15 = [(HKHealthChartFactory *)self displayTypeController];
-  v16 = [(HKHealthChartFactory *)self unitPreferenceController];
-  [HKInteractiveChartActivityController encodeChartDataWithHealthStore:v13 dateCache:v14 displayTypeController:v15 unitController:v16 activityMoveMode:a3 monthDateInterval:v11 sixMonthDateInterval:v12 completion:v19];
+  hk_gregorianCalendarWithLocalTimeZone = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
+  v11 = [(HKRemoteDateIntervals *)v9 dateIntervalForTimeScope:4 withGregorianCalendar:hk_gregorianCalendarWithLocalTimeZone error:0];
+  v12 = [(HKRemoteDateIntervals *)v9 dateIntervalForTimeScope:3 withGregorianCalendar:hk_gregorianCalendarWithLocalTimeZone error:0];
+  healthStore = [(HKHealthChartFactory *)self healthStore];
+  dateCache = [(HKHealthChartFactory *)self dateCache];
+  displayTypeController2 = [(HKHealthChartFactory *)self displayTypeController];
+  unitPreferenceController = [(HKHealthChartFactory *)self unitPreferenceController];
+  [HKInteractiveChartActivityController encodeChartDataWithHealthStore:healthStore dateCache:dateCache displayTypeController:displayTypeController2 unitController:unitPreferenceController activityMoveMode:mode monthDateInterval:v11 sixMonthDateInterval:v12 completion:completionCopy];
 
   objc_autoreleasePoolPop(context);
 }
 
-- (void)updateChartSummaryTrendModel:(id)a3 viewController:(id)a4
+- (void)updateChartSummaryTrendModel:(id)model viewController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 conformsToProtocol:&unk_1F43B2A78])
+  modelCopy = model;
+  controllerCopy = controller;
+  if ([controllerCopy conformsToProtocol:&unk_1F43B2A78])
   {
-    v7 = [v6 getChartSummaryTrendModelToModify];
-    v8 = v7;
-    if (v7)
+    getChartSummaryTrendModelToModify = [controllerCopy getChartSummaryTrendModelToModify];
+    v8 = getChartSummaryTrendModelToModify;
+    if (getChartSummaryTrendModelToModify)
     {
-      [v7 updateChartSummaryTrendModel:v5];
+      [getChartSummaryTrendModelToModify updateChartSummaryTrendModel:modelCopy];
     }
   }
 
@@ -1915,65 +1915,65 @@ LABEL_12:
     v8 = HKLogWellnessDashboard();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [HKHealthChartFactory updateChartSummaryTrendModel:v6 viewController:v8];
+      [HKHealthChartFactory updateChartSummaryTrendModel:controllerCopy viewController:v8];
     }
   }
 }
 
-- (int64_t)_resolvedTimeScopeForTypeIdentifier:(id)a3 displayDateInterval:(id)a4
+- (int64_t)_resolvedTimeScopeForTypeIdentifier:(id)identifier displayDateInterval:(id)interval
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HKHealthChartFactory *)self _displayTypeForTypeIdentifier:v7];
+  identifierCopy = identifier;
+  intervalCopy = interval;
+  v9 = [(HKHealthChartFactory *)self _displayTypeForTypeIdentifier:identifierCopy];
   if (v9)
   {
-    [v8 duration];
+    [intervalCopy duration];
     if (v10 >= 2.22507386e-308)
     {
-      v13 = [v8 startDate];
-      v14 = [v8 endDate];
-      v11 = [HKValueRange valueRangeWithMinValue:v13 maxValue:v14];
+      startDate = [intervalCopy startDate];
+      endDate = [intervalCopy endDate];
+      chartingRules2 = [HKValueRange valueRangeWithMinValue:startDate maxValue:endDate];
 
-      v12 = [HKGraphZoomLevelConfiguration timeScopeForDateRange:v11];
-      if (([v9 hk_isSupportedTimeScope:v12] & 1) == 0)
+      preferredTimeScope = [HKGraphZoomLevelConfiguration timeScopeForDateRange:chartingRules2];
+      if (([v9 hk_isSupportedTimeScope:preferredTimeScope] & 1) == 0)
       {
-        v15 = [v9 chartingRules];
-        v12 = [v15 preferredTimeScope];
+        chartingRules = [v9 chartingRules];
+        preferredTimeScope = [chartingRules preferredTimeScope];
       }
     }
 
     else
     {
-      v11 = [v9 chartingRules];
-      v12 = [v11 preferredTimeScope];
+      chartingRules2 = [v9 chartingRules];
+      preferredTimeScope = [chartingRules2 preferredTimeScope];
     }
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HKHealthChartFactory.m" lineNumber:1185 description:{@"Type %@ does not have a valid display type.", v7}];
-    v12 = 8;
+    chartingRules2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [chartingRules2 handleFailureInMethod:a2 object:self file:@"HKHealthChartFactory.m" lineNumber:1185 description:{@"Type %@ does not have a valid display type.", identifierCopy}];
+    preferredTimeScope = 8;
   }
 
-  return v12;
+  return preferredTimeScope;
 }
 
-- (id)_resolvedDisplayDateForDisplayType:(id)a3 displayDate:(id)a4 timeScope:(int64_t)a5 gregorianCalendar:(id)a6
+- (id)_resolvedDisplayDateForDisplayType:(id)type displayDate:(id)date timeScope:(int64_t)scope gregorianCalendar:(id)calendar
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = [a3 behavior];
-  v12 = [v11 preferredCalendarDayAlignment];
+  dateCopy = date;
+  calendarCopy = calendar;
+  behavior = [type behavior];
+  preferredCalendarDayAlignment = [behavior preferredCalendarDayAlignment];
 
-  if (v12 != 1 || (a5 & 0xFFFFFFFFFFFFFFFELL) == 6 || (v13 = [v9 hk_dayIndexWithCalendar:v10], v14 = objc_msgSend(v9, "hk_morningIndexWithCalendar:", v10), v13 == v14))
+  if (preferredCalendarDayAlignment != 1 || (scope & 0xFFFFFFFFFFFFFFFELL) == 6 || (v13 = [dateCopy hk_dayIndexWithCalendar:calendarCopy], v14 = objc_msgSend(dateCopy, "hk_morningIndexWithCalendar:", calendarCopy), v13 == v14))
   {
-    v15 = v9;
+    v15 = dateCopy;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E695DF00] hk_dateOnDayIndex:v14 atHour:6 calendar:v10];
+    v15 = [MEMORY[0x1E695DF00] hk_dateOnDayIndex:v14 atHour:6 calendar:calendarCopy];
   }
 
   v16 = v15;
@@ -1981,13 +1981,13 @@ LABEL_12:
   return v16;
 }
 
-- (id)_displayTypeForTypeIdentifier:(id)a3
+- (id)_displayTypeForTypeIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x1E696C2E0] _typeWithIdentifier:a3];
+  v4 = [MEMORY[0x1E696C2E0] _typeWithIdentifier:identifier];
   if (v4)
   {
-    v5 = [(HKHealthChartFactory *)self displayTypeController];
-    v6 = [v5 displayTypeForObjectType:v4];
+    displayTypeController = [(HKHealthChartFactory *)self displayTypeController];
+    v6 = [displayTypeController displayTypeForObjectType:v4];
   }
 
   else
@@ -2003,27 +2003,27 @@ LABEL_12:
   v3 = objc_alloc_init(HKSelectedTimeScopeController);
   [(HKSelectedTimeScopeController *)v3 setSelectedTimeScope:1];
   v4 = objc_alloc_init(HKOverlayRoomApplicationItems);
-  v5 = [(HKHealthChartFactory *)self healthStore];
-  [(HKOverlayRoomApplicationItems *)v4 setHealthStore:v5];
+  healthStore = [(HKHealthChartFactory *)self healthStore];
+  [(HKOverlayRoomApplicationItems *)v4 setHealthStore:healthStore];
 
   [(HKOverlayRoomApplicationItems *)v4 setTimeScopeController:v3];
-  v6 = [(HKHealthChartFactory *)self dateCache];
-  [(HKOverlayRoomApplicationItems *)v4 setDateCache:v6];
+  dateCache = [(HKHealthChartFactory *)self dateCache];
+  [(HKOverlayRoomApplicationItems *)v4 setDateCache:dateCache];
 
-  v7 = [(HKHealthChartFactory *)self unitPreferenceController];
-  [(HKOverlayRoomApplicationItems *)v4 setUnitController:v7];
+  unitPreferenceController = [(HKHealthChartFactory *)self unitPreferenceController];
+  [(HKOverlayRoomApplicationItems *)v4 setUnitController:unitPreferenceController];
 
-  v8 = [(HKHealthChartFactory *)self chartDataCacheController];
-  [(HKOverlayRoomApplicationItems *)v4 setChartDataCacheController:v8];
+  chartDataCacheController = [(HKHealthChartFactory *)self chartDataCacheController];
+  [(HKOverlayRoomApplicationItems *)v4 setChartDataCacheController:chartDataCacheController];
 
-  v9 = [(HKHealthChartFactory *)self sampleTypeUpdateController];
-  [(HKOverlayRoomApplicationItems *)v4 setSampleTypeUpdateController:v9];
+  sampleTypeUpdateController = [(HKHealthChartFactory *)self sampleTypeUpdateController];
+  [(HKOverlayRoomApplicationItems *)v4 setSampleTypeUpdateController:sampleTypeUpdateController];
 
-  v10 = [(HKHealthChartFactory *)self sampleTypeDateRangeController];
-  [(HKOverlayRoomApplicationItems *)v4 setSampleDateRangeController:v10];
+  sampleTypeDateRangeController = [(HKHealthChartFactory *)self sampleTypeDateRangeController];
+  [(HKOverlayRoomApplicationItems *)v4 setSampleDateRangeController:sampleTypeDateRangeController];
 
-  v11 = [(HKHealthChartFactory *)self displayTypeController];
-  [(HKOverlayRoomApplicationItems *)v4 setDisplayTypeController:v11];
+  displayTypeController = [(HKHealthChartFactory *)self displayTypeController];
+  [(HKOverlayRoomApplicationItems *)v4 setDisplayTypeController:displayTypeController];
 
   return v4;
 }
@@ -2031,50 +2031,50 @@ LABEL_12:
 - (id)_buildApplicationItems
 {
   v3 = objc_alloc_init(HKOverlayRoomApplicationItems);
-  v4 = [(HKHealthChartFactory *)self healthStore];
-  [(HKOverlayRoomApplicationItems *)v3 setHealthStore:v4];
+  healthStore = [(HKHealthChartFactory *)self healthStore];
+  [(HKOverlayRoomApplicationItems *)v3 setHealthStore:healthStore];
 
-  v5 = [(HKHealthChartFactory *)self selectedTimeScopeController];
-  [(HKOverlayRoomApplicationItems *)v3 setTimeScopeController:v5];
+  selectedTimeScopeController = [(HKHealthChartFactory *)self selectedTimeScopeController];
+  [(HKOverlayRoomApplicationItems *)v3 setTimeScopeController:selectedTimeScopeController];
 
-  v6 = [(HKHealthChartFactory *)self dateCache];
-  [(HKOverlayRoomApplicationItems *)v3 setDateCache:v6];
+  dateCache = [(HKHealthChartFactory *)self dateCache];
+  [(HKOverlayRoomApplicationItems *)v3 setDateCache:dateCache];
 
-  v7 = [(HKHealthChartFactory *)self unitPreferenceController];
-  [(HKOverlayRoomApplicationItems *)v3 setUnitController:v7];
+  unitPreferenceController = [(HKHealthChartFactory *)self unitPreferenceController];
+  [(HKOverlayRoomApplicationItems *)v3 setUnitController:unitPreferenceController];
 
-  v8 = [(HKHealthChartFactory *)self chartDataCacheController];
-  [(HKOverlayRoomApplicationItems *)v3 setChartDataCacheController:v8];
+  chartDataCacheController = [(HKHealthChartFactory *)self chartDataCacheController];
+  [(HKOverlayRoomApplicationItems *)v3 setChartDataCacheController:chartDataCacheController];
 
-  v9 = [(HKHealthChartFactory *)self sampleTypeUpdateController];
-  [(HKOverlayRoomApplicationItems *)v3 setSampleTypeUpdateController:v9];
+  sampleTypeUpdateController = [(HKHealthChartFactory *)self sampleTypeUpdateController];
+  [(HKOverlayRoomApplicationItems *)v3 setSampleTypeUpdateController:sampleTypeUpdateController];
 
-  v10 = [(HKHealthChartFactory *)self sampleTypeDateRangeController];
-  [(HKOverlayRoomApplicationItems *)v3 setSampleDateRangeController:v10];
+  sampleTypeDateRangeController = [(HKHealthChartFactory *)self sampleTypeDateRangeController];
+  [(HKOverlayRoomApplicationItems *)v3 setSampleDateRangeController:sampleTypeDateRangeController];
 
-  v11 = [(HKHealthChartFactory *)self displayTypeController];
-  [(HKOverlayRoomApplicationItems *)v3 setDisplayTypeController:v11];
+  displayTypeController = [(HKHealthChartFactory *)self displayTypeController];
+  [(HKOverlayRoomApplicationItems *)v3 setDisplayTypeController:displayTypeController];
 
   return v3;
 }
 
-- (id)_factorDisplayTypesForPrimaryTypeIdentifier:(id)a3
+- (id)_factorDisplayTypesForPrimaryTypeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HKHealthChartFactory *)self displayTypeController];
-  v6 = [MEMORY[0x1E696C2E0] _typeWithIdentifier:v4];
+  identifierCopy = identifier;
+  displayTypeController = [(HKHealthChartFactory *)self displayTypeController];
+  v6 = [MEMORY[0x1E696C2E0] _typeWithIdentifier:identifierCopy];
 
-  v7 = [v5 displayTypeForObjectType:v6];
+  v7 = [displayTypeController displayTypeForObjectType:v6];
 
   v8 = [(HKHealthChartFactory *)self _factorDisplayTypesForPrimaryDisplayType:v7];
 
   return v8;
 }
 
-- (id)_factorDisplayTypesForPrimaryDisplayType:(id)a3
+- (id)_factorDisplayTypesForPrimaryDisplayType:(id)type
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
@@ -2096,7 +2096,7 @@ LABEL_12:
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([(HKHealthChartFactory *)self _factorDisplayType:v11 availableForPrimaryDisplayType:v4]&& [(HKHealthChartFactory *)self _factorDisplayTypeHasData:v11])
+        if ([(HKHealthChartFactory *)self _factorDisplayType:v11 availableForPrimaryDisplayType:typeCopy]&& [(HKHealthChartFactory *)self _factorDisplayTypeHasData:v11])
         {
           [v5 addObject:v11];
         }
@@ -2111,80 +2111,80 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)_factorDisplayType:(id)a3 availableForPrimaryDisplayType:(id)a4
+- (BOOL)_factorDisplayType:(id)type availableForPrimaryDisplayType:(id)displayType
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 hk_chartExcludedFactorDisplayTypes];
-  v8 = [v7 containsObject:v6];
-  v9 = [v6 isEqual:v5];
+  displayTypeCopy = displayType;
+  typeCopy = type;
+  hk_chartExcludedFactorDisplayTypes = [displayTypeCopy hk_chartExcludedFactorDisplayTypes];
+  v8 = [hk_chartExcludedFactorDisplayTypes containsObject:typeCopy];
+  v9 = [typeCopy isEqual:displayTypeCopy];
 
   return ((v8 | v9) & 1) == 0;
 }
 
-- (BOOL)_factorDisplayTypeHasData:(id)a3
+- (BOOL)_factorDisplayTypeHasData:(id)data
 {
-  v4 = [a3 sampleType];
-  v5 = [(HKHealthChartFactory *)self sampleTypeDateRangeController];
-  v6 = [v5 dateRangeForSampleType:v4];
+  sampleType = [data sampleType];
+  sampleTypeDateRangeController = [(HKHealthChartFactory *)self sampleTypeDateRangeController];
+  v6 = [sampleTypeDateRangeController dateRangeForSampleType:sampleType];
 
-  v7 = [v6 minValue];
-  if (v7)
+  minValue = [v6 minValue];
+  if (minValue)
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [v6 maxValue];
-    v8 = v9 != 0;
+    maxValue = [v6 maxValue];
+    v8 = maxValue != 0;
   }
 
   return v8;
 }
 
-- (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11
+- (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = a3;
-  v21 = [(HKHealthChartFactory *)self displayTypeController];
-  v22 = [MEMORY[0x1E696C2E0] _typeWithIdentifier:v20];
+  itemsCopy = items;
+  dateCopy = date;
+  activityCopy = activity;
+  modelCopy = model;
+  typesCopy = types;
+  identifierCopy = identifier;
+  displayTypeController = [(HKHealthChartFactory *)self displayTypeController];
+  v22 = [MEMORY[0x1E696C2E0] _typeWithIdentifier:identifierCopy];
 
-  v23 = [v21 displayTypeForObjectType:v22];
+  v23 = [displayTypeController displayTypeForObjectType:v22];
 
   if (v23)
   {
-    v42 = v15;
-    v24 = v19;
-    v25 = [v23 hk_interactiveChartOptions];
-    if (v16)
+    v42 = itemsCopy;
+    v24 = typesCopy;
+    hk_interactiveChartOptions = [v23 hk_interactiveChartOptions];
+    if (dateCopy)
     {
-      v26 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
-      v27 = [(HKHealthChartFactory *)self selectedTimeScopeController];
-      -[HKHealthChartFactory _resolvedDisplayDateForDisplayType:displayDate:timeScope:gregorianCalendar:](self, "_resolvedDisplayDateForDisplayType:displayDate:timeScope:gregorianCalendar:", v23, v16, [v27 selectedTimeScope], v26);
-      v29 = v28 = v17;
+      hk_gregorianCalendarWithLocalTimeZone = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
+      selectedTimeScopeController = [(HKHealthChartFactory *)self selectedTimeScopeController];
+      -[HKHealthChartFactory _resolvedDisplayDateForDisplayType:displayDate:timeScope:gregorianCalendar:](self, "_resolvedDisplayDateForDisplayType:displayDate:timeScope:gregorianCalendar:", v23, dateCopy, [selectedTimeScopeController selectedTimeScope], hk_gregorianCalendarWithLocalTimeZone);
+      v29 = v28 = activityCopy;
 
-      v16 = v29;
-      v17 = v28;
+      dateCopy = v29;
+      activityCopy = v28;
     }
 
-    if (v17)
+    if (activityCopy)
     {
 
-      v16 = 0;
+      dateCopy = 0;
     }
 
-    v19 = v24;
-    v30 = v25 | a11;
-    v15 = v42;
-    if (v18 || [v19 count])
+    typesCopy = v24;
+    v30 = hk_interactiveChartOptions | options;
+    itemsCopy = v42;
+    if (modelCopy || [typesCopy count])
     {
-      v31 = [[HKOverlayRoomFactorAndTrendViewController alloc] initWithBaseChartDisplayType:v23 trendModel:v18 factorDisplayTypes:v19 displayDate:v16 applicationItems:v42 mode:1 timeScopeRanges:0 initialTimeScope:8 wrappedOverlay:0 overrideFirstWeekday:-1 overrideCalendar:0 additionalChartOptions:v30];
+      v31 = [[HKOverlayRoomFactorAndTrendViewController alloc] initWithBaseChartDisplayType:v23 trendModel:modelCopy factorDisplayTypes:typesCopy displayDate:dateCopy applicationItems:v42 mode:1 timeScopeRanges:0 initialTimeScope:8 wrappedOverlay:0 overrideFirstWeekday:-1 overrideCalendar:0 additionalChartOptions:v30];
     }
 
     else
@@ -2192,17 +2192,17 @@ LABEL_12:
       v38 = [HKInteractiveChartViewController alloc];
       v43[0] = v23;
       v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:1];
-      v40 = [(HKHealthChartFactory *)self healthStore];
-      v37 = [(HKHealthChartFactory *)self unitPreferenceController];
+      healthStore = [(HKHealthChartFactory *)self healthStore];
+      unitPreferenceController = [(HKHealthChartFactory *)self unitPreferenceController];
       [(HKHealthChartFactory *)self dateCache];
-      v33 = v39 = v17;
-      v34 = [(HKHealthChartFactory *)self chartDataCacheController];
-      v35 = [(HKHealthChartFactory *)self selectedTimeScopeController];
-      v36 = [(HKHealthChartFactory *)self sampleTypeDateRangeController];
-      v31 = [(HKInteractiveChartViewController *)v38 initWithDisplayTypes:v41 healthStore:v40 unitPreferenceController:v37 dateCache:v33 chartDataCacheController:v34 selectedTimeScopeController:v35 sampleTypeDateRangeController:v36 initialXValue:v16 currentCalendarOverride:0 options:v30];
+      v33 = v39 = activityCopy;
+      chartDataCacheController = [(HKHealthChartFactory *)self chartDataCacheController];
+      selectedTimeScopeController2 = [(HKHealthChartFactory *)self selectedTimeScopeController];
+      sampleTypeDateRangeController = [(HKHealthChartFactory *)self sampleTypeDateRangeController];
+      v31 = [(HKInteractiveChartViewController *)v38 initWithDisplayTypes:v41 healthStore:healthStore unitPreferenceController:unitPreferenceController dateCache:v33 chartDataCacheController:chartDataCacheController selectedTimeScopeController:selectedTimeScopeController2 sampleTypeDateRangeController:sampleTypeDateRangeController initialXValue:dateCopy currentCalendarOverride:0 options:v30];
 
-      v15 = v42;
-      v17 = v39;
+      itemsCopy = v42;
+      activityCopy = v39;
 
       [(HKOverlayRoomViewController *)v31 setRestorationUserActivity:v39];
     }
@@ -2216,10 +2216,10 @@ LABEL_12:
   return v31;
 }
 
-- (id)chartFactoryViewControllerProviderForType:(id)a3 standardProvider:(id)a4
+- (id)chartFactoryViewControllerProviderForType:(id)type standardProvider:(id)provider
 {
-  v5 = a4;
-  v6 = [MEMORY[0x1E696C2E0] _typeWithIdentifier:a3];
+  providerCopy = provider;
+  v6 = [MEMORY[0x1E696C2E0] _typeWithIdentifier:type];
   v7 = v6;
   if (v6)
   {
@@ -2399,7 +2399,7 @@ LABEL_12:
       case 313:
       case 314:
       case 341:
-        v9 = v5;
+        v9 = providerCopy;
         goto LABEL_4;
       case 5:
       case 14:
@@ -2439,7 +2439,7 @@ LABEL_4:
   return v8;
 }
 
-- (id)interactiveChartFromMeasureIdentifier:(id)a3 displayDateInterval:(id)a4
+- (id)interactiveChartFromMeasureIdentifier:(id)identifier displayDateInterval:(id)interval
 {
   sub_1C3CFC180(0, &qword_1EC087558, MEMORY[0x1E6968130]);
   MEMORY[0x1EEE9AC00](v6 - 8);
@@ -2454,7 +2454,7 @@ LABEL_4:
 
   v9 = sub_1C3D20104();
   v11 = v10;
-  if (a4)
+  if (interval)
   {
     sub_1C3D1DC04();
     v12 = sub_1C3D1DC54();
@@ -2467,7 +2467,7 @@ LABEL_4:
     (*(*(v13 - 8) + 56))(v8, 1, 1, v13);
   }
 
-  v14 = self;
+  selfCopy = self;
   v15 = HKHealthChartFactory.interactiveChart(from:displayDateInterval:)(v9, v11, v8);
 
   sub_1C3CFCA8C(v8, &qword_1EC087558, MEMORY[0x1E6968130]);

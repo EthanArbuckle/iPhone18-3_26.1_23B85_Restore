@@ -1,43 +1,43 @@
 @interface CWFAssetPowerTableElector
-+ (id)powerTableEvaluationStateAsString:(int64_t)a3;
-+ (int64_t)powerTableEvaluationStringToState:(id)a3;
++ (id)powerTableEvaluationStateAsString:(int64_t)string;
++ (int64_t)powerTableEvaluationStringToState:(id)state;
 - (BOOL)isSessionCurrentlyBlocking;
-- (BOOL)removePersistedKey:(id)a3;
-- (BOOL)waitForInterfaceAdded:(id)a3;
-- (CWFAssetPowerTableElector)initWithNotificationCenter:(id)a3;
+- (BOOL)removePersistedKey:(id)key;
+- (BOOL)waitForInterfaceAdded:(id)added;
+- (CWFAssetPowerTableElector)initWithNotificationCenter:(id)center;
 - (CWFAssetPowerTableElectorDelegate)delegate;
 - (id)description;
 - (id)getPersistedDict;
-- (id)getPersistedKey:(id)a3;
-- (id)getSession:(id)a3;
-- (id)getSession:(id)a3 forKey:(id)a4;
-- (id)performPowerTableVersionRequestWithDeadline:(id)a3;
-- (void)_handleCENPowerTableEvaluationNotification:(id)a3;
+- (id)getPersistedKey:(id)key;
+- (id)getSession:(id)session;
+- (id)getSession:(id)session forKey:(id)key;
+- (id)performPowerTableVersionRequestWithDeadline:(id)deadline;
+- (void)_handleCENPowerTableEvaluationNotification:(id)notification;
 - (void)checkForExistingSessionAndRecover;
 - (void)dealloc;
-- (void)dispatchWaitForInterfaceAddedThenBlockify:(id)a3 completion:(id)a4;
-- (void)handleCENPowerTableEvaluationNotification:(id)a3;
-- (void)handleCENPowerTableEvaluationStateAborted:(id)a3;
-- (void)handleCENPowerTableEvaluationStateAccepted:(id)a3;
-- (void)handleCENPowerTableEvaluationStateRejected:(id)a3;
-- (void)handleCENPowerTableEvaluationStateRequestingReadiness:(id)a3 dueInterval:(double)a4;
-- (void)handleCENPowerTableEvaluationStateRequestingVotes:(id)a3 dueInterval:(double)a4;
-- (void)handleCENPowerTableEvaluationStateStarting:(id)a3;
+- (void)dispatchWaitForInterfaceAddedThenBlockify:(id)blockify completion:(id)completion;
+- (void)handleCENPowerTableEvaluationNotification:(id)notification;
+- (void)handleCENPowerTableEvaluationStateAborted:(id)aborted;
+- (void)handleCENPowerTableEvaluationStateAccepted:(id)accepted;
+- (void)handleCENPowerTableEvaluationStateRejected:(id)rejected;
+- (void)handleCENPowerTableEvaluationStateRequestingReadiness:(id)readiness dueInterval:(double)interval;
+- (void)handleCENPowerTableEvaluationStateRequestingVotes:(id)votes dueInterval:(double)interval;
+- (void)handleCENPowerTableEvaluationStateStarting:(id)starting;
 - (void)handleCENPowerTableEvaluationStateUninitialized;
-- (void)performVersionFetchBlockify:(id)a3;
-- (void)persist:(id)a3 forKey:(id)a4;
-- (void)persistSession:(id)a3 data:(id)a4 forKey:(id)a5;
-- (void)processTransitionToTerminalState:(id)a3;
+- (void)performVersionFetchBlockify:(id)blockify;
+- (void)persist:(id)persist forKey:(id)key;
+- (void)persistSession:(id)session data:(id)data forKey:(id)key;
+- (void)processTransitionToTerminalState:(id)state;
 - (void)setupInterfaceAddedAndDriverAvailMonitor;
-- (void)waitForPowerTableBootedThenVoteInBlock:(id)a3 completion:(id)a4;
+- (void)waitForPowerTableBootedThenVoteInBlock:(id)block completion:(id)completion;
 @end
 
 @implementation CWFAssetPowerTableElector
 
-- (CWFAssetPowerTableElector)initWithNotificationCenter:(id)a3
+- (CWFAssetPowerTableElector)initWithNotificationCenter:(id)center
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  centerCopy = center;
   v24.receiver = self;
   v24.super_class = CWFAssetPowerTableElector;
   v5 = [(CWFAssetPowerTableElector *)&v24 init];
@@ -46,36 +46,36 @@
     v6 = dispatch_queue_create("com.apple.wifi.CWFAssetPowerTableElector", 0);
     [(CWFAssetPowerTableElector *)v5 set_coordinationQueue:v6];
 
-    v7 = [(CWFAssetPowerTableElector *)v5 _coordinationQueue];
+    _coordinationQueue = [(CWFAssetPowerTableElector *)v5 _coordinationQueue];
 
-    if (v7)
+    if (_coordinationQueue)
     {
       v8 = dispatch_queue_create("com.apple.wifi.CWFAssetPowerTableWorker", MEMORY[0x1E69E96A8]);
       [(CWFAssetPowerTableElector *)v5 set_apiQueue:v8];
 
-      v9 = [(CWFAssetPowerTableElector *)v5 _apiQueue];
+      _apiQueue = [(CWFAssetPowerTableElector *)v5 _apiQueue];
 
-      if (v9)
+      if (_apiQueue)
       {
         v10 = dispatch_queue_create("com.apple.wifi.PowerTableSignalQueue", 0);
         [(CWFAssetPowerTableElector *)v5 set_signalQueue:v10];
 
-        v11 = [(CWFAssetPowerTableElector *)v5 _signalQueue];
+        _signalQueue = [(CWFAssetPowerTableElector *)v5 _signalQueue];
 
-        if (v11)
+        if (_signalQueue)
         {
           v12 = dispatch_queue_create("com.apple.wifi.PowerTableWaitingQueue", 0);
           [(CWFAssetPowerTableElector *)v5 set_waitingQueue:v12];
 
-          v13 = [(CWFAssetPowerTableElector *)v5 _waitingQueue];
+          _waitingQueue = [(CWFAssetPowerTableElector *)v5 _waitingQueue];
 
-          if (v13)
+          if (_waitingQueue)
           {
             v14 = MGCopyAnswer();
             -[CWFAssetPowerTableElector set_isInternalBuild:](v5, "set_isInternalBuild:", [v14 BOOLValue]);
 
-            v15 = [MEMORY[0x1E696AE30] processInfo];
-            -[CWFAssetPowerTableElector set_pid:](v5, "set_pid:", [v15 processIdentifier]);
+            processInfo = [MEMORY[0x1E696AE30] processInfo];
+            -[CWFAssetPowerTableElector set_pid:](v5, "set_pid:", [processInfo processIdentifier]);
 
             [(CWFAssetPowerTableElector *)v5 set_readinessTimeoutInterval:*MEMORY[0x1E6993C00]];
             [(CWFAssetPowerTableElector *)v5 set_votingTimeoutInterval:*MEMORY[0x1E6993C18]];
@@ -83,16 +83,16 @@
             [(CWFAssetPowerTableElector *)v5 set_dateToBlockWaitingForDriverReload:30.0];
             [(CWFAssetPowerTableElector *)v5 set_powerTableEvaluationState:0];
             [(CWFAssetPowerTableElector *)v5 checkForExistingSessionAndRecover];
-            if (v4)
+            if (centerCopy)
             {
-              [(CWFAssetPowerTableElector *)v5 set_notificationCenter:v4];
+              [(CWFAssetPowerTableElector *)v5 set_notificationCenter:centerCopy];
               [(CWFAssetPowerTableElector *)v5 _notificationCenter];
             }
 
             else
             {
-              v16 = [MEMORY[0x1E696ABB0] defaultCenter];
-              [(CWFAssetPowerTableElector *)v5 set_distNotificationCenter:v16];
+              defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+              [(CWFAssetPowerTableElector *)v5 set_distNotificationCenter:defaultCenter];
 
               [(CWFAssetPowerTableElector *)v5 _distNotificationCenter];
             }
@@ -198,20 +198,20 @@ LABEL_13:
 
 - (void)dealloc
 {
-  v3 = [(CWFAssetPowerTableElector *)self _notificationCenter];
+  _notificationCenter = [(CWFAssetPowerTableElector *)self _notificationCenter];
 
-  if (v3)
+  if (_notificationCenter)
   {
-    v4 = [(CWFAssetPowerTableElector *)self _notificationCenter];
-    [v4 removeObserver:self];
+    _notificationCenter2 = [(CWFAssetPowerTableElector *)self _notificationCenter];
+    [_notificationCenter2 removeObserver:self];
   }
 
-  v5 = [(CWFAssetPowerTableElector *)self _distNotificationCenter];
+  _distNotificationCenter = [(CWFAssetPowerTableElector *)self _distNotificationCenter];
 
-  if (v5)
+  if (_distNotificationCenter)
   {
-    v6 = [(CWFAssetPowerTableElector *)self _distNotificationCenter];
-    [v6 removeObserver:self];
+    _distNotificationCenter2 = [(CWFAssetPowerTableElector *)self _distNotificationCenter];
+    [_distNotificationCenter2 removeObserver:self];
   }
 
   v7.receiver = self;
@@ -219,28 +219,28 @@ LABEL_13:
   [(CWFAssetPowerTableElector *)&v7 dealloc];
 }
 
-- (void)persist:(id)a3 forKey:(id)a4
+- (void)persist:(id)persist forKey:(id)key
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  persistCopy = persist;
+  keyCopy = key;
+  if (keyCopy)
   {
-    v8 = [(CWFAssetPowerTableElector *)self getPersistedDict];
-    if (!v8)
+    getPersistedDict = [(CWFAssetPowerTableElector *)self getPersistedDict];
+    if (!getPersistedDict)
     {
-      v8 = [MEMORY[0x1E695DF90] dictionary];
+      getPersistedDict = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    [v8 setObject:v6 forKey:v7];
-    v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v9 setPersistentDomain:v8 forName:@"com.apple.wifi.powertable"];
+    [getPersistedDict setObject:persistCopy forKey:keyCopy];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults setPersistentDomain:getPersistedDict forName:@"com.apple.wifi.powertable"];
   }
 
   else
   {
-    v8 = CWFGetOTAOSLog();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    getPersistedDict = CWFGetOTAOSLog();
+    if (os_log_type_enabled(getPersistedDict, OS_LOG_TYPE_ERROR))
     {
       v11 = 136446722;
       v12 = "[CWFAssetPowerTableElector persist:forKey:]";
@@ -248,35 +248,35 @@ LABEL_13:
       v14 = 147;
       v15 = 2080;
       v16 = "[CWFAssetPowerTableElector persist:forKey:]";
-      _os_log_impl(&dword_1E0BBF000, v8, OS_LOG_TYPE_ERROR, "%{public}s::%d:%s: Failed access userDefaults", &v11, 0x1Cu);
+      _os_log_impl(&dword_1E0BBF000, getPersistedDict, OS_LOG_TYPE_ERROR, "%{public}s::%d:%s: Failed access userDefaults", &v11, 0x1Cu);
     }
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)persistSession:(id)a3 data:(id)a4 forKey:(id)a5
+- (void)persistSession:(id)session data:(id)data forKey:(id)key
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v26 = a4;
-  v24 = self;
-  v25 = a5;
-  v9 = [(CWFAssetPowerTableElector *)self getPersistedDict];
+  sessionCopy = session;
+  dataCopy = data;
+  selfCopy = self;
+  keyCopy = key;
+  getPersistedDict = [(CWFAssetPowerTableElector *)self getPersistedDict];
   v10 = MEMORY[0x1E695DF70];
-  v11 = [v9 objectForKey:@"powertable-election-sessions-history"];
-  v12 = [v10 arrayWithArray:v11];
+  v11 = [getPersistedDict objectForKey:@"powertable-election-sessions-history"];
+  array = [v10 arrayWithArray:v11];
 
-  if (!v12)
+  if (!array)
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v13 = v12;
+  v13 = array;
   v14 = [v13 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v14)
   {
@@ -293,7 +293,7 @@ LABEL_5:
 
       v18 = *(*(&v27 + 1) + 8 * v17);
       v19 = [v18 objectForKeyedSubscript:@"session-id"];
-      v20 = [v8 isEqualToString:v19];
+      v20 = [sessionCopy isEqualToString:v19];
 
       if (v20)
       {
@@ -314,9 +314,9 @@ LABEL_5:
 
     [v13 removeObject:v18];
     v21 = 0x1E695D000uLL;
-    v22 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v18];
+    dictionary = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v18];
 
-    if (v22)
+    if (dictionary)
     {
       goto LABEL_14;
     }
@@ -329,48 +329,48 @@ LABEL_11:
     v21 = 0x1E695D000;
   }
 
-  v22 = [*(v21 + 3984) dictionary];
-  [v22 setObject:v8 forKeyedSubscript:@"session-id"];
+  dictionary = [*(v21 + 3984) dictionary];
+  [dictionary setObject:sessionCopy forKeyedSubscript:@"session-id"];
 LABEL_14:
-  [v22 setObject:v26 forKeyedSubscript:v25];
-  [v13 addObject:v22];
-  [(CWFAssetPowerTableElector *)v24 persist:v13 forKey:@"powertable-election-sessions-history"];
+  [dictionary setObject:dataCopy forKeyedSubscript:keyCopy];
+  [v13 addObject:dictionary];
+  [(CWFAssetPowerTableElector *)selfCopy persist:v13 forKey:@"powertable-election-sessions-history"];
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
 - (id)getPersistedDict
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 persistentDomainForName:@"com.apple.wifi.powertable"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults persistentDomainForName:@"com.apple.wifi.powertable"];
 
   return v3;
 }
 
-- (id)getPersistedKey:(id)a3
+- (id)getPersistedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CWFAssetPowerTableElector *)self getPersistedDict];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  getPersistedDict = [(CWFAssetPowerTableElector *)self getPersistedDict];
+  v6 = [getPersistedDict objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (BOOL)removePersistedKey:(id)a3
+- (BOOL)removePersistedKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = MEMORY[0x1E695DF90];
-  v6 = [(CWFAssetPowerTableElector *)self getPersistedDict];
-  v7 = [v5 dictionaryWithDictionary:v6];
+  getPersistedDict = [(CWFAssetPowerTableElector *)self getPersistedDict];
+  v7 = [v5 dictionaryWithDictionary:getPersistedDict];
 
   if (v7)
   {
-    v8 = [v7 objectForKeyedSubscript:v4];
+    v8 = [v7 objectForKeyedSubscript:keyCopy];
     v9 = v8 != 0;
 
-    [v7 setObject:0 forKeyedSubscript:v4];
-    v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v10 setPersistentDomain:v7 forName:@"com.apple.wifi.powertable"];
+    [v7 setObject:0 forKeyedSubscript:keyCopy];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults setPersistentDomain:v7 forName:@"com.apple.wifi.powertable"];
   }
 
   else
@@ -381,14 +381,14 @@ LABEL_14:
   return v9;
 }
 
-- (id)getSession:(id)a3 forKey:(id)a4
+- (id)getSession:(id)session forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(CWFAssetPowerTableElector *)self getSession:a3];
+  keyCopy = key;
+  v7 = [(CWFAssetPowerTableElector *)self getSession:session];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 objectForKeyedSubscript:v6];
+    v9 = [v7 objectForKeyedSubscript:keyCopy];
   }
 
   else
@@ -399,12 +399,12 @@ LABEL_14:
   return v9;
 }
 
-- (id)getSession:(id)a3
+- (id)getSession:(id)session
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CWFAssetPowerTableElector *)self getPersistedDict];
-  v6 = [v5 objectForKey:@"powertable-election-sessions-history"];
+  sessionCopy = session;
+  getPersistedDict = [(CWFAssetPowerTableElector *)self getPersistedDict];
+  v6 = [getPersistedDict objectForKey:@"powertable-election-sessions-history"];
   v7 = v6;
   if (v6)
   {
@@ -417,7 +417,7 @@ LABEL_14:
     if (v9)
     {
       v10 = v9;
-      v19 = v5;
+      v19 = getPersistedDict;
       v11 = *v21;
       while (2)
       {
@@ -430,7 +430,7 @@ LABEL_14:
 
           v13 = *(*(&v20 + 1) + 8 * i);
           v14 = [v13 objectForKeyedSubscript:@"session-id"];
-          v15 = [v4 isEqualToString:v14];
+          v15 = [sessionCopy isEqualToString:v14];
 
           if (v15)
           {
@@ -450,7 +450,7 @@ LABEL_14:
 
       v16 = 0;
 LABEL_12:
-      v5 = v19;
+      getPersistedDict = v19;
     }
 
     else
@@ -469,15 +469,15 @@ LABEL_12:
   return v16;
 }
 
-- (void)waitForPowerTableBootedThenVoteInBlock:(id)a3 completion:(id)a4
+- (void)waitForPowerTableBootedThenVoteInBlock:(id)block completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionCopy = completion;
   [(CWFAssetPowerTableElector *)self _dateToBlockWaitingForDriverReload];
-  v9 = [v6 dateByAddingTimeInterval:0.0 - v8];
+  v9 = [blockCopy dateByAddingTimeInterval:0.0 - v8];
   [(CWFAssetPowerTableElector *)self _dateToFetchReloadedPowerTableForVoteAssesment];
-  v11 = [v6 dateByAddingTimeInterval:0.0 - v10];
+  v11 = [blockCopy dateByAddingTimeInterval:0.0 - v10];
   if (![(CWFAssetPowerTableElector *)self _readyToFetchLoadedPT])
   {
     v12 = CWFGetOTAOSLog();
@@ -501,13 +501,13 @@ LABEL_12:
       _os_signpost_emit_with_name_impl(&dword_1E0BBF000, v13, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "wait _readyToFetchLoadedPTCondition", "", &v27, 2u);
     }
 
-    v14 = [(CWFAssetPowerTableElector *)self _readyToFetchLoadedPTCondition];
-    [v14 lock];
+    _readyToFetchLoadedPTCondition = [(CWFAssetPowerTableElector *)self _readyToFetchLoadedPTCondition];
+    [_readyToFetchLoadedPTCondition lock];
 
     while (![(CWFAssetPowerTableElector *)self _readyToFetchLoadedPT])
     {
-      v15 = [(CWFAssetPowerTableElector *)self _readyToFetchLoadedPTCondition];
-      v16 = [v15 waitUntilDate:v9];
+      _readyToFetchLoadedPTCondition2 = [(CWFAssetPowerTableElector *)self _readyToFetchLoadedPTCondition];
+      v16 = [_readyToFetchLoadedPTCondition2 waitUntilDate:v9];
 
       if ((v16 & 1) == 0)
       {
@@ -521,7 +521,7 @@ LABEL_12:
           v31 = 2080;
           v32 = "[CWFAssetPowerTableElector waitForPowerTableBootedThenVoteInBlock:completion:]";
           v33 = 2112;
-          v34 = v6;
+          v34 = blockCopy;
           _os_log_impl(&dword_1E0BBF000, v17, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:%s: Wait for _readyToFetchLoadedPTCondition timed out at date %@", &v27, 0x26u);
         }
 
@@ -529,8 +529,8 @@ LABEL_12:
       }
     }
 
-    v18 = [(CWFAssetPowerTableElector *)self _readyToFetchLoadedPTCondition];
-    [v18 unlock];
+    _readyToFetchLoadedPTCondition3 = [(CWFAssetPowerTableElector *)self _readyToFetchLoadedPTCondition];
+    [_readyToFetchLoadedPTCondition3 unlock];
 
     v19 = CWFGetOTAOSLog();
     if (os_signpost_enabled(v19))
@@ -557,8 +557,8 @@ LABEL_12:
     }
 
     v21 = [(CWFAssetPowerTableElector *)self performPowerTableVersionRequestWithDeadline:v11];
-    v22 = [v21 allKeys];
-    v23 = [v22 count];
+    allKeys = [v21 allKeys];
+    v23 = [allKeys count];
     v24 = v23 != 0;
 
     if (!v23)
@@ -582,29 +582,29 @@ LABEL_12:
     v24 = 0;
   }
 
-  v7[2](v7, v24, 0);
+  completionCopy[2](completionCopy, v24, 0);
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dispatchWaitForInterfaceAddedThenBlockify:(id)a3 completion:(id)a4
+- (void)dispatchWaitForInterfaceAddedThenBlockify:(id)blockify completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  blockifyCopy = blockify;
   [(CWFAssetPowerTableElector *)self _dateToBlockWaitingForDriverReload];
-  v9 = [v7 dateByAddingTimeInterval:0.0 - v8];
+  v9 = [blockifyCopy dateByAddingTimeInterval:0.0 - v8];
 
-  v10 = [(CWFAssetPowerTableElector *)self _waitingQueue];
+  _waitingQueue = [(CWFAssetPowerTableElector *)self _waitingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0C4CBFC;
   block[3] = &unk_1E86E6CA8;
   v14 = v9;
-  v15 = self;
-  v16 = v6;
-  v11 = v6;
+  selfCopy = self;
+  v16 = completionCopy;
+  v11 = completionCopy;
   v12 = v9;
-  dispatch_async(v10, block);
+  dispatch_async(_waitingQueue, block);
 }
 
 - (void)setupInterfaceAddedAndDriverAvailMonitor
@@ -617,37 +617,37 @@ LABEL_12:
     _os_signpost_emit_with_name_impl(&dword_1E0BBF000, v3, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "setupInterfaceAddedAndDriverAvailMonitor", "", buf, 2u);
   }
 
-  v4 = [(CWFAssetPowerTableElector *)self wifiInterface];
-  v5 = v4 == 0;
+  wifiInterface = [(CWFAssetPowerTableElector *)self wifiInterface];
+  v5 = wifiInterface == 0;
 
   if (v5)
   {
     v6 = objc_alloc_init(CWFInterface);
     [(CWFAssetPowerTableElector *)self setWifiInterface:v6];
 
-    v7 = [(CWFAssetPowerTableElector *)self wifiInterface];
-    [v7 activate];
+    wifiInterface2 = [(CWFAssetPowerTableElector *)self wifiInterface];
+    [wifiInterface2 activate];
   }
 
   objc_initWeak(&location, self);
-  v8 = [(CWFAssetPowerTableElector *)self wifiInterface];
+  wifiInterface3 = [(CWFAssetPowerTableElector *)self wifiInterface];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = sub_1E0C4D1C4;
   v23[3] = &unk_1E86E6F30;
   objc_copyWeak(&v24, &location);
-  [v8 setEventHandler:v23];
+  [wifiInterface3 setEventHandler:v23];
 
-  v9 = [(CWFAssetPowerTableElector *)self wifiInterface];
+  wifiInterface4 = [(CWFAssetPowerTableElector *)self wifiInterface];
   v22 = 0;
-  v10 = [v9 startMonitoringEventType:10 error:&v22];
+  v10 = [wifiInterface4 startMonitoringEventType:10 error:&v22];
   v11 = v22;
 
   if (v10)
   {
-    v12 = [(CWFAssetPowerTableElector *)self wifiInterface];
+    wifiInterface5 = [(CWFAssetPowerTableElector *)self wifiInterface];
     v21 = v11;
-    v13 = [v12 startMonitoringEventType:42 error:&v21];
+    v13 = [wifiInterface5 startMonitoringEventType:42 error:&v21];
     v14 = v21;
 
     if (v13)
@@ -725,10 +725,10 @@ LABEL_11:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)waitForInterfaceAdded:(id)a3
+- (BOOL)waitForInterfaceAdded:(id)added
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  addedCopy = added;
   v5 = CWFGetOTAOSLog();
   if (os_signpost_enabled(v5))
   {
@@ -743,13 +743,13 @@ LABEL_11:
     _os_signpost_emit_with_name_impl(&dword_1E0BBF000, v6, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "wait _interfaceAddedEventCondition", "", &v23, 2u);
   }
 
-  v7 = [(CWFAssetPowerTableElector *)self _interfaceAddedEventCondition];
-  [v7 lock];
+  _interfaceAddedEventCondition = [(CWFAssetPowerTableElector *)self _interfaceAddedEventCondition];
+  [_interfaceAddedEventCondition lock];
 
   while (![(CWFAssetPowerTableElector *)self _interfaceAddedEventOccurred])
   {
-    v8 = [(CWFAssetPowerTableElector *)self _interfaceAddedEventCondition];
-    v9 = [v8 waitUntilDate:v4];
+    _interfaceAddedEventCondition2 = [(CWFAssetPowerTableElector *)self _interfaceAddedEventCondition];
+    v9 = [_interfaceAddedEventCondition2 waitUntilDate:addedCopy];
 
     if ((v9 & 1) == 0)
     {
@@ -763,7 +763,7 @@ LABEL_11:
         v27 = 2080;
         v28 = "[CWFAssetPowerTableElector waitForInterfaceAdded:]";
         v29 = 2112;
-        *v30 = v4;
+        *v30 = addedCopy;
         _os_log_impl(&dword_1E0BBF000, v10, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:%s: Wait for _condInterfaceAddedAfterEvaluationStart timed out at date %@", &v23, 0x26u);
       }
 
@@ -771,12 +771,12 @@ LABEL_11:
     }
   }
 
-  v11 = [(CWFAssetPowerTableElector *)self _interfaceAddedEventOccurred];
+  _interfaceAddedEventOccurred = [(CWFAssetPowerTableElector *)self _interfaceAddedEventOccurred];
   v12 = CWFGetOTAOSLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(CWFAssetPowerTableElector *)self _interfaceAddedEventCondition];
-    v14 = [(CWFAssetPowerTableElector *)self _interfaceAddedEventOccurred];
+    _interfaceAddedEventCondition3 = [(CWFAssetPowerTableElector *)self _interfaceAddedEventCondition];
+    _interfaceAddedEventOccurred2 = [(CWFAssetPowerTableElector *)self _interfaceAddedEventOccurred];
     v23 = 136447234;
     v24 = "[CWFAssetPowerTableElector waitForInterfaceAdded:]";
     v25 = 1024;
@@ -784,14 +784,14 @@ LABEL_11:
     v27 = 2080;
     v28 = "[CWFAssetPowerTableElector waitForInterfaceAdded:]";
     v29 = 2112;
-    *v30 = v13;
+    *v30 = _interfaceAddedEventCondition3;
     *&v30[8] = 1024;
-    v31 = v14;
+    v31 = _interfaceAddedEventOccurred2;
     _os_log_impl(&dword_1E0BBF000, v12, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:%s: _interfaceAddedEventCondition %@ or _interfaceAddedEventOccurred %d Done", &v23, 0x2Cu);
   }
 
-  v15 = [(CWFAssetPowerTableElector *)self _interfaceAddedEventCondition];
-  [v15 unlock];
+  _interfaceAddedEventCondition4 = [(CWFAssetPowerTableElector *)self _interfaceAddedEventCondition];
+  [_interfaceAddedEventCondition4 unlock];
 
   v16 = CWFGetOTAOSLog();
   if (os_signpost_enabled(v16))
@@ -803,8 +803,8 @@ LABEL_11:
   v17 = CWFGetOTAOSLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(CWFAssetPowerTableElector *)self _interfaceAddedEventOccurred];
-    v19 = [(CWFAssetPowerTableElector *)self _driverAvailEventOccurred];
+    _interfaceAddedEventOccurred3 = [(CWFAssetPowerTableElector *)self _interfaceAddedEventOccurred];
+    _driverAvailEventOccurred = [(CWFAssetPowerTableElector *)self _driverAvailEventOccurred];
     v23 = 136447234;
     v24 = "[CWFAssetPowerTableElector waitForInterfaceAdded:]";
     v25 = 1024;
@@ -812,9 +812,9 @@ LABEL_11:
     v27 = 2080;
     v28 = "[CWFAssetPowerTableElector waitForInterfaceAdded:]";
     v29 = 1024;
-    *v30 = v18;
+    *v30 = _interfaceAddedEventOccurred3;
     *&v30[4] = 1024;
-    *&v30[6] = v19;
+    *&v30[6] = _driverAvailEventOccurred;
     _os_log_impl(&dword_1E0BBF000, v17, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:%s: waitForInterfaceAdded completed _interfaceAddedEventOccurred %d _driverAvailEventOccurred %d", &v23, 0x28u);
   }
 
@@ -826,14 +826,14 @@ LABEL_11:
   }
 
   v21 = *MEMORY[0x1E69E9840];
-  return v11;
+  return _interfaceAddedEventOccurred;
 }
 
-- (void)performVersionFetchBlockify:(id)a3
+- (void)performVersionFetchBlockify:(id)blockify
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  blockifyCopy = blockify;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v6 = CWFGetOTAOSLog();
   if (os_signpost_enabled(v6))
   {
@@ -856,8 +856,8 @@ LABEL_11:
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
-  v8 = [(CWFAssetPowerTableElector *)self delegate];
-  v9 = [v8 performVersionFetch:v5];
+  delegate = [(CWFAssetPowerTableElector *)self delegate];
+  v9 = [delegate performVersionFetch:dictionary];
 
   buf[24] = v9;
   v13[0] = MEMORY[0x1E69E9820];
@@ -873,17 +873,17 @@ LABEL_11:
     _os_signpost_emit_with_name_impl(&dword_1E0BBF000, v10, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "performVersionFetch", "", v12, 2u);
   }
 
-  (*(v4 + 2))(v4, *(*&buf[8] + 24), v5, 0);
+  (*(blockifyCopy + 2))(blockifyCopy, *(*&buf[8] + 24), dictionary, 0);
   _Block_object_dispose(buf, 8);
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)performPowerTableVersionRequestWithDeadline:(id)a3
+- (id)performPowerTableVersionRequestWithDeadline:(id)deadline
 {
   v63 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  deadlineCopy = deadline;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   [(CWFAssetPowerTableElector *)self set_powerTableFetched:0];
   v6 = objc_alloc_init(MEMORY[0x1E696AB30]);
   [(CWFAssetPowerTableElector *)self set_condPowerTableFetched:v6];
@@ -895,16 +895,16 @@ LABEL_11:
     _os_signpost_emit_with_name_impl(&dword_1E0BBF000, v7, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "performPowerTableVersionRequestWithDeadline", "", buf, 2u);
   }
 
-  v8 = [(CWFAssetPowerTableElector *)self wifiInterface];
-  v9 = v8 == 0;
+  wifiInterface = [(CWFAssetPowerTableElector *)self wifiInterface];
+  v9 = wifiInterface == 0;
 
   if (v9)
   {
     v10 = objc_alloc_init(CWFInterface);
     [(CWFAssetPowerTableElector *)self setWifiInterface:v10];
 
-    v11 = [(CWFAssetPowerTableElector *)self wifiInterface];
-    [v11 activate];
+    wifiInterface2 = [(CWFAssetPowerTableElector *)self wifiInterface];
+    [wifiInterface2 activate];
   }
 
   *buf = 0;
@@ -924,9 +924,9 @@ LABEL_11:
   v35[2] = sub_1E0C4EACC;
   v35[3] = &unk_1E86E6F80;
   v35[4] = self;
-  v12 = v5;
+  v12 = dictionary;
   v36 = v12;
-  v13 = v4;
+  v13 = deadlineCopy;
   v37 = v13;
   v38 = &v39;
   v14 = MEMORY[0x1E12EA400](v35);
@@ -951,13 +951,13 @@ LABEL_11:
   }
 
   objc_storeWeak(v40 + 5, *(v46 + 5));
-  v18 = [(CWFAssetPowerTableElector *)self _apiQueue];
+  _apiQueue = [(CWFAssetPowerTableElector *)self _apiQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0C4F12C;
   block[3] = &unk_1E86E5600;
   block[4] = buf;
-  dispatch_async(v18, block);
+  dispatch_async(_apiQueue, block);
 
   v19 = CWFGetOTAOSLog();
   if (os_signpost_enabled(v19))
@@ -966,13 +966,13 @@ LABEL_11:
     _os_signpost_emit_with_name_impl(&dword_1E0BBF000, v19, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "wait _condPowerTableFetched", "", v53, 2u);
   }
 
-  v20 = [(CWFAssetPowerTableElector *)self _condPowerTableFetched];
-  [v20 lock];
+  _condPowerTableFetched = [(CWFAssetPowerTableElector *)self _condPowerTableFetched];
+  [_condPowerTableFetched lock];
 
   while (![(CWFAssetPowerTableElector *)self _powerTableFetched])
   {
-    v21 = [(CWFAssetPowerTableElector *)self _condPowerTableFetched];
-    v22 = [v21 waitUntilDate:v13];
+    _condPowerTableFetched2 = [(CWFAssetPowerTableElector *)self _condPowerTableFetched];
+    v22 = [_condPowerTableFetched2 waitUntilDate:v13];
 
     if ((v22 & 1) == 0 && ![(CWFAssetPowerTableElector *)self _powerTableFetched])
     {
@@ -999,8 +999,8 @@ LABEL_11:
     }
   }
 
-  v27 = [(CWFAssetPowerTableElector *)self _condPowerTableFetched];
-  [v27 unlock];
+  _condPowerTableFetched3 = [(CWFAssetPowerTableElector *)self _condPowerTableFetched];
+  [_condPowerTableFetched3 unlock];
 
   v28 = CWFGetOTAOSLog();
   if (os_signpost_enabled(v28))
@@ -1028,15 +1028,15 @@ LABEL_11:
   return v31;
 }
 
-- (void)handleCENPowerTableEvaluationNotification:(id)a3
+- (void)handleCENPowerTableEvaluationNotification:(id)notification
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E6993C10]];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E6993C10]];
 
   v7 = CWFGetOTAOSLog();
-  v8 = os_signpost_id_make_with_pointer(v7, v4);
+  v8 = os_signpost_id_make_with_pointer(v7, notificationCopy);
 
   v9 = CWFGetOTAOSLog();
   v10 = v9;
@@ -1048,26 +1048,26 @@ LABEL_11:
     _os_signpost_emit_with_name_impl(&dword_1E0BBF000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "NSNotification", "%@", buf, 0xCu);
   }
 
-  v12 = [(CWFAssetPowerTableElector *)self _coordinationQueue];
+  _coordinationQueue = [(CWFAssetPowerTableElector *)self _coordinationQueue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = sub_1E0C4F914;
   v16[3] = &unk_1E86E6B18;
   v16[4] = self;
-  v17 = v4;
+  v17 = notificationCopy;
   v18 = v6;
   v19 = v8;
   v13 = v6;
-  v14 = v4;
-  dispatch_async(v12, v16);
+  v14 = notificationCopy;
+  dispatch_async(_coordinationQueue, v16);
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleCENPowerTableEvaluationNotification:(id)a3
+- (void)_handleCENPowerTableEvaluationNotification:(id)notification
 {
   v76 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = CWFGetOTAOSLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1078,12 +1078,12 @@ LABEL_11:
     *&buf[18] = 2080;
     *&buf[20] = "[CWFAssetPowerTableElector _handleCENPowerTableEvaluationNotification:]";
     v58 = 2112;
-    v59 = v4;
+    v59 = notificationCopy;
     _os_log_impl(&dword_1E0BBF000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:%s: Election NSNotification %@", buf, 0x26u);
   }
 
-  v52 = [v4 name];
-  if (([v52 isEqualToString:*MEMORY[0x1E6993BF0]] & 1) == 0)
+  name = [notificationCopy name];
+  if (([name isEqualToString:*MEMORY[0x1E6993BF0]] & 1) == 0)
   {
     v7 = CWFGetOTAOSLog();
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1091,8 +1091,8 @@ LABEL_11:
       goto LABEL_50;
     }
 
-    v39 = v52;
-    v40 = [v52 UTF8String];
+    v39 = name;
+    uTF8String = [name UTF8String];
     *buf = 136446978;
     *&buf[4] = "[CWFAssetPowerTableElector _handleCENPowerTableEvaluationNotification:]";
     *&buf[12] = 1024;
@@ -1100,7 +1100,7 @@ LABEL_11:
     *&buf[18] = 2080;
     *&buf[20] = "[CWFAssetPowerTableElector _handleCENPowerTableEvaluationNotification:]";
     v58 = 2080;
-    v59 = v40;
+    v59 = uTF8String;
     v41 = "%{public}s::%d:%s: unexpected notification %s";
     v42 = v7;
     v43 = 38;
@@ -1109,8 +1109,8 @@ LABEL_55:
     goto LABEL_50;
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKey:*MEMORY[0x1E6993C08]];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKey:*MEMORY[0x1E6993C08]];
 
   if (!v7)
   {
@@ -1150,8 +1150,8 @@ LABEL_55:
     goto LABEL_58;
   }
 
-  v8 = [v4 userInfo];
-  v53 = [v8 objectForKey:*MEMORY[0x1E6993C10]];
+  userInfo2 = [notificationCopy userInfo];
+  v53 = [userInfo2 objectForKey:*MEMORY[0x1E6993C10]];
 
   if (!v53)
   {
@@ -1190,8 +1190,8 @@ LABEL_58:
     goto LABEL_70;
   }
 
-  v9 = [v53 integerValue];
-  if ((v9 - 7) <= 0xFFFFFFFFFFFFFFF9)
+  integerValue = [v53 integerValue];
+  if ((integerValue - 7) <= 0xFFFFFFFFFFFFFFF9)
   {
     v45 = CWFGetOTAOSLog();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -1203,15 +1203,15 @@ LABEL_58:
       *&buf[18] = 2080;
       *&buf[20] = "[CWFAssetPowerTableElector _handleCENPowerTableEvaluationNotification:]";
       v58 = 2048;
-      v59 = v9;
+      v59 = integerValue;
       _os_log_impl(&dword_1E0BBF000, v45, OS_LOG_TYPE_ERROR, "%{public}s::%d:%s: invalid state %ld", buf, 0x26u);
     }
 
     goto LABEL_70;
   }
 
-  v10 = [v4 userInfo];
-  v11 = [v10 objectForKey:*MEMORY[0x1E6993BE8]];
+  userInfo3 = [notificationCopy userInfo];
+  v11 = [userInfo3 objectForKey:*MEMORY[0x1E6993BE8]];
 
   if (!v11)
   {
@@ -1312,8 +1312,8 @@ LABEL_70:
     goto LABEL_85;
   }
 
-  v16 = [v4 userInfo];
-  v17 = [v16 objectForKey:*MEMORY[0x1E6993BF8]];
+  userInfo4 = [notificationCopy userInfo];
+  v17 = [userInfo4 objectForKey:*MEMORY[0x1E6993BF8]];
 
   if (!v17)
   {
@@ -1385,7 +1385,7 @@ LABEL_88:
   {
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [objc_opt_class() powerTableEvaluationStateAsString:v9];
+      v24 = [objc_opt_class() powerTableEvaluationStateAsString:integerValue];
       v25 = [objc_opt_class() powerTableEvaluationStateAsString:{-[CWFAssetPowerTableElector _powerTableEvaluationState](self, "_powerTableEvaluationState")}];
       *buf = 136447490;
       *&buf[4] = "[CWFAssetPowerTableElector _handleCENPowerTableEvaluationNotification:]";
@@ -1404,9 +1404,9 @@ LABEL_88:
 
     v26 = CWFGetOTAOSLog();
     v27 = os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
-    if (v9 > 3)
+    if (integerValue > 3)
     {
-      if (v9 == 4)
+      if (integerValue == 4)
       {
         if (v27)
         {
@@ -1422,7 +1422,7 @@ LABEL_88:
         [(CWFAssetPowerTableElector *)self handleCENPowerTableEvaluationStateRejected:v7];
       }
 
-      else if (v9 == 5)
+      else if (integerValue == 5)
       {
         if (v27)
         {
@@ -1457,7 +1457,7 @@ LABEL_88:
       goto LABEL_47;
     }
 
-    if (v9 == 1)
+    if (integerValue == 1)
     {
       if (v27)
       {
@@ -1511,7 +1511,7 @@ LABEL_88:
       _Block_object_dispose(buf, 8);
     }
 
-    else if (v9 == 2)
+    else if (integerValue == 2)
     {
       if (v27)
       {
@@ -1543,7 +1543,7 @@ LABEL_47:
         v32 = CWFGetOTAOSLog();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
-          v33 = [objc_opt_class() powerTableEvaluationStateAsString:v9];
+          v33 = [objc_opt_class() powerTableEvaluationStateAsString:integerValue];
           v34 = [v11 objectAtIndexedSubscript:0];
           v35 = [v11 objectAtIndexedSubscript:1];
           v36 = [v17 objectAtIndexedSubscript:0];
@@ -1658,9 +1658,9 @@ LABEL_50:
   v3 = [(CWFAssetPowerTableElector *)self getPersistedKey:@"powertable-election-session-id"];
   v4 = [(CWFAssetPowerTableElector *)self getPersistedKey:@"powertable-election-session-start-date"];
   v5 = [(CWFAssetPowerTableElector *)self getPersistedKey:@"powertable-election-session-state"];
-  v6 = [(CWFAssetPowerTableElector *)self _powerTableSession];
+  _powerTableSession = [(CWFAssetPowerTableElector *)self _powerTableSession];
 
-  if (!v6 && v3)
+  if (!_powerTableSession && v3)
   {
     v7 = CWFGetOTAOSLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1679,9 +1679,9 @@ LABEL_50:
     [(CWFAssetPowerTableElector *)self set_powerTableSession:v3];
   }
 
-  v8 = [(CWFAssetPowerTableElector *)self _powerTableSessionStartDate];
+  _powerTableSessionStartDate = [(CWFAssetPowerTableElector *)self _powerTableSessionStartDate];
 
-  if (!v8 && v4)
+  if (!_powerTableSessionStartDate && v4)
   {
     v9 = CWFGetOTAOSLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1725,15 +1725,15 @@ LABEL_50:
     }
   }
 
-  v13 = [(CWFAssetPowerTableElector *)self _powerTableSessionStartDate];
-  if (!v13)
+  _powerTableSessionStartDate2 = [(CWFAssetPowerTableElector *)self _powerTableSessionStartDate];
+  if (!_powerTableSessionStartDate2)
   {
     goto LABEL_21;
   }
 
-  v14 = v13;
-  v15 = [(CWFAssetPowerTableElector *)self _powerTableSessionStartDate];
-  [v15 timeIntervalSinceNow];
+  v14 = _powerTableSessionStartDate2;
+  _powerTableSessionStartDate3 = [(CWFAssetPowerTableElector *)self _powerTableSessionStartDate];
+  [_powerTableSessionStartDate3 timeIntervalSinceNow];
   v17 = v16;
   [(CWFAssetPowerTableElector *)self _maxSessionActiveInterval];
   v19 = v18;
@@ -1753,7 +1753,7 @@ LABEL_50:
       v24 = [(CWFAssetPowerTableElector *)self getPersistedKey:@"powertable-election-session-id"];
       [(CWFAssetPowerTableElector *)self _maxSessionActiveInterval];
       v26 = v25;
-      v27 = [(CWFAssetPowerTableElector *)self error];
+      error = [(CWFAssetPowerTableElector *)self error];
       v32 = 136447490;
       v33 = "[CWFAssetPowerTableElector checkForExistingSessionAndRecover]";
       v34 = 1024;
@@ -1765,7 +1765,7 @@ LABEL_50:
       v40 = 2048;
       v41 = v26;
       v42 = 2112;
-      v43 = v27;
+      v43 = error;
       _os_log_impl(&dword_1E0BBF000, v23, OS_LOG_TYPE_ERROR, "%{public}s::%d:%s: Session id %@ has expired past max interval of %f, recovering by removing stale session - error %@", &v32, 0x3Au);
     }
 
@@ -1843,7 +1843,7 @@ LABEL_11:
         v12 = [(CWFAssetPowerTableElector *)self getPersistedKey:@"powertable-election-session-id"];
         [(CWFAssetPowerTableElector *)self _maxSessionActiveInterval];
         v14 = v13;
-        v15 = [(CWFAssetPowerTableElector *)self error];
+        error = [(CWFAssetPowerTableElector *)self error];
         *buf = 136447490;
         v27 = "[CWFAssetPowerTableElector isSessionCurrentlyBlocking]";
         v28 = 1024;
@@ -1855,7 +1855,7 @@ LABEL_11:
         v34 = 2048;
         v35 = v14;
         v36 = 2112;
-        v37 = v15;
+        v37 = error;
         _os_log_impl(&dword_1E0BBF000, v11, OS_LOG_TYPE_ERROR, "%{public}s::%d:%s: Session id %@ has expired past max interval of %f, recovering by removing stale session - error %@", buf, 0x3Au);
       }
 
@@ -1876,7 +1876,7 @@ LABEL_11:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         v21 = [(CWFAssetPowerTableElector *)self getPersistedKey:@"powertable-election-session-id"];
-        v22 = [(CWFAssetPowerTableElector *)self error];
+        error2 = [(CWFAssetPowerTableElector *)self error];
         *buf = 136447234;
         v27 = "[CWFAssetPowerTableElector isSessionCurrentlyBlocking]";
         v28 = 1024;
@@ -1886,7 +1886,7 @@ LABEL_11:
         v32 = 2112;
         v33 = v21;
         v34 = 2112;
-        v35 = v22;
+        v35 = error2;
         _os_log_impl(&dword_1E0BBF000, v20, OS_LOG_TYPE_ERROR, "%{public}s::%d:%s: Session id %@ has missing start date, recovering by removing session id - error %@", buf, 0x30u);
       }
 
@@ -1902,10 +1902,10 @@ LABEL_12:
   return v3;
 }
 
-- (void)processTransitionToTerminalState:(id)a3
+- (void)processTransitionToTerminalState:(id)state
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   v5 = [MEMORY[0x1E695DF00] now];
   v6 = CWFGetOTAOSLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1925,7 +1925,7 @@ LABEL_12:
   v8 = [v5 dateByAddingTimeInterval:10.0];
   v9 = [(CWFAssetPowerTableElector *)self performPowerTableVersionRequestWithDeadline:v8];
 
-  [(CWFAssetPowerTableElector *)self persistSession:v4 data:v9 forKey:@"pt-ver-final"];
+  [(CWFAssetPowerTableElector *)self persistSession:stateCopy data:v9 forKey:@"pt-ver-final"];
   v10 = [v9 valueForKey:@"PTV_TABLE_VERSION"];
 
   v11 = +[CWFPowerTableElectionTelemetry sharedObj];
@@ -1942,16 +1942,16 @@ LABEL_12:
   }
 
   v14 = [objc_opt_class() powerTableEvaluationStateAsString:{-[CWFAssetPowerTableElector _powerTableEvaluationState](self, "_powerTableEvaluationState")}];
-  [(CWFAssetPowerTableElector *)self persistSession:v4 data:v14 forKey:@"state"];
+  [(CWFAssetPowerTableElector *)self persistSession:stateCopy data:v14 forKey:@"state"];
 
   v15 = [objc_opt_class() powerTableEvaluationStateAsString:{-[CWFAssetPowerTableElector _powerTableEvaluationState](self, "_powerTableEvaluationState")}];
   [(CWFAssetPowerTableElector *)self persist:v15 forKey:@"powertable-election-session-state"];
 
   v16 = [MEMORY[0x1E695DF00] now];
-  [(CWFAssetPowerTableElector *)self persistSession:v4 data:v16 forKey:@"session-end-date"];
+  [(CWFAssetPowerTableElector *)self persistSession:stateCopy data:v16 forKey:@"session-end-date"];
 
   v17 = [MEMORY[0x1E696AD98] numberWithInt:{-[CWFAssetPowerTableElector _pid](self, "_pid")}];
-  [(CWFAssetPowerTableElector *)self persistSession:v4 data:v17 forKey:@"pid-at-end"];
+  [(CWFAssetPowerTableElector *)self persistSession:stateCopy data:v17 forKey:@"pid-at-end"];
 
   [(CWFAssetPowerTableElector *)self removePersistedKey:@"powertable-election-session-id"];
   [(CWFAssetPowerTableElector *)self removePersistedKey:@"powertable-election-session-start-date"];
@@ -1975,10 +1975,10 @@ LABEL_12:
 
     v20 = [objc_opt_class() powerTableEvaluationStateAsString:{-[CWFAssetPowerTableElector _powerTableEvaluationState](self, "_powerTableEvaluationState")}];
     v21 = +[CWFPowerTableElectionTelemetry sharedObj];
-    v22 = [v21 getElectionSummaryStringForABC];
+    getElectionSummaryStringForABC = [v21 getElectionSummaryStringForABC];
 
     v23 = +[CWFDiagnosticReporter sharedWiFiDiagnosticReporter];
-    [v23 submitWiFiDiagnosticReportType:@"PowerTableElection" reason:v20 subtypeContext:v22];
+    [v23 submitWiFiDiagnosticReportType:@"PowerTableElection" reason:v20 subtypeContext:getElectionSummaryStringForABC];
   }
 
   v24 = +[CWFDiagnosticReporter sharedWiFiDiagnosticReporter];
@@ -2020,17 +2020,17 @@ LABEL_12:
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleCENPowerTableEvaluationStateRequestingReadiness:(id)a3 dueInterval:(double)a4
+- (void)handleCENPowerTableEvaluationStateRequestingReadiness:(id)readiness dueInterval:(double)interval
 {
   v66 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  readinessCopy = readiness;
   v7 = [MEMORY[0x1E695DF00] now];
   v50 = 0;
   v51 = &v50;
   v52 = 0x2020000000;
   v53 = 1;
-  v8 = [(CWFAssetPowerTableElector *)self isSessionCurrentlyBlocking];
-  if (v8)
+  isSessionCurrentlyBlocking = [(CWFAssetPowerTableElector *)self isSessionCurrentlyBlocking];
+  if (isSessionCurrentlyBlocking)
   {
     v9 = CWFGetOTAOSLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2059,9 +2059,9 @@ LABEL_12:
       v58 = 2080;
       v59 = "[CWFAssetPowerTableElector handleCENPowerTableEvaluationStateRequestingReadiness:dueInterval:]";
       v60 = 2112;
-      v61 = v6;
+      v61 = readinessCopy;
       v62 = 2112;
-      v63 = *&v12;
+      intervalCopy = *&v12;
       v64 = 2112;
       v65 = v13;
       _os_log_impl(&dword_1E0BBF000, v11, OS_LOG_TYPE_FAULT, "%{public}s::%d:%s: Got unexpected Readiness Request with session %@ when existng session running %@ which was started at %@", buf, 0x3Au);
@@ -2072,15 +2072,15 @@ LABEL_12:
 
   else
   {
-    [(CWFAssetPowerTableElector *)self set_powerTableSession:v6];
-    [(CWFAssetPowerTableElector *)self persist:v6 forKey:@"powertable-election-session-id"];
+    [(CWFAssetPowerTableElector *)self set_powerTableSession:readinessCopy];
+    [(CWFAssetPowerTableElector *)self persist:readinessCopy forKey:@"powertable-election-session-id"];
     [(CWFAssetPowerTableElector *)self set_powerTableSessionStartDate:v7];
     [(CWFAssetPowerTableElector *)self persist:v7 forKey:@"powertable-election-session-start-date"];
-    v15 = [v7 dateByAddingTimeInterval:a4];
-    [(CWFAssetPowerTableElector *)self persistSession:v6 data:v15 forKey:@"readiness-deadline-date"];
+    v15 = [v7 dateByAddingTimeInterval:interval];
+    [(CWFAssetPowerTableElector *)self persistSession:readinessCopy data:v15 forKey:@"readiness-deadline-date"];
 
     v16 = [MEMORY[0x1E696AD98] numberWithInt:{-[CWFAssetPowerTableElector _pid](self, "_pid")}];
-    [(CWFAssetPowerTableElector *)self persistSession:v6 data:v16 forKey:@"pid-at-start"];
+    [(CWFAssetPowerTableElector *)self persistSession:readinessCopy data:v16 forKey:@"pid-at-start"];
 
     v11 = CWFGetOTAOSLog();
     v14 = 1;
@@ -2094,9 +2094,9 @@ LABEL_12:
       v58 = 2080;
       v59 = "[CWFAssetPowerTableElector handleCENPowerTableEvaluationStateRequestingReadiness:dueInterval:]";
       v60 = 2112;
-      v61 = v6;
+      v61 = readinessCopy;
       v62 = 2048;
-      v63 = a4;
+      intervalCopy = interval;
       v64 = 2112;
       v65 = v17;
       _os_log_impl(&dword_1E0BBF000, v11, OS_LOG_TYPE_INFO, "%{public}s::%d:%s: Session Created - Session %@ interval %f - self desc: %@", buf, 0x3Au);
@@ -2114,10 +2114,10 @@ LABEL_12:
   sub_1E0BF1DA8(@"override-readiness-response", @"com.apple.wifi.powertable", v49);
   if (*(v51 + 24) == 1)
   {
-    v18 = [(CWFAssetPowerTableElector *)self getSession:v6 forKey:@"readiness-deadline-date"];
+    v18 = [(CWFAssetPowerTableElector *)self getSession:readinessCopy forKey:@"readiness-deadline-date"];
     v19 = [(CWFAssetPowerTableElector *)self performPowerTableVersionRequestWithDeadline:v18];
 
-    [(CWFAssetPowerTableElector *)self persistSession:v6 data:v19 forKey:@"pt-ver-initial"];
+    [(CWFAssetPowerTableElector *)self persistSession:readinessCopy data:v19 forKey:@"pt-ver-initial"];
     v20 = [v19 valueForKey:@"PTV_TABLE_VERSION"];
     if (!v20 || ([v19 valueForKey:@"PTV_BINARY_FILENAME"], v21 = objc_claimAutoreleasedReturnValue(), v22 = v21 == 0, v21, v20, v22))
     {
@@ -2133,8 +2133,8 @@ LABEL_12:
       [v23 setCurrentPowerTableVersionAtReadiness:v24 fileName:v25];
     }
 
-    v26 = [v19 allKeys];
-    v27 = [v26 count] == 0;
+    allKeys = [v19 allKeys];
+    v27 = [allKeys count] == 0;
 
     if (v27)
     {
@@ -2182,7 +2182,7 @@ LABEL_12:
     v33 = CWFGetOTAOSLog();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
     {
-      v34 = [(CWFAssetPowerTableElector *)self _interfaceAddedEventOccurred];
+      _interfaceAddedEventOccurred = [(CWFAssetPowerTableElector *)self _interfaceAddedEventOccurred];
       *buf = 136446978;
       v55 = "[CWFAssetPowerTableElector handleCENPowerTableEvaluationStateRequestingReadiness:dueInterval:]";
       v56 = 1024;
@@ -2190,14 +2190,14 @@ LABEL_12:
       v58 = 2080;
       v59 = "[CWFAssetPowerTableElector handleCENPowerTableEvaluationStateRequestingReadiness:dueInterval:]";
       v60 = 1024;
-      LODWORD(v61) = v34;
+      LODWORD(v61) = _interfaceAddedEventOccurred;
       _os_log_impl(&dword_1E0BBF000, v33, OS_LOG_TYPE_INFO, "%{public}s::%d:%s: SET _interfaceAddedEventOccurred %d", buf, 0x22u);
     }
 
     v35 = CWFGetOTAOSLog();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
     {
-      v36 = [(CWFAssetPowerTableElector *)self _driverAvailEventOccurred];
+      _driverAvailEventOccurred = [(CWFAssetPowerTableElector *)self _driverAvailEventOccurred];
       *buf = 136446978;
       v55 = "[CWFAssetPowerTableElector handleCENPowerTableEvaluationStateRequestingReadiness:dueInterval:]";
       v56 = 1024;
@@ -2205,7 +2205,7 @@ LABEL_12:
       v58 = 2080;
       v59 = "[CWFAssetPowerTableElector handleCENPowerTableEvaluationStateRequestingReadiness:dueInterval:]";
       v60 = 1024;
-      LODWORD(v61) = v36;
+      LODWORD(v61) = _driverAvailEventOccurred;
       _os_log_impl(&dword_1E0BBF000, v35, OS_LOG_TYPE_INFO, "%{public}s::%d:%s: SET _driverAvailEventOccurred %d", buf, 0x22u);
     }
 
@@ -2214,7 +2214,7 @@ LABEL_12:
 
     [(CWFAssetPowerTableElector *)self set_readyToFetchLoadedPT:0];
     v38 = +[CWFDiagnosticReporter sharedWiFiDiagnosticReporter];
-    v39 = [(CWFAssetPowerTableElector *)self getSession:v6 forKey:@"readiness-deadline-date"];
+    v39 = [(CWFAssetPowerTableElector *)self getSession:readinessCopy forKey:@"readiness-deadline-date"];
     [v38 requestWiFiToBlockABCSignatureUntil:v39 signature:@"mute-abc-driver-availability-until"];
 
     [(CWFAssetPowerTableElector *)self setupInterfaceAddedAndDriverAvailMonitor];
@@ -2229,16 +2229,16 @@ LABEL_12:
     [(CWFAssetPowerTableElector *)self dispatchWaitForInterfaceAddedThenBlockify:v41 completion:v48];
   }
 
-  v42 = [(CWFAssetPowerTableElector *)self _apiQueue];
+  _apiQueue = [(CWFAssetPowerTableElector *)self _apiQueue];
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
   v47[2] = sub_1E0C52F20;
   v47[3] = &unk_1E86E6A28;
   v47[4] = self;
   v47[5] = &v50;
-  dispatch_async(v42, v47);
+  dispatch_async(_apiQueue, v47);
 
-  if (!v8)
+  if (!isSessionCurrentlyBlocking)
   {
     if (*(v51 + 24))
     {
@@ -2250,10 +2250,10 @@ LABEL_12:
       v43 = &unk_1F5BBC3E8;
     }
 
-    [(CWFAssetPowerTableElector *)self persistSession:v6 data:v43 forKey:@"readiness-reply"];
+    [(CWFAssetPowerTableElector *)self persistSession:readinessCopy data:v43 forKey:@"readiness-reply"];
     [(CWFAssetPowerTableElector *)self set_powerTableEvaluationState:*(v51 + 24)];
     v44 = [objc_opt_class() powerTableEvaluationStateAsString:{-[CWFAssetPowerTableElector _powerTableEvaluationState](self, "_powerTableEvaluationState")}];
-    [(CWFAssetPowerTableElector *)self persistSession:v6 data:v44 forKey:@"state"];
+    [(CWFAssetPowerTableElector *)self persistSession:readinessCopy data:v44 forKey:@"state"];
 
     v45 = [objc_opt_class() powerTableEvaluationStateAsString:{-[CWFAssetPowerTableElector _powerTableEvaluationState](self, "_powerTableEvaluationState")}];
     [(CWFAssetPowerTableElector *)self persist:v45 forKey:@"powertable-election-session-state"];
@@ -2264,11 +2264,11 @@ LABEL_12:
   v46 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleCENPowerTableEvaluationStateStarting:(id)a3
+- (void)handleCENPowerTableEvaluationStateStarting:(id)starting
 {
   v34[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
+  startingCopy = starting;
   v6 = [v4 now];
   if ([(CWFAssetPowerTableElector *)self _powerTableEvaluationState]!= 1)
   {
@@ -2320,12 +2320,12 @@ LABEL_12:
   }
 
   [(CWFAssetPowerTableElector *)self set_powerTableEvaluationStartDate:v6];
-  v17 = [(CWFAssetPowerTableElector *)self _powerTableEvaluationStartDate];
-  [(CWFAssetPowerTableElector *)self persistSession:v5 data:v17 forKey:@"evaluation-start-date"];
+  _powerTableEvaluationStartDate = [(CWFAssetPowerTableElector *)self _powerTableEvaluationStartDate];
+  [(CWFAssetPowerTableElector *)self persistSession:startingCopy data:_powerTableEvaluationStartDate forKey:@"evaluation-start-date"];
 
   [(CWFAssetPowerTableElector *)self set_powerTableEvaluationState:2];
   v18 = [objc_opt_class() powerTableEvaluationStateAsString:{-[CWFAssetPowerTableElector _powerTableEvaluationState](self, "_powerTableEvaluationState")}];
-  [(CWFAssetPowerTableElector *)self persistSession:v5 data:v18 forKey:@"state"];
+  [(CWFAssetPowerTableElector *)self persistSession:startingCopy data:v18 forKey:@"state"];
 
   v19 = [objc_opt_class() powerTableEvaluationStateAsString:{-[CWFAssetPowerTableElector _powerTableEvaluationState](self, "_powerTableEvaluationState")}];
   [(CWFAssetPowerTableElector *)self persist:v19 forKey:@"powertable-election-session-state"];
@@ -2333,10 +2333,10 @@ LABEL_12:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleCENPowerTableEvaluationStateRequestingVotes:(id)a3 dueInterval:(double)a4
+- (void)handleCENPowerTableEvaluationStateRequestingVotes:(id)votes dueInterval:(double)interval
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  votesCopy = votes;
   v7 = [MEMORY[0x1E695DF00] now];
   if ([(CWFAssetPowerTableElector *)self _powerTableEvaluationState]!= 2)
   {
@@ -2387,54 +2387,54 @@ LABEL_12:
     }
   }
 
-  [(CWFAssetPowerTableElector *)self persistSession:v6 data:v7 forKey:@"vote-start-date"];
-  v18 = [v7 dateByAddingTimeInterval:a4];
-  [(CWFAssetPowerTableElector *)self persistSession:v6 data:v18 forKey:@"vote-deadline-date"];
+  [(CWFAssetPowerTableElector *)self persistSession:votesCopy data:v7 forKey:@"vote-start-date"];
+  v18 = [v7 dateByAddingTimeInterval:interval];
+  [(CWFAssetPowerTableElector *)self persistSession:votesCopy data:v18 forKey:@"vote-deadline-date"];
 
   v19 = +[CWFDiagnosticReporter sharedWiFiDiagnosticReporter];
-  v20 = [(CWFAssetPowerTableElector *)self getSession:v6 forKey:@"vote-deadline-date"];
+  v20 = [(CWFAssetPowerTableElector *)self getSession:votesCopy forKey:@"vote-deadline-date"];
   [v19 requestWiFiToBlockABCSignatureUntil:v20 signature:@"mute-abc-driver-availability-until"];
 
-  v21 = [(CWFAssetPowerTableElector *)self getSession:v6 forKey:@"vote-deadline-date"];
+  v21 = [(CWFAssetPowerTableElector *)self getSession:votesCopy forKey:@"vote-deadline-date"];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = sub_1E0C536B4;
   v24[3] = &unk_1E86E6FF8;
-  v25 = v6;
-  v26 = self;
-  v22 = v6;
+  v25 = votesCopy;
+  selfCopy = self;
+  v22 = votesCopy;
   [(CWFAssetPowerTableElector *)self waitForPowerTableBootedThenVoteInBlock:v21 completion:v24];
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleCENPowerTableEvaluationStateRejected:(id)a3
+- (void)handleCENPowerTableEvaluationStateRejected:(id)rejected
 {
-  v4 = a3;
+  rejectedCopy = rejected;
   [(CWFAssetPowerTableElector *)self set_powerTableEvaluationState:4];
-  [(CWFAssetPowerTableElector *)self processTransitionToTerminalState:v4];
+  [(CWFAssetPowerTableElector *)self processTransitionToTerminalState:rejectedCopy];
 
   v6 = +[CWFPowerTableElectionTelemetry sharedObj];
   v5 = [objc_opt_class() powerTableEvaluationStateAsString:{-[CWFAssetPowerTableElector _powerTableEvaluationState](self, "_powerTableEvaluationState")}];
   [v6 setFinalResultAndSendTelemetry:v5];
 }
 
-- (void)handleCENPowerTableEvaluationStateAccepted:(id)a3
+- (void)handleCENPowerTableEvaluationStateAccepted:(id)accepted
 {
-  v4 = a3;
+  acceptedCopy = accepted;
   [(CWFAssetPowerTableElector *)self set_powerTableEvaluationState:5];
-  [(CWFAssetPowerTableElector *)self processTransitionToTerminalState:v4];
+  [(CWFAssetPowerTableElector *)self processTransitionToTerminalState:acceptedCopy];
 
   v6 = +[CWFPowerTableElectionTelemetry sharedObj];
   v5 = [objc_opt_class() powerTableEvaluationStateAsString:{-[CWFAssetPowerTableElector _powerTableEvaluationState](self, "_powerTableEvaluationState")}];
   [v6 setFinalResultAndSendTelemetry:v5];
 }
 
-- (void)handleCENPowerTableEvaluationStateAborted:(id)a3
+- (void)handleCENPowerTableEvaluationStateAborted:(id)aborted
 {
-  v4 = a3;
+  abortedCopy = aborted;
   [(CWFAssetPowerTableElector *)self set_powerTableEvaluationState:6];
-  [(CWFAssetPowerTableElector *)self processTransitionToTerminalState:v4];
+  [(CWFAssetPowerTableElector *)self processTransitionToTerminalState:abortedCopy];
 
   v6 = +[CWFPowerTableElectionTelemetry sharedObj];
   v5 = [objc_opt_class() powerTableEvaluationStateAsString:{-[CWFAssetPowerTableElector _powerTableEvaluationState](self, "_powerTableEvaluationState")}];
@@ -2443,39 +2443,39 @@ LABEL_12:
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(CWFAssetPowerTableElector *)self _pid];
-  v5 = [(CWFAssetPowerTableElector *)self _powerTableEvaluationState];
-  v6 = [(CWFAssetPowerTableElector *)self _powerTableSession];
-  v7 = [(CWFAssetPowerTableElector *)self _powerTableSessionStartDate];
-  [v3 appendFormat:@"Current Process info: pid %d, powerTableEvaluationState %ld, _powerTableSession %@, _powerTableSessionStartDate %@", v4, v5, v6, v7];
+  string = [MEMORY[0x1E696AD60] string];
+  _pid = [(CWFAssetPowerTableElector *)self _pid];
+  _powerTableEvaluationState = [(CWFAssetPowerTableElector *)self _powerTableEvaluationState];
+  _powerTableSession = [(CWFAssetPowerTableElector *)self _powerTableSession];
+  _powerTableSessionStartDate = [(CWFAssetPowerTableElector *)self _powerTableSessionStartDate];
+  [string appendFormat:@"Current Process info: pid %d, powerTableEvaluationState %ld, _powerTableSession %@, _powerTableSessionStartDate %@", _pid, _powerTableEvaluationState, _powerTableSession, _powerTableSessionStartDate];
 
   v8 = [(CWFAssetPowerTableElector *)self getPersistedKey:@"powertable-election-session-id"];
   v9 = [(CWFAssetPowerTableElector *)self getPersistedKey:@"powertable-election-session-start-date"];
-  [v3 appendFormat:@"Current Persistent Session Info: kPersistence_session_id_current %@, kPersistence_session_start_date_current %@", v8, v9];
+  [string appendFormat:@"Current Persistent Session Info: kPersistence_session_id_current %@, kPersistence_session_start_date_current %@", v8, v9];
 
-  v10 = [(CWFAssetPowerTableElector *)self _powerTableSession];
+  _powerTableSession2 = [(CWFAssetPowerTableElector *)self _powerTableSession];
 
-  if (v10)
+  if (_powerTableSession2)
   {
-    v11 = [(CWFAssetPowerTableElector *)self _powerTableSession];
-    v12 = [(CWFAssetPowerTableElector *)self getSession:v11];
-    [v3 appendFormat:@"Detailed Current Persistent Session Info: %@", v12];
+    _powerTableSession3 = [(CWFAssetPowerTableElector *)self _powerTableSession];
+    v12 = [(CWFAssetPowerTableElector *)self getSession:_powerTableSession3];
+    [string appendFormat:@"Detailed Current Persistent Session Info: %@", v12];
   }
 
   else
   {
-    v11 = [(CWFAssetPowerTableElector *)self getPersistedKey:@"powertable-election-sessions-history"];
-    [v3 appendFormat:@"Detailed All Persistent Session Info: %@", v11];
+    _powerTableSession3 = [(CWFAssetPowerTableElector *)self getPersistedKey:@"powertable-election-sessions-history"];
+    [string appendFormat:@"Detailed All Persistent Session Info: %@", _powerTableSession3];
   }
 
-  return v3;
+  return string;
 }
 
-+ (id)powerTableEvaluationStateAsString:(int64_t)a3
++ (id)powerTableEvaluationStateAsString:(int64_t)string
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3 >= 7)
+  if (string >= 7)
   {
     v4 = CWFGetOTAOSLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2492,21 +2492,21 @@ LABEL_12:
 
   else
   {
-    result = off_1E86E7018[a3];
+    result = off_1E86E7018[string];
   }
 
   v5 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-+ (int64_t)powerTableEvaluationStringToState:(id)a3
++ (int64_t)powerTableEvaluationStringToState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = 0;
   while (1)
   {
     v5 = [objc_opt_class() powerTableEvaluationStateAsString:v4];
-    v6 = [v3 isEqualToString:v5];
+    v6 = [stateCopy isEqualToString:v5];
 
     if (v6)
     {

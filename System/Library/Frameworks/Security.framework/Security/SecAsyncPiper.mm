@@ -1,6 +1,6 @@
 @interface SecAsyncPiper
-- (SecAsyncPiper)initWithError:(id *)a3;
-- (id)dictWithError:(id *)a3;
+- (SecAsyncPiper)initWithError:(id *)error;
+- (id)dictWithError:(id *)error;
 - (id)xpcFd;
 - (void)moreData;
 - (void)waitAndReleaseFd_ForTestingOnly;
@@ -8,7 +8,7 @@
 
 @implementation SecAsyncPiper
 
-- (id)dictWithError:(id *)a3
+- (id)dictWithError:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -22,7 +22,7 @@
   v12 = __Block_byref_object_copy__885;
   v13 = __Block_byref_object_dispose__886;
   v14 = 0;
-  v5 = [(SecAsyncPiper *)self queue];
+  queue = [(SecAsyncPiper *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __31__SecAsyncPiper_dictWithError___block_invoke;
@@ -30,11 +30,11 @@
   block[4] = self;
   block[5] = &v15;
   block[6] = &v9;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
-  if (a3)
+  if (error)
   {
-    *a3 = v10[5];
+    *error = v10[5];
   }
 
   v6 = v16[5];
@@ -64,12 +64,12 @@ void __31__SecAsyncPiper_dictWithError___block_invoke(uint64_t a1)
   [(SecAsyncPiper *)self setSemaForTestingOnly:v3];
 
   [(SecAsyncPiper *)self moreData];
-  v4 = [(SecAsyncPiper *)self semaForTestingOnly];
-  dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
+  semaForTestingOnly = [(SecAsyncPiper *)self semaForTestingOnly];
+  dispatch_semaphore_wait(semaForTestingOnly, 0xFFFFFFFFFFFFFFFFLL);
 
   [(SecAsyncPiper *)self setWriteXpcFd:0];
-  v5 = [(SecAsyncPiper *)self semaForTestingOnly];
-  dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
+  semaForTestingOnly2 = [(SecAsyncPiper *)self semaForTestingOnly];
+  dispatch_semaphore_wait(semaForTestingOnly2, 0xFFFFFFFFFFFFFFFFLL);
 }
 
 - (id)xpcFd
@@ -81,14 +81,14 @@ void __31__SecAsyncPiper_dictWithError___block_invoke(uint64_t a1)
 
 - (void)moreData
 {
-  v3 = [(SecAsyncPiper *)self queue];
+  queue = [(SecAsyncPiper *)self queue];
   objc_initWeak(&location, self);
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __25__SecAsyncPiper_moreData__block_invoke;
   v4[3] = &unk_1E70E0AD0;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(queue, v4);
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
@@ -160,7 +160,7 @@ void __25__SecAsyncPiper_moreData__block_invoke(uint64_t a1)
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (SecAsyncPiper)initWithError:(id *)a3
+- (SecAsyncPiper)initWithError:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
@@ -257,9 +257,9 @@ LABEL_17:
 
 LABEL_9:
 
-  if (a3)
+  if (error)
   {
-    *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:v5 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:v5 userInfo:0];
   }
 
   v8 = 0;

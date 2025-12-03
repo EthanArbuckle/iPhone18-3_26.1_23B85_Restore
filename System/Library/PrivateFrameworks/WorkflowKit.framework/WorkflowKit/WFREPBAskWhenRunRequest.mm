@@ -1,24 +1,24 @@
 @interface WFREPBAskWhenRunRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addParameterKeys:(id)a3;
-- (void)addParameterKeysAndStates:(id)a3;
-- (void)addPossibleStates:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addParameterKeys:(id)keys;
+- (void)addParameterKeysAndStates:(id)states;
+- (void)addPossibleStates:(id)states;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFREPBAskWhenRunRequest
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(WFREPBAskWhenRunRequest *)self setAssociatedRunRequestIdentifier:?];
   }
@@ -27,7 +27,7 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v6)
   {
@@ -55,7 +55,7 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = *(v4 + 5);
+  v10 = *(fromCopy + 5);
   v11 = [v10 countByEnumeratingWithState:&v25 objects:v34 count:16];
   if (v11)
   {
@@ -79,12 +79,12 @@
     while (v12);
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(WFREPBAskWhenRunRequest *)self setActionIdentifier:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(WFREPBAskWhenRunRequest *)self setActionSerializedParameters:?];
   }
@@ -93,7 +93,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v15 = *(v4 + 6);
+  v15 = *(fromCopy + 6);
   v16 = [v15 countByEnumeratingWithState:&v21 objects:v33 count:16];
   if (v16)
   {
@@ -130,13 +130,13 @@
   return v6 ^ v7 ^ [(NSMutableArray *)self->_possibleStates hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((associatedRunRequestIdentifier = self->_associatedRunRequestIdentifier, !(associatedRunRequestIdentifier | v4[3])) || -[NSString isEqual:](associatedRunRequestIdentifier, "isEqual:")) && ((parameterKeys = self->_parameterKeys, !(parameterKeys | v4[4])) || -[NSMutableArray isEqual:](parameterKeys, "isEqual:")) && ((parameterKeysAndStates = self->_parameterKeysAndStates, !(parameterKeysAndStates | v4[5])) || -[NSMutableArray isEqual:](parameterKeysAndStates, "isEqual:")) && ((actionIdentifier = self->_actionIdentifier, !(actionIdentifier | v4[1])) || -[NSString isEqual:](actionIdentifier, "isEqual:")) && ((actionSerializedParameters = self->_actionSerializedParameters, !(actionSerializedParameters | v4[2])) || -[NSData isEqual:](actionSerializedParameters, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((associatedRunRequestIdentifier = self->_associatedRunRequestIdentifier, !(associatedRunRequestIdentifier | equalCopy[3])) || -[NSString isEqual:](associatedRunRequestIdentifier, "isEqual:")) && ((parameterKeys = self->_parameterKeys, !(parameterKeys | equalCopy[4])) || -[NSMutableArray isEqual:](parameterKeys, "isEqual:")) && ((parameterKeysAndStates = self->_parameterKeysAndStates, !(parameterKeysAndStates | equalCopy[5])) || -[NSMutableArray isEqual:](parameterKeysAndStates, "isEqual:")) && ((actionIdentifier = self->_actionIdentifier, !(actionIdentifier | equalCopy[1])) || -[NSString isEqual:](actionIdentifier, "isEqual:")) && ((actionSerializedParameters = self->_actionSerializedParameters, !(actionSerializedParameters | equalCopy[2])) || -[NSData isEqual:](actionSerializedParameters, "isEqual:")))
   {
     possibleStates = self->_possibleStates;
-    if (possibleStates | v4[6])
+    if (possibleStates | equalCopy[6])
     {
       v11 = [(NSMutableArray *)possibleStates isEqual:?];
     }
@@ -155,11 +155,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v47 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_associatedRunRequestIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_associatedRunRequestIdentifier copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -183,7 +183,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v40 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v40 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addParameterKeys:v13];
 
         ++v12;
@@ -216,7 +216,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v36 + 1) + 8 * v18) copyWithZone:a3];
+        v19 = [*(*(&v36 + 1) + 8 * v18) copyWithZone:zone];
         [v5 addParameterKeysAndStates:v19];
 
         ++v18;
@@ -229,11 +229,11 @@
     while (v16);
   }
 
-  v20 = [(NSString *)self->_actionIdentifier copyWithZone:a3];
+  v20 = [(NSString *)self->_actionIdentifier copyWithZone:zone];
   v21 = v5[1];
   v5[1] = v20;
 
-  v22 = [(NSData *)self->_actionSerializedParameters copyWithZone:a3];
+  v22 = [(NSData *)self->_actionSerializedParameters copyWithZone:zone];
   v23 = v5[2];
   v5[2] = v22;
 
@@ -257,7 +257,7 @@
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v32 + 1) + 8 * v28) copyWithZone:{a3, v32}];
+        v29 = [*(*(&v32 + 1) + 8 * v28) copyWithZone:{zone, v32}];
         [v5 addPossibleStates:v29];
 
         ++v28;
@@ -274,72 +274,72 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
-  [v16 setAssociatedRunRequestIdentifier:self->_associatedRunRequestIdentifier];
+  toCopy = to;
+  [toCopy setAssociatedRunRequestIdentifier:self->_associatedRunRequestIdentifier];
   if ([(WFREPBAskWhenRunRequest *)self parameterKeysCount])
   {
-    [v16 clearParameterKeys];
-    v4 = [(WFREPBAskWhenRunRequest *)self parameterKeysCount];
-    if (v4)
+    [toCopy clearParameterKeys];
+    parameterKeysCount = [(WFREPBAskWhenRunRequest *)self parameterKeysCount];
+    if (parameterKeysCount)
     {
-      v5 = v4;
+      v5 = parameterKeysCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(WFREPBAskWhenRunRequest *)self parameterKeysAtIndex:i];
-        [v16 addParameterKeys:v7];
+        [toCopy addParameterKeys:v7];
       }
     }
   }
 
   if ([(WFREPBAskWhenRunRequest *)self parameterKeysAndStatesCount])
   {
-    [v16 clearParameterKeysAndStates];
-    v8 = [(WFREPBAskWhenRunRequest *)self parameterKeysAndStatesCount];
-    if (v8)
+    [toCopy clearParameterKeysAndStates];
+    parameterKeysAndStatesCount = [(WFREPBAskWhenRunRequest *)self parameterKeysAndStatesCount];
+    if (parameterKeysAndStatesCount)
     {
-      v9 = v8;
+      v9 = parameterKeysAndStatesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(WFREPBAskWhenRunRequest *)self parameterKeysAndStatesAtIndex:j];
-        [v16 addParameterKeysAndStates:v11];
+        [toCopy addParameterKeysAndStates:v11];
       }
     }
   }
 
-  [v16 setActionIdentifier:self->_actionIdentifier];
+  [toCopy setActionIdentifier:self->_actionIdentifier];
   if (self->_actionSerializedParameters)
   {
-    [v16 setActionSerializedParameters:?];
+    [toCopy setActionSerializedParameters:?];
   }
 
   if ([(WFREPBAskWhenRunRequest *)self possibleStatesCount])
   {
-    [v16 clearPossibleStates];
-    v12 = [(WFREPBAskWhenRunRequest *)self possibleStatesCount];
-    if (v12)
+    [toCopy clearPossibleStates];
+    possibleStatesCount = [(WFREPBAskWhenRunRequest *)self possibleStatesCount];
+    if (possibleStatesCount)
     {
-      v13 = v12;
+      v13 = possibleStatesCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(WFREPBAskWhenRunRequest *)self possibleStatesAtIndex:k];
-        [v16 addPossibleStates:v15];
+        [toCopy addPossibleStates:v15];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (!self->_associatedRunRequestIdentifier)
   {
     __assert_rtn("[WFREPBAskWhenRunRequest writeTo:]", "WFREPBAskWhenRunRequest.m", 243, "nil != self->_associatedRunRequestIdentifier");
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   v35 = 0u;
   v36 = 0u;
@@ -454,12 +454,12 @@
 - (id)dictionaryRepresentation
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   associatedRunRequestIdentifier = self->_associatedRunRequestIdentifier;
   if (associatedRunRequestIdentifier)
   {
-    [v3 setObject:associatedRunRequestIdentifier forKey:@"associatedRunRequestIdentifier"];
+    [dictionary setObject:associatedRunRequestIdentifier forKey:@"associatedRunRequestIdentifier"];
   }
 
   parameterKeys = self->_parameterKeys;
@@ -490,8 +490,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -537,8 +537,8 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
-          [v16 addObject:v22];
+          dictionaryRepresentation2 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
+          [v16 addObject:dictionaryRepresentation2];
         }
 
         v19 = [(NSMutableArray *)v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
@@ -561,64 +561,64 @@
   v8.receiver = self;
   v8.super_class = WFREPBAskWhenRunRequest;
   v4 = [(WFREPBAskWhenRunRequest *)&v8 description];
-  v5 = [(WFREPBAskWhenRunRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFREPBAskWhenRunRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addPossibleStates:(id)a3
+- (void)addPossibleStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   possibleStates = self->_possibleStates;
-  v8 = v4;
+  v8 = statesCopy;
   if (!possibleStates)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_possibleStates;
     self->_possibleStates = v6;
 
-    v4 = v8;
+    statesCopy = v8;
     possibleStates = self->_possibleStates;
   }
 
-  [(NSMutableArray *)possibleStates addObject:v4];
+  [(NSMutableArray *)possibleStates addObject:statesCopy];
 }
 
-- (void)addParameterKeysAndStates:(id)a3
+- (void)addParameterKeysAndStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   parameterKeysAndStates = self->_parameterKeysAndStates;
-  v8 = v4;
+  v8 = statesCopy;
   if (!parameterKeysAndStates)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_parameterKeysAndStates;
     self->_parameterKeysAndStates = v6;
 
-    v4 = v8;
+    statesCopy = v8;
     parameterKeysAndStates = self->_parameterKeysAndStates;
   }
 
-  [(NSMutableArray *)parameterKeysAndStates addObject:v4];
+  [(NSMutableArray *)parameterKeysAndStates addObject:statesCopy];
 }
 
-- (void)addParameterKeys:(id)a3
+- (void)addParameterKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   parameterKeys = self->_parameterKeys;
-  v8 = v4;
+  v8 = keysCopy;
   if (!parameterKeys)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_parameterKeys;
     self->_parameterKeys = v6;
 
-    v4 = v8;
+    keysCopy = v8;
     parameterKeys = self->_parameterKeys;
   }
 
-  [(NSMutableArray *)parameterKeys addObject:v4];
+  [(NSMutableArray *)parameterKeys addObject:keysCopy];
 }
 
 @end

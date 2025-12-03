@@ -1,20 +1,20 @@
 @interface STCallingStatusDomainDataDiff
-+ (id)diffFromData:(id)a3 toData:(id)a4;
++ (id)diffFromData:(id)data toData:(id)toData;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isOrthogonalToDiff:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isOrthogonalToDiff:(id)diff;
 - (STCallingStatusDomainDataDiff)init;
-- (STCallingStatusDomainDataDiff)initWithCallDescriptorListDataDiff:(id)a3;
-- (STCallingStatusDomainDataDiff)initWithCoder:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)dataByApplyingToData:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffByApplyingDiff:(id)a3;
+- (STCallingStatusDomainDataDiff)initWithCallDescriptorListDataDiff:(id)diff;
+- (STCallingStatusDomainDataDiff)initWithCoder:(id)coder;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)dataByApplyingToData:(id)data;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffByApplyingDiff:(id)diff;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)applyToMutableData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyToMutableData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STCallingStatusDomainDataDiff
@@ -29,13 +29,13 @@
   return [(STCallingStatusDomainDataDiff *)self isEmpty];
 }
 
-+ (id)diffFromData:(id)a3 toData:(id)a4
++ (id)diffFromData:(id)data toData:(id)toData
 {
-  v5 = a4;
-  v6 = [a3 callDescriptorListData];
-  v7 = [v5 callDescriptorListData];
+  toDataCopy = toData;
+  callDescriptorListData = [data callDescriptorListData];
+  callDescriptorListData2 = [toDataCopy callDescriptorListData];
 
-  v8 = [STListDataDiff diffFromListData:v6 toListData:v7];
+  v8 = [STListDataDiff diffFromListData:callDescriptorListData toListData:callDescriptorListData2];
 
   v9 = [[STCallingStatusDomainDataDiff alloc] initWithCallDescriptorListDataDiff:v8];
 
@@ -50,15 +50,15 @@
   return v4;
 }
 
-- (STCallingStatusDomainDataDiff)initWithCallDescriptorListDataDiff:(id)a3
+- (STCallingStatusDomainDataDiff)initWithCallDescriptorListDataDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   v9.receiver = self;
   v9.super_class = STCallingStatusDomainDataDiff;
   v5 = [(STCallingStatusDomainDataDiff *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [diffCopy copy];
     callDescriptorListDataDiff = v5->_callDescriptorListDataDiff;
     v5->_callDescriptorListDataDiff = v6;
   }
@@ -66,15 +66,15 @@
   return v5;
 }
 
-- (id)dataByApplyingToData:(id)a3
+- (id)dataByApplyingToData:(id)data
 {
-  v4 = [a3 mutableCopy];
+  v4 = [data mutableCopy];
   [(STCallingStatusDomainDataDiff *)self applyToMutableData:v4];
 
   return v4;
 }
 
-- (void)applyToMutableData:(id)a3
+- (void)applyToMutableData:(id)data
 {
   if (self)
   {
@@ -87,17 +87,17 @@
   }
 
   v5 = callDescriptorListDataDiff;
-  v6 = [a3 callDescriptorListData];
-  [(STListDataDiff *)v5 applyToMutableListData:v6];
+  callDescriptorListData = [data callDescriptorListData];
+  [(STListDataDiff *)v5 applyToMutableListData:callDescriptorListData];
 }
 
-- (id)diffByApplyingDiff:(id)a3
+- (id)diffByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = diffCopy;
     v6 = v5;
     if (self)
     {
@@ -134,26 +134,26 @@ LABEL_7:
   return v11;
 }
 
-- (BOOL)isOrthogonalToDiff:(id)a3
+- (BOOL)isOrthogonalToDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   if ([(STCallingStatusDomainDataDiff *)self isEmpty])
   {
-    v5 = 1;
+    isEmpty = 1;
   }
 
   else
   {
-    v5 = [v4 isEmpty];
+    isEmpty = [diffCopy isEmpty];
   }
 
-  return v5;
+  return isEmpty;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   if (self)
   {
     self = self->_callDescriptorListDataDiff;
@@ -163,8 +163,8 @@ LABEL_7:
   v10[1] = 3221225472;
   v10[2] = __41__STCallingStatusDomainDataDiff_isEqual___block_invoke;
   v10[3] = &unk_1E85DDCD8;
-  v11 = v4;
-  v6 = v4;
+  v11 = equalCopy;
+  v6 = equalCopy;
   v7 = [v5 appendObject:self counterpart:v10];
   v8 = [v5 isEqual];
 
@@ -187,8 +187,8 @@ id __41__STCallingStatusDomainDataDiff_isEqual___block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = v3;
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = builder;
   if (self)
   {
     callDescriptorListDataDiff = self->_callDescriptorListDataDiff;
@@ -199,13 +199,13 @@ id __41__STCallingStatusDomainDataDiff_isEqual___block_invoke(uint64_t a1)
     callDescriptorListDataDiff = 0;
   }
 
-  v6 = [v3 appendObject:callDescriptorListDataDiff];
+  v6 = [builder appendObject:callDescriptorListDataDiff];
   v7 = [v4 hash];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
@@ -217,76 +217,76 @@ id __41__STCallingStatusDomainDataDiff_isEqual___block_invoke(uint64_t a1)
     callDescriptorListDataDiff = 0;
   }
 
-  [a3 encodeObject:callDescriptorListDataDiff forKey:@"callDescriptorListDataDiff"];
+  [coder encodeObject:callDescriptorListDataDiff forKey:@"callDescriptorListDataDiff"];
 }
 
-- (STCallingStatusDomainDataDiff)initWithCoder:(id)a3
+- (STCallingStatusDomainDataDiff)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callDescriptorListDataDiff"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callDescriptorListDataDiff"];
 
   if (v5)
   {
     self = [(STCallingStatusDomainDataDiff *)self initWithCallDescriptorListDataDiff:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STCallingStatusDomainDataDiff *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STCallingStatusDomainDataDiff *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STCallingStatusDomainDataDiff *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STCallingStatusDomainDataDiff *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STCallingStatusDomainDataDiff *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STCallingStatusDomainDataDiff *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = a2;
-    v6 = [v3 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [selfCopy succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
 
-    v7 = [v6 activeMultilinePrefix];
+    activeMultilinePrefix = [succinctDescriptionBuilder activeMultilinePrefix];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __81__STCallingStatusDomainDataDiff__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v10[3] = &unk_1E85DDD00;
-    v8 = v6;
+    v8 = succinctDescriptionBuilder;
     v11 = v8;
-    v12 = v3;
-    [v8 appendBodySectionWithName:0 multilinePrefix:v7 block:v10];
+    v12 = selfCopy;
+    [v8 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v10];
 
-    v3 = v8;
+    selfCopy = v8;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

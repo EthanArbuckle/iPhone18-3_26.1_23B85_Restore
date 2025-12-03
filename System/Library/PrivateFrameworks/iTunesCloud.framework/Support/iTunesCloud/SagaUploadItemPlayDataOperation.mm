@@ -8,15 +8,15 @@
 {
   v46 = [[MSVXPCTransaction alloc] initWithName:@"SagaUploadItemPlayDataOperation"];
   [v46 beginTransaction];
-  v3 = [(CloudLibraryOperation *)self musicLibrary];
-  v4 = [(CloudLibraryOperation *)self clientIdentity];
-  [v3 setClientIdentity:v4];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+  clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+  [musicLibrary setClientIdentity:clientIdentity];
 
   v43 = +[NSMutableArray array];
-  v44 = self;
-  v5 = [(CloudLibraryOperation *)self musicLibrary];
-  v42 = [v5 sagaLastItemPlayDataUploadDate];
-  [v42 timeIntervalSinceReferenceDate];
+  selfCopy = self;
+  musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
+  sagaLastItemPlayDataUploadDate = [musicLibrary2 sagaLastItemPlayDataUploadDate];
+  [sagaLastItemPlayDataUploadDate timeIntervalSinceReferenceDate];
   v7 = v6;
   v40 = [ML3ComparisonPredicate predicateWithProperty:ML3TrackPropertyRemoteLocationID equalToInt64:200];
   v61[0] = v40;
@@ -41,8 +41,8 @@
   v61[1] = v16;
   v17 = [NSArray arrayWithObjects:v61 count:2];
   v18 = [ML3AllCompoundPredicate predicateMatchingPredicates:v17];
-  v45 = v5;
-  v19 = [ML3Track queryWithLibrary:v5 predicate:v18];
+  v45 = musicLibrary2;
+  v19 = [ML3Track queryWithLibrary:musicLibrary2 predicate:v18];
 
   v20 = v19;
   v21 = +[NSMutableArray array];
@@ -57,7 +57,7 @@
   v52[1] = 3221225472;
   v52[2] = sub_1000C7F50;
   v52[3] = &unk_1001DF378;
-  v24 = v42;
+  v24 = sagaLastItemPlayDataUploadDate;
   v53 = v24;
   v25 = v21;
   v54 = v25;
@@ -77,26 +77,26 @@
 
   if ([v25 count])
   {
-    v29 = v44;
-    v30 = [(CloudLibraryOperation *)v44 connection];
-    v31 = +[ICBulkSetItemPropertyRequest requestWithDatabaseID:itemIDs:properties:useLongIDs:](ICBulkSetItemPropertyRequest, "requestWithDatabaseID:itemIDs:properties:useLongIDs:", [v30 databaseID], v25, v26, 0);
+    v29 = selfCopy;
+    connection = [(CloudLibraryOperation *)selfCopy connection];
+    v31 = +[ICBulkSetItemPropertyRequest requestWithDatabaseID:itemIDs:properties:useLongIDs:](ICBulkSetItemPropertyRequest, "requestWithDatabaseID:itemIDs:properties:useLongIDs:", [connection databaseID], v25, v26, 0);
     v50[0] = _NSConcreteStackBlock;
     v50[1] = 3221225472;
     v50[2] = sub_1000C816C;
     v50[3] = &unk_1001DF838;
-    v50[4] = v44;
+    v50[4] = selfCopy;
     v32 = dispatch_semaphore_create(0);
     v51 = v32;
-    [v30 sendRequest:v31 withResponseHandler:v50];
+    [connection sendRequest:v31 withResponseHandler:v50];
     dispatch_semaphore_wait(v32, 0xFFFFFFFFFFFFFFFFLL);
     v33 = v45;
-    if ([(CloudLibraryOperation *)v44 status]== 1)
+    if ([(CloudLibraryOperation *)selfCopy status]== 1)
     {
       v47[0] = _NSConcreteStackBlock;
       v47[1] = 3221225472;
       v47[2] = sub_1000C8300;
       v47[3] = &unk_1001DF3A0;
-      v47[4] = v44;
+      v47[4] = selfCopy;
       v48 = v27;
       v49 = v45;
       [v49 performDatabaseTransactionWithBlock:v47];
@@ -105,14 +105,14 @@
 
   else
   {
-    v29 = v44;
-    [(CloudLibraryOperation *)v44 setStatus:1];
+    v29 = selfCopy;
+    [(CloudLibraryOperation *)selfCopy setStatus:1];
     v33 = v45;
   }
 
-  v34 = [(CloudLibraryOperation *)v29 musicLibrary];
+  musicLibrary3 = [(CloudLibraryOperation *)v29 musicLibrary];
   v35 = MSVTCCIdentityForCurrentProcess();
-  [v34 setClientIdentity:v35];
+  [musicLibrary3 setClientIdentity:v35];
 
   [v46 endTransaction];
 }

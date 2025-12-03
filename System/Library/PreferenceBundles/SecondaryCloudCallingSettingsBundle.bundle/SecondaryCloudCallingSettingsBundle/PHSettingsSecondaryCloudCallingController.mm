@@ -1,18 +1,18 @@
 @interface PHSettingsSecondaryCloudCallingController
 - (BOOL)shouldShowUpgradeToThumperButton;
 - (PHSettingsSecondaryCloudCallingController)init;
-- (id)getiPhoneCellularSwitchActive:(id)a3;
+- (id)getiPhoneCellularSwitchActive:(id)active;
 - (id)mainSwitchFooterText;
 - (id)specifiers;
 - (id)upgradeToThumperSpecifiers;
-- (void)activateThumperForThisDevice:(id)a3;
+- (void)activateThumperForThisDevice:(id)device;
 - (void)applicationDidResume;
-- (void)capabilitiesChanged:(id)a3;
-- (void)changeEmergencyAddress:(id)a3;
+- (void)capabilitiesChanged:(id)changed;
+- (void)changeEmergencyAddress:(id)address;
 - (void)dealloc;
 - (void)emitNavigationEvent;
-- (void)setiPhoneCellularSwitchActive:(id)a3 specifier:(id)a4;
-- (void)thumperProvisioningURLChanged:(id)a3;
+- (void)setiPhoneCellularSwitchActive:(id)active specifier:(id)specifier;
+- (void)thumperProvisioningURLChanged:(id)changed;
 @end
 
 @implementation PHSettingsSecondaryCloudCallingController
@@ -52,12 +52,12 @@
 
 - (void)emitNavigationEvent
 {
-  v3 = [(PHSettingsSecondaryCloudCallingController *)self specifier];
-  v4 = [v3 target];
-  v5 = [v4 parentListController];
-  v6 = [v5 specifierID];
+  specifier = [(PHSettingsSecondaryCloudCallingController *)self specifier];
+  target = [specifier target];
+  parentListController = [target parentListController];
+  specifierID = [parentListController specifierID];
 
-  if ([v6 isEqualToString:@"com.apple.preferences.facetime"])
+  if ([specifierID isEqualToString:@"com.apple.preferences.facetime"])
   {
     v24 = TUBundleIdentifierFaceTimeApplication;
     v25 = [NSString stringWithFormat:@"settings-navigation://com.apple.Settings.Apps/%@/%@", TUBundleIdentifierFaceTimeApplication, @"SECONDARY_CLOUD_CALLING"];
@@ -65,20 +65,20 @@
     v7 = [_NSLocalizedStringResource alloc];
     v8 = +[NSLocale currentLocale];
     v9 = [NSBundle bundleForClass:objc_opt_class()];
-    v10 = [v9 bundleURL];
-    v11 = [v7 initWithKey:@"Calls on Other Devices" table:0 locale:v8 bundleURL:v10];
+    bundleURL = [v9 bundleURL];
+    v11 = [v7 initWithKey:@"Calls on Other Devices" table:0 locale:v8 bundleURL:bundleURL];
 
     v12 = [_NSLocalizedStringResource alloc];
     v13 = +[NSLocale currentLocale];
     v14 = [NSBundle bundleForClass:objc_opt_class()];
-    v15 = [v14 bundleURL];
-    v16 = [v12 initWithKey:@"Apps" table:0 locale:v13 bundleURL:v15];
+    bundleURL2 = [v14 bundleURL];
+    v16 = [v12 initWithKey:@"Apps" table:0 locale:v13 bundleURL:bundleURL2];
 
     v17 = [_NSLocalizedStringResource alloc];
     v18 = +[NSLocale currentLocale];
     v19 = [NSBundle bundleForClass:objc_opt_class()];
-    v20 = [v19 bundleURL];
-    v21 = [v17 initWithKey:@"FaceTime" table:0 locale:v18 bundleURL:v20];
+    bundleURL3 = [v19 bundleURL];
+    v21 = [v17 initWithKey:@"FaceTime" table:0 locale:v18 bundleURL:bundleURL3];
 
     v26[0] = v16;
     v26[1] = v21;
@@ -102,12 +102,12 @@
   [(PHSettingsSecondaryCloudCallingController *)self reloadSpecifiers];
 }
 
-- (void)changeEmergencyAddress:(id)a3
+- (void)changeEmergencyAddress:(id)address
 {
   +[TUCallCapabilities invalidateAndRefreshThumperCallingProvisioningURL];
-  v5 = [(PHSettingsSecondaryCloudCallingController *)self thumperProvisioningController];
-  v4 = [v5 updateEmergencyAddressController];
-  [(PHSettingsCloudCallingListController *)self presentOrUpdateViewController:v4];
+  thumperProvisioningController = [(PHSettingsSecondaryCloudCallingController *)self thumperProvisioningController];
+  updateEmergencyAddressController = [thumperProvisioningController updateEmergencyAddressController];
+  [(PHSettingsCloudCallingListController *)self presentOrUpdateViewController:updateEmergencyAddressController];
 }
 
 - (id)specifiers
@@ -118,18 +118,18 @@
   {
     v5 = [(PHSettingsSecondaryCloudCallingController *)self loadSpecifiersFromPlistName:@"SecondaryCloudCallingSettings" target:self];
     v6 = [v5 specifierForID:@"SECONDARY_CLOUD_CALLING_GROUP"];
-    v7 = [(PHSettingsSecondaryCloudCallingController *)self mainSwitchFooterText];
+    mainSwitchFooterText = [(PHSettingsSecondaryCloudCallingController *)self mainSwitchFooterText];
     v8 = PSFooterTextGroupKey;
-    [v6 setProperty:v7 forKey:PSFooterTextGroupKey];
+    [v6 setProperty:mainSwitchFooterText forKey:PSFooterTextGroupKey];
 
-    v9 = [(PHSettingsThumperProvisioningController *)self->_thumperProvisioningController shouldShowEmergencyAddress];
+    shouldShowEmergencyAddress = [(PHSettingsThumperProvisioningController *)self->_thumperProvisioningController shouldShowEmergencyAddress];
     v10 = [v5 specifierForID:@"EMERGENCY_ADDRESS_GROUP"];
-    if (v9)
+    if (shouldShowEmergencyAddress)
     {
       v11 = [NSBundle bundleForClass:objc_opt_class()];
       v12 = TUStringKeyForNetwork();
-      v13 = [(PHSettingsSecondaryCloudCallingController *)self bundleDescriptor];
-      v14 = [v11 localizedStringForKey:v12 value:&stru_C760 table:v13];
+      bundleDescriptor = [(PHSettingsSecondaryCloudCallingController *)self bundleDescriptor];
+      v14 = [v11 localizedStringForKey:v12 value:&stru_C760 table:bundleDescriptor];
       [v10 setProperty:v14 forKey:v8];
 
       v15 = [v5 specifierForID:@"EMERGENCY_ADDRESS_GROUP"];
@@ -146,8 +146,8 @@
       v15 = [v5 specifierForID:@"EMERGENCY_ADDRESS_GROUP"];
       v17 = [NSBundle bundleForClass:objc_opt_class()];
       v18 = TUStringKeyForNetwork();
-      v19 = [(PHSettingsSecondaryCloudCallingController *)self bundleDescriptor];
-      v20 = [v17 localizedStringForKey:v18 value:&stru_C760 table:v19];
+      bundleDescriptor2 = [(PHSettingsSecondaryCloudCallingController *)self bundleDescriptor];
+      v20 = [v17 localizedStringForKey:v18 value:&stru_C760 table:bundleDescriptor2];
       [v15 setProperty:v20 forKey:v8];
     }
 
@@ -164,8 +164,8 @@
     v22 = v21;
     if ([(PHSettingsSecondaryCloudCallingController *)self shouldShowUpgradeToThumperButton])
     {
-      v23 = [(PHSettingsSecondaryCloudCallingController *)self upgradeToThumperSpecifiers];
-      [v5 addObjectsFromArray:v23];
+      upgradeToThumperSpecifiers = [(PHSettingsSecondaryCloudCallingController *)self upgradeToThumperSpecifiers];
+      [v5 addObjectsFromArray:upgradeToThumperSpecifiers];
       v24 = [v5 specifierForID:@"SECONDARY_CLOUD_CALLING_THUMPER_UPGRADE_GROUP"];
 
       v22 = v24;
@@ -192,14 +192,14 @@
   +[TUCallCapabilities supportsThumperCallingOverCellularData];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = TUStringKeyForNetworkAndProduct();
-  v6 = [(PHSettingsSecondaryCloudCallingController *)self bundleDescriptor];
-  v7 = [v4 localizedStringForKey:v5 value:&stru_C760 table:v6];
+  bundleDescriptor = [(PHSettingsSecondaryCloudCallingController *)self bundleDescriptor];
+  v7 = [v4 localizedStringForKey:v5 value:&stru_C760 table:bundleDescriptor];
 
   [v3 setProperty:v7 forKey:PSFooterTextGroupKey];
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = TUStringKeyForNetwork();
-  v10 = [(PHSettingsSecondaryCloudCallingController *)self bundleDescriptor];
-  v11 = [v8 localizedStringForKey:v9 value:&stru_C760 table:v10];
+  bundleDescriptor2 = [(PHSettingsSecondaryCloudCallingController *)self bundleDescriptor];
+  v11 = [v8 localizedStringForKey:v9 value:&stru_C760 table:bundleDescriptor2];
   v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:0 get:0 detail:0 cell:13 edit:0];
 
   [v12 setButtonAction:"activateThumperForThisDevice:"];
@@ -216,8 +216,8 @@
   {
     v3 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = TUStringKeyForNetwork();
-    v7 = [(PHSettingsSecondaryCloudCallingController *)self bundleDescriptor];
-    v6 = [v3 localizedStringForKey:v5 value:&stru_C760 table:v7];
+    bundleDescriptor = [(PHSettingsSecondaryCloudCallingController *)self bundleDescriptor];
+    v6 = [v3 localizedStringForKey:v5 value:&stru_C760 table:bundleDescriptor];
   }
 
   else
@@ -226,9 +226,9 @@
     v4 = [v3 length];
     +[TUCallCapabilities supportsThumperCallingOverCellularData];
     v5 = [NSBundle bundleForClass:objc_opt_class()];
-    v7 = TUStringKeyForNetworkAndProduct();
-    v8 = [(PHSettingsSecondaryCloudCallingController *)self bundleDescriptor];
-    [v5 localizedStringForKey:v7 value:&stru_C760 table:v8];
+    bundleDescriptor = TUStringKeyForNetworkAndProduct();
+    bundleDescriptor2 = [(PHSettingsSecondaryCloudCallingController *)self bundleDescriptor];
+    [v5 localizedStringForKey:bundleDescriptor value:&stru_C760 table:bundleDescriptor2];
     if (v4)
       v9 = {;
       [NSString stringWithFormat:v9, v3];
@@ -246,30 +246,30 @@
 
 - (BOOL)shouldShowUpgradeToThumperButton
 {
-  v3 = [(PHSettingsThumperProvisioningController *)self->_thumperProvisioningController shouldShowUpgradeToThumperButton];
-  if (v3)
+  shouldShowUpgradeToThumperButton = [(PHSettingsThumperProvisioningController *)self->_thumperProvisioningController shouldShowUpgradeToThumperButton];
+  if (shouldShowUpgradeToThumperButton)
   {
     v4 = [(PHSettingsSecondaryCloudCallingController *)self getiPhoneCellularSwitchActive:0];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(shouldShowUpgradeToThumperButton) = bOOLValue;
   }
 
-  return v3;
+  return shouldShowUpgradeToThumperButton;
 }
 
-- (void)setiPhoneCellularSwitchActive:(id)a3 specifier:(id)a4
+- (void)setiPhoneCellularSwitchActive:(id)active specifier:(id)specifier
 {
-  v5 = a3;
+  activeCopy = active;
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v29 = [v5 BOOLValue];
+    bOOLValue = [activeCopy BOOLValue];
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "setiPhoneCellularSwitchActive: value is %d ... ", buf, 8u);
   }
 
-  if (![v5 BOOLValue])
+  if (![activeCopy BOOLValue])
   {
     v10 = PHDefaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -318,19 +318,19 @@ LABEL_22:
   {
     v13 = +[TUCallCapabilities accountsSupportSecondaryCalling];
     *buf = 67109120;
-    v29 = v13;
+    bOOLValue = v13;
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "... but not allowing Calls from iPhone to be enabled because accountsSupportSecondaryCalling = %d", buf, 8u);
   }
 
   v14 = [NSBundle bundleForClass:objc_opt_class()];
-  v15 = [(PHSettingsSecondaryCloudCallingController *)self bundleDescriptor];
-  v16 = [v14 localizedStringForKey:@"SECONDARY_CLOUD_CALLING_ACCOUNT_ALERT_TITLE" value:&stru_C760 table:v15];
+  bundleDescriptor = [(PHSettingsSecondaryCloudCallingController *)self bundleDescriptor];
+  v16 = [v14 localizedStringForKey:@"SECONDARY_CLOUD_CALLING_ACCOUNT_ALERT_TITLE" value:&stru_C760 table:bundleDescriptor];
 
   v17 = objc_alloc_init(TUFeatureFlags);
-  LODWORD(v15) = [v17 appleAccountRebrandEnabled];
+  LODWORD(bundleDescriptor) = [v17 appleAccountRebrandEnabled];
   v18 = [NSBundle bundleForClass:objc_opt_class()];
-  v19 = [(PHSettingsSecondaryCloudCallingController *)self bundleDescriptor];
-  if (v15)
+  bundleDescriptor2 = [(PHSettingsSecondaryCloudCallingController *)self bundleDescriptor];
+  if (bundleDescriptor)
   {
     v20 = @"SECONDARY_CLOUD_CALLING_ACCOUNT_ALERT_MESSAGE_APPLEACCOUNT";
   }
@@ -340,12 +340,12 @@ LABEL_22:
     v20 = @"SECONDARY_CLOUD_CALLING_ACCOUNT_ALERT_MESSAGE";
   }
 
-  v21 = [v18 localizedStringForKey:v20 value:&stru_C760 table:v19];
+  v21 = [v18 localizedStringForKey:v20 value:&stru_C760 table:bundleDescriptor2];
 
   v22 = [UIAlertController alertControllerWithTitle:v16 message:v21 preferredStyle:1];
   v23 = [NSBundle bundleForClass:objc_opt_class()];
-  v24 = [(PHSettingsSecondaryCloudCallingController *)self bundleDescriptor];
-  v25 = [v23 localizedStringForKey:@"OK" value:&stru_C760 table:v24];
+  bundleDescriptor3 = [(PHSettingsSecondaryCloudCallingController *)self bundleDescriptor];
+  v25 = [v23 localizedStringForKey:@"OK" value:&stru_C760 table:bundleDescriptor3];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_3F5C;
@@ -359,7 +359,7 @@ LABEL_23:
   [(PHSettingsSecondaryCloudCallingController *)self reloadSpecifiers];
 }
 
-- (id)getiPhoneCellularSwitchActive:(id)a3
+- (id)getiPhoneCellularSwitchActive:(id)active
 {
   if ((+[TUCallCapabilities isRelayCallingEnabled]& 1) != 0)
   {
@@ -374,7 +374,7 @@ LABEL_23:
   return [NSNumber numberWithInt:v3];
 }
 
-- (void)activateThumperForThisDevice:(id)a3
+- (void)activateThumperForThisDevice:(id)device
 {
   v3 = PHDefaultLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -409,14 +409,14 @@ LABEL_23:
   }
 }
 
-- (void)capabilitiesChanged:(id)a3
+- (void)capabilitiesChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = changedCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Received capabilites changed notification: %@. Reloading specifiers", buf, 0xCu);
   }
 
@@ -428,21 +428,21 @@ LABEL_23:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)thumperProvisioningURLChanged:(id)a3
+- (void)thumperProvisioningURLChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = changedCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Received Thumper provisioning URL changed notification: %@", &v11, 0xCu);
   }
 
   v6 = +[TUCallCapabilities thumperCallingCapabilityInfo];
-  v7 = [(PHSettingsSecondaryCloudCallingController *)self presentedViewController];
+  presentedViewController = [(PHSettingsSecondaryCloudCallingController *)self presentedViewController];
 
-  if (v7 && ![v6 provisioningStatus])
+  if (presentedViewController && ![v6 provisioningStatus])
   {
     v8 = PHDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -451,9 +451,9 @@ LABEL_23:
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "We have a presented view controller and Thumper provisioning status is not-allowed, so updating our presented controller", &v11, 2u);
     }
 
-    v9 = [(PHSettingsSecondaryCloudCallingController *)self thumperProvisioningController];
-    v10 = [v9 provisionCapabilityController];
-    [(PHSettingsCloudCallingListController *)self presentOrUpdateViewController:v10];
+    thumperProvisioningController = [(PHSettingsSecondaryCloudCallingController *)self thumperProvisioningController];
+    provisionCapabilityController = [thumperProvisioningController provisionCapabilityController];
+    [(PHSettingsCloudCallingListController *)self presentOrUpdateViewController:provisionCapabilityController];
   }
 }
 

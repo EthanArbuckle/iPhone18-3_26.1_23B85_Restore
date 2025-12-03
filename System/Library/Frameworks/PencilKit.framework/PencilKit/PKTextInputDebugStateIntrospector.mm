@@ -1,14 +1,14 @@
 @interface PKTextInputDebugStateIntrospector
 + (id)_knownInstances;
-+ (id)debugStateLineDescriptionForIntrospectable:(id)a3;
++ (id)debugStateLineDescriptionForIntrospectable:(id)introspectable;
 + (void)debugStateDidChange;
-- (BOOL)debugStateCanShowDetailsForStateKey:(id)a3;
-- (PKTextInputDebugStateIntrospector)initWithInteraction:(id)a3;
+- (BOOL)debugStateCanShowDetailsForStateKey:(id)key;
+- (PKTextInputDebugStateIntrospector)initWithInteraction:(id)interaction;
 - (PKTextInputDebugStateIntrospectorDelegate)delegate;
 - (PKTextInputInteraction)interaction;
-- (id)_introspectableForStateKey:(id)a3;
-- (id)debugStateDescriptionForStateKey:(id)a3;
-- (id)debugStateDetailViewControllerForStateKey:(id)a3;
+- (id)_introspectableForStateKey:(id)key;
+- (id)debugStateDescriptionForStateKey:(id)key;
+- (id)debugStateDetailViewControllerForStateKey:(id)key;
 - (id)debugStateKeys;
 - (id)fullDebugStateDescription;
 - (void)_debugStateDidChange;
@@ -17,18 +17,18 @@
 
 @implementation PKTextInputDebugStateIntrospector
 
-- (PKTextInputDebugStateIntrospector)initWithInteraction:(id)a3
+- (PKTextInputDebugStateIntrospector)initWithInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   v9.receiver = self;
   v9.super_class = PKTextInputDebugStateIntrospector;
   v5 = [(PKTextInputDebugStateIntrospector *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_interaction, v4);
-    v7 = [objc_opt_class() _knownInstances];
-    [v7 addObject:v6];
+    objc_storeWeak(&v5->_interaction, interactionCopy);
+    _knownInstances = [objc_opt_class() _knownInstances];
+    [_knownInstances addObject:v6];
   }
 
   return v6;
@@ -36,8 +36,8 @@
 
 - (void)dealloc
 {
-  v3 = [objc_opt_class() _knownInstances];
-  [v3 removeObject:self];
+  _knownInstances = [objc_opt_class() _knownInstances];
+  [_knownInstances removeObject:self];
 
   v4.receiver = self;
   v4.super_class = PKTextInputDebugStateIntrospector;
@@ -63,18 +63,18 @@ void __52__PKTextInputDebugStateIntrospector__knownInstances__block_invoke()
   _MergedGlobals_161 = v0;
 }
 
-+ (id)debugStateLineDescriptionForIntrospectable:(id)a3
++ (id)debugStateLineDescriptionForIntrospectable:(id)introspectable
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
-  v5 = [v3 array];
+  introspectableCopy = introspectable;
+  array = [v3 array];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __80__PKTextInputDebugStateIntrospector_debugStateLineDescriptionForIntrospectable___block_invoke;
   v9[3] = &unk_1E82DB6D8;
-  v10 = v5;
-  v6 = v5;
-  [v4 reportDebugStateDescription:v9];
+  v10 = array;
+  v6 = array;
+  [introspectableCopy reportDebugStateDescription:v9];
 
   v7 = [v6 componentsJoinedByString:{@", "}];
 
@@ -96,13 +96,13 @@ void __80__PKTextInputDebugStateIntrospector_debugStateLineDescriptionForIntrosp
 - (id)fullDebugStateDescription
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(PKTextInputDebugStateIntrospector *)self debugStateKeys];
+  string = [MEMORY[0x1E696AD60] string];
+  debugStateKeys = [(PKTextInputDebugStateIntrospector *)self debugStateKeys];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [debugStateKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -113,23 +113,23 @@ void __80__PKTextInputDebugStateIntrospector_debugStateLineDescriptionForIntrosp
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(debugStateKeys);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [(PKTextInputDebugStateIntrospector *)self debugStateTitleForStateKey:v9];
         v11 = [(PKTextInputDebugStateIntrospector *)self debugStateDescriptionForStateKey:v9];
-        v12 = [v11 string];
-        [v3 appendFormat:@"== %@ ==\n%@\n\n", v10, v12];
+        string2 = [v11 string];
+        [string appendFormat:@"== %@ ==\n%@\n\n", v10, string2];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [debugStateKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return string;
 }
 
 + (void)debugStateDidChange
@@ -139,8 +139,8 @@ void __80__PKTextInputDebugStateIntrospector_debugStateLineDescriptionForIntrosp
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [a1 _knownInstances];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  _knownInstances = [self _knownInstances];
+  v3 = [_knownInstances countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -152,14 +152,14 @@ void __80__PKTextInputDebugStateIntrospector_debugStateLineDescriptionForIntrosp
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_knownInstances);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) _debugStateDidChange];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [_knownInstances countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -168,8 +168,8 @@ void __80__PKTextInputDebugStateIntrospector_debugStateLineDescriptionForIntrosp
 
 - (void)_debugStateDidChange
 {
-  v3 = [(PKTextInputDebugStateIntrospector *)self delegate];
-  [v3 debugStateIntrospectorContentDidChange:self];
+  delegate = [(PKTextInputDebugStateIntrospector *)self delegate];
+  [delegate debugStateIntrospectorContentDidChange:self];
 }
 
 - (id)debugStateKeys
@@ -190,42 +190,42 @@ void __51__PKTextInputDebugStateIntrospector_debugStateKeys__block_invoke()
   qword_1ED6A5410 = &unk_1F47C1DC0;
 }
 
-- (id)debugStateDetailViewControllerForStateKey:(id)a3
+- (id)debugStateDetailViewControllerForStateKey:(id)key
 {
-  v3 = [(PKTextInputDebugStateIntrospector *)self _introspectableForStateKey:a3];
+  v3 = [(PKTextInputDebugStateIntrospector *)self _introspectableForStateKey:key];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 debugStateDetailViewController];
+    debugStateDetailViewController = [v3 debugStateDetailViewController];
   }
 
   else
   {
-    v4 = 0;
+    debugStateDetailViewController = 0;
   }
 
-  return v4;
+  return debugStateDetailViewController;
 }
 
-- (BOOL)debugStateCanShowDetailsForStateKey:(id)a3
+- (BOOL)debugStateCanShowDetailsForStateKey:(id)key
 {
-  v3 = [(PKTextInputDebugStateIntrospector *)self _introspectableForStateKey:a3];
+  v3 = [(PKTextInputDebugStateIntrospector *)self _introspectableForStateKey:key];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 debugStateCanDisplayDetails];
+    debugStateCanDisplayDetails = [v3 debugStateCanDisplayDetails];
   }
 
   else
   {
-    v4 = 0;
+    debugStateCanDisplayDetails = 0;
   }
 
-  return v4;
+  return debugStateCanDisplayDetails;
 }
 
-- (id)debugStateDescriptionForStateKey:(id)a3
+- (id)debugStateDescriptionForStateKey:(id)key
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PKTextInputDebugStateIntrospector *)self _introspectableForStateKey:a3];
+  v3 = [(PKTextInputDebugStateIntrospector *)self _introspectableForStateKey:key];
   v15 = *MEMORY[0x1E69DB648];
   v4 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:12.0];
   v16[0] = v4;
@@ -276,91 +276,91 @@ void __70__PKTextInputDebugStateIntrospector_debugStateDescriptionForStateKey___
   [v10 appendAttributedString:v14];
 }
 
-- (id)_introspectableForStateKey:(id)a3
+- (id)_introspectableForStateKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"Interaction Controller"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"Interaction Controller"])
   {
-    v5 = [(PKTextInputDebugStateIntrospector *)self interaction];
+    interaction = [(PKTextInputDebugStateIntrospector *)self interaction];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"Actions Logging"])
+  if ([keyCopy isEqualToString:@"Actions Logging"])
   {
-    v6 = [(PKTextInputDebugStateIntrospector *)self interaction];
-    v7 = [v6 debugLogController];
+    interaction2 = [(PKTextInputDebugStateIntrospector *)self interaction];
+    debugLogController = [interaction2 debugLogController];
 LABEL_11:
-    v5 = v7;
+    interaction = debugLogController;
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"Canvas Controller"])
+  if ([keyCopy isEqualToString:@"Canvas Controller"])
   {
-    v6 = [(PKTextInputDebugStateIntrospector *)self interaction];
-    v7 = [v6 canvasController];
+    interaction2 = [(PKTextInputDebugStateIntrospector *)self interaction];
+    debugLogController = [interaction2 canvasController];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"Gesture Recognizer"])
+  if ([keyCopy isEqualToString:@"Gesture Recognizer"])
   {
-    v6 = [(PKTextInputDebugStateIntrospector *)self interaction];
-    v7 = [v6 drawingGestureRecognizer];
+    interaction2 = [(PKTextInputDebugStateIntrospector *)self interaction];
+    debugLogController = [interaction2 drawingGestureRecognizer];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"Handwriting Controller"])
+  if ([keyCopy isEqualToString:@"Handwriting Controller"])
   {
-    v6 = [(PKTextInputDebugStateIntrospector *)self interaction];
-    v7 = [v6 handwritingController];
+    interaction2 = [(PKTextInputDebugStateIntrospector *)self interaction];
+    debugLogController = [interaction2 handwritingController];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"Active Input Target"])
+  if ([keyCopy isEqualToString:@"Active Input Target"])
   {
-    v6 = [(PKTextInputDebugStateIntrospector *)self interaction];
-    v9 = [v6 handwritingController];
-    v10 = [v9 debugActiveInputTargetState];
+    interaction2 = [(PKTextInputDebugStateIntrospector *)self interaction];
+    handwritingController = [interaction2 handwritingController];
+    debugActiveInputTargetState = [handwritingController debugActiveInputTargetState];
 LABEL_20:
-    v5 = v10;
+    interaction = debugActiveInputTargetState;
 
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"Recognition Manager"])
+  if ([keyCopy isEqualToString:@"Recognition Manager"])
   {
-    v6 = [(PKTextInputDebugStateIntrospector *)self interaction];
-    v9 = [v6 handwritingController];
-    v10 = [v9 debugRecognitionManager];
+    interaction2 = [(PKTextInputDebugStateIntrospector *)self interaction];
+    handwritingController = [interaction2 handwritingController];
+    debugActiveInputTargetState = [handwritingController debugRecognitionManager];
     goto LABEL_20;
   }
 
-  if ([v4 isEqualToString:@"Cursor Controller"])
+  if ([keyCopy isEqualToString:@"Cursor Controller"])
   {
-    v6 = [(PKTextInputDebugStateIntrospector *)self interaction];
-    v7 = [v6 cursorController];
+    interaction2 = [(PKTextInputDebugStateIntrospector *)self interaction];
+    debugLogController = [interaction2 cursorController];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"Reserve Space Controller"])
+  if ([keyCopy isEqualToString:@"Reserve Space Controller"])
   {
-    v6 = [(PKTextInputDebugStateIntrospector *)self interaction];
-    v7 = [v6 reserveSpaceController];
+    interaction2 = [(PKTextInputDebugStateIntrospector *)self interaction];
+    debugLogController = [interaction2 reserveSpaceController];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"Elements Controller"])
+  if ([keyCopy isEqualToString:@"Elements Controller"])
   {
-    v6 = [(PKTextInputDebugStateIntrospector *)self interaction];
-    v7 = [v6 elementsController];
+    interaction2 = [(PKTextInputDebugStateIntrospector *)self interaction];
+    debugLogController = [interaction2 elementsController];
     goto LABEL_11;
   }
 
-  v5 = 0;
+  interaction = 0;
 LABEL_13:
 
-  return v5;
+  return interaction;
 }
 
 - (PKTextInputInteraction)interaction

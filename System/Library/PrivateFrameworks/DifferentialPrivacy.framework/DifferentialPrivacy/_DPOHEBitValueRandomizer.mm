@@ -1,19 +1,19 @@
 @interface _DPOHEBitValueRandomizer
-+ (id)oheBitValueRandomizerWithDimensionality:(unint64_t)a3 epsilon:(double)a4;
++ (id)oheBitValueRandomizerWithDimensionality:(unint64_t)dimensionality epsilon:(double)epsilon;
 - (NSString)description;
-- (_DPOHEBitValueRandomizer)initWithDimensionality:(unint64_t)a3 epsilon:(double)a4;
+- (_DPOHEBitValueRandomizer)initWithDimensionality:(unint64_t)dimensionality epsilon:(double)epsilon;
 - (id).cxx_construct;
-- (id)randomize:(id)a3;
-- (id)randomizeBitValues:(id)a3 forKey:(id)a4;
-- (id)randomizeWithMessageIndex:(unint64_t)a3 numberOfFlippedBits:(unint64_t)a4;
+- (id)randomize:(id)randomize;
+- (id)randomizeBitValues:(id)values forKey:(id)key;
+- (id)randomizeWithMessageIndex:(unint64_t)index numberOfFlippedBits:(unint64_t)bits;
 @end
 
 @implementation _DPOHEBitValueRandomizer
 
-- (_DPOHEBitValueRandomizer)initWithDimensionality:(unint64_t)a3 epsilon:(double)a4
+- (_DPOHEBitValueRandomizer)initWithDimensionality:(unint64_t)dimensionality epsilon:(double)epsilon
 {
-  v7 = isInvalidEpsilon(a4);
-  if (a3)
+  v7 = isInvalidEpsilon(epsilon);
+  if (dimensionality)
   {
     v8 = v7;
   }
@@ -25,7 +25,7 @@
 
   if (v8)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -36,9 +36,9 @@
     v11 = v10;
     if (v10)
     {
-      v10->_epsilon = a4;
-      v10->_domainSize = a3;
-      v12 = exp(-a4);
+      v10->_epsilon = epsilon;
+      v10->_domainSize = dimensionality;
+      v12 = exp(-epsilon);
       v11->_flipProbability = v12 / (v12 + 1.0);
       v13 = arc4random();
       v11->_rng.__x_[0] = v13;
@@ -55,34 +55,34 @@
     }
 
     self = v11;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-+ (id)oheBitValueRandomizerWithDimensionality:(unint64_t)a3 epsilon:(double)a4
++ (id)oheBitValueRandomizerWithDimensionality:(unint64_t)dimensionality epsilon:(double)epsilon
 {
-  v4 = [[a1 alloc] initWithDimensionality:a3 epsilon:a4];
+  v4 = [[self alloc] initWithDimensionality:dimensionality epsilon:epsilon];
 
   return v4;
 }
 
-- (id)randomizeWithMessageIndex:(unint64_t)a3 numberOfFlippedBits:(unint64_t)a4
+- (id)randomizeWithMessageIndex:(unint64_t)index numberOfFlippedBits:(unint64_t)bits
 {
-  v18 = a4;
-  v19 = a3;
+  bitsCopy = bits;
+  indexCopy = index;
   domainSize = self->_domainSize;
-  if (domainSize > a3 && domainSize >= a4)
+  if (domainSize > index && domainSize >= bits)
   {
     v15 = 0u;
     v16 = 0u;
     v17 = 1065353216;
-    if (sampleUniformWithoutReplace<unsigned long,std::mersenne_twister_engine<unsigned int,32ul,624ul,397ul,31ul,2567483615u,11ul,4294967295u,7ul,2636928640u,15ul,4022730752u,18ul,1812433253u>>(&v15, &self->_domainSize, &v18, &self->_rng))
+    if (sampleUniformWithoutReplace<unsigned long,std::mersenne_twister_engine<unsigned int,32ul,624ul,397ul,31ul,2567483615u,11ul,4294967295u,7ul,2636928640u,15ul,4022730752u,18ul,1812433253u>>(&v15, &self->_domainSize, &bitsCopy, &self->_rng))
     {
-      std::__hash_table<unsigned long,std::hash<unsigned long>,std::equal_to<unsigned long>,std::allocator<unsigned long>>::__emplace_unique_key_args<unsigned long,unsigned long const&>(&v15, &v19);
+      std::__hash_table<unsigned long,std::hash<unsigned long>,std::equal_to<unsigned long>,std::allocator<unsigned long>>::__emplace_unique_key_args<unsigned long,unsigned long const&>(&v15, &indexCopy);
       v8 = v7;
-      std::__hash_table<unsigned long,std::hash<unsigned long>,std::equal_to<unsigned long>,std::allocator<unsigned long>>::__erase_unique<unsigned long>(&v15, &v19);
+      std::__hash_table<unsigned long,std::hash<unsigned long>,std::equal_to<unsigned long>,std::allocator<unsigned long>>::__erase_unique<unsigned long>(&v15, &indexCopy);
       v9 = uniformRandomProbabilityExcludingOne();
       v10 = *(&v16 + 1);
       v11 = [&stru_2839671C8 mutableCopy];
@@ -100,7 +100,7 @@
           [v11 appendFormat:@"%lu", v12[2]];
           if (((v13 == 0) & v8) == 1)
           {
-            [v11 appendFormat:@", %lu", v19];
+            [v11 appendFormat:@", %lu", indexCopy];
           }
 
           v12 = *v12;
@@ -112,7 +112,7 @@
 
       if (((*(&v16 + 1) == 0) & v8) != 0)
       {
-        [v11 appendFormat:@"%lu", v19];
+        [v11 appendFormat:@"%lu", indexCopy];
       }
 
       v6 = [v11 copy];
@@ -134,17 +134,17 @@
   return v6;
 }
 
-- (id)randomize:(id)a3
+- (id)randomize:(id)randomize
 {
-  v4 = [a3 unsignedLongValue];
-  if (v4 >= self->_domainSize)
+  unsignedLongValue = [randomize unsignedLongValue];
+  if (unsignedLongValue >= self->_domainSize)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(_DPOHEBitValueRandomizer *)self randomizeWithMessageIndex:v4 numberOfFlippedBits:[(_DPOHEBitValueRandomizer *)self drawNumberOfFlippedBits]];
+    v5 = [(_DPOHEBitValueRandomizer *)self randomizeWithMessageIndex:unsignedLongValue numberOfFlippedBits:[(_DPOHEBitValueRandomizer *)self drawNumberOfFlippedBits]];
   }
 
   return v5;
@@ -160,11 +160,11 @@
   return v6;
 }
 
-- (id)randomizeBitValues:(id)a3 forKey:(id)a4
+- (id)randomizeBitValues:(id)values forKey:(id)key
 {
   v26 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v20 = a4;
+  valuesCopy = values;
+  keyCopy = key;
   v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.0];
   [v6 timeIntervalSinceReferenceDate];
   v8 = v7;
@@ -174,7 +174,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v18;
+  v9 = valuesCopy;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -192,7 +192,7 @@
         if (([v13 isEqualToNumber:&unk_283975F10] & 1) == 0)
         {
           v14 = [(_DPOHEBitValueRandomizer *)self randomize:v13];
-          v15 = -[_DPBitValueRecord initWithKey:clearBitValue:privateBitValueStr:creationDate:submitted:objectId:]([_DPBitValueRecord alloc], "initWithKey:clearBitValue:privateBitValueStr:creationDate:submitted:objectId:", v20, [v13 shortValue], v14, 0, 0, v8);
+          v15 = -[_DPBitValueRecord initWithKey:clearBitValue:privateBitValueStr:creationDate:submitted:objectId:]([_DPBitValueRecord alloc], "initWithKey:clearBitValue:privateBitValueStr:creationDate:submitted:objectId:", keyCopy, [v13 shortValue], v14, 0, 0, v8);
           if (v15)
           {
             [v19 addObject:v15];

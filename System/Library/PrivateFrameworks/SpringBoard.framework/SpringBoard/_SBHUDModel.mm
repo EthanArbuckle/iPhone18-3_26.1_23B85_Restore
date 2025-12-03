@@ -1,43 +1,43 @@
 @interface _SBHUDModel
-+ (id)HUDModelForController:(id)a3 viewController:(id)a4 identifier:(id)a5;
++ (id)HUDModelForController:(id)controller viewController:(id)viewController identifier:(id)identifier;
 - (BOOL)_shouldIgnoreDropletAttachment;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isVisible;
 - (NSString)description;
-- (void)_handleDropletLayoutCallback:(double)a3;
+- (void)_handleDropletLayoutCallback:(double)callback;
 - (void)_setupDropletLayout;
 - (void)_teardownDropletLayout;
 - (void)dealloc;
-- (void)dismissAnimated:(BOOL)a3;
-- (void)hudViewController:(id)a3 didDismissHUD:(id)a4;
-- (void)hudViewController:(id)a3 didPresentHUD:(id)a4;
-- (void)hudViewController:(id)a3 willDismissHUD:(id)a4;
-- (void)hudViewController:(id)a3 willPresentHUD:(id)a4;
+- (void)dismissAnimated:(BOOL)animated;
+- (void)hudViewController:(id)controller didDismissHUD:(id)d;
+- (void)hudViewController:(id)controller didPresentHUD:(id)d;
+- (void)hudViewController:(id)controller willDismissHUD:(id)d;
+- (void)hudViewController:(id)controller willPresentHUD:(id)d;
 - (void)invalidateDismissalTimer;
-- (void)presentWithDismissalInterval:(double)a3 animated:(BOOL)a4;
+- (void)presentWithDismissalInterval:(double)interval animated:(BOOL)animated;
 - (void)rescheduleDismissalTimer;
 - (void)scheduleDismissalTimer;
-- (void)updateAttachmentStateForHUDViewController:(id)a3;
+- (void)updateAttachmentStateForHUDViewController:(id)controller;
 @end
 
 @implementation _SBHUDModel
 
-+ (id)HUDModelForController:(id)a3 viewController:(id)a4 identifier:(id)a5
++ (id)HUDModelForController:(id)controller viewController:(id)viewController identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  identifierCopy = identifier;
+  v10 = identifierCopy;
+  if (viewControllerCopy)
   {
-    if (v9)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     +[_SBHUDModel HUDModelForController:viewController:identifier:];
-    if (v7)
+    if (controllerCopy)
     {
       goto LABEL_4;
     }
@@ -52,7 +52,7 @@ LABEL_8:
   }
 
 LABEL_3:
-  if (v7)
+  if (controllerCopy)
   {
     goto LABEL_4;
   }
@@ -62,12 +62,12 @@ LABEL_9:
 LABEL_4:
   v11 = objc_opt_new();
   v12 = v11[4];
-  v11[4] = v7;
-  v13 = v7;
+  v11[4] = controllerCopy;
+  v13 = controllerCopy;
 
   v14 = v11[3];
-  v11[3] = v8;
-  v15 = v8;
+  v11[3] = viewControllerCopy;
+  v15 = viewControllerCopy;
 
   v16 = v11[6];
   v11[6] = v10;
@@ -86,32 +86,32 @@ LABEL_4:
   [(_SBHUDModel *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = SBSafeCast(v5, v4);
+  v6 = SBSafeCast(v5, equalCopy);
 
   if (v6)
   {
-    v7 = [(_SBHUDModel *)self identifier];
-    v8 = [v6 identifier];
-    v9 = [v7 isEqual:v8];
+    identifier = [(_SBHUDModel *)self identifier];
+    identifier2 = [v6 identifier];
+    v9 = [identifier isEqual:identifier2];
 
-    v10 = [v6 HUDViewController];
-    v11 = [(_SBHUDModel *)self HUDViewController];
-    v12 = [v10 isEqual:v11];
+    hUDViewController = [v6 HUDViewController];
+    hUDViewController2 = [(_SBHUDModel *)self HUDViewController];
+    v12 = [hUDViewController isEqual:hUDViewController2];
 
-    v13 = [v6 HUDController];
-    v14 = [(_SBHUDModel *)self HUDController];
-    LOBYTE(v11) = [v13 isEqual:v14];
+    hUDController = [v6 HUDController];
+    hUDController2 = [(_SBHUDModel *)self HUDController];
+    LOBYTE(hUDViewController2) = [hUDController isEqual:hUDController2];
 
-    v15 = v11 & v9 & v12;
+    v15 = hUDViewController2 & v9 & v12;
   }
 
   else
@@ -125,17 +125,17 @@ LABEL_4:
 - (NSString)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(_SBHUDModel *)self identifier];
-  v5 = [v3 appendObject:v4 withName:@"identifier"];
+  identifier = [(_SBHUDModel *)self identifier];
+  v5 = [v3 appendObject:identifier withName:@"identifier"];
 
   v6 = [v3 appendBool:-[_SBHUDModel isPresenting](self withName:{"isPresenting"), @"isPresenting"}];
   v7 = [v3 appendBool:-[_SBHUDModel isPresented](self withName:{"isPresented"), @"isPresented"}];
   v8 = [v3 appendBool:-[_SBHUDModel isDismissing](self withName:{"isDismissing"), @"isDismissing"}];
   v9 = [v3 appendBool:-[_SBHUDModel isDismissed](self withName:{"isDismissed"), @"isDismissing"}];
   v10 = [v3 appendBool:-[_SBHUDModel isDismissalScheduled](self withName:{"isDismissalScheduled"), @"isDismissalScheduled"}];
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
 - (BOOL)isVisible
@@ -148,21 +148,21 @@ LABEL_4:
   return [(_SBHUDModel *)self isDismissing];
 }
 
-- (void)presentWithDismissalInterval:(double)a3 animated:(BOOL)a4
+- (void)presentWithDismissalInterval:(double)interval animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(_SBHUDModel *)self invalidateDismissalTimer];
-  self->_dismissalInterval = a3;
-  v7 = [(_SBHUDModel *)self HUDController];
-  [v7 _presentHUD:self animated:v4];
+  self->_dismissalInterval = interval;
+  hUDController = [(_SBHUDModel *)self HUDController];
+  [hUDController _presentHUD:self animated:animatedCopy];
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(_SBHUDModel *)self invalidateDismissalTimer];
-  v5 = [(_SBHUDModel *)self HUDController];
-  [v5 _dismissHUD:self animated:v3];
+  hUDController = [(_SBHUDModel *)self HUDController];
+  [hUDController _dismissHUD:self animated:animatedCopy];
 }
 
 - (void)invalidateDismissalTimer
@@ -179,7 +179,7 @@ LABEL_4:
 - (void)scheduleDismissalTimer
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -193,10 +193,10 @@ LABEL_4:
 
 - (void)_setupDropletLayout
 {
-  v3 = [(SBHUDViewControlling *)self->_HUDViewController triggerButton];
-  if (v3)
+  triggerButton = [(SBHUDViewControlling *)self->_HUDViewController triggerButton];
+  if (triggerButton)
   {
-    v4 = v3 == 9;
+    v4 = triggerButton == 9;
   }
 
   else
@@ -206,13 +206,13 @@ LABEL_4:
 
   if (!v4)
   {
-    v5 = v3;
-    v6 = [(SBHUDController *)self->_HUDController windowScene];
-    v7 = [v6 hardwareButtonBezelEffectsCoordinator];
+    v5 = triggerButton;
+    windowScene = [(SBHUDController *)self->_HUDController windowScene];
+    hardwareButtonBezelEffectsCoordinator = [windowScene hardwareButtonBezelEffectsCoordinator];
 
-    v8 = [v7 hintDropletsEnabled];
+    hintDropletsEnabled = [hardwareButtonBezelEffectsCoordinator hintDropletsEnabled];
     HUDViewController = self->_HUDViewController;
-    if (v8)
+    if (hintDropletsEnabled)
     {
       [(SBHUDViewControlling *)HUDViewController setAttachmentDelegate:self];
       objc_initWeak(&location, self);
@@ -223,7 +223,7 @@ LABEL_4:
       objc_copyWeak(&v17, &location);
       v10 = MEMORY[0x223D6F7F0](&v13);
       [(BSInvalidatable *)self->_dropletLayoutAssertion invalidate:v13];
-      v11 = [v7 setDropletLayoutCallback:v10 forButton:v5];
+      v11 = [hardwareButtonBezelEffectsCoordinator setDropletLayoutCallback:v10 forButton:v5];
       dropletLayoutAssertion = self->_dropletLayoutAssertion;
       self->_dropletLayoutAssertion = v11;
 
@@ -251,73 +251,73 @@ LABEL_4:
 
 - (BOOL)_shouldIgnoreDropletAttachment
 {
-  v3 = [(SBHUDViewControlling *)self->_HUDViewController attachmentIgnoredOrientations];
-  v4 = [(SBHUDViewControlling *)self->_HUDViewController interfaceOrientation];
+  attachmentIgnoredOrientations = [(SBHUDViewControlling *)self->_HUDViewController attachmentIgnoredOrientations];
+  interfaceOrientation = [(SBHUDViewControlling *)self->_HUDViewController interfaceOrientation];
 
-  return MEMORY[0x282143930](v3, v4);
+  return MEMORY[0x282143930](attachmentIgnoredOrientations, interfaceOrientation);
 }
 
-- (void)_handleDropletLayoutCallback:(double)a3
+- (void)_handleDropletLayoutCallback:(double)callback
 {
-  v5 = [(_SBHUDModel *)self _shouldIgnoreDropletAttachment];
+  _shouldIgnoreDropletAttachment = [(_SBHUDModel *)self _shouldIgnoreDropletAttachment];
   HUDViewController = self->_HUDViewController;
-  if (v5)
+  if (_shouldIgnoreDropletAttachment)
   {
-    v7 = *MEMORY[0x277CBF348];
-    v8 = *(MEMORY[0x277CBF348] + 8);
+    callbackCopy = *MEMORY[0x277CBF348];
+    callbackCopy2 = *(MEMORY[0x277CBF348] + 8);
   }
 
   else
   {
-    v9 = [(SBHUDViewControlling *)HUDViewController interfaceOrientation];
-    v8 = 0.0;
-    if ((v9 - 3) >= 2)
+    interfaceOrientation = [(SBHUDViewControlling *)HUDViewController interfaceOrientation];
+    callbackCopy2 = 0.0;
+    if ((interfaceOrientation - 3) >= 2)
     {
-      v7 = a3;
+      callbackCopy = callback;
     }
 
     else
     {
-      v7 = 0.0;
+      callbackCopy = 0.0;
     }
 
-    if ((v9 - 3) < 2)
+    if ((interfaceOrientation - 3) < 2)
     {
-      v8 = a3;
+      callbackCopy2 = callback;
     }
 
     HUDViewController = self->_HUDViewController;
   }
 
-  [(SBHUDViewControlling *)HUDViewController setPositionOffset:v7, v8];
+  [(SBHUDViewControlling *)HUDViewController setPositionOffset:callbackCopy, callbackCopy2];
 }
 
-- (void)updateAttachmentStateForHUDViewController:(id)a3
+- (void)updateAttachmentStateForHUDViewController:(id)controller
 {
-  v4 = [(SBHUDViewControlling *)self->_HUDViewController triggerButton];
-  if (v4 && self->_dropletLayoutAssertion)
+  triggerButton = [(SBHUDViewControlling *)self->_HUDViewController triggerButton];
+  if (triggerButton && self->_dropletLayoutAssertion)
   {
-    v5 = v4;
-    v6 = [(SBHUDViewControlling *)self->_HUDViewController isHUDAttached];
-    v7 = ([(_SBHUDModel *)self _shouldIgnoreDropletAttachment]^ 1) & v6;
-    v9 = [(SBHUDController *)self->_HUDController windowScene];
-    v8 = [v9 hardwareButtonBezelEffectsCoordinator];
-    [v8 updateHintContentVisibility:v7 forButton:v5 animationSettings:0];
+    v5 = triggerButton;
+    isHUDAttached = [(SBHUDViewControlling *)self->_HUDViewController isHUDAttached];
+    v7 = ([(_SBHUDModel *)self _shouldIgnoreDropletAttachment]^ 1) & isHUDAttached;
+    windowScene = [(SBHUDController *)self->_HUDController windowScene];
+    hardwareButtonBezelEffectsCoordinator = [windowScene hardwareButtonBezelEffectsCoordinator];
+    [hardwareButtonBezelEffectsCoordinator updateHintContentVisibility:v7 forButton:v5 animationSettings:0];
   }
 }
 
-- (void)hudViewController:(id)a3 willDismissHUD:(id)a4
+- (void)hudViewController:(id)controller willDismissHUD:(id)d
 {
-  [(_SBHUDModel *)self setPresented:1, a4];
+  [(_SBHUDModel *)self setPresented:1, d];
   [(_SBHUDModel *)self setPresenting:0];
   [(_SBHUDModel *)self setDismissing:1];
 
   [(_SBHUDModel *)self setDismissed:0];
 }
 
-- (void)hudViewController:(id)a3 didDismissHUD:(id)a4
+- (void)hudViewController:(id)controller didDismissHUD:(id)d
 {
-  [(_SBHUDModel *)self setPresented:0, a4];
+  [(_SBHUDModel *)self setPresented:0, d];
   [(_SBHUDModel *)self setPresenting:0];
   [(_SBHUDModel *)self setDismissing:0];
   [(_SBHUDModel *)self setDismissed:1];
@@ -325,9 +325,9 @@ LABEL_4:
   [(_SBHUDModel *)self _teardownDropletLayout];
 }
 
-- (void)hudViewController:(id)a3 willPresentHUD:(id)a4
+- (void)hudViewController:(id)controller willPresentHUD:(id)d
 {
-  [(_SBHUDModel *)self _setupDropletLayout:a3];
+  [(_SBHUDModel *)self _setupDropletLayout:controller];
   [(_SBHUDModel *)self setPresenting:1];
   [(_SBHUDModel *)self setPresented:0];
   [(_SBHUDModel *)self setDismissing:0];
@@ -335,9 +335,9 @@ LABEL_4:
   [(_SBHUDModel *)self setDismissed:0];
 }
 
-- (void)hudViewController:(id)a3 didPresentHUD:(id)a4
+- (void)hudViewController:(id)controller didPresentHUD:(id)d
 {
-  [(_SBHUDModel *)self setPresenting:0, a4];
+  [(_SBHUDModel *)self setPresenting:0, d];
   [(_SBHUDModel *)self setPresented:1];
   [(_SBHUDModel *)self setDismissing:0];
 

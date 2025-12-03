@@ -1,41 +1,41 @@
 @interface CCDValidationInfo
-- (BOOL)validateSelfUsingValidationInfoWithDictionary:(id)a3 resultsDictionary:(id)a4;
-- (BOOL)validateSelfWithDictionary:(id)a3 resultsDictionary:(id)a4;
-- (CCDValidationInfo)initWithName:(id)a3 validationInfo:(id)a4;
+- (BOOL)validateSelfUsingValidationInfoWithDictionary:(id)dictionary resultsDictionary:(id)resultsDictionary;
+- (BOOL)validateSelfWithDictionary:(id)dictionary resultsDictionary:(id)resultsDictionary;
+- (CCDValidationInfo)initWithName:(id)name validationInfo:(id)info;
 @end
 
 @implementation CCDValidationInfo
 
-- (CCDValidationInfo)initWithName:(id)a3 validationInfo:(id)a4
+- (CCDValidationInfo)initWithName:(id)name validationInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = CCDValidationInfo;
   v9 = [(CCDValidationInfo *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    v11 = [v8 objectForKeyedSubscript:@"isRequired"];
+    objc_storeStrong(&v9->_name, name);
+    v11 = [infoCopy objectForKeyedSubscript:@"isRequired"];
     v10->_isRequired = [v11 BOOLValue];
 
-    objc_storeStrong(&v10->_validationInfo, a4);
+    objc_storeStrong(&v10->_validationInfo, info);
   }
 
   return v10;
 }
 
-- (BOOL)validateSelfWithDictionary:(id)a3 resultsDictionary:(id)a4
+- (BOOL)validateSelfWithDictionary:(id)dictionary resultsDictionary:(id)resultsDictionary
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CCDValidationInfo *)self name];
-  v9 = [v6 objectForKeyedSubscript:v8];
+  dictionaryCopy = dictionary;
+  resultsDictionaryCopy = resultsDictionary;
+  name = [(CCDValidationInfo *)self name];
+  v9 = [dictionaryCopy objectForKeyedSubscript:name];
 
   if (v9)
   {
-    LOBYTE(self) = [(CCDValidationInfo *)self validateSelfUsingValidationInfoWithDictionary:v6 resultsDictionary:v7];
+    LOBYTE(self) = [(CCDValidationInfo *)self validateSelfUsingValidationInfoWithDictionary:dictionaryCopy resultsDictionary:resultsDictionaryCopy];
   }
 
   else
@@ -46,10 +46,10 @@
   return self;
 }
 
-- (BOOL)validateSelfUsingValidationInfoWithDictionary:(id)a3 resultsDictionary:(id)a4
+- (BOOL)validateSelfUsingValidationInfoWithDictionary:(id)dictionary resultsDictionary:(id)resultsDictionary
 {
-  v5 = a3;
-  v6 = a4;
+  dictionaryCopy = dictionary;
+  resultsDictionaryCopy = resultsDictionary;
   __assert_rtn("[CCDValidationInfo validateSelfUsingValidationInfoWithDictionary:resultsDictionary:]", "CCDValidationInfo.m", 50, "0");
 }
 

@@ -1,31 +1,31 @@
 @interface HKJulianIndexedSevenDayQuantityChartPoint
-- (HKJulianIndexedSevenDayQuantityChartPoint)initWithStartDate:(id)a3 endDate:(id)a4 displayType:(id)a5 unit:(id)a6 quantity:(id)a7;
+- (HKJulianIndexedSevenDayQuantityChartPoint)initWithStartDate:(id)date endDate:(id)endDate displayType:(id)type unit:(id)unit quantity:(id)quantity;
 - (NSString)description;
 - (id)allYValues;
 @end
 
 @implementation HKJulianIndexedSevenDayQuantityChartPoint
 
-- (HKJulianIndexedSevenDayQuantityChartPoint)initWithStartDate:(id)a3 endDate:(id)a4 displayType:(id)a5 unit:(id)a6 quantity:(id)a7
+- (HKJulianIndexedSevenDayQuantityChartPoint)initWithStartDate:(id)date endDate:(id)endDate displayType:(id)type unit:(id)unit quantity:(id)quantity
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  dateCopy = date;
+  endDateCopy = endDate;
+  typeCopy = type;
+  unitCopy = unit;
+  quantityCopy = quantity;
   v26.receiver = self;
   v26.super_class = HKJulianIndexedSevenDayQuantityChartPoint;
   v18 = [(HKJulianIndexedSevenDayQuantityChartPoint *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_xStart, a3);
-    objc_storeStrong(&v19->_xEnd, a4);
+    objc_storeStrong(&v18->_xStart, date);
+    objc_storeStrong(&v19->_xEnd, endDate);
     v20 = MEMORY[0x1E696AD98];
-    [v17 doubleValueForUnit:v16];
+    [quantityCopy doubleValueForUnit:unitCopy];
     v21 = [v20 numberWithDouble:?];
-    v22 = [v15 presentation];
-    v23 = [v22 adjustedValueForDaemonValue:v21];
+    presentation = [typeCopy presentation];
+    v23 = [presentation adjustedValueForDaemonValue:v21];
     yValue = v19->_yValue;
     v19->_yValue = v23;
   }

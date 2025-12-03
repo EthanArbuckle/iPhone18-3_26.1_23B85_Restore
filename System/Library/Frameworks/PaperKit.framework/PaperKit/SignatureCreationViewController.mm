@@ -1,22 +1,22 @@
 @interface SignatureCreationViewController
 - (BOOL)becomeFirstResponder;
-- (_TtC8PaperKit31SignatureCreationViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)cancelAction:(id)a3;
-- (void)canvasViewDrawingDidChange:(id)a3;
+- (_TtC8PaperKit31SignatureCreationViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)cancelAction:(id)action;
+- (void)canvasViewDrawingDidChange:(id)change;
 - (void)clearAction;
-- (void)doneAction:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)doneAction:(id)action;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SignatureCreationViewController
 
-- (_TtC8PaperKit31SignatureCreationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8PaperKit31SignatureCreationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -27,74 +27,74 @@
     v6 = 0;
   }
 
-  return SignatureCreationViewController.init(nibName:bundle:)(a4, v6, a4);
+  return SignatureCreationViewController.init(nibName:bundle:)(bundle, v6, bundle);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   SignatureCreationViewController.viewDidLoad()();
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SignatureCreationViewController.becomeFirstResponder()();
 
   return v3;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  SignatureCreationViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  SignatureCreationViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  SignatureCreationViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  SignatureCreationViewController.viewDidDisappear(_:)(disappear);
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v10.receiver = self;
   v10.super_class = type metadata accessor for SignatureCreationViewController();
-  v6 = a3;
+  collectionCopy = collection;
   swift_unknownObjectRetain();
   v7 = v10.receiver;
-  [(SignatureCreationViewController *)&v10 willTransitionToTraitCollection:v6 withTransitionCoordinator:a4];
-  v8 = [v7 traitCollection];
-  v9 = [v8 horizontalSizeClass];
+  [(SignatureCreationViewController *)&v10 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinator];
+  traitCollection = [v7 traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v9 != [v6 horizontalSizeClass])
+  if (horizontalSizeClass != [collectionCopy horizontalSizeClass])
   {
-    SignatureCreationViewController.clearSignature(with:)(a4);
+    SignatureCreationViewController.clearSignature(with:)(coordinator);
   }
 
   swift_unknownObjectRelease();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v15.receiver = self;
   v15.super_class = type metadata accessor for SignatureCreationViewController();
   swift_unknownObjectRetain();
   v7 = v15.receiver;
-  [(SignatureCreationViewController *)&v15 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
-  v8 = [v7 view];
-  if (v8)
+  [(SignatureCreationViewController *)&v15 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
+  view = [v7 view];
+  if (view)
   {
-    v9 = v8;
-    [v8 bounds];
+    v9 = view;
+    [view bounds];
     v11 = v10;
     v13 = v12;
 
     if (width != v11 || height != v13)
     {
-      SignatureCreationViewController.clearSignature(with:)(a4);
+      SignatureCreationViewController.clearSignature(with:)(coordinator);
     }
 
     swift_unknownObjectRelease();
@@ -106,30 +106,30 @@
   }
 }
 
-- (void)doneAction:(id)a3
+- (void)doneAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   specialized SignatureCreationViewController.doneAction(_:)();
 }
 
-- (void)cancelAction:(id)a3
+- (void)cancelAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   specialized SignatureCreationViewController.cancelAction(_:)();
 }
 
 - (void)clearAction
 {
-  v2 = self;
+  selfCopy = self;
   SignatureCreationViewController.clearAction()();
 }
 
-- (void)canvasViewDrawingDidChange:(id)a3
+- (void)canvasViewDrawingDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   specialized SignatureCreationViewController.canvasViewDrawingDidChange(_:)();
 }
 

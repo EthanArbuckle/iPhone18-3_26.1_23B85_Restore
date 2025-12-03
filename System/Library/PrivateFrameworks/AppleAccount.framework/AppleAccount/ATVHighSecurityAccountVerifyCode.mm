@@ -1,21 +1,21 @@
 @interface ATVHighSecurityAccountVerifyCode
-- (ATVHighSecurityAccountVerifyCode)initWithAccount:(id)a3 device:(id)a4 hsaCode:(id)a5;
+- (ATVHighSecurityAccountVerifyCode)initWithAccount:(id)account device:(id)device hsaCode:(id)code;
 - (id)urlRequest;
 - (id)urlString;
 @end
 
 @implementation ATVHighSecurityAccountVerifyCode
 
-- (ATVHighSecurityAccountVerifyCode)initWithAccount:(id)a3 device:(id)a4 hsaCode:(id)a5
+- (ATVHighSecurityAccountVerifyCode)initWithAccount:(id)account device:(id)device hsaCode:(id)code
 {
-  v9 = a5;
+  codeCopy = code;
   v13.receiver = self;
   v13.super_class = ATVHighSecurityAccountVerifyCode;
-  v10 = [(ATVHighSecurityAccountSendCode *)&v13 initWithAccount:a3 device:a4];
+  v10 = [(ATVHighSecurityAccountSendCode *)&v13 initWithAccount:account device:device];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_hsaCode, a5);
+    objc_storeStrong(&v10->_hsaCode, code);
   }
 
   return v11;
@@ -24,9 +24,9 @@
 - (id)urlString
 {
   v2 = +[AAURLConfiguration urlConfiguration];
-  v3 = [v2 verifyCodeURL];
+  verifyCodeURL = [v2 verifyCodeURL];
 
-  return v3;
+  return verifyCodeURL;
 }
 
 - (id)urlRequest
@@ -34,8 +34,8 @@
   v34 = *MEMORY[0x1E69E9840];
   v31.receiver = self;
   v31.super_class = ATVHighSecurityAccountVerifyCode;
-  v3 = [(ATVHighSecurityAccountSendCode *)&v31 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(ATVHighSecurityAccountSendCode *)&v31 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   v5 = [(NSDictionary *)self->super._device mutableCopy];
   [v5 setValue:self->_hsaCode forKey:@"hsaCode"];
@@ -52,9 +52,9 @@
     v8 = _AALogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v7 localizedDescription];
+      localizedDescription = [v7 localizedDescription];
       *buf = 138412290;
-      v33 = v9;
+      v33 = localizedDescription;
       _os_log_impl(&dword_1B6F6A000, v8, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
     }
   }
@@ -70,8 +70,8 @@
   }
 
   [v4 setHTTPMethod:@"POST"];
-  v12 = [(ACAccount *)self->super.super._account aa_password];
-  if (v12 && (v13 = v12, [(ACAccount *)self->super.super._account username], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v14))
+  aa_password = [(ACAccount *)self->super.super._account aa_password];
+  if (aa_password && (v13 = aa_password, [(ACAccount *)self->super.super._account username], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v14))
   {
     v15 = _AALogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -81,20 +81,20 @@
     }
 
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [(ACAccount *)self->super.super._account username];
-    v18 = [(ACAccount *)self->super.super._account aa_password];
-    v19 = [v16 stringWithFormat:@"%@:%@", v17, v18, v7];
+    username = [(ACAccount *)self->super.super._account username];
+    aa_password2 = [(ACAccount *)self->super.super._account aa_password];
+    v19 = [v16 stringWithFormat:@"%@:%@", username, aa_password2, v7];
 
     v20 = 1;
   }
 
   else
   {
-    v17 = _AALogSystem();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    username = _AALogSystem();
+    if (os_log_type_enabled(username, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1B6F6A000, v17, OS_LOG_TYPE_DEFAULT, "ERROR: Missing account username or password", buf, 2u);
+      _os_log_impl(&dword_1B6F6A000, username, OS_LOG_TYPE_DEFAULT, "ERROR: Missing account username or password", buf, 2u);
     }
 
     v20 = 0;

@@ -7,34 +7,34 @@
 - (id)cs_copyVisualEffectView
 {
   v2 = objc_alloc(objc_opt_class());
-  [a1 frame];
+  [self frame];
   v3 = [v2 initWithFrame:?];
-  [v3 setAutoresizingMask:{objc_msgSend(a1, "autoresizingMask")}];
-  [v3 setClipsToBounds:{objc_msgSend(a1, "clipsToBounds")}];
-  [v3 setUserInteractionEnabled:{objc_msgSend(a1, "isUserInteractionEnabled")}];
+  [v3 setAutoresizingMask:{objc_msgSend(self, "autoresizingMask")}];
+  [v3 setClipsToBounds:{objc_msgSend(self, "clipsToBounds")}];
+  [v3 setUserInteractionEnabled:{objc_msgSend(self, "isUserInteractionEnabled")}];
   v4 = objc_alloc(MEMORY[0x1E695DEC8]);
-  v5 = [a1 backgroundEffects];
-  v6 = [v4 initWithArray:v5 copyItems:1];
+  backgroundEffects = [self backgroundEffects];
+  v6 = [v4 initWithArray:backgroundEffects copyItems:1];
 
   [v3 setBackgroundEffects:v6];
-  [a1 _continuousCornerRadius];
+  [self _continuousCornerRadius];
   [v3 _setContinuousCornerRadius:?];
-  v7 = [a1 _groupName];
-  [v3 _setGroupName:v7];
+  _groupName = [self _groupName];
+  [v3 _setGroupName:_groupName];
 
-  v8 = [v3 contentView];
-  v9 = [a1 contentView];
-  v10 = [v9 backgroundColor];
-  [v8 setBackgroundColor:v10];
+  contentView = [v3 contentView];
+  contentView2 = [self contentView];
+  backgroundColor = [contentView2 backgroundColor];
+  [contentView setBackgroundColor:backgroundColor];
 
-  v11 = [v3 contentView];
-  v12 = [a1 contentView];
-  [v12 alpha];
-  [v11 setAlpha:?];
+  contentView3 = [v3 contentView];
+  contentView4 = [self contentView];
+  [contentView4 alpha];
+  [contentView3 setAlpha:?];
 
-  v13 = [v3 contentView];
-  v14 = [a1 contentView];
-  [v13 setHidden:{objc_msgSend(v14, "isHidden")}];
+  contentView5 = [v3 contentView];
+  contentView6 = [self contentView];
+  [contentView5 setHidden:{objc_msgSend(contentView6, "isHidden")}];
 
   return v3;
 }

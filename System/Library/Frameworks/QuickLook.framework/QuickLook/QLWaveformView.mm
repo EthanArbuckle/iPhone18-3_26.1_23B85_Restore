@@ -1,23 +1,23 @@
 @interface QLWaveformView
 - (CGRect)visibleRect;
 - (void)_expandWaveform;
-- (void)_updateWithWaveformImage:(id)a3;
+- (void)_updateWithWaveformImage:(id)image;
 - (void)layoutSubviews;
-- (void)setAsset:(id)a3;
+- (void)setAsset:(id)asset;
 - (void)updateImage;
 @end
 
 @implementation QLWaveformView
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
-  if (self->_asset != v5)
+  assetCopy = asset;
+  if (self->_asset != assetCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_asset, a3);
+    v6 = assetCopy;
+    objc_storeStrong(&self->_asset, asset);
     [(QLWaveformView *)self updateImage];
-    v5 = v6;
+    assetCopy = v6;
   }
 }
 
@@ -52,8 +52,8 @@
       lineView = self->_lineView;
       self->_lineView = v9;
 
-      v11 = [MEMORY[0x277D75348] secondaryLabelColor];
-      [(UIView *)self->_lineView setBackgroundColor:v11];
+      secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+      [(UIView *)self->_lineView setBackgroundColor:secondaryLabelColor];
 
       [(QLWaveformView *)self addSubview:self->_lineView];
     }
@@ -68,21 +68,21 @@
 
       [(UIImageView *)self->_waveView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(QLWaveformView *)self addSubview:self->_waveView];
-      v31 = [(UIImageView *)self->_waveView leftAnchor];
-      v30 = [(QLWaveformView *)self leftAnchor];
-      v29 = [v31 constraintEqualToAnchor:v30];
+      leftAnchor = [(UIImageView *)self->_waveView leftAnchor];
+      leftAnchor2 = [(QLWaveformView *)self leftAnchor];
+      v29 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       v37[0] = v29;
-      v28 = [(UIImageView *)self->_waveView rightAnchor];
-      v27 = [(QLWaveformView *)self rightAnchor];
-      v26 = [v28 constraintEqualToAnchor:v27];
+      rightAnchor = [(UIImageView *)self->_waveView rightAnchor];
+      rightAnchor2 = [(QLWaveformView *)self rightAnchor];
+      v26 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
       v37[1] = v26;
-      v16 = [(UIImageView *)self->_waveView bottomAnchor];
-      v17 = [(QLWaveformView *)self bottomAnchor];
-      v18 = [v16 constraintEqualToAnchor:v17];
+      bottomAnchor = [(UIImageView *)self->_waveView bottomAnchor];
+      bottomAnchor2 = [(QLWaveformView *)self bottomAnchor];
+      v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v37[2] = v18;
-      v19 = [(UIImageView *)self->_waveView topAnchor];
-      v20 = [(QLWaveformView *)self topAnchor];
-      v21 = [v19 constraintEqualToAnchor:v20];
+      topAnchor = [(UIImageView *)self->_waveView topAnchor];
+      topAnchor2 = [(QLWaveformView *)self topAnchor];
+      v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v37[3] = v21;
       v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:4];
       [(QLWaveformView *)self addConstraints:v22];
@@ -90,8 +90,8 @@
       waveView = self->_waveView;
     }
 
-    v23 = [(UIImageView *)waveView image];
-    v24 = v23 == 0;
+    image = [(UIImageView *)waveView image];
+    v24 = image == 0;
 
     if (v24)
     {
@@ -99,14 +99,14 @@
       v34 = buf;
       v35 = 0x2020000000;
       v36 = 1;
-      v25 = [(QLWaveformView *)self asset];
+      asset = [(QLWaveformView *)self asset];
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __29__QLWaveformView_updateImage__block_invoke;
       v32[3] = &unk_278B57F90;
       v32[4] = self;
       v32[5] = buf;
-      [QLWaveformScrubberViewProvider generateWaveformForSize:v25 asset:v32 updateHandler:p_waveSize->width, self->_waveSize.height];
+      [QLWaveformScrubberViewProvider generateWaveformForSize:asset asset:v32 updateHandler:p_waveSize->width, self->_waveSize.height];
 
       _Block_object_dispose(buf, 8);
     }
@@ -184,9 +184,9 @@ void __33__QLWaveformView__expandWaveform__block_invoke_2(uint64_t a1)
   *(v2 + 424) = 0;
 }
 
-- (void)_updateWithWaveformImage:(id)a3
+- (void)_updateWithWaveformImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = MEMORY[0x277D75D18];
   waveView = self->_waveView;
   v8[0] = MEMORY[0x277D85DD0];
@@ -194,8 +194,8 @@ void __33__QLWaveformView__expandWaveform__block_invoke_2(uint64_t a1)
   v8[2] = __43__QLWaveformView__updateWithWaveformImage___block_invoke;
   v8[3] = &unk_278B56E50;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = imageCopy;
+  v7 = imageCopy;
   [v5 transitionWithView:waveView duration:5242880 options:v8 animations:0 completion:0.25];
 }
 

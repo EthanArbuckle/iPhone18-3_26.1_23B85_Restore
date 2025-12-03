@@ -1,9 +1,9 @@
 @interface _CPStoreCardSectionEngagementFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPStoreCardSectionEngagementFeedback)init;
-- (_CPStoreCardSectionEngagementFeedback)initWithFacade:(id)a3;
+- (_CPStoreCardSectionEngagementFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPStoreCardSectionEngagementFeedback
@@ -17,34 +17,34 @@
   return v6 ^ [(NSString *)self->_resultId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_26;
   }
 
-  v6 = [(_CPStoreCardSectionEngagementFeedback *)self destination];
-  v7 = [v4 destination];
-  if ((v6 != 0) == (v7 == 0))
+  destination = [(_CPStoreCardSectionEngagementFeedback *)self destination];
+  destination2 = [equalCopy destination];
+  if ((destination != 0) == (destination2 == 0))
   {
     goto LABEL_25;
   }
 
-  v8 = [(_CPStoreCardSectionEngagementFeedback *)self destination];
-  if (v8)
+  destination3 = [(_CPStoreCardSectionEngagementFeedback *)self destination];
+  if (destination3)
   {
-    v9 = v8;
-    v10 = [(_CPStoreCardSectionEngagementFeedback *)self destination];
-    v11 = [v4 destination];
-    v12 = [v10 isEqual:v11];
+    v9 = destination3;
+    destination4 = [(_CPStoreCardSectionEngagementFeedback *)self destination];
+    destination5 = [equalCopy destination];
+    v12 = [destination4 isEqual:destination5];
 
     if (!v12)
     {
@@ -57,31 +57,31 @@
   }
 
   triggerEvent = self->_triggerEvent;
-  if (triggerEvent != [v4 triggerEvent])
+  if (triggerEvent != [equalCopy triggerEvent])
   {
     goto LABEL_26;
   }
 
   actionCardType = self->_actionCardType;
-  if (actionCardType != [v4 actionCardType])
+  if (actionCardType != [equalCopy actionCardType])
   {
     goto LABEL_26;
   }
 
-  v6 = [(_CPStoreCardSectionEngagementFeedback *)self cardSection];
-  v7 = [v4 cardSection];
-  if ((v6 != 0) == (v7 == 0))
+  destination = [(_CPStoreCardSectionEngagementFeedback *)self cardSection];
+  destination2 = [equalCopy cardSection];
+  if ((destination != 0) == (destination2 == 0))
   {
     goto LABEL_25;
   }
 
-  v15 = [(_CPStoreCardSectionEngagementFeedback *)self cardSection];
-  if (v15)
+  cardSection = [(_CPStoreCardSectionEngagementFeedback *)self cardSection];
+  if (cardSection)
   {
-    v16 = v15;
-    v17 = [(_CPStoreCardSectionEngagementFeedback *)self cardSection];
-    v18 = [v4 cardSection];
-    v19 = [v17 isEqual:v18];
+    v16 = cardSection;
+    cardSection2 = [(_CPStoreCardSectionEngagementFeedback *)self cardSection];
+    cardSection3 = [equalCopy cardSection];
+    v19 = [cardSection2 isEqual:cardSection3];
 
     if (!v19)
     {
@@ -94,25 +94,25 @@
   }
 
   productPageResult = self->_productPageResult;
-  if (productPageResult != [v4 productPageResult])
+  if (productPageResult != [equalCopy productPageResult])
   {
     goto LABEL_26;
   }
 
-  v6 = [(_CPStoreCardSectionEngagementFeedback *)self cardSectionId];
-  v7 = [v4 cardSectionId];
-  if ((v6 != 0) == (v7 == 0))
+  destination = [(_CPStoreCardSectionEngagementFeedback *)self cardSectionId];
+  destination2 = [equalCopy cardSectionId];
+  if ((destination != 0) == (destination2 == 0))
   {
     goto LABEL_25;
   }
 
-  v21 = [(_CPStoreCardSectionEngagementFeedback *)self cardSectionId];
-  if (v21)
+  cardSectionId = [(_CPStoreCardSectionEngagementFeedback *)self cardSectionId];
+  if (cardSectionId)
   {
-    v22 = v21;
-    v23 = [(_CPStoreCardSectionEngagementFeedback *)self cardSectionId];
-    v24 = [v4 cardSectionId];
-    v25 = [v23 isEqual:v24];
+    v22 = cardSectionId;
+    cardSectionId2 = [(_CPStoreCardSectionEngagementFeedback *)self cardSectionId];
+    cardSectionId3 = [equalCopy cardSectionId];
+    v25 = [cardSectionId2 isEqual:cardSectionId3];
 
     if (!v25)
     {
@@ -124,17 +124,17 @@
   {
   }
 
-  v6 = [(_CPStoreCardSectionEngagementFeedback *)self resultId];
-  v7 = [v4 resultId];
-  if ((v6 != 0) == (v7 == 0))
+  destination = [(_CPStoreCardSectionEngagementFeedback *)self resultId];
+  destination2 = [equalCopy resultId];
+  if ((destination != 0) == (destination2 == 0))
   {
 LABEL_25:
 
     goto LABEL_26;
   }
 
-  v26 = [(_CPStoreCardSectionEngagementFeedback *)self resultId];
-  if (!v26)
+  resultId = [(_CPStoreCardSectionEngagementFeedback *)self resultId];
+  if (!resultId)
   {
 
 LABEL_29:
@@ -142,10 +142,10 @@ LABEL_29:
     goto LABEL_27;
   }
 
-  v27 = v26;
-  v28 = [(_CPStoreCardSectionEngagementFeedback *)self resultId];
-  v29 = [v4 resultId];
-  v30 = [v28 isEqual:v29];
+  v27 = resultId;
+  resultId2 = [(_CPStoreCardSectionEngagementFeedback *)self resultId];
+  resultId3 = [equalCopy resultId];
+  v30 = [resultId2 isEqual:resultId3];
 
   if (v30)
   {
@@ -159,20 +159,20 @@ LABEL_27:
   return v31;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v17 = a3;
+  toCopy = to;
   if ([(_CPStoreCardSectionEngagementFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_CPStoreCardSectionEngagementFeedback *)self destination];
+  destination = [(_CPStoreCardSectionEngagementFeedback *)self destination];
 
-  if (v5)
+  if (destination)
   {
-    v6 = [(_CPStoreCardSectionEngagementFeedback *)self destination];
+    destination2 = [(_CPStoreCardSectionEngagementFeedback *)self destination];
     PBDataWriterWriteSubmessage();
   }
 
@@ -188,11 +188,11 @@ LABEL_27:
     PBDataWriterWriteInt32Field();
   }
 
-  v9 = [(_CPStoreCardSectionEngagementFeedback *)self cardSection];
+  cardSection = [(_CPStoreCardSectionEngagementFeedback *)self cardSection];
 
-  if (v9)
+  if (cardSection)
   {
-    v10 = [(_CPStoreCardSectionEngagementFeedback *)self cardSection];
+    cardSection2 = [(_CPStoreCardSectionEngagementFeedback *)self cardSection];
     PBDataWriterWriteSubmessage();
   }
 
@@ -202,22 +202,22 @@ LABEL_27:
     PBDataWriterWriteInt32Field();
   }
 
-  v12 = [(_CPStoreCardSectionEngagementFeedback *)self cardSectionId];
+  cardSectionId = [(_CPStoreCardSectionEngagementFeedback *)self cardSectionId];
 
-  if (v12)
+  if (cardSectionId)
   {
     cardSectionId = self->_cardSectionId;
     PBDataWriterWriteStringField();
   }
 
-  v14 = [(_CPStoreCardSectionEngagementFeedback *)self resultId];
+  resultId = [(_CPStoreCardSectionEngagementFeedback *)self resultId];
 
-  v15 = v17;
-  if (v14)
+  v15 = toCopy;
+  if (resultId)
   {
     resultId = self->_resultId;
     PBDataWriterWriteStringField();
-    v15 = v17;
+    v15 = toCopy;
   }
 }
 
@@ -235,52 +235,52 @@ LABEL_27:
   return v2;
 }
 
-- (_CPStoreCardSectionEngagementFeedback)initWithFacade:(id)a3
+- (_CPStoreCardSectionEngagementFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v20.receiver = self;
   v20.super_class = _CPStoreCardSectionEngagementFeedback;
   v5 = [(_CPStoreCardSectionEngagementFeedback *)&v20 init];
   if (v5)
   {
-    -[_CPStoreCardSectionEngagementFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 destination];
+    -[_CPStoreCardSectionEngagementFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    destination = [facadeCopy destination];
 
-    if (v6)
+    if (destination)
     {
       v7 = [_CPPunchoutForFeedback alloc];
-      v8 = [v4 destination];
-      v9 = [(_CPPunchoutForFeedback *)v7 initWithFacade:v8];
+      destination2 = [facadeCopy destination];
+      v9 = [(_CPPunchoutForFeedback *)v7 initWithFacade:destination2];
       [(_CPStoreCardSectionEngagementFeedback *)v5 setDestination:v9];
     }
 
-    -[_CPStoreCardSectionEngagementFeedback setTriggerEvent:](v5, "setTriggerEvent:", [v4 triggerEvent]);
-    -[_CPStoreCardSectionEngagementFeedback setActionCardType:](v5, "setActionCardType:", [v4 actionCardType]);
-    v10 = [v4 cardSection];
+    -[_CPStoreCardSectionEngagementFeedback setTriggerEvent:](v5, "setTriggerEvent:", [facadeCopy triggerEvent]);
+    -[_CPStoreCardSectionEngagementFeedback setActionCardType:](v5, "setActionCardType:", [facadeCopy actionCardType]);
+    cardSection = [facadeCopy cardSection];
 
-    if (v10)
+    if (cardSection)
     {
       v11 = [_CPCardSectionForFeedback alloc];
-      v12 = [v4 cardSection];
-      v13 = [(_CPCardSectionForFeedback *)v11 initWithFacade:v12];
+      cardSection2 = [facadeCopy cardSection];
+      v13 = [(_CPCardSectionForFeedback *)v11 initWithFacade:cardSection2];
       [(_CPStoreCardSectionEngagementFeedback *)v5 setCardSection:v13];
     }
 
-    -[_CPStoreCardSectionEngagementFeedback setProductPageResult:](v5, "setProductPageResult:", [v4 productPageResult]);
-    v14 = [v4 cardSectionId];
+    -[_CPStoreCardSectionEngagementFeedback setProductPageResult:](v5, "setProductPageResult:", [facadeCopy productPageResult]);
+    cardSectionId = [facadeCopy cardSectionId];
 
-    if (v14)
+    if (cardSectionId)
     {
-      v15 = [v4 cardSectionId];
-      [(_CPStoreCardSectionEngagementFeedback *)v5 setCardSectionId:v15];
+      cardSectionId2 = [facadeCopy cardSectionId];
+      [(_CPStoreCardSectionEngagementFeedback *)v5 setCardSectionId:cardSectionId2];
     }
 
-    v16 = [v4 resultId];
+    resultId = [facadeCopy resultId];
 
-    if (v16)
+    if (resultId)
     {
-      v17 = [v4 resultId];
-      [(_CPStoreCardSectionEngagementFeedback *)v5 setResultId:v17];
+      resultId2 = [facadeCopy resultId];
+      [(_CPStoreCardSectionEngagementFeedback *)v5 setResultId:resultId2];
     }
 
     v18 = v5;

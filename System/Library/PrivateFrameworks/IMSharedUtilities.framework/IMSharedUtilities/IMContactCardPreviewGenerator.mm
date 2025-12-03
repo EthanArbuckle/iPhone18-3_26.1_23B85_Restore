@@ -1,34 +1,34 @@
 @interface IMContactCardPreviewGenerator
-+ (CGImage)monogramForFirstName:(id)a3 lastName:(id)a4;
-+ (CGImage)newContactCardPreviewFrom:(id)a3 previewURL:(id)a4 senderContext:(id)a5 withPreviewConstraints:(IMPreviewConstraints *)a6 error:(id *)a7;
-+ (CGImage)newMonogramImageForData:(id)a3 constraints:(IMPreviewConstraints *)a4;
-+ (CGImage)newPreviewFromSourceURL:(id)a3 previewURL:(id)a4 senderContext:(id)a5 withPreviewConstraints:(IMPreviewConstraints *)a6 error:(id *)a7;
-+ (CGImage)newPreviewFromSourceURL:(id)a3 withPreviewConstraints:(IMPreviewConstraints *)a4 error:(id *)a5;
-+ (id)contactCardPreviewPayloadFileURLFrom:(id)a3 previewURL:(id)a4 withFileExtension:(id)a5;
-+ (id)contactCardPreviewPayloadsDirectoryFrom:(id)a3 previewURL:(id)a4;
-+ (id)generateContactPlistFrom:(id)a3 previewURL:(id)a4 senderContext:(id)a5 error:(id *)a6;
-+ (id)vCardDataForURL:(id)a3;
++ (CGImage)monogramForFirstName:(id)name lastName:(id)lastName;
++ (CGImage)newContactCardPreviewFrom:(id)from previewURL:(id)l senderContext:(id)context withPreviewConstraints:(IMPreviewConstraints *)constraints error:(id *)error;
++ (CGImage)newMonogramImageForData:(id)data constraints:(IMPreviewConstraints *)constraints;
++ (CGImage)newPreviewFromSourceURL:(id)l previewURL:(id)rL senderContext:(id)context withPreviewConstraints:(IMPreviewConstraints *)constraints error:(id *)error;
++ (CGImage)newPreviewFromSourceURL:(id)l withPreviewConstraints:(IMPreviewConstraints *)constraints error:(id *)error;
++ (id)contactCardPreviewPayloadFileURLFrom:(id)from previewURL:(id)l withFileExtension:(id)extension;
++ (id)contactCardPreviewPayloadsDirectoryFrom:(id)from previewURL:(id)l;
++ (id)generateContactPlistFrom:(id)from previewURL:(id)l senderContext:(id)context error:(id *)error;
++ (id)vCardDataForURL:(id)l;
 @end
 
 @implementation IMContactCardPreviewGenerator
 
-+ (CGImage)newPreviewFromSourceURL:(id)a3 withPreviewConstraints:(IMPreviewConstraints *)a4 error:(id *)a5
++ (CGImage)newPreviewFromSourceURL:(id)l withPreviewConstraints:(IMPreviewConstraints *)constraints error:(id *)error
 {
-  v7 = [a1 vCardDataForURL:{a3, a4, a5}];
-  v8 = *&a4->var1.height;
-  v11[0] = *&a4->var0;
+  v7 = [self vCardDataForURL:{l, constraints, error}];
+  v8 = *&constraints->var1.height;
+  v11[0] = *&constraints->var0;
   v11[1] = v8;
-  v12 = *&a4->var3;
-  v9 = [a1 newMonogramImageForData:v7 constraints:v11];
+  v12 = *&constraints->var3;
+  v9 = [self newMonogramImageForData:v7 constraints:v11];
 
   return v9;
 }
 
-+ (id)vCardDataForURL:(id)a3
++ (id)vCardDataForURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:a3 options:8 error:0];
+    v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:l options:8 error:0];
   }
 
   else
@@ -39,14 +39,14 @@
   return v4;
 }
 
-+ (CGImage)newMonogramImageForData:(id)a3 constraints:(IMPreviewConstraints *)a4
++ (CGImage)newMonogramImageForData:(id)data constraints:(IMPreviewConstraints *)constraints
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dataCopy = data;
+  if (!dataCopy)
   {
 LABEL_24:
-    v16 = 0;
+    cGImage = 0;
     goto LABEL_25;
   }
 
@@ -67,7 +67,7 @@ LABEL_24:
   }
 
   v21 = 0;
-  v7 = [v6 contactsWithData:v5 error:&v21];
+  v7 = [v6 contactsWithData:dataCopy error:&v21];
   v8 = v21;
   if (v8 || !v7 || ![v7 count])
   {
@@ -85,7 +85,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v9 = [v7 firstObject];
+  firstObject = [v7 firstObject];
   v10 = MEMORY[0x1AC570AA0](@"CNMonogrammer", @"ContactsUI");
   if (!v10)
   {
@@ -103,38 +103,38 @@ LABEL_24:
   }
 
   v11 = [v10 alloc];
-  [a1 contactMonogramDiameter];
+  [self contactMonogramDiameter];
   v12 = [v11 initWithStyle:1 diameter:?];
-  v13 = [v9 givenName];
-  v14 = [v9 familyName];
-  v15 = [v12 monogramForPersonWithFirstName:v13 lastName:v14];
-  v16 = [v15 CGImage];
+  givenName = [firstObject givenName];
+  familyName = [firstObject familyName];
+  v15 = [v12 monogramForPersonWithFirstName:givenName lastName:familyName];
+  cGImage = [v15 CGImage];
 
-  if (v16)
+  if (cGImage)
   {
-    CFRetain(v16);
+    CFRetain(cGImage);
   }
 
 LABEL_25:
-  return v16;
+  return cGImage;
 }
 
-+ (CGImage)newPreviewFromSourceURL:(id)a3 previewURL:(id)a4 senderContext:(id)a5 withPreviewConstraints:(IMPreviewConstraints *)a6 error:(id *)a7
++ (CGImage)newPreviewFromSourceURL:(id)l previewURL:(id)rL senderContext:(id)context withPreviewConstraints:(IMPreviewConstraints *)constraints error:(id *)error
 {
   v34[3] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  contextCopy = context;
   if (IMOSLoggingEnabled())
   {
     v15 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [MEMORY[0x1E696AD98] numberWithDouble:a6->var1.width];
-      v17 = [MEMORY[0x1E696AD98] numberWithDouble:a6->var1.height];
-      v18 = [MEMORY[0x1E696AD98] numberWithDouble:a6->var0];
+      v16 = [MEMORY[0x1E696AD98] numberWithDouble:constraints->var1.width];
+      v17 = [MEMORY[0x1E696AD98] numberWithDouble:constraints->var1.height];
+      v18 = [MEMORY[0x1E696AD98] numberWithDouble:constraints->var0];
       *v33 = 138413058;
-      *&v33[4] = v12;
+      *&v33[4] = lCopy;
       *&v33[12] = 2112;
       *&v33[14] = v16;
       *&v33[22] = 2112;
@@ -145,7 +145,7 @@ LABEL_25:
     }
   }
 
-  if (!v12)
+  if (!lCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -160,10 +160,10 @@ LABEL_25:
       }
     }
 
-    if (a7)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:5 userInfo:0];
-      *a7 = v28 = 0;
+      *error = v28 = 0;
       goto LABEL_15;
     }
 
@@ -172,11 +172,11 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v19 = *&a6->var1.height;
-  *v33 = *&a6->var0;
+  v19 = *&constraints->var1.height;
+  *v33 = *&constraints->var0;
   *&v33[16] = v19;
-  v34[0] = *&a6->var3;
-  v20 = [a1 newContactCardPreviewFrom:v12 previewURL:v13 senderContext:v14 withPreviewConstraints:v33 error:a7];
+  v34[0] = *&constraints->var3;
+  v20 = [self newContactCardPreviewFrom:lCopy previewURL:rLCopy senderContext:contextCopy withPreviewConstraints:v33 error:error];
   v21 = v20;
   if (!v20)
   {
@@ -185,27 +185,27 @@ LABEL_14:
 
   Width = CGImageGetWidth(v20);
   Height = CGImageGetHeight(v21);
-  [a1 thumbnailFillSizeForWidth:a6->var0 imageSize:Width scale:{Height, a6->var2}];
+  [self thumbnailFillSizeForWidth:constraints->var0 imageSize:Width scale:{Height, constraints->var2}];
   v26 = fmax(v24 / Width, v25 / Height);
-  v27 = *&a6->var1.height;
-  *v33 = *&a6->var0;
+  v27 = *&constraints->var1.height;
+  *v33 = *&constraints->var0;
   *&v33[16] = v27;
-  v34[0] = *&a6->var3;
-  v28 = [a1 newCroppedAndRescaledImageFromImage:v21 constraints:v33 targetPxSize:{ceil(v26 * Width), ceil(v26 * Height)}];
+  v34[0] = *&constraints->var3;
+  v28 = [self newCroppedAndRescaledImageFromImage:v21 constraints:v33 targetPxSize:{ceil(v26 * Width), ceil(v26 * Height)}];
   CGImageRelease(v21);
 LABEL_15:
 
   return v28;
 }
 
-+ (id)contactCardPreviewPayloadsDirectoryFrom:(id)a3 previewURL:(id)a4
++ (id)contactCardPreviewPayloadsDirectoryFrom:(id)from previewURL:(id)l
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 URLByDeletingLastPathComponent];
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v8 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:0];
+  fromCopy = from;
+  lCopy = l;
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v9 = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
   if ((v9 & 1) == 0 && IMOSLoggingEnabled())
   {
@@ -213,43 +213,43 @@ LABEL_15:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = objc_opt_class();
-      v12 = [v7 path];
+      path = [uRLByDeletingLastPathComponent path];
       v14 = 138412546;
       v15 = v11;
       v16 = 2112;
-      v17 = v12;
+      v17 = path;
       _os_log_impl(&dword_1A85E5000, v10, OS_LOG_TYPE_INFO, "%@ - Failed to create the preview directory: %@!", &v14, 0x16u);
     }
   }
 
-  return v7;
+  return uRLByDeletingLastPathComponent;
 }
 
-+ (id)contactCardPreviewPayloadFileURLFrom:(id)a3 previewURL:(id)a4 withFileExtension:(id)a5
++ (id)contactCardPreviewPayloadFileURLFrom:(id)from previewURL:(id)l withFileExtension:(id)extension
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a1 contactCardPreviewPayloadsDirectoryFrom:v9 previewURL:a4];
-  v11 = [v9 lastPathComponent];
+  extensionCopy = extension;
+  fromCopy = from;
+  v10 = [self contactCardPreviewPayloadsDirectoryFrom:fromCopy previewURL:l];
+  lastPathComponent = [fromCopy lastPathComponent];
 
-  v12 = [v10 URLByAppendingPathComponent:v11 isDirectory:0];
-  v13 = [v12 URLByAppendingPathExtension:v8];
+  v12 = [v10 URLByAppendingPathComponent:lastPathComponent isDirectory:0];
+  v13 = [v12 URLByAppendingPathExtension:extensionCopy];
 
   return v13;
 }
 
-+ (CGImage)monogramForFirstName:(id)a3 lastName:(id)a4
++ (CGImage)monogramForFirstName:(id)name lastName:(id)lastName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  lastNameCopy = lastName;
   v8 = MEMORY[0x1AC570AA0](@"CNMonogrammer", @"ContactsUI");
   if (v8)
   {
     v9 = [v8 alloc];
-    [a1 contactMonogramDiameter];
+    [self contactMonogramDiameter];
     v10 = [v9 initWithStyle:1 diameter:?];
-    v11 = [v10 monogramForPersonWithFirstName:v6 lastName:v7];
-    v12 = [v11 CGImage];
+    v11 = [v10 monogramForPersonWithFirstName:nameCopy lastName:lastNameCopy];
+    cGImage = [v11 CGImage];
   }
 
   else
@@ -264,25 +264,25 @@ LABEL_15:
       }
     }
 
-    v12 = 0;
+    cGImage = 0;
   }
 
-  return v12;
+  return cGImage;
 }
 
-+ (id)generateContactPlistFrom:(id)a3 previewURL:(id)a4 senderContext:(id)a5 error:(id *)a6
++ (id)generateContactPlistFrom:(id)from previewURL:(id)l senderContext:(id)context error:(id *)error
 {
   v67 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  fromCopy = from;
+  lCopy = l;
+  contextCopy = context;
   v13 = _os_activity_create(&dword_1A85E5000, "com.apple.messages.AttachmentGeneratePreviewContact", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v13, &state);
-  if ([a1 supportsBlastDoor])
+  if ([self supportsBlastDoor])
   {
-    v14 = [a1 vCardDataForURL:v10];
+    v14 = [self vCardDataForURL:fromCopy];
     v54 = 0;
     v55 = &v54;
     v56 = 0x3032000000;
@@ -302,9 +302,9 @@ LABEL_15:
     v47[4] = &v54;
     v47[5] = &v48;
     v45 = v14;
-    [IMAttachmentBlastdoor sendData:v14 senderContext:v12 forPreviewType:1 withCompletionBlock:v47];
+    [IMAttachmentBlastdoor sendData:v14 senderContext:contextCopy forPreviewType:1 withCompletionBlock:v47];
     dispatch_semaphore_wait(v49[5], 0xFFFFFFFFFFFFFFFFLL);
-    v44 = a6;
+    errorCopy = error;
     if (v55[5])
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -330,48 +330,48 @@ LABEL_15:
       }
 
       v21 = v17;
-      v22 = [v21 contactInfo];
-      v23 = [v22 givenName];
-      [v15 setObject:v23 forKeyedSubscript:qword_1EB301F30];
+      contactInfo = [v21 contactInfo];
+      givenName = [contactInfo givenName];
+      [v15 setObject:givenName forKeyedSubscript:qword_1EB301F30];
 
-      v24 = [v21 contactInfo];
-      v25 = [v24 familyName];
-      [v15 setObject:v25 forKeyedSubscript:qword_1EB301F38];
+      contactInfo2 = [v21 contactInfo];
+      familyName = [contactInfo2 familyName];
+      [v15 setObject:familyName forKeyedSubscript:qword_1EB301F38];
 
-      v26 = [v21 contactInfo];
-      v27 = [v26 organizationNameTitle];
-      [v15 setObject:v27 forKeyedSubscript:qword_1EB301F40];
+      contactInfo3 = [v21 contactInfo];
+      organizationNameTitle = [contactInfo3 organizationNameTitle];
+      [v15 setObject:organizationNameTitle forKeyedSubscript:qword_1EB301F40];
 
-      v28 = [v21 contactInfo];
-      v29 = [v28 contactFormatterTitle];
-      [v15 setObject:v29 forKeyedSubscript:qword_1EB301F48];
+      contactInfo4 = [v21 contactInfo];
+      contactFormatterTitle = [contactInfo4 contactFormatterTitle];
+      [v15 setObject:contactFormatterTitle forKeyedSubscript:qword_1EB301F48];
 
-      v30 = [v21 contactInfo];
-      v31 = [v30 contactNameTitle];
-      [v15 setObject:v31 forKeyedSubscript:qword_1EB301F50];
+      contactInfo5 = [v21 contactInfo];
+      contactNameTitle = [contactInfo5 contactNameTitle];
+      [v15 setObject:contactNameTitle forKeyedSubscript:qword_1EB301F50];
 
-      v32 = [v21 contactInfo];
-      v33 = [v32 organizationNameSubtitle];
-      [v15 setObject:v33 forKeyedSubscript:qword_1EB301F58];
+      contactInfo6 = [v21 contactInfo];
+      organizationNameSubtitle = [contactInfo6 organizationNameSubtitle];
+      [v15 setObject:organizationNameSubtitle forKeyedSubscript:qword_1EB301F58];
 
-      v34 = [v21 contactInfo];
-      v35 = [v34 contactNameSubtitle];
-      [v15 setObject:v35 forKeyedSubscript:qword_1EB301F60];
+      contactInfo7 = [v21 contactInfo];
+      contactNameSubtitle = [contactInfo7 contactNameSubtitle];
+      [v15 setObject:contactNameSubtitle forKeyedSubscript:qword_1EB301F60];
 
-      v36 = [objc_opt_class() contactCardPreviewPayloadFileURLFrom:v10 previewURL:v11 withFileExtension:@"plist"];
+      v36 = [objc_opt_class() contactCardPreviewPayloadFileURLFrom:fromCopy previewURL:lCopy withFileExtension:@"plist"];
       v46 = 0;
-      LOBYTE(v35) = [v15 writeToURL:v36 error:&v46];
+      LOBYTE(contactNameSubtitle) = [v15 writeToURL:v36 error:&v46];
       v37 = v46;
-      if (v35)
+      if (contactNameSubtitle)
       {
         if (IMOSLoggingEnabled())
         {
           v38 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
           {
-            v39 = [v36 path];
+            path = [v36 path];
             *buf = 138412290;
-            v62 = v39;
+            v62 = path;
             _os_log_impl(&dword_1A85E5000, v38, OS_LOG_TYPE_INFO, "Successfully written the contact card plist at: %@", buf, 0xCu);
           }
         }
@@ -385,20 +385,20 @@ LABEL_15:
           if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
           {
             v43 = objc_opt_class();
-            v41 = [v36 path];
+            path2 = [v36 path];
             *buf = 138412802;
             v62 = v43;
             v63 = 2112;
-            v64 = v41;
+            v64 = path2;
             v65 = 2112;
             v66 = v37;
             _os_log_impl(&dword_1A85E5000, v40, OS_LOG_TYPE_INFO, "%@ - Failed to write to %@ with error %@!", buf, 0x20u);
           }
         }
 
-        if (v44)
+        if (errorCopy)
         {
-          *v44 = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:9 userInfo:0];
+          *errorCopy = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:9 userInfo:0];
         }
       }
     }
@@ -418,10 +418,10 @@ LABEL_15:
         }
       }
 
-      if (a6)
+      if (error)
       {
         [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:11 userInfo:0];
-        *a6 = v15 = 0;
+        *error = v15 = 0;
       }
 
       else
@@ -445,21 +445,21 @@ LABEL_15:
   return v15;
 }
 
-+ (CGImage)newContactCardPreviewFrom:(id)a3 previewURL:(id)a4 senderContext:(id)a5 withPreviewConstraints:(IMPreviewConstraints *)a6 error:(id *)a7
++ (CGImage)newContactCardPreviewFrom:(id)from previewURL:(id)l senderContext:(id)context withPreviewConstraints:(IMPreviewConstraints *)constraints error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if ([a1 supportsBlastDoor])
+  fromCopy = from;
+  lCopy = l;
+  contextCopy = context;
+  if ([self supportsBlastDoor])
   {
-    v15 = [a1 generateContactPlistFrom:v12 previewURL:v13 senderContext:v14 error:a7];
+    v15 = [self generateContactPlistFrom:fromCopy previewURL:lCopy senderContext:contextCopy error:error];
     v16 = v15;
     if (v15)
     {
       v17 = [v15 objectForKeyedSubscript:qword_1EB301F30];
       v18 = [v16 objectForKeyedSubscript:qword_1EB301F38];
-      v19 = [a1 monogramForFirstName:v17 lastName:v18];
+      v19 = [self monogramForFirstName:v17 lastName:v18];
 
       if (v19)
       {
@@ -469,10 +469,10 @@ LABEL_15:
       v20 = IMCreateASTCImageDataFromCGImageRef(v19);
       if (v20)
       {
-        v21 = [objc_opt_class() contactCardPreviewPayloadFileURLFrom:v12 previewURL:v13 withFileExtension:@"ktx"];
-        v22 = [v21 path];
+        v21 = [objc_opt_class() contactCardPreviewPayloadFileURLFrom:fromCopy previewURL:lCopy withFileExtension:@"ktx"];
+        path = [v21 path];
         v34 = v21;
-        LOBYTE(v21) = [(__CFData *)v20 writeToFile:v22 atomically:1];
+        LOBYTE(v21) = [(__CFData *)v20 writeToFile:path atomically:1];
 
         v23 = IMOSLoggingEnabled();
         if (v21)
@@ -483,9 +483,9 @@ LABEL_15:
             v25 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
             {
-              v26 = [v34 path];
+              path2 = [v34 path];
               *buf = 138412290;
-              *&buf[4] = v26;
+              *&buf[4] = path2;
               _os_log_impl(&dword_1A85E5000, v25, OS_LOG_TYPE_INFO, "Successfully written the avatar preview image at: %@", buf, 0xCu);
             }
           }
@@ -500,18 +500,18 @@ LABEL_15:
             if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
             {
               v33 = objc_opt_class();
-              v31 = [v34 path];
+              path3 = [v34 path];
               *buf = 138412546;
               *&buf[4] = v33;
               *&buf[12] = 2112;
-              *&buf[14] = v31;
+              *&buf[14] = path3;
               _os_log_impl(&dword_1A85E5000, v30, OS_LOG_TYPE_INFO, "%@ - Failed to write to %@", buf, 0x16u);
             }
           }
 
-          if (a7)
+          if (error)
           {
-            *a7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:9 userInfo:0];
+            *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:9 userInfo:0];
           }
         }
       }
@@ -530,9 +530,9 @@ LABEL_15:
           }
         }
 
-        if (a7)
+        if (error)
         {
-          *a7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:3 userInfo:0];
+          *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:3 userInfo:0];
         }
       }
     }
@@ -545,11 +545,11 @@ LABEL_15:
 
   else
   {
-    v27 = *&a6->var1.height;
-    *buf = *&a6->var0;
+    v27 = *&constraints->var1.height;
+    *buf = *&constraints->var0;
     *&buf[16] = v27;
-    v36 = *&a6->var3;
-    v19 = [a1 newPreviewFromSourceURL:v12 withPreviewConstraints:buf error:a7];
+    v36 = *&constraints->var3;
+    v19 = [self newPreviewFromSourceURL:fromCopy withPreviewConstraints:buf error:error];
   }
 
   return v19;

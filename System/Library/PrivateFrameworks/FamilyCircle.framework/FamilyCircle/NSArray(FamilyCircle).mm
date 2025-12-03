@@ -8,7 +8,7 @@
 - (id)fa_map:()FamilyCircle
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __32__NSArray_FamilyCircle__fa_map___block_invoke;
@@ -17,7 +17,7 @@
   v15 = v4;
   v6 = v5;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:&v10];
+  [self enumerateObjectsUsingBlock:&v10];
   v8 = [v6 copy];
 
   return v8;
@@ -39,7 +39,7 @@
   v5 = v4;
   v9 = v5;
   v10 = &v11;
-  [a1 enumerateObjectsUsingBlock:v8];
+  [self enumerateObjectsUsingBlock:v8];
   v6 = v12[5];
 
   _Block_object_dispose(&v11, 8);

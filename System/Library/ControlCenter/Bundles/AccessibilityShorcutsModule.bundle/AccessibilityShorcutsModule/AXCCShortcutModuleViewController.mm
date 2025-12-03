@@ -2,17 +2,17 @@
 - (AXCCShortcutModuleViewControllerDelegate)shortcutDelegate;
 - (BOOL)_hasScreenSwitch;
 - (CCUIToggleModule)module;
-- (id)_menuItemForOption:(id)a3;
+- (id)_menuItemForOption:(id)option;
 - (id)_menuItemOpenAccessibilityShortcutSettings;
 - (id)_titlesForVisibleShortcuts;
 - (id)contentModuleContext;
 - (void)_launchAccessibilityReader;
-- (void)_toggleOption:(int64_t)a3;
-- (void)buttonTapped:(id)a3 forEvent:(id)a4;
+- (void)_toggleOption:(int64_t)option;
+- (void)buttonTapped:(id)tapped forEvent:(id)event;
 - (void)dealloc;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToExpandedContentMode:(BOOL)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToExpandedContentMode:(BOOL)mode;
 @end
 
 @implementation AXCCShortcutModuleViewController
@@ -158,20 +158,20 @@
   [(AXCCShortcutModuleViewController *)&v4 dealloc];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
   v10[2] = sub_29C92D8CC;
   v10[3] = &unk_29F334660;
   v10[4] = self;
-  v7 = a4;
-  objc_msgSend_animateAlongsideTransition_completion_(v7, v8, v10, 0);
+  coordinatorCopy = coordinator;
+  objc_msgSend_animateAlongsideTransition_completion_(coordinatorCopy, v8, v10, 0);
   v9.receiver = self;
   v9.super_class = AXCCShortcutModuleViewController;
-  [(CCUIMenuModuleViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(CCUIMenuModuleViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 - (id)_menuItemOpenAccessibilityShortcutSettings
@@ -192,11 +192,11 @@
   return v5;
 }
 
-- (id)_menuItemForOption:(id)a3
+- (id)_menuItemForOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   v5 = MEMORY[0x29EDBDFB8];
-  v8 = objc_msgSend_intValue(v4, v6, v7);
+  v8 = objc_msgSend_intValue(optionCopy, v6, v7);
   v10 = objc_msgSend_titleForTripleClickOption_(v5, v9, v8);
   objc_initWeak(&location, self);
   v11 = objc_alloc(MEMORY[0x29EDC0CE0]);
@@ -205,7 +205,7 @@
   v23[2] = sub_29C92DD68;
   v23[3] = &unk_29F3346B0;
   objc_copyWeak(&v25, &location);
-  v12 = v4;
+  v12 = optionCopy;
   v24 = v12;
   v14 = objc_msgSend_initWithTitle_identifier_handler_(v11, v13, v10, v10, v23);
   v15 = MEMORY[0x29EDBDFB8];
@@ -259,29 +259,29 @@
   return v4;
 }
 
-- (void)_toggleOption:(int64_t)a3
+- (void)_toggleOption:(int64_t)option
 {
-  if (a3 == 44)
+  if (option == 44)
   {
     objc_msgSend__launchAccessibilityReader(self, a2, 44);
   }
 
   else
   {
-    objc_msgSend_toggleTripleClickOption_(MEMORY[0x29EDBDFB8], a2, a3);
+    objc_msgSend_toggleTripleClickOption_(MEMORY[0x29EDBDFB8], a2, option);
   }
 
   v8 = objc_msgSend_shortcutDelegate(self, v4, v5);
   objc_msgSend_optionToggled(v8, v6, v7);
 }
 
-- (void)willTransitionToExpandedContentMode:(BOOL)a3
+- (void)willTransitionToExpandedContentMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v12.receiver = self;
   v12.super_class = AXCCShortcutModuleViewController;
   [(CCUIMenuModuleViewController *)&v12 willTransitionToExpandedContentMode:?];
-  if (v3)
+  if (modeCopy)
   {
     objc_msgSend_setSelected_(self, v5, 0);
   }
@@ -314,9 +314,9 @@
   return v8;
 }
 
-- (void)buttonTapped:(id)a3 forEvent:(id)a4
+- (void)buttonTapped:(id)tapped forEvent:(id)event
 {
-  v6 = objc_msgSend_shortcutDelegate(self, a2, a3, a4);
+  v6 = objc_msgSend_shortcutDelegate(self, a2, tapped, event);
   objc_msgSend_expandModule(v6, v4, v5);
 }
 

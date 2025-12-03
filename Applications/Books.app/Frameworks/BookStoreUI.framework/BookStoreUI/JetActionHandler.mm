@@ -1,21 +1,21 @@
 @interface JetActionHandler
 - (_TtC11BookStoreUI16JetActionHandler)init;
-- (void)performRawActionModel:(NSDictionary *)a3 withParentTracker:(_TtC13BookAnalytics9BATracker *)a4 shouldReportFigaro:(BOOL)a5 sourceViewController:(UIViewController *)a6 completion:(id)a7;
+- (void)performRawActionModel:(NSDictionary *)model withParentTracker:(_TtC13BookAnalytics9BATracker *)tracker shouldReportFigaro:(BOOL)figaro sourceViewController:(UIViewController *)controller completion:(id)completion;
 @end
 
 @implementation JetActionHandler
 
-- (void)performRawActionModel:(NSDictionary *)a3 withParentTracker:(_TtC13BookAnalytics9BATracker *)a4 shouldReportFigaro:(BOOL)a5 sourceViewController:(UIViewController *)a6 completion:(id)a7
+- (void)performRawActionModel:(NSDictionary *)model withParentTracker:(_TtC13BookAnalytics9BATracker *)tracker shouldReportFigaro:(BOOL)figaro sourceViewController:(UIViewController *)controller completion:(id)completion
 {
   v13 = sub_6620C(&unk_3BDBB0);
   __chkstk_darwin(v13 - 8);
   v15 = &v25 - v14;
-  v16 = _Block_copy(a7);
+  v16 = _Block_copy(completion);
   v17 = swift_allocObject();
-  *(v17 + 16) = a3;
-  *(v17 + 24) = a4;
-  *(v17 + 32) = a5;
-  *(v17 + 40) = a6;
+  *(v17 + 16) = model;
+  *(v17 + 24) = tracker;
+  *(v17 + 32) = figaro;
+  *(v17 + 40) = controller;
   *(v17 + 48) = v16;
   *(v17 + 56) = self;
   v18 = sub_2C5C58();
@@ -30,10 +30,10 @@
   v20[3] = 0;
   v20[4] = &unk_2ED3D0;
   v20[5] = v19;
-  v21 = a3;
-  v22 = a4;
-  v23 = a6;
-  v24 = self;
+  modelCopy = model;
+  trackerCopy = tracker;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1CDB58(0, 0, v15, &unk_2E47F0, v20);
 }
 

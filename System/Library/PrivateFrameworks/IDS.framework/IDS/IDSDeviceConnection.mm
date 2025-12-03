@@ -1,35 +1,35 @@
 @interface IDSDeviceConnection
-- (BOOL)updateConnectionWithOptions:(id)a3 error:(id *)a4;
+- (BOOL)updateConnectionWithOptions:(id)options error:(id *)error;
 - (NSDictionary)metrics;
 - (NSInputStream)inputStream;
 - (NSOutputStream)outputStream;
 - (_IDSDeviceConnection)_internal;
 - (id)description;
-- (id)initSocketWithDevice:(id)a3 options:(id)a4 completionHandler:(id)a5 queue:(id)a6;
-- (id)initStreamWithDevice:(id)a3 options:(id)a4 completionHandler:(id)a5 queue:(id)a6;
+- (id)initSocketWithDevice:(id)device options:(id)options completionHandler:(id)handler queue:(id)queue;
+- (id)initStreamWithDevice:(id)device options:(id)options completionHandler:(id)handler queue:(id)queue;
 - (int)socket;
 - (unint64_t)mtu;
 - (void)close;
 - (void)dealloc;
-- (void)setStreamPairWithInputStream:(id)a3 outputStream:(id)a4;
+- (void)setStreamPairWithInputStream:(id)stream outputStream:(id)outputStream;
 - (void)triggerLossOfXpcConnection;
 @end
 
 @implementation IDSDeviceConnection
 
-- (id)initSocketWithDevice:(id)a3 options:(id)a4 completionHandler:(id)a5 queue:(id)a6
+- (id)initSocketWithDevice:(id)device options:(id)options completionHandler:(id)handler queue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deviceCopy = device;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queueCopy = queue;
   v14 = +[IDSInternalQueueController sharedInstance];
-  v15 = [v14 assertQueueIsNotCurrent];
+  assertQueueIsNotCurrent = [v14 assertQueueIsNotCurrent];
 
-  if (v15)
+  if (assertQueueIsNotCurrent)
   {
-    v16 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B41414();
     }
@@ -43,7 +43,7 @@
       sub_195B26A7C();
     }
 
-    v18 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -53,7 +53,7 @@
     v19 = [(IDSDeviceConnection *)&v32 init];
     if (v19)
     {
-      v20 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v11];
+      v20 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:optionsCopy];
       v21 = MEMORY[0x1E696AD98];
       ids_monotonic_time();
       v22 = [v21 numberWithDouble:?];
@@ -65,34 +65,34 @@
       v26[2] = sub_195B0CBE4;
       v26[3] = &unk_1E7443110;
       v27 = v19;
-      v28 = v10;
+      v28 = deviceCopy;
       v29 = v20;
-      v31 = v12;
-      v30 = v13;
+      v31 = handlerCopy;
+      v30 = queueCopy;
       v24 = v20;
       [v23 performBlock:v26];
     }
 
     self = v19;
-    v18 = self;
+    selfCopy = self;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (id)initStreamWithDevice:(id)a3 options:(id)a4 completionHandler:(id)a5 queue:(id)a6
+- (id)initStreamWithDevice:(id)device options:(id)options completionHandler:(id)handler queue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deviceCopy = device;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queueCopy = queue;
   v14 = +[IDSInternalQueueController sharedInstance];
-  v15 = [v14 assertQueueIsNotCurrent];
+  assertQueueIsNotCurrent = [v14 assertQueueIsNotCurrent];
 
-  if (v15)
+  if (assertQueueIsNotCurrent)
   {
-    v16 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B414B4();
     }
@@ -106,7 +106,7 @@
       sub_195B26A7C();
     }
 
-    v18 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -116,29 +116,29 @@
     v19 = [(IDSDeviceConnection *)&v35 init];
     if (v19)
     {
-      v20 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v11];
+      v20 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:optionsCopy];
       v21 = MEMORY[0x1E696AD98];
       ids_monotonic_time();
       v22 = [v21 numberWithDouble:?];
       [v20 setObject:v22 forKeyedSubscript:*MEMORY[0x1E69A4ED8]];
 
-      if (!v13)
+      if (!queueCopy)
       {
-        v13 = MEMORY[0x1E69E96A0];
+        queueCopy = MEMORY[0x1E69E96A0];
         v23 = MEMORY[0x1E69E96A0];
       }
 
-      v24 = [v12 copy];
+      v24 = [handlerCopy copy];
       v25 = +[IDSInternalQueueController sharedInstance];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = sub_195B0CEB8;
       v29[3] = &unk_1E74408C8;
       v30 = v19;
-      v31 = v10;
+      v31 = deviceCopy;
       v32 = v20;
-      v13 = v13;
-      v33 = v13;
+      queueCopy = queueCopy;
+      v33 = queueCopy;
       v34 = v24;
       v26 = v24;
       v27 = v20;
@@ -146,15 +146,15 @@
     }
 
     self = v19;
-    v18 = self;
+    selfCopy = self;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (BOOL)updateConnectionWithOptions:(id)a3 error:(id *)a4
+- (BOOL)updateConnectionWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -166,15 +166,15 @@
   v10[3] = &unk_1E743FCF8;
   v12 = &v14;
   v10[4] = self;
-  v8 = v6;
+  v8 = optionsCopy;
   v11 = v8;
-  v13 = a4;
+  errorCopy = error;
   [v7 performBlock:v10 waitUntilDone:1];
 
-  LOBYTE(a4) = *(v15 + 24);
+  LOBYTE(error) = *(v15 + 24);
   _Block_object_dispose(&v14, 8);
 
-  return a4;
+  return error;
 }
 
 - (void)dealloc
@@ -222,20 +222,20 @@
   return v4;
 }
 
-- (void)setStreamPairWithInputStream:(id)a3 outputStream:(id)a4
+- (void)setStreamPairWithInputStream:(id)stream outputStream:(id)outputStream
 {
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  outputStreamCopy = outputStream;
   v8 = +[IDSInternalQueueController sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195B0D738;
   v11[3] = &unk_1E743E620;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = streamCopy;
+  v13 = outputStreamCopy;
+  v9 = outputStreamCopy;
+  v10 = streamCopy;
   [v8 performBlock:v11];
 }
 
@@ -362,12 +362,12 @@
 - (_IDSDeviceConnection)_internal
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B41554();
     }

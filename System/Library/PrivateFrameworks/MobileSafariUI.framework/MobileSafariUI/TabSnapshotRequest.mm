@@ -1,16 +1,16 @@
 @interface TabSnapshotRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
-- (TabSnapshotRequest)initWithSize:(CGSize)a3 options:(unint64_t)a4 identifier:(id)a5;
+- (TabSnapshotRequest)initWithSize:(CGSize)size options:(unint64_t)options identifier:(id)identifier;
 @end
 
 @implementation TabSnapshotRequest
 
-- (TabSnapshotRequest)initWithSize:(CGSize)a3 options:(unint64_t)a4 identifier:(id)a5
+- (TabSnapshotRequest)initWithSize:(CGSize)size options:(unint64_t)options identifier:(id)identifier
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = TabSnapshotRequest;
   v10 = [(TabSnapshotRequest *)&v16 init];
@@ -19,8 +19,8 @@
   {
     v10->_size.width = width;
     v10->_size.height = height;
-    v10->_options = a4;
-    v12 = [v9 copyWithZone:0];
+    v10->_options = options;
+    v12 = [identifierCopy copyWithZone:0];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
@@ -30,10 +30,10 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -43,10 +43,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = self->_identifier;
-      v7 = [(TabSnapshotRequest *)v5 identifier];
-      if ([(NSUUID *)identifier isEqual:v7])
+      identifier = [(TabSnapshotRequest *)v5 identifier];
+      if ([(NSUUID *)identifier isEqual:identifier])
       {
         [(TabSnapshotRequest *)v5 size];
         v9 = 0;

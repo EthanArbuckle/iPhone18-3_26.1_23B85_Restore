@@ -1,23 +1,23 @@
 @interface BluetoothAudiodConnection
 + (id)sharedInstance;
 - (BluetoothAudiodConnection)init;
-- (void)addDevice:(id)a3 toSession:(id)a4;
-- (void)createISODataPathWithOptions:(id)a3;
+- (void)addDevice:(id)device toSession:(id)session;
+- (void)createISODataPathWithOptions:(id)options;
 - (void)dealloc;
-- (void)deviceConnected:(id)a3 withServiceUUID:(id)a4;
+- (void)deviceConnected:(id)connected withServiceUUID:(id)d;
 - (void)launchAsServer;
-- (void)notifyCAPProcedureComplete:(id)a3 withInfo:(id)a4;
-- (void)notifyStreamWillStart:(id)a3;
-- (void)notifyStreamWillStop:(id)a3;
-- (void)publishAudioDeviceForSession:(id)a3 withDeviceInfo:(id)a4;
-- (void)removeDevice:(id)a3 fromSession:(id)a4;
-- (void)removeISODataPathWithOptions:(id)a3;
-- (void)setupCIGForHALSession:(id)a3 withDeviceInfo:(id)a4;
+- (void)notifyCAPProcedureComplete:(id)complete withInfo:(id)info;
+- (void)notifyStreamWillStart:(id)start;
+- (void)notifyStreamWillStop:(id)stop;
+- (void)publishAudioDeviceForSession:(id)session withDeviceInfo:(id)info;
+- (void)removeDevice:(id)device fromSession:(id)session;
+- (void)removeISODataPathWithOptions:(id)options;
+- (void)setupCIGForHALSession:(id)session withDeviceInfo:(id)info;
 - (void)setupConnection;
 - (void)tearDownSCDynamicStore;
-- (void)updateCodecConfigForSession:(id)a3 withCodecInfo:(id)a4;
-- (void)updateMicrophoneForSession:(id)a3 withMute:(unsigned __int8)a4;
-- (void)updateVolumeForSession:(id)a3 withVolume:(float)a4;
+- (void)updateCodecConfigForSession:(id)session withCodecInfo:(id)info;
+- (void)updateMicrophoneForSession:(id)session withMute:(unsigned __int8)mute;
+- (void)updateVolumeForSession:(id)session withVolume:(float)volume;
 @end
 
 @implementation BluetoothAudiodConnection
@@ -89,87 +89,87 @@
   [v5 setInvalidationHandler:&stru_100B073A8];
 }
 
-- (void)deviceConnected:(id)a3 withServiceUUID:(id)a4
+- (void)deviceConnected:(id)connected withServiceUUID:(id)d
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(BluetoothAudiodConnection *)self connection];
-  v8 = [v7 remoteObjectProxy];
-  [v8 deviceConnected:v9 withServiceUUID:v6];
+  connectedCopy = connected;
+  dCopy = d;
+  connection = [(BluetoothAudiodConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy deviceConnected:connectedCopy withServiceUUID:dCopy];
 }
 
 - (void)launchAsServer
 {
-  v3 = [(BluetoothAudiodConnection *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 launchAsServer];
+  connection = [(BluetoothAudiodConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy launchAsServer];
 }
 
-- (void)notifyStreamWillStart:(id)a3
+- (void)notifyStreamWillStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v5 = qword_100BCE950;
   if (os_log_type_enabled(qword_100BCE950, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = startCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Notifying that audio stream is going to start for session %@", &v8, 0xCu);
   }
 
-  v6 = [(BluetoothAudiodConnection *)self connection];
-  v7 = [v6 remoteObjectProxy];
-  [v7 notifyStreamWillStart:v4];
+  connection = [(BluetoothAudiodConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy notifyStreamWillStart:startCopy];
 }
 
-- (void)notifyStreamWillStop:(id)a3
+- (void)notifyStreamWillStop:(id)stop
 {
-  v4 = a3;
+  stopCopy = stop;
   v5 = qword_100BCE950;
   if (os_log_type_enabled(qword_100BCE950, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = stopCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Notifying that audio stream is going to stop for session %@", &v8, 0xCu);
   }
 
-  v6 = [(BluetoothAudiodConnection *)self connection];
-  v7 = [v6 remoteObjectProxy];
-  [v7 notifyStreamWillStop:v4];
+  connection = [(BluetoothAudiodConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy notifyStreamWillStop:stopCopy];
 }
 
-- (void)publishAudioDeviceForSession:(id)a3 withDeviceInfo:(id)a4
+- (void)publishAudioDeviceForSession:(id)session withDeviceInfo:(id)info
 {
-  v6 = a3;
-  v5 = a4;
+  sessionCopy = session;
+  infoCopy = info;
   if (qword_100B54328 != -1)
   {
     sub_10085EAC0();
   }
 
-  sub_100615EE8(qword_100B54320, v6, v5);
+  sub_100615EE8(qword_100B54320, sessionCopy, infoCopy);
 }
 
-- (void)setupCIGForHALSession:(id)a3 withDeviceInfo:(id)a4
+- (void)setupCIGForHALSession:(id)session withDeviceInfo:(id)info
 {
-  v6 = a3;
-  v5 = a4;
+  sessionCopy = session;
+  infoCopy = info;
   if (qword_100B54328 != -1)
   {
     sub_10085EAC0();
   }
 
-  sub_100616118(qword_100B54320, v6, v5);
+  sub_100616118(qword_100B54320, sessionCopy, infoCopy);
 }
 
-- (void)addDevice:(id)a3 toSession:(id)a4
+- (void)addDevice:(id)device toSession:(id)session
 {
-  v5 = a3;
-  v6 = a4;
+  deviceCopy = device;
+  sessionCopy = session;
   v7 = qword_100BCE950;
   if (os_log_type_enabled(qword_100BCE950, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Adding LE Connected Audio device %@", &v8, 0xCu);
   }
 
@@ -178,18 +178,18 @@
     sub_10085EAD4();
   }
 
-  sub_100616310(qword_100B54320, v6, v5);
+  sub_100616310(qword_100B54320, sessionCopy, deviceCopy);
 }
 
-- (void)removeDevice:(id)a3 fromSession:(id)a4
+- (void)removeDevice:(id)device fromSession:(id)session
 {
-  v5 = a3;
-  v6 = a4;
+  deviceCopy = device;
+  sessionCopy = session;
   v7 = qword_100BCE950;
   if (os_log_type_enabled(qword_100BCE950, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Removing LE Connected Audio device %@", &v8, 0xCu);
   }
 
@@ -198,18 +198,18 @@
     sub_10085EAD4();
   }
 
-  sub_10061649C(qword_100B54320, v6, v5);
+  sub_10061649C(qword_100B54320, sessionCopy, deviceCopy);
 }
 
-- (void)notifyCAPProcedureComplete:(id)a3 withInfo:(id)a4
+- (void)notifyCAPProcedureComplete:(id)complete withInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  completeCopy = complete;
+  infoCopy = info;
   v7 = qword_100BCE950;
   if (os_log_type_enabled(qword_100BCE950, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = completeCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notifying Audio CAP Procedure is done: %@", &v8, 0xCu);
   }
 
@@ -218,17 +218,17 @@
     sub_10085EAD4();
   }
 
-  sub_100616684(qword_100B54320, v5, v6);
+  sub_100616684(qword_100B54320, completeCopy, infoCopy);
 }
 
-- (void)createISODataPathWithOptions:(id)a3
+- (void)createISODataPathWithOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = qword_100BCE950;
   if (os_log_type_enabled(qword_100BCE950, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Creating ISO path options %@", &v5, 0xCu);
   }
 
@@ -237,17 +237,17 @@
     sub_10085EAD4();
   }
 
-  sub_100616D44(qword_100B54320, v3);
+  sub_100616D44(qword_100B54320, optionsCopy);
 }
 
-- (void)removeISODataPathWithOptions:(id)a3
+- (void)removeISODataPathWithOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = qword_100BCE950;
   if (os_log_type_enabled(qword_100BCE950, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Removing ISO path for session %@", &v5, 0xCu);
   }
 
@@ -256,64 +256,64 @@
     sub_10085EAD4();
   }
 
-  sub_100616F30(qword_100B54320, v3);
+  sub_100616F30(qword_100B54320, optionsCopy);
 }
 
-- (void)updateCodecConfigForSession:(id)a3 withCodecInfo:(id)a4
+- (void)updateCodecConfigForSession:(id)session withCodecInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  infoCopy = info;
   v8 = qword_100BCE950;
   if (os_log_type_enabled(qword_100BCE950, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = sessionCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = infoCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Updating Codec Config for session %@ with %@", &v11, 0x16u);
   }
 
-  v9 = [(BluetoothAudiodConnection *)self connection];
-  v10 = [v9 remoteObjectProxy];
-  [v10 updateCodecConfigForSession:v6 withCodecInfo:v7];
+  connection = [(BluetoothAudiodConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy updateCodecConfigForSession:sessionCopy withCodecInfo:infoCopy];
 }
 
-- (void)updateVolumeForSession:(id)a3 withVolume:(float)a4
+- (void)updateVolumeForSession:(id)session withVolume:(float)volume
 {
-  v6 = a3;
+  sessionCopy = session;
   v7 = qword_100BCE950;
   if (os_log_type_enabled(qword_100BCE950, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134218242;
-    v12 = a4;
+    volumeCopy = volume;
     v13 = 2112;
-    v14 = v6;
+    v14 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notifying that audio stream is updating volume to %f for session %@", &v11, 0x16u);
   }
 
-  v8 = [(BluetoothAudiodConnection *)self connection];
-  v9 = [v8 remoteObjectProxy];
-  *&v10 = a4;
-  [v9 updateVolumeForSession:v6 withVolume:v10];
+  connection = [(BluetoothAudiodConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  *&v10 = volume;
+  [remoteObjectProxy updateVolumeForSession:sessionCopy withVolume:v10];
 }
 
-- (void)updateMicrophoneForSession:(id)a3 withMute:(unsigned __int8)a4
+- (void)updateMicrophoneForSession:(id)session withMute:(unsigned __int8)mute
 {
-  v4 = a4;
-  v6 = a3;
+  muteCopy = mute;
+  sessionCopy = session;
   v7 = qword_100BCE950;
   if (os_log_type_enabled(qword_100BCE950, OS_LOG_TYPE_DEFAULT))
   {
     v10[0] = 67109378;
-    v10[1] = v4;
+    v10[1] = muteCopy;
     v11 = 2112;
-    v12 = v6;
+    v12 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notifying that audio stream is updating mute to %d for session %@", v10, 0x12u);
   }
 
-  v8 = [(BluetoothAudiodConnection *)self connection];
-  v9 = [v8 remoteObjectProxy];
-  [v9 updateMicrophoneForSession:v6 withMute:v4];
+  connection = [(BluetoothAudiodConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy updateMicrophoneForSession:sessionCopy withMute:muteCopy];
 }
 
 @end

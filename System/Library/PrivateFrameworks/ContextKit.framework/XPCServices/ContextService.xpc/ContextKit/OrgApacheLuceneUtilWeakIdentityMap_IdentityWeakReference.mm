@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneUtilWeakIdentityMap_IdentityWeakReference
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation OrgApacheLuceneUtilWeakIdentityMap_IdentityWeakReference
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -18,7 +18,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     [(JavaLangRefReference *)self get];
     JreThrowNullPointerException();
@@ -30,7 +30,7 @@
   }
 
   v5 = [(JavaLangRefReference *)self get];
-  return v5 == [a3 get];
+  return v5 == [equal get];
 }
 
 @end

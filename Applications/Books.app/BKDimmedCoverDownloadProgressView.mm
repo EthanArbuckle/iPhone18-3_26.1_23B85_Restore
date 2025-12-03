@@ -1,6 +1,6 @@
 @interface BKDimmedCoverDownloadProgressView
 - (BKDimmedCoverDownloadProgressViewDelegate)delegate;
-- (void)setAsset:(id)a3;
+- (void)setAsset:(id)asset;
 - (void)stopDownloadButtonPressed;
 @end
 
@@ -13,11 +13,11 @@
   return Strong;
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
-  v6 = self;
-  sub_1002B3DDC(a3);
+  assetCopy = asset;
+  selfCopy = self;
+  sub_1002B3DDC(asset);
 }
 
 - (void)stopDownloadButtonPressed
@@ -29,7 +29,7 @@
     if (Strong)
     {
       v5 = Strong;
-      v6 = self;
+      selfCopy = self;
       v7 = v2;
       [v5 didTapStopDownloadButtonWithAsset:v7];
 

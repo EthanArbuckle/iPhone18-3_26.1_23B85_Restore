@@ -4,25 +4,25 @@
 - (NSString)itemOfferNoticeString;
 - (UIImage)iconImage;
 - (id)_parentCollectionViewCell;
-- (void)_getParentTableView:(id *)a3 collectionView:(id *)a4;
-- (void)_itemOfferConfirmAction:(id)a3;
-- (void)_reloadItemOfferButton:(BOOL)a3;
+- (void)_getParentTableView:(id *)view collectionView:(id *)collectionView;
+- (void)_itemOfferConfirmAction:(id)action;
+- (void)_reloadItemOfferButton:(BOOL)button;
 - (void)_reloadItemOfferVisibility;
-- (void)_showItemOfferConfirmationAction:(id)a3;
+- (void)_showItemOfferConfirmationAction:(id)action;
 - (void)dealloc;
-- (void)itemOfferButtonWillAnimateTransition:(id)a3;
+- (void)itemOfferButtonWillAnimateTransition:(id)transition;
 - (void)prepareForReuse;
 - (void)resetLayout;
-- (void)setBackgroundColor:(id)a3;
-- (void)setDisplaysItemOfferButton:(BOOL)a3;
-- (void)setIconImage:(id)a3;
-- (void)setIconImageHidden:(BOOL)a3;
-- (void)setItemOffer:(id)a3;
-- (void)setItemOfferButtonAppearance:(id)a3;
-- (void)setItemOfferNoticeString:(id)a3;
-- (void)setItemState:(id)a3;
-- (void)setItemState:(id)a3 animated:(BOOL)a4;
-- (void)setRestricted:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setDisplaysItemOfferButton:(BOOL)button;
+- (void)setIconImage:(id)image;
+- (void)setIconImageHidden:(BOOL)hidden;
+- (void)setItemOffer:(id)offer;
+- (void)setItemOfferButtonAppearance:(id)appearance;
+- (void)setItemOfferNoticeString:(id)string;
+- (void)setItemState:(id)state;
+- (void)setItemState:(id)state animated:(BOOL)animated;
+- (void)setRestricted:(BOOL)restricted;
 @end
 
 @implementation SKUIItemCellLayout
@@ -67,9 +67,9 @@
     }
   }
 
-  v11 = [(SKUICellImageView *)self->_iconImageView image];
+  image = [(SKUICellImageView *)self->_iconImageView image];
 
-  return v11;
+  return image;
 }
 
 - (NSString)itemOfferNoticeString
@@ -86,9 +86,9 @@
     }
   }
 
-  v11 = [(UILabel *)self->_itemOfferNoticeLabel text];
+  text = [(UILabel *)self->_itemOfferNoticeLabel text];
 
-  return v11;
+  return text;
 }
 
 - (void)resetLayout
@@ -116,9 +116,9 @@
   [(SKUICellLayout *)&v12 resetLayout];
 }
 
-- (void)setDisplaysItemOfferButton:(BOOL)a3
+- (void)setDisplaysItemOfferButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -131,16 +131,16 @@
     }
   }
 
-  if (self->_hidesItemOfferButton == v3)
+  if (self->_hidesItemOfferButton == buttonCopy)
   {
-    self->_hidesItemOfferButton = !v3;
+    self->_hidesItemOfferButton = !buttonCopy;
     [(SKUIItemCellLayout *)self _reloadItemOfferButton:0];
   }
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -153,12 +153,12 @@
     }
   }
 
-  v13 = [(SKUICellImageView *)self->_iconImageView image];
+  image = [(SKUICellImageView *)self->_iconImageView image];
 
-  if (v13 != v4)
+  if (image != imageCopy)
   {
     iconImageView = self->_iconImageView;
-    if (!v4)
+    if (!imageCopy)
     {
       [(SKUICellImageView *)iconImageView removeFromSuperview];
       v29 = self->_iconImageView;
@@ -174,24 +174,24 @@
       self->_iconImageView = v15;
 
       v17 = self->_iconImageView;
-      v18 = [(SKUICellLayout *)self parentCellView];
-      v19 = [v18 backgroundColor];
-      [(SKUICellImageView *)v17 setBackgroundColor:v19];
+      parentCellView = [(SKUICellLayout *)self parentCellView];
+      backgroundColor = [parentCellView backgroundColor];
+      [(SKUICellImageView *)v17 setBackgroundColor:backgroundColor];
 
       [(SKUICellImageView *)self->_iconImageView setHidden:[(SKUIItemCellLayout *)self isIconImageHidden]];
-      v20 = [(SKUICellLayout *)self contentView];
-      [v20 insertSubview:self->_iconImageView atIndex:0];
+      contentView = [(SKUICellLayout *)self contentView];
+      [contentView insertSubview:self->_iconImageView atIndex:0];
 
       iconImageView = self->_iconImageView;
     }
 
-    v21 = [(SKUICellImageView *)iconImageView image];
-    [v21 size];
+    image2 = [(SKUICellImageView *)iconImageView image];
+    [image2 size];
     v23 = v22;
     v25 = v24;
 
-    [(SKUICellImageView *)self->_iconImageView setImage:v4];
-    [v4 size];
+    [(SKUICellImageView *)self->_iconImageView setImage:imageCopy];
+    [imageCopy size];
     if (v23 != v27 || v25 != v26)
     {
       [(SKUICellImageView *)self->_iconImageView sizeToFit];
@@ -201,9 +201,9 @@ LABEL_15:
   }
 }
 
-- (void)setIconImageHidden:(BOOL)a3
+- (void)setIconImageHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -216,16 +216,16 @@ LABEL_15:
     }
   }
 
-  if (self->_iconImageHidden != v3)
+  if (self->_iconImageHidden != hiddenCopy)
   {
-    self->_iconImageHidden = v3;
-    [(SKUICellImageView *)self->_iconImageView setHidden:v3];
+    self->_iconImageHidden = hiddenCopy;
+    [(SKUICellImageView *)self->_iconImageView setHidden:hiddenCopy];
   }
 }
 
-- (void)setItemOffer:(id)a3
+- (void)setItemOffer:(id)offer
 {
-  v5 = a3;
+  offerCopy = offer;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -238,21 +238,21 @@ LABEL_15:
     }
   }
 
-  if (self->_itemOffer == v5)
+  if (self->_itemOffer == offerCopy)
   {
     [(SKUIItemCellLayout *)self _reloadItemOfferVisibility];
   }
 
   else
   {
-    objc_storeStrong(&self->_itemOffer, a3);
+    objc_storeStrong(&self->_itemOffer, offer);
     [(SKUIItemCellLayout *)self _reloadItemOfferButton:0];
   }
 }
 
-- (void)setItemOfferButtonAppearance:(id)a3
+- (void)setItemOfferButtonAppearance:(id)appearance
 {
-  v5 = a3;
+  appearanceCopy = appearance;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -265,16 +265,16 @@ LABEL_15:
     }
   }
 
-  if (self->_itemOfferButtonAppearance != v5)
+  if (self->_itemOfferButtonAppearance != appearanceCopy)
   {
-    objc_storeStrong(&self->_itemOfferButtonAppearance, a3);
+    objc_storeStrong(&self->_itemOfferButtonAppearance, appearance);
     [(SKUIItemOfferButton *)self->_itemOfferButton setColoringWithAppearance:self->_itemOfferButtonAppearance];
   }
 }
 
-- (void)setItemOfferNoticeString:(id)a3
+- (void)setItemOfferNoticeString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -287,12 +287,12 @@ LABEL_15:
     }
   }
 
-  v13 = [(UILabel *)self->_itemOfferNoticeLabel text];
+  text = [(UILabel *)self->_itemOfferNoticeLabel text];
 
-  if (v13 != v4)
+  if (text != stringCopy)
   {
     itemOfferNoticeLabel = self->_itemOfferNoticeLabel;
-    if (v4)
+    if (stringCopy)
     {
       if (!itemOfferNoticeLabel)
       {
@@ -301,9 +301,9 @@ LABEL_15:
         self->_itemOfferNoticeLabel = v15;
 
         v17 = self->_itemOfferNoticeLabel;
-        v18 = [(SKUICellLayout *)self parentCellView];
-        v19 = [v18 backgroundColor];
-        [(UILabel *)v17 setBackgroundColor:v19];
+        parentCellView = [(SKUICellLayout *)self parentCellView];
+        backgroundColor = [parentCellView backgroundColor];
+        [(UILabel *)v17 setBackgroundColor:backgroundColor];
 
         v20 = self->_itemOfferNoticeLabel;
         v21 = [MEMORY[0x277D74300] systemFontOfSize:7.0];
@@ -311,13 +311,13 @@ LABEL_15:
 
         [(UILabel *)self->_itemOfferNoticeLabel setNumberOfLines:3];
         [(UILabel *)self->_itemOfferNoticeLabel setTextAlignment:1];
-        v22 = [(SKUICellLayout *)self contentView];
-        [v22 addSubview:self->_itemOfferNoticeLabel];
+        contentView = [(SKUICellLayout *)self contentView];
+        [contentView addSubview:self->_itemOfferNoticeLabel];
 
         itemOfferNoticeLabel = self->_itemOfferNoticeLabel;
       }
 
-      [(UILabel *)itemOfferNoticeLabel setText:v4];
+      [(UILabel *)itemOfferNoticeLabel setText:stringCopy];
       [(UILabel *)self->_itemOfferNoticeLabel setHidden:[(SKUIItemCellLayout *)self _canShowItemOfferNotice]^ 1];
       [(SKUICellLayout *)self setNeedsLayout];
     }
@@ -330,9 +330,9 @@ LABEL_15:
   }
 }
 
-- (void)setItemState:(id)a3
+- (void)setItemState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -345,13 +345,13 @@ LABEL_15:
     }
   }
 
-  [(SKUIItemCellLayout *)self setItemState:v4 animated:0];
+  [(SKUIItemCellLayout *)self setItemState:stateCopy animated:0];
 }
 
-- (void)setItemState:(id)a3 animated:(BOOL)a4
+- (void)setItemState:(id)state animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  stateCopy = state;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -364,24 +364,24 @@ LABEL_15:
     }
   }
 
-  if (self->_itemState == v6)
+  if (self->_itemState == stateCopy)
   {
     [(SKUIItemCellLayout *)self _reloadItemOfferVisibility];
   }
 
   else
   {
-    v15 = [(SKUIItemState *)v6 copy];
+    v15 = [(SKUIItemState *)stateCopy copy];
     itemState = self->_itemState;
     self->_itemState = v15;
 
-    [(SKUIItemCellLayout *)self _reloadItemOfferButton:v4];
+    [(SKUIItemCellLayout *)self _reloadItemOfferButton:animatedCopy];
   }
 }
 
-- (void)setRestricted:(BOOL)a3
+- (void)setRestricted:(BOOL)restricted
 {
-  v3 = a3;
+  restrictedCopy = restricted;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -394,9 +394,9 @@ LABEL_15:
     }
   }
 
-  if (self->_restricted != v3)
+  if (self->_restricted != restrictedCopy)
   {
-    self->_restricted = v3;
+    self->_restricted = restrictedCopy;
     [(SKUIItemCellLayout *)self _reloadItemOfferButton:0];
   }
 }
@@ -421,9 +421,9 @@ LABEL_15:
   [(SKUICellLayout *)&v11 prepareForReuse];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -436,15 +436,15 @@ LABEL_15:
     }
   }
 
-  [(SKUICellImageView *)self->_iconImageView setBackgroundColor:v4];
-  [(SKUIItemOfferButton *)self->_itemOfferButton setBackgroundColor:v4];
-  [(UILabel *)self->_itemOfferNoticeLabel setBackgroundColor:v4];
+  [(SKUICellImageView *)self->_iconImageView setBackgroundColor:colorCopy];
+  [(SKUIItemOfferButton *)self->_itemOfferButton setBackgroundColor:colorCopy];
+  [(UILabel *)self->_itemOfferNoticeLabel setBackgroundColor:colorCopy];
   v13.receiver = self;
   v13.super_class = SKUIItemCellLayout;
-  [(SKUICellLayout *)&v13 setBackgroundColor:v4];
+  [(SKUICellLayout *)&v13 setBackgroundColor:colorCopy];
 }
 
-- (void)itemOfferButtonWillAnimateTransition:(id)a3
+- (void)itemOfferButtonWillAnimateTransition:(id)transition
 {
   if (os_variant_has_internal_content())
   {
@@ -462,32 +462,32 @@ LABEL_15:
   [(SKUIItemCellLayout *)self layoutForItemOfferChange];
 }
 
-- (void)_itemOfferConfirmAction:(id)a3
+- (void)_itemOfferConfirmAction:(id)action
 {
   v10 = 0;
   v11 = 0;
   [(SKUIItemCellLayout *)self _getParentTableView:&v11 collectionView:&v10];
   v4 = v11;
   v5 = v10;
-  v6 = [v4 delegate];
+  delegate = [v4 delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(SKUICellLayout *)self parentCellView];
-    [v6 itemTableView:v4 didConfirmItemOfferForTableViewCell:v7];
+    parentCellView = [(SKUICellLayout *)self parentCellView];
+    [delegate itemTableView:v4 didConfirmItemOfferForTableViewCell:parentCellView];
   }
 
-  v8 = [v5 delegate];
+  delegate2 = [v5 delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(SKUIItemCellLayout *)self _parentCollectionViewCell];
-    [v8 itemCollectionView:v5 didConfirmItemOfferForCell:v9];
+    _parentCollectionViewCell = [(SKUIItemCellLayout *)self _parentCollectionViewCell];
+    [delegate2 itemCollectionView:v5 didConfirmItemOfferForCell:_parentCollectionViewCell];
   }
 }
 
-- (void)_showItemOfferConfirmationAction:(id)a3
+- (void)_showItemOfferConfirmationAction:(id)action
 {
-  v4 = [(SKUIItemOfferButton *)self->_itemOfferButton superview];
-  [v4 bringSubviewToFront:self->_itemOfferButton];
+  superview = [(SKUIItemOfferButton *)self->_itemOfferButton superview];
+  [superview bringSubviewToFront:self->_itemOfferButton];
 
   itemOfferButton = self->_itemOfferButton;
 
@@ -496,41 +496,41 @@ LABEL_15:
 
 - (BOOL)_canShowItemOfferNotice
 {
-  v3 = [(UILabel *)self->_itemOfferNoticeLabel text];
-  v4 = [v3 length];
+  text = [(UILabel *)self->_itemOfferNoticeLabel text];
+  v4 = [text length];
 
   if (!v4)
   {
 LABEL_4:
-    LOBYTE(v5) = 0;
-    return v5;
+    LOBYTE(displaysItemOfferButton) = 0;
+    return displaysItemOfferButton;
   }
 
-  v5 = [(SKUIItemCellLayout *)self displaysItemOfferButton];
-  if (v5)
+  displaysItemOfferButton = [(SKUIItemCellLayout *)self displaysItemOfferButton];
+  if (displaysItemOfferButton)
   {
     if (![(SKUIItemCellLayout *)self isRestricted])
     {
-      v6 = [(SKUIItemCellLayout *)self itemState];
-      v7 = [v6 state];
+      itemState = [(SKUIItemCellLayout *)self itemState];
+      state = [itemState state];
 
-      LOBYTE(v5) = (v7 & 0xFFFFFFFFFFFFFFEFLL) == 0;
-      return v5;
+      LOBYTE(displaysItemOfferButton) = (state & 0xFFFFFFFFFFFFFFEFLL) == 0;
+      return displaysItemOfferButton;
     }
 
     goto LABEL_4;
   }
 
-  return v5;
+  return displaysItemOfferButton;
 }
 
-- (void)_getParentTableView:(id *)a3 collectionView:(id *)a4
+- (void)_getParentTableView:(id *)view collectionView:(id *)collectionView
 {
-  v16 = [(SKUICellLayout *)self parentCellView];
-  v6 = [v16 superview];
-  if (v6)
+  parentCellView = [(SKUICellLayout *)self parentCellView];
+  superview = [parentCellView superview];
+  if (superview)
   {
-    v7 = v6;
+    v7 = superview;
     while (1)
     {
       objc_opt_class();
@@ -557,12 +557,12 @@ LABEL_4:
       v10 = v8;
       v11 = v9;
 LABEL_7:
-      v13 = [v7 superview];
+      superview2 = [v7 superview];
 
       if (!v11 && !v10)
       {
-        v7 = v13;
-        if (v13)
+        v7 = superview2;
+        if (superview2)
         {
           continue;
         }
@@ -574,25 +574,25 @@ LABEL_7:
 
   v10 = 0;
   v11 = 0;
-  v13 = 0;
+  superview2 = 0;
 LABEL_12:
-  if (a4)
+  if (collectionView)
   {
     v14 = v10;
-    *a4 = v10;
+    *collectionView = v10;
   }
 
-  if (a3)
+  if (view)
   {
     v15 = v11;
-    *a3 = v11;
+    *view = v11;
   }
 }
 
 - (id)_parentCollectionViewCell
 {
-  v2 = [(SKUICellLayout *)self parentCellView];
-  if (v2)
+  parentCellView = [(SKUICellLayout *)self parentCellView];
+  if (parentCellView)
   {
     do
     {
@@ -602,20 +602,20 @@ LABEL_12:
         break;
       }
 
-      v3 = [v2 superview];
+      superview = [parentCellView superview];
 
-      v2 = v3;
+      parentCellView = superview;
     }
 
-    while (v3);
+    while (superview);
   }
 
-  return v2;
+  return parentCellView;
 }
 
-- (void)_reloadItemOfferButton:(BOOL)a3
+- (void)_reloadItemOfferButton:(BOOL)button
 {
-  if (!self->_itemOffer || self->_hidesItemOfferButton || (v4 = a3, [(SKUIItemCellLayout *)self isRestricted]))
+  if (!self->_itemOffer || self->_hidesItemOfferButton || (v4 = button, [(SKUIItemCellLayout *)self isRestricted]))
   {
     [(SKUIItemOfferButton *)self->_itemOfferButton setHidden:1];
   }
@@ -633,25 +633,25 @@ LABEL_12:
       [(SKUIItemOfferButton *)self->_itemOfferButton addTarget:self action:sel__itemOfferConfirmAction_ forControlEvents:0x20000];
       [(SKUIItemOfferButton *)self->_itemOfferButton addTarget:self action:sel__showItemOfferConfirmationAction_ forControlEvents:0x40000];
       v10 = self->_itemOfferButton;
-      v11 = [(SKUICellLayout *)self parentCellView];
-      v12 = [v11 backgroundColor];
-      [(SKUIItemOfferButton *)v10 setBackgroundColor:v12];
+      parentCellView = [(SKUICellLayout *)self parentCellView];
+      backgroundColor = [parentCellView backgroundColor];
+      [(SKUIItemOfferButton *)v10 setBackgroundColor:backgroundColor];
 
       LODWORD(v13) = -0.5;
       [(SKUIItemOfferButton *)self->_itemOfferButton setCharge:v13];
       [(SKUIItemOfferButton *)self->_itemOfferButton setDelegate:self];
-      v14 = [(SKUICellLayout *)self contentView];
-      [v14 addSubview:self->_itemOfferButton];
+      contentView = [(SKUICellLayout *)self contentView];
+      [contentView addSubview:self->_itemOfferButton];
 
       itemOfferButton = self->_itemOfferButton;
     }
 
     [(SKUIItemOfferButton *)itemOfferButton setHidden:0];
-    v15 = [(SKUIItemCellLayout *)self itemState];
+    itemState = [(SKUIItemCellLayout *)self itemState];
     v16 = self->_itemOfferButton;
     itemOffer = self->_itemOffer;
-    v18 = [(SKUICellLayout *)self clientContext];
-    v19 = [(SKUIItemOfferButton *)v16 setValuesUsingItemOffer:itemOffer itemState:v15 clientContext:v18 animated:v4];
+    clientContext = [(SKUICellLayout *)self clientContext];
+    v19 = [(SKUIItemOfferButton *)v16 setValuesUsingItemOffer:itemOffer itemState:itemState clientContext:clientContext animated:v4];
 
     if (v19)
     {

@@ -1,31 +1,31 @@
 @interface CNVisualIdentity
-+ (id)abbreviatedNameForGroupName:(id)a3;
++ (id)abbreviatedNameForGroupName:(id)name;
 + (id)descriptorForImageKeys;
 + (id)descriptorForRequiredKeys;
-+ (id)firstComposedCharacterFromString:(id)a3;
++ (id)firstComposedCharacterFromString:(id)string;
 + (id)log;
 - (BOOL)hasImageDataAvailable;
 - (BOOL)hasLinkedContacts;
 - (CGRect)cropRect;
-- (CNVisualIdentity)initWithContact:(id)a3;
-- (CNVisualIdentity)initWithGroupIdentity:(id)a3;
+- (CNVisualIdentity)initWithContact:(id)contact;
+- (CNVisualIdentity)initWithGroupIdentity:(id)identity;
 - (NSString)abbreviatedName;
 - (NSString)name;
 - (NSString)shortenedDisplayName;
 - (UIImage)avatarImage;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)wallpaperType;
 - (int64_t)contactImageSource;
 - (unint64_t)contactImageType;
 - (void)clearImage;
 - (void)clearImageAndWallpaper;
-- (void)setCropRect:(CGRect)a3;
-- (void)setImageData:(id)a3;
-- (void)setThumbnailImageData:(id)a3;
-- (void)updateContactWithGivenName:(id)a3 familyName:(id)a4;
-- (void)updateGroupName:(id)a3;
-- (void)updateImageForContact:(id)a3;
-- (void)updateImageType:(unint64_t)a3;
+- (void)setCropRect:(CGRect)rect;
+- (void)setImageData:(id)data;
+- (void)setThumbnailImageData:(id)data;
+- (void)updateContactWithGivenName:(id)name familyName:(id)familyName;
+- (void)updateGroupName:(id)name;
+- (void)updateImageForContact:(id)contact;
+- (void)updateImageType:(unint64_t)type;
 @end
 
 @implementation CNVisualIdentity
@@ -45,9 +45,9 @@
 
 - (id)wallpaperType
 {
-  v3 = [(CNVisualIdentity *)self imageType];
+  imageType = [(CNVisualIdentity *)self imageType];
   v4 = [MEMORY[0x1E695CD58] stringIdentifierForImageType:2];
-  v5 = [v3 isEqualToString:v4];
+  v5 = [imageType isEqualToString:v4];
 
   if (v5)
   {
@@ -56,9 +56,9 @@
 
   else
   {
-    v7 = [(CNVisualIdentity *)self imageType];
+    imageType2 = [(CNVisualIdentity *)self imageType];
     v8 = [MEMORY[0x1E695CD58] stringIdentifierForImageType:3];
-    v9 = [v7 isEqualToString:v8];
+    v9 = [imageType2 isEqualToString:v8];
 
     v6 = MEMORY[0x1E695CCF0];
     if (v9)
@@ -81,13 +81,13 @@
     goto LABEL_5;
   }
 
-  v4 = [(CNVisualIdentity *)self thumbnailImageData];
+  thumbnailImageData = [(CNVisualIdentity *)self thumbnailImageData];
 
-  if (v4)
+  if (thumbnailImageData)
   {
     v5 = MEMORY[0x1E69DCAB8];
-    v6 = [(CNVisualIdentity *)self thumbnailImageData];
-    v7 = [v5 imageWithData:v6];
+    thumbnailImageData2 = [(CNVisualIdentity *)self thumbnailImageData];
+    v7 = [v5 imageWithData:thumbnailImageData2];
     v8 = self->_avatarImage;
     self->_avatarImage = v7;
 LABEL_4:
@@ -98,15 +98,15 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v11 = [(CNVisualIdentity *)self imageData];
+  imageData = [(CNVisualIdentity *)self imageData];
 
-  if (v11)
+  if (imageData)
   {
     [(CNVisualIdentity *)self cropRect];
     v12 = CGRectEqualToRect(v54, *MEMORY[0x1E695F058]);
     v13 = MEMORY[0x1E69DCAB8];
-    v6 = [(CNVisualIdentity *)self imageData];
-    v14 = [v13 imageWithData:v6];
+    thumbnailImageData2 = [(CNVisualIdentity *)self imageData];
+    v14 = [v13 imageWithData:thumbnailImageData2];
     v15 = v14;
     if (v12)
     {
@@ -151,12 +151,12 @@ LABEL_5:
       v24 = v33;
     }
 
-    v34 = [(UIImage *)v15 CGImage];
+    cGImage = [(UIImage *)v15 CGImage];
     v55.origin.x = v18;
     v55.origin.y = v20;
     v55.size.width = v22;
     v55.size.height = v24;
-    v35 = CGImageCreateWithImageInRect(v34, v55);
+    v35 = CGImageCreateWithImageInRect(cGImage, v55);
     v36 = MEMORY[0x1E69DCAB8];
     [(UIImage *)v15 scale];
     v38 = [v36 imageWithCGImage:v35 scale:-[UIImage imageOrientation](v15 orientation:{"imageOrientation"), v37}];
@@ -182,84 +182,84 @@ LABEL_6:
 
 - (BOOL)hasImageDataAvailable
 {
-  v3 = [(CNVisualIdentity *)self thumbnailImageData];
-  if (v3)
+  thumbnailImageData = [(CNVisualIdentity *)self thumbnailImageData];
+  if (thumbnailImageData)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CNVisualIdentity *)self imageData];
-    v4 = v5 != 0;
+    imageData = [(CNVisualIdentity *)self imageData];
+    v4 = imageData != 0;
   }
 
   return v4;
 }
 
-- (void)updateGroupName:(id)a3
+- (void)updateGroupName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   if ([(CNVisualIdentity *)self canUpdateGroupName])
   {
-    [(CNVisualIdentity *)self setName:v5];
-    v4 = [objc_opt_class() abbreviatedNameForGroupName:v5];
+    [(CNVisualIdentity *)self setName:nameCopy];
+    v4 = [objc_opt_class() abbreviatedNameForGroupName:nameCopy];
     [(CNVisualIdentity *)self setAbbreviatedName:v4];
   }
 }
 
-- (void)updateImageType:(unint64_t)a3
+- (void)updateImageType:(unint64_t)type
 {
-  v4 = [MEMORY[0x1E695CD58] stringIdentifierForImageType:a3];
+  v4 = [MEMORY[0x1E695CD58] stringIdentifierForImageType:type];
   [(CNVisualIdentity *)self setImageType:v4];
 }
 
-- (void)updateImageForContact:(id)a3
+- (void)updateImageForContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNVisualIdentity *)self imageData];
-  [v4 setImageData:v5];
+  contactCopy = contact;
+  imageData = [(CNVisualIdentity *)self imageData];
+  [contactCopy setImageData:imageData];
 
-  v6 = [(CNVisualIdentity *)self thumbnailImageData];
-  [v4 setThumbnailImageData:v6];
+  thumbnailImageData = [(CNVisualIdentity *)self thumbnailImageData];
+  [contactCopy setThumbnailImageData:thumbnailImageData];
 
-  v7 = [(CNVisualIdentity *)self fullscreenImageData];
-  [v4 setFullscreenImageData:v7];
+  fullscreenImageData = [(CNVisualIdentity *)self fullscreenImageData];
+  [contactCopy setFullscreenImageData:fullscreenImageData];
 
   [(CNVisualIdentity *)self cropRect];
-  [v4 setCropRect:?];
-  v8 = [(CNVisualIdentity *)self imageHash];
-  [v4 setImageHash:v8];
+  [contactCopy setCropRect:?];
+  imageHash = [(CNVisualIdentity *)self imageHash];
+  [contactCopy setImageHash:imageHash];
 
-  v9 = [(CNVisualIdentity *)self imageType];
-  [v4 setImageType:v9];
+  imageType = [(CNVisualIdentity *)self imageType];
+  [contactCopy setImageType:imageType];
 
-  v10 = [(CNVisualIdentity *)self memojiMetadata];
-  [v4 setMemojiMetadata:v10];
+  memojiMetadata = [(CNVisualIdentity *)self memojiMetadata];
+  [contactCopy setMemojiMetadata:memojiMetadata];
 
-  v11 = [(CNVisualIdentity *)self wallpaper];
-  [v4 setWallpaper:v11];
+  wallpaper = [(CNVisualIdentity *)self wallpaper];
+  [contactCopy setWallpaper:wallpaper];
 }
 
-- (void)updateContactWithGivenName:(id)a3 familyName:(id)a4
+- (void)updateContactWithGivenName:(id)name familyName:(id)familyName
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNVisualIdentity *)self contacts];
-  v9 = [v8 firstObject];
-  v10 = [v9 mutableCopy];
+  nameCopy = name;
+  familyNameCopy = familyName;
+  contacts = [(CNVisualIdentity *)self contacts];
+  firstObject = [contacts firstObject];
+  v10 = [firstObject mutableCopy];
 
   if (v10)
   {
-    [v10 setGivenName:v6];
-    [v10 setFamilyName:v7];
-    v11 = [v10 freeze];
-    v20[0] = v11;
+    [v10 setGivenName:nameCopy];
+    [v10 setFamilyName:familyNameCopy];
+    freeze = [v10 freeze];
+    v20[0] = freeze;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-    v13 = [(CNVisualIdentity *)self contacts];
-    v14 = [v13 _cn_tail];
-    v15 = [v12 arrayByAddingObjectsFromArray:v14];
+    contacts2 = [(CNVisualIdentity *)self contacts];
+    _cn_tail = [contacts2 _cn_tail];
+    v15 = [v12 arrayByAddingObjectsFromArray:_cn_tail];
     [(CNVisualIdentity *)self setContacts:v15];
 
     v16 = [MEMORY[0x1E695CD80] stringFromContact:v10 style:0];
@@ -294,8 +294,8 @@ LABEL_6:
 - (int64_t)contactImageSource
 {
   v2 = MEMORY[0x1E695CD58];
-  v3 = [(CNVisualIdentity *)self imageType];
-  v4 = [v2 rawImageSourceForIdentifier:v3];
+  imageType = [(CNVisualIdentity *)self imageType];
+  v4 = [v2 rawImageSourceForIdentifier:imageType];
 
   return v4;
 }
@@ -303,8 +303,8 @@ LABEL_6:
 - (unint64_t)contactImageType
 {
   v2 = MEMORY[0x1E695CD58];
-  v3 = [(CNVisualIdentity *)self imageType];
-  v4 = [v2 rawImageTypeForIdentifier:v3];
+  imageType = [(CNVisualIdentity *)self imageType];
+  v4 = [v2 rawImageTypeForIdentifier:imageType];
 
   return v4;
 }
@@ -312,8 +312,8 @@ LABEL_6:
 - (BOOL)hasLinkedContacts
 {
   v2 = *MEMORY[0x1E6996530];
-  v3 = [(CNVisualIdentity *)self linkedContacts];
-  LOBYTE(v2) = (*(v2 + 16))(v2, v3);
+  linkedContacts = [(CNVisualIdentity *)self linkedContacts];
+  LOBYTE(v2) = (*(v2 + 16))(v2, linkedContacts);
 
   return v2 ^ 1;
 }
@@ -325,8 +325,8 @@ LABEL_6:
     p_abbreviatedName = &self->_abbreviatedName;
     if ((*(*MEMORY[0x1E6996568] + 16))())
     {
-      v4 = [(NSArray *)self->_contacts firstObject];
-      v5 = [MEMORY[0x1E695CD80] stringFromContact:v4 style:1002];
+      firstObject = [(NSArray *)self->_contacts firstObject];
+      v5 = [MEMORY[0x1E695CD80] stringFromContact:firstObject style:1002];
       abbreviatedName = self->_abbreviatedName;
       self->_abbreviatedName = v5;
     }
@@ -349,10 +349,10 @@ LABEL_6:
     p_shortenedDisplayName = &self->_shortenedDisplayName;
     if ((*(*MEMORY[0x1E6996568] + 16))())
     {
-      v4 = [(NSArray *)self->_contacts firstObject];
-      v5 = [v4 givenName];
+      firstObject = [(NSArray *)self->_contacts firstObject];
+      givenName = [firstObject givenName];
       shortenedDisplayName = self->_shortenedDisplayName;
-      self->_shortenedDisplayName = v5;
+      self->_shortenedDisplayName = givenName;
     }
   }
 
@@ -373,8 +373,8 @@ LABEL_6:
     p_name = &self->_name;
     if ((*(*MEMORY[0x1E6996568] + 16))())
     {
-      v4 = [(NSArray *)self->_contacts firstObject];
-      v5 = [MEMORY[0x1E695CD80] stringFromContact:v4 style:0];
+      firstObject = [(NSArray *)self->_contacts firstObject];
+      v5 = [MEMORY[0x1E695CD80] stringFromContact:firstObject style:0];
       name = self->_name;
       self->_name = v5;
     }
@@ -390,13 +390,13 @@ LABEL_6:
   return v7;
 }
 
-- (void)setCropRect:(CGRect)a3
+- (void)setCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->_cropRect))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectEqualToRect(rect, self->_cropRect))
   {
     self->_cropRect.origin.x = x;
     self->_cropRect.origin.y = y;
@@ -407,101 +407,101 @@ LABEL_6:
   }
 }
 
-- (void)setImageData:(id)a3
+- (void)setImageData:(id)data
 {
-  v6 = a3;
-  if (([v6 isEqualToData:self->_imageData] & 1) == 0)
+  dataCopy = data;
+  if (([dataCopy isEqualToData:self->_imageData] & 1) == 0)
   {
-    objc_storeStrong(&self->_imageData, a3);
+    objc_storeStrong(&self->_imageData, data);
     avatarImage = self->_avatarImage;
     self->_avatarImage = 0;
   }
 }
 
-- (void)setThumbnailImageData:(id)a3
+- (void)setThumbnailImageData:(id)data
 {
-  v6 = a3;
-  if (([v6 isEqualToData:self->_thumbnailImageData] & 1) == 0)
+  dataCopy = data;
+  if (([dataCopy isEqualToData:self->_thumbnailImageData] & 1) == 0)
   {
-    objc_storeStrong(&self->_thumbnailImageData, a3);
+    objc_storeStrong(&self->_thumbnailImageData, data);
     avatarImage = self->_avatarImage;
     self->_avatarImage = 0;
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CNVisualIdentity);
-  v5 = [(CNVisualIdentity *)self imageData];
-  [(CNVisualIdentity *)v4 setImageData:v5];
+  imageData = [(CNVisualIdentity *)self imageData];
+  [(CNVisualIdentity *)v4 setImageData:imageData];
 
-  v6 = [(CNVisualIdentity *)self name];
-  [(CNVisualIdentity *)v4 setName:v6];
+  name = [(CNVisualIdentity *)self name];
+  [(CNVisualIdentity *)v4 setName:name];
 
-  v7 = [(CNVisualIdentity *)self abbreviatedName];
-  [(CNVisualIdentity *)v4 setAbbreviatedName:v7];
+  abbreviatedName = [(CNVisualIdentity *)self abbreviatedName];
+  [(CNVisualIdentity *)v4 setAbbreviatedName:abbreviatedName];
 
-  v8 = [(CNVisualIdentity *)self imageHash];
-  [(CNVisualIdentity *)v4 setImageHash:v8];
+  imageHash = [(CNVisualIdentity *)self imageHash];
+  [(CNVisualIdentity *)v4 setImageHash:imageHash];
 
   [(CNVisualIdentity *)self cropRect];
   [(CNVisualIdentity *)v4 setCropRect:?];
-  v9 = [(CNVisualIdentity *)self imageType];
-  [(CNVisualIdentity *)v4 setImageType:v9];
+  imageType = [(CNVisualIdentity *)self imageType];
+  [(CNVisualIdentity *)v4 setImageType:imageType];
 
-  v10 = [(CNVisualIdentity *)self identifier];
-  [(CNVisualIdentity *)v4 setIdentifier:v10];
+  identifier = [(CNVisualIdentity *)self identifier];
+  [(CNVisualIdentity *)v4 setIdentifier:identifier];
 
-  v11 = [(CNVisualIdentity *)self thumbnailImageData];
-  [(CNVisualIdentity *)v4 setThumbnailImageData:v11];
+  thumbnailImageData = [(CNVisualIdentity *)self thumbnailImageData];
+  [(CNVisualIdentity *)v4 setThumbnailImageData:thumbnailImageData];
 
-  v12 = [(CNVisualIdentity *)self fullscreenImageData];
-  [(CNVisualIdentity *)v4 setFullscreenImageData:v12];
+  fullscreenImageData = [(CNVisualIdentity *)self fullscreenImageData];
+  [(CNVisualIdentity *)v4 setFullscreenImageData:fullscreenImageData];
 
-  v13 = [(CNVisualIdentity *)self linkedContacts];
-  [(CNVisualIdentity *)v4 setLinkedContacts:v13];
+  linkedContacts = [(CNVisualIdentity *)self linkedContacts];
+  [(CNVisualIdentity *)v4 setLinkedContacts:linkedContacts];
 
-  v14 = [(CNVisualIdentity *)self contacts];
-  [(CNVisualIdentity *)v4 setContacts:v14];
+  contacts = [(CNVisualIdentity *)self contacts];
+  [(CNVisualIdentity *)v4 setContacts:contacts];
 
   [(CNVisualIdentity *)v4 setIdentityType:[(CNVisualIdentity *)self identityType]];
-  v15 = [(CNVisualIdentity *)self memojiMetadata];
-  [(CNVisualIdentity *)v4 setMemojiMetadata:v15];
+  memojiMetadata = [(CNVisualIdentity *)self memojiMetadata];
+  [(CNVisualIdentity *)v4 setMemojiMetadata:memojiMetadata];
 
-  v16 = [(CNVisualIdentity *)self wallpaper];
-  [(CNVisualIdentity *)v4 setWallpaper:v16];
+  wallpaper = [(CNVisualIdentity *)self wallpaper];
+  [(CNVisualIdentity *)v4 setWallpaper:wallpaper];
 
   return v4;
 }
 
-- (CNVisualIdentity)initWithGroupIdentity:(id)a3
+- (CNVisualIdentity)initWithGroupIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v32.receiver = self;
   v32.super_class = CNVisualIdentity;
   v5 = [(CNVisualIdentity *)&v32 init];
   if (v5)
   {
-    if ([v4 numberOfContacts] == 1)
+    if ([identityCopy numberOfContacts] == 1)
     {
-      v6 = [v4 contacts];
-      v7 = [v6 firstObject];
-      v5 = [(CNVisualIdentity *)v5 initWithContact:v7];
+      contacts = [identityCopy contacts];
+      firstObject = [contacts firstObject];
+      v5 = [(CNVisualIdentity *)v5 initWithContact:firstObject];
     }
 
     else
     {
-      v8 = [v4 groupPhoto];
+      groupPhoto = [identityCopy groupPhoto];
       imageData = v5->_imageData;
-      v5->_imageData = v8;
+      v5->_imageData = groupPhoto;
 
-      v10 = [v4 groupName];
+      groupName = [identityCopy groupName];
       name = v5->_name;
-      v5->_name = v10;
+      v5->_name = groupName;
 
       v12 = *MEMORY[0x1E6996568];
-      v13 = [v4 groupName];
-      if ((*(v12 + 16))(v12, v13))
+      groupName2 = [identityCopy groupName];
+      if ((*(v12 + 16))(v12, groupName2))
       {
         abbreviatedName = v5->_abbreviatedName;
         v5->_abbreviatedName = 0;
@@ -510,7 +510,7 @@ LABEL_6:
       else
       {
         v15 = objc_opt_class();
-        abbreviatedName = [v4 groupName];
+        abbreviatedName = [identityCopy groupName];
         v16 = [v15 abbreviatedNameForGroupName:abbreviatedName];
         v17 = v5->_abbreviatedName;
         v5->_abbreviatedName = v16;
@@ -523,13 +523,13 @@ LABEL_6:
       v5->_cropRect.origin = *MEMORY[0x1E695F058];
       v5->_cropRect.size = v19;
       v5->_imageType = 0;
-      v20 = [v4 identifier];
+      identifier = [identityCopy identifier];
       identifier = v5->_identifier;
-      v5->_identifier = v20;
+      v5->_identifier = identifier;
 
-      v22 = [v4 groupPhoto];
+      groupPhoto2 = [identityCopy groupPhoto];
       thumbnailImageData = v5->_thumbnailImageData;
-      v5->_thumbnailImageData = v22;
+      v5->_thumbnailImageData = groupPhoto2;
 
       fullscreenImageData = v5->_fullscreenImageData;
       v5->_fullscreenImageData = 0;
@@ -537,9 +537,9 @@ LABEL_6:
       linkedContacts = v5->_linkedContacts;
       v5->_linkedContacts = 0;
 
-      v26 = [v4 contacts];
+      contacts2 = [identityCopy contacts];
       contacts = v5->_contacts;
-      v5->_contacts = v26;
+      v5->_contacts = contacts2;
 
       memojiMetadata = v5->_memojiMetadata;
       v5->_memojiMetadata = 0;
@@ -561,10 +561,10 @@ LABEL_6:
   return v5;
 }
 
-- (CNVisualIdentity)initWithContact:(id)a3
+- (CNVisualIdentity)initWithContact:(id)contact
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactCopy = contact;
   v35.receiver = self;
   v35.super_class = CNVisualIdentity;
   v5 = [(CNVisualIdentity *)&v35 init];
@@ -573,52 +573,52 @@ LABEL_6:
     v6 = +[CNVisualIdentity descriptorForImageKeys];
     v37[0] = v6;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:1];
-    v8 = [v4 areKeysAvailable:v7];
+    v8 = [contactCopy areKeysAvailable:v7];
 
     if (v8)
     {
-      v9 = [v4 imageData];
+      imageData = [contactCopy imageData];
       imageData = v5->_imageData;
-      v5->_imageData = v9;
+      v5->_imageData = imageData;
 
-      v11 = [v4 imageHash];
+      imageHash = [contactCopy imageHash];
       imageHash = v5->_imageHash;
-      v5->_imageHash = v11;
+      v5->_imageHash = imageHash;
 
-      [v4 cropRect];
+      [contactCopy cropRect];
       v5->_cropRect.origin.x = v13;
       v5->_cropRect.origin.y = v14;
       v5->_cropRect.size.width = v15;
       v5->_cropRect.size.height = v16;
-      v5->_imageType = [v4 imageType];
-      v17 = [v4 thumbnailImageData];
+      v5->_imageType = [contactCopy imageType];
+      thumbnailImageData = [contactCopy thumbnailImageData];
       thumbnailImageData = v5->_thumbnailImageData;
-      v5->_thumbnailImageData = v17;
+      v5->_thumbnailImageData = thumbnailImageData;
 
-      v19 = [v4 fullscreenImageData];
+      fullscreenImageData = [contactCopy fullscreenImageData];
       fullscreenImageData = v5->_fullscreenImageData;
-      v5->_fullscreenImageData = v19;
+      v5->_fullscreenImageData = fullscreenImageData;
 
-      v21 = [v4 memojiMetadata];
+      memojiMetadata = [contactCopy memojiMetadata];
       memojiMetadata = v5->_memojiMetadata;
-      v5->_memojiMetadata = v21;
+      v5->_memojiMetadata = memojiMetadata;
 
-      v23 = [v4 wallpaper];
+      wallpaper = [contactCopy wallpaper];
       wallpaper = v5->_wallpaper;
-      v5->_wallpaper = v23;
+      v5->_wallpaper = wallpaper;
     }
 
-    v25 = [v4 identifier];
+    identifier = [contactCopy identifier];
     identifier = v5->_identifier;
-    v5->_identifier = v25;
+    v5->_identifier = identifier;
 
-    v27 = [v4 linkedContacts];
+    linkedContacts = [contactCopy linkedContacts];
     linkedContacts = v5->_linkedContacts;
-    v5->_linkedContacts = v27;
+    v5->_linkedContacts = linkedContacts;
 
-    if (v4)
+    if (contactCopy)
     {
-      v36 = v4;
+      v36 = contactCopy;
       v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1];
       p_super = &v5->_contacts->super;
       v5->_contacts = v29;
@@ -643,22 +643,22 @@ LABEL_6:
   return v5;
 }
 
-+ (id)abbreviatedNameForGroupName:(id)a3
++ (id)abbreviatedNameForGroupName:(id)name
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  nameCopy = name;
   v4 = *MEMORY[0x1E6996568];
-  if ((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], v3))
+  if ((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], nameCopy))
   {
     v5 = 0;
     goto LABEL_20;
   }
 
-  v19 = v3;
-  v6 = [v3 componentsSeparatedByString:@" "];
+  v19 = nameCopy;
+  v6 = [nameCopy componentsSeparatedByString:@" "];
   v7 = [v6 _cn_take:2];
 
-  v8 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+  alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -686,7 +686,7 @@ LABEL_6:
 
       v14 = [objc_opt_class() firstComposedCharacterFromString:*(*(&v21 + 1) + 8 * i)];
       v15 = [CNUIStringUtilities stringIsSingleEmoji:v14];
-      v16 = [v14 _cn_containsCharacterInSet:v8];
+      v16 = [v14 _cn_containsCharacterInSet:alphanumericCharacterSet];
       if (v15)
       {
         if ((((*(v4 + 16))(v4, v5) | v16) & 1) == 0)
@@ -716,19 +716,19 @@ LABEL_15:
   while (v10);
 LABEL_19:
 
-  v3 = v19;
+  nameCopy = v19;
 LABEL_20:
 
   return v5;
 }
 
-+ (id)firstComposedCharacterFromString:(id)a3
++ (id)firstComposedCharacterFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if ((*(*MEMORY[0x1E6996570] + 16))())
   {
-    v4 = [v3 rangeOfComposedCharacterSequenceAtIndex:0];
-    v6 = [v3 substringWithRange:{v4, v5}];
+    v4 = [stringCopy rangeOfComposedCharacterSequenceAtIndex:0];
+    v6 = [stringCopy substringWithRange:{v4, v5}];
   }
 
   else

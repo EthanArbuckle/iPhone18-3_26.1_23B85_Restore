@@ -1,19 +1,19 @@
 @interface NSBundleAccessibility
-- (BOOL)loadAndReturnError:(id *)a3;
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5;
+- (BOOL)loadAndReturnError:(id *)error;
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table;
 @end
 
 @implementation NSBundleAccessibility
 
-- (BOOL)loadAndReturnError:(id *)a3
+- (BOOL)loadAndReturnError:(id *)error
 {
   v9.receiver = self;
   v9.super_class = NSBundleAccessibility;
-  v4 = [(NSBundleAccessibility *)&v9 loadAndReturnError:a3];
-  v5 = [MEMORY[0x1E6989890] sharedInstance];
-  v6 = [v5 useNewAXBundleLoader];
+  v4 = [(NSBundleAccessibility *)&v9 loadAndReturnError:error];
+  mEMORY[0x1E6989890] = [MEMORY[0x1E6989890] sharedInstance];
+  useNewAXBundleLoader = [mEMORY[0x1E6989890] useNewAXBundleLoader];
 
-  if ((v6 & 1) == 0)
+  if ((useNewAXBundleLoader & 1) == 0)
   {
     if (loadAndReturnError__registerOnce != -1)
     {
@@ -38,14 +38,14 @@ uint64_t __44__NSBundleAccessibility_loadAndReturnError___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  keyCopy = key;
+  valueCopy = value;
+  tableCopy = table;
   v35.receiver = self;
   v35.super_class = NSBundleAccessibility;
-  v12 = [(NSBundleAccessibility *)&v35 localizedStringForKey:v9 value:v10 table:v11];
+  v12 = [(NSBundleAccessibility *)&v35 localizedStringForKey:keyCopy value:valueCopy table:tableCopy];
   if ((localizedStringForKey_value_table__RecursiveCall & 1) == 0)
   {
     v13 = _AXSAutomationLocalizedStringLookupInfoEnabled();
@@ -60,10 +60,10 @@ LABEL_24:
     v33 = v14;
     if (v14)
     {
-      v15 = self;
+      selfCopy = self;
       InstanceMethod = class_getInstanceMethod(+[NSBundleAccessibility superclass], a2);
       Implementation = method_getImplementation(InstanceMethod);
-      v18 = (Implementation)(v15, a2, v9, v10, v11);
+      v18 = (Implementation)(selfCopy, a2, keyCopy, valueCopy, tableCopy);
       if (v18)
       {
         v19 = [MEMORY[0x1E6988D60] axAttributedStringWithString:v18];
@@ -76,7 +76,7 @@ LABEL_24:
         v30 = v33;
         v31 = v12;
         v28 = @"%@: Failed to lookup alternate localization '%@' of localized string '%@'.";
-        v29 = v15;
+        v29 = selfCopy;
         LOBYTE(v27) = 1;
         _AXLogWithFacility();
 
@@ -97,12 +97,12 @@ LABEL_24:
 LABEL_11:
         v20 = 1;
         localizedStringForKey_value_table__RecursiveCall = 1;
-        if (!v11)
+        if (!tableCopy)
         {
           v34.receiver = self;
           v34.super_class = NSBundleAccessibility;
-          v11 = @"Localizable";
-          v21 = [(NSBundleAccessibility *)&v34 localizedStringForKey:v9 value:0 table:@"Localizable"];
+          tableCopy = @"Localizable";
+          v21 = [(NSBundleAccessibility *)&v34 localizedStringForKey:keyCopy value:0 table:@"Localizable"];
           v20 = v21 != 0;
         }
 
@@ -115,13 +115,13 @@ LABEL_11:
         }
 
         v23 = [(NSBundleAccessibility *)self bundleIdentifier:v27];
-        v24 = [(NSBundleAccessibility *)self bundlePath];
+        bundlePath = [(NSBundleAccessibility *)self bundlePath];
         [v19 setAttribute:v23 forKey:@"UIAccessibilityTokenLocalizedStringBundleID"];
-        [v19 setAttribute:v24 forKey:@"UIAccessibilityTokenLocalizationBundlePath"];
-        [v19 setAttribute:v9 forKey:@"UIAccessibilityTokenLocalizedStringKey"];
+        [v19 setAttribute:bundlePath forKey:@"UIAccessibilityTokenLocalizationBundlePath"];
+        [v19 setAttribute:keyCopy forKey:@"UIAccessibilityTokenLocalizedStringKey"];
         if (v32)
         {
-          [v19 setAttribute:v11 forKey:@"UIAccessibilityTokenLocalizedStringTableName"];
+          [v19 setAttribute:tableCopy forKey:@"UIAccessibilityTokenLocalizedStringTableName"];
         }
 
         if (v22)

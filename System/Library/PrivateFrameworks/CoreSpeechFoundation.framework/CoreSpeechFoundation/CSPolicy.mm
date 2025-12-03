@@ -2,13 +2,13 @@
 - (BOOL)_checkAllConditionsEnabled;
 - (BOOL)isEnabled;
 - (CSPolicy)init;
-- (void)CSEventMonitorDidReceiveEvent:(id)a3;
-- (void)addConditions:(id)a3;
+- (void)CSEventMonitorDidReceiveEvent:(id)event;
+- (void)addConditions:(id)conditions;
 - (void)dealloc;
-- (void)notifyCallback:(BOOL)a3 option:(unint64_t)a4;
-- (void)notifyCallbackWithOption:(unint64_t)a3;
-- (void)setCallback:(id)a3;
-- (void)subscribeEventMonitor:(id)a3;
+- (void)notifyCallback:(BOOL)callback option:(unint64_t)option;
+- (void)notifyCallbackWithOption:(unint64_t)option;
+- (void)setCallback:(id)callback;
+- (void)subscribeEventMonitor:(id)monitor;
 @end
 
 @implementation CSPolicy
@@ -92,13 +92,13 @@ uint64_t __21__CSPolicy_isEnabled__block_invoke(uint64_t a1)
   v2 = [(CSPolicy *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     monitors = v2->_monitors;
-    v2->_monitors = v3;
+    v2->_monitors = array;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     conditions = v2->_conditions;
-    v2->_conditions = v5;
+    v2->_conditions = array2;
 
     v7 = dispatch_queue_create("Serial CSPolicy queue", 0);
     queue = v2->_queue;
@@ -108,14 +108,14 @@ uint64_t __21__CSPolicy_isEnabled__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)CSEventMonitorDidReceiveEvent:(id)a3
+- (void)CSEventMonitorDidReceiveEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 type] == 1;
-  v6 = [v4 type];
+  eventCopy = event;
+  v5 = [eventCopy type] == 1;
+  type = [eventCopy type];
 
   queue = self->_queue;
-  if (v6 == 2)
+  if (type == 2)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -170,7 +170,7 @@ void *__42__CSPolicy_CSEventMonitorDidReceiveEvent___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)notifyCallbackWithOption:(unint64_t)a3
+- (void)notifyCallbackWithOption:(unint64_t)option
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -178,7 +178,7 @@ void *__42__CSPolicy_CSEventMonitorDidReceiveEvent___block_invoke_2(uint64_t a1)
   v4[2] = __37__CSPolicy_notifyCallbackWithOption___block_invoke;
   v4[3] = &unk_1E865CC58;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = option;
   dispatch_async(queue, v4);
 }
 
@@ -198,16 +198,16 @@ void *__37__CSPolicy_notifyCallbackWithOption___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)notifyCallback:(BOOL)a3 option:(unint64_t)a4
+- (void)notifyCallback:(BOOL)callback option:(unint64_t)option
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __34__CSPolicy_notifyCallback_option___block_invoke;
   block[3] = &unk_1E865B2B8;
-  v6 = a3;
+  callbackCopy = callback;
   block[4] = self;
-  block[5] = a4;
+  block[5] = option;
   dispatch_async(queue, block);
 }
 
@@ -222,19 +222,19 @@ uint64_t __34__CSPolicy_notifyCallback_option___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)subscribeEventMonitor:(id)a3
+- (void)subscribeEventMonitor:(id)monitor
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  monitorCopy = monitor;
+  v5 = monitorCopy;
+  if (monitorCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __34__CSPolicy_subscribeEventMonitor___block_invoke;
     v7[3] = &unk_1E865C970;
-    v8 = v4;
-    v9 = self;
+    v8 = monitorCopy;
+    selfCopy = self;
     dispatch_sync(queue, v7);
   }
 }
@@ -248,11 +248,11 @@ uint64_t __34__CSPolicy_subscribeEventMonitor___block_invoke(uint64_t a1)
   return [v3 addObject:v2];
 }
 
-- (void)addConditions:(id)a3
+- (void)addConditions:(id)conditions
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  conditionsCopy = conditions;
+  v5 = conditionsCopy;
+  if (conditionsCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -260,7 +260,7 @@ uint64_t __34__CSPolicy_subscribeEventMonitor___block_invoke(uint64_t a1)
     v7[2] = __26__CSPolicy_addConditions___block_invoke;
     v7[3] = &unk_1E865CB90;
     v7[4] = self;
-    v8 = v4;
+    v8 = conditionsCopy;
     dispatch_sync(queue, v7);
   }
 }
@@ -322,17 +322,17 @@ void __19__CSPolicy_dealloc__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCallback:(id)a3
+- (void)setCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __24__CSPolicy_setCallback___block_invoke;
   v7[3] = &unk_1E865CB90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   dispatch_async(queue, v7);
 }
 

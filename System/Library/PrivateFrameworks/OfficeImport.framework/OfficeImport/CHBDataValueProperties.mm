@@ -1,9 +1,9 @@
 @interface CHBDataValueProperties
-+ (Class)chbDataValuePropertiesClassWithState:(id)a3;
++ (Class)chbDataValuePropertiesClassWithState:(id)state;
 + (id)chdDataValueProperties;
-+ (id)chdDataValuePropertiesFrom:(const XlChartSeriesFormat *)a3 state:(id)a4;
-+ (id)chdDataValuePropertiesFromState:(id)a3;
-+ (id)readFrom:(const XlChartSeriesFormat *)a3 state:(id)a4;
++ (id)chdDataValuePropertiesFrom:(const XlChartSeriesFormat *)from state:(id)state;
++ (id)chdDataValuePropertiesFromState:(id)state;
++ (id)readFrom:(const XlChartSeriesFormat *)from state:(id)state;
 @end
 
 @implementation CHBDataValueProperties
@@ -15,18 +15,18 @@
   return v2;
 }
 
-+ (id)readFrom:(const XlChartSeriesFormat *)a3 state:(id)a4
++ (id)readFrom:(const XlChartSeriesFormat *)from state:(id)state
 {
-  v6 = a4;
-  if (a3)
+  stateCopy = state;
+  if (from)
   {
-    v7 = [a1 chdDataValuePropertiesFrom:a3 state:v6];
-    [v7 setDataValueIndex:a3->var9];
-    XlChartBinaryReader::setDataPointFormat([v6 xlReader], a3->var12, LOWORD(a3->var9));
-    v8 = [CHBGraphicProperties oadGraphicPropertiesFromXlChartSeriesFormat:a3 state:v6];
+    v7 = [self chdDataValuePropertiesFrom:from state:stateCopy];
+    [v7 setDataValueIndex:from->var9];
+    XlChartBinaryReader::setDataPointFormat([stateCopy xlReader], from->var12, LOWORD(from->var9));
+    v8 = [CHBGraphicProperties oadGraphicPropertiesFromXlChartSeriesFormat:from state:stateCopy];
     [v7 setGraphicProperties:v8];
 
-    v9 = [CHBMarker readFrom:a3 state:v6];
+    v9 = [CHBMarker readFrom:from state:stateCopy];
     [v7 setMarker:v9];
   }
 
@@ -38,30 +38,30 @@
   return v7;
 }
 
-+ (id)chdDataValuePropertiesFrom:(const XlChartSeriesFormat *)a3 state:(id)a4
++ (id)chdDataValuePropertiesFrom:(const XlChartSeriesFormat *)from state:(id)state
 {
-  v5 = [a1 chbDataValuePropertiesClassWithState:a4];
-  v6 = [v5 chdDataValueProperties];
-  [v5 read:v6 from:a3];
+  v5 = [self chbDataValuePropertiesClassWithState:state];
+  chdDataValueProperties = [v5 chdDataValueProperties];
+  [v5 read:chdDataValueProperties from:from];
 
-  return v6;
+  return chdDataValueProperties;
 }
 
-+ (id)chdDataValuePropertiesFromState:(id)a3
++ (id)chdDataValuePropertiesFromState:(id)state
 {
-  v4 = a3;
-  v5 = [objc_msgSend(a1 chbDataValuePropertiesClassWithState:{v4), "chdDataValueProperties"}];
+  stateCopy = state;
+  v5 = [objc_msgSend(self chbDataValuePropertiesClassWithState:{stateCopy), "chdDataValueProperties"}];
 
   return v5;
 }
 
-+ (Class)chbDataValuePropertiesClassWithState:(id)a3
++ (Class)chbDataValuePropertiesClassWithState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 xlCurrentPlot];
-  if ((*(*v4 + 16))(v4) != 2)
+  stateCopy = state;
+  xlCurrentPlot = [stateCopy xlCurrentPlot];
+  if ((*(*xlCurrentPlot + 16))(xlCurrentPlot) != 2)
   {
-    (*(*v4 + 16))(v4);
+    (*(*xlCurrentPlot + 16))(xlCurrentPlot);
   }
 
   v5 = objc_opt_class();

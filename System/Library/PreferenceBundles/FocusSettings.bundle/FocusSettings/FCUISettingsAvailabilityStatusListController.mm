@@ -1,16 +1,16 @@
 @interface FCUISettingsAvailabilityStatusListController
-- (FCUISettingsAvailabilityStatusListController)initWithNibName:(id)a3 bundle:(id)a4;
+- (FCUISettingsAvailabilityStatusListController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
-- (void)_setAvailabilityStatus:(id)a3 specifier:(id)a4;
+- (void)_setAvailabilityStatus:(id)status specifier:(id)specifier;
 @end
 
 @implementation FCUISettingsAvailabilityStatusListController
 
-- (FCUISettingsAvailabilityStatusListController)initWithNibName:(id)a3 bundle:(id)a4
+- (FCUISettingsAvailabilityStatusListController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = FCUISettingsAvailabilityStatusListController;
-  v4 = [(FCUISettingsAvailabilityStatusListController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(FCUISettingsAvailabilityStatusListController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [DNDGlobalConfigurationService serviceForClientIdentifier:@"com.apple.donotdisturb.preferences"];
@@ -27,7 +27,7 @@
   if (!v3)
   {
     v32 = OBJC_IVAR___PSListController__specifiers;
-    v38 = self;
+    selfCopy = self;
     v4 = objc_alloc_init(NSMutableArray);
     v5 = +[PSSpecifier emptyGroupSpecifier];
     v6 = +[NSBundle fcui_focusSettingsLocalizationBundle];
@@ -81,8 +81,8 @@
           {
             v22 = CFBundleGetIdentifier(v21);
             v23 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v22 allowPlaceholder:0 error:0];
-            v24 = [v23 localizedName];
-            v25 = [PSSpecifier preferenceSpecifierNamed:v24 target:v38 set:"_setAvailabilityStatus:specifier:" get:"_availabilityStatus:" detail:0 cell:6 edit:0];
+            localizedName = [v23 localizedName];
+            v25 = [PSSpecifier preferenceSpecifierNamed:localizedName target:selfCopy set:"_setAvailabilityStatus:specifier:" get:"_availabilityStatus:" detail:0 cell:6 edit:0];
 
             [v25 setProperty:&__kCFBooleanTrue forKey:v35];
             [v25 setProperty:v22 forKey:@"appBundleID"];
@@ -104,30 +104,30 @@
     }
 
     v27 = [v37 copy];
-    v28 = *&v38->PSListController_opaque[v32];
-    *&v38->PSListController_opaque[v32] = v27;
+    v28 = *&selfCopy->PSListController_opaque[v32];
+    *&selfCopy->PSListController_opaque[v32] = v27;
 
-    v3 = *&v38->PSListController_opaque[v32];
+    v3 = *&selfCopy->PSListController_opaque[v32];
   }
 
   return v3;
 }
 
-- (void)_setAvailabilityStatus:(id)a3 specifier:(id)a4
+- (void)_setAvailabilityStatus:(id)status specifier:(id)specifier
 {
-  v11 = a3;
-  v6 = a4;
+  statusCopy = status;
+  specifierCopy = specifier;
   v7 = PSValueKey;
-  v8 = [v6 propertyForKey:PSValueKey];
-  v9 = [v11 isEqual:v8];
+  v8 = [specifierCopy propertyForKey:PSValueKey];
+  v9 = [statusCopy isEqual:v8];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [v6 propertyForKey:@"appBundleID"];
-    [v11 BOOLValue];
+    v10 = [specifierCopy propertyForKey:@"appBundleID"];
+    [statusCopy BOOLValue];
     TCCAccessSetForBundleId();
     [(DNDGlobalConfigurationService *)self->_globalConfigurationService didChangeFocusStatusSharingSettingForApplicationIdentifier:v10];
-    [v6 setProperty:v11 forKey:v7];
+    [specifierCopy setProperty:statusCopy forKey:v7];
   }
 }
 

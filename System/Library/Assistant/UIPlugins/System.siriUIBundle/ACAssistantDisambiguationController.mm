@@ -1,49 +1,49 @@
 @interface ACAssistantDisambiguationController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (Class)footerViewClass;
 - (double)desiredHeightForFooterView;
-- (double)desiredHeightForWidth:(double)a3;
+- (double)desiredHeightForWidth:(double)width;
 - (id)_picker;
 - (id)_pickerController;
 - (id)alternativeAceCommandsToPerformIfNotExposingViews;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
 - (void)_configureContent;
-- (void)_showPicker:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)configureReusableFooterView:(id)a3;
+- (void)_showPicker:(id)picker;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)configureReusableFooterView:(id)view;
 - (void)loadView;
-- (void)pickerViewController:(id)a3 didDismissPicker:(id)a4;
-- (void)pickerViewController:(id)a3 didRequestKeyboardWithVisibility:(BOOL)a4;
-- (void)pickerViewController:(id)a3 didSelectObject:(id)a4 fromPicker:(id)a5;
-- (void)pickerViewController:(id)a3 shouldPresentPicker:(id)a4 completion:(id)a5;
-- (void)pickerViewController:(id)a3 willDismissPicker:(id)a4;
-- (void)pickerViewController:(id)a3 willPresentPicker:(id)a4;
-- (void)setAceObject:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setManageBackgroundColor:(BOOL)a3;
+- (void)pickerViewController:(id)controller didDismissPicker:(id)picker;
+- (void)pickerViewController:(id)controller didRequestKeyboardWithVisibility:(BOOL)visibility;
+- (void)pickerViewController:(id)controller didSelectObject:(id)object fromPicker:(id)picker;
+- (void)pickerViewController:(id)controller shouldPresentPicker:(id)picker completion:(id)completion;
+- (void)pickerViewController:(id)controller willDismissPicker:(id)picker;
+- (void)pickerViewController:(id)controller willPresentPicker:(id)picker;
+- (void)setAceObject:(id)object;
+- (void)setDelegate:(id)delegate;
+- (void)setManageBackgroundColor:(BOOL)color;
 - (void)siriDidDeactivate;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ACAssistantDisambiguationController
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v4.receiver = self;
   v4.super_class = ACAssistantDisambiguationController;
-  [(ACAssistantDisambiguationController *)&v4 setDelegate:a3];
+  [(ACAssistantDisambiguationController *)&v4 setDelegate:delegate];
   [(ACAssistantDisambiguationController *)self _configureContent];
 }
 
-- (void)setAceObject:(id)a3
+- (void)setAceObject:(id)object
 {
   v4.receiver = self;
   v4.super_class = ACAssistantDisambiguationController;
-  [(ACAssistantDisambiguationController *)&v4 setAceObject:a3];
+  [(ACAssistantDisambiguationController *)&v4 setAceObject:object];
   [(ACAssistantDisambiguationController *)self _configureContent];
 }
 
@@ -62,15 +62,15 @@
 
   else
   {
-    v4 = [(ACAssistantDisambiguationController *)self aceObject];
+    aceObject = [(ACAssistantDisambiguationController *)self aceObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       self->_isGroup = 0;
-      objc_storeStrong(&self->_disambiguationList, v4);
-      v5 = [(ACAssistantDisambiguationController *)self delegate];
-      v6 = [(SAUIDisambiguationList *)self->_disambiguationList items];
-      v7 = [v5 siriViewController:self filteredDisambiguationListItems:v6];
+      objc_storeStrong(&self->_disambiguationList, aceObject);
+      delegate = [(ACAssistantDisambiguationController *)self delegate];
+      items = [(SAUIDisambiguationList *)self->_disambiguationList items];
+      v7 = [delegate siriViewController:self filteredDisambiguationListItems:items];
       filteredItems = self->_filteredItems;
       self->_filteredItems = v7;
 
@@ -78,8 +78,8 @@
       disambiguationItems = self->_disambiguationItems;
       self->_disambiguationItems = v9;
 
-      v11 = [(ACAssistantDisambiguationController *)self delegate];
-      v12 = [v11 siriViewController:self listItemToPickInAutodisambiguationForListItems:self->_filteredItems];
+      delegate2 = [(ACAssistantDisambiguationController *)self delegate];
+      v12 = [delegate2 siriViewController:self listItemToPickInAutodisambiguationForListItems:self->_filteredItems];
       preferredListItem = self->_preferredListItem;
       self->_preferredListItem = v12;
     }
@@ -90,8 +90,8 @@
       if (objc_opt_isKindOfClass())
       {
         self->_isGroup = 1;
-        v41 = v4;
-        objc_storeStrong(&self->_disambiguationGroup, v4);
+        v41 = aceObject;
+        objc_storeStrong(&self->_disambiguationGroup, aceObject);
         v14 = +[NSMutableArray array];
         disambiguationItemsList = self->_disambiguationItemsList;
         self->_disambiguationItemsList = v14;
@@ -120,17 +120,17 @@
               }
 
               v22 = *(*(&v43 + 1) + 8 * i);
-              v23 = [(ACAssistantDisambiguationController *)self delegate];
-              v24 = [v22 items];
-              v25 = [v23 siriViewController:self filteredDisambiguationListItems:v24];
+              delegate3 = [(ACAssistantDisambiguationController *)self delegate];
+              items2 = [v22 items];
+              v25 = [delegate3 siriViewController:self filteredDisambiguationListItems:items2];
 
-              v26 = [v22 groupTitle];
-              v27 = [v26 length];
+              groupTitle = [v22 groupTitle];
+              v27 = [groupTitle length];
 
               if (!v27)
               {
-                v28 = [(ACAssistantDisambiguationController *)self delegate];
-                v29 = [v28 siriViewController:self listItemToPickInAutodisambiguationForListItems:v25];
+                delegate4 = [(ACAssistantDisambiguationController *)self delegate];
+                v29 = [delegate4 siriViewController:self listItemToPickInAutodisambiguationForListItems:v25];
                 v30 = self->_preferredListItem;
                 self->_preferredListItem = v29;
               }
@@ -147,7 +147,7 @@
           while (v19);
         }
 
-        v4 = v41;
+        aceObject = v41;
       }
     }
 
@@ -159,9 +159,9 @@
         disambiguationList = self->_disambiguationGroup;
       }
 
-      v37 = [(SAUIDisambiguationList *)disambiguationList af_assistedSelectionItem];
+      af_assistedSelectionItem = [(SAUIDisambiguationList *)disambiguationList af_assistedSelectionItem];
       v38 = self->_preferredListItem;
-      self->_preferredListItem = v37;
+      self->_preferredListItem = af_assistedSelectionItem;
 
       if (self->_preferredListItem)
       {
@@ -196,15 +196,15 @@
   v69.super_class = ACAssistantDisambiguationController;
   [(ACAssistantDisambiguationController *)&v69 loadView];
   [(ACAssistantDisambiguationController *)self setDefaultViewInsets:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
-  v3 = [(ACAssistantDisambiguationController *)self collectionView];
-  v4 = [(ACAssistantDisambiguationController *)self cellClass];
-  v5 = [(objc_class *)[(ACAssistantDisambiguationController *)self cellClass] reuseIdentifier];
-  [v3 registerClass:v4 forCellWithReuseIdentifier:v5];
+  collectionView = [(ACAssistantDisambiguationController *)self collectionView];
+  cellClass = [(ACAssistantDisambiguationController *)self cellClass];
+  reuseIdentifier = [(objc_class *)[(ACAssistantDisambiguationController *)self cellClass] reuseIdentifier];
+  [collectionView registerClass:cellClass forCellWithReuseIdentifier:reuseIdentifier];
 
   v6 = objc_opt_class();
-  v7 = [objc_opt_class() reuseIdentifier];
-  v57 = v3;
-  [v3 registerClass:v6 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v7];
+  reuseIdentifier2 = [objc_opt_class() reuseIdentifier];
+  v57 = collectionView;
+  [collectionView registerClass:v6 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:reuseIdentifier2];
 
   v56 = +[AFUIDisambiguationAnalyticsManager sharedManager];
   if (self->_isGroup)
@@ -218,8 +218,8 @@
     while (1)
     {
       v9 = [(NSMutableArray *)self->_filteredItemsList objectAtIndex:v8];
-      v10 = [(SAUIDisambiguationGroup *)self->_disambiguationGroup disambiguationLists];
-      v11 = [v10 objectAtIndex:v8];
+      disambiguationLists = [(SAUIDisambiguationGroup *)self->_disambiguationGroup disambiguationLists];
+      v11 = [disambiguationLists objectAtIndex:v8];
 
       v59 = v8;
       v12 = [(NSMutableArray *)self->_disambiguationItemsList objectAtIndex:v8];
@@ -247,52 +247,52 @@
 
           v17 = *(*(&v65 + 1) + 8 * i);
           [v17 sruif_setSelectionTextWithDisambiguationList:v11];
-          v18 = [(ACAssistantDisambiguationController *)self delegate];
-          v19 = [v11 disambiguationKey];
-          v20 = [v18 siriViewController:self disambiguationItemForListItem:v17 disambiguationKey:v19];
+          delegate = [(ACAssistantDisambiguationController *)self delegate];
+          disambiguationKey = [v11 disambiguationKey];
+          v20 = [delegate siriViewController:self disambiguationItemForListItem:v17 disambiguationKey:disambiguationKey];
 
           if (!v20)
           {
             v20 = +[SiriUIDisambiguationItem disambiguationItem];
-            v21 = [v17 object];
+            object = [v17 object];
             v22 = [NSString stringWithFormat:@"Missing %@ Disambig", objc_opt_class()];
             [v20 setTitle:v22];
           }
 
-          v23 = [v20 title];
-          v24 = [v23 length];
+          title = [v20 title];
+          v24 = [title length];
 
           if (!v24)
           {
-            v25 = [v17 title];
-            v26 = [v25 length];
+            title2 = [v17 title];
+            v26 = [title2 length];
 
             if (v26)
             {
-              v27 = [v17 title];
+              title3 = [v17 title];
             }
 
             else
             {
-              v28 = [v17 selectionText];
-              v29 = [v28 length];
+              selectionText = [v17 selectionText];
+              v29 = [selectionText length];
 
               if (!v29)
               {
                 goto LABEL_17;
               }
 
-              v27 = [v17 selectionText];
+              title3 = [v17 selectionText];
             }
 
-            v30 = v27;
-            [v20 setTitle:v27];
+            v30 = title3;
+            [v20 setTitle:title3];
           }
 
 LABEL_17:
-          v31 = [v20 title];
+          title4 = [v20 title];
 
-          if (!v31)
+          if (!title4)
           {
             sub_C504(v17, a2, self);
           }
@@ -347,52 +347,52 @@ LABEL_24:
 
       v39 = *(*(&v61 + 1) + 8 * j);
       [v39 sruif_setSelectionTextWithDisambiguationList:self->_disambiguationList];
-      v40 = [(ACAssistantDisambiguationController *)self delegate];
-      v41 = [(SAUIDisambiguationList *)self->_disambiguationList disambiguationKey];
-      v42 = [v40 siriViewController:self disambiguationItemForListItem:v39 disambiguationKey:v41];
+      delegate2 = [(ACAssistantDisambiguationController *)self delegate];
+      disambiguationKey2 = [(SAUIDisambiguationList *)self->_disambiguationList disambiguationKey];
+      v42 = [delegate2 siriViewController:self disambiguationItemForListItem:v39 disambiguationKey:disambiguationKey2];
 
       if (!v42)
       {
         v42 = +[SiriUIDisambiguationItem disambiguationItem];
-        v43 = [v39 object];
+        object2 = [v39 object];
         v44 = [NSString stringWithFormat:@"Missing %@ Disambig", objc_opt_class()];
         [v42 setTitle:v44];
       }
 
-      v45 = [v42 title];
-      v46 = [v45 length];
+      title5 = [v42 title];
+      v46 = [title5 length];
 
       if (!v46)
       {
-        v47 = [v39 title];
-        v48 = [v47 length];
+        title6 = [v39 title];
+        v48 = [title6 length];
 
         if (v48)
         {
-          v49 = [v39 title];
+          title7 = [v39 title];
         }
 
         else
         {
-          v50 = [v39 selectionText];
-          v51 = [v50 length];
+          selectionText2 = [v39 selectionText];
+          v51 = [selectionText2 length];
 
           if (!v51)
           {
             goto LABEL_38;
           }
 
-          v49 = [v39 selectionText];
+          title7 = [v39 selectionText];
         }
 
-        v52 = v49;
-        [v42 setTitle:v49];
+        v52 = title7;
+        [v42 setTitle:title7];
       }
 
 LABEL_38:
-      v53 = [v42 title];
+      title8 = [v42 title];
 
-      if (!v53)
+      if (!title8)
       {
         sub_C478(v39, a2, self);
       }
@@ -423,48 +423,48 @@ LABEL_44:
 LABEL_46:
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = ACAssistantDisambiguationController;
-  [(ACAssistantDisambiguationController *)&v7 viewWillAppear:a3];
+  [(ACAssistantDisambiguationController *)&v7 viewWillAppear:appear];
   if ([(ACAssistantDisambiguationController *)self isVirgin])
   {
-    v4 = [(ACAssistantDisambiguationController *)self _picker];
+    _picker = [(ACAssistantDisambiguationController *)self _picker];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(ACAssistantDisambiguationController *)self _picker];
-      v6 = [v5 showImmediately];
+      _picker2 = [(ACAssistantDisambiguationController *)self _picker];
+      showImmediately = [_picker2 showImmediately];
 
-      if (!v6)
+      if (!showImmediately)
       {
         return;
       }
 
-      v4 = [(ACAssistantDisambiguationController *)self _pickerController];
-      [v4 showPicker:0];
+      _picker = [(ACAssistantDisambiguationController *)self _pickerController];
+      [_picker showPicker:0];
     }
   }
 }
 
-- (void)setManageBackgroundColor:(BOOL)a3
+- (void)setManageBackgroundColor:(BOOL)color
 {
-  self->_manageBackgroundColor = a3;
-  v3 = [(ACAssistantDisambiguationController *)self collectionViewLayout];
-  [v3 invalidateLayout];
+  self->_manageBackgroundColor = color;
+  collectionViewLayout = [(ACAssistantDisambiguationController *)self collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
   if (([(ACAssistantDisambiguationController *)self isViewLoaded]& 1) == 0)
   {
     [(ACAssistantDisambiguationController *)self loadView];
   }
 
-  v4 = [(ACAssistantDisambiguationController *)self collectionView];
-  v5 = [v4 collectionViewLayout];
-  [v5 collectionViewContentSize];
+  collectionView = [(ACAssistantDisambiguationController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v7 = v6;
 
   return v7;
@@ -485,7 +485,7 @@ LABEL_46:
       if (!self->_isGroup)
       {
 LABEL_10:
-        v12 = 0;
+        commands = 0;
         goto LABEL_12;
       }
     }
@@ -511,15 +511,15 @@ LABEL_11:
     v18[4] = v15;
     [v16 logEventWithType:1426 contextProvider:v18];
 
-    v12 = [(SAUIDisambiguationList *)self->_disambiguationList _systemPlugin_failureCommandsForCode:v15];
+    commands = [(SAUIDisambiguationList *)self->_disambiguationList _systemPlugin_failureCommandsForCode:v15];
     goto LABEL_12;
   }
 
-  v4 = [(SAUIListItem *)preferredListItem aceId];
-  v5 = [v4 copy];
+  aceId = [(SAUIListItem *)preferredListItem aceId];
+  v5 = [aceId copy];
 
-  v6 = [(SAUIListItem *)self->_preferredListItem title];
-  v7 = [v6 copy];
+  title = [(SAUIListItem *)self->_preferredListItem title];
+  v7 = [title copy];
 
   disambiguationList = self->_disambiguationList;
   if (!disambiguationList)
@@ -539,11 +539,11 @@ LABEL_11:
   v11 = v5;
   [v9 logEventWithType:1426 contextProvider:v19];
 
-  v12 = [(SAUIListItem *)self->_preferredListItem commands];
+  commands = [(SAUIListItem *)self->_preferredListItem commands];
 
 LABEL_12:
 
-  return v12;
+  return commands;
 }
 
 - (void)siriDidDeactivate
@@ -554,18 +554,18 @@ LABEL_12:
   [v2 setDisambiguationAssistance:0];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   if (self->_isGroup)
   {
-    if ([(NSMutableArray *)self->_filteredItemsList count]<= a4)
+    if ([(NSMutableArray *)self->_filteredItemsList count]<= section)
     {
       return 0;
     }
 
     else
     {
-      v6 = [(NSMutableArray *)self->_filteredItemsList objectAtIndex:a4];
+      v6 = [(NSMutableArray *)self->_filteredItemsList objectAtIndex:section];
       v7 = [v6 count];
 
       return v7;
@@ -576,11 +576,11 @@ LABEL_12:
   {
     filteredItems = self->_filteredItems;
 
-    return [(NSArray *)filteredItems count:a3];
+    return [(NSArray *)filteredItems count:view];
   }
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   if (self->_isGroup)
   {
@@ -593,41 +593,41 @@ LABEL_12:
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(objc_class *)[(ACAssistantDisambiguationController *)self cellClass] reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  reuseIdentifier = [(objc_class *)[(ACAssistantDisambiguationController *)self cellClass] reuseIdentifier];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:pathCopy];
 
   [v9 setHasStarColumn:self->_hasFavoritesStarColumn];
   if (self->_isGroup)
   {
-    v10 = -[NSMutableArray objectAtIndex:](self->_filteredItemsList, "objectAtIndex:", [v6 section]);
-    v11 = -[NSMutableArray objectAtIndex:](self->_disambiguationItemsList, "objectAtIndex:", [v6 section]);
-    v12 = [(ACAssistantDisambiguationController *)self _picker];
+    v10 = -[NSMutableArray objectAtIndex:](self->_filteredItemsList, "objectAtIndex:", [pathCopy section]);
+    v11 = -[NSMutableArray objectAtIndex:](self->_disambiguationItemsList, "objectAtIndex:", [pathCopy section]);
+    _picker = [(ACAssistantDisambiguationController *)self _picker];
 
-    if (!v12)
+    if (!_picker)
     {
-      [v9 setLastRow:{objc_msgSend(v6, "row") == objc_msgSend(v10, "count") - 1}];
+      [v9 setLastRow:{objc_msgSend(pathCopy, "row") == objc_msgSend(v10, "count") - 1}];
     }
 
-    v13 = [v11 objectAtIndex:{objc_msgSend(v6, "row")}];
+    v13 = [v11 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
     [v9 setItem:v13];
 
     goto LABEL_9;
   }
 
-  v14 = [(ACAssistantDisambiguationController *)self _picker];
+  _picker2 = [(ACAssistantDisambiguationController *)self _picker];
 
-  if (!v14)
+  if (!_picker2)
   {
-    [v9 setLastRow:{objc_msgSend(v6, "row") == -[NSArray count](self->_filteredItems, "count") - 1}];
+    [v9 setLastRow:{objc_msgSend(pathCopy, "row") == -[NSArray count](self->_filteredItems, "count") - 1}];
   }
 
   if ([(NSMutableArray *)self->_disambiguationItems count])
   {
-    v10 = -[NSMutableArray objectAtIndex:](self->_disambiguationItems, "objectAtIndex:", [v6 row]);
+    v10 = -[NSMutableArray objectAtIndex:](self->_disambiguationItems, "objectAtIndex:", [pathCopy row]);
     [v9 setItem:v10];
 LABEL_9:
 
@@ -650,54 +650,54 @@ LABEL_10:
   return v9;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (UICollectionElementKindSectionHeader != v10)
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if (UICollectionElementKindSectionHeader != kindCopy)
   {
-    sub_C620(self, a2, v10, v11);
+    sub_C620(self, a2, kindCopy, pathCopy);
   }
 
-  v12 = [objc_opt_class() reuseIdentifier];
-  v13 = [v9 dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v12 forIndexPath:v11];
+  reuseIdentifier = [objc_opt_class() reuseIdentifier];
+  v13 = [viewCopy dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:reuseIdentifier forIndexPath:pathCopy];
 
   if (self->_isGroup)
   {
-    v14 = [(SAUIDisambiguationGroup *)self->_disambiguationGroup disambiguationLists];
-    v15 = [v14 objectAtIndex:{objc_msgSend(v11, "section")}];
+    disambiguationLists = [(SAUIDisambiguationGroup *)self->_disambiguationGroup disambiguationLists];
+    v15 = [disambiguationLists objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
-    v16 = [v15 groupTitle];
-    v17 = [v16 length];
+    groupTitle = [v15 groupTitle];
+    v17 = [groupTitle length];
 
     if (v17)
     {
-      v18 = [v15 groupTitle];
-      [v13 setText:v18];
+      groupTitle2 = [v15 groupTitle];
+      [v13 setText:groupTitle2];
     }
   }
 
   return v13;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
   if (self->_isGroup)
   {
-    v7 = [(SAUIDisambiguationGroup *)self->_disambiguationGroup disambiguationLists:a3];
-    v8 = [v7 objectAtIndex:a5];
+    v7 = [(SAUIDisambiguationGroup *)self->_disambiguationGroup disambiguationLists:view];
+    v8 = [v7 objectAtIndex:section];
 
-    v9 = [v8 groupTitle];
-    v10 = [v9 length];
+    groupTitle = [v8 groupTitle];
+    v10 = [groupTitle length];
 
     if (v10)
     {
-      v11 = [(ACAssistantDisambiguationController *)self delegate];
-      [v11 siriViewControllerExpectedWidth:self];
+      delegate = [(ACAssistantDisambiguationController *)self delegate];
+      [delegate siriViewControllerExpectedWidth:self];
       v13 = v12;
-      v14 = [v8 groupTitle];
-      [SiriUIPlatterSectionHeaderCollectionViewCell sizeThatFits:v14 text:v13, 1.79769313e308];
+      groupTitle2 = [v8 groupTitle];
+      [SiriUIPlatterSectionHeaderCollectionViewCell sizeThatFits:groupTitle2 text:v13, 1.79769313e308];
       width = v15;
       height = v17;
     }
@@ -722,13 +722,13 @@ LABEL_10:
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectItemAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [view deselectItemAtIndexPath:pathCopy animated:1];
   if (self->_isGroup)
   {
-    v7 = -[NSMutableArray objectAtIndex:](self->_filteredItemsList, "objectAtIndex:", [v6 section]);
+    v7 = -[NSMutableArray objectAtIndex:](self->_filteredItemsList, "objectAtIndex:", [pathCopy section]);
   }
 
   else
@@ -737,9 +737,9 @@ LABEL_10:
   }
 
   v8 = v7;
-  v9 = -[NSArray objectAtIndex:](v7, "objectAtIndex:", [v6 row]);
-  v10 = [v9 commands];
-  v11 = [v9 object];
+  v9 = -[NSArray objectAtIndex:](v7, "objectAtIndex:", [pathCopy row]);
+  commands = [v9 commands];
+  object = [v9 object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -747,47 +747,47 @@ LABEL_10:
   {
     v13 = objc_alloc_init(SAUIDisambiguationItemSelected);
     v14 = +[NSUUID UUID];
-    v15 = [v14 UUIDString];
-    [v13 setAceId:v15];
+    uUIDString = [v14 UUIDString];
+    [v13 setAceId:uUIDString];
 
-    v16 = [v9 aceId];
-    [v13 setSelectedAceId:v16];
+    aceId = [v9 aceId];
+    [v13 setSelectedAceId:aceId];
 
     v21 = v13;
     v17 = [NSArray arrayWithObjects:&v21 count:1];
-    v18 = [v10 arrayByAddingObjectsFromArray:v17];
+    v18 = [commands arrayByAddingObjectsFromArray:v17];
 
-    v10 = v18;
+    commands = v18;
   }
 
-  v19 = [(ACAssistantDisambiguationController *)self delegate];
-  [v19 siriViewController:self addSelectionResponse:v9];
+  delegate = [(ACAssistantDisambiguationController *)self delegate];
+  [delegate siriViewController:self addSelectionResponse:v9];
 
-  v20 = [(ACAssistantDisambiguationController *)self delegate];
-  [v20 siriViewController:self performAceCommands:v10];
+  delegate2 = [(ACAssistantDisambiguationController *)self delegate];
+  [delegate2 siriViewController:self performAceCommands:commands];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
+  viewCopy = view;
+  pathCopy = path;
   +[ACAssistantDisambiguationCell defaultHeight];
   v10 = v9;
   if (self->_isGroup)
   {
-    v11 = -[NSMutableArray objectAtIndex:](self->_disambiguationItemsList, "objectAtIndex:", [v8 section]);
-    v12 = [v11 objectAtIndex:{objc_msgSend(v8, "row")}];
+    v11 = -[NSMutableArray objectAtIndex:](self->_disambiguationItemsList, "objectAtIndex:", [pathCopy section]);
+    v12 = [v11 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
   }
 
   else
   {
     v13 = [(NSMutableArray *)self->_disambiguationItems count];
-    if (v13 <= [v8 row])
+    if (v13 <= [pathCopy row])
     {
       v14 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
       {
-        sub_C6D0(&self->_disambiguationItems, v14, v8);
+        sub_C6D0(&self->_disambiguationItems, v14, pathCopy);
       }
 
       v12 = 0;
@@ -795,20 +795,20 @@ LABEL_10:
 
     else
     {
-      v12 = -[NSMutableArray objectAtIndex:](self->_disambiguationItems, "objectAtIndex:", [v8 row]);
+      v12 = -[NSMutableArray objectAtIndex:](self->_disambiguationItems, "objectAtIndex:", [pathCopy row]);
     }
   }
 
-  v15 = [v12 imageView];
+  imageView = [v12 imageView];
 
-  if (v15)
+  if (imageView)
   {
     +[ACAssistantDisambiguationCell defaultHeightWithImageView];
     goto LABEL_14;
   }
 
-  v17 = [v12 subtitle];
-  if (v17)
+  subtitle = [v12 subtitle];
+  if (subtitle)
   {
 
 LABEL_13:
@@ -816,16 +816,16 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v18 = [v12 extraDisambiguationSubText];
+  extraDisambiguationSubText = [v12 extraDisambiguationSubText];
 
-  if (v18)
+  if (extraDisambiguationSubText)
   {
     goto LABEL_13;
   }
 
-  v23 = [v12 headingText];
+  headingText = [v12 headingText];
 
-  if (!v23)
+  if (!headingText)
   {
     goto LABEL_15;
   }
@@ -834,7 +834,7 @@ LABEL_13:
 LABEL_14:
   v10 = v16;
 LABEL_15:
-  [v7 size];
+  [viewCopy size];
   v20 = v19;
 
   v21 = v20;
@@ -848,24 +848,24 @@ LABEL_15:
 {
   if (self->_isGroup)
   {
-    v2 = [(SAUIDisambiguationGroup *)self->_disambiguationGroup disambiguationLists];
-    v3 = [v2 firstObject];
-    v4 = [v3 domainObjectPicker];
+    disambiguationLists = [(SAUIDisambiguationGroup *)self->_disambiguationGroup disambiguationLists];
+    firstObject = [disambiguationLists firstObject];
+    domainObjectPicker = [firstObject domainObjectPicker];
   }
 
   else
   {
-    v4 = [(SAUIDisambiguationList *)self->_disambiguationList domainObjectPicker];
+    domainObjectPicker = [(SAUIDisambiguationList *)self->_disambiguationList domainObjectPicker];
   }
 
-  return v4;
+  return domainObjectPicker;
 }
 
 - (Class)footerViewClass
 {
-  v2 = [(ACAssistantDisambiguationController *)self _picker];
+  _picker = [(ACAssistantDisambiguationController *)self _picker];
 
-  if (v2)
+  if (_picker)
   {
     v3 = objc_opt_class();
   }
@@ -883,8 +883,8 @@ LABEL_15:
   pickerController = self->_pickerController;
   if (!pickerController)
   {
-    v4 = [(ACAssistantDisambiguationController *)self _picker];
-    v5 = [SiriUIObjectPickerViewController pickerControllerWithPicker:v4];
+    _picker = [(ACAssistantDisambiguationController *)self _picker];
+    v5 = [SiriUIObjectPickerViewController pickerControllerWithPicker:_picker];
     v6 = self->_pickerController;
     self->_pickerController = v5;
 
@@ -895,32 +895,32 @@ LABEL_15:
   return pickerController;
 }
 
-- (void)configureReusableFooterView:(id)a3
+- (void)configureReusableFooterView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 subviews];
-  [v5 makeObjectsPerformSelector:"removeFromSuperview"];
+  viewCopy = view;
+  subviews = [viewCopy subviews];
+  [subviews makeObjectsPerformSelector:"removeFromSuperview"];
 
   v7 = objc_alloc_init(SiriUIObjectPickerButtonView);
-  v6 = [v7 button];
-  [v6 addTarget:self action:"_showPicker:" forControlEvents:64];
+  button = [v7 button];
+  [button addTarget:self action:"_showPicker:" forControlEvents:64];
 
   [v7 setAutoresizingMask:18];
-  [v4 bounds];
+  [viewCopy bounds];
   [v7 setFrame:?];
-  [v4 addSubview:v7];
+  [viewCopy addSubview:v7];
 }
 
-- (void)_showPicker:(id)a3
+- (void)_showPicker:(id)picker
 {
-  v3 = [(ACAssistantDisambiguationController *)self _pickerController];
-  [v3 showPicker:0];
+  _pickerController = [(ACAssistantDisambiguationController *)self _pickerController];
+  [_pickerController showPicker:0];
 }
 
 - (double)desiredHeightForFooterView
 {
-  v2 = [(ACAssistantDisambiguationController *)self _picker];
-  if (v2)
+  _picker = [(ACAssistantDisambiguationController *)self _picker];
+  if (_picker)
   {
     +[SiriUIObjectPickerButtonView defaultHeight];
     v4 = v3;
@@ -934,57 +934,57 @@ LABEL_15:
   return v4;
 }
 
-- (void)pickerViewController:(id)a3 shouldPresentPicker:(id)a4 completion:(id)a5
+- (void)pickerViewController:(id)controller shouldPresentPicker:(id)picker completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(ACAssistantDisambiguationController *)self delegate];
-  [v9 siriSnippetViewController:self shouldPresentPicker:v8 completion:v7];
+  completionCopy = completion;
+  pickerCopy = picker;
+  delegate = [(ACAssistantDisambiguationController *)self delegate];
+  [delegate siriSnippetViewController:self shouldPresentPicker:pickerCopy completion:completionCopy];
 }
 
-- (void)pickerViewController:(id)a3 willPresentPicker:(id)a4
+- (void)pickerViewController:(id)controller willPresentPicker:(id)picker
 {
-  v5 = a4;
-  v6 = [(ACAssistantDisambiguationController *)self delegate];
-  [v6 cancelRequestForSiriSnippetViewController:self];
+  pickerCopy = picker;
+  delegate = [(ACAssistantDisambiguationController *)self delegate];
+  [delegate cancelRequestForSiriSnippetViewController:self];
 
-  v7 = [(ACAssistantDisambiguationController *)self delegate];
-  [v7 siriSnippetViewController:self setStatusViewHidden:1];
+  delegate2 = [(ACAssistantDisambiguationController *)self delegate];
+  [delegate2 siriSnippetViewController:self setStatusViewHidden:1];
 
-  v8 = [(ACAssistantDisambiguationController *)self _privateDelegate];
-  [v8 siriSnippetViewController:self willPresentViewController:v5];
+  _privateDelegate = [(ACAssistantDisambiguationController *)self _privateDelegate];
+  [_privateDelegate siriSnippetViewController:self willPresentViewController:pickerCopy];
 }
 
-- (void)pickerViewController:(id)a3 didSelectObject:(id)a4 fromPicker:(id)a5
+- (void)pickerViewController:(id)controller didSelectObject:(id)object fromPicker:(id)picker
 {
-  v6 = a4;
-  v7 = [(ACAssistantDisambiguationController *)self delegate];
-  v10 = v6;
+  objectCopy = object;
+  delegate = [(ACAssistantDisambiguationController *)self delegate];
+  v10 = objectCopy;
   v8 = [NSArray arrayWithObjects:&v10 count:1];
 
-  [v7 siriViewController:self performAceCommands:v8];
-  v9 = [(ACAssistantDisambiguationController *)self delegate];
-  [v9 siriSnippetViewController:self setStatusViewHidden:0];
+  [delegate siriViewController:self performAceCommands:v8];
+  delegate2 = [(ACAssistantDisambiguationController *)self delegate];
+  [delegate2 siriSnippetViewController:self setStatusViewHidden:0];
 }
 
-- (void)pickerViewController:(id)a3 willDismissPicker:(id)a4
+- (void)pickerViewController:(id)controller willDismissPicker:(id)picker
 {
-  v5 = a4;
-  v6 = [(ACAssistantDisambiguationController *)self _privateDelegate];
-  [v6 siriSnippetViewController:self willDismissViewController:v5];
+  pickerCopy = picker;
+  _privateDelegate = [(ACAssistantDisambiguationController *)self _privateDelegate];
+  [_privateDelegate siriSnippetViewController:self willDismissViewController:pickerCopy];
 }
 
-- (void)pickerViewController:(id)a3 didDismissPicker:(id)a4
+- (void)pickerViewController:(id)controller didDismissPicker:(id)picker
 {
-  v5 = [(ACAssistantDisambiguationController *)self delegate:a3];
+  v5 = [(ACAssistantDisambiguationController *)self delegate:controller];
   [v5 siriSnippetViewController:self setStatusViewHidden:0];
 }
 
-- (void)pickerViewController:(id)a3 didRequestKeyboardWithVisibility:(BOOL)a4
+- (void)pickerViewController:(id)controller didRequestKeyboardWithVisibility:(BOOL)visibility
 {
-  v4 = a4;
-  v6 = [(ACAssistantDisambiguationController *)self _privateDelegate];
-  [v6 siriSnippetViewController:self didRequestKeyboardWithVisibility:v4];
+  visibilityCopy = visibility;
+  _privateDelegate = [(ACAssistantDisambiguationController *)self _privateDelegate];
+  [_privateDelegate siriSnippetViewController:self didRequestKeyboardWithVisibility:visibilityCopy];
 }
 
 @end

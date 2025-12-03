@@ -1,13 +1,13 @@
 @interface PPAugmentedGazetteer
-+ (id)textForToken:(void *)a3 text:;
++ (id)textForToken:(void *)token text:;
 - (PPAugmentedGazetteer)init;
-- (PPAugmentedGazetteer)initWithDatabaseAsset:(id)a3 gazetteerPath:(id)a4 contextPredictor:(id)a5;
-- (PPAugmentedGazetteer)initWithDatabaseAssetPath:(id)a3 gazetteerPath:(id)a4 contextPredictor:(id)a5;
-- (id)metadataForName:(id)a3;
+- (PPAugmentedGazetteer)initWithDatabaseAsset:(id)asset gazetteerPath:(id)path contextPredictor:(id)predictor;
+- (PPAugmentedGazetteer)initWithDatabaseAssetPath:(id)path gazetteerPath:(id)gazetteerPath contextPredictor:(id)predictor;
+- (id)metadataForName:(id)name;
 - (void)dealloc;
-- (void)iterExtractionsForText:(id)a3 addEntity:(id)a4 addTopic:(id)a5 addLocation:(id)a6;
-- (void)iterSentencesForText:(id)a3 block:(id)a4;
-- (void)iterTokensForSentence:(id)a3 block:(id)a4;
+- (void)iterExtractionsForText:(id)text addEntity:(id)entity addTopic:(id)topic addLocation:(id)location;
+- (void)iterSentencesForText:(id)text block:(id)block;
+- (void)iterTokensForSentence:(id)sentence block:(id)block;
 @end
 
 @implementation PPAugmentedGazetteer
@@ -21,9 +21,9 @@
   v6 = [v5 filepathForFactor:@"AugmentedGazetteer.dat" namespaceName:@"PERSONALIZATION_PORTRAIT_GLOBAL"];
 
   v7 = MEMORY[0x277D3A248];
-  v8 = [MEMORY[0x277CBEAF8] currentLocale];
-  v9 = [v8 languageCode];
-  v10 = [v7 languageForLocaleIdentifier:v9];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  languageCode = [currentLocale languageCode];
+  v10 = [v7 languageForLocaleIdentifier:languageCode];
   language = self->_language;
   self->_language = v10;
 
@@ -51,19 +51,19 @@ uint64_t __31__PPAugmentedGazetteer_dealloc__block_invoke(uint64_t a1, void *a2)
   return MEMORY[0x282152500](v4);
 }
 
-- (void)iterTokensForSentence:(id)a3 block:(id)a4
+- (void)iterTokensForSentence:(id)sentence block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  sentenceCopy = sentence;
+  blockCopy = block;
   lock = self->_lock;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __52__PPAugmentedGazetteer_iterTokensForSentence_block___block_invoke;
   v11[3] = &unk_2789762C0;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sentenceCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = sentenceCopy;
   [(_PASLock *)lock runWithLockAcquired:v11];
 }
 
@@ -104,32 +104,32 @@ void __52__PPAugmentedGazetteer_iterTokensForSentence_block___block_invoke_2(voi
   objc_autoreleasePoolPop(v6);
 }
 
-+ (id)textForToken:(void *)a3 text:
++ (id)textForToken:(void *)token text:
 {
-  v4 = a3;
+  tokenCopy = token;
   objc_opt_self();
   v6 = *a2;
   v5 = a2[1];
   v7 = objc_autoreleasePoolPush();
-  v8 = [v4 substringWithRange:{v6, v5}];
+  v8 = [tokenCopy substringWithRange:{v6, v5}];
   objc_autoreleasePoolPop(v7);
 
   return v8;
 }
 
-- (void)iterSentencesForText:(id)a3 block:(id)a4
+- (void)iterSentencesForText:(id)text block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  blockCopy = block;
   lock = self->_lock;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __51__PPAugmentedGazetteer_iterSentencesForText_block___block_invoke;
   v11[3] = &unk_2789762C0;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = textCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = textCopy;
   [(_PASLock *)lock runWithLockAcquired:v11];
 }
 
@@ -182,9 +182,9 @@ void __51__PPAugmentedGazetteer_iterSentencesForText_block___block_invoke_2(uint
   }
 }
 
-- (id)metadataForName:(id)a3
+- (id)metadataForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_opt_new();
   db = self->_db;
   v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT * FROM %s WHERE name = :name", "metadata"];
@@ -192,14 +192,14 @@ void __51__PPAugmentedGazetteer_iterSentencesForText_block___block_invoke_2(uint
   v15[1] = 3221225472;
   v15[2] = __40__PPAugmentedGazetteer_metadataForName___block_invoke;
   v15[3] = &unk_278978CF8;
-  v16 = v4;
+  v16 = nameCopy;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __40__PPAugmentedGazetteer_metadataForName___block_invoke_2;
   v13[3] = &unk_278978DB8;
   v8 = v5;
   v14 = v8;
-  v9 = v4;
+  v9 = nameCopy;
   [(_PASSqliteDatabase *)db prepAndRunQuery:v7 onPrep:v15 onRow:v13 onError:&__block_literal_global_76];
 
   v10 = v14;
@@ -239,14 +239,14 @@ uint64_t __40__PPAugmentedGazetteer_metadataForName___block_invoke_3(uint64_t a1
   return *MEMORY[0x277D42690];
 }
 
-- (void)iterExtractionsForText:(id)a3 addEntity:(id)a4 addTopic:(id)a5 addLocation:(id)a6
+- (void)iterExtractionsForText:(id)text addEntity:(id)entity addTopic:(id)topic addLocation:(id)location
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(NSString *)self->_language lowercaseString];
-  v15 = [v14 hasPrefix:@"zh"];
+  textCopy = text;
+  entityCopy = entity;
+  topicCopy = topic;
+  locationCopy = location;
+  lowercaseString = [(NSString *)self->_language lowercaseString];
+  v15 = [lowercaseString hasPrefix:@"zh"];
 
   if (v15)
   {
@@ -265,10 +265,10 @@ uint64_t __40__PPAugmentedGazetteer_metadataForName___block_invoke_3(uint64_t a1
     v17[2] = __78__PPAugmentedGazetteer_iterExtractionsForText_addEntity_addTopic_addLocation___block_invoke;
     v17[3] = &unk_278976250;
     v17[4] = self;
-    v18 = v11;
-    v19 = v13;
-    v20 = v12;
-    [(PPAugmentedGazetteer *)self iterSentencesForText:v10 block:v17];
+    v18 = entityCopy;
+    v19 = locationCopy;
+    v20 = topicCopy;
+    [(PPAugmentedGazetteer *)self iterSentencesForText:textCopy block:v17];
   }
 }
 
@@ -493,29 +493,29 @@ void __78__PPAugmentedGazetteer_addExtractions_context_addEntity_addTopic_addLoc
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (PPAugmentedGazetteer)initWithDatabaseAsset:(id)a3 gazetteerPath:(id)a4 contextPredictor:(id)a5
+- (PPAugmentedGazetteer)initWithDatabaseAsset:(id)asset gazetteerPath:(id)path contextPredictor:(id)predictor
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetCopy = asset;
+  pathCopy = path;
+  predictorCopy = predictor;
   v35.receiver = self;
   v35.super_class = PPAugmentedGazetteer;
   v12 = [(PPAugmentedGazetteer *)&v35 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_db, a3);
+    objc_storeStrong(&v12->_db, asset);
     v14 = MEMORY[0x277D3A248];
-    v15 = [MEMORY[0x277CBEAF8] currentLocale];
-    v16 = [v15 languageCode];
-    v17 = [v14 languageForLocaleIdentifier:v16];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    languageCode = [currentLocale languageCode];
+    v17 = [v14 languageForLocaleIdentifier:languageCode];
     language = v13->_language;
     v13->_language = v17;
 
-    objc_storeStrong(&v13->_contextPredictor, a5);
+    objc_storeStrong(&v13->_contextPredictor, predictor);
     v19 = objc_opt_new();
-    v20 = v10;
+    v20 = pathCopy;
     objc_opt_self();
     v38 = *MEMORY[0x277D00398];
     [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
@@ -565,23 +565,23 @@ void __78__PPAugmentedGazetteer_addExtractions_context_addEntity_addTopic_addLoc
   return v13;
 }
 
-- (PPAugmentedGazetteer)initWithDatabaseAssetPath:(id)a3 gazetteerPath:(id)a4 contextPredictor:(id)a5
+- (PPAugmentedGazetteer)initWithDatabaseAssetPath:(id)path gazetteerPath:(id)gazetteerPath contextPredictor:(id)predictor
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  gazetteerPathCopy = gazetteerPath;
+  predictorCopy = predictor;
   v11 = pp_default_log_handle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v29 = v9;
+    v29 = gazetteerPathCopy;
     v30 = 2112;
-    v31 = v8;
+    v31 = pathCopy;
     _os_log_impl(&dword_23224A000, v11, OS_LOG_TYPE_DEFAULT, "PPAugmentedGazetteer: initializing with gazetteer at %@ and database at %@", buf, 0x16u);
   }
 
-  if (!v9)
+  if (!gazetteerPathCopy)
   {
     v16 = pp_default_log_handle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -593,11 +593,11 @@ LABEL_11:
     }
 
 LABEL_12:
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
-  if (!v8)
+  if (!pathCopy)
   {
     v16 = pp_default_log_handle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -611,23 +611,23 @@ LABEL_12:
   }
 
   v12 = objc_alloc(MEMORY[0x277D42630]);
-  v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"file://%@?immutable=1", v8];
+  pathCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"file://%@?immutable=1", pathCopy];
   v27 = 0;
   v14 = objc_opt_new();
-  v15 = [v12 initWithFilename:v13 flags:1 error:&v27 errorHandler:v14];
+  v15 = [v12 initWithFilename:pathCopy flags:1 error:&v27 errorHandler:v14];
   v16 = v27;
 
   if (v15)
   {
     v17 = MEMORY[0x277D3A248];
-    v18 = [MEMORY[0x277CBEAF8] currentLocale];
-    v19 = [v18 languageCode];
-    v20 = [v17 languageForLocaleIdentifier:v19];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    languageCode = [currentLocale languageCode];
+    v20 = [v17 languageForLocaleIdentifier:languageCode];
     language = self->_language;
     self->_language = v20;
 
-    self = [(PPAugmentedGazetteer *)self initWithDatabaseAsset:v15 gazetteerPath:v9 contextPredictor:v10];
-    v22 = self;
+    self = [(PPAugmentedGazetteer *)self initWithDatabaseAsset:v15 gazetteerPath:gazetteerPathCopy contextPredictor:predictorCopy];
+    selfCopy = self;
   }
 
   else
@@ -640,12 +640,12 @@ LABEL_12:
       _os_log_error_impl(&dword_23224A000, v24, OS_LOG_TYPE_ERROR, "PPAugmentedGazetteer: unable to open database. %@", buf, 0xCu);
     }
 
-    v22 = 0;
+    selfCopy = 0;
   }
 
 LABEL_17:
   v25 = *MEMORY[0x277D85DE8];
-  return v22;
+  return selfCopy;
 }
 
 @end

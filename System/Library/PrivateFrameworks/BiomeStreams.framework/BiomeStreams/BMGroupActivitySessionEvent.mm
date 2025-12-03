@@ -1,9 +1,9 @@
 @interface BMGroupActivitySessionEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMGroupActivitySessionEvent)initWithIsActive:(BOOL)a3 sourceBundleID:(id)a4 activitySessionID:(id)a5 activityID:(id)a6 messagesChatGuid:(id)a7 participantHandles:(id)a8 memberHandles:(id)a9 experienceType:(id)a10;
-- (BMGroupActivitySessionEvent)initWithProto:(id)a3;
-- (BMGroupActivitySessionEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMGroupActivitySessionEvent)initWithIsActive:(BOOL)active sourceBundleID:(id)d activitySessionID:(id)iD activityID:(id)activityID messagesChatGuid:(id)guid participantHandles:(id)handles memberHandles:(id)memberHandles experienceType:(id)self0;
+- (BMGroupActivitySessionEvent)initWithProto:(id)proto;
+- (BMGroupActivitySessionEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -12,47 +12,47 @@
 
 @implementation BMGroupActivitySessionEvent
 
-- (BMGroupActivitySessionEvent)initWithIsActive:(BOOL)a3 sourceBundleID:(id)a4 activitySessionID:(id)a5 activityID:(id)a6 messagesChatGuid:(id)a7 participantHandles:(id)a8 memberHandles:(id)a9 experienceType:(id)a10
+- (BMGroupActivitySessionEvent)initWithIsActive:(BOOL)active sourceBundleID:(id)d activitySessionID:(id)iD activityID:(id)activityID messagesChatGuid:(id)guid participantHandles:(id)handles memberHandles:(id)memberHandles experienceType:(id)self0
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  dCopy = d;
+  iDCopy = iD;
+  activityIDCopy = activityID;
+  guidCopy = guid;
+  handlesCopy = handles;
+  memberHandlesCopy = memberHandles;
+  typeCopy = type;
   v40.receiver = self;
   v40.super_class = BMGroupActivitySessionEvent;
   v23 = [(BMEventBase *)&v40 init];
   v24 = v23;
   if (v23)
   {
-    v23->_isActive = a3;
-    v25 = [v16 copy];
+    v23->_isActive = active;
+    v25 = [dCopy copy];
     sourceBundleID = v24->_sourceBundleID;
     v24->_sourceBundleID = v25;
 
-    v27 = [v17 copy];
+    v27 = [iDCopy copy];
     activitySessionID = v24->_activitySessionID;
     v24->_activitySessionID = v27;
 
-    v29 = [v18 copy];
+    v29 = [activityIDCopy copy];
     activityID = v24->_activityID;
     v24->_activityID = v29;
 
-    v31 = [v19 copy];
+    v31 = [guidCopy copy];
     messagesChatGuid = v24->_messagesChatGuid;
     v24->_messagesChatGuid = v31;
 
-    v33 = [v20 copy];
+    v33 = [handlesCopy copy];
     participantHandles = v24->_participantHandles;
     v24->_participantHandles = v33;
 
-    v35 = [v21 copy];
+    v35 = [memberHandlesCopy copy];
     memberHandles = v24->_memberHandles;
     v24->_memberHandles = v35;
 
-    v37 = [v22 copy];
+    v37 = [typeCopy copy];
     experienceType = v24->_experienceType;
     v24->_experienceType = v37;
   }
@@ -78,29 +78,29 @@
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMGroupActivitySessionEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMGroupActivitySessionEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMGroupActivitySessionEvent)initWithProto:(id)a3
+- (BMGroupActivitySessionEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -116,68 +116,68 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v16 = [v5 isActive];
-  v6 = [v5 sourceBundleId];
-  v7 = [v5 activitySessionId];
-  v8 = [v5 activityId];
-  v9 = [v5 messagesChatGuid];
-  v10 = [v5 participantHandles];
-  v11 = [v5 memberHandles];
-  v12 = [v5 experienceType];
+  v5 = protoCopy;
+  isActive = [v5 isActive];
+  sourceBundleId = [v5 sourceBundleId];
+  activitySessionId = [v5 activitySessionId];
+  activityId = [v5 activityId];
+  messagesChatGuid = [v5 messagesChatGuid];
+  participantHandles = [v5 participantHandles];
+  memberHandles = [v5 memberHandles];
+  experienceType = [v5 experienceType];
 
-  self = [(BMGroupActivitySessionEvent *)self initWithIsActive:v16 sourceBundleID:v6 activitySessionID:v7 activityID:v8 messagesChatGuid:v9 participantHandles:v10 memberHandles:v11 experienceType:v12];
-  v13 = self;
+  self = [(BMGroupActivitySessionEvent *)self initWithIsActive:isActive sourceBundleID:sourceBundleId activitySessionID:activitySessionId activityID:activityId messagesChatGuid:messagesChatGuid participantHandles:participantHandles memberHandles:memberHandles experienceType:experienceType];
+  selfCopy = self;
 LABEL_8:
 
-  return v13;
+  return selfCopy;
 }
 
-- (BMGroupActivitySessionEvent)initWithProtoData:(id)a3
+- (BMGroupActivitySessionEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBGroupActivitySessionEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBGroupActivitySessionEvent alloc] initWithData:dataCopy];
 
     self = [(BMGroupActivitySessionEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
   [v3 setIsActive:{-[BMGroupActivitySessionEvent isActive](self, "isActive")}];
-  v4 = [(BMGroupActivitySessionEvent *)self sourceBundleID];
-  [v3 setSourceBundleId:v4];
+  sourceBundleID = [(BMGroupActivitySessionEvent *)self sourceBundleID];
+  [v3 setSourceBundleId:sourceBundleID];
 
-  v5 = [(BMGroupActivitySessionEvent *)self activitySessionID];
-  [v3 setActivitySessionId:v5];
+  activitySessionID = [(BMGroupActivitySessionEvent *)self activitySessionID];
+  [v3 setActivitySessionId:activitySessionID];
 
-  v6 = [(BMGroupActivitySessionEvent *)self activityID];
-  [v3 setActivityId:v6];
+  activityID = [(BMGroupActivitySessionEvent *)self activityID];
+  [v3 setActivityId:activityID];
 
-  v7 = [(BMGroupActivitySessionEvent *)self messagesChatGuid];
-  [v3 setMessagesChatGuid:v7];
+  messagesChatGuid = [(BMGroupActivitySessionEvent *)self messagesChatGuid];
+  [v3 setMessagesChatGuid:messagesChatGuid];
 
-  v8 = [(BMGroupActivitySessionEvent *)self participantHandles];
-  v9 = [v8 mutableCopy];
+  participantHandles = [(BMGroupActivitySessionEvent *)self participantHandles];
+  v9 = [participantHandles mutableCopy];
   [v3 setParticipantHandles:v9];
 
-  v10 = [(BMGroupActivitySessionEvent *)self memberHandles];
-  v11 = [v10 mutableCopy];
+  memberHandles = [(BMGroupActivitySessionEvent *)self memberHandles];
+  v11 = [memberHandles mutableCopy];
   [v3 setMemberHandles:v11];
 
-  v12 = [(BMGroupActivitySessionEvent *)self experienceType];
-  [v3 setExperienceType:v12];
+  experienceType = [(BMGroupActivitySessionEvent *)self experienceType];
+  [v3 setExperienceType:experienceType];
 
   return v3;
 }
@@ -194,15 +194,15 @@ LABEL_8:
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMGroupActivitySessionEvent *)self isActive];
-    if (v6 != [v5 isActive])
+    v5 = equalCopy;
+    isActive = [(BMGroupActivitySessionEvent *)self isActive];
+    if (isActive != [v5 isActive])
     {
 LABEL_3:
       v7 = 0;
@@ -211,35 +211,35 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v8 = [(BMGroupActivitySessionEvent *)self sourceBundleID];
-    v9 = [v5 sourceBundleID];
-    if ([v8 isEqualToString:v9])
+    sourceBundleID = [(BMGroupActivitySessionEvent *)self sourceBundleID];
+    sourceBundleID2 = [v5 sourceBundleID];
+    if ([sourceBundleID isEqualToString:sourceBundleID2])
     {
-      v10 = [(BMGroupActivitySessionEvent *)self activitySessionID];
-      v11 = [v5 activitySessionID];
-      if ([v10 isEqualToString:v11])
+      activitySessionID = [(BMGroupActivitySessionEvent *)self activitySessionID];
+      activitySessionID2 = [v5 activitySessionID];
+      if ([activitySessionID isEqualToString:activitySessionID2])
       {
-        v12 = [(BMGroupActivitySessionEvent *)self activityID];
-        v13 = [v5 activityID];
-        if ([v12 isEqualToString:v13])
+        activityID = [(BMGroupActivitySessionEvent *)self activityID];
+        activityID2 = [v5 activityID];
+        if ([activityID isEqualToString:activityID2])
         {
           [(BMGroupActivitySessionEvent *)self experienceType];
-          v14 = v26 = v12;
-          v15 = [v5 experienceType];
-          v27 = [v14 isEqualToString:v15];
+          v14 = v26 = activityID;
+          experienceType = [v5 experienceType];
+          v27 = [v14 isEqualToString:experienceType];
 
           if (!v27)
           {
             goto LABEL_3;
           }
 
-          v16 = [(BMGroupActivitySessionEvent *)self messagesChatGuid];
+          messagesChatGuid = [(BMGroupActivitySessionEvent *)self messagesChatGuid];
 
-          if (v16)
+          if (messagesChatGuid)
           {
-            v17 = [(BMGroupActivitySessionEvent *)self messagesChatGuid];
-            v18 = [v5 messagesChatGuid];
-            v7 = [v17 isEqualToString:v18];
+            messagesChatGuid2 = [(BMGroupActivitySessionEvent *)self messagesChatGuid];
+            messagesChatGuid3 = [v5 messagesChatGuid];
+            v7 = [messagesChatGuid2 isEqualToString:messagesChatGuid3];
           }
 
           else
@@ -247,41 +247,41 @@ LABEL_16:
             v7 = 0;
           }
 
-          v20 = [(BMGroupActivitySessionEvent *)self participantHandles];
-          if ([v20 count])
+          participantHandles = [(BMGroupActivitySessionEvent *)self participantHandles];
+          if ([participantHandles count])
           {
-            v21 = [v5 participantHandles];
-            v22 = [v21 count];
+            participantHandles2 = [v5 participantHandles];
+            v22 = [participantHandles2 count];
 
             if (!v22)
             {
 LABEL_23:
-              v8 = [(BMGroupActivitySessionEvent *)self memberHandles];
-              if (![v8 count])
+              sourceBundleID = [(BMGroupActivitySessionEvent *)self memberHandles];
+              if (![sourceBundleID count])
               {
                 goto LABEL_15;
               }
 
-              v24 = [v5 memberHandles];
-              v25 = [v24 count];
+              memberHandles = [v5 memberHandles];
+              v25 = [memberHandles count];
 
               if (!v25)
               {
                 goto LABEL_16;
               }
 
-              v8 = [(BMGroupActivitySessionEvent *)self memberHandles];
-              v9 = [v5 memberHandles];
-              v7 = [v8 isEqualToArray:v9];
+              sourceBundleID = [(BMGroupActivitySessionEvent *)self memberHandles];
+              sourceBundleID2 = [v5 memberHandles];
+              v7 = [sourceBundleID isEqualToArray:sourceBundleID2];
 LABEL_14:
 
 LABEL_15:
               goto LABEL_16;
             }
 
-            v20 = [(BMGroupActivitySessionEvent *)self participantHandles];
-            v23 = [v5 participantHandles];
-            v7 = [v20 isEqualToArray:v23];
+            participantHandles = [(BMGroupActivitySessionEvent *)self participantHandles];
+            participantHandles3 = [v5 participantHandles];
+            v7 = [participantHandles isEqualToArray:participantHandles3];
           }
 
           goto LABEL_23;

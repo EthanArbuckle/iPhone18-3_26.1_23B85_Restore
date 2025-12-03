@@ -1,41 +1,41 @@
 @interface CBHistogramBuilder2D
-- (CBHistogramBuilder2D)initWithFirstDim:(id)a3 andSecondDim:(id)a4;
+- (CBHistogramBuilder2D)initWithFirstDim:(id)dim andSecondDim:(id)secondDim;
 - (void)dealloc;
-- (void)enumerateBinsUsingBlock:(id)a3;
-- (void)pushNumberWeighted:(double)a3 withWeight:(double)a4 forFirstDimValue:(float)a5;
+- (void)enumerateBinsUsingBlock:(id)block;
+- (void)pushNumberWeighted:(double)weighted withWeight:(double)weight forFirstDimValue:(float)value;
 @end
 
 @implementation CBHistogramBuilder2D
 
-- (CBHistogramBuilder2D)initWithFirstDim:(id)a3 andSecondDim:(id)a4
+- (CBHistogramBuilder2D)initWithFirstDim:(id)dim andSecondDim:(id)secondDim
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
-  v12 = a4;
+  dimCopy = dim;
+  secondDimCopy = secondDim;
   v11.receiver = self;
   v11.super_class = CBHistogramBuilder2D;
-  v15 = [(CBHistogramBuilder2D *)&v11 init];
-  if (!v15)
+  selfCopy = [(CBHistogramBuilder2D *)&v11 init];
+  if (!selfCopy)
   {
-    return v15;
+    return selfCopy;
   }
 
-  if (v13 && v12)
+  if (dimCopy && secondDimCopy)
   {
-    v4 = MEMORY[0x1E69E5928](v13);
-    v15->_firstDimEdges = v4;
+    v4 = MEMORY[0x1E69E5928](dimCopy);
+    selfCopy->_firstDimEdges = v4;
     v9 = objc_alloc(MEMORY[0x1E695DF70]);
-    v5 = [v9 initWithCapacity:{-[NSArray count](v15->_firstDimEdges, "count") + 1}];
-    v15->_histograms = v5;
-    for (i = 0; i < [(NSArray *)v15->_firstDimEdges count]+ 1; ++i)
+    v5 = [v9 initWithCapacity:{-[NSArray count](selfCopy->_firstDimEdges, "count") + 1}];
+    selfCopy->_histograms = v5;
+    for (i = 0; i < [(NSArray *)selfCopy->_firstDimEdges count]+ 1; ++i)
     {
-      histograms = v15->_histograms;
+      histograms = selfCopy->_histograms;
       v6 = [CBHistogramBuilder alloc];
-      [(NSMutableArray *)histograms insertObject:[(CBHistogramBuilder *)v6 initWithEdges:v12] atIndex:i];
+      [(NSMutableArray *)histograms insertObject:[(CBHistogramBuilder *)v6 initWithEdges:secondDimCopy] atIndex:i];
     }
 
-    return v15;
+    return selfCopy;
   }
 
   return 0;
@@ -43,16 +43,16 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   MEMORY[0x1E69E5920](self->_histograms);
-  *&v2 = MEMORY[0x1E69E5920](v5->_firstDimEdges).n128_u64[0];
-  v3.receiver = v5;
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_firstDimEdges).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = CBHistogramBuilder2D;
   [(CBHistogramBuilder2D *)&v3 dealloc];
 }
 
-- (void)pushNumberWeighted:(double)a3 withWeight:(double)a4 forFirstDimValue:(float)a5
+- (void)pushNumberWeighted:(double)weighted withWeight:(double)weight forFirstDimValue:(float)value
 {
   for (i = 0; i < [(NSMutableArray *)self->_histograms count]; ++i)
   {
@@ -60,34 +60,34 @@
     {
       [-[NSArray objectAtIndex:](self->_firstDimEdges objectAtIndex:{i), "doubleValue"}];
       v7 = v6;
-      v5 = a5;
-      if (a5 >= v7)
+      valueCopy = value;
+      if (value >= v7)
       {
         continue;
       }
     }
 
-    [-[NSMutableArray objectAtIndex:](self->_histograms objectAtIndex:{i, v5), "pushNumberWeighted:withWeight:", a3, a4}];
+    [-[NSMutableArray objectAtIndex:](self->_histograms objectAtIndex:{i, valueCopy), "pushNumberWeighted:withWeight:", weighted, weight}];
     return;
   }
 }
 
-- (void)enumerateBinsUsingBlock:(id)a3
+- (void)enumerateBinsUsingBlock:(id)block
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  blockCopy = block;
   context = objc_autoreleasePoolPush();
-  v13 = [(NSMutableArray *)v16->_histograms count];
-  histograms = v16->_histograms;
+  v13 = [(NSMutableArray *)selfCopy->_histograms count];
+  histograms = selfCopy->_histograms;
   v5 = MEMORY[0x1E69E9820];
   v6 = -1073741824;
   v7 = 0;
   v8 = __48__CBHistogramBuilder2D_enumerateBinsUsingBlock___block_invoke;
   v9 = &unk_1E867B2E8;
-  v10 = v16;
+  v10 = selfCopy;
   v12 = v13;
-  v11 = v14;
+  v11 = blockCopy;
   [(NSMutableArray *)histograms enumerateObjectsUsingBlock:?];
   objc_autoreleasePoolPop(context);
 }

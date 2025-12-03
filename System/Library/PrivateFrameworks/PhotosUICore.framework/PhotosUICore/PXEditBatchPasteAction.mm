@@ -1,18 +1,18 @@
 @interface PXEditBatchPasteAction
-- (BOOL)isEligibleForAsyncProcessingOnAsset:(id)a3;
-- (PXEditBatchPasteAction)initWithPresetManager:(id)a3 syncProgress:(id)a4 asyncProgress:(id)a5 asyncLoadingStatusManager:(id)a6 forAssets:(id)a7;
-- (void)_syncPasteDidFinishWithResults:(id)a3 didCancel:(BOOL)a4 completionHandler:(id)a5;
-- (void)performAction:(id)a3;
+- (BOOL)isEligibleForAsyncProcessingOnAsset:(id)asset;
+- (PXEditBatchPasteAction)initWithPresetManager:(id)manager syncProgress:(id)progress asyncProgress:(id)asyncProgress asyncLoadingStatusManager:(id)statusManager forAssets:(id)assets;
+- (void)_syncPasteDidFinishWithResults:(id)results didCancel:(BOOL)cancel completionHandler:(id)handler;
+- (void)performAction:(id)action;
 @end
 
 @implementation PXEditBatchPasteAction
 
-- (BOOL)isEligibleForAsyncProcessingOnAsset:(id)a3
+- (BOOL)isEligibleForAsyncProcessingOnAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   if (self->_target && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [self->_target isEligibleForAsyncProcessingOnAsset:v4];
+    v5 = [self->_target isEligibleForAsyncProcessingOnAsset:assetCopy];
   }
 
   else
@@ -23,32 +23,32 @@
   return v5;
 }
 
-- (void)_syncPasteDidFinishWithResults:(id)a3 didCancel:(BOOL)a4 completionHandler:(id)a5
+- (void)_syncPasteDidFinishWithResults:(id)results didCancel:(BOOL)cancel completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PXEditBatchAction *)self asyncAssets];
-  v11 = v10;
-  if (a4 || ![v10 count])
+  resultsCopy = results;
+  handlerCopy = handler;
+  asyncAssets = [(PXEditBatchAction *)self asyncAssets];
+  v11 = asyncAssets;
+  if (cancel || ![asyncAssets count])
   {
-    [(PXEditBatchAction *)self saveResults:v8 completion:v9];
+    [(PXEditBatchAction *)self saveResults:resultsCopy completion:handlerCopy];
   }
 
   else
   {
     objc_initWeak(&location, self);
     -[PXEditBatchAction willBeginActionIsAsync:itemCount:](self, "willBeginActionIsAsync:itemCount:", 1, [v11 count]);
-    v12 = [(PXEditBatchAction *)self manager];
+    manager = [(PXEditBatchAction *)self manager];
     target = self->_target;
-    v14 = [(PXEditBatchAction *)self asyncProgress];
+    asyncProgress = [(PXEditBatchAction *)self asyncProgress];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __85__PXEditBatchPasteAction__syncPasteDidFinishWithResults_didCancel_completionHandler___block_invoke;
     v15[3] = &unk_1E7742CE8;
-    v16 = v8;
+    v16 = resultsCopy;
     objc_copyWeak(&v18, &location);
-    v17 = v9;
-    [v12 pastePreset:target onAssets:v11 async:1 progress:v14 completion:v15];
+    v17 = handlerCopy;
+    [manager pastePreset:target onAssets:v11 async:1 progress:asyncProgress completion:v15];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -66,15 +66,15 @@ void __85__PXEditBatchPasteAction__syncPasteDidFinishWithResults_didCancel_compl
   [WeakRetained saveResults:v6 completion:*(a1 + 40)];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PXEditBatchAction *)self assets];
-  v6 = v5;
-  if (self->_target && [v5 count])
+  actionCopy = action;
+  assets = [(PXEditBatchAction *)self assets];
+  v6 = assets;
+  if (self->_target && [assets count])
   {
-    v7 = [(PXEditBatchAction *)self manager];
-    if ([v7 isBusyWithBatchAction])
+    manager = [(PXEditBatchAction *)self manager];
+    if ([manager isBusyWithBatchAction])
     {
       v8 = PLUIGetLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -83,23 +83,23 @@ void __85__PXEditBatchPasteAction__syncPasteDidFinishWithResults_didCancel_compl
         _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_ERROR, "Could not complete PXEditPasteAction: Edit manager is busy.", buf, 2u);
       }
 
-      (*(v4 + 2))(v4, 0, 0);
+      (*(actionCopy + 2))(actionCopy, 0, 0);
     }
 
     else
     {
-      v10 = [(PXEditBatchAction *)self syncAssets];
-      -[PXEditBatchAction willBeginActionIsAsync:itemCount:](self, "willBeginActionIsAsync:itemCount:", 0, [v10 count]);
+      syncAssets = [(PXEditBatchAction *)self syncAssets];
+      -[PXEditBatchAction willBeginActionIsAsync:itemCount:](self, "willBeginActionIsAsync:itemCount:", 0, [syncAssets count]);
       objc_initWeak(buf, self);
       target = self->_target;
-      v12 = [(PXEditBatchAction *)self syncProgress];
+      syncProgress = [(PXEditBatchAction *)self syncProgress];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __40__PXEditBatchPasteAction_performAction___block_invoke;
       v13[3] = &unk_1E7742CC0;
       objc_copyWeak(&v15, buf);
-      v14 = v4;
-      [v7 pastePreset:target onAssets:v10 async:0 progress:v12 completion:v13];
+      v14 = actionCopy;
+      [manager pastePreset:target onAssets:syncAssets async:0 progress:syncProgress completion:v13];
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(buf);
@@ -115,7 +115,7 @@ void __85__PXEditBatchPasteAction__syncPasteDidFinishWithResults_didCancel_compl
       _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_ERROR, "Could not complete PXEditPasteAction: No asset or target found", buf, 2u);
     }
 
-    (*(v4 + 2))(v4, 0, 0);
+    (*(actionCopy + 2))(actionCopy, 0, 0);
   }
 }
 
@@ -126,17 +126,17 @@ void __40__PXEditBatchPasteAction_performAction___block_invoke(uint64_t a1, void
   [WeakRetained _syncPasteDidFinishWithResults:v5 didCancel:a3 completionHandler:*(a1 + 32)];
 }
 
-- (PXEditBatchPasteAction)initWithPresetManager:(id)a3 syncProgress:(id)a4 asyncProgress:(id)a5 asyncLoadingStatusManager:(id)a6 forAssets:(id)a7
+- (PXEditBatchPasteAction)initWithPresetManager:(id)manager syncProgress:(id)progress asyncProgress:(id)asyncProgress asyncLoadingStatusManager:(id)statusManager forAssets:(id)assets
 {
-  v12 = a3;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = PXEditBatchPasteAction;
-  v13 = [(PXEditBatchAction *)&v17 initWithPresetManager:v12 syncProgress:a4 asyncProgress:a5 asyncLoadingStatusManager:a6 forAssets:a7];
+  v13 = [(PXEditBatchAction *)&v17 initWithPresetManager:managerCopy syncProgress:progress asyncProgress:asyncProgress asyncLoadingStatusManager:statusManager forAssets:assets];
   if (v13)
   {
-    v14 = [v12 presetFromPasteboard];
+    presetFromPasteboard = [managerCopy presetFromPasteboard];
     target = v13->_target;
-    v13->_target = v14;
+    v13->_target = presetFromPasteboard;
   }
 
   return v13;

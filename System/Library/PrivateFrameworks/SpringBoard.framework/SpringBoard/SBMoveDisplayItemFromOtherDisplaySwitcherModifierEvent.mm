@@ -1,23 +1,23 @@
 @interface SBMoveDisplayItemFromOtherDisplaySwitcherModifierEvent
-- (SBMoveDisplayItemFromOtherDisplaySwitcherModifierEvent)initWithDisplayItem:(id)a3;
+- (SBMoveDisplayItemFromOtherDisplaySwitcherModifierEvent)initWithDisplayItem:(id)item;
 @end
 
 @implementation SBMoveDisplayItemFromOtherDisplaySwitcherModifierEvent
 
-- (SBMoveDisplayItemFromOtherDisplaySwitcherModifierEvent)initWithDisplayItem:(id)a3
+- (SBMoveDisplayItemFromOtherDisplaySwitcherModifierEvent)initWithDisplayItem:(id)item
 {
-  v6 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = SBMoveDisplayItemFromOtherDisplaySwitcherModifierEvent;
   v7 = [(SBWindowingModifierActivity *)&v9 init];
   if (v7)
   {
-    if (!v6)
+    if (!itemCopy)
     {
       [(SBMoveDisplayItemFromOtherDisplaySwitcherModifierEvent *)a2 initWithDisplayItem:v7];
     }
 
-    objc_storeStrong(&v7->_displayItem, a3);
+    objc_storeStrong(&v7->_displayItem, item);
   }
 
   return v7;

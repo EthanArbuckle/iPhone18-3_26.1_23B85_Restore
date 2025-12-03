@@ -1,5 +1,5 @@
 @interface IdentityProofingBaseViewController
-- (_TtC9CoreIDVUI34IdentityProofingBaseViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9CoreIDVUI34IdentityProofingBaseViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -14,9 +14,9 @@
   sub_245869F34();
 }
 
-- (_TtC9CoreIDVUI34IdentityProofingBaseViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9CoreIDVUI34IdentityProofingBaseViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_245910A04();
     v7 = v6;
@@ -28,8 +28,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_24586A770(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_24586A770(v5, v7, bundle);
 }
 
 @end

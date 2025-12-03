@@ -1,22 +1,22 @@
 @interface TRIBGSTManager
-+ (void)_submitDeactivationBGSTRequestAfterSeconds:(int64_t)a3 gracePeriodInSeconds:(int64_t)a4;
-- (TRIBGSTManager)initWithServerContext:(id)a3 asyncQueue:(id)a4;
-- (void)expireBGST:(id)a3;
++ (void)_submitDeactivationBGSTRequestAfterSeconds:(int64_t)seconds gracePeriodInSeconds:(int64_t)inSeconds;
+- (TRIBGSTManager)initWithServerContext:(id)context asyncQueue:(id)queue;
+- (void)expireBGST:(id)t;
 - (void)markAllBGSTsAsCompleted;
-- (void)markBGSTAsStarted:(id)a3;
-- (void)scheduleDeactivationBGSTWithEarliestDeactivationTaskScheduledDate:(id)a3 gracePeriodInSeconds:(int64_t)a4;
+- (void)markBGSTAsStarted:(id)started;
+- (void)scheduleDeactivationBGSTWithEarliestDeactivationTaskScheduledDate:(id)date gracePeriodInSeconds:(int64_t)seconds;
 @end
 
 @implementation TRIBGSTManager
 
-- (TRIBGSTManager)initWithServerContext:(id)a3 asyncQueue:(id)a4
+- (TRIBGSTManager)initWithServerContext:(id)context asyncQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  contextCopy = context;
+  queueCopy = queue;
+  v9 = queueCopy;
+  if (contextCopy)
   {
-    if (v8)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -24,8 +24,8 @@
 
   else
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"TRIBGSTManager.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIBGSTManager.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
     if (v9)
     {
@@ -33,8 +33,8 @@
     }
   }
 
-  v19 = [MEMORY[0x277CCA890] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"TRIBGSTManager.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"asyncQueue"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIBGSTManager.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"asyncQueue"}];
 
 LABEL_3:
   v20.receiver = self;
@@ -43,8 +43,8 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_serverContext, v7);
-    objc_storeStrong(&v11->_asyncQueue, a4);
+    objc_storeWeak(&v10->_serverContext, contextCopy);
+    objc_storeStrong(&v11->_asyncQueue, queue);
     v12 = objc_opt_new();
     v13 = objc_opt_new();
     v14 = v12[1];
@@ -58,15 +58,15 @@ LABEL_3:
   return v11;
 }
 
-- (void)markBGSTAsStarted:(id)a3
+- (void)markBGSTAsStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   lock = self->_lock;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __36__TRIBGSTManager_markBGSTAsStarted___block_invoke;
   v12[3] = &unk_279DE3468;
-  v6 = v4;
+  v6 = startedCopy;
   v13 = v6;
   [(_PASLock *)lock runWithLockAcquired:v12];
   objc_initWeak(&location, self);
@@ -110,16 +110,16 @@ void __36__TRIBGSTManager_markBGSTAsStarted___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)expireBGST:(id)a3
+- (void)expireBGST:(id)t
 {
-  v4 = a3;
+  tCopy = t;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__TRIBGSTManager_expireBGST___block_invoke;
   v7[3] = &unk_279DE3468;
-  v8 = v4;
-  v6 = v4;
+  v8 = tCopy;
+  v6 = tCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -200,18 +200,18 @@ uint64_t __41__TRIBGSTManager_markAllBGSTsAsCompleted__block_invoke(uint64_t a1,
   return [v5 removeAllObjects];
 }
 
-- (void)scheduleDeactivationBGSTWithEarliestDeactivationTaskScheduledDate:(id)a3 gracePeriodInSeconds:(int64_t)a4
+- (void)scheduleDeactivationBGSTWithEarliestDeactivationTaskScheduledDate:(id)date gracePeriodInSeconds:(int64_t)seconds
 {
-  v6 = a3;
+  dateCopy = date;
   lock = self->_lock;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __105__TRIBGSTManager_scheduleDeactivationBGSTWithEarliestDeactivationTaskScheduledDate_gracePeriodInSeconds___block_invoke;
   v9[3] = &unk_279DE34F8;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = dateCopy;
+  selfCopy = self;
+  secondsCopy = seconds;
+  v8 = dateCopy;
   [(_PASLock *)lock runWithLockAcquired:v9];
 }
 
@@ -311,7 +311,7 @@ void __105__TRIBGSTManager_scheduleDeactivationBGSTWithEarliestDeactivationTaskS
   v24 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_submitDeactivationBGSTRequestAfterSeconds:(int64_t)a3 gracePeriodInSeconds:(int64_t)a4
++ (void)_submitDeactivationBGSTRequestAfterSeconds:(int64_t)seconds gracePeriodInSeconds:(int64_t)inSeconds
 {
   v22 = *MEMORY[0x277D85DE8];
   gotLoadHelper_x8__OBJC_CLASS___BGNonRepeatingSystemTaskRequest(v4);
@@ -319,12 +319,12 @@ void __105__TRIBGSTManager_scheduleDeactivationBGSTWithEarliestDeactivationTaskS
   [v8 setPriority:1];
   [v8 setRequiresNetworkConnectivity:0];
   [v8 setRequiresExternalPower:0];
-  [v8 setScheduleAfter:(a3 + 1)];
-  [v8 setTrySchedulingBefore:(a3 + 1 + a4)];
+  [v8 setScheduleAfter:(seconds + 1)];
+  [v8 setTrySchedulingBefore:(seconds + 1 + inSeconds)];
   Helper_x8__OBJC_CLASS___BGSystemTaskScheduler = gotLoadHelper_x8__OBJC_CLASS___BGSystemTaskScheduler(v9);
-  v12 = [*(v11 + 2064) sharedScheduler];
+  sharedScheduler = [*(v11 + 2064) sharedScheduler];
   v19 = 0;
-  v13 = [v12 submitTaskRequest:v8 error:&v19];
+  v13 = [sharedScheduler submitTaskRequest:v8 error:&v19];
   v14 = v19;
 
   v15 = TRILogCategory_Server();
@@ -334,7 +334,7 @@ void __105__TRIBGSTManager_scheduleDeactivationBGSTWithEarliestDeactivationTaskS
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v21 = a3;
+      secondsCopy = seconds;
       _os_log_impl(&dword_26F567000, v16, OS_LOG_TYPE_DEFAULT, "Scheduled the deactivation BGST to run in %lld seconds from now.", buf, 0xCu);
     }
   }
@@ -348,7 +348,7 @@ void __105__TRIBGSTManager_scheduleDeactivationBGSTWithEarliestDeactivationTaskS
     }
 
     *buf = 138412290;
-    v21 = v18;
+    secondsCopy = v18;
     _os_log_error_impl(&dword_26F567000, v16, OS_LOG_TYPE_ERROR, "Failed to submit deactivation BGST with error: %@", buf, 0xCu);
   }
 

@@ -1,98 +1,98 @@
 @interface CAMVideoLocalPersistenceResult
-- (CAMVideoLocalPersistenceResult)initWithCoder:(id)a3;
-- (CAMVideoLocalPersistenceResult)initWithURL:(id)a3 filteredLocalDestinationURL:(id)a4 linkedURL:(id)a5 filteredLinkedURL:(id)a6 videoThumbnailPath:(id)a7 UUID:(id)a8 duration:(id *)a9 dimensions:(id)a10 stillPersistenceUUID:(id)a11 stillDisplayTime:(id *)a12 metadataItems:(id)a13 creationDate:(id)a14 adjustmentsData:(id)a15 coordinationInfo:(id)a16 localPrivateMetadataFileURL:(id)a17 error:(id)a18;
-- (void)encodeWithCoder:(id)a3;
+- (CAMVideoLocalPersistenceResult)initWithCoder:(id)coder;
+- (CAMVideoLocalPersistenceResult)initWithURL:(id)l filteredLocalDestinationURL:(id)rL linkedURL:(id)uRL filteredLinkedURL:(id)linkedURL videoThumbnailPath:(id)path UUID:(id)d duration:(id *)duration dimensions:(id)self0 stillPersistenceUUID:(id)self1 stillDisplayTime:(id *)self2 metadataItems:(id)self3 creationDate:(id)self4 adjustmentsData:(id)self5 coordinationInfo:(id)self6 localPrivateMetadataFileURL:(id)self7 error:(id)self8;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CAMVideoLocalPersistenceResult
 
-- (CAMVideoLocalPersistenceResult)initWithURL:(id)a3 filteredLocalDestinationURL:(id)a4 linkedURL:(id)a5 filteredLinkedURL:(id)a6 videoThumbnailPath:(id)a7 UUID:(id)a8 duration:(id *)a9 dimensions:(id)a10 stillPersistenceUUID:(id)a11 stillDisplayTime:(id *)a12 metadataItems:(id)a13 creationDate:(id)a14 adjustmentsData:(id)a15 coordinationInfo:(id)a16 localPrivateMetadataFileURL:(id)a17 error:(id)a18
+- (CAMVideoLocalPersistenceResult)initWithURL:(id)l filteredLocalDestinationURL:(id)rL linkedURL:(id)uRL filteredLinkedURL:(id)linkedURL videoThumbnailPath:(id)path UUID:(id)d duration:(id *)duration dimensions:(id)self0 stillPersistenceUUID:(id)self1 stillDisplayTime:(id *)self2 metadataItems:(id)self3 creationDate:(id)self4 adjustmentsData:(id)self5 coordinationInfo:(id)self6 localPrivateMetadataFileURL:(id)self7 error:(id)self8
 {
-  v56 = a3;
-  v55 = a4;
-  v57 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = a8;
-  v25 = a11;
-  v26 = a13;
-  v27 = a14;
-  v54 = a15;
-  v28 = a16;
-  v29 = a17;
-  v30 = a18;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
+  linkedURLCopy = linkedURL;
+  pathCopy = path;
+  dCopy = d;
+  iDCopy = iD;
+  itemsCopy = items;
+  dateCopy = date;
+  dataCopy = data;
+  infoCopy = info;
+  fileURLCopy = fileURL;
+  errorCopy = error;
   v58.receiver = self;
   v58.super_class = CAMVideoLocalPersistenceResult;
   v31 = [(CAMVideoLocalPersistenceResult *)&v58 init];
   if (v31)
   {
-    v32 = [v56 copy];
+    v32 = [lCopy copy];
     v33 = *(v31 + 1);
     *(v31 + 1) = v32;
 
-    v34 = [v55 copy];
+    v34 = [rLCopy copy];
     v35 = *(v31 + 2);
     *(v31 + 2) = v34;
 
-    v36 = [v57 copy];
+    v36 = [uRLCopy copy];
     v37 = *(v31 + 3);
     *(v31 + 3) = v36;
 
-    v38 = [v22 copy];
+    v38 = [linkedURLCopy copy];
     v39 = *(v31 + 4);
     *(v31 + 4) = v38;
 
-    v40 = [v23 copy];
+    v40 = [pathCopy copy];
     v41 = *(v31 + 5);
     *(v31 + 5) = v40;
 
-    v42 = [v24 copy];
+    v42 = [dCopy copy];
     v43 = *(v31 + 6);
     *(v31 + 6) = v42;
 
-    v44 = *&a9->var0;
-    *(v31 + 17) = a9->var3;
+    v44 = *&duration->var0;
+    *(v31 + 17) = duration->var3;
     *(v31 + 120) = v44;
-    *(v31 + 7) = a10;
-    v45 = [v25 copy];
+    *(v31 + 7) = dimensions;
+    v45 = [iDCopy copy];
     v46 = *(v31 + 8);
     *(v31 + 8) = v45;
 
-    v47 = *&a12->var0;
-    *(v31 + 20) = a12->var3;
+    v47 = *&time->var0;
+    *(v31 + 20) = time->var3;
     *(v31 + 9) = v47;
-    objc_storeStrong(v31 + 9, a13);
-    objc_storeStrong(v31 + 10, a14);
-    objc_storeStrong(v31 + 11, a15);
-    objc_storeStrong(v31 + 12, a16);
-    v48 = [v29 copy];
+    objc_storeStrong(v31 + 9, items);
+    objc_storeStrong(v31 + 10, date);
+    objc_storeStrong(v31 + 11, data);
+    objc_storeStrong(v31 + 12, info);
+    v48 = [fileURLCopy copy];
     v49 = *(v31 + 13);
     *(v31 + 13) = v48;
 
-    objc_storeStrong(v31 + 14, a18);
+    objc_storeStrong(v31 + 14, error);
     v50 = v31;
   }
 
   return v31;
 }
 
-- (CAMVideoLocalPersistenceResult)initWithCoder:(id)a3
+- (CAMVideoLocalPersistenceResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultLocalDestinationURL"];
-  v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultFilteredLocalDestinationURL"];
-  v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultLinkedDestinationURL"];
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultFilteredLinkedDestinationURL"];
-  v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultVideoThumbnailDestinationPath"];
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultLocalPersistenceUUID"];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultDuration"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultDimensions"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultStillPersistenceUUID"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultStillDisplayTime"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultCreationDate"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultAdjustmentsData"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultLocalPrivateMetadataFileURL"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultError"];
+  coderCopy = coder;
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultLocalDestinationURL"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultFilteredLocalDestinationURL"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultLinkedDestinationURL"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultFilteredLinkedDestinationURL"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultVideoThumbnailDestinationPath"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultLocalPersistenceUUID"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultDuration"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultDimensions"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultStillPersistenceUUID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultStillDisplayTime"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultCreationDate"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultAdjustmentsData"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultLocalPrivateMetadataFileURL"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CAMVideoLocalPersistenceResultError"];
 
   v13 = *MEMORY[0x1E6960C70];
   v32 = *MEMORY[0x1E6960C70];
@@ -133,50 +133,50 @@
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696B098];
   duration = self->_duration;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 valueWithCMTime:&duration];
   duration = self->_stillDisplayTime;
   v7 = [MEMORY[0x1E696B098] valueWithCMTime:&duration];
   v8 = [MEMORY[0x1E696B098] valueWithBytes:&self->_dimensions objCType:"{?=ii}"];
-  v9 = [(CAMVideoLocalPersistenceResult *)self localDestinationURL];
-  [v5 encodeObject:v9 forKey:@"CAMVideoLocalPersistenceResultLocalDestinationURL"];
+  localDestinationURL = [(CAMVideoLocalPersistenceResult *)self localDestinationURL];
+  [coderCopy encodeObject:localDestinationURL forKey:@"CAMVideoLocalPersistenceResultLocalDestinationURL"];
 
-  v10 = [(CAMVideoLocalPersistenceResult *)self filteredLocalDestinationURL];
-  [v5 encodeObject:v10 forKey:@"CAMVideoLocalPersistenceResultFilteredLocalDestinationURL"];
+  filteredLocalDestinationURL = [(CAMVideoLocalPersistenceResult *)self filteredLocalDestinationURL];
+  [coderCopy encodeObject:filteredLocalDestinationURL forKey:@"CAMVideoLocalPersistenceResultFilteredLocalDestinationURL"];
 
-  v11 = [(CAMVideoLocalPersistenceResult *)self linkedDestinationURL];
-  [v5 encodeObject:v11 forKey:@"CAMVideoLocalPersistenceResultLinkedDestinationURL"];
+  linkedDestinationURL = [(CAMVideoLocalPersistenceResult *)self linkedDestinationURL];
+  [coderCopy encodeObject:linkedDestinationURL forKey:@"CAMVideoLocalPersistenceResultLinkedDestinationURL"];
 
-  v12 = [(CAMVideoLocalPersistenceResult *)self filteredLinkedDestinationURL];
-  [v5 encodeObject:v12 forKey:@"CAMVideoLocalPersistenceResultFilteredLinkedDestinationURL"];
+  filteredLinkedDestinationURL = [(CAMVideoLocalPersistenceResult *)self filteredLinkedDestinationURL];
+  [coderCopy encodeObject:filteredLinkedDestinationURL forKey:@"CAMVideoLocalPersistenceResultFilteredLinkedDestinationURL"];
 
-  v13 = [(CAMVideoLocalPersistenceResult *)self filteredVideoPreviewPath];
-  [v5 encodeObject:v13 forKey:@"CAMVideoLocalPersistenceResultVideoThumbnailDestinationPath"];
+  filteredVideoPreviewPath = [(CAMVideoLocalPersistenceResult *)self filteredVideoPreviewPath];
+  [coderCopy encodeObject:filteredVideoPreviewPath forKey:@"CAMVideoLocalPersistenceResultVideoThumbnailDestinationPath"];
 
-  v14 = [(CAMVideoLocalPersistenceResult *)self localPersistenceUUID];
-  [v5 encodeObject:v14 forKey:@"CAMVideoLocalPersistenceResultLocalPersistenceUUID"];
+  localPersistenceUUID = [(CAMVideoLocalPersistenceResult *)self localPersistenceUUID];
+  [coderCopy encodeObject:localPersistenceUUID forKey:@"CAMVideoLocalPersistenceResultLocalPersistenceUUID"];
 
-  [v5 encodeObject:v6 forKey:@"CAMVideoLocalPersistenceResultDuration"];
-  [v5 encodeObject:v8 forKey:@"CAMVideoLocalPersistenceResultDimensions"];
-  v15 = [(CAMVideoLocalPersistenceResult *)self stillPersistenceUUID];
-  [v5 encodeObject:v15 forKey:@"CAMVideoLocalPersistenceResultStillPersistenceUUID"];
+  [coderCopy encodeObject:v6 forKey:@"CAMVideoLocalPersistenceResultDuration"];
+  [coderCopy encodeObject:v8 forKey:@"CAMVideoLocalPersistenceResultDimensions"];
+  stillPersistenceUUID = [(CAMVideoLocalPersistenceResult *)self stillPersistenceUUID];
+  [coderCopy encodeObject:stillPersistenceUUID forKey:@"CAMVideoLocalPersistenceResultStillPersistenceUUID"];
 
-  [v5 encodeObject:v7 forKey:@"CAMVideoLocalPersistenceResultStillDisplayTime"];
-  v16 = [(CAMVideoLocalPersistenceResult *)self creationDate];
-  [v5 encodeObject:v16 forKey:@"CAMVideoLocalPersistenceResultCreationDate"];
+  [coderCopy encodeObject:v7 forKey:@"CAMVideoLocalPersistenceResultStillDisplayTime"];
+  creationDate = [(CAMVideoLocalPersistenceResult *)self creationDate];
+  [coderCopy encodeObject:creationDate forKey:@"CAMVideoLocalPersistenceResultCreationDate"];
 
-  v17 = [(CAMVideoLocalPersistenceResult *)self adjustmentsData];
-  [v5 encodeObject:v17 forKey:@"CAMVideoLocalPersistenceResultAdjustmentsData"];
+  adjustmentsData = [(CAMVideoLocalPersistenceResult *)self adjustmentsData];
+  [coderCopy encodeObject:adjustmentsData forKey:@"CAMVideoLocalPersistenceResultAdjustmentsData"];
 
-  v18 = [(CAMVideoLocalPersistenceResult *)self localPrivateMetadataFileURL];
-  [v5 encodeObject:v18 forKey:@"CAMVideoLocalPersistenceResultLocalPrivateMetadataFileURL"];
+  localPrivateMetadataFileURL = [(CAMVideoLocalPersistenceResult *)self localPrivateMetadataFileURL];
+  [coderCopy encodeObject:localPrivateMetadataFileURL forKey:@"CAMVideoLocalPersistenceResultLocalPrivateMetadataFileURL"];
 
-  v19 = [(CAMVideoLocalPersistenceResult *)self error];
-  [v5 encodeObject:v19 forKey:@"CAMVideoLocalPersistenceResultError"];
+  error = [(CAMVideoLocalPersistenceResult *)self error];
+  [coderCopy encodeObject:error forKey:@"CAMVideoLocalPersistenceResultError"];
 }
 
 @end

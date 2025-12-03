@@ -1,10 +1,10 @@
 @interface IDSAWDLogging
 + (id)sharedInstance;
 - (IDSAWDLogging)init;
-- (id)_metricContainerForMetricType:(unsigned int)a3;
-- (void)IDSQuickRelayEventType:(id)a3 eventSubType:(id)a4 duration:(id)a5 resultCode:(id)a6 providerType:(id)a7 transportType:(id)a8 interfaceType:(id)a9 skeEnabled:(id)a10 isInitiator:(id)a11 protocolVersion:(id)a12 retryCount:(id)a13 serviceName:(id)a14 subServiceName:(id)a15 participantCount:(id)a16;
-- (void)_submitAWDMetric:(id)a3 withContainer:(id)a4;
-- (void)submitMetric:(id)a3 withIdentifier:(unsigned int)a4;
+- (id)_metricContainerForMetricType:(unsigned int)type;
+- (void)IDSQuickRelayEventType:(id)type eventSubType:(id)subType duration:(id)duration resultCode:(id)code providerType:(id)providerType transportType:(id)transportType interfaceType:(id)interfaceType skeEnabled:(id)self0 isInitiator:(id)self1 protocolVersion:(id)self2 retryCount:(id)self3 serviceName:(id)self4 subServiceName:(id)self5 participantCount:(id)self6;
+- (void)_submitAWDMetric:(id)metric withContainer:(id)container;
+- (void)submitMetric:(id)metric withIdentifier:(unsigned int)identifier;
 @end
 
 @implementation IDSAWDLogging
@@ -21,27 +21,27 @@
   return v3;
 }
 
-- (id)_metricContainerForMetricType:(unsigned int)a3
+- (id)_metricContainerForMetricType:(unsigned int)type
 {
-  v3 = [self->_AWDServerConnection newMetricContainerWithIdentifier:*&a3];
+  v3 = [self->_AWDServerConnection newMetricContainerWithIdentifier:*&type];
 
   return v3;
 }
 
-- (void)_submitAWDMetric:(id)a3 withContainer:(id)a4
+- (void)_submitAWDMetric:(id)metric withContainer:(id)container
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  metricCopy = metric;
+  containerCopy = container;
+  v8 = containerCopy;
+  if (metricCopy && containerCopy)
   {
-    [v7 setMetric:v6];
+    [containerCopy setMetric:metricCopy];
     v9 = [self->_AWDServerConnection submitMetric:v8];
     v10 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [v8 metricId];
+      metricId = [v8 metricId];
       v12 = @"NO";
       if (v9)
       {
@@ -49,7 +49,7 @@
       }
 
       *buf = 67109378;
-      v14 = v11;
+      v14 = metricId;
       v15 = 2112;
       v16 = v12;
       _os_log_impl(&dword_1A7AD9000, v10, OS_LOG_TYPE_DEBUG, "Submitted metric: 0x%x succeeded? %@", buf, 0x12u);
@@ -84,10 +84,10 @@
   return v2;
 }
 
-- (void)submitMetric:(id)a3 withIdentifier:(unsigned int)a4
+- (void)submitMetric:(id)metric withIdentifier:(unsigned int)identifier
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&identifier;
+  metricCopy = metric;
   v7 = [self->_AWDServerConnection newMetricContainerWithIdentifier:v4];
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
@@ -95,33 +95,33 @@
   v11[2] = sub_1A7BF4E70;
   v11[3] = &unk_1E77E0E18;
   v11[4] = self;
-  v12 = v6;
+  v12 = metricCopy;
   v13 = v7;
   v9 = v7;
-  v10 = v6;
+  v10 = metricCopy;
   IDSAWDSubmitBlockAsync(queue, v11);
 }
 
-- (void)IDSQuickRelayEventType:(id)a3 eventSubType:(id)a4 duration:(id)a5 resultCode:(id)a6 providerType:(id)a7 transportType:(id)a8 interfaceType:(id)a9 skeEnabled:(id)a10 isInitiator:(id)a11 protocolVersion:(id)a12 retryCount:(id)a13 serviceName:(id)a14 subServiceName:(id)a15 participantCount:(id)a16
+- (void)IDSQuickRelayEventType:(id)type eventSubType:(id)subType duration:(id)duration resultCode:(id)code providerType:(id)providerType transportType:(id)transportType interfaceType:(id)interfaceType skeEnabled:(id)self0 isInitiator:(id)self1 protocolVersion:(id)self2 retryCount:(id)self3 serviceName:(id)self4 subServiceName:(id)self5 participantCount:(id)self6
 {
-  v64 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = a6;
-  v63 = a7;
-  v62 = a8;
-  v24 = a9;
-  v25 = a10;
-  v26 = a11;
-  v27 = a12;
-  v61 = a13;
-  v60 = a14;
-  v59 = a15;
-  v58 = a16;
-  v28 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v29 = [v28 isInternalInstall];
+  typeCopy = type;
+  subTypeCopy = subType;
+  durationCopy = duration;
+  codeCopy = code;
+  providerTypeCopy = providerType;
+  transportTypeCopy = transportType;
+  interfaceTypeCopy = interfaceType;
+  enabledCopy = enabled;
+  initiatorCopy = initiator;
+  versionCopy = version;
+  countCopy = count;
+  nameCopy = name;
+  serviceNameCopy = serviceName;
+  participantCountCopy = participantCount;
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v26 || (v29 & 1) != 0 || IDSAWDLogShouldSubmitHotShipQuickRelayMetric([v26 BOOLValue]))
+  if (!initiatorCopy || (isInternalInstall & 1) != 0 || IDSAWDLogShouldSubmitHotShipQuickRelayMetric([initiatorCopy BOOLValue]))
   {
     queue = self->_queue;
     v65[0] = MEMORY[0x1E69E9820];
@@ -129,55 +129,55 @@
     v65[2] = sub_1A7C8D74C;
     v65[3] = &unk_1E77E27F8;
     v65[4] = self;
-    v51 = v64;
+    v51 = typeCopy;
     v66 = v51;
-    v50 = v21;
+    v50 = subTypeCopy;
     v67 = v50;
-    v49 = v22;
+    v49 = durationCopy;
     v68 = v49;
-    v79 = v29;
-    v48 = v23;
+    v79 = isInternalInstall;
+    v48 = codeCopy;
     v69 = v48;
-    v47 = v63;
+    v47 = providerTypeCopy;
     v70 = v47;
-    v54 = v23;
-    v46 = v62;
+    v54 = codeCopy;
+    v46 = transportTypeCopy;
     v71 = v46;
-    v55 = v22;
-    v30 = v24;
+    v55 = durationCopy;
+    v30 = interfaceTypeCopy;
     v72 = v30;
-    v56 = v21;
-    v31 = v25;
+    v56 = subTypeCopy;
+    v31 = enabledCopy;
     v73 = v31;
-    v53 = v26;
-    v32 = v26;
+    v53 = initiatorCopy;
+    v32 = initiatorCopy;
     v74 = v32;
-    v33 = v27;
+    v33 = versionCopy;
     v75 = v33;
-    v34 = v25;
-    v35 = v61;
+    v34 = enabledCopy;
+    v35 = countCopy;
     v76 = v35;
-    v36 = v24;
-    v37 = v60;
+    v36 = interfaceTypeCopy;
+    v37 = nameCopy;
     v77 = v37;
-    v38 = v27;
-    v39 = v59;
+    v38 = versionCopy;
+    v39 = serviceNameCopy;
     v78 = v39;
     IDSAWDSubmitBlockAsync(queue, v65);
     v45 = v39;
-    v27 = v38;
+    versionCopy = v38;
     v43 = v35;
     v44 = v37;
-    v24 = v36;
-    v25 = v34;
+    interfaceTypeCopy = v36;
+    enabledCopy = v34;
     v42 = v32;
-    v26 = v53;
-    v23 = v54;
+    initiatorCopy = v53;
+    codeCopy = v54;
     v40 = v30;
     v41 = v31;
-    v22 = v55;
-    v21 = v56;
-    [(IDSAWDLogging *)self IDSCoreAnalyticsQuickRelayEventType:v51 eventSubType:v50 duration:v49 resultCode:v48 providerType:v47 transportType:v46 interfaceType:v40 skeEnabled:v41 isInitiator:v42 protocolVersion:v33 retryCount:v43 serviceName:v44 subServiceName:v45 participantCount:v58];
+    durationCopy = v55;
+    subTypeCopy = v56;
+    [(IDSAWDLogging *)self IDSCoreAnalyticsQuickRelayEventType:v51 eventSubType:v50 duration:v49 resultCode:v48 providerType:v47 transportType:v46 interfaceType:v40 skeEnabled:v41 isInitiator:v42 protocolVersion:v33 retryCount:v43 serviceName:v44 subServiceName:v45 participantCount:participantCountCopy];
   }
 }
 

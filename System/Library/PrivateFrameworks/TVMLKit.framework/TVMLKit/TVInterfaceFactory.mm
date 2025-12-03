@@ -1,36 +1,36 @@
 @interface TVInterfaceFactory
-+ (id)_URLForResource:(id)a3 bundle:(id)a4;
++ (id)_URLForResource:(id)resource bundle:(id)bundle;
 + (id)_tvmlResourceMap;
 + (id)sharedInterfaceFactory;
 + (void)initialize;
-- (Class)_collectionViewCellClassForElement:(id)a3;
-- (Class)_extendedCollectionViewCellClassForIKElement:(id)a3;
-- (Class)collectionViewCellClassForElement:(id)a3;
+- (Class)_collectionViewCellClassForElement:(id)element;
+- (Class)_extendedCollectionViewCellClassForIKElement:(id)element;
+- (Class)collectionViewCellClassForElement:(id)element;
 - (TVInterfaceFactory)init;
-- (id)URLForResource:(id)a3;
-- (id)_controllerTransitionFromElement:(id)a3 toElement:(id)a4 forNavigationControllerOperation:(int64_t)a5 relativeToFrom:(BOOL)a6;
-- (id)_getImageFromURLorBundle:(id)a3;
-- (id)_imageProxyForResourceURL:(id)a3 scaleToSize:(CGSize)a4;
-- (id)_imageProxyForSymbolURL:(id)a3 imageSymbolConfiguration:(id)a4 scaleToSize:(CGSize)a5;
-- (id)_imageProxyFromElement:(id)a3 withLayout:(id)a4;
-- (id)_navigationControllerForTabIdentifier:(id)a3;
-- (id)_resourceImageNamed:(id)a3;
-- (id)_styleSheetURLForTemplate:(id)a3;
-- (id)_viewControllerFromElement:(id)a3 layout:(id)a4 existingController:(id)a5;
-- (id)_viewFromElement:(id)a3 layout:(id)a4 existingView:(id)a5;
-- (id)imageForResource:(id)a3;
-- (id)playerViewControllerForPlayer:(id)a3;
-- (id)viewControllerForElement:(id)a3 existingViewController:(id)a4;
-- (id)viewForElement:(id)a3 existingView:(id)a4;
-- (void)_darkerSystemColorStatusChanged:(id)a3;
-- (void)_registerControllerTransitioningCreator:(id)a3 withType:(unint64_t)a4;
-- (void)_registerViewControllerCreator:(id)a3 withType:(unint64_t)a4;
-- (void)_registerViewControllerCreatorEx:(id)a3 withType:(unint64_t)a4;
-- (void)_registerViewCreator:(id)a3 withType:(unint64_t)a4;
-- (void)_registerViewCreatorEx:(id)a3 withType:(unint64_t)a4;
-- (void)_willParseAppDocument:(id)a3 forImplicitUpdates:(BOOL)a4;
+- (id)URLForResource:(id)resource;
+- (id)_controllerTransitionFromElement:(id)element toElement:(id)toElement forNavigationControllerOperation:(int64_t)operation relativeToFrom:(BOOL)from;
+- (id)_getImageFromURLorBundle:(id)bundle;
+- (id)_imageProxyForResourceURL:(id)l scaleToSize:(CGSize)size;
+- (id)_imageProxyForSymbolURL:(id)l imageSymbolConfiguration:(id)configuration scaleToSize:(CGSize)size;
+- (id)_imageProxyFromElement:(id)element withLayout:(id)layout;
+- (id)_navigationControllerForTabIdentifier:(id)identifier;
+- (id)_resourceImageNamed:(id)named;
+- (id)_styleSheetURLForTemplate:(id)template;
+- (id)_viewControllerFromElement:(id)element layout:(id)layout existingController:(id)controller;
+- (id)_viewFromElement:(id)element layout:(id)layout existingView:(id)view;
+- (id)imageForResource:(id)resource;
+- (id)playerViewControllerForPlayer:(id)player;
+- (id)viewControllerForElement:(id)element existingViewController:(id)controller;
+- (id)viewForElement:(id)element existingView:(id)view;
+- (void)_darkerSystemColorStatusChanged:(id)changed;
+- (void)_registerControllerTransitioningCreator:(id)creator withType:(unint64_t)type;
+- (void)_registerViewControllerCreator:(id)creator withType:(unint64_t)type;
+- (void)_registerViewControllerCreatorEx:(id)ex withType:(unint64_t)type;
+- (void)_registerViewCreator:(id)creator withType:(unint64_t)type;
+- (void)_registerViewCreatorEx:(id)ex withType:(unint64_t)type;
+- (void)_willParseAppDocument:(id)document forImplicitUpdates:(BOOL)updates;
 - (void)dealloc;
-- (void)setExtendedInterfaceCreator:(id)a3;
+- (void)setExtendedInterfaceCreator:(id)creator;
 - (void)setup;
 @end
 
@@ -38,7 +38,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = +[TVInterfaceFactory sharedInterfaceFactory];
     [v2 setup];
@@ -110,12 +110,12 @@ uint64_t __44__TVInterfaceFactory_sharedInterfaceFactory__block_invoke()
   self->_styleSheetRegistry = v11;
 
   v35 = MEMORY[0x277CBEAC0];
-  v32 = [MEMORY[0x277D75348] systemTealColor];
-  v31 = [MEMORY[0x277D75348] systemGrayColor];
-  v30 = [MEMORY[0x277D75348] systemMidGrayColor];
-  v29 = [MEMORY[0x277D75348] tvmlkit_keyColor];
-  v33 = [MEMORY[0x277D75348] tvmlkit_keyColor];
-  v28 = [v33 colorWithAlphaComponent:0.8];
+  systemTealColor = [MEMORY[0x277D75348] systemTealColor];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  systemMidGrayColor = [MEMORY[0x277D75348] systemMidGrayColor];
+  tvmlkit_keyColor = [MEMORY[0x277D75348] tvmlkit_keyColor];
+  tvmlkit_keyColor2 = [MEMORY[0x277D75348] tvmlkit_keyColor];
+  v28 = [tvmlkit_keyColor2 colorWithAlphaComponent:0.8];
   v27 = [MEMORY[0x277D75348] colorWithRed:1.0 green:0.37254902 blue:0.411764706 alpha:1.0];
   v26 = [MEMORY[0x277D75348] colorWithRed:0.921568627 green:0.0431372549 blue:0.333333333 alpha:1.0];
   v25 = [MEMORY[0x277D75348] colorWithRed:0.968627451 green:0.568627451 blue:0.282352941 alpha:1.0];
@@ -133,42 +133,42 @@ uint64_t __44__TVInterfaceFactory_sharedInterfaceFactory__block_invoke()
   v16 = [MEMORY[0x277D75348] colorWithRed:0.674509804 green:0.541176471 blue:1.0 alpha:1.0];
   v15 = [MEMORY[0x277D75348] colorWithRed:1.0 green:0.384313725 blue:0.698039216 alpha:1.0];
   v13 = [MEMORY[0x277D75348] colorWithRed:0.929411765 green:0.4 blue:0.509803922 alpha:1.0];
-  v36 = [v35 dictionaryWithObjectsAndKeys:{v32, @"systemteal", v31, @"systemgray", v30, @"systemmidgray", v29, @"keyblue", v28, @"keyblue-highlighted", v27, @"orange1", v26, @"orange2", v25, @"orange3", v24, @"yellow1", v38, @"yellow2", v37, @"yellow3", v34, @"green1", v23, @"green2", v22, @"green3", v21, @"blue1", v20, @"blue2", v19, @"blue3", v18, @"blue4", v17, @"purple1", v16, @"purple2", v15, @"pink", v13, @"coral", 0}];
+  v36 = [v35 dictionaryWithObjectsAndKeys:{systemTealColor, @"systemteal", systemGrayColor, @"systemgray", systemMidGrayColor, @"systemmidgray", tvmlkit_keyColor, @"keyblue", v28, @"keyblue-highlighted", v27, @"orange1", v26, @"orange2", v25, @"orange3", v24, @"yellow1", v38, @"yellow2", v37, @"yellow3", v34, @"green1", v23, @"green2", v22, @"green3", v21, @"blue1", v20, @"blue2", v19, @"blue3", v18, @"blue4", v17, @"purple1", v16, @"purple2", v15, @"pink", v13, @"coral", 0}];
 
   [MEMORY[0x277D1B070] registerColorNameMap:v36];
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v14 addObserver:self selector:sel__darkerSystemColorStatusChanged_ name:*MEMORY[0x277D76460] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__darkerSystemColorStatusChanged_ name:*MEMORY[0x277D76460] object:0];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TVInterfaceFactory;
   [(TVInterfaceFactory *)&v4 dealloc];
 }
 
-- (void)_darkerSystemColorStatusChanged:(id)a3
+- (void)_darkerSystemColorStatusChanged:(id)changed
 {
   v3 = MEMORY[0x277CBEAC0];
-  v4 = [MEMORY[0x277D75348] tvmlkit_keyColor];
-  v5 = [MEMORY[0x277D75348] tvmlkit_keyColor];
-  v6 = [v5 colorWithAlphaComponent:0.8];
-  v7 = [v3 dictionaryWithObjectsAndKeys:{v4, @"keyblue", v6, @"keyblue-highlighted", 0}];
+  tvmlkit_keyColor = [MEMORY[0x277D75348] tvmlkit_keyColor];
+  tvmlkit_keyColor2 = [MEMORY[0x277D75348] tvmlkit_keyColor];
+  v6 = [tvmlkit_keyColor2 colorWithAlphaComponent:0.8];
+  v7 = [v3 dictionaryWithObjectsAndKeys:{tvmlkit_keyColor, @"keyblue", v6, @"keyblue-highlighted", 0}];
 
   [MEMORY[0x277D1B070] registerColorNameMap:v7];
 }
 
-- (void)setExtendedInterfaceCreator:(id)a3
+- (void)setExtendedInterfaceCreator:(id)creator
 {
-  v5 = a3;
+  creatorCopy = creator;
   p_extendedInterfaceCreator = &self->_extendedInterfaceCreator;
-  if (self->_extendedInterfaceCreator != v5)
+  if (self->_extendedInterfaceCreator != creatorCopy)
   {
-    v23 = v5;
-    objc_storeStrong(p_extendedInterfaceCreator, a3);
+    v23 = creatorCopy;
+    objc_storeStrong(p_extendedInterfaceCreator, creator);
     *&self->_extenderFlags = *&self->_extenderFlags & 0xFFFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
@@ -396,42 +396,42 @@ uint64_t __44__TVInterfaceFactory_sharedInterfaceFactory__block_invoke()
     }
 
     *&self->_extenderFlags = *&self->_extenderFlags & 0xDFFF | v22;
-    v5 = v23;
+    creatorCopy = v23;
     if (v22 | extenderFlags & 0x2000)
     {
       p_extendedInterfaceCreator = [(TVStyleSheetRegistry *)self->_styleSheetRegistry commitStyleSheets];
-      v5 = v23;
+      creatorCopy = v23;
     }
   }
 
-  MEMORY[0x2821F96F8](p_extendedInterfaceCreator, v5);
+  MEMORY[0x2821F96F8](p_extendedInterfaceCreator, creatorCopy);
 }
 
-- (id)viewForElement:(id)a3 existingView:(id)a4
+- (id)viewForElement:(id)element existingView:(id)view
 {
-  v6 = a4;
-  v7 = [a3 element];
-  v8 = [(TVInterfaceFactory *)self _viewFromElement:v7 existingView:v6];
+  viewCopy = view;
+  element = [element element];
+  v8 = [(TVInterfaceFactory *)self _viewFromElement:element existingView:viewCopy];
 
   return v8;
 }
 
-- (id)viewControllerForElement:(id)a3 existingViewController:(id)a4
+- (id)viewControllerForElement:(id)element existingViewController:(id)controller
 {
-  v6 = a4;
-  v7 = [a3 element];
-  v8 = [(TVInterfaceFactory *)self _viewControllerFromElement:v7 existingController:v6];
+  controllerCopy = controller;
+  element = [element element];
+  v8 = [(TVInterfaceFactory *)self _viewControllerFromElement:element existingController:controllerCopy];
 
   return v8;
 }
 
-- (id)URLForResource:(id)a3
+- (id)URLForResource:(id)resource
 {
-  v4 = a3;
-  if ((*&self->_extenderFlags & 4) == 0 || (-[TVInterfaceFactory extendedInterfaceCreator](self, "extendedInterfaceCreator"), v5 = objc_claimAutoreleasedReturnValue(), [v5 URLForResource:v4], v6 = objc_claimAutoreleasedReturnValue(), v5, _TVMLMetricsLogPublicAPIUsage(sel_URLForResource_), !v6))
+  resourceCopy = resource;
+  if ((*&self->_extenderFlags & 4) == 0 || (-[TVInterfaceFactory extendedInterfaceCreator](self, "extendedInterfaceCreator"), v5 = objc_claimAutoreleasedReturnValue(), [v5 URLForResource:resourceCopy], v6 = objc_claimAutoreleasedReturnValue(), v5, _TVMLMetricsLogPublicAPIUsage(sel_URLForResource_), !v6))
   {
     v7 = +[TVInterfaceFactory _tvmlResourceMap];
-    v8 = [v7 objectForKeyedSubscript:v4];
+    v8 = [v7 objectForKeyedSubscript:resourceCopy];
     v9 = v8;
     if (v8)
     {
@@ -440,7 +440,7 @@ uint64_t __44__TVInterfaceFactory_sharedInterfaceFactory__block_invoke()
 
     else
     {
-      v10 = v4;
+      v10 = resourceCopy;
     }
 
     v11 = v10;
@@ -451,12 +451,12 @@ uint64_t __44__TVInterfaceFactory_sharedInterfaceFactory__block_invoke()
     if (!v6)
     {
       v13 = +[TVMLUtilities TVUIKitBundle];
-      v6 = [TVInterfaceFactory _URLForResource:v4 bundle:v13];
+      v6 = [TVInterfaceFactory _URLForResource:resourceCopy bundle:v13];
 
       if (!v6)
       {
-        v14 = [MEMORY[0x277CCA8D8] mainBundle];
-        v6 = [TVInterfaceFactory _URLForResource:v4 bundle:v14];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        v6 = [TVInterfaceFactory _URLForResource:resourceCopy bundle:mainBundle];
       }
     }
   }
@@ -464,15 +464,15 @@ uint64_t __44__TVInterfaceFactory_sharedInterfaceFactory__block_invoke()
   return v6;
 }
 
-- (id)imageForResource:(id)a3
+- (id)imageForResource:(id)resource
 {
-  v4 = a3;
-  if ((*&self->_extenderFlags & 8) == 0 || (-[TVInterfaceFactory extendedInterfaceCreator](self, "extendedInterfaceCreator"), v5 = objc_claimAutoreleasedReturnValue(), [v5 imageForResource:v4], v6 = objc_claimAutoreleasedReturnValue(), v5, _TVMLMetricsLogPublicAPIUsage(sel_imageForResource_), !v6))
+  resourceCopy = resource;
+  if ((*&self->_extenderFlags & 8) == 0 || (-[TVInterfaceFactory extendedInterfaceCreator](self, "extendedInterfaceCreator"), v5 = objc_claimAutoreleasedReturnValue(), [v5 imageForResource:resourceCopy], v6 = objc_claimAutoreleasedReturnValue(), v5, _TVMLMetricsLogPublicAPIUsage(sel_imageForResource_), !v6))
   {
-    v7 = [(TVInterfaceFactory *)self _getImageFromURLorBundle:v4];
+    v7 = [(TVInterfaceFactory *)self _getImageFromURLorBundle:resourceCopy];
     if (!v7)
     {
-      v7 = [MEMORY[0x277D755B8] systemImageNamed:v4];
+      v7 = [MEMORY[0x277D755B8] systemImageNamed:resourceCopy];
     }
 
     v6 = v7;
@@ -481,22 +481,22 @@ uint64_t __44__TVInterfaceFactory_sharedInterfaceFactory__block_invoke()
   return v6;
 }
 
-- (Class)collectionViewCellClassForElement:(id)a3
+- (Class)collectionViewCellClassForElement:(id)element
 {
-  v4 = [a3 element];
-  v5 = [(TVInterfaceFactory *)self _collectionViewCellClassForElement:v4];
+  element = [element element];
+  v5 = [(TVInterfaceFactory *)self _collectionViewCellClassForElement:element];
 
   return v5;
 }
 
-- (id)playerViewControllerForPlayer:(id)a3
+- (id)playerViewControllerForPlayer:(id)player
 {
   if ((*&self->_extenderFlags & 0x20) != 0)
   {
-    v5 = a3;
+    playerCopy = player;
     _TVMLMetricsLogPublicAPIUsage(sel_playerViewControllerForPlayer_);
-    v6 = [(TVInterfaceFactory *)self extendedInterfaceCreator];
-    v3 = [v6 playerViewControllerForPlayer:v5];
+    extendedInterfaceCreator = [(TVInterfaceFactory *)self extendedInterfaceCreator];
+    v3 = [extendedInterfaceCreator playerViewControllerForPlayer:playerCopy];
   }
 
   else
@@ -507,16 +507,16 @@ uint64_t __44__TVInterfaceFactory_sharedInterfaceFactory__block_invoke()
   return v3;
 }
 
-- (void)_registerViewCreator:(id)a3 withType:(unint64_t)a4
+- (void)_registerViewCreator:(id)creator withType:(unint64_t)type
 {
-  v6 = a3;
+  creatorCopy = creator;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __52__TVInterfaceFactory__registerViewCreator_withType___block_invoke;
   v8[3] = &unk_279D6FC58;
-  v9 = v6;
-  v7 = v6;
-  [(TVInterfaceFactory *)self _registerViewCreatorEx:v8 withType:a4];
+  v9 = creatorCopy;
+  v7 = creatorCopy;
+  [(TVInterfaceFactory *)self _registerViewCreatorEx:v8 withType:type];
 }
 
 id __52__TVInterfaceFactory__registerViewCreator_withType___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -554,46 +554,46 @@ LABEL_7:
   return v7;
 }
 
-- (void)_registerViewCreatorEx:(id)a3 withType:(unint64_t)a4
+- (void)_registerViewCreatorEx:(id)ex withType:(unint64_t)type
 {
-  if (a3)
+  if (ex)
   {
-    v8 = [a3 copy];
+    v8 = [ex copy];
     viewCreatorsByKey = self->_viewCreatorsByKey;
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
     [(NSMutableDictionary *)viewCreatorsByKey setObject:v8 forKeyedSubscript:v7];
   }
 }
 
-- (void)_registerViewControllerCreator:(id)a3 withType:(unint64_t)a4
+- (void)_registerViewControllerCreator:(id)creator withType:(unint64_t)type
 {
-  v6 = a3;
+  creatorCopy = creator;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__TVInterfaceFactory__registerViewControllerCreator_withType___block_invoke;
   v8[3] = &unk_279D6FC80;
-  v9 = v6;
-  v7 = v6;
-  [(TVInterfaceFactory *)self _registerViewControllerCreatorEx:v8 withType:a4];
+  v9 = creatorCopy;
+  v7 = creatorCopy;
+  [(TVInterfaceFactory *)self _registerViewControllerCreatorEx:v8 withType:type];
 }
 
-- (void)_registerViewControllerCreatorEx:(id)a3 withType:(unint64_t)a4
+- (void)_registerViewControllerCreatorEx:(id)ex withType:(unint64_t)type
 {
-  if (a3)
+  if (ex)
   {
-    v8 = [a3 copy];
+    v8 = [ex copy];
     viewControllerCreatorsByKey = self->_viewControllerCreatorsByKey;
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
     [(NSMutableDictionary *)viewControllerCreatorsByKey setObject:v8 forKeyedSubscript:v7];
   }
 }
 
-- (id)_viewFromElement:(id)a3 layout:(id)a4 existingView:(id)a5
+- (id)_viewFromElement:(id)element layout:(id)layout existingView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  elementCopy = element;
+  layoutCopy = layout;
+  viewCopy = view;
+  if (!elementCopy)
   {
     v14 = 0;
     goto LABEL_29;
@@ -604,12 +604,12 @@ LABEL_7:
   {
     if (extenderFlags)
     {
-      v12 = [(TVInterfaceFactory *)self extendedInterfaceCreator];
-      v13 = [v8 tv_associatedViewElement];
-      v14 = [v12 viewForElement:v13 existingView:v10];
+      extendedInterfaceCreator = [(TVInterfaceFactory *)self extendedInterfaceCreator];
+      tv_associatedViewElement = [elementCopy tv_associatedViewElement];
+      v14 = [extendedInterfaceCreator viewForElement:tv_associatedViewElement existingView:viewCopy];
 
-      v15 = [(objc_class *)[TVViewLayout layoutClassForElement:?]element:"layoutWithLayout:element:", v9, v8];
-      [v14 tv_setLayout:v15];
+      elementCopy = [(objc_class *)[TVViewLayout layoutClassForElement:?]element:"layoutWithLayout:element:", layoutCopy, elementCopy];
+      [v14 tv_setLayout:elementCopy];
 
       _TVMLMetricsLogPublicAPIUsage(sel_viewForElement_existingView_);
       if (v14)
@@ -620,7 +620,7 @@ LABEL_7:
 
 LABEL_8:
     viewCreatorsByKey = self->_viewCreatorsByKey;
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "tv_elementType")}];
+    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(elementCopy, "tv_elementType")}];
     v20 = [(NSMutableDictionary *)viewCreatorsByKey objectForKeyedSubscript:v19];
 
     if (v20)
@@ -652,16 +652,16 @@ LABEL_32:
     {
       v20 = v22;
 LABEL_15:
-      v23 = [v10 tv_associatedIKViewElement];
-      v24 = v23;
-      if (v10 && v23 == v8 && ![v8 updateType] && (objc_msgSend(v8, "objectForKeyedSubscript:", @"TVForceUpdate"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "BOOLValue"), v25, (v26 & 1) == 0))
+      tv_associatedIKViewElement = [viewCopy tv_associatedIKViewElement];
+      v24 = tv_associatedIKViewElement;
+      if (viewCopy && tv_associatedIKViewElement == elementCopy && ![elementCopy updateType] && (objc_msgSend(elementCopy, "objectForKeyedSubscript:", @"TVForceUpdate"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "BOOLValue"), v25, (v26 & 1) == 0))
       {
-        v27 = v10;
+        v27 = viewCopy;
       }
 
       else
       {
-        v27 = (v20)[2](v20, v8, v9, v10);
+        v27 = (v20)[2](v20, elementCopy, layoutCopy, viewCopy);
       }
 
       v14 = v27;
@@ -672,11 +672,11 @@ LABEL_15:
     goto LABEL_32;
   }
 
-  v16 = [(TVInterfaceFactory *)self extendedInterfaceCreator];
-  v14 = [v16 _viewForIKElement:v8 existingView:v10];
+  extendedInterfaceCreator2 = [(TVInterfaceFactory *)self extendedInterfaceCreator];
+  v14 = [extendedInterfaceCreator2 _viewForIKElement:elementCopy existingView:viewCopy];
 
-  v17 = [(objc_class *)[TVViewLayout layoutClassForElement:?]element:"layoutWithLayout:element:", v9, v8];
-  [v14 tv_setLayout:v17];
+  elementCopy2 = [(objc_class *)[TVViewLayout layoutClassForElement:?]element:"layoutWithLayout:element:", layoutCopy, elementCopy];
+  [v14 tv_setLayout:elementCopy2];
 
   if (!v14)
   {
@@ -684,47 +684,47 @@ LABEL_15:
   }
 
 LABEL_21:
-  [v14 _transferAttributesFromElement:v8];
-  v28 = [v8 attributes];
-  v29 = [v28 objectForKeyedSubscript:@"accessibilityText"];
+  [v14 _transferAttributesFromElement:elementCopy];
+  attributes = [elementCopy attributes];
+  v29 = [attributes objectForKeyedSubscript:@"accessibilityText"];
 
   if ([v29 length])
   {
     [v14 tv_setAccessibilityText:v29];
   }
 
-  v30 = [v8 attributes];
-  v31 = [v30 objectForKeyedSubscript:@"data-siri"];
+  attributes2 = [elementCopy attributes];
+  v31 = [attributes2 objectForKeyedSubscript:@"data-siri"];
   [v14 tv_setSiriData:v31];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v32 = [v8 appDocument];
-    v33 = [v32 templateElement];
-    v34 = [v33 tv_elementType];
+    appDocument = [elementCopy appDocument];
+    templateElement = [appDocument templateElement];
+    tv_elementType = [templateElement tv_elementType];
 
-    if (v34 == 71)
+    if (tv_elementType == 71)
     {
       [v14 tv_disableAnimation:1 forProperty:@"position"];
     }
   }
 
-  [v14 tv_setAssociatedIKViewElement:v8];
-  v35 = [v8 style];
-  v36 = [v35 tv_layerFlipMode];
+  [v14 tv_setAssociatedIKViewElement:elementCopy];
+  style = [elementCopy style];
+  tv_layerFlipMode = [style tv_layerFlipMode];
 
-  v37 = [v36 isEqualToString:@"horizontal"];
-  if (v36)
+  v37 = [tv_layerFlipMode isEqualToString:@"horizontal"];
+  if (tv_layerFlipMode)
   {
     v38 = v37;
-    v39 = [v14 layer];
-    [v39 setFlipsHorizontalAxis:v38];
+    layer = [v14 layer];
+    [layer setFlipsHorizontalAxis:v38];
   }
 
-  [v8 tv_setProxyView:v14];
-  [v8 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"TVForceUpdate"];
-  v40 = [v8 elementName];
+  [elementCopy tv_setProxyView:v14];
+  [elementCopy setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"TVForceUpdate"];
+  elementName = [elementCopy elementName];
   _TVMLMetricsLogElementUsage();
 
 LABEL_29:
@@ -732,12 +732,12 @@ LABEL_29:
   return v14;
 }
 
-- (id)_viewControllerFromElement:(id)a3 layout:(id)a4 existingController:(id)a5
+- (id)_viewControllerFromElement:(id)element layout:(id)layout existingController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  elementCopy = element;
+  layoutCopy = layout;
+  controllerCopy = controller;
+  if (!elementCopy)
   {
     v14 = 0;
     goto LABEL_18;
@@ -746,28 +746,28 @@ LABEL_29:
   extenderFlags = self->_extenderFlags;
   if ((extenderFlags & 0x80) != 0)
   {
-    v15 = [(TVInterfaceFactory *)self extendedInterfaceCreator];
-    v14 = [v15 _viewControllerForIKElement:v8 existingViewController:v10];
+    extendedInterfaceCreator = [(TVInterfaceFactory *)self extendedInterfaceCreator];
+    v14 = [extendedInterfaceCreator _viewControllerForIKElement:elementCopy existingViewController:controllerCopy];
 
     if (!v14)
     {
 LABEL_8:
       viewControllerCreatorsByKey = self->_viewControllerCreatorsByKey;
-      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "tv_elementType")}];
+      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(elementCopy, "tv_elementType")}];
       v18 = [(NSMutableDictionary *)viewControllerCreatorsByKey objectForKeyedSubscript:v17];
 
       if (v18)
       {
-        v19 = [v10 tv_associatedIKViewElement];
-        v20 = v19;
-        if (v10 && v19 == v8 && ![v8 updateType] && (objc_msgSend(v8, "objectForKeyedSubscript:", @"TVForceUpdate"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "BOOLValue"), v21, (v22 & 1) == 0))
+        tv_associatedIKViewElement = [controllerCopy tv_associatedIKViewElement];
+        v20 = tv_associatedIKViewElement;
+        if (controllerCopy && tv_associatedIKViewElement == elementCopy && ![elementCopy updateType] && (objc_msgSend(elementCopy, "objectForKeyedSubscript:", @"TVForceUpdate"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "BOOLValue"), v21, (v22 & 1) == 0))
         {
-          v23 = v10;
+          v23 = controllerCopy;
         }
 
         else
         {
-          v23 = (v18)[2](v18, v8, v9, v10);
+          v23 = (v18)[2](v18, elementCopy, layoutCopy, controllerCopy);
         }
 
         v14 = v23;
@@ -787,9 +787,9 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    v12 = [(TVInterfaceFactory *)self extendedInterfaceCreator];
-    v13 = [v8 tv_associatedViewElement];
-    v14 = [v12 viewControllerForElement:v13 existingViewController:v10];
+    extendedInterfaceCreator2 = [(TVInterfaceFactory *)self extendedInterfaceCreator];
+    tv_associatedViewElement = [elementCopy tv_associatedViewElement];
+    v14 = [extendedInterfaceCreator2 viewControllerForElement:tv_associatedViewElement existingViewController:controllerCopy];
 
     _TVMLMetricsLogPublicAPIUsage(sel_viewControllerForElement_existingViewController_);
     if (!v14)
@@ -798,10 +798,10 @@ LABEL_8:
     }
   }
 
-  [v14 tv_setAssociatedIKViewElement:v8];
-  [v8 tv_setProxyView:v14];
-  [v8 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"TVForceUpdate"];
-  v24 = [v8 elementName];
+  [v14 tv_setAssociatedIKViewElement:elementCopy];
+  [elementCopy tv_setProxyView:v14];
+  [elementCopy setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"TVForceUpdate"];
+  elementName = [elementCopy elementName];
   _TVMLMetricsLogElementUsage();
 
 LABEL_18:
@@ -809,14 +809,14 @@ LABEL_18:
   return v14;
 }
 
-- (Class)_extendedCollectionViewCellClassForIKElement:(id)a3
+- (Class)_extendedCollectionViewCellClassForIKElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   extenderFlags = self->_extenderFlags;
   if ((extenderFlags & 0x100) != 0)
   {
-    v7 = [(TVInterfaceFactory *)self extendedInterfaceCreator];
-    v6 = [v7 _collectionViewCellClassForIKElement:v4];
+    extendedInterfaceCreator = [(TVInterfaceFactory *)self extendedInterfaceCreator];
+    v6 = [extendedInterfaceCreator _collectionViewCellClassForIKElement:elementCopy];
   }
 
   else
@@ -828,9 +828,9 @@ LABEL_18:
     }
 
     _TVMLMetricsLogPublicAPIUsage(sel_collectionViewCellClassForElement_);
-    v7 = [(TVInterfaceFactory *)self extendedInterfaceCreator];
-    v8 = [v4 tv_associatedViewElement];
-    v6 = [v7 collectionViewCellClassForElement:v8];
+    extendedInterfaceCreator = [(TVInterfaceFactory *)self extendedInterfaceCreator];
+    tv_associatedViewElement = [elementCopy tv_associatedViewElement];
+    v6 = [extendedInterfaceCreator collectionViewCellClassForElement:tv_associatedViewElement];
   }
 
 LABEL_7:
@@ -838,20 +838,20 @@ LABEL_7:
   return v6;
 }
 
-- (Class)_collectionViewCellClassForElement:(id)a3
+- (Class)_collectionViewCellClassForElement:(id)element
 {
-  v4 = a3;
-  v5 = [(TVInterfaceFactory *)self _extendedCollectionViewCellClassForIKElement:v4];
+  elementCopy = element;
+  v5 = [(TVInterfaceFactory *)self _extendedCollectionViewCellClassForIKElement:elementCopy];
   if (!v5)
   {
-    v6 = [v4 parent];
-    v7 = [v6 parent];
-    v8 = [v7 tv_elementType];
+    parent = [elementCopy parent];
+    v6Parent = [parent parent];
+    tv_elementType = [v6Parent tv_elementType];
 
-    if (v8 != 9 || (v5 = objc_opt_class()) == 0)
+    if (tv_elementType != 9 || (v5 = objc_opt_class()) == 0)
     {
-      v9 = [v4 tv_elementType];
-      if (v9 != 8 && v9 != 24 && v9 != 23)
+      tv_elementType2 = [elementCopy tv_elementType];
+      if (tv_elementType2 != 8 && tv_elementType2 != 24 && tv_elementType2 != 23)
       {
         v10 = 0;
         goto LABEL_9;
@@ -868,14 +868,14 @@ LABEL_9:
   return v10;
 }
 
-- (id)_imageProxyFromElement:(id)a3 withLayout:(id)a4
+- (id)_imageProxyFromElement:(id)element withLayout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  layoutCopy = layout;
   if ((*&self->_extenderFlags & 0x800) != 0)
   {
-    v9 = [(TVInterfaceFactory *)self extendedInterfaceCreator];
-    v8 = [v9 _imageProxyForIKElement:v6 withLayout:v7];
+    extendedInterfaceCreator = [(TVInterfaceFactory *)self extendedInterfaceCreator];
+    v8 = [extendedInterfaceCreator _imageProxyForIKElement:elementCopy withLayout:layoutCopy];
   }
 
   else
@@ -886,33 +886,33 @@ LABEL_9:
       goto LABEL_7;
     }
 
-    v9 = [(TVInterfaceFactory *)self extendedInterfaceCreator];
-    v10 = [v6 tv_associatedViewElement];
-    v8 = [v9 _imageProxyForElement:v10];
+    extendedInterfaceCreator = [(TVInterfaceFactory *)self extendedInterfaceCreator];
+    tv_associatedViewElement = [elementCopy tv_associatedViewElement];
+    v8 = [extendedInterfaceCreator _imageProxyForElement:tv_associatedViewElement];
   }
 
-  v11 = [v6 appDocument];
-  v12 = [v11 requestLoader];
-  [v8 setRequestLoader:v12];
+  appDocument = [elementCopy appDocument];
+  requestLoader = [appDocument requestLoader];
+  [v8 setRequestLoader:requestLoader];
 
 LABEL_7:
 
   return v8;
 }
 
-- (id)_imageProxyForResourceURL:(id)a3 scaleToSize:(CGSize)a4
+- (id)_imageProxyForResourceURL:(id)l scaleToSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = [a3 tv_resourceName];
+  height = size.height;
+  width = size.width;
+  tv_resourceName = [l tv_resourceName];
   v8 = [TVImageProxy alloc];
   v9 = +[_TVResourceImageLoader sharedInstance];
-  v10 = [(TVImageProxy *)v8 initWithObject:v7 imageLoader:v9 groupType:0];
+  v10 = [(TVImageProxy *)v8 initWithObject:tv_resourceName imageLoader:v9 groupType:0];
 
   [(TVImageProxy *)v10 setCacheOnLoad:+[TVMLUtilities canHandleDecodingOnRenderThread]^ 1];
   if (width == *MEMORY[0x277CBF3A8] && height == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v12 = [(TVInterfaceFactory *)self imageForResource:v7];
+    v12 = [(TVInterfaceFactory *)self imageForResource:tv_resourceName];
     if (!v12)
     {
 
@@ -923,13 +923,13 @@ LABEL_7:
   return v10;
 }
 
-- (id)_imageProxyForSymbolURL:(id)a3 imageSymbolConfiguration:(id)a4 scaleToSize:(CGSize)a5
+- (id)_imageProxyForSymbolURL:(id)l imageSymbolConfiguration:(id)configuration scaleToSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a4;
-  v9 = [a3 tv_symbolName];
-  v10 = [[_TVImageSymbolDescription alloc] initWithSymbolName:v9 imageSymbolConfiguration:v8];
+  height = size.height;
+  width = size.width;
+  configurationCopy = configuration;
+  tv_symbolName = [l tv_symbolName];
+  v10 = [[_TVImageSymbolDescription alloc] initWithSymbolName:tv_symbolName imageSymbolConfiguration:configurationCopy];
   v11 = [TVImageProxy alloc];
   v12 = +[_TVSymbolImageLoader sharedInstance];
   v13 = [(TVImageProxy *)v11 initWithObject:v10 imageLoader:v12 groupType:0];
@@ -937,7 +937,7 @@ LABEL_7:
   [(TVImageProxy *)v13 setCacheOnLoad:+[TVMLUtilities canHandleDecodingOnRenderThread]^ 1];
   if (width == *MEMORY[0x277CBF3A8] && height == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v15 = [MEMORY[0x277D755B8] systemImageNamed:v9 withConfiguration:v8];
+    v15 = [MEMORY[0x277D755B8] systemImageNamed:tv_symbolName withConfiguration:configurationCopy];
     if (!v15)
     {
 
@@ -948,13 +948,13 @@ LABEL_7:
   return v13;
 }
 
-- (id)_navigationControllerForTabIdentifier:(id)a3
+- (id)_navigationControllerForTabIdentifier:(id)identifier
 {
   if ((*&self->_extenderFlags & 0x4000) != 0)
   {
-    v5 = a3;
-    v6 = [(TVInterfaceFactory *)self extendedInterfaceCreator];
-    v3 = [v6 _navigationControllerForTabIdentifier:v5];
+    identifierCopy = identifier;
+    extendedInterfaceCreator = [(TVInterfaceFactory *)self extendedInterfaceCreator];
+    v3 = [extendedInterfaceCreator _navigationControllerForTabIdentifier:identifierCopy];
   }
 
   else
@@ -965,29 +965,29 @@ LABEL_7:
   return v3;
 }
 
-- (void)_registerControllerTransitioningCreator:(id)a3 withType:(unint64_t)a4
+- (void)_registerControllerTransitioningCreator:(id)creator withType:(unint64_t)type
 {
-  if (a3)
+  if (creator)
   {
-    v8 = [a3 copy];
+    v8 = [creator copy];
     controllerTransitionCreatorsByKey = self->_controllerTransitionCreatorsByKey;
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
     [(NSMutableDictionary *)controllerTransitionCreatorsByKey setObject:v8 forKeyedSubscript:v7];
   }
 }
 
-- (id)_controllerTransitionFromElement:(id)a3 toElement:(id)a4 forNavigationControllerOperation:(int64_t)a5 relativeToFrom:(BOOL)a6
+- (id)_controllerTransitionFromElement:(id)element toElement:(id)toElement forNavigationControllerOperation:(int64_t)operation relativeToFrom:(BOOL)from
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  fromCopy = from;
+  elementCopy = element;
+  toElementCopy = toElement;
   controllerTransitionCreatorsByKey = self->_controllerTransitionCreatorsByKey;
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "tv_elementType")}];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(elementCopy, "tv_elementType")}];
   v14 = [(NSMutableDictionary *)controllerTransitionCreatorsByKey objectForKeyedSubscript:v13];
 
   if (v14)
   {
-    v15 = (v14)[2](v14, v10, v11, a5, v6);
+    v15 = (v14)[2](v14, elementCopy, toElementCopy, operation, fromCopy);
   }
 
   else
@@ -998,13 +998,13 @@ LABEL_7:
   return v15;
 }
 
-- (id)_styleSheetURLForTemplate:(id)a3
+- (id)_styleSheetURLForTemplate:(id)template
 {
   if ((*&self->_extenderFlags & 0x2000) != 0)
   {
-    v5 = a3;
-    v6 = [(TVInterfaceFactory *)self extendedInterfaceCreator];
-    v3 = [v6 _styleSheetURLForTemplate:v5];
+    templateCopy = template;
+    extendedInterfaceCreator = [(TVInterfaceFactory *)self extendedInterfaceCreator];
+    v3 = [extendedInterfaceCreator _styleSheetURLForTemplate:templateCopy];
   }
 
   else
@@ -1015,11 +1015,11 @@ LABEL_7:
   return v3;
 }
 
-- (id)_resourceImageNamed:(id)a3
+- (id)_resourceImageNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = +[TVInterfaceFactory _tvmlResourceMap];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:namedCopy];
   v6 = v5;
   if (v5)
   {
@@ -1028,7 +1028,7 @@ LABEL_7:
 
   else
   {
-    v7 = v3;
+    v7 = namedCopy;
   }
 
   v8 = v7;
@@ -1147,11 +1147,11 @@ uint64_t __38__TVInterfaceFactory__tvmlResourceMap__block_invoke()
   return [v2 setObject:@"dolbyatmos_mask" forKeyedSubscript:@"dolby-atmos"];
 }
 
-- (id)_getImageFromURLorBundle:(id)a3
+- (id)_getImageFromURLorBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = +[TVInterfaceFactory _tvmlResourceMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:bundleCopy];
   v7 = v6;
   if (v6)
   {
@@ -1160,7 +1160,7 @@ uint64_t __38__TVInterfaceFactory__tvmlResourceMap__block_invoke()
 
   else
   {
-    v8 = v4;
+    v8 = bundleCopy;
   }
 
   v9 = v8;
@@ -1173,23 +1173,23 @@ uint64_t __38__TVInterfaceFactory__tvmlResourceMap__block_invoke()
   {
     v13 = MEMORY[0x277D755B8];
     v14 = +[TVMLUtilities TVUIKitBundle];
-    v12 = [v13 imageNamed:v4 inBundle:v14];
+    v12 = [v13 imageNamed:bundleCopy inBundle:v14];
 
     if (!v12)
     {
       v15 = MEMORY[0x277D755B8];
-      v16 = [MEMORY[0x277CCA8D8] mainBundle];
-      v12 = [v15 imageNamed:v4 inBundle:v16];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v12 = [v15 imageNamed:bundleCopy inBundle:mainBundle];
     }
   }
 
-  v17 = [(TVInterfaceFactory *)self URLForResource:v4];
+  v17 = [(TVInterfaceFactory *)self URLForResource:bundleCopy];
   v18 = v17;
   if (v17 && [v17 isFileURL])
   {
     v19 = MEMORY[0x277D755B8];
-    v20 = [v18 path];
-    v21 = [v19 imageWithContentsOfFile:v20];
+    path = [v18 path];
+    v21 = [v19 imageWithContentsOfFile:path];
 
     v12 = v21;
   }
@@ -1199,26 +1199,26 @@ uint64_t __38__TVInterfaceFactory__tvmlResourceMap__block_invoke()
     v22 = TVMLKitImageLogObject;
     if (os_log_type_enabled(TVMLKitImageLogObject, OS_LOG_TYPE_ERROR))
     {
-      [(TVInterfaceFactory *)v4 _getImageFromURLorBundle:v22];
+      [(TVInterfaceFactory *)bundleCopy _getImageFromURLorBundle:v22];
     }
   }
 
   return v12;
 }
 
-+ (id)_URLForResource:(id)a3 bundle:(id)a4
++ (id)_URLForResource:(id)resource bundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  resourceCopy = resource;
+  bundleCopy = bundle;
+  if ([resourceCopy length])
   {
-    v7 = [v6 pathForResource:v5 ofType:@"png"];
+    v7 = [bundleCopy pathForResource:resourceCopy ofType:@"png"];
     if (!v7)
     {
-      v7 = [v6 pathForResource:v5 ofType:@"jpg"];
+      v7 = [bundleCopy pathForResource:resourceCopy ofType:@"jpg"];
       if (!v7)
       {
-        v7 = [v6 pathForResource:v5 ofType:@"lsr"];
+        v7 = [bundleCopy pathForResource:resourceCopy ofType:@"lsr"];
       }
     }
 
@@ -1243,17 +1243,17 @@ uint64_t __38__TVInterfaceFactory__tvmlResourceMap__block_invoke()
   return v9;
 }
 
-- (void)_willParseAppDocument:(id)a3 forImplicitUpdates:(BOOL)a4
+- (void)_willParseAppDocument:(id)document forImplicitUpdates:(BOOL)updates
 {
-  v4 = a4;
-  v32 = a3;
-  v6 = [v32 templateElement];
+  updatesCopy = updates;
+  documentCopy = document;
+  templateElement = [documentCopy templateElement];
 
-  if (v6 && (*&self->_extenderFlags & 0x600) != 0)
+  if (templateElement && (*&self->_extenderFlags & 0x600) != 0)
   {
     v7 = MEMORY[0x277CBEB18];
-    v8 = [v32 templateElement];
-    v9 = [v7 arrayWithObject:v8];
+    templateElement2 = [documentCopy templateElement];
+    v9 = [v7 arrayWithObject:templateElement2];
     while (1)
     {
 
@@ -1263,116 +1263,116 @@ uint64_t __38__TVInterfaceFactory__tvmlResourceMap__block_invoke()
         goto LABEL_37;
       }
 
-      v8 = [v9 firstObject];
+      templateElement2 = [v9 firstObject];
       [v9 removeObjectAtIndex:0];
-      v10 = v4 ? [v8 implicitUpdateType] : objc_msgSend(v8, "updateType");
+      v10 = updatesCopy ? [templateElement2 implicitUpdateType] : objc_msgSend(templateElement2, "updateType");
       v11 = v10;
       if (v10 >= 2)
       {
         break;
       }
 
-      v15 = [v8 tv_isParsedOnce];
-      if (v11 || (v15 & 1) == 0)
+      tv_isParsedOnce = [templateElement2 tv_isParsedOnce];
+      if (v11 || (tv_isParsedOnce & 1) == 0)
       {
 LABEL_10:
-        if (([v8 tv_isParsedOnce] & 1) == 0)
+        if (([templateElement2 tv_isParsedOnce] & 1) == 0)
         {
           extenderFlags = self->_extenderFlags;
-          v13 = [(TVInterfaceFactory *)self extendedInterfaceCreator];
-          v14 = v13;
+          extendedInterfaceCreator = [(TVInterfaceFactory *)self extendedInterfaceCreator];
+          v14 = extendedInterfaceCreator;
           if ((extenderFlags & 0x200) != 0)
           {
-            v16 = [v8 tv_associatedViewElement];
-            [v14 _parseAppConfigurationForElement:v16];
+            tv_associatedViewElement = [templateElement2 tv_associatedViewElement];
+            [v14 _parseAppConfigurationForElement:tv_associatedViewElement];
           }
 
           else
           {
-            [v13 _parseAppConfigurationForIKElement:v8];
+            [extendedInterfaceCreator _parseAppConfigurationForIKElement:templateElement2];
           }
 
-          [v8 tv_setParsedOnce:1];
+          [templateElement2 tv_setParsedOnce:1];
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v17 = [v8 masterPrototypes];
-          if ([v17 count])
+          masterPrototypes = [templateElement2 masterPrototypes];
+          if ([masterPrototypes count])
           {
             v18 = 0;
             do
             {
-              v19 = [v17 objectAtIndexedSubscript:v18];
+              v19 = [masterPrototypes objectAtIndexedSubscript:v18];
               [v9 insertObject:v19 atIndex:v18];
 
               ++v18;
             }
 
-            while (v18 < [v17 count]);
+            while (v18 < [masterPrototypes count]);
           }
 
-          v20 = [v8 proxiedItemElements];
-          if ([v20 count])
+          proxiedItemElements = [templateElement2 proxiedItemElements];
+          if ([proxiedItemElements count])
           {
             v21 = 0;
             do
             {
-              v22 = [v20 objectAtIndexedSubscript:v21];
+              v22 = [proxiedItemElements objectAtIndexedSubscript:v21];
               [v9 insertObject:v22 atIndex:v21];
 
               ++v21;
             }
 
-            while (v21 < [v20 count]);
+            while (v21 < [proxiedItemElements count]);
           }
         }
 
-        v23 = [MEMORY[0x277CBEB18] arrayWithObject:v8];
+        v23 = [MEMORY[0x277CBEB18] arrayWithObject:templateElement2];
         v24 = v23;
         while ([v23 count])
         {
-          v25 = [v24 firstObject];
+          firstObject = [v24 firstObject];
           [v24 removeObjectAtIndex:0];
-          v26 = [v25 aliases];
-          [v24 addObjectsFromArray:v26];
-          if ([v26 count])
+          aliases = [firstObject aliases];
+          [v24 addObjectsFromArray:aliases];
+          if ([aliases count])
           {
             v27 = 0;
             do
             {
-              v28 = [v26 objectAtIndexedSubscript:v27];
+              v28 = [aliases objectAtIndexedSubscript:v27];
               [v9 insertObject:v28 atIndex:v27];
 
               ++v27;
             }
 
-            while (v27 < [v26 count]);
+            while (v27 < [aliases count]);
           }
 
           v23 = v24;
         }
 
-        v29 = [v8 children];
-        if ([v29 count])
+        children = [templateElement2 children];
+        if ([children count])
         {
           v30 = 0;
           do
           {
-            v31 = [v29 objectAtIndexedSubscript:v30];
+            v31 = [children objectAtIndexedSubscript:v30];
             [v9 insertObject:v31 atIndex:v30];
 
             ++v30;
           }
 
-          while (v30 < [v29 count]);
+          while (v30 < [children count]);
         }
       }
     }
 
-    [v8 tv_setParsedOnce:0];
-    [v8 tv_isParsedOnce];
+    [templateElement2 tv_setParsedOnce:0];
+    [templateElement2 tv_isParsedOnce];
     goto LABEL_10;
   }
 

@@ -2,49 +2,49 @@
 + (Class)applicationIconClass;
 + (Class)bookmarkClass;
 + (Class)bookmarkIconClass;
-- (BOOL)containsIcon:(id)a3;
-- (BOOL)isApplicationIconVisibleForBundleIdentifier:(id)a3;
-- (BOOL)isIconVisible:(id)a3;
+- (BOOL)containsIcon:(id)icon;
+- (BOOL)isApplicationIconVisibleForBundleIdentifier:(id)identifier;
+- (BOOL)isIconVisible:(id)visible;
 - (NSSet)icons;
 - (SBHApplicationInfoProviding)applicationInfoProvider;
 - (SBHIconRepository)init;
-- (id)addApplicationIconForApplication:(id)a3;
-- (id)addApplicationIconForApplicationPlaceholder:(id)a3;
-- (id)addBookmarkIconForWebClip:(id)a3;
-- (id)iconForIdentifier:(id)a3;
-- (void)addIcon:(id)a3;
-- (void)addIcons:(id)a3;
-- (void)enumerateIconsUsingBlock:(id)a3;
-- (void)removeApplicationIconForApplication:(id)a3;
-- (void)removeApplicationIconForApplicationPlaceholder:(id)a3;
-- (void)removeIcon:(id)a3;
-- (void)setHiddenTagsThatAffectBookmarkIcons:(id)a3;
-- (void)setVisibilityOfIconsWithVisibleTags:(id)a3 hiddenTags:(id)a4;
-- (void)uninstallIcon:(id)a3 completionHandler:(id)a4;
-- (void)updateExistingBookmarkIcon:(id)a3 forUpdatedWebClip:(id)a4;
+- (id)addApplicationIconForApplication:(id)application;
+- (id)addApplicationIconForApplicationPlaceholder:(id)placeholder;
+- (id)addBookmarkIconForWebClip:(id)clip;
+- (id)iconForIdentifier:(id)identifier;
+- (void)addIcon:(id)icon;
+- (void)addIcons:(id)icons;
+- (void)enumerateIconsUsingBlock:(id)block;
+- (void)removeApplicationIconForApplication:(id)application;
+- (void)removeApplicationIconForApplicationPlaceholder:(id)placeholder;
+- (void)removeIcon:(id)icon;
+- (void)setHiddenTagsThatAffectBookmarkIcons:(id)icons;
+- (void)setVisibilityOfIconsWithVisibleTags:(id)tags hiddenTags:(id)hiddenTags;
+- (void)uninstallIcon:(id)icon completionHandler:(id)handler;
+- (void)updateExistingBookmarkIcon:(id)icon forUpdatedWebClip:(id)clip;
 @end
 
 @implementation SBHIconRepository
 
-- (BOOL)isIconVisible:(id)a3
+- (BOOL)isIconVisible:(id)visible
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = SBHIconRepository.isIconVisible(_:)(v4);
+  visibleCopy = visible;
+  selfCopy = self;
+  LOBYTE(self) = SBHIconRepository.isIconVisible(_:)(visibleCopy);
 
   return self & 1;
 }
 
-- (id)iconForIdentifier:(id)a3
+- (id)iconForIdentifier:(id)identifier
 {
-  v3 = [(SBHIconRepository *)self iconFor:a3];
+  v3 = [(SBHIconRepository *)self iconFor:identifier];
 
   return v3;
 }
 
 - (NSSet)icons
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BEB1FF98();
   swift_beginAccess();
 
@@ -85,14 +85,14 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)addIcon:(id)a3
+- (void)addIcon:(id)icon
 {
-  v4 = a3;
-  v5 = self;
-  _sSo17SBHIconRepositoryC15SpringBoardHomeE7addIconyySo06SBLeafG0CF_0(v4);
+  iconCopy = icon;
+  selfCopy = self;
+  _sSo17SBHIconRepositoryC15SpringBoardHomeE7addIconyySo06SBLeafG0CF_0(iconCopy);
 }
 
-- (void)addIcons:(id)a3
+- (void)addIcons:(id)icons
 {
   sub_1BEB20D28(0, &qword_1EBDBFFE0);
   v4 = sub_1BEE471AC();
@@ -121,7 +121,7 @@
     return;
   }
 
-  v7 = self;
+  selfCopy = self;
   for (i = 0; i != v6; ++i)
   {
     if ((v5 & 0xC000000000000001) != 0)
@@ -141,11 +141,11 @@
 LABEL_10:
 }
 
-- (id)addApplicationIconForApplication:(id)a3
+- (id)addApplicationIconForApplication:(id)application
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_1BEDCB9A8(a3);
+  selfCopy = self;
+  v6 = sub_1BEDCB9A8(application);
   if (v6)
   {
     v7 = v6;
@@ -154,7 +154,7 @@ LABEL_10:
 
   else
   {
-    v8 = sub_1BEDCB134(a3, &selRef_bundleIdentifier, &selRef_initWithApplication_);
+    v8 = sub_1BEDCB134(application, &selRef_bundleIdentifier, &selRef_initWithApplication_);
     v7 = v8;
     if (v8)
     {
@@ -167,30 +167,30 @@ LABEL_10:
   return v7;
 }
 
-- (id)addApplicationIconForApplicationPlaceholder:(id)a3
+- (id)addApplicationIconForApplicationPlaceholder:(id)placeholder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1BEDCBBE0(a3);
+  selfCopy = self;
+  sub_1BEDCBBE0(placeholder);
   v7 = v6;
   swift_unknownObjectRelease();
 
   return v7;
 }
 
-- (id)addBookmarkIconForWebClip:(id)a3
+- (id)addBookmarkIconForWebClip:(id)clip
 {
-  v4 = a3;
-  v5 = self;
-  result = [v4 identifier];
+  clipCopy = clip;
+  selfCopy = self;
+  result = [clipCopy identifier];
   if (result)
   {
     v7 = result;
-    v8 = [(SBHIconRepository *)v5 bookmarkIconForWebClipIdentifier:result];
+    v8 = [(SBHIconRepository *)selfCopy bookmarkIconForWebClipIdentifier:result];
 
     if (!v8)
     {
-      v9 = sub_1BEDCB2C0(v4);
+      v9 = sub_1BEDCB2C0(clipCopy);
       v8 = v9;
       if (v9)
       {
@@ -209,18 +209,18 @@ LABEL_10:
   return result;
 }
 
-- (void)removeIcon:(id)a3
+- (void)removeIcon:(id)icon
 {
-  v4 = a3;
-  v5 = self;
-  _sSo17SBHIconRepositoryC15SpringBoardHomeE10removeIconyySo06SBLeafG0CF_0(v4);
+  iconCopy = icon;
+  selfCopy = self;
+  _sSo17SBHIconRepositoryC15SpringBoardHomeE10removeIconyySo06SBLeafG0CF_0(iconCopy);
 }
 
-- (void)removeApplicationIconForApplication:(id)a3
+- (void)removeApplicationIconForApplication:(id)application
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  v5 = sub_1BEDCB9A8(a3);
+  selfCopy = self;
+  v5 = sub_1BEDCB9A8(application);
   if (v5)
   {
     v6 = v5;
@@ -234,50 +234,50 @@ LABEL_10:
   swift_unknownObjectRelease();
 }
 
-- (void)removeApplicationIconForApplicationPlaceholder:(id)a3
+- (void)removeApplicationIconForApplicationPlaceholder:(id)placeholder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1BEDCC1BC(a3);
+  selfCopy = self;
+  sub_1BEDCC1BC(placeholder);
   swift_unknownObjectRelease();
 }
 
-- (void)updateExistingBookmarkIcon:(id)a3 forUpdatedWebClip:(id)a4
+- (void)updateExistingBookmarkIcon:(id)icon forUpdatedWebClip:(id)clip
 {
   ObjCClassFromObject = swift_getObjCClassFromObject();
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
+  iconCopy = icon;
+  clipCopy = clip;
+  selfCopy = self;
   [ObjCClassFromObject bookmarkClass];
   swift_getObjCClassMetadata();
   sub_1BEB20D28(0, &qword_1EBDC73C8);
   swift_dynamicCastMetatype();
-  v10 = [objc_allocWithZone(swift_getObjCClassFromMetadata()) initWithWebClip_];
-  [v8 setBookmark_];
+  initWithWebClip_ = [objc_allocWithZone(swift_getObjCClassFromMetadata()) initWithWebClip_];
+  [iconCopy setBookmark_];
 }
 
-- (void)enumerateIconsUsingBlock:(id)a3
+- (void)enumerateIconsUsingBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   _Block_copy(v4);
-  v5 = self;
-  sub_1BEDCFAF8(v5, v4);
+  selfCopy = self;
+  sub_1BEDCFAF8(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (BOOL)containsIcon:(id)a3
+- (BOOL)containsIcon:(id)icon
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = SBHIconRepository.containsIcon(_:)(v4);
+  iconCopy = icon;
+  selfCopy = self;
+  LOBYTE(self) = SBHIconRepository.containsIcon(_:)(iconCopy);
 
   return self & 1;
 }
 
-- (void)uninstallIcon:(id)a3 completionHandler:(id)a4
+- (void)uninstallIcon:(id)icon completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -290,33 +290,33 @@ LABEL_10:
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  SBHIconRepository.uninstallIcon(_:completionHandler:)(v8, v6, v7);
+  iconCopy = icon;
+  selfCopy = self;
+  SBHIconRepository.uninstallIcon(_:completionHandler:)(iconCopy, v6, v7);
   sub_1BEB326F8(v6);
 }
 
-- (void)setVisibilityOfIconsWithVisibleTags:(id)a3 hiddenTags:(id)a4
+- (void)setVisibilityOfIconsWithVisibleTags:(id)tags hiddenTags:(id)hiddenTags
 {
   v5 = sub_1BEE4726C();
   v6 = sub_1BEE4726C();
-  v7 = self;
+  selfCopy = self;
   SBHIconRepository.setVisibilityOfIconsWithVisibleTags(_:hiddenTags:)(v5, v6);
 }
 
-- (void)setHiddenTagsThatAffectBookmarkIcons:(id)a3
+- (void)setHiddenTagsThatAffectBookmarkIcons:(id)icons
 {
   *(self + OBJC_IVAR___SBHIconRepository_hiddenTagsThatAffectBookmarkIcons) = sub_1BEE4726C();
 }
 
-- (BOOL)isApplicationIconVisibleForBundleIdentifier:(id)a3
+- (BOOL)isApplicationIconVisibleForBundleIdentifier:(id)identifier
 {
-  v4 = self;
-  v5 = [(SBHIconRepository *)v4 applicationIconForBundleIdentifier:a3];
+  selfCopy = self;
+  v5 = [(SBHIconRepository *)selfCopy applicationIconForBundleIdentifier:identifier];
   if (v5)
   {
     v6 = v5;
-    v7 = [(SBHIconRepository *)v4 isIconVisible:v5];
+    v7 = [(SBHIconRepository *)selfCopy isIconVisible:v5];
   }
 
   else

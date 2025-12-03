@@ -4,11 +4,11 @@
 - (CKVideoPreviewViewControllerDelegate)videoPreviewDelegate;
 - (void)dealloc;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
 - (void)play;
-- (void)setVideoFileURL:(id)a3;
-- (void)videoDidReachEnd:(id)a3;
+- (void)setVideoFileURL:(id)l;
+- (void)videoDidReachEnd:(id)end;
 @end
 
 @implementation CKVideoPreviewViewController
@@ -20,14 +20,14 @@
   v2 = [(CKVideoPreviewViewController *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69880E0] layer];
-    [(CKVideoPreviewViewController *)v2 setAvPlayerLayer:v3];
+    layer = [MEMORY[0x1E69880E0] layer];
+    [(CKVideoPreviewViewController *)v2 setAvPlayerLayer:layer];
 
-    v4 = [(CKVideoPreviewViewController *)v2 avPlayerLayer];
-    [v4 setVideoGravity:*MEMORY[0x1E69874F0]];
+    avPlayerLayer = [(CKVideoPreviewViewController *)v2 avPlayerLayer];
+    [avPlayerLayer setVideoGravity:*MEMORY[0x1E69874F0]];
 
-    v5 = [(CKVideoPreviewViewController *)v2 avPlayerLayer];
-    [v5 setPreferredDynamicRange:*MEMORY[0x1E6979298]];
+    avPlayerLayer2 = [(CKVideoPreviewViewController *)v2 avPlayerLayer];
+    [avPlayerLayer2 setPreferredDynamicRange:*MEMORY[0x1E6979298]];
   }
 
   return v2;
@@ -38,65 +38,65 @@
   v8.receiver = self;
   v8.super_class = CKVideoPreviewViewController;
   [(CKVideoPreviewViewController *)&v8 loadView];
-  v3 = [(CKVideoPreviewViewController *)self avPlayerLayer];
-  v4 = [(CKVideoPreviewViewController *)self view];
-  [v4 bounds];
-  [v3 setFrame:?];
+  avPlayerLayer = [(CKVideoPreviewViewController *)self avPlayerLayer];
+  view = [(CKVideoPreviewViewController *)self view];
+  [view bounds];
+  [avPlayerLayer setFrame:?];
 
-  v5 = [(CKVideoPreviewViewController *)self view];
-  v6 = [v5 layer];
-  v7 = [(CKVideoPreviewViewController *)self avPlayerLayer];
-  [v6 insertSublayer:v7 atIndex:0];
+  view2 = [(CKVideoPreviewViewController *)self view];
+  layer = [view2 layer];
+  avPlayerLayer2 = [(CKVideoPreviewViewController *)self avPlayerLayer];
+  [layer insertSublayer:avPlayerLayer2 atIndex:0];
 
   [(CKVideoPreviewViewController *)self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)setVideoFileURL:(id)a3
+- (void)setVideoFileURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v4 = CKAVURLAssetForURL(a3);
+    v4 = CKAVURLAssetForURL(l);
     v5 = [MEMORY[0x1E69880B0] playerItemWithAsset:v4];
     [(CKVideoPreviewViewController *)self setAvPlayerItem:v5];
 
     v6 = MEMORY[0x1E6988098];
-    v7 = [(CKVideoPreviewViewController *)self avPlayerItem];
-    v8 = [v6 playerWithPlayerItem:v7];
+    avPlayerItem = [(CKVideoPreviewViewController *)self avPlayerItem];
+    v8 = [v6 playerWithPlayerItem:avPlayerItem];
     [(CKVideoPreviewViewController *)self setAvPlayer:v8];
 
-    v9 = [(CKVideoPreviewViewController *)self avPlayer];
-    v10 = [(CKVideoPreviewViewController *)self avPlayerLayer];
-    [v10 setPlayer:v9];
+    avPlayer = [(CKVideoPreviewViewController *)self avPlayer];
+    avPlayerLayer = [(CKVideoPreviewViewController *)self avPlayerLayer];
+    [avPlayerLayer setPlayer:avPlayer];
 
-    v11 = [(CKVideoPreviewViewController *)self avPlayer];
-    [v11 setActionAtItemEnd:1];
+    avPlayer2 = [(CKVideoPreviewViewController *)self avPlayer];
+    [avPlayer2 setActionAtItemEnd:1];
 
-    v12 = [(CKVideoPreviewViewController *)self avPlayer];
+    avPlayer3 = [(CKVideoPreviewViewController *)self avPlayer];
     v13 = MEMORY[0x193AF5ED0]("CMTimeZero", @"CoreMedia");
     v14 = *(v13 + 16);
     v22 = *v13;
     v23 = v14;
-    [v12 seekToTime:&v22];
+    [avPlayer3 seekToTime:&v22];
 
-    v15 = [(CKVideoPreviewViewController *)self avPlayerLayer];
-    [v15 addObserver:self forKeyPath:@"readyForDisplay" options:5 context:&CKVideoPlayerLayerContext];
+    avPlayerLayer2 = [(CKVideoPreviewViewController *)self avPlayerLayer];
+    [avPlayerLayer2 addObserver:self forKeyPath:@"readyForDisplay" options:5 context:&CKVideoPlayerLayerContext];
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v17 = *MEMORY[0x1E6987A10];
-    v18 = [(CKVideoPreviewViewController *)self avPlayerItem];
-    [v16 addObserver:self selector:sel_videoDidReachEnd_ name:v17 object:v18];
+    avPlayerItem2 = [(CKVideoPreviewViewController *)self avPlayerItem];
+    [defaultCenter addObserver:self selector:sel_videoDidReachEnd_ name:v17 object:avPlayerItem2];
 
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v20 = *MEMORY[0x1E6987A20];
-    v21 = [(CKVideoPreviewViewController *)self avPlayerItem];
-    [v19 addObserver:self selector:sel_videoDidReachEnd_ name:v20 object:v21];
+    avPlayerItem3 = [(CKVideoPreviewViewController *)self avPlayerItem];
+    [defaultCenter2 addObserver:self selector:sel_videoDidReachEnd_ name:v20 object:avPlayerItem3];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(AVPlayerLayer *)self->_avPlayerLayer removeObserver:self forKeyPath:@"readyForDisplay" context:&CKVideoPlayerLayerContext];
   [(AVPlayerLayer *)self->_avPlayerLayer removeFromSuperlayer];
@@ -107,8 +107,8 @@
 
 - (BOOL)togglePlayPause
 {
-  v3 = [(CKVideoPreviewViewController *)self isPlaying];
-  if (v3)
+  isPlaying = [(CKVideoPreviewViewController *)self isPlaying];
+  if (isPlaying)
   {
     [(CKVideoPreviewViewController *)self pause];
   }
@@ -118,7 +118,7 @@
     [(CKVideoPreviewViewController *)self play];
   }
 
-  return !v3;
+  return !isPlaying;
 }
 
 - (void)play
@@ -126,12 +126,12 @@
   if ([(CKVideoPreviewViewController *)self reachedEnd])
   {
     [(CKVideoPreviewViewController *)self setReachedEnd:0];
-    v3 = [(CKVideoPreviewViewController *)self avPlayer];
+    avPlayer = [(CKVideoPreviewViewController *)self avPlayer];
     v4 = MEMORY[0x193AF5ED0]("CMTimeZero", @"CoreMedia");
     v5 = *(v4 + 16);
     v8 = *v4;
     v9 = v5;
-    [v3 seekToTime:&v8];
+    [avPlayer seekToTime:&v8];
   }
 
   v6 = +[CKAudioSessionController shareInstance];
@@ -151,49 +151,49 @@ void __36__CKVideoPreviewViewController_play__block_invoke(uint64_t a1)
 
 - (void)pause
 {
-  v2 = [(CKVideoPreviewViewController *)self avPlayer];
-  [v2 pause];
+  avPlayer = [(CKVideoPreviewViewController *)self avPlayer];
+  [avPlayer pause];
 
   v3 = +[CKAudioSessionController shareInstance];
   [v3 deactivate];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 != &CKVideoPlayerLayerContext)
+  if (context != &CKVideoPlayerLayerContext)
   {
     v9.receiver = self;
     v9.super_class = CKVideoPreviewViewController;
-    [(CKVideoPreviewViewController *)&v9 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(CKVideoPreviewViewController *)&v9 observeValueForKeyPath:path ofObject:object change:change context:?];
     return;
   }
 
-  if ([a3 isEqualToString:{@"readyForDisplay", a4, a5}])
+  if ([path isEqualToString:{@"readyForDisplay", object, change}])
   {
-    v8 = [(CKVideoPreviewViewController *)self avPlayerLayer];
-    if ([v8 isReadyForDisplay])
+    avPlayerLayer = [(CKVideoPreviewViewController *)self avPlayerLayer];
+    if ([avPlayerLayer isReadyForDisplay])
     {
-      v7 = [(CKVideoPreviewViewController *)self isPlaying];
+      isPlaying = [(CKVideoPreviewViewController *)self isPlaying];
 
-      if (v7)
+      if (isPlaying)
       {
         return;
       }
 
-      v8 = [(CKVideoPreviewViewController *)self videoPreviewDelegate];
-      [v8 ckVideoPreviewViewControllerReady:self];
+      avPlayerLayer = [(CKVideoPreviewViewController *)self videoPreviewDelegate];
+      [avPlayerLayer ckVideoPreviewViewControllerReady:self];
     }
   }
 }
 
-- (void)videoDidReachEnd:(id)a3
+- (void)videoDidReachEnd:(id)end
 {
   [(CKVideoPreviewViewController *)self setReachedEnd:1];
   v4 = +[CKAudioSessionController shareInstance];
   [v4 deactivate];
 
-  v5 = [(CKVideoPreviewViewController *)self videoPreviewDelegate];
-  [v5 ckVideoPreviewViewControllerFinishedPlaying:self];
+  videoPreviewDelegate = [(CKVideoPreviewViewController *)self videoPreviewDelegate];
+  [videoPreviewDelegate ckVideoPreviewViewControllerFinishedPlaying:self];
 }
 
 - (CKVideoPreviewViewControllerDelegate)videoPreviewDelegate

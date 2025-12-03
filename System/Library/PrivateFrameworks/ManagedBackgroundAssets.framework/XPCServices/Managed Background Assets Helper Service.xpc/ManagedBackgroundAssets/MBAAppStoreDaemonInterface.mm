@@ -1,14 +1,14 @@
 @interface MBAAppStoreDaemonInterface
-+ (id)testFlightDownloadManifestRequestForStoreItemIdentifier:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
++ (id)testFlightDownloadManifestRequestForStoreItemIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier error:(id *)error;
 @end
 
 @implementation MBAAppStoreDaemonInterface
 
-+ (id)testFlightDownloadManifestRequestForStoreItemIdentifier:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
++ (id)testFlightDownloadManifestRequestForStoreItemIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [sub_1000015C4() testFlightDownloadManifestRequestForStoreItemIdentifier:v8 bundleIdentifier:v7 error:a5];
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
+  v9 = [sub_1000015C4() testFlightDownloadManifestRequestForStoreItemIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy error:error];
 
   return v9;
 }

@@ -1,6 +1,6 @@
 @interface AMSCampaignCohortParamsProvider
 + (id)provider;
-- (id)retrieveMetricsParamsStringPromiseWithBag:(id)a3 currentMetricsString:(id)a4;
+- (id)retrieveMetricsParamsStringPromiseWithBag:(id)bag currentMetricsString:(id)string;
 @end
 
 @implementation AMSCampaignCohortParamsProvider
@@ -13,11 +13,11 @@
   return v2;
 }
 
-- (id)retrieveMetricsParamsStringPromiseWithBag:(id)a3 currentMetricsString:(id)a4
+- (id)retrieveMetricsParamsStringPromiseWithBag:(id)bag currentMetricsString:(id)string
 {
   sub_192F967CC();
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = CampaignCohortParamsProvider.retrieveMetricsParamsStringPromise(bag:currentMetricsString:)();
   swift_unknownObjectRelease();
 

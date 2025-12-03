@@ -1,10 +1,10 @@
 @interface FTBlazarMultiUserMessage
-+ (Class)session_message_immutableClassForType:(int64_t)a3;
-+ (int64_t)session_message_typeForImmutableObject:(id)a3;
++ (Class)session_message_immutableClassForType:(int64_t)type;
++ (int64_t)session_message_typeForImmutableObject:(id)object;
 - (FLTBFBufferAccessor)session_message;
 - (FTAudioLimitExceeded)session_messageAsFTAudioLimitExceeded;
 - (FTAudioPacket)session_messageAsFTAudioPacket;
-- (FTBlazarMultiUserMessage)initWithFlatbuffData:(id)a3 root:(const BlazarMultiUserMessage *)a4 verify:(BOOL)a5;
+- (FTBlazarMultiUserMessage)initWithFlatbuffData:(id)data root:(const BlazarMultiUserMessage *)root verify:(BOOL)verify;
 - (FTClientSetupInfo)session_messageAsFTClientSetupInfo;
 - (FTFinalBlazarResponse)session_messageAsFTFinalBlazarResponse;
 - (FTFinalSpeechRecognitionResponse)session_messageAsFTFinalSpeechRecognitionResponse;
@@ -22,49 +22,49 @@
 - (FTSetSpeechContext)session_messageAsFTSetSpeechContext;
 - (FTSetSpeechProfile)session_messageAsFTSetSpeechProfile;
 - (FTUpdateAudioInfo)session_messageAsFTUpdateAudioInfo;
-- (Offset<siri::speech::qss_fb::BlazarMultiUserMessage>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::qss_fb::BlazarMultiUserMessage>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int64_t)session_message_type;
 @end
 
 @implementation FTBlazarMultiUserMessage
 
-- (FTBlazarMultiUserMessage)initWithFlatbuffData:(id)a3 root:(const BlazarMultiUserMessage *)a4 verify:(BOOL)a5
+- (FTBlazarMultiUserMessage)initWithFlatbuffData:(id)data root:(const BlazarMultiUserMessage *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = FTBlazarMultiUserMessage;
   v10 = [(FTBlazarMultiUserMessage *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_15;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_15;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_233005E20;
       v27 = 0;
@@ -81,9 +81,9 @@ LABEL_15:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;
@@ -739,180 +739,180 @@ LABEL_16:
   switch([(FTBlazarMultiUserMessage *)self session_message_type])
   {
     case 1:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTMultiUserStartSpeechRequest];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTMultiUserStartSpeechRequest];
       break;
     case 2:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTUpdateAudioInfo];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTUpdateAudioInfo];
       break;
     case 3:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetRequestOrigin];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetRequestOrigin];
       break;
     case 4:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetSpeechContext];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetSpeechContext];
       break;
     case 5:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetSpeechProfile];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetSpeechProfile];
       break;
     case 6:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetEndpointerState];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetEndpointerState];
       break;
     case 7:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTAudioPacket];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTAudioPacket];
       break;
     case 8:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTFinishAudio];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTFinishAudio];
       break;
     case 9:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTResetServerEndpointer];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTResetServerEndpointer];
       break;
     case 10:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetAlternateRecognitionSausage];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetAlternateRecognitionSausage];
       break;
     case 11:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTFinalSpeechRecognitionResponse];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTFinalSpeechRecognitionResponse];
       break;
     case 12:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTPartialSpeechRecognitionResponse];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTPartialSpeechRecognitionResponse];
       break;
     case 13:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTRecognitionProgress];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTRecognitionProgress];
       break;
     case 14:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTRecognitionCandidate];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTRecognitionCandidate];
       break;
     case 15:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTRequestStatsResponse];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTRequestStatsResponse];
       break;
     case 16:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTServerEndpointFeatures];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTServerEndpointFeatures];
       break;
     case 17:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTClientSetupInfo];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTClientSetupInfo];
       break;
     case 18:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTAudioLimitExceeded];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTAudioLimitExceeded];
       break;
     case 19:
-      v3 = [(FTBlazarMultiUserMessage *)self session_messageAsFTFinalBlazarResponse];
+      session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTFinalBlazarResponse];
       break;
     default:
-      v3 = 0;
+      session_messageAsFTMultiUserStartSpeechRequest = 0;
       break;
   }
 
-  return v3;
+  return session_messageAsFTMultiUserStartSpeechRequest;
 }
 
-+ (Class)session_message_immutableClassForType:(int64_t)a3
++ (Class)session_message_immutableClassForType:(int64_t)type
 {
-  if ((a3 - 1) > 0x12)
+  if ((type - 1) > 0x12)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = *off_2789B83A8[a3 - 1];
+    v4 = *off_2789B83A8[type - 1];
     v5 = objc_opt_class();
   }
 
   return v5;
 }
 
-+ (int64_t)session_message_typeForImmutableObject:(id)a3
++ (int64_t)session_message_typeForImmutableObject:(id)object
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  objectCopy = object;
+  if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 1;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 2;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 3;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 4;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 5;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 6;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 7;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 8;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 9;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 10;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 11;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 12;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 13;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 14;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 15;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 16;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 17;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 18;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 19;
   }
@@ -925,13 +925,13 @@ LABEL_16:
   return v4;
 }
 
-- (Offset<siri::speech::qss_fb::BlazarMultiUserMessage>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::qss_fb::BlazarMultiUserMessage>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTBlazarMultiUserMessage *)self session_message_type];
+  session_message_type = [(FTBlazarMultiUserMessage *)self session_message_type];
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 1)
   {
-    v6 = [(FTBlazarMultiUserMessage *)self session_messageAsFTMultiUserStartSpeechRequest];
-    v7 = [v6 addObjectToBuffer:a3];
+    session_messageAsFTMultiUserStartSpeechRequest = [(FTBlazarMultiUserMessage *)self session_messageAsFTMultiUserStartSpeechRequest];
+    v7 = [session_messageAsFTMultiUserStartSpeechRequest addObjectToBuffer:buffer];
 
     v8 = v7;
   }
@@ -943,8 +943,8 @@ LABEL_16:
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 2)
   {
-    v9 = [(FTBlazarMultiUserMessage *)self session_messageAsFTUpdateAudioInfo];
-    v10 = [v9 addObjectToBuffer:a3];
+    session_messageAsFTUpdateAudioInfo = [(FTBlazarMultiUserMessage *)self session_messageAsFTUpdateAudioInfo];
+    v10 = [session_messageAsFTUpdateAudioInfo addObjectToBuffer:buffer];
 
     v11 = v10;
   }
@@ -956,8 +956,8 @@ LABEL_16:
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 3)
   {
-    v12 = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetRequestOrigin];
-    v13 = [v12 addObjectToBuffer:a3];
+    session_messageAsFTSetRequestOrigin = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetRequestOrigin];
+    v13 = [session_messageAsFTSetRequestOrigin addObjectToBuffer:buffer];
 
     v14 = v13;
   }
@@ -969,8 +969,8 @@ LABEL_16:
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 4)
   {
-    v15 = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetSpeechContext];
-    v16 = [v15 addObjectToBuffer:a3];
+    session_messageAsFTSetSpeechContext = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetSpeechContext];
+    v16 = [session_messageAsFTSetSpeechContext addObjectToBuffer:buffer];
 
     v70 = v16;
   }
@@ -982,8 +982,8 @@ LABEL_16:
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 5)
   {
-    v17 = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetSpeechProfile];
-    v18 = [v17 addObjectToBuffer:a3];
+    session_messageAsFTSetSpeechProfile = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetSpeechProfile];
+    v18 = [session_messageAsFTSetSpeechProfile addObjectToBuffer:buffer];
 
     v69 = v18;
   }
@@ -995,8 +995,8 @@ LABEL_16:
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 6)
   {
-    v19 = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetEndpointerState];
-    v20 = [v19 addObjectToBuffer:a3];
+    session_messageAsFTSetEndpointerState = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetEndpointerState];
+    v20 = [session_messageAsFTSetEndpointerState addObjectToBuffer:buffer];
 
     v68 = v20;
   }
@@ -1008,8 +1008,8 @@ LABEL_16:
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 7)
   {
-    v21 = [(FTBlazarMultiUserMessage *)self session_messageAsFTAudioPacket];
-    v22 = [v21 addObjectToBuffer:a3];
+    session_messageAsFTAudioPacket = [(FTBlazarMultiUserMessage *)self session_messageAsFTAudioPacket];
+    v22 = [session_messageAsFTAudioPacket addObjectToBuffer:buffer];
 
     v67 = v22;
   }
@@ -1021,8 +1021,8 @@ LABEL_16:
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 8)
   {
-    v23 = [(FTBlazarMultiUserMessage *)self session_messageAsFTFinishAudio];
-    v24 = [v23 addObjectToBuffer:a3];
+    session_messageAsFTFinishAudio = [(FTBlazarMultiUserMessage *)self session_messageAsFTFinishAudio];
+    v24 = [session_messageAsFTFinishAudio addObjectToBuffer:buffer];
 
     v66 = v24;
   }
@@ -1034,8 +1034,8 @@ LABEL_16:
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 9)
   {
-    v25 = [(FTBlazarMultiUserMessage *)self session_messageAsFTResetServerEndpointer];
-    v26 = [v25 addObjectToBuffer:a3];
+    session_messageAsFTResetServerEndpointer = [(FTBlazarMultiUserMessage *)self session_messageAsFTResetServerEndpointer];
+    v26 = [session_messageAsFTResetServerEndpointer addObjectToBuffer:buffer];
 
     v65 = v26;
   }
@@ -1047,8 +1047,8 @@ LABEL_16:
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 10)
   {
-    v27 = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetAlternateRecognitionSausage];
-    v28 = [v27 addObjectToBuffer:a3];
+    session_messageAsFTSetAlternateRecognitionSausage = [(FTBlazarMultiUserMessage *)self session_messageAsFTSetAlternateRecognitionSausage];
+    v28 = [session_messageAsFTSetAlternateRecognitionSausage addObjectToBuffer:buffer];
 
     v64 = v28;
   }
@@ -1060,8 +1060,8 @@ LABEL_16:
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 11)
   {
-    v29 = [(FTBlazarMultiUserMessage *)self session_messageAsFTFinalSpeechRecognitionResponse];
-    v30 = [v29 addObjectToBuffer:a3];
+    session_messageAsFTFinalSpeechRecognitionResponse = [(FTBlazarMultiUserMessage *)self session_messageAsFTFinalSpeechRecognitionResponse];
+    v30 = [session_messageAsFTFinalSpeechRecognitionResponse addObjectToBuffer:buffer];
 
     v63 = v30;
   }
@@ -1073,8 +1073,8 @@ LABEL_16:
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 12)
   {
-    v31 = [(FTBlazarMultiUserMessage *)self session_messageAsFTPartialSpeechRecognitionResponse];
-    v32 = [v31 addObjectToBuffer:a3];
+    session_messageAsFTPartialSpeechRecognitionResponse = [(FTBlazarMultiUserMessage *)self session_messageAsFTPartialSpeechRecognitionResponse];
+    v32 = [session_messageAsFTPartialSpeechRecognitionResponse addObjectToBuffer:buffer];
 
     v62 = v32;
   }
@@ -1086,8 +1086,8 @@ LABEL_16:
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 13)
   {
-    v33 = [(FTBlazarMultiUserMessage *)self session_messageAsFTRecognitionProgress];
-    v34 = [v33 addObjectToBuffer:a3];
+    session_messageAsFTRecognitionProgress = [(FTBlazarMultiUserMessage *)self session_messageAsFTRecognitionProgress];
+    v34 = [session_messageAsFTRecognitionProgress addObjectToBuffer:buffer];
 
     v61 = v34;
   }
@@ -1099,8 +1099,8 @@ LABEL_16:
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 14)
   {
-    v35 = [(FTBlazarMultiUserMessage *)self session_messageAsFTRecognitionCandidate];
-    v36 = [v35 addObjectToBuffer:a3];
+    session_messageAsFTRecognitionCandidate = [(FTBlazarMultiUserMessage *)self session_messageAsFTRecognitionCandidate];
+    v36 = [session_messageAsFTRecognitionCandidate addObjectToBuffer:buffer];
 
     v60 = v36;
   }
@@ -1112,8 +1112,8 @@ LABEL_16:
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 15)
   {
-    v37 = [(FTBlazarMultiUserMessage *)self session_messageAsFTRequestStatsResponse];
-    v38 = [v37 addObjectToBuffer:a3];
+    session_messageAsFTRequestStatsResponse = [(FTBlazarMultiUserMessage *)self session_messageAsFTRequestStatsResponse];
+    v38 = [session_messageAsFTRequestStatsResponse addObjectToBuffer:buffer];
 
     v59 = v38;
   }
@@ -1125,8 +1125,8 @@ LABEL_16:
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 16)
   {
-    v39 = [(FTBlazarMultiUserMessage *)self session_messageAsFTServerEndpointFeatures];
-    v40 = [v39 addObjectToBuffer:a3];
+    session_messageAsFTServerEndpointFeatures = [(FTBlazarMultiUserMessage *)self session_messageAsFTServerEndpointFeatures];
+    v40 = [session_messageAsFTServerEndpointFeatures addObjectToBuffer:buffer];
 
     v58 = v40;
   }
@@ -1138,8 +1138,8 @@ LABEL_16:
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 17)
   {
-    v41 = [(FTBlazarMultiUserMessage *)self session_messageAsFTClientSetupInfo];
-    v42 = [v41 addObjectToBuffer:a3];
+    session_messageAsFTClientSetupInfo = [(FTBlazarMultiUserMessage *)self session_messageAsFTClientSetupInfo];
+    v42 = [session_messageAsFTClientSetupInfo addObjectToBuffer:buffer];
 
     v57 = v42;
   }
@@ -1152,8 +1152,8 @@ LABEL_16:
   v43 = v14;
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 18)
   {
-    v44 = [(FTBlazarMultiUserMessage *)self session_messageAsFTAudioLimitExceeded];
-    v45 = [v44 addObjectToBuffer:a3];
+    session_messageAsFTAudioLimitExceeded = [(FTBlazarMultiUserMessage *)self session_messageAsFTAudioLimitExceeded];
+    v45 = [session_messageAsFTAudioLimitExceeded addObjectToBuffer:buffer];
 
     v46 = v45;
   }
@@ -1167,8 +1167,8 @@ LABEL_16:
   v56 = v46;
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 19)
   {
-    v48 = [(FTBlazarMultiUserMessage *)self session_messageAsFTFinalBlazarResponse];
-    v49 = [v48 addObjectToBuffer:a3];
+    session_messageAsFTFinalBlazarResponse = [(FTBlazarMultiUserMessage *)self session_messageAsFTFinalBlazarResponse];
+    v49 = [session_messageAsFTFinalBlazarResponse addObjectToBuffer:buffer];
     v50 = v8;
 
     v51 = v49;
@@ -1180,107 +1180,107 @@ LABEL_16:
     v51 = 0;
   }
 
-  *(a3 + 70) = 1;
-  v53 = *(a3 + 5);
-  v52 = *(a3 + 6);
-  v54 = *(a3 + 4);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v5, 0);
+  *(buffer + 70) = 1;
+  v53 = *(buffer + 5);
+  v52 = *(buffer + 6);
+  v54 = *(buffer + 4);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, session_message_type, 0);
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 1)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v50);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v50);
   }
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 2)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v47);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v47);
   }
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 3)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v43);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v43);
   }
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 4)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v70);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v70);
   }
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 5)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v69);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v69);
   }
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 6)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v68);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v68);
   }
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 7)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v67);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v67);
   }
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 8)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v66);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v66);
   }
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 9)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v65);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v65);
   }
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 10)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v64);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v64);
   }
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 11)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v63);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v63);
   }
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 12)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v62);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v62);
   }
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 13)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v61);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v61);
   }
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 14)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v60);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v60);
   }
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 15)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v59);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v59);
   }
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 16)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v58);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v58);
   }
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 17)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v57);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v57);
   }
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 18)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v56);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v56);
   }
 
   if ([(FTBlazarMultiUserMessage *)self session_message_type]== 19)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v51);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v51);
   }
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v54 - v52 + v53);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v54 - v52 + v53);
 }
 
 - (id)flatbuffData

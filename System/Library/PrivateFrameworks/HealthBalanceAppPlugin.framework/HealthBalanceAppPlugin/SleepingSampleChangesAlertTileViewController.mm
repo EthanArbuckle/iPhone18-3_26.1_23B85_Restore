@@ -1,8 +1,8 @@
 @interface SleepingSampleChangesAlertTileViewController
 - (NSString)title;
-- (_TtC22HealthBalanceAppPlugin44SleepingSampleChangesAlertTileViewController)initWithCoder:(id)a3;
-- (_TtC22HealthBalanceAppPlugin44SleepingSampleChangesAlertTileViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setTitle:(id)a3;
+- (_TtC22HealthBalanceAppPlugin44SleepingSampleChangesAlertTileViewController)initWithCoder:(id)coder;
+- (_TtC22HealthBalanceAppPlugin44SleepingSampleChangesAlertTileViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setTitle:(id)title;
 - (void)viewDidLoad;
 @end
 
@@ -18,11 +18,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_25134E710();
 }
 
-- (_TtC22HealthBalanceAppPlugin44SleepingSampleChangesAlertTileViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22HealthBalanceAppPlugin44SleepingSampleChangesAlertTileViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_251385F74();
   sub_251385F64();
@@ -32,10 +32,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     v6 = sub_251385E64();
-    a3 = v7;
+    name = v7;
   }
 
   else
@@ -43,13 +43,13 @@
     v6 = 0;
   }
 
-  v8 = a4;
-  v9 = SleepingSampleChangesAlertTileViewController.init(nibName:bundle:)(v6, a3, a4);
+  bundleCopy = bundle;
+  v9 = SleepingSampleChangesAlertTileViewController.init(nibName:bundle:)(v6, name, bundle);
 
   return v9;
 }
 
-- (_TtC22HealthBalanceAppPlugin44SleepingSampleChangesAlertTileViewController)initWithCoder:(id)a3
+- (_TtC22HealthBalanceAppPlugin44SleepingSampleChangesAlertTileViewController)initWithCoder:(id)coder
 {
   sub_251385F74();
   sub_251385F64();
@@ -59,7 +59,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = SleepingSampleChangesAlertTileViewController.init(coder:)(a3);
+  v4 = SleepingSampleChangesAlertTileViewController.init(coder:)(coder);
 
   return v4;
 }
@@ -83,7 +83,7 @@
   sub_251385DB4();
   type metadata accessor for HealthBalanceAppPlugin();
   ObjCClassFromMetadata = swift_getObjCClassFromMetadata();
-  v7 = [objc_opt_self() bundleForClass_];
+  bundleForClass_ = [objc_opt_self() bundleForClass_];
   sub_251384A74();
   sub_251385E84();
   v8 = sub_251385E34();
@@ -91,7 +91,7 @@
   return v8;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   sub_251385F74();
   sub_251385F64();

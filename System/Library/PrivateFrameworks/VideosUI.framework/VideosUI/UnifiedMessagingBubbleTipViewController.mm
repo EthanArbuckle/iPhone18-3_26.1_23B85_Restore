@@ -1,6 +1,6 @@
 @interface UnifiedMessagingBubbleTipViewController
-- (_TtC8VideosUI39UnifiedMessagingBubbleTipViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (_TtC8VideosUI39UnifiedMessagingBubbleTipViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)vui_loadView;
 @end
 
@@ -8,19 +8,19 @@
 
 - (void)vui_loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3D3ACE0();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1E3D3AF28(a3);
+  selfCopy = self;
+  sub_1E3D3AF28(appear);
 }
 
-- (_TtC8VideosUI39UnifiedMessagingBubbleTipViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI39UnifiedMessagingBubbleTipViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1E4205F14();
     v7 = v6;
@@ -32,8 +32,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1E3D3B48C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1E3D3B48C(v5, v7, bundle);
 }
 
 @end

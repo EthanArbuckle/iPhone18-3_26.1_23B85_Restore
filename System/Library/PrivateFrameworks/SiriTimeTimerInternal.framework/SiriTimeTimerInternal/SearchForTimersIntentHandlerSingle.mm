@@ -1,9 +1,9 @@
 @interface SearchForTimersIntentHandlerSingle
 - (_TtC21SiriTimeTimerInternal34SearchForTimersIntentHandlerSingle)init;
-- (void)confirmSearchTimer:(id)a3 completion:(id)a4;
-- (void)handleSearchTimer:(id)a3 completion:(id)a4;
-- (void)resolveAllAvailableTargetsForSearchTimer:(SearchTimerIntent *)a3 withCompletion:(id)a4;
-- (void)resolveAssociatedDeviceTargetForSearchTimer:(SearchTimerIntent *)a3 withCompletion:(id)a4;
+- (void)confirmSearchTimer:(id)timer completion:(id)completion;
+- (void)handleSearchTimer:(id)timer completion:(id)completion;
+- (void)resolveAllAvailableTargetsForSearchTimer:(SearchTimerIntent *)timer withCompletion:(id)completion;
+- (void)resolveAssociatedDeviceTargetForSearchTimer:(SearchTimerIntent *)timer withCompletion:(id)completion;
 @end
 
 @implementation SearchForTimersIntentHandlerSingle
@@ -25,9 +25,9 @@
   return v4;
 }
 
-- (void)confirmSearchTimer:(id)a3 completion:(id)a4
+- (void)confirmSearchTimer:(id)timer completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   v5 = [objc_allocWithZone(type metadata accessor for SearchTimerIntentResponse()) init];
   v6 = OBJC_IVAR___SearchTimerIntentResponse_code;
   swift_beginAccess();
@@ -37,14 +37,14 @@
   _Block_release(v4);
 }
 
-- (void)resolveAssociatedDeviceTargetForSearchTimer:(SearchTimerIntent *)a3 withCompletion:(id)a4
+- (void)resolveAssociatedDeviceTargetForSearchTimer:(SearchTimerIntent *)timer withCompletion:(id)completion
 {
   v7 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_28030CE78, "\nY") - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = timer;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_2693B3920();
@@ -59,19 +59,19 @@
   v14[3] = 0;
   v14[4] = &unk_2693B5548;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  timerCopy = timer;
+  selfCopy = self;
   sub_2693A6BC4(0, 0, v9, &unk_2693B5550, v14);
 }
 
-- (void)resolveAllAvailableTargetsForSearchTimer:(SearchTimerIntent *)a3 withCompletion:(id)a4
+- (void)resolveAllAvailableTargetsForSearchTimer:(SearchTimerIntent *)timer withCompletion:(id)completion
 {
   v7 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_28030CE78, "\nY") - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = timer;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_2693B3920();
@@ -86,19 +86,19 @@
   v14[3] = 0;
   v14[4] = &unk_2693B5700;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  timerCopy = timer;
+  selfCopy = self;
   sub_2693A6BC4(0, 0, v9, &unk_2693B5530, v14);
 }
 
-- (void)handleSearchTimer:(id)a3 completion:(id)a4
+- (void)handleSearchTimer:(id)timer completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_269343EB8(v8, sub_269344A48, v7);
+  timerCopy = timer;
+  selfCopy = self;
+  sub_269343EB8(timerCopy, sub_269344A48, v7);
 }
 
 @end

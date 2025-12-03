@@ -1,67 +1,67 @@
 @interface FMFenceMapViewController
-- (BOOL)searchBarShouldBeginEditing:(id)a3;
-- (BOOL)searchBarShouldEndEditing:(id)a3;
-- (_TtC6FindMy24FMFenceMapViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)cancelActionWithSender:(id)a3;
-- (void)chooseLargeRadiusActionWithSender:(id)a3;
-- (void)chooseMediumRadiusActionWithSender:(id)a3;
-- (void)chooseSmallRadiusActionWithSender:(id)a3;
-- (void)didStopDraggingHandle:(id)a3;
-- (void)doneActionWithSender:(id)a3;
-- (void)longPressActionWithSender:(id)a3;
-- (void)mapView:(id)a3 annotationView:(id)a4 didChangeDragState:(unint64_t)a5 fromOldState:(unint64_t)a6;
-- (void)mapView:(id)a3 didDeselectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 didUpdateUserLocation:(id)a4;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)mapView:(id)a3 regionWillChangeAnimated:(BOOL)a4;
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3;
-- (void)refreshActionWithSender:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (BOOL)searchBarShouldBeginEditing:(id)editing;
+- (BOOL)searchBarShouldEndEditing:(id)editing;
+- (_TtC6FindMy24FMFenceMapViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)cancelActionWithSender:(id)sender;
+- (void)chooseLargeRadiusActionWithSender:(id)sender;
+- (void)chooseMediumRadiusActionWithSender:(id)sender;
+- (void)chooseSmallRadiusActionWithSender:(id)sender;
+- (void)didStopDraggingHandle:(id)handle;
+- (void)doneActionWithSender:(id)sender;
+- (void)longPressActionWithSender:(id)sender;
+- (void)mapView:(id)view annotationView:(id)annotationView didChangeDragState:(unint64_t)state fromOldState:(unint64_t)oldState;
+- (void)mapView:(id)view didDeselectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view didUpdateUserLocation:(id)location;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)mapView:(id)view regionWillChangeAnimated:(BOOL)animated;
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover;
+- (void)refreshActionWithSender:(id)sender;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willStartDraggingHandle:(id)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willStartDraggingHandle:(id)handle;
 @end
 
 @implementation FMFenceMapViewController
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   v7 = sub_100278B64();
 
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_100276DBC(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_100276DBC(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -72,50 +72,50 @@
   return UITableViewAutomaticDimension;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_10027761C(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10027761C(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10042FC0C(v6, v7);
+  viewCopy = view;
+  annotationViewCopy = annotationView;
+  selfCopy = self;
+  sub_10042FC0C(viewCopy, annotationViewCopy);
 }
 
-- (void)mapView:(id)a3 didDeselectAnnotationView:(id)a4
+- (void)mapView:(id)view didDeselectAnnotationView:(id)annotationView
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100430ADC(v7);
+  viewCopy = view;
+  annotationViewCopy = annotationView;
+  selfCopy = self;
+  sub_100430ADC(annotationViewCopy);
 }
 
-- (void)mapView:(id)a3 didUpdateUserLocation:(id)a4
+- (void)mapView:(id)view didUpdateUserLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100430C20(v6);
+  viewCopy = view;
+  locationCopy = location;
+  selfCopy = self;
+  sub_100430C20(viewCopy);
 }
 
-- (void)mapView:(id)a3 regionWillChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionWillChangeAnimated:(BOOL)animated
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy24FMFenceMapViewController_dragView);
   if (v4)
   {
-    [v4 removeHandle:{0, a4}];
+    [v4 removeHandle:{0, animated}];
   }
 
   else
@@ -124,12 +124,12 @@
   }
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy24FMFenceMapViewController_dragView);
   if (v5)
   {
-    [v5 addHandleForAnnotation:{*(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy24FMFenceMapViewController_selectedAnnotation), a4}];
+    [v5 addHandleForAnnotation:{*(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy24FMFenceMapViewController_selectedAnnotation), animated}];
   }
 
   else
@@ -138,46 +138,46 @@
   }
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_1004303C0(v6, a4);
+  selfCopy = self;
+  v8 = sub_1004303C0(viewCopy, annotation);
 
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (void)mapView:(id)a3 annotationView:(id)a4 didChangeDragState:(unint64_t)a5 fromOldState:(unint64_t)a6
+- (void)mapView:(id)view annotationView:(id)annotationView didChangeDragState:(unint64_t)state fromOldState:(unint64_t)oldState
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_100430DAC(v10, a5);
+  viewCopy = view;
+  annotationViewCopy = annotationView;
+  selfCopy = self;
+  sub_100430DAC(annotationViewCopy, state);
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_10043091C(v5);
+  selfCopy = self;
+  v7 = sub_10043091C(viewCopy);
 
   swift_unknownObjectRelease();
 
   return v7;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v10 = self;
-  v5 = [v4 searchBar];
-  v6 = [v5 text];
+  controllerCopy = controller;
+  selfCopy = self;
+  searchBar = [controllerCopy searchBar];
+  text = [searchBar text];
 
-  if (v6)
+  if (text)
   {
     v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = v8;
@@ -186,16 +186,16 @@
   }
 }
 
-- (BOOL)searchBarShouldBeginEditing:(id)a3
+- (BOOL)searchBarShouldBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_100458380(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_100458380(editingCopy);
 
   return 1;
 }
 
-- (BOOL)searchBarShouldEndEditing:(id)a3
+- (BOOL)searchBarShouldEndEditing:(id)editing
 {
   if ((*(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy24FMFenceMapViewController_isResigningFromTableView) & 1) == 0)
   {
@@ -213,148 +213,148 @@
   return v3;
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
-  sub_100458614(v4);
+  clickedCopy = clicked;
+  selfCopy = self;
+  sub_100458614(clickedCopy);
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
-  sub_100458A38(v4);
+  clickedCopy = clicked;
+  selfCopy = self;
+  sub_100458A38(clickedCopy);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10045DBB8();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v4 = self;
-  sub_10045DDE0(v3);
+  disappearCopy = disappear;
+  selfCopy = self;
+  sub_10045DDE0(disappearCopy);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_10045DF1C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10045DF1C(change);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_10046CF90(a4);
+  selfCopy = self;
+  sub_10046CF90(coordinator);
   swift_unknownObjectRelease();
 }
 
-- (void)willStartDraggingHandle:(id)a3
+- (void)willStartDraggingHandle:(id)handle
 {
-  v5 = a3;
-  v6 = self;
-  sub_100467F18(a3);
+  handleCopy = handle;
+  selfCopy = self;
+  sub_100467F18(handle);
 }
 
-- (void)didStopDraggingHandle:(id)a3
+- (void)didStopDraggingHandle:(id)handle
 {
-  v5 = a3;
-  v6 = self;
-  sub_10046801C(a3);
+  handleCopy = handle;
+  selfCopy = self;
+  sub_10046801C(handle);
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
+  draggingCopy = dragging;
+  selfCopy = self;
   sub_10046D160();
 }
 
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover
 {
-  v6 = self;
-  v3 = [(FMFenceMapViewController *)v6 navigationItem];
-  v4 = [v3 searchController];
+  selfCopy = self;
+  navigationItem = [(FMFenceMapViewController *)selfCopy navigationItem];
+  searchController = [navigationItem searchController];
 
-  if (v4)
+  if (searchController)
   {
-    v5 = [v4 searchBar];
+    searchBar = [searchController searchBar];
 
-    [v5 resignFirstResponder];
+    [searchBar resignFirstResponder];
   }
 }
 
-- (void)chooseSmallRadiusActionWithSender:(id)a3
+- (void)chooseSmallRadiusActionWithSender:(id)sender
 {
-  v3 = self;
+  selfCopy = self;
   sub_100467A98(0x4059000000000000, 0);
 }
 
-- (void)chooseMediumRadiusActionWithSender:(id)a3
+- (void)chooseMediumRadiusActionWithSender:(id)sender
 {
-  v3 = self;
+  selfCopy = self;
   sub_100467A98(0x406F400000000000, 0);
 }
 
-- (void)chooseLargeRadiusActionWithSender:(id)a3
+- (void)chooseLargeRadiusActionWithSender:(id)sender
 {
-  v3 = self;
+  selfCopy = self;
   sub_100467A98(0x4077700000000000, 0);
 }
 
-- (void)longPressActionWithSender:(id)a3
+- (void)longPressActionWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_100468460(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_100468460(senderCopy);
 }
 
-- (void)refreshActionWithSender:(id)a3
+- (void)refreshActionWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_10046D208();
 }
 
-- (void)doneActionWithSender:(id)a3
+- (void)doneActionWithSender:(id)sender
 {
-  v3 = self;
+  selfCopy = self;
   sub_100466DE4();
 }
 
-- (void)cancelActionWithSender:(id)a3
+- (void)cancelActionWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  if (*(&v4->super.super.super.isa + OBJC_IVAR____TtC6FindMy24FMFenceMapViewController_isOtherUsage) == 1)
+  if (*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC6FindMy24FMFenceMapViewController_isOtherUsage) == 1)
   {
-    v5 = [(FMFenceMapViewController *)v4 navigationController];
-    if (v5)
+    navigationController = [(FMFenceMapViewController *)selfCopy navigationController];
+    if (navigationController)
     {
-      v6 = v5;
-      v7 = [(FMFenceMapViewController *)v5 popViewControllerAnimated:1];
+      v6 = navigationController;
+      v7 = [(FMFenceMapViewController *)navigationController popViewControllerAnimated:1];
 
-      v4 = v6;
+      selfCopy = v6;
     }
   }
 
   else
   {
-    [(FMFenceMapViewController *)v4 dismissViewControllerAnimated:1 completion:0];
+    [(FMFenceMapViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
   }
 
   sub_100006060(&v8);
 }
 
-- (_TtC6FindMy24FMFenceMapViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6FindMy24FMFenceMapViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

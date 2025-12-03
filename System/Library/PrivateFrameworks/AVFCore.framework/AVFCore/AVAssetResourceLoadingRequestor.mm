@@ -1,11 +1,11 @@
 @interface AVAssetResourceLoadingRequestor
-- (AVAssetResourceLoadingRequestor)initWithRequestInfo:(__CFDictionary *)a3;
+- (AVAssetResourceLoadingRequestor)initWithRequestInfo:(__CFDictionary *)info;
 - (void)dealloc;
 @end
 
 @implementation AVAssetResourceLoadingRequestor
 
-- (AVAssetResourceLoadingRequestor)initWithRequestInfo:(__CFDictionary *)a3
+- (AVAssetResourceLoadingRequestor)initWithRequestInfo:(__CFDictionary *)info
 {
   v6.receiver = self;
   v6.super_class = AVAssetResourceLoadingRequestor;

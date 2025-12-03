@@ -1,15 +1,15 @@
 @interface ComposePlaceholderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 @end
 
 @implementation ComposePlaceholderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ComposePlaceholderView" hasInstanceMethod:@"subjectField" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFComposeSubjectView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ComposePlaceholderView" hasInstanceMethod:@"subjectField" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFComposeSubjectView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityValue

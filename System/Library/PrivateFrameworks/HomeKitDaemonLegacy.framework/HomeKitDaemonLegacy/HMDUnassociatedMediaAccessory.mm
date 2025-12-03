@@ -1,56 +1,56 @@
 @interface HMDUnassociatedMediaAccessory
 + (id)logCategory;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHAPAirPlay2Accessory;
-- (HMDUnassociatedMediaAccessory)initWithAdvertisement:(id)a3 messageDispatcher:(id)a4;
-- (HMDUnassociatedMediaAccessory)initWithIdentifier:(id)a3 name:(id)a4 category:(id)a5 messageDispatcher:(id)a6;
-- (id)addTransactionForHome:(id)a3;
+- (HMDUnassociatedMediaAccessory)initWithAdvertisement:(id)advertisement messageDispatcher:(id)dispatcher;
+- (HMDUnassociatedMediaAccessory)initWithIdentifier:(id)identifier name:(id)name category:(id)category messageDispatcher:(id)dispatcher;
+- (id)addTransactionForHome:(id)home;
 - (id)dumpDescription;
-- (id)modelForChangeType:(unint64_t)a3 uuid:(id)a4 parentUUID:(id)a5;
+- (id)modelForChangeType:(unint64_t)type uuid:(id)uuid parentUUID:(id)d;
 - (int64_t)associationOptions;
 - (unint64_t)hash;
-- (void)updateAdvertisementData:(id)a3;
+- (void)updateAdvertisementData:(id)data;
 @end
 
 @implementation HMDUnassociatedMediaAccessory
 
-- (id)addTransactionForHome:(id)a3
+- (id)addTransactionForHome:(id)home
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUnassociatedAccessory *)self uuid];
-  v6 = [v4 uuid];
-  v7 = [(HMDUnassociatedMediaAccessory *)self modelForChangeType:1 uuid:v5 parentUUID:v6];
+  homeCopy = home;
+  uuid = [(HMDUnassociatedAccessory *)self uuid];
+  uuid2 = [homeCopy uuid];
+  v7 = [(HMDUnassociatedMediaAccessory *)self modelForChangeType:1 uuid:uuid parentUUID:uuid2];
 
-  v8 = [(HMDUnassociatedAccessory *)self identifier];
-  [v7 setIdentifier:v8];
+  identifier = [(HMDUnassociatedAccessory *)self identifier];
+  [v7 setIdentifier:identifier];
 
-  v9 = [(HMDUnassociatedAccessory *)self name];
-  [v7 setProvidedName:v9];
+  name = [(HMDUnassociatedAccessory *)self name];
+  [v7 setProvidedName:name];
 
   v10 = MEMORY[0x277CD1680];
-  v11 = [(HMDUnassociatedAccessory *)self category];
-  v12 = [v10 categoryIdentifierForCategory:v11];
+  category = [(HMDUnassociatedAccessory *)self category];
+  v12 = [v10 categoryIdentifierForCategory:category];
   [v7 setAccessoryCategory:v12];
 
-  v13 = [v7 providedName];
-  if (v13)
+  providedName = [v7 providedName];
+  if (providedName)
   {
-    v14 = v13;
-    v15 = [v7 configuredName];
+    v14 = providedName;
+    configuredName = [v7 configuredName];
 
-    if (!v15)
+    if (!configuredName)
     {
-      v16 = [(HMDUnassociatedAccessory *)self category];
-      v17 = [v16 localizedDescription];
-      v18 = [v7 providedName];
-      v19 = [v17 isEqualToString:v18];
+      category2 = [(HMDUnassociatedAccessory *)self category];
+      localizedDescription = [category2 localizedDescription];
+      providedName2 = [v7 providedName];
+      v19 = [localizedDescription isEqualToString:providedName2];
 
       if ((v19 & 1) == 0)
       {
-        v20 = [(HMDUnassociatedAccessory *)self category];
-        v21 = [v20 categoryType];
-        v22 = [v21 isEqualToString:*MEMORY[0x277CCE8B0]];
+        category3 = [(HMDUnassociatedAccessory *)self category];
+        categoryType = [category3 categoryType];
+        v22 = [categoryType isEqualToString:*MEMORY[0x277CCE8B0]];
 
         if ((v22 & 1) == 0)
         {
@@ -58,8 +58,8 @@
           v45 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v23 = [v4 rooms];
-          v24 = [v23 countByEnumeratingWithState:&v42 objects:v50 count:16];
+          rooms = [homeCopy rooms];
+          v24 = [rooms countByEnumeratingWithState:&v42 objects:v50 count:16];
           if (v24)
           {
             v25 = v24;
@@ -70,12 +70,12 @@ LABEL_7:
             {
               if (*v43 != v26)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(rooms);
               }
 
-              v28 = [*(*(&v42 + 1) + 8 * v27) name];
-              v29 = [v7 providedName];
-              v30 = [v28 caseInsensitiveCompare:v29];
+              name2 = [*(*(&v42 + 1) + 8 * v27) name];
+              providedName3 = [v7 providedName];
+              v30 = [name2 caseInsensitiveCompare:providedName3];
 
               if (!v30)
               {
@@ -84,7 +84,7 @@ LABEL_7:
 
               if (v25 == ++v27)
               {
-                v25 = [v23 countByEnumeratingWithState:&v42 objects:v50 count:16];
+                v25 = [rooms countByEnumeratingWithState:&v42 objects:v50 count:16];
                 if (v25)
                 {
                   goto LABEL_7;
@@ -99,10 +99,10 @@ LABEL_7:
           {
 LABEL_13:
 
-            v31 = [v4 roomForEntireHome];
-            v32 = [v31 name];
-            v33 = [v7 providedName];
-            v34 = [v32 caseInsensitiveCompare:v33];
+            roomForEntireHome = [homeCopy roomForEntireHome];
+            name3 = [roomForEntireHome name];
+            providedName4 = [v7 providedName];
+            v34 = [name3 caseInsensitiveCompare:providedName4];
 
             if (!v34)
             {
@@ -110,22 +110,22 @@ LABEL_13:
             }
 
             v35 = objc_autoreleasePoolPush();
-            v36 = self;
+            selfCopy = self;
             v37 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
             {
               v38 = HMFGetLogIdentifier();
-              v39 = [v7 providedName];
+              providedName5 = [v7 providedName];
               *buf = 138543618;
               v47 = v38;
               v48 = 2112;
-              v49 = v39;
+              v49 = providedName5;
               _os_log_impl(&dword_2531F8000, v37, OS_LOG_TYPE_INFO, "%{public}@Populating configuredName with providedName: %@", buf, 0x16u);
             }
 
             objc_autoreleasePoolPop(v35);
-            v23 = [v7 providedName];
-            [v7 setConfiguredName:v23];
+            rooms = [v7 providedName];
+            [v7 setConfiguredName:rooms];
           }
         }
       }
@@ -139,10 +139,10 @@ LABEL_18:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -152,7 +152,7 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -163,9 +163,9 @@ LABEL_18:
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDUnassociatedAccessory *)self identifier];
-      v8 = [(HMDUnassociatedAccessory *)v6 identifier];
-      v9 = [v7 isEqual:v8];
+      identifier = [(HMDUnassociatedAccessory *)self identifier];
+      identifier2 = [(HMDUnassociatedAccessory *)v6 identifier];
+      v9 = [identifier isEqual:identifier2];
     }
 
     else
@@ -179,37 +179,37 @@ LABEL_18:
 
 - (unint64_t)hash
 {
-  v2 = [(HMDUnassociatedAccessory *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMDUnassociatedAccessory *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
 - (int64_t)associationOptions
 {
-  v3 = [(HMDUnassociatedMediaAccessory *)self advertisement];
+  advertisement = [(HMDUnassociatedMediaAccessory *)self advertisement];
 
-  if (!v3)
+  if (!advertisement)
   {
     return 0;
   }
 
-  v4 = [(HMDUnassociatedMediaAccessory *)self advertisement];
-  v5 = [v4 associationOptions];
+  advertisement2 = [(HMDUnassociatedMediaAccessory *)self advertisement];
+  associationOptions = [advertisement2 associationOptions];
 
-  return v5;
+  return associationOptions;
 }
 
 - (id)dumpDescription
 {
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(HMDUnassociatedAccessory *)self name];
-  v6 = [(HMDUnassociatedAccessory *)self uuid];
-  v7 = [v6 UUIDString];
-  v8 = [(HMDUnassociatedAccessory *)self category];
-  v9 = [(HMDUnassociatedAccessory *)self identifier];
-  v10 = [v4 stringWithFormat:@"Media Accessory '%@': uuid %@  category %@ identifier %@", v5, v7, v8, v9];
+  name = [(HMDUnassociatedAccessory *)self name];
+  uuid = [(HMDUnassociatedAccessory *)self uuid];
+  uUIDString = [uuid UUIDString];
+  category = [(HMDUnassociatedAccessory *)self category];
+  identifier = [(HMDUnassociatedAccessory *)self identifier];
+  v10 = [v4 stringWithFormat:@"Media Accessory '%@': uuid %@  category %@ identifier %@", name, uUIDString, category, identifier];
 
   [v3 setObject:v10 forKey:*MEMORY[0x277D0F170]];
 
@@ -218,11 +218,11 @@ LABEL_18:
 
 - (BOOL)isHAPAirPlay2Accessory
 {
-  v2 = [(HMDUnassociatedMediaAccessory *)self advertisement];
+  advertisement = [(HMDUnassociatedMediaAccessory *)self advertisement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = advertisement;
   }
 
   else
@@ -234,75 +234,75 @@ LABEL_18:
 
   if (v4)
   {
-    v5 = [v4 outputDevice];
-    v6 = [v5 outputDevice];
-    v7 = [v6 supportsHAP];
+    outputDevice = [v4 outputDevice];
+    v5OutputDevice = [outputDevice outputDevice];
+    supportsHAP = [v5OutputDevice supportsHAP];
   }
 
   else
   {
-    v7 = 0;
+    supportsHAP = 0;
   }
 
-  return v7;
+  return supportsHAP;
 }
 
-- (void)updateAdvertisementData:(id)a3
+- (void)updateAdvertisementData:(id)data
 {
-  v5 = a3;
-  if (v5)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v6 = v5;
+    v6 = dataCopy;
     os_unfair_recursive_lock_lock_with_options();
-    objc_storeStrong(&self->_advertisement, a3);
+    objc_storeStrong(&self->_advertisement, data);
     os_unfair_recursive_lock_unlock();
-    v5 = v6;
+    dataCopy = v6;
   }
 }
 
-- (HMDUnassociatedMediaAccessory)initWithAdvertisement:(id)a3 messageDispatcher:(id)a4
+- (HMDUnassociatedMediaAccessory)initWithAdvertisement:(id)advertisement messageDispatcher:(id)dispatcher
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 name];
-  v10 = [v7 identifier];
-  v11 = [v7 category];
-  v12 = [(HMDUnassociatedMediaAccessory *)self initWithIdentifier:v10 name:v9 category:v11 messageDispatcher:v8];
+  advertisementCopy = advertisement;
+  dispatcherCopy = dispatcher;
+  name = [advertisementCopy name];
+  identifier = [advertisementCopy identifier];
+  category = [advertisementCopy category];
+  v12 = [(HMDUnassociatedMediaAccessory *)self initWithIdentifier:identifier name:name category:category messageDispatcher:dispatcherCopy];
 
   if (v12)
   {
-    objc_storeStrong(&v12->_advertisement, a3);
+    objc_storeStrong(&v12->_advertisement, advertisement);
   }
 
   return v12;
 }
 
-- (HMDUnassociatedMediaAccessory)initWithIdentifier:(id)a3 name:(id)a4 category:(id)a5 messageDispatcher:(id)a6
+- (HMDUnassociatedMediaAccessory)initWithIdentifier:(id)identifier name:(id)name category:(id)category messageDispatcher:(id)dispatcher
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  identifierCopy = identifier;
+  nameCopy = name;
+  categoryCopy = category;
+  dispatcherCopy = dispatcher;
+  if (!categoryCopy)
   {
     v14 = MEMORY[0x277CD1680];
     v15 = objc_alloc(MEMORY[0x277CCAD78]);
     v16 = [v15 initWithUUIDString:*MEMORY[0x277CCE900]];
-    v12 = [v14 categoryWithIdentifier:v16];
+    categoryCopy = [v14 categoryWithIdentifier:v16];
   }
 
   v19.receiver = self;
   v19.super_class = HMDUnassociatedMediaAccessory;
-  v17 = [(HMDUnassociatedAccessory *)&v19 initWithIdentifier:v10 name:v11 category:v12 messageDispatcher:v13];
+  v17 = [(HMDUnassociatedAccessory *)&v19 initWithIdentifier:identifierCopy name:nameCopy category:categoryCopy messageDispatcher:dispatcherCopy];
 
   return v17;
 }
 
-- (id)modelForChangeType:(unint64_t)a3 uuid:(id)a4 parentUUID:(id)a5
+- (id)modelForChangeType:(unint64_t)type uuid:(id)uuid parentUUID:(id)d
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(HMDBackingStoreModelObject *)[HMDMediaAccessoryModel alloc] initWithObjectChangeType:a3 uuid:v8 parentUUID:v7];
+  dCopy = d;
+  uuidCopy = uuid;
+  v9 = [(HMDBackingStoreModelObject *)[HMDMediaAccessoryModel alloc] initWithObjectChangeType:type uuid:uuidCopy parentUUID:dCopy];
 
   return v9;
 }

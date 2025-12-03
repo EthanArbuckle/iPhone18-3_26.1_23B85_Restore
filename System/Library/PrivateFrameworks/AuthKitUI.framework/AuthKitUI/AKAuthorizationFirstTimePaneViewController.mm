@@ -1,12 +1,12 @@
 @interface AKAuthorizationFirstTimePaneViewController
 - (AKAuthorizationViewController)authorizationViewController;
-- (void)_addAdditionalCTAToContext:(id)a3;
-- (void)_addContinueButtonToContext:(id)a3 title:(id)a4;
-- (void)_addIconToContext:(id)a3;
-- (void)_addPrivacyLinkToContext:(id)a3;
-- (void)_addTitleToContext:(id)a3;
-- (void)_continueButtonSelected:(id)a3;
-- (void)_performAdditionalCTA:(id)a3;
+- (void)_addAdditionalCTAToContext:(id)context;
+- (void)_addContinueButtonToContext:(id)context title:(id)title;
+- (void)_addIconToContext:(id)context;
+- (void)_addPrivacyLinkToContext:(id)context;
+- (void)_addTitleToContext:(id)context;
+- (void)_continueButtonSelected:(id)selected;
+- (void)_performAdditionalCTA:(id)a;
 - (void)viewDidLoad;
 @end
 
@@ -14,19 +14,19 @@
 
 - (void)viewDidLoad
 {
-  v90 = self;
+  selfCopy = self;
   v89 = a2;
   v88.receiver = self;
   v88.super_class = AKAuthorizationFirstTimePaneViewController;
   [(AKAuthorizationPaneViewController *)&v88 viewDidLoad];
-  v76 = [MEMORY[0x277CF0228] sharedManager];
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
   v86 = 0;
   v84 = 0;
-  if ([v76 isAuthKitSolariumFeatureEnabled])
+  if ([mEMORY[0x277CF0228] isAuthKitSolariumFeatureEnabled])
   {
-    v87 = [MEMORY[0x277D75348] systemBackgroundColor];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
     v86 = 1;
-    v75 = v87;
+    v75 = systemBackgroundColor;
   }
 
   else
@@ -36,9 +36,9 @@
     v75 = v85;
   }
 
-  v74 = [(AKAuthorizationFirstTimePaneViewController *)v90 view];
-  [v74 setBackgroundColor:v75];
-  MEMORY[0x277D82BD8](v74);
+  view = [(AKAuthorizationFirstTimePaneViewController *)selfCopy view];
+  [view setBackgroundColor:v75];
+  MEMORY[0x277D82BD8](view);
   if (v84)
   {
     MEMORY[0x277D82BD8](v85);
@@ -46,32 +46,32 @@
 
   if (v86)
   {
-    MEMORY[0x277D82BD8](v87);
+    MEMORY[0x277D82BD8](systemBackgroundColor);
   }
 
-  *&v2 = MEMORY[0x277D82BD8](v76).n128_u64[0];
-  v70 = v90;
-  v71 = [(AKAuthorizationPaneViewController *)v90 tableView];
-  [(UITableView *)v71 setDelegate:v70];
-  *&v3 = MEMORY[0x277D82BD8](v71).n128_u64[0];
-  v83 = [(AKAuthorizationPaneViewController *)v90 mutableConstraints];
-  v82 = [(AKAuthorizationPaneViewController *)v90 headerPaneContext];
-  v72 = [MEMORY[0x277CF0228] sharedManager];
-  v73 = [v72 isAuthKitSolariumFeatureEnabled];
-  *&v4 = MEMORY[0x277D82BD8](v72).n128_u64[0];
-  if (!v73)
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  v70 = selfCopy;
+  tableView = [(AKAuthorizationPaneViewController *)selfCopy tableView];
+  [(UITableView *)tableView setDelegate:v70];
+  *&v3 = MEMORY[0x277D82BD8](tableView).n128_u64[0];
+  mutableConstraints = [(AKAuthorizationPaneViewController *)selfCopy mutableConstraints];
+  headerPaneContext = [(AKAuthorizationPaneViewController *)selfCopy headerPaneContext];
+  mEMORY[0x277CF0228]2 = [MEMORY[0x277CF0228] sharedManager];
+  isAuthKitSolariumFeatureEnabled = [mEMORY[0x277CF0228]2 isAuthKitSolariumFeatureEnabled];
+  *&v4 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]2).n128_u64[0];
+  if (!isAuthKitSolariumFeatureEnabled)
   {
-    [(AKAuthorizationFirstTimePaneViewController *)v90 _addIconToContext:v82, v4];
+    [(AKAuthorizationFirstTimePaneViewController *)selfCopy _addIconToContext:headerPaneContext, v4];
   }
 
-  [(AKAuthorizationFirstTimePaneViewController *)v90 _addTitleToContext:v82, v4];
+  [(AKAuthorizationFirstTimePaneViewController *)selfCopy _addTitleToContext:headerPaneContext, v4];
   v81 = 0;
   v80 = 0;
-  v68 = [(AKAuthorizationFirstTimePaneViewController *)v90 authorizationViewController];
-  v69 = [(AKAuthorizationViewController *)v68 _isManagedAppleID];
-  MEMORY[0x277D82BD8](v68);
-  v79 = v69;
-  if (v69)
+  authorizationViewController = [(AKAuthorizationFirstTimePaneViewController *)selfCopy authorizationViewController];
+  _isManagedAppleID = [(AKAuthorizationViewController *)authorizationViewController _isManagedAppleID];
+  MEMORY[0x277D82BD8](authorizationViewController);
+  v79 = _isManagedAppleID;
+  if (_isManagedAppleID)
   {
     v56 = [AKAuthorizationBulletPointSubPane alloc];
     v61 = +[AKAuthorizationBiometricImage biometricImage];
@@ -139,10 +139,10 @@
     v9 = MEMORY[0x277D82BD8](v55).n128_u64[0];
   }
 
-  v42 = [MEMORY[0x277CF0228] sharedManager];
-  v43 = [v42 isAuthKitSolariumFeatureEnabled];
-  *&v14 = MEMORY[0x277D82BD8](v42).n128_u64[0];
-  if (v43)
+  mEMORY[0x277CF0228]3 = [MEMORY[0x277CF0228] sharedManager];
+  isAuthKitSolariumFeatureEnabled2 = [mEMORY[0x277CF0228]3 isAuthKitSolariumFeatureEnabled];
+  *&v14 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]3).n128_u64[0];
+  if (isAuthKitSolariumFeatureEnabled2)
   {
     v78 = MEMORY[0x277D82BE0](v81);
     objc_storeStrong(&v81, v80);
@@ -150,12 +150,12 @@
     objc_storeStrong(&v78, 0);
   }
 
-  v38 = [(AKAuthorizationPaneViewController *)v90 headerPaneContext];
-  [(AKAuthorizationPaneContext *)v38 addSubPane:v81];
-  *&v15 = MEMORY[0x277D82BD8](v38).n128_u64[0];
-  v39 = [(AKAuthorizationPaneViewController *)v90 headerPaneContext];
-  [(AKAuthorizationPaneContext *)v39 addSubPane:v80];
-  *&v16 = MEMORY[0x277D82BD8](v39).n128_u64[0];
+  headerPaneContext2 = [(AKAuthorizationPaneViewController *)selfCopy headerPaneContext];
+  [(AKAuthorizationPaneContext *)headerPaneContext2 addSubPane:v81];
+  *&v15 = MEMORY[0x277D82BD8](headerPaneContext2).n128_u64[0];
+  headerPaneContext3 = [(AKAuthorizationPaneViewController *)selfCopy headerPaneContext];
+  [(AKAuthorizationPaneContext *)headerPaneContext3 addSubPane:v80];
+  *&v16 = MEMORY[0x277D82BD8](headerPaneContext3).n128_u64[0];
   v40 = v81;
   +[AKAuthorizationPaneMetrics interBulletSpacing];
   [v40 setCustomSpacingAfter:?];
@@ -176,50 +176,50 @@
     MEMORY[0x277D82BD8](v34);
     MEMORY[0x277D82BD8](v35);
     *&v17 = MEMORY[0x277D82BD8](v36).n128_u64[0];
-    v37 = [(AKAuthorizationPaneViewController *)v90 headerPaneContext];
-    [(AKAuthorizationPaneContext *)v37 addSubPane:v77];
-    MEMORY[0x277D82BD8](v37);
+    headerPaneContext4 = [(AKAuthorizationPaneViewController *)selfCopy headerPaneContext];
+    [(AKAuthorizationPaneContext *)headerPaneContext4 addSubPane:v77];
+    MEMORY[0x277D82BD8](headerPaneContext4);
     objc_storeStrong(&v77, 0);
   }
 
-  v22 = v90;
-  v23 = [(AKAuthorizationPaneViewController *)v90 footerPaneContext];
+  v22 = selfCopy;
+  footerPaneContext = [(AKAuthorizationPaneViewController *)selfCopy footerPaneContext];
   [(AKAuthorizationFirstTimePaneViewController *)v22 _addPrivacyLinkToContext:?];
-  *&v18 = MEMORY[0x277D82BD8](v23).n128_u64[0];
-  v24 = v90;
-  v27 = [(AKAuthorizationPaneViewController *)v90 footerPaneContext];
+  *&v18 = MEMORY[0x277D82BD8](footerPaneContext).n128_u64[0];
+  v24 = selfCopy;
+  footerPaneContext2 = [(AKAuthorizationPaneViewController *)selfCopy footerPaneContext];
   v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v25 = [v26 localizedStringForKey:@"AUTHORIZE_FIRST_TIME_BUTTON_TITLE" value:&stru_28358EF68 table:@"Localizable"];
-  [(AKAuthorizationFirstTimePaneViewController *)v24 _addContinueButtonToContext:v27 title:?];
+  [(AKAuthorizationFirstTimePaneViewController *)v24 _addContinueButtonToContext:footerPaneContext2 title:?];
   MEMORY[0x277D82BD8](v25);
   MEMORY[0x277D82BD8](v26);
-  *&v19 = MEMORY[0x277D82BD8](v27).n128_u64[0];
-  v28 = v90;
-  v29 = [(AKAuthorizationPaneViewController *)v90 footerPaneContext];
+  *&v19 = MEMORY[0x277D82BD8](footerPaneContext2).n128_u64[0];
+  v28 = selfCopy;
+  footerPaneContext3 = [(AKAuthorizationPaneViewController *)selfCopy footerPaneContext];
   [(AKAuthorizationFirstTimePaneViewController *)v28 _addAdditionalCTAToContext:?];
-  *&v20 = MEMORY[0x277D82BD8](v29).n128_u64[0];
-  v30 = [(AKAuthorizationPaneViewController *)v90 footerPaneContext];
-  [(AKAuthorizationPaneContext *)v30 addEmptyViewWithSpacing:0.0];
-  *&v21 = MEMORY[0x277D82BD8](v30).n128_u64[0];
-  [MEMORY[0x277CCAAD0] activateConstraints:{v83, v21}];
+  *&v20 = MEMORY[0x277D82BD8](footerPaneContext3).n128_u64[0];
+  footerPaneContext4 = [(AKAuthorizationPaneViewController *)selfCopy footerPaneContext];
+  [(AKAuthorizationPaneContext *)footerPaneContext4 addEmptyViewWithSpacing:0.0];
+  *&v21 = MEMORY[0x277D82BD8](footerPaneContext4).n128_u64[0];
+  [MEMORY[0x277CCAAD0] activateConstraints:{mutableConstraints, v21}];
   objc_storeStrong(&v80, 0);
   objc_storeStrong(&v81, 0);
-  objc_storeStrong(&v82, 0);
-  objc_storeStrong(&v83, 0);
+  objc_storeStrong(&headerPaneContext, 0);
+  objc_storeStrong(&mutableConstraints, 0);
 }
 
-- (void)_addIconToContext:(id)a3
+- (void)_addIconToContext:(id)context
 {
   v30[2] = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v28 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v27 = [MEMORY[0x277D755B8] imageNamed:@"SignInWithAppleLogo" inBundle:v28];
   v26 = [[AKAuthorizationSubPaneImage alloc] initWithImage:v27];
-  v21 = [(AKAuthorizationSubPaneImage *)v26 image];
-  [(UIImage *)v21 size];
+  image = [(AKAuthorizationSubPaneImage *)v26 image];
+  [(UIImage *)image size];
   v24 = 0;
   v22 = 0;
   if (v3 == 0.0)
@@ -229,50 +229,50 @@
 
   else
   {
-    v25 = [(AKAuthorizationSubPaneImage *)v26 image];
+    image2 = [(AKAuthorizationSubPaneImage *)v26 image];
     v24 = 1;
-    [(UIImage *)v25 size];
+    [(UIImage *)image2 size];
     v19 = v4;
-    v23 = [(AKAuthorizationSubPaneImage *)v26 image];
+    image3 = [(AKAuthorizationSubPaneImage *)v26 image];
     v22 = 1;
-    [(UIImage *)v23 size];
+    [(UIImage *)image3 size];
     v20 = v19 / v5;
   }
 
   if (v22)
   {
-    MEMORY[0x277D82BD8](v23);
+    MEMORY[0x277D82BD8](image3);
   }
 
   if (v24)
   {
-    MEMORY[0x277D82BD8](v25);
+    MEMORY[0x277D82BD8](image2);
   }
 
-  MEMORY[0x277D82BD8](v21);
+  MEMORY[0x277D82BD8](image);
   v8 = v26;
-  v17 = [(AKAuthorizationSubPaneImage *)v26 imageView];
-  v16 = [(UIImageView *)v17 heightAnchor];
+  imageView = [(AKAuthorizationSubPaneImage *)v26 imageView];
+  heightAnchor = [(UIImageView *)imageView heightAnchor];
   +[AKAuthorizationPaneMetrics iconSize];
-  v15 = [v16 constraintEqualToConstant:v6];
+  v15 = [heightAnchor constraintEqualToConstant:v6];
   v30[0] = v15;
-  v14 = [(AKAuthorizationSubPaneImage *)v26 imageView];
-  v13 = [(UIImageView *)v14 widthAnchor];
-  v12 = [(AKAuthorizationSubPaneImage *)v26 imageView];
-  v11 = [(UIImageView *)v12 heightAnchor];
-  v10 = [v13 constraintEqualToAnchor:v20 multiplier:?];
+  imageView2 = [(AKAuthorizationSubPaneImage *)v26 imageView];
+  widthAnchor = [(UIImageView *)imageView2 widthAnchor];
+  imageView3 = [(AKAuthorizationSubPaneImage *)v26 imageView];
+  heightAnchor2 = [(UIImageView *)imageView3 heightAnchor];
+  v10 = [widthAnchor constraintEqualToAnchor:v20 multiplier:?];
   v30[1] = v10;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
   [(AKAuthorizationSubPaneImage *)v8 setImageViewConstraints:?];
   MEMORY[0x277D82BD8](v9);
   MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
+  MEMORY[0x277D82BD8](heightAnchor2);
+  MEMORY[0x277D82BD8](imageView3);
+  MEMORY[0x277D82BD8](widthAnchor);
+  MEMORY[0x277D82BD8](imageView2);
   MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
-  *&v7 = MEMORY[0x277D82BD8](v17).n128_u64[0];
+  MEMORY[0x277D82BD8](heightAnchor);
+  *&v7 = MEMORY[0x277D82BD8](imageView).n128_u64[0];
   [location[0] addSubPane:{v26, v7}];
   v18 = v26;
   +[AKAuthorizationPaneMetrics iconBottomSpacing];
@@ -284,16 +284,16 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_addTitleToContext:(id)a3
+- (void)_addTitleToContext:(id)context
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = [(AKAuthorizationFirstTimePaneViewController *)v33 authorizationViewController];
-  v15 = [(AKAuthorizationViewController *)v14 _isManagedAppleID];
-  MEMORY[0x277D82BD8](v14);
-  v31 = v15;
+  objc_storeStrong(location, context);
+  authorizationViewController = [(AKAuthorizationFirstTimePaneViewController *)selfCopy authorizationViewController];
+  _isManagedAppleID = [(AKAuthorizationViewController *)authorizationViewController _isManagedAppleID];
+  MEMORY[0x277D82BD8](authorizationViewController);
+  v31 = _isManagedAppleID;
   v16 = [AKAuthorizationSubPaneInfoLabel alloc];
   v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v17 = [v18 localizedStringForKey:@"AUTHORIZE_FIRST_TIME_TITLE" value:&stru_28358EF68 table:@"Localizable"];
@@ -301,16 +301,16 @@
   MEMORY[0x277D82BD8](v17);
   [v30 setInfoLabelType:{1, MEMORY[0x277D82BD8](v18).n128_f64[0]}];
   [location[0] addSubPane:v30];
-  if (v15)
+  if (_isManagedAppleID)
   {
     +[AKAuthorizationPaneMetrics titleToSmallTitleVerticalSpacing];
     [v30 setCustomSpacingAfter:?];
-    v13 = [MEMORY[0x277CF0228] sharedManager];
+    mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
     v27 = 0;
     v25 = 0;
     v23 = 0;
     v21 = 0;
-    if ([v13 isAuthKitSolariumFeatureEnabled])
+    if ([mEMORY[0x277CF0228] isAuthKitSolariumFeatureEnabled])
     {
       v28 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v27 = 1;
@@ -349,7 +349,7 @@
       MEMORY[0x277D82BD8](v28);
     }
 
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](mEMORY[0x277CF0228]);
     v20 = [[AKAuthorizationSubPaneInfoLabel alloc] initWithString:v29];
     [(AKAuthorizationSubPaneInfoLabel *)v20 setInfoLabelType:3];
     [location[0] addSubPane:v20];
@@ -362,10 +362,10 @@
 
   else
   {
-    v10 = [MEMORY[0x277CF0228] sharedManager];
-    v11 = [v10 isAuthKitSolariumFeatureEnabled];
-    *&v4 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-    if (v11)
+    mEMORY[0x277CF0228]2 = [MEMORY[0x277CF0228] sharedManager];
+    isAuthKitSolariumFeatureEnabled = [mEMORY[0x277CF0228]2 isAuthKitSolariumFeatureEnabled];
+    *&v4 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]2).n128_u64[0];
+    if (isAuthKitSolariumFeatureEnabled)
     {
       +[AKAuthorizationPaneMetrics titleToSmallTitleVerticalSpacing];
       [v30 setCustomSpacingAfter:?];
@@ -394,19 +394,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_addPrivacyLinkToContext:(id)a3
+- (void)_addPrivacyLinkToContext:(id)context
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v4 = location[0];
   +[AKAuthorizationPaneMetrics privacyLinkTopSpacing];
   [v4 addEmptyViewWithSpacing:?];
-  v5 = [(AKAuthorizationFirstTimePaneViewController *)v10 authorizationViewController];
-  v6 = [(AKAuthorizationViewController *)v5 _isManagedAppleID];
-  MEMORY[0x277D82BD8](v5);
-  v8 = v6;
+  authorizationViewController = [(AKAuthorizationFirstTimePaneViewController *)selfCopy authorizationViewController];
+  _isManagedAppleID = [(AKAuthorizationViewController *)authorizationViewController _isManagedAppleID];
+  MEMORY[0x277D82BD8](authorizationViewController);
+  v8 = _isManagedAppleID;
   v7 = [[AKAuthorizationSubPanePrivacyLink alloc] initWithPrivacyLinkType:v8];
   [location[0] addSubPane:v7];
   v3 = v7;
@@ -416,76 +416,76 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_addContinueButtonToContext:(id)a3 title:(id)a4
+- (void)_addContinueButtonToContext:(id)context title:(id)title
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v35 = 0;
-  objc_storeStrong(&v35, a4);
+  objc_storeStrong(&v35, title);
   v4 = [AKAuthorizationContinueButton alloc];
   v34 = [(AKAuthorizationContinueButton *)v4 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v34 setButtonText:v35];
-  [v34 addTarget:v37 action:sel__continueButtonSelected_];
-  v25 = [location[0] stackView];
+  [v34 addTarget:selfCopy action:sel__continueButtonSelected_];
+  stackView = [location[0] stackView];
   +[AKAuthorizationPaneMetrics continueButtonTopSpacing];
   v21 = v5;
-  v24 = [location[0] stackView];
-  v23 = [v24 arrangedSubviews];
-  v22 = [v23 lastObject];
-  [v25 setCustomSpacing:v21 afterView:?];
-  MEMORY[0x277D82BD8](v22);
-  MEMORY[0x277D82BD8](v23);
-  MEMORY[0x277D82BD8](v24);
-  *&v6 = MEMORY[0x277D82BD8](v25).n128_u64[0];
-  v26 = [location[0] stackView];
-  [v26 addArrangedSubview:v34];
-  *&v7 = MEMORY[0x277D82BD8](v26).n128_u64[0];
-  v27 = [location[0] stackView];
+  stackView2 = [location[0] stackView];
+  arrangedSubviews = [stackView2 arrangedSubviews];
+  lastObject = [arrangedSubviews lastObject];
+  [stackView setCustomSpacing:v21 afterView:?];
+  MEMORY[0x277D82BD8](lastObject);
+  MEMORY[0x277D82BD8](arrangedSubviews);
+  MEMORY[0x277D82BD8](stackView2);
+  *&v6 = MEMORY[0x277D82BD8](stackView).n128_u64[0];
+  stackView3 = [location[0] stackView];
+  [stackView3 addArrangedSubview:v34];
+  *&v7 = MEMORY[0x277D82BD8](stackView3).n128_u64[0];
+  stackView4 = [location[0] stackView];
   +[AKAuthorizationPaneMetrics continueButtonBottomSpacing];
-  [v27 setCustomSpacing:v34 afterView:?];
-  *&v8 = MEMORY[0x277D82BD8](v27).n128_u64[0];
-  v31 = [location[0] mutableConstraints];
-  v30 = [v34 heightAnchor];
+  [stackView4 setCustomSpacing:v34 afterView:?];
+  *&v8 = MEMORY[0x277D82BD8](stackView4).n128_u64[0];
+  mutableConstraints = [location[0] mutableConstraints];
+  heightAnchor = [v34 heightAnchor];
   +[AKAuthorizationPaneMetrics continueButtonHeight];
-  v29 = [v30 constraintEqualToConstant:?];
+  v29 = [heightAnchor constraintEqualToConstant:?];
   v39[0] = v29;
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
-  [v31 addObjectsFromArray:?];
+  [mutableConstraints addObjectsFromArray:?];
   MEMORY[0x277D82BD8](v28);
   MEMORY[0x277D82BD8](v29);
-  MEMORY[0x277D82BD8](v30);
-  v32 = [MEMORY[0x277CF0228] sharedManager];
-  v33 = [v32 isAuthKitSolariumFeatureEnabled];
-  *&v9 = MEMORY[0x277D82BD8](v32).n128_u64[0];
-  if (v33)
+  MEMORY[0x277D82BD8](heightAnchor);
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isAuthKitSolariumFeatureEnabled = [mEMORY[0x277CF0228] isAuthKitSolariumFeatureEnabled];
+  *&v9 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isAuthKitSolariumFeatureEnabled)
   {
-    v19 = [location[0] mutableConstraints];
-    v18 = [v34 leadingAnchor];
-    v17 = [location[0] stackView];
-    v16 = [v17 leadingAnchor];
-    v15 = [v18 constraintEqualToAnchor:38.0 constant:?];
+    mutableConstraints2 = [location[0] mutableConstraints];
+    leadingAnchor = [v34 leadingAnchor];
+    stackView5 = [location[0] stackView];
+    leadingAnchor2 = [stackView5 leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:38.0 constant:?];
     v38[0] = v15;
-    v14 = [v34 trailingAnchor];
-    v13 = [location[0] stackView];
-    v12 = [v13 trailingAnchor];
-    v11 = [v14 constraintEqualToAnchor:-38.0 constant:?];
+    trailingAnchor = [v34 trailingAnchor];
+    stackView6 = [location[0] stackView];
+    trailingAnchor2 = [stackView6 trailingAnchor];
+    v11 = [trailingAnchor constraintEqualToAnchor:-38.0 constant:?];
     v38[1] = v11;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
-    [v19 addObjectsFromArray:?];
+    [mutableConstraints2 addObjectsFromArray:?];
     MEMORY[0x277D82BD8](v10);
     MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
-    MEMORY[0x277D82BD8](v14);
+    MEMORY[0x277D82BD8](trailingAnchor2);
+    MEMORY[0x277D82BD8](stackView6);
+    MEMORY[0x277D82BD8](trailingAnchor);
     MEMORY[0x277D82BD8](v15);
-    MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
-    MEMORY[0x277D82BD8](v18);
-    MEMORY[0x277D82BD8](v19);
+    MEMORY[0x277D82BD8](leadingAnchor2);
+    MEMORY[0x277D82BD8](stackView5);
+    MEMORY[0x277D82BD8](leadingAnchor);
+    MEMORY[0x277D82BD8](mutableConstraints2);
   }
 
   objc_storeStrong(&v34, 0);
@@ -494,64 +494,64 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_continueButtonSelected:(id)a3
+- (void)_continueButtonSelected:(id)selected
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(AKAuthorizationFirstTimePaneViewController *)v9 navigationController];
-  v7 = [v5 topViewController];
-  v6 = v9;
-  MEMORY[0x277D82BD8](v7);
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-  if (v7 == v6)
+  objc_storeStrong(location, selected);
+  navigationController = [(AKAuthorizationFirstTimePaneViewController *)selfCopy navigationController];
+  topViewController = [navigationController topViewController];
+  v6 = selfCopy;
+  MEMORY[0x277D82BD8](topViewController);
+  *&v3 = MEMORY[0x277D82BD8](navigationController).n128_u64[0];
+  if (topViewController == v6)
   {
-    v4 = [(AKAuthorizationPaneViewController *)v9 paneDelegate];
-    [(AKAuthorizationPaneDelegate *)v4 performAppleIDAuthorizationForPaneViewController:v9];
-    MEMORY[0x277D82BD8](v4);
+    paneDelegate = [(AKAuthorizationPaneViewController *)selfCopy paneDelegate];
+    [(AKAuthorizationPaneDelegate *)paneDelegate performAppleIDAuthorizationForPaneViewController:selfCopy];
+    MEMORY[0x277D82BD8](paneDelegate);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_addAdditionalCTAToContext:(id)a3
+- (void)_addAdditionalCTAToContext:(id)context
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = [(AKAuthorizationFirstTimePaneViewController *)v22 authorizationViewController];
-  v15 = [(AKAuthorizationViewController *)v16 presentationContext];
-  v14 = [(AKAuthorizationPresentationContext *)v15 credentialRequestContext];
-  v17 = [v14 _shouldShowAdditionalCTA];
-  MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
-  if (v17)
+  objc_storeStrong(location, context);
+  authorizationViewController = [(AKAuthorizationFirstTimePaneViewController *)selfCopy authorizationViewController];
+  presentationContext = [(AKAuthorizationViewController *)authorizationViewController presentationContext];
+  credentialRequestContext = [(AKAuthorizationPresentationContext *)presentationContext credentialRequestContext];
+  _shouldShowAdditionalCTA = [credentialRequestContext _shouldShowAdditionalCTA];
+  MEMORY[0x277D82BD8](credentialRequestContext);
+  MEMORY[0x277D82BD8](presentationContext);
+  MEMORY[0x277D82BD8](authorizationViewController);
+  if (_shouldShowAdditionalCTA)
   {
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v19 = [v6 localizedStringForKey:@"ADDITIONAL_CTA" value:&stru_28358EF68 table:@"Localizable"];
     MEMORY[0x277D82BD8](v6);
-    v18 = [AKTextualLinkButton buttonWithText:v19 fontSize:v22 target:sel__performAdditionalCTA_ action:16.0];
-    v7 = [location[0] stackView];
-    [v7 addArrangedSubview:v18];
-    *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-    v12 = [location[0] stackView];
+    v18 = [AKTextualLinkButton buttonWithText:v19 fontSize:selfCopy target:sel__performAdditionalCTA_ action:16.0];
+    stackView = [location[0] stackView];
+    [stackView addArrangedSubview:v18];
+    *&v3 = MEMORY[0x277D82BD8](stackView).n128_u64[0];
+    stackView2 = [location[0] stackView];
     +[AKAuthorizationPaneMetrics useOtherAppleIDTopSpacing];
     v8 = v4;
-    v11 = [location[0] stackView];
-    v10 = [v11 arrangedSubviews];
-    v9 = [v10 lastObject];
-    [v12 setCustomSpacing:v8 afterView:?];
-    MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
-    MEMORY[0x277D82BD8](v11);
-    *&v5 = MEMORY[0x277D82BD8](v12).n128_u64[0];
-    v13 = [location[0] stackView];
+    stackView3 = [location[0] stackView];
+    arrangedSubviews = [stackView3 arrangedSubviews];
+    lastObject = [arrangedSubviews lastObject];
+    [stackView2 setCustomSpacing:v8 afterView:?];
+    MEMORY[0x277D82BD8](lastObject);
+    MEMORY[0x277D82BD8](arrangedSubviews);
+    MEMORY[0x277D82BD8](stackView3);
+    *&v5 = MEMORY[0x277D82BD8](stackView2).n128_u64[0];
+    stackView4 = [location[0] stackView];
     +[AKAuthorizationPaneMetrics useOtherAppleIDBottomSpacing];
-    [v13 setCustomSpacing:v18 afterView:?];
-    MEMORY[0x277D82BD8](v13);
+    [stackView4 setCustomSpacing:v18 afterView:?];
+    MEMORY[0x277D82BD8](stackView4);
     objc_storeStrong(&v18, 0);
     objc_storeStrong(&v19, 0);
     v20 = 0;
@@ -565,12 +565,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_performAdditionalCTA:(id)a3
+- (void)_performAdditionalCTA:(id)a
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, a);
   v12 = _AKLogSiwa();
   v11 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -583,14 +583,14 @@
 
   objc_storeStrong(&v12, 0);
   v9 = [MEMORY[0x277CCA9B8] ak_errorWithCode:-7124];
-  v8 = MEMORY[0x277D82BE0](v14);
-  v5 = [v8 authorizationViewController];
-  v4 = [v5 delegate];
-  v3 = [v8 authorizationViewController];
-  [v4 authorizationViewController:? didCompleteWithAuthorization:? error:?];
-  MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
+  v8 = MEMORY[0x277D82BE0](selfCopy);
+  authorizationViewController = [v8 authorizationViewController];
+  delegate = [authorizationViewController delegate];
+  authorizationViewController2 = [v8 authorizationViewController];
+  [delegate authorizationViewController:? didCompleteWithAuthorization:? error:?];
+  MEMORY[0x277D82BD8](authorizationViewController2);
+  MEMORY[0x277D82BD8](delegate);
+  MEMORY[0x277D82BD8](authorizationViewController);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);

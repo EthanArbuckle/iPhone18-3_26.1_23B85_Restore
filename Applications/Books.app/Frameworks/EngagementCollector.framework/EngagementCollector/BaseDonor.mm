@@ -1,12 +1,12 @@
 @interface BaseDonor
-- (BOOL)isObservedBy:(id)a3;
+- (BOOL)isObservedBy:(id)by;
 - (NSArray)eventConfigurations;
 - (NSString)type;
 - (_TtC19EngagementCollector9BaseDonor)init;
-- (void)donateWithConfiguration:(id)a3 context:(id)a4 donationCompleteBlock:(id)a5;
-- (void)propertyDidChange:(id)a3 propertyConfiguration:(id)a4;
-- (void)setEventConfigurations:(id)a3;
-- (void)setType:(id)a3;
+- (void)donateWithConfiguration:(id)configuration context:(id)context donationCompleteBlock:(id)block;
+- (void)propertyDidChange:(id)change propertyConfiguration:(id)configuration;
+- (void)setEventConfigurations:(id)configurations;
+- (void)setType:(id)type;
 @end
 
 @implementation BaseDonor
@@ -23,7 +23,7 @@
   return v5;
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
   v4 = sub_31320();
   v6 = v5;
@@ -46,7 +46,7 @@
   return v5.super.isa;
 }
 
-- (void)setEventConfigurations:(id)a3
+- (void)setEventConfigurations:(id)configurations
 {
   type metadata accessor for BasePropertyConfiguration();
   v4 = sub_313E0();
@@ -56,19 +56,19 @@
   *(self + v5) = v4;
 }
 
-- (void)donateWithConfiguration:(id)a3 context:(id)a4 donationCompleteBlock:(id)a5
+- (void)donateWithConfiguration:(id)configuration context:(id)context donationCompleteBlock:(id)block
 {
-  _Block_copy(a5);
+  _Block_copy(block);
   sub_317A0();
   __break(1u);
 }
 
-- (void)propertyDidChange:(id)a3 propertyConfiguration:(id)a4
+- (void)propertyDidChange:(id)change propertyConfiguration:(id)configuration
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
-  sub_24508(a3, v7);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_24508(change, configurationCopy);
   swift_unknownObjectRelease();
 }
 
@@ -79,11 +79,11 @@
   return result;
 }
 
-- (BOOL)isObservedBy:(id)a3
+- (BOOL)isObservedBy:(id)by
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = BaseDonor.isObserved(by:)(a3);
+  selfCopy = self;
+  v6 = BaseDonor.isObserved(by:)(by);
   swift_unknownObjectRelease();
 
   return v6 & 1;

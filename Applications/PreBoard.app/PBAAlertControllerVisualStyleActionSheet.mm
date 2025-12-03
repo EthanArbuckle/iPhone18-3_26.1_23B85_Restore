@@ -1,14 +1,14 @@
 @interface PBAAlertControllerVisualStyleActionSheet
-- (UIEdgeInsets)contentInsetsForContainerView:(id)a3;
+- (UIEdgeInsets)contentInsetsForContainerView:(id)view;
 @end
 
 @implementation PBAAlertControllerVisualStyleActionSheet
 
-- (UIEdgeInsets)contentInsetsForContainerView:(id)a3
+- (UIEdgeInsets)contentInsetsForContainerView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = SBFEffectiveHomeButtonType();
-  [v3 layoutMargins];
+  [viewCopy layoutMargins];
   v6 = v5;
   v8 = v7;
   v10 = v9;

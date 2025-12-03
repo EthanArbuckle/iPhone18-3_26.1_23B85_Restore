@@ -1,84 +1,84 @@
 @interface THWSceneRep
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)expandedHasContentForPanel:(int)a3;
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)expandedHasContentForPanel:(int)panel;
+- (BOOL)handleGesture:(id)gesture;
 - (BOOL)isExpanded;
 - (BOOL)isFreeTransformInProgress;
 - (BOOL)wantsPressAction;
 - (CGAffineTransform)freeTransform;
-- (CGAffineTransform)shadowAnimationLayerDestinationTransform:(SEL)a3 uniformTargetScale:(id)a4;
-- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4;
+- (CGAffineTransform)shadowAnimationLayerDestinationTransform:(SEL)transform uniformTargetScale:(id)scale;
+- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize;
 - (CGRect)ftcTargetFrame;
-- (CGRect)p_contentsRectForDestination:(CGSize)a3 shouldFill:(BOOL)a4;
+- (CGRect)p_contentsRectForDestination:(CGSize)destination shouldFill:(BOOL)fill;
 - (CGRect)p_scaledViewFrameOnCanvas;
 - (CGRect)rectForCompletion;
-- (CGRect)targetFrameForSource:(id)a3;
+- (CGRect)targetFrameForSource:(id)source;
 - (CGSize)p_targetExpandedSize;
 - (THAnimationController)animationController;
-- (THWSceneRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (THWSceneRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (double)expandedContentMinimumZoomScale;
-- (double)scaleForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4;
-- (double)screenScaleForSceneController:(id)a3;
+- (double)scaleForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize;
+- (double)screenScaleForSceneController:(id)controller;
 - (id)animationLayer;
-- (id)backgroundColorForSceneController:(id)a3;
-- (id)documentRootForSceneController:(id)a3;
-- (id)expandedChildInfosForPanel:(int)a3;
+- (id)backgroundColorForSceneController:(id)controller;
+- (id)documentRootForSceneController:(id)controller;
+- (id)expandedChildInfosForPanel:(int)panel;
 - (id)p_sceneContentLayer;
-- (id)placeholderLayerForSceneController:(id)a3;
+- (id)placeholderLayerForSceneController:(id)controller;
 - (id)shadowAnimationLayer;
 - (id)shadowPath;
 - (id)targetLayer;
 - (int)pressableAction;
-- (void)addChildViewsToArray:(id)a3;
-- (void)animationControllerDidAddContentAnimations:(id)a3 uniformTargetScale:(double)a4;
-- (void)animationControllerDidPresent:(id)a3;
-- (void)animationControllerSetupTarget:(id)a3;
-- (void)animationControllerTeardownTarget:(id)a3;
+- (void)addChildViewsToArray:(id)array;
+- (void)animationControllerDidAddContentAnimations:(id)animations uniformTargetScale:(double)scale;
+- (void)animationControllerDidPresent:(id)present;
+- (void)animationControllerSetupTarget:(id)target;
+- (void)animationControllerTeardownTarget:(id)target;
 - (void)canvasDidBeginFreeTransform;
 - (void)canvasDidEndFreeTransform;
 - (void)dealloc;
-- (void)didAddChildView:(id)a3;
+- (void)didAddChildView:(id)view;
 - (void)didPresentExpanded;
 - (void)expandedDidAppearPreAnimation;
-- (void)expandedDidRotateTransitionToSize:(CGSize)a3;
-- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)a3 toFrame:(CGRect)a4;
-- (void)expandedWillRotateTransitionFromSize:(CGSize)a3 toSize:(CGSize)a4;
+- (void)expandedDidRotateTransitionToSize:(CGSize)size;
+- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)frame toFrame:(CGRect)toFrame;
+- (void)expandedWillRotateTransitionFromSize:(CGSize)size toSize:(CGSize)toSize;
 - (void)freeTransformDidEnd;
 - (void)freeTransformWillBegin;
-- (void)handleNotificationVantageDidChange:(id)a3;
-- (void)handleSingleTapInSceneForSceneController:(id)a3;
+- (void)handleNotificationVantageDidChange:(id)change;
+- (void)handleSingleTapInSceneForSceneController:(id)controller;
 - (void)p_reparentSceneView;
-- (void)p_setupImageCropAnimationControllerWithDestinationRep:(id)a3;
-- (void)p_setupSceneControllerIfNecessary:(BOOL)a3;
+- (void)p_setupImageCropAnimationControllerWithDestinationRep:(id)rep;
+- (void)p_setupSceneControllerIfNecessary:(BOOL)necessary;
 - (void)p_updateInteractiveMode;
-- (void)reparentAnimationLayerIfBackedByView:(id)a3;
-- (void)reparentTargetLayerIfBackedByView:(id)a3;
-- (void)replaceContentsFromRep:(id)a3;
-- (void)sceneDidLoadForSceneController:(id)a3;
-- (void)setChildReps:(id)a3;
+- (void)reparentAnimationLayerIfBackedByView:(id)view;
+- (void)reparentTargetLayerIfBackedByView:(id)view;
+- (void)replaceContentsFromRep:(id)rep;
+- (void)sceneDidLoadForSceneController:(id)controller;
+- (void)setChildReps:(id)reps;
 - (void)updateChildrenFromLayout;
 - (void)viewScrollWillChange;
 - (void)viewScrollingEnded;
 - (void)willBeRemoved;
-- (void)willBeginHandlingGesture:(id)a3;
-- (void)willRemoveChildView:(id)a3;
+- (void)willBeginHandlingGesture:(id)gesture;
+- (void)willRemoveChildView:(id)view;
 @end
 
 @implementation THWSceneRep
 
-- (THWSceneRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THWSceneRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v8.receiver = self;
   v8.super_class = THWSceneRep;
-  v4 = [(THWSceneRep *)&v8 initWithLayout:a3 canvas:a4];
+  v4 = [(THWSceneRep *)&v8 initWithLayout:layout canvas:canvas];
   if (v4)
   {
     objc_opt_class();
     [(THWSceneRep *)v4 interactiveCanvasController];
-    v5 = [TSUDynamicCast() pressHandlerForPressableReps];
-    if (v5)
+    pressHandlerForPressableReps = [TSUDynamicCast() pressHandlerForPressableReps];
+    if (pressHandlerForPressableReps)
     {
-      v4->_pressableHandler = [[THWPressableRepGestureTargetHandler alloc] initWithPressableRep:v4 pressHandler:v5];
+      v4->_pressableHandler = [[THWPressableRepGestureTargetHandler alloc] initWithPressableRep:v4 pressHandler:pressHandlerForPressableReps];
     }
 
     v4->_freeTransformableHandler = -[THWFreeTransformableRepGestureTargetHandler initWithFreeTransformableRep:handler:]([THWFreeTransformableRepGestureTargetHandler alloc], "initWithFreeTransformableRep:handler:", v4, [objc_msgSend(-[THWSceneRep hostICC](v4 "hostICC")]);
@@ -138,7 +138,7 @@ LABEL_8:
   return result;
 }
 
-- (void)p_setupSceneControllerIfNecessary:(BOOL)a3
+- (void)p_setupSceneControllerIfNecessary:(BOOL)necessary
 {
   if (self->_sceneController)
   {
@@ -146,11 +146,11 @@ LABEL_8:
   }
 
   v5 = [THWSceneController alloc];
-  v6 = [(THWSceneRep *)self info];
+  info = [(THWSceneRep *)self info];
   [(THWSceneRep *)self p_scaledViewFrameOnCanvas];
-  sceneController = [(THWSceneController *)v5 initWithSceneInfo:v6 frame:self delegate:?];
+  sceneController = [(THWSceneController *)v5 initWithSceneInfo:info frame:self delegate:?];
   self->_sceneController = sceneController;
-  if (a3)
+  if (necessary)
   {
     goto LABEL_3;
   }
@@ -208,55 +208,55 @@ LABEL_3:
 
 - (void)canvasDidBeginFreeTransform
 {
-  v2 = [(THWSceneRep *)self sceneController];
+  sceneController = [(THWSceneRep *)self sceneController];
 
-  [(THWSceneController *)v2 pauseIdleAnimation];
+  [(THWSceneController *)sceneController pauseIdleAnimation];
 }
 
 - (void)canvasDidEndFreeTransform
 {
   if ([(THWSceneRep *)self isVisibleOnCanvas])
   {
-    v3 = [(THWSceneRep *)self sceneController];
+    sceneController = [(THWSceneRep *)self sceneController];
 
-    [(THWSceneController *)v3 resumeIdleAnimationIfNecessary];
+    [(THWSceneController *)sceneController resumeIdleAnimationIfNecessary];
   }
 }
 
-- (void)handleNotificationVantageDidChange:(id)a3
+- (void)handleNotificationVantageDidChange:(id)change
 {
-  v4 = [objc_msgSend(a3 "userInfo")];
+  v4 = [objc_msgSend(change "userInfo")];
   if (([v4 isEqualToString:@"THVantageChangeReasonTransitionToGlossary"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"THVantageChangeReasonTransitionToNotesVC"))
   {
-    v5 = [(THWSceneRep *)self sceneController];
+    sceneController = [(THWSceneRep *)self sceneController];
 
-    [(THWSceneController *)v5 pauseIdleAnimation];
+    [(THWSceneController *)sceneController pauseIdleAnimation];
   }
 }
 
-- (id)documentRootForSceneController:(id)a3
+- (id)documentRootForSceneController:(id)controller
 {
-  v3 = [(THWSceneRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWSceneRep *)self interactiveCanvasController];
 
-  return [v3 documentRoot];
+  return [interactiveCanvasController documentRoot];
 }
 
-- (id)backgroundColorForSceneController:(id)a3
+- (id)backgroundColorForSceneController:(id)controller
 {
-  v3 = [(THWSceneRep *)self info];
+  info = [(THWSceneRep *)self info];
 
-  return [v3 stageColor];
+  return [info stageColor];
 }
 
-- (id)placeholderLayerForSceneController:(id)a3
+- (id)placeholderLayerForSceneController:(id)controller
 {
-  v4 = [(THWSceneRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWSceneRep *)self interactiveCanvasController];
   v5 = [-[THWSceneRep interactiveCanvasController](self "interactiveCanvasController")];
 
-  return [v4 layerForRep:v5];
+  return [interactiveCanvasController layerForRep:v5];
 }
 
-- (double)screenScaleForSceneController:(id)a3
+- (double)screenScaleForSceneController:(id)controller
 {
   v3 = +[UIScreen mainScreen];
 
@@ -264,7 +264,7 @@ LABEL_3:
   return result;
 }
 
-- (void)handleSingleTapInSceneForSceneController:(id)a3
+- (void)handleSingleTapInSceneForSceneController:(id)controller
 {
   if ([(THWPressableRepGestureTargetHandler *)[(THWSceneRep *)self pressableHandler] widgetInteractionDisabledOnPage])
   {
@@ -279,9 +279,9 @@ LABEL_3:
   if (![(THWSceneRep *)self isExpanded]&& [(THWSceneRep *)self meetsStageDimensionRequirementForExpanded])
   {
 LABEL_2:
-    v4 = [(THWSceneRep *)self pressableHandler];
+    pressableHandler = [(THWSceneRep *)self pressableHandler];
 
-    [(THWPressableRepGestureTargetHandler *)v4 spoofGesture];
+    [(THWPressableRepGestureTargetHandler *)pressableHandler spoofGesture];
   }
 
   else
@@ -293,69 +293,69 @@ LABEL_2:
   }
 }
 
-- (void)sceneDidLoadForSceneController:(id)a3
+- (void)sceneDidLoadForSceneController:(id)controller
 {
   if (![(THWSceneRep *)self isCurrentlyScrolling])
   {
-    v4 = [(THWSceneRep *)self interactiveCanvasController];
+    interactiveCanvasController = [(THWSceneRep *)self interactiveCanvasController];
 
-    [v4 invalidateReps];
+    [interactiveCanvasController invalidateReps];
   }
 }
 
-- (void)setChildReps:(id)a3
+- (void)setChildReps:(id)reps
 {
   childReps = self->_childReps;
-  if (childReps != a3)
+  if (childReps != reps)
   {
     [(NSArray *)childReps makeObjectsPerformSelector:"setParentRep:" withObject:0];
 
-    v6 = a3;
-    self->_childReps = v6;
+    repsCopy = reps;
+    self->_childReps = repsCopy;
 
-    [(NSArray *)v6 makeObjectsPerformSelector:"setParentRep:" withObject:self];
+    [(NSArray *)repsCopy makeObjectsPerformSelector:"setParentRep:" withObject:self];
   }
 }
 
-- (void)addChildViewsToArray:(id)a3
+- (void)addChildViewsToArray:(id)array
 {
   if (!+[NSThread isMainThread])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [(THWSceneRep *)self isVisibleOnCanvas];
-  v6 = [(THWSceneRep *)self sceneController];
-  if (!v5)
+  isVisibleOnCanvas = [(THWSceneRep *)self isVisibleOnCanvas];
+  sceneController = [(THWSceneRep *)self sceneController];
+  if (!isVisibleOnCanvas)
   {
-    v9 = [(THWSceneController *)v6 view];
-    if (!v9)
+    view = [(THWSceneController *)sceneController view];
+    if (!view)
     {
       goto LABEL_13;
     }
 
-    v7 = v9;
-    v10 = [(THWSceneRep *)self sceneController];
+    view2 = view;
+    sceneController2 = [(THWSceneRep *)self sceneController];
     [(THWSceneRep *)self p_scaledViewFrameOnCanvas];
-    [(THWSceneController *)v10 setFrame:?];
+    [(THWSceneController *)sceneController2 setFrame:?];
     goto LABEL_12;
   }
 
-  if (v6)
+  if (sceneController)
   {
     if (![(THWSceneRep *)self isCurrentlyScrolling]&& ![(THWSceneController *)[(THWSceneRep *)self sceneController] view])
     {
       [(THWSceneController *)[(THWSceneRep *)self sceneController] setupSceneView];
     }
 
-    v7 = [(THWSceneController *)[(THWSceneRep *)self sceneController] view];
-    v8 = [(THWSceneRep *)self sceneController];
+    view2 = [(THWSceneController *)[(THWSceneRep *)self sceneController] view];
+    sceneController3 = [(THWSceneRep *)self sceneController];
     [(THWSceneRep *)self p_scaledViewFrameOnCanvas];
-    [(THWSceneController *)v8 setFrame:?];
-    if (v7)
+    [(THWSceneController *)sceneController3 setFrame:?];
+    if (view2)
     {
 LABEL_12:
-      [a3 addObject:v7];
+      [array addObject:view2];
     }
   }
 
@@ -376,51 +376,51 @@ LABEL_13:
   }
 }
 
-- (void)didAddChildView:(id)a3
+- (void)didAddChildView:(id)view
 {
   if (!+[NSThread isMainThread])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (a3 && [(THWSceneController *)[(THWSceneRep *)self sceneController] view]== a3)
+  if (view && [(THWSceneController *)[(THWSceneRep *)self sceneController] view]== view)
   {
-    v5 = [(THWSceneRep *)self sceneController];
+    sceneController = [(THWSceneRep *)self sceneController];
 
-    [(THWSceneController *)v5 didAddSceneView];
+    [(THWSceneController *)sceneController didAddSceneView];
   }
 }
 
-- (void)willRemoveChildView:(id)a3
+- (void)willRemoveChildView:(id)view
 {
   if (!+[NSThread isMainThread])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (a3 && ![(THWSceneRep *)self loanedSceneController]&& self->_sceneController && [(THWSceneController *)[(THWSceneRep *)self sceneController] view]== a3)
+  if (view && ![(THWSceneRep *)self loanedSceneController]&& self->_sceneController && [(THWSceneController *)[(THWSceneRep *)self sceneController] view]== view)
   {
     [(THWSceneController *)self->_sceneController stopAnimation];
 
-    [a3 removeFromSuperview];
+    [view removeFromSuperview];
   }
 }
 
 - (void)p_updateInteractiveMode
 {
   [(THWSceneController *)[(THWSceneRep *)self sceneController] setUserInteractionEnabled:1];
-  v3 = [(THWPressableRepGestureTargetHandler *)[(THWSceneRep *)self pressableHandler] widgetInteractionDisabledOnPage];
-  v4 = [(THWSceneRep *)self sceneController];
-  if (v3)
+  widgetInteractionDisabledOnPage = [(THWPressableRepGestureTargetHandler *)[(THWSceneRep *)self pressableHandler] widgetInteractionDisabledOnPage];
+  sceneController = [(THWSceneRep *)self sceneController];
+  if (widgetInteractionDisabledOnPage)
   {
 
-    [(THWSceneController *)v4 pauseIdleAnimationForRotation];
+    [(THWSceneController *)sceneController pauseIdleAnimationForRotation];
   }
 
   else
   {
 
-    [(THWSceneController *)v4 resumeIdleAnimationIfNecessary];
+    [(THWSceneController *)sceneController resumeIdleAnimationIfNecessary];
   }
 }
 
@@ -448,46 +448,46 @@ LABEL_13:
   return [(THWSceneRep *)&v3 pressableAction];
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  if (![(THWSceneRep *)self animating]&& [(THWPressableRepGestureTargetHandler *)[(THWSceneRep *)self pressableHandler] canHandleGesture:a3])
+  if (![(THWSceneRep *)self animating]&& [(THWPressableRepGestureTargetHandler *)[(THWSceneRep *)self pressableHandler] canHandleGesture:gesture])
   {
     return 1;
   }
 
-  v6 = [(THWSceneRep *)self freeTransformableHandler];
+  freeTransformableHandler = [(THWSceneRep *)self freeTransformableHandler];
 
-  return [(THWFreeTransformableRepGestureTargetHandler *)v6 canHandleGesture:a3];
+  return [(THWFreeTransformableRepGestureTargetHandler *)freeTransformableHandler canHandleGesture:gesture];
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  if ([(THWPressableRepGestureTargetHandler *)[(THWSceneRep *)self pressableHandler] handleGesture:a3])
+  if ([(THWPressableRepGestureTargetHandler *)[(THWSceneRep *)self pressableHandler] handleGesture:gesture])
   {
     return 1;
   }
 
-  v6 = [(THWSceneRep *)self freeTransformableHandler];
+  freeTransformableHandler = [(THWSceneRep *)self freeTransformableHandler];
 
-  return [(THWFreeTransformableRepGestureTargetHandler *)v6 handleGesture:a3];
+  return [(THWFreeTransformableRepGestureTargetHandler *)freeTransformableHandler handleGesture:gesture];
 }
 
-- (void)willBeginHandlingGesture:(id)a3
+- (void)willBeginHandlingGesture:(id)gesture
 {
-  v5 = [a3 gestureKind];
-  if (v5 == TSDFreeTransform)
+  gestureKind = [gesture gestureKind];
+  if (gestureKind == TSDFreeTransform)
   {
-    v6 = [(THWSceneRep *)self freeTransformableHandler];
+    freeTransformableHandler = [(THWSceneRep *)self freeTransformableHandler];
 
-    [(THWFreeTransformableRepGestureTargetHandler *)v6 willBeginHandlingGesture:a3];
+    [(THWFreeTransformableRepGestureTargetHandler *)freeTransformableHandler willBeginHandlingGesture:gesture];
   }
 }
 
 - (BOOL)isExpanded
 {
-  v2 = [(THWSceneRep *)self layout];
+  layout = [(THWSceneRep *)self layout];
 
-  return [v2 isExpanded];
+  return [layout isExpanded];
 }
 
 - (id)shadowPath
@@ -531,17 +531,17 @@ LABEL_13:
   {
     [(THWSceneRep *)self setSceneDidReceiveRotationLayoutDuringFreeTransform:0];
     [objc_msgSend(v3 "sceneController")];
-    v4 = [v3 layout];
+    layout = [v3 layout];
 
-    [v4 invalidateFrame];
+    [layout invalidateFrame];
   }
 }
 
 - (CGRect)rectForCompletion
 {
-  v2 = [(THWSceneRep *)self layout];
+  layout = [(THWSceneRep *)self layout];
 
-  [v2 frameInParent];
+  [layout frameInParent];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -568,45 +568,45 @@ LABEL_13:
 
 - (void)expandedDidAppearPreAnimation
 {
-  v2 = [(THWSceneRep *)self sceneController];
-  if (v2)
+  sceneController = [(THWSceneRep *)self sceneController];
+  if (sceneController)
   {
-    v3 = v2;
-    if (![(THWSceneController *)v2 hasRendered])
+    v3 = sceneController;
+    if (![(THWSceneController *)sceneController hasRendered])
     {
-      v4 = [(THWSceneController *)v3 view];
+      view = [(THWSceneController *)v3 view];
 
-      [v4 setNeedsDisplay];
+      [view setNeedsDisplay];
     }
   }
 }
 
 - (void)didPresentExpanded
 {
-  v2 = [(THWSceneRep *)self sceneController];
+  sceneController = [(THWSceneRep *)self sceneController];
 
-  [(THWSceneController *)v2 setUserInteractionEnabled:1];
+  [(THWSceneController *)sceneController setUserInteractionEnabled:1];
 }
 
-- (BOOL)expandedHasContentForPanel:(int)a3
+- (BOOL)expandedHasContentForPanel:(int)panel
 {
-  v3 = *&a3;
+  v3 = *&panel;
   v4 = [-[THWSceneRep info](self "info")];
 
   return [v4 panelContentProviderHasContentForPanel:v3];
 }
 
-- (id)expandedChildInfosForPanel:(int)a3
+- (id)expandedChildInfosForPanel:(int)panel
 {
-  v3 = *&a3;
+  v3 = *&panel;
   v4 = [-[THWSceneRep info](self "info")];
 
   return [v4 panelContentProviderChildInfosForPanel:v3];
 }
 
-- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)a3 toFrame:(CGRect)a4
+- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)frame toFrame:(CGRect)toFrame
 {
-  v4 = [(THWSceneRep *)self layout:a3.origin.x];
+  v4 = [(THWSceneRep *)self layout:frame.origin.x];
 
   [v4 invalidateFrame];
 }
@@ -645,9 +645,9 @@ LABEL_13:
 {
   if (![(THWSceneRep *)self isFreeTransformInProgress]|| (result = [(THWFreeTransformController *)[(THWFreeTransformableRepGestureTargetHandler *)[(THWSceneRep *)self freeTransformableHandler] ftc] freeTransformLayer]) == 0)
   {
-    v4 = [(THWSceneRep *)self imageCropAnimationController];
+    imageCropAnimationController = [(THWSceneRep *)self imageCropAnimationController];
 
-    return [(THWImageCropAnimationController *)v4 wrapperLayer];
+    return [(THWImageCropAnimationController *)imageCropAnimationController wrapperLayer];
   }
 
   return result;
@@ -658,17 +658,17 @@ LABEL_13:
   result = [(THWSceneController *)[(THWSceneRep *)self sceneController] sceneLayer];
   if (!result)
   {
-    v4 = [(THWSceneRep *)self interactiveCanvasController];
+    interactiveCanvasController = [(THWSceneRep *)self interactiveCanvasController];
 
-    return [v4 layerForRep:self];
+    return [interactiveCanvasController layerForRep:self];
   }
 
   return result;
 }
 
-- (CGRect)p_contentsRectForDestination:(CGSize)a3 shouldFill:(BOOL)a4
+- (CGRect)p_contentsRectForDestination:(CGSize)destination shouldFill:(BOOL)fill
 {
-  if (a4)
+  if (fill)
   {
     v4 = 1.0;
     v5 = 0.0;
@@ -719,7 +719,7 @@ LABEL_13:
   return [(THWFreeTransformController *)v3 shadowLayer];
 }
 
-- (CGAffineTransform)shadowAnimationLayerDestinationTransform:(SEL)a3 uniformTargetScale:(id)a4
+- (CGAffineTransform)shadowAnimationLayerDestinationTransform:(SEL)transform uniformTargetScale:(id)scale
 {
   v7 = *&CGAffineTransformIdentity.c;
   *&retstr->a = *&CGAffineTransformIdentity.a;
@@ -825,7 +825,7 @@ LABEL_13:
   return result;
 }
 
-- (void)reparentAnimationLayerIfBackedByView:(id)a3
+- (void)reparentAnimationLayerIfBackedByView:(id)view
 {
   if (![(THWSceneRep *)self isFreeTransformInProgress])
   {
@@ -866,7 +866,7 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)targetFrameForSource:(id)a3
+- (CGRect)targetFrameForSource:(id)source
 {
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
@@ -874,10 +874,10 @@ LABEL_13:
   height = CGRectNull.size.height;
   objc_opt_class();
   v8 = TSUDynamicCast();
-  v9 = [v8 sceneController];
-  if (v9)
+  sceneController = [v8 sceneController];
+  if (sceneController)
   {
-    v10 = v9;
+    v10 = sceneController;
     [objc_msgSend(objc_msgSend(v8 "interactiveCanvasController")];
     v12 = v11;
     v14 = v13;
@@ -905,17 +905,17 @@ LABEL_13:
 
 - (void)p_reparentSceneView
 {
-  v3 = [(THWSceneController *)[(THWSceneRep *)self sceneController] view];
-  if (v3)
+  view = [(THWSceneController *)[(THWSceneRep *)self sceneController] view];
+  if (view)
   {
-    v4 = v3;
+    v4 = view;
     if (![(THWSceneRep *)self imageCropAnimationController])
     {
       v7 = v4;
       [-[THWSceneRep subviewsController](self "subviewsController")];
-      v5 = [(THWSceneRep *)self sceneController];
+      sceneController = [(THWSceneRep *)self sceneController];
       [(THWSceneRep *)self p_scaledViewFrameOnCanvas];
-      [(THWSceneController *)v5 setFrame:?];
+      [(THWSceneController *)sceneController setFrame:?];
       [objc_msgSend(v4 "layer")];
       v6[0] = _NSConcreteStackBlock;
       v6[1] = 3221225472;
@@ -927,10 +927,10 @@ LABEL_13:
   }
 }
 
-- (void)reparentTargetLayerIfBackedByView:(id)a3
+- (void)reparentTargetLayerIfBackedByView:(id)view
 {
   objc_opt_class();
-  [a3 source];
+  [view source];
   if (([TSUDynamicCast() isFreeTransformInProgress] & 1) == 0)
   {
 
@@ -938,23 +938,23 @@ LABEL_13:
   }
 }
 
-- (void)animationControllerDidPresent:(id)a3
+- (void)animationControllerDidPresent:(id)present
 {
   self->_animationController = 0;
 
   [(THWSceneRep *)self setAnimating:0];
 }
 
-- (void)animationControllerSetupTarget:(id)a3
+- (void)animationControllerSetupTarget:(id)target
 {
   objc_opt_class();
-  [a3 destination];
+  [target destination];
   v5 = TSUDynamicCast();
 
   [(THWSceneRep *)self p_setupImageCropAnimationControllerWithDestinationRep:v5];
 }
 
-- (void)animationControllerTeardownTarget:(id)a3
+- (void)animationControllerTeardownTarget:(id)target
 {
   if (![(THWSceneRep *)self isFreeTransformInProgress])
   {
@@ -966,15 +966,15 @@ LABEL_13:
   }
 }
 
-- (void)animationControllerDidAddContentAnimations:(id)a3 uniformTargetScale:(double)a4
+- (void)animationControllerDidAddContentAnimations:(id)animations uniformTargetScale:(double)scale
 {
-  v5 = [(THWSceneRep *)self imageCropAnimationController];
-  [a3 animationDuration];
+  imageCropAnimationController = [(THWSceneRep *)self imageCropAnimationController];
+  [animations animationDuration];
 
-  [THWImageCropAnimationController addAnimationWithDuration:v5 targetScale:"addAnimationWithDuration:targetScale:"];
+  [THWImageCropAnimationController addAnimationWithDuration:imageCropAnimationController targetScale:"addAnimationWithDuration:targetScale:"];
 }
 
-- (void)replaceContentsFromRep:(id)a3
+- (void)replaceContentsFromRep:(id)rep
 {
   v7.receiver = self;
   v7.super_class = THWSceneRep;
@@ -995,20 +995,20 @@ LABEL_13:
     [(THWSceneRep *)self setSceneTransferHappened:1];
     [v6 setSceneController:0];
     [v6 setLoanedSceneController:1];
-    [objc_msgSend(a3 "interactiveCanvasController")];
+    [objc_msgSend(rep "interactiveCanvasController")];
     [-[THWSceneRep interactiveCanvasController](self "interactiveCanvasController")];
   }
 }
 
-- (double)scaleForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (double)scaleForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.height;
-  v7 = a3.width;
-  v8 = [(THWSceneController *)[(THWSceneRep *)self sceneController] yFovFixed];
+  height = toSize.height;
+  width = toSize.width;
+  v6 = size.height;
+  v7 = size.width;
+  yFovFixed = [(THWSceneController *)[(THWSceneRep *)self sceneController] yFovFixed];
   result = height / v6;
-  if ((v8 & 1) == 0)
+  if ((yFovFixed & 1) == 0)
   {
     return width / v7;
   }
@@ -1016,7 +1016,7 @@ LABEL_13:
   return result;
 }
 
-- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -1025,12 +1025,12 @@ LABEL_13:
   return result;
 }
 
-- (void)expandedWillRotateTransitionFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (void)expandedWillRotateTransitionFromSize:(CGSize)size toSize:(CGSize)toSize
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.height;
-  v7 = a3.width;
+  height = toSize.height;
+  width = toSize.width;
+  v6 = size.height;
+  v7 = size.width;
   [(THWSceneController *)[(THWSceneRep *)self sceneController] setDisableFrameUpdate:1];
   [(THWSceneController *)[(THWSceneRep *)self sceneController] frame];
   v10 = v9;
@@ -1058,14 +1058,14 @@ LABEL_13:
   v14 = v19;
   v16 = v20;
 LABEL_6:
-  v21 = [(THWSceneRep *)self sceneController];
+  sceneController = [(THWSceneRep *)self sceneController];
 
-  [(THWSceneController *)v21 setFrame:1 overrideDisabled:v10, v12, v14, v16];
+  [(THWSceneController *)sceneController setFrame:1 overrideDisabled:v10, v12, v14, v16];
 }
 
-- (void)expandedDidRotateTransitionToSize:(CGSize)a3
+- (void)expandedDidRotateTransitionToSize:(CGSize)size
 {
-  if ([(THWSceneRep *)self isFreeTransformInProgress:a3.width])
+  if ([(THWSceneRep *)self isFreeTransformInProgress:size.width])
   {
 
     [(THWSceneRep *)self setSceneDidReceiveRotationLayoutDuringFreeTransform:1];
@@ -1074,9 +1074,9 @@ LABEL_6:
   else
   {
     [(THWSceneController *)[(THWSceneRep *)self sceneController] setDisableFrameUpdate:0];
-    v4 = [(THWSceneRep *)self layout];
+    layout = [(THWSceneRep *)self layout];
 
-    [v4 invalidateFrame];
+    [layout invalidateFrame];
   }
 }
 
@@ -1100,15 +1100,15 @@ LABEL_6:
   return result;
 }
 
-- (void)p_setupImageCropAnimationControllerWithDestinationRep:(id)a3
+- (void)p_setupImageCropAnimationControllerWithDestinationRep:(id)rep
 {
-  v5 = [(THWSceneRep *)self p_sceneContentLayer];
+  p_sceneContentLayer = [(THWSceneRep *)self p_sceneContentLayer];
   [objc_msgSend(-[THWSceneRep interactiveCanvasController](self "interactiveCanvasController")];
   v7 = v6;
   v9 = v8;
-  if (a3)
+  if (rep)
   {
-    [a3 layerFrameInScaledCanvas];
+    [rep layerFrameInScaledCanvas];
     v11 = v10;
     v13 = v12;
   }
@@ -1123,9 +1123,9 @@ LABEL_6:
   v16 = [(THWSceneController *)[(THWSceneRep *)self sceneController] shouldFillSize:v7 withinSize:v9, v11, v13];
   if ([(THWSceneRep *)self imageCropAnimationController])
   {
-    if (a3)
+    if (rep)
     {
-      v17 = a3 == self;
+      v17 = rep == self;
     }
 
     else
@@ -1155,15 +1155,15 @@ LABEL_12:
 
   if ([(THWSceneRep *)self imageCropAnimationController])
   {
-    if (a3)
+    if (rep)
     {
-      if (a3 == self)
+      if (rep == self)
       {
         [(THWImageCropAnimationController *)[(THWSceneRep *)self imageCropAnimationController] sourceContentsRect];
         [(THWImageCropAnimationController *)[(THWSceneRep *)self imageCropAnimationController] setTargetContentsRect:v57, v58, v59, v60];
         [(THWImageCropAnimationController *)[(THWSceneRep *)self imageCropAnimationController] sourceCornerRadius];
         v62 = v61;
-        v39 = [(THWSceneRep *)self imageCropAnimationController];
+        imageCropAnimationController = [(THWSceneRep *)self imageCropAnimationController];
         v40 = v62;
       }
 
@@ -1174,18 +1174,18 @@ LABEL_12:
         v26 = v25;
         v28 = v27;
         v30 = v29;
-        [a3 p_contentsRectForDestination:v16 ^ 1 shouldFill:{v7, v9}];
+        [rep p_contentsRectForDestination:v16 ^ 1 shouldFill:{v7, v9}];
         v32 = v31;
         v34 = v33;
         v36 = v35;
         v38 = v37;
         [(THWImageCropAnimationController *)[(THWSceneRep *)self imageCropAnimationController] setSourceContentsRect:v24, v26, v28, v30];
         [(THWImageCropAnimationController *)[(THWSceneRep *)self imageCropAnimationController] setTargetContentsRect:v32, v34, v36, v38];
-        v39 = [(THWSceneRep *)self imageCropAnimationController];
+        imageCropAnimationController = [(THWSceneRep *)self imageCropAnimationController];
         v40 = 0.0;
       }
 
-      [(THWImageCropAnimationController *)v39 setTargetCornerRadius:v40];
+      [(THWImageCropAnimationController *)imageCropAnimationController setTargetCornerRadius:v40];
     }
   }
 
@@ -1196,9 +1196,9 @@ LABEL_12:
     v44 = v43;
     v46 = v45;
     v48 = v47;
-    if (a3)
+    if (rep)
     {
-      [a3 p_contentsRectForDestination:v16 ^ 1 shouldFill:{v7, v9}];
+      [rep p_contentsRectForDestination:v16 ^ 1 shouldFill:{v7, v9}];
       v50 = v49;
       v52 = v51;
       v54 = v53;
@@ -1213,16 +1213,16 @@ LABEL_12:
       v56 = 1.0;
     }
 
-    self->_imageCropAnimationController = [[THWImageCropAnimationController alloc] initWithImageContentLayer:v5];
+    self->_imageCropAnimationController = [[THWImageCropAnimationController alloc] initWithImageContentLayer:p_sceneContentLayer];
     [(THWImageCropAnimationController *)[(THWSceneRep *)self imageCropAnimationController] setSourceContentsRect:v42, v44, v46, v48];
     [(THWImageCropAnimationController *)[(THWSceneRep *)self imageCropAnimationController] setSourceCornerRadius:0.0];
     [(THWImageCropAnimationController *)[(THWSceneRep *)self imageCropAnimationController] setTargetContentsRect:v50, v52, v54, v56];
     [(THWImageCropAnimationController *)[(THWSceneRep *)self imageCropAnimationController] setTargetCornerRadius:0.0];
     [(THWImageCropAnimationController *)[(THWSceneRep *)self imageCropAnimationController] setCropDurationScale:0.5];
     [(THWImageCropAnimationController *)[(THWSceneRep *)self imageCropAnimationController] setCornerRadiusDurationScale:0.5];
-    v63 = [(THWSceneRep *)self imageCropAnimationController];
+    imageCropAnimationController2 = [(THWSceneRep *)self imageCropAnimationController];
 
-    [(THWImageCropAnimationController *)v63 setupWrapperLayer];
+    [(THWImageCropAnimationController *)imageCropAnimationController2 setupWrapperLayer];
   }
 }
 

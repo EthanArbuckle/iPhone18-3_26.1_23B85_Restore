@@ -1,24 +1,24 @@
 @interface VNOpticalFlowGeneratorRevision1
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)computeStagesToBindForConfigurationOptions:(id)options;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNOpticalFlowGeneratorRevision1
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allCPUAndGPUComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allCPUAndGPUComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   return v5;
 }
 
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3
++ (id)computeStagesToBindForConfigurationOptions:(id)options
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = @"VNComputeStageMain";
@@ -27,19 +27,19 @@
   return v3;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
   v69[1] = *MEMORY[0x1E69E9840];
-  v13 = a5;
-  v62 = a7;
-  v14 = a9;
-  v15 = [v13 objectForKeyedSubscript:@"VNOpticalFlowGeneratorProcessOption_ROIWidth"];
-  v16 = [v15 unsignedIntegerValue];
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v15 = [optionsCopy objectForKeyedSubscript:@"VNOpticalFlowGeneratorProcessOption_ROIWidth"];
+  unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-  v17 = [v13 objectForKeyedSubscript:@"VNOpticalFlowGeneratorProcessOption_ROIHeight"];
-  v18 = [v17 unsignedIntegerValue];
+  v17 = [optionsCopy objectForKeyedSubscript:@"VNOpticalFlowGeneratorProcessOption_ROIHeight"];
+  unsignedIntegerValue2 = [v17 unsignedIntegerValue];
 
-  v19 = v13;
+  v19 = optionsCopy;
   v20 = v19;
   if (!self)
   {
@@ -48,7 +48,7 @@
   }
 
   pixelBuffer = 0;
-  v21 = [VNValidationUtilities getOptionalObject:&pixelBuffer ofClass:objc_opt_class() forKey:@"VNOpticalFlowGeneratorProcessOption_PreviousObservation" inOptions:v19 error:a8];
+  v21 = [VNValidationUtilities getOptionalObject:&pixelBuffer ofClass:objc_opt_class() forKey:@"VNOpticalFlowGeneratorProcessOption_PreviousObservation" inOptions:v19 error:error];
   v22 = pixelBuffer;
   v23 = v22;
   if (!v21)
@@ -60,7 +60,7 @@ LABEL_24:
   }
 
   v67 = 0;
-  if (![VNValidationUtilities getNSUIntegerValue:&v67 forKey:@"VNOpticalFlowGeneratorProcessOption_OutputPixelFormat" inOptions:v20 error:a8])
+  if (![VNValidationUtilities getNSUIntegerValue:&v67 forKey:@"VNOpticalFlowGeneratorProcessOption_OutputPixelFormat" inOptions:v20 error:error])
   {
 LABEL_17:
 
@@ -69,25 +69,25 @@ LABEL_17:
 
   if (v67 != 843264102 && v67 != 843264104)
   {
-    if (a8)
+    if (error)
     {
       v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-      *a8 = [VNError errorForInvalidOption:v28 named:@"outputPixelFormat"];
+      *error = [VNError errorForInvalidOption:v28 named:@"outputPixelFormat"];
     }
 
     goto LABEL_17;
   }
 
   v66 = 0;
-  if (![VNValidationUtilities getNSUIntegerValue:&v66 forKey:@"VNOpticalFlowGeneratorOption_ComputationAccuracy" inOptions:v20 error:a8])
+  if (![VNValidationUtilities getNSUIntegerValue:&v66 forKey:@"VNOpticalFlowGeneratorOption_ComputationAccuracy" inOptions:v20 error:error])
   {
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v24 = ceilf(logf(8.0 / v18) / -0.69315);
-  v25 = ceilf(logf(8.0 / v16) / -0.69315);
+  v24 = ceilf(logf(8.0 / unsignedIntegerValue2) / -0.69315);
+  v25 = ceilf(logf(8.0 / unsignedIntegerValue) / -0.69315);
   if (v24 >= v25)
   {
     v26 = v25;
@@ -132,10 +132,10 @@ LABEL_29:
     }
 
 LABEL_21:
-    if (a8)
+    if (error)
     {
       v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-      *a8 = [VNError errorForInvalidOption:v29 named:@"VNOpticalFlowGeneratorOption_ComputationAccuracy"];
+      *error = [VNError errorForInvalidOption:v29 named:@"VNOpticalFlowGeneratorOption_ComputationAccuracy"];
     }
 
     goto LABEL_23;
@@ -149,10 +149,10 @@ LABEL_31:
   v33 = v67;
   v61 = v32;
 
-  texture = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:v16 height:v18 pixelFormatType:v33 error:a8];
+  texture = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:unsignedIntegerValue height:unsignedIntegerValue2 pixelFormatType:v33 error:error];
   if (texture)
   {
-    v34 = [VNValidationUtilities requiredArrayForKey:@"VNOpticalFlowGeneratorProcessOption_FromAndToPixelBuffers" inOptions:v20 withElementsOfClass:0 error:a8];
+    v34 = [VNValidationUtilities requiredArrayForKey:@"VNOpticalFlowGeneratorProcessOption_FromAndToPixelBuffers" inOptions:v20 withElementsOfClass:0 error:error];
     v35 = v34;
     if (!v34)
     {
@@ -168,7 +168,7 @@ LABEL_67:
 
     v37 = [v35 objectAtIndexedSubscript:1];
 
-    v56 = [VNValidationUtilities originatingRequestSpecifierInOptions:v20 error:a8];
+    v56 = [VNValidationUtilities originatingRequestSpecifierInOptions:v20 error:error];
     if (!v56)
     {
       v30 = 0;
@@ -177,7 +177,7 @@ LABEL_66:
       goto LABEL_67;
     }
 
-    v38 = [(VNDetector *)self computeDeviceForComputeStage:@"VNComputeStageMain" processingOptions:v20 error:a8];
+    v38 = [(VNDetector *)self computeDeviceForComputeStage:@"VNComputeStageMain" processingOptions:v20 error:error];
     v55 = v38;
     if (!v38)
     {
@@ -202,9 +202,9 @@ LABEL_65:
       CVPixelBufferRetain(v37);
     }
 
-    v40 = [(__CVBuffer *)v61 opticalFlow];
-    v41 = v40;
-    if (v40 && v26 == [v40 levelCount])
+    opticalFlow = [(__CVBuffer *)v61 opticalFlow];
+    v41 = opticalFlow;
+    if (opticalFlow && v26 == [opticalFlow levelCount])
     {
       v42 = 1;
     }
@@ -221,18 +221,18 @@ LABEL_65:
       {
         v44 = [[VNLKTOpticalFlowCPU alloc] initWithWidth:Width height:Height numScales:v54];
         v45 = v44;
-        if (a8 && !v44)
+        if (error && !v44)
         {
           +[VNError errorForMemoryAllocationFailure];
-          *a8 = v45 = 0;
+          *error = v45 = 0;
         }
       }
 
       else
       {
         v46 = [VNLKTOpticalFlowGPU alloc];
-        v47 = [(VNDetector *)self metalContext];
-        v45 = [(VNLKTOpticalFlowGPU *)v46 initWithMetalContext:v47 width:Width height:Height numScales:v54 error:a8];
+        metalContext = [(VNDetector *)self metalContext];
+        v45 = [(VNLKTOpticalFlowGPU *)v46 initWithMetalContext:metalContext width:Width height:Height numScales:v54 error:error];
       }
 
       apple::vision::CVPixelBufferWrapper::~CVPixelBufferWrapper(&pixelBuffer);
@@ -257,11 +257,11 @@ LABEL_65:
     [v41 setNlreg_sigma_c:v49];
     LODWORD(v50) = 1045220557;
     [v41 setNlreg_sigma_w:v50];
-    if ([v41 setOutputUV:v65 error:a8])
+    if ([v41 setOutputUV:v65 error:error])
     {
       if (v42)
       {
-        if (([v41 estimateFlowStream:v63 error:a8] & 1) == 0)
+        if (([v41 estimateFlowStream:v63 error:error] & 1) == 0)
         {
           goto LABEL_60;
         }
@@ -291,7 +291,7 @@ LABEL_61:
         goto LABEL_65;
       }
 
-      if ([v41 estimateFlowFromReference:v64 target:v63 error:a8])
+      if ([v41 estimateFlowFromReference:v64 target:v63 error:error])
       {
         goto LABEL_59;
       }
@@ -310,14 +310,14 @@ LABEL_25:
   return v30;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v40 = *MEMORY[0x1E69E9840];
-  v15 = a4;
+  optionsCopy = options;
   v16 = width;
   v17 = height;
   v38[0] = MEMORY[0x1E69E9820];
@@ -325,9 +325,9 @@ LABEL_25:
   v38[2] = __129__VNOpticalFlowGeneratorRevision1_createRegionOfInterestCrop_options_qosClass_warningRecorder_pixelBuffer_error_progressHandler___block_invoke;
   v38[3] = &unk_1E77B6810;
   v38[4] = self;
-  if ([VNValidationUtilities validateNonZeroImageWidth:width & 0xFFFFFFFFFFFFFFFELL height:height & 0xFFFFFFFFFFFFFFFELL componentNameProvidingBlock:v38 error:a8])
+  if ([VNValidationUtilities validateNonZeroImageWidth:width & 0xFFFFFFFFFFFFFFFELL height:height & 0xFFFFFFFFFFFFFFFELL componentNameProvidingBlock:v38 error:error])
   {
-    v18 = [(VNOpticalFlowGenerator *)self validatedImageBuffersFromOptions:v15 error:a8];
+    v18 = [(VNOpticalFlowGenerator *)self validatedImageBuffersFromOptions:optionsCopy error:error];
     v31 = v18;
     if (v18)
     {
@@ -356,13 +356,13 @@ LABEL_25:
             v24 = *(*(&v34 + 1) + 8 * v22);
             if (v23)
             {
-              v25 = [*(*(&v34 + 1) + 8 * v22) width];
-              if (v25 != [v23 width] || (v26 = objc_msgSend(v24, "height"), v26 != objc_msgSend(v23, "height")))
+              width = [*(*(&v34 + 1) + 8 * v22) width];
+              if (width != [v23 width] || (v26 = objc_msgSend(v24, "height"), v26 != objc_msgSend(v23, "height")))
               {
-                if (a8)
+                if (error)
                 {
                   [VNError errorForInvalidOperationWithLocalizedDescription:@"Optical flow cannot be performed on images with different dimensions"];
-                  *a8 = v29 = 0;
+                  *error = v29 = 0;
                 }
 
                 else
@@ -376,7 +376,7 @@ LABEL_25:
 
             v19 = v24;
 
-            v27 = [v19 croppedBufferWithWidth:v16 & 0xFFFFFFFFFFFFFFFELL height:v17 & 0xFFFFFFFFFFFFFFFELL format:1111970369 cropRect:v15 options:a8 error:{x, y, width, height}];
+            v27 = [v19 croppedBufferWithWidth:v16 & 0xFFFFFFFFFFFFFFFELL height:v17 & 0xFFFFFFFFFFFFFFFELL format:1111970369 cropRect:optionsCopy options:error error:{x, y, width, height}];
             if (!v27)
             {
               v29 = 0;
@@ -400,12 +400,12 @@ LABEL_25:
         }
       }
 
-      [v15 setObject:v33 forKeyedSubscript:@"VNOpticalFlowGeneratorProcessOption_FromAndToPixelBuffers"];
-      v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v16 & 0xFFFFFFFFFFFFFFFELL];
-      [v15 setObject:v28 forKeyedSubscript:@"VNOpticalFlowGeneratorProcessOption_ROIWidth"];
+      [optionsCopy setObject:v33 forKeyedSubscript:@"VNOpticalFlowGeneratorProcessOption_FromAndToPixelBuffers"];
+      0xFFFFFFFFFFFFFFFELL = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v16 & 0xFFFFFFFFFFFFFFFELL];
+      [optionsCopy setObject:0xFFFFFFFFFFFFFFFELL forKeyedSubscript:@"VNOpticalFlowGeneratorProcessOption_ROIWidth"];
 
       obj = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v17 & 0xFFFFFFFFFFFFFFFELL];
-      [v15 setObject:? forKeyedSubscript:?];
+      [optionsCopy setObject:? forKeyedSubscript:?];
       v29 = 1;
 LABEL_20:
       v23 = v19;

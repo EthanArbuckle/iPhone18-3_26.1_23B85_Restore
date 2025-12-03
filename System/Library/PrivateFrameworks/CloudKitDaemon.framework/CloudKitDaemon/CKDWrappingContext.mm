@@ -1,5 +1,5 @@
 @interface CKDWrappingContext
-- (CKDWrappingContext)initWithRecordID:(id)a3 fieldName:(id)a4 mergeableDeltaID:(id)a5 fileSignature:(id)a6 referenceSignature:(id)a7;
+- (CKDWrappingContext)initWithRecordID:(id)d fieldName:(id)name mergeableDeltaID:(id)iD fileSignature:(id)signature referenceSignature:(id)referenceSignature;
 - (id)assetContextString;
 - (id)encryptedDataContextString;
 @end
@@ -63,15 +63,15 @@
   return v30;
 }
 
-- (CKDWrappingContext)initWithRecordID:(id)a3 fieldName:(id)a4 mergeableDeltaID:(id)a5 fileSignature:(id)a6 referenceSignature:(id)a7
+- (CKDWrappingContext)initWithRecordID:(id)d fieldName:(id)name mergeableDeltaID:(id)iD fileSignature:(id)signature referenceSignature:(id)referenceSignature
 {
   v34 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v28 = a7;
-  if (v13 && v14)
+  dCopy = d;
+  nameCopy = name;
+  iDCopy = iD;
+  signatureCopy = signature;
+  referenceSignatureCopy = referenceSignature;
+  if (dCopy && nameCopy)
   {
     v29.receiver = self;
     v29.super_class = CKDWrappingContext;
@@ -83,24 +83,24 @@
       v20 = v19;
       if (v19)
       {
-        v27 = v16;
-        v21 = v15;
+        v27 = signatureCopy;
+        v21 = iDCopy;
         v22 = v19;
 
-        v14 = v22;
-        v15 = v21;
-        v16 = v27;
+        nameCopy = v22;
+        iDCopy = v21;
+        signatureCopy = v27;
       }
 
-      objc_storeStrong(&v17->_recordID, a3);
-      objc_storeStrong(&v17->_fieldName, v14);
-      objc_storeStrong(&v17->_mergeableDeltaID, a5);
-      objc_storeStrong(&v17->_fileSignature, a6);
-      objc_storeStrong(&v17->_referenceSignature, a7);
+      objc_storeStrong(&v17->_recordID, d);
+      objc_storeStrong(&v17->_fieldName, nameCopy);
+      objc_storeStrong(&v17->_mergeableDeltaID, iD);
+      objc_storeStrong(&v17->_fileSignature, signature);
+      objc_storeStrong(&v17->_referenceSignature, referenceSignature);
     }
 
     self = v17;
-    v23 = self;
+    selfCopy = self;
   }
 
   else
@@ -114,17 +114,17 @@
     if (os_log_type_enabled(*MEMORY[0x277CBC858], OS_LOG_TYPE_FAULT))
     {
       *buf = 138412546;
-      v31 = v13;
+      v31 = dCopy;
       v32 = 2114;
-      v33 = v14;
+      v33 = nameCopy;
       _os_log_fault_impl(&dword_22506F000, v24, OS_LOG_TYPE_FAULT, "Wrapping context requires a non-nil recordID and field. RecordID: %@, field: %{public}@", buf, 0x16u);
     }
 
-    v23 = 0;
+    selfCopy = 0;
   }
 
   v25 = *MEMORY[0x277D85DE8];
-  return v23;
+  return selfCopy;
 }
 
 - (id)encryptedDataContextString

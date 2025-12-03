@@ -1,35 +1,35 @@
 @interface MCAnimationPathCombo
-- (MCAnimationPathCombo)initWithImprint:(id)a3;
+- (MCAnimationPathCombo)initWithImprint:(id)imprint;
 - (NSSet)animationPaths;
-- (id)animationPathForKey:(id)a3;
+- (id)animationPathForKey:(id)key;
 - (id)imprint;
 - (id)imprintsForAnimationPaths;
 - (unint64_t)countOfAnimationPaths;
-- (void)_copySelfToSnapshot:(id)a3;
-- (void)addAnimationPath:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
+- (void)addAnimationPath:(id)path;
 - (void)demolish;
 - (void)demolishAnimationPaths;
-- (void)initAnimationPathsWithImprints:(id)a3;
+- (void)initAnimationPathsWithImprints:(id)imprints;
 - (void)removeAllAnimationPaths;
-- (void)removeAnimationPathForKey:(id)a3;
+- (void)removeAnimationPathForKey:(id)key;
 @end
 
 @implementation MCAnimationPathCombo
 
-- (MCAnimationPathCombo)initWithImprint:(id)a3
+- (MCAnimationPathCombo)initWithImprint:(id)imprint
 {
   v7.receiver = self;
   v7.super_class = MCAnimationPathCombo;
   v4 = [(MCAnimationPath *)&v7 initWithImprint:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"animationPaths"];
+    v5 = [imprint objectForKey:@"animationPaths"];
     if (v5)
     {
       [(MCAnimationPathCombo *)v4 initAnimationPathsWithImprints:v5];
     }
 
-    v4->mCombineOperation = [a3 objectForKey:@"combineOperation"];
+    v4->mCombineOperation = [imprint objectForKey:@"combineOperation"];
   }
 
   return v4;
@@ -50,37 +50,37 @@
 {
   v6.receiver = self;
   v6.super_class = MCAnimationPathCombo;
-  v3 = [(MCAnimationPath *)&v6 imprint];
+  imprint = [(MCAnimationPath *)&v6 imprint];
   if ([(NSMutableSet *)self->mAnimationPaths count])
   {
-    [v3 setObject:-[MCAnimationPathCombo imprintsForAnimationPaths](self forKey:{"imprintsForAnimationPaths"), @"animationPaths"}];
+    [imprint setObject:-[MCAnimationPathCombo imprintsForAnimationPaths](self forKey:{"imprintsForAnimationPaths"), @"animationPaths"}];
   }
 
   mCombineOperation = self->mCombineOperation;
   if (mCombineOperation)
   {
-    [v3 setObject:mCombineOperation forKey:@"combineOperation"];
+    [imprint setObject:mCombineOperation forKey:@"combineOperation"];
   }
 
-  return v3;
+  return imprint;
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   v15.receiver = self;
   v15.super_class = MCAnimationPathCombo;
   [(MCAnimationPath *)&v15 _copySelfToSnapshot:?];
   if (self->mAnimationPaths)
   {
-    v5 = [(MCAnimationPathCombo *)self animationPaths];
-    if ([(NSSet *)v5 count])
+    animationPaths = [(MCAnimationPathCombo *)self animationPaths];
+    if ([(NSSet *)animationPaths count])
     {
-      *(a3 + 3) = [[NSMutableSet alloc] initWithCapacity:{-[NSSet count](v5, "count")}];
+      *(snapshot + 3) = [[NSMutableSet alloc] initWithCapacity:{-[NSSet count](animationPaths, "count")}];
       v11 = 0u;
       v12 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v6 = [(NSSet *)v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v6 = [(NSSet *)animationPaths countByEnumeratingWithState:&v11 objects:v16 count:16];
       if (v6)
       {
         v7 = v6;
@@ -92,15 +92,15 @@
           {
             if (*v12 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(animationPaths);
             }
 
-            [*(a3 + 3) addObject:{objc_msgSend(*(*(&v11 + 1) + 8 * v9), "snapshot")}];
+            [*(snapshot + 3) addObject:{objc_msgSend(*(*(&v11 + 1) + 8 * v9), "snapshot")}];
             v9 = v9 + 1;
           }
 
           while (v7 != v9);
-          v7 = [(NSSet *)v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+          v7 = [(NSSet *)animationPaths countByEnumeratingWithState:&v11 objects:v16 count:16];
         }
 
         while (v7);
@@ -111,22 +111,22 @@
   mCombineOperation = self->mCombineOperation;
   if (mCombineOperation)
   {
-    *(a3 + 4) = [(NSString *)mCombineOperation copy];
+    *(snapshot + 4) = [(NSString *)mCombineOperation copy];
   }
 }
 
-- (void)initAnimationPathsWithImprints:(id)a3
+- (void)initAnimationPathsWithImprints:(id)imprints
 {
-  if (a3)
+  if (imprints)
   {
-    if ([a3 count])
+    if ([imprints count])
     {
       self->mAnimationPaths = objc_alloc_init(NSMutableSet);
       v12 = 0u;
       v13 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v5 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [imprints countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         v6 = v5;
@@ -138,7 +138,7 @@
           {
             if (*v13 != v7)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(imprints);
             }
 
             v9 = [MCObjectLight objectWithImprint:*(*(&v12 + 1) + 8 * v8)];
@@ -168,7 +168,7 @@ LABEL_13:
           }
 
           while (v6 != v8);
-          v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v6 = [imprints countByEnumeratingWithState:&v12 objects:v16 count:16];
         }
 
         while (v6);
@@ -252,8 +252,8 @@ LABEL_14:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(MCAnimationPathCombo *)self animationPaths];
-  v5 = [(NSSet *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  animationPaths = [(MCAnimationPathCombo *)self animationPaths];
+  v5 = [(NSSet *)animationPaths countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -265,7 +265,7 @@ LABEL_14:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(animationPaths);
         }
 
         [v3 addObject:{objc_msgSend(*(*(&v10 + 1) + 8 * v8), "imprint")}];
@@ -273,7 +273,7 @@ LABEL_14:
       }
 
       while (v6 != v8);
-      v6 = [(NSSet *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [(NSSet *)animationPaths countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -285,9 +285,9 @@ LABEL_14:
 - (NSSet)animationPaths
 {
   v3 = sEmptySet;
-  v4 = [(MCAnimationPath *)self isSnapshot];
+  isSnapshot = [(MCAnimationPath *)self isSnapshot];
   mAnimationPaths = self->mAnimationPaths;
-  if ((v4 & 1) == 0)
+  if ((isSnapshot & 1) == 0)
   {
     if (mAnimationPaths)
     {
@@ -308,9 +308,9 @@ LABEL_14:
 
 - (unint64_t)countOfAnimationPaths
 {
-  v3 = [(MCAnimationPath *)self isSnapshot];
+  isSnapshot = [(MCAnimationPath *)self isSnapshot];
   mAnimationPaths = self->mAnimationPaths;
-  if (v3)
+  if (isSnapshot)
   {
     v5 = self->mAnimationPaths;
 
@@ -331,7 +331,7 @@ LABEL_14:
   }
 }
 
-- (id)animationPathForKey:(id)a3
+- (id)animationPathForKey:(id)key
 {
   if ([(MCAnimationPath *)self isSnapshot])
   {
@@ -429,9 +429,9 @@ LABEL_24:
   return v9;
 }
 
-- (void)addAnimationPath:(id)a3
+- (void)addAnimationPath:(id)path
 {
-  -[MCAnimationPathCombo removeAnimationPathForKey:](self, "removeAnimationPathForKey:", [a3 key]);
+  -[MCAnimationPathCombo removeAnimationPathForKey:](self, "removeAnimationPathForKey:", [path key]);
   if (!self->mAnimationPaths)
   {
     objc_sync_enter(self);
@@ -439,11 +439,11 @@ LABEL_24:
     objc_sync_exit(self);
   }
 
-  v7 = [[NSSet alloc] initWithObjects:{a3, 0}];
+  v7 = [[NSSet alloc] initWithObjects:{path, 0}];
   [(MCAnimationPathCombo *)self willChangeValueForKey:@"animationPaths" withSetMutation:1 usingObjects:?];
   mAnimationPaths = self->mAnimationPaths;
   objc_sync_enter(mAnimationPaths);
-  [(NSMutableSet *)self->mAnimationPaths addObject:a3];
+  [(NSMutableSet *)self->mAnimationPaths addObject:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -458,17 +458,17 @@ LABEL_24:
       goto LABEL_8;
     }
 
-    [a3 addObserver:self forKeyPath:@"combineOperation" options:0 context:0];
+    [path addObserver:self forKeyPath:@"combineOperation" options:0 context:0];
     v6 = @"animationPaths";
   }
 
-  [a3 addObserver:self forKeyPath:v6 options:0 context:0];
+  [path addObserver:self forKeyPath:v6 options:0 context:0];
 LABEL_8:
   objc_sync_exit(mAnimationPaths);
   [(MCAnimationPathCombo *)self didChangeValueForKey:@"animationPaths" withSetMutation:1 usingObjects:v7];
 }
 
-- (void)removeAnimationPathForKey:(id)a3
+- (void)removeAnimationPathForKey:(id)key
 {
   mAnimationPaths = self->mAnimationPaths;
   if (!mAnimationPaths)

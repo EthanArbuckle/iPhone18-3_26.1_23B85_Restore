@@ -1,6 +1,6 @@
 @interface SBCaptureApplicationLaunchAssertion
-- (SBCaptureApplicationLaunchAssertion)initWithIdentifier:(id)a3 bundleIdentifier:(id)a4 reason:(id)a5 invalidationHandler:(id)a6;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBCaptureApplicationLaunchAssertion)initWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier reason:(id)reason invalidationHandler:(id)handler;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)invalidate;
@@ -8,30 +8,30 @@
 
 @implementation SBCaptureApplicationLaunchAssertion
 
-- (SBCaptureApplicationLaunchAssertion)initWithIdentifier:(id)a3 bundleIdentifier:(id)a4 reason:(id)a5 invalidationHandler:(id)a6
+- (SBCaptureApplicationLaunchAssertion)initWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier reason:(id)reason invalidationHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  reasonCopy = reason;
+  handlerCopy = handler;
   v24.receiver = self;
   v24.super_class = SBCaptureApplicationLaunchAssertion;
   v14 = [(SBCaptureApplicationLaunchAssertion *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     identifier = v14->_identifier;
     v14->_identifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [bundleIdentifierCopy copy];
     bundleIdentifier = v14->_bundleIdentifier;
     v14->_bundleIdentifier = v17;
 
-    v19 = [v12 copy];
+    v19 = [reasonCopy copy];
     reason = v14->_reason;
     v14->_reason = v19;
 
-    v21 = [v13 copy];
+    v21 = [handlerCopy copy];
     invalidationHandler = v14->_invalidationHandler;
     v14->_invalidationHandler = v21;
   }
@@ -41,10 +41,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBCaptureApplicationLaunchAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBCaptureApplicationLaunchAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -57,12 +57,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBCaptureApplicationLaunchAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBCaptureApplicationLaunchAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)invalidate

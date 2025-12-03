@@ -1,25 +1,25 @@
 @interface MSDAppPrivacyPermissionsHelper
 + (id)sharedInstance;
-- (BOOL)grantNetworkPermission:(BOOL)a3 toBundleID:(id)a4;
-- (BOOL)grantTCCPermission:(BOOL)a3 forResource:(id)a4 toBundleID:(id)a5;
-- (BOOL)isCoreLocationOwnedResource:(id)a3;
-- (BOOL)isNetworkOwnedResource:(id)a3;
-- (BOOL)isTccOwnedResource:(id)a3;
-- (BOOL)saveNetworkPrivacyConfiguration:(id)a3;
+- (BOOL)grantNetworkPermission:(BOOL)permission toBundleID:(id)d;
+- (BOOL)grantTCCPermission:(BOOL)permission forResource:(id)resource toBundleID:(id)d;
+- (BOOL)isCoreLocationOwnedResource:(id)resource;
+- (BOOL)isNetworkOwnedResource:(id)resource;
+- (BOOL)isTccOwnedResource:(id)resource;
+- (BOOL)saveNetworkPrivacyConfiguration:(id)configuration;
 - (MSDAppPrivacyPermissionsHelper)init;
-- (id)getCLPermissionForBundleID:(id)a3;
-- (id)getNetworkAccessPermissionForBundleID:(id)a3;
+- (id)getCLPermissionForBundleID:(id)d;
+- (id)getNetworkAccessPermissionForBundleID:(id)d;
 - (id)getNetworkPrivacyConfiguration;
-- (id)getPrivacyPermissionsForAppBundleID:(id)a3;
-- (id)getTCCPermissionsForBundleID:(id)a3;
-- (void)grantCLPermission:(id)a3 toBundleID:(id)a4;
-- (void)grantPrivacyPermissions:(id)a3 forAppBundleID:(id)a4;
+- (id)getPrivacyPermissionsForAppBundleID:(id)d;
+- (id)getTCCPermissionsForBundleID:(id)d;
+- (void)grantCLPermission:(id)permission toBundleID:(id)d;
+- (void)grantPrivacyPermissions:(id)permissions forAppBundleID:(id)d;
 - (void)grantPrivacyPermissionsForAllApps;
-- (void)revokeCLPermissionForBundleID:(id)a3;
-- (void)revokeNetworkPermissionForBundleID:(id)a3;
-- (void)revokePrivacyPermissions:(id)a3 forAppBundleID:(id)a4;
+- (void)revokeCLPermissionForBundleID:(id)d;
+- (void)revokeNetworkPermissionForBundleID:(id)d;
+- (void)revokePrivacyPermissions:(id)permissions forAppBundleID:(id)d;
 - (void)revokePrivacyPermissionsForAllApps;
-- (void)savePrivacyPermissionsForAllApps:(id)a3;
+- (void)savePrivacyPermissionsForAllApps:(id)apps;
 @end
 
 @implementation MSDAppPrivacyPermissionsHelper
@@ -44,28 +44,28 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(MSDAppPrivacyPermissionsHelper *)v2 getTccOwnedResources];
-    [(MSDAppPrivacyPermissionsHelper *)v3 setTccOwnedResources:v4];
+    getTccOwnedResources = [(MSDAppPrivacyPermissionsHelper *)v2 getTccOwnedResources];
+    [(MSDAppPrivacyPermissionsHelper *)v3 setTccOwnedResources:getTccOwnedResources];
 
-    v5 = [(MSDAppPrivacyPermissionsHelper *)v3 getCoreLocationOwnedResources];
-    [(MSDAppPrivacyPermissionsHelper *)v3 setCoreLocationOwnedResources:v5];
+    getCoreLocationOwnedResources = [(MSDAppPrivacyPermissionsHelper *)v3 getCoreLocationOwnedResources];
+    [(MSDAppPrivacyPermissionsHelper *)v3 setCoreLocationOwnedResources:getCoreLocationOwnedResources];
 
-    v6 = [(MSDAppPrivacyPermissionsHelper *)v3 getNetworkOwnedResources];
-    [(MSDAppPrivacyPermissionsHelper *)v3 setNetworkOwnedResources:v6];
+    getNetworkOwnedResources = [(MSDAppPrivacyPermissionsHelper *)v3 getNetworkOwnedResources];
+    [(MSDAppPrivacyPermissionsHelper *)v3 setNetworkOwnedResources:getNetworkOwnedResources];
   }
 
   return v3;
 }
 
-- (void)grantPrivacyPermissions:(id)a3 forAppBundleID:(id)a4
+- (void)grantPrivacyPermissions:(id)permissions forAppBundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  permissionsCopy = permissions;
+  dCopy = d;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v23 objects:v35 count:16];
+  v8 = [permissionsCopy countByEnumeratingWithState:&v23 objects:v35 count:16];
   if (v8)
   {
     v9 = v8;
@@ -77,7 +77,7 @@
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(permissionsCopy);
         }
 
         v12 = *(*(&v23 + 1) + 8 * v11);
@@ -89,16 +89,16 @@
           v29 = 2114;
           v30 = v12;
           v31 = 2114;
-          v32 = v7;
+          v32 = dCopy;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s - Granting privacy permission for resource: %{public}@ to app: %{public}@", buf, 0x20u);
         }
 
         if ([(MSDAppPrivacyPermissionsHelper *)self isTccOwnedResource:v12])
         {
-          v14 = [v6 objectForKey:v12];
-          v15 = [v14 BOOLValue];
+          v14 = [permissionsCopy objectForKey:v12];
+          bOOLValue = [v14 BOOLValue];
 
-          if ([(MSDAppPrivacyPermissionsHelper *)self grantTCCPermission:v15 forResource:v12 toBundleID:v7])
+          if ([(MSDAppPrivacyPermissionsHelper *)self grantTCCPermission:bOOLValue forResource:v12 toBundleID:dCopy])
           {
             goto LABEL_21;
           }
@@ -114,9 +114,9 @@
           v29 = 2114;
           v30 = v12;
           v31 = 2114;
-          v32 = v7;
+          v32 = dCopy;
           v33 = 1024;
-          v34 = v15;
+          v34 = bOOLValue;
           v17 = v16;
           v18 = "%s - Failed to grant TCC resource:  %{public}@ to bundle:  %{public}@ isGranted:  %{BOOL}d";
 LABEL_12:
@@ -128,16 +128,16 @@ LABEL_24:
 
         if ([(MSDAppPrivacyPermissionsHelper *)self isCoreLocationOwnedResource:v12])
         {
-          v16 = [v6 objectForKey:v12];
-          [(MSDAppPrivacyPermissionsHelper *)self grantCLPermission:v16 toBundleID:v7];
+          v16 = [permissionsCopy objectForKey:v12];
+          [(MSDAppPrivacyPermissionsHelper *)self grantCLPermission:v16 toBundleID:dCopy];
         }
 
         else if ([(MSDAppPrivacyPermissionsHelper *)self isNetworkOwnedResource:v12])
         {
-          v20 = [v6 objectForKey:v12];
-          v21 = [v20 BOOLValue];
+          v20 = [permissionsCopy objectForKey:v12];
+          bOOLValue2 = [v20 BOOLValue];
 
-          if ([(MSDAppPrivacyPermissionsHelper *)self grantNetworkPermission:v21 toBundleID:v7])
+          if ([(MSDAppPrivacyPermissionsHelper *)self grantNetworkPermission:bOOLValue2 toBundleID:dCopy])
           {
             goto LABEL_21;
           }
@@ -150,9 +150,9 @@ LABEL_24:
             v29 = 2114;
             v30 = v12;
             v31 = 2114;
-            v32 = v7;
+            v32 = dCopy;
             v33 = 1024;
-            v34 = v21;
+            v34 = bOOLValue2;
             v17 = v16;
             v18 = "%s - Failed to grant network permission:  %{public}@ to bundle:  %{public}@ allow:  %{BOOL}d";
             goto LABEL_12;
@@ -169,7 +169,7 @@ LABEL_24:
             v29 = 2114;
             v30 = v12;
             v31 = 2114;
-            v32 = v7;
+            v32 = dCopy;
             v17 = v16;
             v18 = "%s - Unknown resource recorded in manifest:  %{public}@ for bundle:  %{public}@";
             v19 = 32;
@@ -184,7 +184,7 @@ LABEL_21:
       }
 
       while (v9 != v11);
-      v22 = [v6 countByEnumeratingWithState:&v23 objects:v35 count:16];
+      v22 = [permissionsCopy countByEnumeratingWithState:&v23 objects:v35 count:16];
       v9 = v22;
     }
 
@@ -192,15 +192,15 @@ LABEL_21:
   }
 }
 
-- (void)revokePrivacyPermissions:(id)a3 forAppBundleID:(id)a4
+- (void)revokePrivacyPermissions:(id)permissions forAppBundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  permissionsCopy = permissions;
+  dCopy = d;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v15 objects:v25 count:16];
+  v8 = [permissionsCopy countByEnumeratingWithState:&v15 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -212,7 +212,7 @@ LABEL_21:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(permissionsCopy);
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
@@ -222,23 +222,23 @@ LABEL_21:
           *buf = 138543618;
           v20 = v12;
           v21 = 2114;
-          v22 = v7;
+          v22 = dCopy;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Revoking privacy permission for resource: %{public}@ to app: %{public}@", buf, 0x16u);
         }
 
         if ([(MSDAppPrivacyPermissionsHelper *)self isTccOwnedResource:v12])
         {
-          [(MSDAppPrivacyPermissionsHelper *)self revokeTCCPermissionForResource:v12 toBundleID:v7];
+          [(MSDAppPrivacyPermissionsHelper *)self revokeTCCPermissionForResource:v12 toBundleID:dCopy];
         }
 
         else if ([(MSDAppPrivacyPermissionsHelper *)self isCoreLocationOwnedResource:v12])
         {
-          [(MSDAppPrivacyPermissionsHelper *)self revokeCLPermissionForBundleID:v7];
+          [(MSDAppPrivacyPermissionsHelper *)self revokeCLPermissionForBundleID:dCopy];
         }
 
         else if ([(MSDAppPrivacyPermissionsHelper *)self isNetworkOwnedResource:v12])
         {
-          [(MSDAppPrivacyPermissionsHelper *)self revokeNetworkPermissionForBundleID:v7];
+          [(MSDAppPrivacyPermissionsHelper *)self revokeNetworkPermissionForBundleID:dCopy];
         }
 
         else
@@ -251,7 +251,7 @@ LABEL_21:
             v21 = 2114;
             v22 = v12;
             v23 = 2114;
-            v24 = v7;
+            v24 = dCopy;
             _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s - Unknown resource recorded in manifest:  %{public}@ for bundle:  %{public}@", buf, 0x20u);
           }
         }
@@ -260,30 +260,30 @@ LABEL_21:
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v15 objects:v25 count:16];
+      v9 = [permissionsCopy countByEnumeratingWithState:&v15 objects:v25 count:16];
     }
 
     while (v9);
   }
 }
 
-- (id)getPrivacyPermissionsForAppBundleID:(id)a3
+- (id)getPrivacyPermissionsForAppBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc_init(NSMutableDictionary);
-  v6 = [(MSDAppPrivacyPermissionsHelper *)self getTCCPermissionsForBundleID:v4];
+  v6 = [(MSDAppPrivacyPermissionsHelper *)self getTCCPermissionsForBundleID:dCopy];
   if (v6)
   {
     [v5 addEntriesFromDictionary:v6];
   }
 
-  v7 = [(MSDAppPrivacyPermissionsHelper *)self getCLPermissionForBundleID:v4];
+  v7 = [(MSDAppPrivacyPermissionsHelper *)self getCLPermissionForBundleID:dCopy];
   if (v7)
   {
     [v5 addEntriesFromDictionary:v7];
   }
 
-  v8 = [(MSDAppPrivacyPermissionsHelper *)self getNetworkAccessPermissionForBundleID:v4];
+  v8 = [(MSDAppPrivacyPermissionsHelper *)self getNetworkAccessPermissionForBundleID:dCopy];
   if (v8)
   {
     [v5 addEntriesFromDictionary:v8];
@@ -292,22 +292,22 @@ LABEL_21:
   return v5;
 }
 
-- (BOOL)grantTCCPermission:(BOOL)a3 forResource:(id)a4 toBundleID:(id)a5
+- (BOOL)grantTCCPermission:(BOOL)permission forResource:(id)resource toBundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
+  permissionCopy = permission;
+  resourceCopy = resource;
+  dCopy = d;
   v9 = sub_100063A54();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315906;
     v13 = "[MSDAppPrivacyPermissionsHelper grantTCCPermission:forResource:toBundleID:]";
     v14 = 1024;
-    v15 = v6;
+    v15 = permissionCopy;
     v16 = 2114;
-    v17 = v7;
+    v17 = resourceCopy;
     v18 = 2114;
-    v19 = v8;
+    v19 = dCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s - isGranted:  %{BOOL}d - resources:  %{public}@ - bundleID:  %{public}@", &v12, 0x26u);
   }
 
@@ -320,44 +320,44 @@ LABEL_21:
   return v10 != 0;
 }
 
-- (void)grantCLPermission:(id)a3 toBundleID:(id)a4
+- (void)grantCLPermission:(id)permission toBundleID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  permissionCopy = permission;
+  dCopy = d;
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315650;
     v9 = "[MSDAppPrivacyPermissionsHelper grantCLPermission:toBundleID:]";
     v10 = 1024;
-    v11 = [v5 BOOLValue];
+    bOOLValue = [permissionCopy BOOLValue];
     v12 = 2114;
-    v13 = v6;
+    v13 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s - status:  %{BOOL}d - bundleID:  %{public}@", &v8, 0x1Cu);
   }
 
-  +[CLLocationManager setAuthorizationStatusByType:forBundleIdentifier:](CLLocationManager, "setAuthorizationStatusByType:forBundleIdentifier:", [v5 integerValue], v6);
+  +[CLLocationManager setAuthorizationStatusByType:forBundleIdentifier:](CLLocationManager, "setAuthorizationStatusByType:forBundleIdentifier:", [permissionCopy integerValue], dCopy);
 }
 
-- (BOOL)grantNetworkPermission:(BOOL)a3 toBundleID:(id)a4
+- (BOOL)grantNetworkPermission:(BOOL)permission toBundleID:(id)d
 {
-  v4 = a3;
-  v6 = a4;
+  permissionCopy = permission;
+  dCopy = d;
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v30 = "[MSDAppPrivacyPermissionsHelper grantNetworkPermission:toBundleID:]";
     v31 = 1024;
-    v32 = v4;
+    v32 = permissionCopy;
     v33 = 2114;
-    v34 = v6;
+    v34 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s - allow:  %{BOOL}d - bundleID:  %{public}@", buf, 0x1Cu);
   }
 
-  v8 = [(MSDAppPrivacyPermissionsHelper *)self getNetworkPrivacyConfiguration];
-  v9 = v8;
-  if (!v8)
+  getNetworkPrivacyConfiguration = [(MSDAppPrivacyPermissionsHelper *)self getNetworkPrivacyConfiguration];
+  v9 = getNetworkPrivacyConfiguration;
+  if (!getNetworkPrivacyConfiguration)
   {
     v19 = sub_100063A54();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -365,7 +365,7 @@ LABEL_21:
       sub_1000CA0A8();
     }
 
-    v10 = 0;
+    pathController = 0;
 LABEL_14:
 
 LABEL_15:
@@ -373,15 +373,15 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  v22 = v4;
-  v23 = self;
-  v10 = [v8 pathController];
+  v22 = permissionCopy;
+  selfCopy = self;
+  pathController = [getNetworkPrivacyConfiguration pathController];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = [v10 pathRules];
-  v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  pathRules = [pathController pathRules];
+  v12 = [pathRules countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v12)
   {
 LABEL_12:
@@ -403,12 +403,12 @@ LABEL_6:
   {
     if (*v25 != v14)
     {
-      objc_enumerationMutation(v11);
+      objc_enumerationMutation(pathRules);
     }
 
     v16 = *(*(&v24 + 1) + 8 * v15);
-    v17 = [v16 matchSigningIdentifier];
-    v18 = [v17 isEqualToString:v6];
+    matchSigningIdentifier = [v16 matchSigningIdentifier];
+    v18 = [matchSigningIdentifier isEqualToString:dCopy];
 
     if (v18)
     {
@@ -417,7 +417,7 @@ LABEL_6:
 
     if (v13 == ++v15)
     {
-      v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v13 = [pathRules countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v13)
       {
         goto LABEL_6;
@@ -431,7 +431,7 @@ LABEL_6:
   v20 = 1;
   [v16 setMulticastPreferenceSet:1];
 
-  if (![(MSDAppPrivacyPermissionsHelper *)v23 saveNetworkPrivacyConfiguration:v9])
+  if (![(MSDAppPrivacyPermissionsHelper *)selfCopy saveNetworkPrivacyConfiguration:v9])
   {
     goto LABEL_15;
   }
@@ -441,9 +441,9 @@ LABEL_17:
   return v20;
 }
 
-- (id)getTCCPermissionsForBundleID:(id)a3
+- (id)getTCCPermissionsForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(NSMutableDictionary);
   v5 = TCCAccessCopyInformationForBundleId();
   v6 = sub_100063A54();
@@ -480,13 +480,13 @@ LABEL_17:
         v15 = sub_100063A54();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
-          v16 = [v14 BOOLValue];
+          bOOLValue = [v14 BOOLValue];
           *buf = 136315650;
           v24 = "[MSDAppPrivacyPermissionsHelper getTCCPermissionsForBundleID:]";
           v25 = 2114;
           v26 = v13;
           v27 = 1024;
-          v28 = v16;
+          v28 = bOOLValue;
           _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%s - resource:  %{public}@ - isGranted:  %{BOOL}d", buf, 0x1Cu);
         }
       }
@@ -502,9 +502,9 @@ LABEL_17:
   return v17;
 }
 
-- (id)getCLPermissionForBundleID:(id)a3
+- (id)getCLPermissionForBundleID:(id)d
 {
-  v3 = [CLLocationManager authorizationStatusForBundleIdentifier:a3];
+  v3 = [CLLocationManager authorizationStatusForBundleIdentifier:d];
   v4 = [NSDictionary alloc];
   v5 = [NSNumber numberWithInteger:v3];
   v6 = [v4 initWithObjectsAndKeys:{v5, @"kCLServiceLocationService", 0}];
@@ -512,20 +512,20 @@ LABEL_17:
   return v6;
 }
 
-- (id)getNetworkAccessPermissionForBundleID:(id)a3
+- (id)getNetworkAccessPermissionForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(MSDAppPrivacyPermissionsHelper *)self getNetworkPrivacyConfiguration];
-  v6 = v5;
-  if (v5)
+  dCopy = d;
+  getNetworkPrivacyConfiguration = [(MSDAppPrivacyPermissionsHelper *)self getNetworkPrivacyConfiguration];
+  v6 = getNetworkPrivacyConfiguration;
+  if (getNetworkPrivacyConfiguration)
   {
-    v7 = [v5 pathController];
+    pathController = [getNetworkPrivacyConfiguration pathController];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v8 = [v7 pathRules];
-    v9 = [v8 countByEnumeratingWithState:&v23 objects:v31 count:16];
+    pathRules = [pathController pathRules];
+    v9 = [pathRules countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v9)
     {
       v10 = v9;
@@ -536,23 +536,23 @@ LABEL_17:
         {
           if (*v24 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(pathRules);
           }
 
           v13 = *(*(&v23 + 1) + 8 * i);
-          v14 = [v13 matchSigningIdentifier];
-          v15 = [v14 isEqualToString:v4];
+          matchSigningIdentifier = [v13 matchSigningIdentifier];
+          v15 = [matchSigningIdentifier isEqualToString:dCopy];
 
           if (v15)
           {
             v17 = sub_100063A54();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
-              v18 = [v13 denyMulticast];
+              denyMulticast = [v13 denyMulticast];
               *buf = 67109378;
-              v28 = v18 ^ 1;
+              v28 = denyMulticast ^ 1;
               v29 = 2114;
-              v30 = v4;
+              v30 = dCopy;
               _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Found network access permission: %d for bundleID: %{public}@", buf, 0x12u);
             }
 
@@ -564,7 +564,7 @@ LABEL_17:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        v10 = [pathRules countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v10)
         {
           continue;
@@ -577,13 +577,13 @@ LABEL_17:
 
   else
   {
-    v8 = sub_100063A54();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    pathRules = sub_100063A54();
+    if (os_log_type_enabled(pathRules, OS_LOG_TYPE_ERROR))
     {
       sub_1000CA0A8();
     }
 
-    v7 = 0;
+    pathController = 0;
   }
 
   v16 = 0;
@@ -593,30 +593,30 @@ LABEL_14:
   return v16;
 }
 
-- (void)revokeCLPermissionForBundleID:(id)a3
+- (void)revokeCLPermissionForBundleID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   if ([CLLocationManager authorizationStatusForBundleIdentifier:?])
   {
     v4 = [NSNumber numberWithInteger:0];
-    [(MSDAppPrivacyPermissionsHelper *)self grantCLPermission:v4 toBundleID:v5];
+    [(MSDAppPrivacyPermissionsHelper *)self grantCLPermission:v4 toBundleID:dCopy];
   }
 }
 
-- (void)revokeNetworkPermissionForBundleID:(id)a3
+- (void)revokeNetworkPermissionForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(MSDAppPrivacyPermissionsHelper *)self getNetworkPrivacyConfiguration];
-  v6 = v5;
-  if (v5)
+  dCopy = d;
+  getNetworkPrivacyConfiguration = [(MSDAppPrivacyPermissionsHelper *)self getNetworkPrivacyConfiguration];
+  v6 = getNetworkPrivacyConfiguration;
+  if (getNetworkPrivacyConfiguration)
   {
-    [v5 pathController];
+    [getNetworkPrivacyConfiguration pathController];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v17 = v22 = 0u;
-    v7 = [v17 pathRules];
-    v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    pathRules = [v17 pathRules];
+    v8 = [pathRules countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
       v9 = v8;
@@ -627,12 +627,12 @@ LABEL_14:
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(pathRules);
           }
 
           v12 = *(*(&v19 + 1) + 8 * i);
-          v13 = [v12 matchSigningIdentifier];
-          v14 = [v13 isEqualToString:v4];
+          matchSigningIdentifier = [v12 matchSigningIdentifier];
+          v14 = [matchSigningIdentifier isEqualToString:dCopy];
 
           if (v14)
           {
@@ -644,7 +644,7 @@ LABEL_14:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v9 = [pathRules countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v9)
         {
           continue;
@@ -710,9 +710,9 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)saveNetworkPrivacyConfiguration:(id)a3
+- (BOOL)saveNetworkPrivacyConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -731,7 +731,7 @@ LABEL_14:
   v9[3] = &unk_100169E40;
   v9[4] = &v16;
   v9[5] = &v10;
-  [v4 saveConfiguration:v3 withCompletionQueue:v5 handler:v9];
+  [v4 saveConfiguration:configurationCopy withCompletionQueue:v5 handler:v9];
 
   v6 = v11[5];
   v7 = dispatch_time(0, 30000000000);
@@ -744,29 +744,29 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)isTccOwnedResource:(id)a3
+- (BOOL)isTccOwnedResource:(id)resource
 {
-  v4 = a3;
-  v5 = [(MSDAppPrivacyPermissionsHelper *)self tccOwnedResources];
-  v6 = [v5 containsObject:v4];
+  resourceCopy = resource;
+  tccOwnedResources = [(MSDAppPrivacyPermissionsHelper *)self tccOwnedResources];
+  v6 = [tccOwnedResources containsObject:resourceCopy];
 
   return v6;
 }
 
-- (BOOL)isCoreLocationOwnedResource:(id)a3
+- (BOOL)isCoreLocationOwnedResource:(id)resource
 {
-  v4 = a3;
-  v5 = [(MSDAppPrivacyPermissionsHelper *)self coreLocationOwnedResources];
-  v6 = [v5 containsObject:v4];
+  resourceCopy = resource;
+  coreLocationOwnedResources = [(MSDAppPrivacyPermissionsHelper *)self coreLocationOwnedResources];
+  v6 = [coreLocationOwnedResources containsObject:resourceCopy];
 
   return v6;
 }
 
-- (BOOL)isNetworkOwnedResource:(id)a3
+- (BOOL)isNetworkOwnedResource:(id)resource
 {
-  v4 = a3;
-  v5 = [(MSDAppPrivacyPermissionsHelper *)self networkOwnedResources];
-  v6 = [v5 containsObject:v4];
+  resourceCopy = resource;
+  networkOwnedResources = [(MSDAppPrivacyPermissionsHelper *)self networkOwnedResources];
+  v6 = [networkOwnedResources containsObject:resourceCopy];
 
   return v6;
 }
@@ -860,16 +860,16 @@ LABEL_14:
   }
 }
 
-- (void)savePrivacyPermissionsForAllApps:(id)a3
+- (void)savePrivacyPermissionsForAllApps:(id)apps
 {
-  v3 = a3;
+  appsCopy = apps;
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [v3 getSystemAppDataList];
+  getSystemAppDataList = [appsCopy getSystemAppDataList];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v32 count:16];
+  v6 = [getSystemAppDataList countByEnumeratingWithState:&v25 objects:v32 count:16];
   if (v6)
   {
     v7 = v6;
@@ -880,29 +880,29 @@ LABEL_14:
       {
         if (*v26 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(getSystemAppDataList);
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
-        v11 = [v3 getSystemAppPrivacyPermissions:v10];
+        v11 = [appsCopy getSystemAppPrivacyPermissions:v10];
         if (v11)
         {
           [v4 setObject:v11 forKey:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v25 objects:v32 count:16];
+      v7 = [getSystemAppDataList countByEnumeratingWithState:&v25 objects:v32 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [v3 getAppList];
+  getAppList = [appsCopy getAppList];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = [v12 countByEnumeratingWithState:&v21 objects:v31 count:16];
+  v13 = [getAppList countByEnumeratingWithState:&v21 objects:v31 count:16];
   if (v13)
   {
     v14 = v13;
@@ -913,18 +913,18 @@ LABEL_14:
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(getAppList);
         }
 
         v17 = *(*(&v21 + 1) + 8 * j);
-        v18 = [v3 getAppPrivacyPermissions:v17];
+        v18 = [appsCopy getAppPrivacyPermissions:v17];
         if (v18)
         {
           [v4 setObject:v18 forKey:v17];
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v21 objects:v31 count:16];
+      v14 = [getAppList countByEnumeratingWithState:&v21 objects:v31 count:16];
     }
 
     while (v14);

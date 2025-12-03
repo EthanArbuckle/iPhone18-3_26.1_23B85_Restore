@@ -2,28 +2,28 @@
 - (ChromeOverlayHosting)host;
 - (_TtP4Maps32BrowseVenueChromeOverlayDelegate_)delegate;
 - (void)buttonTapped;
-- (void)didChangeFocusedVenue:(id)a3 focusedBuilding:(id)a4 displayedFloorOrdinal:(signed __int16)a5;
-- (void)setDisplayedMapType:(unint64_t)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHost:(id)a3;
+- (void)didChangeFocusedVenue:(id)venue focusedBuilding:(id)building displayedFloorOrdinal:(signed __int16)ordinal;
+- (void)setDisplayedMapType:(unint64_t)type;
+- (void)setHidden:(BOOL)hidden;
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setHost:(id)host;
 @end
 
 @implementation BrowseVenueChromeOverlay
 
-- (void)setDisplayedMapType:(unint64_t)a3
+- (void)setDisplayedMapType:(unint64_t)type
 {
   v3 = *(self + OBJC_IVAR____TtC4Maps24BrowseVenueChromeOverlay_displayedMapType);
-  *(self + OBJC_IVAR____TtC4Maps24BrowseVenueChromeOverlay_displayedMapType) = a3;
-  v4 = self;
+  *(self + OBJC_IVAR____TtC4Maps24BrowseVenueChromeOverlay_displayedMapType) = type;
+  selfCopy = self;
   sub_10003C5F4(v3);
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
-  *(self + OBJC_IVAR____TtC4Maps24BrowseVenueChromeOverlay_host) = a3;
+  *(self + OBJC_IVAR____TtC4Maps24BrowseVenueChromeOverlay_host) = host;
   swift_unknownObjectRetain_n();
-  v4 = self;
+  selfCopy = self;
   sub_10003C910();
   swift_unknownObjectRelease();
 
@@ -39,7 +39,7 @@
 
 - (void)buttonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_100376F5C();
 }
 
@@ -50,26 +50,26 @@
   return v2;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v3 = *(self + OBJC_IVAR____TtC4Maps24BrowseVenueChromeOverlay_isHidden);
-  *(self + OBJC_IVAR____TtC4Maps24BrowseVenueChromeOverlay_isHidden) = a3;
-  v4 = self;
+  *(self + OBJC_IVAR____TtC4Maps24BrowseVenueChromeOverlay_isHidden) = hidden;
+  selfCopy = self;
   sub_1003770C4(v3);
 }
 
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v5 = self;
-  sub_100377C54(a3);
+  selfCopy = self;
+  sub_100377C54(hidden);
 }
 
-- (void)didChangeFocusedVenue:(id)a3 focusedBuilding:(id)a4 displayedFloorOrdinal:(signed __int16)a5
+- (void)didChangeFocusedVenue:(id)venue focusedBuilding:(id)building displayedFloorOrdinal:(signed __int16)ordinal
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_100377D04(a3);
+  venueCopy = venue;
+  buildingCopy = building;
+  selfCopy = self;
+  sub_100377D04(venue);
 }
 
 @end

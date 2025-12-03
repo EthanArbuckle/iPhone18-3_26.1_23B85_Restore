@@ -1,58 +1,58 @@
 @interface DiskImageCreatorFromDevice
-- (BOOL)createImageWithSrcDevice:(id)a3 error:(id *)a4;
-- (DiskImageCreatorFromDevice)initWithURL:(id)a3 error:(id *)a4;
+- (BOOL)createImageWithSrcDevice:(id)device error:(id *)error;
+- (DiskImageCreatorFromDevice)initWithURL:(id)l error:(id *)error;
 @end
 
 @implementation DiskImageCreatorFromDevice
 
-- (DiskImageCreatorFromDevice)initWithURL:(id)a3 error:(id *)a4
+- (DiskImageCreatorFromDevice)initWithURL:(id)l error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = DiskImageCreatorFromDevice;
-  return [(BaseDiskImageCreator *)&v5 initWithURL:a3 defaultFormat:4 error:a4];
+  return [(BaseDiskImageCreator *)&v5 initWithURL:l defaultFormat:4 error:error];
 }
 
-- (BOOL)createImageWithSrcDevice:(id)a3 error:(id *)a4
+- (BOOL)createImageWithSrcDevice:(id)device error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (([v6 hasPrefix:@"/dev"] & 1) == 0)
+  deviceCopy = device;
+  v7 = deviceCopy;
+  if (([deviceCopy hasPrefix:@"/dev"] & 1) == 0)
   {
-    v7 = [@"/dev" stringByAppendingPathComponent:v6];
+    v7 = [@"/dev" stringByAppendingPathComponent:deviceCopy];
   }
 
   v8 = [DIConvertParams alloc];
   v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:v7];
   v10 = [(BaseDiskImageCreator *)self URL];
-  v11 = [(DIConvertParams *)v8 initWithInputURL:v9 outputURL:v10 error:a4];
+  v11 = [(DIConvertParams *)v8 initWithInputURL:v9 outputURL:v10 error:error];
 
   if (v11)
   {
     [(DIConvertParams *)v11 setOutputFormat:[(BaseDiskImageCreator *)self imageFormat]];
     [(DIConvertParams *)v11 setEncryptionMethod:[(BaseDiskImageCreator *)self encryptionMethod]];
     [(DIBaseParams *)v11 setReadPassphraseFlags:[(BaseDiskImageCreator *)self readPassphraseFlags]];
-    v12 = [(BaseDiskImageCreator *)self publicKey];
-    [(DIConvertParams *)v11 setPublicKey:v12];
+    publicKey = [(BaseDiskImageCreator *)self publicKey];
+    [(DIConvertParams *)v11 setPublicKey:publicKey];
 
-    v13 = [(BaseDiskImageCreator *)self certificate];
-    [(DIConvertParams *)v11 setCertificate:v13];
+    certificate = [(BaseDiskImageCreator *)self certificate];
+    [(DIConvertParams *)v11 setCertificate:certificate];
 
     [(DIConvertParams *)v11 setPassphrase:[(BaseDiskImageCreator *)self passphrase]];
-    v14 = [(BaseDiskImageCreator *)self mutableSymmetricKey];
-    [(DIBaseParams *)v11 setSymmetricKey:v14];
+    mutableSymmetricKey = [(BaseDiskImageCreator *)self mutableSymmetricKey];
+    [(DIBaseParams *)v11 setSymmetricKey:mutableSymmetricKey];
 
-    v15 = [(BaseDiskImageCreator *)self temporaryPassphrase];
+    temporaryPassphrase = [(BaseDiskImageCreator *)self temporaryPassphrase];
 
-    if (!v15)
+    if (!temporaryPassphrase)
     {
 LABEL_7:
-      v18 = ![DiskImages2 convertWithParams:v11 error:a4];
-      LOBYTE(a4) = 1;
+      v18 = ![DiskImages2 convertWithParams:v11 error:error];
+      LOBYTE(error) = 1;
       goto LABEL_10;
     }
 
-    v16 = [(BaseDiskImageCreator *)self temporaryPassphrase];
-    v17 = -[DIConvertParams setPassphrase:encryptionMethod:error:](v11, "setPassphrase:encryptionMethod:error:", [v16 buf], -[BaseDiskImageCreator encryptionMethod](self, "encryptionMethod"), a4);
+    temporaryPassphrase2 = [(BaseDiskImageCreator *)self temporaryPassphrase];
+    v17 = -[DIConvertParams setPassphrase:encryptionMethod:error:](v11, "setPassphrase:encryptionMethod:error:", [temporaryPassphrase2 buf], -[BaseDiskImageCreator encryptionMethod](self, "encryptionMethod"), error);
 
     if (v17)
     {
@@ -61,7 +61,7 @@ LABEL_7:
     }
 
     v18 = 0;
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
   else
@@ -74,14 +74,14 @@ LABEL_10:
   [(BaseDiskImageCreator *)self setTemporaryPassphrase:0];
   if (v18)
   {
-    a4 = [MEMORY[0x277CCAA00] defaultManager];
+    error = [MEMORY[0x277CCAA00] defaultManager];
     v19 = [(BaseDiskImageCreator *)self URL];
-    [a4 removeItemAtURL:v19 error:0];
+    [error removeItemAtURL:v19 error:0];
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
-  return a4 & 1;
+  return error & 1;
 }
 
 @end

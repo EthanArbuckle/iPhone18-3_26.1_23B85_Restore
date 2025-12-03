@@ -1,28 +1,28 @@
 @interface _SFSpeechRecognitionBlockTask
-- (id)_initWithRequest:(id)a3 queue:(id)a4 languageCode:(id)a5 taskHint:(int64_t)a6 resultHandler:(id)a7;
+- (id)_initWithRequest:(id)request queue:(id)queue languageCode:(id)code taskHint:(int64_t)hint resultHandler:(id)handler;
 - (uint64_t)_finalizeResultHandler;
-- (void)_fireResultHandlerWithResult:(void *)a3 error:;
-- (void)dictationConnection:(id)a3 didRecognizePackage:(id)a4;
-- (void)dictationConnection:(id)a3 didRecognizeTokens:(id)a4 languageModel:(id)a5;
-- (void)dictationConnection:(id)a3 speechRecognitionDidFail:(id)a4;
-- (void)dictationConnection:(id)a3 speechRecordingDidFail:(id)a4;
-- (void)dictationConnectionSpeechRecognitionDidSucceed:(id)a3;
-- (void)dictationConnectionSpeechRecordingDidCancel:(id)a3;
-- (void)localSpeechRecognitionClient:(id)a3 didFinishRecognition:(id)a4;
-- (void)localSpeechRecognitionClient:(id)a3 didRecognizePartialResult:(id)a4 rawPartialResult:(id)a5;
-- (void)localSpeechRecognitionClient:(id)a3 speechRecognitionDidFail:(id)a4;
-- (void)localSpeechRecognitionClient:(id)a3 speechRecordingDidFail:(id)a4;
-- (void)localSpeechRecognitionClientSpeechRecognitionDidSucceed:(id)a3;
-- (void)localSpeechRecognitionClientSpeechRecordingDidCancel:(id)a3;
+- (void)_fireResultHandlerWithResult:(void *)result error:;
+- (void)dictationConnection:(id)connection didRecognizePackage:(id)package;
+- (void)dictationConnection:(id)connection didRecognizeTokens:(id)tokens languageModel:(id)model;
+- (void)dictationConnection:(id)connection speechRecognitionDidFail:(id)fail;
+- (void)dictationConnection:(id)connection speechRecordingDidFail:(id)fail;
+- (void)dictationConnectionSpeechRecognitionDidSucceed:(id)succeed;
+- (void)dictationConnectionSpeechRecordingDidCancel:(id)cancel;
+- (void)localSpeechRecognitionClient:(id)client didFinishRecognition:(id)recognition;
+- (void)localSpeechRecognitionClient:(id)client didRecognizePartialResult:(id)result rawPartialResult:(id)partialResult;
+- (void)localSpeechRecognitionClient:(id)client speechRecognitionDidFail:(id)fail;
+- (void)localSpeechRecognitionClient:(id)client speechRecordingDidFail:(id)fail;
+- (void)localSpeechRecognitionClientSpeechRecognitionDidSucceed:(id)succeed;
+- (void)localSpeechRecognitionClientSpeechRecordingDidCancel:(id)cancel;
 @end
 
 @implementation _SFSpeechRecognitionBlockTask
 
-- (void)localSpeechRecognitionClientSpeechRecognitionDidSucceed:(id)a3
+- (void)localSpeechRecognitionClientSpeechRecognitionDidSucceed:(id)succeed
 {
   v6.receiver = self;
   v6.super_class = _SFSpeechRecognitionBlockTask;
-  [(SFSpeechRecognitionTask *)&v6 localSpeechRecognitionClientSpeechRecognitionDidSucceed:a3];
+  [(SFSpeechRecognitionTask *)&v6 localSpeechRecognitionClientSpeechRecognitionDidSucceed:succeed];
   internalQueue = self->super._internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -56,72 +56,72 @@
   return result;
 }
 
-- (void)_fireResultHandlerWithResult:(void *)a3 error:
+- (void)_fireResultHandlerWithResult:(void *)result error:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  resultCopy = result;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 48));
-    v7 = [v5 isFinal];
-    if (v6 || v7)
+    dispatch_assert_queue_V2(*(self + 48));
+    isFinal = [v5 isFinal];
+    if (resultCopy || isFinal)
     {
-      *(a1 + 96) = 1;
+      *(self + 96) = 1;
     }
 
-    v8 = [*(a1 + 88) copy];
+    v8 = [*(self + 88) copy];
     v9 = v8;
     if (v8)
     {
-      v10 = *(a1 + 24);
+      v10 = *(self + 24);
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __68___SFSpeechRecognitionBlockTask__fireResultHandlerWithResult_error___block_invoke;
       v11[3] = &unk_1E797C528;
       v14 = v8;
       v12 = v5;
-      v13 = v6;
+      v13 = resultCopy;
       [v10 addOperationWithBlock:v11];
     }
   }
 }
 
-- (void)localSpeechRecognitionClient:(id)a3 didFinishRecognition:(id)a4
+- (void)localSpeechRecognitionClient:(id)client didFinishRecognition:(id)recognition
 {
-  v5 = a4;
+  recognitionCopy = recognition;
   internalQueue = self->super._internalQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __83___SFSpeechRecognitionBlockTask_localSpeechRecognitionClient_didFinishRecognition___block_invoke;
   v8[3] = &unk_1E797CB08;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = recognitionCopy;
+  v7 = recognitionCopy;
   dispatch_async(internalQueue, v8);
 }
 
-- (void)localSpeechRecognitionClient:(id)a3 didRecognizePartialResult:(id)a4 rawPartialResult:(id)a5
+- (void)localSpeechRecognitionClient:(id)client didRecognizePartialResult:(id)result rawPartialResult:(id)partialResult
 {
-  v7 = a4;
-  v8 = a5;
+  resultCopy = result;
+  partialResultCopy = partialResult;
   internalQueue = self->super._internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __105___SFSpeechRecognitionBlockTask_localSpeechRecognitionClient_didRecognizePartialResult_rawPartialResult___block_invoke;
   block[3] = &unk_1E797C460;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = resultCopy;
+  v14 = partialResultCopy;
+  v10 = partialResultCopy;
+  v11 = resultCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)localSpeechRecognitionClient:(id)a3 speechRecognitionDidFail:(id)a4
+- (void)localSpeechRecognitionClient:(id)client speechRecognitionDidFail:(id)fail
 {
   v7.receiver = self;
   v7.super_class = _SFSpeechRecognitionBlockTask;
-  [(SFSpeechRecognitionTask *)&v7 localSpeechRecognitionClient:a3 speechRecognitionDidFail:a4];
+  [(SFSpeechRecognitionTask *)&v7 localSpeechRecognitionClient:client speechRecognitionDidFail:fail];
   internalQueue = self->super._internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -131,28 +131,28 @@
   dispatch_async(internalQueue, block);
 }
 
-- (void)localSpeechRecognitionClient:(id)a3 speechRecordingDidFail:(id)a4
+- (void)localSpeechRecognitionClient:(id)client speechRecordingDidFail:(id)fail
 {
-  v6 = a4;
+  failCopy = fail;
   v11.receiver = self;
   v11.super_class = _SFSpeechRecognitionBlockTask;
-  [(SFSpeechRecognitionTask *)&v11 localSpeechRecognitionClient:a3 speechRecordingDidFail:v6];
+  [(SFSpeechRecognitionTask *)&v11 localSpeechRecognitionClient:client speechRecordingDidFail:failCopy];
   internalQueue = self->super._internalQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __85___SFSpeechRecognitionBlockTask_localSpeechRecognitionClient_speechRecordingDidFail___block_invoke;
   v9[3] = &unk_1E797CB08;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = failCopy;
+  v8 = failCopy;
   dispatch_async(internalQueue, v9);
 }
 
-- (void)localSpeechRecognitionClientSpeechRecordingDidCancel:(id)a3
+- (void)localSpeechRecognitionClientSpeechRecordingDidCancel:(id)cancel
 {
   v6.receiver = self;
   v6.super_class = _SFSpeechRecognitionBlockTask;
-  [(SFSpeechRecognitionTask *)&v6 localSpeechRecognitionClientSpeechRecordingDidCancel:a3];
+  [(SFSpeechRecognitionTask *)&v6 localSpeechRecognitionClientSpeechRecordingDidCancel:cancel];
   internalQueue = self->super._internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -162,24 +162,24 @@
   dispatch_async(internalQueue, block);
 }
 
-- (void)dictationConnection:(id)a3 didRecognizeTokens:(id)a4 languageModel:(id)a5
+- (void)dictationConnection:(id)connection didRecognizeTokens:(id)tokens languageModel:(id)model
 {
-  v6 = a4;
+  tokensCopy = tokens;
   internalQueue = self->super._internalQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __86___SFSpeechRecognitionBlockTask_dictationConnection_didRecognizeTokens_languageModel___block_invoke;
   v9[3] = &unk_1E797CB08;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = tokensCopy;
+  v8 = tokensCopy;
   dispatch_async(internalQueue, v9);
 }
 
-- (void)dictationConnection:(id)a3 didRecognizePackage:(id)a4
+- (void)dictationConnection:(id)connection didRecognizePackage:(id)package
 {
-  v5 = a4;
-  v6 = [SFUtilities recognizedResultFromPackage:v5];
+  packageCopy = package;
+  v6 = [SFUtilities recognizedResultFromPackage:packageCopy];
   internalQueue = self->super._internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -187,17 +187,17 @@
   block[3] = &unk_1E797C460;
   block[4] = self;
   v11 = v6;
-  v12 = v5;
-  v8 = v5;
+  v12 = packageCopy;
+  v8 = packageCopy;
   v9 = v6;
   dispatch_async(internalQueue, block);
 }
 
-- (void)dictationConnectionSpeechRecognitionDidSucceed:(id)a3
+- (void)dictationConnectionSpeechRecognitionDidSucceed:(id)succeed
 {
   v6.receiver = self;
   v6.super_class = _SFSpeechRecognitionBlockTask;
-  [(SFSpeechRecognitionTask *)&v6 dictationConnectionSpeechRecognitionDidSucceed:a3];
+  [(SFSpeechRecognitionTask *)&v6 dictationConnectionSpeechRecognitionDidSucceed:succeed];
   internalQueue = self->super._internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -207,11 +207,11 @@
   dispatch_async(internalQueue, block);
 }
 
-- (void)dictationConnection:(id)a3 speechRecognitionDidFail:(id)a4
+- (void)dictationConnection:(id)connection speechRecognitionDidFail:(id)fail
 {
   v7.receiver = self;
   v7.super_class = _SFSpeechRecognitionBlockTask;
-  [(SFSpeechRecognitionTask *)&v7 dictationConnection:a3 speechRecognitionDidFail:a4];
+  [(SFSpeechRecognitionTask *)&v7 dictationConnection:connection speechRecognitionDidFail:fail];
   internalQueue = self->super._internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -221,11 +221,11 @@
   dispatch_async(internalQueue, block);
 }
 
-- (void)dictationConnectionSpeechRecordingDidCancel:(id)a3
+- (void)dictationConnectionSpeechRecordingDidCancel:(id)cancel
 {
   v6.receiver = self;
   v6.super_class = _SFSpeechRecognitionBlockTask;
-  [(SFSpeechRecognitionTask *)&v6 dictationConnectionSpeechRecordingDidCancel:a3];
+  [(SFSpeechRecognitionTask *)&v6 dictationConnectionSpeechRecordingDidCancel:cancel];
   internalQueue = self->super._internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -235,32 +235,32 @@
   dispatch_async(internalQueue, block);
 }
 
-- (void)dictationConnection:(id)a3 speechRecordingDidFail:(id)a4
+- (void)dictationConnection:(id)connection speechRecordingDidFail:(id)fail
 {
-  v6 = a4;
+  failCopy = fail;
   v11.receiver = self;
   v11.super_class = _SFSpeechRecognitionBlockTask;
-  [(SFSpeechRecognitionTask *)&v11 dictationConnection:a3 speechRecordingDidFail:v6];
+  [(SFSpeechRecognitionTask *)&v11 dictationConnection:connection speechRecordingDidFail:failCopy];
   internalQueue = self->super._internalQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76___SFSpeechRecognitionBlockTask_dictationConnection_speechRecordingDidFail___block_invoke;
   v9[3] = &unk_1E797CB08;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = failCopy;
+  v8 = failCopy;
   dispatch_async(internalQueue, v9);
 }
 
-- (id)_initWithRequest:(id)a3 queue:(id)a4 languageCode:(id)a5 taskHint:(int64_t)a6 resultHandler:(id)a7
+- (id)_initWithRequest:(id)request queue:(id)queue languageCode:(id)code taskHint:(int64_t)hint resultHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  requestCopy = request;
+  queueCopy = queue;
+  codeCopy = code;
+  handlerCopy = handler;
   v27.receiver = self;
   v27.super_class = _SFSpeechRecognitionBlockTask;
-  v16 = [(SFSpeechRecognitionTask *)&v27 _initWithRequest:v12 queue:v13 languageCode:v14 taskHint:a6];
+  v16 = [(SFSpeechRecognitionTask *)&v27 _initWithRequest:requestCopy queue:queueCopy languageCode:codeCopy taskHint:hint];
   v17 = v16;
   if (v16)
   {
@@ -275,7 +275,7 @@
     v22[1] = 3221225472;
     v22[2] = __92___SFSpeechRecognitionBlockTask__initWithRequest_queue_languageCode_taskHint_resultHandler___block_invoke;
     v22[3] = &unk_1E797BCA0;
-    v23 = v15;
+    v23 = handlerCopy;
     v24 = v25;
     v19 = [v22 copy];
     v20 = v18[11];

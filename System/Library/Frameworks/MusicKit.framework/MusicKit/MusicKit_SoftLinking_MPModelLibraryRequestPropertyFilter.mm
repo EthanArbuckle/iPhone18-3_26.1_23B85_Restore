@@ -1,19 +1,19 @@
 @interface MusicKit_SoftLinking_MPModelLibraryRequestPropertyFilter
-- (MusicKit_SoftLinking_MPModelLibraryRequestPropertyFilter)initWithKeys:(id)a3 value:(id)a4 type:(int64_t)a5;
+- (MusicKit_SoftLinking_MPModelLibraryRequestPropertyFilter)initWithKeys:(id)keys value:(id)value type:(int64_t)type;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelLibraryRequestPropertyFilter
 
-- (MusicKit_SoftLinking_MPModelLibraryRequestPropertyFilter)initWithKeys:(id)a3 value:(id)a4 type:(int64_t)a5
+- (MusicKit_SoftLinking_MPModelLibraryRequestPropertyFilter)initWithKeys:(id)keys value:(id)value type:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  keysCopy = keys;
+  valueCopy = value;
   v17.receiver = self;
   v17.super_class = MusicKit_SoftLinking_MPModelLibraryRequestPropertyFilter;
   v10 = [(MusicKit_SoftLinking_MPModelLibraryRequestPropertyFilter *)&v17 init];
   if (v10)
   {
-    v11 = [objc_opt_class() _underlyingComparisonTypeForComparisonType:a5];
+    v11 = [objc_opt_class() _underlyingComparisonTypeForComparisonType:type];
     v19 = 0;
     v20 = &v19;
     v21 = 0x2050000000;
@@ -32,7 +32,7 @@
 
     v13 = v12;
     _Block_object_dispose(&v19, 8);
-    v14 = [[v12 alloc] initWithKeys:v8 value:v9 comparisonType:v11];
+    v14 = [[v12 alloc] initWithKeys:keysCopy value:valueCopy comparisonType:v11];
     underlyingPropertyFilter = v10->_underlyingPropertyFilter;
     v10->_underlyingPropertyFilter = v14;
   }

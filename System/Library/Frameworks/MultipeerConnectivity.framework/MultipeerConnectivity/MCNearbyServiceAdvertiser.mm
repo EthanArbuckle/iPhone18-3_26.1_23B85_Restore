@@ -2,26 +2,26 @@
 - (MCNearbyServiceAdvertiser)init;
 - (MCNearbyServiceAdvertiser)initWithPeer:(MCPeerID *)myPeerID discoveryInfo:(NSDictionary *)info serviceType:(NSString *)serviceType;
 - (NSString)description;
-- (id)makeTXTRecordDataWithDiscoveryInfo:(id)a3;
-- (id)txtRecordDataWithDiscoveryInfo:(id)a3;
-- (void)applicationDidEnterBackgroundNotification:(id)a3;
-- (void)applicationWillEnterForegroundNotification:(id)a3;
+- (id)makeTXTRecordDataWithDiscoveryInfo:(id)info;
+- (id)txtRecordDataWithDiscoveryInfo:(id)info;
+- (void)applicationDidEnterBackgroundNotification:(id)notification;
+- (void)applicationWillEnterForegroundNotification:(id)notification;
 - (void)dealloc;
-- (void)netService:(id)a3 didAcceptConnectionWithInputStream:(id)a4 outputStream:(id)a5;
-- (void)netService:(id)a3 didNotPublish:(id)a4;
-- (void)netServiceDidPublish:(id)a3;
-- (void)netServiceDidStop:(id)a3;
-- (void)parseIDString:(id *)a3 displayName:(id *)a4 fromIdentifier:(id)a5;
+- (void)netService:(id)service didAcceptConnectionWithInputStream:(id)stream outputStream:(id)outputStream;
+- (void)netService:(id)service didNotPublish:(id)publish;
+- (void)netServiceDidPublish:(id)publish;
+- (void)netServiceDidStop:(id)stop;
+- (void)parseIDString:(id *)string displayName:(id *)name fromIdentifier:(id)identifier;
 - (void)startAdvertisingPeer;
 - (void)stopAdvertisingPeer;
-- (void)syncAttachConnection:(id)a3 toPeer:(id)a4;
-- (void)syncCloseConnectionForPeer:(id)a3;
-- (void)syncHandleIncomingInputStream:(id)a3 outputStream:(id)a4;
-- (void)syncHandleInvite:(id)a3 fromPeer:(id)a4;
-- (void)syncHandleInviteConnect:(id)a3 fromPeer:(id)a4;
-- (void)syncReceivedData:(id)a3 fromPeer:(id)a4;
-- (void)syncSendData:(id)a3 toPeer:(id)a4 withCompletionHandler:(id)a5;
-- (void)syncSendDictionary:(id)a3 toPeer:(id)a4 withCompletionHandler:(id)a5;
+- (void)syncAttachConnection:(id)connection toPeer:(id)peer;
+- (void)syncCloseConnectionForPeer:(id)peer;
+- (void)syncHandleIncomingInputStream:(id)stream outputStream:(id)outputStream;
+- (void)syncHandleInvite:(id)invite fromPeer:(id)peer;
+- (void)syncHandleInviteConnect:(id)connect fromPeer:(id)peer;
+- (void)syncReceivedData:(id)data fromPeer:(id)peer;
+- (void)syncSendData:(id)data toPeer:(id)peer withCompletionHandler:(id)handler;
+- (void)syncSendDictionary:(id)dictionary toPeer:(id)peer withCompletionHandler:(id)handler;
 - (void)syncStartAdvertisingPeer;
 - (void)syncStopAdvertisingPeer;
 @end
@@ -78,10 +78,10 @@
     }
 
     v8->_syncQueue = dispatch_queue_create("com.apple.MCNearbyServiceAdvertiser.syncQueue", 0);
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v21 addObserver:v8 selector:sel_applicationDidEnterBackgroundNotification_ name:*MEMORY[0x277D76660] object:0];
-    [v21 addObserver:v8 selector:sel_applicationWillEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
-    [v21 addObserver:v8 selector:sel_applicationWillTerminateNotification_ name:*MEMORY[0x277D76770] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_applicationDidEnterBackgroundNotification_ name:*MEMORY[0x277D76660] object:0];
+    [defaultCenter addObserver:v8 selector:sel_applicationWillEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
+    [defaultCenter addObserver:v8 selector:sel_applicationWillTerminateNotification_ name:*MEMORY[0x277D76770] object:0];
   }
 
   return v8;
@@ -105,26 +105,26 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MCNearbyServiceAdvertiser *)self myPeerID];
-  v7 = [(MCNearbyServiceAdvertiser *)self discoveryInfo];
-  v8 = [(MCNearbyServiceAdvertiser *)self serviceType];
+  myPeerID = [(MCNearbyServiceAdvertiser *)self myPeerID];
+  discoveryInfo = [(MCNearbyServiceAdvertiser *)self discoveryInfo];
+  serviceType = [(MCNearbyServiceAdvertiser *)self serviceType];
   [(MCNearbyServiceAdvertiser *)self delegate];
   v9 = objc_opt_class();
-  return [v3 stringWithFormat:@"<%@: %p MyPeerID = %@ DiscoveryInfo = %@ ServiceType = %@ Delegate = <%@: %p>>", v5, self, v6, v7, v8, NSStringFromClass(v9), -[MCNearbyServiceAdvertiser delegate](self, "delegate")];
+  return [v3 stringWithFormat:@"<%@: %p MyPeerID = %@ DiscoveryInfo = %@ ServiceType = %@ Delegate = <%@: %p>>", v5, self, myPeerID, discoveryInfo, serviceType, NSStringFromClass(v9), -[MCNearbyServiceAdvertiser delegate](self, "delegate")];
 }
 
-- (id)makeTXTRecordDataWithDiscoveryInfo:(id)a3
+- (id)makeTXTRecordDataWithDiscoveryInfo:(id)info
 {
   v19 = *MEMORY[0x277D85DE8];
   v4 = [MEMORY[0x277CBEB38] dictionaryWithObject:-[MCPeerID displayName](-[MCNearbyServiceAdvertiser myPeerID](self forKey:{"myPeerID"), "displayName"), @"_d"}];
-  if (a3)
+  if (info)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [a3 allKeys];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allKeys = [info allKeys];
+    v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -135,11 +135,11 @@
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allKeys);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [a3 objectForKey:v10];
+          v11 = [info objectForKey:v10];
           if ([v10 hasPrefix:@"_"])
           {
             v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"_", v10];
@@ -148,7 +148,7 @@
           [v4 setObject:v11 forKey:v10];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -160,15 +160,15 @@
   return result;
 }
 
-- (id)txtRecordDataWithDiscoveryInfo:(id)a3
+- (id)txtRecordDataWithDiscoveryInfo:(id)info
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [info allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -180,10 +180,10 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
-        [a3 objectForKeyedSubscript:*(*(&v12 + 1) + 8 * v9)];
+        [info objectForKeyedSubscript:*(*(&v12 + 1) + 8 * v9)];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
@@ -195,7 +195,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -205,21 +205,21 @@
     }
   }
 
-  result = [(MCNearbyServiceAdvertiser *)self makeTXTRecordDataWithDiscoveryInfo:a3];
+  result = [(MCNearbyServiceAdvertiser *)self makeTXTRecordDataWithDiscoveryInfo:info];
 LABEL_12:
   v11 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (void)parseIDString:(id *)a3 displayName:(id *)a4 fromIdentifier:(id)a5
+- (void)parseIDString:(id *)string displayName:(id *)name fromIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = [MEMORY[0x277CCAC80] scannerWithString:a5];
-  if ([v8 scanUpToString:@"+" intoString:a3])
+  v8 = [MEMORY[0x277CCAC80] scannerWithString:identifier];
+  if ([v8 scanUpToString:@"+" intoString:string])
   {
     if ([v8 scanString:@"+" intoString:0])
     {
-      if ([v8 scanUpToString:@"+" intoString:a4])
+      if ([v8 scanUpToString:@"+" intoString:name])
       {
         goto LABEL_9;
       }
@@ -242,7 +242,7 @@ LABEL_12:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = a5;
+    identifierCopy = identifier;
     v14 = 1024;
     v15 = v9;
     _os_log_impl(&dword_239FB7000, v10, OS_LOG_TYPE_DEFAULT, "Identifier [%@] failed to parse at %d.", &v12, 0x12u);
@@ -261,8 +261,8 @@ LABEL_9:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v3 = [(NSMutableDictionary *)self->_peers allValues];
-    v4 = [v3 countByEnumeratingWithState:&v14 objects:v22 count:16];
+    allValues = [(NSMutableDictionary *)self->_peers allValues];
+    v4 = [allValues countByEnumeratingWithState:&v14 objects:v22 count:16];
     if (v4)
     {
       v5 = v4;
@@ -274,14 +274,14 @@ LABEL_9:
         {
           if (*v15 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v14 + 1) + 8 * v7++) invalidate];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v14 objects:v22 count:16];
+        v5 = [allValues countByEnumeratingWithState:&v14 objects:v22 count:16];
       }
 
       while (v5);
@@ -299,8 +299,8 @@ LABEL_9:
 
       [(MCNearbyServiceAdvertiser *)self setNetworkServer:v8];
       [(NSNetService *)[(MCNearbyServiceAdvertiser *)self networkServer] setTXTRecordData:[(MCNearbyServiceAdvertiser *)self TXTRecordData]];
-      v9 = [MEMORY[0x277CBEB88] mainRunLoop];
-      [v8 scheduleInRunLoop:v9 forMode:*MEMORY[0x277CBE738]];
+      mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+      [v8 scheduleInRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
     }
 
     [(NSNetService *)[(MCNearbyServiceAdvertiser *)self networkServer] publishWithOptions:2];
@@ -308,12 +308,12 @@ LABEL_9:
     v10 = mcadvertiser_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(MCPeerID *)[(MCNearbyServiceAdvertiser *)self myPeerID] displayNameAndPID];
-      v12 = [(MCNearbyServiceAdvertiser *)self formattedServiceType];
+      displayNameAndPID = [(MCPeerID *)[(MCNearbyServiceAdvertiser *)self myPeerID] displayNameAndPID];
+      formattedServiceType = [(MCNearbyServiceAdvertiser *)self formattedServiceType];
       *buf = 138412546;
-      v19 = v11;
+      v19 = displayNameAndPID;
       v20 = 2112;
-      v21 = v12;
+      v21 = formattedServiceType;
       _os_log_impl(&dword_239FB7000, v10, OS_LOG_TYPE_DEFAULT, "Start advertising peer [%@] type [%@].", buf, 0x16u);
     }
   }
@@ -349,9 +349,9 @@ LABEL_9:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138412546;
-      v6 = [(MCPeerID *)[(MCNearbyServiceAdvertiser *)self myPeerID] displayNameAndPID];
+      displayNameAndPID = [(MCPeerID *)[(MCNearbyServiceAdvertiser *)self myPeerID] displayNameAndPID];
       v7 = 2112;
-      v8 = [(MCNearbyServiceAdvertiser *)self formattedServiceType];
+      formattedServiceType = [(MCNearbyServiceAdvertiser *)self formattedServiceType];
       _os_log_impl(&dword_239FB7000, v3, OS_LOG_TYPE_DEFAULT, "Stop advertising peer [%@] type [%@].", &v5, 0x16u);
     }
   }
@@ -370,7 +370,7 @@ LABEL_9:
   dispatch_async(syncQueue, block);
 }
 
-- (void)applicationDidEnterBackgroundNotification:(id)a3
+- (void)applicationDidEnterBackgroundNotification:(id)notification
 {
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -395,7 +395,7 @@ uint64_t __71__MCNearbyServiceAdvertiser_applicationDidEnterBackgroundNotificati
   return result;
 }
 
-- (void)applicationWillEnterForegroundNotification:(id)a3
+- (void)applicationWillEnterForegroundNotification:(id)notification
 {
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -420,27 +420,27 @@ uint64_t __72__MCNearbyServiceAdvertiser_applicationWillEnterForegroundNotificat
   return result;
 }
 
-- (void)syncAttachConnection:(id)a3 toPeer:(id)a4
+- (void)syncAttachConnection:(id)connection toPeer:(id)peer
 {
-  [a4 attachConnection:a3];
-  [a4 setState:2];
+  [peer attachConnection:connection];
+  [peer setState:2];
 
-  [a4 flushDataBuffer];
+  [peer flushDataBuffer];
 }
 
-- (void)syncCloseConnectionForPeer:(id)a3
+- (void)syncCloseConnectionForPeer:(id)peer
 {
-  [a3 closeConnection];
+  [peer closeConnection];
 
-  [a3 setState:0];
+  [peer setState:0];
 }
 
-- (void)syncSendDictionary:(id)a3 toPeer:(id)a4 withCompletionHandler:(id)a5
+- (void)syncSendDictionary:(id)dictionary toPeer:(id)peer withCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0;
-  v8 = [a5 copy];
-  v9 = [MEMORY[0x277CCAC58] dataWithPropertyList:a3 format:200 options:0 error:&v13];
+  v8 = [handler copy];
+  v9 = [MEMORY[0x277CCAC58] dataWithPropertyList:dictionary format:200 options:0 error:&v13];
   if (v9)
   {
     v10 = v9;
@@ -448,13 +448,13 @@ uint64_t __72__MCNearbyServiceAdvertiser_applicationWillEnterForegroundNotificat
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v15 = a3;
+      dictionaryCopy = dictionary;
       v16 = 2112;
-      v17 = a4;
+      peerCopy = peer;
       _os_log_impl(&dword_239FB7000, v11, OS_LOG_TYPE_DEFAULT, "Sending dictionary %@ to peer %@.", buf, 0x16u);
     }
 
-    [(MCNearbyServiceAdvertiser *)self syncSendData:v10 toPeer:a4 withCompletionHandler:v8];
+    [(MCNearbyServiceAdvertiser *)self syncSendData:v10 toPeer:peer withCompletionHandler:v8];
   }
 
   else if (v8)
@@ -465,34 +465,34 @@ uint64_t __72__MCNearbyServiceAdvertiser_applicationWillEnterForegroundNotificat
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncHandleInvite:(id)a3 fromPeer:(id)a4
+- (void)syncHandleInvite:(id)invite fromPeer:(id)peer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = [a3 objectForKey:@"MCNearbyServiceSenderPeerIDKey"];
+  v7 = [invite objectForKey:@"MCNearbyServiceSenderPeerIDKey"];
   v8 = [[MCPeerID alloc] initWithSerializedRepresentation:v7];
-  v9 = [a3 objectForKey:@"MCNearbyServiceRecipientPeerIDKey"];
+  v9 = [invite objectForKey:@"MCNearbyServiceRecipientPeerIDKey"];
   v10 = [[MCPeerID alloc] initWithSerializedRepresentation:v9];
   v11 = mcadvertiser_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v18 = a4;
+    peerCopy = peer;
     v19 = 2112;
-    v20 = [objc_msgSend(a4 "peerID")];
+    v20 = [objc_msgSend(peer "peerID")];
     _os_log_impl(&dword_239FB7000, v11, OS_LOG_TYPE_DEFAULT, "Got invite from peer[%@] for peer[%@].", buf, 0x16u);
   }
 
   if ([(MCPeerID *)[(MCNearbyServiceAdvertiser *)self myPeerID] isEqual:v10])
   {
-    if ([objc_msgSend(a4 "peerID")])
+    if ([objc_msgSend(peer "peerID")])
     {
-      v12 = [a3 objectForKey:@"MCNearbyServiceInviteContextKey"];
+      v12 = [invite objectForKey:@"MCNearbyServiceInviteContextKey"];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __55__MCNearbyServiceAdvertiser_syncHandleInvite_fromPeer___block_invoke;
       v16[3] = &unk_278B44698;
-      v16[4] = a4;
-      v16[5] = a3;
+      v16[4] = peer;
+      v16[5] = invite;
       v16[6] = v9;
       v16[7] = v7;
       v16[8] = self;
@@ -709,28 +709,28 @@ void __55__MCNearbyServiceAdvertiser_syncHandleInvite_fromPeer___block_invoke_2_
   }
 }
 
-- (void)syncHandleInviteConnect:(id)a3 fromPeer:(id)a4
+- (void)syncHandleInviteConnect:(id)connect fromPeer:(id)peer
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = -[MCPeerID initWithSerializedRepresentation:]([MCPeerID alloc], "initWithSerializedRepresentation:", [a3 objectForKey:@"MCNearbyServiceSenderPeerIDKey"]);
-  v8 = -[MCPeerID initWithSerializedRepresentation:]([MCPeerID alloc], "initWithSerializedRepresentation:", [a3 objectForKey:@"MCNearbyServiceRecipientPeerIDKey"]);
+  v7 = -[MCPeerID initWithSerializedRepresentation:]([MCPeerID alloc], "initWithSerializedRepresentation:", [connect objectForKey:@"MCNearbyServiceSenderPeerIDKey"]);
+  v8 = -[MCPeerID initWithSerializedRepresentation:]([MCPeerID alloc], "initWithSerializedRepresentation:", [connect objectForKey:@"MCNearbyServiceRecipientPeerIDKey"]);
   v9 = mcadvertiser_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v22 = a3;
+    connectCopy = connect;
     v23 = 2112;
-    v24 = a4;
+    peerCopy = peer;
     _os_log_impl(&dword_239FB7000, v9, OS_LOG_TYPE_DEFAULT, "Got invite connect [%@] from peer [%@].", buf, 0x16u);
   }
 
   if ([(MCPeerID *)[(MCNearbyServiceAdvertiser *)self myPeerID] isEqual:v8])
   {
-    if ([objc_msgSend(a4 "peerID")])
+    if ([objc_msgSend(peer "peerID")])
     {
-      v10 = [a3 objectForKey:@"MCNearbyServiceConnectionDataKey"];
-      v11 = [a3 objectForKey:@"MCNearbyServiceInviteIDKey"];
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"from:%@=%@", objc_msgSend(objc_msgSend(a4, "peerID"), "displayName"), v11];
+      v10 = [connect objectForKey:@"MCNearbyServiceConnectionDataKey"];
+      v11 = [connect objectForKey:@"MCNearbyServiceInviteIDKey"];
+      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"from:%@=%@", objc_msgSend(objc_msgSend(peer, "peerID"), "displayName"), v11];
       v13 = [(NSMutableDictionary *)self->_invites objectForKey:v12];
       v14 = [v13 objectForKey:@"MCNearbyServiceRecipientPeerIDKey"];
       v15 = [v13 objectForKey:@"MCNearbyServiceSessionKey"];
@@ -738,9 +738,9 @@ void __55__MCNearbyServiceAdvertiser_syncHandleInvite_fromPeer___block_invoke_2_
       {
         if (v15)
         {
-          [v15 connectPeer:objc_msgSend(a4 withNearbyConnectionData:{"peerID"), v10}];
+          [v15 connectPeer:objc_msgSend(peer withNearbyConnectionData:{"peerID"), v10}];
           [(NSMutableDictionary *)self->_invites removeObjectForKey:v12];
-          [(MCNearbyServiceAdvertiser *)self syncCloseConnectionForPeer:a4];
+          [(MCNearbyServiceAdvertiser *)self syncCloseConnectionForPeer:peer];
         }
 
         else
@@ -748,7 +748,7 @@ void __55__MCNearbyServiceAdvertiser_syncHandleInvite_fromPeer___block_invoke_2_
           v19 = mcadvertiser_log();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
-            [MCNearbyServiceAdvertiser syncHandleInviteConnect:a4 fromPeer:&self->_invites];
+            [MCNearbyServiceAdvertiser syncHandleInviteConnect:peer fromPeer:&self->_invites];
           }
         }
       }
@@ -785,31 +785,31 @@ void __55__MCNearbyServiceAdvertiser_syncHandleInvite_fromPeer___block_invoke_2_
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncSendData:(id)a3 toPeer:(id)a4 withCompletionHandler:(id)a5
+- (void)syncSendData:(id)data toPeer:(id)peer withCompletionHandler:(id)handler
 {
-  if (![a4 state])
+  if (![peer state])
   {
     v8 = mcadvertiser_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [MCNearbyServiceAdvertiser syncSendData:a4 toPeer:? withCompletionHandler:?];
+      [MCNearbyServiceAdvertiser syncSendData:peer toPeer:? withCompletionHandler:?];
     }
   }
 
-  [a4 sendData:a3 withCompletionHandler:a5];
+  [peer sendData:data withCompletionHandler:handler];
 }
 
-- (void)syncReceivedData:(id)a3 fromPeer:(id)a4
+- (void)syncReceivedData:(id)data fromPeer:(id)peer
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:0];
+  v6 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:0];
   v7 = mcadvertiser_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
     v13 = v6;
     v14 = 2112;
-    v15 = a4;
+    peerCopy = peer;
     _os_log_impl(&dword_239FB7000, v7, OS_LOG_TYPE_DEFAULT, "Received dict [%@] from peer [%@].", &v12, 0x16u);
   }
 
@@ -818,7 +818,7 @@ void __55__MCNearbyServiceAdvertiser_syncHandleInvite_fromPeer___block_invoke_2_
     v8 = [objc_msgSend(v6 objectForKey:{@"MCNearbyServiceMessageIDKey", "unsignedIntegerValue"}];
     if (v8 == 3)
     {
-      [(MCNearbyServiceAdvertiser *)self syncHandleInviteConnect:v6 fromPeer:a4];
+      [(MCNearbyServiceAdvertiser *)self syncHandleInviteConnect:v6 fromPeer:peer];
     }
 
     else
@@ -826,7 +826,7 @@ void __55__MCNearbyServiceAdvertiser_syncHandleInvite_fromPeer___block_invoke_2_
       v9 = v8;
       if (v8 == 1)
       {
-        [(MCNearbyServiceAdvertiser *)self syncHandleInvite:v6 fromPeer:a4];
+        [(MCNearbyServiceAdvertiser *)self syncHandleInvite:v6 fromPeer:peer];
       }
 
       else
@@ -845,7 +845,7 @@ void __55__MCNearbyServiceAdvertiser_syncHandleInvite_fromPeer___block_invoke_2_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncHandleIncomingInputStream:(id)a3 outputStream:(id)a4
+- (void)syncHandleIncomingInputStream:(id)stream outputStream:(id)outputStream
 {
   v13 = *MEMORY[0x277D85DE8];
   v7 = -[MCNearbyDiscoveryPeerConnection initWithLocalServiceName:]([MCNearbyDiscoveryPeerConnection alloc], "initWithLocalServiceName:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@+%@", -[MCPeerID idString](-[MCNearbyServiceAdvertiser myPeerID](self, "myPeerID"), "idString"), -[MCPeerID displayName](-[MCNearbyServiceAdvertiser myPeerID](self, "myPeerID"), "displayName")]);
@@ -856,7 +856,7 @@ void __55__MCNearbyServiceAdvertiser_syncHandleInvite_fromPeer___block_invoke_2_
   v10[4] = v7;
   v10[5] = self;
   [(MCNearbyDiscoveryPeerConnection *)v7 setConnectedHandler:v10];
-  [(MCNearbyDiscoveryPeerConnection *)v7 attachInputStream:a3 outputStream:a4];
+  [(MCNearbyDiscoveryPeerConnection *)v7 attachInputStream:stream outputStream:outputStream];
   v8 = mcadvertiser_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1141,16 +1141,16 @@ uint64_t __72__MCNearbyServiceAdvertiser_syncHandleIncomingInputStream_outputStr
   return [*(a1 + 40) syncCloseConnectionForPeer:*(a1 + 32)];
 }
 
-- (void)netService:(id)a3 didAcceptConnectionWithInputStream:(id)a4 outputStream:(id)a5
+- (void)netService:(id)service didAcceptConnectionWithInputStream:(id)stream outputStream:(id)outputStream
 {
   v16 = *MEMORY[0x277D85DE8];
   v8 = mcadvertiser_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v13 = a4;
+    streamCopy = stream;
     v14 = 2048;
-    v15 = a5;
+    outputStreamCopy = outputStream;
     _os_log_impl(&dword_239FB7000, v8, OS_LOG_TYPE_DEFAULT, "Accepted connection with inputStream [%p] outputStream [%p].", buf, 0x16u);
   }
 
@@ -1160,13 +1160,13 @@ uint64_t __72__MCNearbyServiceAdvertiser_syncHandleIncomingInputStream_outputStr
   block[2] = __88__MCNearbyServiceAdvertiser_netService_didAcceptConnectionWithInputStream_outputStream___block_invoke;
   block[3] = &unk_278B43C88;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = stream;
+  block[6] = outputStream;
   dispatch_async(syncQueue, block);
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)netServiceDidStop:(id)a3
+- (void)netServiceDidStop:(id)stop
 {
   v3 = mcadvertiser_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1176,7 +1176,7 @@ uint64_t __72__MCNearbyServiceAdvertiser_syncHandleIncomingInputStream_outputStr
   }
 }
 
-- (void)netServiceDidPublish:(id)a3
+- (void)netServiceDidPublish:(id)publish
 {
   v3 = mcadvertiser_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1186,7 +1186,7 @@ uint64_t __72__MCNearbyServiceAdvertiser_syncHandleIncomingInputStream_outputStr
   }
 }
 
-- (void)netService:(id)a3 didNotPublish:(id)a4
+- (void)netService:(id)service didNotPublish:(id)publish
 {
   v5 = mcadvertiser_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))

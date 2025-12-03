@@ -2,9 +2,9 @@
 + (HUNearbyLiveListenController)sharedInstance;
 - (HUNearbyLiveListenController)init;
 - (NSString)transcription;
-- (void)registerUpdateBlock:(id)a3 withListener:(id)a4;
-- (void)removeListener:(id)a3;
-- (void)setTranscription:(id)a3;
+- (void)registerUpdateBlock:(id)block withListener:(id)listener;
+- (void)removeListener:(id)listener;
+- (void)setTranscription:(id)transcription;
 - (void)startLiveListen;
 - (void)startLiveListenRewind;
 - (void)stopLiveListen;
@@ -54,9 +54,9 @@ void __46__HUNearbyLiveListenController_sharedInstance__block_invoke()
   if (v2)
   {
     v2->_state = 0;
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     updateBlocks = v3->_updateBlocks;
-    v3->_updateBlocks = v4;
+    v3->_updateBlocks = array;
 
     v6 = objc_opt_new();
     updateLock = v3->_updateLock;
@@ -70,95 +70,95 @@ void __46__HUNearbyLiveListenController_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)setTranscription:(id)a3
+- (void)setTranscription:(id)transcription
 {
-  v4 = a3;
+  transcriptionCopy = transcription;
   [(NSLock *)self->_transcriptionLock lock];
   transcription = self->_transcription;
-  self->_transcription = v4;
-  v6 = v4;
+  self->_transcription = transcriptionCopy;
+  v6 = transcriptionCopy;
 
   [(NSLock *)self->_transcriptionLock unlock];
 }
 
-- (void)registerUpdateBlock:(id)a3 withListener:(id)a4
+- (void)registerUpdateBlock:(id)block withListener:(id)listener
 {
-  aBlock = a3;
-  v6 = a4;
+  aBlock = block;
+  listenerCopy = listener;
   if (aBlock)
   {
     v7 = [HUIdentifierAndBlockPair alloc];
     v8 = _Block_copy(aBlock);
-    v9 = [(HUIdentifierAndBlockPair *)v7 initWithIdentifier:v6 andBlock:v8];
+    v9 = [(HUIdentifierAndBlockPair *)v7 initWithIdentifier:listenerCopy andBlock:v8];
 
-    v10 = [(HUNearbyLiveListenController *)self updateLock];
-    [v10 lock];
+    updateLock = [(HUNearbyLiveListenController *)self updateLock];
+    [updateLock lock];
 
-    v11 = [(HUNearbyLiveListenController *)self updateBlocks];
-    v12 = [v11 count];
+    updateBlocks = [(HUNearbyLiveListenController *)self updateBlocks];
+    v12 = [updateBlocks count];
 
-    v13 = [(HUNearbyLiveListenController *)self updateBlocks];
-    [v13 addObject:v9];
+    updateBlocks2 = [(HUNearbyLiveListenController *)self updateBlocks];
+    [updateBlocks2 addObject:v9];
 
-    v14 = [(HUNearbyLiveListenController *)self updateLock];
-    [v14 unlock];
+    updateLock2 = [(HUNearbyLiveListenController *)self updateLock];
+    [updateLock2 unlock];
 
-    v15 = [HUListenerHelper listenerHelperWithListener:v6 andDelegate:self];
+    v15 = [HUListenerHelper listenerHelperWithListener:listenerCopy andDelegate:self];
     if (!v12)
     {
-      v16 = [(HUNearbyLiveListenController *)self deviceImplementation];
-      [v16 startObserving];
+      deviceImplementation = [(HUNearbyLiveListenController *)self deviceImplementation];
+      [deviceImplementation startObserving];
     }
 
-    v17 = [(HUNearbyLiveListenController *)self state];
+    state = [(HUNearbyLiveListenController *)self state];
     [(HUNearbyLiveListenController *)self audioLevel];
     v19 = v18;
-    v20 = [(HUNearbyLiveListenController *)self isPlayingBack];
-    v21 = [(HUNearbyLiveListenController *)self transcription];
-    (*(aBlock + 2))(aBlock, v17, v20, v21, v19);
+    isPlayingBack = [(HUNearbyLiveListenController *)self isPlayingBack];
+    transcription = [(HUNearbyLiveListenController *)self transcription];
+    (*(aBlock + 2))(aBlock, state, isPlayingBack, transcription, v19);
   }
 
   else
   {
-    [(HUNearbyLiveListenController *)self removeListener:v6];
+    [(HUNearbyLiveListenController *)self removeListener:listenerCopy];
   }
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
-  v5 = [(HUNearbyLiveListenController *)self updateLock];
-  [v5 lock];
+  listenerCopy = listener;
+  updateLock = [(HUNearbyLiveListenController *)self updateLock];
+  [updateLock lock];
 
-  v6 = [(HUNearbyLiveListenController *)self updateBlocks];
+  updateBlocks = [(HUNearbyLiveListenController *)self updateBlocks];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __47__HUNearbyLiveListenController_removeListener___block_invoke;
   v14[3] = &unk_1E85CC0C8;
-  v15 = v4;
-  v7 = v4;
-  v8 = [v6 indexesOfObjectsPassingTest:v14];
+  v15 = listenerCopy;
+  v7 = listenerCopy;
+  v8 = [updateBlocks indexesOfObjectsPassingTest:v14];
 
   if (![v8 count])
   {
-    v13 = [(HUNearbyLiveListenController *)self updateLock];
-    [v13 unlock];
+    updateLock2 = [(HUNearbyLiveListenController *)self updateLock];
+    [updateLock2 unlock];
     goto LABEL_5;
   }
 
-  v9 = [(HUNearbyLiveListenController *)self updateBlocks];
-  [v9 removeObjectsAtIndexes:v8];
+  updateBlocks2 = [(HUNearbyLiveListenController *)self updateBlocks];
+  [updateBlocks2 removeObjectsAtIndexes:v8];
 
-  v10 = [(HUNearbyLiveListenController *)self updateBlocks];
-  v11 = [v10 count];
+  updateBlocks3 = [(HUNearbyLiveListenController *)self updateBlocks];
+  v11 = [updateBlocks3 count];
 
-  v12 = [(HUNearbyLiveListenController *)self updateLock];
-  [v12 unlock];
+  updateLock3 = [(HUNearbyLiveListenController *)self updateLock];
+  [updateLock3 unlock];
 
   if (!v11)
   {
-    v13 = [(HUNearbyLiveListenController *)self deviceImplementation];
-    [v13 stopObserving];
+    updateLock2 = [(HUNearbyLiveListenController *)self deviceImplementation];
+    [updateLock2 stopObserving];
 LABEL_5:
   }
 }
@@ -173,22 +173,22 @@ BOOL __47__HUNearbyLiveListenController_removeListener___block_invoke(uint64_t a
 
 - (void)startLiveListen
 {
-  v2 = [(HUNearbyLiveListenController *)self deviceImplementation];
-  [v2 startLiveListen];
+  deviceImplementation = [(HUNearbyLiveListenController *)self deviceImplementation];
+  [deviceImplementation startLiveListen];
 }
 
 - (void)stopLiveListen
 {
-  v2 = [(HUNearbyLiveListenController *)self deviceImplementation];
-  [v2 stopLiveListen];
+  deviceImplementation = [(HUNearbyLiveListenController *)self deviceImplementation];
+  [deviceImplementation stopLiveListen];
 }
 
 - (void)startLiveListenRewind
 {
   if (![(HUNearbyLiveListenController *)self isPlayingBack])
   {
-    v3 = [(HUNearbyLiveListenController *)self deviceImplementation];
-    [v3 startLiveListenRewind];
+    deviceImplementation = [(HUNearbyLiveListenController *)self deviceImplementation];
+    [deviceImplementation startLiveListenRewind];
   }
 }
 
@@ -196,8 +196,8 @@ BOOL __47__HUNearbyLiveListenController_removeListener___block_invoke(uint64_t a
 {
   if ([(HUNearbyLiveListenController *)self isPlayingBack])
   {
-    v3 = [(HUNearbyLiveListenController *)self deviceImplementation];
-    [v3 stopLiveListenRewind];
+    deviceImplementation = [(HUNearbyLiveListenController *)self deviceImplementation];
+    [deviceImplementation stopLiveListenRewind];
   }
 }
 

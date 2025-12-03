@@ -12,41 +12,41 @@
 
 - (uint64_t)usageType
 {
-  v1 = IOHIDElementGetProperty(a1, @"UsageType");
+  v1 = IOHIDElementGetProperty(self, @"UsageType");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 integerValue];
+    integerValue = [v1 integerValue];
   }
 
   else
   {
-    v2 = 0;
+    integerValue = 0;
   }
 
-  return v2;
+  return integerValue;
 }
 
 - (uint64_t)usageTypeIndex
 {
-  v1 = IOHIDElementGetProperty(a1, @"UsageTypeIndex");
+  v1 = IOHIDElementGetProperty(self, @"UsageTypeIndex");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 integerValue];
+    integerValue = [v1 integerValue];
   }
 
   else
   {
-    v2 = -1;
+    integerValue = -1;
   }
 
-  return v2;
+  return integerValue;
 }
 
 - (id)calibrationMin
 {
-  Property = IOHIDElementGetProperty(a1, @"CalibrationMin");
+  Property = IOHIDElementGetProperty(self, @"CalibrationMin");
   if (Property)
   {
     v2 = Property;
@@ -67,7 +67,7 @@
 
 - (id)calibrationMax
 {
-  Property = IOHIDElementGetProperty(a1, @"CalibrationMax");
+  Property = IOHIDElementGetProperty(self, @"CalibrationMax");
   if (Property)
   {
     v2 = Property;
@@ -95,10 +95,10 @@
   if (v6)
   {
     v7 = [v4 substringToIndex:1];
-    v8 = [v7 lowercaseString];
+    lowercaseString = [v7 lowercaseString];
 
-    v9 = [v4 stringByReplacingCharactersInRange:0 withString:{1, v8}];
-    v10 = [a1 valueForKey:v9];
+    v9 = [v4 stringByReplacingCharactersInRange:0 withString:{1, lowercaseString}];
+    v10 = [self valueForKey:v9];
   }
 
   else
@@ -118,14 +118,14 @@
   if (v6)
   {
     v7 = [v4 substringToIndex:1];
-    v8 = [v7 lowercaseString];
+    lowercaseString = [v7 lowercaseString];
 
-    v9 = [v4 stringByReplacingCharactersInRange:0 withString:{1, v8}];
+    v9 = [v4 stringByReplacingCharactersInRange:0 withString:{1, lowercaseString}];
 
     v4 = v9;
   }
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &off_1F4E3E920;
   v10 = objc_msgSendSuper2(&v12, sel_valueForKey_, v4);
 
@@ -135,13 +135,13 @@
 - (id)debugDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &off_1F4E3E920;
   v3 = objc_msgSendSuper2(&v9, sel_debugDescription);
-  v4 = [a1 elementCookie];
-  v5 = [a1 type];
-  v6 = [a1 name];
-  v7 = [v2 stringWithFormat:@"%@ {\n\t elementCookie = %u\n\t type = %zi\n\t name = %@\n\t usageType = %zd\n\t usageTypeIndex = %zd\n\t usage = %zd\n\t usagePage = %zd\n}", v3, v4, v5, v6, objc_msgSend(a1, "usageType"), objc_msgSend(a1, "usageTypeIndex"), objc_msgSend(a1, "usage"), objc_msgSend(a1, "usagePage")];
+  elementCookie = [self elementCookie];
+  type = [self type];
+  name = [self name];
+  v7 = [v2 stringWithFormat:@"%@ {\n\t elementCookie = %u\n\t type = %zi\n\t name = %@\n\t usageType = %zd\n\t usageTypeIndex = %zd\n\t usage = %zd\n\t usagePage = %zd\n}", v3, elementCookie, type, name, objc_msgSend(self, "usageType"), objc_msgSend(self, "usageTypeIndex"), objc_msgSend(self, "usage"), objc_msgSend(self, "usagePage")];
 
   return v7;
 }

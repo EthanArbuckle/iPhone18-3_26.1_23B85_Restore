@@ -1,14 +1,14 @@
 @interface VNSaliencyImageObservation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)boundingBox;
 - (CGRect)narrowedBoundingBox;
-- (VNSaliencyImageObservation)initWithCoder:(id)a3;
-- (VNSaliencyImageObservation)initWithOriginatingRequestSpecifier:(id)a3 rawSaliencyImage:(__CVBuffer *)a4 originalImageSize:(CGSize)a5 salientObjectBoundingBoxes:(id)a6;
-- (__CVBuffer)createSaliencyImageAndReturnError:(id *)a3;
+- (VNSaliencyImageObservation)initWithCoder:(id)coder;
+- (VNSaliencyImageObservation)initWithOriginatingRequestSpecifier:(id)specifier rawSaliencyImage:(__CVBuffer *)image originalImageSize:(CGSize)size salientObjectBoundingBoxes:(id)boxes;
+- (__CVBuffer)createSaliencyImageAndReturnError:(id *)error;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
 - (void)_computeBoundingBoxes;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNSaliencyImageObservation
@@ -55,11 +55,11 @@
 
 - (void)_computeBoundingBoxes
 {
-  v3 = [(VNPixelBufferObservation *)self pixelBuffer];
+  pixelBuffer = [(VNPixelBufferObservation *)self pixelBuffer];
   LODWORD(v4) = 1022739087;
   LODWORD(v5) = 4.0;
   LODWORD(v6) = 1022739087;
-  v12 = [VNHeatMapUtilities boundingBoxesFromFloat32PixelBuffer:v3 thresholds:&unk_1F19C1F90 relativeToMaximum:1 applySmoothing:1 originalImageSize:0 sigmaX:self->_mOriginalImageSize.width sigmaY:self->_mOriginalImageSize.height nStd:v4 error:v6, v5];
+  v12 = [VNHeatMapUtilities boundingBoxesFromFloat32PixelBuffer:pixelBuffer thresholds:&unk_1F19C1F90 relativeToMaximum:1 applySmoothing:1 originalImageSize:0 sigmaX:self->_mOriginalImageSize.width sigmaY:self->_mOriginalImageSize.height nStd:v4 error:v6, v5];
   if ([v12 count] == 2)
   {
     v7 = [v12 objectAtIndexedSubscript:0];
@@ -81,11 +81,11 @@
   }
 }
 
-- (__CVBuffer)createSaliencyImageAndReturnError:(id *)a3
+- (__CVBuffer)createSaliencyImageAndReturnError:(id *)error
 {
-  v3 = [(VNPixelBufferObservation *)self pixelBuffer];
+  pixelBuffer = [(VNPixelBufferObservation *)self pixelBuffer];
 
-  return CVPixelBufferRetain(v3);
+  return CVPixelBufferRetain(pixelBuffer);
 }
 
 - (unint64_t)hash
@@ -108,12 +108,12 @@
   return *&height ^ __ROR8__(*&width, 51) ^ __ROR8__(v3, 51);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = VNSaliencyImageObservation;
-  v5 = [(VNPixelBufferObservation *)&v7 isEqual:v4]&& self->_mOriginalImageSize.height == v4[19] && self->_mOriginalImageSize.width == v4[18];
+  v5 = [(VNPixelBufferObservation *)&v7 isEqual:equalCopy]&& self->_mOriginalImageSize.height == equalCopy[19] && self->_mOriginalImageSize.width == equalCopy[18];
 
   return v5;
 }
@@ -122,17 +122,17 @@
 {
   v10.receiver = self;
   v10.super_class = VNSaliencyImageObservation;
-  v3 = [(VNPixelBufferObservation *)&v10 vn_cloneObject];
-  v4 = v3;
-  if (v3)
+  vn_cloneObject = [(VNPixelBufferObservation *)&v10 vn_cloneObject];
+  v4 = vn_cloneObject;
+  if (vn_cloneObject)
   {
     size = self->_mSalientRegion.size;
-    *(v3 + 160) = self->_mSalientRegion.origin;
-    *(v3 + 176) = size;
+    *(vn_cloneObject + 160) = self->_mSalientRegion.origin;
+    *(vn_cloneObject + 176) = size;
     v6 = self->_mHighlySalientRegion.size;
-    *(v3 + 192) = self->_mHighlySalientRegion.origin;
-    *(v3 + 208) = v6;
-    *(v3 + 144) = self->_mOriginalImageSize;
+    *(vn_cloneObject + 192) = self->_mHighlySalientRegion.origin;
+    *(vn_cloneObject + 208) = v6;
+    *(vn_cloneObject + 144) = self->_mOriginalImageSize;
     v7 = [(NSArray *)self->_mSalientObjects copy];
     v8 = v4[29];
     v4[29] = v7;
@@ -141,38 +141,38 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v6.receiver = self;
   v6.super_class = VNSaliencyImageObservation;
-  [(VNPixelBufferObservation *)&v6 encodeWithCoder:v4];
-  [v4 encodeObject:&unk_1F19C1300 forKey:@"VNSaliencyImageObservation"];
-  [v4 encodeDouble:@"OISW" forKey:self->_mOriginalImageSize.width];
-  [v4 encodeDouble:@"OISH" forKey:self->_mOriginalImageSize.height];
-  [v4 encodeObject:self->_mSalientObjects forKey:@"SOBJ"];
-  [v4 encodeDouble:@"BBOX" forKey:self->_mSalientRegion.origin.x];
-  [v4 encodeDouble:@"BBOY" forKey:self->_mSalientRegion.origin.y];
-  [v4 encodeDouble:@"BBSW" forKey:self->_mSalientRegion.size.width];
-  [v4 encodeDouble:@"BBSH" forKey:self->_mSalientRegion.size.height];
+  [(VNPixelBufferObservation *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:&unk_1F19C1300 forKey:@"VNSaliencyImageObservation"];
+  [coderCopy encodeDouble:@"OISW" forKey:self->_mOriginalImageSize.width];
+  [coderCopy encodeDouble:@"OISH" forKey:self->_mOriginalImageSize.height];
+  [coderCopy encodeObject:self->_mSalientObjects forKey:@"SOBJ"];
+  [coderCopy encodeDouble:@"BBOX" forKey:self->_mSalientRegion.origin.x];
+  [coderCopy encodeDouble:@"BBOY" forKey:self->_mSalientRegion.origin.y];
+  [coderCopy encodeDouble:@"BBSW" forKey:self->_mSalientRegion.size.width];
+  [coderCopy encodeDouble:@"BBSH" forKey:self->_mSalientRegion.size.height];
   self = (self + 192);
-  [v4 encodeDouble:@"NBBOX" forKey:*&self->super.super.super.isa];
-  [v4 encodeDouble:@"NBBOY" forKey:*&self->super.super._originatingRequestSpecifier];
-  [v4 encodeDouble:@"NBBSW" forKey:*&self->super.super._confidence];
-  [v4 encodeDouble:@"NBBSH" forKey:*&self->super.super._uuid];
+  [coderCopy encodeDouble:@"NBBOX" forKey:*&self->super.super.super.isa];
+  [coderCopy encodeDouble:@"NBBOY" forKey:*&self->super.super._originatingRequestSpecifier];
+  [coderCopy encodeDouble:@"NBBSW" forKey:*&self->super.super._confidence];
+  [coderCopy encodeDouble:@"NBBSH" forKey:*&self->super.super._uuid];
   objc_autoreleasePoolPop(v5);
 }
 
-- (VNSaliencyImageObservation)initWithCoder:(id)a3
+- (VNSaliencyImageObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = VNSaliencyImageObservation;
-  v5 = [(VNPixelBufferObservation *)&v25 initWithCoder:v4];
+  v5 = [(VNPixelBufferObservation *)&v25 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"VNSaliencyImageObservation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"VNSaliencyImageObservation"];
     if ([v6 intValue] != 1)
     {
 
@@ -180,33 +180,33 @@
       goto LABEL_6;
     }
 
-    [v4 decodeDoubleForKey:@"OISW"];
+    [coderCopy decodeDoubleForKey:@"OISW"];
     v8 = v7;
-    [v4 decodeDoubleForKey:@"OISH"];
+    [coderCopy decodeDoubleForKey:@"OISH"];
     v5->_mOriginalImageSize.width = v8;
     v5->_mOriginalImageSize.height = v9;
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"SOBJ"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"SOBJ"];
     mSalientObjects = v5->_mSalientObjects;
     v5->_mSalientObjects = v13;
 
-    [v4 decodeDoubleForKey:@"BBOX"];
+    [coderCopy decodeDoubleForKey:@"BBOX"];
     v5->_mSalientRegion.origin.x = v15;
-    [v4 decodeDoubleForKey:@"BBOY"];
+    [coderCopy decodeDoubleForKey:@"BBOY"];
     v5->_mSalientRegion.origin.y = v16;
-    [v4 decodeDoubleForKey:@"BBSW"];
+    [coderCopy decodeDoubleForKey:@"BBSW"];
     v5->_mSalientRegion.size.width = v17;
-    [v4 decodeDoubleForKey:@"BBSH"];
+    [coderCopy decodeDoubleForKey:@"BBSH"];
     v5->_mSalientRegion.size.height = v18;
-    [v4 decodeDoubleForKey:@"NBBOX"];
+    [coderCopy decodeDoubleForKey:@"NBBOX"];
     v5->_mHighlySalientRegion.origin.x = v19;
-    [v4 decodeDoubleForKey:@"NBBOY"];
+    [coderCopy decodeDoubleForKey:@"NBBOY"];
     v5->_mHighlySalientRegion.origin.y = v20;
-    [v4 decodeDoubleForKey:@"NBBSW"];
+    [coderCopy decodeDoubleForKey:@"NBBSW"];
     v5->_mHighlySalientRegion.size.width = v21;
-    [v4 decodeDoubleForKey:@"NBBSH"];
+    [coderCopy decodeDoubleForKey:@"NBBSH"];
     v5->_mHighlySalientRegion.size.height = v22;
   }
 
@@ -216,15 +216,15 @@ LABEL_6:
   return v23;
 }
 
-- (VNSaliencyImageObservation)initWithOriginatingRequestSpecifier:(id)a3 rawSaliencyImage:(__CVBuffer *)a4 originalImageSize:(CGSize)a5 salientObjectBoundingBoxes:(id)a6
+- (VNSaliencyImageObservation)initWithOriginatingRequestSpecifier:(id)specifier rawSaliencyImage:(__CVBuffer *)image originalImageSize:(CGSize)size salientObjectBoundingBoxes:(id)boxes
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
-  v12 = a6;
+  height = size.height;
+  width = size.width;
+  specifierCopy = specifier;
+  boxesCopy = boxes;
   v21.receiver = self;
   v21.super_class = VNSaliencyImageObservation;
-  v13 = [(VNPixelBufferObservation *)&v21 initWithOriginatingRequestSpecifier:v11 featureName:0 CVPixelBuffer:a4];
+  v13 = [(VNPixelBufferObservation *)&v21 initWithOriginatingRequestSpecifier:specifierCopy featureName:0 CVPixelBuffer:image];
   v14 = v13;
   if (v13)
   {
@@ -237,7 +237,7 @@ LABEL_6:
     v17 = v15[1];
     v13->_mHighlySalientRegion.origin = *v15;
     v13->_mHighlySalientRegion.size = v17;
-    v18 = [v12 copy];
+    v18 = [boxesCopy copy];
     mSalientObjects = v14->_mSalientObjects;
     v14->_mSalientObjects = v18;
   }

@@ -1,31 +1,31 @@
 @interface GTBulkDataUploadDescriptor
-- (GTBulkDataUploadDescriptor)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTBulkDataUploadDescriptor)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTBulkDataUploadDescriptor
 
-- (GTBulkDataUploadDescriptor)initWithCoder:(id)a3
+- (GTBulkDataUploadDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = GTBulkDataUploadDescriptor;
   v5 = [(GTBulkDataUploadDescriptor *)&v7 init];
   if (v5)
   {
-    v5->_sizeHint = [v4 decodeInt64ForKey:@"sizeHint"];
-    v5->_compressionAlgorithm = [v4 decodeIntegerForKey:@"compressionAlgorithm"];
+    v5->_sizeHint = [coderCopy decodeInt64ForKey:@"sizeHint"];
+    v5->_compressionAlgorithm = [coderCopy decodeIntegerForKey:@"compressionAlgorithm"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sizeHint = self->_sizeHint;
-  v5 = a3;
-  [v5 encodeInt64:sizeHint forKey:@"sizeHint"];
-  [v5 encodeInteger:self->_compressionAlgorithm forKey:@"compressionAlgorithm"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:sizeHint forKey:@"sizeHint"];
+  [coderCopy encodeInteger:self->_compressionAlgorithm forKey:@"compressionAlgorithm"];
 }
 
 @end

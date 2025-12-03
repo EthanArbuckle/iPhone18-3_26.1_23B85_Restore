@@ -1,43 +1,43 @@
 @interface PUPinchTracker
 - (PUPinchTracker)init;
-- (PUPinchTracker)initWithInitialCenter:(CGPoint)a3 initialSize:(CGSize)a4 initialTransform:(CGAffineTransform *)a5;
-- (void)_transformPinchLocation1:(CGPoint)a3 location2:(CGPoint)a4 intoCenter:(CGPoint *)a5 distance:(double *)a6 angle:(double *)a7;
-- (void)setPinchLocation1:(CGPoint)a3 location2:(CGPoint)a4;
+- (PUPinchTracker)initWithInitialCenter:(CGPoint)center initialSize:(CGSize)size initialTransform:(CGAffineTransform *)transform;
+- (void)_transformPinchLocation1:(CGPoint)location1 location2:(CGPoint)location2 intoCenter:(CGPoint *)center distance:(double *)distance angle:(double *)angle;
+- (void)setPinchLocation1:(CGPoint)location1 location2:(CGPoint)location2;
 @end
 
 @implementation PUPinchTracker
 
-- (void)_transformPinchLocation1:(CGPoint)a3 location2:(CGPoint)a4 intoCenter:(CGPoint *)a5 distance:(double *)a6 angle:(double *)a7
+- (void)_transformPinchLocation1:(CGPoint)location1 location2:(CGPoint)location2 intoCenter:(CGPoint *)center distance:(double *)distance angle:(double *)angle
 {
-  y = a4.y;
-  x = a4.x;
-  v12 = a3.y;
-  v13 = a3.x;
-  v14 = a4.x - a3.x;
-  v15 = a4.y - a3.y;
-  v16 = hypot(a4.x - a3.x, a4.y - a3.y);
+  y = location2.y;
+  x = location2.x;
+  v12 = location1.y;
+  v13 = location1.x;
+  v14 = location2.x - location1.x;
+  v15 = location2.y - location1.y;
+  v16 = hypot(location2.x - location1.x, location2.y - location1.y);
   v17 = atan2(v15, v14);
-  if (a5)
+  if (center)
   {
-    a5->x = x * 0.5 + v13 * 0.5;
-    a5->y = y * 0.5 + v12 * 0.5;
+    center->x = x * 0.5 + v13 * 0.5;
+    center->y = y * 0.5 + v12 * 0.5;
   }
 
-  if (a6)
+  if (distance)
   {
-    *a6 = v16;
+    *distance = v16;
   }
 
-  if (a7)
+  if (angle)
   {
-    *a7 = v17;
+    *angle = v17;
   }
 }
 
-- (void)setPinchLocation1:(CGPoint)a3 location2:(CGPoint)a4
+- (void)setPinchLocation1:(CGPoint)location1 location2:(CGPoint)location2
 {
-  y = a3.y;
-  x = a3.x;
+  y = location1.y;
+  x = location1.x;
   v61[2] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E695EFF8];
   if (!self->_didSetInitialPinchValues)
@@ -46,9 +46,9 @@
     v9 = self->_initialCenter.y;
     v10 = x - v8;
     v11 = y - v9;
-    v50 = a4;
-    v12 = a4.x - v8;
-    v13 = a4.y - v9;
+    location2Copy = location2;
+    v12 = location2.x - v8;
+    v13 = location2.y - v9;
     a = self->_initialTransformInverse.a;
     b = self->_initialTransformInverse.b;
     c = self->_initialTransformInverse.c;
@@ -77,13 +77,13 @@
     [(PUPinchTracker *)self _transformPinchLocation1:&self->_initialPinchCenter location2:&self->_initialPinchDistance intoCenter:&self->_initialPinchAngle distance:self->_initialTransform.tx + v21 * self->_initialTransform.c + self->_initialTransform.a * v20 + self->_initialCenter.x angle:self->_initialTransform.ty + v21 * self->_initialTransform.d + self->_initialTransform.b * v20 + self->_initialCenter.y, self->_initialTransform.tx + self->_initialTransform.c * v23 + self->_initialTransform.a * v22 + self->_initialCenter.x, self->_initialTransform.ty + self->_initialTransform.d * v23 + self->_initialTransform.b * v22 + self->_initialCenter.y];
     self->_initialPinchOrigin = vaddq_f64(*&self->_initialTransformInverse.tx, vmlaq_n_f64(vmulq_n_f64(*&self->_initialTransformInverse.c, self->_initialPinchCenter.y - self->_initialCenter.y), *&self->_initialTransformInverse.a, self->_initialPinchCenter.x - self->_initialCenter.x));
     self->_didSetInitialPinchValues = 1;
-    a4 = v50;
+    location2 = location2Copy;
   }
 
   v60 = *v7;
   v58 = 0.0;
   v59 = 0.0;
-  [(PUPinchTracker *)self _transformPinchLocation1:&v60 location2:&v59 intoCenter:&v58 distance:x angle:y, a4.x, a4.y];
+  [(PUPinchTracker *)self _transformPinchLocation1:&v60 location2:&v59 intoCenter:&v58 distance:x angle:y, location2.x, location2.y];
   v26 = *&v60 - self->_initialPinchCenter.x;
   v27 = *(&v60 + 1) - self->_initialPinchCenter.y;
   v28 = self->_initialTransformInverse.tx + v27 * self->_initialTransformInverse.c + self->_initialTransformInverse.a * v26;
@@ -153,27 +153,27 @@
   angle = 0.0;
   PUDecomposeTransform(v52, &t2, &initialSize.width, &initialSize.height, &angle);
   CGAffineTransformMakeRotation(&v56, angle);
-  v47 = [(PUPinchTracker *)self updateHandler];
+  updateHandler = [(PUPinchTracker *)self updateHandler];
 
-  if (v47)
+  if (updateHandler)
   {
-    v48 = [(PUPinchTracker *)self updateHandler];
-    v49 = v48[2];
+    updateHandler2 = [(PUPinchTracker *)self updateHandler];
+    v49 = updateHandler2[2];
     t1 = v56;
-    v49(v48, &t1, t2.a, t2.b, initialSize.width, initialSize.height);
+    v49(updateHandler2, &t1, t2.a, t2.b, initialSize.width, initialSize.height);
   }
 }
 
-- (PUPinchTracker)initWithInitialCenter:(CGPoint)a3 initialSize:(CGSize)a4 initialTransform:(CGAffineTransform *)a5
+- (PUPinchTracker)initWithInitialCenter:(CGPoint)center initialSize:(CGSize)size initialTransform:(CGAffineTransform *)transform
 {
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  x = a3.x;
-  if (a4.width == 0.0 || a4.height == 0.0)
+  height = size.height;
+  width = size.width;
+  y = center.y;
+  x = center.x;
+  if (size.width == 0.0 || size.height == 0.0)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PUPinchTracker.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"initialSize.width != 0.0f && initialSize.height != 0.0f"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPinchTracker.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"initialSize.width != 0.0f && initialSize.height != 0.0f"}];
   }
 
   v22.receiver = self;
@@ -186,15 +186,15 @@
     *(v12 + 2) = y;
     *(v12 + 3) = width;
     *(v12 + 4) = height;
-    v14 = *&a5->a;
-    v15 = *&a5->c;
-    *(v12 + 72) = *&a5->tx;
+    v14 = *&transform->a;
+    v15 = *&transform->c;
+    *(v12 + 72) = *&transform->tx;
     *(v12 + 56) = v15;
     *(v12 + 40) = v14;
-    v16 = *&a5->c;
-    *&v20.a = *&a5->a;
+    v16 = *&transform->c;
+    *&v20.a = *&transform->a;
     *&v20.c = v16;
-    *&v20.tx = *&a5->tx;
+    *&v20.tx = *&transform->tx;
     CGAffineTransformInvert(&v21, &v20);
     v17 = *&v21.c;
     *(v13 + 88) = *&v21.a;

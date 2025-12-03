@@ -38,7 +38,7 @@
 
 - (void)sqliteBind:()BRCSerializationAdditions index:
 {
-  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a1 requiringSecureCoding:1 error:0];
+  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
   v6 = v7;
   sqlite3_bind_blob(a3, a4, [v7 bytes], objc_msgSend(v7, "length"), 0xFFFFFFFFFFFFFFFFLL);
 }
@@ -98,8 +98,8 @@
   v13 = a4;
   if (a5)
   {
-    v14 = [a1 encryptedValues];
-    v15 = [v14 objectForKeyedSubscript:v13];
+    encryptedValues = [self encryptedValues];
+    v15 = [encryptedValues objectForKeyedSubscript:v13];
 
     if (v15)
     {
@@ -109,7 +109,7 @@
 
   else
   {
-    v15 = [a1 objectForKeyedSubscript:v13];
+    v15 = [self objectForKeyedSubscript:v13];
     if (v15)
     {
       goto LABEL_6;
@@ -118,7 +118,7 @@
 
   if ((a7 & 1) == 0)
   {
-    [CKRecord(BRCSerializationAdditions) _deserializeValue:a8 forKey:a1 encrypted:v13 expectClass:&v23 allowNil:? errorDescription:?];
+    [CKRecord(BRCSerializationAdditions) _deserializeValue:a8 forKey:self encrypted:v13 expectClass:&v23 allowNil:? errorDescription:?];
     a8 = v23;
     goto LABEL_11;
   }
@@ -129,9 +129,9 @@ LABEL_6:
     if (a8)
     {
       v18 = MEMORY[0x277CCACA8];
-      v19 = [a1 recordType];
-      v20 = [a1 recordID];
-      v21 = [v18 stringWithFormat:@"invalid value for key '%@' in %@ record %@: %@ %@", v13, v19, v20, objc_opt_class(), v15];
+      recordType = [self recordType];
+      recordID = [self recordID];
+      v21 = [v18 stringWithFormat:@"invalid value for key '%@' in %@ record %@: %@ %@", v13, recordType, recordID, objc_opt_class(), v15];
       v22 = *a8;
       *a8 = v21;
 
@@ -160,7 +160,7 @@ LABEL_11:
   v14 = a7;
   v54 = 0;
   v55[0] = 0;
-  v15 = [a1 _deserializeValue:&v54 forKey:@"encryptedBasename" encrypted:1 expectClass:objc_opt_class() allowNil:0 errorDescription:v55];
+  v15 = [self _deserializeValue:&v54 forKey:@"encryptedBasename" encrypted:1 expectClass:objc_opt_class() allowNil:0 errorDescription:v55];
   v16 = v54;
   if ((v15 & 1) == 0)
   {
@@ -192,7 +192,7 @@ LABEL_11:
   }
 
   v53 = 0;
-  v17 = [a1 _deserializeValue:&v53 forKey:@"bounceNo" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:v55];
+  v17 = [self _deserializeValue:&v53 forKey:@"bounceNo" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:v55];
   v18 = v53;
   if ((v17 & 1) == 0)
   {
@@ -223,7 +223,7 @@ LABEL_11:
   }
 
   v52 = 0;
-  v19 = [a1 _deserializeValue:&v52 forKey:@"extension" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:v55];
+  v19 = [self _deserializeValue:&v52 forKey:@"extension" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:v55];
   v20 = v52;
   if ((v19 & 1) == 0)
   {
@@ -300,10 +300,10 @@ LABEL_35:
   if (a3)
   {
     v36 = MEMORY[0x277CCACA8];
-    v37 = [v25 fileSystemRepresentation];
+    fileSystemRepresentation = [v25 fileSystemRepresentation];
     v38 = v36;
     a6 = v34;
-    v39 = [v38 br_pathWithFileSystemRepresentation:v37];
+    v39 = [v38 br_pathWithFileSystemRepresentation:fileSystemRepresentation];
     v40 = *a3;
     *a3 = v39;
   }
@@ -311,10 +311,10 @@ LABEL_35:
   if (a4)
   {
     v41 = MEMORY[0x277CCACA8];
-    v42 = [v24 fileSystemRepresentation];
+    fileSystemRepresentation2 = [v24 fileSystemRepresentation];
     v43 = v41;
     a6 = v34;
-    v44 = [v43 br_pathWithFileSystemRepresentation:v42];
+    v44 = [v43 br_pathWithFileSystemRepresentation:fileSystemRepresentation2];
     v45 = *a4;
     *a4 = v44;
   }
@@ -329,10 +329,10 @@ LABEL_35:
     if (v20)
     {
       v46 = MEMORY[0x277CCACA8];
-      v47 = [v20 fileSystemRepresentation];
+      fileSystemRepresentation3 = [v20 fileSystemRepresentation];
       v48 = v46;
       a6 = v34;
-      v49 = [v48 br_pathWithFileSystemRepresentation:v47];
+      v49 = [v48 br_pathWithFileSystemRepresentation:fileSystemRepresentation3];
     }
 
     else
@@ -363,17 +363,17 @@ LABEL_50:
   v9 = [v8 db];
   [v9 assertOnQueue];
 
-  v10 = [v8 session];
+  session = [v8 session];
 
-  v11 = 0;
+  dictionary = 0;
   v114 = 0;
   if (!a3)
   {
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
   v113 = 0;
-  v12 = [a1 _deserializeValue:&v113 forKey:@"parent" encrypted:0 expectClass:objc_opt_class() allowNil:0 errorDescription:&v114];
+  v12 = [self _deserializeValue:&v113 forKey:@"parent" encrypted:0 expectClass:objc_opt_class() allowNil:0 errorDescription:&v114];
   v13 = v113;
   v14 = v13;
   if (v12)
@@ -381,7 +381,7 @@ LABEL_50:
     v14 = v13;
 
     v112 = 0;
-    v15 = [a1 _deserializeValue:&v112 forKey:@"target" encrypted:0 expectClass:objc_opt_class() allowNil:0 errorDescription:&v114];
+    v15 = [self _deserializeValue:&v112 forKey:@"target" encrypted:0 expectClass:objc_opt_class() allowNil:0 errorDescription:&v114];
     v16 = v112;
     v17 = v16;
     if (v15)
@@ -389,7 +389,7 @@ LABEL_50:
       v17 = v16;
 
       v111 = 0;
-      v18 = [a1 _deserializeValue:&v111 forKey:@"favoriteRank" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v114];
+      v18 = [self _deserializeValue:&v111 forKey:@"favoriteRank" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v114];
       v19 = v111;
       v20 = v19;
       if (v18)
@@ -397,14 +397,14 @@ LABEL_50:
         v21 = v19;
 
         v110 = 0;
-        v22 = [a1 _deserializeValue:&v110 forKey:@"lastOpenTime" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v114];
+        v22 = [self _deserializeValue:&v110 forKey:@"lastOpenTime" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v114];
         v23 = v110;
         v24 = v23;
         if ((v22 & 1) == 0)
         {
-          if (v11)
+          if (dictionary)
           {
-            [v11 setObject:v114 forKeyedSubscript:@"lastOpenTime"];
+            [dictionary setObject:v114 forKeyedSubscript:@"lastOpenTime"];
           }
 
           else if (a5)
@@ -428,14 +428,14 @@ LABEL_50:
         v106 = v23;
 
         v109 = 0;
-        v25 = [a1 _deserializeValue:&v109 forKey:@"finderTags" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v114];
+        v25 = [self _deserializeValue:&v109 forKey:@"finderTags" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v114];
         v26 = v109;
         v27 = v26;
         if ((v25 & 1) == 0)
         {
-          if (v11)
+          if (dictionary)
           {
-            [v11 setObject:v114 forKeyedSubscript:@"finderTags"];
+            [dictionary setObject:v114 forKeyedSubscript:@"finderTags"];
           }
 
           else if (a5)
@@ -457,9 +457,9 @@ LABEL_50:
 
         v20 = v26;
 
-        if ([v11 count])
+        if ([dictionary count])
         {
-          v28 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CFACB0] code:1001 userInfo:v11];
+          v28 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CFACB0] code:1001 userInfo:dictionary];
           if (v28)
           {
             v29 = brc_bread_crumbs();
@@ -500,10 +500,10 @@ LABEL_55:
 
         v101 = v21;
         obja = [v14 recordID];
-        v39 = [obja zoneID];
-        v94 = [a1 recordID];
-        v40 = [v94 zoneID];
-        v97 = [v39 isEqual:v40];
+        zoneID = [obja zoneID];
+        recordID = [self recordID];
+        zoneID2 = [recordID zoneID];
+        v97 = [zoneID isEqual:zoneID2];
 
         if ((v97 & 1) == 0)
         {
@@ -511,13 +511,13 @@ LABEL_55:
           v49 = brc_default_log();
           if (os_log_type_enabled(v49, OS_LOG_TYPE_FAULT))
           {
-            v100 = [v14 recordID];
-            v87 = [v100 zoneID];
-            v96 = [a1 recordID];
-            [v96 zoneID];
+            recordID2 = [v14 recordID];
+            zoneID3 = [recordID2 zoneID];
+            recordID3 = [self recordID];
+            [recordID3 zoneID];
             v88 = objb = v48;
             *buf = 138412802;
-            v116 = v87;
+            v116 = zoneID3;
             v117 = 2112;
             v118 = v88;
             v119 = 2112;
@@ -529,11 +529,11 @@ LABEL_55:
 
           v50 = MEMORY[0x277CCA9B8];
           v99 = *MEMORY[0x277CFACB0];
-          objc = [a1 recordID];
-          v51 = [objc zoneID];
-          v52 = [v14 recordID];
-          v53 = [v52 zoneID];
-          v54 = [v50 br_errorWithDomain:v99 code:1005 description:{@"Records zoneID %@ must be equal to parents zoneID %@", v51, v53}];
+          objc = [self recordID];
+          zoneID4 = [objc zoneID];
+          recordID4 = [v14 recordID];
+          zoneID5 = [recordID4 zoneID];
+          v54 = [v50 br_errorWithDomain:v99 code:1005 description:{@"Records zoneID %@ must be equal to parents zoneID %@", zoneID4, zoneID5}];
 
           v55 = v54;
           if (v54)
@@ -573,18 +573,18 @@ LABEL_55:
 
         obj = objc_opt_new();
         [obj setType:3];
-        v41 = [v17 recordID];
-        v42 = [v41 zoneID];
+        recordID5 = [v17 recordID];
+        zoneID6 = [recordID5 zoneID];
 
-        v43 = [v17 recordID];
-        v98 = [v43 recordName];
+        recordID6 = [v17 recordID];
+        recordName = [recordID6 recordName];
 
-        v95 = v42;
-        v44 = [objc_alloc(MEMORY[0x277CFAE60]) initWithRecordZoneID:v42];
+        v95 = zoneID6;
+        v44 = [objc_alloc(MEMORY[0x277CFAE60]) initWithRecordZoneID:zoneID6];
         v92 = v44;
         if ([v44 isPrivate])
         {
-          v45 = [v10 getOrReserveLibraryRowIDForLibrary:v44];
+          v45 = [session getOrReserveLibraryRowIDForLibrary:v44];
         }
 
         else
@@ -592,41 +592,41 @@ LABEL_55:
           v45 = 0;
         }
 
-        v59 = [v17 recordID];
-        v60 = [v10 zoneAppRetriever];
+        recordID7 = [v17 recordID];
+        zoneAppRetriever = [session zoneAppRetriever];
         v91 = v45;
-        v61 = [v59 brc_itemIDOfTargetWithLibraryRowID:v45 zoneAppRetriever:v60];
+        v61 = [recordID7 brc_itemIDOfTargetWithLibraryRowID:v45 zoneAppRetriever:zoneAppRetriever];
 
         v93 = v61;
-        if ([v98 hasPrefix:@"documentContent/"])
+        if ([recordName hasPrefix:@"documentContent/"])
         {
           v90 = MEMORY[0x277CCACA8];
-          v62 = [v95 zoneName];
-          v63 = [v95 ownerName];
+          zoneName = [v95 zoneName];
+          ownerName = [v95 ownerName];
           v64 = v61;
-          v65 = v63;
+          itemIDString = ownerName;
           v66 = v64;
         }
 
         else
         {
-          if ([v98 hasPrefix:@"documentStructure/"])
+          if ([recordName hasPrefix:@"documentStructure/"])
           {
             v71 = MEMORY[0x277CCACA8];
-            v70 = [v95 zoneName];
-            v65 = [v61 itemIDString];
-            v72 = [v71 stringWithFormat:@"%@/%@", v70, v65];
+            zoneName2 = [v95 zoneName];
+            itemIDString = [v61 itemIDString];
+            v72 = [v71 stringWithFormat:@"%@/%@", zoneName2, itemIDString];
             v73 = obj[8];
             obj[8] = v72;
 
             goto LABEL_74;
           }
 
-          if (![v98 hasPrefix:@"directory/"])
+          if (![recordName hasPrefix:@"directory/"])
           {
-            v70 = brc_bread_crumbs();
-            v65 = brc_default_log();
-            if (os_log_type_enabled(v65, OS_LOG_TYPE_FAULT))
+            zoneName2 = brc_bread_crumbs();
+            itemIDString = brc_default_log();
+            if (os_log_type_enabled(itemIDString, OS_LOG_TYPE_FAULT))
             {
               [CKRecord(BRCSerializationAdditions) deserializeAliasInfo:serverZone:error:];
             }
@@ -635,25 +635,25 @@ LABEL_55:
           }
 
           v90 = MEMORY[0x277CCACA8];
-          v62 = [v95 zoneName];
-          v65 = [v95 ownerName];
+          zoneName = [v95 zoneName];
+          itemIDString = [v95 ownerName];
           v66 = v93;
         }
 
-        v67 = [v66 itemIDString];
-        v68 = [v90 stringWithFormat:@"%@:%@/%@", v62, v65, v67];
+        itemIDString2 = [v66 itemIDString];
+        v68 = [v90 stringWithFormat:@"%@:%@/%@", zoneName, itemIDString, itemIDString2];
         v69 = obj[8];
         obj[8] = v68;
 
-        v70 = v62;
+        zoneName2 = zoneName;
 LABEL_74:
 
-        v74 = [v14 recordID];
-        v75 = [v10 zoneAppRetriever];
-        v76 = [v74 brc_itemIDWithZoneAppRetriever:v75];
+        recordID8 = [v14 recordID];
+        zoneAppRetriever2 = [session zoneAppRetriever];
+        v76 = [recordID8 brc_itemIDWithZoneAppRetriever:zoneAppRetriever2];
         [obj setParentID:v76];
 
-        v77 = [[BRFieldCKInfo alloc] initWithRecord:a1];
+        v77 = [[BRFieldCKInfo alloc] initWithRecord:self];
         [obj setCkInfo:v77];
 
         v78 = v106;
@@ -670,14 +670,14 @@ LABEL_74:
         }
 
         [obj setFinderTags:v79];
-        v80 = [a1 encryptedValues];
-        v81 = [v80 objectForKeyedSubscript:@"encryptedBasename"];
+        encryptedValues = [self encryptedValues];
+        v81 = [encryptedValues objectForKeyedSubscript:@"encryptedBasename"];
 
         if (v81)
         {
           v107 = 0;
           v108 = 0;
-          v82 = [a1 deserializeFilename:&v108 basename:0 bounceno:0 extension:0 userInfo:v11 error:&v107];
+          v82 = [self deserializeFilename:&v108 basename:0 bounceno:0 extension:0 userInfo:dictionary error:&v107];
           v83 = v107;
           if ((v82 & 1) == 0)
           {
@@ -710,9 +710,9 @@ LABEL_86:
         goto LABEL_38;
       }
 
-      if (v11)
+      if (dictionary)
       {
-        [v11 setObject:v114 forKeyedSubscript:@"favoriteRank"];
+        [dictionary setObject:v114 forKeyedSubscript:@"favoriteRank"];
       }
 
       else if (a5)
@@ -730,9 +730,9 @@ LABEL_86:
 
     else
     {
-      if (v11)
+      if (dictionary)
       {
-        [v11 setObject:v114 forKeyedSubscript:@"target"];
+        [dictionary setObject:v114 forKeyedSubscript:@"target"];
       }
 
       else if (a5)
@@ -751,9 +751,9 @@ LABEL_86:
 
   else
   {
-    if (v11)
+    if (dictionary)
     {
-      [v11 setObject:v114 forKeyedSubscript:@"parent"];
+      [dictionary setObject:v114 forKeyedSubscript:@"parent"];
     }
 
     else if (a5)
@@ -778,9 +778,9 @@ LABEL_38:
 
 - (void)_deserializeRootSharingOptions:()BRCSerializationAdditions
 {
-  v5 = [a1 share];
+  share = [self share];
 
-  if (!v5)
+  if (!share)
   {
     v11 = 0;
     if (!a3)
@@ -791,8 +791,8 @@ LABEL_38:
     goto LABEL_8;
   }
 
-  v6 = [a1 encryptedPublicSharingKey];
-  if (!v6 || (v7 = v6, [a1 routingKey], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
+  encryptedPublicSharingKey = [self encryptedPublicSharingKey];
+  if (!encryptedPublicSharingKey || (v7 = encryptedPublicSharingKey, [self routingKey], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
   {
     v9 = brc_bread_crumbs();
     v10 = brc_default_log();
@@ -814,23 +814,23 @@ LABEL_8:
 {
   v25 = 0;
   v26 = 0;
-  [a1 _deserializeRootSharingOptions:&v25];
-  v7 = 0;
+  [self _deserializeRootSharingOptions:&v25];
+  dictionary = 0;
   if (!a3)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
   v24 = 0;
   v8 = *MEMORY[0x277CBC148];
-  v9 = [a1 _deserializeValue:&v24 forKey:*MEMORY[0x277CBC148] encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v26];
+  v9 = [self _deserializeValue:&v24 forKey:*MEMORY[0x277CBC148] encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v26];
   v10 = v24;
   v11 = v10;
   if ((v9 & 1) == 0)
   {
-    if (v7)
+    if (dictionary)
     {
-      [v7 setObject:v26 forKeyedSubscript:v8];
+      [dictionary setObject:v26 forKeyedSubscript:v8];
     }
 
     else if (a4)
@@ -854,7 +854,7 @@ LABEL_8:
     v25 |= 1uLL;
     v23 = 0;
     v12 = *MEMORY[0x277CBC140];
-    v13 = [a1 _deserializeValue:&v23 forKey:*MEMORY[0x277CBC140] encrypted:0 expectClass:objc_opt_class() allowNil:0 errorDescription:&v26];
+    v13 = [self _deserializeValue:&v23 forKey:*MEMORY[0x277CBC140] encrypted:0 expectClass:objc_opt_class() allowNil:0 errorDescription:&v26];
     v14 = v23;
     v15 = v14;
     if (v13)
@@ -867,9 +867,9 @@ LABEL_8:
       goto LABEL_11;
     }
 
-    if (v7)
+    if (dictionary)
     {
-      [v7 setObject:v26 forKeyedSubscript:v12];
+      [dictionary setObject:v26 forKeyedSubscript:v12];
     }
 
     else if (a4)
@@ -892,7 +892,7 @@ LABEL_19:
 
   v15 = 0;
 LABEL_11:
-  v16 = [v7 count];
+  v16 = [dictionary count];
   v17 = v16 == 0;
   if (a3 && !v16)
   {
@@ -910,28 +910,28 @@ LABEL_20:
   v257 = *MEMORY[0x277D85DE8];
   v11 = a5;
   v226 = a6;
-  v12 = [v226 serverDB];
-  [v12 assertOnQueue];
+  serverDB = [v226 serverDB];
+  [serverDB assertOnQueue];
 
-  v13 = 0;
+  dictionary = 0;
   v248 = 0;
   if (!a3)
   {
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v230 = v13;
-  v14 = [a1 recordID];
-  v15 = [v14 zoneID];
-  v16 = [v15 ownerName];
+  v230 = dictionary;
+  recordID = [self recordID];
+  zoneID = [recordID zoneID];
+  ownerName = [zoneID ownerName];
   v17 = *MEMORY[0x277CBBF28];
-  v18 = [v16 isEqualToString:*MEMORY[0x277CBBF28]];
+  v18 = [ownerName isEqualToString:*MEMORY[0x277CBBF28]];
 
   v19 = v230;
   v247 = 0;
-  v20 = [a1 recordID];
-  v21 = [v20 recordName];
-  v22 = [v21 hasPrefix:@"directory/"];
+  recordID2 = [self recordID];
+  recordName = [recordID2 recordName];
+  v22 = [recordName hasPrefix:@"directory/"];
 
   v220 = v22;
   v227 = v11;
@@ -943,9 +943,9 @@ LABEL_20:
   else
   {
     v24 = a7;
-    v25 = [a1 recordID];
-    v26 = [v25 recordName];
-    v27 = [v26 hasPrefix:@"documentStructure/"];
+    recordID3 = [self recordID];
+    recordName2 = [recordID3 recordName];
+    v27 = [recordName2 hasPrefix:@"documentStructure/"];
 
     if (v27)
     {
@@ -954,9 +954,9 @@ LABEL_20:
 
     else
     {
-      v28 = [a1 recordID];
-      v29 = [v28 recordName];
-      v30 = [v29 hasPrefix:@"finderBookmark/"];
+      recordID4 = [self recordID];
+      recordName3 = [recordID4 recordName];
+      v30 = [recordName3 hasPrefix:@"finderBookmark/"];
 
       if (v30)
       {
@@ -965,16 +965,16 @@ LABEL_20:
 
       else
       {
-        v31 = [a1 recordID];
-        v32 = [v31 recordName];
-        v33 = [v32 hasPrefix:@"symlink/"];
+        recordID5 = [self recordID];
+        recordName4 = [recordID5 recordName];
+        v33 = [recordName4 hasPrefix:@"symlink/"];
 
         if ((v33 & 1) == 0)
         {
           v79 = MEMORY[0x277CCACA8];
-          v80 = [a1 recordID];
-          v81 = [a1 recordType];
-          v82 = [v79 stringWithFormat:@"invalid record type for record %@: %@", v80, v81];
+          recordID6 = [self recordID];
+          recordType = [self recordType];
+          v82 = [v79 stringWithFormat:@"invalid record type for record %@: %@", recordID6, recordType];
           v248 = v82;
 
           if (v230)
@@ -1019,11 +1019,11 @@ LABEL_20:
 
   else
   {
-    [a1 deserializeFilename:&v247 basename:0 bounceno:0 extension:0 userInfo:v19 error:a7];
+    [self deserializeFilename:&v247 basename:0 bounceno:0 extension:0 userInfo:v19 error:a7];
   }
 
   v246 = 0;
-  v34 = [a1 _deserializeValue:&v246 forKey:@"parent" encrypted:0 expectClass:objc_opt_class() allowNil:v18 ^ 1u errorDescription:&v248];
+  v34 = [self _deserializeValue:&v246 forKey:@"parent" encrypted:0 expectClass:objc_opt_class() allowNil:v18 ^ 1u errorDescription:&v248];
   v218 = v246;
   if ((v34 & 1) == 0)
   {
@@ -1068,7 +1068,7 @@ LABEL_20:
   }
 
   v245 = 0;
-  v35 = [a1 _deserializeValue:&v245 forKey:@"exactBirthtime" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
+  v35 = [self _deserializeValue:&v245 forKey:@"exactBirthtime" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
   v36 = v245;
   if ((v35 & 1) == 0)
   {
@@ -1105,7 +1105,7 @@ LABEL_20:
   }
 
   v244 = 0;
-  v38 = [a1 _deserializeValue:&v244 forKey:@"birthtime" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
+  v38 = [self _deserializeValue:&v244 forKey:@"birthtime" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
   v39 = v244;
   if ((v38 & 1) == 0)
   {
@@ -1158,10 +1158,10 @@ LABEL_51:
 LABEL_20:
   v214 = a7;
   v215 = v37;
-  v40 = [a1 recordID];
-  v41 = [v40 zoneID];
-  v42 = [v41 ownerName];
-  v43 = [v42 isEqualToString:v17];
+  recordID7 = [self recordID];
+  zoneID2 = [recordID7 zoneID];
+  ownerName2 = [zoneID2 ownerName];
+  v43 = [ownerName2 isEqualToString:v17];
 
   if (!v43)
   {
@@ -1172,7 +1172,7 @@ LABEL_20:
   }
 
   v243 = 0;
-  v44 = [a1 _deserializeValue:&v243 forKey:@"lastOpenTime" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
+  v44 = [self _deserializeValue:&v243 forKey:@"lastOpenTime" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
   v45 = v243;
   if ((v44 & 1) == 0)
   {
@@ -1215,7 +1215,7 @@ LABEL_20:
   }
 
   v242 = 0;
-  v46 = [a1 _deserializeValue:&v242 forKey:@"favoriteRank" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
+  v46 = [self _deserializeValue:&v242 forKey:@"favoriteRank" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
   v47 = v242;
   if ((v46 & 1) == 0)
   {
@@ -1260,7 +1260,7 @@ LABEL_98:
   }
 
   v241 = 0;
-  v48 = [a1 _deserializeValue:&v241 forKey:@"finderTags" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
+  v48 = [self _deserializeValue:&v241 forKey:@"finderTags" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
   v49 = v241;
   if ((v48 & 1) == 0)
   {
@@ -1307,7 +1307,7 @@ LABEL_98:
   v211 = v49;
 LABEL_36:
   v240 = 0;
-  v63 = [a1 _deserializeValue:&v240 forKey:@"hiddenExt" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
+  v63 = [self _deserializeValue:&v240 forKey:@"hiddenExt" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
   v64 = v240;
   v212 = v47;
   if ((v63 & 1) == 0)
@@ -1355,7 +1355,7 @@ LABEL_36:
   v65 = v23;
   v210 = v64;
   v239 = 0;
-  v66 = [a1 _deserializeValue:&v239 forKey:@"xattr" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
+  v66 = [self _deserializeValue:&v239 forKey:@"xattr" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
   v67 = v239;
   if ((v66 & 1) == 0)
   {
@@ -1399,7 +1399,7 @@ LABEL_36:
   }
 
   v238 = 0;
-  v68 = [a1 _deserializeValue:&v238 forKey:@"xattrSignature" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
+  v68 = [self _deserializeValue:&v238 forKey:@"xattrSignature" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
   v207 = v67;
   v208 = v238;
   if ((v68 & 1) == 0)
@@ -1438,7 +1438,7 @@ LABEL_36:
   }
 
   v237 = 0;
-  v69 = [a1 _deserializeValue:&v237 forKey:@"restorePath" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
+  v69 = [self _deserializeValue:&v237 forKey:@"restorePath" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
   v229 = v237;
   if ((v69 & 1) == 0)
   {
@@ -1476,7 +1476,7 @@ LABEL_36:
   }
 
   v236 = 0;
-  v70 = [a1 _deserializeValue:&v236 forKey:@"restoreParent" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
+  v70 = [self _deserializeValue:&v236 forKey:@"restoreParent" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
   v71 = v236;
   if ((v70 & 1) == 0)
   {
@@ -1523,7 +1523,7 @@ LABEL_126:
 
   v225 = v71;
   v235 = 0;
-  v72 = [a1 _deserializeValue:&v235 forKey:@"countMetrics" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
+  v72 = [self _deserializeValue:&v235 forKey:@"countMetrics" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
   v228 = v235;
   if ((v72 & 1) == 0)
   {
@@ -1559,7 +1559,7 @@ LABEL_126:
     goto LABEL_126;
   }
 
-  v73 = v208;
+  signature = v208;
   if (v208)
   {
     v74 = 0x277CCA000uLL;
@@ -1570,11 +1570,11 @@ LABEL_126:
     v74 = 0x277CCA000;
     if (v67)
     {
-      v73 = [v67 signature];
+      signature = [v67 signature];
     }
   }
 
-  v209 = v73;
+  v209 = signature;
   v206 = v65;
   if (!v215)
   {
@@ -1604,8 +1604,8 @@ LABEL_126:
 LABEL_139:
 
     v106 = *(v74 + 2992);
-    v107 = [a1 creationDate];
-    [v107 timeIntervalSince1970];
+    creationDate = [self creationDate];
+    [creationDate timeIntervalSince1970];
     if (!v108)
     {
       time(0);
@@ -1625,7 +1625,7 @@ LABEL_139:
 
   v234 = 0;
   v118 = *(v74 + 2992);
-  v119 = [a1 _deserializeValue:&v234 forKey:@"writable" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
+  v119 = [self _deserializeValue:&v234 forKey:@"writable" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
   v120 = v234;
   v121 = v74;
   v111 = v120;
@@ -1633,7 +1633,7 @@ LABEL_139:
   {
     v233 = 0;
     v122 = *(v121 + 2992);
-    v123 = [a1 _deserializeValue:&v233 forKey:@"executable" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
+    v123 = [self _deserializeValue:&v233 forKey:@"executable" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
     v124 = v233;
     if ((v123 & 1) == 0)
     {
@@ -1733,12 +1733,12 @@ LABEL_34:
     v205 = v110;
     if (v218)
     {
-      v126 = [v218 recordID];
-      [v126 zoneID];
+      recordID8 = [v218 recordID];
+      [recordID8 zoneID];
       v128 = v127 = v111;
-      v129 = [a1 recordID];
-      v130 = [v129 zoneID];
-      v222 = [v128 isEqual:v130];
+      recordID9 = [self recordID];
+      zoneID3 = [recordID9 zoneID];
+      v222 = [v128 isEqual:zoneID3];
 
       v111 = v127;
       v114 = v211;
@@ -1750,17 +1750,17 @@ LABEL_34:
         v137 = brc_default_log();
         if (os_log_type_enabled(v137, OS_LOG_TYPE_FAULT))
         {
-          v199 = [a1 recordType];
-          v200 = [v218 recordID];
-          v201 = [v200 zoneID];
-          v224 = [a1 recordID];
-          v202 = [v224 zoneID];
+          recordType2 = [self recordType];
+          recordID10 = [v218 recordID];
+          zoneID4 = [recordID10 zoneID];
+          recordID11 = [self recordID];
+          zoneID5 = [recordID11 zoneID];
           *buf = 138413058;
-          v250 = v199;
+          v250 = recordType2;
           v251 = 2112;
-          v252 = v201;
+          v252 = zoneID4;
           v253 = 2112;
-          v254 = v202;
+          v254 = zoneID5;
           v255 = 2112;
           v256 = v136;
           _os_log_fault_impl(&dword_223E7A000, v137, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: %@ parent ref zoneID %@ must be equal to record's zoneID %@!%@", buf, 0x2Au);
@@ -1768,11 +1768,11 @@ LABEL_34:
 
         v138 = MEMORY[0x277CCA9B8];
         v139 = *MEMORY[0x277CFACB0];
-        v140 = [a1 recordID];
-        v141 = [v140 zoneID];
-        v142 = [v218 recordID];
-        v143 = [v142 zoneID];
-        v144 = [v138 br_errorWithDomain:v139 code:1005 description:{@"Records zoneID %@ must be equal to parents zoneID %@", v141, v143}];
+        recordID12 = [self recordID];
+        zoneID6 = [recordID12 zoneID];
+        recordID13 = [v218 recordID];
+        zoneID7 = [recordID13 zoneID];
+        v144 = [v138 br_errorWithDomain:v139 code:1005 description:{@"Records zoneID %@ must be equal to parents zoneID %@", zoneID6, zoneID7}];
 
         if (v144)
         {
@@ -1825,7 +1825,7 @@ LABEL_173:
 
     else
     {
-      v148 = [v111 BOOLValue];
+      bOOLValue = [v111 BOOLValue];
       if ([v110 BOOLValue])
       {
         v149 = 2;
@@ -1836,7 +1836,7 @@ LABEL_173:
         v149 = 0;
       }
 
-      v131 = v149 | v148;
+      v131 = v149 | bOOLValue;
     }
 
     [obj setMode:v131];
@@ -1847,17 +1847,17 @@ LABEL_173:
       if ([v227 isDocumentsFolder])
       {
         v150 = [BRCItemID alloc];
-        v151 = [v227 appLibraryRowID];
-        v152 = [(BRCItemID *)v150 _initAsLibraryRootWithAppLibraryRowID:v151];
+        appLibraryRowID = [v227 appLibraryRowID];
+        zoneAppRetriever = [(BRCItemID *)v150 _initAsLibraryRootWithAppLibraryRowID:appLibraryRowID];
         v153 = obj;
-        [obj setParentID:v152];
+        [obj setParentID:zoneAppRetriever];
       }
 
       else
       {
-        v151 = [v218 recordID];
-        v152 = [v226 zoneAppRetriever];
-        v160 = [v151 brc_itemIDWithZoneAppRetriever:v152];
+        appLibraryRowID = [v218 recordID];
+        zoneAppRetriever = [v226 zoneAppRetriever];
+        v160 = [appLibraryRowID brc_itemIDWithZoneAppRetriever:zoneAppRetriever];
         v153 = obj;
         [obj setParentID:v160];
       }
@@ -1866,14 +1866,14 @@ LABEL_173:
     else
     {
       v154 = objc_alloc(MEMORY[0x277CFAE60]);
-      v155 = [a1 recordID];
-      v156 = [v155 zoneID];
-      v151 = [v154 initWithRecordZoneID:v156];
+      recordID14 = [self recordID];
+      zoneID8 = [recordID14 zoneID];
+      appLibraryRowID = [v154 initWithRecordZoneID:zoneID8];
 
-      v152 = [v226 sharedClientZoneByMangledID:v151];
+      zoneAppRetriever = [v226 sharedClientZoneByMangledID:appLibraryRowID];
       v157 = [BRCItemID alloc];
-      v158 = [v152 dbRowID];
-      v159 = [(BRCItemID *)v157 _initAsZoneRootWithZoneRowID:v158];
+      dbRowID = [zoneAppRetriever dbRowID];
+      v159 = [(BRCItemID *)v157 _initAsZoneRootWithZoneRowID:dbRowID];
       v153 = obj;
       [obj setParentID:v159];
     }
@@ -1891,9 +1891,9 @@ LABEL_173:
     else
     {
       v232 = 0;
-      v162 = [a1 _deserializeValue:&v232 forKey:@"ftags" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
+      v162 = [self _deserializeValue:&v232 forKey:@"ftags" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v248];
       v163 = v232;
-      v164 = v163;
+      recordName5 = v163;
       if ((v162 & 1) == 0)
       {
         if (v230)
@@ -1922,24 +1922,24 @@ LABEL_173:
 
       if ([v163 length])
       {
-        [obj setFinderTags:v164];
+        [obj setFinderTags:recordName5];
       }
 
       v161 = v207;
       v153 = obj;
     }
 
-    v165 = [[BRFieldCKInfo alloc] initWithRecord:a1];
+    v165 = [[BRFieldCKInfo alloc] initWithRecord:self];
     [v153 setCkInfo:v165];
 
     [v153 setXattrSignature:v209];
-    v166 = [v161 fileURL];
+    fileURL = [v161 fileURL];
 
-    if (v166)
+    if (fileURL)
     {
-      v167 = [v226 xattrStager];
-      v168 = [v161 fileURL];
-      [v167 saveXattrAtURL:v168 forSignature:v209 error:0];
+      xattrStager = [v226 xattrStager];
+      fileURL2 = [v161 fileURL];
+      [xattrStager saveXattrAtURL:fileURL2 forSignature:v209 error:0];
     }
 
     if ([v229 length])
@@ -1955,27 +1955,27 @@ LABEL_173:
       [obj setTrashPutBackPath:0];
     }
 
-    v171 = [v225 recordID];
-    v172 = [v226 zoneAppRetriever];
-    v173 = [v171 brc_itemIDWithZoneAppRetriever:v172];
+    recordID15 = [v225 recordID];
+    zoneAppRetriever2 = [v226 zoneAppRetriever];
+    v173 = [recordID15 brc_itemIDWithZoneAppRetriever:zoneAppRetriever2];
     [v170 setTrashPutBackParentID:v173];
 
-    v174 = [a1 creatorUserRecordID];
-    v164 = [v174 recordName];
+    creatorUserRecordID = [self creatorUserRecordID];
+    recordName5 = [creatorUserRecordID recordName];
 
-    v175 = [v226 cachedCurrentUserRecordName];
+    cachedCurrentUserRecordName = [v226 cachedCurrentUserRecordName];
     v231 = 0;
-    v176 = [a1 brc_lastModifiedUserRecordNameWithCurrentUserRecordName:v175 personNameComponents:&v231];
+    v176 = [self brc_lastModifiedUserRecordNameWithCurrentUserRecordName:cachedCurrentUserRecordName personNameComponents:&v231];
     v177 = v231;
 
-    if (([v176 isEqualToString:v164]& 1) == 0)
+    if (([v176 isEqualToString:recordName5]& 1) == 0)
     {
 
       v177 = 0;
     }
 
-    v178 = [v226 serverReadWriteDatabaseFacade];
-    v179 = [v178 getOrCreateUserKeyForOwnerName:v164];
+    serverReadWriteDatabaseFacade = [v226 serverReadWriteDatabaseFacade];
+    v179 = [serverReadWriteDatabaseFacade getOrCreateUserKeyForOwnerName:recordName5];
     [obj setCreatorRowID:v179];
 
     v180 = v177;
@@ -2032,8 +2032,8 @@ LABEL_225:
       goto LABEL_51;
     }
 
-    v181 = [v226 serverReadWriteDatabaseFacade];
-    v182 = [v181 userIdentityForName:v164];
+    serverReadWriteDatabaseFacade2 = [v226 serverReadWriteDatabaseFacade];
+    v182 = [serverReadWriteDatabaseFacade2 userIdentityForName:recordName5];
     v183 = v182;
     if (v182)
     {
@@ -2047,20 +2047,20 @@ LABEL_225:
 
     v187 = v184;
 
-    v188 = [(BRFieldUserIdentity *)v187 nameComponents];
-    if (v188)
+    nameComponents = [(BRFieldUserIdentity *)v187 nameComponents];
+    if (nameComponents)
     {
-      v189 = v188;
-      v190 = [(BRFieldUserIdentity *)v187 nameComponents];
-      if (([v190 br_shouldOverwriteExistingName] & 1) == 0)
+      serverDB2 = nameComponents;
+      nameComponents2 = [(BRFieldUserIdentity *)v187 nameComponents];
+      if (([nameComponents2 br_shouldOverwriteExistingName] & 1) == 0)
       {
 
         goto LABEL_213;
       }
 
-      v223 = [v180 br_shouldOverwriteExistingName];
+      br_shouldOverwriteExistingName = [v180 br_shouldOverwriteExistingName];
 
-      if (v223)
+      if (br_shouldOverwriteExistingName)
       {
 LABEL_214:
 
@@ -2069,8 +2069,8 @@ LABEL_214:
     }
 
     [(BRFieldUserIdentity *)v187 setNameComponents:v180];
-    v189 = [v226 serverDB];
-    [v189 execute:{@"UPDATE users SET user_plist = %@ WHERE user_name = %@", v187, v164}];
+    serverDB2 = [v226 serverDB];
+    [serverDB2 execute:{@"UPDATE users SET user_plist = %@ WHERE user_name = %@", v187, recordName5}];
 LABEL_213:
 
     goto LABEL_214;
@@ -2122,7 +2122,7 @@ LABEL_52:
 {
   v16 = 0;
   v17 = 0;
-  v6 = [a1 _deserializeValue:&v16 forKey:@"targetPath" encrypted:1 expectClass:objc_opt_class() allowNil:0 errorDescription:&v17];
+  v6 = [self _deserializeValue:&v16 forKey:@"targetPath" encrypted:1 expectClass:objc_opt_class() allowNil:0 errorDescription:&v17];
   v7 = v16;
   v8 = v7;
   if ((v6 & 1) == 0)
@@ -2174,7 +2174,7 @@ LABEL_10:
   v13 = a7;
   v35 = 0;
   v36 = 0;
-  v14 = [a1 _deserializeValue:&v35 forKey:@"exactSize" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v36];
+  v14 = [self _deserializeValue:&v35 forKey:@"exactSize" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v36];
   v15 = v35;
   v16 = v15;
   if ((v14 & 1) == 0)
@@ -2203,7 +2203,7 @@ LABEL_10:
   if (!v15)
   {
     v34 = 0;
-    v18 = [a1 _deserializeValue:&v34 forKey:@"size" encrypted:0 expectClass:objc_opt_class() allowNil:a6 errorDescription:&v36];
+    v18 = [self _deserializeValue:&v34 forKey:@"size" encrypted:0 expectClass:objc_opt_class() allowNil:a6 errorDescription:&v36];
     v16 = v34;
     if ((v18 & 1) == 0)
     {
@@ -2235,7 +2235,7 @@ LABEL_30:
   }
 
   v33 = 0;
-  v19 = [a1 _deserializeValue:&v33 forKey:@"exactMtime" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v36];
+  v19 = [self _deserializeValue:&v33 forKey:@"exactMtime" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v36];
   v20 = v33;
   v21 = v20;
   if ((v19 & 1) == 0)
@@ -2263,7 +2263,7 @@ LABEL_30:
   if (!v20)
   {
     v32 = 0;
-    v22 = [a1 _deserializeValue:&v32 forKey:@"mtime" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v36];
+    v22 = [self _deserializeValue:&v32 forKey:@"mtime" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v36];
     v21 = v32;
     if ((v22 & 1) == 0)
     {
@@ -2318,12 +2318,12 @@ LABEL_31:
 {
   v172 = *MEMORY[0x277D85DE8];
   v14 = a6;
-  v15 = [v14 session];
-  v16 = 0;
+  session = [v14 session];
+  dictionary = 0;
   v161 = 0;
   if (!a3)
   {
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
   v159 = 0;
@@ -2331,36 +2331,36 @@ LABEL_31:
   v157 = 0;
   v158 = 0;
   v156 = 0;
-  [a1 deserializeFilename:&v160 basename:&v159 bounceno:&v157 extension:&v158 userInfo:v16 error:a8];
+  [self deserializeFilename:&v160 basename:&v159 bounceno:&v157 extension:&v158 userInfo:dictionary error:a8];
   v154 = 0;
   v155 = 0;
-  v17 = [a1 _deserializeModifiedTime:&v155 size:&v154 hasExactSize:&v156 outOfBandUpload:a7 userInfo:v16 error:a8];
+  v17 = [self _deserializeModifiedTime:&v155 size:&v154 hasExactSize:&v156 outOfBandUpload:a7 userInfo:dictionary error:a8];
   v143 = v155;
   v142 = v154;
   if (v17)
   {
-    v139 = v15;
-    v18 = [a1 recordID];
-    v19 = [v18 recordName];
-    v20 = [v19 hasPrefix:@"finderBookmark/"];
+    v139 = session;
+    recordID = [self recordID];
+    recordName = [recordID recordName];
+    v20 = [recordName hasPrefix:@"finderBookmark/"];
 
     if (v20)
     {
       v153 = 0;
-      v21 = [a1 _deserializeValue:&v153 forKey:@"bookmarkContent" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v161];
+      v21 = [self _deserializeValue:&v153 forKey:@"bookmarkContent" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v161];
       v22 = v153;
       if ((v21 & 1) == 0)
       {
         v138 = v22;
-        if (v16)
+        if (dictionary)
         {
-          [v16 setObject:v161 forKeyedSubscript:@"bookmarkContent"];
-          v15 = v139;
+          [dictionary setObject:v161 forKeyedSubscript:@"bookmarkContent"];
+          session = v139;
         }
 
         else
         {
-          v15 = v139;
+          session = v139;
           if (a8)
           {
             *a8 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:1001 description:{@"%@", v161}];
@@ -2374,7 +2374,7 @@ LABEL_31:
           [CKRecord(BRCSerializationAdditions) deserializeFilename:? basename:? bounceno:? extension:? userInfo:? error:?];
         }
 
-        v27 = 0;
+        signature = 0;
         v29 = 0;
         v141 = 0;
         v24 = 0;
@@ -2391,20 +2391,20 @@ LABEL_31:
     else
     {
       v152 = 0;
-      v36 = [a1 _deserializeValue:&v152 forKey:@"fileContent" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v161];
+      v36 = [self _deserializeValue:&v152 forKey:@"fileContent" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v161];
       v136 = v152;
       if ((v36 & 1) == 0)
       {
-        if (v16)
+        if (dictionary)
         {
-          [v16 setObject:v161 forKeyedSubscript:@"fileContent"];
-          v15 = v139;
+          [dictionary setObject:v161 forKeyedSubscript:@"fileContent"];
+          session = v139;
           v40 = v136;
         }
 
         else
         {
-          v15 = v139;
+          session = v139;
           v40 = v136;
           if (a8)
           {
@@ -2419,7 +2419,7 @@ LABEL_31:
           [CKRecord(BRCSerializationAdditions) deserializeFilename:? basename:? bounceno:? extension:? userInfo:? error:?];
         }
 
-        v27 = 0;
+        signature = 0;
         v29 = 0;
         v141 = 0;
         v24 = 0;
@@ -2431,20 +2431,20 @@ LABEL_31:
       }
 
       v151 = 0;
-      v37 = [a1 _deserializeValue:&v151 forKey:@"pkgSignature" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v161];
+      v37 = [self _deserializeValue:&v151 forKey:@"pkgSignature" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v161];
       v141 = v151;
       if ((v37 & 1) == 0)
       {
-        if (v16)
+        if (dictionary)
         {
-          [v16 setObject:v161 forKeyedSubscript:@"pkgSignature"];
-          v15 = v139;
+          [dictionary setObject:v161 forKeyedSubscript:@"pkgSignature"];
+          session = v139;
           v34 = v136;
         }
 
         else
         {
-          v15 = v139;
+          session = v139;
           v34 = v136;
           if (a8)
           {
@@ -2459,7 +2459,7 @@ LABEL_31:
           [CKRecord(BRCSerializationAdditions) deserializeFilename:? basename:? bounceno:? extension:? userInfo:? error:?];
         }
 
-        v27 = 0;
+        signature = 0;
         v29 = 0;
         v24 = 0;
         v35 = 0;
@@ -2470,21 +2470,21 @@ LABEL_31:
       }
 
       v150 = 0;
-      v38 = [a1 _deserializeValue:&v150 forKey:@"thumb1024" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v161];
+      v38 = [self _deserializeValue:&v150 forKey:@"thumb1024" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v161];
       v39 = v150;
       if ((v38 & 1) == 0)
       {
         v138 = v39;
-        if (v16)
+        if (dictionary)
         {
-          [v16 setObject:v161 forKeyedSubscript:@"thumb1024"];
-          v15 = v139;
+          [dictionary setObject:v161 forKeyedSubscript:@"thumb1024"];
+          session = v139;
           v34 = v136;
         }
 
         else
         {
-          v15 = v139;
+          session = v139;
           v34 = v136;
           if (a8)
           {
@@ -2499,7 +2499,7 @@ LABEL_31:
           [CKRecord(BRCSerializationAdditions) deserializeFilename:? basename:? bounceno:? extension:? userInfo:? error:?];
         }
 
-        v27 = 0;
+        signature = 0;
         v29 = 0;
         v24 = 0;
         v137 = 0;
@@ -2510,14 +2510,14 @@ LABEL_31:
     }
 
     v149 = 0;
-    v23 = [a1 _deserializeValue:&v149 forKey:@"xattr" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v161];
+    v23 = [self _deserializeValue:&v149 forKey:@"xattr" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v161];
     v24 = v149;
     if ((v23 & 1) == 0)
     {
-      v15 = v139;
-      if (v16)
+      session = v139;
+      if (dictionary)
       {
-        [v16 setObject:v161 forKeyedSubscript:@"xattr"];
+        [dictionary setObject:v161 forKeyedSubscript:@"xattr"];
         v34 = v136;
       }
 
@@ -2537,7 +2537,7 @@ LABEL_31:
         [CKRecord(BRCSerializationAdditions) deserializeFilename:? basename:? bounceno:? extension:? userInfo:? error:?];
       }
 
-      v27 = 0;
+      signature = 0;
       v29 = 0;
       v35 = 0;
       v138 = v24;
@@ -2547,15 +2547,15 @@ LABEL_31:
 
     v135 = a4;
     v148 = 0;
-    v25 = [a1 _deserializeValue:&v148 forKey:@"xattrSignature" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v161];
+    v25 = [self _deserializeValue:&v148 forKey:@"xattrSignature" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v161];
     v26 = v148;
-    v27 = v26;
-    v15 = v139;
+    signature = v26;
+    session = v139;
     if ((v25 & 1) == 0)
     {
-      if (v16)
+      if (dictionary)
       {
-        [v16 setObject:v161 forKeyedSubscript:@"xattrSignature"];
+        [dictionary setObject:v161 forKeyedSubscript:@"xattrSignature"];
         v34 = v136;
       }
 
@@ -2577,31 +2577,31 @@ LABEL_31:
 
       v29 = 0;
       v35 = 0;
-      v138 = v27;
-      v27 = 0;
+      v138 = signature;
+      signature = 0;
       goto LABEL_75;
     }
 
     if (!v26 && v24)
     {
-      v27 = [v24 signature];
+      signature = [v24 signature];
     }
 
     v147 = 0;
-    v28 = [a1 _deserializeValue:&v147 forKey:@"boundaryKey" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v161];
+    v28 = [self _deserializeValue:&v147 forKey:@"boundaryKey" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v161];
     v29 = v147;
     if ((v28 & 1) == 0)
     {
-      if (v16)
+      if (dictionary)
       {
-        [v16 setObject:v161 forKeyedSubscript:@"boundaryKey"];
-        v15 = v139;
+        [dictionary setObject:v161 forKeyedSubscript:@"boundaryKey"];
+        session = v139;
         v34 = v136;
       }
 
       else
       {
-        v15 = v139;
+        session = v139;
         v34 = v136;
         if (a8)
         {
@@ -2623,20 +2623,20 @@ LABEL_31:
     }
 
     v146 = 0;
-    v30 = [a1 _deserializeValue:&v146 forKey:@"boundaryKeyValidationKey" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v161];
+    v30 = [self _deserializeValue:&v146 forKey:@"boundaryKeyValidationKey" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v161];
     v138 = v146;
     if ((v30 & 1) == 0)
     {
-      if (v16)
+      if (dictionary)
       {
-        [v16 setObject:v161 forKeyedSubscript:@"boundaryKeyValidationKey"];
-        v15 = v139;
+        [dictionary setObject:v161 forKeyedSubscript:@"boundaryKeyValidationKey"];
+        session = v139;
         v34 = v136;
       }
 
       else
       {
-        v15 = v139;
+        session = v139;
         v34 = v136;
         if (a8)
         {
@@ -2665,16 +2665,16 @@ LABEL_31:
       }
 
       v128 = objc_alloc(MEMORY[0x277CFAE60]);
-      v121 = [a1 recordID];
-      v46 = [v121 zoneID];
-      v129 = [v128 initWithRecordZoneID:v46];
+      recordID2 = [self recordID];
+      zoneID = [recordID2 zoneID];
+      v129 = [v128 initWithRecordZoneID:zoneID];
 
-      v117 = [a1 recordID];
-      v47 = [v117 recordName];
-      v122 = [AppTelemetryTimeSeriesEvent newEDPKeysMismatchForRecordID:v47 mangledID:v129];
+      recordID3 = [self recordID];
+      recordName2 = [recordID3 recordName];
+      v122 = [AppTelemetryTimeSeriesEvent newEDPKeysMismatchForRecordID:recordName2 mangledID:v129];
 
-      v48 = [v139 analyticsReporter];
-      [v48 postReportForDefaultSubCategoryWithCategory:8 telemetryTimeEvent:v122];
+      analyticsReporter = [v139 analyticsReporter];
+      [analyticsReporter postReportForDefaultSubCategoryWithCategory:8 telemetryTimeEvent:v122];
     }
 
     else if (!a5)
@@ -2685,29 +2685,29 @@ LABEL_31:
     v49 = v29;
     *a5 = v29;
 LABEL_86:
-    v15 = v139;
+    session = v139;
     if (!v143)
     {
       v144 = brc_bread_crumbs();
       v50 = brc_default_log();
       if (os_log_type_enabled(v50, OS_LOG_TYPE_FAULT))
       {
-        v134 = [a1 recordID];
-        v125 = [v139 zoneAppRetriever];
-        v112 = [v134 brc_itemIDWithZoneAppRetriever:v125];
-        v113 = [v112 UTF8String];
+        recordID4 = [self recordID];
+        zoneAppRetriever = [v139 zoneAppRetriever];
+        v112 = [recordID4 brc_itemIDWithZoneAppRetriever:zoneAppRetriever];
+        uTF8String = [v112 UTF8String];
         *buf = 136315394;
-        v163 = v113;
+        selfCopy = uTF8String;
         v164 = 2112;
         v165 = v144;
         _os_log_fault_impl(&dword_223E7A000, v50, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: The server should have set an mtime for %s%@", buf, 0x16u);
 
-        v15 = v139;
+        session = v139;
       }
 
       v145 = MEMORY[0x277CCABB0];
-      v51 = [a1 modificationDate];
-      [v51 timeIntervalSince1970];
+      modificationDate = [self modificationDate];
+      [modificationDate timeIntervalSince1970];
       if (!v52)
       {
         time(0);
@@ -2721,8 +2721,8 @@ LABEL_86:
     {
       if ((v156 & 1) == 0)
       {
-        v54 = [v142 unsignedLongLongValue];
-        if (v54 == [v136 size])
+        unsignedLongLongValue = [v142 unsignedLongLongValue];
+        if (unsignedLongLongValue == [v136 size])
         {
           v53 = v136;
         }
@@ -2733,17 +2733,17 @@ LABEL_86:
           v61 = brc_default_log();
           if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
           {
-            v130 = [a1 recordType];
-            v123 = [a1 recordID];
+            recordType = [self recordType];
+            recordID5 = [self recordID];
             v118 = v60;
-            v62 = [v142 longLongValue];
+            longLongValue = [v142 longLongValue];
             v63 = [v136 size];
             *buf = 138413314;
-            v163 = v130;
+            selfCopy = recordType;
             v164 = 2112;
-            v165 = v123;
+            v165 = recordID5;
             v166 = 2048;
-            v167 = v62;
+            v167 = longLongValue;
             v60 = v118;
             v168 = 2048;
             v169 = v63;
@@ -2762,15 +2762,15 @@ LABEL_86:
       if (v141)
       {
         v65 = MEMORY[0x277CCACA8];
-        v66 = [a1 recordType];
-        v67 = [a1 recordID];
-        v68 = [v65 stringWithFormat:@"%@ record %@ is both a file and a package", v66, v67];
+        recordType2 = [self recordType];
+        recordID6 = [self recordID];
+        v68 = [v65 stringWithFormat:@"%@ record %@ is both a file and a package", recordType2, recordID6];
         v69 = v161;
         v161 = v68;
 
-        if (v16)
+        if (dictionary)
         {
-          [v16 setObject:v161 forKeyedSubscript:@"asset+pkg"];
+          [dictionary setObject:v161 forKeyedSubscript:@"asset+pkg"];
           v34 = v136;
         }
 
@@ -2785,7 +2785,7 @@ LABEL_86:
 
         v41 = brc_bread_crumbs();
         v42 = brc_default_log();
-        v15 = v139;
+        session = v139;
         if (!os_log_type_enabled(&v42->super, 0x90u))
         {
           goto LABEL_36;
@@ -2794,11 +2794,11 @@ LABEL_86:
         goto LABEL_159;
       }
 
-      v15 = v139;
+      session = v139;
 LABEL_106:
-      if ([v16 count])
+      if ([dictionary count])
       {
-        v70 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CFACB0] code:1001 userInfo:v16];
+        v70 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CFACB0] code:1001 userInfo:dictionary];
         if (v70)
         {
           v140 = brc_bread_crumbs();
@@ -2807,7 +2807,7 @@ LABEL_106:
           {
             v114 = "(passed to caller)";
             *buf = 136315906;
-            v163 = "[CKRecord(BRCSerializationAdditions) deserializeVersion:fakeStatInfo:contentBoundaryKey:clientZone:outOfBandUpload:error:]";
+            selfCopy = "[CKRecord(BRCSerializationAdditions) deserializeVersion:fakeStatInfo:contentBoundaryKey:clientZone:outOfBandUpload:error:]";
             v164 = 2080;
             if (!a8)
             {
@@ -2834,9 +2834,9 @@ LABEL_106:
         if (os_log_type_enabled(&v42->super, 0x90u))
         {
           *buf = 138412802;
-          v163 = a1;
+          selfCopy = self;
           v164 = 2112;
-          v165 = v16;
+          v165 = dictionary;
           v166 = 2112;
           v167 = v41;
           _os_log_error_impl(&dword_223E7A000, &v42->super, 0x90u, "[ERROR] failed deserializing version in %@: %@%@", buf, 0x20u);
@@ -2847,9 +2847,9 @@ LABEL_106:
 
       else
       {
-        v73 = [a1 modifiedByDevice];
+        modifiedByDevice = [self modifiedByDevice];
 
-        if (!v73)
+        if (!modifiedByDevice)
         {
           v74 = brc_bread_crumbs();
           v75 = brc_default_log();
@@ -2862,10 +2862,10 @@ LABEL_106:
         }
 
         v41 = objc_opt_new();
-        if ([a1 brc_currentUserOwnsLastEditorDeviceWithSessionContext:v15])
+        if ([self brc_currentUserOwnsLastEditorDeviceWithSessionContext:session])
         {
-          v76 = [a1 brc_lastEditorDeviceName];
-          [v41 setLastEditorDeviceName:v76];
+          brc_lastEditorDeviceName = [self brc_lastEditorDeviceName];
+          [v41 setLastEditorDeviceName:brc_lastEditorDeviceName];
 
           v53 = v136;
         }
@@ -2882,10 +2882,10 @@ LABEL_106:
           v78 = v158;
           v119 = MEMORY[0x277CCACA8];
           v124 = v77;
-          v79 = [v77 stringValue];
+          stringValue = [v77 stringValue];
           v80 = v119;
           v120 = v78;
-          v81 = [v80 br_representableHFSFileNameWithBase:v131 suffix:v79 extension:v78 makeDotFile:0];
+          v81 = [v80 br_representableHFSFileNameWithBase:v131 suffix:stringValue extension:v78 makeDotFile:0];
           [v41 setOriginalPOSIXName:v81];
 
           v82 = brc_bread_crumbs();
@@ -2894,18 +2894,18 @@ LABEL_106:
           {
             v116 = v82;
             v84 = v160;
-            v115 = [v41 originalPOSIXName];
+            originalPOSIXName = [v41 originalPOSIXName];
             *buf = 138412802;
-            v163 = v84;
+            selfCopy = v84;
             v82 = v116;
             v164 = 2112;
-            v165 = v115;
+            v165 = originalPOSIXName;
             v166 = 2112;
             v167 = v116;
             _os_log_impl(&dword_223E7A000, v83, OS_LOG_TYPE_DEFAULT, "[WARNING] Server gave us an unrepresentable filename: %@ using %@%@", buf, 0x20u);
           }
 
-          v15 = v139;
+          session = v139;
           v53 = v136;
         }
 
@@ -2913,8 +2913,8 @@ LABEL_106:
         [v41 setMtime:{objc_msgSend(v143, "longLongValue")}];
         if (v53)
         {
-          v85 = [v53 signature];
-          [v41 setContentSignature:v85];
+          signature2 = [v53 signature];
+          [v41 setContentSignature:signature2];
         }
 
         else
@@ -2924,8 +2924,8 @@ LABEL_106:
 
         if (v137)
         {
-          v132 = [v137 signature];
-          [v41 setThumbnailSignature:v132];
+          signature3 = [v137 signature];
+          [v41 setThumbnailSignature:signature3];
 
           v86 = [v137 size];
         }
@@ -2937,30 +2937,30 @@ LABEL_106:
         }
 
         [v41 setThumbnailSize:v86];
-        v87 = [a1 conflictLoserEtags];
+        conflictLoserEtags = [self conflictLoserEtags];
 
-        if (v87)
+        if (conflictLoserEtags)
         {
           v88 = objc_alloc(MEMORY[0x277CBEB98]);
-          v89 = [a1 conflictLoserEtags];
-          v90 = [v88 initWithArray:v89];
+          conflictLoserEtags2 = [self conflictLoserEtags];
+          v90 = [v88 initWithArray:conflictLoserEtags2];
           [v41 setConflictLoserEtags:v90];
 
-          v15 = v139;
+          session = v139;
         }
 
-        v91 = [[BRFieldCKInfo alloc] initWithRecord:a1];
+        v91 = [[BRFieldCKInfo alloc] initWithRecord:self];
         [v41 setCkInfo:v91];
 
         [v41 setQuarantineInfo:0];
-        [v41 setXattrSignature:v27];
-        v92 = [v24 fileURL];
+        [v41 setXattrSignature:signature];
+        fileURL = [v24 fileURL];
 
-        if (v92)
+        if (fileURL)
         {
-          v93 = [v15 xattrStager];
-          v94 = [v24 fileURL];
-          [v93 saveXattrAtURL:v94 forSignature:v27 error:0];
+          xattrStager = [session xattrStager];
+          fileURL2 = [v24 fileURL];
+          [xattrStager saveXattrAtURL:fileURL2 forSignature:signature error:0];
         }
 
         if (a3)
@@ -2972,40 +2972,40 @@ LABEL_106:
         if (!v135)
         {
           v35 = 1;
-          v15 = v139;
+          session = v139;
           v34 = v136;
           goto LABEL_76;
         }
 
         v42 = objc_alloc_init(BRCStatInfo);
         [(BRCStatInfo *)v42 setType:1];
-        -[BRCStatInfo setMode:](v42, "setMode:", [a1 permission] == 1);
-        v96 = [v41 originalPOSIXName];
-        [(BRCStatInfo *)v42 setLogicalName:v96];
+        -[BRCStatInfo setMode:](v42, "setMode:", [self permission] == 1);
+        originalPOSIXName2 = [v41 originalPOSIXName];
+        [(BRCStatInfo *)v42 setLogicalName:originalPOSIXName2];
 
-        v97 = [a1 recordID];
-        v98 = [v97 recordName];
-        v133 = [v98 hasPrefix:@"documentContent/"];
+        recordID7 = [self recordID];
+        recordName3 = [recordID7 recordName];
+        v133 = [recordName3 hasPrefix:@"documentContent/"];
 
         if (v133)
         {
           v99 = [BRCItemID alloc];
-          v100 = [v14 dbRowID];
-          v101 = [(BRCItemID *)v99 _initAsZoneRootWithZoneRowID:v100];
+          dbRowID = [v14 dbRowID];
+          v101 = [(BRCItemID *)v99 _initAsZoneRootWithZoneRowID:dbRowID];
           [(BRCStatInfo *)v42 setParentID:v101];
 
-          v102 = [a1 creationDate];
-          [v102 timeIntervalSince1970];
+          creationDate = [self creationDate];
+          [creationDate timeIntervalSince1970];
           v104 = v103;
           if (!v103)
           {
             v104 = time(0);
           }
 
-          v105 = [v143 unsignedLongLongValue];
-          if (v104 >= v105)
+          unsignedLongLongValue2 = [v143 unsignedLongLongValue];
+          if (v104 >= unsignedLongLongValue2)
           {
-            v106 = v105;
+            v106 = unsignedLongLongValue2;
           }
 
           else
@@ -3014,8 +3014,8 @@ LABEL_106:
           }
 
           [(BRCStatInfo *)v42 setBirthtime:v106];
-          v107 = [v41 ckInfo];
-          v108 = [v107 copy];
+          ckInfo = [v41 ckInfo];
+          v108 = [ckInfo copy];
           [(BRCStatInfo *)v42 setCkInfo:v108];
 
           v35 = 1;
@@ -3036,7 +3036,7 @@ LABEL_106:
           v35 = 0;
         }
 
-        v15 = v139;
+        session = v139;
       }
 
       v34 = v136;
@@ -3054,15 +3054,15 @@ LABEL_76:
     }
 
     v55 = MEMORY[0x277CCACA8];
-    v56 = [a1 recordType];
-    v57 = [a1 recordID];
-    v58 = [v55 stringWithFormat:@"%@ record %@ is neither a file nor a package", v56, v57];
+    recordType3 = [self recordType];
+    recordID8 = [self recordID];
+    v58 = [v55 stringWithFormat:@"%@ record %@ is neither a file nor a package", recordType3, recordID8];
     v59 = v161;
     v161 = v58;
 
-    if (v16)
+    if (dictionary)
     {
-      [v16 setObject:v161 forKeyedSubscript:@"pkg+signature"];
+      [dictionary setObject:v161 forKeyedSubscript:@"pkg+signature"];
     }
 
     else if (a8)
@@ -3072,7 +3072,7 @@ LABEL_76:
 
     v41 = brc_bread_crumbs();
     v42 = brc_default_log();
-    v15 = v139;
+    session = v139;
     v34 = 0;
     if (!os_log_type_enabled(&v42->super, 0x90u))
     {
@@ -3086,7 +3086,7 @@ LABEL_36:
     goto LABEL_75;
   }
 
-  v27 = 0;
+  signature = 0;
   v29 = 0;
   v32 = 0;
   v24 = 0;
@@ -3104,7 +3104,7 @@ LABEL_77:
   v7 = objc_alloc_init(BRCSideCarInfo);
   v26 = 0;
   v27 = 0;
-  v8 = [a1 _deserializeValue:&v26 forKey:@"lastOpenTime" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v27];
+  v8 = [self _deserializeValue:&v26 forKey:@"lastOpenTime" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v27];
   v9 = v26;
   if ((v8 & 1) == 0)
   {
@@ -3125,7 +3125,7 @@ LABEL_77:
   }
 
   v25 = 0;
-  v10 = [a1 _deserializeValue:&v25 forKey:@"favoriteRank" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v27];
+  v10 = [self _deserializeValue:&v25 forKey:@"favoriteRank" encrypted:0 expectClass:objc_opt_class() allowNil:1 errorDescription:&v27];
   v11 = v25;
   if ((v10 & 1) == 0)
   {
@@ -3150,7 +3150,7 @@ LABEL_16:
   }
 
   v24 = 0;
-  v12 = [a1 _deserializeValue:&v24 forKey:@"finderTags" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v27];
+  v12 = [self _deserializeValue:&v24 forKey:@"finderTags" encrypted:1 expectClass:objc_opt_class() allowNil:1 errorDescription:&v27];
   v13 = v24;
   if ((v12 & 1) == 0)
   {
@@ -3170,7 +3170,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v14 = [[BRFieldCKInfo alloc] initWithRecord:a1];
+  v14 = [[BRFieldCKInfo alloc] initWithRecord:self];
   [(BRCSideCarInfo *)v7 setCkInfo:v14];
 
   -[BRCSideCarInfo setFavoriteRank:](v7, "setFavoriteRank:", [v11 longLongValue]);
@@ -3187,14 +3187,14 @@ LABEL_17:
 - (uint64_t)_locateSideCarServerZone:()BRCSerializationAdditions withShareAliasReference:sessionContext:
 {
   v8 = a5;
-  v9 = [a4 recordID];
-  v10 = [v8 zoneAppRetriever];
-  v11 = [v9 brc_itemIDWithZoneAppRetriever:v10 error:0];
+  recordID = [a4 recordID];
+  zoneAppRetriever = [v8 zoneAppRetriever];
+  v11 = [recordID brc_itemIDWithZoneAppRetriever:zoneAppRetriever error:0];
 
   if (v11)
   {
-    v12 = [v8 itemFetcher];
-    v13 = [v12 serverItemByItemID:v11];
+    itemFetcher = [v8 itemFetcher];
+    v13 = [itemFetcher serverItemByItemID:v11];
 
     if (v13)
     {
@@ -3203,19 +3203,19 @@ LABEL_17:
         [CKRecord(BRCSerializationAdditions) _locateSideCarServerZone:withShareAliasReference:sessionContext:];
       }
 
-      v14 = [v13 aliasTargetClientZone];
-      v15 = [v14 serverZone];
-      v16 = [v15 asSharedZone];
+      aliasTargetClientZone = [v13 aliasTargetClientZone];
+      serverZone = [aliasTargetClientZone serverZone];
+      asSharedZone = [serverZone asSharedZone];
 
-      v17 = v16;
-      *a3 = v16;
-      v18 = v16 != 0;
+      v17 = asSharedZone;
+      *a3 = asSharedZone;
+      v18 = asSharedZone != 0;
     }
 
     else
     {
-      v19 = [a1 recordID];
-      v18 = [v19 locateSideCarServerZone:a3 sessionContext:v8];
+      recordID2 = [self recordID];
+      v18 = [recordID2 locateSideCarServerZone:a3 sessionContext:v8];
     }
   }
 
@@ -3232,43 +3232,43 @@ LABEL_17:
   v8 = a5;
   v25 = 0;
   v26 = 0;
-  v9 = [a1 _deserializeValue:&v25 forKey:@"shareReference" encrypted:0 expectClass:objc_opt_class() allowNil:0 errorDescription:&v26];
+  v9 = [self _deserializeValue:&v25 forKey:@"shareReference" encrypted:0 expectClass:objc_opt_class() allowNil:0 errorDescription:&v26];
   v10 = v25;
   v11 = v10;
   if (v9)
   {
-    v12 = [v10 recordID];
-    *a4 = [v12 recordName];
-    v13 = [v12 recordName];
-    v14 = [v13 hasPrefix:@"shareAlias/"];
+    recordID = [v10 recordID];
+    *a4 = [recordID recordName];
+    recordName = [recordID recordName];
+    v14 = [recordName hasPrefix:@"shareAlias/"];
 
     if (v14)
     {
-      v15 = [a1 _locateSideCarServerZone:a3 withShareAliasReference:v11 sessionContext:v8];
+      v15 = [self _locateSideCarServerZone:a3 withShareAliasReference:v11 sessionContext:v8];
     }
 
     else
     {
       v17 = objc_alloc(MEMORY[0x277CFAE60]);
-      v18 = [v12 zoneID];
-      v19 = [v17 initWithRecordZoneID:v18];
+      zoneID = [recordID zoneID];
+      v19 = [v17 initWithRecordZoneID:zoneID];
 
-      v20 = [v8 zoneAppRetriever];
-      v21 = [v20 serverZoneByMangledID:v19];
-      v22 = [v21 asSharedZone];
+      zoneAppRetriever = [v8 zoneAppRetriever];
+      v21 = [zoneAppRetriever serverZoneByMangledID:v19];
+      asSharedZone = [v21 asSharedZone];
 
-      v15 = v22 != 0;
-      if (v22)
+      v15 = asSharedZone != 0;
+      if (asSharedZone)
       {
-        v23 = v22;
-        *a3 = v22;
+        v23 = asSharedZone;
+        *a3 = asSharedZone;
       }
     }
   }
 
   else
   {
-    v12 = brc_bread_crumbs();
+    recordID = brc_bread_crumbs();
     v16 = brc_default_log();
     if (os_log_type_enabled(v16, 0x90u))
     {
@@ -3283,20 +3283,20 @@ LABEL_17:
 
 - (void)serializeSystemFields:()BRCSerializationAdditions includeCZMEtag:
 {
-  [a3 setCKInfoFieldsInRecord:a1 includeCZMEtag:?];
+  [a3 setCKInfoFieldsInRecord:self includeCZMEtag:?];
   v4 = objc_alloc(MEMORY[0x277CFAE60]);
-  v5 = [a1 recordID];
-  v6 = [v5 zoneID];
-  v9 = [v4 initWithRecordZoneID:v6];
+  recordID = [self recordID];
+  zoneID = [recordID zoneID];
+  v9 = [v4 initWithRecordZoneID:zoneID];
 
   v7 = [BRCUserDefaults defaultsForMangledID:v9];
   if ([v7 useFailIfOutdatedForResets])
   {
-    [a1 setKnownToServer:1];
-    v8 = [v7 fakeEtagForFailIfOutdated];
-    if (([v8 isEqualToString:@"none"] & 1) == 0)
+    [self setKnownToServer:1];
+    fakeEtagForFailIfOutdated = [v7 fakeEtagForFailIfOutdated];
+    if (([fakeEtagForFailIfOutdated isEqualToString:@"none"] & 1) == 0)
     {
-      [a1 setEtag:v8];
+      [self setEtag:fakeEtagForFailIfOutdated];
     }
   }
 }
@@ -3306,13 +3306,13 @@ LABEL_17:
   v7 = a3;
   if ([v7 length])
   {
-    v6 = [a1 encryptedValues];
-    [v6 setObject:v7 forKeyedSubscript:@"finderTags"];
+    encryptedValues = [self encryptedValues];
+    [encryptedValues setObject:v7 forKeyedSubscript:@"finderTags"];
   }
 
   else if ((a4 & 1) == 0)
   {
-    [a1 setObject:0 forKeyedSubscript:@"finderTags"];
+    [self setObject:0 forKeyedSubscript:@"finderTags"];
   }
 }
 
@@ -3321,41 +3321,41 @@ LABEL_17:
   v6 = a3;
   if ([v6 length])
   {
-    v4 = [a1 encryptedValues];
-    [v4 setObject:v6 forKeyedSubscript:@"boundaryKey"];
+    encryptedValues = [self encryptedValues];
+    [encryptedValues setObject:v6 forKeyedSubscript:@"boundaryKey"];
 
-    v5 = [v6 brc_truncatedSHA256];
-    [a1 setObject:v5 forKeyedSubscript:@"boundaryKeyValidationKey"];
+    brc_truncatedSHA256 = [v6 brc_truncatedSHA256];
+    [self setObject:brc_truncatedSHA256 forKeyedSubscript:@"boundaryKeyValidationKey"];
   }
 }
 
 - (void)seralizeBirthtime:()BRCSerializationAdditions
 {
   v5 = [BRCUserDefaults defaultsForMangledID:0];
-  v6 = [v5 shouldSendRoundedTimestamps];
+  shouldSendRoundedTimestamps = [v5 shouldSendRoundedTimestamps];
 
-  if (v6)
+  if (shouldSendRoundedTimestamps)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:BRCRoundedTimestamp(a3)];
-    [a1 setObject:v7 forKeyedSubscript:@"birthtime"];
+    [self setObject:v7 forKeyedSubscript:@"birthtime"];
   }
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-  v8 = [a1 encryptedValues];
-  [v8 setObject:v9 forKeyedSubscript:@"exactBirthtime"];
+  encryptedValues = [self encryptedValues];
+  [encryptedValues setObject:v9 forKeyedSubscript:@"exactBirthtime"];
 }
 
 - (void)serializeSpecialIdentityForFilename:()BRCSerializationAdditions parentIDIsCloudDocsRoot:parentIDisDocumentsFolder:
 {
   v9 = a3;
-  [a1 setObject:0 forKeyedSubscript:@"specialDirectoryIdentity"];
+  [self setObject:0 forKeyedSubscript:@"specialDirectoryIdentity"];
   if (a4)
   {
     if ([v9 isEqualToString:*MEMORY[0x277CFAD80]])
     {
       v8 = &unk_2837B0178;
 LABEL_11:
-      [a1 setObject:v8 forKeyedSubscript:@"specialDirectoryIdentity"];
+      [self setObject:v8 forKeyedSubscript:@"specialDirectoryIdentity"];
       goto LABEL_12;
     }
 
@@ -3399,8 +3399,8 @@ LABEL_12:
   {
     v45 = a8;
     v19 = [v17 dataUsingEncoding:4];
-    v20 = [a1 encryptedValues];
-    [v20 setObject:v19 forKeyedSubscript:@"encryptedBasename"];
+    encryptedValues = [self encryptedValues];
+    [encryptedValues setObject:v19 forKeyedSubscript:@"encryptedBasename"];
 
     if (a6)
     {
@@ -3408,31 +3408,31 @@ LABEL_12:
     }
 
     v21 = [BRCUserDefaults defaultsForMangledID:0];
-    v22 = [v21 supportsEnhancedDrivePrivacy];
+    supportsEnhancedDrivePrivacy = [v21 supportsEnhancedDrivePrivacy];
 
-    if (!v22)
+    if (!supportsEnhancedDrivePrivacy)
     {
-      v34 = [v17 brc_SHA256];
-      [a1 setObject:v34 forKeyedSubscript:@"basehash"];
+      brc_SHA256 = [v17 brc_SHA256];
+      [self setObject:brc_SHA256 forKeyedSubscript:@"basehash"];
 
       goto LABEL_23;
     }
 
     if (v16)
     {
-      v23 = [MEMORY[0x277CBEA90] brc_generateBogusKey];
-      v24 = [v16 isEqualToData:v23];
+      brc_generateBogusKey = [MEMORY[0x277CBEA90] brc_generateBogusKey];
+      v24 = [v16 isEqualToData:brc_generateBogusKey];
 
       if (v24)
       {
-        v25 = [a1 pluginFields];
-        if (v25)
+        pluginFields = [self pluginFields];
+        if (pluginFields)
         {
-          [a1 pluginFields];
-          v26 = v44 = v25;
+          [self pluginFields];
+          v26 = v44 = pluginFields;
           v27 = [v26 mutableCopy];
 
-          v25 = v44;
+          pluginFields = v44;
         }
 
         else
@@ -3441,31 +3441,31 @@ LABEL_12:
         }
 
         [v27 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"br_bougusSaltingKey"];
-        [a1 setPluginFields:v27];
+        [self setPluginFields:v27];
       }
 
       v38 = [v17 brc_SHA256WithSalt:v16];
-      [a1 setObject:v38 forKeyedSubscript:@"basehash"];
+      [self setObject:v38 forKeyedSubscript:@"basehash"];
 
-      v39 = [a1 recordType];
-      v40 = [v39 isEqualToString:@"structure"];
+      recordType = [self recordType];
+      v40 = [recordType isEqualToString:@"structure"];
 
       if (v40)
       {
-        v41 = [v16 brc_truncatedSHA256];
-        [a1 setObject:v41 forKeyedSubscript:@"basehashSaltValidationKey"];
+        brc_truncatedSHA256 = [v16 brc_truncatedSHA256];
+        [self setObject:brc_truncatedSHA256 forKeyedSubscript:@"basehashSaltValidationKey"];
 
-        [a1 serializeSpecialIdentityForFilename:v15 parentIDIsCloudDocsRoot:v45 parentIDisDocumentsFolder:a9];
+        [self serializeSpecialIdentityForFilename:v15 parentIDIsCloudDocsRoot:v45 parentIDisDocumentsFolder:a9];
       }
 
       goto LABEL_23;
     }
 
-    v35 = [v17 brc_SHA256];
-    [a1 setObject:v35 forKeyedSubscript:@"basehash"];
+    brc_SHA2562 = [v17 brc_SHA256];
+    [self setObject:brc_SHA2562 forKeyedSubscript:@"basehash"];
 
-    v36 = [a1 recordType];
-    v37 = [v36 isEqualToString:@"structure"];
+    recordType2 = [self recordType];
+    v37 = [recordType2 isEqualToString:@"structure"];
 
     if (!v37)
     {
@@ -3475,14 +3475,14 @@ LABEL_23:
       {
         if ((a4 & 1) == 0)
         {
-          [a1 setObject:0 forKeyedSubscript:@"bounceNo"];
+          [self setObject:0 forKeyedSubscript:@"bounceNo"];
         }
       }
 
       else
       {
         v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
-        [a1 setObject:v42 forKeyedSubscript:@"bounceNo"];
+        [self setObject:v42 forKeyedSubscript:@"bounceNo"];
       }
 
       if (v18)
@@ -3497,24 +3497,24 @@ LABEL_23:
 
       if (a5 && (v43 & 1) == 0)
       {
-        [a1 setObject:v18 forKeyedSubscript:@"extension"];
+        [self setObject:v18 forKeyedSubscript:@"extension"];
       }
 
       goto LABEL_33;
     }
 
-    [a1 setObject:0 forKeyedSubscript:@"basehashSaltValidationKey"];
+    [self setObject:0 forKeyedSubscript:@"basehashSaltValidationKey"];
     v29 = @"specialDirectoryIdentity";
-    v28 = a1;
+    selfCopy = self;
 LABEL_10:
-    [v28 setObject:0 forKeyedSubscript:v29];
+    [selfCopy setObject:0 forKeyedSubscript:v29];
     goto LABEL_23;
   }
 
   if (a6)
   {
-    v28 = [a1 encryptedValues];
-    v19 = v28;
+    selfCopy = [self encryptedValues];
+    v19 = selfCopy;
     v29 = @"encryptedBasename";
     goto LABEL_10;
   }
@@ -3542,21 +3542,21 @@ LABEL_33:
   v10 = a3;
   v11 = a4;
   v12 = a5;
-  v13 = [v10 unsignedLongLongValue];
-  if (v13 < 0)
+  unsignedLongLongValue = [v10 unsignedLongLongValue];
+  if (unsignedLongLongValue < 0)
   {
     v28 = a6;
-    v27 = [v12 session];
-    v25 = [v27 analyticsReporter];
-    v26 = [a1 recordID];
-    v14 = [v26 recordName];
-    v15 = [v12 clientZone];
-    v16 = [v15 mangledID];
+    session = [v12 session];
+    analyticsReporter = [session analyticsReporter];
+    recordID = [self recordID];
+    recordName = [recordID recordName];
+    clientZone = [v12 clientZone];
+    mangledID = [clientZone mangledID];
     v17 = MEMORY[0x277CCABB0];
     [v12 clientZone];
     v19 = v18 = v11;
     v20 = [v17 numberWithBool:{objc_msgSend(v19, "enhancedDrivePrivacyEnabled")}];
-    [v25 aggregateReportForAppTelemetryIdentifier:41 itemID:v14 zoneMangledID:v16 enhancedDrivePrivacyEnabled:v20 error:0];
+    [analyticsReporter aggregateReportForAppTelemetryIdentifier:41 itemID:recordName zoneMangledID:mangledID enhancedDrivePrivacyEnabled:v20 error:0];
 
     v11 = v18;
     v21 = brc_bread_crumbs();
@@ -3579,7 +3579,7 @@ LABEL_33:
   }
 
   v23 = *MEMORY[0x277D85DE8];
-  return v13 >= 0;
+  return unsignedLongLongValue >= 0;
 }
 
 - (uint64_t)serializeStatInfo:()BRCSerializationAdditions diffs:stageID:deadInServerTruth:shouldPCSChainStatus:basehashSaltGetter:childBasehashSaltGetter:error:
@@ -3598,26 +3598,26 @@ LABEL_33:
 
   else
   {
-    v16 = [v120 ckInfo];
-    v17 = [v16 etag];
-    v119 = v17 == 0;
+    ckInfo = [v120 ckInfo];
+    etag = [ckInfo etag];
+    v119 = etag == 0;
   }
 
-  v118 = [v120 ckInfo];
+  ckInfo2 = [v120 ckInfo];
 
-  v18 = [v15 clientZone];
-  LODWORD(v112) = [v18 enhancedDrivePrivacyEnabled];
+  clientZone = [v15 clientZone];
+  LODWORD(v112) = [clientZone enhancedDrivePrivacyEnabled];
 
-  v19 = [v15 clientZone];
-  if ([v19 isPrivateZone])
+  clientZone2 = [v15 clientZone];
+  if ([clientZone2 isPrivateZone])
   {
-    v20 = [v15 appLibrary];
-    v21 = [v20 wasMovedToCloudDocs];
+    appLibrary = [v15 appLibrary];
+    wasMovedToCloudDocs = [appLibrary wasMovedToCloudDocs];
   }
 
   else
   {
-    v21 = 0;
+    wasMovedToCloudDocs = 0;
   }
 
   if (v119)
@@ -3629,10 +3629,10 @@ LABEL_33:
         v22 = v116[2]();
         if (v22)
         {
-          [a1 brc_fillWithChildBasehashSalt:v22];
-          v23 = [v15 clientZone];
-          v24 = [v15 itemID];
-          v25 = [v23 saltingStateForItemID:v24];
+          [self brc_fillWithChildBasehashSalt:v22];
+          clientZone3 = [v15 clientZone];
+          itemID = [v15 itemID];
+          v25 = [clientZone3 saltingStateForItemID:itemID];
 
           if (v25)
           {
@@ -3645,7 +3645,7 @@ LABEL_33:
           }
 
           v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{v26, v112, v115}];
-          [a1 setObject:v27 forKeyedSubscript:@"saltingState"];
+          [self setObject:v27 forKeyedSubscript:@"saltingState"];
         }
       }
 
@@ -3667,71 +3667,71 @@ LABEL_33:
     goto LABEL_35;
   }
 
-  if (v21 && ([v15 itemID], v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "isDocumentsFolder"), v31, v32))
+  if (wasMovedToCloudDocs && ([v15 itemID], v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "isDocumentsFolder"), v31, v32))
   {
-    v33 = [v15 clientZone];
-    v34 = [v33 asPrivateClientZone];
-    v35 = [v34 rootItemID];
+    clientZone4 = [v15 clientZone];
+    asPrivateClientZone = [clientZone4 asPrivateClientZone];
+    rootItemID = [asPrivateClientZone rootItemID];
 
-    v36 = [v15 session];
-    v37 = [v15 itemID];
-    v38 = [v37 appLibraryRowID];
-    v39 = [v36 appLibraryByRowID:v38];
-    v40 = [v39 appLibraryID];
+    session = [v15 session];
+    itemID2 = [v15 itemID];
+    appLibraryRowID = [itemID2 appLibraryRowID];
+    v39 = [session appLibraryByRowID:appLibraryRowID];
+    appLibraryID = [v39 appLibraryID];
 
-    v41 = [v40 stringByReplacingOccurrencesOfString:@"." withString:@"~"];
+    v41 = [appLibraryID stringByReplacingOccurrencesOfString:@"." withString:@"~"];
 
-    v42 = [v41 stringByAppendingString:@"_Documents"];
+    logicalNameWithoutLocalBounce = [v41 stringByAppendingString:@"_Documents"];
   }
 
   else
   {
-    v42 = [v120 logicalNameWithoutLocalBounce];
-    v35 = [v120 parentID];
+    logicalNameWithoutLocalBounce = [v120 logicalNameWithoutLocalBounce];
+    rootItemID = [v120 parentID];
   }
 
-  v43 = [v15 appLibrary];
-  if ([v43 isCloudDocsAppLibrary])
+  appLibrary2 = [v15 appLibrary];
+  if ([appLibrary2 isCloudDocsAppLibrary])
   {
-    v44 = [v15 clientZone];
-    if ([v44 isCloudDocsZone])
+    clientZone5 = [v15 clientZone];
+    if ([clientZone5 isCloudDocsZone])
     {
-      v45 = [v15 parentItemIDInZone];
-      v46 = [v45 isNonDesktopRoot];
+      parentItemIDInZone = [v15 parentItemIDInZone];
+      isNonDesktopRoot = [parentItemIDInZone isNonDesktopRoot];
     }
 
     else
     {
-      v46 = 0;
+      isNonDesktopRoot = 0;
     }
   }
 
   else
   {
-    v46 = 0;
+    isNonDesktopRoot = 0;
   }
 
-  v47 = [v15 parentItemIDInZone];
-  v48 = [v47 isDocumentsFolder];
+  parentItemIDInZone2 = [v15 parentItemIDInZone];
+  isDocumentsFolder = [parentItemIDInZone2 isDocumentsFolder];
 
   v28 = v117[2](v117, v15);
-  [a1 serializeFilename:v42 forCreation:v118 == 0 basehashSalt:v28 parentIDIsCloudDocsRoot:v46 parentIDIsDocumentsFolder:v48];
-  v49 = [v15 serverZone];
-  v50 = [v35 validatingDirectoryReferenceInZone:v49];
-  [a1 setObject:v50 forKeyedSubscript:@"parent"];
+  [self serializeFilename:logicalNameWithoutLocalBounce forCreation:ckInfo2 == 0 basehashSalt:v28 parentIDIsCloudDocsRoot:isNonDesktopRoot parentIDIsDocumentsFolder:isDocumentsFolder];
+  serverZone = [v15 serverZone];
+  v50 = [rootItemID validatingDirectoryReferenceInZone:serverZone];
+  [self setObject:v50 forKeyedSubscript:@"parent"];
 
   if ((a7 & 0x3C) != 0)
   {
-    v51 = [v15 serverZone];
-    v52 = [v35 pcsChainParentReferenceInZone:v51];
-    [a1 setParent:v52];
+    serverZone2 = [v15 serverZone];
+    v52 = [rootItemID pcsChainParentReferenceInZone:serverZone2];
+    [self setParent:v52];
   }
 
 LABEL_35:
   if (a7 == 2)
   {
 LABEL_45:
-    [a1 setWantsChainPCS:{1, v112}];
+    [self setWantsChainPCS:{1, v112}];
     goto LABEL_46;
   }
 
@@ -3745,10 +3745,10 @@ LABEL_45:
 
   else
   {
-    v53 = [v15 isDocument];
+    isDocument = [v15 isDocument];
     if ((a7 & 0xC) != 0)
     {
-      v54 = v53;
+      v54 = isDocument;
     }
 
     else
@@ -3767,10 +3767,10 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  v55 = [v15 clientZone];
-  v56 = [v55 asPrivateClientZone];
-  v57 = [v15 itemID];
-  v58 = [v56 pcsChainStateForItem:v57] < 2;
+  clientZone6 = [v15 clientZone];
+  asPrivateClientZone2 = [clientZone6 asPrivateClientZone];
+  itemID3 = [v15 itemID];
+  v58 = [asPrivateClientZone2 pcsChainStateForItem:itemID3] < 2;
 
   if (v58)
   {
@@ -3786,13 +3786,13 @@ LABEL_46:
 
   if (!v59)
   {
-    v60 = [v120 birthtime];
-    v61 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v60];
-    v62 = [a1 _verifyValueForRecordWithNumber:v61 key:@"birthtime" item:v15 error:0];
+    birthtime = [v120 birthtime];
+    v61 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:birthtime];
+    v62 = [self _verifyValueForRecordWithNumber:v61 key:@"birthtime" item:v15 error:0];
 
     if (v62)
     {
-      v63 = v60;
+      v63 = birthtime;
     }
 
     else
@@ -3809,13 +3809,13 @@ LABEL_46:
 
     if ([v15 shouldUseEnhancedDrivePrivacyWhenNeedsPreserving:v28 != 0])
     {
-      [a1 seralizeBirthtime:v63];
+      [self seralizeBirthtime:v63];
     }
 
     else
     {
       v64 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v63];
-      [a1 setObject:v64 forKeyedSubscript:@"birthtime"];
+      [self setObject:v64 forKeyedSubscript:@"birthtime"];
     }
   }
 
@@ -3823,13 +3823,13 @@ LABEL_46:
   {
     if ((a4 & 0x800) != 0 || v119)
     {
-      [a1 setLastUsedTime:{objc_msgSend(v120, "lastUsedTime")}];
+      [self setLastUsedTime:{objc_msgSend(v120, "lastUsedTime")}];
     }
 
     if ((a4 & 0x1000) != 0 || v119)
     {
-      v67 = [v120 favoriteRank];
-      if (v67)
+      favoriteRank = [v120 favoriteRank];
+      if (favoriteRank)
       {
         v68 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v120, "favoriteRank")}];
       }
@@ -3839,8 +3839,8 @@ LABEL_46:
         v68 = 0;
       }
 
-      [a1 setObject:v68 forKeyedSubscript:@"favoriteRank"];
-      if (v67)
+      [self setObject:v68 forKeyedSubscript:@"favoriteRank"];
+      if (favoriteRank)
       {
       }
     }
@@ -3853,8 +3853,8 @@ LABEL_46:
 
     if (!v69)
     {
-      v70 = [v120 finderTags];
-      [a1 serializeFinderTags:v70 forCreation:v118 == 0];
+      finderTags = [v120 finderTags];
+      [self serializeFinderTags:finderTags forCreation:ckInfo2 == 0];
     }
   }
 
@@ -3867,76 +3867,76 @@ LABEL_46:
   if (!v71)
   {
     v72 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v120, "isHiddenExt")}];
-    [a1 setObject:v72 forKeyedSubscript:@"hiddenExt"];
+    [self setObject:v72 forKeyedSubscript:@"hiddenExt"];
   }
 
-  if (v118)
+  if (ckInfo2)
   {
-    [a1 setObject:0 forKeyedSubscript:@"ftags"];
+    [self setObject:0 forKeyedSubscript:@"ftags"];
   }
 
   if ((a4 & 4) != 0 || v119)
   {
-    v74 = [v120 type];
-    if (v74 <= 0xA && ((1 << v74) & 0x611) != 0)
+    type = [v120 type];
+    if (type <= 0xA && ((1 << type) & 0x611) != 0)
     {
-      if (v118)
+      if (ckInfo2)
       {
-        [a1 setObject:0 forKeyedSubscript:@"writable"];
-        [a1 setObject:0 forKeyedSubscript:@"executable"];
+        [self setObject:0 forKeyedSubscript:@"writable"];
+        [self setObject:0 forKeyedSubscript:@"executable"];
       }
     }
 
     else
     {
       v75 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v120, "mode") & 1}];
-      [a1 setObject:v75 forKeyedSubscript:@"writable"];
+      [self setObject:v75 forKeyedSubscript:@"writable"];
 
       v76 = [MEMORY[0x277CCABB0] numberWithInt:{(objc_msgSend(v120, "mode") >> 1) & 1}];
-      [a1 setObject:v76 forKeyedSubscript:@"executable"];
+      [self setObject:v76 forKeyedSubscript:@"executable"];
     }
   }
 
   if ((a4 & 0x100) != 0 || v119)
   {
-    v78 = [v120 xattrSignature];
+    xattrSignature = [v120 xattrSignature];
 
-    if (v78)
+    if (xattrSignature)
     {
-      v79 = [v15 session];
-      v80 = [v79 xattrStager];
-      v81 = [v120 xattrSignature];
-      v82 = [v80 urlForXattrSignature:v81];
+      session2 = [v15 session];
+      xattrStager = [session2 xattrStager];
+      xattrSignature2 = [v120 xattrSignature];
+      v82 = [xattrStager urlForXattrSignature:xattrSignature2];
 
       v121 = 0;
-      LODWORD(v79) = [v82 checkResourceIsReachableAndReturnError:&v121];
-      v83 = v121;
-      if (v79)
+      LODWORD(session2) = [v82 checkResourceIsReachableAndReturnError:&v121];
+      encryptedValues2 = v121;
+      if (session2)
       {
         if (v113)
         {
-          v84 = [MEMORY[0x277CBEA90] brc_generateSaltingKey];
+          brc_generateSaltingKey = [MEMORY[0x277CBEA90] brc_generateSaltingKey];
         }
 
         else
         {
-          v84 = 0;
+          brc_generateSaltingKey = 0;
         }
 
-        v88 = [MEMORY[0x277CBC190] br_assetWithFileURL:v82 boundaryKey:v84];
-        [a1 setObject:v88 forKeyedSubscript:@"xattr"];
+        v88 = [MEMORY[0x277CBC190] br_assetWithFileURL:v82 boundaryKey:brc_generateSaltingKey];
+        [self setObject:v88 forKeyedSubscript:@"xattr"];
         if (v113)
         {
-          v89 = [v120 xattrSignature];
+          xattrSignature3 = [v120 xattrSignature];
         }
 
         else
         {
-          v89 = 0;
+          xattrSignature3 = 0;
         }
 
-        v90 = [a1 encryptedValues];
-        [v90 setObject:v89 forKeyedSubscript:@"xattrSignature"];
+        encryptedValues = [self encryptedValues];
+        [encryptedValues setObject:xattrSignature3 forKeyedSubscript:@"xattrSignature"];
 
         if (v113)
         {
@@ -3949,26 +3949,26 @@ LABEL_46:
         v86 = brc_default_log();
         if (os_log_type_enabled(v86, OS_LOG_TYPE_FAULT))
         {
-          v87 = [v120 xattrSignature];
-          [CKRecord(BRCSerializationAdditions) serializeStatInfo:v87 diffs:v85 stageID:v126 deadInServerTruth:v86 shouldPCSChainStatus:? basehashSaltGetter:? childBasehashSaltGetter:? error:?];
+          xattrSignature4 = [v120 xattrSignature];
+          [CKRecord(BRCSerializationAdditions) serializeStatInfo:xattrSignature4 diffs:v85 stageID:v126 deadInServerTruth:v86 shouldPCSChainStatus:? basehashSaltGetter:? childBasehashSaltGetter:? error:?];
         }
 
-        [a1 setObject:0 forKeyedSubscript:@"xattr"];
-        v84 = [a1 encryptedValues];
-        [v84 setObject:0 forKeyedSubscript:@"xattrSignature"];
+        [self setObject:0 forKeyedSubscript:@"xattr"];
+        brc_generateSaltingKey = [self encryptedValues];
+        [brc_generateSaltingKey setObject:0 forKeyedSubscript:@"xattrSignature"];
       }
     }
 
     else
     {
-      if (!v118)
+      if (!ckInfo2)
       {
         goto LABEL_113;
       }
 
-      [a1 setObject:0 forKeyedSubscript:@"xattr"];
-      v83 = [a1 encryptedValues];
-      [v83 setObject:0 forKeyedSubscript:@"xattrSignature"];
+      [self setObject:0 forKeyedSubscript:@"xattr"];
+      encryptedValues2 = [self encryptedValues];
+      [encryptedValues2 setObject:0 forKeyedSubscript:@"xattrSignature"];
     }
   }
 
@@ -3982,17 +3982,17 @@ LABEL_113:
   if (!v91)
   {
     v92 = [v15 st];
-    v93 = [v92 trashPutBackPath];
-    v94 = [v93 dataUsingEncoding:4];
+    trashPutBackPath = [v92 trashPutBackPath];
+    v94 = [trashPutBackPath dataUsingEncoding:4];
 
-    v95 = [a1 encryptedValues];
-    [v95 setObject:v94 forKeyedSubscript:@"restorePath"];
+    encryptedValues3 = [self encryptedValues];
+    [encryptedValues3 setObject:v94 forKeyedSubscript:@"restorePath"];
 
     v96 = [v15 st];
-    v97 = [v96 trashPutBackParentID];
-    v98 = [v15 serverZone];
-    v99 = [v97 directoryReferenceInZone:v98 action:0];
-    [a1 setObject:v99 forKeyedSubscript:@"restoreParent"];
+    trashPutBackParentID = [v96 trashPutBackParentID];
+    serverZone3 = [v15 serverZone];
+    v99 = [trashPutBackParentID directoryReferenceInZone:serverZone3 action:0];
+    [self setObject:v99 forKeyedSubscript:@"restoreParent"];
   }
 
   if ([v15 isSymLink])
@@ -4005,19 +4005,19 @@ LABEL_113:
 
     if (!v100)
     {
-      v101 = [v15 asSymlink];
-      v102 = [v101 symlinkTarget];
-      v103 = [v102 dataUsingEncoding:4];
+      asSymlink = [v15 asSymlink];
+      symlinkTarget = [asSymlink symlinkTarget];
+      v103 = [symlinkTarget dataUsingEncoding:4];
 
-      v104 = [a1 encryptedValues];
-      [v104 setObject:v103 forKeyedSubscript:@"targetPath"];
+      encryptedValues4 = [self encryptedValues];
+      [encryptedValues4 setObject:v103 forKeyedSubscript:@"targetPath"];
     }
   }
 
   if ((v114 & 1) == 0)
   {
-    v105 = [v120 ckInfo];
-    if (!v105)
+    ckInfo3 = [v120 ckInfo];
+    if (!ckInfo3)
     {
       if ([v15 isFinderBookmark])
       {
@@ -4032,18 +4032,18 @@ LABEL_113:
           _os_log_impl(&dword_223E7A000, v107, OS_LOG_TYPE_DEFAULT, "[WARNING] Item is missing structure CKInfo so using the version CKInfo because they are the same record %@%@", buf, 0x16u);
         }
 
-        v108 = [v15 asFinderBookmark];
-        v109 = [v108 currentVersion];
-        v105 = [v109 ckInfo];
+        asFinderBookmark = [v15 asFinderBookmark];
+        currentVersion = [asFinderBookmark currentVersion];
+        ckInfo3 = [currentVersion ckInfo];
       }
 
       else
       {
-        v105 = 0;
+        ckInfo3 = 0;
       }
     }
 
-    [a1 serializeSystemFields:v105 includeCZMEtag:{objc_msgSend(v15, "isDocumentBeingCopiedToNewZone") ^ 1}];
+    [self serializeSystemFields:ckInfo3 includeCZMEtag:{objc_msgSend(v15, "isDocumentBeingCopiedToNewZone") ^ 1}];
   }
 
   v110 = *MEMORY[0x277D85DE8];
@@ -4059,13 +4059,13 @@ LABEL_113:
   v13 = [BRCUserDefaults defaultsForMangledID:0];
   if (v10 && a5)
   {
-    v14 = [a1 encryptedValues];
-    [v14 setObject:v10 forKeyedSubscript:@"exactSize"];
+    encryptedValues = [self encryptedValues];
+    [encryptedValues setObject:v10 forKeyedSubscript:@"exactSize"];
   }
 
   if (v11)
   {
-    if (([a1 _verifyValueForRecordWithNumber:v11 key:@"mtime" item:v12 error:0] & 1) == 0)
+    if (([self _verifyValueForRecordWithNumber:v11 key:@"mtime" item:v12 error:0] & 1) == 0)
     {
 
       v11 = &unk_2837B01D8;
@@ -4073,19 +4073,19 @@ LABEL_113:
 
     if (a5)
     {
-      v15 = [a1 encryptedValues];
-      [v15 setObject:v11 forKeyedSubscript:@"exactMtime"];
+      encryptedValues2 = [self encryptedValues];
+      [encryptedValues2 setObject:v11 forKeyedSubscript:@"exactMtime"];
 
       if ([v13 shouldSendRoundedTimestamps])
       {
         v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{BRCRoundedTimestamp(objc_msgSend(v11, "unsignedLongLongValue"))}];
-        [a1 setObject:v16 forKeyedSubscript:@"mtime"];
+        [self setObject:v16 forKeyedSubscript:@"mtime"];
       }
     }
 
     else
     {
-      [a1 setObject:v11 forKeyedSubscript:@"mtime"];
+      [self setObject:v11 forKeyedSubscript:@"mtime"];
     }
   }
 
@@ -4096,11 +4096,11 @@ LABEL_113:
 - (uint64_t)serializeForContentUpload:()BRCSerializationAdditions size:mtime:etag:shouldUseEnhancedDrivePrivacy:error:
 {
   v14 = a3;
-  [a1 setEtag:a6];
-  [a1 setKnownToServer:1];
+  [self setEtag:a6];
+  [self setKnownToServer:1];
   v15 = [MEMORY[0x277CCABB0] numberWithLongLong:a4];
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a5];
-  v17 = [a1 _updateSize:v15 mtime:v16 shouldUseEnhancedDrivePrivacy:a7 item:v14 error:a8];
+  v17 = [self _updateSize:v15 mtime:v16 shouldUseEnhancedDrivePrivacy:a7 item:v14 error:a8];
 
   return v17;
 }
@@ -4110,10 +4110,10 @@ LABEL_113:
   v83 = *MEMORY[0x277D85DE8];
   v10 = a3;
   v81 = a6;
-  v11 = [v10 currentVersion];
+  currentVersion = [v10 currentVersion];
   v76 = a5;
   v12 = [v10 contentRecordNeedsForceAllFieldsWhenDeadInServerTruth:a5];
-  v78 = [v11 ckInfo];
+  ckInfo = [currentVersion ckInfo];
 
   if ((a4 & 0x4000000000000000) != 0)
   {
@@ -4125,7 +4125,7 @@ LABEL_113:
     }
   }
 
-  if (!v11)
+  if (!currentVersion)
   {
     v70 = brc_bread_crumbs();
     v71 = brc_default_log();
@@ -4135,33 +4135,33 @@ LABEL_113:
     }
   }
 
-  v15 = [v10 appLibrary];
-  if ([v15 isCloudDocsAppLibrary])
+  appLibrary = [v10 appLibrary];
+  if ([appLibrary isCloudDocsAppLibrary])
   {
-    v16 = [v10 clientZone];
-    if ([v16 isCloudDocsZone])
+    clientZone = [v10 clientZone];
+    if ([clientZone isCloudDocsZone])
     {
-      v17 = [v10 parentItemIDInZone];
-      v18 = [v17 isNonDesktopRoot];
+      parentItemIDInZone = [v10 parentItemIDInZone];
+      isNonDesktopRoot = [parentItemIDInZone isNonDesktopRoot];
     }
 
     else
     {
-      v18 = 0;
+      isNonDesktopRoot = 0;
     }
   }
 
   else
   {
-    v18 = 0;
+    isNonDesktopRoot = 0;
   }
 
-  v19 = [v10 parentItemIDInZone];
-  v20 = [v19 isDocumentsFolder];
+  parentItemIDInZone2 = [v10 parentItemIDInZone];
+  isDocumentsFolder = [parentItemIDInZone2 isDocumentsFolder];
 
   if ([v10 isSharedToMeTopLevelItem])
   {
-    if (v78)
+    if (ckInfo)
     {
       v21 = 0;
     }
@@ -4173,31 +4173,31 @@ LABEL_113:
 
     if (v21 == 1)
     {
-      v22 = [v10 clientZone];
-      v23 = [v10 itemID];
-      v24 = [v22 serverItemByItemID:v23];
+      clientZone2 = [v10 clientZone];
+      itemID = [v10 itemID];
+      v24 = [clientZone2 serverItemByItemID:itemID];
 
-      v25 = [v24 latestVersion];
-      v26 = [v25 originalPOSIXName];
-      v27 = v26;
-      if (v26)
+      latestVersion = [v24 latestVersion];
+      originalPOSIXName = [latestVersion originalPOSIXName];
+      v27 = originalPOSIXName;
+      if (originalPOSIXName)
       {
-        v28 = v26;
+        originalPOSIXName2 = originalPOSIXName;
       }
 
       else
       {
-        v28 = [v11 originalPOSIXName];
+        originalPOSIXName2 = [currentVersion originalPOSIXName];
       }
 
-      v31 = v28;
+      v31 = originalPOSIXName2;
 
-      [a1 serializeFilename:v31 forCreation:1 basehashSalt:0 parentIDIsCloudDocsRoot:v18 parentIDIsDocumentsFolder:v20];
+      [self serializeFilename:v31 forCreation:1 basehashSalt:0 parentIDIsCloudDocsRoot:isNonDesktopRoot parentIDIsDocumentsFolder:isDocumentsFolder];
     }
 
-    v30 = [objc_alloc(MEMORY[0x277CBC5D0]) initShareIDWithShareableItem:v10];
-    v19 = [objc_alloc(MEMORY[0x277CBC620]) initWithRecordID:v30 action:0];
-    [a1 setShare:v19];
+    originalPOSIXName3 = [objc_alloc(MEMORY[0x277CBC5D0]) initShareIDWithShareableItem:v10];
+    parentItemIDInZone2 = [objc_alloc(MEMORY[0x277CBC620]) initWithRecordID:originalPOSIXName3 action:0];
+    [self setShare:parentItemIDInZone2];
 
     goto LABEL_26;
   }
@@ -4210,8 +4210,8 @@ LABEL_113:
 
   if ((v29 & 1) == 0)
   {
-    v30 = [v11 originalPOSIXName];
-    [a1 serializeFilename:v30 forCreation:v78 == 0 basehashSalt:v81 parentIDIsCloudDocsRoot:v18 parentIDIsDocumentsFolder:v20];
+    originalPOSIXName3 = [currentVersion originalPOSIXName];
+    [self serializeFilename:originalPOSIXName3 forCreation:ckInfo == 0 basehashSalt:v81 parentIDIsCloudDocsRoot:isNonDesktopRoot parentIDIsDocumentsFolder:isDocumentsFolder];
 LABEL_26:
   }
 
@@ -4232,11 +4232,11 @@ LABEL_26:
 
   else
   {
-    v19 = MEMORY[0x277CCABB0];
-    v80 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v11, "size")}];
+    parentItemIDInZone2 = MEMORY[0x277CCABB0];
+    v80 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(currentVersion, "size")}];
     if ((a4 & 0x100000) == 0 && ([v10 isDocumentBeingCopiedToNewZone] & 1) == 0)
     {
-      v19 = brc_bread_crumbs();
+      parentItemIDInZone2 = brc_bread_crumbs();
       v33 = brc_default_log();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
       {
@@ -4262,8 +4262,8 @@ LABEL_26:
 
   else
   {
-    v19 = MEMORY[0x277CCABB0];
-    v79 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v11, "mtime")}];
+    parentItemIDInZone2 = MEMORY[0x277CCABB0];
+    v79 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(currentVersion, "mtime")}];
   }
 
   if (v81)
@@ -4273,8 +4273,8 @@ LABEL_26:
 
   else
   {
-    v19 = [a1 objectForKeyedSubscript:@"boundaryKey"];
-    v35 = v19 != 0;
+    parentItemIDInZone2 = [self objectForKeyedSubscript:@"boundaryKey"];
+    v35 = parentItemIDInZone2 != 0;
   }
 
   v36 = [v10 shouldUseEnhancedDrivePrivacyWhenNeedsPreserving:v35];
@@ -4282,7 +4282,7 @@ LABEL_26:
   {
   }
 
-  v37 = [a1 _updateSize:v80 mtime:v79 shouldUseEnhancedDrivePrivacy:v36 item:v10 error:a7];
+  v37 = [self _updateSize:v80 mtime:v79 shouldUseEnhancedDrivePrivacy:v36 item:v10 error:a7];
   if (v37)
   {
     v38 = v12 ^ 1;
@@ -4293,72 +4293,72 @@ LABEL_26:
 
     if ((v38 & 1) == 0)
     {
-      v39 = [v11 xattrSignature];
-      v40 = v39 == 0;
+      xattrSignature = [currentVersion xattrSignature];
+      v40 = xattrSignature == 0;
 
       if (v40)
       {
-        if (v78)
+        if (ckInfo)
         {
-          [a1 setObject:0 forKeyedSubscript:@"xattr"];
-          v45 = [a1 encryptedValues];
-          [v45 setObject:0 forKeyedSubscript:@"xattrSignature"];
+          [self setObject:0 forKeyedSubscript:@"xattr"];
+          encryptedValues = [self encryptedValues];
+          [encryptedValues setObject:0 forKeyedSubscript:@"xattrSignature"];
           goto LABEL_60;
         }
 
 LABEL_57:
-        v45 = [MEMORY[0x277CBEA90] data];
-        v46 = [a1 encryptedValues];
-        [v46 setObject:v45 forKeyedSubscript:@"quarantine"];
+        encryptedValues = [MEMORY[0x277CBEA90] data];
+        encryptedValues2 = [self encryptedValues];
+        [encryptedValues2 setObject:encryptedValues forKeyedSubscript:@"quarantine"];
 
 LABEL_60:
 LABEL_61:
-        v74 = [v10 resolvedConflictLoserEtags];
-        if ((a4 & 0x800000) != 0 && [v74 count] && v78)
+        resolvedConflictLoserEtags = [v10 resolvedConflictLoserEtags];
+        if ((a4 & 0x800000) != 0 && [resolvedConflictLoserEtags count] && ckInfo)
         {
-          v47 = [v11 conflictLoserEtags];
-          v48 = [v47 mutableCopy];
+          conflictLoserEtags = [currentVersion conflictLoserEtags];
+          v48 = [conflictLoserEtags mutableCopy];
 
-          [v48 minusSet:v74];
-          v49 = [v48 allObjects];
-          [a1 setConflictLoserEtags:v49];
+          [v48 minusSet:resolvedConflictLoserEtags];
+          allObjects = [v48 allObjects];
+          [self setConflictLoserEtags:allObjects];
         }
 
         if ([v10 isFinderBookmark])
         {
           v50 = [v10 st];
-          v51 = [v50 ckInfo];
+          ckInfo2 = [v50 ckInfo];
         }
 
         else
         {
-          v51 = [v11 ckInfo];
+          ckInfo2 = [currentVersion ckInfo];
         }
 
         v52 = [BRCUserDefaults defaultsForMangledID:0];
-        v53 = [v10 session];
-        v54 = [v53 accountFacade];
-        v55 = [v52 saveLocalContentVersionIdentifierOnDiskWithAccountFacade:v54];
+        session = [v10 session];
+        accountFacade = [session accountFacade];
+        v55 = [v52 saveLocalContentVersionIdentifierOnDiskWithAccountFacade:accountFacade];
 
-        v56 = [v51 etag];
-        v58 = (a4 & 0x8400000000000000) != 0 && v56 != 0;
+        etag = [ckInfo2 etag];
+        v58 = (a4 & 0x8400000000000000) != 0 && etag != 0;
 
         if (!(v55 & 1 | !v58))
         {
-          [v51 overwriteEtag:0];
+          [ckInfo2 overwriteEtag:0];
           v58 = 0;
         }
 
         if (!v76 || v58)
         {
-          [a1 serializeSystemFields:v51 includeCZMEtag:{objc_msgSend(v10, "isDocumentBeingCopiedToNewZone") ^ 1}];
+          [self serializeSystemFields:ckInfo2 includeCZMEtag:{objc_msgSend(v10, "isDocumentBeingCopiedToNewZone") ^ 1}];
           if (v58)
           {
-            v63 = [a1 pluginFields];
-            if (v63)
+            pluginFields = [self pluginFields];
+            if (pluginFields)
             {
-              v64 = [a1 pluginFields];
-              v65 = [v64 mutableCopy];
+              pluginFields2 = [self pluginFields];
+              v65 = [pluginFields2 mutableCopy];
             }
 
             else
@@ -4367,28 +4367,28 @@ LABEL_61:
             }
 
             [v65 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"br_itemUnderReset"];
-            [a1 setPluginFields:v65];
+            [self setPluginFields:v65];
           }
         }
 
         else
         {
-          v59 = [v10 clientZone];
-          v60 = [v59 mangledID];
-          v61 = [BRCUserDefaults defaultsForMangledID:v60];
-          v62 = [v61 forceFailIfExistOnRevival];
+          clientZone3 = [v10 clientZone];
+          mangledID = [clientZone3 mangledID];
+          v61 = [BRCUserDefaults defaultsForMangledID:mangledID];
+          forceFailIfExistOnRevival = [v61 forceFailIfExistOnRevival];
 
-          if (v62)
+          if (forceFailIfExistOnRevival)
           {
-            [a1 setKnownToServer:0];
-            [a1 setEtag:0];
+            [self setKnownToServer:0];
+            [self setEtag:0];
           }
         }
 
         goto LABEL_89;
       }
 
-      v41 = [a1 objectForKeyedSubscript:@"xattr"];
+      v41 = [self objectForKeyedSubscript:@"xattr"];
       v42 = v41 == 0;
 
       if (v42)
@@ -4401,19 +4401,19 @@ LABEL_61:
         }
       }
 
-      v43 = [a1 encryptedValues];
-      v44 = [v43 objectForKeyedSubscript:@"xattrSignature"];
+      encryptedValues3 = [self encryptedValues];
+      v44 = [encryptedValues3 objectForKeyedSubscript:@"xattrSignature"];
       if (v44)
       {
         goto LABEL_55;
       }
 
-      v66 = [v10 clientZone];
-      v67 = [v66 enhancedDrivePrivacyEnabled];
+      clientZone4 = [v10 clientZone];
+      enhancedDrivePrivacyEnabled = [clientZone4 enhancedDrivePrivacyEnabled];
 
-      if (v67)
+      if (enhancedDrivePrivacyEnabled)
       {
-        v43 = brc_bread_crumbs();
+        encryptedValues3 = brc_bread_crumbs();
         v44 = brc_default_log();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_FAULT))
         {
@@ -4424,7 +4424,7 @@ LABEL_55:
       }
     }
 
-    if (v78)
+    if (ckInfo)
     {
       goto LABEL_61;
     }
@@ -4446,7 +4446,7 @@ LABEL_89:
   {
     if (![v16 favoriteRank])
     {
-      [a1 setObject:0 forKeyedSubscript:@"favoriteRank"];
+      [self setObject:0 forKeyedSubscript:@"favoriteRank"];
       if ((a5 & 0x800) != 0)
       {
         goto LABEL_7;
@@ -4456,13 +4456,13 @@ LABEL_89:
     }
 
     v11 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v16, "favoriteRank")}];
-    [a1 setObject:v11 forKeyedSubscript:@"favoriteRank"];
+    [self setObject:v11 forKeyedSubscript:@"favoriteRank"];
   }
 
   if ((a5 & 0x800) != 0)
   {
 LABEL_7:
-    [a1 setLastUsedTime:{objc_msgSend(v16, "lastUsedTime")}];
+    [self setLastUsedTime:{objc_msgSend(v16, "lastUsedTime")}];
     goto LABEL_8;
   }
 
@@ -4475,17 +4475,17 @@ LABEL_6:
 LABEL_8:
   if ((a5 & 0x200) != 0 || a6)
   {
-    v12 = [v16 finderTags];
-    v13 = [v16 ckInfo];
-    v14 = [v13 etag];
-    [a1 serializeFinderTags:v12 forCreation:v14 == 0];
+    finderTags = [v16 finderTags];
+    ckInfo = [v16 ckInfo];
+    etag = [ckInfo etag];
+    [self serializeFinderTags:finderTags forCreation:etag == 0];
   }
 
-  [a1 setObject:v10 forKeyedSubscript:@"extension"];
+  [self setObject:v10 forKeyedSubscript:@"extension"];
   if ((a6 & 1) == 0)
   {
-    v15 = [v16 ckInfo];
-    [a1 serializeSystemFields:v15];
+    ckInfo2 = [v16 ckInfo];
+    [self serializeSystemFields:ckInfo2];
   }
 }
 
@@ -4494,13 +4494,13 @@ LABEL_8:
   if (a3)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithLongLong:?];
-    [a1 setObject:v4 forKeyedSubscript:@"lastOpenTime"];
+    [self setObject:v4 forKeyedSubscript:@"lastOpenTime"];
   }
 
   else
   {
 
-    [a1 setObject:? forKeyedSubscript:?];
+    [self setObject:? forKeyedSubscript:?];
   }
 }
 
@@ -4542,9 +4542,9 @@ LABEL_8:
 
   if ([v7 needsSave])
   {
-    v4 = [v7 session];
-    v5 = [v4 clientReadWriteDatabaseFacade];
-    [v5 saveAppLibrary:v7];
+    session = [v7 session];
+    clientReadWriteDatabaseFacade = [session clientReadWriteDatabaseFacade];
+    [clientReadWriteDatabaseFacade saveAppLibrary:v7];
 
     v6 = [v7 db];
     [v6 flush];
@@ -4554,9 +4554,9 @@ LABEL_8:
 - (void)_processSaltingOnAppLibrary:()BRCSerializationAdditions
 {
   v4 = a3;
-  v6 = [[BRCBasehashSaltInfo alloc] initWithRecord:a1];
-  v5 = [(BRCBasehashSaltInfo *)v6 childBasehashSalt];
-  [v4 setChildBasehashSalt:v5];
+  v6 = [[BRCBasehashSaltInfo alloc] initWithRecord:self];
+  childBasehashSalt = [(BRCBasehashSaltInfo *)v6 childBasehashSalt];
+  [v4 setChildBasehashSalt:childBasehashSalt];
 
   [v4 setSaltingState:{-[BRCBasehashSaltInfo saltingState](v6, "saltingState")}];
 }
@@ -4565,25 +4565,25 @@ LABEL_8:
 {
   v8 = a3;
   v9 = a4;
-  v10 = [a1 recordType];
-  v11 = [v10 isEqualToString:@"structure"];
+  recordType = [self recordType];
+  v11 = [recordType isEqualToString:@"structure"];
 
   if (v11)
   {
-    v12 = [a1 recordID];
-    v13 = [v9 session];
-    if ([v12 brc_isZoneRootRecordID])
+    recordID = [self recordID];
+    session = [v9 session];
+    if ([recordID brc_isZoneRootRecordID])
     {
-      v14 = [v9 session];
-      v15 = [v14 clientTruthWorkloop];
+      session2 = [v9 session];
+      clientTruthWorkloop = [session2 clientTruthWorkloop];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __102__CKRecord_BRCSerializationAdditions__processAppLibraryDataWithMovedZoneNames_serverZone_isDeltaSync___block_invoke;
       block[3] = &unk_278502F30;
       v45 = v9;
-      v46 = a1;
+      selfCopy = self;
       v47 = a5;
-      dispatch_async_and_wait(v15, block);
+      dispatch_async_and_wait(clientTruthWorkloop, block);
 
       v16 = v45;
 LABEL_4:
@@ -4592,22 +4592,22 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    if ([v12 brc_isAppLibraryRootRecordID])
+    if ([recordID brc_isAppLibraryRootRecordID])
     {
-      v17 = [v12 brc_appLibraryRootZoneName];
-      v18 = [a1 _createAppLibraryIfNecessary:v17 session:v13];
+      brc_appLibraryRootZoneName = [recordID brc_appLibraryRootZoneName];
+      v18 = [self _createAppLibraryIfNecessary:brc_appLibraryRootZoneName session:session];
 
-      v19 = [v9 session];
-      v20 = [v19 clientTruthWorkloop];
+      session3 = [v9 session];
+      clientTruthWorkloop2 = [session3 clientTruthWorkloop];
       v37 = MEMORY[0x277D85DD0];
       v38 = 3221225472;
       v39 = __102__CKRecord_BRCSerializationAdditions__processAppLibraryDataWithMovedZoneNames_serverZone_isDeltaSync___block_invoke_2;
       v40 = &unk_278502F30;
-      v41 = a1;
+      selfCopy2 = self;
       v42 = v18;
       v43 = a5;
       v21 = v18;
-      dispatch_async_and_wait(v20, &v37);
+      dispatch_async_and_wait(clientTruthWorkloop2, &v37);
     }
 
     if (![v9 isCloudDocsZone])
@@ -4615,9 +4615,9 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    if ([v12 brc_isAppLibraryRootRecordID])
+    if ([recordID brc_isAppLibraryRootRecordID])
     {
-      v22 = [v12 brc_appLibraryRootZoneName];
+      brc_appLibraryRootZoneName2 = [recordID brc_appLibraryRootZoneName];
       v23 = brc_bread_crumbs();
       v24 = brc_default_log();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -4625,17 +4625,17 @@ LABEL_34:
         [CKRecord(BRCSerializationAdditions) processAppLibraryDataWithMovedZoneNames:serverZone:isDeltaSync:];
       }
 
-      if ([v22 isEqualToString:*MEMORY[0x277CFAD68]])
+      if ([brc_appLibraryRootZoneName2 isEqualToString:*MEMORY[0x277CFAD68]])
       {
         [CKRecord(BRCSerializationAdditions) processAppLibraryDataWithMovedZoneNames:serverZone:isDeltaSync:];
       }
 
-      [v8 addObject:v22];
+      [v8 addObject:brc_appLibraryRootZoneName2];
     }
 
-    if ([v12 brc_isAppLibraryDocumentsRecordID])
+    if ([recordID brc_isAppLibraryDocumentsRecordID])
     {
-      v25 = [v12 brc_appLibraryDocumentsZoneName];
+      brc_appLibraryDocumentsZoneName = [recordID brc_appLibraryDocumentsZoneName];
       v26 = brc_bread_crumbs();
       v27 = brc_default_log();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -4643,12 +4643,12 @@ LABEL_34:
         [CKRecord(BRCSerializationAdditions) processAppLibraryDataWithMovedZoneNames:serverZone:isDeltaSync:];
       }
 
-      if ([v25 isEqualToString:*MEMORY[0x277CFAD68]])
+      if ([brc_appLibraryDocumentsZoneName isEqualToString:*MEMORY[0x277CFAD68]])
       {
         [CKRecord(BRCSerializationAdditions) processAppLibraryDataWithMovedZoneNames:serverZone:isDeltaSync:];
       }
 
-      [v8 addObject:v25];
+      [v8 addObject:brc_appLibraryDocumentsZoneName];
     }
 
     if (([v9 state] & 4) != 0)
@@ -4656,16 +4656,16 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    v16 = [a1 objectForKeyedSubscript:@"parent"];
+    v16 = [self objectForKeyedSubscript:@"parent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v28 = [v16 recordID];
-      v29 = [v28 brc_isAppLibraryRootRecordID];
+      recordID2 = [v16 recordID];
+      brc_isAppLibraryRootRecordID = [recordID2 brc_isAppLibraryRootRecordID];
       v30 = MEMORY[0x277CFAD68];
-      if (v29)
+      if (brc_isAppLibraryRootRecordID)
       {
-        v31 = [v28 brc_appLibraryRootZoneName];
+        brc_appLibraryRootZoneName3 = [recordID2 brc_appLibraryRootZoneName];
         v32 = brc_bread_crumbs();
         v33 = brc_default_log();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -4673,20 +4673,20 @@ LABEL_34:
           [CKRecord(BRCSerializationAdditions) processAppLibraryDataWithMovedZoneNames:serverZone:isDeltaSync:];
         }
 
-        if ([v31 isEqualToString:*v30])
+        if ([brc_appLibraryRootZoneName3 isEqualToString:*v30])
         {
           [CKRecord(BRCSerializationAdditions) processAppLibraryDataWithMovedZoneNames:serverZone:isDeltaSync:];
         }
 
-        [v8 addObject:v31];
+        [v8 addObject:brc_appLibraryRootZoneName3];
       }
 
-      if (![v28 brc_isAppLibraryDocumentsRecordID])
+      if (![recordID2 brc_isAppLibraryDocumentsRecordID])
       {
         goto LABEL_39;
       }
 
-      v34 = [v28 brc_appLibraryDocumentsZoneName];
+      brc_appLibraryDocumentsZoneName2 = [recordID2 brc_appLibraryDocumentsZoneName];
       v35 = brc_bread_crumbs();
       v36 = brc_default_log();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
@@ -4694,19 +4694,19 @@ LABEL_34:
         [CKRecord(BRCSerializationAdditions) processAppLibraryDataWithMovedZoneNames:serverZone:isDeltaSync:];
       }
 
-      if ([v34 isEqualToString:*v30])
+      if ([brc_appLibraryDocumentsZoneName2 isEqualToString:*v30])
       {
         [CKRecord(BRCSerializationAdditions) processAppLibraryDataWithMovedZoneNames:serverZone:isDeltaSync:];
       }
 
-      [v8 addObject:v34];
+      [v8 addObject:brc_appLibraryDocumentsZoneName2];
     }
 
     else
     {
-      v28 = brc_bread_crumbs();
-      v34 = brc_default_log();
-      if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
+      recordID2 = brc_bread_crumbs();
+      brc_appLibraryDocumentsZoneName2 = brc_default_log();
+      if (os_log_type_enabled(brc_appLibraryDocumentsZoneName2, OS_LOG_TYPE_FAULT))
       {
         [CKRecord(BRCSerializationAdditions) processAppLibraryDataWithMovedZoneNames:serverZone:isDeltaSync:];
       }
@@ -4724,33 +4724,33 @@ LABEL_35:
   v4 = a3;
   if (([v4 isFinderBookmark] & 1) != 0 || (+[BRCUserDefaults defaultsForMangledID:](BRCUserDefaults, "defaultsForMangledID:", 0), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "supportsEnhancedDrivePrivacy"), v5, !v6))
   {
-    v10 = 0;
+    brc_generateSaltingKey = 0;
   }
 
   else
   {
-    v7 = [v4 clientZone];
-    v8 = [v4 itemID];
+    clientZone = [v4 clientZone];
+    itemID = [v4 itemID];
     v9 = [v4 db];
-    v10 = [v7 contentBoundaryKeyForItemID:v8 withDB:v9];
+    brc_generateSaltingKey = [clientZone contentBoundaryKeyForItemID:itemID withDB:v9];
 
-    if ([v4 shouldUseEnhancedDrivePrivacyWhenNeedsPreserving:v10 != 0])
+    if ([v4 shouldUseEnhancedDrivePrivacyWhenNeedsPreserving:brc_generateSaltingKey != 0])
     {
-      if (!v10)
+      if (!brc_generateSaltingKey)
       {
-        v10 = [MEMORY[0x277CBEA90] brc_generateSaltingKey];
+        brc_generateSaltingKey = [MEMORY[0x277CBEA90] brc_generateSaltingKey];
       }
 
-      [a1 serializeContentBoundaryKey:v10];
+      [self serializeContentBoundaryKey:brc_generateSaltingKey];
       v11 = MEMORY[0x277CCABB0];
-      v12 = [v4 currentVersion];
-      v13 = [v11 numberWithLongLong:{objc_msgSend(v12, "size")}];
-      v14 = [a1 encryptedValues];
-      [v14 setObject:v13 forKeyedSubscript:@"exactSize"];
+      currentVersion = [v4 currentVersion];
+      v13 = [v11 numberWithLongLong:{objc_msgSend(currentVersion, "size")}];
+      encryptedValues = [self encryptedValues];
+      [encryptedValues setObject:v13 forKeyedSubscript:@"exactSize"];
     }
   }
 
-  return v10;
+  return brc_generateSaltingKey;
 }
 
 + (void)newFromSqliteValue:()BRCSerializationAdditions .cold.1()

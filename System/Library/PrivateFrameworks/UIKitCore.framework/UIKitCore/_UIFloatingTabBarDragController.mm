@@ -1,81 +1,81 @@
 @interface _UIFloatingTabBarDragController
 - (BOOL)_shouldAddPlaceholderForPendingDrop;
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
 - (BOOL)hasActiveDrag;
 - (UIDragItem)activeDropItem;
 - (UIDropSession)activeDropSession;
-- (_UIFloatingTabBarDragController)initWithDelegate:(id)a3 view:(id)a4;
+- (_UIFloatingTabBarDragController)initWithDelegate:(id)delegate view:(id)view;
 - (_UIFloatingTabBarDragControllerDelegate)delegate;
-- (double)_dragInteraction:(id)a3 delayForLiftBeginningAtLocation:(CGPoint)a4;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (void)_insertPlaceholderAtIndex:(int64_t)a3;
+- (double)_dragInteraction:(id)interaction delayForLiftBeginningAtLocation:(CGPoint)location;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (void)_insertPlaceholderAtIndex:(int64_t)index;
 - (void)_removePlaceholder;
-- (void)_updateFavoriteOrderAnimated:(BOOL)a3;
-- (void)beginEditingWithFavoriteOrder:(id)a3 excludedItems:(id)a4;
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5;
-- (void)dropInteraction:(id)a3 item:(id)a4 willAnimateDropWithAnimator:(id)a5;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4;
+- (void)_updateFavoriteOrderAnimated:(BOOL)animated;
+- (void)beginEditingWithFavoriteOrder:(id)order excludedItems:(id)items;
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session;
+- (void)dropInteraction:(id)interaction item:(id)item willAnimateDropWithAnimator:(id)animator;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end;
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter;
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit;
 - (void)endEditing;
-- (void)insertTabForIdentifier:(id)a3;
-- (void)removeTabForIdentifier:(id)a3;
-- (void)resetFavoriteOrderWithDefaultOrder:(id)a3;
-- (void)setPendingDropTab:(id)a3;
+- (void)insertTabForIdentifier:(id)identifier;
+- (void)removeTabForIdentifier:(id)identifier;
+- (void)resetFavoriteOrderWithDefaultOrder:(id)order;
+- (void)setPendingDropTab:(id)tab;
 @end
 
 @implementation _UIFloatingTabBarDragController
 
-- (_UIFloatingTabBarDragController)initWithDelegate:(id)a3 view:(id)a4
+- (_UIFloatingTabBarDragController)initWithDelegate:(id)delegate view:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = _UIFloatingTabBarDragController;
   v8 = [(_UIFloatingTabBarDragController *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v10 = [[UIDragInteraction alloc] initWithDelegate:v9];
     dragInteraction = v9->_dragInteraction;
     v9->_dragInteraction = v10;
 
-    [v7 addInteraction:v9->_dragInteraction];
+    [viewCopy addInteraction:v9->_dragInteraction];
     v12 = [[UIDropInteraction alloc] initWithDelegate:v9];
     dropInteraction = v9->_dropInteraction;
     v9->_dropInteraction = v12;
 
-    [v7 addInteraction:v9->_dropInteraction];
+    [viewCopy addInteraction:v9->_dropInteraction];
   }
 
   return v9;
 }
 
-- (void)beginEditingWithFavoriteOrder:(id)a3 excludedItems:(id)a4
+- (void)beginEditingWithFavoriteOrder:(id)order excludedItems:(id)items
 {
   self->_editing = 1;
   v6 = MEMORY[0x1E695DFA0];
-  v7 = a4;
-  v8 = [v6 orderedSetWithOrderedSet:a3];
+  itemsCopy = items;
+  v8 = [v6 orderedSetWithOrderedSet:order];
   pendingFavoriteOrder = self->_pendingFavoriteOrder;
   self->_pendingFavoriteOrder = v8;
 
-  v10 = [MEMORY[0x1E695DFA8] setWithSet:v7];
+  v10 = [MEMORY[0x1E695DFA8] setWithSet:itemsCopy];
 
   pendingExcludedItems = self->_pendingExcludedItems;
   self->_pendingExcludedItems = v10;
 }
 
-- (void)resetFavoriteOrderWithDefaultOrder:(id)a3
+- (void)resetFavoriteOrderWithDefaultOrder:(id)order
 {
-  v4 = [MEMORY[0x1E695DFA0] orderedSetWithOrderedSet:a3];
+  v4 = [MEMORY[0x1E695DFA0] orderedSetWithOrderedSet:order];
   pendingFavoriteOrder = self->_pendingFavoriteOrder;
   self->_pendingFavoriteOrder = v4;
 
@@ -101,44 +101,44 @@
   [(_UIFloatingTabBarDragController *)self _removePlaceholder];
 }
 
-- (void)insertTabForIdentifier:(id)a3
+- (void)insertTabForIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   if (([(NSMutableOrderedSet *)self->_pendingFavoriteOrder containsObject:?]& 1) == 0)
   {
-    [(NSMutableOrderedSet *)self->_pendingFavoriteOrder addObject:v5];
-    v4 = [(_UIFloatingTabBarDragController *)self delegate];
-    [v4 tabDragController:self updateFavoriteOrderAnimated:1];
+    [(NSMutableOrderedSet *)self->_pendingFavoriteOrder addObject:identifierCopy];
+    delegate = [(_UIFloatingTabBarDragController *)self delegate];
+    [delegate tabDragController:self updateFavoriteOrderAnimated:1];
   }
 }
 
-- (void)removeTabForIdentifier:(id)a3
+- (void)removeTabForIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   if ([(NSMutableOrderedSet *)self->_pendingFavoriteOrder containsObject:?])
   {
-    [(NSMutableOrderedSet *)self->_pendingFavoriteOrder removeObject:v5];
-    v4 = [(_UIFloatingTabBarDragController *)self delegate];
-    [v4 tabDragController:self updateFavoriteOrderAnimated:1];
+    [(NSMutableOrderedSet *)self->_pendingFavoriteOrder removeObject:identifierCopy];
+    delegate = [(_UIFloatingTabBarDragController *)self delegate];
+    [delegate tabDragController:self updateFavoriteOrderAnimated:1];
   }
 }
 
 - (BOOL)hasActiveDrag
 {
-  v2 = [(_UIFloatingTabBarDragController *)self currentDragTab];
-  v3 = v2 != 0;
+  currentDragTab = [(_UIFloatingTabBarDragController *)self currentDragTab];
+  v3 = currentDragTab != 0;
 
   return v3;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   if ([(_UIFloatingTabBarDragController *)self isEditing])
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v7 = [(_UIFloatingTabBarDragController *)self delegate];
-    v8 = [v7 tabDragController:self tabForBeginningSession:v5];
+    delegate = [(_UIFloatingTabBarDragController *)self delegate];
+    v8 = [delegate tabDragController:self tabForBeginningSession:sessionCopy];
 
     if (v8)
     {
@@ -147,9 +147,9 @@
       [(UIDragItem *)v10 setLocalObject:v8];
       [v6 addObject:v10];
       [(_UIFloatingTabBarDragController *)self setCurrentDragTab:v8];
-      v11 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
-      v12 = [v8 identifier];
-      -[_UIFloatingTabBarDragController setCurrentDragTabOriginalIndex:](self, "setCurrentDragTabOriginalIndex:", [v11 indexOfObject:v12]);
+      pendingFavoriteOrder = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
+      identifier = [v8 identifier];
+      -[_UIFloatingTabBarDragController setCurrentDragTabOriginalIndex:](self, "setCurrentDragTabOriginalIndex:", [pendingFavoriteOrder indexOfObject:identifier]);
     }
   }
 
@@ -161,43 +161,43 @@
   return v6;
 }
 
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __87___UIFloatingTabBarDragController_dragInteraction_willAnimateLiftWithAnimator_session___block_invoke;
   v5[3] = &unk_1E70F5DB8;
   v5[4] = self;
-  [a4 addCompletion:v5];
+  [animator addCompletion:v5];
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v6 = [a4 localObject];
-  v7 = [(_UIFloatingTabBarDragController *)self delegate];
-  v8 = [v7 tabDragController:self previewForLiftingTab:v6];
+  localObject = [item localObject];
+  delegate = [(_UIFloatingTabBarDragController *)self delegate];
+  v8 = [delegate tabDragController:self previewForLiftingTab:localObject];
 
   return v8;
 }
 
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default
 {
-  v6 = [a4 localObject];
-  v7 = [(_UIFloatingTabBarDragController *)self currentDragTab];
-  v8 = v7;
-  if (v6 != v7)
+  localObject = [item localObject];
+  currentDragTab = [(_UIFloatingTabBarDragController *)self currentDragTab];
+  v8 = currentDragTab;
+  if (localObject != currentDragTab)
   {
 
 LABEL_4:
-    v10 = [(_UIFloatingTabBarDragController *)self delegate];
-    v11 = [v10 tabDragController:self previewForCancellingTab:v6];
+    delegate = [(_UIFloatingTabBarDragController *)self delegate];
+    v11 = [delegate tabDragController:self previewForCancellingTab:localObject];
 
     goto LABEL_5;
   }
 
-  v9 = [v6 _tabPlacement];
+  _tabPlacement = [localObject _tabPlacement];
 
-  if (v9 == 3)
+  if (_tabPlacement == 3)
   {
     goto LABEL_4;
   }
@@ -208,33 +208,33 @@ LABEL_5:
   return v11;
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation
 {
-  v7 = [(_UIFloatingTabBarDragController *)self currentDragTab:a3];
-  v8 = [v7 _tabPlacement];
+  v7 = [(_UIFloatingTabBarDragController *)self currentDragTab:interaction];
+  _tabPlacement = [v7 _tabPlacement];
 
-  if (!a5 && v8 == 3)
+  if (!operation && _tabPlacement == 3)
   {
-    v9 = [(_UIFloatingTabBarDragController *)self currentDragTab];
-    v12 = [v9 identifier];
+    currentDragTab = [(_UIFloatingTabBarDragController *)self currentDragTab];
+    identifier = [currentDragTab identifier];
 
-    v10 = [(_UIFloatingTabBarDragController *)self pendingExcludedItems];
-    [v10 removeObject:v12];
+    pendingExcludedItems = [(_UIFloatingTabBarDragController *)self pendingExcludedItems];
+    [pendingExcludedItems removeObject:identifier];
 
-    v11 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
-    [v11 insertObject:v12 atIndex:{-[_UIFloatingTabBarDragController currentDragTabOriginalIndex](self, "currentDragTabOriginalIndex")}];
+    pendingFavoriteOrder = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
+    [pendingFavoriteOrder insertObject:identifier atIndex:{-[_UIFloatingTabBarDragController currentDragTabOriginalIndex](self, "currentDragTabOriginalIndex")}];
 
     [(_UIFloatingTabBarDragController *)self _updateFavoriteOrderAnimated:1];
   }
 }
 
-- (double)_dragInteraction:(id)a3 delayForLiftBeginningAtLocation:(CGPoint)a4
+- (double)_dragInteraction:(id)interaction delayForLiftBeginningAtLocation:(CGPoint)location
 {
-  v4 = [(_UIFloatingTabBarDragController *)self delegate:a3];
-  v5 = [v4 collectionView];
+  v4 = [(_UIFloatingTabBarDragController *)self delegate:interaction];
+  collectionView = [v4 collectionView];
 
-  v6 = [v5 pages];
-  v7 = [v6 count];
+  pages = [collectionView pages];
+  v7 = [pages count];
 
   if (v7 <= 1)
   {
@@ -249,17 +249,17 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   if ([(_UIFloatingTabBarDragController *)self isEditing])
   {
-    v6 = [v5 items];
-    v7 = [v6 firstObject];
-    v8 = [v7 localObject];
+    items = [sessionCopy items];
+    firstObject = [items firstObject];
+    localObject = [firstObject localObject];
 
-    v9 = [v5 items];
-    if ([v9 count] == 1)
+    items2 = [sessionCopy items];
+    if ([items2 count] == 1)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -270,8 +270,8 @@ LABEL_5:
         goto LABEL_9;
       }
 
-      v9 = [(_UIFloatingTabBarDragController *)self delegate];
-      v11 = [v9 tabDragController:self canHandleDropSessionForTab:v8];
+      items2 = [(_UIFloatingTabBarDragController *)self delegate];
+      v11 = [items2 tabDragController:self canHandleDropSessionForTab:localObject];
     }
 
     else
@@ -289,28 +289,28 @@ LABEL_10:
   return v11;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter
 {
-  obj = a4;
+  obj = enter;
   if ([(_UIFloatingTabBarDragController *)self isEditing])
   {
     objc_storeWeak(&self->_activeDropSession, obj);
-    v5 = [obj items];
-    v6 = [v5 firstObject];
-    v7 = [v6 localObject];
+    items = [obj items];
+    firstObject = [items firstObject];
+    localObject = [firstObject localObject];
 
-    [(_UIFloatingTabBarDragController *)self setPendingDropTab:v7];
+    [(_UIFloatingTabBarDragController *)self setPendingDropTab:localObject];
   }
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
-  v5 = a4;
-  v6 = [(_UIFloatingTabBarDragController *)self delegate];
-  v7 = [v6 tabDragController:self dropProposalForSession:v5];
+  updateCopy = update;
+  delegate = [(_UIFloatingTabBarDragController *)self delegate];
+  v7 = [delegate tabDragController:self dropProposalForSession:updateCopy];
 
-  v8 = [(_UIFloatingTabBarDragController *)self delegate];
-  v9 = [v8 tabDragController:self destinationIndexPathForDropSession:v5];
+  delegate2 = [(_UIFloatingTabBarDragController *)self delegate];
+  v9 = [delegate2 tabDragController:self destinationIndexPathForDropSession:updateCopy];
 
   if (-[_UIFloatingTabBarDragController isEditing](self, "isEditing") && [v7 operation] == 3)
   {
@@ -319,16 +319,16 @@ LABEL_10:
     {
       if (v9)
       {
-        v10 = [v9 item];
+        item = [v9 item];
       }
 
       else
       {
-        v12 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
-        v10 = [v12 count];
+        pendingFavoriteOrder = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
+        item = [pendingFavoriteOrder count];
       }
 
-      [(_UIFloatingTabBarDragController *)self _insertPlaceholderAtIndex:v10];
+      [(_UIFloatingTabBarDragController *)self _insertPlaceholderAtIndex:item];
     }
   }
 
@@ -341,35 +341,35 @@ LABEL_10:
   return v7;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit
 {
-  v11 = a4;
-  v5 = [(_UIFloatingTabBarDragController *)self isEditing];
-  v6 = v11;
-  if (v5)
+  exitCopy = exit;
+  isEditing = [(_UIFloatingTabBarDragController *)self isEditing];
+  v6 = exitCopy;
+  if (isEditing)
   {
-    v7 = [v11 items];
-    v8 = [v7 firstObject];
-    v9 = [v8 localObject];
+    items = [exitCopy items];
+    firstObject = [items firstObject];
+    localObject = [firstObject localObject];
 
-    v10 = [(_UIFloatingTabBarDragController *)self pendingDropTab];
+    pendingDropTab = [(_UIFloatingTabBarDragController *)self pendingDropTab];
 
-    if (v9 == v10)
+    if (localObject == pendingDropTab)
     {
       [(_UIFloatingTabBarDragController *)self _removePlaceholder];
       [(_UIFloatingTabBarDragController *)self setPendingDropTab:0];
     }
 
-    v6 = v11;
+    v6 = exitCopy;
   }
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end
 {
-  v5 = a4;
+  endCopy = end;
   WeakRetained = objc_loadWeakRetained(&self->_activeDropSession);
 
-  if (WeakRetained == v5)
+  if (WeakRetained == endCopy)
   {
     [(_UIFloatingTabBarDragController *)self setPendingDropTab:0];
     [(_UIFloatingTabBarDragController *)self setPendingDropTabHasValidTarget:0];
@@ -378,68 +378,68 @@ LABEL_10:
   }
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
-  v5 = a4;
-  v6 = [(_UIFloatingTabBarDragController *)self isEditing];
-  v7 = [(_UIFloatingTabBarDragController *)self delegate];
-  v8 = v7;
-  if (v6)
+  dropCopy = drop;
+  isEditing = [(_UIFloatingTabBarDragController *)self isEditing];
+  delegate = [(_UIFloatingTabBarDragController *)self delegate];
+  v8 = delegate;
+  if (isEditing)
   {
-    v21 = [v7 tabDragController:self destinationIndexPathForDropSession:v5];
+    v21 = [delegate tabDragController:self destinationIndexPathForDropSession:dropCopy];
 
-    v9 = [v5 items];
+    items = [dropCopy items];
 
-    v10 = [v9 firstObject];
-    v5 = [v10 localObject];
+    firstObject = [items firstObject];
+    dropCopy = [firstObject localObject];
 
-    v11 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
-    v12 = [v5 identifier];
-    v13 = [v11 indexOfObject:v12];
+    pendingFavoriteOrder = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
+    identifier = [dropCopy identifier];
+    v13 = [pendingFavoriteOrder indexOfObject:identifier];
 
     if (v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v14 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
-      [v14 removeObjectAtIndex:v13];
+      pendingFavoriteOrder2 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
+      [pendingFavoriteOrder2 removeObjectAtIndex:v13];
     }
 
     if (v21)
     {
-      v15 = [v21 item];
+      item = [v21 item];
     }
 
     else
     {
-      v16 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
-      v15 = [v16 count];
+      pendingFavoriteOrder3 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
+      item = [pendingFavoriteOrder3 count];
     }
 
-    v17 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
-    v18 = [v5 identifier];
-    [v17 insertObject:v18 atIndex:v15];
+    pendingFavoriteOrder4 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
+    identifier2 = [dropCopy identifier];
+    [pendingFavoriteOrder4 insertObject:identifier2 atIndex:item];
 
-    v19 = [(_UIFloatingTabBarDragController *)self pendingExcludedItems];
-    v20 = [v5 identifier];
-    [v19 removeObject:v20];
+    pendingExcludedItems = [(_UIFloatingTabBarDragController *)self pendingExcludedItems];
+    identifier3 = [dropCopy identifier];
+    [pendingExcludedItems removeObject:identifier3];
 
     [(_UIFloatingTabBarDragController *)self setPendingDropTab:0];
   }
 
   else
   {
-    [v7 tabDragController:self acceptItemsIntoTabFromDropSession:v5];
+    [delegate tabDragController:self acceptItemsIntoTabFromDropSession:dropCopy];
     v21 = v8;
   }
 }
 
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default
 {
-  v6 = a4;
-  if ([(_UIFloatingTabBarDragController *)self isEditing]|| (WeakRetained = objc_loadWeakRetained(&self->_activeDropItem), WeakRetained, WeakRetained == v6))
+  itemCopy = item;
+  if ([(_UIFloatingTabBarDragController *)self isEditing]|| (WeakRetained = objc_loadWeakRetained(&self->_activeDropItem), WeakRetained, WeakRetained == itemCopy))
   {
-    v9 = [v6 localObject];
-    v10 = [(_UIFloatingTabBarDragController *)self delegate];
-    v8 = [v10 tabDragController:self previewForInsertingTab:v9];
+    localObject = [itemCopy localObject];
+    delegate = [(_UIFloatingTabBarDragController *)self delegate];
+    v8 = [delegate tabDragController:self previewForInsertingTab:localObject];
   }
 
   else
@@ -450,53 +450,53 @@ LABEL_10:
   return v8;
 }
 
-- (void)dropInteraction:(id)a3 item:(id)a4 willAnimateDropWithAnimator:(id)a5
+- (void)dropInteraction:(id)interaction item:(id)item willAnimateDropWithAnimator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  itemCopy = item;
+  animatorCopy = animator;
   if ([(_UIFloatingTabBarDragController *)self isEditing])
   {
-    objc_storeWeak(&self->_activeDropItem, v9);
+    objc_storeWeak(&self->_activeDropItem, itemCopy);
     objc_initWeak(&location, self);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __84___UIFloatingTabBarDragController_dropInteraction_item_willAnimateDropWithAnimator___block_invoke;
     v11[3] = &unk_1E70F5DE0;
     objc_copyWeak(&v12, &location);
-    [v10 addCompletion:v11];
+    [animatorCopy addCompletion:v11];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)setPendingDropTab:(id)a3
+- (void)setPendingDropTab:(id)tab
 {
-  v5 = a3;
-  if (self->_pendingDropTab != v5)
+  tabCopy = tab;
+  if (self->_pendingDropTab != tabCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_pendingDropTab, a3);
-    v6 = [(_UIFloatingTabBarDragController *)self delegate];
-    [v6 tabDragController:self pendingDropTabDidChange:v7];
+    v7 = tabCopy;
+    objc_storeStrong(&self->_pendingDropTab, tab);
+    delegate = [(_UIFloatingTabBarDragController *)self delegate];
+    [delegate tabDragController:self pendingDropTabDidChange:v7];
 
-    v5 = v7;
+    tabCopy = v7;
     if (!v7)
     {
       [(_UIFloatingTabBarDragController *)self _removePlaceholder];
-      v5 = 0;
+      tabCopy = 0;
     }
   }
 }
 
 - (BOOL)_shouldAddPlaceholderForPendingDrop
 {
-  v3 = [(_UIFloatingTabBarDragController *)self pendingDropTab];
-  if (v3 && [(_UIFloatingTabBarDragController *)self pendingDropTabHasValidTarget])
+  pendingDropTab = [(_UIFloatingTabBarDragController *)self pendingDropTab];
+  if (pendingDropTab && [(_UIFloatingTabBarDragController *)self pendingDropTabHasValidTarget])
   {
-    v4 = [(_UIFloatingTabBarDragController *)self delegate];
-    v5 = [(_UIFloatingTabBarDragController *)self pendingDropTab];
-    v6 = [v4 tabDragController:self isDisplayingTab:v5] ^ 1;
+    delegate = [(_UIFloatingTabBarDragController *)self delegate];
+    pendingDropTab2 = [(_UIFloatingTabBarDragController *)self pendingDropTab];
+    v6 = [delegate tabDragController:self isDisplayingTab:pendingDropTab2] ^ 1;
   }
 
   else
@@ -507,42 +507,42 @@ LABEL_10:
   return v6;
 }
 
-- (void)_insertPlaceholderAtIndex:(int64_t)a3
+- (void)_insertPlaceholderAtIndex:(int64_t)index
 {
-  v5 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
-  v6 = [v5 indexOfObject:@"com.apple.UIKit.TabBar.Placeholder"];
+  pendingFavoriteOrder = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
+  v6 = [pendingFavoriteOrder indexOfObject:@"com.apple.UIKit.TabBar.Placeholder"];
 
-  v7 = [(_UIFloatingTabBarDragController *)self pendingDropTab];
+  pendingDropTab = [(_UIFloatingTabBarDragController *)self pendingDropTab];
 
-  if (v7)
+  if (pendingDropTab)
   {
-    v8 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
-    v9 = [(_UIFloatingTabBarDragController *)self pendingDropTab];
-    v10 = [v9 identifier];
-    v11 = [v8 indexOfObject:v10];
+    pendingFavoriteOrder2 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
+    pendingDropTab2 = [(_UIFloatingTabBarDragController *)self pendingDropTab];
+    identifier = [pendingDropTab2 identifier];
+    v11 = [pendingFavoriteOrder2 indexOfObject:identifier];
 
-    if (v11 != 0x7FFFFFFFFFFFFFFFLL && v11 < a3)
+    if (v11 != 0x7FFFFFFFFFFFFFFFLL && v11 < index)
     {
-      ++a3;
+      ++index;
     }
   }
 
-  if (v6 != a3)
+  if (v6 != index)
   {
     if (v6 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      a3 -= v6 < a3;
-      if (v6 == a3)
+      index -= v6 < index;
+      if (v6 == index)
       {
         return;
       }
 
-      v13 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
-      [v13 removeObjectAtIndex:v6];
+      pendingFavoriteOrder3 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
+      [pendingFavoriteOrder3 removeObjectAtIndex:v6];
     }
 
-    v14 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
-    [v14 insertObject:@"com.apple.UIKit.TabBar.Placeholder" atIndex:a3];
+    pendingFavoriteOrder4 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
+    [pendingFavoriteOrder4 insertObject:@"com.apple.UIKit.TabBar.Placeholder" atIndex:index];
 
     [(_UIFloatingTabBarDragController *)self _updateFavoriteOrderAnimated:1];
   }
@@ -550,23 +550,23 @@ LABEL_10:
 
 - (void)_removePlaceholder
 {
-  v3 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
-  v4 = [v3 containsObject:@"com.apple.UIKit.TabBar.Placeholder"];
+  pendingFavoriteOrder = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
+  v4 = [pendingFavoriteOrder containsObject:@"com.apple.UIKit.TabBar.Placeholder"];
 
   if (v4)
   {
-    v5 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
-    [v5 removeObject:@"com.apple.UIKit.TabBar.Placeholder"];
+    pendingFavoriteOrder2 = [(_UIFloatingTabBarDragController *)self pendingFavoriteOrder];
+    [pendingFavoriteOrder2 removeObject:@"com.apple.UIKit.TabBar.Placeholder"];
 
     [(_UIFloatingTabBarDragController *)self _updateFavoriteOrderAnimated:1];
   }
 }
 
-- (void)_updateFavoriteOrderAnimated:(BOOL)a3
+- (void)_updateFavoriteOrderAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(_UIFloatingTabBarDragController *)self delegate];
-  [v5 tabDragController:self updateFavoriteOrderAnimated:v3];
+  animatedCopy = animated;
+  delegate = [(_UIFloatingTabBarDragController *)self delegate];
+  [delegate tabDragController:self updateFavoriteOrderAnimated:animatedCopy];
 
   self->_needsFavoriteOrderUpdate = 0;
 }

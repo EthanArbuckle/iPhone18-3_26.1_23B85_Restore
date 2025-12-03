@@ -1,9 +1,9 @@
 @interface IDSUTunTimingLogger
-+ (id)incomingEventWithTimestamp:(double)a3 duration:(double)a4 processTime:(double)a5 compressionTime:(double)a6 kernelTime:(double)a7 bytes:(int64_t)a8;
-+ (id)kernelTestEventWithTimestamp:(double)a3 kernelTime:(double)a4 bytes:(int64_t)a5;
-+ (id)outgoingEventWithTimestamp:(double)a3 duration:(double)a4 processTime:(double)a5 compressionTime:(double)a6 sendTime:(double)a7 bytes:(int64_t)a8;
++ (id)incomingEventWithTimestamp:(double)timestamp duration:(double)duration processTime:(double)time compressionTime:(double)compressionTime kernelTime:(double)kernelTime bytes:(int64_t)bytes;
++ (id)kernelTestEventWithTimestamp:(double)timestamp kernelTime:(double)time bytes:(int64_t)bytes;
++ (id)outgoingEventWithTimestamp:(double)timestamp duration:(double)duration processTime:(double)time compressionTime:(double)compressionTime sendTime:(double)sendTime bytes:(int64_t)bytes;
 - (IDSUTunTimingLogger)init;
-- (void)addEvent:(id)a3;
+- (void)addEvent:(id)event;
 - (void)printCurrent;
 @end
 
@@ -29,31 +29,31 @@
   return v2;
 }
 
-+ (id)outgoingEventWithTimestamp:(double)a3 duration:(double)a4 processTime:(double)a5 compressionTime:(double)a6 sendTime:(double)a7 bytes:(int64_t)a8
++ (id)outgoingEventWithTimestamp:(double)timestamp duration:(double)duration processTime:(double)time compressionTime:(double)compressionTime sendTime:(double)sendTime bytes:(int64_t)bytes
 {
-  v8 = [[IDSUTunTimingEventOutgoing alloc] initWithTimestamp:a8 duration:a3 processTime:a4 compressionTime:a5 sendTime:a6 bytes:a7];
+  v8 = [[IDSUTunTimingEventOutgoing alloc] initWithTimestamp:bytes duration:timestamp processTime:duration compressionTime:time sendTime:compressionTime bytes:sendTime];
 
   return v8;
 }
 
-+ (id)incomingEventWithTimestamp:(double)a3 duration:(double)a4 processTime:(double)a5 compressionTime:(double)a6 kernelTime:(double)a7 bytes:(int64_t)a8
++ (id)incomingEventWithTimestamp:(double)timestamp duration:(double)duration processTime:(double)time compressionTime:(double)compressionTime kernelTime:(double)kernelTime bytes:(int64_t)bytes
 {
-  v8 = [[IDSUTunTimingEventIncoming alloc] initWithTimestamp:a8 duration:a3 processTime:a4 compressionTime:a5 kernelTime:a6 bytes:a7];
+  v8 = [[IDSUTunTimingEventIncoming alloc] initWithTimestamp:bytes duration:timestamp processTime:duration compressionTime:time kernelTime:compressionTime bytes:kernelTime];
 
   return v8;
 }
 
-+ (id)kernelTestEventWithTimestamp:(double)a3 kernelTime:(double)a4 bytes:(int64_t)a5
++ (id)kernelTestEventWithTimestamp:(double)timestamp kernelTime:(double)time bytes:(int64_t)bytes
 {
-  v5 = [[IDSUTunTimingEventKernelTest alloc] initWithTimestamp:a5 kernelTime:a3 bytes:a4];
+  v5 = [[IDSUTunTimingEventKernelTest alloc] initWithTimestamp:bytes kernelTime:timestamp bytes:time];
 
   return v5;
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
-  v5 = a3;
-  if (v5)
+  eventCopy = event;
+  if (eventCopy)
   {
     if (![(NSMutableArray *)self->_timingEvents count])
     {
@@ -65,7 +65,7 @@
       self->_lastPrintTime = *&qword_100CBF3C0 * mach_continuous_time();
     }
 
-    [(NSMutableArray *)self->_timingEvents addObject:v5];
+    [(NSMutableArray *)self->_timingEvents addObject:eventCopy];
     if (qword_100CBF438 != -1)
     {
       sub_10092D900();

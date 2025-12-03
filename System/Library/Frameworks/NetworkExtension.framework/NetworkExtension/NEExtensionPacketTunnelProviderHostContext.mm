@@ -1,51 +1,51 @@
 @interface NEExtensionPacketTunnelProviderHostContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (void)fetchVirtualInterfaceTypeWithCompletionHandler:(id)a3;
-- (void)setAppUUIDMap:(id)a3;
-- (void)setupVirtualInterface:(id)a3;
-- (void)validateWithCompletionHandler:(id)a3;
+- (void)fetchVirtualInterfaceTypeWithCompletionHandler:(id)handler;
+- (void)setAppUUIDMap:(id)map;
+- (void)setupVirtualInterface:(id)interface;
+- (void)validateWithCompletionHandler:(id)handler;
 @end
 
 @implementation NEExtensionPacketTunnelProviderHostContext
 
-- (void)validateWithCompletionHandler:(id)a3
+- (void)validateWithCompletionHandler:(id)handler
 {
   v3.receiver = self;
   v3.super_class = NEExtensionPacketTunnelProviderHostContext;
-  [(NEExtensionProviderHostContext *)&v3 validateWithCompletionHandler:a3];
+  [(NEExtensionProviderHostContext *)&v3 validateWithCompletionHandler:handler];
 }
 
-- (void)setAppUUIDMap:(id)a3
+- (void)setAppUUIDMap:(id)map
 {
-  v4 = a3;
-  v5 = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa vendorContext];
-  [v5 setAppUUIDMap:v4];
+  mapCopy = map;
+  vendorContext = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa vendorContext];
+  [vendorContext setAppUUIDMap:mapCopy];
 }
 
-- (void)fetchVirtualInterfaceTypeWithCompletionHandler:(id)a3
+- (void)fetchVirtualInterfaceTypeWithCompletionHandler:(id)handler
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_DEBUG, "%@: fetchVirtualInterfaceTypeWithCompletionHandler", &v8, 0xCu);
   }
 
-  v6 = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa vendorContext];
-  [v6 fetchVirtualInterfaceTypeWithCompletionHandler:v4];
+  vendorContext = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa vendorContext];
+  [vendorContext fetchVirtualInterfaceTypeWithCompletionHandler:handlerCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setupVirtualInterface:(id)a3
+- (void)setupVirtualInterface:(id)interface
 {
-  v4 = a3;
-  v5 = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa vendorContext];
-  [v5 setupVirtualInterface:v4];
+  interfaceCopy = interface;
+  vendorContext = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa vendorContext];
+  [vendorContext setupVirtualInterface:interfaceCopy];
 }
 
 + (id)_extensionAuxiliaryHostProtocol

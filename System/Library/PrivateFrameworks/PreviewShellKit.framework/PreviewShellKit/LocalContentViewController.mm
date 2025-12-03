@@ -1,6 +1,6 @@
 @interface LocalContentViewController
-- (_TtC15PreviewShellKit26LocalContentViewController)initWithCoder:(id)a3;
-- (_TtC15PreviewShellKit26LocalContentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15PreviewShellKit26LocalContentViewController)initWithCoder:(id)coder;
+- (_TtC15PreviewShellKit26LocalContentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -8,42 +8,42 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   LocalContentViewController.viewDidLayoutSubviews()();
 }
 
-- (_TtC15PreviewShellKit26LocalContentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15PreviewShellKit26LocalContentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     sub_25F17908C();
     *(&self->super.super.super.isa + OBJC_IVAR____TtC15PreviewShellKit26LocalContentViewController_contentViewController) = 0;
-    v8 = a4;
-    a3 = sub_25F17905C();
+    bundleCopy = bundle;
+    name = sub_25F17905C();
   }
 
   else
   {
     *(&self->super.super.super.isa + OBJC_IVAR____TtC15PreviewShellKit26LocalContentViewController_contentViewController) = 0;
-    v9 = a4;
+    bundleCopy2 = bundle;
   }
 
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(LocalContentViewController *)&v12 initWithNibName:a3 bundle:a4];
+  v10 = [(LocalContentViewController *)&v12 initWithNibName:name bundle:bundle];
 
   return v10;
 }
 
-- (_TtC15PreviewShellKit26LocalContentViewController)initWithCoder:(id)a3
+- (_TtC15PreviewShellKit26LocalContentViewController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC15PreviewShellKit26LocalContentViewController_contentViewController) = 0;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(LocalContentViewController *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(LocalContentViewController *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

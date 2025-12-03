@@ -1,11 +1,11 @@
 @interface ASVWorldGestureDragOffsetCorrector
-- (ASVWorldGestureDragOffsetCorrector)initWithInitialDragOffset:(ASVWorldGestureDragOffsetCorrector *)self thresholdDragOffset:(SEL)a2;
+- (ASVWorldGestureDragOffsetCorrector)initWithInitialDragOffset:(ASVWorldGestureDragOffsetCorrector *)self thresholdDragOffset:(SEL)offset;
 - (uint64_t)currentDragOffset;
 @end
 
 @implementation ASVWorldGestureDragOffsetCorrector
 
-- (ASVWorldGestureDragOffsetCorrector)initWithInitialDragOffset:(ASVWorldGestureDragOffsetCorrector *)self thresholdDragOffset:(SEL)a2
+- (ASVWorldGestureDragOffsetCorrector)initWithInitialDragOffset:(ASVWorldGestureDragOffsetCorrector *)self thresholdDragOffset:(SEL)offset
 {
   v4 = v3;
   v5 = v2;
@@ -26,17 +26,17 @@
 - (uint64_t)currentDragOffset
 {
   v2 = CACurrentMediaTime();
-  [a1 startTime];
+  [self startTime];
   if (v2 - v3 >= 0.25)
   {
 
-    return [a1 initialDragOffset];
+    return [self initialDragOffset];
   }
 
   else
   {
-    [a1 thresholdDragOffset];
-    return [a1 initialDragOffset];
+    [self thresholdDragOffset];
+    return [self initialDragOffset];
   }
 }
 

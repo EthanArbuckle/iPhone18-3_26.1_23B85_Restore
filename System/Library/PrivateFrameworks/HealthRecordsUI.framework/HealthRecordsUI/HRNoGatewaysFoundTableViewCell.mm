@@ -1,7 +1,7 @@
 @interface HRNoGatewaysFoundTableViewCell
 + (NSString)defaultReuseIdentifier;
-- (HRNoGatewaysFoundTableViewCell)initWithCoder:(id)a3;
-- (HRNoGatewaysFoundTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HRNoGatewaysFoundTableViewCell)initWithCoder:(id)coder;
+- (HRNoGatewaysFoundTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation HRNoGatewaysFoundTableViewCell
@@ -13,11 +13,11 @@
   return v2;
 }
 
-- (HRNoGatewaysFoundTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HRNoGatewaysFoundTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1D139016C();
+    identifier = sub_1D139016C();
     v6 = v5;
   }
 
@@ -26,10 +26,10 @@
     v6 = 0;
   }
 
-  return sub_1D115FF4C(a3, a4, v6);
+  return sub_1D115FF4C(style, identifier, v6);
 }
 
-- (HRNoGatewaysFoundTableViewCell)initWithCoder:(id)a3
+- (HRNoGatewaysFoundTableViewCell)initWithCoder:(id)coder
 {
   result = sub_1D13913BC();
   __break(1u);

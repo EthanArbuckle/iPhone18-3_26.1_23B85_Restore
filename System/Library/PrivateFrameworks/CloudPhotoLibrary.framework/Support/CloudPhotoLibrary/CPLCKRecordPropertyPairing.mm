@@ -1,21 +1,21 @@
 @interface CPLCKRecordPropertyPairing
-- (BOOL)isEqual:(id)a3;
-- (CPLCKRecordPropertyPairing)initWithProperties:(id)a3;
-- (CPLCKRecordPropertyPairing)initWithProperty:(id)a3 andKeys:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CPLCKRecordPropertyPairing)initWithProperties:(id)properties;
+- (CPLCKRecordPropertyPairing)initWithProperty:(id)property andKeys:(id)keys;
 - (id)description;
 @end
 
 @implementation CPLCKRecordPropertyPairing
 
-- (CPLCKRecordPropertyPairing)initWithProperties:(id)a3
+- (CPLCKRecordPropertyPairing)initWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v11.receiver = self;
   v11.super_class = CPLCKRecordPropertyPairing;
   v5 = [(CPLCKRecordPropertyPairing *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [propertiesCopy copy];
     properties = v5->_properties;
     v5->_properties = v6;
 
@@ -27,17 +27,17 @@
   return v5;
 }
 
-- (CPLCKRecordPropertyPairing)initWithProperty:(id)a3 andKeys:(id)a4
+- (CPLCKRecordPropertyPairing)initWithProperty:(id)property andKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = v6;
+  propertyCopy = property;
+  keysCopy = keys;
+  v11 = propertyCopy;
   v8 = [NSArray arrayWithObjects:&v11 count:1];
   v9 = [(CPLCKRecordPropertyPairing *)self initWithProperties:v8];
 
   if (v9)
   {
-    [(NSMutableArray *)v9->_ckKeys addObjectsFromArray:v7];
+    [(NSMutableArray *)v9->_ckKeys addObjectsFromArray:keysCopy];
   }
 
   return v9;
@@ -53,10 +53,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_12;
   }
@@ -70,7 +70,7 @@
 
   v7 = self->_properties;
   v8 = v7;
-  properties = v4->_properties;
+  properties = equalCopy->_properties;
   if (v7 && properties)
   {
     v10 = [v7 isEqual:?];
@@ -94,7 +94,7 @@ LABEL_12:
 
 LABEL_7:
   v11 = self->_ckKeys;
-  v12 = v4->_ckKeys;
+  v12 = equalCopy->_ckKeys;
   v13 = v12;
   v6 = v11 && v12 && ([v11 isEqual:v12] & 1) != 0 || (v11 | v13) == 0;
 

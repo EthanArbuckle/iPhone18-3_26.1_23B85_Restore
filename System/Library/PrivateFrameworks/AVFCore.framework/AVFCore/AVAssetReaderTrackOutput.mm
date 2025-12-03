@@ -1,7 +1,7 @@
 @interface AVAssetReaderTrackOutput
 + (AVAssetReaderTrackOutput)assetReaderTrackOutputWithTrack:(AVAssetTrack *)track outputSettings:(NSDictionary *)outputSettings;
 - (AVAssetReaderTrackOutput)initWithTrack:(AVAssetTrack *)track outputSettings:(NSDictionary *)outputSettings;
-- (BOOL)_enableTrackExtractionReturningError:(id *)a3;
+- (BOOL)_enableTrackExtractionReturningError:(id *)error;
 - (BOOL)_trimsSampleDurations;
 - (id)_asset;
 - (id)_figAssetReaderExtractionOptions;
@@ -13,7 +13,7 @@
 - (unsigned)_getUniformMediaSubtypeIfExists;
 - (void)dealloc;
 - (void)setAudioTimePitchAlgorithm:(AVAudioTimePitchAlgorithm)audioTimePitchAlgorithm;
-- (void)setLimitsImageQueueCapacityToOneFrame:(BOOL)a3;
+- (void)setLimitsImageQueueCapacityToOneFrame:(BOOL)frame;
 @end
 
 @implementation AVAssetReaderTrackOutput
@@ -53,10 +53,10 @@
     CFRetain(v9);
     v8->_trackOutputInternal->track = track;
     v8->_trackOutputInternal->audioTimePitchAlgorithm = @"Spectral";
-    v10 = [(AVAssetTrack *)v8->_trackOutputInternal->track mediaType];
+    mediaType = [(AVAssetTrack *)v8->_trackOutputInternal->track mediaType];
     if (outputSettings)
     {
-      v11 = v10;
+      v11 = mediaType;
       if ([(NSDictionary *)outputSettings objectForKey:@"AVVideoCleanApertureKey"]|| [(NSDictionary *)outputSettings objectForKey:@"AVVideoPixelAspectRatioKey"])
       {
         v30 = v8;
@@ -191,7 +191,7 @@ LABEL_8:
   }
 }
 
-- (void)setLimitsImageQueueCapacityToOneFrame:(BOOL)a3
+- (void)setLimitsImageQueueCapacityToOneFrame:(BOOL)frame
 {
   if (([-[AVAssetReaderTrackOutput mediaType](self "mediaType")] & 1) == 0)
   {
@@ -211,14 +211,14 @@ LABEL_6:
     objc_exception_throw(v14);
   }
 
-  self->_trackOutputInternal->limitsImageQueueCapacityToOneFrame = a3;
+  self->_trackOutputInternal->limitsImageQueueCapacityToOneFrame = frame;
 }
 
 - (id)mediaType
 {
-  v2 = [(AVAssetReaderTrackOutput *)self track];
+  track = [(AVAssetReaderTrackOutput *)self track];
 
-  return [(AVAssetTrack *)v2 mediaType];
+  return [(AVAssetTrack *)track mediaType];
 }
 
 - (opaqueCMSampleBuffer)copyNextSampleBuffer
@@ -243,9 +243,9 @@ LABEL_6:
 
 - (id)_asset
 {
-  v2 = [(AVAssetReaderTrackOutput *)self track];
+  track = [(AVAssetReaderTrackOutput *)self track];
 
-  return [(AVAssetTrack *)v2 asset];
+  return [(AVAssetTrack *)track asset];
 }
 
 - (BOOL)_trimsSampleDurations
@@ -255,16 +255,16 @@ LABEL_6:
     return 1;
   }
 
-  v5 = [(AVAssetReaderTrackOutput *)self mediaType];
+  mediaType = [(AVAssetReaderTrackOutput *)self mediaType];
 
-  return [v5 isEqual:@"soun"];
+  return [mediaType isEqual:@"soun"];
 }
 
 - (id)_formatDescriptions
 {
-  v2 = [(AVAssetReaderTrackOutput *)self track];
+  track = [(AVAssetReaderTrackOutput *)self track];
 
-  return [(AVAssetTrack *)v2 formatDescriptions];
+  return [(AVAssetTrack *)track formatDescriptions];
 }
 
 - (id)_figAssetReaderExtractionOptions
@@ -272,9 +272,9 @@ LABEL_6:
   v32.receiver = self;
   v32.super_class = AVAssetReaderTrackOutput;
   v4 = [(NSDictionary *)[(AVAssetReaderOutput *)&v32 _figAssetReaderExtractionOptions] mutableCopy];
-  v5 = [(AVAssetReaderTrackOutput *)self appliesPreferredTrackTransform];
+  appliesPreferredTrackTransform = [(AVAssetReaderTrackOutput *)self appliesPreferredTrackTransform];
   v6 = MEMORY[0x1E6971388];
-  if (!v5)
+  if (!appliesPreferredTrackTransform)
   {
     v6 = MEMORY[0x1E69713A0];
   }
@@ -301,19 +301,19 @@ LABEL_6:
   [v4 setObject:*v9 forKey:*MEMORY[0x1E6973620]];
   if ([(AVOutputSettings *)outputSettings conformsToProtocol:&unk_1F0B00DD8])
   {
-    v10 = [(AVOutputSettings *)outputSettings fieldMode];
-    if (v10)
+    fieldMode = [(AVOutputSettings *)outputSettings fieldMode];
+    if (fieldMode)
     {
-      [v4 setObject:v10 forKey:*MEMORY[0x1E6971358]];
+      [v4 setObject:fieldMode forKey:*MEMORY[0x1E6971358]];
     }
   }
 
   if ([(AVOutputSettings *)outputSettings conformsToProtocol:&unk_1F0B00DD8])
   {
-    v11 = [(AVOutputSettings *)outputSettings decompressionProperties];
-    if (v11)
+    decompressionProperties = [(AVOutputSettings *)outputSettings decompressionProperties];
+    if (decompressionProperties)
     {
-      [v4 setObject:v11 forKey:*MEMORY[0x1E6971348]];
+      [v4 setObject:decompressionProperties forKey:*MEMORY[0x1E6971348]];
     }
   }
 
@@ -408,12 +408,12 @@ LABEL_32:
 - (unsigned)_getUniformMediaSubtypeIfExists
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [(AVAssetTrack *)[(AVAssetReaderTrackOutput *)self track] formatDescriptions];
+  formatDescriptions = [(AVAssetTrack *)[(AVAssetReaderTrackOutput *)self track] formatDescriptions];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v3 = [(NSArray *)formatDescriptions countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -426,7 +426,7 @@ LABEL_3:
     {
       if (*v12 != v6)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(formatDescriptions);
       }
 
       MediaSubType = CMFormatDescriptionGetMediaSubType(*(*(&v11 + 1) + 8 * v7));
@@ -443,7 +443,7 @@ LABEL_3:
       v8 = MediaSubType;
       if (v4 == v7)
       {
-        v4 = [(NSArray *)v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v4 = [(NSArray *)formatDescriptions countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -457,23 +457,23 @@ LABEL_3:
   return 0;
 }
 
-- (BOOL)_enableTrackExtractionReturningError:(id *)a3
+- (BOOL)_enableTrackExtractionReturningError:(id *)error
 {
   v44 = -1;
-  v5 = [(AVAssetReaderOutput *)self _figAssetReader];
-  v6 = [(AVAssetTrack *)[(AVAssetReaderTrackOutput *)self track] trackID];
-  v7 = [(AVAssetReaderTrackOutput *)self _figAssetReaderExtractionOptions];
+  _figAssetReader = [(AVAssetReaderOutput *)self _figAssetReader];
+  trackID = [(AVAssetTrack *)[(AVAssetReaderTrackOutput *)self track] trackID];
+  _figAssetReaderExtractionOptions = [(AVAssetReaderTrackOutput *)self _figAssetReaderExtractionOptions];
   outputSettings = self->_trackOutputInternal->outputSettings;
   if (!outputSettings)
   {
-    v17 = [(AVAssetReaderTrackOutput *)self _attachedAdaptor];
-    if (!v17)
+    _attachedAdaptor = [(AVAssetReaderTrackOutput *)self _attachedAdaptor];
+    if (!_attachedAdaptor)
     {
       v22 = *(*(CMBaseObjectGetVTable() + 16) + 24);
       if (!v22)
       {
         v21 = 4294954514;
-        if (a3)
+        if (error)
         {
           goto LABEL_19;
         }
@@ -481,7 +481,7 @@ LABEL_3:
         return 0;
       }
 
-      v16 = v22(v5, v6, v7, &v44);
+      v16 = v22(_figAssetReader, trackID, _figAssetReaderExtractionOptions, &v44);
       goto LABEL_17;
     }
 
@@ -492,18 +492,18 @@ LABEL_3:
   {
     if ([(AVOutputSettings *)outputSettings willYieldCompressedSamples])
     {
-      v38 = v6;
-      v9 = v7;
-      v37 = [(AVOutputSettings *)outputSettings videoCodecType];
-      v10 = [(AVOutputSettings *)outputSettings width];
-      v11 = [(AVOutputSettings *)outputSettings height];
-      v12 = [(AVOutputSettings *)outputSettings videoEncoderSpecification];
-      v13 = [(AVOutputSettings *)outputSettings pixelTransferProperties];
-      v14 = [(AVOutputSettings *)outputSettings videoCompressionProperties];
-      if (v13)
+      v38 = trackID;
+      v9 = _figAssetReaderExtractionOptions;
+      videoCodecType = [(AVOutputSettings *)outputSettings videoCodecType];
+      width = [(AVOutputSettings *)outputSettings width];
+      height = [(AVOutputSettings *)outputSettings height];
+      videoEncoderSpecification = [(AVOutputSettings *)outputSettings videoEncoderSpecification];
+      pixelTransferProperties = [(AVOutputSettings *)outputSettings pixelTransferProperties];
+      videoCompressionProperties = [(AVOutputSettings *)outputSettings videoCompressionProperties];
+      if (pixelTransferProperties)
       {
-        v14 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v14];
-        [v14 setObject:v13 forKey:*MEMORY[0x1E6983798]];
+        videoCompressionProperties = [MEMORY[0x1E695DF90] dictionaryWithDictionary:videoCompressionProperties];
+        [videoCompressionProperties setObject:pixelTransferProperties forKey:*MEMORY[0x1E6983798]];
       }
 
       [(AVOutputSettings *)outputSettings minimumFrameDuration];
@@ -512,7 +512,7 @@ LABEL_3:
       {
         v39 = v42;
         *&v40 = v43;
-        v16 = v15(v5, v38, v10, v11, 0, v37, v12, v14, 0, &v39, v9, &v44);
+        v16 = v15(_figAssetReader, v38, width, height, 0, videoCodecType, videoEncoderSpecification, videoCompressionProperties, 0, &v39, v9, &v44);
         goto LABEL_17;
       }
 
@@ -521,7 +521,7 @@ LABEL_14:
       goto LABEL_18;
     }
 
-    v18 = [(AVOutputSettings *)outputSettings pixelBufferAttributes];
+    pixelBufferAttributes = [(AVOutputSettings *)outputSettings pixelBufferAttributes];
     v19 = [AVAssetReaderOutput _figAssetReaderVideoScalingPropertiesFromVideoSettings:outputSettings withFormatDescription:[(AVAssetReaderTrackOutput *)self _formatDescriptions]];
     [(AVOutputSettings *)outputSettings minimumFrameDuration];
     v20 = *(*(CMBaseObjectGetVTable() + 16) + 48);
@@ -532,7 +532,7 @@ LABEL_14:
 
     v39 = v42;
     *&v40 = v43;
-    v16 = v20(v5, v6, v18, v19, &v39, v7, &v44);
+    v16 = v20(_figAssetReader, trackID, pixelBufferAttributes, v19, &v39, _figAssetReaderExtractionOptions, &v44);
 LABEL_17:
     v21 = v16;
     if (v16)
@@ -547,11 +547,11 @@ LABEL_38:
 
   if ([-[AVAssetReaderTrackOutput mediaType](self "mediaType")])
   {
-    v25 = [(AVOutputSettings *)outputSettings willYieldCompressedSamples];
-    v26 = [(AVAssetTrack *)[(AVAssetReaderTrackOutput *)self track] formatDescriptions];
-    if ([(NSArray *)v26 count])
+    willYieldCompressedSamples = [(AVOutputSettings *)outputSettings willYieldCompressedSamples];
+    formatDescriptions = [(AVAssetTrack *)[(AVAssetReaderTrackOutput *)self track] formatDescriptions];
+    if ([(NSArray *)formatDescriptions count])
     {
-      v27 = [(NSArray *)v26 objectAtIndex:0];
+      v27 = [(NSArray *)formatDescriptions objectAtIndex:0];
     }
 
     else
@@ -566,15 +566,15 @@ LABEL_38:
     v33 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{AVAssetReaderGetFigAssetReaderAudioTimePitchAlgorithmForAudioTimePitchAlgorithm(self->_trackOutputInternal->audioTimePitchAlgorithm), *MEMORY[0x1E6971320], 0}];
     [(AVOutputSettings *)outputSettings getAudioStreamBasicDescription:&v39 forAudioFileTypeID:0 sourceFormatDescription:v27];
     v34 = [(AVOutputSettings *)outputSettings copyAudioChannelLayoutForSourceFormatDescription:v27 audioChannelLayoutSize:&v42];
-    v35 = [(AVOutputSettings *)outputSettings audioOptions];
-    if (v25)
+    audioOptions = [(AVOutputSettings *)outputSettings audioOptions];
+    if (willYieldCompressedSamples)
     {
-      v36 = FigAssetReaderEnableReencodedAudioExtractionFromTrack(v5, v6, &v39, v42, v34, v35, v33, v7, &v44);
+      v36 = FigAssetReaderEnableReencodedAudioExtractionFromTrack(_figAssetReader, trackID, &v39, v42, v34, audioOptions, v33, _figAssetReaderExtractionOptions, &v44);
     }
 
     else
     {
-      v36 = FigAssetReaderEnableDecodedAudioExtractionFromTrackWithAudioOptions(v5, v6, &v39, v42, v34, v35, v33, v7, &v44);
+      v36 = FigAssetReaderEnableDecodedAudioExtractionFromTrackWithAudioOptions(_figAssetReader, trackID, &v39, v42, v34, audioOptions, v33, _figAssetReaderExtractionOptions, &v44);
     }
 
     v21 = v36;
@@ -582,12 +582,12 @@ LABEL_38:
     if (v21)
     {
 LABEL_18:
-      if (a3)
+      if (error)
       {
 LABEL_19:
         v23 = [AVAssetReader _errorForOSStatus:v21];
         result = 0;
-        *a3 = v23;
+        *error = v23;
         return result;
       }
 
@@ -599,36 +599,36 @@ LABEL_19:
 
   if ([-[AVAssetReaderTrackOutput mediaType](self "mediaType")])
   {
-    v28 = [(AVAssetReaderTrackOutput *)self _getUniformMediaSubtypeIfExists];
+    _getUniformMediaSubtypeIfExists = [(AVAssetReaderTrackOutput *)self _getUniformMediaSubtypeIfExists];
     v29 = 1634301044;
     goto LABEL_29;
   }
 
   if ([-[AVAssetReaderTrackOutput mediaType](self "mediaType")])
   {
-    v28 = [(AVAssetReaderTrackOutput *)self _getUniformMediaSubtypeIfExists];
+    _getUniformMediaSubtypeIfExists = [(AVAssetReaderTrackOutput *)self _getUniformMediaSubtypeIfExists];
     v29 = 1664495672;
 LABEL_29:
-    if (v28 != v29)
+    if (_getUniformMediaSubtypeIfExists != v29)
     {
       goto LABEL_32;
     }
 
-    v30 = [(AVAssetReaderTrackOutput *)self _attachedAdaptor];
-    if (!v30)
+    _attachedAdaptor2 = [(AVAssetReaderTrackOutput *)self _attachedAdaptor];
+    if (!_attachedAdaptor2)
     {
       goto LABEL_32;
     }
 
-    v31 = v30;
+    v31 = _attachedAdaptor2;
     if ([(NSDictionary *)[(AVOutputSettings *)outputSettings outputSettingsDictionary] count])
     {
       goto LABEL_32;
     }
 
-    v17 = v31;
+    _attachedAdaptor = v31;
 LABEL_11:
-    v16 = [v17 addExtractionForOutput:self figAssetReader:v5 options:v7 withOutputExtactionID:&v44];
+    v16 = [_attachedAdaptor addExtractionForOutput:self figAssetReader:_figAssetReader options:_figAssetReaderExtractionOptions withOutputExtactionID:&v44];
     goto LABEL_17;
   }
 

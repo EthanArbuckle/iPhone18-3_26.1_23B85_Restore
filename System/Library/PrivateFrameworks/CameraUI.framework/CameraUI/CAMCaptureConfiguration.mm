@@ -1,13 +1,13 @@
 @interface CAMCaptureConfiguration
-+ (id)captureGraphConfigurationUsingConfiguration:(id)a3 outputToExternalStorage:(BOOL)a4 captureOrientation:(int64_t)a5;
-+ (id)configuration:(id)a3 withDevice:(int64_t)a4;
-+ (int64_t)_fallbackVideoConfigurationForUnsupportedConfiguration:(int64_t)a3 frontRearSimultaneousVideoEnabled:(BOOL)a4;
-+ (int64_t)sanitizeVideoConfigurationForDesiredConfiguration:(int64_t)a3 mode:(int64_t)a4 device:(int64_t)a5 trueVideoEnabled:(BOOL)a6 frontRearSimultaneousVideoEnabled:(BOOL)a7;
-- (CAMCaptureConfiguration)initWithCaptureMode:(int64_t)a3 captureDevice:(int64_t)a4 videoConfiguration:(int64_t)a5 audioConfiguration:(unint64_t)a6 mixAudioWithOthers:(BOOL)a7 flashMode:(int64_t)a8 torchMode:(int64_t)a9 HDRMode:(int64_t)a10 irisMode:(int64_t)a11 timerDuration:(int64_t)a12 photoModeAspectRatioCrop:(int64_t)a13 photoModeEffectFilterType:(int64_t)a14 squareModeEffectFilterType:(int64_t)a15 portraitModeEffectFilterType:(int64_t)a16 portraitModeLightingEffectType:(int64_t)a17 portraitModeApertureValue:(double)a18 portraitModeIntensityValue:(double)a19 mirrorFrontCameraCaptures:(BOOL)a20 exposureBiasesByMode:(id)a21 macroMode:(int64_t)a22 photoResolution:(int64_t)a23 rawMode:(int64_t)a24 proResVideoMode:(int64_t)a25 semanticStyles:(id)a26 selectedSemanticStyleIndex:(unint64_t)a27 smartStyleSystemStyleIndex:(unint64_t)a28 videoStabilizationMode:(int64_t)a29 zoomPIPEnabled:(BOOL)a30 optionalDepthEffectEnabled:(BOOL)a31 sharedLibraryMode:(int64_t)a32 frontRearSimultaneousVideoEnabled:(BOOL)a33;
-- (CAMCaptureConfiguration)initWithConfiguration:(id)a3;
++ (id)captureGraphConfigurationUsingConfiguration:(id)configuration outputToExternalStorage:(BOOL)storage captureOrientation:(int64_t)orientation;
++ (id)configuration:(id)configuration withDevice:(int64_t)device;
++ (int64_t)_fallbackVideoConfigurationForUnsupportedConfiguration:(int64_t)configuration frontRearSimultaneousVideoEnabled:(BOOL)enabled;
++ (int64_t)sanitizeVideoConfigurationForDesiredConfiguration:(int64_t)configuration mode:(int64_t)mode device:(int64_t)device trueVideoEnabled:(BOOL)enabled frontRearSimultaneousVideoEnabled:(BOOL)videoEnabled;
+- (CAMCaptureConfiguration)initWithCaptureMode:(int64_t)mode captureDevice:(int64_t)device videoConfiguration:(int64_t)configuration audioConfiguration:(unint64_t)audioConfiguration mixAudioWithOthers:(BOOL)others flashMode:(int64_t)flashMode torchMode:(int64_t)torchMode HDRMode:(int64_t)self0 irisMode:(int64_t)self1 timerDuration:(int64_t)self2 photoModeAspectRatioCrop:(int64_t)self3 photoModeEffectFilterType:(int64_t)self4 squareModeEffectFilterType:(int64_t)self5 portraitModeEffectFilterType:(int64_t)self6 portraitModeLightingEffectType:(int64_t)self7 portraitModeApertureValue:(double)self8 portraitModeIntensityValue:(double)self9 mirrorFrontCameraCaptures:(BOOL)captures exposureBiasesByMode:(id)byMode macroMode:(int64_t)macroMode photoResolution:(int64_t)resolution rawMode:(int64_t)rawMode proResVideoMode:(int64_t)videoMode semanticStyles:(id)styles selectedSemanticStyleIndex:(unint64_t)index smartStyleSystemStyleIndex:(unint64_t)styleIndex videoStabilizationMode:(int64_t)stabilizationMode zoomPIPEnabled:(BOOL)mode0 optionalDepthEffectEnabled:(BOOL)mode1 sharedLibraryMode:(int64_t)mode2 frontRearSimultaneousVideoEnabled:(BOOL)mode3;
+- (CAMCaptureConfiguration)initWithConfiguration:(id)configuration;
 - (NSArray)smartStyles;
 - (id)_previewFilters;
-- (id)initForPhotoBoothWithCaptureDevice:(int64_t)a3;
+- (id)initForPhotoBoothWithCaptureDevice:(int64_t)device;
 @end
 
 @implementation CAMCaptureConfiguration
@@ -19,160 +19,160 @@
     goto LABEL_2;
   }
 
-  v6 = [(CAMCaptureConfiguration *)self mode];
-  if (v6 > 5)
+  mode = [(CAMCaptureConfiguration *)self mode];
+  if (mode > 5)
   {
-    if (v6 == 6)
+    if (mode == 6)
     {
-      v5 = [(CAMCaptureConfiguration *)self portraitModeEffectFilterType];
-      v3 = [(CAMCaptureConfiguration *)self portraitModeLightingEffectType];
+      portraitModeEffectFilterType = [(CAMCaptureConfiguration *)self portraitModeEffectFilterType];
+      portraitModeLightingEffectType = [(CAMCaptureConfiguration *)self portraitModeLightingEffectType];
       v4 = 1;
     }
 
     else
     {
-      v3 = 0;
-      v4 = v6 == 7;
-      v5 = 0;
+      portraitModeLightingEffectType = 0;
+      v4 = mode == 7;
+      portraitModeEffectFilterType = 0;
     }
   }
 
   else
   {
-    if (v6)
+    if (mode)
     {
-      if (v6 != 4)
+      if (mode != 4)
       {
 LABEL_2:
-        v3 = 0;
+        portraitModeLightingEffectType = 0;
         v4 = 0;
-        v5 = 0;
+        portraitModeEffectFilterType = 0;
         goto LABEL_12;
       }
 
-      v7 = [(CAMCaptureConfiguration *)self squareModeEffectFilterType];
+      squareModeEffectFilterType = [(CAMCaptureConfiguration *)self squareModeEffectFilterType];
     }
 
     else
     {
-      v7 = [(CAMCaptureConfiguration *)self photoModeEffectFilterType];
+      squareModeEffectFilterType = [(CAMCaptureConfiguration *)self photoModeEffectFilterType];
     }
 
-    v5 = v7;
-    v3 = 0;
+    portraitModeEffectFilterType = squareModeEffectFilterType;
+    portraitModeLightingEffectType = 0;
     v4 = 0;
   }
 
 LABEL_12:
 
-  return [CAMEffectFilterManager filtersForFilterType:v5 lightingType:v3 applyDepthEffect:v4];
+  return [CAMEffectFilterManager filtersForFilterType:portraitModeEffectFilterType lightingType:portraitModeLightingEffectType applyDepthEffect:v4];
 }
 
-- (CAMCaptureConfiguration)initWithCaptureMode:(int64_t)a3 captureDevice:(int64_t)a4 videoConfiguration:(int64_t)a5 audioConfiguration:(unint64_t)a6 mixAudioWithOthers:(BOOL)a7 flashMode:(int64_t)a8 torchMode:(int64_t)a9 HDRMode:(int64_t)a10 irisMode:(int64_t)a11 timerDuration:(int64_t)a12 photoModeAspectRatioCrop:(int64_t)a13 photoModeEffectFilterType:(int64_t)a14 squareModeEffectFilterType:(int64_t)a15 portraitModeEffectFilterType:(int64_t)a16 portraitModeLightingEffectType:(int64_t)a17 portraitModeApertureValue:(double)a18 portraitModeIntensityValue:(double)a19 mirrorFrontCameraCaptures:(BOOL)a20 exposureBiasesByMode:(id)a21 macroMode:(int64_t)a22 photoResolution:(int64_t)a23 rawMode:(int64_t)a24 proResVideoMode:(int64_t)a25 semanticStyles:(id)a26 selectedSemanticStyleIndex:(unint64_t)a27 smartStyleSystemStyleIndex:(unint64_t)a28 videoStabilizationMode:(int64_t)a29 zoomPIPEnabled:(BOOL)a30 optionalDepthEffectEnabled:(BOOL)a31 sharedLibraryMode:(int64_t)a32 frontRearSimultaneousVideoEnabled:(BOOL)a33
+- (CAMCaptureConfiguration)initWithCaptureMode:(int64_t)mode captureDevice:(int64_t)device videoConfiguration:(int64_t)configuration audioConfiguration:(unint64_t)audioConfiguration mixAudioWithOthers:(BOOL)others flashMode:(int64_t)flashMode torchMode:(int64_t)torchMode HDRMode:(int64_t)self0 irisMode:(int64_t)self1 timerDuration:(int64_t)self2 photoModeAspectRatioCrop:(int64_t)self3 photoModeEffectFilterType:(int64_t)self4 squareModeEffectFilterType:(int64_t)self5 portraitModeEffectFilterType:(int64_t)self6 portraitModeLightingEffectType:(int64_t)self7 portraitModeApertureValue:(double)self8 portraitModeIntensityValue:(double)self9 mirrorFrontCameraCaptures:(BOOL)captures exposureBiasesByMode:(id)byMode macroMode:(int64_t)macroMode photoResolution:(int64_t)resolution rawMode:(int64_t)rawMode proResVideoMode:(int64_t)videoMode semanticStyles:(id)styles selectedSemanticStyleIndex:(unint64_t)index smartStyleSystemStyleIndex:(unint64_t)styleIndex videoStabilizationMode:(int64_t)stabilizationMode zoomPIPEnabled:(BOOL)mode0 optionalDepthEffectEnabled:(BOOL)mode1 sharedLibraryMode:(int64_t)mode2 frontRearSimultaneousVideoEnabled:(BOOL)mode3
 {
-  v42 = a21;
-  v43 = a26;
+  byModeCopy = byMode;
+  stylesCopy = styles;
   v49.receiver = self;
   v49.super_class = CAMCaptureConfiguration;
   v44 = [(CAMCaptureConfiguration *)&v49 init];
   if (v44)
   {
-    v44->_mode = a3;
-    v44->_device = a4;
-    v44->_videoConfiguration = a5;
-    v44->_audioConfiguration = a6;
-    v44->_mixAudioWithOthers = a7;
-    v44->_flashMode = a8;
-    v44->_torchMode = a9;
-    v44->_HDRMode = a10;
-    v44->_timerDuration = a12;
-    v44->_irisMode = a11;
-    v44->_photoModeAspectRatioCrop = a13;
-    v44->_photoModeEffectFilterType = a14;
-    v44->_squareModeEffectFilterType = a15;
-    v44->_portraitModeEffectFilterType = a16;
-    v44->_portraitModeLightingEffectType = a17;
+    v44->_mode = mode;
+    v44->_device = device;
+    v44->_videoConfiguration = configuration;
+    v44->_audioConfiguration = audioConfiguration;
+    v44->_mixAudioWithOthers = others;
+    v44->_flashMode = flashMode;
+    v44->_torchMode = torchMode;
+    v44->_HDRMode = rMode;
+    v44->_timerDuration = duration;
+    v44->_irisMode = irisMode;
+    v44->_photoModeAspectRatioCrop = crop;
+    v44->_photoModeEffectFilterType = type;
+    v44->_squareModeEffectFilterType = filterType;
+    v44->_portraitModeEffectFilterType = effectFilterType;
+    v44->_portraitModeLightingEffectType = effectType;
     v44->_photoBooth = 0;
-    v44->_portraitModeApertureValue = a18;
-    v44->_portraitModeIntensityValue = a19;
-    v44->_mirrorFrontCameraCaptures = a20;
-    v45 = [v42 copy];
+    v44->_portraitModeApertureValue = value;
+    v44->_portraitModeIntensityValue = intensityValue;
+    v44->_mirrorFrontCameraCaptures = captures;
+    v45 = [byModeCopy copy];
     exposureBiasesByMode = v44->_exposureBiasesByMode;
     v44->_exposureBiasesByMode = v45;
 
-    v44->_macroMode = a22;
-    v44->_photoResolution = a23;
-    v44->_rawMode = a24;
-    v44->_proResVideoMode = a25;
-    objc_storeStrong(&v44->_semanticStyles, a26);
-    v44->_selectedSemanticStyleIndex = a27;
-    v44->_smartStyleSystemStyleIndex = a28;
-    v44->_zoomPIPEnabled = a30;
-    v44->_videoStabilizationMode = a29;
-    v44->_sharedLibraryMode = a32;
-    v44->_optionalDepthEffectEnabled = a31;
-    v44->_frontRearSimultaneousVideoEnabled = a33;
+    v44->_macroMode = macroMode;
+    v44->_photoResolution = resolution;
+    v44->_rawMode = rawMode;
+    v44->_proResVideoMode = videoMode;
+    objc_storeStrong(&v44->_semanticStyles, styles);
+    v44->_selectedSemanticStyleIndex = index;
+    v44->_smartStyleSystemStyleIndex = styleIndex;
+    v44->_zoomPIPEnabled = enabled;
+    v44->_videoStabilizationMode = stabilizationMode;
+    v44->_sharedLibraryMode = libraryMode;
+    v44->_optionalDepthEffectEnabled = effectEnabled;
+    v44->_frontRearSimultaneousVideoEnabled = videoEnabled;
     v47 = v44;
   }
 
   return v44;
 }
 
-- (CAMCaptureConfiguration)initWithConfiguration:(id)a3
+- (CAMCaptureConfiguration)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = CAMCaptureConfiguration;
   v5 = [(CAMCaptureConfiguration *)&v14 init];
   if (v5)
   {
-    v5->_mode = [v4 mode];
-    v5->_device = [v4 device];
-    v5->_videoConfiguration = [v4 videoConfiguration];
-    v5->_audioConfiguration = [v4 audioConfiguration];
-    v5->_mixAudioWithOthers = [v4 mixAudioWithOthers];
-    v5->_flashMode = [v4 flashMode];
-    v5->_torchMode = [v4 torchMode];
-    v5->_HDRMode = [v4 HDRMode];
-    v5->_irisMode = [v4 irisMode];
-    v5->_timerDuration = [v4 timerDuration];
-    v5->_photoModeAspectRatioCrop = [v4 photoModeAspectRatioCrop];
-    v5->_photoModeEffectFilterType = [v4 photoModeEffectFilterType];
-    v5->_squareModeEffectFilterType = [v4 squareModeEffectFilterType];
-    v5->_portraitModeEffectFilterType = [v4 portraitModeEffectFilterType];
-    v5->_portraitModeLightingEffectType = [v4 portraitModeLightingEffectType];
-    v5->_photoBooth = [v4 isPhotoBooth];
-    [v4 portraitModeApertureValue];
+    v5->_mode = [configurationCopy mode];
+    v5->_device = [configurationCopy device];
+    v5->_videoConfiguration = [configurationCopy videoConfiguration];
+    v5->_audioConfiguration = [configurationCopy audioConfiguration];
+    v5->_mixAudioWithOthers = [configurationCopy mixAudioWithOthers];
+    v5->_flashMode = [configurationCopy flashMode];
+    v5->_torchMode = [configurationCopy torchMode];
+    v5->_HDRMode = [configurationCopy HDRMode];
+    v5->_irisMode = [configurationCopy irisMode];
+    v5->_timerDuration = [configurationCopy timerDuration];
+    v5->_photoModeAspectRatioCrop = [configurationCopy photoModeAspectRatioCrop];
+    v5->_photoModeEffectFilterType = [configurationCopy photoModeEffectFilterType];
+    v5->_squareModeEffectFilterType = [configurationCopy squareModeEffectFilterType];
+    v5->_portraitModeEffectFilterType = [configurationCopy portraitModeEffectFilterType];
+    v5->_portraitModeLightingEffectType = [configurationCopy portraitModeLightingEffectType];
+    v5->_photoBooth = [configurationCopy isPhotoBooth];
+    [configurationCopy portraitModeApertureValue];
     v5->_portraitModeApertureValue = v6;
-    [v4 portraitModeIntensityValue];
+    [configurationCopy portraitModeIntensityValue];
     v5->_portraitModeIntensityValue = v7;
-    v5->_mirrorFrontCameraCaptures = [v4 mirrorFrontCameraCaptures];
-    v8 = [v4 exposureBiasesByMode];
-    v9 = [v8 copy];
+    v5->_mirrorFrontCameraCaptures = [configurationCopy mirrorFrontCameraCaptures];
+    exposureBiasesByMode = [configurationCopy exposureBiasesByMode];
+    v9 = [exposureBiasesByMode copy];
     exposureBiasesByMode = v5->_exposureBiasesByMode;
     v5->_exposureBiasesByMode = v9;
 
-    v5->_macroMode = [v4 macroMode];
-    v5->_photoResolution = [v4 photoResolution];
-    v5->_rawMode = [v4 rawMode];
-    v5->_proResVideoMode = [v4 proResVideoMode];
-    v11 = [v4 semanticStyles];
+    v5->_macroMode = [configurationCopy macroMode];
+    v5->_photoResolution = [configurationCopy photoResolution];
+    v5->_rawMode = [configurationCopy rawMode];
+    v5->_proResVideoMode = [configurationCopy proResVideoMode];
+    semanticStyles = [configurationCopy semanticStyles];
     semanticStyles = v5->_semanticStyles;
-    v5->_semanticStyles = v11;
+    v5->_semanticStyles = semanticStyles;
 
-    v5->_selectedSemanticStyleIndex = [v4 selectedSemanticStyleIndex];
-    v5->_smartStyleSystemStyleIndex = [v4 smartStyleSystemStyleIndex];
-    v5->_videoStabilizationMode = [v4 videoStabilizationMode];
-    v5->_zoomPIPEnabled = [v4 zoomPIPEnabled];
-    v5->_sharedLibraryMode = [v4 sharedLibraryMode];
-    v5->_optionalDepthEffectEnabled = [v4 optionalDepthEffectEnabled];
-    v5->_frontRearSimultaneousVideoEnabled = [v4 frontRearSimultaneousVideoEnabled];
+    v5->_selectedSemanticStyleIndex = [configurationCopy selectedSemanticStyleIndex];
+    v5->_smartStyleSystemStyleIndex = [configurationCopy smartStyleSystemStyleIndex];
+    v5->_videoStabilizationMode = [configurationCopy videoStabilizationMode];
+    v5->_zoomPIPEnabled = [configurationCopy zoomPIPEnabled];
+    v5->_sharedLibraryMode = [configurationCopy sharedLibraryMode];
+    v5->_optionalDepthEffectEnabled = [configurationCopy optionalDepthEffectEnabled];
+    v5->_frontRearSimultaneousVideoEnabled = [configurationCopy frontRearSimultaneousVideoEnabled];
   }
 
   return v5;
 }
 
-- (id)initForPhotoBoothWithCaptureDevice:(int64_t)a3
+- (id)initForPhotoBoothWithCaptureDevice:(int64_t)device
 {
   v10.receiver = self;
   v10.super_class = CAMCaptureConfiguration;
@@ -181,7 +181,7 @@ LABEL_12:
   if (v4)
   {
     *(v4 + 2) = 0;
-    *(v4 + 3) = a3;
+    *(v4 + 3) = device;
     v4[8] = 0;
     *(v4 + 2) = 0u;
     *(v4 + 3) = 0u;
@@ -208,14 +208,14 @@ LABEL_12:
   return v5;
 }
 
-+ (id)captureGraphConfigurationUsingConfiguration:(id)a3 outputToExternalStorage:(BOOL)a4 captureOrientation:(int64_t)a5
++ (id)captureGraphConfigurationUsingConfiguration:(id)configuration outputToExternalStorage:(BOOL)storage captureOrientation:(int64_t)orientation
 {
-  v76 = a4;
-  v5 = a3;
-  v6 = [v5 mode];
-  v7 = [v5 device];
-  v8 = v7;
-  if ((v7 - 8) < 3 || v7 == 11 || v7 == 1)
+  storageCopy = storage;
+  configurationCopy = configuration;
+  mode = [configurationCopy mode];
+  device = [configurationCopy device];
+  v8 = device;
+  if ((device - 8) < 3 || device == 11 || device == 1)
   {
     v9 = 0;
     v10 = 1;
@@ -227,23 +227,23 @@ LABEL_12:
     v9 = 1;
   }
 
-  v73 = [v5 isPhotoBooth];
+  isPhotoBooth = [configurationCopy isPhotoBooth];
   v11 = +[CAMCaptureCapabilities capabilities];
   v12 = +[CAMUserPreferences preferences];
-  if ([v11 isFrontRearSimultaneousVideoSupportedForMode:v6 devicePosition:v10])
+  if ([v11 isFrontRearSimultaneousVideoSupportedForMode:mode devicePosition:v10])
   {
-    v79 = [v12 shouldEnableFrontRearSimultaneousVideo];
+    shouldEnableFrontRearSimultaneousVideo = [v12 shouldEnableFrontRearSimultaneousVideo];
   }
 
   else
   {
-    v79 = 0;
+    shouldEnableFrontRearSimultaneousVideo = 0;
   }
 
-  if ([v5 zoomPIPEnabled])
+  if ([configurationCopy zoomPIPEnabled])
   {
     v13 = +[CAMCaptureCapabilities capabilities];
-    v67 = [v13 isZoomPIPSupportedForMode:v6 devicePosition:v10 frontRearSimultaneousVideoEnabled:v79];
+    v67 = [v13 isZoomPIPSupportedForMode:mode devicePosition:v10 frontRearSimultaneousVideoEnabled:shouldEnableFrontRearSimultaneousVideo];
   }
 
   else
@@ -251,59 +251,59 @@ LABEL_12:
     v67 = 0;
   }
 
-  if ([v11 isCustomLensSupportedForMode:v6 device:v8 isTrueVideo:0])
+  if ([v11 isCustomLensSupportedForMode:mode device:v8 isTrueVideo:0])
   {
-    v69 = [v12 customLensGroup];
+    customLensGroup = [v12 customLensGroup];
   }
 
   else
   {
-    v69 = 0;
+    customLensGroup = 0;
   }
 
-  v68 = [v5 _previewFilters];
-  v14 = [v5 videoConfiguration];
-  v75 = [v5 audioConfiguration];
-  if (v73)
+  _previewFilters = [configurationCopy _previewFilters];
+  videoConfiguration = [configurationCopy videoConfiguration];
+  audioConfiguration = [configurationCopy audioConfiguration];
+  if (isPhotoBooth)
   {
     v66 = 0;
   }
 
   else
   {
-    v66 = [v12 videoThumbnailOutputConfigurationForMode:v6 devicePosition:v10];
+    v66 = [v12 videoThumbnailOutputConfigurationForMode:mode devicePosition:v10];
   }
 
-  v65 = [v12 photoEncodingBehavior];
-  v78 = [v12 videoEncodingBehaviorForConfiguration:v14 mode:v6 desiredProResVideoMode:objc_msgSend(v5 outputToExternalStorage:"proResVideoMode") frontRearSimultaneousVideoEnabled:{v76, v79}];
-  v64 = [v11 shouldSuspendVideoHDRForHDRMode:objc_msgSend(v5 captureMode:{"HDRMode"), v6}];
-  if (v6)
+  photoEncodingBehavior = [v12 photoEncodingBehavior];
+  v78 = [v12 videoEncodingBehaviorForConfiguration:videoConfiguration mode:mode desiredProResVideoMode:objc_msgSend(configurationCopy outputToExternalStorage:"proResVideoMode") frontRearSimultaneousVideoEnabled:{storageCopy, shouldEnableFrontRearSimultaneousVideo}];
+  v64 = [v11 shouldSuspendVideoHDRForHDRMode:objc_msgSend(configurationCopy captureMode:{"HDRMode"), mode}];
+  if (mode)
   {
-    v63 = 0;
+    photoModeAspectRatioCrop = 0;
     if (v9)
     {
 LABEL_19:
-      v62 = 0;
+      mirrorFrontCameraCaptures = 0;
       goto LABEL_22;
     }
   }
 
   else
   {
-    v63 = [v5 photoModeAspectRatioCrop];
+    photoModeAspectRatioCrop = [configurationCopy photoModeAspectRatioCrop];
     if (v9)
     {
       goto LABEL_19;
     }
   }
 
-  v62 = [v5 mirrorFrontCameraCaptures];
+  mirrorFrontCameraCaptures = [configurationCopy mirrorFrontCameraCaptures];
 LABEL_22:
-  v61 = [v12 isAutoFPSVideoEnabledForMode:v6 device:v8 videoConfiguration:v14 encodingBehavior:v78 outputToExternalStorage:v76 frontRearSimultaneousVideoEnabled:v79];
-  v60 = [v11 maxSupportedPhotoQualityPrioritizationForMode:v6 devicePosition:v10];
+  v61 = [v12 isAutoFPSVideoEnabledForMode:mode device:v8 videoConfiguration:videoConfiguration encodingBehavior:v78 outputToExternalStorage:storageCopy frontRearSimultaneousVideoEnabled:shouldEnableFrontRearSimultaneousVideo];
+  v60 = [v11 maxSupportedPhotoQualityPrioritizationForMode:mode devicePosition:v10];
   if ([v12 rawControlEnabled])
   {
-    v72 = [v11 isLinearDNGSupportedForMode:v6];
+    v72 = [v11 isLinearDNGSupportedForMode:mode];
   }
 
   else
@@ -312,14 +312,14 @@ LABEL_22:
   }
 
   v15 = v10;
-  v16 = [v11 semanticStyleSupportForMode:v6 devicePosition:v10];
-  v17 = [v5 semanticStyles];
+  v16 = [v11 semanticStyleSupportForMode:mode devicePosition:v10];
+  semanticStyles = [configurationCopy semanticStyles];
   v58 = v16;
-  v59 = [v11 captureStyleForPreviewWithSupport:v16 styles:v17 selectedStyleIndex:objc_msgSend(v5 smartStyleSystemStyleIndex:{"selectedSemanticStyleIndex"), objc_msgSend(v5, "smartStyleSystemStyleIndex")}];
+  v59 = [v11 captureStyleForPreviewWithSupport:v16 styles:semanticStyles selectedStyleIndex:objc_msgSend(configurationCopy smartStyleSystemStyleIndex:{"selectedSemanticStyleIndex"), objc_msgSend(configurationCopy, "smartStyleSystemStyleIndex")}];
 
   if ([v12 shouldUseContentAwareDistortionCorrection])
   {
-    v57 = [v11 isContentAwareDistortionCorrectionSupportedForMode:v6];
+    v57 = [v11 isContentAwareDistortionCorrectionSupportedForMode:mode];
   }
 
   else
@@ -329,7 +329,7 @@ LABEL_22:
 
   if ([v12 responsiveShutterEnabled])
   {
-    v56 = [v11 isResponsiveShutterSupportedForMode:v6];
+    v56 = [v11 isResponsiveShutterSupportedForMode:mode];
   }
 
   else
@@ -338,46 +338,46 @@ LABEL_22:
   }
 
   v18 = +[CAMUserPreferences preferences];
-  LOBYTE(v38) = v79;
-  v19 = [v11 isActionModeControlSupportedForMode:v6 device:v8 videoConfiguration:v14 videoEncodingBehavior:v78 trueVideoEnabled:0 prefersHDR10BitVideo:objc_msgSend(v18 frontRearSimultaneousVideoEnabled:{"prefersHDR10BitVideoForCapabilities:", v11), v38}];
+  LOBYTE(v38) = shouldEnableFrontRearSimultaneousVideo;
+  v19 = [v11 isActionModeControlSupportedForMode:mode device:v8 videoConfiguration:videoConfiguration videoEncodingBehavior:v78 trueVideoEnabled:0 prefersHDR10BitVideo:objc_msgSend(v18 frontRearSimultaneousVideoEnabled:{"prefersHDR10BitVideoForCapabilities:", v11), v38}];
 
   if (v19)
   {
     v20 = v15;
-    v21 = [v5 videoStabilizationMode];
+    videoStabilizationMode = [configurationCopy videoStabilizationMode];
   }
 
   else
   {
     v20 = v15;
-    v21 = 0;
+    videoStabilizationMode = 0;
   }
 
-  v22 = [v12 videoStabilizationStrengthForVideoStabilizationMode:v21 captureMode:v6];
+  v22 = [v12 videoStabilizationStrengthForVideoStabilizationMode:videoStabilizationMode captureMode:mode];
   v23 = +[CAMUserPreferences preferences];
-  BYTE2(v39) = v79;
+  BYTE2(v39) = shouldEnableFrontRearSimultaneousVideo;
   BYTE1(v39) = [v23 prefersHDR10BitVideoForCapabilities:v11];
   LOBYTE(v39) = 0;
-  v24 = [v11 isVideoStabilizationStrength:v22 supportedForMode:v6 device:v8 videoConfiguration:v14 videoEncodingBehavior:v78 outputToExternalStorage:v76 trueVideoEnabled:v39 prefersHDR10BitVideo:? frontRearSimultaneousVideoEnabled:?];
+  v24 = [v11 isVideoStabilizationStrength:v22 supportedForMode:mode device:v8 videoConfiguration:videoConfiguration videoEncodingBehavior:v78 outputToExternalStorage:storageCopy trueVideoEnabled:v39 prefersHDR10BitVideo:? frontRearSimultaneousVideoEnabled:?];
 
-  v77 = [v12 maximumPhotoResolutionForMode:v6 device:v8];
+  v77 = [v12 maximumPhotoResolutionForMode:mode device:v8];
   v25 = 0;
   if (v72)
   {
-    v25 = [v5 rawMode] == 1;
+    v25 = [configurationCopy rawMode] == 1;
   }
 
   v55 = v25;
-  v53 = [v12 colorSpaceForMode:v6 videoConfiguration:v14 videoEncodingBehavior:v78 device:v8 preferredProResColorSpace:{objc_msgSend(v12, "explicitProResColorSpace")}];
+  v53 = [v12 colorSpaceForMode:mode videoConfiguration:videoConfiguration videoEncodingBehavior:v78 device:v8 preferredProResColorSpace:{objc_msgSend(v12, "explicitProResColorSpace")}];
   v26 = v20;
-  v52 = [v11 useVideoBinnedForMode:v6 videoConfiguration:v14 devicePosition:v20];
-  v51 = [v12 shouldUseDepthSuggestionInPhotoMode];
-  v54 = [v12 windRemovalEnabledForAudioConfiguration:v75];
+  v52 = [v11 useVideoBinnedForMode:mode videoConfiguration:videoConfiguration devicePosition:v20];
+  shouldUseDepthSuggestionInPhotoMode = [v12 shouldUseDepthSuggestionInPhotoMode];
+  v54 = [v12 windRemovalEnabledForAudioConfiguration:audioConfiguration];
   v49 = [v12 prefersHDR10BitVideoForCapabilities:v11];
-  v27 = [v11 isDynamicAspectRatioSupportedForMode:v6 videoConfiguration:v14 devicePosition:v20];
-  v28 = [v11 isSmartFramingSupportedForMode:v6 devicePosition:v26];
+  v27 = [v11 isDynamicAspectRatioSupportedForMode:mode videoConfiguration:videoConfiguration devicePosition:v20];
+  v28 = [v11 isSmartFramingSupportedForMode:mode devicePosition:v26];
   v29 = 1;
-  if ((a5 - 3) >= 2)
+  if ((orientation - 3) >= 2)
   {
     v30 = 1;
   }
@@ -419,67 +419,67 @@ LABEL_22:
     v33 = 0;
   }
 
-  v48 = v73;
-  if (v73)
+  v48 = isPhotoBooth;
+  if (isPhotoBooth)
   {
     v29 = 2;
   }
 
   v74 = v29;
   v47 = [CAMCaptureGraphConfiguration alloc];
-  v46 = [v5 macroMode];
-  v34 = [v5 mixAudioWithOthers];
-  v35 = [v5 smartStyles];
-  BYTE2(v45) = v79;
+  macroMode = [configurationCopy macroMode];
+  mixAudioWithOthers = [configurationCopy mixAudioWithOthers];
+  smartStyles = [configurationCopy smartStyles];
+  BYTE2(v45) = shouldEnableFrontRearSimultaneousVideo;
   BYTE1(v45) = v49;
   LOBYTE(v45) = 0;
   BYTE2(v44) = v67;
-  BYTE1(v44) = v51;
+  BYTE1(v44) = shouldUseDepthSuggestionInPhotoMode;
   LOBYTE(v44) = v52;
   BYTE2(v43) = v55;
   BYTE1(v43) = v56;
   LOBYTE(v43) = v57;
   BYTE1(v42) = v72;
-  LOBYTE(v42) = v62;
+  LOBYTE(v42) = mirrorFrontCameraCaptures;
   BYTE1(v41) = v64;
   LOBYTE(v41) = v61;
   LOBYTE(v40) = v54;
-  v36 = [CAMCaptureGraphConfiguration initWithCaptureMode:v47 captureDevice:"initWithCaptureMode:captureDevice:macroMode:videoConfiguration:audioConfiguration:mixAudioWithOthers:windNoiseRemovalEnabled:previewConfiguration:previewSampleBufferVideoFormat:previewFilters:videoThumbnailOutputConfiguration:photoEncodingBehavior:videoEncodingBehavior:enableAutoFPSVideo:videoHDRSuspended:aspectRatioCrop:photoQualityPrioritization:captureMirrored:enableRAWCaptureIfSupported:semanticStyleSupport:previewSemanticStyle:smartStyles:enableContentAwareDistortionCorrection:enableResponsiveShutter:suspendLivePhotoCapture:videoStabilizationStrength:maximumPhotoResolution:colorSpace:videoBinned:enableDepthSuggestion:enableZoomPIP:customLensGroup:trueVideoEnabled:prefersHDR10BitVideo:frontRearSimultaneousVideoEnabled:videoDynamicAspectRatio:smartFramingFieldOfView:" macroMode:v6 videoConfiguration:v50 audioConfiguration:v46 mixAudioWithOthers:v14 windNoiseRemovalEnabled:v75 previewConfiguration:v34 previewSampleBufferVideoFormat:v40 previewFilters:v74 videoThumbnailOutputConfiguration:v48 photoEncodingBehavior:v68 videoEncodingBehavior:v66 enableAutoFPSVideo:v65 videoHDRSuspended:v78 aspectRatioCrop:v41 photoQualityPrioritization:v63 captureMirrored:v60 enableRAWCaptureIfSupported:v42 semanticStyleSupport:v58 previewSemanticStyle:v59 smartStyles:v35 enableContentAwareDistortionCorrection:v43 enableResponsiveShutter:v33 suspendLivePhotoCapture:v77 videoStabilizationStrength:v53 maximumPhotoResolution:v44 colorSpace:v69 videoBinned:v45 enableDepthSuggestion:v32 enableZoomPIP:v31 customLensGroup:? trueVideoEnabled:? prefersHDR10BitVideo:? frontRearSimultaneousVideoEnabled:? videoDynamicAspectRatio:? smartFramingFieldOfView:?];
+  v36 = [CAMCaptureGraphConfiguration initWithCaptureMode:v47 captureDevice:"initWithCaptureMode:captureDevice:macroMode:videoConfiguration:audioConfiguration:mixAudioWithOthers:windNoiseRemovalEnabled:previewConfiguration:previewSampleBufferVideoFormat:previewFilters:videoThumbnailOutputConfiguration:photoEncodingBehavior:videoEncodingBehavior:enableAutoFPSVideo:videoHDRSuspended:aspectRatioCrop:photoQualityPrioritization:captureMirrored:enableRAWCaptureIfSupported:semanticStyleSupport:previewSemanticStyle:smartStyles:enableContentAwareDistortionCorrection:enableResponsiveShutter:suspendLivePhotoCapture:videoStabilizationStrength:maximumPhotoResolution:colorSpace:videoBinned:enableDepthSuggestion:enableZoomPIP:customLensGroup:trueVideoEnabled:prefersHDR10BitVideo:frontRearSimultaneousVideoEnabled:videoDynamicAspectRatio:smartFramingFieldOfView:" macroMode:mode videoConfiguration:v50 audioConfiguration:macroMode mixAudioWithOthers:videoConfiguration windNoiseRemovalEnabled:audioConfiguration previewConfiguration:mixAudioWithOthers previewSampleBufferVideoFormat:v40 previewFilters:v74 videoThumbnailOutputConfiguration:v48 photoEncodingBehavior:_previewFilters videoEncodingBehavior:v66 enableAutoFPSVideo:photoEncodingBehavior videoHDRSuspended:v78 aspectRatioCrop:v41 photoQualityPrioritization:photoModeAspectRatioCrop captureMirrored:v60 enableRAWCaptureIfSupported:v42 semanticStyleSupport:v58 previewSemanticStyle:v59 smartStyles:smartStyles enableContentAwareDistortionCorrection:v43 enableResponsiveShutter:v33 suspendLivePhotoCapture:v77 videoStabilizationStrength:v53 maximumPhotoResolution:v44 colorSpace:customLensGroup videoBinned:v45 enableDepthSuggestion:v32 enableZoomPIP:v31 customLensGroup:? trueVideoEnabled:? prefersHDR10BitVideo:? frontRearSimultaneousVideoEnabled:? videoDynamicAspectRatio:? smartFramingFieldOfView:?];
 
   return v36;
 }
 
-+ (int64_t)sanitizeVideoConfigurationForDesiredConfiguration:(int64_t)a3 mode:(int64_t)a4 device:(int64_t)a5 trueVideoEnabled:(BOOL)a6 frontRearSimultaneousVideoEnabled:(BOOL)a7
++ (int64_t)sanitizeVideoConfigurationForDesiredConfiguration:(int64_t)configuration mode:(int64_t)mode device:(int64_t)device trueVideoEnabled:(BOOL)enabled frontRearSimultaneousVideoEnabled:(BOOL)videoEnabled
 {
-  v7 = a7;
-  v8 = a6;
+  videoEnabledCopy = videoEnabled;
+  enabledCopy = enabled;
   v13 = +[CAMCaptureCapabilities capabilities];
   do
   {
-    if ([v13 isSupportedVideoConfiguration:a3 forMode:a4 device:a5 trueVideoEnabled:v8 frontRearSimultaneousVideoEnabled:v7])
+    if ([v13 isSupportedVideoConfiguration:configuration forMode:mode device:device trueVideoEnabled:enabledCopy frontRearSimultaneousVideoEnabled:videoEnabledCopy])
     {
       break;
     }
 
-    a3 = [a1 _fallbackVideoConfigurationForUnsupportedConfiguration:a3 frontRearSimultaneousVideoEnabled:v7];
+    configuration = [self _fallbackVideoConfigurationForUnsupportedConfiguration:configuration frontRearSimultaneousVideoEnabled:videoEnabledCopy];
   }
 
-  while (a3);
+  while (configuration);
 
-  return a3;
+  return configuration;
 }
 
-+ (int64_t)_fallbackVideoConfigurationForUnsupportedConfiguration:(int64_t)a3 frontRearSimultaneousVideoEnabled:(BOOL)a4
++ (int64_t)_fallbackVideoConfigurationForUnsupportedConfiguration:(int64_t)configuration frontRearSimultaneousVideoEnabled:(BOOL)enabled
 {
-  if (a3 > 12)
+  if (configuration > 12)
   {
     v5 = 12;
-    if (a3 != 14)
+    if (configuration != 14)
     {
       v5 = 0;
     }
 
-    if (a3 == 13)
+    if (configuration == 13)
     {
       return 9;
     }
@@ -492,14 +492,14 @@ LABEL_22:
 
   else
   {
-    if (a3 == 4)
+    if (configuration == 4)
     {
       return 1;
     }
 
-    if (a3 == 9)
+    if (configuration == 9)
     {
-      if (a4)
+      if (enabled)
       {
         return 5;
       }
@@ -511,12 +511,12 @@ LABEL_22:
   }
 }
 
-+ (id)configuration:(id)a3 withDevice:(int64_t)a4
++ (id)configuration:(id)configuration withDevice:(int64_t)device
 {
-  v5 = a3;
-  v6 = [[CAMCaptureConfiguration alloc] initWithConfiguration:v5];
+  configurationCopy = configuration;
+  v6 = [[CAMCaptureConfiguration alloc] initWithConfiguration:configurationCopy];
 
-  v6->_device = a4;
+  v6->_device = device;
 
   return v6;
 }
@@ -524,19 +524,19 @@ LABEL_22:
 - (NSArray)smartStyles
 {
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 smartStylesSupported];
+  smartStylesSupported = [v3 smartStylesSupported];
 
-  if (v4)
+  if (smartStylesSupported)
   {
-    v5 = [(CAMCaptureConfiguration *)self semanticStyles];
+    semanticStyles = [(CAMCaptureConfiguration *)self semanticStyles];
   }
 
   else
   {
-    v5 = 0;
+    semanticStyles = 0;
   }
 
-  return v5;
+  return semanticStyles;
 }
 
 @end

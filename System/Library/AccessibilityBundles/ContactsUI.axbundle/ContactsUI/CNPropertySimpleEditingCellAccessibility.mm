@@ -1,32 +1,32 @@
 @interface CNPropertySimpleEditingCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)valueView;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)updateValueWithPropertyItem:(id)a3;
+- (void)updateValueWithPropertyItem:(id)item;
 @end
 
 @implementation CNPropertySimpleEditingCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNPropertySimpleEditingCell" hasInstanceVariable:@"_textField" withType:"UITextField"];
-  [v3 validateClass:@"CNPropertySimpleEditingCell" hasInstanceMethod:@"valueView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNPropertySimpleCell" hasInstanceMethod:@"labelView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNPropertySimpleEditingCell" hasInstanceMethod:@"updateValueWithPropertyItem:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CNPropertySimpleEditingCell" isKindOfClass:@"CNPropertyEditingCell"];
-  [v3 validateClass:@"CNPropertyEditingCell" hasInstanceMethod:@"labelButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNPropertySimpleEditingCell" hasInstanceVariable:@"_textField" withType:"UITextField"];
+  [validationsCopy validateClass:@"CNPropertySimpleEditingCell" hasInstanceMethod:@"valueView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNPropertySimpleCell" hasInstanceMethod:@"labelView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNPropertySimpleEditingCell" hasInstanceMethod:@"updateValueWithPropertyItem:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CNPropertySimpleEditingCell" isKindOfClass:@"CNPropertyEditingCell"];
+  [validationsCopy validateClass:@"CNPropertyEditingCell" hasInstanceMethod:@"labelButton" withFullSignature:{"@", 0}];
 }
 
 - (id)valueView
 {
   v5.receiver = self;
   v5.super_class = CNPropertySimpleEditingCellAccessibility;
-  v3 = [(CNPropertySimpleEditingCellAccessibility *)&v5 valueView];
+  valueView = [(CNPropertySimpleEditingCellAccessibility *)&v5 valueView];
   [(CNPropertySimpleEditingCellAccessibility *)self _accessibilityLoadAccessibilityInformation];
 
-  return v3;
+  return valueView;
 }
 
 - (id)accessibilityLabel
@@ -35,16 +35,16 @@
   v3 = [(CNPropertySimpleEditingCellAccessibility *)self safeValueForKey:@"labelButton"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 currentTitle];
+  currentTitle = [v4 currentTitle];
 
-  return v5;
+  return currentTitle;
 }
 
-- (void)updateValueWithPropertyItem:(id)a3
+- (void)updateValueWithPropertyItem:(id)item
 {
   v4.receiver = self;
   v4.super_class = CNPropertySimpleEditingCellAccessibility;
-  [(CNPropertySimpleEditingCellAccessibility *)&v4 updateValueWithPropertyItem:a3];
+  [(CNPropertySimpleEditingCellAccessibility *)&v4 updateValueWithPropertyItem:item];
   [(CNPropertySimpleEditingCellAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
@@ -55,8 +55,8 @@
   [(CNPropertySimpleEditingCellAccessibility *)&v6 _accessibilityLoadAccessibilityInformation];
   v3 = [(CNPropertySimpleEditingCellAccessibility *)self safeValueForKey:@"_textField"];
   v4 = [(CNPropertySimpleEditingCellAccessibility *)self safeValueForKey:@"labelView"];
-  v5 = [v4 accessibilityLabel];
-  [v3 setAccessibilityIdentifier:v5];
+  accessibilityLabel = [v4 accessibilityLabel];
+  [v3 setAccessibilityIdentifier:accessibilityLabel];
 }
 
 @end

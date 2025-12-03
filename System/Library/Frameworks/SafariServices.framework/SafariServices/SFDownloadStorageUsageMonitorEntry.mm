@@ -1,47 +1,47 @@
 @interface SFDownloadStorageUsageMonitorEntry
-- (SFDownloadStorageUsageMonitorEntry)initWithIdentifier:(id)a3;
+- (SFDownloadStorageUsageMonitorEntry)initWithIdentifier:(id)identifier;
 - (SFDownloadStorageUsageMonitorEntryDelegate)delegate;
-- (void)_didGainProgress:(id)a3;
-- (void)_didLoseProgress:(id)a3;
-- (void)_updateProgressSubscriptionWithData:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)updateWithDictionaryRepresentation:(id)a3;
+- (void)_didGainProgress:(id)progress;
+- (void)_didLoseProgress:(id)progress;
+- (void)_updateProgressSubscriptionWithData:(id)data;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)updateWithDictionaryRepresentation:(id)representation;
 @end
 
 @implementation SFDownloadStorageUsageMonitorEntry
 
-- (SFDownloadStorageUsageMonitorEntry)initWithIdentifier:(id)a3
+- (SFDownloadStorageUsageMonitorEntry)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(SFDownloadStorageUsageMonitorEntry *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)_didGainProgress:(id)a3
+- (void)_didGainProgress:(id)progress
 {
-  v7 = a3;
-  v5 = [v7 fileOperationKind];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E696A848]];
+  progressCopy = progress;
+  fileOperationKind = [progressCopy fileOperationKind];
+  v6 = [fileOperationKind isEqualToString:*MEMORY[0x1E696A848]];
 
   if (v6)
   {
-    objc_storeStrong(&self->_progress, a3);
-    [v7 addObserver:self forKeyPath:@"completedUnitCount" options:1 context:entryProgressCompletedUnitCountKVOContext];
+    objc_storeStrong(&self->_progress, progress);
+    [progressCopy addObserver:self forKeyPath:@"completedUnitCount" options:1 context:entryProgressCompletedUnitCountKVOContext];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (entryProgressCompletedUnitCountKVOContext == a6)
+  if (entryProgressCompletedUnitCountKVOContext == context)
   {
-    self->_cachedUsage = [(NSProgress *)self->_progress completedUnitCount:a3];
+    self->_cachedUsage = [(NSProgress *)self->_progress completedUnitCount:path];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained entryDidChangeUsage:self];
   }
@@ -50,14 +50,14 @@
   {
     v8.receiver = self;
     v8.super_class = SFDownloadStorageUsageMonitorEntry;
-    [(SFDownloadStorageUsageMonitorEntry *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(SFDownloadStorageUsageMonitorEntry *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)_didLoseProgress:(id)a3
+- (void)_didLoseProgress:(id)progress
 {
   progress = self->_progress;
-  if (progress == a3)
+  if (progress == progress)
   {
     [(NSProgress *)progress removeObserver:self forKeyPath:@"completedUnitCount" context:entryProgressCompletedUnitCountKVOContext];
     v5 = self->_progress;
@@ -68,9 +68,9 @@
 
     v7 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:self->_destinationPath isDirectory:0 relativeToURL:v14];
     cachedUsage = self->_cachedUsage;
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v7 path];
-    v11 = [v9 attributesOfItemAtPath:v10 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v7 path];
+    v11 = [defaultManager attributesOfItemAtPath:path error:0];
     v12 = [v11 safari_numberForKey:*MEMORY[0x1E696A3B8]];
     self->_cachedUsage = [v12 integerValue];
 
@@ -82,9 +82,9 @@
   }
 }
 
-- (void)_updateProgressSubscriptionWithData:(id)a3
+- (void)_updateProgressSubscriptionWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   progressSubscriber = self->_progressSubscriber;
   if (progressSubscriber)
   {
@@ -99,10 +99,10 @@
     self->_progressSubscriber = 0;
   }
 
-  objc_storeStrong(&self->_progressData, a3);
-  if (v5)
+  objc_storeStrong(&self->_progressData, data);
+  if (dataCopy)
   {
-    v8 = [objc_alloc(MEMORY[0x1E695DFF8]) initByResolvingBookmarkData:v5 options:0 relativeToURL:0 bookmarkDataIsStale:0 error:0];
+    v8 = [objc_alloc(MEMORY[0x1E695DFF8]) initByResolvingBookmarkData:dataCopy options:0 relativeToURL:0 bookmarkDataIsStale:0 error:0];
     if (v8)
     {
       v9 = v8;
@@ -149,14 +149,14 @@ void __74__SFDownloadStorageUsageMonitorEntry__updateProgressSubscriptionWithDat
   [WeakRetained _didLoseProgress:*(a1 + 32)];
 }
 
-- (void)updateWithDictionaryRepresentation:(id)a3
+- (void)updateWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 safari_stringForKey:@"Path"];
+  representationCopy = representation;
+  v5 = [representationCopy safari_stringForKey:@"Path"];
   destinationPath = self->_destinationPath;
   self->_destinationPath = v5;
 
-  v17 = [v4 safari_dataForKey:@"PlaceholderBookmarkData"];
+  v17 = [representationCopy safari_dataForKey:@"PlaceholderBookmarkData"];
 
   if ((WBSIsEqual() & 1) == 0)
   {
@@ -173,9 +173,9 @@ void __74__SFDownloadStorageUsageMonitorEntry__updateProgressSubscriptionWithDat
       v10 = [v9 URLByAppendingPathComponent:@"/" isDirectory:1];
 
       v11 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:self->_destinationPath isDirectory:0 relativeToURL:v10];
-      v12 = [MEMORY[0x1E696AC08] defaultManager];
-      v13 = [v11 path];
-      v14 = [v12 attributesOfItemAtPath:v13 error:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      path = [v11 path];
+      v14 = [defaultManager attributesOfItemAtPath:path error:0];
       v15 = [v14 safari_numberForKey:*MEMORY[0x1E696A3B8]];
       self->_cachedUsage = [v15 integerValue];
 

@@ -1,30 +1,30 @@
 @interface AAPSyncState
-- (AAPSyncState)initWithCoder:(id)a3;
-- (AAPSyncState)initWithValidity:(id)a3 version:(int64_t)a4 keyAnchor:(id)a5 startAnchor:(id)a6 stopAnchor:(id)a7 apps:(id)a8 deletes:(id)a9;
-- (BOOL)isEqual:(id)a3;
+- (AAPSyncState)initWithCoder:(id)coder;
+- (AAPSyncState)initWithValidity:(id)validity version:(int64_t)version keyAnchor:(id)anchor startAnchor:(id)startAnchor stopAnchor:(id)stopAnchor apps:(id)apps deletes:(id)deletes;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 - (void)_validate;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AAPSyncState
 
-- (AAPSyncState)initWithValidity:(id)a3 version:(int64_t)a4 keyAnchor:(id)a5 startAnchor:(id)a6 stopAnchor:(id)a7 apps:(id)a8 deletes:(id)a9
+- (AAPSyncState)initWithValidity:(id)validity version:(int64_t)version keyAnchor:(id)anchor startAnchor:(id)startAnchor stopAnchor:(id)stopAnchor apps:(id)apps deletes:(id)deletes
 {
   v17.receiver = self;
   v17.super_class = AAPSyncState;
   v15 = [(AAPSyncState *)&v17 init];
   if (v15)
   {
-    v15->_validity = [a3 copy];
-    v15->_version = a4;
-    v15->_keyAnchor = [a5 copy];
-    v15->_startAnchor = [a6 copy];
-    v15->_stopAnchor = [a7 copy];
-    v15->_apps = [a8 copy];
-    v15->_deletes = [a9 copy];
+    v15->_validity = [validity copy];
+    v15->_version = version;
+    v15->_keyAnchor = [anchor copy];
+    v15->_startAnchor = [startAnchor copy];
+    v15->_stopAnchor = [stopAnchor copy];
+    v15->_apps = [apps copy];
+    v15->_deletes = [deletes copy];
     [(AAPSyncState *)v15 _validate];
   }
 
@@ -158,7 +158,7 @@
   }
 }
 
-- (AAPSyncState)initWithCoder:(id)a3
+- (AAPSyncState)initWithCoder:(id)coder
 {
   v5 = objc_opt_class();
   v6 = objc_opt_class();
@@ -166,13 +166,13 @@
   v8 = objc_opt_class();
   v9 = [NSSet setWithObjects:v7, v5, 0];
   v10 = [NSSet setWithObjects:v8, objc_opt_class(), 0];
-  v18 = [a3 decodeObjectOfClass:v5 forKey:@"validity"];
-  v11 = [a3 decodeIntegerForKey:@"version"];
-  v12 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"keyAnchor"];
-  v13 = [a3 decodeObjectOfClass:v6 forKey:@"startAnchor"];
-  v14 = [a3 decodeObjectOfClass:v6 forKey:@"stopAnchor"];
-  v15 = [a3 decodeObjectOfClasses:v9 forKey:@"apps"];
-  v16 = [a3 decodeObjectOfClasses:v10 forKey:@"deletes"];
+  v18 = [coder decodeObjectOfClass:v5 forKey:@"validity"];
+  v11 = [coder decodeIntegerForKey:@"version"];
+  v12 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"keyAnchor"];
+  v13 = [coder decodeObjectOfClass:v6 forKey:@"startAnchor"];
+  v14 = [coder decodeObjectOfClass:v6 forKey:@"stopAnchor"];
+  v15 = [coder decodeObjectOfClasses:v9 forKey:@"apps"];
+  v16 = [coder decodeObjectOfClasses:v10 forKey:@"deletes"];
   if (self->_apps && (objc_opt_isKindOfClass() & 1) == 0)
   {
     sub_117E0();
@@ -186,17 +186,17 @@
   return [(AAPSyncState *)self initWithValidity:v18 version:v11 keyAnchor:v12 startAnchor:v13 stopAnchor:v14 apps:v15 deletes:v16];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_validity forKey:@"validity"];
-  [a3 encodeInteger:self->_version forKey:@"version"];
-  [a3 encodeObject:self->_keyAnchor forKey:@"keyAnchor"];
-  [a3 encodeObject:self->_startAnchor forKey:@"startAnchor"];
-  [a3 encodeObject:self->_stopAnchor forKey:@"stopAnchor"];
-  [a3 encodeObject:self->_apps forKey:@"apps"];
+  [coder encodeObject:self->_validity forKey:@"validity"];
+  [coder encodeInteger:self->_version forKey:@"version"];
+  [coder encodeObject:self->_keyAnchor forKey:@"keyAnchor"];
+  [coder encodeObject:self->_startAnchor forKey:@"startAnchor"];
+  [coder encodeObject:self->_stopAnchor forKey:@"stopAnchor"];
+  [coder encodeObject:self->_apps forKey:@"apps"];
   deletes = self->_deletes;
 
-  [a3 encodeObject:deletes forKey:@"deletes"];
+  [coder encodeObject:deletes forKey:@"deletes"];
 }
 
 - (unint64_t)hash
@@ -210,10 +210,10 @@
   return [(NSArray *)self->_deletes hash]+ 32 * v8 - v8 + 0x6CE5F3FACFLL;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = self;
-  if (self == a3)
+  selfCopy = self;
+  if (self == equal)
   {
     LOBYTE(self) = self != 0;
   }
@@ -226,31 +226,31 @@
       goto LABEL_3;
     }
 
-    LODWORD(self) = -[NSString isEqualToString:](v3->_validity, "isEqualToString:", [a3 validity]);
+    LODWORD(self) = -[NSString isEqualToString:](selfCopy->_validity, "isEqualToString:", [equal validity]);
     if (!self)
     {
       return self;
     }
 
-    version = v3->_version;
-    if (version == [a3 version])
+    version = selfCopy->_version;
+    if (version == [equal version])
     {
-      LODWORD(self) = -[AAPSyncAnchor isEqualToAnchor:](v3->_keyAnchor, "isEqualToAnchor:", [a3 keyAnchor]);
+      LODWORD(self) = -[AAPSyncAnchor isEqualToAnchor:](selfCopy->_keyAnchor, "isEqualToAnchor:", [equal keyAnchor]);
       if (self)
       {
-        LODWORD(self) = -[AAPSyncAnchor isEqualToAnchor:](v3->_startAnchor, "isEqualToAnchor:", [a3 startAnchor]);
+        LODWORD(self) = -[AAPSyncAnchor isEqualToAnchor:](selfCopy->_startAnchor, "isEqualToAnchor:", [equal startAnchor]);
         if (self)
         {
-          LODWORD(self) = -[AAPSyncAnchor isEqualToAnchor:](v3->_stopAnchor, "isEqualToAnchor:", [a3 stopAnchor]);
+          LODWORD(self) = -[AAPSyncAnchor isEqualToAnchor:](selfCopy->_stopAnchor, "isEqualToAnchor:", [equal stopAnchor]);
           if (self)
           {
-            LODWORD(self) = -[NSSet isEqualToSet:](v3->_apps, "isEqualToSet:", [a3 apps]);
+            LODWORD(self) = -[NSSet isEqualToSet:](selfCopy->_apps, "isEqualToSet:", [equal apps]);
             if (self)
             {
-              deletes = v3->_deletes;
-              v8 = [a3 deletes];
+              deletes = selfCopy->_deletes;
+              deletes = [equal deletes];
 
-              LOBYTE(self) = [(NSArray *)deletes isEqualToArray:v8];
+              LOBYTE(self) = [(NSArray *)deletes isEqualToArray:deletes];
             }
           }
         }

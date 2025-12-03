@@ -1,24 +1,24 @@
 @interface OCXSummary
-+ (void)readSummary:(id)a3 package:(id)a4;
++ (void)readSummary:(id)summary package:(id)package;
 @end
 
 @implementation OCXSummary
 
-+ (void)readSummary:(id)a3 package:(id)a4
++ (void)readSummary:(id)summary package:(id)package
 {
-  v10 = a3;
-  v5 = [a4 properties];
-  v6 = [v5 title];
-  [v10 setTitle:v6];
+  summaryCopy = summary;
+  properties = [package properties];
+  title = [properties title];
+  [summaryCopy setTitle:title];
 
-  v7 = [v5 creator];
-  [v10 setAuthor:v7];
+  creator = [properties creator];
+  [summaryCopy setAuthor:creator];
 
-  v8 = [v5 keywords];
-  [v10 setKeywords:v8];
+  keywords = [properties keywords];
+  [summaryCopy setKeywords:keywords];
 
-  v9 = [v5 description];
-  [v10 setComments:v9];
+  v9 = [properties description];
+  [summaryCopy setComments:v9];
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface PKApplicationMessageGroupDescriptor
-+ (id)createForIdentifier:(id)a3 withSingularSummary:(id)a4 pluralSummary:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (PKApplicationMessageGroupDescriptor)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)createForIdentifier:(id)identifier withSingularSummary:(id)summary pluralSummary:(id)pluralSummary;
+- (BOOL)isEqual:(id)equal;
+- (PKApplicationMessageGroupDescriptor)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplicationMessageGroupDescriptor
 
-+ (id)createForIdentifier:(id)a3 withSingularSummary:(id)a4 pluralSummary:(id)a5
++ (id)createForIdentifier:(id)identifier withSingularSummary:(id)summary pluralSummary:(id)pluralSummary
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  pluralSummaryCopy = pluralSummary;
+  summaryCopy = summary;
+  identifierCopy = identifier;
   v10 = [PKApplicationMessageGroupDescriptor alloc];
-  v11 = v9;
-  v12 = v8;
-  v13 = v7;
+  v11 = identifierCopy;
+  v12 = summaryCopy;
+  v13 = pluralSummaryCopy;
   v14 = v13;
   v15 = 0;
   if (v10 && v11 && v12 && v13)
@@ -45,33 +45,33 @@
   return v15;
 }
 
-- (PKApplicationMessageGroupDescriptor)initWithCoder:(id)a3
+- (PKApplicationMessageGroupDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = PKApplicationMessageGroupDescriptor;
   v5 = [(PKApplicationMessageGroupDescriptor *)&v16 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"identifier"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
     if (!v5->_identifier)
     {
       v14 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKApplicationMessageGroupDescriptor" code:0 userInfo:0];
-      [v4 failWithError:v14];
+      [coderCopy failWithError:v14];
 
       v13 = 0;
       goto LABEL_6;
     }
 
-    v9 = [v4 decodeObjectOfClass:v6 forKey:@"singular"];
+    v9 = [coderCopy decodeObjectOfClass:v6 forKey:@"singular"];
     singularSummary = v5->_singularSummary;
     v5->_singularSummary = v9;
 
-    v11 = [v4 decodeObjectOfClass:v6 forKey:@"plural"];
+    v11 = [coderCopy decodeObjectOfClass:v6 forKey:@"plural"];
     pluralSummary = v5->_pluralSummary;
     v5->_pluralSummary = v11;
   }
@@ -82,24 +82,24 @@ LABEL_6:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_singularSummary forKey:@"singular"];
-  [v5 encodeObject:self->_pluralSummary forKey:@"plural"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_singularSummary forKey:@"singular"];
+  [coderCopy encodeObject:self->_pluralSummary forKey:@"plural"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = 0;
-  if (v4 && (isKindOfClass & 1) != 0)
+  if (equalCopy && (isKindOfClass & 1) != 0)
   {
-    v7 = v4;
+    v7 = equalCopy;
     v8 = v7;
     if (self)
     {

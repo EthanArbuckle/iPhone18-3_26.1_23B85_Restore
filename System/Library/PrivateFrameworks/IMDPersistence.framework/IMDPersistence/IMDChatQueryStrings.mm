@@ -8,17 +8,17 @@
 + (NSString)copyChatsWithIdentiferAndDomain;
 + (NSString)copyChatsWithIdentifier;
 + (NSString)remapChatsWithLastAddressedSIMIDToNewLastAddressedIDsQuery;
-+ (id)allColumnsWithPrefix:(id)a3;
-+ (id)copyChatsWithUnreadMessagesWithLimit:(int64_t)a3 beforeDate:(id)a4 extraCriteria:(id)a5;
-+ (id)copyRecentChatsQueryWithFilterCount:(int)a3;
++ (id)allColumnsWithPrefix:(id)prefix;
++ (id)copyChatsWithUnreadMessagesWithLimit:(int64_t)limit beforeDate:(id)date extraCriteria:(id)criteria;
++ (id)copyRecentChatsQueryWithFilterCount:(int)count;
 - (IMDChatQueryStrings)init;
 @end
 
 @implementation IMDChatQueryStrings
 
-+ (id)allColumnsWithPrefix:(id)a3
++ (id)allColumnsWithPrefix:(id)prefix
 {
-  if (a3)
+  if (prefix)
   {
     v3 = sub_1B7CFEA60();
     v5 = v4;
@@ -39,7 +39,7 @@
 
 + (NSString)copyAllChatsQuery
 {
-  v2 = [a1 selectAllColumns];
+  selectAllColumns = [self selectAllColumns];
   sub_1B7CFEA60();
 
   MEMORY[0x1B8CADCA0](0xD000000000000018, 0x80000001B7D4EC60);
@@ -51,7 +51,7 @@
 
 + (NSString)copyAllNamedChatsQuery
 {
-  v2 = [a1 selectAllColumns];
+  selectAllColumns = [self selectAllColumns];
   sub_1B7CFEA60();
 
   MEMORY[0x1B8CADCA0](0xD00000000000004ELL, 0x80000001B7D4EC10);
@@ -77,7 +77,7 @@
 
 + (NSString)copyAllActiveChatsQuery
 {
-  v2 = [a1 selectAllColumns];
+  selectAllColumns = [self selectAllColumns];
   sub_1B7CFEA60();
 
   MEMORY[0x1B8CADCA0](0xD00000000000004ELL, 0x80000001B7D4EAD0);
@@ -105,22 +105,22 @@
   return v2;
 }
 
-+ (id)copyRecentChatsQueryWithFilterCount:(int)a3
++ (id)copyRecentChatsQueryWithFilterCount:(int)count
 {
   swift_getObjCClassMetadata();
-  sub_1B7C0EF40(a3);
+  sub_1B7C0EF40(count);
   v4 = sub_1B7CFEA30();
 
   return v4;
 }
 
-+ (id)copyChatsWithUnreadMessagesWithLimit:(int64_t)a3 beforeDate:(id)a4 extraCriteria:(id)a5
++ (id)copyChatsWithUnreadMessagesWithLimit:(int64_t)limit beforeDate:(id)date extraCriteria:(id)criteria
 {
   v8 = sub_1B7C107FC(&unk_1EBA51980, &unk_1B7D0A1B0);
   v9 = *(*(v8 - 8) + 64);
   MEMORY[0x1EEE9AC00](v8 - 8);
   v11 = &v18 - v10;
-  if (a4)
+  if (date)
   {
     sub_1B7CFE0F0();
     v12 = sub_1B7CFE120();
@@ -133,10 +133,10 @@
     (*(*(v13 - 8) + 56))(v11, 1, 1, v13);
   }
 
-  if (a5)
+  if (criteria)
   {
     v14 = sub_1B7CFEA60();
-    a5 = v15;
+    criteria = v15;
   }
 
   else
@@ -145,7 +145,7 @@
   }
 
   swift_getObjCClassMetadata();
-  sub_1B7C0F114(a3, v11, v14, a5);
+  sub_1B7C0F114(limit, v11, v14, criteria);
 
   sub_1B7C10844(v11);
   v16 = sub_1B7CFEA30();
@@ -155,7 +155,7 @@
 
 + (NSString)copyChatsWithIdentifier
 {
-  v2 = [a1 selectAllColumnsWithAlias];
+  selectAllColumnsWithAlias = [self selectAllColumnsWithAlias];
   sub_1B7CFEA60();
 
   MEMORY[0x1B8CADCA0](0xD000000000000044, 0x80000001B7D4E650);
@@ -167,7 +167,7 @@
 
 + (NSString)copyChatsWithIdentiferAndDomain
 {
-  v2 = [a1 selectAllColumnsWithAlias];
+  selectAllColumnsWithAlias = [self selectAllColumnsWithAlias];
   sub_1B7CFEA60();
 
   MEMORY[0x1B8CADCA0](0xD000000000000053, 0x80000001B7D4E5F0);

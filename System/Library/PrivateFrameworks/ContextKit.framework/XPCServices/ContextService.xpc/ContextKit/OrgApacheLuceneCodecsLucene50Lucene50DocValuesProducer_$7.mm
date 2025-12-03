@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$7
 - (id)termsEnum;
-- (int)lookupTermWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (int)lookupTermWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$7
 
-- (int)lookupTermWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (int)lookupTermWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   v5 = self->val$binary_;
   objc_opt_class();
@@ -24,14 +24,14 @@
       JreThrowClassCastException();
     }
 
-    return [(OrgApacheLuceneIndexBinaryDocValues *)v6 lookupTermWithOrgApacheLuceneUtilBytesRef:a3];
+    return [(OrgApacheLuceneIndexBinaryDocValues *)v6 lookupTermWithOrgApacheLuceneUtilBytesRef:ref];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer__7;
-    return [(OrgApacheLuceneIndexSortedDocValues *)&v8 lookupTermWithOrgApacheLuceneUtilBytesRef:a3];
+    return [(OrgApacheLuceneIndexSortedDocValues *)&v8 lookupTermWithOrgApacheLuceneUtilBytesRef:ref];
   }
 }
 

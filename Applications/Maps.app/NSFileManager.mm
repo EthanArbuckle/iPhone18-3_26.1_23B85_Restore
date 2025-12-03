@@ -1,5 +1,5 @@
 @interface NSFileManager
-+ (BOOL)emptyContentsOfDirectoryAtURL:(id)a3 error:(id *)a4;
++ (BOOL)emptyContentsOfDirectoryAtURL:(id)l error:(id *)error;
 + (id)_maps_globalCachesURL;
 @end
 
@@ -76,12 +76,12 @@ LABEL_15:
   return v3;
 }
 
-+ (BOOL)emptyContentsOfDirectoryAtURL:(id)a3 error:(id *)a4
++ (BOOL)emptyContentsOfDirectoryAtURL:(id)l error:(id *)error
 {
-  v18 = a4;
-  v4 = a3;
+  errorCopy = error;
+  lCopy = l;
   v5 = +[NSFileManager defaultManager];
-  v6 = [v5 enumeratorAtURL:v4 includingPropertiesForKeys:0 options:0 errorHandler:0];
+  v6 = [v5 enumeratorAtURL:lCopy includingPropertiesForKeys:0 options:0 errorHandler:0];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -103,7 +103,7 @@ LABEL_15:
 
         v12 = *(*(&v20 + 1) + 8 * i);
         v19 = 0;
-        [v5 removeItemAtURL:v12 error:{&v19, v18}];
+        [v5 removeItemAtURL:v12 error:{&v19, errorCopy}];
         v13 = v19;
         if (v13)
         {
@@ -127,7 +127,7 @@ LABEL_15:
     v9 = 0;
   }
 
-  if (v18 && [v9 count])
+  if (errorCopy && [v9 count])
   {
     v24[0] = @"mapsPartialErrorsByFileURL";
     v14 = [v9 copy];
@@ -135,7 +135,7 @@ LABEL_15:
     v25[0] = v14;
     v25[1] = @"Could not successfully delete all the files in the directory";
     v15 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:2];
-    *v18 = [NSError errorWithDomain:NSCocoaErrorDomain code:512 userInfo:v15];
+    *errorCopy = [NSError errorWithDomain:NSCocoaErrorDomain code:512 userInfo:v15];
   }
 
   v16 = [v9 count] == 0;

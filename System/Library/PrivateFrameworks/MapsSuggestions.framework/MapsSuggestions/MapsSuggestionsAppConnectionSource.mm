@@ -1,8 +1,8 @@
 @interface MapsSuggestionsAppConnectionSource
-- (MapsSuggestionsAppConnectionSource)initWithPortrait:(id)a3 delegate:(id)a4 guardian:(id)a5 name:(id)a6;
-- (double)updateSuggestionEntriesWithHandler:(id)a3;
-- (id)initFromResourceDepot:(id)a3 name:(id)a4;
-- (void)feedbackForEntry:(id)a3 action:(int64_t)a4;
+- (MapsSuggestionsAppConnectionSource)initWithPortrait:(id)portrait delegate:(id)delegate guardian:(id)guardian name:(id)name;
+- (double)updateSuggestionEntriesWithHandler:(id)handler;
+- (id)initFromResourceDepot:(id)depot name:(id)name;
+- (void)feedbackForEntry:(id)entry action:(int64_t)action;
 - (void)start;
 - (void)stop;
 @end
@@ -19,14 +19,14 @@
   }
 }
 
-- (MapsSuggestionsAppConnectionSource)initWithPortrait:(id)a3 delegate:(id)a4 guardian:(id)a5 name:(id)a6
+- (MapsSuggestionsAppConnectionSource)initWithPortrait:(id)portrait delegate:(id)delegate guardian:(id)guardian name:(id)name
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v11)
+  portraitCopy = portrait;
+  delegateCopy = delegate;
+  guardianCopy = guardian;
+  nameCopy = name;
+  v15 = nameCopy;
+  if (!portraitCopy)
   {
     v21 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
@@ -48,7 +48,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v12)
+  if (!delegateCopy)
   {
     v21 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
@@ -68,7 +68,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v14)
+  if (!nameCopy)
   {
     v21 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
@@ -87,13 +87,13 @@ LABEL_13:
 
 LABEL_14:
 
-    v20 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
   v24.receiver = self;
   v24.super_class = MapsSuggestionsAppConnectionSource;
-  v16 = [(MapsSuggestionsAppConnectionSource *)&v24 initWithDelegate:v12 name:v14];
+  v16 = [(MapsSuggestionsAppConnectionSource *)&v24 initWithDelegate:delegateCopy name:nameCopy];
   if (v16)
   {
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -101,22 +101,22 @@ LABEL_14:
     appConnectionUpdateQueue = v16->_appConnectionUpdateQueue;
     v16->_appConnectionUpdateQueue = v18;
 
-    objc_storeStrong(&v16->_portrait, a3);
-    objc_storeStrong(&v16->_guardian, a5);
+    objc_storeStrong(&v16->_portrait, portrait);
+    objc_storeStrong(&v16->_guardian, guardian);
   }
 
   self = v16;
-  v20 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v20;
+  return selfCopy;
 }
 
-- (id)initFromResourceDepot:(id)a3 name:(id)a4
+- (id)initFromResourceDepot:(id)depot name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  depotCopy = depot;
+  nameCopy = name;
+  if (!depotCopy)
   {
     v14 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -138,9 +138,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v8 = [v6 oneSourceDelegate];
+  oneSourceDelegate = [depotCopy oneSourceDelegate];
 
-  if (!v8)
+  if (!oneSourceDelegate)
   {
     v14 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -160,9 +160,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v9 = [v6 onePortrait];
+  onePortrait = [depotCopy onePortrait];
 
-  if (!v9)
+  if (!onePortrait)
   {
     v14 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -181,19 +181,19 @@ LABEL_11:
 
 LABEL_12:
 
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
-  v10 = [v6 onePortrait];
-  v11 = [v6 oneSourceDelegate];
-  v12 = [v6 oneAppGuardian];
-  self = [(MapsSuggestionsAppConnectionSource *)self initWithPortrait:v10 delegate:v11 guardian:v12 name:v7];
+  onePortrait2 = [depotCopy onePortrait];
+  oneSourceDelegate2 = [depotCopy oneSourceDelegate];
+  oneAppGuardian = [depotCopy oneAppGuardian];
+  self = [(MapsSuggestionsAppConnectionSource *)self initWithPortrait:onePortrait2 delegate:oneSourceDelegate2 guardian:oneAppGuardian name:nameCopy];
 
-  v13 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v13;
+  return selfCopy;
 }
 
 - (void)stop
@@ -207,15 +207,15 @@ LABEL_13:
   }
 }
 
-- (double)updateSuggestionEntriesWithHandler:(id)a3
+- (double)updateSuggestionEntriesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsAppConnectionSource *)self uniqueName];
+    uniqueName = [(MapsSuggestionsAppConnectionSource *)self uniqueName];
     *buf = 138412546;
-    v17 = v6;
+    v17 = uniqueName;
     v18 = 2080;
     v19 = "updateSuggestionEntriesWithHandler";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -235,7 +235,7 @@ LABEL_13:
   v13[2] = sub_100040480;
   v13[3] = &unk_100075B88;
   objc_copyWeak(&v15, buf);
-  v9 = v4;
+  v9 = handlerCopy;
   v14 = v9;
   dispatch_async(appConnectionUpdateQueue, v13);
   GEOConfigGetDouble();
@@ -247,10 +247,10 @@ LABEL_13:
   return v11;
 }
 
-- (void)feedbackForEntry:(id)a3 action:(int64_t)a4
+- (void)feedbackForEntry:(id)entry action:(int64_t)action
 {
-  v6 = a3;
-  if (!v6)
+  entryCopy = entry;
+  if (!entryCopy)
   {
     v8 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -271,13 +271,13 @@ LABEL_13:
 
   if (+[MapsSuggestionsSiri isEnabled])
   {
-    v7 = [v6 stringForKey:@"MapsSuggestionsAppConnectionIdentifierKey"];
+    v7 = [entryCopy stringForKey:@"MapsSuggestionsAppConnectionIdentifierKey"];
     v8 = v7;
     if (v7)
     {
-      if (a4 > 1)
+      if (action > 1)
       {
-        if ((a4 - 2) < 3)
+        if ((action - 2) < 3)
         {
           portrait = self->_portrait;
           v24 = v7;
@@ -290,7 +290,7 @@ LABEL_21:
           goto LABEL_22;
         }
 
-        if (a4 == 5)
+        if (action == 5)
         {
           v21 = self->_portrait;
           v23 = v7;
@@ -301,7 +301,7 @@ LABEL_21:
           goto LABEL_21;
         }
 
-        if (a4 != 6)
+        if (action != 6)
         {
           goto LABEL_19;
         }
@@ -311,9 +311,9 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      if (a4)
+      if (action)
       {
-        if (a4 == 1)
+        if (action == 1)
         {
           v19 = self->_portrait;
           v22 = v7;

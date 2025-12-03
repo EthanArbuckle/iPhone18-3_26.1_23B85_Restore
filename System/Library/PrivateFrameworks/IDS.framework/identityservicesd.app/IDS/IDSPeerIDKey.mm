@@ -1,85 +1,85 @@
 @interface IDSPeerIDKey
-+ (id)peerIDKeyWithService:(id)a3 fromURI:(id)a4 toURI:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (IDSPeerIDKey)initWithCoder:(id)a3;
-- (IDSPeerIDKey)initWithService:(id)a3 fromURI:(id)a4 toURI:(id)a5;
++ (id)peerIDKeyWithService:(id)service fromURI:(id)i toURI:(id)rI;
+- (BOOL)isEqual:(id)equal;
+- (IDSPeerIDKey)initWithCoder:(id)coder;
+- (IDSPeerIDKey)initWithService:(id)service fromURI:(id)i toURI:(id)rI;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSPeerIDKey
 
 - (unint64_t)hash
 {
-  v3 = [(IDSPeerIDKey *)self service];
-  v4 = [v3 hash];
-  v5 = [(IDSPeerIDKey *)self fromURI];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(IDSPeerIDKey *)self toURI];
-  v8 = [v7 hash];
+  service = [(IDSPeerIDKey *)self service];
+  v4 = [service hash];
+  fromURI = [(IDSPeerIDKey *)self fromURI];
+  v6 = [fromURI hash] ^ v4;
+  toURI = [(IDSPeerIDKey *)self toURI];
+  v8 = [toURI hash];
 
   return v6 ^ v8;
 }
 
-+ (id)peerIDKeyWithService:(id)a3 fromURI:(id)a4 toURI:(id)a5
++ (id)peerIDKeyWithService:(id)service fromURI:(id)i toURI:(id)rI
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithService:v10 fromURI:v9 toURI:v8];
+  rICopy = rI;
+  iCopy = i;
+  serviceCopy = service;
+  v11 = [[self alloc] initWithService:serviceCopy fromURI:iCopy toURI:rICopy];
 
   return v11;
 }
 
-- (IDSPeerIDKey)initWithService:(id)a3 fromURI:(id)a4 toURI:(id)a5
+- (IDSPeerIDKey)initWithService:(id)service fromURI:(id)i toURI:(id)rI
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  v12 = 0;
-  if (v8 && v9 && v10)
+  serviceCopy = service;
+  iCopy = i;
+  rICopy = rI;
+  v11 = rICopy;
+  selfCopy = 0;
+  if (serviceCopy && iCopy && rICopy)
   {
     v17.receiver = self;
     v17.super_class = IDSPeerIDKey;
     v13 = [(IDSPeerIDKey *)&v17 init];
     if (v13)
     {
-      v14 = [v8 copy];
+      v14 = [serviceCopy copy];
       service = v13->_service;
       v13->_service = v14;
 
-      objc_storeStrong(&v13->_fromURI, a4);
-      objc_storeStrong(&v13->_toURI, a5);
-      v13->_hasMatchingURIs = [v9 isEqualToURI:v11];
+      objc_storeStrong(&v13->_fromURI, i);
+      objc_storeStrong(&v13->_toURI, rI);
+      v13->_hasMatchingURIs = [iCopy isEqualToURI:v11];
     }
 
     self = v13;
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 service];
-    v7 = [(IDSPeerIDKey *)self service];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    service = [v5 service];
+    service2 = [(IDSPeerIDKey *)self service];
+    if ([service isEqualToString:service2])
     {
-      v8 = [v5 fromURI];
-      v9 = [(IDSPeerIDKey *)self fromURI];
-      if ([v8 isEqual:v9])
+      fromURI = [v5 fromURI];
+      fromURI2 = [(IDSPeerIDKey *)self fromURI];
+      if ([fromURI isEqual:fromURI2])
       {
-        v10 = [v5 toURI];
-        v11 = [(IDSPeerIDKey *)self toURI];
-        v12 = [v10 isEqual:v11];
+        toURI = [v5 toURI];
+        toURI2 = [(IDSPeerIDKey *)self toURI];
+        v12 = [toURI isEqual:toURI2];
       }
 
       else
@@ -104,36 +104,36 @@
 
 - (id)description
 {
-  v3 = [(IDSPeerIDKey *)self service];
-  v4 = [(IDSPeerIDKey *)self fromURI];
-  v5 = [(IDSPeerIDKey *)self toURI];
-  v6 = [NSString stringWithFormat:@"<service:%@, from:%@, to:%@>", v3, v4, v5];
+  service = [(IDSPeerIDKey *)self service];
+  fromURI = [(IDSPeerIDKey *)self fromURI];
+  toURI = [(IDSPeerIDKey *)self toURI];
+  v6 = [NSString stringWithFormat:@"<service:%@, from:%@, to:%@>", service, fromURI, toURI];
 
   return v6;
 }
 
-- (IDSPeerIDKey)initWithCoder:(id)a3
+- (IDSPeerIDKey)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"service"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fromURI"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"toURI"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"service"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fromURI"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"toURI"];
 
   v8 = [(IDSPeerIDKey *)self initWithService:v5 fromURI:v6 toURI:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IDSPeerIDKey *)self service];
-  [v4 encodeObject:v5 forKey:@"service"];
+  coderCopy = coder;
+  service = [(IDSPeerIDKey *)self service];
+  [coderCopy encodeObject:service forKey:@"service"];
 
-  v6 = [(IDSPeerIDKey *)self fromURI];
-  [v4 encodeObject:v6 forKey:@"fromURI"];
+  fromURI = [(IDSPeerIDKey *)self fromURI];
+  [coderCopy encodeObject:fromURI forKey:@"fromURI"];
 
-  v7 = [(IDSPeerIDKey *)self toURI];
-  [v4 encodeObject:v7 forKey:@"toURI"];
+  toURI = [(IDSPeerIDKey *)self toURI];
+  [coderCopy encodeObject:toURI forKey:@"toURI"];
 }
 
 @end

@@ -1,79 +1,79 @@
 @interface _UIUpdateLinkTrackingWindow
-- (void)_switchWindowFrom:(void *)a3 to:;
-- (void)_windowSceneDidChange:(id)a3;
-- (void)_windowSceneWillChange:(id)a3;
-- (void)_windowVisibilityChanged:(id)a3;
+- (void)_switchWindowFrom:(void *)from to:;
+- (void)_windowSceneDidChange:(id)change;
+- (void)_windowSceneWillChange:(id)change;
+- (void)_windowVisibilityChanged:(id)changed;
 @end
 
 @implementation _UIUpdateLinkTrackingWindow
 
-- (void)_switchWindowFrom:(void *)a3 to:
+- (void)_switchWindowFrom:(void *)from to:
 {
-  if (a1 && *(a1 + 80) != a3)
+  if (self && *(self + 80) != from)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     if (a2)
     {
-      [v6 removeObserver:a1 name:@"UIWindowDidBecomeVisibleNotification" object:a2];
-      [v6 removeObserver:a1 name:@"UIWindowDidBecomeHiddenNotification" object:a2];
-      [v6 removeObserver:a1 name:@"_UIWindowWillMoveToNilSceneNotification" object:a2];
-      [v6 removeObserver:a1 name:@"_UIWindowWillMoveToSceneNotification" object:a2];
-      [v6 removeObserver:a1 name:@"_UIWindowDidMoveToSceneNotification" object:a2];
+      [defaultCenter removeObserver:self name:@"UIWindowDidBecomeVisibleNotification" object:a2];
+      [defaultCenter removeObserver:self name:@"UIWindowDidBecomeHiddenNotification" object:a2];
+      [defaultCenter removeObserver:self name:@"_UIWindowWillMoveToNilSceneNotification" object:a2];
+      [defaultCenter removeObserver:self name:@"_UIWindowWillMoveToSceneNotification" object:a2];
+      [defaultCenter removeObserver:self name:@"_UIWindowDidMoveToSceneNotification" object:a2];
     }
 
-    if (a3)
+    if (from)
     {
-      [v6 addObserver:a1 selector:sel__windowVisibilityChanged_ name:@"UIWindowDidBecomeVisibleNotification" object:a3];
-      [v6 addObserver:a1 selector:sel__windowVisibilityChanged_ name:@"UIWindowDidBecomeHiddenNotification" object:a3];
-      [v6 addObserver:a1 selector:sel__windowSceneWillChange_ name:@"_UIWindowWillMoveToNilSceneNotification" object:a3];
-      [v6 addObserver:a1 selector:sel__windowSceneWillChange_ name:@"_UIWindowWillMoveToSceneNotification" object:a3];
-      [v6 addObserver:a1 selector:sel__windowSceneDidChange_ name:@"_UIWindowDidMoveToSceneNotification" object:a3];
+      [defaultCenter addObserver:self selector:sel__windowVisibilityChanged_ name:@"UIWindowDidBecomeVisibleNotification" object:from];
+      [defaultCenter addObserver:self selector:sel__windowVisibilityChanged_ name:@"UIWindowDidBecomeHiddenNotification" object:from];
+      [defaultCenter addObserver:self selector:sel__windowSceneWillChange_ name:@"_UIWindowWillMoveToNilSceneNotification" object:from];
+      [defaultCenter addObserver:self selector:sel__windowSceneWillChange_ name:@"_UIWindowWillMoveToSceneNotification" object:from];
+      [defaultCenter addObserver:self selector:sel__windowSceneDidChange_ name:@"_UIWindowDidMoveToSceneNotification" object:from];
     }
 
-    *(a1 + 72) = [a3 _isVisible];
-    *(a1 + 80) = a3;
+    *(self + 72) = [from _isVisible];
+    *(self + 80) = from;
   }
 }
 
-- (void)_windowVisibilityChanged:(id)a3
+- (void)_windowVisibilityChanged:(id)changed
 {
-  v5 = [a3 object];
-  self->_windowVisible = [v5 _isVisible];
-  v4 = [(_UIUpdateLinkTrackingWindow *)self _canEngage];
-  if (self->super.super.super._engaged != v4)
+  object = [changed object];
+  self->_windowVisible = [object _isVisible];
+  _canEngage = [(_UIUpdateLinkTrackingWindow *)self _canEngage];
+  if (self->super.super.super._engaged != _canEngage)
   {
-    self->super.super.super._engaged = v4;
+    self->super.super.super._engaged = _canEngage;
     [(UIUpdateLink *)self _setActive:?];
   }
 }
 
-- (void)_windowSceneWillChange:(id)a3
+- (void)_windowSceneWillChange:(id)change
 {
-  v6 = [a3 object];
-  v4 = [v6 _windowHostingScene];
-  [(_UIUpdateLinkTrackingScene *)self _switchSceneFrom:v4 to:0];
+  object = [change object];
+  _windowHostingScene = [object _windowHostingScene];
+  [(_UIUpdateLinkTrackingScene *)self _switchSceneFrom:_windowHostingScene to:0];
   if (self)
   {
-    v5 = [(_UIUpdateLinkTrackingWindow *)self _canEngage];
-    if (self->super.super.super._engaged != v5)
+    _canEngage = [(_UIUpdateLinkTrackingWindow *)self _canEngage];
+    if (self->super.super.super._engaged != _canEngage)
     {
-      self->super.super.super._engaged = v5;
+      self->super.super.super._engaged = _canEngage;
       [(UIUpdateLink *)self _setActive:?];
     }
   }
 }
 
-- (void)_windowSceneDidChange:(id)a3
+- (void)_windowSceneDidChange:(id)change
 {
-  v6 = [a3 object];
-  v4 = [v6 _windowHostingScene];
-  [(_UIUpdateLinkTrackingScene *)self _switchSceneFrom:v4 to:?];
+  object = [change object];
+  _windowHostingScene = [object _windowHostingScene];
+  [(_UIUpdateLinkTrackingScene *)self _switchSceneFrom:_windowHostingScene to:?];
   if (self)
   {
-    v5 = [(_UIUpdateLinkTrackingWindow *)self _canEngage];
-    if (self->super.super.super._engaged != v5)
+    _canEngage = [(_UIUpdateLinkTrackingWindow *)self _canEngage];
+    if (self->super.super.super._engaged != _canEngage)
     {
-      self->super.super.super._engaged = v5;
+      self->super.super.super._engaged = _canEngage;
       [(UIUpdateLink *)self _setActive:?];
     }
   }

@@ -1,18 +1,18 @@
 @interface SFDefaultBrowserPromptController
 + (SFDefaultBrowserPromptController)sharedController;
-+ (id)_directoryURLWithKey:(id)a3;
-+ (id)_fileURLWithKey:(id)a3;
-- (BOOL)_didStorePlistWithDictionary:(id)a3 fileNameKey:(id)a4 shouldExcludeFromBackup:(BOOL)a5;
++ (id)_directoryURLWithKey:(id)key;
++ (id)_fileURLWithKey:(id)key;
+- (BOOL)_didStorePlistWithDictionary:(id)dictionary fileNameKey:(id)key shouldExcludeFromBackup:(BOOL)backup;
 - (BOOL)_hasPerformedPromptCheck;
 - (BOOL)didCompleteBrowserSheet;
 - (BOOL)hasShownBrowserChoiceScreenOnOtherDevices;
 - (BOOL)shouldPerformPromptCheck;
 - (SFDefaultBrowserPromptController)init;
-- (id)browserIconReplacementAlertController:(id)a3 browserLocalizedName:(id)a4 completionHandler:(id)a5;
-- (id)visualStyleForAlertControllerStyle:(int64_t)a3 traitCollection:(id)a4 descriptor:(id)a5;
+- (id)browserIconReplacementAlertController:(id)controller browserLocalizedName:(id)name completionHandler:(id)handler;
+- (id)visualStyleForAlertControllerStyle:(int64_t)style traitCollection:(id)collection descriptor:(id)descriptor;
 - (void)_connectToService;
-- (void)determineIfBrowserSheetNeedsDisplayWithCompletionHandler:(id)a3;
-- (void)serviceProxyWillQueueInvocation:(id)a3;
+- (void)determineIfBrowserSheetNeedsDisplayWithCompletionHandler:(id)handler;
+- (void)serviceProxyWillQueueInvocation:(id)invocation;
 @end
 
 @implementation SFDefaultBrowserPromptController
@@ -58,11 +58,11 @@ void __52__SFDefaultBrowserPromptController_sharedController__block_invoke()
 {
   if (+[_SFFeatureAvailability isBrowserSelectionSheetEligible])
   {
-    v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v4 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v5 = [v4 isOnDeviceAppInstallationAllowed];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    mEMORY[0x1E69ADFB8]2 = [MEMORY[0x1E69ADFB8] sharedConnection];
+    isOnDeviceAppInstallationAllowed = [mEMORY[0x1E69ADFB8]2 isOnDeviceAppInstallationAllowed];
 
-    if (v5 && ((objc_opt_respondsToSelector() & 1) == 0 || [v3 isDefaultBrowserPromptingAllowed]))
+    if (isOnDeviceAppInstallationAllowed && ((objc_opt_respondsToSelector() & 1) == 0 || [mEMORY[0x1E69ADFB8] isDefaultBrowserPromptingAllowed]))
     {
       v6 = ![(SFDefaultBrowserPromptController *)self _hasPerformedPromptCheck];
     }
@@ -90,16 +90,16 @@ void __52__SFDefaultBrowserPromptController_sharedController__block_invoke()
   return v4;
 }
 
-- (void)determineIfBrowserSheetNeedsDisplayWithCompletionHandler:(id)a3
+- (void)determineIfBrowserSheetNeedsDisplayWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   serviceProxy = self->_serviceProxy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __93__SFDefaultBrowserPromptController_determineIfBrowserSheetNeedsDisplayWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E848FA50;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(SFDefaultBrowserPromptServiceProtocol *)serviceProxy determineIfBrowserSheetNeedsDisplayWithCompletionHandler:v7];
 }
 
@@ -119,13 +119,13 @@ void __52__SFDefaultBrowserPromptController_sharedController__block_invoke()
   return v4 & self;
 }
 
-- (id)browserIconReplacementAlertController:(id)a3 browserLocalizedName:(id)a4 completionHandler:(id)a5
+- (id)browserIconReplacementAlertController:(id)controller browserLocalizedName:(id)name completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  nameCopy = name;
+  handlerCopy = handler;
   v11 = *MEMORY[0x1E69C8DA8];
-  if ([v8 isEqualToString:*MEMORY[0x1E69C8DA8]])
+  if ([controllerCopy isEqualToString:*MEMORY[0x1E69C8DA8]])
   {
     v12 = 0;
   }
@@ -151,15 +151,15 @@ void __52__SFDefaultBrowserPromptController_sharedController__block_invoke()
     v14 = v13;
     _Block_object_dispose(&v36, 8);
     v15 = objc_alloc_init(v13);
-    if ([v15 canSwapApplicationIconsInProminentPositionsWithBundleIdentifier:v11 withApplicationIconsWithWithBundleIdentifier:v8])
+    if ([v15 canSwapApplicationIconsInProminentPositionsWithBundleIdentifier:v11 withApplicationIconsWithWithBundleIdentifier:controllerCopy])
     {
       v16 = _WBSLocalizedString();
       _SFDeviceIsPad();
       v17 = MEMORY[0x1E696AEC0];
       v18 = _WBSLocalizedString();
-      v28 = [v17 stringWithFormat:v18, v9];
+      nameCopy = [v17 stringWithFormat:v18, nameCopy];
 
-      v12 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v16 message:v28 preferredStyle:1];
+      v12 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v16 message:nameCopy preferredStyle:1];
       [v12 _setStyleProvider:self];
       v19 = MEMORY[0x1E69DC648];
       _WBSLocalizedString();
@@ -169,8 +169,8 @@ void __52__SFDefaultBrowserPromptController_sharedController__block_invoke()
       v31[2] = __113__SFDefaultBrowserPromptController_browserIconReplacementAlertController_browserLocalizedName_completionHandler___block_invoke;
       v31[3] = &unk_1E8492E10;
       v32 = v15;
-      v33 = v8;
-      v21 = v10;
+      v33 = controllerCopy;
+      v21 = handlerCopy;
       v34 = v21;
       v22 = [v19 actionWithTitle:v20 style:0 handler:v31];
 
@@ -205,15 +205,15 @@ uint64_t __113__SFDefaultBrowserPromptController_browserIconReplacementAlertCont
   return v2();
 }
 
-+ (id)_directoryURLWithKey:(id)a3
++ (id)_directoryURLWithKey:(id)key
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 safari_mobileSafariGroupContainerDirectoryURL];
-  v6 = [v5 URLByAppendingPathComponent:@"Library" isDirectory:1];
+  keyCopy = key;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  safari_mobileSafariGroupContainerDirectoryURL = [defaultManager safari_mobileSafariGroupContainerDirectoryURL];
+  v6 = [safari_mobileSafariGroupContainerDirectoryURL URLByAppendingPathComponent:@"Library" isDirectory:1];
 
   v7 = [v6 URLByAppendingPathComponent:@"DefaultBrowserSelection" isDirectory:1];
-  if ([v3 isEqualToString:@"DefaultBrowserPromptVersion"])
+  if ([keyCopy isEqualToString:@"DefaultBrowserPromptVersion"])
   {
     v8 = @"ExcludedFromBackup";
 LABEL_5:
@@ -221,7 +221,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"DefaultBrowserShownOnOtherDevices"])
+  if ([keyCopy isEqualToString:@"DefaultBrowserShownOnOtherDevices"])
   {
     v8 = @"RestoredFromBackup";
     goto LABEL_5;
@@ -234,20 +234,20 @@ LABEL_7:
   return v10;
 }
 
-+ (id)_fileURLWithKey:(id)a3
++ (id)_fileURLWithKey:(id)key
 {
-  v3 = a3;
-  v4 = [SFDefaultBrowserPromptController _directoryURLWithKey:v3];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.plist", v3];
+  keyCopy = key;
+  v4 = [SFDefaultBrowserPromptController _directoryURLWithKey:keyCopy];
+  keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.plist", keyCopy];
 
-  v6 = [v4 URLByAppendingPathComponent:v5 isDirectory:0];
+  v6 = [v4 URLByAppendingPathComponent:keyCopy isDirectory:0];
 
   return v6;
 }
 
 - (void)_connectToService
 {
-  v3 = [(_UIAsyncInvocation *)self->_cancelViewServiceRequest invoke];
+  invoke = [(_UIAsyncInvocation *)self->_cancelViewServiceRequest invoke];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__SFDefaultBrowserPromptController__connectToService__block_invoke;
@@ -293,22 +293,22 @@ void __53__SFDefaultBrowserPromptController__connectToService__block_invoke(uint
   return v5;
 }
 
-- (BOOL)_didStorePlistWithDictionary:(id)a3 fileNameKey:(id)a4 shouldExcludeFromBackup:(BOOL)a5
+- (BOOL)_didStorePlistWithDictionary:(id)dictionary fileNameKey:(id)key shouldExcludeFromBackup:(BOOL)backup
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = [SFDefaultBrowserPromptController _directoryURLWithKey:v8];
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
+  backupCopy = backup;
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  v9 = [SFDefaultBrowserPromptController _directoryURLWithKey:keyCopy];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v22 = 0;
-  v11 = [v10 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:&v22];
+  v11 = [defaultManager createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:&v22];
   v12 = v22;
 
   if (v11)
   {
-    v13 = [SFDefaultBrowserPromptController _fileURLWithKey:v8];
-    v14 = [v7 writeToURL:v13 atomically:0];
-    if (v14 && v5)
+    v13 = [SFDefaultBrowserPromptController _fileURLWithKey:keyCopy];
+    v14 = [dictionaryCopy writeToURL:v13 atomically:0];
+    if (v14 && backupCopy)
     {
       v15 = *MEMORY[0x1E695DB80];
       v21 = v12;
@@ -325,7 +325,7 @@ void __53__SFDefaultBrowserPromptController__connectToService__block_invoke(uint
         v19 = WBS_LOG_CHANNEL_PREFIXBrowserChoiceScreen();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
-          [SFDefaultBrowserPromptController _didStorePlistWithDictionary:v8 fileNameKey:v19 shouldExcludeFromBackup:v17];
+          [SFDefaultBrowserPromptController _didStorePlistWithDictionary:keyCopy fileNameKey:v19 shouldExcludeFromBackup:v17];
         }
 
         LOBYTE(v14) = 0;
@@ -354,7 +354,7 @@ void __53__SFDefaultBrowserPromptController__connectToService__block_invoke(uint
   return v14;
 }
 
-- (void)serviceProxyWillQueueInvocation:(id)a3
+- (void)serviceProxyWillQueueInvocation:(id)invocation
 {
   if (!self->_cancelViewServiceRequest)
   {
@@ -362,11 +362,11 @@ void __53__SFDefaultBrowserPromptController__connectToService__block_invoke(uint
   }
 }
 
-- (id)visualStyleForAlertControllerStyle:(int64_t)a3 traitCollection:(id)a4 descriptor:(id)a5
+- (id)visualStyleForAlertControllerStyle:(int64_t)style traitCollection:(id)collection descriptor:(id)descriptor
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3 == 1)
+  collectionCopy = collection;
+  descriptorCopy = descriptor;
+  if (style == 1)
   {
     visualStyle = self->_visualStyle;
     if (!visualStyle)

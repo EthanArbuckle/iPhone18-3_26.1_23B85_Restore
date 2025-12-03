@@ -1,14 +1,14 @@
 @interface CDUserDefaultsDidFinishAuthRequest
-- (CDUserDefaultsDidFinishAuthRequest)initWithRapportDictionary:(id)a3;
+- (CDUserDefaultsDidFinishAuthRequest)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDUserDefaultsDidFinishAuthRequest
 
-- (CDUserDefaultsDidFinishAuthRequest)initWithRapportDictionary:(id)a3
+- (CDUserDefaultsDidFinishAuthRequest)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = CDUserDefaultsDidFinishAuthRequest;
   v5 = [(CDUserDefaultsDidFinishAuthRequest *)&v25 init];
@@ -28,7 +28,7 @@
     v5->_deviceName = v9;
 
     v11 = objc_opt_self();
-    v12 = v4;
+    v12 = dictionaryCopy;
     v13 = [NSSet setWithObject:v11];
     v14 = sub_100017500(v12, @"authError", v13);
 
@@ -81,9 +81,9 @@
   [v3 appendString:v6 withName:@"error" skipIfEmpty:1];
 
   v7 = [v3 appendObject:self->_values withName:@"values"];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 @end

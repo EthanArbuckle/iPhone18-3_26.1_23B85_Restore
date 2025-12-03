@@ -1,27 +1,27 @@
 @interface HKQuerySubscriptionAnchor
-- (BOOL)isEqual:(id)a3;
-- (HKQuerySubscriptionAnchor)initWithCoder:(id)a3;
-- (HKQuerySubscriptionAnchor)initWithDataAnchor:(id)a3 associationAnchor:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HKQuerySubscriptionAnchor)initWithCoder:(id)coder;
+- (HKQuerySubscriptionAnchor)initWithDataAnchor:(id)anchor associationAnchor:(id)associationAnchor;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKQuerySubscriptionAnchor
 
-- (HKQuerySubscriptionAnchor)initWithDataAnchor:(id)a3 associationAnchor:(id)a4
+- (HKQuerySubscriptionAnchor)initWithDataAnchor:(id)anchor associationAnchor:(id)associationAnchor
 {
-  v6 = a3;
-  v7 = a4;
+  anchorCopy = anchor;
+  associationAnchorCopy = associationAnchor;
   v14.receiver = self;
   v14.super_class = HKQuerySubscriptionAnchor;
   v8 = [(HKQuerySubscriptionAnchor *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [anchorCopy copy];
     dataAnchor = v8->_dataAnchor;
     v8->_dataAnchor = v9;
 
-    v11 = [v7 copy];
+    v11 = [associationAnchorCopy copy];
     associationAnchor = v8->_associationAnchor;
     v8->_associationAnchor = v11;
   }
@@ -39,10 +39,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -52,16 +52,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = equalCopy;
       dataAnchor = self->_dataAnchor;
-      v9 = [(HKQuerySubscriptionAnchor *)v7 dataAnchor];
-      if (dataAnchor == v9)
+      dataAnchor = [(HKQuerySubscriptionAnchor *)v7 dataAnchor];
+      if (dataAnchor == dataAnchor)
       {
         goto LABEL_9;
       }
 
-      v10 = [(HKQuerySubscriptionAnchor *)v7 dataAnchor];
-      if (!v10)
+      dataAnchor2 = [(HKQuerySubscriptionAnchor *)v7 dataAnchor];
+      if (!dataAnchor2)
       {
         v12 = 0;
 LABEL_17:
@@ -69,16 +69,16 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v3 = v10;
+      v3 = dataAnchor2;
       v11 = self->_dataAnchor;
-      v4 = [(HKQuerySubscriptionAnchor *)v7 dataAnchor];
-      if ([(NSNumber *)v11 isEqual:v4])
+      dataAnchor3 = [(HKQuerySubscriptionAnchor *)v7 dataAnchor];
+      if ([(NSNumber *)v11 isEqual:dataAnchor3])
       {
 LABEL_9:
         associationAnchor = self->_associationAnchor;
-        v14 = [(HKQuerySubscriptionAnchor *)v7 associationAnchor];
-        v15 = v14;
-        if (associationAnchor == v14)
+        associationAnchor = [(HKQuerySubscriptionAnchor *)v7 associationAnchor];
+        v15 = associationAnchor;
+        if (associationAnchor == associationAnchor)
         {
 
           v12 = 1;
@@ -86,13 +86,13 @@ LABEL_9:
 
         else
         {
-          v16 = [(HKQuerySubscriptionAnchor *)v7 associationAnchor];
-          if (v16)
+          associationAnchor2 = [(HKQuerySubscriptionAnchor *)v7 associationAnchor];
+          if (associationAnchor2)
           {
-            v17 = v16;
+            v17 = associationAnchor2;
             v18 = self->_associationAnchor;
-            v19 = [(HKQuerySubscriptionAnchor *)v7 associationAnchor];
-            v12 = [(NSNumber *)v18 isEqual:v19];
+            associationAnchor3 = [(HKQuerySubscriptionAnchor *)v7 associationAnchor];
+            v12 = [(NSNumber *)v18 isEqual:associationAnchor3];
           }
 
           else
@@ -102,7 +102,7 @@ LABEL_9:
           }
         }
 
-        if (dataAnchor == v9)
+        if (dataAnchor == dataAnchor)
         {
           goto LABEL_17;
         }
@@ -124,19 +124,19 @@ LABEL_18:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dataAnchor = self->_dataAnchor;
-  v5 = a3;
-  [v5 encodeObject:dataAnchor forKey:@"DataAnchor"];
-  [v5 encodeObject:self->_associationAnchor forKey:@"AssociationAnchor"];
+  coderCopy = coder;
+  [coderCopy encodeObject:dataAnchor forKey:@"DataAnchor"];
+  [coderCopy encodeObject:self->_associationAnchor forKey:@"AssociationAnchor"];
 }
 
-- (HKQuerySubscriptionAnchor)initWithCoder:(id)a3
+- (HKQuerySubscriptionAnchor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DataAnchor"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AssociationAnchor"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DataAnchor"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AssociationAnchor"];
 
   v7 = [(HKQuerySubscriptionAnchor *)self initWithDataAnchor:v5 associationAnchor:v6];
   return v7;

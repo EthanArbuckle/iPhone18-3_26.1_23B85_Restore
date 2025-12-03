@@ -8,8 +8,8 @@
 {
   v2 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
-  v4 = [a1 name];
-  v5 = [v2 stringWithFormat:@"<%@:%p, name: %@>", v3, a1, v4];
+  name = [self name];
+  v5 = [v2 stringWithFormat:@"<%@:%p, name: %@>", v3, self, name];
 
   return v5;
 }

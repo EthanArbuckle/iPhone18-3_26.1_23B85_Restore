@@ -1,25 +1,25 @@
 @interface HFCameraPlaybackEngineConfiguration
 - (HFCameraClipScrubbing)clipScrubber;
-- (HFCameraPlaybackEngineConfiguration)initWithHome:(id)a3 cameraProfile:(id)a4;
+- (HFCameraPlaybackEngineConfiguration)initWithHome:(id)home cameraProfile:(id)profile;
 - (void)assertConfigurationIsValid;
-- (void)assertIsValid:(id)a3 cameraProfile:(id)a4;
+- (void)assertIsValid:(id)valid cameraProfile:(id)profile;
 @end
 
 @implementation HFCameraPlaybackEngineConfiguration
 
-- (HFCameraPlaybackEngineConfiguration)initWithHome:(id)a3 cameraProfile:(id)a4
+- (HFCameraPlaybackEngineConfiguration)initWithHome:(id)home cameraProfile:(id)profile
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  profileCopy = profile;
   v14.receiver = self;
   v14.super_class = HFCameraPlaybackEngineConfiguration;
   v9 = [(HFCameraPlaybackEngineConfiguration *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    [(HFCameraPlaybackEngineConfiguration *)v9 assertIsValid:v7 cameraProfile:v8];
-    objc_storeStrong(&v10->_home, a3);
-    objc_storeStrong(&v10->_cameraProfile, a4);
+    [(HFCameraPlaybackEngineConfiguration *)v9 assertIsValid:homeCopy cameraProfile:profileCopy];
+    objc_storeStrong(&v10->_home, home);
+    objc_storeStrong(&v10->_cameraProfile, profile);
     v11 = +[HFCameraPlaybackPosition livePosition];
     playbackPosition = v10->_playbackPosition;
     v10->_playbackPosition = v11;
@@ -32,39 +32,39 @@
 {
   if (!+[HFUtilities isInternalTest])
   {
-    v4 = [(HFCameraPlaybackEngineConfiguration *)self cameraProfile];
+    cameraProfile = [(HFCameraPlaybackEngineConfiguration *)self cameraProfile];
 
-    if (!v4)
+    if (!cameraProfile)
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"HFCameraPlaybackEngineConfiguration.m" lineNumber:36 description:@"Missing camera profile"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HFCameraPlaybackEngineConfiguration.m" lineNumber:36 description:@"Missing camera profile"];
     }
 
-    v5 = [(HFCameraPlaybackEngineConfiguration *)self home];
+    home = [(HFCameraPlaybackEngineConfiguration *)self home];
 
-    if (!v5)
+    if (!home)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"HFCameraPlaybackEngineConfiguration.m" lineNumber:37 description:@"Missing home"];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFCameraPlaybackEngineConfiguration.m" lineNumber:37 description:@"Missing home"];
     }
 
-    v6 = [(HFCameraPlaybackEngineConfiguration *)self playbackPosition];
+    playbackPosition = [(HFCameraPlaybackEngineConfiguration *)self playbackPosition];
 
-    if (!v6)
+    if (!playbackPosition)
     {
-      v9 = [MEMORY[0x277CCA890] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"HFCameraPlaybackEngineConfiguration.m" lineNumber:38 description:@"Missing playback position"];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"HFCameraPlaybackEngineConfiguration.m" lineNumber:38 description:@"Missing playback position"];
     }
   }
 }
 
-- (void)assertIsValid:(id)a3 cameraProfile:(id)a4
+- (void)assertIsValid:(id)valid cameraProfile:(id)profile
 {
   if (!+[HFUtilities isInternalTest])
   {
-    if (a4)
+    if (profile)
     {
-      if (a3)
+      if (valid)
       {
         return;
       }
@@ -72,17 +72,17 @@
 
     else
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"HFCameraPlaybackEngineConfiguration.m" lineNumber:47 description:@"Missing camera profile"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HFCameraPlaybackEngineConfiguration.m" lineNumber:47 description:@"Missing camera profile"];
 
-      if (a3)
+      if (valid)
       {
         return;
       }
     }
 
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HFCameraPlaybackEngineConfiguration.m" lineNumber:48 description:@"Missing home"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFCameraPlaybackEngineConfiguration.m" lineNumber:48 description:@"Missing home"];
   }
 }
 

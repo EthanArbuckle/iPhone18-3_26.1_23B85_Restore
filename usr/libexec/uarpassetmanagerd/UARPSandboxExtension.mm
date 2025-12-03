@@ -1,27 +1,27 @@
 @interface UARPSandboxExtension
-+ (id)readTokenStringWithURL:(id)a3;
-+ (id)readWriteTokenStringWithURL:(id)a3;
-- (UARPSandboxExtension)initWithTokenString:(id)a3;
++ (id)readTokenStringWithURL:(id)l;
++ (id)readWriteTokenStringWithURL:(id)l;
+- (UARPSandboxExtension)initWithTokenString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation UARPSandboxExtension
 
-+ (id)readTokenStringWithURL:(id)a3
++ (id)readTokenStringWithURL:(id)l
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v9 = +[NSFileManager defaultManager];
-  v8 = [location[0] path];
+  path = [location[0] path];
   v10 = [(NSFileManager *)v9 fileExistsAtPath:?];
 
   if (v10)
   {
-    v6 = [location[0] path];
-    v3 = v6;
-    [v6 UTF8String];
+    path2 = [location[0] path];
+    v3 = path2;
+    [path2 UTF8String];
     v7 = sandbox_extension_issue_file();
 
     v14 = v7;
@@ -71,21 +71,21 @@
   return v4;
 }
 
-+ (id)readWriteTokenStringWithURL:(id)a3
++ (id)readWriteTokenStringWithURL:(id)l
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v9 = +[NSFileManager defaultManager];
-  v8 = [location[0] path];
+  path = [location[0] path];
   v10 = [(NSFileManager *)v9 fileExistsAtPath:?];
 
   if (v10)
   {
-    v6 = [location[0] path];
-    v3 = v6;
-    [v6 UTF8String];
+    path2 = [location[0] path];
+    v3 = path2;
+    [path2 UTF8String];
     v7 = sandbox_extension_issue_file();
 
     v14 = v7;
@@ -135,19 +135,19 @@
   return v4;
 }
 
-- (UARPSandboxExtension)initWithTokenString:(id)a3
+- (UARPSandboxExtension)initWithTokenString:(id)string
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v10;
-  v10 = 0;
+  objc_storeStrong(location, string);
+  v3 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v3;
   v8.super_class = UARPSandboxExtension;
-  v10 = [(UARPSandboxExtension *)&v8 init];
-  objc_storeStrong(&v10, v10);
-  if (v10 && (v6 = location[0], v4 = location[0], [v6 UTF8String], *(v10 + 1) = sandbox_extension_consume(), *(v10 + 1) == -1))
+  selfCopy = [(UARPSandboxExtension *)&v8 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy && (v6 = location[0], v4 = location[0], [v6 UTF8String], *(selfCopy + 1) = sandbox_extension_consume(), *(selfCopy + 1) == -1))
   {
     oslog = &_os_log_default;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
@@ -162,26 +162,26 @@
 
   else
   {
-    v11 = v10;
+    v11 = selfCopy;
   }
 
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (self->_sandboxExtensionHandle != -1)
   {
-    sandboxExtensionHandle = v5->_sandboxExtensionHandle;
+    sandboxExtensionHandle = selfCopy->_sandboxExtensionHandle;
     sandbox_extension_release();
-    v5->_sandboxExtensionHandle = -1;
+    selfCopy->_sandboxExtensionHandle = -1;
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = UARPSandboxExtension;
   [(UARPSandboxExtension *)&v3 dealloc];
 }

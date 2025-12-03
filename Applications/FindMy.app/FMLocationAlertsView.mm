@@ -1,13 +1,13 @@
 @interface FMLocationAlertsView
-- (_TtC6FindMy20FMLocationAlertsView)initWithCoder:(id)a3;
+- (_TtC6FindMy20FMLocationAlertsView)initWithCoder:(id)coder;
 - (void)handleAction;
-- (void)handleFenceTapWithSender:(id)a3;
+- (void)handleFenceTapWithSender:(id)sender;
 - (void)handleSecondaryAction;
 @end
 
 @implementation FMLocationAlertsView
 
-- (_TtC6FindMy20FMLocationAlertsView)initWithCoder:(id)a3
+- (_TtC6FindMy20FMLocationAlertsView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy20FMLocationAlertsView_fencesRow) = _swiftEmptyArrayStorage;
   *(&self->super.titleLabel + OBJC_IVAR____TtC6FindMy20FMLocationAlertsView_delegate) = 0;
@@ -27,14 +27,14 @@
 {
   if (*(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy20FMLocationAlertsView_disabled) == 1)
   {
-    v5 = self;
-    v3 = v5;
+    selfCopy = self;
+    nextResponder = selfCopy;
     while (1)
     {
-      v4 = v3;
-      v3 = [(FMLocationAlertsView *)v3 nextResponder];
+      v4 = nextResponder;
+      nextResponder = [(FMLocationAlertsView *)nextResponder nextResponder];
 
-      if (!v3)
+      if (!nextResponder)
       {
         break;
       }
@@ -50,16 +50,16 @@
   }
 }
 
-- (void)handleFenceTapWithSender:(id)a3
+- (void)handleFenceTapWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_10037825C(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_10037825C(senderCopy);
 }
 
 - (void)handleSecondaryAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003784EC();
 }
 

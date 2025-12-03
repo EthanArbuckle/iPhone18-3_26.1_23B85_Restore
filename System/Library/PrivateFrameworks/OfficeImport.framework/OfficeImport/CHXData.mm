@@ -1,70 +1,70 @@
 @interface CHXData
-+ (BOOL)isHiddenDataElement:(_xmlNode *)a3 data:(id)a4 state:(id)a5;
-+ (id)chdDataFromXmlDataElement:(_xmlNode *)a3 state:(id)a4;
-+ (void)readNumDataFromXmlNumDataElement:(_xmlNode *)a3 data:(id)a4 state:(id)a5;
-+ (void)readStrDataFromXmlMultiLevelStrDataElement:(_xmlNode *)a3 data:(id)a4 state:(id)a5;
-+ (void)readStrDataFromXmlStrDataElement:(_xmlNode *)a3 data:(id)a4 state:(id)a5;
++ (BOOL)isHiddenDataElement:(_xmlNode *)element data:(id)data state:(id)state;
++ (id)chdDataFromXmlDataElement:(_xmlNode *)element state:(id)state;
++ (void)readNumDataFromXmlNumDataElement:(_xmlNode *)element data:(id)data state:(id)state;
++ (void)readStrDataFromXmlMultiLevelStrDataElement:(_xmlNode *)element data:(id)data state:(id)state;
++ (void)readStrDataFromXmlStrDataElement:(_xmlNode *)element data:(id)data state:(id)state;
 @end
 
 @implementation CHXData
 
-+ (id)chdDataFromXmlDataElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdDataFromXmlDataElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
-  v7 = [v6 resources];
-  v43 = [CHDData dataWithResources:v7];
+  stateCopy = state;
+  resources = [stateCopy resources];
+  v43 = [CHDData dataWithResources:resources];
 
-  if (a3)
+  if (element)
   {
-    v42 = [v6 exState];
-    for (i = OCXFirstChild(a3); ; i = OCXNextSibling(i))
+    exState = [stateCopy exState];
+    for (i = OCXFirstChild(element); ; i = OCXNextSibling(i))
     {
       if (!i)
       {
-        v40 = [v43 dataValues];
-        [v40 finishReading];
+        dataValues = [v43 dataValues];
+        [dataValues finishReading];
 
         goto LABEL_22;
       }
 
-      v9 = [v6 drawingState];
-      v10 = [v9 OAXChartNamespace];
-      if (CXNodeHasName(i, v10, "numRef"))
+      drawingState = [stateCopy drawingState];
+      oAXChartNamespace = [drawingState OAXChartNamespace];
+      if (CXNodeHasName(i, oAXChartNamespace, "numRef"))
       {
         goto LABEL_7;
       }
 
-      v11 = [v6 drawingState];
-      v12 = [v11 OAXChartNamespace];
-      if (CXNodeHasName(i, v12, "strRef"))
+      drawingState2 = [stateCopy drawingState];
+      oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+      if (CXNodeHasName(i, oAXChartNamespace2, "strRef"))
       {
         break;
       }
 
-      v21 = [v6 drawingState];
-      v22 = [v21 OAXChartNamespace];
-      HasName = CXNodeHasName(i, v22, "multiLvlStrRef");
+      drawingState3 = [stateCopy drawingState];
+      oAXChartNamespace3 = [drawingState3 OAXChartNamespace];
+      HasName = CXNodeHasName(i, oAXChartNamespace3, "multiLvlStrRef");
 
       if (!HasName)
       {
-        v24 = [v6 drawingState];
-        v25 = [v24 OAXChartNamespace];
-        v26 = CXNodeHasName(i, v25, "numLit");
+        drawingState4 = [stateCopy drawingState];
+        oAXChartNamespace4 = [drawingState4 OAXChartNamespace];
+        v26 = CXNodeHasName(i, oAXChartNamespace4, "numLit");
 
         if (v26)
         {
-          [a1 readNumDataFromXmlNumDataElement:i data:v43 state:v6];
+          [self readNumDataFromXmlNumDataElement:i data:v43 state:stateCopy];
         }
 
         else
         {
-          v37 = [v6 drawingState];
-          v38 = [v37 OAXChartNamespace];
-          v39 = CXNodeHasName(i, v38, "strLit");
+          drawingState5 = [stateCopy drawingState];
+          oAXChartNamespace5 = [drawingState5 OAXChartNamespace];
+          v39 = CXNodeHasName(i, oAXChartNamespace5, "strLit");
 
           if (v39)
           {
-            [a1 readStrDataFromXmlStrDataElement:i data:v43 state:v6];
+            [self readStrDataFromXmlStrDataElement:i data:v43 state:stateCopy];
           }
         }
 
@@ -72,28 +72,28 @@
       }
 
 LABEL_8:
-      v13 = [v6 ignoreFormulas];
-      if (([v6 ignoreFormulas] & 1) == 0)
+      ignoreFormulas = [stateCopy ignoreFormulas];
+      if (([stateCopy ignoreFormulas] & 1) == 0)
       {
-        v14 = [v6 drawingState];
-        v15 = [v14 OAXChartNamespace];
-        v16 = OCXFindRequiredChild(i, v15, "f");
+        drawingState6 = [stateCopy drawingState];
+        oAXChartNamespace6 = [drawingState6 OAXChartNamespace];
+        v16 = OCXFindRequiredChild(i, oAXChartNamespace6, "f");
 
-        v17 = [EXFormula edFormulaFromXmlFormulaElement:v16 formulaClass:objc_opt_class() state:v42];
-        v18 = [v42 workbook];
-        [v17 setWorkbook:v18];
+        v17 = [EXFormula edFormulaFromXmlFormulaElement:v16 formulaClass:objc_opt_class() state:exState];
+        workbook = [exState workbook];
+        [v17 setWorkbook:workbook];
 
-        v19 = [v6 chart];
-        [v43 setFormula:v17 chart:v19];
+        chart = [stateCopy chart];
+        [v43 setFormula:v17 chart:chart];
 
-        v20 = [v17 originalFormulaString];
-        if ([v20 rangeOfString:@"#REF"] == 0x7FFFFFFFFFFFFFFFLL)
+        originalFormulaString = [v17 originalFormulaString];
+        if ([originalFormulaString rangeOfString:@"#REF"] == 0x7FFFFFFFFFFFFFFFLL)
         {
         }
 
         else
         {
-          v27 = [v20 rangeOfString:@"'#REF'"];
+          v27 = [originalFormulaString rangeOfString:@"'#REF'"];
 
           if (v27 == 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -102,25 +102,25 @@ LABEL_8:
         }
 
 LABEL_17:
-        v28 = [v6 drawingState];
-        v29 = [v28 OAXChartNamespace];
-        v30 = OCXFindChild(i, v29, "strCache");
+        drawingState7 = [stateCopy drawingState];
+        oAXChartNamespace7 = [drawingState7 OAXChartNamespace];
+        v30 = OCXFindChild(i, oAXChartNamespace7, "strCache");
 
-        [a1 readStrDataFromXmlStrDataElement:v30 data:v43 state:v6];
-        v31 = [v6 drawingState];
-        v32 = [v31 OAXChartNamespace];
-        v33 = OCXFindChild(i, v32, "multiLvlStrCache");
+        [self readStrDataFromXmlStrDataElement:v30 data:v43 state:stateCopy];
+        drawingState8 = [stateCopy drawingState];
+        oAXChartNamespace8 = [drawingState8 OAXChartNamespace];
+        v33 = OCXFindChild(i, oAXChartNamespace8, "multiLvlStrCache");
 
-        [a1 readStrDataFromXmlMultiLevelStrDataElement:v33 data:v43 state:v6];
-        v34 = [v6 drawingState];
-        v35 = [v34 OAXChartNamespace];
-        v36 = OCXFindChild(i, v35, "numCache");
+        [self readStrDataFromXmlMultiLevelStrDataElement:v33 data:v43 state:stateCopy];
+        drawingState9 = [stateCopy drawingState];
+        oAXChartNamespace9 = [drawingState9 OAXChartNamespace];
+        v36 = OCXFindChild(i, oAXChartNamespace9, "numCache");
 
-        [a1 readNumDataFromXmlNumDataElement:v36 data:v43 state:v6];
+        [self readNumDataFromXmlNumDataElement:v36 data:v43 state:stateCopy];
         continue;
       }
 
-      if (v13)
+      if (ignoreFormulas)
       {
         goto LABEL_17;
       }
@@ -135,24 +135,24 @@ LABEL_22:
   return v43;
 }
 
-+ (void)readNumDataFromXmlNumDataElement:(_xmlNode *)a3 data:(id)a4 state:(id)a5
++ (void)readNumDataFromXmlNumDataElement:(_xmlNode *)element data:(id)data state:(id)state
 {
-  v18 = a4;
-  v8 = a5;
-  if (a3)
+  dataCopy = data;
+  stateCopy = state;
+  if (element)
   {
-    if (([a1 isHiddenDataElement:a3 data:v18 state:v8] & 1) == 0)
+    if (([self isHiddenDataElement:element data:dataCopy state:stateCopy] & 1) == 0)
     {
-      for (i = OCXFirstChildNamed(a3, "pt"); i; i = OCXNextSiblingNamed(i, "pt"))
+      for (i = OCXFirstChildNamed(element, "pt"); i; i = OCXNextSiblingNamed(i, "pt"))
       {
-        v10 = [v18 dataValues];
-        v11 = [CHXDataValue chdNumberValueFromXmlDataValueElement:i state:v8];
-        [v10 addDataValue:v11];
+        dataValues = [dataCopy dataValues];
+        v11 = [CHXDataValue chdNumberValueFromXmlDataValueElement:i state:stateCopy];
+        [dataValues addDataValue:v11];
       }
 
-      v12 = [v8 drawingState];
-      v13 = [v12 OAXChartNamespace];
-      v14 = OCXFindChild(a3, v13, "formatCode");
+      drawingState = [stateCopy drawingState];
+      oAXChartNamespace = [drawingState OAXChartNamespace];
+      v14 = OCXFindChild(element, oAXChartNamespace, "formatCode");
 
       if (v14)
       {
@@ -160,36 +160,36 @@ LABEL_22:
         v16 = [EDString edStringWithString:v15];
         v17 = [EDContentFormat contentFormatWithFormatString:v16];
 
-        [v18 setContentFormat:v17];
+        [dataCopy setContentFormat:v17];
       }
     }
   }
 }
 
-+ (void)readStrDataFromXmlStrDataElement:(_xmlNode *)a3 data:(id)a4 state:(id)a5
++ (void)readStrDataFromXmlStrDataElement:(_xmlNode *)element data:(id)data state:(id)state
 {
-  v12 = a4;
-  v8 = a5;
-  if (a3 && ([a1 isHiddenDataElement:a3 data:v12 state:v8] & 1) == 0)
+  dataCopy = data;
+  stateCopy = state;
+  if (element && ([self isHiddenDataElement:element data:dataCopy state:stateCopy] & 1) == 0)
   {
-    for (i = OCXFirstChildNamed(a3, "pt"); i; i = OCXNextSiblingNamed(i, "pt"))
+    for (i = OCXFirstChildNamed(element, "pt"); i; i = OCXNextSiblingNamed(i, "pt"))
     {
-      v10 = [v12 dataValues];
-      v11 = [CHXDataValue chdStringValueFromXmlDataValueElement:i state:v8];
-      [v10 addDataValue:v11];
+      dataValues = [dataCopy dataValues];
+      v11 = [CHXDataValue chdStringValueFromXmlDataValueElement:i state:stateCopy];
+      [dataValues addDataValue:v11];
     }
   }
 }
 
-+ (void)readStrDataFromXmlMultiLevelStrDataElement:(_xmlNode *)a3 data:(id)a4 state:(id)a5
++ (void)readStrDataFromXmlMultiLevelStrDataElement:(_xmlNode *)element data:(id)data state:(id)state
 {
-  v11 = a4;
-  v8 = a5;
-  if (a3)
+  dataCopy = data;
+  stateCopy = state;
+  if (element)
   {
-    if (([a1 isHiddenDataElement:a3 data:v11 state:v8] & 1) == 0)
+    if (([self isHiddenDataElement:element data:dataCopy state:stateCopy] & 1) == 0)
     {
-      v9 = OCXFirstChildNamed(a3, "lvl");
+      v9 = OCXFirstChildNamed(element, "lvl");
       if (v9)
       {
         do
@@ -199,18 +199,18 @@ LABEL_22:
         }
 
         while (v9);
-        [a1 readStrDataFromXmlStrDataElement:v10 data:v11 state:v8];
+        [self readStrDataFromXmlStrDataElement:v10 data:dataCopy state:stateCopy];
       }
     }
   }
 }
 
-+ (BOOL)isHiddenDataElement:(_xmlNode *)a3 data:(id)a4 state:(id)a5
++ (BOOL)isHiddenDataElement:(_xmlNode *)element data:(id)data state:(id)state
 {
-  v7 = a4;
-  v8 = [a5 drawingState];
-  v9 = [v8 OAXChartNamespace];
-  v10 = OCXFindChild(a3, v9, "ptCount");
+  dataCopy = data;
+  drawingState = [state drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v10 = OCXFindChild(element, oAXChartNamespace, "ptCount");
 
   v15 = 0;
   if (v10 && ((v11 = CXOptionalUnsignedLongAttribute(v10, CXNoNamespace, "val", &v15), !v15) ? (v12 = v11) : (v12 = 0), v12))
@@ -220,7 +220,7 @@ LABEL_22:
 
   else
   {
-    [v7 setDataValueIndexCount:?];
+    [dataCopy setDataValueIndexCount:?];
     v13 = 0;
   }
 

@@ -1,6 +1,6 @@
 @interface STUIStatusBarSensorActivityItem
 - (STUIStatusBarSensorActivityView)sensorActivityIndicator;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (void)_create_sensorActivityIndicator;
 @end
 
@@ -28,41 +28,41 @@
   MEMORY[0x2821F96F8](v4, sensorActivityIndicator);
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a4;
+  itemCopy = item;
   v17.receiver = self;
   v17.super_class = STUIStatusBarSensorActivityItem;
-  v7 = a3;
-  v8 = [(STUIStatusBarItem *)&v17 applyUpdate:v7 toDisplayItem:v6];
-  v9 = [v7 dataChanged];
+  updateCopy = update;
+  v8 = [(STUIStatusBarItem *)&v17 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  dataChanged = [updateCopy dataChanged];
 
-  if (v9)
+  if (dataChanged)
   {
-    v10 = [(STUIStatusBarItem *)self statusBar];
-    v11 = [v10 _showSensorActivityIndicatorWithoutPortalView];
+    statusBar = [(STUIStatusBarItem *)self statusBar];
+    _showSensorActivityIndicatorWithoutPortalView = [statusBar _showSensorActivityIndicatorWithoutPortalView];
 
-    v12 = [(STUIStatusBarSensorActivityItem *)self sensorActivityIndicator];
-    v13 = [(STUIStatusBarItem *)self statusBar];
-    v14 = [v13 _effectiveTargetScreen];
-    if (v11)
+    sensorActivityIndicator = [(STUIStatusBarSensorActivityItem *)self sensorActivityIndicator];
+    statusBar2 = [(STUIStatusBarItem *)self statusBar];
+    _effectiveTargetScreen = [statusBar2 _effectiveTargetScreen];
+    if (_showSensorActivityIndicatorWithoutPortalView)
     {
-      [v12 configureSensorViewWithoutPortalIfNeededForTargetScreen:v14];
+      [sensorActivityIndicator configureSensorViewWithoutPortalIfNeededForTargetScreen:_effectiveTargetScreen];
     }
 
     else
     {
-      if ([v12 configurePortalViewIfNeededForTargetScreen:v14])
+      if ([sensorActivityIndicator configurePortalViewIfNeededForTargetScreen:_effectiveTargetScreen])
       {
-        v15 = [v6 isEnabled];
+        isEnabled = [itemCopy isEnabled];
       }
 
       else
       {
-        v15 = 0;
+        isEnabled = 0;
       }
 
-      [v6 setEnabled:v15];
+      [itemCopy setEnabled:isEnabled];
     }
   }
 

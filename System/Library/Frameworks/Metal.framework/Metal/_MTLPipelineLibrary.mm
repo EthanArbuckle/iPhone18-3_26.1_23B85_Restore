@@ -1,10 +1,10 @@
 @interface _MTLPipelineLibrary
 - (NSArray)metallibPaths;
-- (_MTLPipelineLibrary)initWithDevice:(id)a3 pipelineLibraryData:(void *)a4;
-- (id)newComputePipelineDescriptorWithName:(id)a3 error:(id *)a4;
-- (id)newComputePipelineStateWithName:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newRenderPipelineDescriptorWithName:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateWithName:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
+- (_MTLPipelineLibrary)initWithDevice:(id)device pipelineLibraryData:(void *)data;
+- (id)newComputePipelineDescriptorWithName:(id)name error:(id *)error;
+- (id)newComputePipelineStateWithName:(id)name options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newRenderPipelineDescriptorWithName:(id)name error:(id *)error;
+- (id)newRenderPipelineStateWithName:(id)name options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -24,67 +24,67 @@
   [(_MTLObjectWithLabel *)&v4 dealloc];
 }
 
-- (_MTLPipelineLibrary)initWithDevice:(id)a3 pipelineLibraryData:(void *)a4
+- (_MTLPipelineLibrary)initWithDevice:(id)device pipelineLibraryData:(void *)data
 {
   v8.receiver = self;
   v8.super_class = _MTLPipelineLibrary;
   v6 = [(_MTLObjectWithLabel *)&v8 init];
   if (v6)
   {
-    v6->_device = a3;
-    v6->_pipelineLibraryData = a4;
+    v6->_device = device;
+    v6->_pipelineLibraryData = data;
     v6->_disableRunTimeCompilation = 0;
   }
 
   return v6;
 }
 
-- (id)newComputePipelineStateWithName:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newComputePipelineStateWithName:(id)name options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  v10 = MTLPipelineDescriptions::newComputePipelineDescriptor(*self->_pipelineLibraryData, [a3 UTF8String], *(self->_pipelineLibraryData + 3), a6);
+  v10 = MTLPipelineDescriptions::newComputePipelineDescriptor(*self->_pipelineLibraryData, [name UTF8String], *(self->_pipelineLibraryData + 3), error);
   [v10 setPipelineLibrary:self];
   if (!v10)
   {
     return 0;
   }
 
-  v11 = [(MTLDevice *)self->_device newComputePipelineStateWithDescriptor:v10 options:a4 reflection:a5 error:a6];
+  v11 = [(MTLDevice *)self->_device newComputePipelineStateWithDescriptor:v10 options:options reflection:reflection error:error];
 
   return v11;
 }
 
-- (id)newRenderPipelineStateWithName:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newRenderPipelineStateWithName:(id)name options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  v10 = MTLPipelineDescriptions::newRenderPipelineDescriptor(*self->_pipelineLibraryData, [a3 UTF8String], *(self->_pipelineLibraryData + 3), a6);
+  v10 = MTLPipelineDescriptions::newRenderPipelineDescriptor(*self->_pipelineLibraryData, [name UTF8String], *(self->_pipelineLibraryData + 3), error);
   [v10 setPipelineLibrary:self];
   if (!v10)
   {
     return 0;
   }
 
-  v11 = [(MTLDevice *)self->_device newRenderPipelineStateWithDescriptor:v10 options:a4 reflection:a5 error:a6];
+  v11 = [(MTLDevice *)self->_device newRenderPipelineStateWithDescriptor:v10 options:options reflection:reflection error:error];
 
   return v11;
 }
 
-- (id)newComputePipelineDescriptorWithName:(id)a3 error:(id *)a4
+- (id)newComputePipelineDescriptorWithName:(id)name error:(id *)error
 {
   pipelineLibraryData = self->_pipelineLibraryData;
-  v6 = [a3 UTF8String];
+  uTF8String = [name UTF8String];
   v7 = *pipelineLibraryData;
   v8 = *(pipelineLibraryData + 3);
 
-  return MTLPipelineDescriptions::newComputePipelineDescriptor(v7, v6, v8, a4);
+  return MTLPipelineDescriptions::newComputePipelineDescriptor(v7, uTF8String, v8, error);
 }
 
-- (id)newRenderPipelineDescriptorWithName:(id)a3 error:(id *)a4
+- (id)newRenderPipelineDescriptorWithName:(id)name error:(id *)error
 {
   pipelineLibraryData = self->_pipelineLibraryData;
-  v6 = [a3 UTF8String];
+  uTF8String = [name UTF8String];
   v7 = *pipelineLibraryData;
   v8 = *(pipelineLibraryData + 3);
 
-  return MTLPipelineDescriptions::newRenderPipelineDescriptor(v7, v6, v8, a4);
+  return MTLPipelineDescriptions::newRenderPipelineDescriptor(v7, uTF8String, v8, error);
 }
 
 - (NSArray)metallibPaths

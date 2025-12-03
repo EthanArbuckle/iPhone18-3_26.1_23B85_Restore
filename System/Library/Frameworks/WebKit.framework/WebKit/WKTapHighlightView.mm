@@ -1,22 +1,22 @@
 @interface WKTapHighlightView
-- (WKTapHighlightView)initWithFrame:(CGRect)a3;
+- (WKTapHighlightView)initWithFrame:(CGRect)frame;
 - (id).cxx_construct;
 - (void)cleanUp;
-- (void)drawRect:(CGRect)a3;
-- (void)setColor:(id)a3;
-- (void)setCornerRadii:(Radii *)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setFrames:(void *)a3;
-- (void)setQuads:(void *)a3 boundaryRect:(const FloatRect *)a4;
+- (void)drawRect:(CGRect)rect;
+- (void)setColor:(id)color;
+- (void)setCornerRadii:(Radii *)radii;
+- (void)setFrame:(CGRect)frame;
+- (void)setFrames:(void *)frames;
+- (void)setQuads:(void *)quads boundaryRect:(const FloatRect *)rect;
 @end
 
 @implementation WKTapHighlightView
 
-- (WKTapHighlightView)initWithFrame:(CGRect)a3
+- (WKTapHighlightView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = WKTapHighlightView;
-  v3 = [(WKTapHighlightView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WKTapHighlightView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -33,31 +33,31 @@
   WTF::Vector<WebCore::PlatformTimeRanges::Range,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::shrinkCapacity(&self->_innerQuads, 0);
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  if (a3)
+  if (color)
   {
-    v5 = a3;
+    colorCopy = color;
   }
 
   m_ptr = self->_color.m_ptr;
-  self->_color.m_ptr = a3;
+  self->_color.m_ptr = color;
   if (m_ptr)
   {
   }
 }
 
-- (void)setCornerRadii:(Radii *)a3
+- (void)setCornerRadii:(Radii *)radii
 {
-  v3 = *&a3->m_bottomLeft.m_width;
-  *&self->_cornerRadii.m_topLeft.m_width = *&a3->m_topLeft.m_width;
+  v3 = *&radii->m_bottomLeft.m_width;
+  *&self->_cornerRadii.m_topLeft.m_width = *&radii->m_topLeft.m_width;
   *&self->_cornerRadii.m_bottomLeft.m_width = v3;
 }
 
-- (void)setFrames:(void *)a3
+- (void)setFrames:(void *)frames
 {
   [(WKTapHighlightView *)self cleanUp];
-  v5 = *(a3 + 3);
+  v5 = *(frames + 3);
   if (v5)
   {
     v18 = 0uLL;
@@ -65,13 +65,13 @@
   }
 
   [(WKTapHighlightView *)self setFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  v5 = *(a3 + 3);
+  v5 = *(frames + 3);
   v18 = 0uLL;
   if (v5)
   {
 LABEL_4:
-    v6 = *a3;
-    v7 = *a3 + 16 * v5;
+    v6 = *frames;
+    v7 = *frames + 16 * v5;
     v8 = 0;
     do
     {
@@ -105,7 +105,7 @@ LABEL_4:
   v16.receiver = self;
   v16.super_class = WKTapHighlightView;
   [(WKTapHighlightView *)&v16 setFrame:?];
-  WTF::VectorBuffer<WTF::String,0ul,WTF::FastMalloc>::adopt(&self->_innerFrames, a3);
+  WTF::VectorBuffer<WTF::String,0ul,WTF::FastMalloc>::adopt(&self->_innerFrames, frames);
   m_size = self->_innerFrames.m_size;
   if (m_size)
   {
@@ -127,14 +127,14 @@ LABEL_4:
   }
 }
 
-- (void)setQuads:(void *)a3 boundaryRect:(const FloatRect *)a4
+- (void)setQuads:(void *)quads boundaryRect:(const FloatRect *)rect
 {
   [(WKTapHighlightView *)self cleanUp];
-  v7 = *(a3 + 3);
-  if (v7 || ([(WKTapHighlightView *)self setFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)], v7 = *(a3 + 3), v7))
+  v7 = *(quads + 3);
+  if (v7 || ([(WKTapHighlightView *)self setFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)], v7 = *(quads + 3), v7))
   {
-    v9 = *a3;
-    v10 = *a3 + 32 * v7;
+    v9 = *quads;
+    v10 = *quads + 32 * v7;
     v11 = 0;
     v12 = 0;
     v13 = 0;
@@ -185,13 +185,13 @@ LABEL_4:
   *(v30 + 1) = v13.f32[1] - v8.f32[0];
   v21 = vdup_lane_s32(v8, 0);
   *(&v30[0] + 1) = vadd_f32(v21, vadd_f32(v20, v21));
-  WebCore::FloatRect::intersect(v30, a4);
+  WebCore::FloatRect::intersect(v30, rect);
   WebCore::FloatRect::operator CGRect();
   v29.receiver = self;
   v29.super_class = WKTapHighlightView;
   [(WKTapHighlightView *)&v29 setFrame:?];
   p_innerQuads = &self->_innerQuads;
-  WTF::VectorBuffer<WebCore::HTTPHeaderField,0ul,WTF::FastMalloc>::adopt(&self->_innerQuads, a3);
+  WTF::VectorBuffer<WebCore::HTTPHeaderField,0ul,WTF::FastMalloc>::adopt(&self->_innerQuads, quads);
   m_size = self->_innerQuads.m_size;
   if (m_size)
   {
@@ -217,29 +217,29 @@ LABEL_4:
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(WKTapHighlightView *)self cleanUp];
   v8.receiver = self;
   v8.super_class = WKTapHighlightView;
   [(WKTapHighlightView *)&v8 setFrame:x, y, width, height];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v18 = *MEMORY[0x1E69E9840];
   p_innerFrames = &self->_innerFrames;
   if (self->_innerFrames.m_size || self->_innerQuads.m_size)
   {
-    v5 = [MEMORY[0x1E69DC728] bezierPath];
+    bezierPath = [MEMORY[0x1E69DC728] bezierPath];
     if (p_innerFrames->m_size)
     {
       WebCore::PathUtilities::pathWithShrinkWrappedRects();
-      [v5 appendPath:{objc_msgSend(MEMORY[0x1E69DC728], "bezierPathWithCGPath:", WebCore::Path::platformPath(&v16))}];
+      [bezierPath appendPath:{objc_msgSend(MEMORY[0x1E69DC728], "bezierPathWithCGPath:", WebCore::Path::platformPath(&v16))}];
       if (v17 >= 2u && v17 != 255)
       {
         v6 = v16;
@@ -265,17 +265,17 @@ LABEL_4:
         v10 = &p_innerQuads->m_buffer[m_size];
         do
         {
-          v11 = [MEMORY[0x1E69DC728] bezierPath];
+          bezierPath2 = [MEMORY[0x1E69DC728] bezierPath];
           WebCore::FloatPoint::operator CGPoint();
-          [v11 moveToPoint:?];
+          [bezierPath2 moveToPoint:?];
           WebCore::FloatPoint::operator CGPoint();
-          [v11 addLineToPoint:?];
+          [bezierPath2 addLineToPoint:?];
           WebCore::FloatPoint::operator CGPoint();
-          [v11 addLineToPoint:?];
+          [bezierPath2 addLineToPoint:?];
           WebCore::FloatPoint::operator CGPoint();
-          [v11 addLineToPoint:?];
-          [v11 closePath];
-          [v5 appendPath:v11];
+          [bezierPath2 addLineToPoint:?];
+          [bezierPath2 closePath];
+          [bezierPath appendPath:bezierPath2];
           ++m_buffer;
         }
 
@@ -295,7 +295,7 @@ LABEL_4:
     [[(UIColor *)self->_color.m_ptr colorWithAlphaComponent:1.0] set];
     CGContextSetAlpha(CurrentContext, Alpha);
     CGContextBeginTransparencyLayer(CurrentContext, 0);
-    CGContextAddPath(CurrentContext, [v5 CGPath]);
+    CGContextAddPath(CurrentContext, [bezierPath CGPath]);
     CGContextDrawPath(CurrentContext, kCGPathFillStroke);
     CGContextEndTransparencyLayer(CurrentContext);
     CGContextRestoreGState(CurrentContext);
@@ -303,7 +303,7 @@ LABEL_4:
 
   else
   {
-    [(UIColor *)self->_color.m_ptr set:a3.origin.x];
+    [(UIColor *)self->_color.m_ptr set:rect.origin.x];
     v14 = MEMORY[0x1E69DC728];
     [(WKTapHighlightView *)self bounds];
     v15 = [v14 bezierPathWithRoundedRect:? cornerRadius:?];

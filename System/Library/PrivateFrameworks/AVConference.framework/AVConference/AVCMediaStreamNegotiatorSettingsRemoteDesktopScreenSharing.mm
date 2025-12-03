@@ -1,12 +1,12 @@
 @interface AVCMediaStreamNegotiatorSettingsRemoteDesktopScreenSharing
-- (AVCMediaStreamNegotiatorSettingsRemoteDesktopScreenSharing)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5;
+- (AVCMediaStreamNegotiatorSettingsRemoteDesktopScreenSharing)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error;
 @end
 
 @implementation AVCMediaStreamNegotiatorSettingsRemoteDesktopScreenSharing
 
-- (AVCMediaStreamNegotiatorSettingsRemoteDesktopScreenSharing)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5
+- (AVCMediaStreamNegotiatorSettingsRemoteDesktopScreenSharing)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error
 {
-  v6 = a4;
+  roleCopy = role;
   v16 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = AVCMediaStreamNegotiatorSettingsRemoteDesktopScreenSharing;
@@ -16,12 +16,12 @@
     return v8;
   }
 
-  if (v6 != 1 || ![a3 objectForKey:@"AVCMediaStreamNegotiatorAccessNetworkType"])
+  if (roleCopy != 1 || ![options objectForKey:@"AVCMediaStreamNegotiatorAccessNetworkType"])
   {
     goto LABEL_6;
   }
 
-  v9 = [a3 objectForKeyedSubscript:@"AVCMediaStreamNegotiatorAccessNetworkType"];
+  v9 = [options objectForKeyedSubscript:@"AVCMediaStreamNegotiatorAccessNetworkType"];
   if (v9)
   {
     v8->super._accessNetworkType = [v9 intValue];
@@ -36,7 +36,7 @@ LABEL_6:
       if (v11)
       {
         [(NSMutableSet *)v11 addObject:&unk_1F579B8C8];
-        v12 = [AVCMediaStreamNegotiatorSettings hdrModeWithNegotiatorInitOptions:a3];
+        v12 = [AVCMediaStreamNegotiatorSettings hdrModeWithNegotiatorInitOptions:options];
         -[NSMutableSet addObject:](v8->super._hdrModesSupported, "addObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12]);
         v8->super._shouldSetJitterBufferMode = 1;
         v8->super._blackFrameOnClearScreenEnabledDefault = 1;
@@ -57,9 +57,9 @@ LABEL_6:
 
   v14 = @"cannot get accessNetworkType from Init options";
 LABEL_13:
-  if (a5)
+  if (error)
   {
-    *a5 = v14;
+    *error = v14;
   }
 
   return 0;

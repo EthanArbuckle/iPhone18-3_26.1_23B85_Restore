@@ -1,6 +1,6 @@
 @interface MTRContentLauncherClusterContentSearchStruct
 - (MTRContentLauncherClusterContentSearchStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,19 +13,19 @@
   v2 = [(MTRContentLauncherClusterContentSearchStruct *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     parameterList = v2->_parameterList;
-    v2->_parameterList = v3;
+    v2->_parameterList = array;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRContentLauncherClusterContentSearchStruct);
-  v5 = [(MTRContentLauncherClusterContentSearchStruct *)self parameterList];
-  [(MTRContentLauncherClusterContentSearchStruct *)v4 setParameterList:v5];
+  parameterList = [(MTRContentLauncherClusterContentSearchStruct *)self parameterList];
+  [(MTRContentLauncherClusterContentSearchStruct *)v4 setParameterList:parameterList];
 
   return v4;
 }

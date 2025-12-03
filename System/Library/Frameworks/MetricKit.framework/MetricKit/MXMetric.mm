@@ -1,6 +1,6 @@
 @interface MXMetric
 - (MXMetric)init;
-- (MXMetric)initWithCoder:(id)a3;
+- (MXMetric)initWithCoder:(id)coder;
 - (NSData)JSONRepresentation;
 @end
 
@@ -22,14 +22,14 @@
 
     [(NSMeasurementFormatter *)v2->_measurementFormatter setUnitOptions:1];
     [(NSMeasurementFormatter *)v2->_measurementFormatter setUnitStyle:2];
-    v6 = [(NSMeasurementFormatter *)v2->_measurementFormatter numberFormatter];
-    [v6 setMaximumFractionDigits:0];
+    numberFormatter = [(NSMeasurementFormatter *)v2->_measurementFormatter numberFormatter];
+    [numberFormatter setMaximumFractionDigits:0];
   }
 
   return v2;
 }
 
-- (MXMetric)initWithCoder:(id)a3
+- (MXMetric)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = MXMetric;
@@ -45,8 +45,8 @@
 
     [(NSMeasurementFormatter *)v3->_measurementFormatter setUnitOptions:1];
     [(NSMeasurementFormatter *)v3->_measurementFormatter setUnitStyle:2];
-    v7 = [(NSMeasurementFormatter *)v3->_measurementFormatter numberFormatter];
-    [v7 setMaximumFractionDigits:0];
+    numberFormatter = [(NSMeasurementFormatter *)v3->_measurementFormatter numberFormatter];
+    [numberFormatter setMaximumFractionDigits:0];
   }
 
   return v3;
@@ -54,11 +54,11 @@
 
 - (NSData)JSONRepresentation
 {
-  v2 = [(MXMetric *)self toDictionary];
-  if ([MEMORY[0x277CCAAA0] isValidJSONObject:v2])
+  toDictionary = [(MXMetric *)self toDictionary];
+  if ([MEMORY[0x277CCAAA0] isValidJSONObject:toDictionary])
   {
     v5 = 0;
-    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v2 options:1 error:&v5];
+    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:toDictionary options:1 error:&v5];
   }
 
   else

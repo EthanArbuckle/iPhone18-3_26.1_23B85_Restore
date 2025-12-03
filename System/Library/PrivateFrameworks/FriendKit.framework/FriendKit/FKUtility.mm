@@ -1,10 +1,10 @@
 @interface FKUtility
-+ (BOOL)isRomanString:(id)a3;
++ (BOOL)isRomanString:(id)string;
 + (id)_nameFormatter;
-+ (id)compressPhoneNumberString:(id)a3;
-+ (id)hashFromData:(id)a3;
-+ (id)initialForString:(id)a3;
-+ (id)initialsForPerson:(void *)a3;
++ (id)compressPhoneNumberString:(id)string;
++ (id)hashFromData:(id)data;
++ (id)initialForString:(id)string;
++ (id)initialsForPerson:(void *)person;
 @end
 
 @implementation FKUtility
@@ -28,9 +28,9 @@ uint64_t __27__FKUtility__nameFormatter__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)initialsForPerson:(void *)a3
++ (id)initialsForPerson:(void *)person
 {
-  if (a3 && (v4 = ABPersonCopyPreferredLinkedPersonForName()) != 0)
+  if (person && (v4 = ABPersonCopyPreferredLinkedPersonForName()) != 0)
   {
     v5 = v4;
     v6 = ABRecordCopyValue(v4, *MEMORY[0x277CE9970]);
@@ -46,10 +46,10 @@ uint64_t __27__FKUtility__nameFormatter__block_invoke()
       v11 = ABRecordCopyValue(v5, *MEMORY[0x277CE9980]);
       [v9 setFamilyName:v11];
 
-      v12 = [a1 _nameFormatter];
-      [v12 setStyle:4];
-      [v12 set_ignoresFallbacks:1];
-      v8 = [v12 stringFromPersonNameComponents:v9];
+      _nameFormatter = [self _nameFormatter];
+      [_nameFormatter setStyle:4];
+      [_nameFormatter set_ignoresFallbacks:1];
+      v8 = [_nameFormatter stringFromPersonNameComponents:v9];
     }
 
     if (![v8 length])
@@ -66,19 +66,19 @@ uint64_t __27__FKUtility__nameFormatter__block_invoke()
     v8 = 0;
   }
 
-  v13 = [v8 localizedUppercaseString];
+  localizedUppercaseString = [v8 localizedUppercaseString];
 
-  return v13;
+  return localizedUppercaseString;
 }
 
-+ (id)initialForString:(id)a3
++ (id)initialForString:(id)string
 {
-  v3 = a3;
-  if ([v3 length] && +[FKUtility isRomanString:](FKUtility, "isRomanString:", v3))
+  stringCopy = string;
+  if ([stringCopy length] && +[FKUtility isRomanString:](FKUtility, "isRomanString:", stringCopy))
   {
-    v4 = [v3 substringWithRange:{0, 1}];
-    v5 = [MEMORY[0x277CCA900] letterCharacterSet];
-    v6 = [v4 rangeOfCharacterFromSet:v5];
+    v4 = [stringCopy substringWithRange:{0, 1}];
+    letterCharacterSet = [MEMORY[0x277CCA900] letterCharacterSet];
+    v6 = [v4 rangeOfCharacterFromSet:letterCharacterSet];
 
     if (v6 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -88,15 +88,15 @@ uint64_t __27__FKUtility__nameFormatter__block_invoke()
 
   v4 = 0;
 LABEL_6:
-  v7 = [v4 localizedUppercaseString];
+  localizedUppercaseString = [v4 localizedUppercaseString];
 
-  return v7;
+  return localizedUppercaseString;
 }
 
-+ (BOOL)isRomanString:(id)a3
++ (BOOL)isRomanString:(id)string
 {
-  v3 = a3;
-  if (v3)
+  stringCopy = string;
+  if (stringCopy)
   {
     if (_ABStringContainsNonLatinCharacters())
     {
@@ -117,12 +117,12 @@ LABEL_6:
   return v4;
 }
 
-+ (id)compressPhoneNumberString:(id)a3
++ (id)compressPhoneNumberString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = CPPhoneNumberCopyHomeCountryCode();
   v5 = CFPhoneNumberCreate();
-  v6 = v3;
+  v6 = stringCopy;
   if (v5)
   {
     v7 = v5;
@@ -138,14 +138,14 @@ LABEL_6:
   return v6;
 }
 
-+ (id)hashFromData:(id)a3
++ (id)hashFromData:(id)data
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v5 = [dataCopy length];
 
-  CC_SHA1(v4, v5, md);
+  CC_SHA1(bytes, v5, md);
   v6 = [MEMORY[0x277CBEA90] dataWithBytes:md length:20];
   v7 = [v6 base64EncodedStringWithOptions:1];
 

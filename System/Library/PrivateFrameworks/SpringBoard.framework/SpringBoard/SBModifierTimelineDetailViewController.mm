@@ -1,12 +1,12 @@
 @interface SBModifierTimelineDetailViewController
-- (id)_prettyStringForEventPredicateDetails:(id)a3;
-- (id)_stackSnapshotAtIndex:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)_numberOfModifiersInStackSnapshot:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)setEntry:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)_prettyStringForEventPredicateDetails:(id)details;
+- (id)_stackSnapshotAtIndex:(int64_t)index;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)_numberOfModifiersInStackSnapshot:(id)snapshot;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)setEntry:(id)entry;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -27,8 +27,8 @@
   [(UITableView *)self->_tableView setDelegate:self];
   [(UITableView *)self->_tableView contentInset];
   [(UITableView *)self->_tableView setContentInset:?];
-  v6 = [(SBModifierTimelineDetailViewController *)self view];
-  [v6 addSubview:self->_tableView];
+  view = [(SBModifierTimelineDetailViewController *)self view];
+  [view addSubview:self->_tableView];
 
   v7 = [[SBModifierTimelineModifierDetailViewController alloc] initWithNibName:0 bundle:0];
   modifierDetailViewController = self->_modifierDetailViewController;
@@ -39,14 +39,14 @@
   self->_textDetailViewController = v9;
 
   v11 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:@"Done" style:2 target:self action:sel__done];
-  v12 = [(SBModifierTimelineDetailViewController *)self navigationItem];
-  [v12 setRightBarButtonItem:v11];
+  navigationItem = [(SBModifierTimelineDetailViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v11];
 }
 
-- (void)setEntry:(id)a3
+- (void)setEntry:(id)entry
 {
-  objc_storeStrong(&self->_entry, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_entry, entry);
+  entryCopy = entry;
   [(SBModifierTimelineDetailViewController *)self loadViewIfNeeded];
   [(UITableView *)self->_tableView reloadData];
 }
@@ -57,46 +57,46 @@
   v5.super_class = SBModifierTimelineDetailViewController;
   [(SBModifierTimelineDetailViewController *)&v5 viewWillLayoutSubviews];
   tableView = self->_tableView;
-  v4 = [(SBModifierTimelineDetailViewController *)self view];
-  [v4 bounds];
+  view = [(SBModifierTimelineDetailViewController *)self view];
+  [view bounds];
   [(UITableView *)tableView setFrame:?];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 > 2)
+  if (section > 2)
   {
     return &stru_283094718;
   }
 
   else
   {
-    return off_2783C3DF0[a4];
+    return off_2783C3DF0[section];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (section)
   {
-    if (a4 == 2)
+    if (section == 2)
     {
-      v7 = [(SBSwitcherModifierTimelineEntry *)self->_entry responseSnapshot];
-      v9 = [v7 responseNames];
-      v8 = [v9 count];
+      responseSnapshot = [(SBSwitcherModifierTimelineEntry *)self->_entry responseSnapshot];
+      responseNames = [responseSnapshot responseNames];
+      v8 = [responseNames count];
     }
 
     else
     {
-      if (a4 != 1)
+      if (section != 1)
       {
         v8 = 0;
         goto LABEL_9;
       }
 
-      v7 = [(SBSwitcherModifierTimelineEntry *)self->_entry stackSnapshotAfterEvent];
-      v8 = [(SBModifierTimelineDetailViewController *)self _numberOfModifiersInStackSnapshot:v7];
+      responseSnapshot = [(SBSwitcherModifierTimelineEntry *)self->_entry stackSnapshotAfterEvent];
+      v8 = [(SBModifierTimelineDetailViewController *)self _numberOfModifiersInStackSnapshot:responseSnapshot];
     }
   }
 
@@ -110,45 +110,45 @@ LABEL_9:
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"Cell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"Cell"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"Cell"];
   }
 
   [v7 setAccessoryType:1];
-  if (![v6 section])
+  if (![pathCopy section])
   {
-    v8 = [v7 textLabel];
-    v9 = [(SBSwitcherModifierTimelineEntry *)self->_entry eventSnapshot];
-    v10 = [v9 eventName];
-    v11 = v8;
+    textLabel = [v7 textLabel];
+    eventSnapshot = [(SBSwitcherModifierTimelineEntry *)self->_entry eventSnapshot];
+    eventName = [eventSnapshot eventName];
+    v11 = textLabel;
     goto LABEL_7;
   }
 
-  if ([v6 section] == 1)
+  if ([pathCopy section] == 1)
   {
-    v8 = -[SBModifierTimelineDetailViewController _stackSnapshotAtIndex:](self, "_stackSnapshotAtIndex:", [v6 row]);
-    v9 = [v7 textLabel];
-    v10 = [v8 modifierName];
-    v11 = v9;
+    textLabel = -[SBModifierTimelineDetailViewController _stackSnapshotAtIndex:](self, "_stackSnapshotAtIndex:", [pathCopy row]);
+    eventSnapshot = [v7 textLabel];
+    eventName = [textLabel modifierName];
+    v11 = eventSnapshot;
 LABEL_7:
-    [v11 setText:v10];
+    [v11 setText:eventName];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  if ([v6 section] == 2)
+  if ([pathCopy section] == 2)
   {
-    v8 = [v7 textLabel];
-    v9 = [(SBSwitcherModifierTimelineEntry *)self->_entry responseSnapshot];
-    v10 = [v9 responseNames];
-    v13 = [v10 objectAtIndex:{objc_msgSend(v6, "row")}];
-    [v8 setText:v13];
+    textLabel = [v7 textLabel];
+    eventSnapshot = [(SBSwitcherModifierTimelineEntry *)self->_entry responseSnapshot];
+    eventName = [eventSnapshot responseNames];
+    v13 = [eventName objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+    [textLabel setText:v13];
 
     goto LABEL_8;
   }
@@ -158,69 +158,69 @@ LABEL_9:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v23 = a4;
-  [a3 deselectRowAtIndexPath:v23 animated:1];
-  if (![v23 section])
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  if (![pathCopy section])
   {
-    v6 = [(SBSwitcherModifierTimelineEntry *)self->_entry eventSnapshot];
+    eventSnapshot = [(SBSwitcherModifierTimelineEntry *)self->_entry eventSnapshot];
     v7 = 1008;
     [(SBModifierTimelineTextDetailViewController *)self->_textDetailViewController prepareForReuse];
     textDetailViewController = self->_textDetailViewController;
-    v11 = [v6 eventName];
-    [(SBModifierTimelineTextDetailViewController *)textDetailViewController setTitle:v11];
+    eventName = [eventSnapshot eventName];
+    [(SBModifierTimelineTextDetailViewController *)textDetailViewController setTitle:eventName];
 
     v12 = self->_textDetailViewController;
-    v13 = [(SBModifierTimelineDetailViewController *)self _prettyStringForEventPredicateDetails:v6];
+    v13 = [(SBModifierTimelineDetailViewController *)self _prettyStringForEventPredicateDetails:eventSnapshot];
     [(SBModifierTimelineTextDetailViewController *)v12 setAttributedText:v13];
 
     goto LABEL_5;
   }
 
-  if ([v23 section] == 1)
+  if ([pathCopy section] == 1)
   {
-    v6 = -[SBModifierTimelineDetailViewController _stackSnapshotAtIndex:](self, "_stackSnapshotAtIndex:", [v23 row]);
+    eventSnapshot = -[SBModifierTimelineDetailViewController _stackSnapshotAtIndex:](self, "_stackSnapshotAtIndex:", [pathCopy row]);
     v7 = 1000;
     modifierDetailViewController = self->_modifierDetailViewController;
-    v9 = [v6 modifierName];
-    [(SBModifierTimelineModifierDetailViewController *)modifierDetailViewController setTitle:v9];
+    modifierName = [eventSnapshot modifierName];
+    [(SBModifierTimelineModifierDetailViewController *)modifierDetailViewController setTitle:modifierName];
 
-    [(SBModifierTimelineModifierDetailViewController *)self->_modifierDetailViewController setStackSnapshot:v6];
+    [(SBModifierTimelineModifierDetailViewController *)self->_modifierDetailViewController setStackSnapshot:eventSnapshot];
 LABEL_5:
-    v14 = [(SBModifierTimelineDetailViewController *)self navigationController];
-    [v14 pushViewController:*(&self->super.super.super.isa + v7) animated:1];
+    navigationController = [(SBModifierTimelineDetailViewController *)self navigationController];
+    [navigationController pushViewController:*(&self->super.super.super.isa + v7) animated:1];
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v23 section] == 2)
+  if ([pathCopy section] == 2)
   {
     [(SBModifierTimelineTextDetailViewController *)self->_textDetailViewController prepareForReuse];
     v15 = self->_textDetailViewController;
-    v16 = [(SBSwitcherModifierTimelineEntry *)self->_entry responseSnapshot];
-    v17 = [v16 responseNames];
-    v18 = [v17 objectAtIndex:{objc_msgSend(v23, "row")}];
+    responseSnapshot = [(SBSwitcherModifierTimelineEntry *)self->_entry responseSnapshot];
+    responseNames = [responseSnapshot responseNames];
+    v18 = [responseNames objectAtIndex:{objc_msgSend(pathCopy, "row")}];
     [(SBModifierTimelineTextDetailViewController *)v15 setTitle:v18];
 
     v19 = self->_textDetailViewController;
-    v20 = [(SBSwitcherModifierTimelineEntry *)self->_entry responseSnapshot];
-    v21 = [v20 responseDescriptions];
-    v22 = [v21 objectAtIndex:{objc_msgSend(v23, "row")}];
+    responseSnapshot2 = [(SBSwitcherModifierTimelineEntry *)self->_entry responseSnapshot];
+    responseDescriptions = [responseSnapshot2 responseDescriptions];
+    v22 = [responseDescriptions objectAtIndex:{objc_msgSend(pathCopy, "row")}];
     [(SBModifierTimelineTextDetailViewController *)v19 setText:v22];
 
-    v6 = [(SBModifierTimelineDetailViewController *)self navigationController];
-    [v6 pushViewController:self->_textDetailViewController animated:1];
+    eventSnapshot = [(SBModifierTimelineDetailViewController *)self navigationController];
+    [eventSnapshot pushViewController:self->_textDetailViewController animated:1];
     goto LABEL_6;
   }
 
 LABEL_7:
 }
 
-- (int64_t)_numberOfModifiersInStackSnapshot:(id)a3
+- (int64_t)_numberOfModifiersInStackSnapshot:(id)snapshot
 {
-  v3 = a3;
+  snapshotCopy = snapshot;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -230,14 +230,14 @@ LABEL_7:
   v6[2] = __76__SBModifierTimelineDetailViewController__numberOfModifiersInStackSnapshot___block_invoke;
   v6[3] = &unk_2783C2C58;
   v6[4] = &v7;
-  [v3 enumerateModifierSnapshots:v6];
+  [snapshotCopy enumerateModifierSnapshots:v6];
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
 
   return v4;
 }
 
-- (id)_stackSnapshotAtIndex:(int64_t)a3
+- (id)_stackSnapshotAtIndex:(int64_t)index
 {
   v9 = 0;
   v10 = &v9;
@@ -249,15 +249,15 @@ LABEL_7:
   v8[1] = v8;
   v8[2] = 0x2020000000;
   v8[3] = 0;
-  v4 = [(SBSwitcherModifierTimelineEntry *)self->_entry stackSnapshotAfterEvent];
+  stackSnapshotAfterEvent = [(SBSwitcherModifierTimelineEntry *)self->_entry stackSnapshotAfterEvent];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__SBModifierTimelineDetailViewController__stackSnapshotAtIndex___block_invoke;
   v7[3] = &unk_2783C3DD0;
   v7[5] = &v9;
-  v7[6] = a3;
+  v7[6] = index;
   v7[4] = v8;
-  [v4 enumerateModifierSnapshots:v7];
+  [stackSnapshotAfterEvent enumerateModifierSnapshots:v7];
 
   v5 = v10[5];
   _Block_object_dispose(v8, 8);
@@ -284,18 +284,18 @@ void __64__SBModifierTimelineDetailViewController__stackSnapshotAtIndex___block_
   *(v7 + 24) = v8 + 1;
 }
 
-- (id)_prettyStringForEventPredicateDetails:(id)a3
+- (id)_prettyStringForEventPredicateDetails:(id)details
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  detailsCopy = details;
   v4 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v19 = v3;
-  v5 = [v3 eventDescription];
-  v6 = [v5 componentsSeparatedByString:@"\n"];
+  v19 = detailsCopy;
+  eventDescription = [detailsCopy eventDescription];
+  v6 = [eventDescription componentsSeparatedByString:@"\n"];
 
   obj = v6;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v27 count:16];

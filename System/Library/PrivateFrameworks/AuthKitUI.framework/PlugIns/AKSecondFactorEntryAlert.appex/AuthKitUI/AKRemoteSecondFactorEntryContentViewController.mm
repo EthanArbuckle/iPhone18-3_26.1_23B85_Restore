@@ -2,7 +2,7 @@
 - (void)_didEnterNewCode;
 - (void)_invalidatePreferredContentSize;
 - (void)dealloc;
-- (void)getPreferredContentSizeWithReplyBlock:(id)a3;
+- (void)getPreferredContentSizeWithReplyBlock:(id)block;
 - (void)loadView;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -10,16 +10,16 @@
 
 @implementation AKRemoteSecondFactorEntryContentViewController
 
-- (void)getPreferredContentSizeWithReplyBlock:(id)a3
+- (void)getPreferredContentSizeWithReplyBlock:(id)block
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, block);
   if (location[0])
   {
     v5 = location[0];
-    [(AKRemoteSecondFactorEntryContentViewController *)v7 preferredContentSize];
+    [(AKRemoteSecondFactorEntryContentViewController *)selfCopy preferredContentSize];
     v5[2](v3, v4);
   }
 
@@ -28,55 +28,55 @@
 
 - (void)loadView
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v7.receiver = self;
   v7.super_class = AKRemoteSecondFactorEntryContentViewController;
   [(AKSecondFactorCodeEntryContentViewController *)&v7 loadView];
-  v3 = [(AKRemoteSecondFactorEntryContentViewController *)v9 view];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:1];
+  view = [(AKRemoteSecondFactorEntryContentViewController *)selfCopy view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:1];
 
-  v4 = [(AKRemoteSecondFactorEntryContentViewController *)v9 view];
-  [v4 systemLayoutSizeFittingSize:{UILayoutFittingExpandedSize.width, UILayoutFittingExpandedSize.height}];
+  view2 = [(AKRemoteSecondFactorEntryContentViewController *)selfCopy view];
+  [view2 systemLayoutSizeFittingSize:{UILayoutFittingExpandedSize.width, UILayoutFittingExpandedSize.height}];
   v6 = v2;
 
-  [(AKRemoteSecondFactorEntryContentViewController *)v9 setPreferredContentSize:270.0, v6];
+  [(AKRemoteSecondFactorEntryContentViewController *)selfCopy setPreferredContentSize:270.0, v6];
   v5 = +[NSNotificationCenter defaultCenter];
-  [(NSNotificationCenter *)v5 addObserver:v9 selector:"_didEnterNewCode" name:@"AKSecondFactorCodeEntryContentViewControllerDidEnterCodeNotification" object:0];
+  [(NSNotificationCenter *)v5 addObserver:selfCopy selector:"_didEnterNewCode" name:@"AKSecondFactorCodeEntryContentViewControllerDidEnterCodeNotification" object:0];
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = +[NSNotificationCenter defaultCenter];
-  [(NSNotificationCenter *)v2 removeObserver:v5 name:@"AKSecondFactorCodeEntryContentViewControllerDidEnterCodeNotification" object:0];
+  [(NSNotificationCenter *)v2 removeObserver:selfCopy name:@"AKSecondFactorCodeEntryContentViewControllerDidEnterCodeNotification" object:0];
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = AKRemoteSecondFactorEntryContentViewController;
   [(AKSecondFactorCodeEntryContentViewController *)&v3 dealloc];
 }
 
 - (void)_didEnterNewCode
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(AKSecondFactorCodeEntryContentViewController *)v8 generatedCode];
-    sub_100001370(v9, v6);
+    generatedCode = [(AKSecondFactorCodeEntryContentViewController *)selfCopy generatedCode];
+    sub_100001370(v9, generatedCode);
     _os_log_impl(&_mh_execute_header, location[0], OS_LOG_TYPE_DEFAULT, "Login code has been entered. Notifying. %@", v9, 0xCu);
   }
 
   objc_storeStrong(location, 0);
-  v5 = [(AKSecondFactorCodeEntryContentViewController *)v8 generatedCode];
+  generatedCode2 = [(AKSecondFactorCodeEntryContentViewController *)selfCopy generatedCode];
 
-  if (v5)
+  if (generatedCode2)
   {
     key = _AKAppleIDLoginCodeKey;
-    v4 = [(AKSecondFactorCodeEntryContentViewController *)v8 generatedCode];
-    CFPreferencesSetAppValue(key, v4, kCFPreferencesAnyApplication);
+    generatedCode3 = [(AKSecondFactorCodeEntryContentViewController *)selfCopy generatedCode];
+    CFPreferencesSetAppValue(key, generatedCode3, kCFPreferencesAnyApplication);
 
     CFPreferencesSynchronize(kCFPreferencesAnyApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   }
@@ -87,29 +87,29 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = AKRemoteSecondFactorEntryContentViewController;
   [(AKRemoteSecondFactorEntryContentViewController *)&v2 viewDidLayoutSubviews];
-  [(AKRemoteSecondFactorEntryContentViewController *)v4 _invalidatePreferredContentSize];
+  [(AKRemoteSecondFactorEntryContentViewController *)selfCopy _invalidatePreferredContentSize];
 }
 
 - (void)viewDidLoad
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = AKRemoteSecondFactorEntryContentViewController;
   [(AKRemoteSecondFactorEntryContentViewController *)&v2 viewDidLoad];
-  [(AKRemoteSecondFactorEntryContentViewController *)v4 _invalidatePreferredContentSize];
+  [(AKRemoteSecondFactorEntryContentViewController *)selfCopy _invalidatePreferredContentSize];
 }
 
 - (void)_invalidatePreferredContentSize
 {
-  v4 = [(AKRemoteSecondFactorEntryContentViewController *)self _remoteViewControllerProxy];
+  _remoteViewControllerProxy = [(AKRemoteSecondFactorEntryContentViewController *)self _remoteViewControllerProxy];
   [(AKRemoteSecondFactorEntryContentViewController *)self preferredContentSize];
-  [v4 setPreferredContentSize:{v2, v3}];
+  [_remoteViewControllerProxy setPreferredContentSize:{v2, v3}];
 }
 
 @end

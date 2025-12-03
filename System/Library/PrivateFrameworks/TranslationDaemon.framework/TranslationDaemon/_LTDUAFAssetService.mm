@@ -1,37 +1,37 @@
 @interface _LTDUAFAssetService
-+ (BOOL)_ensureAssetDownloadCompletion:(id)a3 progress:(id)a4;
++ (BOOL)_ensureAssetDownloadCompletion:(id)completion progress:(id)progress;
 + (id)_allAssetLocales;
 + (id)_allAssetSpecifiers;
 + (id)_allAssetSpecifiersByLocaleId;
 + (id)_catalog;
 + (id)_configBundleURL;
 + (id)_deferredTimerQueue;
-+ (id)_errorFor:(int64_t)a3 message:(id)a4;
++ (id)_errorFor:(int64_t)for message:(id)message;
 + (id)_queue;
 + (id)_requiredAssetSpecifiers;
 + (id)_subscribedAssetSpecifiers;
 + (id)_subscriptions;
-+ (id)assetUsageValuesForAssetType:(unint64_t)a3;
++ (id)assetUsageValuesForAssetType:(unint64_t)type;
 + (id)pendingDownloadSchedulingAssetsNameToEntry;
-+ (id)queryAssetType:(id)a3 filter:(unint64_t)a4 error:(id *)a5;
-+ (unint64_t)stateForAsset:(id)a3;
++ (id)queryAssetType:(id)type filter:(unint64_t)filter error:(id *)error;
++ (unint64_t)stateForAsset:(id)asset;
 + (void)_cancelDeferredUnsubscribeTimer;
 + (void)_catalog;
 + (void)_deferredUnsubscribe;
-+ (void)_downloadAsset:(id)a3 options:(unint64_t)a4 progress:(id)a5 completion:(id)a6;
-+ (void)_registerChangeHandler:(id)a3;
-+ (void)_registerForAsset:(id)a3 options:(unint64_t)a4 progress:(id)a5 completion:(id)a6;
-+ (void)_registerOneTimeChangeHandler:(id)a3;
-+ (void)_scheduleNextDownloadIfNeededWithCompletedDownloadEntry:(id)a3;
-+ (void)_subscribe:(id)a3 completion:(id)a4;
-+ (void)_subscribeWithAssetSpecifiers:(id)a3 completion:(id)a4;
-+ (void)_unsubscribe:(id)a3 completion:(id)a4;
-+ (void)_unsubscribeWithAssetSpecifiers:(id)a3 completion:(id)a4;
++ (void)_downloadAsset:(id)asset options:(unint64_t)options progress:(id)progress completion:(id)completion;
++ (void)_registerChangeHandler:(id)handler;
++ (void)_registerForAsset:(id)asset options:(unint64_t)options progress:(id)progress completion:(id)completion;
++ (void)_registerOneTimeChangeHandler:(id)handler;
++ (void)_scheduleNextDownloadIfNeededWithCompletedDownloadEntry:(id)entry;
++ (void)_subscribe:(id)_subscribe completion:(id)completion;
++ (void)_subscribeWithAssetSpecifiers:(id)specifiers completion:(id)completion;
++ (void)_unsubscribe:(id)_unsubscribe completion:(id)completion;
++ (void)_unsubscribeWithAssetSpecifiers:(id)specifiers completion:(id)completion;
 + (void)_updateDeferredUnsubscribeTimer;
-+ (void)downloadAsset:(id)a3 options:(unint64_t)a4 progress:(id)a5 completion:(id)a6;
-+ (void)downloadCatalogForAssetType:(id)a3 completion:(id)a4;
-+ (void)purgeAsset:(id)a3 completion:(id)a4;
-+ (void)queryAssetType:(id)a3 filter:(unint64_t)a4 completion:(id)a5;
++ (void)downloadAsset:(id)asset options:(unint64_t)options progress:(id)progress completion:(id)completion;
++ (void)downloadCatalogForAssetType:(id)type completion:(id)completion;
++ (void)purgeAsset:(id)asset completion:(id)completion;
++ (void)queryAssetType:(id)type filter:(unint64_t)filter completion:(id)completion;
 @end
 
 @implementation _LTDUAFAssetService
@@ -74,20 +74,20 @@
 
 + (id)_configBundleURL
 {
-  v2 = [MEMORY[0x277D779F8] sharedManager];
-  v3 = [v2 retrieveAssetSet:@"com.apple.sequoia.asset" usages:&unk_2848681A8];
+  mEMORY[0x277D779F8] = [MEMORY[0x277D779F8] sharedManager];
+  v3 = [mEMORY[0x277D779F8] retrieveAssetSet:@"com.apple.sequoia.asset" usages:&unk_2848681A8];
 
-  v4 = [v3 assets];
-  v5 = [v4 objectForKeyedSubscript:@"com.apple.sequoia.asset.config"];
-  v6 = [v5 location];
+  assets = [v3 assets];
+  v5 = [assets objectForKeyedSubscript:@"com.apple.sequoia.asset.config"];
+  location = [v5 location];
 
-  return v6;
+  return location;
 }
 
-+ (id)assetUsageValuesForAssetType:(unint64_t)a3
++ (id)assetUsageValuesForAssetType:(unint64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [_LTDUAFBridge assetUsagesForAssetType:a3];
+  v3 = [_LTDUAFBridge assetUsagesForAssetType:type];
   v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v3, "count")}];
   v15 = 0u;
   v16 = 0u;
@@ -109,8 +109,8 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [MEMORY[0x277D779F8] sharedManager];
-        v12 = [v11 knownUsagesForAssetSet:@"com.apple.sequoia.asset" usageType:v10];
+        mEMORY[0x277D779F8] = [MEMORY[0x277D779F8] sharedManager];
+        v12 = [mEMORY[0x277D779F8] knownUsagesForAssetSet:@"com.apple.sequoia.asset" usageType:v10];
 
         [v4 setObject:v12 forKeyedSubscript:v10];
       }
@@ -144,7 +144,7 @@
   block[1] = 3221225472;
   block[2] = __52___LTDUAFAssetService__allAssetSpecifiersByLocaleId__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_allAssetSpecifiersByLocaleId_onceToken != -1)
   {
     dispatch_once(&_allAssetSpecifiersByLocaleId_onceToken, block);
@@ -161,7 +161,7 @@
   block[1] = 3221225472;
   block[2] = __42___LTDUAFAssetService__allAssetSpecifiers__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_allAssetSpecifiers_onceToken != -1)
   {
     dispatch_once(&_allAssetSpecifiers_onceToken, block);
@@ -176,13 +176,13 @@
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [a1 _allAssetSpecifiersByLocaleId];
+  _allAssetSpecifiersByLocaleId = [self _allAssetSpecifiersByLocaleId];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a1 _selectedLocales];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _selectedLocales = [self _selectedLocales];
+  v6 = [_selectedLocales countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -193,14 +193,14 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_selectedLocales);
         }
 
-        v10 = [v4 objectForKeyedSubscript:*(*(&v13 + 1) + 8 * i)];
+        v10 = [_allAssetSpecifiersByLocaleId objectForKeyedSubscript:*(*(&v13 + 1) + 8 * i)];
         [v3 unionSet:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [_selectedLocales countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -214,8 +214,8 @@
 
 + (id)_subscriptions
 {
-  v2 = [MEMORY[0x277D779F8] sharedManager];
-  v3 = [v2 subscriptionsForSubscriber:@"com.apple.translationd.uaf"];
+  mEMORY[0x277D779F8] = [MEMORY[0x277D779F8] sharedManager];
+  v3 = [mEMORY[0x277D779F8] subscriptionsForSubscriber:@"com.apple.translationd.uaf"];
 
   v4 = [MEMORY[0x277CBEB98] setWithArray:v3];
 
@@ -226,12 +226,12 @@
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [a1 _subscriptions];
+  _subscriptions = [self _subscriptions];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [_subscriptions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -242,14 +242,14 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_subscriptions);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) name];
-        [v3 addObject:v9];
+        name = [*(*(&v12 + 1) + 8 * i) name];
+        [v3 addObject:name];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [_subscriptions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -285,14 +285,14 @@
 
   os_unfair_lock_lock(&_subscriptionLock_0);
   v8 = objc_opt_new();
-  v9 = [a1 _allAssetSpecifiers];
-  v50 = [v9 mutableCopy];
+  _allAssetSpecifiers = [self _allAssetSpecifiers];
+  v50 = [_allAssetSpecifiers mutableCopy];
 
-  v10 = [a1 _requiredAssetSpecifiers];
-  v11 = [v10 mutableCopy];
+  _requiredAssetSpecifiers = [self _requiredAssetSpecifiers];
+  v11 = [_requiredAssetSpecifiers mutableCopy];
 
-  v12 = [a1 _subscribedAssetSpecifiers];
-  v13 = [v12 mutableCopy];
+  _subscribedAssetSpecifiers = [self _subscribedAssetSpecifiers];
+  v13 = [_subscribedAssetSpecifiers mutableCopy];
 
   v14 = [v11 mutableCopy];
   [v14 minusSet:v13];
@@ -314,12 +314,12 @@
       _os_log_impl(&dword_232E53000, v16, OS_LOG_TYPE_DEFAULT, "Updating subscription with %{public}@", buf, 0xCu);
     }
 
-    [a1 _subscribeWithAssetSpecifiers:v11 completion:0];
+    [self _subscribeWithAssetSpecifiers:v11 completion:0];
   }
 
   v51 = v14;
   v52 = v11;
-  v54 = a1;
+  selfCopy = self;
   v72 = 0u;
   v73 = 0u;
   v70 = 0u;
@@ -342,19 +342,19 @@
 
         v61 = v18;
         v19 = [_LTDUAFBridge assetUsagesForAssetSpecifier:*(*(&v70 + 1) + 8 * v18)];
-        v20 = [MEMORY[0x277D779F8] sharedManager];
+        mEMORY[0x277D779F8] = [MEMORY[0x277D779F8] sharedManager];
         v60 = v19;
-        v21 = [v20 retrieveAssetSet:@"com.apple.sequoia.asset" usages:v19];
+        v21 = [mEMORY[0x277D779F8] retrieveAssetSet:@"com.apple.sequoia.asset" usages:v19];
 
         v59 = v21;
-        v22 = [v21 assets];
+        assets = [v21 assets];
         v66 = 0u;
         v67 = 0u;
         v68 = 0u;
         v69 = 0u;
-        v58 = v22;
-        v23 = [v22 allValues];
-        v24 = [v23 countByEnumeratingWithState:&v66 objects:v77 count:16];
+        v58 = assets;
+        allValues = [assets allValues];
+        v24 = [allValues countByEnumeratingWithState:&v66 objects:v77 count:16];
         if (v24)
         {
           v25 = v24;
@@ -365,12 +365,12 @@
             {
               if (*v67 != v26)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(allValues);
               }
 
               v28 = *(*(&v66 + 1) + 8 * i);
-              v29 = [v28 metadata];
-              v30 = [v29 objectForKeyedSubscript:v17];
+              metadata = [v28 metadata];
+              v30 = [metadata objectForKeyedSubscript:v17];
 
               if (v30)
               {
@@ -407,7 +407,7 @@
               }
             }
 
-            v25 = [v23 countByEnumeratingWithState:&v66 objects:v77 count:16];
+            v25 = [allValues countByEnumeratingWithState:&v66 objects:v77 count:16];
           }
 
           while (v25);
@@ -472,7 +472,7 @@
     while (v37);
   }
 
-  [v54 _updateDeferredUnsubscribeTimer];
+  [selfCopy _updateDeferredUnsubscribeTimer];
   os_unfair_lock_unlock(&_subscriptionLock_0);
   v44 = _LTOSLogAssets();
   v45 = v44;
@@ -482,60 +482,60 @@
     _os_signpost_emit_with_name_impl(&dword_232E53000, v45, OS_SIGNPOST_INTERVAL_END, spid, "uafCatalog", "end", v75, 2u);
   }
 
-  v46 = [v8 allValues];
+  allValues2 = [v8 allValues];
 
   v47 = *MEMORY[0x277D85DE8];
 
-  return v46;
+  return allValues2;
 }
 
-+ (void)queryAssetType:(id)a3 filter:(unint64_t)a4 completion:(id)a5
++ (void)queryAssetType:(id)type filter:(unint64_t)filter completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 _queue];
+  typeCopy = type;
+  completionCopy = completion;
+  _queue = [self _queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __56___LTDUAFAssetService_queryAssetType_filter_completion___block_invoke;
   v13[3] = &unk_2789B5818;
-  v16 = a1;
-  v17 = a4;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  selfCopy = self;
+  filterCopy = filter;
+  v14 = typeCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = typeCopy;
+  dispatch_async(_queue, v13);
 }
 
-+ (id)queryAssetType:(id)a3 filter:(unint64_t)a4 error:(id *)a5
++ (id)queryAssetType:(id)type filter:(unint64_t)filter error:(id *)error
 {
-  v6 = [a1 _catalog];
-  v7 = v6;
-  if (a4 > 2)
+  _catalog = [self _catalog];
+  v7 = _catalog;
+  if (filter > 2)
   {
     v8 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v8 = [v6 _ltCompactMap:*(&off_2789B6A18 + a4)];
+    v8 = [_catalog _ltCompactMap:*(&off_2789B6A18 + filter)];
   }
 
   return v8;
 }
 
-+ (void)downloadAsset:(id)a3 options:(unint64_t)a4 progress:(id)a5 completion:(id)a6
++ (void)downloadAsset:(id)asset options:(unint64_t)options progress:(id)progress completion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
+  assetCopy = asset;
+  completionCopy = completion;
+  progressCopy = progress;
   os_unfair_lock_lock(&_downloadThrottlingLock_0);
-  v13 = [[_LTDAssetModelDownloadEntry alloc] initWithAsset:v10 options:a4 progress:v12 completion:v11];
+  v13 = [[_LTDAssetModelDownloadEntry alloc] initWithAsset:assetCopy options:options progress:progressCopy completion:completionCopy];
 
-  v14 = [a1 pendingDownloadSchedulingAssetsNameToEntry];
-  v15 = [v10 assetName];
-  v16 = [v14 objectForKeyedSubscript:v15];
+  pendingDownloadSchedulingAssetsNameToEntry = [self pendingDownloadSchedulingAssetsNameToEntry];
+  assetName = [assetCopy assetName];
+  v16 = [pendingDownloadSchedulingAssetsNameToEntry objectForKeyedSubscript:assetName];
 
   if (v16)
   {
@@ -543,53 +543,53 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [v16 asset];
-      v20 = [v19 assetName];
+      asset = [v16 asset];
+      assetName2 = [asset assetName];
       v32 = 138412290;
-      v33 = v20;
+      v33 = assetName2;
       _os_log_impl(&dword_232E53000, v18, OS_LOG_TYPE_DEFAULT, "UAF Asset downloads found existing same entry %@", &v32, 0xCu);
     }
 
-    v21 = [v16 duplicateEntries];
-    [v21 addObject:v13];
+    duplicateEntries = [v16 duplicateEntries];
+    [duplicateEntries addObject:v13];
 
     os_unfair_lock_unlock(&_downloadThrottlingLock_0);
   }
 
   else
   {
-    v22 = [a1 pendingDownloadSchedulingAssetsNameToEntry];
-    v23 = [v10 assetName];
-    [v22 setObject:v13 forKey:v23];
+    pendingDownloadSchedulingAssetsNameToEntry2 = [self pendingDownloadSchedulingAssetsNameToEntry];
+    assetName3 = [assetCopy assetName];
+    [pendingDownloadSchedulingAssetsNameToEntry2 setObject:v13 forKey:assetName3];
 
     v24 = _LTOSLogAssets();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       v25 = v24;
-      v26 = [(_LTDAssetModelDownloadEntry *)v13 asset];
-      v27 = [v26 assetName];
+      asset2 = [(_LTDAssetModelDownloadEntry *)v13 asset];
+      assetName4 = [asset2 assetName];
       v32 = 138412290;
-      v33 = v27;
+      v33 = assetName4;
       _os_log_impl(&dword_232E53000, v25, OS_LOG_TYPE_DEFAULT, "UAF Asset downloads downloads starting first download of %@", &v32, 0xCu);
     }
 
     os_unfair_lock_unlock(&_downloadThrottlingLock_0);
     os_unfair_lock_lock(&_subscriptionLock_0);
-    [a1 _cancelDeferredUnsubscribeTimer];
+    [self _cancelDeferredUnsubscribeTimer];
     os_unfair_lock_unlock(&_subscriptionLock_0);
-    v28 = [(_LTDAssetModelDownloadEntry *)v13 options];
-    v29 = [(_LTDAssetModelDownloadEntry *)v13 progress];
-    v30 = [(_LTDAssetModelDownloadEntry *)v13 completion];
-    [a1 _downloadAsset:v13 options:v28 progress:v29 completion:v30];
+    options = [(_LTDAssetModelDownloadEntry *)v13 options];
+    progress = [(_LTDAssetModelDownloadEntry *)v13 progress];
+    completion = [(_LTDAssetModelDownloadEntry *)v13 completion];
+    [self _downloadAsset:v13 options:options progress:progress completion:completion];
   }
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_scheduleNextDownloadIfNeededWithCompletedDownloadEntry:(id)a3
++ (void)_scheduleNextDownloadIfNeededWithCompletedDownloadEntry:(id)entry
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entryCopy = entry;
   v5 = _LTOSLogAssets();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -598,16 +598,16 @@
   }
 
   os_unfair_lock_lock(&_downloadThrottlingLock_0);
-  if (v4)
+  if (entryCopy)
   {
-    v6 = [v4 asset];
-    v7 = [v6 progress];
-    v8 = [v7 offlineState];
+    asset = [entryCopy asset];
+    progress = [asset progress];
+    offlineState = [progress offlineState];
 
-    if (v8 == 2)
+    if (offlineState == 2)
     {
-      v9 = [v4 duplicateEntries];
-      v10 = [v9 count];
+      duplicateEntries = [entryCopy duplicateEntries];
+      v10 = [duplicateEntries count];
 
       if (v10)
       {
@@ -615,10 +615,10 @@
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v12 = v11;
-          v13 = [v4 asset];
-          v14 = [v13 assetName];
+          asset2 = [entryCopy asset];
+          assetName = [asset2 assetName];
           *buf = 138412290;
-          v62 = v14;
+          v62 = assetName;
           _os_log_impl(&dword_232E53000, v12, OS_LOG_TYPE_DEFAULT, "UAF Asset downloads successfully finished with deduped entries %@", buf, 0xCu);
         }
 
@@ -626,9 +626,9 @@
         v60 = 0u;
         v57 = 0u;
         v58 = 0u;
-        v56 = v4;
-        v15 = [v4 duplicateEntries];
-        v16 = [v15 countByEnumeratingWithState:&v57 objects:v65 count:16];
+        v56 = entryCopy;
+        duplicateEntries2 = [entryCopy duplicateEntries];
+        v16 = [duplicateEntries2 countByEnumeratingWithState:&v57 objects:v65 count:16];
         if (v16)
         {
           v17 = v16;
@@ -639,7 +639,7 @@
             {
               if (*v58 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(duplicateEntries2);
               }
 
               v20 = *(*(&v57 + 1) + 8 * i);
@@ -647,34 +647,34 @@
               if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
               {
                 v22 = v21;
-                v23 = [v20 asset];
-                v24 = [v23 assetName];
+                asset3 = [v20 asset];
+                assetName2 = [asset3 assetName];
                 *buf = 138412290;
-                v62 = v24;
+                v62 = assetName2;
                 _os_log_impl(&dword_232E53000, v22, OS_LOG_TYPE_DEFAULT, "UAF Asset downloads updating offlineStatus and calling completion on the duplicate entry assets %@", buf, 0xCu);
               }
 
-              v25 = [v20 completion];
-              v25[2](v25, 0);
+              completion = [v20 completion];
+              completion[2](completion, 0);
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v57 objects:v65 count:16];
+            v17 = [duplicateEntries2 countByEnumeratingWithState:&v57 objects:v65 count:16];
           }
 
           while (v17);
         }
 
-        v4 = v56;
-        v26 = [v56 duplicateEntries];
-        [v26 removeAllObjects];
+        entryCopy = v56;
+        duplicateEntries3 = [v56 duplicateEntries];
+        [duplicateEntries3 removeAllObjects];
 
-        a1 = v55;
+        self = v55;
       }
     }
   }
 
-  v27 = [v4 duplicateEntries];
-  v28 = [v27 count];
+  duplicateEntries4 = [entryCopy duplicateEntries];
+  v28 = [duplicateEntries4 count];
 
   if (v28)
   {
@@ -682,62 +682,62 @@
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       v30 = v29;
-      v31 = [v4 asset];
-      v32 = [v31 assetName];
+      asset4 = [entryCopy asset];
+      assetName3 = [asset4 assetName];
       *buf = 138412290;
-      v62 = v32;
+      v62 = assetName3;
       _os_log_impl(&dword_232E53000, v30, OS_LOG_TYPE_DEFAULT, "UAF Asset downloads re-enqueue same assets %@", buf, 0xCu);
     }
 
-    v33 = [v4 duplicateEntries];
-    v34 = [v33 firstObject];
+    duplicateEntries5 = [entryCopy duplicateEntries];
+    firstObject = [duplicateEntries5 firstObject];
 
-    v35 = [v4 duplicateEntries];
-    [v35 removeObjectAtIndex:0];
+    duplicateEntries6 = [entryCopy duplicateEntries];
+    [duplicateEntries6 removeObjectAtIndex:0];
 
-    v36 = [v4 duplicateEntries];
-    [v34 setDuplicateEntries:v36];
+    duplicateEntries7 = [entryCopy duplicateEntries];
+    [firstObject setDuplicateEntries:duplicateEntries7];
 
-    v37 = [a1 pendingDownloadSchedulingAssetsNameToEntry];
-    v38 = [v34 asset];
-    v39 = [v38 assetName];
-    [v37 setObject:v34 forKey:v39];
+    pendingDownloadSchedulingAssetsNameToEntry = [self pendingDownloadSchedulingAssetsNameToEntry];
+    asset5 = [firstObject asset];
+    assetName4 = [asset5 assetName];
+    [pendingDownloadSchedulingAssetsNameToEntry setObject:firstObject forKey:assetName4];
 
     os_unfair_lock_unlock(&_downloadThrottlingLock_0);
-    v40 = [v34 options];
-    v41 = [v34 progress];
-    v42 = [v34 completion];
-    [a1 _downloadAsset:v34 options:v40 progress:v41 completion:v42];
+    options = [firstObject options];
+    progress2 = [firstObject progress];
+    completion2 = [firstObject completion];
+    [self _downloadAsset:firstObject options:options progress:progress2 completion:completion2];
   }
 
   else
   {
-    v43 = [a1 pendingDownloadSchedulingAssetsNameToEntry];
-    v44 = [v4 asset];
-    v45 = [v44 assetName];
-    [v43 removeObjectForKey:v45];
+    pendingDownloadSchedulingAssetsNameToEntry2 = [self pendingDownloadSchedulingAssetsNameToEntry];
+    asset6 = [entryCopy asset];
+    assetName5 = [asset6 assetName];
+    [pendingDownloadSchedulingAssetsNameToEntry2 removeObjectForKey:assetName5];
 
     v46 = _LTOSLogAssets();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
       v47 = v46;
-      v48 = [v4 asset];
-      v49 = [v48 assetName];
-      v50 = [a1 pendingDownloadSchedulingAssetsNameToEntry];
-      v51 = [v50 count];
+      asset7 = [entryCopy asset];
+      assetName6 = [asset7 assetName];
+      pendingDownloadSchedulingAssetsNameToEntry3 = [self pendingDownloadSchedulingAssetsNameToEntry];
+      v51 = [pendingDownloadSchedulingAssetsNameToEntry3 count];
       *buf = 138412546;
-      v62 = v49;
+      v62 = assetName6;
       v63 = 2048;
       v64 = v51;
       _os_log_impl(&dword_232E53000, v47, OS_LOG_TYPE_DEFAULT, "UAF Asset downloads finished downloading assets %@ pending assets count %lu", buf, 0x16u);
     }
 
-    v52 = [a1 pendingDownloadSchedulingAssetsNameToEntry];
-    v53 = [v52 count];
+    pendingDownloadSchedulingAssetsNameToEntry4 = [self pendingDownloadSchedulingAssetsNameToEntry];
+    v53 = [pendingDownloadSchedulingAssetsNameToEntry4 count];
 
     os_unfair_lock_unlock(&_downloadThrottlingLock_0);
     os_unfair_lock_lock(&_subscriptionLock_0);
-    [a1 _updateDeferredUnsubscribeTimer];
+    [self _updateDeferredUnsubscribeTimer];
     os_unfair_lock_unlock(&_subscriptionLock_0);
     if (!v53)
     {
@@ -748,42 +748,42 @@
   v54 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_downloadAsset:(id)a3 options:(unint64_t)a4 progress:(id)a5 completion:(id)a6
++ (void)_downloadAsset:(id)asset options:(unint64_t)options progress:(id)progress completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 asset];
+  assetCopy = asset;
+  progressCopy = progress;
+  completionCopy = completion;
+  asset = [assetCopy asset];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
 LABEL_5:
-    v15 = [a1 _errorFor:15 message:{@"Asset model is not a UAF asset model, abort download"}];
+    v15 = [self _errorFor:15 message:{@"Asset model is not a UAF asset model, abort download"}];
     v16 = _LTOSLogAssets();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       +[_LTDUAFAssetService _downloadAsset:options:progress:completion:];
-      if (!v12)
+      if (!completionCopy)
       {
         goto LABEL_8;
       }
     }
 
-    else if (!v12)
+    else if (!completionCopy)
     {
 LABEL_8:
-      [a1 _scheduleNextDownloadIfNeededWithCompletedDownloadEntry:v10];
+      [self _scheduleNextDownloadIfNeededWithCompletedDownloadEntry:assetCopy];
       goto LABEL_9;
     }
 
-    v12[2](v12, v15);
+    completionCopy[2](completionCopy, v15);
     goto LABEL_8;
   }
 
-  v14 = [v10 asset];
+  asset2 = [assetCopy asset];
 
-  if (!v14)
+  if (!asset2)
   {
     goto LABEL_5;
   }
@@ -792,29 +792,29 @@ LABEL_8:
   v22[1] = 3221225472;
   v22[2] = __66___LTDUAFAssetService__downloadAsset_options_progress_completion___block_invoke;
   v22[3] = &unk_2789B6930;
-  v23 = v11;
+  v23 = progressCopy;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __66___LTDUAFAssetService__downloadAsset_options_progress_completion___block_invoke_2;
   v17[3] = &unk_2789B6958;
-  v18 = v14;
-  v20 = v12;
-  v21 = a1;
-  v19 = v10;
-  v15 = v14;
-  [a1 _registerForAsset:v15 options:a4 progress:v22 completion:v17];
+  v18 = asset2;
+  v20 = completionCopy;
+  selfCopy = self;
+  v19 = assetCopy;
+  v15 = asset2;
+  [self _registerForAsset:v15 options:options progress:v22 completion:v17];
 
 LABEL_9:
 }
 
-+ (void)purgeAsset:(id)a3 completion:(id)a4
++ (void)purgeAsset:(id)asset completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = assetCopy;
   }
 
   else
@@ -826,55 +826,55 @@ LABEL_9:
   v10 = v9;
   if (!v9)
   {
-    v12 = [a1 _errorFor:21 message:{@"Asset model is not a UAF asset mode, abort purge"}];
+    v12 = [self _errorFor:21 message:{@"Asset model is not a UAF asset mode, abort purge"}];
     v13 = _LTOSLogAssets();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       +[_LTDUAFAssetService purgeAsset:completion:];
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!v7)
+    else if (!completionCopy)
     {
       goto LABEL_9;
     }
 
-    v7[2](v7, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
     goto LABEL_9;
   }
 
-  v11 = [v9 assetName];
+  assetName = [v9 assetName];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __45___LTDUAFAssetService_purgeAsset_completion___block_invoke;
   v14[3] = &unk_2789B58D0;
   v15 = v10;
-  v16 = v7;
-  [a1 _unsubscribe:v11 completion:v14];
+  v16 = completionCopy;
+  [self _unsubscribe:assetName completion:v14];
 
   v12 = v15;
 LABEL_9:
 }
 
-+ (void)downloadCatalogForAssetType:(id)a3 completion:(id)a4
++ (void)downloadCatalogForAssetType:(id)type completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 1, 0);
+    (*(completion + 2))(completion, 1, 0);
   }
 }
 
-+ (unint64_t)stateForAsset:(id)a3
++ (unint64_t)stateForAsset:(id)asset
 {
   v3 = MEMORY[0x277D779F8];
-  v4 = a3;
-  v5 = [v3 sharedManager];
-  v6 = [v4 assetName];
+  assetCopy = asset;
+  sharedManager = [v3 sharedManager];
+  assetName = [assetCopy assetName];
 
-  v7 = [v5 downloadStatusForSubscriber:@"com.apple.translationd.uaf" subscriptionName:v6];
+  v7 = [sharedManager downloadStatusForSubscriber:@"com.apple.translationd.uaf" subscriptionName:assetName];
   if (v7 > 7)
   {
     return 1;
@@ -886,12 +886,12 @@ LABEL_9:
   }
 }
 
-+ (void)_subscribe:(id)a3 completion:(id)a4
++ (void)_subscribe:(id)_subscribe completion:(id)completion
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [_LTDUAFBridge assetUsagesForAssetSpecifier:v6];
+  _subscribeCopy = _subscribe;
+  completionCopy = completion;
+  v8 = [_LTDUAFBridge assetUsagesForAssetSpecifier:_subscribeCopy];
   v9 = v8;
   if (v8)
   {
@@ -912,50 +912,50 @@ LABEL_9:
   }
 
   v13 = [v10 dictionaryWithObjects:v11 forKeys:v12 count:1];
-  v14 = [objc_alloc(MEMORY[0x277D77A08]) initWithName:v6 assetSets:v13 usageAliases:0 expires:0];
+  v14 = [objc_alloc(MEMORY[0x277D77A08]) initWithName:_subscribeCopy assetSets:v13 usageAliases:0 expires:0];
   if (!v14)
   {
-    v15 = [a1 _errorFor:15 message:@"Asset subscription for UAF asset model failed"];
+    mEMORY[0x277D779F8] = [self _errorFor:15 message:@"Asset subscription for UAF asset model failed"];
     v18 = _LTOSLogAssets();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       +[_LTDUAFAssetService _subscribe:completion:];
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!v7)
+    else if (!completionCopy)
     {
       goto LABEL_9;
     }
 
-    v7[2](v7, v15);
+    completionCopy[2](completionCopy, mEMORY[0x277D779F8]);
     goto LABEL_9;
   }
 
-  v15 = [MEMORY[0x277D779F8] sharedManager];
+  mEMORY[0x277D779F8] = [MEMORY[0x277D779F8] sharedManager];
   v20 = v14;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v20 count:1];
-  v17 = [a1 _queue];
-  [v15 subscribe:@"com.apple.translationd.uaf" subscriptions:v16 queue:v17 completion:v7];
+  _queue = [self _queue];
+  [mEMORY[0x277D779F8] subscribe:@"com.apple.translationd.uaf" subscriptions:v16 queue:_queue completion:completionCopy];
 
 LABEL_9:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_subscribeWithAssetSpecifiers:(id)a3 completion:(id)a4
++ (void)_subscribeWithAssetSpecifiers:(id)specifiers completion:(id)completion
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v27 = a4;
-  v6 = [MEMORY[0x277CBEB18] array];
+  specifiersCopy = specifiers;
+  completionCopy = completion;
+  array = [MEMORY[0x277CBEB18] array];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v5;
+  obj = specifiersCopy;
   v7 = [obj countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v7)
   {
@@ -972,7 +972,7 @@ LABEL_9:
 
         v11 = *(*(&v29 + 1) + 8 * i);
         v12 = [_LTDUAFBridge assetUsagesForAssetSpecifier:v11];
-        v13 = v12;
+        _queue = v12;
         if (v12)
         {
           v35 = @"com.apple.sequoia.asset";
@@ -995,26 +995,26 @@ LABEL_9:
         v18 = [objc_alloc(MEMORY[0x277D77A08]) initWithName:v11 assetSets:v17 usageAliases:0 expires:0];
         if (!v18)
         {
-          v23 = [a1 _errorFor:15 message:@"Asset subscription for UAF asset model failed"];
+          v23 = [self _errorFor:15 message:@"Asset subscription for UAF asset model failed"];
           v24 = _LTOSLogAssets();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
           {
             +[_LTDUAFAssetService _subscribe:completion:];
           }
 
-          v22 = v27;
+          v22 = completionCopy;
           v20 = obj;
-          if (v27)
+          if (completionCopy)
           {
-            (*(v27 + 2))(v27, v23);
+            (*(completionCopy + 2))(completionCopy, v23);
           }
 
-          v21 = obj;
+          mEMORY[0x277D779F8] = obj;
           goto LABEL_18;
         }
 
         v19 = v18;
-        [v6 addObject:v18];
+        [array addObject:v18];
       }
 
       v8 = [obj countByEnumeratingWithState:&v29 objects:v37 count:16];
@@ -1029,122 +1029,122 @@ LABEL_9:
 
   v20 = obj;
 
-  v21 = [MEMORY[0x277D779F8] sharedManager];
-  v13 = [a1 _queue];
-  v22 = v27;
-  [v21 subscribe:@"com.apple.translationd.uaf" subscriptions:v6 queue:v13 completion:v27];
+  mEMORY[0x277D779F8] = [MEMORY[0x277D779F8] sharedManager];
+  _queue = [self _queue];
+  v22 = completionCopy;
+  [mEMORY[0x277D779F8] subscribe:@"com.apple.translationd.uaf" subscriptions:array queue:_queue completion:completionCopy];
 LABEL_18:
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_unsubscribe:(id)a3 completion:(id)a4
++ (void)_unsubscribe:(id)_unsubscribe completion:(id)completion
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277D779F8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 sharedManager];
-  v13[0] = v8;
+  completionCopy = completion;
+  _unsubscribeCopy = _unsubscribe;
+  sharedManager = [v6 sharedManager];
+  v13[0] = _unsubscribeCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
 
-  v11 = [a1 _queue];
-  [v9 unsubscribe:@"com.apple.translationd.uaf" subscriptionNames:v10 queue:v11 completion:v7];
+  _queue = [self _queue];
+  [sharedManager unsubscribe:@"com.apple.translationd.uaf" subscriptionNames:v10 queue:_queue completion:completionCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_unsubscribeWithAssetSpecifiers:(id)a3 completion:(id)a4
++ (void)_unsubscribeWithAssetSpecifiers:(id)specifiers completion:(id)completion
 {
   v6 = MEMORY[0x277D779F8];
-  v7 = a4;
-  v8 = a3;
-  v10 = [v6 sharedManager];
-  v9 = [a1 _queue];
-  [v10 unsubscribe:@"com.apple.translationd.uaf" subscriptionNames:v8 queue:v9 completion:v7];
+  completionCopy = completion;
+  specifiersCopy = specifiers;
+  sharedManager = [v6 sharedManager];
+  _queue = [self _queue];
+  [sharedManager unsubscribe:@"com.apple.translationd.uaf" subscriptionNames:specifiersCopy queue:_queue completion:completionCopy];
 }
 
-+ (id)_errorFor:(int64_t)a3 message:(id)a4
++ (id)_errorFor:(int64_t)for message:(id)message
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCA9B8];
   v12 = *MEMORY[0x277CCA450];
-  v13[0] = a4;
+  v13[0] = message;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
+  messageCopy = message;
   v8 = [v6 dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  v9 = [v5 errorWithDomain:@"LTTranslationDaemonErrorDomain" code:a3 userInfo:v8];
+  v9 = [v5 errorWithDomain:@"LTTranslationDaemonErrorDomain" code:for userInfo:v8];
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-+ (void)_registerChangeHandler:(id)a3
++ (void)_registerChangeHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D779F8] sharedManager];
-  v6 = [a1 _queue];
+  handlerCopy = handler;
+  mEMORY[0x277D779F8] = [MEMORY[0x277D779F8] sharedManager];
+  _queue = [self _queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46___LTDUAFAssetService__registerChangeHandler___block_invoke;
   v9[3] = &unk_2789B5418;
-  v10 = v4;
-  v7 = v4;
-  v8 = [v5 observeAssetSet:@"com.apple.sequoia.asset" queue:v6 handler:v9];
+  v10 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = [mEMORY[0x277D779F8] observeAssetSet:@"com.apple.sequoia.asset" queue:_queue handler:v9];
 }
 
-+ (void)_registerOneTimeChangeHandler:(id)a3
++ (void)_registerOneTimeChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__6;
   v17 = __Block_byref_object_dispose__6;
   v18 = 0;
-  v5 = [MEMORY[0x277D779F8] sharedManager];
-  v6 = [a1 _queue];
+  mEMORY[0x277D779F8] = [MEMORY[0x277D779F8] sharedManager];
+  _queue = [self _queue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53___LTDUAFAssetService__registerOneTimeChangeHandler___block_invoke;
   v10[3] = &unk_2789B6980;
-  v11 = v4;
+  v11 = handlerCopy;
   v12 = &v13;
-  v7 = v4;
-  v8 = [v5 observeAssetSet:@"com.apple.sequoia.asset" queue:v6 handler:v10];
+  v7 = handlerCopy;
+  v8 = [mEMORY[0x277D779F8] observeAssetSet:@"com.apple.sequoia.asset" queue:_queue handler:v10];
   v9 = v14[5];
   v14[5] = v8;
 
   _Block_object_dispose(&v13, 8);
 }
 
-+ (BOOL)_ensureAssetDownloadCompletion:(id)a3 progress:(id)a4
++ (BOOL)_ensureAssetDownloadCompletion:(id)completion progress:(id)progress
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 assetName];
-  v8 = [_LTDUAFBridge assetUsagesForAssetSpecifier:v7];
+  completionCopy = completion;
+  progressCopy = progress;
+  assetName = [completionCopy assetName];
+  v8 = [_LTDUAFBridge assetUsagesForAssetSpecifier:assetName];
 
-  v9 = [MEMORY[0x277D779F8] sharedManager];
-  v10 = [v9 retrieveAssetSet:@"com.apple.sequoia.asset" usages:v8];
+  mEMORY[0x277D779F8] = [MEMORY[0x277D779F8] sharedManager];
+  v10 = [mEMORY[0x277D779F8] retrieveAssetSet:@"com.apple.sequoia.asset" usages:v8];
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v11 = [v10 assets];
-  v12 = [v11 allValues];
+  assets = [v10 assets];
+  allValues = [assets allValues];
 
-  obj = v12;
-  v13 = [v12 countByEnumeratingWithState:&v36 objects:v44 count:16];
+  obj = allValues;
+  v13 = [allValues countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v13)
   {
     v14 = v13;
     v32 = v10;
     v33 = v8;
-    v34 = v6;
+    v34 = progressCopy;
     v15 = *v37;
     v16 = *MEMORY[0x277D77A20];
     while (2)
@@ -1157,10 +1157,10 @@ LABEL_18:
         }
 
         v18 = *(*(&v36 + 1) + 8 * i);
-        v19 = [v18 metadata];
-        v20 = [v19 objectForKeyedSubscript:v16];
-        v21 = [v5 assetName];
-        v22 = [v20 isEqualToString:v21];
+        metadata = [v18 metadata];
+        v20 = [metadata objectForKeyedSubscript:v16];
+        assetName2 = [completionCopy assetName];
+        v22 = [v20 isEqualToString:assetName2];
 
         if (v22)
         {
@@ -1168,27 +1168,27 @@ LABEL_18:
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
             v25 = v24;
-            v26 = [v18 name];
-            v27 = [v18 location];
+            name = [v18 name];
+            location = [v18 location];
             *buf = 138412546;
-            v41 = v26;
+            v41 = name;
             v42 = 2112;
-            v43 = v27;
+            v43 = location;
             _os_log_impl(&dword_232E53000, v25, OS_LOG_TYPE_DEFAULT, "UAF asset download completed name %@, location %@", buf, 0x16u);
           }
 
-          v28 = [v18 location];
+          location2 = [v18 location];
 
-          v23 = v28 != 0;
+          v23 = location2 != 0;
           v10 = v32;
-          if (v28)
+          if (location2)
           {
-            v29 = [v5 progress];
-            [v29 setOfflineState:2];
+            progress = [completionCopy progress];
+            [progress setOfflineState:2];
           }
 
-          v6 = v34;
-          v34[2](v34, v5);
+          progressCopy = v34;
+          v34[2](v34, completionCopy);
           v8 = v33;
           goto LABEL_16;
         }
@@ -1205,7 +1205,7 @@ LABEL_18:
 
     v23 = 0;
     v8 = v33;
-    v6 = v34;
+    progressCopy = v34;
     v10 = v32;
   }
 
@@ -1220,20 +1220,20 @@ LABEL_16:
   return v23;
 }
 
-+ (void)_registerForAsset:(id)a3 options:(unint64_t)a4 progress:(id)a5 completion:(id)a6
++ (void)_registerForAsset:(id)asset options:(unint64_t)options progress:(id)progress completion:(id)completion
 {
-  v8 = a4;
+  optionsCopy = options;
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  assetCopy = asset;
+  progressCopy = progress;
+  completionCopy = completion;
   v13 = _LTOSLogAssets();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [v10 assetName];
+    assetName = [assetCopy assetName];
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v15;
+    *(&buf + 4) = assetName;
     _os_log_impl(&dword_232E53000, v14, OS_LOG_TYPE_DEFAULT, "UAF asset registration for %{public}@", &buf, 0xCu);
   }
 
@@ -1244,36 +1244,36 @@ LABEL_16:
   v38 = __Block_byref_object_copy__6;
   v39 = __Block_byref_object_dispose__6;
   v40 = 0;
-  if (v8)
+  if (optionsCopy)
   {
     v35 = *MEMORY[0x277D77A40];
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
   }
 
-  v17 = [MEMORY[0x277D779F8] sharedManager];
-  v18 = [v10 assetName];
-  v19 = [a1 _queue];
+  mEMORY[0x277D779F8] = [MEMORY[0x277D779F8] sharedManager];
+  assetName2 = [assetCopy assetName];
+  _queue = [self _queue];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __69___LTDUAFAssetService__registerForAsset_options_progress_completion___block_invoke;
   v30[3] = &unk_2789B69A8;
-  v31 = v10;
-  v32 = v11;
+  v31 = assetCopy;
+  v32 = progressCopy;
   p_buf = &buf;
-  v34 = a1;
+  selfCopy = self;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __69___LTDUAFAssetService__registerForAsset_options_progress_completion___block_invoke_400;
   v24[3] = &unk_2789B69F8;
   v28 = &buf;
-  v20 = v12;
+  v20 = completionCopy;
   v26 = v20;
-  v29 = a1;
+  selfCopy2 = self;
   v21 = v31;
   v25 = v21;
   v22 = v32;
   v27 = v22;
-  [v17 updateAssetsForSubscriber:@"com.apple.translationd.uaf" subscriptionName:v18 policies:v16 queue:v19 detailedProgress:v30 completion:v24];
+  [mEMORY[0x277D779F8] updateAssetsForSubscriber:@"com.apple.translationd.uaf" subscriptionName:assetName2 policies:v16 queue:_queue detailedProgress:v30 completion:v24];
 
   _Block_object_dispose(&buf, 8);
   v23 = *MEMORY[0x277D85DE8];
@@ -1281,15 +1281,15 @@ LABEL_16:
 
 + (void)_updateDeferredUnsubscribeTimer
 {
-  [a1 _cancelDeferredUnsubscribeTimer];
+  [self _cancelDeferredUnsubscribeTimer];
   v3 = _LTOSLogAssets();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     +[(_LTDUAFAssetService *)v3];
   }
 
-  v4 = [a1 _deferredTimerQueue];
-  v5 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v4);
+  _deferredTimerQueue = [self _deferredTimerQueue];
+  v5 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, _deferredTimerQueue);
   v6 = _deferredUnsubscribeTimer_0;
   _deferredUnsubscribeTimer_0 = v5;
 
@@ -1300,7 +1300,7 @@ LABEL_16:
   handler[1] = 3221225472;
   handler[2] = __54___LTDUAFAssetService__updateDeferredUnsubscribeTimer__block_invoke;
   handler[3] = &__block_descriptor_40_e5_v8__0l;
-  handler[4] = a1;
+  handler[4] = self;
   dispatch_source_set_event_handler(_deferredUnsubscribeTimer_0, handler);
   dispatch_resume(_deferredUnsubscribeTimer_0);
 }
@@ -1319,11 +1319,11 @@ LABEL_16:
 {
   v15 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&_subscriptionLock_0);
-  v3 = [a1 _subscribedAssetSpecifiers];
-  v4 = [v3 mutableCopy];
+  _subscribedAssetSpecifiers = [self _subscribedAssetSpecifiers];
+  v4 = [_subscribedAssetSpecifiers mutableCopy];
 
-  v5 = [a1 _requiredAssetSpecifiers];
-  v6 = [v5 mutableCopy];
+  _requiredAssetSpecifiers = [self _requiredAssetSpecifiers];
+  v6 = [_requiredAssetSpecifiers mutableCopy];
 
   v7 = [v4 mutableCopy];
   [v7 minusSet:v6];
@@ -1331,16 +1331,16 @@ LABEL_16:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v7 allObjects];
+    allObjects = [v7 allObjects];
     v13 = 138412290;
-    v14 = v10;
+    v14 = allObjects;
     _os_log_impl(&dword_232E53000, v9, OS_LOG_TYPE_DEFAULT, "Remove orphaned MT subscription for %@", &v13, 0xCu);
   }
 
-  v11 = [v7 allObjects];
-  [a1 _unsubscribeWithAssetSpecifiers:v11 completion:0];
+  allObjects2 = [v7 allObjects];
+  [self _unsubscribeWithAssetSpecifiers:allObjects2 completion:0];
 
-  [a1 _cancelDeferredUnsubscribeTimer];
+  [self _cancelDeferredUnsubscribeTimer];
   os_unfair_lock_unlock(&_subscriptionLock_0);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -1349,10 +1349,10 @@ LABEL_16:
 + (void)_catalog
 {
   v7 = a2;
-  v8 = [a3 name];
-  *a1 = 138543362;
-  *a4 = v8;
-  _os_log_error_impl(&dword_232E53000, v7, OS_LOG_TYPE_ERROR, "No asset specifier found for subscribed asset: %{public}@", a1, 0xCu);
+  name = [a3 name];
+  *self = 138543362;
+  *a4 = name;
+  _os_log_error_impl(&dword_232E53000, v7, OS_LOG_TYPE_ERROR, "No asset specifier found for subscribed asset: %{public}@", self, 0xCu);
 }
 
 + (void)_downloadAsset:options:progress:completion:.cold.1()

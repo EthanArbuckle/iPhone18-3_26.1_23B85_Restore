@@ -1,13 +1,13 @@
 @interface PKIssuerProvisioningExtensionPassEntry
-- (BOOL)_isEqualToEntry:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isEqualToEntry:(id)entry;
+- (BOOL)isEqual:(id)equal;
 - (PKIssuerProvisioningExtensionPassEntry)init;
-- (PKIssuerProvisioningExtensionPassEntry)initWithCoder:(id)a3;
-- (id)_initWithType:(int64_t)a3 identifier:(id)a4 title:(id)a5 art:(CGImage *)a6;
+- (PKIssuerProvisioningExtensionPassEntry)initWithCoder:(id)coder;
+- (id)_initWithType:(int64_t)type identifier:(id)identifier title:(id)title art:(CGImage *)art;
 - (id)paymentPassEntry;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKIssuerProvisioningExtensionPassEntry
@@ -16,15 +16,15 @@
 {
   if ([(PKIssuerProvisioningExtensionPassEntry *)self type]== 1)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (PKIssuerProvisioningExtensionPassEntry)init
@@ -39,12 +39,12 @@
   return 0;
 }
 
-- (id)_initWithType:(int64_t)a3 identifier:(id)a4 title:(id)a5 art:(CGImage *)a6
+- (id)_initWithType:(int64_t)type identifier:(id)identifier title:(id)title art:(CGImage *)art
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10 && v11 && a6)
+  identifierCopy = identifier;
+  titleCopy = title;
+  v12 = titleCopy;
+  if (identifierCopy && titleCopy && art)
   {
     v22.receiver = self;
     v22.super_class = PKIssuerProvisioningExtensionPassEntry;
@@ -52,8 +52,8 @@
     v14 = v13;
     if (v13)
     {
-      v13->_type = a3;
-      v15 = [v10 copy];
+      v13->_type = type;
+      v15 = [identifierCopy copy];
       identifier = v14->_identifier;
       v14->_identifier = v15;
 
@@ -61,11 +61,11 @@
       title = v14->_title;
       v14->_title = v17;
 
-      v14->_art = CGImageRetain(a6);
+      v14->_art = CGImageRetain(art);
     }
 
     self = v14;
-    v19 = self;
+    selfCopy = self;
   }
 
   else
@@ -77,10 +77,10 @@
       _os_log_impl(&dword_1AD337000, v20, OS_LOG_TYPE_DEFAULT, "PKIssuerProvisioningExtensionPassEntry: initializer missing required parameters.", buf, 2u);
     }
 
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -91,9 +91,9 @@
   [(PKIssuerProvisioningExtensionPassEntry *)&v3 dealloc];
 }
 
-- (PKIssuerProvisioningExtensionPassEntry)initWithCoder:(id)a3
+- (PKIssuerProvisioningExtensionPassEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKIssuerProvisioningExtensionPassEntry;
   v5 = [(PKIssuerProvisioningExtensionPassEntry *)&v14 init];
@@ -101,15 +101,15 @@
   if (v5)
   {
     [(PKIssuerProvisioningExtensionPassEntry *)v5 setType:0];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v6->_identifier;
     v6->_identifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v6->_title;
     v6->_title = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"art"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"art"];
     v12 = v11;
     if (v11)
     {
@@ -120,11 +120,11 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  [v8 encodeObject:self->_identifier forKey:@"identifier"];
-  [v8 encodeObject:self->_title forKey:@"title"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
   if (self->_art)
   {
     Mutable = CFDataCreateMutable(0, 0);
@@ -138,7 +138,7 @@
         CGImageDestinationAddImage(v6, self->_art, 0);
         if (CGImageDestinationFinalize(v7))
         {
-          [v8 encodeObject:v5 forKey:@"art"];
+          [coderCopy encodeObject:v5 forKey:@"art"];
         }
 
         CFRelease(v7);
@@ -151,19 +151,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_title];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_title];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_type - v4 + 32 * v4;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -171,22 +171,22 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKIssuerProvisioningExtensionPassEntry *)self _isEqualToEntry:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKIssuerProvisioningExtensionPassEntry *)self _isEqualToEntry:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_isEqualToEntry:(id)a3
+- (BOOL)_isEqualToEntry:(id)entry
 {
-  v4 = a3;
-  if (!v4)
+  entryCopy = entry;
+  if (!entryCopy)
   {
     goto LABEL_15;
   }
 
   identifier = self->_identifier;
-  v6 = v4[1];
+  v6 = entryCopy[1];
   if (identifier)
   {
     v7 = v6 == 0;
@@ -211,7 +211,7 @@
   }
 
   title = self->_title;
-  v9 = v4[2];
+  v9 = entryCopy[2];
   if (!title || !v9)
   {
     if (title == v9)
@@ -230,7 +230,7 @@ LABEL_15:
   }
 
 LABEL_13:
-  v10 = self->_type == v4[4];
+  v10 = self->_type == entryCopy[4];
 LABEL_16:
 
   return v10;

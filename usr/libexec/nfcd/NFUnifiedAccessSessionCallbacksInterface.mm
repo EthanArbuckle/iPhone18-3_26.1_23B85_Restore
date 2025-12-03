@@ -8,9 +8,9 @@
 + (id)interface
 {
   v2 = [(NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface *)[NFUnifiedAccessSessionCallbacksInterface alloc] initWithProtocol:&OBJC_PROTOCOL___NFUnifiedAccessSessionCallbacksInterface];
-  v3 = [(NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface *)v2 protocolInterface];
+  protocolInterface = [(NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface *)v2 protocolInterface];
 
-  return v3;
+  return protocolInterface;
 }
 
 - (void)setupInterface

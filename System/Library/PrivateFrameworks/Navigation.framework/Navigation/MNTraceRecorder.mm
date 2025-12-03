@@ -1,55 +1,55 @@
 @interface MNTraceRecorder
-- (BOOL)_isTracePathValid:(id)a3;
+- (BOOL)_isTracePathValid:(id)valid;
 - (BOOL)_recordInfo;
 - (MNTraceRecorder)init;
 - (double)timeSinceRecordingBegan;
 - (void)_closeTraceDB;
-- (void)_dispatchWrite:(id)a3;
-- (void)_executeStatementForQuery:(id)a3 handler:(id)a4;
+- (void)_dispatchWrite:(id)write;
+- (void)_executeStatementForQuery:(id)query handler:(id)handler;
 - (void)_initializeTraceDB;
-- (void)_logError:(id)a3 resultCode:(int)a4;
-- (void)_logSqliteErrorWithResult:(int)a3 file:(const char *)a4 line:(int)a5;
+- (void)_logError:(id)error resultCode:(int)code;
+- (void)_logSqliteErrorWithResult:(int)result file:(const char *)file line:(int)line;
 - (void)_prepareStatements;
-- (void)_recordLocationEvent:(int64_t)a3 recordingTimestamp:(double)a4 location:(id)a5 correctedLocation:(id)a6;
-- (void)_recordNavigationUpdate:(int64_t)a3 parameters:(id)a4;
+- (void)_recordLocationEvent:(int64_t)event recordingTimestamp:(double)timestamp location:(id)location correctedLocation:(id)correctedLocation;
+- (void)_recordNavigationUpdate:(int64_t)update parameters:(id)parameters;
 - (void)_updateForExistingTrace;
 - (void)beginTransaction;
 - (void)endTransaction;
-- (void)recordAudioSetting:(BOOL)a3 voiceGuidance:(int64_t)a4;
-- (void)recordCompassHeading:(double)a3 magneticHeading:(double)a4 accuracy:(double)a5 timestamp:(id)a6;
-- (void)recordDebugSetting:(id)a3 settingValue:(id)a4;
-- (void)recordDepartWaypoint:(id)a3 legIndex:(unint64_t)a4 departureReason:(unint64_t)a5;
-- (void)recordDirectionsRequest:(id)a3 response:(id)a4 error:(id)a5 waypoints:(id)a6 selectedRouteIndex:(unint64_t)a7 requestTimestamp:(double)a8 responseTimestamp:(double)a9;
-- (void)recordETAURequest:(id)a3 response:(id)a4 error:(id)a5 destinationName:(id)a6 requestTimestamp:(double)a7 responseTimestamp:(double)a8;
-- (void)recordEnvironmentInfo:(id)a3 value:(id)a4;
-- (void)recordError:(id)a3;
-- (void)recordInitialCourse:(double)a3;
-- (void)recordLocation:(id)a3 correctedLocation:(id)a4;
-- (void)recordLocation:(id)a3 rawLocation:(id)a4;
-- (void)recordLocation:(id)a3 rawLocation:(id)a4 timestamp:(double)a5;
+- (void)recordAudioSetting:(BOOL)setting voiceGuidance:(int64_t)guidance;
+- (void)recordCompassHeading:(double)heading magneticHeading:(double)magneticHeading accuracy:(double)accuracy timestamp:(id)timestamp;
+- (void)recordDebugSetting:(id)setting settingValue:(id)value;
+- (void)recordDepartWaypoint:(id)waypoint legIndex:(unint64_t)index departureReason:(unint64_t)reason;
+- (void)recordDirectionsRequest:(id)request response:(id)response error:(id)error waypoints:(id)waypoints selectedRouteIndex:(unint64_t)index requestTimestamp:(double)timestamp responseTimestamp:(double)responseTimestamp;
+- (void)recordETAURequest:(id)request response:(id)response error:(id)error destinationName:(id)name requestTimestamp:(double)timestamp responseTimestamp:(double)responseTimestamp;
+- (void)recordEnvironmentInfo:(id)info value:(id)value;
+- (void)recordError:(id)error;
+- (void)recordInitialCourse:(double)course;
+- (void)recordLocation:(id)location correctedLocation:(id)correctedLocation;
+- (void)recordLocation:(id)location rawLocation:(id)rawLocation;
+- (void)recordLocation:(id)location rawLocation:(id)rawLocation timestamp:(double)timestamp;
 - (void)recordLocationUpdatePause;
 - (void)recordLocationUpdateResume;
-- (void)recordMiscInfo:(id)a3 value:(id)a4;
-- (void)recordMotionUpdate:(unint64_t)a3 exitType:(unint64_t)a4 confidence:(unint64_t)a5;
-- (void)recordNavigationEvent:(int64_t)a3 description:(id)a4;
-- (void)recordRouteChangeWithIndex:(unint64_t)a3 directionsResponseID:(id)a4 etauResponseID:(id)a5 rerouteReason:(unint64_t)a6;
-- (void)recordRouteCreationAction:(unint64_t)a3 request:(id)a4 response:(id)a5 error:(id)a6 anchorPoints:(id)a7 requestDate:(id)a8 responseDate:(id)a9;
-- (void)recordStylesheet:(id)a3 data:(id)a4;
-- (void)recordTransitUpdateError:(id)a3;
-- (void)recordTransitUpdateRequest:(id)a3 withTimestamp:(double)a4;
-- (void)recordTransitUpdateResponse:(id)a3;
-- (void)recordVehicleHeading:(double)a3 timestamp:(id)a4;
-- (void)recordVehicleSpeed:(double)a3 timestamp:(id)a4;
-- (void)recordVirtualGarageVehicleState:(id)a3 isDifferentVehicle:(BOOL)a4;
+- (void)recordMiscInfo:(id)info value:(id)value;
+- (void)recordMotionUpdate:(unint64_t)update exitType:(unint64_t)type confidence:(unint64_t)confidence;
+- (void)recordNavigationEvent:(int64_t)event description:(id)description;
+- (void)recordRouteChangeWithIndex:(unint64_t)index directionsResponseID:(id)d etauResponseID:(id)iD rerouteReason:(unint64_t)reason;
+- (void)recordRouteCreationAction:(unint64_t)action request:(id)request response:(id)response error:(id)error anchorPoints:(id)points requestDate:(id)date responseDate:(id)responseDate;
+- (void)recordStylesheet:(id)stylesheet data:(id)data;
+- (void)recordTransitUpdateError:(id)error;
+- (void)recordTransitUpdateRequest:(id)request withTimestamp:(double)timestamp;
+- (void)recordTransitUpdateResponse:(id)response;
+- (void)recordVehicleHeading:(double)heading timestamp:(id)timestamp;
+- (void)recordVehicleSpeed:(double)speed timestamp:(id)timestamp;
+- (void)recordVirtualGarageVehicleState:(id)state isDifferentVehicle:(BOOL)vehicle;
 - (void)resetLocationsForSimulation;
 - (void)saveTraceSynchronously;
-- (void)saveTraceWithCompletionHandler:(id)a3;
-- (void)setIsSimulation:(BOOL)a3;
-- (void)setNavigationEndDate:(id)a3;
-- (void)setNavigationStartDate:(id)a3;
-- (void)setRecordingStartDate:(id)a3;
-- (void)setRouteGenius:(BOOL)a3;
-- (void)startWritingTraceToPath:(id)a3 traceType:(int64_t)a4 withErrorHandler:(id)a5;
+- (void)saveTraceWithCompletionHandler:(id)handler;
+- (void)setIsSimulation:(BOOL)simulation;
+- (void)setNavigationEndDate:(id)date;
+- (void)setNavigationStartDate:(id)date;
+- (void)setRecordingStartDate:(id)date;
+- (void)setRouteGenius:(BOOL)genius;
+- (void)startWritingTraceToPath:(id)path traceType:(int64_t)type withErrorHandler:(id)handler;
 @end
 
 @implementation MNTraceRecorder
@@ -66,21 +66,21 @@
   return -v3;
 }
 
-- (void)_executeStatementForQuery:(id)a3 handler:(id)a4
+- (void)_executeStatementForQuery:(id)query handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  queryCopy = query;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v6)
+    if (queryCopy)
     {
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __53__MNTraceRecorder__executeStatementForQuery_handler___block_invoke;
       v9[3] = &unk_1E842F448;
       v9[4] = self;
-      v10 = v6;
-      v11 = v7;
+      v10 = queryCopy;
+      v11 = handlerCopy;
       [(MNTraceRecorder *)self _dispatchWrite:v9];
     }
 
@@ -147,10 +147,10 @@ void __53__MNTraceRecorder__executeStatementForQuery_handler___block_invoke(uint
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_recordNavigationUpdate:(int64_t)a3 parameters:(id)a4
+- (void)_recordNavigationUpdate:(int64_t)update parameters:(id)parameters
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  parametersCopy = parameters;
   if (self->_closed)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot complete operation on closed trace."];
@@ -171,10 +171,10 @@ void __53__MNTraceRecorder__executeStatementForQuery_handler___block_invoke(uint
   v12[2] = __54__MNTraceRecorder__recordNavigationUpdate_parameters___block_invoke;
   v12[3] = &unk_1E842AAC0;
   v14 = v7;
-  v15 = a3;
+  updateCopy = update;
   v12[4] = self;
-  v13 = v6;
-  v8 = v6;
+  v13 = parametersCopy;
+  v8 = parametersCopy;
   [(MNTraceRecorder *)self _dispatchWrite:v12];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -220,15 +220,15 @@ void __54__MNTraceRecorder__recordNavigationUpdate_parameters___block_invoke(uin
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordRouteCreationAction:(unint64_t)a3 request:(id)a4 response:(id)a5 error:(id)a6 anchorPoints:(id)a7 requestDate:(id)a8 responseDate:(id)a9
+- (void)recordRouteCreationAction:(unint64_t)action request:(id)request response:(id)response error:(id)error anchorPoints:(id)points requestDate:(id)date responseDate:(id)responseDate
 {
   v51 = *MEMORY[0x1E69E9840];
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  requestCopy = request;
+  responseCopy = response;
+  errorCopy = error;
+  pointsCopy = points;
+  dateCopy = date;
+  responseDateCopy = responseDate;
   if (self->_traceType != 2)
     v29 = {;
     v30 = GEOFindOrCreateLog();
@@ -262,9 +262,9 @@ void __54__MNTraceRecorder__recordNavigationUpdate_parameters___block_invoke(uin
     }
   }
 
-  [v19 timeIntervalSinceDate:self->_recordingStartDate];
+  [dateCopy timeIntervalSinceDate:self->_recordingStartDate];
   v22 = v21;
-  [v20 timeIntervalSinceDate:self->_recordingStartDate];
+  [responseDateCopy timeIntervalSinceDate:self->_recordingStartDate];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __106__MNTraceRecorder_recordRouteCreationAction_request_response_error_anchorPoints_requestDate_responseDate___block_invoke;
@@ -272,15 +272,15 @@ void __54__MNTraceRecorder__recordNavigationUpdate_parameters___block_invoke(uin
   v38 = v22;
   v39 = v23;
   v33[4] = self;
-  v34 = v15;
-  v40 = a3;
-  v35 = v16;
-  v36 = v18;
-  v37 = v17;
-  v24 = v17;
-  v25 = v18;
-  v26 = v16;
-  v27 = v15;
+  v34 = requestCopy;
+  actionCopy = action;
+  v35 = responseCopy;
+  v36 = pointsCopy;
+  v37 = errorCopy;
+  v24 = errorCopy;
+  v25 = pointsCopy;
+  v26 = responseCopy;
+  v27 = requestCopy;
   [(MNTraceRecorder *)self _dispatchWrite:v33];
 
   v28 = *MEMORY[0x1E69E9840];
@@ -370,19 +370,19 @@ void __106__MNTraceRecorder_recordRouteCreationAction_request_response_error_anc
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_logError:(id)a3 resultCode:(int)a4
+- (void)_logError:(id)error resultCode:(int)code
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a4 != 101)
+  errorCopy = error;
+  if (code != 101)
   {
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v8 = 138543618;
-      v9 = v5;
+      v9 = errorCopy;
       v10 = 1024;
-      v11 = a4;
+      codeCopy = code;
       _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_ERROR, "%{public}@: %d", &v8, 0x12u);
     }
   }
@@ -390,10 +390,10 @@ void __106__MNTraceRecorder_recordRouteCreationAction_request_response_error_anc
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordVirtualGarageVehicleState:(id)a3 isDifferentVehicle:(BOOL)a4
+- (void)recordVirtualGarageVehicleState:(id)state isDifferentVehicle:(BOOL)vehicle
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  stateCopy = state;
   if (self->_closed)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot complete operation on closed trace."];
@@ -413,11 +413,11 @@ void __106__MNTraceRecorder_recordRouteCreationAction_request_response_error_anc
   v12[1] = 3221225472;
   v12[2] = __70__MNTraceRecorder_recordVirtualGarageVehicleState_isDifferentVehicle___block_invoke;
   v12[3] = &unk_1E842AB38;
-  v13 = v6;
-  v14 = self;
+  v13 = stateCopy;
+  selfCopy = self;
   v15 = v7;
-  v16 = a4;
-  v8 = v6;
+  vehicleCopy = vehicle;
+  v8 = stateCopy;
   [(MNTraceRecorder *)self _dispatchWrite:v12];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -547,10 +547,10 @@ void __70__MNTraceRecorder_recordVirtualGarageVehicleState_isDifferentVehicle___
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordCompassHeading:(double)a3 magneticHeading:(double)a4 accuracy:(double)a5 timestamp:(id)a6
+- (void)recordCompassHeading:(double)heading magneticHeading:(double)magneticHeading accuracy:(double)accuracy timestamp:(id)timestamp
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a6;
+  timestampCopy = timestamp;
   if (self->_closed)
   {
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot complete operation on closed trace."];
@@ -565,9 +565,9 @@ void __70__MNTraceRecorder_recordVirtualGarageVehicleState_isDifferentVehicle___
     }
   }
 
-  v11 = [MEMORY[0x1E695DF00] date];
-  v12 = v11;
-  if (!self->_recordingCompassHeadingLastDate || ([v11 timeIntervalSinceDate:?], v13 >= 1.0))
+  date = [MEMORY[0x1E695DF00] date];
+  v12 = date;
+  if (!self->_recordingCompassHeadingLastDate || ([date timeIntervalSinceDate:?], v13 >= 1.0))
   {
     objc_storeStrong(&self->_recordingCompassHeadingLastDate, v12);
     [(MNTraceRecorder *)self timeSinceRecordingBegan];
@@ -577,10 +577,10 @@ void __70__MNTraceRecorder_recordVirtualGarageVehicleState_isDifferentVehicle___
     v18[3] = &unk_1E842AB10;
     v18[4] = self;
     v20 = v14;
-    v19 = v10;
-    v21 = a3;
-    v22 = a4;
-    v23 = a5;
+    v19 = timestampCopy;
+    headingCopy = heading;
+    magneticHeadingCopy = magneticHeading;
+    accuracyCopy = accuracy;
     [(MNTraceRecorder *)self _dispatchWrite:v18];
   }
 
@@ -618,7 +618,7 @@ void __75__MNTraceRecorder_recordCompassHeading_magneticHeading_accuracy_timesta
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordMotionUpdate:(unint64_t)a3 exitType:(unint64_t)a4 confidence:(unint64_t)a5
+- (void)recordMotionUpdate:(unint64_t)update exitType:(unint64_t)type confidence:(unint64_t)confidence
 {
   v22 = *MEMORY[0x1E69E9840];
   if (self->_closed)
@@ -637,8 +637,8 @@ void __75__MNTraceRecorder_recordCompassHeading_magneticHeading_accuracy_timesta
 
   [(MNTraceRecorder *)self timeSinceRecordingBegan];
   v10 = v9;
-  v11 = [MEMORY[0x1E695DF00] date];
-  [v11 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceReferenceDate];
   v13 = v12;
 
   v17[0] = MEMORY[0x1E69E9820];
@@ -648,9 +648,9 @@ void __75__MNTraceRecorder_recordCompassHeading_magneticHeading_accuracy_timesta
   v17[4] = self;
   v17[5] = v10;
   v17[6] = v13;
-  v17[7] = a3;
-  v17[8] = a4;
-  v17[9] = a5;
+  v17[7] = update;
+  v17[8] = type;
+  v17[9] = confidence;
   [(MNTraceRecorder *)self _dispatchWrite:v17];
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -684,10 +684,10 @@ void __58__MNTraceRecorder_recordMotionUpdate_exitType_confidence___block_invoke
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordVehicleHeading:(double)a3 timestamp:(id)a4
+- (void)recordVehicleHeading:(double)heading timestamp:(id)timestamp
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  timestampCopy = timestamp;
   if (self->_closed)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot complete operation on closed trace."];
@@ -708,10 +708,10 @@ void __58__MNTraceRecorder_recordMotionUpdate_exitType_confidence___block_invoke
   v12[2] = __50__MNTraceRecorder_recordVehicleHeading_timestamp___block_invoke;
   v12[3] = &unk_1E842AAC0;
   v12[4] = self;
-  v13 = v6;
+  v13 = timestampCopy;
   v14 = v7;
-  v15 = a3;
-  v8 = v6;
+  headingCopy = heading;
+  v8 = timestampCopy;
   [(MNTraceRecorder *)self _dispatchWrite:v12];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -746,10 +746,10 @@ void __50__MNTraceRecorder_recordVehicleHeading_timestamp___block_invoke(uint64_
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordVehicleSpeed:(double)a3 timestamp:(id)a4
+- (void)recordVehicleSpeed:(double)speed timestamp:(id)timestamp
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  timestampCopy = timestamp;
   if (self->_closed)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot complete operation on closed trace."];
@@ -770,10 +770,10 @@ void __50__MNTraceRecorder_recordVehicleHeading_timestamp___block_invoke(uint64_
   v12[2] = __48__MNTraceRecorder_recordVehicleSpeed_timestamp___block_invoke;
   v12[3] = &unk_1E842AAC0;
   v12[4] = self;
-  v13 = v6;
+  v13 = timestampCopy;
   v14 = v7;
-  v15 = a3;
-  v8 = v6;
+  speedCopy = speed;
+  v8 = timestampCopy;
   [(MNTraceRecorder *)self _dispatchWrite:v12];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -808,10 +808,10 @@ void __48__MNTraceRecorder_recordVehicleSpeed_timestamp___block_invoke(uint64_t 
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordTransitUpdateError:(id)a3
+- (void)recordTransitUpdateError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self->_closed)
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot complete operation on closed trace."];
@@ -833,8 +833,8 @@ void __48__MNTraceRecorder_recordVehicleSpeed_timestamp___block_invoke(uint64_t 
   v10[3] = &unk_1E84309E8;
   v12 = v5;
   v10[4] = self;
-  v11 = v4;
-  v6 = v4;
+  v11 = errorCopy;
+  v6 = errorCopy;
   [(MNTraceRecorder *)self _dispatchWrite:v10];
 
   v7 = *MEMORY[0x1E69E9840];
@@ -867,10 +867,10 @@ void __44__MNTraceRecorder_recordTransitUpdateError___block_invoke(uint64_t a1)
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordTransitUpdateResponse:(id)a3
+- (void)recordTransitUpdateResponse:(id)response
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  responseCopy = response;
   if (self->_closed)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot complete operation on closed trace."];
@@ -887,15 +887,15 @@ void __44__MNTraceRecorder_recordTransitUpdateError___block_invoke(uint64_t a1)
 
   [(MNTraceRecorder *)self timeSinceRecordingBegan];
   v6 = v5;
-  v7 = [v4 data];
+  data = [responseCopy data];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __47__MNTraceRecorder_recordTransitUpdateResponse___block_invoke;
   v12[3] = &unk_1E84309E8;
   v14 = v6;
   v12[4] = self;
-  v13 = v7;
-  v8 = v7;
+  v13 = data;
+  v8 = data;
   [(MNTraceRecorder *)self _dispatchWrite:v12];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -927,10 +927,10 @@ void __47__MNTraceRecorder_recordTransitUpdateResponse___block_invoke(uint64_t a
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordTransitUpdateRequest:(id)a3 withTimestamp:(double)a4
+- (void)recordTransitUpdateRequest:(id)request withTimestamp:(double)timestamp
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  requestCopy = request;
   if (self->_closed)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot complete operation on closed trace."];
@@ -945,15 +945,15 @@ void __47__MNTraceRecorder_recordTransitUpdateResponse___block_invoke(uint64_t a
     }
   }
 
-  v7 = [v6 data];
+  data = [requestCopy data];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __60__MNTraceRecorder_recordTransitUpdateRequest_withTimestamp___block_invoke;
   v12[3] = &unk_1E84309E8;
-  v14 = a4;
+  timestampCopy = timestamp;
   v12[4] = self;
-  v13 = v7;
-  v8 = v7;
+  v13 = data;
+  v8 = data;
   [(MNTraceRecorder *)self _dispatchWrite:v12];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -985,13 +985,13 @@ void __60__MNTraceRecorder_recordTransitUpdateRequest_withTimestamp___block_invo
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordETAURequest:(id)a3 response:(id)a4 error:(id)a5 destinationName:(id)a6 requestTimestamp:(double)a7 responseTimestamp:(double)a8
+- (void)recordETAURequest:(id)request response:(id)response error:(id)error destinationName:(id)name requestTimestamp:(double)timestamp responseTimestamp:(double)responseTimestamp
 {
   v36 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  requestCopy = request;
+  responseCopy = response;
+  errorCopy = error;
+  nameCopy = name;
   if (self->_closed)
   {
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot complete operation on closed trace."];
@@ -1010,17 +1010,17 @@ void __60__MNTraceRecorder_recordTransitUpdateRequest_withTimestamp___block_invo
   v25[1] = 3221225472;
   v25[2] = __103__MNTraceRecorder_recordETAURequest_response_error_destinationName_requestTimestamp_responseTimestamp___block_invoke;
   v25[3] = &unk_1E842AA98;
-  v30 = a7;
-  v31 = a8;
+  timestampCopy = timestamp;
+  responseTimestampCopy = responseTimestamp;
   v25[4] = self;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v29 = v17;
-  v18 = v17;
-  v19 = v16;
-  v20 = v15;
-  v21 = v14;
+  v26 = requestCopy;
+  v27 = responseCopy;
+  v28 = errorCopy;
+  v29 = nameCopy;
+  v18 = nameCopy;
+  v19 = errorCopy;
+  v20 = responseCopy;
+  v21 = requestCopy;
   [(MNTraceRecorder *)self _dispatchWrite:v25];
 
   v22 = *MEMORY[0x1E69E9840];
@@ -1068,7 +1068,7 @@ void __103__MNTraceRecorder_recordETAURequest_response_error_destinationName_req
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordInitialCourse:(double)a3
+- (void)recordInitialCourse:(double)course
 {
   v13 = *MEMORY[0x1E69E9840];
   if (self->_closed)
@@ -1090,7 +1090,7 @@ void __103__MNTraceRecorder_recordETAURequest_response_error_destinationName_req
   v8[2] = __39__MNTraceRecorder_recordInitialCourse___block_invoke;
   v8[3] = &unk_1E8430A10;
   v8[4] = self;
-  *&v8[5] = a3;
+  *&v8[5] = course;
   [(MNTraceRecorder *)self _dispatchWrite:v8];
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -1149,13 +1149,13 @@ uint64_t __39__MNTraceRecorder_recordInitialCourse___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)recordDirectionsRequest:(id)a3 response:(id)a4 error:(id)a5 waypoints:(id)a6 selectedRouteIndex:(unint64_t)a7 requestTimestamp:(double)a8 responseTimestamp:(double)a9
+- (void)recordDirectionsRequest:(id)request response:(id)response error:(id)error waypoints:(id)waypoints selectedRouteIndex:(unint64_t)index requestTimestamp:(double)timestamp responseTimestamp:(double)responseTimestamp
 {
   v41 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
+  requestCopy = request;
+  responseCopy = response;
+  errorCopy = error;
+  waypointsCopy = waypoints;
   if (self->_closed)
   {
     v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot complete operation on closed trace."];
@@ -1176,19 +1176,19 @@ uint64_t __39__MNTraceRecorder_recordInitialCourse___block_invoke(uint64_t a1)
   v28[1] = 3221225472;
   v28[2] = __122__MNTraceRecorder_recordDirectionsRequest_response_error_waypoints_selectedRouteIndex_requestTimestamp_responseTimestamp___block_invoke;
   v28[3] = &unk_1E842AA70;
-  v33 = a8;
-  v34 = a9;
+  timestampCopy = timestamp;
+  responseTimestampCopy = responseTimestamp;
   v28[4] = self;
-  v29 = v16;
-  v30 = v17;
-  v31 = v18;
-  v32 = v19;
-  v35 = a7;
+  v29 = requestCopy;
+  v30 = responseCopy;
+  v31 = errorCopy;
+  v32 = waypointsCopy;
+  indexCopy = index;
   v36 = routeRequestCount == 0;
-  v21 = v19;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
+  v21 = waypointsCopy;
+  v22 = errorCopy;
+  v23 = responseCopy;
+  v24 = requestCopy;
   [(MNTraceRecorder *)self _dispatchWrite:v28];
 
   v25 = *MEMORY[0x1E69E9840];
@@ -1278,18 +1278,18 @@ void __122__MNTraceRecorder_recordDirectionsRequest_response_error_waypoints_sel
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordDepartWaypoint:(id)a3 legIndex:(unint64_t)a4 departureReason:(unint64_t)a5
+- (void)recordDepartWaypoint:(id)waypoint legIndex:(unint64_t)index departureReason:(unint64_t)reason
 {
   v15[3] = *MEMORY[0x1E69E9840];
-  v15[0] = a3;
+  v15[0] = waypoint;
   v14[0] = @"waypoint";
   v14[1] = @"legIndex";
   v8 = MEMORY[0x1E696AD98];
-  v9 = a3;
-  v10 = [v8 numberWithUnsignedInteger:a4];
+  waypointCopy = waypoint;
+  v10 = [v8 numberWithUnsignedInteger:index];
   v15[1] = v10;
   v14[2] = @"reason";
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:reason];
   v15[2] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:3];
 
@@ -1297,42 +1297,42 @@ void __122__MNTraceRecorder_recordDirectionsRequest_response_error_waypoints_sel
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordRouteChangeWithIndex:(unint64_t)a3 directionsResponseID:(id)a4 etauResponseID:(id)a5 rerouteReason:(unint64_t)a6
+- (void)recordRouteChangeWithIndex:(unint64_t)index directionsResponseID:(id)d etauResponseID:(id)iD rerouteReason:(unint64_t)reason
 {
-  v14 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
   v11 = objc_opt_new();
-  if (v14)
+  if (dCopy)
   {
-    [v11 setObject:v14 forKeyedSubscript:@"directionsResponseID"];
+    [v11 setObject:dCopy forKeyedSubscript:@"directionsResponseID"];
   }
 
-  if (v10)
+  if (iDCopy)
   {
-    [v11 setObject:v10 forKeyedSubscript:@"etauResponseID"];
+    [v11 setObject:iDCopy forKeyedSubscript:@"etauResponseID"];
   }
 
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   [v11 setObject:v12 forKeyedSubscript:@"routeIndex"];
 
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:reason];
   [v11 setObject:v13 forKeyedSubscript:@"reason"];
 
   [(MNTraceRecorder *)self _recordNavigationUpdate:1 parameters:v11];
 }
 
-- (void)setNavigationEndDate:(id)a3
+- (void)setNavigationEndDate:(id)date
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dateCopy = date;
+  v5 = dateCopy;
+  if (dateCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __40__MNTraceRecorder_setNavigationEndDate___block_invoke;
     v6[3] = &unk_1E8430D50;
     v6[4] = self;
-    v7 = v4;
+    v7 = dateCopy;
     [(MNTraceRecorder *)self _dispatchWrite:v6];
   }
 }
@@ -1347,18 +1347,18 @@ uint64_t __40__MNTraceRecorder_setNavigationEndDate___block_invoke(uint64_t a1)
   return [v3 execute];
 }
 
-- (void)setNavigationStartDate:(id)a3
+- (void)setNavigationStartDate:(id)date
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dateCopy = date;
+  v5 = dateCopy;
+  if (dateCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __42__MNTraceRecorder_setNavigationStartDate___block_invoke;
     v6[3] = &unk_1E8430D50;
     v6[4] = self;
-    v7 = v4;
+    v7 = dateCopy;
     [(MNTraceRecorder *)self _dispatchWrite:v6];
   }
 }
@@ -1487,7 +1487,7 @@ void __46__MNTraceRecorder_resetLocationsForSimulation__block_invoke(uint64_t a1
   }
 }
 
-- (void)setRouteGenius:(BOOL)a3
+- (void)setRouteGenius:(BOOL)genius
 {
   v14 = *MEMORY[0x1E69E9840];
   if (self->_closed)
@@ -1509,7 +1509,7 @@ void __46__MNTraceRecorder_resetLocationsForSimulation__block_invoke(uint64_t a1
   v8[2] = __34__MNTraceRecorder_setRouteGenius___block_invoke;
   v8[3] = &unk_1E8430928;
   v8[4] = self;
-  v9 = a3;
+  geniusCopy = genius;
   [(MNTraceRecorder *)self _dispatchWrite:v8];
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -1536,7 +1536,7 @@ void __34__MNTraceRecorder_setRouteGenius___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setIsSimulation:(BOOL)a3
+- (void)setIsSimulation:(BOOL)simulation
 {
   v14 = *MEMORY[0x1E69E9840];
   if (self->_closed)
@@ -1558,7 +1558,7 @@ void __34__MNTraceRecorder_setRouteGenius___block_invoke(uint64_t a1)
   v8[2] = __35__MNTraceRecorder_setIsSimulation___block_invoke;
   v8[3] = &unk_1E8430928;
   v8[4] = self;
-  v9 = a3;
+  simulationCopy = simulation;
   [(MNTraceRecorder *)self _dispatchWrite:v8];
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -1581,10 +1581,10 @@ void __35__MNTraceRecorder_setIsSimulation___block_invoke(uint64_t a1)
   }
 }
 
-- (void)recordError:(id)a3
+- (void)recordError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self->_closed)
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot complete operation on closed trace."];
@@ -1606,8 +1606,8 @@ void __35__MNTraceRecorder_setIsSimulation___block_invoke(uint64_t a1)
   v10[3] = &unk_1E84309E8;
   v12 = v5;
   v10[4] = self;
-  v11 = v4;
-  v6 = v4;
+  v11 = errorCopy;
+  v6 = errorCopy;
   [(MNTraceRecorder *)self _dispatchWrite:v10];
 
   v7 = *MEMORY[0x1E69E9840];
@@ -1654,26 +1654,26 @@ void __31__MNTraceRecorder_recordError___block_invoke(uint64_t a1)
   [(MNTraceRecorder *)self _recordLocationEvent:1 recordingTimestamp:0 location:0 correctedLocation:?];
 }
 
-- (void)recordLocation:(id)a3 correctedLocation:(id)a4
+- (void)recordLocation:(id)location correctedLocation:(id)correctedLocation
 {
-  v6 = a4;
-  v7 = a3;
+  correctedLocationCopy = correctedLocation;
+  locationCopy = location;
   [(MNTraceRecorder *)self timeSinceRecordingBegan];
-  [(MNTraceRecorder *)self _recordLocationEvent:0 recordingTimestamp:v7 location:v6 correctedLocation:?];
+  [(MNTraceRecorder *)self _recordLocationEvent:0 recordingTimestamp:locationCopy location:correctedLocationCopy correctedLocation:?];
 }
 
-- (void)_recordLocationEvent:(int64_t)a3 recordingTimestamp:(double)a4 location:(id)a5 correctedLocation:(id)a6
+- (void)_recordLocationEvent:(int64_t)event recordingTimestamp:(double)timestamp location:(id)location correctedLocation:(id)correctedLocation
 {
-  v53 = a5;
-  v9 = a6;
+  locationCopy = location;
+  correctedLocationCopy = correctedLocation;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (v53)
+  if (locationCopy)
   {
-    [v53 coordinate];
+    [locationCopy coordinate];
     v51.latitude = v11;
     v51.longitude = v12;
-    [v53 rawCoordinate];
+    [locationCopy rawCoordinate];
   }
 
   else
@@ -1686,29 +1686,29 @@ void __31__MNTraceRecorder_recordError___block_invoke(uint64_t a1)
 
   v49 = longitude;
   v50 = latitude;
-  v16 = [v53 timestamp];
-  [v16 timeIntervalSinceReferenceDate];
+  timestamp = [locationCopy timestamp];
+  [timestamp timeIntervalSinceReferenceDate];
   v48 = v17;
-  if (v53)
+  if (locationCopy)
   {
-    [v53 horizontalAccuracy];
+    [locationCopy horizontalAccuracy];
     v47 = v18;
-    [v53 verticalAccuracy];
+    [locationCopy verticalAccuracy];
     v46 = v19;
-    [v53 altitude];
+    [locationCopy altitude];
     v45 = v20;
-    [v53 speed];
+    [locationCopy speed];
     v22 = v21;
-    [v53 _navigation_speedAccuracy];
+    [locationCopy _navigation_speedAccuracy];
     v24 = v23;
-    [v53 course];
+    [locationCopy course];
     v26 = v25;
-    [v53 rawCourse];
+    [locationCopy rawCourse];
     v28 = v27;
-    v29 = [v53 type];
-    [v53 courseAccuracy];
+    type = [locationCopy type];
+    [locationCopy courseAccuracy];
     v31 = v30;
-    if (v9)
+    if (correctedLocationCopy)
     {
       goto LABEL_6;
     }
@@ -1726,7 +1726,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v29 = [0 type];
+  type = [0 type];
   v28 = 0;
   v24 = 0;
   v45 = 0;
@@ -1735,36 +1735,36 @@ LABEL_9:
   v22 = 0;
   v26 = 0;
   v31 = 0;
-  if (!v9)
+  if (!correctedLocationCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_6:
-  [v9 coordinate];
+  [correctedLocationCopy coordinate];
   v33 = v32;
   v35 = v34;
-  [v9 course];
+  [correctedLocationCopy course];
   v37 = v36;
   if (isKindOfClass)
   {
 LABEL_7:
-    v38 = [v9 state];
-    v39 = [v53 matchInfo];
-    v40 = [v9 speedLimit];
-    v41 = [v9 shieldText];
-    LODWORD(v44) = [v9 shieldType];
-    LODWORD(v43) = v40;
-    [(MNTraceRecorder *)self _recordLocationEvent:a3 recordingTimestamp:v29 coordinate:v38 rawCoordinate:4 timestamp:v39 horizontalAccuracy:v9 verticalAccuracy:a4 altitude:v51 speed:v50 speedAccuracy:v49 course:v48 rawCourse:v47 type:v46 courseAccuracy:v45 correctedCoordinate:v22 correctedCourse:v24 matchType:v26 activeTransportType:v28 matchInfo:v31 correctedLocation:*&v33 speedLimit:*&v35 shieldText:v37 shieldType:v43, v41, v44];
+    state = [correctedLocationCopy state];
+    matchInfo = [locationCopy matchInfo];
+    speedLimit = [correctedLocationCopy speedLimit];
+    shieldText = [correctedLocationCopy shieldText];
+    LODWORD(v44) = [correctedLocationCopy shieldType];
+    LODWORD(v43) = speedLimit;
+    [(MNTraceRecorder *)self _recordLocationEvent:event recordingTimestamp:type coordinate:state rawCoordinate:4 timestamp:matchInfo horizontalAccuracy:correctedLocationCopy verticalAccuracy:timestamp altitude:v51 speed:v50 speedAccuracy:v49 course:v48 rawCourse:v47 type:v46 courseAccuracy:v45 correctedCoordinate:v22 correctedCourse:v24 matchType:v26 activeTransportType:v28 matchInfo:v31 correctedLocation:*&v33 speedLimit:*&v35 shieldText:v37 shieldType:v43, shieldText, v44];
 
     goto LABEL_11;
   }
 
 LABEL_10:
-  v39 = [v53 matchInfo];
+  matchInfo = [locationCopy matchInfo];
   LODWORD(v44) = -1;
   LODWORD(v43) = -1;
-  [(MNTraceRecorder *)self _recordLocationEvent:a3 recordingTimestamp:v29 coordinate:0xFFFFFFFFLL rawCoordinate:4 timestamp:v39 horizontalAccuracy:v9 verticalAccuracy:a4 altitude:v51 speed:v50 speedAccuracy:v49 course:v48 rawCourse:v47 type:v46 courseAccuracy:v45 correctedCoordinate:v22 correctedCourse:v24 matchType:v26 activeTransportType:v28 matchInfo:v31 correctedLocation:*&v33 speedLimit:*&v35 shieldText:v37 shieldType:v43, 0, v44];
+  [(MNTraceRecorder *)self _recordLocationEvent:event recordingTimestamp:type coordinate:0xFFFFFFFFLL rawCoordinate:4 timestamp:matchInfo horizontalAccuracy:correctedLocationCopy verticalAccuracy:timestamp altitude:v51 speed:v50 speedAccuracy:v49 course:v48 rawCourse:v47 type:v46 courseAccuracy:v45 correctedCoordinate:v22 correctedCourse:v24 matchType:v26 activeTransportType:v28 matchInfo:v31 correctedLocation:*&v33 speedLimit:*&v35 shieldText:v37 shieldType:v43, 0, v44];
 LABEL_11:
 }
 
@@ -1838,11 +1838,11 @@ void __323__MNTraceRecorder__recordLocationEvent_recordingTimestamp_coordinate_r
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordLocation:(id)a3 rawLocation:(id)a4 timestamp:(double)a5
+- (void)recordLocation:(id)location rawLocation:(id)rawLocation timestamp:(double)timestamp
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  locationCopy = location;
+  rawLocationCopy = rawLocation;
   if (self->_closed)
   {
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot complete operation on closed trace."];
@@ -1861,29 +1861,29 @@ void __323__MNTraceRecorder__recordLocationEvent_recordingTimestamp_coordinate_r
   v15[1] = 3221225472;
   v15[2] = __56__MNTraceRecorder_recordLocation_rawLocation_timestamp___block_invoke;
   v15[3] = &unk_1E842AA20;
-  v18 = a5;
+  timestampCopy = timestamp;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v10 = v9;
-  v11 = v8;
+  v16 = locationCopy;
+  v17 = rawLocationCopy;
+  v10 = rawLocationCopy;
+  v11 = locationCopy;
   [(MNTraceRecorder *)self _dispatchWrite:v15];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordLocation:(id)a3 rawLocation:(id)a4
+- (void)recordLocation:(id)location rawLocation:(id)rawLocation
 {
-  v6 = a4;
-  v7 = a3;
+  rawLocationCopy = rawLocation;
+  locationCopy = location;
   [(MNTraceRecorder *)self timeSinceRecordingBegan];
-  [(MNTraceRecorder *)self recordLocation:v7 rawLocation:v6 timestamp:?];
+  [(MNTraceRecorder *)self recordLocation:locationCopy rawLocation:rawLocationCopy timestamp:?];
 }
 
-- (void)recordNavigationEvent:(int64_t)a3 description:(id)a4
+- (void)recordNavigationEvent:(int64_t)event description:(id)description
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  descriptionCopy = description;
   if (self->_closed)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot complete operation on closed trace."];
@@ -1900,8 +1900,8 @@ void __323__MNTraceRecorder__recordLocationEvent_recordingTimestamp_coordinate_r
 
   [(MNTraceRecorder *)self timeSinceRecordingBegan];
   v8 = v7;
-  v9 = [MEMORY[0x1E695DF00] date];
-  [v9 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceReferenceDate];
   v11 = v10;
 
   v16[0] = MEMORY[0x1E69E9820];
@@ -1910,10 +1910,10 @@ void __323__MNTraceRecorder__recordLocationEvent_recordingTimestamp_coordinate_r
   v16[3] = &unk_1E842A9F8;
   v18 = v8;
   v19 = v11;
-  v20 = a3;
+  eventCopy = event;
   v16[4] = self;
-  v17 = v6;
-  v12 = v6;
+  v17 = descriptionCopy;
+  v12 = descriptionCopy;
   [(MNTraceRecorder *)self _dispatchWrite:v16];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -1947,20 +1947,20 @@ void __53__MNTraceRecorder_recordNavigationEvent_description___block_invoke(uint
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordMiscInfo:(id)a3 value:(id)a4
+- (void)recordMiscInfo:(id)info value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  infoCopy = info;
+  valueCopy = value;
+  v8 = valueCopy;
+  if (infoCopy && valueCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __40__MNTraceRecorder_recordMiscInfo_value___block_invoke;
     v9[3] = &unk_1E842A9D0;
-    v10 = v7;
-    v11 = v6;
-    v12 = self;
+    v10 = valueCopy;
+    v11 = infoCopy;
+    selfCopy = self;
     [(MNTraceRecorder *)self _executeStatementForQuery:@"INSERT INTO misc_info (key handler:value) VALUES (?, ?)", v9];
   }
 }
@@ -2056,19 +2056,19 @@ LABEL_18:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordStylesheet:(id)a3 data:(id)a4
+- (void)recordStylesheet:(id)stylesheet data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  stylesheetCopy = stylesheet;
+  dataCopy = data;
+  if (stylesheetCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __41__MNTraceRecorder_recordStylesheet_data___block_invoke;
     v8[3] = &unk_1E842F128;
     v8[4] = self;
-    v9 = v6;
-    v10 = v7;
+    v9 = stylesheetCopy;
+    v10 = dataCopy;
     [(MNTraceRecorder *)self _dispatchWrite:v8];
   }
 }
@@ -2095,21 +2095,21 @@ void __41__MNTraceRecorder_recordStylesheet_data___block_invoke(void *a1)
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordAudioSetting:(BOOL)a3 voiceGuidance:(int64_t)a4
+- (void)recordAudioSetting:(BOOL)setting voiceGuidance:(int64_t)guidance
 {
-  if (self->_lastPauseSpokenAudio != a3 || self->_lastVoiceGuidanceSetting != a4)
+  if (self->_lastPauseSpokenAudio != setting || self->_lastVoiceGuidanceSetting != guidance)
   {
     v8 = v4;
     v9 = v5;
-    self->_lastPauseSpokenAudio = a3;
-    self->_lastVoiceGuidanceSetting = a4;
+    self->_lastPauseSpokenAudio = setting;
+    self->_lastVoiceGuidanceSetting = guidance;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __52__MNTraceRecorder_recordAudioSetting_voiceGuidance___block_invoke;
     v6[3] = &unk_1E842A9A8;
-    v7 = a3;
+    settingCopy = setting;
     v6[4] = self;
-    v6[5] = a4;
+    v6[5] = guidance;
     [(MNTraceRecorder *)self _dispatchWrite:v6];
   }
 }
@@ -2140,19 +2140,19 @@ void __52__MNTraceRecorder_recordAudioSetting_voiceGuidance___block_invoke(uint6
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordDebugSetting:(id)a3 settingValue:(id)a4
+- (void)recordDebugSetting:(id)setting settingValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  settingCopy = setting;
+  valueCopy = value;
+  v8 = valueCopy;
+  if (settingCopy && valueCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __51__MNTraceRecorder_recordDebugSetting_settingValue___block_invoke;
     v9[3] = &unk_1E842F128;
     v9[4] = self;
-    v10 = v6;
+    v10 = settingCopy;
     v11 = v8;
     [(MNTraceRecorder *)self _dispatchWrite:v9];
   }
@@ -2180,19 +2180,19 @@ void __51__MNTraceRecorder_recordDebugSetting_settingValue___block_invoke(void *
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordEnvironmentInfo:(id)a3 value:(id)a4
+- (void)recordEnvironmentInfo:(id)info value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  infoCopy = info;
+  valueCopy = value;
+  v8 = valueCopy;
+  if (infoCopy && valueCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __47__MNTraceRecorder_recordEnvironmentInfo_value___block_invoke;
     v9[3] = &unk_1E842F128;
     v9[4] = self;
-    v10 = v6;
+    v10 = infoCopy;
     v11 = v8;
     [(MNTraceRecorder *)self _dispatchWrite:v9];
   }
@@ -2220,13 +2220,13 @@ void __47__MNTraceRecorder_recordEnvironmentInfo_value___block_invoke(void *a1)
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setRecordingStartDate:(id)a3
+- (void)setRecordingStartDate:(id)date
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dateCopy = date;
+  if (dateCopy)
   {
-    v5 = v4;
+    v5 = dateCopy;
     v6 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -2285,13 +2285,13 @@ uint64_t __41__MNTraceRecorder_setRecordingStartDate___block_invoke(uint64_t a1)
 
 - (void)_closeTraceDB
 {
-  v3 = [(MNTraceRecorder *)self trace];
-  v4 = [v3 db];
+  trace = [(MNTraceRecorder *)self trace];
+  v4 = [trace db];
 
   if (v4)
   {
-    v6 = [(MNTraceRecorder *)self trace];
-    [v6 closeTrace];
+    trace2 = [(MNTraceRecorder *)self trace];
+    [trace2 closeTrace];
   }
 
   else
@@ -3018,9 +3018,9 @@ LABEL_74:
   v5 = v15;
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v5];
-    v7 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    directionsURL = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v5];
+    absoluteString = GEOFindOrCreateLog();
+    if (os_log_type_enabled(absoluteString, OS_LOG_TYPE_ERROR))
     {
       *buf = 136316162;
       v17 = "[MNTraceRecorder _recordInfo]";
@@ -3031,11 +3031,11 @@ LABEL_74:
       v22 = 2080;
       v23 = "NO";
       v24 = 2112;
-      v25 = v6;
-      _os_log_impl(&dword_1D311E000, v7, OS_LOG_TYPE_ERROR, "*** Assertion failure in %s, %s:%d: (%s) %@", buf, 0x30u);
+      v25 = directionsURL;
+      _os_log_impl(&dword_1D311E000, absoluteString, OS_LOG_TYPE_ERROR, "*** Assertion failure in %s, %s:%d: (%s) %@", buf, 0x30u);
     }
 
-    v8 = 0;
+    execute = 0;
   }
 
   else
@@ -3045,20 +3045,20 @@ LABEL_74:
     [v4 bindParameter:@":original_version" int:{+[MNTrace currentVersion](MNTrace, "currentVersion")}];
     [(NSDate *)self->_recordingStartDate timeIntervalSinceReferenceDate];
     [v4 bindParameter:@":recording_start_time" double:?];
-    v9 = [MEMORY[0x1E69A1D18] sharedService];
-    v6 = [v9 directionsURL];
+    mEMORY[0x1E69A1D18] = [MEMORY[0x1E69A1D18] sharedService];
+    directionsURL = [mEMORY[0x1E69A1D18] directionsURL];
 
-    v7 = [v6 absoluteString];
-    if ([v7 length])
+    absoluteString = [directionsURL absoluteString];
+    if ([absoluteString length])
     {
-      [v4 bindParameter:@":directions_url" string:v7];
+      [v4 bindParameter:@":directions_url" string:absoluteString];
     }
 
-    v10 = [MEMORY[0x1E69A2398] sharedPlatform];
-    [v4 bindParameter:@":is_internal_install" int:{objc_msgSend(v10, "isInternalInstall")}];
+    mEMORY[0x1E69A2398] = [MEMORY[0x1E69A2398] sharedPlatform];
+    [v4 bindParameter:@":is_internal_install" int:{objc_msgSend(mEMORY[0x1E69A2398], "isInternalInstall")}];
 
-    v8 = [v4 execute];
-    if ((v8 & 1) == 0)
+    execute = [v4 execute];
+    if ((execute & 1) == 0)
     {
       v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error recording info statement."];
       v14 = GEOFindOrCreateLog();
@@ -3082,7 +3082,7 @@ LABEL_74:
   }
 
   v11 = *MEMORY[0x1E69E9840];
-  return v8;
+  return execute;
 }
 
 - (void)_updateForExistingTrace
@@ -3230,11 +3230,11 @@ LABEL_11:
       _os_log_impl(&dword_1D311E000, v5, OS_LOG_TYPE_DEFAULT, "Trace DB successfully initialized.", buf, 2u);
     }
 
-    v6 = [v3 UTF8String];
-    v7 = [(MNTraceRecorder *)self trace];
-    LODWORD(v6) = sqlite3_exec([v7 db], v6, 0, 0, 0);
+    uTF8String = [v3 UTF8String];
+    trace = [(MNTraceRecorder *)self trace];
+    LODWORD(uTF8String) = sqlite3_exec([trace db], uTF8String, 0, 0, 0);
 
-    if (v6)
+    if (uTF8String)
     {
       v8 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -3246,14 +3246,14 @@ LABEL_11:
       }
     }
 
-    v10 = [(MNTraceRecorder *)self trace];
-    sqlite3_db_config([v10 db], 1002, 1, 0);
+    trace2 = [(MNTraceRecorder *)self trace];
+    sqlite3_db_config([trace2 db], 1002, 1, 0);
 
     if ([(MNTraceRecorder *)self _recordInfo])
     {
       ppStmt = 0;
-      v11 = [(MNTraceRecorder *)self trace];
-      v12 = sqlite3_prepare_v2([v11 db], "INSERT OR IGNORE INTO navigation_event_types (event_id, event_name) VALUES (?, ?)", 81, &ppStmt, 0);
+      trace3 = [(MNTraceRecorder *)self trace];
+      v12 = sqlite3_prepare_v2([trace3 db], "INSERT OR IGNORE INTO navigation_event_types (event_id, event_name) VALUES (?, ?)", 81, &ppStmt, 0);
 
       if (v12)
       {
@@ -3279,7 +3279,7 @@ LABEL_17:
           if (v17)
           {
             v21 = v17;
-            v22 = self;
+            selfCopy2 = self;
             v23 = 282;
             goto LABEL_29;
           }
@@ -3310,10 +3310,10 @@ LABEL_17:
         }
 
         v21 = v18;
-        v22 = self;
+        selfCopy2 = self;
         v23 = 283;
 LABEL_29:
-        [(MNTraceRecorder *)v22 _logSqliteErrorWithResult:v21 file:"/Library/Caches/com.apple.xbs/Sources/Navigation/Traces/MNTraceRecorder.m" line:v23];
+        [(MNTraceRecorder *)selfCopy2 _logSqliteErrorWithResult:v21 file:"/Library/Caches/com.apple.xbs/Sources/Navigation/Traces/MNTraceRecorder.m" line:v23];
       }
     }
   }
@@ -3321,31 +3321,31 @@ LABEL_29:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isTracePathValid:(id)a3
+- (BOOL)_isTracePathValid:(id)valid
 {
   v3 = MEMORY[0x1E696AE70];
-  v4 = a3;
+  validCopy = valid;
   v5 = [v3 regularExpressionWithPattern:@"[\n\x00\\\\]+" options:0 error:0];
-  v6 = [v5 numberOfMatchesInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+  v6 = [v5 numberOfMatchesInString:validCopy options:0 range:{0, objc_msgSend(validCopy, "length")}];
 
   return v6 == 0;
 }
 
-- (void)_logSqliteErrorWithResult:(int)a3 file:(const char *)a4 line:(int)a5
+- (void)_logSqliteErrorWithResult:(int)result file:(const char *)file line:(int)line
 {
   v21 = *MEMORY[0x1E69E9840];
   v9 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v10 = [(MNTraceRecorder *)self trace];
+    trace = [(MNTraceRecorder *)self trace];
     v13 = 136446978;
-    v14 = a4;
+    fileCopy = file;
     v15 = 1024;
-    v16 = a5;
+    lineCopy = line;
     v17 = 1024;
-    v18 = a3;
+    resultCopy = result;
     v19 = 2082;
-    v20 = sqlite3_errmsg([v10 db]);
+    v20 = sqlite3_errmsg([trace db]);
     _os_log_impl(&dword_1D311E000, v9, OS_LOG_TYPE_ERROR, "%{public}s:%d  SQL error: (%d) %{public}s", &v13, 0x22u);
   }
 
@@ -3362,21 +3362,21 @@ LABEL_29:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_dispatchWrite:(id)a3
+- (void)_dispatchWrite:(id)write
 {
-  v4 = a3;
-  v5 = [(MNTraceRecorder *)self trace];
-  v6 = [v5 writeGroup];
-  v7 = [(MNTraceRecorder *)self trace];
-  v8 = [v7 writeQueue];
+  writeCopy = write;
+  trace = [(MNTraceRecorder *)self trace];
+  writeGroup = [trace writeGroup];
+  trace2 = [(MNTraceRecorder *)self trace];
+  writeQueue = [trace2 writeQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __34__MNTraceRecorder__dispatchWrite___block_invoke;
   v10[3] = &unk_1E842F580;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  dispatch_group_async(v6, v8, v10);
+  v11 = writeCopy;
+  v9 = writeCopy;
+  dispatch_group_async(writeGroup, writeQueue, v10);
 }
 
 void __34__MNTraceRecorder__dispatchWrite___block_invoke(uint64_t a1)
@@ -3410,17 +3410,17 @@ void __34__MNTraceRecorder__dispatchWrite___block_invoke(uint64_t a1)
   }
 
   [(MNTraceRecorder *)self saveTraceWithCompletionHandler:0];
-  v3 = [(MNTraceRecorder *)self trace];
-  v4 = [v3 writeGroup];
-  dispatch_group_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
+  trace = [(MNTraceRecorder *)self trace];
+  writeGroup = [trace writeGroup];
+  dispatch_group_wait(writeGroup, 0xFFFFFFFFFFFFFFFFLL);
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveTraceWithCompletionHandler:(id)a3
+- (void)saveTraceWithCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_closed)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot complete operation on closed trace."];
@@ -3450,8 +3450,8 @@ void __34__MNTraceRecorder__dispatchWrite___block_invoke(uint64_t a1)
   v12[2] = __50__MNTraceRecorder_saveTraceWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E842F580;
   v12[4] = self;
-  v13 = v4;
-  v7 = v4;
+  v13 = handlerCopy;
+  v7 = handlerCopy;
   [(MNTraceRecorder *)self _dispatchWrite:v12];
   errorHandler = self->_errorHandler;
   self->_errorHandler = 0;
@@ -3529,11 +3529,11 @@ void __50__MNTraceRecorder_saveTraceWithCompletionHandler___block_invoke(uint64_
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startWritingTraceToPath:(id)a3 traceType:(int64_t)a4 withErrorHandler:(id)a5
+- (void)startWritingTraceToPath:(id)path traceType:(int64_t)type withErrorHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  pathCopy = path;
+  handlerCopy = handler;
   if (self->_trace)
   {
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"startWritingTraceToPath: called when trace was already created"];
@@ -3548,7 +3548,7 @@ void __50__MNTraceRecorder_saveTraceWithCompletionHandler___block_invoke(uint64_
     }
   }
 
-  v11 = [(MNTraceRecorder *)self _isTracePathValid:v9];
+  v11 = [(MNTraceRecorder *)self _isTracePathValid:pathCopy];
   v12 = GEOFindOrCreateLog();
   v13 = v12;
   if (v11)
@@ -3556,7 +3556,7 @@ void __50__MNTraceRecorder_saveTraceWithCompletionHandler___block_invoke(uint64_
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138477827;
-      v32 = v9;
+      v32 = pathCopy;
       _os_log_impl(&dword_1D311E000, v13, OS_LOG_TYPE_DEFAULT, "Start writing trace to path: %{private}@", buf, 0xCu);
     }
 
@@ -3564,8 +3564,8 @@ void __50__MNTraceRecorder_saveTraceWithCompletionHandler___block_invoke(uint64_
     trace = self->_trace;
     self->_trace = v14;
 
-    objc_storeStrong(&self->_tracePath, a3);
-    self->_traceType = a4;
+    objc_storeStrong(&self->_tracePath, path);
+    self->_traceType = type;
     if (!self->_recordingStartDate)
     {
       v16 = [MEMORY[0x1E695DF00] now];
@@ -3580,15 +3580,15 @@ void __50__MNTraceRecorder_saveTraceWithCompletionHandler___block_invoke(uint64_
       _os_log_impl(&dword_1D311E000, v18, OS_LOG_TYPE_DEFAULT, "Setting recording start time to current time", buf, 2u);
     }
 
-    v19 = [(MNTrace *)self->_trace writeQueue];
+    writeQueue = [(MNTrace *)self->_trace writeQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __70__MNTraceRecorder_startWritingTraceToPath_traceType_withErrorHandler___block_invoke;
     block[3] = &unk_1E842F448;
-    v26 = v9;
-    v27 = self;
-    v28 = v10;
-    dispatch_async(v19, block);
+    v26 = pathCopy;
+    selfCopy = self;
+    v28 = handlerCopy;
+    dispatch_async(writeQueue, block);
 
     v20 = v26;
     goto LABEL_14;
@@ -3597,19 +3597,19 @@ void __50__MNTraceRecorder_saveTraceWithCompletionHandler___block_invoke(uint64_
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     *buf = 138477827;
-    v32 = v9;
+    v32 = pathCopy;
     _os_log_impl(&dword_1D311E000, v13, OS_LOG_TYPE_ERROR, "Error opening trace recorder due to invalid path: %{private}@", buf, 0xCu);
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     v29[0] = *MEMORY[0x1E696A578];
     v29[1] = @"path";
     v30[0] = @"Invalid path";
-    v30[1] = v9;
+    v30[1] = pathCopy;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:2];
     v21 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MNTraceErrorDomain" code:10 userInfo:v20];
-    (*(v10 + 2))(v10, v21);
+    (*(handlerCopy + 2))(handlerCopy, v21);
 
 LABEL_14:
   }

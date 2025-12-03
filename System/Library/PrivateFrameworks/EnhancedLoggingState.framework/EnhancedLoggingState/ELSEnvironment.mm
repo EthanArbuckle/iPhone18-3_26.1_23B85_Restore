@@ -1,8 +1,8 @@
 @interface ELSEnvironment
 + (id)sharedInstance;
 - (CKContainerID)cloudKitContainerIdentifier;
-- (id)_containerIdentifierForCloudKitEnvironment:(unint64_t)a3;
-- (int64_t)_containerEnvironmentForCloudKitEnvironment:(unint64_t)a3;
+- (id)_containerIdentifierForCloudKitEnvironment:(unint64_t)environment;
+- (int64_t)_containerEnvironmentForCloudKitEnvironment:(unint64_t)environment;
 - (unint64_t)cloudKitEnvironment;
 @end
 
@@ -30,9 +30,9 @@ uint64_t __32__ELSEnvironment_sharedInstance__block_invoke()
 - (unint64_t)cloudKitEnvironment
 {
   v2 = +[ELSDefaults sharedInstance];
-  v3 = [v2 cloudKitEnvironment];
+  cloudKitEnvironment = [v2 cloudKitEnvironment];
 
-  return v3;
+  return cloudKitEnvironment;
 }
 
 - (CKContainerID)cloudKitContainerIdentifier
@@ -44,19 +44,19 @@ uint64_t __32__ELSEnvironment_sharedInstance__block_invoke()
   return v5;
 }
 
-- (id)_containerIdentifierForCloudKitEnvironment:(unint64_t)a3
+- (id)_containerIdentifierForCloudKitEnvironment:(unint64_t)environment
 {
-  if (a3 <= 2)
+  if (environment <= 2)
   {
-    self = *off_278FC4D90[a3];
+    self = *off_278FC4D90[environment];
   }
 
   return self;
 }
 
-- (int64_t)_containerEnvironmentForCloudKitEnvironment:(unint64_t)a3
+- (int64_t)_containerEnvironmentForCloudKitEnvironment:(unint64_t)environment
 {
-  if (a3 - 1 >= 2)
+  if (environment - 1 >= 2)
   {
     return 1;
   }

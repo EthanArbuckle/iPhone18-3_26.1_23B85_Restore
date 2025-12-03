@@ -1,7 +1,7 @@
 @interface TKVibrationRecorderRippleTouchContext
 - (CGPoint)location;
 - (TKVibrationRecorderRippleTouchContext)init;
-- (void)configureWithTimeIntervalSinceCreation:(double)a3 location:(CGPoint)a4;
+- (void)configureWithTimeIntervalSinceCreation:(double)creation location:(CGPoint)location;
 @end
 
 @implementation TKVibrationRecorderRippleTouchContext
@@ -20,12 +20,12 @@
   return v3;
 }
 
-- (void)configureWithTimeIntervalSinceCreation:(double)a3 location:(CGPoint)a4
+- (void)configureWithTimeIntervalSinceCreation:(double)creation location:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-  self->_creationTimestamp = v8 - a3;
+  self->_creationTimestamp = v8 - creation;
   self->_location.x = x;
   self->_location.y = y;
 }

@@ -1,11 +1,11 @@
 @interface TFImageUpload
-- (BOOL)isEqual:(id)a3;
-- (TFImageUpload)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TFImageUpload)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TFImageUpload
@@ -15,8 +15,8 @@
   v7.receiver = self;
   v7.super_class = TFImageUpload;
   v3 = [(TFImageUpload *)&v7 description];
-  v4 = [(TFImageUpload *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(TFImageUpload *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -40,44 +40,44 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_uploadUrl)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_xiCloudVersionIdHeader)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uploadUrl copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uploadUrl copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_xiCloudVersionIdHeader copyWithZone:a3];
+  v8 = [(NSString *)self->_xiCloudVersionIdHeader copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((uploadUrl = self->_uploadUrl, !(uploadUrl | v4[1])) || -[NSString isEqual:](uploadUrl, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((uploadUrl = self->_uploadUrl, !(uploadUrl | equalCopy[1])) || -[NSString isEqual:](uploadUrl, "isEqual:")))
   {
     xiCloudVersionIdHeader = self->_xiCloudVersionIdHeader;
-    if (xiCloudVersionIdHeader | v4[2])
+    if (xiCloudVersionIdHeader | equalCopy[2])
     {
       v7 = [(NSString *)xiCloudVersionIdHeader isEqual:?];
     }
@@ -96,27 +96,27 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uploadUrl = self->_uploadUrl;
-  v5 = a3;
-  [v5 encodeObject:uploadUrl forKey:@"A"];
-  [v5 encodeObject:self->_xiCloudVersionIdHeader forKey:@"B"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uploadUrl forKey:@"A"];
+  [coderCopy encodeObject:self->_xiCloudVersionIdHeader forKey:@"B"];
 }
 
-- (TFImageUpload)initWithCoder:(id)a3
+- (TFImageUpload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TFImageUpload;
   v5 = [(TFImageUpload *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"A"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"A"];
     uploadUrl = v5->_uploadUrl;
     v5->_uploadUrl = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"B"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"B"];
     xiCloudVersionIdHeader = v5->_xiCloudVersionIdHeader;
     v5->_xiCloudVersionIdHeader = v8;
   }

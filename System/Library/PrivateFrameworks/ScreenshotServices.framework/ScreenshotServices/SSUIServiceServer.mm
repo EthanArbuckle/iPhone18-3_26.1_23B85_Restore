@@ -1,64 +1,64 @@
 @interface SSUIServiceServer
-- (BOOL)_handleHasAnySSUIServiceEntitlement:(id)a3;
-- (SSUIServiceServer)initWithDelegate:(id)a3;
+- (BOOL)_handleHasAnySSUIServiceEntitlement:(id)entitlement;
+- (SSUIServiceServer)initWithDelegate:(id)delegate;
 - (SSUIServiceServerDelegate)delegate;
-- (void)noteDidReceiveMessage:(id)a3 withType:(int64_t)a4 fromClient:(id)a5;
+- (void)noteDidReceiveMessage:(id)message withType:(int64_t)type fromClient:(id)client;
 @end
 
 @implementation SSUIServiceServer
 
-- (SSUIServiceServer)initWithDelegate:(id)a3
+- (SSUIServiceServer)initWithDelegate:(id)delegate
 {
   v4 = SSUIServiceIdentifier;
   v5 = MEMORY[0x1E699FC68];
-  v6 = a3;
+  delegateCopy = delegate;
   v7 = [v5 queueWithDispatchQueue:MEMORY[0x1E69E96A0]];
   v10.receiver = self;
   v10.super_class = SSUIServiceServer;
   v8 = [(FBSServiceFacility *)&v10 initWithIdentifier:v4 queue:v7];
 
-  [(SSUIServiceServer *)v8 setDelegate:v6];
+  [(SSUIServiceServer *)v8 setDelegate:delegateCopy];
   return v8;
 }
 
-- (BOOL)_handleHasAnySSUIServiceEntitlement:(id)a3
+- (BOOL)_handleHasAnySSUIServiceEntitlement:(id)entitlement
 {
-  v3 = a3;
-  if ([v3 hasEntitlement:SSUIShowScreenshotUIEntitlement])
+  entitlementCopy = entitlement;
+  if ([entitlementCopy hasEntitlement:SSUIShowScreenshotUIEntitlement])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 hasEntitlement:SSUIRunPPTEntitlement];
+    v4 = [entitlementCopy hasEntitlement:SSUIRunPPTEntitlement];
   }
 
   return v4;
 }
 
-- (void)noteDidReceiveMessage:(id)a3 withType:(int64_t)a4 fromClient:(id)a5
+- (void)noteDidReceiveMessage:(id)message withType:(int64_t)type fromClient:(id)client
 {
-  v7 = a3;
-  v8 = [a5 processHandle];
-  if ([(SSUIServiceServer *)self _handleHasAnySSUIServiceEntitlement:v8])
+  messageCopy = message;
+  processHandle = [client processHandle];
+  if ([(SSUIServiceServer *)self _handleHasAnySSUIServiceEntitlement:processHandle])
   {
-    v9 = [v7 payload];
-    v10 = xpc_dictionary_get_value(v9, "SSUIServiceRequest");
+    payload = [messageCopy payload];
+    v10 = xpc_dictionary_get_value(payload, "SSUIServiceRequest");
     v11 = [MEMORY[0x1E698E7A8] coderWithMessage:v10];
     v12 = [v11 decodeObjectOfClass:objc_opt_class() forKey:@"SSUIServiceRequest"];
-    v13 = [objc_opt_class() entitlement];
-    v14 = [v8 hasEntitlement:v13];
+    entitlement = [objc_opt_class() entitlement];
+    v14 = [processHandle hasEntitlement:entitlement];
 
     if (v14)
     {
-      v15 = [(SSUIServiceServer *)self delegate];
+      delegate = [(SSUIServiceServer *)self delegate];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __63__SSUIServiceServer_noteDidReceiveMessage_withType_fromClient___block_invoke;
       v17[3] = &unk_1E8590600;
-      v18 = v7;
-      [v15 server:self handleRequest:v12 withCompletion:v17];
+      v18 = messageCopy;
+      [delegate server:self handleRequest:v12 withCompletion:v17];
 
       v16 = v18;
     }
@@ -68,7 +68,7 @@
       v16 = os_log_create("com.apple.screenshotservices", "XPC");
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        [SSUIServiceServer noteDidReceiveMessage:v8 withType:v12 fromClient:v16];
+        [SSUIServiceServer noteDidReceiveMessage:processHandle withType:v12 fromClient:v16];
       }
     }
   }
@@ -78,10 +78,10 @@
     v10 = os_log_create("com.apple.screenshotservices", "XPC");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [SSUIServiceServer noteDidReceiveMessage:v8 withType:v10 fromClient:?];
+      [SSUIServiceServer noteDidReceiveMessage:processHandle withType:v10 fromClient:?];
     }
 
-    v9 = v10;
+    payload = v10;
   }
 }
 

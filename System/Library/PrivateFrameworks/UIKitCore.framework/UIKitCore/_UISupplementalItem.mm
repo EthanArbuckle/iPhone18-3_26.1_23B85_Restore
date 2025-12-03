@@ -1,6 +1,6 @@
 @interface _UISupplementalItem
-+ (id)_uiSupplementalItemWithTISupplementalItem:(id)a3 icon:(id)a4;
-- (_UISupplementalItem)initWithCoder:(id)a3;
++ (id)_uiSupplementalItemWithTISupplementalItem:(id)item icon:(id)icon;
+- (_UISupplementalItem)initWithCoder:(id)coder;
 - (id)_init;
 @end
 
@@ -20,14 +20,14 @@
   return v3;
 }
 
-+ (id)_uiSupplementalItemWithTISupplementalItem:(id)a3 icon:(id)a4
++ (id)_uiSupplementalItemWithTISupplementalItem:(id)item icon:(id)icon
 {
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  iconCopy = icon;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [[_UISupplementalPersonItem alloc] initWithTISupplementalPersonItem:v5 icon:v6];
+    v7 = [[_UISupplementalPersonItem alloc] initWithTISupplementalPersonItem:itemCopy icon:iconCopy];
 LABEL_5:
     v8 = v7;
     goto LABEL_7;
@@ -36,7 +36,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [[_UISupplementalPhraseItem alloc] initWithTISupplementalPhraseItem:v5 icon:v6];
+    v7 = [[_UISupplementalPhraseItem alloc] initWithTISupplementalPhraseItem:itemCopy icon:iconCopy];
     goto LABEL_5;
   }
 
@@ -46,20 +46,20 @@ LABEL_7:
   return v8;
 }
 
-- (_UISupplementalItem)initWithCoder:(id)a3
+- (_UISupplementalItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_UISupplementalItem *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(_UISupplementalItem *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
-    icon = v5->_icon;
-    v5->_icon = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
+    icon = _init->_icon;
+    _init->_icon = v6;
 
-    v8 = v5;
+    v8 = _init;
   }
 
-  return v5;
+  return _init;
 }
 
 @end

@@ -29,7 +29,7 @@
   }
 
   v36 = v7;
-  v12 = [(NSNumber *)self->inputFlipYTiles BOOLValue];
+  bOOLValue = [(NSNumber *)self->inputFlipYTiles BOOLValue];
   inputBreakpoint0 = self->inputBreakpoint0;
   [(CIVector *)inputBreakpoint0 X];
   v41 = v14;
@@ -70,7 +70,7 @@
 
   v29 = [CIVector vectorWithX:v39.f32[0] Y:v23 Z:*v42.i32 W:*&v42.i32[1]];
   v30.i32[0] = v37.i32[0];
-  if (v12)
+  if (bOOLValue)
   {
     v31 = -1;
   }
@@ -82,7 +82,7 @@
 
   *&v30.i32[1] = v9 + v35;
   v38 = vbsl_s8(vdup_n_s32(v31), v30, v37);
-  v32 = [(CINinePartTiled *)self _kernelAlt];
+  _kernelAlt = [(CINinePartTiled *)self _kernelAlt];
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
   v43[2] = __30__CINinePartTiled_outputImage__block_invoke;
@@ -90,12 +90,12 @@
   v43[4] = v39;
   v43[5] = v42;
   v43[6] = v36;
-  v44 = v12;
+  v44 = bOOLValue;
   inputImage = self->inputImage;
   v45[0] = v29;
   v45[1] = [CIVector vectorWithX:v8 Y:v10];
   v45[2] = [CIVector vectorWithX:*v38.i32 Y:*&v38.i32[1]];
-  return [v32 applyWithExtent:v43 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v45, 3), x, y, width, height}];
+  return [_kernelAlt applyWithExtent:v43 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v45, 3), x, y, width, height}];
 }
 
 double __30__CINinePartTiled_outputImage__block_invoke(uint64_t a1, double a2, double a3, double a4, double a5)

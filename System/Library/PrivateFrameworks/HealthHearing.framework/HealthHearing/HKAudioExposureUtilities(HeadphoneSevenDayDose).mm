@@ -33,29 +33,29 @@
 {
   v8 = a3;
   v9 = a4;
-  v10 = [MEMORY[0x277CCDAB0] decibelAWeightedSoundPressureLevelUnit];
-  if ([v8 isCompatibleWithUnit:v10])
+  decibelAWeightedSoundPressureLevelUnit = [MEMORY[0x277CCDAB0] decibelAWeightedSoundPressureLevelUnit];
+  if ([v8 isCompatibleWithUnit:decibelAWeightedSoundPressureLevelUnit])
   {
-    v11 = [MEMORY[0x277CCDAB0] secondUnit];
-    if ([v9 isCompatibleWithUnit:v11])
+    secondUnit = [MEMORY[0x277CCDAB0] secondUnit];
+    if ([v9 isCompatibleWithUnit:secondUnit])
     {
-      [v8 doubleValueForUnit:v10];
+      [v8 doubleValueForUnit:decibelAWeightedSoundPressureLevelUnit];
       v13 = v12;
-      [v9 doubleValueForUnit:v11];
-      v15 = [a1 hk_sevenDayDoseWithExposureLevel:a5 exposureDuration:v13 error:v14];
+      [v9 doubleValueForUnit:secondUnit];
+      v15 = [self hk_sevenDayDoseWithExposureLevel:a5 exposureDuration:v13 error:v14];
       goto LABEL_7;
     }
 
     v17 = MEMORY[0x277CCA9B8];
-    v18 = [v9 _unit];
-    [v17 hk_assignError:a5 code:3 format:{@"duration (%@) incompatible with second unit", v18}];
+    _unit = [v9 _unit];
+    [v17 hk_assignError:a5 code:3 format:{@"duration (%@) incompatible with second unit", _unit}];
   }
 
   else
   {
     v16 = MEMORY[0x277CCA9B8];
-    v11 = [v8 _unit];
-    [v16 hk_assignError:a5 code:3 format:{@"averageQuantity (%@) incompatable with dBASPL unit", v11}];
+    secondUnit = [v8 _unit];
+    [v16 hk_assignError:a5 code:3 format:{@"averageQuantity (%@) incompatable with dBASPL unit", secondUnit}];
   }
 
   v15 = 0;

@@ -4,11 +4,11 @@
 - (BOOL)newRadioNsaCoverage;
 - (BOOL)newRadioSaCoverage;
 - (BOOL)newRadioSub6DataBearer;
-- (CTDataStatus)initWithCoder:(id)a3;
+- (CTDataStatus)initWithCoder:(id)coder;
 - (id)copyBasic;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTDataStatus
@@ -46,9 +46,9 @@
 
   else
   {
-    v6 = [(CTDataStatus *)self indicatorOverride];
-    v3 = 0xF0100u >> v6;
-    if (v6 >= 0x14)
+    indicatorOverride = [(CTDataStatus *)self indicatorOverride];
+    v3 = 0xF0100u >> indicatorOverride;
+    if (indicatorOverride >= 0x14)
     {
       LOBYTE(v3) = 0;
     }
@@ -69,9 +69,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setAttached:{-[CTDataStatus attached](self, "attached")}];
   [v4 setDataSim:{-[CTDataStatus dataSim](self, "dataSim")}];
   [v4 setIndicator:{-[CTDataStatus indicator](self, "indicator")}];
@@ -90,76 +90,76 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(CTDataStatus *)self attached];
+  coderCopy = coder;
+  attached = [(CTDataStatus *)self attached];
   if ([(CTDataStatus *)self dataSim])
   {
-    v4 |= 0x40u;
+    attached |= 0x40u;
   }
 
   if ([(CTDataStatus *)self inHomeCountry])
   {
-    v4 |= 4u;
+    attached |= 4u;
   }
 
   if ([(CTDataStatus *)self roamAllowed])
   {
-    v4 |= 8u;
+    attached |= 8u;
   }
 
   if ([(CTDataStatus *)self dataPlanSignalingReductionOverride])
   {
-    v4 |= 0x80u;
+    attached |= 0x80u;
   }
 
   if ([(CTDataStatus *)self cellularDataPossible])
   {
-    v5 = v4 | 0x10;
+    v5 = attached | 0x10;
   }
 
   else
   {
-    v5 = v4;
+    v5 = attached;
   }
 
-  [v6 encodeInt:v5 forKey:@"DataStatusFlags"];
-  [v6 encodeInt:-[CTDataStatus indicator](self forKey:{"indicator"), @"indicator"}];
-  [v6 encodeInt:-[CTDataStatus indicatorOverride](self forKey:{"indicatorOverride"), @"indicatorOverride"}];
-  [v6 encodeInt:-[CTDataStatus radioTechnology](self forKey:{"radioTechnology"), @"radioTechnology"}];
-  [v6 encodeInt:-[CTDataStatus dataMode](self forKey:{"dataMode"), @"dataMode"}];
-  [v6 encodeInt:-[CTDataStatus dataBearerTechnology](self forKey:{"dataBearerTechnology"), @"dataBearerTechnology"}];
-  [v6 encodeInt:-[CTDataStatus dataBearerSoMask](self forKey:{"dataBearerSoMask"), @"dataBearerSoMask"}];
-  [v6 encodeInt:-[CTDataStatus activeContexts](self forKey:{"activeContexts"), @"activeContexts"}];
-  [v6 encodeInt:-[CTDataStatus totalActiveContexts](self forKey:{"totalActiveContexts"), @"totalActiveContexts"}];
-  [v6 encodeInt:-[CTDataStatus reason](self forKey:{"reason"), @"reason"}];
+  [coderCopy encodeInt:v5 forKey:@"DataStatusFlags"];
+  [coderCopy encodeInt:-[CTDataStatus indicator](self forKey:{"indicator"), @"indicator"}];
+  [coderCopy encodeInt:-[CTDataStatus indicatorOverride](self forKey:{"indicatorOverride"), @"indicatorOverride"}];
+  [coderCopy encodeInt:-[CTDataStatus radioTechnology](self forKey:{"radioTechnology"), @"radioTechnology"}];
+  [coderCopy encodeInt:-[CTDataStatus dataMode](self forKey:{"dataMode"), @"dataMode"}];
+  [coderCopy encodeInt:-[CTDataStatus dataBearerTechnology](self forKey:{"dataBearerTechnology"), @"dataBearerTechnology"}];
+  [coderCopy encodeInt:-[CTDataStatus dataBearerSoMask](self forKey:{"dataBearerSoMask"), @"dataBearerSoMask"}];
+  [coderCopy encodeInt:-[CTDataStatus activeContexts](self forKey:{"activeContexts"), @"activeContexts"}];
+  [coderCopy encodeInt:-[CTDataStatus totalActiveContexts](self forKey:{"totalActiveContexts"), @"totalActiveContexts"}];
+  [coderCopy encodeInt:-[CTDataStatus reason](self forKey:{"reason"), @"reason"}];
 }
 
-- (CTDataStatus)initWithCoder:(id)a3
+- (CTDataStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CTDataStatus;
   v5 = [(CTDataStatus *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeIntForKey:@"DataStatusFlags"];
+    v6 = [coderCopy decodeIntForKey:@"DataStatusFlags"];
     v5->_attached = v6 & 1;
     v5->_dataPlanSignalingReductionOverride = v6 < 0;
     v5->_inHomeCountry = (v6 & 4) != 0;
     v5->_roamAllowed = (v6 & 8) != 0;
     v5->_cellularDataPossible = (v6 & 0x10) != 0;
     v5->_dataSim = (v6 & 0x40) != 0;
-    v5->_indicator = [v4 decodeIntForKey:@"indicator"];
-    v5->_indicatorOverride = [v4 decodeIntForKey:@"indicatorOverride"];
-    v5->_radioTechnology = [v4 decodeIntForKey:@"radioTechnology"];
-    v5->_dataMode = [v4 decodeIntForKey:@"dataMode"];
-    v5->_dataBearerTechnology = [v4 decodeIntForKey:@"dataBearerTechnology"];
-    v5->_dataBearerSoMask = [v4 decodeIntForKey:@"dataBearerSoMask"];
-    v5->_activeContexts = [v4 decodeIntForKey:@"activeContexts"];
-    v5->_totalActiveContexts = [v4 decodeIntForKey:@"totalActiveContexts"];
-    v5->_reason = [v4 decodeIntForKey:@"reason"];
+    v5->_indicator = [coderCopy decodeIntForKey:@"indicator"];
+    v5->_indicatorOverride = [coderCopy decodeIntForKey:@"indicatorOverride"];
+    v5->_radioTechnology = [coderCopy decodeIntForKey:@"radioTechnology"];
+    v5->_dataMode = [coderCopy decodeIntForKey:@"dataMode"];
+    v5->_dataBearerTechnology = [coderCopy decodeIntForKey:@"dataBearerTechnology"];
+    v5->_dataBearerSoMask = [coderCopy decodeIntForKey:@"dataBearerSoMask"];
+    v5->_activeContexts = [coderCopy decodeIntForKey:@"activeContexts"];
+    v5->_totalActiveContexts = [coderCopy decodeIntForKey:@"totalActiveContexts"];
+    v5->_reason = [coderCopy decodeIntForKey:@"reason"];
   }
 
   return v5;
@@ -167,46 +167,46 @@
 
 - (BOOL)newRadioSaCoverage
 {
-  v3 = [(CTDataStatus *)self newRadioCoverage];
-  if (v3)
+  newRadioCoverage = [(CTDataStatus *)self newRadioCoverage];
+  if (newRadioCoverage)
   {
-    LOBYTE(v3) = [(CTDataStatus *)self radioTechnology]== 10;
+    LOBYTE(newRadioCoverage) = [(CTDataStatus *)self radioTechnology]== 10;
   }
 
-  return v3;
+  return newRadioCoverage;
 }
 
 - (BOOL)newRadioNsaCoverage
 {
-  v3 = [(CTDataStatus *)self newRadioCoverage];
-  if (v3)
+  newRadioCoverage = [(CTDataStatus *)self newRadioCoverage];
+  if (newRadioCoverage)
   {
-    LOBYTE(v3) = ![(CTDataStatus *)self newRadioSaCoverage];
+    LOBYTE(newRadioCoverage) = ![(CTDataStatus *)self newRadioSaCoverage];
   }
 
-  return v3;
+  return newRadioCoverage;
 }
 
 - (BOOL)newRadioMmWaveDataBearer
 {
-  v3 = [(CTDataStatus *)self newRadioDataBearer];
-  if (v3)
+  newRadioDataBearer = [(CTDataStatus *)self newRadioDataBearer];
+  if (newRadioDataBearer)
   {
     return ([(CTDataStatus *)self dataBearerSoMask]>> 3) & 1;
   }
 
-  return v3;
+  return newRadioDataBearer;
 }
 
 - (BOOL)newRadioSub6DataBearer
 {
-  v3 = [(CTDataStatus *)self newRadioDataBearer];
-  if (v3)
+  newRadioDataBearer = [(CTDataStatus *)self newRadioDataBearer];
+  if (newRadioDataBearer)
   {
     return ([(CTDataStatus *)self dataBearerSoMask]>> 2) & 1;
   }
 
-  return v3;
+  return newRadioDataBearer;
 }
 
 @end

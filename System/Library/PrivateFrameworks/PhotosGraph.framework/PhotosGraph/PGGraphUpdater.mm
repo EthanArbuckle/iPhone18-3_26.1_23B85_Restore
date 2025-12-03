@@ -1,31 +1,31 @@
 @interface PGGraphUpdater
 - (PGGraphUpdater)init;
-- (PGGraphUpdater)initWith:(id)a3;
-- (void)applyChangesFrom:(PGGraphUpdate *)a3 progressReporter:(MAProgressReporter *)a4 completionHandler:(id)a5;
+- (PGGraphUpdater)initWith:(id)with;
+- (void)applyChangesFrom:(PGGraphUpdate *)from progressReporter:(MAProgressReporter *)reporter completionHandler:(id)handler;
 @end
 
 @implementation PGGraphUpdater
 
-- (PGGraphUpdater)initWith:(id)a3
+- (PGGraphUpdater)initWith:(id)with
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR___PGGraphUpdater_graphManager) = a3;
+  *(&self->super.isa + OBJC_IVAR___PGGraphUpdater_graphManager) = with;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  v6 = a3;
+  withCopy = with;
   return [(PGGraphUpdater *)&v8 init];
 }
 
-- (void)applyChangesFrom:(PGGraphUpdate *)a3 progressReporter:(MAProgressReporter *)a4 completionHandler:(id)a5
+- (void)applyChangesFrom:(PGGraphUpdate *)from progressReporter:(MAProgressReporter *)reporter completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DAB07C0, &qword_22F77A4F0);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = from;
+  v14[3] = reporter;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_22F741320();
@@ -40,9 +40,9 @@
   v17[3] = 0;
   v17[4] = &unk_22F783A70;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  fromCopy = from;
+  reporterCopy = reporter;
+  selfCopy = self;
   sub_22F33C54C(0, 0, v12, &unk_22F784250, v17);
 }
 

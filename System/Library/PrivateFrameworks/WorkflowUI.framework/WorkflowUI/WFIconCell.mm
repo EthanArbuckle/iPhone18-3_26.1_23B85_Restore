@@ -1,17 +1,17 @@
 @interface WFIconCell
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation WFIconCell
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = WFIconCell;
-  v4 = a3;
-  [(WFIconCell *)&v7 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(WFIconCell *)&v7 traitCollectionDidChange:changeCopy];
   v5 = [(WFIconCell *)self traitCollection:v7.receiver];
-  v6 = WFShouldRedrawIconForTraitCollectionChange(v5, v4);
+  v6 = WFShouldRedrawIconForTraitCollectionChange(v5, changeCopy);
 
   if (v6)
   {

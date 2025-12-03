@@ -1,13 +1,13 @@
 @interface DOCHistoryNavigationButtonItem
 - (BOOL)isEnabled;
 - (_TtC26DocumentManagerExecutables30DOCHistoryNavigationButtonItem)init;
-- (_TtC26DocumentManagerExecutables30DOCHistoryNavigationButtonItem)initWithCoder:(id)a3;
-- (void)setEnabled:(BOOL)a3;
+- (_TtC26DocumentManagerExecutables30DOCHistoryNavigationButtonItem)initWithCoder:(id)coder;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation DOCHistoryNavigationButtonItem
 
-- (_TtC26DocumentManagerExecutables30DOCHistoryNavigationButtonItem)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables30DOCHistoryNavigationButtonItem)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables30DOCHistoryNavigationButtonItem_direction) = 2;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables30DOCHistoryNavigationButtonItem_canEnable) = 1;
@@ -34,12 +34,12 @@
   return [(DOCHistoryNavigationButtonItem *)&v3 isEnabled];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4.receiver = self;
   v4.super_class = type metadata accessor for DOCHistoryNavigationButtonItem();
-  [(DOCHistoryNavigationButtonItem *)&v4 setEnabled:v3];
+  [(DOCHistoryNavigationButtonItem *)&v4 setEnabled:enabledCopy];
 }
 
 @end

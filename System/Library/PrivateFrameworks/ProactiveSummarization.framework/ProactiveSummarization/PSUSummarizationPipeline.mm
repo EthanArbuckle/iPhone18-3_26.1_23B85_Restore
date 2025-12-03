@@ -1,11 +1,11 @@
 @interface PSUSummarizationPipeline
-- (void)deleteItemsWithIdentifiers:(id)a3 bundleId:(id)a4;
-- (void)processItem:(id)a3 receivedDate:(id)a4 positionInReceivedItems:(int64_t)a5;
+- (void)deleteItemsWithIdentifiers:(id)identifiers bundleId:(id)id;
+- (void)processItem:(id)item receivedDate:(id)date positionInReceivedItems:(int64_t)items;
 @end
 
 @implementation PSUSummarizationPipeline
 
-- (void)processItem:(id)a3 receivedDate:(id)a4 positionInReceivedItems:(int64_t)a5
+- (void)processItem:(id)item receivedDate:(id)date positionInReceivedItems:(int64_t)items
 {
   v8 = sub_231E0F950();
   v9 = OUTLINED_FUNCTION_24(v8);
@@ -15,8 +15,8 @@
   OUTLINED_FUNCTION_4_1();
   OUTLINED_FUNCTION_162_0();
   sub_231E0F910();
-  v14 = a3;
-  v15 = self;
+  itemCopy = item;
+  selfCopy = self;
   OUTLINED_FUNCTION_112_3();
   sub_231DAB414();
 
@@ -25,11 +25,11 @@
   v18(v17);
 }
 
-- (void)deleteItemsWithIdentifiers:(id)a3 bundleId:(id)a4
+- (void)deleteItemsWithIdentifiers:(id)identifiers bundleId:(id)id
 {
   sub_231E11870();
   sub_231E11620();
-  v5 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_112_3();
   sub_231DAF60C();
 }

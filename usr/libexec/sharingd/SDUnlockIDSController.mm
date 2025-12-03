@@ -5,15 +5,15 @@
 - (NSSet)autoUnlockEligibleDevices;
 - (SDUnlockIDSController)init;
 - (id)activeIDSDevice;
-- (id)autoUnlockDeviceForIDSDevice:(id)a3;
-- (id)dataClassStringForDataClass:(int64_t)a3;
-- (void)addDelegate:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)sendProtocolBufferData:(id)a3 withType:(unsigned __int16)a4 timeout:(id)a5 option:(int64_t)a6 dataClass:(int64_t)a7 queueOneID:(id)a8 errorHandler:(id)a9;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
-- (void)serviceSpaceDidBecomeAvailable:(id)a3;
+- (id)autoUnlockDeviceForIDSDevice:(id)device;
+- (id)dataClassStringForDataClass:(int64_t)class;
+- (void)addDelegate:(id)delegate;
+- (void)removeDelegate:(id)delegate;
+- (void)sendProtocolBufferData:(id)data withType:(unsigned __int16)type timeout:(id)timeout option:(int64_t)option dataClass:(int64_t)class queueOneID:(id)d errorHandler:(id)handler;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
+- (void)serviceSpaceDidBecomeAvailable:(id)available;
 @end
 
 @implementation SDUnlockIDSController
@@ -24,8 +24,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(IDSService *)self->_idsService devices];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  devices = [(IDSService *)self->_idsService devices];
+  v3 = [devices countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -35,7 +35,7 @@
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devices);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -46,7 +46,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [devices countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -118,12 +118,12 @@ LABEL_11:
 
 - (BOOL)hasDefaultDevice
 {
-  v2 = [(IDSService *)self->_idsService devices];
+  devices = [(IDSService *)self->_idsService devices];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v3 = [devices countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -135,13 +135,13 @@ LABEL_11:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devices);
         }
 
         v5 |= [*(*(&v9 + 1) + 8 * i) isDefaultPairedDevice];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [devices countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -161,8 +161,8 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(IDSService *)self->_idsService devices];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v16 count:16];
+  devices = [(IDSService *)self->_idsService devices];
+  v3 = [devices countByEnumeratingWithState:&v10 objects:v16 count:16];
   if (v3)
   {
     v4 = *v11;
@@ -172,7 +172,7 @@ LABEL_11:
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devices);
         }
 
         v6 = *(*(&v10 + 1) + 8 * i);
@@ -183,7 +183,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v16 count:16];
+      v3 = [devices countByEnumeratingWithState:&v10 objects:v16 count:16];
       if (v3)
       {
         continue;
@@ -212,58 +212,58 @@ LABEL_12:
   return v3;
 }
 
-- (void)sendProtocolBufferData:(id)a3 withType:(unsigned __int16)a4 timeout:(id)a5 option:(int64_t)a6 dataClass:(int64_t)a7 queueOneID:(id)a8 errorHandler:(id)a9
+- (void)sendProtocolBufferData:(id)data withType:(unsigned __int16)type timeout:(id)timeout option:(int64_t)option dataClass:(int64_t)class queueOneID:(id)d errorHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a8;
-  v18 = a9;
-  v19 = [(SDUnlockIDSController *)self serviceQueue];
+  dataCopy = data;
+  timeoutCopy = timeout;
+  dCopy = d;
+  handlerCopy = handler;
+  serviceQueue = [(SDUnlockIDSController *)self serviceQueue];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_10006AA2C;
   v24[3] = &unk_1008CE000;
-  v25 = v16;
-  v26 = v17;
-  v32 = a4;
-  v27 = v15;
-  v28 = self;
-  v30 = a6;
-  v31 = a7;
-  v29 = v18;
-  v20 = v18;
-  v21 = v15;
-  v22 = v17;
-  v23 = v16;
-  dispatch_async(v19, v24);
+  v25 = timeoutCopy;
+  v26 = dCopy;
+  typeCopy = type;
+  v27 = dataCopy;
+  selfCopy = self;
+  optionCopy = option;
+  classCopy = class;
+  v29 = handlerCopy;
+  v20 = handlerCopy;
+  v21 = dataCopy;
+  v22 = dCopy;
+  v23 = timeoutCopy;
+  dispatch_async(serviceQueue, v24);
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(SDUnlockIDSController *)self serviceQueue];
+  delegateCopy = delegate;
+  serviceQueue = [(SDUnlockIDSController *)self serviceQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006AE60;
   v7[3] = &unk_1008CE028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_async(serviceQueue, v7);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(SDUnlockIDSController *)self serviceQueue];
+  delegateCopy = delegate;
+  serviceQueue = [(SDUnlockIDSController *)self serviceQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006AF68;
   v7[3] = &unk_1008CE028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_async(serviceQueue, v7);
 }
 
 - (NSSet)autoUnlockEligibleDevices
@@ -273,24 +273,24 @@ LABEL_12:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v3 = [(SDUnlockIDSController *)self idsService];
-  v4 = [v3 devices];
+  idsService = [(SDUnlockIDSController *)self idsService];
+  devices = [idsService devices];
 
-  v5 = [v4 countByEnumeratingWithState:&v30 objects:v36 count:16];
+  v5 = [devices countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v31;
     v8 = &_mh_execute_header;
     v9 = "Skipping unpaired device: %@";
-    v28 = v4;
+    v28 = devices;
     do
     {
       for (i = 0; i != v6; i = i + 1)
       {
         if (*v31 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devices);
         }
 
         v11 = *(*(&v30 + 1) + 8 * i);
@@ -312,8 +312,8 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        v12 = [v11 modelIdentifier];
-        v13 = sub_1001123D8(v12);
+        modelIdentifier = [v11 modelIdentifier];
+        v13 = sub_1001123D8(modelIdentifier);
 
         if (!v13)
         {
@@ -336,19 +336,19 @@ LABEL_15:
         if (v14 && [v14 type]== 1)
         {
           v16 = +[SDStatusMonitor sharedMonitor];
-          v17 = self;
+          selfCopy = self;
           v18 = v8;
           v19 = v9;
-          v20 = [v16 deviceKeyBagUnlocked];
+          deviceKeyBagUnlocked = [v16 deviceKeyBagUnlocked];
 
           v21 = +[SDAutoUnlockAKSManager sharedManager];
-          v22 = [v11 uniqueIDOverride];
-          v23 = v20;
+          uniqueIDOverride = [v11 uniqueIDOverride];
+          v23 = deviceKeyBagUnlocked;
           v9 = v19;
           v8 = v18;
-          self = v17;
-          v4 = v28;
-          -[NSObject setKeyExists:](v15, "setKeyExists:", [v21 ltkExistsForKeyDevice:v22 updateLTKs:v23]);
+          self = selfCopy;
+          devices = v28;
+          -[NSObject setKeyExists:](v15, "setKeyExists:", [v21 ltkExistsForKeyDevice:uniqueIDOverride updateLTKs:v23]);
 
           [v29 addObject:v15];
         }
@@ -356,7 +356,7 @@ LABEL_15:
 LABEL_16:
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v30 objects:v36 count:16];
+      v6 = [devices countByEnumeratingWithState:&v30 objects:v36 count:16];
     }
 
     while (v6);
@@ -365,45 +365,45 @@ LABEL_16:
   return v29;
 }
 
-- (id)autoUnlockDeviceForIDSDevice:(id)a3
+- (id)autoUnlockDeviceForIDSDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 nsuuid];
+  deviceCopy = device;
+  nsuuid = [deviceCopy nsuuid];
 
-  if (v4)
+  if (nsuuid)
   {
     v5 = objc_opt_new();
-    v6 = [v3 uniqueIDOverride];
-    [v5 setUniqueID:v6];
+    uniqueIDOverride = [deviceCopy uniqueIDOverride];
+    [v5 setUniqueID:uniqueIDOverride];
 
-    v7 = [v3 nsuuid];
-    [v5 setBluetoothID:v7];
+    nsuuid2 = [deviceCopy nsuuid];
+    [v5 setBluetoothID:nsuuid2];
 
-    v8 = [v3 modelIdentifier];
-    [v5 setModelIdentifier:v8];
+    modelIdentifier = [deviceCopy modelIdentifier];
+    [v5 setModelIdentifier:modelIdentifier];
 
-    v9 = [v3 productName];
-    [v5 setProductName:v9];
+    productName = [deviceCopy productName];
+    [v5 setProductName:productName];
 
-    v10 = [v3 productVersion];
-    [v5 setProductVersion:v10];
+    productVersion = [deviceCopy productVersion];
+    [v5 setProductVersion:productVersion];
 
-    v11 = [v3 productBuildVersion];
-    [v5 setProductBuildVersion:v11];
+    productBuildVersion = [deviceCopy productBuildVersion];
+    [v5 setProductBuildVersion:productBuildVersion];
 
-    v12 = [v3 name];
-    [v5 setName:v12];
+    name = [deviceCopy name];
+    [v5 setName:name];
 
-    v13 = [v3 enclosureColor];
-    [v5 setEnclosureColor:v13];
+    enclosureColor = [deviceCopy enclosureColor];
+    [v5 setEnclosureColor:enclosureColor];
 
-    [v5 setDefaultPairedDevice:{objc_msgSend(v3, "isDefaultPairedDevice")}];
+    [v5 setDefaultPairedDevice:{objc_msgSend(deviceCopy, "isDefaultPairedDevice")}];
     [v5 setModelName:@"Apple Watch"];
-    if (v3)
+    if (deviceCopy)
     {
-      [v3 operatingSystemVersion];
+      [deviceCopy operatingSystemVersion];
       v14 = v38;
-      [v3 operatingSystemVersion];
+      [deviceCopy operatingSystemVersion];
       v15 = v36 > 3;
     }
 
@@ -420,9 +420,9 @@ LABEL_16:
     }
 
     [v5 setMajorOSVersion:{v14, v35, v36, v37, v38, v39, v40}];
-    v17 = [v3 modelIdentifier];
-    v18 = sub_100112424(v17);
-    v19 = [v18 integerValue];
+    modelIdentifier2 = [deviceCopy modelIdentifier];
+    v18 = sub_100112424(modelIdentifier2);
+    integerValue = [v18 integerValue];
 
     v20 = v14 == 7 && v15;
     if (v14 > 7)
@@ -430,7 +430,7 @@ LABEL_16:
       v20 = 1;
     }
 
-    if (v19 > 2)
+    if (integerValue > 2)
     {
       v21 = v20;
     }
@@ -443,31 +443,31 @@ LABEL_16:
     [v5 setSupportsApproveWithWatch:v21];
     [v5 setSupportsApproveIcon:{objc_msgSend(v5, "supportsApproveWithWatch")}];
     v22 = +[SDAutoUnlockAKSManager sharedManager];
-    v23 = [v3 uniqueIDOverride];
-    v24 = [v22 sessionKeyExistsForDeviceID:v23];
+    uniqueIDOverride2 = [deviceCopy uniqueIDOverride];
+    v24 = [v22 sessionKeyExistsForDeviceID:uniqueIDOverride2];
 
     v25 = +[SDAutoUnlockAKSManager sharedManager];
-    v26 = [v25 deviceIDsMissingSessionKey];
-    v27 = [v3 uniqueIDOverride];
-    v28 = [v26 containsObject:v27];
+    deviceIDsMissingSessionKey = [v25 deviceIDsMissingSessionKey];
+    uniqueIDOverride3 = [deviceCopy uniqueIDOverride];
+    v28 = [deviceIDsMissingSessionKey containsObject:uniqueIDOverride3];
 
     [v5 setSupportsEncryption:v24 & (v28 ^ 1)];
     v29 = +[SDAutoUnlockAKSManager sharedManager];
-    v30 = [v3 uniqueIDOverride];
-    v31 = [v29 deviceEnabledAsKey:v30];
+    uniqueIDOverride4 = [deviceCopy uniqueIDOverride];
+    v31 = [v29 deviceEnabledAsKey:uniqueIDOverride4];
 
     [v5 setUnlockEnabled:v31];
-    v32 = [v3 nsuuid];
-    v16 = v32;
-    if (v32 && (v31 & 1) != 0)
+    nsuuid3 = [deviceCopy nsuuid];
+    v16 = nsuuid3;
+    if (nsuuid3 && (v31 & 1) != 0)
     {
-      v33 = [v5 proxyBluetoothID];
-      [v5 setBluetoothCloudPaired:v33 != 0];
+      proxyBluetoothID = [v5 proxyBluetoothID];
+      [v5 setBluetoothCloudPaired:proxyBluetoothID != 0];
     }
 
     else
     {
-      [v5 setBluetoothCloudPaired:v32 != 0];
+      [v5 setBluetoothCloudPaired:nsuuid3 != 0];
     }
   }
 
@@ -485,13 +485,13 @@ LABEL_16:
   return v5;
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v6 = paired_unlock_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 valueForKeyPath:@"@unionOfObjects.uniqueID"];
+    v7 = [changedCopy valueForKeyPath:@"@unionOfObjects.uniqueID"];
     v8 = SFCompactStringFromCollection();
     *buf = 138412290;
     v21 = v8;
@@ -502,8 +502,8 @@ LABEL_16:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(SDUnlockIDSController *)self delegates];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  delegates = [(SDUnlockIDSController *)self delegates];
+  v10 = [delegates countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -515,7 +515,7 @@ LABEL_16:
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(delegates);
         }
 
         v14 = *(*(&v15 + 1) + 8 * v13);
@@ -528,14 +528,14 @@ LABEL_16:
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [delegates countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)serviceSpaceDidBecomeAvailable:(id)a3
+- (void)serviceSpaceDidBecomeAvailable:(id)available
 {
   v4 = paired_unlock_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -548,8 +548,8 @@ LABEL_16:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(SDUnlockIDSController *)self delegates];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  delegates = [(SDUnlockIDSController *)self delegates];
+  v6 = [delegates countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -561,7 +561,7 @@ LABEL_16:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(delegates);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
@@ -574,50 +574,50 @@ LABEL_16:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v7 = [delegates countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  serviceCopy = service;
+  protobufCopy = protobuf;
+  dCopy = d;
   v13 = paired_unlock_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v11 type];
-    v15 = [v11 data];
-    v16 = [v15 length];
-    v17 = [v11 data];
+    type = [protobufCopy type];
+    data = [protobufCopy data];
+    v16 = [data length];
+    data2 = [protobufCopy data];
     *buf = 67109634;
-    v36 = v14;
+    v36 = type;
     v37 = 1024;
     v38 = v16;
     v39 = 2112;
-    v40 = v17;
+    v40 = data2;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Incoming protobuf (type = %d, size = %u, data = %@)", buf, 0x18u);
   }
 
-  v18 = [v10 deviceForFromID:v12];
-  v29 = [v18 uniqueIDOverride];
+  v18 = [serviceCopy deviceForFromID:dCopy];
+  uniqueIDOverride = [v18 uniqueIDOverride];
 
-  if (v11)
+  if (protobufCopy)
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v19 = [(SDUnlockIDSController *)self delegates];
-    v20 = [v19 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    delegates = [(SDUnlockIDSController *)self delegates];
+    v20 = [delegates countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v20)
     {
       v21 = v20;
-      v27 = v12;
-      v28 = v10;
+      v27 = dCopy;
+      v28 = serviceCopy;
       v22 = *v31;
       do
       {
@@ -625,66 +625,66 @@ LABEL_16:
         {
           if (*v31 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(delegates);
           }
 
           v24 = *(*(&v30 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            v25 = [v11 data];
-            [v24 idsController:self didReceiveProtoData:v25 forType:{objc_msgSend(v11, "type")}];
+            data3 = [protobufCopy data];
+            [v24 idsController:self didReceiveProtoData:data3 forType:{objc_msgSend(protobufCopy, "type")}];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v26 = [v11 data];
-            [v24 idsController:self didReceiveProtoData:v26 forType:objc_msgSend(v11 deviceID:{"type"), v29}];
+            data4 = [protobufCopy data];
+            [v24 idsController:self didReceiveProtoData:data4 forType:objc_msgSend(protobufCopy deviceID:{"type"), uniqueIDOverride}];
           }
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v21 = [delegates countByEnumeratingWithState:&v30 objects:v34 count:16];
       }
 
       while (v21);
-      v12 = v27;
-      v10 = v28;
+      dCopy = v27;
+      serviceCopy = v28;
     }
   }
 
   else
   {
-    v19 = paired_unlock_log();
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    delegates = paired_unlock_log();
+    if (os_log_type_enabled(delegates, OS_LOG_TYPE_ERROR))
     {
       sub_10006C150();
     }
   }
 }
 
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block
 {
-  v6 = a4;
-  v7 = a5;
+  deviceCopy = device;
+  blockCopy = block;
   v8 = paired_unlock_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v6;
+    v10 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "didSwitchActivePairedDevice %@", &v9, 0xCu);
   }
 
-  v7[2](v7);
+  blockCopy[2](blockCopy);
 }
 
-- (id)dataClassStringForDataClass:(int64_t)a3
+- (id)dataClassStringForDataClass:(int64_t)class
 {
   v3 = @"Unknown";
-  if (a3 == 2)
+  if (class == 2)
   {
     v3 = @"SDUnlockSendDataClassClassA";
   }
 
-  if (a3 == 1)
+  if (class == 1)
   {
     return @"SDUnlockSendDataClassClassD";
   }

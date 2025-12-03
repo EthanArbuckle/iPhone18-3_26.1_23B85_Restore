@@ -1,20 +1,20 @@
 @interface PUIStylePickerViewController
 - (BOOL)_shouldShowWeightSliderForSelectedFont;
-- (PUIStylePickerViewController)initWithComponents:(id)a3 previewTextString:(id)a4;
-- (PUIStylePickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (PUIStylePickerViewController)initWithStylePickerConfiguration:(id)a3;
+- (PUIStylePickerViewController)initWithComponents:(id)components previewTextString:(id)string;
+- (PUIStylePickerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (PUIStylePickerViewController)initWithStylePickerConfiguration:(id)configuration;
 - (PUIStylePickerViewControllerDelegate)delegate;
 - (double)desiredDetent;
 - (id)componentViewControllers;
-- (id)stylePickerComponentViewController:(id)a3 coordinatorForStyle:(id)a4 isSuggested:(BOOL)a5;
-- (void)_closeButtonTapped:(id)a3;
-- (void)_didPressTextAlignmentBarButtonItem:(id)a3;
-- (void)_notifyChangeHandlersOfChange:(id)a3;
-- (void)_notifyClientsOfChangedNumberingSystem:(id)a3;
-- (void)_notifyClientsOfPickerConfigurationUpdate:(id)a3;
-- (void)_notifyDelegateRespondingToSelector:(SEL)a3 handler:(id)a4;
+- (id)stylePickerComponentViewController:(id)controller coordinatorForStyle:(id)style isSuggested:(BOOL)suggested;
+- (void)_closeButtonTapped:(id)tapped;
+- (void)_didPressTextAlignmentBarButtonItem:(id)item;
+- (void)_notifyChangeHandlersOfChange:(id)change;
+- (void)_notifyClientsOfChangedNumberingSystem:(id)system;
+- (void)_notifyClientsOfPickerConfigurationUpdate:(id)update;
+- (void)_notifyDelegateRespondingToSelector:(SEL)selector handler:(id)handler;
 - (void)_notifyObserversOfChangedDesiredDetent;
-- (void)_notifyObserversRespondingToSelector:(SEL)a3 enumerator:(id)a4;
+- (void)_notifyObserversRespondingToSelector:(SEL)selector enumerator:(id)enumerator;
 - (void)_refreshBarButtonItems;
 - (void)_refreshComponentViewControllers;
 - (void)_setupComponentViewControllersIfNeeded;
@@ -22,40 +22,40 @@
 - (void)_signalDelegateWillFinish;
 - (void)_updatePreferredContentSize;
 - (void)_updateViews;
-- (void)addObserver:(id)a3;
-- (void)fontPickerComponentViewController:(id)a3 didChangeFontWeight:(double)a4;
-- (void)fontPickerComponentViewController:(id)a3 didSelectItem:(id)a4;
-- (void)homeScreenComponentViewController:(id)a3 didBeginEyedropperSessionForHomeScreenConfiguration:(id)a4;
-- (void)homeScreenComponentViewController:(id)a3 didUpdateHomeScreenConfiguration:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)fontPickerComponentViewController:(id)controller didChangeFontWeight:(double)weight;
+- (void)fontPickerComponentViewController:(id)controller didSelectItem:(id)item;
+- (void)homeScreenComponentViewController:(id)controller didBeginEyedropperSessionForHomeScreenConfiguration:(id)configuration;
+- (void)homeScreenComponentViewController:(id)controller didUpdateHomeScreenConfiguration:(id)configuration;
 - (void)loadView;
-- (void)removeObserver:(id)a3;
-- (void)setCenterBarButtonItems:(id)a3;
-- (void)setContentsLuminance:(double)a3;
-- (void)setLeadingBarButtonItems:(id)a3;
-- (void)setTrailingBarButtonItems:(id)a3;
-- (void)stylePickerComponentViewController:(id)a3 didSelectStyle:(id)a4 isSuggestedStyle:(BOOL)a5 userSelected:(BOOL)a6;
-- (void)textLayoutPickerComponentViewController:(id)a3 didSelectTextLayout:(unint64_t)a4 userSelected:(BOOL)a5;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)removeObserver:(id)observer;
+- (void)setCenterBarButtonItems:(id)items;
+- (void)setContentsLuminance:(double)luminance;
+- (void)setLeadingBarButtonItems:(id)items;
+- (void)setTrailingBarButtonItems:(id)items;
+- (void)stylePickerComponentViewController:(id)controller didSelectStyle:(id)style isSuggestedStyle:(BOOL)suggestedStyle userSelected:(BOOL)selected;
+- (void)textLayoutPickerComponentViewController:(id)controller didSelectTextLayout:(unint64_t)layout userSelected:(BOOL)selected;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewLayoutMarginsDidChange;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PUIStylePickerViewController
 
-- (PUIStylePickerViewController)initWithStylePickerConfiguration:(id)a3
+- (PUIStylePickerViewController)initWithStylePickerConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (!v5)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     [(PUIStylePickerViewController *)a2 initWithStylePickerConfiguration:?];
   }
 
-  v6 = v5;
-  v7 = [v5 components];
-  if ([v7 numberOfComponents])
+  v6 = configurationCopy;
+  components = [configurationCopy components];
+  if ([components numberOfComponents])
   {
     v16.receiver = self;
     v16.super_class = PUIStylePickerViewController;
@@ -68,37 +68,37 @@
       stylePickerConfiguration = v8->_stylePickerConfiguration;
       v8->_stylePickerConfiguration = v10;
 
-      v12 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       observers = v8->_observers;
-      v8->_observers = v12;
+      v8->_observers = weakObjectsHashTable;
     }
 
     self = v8;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (PUIStylePickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PUIStylePickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v5 = [PUIStylePickerConfiguration defaultStylePickerConfigurationForRole:*MEMORY[0x1E69C5220], a4];
-  v6 = [(PUIStylePickerViewController *)self initWithStylePickerConfiguration:v5];
+  bundle = [PUIStylePickerConfiguration defaultStylePickerConfigurationForRole:*MEMORY[0x1E69C5220], bundle];
+  v6 = [(PUIStylePickerViewController *)self initWithStylePickerConfiguration:bundle];
 
   return v6;
 }
 
-- (PUIStylePickerViewController)initWithComponents:(id)a3 previewTextString:(id)a4
+- (PUIStylePickerViewController)initWithComponents:(id)components previewTextString:(id)string
 {
-  v6 = a4;
-  v7 = a3;
+  stringCopy = string;
+  componentsCopy = components;
   v8 = [PUIStylePickerConfiguration alloc];
-  v9 = [(PUIStylePickerConfiguration *)v8 initWithPreviewTextString:v6 defaultRole:*MEMORY[0x1E69C5220] components:v7 defaultPreferredTimeMaxY:0 defaultContentsLuminance:0 styleConfiguration:0.0 textLayoutConfiguration:0.5];
+  v9 = [(PUIStylePickerConfiguration *)v8 initWithPreviewTextString:stringCopy defaultRole:*MEMORY[0x1E69C5220] components:componentsCopy defaultPreferredTimeMaxY:0 defaultContentsLuminance:0 styleConfiguration:0.0 textLayoutConfiguration:0.5];
 
   v10 = [(PUIStylePickerViewController *)self initWithStylePickerConfiguration:v9];
   return v10;
@@ -130,42 +130,42 @@
 
 - (void)_updatePreferredContentSize
 {
-  v9 = [(PUIStylePickerViewController *)self navigationController];
-  if (v9)
+  navigationController = [(PUIStylePickerViewController *)self navigationController];
+  if (navigationController)
   {
-    v3 = [v9 navigationBar];
-    [v3 frame];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar frame];
     v5 = v4;
 
-    v6 = [(PUIStylePickerViewController *)self rootStackView];
-    [v6 bounds];
-    [v9 setPreferredContentSize:{v8, v5 + v7 + -15.0}];
+    rootStackView = [(PUIStylePickerViewController *)self rootStackView];
+    [rootStackView bounds];
+    [navigationController setPreferredContentSize:{v8, v5 + v7 + -15.0}];
   }
 
   [(PUIStylePickerViewController *)self _notifyObserversOfChangedDesiredDetent];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PUIStylePickerViewController;
-  [(PUIStylePickerViewController *)&v4 viewWillAppear:a3];
+  [(PUIStylePickerViewController *)&v4 viewWillAppear:appear];
   self->_hasNotifiedDelegateOfDismissal = 0;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PUIStylePickerViewController;
-  [(PUIStylePickerViewController *)&v4 viewWillDisappear:a3];
+  [(PUIStylePickerViewController *)&v4 viewWillDisappear:disappear];
   [(PUIStylePickerViewController *)self _signalDelegateWillFinish];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PUIStylePickerViewController;
-  [(PUIStylePickerViewController *)&v4 viewDidDisappear:a3];
+  [(PUIStylePickerViewController *)&v4 viewDidDisappear:disappear];
   if (!self->_hasNotifiedDelegateOfDismissal)
   {
     [(PUIStylePickerViewController *)self _signalDelegateDidFinish];
@@ -176,26 +176,26 @@
 {
   v15[1] = *MEMORY[0x1E69E9840];
   [(PUIStylePickerViewController *)self _setupComponentViewControllersIfNeeded];
-  v3 = [(PUIStylePickerViewController *)self rootStackView];
-  if (!v3)
+  rootStackView = [(PUIStylePickerViewController *)self rootStackView];
+  if (!rootStackView)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCF90]);
-    v3 = [v4 initWithArrangedSubviews:MEMORY[0x1E695E0F0]];
-    [v3 setAxis:1];
-    [v3 setSpacing:48.0];
-    [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(PUIStylePickerViewController *)self setRootStackView:v3];
+    rootStackView = [v4 initWithArrangedSubviews:MEMORY[0x1E695E0F0]];
+    [rootStackView setAxis:1];
+    [rootStackView setSpacing:48.0];
+    [rootStackView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(PUIStylePickerViewController *)self setRootStackView:rootStackView];
   }
 
-  v5 = [(PUIStylePickerViewController *)self backgroundView];
-  if ((PUIFeatureEnabled(11) & 1) == 0 && !v5)
+  backgroundView = [(PUIStylePickerViewController *)self backgroundView];
+  if ((PUIFeatureEnabled(11) & 1) == 0 && !backgroundView)
   {
     v6 = objc_alloc(MEMORY[0x1E69DD298]);
     v7 = [MEMORY[0x1E69DC730] effectWithStyle:8];
-    v5 = [v6 initWithEffect:v7];
+    backgroundView = [v6 initWithEffect:v7];
 
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(PUIStylePickerViewController *)self setBackgroundView:v5];
+    [backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(PUIStylePickerViewController *)self setBackgroundView:backgroundView];
   }
 
   if (![(PUIStylePickerViewController *)self isViewLoaded]|| ([(PUIStylePickerViewController *)self view], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
@@ -206,10 +206,10 @@
 
   if ((PUIFeatureEnabled(11) & 1) == 0)
   {
-    [v8 addSubview:v5];
+    [v8 addSubview:backgroundView];
   }
 
-  [v8 addSubview:v3];
+  [v8 addSubview:rootStackView];
   [(PUIStylePickerViewController *)self _updateViews];
   [(PUIStylePickerViewController *)self _refreshComponentViewControllers];
   [(PUIStylePickerViewController *)self _refreshBarButtonItems];
@@ -249,12 +249,12 @@ void __40__PUIStylePickerViewController_loadView__block_invoke(uint64_t a1)
   [(PUIStylePickerViewController *)self additionalSafeAreaInsets];
   v4 = v3;
   v6 = v5;
-  v7 = [(PUIStylePickerViewController *)self stylePickerConfiguration];
-  v8 = [v7 components];
-  if ([v8 containsComponent:1])
+  stylePickerConfiguration = [(PUIStylePickerViewController *)self stylePickerConfiguration];
+  components = [stylePickerConfiguration components];
+  if ([components containsComponent:1])
   {
-    v9 = [(PUIStylePickerViewController *)self fontPickerComponentViewController];
-    v10 = v9 != 0;
+    fontPickerComponentViewController = [(PUIStylePickerViewController *)self fontPickerComponentViewController];
+    v10 = fontPickerComponentViewController != 0;
   }
 
   else
@@ -262,10 +262,10 @@ void __40__PUIStylePickerViewController_loadView__block_invoke(uint64_t a1)
     v10 = 0;
   }
 
-  if ([v8 containsComponent:8])
+  if ([components containsComponent:8])
   {
-    v11 = [(PUIStylePickerViewController *)self textLayoutPickerComponentViewController];
-    v12 = v11 != 0;
+    textLayoutPickerComponentViewController = [(PUIStylePickerViewController *)self textLayoutPickerComponentViewController];
+    v12 = textLayoutPickerComponentViewController != 0;
   }
 
   else
@@ -273,10 +273,10 @@ void __40__PUIStylePickerViewController_loadView__block_invoke(uint64_t a1)
     v12 = 0;
   }
 
-  if ([v8 containsComponent:4])
+  if ([components containsComponent:4])
   {
-    v13 = [(PUIStylePickerViewController *)self stylePickerComponentViewController];
-    v14 = v13 != 0;
+    stylePickerComponentViewController = [(PUIStylePickerViewController *)self stylePickerComponentViewController];
+    v14 = stylePickerComponentViewController != 0;
   }
 
   else
@@ -284,10 +284,10 @@ void __40__PUIStylePickerViewController_loadView__block_invoke(uint64_t a1)
     v14 = 0;
   }
 
-  if ([v8 containsComponent:2])
+  if ([components containsComponent:2])
   {
-    v15 = [(PUIStylePickerViewController *)self numberingSystemPickerComponentViewController];
-    v16 = v15 != 0;
+    numberingSystemPickerComponentViewController = [(PUIStylePickerViewController *)self numberingSystemPickerComponentViewController];
+    v16 = numberingSystemPickerComponentViewController != 0;
   }
 
   else
@@ -295,10 +295,10 @@ void __40__PUIStylePickerViewController_loadView__block_invoke(uint64_t a1)
     v16 = 0;
   }
 
-  if ([v8 containsComponent:32])
+  if ([components containsComponent:32])
   {
-    v17 = [(PUIStylePickerViewController *)self homeScreenComponentViewController];
-    v18 = v17 != 0;
+    homeScreenComponentViewController = [(PUIStylePickerViewController *)self homeScreenComponentViewController];
+    v18 = homeScreenComponentViewController != 0;
   }
 
   else
@@ -309,8 +309,8 @@ void __40__PUIStylePickerViewController_loadView__block_invoke(uint64_t a1)
   v19 = v4 + v6;
   if (v16)
   {
-    v20 = [(PUIStylePickerViewController *)self numberingSystemPickerComponentViewController];
-    [v20 estimatedHeight];
+    numberingSystemPickerComponentViewController2 = [(PUIStylePickerViewController *)self numberingSystemPickerComponentViewController];
+    [numberingSystemPickerComponentViewController2 estimatedHeight];
     v19 = v19 + v21;
 
     v22 = 1;
@@ -329,8 +329,8 @@ void __40__PUIStylePickerViewController_loadView__block_invoke(uint64_t a1)
     }
   }
 
-  v23 = [(PUIStylePickerViewController *)self fontPickerComponentViewController];
-  [v23 estimatedHeight];
+  fontPickerComponentViewController2 = [(PUIStylePickerViewController *)self fontPickerComponentViewController];
+  [fontPickerComponentViewController2 estimatedHeight];
   v19 = v19 + v24;
 
   ++v22;
@@ -348,8 +348,8 @@ LABEL_22:
     }
 
 LABEL_27:
-    v29 = [(PUIStylePickerViewController *)self stylePickerComponentViewController];
-    [v29 estimatedHeight];
+    stylePickerComponentViewController2 = [(PUIStylePickerViewController *)self stylePickerComponentViewController];
+    [stylePickerComponentViewController2 estimatedHeight];
     v19 = v19 + v30;
 
     v22 = 1;
@@ -361,8 +361,8 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v27 = [(PUIStylePickerViewController *)self textLayoutPickerComponentViewController];
-  [v27 estimatedHeight];
+  textLayoutPickerComponentViewController2 = [(PUIStylePickerViewController *)self textLayoutPickerComponentViewController];
+  [textLayoutPickerComponentViewController2 estimatedHeight];
   v19 = v19 + v28;
 
   ++v22;
@@ -375,8 +375,8 @@ LABEL_24:
   if (v18)
   {
 LABEL_25:
-    v25 = [(PUIStylePickerViewController *)self homeScreenComponentViewController];
-    [v25 estimatedHeight];
+    homeScreenComponentViewController2 = [(PUIStylePickerViewController *)self homeScreenComponentViewController];
+    [homeScreenComponentViewController2 estimatedHeight];
     v19 = v19 + v26;
 
     goto LABEL_30;
@@ -389,14 +389,14 @@ LABEL_28:
   }
 
 LABEL_30:
-  v31 = [(PUIStylePickerViewController *)self navigationController];
+  navigationController = [(PUIStylePickerViewController *)self navigationController];
 
-  if (v31)
+  if (navigationController)
   {
     v19 = v19 + 44.0;
   }
 
-  [v7 edgeInsets];
+  [stylePickerConfiguration edgeInsets];
   if (v35 == *(MEMORY[0x1E69DC5C0] + 8) && v32 == *MEMORY[0x1E69DC5C0] && v34 == *(MEMORY[0x1E69DC5C0] + 24))
   {
     v36 = v19 + v32 + v33;
@@ -416,17 +416,17 @@ LABEL_30:
 
 - (BOOL)_shouldShowWeightSliderForSelectedFont
 {
-  v3 = [(PUIStylePickerViewController *)self stylePickerConfiguration];
-  v4 = [v3 textLayoutConfiguration];
-  v5 = [v4 fontConfiguration];
+  stylePickerConfiguration = [(PUIStylePickerViewController *)self stylePickerConfiguration];
+  textLayoutConfiguration = [stylePickerConfiguration textLayoutConfiguration];
+  fontConfiguration = [textLayoutConfiguration fontConfiguration];
 
-  v6 = [(PUIStylePickerViewController *)self extensionBundleURL];
-  v7 = [v5 PUIFontWithExtensionBundleURL:v6];
+  extensionBundleURL = [(PUIStylePickerViewController *)self extensionBundleURL];
+  v7 = [fontConfiguration PUIFontWithExtensionBundleURL:extensionBundleURL];
 
-  if ([v5 isSystemItem])
+  if ([fontConfiguration isSystemItem])
   {
-    v8 = [v7 fontIdentifier];
-    v9 = [v8 isEqual:@"PRTimeFontIdentifierRail"] ^ 1;
+    fontIdentifier = [v7 fontIdentifier];
+    v9 = [fontIdentifier isEqual:@"PRTimeFontIdentifierRail"] ^ 1;
   }
 
   else
@@ -437,27 +437,27 @@ LABEL_30:
   return v9;
 }
 
-- (void)setContentsLuminance:(double)a3
+- (void)setContentsLuminance:(double)luminance
 {
   if ((BSEqualDoubles() & 1) == 0)
   {
-    self->_contentsLuminance = a3;
-    v5 = [(PUIStylePickerViewController *)self stylePickerComponentViewController];
+    self->_contentsLuminance = luminance;
+    stylePickerComponentViewController = [(PUIStylePickerViewController *)self stylePickerComponentViewController];
 
-    if (v5)
+    if (stylePickerComponentViewController)
     {
-      v6 = [(PUIStylePickerViewController *)self stylePickerComponentViewController];
-      [v6 setContentsLuminance:a3];
+      stylePickerComponentViewController2 = [(PUIStylePickerViewController *)self stylePickerComponentViewController];
+      [stylePickerComponentViewController2 setContentsLuminance:luminance];
     }
   }
 }
 
-- (void)setTrailingBarButtonItems:(id)a3
+- (void)setTrailingBarButtonItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   if (([(NSArray *)self->_trailingBarButtonItems isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [itemsCopy copy];
     trailingBarButtonItems = self->_trailingBarButtonItems;
     self->_trailingBarButtonItems = v4;
 
@@ -465,12 +465,12 @@ LABEL_30:
   }
 }
 
-- (void)setLeadingBarButtonItems:(id)a3
+- (void)setLeadingBarButtonItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   if (([(NSArray *)self->_leadingBarButtonItems isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [itemsCopy copy];
     leadingBarButtonItems = self->_leadingBarButtonItems;
     self->_leadingBarButtonItems = v4;
 
@@ -478,12 +478,12 @@ LABEL_30:
   }
 }
 
-- (void)setCenterBarButtonItems:(id)a3
+- (void)setCenterBarButtonItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   if (([(NSArray *)self->_centerBarButtonItems isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [itemsCopy copy];
     centerBarButtonItems = self->_centerBarButtonItems;
     self->_centerBarButtonItems = v4;
 
@@ -491,23 +491,23 @@ LABEL_30:
   }
 }
 
-- (void)fontPickerComponentViewController:(id)a3 didChangeFontWeight:(double)a4
+- (void)fontPickerComponentViewController:(id)controller didChangeFontWeight:(double)weight
 {
-  v6 = [(PUIStylePickerViewController *)self stylePickerConfiguration];
-  v7 = [v6 textLayoutConfiguration];
-  v8 = [v7 fontConfiguration];
-  v9 = [(PUIStylePickerViewController *)self extensionBundleURL];
-  v10 = [v8 PUIFontWithExtensionBundleURL:v9];
+  stylePickerConfiguration = [(PUIStylePickerViewController *)self stylePickerConfiguration];
+  textLayoutConfiguration = [stylePickerConfiguration textLayoutConfiguration];
+  fontConfiguration = [textLayoutConfiguration fontConfiguration];
+  extensionBundleURL = [(PUIStylePickerViewController *)self extensionBundleURL];
+  v10 = [fontConfiguration PUIFontWithExtensionBundleURL:extensionBundleURL];
 
-  v11 = [v6 defaultRole];
-  v12 = [v10 effectiveFontForRole:v11 ignoringWeight:1];
+  defaultRole = [stylePickerConfiguration defaultRole];
+  v12 = [v10 effectiveFontForRole:defaultRole ignoringWeight:1];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __86__PUIStylePickerViewController_fontPickerComponentViewController_didChangeFontWeight___block_invoke;
   v14[3] = &unk_1E78565C0;
   v15 = v12;
-  v16 = a4;
+  weightCopy = weight;
   v13 = v12;
   [(PUIStylePickerViewController *)self _notifyChangeHandlersOfChange:v14];
 }
@@ -521,33 +521,33 @@ void __86__PUIStylePickerViewController_fontPickerComponentViewController_didCha
   [v4 setFontWeight:v7];
 }
 
-- (void)fontPickerComponentViewController:(id)a3 didSelectItem:(id)a4
+- (void)fontPickerComponentViewController:(id)controller didSelectItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUIStylePickerViewController *)self stylePickerConfiguration];
-  v9 = [v8 defaultRole];
-  v10 = [(PUIStylePickerViewController *)self numberingSystemPickerMenuController];
-  v11 = [(PUIStylePickerViewController *)self numberSystemBarItem];
-  v12 = [v7 font];
-  v13 = [v12 effectiveFontForRole:v9];
+  controllerCopy = controller;
+  itemCopy = item;
+  stylePickerConfiguration = [(PUIStylePickerViewController *)self stylePickerConfiguration];
+  defaultRole = [stylePickerConfiguration defaultRole];
+  numberingSystemPickerMenuController = [(PUIStylePickerViewController *)self numberingSystemPickerMenuController];
+  numberSystemBarItem = [(PUIStylePickerViewController *)self numberSystemBarItem];
+  font = [itemCopy font];
+  v13 = [font effectiveFontForRole:defaultRole];
 
-  [v10 setFont:v13];
-  v14 = [(PUIStylePickerViewController *)self numberingSystemPickerMenuController];
-  v15 = [v14 menu];
+  [numberingSystemPickerMenuController setFont:v13];
+  numberingSystemPickerMenuController2 = [(PUIStylePickerViewController *)self numberingSystemPickerMenuController];
+  menu = [numberingSystemPickerMenuController2 menu];
 
-  [v11 setMenu:v15];
+  [numberSystemBarItem setMenu:menu];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __80__PUIStylePickerViewController_fontPickerComponentViewController_didSelectItem___block_invoke;
   v19[3] = &unk_1E78565E8;
   v19[4] = self;
-  v20 = v7;
+  v20 = itemCopy;
   v21 = v13;
-  v22 = v6;
-  v16 = v6;
+  v22 = controllerCopy;
+  v16 = controllerCopy;
   v17 = v13;
-  v18 = v7;
+  v18 = itemCopy;
   [(PUIStylePickerViewController *)self _notifyChangeHandlersOfChange:v19];
 }
 
@@ -601,14 +601,14 @@ LABEL_7:
   [v4 setCustomFont:v17];
 }
 
-- (void)textLayoutPickerComponentViewController:(id)a3 didSelectTextLayout:(unint64_t)a4 userSelected:(BOOL)a5
+- (void)textLayoutPickerComponentViewController:(id)controller didSelectTextLayout:(unint64_t)layout userSelected:(BOOL)selected
 {
-  v5 = a4;
-  v7 = [(PUIStylePickerViewController *)self stylePickerConfiguration:a3];
-  v8 = [v7 previewTextString];
+  layoutCopy = layout;
+  v7 = [(PUIStylePickerViewController *)self stylePickerConfiguration:controller];
+  previewTextString = [v7 previewTextString];
 
   v9 = +[PUITextLayoutConfiguration maximumVerticalTextCharacters];
-  if (PUITextLayoutIsVertical(v5) && [v8 length] > v9)
+  if (PUITextLayoutIsVertical(layoutCopy) && [previewTextString length] > v9)
   {
     v10 = MEMORY[0x1E696AEC0];
     v11 = PUIBundle();
@@ -628,17 +628,17 @@ LABEL_7:
     [v17 addAction:v21];
     [(PUIStylePickerViewController *)self presentViewController:v17 animated:1 completion:0];
 
-    v5 = 0;
+    layoutCopy = 0;
   }
 
-  v22 = [(PUIStylePickerViewController *)self textLayoutPickerComponentViewController];
-  [v22 setSelectedLayout:v5];
+  textLayoutPickerComponentViewController = [(PUIStylePickerViewController *)self textLayoutPickerComponentViewController];
+  [textLayoutPickerComponentViewController setSelectedLayout:layoutCopy];
 
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __105__PUIStylePickerViewController_textLayoutPickerComponentViewController_didSelectTextLayout_userSelected___block_invoke;
   v23[3] = &__block_descriptor_40_e39_v16__0__PUIStylePickerSelectionChange_8l;
-  v23[4] = v5;
+  v23[4] = layoutCopy;
   [(PUIStylePickerViewController *)self _notifyChangeHandlersOfChange:v23];
 }
 
@@ -651,19 +651,19 @@ void __105__PUIStylePickerViewController_textLayoutPickerComponentViewController
   [v4 setPreferredLayout:v5];
 }
 
-- (void)stylePickerComponentViewController:(id)a3 didSelectStyle:(id)a4 isSuggestedStyle:(BOOL)a5 userSelected:(BOOL)a6
+- (void)stylePickerComponentViewController:(id)controller didSelectStyle:(id)style isSuggestedStyle:(BOOL)suggestedStyle userSelected:(BOOL)selected
 {
-  v6 = a6;
-  v9 = a4;
-  v10 = v9;
-  if (v6)
+  selectedCopy = selected;
+  styleCopy = style;
+  v10 = styleCopy;
+  if (selectedCopy)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __112__PUIStylePickerViewController_stylePickerComponentViewController_didSelectStyle_isSuggestedStyle_userSelected___block_invoke;
     v11[3] = &unk_1E7856630;
-    v12 = v9;
-    v13 = a5;
+    v12 = styleCopy;
+    suggestedStyleCopy = suggestedStyle;
     [(PUIStylePickerViewController *)self _notifyChangeHandlersOfChange:v11];
   }
 }
@@ -677,10 +677,10 @@ void __112__PUIStylePickerViewController_stylePickerComponentViewController_didS
   [v4 setSuggestedStyle:v5];
 }
 
-- (id)stylePickerComponentViewController:(id)a3 coordinatorForStyle:(id)a4 isSuggested:(BOOL)a5
+- (id)stylePickerComponentViewController:(id)controller coordinatorForStyle:(id)style isSuggested:(BOOL)suggested
 {
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  styleCopy = style;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -693,9 +693,9 @@ void __112__PUIStylePickerViewController_stylePickerComponentViewController_didS
   v13[3] = &unk_1E7856658;
   v15 = &v17;
   v13[4] = self;
-  v10 = v9;
+  v10 = styleCopy;
   v14 = v10;
-  v16 = a5;
+  suggestedCopy = suggested;
   [(PUIStylePickerViewController *)self _notifyDelegateRespondingToSelector:sel_stylePickerViewController_coordinatorForStyle_isSuggested_ handler:v13];
   v11 = v18[5];
 
@@ -714,78 +714,78 @@ uint64_t __99__PUIStylePickerViewController_stylePickerComponentViewController_c
   return MEMORY[0x1EEE66BB8](v3, v5);
 }
 
-- (void)homeScreenComponentViewController:(id)a3 didUpdateHomeScreenConfiguration:(id)a4
+- (void)homeScreenComponentViewController:(id)controller didUpdateHomeScreenConfiguration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __99__PUIStylePickerViewController_homeScreenComponentViewController_didUpdateHomeScreenConfiguration___block_invoke;
   v7[3] = &unk_1E7856680;
-  v8 = v5;
-  v6 = v5;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   [(PUIStylePickerViewController *)self _notifyClientsOfPickerConfigurationUpdate:v7];
 }
 
-- (void)homeScreenComponentViewController:(id)a3 didBeginEyedropperSessionForHomeScreenConfiguration:(id)a4
+- (void)homeScreenComponentViewController:(id)controller didBeginEyedropperSessionForHomeScreenConfiguration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __118__PUIStylePickerViewController_homeScreenComponentViewController_didBeginEyedropperSessionForHomeScreenConfiguration___block_invoke;
   v7[3] = &unk_1E78566A8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   [(PUIStylePickerViewController *)self _notifyDelegateRespondingToSelector:sel_stylePickerViewController_startedMagnificationSessionForHomeScreenConfiguration_ handler:v7];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers addObject:?];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
 }
 
-- (void)_notifyDelegateRespondingToSelector:(SEL)a3 handler:(id)a4
+- (void)_notifyDelegateRespondingToSelector:(SEL)selector handler:(id)handler
 {
-  v5 = a4;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v7 = v5;
-    v6 = [(PUIStylePickerViewController *)self delegate];
+    v7 = handlerCopy;
+    delegate = [(PUIStylePickerViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v7[2](v7, v6);
+      v7[2](v7, delegate);
     }
 
-    v5 = v7;
+    handlerCopy = v7;
   }
 }
 
-- (void)_notifyObserversRespondingToSelector:(SEL)a3 enumerator:(id)a4
+- (void)_notifyObserversRespondingToSelector:(SEL)selector enumerator:(id)enumerator
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if (v5)
+  enumeratorCopy = enumerator;
+  if (enumeratorCopy)
   {
-    v6 = [(PUIStylePickerViewController *)self delegate];
-    if ((objc_opt_respondsToSelector() & 1) == 0 || (v17 = 0, v5[2](v5, v6, &v17), (v17 & 1) == 0))
+    delegate = [(PUIStylePickerViewController *)self delegate];
+    if ((objc_opt_respondsToSelector() & 1) == 0 || (v17 = 0, enumeratorCopy[2](enumeratorCopy, delegate, &v17), (v17 & 1) == 0))
     {
       v15 = 0u;
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v7 = [(PUIStylePickerViewController *)self observers];
-      v8 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      observers = [(PUIStylePickerViewController *)self observers];
+      v8 = [observers countByEnumeratingWithState:&v13 objects:v18 count:16];
       if (v8)
       {
         v9 = v8;
@@ -796,14 +796,14 @@ LABEL_6:
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(observers);
           }
 
           v12 = *(*(&v13 + 1) + 8 * v11);
           if (objc_opt_respondsToSelector())
           {
             v17 = 0;
-            v5[2](v5, v12, &v17);
+            enumeratorCopy[2](enumeratorCopy, v12, &v17);
             if (v17)
             {
               break;
@@ -812,7 +812,7 @@ LABEL_6:
 
           if (v9 == ++v11)
           {
-            v9 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
+            v9 = [observers countByEnumeratingWithState:&v13 objects:v18 count:16];
             if (v9)
             {
               goto LABEL_6;
@@ -826,75 +826,75 @@ LABEL_6:
   }
 }
 
-- (void)_notifyChangeHandlersOfChange:(id)a3
+- (void)_notifyChangeHandlersOfChange:(id)change
 {
-  v4 = a3;
-  v5 = [(PUIStylePickerViewController *)self changeHandler];
+  changeCopy = change;
+  changeHandler = [(PUIStylePickerViewController *)self changeHandler];
   v6 = objc_alloc_init(PUIStylePickerSelectionChange);
-  v4[2](v4, v6);
+  changeCopy[2](changeCopy, v6);
 
   if ([(PUIStylePickerSelectionChange *)v6 hasChanges])
   {
-    if (v5)
+    if (changeHandler)
     {
-      (v5)[2](v5, v6);
+      (changeHandler)[2](changeHandler, v6);
     }
 
-    v7 = [(PUIStylePickerViewController *)self stylePickerConfiguration];
-    v8 = [(PUIStylePickerSelectionChange *)v6 fontIdentifier];
-    v9 = [(PUIStylePickerSelectionChange *)v6 preferredAlignment];
-    v10 = [(PUIStylePickerSelectionChange *)v6 preferredLayout];
-    v11 = [(PUIStylePickerSelectionChange *)v6 fontWeight];
-    v12 = [(PUIStylePickerSelectionChange *)v6 customFont];
-    v13 = [(PUIStylePickerSelectionChange *)v6 numberingSystem];
-    v14 = [(PUIStylePickerSelectionChange *)v6 isSystemItem];
-    v43 = v11;
-    v44 = v10;
-    v46 = v13;
-    v47 = v12;
-    v45 = v14;
-    if (v9 || v10 || v13 || v8 || v11 || v12 || v14)
+    stylePickerConfiguration = [(PUIStylePickerViewController *)self stylePickerConfiguration];
+    fontIdentifier = [(PUIStylePickerSelectionChange *)v6 fontIdentifier];
+    preferredAlignment = [(PUIStylePickerSelectionChange *)v6 preferredAlignment];
+    preferredLayout = [(PUIStylePickerSelectionChange *)v6 preferredLayout];
+    fontWeight = [(PUIStylePickerSelectionChange *)v6 fontWeight];
+    customFont = [(PUIStylePickerSelectionChange *)v6 customFont];
+    numberingSystem = [(PUIStylePickerSelectionChange *)v6 numberingSystem];
+    isSystemItem = [(PUIStylePickerSelectionChange *)v6 isSystemItem];
+    v43 = fontWeight;
+    v44 = preferredLayout;
+    v46 = numberingSystem;
+    v47 = customFont;
+    v45 = isSystemItem;
+    if (preferredAlignment || preferredLayout || numberingSystem || fontIdentifier || fontWeight || customFont || isSystemItem)
     {
-      v16 = [v7 textLayoutConfiguration];
-      v15 = [v16 mutableCopy];
+      textLayoutConfiguration = [stylePickerConfiguration textLayoutConfiguration];
+      v15 = [textLayoutConfiguration mutableCopy];
 
-      if (v8 || v11 || v47 || v45)
+      if (fontIdentifier || fontWeight || v47 || v45)
       {
         if (v47)
         {
           v41 = [PUICustomFontConfiguration alloc];
           v17 = MEMORY[0x1E696AAE8];
-          v18 = [(PUIStylePickerViewController *)self extensionBundleURL];
-          v19 = [v17 bundleWithURL:v18];
+          extensionBundleURL = [(PUIStylePickerViewController *)self extensionBundleURL];
+          v19 = [v17 bundleWithURL:extensionBundleURL];
           v20 = [(PUICustomFontConfiguration *)v41 initWithFont:v47 extensionBundle:v19];
 
-          v10 = v44;
+          preferredLayout = v44;
         }
 
         else
         {
           v21 = [PUISystemFontConfiguration alloc];
-          [v11 bs_CGFloatValue];
-          v20 = -[PUISystemFontConfiguration initWithFontIdentifier:weight:systemItem:](v21, "initWithFontIdentifier:weight:systemItem:", v8, [v45 BOOLValue], v22);
+          [fontWeight bs_CGFloatValue];
+          v20 = -[PUISystemFontConfiguration initWithFontIdentifier:weight:systemItem:](v21, "initWithFontIdentifier:weight:systemItem:", fontIdentifier, [v45 BOOLValue], v22);
         }
 
         [v15 setFontConfiguration:v20];
       }
 
-      if (v10)
+      if (preferredLayout)
       {
-        [v15 setPreferredLayout:{objc_msgSend(v10, "unsignedIntegerValue")}];
+        [v15 setPreferredLayout:{objc_msgSend(preferredLayout, "unsignedIntegerValue")}];
       }
 
-      if (v9)
+      if (preferredAlignment)
       {
-        [v15 setPreferredAlignment:{objc_msgSend(v9, "unsignedIntegerValue")}];
+        [v15 setPreferredAlignment:{objc_msgSend(preferredAlignment, "unsignedIntegerValue")}];
       }
 
       if (v46)
       {
-        v23 = [v46 type];
-        [v15 setNumberingSystemType:v23];
+        type = [v46 type];
+        [v15 setNumberingSystemType:type];
       }
     }
 
@@ -903,10 +903,10 @@ LABEL_6:
       v15 = 0;
     }
 
-    v24 = [(PUIStylePickerSelectionChange *)v6 style];
-    v25 = [(PUIStylePickerSelectionChange *)v6 isSuggestedStyle];
-    v26 = v25;
-    if (!(v24 | v25))
+    style = [(PUIStylePickerSelectionChange *)v6 style];
+    isSuggestedStyle = [(PUIStylePickerSelectionChange *)v6 isSuggestedStyle];
+    v26 = isSuggestedStyle;
+    if (!(style | isSuggestedStyle))
     {
       v30 = 0;
 LABEL_39:
@@ -923,21 +923,21 @@ LABEL_39:
       goto LABEL_40;
     }
 
-    v40 = v5;
-    v42 = v9;
-    v39 = v8;
-    if (v25 && ([v7 styleConfiguration], v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "suggestedStyle"), v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "isEqual:", v24), v28, v27, (v29 & 1) == 0))
+    v40 = changeHandler;
+    v42 = preferredAlignment;
+    v39 = fontIdentifier;
+    if (isSuggestedStyle && ([stylePickerConfiguration styleConfiguration], v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "suggestedStyle"), v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "isEqual:", style), v28, v27, (v29 & 1) == 0))
     {
-      v31 = [v7 styleConfiguration];
-      v30 = [v31 mutableCopy];
+      styleConfiguration = [stylePickerConfiguration styleConfiguration];
+      v30 = [styleConfiguration mutableCopy];
 
-      [v30 setSuggestedStyle:v24];
-      if (!v24)
+      [v30 setSuggestedStyle:style];
+      if (!style)
       {
 LABEL_35:
-        v8 = v39;
-        v5 = v40;
-        v9 = v42;
+        fontIdentifier = v39;
+        changeHandler = v40;
+        preferredAlignment = v42;
         goto LABEL_39;
       }
     }
@@ -945,36 +945,36 @@ LABEL_35:
     else
     {
       v30 = 0;
-      if (!v24)
+      if (!style)
       {
         goto LABEL_35;
       }
     }
 
-    v32 = v7;
-    v33 = [v7 styleConfiguration];
-    v34 = [v33 selectedStyle];
-    v35 = [v34 isEqual:v24];
+    v32 = stylePickerConfiguration;
+    styleConfiguration2 = [stylePickerConfiguration styleConfiguration];
+    selectedStyle = [styleConfiguration2 selectedStyle];
+    v35 = [selectedStyle isEqual:style];
 
     if ((v35 & 1) == 0)
     {
-      v7 = v32;
-      v8 = v39;
-      v9 = v42;
+      stylePickerConfiguration = v32;
+      fontIdentifier = v39;
+      preferredAlignment = v42;
       if (!v30)
       {
-        v36 = [v32 styleConfiguration];
-        v30 = [v36 mutableCopy];
+        styleConfiguration3 = [v32 styleConfiguration];
+        v30 = [styleConfiguration3 mutableCopy];
 
-        v9 = v42;
+        preferredAlignment = v42;
       }
 
-      [v30 setSelectedStyle:v24];
-      v5 = v40;
+      [v30 setSelectedStyle:style];
+      changeHandler = v40;
       goto LABEL_39;
     }
 
-    v7 = v32;
+    stylePickerConfiguration = v32;
     goto LABEL_35;
   }
 
@@ -998,14 +998,14 @@ void __62__PUIStylePickerViewController__notifyChangeHandlersOfChange___block_in
   }
 }
 
-- (void)_notifyClientsOfPickerConfigurationUpdate:(id)a3
+- (void)_notifyClientsOfPickerConfigurationUpdate:(id)update
 {
-  if (a3)
+  if (update)
   {
-    v4 = a3;
-    v5 = [(PUIStylePickerViewController *)self stylePickerConfiguration];
-    v6 = [v5 mutableCopy];
-    v4[2](v4, v6);
+    updateCopy = update;
+    stylePickerConfiguration = [(PUIStylePickerViewController *)self stylePickerConfiguration];
+    v6 = [stylePickerConfiguration mutableCopy];
+    updateCopy[2](updateCopy, v6);
 
     v7 = objc_opt_new();
     v32[0] = MEMORY[0x1E69E9820];
@@ -1014,61 +1014,61 @@ void __62__PUIStylePickerViewController__notifyChangeHandlersOfChange___block_in
     v32[3] = &unk_1E7854BC0;
     v8 = v7;
     v33 = v8;
-    v34 = self;
+    selfCopy = self;
     v9 = v6;
     v35 = v9;
     v10 = MEMORY[0x1AC5769F0](v32);
-    v11 = [v5 textLayoutConfiguration];
-    v12 = [v9 textLayoutConfiguration];
-    v13 = [v11 isEqual:v12];
+    textLayoutConfiguration = [stylePickerConfiguration textLayoutConfiguration];
+    textLayoutConfiguration2 = [v9 textLayoutConfiguration];
+    v13 = [textLayoutConfiguration isEqual:textLayoutConfiguration2];
 
     if ((v13 & 1) == 0)
     {
       v10[2](v10);
-      v14 = [v9 textLayoutConfiguration];
+      textLayoutConfiguration3 = [v9 textLayoutConfiguration];
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __74__PUIStylePickerViewController__notifyClientsOfPickerConfigurationUpdate___block_invoke_2;
       v30[3] = &unk_1E78566F8;
       v30[4] = self;
-      v31 = v14;
-      v15 = v14;
+      v31 = textLayoutConfiguration3;
+      v15 = textLayoutConfiguration3;
       [(PUIStylePickerViewController *)self _notifyObserversRespondingToSelector:sel_stylePickerViewController_didUpdateStyleConfiguration_ enumerator:v30];
     }
 
-    v16 = [v5 styleConfiguration];
-    v17 = [v9 styleConfiguration];
-    v18 = [v16 isEqual:v17];
+    styleConfiguration = [stylePickerConfiguration styleConfiguration];
+    styleConfiguration2 = [v9 styleConfiguration];
+    v18 = [styleConfiguration isEqual:styleConfiguration2];
 
     if ((v18 & 1) == 0)
     {
       v10[2](v10);
-      v19 = [v9 styleConfiguration];
+      styleConfiguration3 = [v9 styleConfiguration];
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __74__PUIStylePickerViewController__notifyClientsOfPickerConfigurationUpdate___block_invoke_3;
       v28[3] = &unk_1E78566F8;
       v28[4] = self;
-      v29 = v19;
-      v20 = v19;
+      v29 = styleConfiguration3;
+      v20 = styleConfiguration3;
       [(PUIStylePickerViewController *)self _notifyObserversRespondingToSelector:sel_stylePickerViewController_didUpdateStyleConfiguration_ enumerator:v28];
     }
 
-    v21 = [v5 homeScreenConfiguration];
-    v22 = [v9 homeScreenConfiguration];
-    v23 = [v21 isEqual:v22];
+    homeScreenConfiguration = [stylePickerConfiguration homeScreenConfiguration];
+    homeScreenConfiguration2 = [v9 homeScreenConfiguration];
+    v23 = [homeScreenConfiguration isEqual:homeScreenConfiguration2];
 
     if ((v23 & 1) == 0)
     {
       v10[2](v10);
-      v24 = [v9 homeScreenConfiguration];
+      homeScreenConfiguration3 = [v9 homeScreenConfiguration];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __74__PUIStylePickerViewController__notifyClientsOfPickerConfigurationUpdate___block_invoke_4;
       v26[3] = &unk_1E7856720;
       v26[4] = self;
-      v27 = v24;
-      v25 = v24;
+      v27 = homeScreenConfiguration3;
+      v25 = homeScreenConfiguration3;
       [(PUIStylePickerViewController *)self _notifyObserversRespondingToSelector:sel_stylePickerViewController_didUpdateHomeScreenConfiguration_ enumerator:v26];
     }
   }
@@ -1100,7 +1100,7 @@ void __74__PUIStylePickerViewController__notifyClientsOfPickerConfigurationUpdat
   }
 }
 
-- (void)_closeButtonTapped:(id)a3
+- (void)_closeButtonTapped:(id)tapped
 {
   [(PUIStylePickerViewController *)self _signalDelegateDidFinish];
 
@@ -1134,16 +1134,16 @@ void __74__PUIStylePickerViewController__notifyClientsOfPickerConfigurationUpdat
   [(PUIStylePickerViewController *)self _notifyDelegateRespondingToSelector:sel_stylePickerViewControllerDidFinish_ handler:v3];
 }
 
-- (void)_didPressTextAlignmentBarButtonItem:(id)a3
+- (void)_didPressTextAlignmentBarButtonItem:(id)item
 {
-  v4 = [(PUIStylePickerViewController *)self textAlignmentBarItem];
-  v5 = [v4 toggle];
+  textAlignmentBarItem = [(PUIStylePickerViewController *)self textAlignmentBarItem];
+  toggle = [textAlignmentBarItem toggle];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __68__PUIStylePickerViewController__didPressTextAlignmentBarButtonItem___block_invoke;
   v6[3] = &__block_descriptor_40_e39_v16__0__PUIStylePickerSelectionChange_8l;
-  v6[4] = v5;
+  v6[4] = toggle;
   [(PUIStylePickerViewController *)self _notifyChangeHandlersOfChange:v6];
 }
 
@@ -1156,60 +1156,60 @@ void __68__PUIStylePickerViewController__didPressTextAlignmentBarButtonItem___bl
   [v4 setPreferredAlignment:v5];
 }
 
-- (void)_notifyClientsOfChangedNumberingSystem:(id)a3
+- (void)_notifyClientsOfChangedNumberingSystem:(id)system
 {
-  v4 = a3;
-  if (!v4)
+  systemCopy = system;
+  if (!systemCopy)
   {
-    v4 = +[PUINumberingSystem systemDefaultNumberingSystem];
+    systemCopy = +[PUINumberingSystem systemDefaultNumberingSystem];
   }
 
-  v5 = [(PUIStylePickerViewController *)self fontPickerComponentViewController];
-  if (v5)
+  fontPickerComponentViewController = [(PUIStylePickerViewController *)self fontPickerComponentViewController];
+  if (fontPickerComponentViewController)
   {
-    v6 = [v4 locale];
-    [v5 setLocale:v6];
+    locale = [systemCopy locale];
+    [fontPickerComponentViewController setLocale:locale];
   }
 
-  v7 = [(PUIStylePickerViewController *)self numberingSystemPickerMenuController];
-  v8 = [(PUIStylePickerViewController *)self numberSystemBarItem];
-  v9 = v8;
-  if (v7 && v8)
+  numberingSystemPickerMenuController = [(PUIStylePickerViewController *)self numberingSystemPickerMenuController];
+  numberSystemBarItem = [(PUIStylePickerViewController *)self numberSystemBarItem];
+  v9 = numberSystemBarItem;
+  if (numberingSystemPickerMenuController && numberSystemBarItem)
   {
-    v10 = [v7 menu];
-    [v9 setMenu:v10];
+    menu = [numberingSystemPickerMenuController menu];
+    [v9 setMenu:menu];
   }
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __71__PUIStylePickerViewController__notifyClientsOfChangedNumberingSystem___block_invoke;
   v12[3] = &unk_1E7856798;
-  v13 = v4;
-  v11 = v4;
+  v13 = systemCopy;
+  v11 = systemCopy;
   [(PUIStylePickerViewController *)self _notifyChangeHandlersOfChange:v12];
 }
 
 - (void)_setupComponentViewControllersIfNeeded
 {
-  v3 = [(PUIStylePickerViewController *)self stylePickerConfiguration];
-  v4 = [v3 components];
-  v5 = [v3 defaultRole];
-  v6 = [v3 previewTextString];
-  v7 = [v3 styleConfiguration];
-  v8 = [v3 textLayoutConfiguration];
+  stylePickerConfiguration = [(PUIStylePickerViewController *)self stylePickerConfiguration];
+  components = [stylePickerConfiguration components];
+  defaultRole = [stylePickerConfiguration defaultRole];
+  previewTextString = [stylePickerConfiguration previewTextString];
+  styleConfiguration = [stylePickerConfiguration styleConfiguration];
+  textLayoutConfiguration = [stylePickerConfiguration textLayoutConfiguration];
   [(PUIStylePickerViewController *)self contentsLuminance];
   v10 = v9;
-  v11 = [v4 containsComponent:2];
-  v79 = [v4 containsComponent:4];
-  v12 = [v4 containsComponent:1];
-  v76 = [v4 containsComponent:16];
-  v13 = [v4 containsComponent:8];
-  v77 = [v4 containsComponent:32];
-  v14 = [(PUIStylePickerViewController *)self extensionBundleURL];
-  v81 = v14;
-  if (v14)
+  v11 = [components containsComponent:2];
+  v79 = [components containsComponent:4];
+  v12 = [components containsComponent:1];
+  v76 = [components containsComponent:16];
+  v13 = [components containsComponent:8];
+  v77 = [components containsComponent:32];
+  extensionBundleURL = [(PUIStylePickerViewController *)self extensionBundleURL];
+  v81 = extensionBundleURL;
+  if (extensionBundleURL)
   {
-    v78 = [v8 effectiveFontWithExtensionBundleURL:v14 forRole:v5];
+    v78 = [textLayoutConfiguration effectiveFontWithExtensionBundleURL:extensionBundleURL forRole:defaultRole];
   }
 
   else
@@ -1217,17 +1217,17 @@ void __68__PUIStylePickerViewController__didPressTextAlignmentBarButtonItem___bl
     v78 = 0;
   }
 
-  v80 = [(PUIStylePickerViewController *)self delegate];
+  delegate = [(PUIStylePickerViewController *)self delegate];
   if (v12)
   {
     v71 = v11;
-    v74 = v8;
-    v69 = v7;
-    v15 = [PUIFontPickerComponentViewController defaultItemsForRole:v5 text:v6];
+    v74 = textLayoutConfiguration;
+    v69 = styleConfiguration;
+    v15 = [PUIFontPickerComponentViewController defaultItemsForRole:defaultRole text:previewTextString];
     v67 = v13;
-    if (v5 && ([v5 isEqualToString:*MEMORY[0x1E69C5218]] & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (defaultRole && ([defaultRole isEqualToString:*MEMORY[0x1E69C5218]] & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v16 = [v80 additionalFontsForStylePickerViewController:self];
+      v16 = [delegate additionalFontsForStylePickerViewController:self];
       [(PUIStylePickerViewController *)self setAdditionalFonts:v16];
       v17 = [v16 bs_map:&__block_literal_global_33];
       v18 = [v15 arrayByAddingObjectsFromArray:v17];
@@ -1241,38 +1241,38 @@ void __68__PUIStylePickerViewController__didPressTextAlignmentBarButtonItem___bl
       [(PUIStylePickerViewController *)self setAdditionalFonts:0];
     }
 
-    v73 = v5;
-    v19 = v6;
+    v73 = defaultRole;
+    v19 = previewTextString;
     if (objc_opt_respondsToSelector())
     {
       v90[0] = MEMORY[0x1E69E9820];
       v90[1] = 3221225472;
       v90[2] = __70__PUIStylePickerViewController__setupComponentViewControllersIfNeeded__block_invoke_2;
       v90[3] = &unk_1E78567E0;
-      v91 = v80;
-      v92 = self;
+      v91 = delegate;
+      selfCopy = self;
       v20 = [v15 bs_filter:v90];
 
       v15 = v20;
     }
 
-    v21 = [v8 fontConfiguration];
-    v22 = [v21 PUIFontWithExtensionBundleURL:v81];
-    v23 = [v22 customFont];
+    fontConfiguration = [textLayoutConfiguration fontConfiguration];
+    v22 = [fontConfiguration PUIFontWithExtensionBundleURL:v81];
+    customFont = [v22 customFont];
 
     v66 = v22;
-    if (v23)
+    if (customFont)
     {
-      v24 = [v22 customFont];
+      customFont2 = [v22 customFont];
       v88[0] = MEMORY[0x1E69E9820];
       v88[1] = 3221225472;
       v88[2] = __70__PUIStylePickerViewController__setupComponentViewControllersIfNeeded__block_invoke_3;
       v88[3] = &unk_1E7856808;
-      v89 = v24;
-      v25 = v24;
+      v89 = customFont2;
+      v25 = customFont2;
       v68 = [v15 bs_firstObjectPassingTest:v88];
 
-      v6 = v19;
+      previewTextString = v19;
     }
 
     else
@@ -1283,7 +1283,7 @@ void __68__PUIStylePickerViewController__didPressTextAlignmentBarButtonItem___bl
       v85[3] = &unk_1E78567E0;
       v26 = v22;
       v86 = v26;
-      v27 = v21;
+      v27 = fontConfiguration;
       v87 = v27;
       v68 = [v15 bs_firstObjectPassingTest:v85];
       if (!v68)
@@ -1298,51 +1298,51 @@ void __68__PUIStylePickerViewController__didPressTextAlignmentBarButtonItem___bl
       }
 
       v25 = v86;
-      v6 = v19;
+      previewTextString = v19;
       v13 = v67;
     }
 
-    v5 = v73;
+    defaultRole = v73;
 
     v28 = [v15 count] > 1;
     v11 = v71;
     v72 = v28 | [(PUIStylePickerViewController *)self _shouldShowWeightSliderForSelectedFont];
     if (v72)
     {
-      v64 = v3;
-      v29 = v5;
-      v30 = [(PUIStylePickerViewController *)self fontPickerComponentViewController];
-      if (!v30)
+      v64 = stylePickerConfiguration;
+      v29 = defaultRole;
+      fontPickerComponentViewController = [(PUIStylePickerViewController *)self fontPickerComponentViewController];
+      if (!fontPickerComponentViewController)
       {
-        v30 = [[PUIFontPickerComponentViewController alloc] initWithItems:v15 selectedItem:v68 role:v29 titleString:v6];
-        [(PUIFontPickerComponentViewController *)v30 setDelegate:self];
-        [(PUIStylePickerViewController *)self setFontPickerComponentViewController:v30];
+        fontPickerComponentViewController = [[PUIFontPickerComponentViewController alloc] initWithItems:v15 selectedItem:v68 role:v29 titleString:previewTextString];
+        [(PUIFontPickerComponentViewController *)fontPickerComponentViewController setDelegate:self];
+        [(PUIStylePickerViewController *)self setFontPickerComponentViewController:fontPickerComponentViewController];
       }
 
-      v31 = [v74 fontConfiguration];
-      v32 = [(PUIStylePickerViewController *)self extensionBundleURL];
-      [v31 PUIFontWithExtensionBundleURL:v32];
-      v33 = v65 = v6;
+      fontConfiguration2 = [v74 fontConfiguration];
+      extensionBundleURL2 = [(PUIStylePickerViewController *)self extensionBundleURL];
+      [fontConfiguration2 PUIFontWithExtensionBundleURL:extensionBundleURL2];
+      v33 = v65 = previewTextString;
 
       v34 = [v33 effectiveFontForRole:v29 ignoringWeight:1];
-      v35 = [v34 pui_variantWeightRange];
+      pui_variantWeightRange = [v34 pui_variantWeightRange];
       v36 = v15;
       v38 = v37;
       [v33 weight];
-      [(PUIFontPickerComponentViewController *)v30 setFontWeight:(v39 - v35) / (v38 - v35)];
-      v40 = [v74 numberingSystemType];
-      v41 = [PUINumberingSystem numberingSystemForType:v40];
+      [(PUIFontPickerComponentViewController *)fontPickerComponentViewController setFontWeight:(v39 - pui_variantWeightRange) / (v38 - pui_variantWeightRange)];
+      numberingSystemType = [v74 numberingSystemType];
+      v41 = [PUINumberingSystem numberingSystemForType:numberingSystemType];
 
-      v42 = [v41 locale];
-      [(PUIFontPickerComponentViewController *)v30 setLocale:v42];
+      locale = [v41 locale];
+      [(PUIFontPickerComponentViewController *)fontPickerComponentViewController setLocale:locale];
 
       v15 = v36;
-      v6 = v65;
+      previewTextString = v65;
 
-      v5 = v29;
+      defaultRole = v29;
       v11 = v71;
       v13 = v67;
-      v3 = v64;
+      stylePickerConfiguration = v64;
     }
 
     else
@@ -1350,8 +1350,8 @@ void __68__PUIStylePickerViewController__didPressTextAlignmentBarButtonItem___bl
       [(PUIStylePickerViewController *)self setFontPickerComponentViewController:0];
     }
 
-    v7 = v69;
-    v8 = v74;
+    styleConfiguration = v69;
+    textLayoutConfiguration = v74;
   }
 
   else
@@ -1361,11 +1361,11 @@ void __68__PUIStylePickerViewController__didPressTextAlignmentBarButtonItem___bl
 
   if (v76)
   {
-    v43 = [(PUIStylePickerViewController *)self textAlignmentBarItem];
+    textAlignmentBarItem = [(PUIStylePickerViewController *)self textAlignmentBarItem];
 
-    if (!v43)
+    if (!textAlignmentBarItem)
     {
-      v44 = -[PUITextAlignmentBarButtonItem initWithTextAlignment:target:action:]([PUITextAlignmentBarButtonItem alloc], "initWithTextAlignment:target:action:", [v8 preferredAlignment], self, sel__didPressTextAlignmentBarButtonItem_);
+      v44 = -[PUITextAlignmentBarButtonItem initWithTextAlignment:target:action:]([PUITextAlignmentBarButtonItem alloc], "initWithTextAlignment:target:action:", [textLayoutConfiguration preferredAlignment], self, sel__didPressTextAlignmentBarButtonItem_);
       [(PUIStylePickerViewController *)self setTextAlignmentBarItem:v44];
     }
 
@@ -1386,27 +1386,27 @@ LABEL_32:
   }
 
 LABEL_28:
-  v45 = [PUITextLayoutSet supportedTextLayoutSetForRole:v5];
-  v46 = [(PUIStylePickerViewController *)self textLayoutPickerComponentViewController];
-  if (!v46)
+  v45 = [PUITextLayoutSet supportedTextLayoutSetForRole:defaultRole];
+  textLayoutPickerComponentViewController = [(PUIStylePickerViewController *)self textLayoutPickerComponentViewController];
+  if (!textLayoutPickerComponentViewController)
   {
-    v46 = -[PUITextLayoutPickerComponentViewController initWithLayouts:selectedLayout:]([PUITextLayoutPickerComponentViewController alloc], "initWithLayouts:selectedLayout:", v45, [v8 preferredLayout]);
-    [(PUITextLayoutPickerComponentViewController *)v46 setDelegate:self];
-    [(PUIStylePickerViewController *)self setTextLayoutPickerComponentViewController:v46];
+    textLayoutPickerComponentViewController = -[PUITextLayoutPickerComponentViewController initWithLayouts:selectedLayout:]([PUITextLayoutPickerComponentViewController alloc], "initWithLayouts:selectedLayout:", v45, [textLayoutConfiguration preferredLayout]);
+    [(PUITextLayoutPickerComponentViewController *)textLayoutPickerComponentViewController setDelegate:self];
+    [(PUIStylePickerViewController *)self setTextLayoutPickerComponentViewController:textLayoutPickerComponentViewController];
   }
 
 LABEL_33:
   if (v79)
   {
-    v47 = [(PUIStylePickerViewController *)self stylePickerComponentViewController];
-    if (!v47)
+    stylePickerComponentViewController = [(PUIStylePickerViewController *)self stylePickerComponentViewController];
+    if (!stylePickerComponentViewController)
     {
-      v47 = [[PUIStylePickerComponentViewController alloc] initWithConfiguration:v7];
-      [(PUIStylePickerComponentViewController *)v47 setDelegate:self];
-      [(PUIStylePickerViewController *)self setStylePickerComponentViewController:v47];
+      stylePickerComponentViewController = [[PUIStylePickerComponentViewController alloc] initWithConfiguration:styleConfiguration];
+      [(PUIStylePickerComponentViewController *)stylePickerComponentViewController setDelegate:self];
+      [(PUIStylePickerViewController *)self setStylePickerComponentViewController:stylePickerComponentViewController];
     }
 
-    [(PUIStylePickerComponentViewController *)v47 setContentsLuminance:v10];
+    [(PUIStylePickerComponentViewController *)stylePickerComponentViewController setContentsLuminance:v10];
 
     if (!v11)
     {
@@ -1427,62 +1427,62 @@ LABEL_37:
     }
   }
 
-  v48 = [v8 effectiveNumberingSystemType];
-  v49 = [PUINumberingSystem numberingSystemForType:v48];
+  effectiveNumberingSystemType = [textLayoutConfiguration effectiveNumberingSystemType];
+  v49 = [PUINumberingSystem numberingSystemForType:effectiveNumberingSystemType];
 
   if ((v79 | v72))
   {
-    v50 = [(PUIStylePickerViewController *)self numberingSystemPickerMenuController];
-    if (!v50)
+    numberingSystemPickerMenuController = [(PUIStylePickerViewController *)self numberingSystemPickerMenuController];
+    if (!numberingSystemPickerMenuController)
     {
-      v50 = [[PUINumberingSystemPickerMenuController alloc] initWithNumberingSystem:v49 font:v78];
-      [(PUINumberingSystemPickerMenuController *)v50 setDelegate:self];
-      [(PUIStylePickerViewController *)self setNumberingSystemPickerMenuController:v50];
+      numberingSystemPickerMenuController = [[PUINumberingSystemPickerMenuController alloc] initWithNumberingSystem:v49 font:v78];
+      [(PUINumberingSystemPickerMenuController *)numberingSystemPickerMenuController setDelegate:self];
+      [(PUIStylePickerViewController *)self setNumberingSystemPickerMenuController:numberingSystemPickerMenuController];
     }
 
-    v51 = [(PUIStylePickerViewController *)self numberSystemBarItem];
-    if (!v51)
+    numberSystemBarItem = [(PUIStylePickerViewController *)self numberSystemBarItem];
+    if (!numberSystemBarItem)
     {
       v52 = MEMORY[0x1E69DCAB8];
       [MEMORY[0x1E69DCAD8] configurationWithScale:3];
-      v75 = v8;
-      v54 = v53 = v6;
+      v75 = textLayoutConfiguration;
+      v54 = v53 = previewTextString;
       [v52 systemImageNamed:@"globe" withConfiguration:v54];
-      v70 = v7;
-      v56 = v55 = v5;
+      v70 = styleConfiguration;
+      v56 = v55 = defaultRole;
 
       v57 = objc_alloc(MEMORY[0x1E69DC708]);
-      v58 = [(PUINumberingSystemPickerMenuController *)v50 menu];
-      v51 = [v57 initWithImage:v56 menu:v58];
+      menu = [(PUINumberingSystemPickerMenuController *)numberingSystemPickerMenuController menu];
+      numberSystemBarItem = [v57 initWithImage:v56 menu:menu];
 
-      v6 = v53;
-      v8 = v75;
-      [(PUIStylePickerViewController *)self setNumberSystemBarItem:v51];
+      previewTextString = v53;
+      textLayoutConfiguration = v75;
+      [(PUIStylePickerViewController *)self setNumberSystemBarItem:numberSystemBarItem];
 
-      v5 = v55;
-      v7 = v70;
+      defaultRole = v55;
+      styleConfiguration = v70;
     }
   }
 
   else
   {
-    v50 = [(PUIStylePickerViewController *)self numberingSystemPickerComponentViewController];
-    if (!v50)
+    numberingSystemPickerMenuController = [(PUIStylePickerViewController *)self numberingSystemPickerComponentViewController];
+    if (!numberingSystemPickerMenuController)
     {
-      v50 = [[PUINumberingSystemPickerComponentViewController alloc] initWithNumberingSystem:v49 font:v78];
-      [(PUINumberingSystemPickerMenuController *)v50 setDelegate:self];
-      [(PUIStylePickerViewController *)self setNumberingSystemPickerComponentViewController:v50];
+      numberingSystemPickerMenuController = [[PUINumberingSystemPickerComponentViewController alloc] initWithNumberingSystem:v49 font:v78];
+      [(PUINumberingSystemPickerMenuController *)numberingSystemPickerMenuController setDelegate:self];
+      [(PUIStylePickerViewController *)self setNumberingSystemPickerComponentViewController:numberingSystemPickerMenuController];
     }
   }
 
 LABEL_48:
   if (v77)
   {
-    v59 = [v3 homeScreenConfiguration];
-    v60 = v59;
-    if (v59)
+    homeScreenConfiguration = [stylePickerConfiguration homeScreenConfiguration];
+    v60 = homeScreenConfiguration;
+    if (homeScreenConfiguration)
     {
-      v61 = v59;
+      v61 = homeScreenConfiguration;
     }
 
     else
@@ -1492,12 +1492,12 @@ LABEL_48:
 
     v62 = v61;
 
-    v63 = [(PUIStylePickerViewController *)self homeScreenComponentViewController];
-    if (!v63)
+    homeScreenComponentViewController = [(PUIStylePickerViewController *)self homeScreenComponentViewController];
+    if (!homeScreenComponentViewController)
     {
-      v63 = [[PUIStylePickerHomeScreenComponentViewController alloc] initWithHomeScreenConfiguration:v62];
-      [(PUIStylePickerHomeScreenComponentViewController *)v63 setDelegate:self];
-      [(PUIStylePickerViewController *)self setHomeScreenComponentViewController:v63];
+      homeScreenComponentViewController = [[PUIStylePickerHomeScreenComponentViewController alloc] initWithHomeScreenConfiguration:v62];
+      [(PUIStylePickerHomeScreenComponentViewController *)homeScreenComponentViewController setDelegate:self];
+      [(PUIStylePickerViewController *)self setHomeScreenComponentViewController:homeScreenComponentViewController];
     }
   }
 
@@ -1572,15 +1572,15 @@ uint64_t __70__PUIStylePickerViewController__setupComponentViewControllersIfNeed
 
 - (void)_refreshComponentViewControllers
 {
-  v20 = [(PUIStylePickerViewController *)self stylePickerConfiguration];
-  v3 = [v20 components];
-  v4 = [v3 containsComponent:2];
-  v5 = [v3 containsComponent:4];
-  LODWORD(v6) = [v3 containsComponent:16];
-  v7 = [v3 containsComponent:8];
-  v8 = [v3 containsComponent:32];
+  stylePickerConfiguration = [(PUIStylePickerViewController *)self stylePickerConfiguration];
+  components = [stylePickerConfiguration components];
+  v4 = [components containsComponent:2];
+  v5 = [components containsComponent:4];
+  LODWORD(fontPickerComponentViewController2) = [components containsComponent:16];
+  v7 = [components containsComponent:8];
+  v8 = [components containsComponent:32];
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (!v6 || ([(PUIStylePickerViewController *)self fontPickerComponentViewController], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
+  if (!fontPickerComponentViewController2 || ([(PUIStylePickerViewController *)self fontPickerComponentViewController], fontPickerComponentViewController2 = objc_claimAutoreleasedReturnValue(), fontPickerComponentViewController2, !fontPickerComponentViewController2))
   {
     v13 = 1;
     if (!v7)
@@ -1591,64 +1591,64 @@ uint64_t __70__PUIStylePickerViewController__setupComponentViewControllersIfNeed
     goto LABEL_7;
   }
 
-  v10 = [(PUIStylePickerViewController *)self fontPickerComponentViewController];
-  v11 = [v10 items];
-  v12 = [v11 count];
+  fontPickerComponentViewController = [(PUIStylePickerViewController *)self fontPickerComponentViewController];
+  items = [fontPickerComponentViewController items];
+  v12 = [items count];
 
   if (v12 >= 2)
   {
-    v6 = [(PUIStylePickerViewController *)self fontPickerComponentViewController];
-    [v9 addObject:v6];
+    fontPickerComponentViewController2 = [(PUIStylePickerViewController *)self fontPickerComponentViewController];
+    [v9 addObject:fontPickerComponentViewController2];
 
     v13 = 0;
-    LODWORD(v6) = 1;
+    LODWORD(fontPickerComponentViewController2) = 1;
     if (!v7)
     {
       goto LABEL_8;
     }
 
 LABEL_7:
-    v14 = [(PUIStylePickerViewController *)self textLayoutPickerComponentViewController];
-    [v9 bs_safeAddObject:v14];
+    textLayoutPickerComponentViewController = [(PUIStylePickerViewController *)self textLayoutPickerComponentViewController];
+    [v9 bs_safeAddObject:textLayoutPickerComponentViewController];
 
     goto LABEL_8;
   }
 
   v13 = 0;
-  LODWORD(v6) = 0;
+  LODWORD(fontPickerComponentViewController2) = 0;
   if (v7)
   {
     goto LABEL_7;
   }
 
 LABEL_8:
-  if (((v13 | v6) & 1) == 0)
+  if (((v13 | fontPickerComponentViewController2) & 1) == 0)
   {
-    v15 = [(PUIStylePickerViewController *)self fontPickerComponentViewController];
-    [v9 bs_safeAddObject:v15];
+    fontPickerComponentViewController3 = [(PUIStylePickerViewController *)self fontPickerComponentViewController];
+    [v9 bs_safeAddObject:fontPickerComponentViewController3];
   }
 
   if (v4)
   {
-    v16 = [(PUIStylePickerViewController *)self numberingSystemPickerComponentViewController];
+    numberingSystemPickerComponentViewController = [(PUIStylePickerViewController *)self numberingSystemPickerComponentViewController];
 
-    if (v16)
+    if (numberingSystemPickerComponentViewController)
     {
-      v17 = [(PUIStylePickerViewController *)self numberingSystemPickerComponentViewController];
-      [v9 addObject:v17];
+      numberingSystemPickerComponentViewController2 = [(PUIStylePickerViewController *)self numberingSystemPickerComponentViewController];
+      [v9 addObject:numberingSystemPickerComponentViewController2];
     }
   }
 
   if (v5)
   {
-    v18 = [(PUIStylePickerViewController *)self stylePickerComponentViewController];
-    [v9 bs_safeAddObject:v18];
+    stylePickerComponentViewController = [(PUIStylePickerViewController *)self stylePickerComponentViewController];
+    [v9 bs_safeAddObject:stylePickerComponentViewController];
   }
 
   if (v8)
   {
-    v19 = [(PUIStylePickerViewController *)self homeScreenComponentViewController];
-    [v9 bs_safeAddObject:v19];
+    homeScreenComponentViewController = [(PUIStylePickerViewController *)self homeScreenComponentViewController];
+    [v9 bs_safeAddObject:homeScreenComponentViewController];
   }
 }
 
@@ -1659,59 +1659,59 @@ LABEL_8:
     return;
   }
 
-  v42 = [(PUIStylePickerViewController *)self stylePickerConfiguration];
-  v3 = [v42 components];
-  v4 = [(PUIStylePickerViewController *)self leadingBarButtonItems];
-  v46 = [(PUIStylePickerViewController *)self centerBarButtonItems];
-  v5 = [(PUIStylePickerViewController *)self trailingBarButtonItems];
+  stylePickerConfiguration = [(PUIStylePickerViewController *)self stylePickerConfiguration];
+  components = [stylePickerConfiguration components];
+  leadingBarButtonItems = [(PUIStylePickerViewController *)self leadingBarButtonItems];
+  centerBarButtonItems = [(PUIStylePickerViewController *)self centerBarButtonItems];
+  trailingBarButtonItems = [(PUIStylePickerViewController *)self trailingBarButtonItems];
   v6 = objc_opt_new();
   v7 = objc_opt_new();
   v8 = objc_opt_new();
-  v9 = [v3 containsComponent:2];
-  v41 = v3;
-  if ([v3 containsComponent:16])
+  v9 = [components containsComponent:2];
+  v41 = components;
+  if ([components containsComponent:16])
   {
-    v10 = [(PUIStylePickerViewController *)self textAlignmentBarItem];
-    [v6 addObject:v10];
+    textAlignmentBarItem = [(PUIStylePickerViewController *)self textAlignmentBarItem];
+    [v6 addObject:textAlignmentBarItem];
   }
 
   if (v9)
   {
-    v11 = [(PUIStylePickerViewController *)self numberingSystemPickerComponentViewController];
+    numberingSystemPickerComponentViewController = [(PUIStylePickerViewController *)self numberingSystemPickerComponentViewController];
 
-    if (!v11)
+    if (!numberingSystemPickerComponentViewController)
     {
-      v12 = [(PUIStylePickerViewController *)self numberSystemBarItem];
-      [v6 addObject:v12];
+      numberSystemBarItem = [(PUIStylePickerViewController *)self numberSystemBarItem];
+      [v6 addObject:numberSystemBarItem];
     }
   }
 
-  v13 = [(PUIStylePickerViewController *)self stylePickerComponentViewController];
-  v14 = [v13 colorWell];
-  if (!v14)
+  stylePickerComponentViewController = [(PUIStylePickerViewController *)self stylePickerComponentViewController];
+  colorWell = [stylePickerComponentViewController colorWell];
+  if (!colorWell)
   {
     goto LABEL_10;
   }
 
-  v15 = v14;
-  v16 = [(PUIStylePickerViewController *)self numberSystemBarItem];
+  v15 = colorWell;
+  numberSystemBarItem2 = [(PUIStylePickerViewController *)self numberSystemBarItem];
 
-  v17 = v46;
-  if (!v16)
+  v17 = centerBarButtonItems;
+  if (!numberSystemBarItem2)
   {
-    v13 = [(PUIStylePickerComponentViewController *)self->_stylePickerComponentViewController colorWellView];
-    v18 = [v13 colorWell];
-    [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v13];
+    stylePickerComponentViewController = [(PUIStylePickerComponentViewController *)self->_stylePickerComponentViewController colorWellView];
+    colorWell2 = [stylePickerComponentViewController colorWell];
+    [colorWell2 setTranslatesAutoresizingMaskIntoConstraints:0];
+    v19 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:stylePickerComponentViewController];
     [v6 addObject:v19];
 
 LABEL_10:
-    v17 = v46;
+    v17 = centerBarButtonItems;
   }
 
-  if ([v4 count])
+  if ([leadingBarButtonItems count])
   {
-    v45 = [objc_alloc(MEMORY[0x1E69DC720]) initWithBarButtonItems:v4 representativeItem:0];
+    v45 = [objc_alloc(MEMORY[0x1E69DC720]) initWithBarButtonItems:leadingBarButtonItems representativeItem:0];
   }
 
   else
@@ -1749,10 +1749,10 @@ LABEL_10:
     v43 = 0;
   }
 
-  v39 = v5;
-  if ([v5 count])
+  v39 = trailingBarButtonItems;
+  if ([trailingBarButtonItems count])
   {
-    v21 = [objc_alloc(MEMORY[0x1E69DC720]) initWithBarButtonItems:v5 representativeItem:0];
+    v21 = [objc_alloc(MEMORY[0x1E69DC720]) initWithBarButtonItems:trailingBarButtonItems representativeItem:0];
   }
 
   else
@@ -1761,7 +1761,7 @@ LABEL_10:
   }
 
   v38 = v6;
-  v40 = v4;
+  v40 = leadingBarButtonItems;
   v36 = v8;
   v37 = v7;
   if ([v8 count])
@@ -1784,56 +1784,56 @@ LABEL_10:
   v26 = v20;
   [v25 bs_safeAddObject:v20];
   [v25 bs_safeAddObject:v43];
-  v27 = [(PUIStylePickerViewController *)self navigationController];
-  v28 = [v27 navigationBar];
-  v29 = [v28 topItem];
+  navigationController = [(PUIStylePickerViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  topItem = [navigationBar topItem];
 
-  [v29 _setManualScrollEdgeAppearanceProgress:0.0];
-  [v29 setLeadingItemGroups:v23];
-  v30 = v46;
-  if ([v46 count])
+  [topItem _setManualScrollEdgeAppearanceProgress:0.0];
+  [topItem setLeadingItemGroups:v23];
+  v30 = centerBarButtonItems;
+  if ([centerBarButtonItems count])
   {
-    if ([v46 count] == 1 && (objc_msgSend(v46, "firstObject"), v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v31, "customView"), v32 = objc_claimAutoreleasedReturnValue(), v32, v31, v30 = v46, v32))
+    if ([centerBarButtonItems count] == 1 && (objc_msgSend(centerBarButtonItems, "firstObject"), v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v31, "customView"), v32 = objc_claimAutoreleasedReturnValue(), v32, v31, v30 = centerBarButtonItems, v32))
     {
-      v33 = [v46 firstObject];
-      v34 = [v33 customView];
+      firstObject = [centerBarButtonItems firstObject];
+      customView = [firstObject customView];
 
-      v30 = v46;
-      [v34 sizeToFit];
-      [v29 setTitleView:v34];
+      v30 = centerBarButtonItems;
+      [customView sizeToFit];
+      [topItem setTitleView:customView];
     }
 
     else
     {
-      [v29 setCenterItemGroups:v25];
-      [v29 setTitle:0];
+      [topItem setCenterItemGroups:v25];
+      [topItem setTitle:0];
     }
   }
 
   else
   {
-    v35 = [(PUIStylePickerViewController *)self title];
-    [v29 setTitle:v35];
+    title = [(PUIStylePickerViewController *)self title];
+    [topItem setTitle:title];
 
-    v30 = v46;
+    v30 = centerBarButtonItems;
   }
 
-  [v29 setTrailingItemGroups:v24];
+  [topItem setTrailingItemGroups:v24];
 }
 
 - (id)componentViewControllers
 {
   v3 = objc_opt_new();
-  v4 = [(PUIStylePickerViewController *)self stylePickerConfiguration];
-  v5 = [v4 components];
+  stylePickerConfiguration = [(PUIStylePickerViewController *)self stylePickerConfiguration];
+  components = [stylePickerConfiguration components];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __56__PUIStylePickerViewController_componentViewControllers__block_invoke;
   v12 = &unk_1E7856830;
   v13 = v3;
-  v14 = self;
+  selfCopy = self;
   v6 = v3;
-  [v5 enumerateComponents:&v9];
+  [components enumerateComponents:&v9];
 
   v7 = [v6 copy];
 
@@ -1874,20 +1874,20 @@ void __56__PUIStylePickerViewController_componentViewControllers__block_invoke(u
 
 - (void)_updateViews
 {
-  v2 = self;
+  selfCopy = self;
   v119 = *MEMORY[0x1E69E9840];
-  v3 = [(PUIStylePickerViewController *)self view];
-  v4 = [(PUIStylePickerViewController *)v2 rootStackView];
-  v74 = [(PUIStylePickerViewController *)v2 backgroundView];
-  v5 = [(PUIStylePickerViewController *)v2 componentViewControllers];
+  view = [(PUIStylePickerViewController *)self view];
+  rootStackView = [(PUIStylePickerViewController *)selfCopy rootStackView];
+  backgroundView = [(PUIStylePickerViewController *)selfCopy backgroundView];
+  componentViewControllers = [(PUIStylePickerViewController *)selfCopy componentViewControllers];
   v85 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
   v111 = 0u;
-  obj = v5;
+  obj = componentViewControllers;
   v6 = [obj countByEnumeratingWithState:&v108 objects:v118 count:16];
-  v84 = v2;
+  v84 = selfCopy;
   if (v6)
   {
     v7 = v6;
@@ -1903,13 +1903,13 @@ void __56__PUIStylePickerViewController_componentViewControllers__block_invoke(u
         }
 
         v11 = *(*(&v108 + 1) + 8 * i);
-        v12 = [v11 view];
-        [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [v85 addObject:v12];
-        v13 = [v11 parentViewController];
+        view2 = [v11 view];
+        [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+        [v85 addObject:view2];
+        parentViewController = [v11 parentViewController];
 
-        v14 = v13 == v84;
-        v2 = v84;
+        v14 = parentViewController == v84;
+        selfCopy = v84;
         if (!v14)
         {
           [v11 willMoveToParentViewController:v84];
@@ -1930,11 +1930,11 @@ void __56__PUIStylePickerViewController_componentViewControllers__block_invoke(u
     v8 = 0;
   }
 
-  v15 = [v4 arrangedSubviews];
+  arrangedSubviews = [rootStackView arrangedSubviews];
   v16 = v85;
-  v17 = [v85 isEqualToArray:v15];
+  v17 = [v85 isEqualToArray:arrangedSubviews];
 
-  v73 = v4;
+  v73 = rootStackView;
   if (v17)
   {
     if ((v8 & 1) == 0)
@@ -1949,8 +1949,8 @@ void __56__PUIStylePickerViewController_componentViewControllers__block_invoke(u
     v107 = 0u;
     v104 = 0u;
     v105 = 0u;
-    v18 = [v4 arrangedSubviews];
-    v19 = [v18 copy];
+    arrangedSubviews2 = [rootStackView arrangedSubviews];
+    v19 = [arrangedSubviews2 copy];
 
     v20 = [v19 countByEnumeratingWithState:&v104 objects:v117 count:16];
     if (v20)
@@ -1966,7 +1966,7 @@ void __56__PUIStylePickerViewController_componentViewControllers__block_invoke(u
             objc_enumerationMutation(v19);
           }
 
-          [v4 removeArrangedSubview:*(*(&v104 + 1) + 8 * j)];
+          [rootStackView removeArrangedSubview:*(*(&v104 + 1) + 8 * j)];
         }
 
         v21 = [v19 countByEnumeratingWithState:&v104 objects:v117 count:16];
@@ -1994,7 +1994,7 @@ void __56__PUIStylePickerViewController_componentViewControllers__block_invoke(u
             objc_enumerationMutation(v24);
           }
 
-          [v4 addArrangedSubview:*(*(&v100 + 1) + 8 * k)];
+          [rootStackView addArrangedSubview:*(*(&v100 + 1) + 8 * k)];
         }
 
         v26 = [v24 countByEnumeratingWithState:&v100 objects:v116 count:16];
@@ -2003,14 +2003,14 @@ void __56__PUIStylePickerViewController_componentViewControllers__block_invoke(u
       while (v26);
     }
 
-    v2 = v84;
+    selfCopy = v84;
   }
 
-  v29 = [(PUIStylePickerViewController *)v2 dividerViews];
-  [v29 makeObjectsPerformSelector:sel_removeFromSuperview];
+  dividerViews = [(PUIStylePickerViewController *)selfCopy dividerViews];
+  [dividerViews makeObjectsPerformSelector:sel_removeFromSuperview];
 
   v80 = objc_opt_new();
-  v72 = v3;
+  v72 = view;
   if ([v85 count] < 2)
   {
     v30 = 0;
@@ -2041,27 +2041,27 @@ void __56__PUIStylePickerViewController_componentViewControllers__block_invoke(u
 
         v32 = *(*(&v96 + 1) + 8 * m);
         v33 = objc_alloc_init(MEMORY[0x1E69DD250]);
-        v34 = [MEMORY[0x1E69DC888] separatorColor];
-        [v33 setBackgroundColor:v34];
+        separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+        [v33 setBackgroundColor:separatorColor];
 
         [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
         [v32 addSubview:v33];
         [v80 addObject:v33];
         v86 = MEMORY[0x1E696ACD8];
-        v94 = [v33 heightAnchor];
-        v92 = [v94 constraintEqualToConstant:1.0];
+        heightAnchor = [v33 heightAnchor];
+        v92 = [heightAnchor constraintEqualToConstant:1.0];
         v114[0] = v92;
-        v90 = [v33 leadingAnchor];
-        v88 = [v32 leadingAnchor];
-        v35 = [v90 constraintEqualToAnchor:v88];
+        leadingAnchor = [v33 leadingAnchor];
+        leadingAnchor2 = [v32 leadingAnchor];
+        v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v114[1] = v35;
-        v36 = [v33 trailingAnchor];
-        v37 = [v32 trailingAnchor];
-        v38 = [v36 constraintEqualToAnchor:v37];
+        trailingAnchor = [v33 trailingAnchor];
+        trailingAnchor2 = [v32 trailingAnchor];
+        v38 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v114[2] = v38;
-        v39 = [v33 bottomAnchor];
-        v40 = [v32 topAnchor];
-        v41 = [v39 constraintEqualToAnchor:v40 constant:-24.0];
+        bottomAnchor = [v33 bottomAnchor];
+        topAnchor = [v32 topAnchor];
+        v41 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:-24.0];
         v114[3] = v41;
         v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v114 count:4];
         [v86 activateConstraints:v42];
@@ -2073,31 +2073,31 @@ void __56__PUIStylePickerViewController_componentViewControllers__block_invoke(u
     while (v82);
   }
 
-  v2 = v84;
+  selfCopy = v84;
   [(PUIStylePickerViewController *)v84 setDividerViews:v80];
 
-  v3 = v72;
-  v4 = v73;
+  view = v72;
+  rootStackView = v73;
   v16 = v85;
 LABEL_41:
-  v43 = [v3 safeAreaLayoutGuide];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
   v44 = PUIFeatureEnabled(11);
-  v45 = [v4 leadingAnchor];
-  v46 = [v43 leadingAnchor];
-  v47 = [v45 constraintEqualToAnchor:v46];
+  leadingAnchor3 = [rootStackView leadingAnchor];
+  leadingAnchor4 = [safeAreaLayoutGuide leadingAnchor];
+  v47 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v48 = v47;
   if (v44)
   {
     v113[0] = v47;
-    v49 = [v4 trailingAnchor];
-    v95 = [v43 trailingAnchor];
-    v93 = [v49 constraintEqualToAnchor:?];
+    trailingAnchor3 = [rootStackView trailingAnchor];
+    trailingAnchor4 = [safeAreaLayoutGuide trailingAnchor];
+    v93 = [trailingAnchor3 constraintEqualToAnchor:?];
     v113[1] = v93;
-    v50 = [v4 topAnchor];
-    v89 = [v3 safeAreaLayoutGuide];
-    [v89 topAnchor];
-    v87 = v91 = v50;
-    v83 = [v50 constraintEqualToAnchor:7.0 constant:?];
+    topAnchor2 = [rootStackView topAnchor];
+    safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+    [safeAreaLayoutGuide2 topAnchor];
+    v87 = v91 = topAnchor2;
+    v83 = [topAnchor2 constraintEqualToAnchor:7.0 constant:?];
     v113[2] = v83;
     v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:v113 count:3];
   }
@@ -2105,63 +2105,63 @@ LABEL_41:
   else
   {
     v112[0] = v47;
-    v76 = [v4 trailingAnchor];
-    v95 = [v43 trailingAnchor];
-    v93 = [v76 constraintEqualToAnchor:?];
+    trailingAnchor5 = [rootStackView trailingAnchor];
+    trailingAnchor4 = [safeAreaLayoutGuide trailingAnchor];
+    v93 = [trailingAnchor5 constraintEqualToAnchor:?];
     v112[1] = v93;
-    v52 = [v4 topAnchor];
-    v89 = [v3 safeAreaLayoutGuide];
-    [v89 topAnchor];
-    v87 = v91 = v52;
-    v83 = [v52 constraintEqualToAnchor:7.0 constant:?];
+    topAnchor3 = [rootStackView topAnchor];
+    safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+    [safeAreaLayoutGuide2 topAnchor];
+    v87 = v91 = topAnchor3;
+    v83 = [topAnchor3 constraintEqualToAnchor:7.0 constant:?];
     v112[2] = v83;
-    v71 = [v74 leadingAnchor];
-    v70 = [v3 leadingAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70];
+    leadingAnchor5 = [backgroundView leadingAnchor];
+    leadingAnchor6 = [view leadingAnchor];
+    v69 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v112[3] = v69;
-    v68 = [v74 trailingAnchor];
-    v67 = [v3 trailingAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67];
+    trailingAnchor6 = [backgroundView trailingAnchor];
+    trailingAnchor7 = [view trailingAnchor];
+    v66 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
     v112[4] = v66;
-    v53 = [v74 bottomAnchor];
-    v54 = [v3 bottomAnchor];
-    [v53 constraintEqualToAnchor:v54];
-    v81 = v45;
-    v56 = v55 = v3;
+    bottomAnchor2 = [backgroundView bottomAnchor];
+    bottomAnchor3 = [view bottomAnchor];
+    [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
+    v81 = leadingAnchor3;
+    v56 = v55 = view;
     v112[5] = v56;
-    [v74 topAnchor];
-    v57 = v79 = v46;
+    [backgroundView topAnchor];
+    v57 = v79 = leadingAnchor4;
     [v55 topAnchor];
     v58 = v48;
-    v60 = v59 = v43;
+    v60 = v59 = safeAreaLayoutGuide;
     v61 = [v57 constraintEqualToAnchor:v60];
     v112[6] = v61;
     v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:v112 count:7];
 
     v16 = v85;
-    v43 = v59;
+    safeAreaLayoutGuide = v59;
     v48 = v58;
 
-    v4 = v73;
-    v46 = v79;
+    rootStackView = v73;
+    leadingAnchor4 = v79;
 
-    v3 = v55;
-    v45 = v81;
+    view = v55;
+    leadingAnchor3 = v81;
 
-    v49 = v76;
-    v2 = v84;
+    trailingAnchor3 = trailingAnchor5;
+    selfCopy = v84;
   }
 
-  v62 = [(PUIStylePickerViewController *)v2 layoutConstraints];
-  v63 = [v62 isEqualToArray:v51];
+  layoutConstraints = [(PUIStylePickerViewController *)selfCopy layoutConstraints];
+  v63 = [layoutConstraints isEqualToArray:v51];
 
   if ((v63 & 1) == 0)
   {
     v64 = MEMORY[0x1E696ACD8];
-    v65 = [(PUIStylePickerViewController *)v2 layoutConstraints];
-    [v64 deactivateConstraints:v65];
+    layoutConstraints2 = [(PUIStylePickerViewController *)selfCopy layoutConstraints];
+    [v64 deactivateConstraints:layoutConstraints2];
 
-    [(PUIStylePickerViewController *)v2 setLayoutConstraints:v51];
+    [(PUIStylePickerViewController *)selfCopy setLayoutConstraints:v51];
     [MEMORY[0x1E696ACD8] activateConstraints:v51];
   }
 }

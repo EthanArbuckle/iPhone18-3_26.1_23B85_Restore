@@ -1,34 +1,34 @@
 @interface MTLFunctionStitchingInputBufferAddress
-- (BOOL)isEqual:(id)a3;
-- (MTLFunctionStitchingInputBufferAddress)initWithBindIndex:(unint64_t)a3;
-- (MTLFunctionStitchingInputBufferAddress)initWithBindIndex:(unint64_t)a3 byteOffset:(unint64_t)a4 dereference:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTLFunctionStitchingInputBufferAddress)initWithBindIndex:(unint64_t)index;
+- (MTLFunctionStitchingInputBufferAddress)initWithBindIndex:(unint64_t)index byteOffset:(unint64_t)offset dereference:(BOOL)dereference;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (unint64_t)hash;
 @end
 
 @implementation MTLFunctionStitchingInputBufferAddress
 
-- (MTLFunctionStitchingInputBufferAddress)initWithBindIndex:(unint64_t)a3
+- (MTLFunctionStitchingInputBufferAddress)initWithBindIndex:(unint64_t)index
 {
   v5.receiver = self;
   v5.super_class = MTLFunctionStitchingInputBufferAddress;
   result = [(MTLFunctionStitchingInputBufferAddress *)&v5 init];
-  result->_bindIndex = a3;
+  result->_bindIndex = index;
   result->_byteOffset = 0;
   result->_dereference = 0;
   return result;
 }
 
-- (MTLFunctionStitchingInputBufferAddress)initWithBindIndex:(unint64_t)a3 byteOffset:(unint64_t)a4 dereference:(BOOL)a5
+- (MTLFunctionStitchingInputBufferAddress)initWithBindIndex:(unint64_t)index byteOffset:(unint64_t)offset dereference:(BOOL)dereference
 {
-  self->_bindIndex = a3;
-  self->_byteOffset = a4;
-  self->_dereference = a5;
+  self->_bindIndex = index;
+  self->_byteOffset = offset;
+  self->_dereference = dereference;
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setBindIndex:self->_bindIndex];
@@ -37,33 +37,33 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     return 0;
   }
 
-  v6 = [(MTLFunctionStitchingInputBufferAddress *)self bindIndex];
-  if (v6 != [a3 bindIndex])
+  bindIndex = [(MTLFunctionStitchingInputBufferAddress *)self bindIndex];
+  if (bindIndex != [equal bindIndex])
   {
     return 0;
   }
 
-  v7 = [(MTLFunctionStitchingInputBufferAddress *)self byteOffset];
-  if (v7 != [a3 byteOffset])
+  byteOffset = [(MTLFunctionStitchingInputBufferAddress *)self byteOffset];
+  if (byteOffset != [equal byteOffset])
   {
     return 0;
   }
 
-  v8 = [(MTLFunctionStitchingInputBufferAddress *)self dereference];
-  return v8 ^ [a3 dereference] ^ 1;
+  dereference = [(MTLFunctionStitchingInputBufferAddress *)self dereference];
+  return dereference ^ [equal dereference] ^ 1;
 }
 
 - (unint64_t)hash
@@ -75,10 +75,10 @@
   return _MTLHashState(v4, 0x18uLL);
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v10[9] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v5 = MEMORY[0x1E696AEC0];
   v9.receiver = self;
   v9.super_class = MTLFunctionStitchingInputBufferAddress;

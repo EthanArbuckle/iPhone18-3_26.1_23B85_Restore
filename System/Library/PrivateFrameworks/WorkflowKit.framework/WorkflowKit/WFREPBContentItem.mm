@@ -1,41 +1,41 @@
 @interface WFREPBContentItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEncodingType:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (int)StringAsEncodingType:(id)type;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFREPBContentItem
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(WFREPBContentItem *)self setItem:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_encodingType = v4[2];
+  self->_encodingType = fromCopy[2];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && ((item = self->_item, !(item | *(v4 + 2))) || -[NSData isEqual:](item, "isEqual:")) && self->_encodingType == *(v4 + 2);
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && ((item = self->_item, !(item | *(equalCopy + 2))) || -[NSData isEqual:](item, "isEqual:")) && self->_encodingType == *(equalCopy + 2);
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_item copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_item copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -43,23 +43,23 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   item = self->_item;
-  v5 = a3;
-  [v5 setItem:item];
-  v5[2] = self->_encodingType;
+  toCopy = to;
+  [toCopy setItem:item];
+  toCopy[2] = self->_encodingType;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_item)
   {
     __assert_rtn("[WFREPBContentItem writeTo:]", "WFREPBContentItem.m", 87, "nil != self->_item");
   }
 
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteDataField();
   encodingType = self->_encodingType;
   PBDataWriterWriteInt32Field();
@@ -67,12 +67,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   item = self->_item;
   if (item)
   {
-    [v3 setObject:item forKey:@"item"];
+    [dictionary setObject:item forKey:@"item"];
   }
 
   encodingType = self->_encodingType;
@@ -102,19 +102,19 @@
   v8.receiver = self;
   v8.super_class = WFREPBContentItem;
   v4 = [(WFREPBContentItem *)&v8 description];
-  v5 = [(WFREPBContentItem *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFREPBContentItem *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsEncodingType:(id)a3
+- (int)StringAsEncodingType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = 1;
-  if (([v3 isEqualToString:@"Protobuf"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"Protobuf"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"NSSecureCoding"])
+    if ([typeCopy isEqualToString:@"NSSecureCoding"])
     {
       v4 = 2;
     }

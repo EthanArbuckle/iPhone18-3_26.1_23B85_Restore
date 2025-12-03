@@ -1,13 +1,13 @@
 @interface BRDaemonCloudDocsHelper
-- (id)queryPathsForPersona:(id)a3 withError:(id *)a4;
+- (id)queryPathsForPersona:(id)persona withError:(id *)error;
 @end
 
 @implementation BRDaemonCloudDocsHelper
 
-- (id)queryPathsForPersona:(id)a3 withError:(id *)a4
+- (id)queryPathsForPersona:(id)persona withError:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  personaCopy = persona;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -28,7 +28,7 @@
       *buf = 136315906;
       v23 = "[BRDaemonCloudDocsHelper queryPathsForPersona:withError:]";
       v24 = 2080;
-      if (!a4)
+      if (!error)
       {
         v15 = "(ignored by caller)";
       }
@@ -41,10 +41,10 @@
       _os_log_error_impl(&dword_223E7A000, v10, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
     }
 
-    if (a4)
+    if (error)
     {
       v11 = v8;
-      *a4 = v8;
+      *error = v8;
     }
 
     v12 = 0;

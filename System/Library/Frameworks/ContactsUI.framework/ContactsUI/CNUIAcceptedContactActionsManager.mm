@@ -1,22 +1,22 @@
 @interface CNUIAcceptedContactActionsManager
 + (id)log;
-- (CNUIAcceptedContactActionsManager)initWithConfiguration:(id)a3;
+- (CNUIAcceptedContactActionsManager)initWithConfiguration:(id)configuration;
 - (CNUIAcceptedContactActionsManagerDelegate)delegate;
-- (id)_makeAlertControllerForTagWithTitle:(id)a3;
+- (id)_makeAlertControllerForTagWithTitle:(id)title;
 - (id)_makeAlertControllerToAddTag;
 - (id)_makeAlertControllerToCreateContactOrAddTag;
 - (id)_makeAlertControllerToEditTag;
 - (id)cancelAction;
-- (id)doneActionForAlertController:(id)a3;
+- (id)doneActionForAlertController:(id)controller;
 - (id)presentingViewController;
-- (id)presentingViewControllerWithSourceView:(id *)a3 sourceRect:(CGRect *)a4;
+- (id)presentingViewControllerWithSourceView:(id *)view sourceRect:(CGRect *)rect;
 - (void)_presentAcceptedContacAddLabelViewController;
 - (void)_presentAcceptedContactEditLabelViewController;
 - (void)_presentCreateNewContactOrNewLabelViewController;
 - (void)_presentCreateNewContactViewController;
-- (void)_presentViewController:(id)a3;
-- (void)_recordAcceptedEventWithDisplayName:(id)a3;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
+- (void)_presentViewController:(id)controller;
+- (void)_recordAcceptedEventWithDisplayName:(id)name;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
 - (void)presentAcceptedContactViewController;
 @end
 
@@ -29,35 +29,35 @@
   return WeakRetained;
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNUIAcceptedContactActionsManager *)self presentingViewController];
-  [v8 dismissViewControllerAnimated:1 completion:0];
+  contactCopy = contact;
+  controllerCopy = controller;
+  presentingViewController = [(CNUIAcceptedContactActionsManager *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
-  v9 = [v7 navigationController];
+  navigationController = [controllerCopy navigationController];
 
-  v10 = [v9 popViewControllerAnimated:1];
-  v11 = [(CNUIAcceptedContactActionsManager *)self delegate];
-  [v11 acceptedContactActionsManager:self didCreateNewContact:v6];
+  v10 = [navigationController popViewControllerAnimated:1];
+  delegate = [(CNUIAcceptedContactActionsManager *)self delegate];
+  [delegate acceptedContactActionsManager:self didCreateNewContact:contactCopy];
 
-  v12 = [(CNUIAcceptedContactActionsManager *)self metricsEvent];
-  [v12 reportWithSuccess:1];
+  metricsEvent = [(CNUIAcceptedContactActionsManager *)self metricsEvent];
+  [metricsEvent reportWithSuccess:1];
 }
 
-- (id)presentingViewControllerWithSourceView:(id *)a3 sourceRect:(CGRect *)a4
+- (id)presentingViewControllerWithSourceView:(id *)view sourceRect:(CGRect *)rect
 {
-  v7 = [(CNUIAcceptedContactActionsManager *)self delegate];
-  v8 = [v7 presentingViewControllerForAcceptedContactActionsManager:self sourceView:a3 sourceRect:a4];
+  delegate = [(CNUIAcceptedContactActionsManager *)self delegate];
+  v8 = [delegate presentingViewControllerForAcceptedContactActionsManager:self sourceView:view sourceRect:rect];
 
   return v8;
 }
 
 - (id)presentingViewController
 {
-  v3 = [(CNUIAcceptedContactActionsManager *)self delegate];
-  v4 = [v3 presentingViewControllerForAcceptedContactActionsManager:self sourceView:0 sourceRect:0];
+  delegate = [(CNUIAcceptedContactActionsManager *)self delegate];
+  v4 = [delegate presentingViewControllerForAcceptedContactActionsManager:self sourceView:0 sourceRect:0];
 
   return v4;
 }
@@ -86,9 +86,9 @@ void __49__CNUIAcceptedContactActionsManager_cancelAction__block_invoke(uint64_t
   [v3 acceptedContactActionsManagerDidCancel:*(a1 + 32)];
 }
 
-- (id)doneActionForAlertController:(id)a3
+- (id)doneActionForAlertController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = MEMORY[0x1E69DC648];
   v6 = CNContactsUIBundle();
   v7 = [v6 localizedStringForKey:@"ACCEPTED_CONTACTS_ADD_NAME_DONE_ACTION" value:&stru_1F0CE7398 table:@"Localized"];
@@ -96,9 +96,9 @@ void __49__CNUIAcceptedContactActionsManager_cancelAction__block_invoke(uint64_t
   v11[1] = 3221225472;
   v11[2] = __66__CNUIAcceptedContactActionsManager_doneActionForAlertController___block_invoke;
   v11[3] = &unk_1E74E7308;
-  v12 = v4;
-  v13 = self;
-  v8 = v4;
+  v12 = controllerCopy;
+  selfCopy = self;
+  v8 = controllerCopy;
   v9 = [v5 actionWithTitle:v7 style:0 handler:v11];
 
   return v9;
@@ -114,16 +114,16 @@ void __66__CNUIAcceptedContactActionsManager_doneActionForAlertController___bloc
   [v3 _recordAcceptedEventWithDisplayName:v4];
 }
 
-- (void)_recordAcceptedEventWithDisplayName:(id)a3
+- (void)_recordAcceptedEventWithDisplayName:(id)name
 {
-  v4 = a3;
-  v5 = [(CNUIAcceptedContactActionsManager *)self configuration];
+  nameCopy = name;
+  configuration = [(CNUIAcceptedContactActionsManager *)self configuration];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __73__CNUIAcceptedContactActionsManager__recordAcceptedEventWithDisplayName___block_invoke;
   v6[3] = &unk_1E74E5200;
   v6[4] = self;
-  [v5 recordAcceptedEventWithDisplayName:v4 completionHandler:v6];
+  [configuration recordAcceptedEventWithDisplayName:nameCopy completionHandler:v6];
 }
 
 void __73__CNUIAcceptedContactActionsManager__recordAcceptedEventWithDisplayName___block_invoke(uint64_t a1)
@@ -135,18 +135,18 @@ void __73__CNUIAcceptedContactActionsManager__recordAcceptedEventWithDisplayName
   [v3 acceptedContactActionsManager:*(a1 + 32) didRecordRecentEvent:0];
 }
 
-- (id)_makeAlertControllerForTagWithTitle:(id)a3
+- (id)_makeAlertControllerForTagWithTitle:(id)title
 {
   v4 = MEMORY[0x1E69DC650];
-  v5 = a3;
-  v6 = [(CNUIAcceptedContactActionsManager *)self configuration];
-  v7 = [v6 handle];
-  v8 = [v4 alertControllerWithTitle:v5 message:v7 preferredStyle:1];
+  titleCopy = title;
+  configuration = [(CNUIAcceptedContactActionsManager *)self configuration];
+  handle = [configuration handle];
+  v8 = [v4 alertControllerWithTitle:titleCopy message:handle preferredStyle:1];
 
   v9 = [(CNUIAcceptedContactActionsManager *)self doneActionForAlertController:v8];
-  v10 = [(CNUIAcceptedContactActionsManager *)self cancelAction];
+  cancelAction = [(CNUIAcceptedContactActionsManager *)self cancelAction];
   [v8 addAction:v9];
-  [v8 addAction:v10];
+  [v8 addAction:cancelAction];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __73__CNUIAcceptedContactActionsManager__makeAlertControllerForTagWithTitle___block_invoke;
@@ -225,10 +225,10 @@ void __73__CNUIAcceptedContactActionsManager__makeAlertControllerForTagWithTitle
   v17[4] = self;
   v14 = [v11 actionWithTitle:v13 style:0 handler:v17];
 
-  v15 = [(CNUIAcceptedContactActionsManager *)self cancelAction];
+  cancelAction = [(CNUIAcceptedContactActionsManager *)self cancelAction];
   [v6 addAction:v14];
   [v6 addAction:v10];
-  [v6 addAction:v15];
+  [v6 addAction:cancelAction];
   [v6 setPreferredAction:v14];
 
   return v6;
@@ -255,17 +255,17 @@ void __80__CNUIAcceptedContactActionsManager__makeAlertControllerToCreateContact
   [v3 _recordAcceptedEventWithDisplayName:v4];
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CNUIAcceptedContactActionsManager *)self presentingViewController];
-  if (v5)
+  controllerCopy = controller;
+  presentingViewController = [(CNUIAcceptedContactActionsManager *)self presentingViewController];
+  if (presentingViewController)
   {
     objc_opt_class();
-    v6 = [(CNUIAcceptedContactActionsManager *)self delegate];
+    delegate = [(CNUIAcceptedContactActionsManager *)self delegate];
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = delegate;
     }
 
     else
@@ -277,13 +277,13 @@ void __80__CNUIAcceptedContactActionsManager__makeAlertControllerToCreateContact
 
     if (v8)
     {
-      v9 = [v8 delegate];
-      [v9 action:v8 presentViewController:v4 sender:v8];
+      delegate2 = [v8 delegate];
+      [delegate2 action:v8 presentViewController:controllerCopy sender:v8];
     }
 
     else
     {
-      [v5 presentViewController:v4 animated:1 completion:&__block_literal_global_9_46112];
+      [presentingViewController presentViewController:controllerCopy animated:1 completion:&__block_literal_global_9_46112];
     }
   }
 
@@ -317,8 +317,8 @@ void __60__CNUIAcceptedContactActionsManager__presentViewController___block_invo
     _os_log_impl(&dword_199A75000, v3, OS_LOG_TYPE_INFO, "Presenting UI to edit description", v5, 2u);
   }
 
-  v4 = [(CNUIAcceptedContactActionsManager *)self _makeAlertControllerToEditTag];
-  [(CNUIAcceptedContactActionsManager *)self _presentViewController:v4];
+  _makeAlertControllerToEditTag = [(CNUIAcceptedContactActionsManager *)self _makeAlertControllerToEditTag];
+  [(CNUIAcceptedContactActionsManager *)self _presentViewController:_makeAlertControllerToEditTag];
 }
 
 - (void)_presentAcceptedContacAddLabelViewController
@@ -330,8 +330,8 @@ void __60__CNUIAcceptedContactActionsManager__presentViewController___block_invo
     _os_log_impl(&dword_199A75000, v3, OS_LOG_TYPE_INFO, "Presenting UI to add description", v5, 2u);
   }
 
-  v4 = [(CNUIAcceptedContactActionsManager *)self _makeAlertControllerToAddTag];
-  [(CNUIAcceptedContactActionsManager *)self _presentViewController:v4];
+  _makeAlertControllerToAddTag = [(CNUIAcceptedContactActionsManager *)self _makeAlertControllerToAddTag];
+  [(CNUIAcceptedContactActionsManager *)self _presentViewController:_makeAlertControllerToAddTag];
 }
 
 - (void)_presentCreateNewContactViewController
@@ -343,9 +343,9 @@ void __60__CNUIAcceptedContactActionsManager__presentViewController___block_invo
     _os_log_impl(&dword_199A75000, v3, OS_LOG_TYPE_INFO, "Presenting UI to create new contact", v8, 2u);
   }
 
-  v4 = [(CNUIAcceptedContactActionsManager *)self configuration];
-  v5 = [v4 contactForNewContact];
-  v6 = [CNContactViewController viewControllerForNewContact:v5];
+  configuration = [(CNUIAcceptedContactActionsManager *)self configuration];
+  contactForNewContact = [configuration contactForNewContact];
+  v6 = [CNContactViewController viewControllerForNewContact:contactForNewContact];
 
   [v6 setDelegate:self];
   v7 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v6];
@@ -362,15 +362,15 @@ void __60__CNUIAcceptedContactActionsManager__presentViewController___block_invo
   v5 = v13;
   if (v4)
   {
-    v6 = [(CNUIAcceptedContactActionsManager *)self _makeAlertControllerToCreateContactOrAddTag];
-    v7 = [v6 popoverPresentationController];
-    [v7 setSourceView:v5];
-    [v7 setSourceRect:{v14, v15}];
+    _makeAlertControllerToCreateContactOrAddTag = [(CNUIAcceptedContactActionsManager *)self _makeAlertControllerToCreateContactOrAddTag];
+    popoverPresentationController = [_makeAlertControllerToCreateContactOrAddTag popoverPresentationController];
+    [popoverPresentationController setSourceView:v5];
+    [popoverPresentationController setSourceRect:{v14, v15}];
     objc_opt_class();
-    v8 = [(CNUIAcceptedContactActionsManager *)self delegate];
+    delegate = [(CNUIAcceptedContactActionsManager *)self delegate];
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = delegate;
     }
 
     else
@@ -382,23 +382,23 @@ void __60__CNUIAcceptedContactActionsManager__presentViewController___block_invo
 
     if (v10)
     {
-      v11 = [v10 delegate];
-      [v11 action:v10 presentViewController:v6 sender:v10];
+      delegate2 = [v10 delegate];
+      [delegate2 action:v10 presentViewController:_makeAlertControllerToCreateContactOrAddTag sender:v10];
     }
 
     else
     {
-      [v4 presentViewController:v6 animated:1 completion:&__block_literal_global_5_46121];
+      [v4 presentViewController:_makeAlertControllerToCreateContactOrAddTag animated:1 completion:&__block_literal_global_5_46121];
     }
   }
 
   else
   {
-    v6 = +[CNUIAcceptedContactActionsManager log];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    _makeAlertControllerToCreateContactOrAddTag = +[CNUIAcceptedContactActionsManager log];
+    if (os_log_type_enabled(_makeAlertControllerToCreateContactOrAddTag, OS_LOG_TYPE_INFO))
     {
       *v12 = 0;
-      _os_log_impl(&dword_199A75000, v6, OS_LOG_TYPE_INFO, "Couldn't fetch presenting view controller from delegate", v12, 2u);
+      _os_log_impl(&dword_199A75000, _makeAlertControllerToCreateContactOrAddTag, OS_LOG_TYPE_INFO, "Couldn't fetch presenting view controller from delegate", v12, 2u);
     }
   }
 }
@@ -415,14 +415,14 @@ void __85__CNUIAcceptedContactActionsManager__presentCreateNewContactOrNewLabelV
 
 - (void)presentAcceptedContactViewController
 {
-  v3 = [(CNUIAcceptedContactActionsManager *)self presentingViewController];
+  presentingViewController = [(CNUIAcceptedContactActionsManager *)self presentingViewController];
 
-  if (v3)
+  if (presentingViewController)
   {
-    v4 = [(CNUIAcceptedContactActionsManager *)self configuration];
-    v5 = [v4 configurationType];
+    configuration = [(CNUIAcceptedContactActionsManager *)self configuration];
+    configurationType = [configuration configurationType];
 
-    if (v5 == 1)
+    if (configurationType == 1)
     {
 
       [(CNUIAcceptedContactActionsManager *)self _presentAcceptedContacAddLabelViewController];
@@ -430,10 +430,10 @@ void __85__CNUIAcceptedContactActionsManager__presentCreateNewContactOrNewLabelV
 
     else
     {
-      v7 = [(CNUIAcceptedContactActionsManager *)self configuration];
-      v8 = [v7 configurationType];
+      configuration2 = [(CNUIAcceptedContactActionsManager *)self configuration];
+      configurationType2 = [configuration2 configurationType];
 
-      if (v8 == 2)
+      if (configurationType2 == 2)
       {
 
         [(CNUIAcceptedContactActionsManager *)self _presentAcceptedContactEditLabelViewController];
@@ -458,16 +458,16 @@ void __85__CNUIAcceptedContactActionsManager__presentCreateNewContactOrNewLabelV
   }
 }
 
-- (CNUIAcceptedContactActionsManager)initWithConfiguration:(id)a3
+- (CNUIAcceptedContactActionsManager)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = CNUIAcceptedContactActionsManager;
   v6 = [(CNUIAcceptedContactActionsManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
   }
 
   return v7;

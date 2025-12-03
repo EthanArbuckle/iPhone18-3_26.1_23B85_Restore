@@ -1,20 +1,20 @@
 @interface HKStackedCategoryValueSeriesCoordinate
 - (CGPoint)end;
 - (CGPoint)start;
-- (HKStackedCategoryValueSeriesCoordinate)initWithStart:(CGPoint)a3 end:(CGPoint)a4 pointStyle:(int64_t)a5 userInfo:(id)a6;
+- (HKStackedCategoryValueSeriesCoordinate)initWithStart:(CGPoint)start end:(CGPoint)end pointStyle:(int64_t)style userInfo:(id)info;
 - (NSString)description;
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4;
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale;
 @end
 
 @implementation HKStackedCategoryValueSeriesCoordinate
 
-- (HKStackedCategoryValueSeriesCoordinate)initWithStart:(CGPoint)a3 end:(CGPoint)a4 pointStyle:(int64_t)a5 userInfo:(id)a6
+- (HKStackedCategoryValueSeriesCoordinate)initWithStart:(CGPoint)start end:(CGPoint)end pointStyle:(int64_t)style userInfo:(id)info
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3.y;
-  v11 = a3.x;
-  v13 = a6;
+  y = end.y;
+  x = end.x;
+  v10 = start.y;
+  v11 = start.x;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = HKStackedCategoryValueSeriesCoordinate;
   v14 = [(HKStackedCategoryValueSeriesCoordinate *)&v17 init];
@@ -25,28 +25,28 @@
     v14->_start.y = v10;
     v14->_end.x = x;
     v14->_end.y = y;
-    v14->_pointStyle = a5;
-    objc_storeStrong(&v14->_userInfo, a6);
+    v14->_pointStyle = style;
+    objc_storeStrong(&v14->_userInfo, info);
   }
 
   return v15;
 }
 
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale
 {
   x = self->_start.x;
   y = self->_start.y;
-  c = a3->c;
-  tx = a3->tx;
-  v9 = tx + y * c + a3->a * x;
+  c = transform->c;
+  tx = transform->tx;
+  v9 = tx + y * c + transform->a * x;
   v10 = self->_end.x;
   v11 = self->_end.y;
-  v12 = tx + v11 * c + a3->a * v10;
-  if (a4)
+  v12 = tx + v11 * c + transform->a * v10;
+  if (scale)
   {
-    ty = a3->ty;
-    b = a3->b;
-    d = a3->d;
+    ty = transform->ty;
+    b = transform->b;
+    d = transform->d;
     v16 = ty + v11 * d + b * v10;
     v9 = HKUIFloorCGPointToScreenScale(v9, ty + y * d + b * x);
     v12 = HKUIFloorCGPointToScreenScale(v12, v16);

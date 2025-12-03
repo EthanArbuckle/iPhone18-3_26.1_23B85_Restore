@@ -1,21 +1,21 @@
 @interface FALaunchOutOfProcessRequest
-- (void)launchOutOfProcessUIWithOptions:(id)a3 completion:(id)a4;
+- (void)launchOutOfProcessUIWithOptions:(id)options completion:(id)completion;
 @end
 
 @implementation FALaunchOutOfProcessRequest
 
-- (void)launchOutOfProcessUIWithOptions:(id)a3 completion:(id)a4
+- (void)launchOutOfProcessUIWithOptions:(id)options completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __74__FALaunchOutOfProcessRequest_launchOutOfProcessUIWithOptions_completion___block_invoke;
   v10[3] = &unk_1E7CA46D8;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  optionsCopy = options;
   v9 = [(FAFamilyCircleRequest *)self serviceRemoteObjectWithErrorHandler:v10];
-  [v9 launchOutOfProcessFamilyWithOptions:v8 completion:v7];
+  [v9 launchOutOfProcessFamilyWithOptions:optionsCopy completion:v7];
 }
 
 void __74__FALaunchOutOfProcessRequest_launchOutOfProcessUIWithOptions_completion___block_invoke(uint64_t a1, void *a2)

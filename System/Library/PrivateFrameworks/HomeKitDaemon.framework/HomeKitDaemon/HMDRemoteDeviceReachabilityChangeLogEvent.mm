@@ -1,5 +1,5 @@
 @interface HMDRemoteDeviceReachabilityChangeLogEvent
-- (HMDRemoteDeviceReachabilityChangeLogEvent)initWithReason:(unint64_t)a3 reachable:(BOOL)a4 targetSupportsIDSPresence:(BOOL)a5;
+- (HMDRemoteDeviceReachabilityChangeLogEvent)initWithReason:(unint64_t)reason reachable:(BOOL)reachable targetSupportsIDSPresence:(BOOL)presence;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -12,15 +12,15 @@
   v3 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDRemoteDeviceReachabilityChangeLogEvent reachable](self, "reachable")}];
   v12[0] = v3;
   v11[1] = @"reason";
-  v4 = [(HMDRemoteDeviceReachabilityChangeLogEvent *)self reason];
-  if (v4 > 6)
+  reason = [(HMDRemoteDeviceReachabilityChangeLogEvent *)self reason];
+  if (reason > 6)
   {
     v5 = @"unknown";
   }
 
   else
   {
-    v5 = off_278677A70[v4];
+    v5 = off_278677A70[reason];
   }
 
   v6 = v5;
@@ -35,16 +35,16 @@
   return v8;
 }
 
-- (HMDRemoteDeviceReachabilityChangeLogEvent)initWithReason:(unint64_t)a3 reachable:(BOOL)a4 targetSupportsIDSPresence:(BOOL)a5
+- (HMDRemoteDeviceReachabilityChangeLogEvent)initWithReason:(unint64_t)reason reachable:(BOOL)reachable targetSupportsIDSPresence:(BOOL)presence
 {
   v9.receiver = self;
   v9.super_class = HMDRemoteDeviceReachabilityChangeLogEvent;
   result = [(HMMLogEvent *)&v9 init];
   if (result)
   {
-    result->_reason = a3;
-    result->_reachable = a4;
-    result->_targetSupportsIDSPresence = a5;
+    result->_reason = reason;
+    result->_reachable = reachable;
+    result->_targetSupportsIDSPresence = presence;
   }
 
   return result;

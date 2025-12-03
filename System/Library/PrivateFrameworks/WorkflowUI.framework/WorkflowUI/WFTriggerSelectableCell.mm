@@ -1,5 +1,5 @@
 @interface WFTriggerSelectableCell
-- (WFTriggerSelectableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WFTriggerSelectableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
 @end
 
@@ -11,23 +11,23 @@
   v5.super_class = WFTriggerSelectableCell;
   [(WFTriggerSelectableCell *)&v5 prepareForReuse];
   [(WFTriggerSelectableCell *)self setAccessoryType:0];
-  v3 = [(WFTriggerSelectableCell *)self textLabel];
-  [v3 setText:0];
+  textLabel = [(WFTriggerSelectableCell *)self textLabel];
+  [textLabel setText:0];
 
-  v4 = [(WFTriggerSelectableCell *)self detailTextLabel];
-  [v4 setText:0];
+  detailTextLabel = [(WFTriggerSelectableCell *)self detailTextLabel];
+  [detailTextLabel setText:0];
 }
 
-- (WFTriggerSelectableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WFTriggerSelectableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = WFTriggerSelectableCell;
-  v4 = [(WFTriggerSelectableCell *)&v9 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(WFTriggerSelectableCell *)&v9 initWithStyle:3 reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v6 = [(WFTriggerSelectableCell *)v4 detailTextLabel];
-    [v6 setTextColor:v5];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    detailTextLabel = [(WFTriggerSelectableCell *)v4 detailTextLabel];
+    [detailTextLabel setTextColor:secondaryLabelColor];
 
     v7 = v4;
   }

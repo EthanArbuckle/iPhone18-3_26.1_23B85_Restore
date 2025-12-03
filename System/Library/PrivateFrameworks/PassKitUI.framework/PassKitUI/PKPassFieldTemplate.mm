@@ -1,8 +1,8 @@
 @interface PKPassFieldTemplate
-+ (PKPassFieldTemplate)fieldTemplateWithTextAlignment:(int64_t)a3;
-+ (PKPassFieldTemplate)fieldTemplateWithVerticalPadding:(double)a3;
-+ (PKPassFieldTemplate)fieldTemplateWithViewSubclass:(Class)a3;
-+ (id)_templateByResolvingTemplate:(id)a3 withDefault:(id)a4;
++ (PKPassFieldTemplate)fieldTemplateWithTextAlignment:(int64_t)alignment;
++ (PKPassFieldTemplate)fieldTemplateWithVerticalPadding:(double)padding;
++ (PKPassFieldTemplate)fieldTemplateWithViewSubclass:(Class)subclass;
++ (id)_templateByResolvingTemplate:(id)template withDefault:(id)default;
 - (BOOL)suppressesEmptyLabel;
 - (BOOL)suppressesLabel;
 - (BOOL)valueCanWrap;
@@ -11,48 +11,48 @@
 - (int64_t)labelCaseStyle;
 - (int64_t)preferredSingleStyle;
 - (int64_t)textAlignment;
-- (void)setLabelCaseStyle:(int64_t)a3;
-- (void)setPreferredSingleStyle:(int64_t)a3;
-- (void)setSuppressesEmptyLabel:(BOOL)a3;
-- (void)setSuppressesLabel:(BOOL)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setValueCanWrap:(BOOL)a3;
-- (void)setValueSignificant:(BOOL)a3;
-- (void)setVerticalPadding:(double)a3;
+- (void)setLabelCaseStyle:(int64_t)style;
+- (void)setPreferredSingleStyle:(int64_t)style;
+- (void)setSuppressesEmptyLabel:(BOOL)label;
+- (void)setSuppressesLabel:(BOOL)label;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setValueCanWrap:(BOOL)wrap;
+- (void)setValueSignificant:(BOOL)significant;
+- (void)setVerticalPadding:(double)padding;
 @end
 
 @implementation PKPassFieldTemplate
 
 - (BOOL)valueCanWrap
 {
-  v2 = [(PKPassFieldTemplate *)self boxedValueCanWrap];
-  v3 = [v2 BOOLValue];
+  boxedValueCanWrap = [(PKPassFieldTemplate *)self boxedValueCanWrap];
+  bOOLValue = [boxedValueCanWrap BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)suppressesLabel
 {
-  v2 = [(PKPassFieldTemplate *)self boxedSuppressesLabel];
-  v3 = [v2 BOOLValue];
+  boxedSuppressesLabel = [(PKPassFieldTemplate *)self boxedSuppressesLabel];
+  bOOLValue = [boxedSuppressesLabel BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)textAlignment
 {
-  v2 = [(PKPassFieldTemplate *)self boxedTextAlignment];
-  v3 = [v2 integerValue];
+  boxedTextAlignment = [(PKPassFieldTemplate *)self boxedTextAlignment];
+  integerValue = [boxedTextAlignment integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)suppressesEmptyLabel
 {
-  v2 = [(PKPassFieldTemplate *)self boxedSuppressesEmptyLabel];
-  v3 = [v2 BOOLValue];
+  boxedSuppressesEmptyLabel = [(PKPassFieldTemplate *)self boxedSuppressesEmptyLabel];
+  bOOLValue = [boxedSuppressesEmptyLabel BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)labelCaseStyle
@@ -66,87 +66,87 @@
   return result;
 }
 
-+ (PKPassFieldTemplate)fieldTemplateWithTextAlignment:(int64_t)a3
++ (PKPassFieldTemplate)fieldTemplateWithTextAlignment:(int64_t)alignment
 {
   v4 = objc_alloc_init(PKPassFieldTemplate);
-  [(PKPassFieldTemplate *)v4 setTextAlignment:a3];
+  [(PKPassFieldTemplate *)v4 setTextAlignment:alignment];
 
   return v4;
 }
 
-+ (PKPassFieldTemplate)fieldTemplateWithVerticalPadding:(double)a3
++ (PKPassFieldTemplate)fieldTemplateWithVerticalPadding:(double)padding
 {
   v4 = objc_alloc_init(PKPassFieldTemplate);
-  [(PKPassFieldTemplate *)v4 setVerticalPadding:a3];
+  [(PKPassFieldTemplate *)v4 setVerticalPadding:padding];
 
   return v4;
 }
 
-+ (PKPassFieldTemplate)fieldTemplateWithViewSubclass:(Class)a3
++ (PKPassFieldTemplate)fieldTemplateWithViewSubclass:(Class)subclass
 {
   v4 = objc_alloc_init(PKPassFieldTemplate);
-  [(PKPassFieldTemplate *)v4 setViewSubclass:a3];
+  [(PKPassFieldTemplate *)v4 setViewSubclass:subclass];
 
   return v4;
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:alignment];
   [(PKPassFieldTemplate *)self setBoxedTextAlignment:v4];
 }
 
 - (double)verticalPadding
 {
-  v2 = [(PKPassFieldTemplate *)self boxedVerticalPadding];
-  [v2 floatValue];
+  boxedVerticalPadding = [(PKPassFieldTemplate *)self boxedVerticalPadding];
+  [boxedVerticalPadding floatValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setVerticalPadding:(double)a3
+- (void)setVerticalPadding:(double)padding
 {
-  *&a3 = a3;
-  v4 = [MEMORY[0x1E696AD98] numberWithFloat:a3];
+  *&padding = padding;
+  v4 = [MEMORY[0x1E696AD98] numberWithFloat:padding];
   [(PKPassFieldTemplate *)self setBoxedVerticalPadding:v4];
 }
 
-- (void)setSuppressesLabel:(BOOL)a3
+- (void)setSuppressesLabel:(BOOL)label
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:label];
   [(PKPassFieldTemplate *)self setBoxedSuppressesLabel:v4];
 }
 
-- (void)setSuppressesEmptyLabel:(BOOL)a3
+- (void)setSuppressesEmptyLabel:(BOOL)label
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:label];
   [(PKPassFieldTemplate *)self setBoxedSuppressesEmptyLabel:v4];
 }
 
-- (void)setLabelCaseStyle:(int64_t)a3
+- (void)setLabelCaseStyle:(int64_t)style
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:style];
   [(PKPassFieldTemplate *)self setBoxedLabelCaseStyle:v4];
 }
 
 - (BOOL)valueSignificant
 {
-  v2 = [(PKPassFieldTemplate *)self boxedValueSignificant];
-  v3 = [v2 BOOLValue];
+  boxedValueSignificant = [(PKPassFieldTemplate *)self boxedValueSignificant];
+  bOOLValue = [boxedValueSignificant BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setValueSignificant:(BOOL)a3
+- (void)setValueSignificant:(BOOL)significant
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:significant];
   [(PKPassFieldTemplate *)self setBoxedValueSignificant:v4];
 }
 
-- (void)setValueCanWrap:(BOOL)a3
+- (void)setValueCanWrap:(BOOL)wrap
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:wrap];
   [(PKPassFieldTemplate *)self setBoxedValueCanWrap:v4];
 }
 
@@ -161,190 +161,190 @@
   return result;
 }
 
-- (void)setPreferredSingleStyle:(int64_t)a3
+- (void)setPreferredSingleStyle:(int64_t)style
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:style];
   [(PKPassFieldTemplate *)self setBoxedPreferredSingleStyle:v4];
 }
 
-+ (id)_templateByResolvingTemplate:(id)a3 withDefault:(id)a4
++ (id)_templateByResolvingTemplate:(id)template withDefault:(id)default
 {
-  v5 = a3;
-  v6 = a4;
+  templateCopy = template;
+  defaultCopy = default;
   v7 = objc_alloc_init(PKPassFieldTemplate);
-  v8 = [v5 boxedTextAlignment];
-  if (v8)
+  boxedTextAlignment = [templateCopy boxedTextAlignment];
+  if (boxedTextAlignment)
   {
-    [(PKPassFieldTemplate *)v7 setBoxedTextAlignment:v8];
+    [(PKPassFieldTemplate *)v7 setBoxedTextAlignment:boxedTextAlignment];
   }
 
   else
   {
-    v9 = [v6 boxedTextAlignment];
-    [(PKPassFieldTemplate *)v7 setBoxedTextAlignment:v9];
+    boxedTextAlignment2 = [defaultCopy boxedTextAlignment];
+    [(PKPassFieldTemplate *)v7 setBoxedTextAlignment:boxedTextAlignment2];
   }
 
-  v10 = [v5 boxedVerticalPadding];
-  if (v10)
+  boxedVerticalPadding = [templateCopy boxedVerticalPadding];
+  if (boxedVerticalPadding)
   {
-    [(PKPassFieldTemplate *)v7 setBoxedVerticalPadding:v10];
-  }
-
-  else
-  {
-    v11 = [v6 boxedVerticalPadding];
-    [(PKPassFieldTemplate *)v7 setBoxedVerticalPadding:v11];
-  }
-
-  v12 = [v5 boxedSuppressesLabel];
-  if (v12)
-  {
-    [(PKPassFieldTemplate *)v7 setBoxedSuppressesLabel:v12];
+    [(PKPassFieldTemplate *)v7 setBoxedVerticalPadding:boxedVerticalPadding];
   }
 
   else
   {
-    v13 = [v6 boxedSuppressesLabel];
-    [(PKPassFieldTemplate *)v7 setBoxedSuppressesLabel:v13];
+    boxedVerticalPadding2 = [defaultCopy boxedVerticalPadding];
+    [(PKPassFieldTemplate *)v7 setBoxedVerticalPadding:boxedVerticalPadding2];
   }
 
-  v14 = [v5 boxedSuppressesEmptyLabel];
-  if (v14)
+  boxedSuppressesLabel = [templateCopy boxedSuppressesLabel];
+  if (boxedSuppressesLabel)
   {
-    [(PKPassFieldTemplate *)v7 setBoxedSuppressesEmptyLabel:v14];
-  }
-
-  else
-  {
-    v15 = [v6 boxedSuppressesEmptyLabel];
-    [(PKPassFieldTemplate *)v7 setBoxedSuppressesEmptyLabel:v15];
-  }
-
-  v16 = [v5 boxedLabelCaseStyle];
-  if (v16)
-  {
-    [(PKPassFieldTemplate *)v7 setBoxedLabelCaseStyle:v16];
+    [(PKPassFieldTemplate *)v7 setBoxedSuppressesLabel:boxedSuppressesLabel];
   }
 
   else
   {
-    v17 = [v6 boxedLabelCaseStyle];
-    [(PKPassFieldTemplate *)v7 setBoxedLabelCaseStyle:v17];
+    boxedSuppressesLabel2 = [defaultCopy boxedSuppressesLabel];
+    [(PKPassFieldTemplate *)v7 setBoxedSuppressesLabel:boxedSuppressesLabel2];
   }
 
-  v18 = [v5 boxedValueSignificant];
-  if (v18)
+  boxedSuppressesEmptyLabel = [templateCopy boxedSuppressesEmptyLabel];
+  if (boxedSuppressesEmptyLabel)
   {
-    [(PKPassFieldTemplate *)v7 setBoxedValueSignificant:v18];
-  }
-
-  else
-  {
-    v19 = [v6 boxedValueSignificant];
-    [(PKPassFieldTemplate *)v7 setBoxedValueSignificant:v19];
-  }
-
-  v20 = [v5 boxedValueCanWrap];
-  if (v20)
-  {
-    [(PKPassFieldTemplate *)v7 setBoxedValueCanWrap:v20];
+    [(PKPassFieldTemplate *)v7 setBoxedSuppressesEmptyLabel:boxedSuppressesEmptyLabel];
   }
 
   else
   {
-    v21 = [v6 boxedValueCanWrap];
-    [(PKPassFieldTemplate *)v7 setBoxedValueCanWrap:v21];
+    boxedSuppressesEmptyLabel2 = [defaultCopy boxedSuppressesEmptyLabel];
+    [(PKPassFieldTemplate *)v7 setBoxedSuppressesEmptyLabel:boxedSuppressesEmptyLabel2];
   }
 
-  v22 = [v5 labelFont];
-  if (v22)
+  boxedLabelCaseStyle = [templateCopy boxedLabelCaseStyle];
+  if (boxedLabelCaseStyle)
   {
-    [(PKPassFieldTemplate *)v7 setLabelFont:v22];
-  }
-
-  else
-  {
-    v23 = [v6 labelFont];
-    [(PKPassFieldTemplate *)v7 setLabelFont:v23];
-  }
-
-  v24 = [v5 valueFont];
-  if (v24)
-  {
-    [(PKPassFieldTemplate *)v7 setValueFont:v24];
+    [(PKPassFieldTemplate *)v7 setBoxedLabelCaseStyle:boxedLabelCaseStyle];
   }
 
   else
   {
-    v25 = [v6 valueFont];
-    [(PKPassFieldTemplate *)v7 setValueFont:v25];
+    boxedLabelCaseStyle2 = [defaultCopy boxedLabelCaseStyle];
+    [(PKPassFieldTemplate *)v7 setBoxedLabelCaseStyle:boxedLabelCaseStyle2];
   }
 
-  v26 = [v5 viewSubclass];
-  if (!v26)
+  boxedValueSignificant = [templateCopy boxedValueSignificant];
+  if (boxedValueSignificant)
   {
-    v26 = [v6 viewSubclass];
-  }
-
-  [(PKPassFieldTemplate *)v7 setViewSubclass:v26];
-  v27 = [v5 boxedPreferredSingleStyle];
-  if (v27)
-  {
-    [(PKPassFieldTemplate *)v7 setBoxedPreferredSingleStyle:v27];
+    [(PKPassFieldTemplate *)v7 setBoxedValueSignificant:boxedValueSignificant];
   }
 
   else
   {
-    v28 = [v6 boxedPreferredSingleStyle];
-    [(PKPassFieldTemplate *)v7 setBoxedPreferredSingleStyle:v28];
+    boxedValueSignificant2 = [defaultCopy boxedValueSignificant];
+    [(PKPassFieldTemplate *)v7 setBoxedValueSignificant:boxedValueSignificant2];
   }
 
-  v29 = [v5 automaticVibrantLabelBlendMode];
-  if (v29)
+  boxedValueCanWrap = [templateCopy boxedValueCanWrap];
+  if (boxedValueCanWrap)
   {
-    [(PKPassFieldTemplate *)v7 setAutomaticVibrantLabelBlendMode:v29];
-  }
-
-  else
-  {
-    v30 = [v6 automaticVibrantLabelBlendMode];
-    [(PKPassFieldTemplate *)v7 setAutomaticVibrantLabelBlendMode:v30];
-  }
-
-  v31 = [v5 automaticVibrantLabelColor];
-  if (v31)
-  {
-    [(PKPassFieldTemplate *)v7 setAutomaticVibrantLabelColor:v31];
+    [(PKPassFieldTemplate *)v7 setBoxedValueCanWrap:boxedValueCanWrap];
   }
 
   else
   {
-    v32 = [v6 automaticVibrantLabelColor];
-    [(PKPassFieldTemplate *)v7 setAutomaticVibrantLabelColor:v32];
+    boxedValueCanWrap2 = [defaultCopy boxedValueCanWrap];
+    [(PKPassFieldTemplate *)v7 setBoxedValueCanWrap:boxedValueCanWrap2];
   }
 
-  v33 = [v5 automaticVibrantValueBlendMode];
-  if (v33)
+  labelFont = [templateCopy labelFont];
+  if (labelFont)
   {
-    [(PKPassFieldTemplate *)v7 setAutomaticVibrantValueBlendMode:v33];
-  }
-
-  else
-  {
-    v34 = [v6 automaticVibrantValueBlendMode];
-    [(PKPassFieldTemplate *)v7 setAutomaticVibrantValueBlendMode:v34];
-  }
-
-  v35 = [v5 automaticVibrantValueColor];
-  if (v35)
-  {
-    [(PKPassFieldTemplate *)v7 setAutomaticVibrantValueColor:v35];
+    [(PKPassFieldTemplate *)v7 setLabelFont:labelFont];
   }
 
   else
   {
-    v36 = [v6 automaticVibrantValueColor];
-    [(PKPassFieldTemplate *)v7 setAutomaticVibrantValueColor:v36];
+    labelFont2 = [defaultCopy labelFont];
+    [(PKPassFieldTemplate *)v7 setLabelFont:labelFont2];
+  }
+
+  valueFont = [templateCopy valueFont];
+  if (valueFont)
+  {
+    [(PKPassFieldTemplate *)v7 setValueFont:valueFont];
+  }
+
+  else
+  {
+    valueFont2 = [defaultCopy valueFont];
+    [(PKPassFieldTemplate *)v7 setValueFont:valueFont2];
+  }
+
+  viewSubclass = [templateCopy viewSubclass];
+  if (!viewSubclass)
+  {
+    viewSubclass = [defaultCopy viewSubclass];
+  }
+
+  [(PKPassFieldTemplate *)v7 setViewSubclass:viewSubclass];
+  boxedPreferredSingleStyle = [templateCopy boxedPreferredSingleStyle];
+  if (boxedPreferredSingleStyle)
+  {
+    [(PKPassFieldTemplate *)v7 setBoxedPreferredSingleStyle:boxedPreferredSingleStyle];
+  }
+
+  else
+  {
+    boxedPreferredSingleStyle2 = [defaultCopy boxedPreferredSingleStyle];
+    [(PKPassFieldTemplate *)v7 setBoxedPreferredSingleStyle:boxedPreferredSingleStyle2];
+  }
+
+  automaticVibrantLabelBlendMode = [templateCopy automaticVibrantLabelBlendMode];
+  if (automaticVibrantLabelBlendMode)
+  {
+    [(PKPassFieldTemplate *)v7 setAutomaticVibrantLabelBlendMode:automaticVibrantLabelBlendMode];
+  }
+
+  else
+  {
+    automaticVibrantLabelBlendMode2 = [defaultCopy automaticVibrantLabelBlendMode];
+    [(PKPassFieldTemplate *)v7 setAutomaticVibrantLabelBlendMode:automaticVibrantLabelBlendMode2];
+  }
+
+  automaticVibrantLabelColor = [templateCopy automaticVibrantLabelColor];
+  if (automaticVibrantLabelColor)
+  {
+    [(PKPassFieldTemplate *)v7 setAutomaticVibrantLabelColor:automaticVibrantLabelColor];
+  }
+
+  else
+  {
+    automaticVibrantLabelColor2 = [defaultCopy automaticVibrantLabelColor];
+    [(PKPassFieldTemplate *)v7 setAutomaticVibrantLabelColor:automaticVibrantLabelColor2];
+  }
+
+  automaticVibrantValueBlendMode = [templateCopy automaticVibrantValueBlendMode];
+  if (automaticVibrantValueBlendMode)
+  {
+    [(PKPassFieldTemplate *)v7 setAutomaticVibrantValueBlendMode:automaticVibrantValueBlendMode];
+  }
+
+  else
+  {
+    automaticVibrantValueBlendMode2 = [defaultCopy automaticVibrantValueBlendMode];
+    [(PKPassFieldTemplate *)v7 setAutomaticVibrantValueBlendMode:automaticVibrantValueBlendMode2];
+  }
+
+  automaticVibrantValueColor = [templateCopy automaticVibrantValueColor];
+  if (automaticVibrantValueColor)
+  {
+    [(PKPassFieldTemplate *)v7 setAutomaticVibrantValueColor:automaticVibrantValueColor];
+  }
+
+  else
+  {
+    automaticVibrantValueColor2 = [defaultCopy automaticVibrantValueColor];
+    [(PKPassFieldTemplate *)v7 setAutomaticVibrantValueColor:automaticVibrantValueColor2];
   }
 
   return v7;

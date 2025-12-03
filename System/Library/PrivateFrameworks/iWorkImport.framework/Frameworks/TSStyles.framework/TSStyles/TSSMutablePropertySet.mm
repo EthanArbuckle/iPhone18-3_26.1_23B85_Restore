@@ -1,10 +1,10 @@
 @interface TSSMutablePropertySet
 - (TSSMutablePropertySet)init;
-- (TSSMutablePropertySet)initWithPropertySet:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addProperties:(id)a3;
-- (void)intersectPropertySet:(id)a3;
-- (void)removeProperties:(id)a3;
+- (TSSMutablePropertySet)initWithPropertySet:(id)set;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addProperties:(id)properties;
+- (void)intersectPropertySet:(id)set;
+- (void)removeProperties:(id)properties;
 @end
 
 @implementation TSSMutablePropertySet
@@ -19,16 +19,16 @@
   return v5;
 }
 
-- (TSSMutablePropertySet)initWithPropertySet:(id)a3
+- (TSSMutablePropertySet)initWithPropertySet:(id)set
 {
-  v4 = a3;
-  if (!v4)
+  setCopy = set;
+  if (!setCopy)
   {
     sub_276CE185C();
   }
 
-  v7 = v4;
-  v8 = v4[1];
+  v7 = setCopy;
+  v8 = setCopy[1];
   if (!v8)
   {
     v9 = MEMORY[0x277D81150];
@@ -46,7 +46,7 @@
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSSPropertySet alloc];
   v7 = objc_msgSend_copy(self->super.mIndexSet, v5, v6);
@@ -55,27 +55,27 @@
   return v9;
 }
 
-- (void)addProperties:(id)a3
+- (void)addProperties:(id)properties
 {
-  if (a3)
+  if (properties)
   {
-    objc_msgSend_addIndexes_(self->super.mIndexSet, a2, *(a3 + 1));
+    objc_msgSend_addIndexes_(self->super.mIndexSet, a2, *(properties + 1));
   }
 }
 
-- (void)removeProperties:(id)a3
+- (void)removeProperties:(id)properties
 {
-  if (a3)
+  if (properties)
   {
-    objc_msgSend_removeIndexes_(self->super.mIndexSet, a2, *(a3 + 1));
+    objc_msgSend_removeIndexes_(self->super.mIndexSet, a2, *(properties + 1));
   }
 }
 
-- (void)intersectPropertySet:(id)a3
+- (void)intersectPropertySet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v9 = objc_msgSend_mutableCopy(self, v5, v6);
-  objc_msgSend_removeProperties_(v9, v7, v4);
+  objc_msgSend_removeProperties_(v9, v7, setCopy);
 
   objc_msgSend_removeProperties_(self, v8, v9);
 }

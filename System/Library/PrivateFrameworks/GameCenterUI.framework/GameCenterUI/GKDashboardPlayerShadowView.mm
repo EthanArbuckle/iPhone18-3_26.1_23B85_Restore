@@ -1,24 +1,24 @@
 @interface GKDashboardPlayerShadowView
 - (BOOL)dimmed;
 - (BOOL)isUsingPlaceholder;
-- (GKDashboardPlayerShadowView)initWithFrame:(CGRect)a3;
+- (GKDashboardPlayerShadowView)initWithFrame:(CGRect)frame;
 - (GKPlayer)player;
 - (UIView)parentView;
 - (void)awakeFromNib;
 - (void)invalidatePhoto;
 - (void)layoutSubviews;
-- (void)setDimmed:(BOOL)a3;
-- (void)setPlayer:(id)a3;
+- (void)setDimmed:(BOOL)dimmed;
+- (void)setPlayer:(id)player;
 - (void)setupPhoto;
 @end
 
 @implementation GKDashboardPlayerShadowView
 
-- (GKDashboardPlayerShadowView)initWithFrame:(CGRect)a3
+- (GKDashboardPlayerShadowView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = GKDashboardPlayerShadowView;
-  v3 = [(GKDashboardPlayerShadowView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKDashboardPlayerShadowView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -43,40 +43,40 @@
   v4 = [(GKDashboardPlayerPhotoView *)v3 initWithFrame:?];
   [(GKDashboardPlayerShadowView *)self setPhotoView:v4];
 
-  v5 = [(GKDashboardPlayerShadowView *)self photoView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  photoView = [(GKDashboardPlayerShadowView *)self photoView];
+  [photoView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(GKDashboardPlayerShadowView *)self photoView];
-  [(GKDashboardPlayerShadowView *)self addSubview:v6];
+  photoView2 = [(GKDashboardPlayerShadowView *)self photoView];
+  [(GKDashboardPlayerShadowView *)self addSubview:photoView2];
 
   v7 = MEMORY[0x277CCAAD0];
-  v9 = [(GKDashboardPlayerShadowView *)self photoView];
-  v8 = [v7 _gkConstraintsForView:v9 withinView:self insets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+  photoView3 = [(GKDashboardPlayerShadowView *)self photoView];
+  v8 = [v7 _gkConstraintsForView:photoView3 withinView:self insets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
   [(GKDashboardPlayerShadowView *)self addConstraints:v8];
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v4 = a3;
-  v5 = [(GKDashboardPlayerShadowView *)self photoView];
-  [v5 setPlayer:v4];
+  playerCopy = player;
+  photoView = [(GKDashboardPlayerShadowView *)self photoView];
+  [photoView setPlayer:playerCopy];
 
-  v6 = [(GKDashboardPlayerShadowView *)self parentView];
-  [v6 setNeedsDisplay];
+  parentView = [(GKDashboardPlayerShadowView *)self parentView];
+  [parentView setNeedsDisplay];
 }
 
 - (GKPlayer)player
 {
-  v2 = [(GKDashboardPlayerShadowView *)self photoView];
-  v3 = [v2 player];
+  photoView = [(GKDashboardPlayerShadowView *)self photoView];
+  player = [photoView player];
 
-  return v3;
+  return player;
 }
 
 - (void)invalidatePhoto
 {
-  v2 = [(GKDashboardPlayerShadowView *)self photoView];
-  [v2 invalidatePhoto];
+  photoView = [(GKDashboardPlayerShadowView *)self photoView];
+  [photoView invalidatePhoto];
 }
 
 - (UIView)parentView
@@ -84,38 +84,38 @@
   parentCell = self->_parentCell;
   if (parentCell)
   {
-    v3 = parentCell;
+    superview = parentCell;
   }
 
   else
   {
-    v3 = [(GKDashboardPlayerShadowView *)self superview];
+    superview = [(GKDashboardPlayerShadowView *)self superview];
   }
 
-  return v3;
+  return superview;
 }
 
 - (BOOL)isUsingPlaceholder
 {
-  v2 = [(GKDashboardPlayerShadowView *)self photoView];
-  v3 = [v2 isUsingPlaceholder];
+  photoView = [(GKDashboardPlayerShadowView *)self photoView];
+  isUsingPlaceholder = [photoView isUsingPlaceholder];
 
-  return v3;
+  return isUsingPlaceholder;
 }
 
 - (BOOL)dimmed
 {
-  v2 = [(GKDashboardPlayerShadowView *)self photoView];
-  v3 = [v2 dimmed];
+  photoView = [(GKDashboardPlayerShadowView *)self photoView];
+  dimmed = [photoView dimmed];
 
-  return v3;
+  return dimmed;
 }
 
-- (void)setDimmed:(BOOL)a3
+- (void)setDimmed:(BOOL)dimmed
 {
-  v3 = a3;
-  v4 = [(GKDashboardPlayerShadowView *)self photoView];
-  [v4 setDimmed:v3];
+  dimmedCopy = dimmed;
+  photoView = [(GKDashboardPlayerShadowView *)self photoView];
+  [photoView setDimmed:dimmedCopy];
 }
 
 - (void)layoutSubviews

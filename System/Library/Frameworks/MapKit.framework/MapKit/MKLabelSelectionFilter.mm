@@ -1,13 +1,13 @@
 @interface MKLabelSelectionFilter
-- (BOOL)canSelectLabelMarker:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isFeatureAnnotationSelectable:(id)a3;
-- (BOOL)isLabelSelectable:(id)a3;
-- (MKLabelSelectionFilter)initWithMapFeatureOptions:(int64_t)a3;
-- (MKLabelSelectionFilter)initWithSelectionHandler:(id)a3;
+- (BOOL)canSelectLabelMarker:(id)marker;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isFeatureAnnotationSelectable:(id)selectable;
+- (BOOL)isLabelSelectable:(id)selectable;
+- (MKLabelSelectionFilter)initWithMapFeatureOptions:(int64_t)options;
+- (MKLabelSelectionFilter)initWithSelectionHandler:(id)handler;
 - (MKMapView)mapView;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)performQueries:(id)a3 completionHandler:(id)a4 completionQueue:(id)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)performQueries:(id)queries completionHandler:(id)handler completionQueue:(id)queue;
 @end
 
 @implementation MKLabelSelectionFilter
@@ -19,7 +19,7 @@
   return WeakRetained;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MKLabelSelectionFilter);
   v5 = MEMORY[0x1A58E9F30](self->_selectionHandler);
@@ -33,17 +33,17 @@
   return v4;
 }
 
-- (void)performQueries:(id)a3 completionHandler:(id)a4 completionQueue:(id)a5
+- (void)performQueries:(id)queries completionHandler:(id)handler completionQueue:(id)queue
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queriesCopy = queries;
+  handlerCopy = handler;
+  queueCopy = queue;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v11 = [queriesCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -54,15 +54,15 @@
       {
         if (*v23 != v13)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(queriesCopy);
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
-        v16 = [v15 labelMarker];
-        [v15 setResult:{-[MKLabelSelectionFilter isLabelSelectable:](self, "isLabelSelectable:", v16)}];
+        labelMarker = [v15 labelMarker];
+        [v15 setResult:{-[MKLabelSelectionFilter isLabelSelectable:](self, "isLabelSelectable:", labelMarker)}];
       }
 
-      v12 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v12 = [queriesCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v12);
@@ -72,56 +72,56 @@
   v19[1] = 3221225472;
   v19[2] = __75__MKLabelSelectionFilter_performQueries_completionHandler_completionQueue___block_invoke;
   v19[3] = &unk_1E76CDA20;
-  v20 = v8;
-  v21 = v9;
-  v17 = v8;
-  v18 = v9;
-  dispatch_async(v10, v19);
+  v20 = queriesCopy;
+  v21 = handlerCopy;
+  v17 = queriesCopy;
+  v18 = handlerCopy;
+  dispatch_async(queueCopy, v19);
 }
 
-- (BOOL)isLabelSelectable:(id)a3
+- (BOOL)isLabelSelectable:(id)selectable
 {
-  v4 = a3;
-  v5 = [v4 featureAnnotation];
+  selectableCopy = selectable;
+  featureAnnotation = [selectableCopy featureAnnotation];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 featureAnnotation];
-    v8 = [v7 annotationView];
-    v9 = [v8 isEnabled];
+    featureAnnotation2 = [selectableCopy featureAnnotation];
+    annotationView = [featureAnnotation2 annotationView];
+    isEnabled = [annotationView isEnabled];
   }
 
   else if (self->_selectionHandler)
   {
-    v9 = [(MKLabelSelectionFilter *)self canSelectLabelMarker:v4];
+    isEnabled = [(MKLabelSelectionFilter *)self canSelectLabelMarker:selectableCopy];
   }
 
   else
   {
-    v10 = [v4 externalFeatureCategory];
-    if (v10 == 1)
+    externalFeatureCategory = [selectableCopy externalFeatureCategory];
+    if (externalFeatureCategory == 1)
     {
       if ((self->_featureOptions & 1) == 0)
       {
-        v9 = 0;
+        isEnabled = 0;
         goto LABEL_14;
       }
 
-      v13 = [v4 pickedLabelBalloonBehavior] == 1;
+      v13 = [selectableCopy pickedLabelBalloonBehavior] == 1;
     }
 
     else
     {
-      v11 = v10;
+      v11 = externalFeatureCategory;
       v12 = 4;
-      if (v10 != 3)
+      if (externalFeatureCategory != 3)
       {
         v12 = 0;
       }
 
-      if (v10 != 2)
+      if (externalFeatureCategory != 2)
       {
         v11 = v12;
       }
@@ -129,24 +129,24 @@
       v13 = (self->_featureOptions & v11) == 0;
     }
 
-    v9 = !v13;
+    isEnabled = !v13;
   }
 
 LABEL_14:
 
-  return v9;
+  return isEnabled;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MKLabelSelectionFilter *)self isEqualToLabelSelectionFilter:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MKLabelSelectionFilter *)self isEqualToLabelSelectionFilter:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isFeatureAnnotationSelectable:(id)a3
+- (BOOL)isFeatureAnnotationSelectable:(id)selectable
 {
   selectionHandler = self->_selectionHandler;
   if (selectionHandler)
@@ -158,8 +158,8 @@ LABEL_14:
 
   else
   {
-    v7 = [a3 featureType];
-    switch(v7)
+    featureType = [selectable featureType];
+    switch(featureType)
     {
       case 2:
         v8 = (LOBYTE(self->_featureOptions) >> 2) & 1;
@@ -176,19 +176,19 @@ LABEL_14:
   }
 }
 
-- (BOOL)canSelectLabelMarker:(id)a3
+- (BOOL)canSelectLabelMarker:(id)marker
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AF00] mainThread];
+  markerCopy = marker;
+  mainThread = [MEMORY[0x1E696AF00] mainThread];
 
-  if (v5)
+  if (mainThread)
   {
-    v6 = [(MKLabelSelectionFilter *)self mapView];
-    v7 = [v6 preferredConfiguration];
+    mapView = [(MKLabelSelectionFilter *)self mapView];
+    preferredConfiguration = [mapView preferredConfiguration];
 
     objc_opt_class();
-    v8 = (objc_opt_isKindOfClass() & 1) != 0 && [v7 elevationStyle] == 0;
-    v10 = [[MKMapFeatureAnnotation alloc] initWithVKLabelMarker:v4 isHybridMap:v8];
+    v8 = (objc_opt_isKindOfClass() & 1) != 0 && [preferredConfiguration elevationStyle] == 0;
+    v10 = [[MKMapFeatureAnnotation alloc] initWithVKLabelMarker:markerCopy isHybridMap:v8];
     v9 = (*(self->_selectionHandler + 2))();
   }
 
@@ -205,7 +205,7 @@ LABEL_14:
     v12[3] = &unk_1E76CA848;
     v14 = &v16;
     objc_copyWeak(&v15, &location);
-    v13 = v4;
+    v13 = markerCopy;
     dispatch_sync(MEMORY[0x1E69E96A0], v12);
     v9 = *(v17 + 24);
 
@@ -223,9 +223,9 @@ void __47__MKLabelSelectionFilter_canSelectLabelMarker___block_invoke(uint64_t a
   *(*(*(a1 + 40) + 8) + 24) = [WeakRetained canSelectLabelMarker:*(a1 + 32)];
 }
 
-- (MKLabelSelectionFilter)initWithSelectionHandler:(id)a3
+- (MKLabelSelectionFilter)initWithSelectionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10.receiver = self;
   v10.super_class = MKLabelSelectionFilter;
   v5 = [(MKLabelSelectionFilter *)&v10 init];
@@ -233,7 +233,7 @@ void __47__MKLabelSelectionFilter_canSelectLabelMarker___block_invoke(uint64_t a
   if (v5)
   {
     v5->_featureOptions = 7;
-    v7 = MEMORY[0x1A58E9F30](v4);
+    v7 = MEMORY[0x1A58E9F30](handlerCopy);
     selectionHandler = v6->_selectionHandler;
     v6->_selectionHandler = v7;
   }
@@ -241,14 +241,14 @@ void __47__MKLabelSelectionFilter_canSelectLabelMarker___block_invoke(uint64_t a
   return v6;
 }
 
-- (MKLabelSelectionFilter)initWithMapFeatureOptions:(int64_t)a3
+- (MKLabelSelectionFilter)initWithMapFeatureOptions:(int64_t)options
 {
   v5.receiver = self;
   v5.super_class = MKLabelSelectionFilter;
   result = [(MKLabelSelectionFilter *)&v5 init];
   if (result)
   {
-    result->_featureOptions = a3;
+    result->_featureOptions = options;
   }
 
   return result;

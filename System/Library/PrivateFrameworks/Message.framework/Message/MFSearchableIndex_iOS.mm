@@ -1,7 +1,7 @@
 @interface MFSearchableIndex_iOS
 + (OS_os_log)log;
 - (BOOL)isPluggedIn;
-- (MFSearchableIndex_iOS)initWithName:(id)a3 dataSource:(id)a4;
+- (MFSearchableIndex_iOS)initWithName:(id)name dataSource:(id)source;
 - (id)currentReasons;
 - (id)dataSourceRefreshReasons;
 - (id)exclusionReasons;
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __28__MFSearchableIndex_iOS_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_30 != -1)
   {
     dispatch_once(&log_onceToken_30, block);
@@ -28,24 +28,24 @@
   return v2;
 }
 
-- (MFSearchableIndex_iOS)initWithName:(id)a3 dataSource:(id)a4
+- (MFSearchableIndex_iOS)initWithName:(id)name dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  sourceCopy = source;
   v13.receiver = self;
   v13.super_class = MFSearchableIndex_iOS;
-  v8 = [(EDSearchableIndex *)&v13 initWithName:v6 dataSource:v7];
+  v8 = [(EDSearchableIndex *)&v13 initWithName:nameCopy dataSource:sourceCopy];
   if (v8)
   {
     v9 = MFUserAgent();
     -[EDSearchableIndex setForeground:](v8, "setForeground:", [v9 isForeground]);
 
-    v10 = [MEMORY[0x1E69AD6C0] sharedController];
-    [v10 addDiagnosticsGenerator:v8];
+    mEMORY[0x1E69AD6C0] = [MEMORY[0x1E69AD6C0] sharedController];
+    [mEMORY[0x1E69AD6C0] addDiagnosticsGenerator:v8];
   }
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 addObserver:v8 selector:sel_attachmentBecameAvailable_ name:@"LibraryMessageAttachmentDataBecameAvailableNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v8 selector:sel_attachmentBecameAvailable_ name:@"LibraryMessageAttachmentDataBecameAvailableNotification" object:0];
 
   return v8;
 }
@@ -89,21 +89,21 @@
 - (id)currentReasons
 {
   v3 = +[MFActivityMonitor currentMonitor];
-  v4 = [v3 reasons];
+  reasons = [v3 reasons];
 
-  if ([v4 count])
+  if ([reasons count])
   {
-    v5 = v4;
+    currentReasons = reasons;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = MFSearchableIndex_iOS;
-    v5 = [(EDSearchableIndex *)&v8 currentReasons];
+    currentReasons = [(EDSearchableIndex *)&v8 currentReasons];
   }
 
-  v6 = v5;
+  v6 = currentReasons;
 
   return v6;
 }
@@ -111,17 +111,17 @@
 - (id)powerObservable
 {
   v2 = +[MFPowerController sharedInstance];
-  v3 = [v2 powerObservable];
+  powerObservable = [v2 powerObservable];
 
-  return v3;
+  return powerObservable;
 }
 
 - (BOOL)isPluggedIn
 {
   v2 = +[MFPowerController sharedInstance];
-  v3 = [v2 isPluggedIn];
+  isPluggedIn = [v2 isPluggedIn];
 
-  return v3;
+  return isPluggedIn;
 }
 
 @end

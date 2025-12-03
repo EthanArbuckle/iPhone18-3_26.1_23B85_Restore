@@ -1,29 +1,29 @@
 @interface AASystemStateMonitor
 - (AASystemStateMonitor)init;
-- (AASystemStateMonitor)initWithCoder:(id)a3;
+- (AASystemStateMonitor)initWithCoder:(id)coder;
 - (BOOL)direct;
-- (char)fetchHealthKitDataWriteAllowedForDevice:(id)a3;
-- (id)_deviceWithIdentifier:(id)a3;
+- (char)fetchHealthKitDataWriteAllowedForDevice:(id)device;
+- (id)_deviceWithIdentifier:(id)identifier;
 - (id)_ensureXPCStarted;
 - (id)description;
-- (void)_activateDirect:(id)a3;
-- (void)_activateXPC:(id)a3 reactivate:(BOOL)a4;
+- (void)_activateDirect:(id)direct;
+- (void)_activateXPC:(id)c reactivate:(BOOL)reactivate;
 - (void)_connectedDeviceDiscoveryEnsureStarted;
 - (void)_connectedDeviceDiscoveryEnsureStopped;
-- (void)_connectedDeviceFound:(id)a3;
-- (void)_connectedDeviceLost:(id)a3;
+- (void)_connectedDeviceFound:(id)found;
+- (void)_connectedDeviceLost:(id)lost;
 - (void)_interrupted;
 - (void)_invalidateDirect;
 - (void)_invalidated;
-- (void)_reportError:(id)a3;
-- (void)aaDeviceRouteChanged:(BOOL)a3 withAADevice:(id)a4;
-- (void)activateWithCompletion:(id)a3;
-- (void)activeHRMDeviceChanged:(id)a3 withSREnabled:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchPairedHRMDevices:(id)a3;
+- (void)_reportError:(id)error;
+- (void)aaDeviceRouteChanged:(BOOL)changed withAADevice:(id)device;
+- (void)activateWithCompletion:(id)completion;
+- (void)activeHRMDeviceChanged:(id)changed withSREnabled:(BOOL)enabled;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchPairedHRMDevices:(id)devices;
 - (void)invalidate;
-- (void)showFitEducationNotificationForDevice:(id)a3;
-- (void)siriHijackEligibilityUpdated:(BOOL)a3;
+- (void)showFitEducationNotificationForDevice:(id)device;
+- (void)siriHijackEligibilityUpdated:(BOOL)updated;
 @end
 
 @implementation AASystemStateMonitor
@@ -64,8 +64,8 @@
 
 - (BOOL)direct
 {
-  v2 = [(AASystemStateMonitor *)self internalServicesDaemon];
-  v3 = v2 != 0;
+  internalServicesDaemon = [(AASystemStateMonitor *)self internalServicesDaemon];
+  v3 = internalServicesDaemon != 0;
 
   return v3;
 }
@@ -118,9 +118,9 @@
   return 0;
 }
 
-- (AASystemStateMonitor)initWithCoder:(id)a3
+- (AASystemStateMonitor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AASystemStateMonitor *)self init];
   if (v5)
   {
@@ -135,26 +135,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   clientID = self->_clientID;
   if (clientID)
   {
-    [a3 encodeInt64:clientID forKey:@"cid"];
+    [coder encodeInt64:clientID forKey:@"cid"];
   }
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__AASystemStateMonitor_activateWithCompletion___block_invoke;
   v7[3] = &unk_278CDD638;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -235,30 +235,30 @@ LABEL_14:
 LABEL_17:
 }
 
-- (void)_activateDirect:(id)a3
+- (void)_activateDirect:(id)direct
 {
-  v5 = a3;
+  directCopy = direct;
   if (gLogCategory_AASystemStateMonitor <= 30 && (gLogCategory_AASystemStateMonitor != -1 || _LogCategory_Initialize()))
   {
     [AASystemStateMonitor _activateDirect:?];
   }
 
-  v4 = [(AASystemStateMonitor *)self internalServicesDaemon];
-  [v4 activateSystemStateMonitorDirect:self completion:v5];
+  internalServicesDaemon = [(AASystemStateMonitor *)self internalServicesDaemon];
+  [internalServicesDaemon activateSystemStateMonitorDirect:self completion:directCopy];
 }
 
-- (void)_activateXPC:(id)a3 reactivate:(BOOL)a4
+- (void)_activateXPC:(id)c reactivate:(BOOL)reactivate
 {
-  v6 = a3;
+  cCopy = c;
   if (gLogCategory_AASystemStateMonitor <= 30 && (gLogCategory_AASystemStateMonitor != -1 || _LogCategory_Initialize()))
   {
     [AASystemStateMonitor _activateXPC:? reactivate:?];
   }
 
-  v7 = [(AASystemStateMonitor *)self _ensureXPCStarted];
-  if (v7)
+  _ensureXPCStarted = [(AASystemStateMonitor *)self _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
-    v6[2](v6, v7);
+    cCopy[2](cCopy, _ensureXPCStarted);
   }
 
   else
@@ -268,8 +268,8 @@ LABEL_17:
     v13[1] = 3221225472;
     v13[2] = __48__AASystemStateMonitor__activateXPC_reactivate___block_invoke;
     v13[3] = &unk_278CDD6D8;
-    v15 = a4;
-    v9 = v6;
+    reactivateCopy = reactivate;
+    v9 = cCopy;
     v14 = v9;
     v10 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v13];
     v11[0] = MEMORY[0x277D85DD0];
@@ -375,8 +375,8 @@ void __34__AASystemStateMonitor_invalidate__block_invoke(uint64_t a1)
 
 - (void)_invalidateDirect
 {
-  v3 = [(AASystemStateMonitor *)self internalServicesDaemon];
-  [v3 invalidateSystemStateMonitorDirect:self];
+  internalServicesDaemon = [(AASystemStateMonitor *)self internalServicesDaemon];
+  [internalServicesDaemon invalidateSystemStateMonitorDirect:self];
 }
 
 - (void)_invalidated
@@ -424,9 +424,9 @@ void __34__AASystemStateMonitor_invalidate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   if (gLogCategory_AASystemStateMonitor <= 90 && (gLogCategory_AASystemStateMonitor != -1 || _LogCategory_Initialize()))
   {
     [AASystemStateMonitor _reportError:];
@@ -438,13 +438,13 @@ void __34__AASystemStateMonitor_invalidate__block_invoke(uint64_t a1)
 
   if (v4)
   {
-    (v4)[2](v4, v6);
+    (v4)[2](v4, errorCopy);
   }
 }
 
-- (char)fetchHealthKitDataWriteAllowedForDevice:(id)a3
+- (char)fetchHealthKitDataWriteAllowedForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = 0;
   v12 = 0;
   v13 = &v12;
@@ -452,8 +452,8 @@ void __34__AASystemStateMonitor_invalidate__block_invoke(uint64_t a1)
   v15 = 0;
   if (self->_activateCalled)
   {
-    v6 = [(AASystemStateMonitor *)self _ensureXPCStarted];
-    if (v6)
+    _ensureXPCStarted = [(AASystemStateMonitor *)self _ensureXPCStarted];
+    if (_ensureXPCStarted)
     {
       if (gLogCategory_AASystemStateMonitor <= 90 && (gLogCategory_AASystemStateMonitor != -1 || _LogCategory_Initialize()))
       {
@@ -482,7 +482,7 @@ void __34__AASystemStateMonitor_invalidate__block_invoke(uint64_t a1)
       v10[2] = __64__AASystemStateMonitor_fetchHealthKitDataWriteAllowedForDevice___block_invoke_2;
       v10[3] = &unk_278CDD830;
       v10[4] = &v12;
-      [v8 systemStateMonitorFetchHealthKitDataWriteAllowedForDevice:v4 completionHandler:v10];
+      [v8 systemStateMonitorFetchHealthKitDataWriteAllowedForDevice:deviceCopy completionHandler:v10];
 
       v5 = *(v13 + 24);
     }
@@ -531,13 +531,13 @@ uint64_t __64__AASystemStateMonitor_fetchHealthKitDataWriteAllowedForDevice___bl
   return result;
 }
 
-- (void)fetchPairedHRMDevices:(id)a3
+- (void)fetchPairedHRMDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   if (self->_activateCalled)
   {
-    v5 = [(AASystemStateMonitor *)self _ensureXPCStarted];
-    if (v5)
+    _ensureXPCStarted = [(AASystemStateMonitor *)self _ensureXPCStarted];
+    if (_ensureXPCStarted)
     {
       if (gLogCategory_AASystemStateMonitor <= 90 && (gLogCategory_AASystemStateMonitor != -1 || _LogCategory_Initialize()))
       {
@@ -546,7 +546,7 @@ uint64_t __64__AASystemStateMonitor_fetchHealthKitDataWriteAllowedForDevice___bl
 
       v6 = *MEMORY[0x277CCA590];
       v7 = NSErrorF();
-      v4[2](v4, 0, v7);
+      devicesCopy[2](devicesCopy, 0, v7);
     }
 
     else
@@ -561,7 +561,7 @@ uint64_t __64__AASystemStateMonitor_fetchHealthKitDataWriteAllowedForDevice___bl
       v14[1] = 3221225472;
       v14[2] = __46__AASystemStateMonitor_fetchPairedHRMDevices___block_invoke;
       v14[3] = &unk_278CDD700;
-      v10 = v4;
+      v10 = devicesCopy;
       v15 = v10;
       v11 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v14];
       v12[0] = MEMORY[0x277D85DD0];
@@ -579,7 +579,7 @@ uint64_t __64__AASystemStateMonitor_fetchHealthKitDataWriteAllowedForDevice___bl
   {
     v8 = *MEMORY[0x277CCA590];
     v7 = NSErrorF();
-    v4[2](v4, 0, v7);
+    devicesCopy[2](devicesCopy, 0, v7);
   }
 }
 
@@ -608,9 +608,9 @@ void __46__AASystemStateMonitor_fetchPairedHRMDevices___block_invoke_2(uint64_t 
 
 - (void)_connectedDeviceDiscoveryEnsureStarted
 {
-  v3 = [(AASystemStateMonitor *)self connectedDiscovery];
+  connectedDiscovery = [(AASystemStateMonitor *)self connectedDiscovery];
 
-  if (!v3)
+  if (!connectedDiscovery)
   {
     if (gLogCategory_AASystemStateMonitor <= 30 && (gLogCategory_AASystemStateMonitor != -1 || _LogCategory_Initialize()))
     {
@@ -618,8 +618,8 @@ void __46__AASystemStateMonitor_fetchPairedHRMDevices___block_invoke_2(uint64_t 
     }
 
     v4 = objc_alloc_init(AADeviceManager);
-    v5 = [(AASystemStateMonitor *)self dispatchQueue];
-    [(AADeviceManager *)v4 setDispatchQueue:v5];
+    dispatchQueue = [(AASystemStateMonitor *)self dispatchQueue];
+    [(AADeviceManager *)v4 setDispatchQueue:dispatchQueue];
 
     [(AADeviceManager *)v4 setInterruptionHandler:&__block_literal_global_0];
     [(AADeviceManager *)v4 setInvalidationHandler:&__block_literal_global_116];
@@ -636,7 +636,7 @@ void __46__AASystemStateMonitor_fetchPairedHRMDevices___block_invoke_2(uint64_t 
     v10[4] = self;
     [(AADeviceManager *)v4 setDeviceLostHandler:v10];
     [(AASystemStateMonitor *)self setConnectedDiscovery:v4];
-    v6 = [(AASystemStateMonitor *)self connectedDiscovery];
+    connectedDiscovery2 = [(AASystemStateMonitor *)self connectedDiscovery];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __62__AASystemStateMonitor__connectedDeviceDiscoveryEnsureStarted__block_invoke_5;
@@ -644,7 +644,7 @@ void __46__AASystemStateMonitor_fetchPairedHRMDevices___block_invoke_2(uint64_t 
     v8[4] = self;
     v9 = v4;
     v7 = v4;
-    [v6 activateWithCompletion:v8];
+    [connectedDiscovery2 activateWithCompletion:v8];
   }
 }
 
@@ -693,78 +693,78 @@ void __62__AASystemStateMonitor__connectedDeviceDiscoveryEnsureStarted__block_in
     [AASystemStateMonitor _connectedDeviceDiscoveryEnsureStopped];
   }
 
-  v3 = [(AASystemStateMonitor *)self connectedDiscovery];
+  connectedDiscovery = [(AASystemStateMonitor *)self connectedDiscovery];
 
-  if (v3)
+  if (connectedDiscovery)
   {
-    v4 = [(AASystemStateMonitor *)self connectedDiscovery];
-    [v4 invalidate];
+    connectedDiscovery2 = [(AASystemStateMonitor *)self connectedDiscovery];
+    [connectedDiscovery2 invalidate];
 
     [(AASystemStateMonitor *)self setConnectedDiscovery:0];
   }
 }
 
-- (void)_connectedDeviceFound:(id)a3
+- (void)_connectedDeviceFound:(id)found
 {
-  v12 = a3;
-  v4 = [(AASystemStateMonitor *)self dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  foundCopy = found;
+  dispatchQueue = [(AASystemStateMonitor *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v5 = [v12 identifier];
-  v6 = [(AASystemStateMonitor *)self devicesMap];
+  identifier = [foundCopy identifier];
+  devicesMap = [(AASystemStateMonitor *)self devicesMap];
 
-  if (!v6)
+  if (!devicesMap)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [(AASystemStateMonitor *)self setDevicesMap:v7];
   }
 
-  v8 = [(AASystemStateMonitor *)self devicesMap];
-  v9 = [v8 objectForKeyedSubscript:v5];
+  devicesMap2 = [(AASystemStateMonitor *)self devicesMap];
+  v9 = [devicesMap2 objectForKeyedSubscript:identifier];
 
-  v10 = [(AASystemStateMonitor *)self devicesMap];
-  [v10 setObject:v12 forKeyedSubscript:v5];
+  devicesMap3 = [(AASystemStateMonitor *)self devicesMap];
+  [devicesMap3 setObject:foundCopy forKeyedSubscript:identifier];
 
   if (!v9)
   {
-    [(AASystemStateMonitor *)self aaDeviceConnectionChanged:1 withAADevice:v12];
+    [(AASystemStateMonitor *)self aaDeviceConnectionChanged:1 withAADevice:foundCopy];
     goto LABEL_7;
   }
 
-  v11 = [v9 routed];
-  if (v11 != [v12 routed])
+  routed = [v9 routed];
+  if (routed != [foundCopy routed])
   {
 LABEL_7:
-    -[AASystemStateMonitor aaDeviceRouteChanged:withAADevice:](self, "aaDeviceRouteChanged:withAADevice:", [v12 routed], v12);
+    -[AASystemStateMonitor aaDeviceRouteChanged:withAADevice:](self, "aaDeviceRouteChanged:withAADevice:", [foundCopy routed], foundCopy);
   }
 }
 
-- (void)_connectedDeviceLost:(id)a3
+- (void)_connectedDeviceLost:(id)lost
 {
-  v9 = a3;
-  v4 = [(AASystemStateMonitor *)self dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  lostCopy = lost;
+  dispatchQueue = [(AASystemStateMonitor *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v5 = [v9 identifier];
-  v6 = [(AASystemStateMonitor *)self devicesMap];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  identifier = [lostCopy identifier];
+  devicesMap = [(AASystemStateMonitor *)self devicesMap];
+  v7 = [devicesMap objectForKeyedSubscript:identifier];
 
   if (v7)
   {
-    [(AASystemStateMonitor *)self aaDeviceConnectionChanged:0 withAADevice:v9];
+    [(AASystemStateMonitor *)self aaDeviceConnectionChanged:0 withAADevice:lostCopy];
     if ([v7 routed])
     {
-      [(AASystemStateMonitor *)self aaDeviceRouteChanged:0 withAADevice:v9];
+      [(AASystemStateMonitor *)self aaDeviceRouteChanged:0 withAADevice:lostCopy];
     }
 
-    v8 = [(AASystemStateMonitor *)self devicesMap];
-    [v8 removeObjectForKey:v5];
+    devicesMap2 = [(AASystemStateMonitor *)self devicesMap];
+    [devicesMap2 removeObjectForKey:identifier];
   }
 }
 
-- (void)aaDeviceRouteChanged:(BOOL)a3 withAADevice:(id)a4
+- (void)aaDeviceRouteChanged:(BOOL)changed withAADevice:(id)device
 {
-  v12 = a4;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_aaDeviceRouteChangedHandler)
   {
@@ -776,7 +776,7 @@ LABEL_7:
     (*(self->_aaDeviceRouteChangedHandler + 2))();
   }
 
-  if ([v12 heartRateMonitorCapability] && self->_hrmCapableDeviceRoutedStateChangedHandler)
+  if ([deviceCopy heartRateMonitorCapability] && self->_hrmCapableDeviceRoutedStateChangedHandler)
   {
     if (gLogCategory_AASystemStateMonitor <= 30 && (gLogCategory_AASystemStateMonitor != -1 || _LogCategory_Initialize()))
     {
@@ -786,10 +786,10 @@ LABEL_7:
     (*(self->_hrmCapableDeviceRoutedStateChangedHandler + 2))();
   }
 
-  v5 = [v12 identifier];
-  v6 = [(AudioAccessoryDevice *)self->_activeHRMDevice identifier];
-  v7 = v5;
-  v8 = v6;
+  identifier = [deviceCopy identifier];
+  identifier2 = [(AudioAccessoryDevice *)self->_activeHRMDevice identifier];
+  v7 = identifier;
+  v8 = identifier2;
   v9 = v8;
   if (v7 == v8)
   {
@@ -805,37 +805,37 @@ LABEL_7:
 
   v10 = [v7 isEqual:v8];
 
-  v11 = v12;
+  v11 = deviceCopy;
   if (v10)
   {
 LABEL_17:
-    [(AASystemStateMonitor *)self activeHRMDeviceChanged:v12 withSREnabled:self->_isSREnabled];
+    [(AASystemStateMonitor *)self activeHRMDeviceChanged:deviceCopy withSREnabled:self->_isSREnabled];
 LABEL_19:
-    v11 = v12;
+    v11 = deviceCopy;
   }
 }
 
-- (void)activeHRMDeviceChanged:(id)a3 withSREnabled:(BOOL)a4
+- (void)activeHRMDeviceChanged:(id)changed withSREnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v10 = a3;
+  enabledCopy = enabled;
+  changedCopy = changed;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  self->_isSREnabled = v4;
+  self->_isSREnabled = enabledCopy;
   if (self->_activeHRMDeviceChangedHandler)
   {
-    objc_storeStrong(&self->_activeHRMDevice, a3);
-    v7 = v10;
-    if (v10)
+    objc_storeStrong(&self->_activeHRMDevice, changed);
+    v7 = changedCopy;
+    if (changedCopy)
     {
-      if (v4)
+      if (enabledCopy)
       {
-        [v10 routed];
-        v7 = v10;
+        [changedCopy routed];
+        v7 = changedCopy;
       }
 
       if (gLogCategory_AASystemStateMonitor <= 30)
       {
-        if (gLogCategory_AASystemStateMonitor != -1 || (v8 = _LogCategory_Initialize(), v7 = v10, v8))
+        if (gLogCategory_AASystemStateMonitor != -1 || (v8 = _LogCategory_Initialize(), v7 = changedCopy, v8))
         {
           [AASystemStateMonitor activeHRMDeviceChanged:v7 withSREnabled:?];
         }
@@ -863,13 +863,13 @@ LABEL_19:
   }
 }
 
-- (void)showFitEducationNotificationForDevice:(id)a3
+- (void)showFitEducationNotificationForDevice:(id)device
 {
-  v6 = a3;
+  deviceCopy = device;
   if (self->_activateCalled)
   {
-    v4 = [(AASystemStateMonitor *)self _ensureXPCStarted];
-    if (v4)
+    _ensureXPCStarted = [(AASystemStateMonitor *)self _ensureXPCStarted];
+    if (_ensureXPCStarted)
     {
       if (gLogCategory_AASystemStateMonitor <= 90 && (gLogCategory_AASystemStateMonitor != -1 || _LogCategory_Initialize()))
       {
@@ -885,7 +885,7 @@ LABEL_19:
       }
 
       v5 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxyWithErrorHandler:&__block_literal_global_133];
-      [v5 systemStateMonitorShowFitEducationNotificationForIdentifier:v6 completionHandler:&__block_literal_global_136];
+      [v5 systemStateMonitorShowFitEducationNotificationForIdentifier:deviceCopy completionHandler:&__block_literal_global_136];
     }
   }
 
@@ -929,10 +929,10 @@ uint64_t __62__AASystemStateMonitor_showFitEducationNotificationForDevice___bloc
   return MEMORY[0x2821F96F8](v2, v3);
 }
 
-- (void)siriHijackEligibilityUpdated:(BOOL)a3
+- (void)siriHijackEligibilityUpdated:(BOOL)updated
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  self->_isSystemEligibleForSiriHijack = a3;
+  self->_isSystemEligibleForSiriHijack = updated;
   siriHijackEligibilityUpdatedHandler = self->_siriHijackEligibilityUpdatedHandler;
   if (siriHijackEligibilityUpdatedHandler)
   {
@@ -947,10 +947,10 @@ uint64_t __62__AASystemStateMonitor_showFitEducationNotificationForDevice___bloc
   }
 }
 
-- (id)_deviceWithIdentifier:(id)a3
+- (id)_deviceWithIdentifier:(id)identifier
 {
   v5 = 0;
-  if (a3)
+  if (identifier)
   {
     devicesMap = self->_devicesMap;
     if (devicesMap)

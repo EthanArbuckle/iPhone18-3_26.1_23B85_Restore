@@ -1,35 +1,35 @@
 @interface CMLineShapeBuilder
-- (CGPath)copyShapeWithTransform:(CGAffineTransform *)a3;
-- (CGRect)_boundingBoxForLineEnd:(id)a3;
-- (float)_adjustedCoefAtIndex:(int)a3;
-- (float)_getRotationFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 withBounds:(id)a5;
-- (void)_renderBentConnector2InPath:(CGPath *)a3 withTransform:(CGAffineTransform *)a4 andOrientedBounds:(id)a5 headSrc:(CGPoint *)a6 headDst:(CGPoint *)a7 tailSrc:(CGPoint *)a8 tailDst:(CGPoint *)a9;
-- (void)_renderBentConnector3InPath:(CGPath *)a3 withTransform:(CGAffineTransform *)a4 andOrientedBounds:(id)a5 headSrc:(CGPoint *)a6 headDst:(CGPoint *)a7 tailSrc:(CGPoint *)a8 tailDst:(CGPoint *)a9;
-- (void)_renderLineEnd:(id)a3 atPoint:(CGPoint)a4 withOrientation:(float)a5 inPath:(CGPath *)a6;
-- (void)_renderStraightConnector1InPath:(CGPath *)a3 withTransform:(CGAffineTransform *)a4 andOrientedBounds:(id)a5 headSrc:(CGPoint *)a6 headDst:(CGPoint *)a7 tailSrc:(CGPoint *)a8 tailDst:(CGPoint *)a9;
+- (CGPath)copyShapeWithTransform:(CGAffineTransform *)transform;
+- (CGRect)_boundingBoxForLineEnd:(id)end;
+- (float)_adjustedCoefAtIndex:(int)index;
+- (float)_getRotationFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint withBounds:(id)bounds;
+- (void)_renderBentConnector2InPath:(CGPath *)path withTransform:(CGAffineTransform *)transform andOrientedBounds:(id)bounds headSrc:(CGPoint *)src headDst:(CGPoint *)dst tailSrc:(CGPoint *)tailSrc tailDst:(CGPoint *)tailDst;
+- (void)_renderBentConnector3InPath:(CGPath *)path withTransform:(CGAffineTransform *)transform andOrientedBounds:(id)bounds headSrc:(CGPoint *)src headDst:(CGPoint *)dst tailSrc:(CGPoint *)tailSrc tailDst:(CGPoint *)tailDst;
+- (void)_renderLineEnd:(id)end atPoint:(CGPoint)point withOrientation:(float)orientation inPath:(CGPath *)path;
+- (void)_renderStraightConnector1InPath:(CGPath *)path withTransform:(CGAffineTransform *)transform andOrientedBounds:(id)bounds headSrc:(CGPoint *)src headDst:(CGPoint *)dst tailSrc:(CGPoint *)tailSrc tailDst:(CGPoint *)tailDst;
 @end
 
 @implementation CMLineShapeBuilder
 
-- (CGPath)copyShapeWithTransform:(CGAffineTransform *)a3
+- (CGPath)copyShapeWithTransform:(CGAffineTransform *)transform
 {
   Mutable = CGPathCreateMutable();
   type = self->super._type;
   if (type == 34)
   {
-    v8 = *&a3->c;
-    v28 = *&a3->a;
+    v8 = *&transform->c;
+    v28 = *&transform->a;
     v29 = v8;
-    v30 = *&a3->tx;
+    v30 = *&transform->tx;
     [(CMLineShapeBuilder *)self _renderBentConnector3InPath:Mutable withTransform:&v28 andOrientedBounds:self->super._orientedBounds headSrc:&v37 headDst:&v35 tailSrc:&v33 tailDst:&v31];
   }
 
   else
   {
-    v7 = *&a3->c;
-    v28 = *&a3->a;
+    v7 = *&transform->c;
+    v28 = *&transform->a;
     v29 = v7;
-    v30 = *&a3->tx;
+    v30 = *&transform->tx;
     if (type == 33)
     {
       [(CMLineShapeBuilder *)self _renderBentConnector2InPath:Mutable withTransform:&v28 andOrientedBounds:self->super._orientedBounds headSrc:&v37 headDst:&v35 tailSrc:&v33 tailDst:&v31];
@@ -41,14 +41,14 @@
     }
   }
 
-  a = a3->a;
-  b = a3->b;
-  c = a3->c;
-  d = a3->d;
-  tx = a3->tx;
-  ty = a3->ty;
+  a = transform->a;
+  b = transform->b;
+  c = transform->c;
+  d = transform->d;
+  tx = transform->tx;
+  ty = transform->ty;
   v15 = ty + v38 * d + b * v37;
-  v37 = tx + v38 * c + a3->a * v37;
+  v37 = tx + v38 * c + transform->a * v37;
   v38 = v15;
   v16 = ty + d * v36 + b * v35;
   v35 = tx + c * v36 + a * v35;
@@ -61,26 +61,26 @@
   v32 = v18;
   [CMLineShapeBuilder _getRotationFromPoint:"_getRotationFromPoint:toPoint:withBounds:" toPoint:self->super._orientedBounds withBounds:?];
   v20 = v19;
-  v21 = [(OADStroke *)self->_stroke head];
+  head = [(OADStroke *)self->_stroke head];
   LODWORD(v22) = v20;
-  [(CMLineShapeBuilder *)self _renderLineEnd:v21 atPoint:Mutable withOrientation:v35 inPath:v36, v22];
+  [(CMLineShapeBuilder *)self _renderLineEnd:head atPoint:Mutable withOrientation:v35 inPath:v36, v22];
 
   [(CMLineShapeBuilder *)self _getRotationFromPoint:self->super._orientedBounds toPoint:v33 withBounds:v34, v31, v32];
   v24 = v23;
-  v25 = [(OADStroke *)self->_stroke tail];
+  tail = [(OADStroke *)self->_stroke tail];
   LODWORD(v26) = v24;
-  [(CMLineShapeBuilder *)self _renderLineEnd:v25 atPoint:Mutable withOrientation:v31 inPath:v32, v26];
+  [(CMLineShapeBuilder *)self _renderLineEnd:tail atPoint:Mutable withOrientation:v31 inPath:v32, v26];
 
   return Mutable;
 }
 
-- (void)_renderStraightConnector1InPath:(CGPath *)a3 withTransform:(CGAffineTransform *)a4 andOrientedBounds:(id)a5 headSrc:(CGPoint *)a6 headDst:(CGPoint *)a7 tailSrc:(CGPoint *)a8 tailDst:(CGPoint *)a9
+- (void)_renderStraightConnector1InPath:(CGPath *)path withTransform:(CGAffineTransform *)transform andOrientedBounds:(id)bounds headSrc:(CGPoint *)src headDst:(CGPoint *)dst tailSrc:(CGPoint *)tailSrc tailDst:(CGPoint *)tailDst
 {
-  v19 = a5;
-  [v19 rotation];
+  boundsCopy = bounds;
+  [boundsCopy rotation];
   v14 = [OADOrientedBounds directionCloserToVerticalThanToHorizontal:?];
-  v15 = [v19 flipX];
-  v16 = v15 ^ [v19 flipY];
+  flipX = [boundsCopy flipX];
+  v16 = flipX ^ [boundsCopy flipY];
   if ((v14 & v16) != 0)
   {
     v17 = 0.0;
@@ -101,25 +101,25 @@
     v18 = 0.0;
   }
 
-  CGPathMoveToPoint(a3, a4, v17, v18);
-  CGPathAddLineToPoint(a3, a4, v18, v17);
-  a9->x = v18;
-  a9->y = v17;
-  a8->x = v17;
-  a8->y = v18;
-  a6->x = v18;
-  a6->y = v17;
-  a7->x = v17;
-  a7->y = v18;
+  CGPathMoveToPoint(path, transform, v17, v18);
+  CGPathAddLineToPoint(path, transform, v18, v17);
+  tailDst->x = v18;
+  tailDst->y = v17;
+  tailSrc->x = v17;
+  tailSrc->y = v18;
+  src->x = v18;
+  src->y = v17;
+  dst->x = v17;
+  dst->y = v18;
 }
 
-- (void)_renderBentConnector2InPath:(CGPath *)a3 withTransform:(CGAffineTransform *)a4 andOrientedBounds:(id)a5 headSrc:(CGPoint *)a6 headDst:(CGPoint *)a7 tailSrc:(CGPoint *)a8 tailDst:(CGPoint *)a9
+- (void)_renderBentConnector2InPath:(CGPath *)path withTransform:(CGAffineTransform *)transform andOrientedBounds:(id)bounds headSrc:(CGPoint *)src headDst:(CGPoint *)dst tailSrc:(CGPoint *)tailSrc tailDst:(CGPoint *)tailDst
 {
-  v19 = a5;
-  [v19 rotation];
+  boundsCopy = bounds;
+  [boundsCopy rotation];
   v14 = [OADOrientedBounds directionCloserToVerticalThanToHorizontal:?];
-  v15 = [v19 flipX];
-  v16 = v15 ^ [v19 flipY];
+  flipX = [boundsCopy flipX];
+  v16 = flipX ^ [boundsCopy flipY];
   if ((v14 & v16) != 0)
   {
     v17 = 10.0;
@@ -140,23 +140,23 @@
     v18 = 10.0;
   }
 
-  CGPathMoveToPoint(a3, a4, v17, v18);
-  CGPathAddLineToPoint(a3, a4, v18, v18);
-  CGPathAddLineToPoint(a3, a4, v18, v17);
-  a9->x = v17;
-  a9->y = v18;
-  a8->x = v18;
-  a8->y = v18;
-  a6->x = v18;
-  a6->y = v18;
-  a7->x = v18;
-  a7->y = v17;
+  CGPathMoveToPoint(path, transform, v17, v18);
+  CGPathAddLineToPoint(path, transform, v18, v18);
+  CGPathAddLineToPoint(path, transform, v18, v17);
+  tailDst->x = v17;
+  tailDst->y = v18;
+  tailSrc->x = v18;
+  tailSrc->y = v18;
+  src->x = v18;
+  src->y = v18;
+  dst->x = v18;
+  dst->y = v17;
 }
 
-- (float)_adjustedCoefAtIndex:(int)a3
+- (float)_adjustedCoefAtIndex:(int)index
 {
   adjustValues = self->super._adjustValues;
-  v5 = [MEMORY[0x277CCABB0] numberWithInt:*&a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInt:*&index];
   v6 = [(NSDictionary *)adjustValues objectForKey:v5];
 
   if (v6)
@@ -175,16 +175,16 @@
   return v10;
 }
 
-- (void)_renderBentConnector3InPath:(CGPath *)a3 withTransform:(CGAffineTransform *)a4 andOrientedBounds:(id)a5 headSrc:(CGPoint *)a6 headDst:(CGPoint *)a7 tailSrc:(CGPoint *)a8 tailDst:(CGPoint *)a9
+- (void)_renderBentConnector3InPath:(CGPath *)path withTransform:(CGAffineTransform *)transform andOrientedBounds:(id)bounds headSrc:(CGPoint *)src headDst:(CGPoint *)dst tailSrc:(CGPoint *)tailSrc tailDst:(CGPoint *)tailDst
 {
-  v24 = a5;
-  [v24 rotation];
+  boundsCopy = bounds;
+  [boundsCopy rotation];
   v15 = [OADOrientedBounds directionCloserToVerticalThanToHorizontal:?];
-  v16 = [v24 flipX];
-  v17 = [v24 flipY];
+  flipX = [boundsCopy flipX];
+  flipY = [boundsCopy flipY];
   [(CMLineShapeBuilder *)self _adjustedCoefAtIndex:0];
-  v19 = v16 ^ v17;
-  if ((v15 & (v16 ^ v17)) != 0)
+  v19 = flipX ^ flipY;
+  if ((v15 & (flipX ^ flipY)) != 0)
   {
     v20 = 10.0;
   }
@@ -214,34 +214,34 @@
     v22 = v18;
   }
 
-  CGPathMoveToPoint(a3, a4, v21, v20);
+  CGPathMoveToPoint(path, transform, v21, v20);
   v23 = v22 * 10.0;
-  CGPathAddLineToPoint(a3, a4, v23, v20);
-  CGPathAddLineToPoint(a3, a4, v23, v21);
-  CGPathAddLineToPoint(a3, a4, v20, v21);
-  a7->x = v21;
-  a7->y = v20;
-  a6->x = v23;
-  a6->y = v20;
-  a8->x = v23;
-  a8->y = v21;
-  a9->x = v20;
-  a9->y = v21;
+  CGPathAddLineToPoint(path, transform, v23, v20);
+  CGPathAddLineToPoint(path, transform, v23, v21);
+  CGPathAddLineToPoint(path, transform, v20, v21);
+  dst->x = v21;
+  dst->y = v20;
+  src->x = v23;
+  src->y = v20;
+  tailSrc->x = v23;
+  tailSrc->y = v21;
+  tailDst->x = v20;
+  tailDst->y = v21;
 }
 
-- (float)_getRotationFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 withBounds:(id)a5
+- (float)_getRotationFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint withBounds:(id)bounds
 {
-  x = a4.x;
-  v6 = a3.x;
-  v7 = a4.x - a3.x;
+  x = toPoint.x;
+  v6 = point.x;
+  v7 = toPoint.x - point.x;
   if (v7 == 0.0)
   {
-    v8 = dbl_25D710B10[a3.y > a4.y];
+    v8 = dbl_25D710B10[point.y > toPoint.y];
   }
 
   else
   {
-    v8 = atan((a4.y - a3.y) / v7);
+    v8 = atan((toPoint.y - point.y) / v7);
   }
 
   result = v8;
@@ -253,10 +253,10 @@
   return result;
 }
 
-- (CGRect)_boundingBoxForLineEnd:(id)a3
+- (CGRect)_boundingBoxForLineEnd:(id)end
 {
-  v3 = a3;
-  if ([v3 type] == 5)
+  endCopy = end;
+  if ([endCopy type] == 5)
   {
     v4 = &[CMLineShapeBuilder _boundingBoxForLineEnd:]::openEndArrowSizes;
   }
@@ -266,16 +266,16 @@
     v4 = &[CMLineShapeBuilder _boundingBoxForLineEnd:]::arrowSizes;
   }
 
-  v5 = [v3 width];
-  v6 = [v3 length];
-  if (v5 >= 3)
+  width = [endCopy width];
+  v6 = [endCopy length];
+  if (width >= 3)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v5;
+    v7 = width;
   }
 
   v8 = v4[v7];
@@ -290,14 +290,14 @@
   }
 
   v10 = v4[v9];
-  v11 = [v3 type];
+  type = [endCopy type];
   v12 = 0.0;
-  if (v11 == 4)
+  if (type == 4)
   {
     v12 = v10 * 0.5;
   }
 
-  if (v11 == 3)
+  if (type == 3)
   {
     v12 = v10 * 0.5;
   }
@@ -315,17 +315,17 @@
   return result;
 }
 
-- (void)_renderLineEnd:(id)a3 atPoint:(CGPoint)a4 withOrientation:(float)a5 inPath:(CGPath *)a6
+- (void)_renderLineEnd:(id)end atPoint:(CGPoint)point withOrientation:(float)orientation inPath:(CGPath *)path
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a3;
-  if (!v11)
+  y = point.y;
+  x = point.x;
+  endCopy = end;
+  if (!endCopy)
   {
     goto LABEL_15;
   }
 
-  [(CMLineShapeBuilder *)self _boundingBoxForLineEnd:v11];
+  [(CMLineShapeBuilder *)self _boundingBoxForLineEnd:endCopy];
   v12 = v36.origin.x;
   v13 = v36.origin.y;
   width = v36.size.width;
@@ -342,32 +342,32 @@
   CGAffineTransformScale(&v33, &t1, 1.66666663, 1.66666663);
   v34 = v33;
   t1 = v33;
-  CGAffineTransformRotate(&v33, &t1, a5 + 1.57079633);
+  CGAffineTransformRotate(&v33, &t1, orientation + 1.57079633);
   v34 = v33;
   t1 = v33;
   CGAffineTransformScale(&v33, &t1, 1.0, -1.0);
   v34 = v33;
-  v18 = [v11 type];
+  type = [endCopy type];
   v19 = v16;
   v20 = v17;
   v21 = v19 * 0.5;
-  if (v18 <= 2)
+  if (type <= 2)
   {
-    if (v18 == 1)
+    if (type == 1)
     {
       CGAffineTransformMakeTranslation(&m, 0.0, -v20);
       t1 = m;
       v31 = v34;
       CGAffineTransformConcat(&v33, &t1, &v31);
       m = v33;
-      CGPathMoveToPoint(a6, &m, v21, 0.0);
+      CGPathMoveToPoint(path, &m, v21, 0.0);
       v30 = 0.0;
-      CGPathAddLineToPoint(a6, &m, 0.0, v20);
+      CGPathAddLineToPoint(path, &m, 0.0, v20);
       v28 = -v21;
       goto LABEL_14;
     }
 
-    if (v18 != 2)
+    if (type != 2)
     {
       goto LABEL_15;
     }
@@ -377,27 +377,27 @@
     v31 = v34;
     CGAffineTransformConcat(&v33, &t1, &v31);
     m = v33;
-    CGPathMoveToPoint(a6, &m, v21, 0.0);
-    CGPathAddLineToPoint(a6, &m, 0.0, v20);
+    CGPathMoveToPoint(path, &m, v21, 0.0);
+    CGPathAddLineToPoint(path, &m, 0.0, v20);
     v28 = 0.0;
-    CGPathAddLineToPoint(a6, &m, -v21, 0.0);
+    CGPathAddLineToPoint(path, &m, -v21, 0.0);
     v29 = v20 / 3.0;
 LABEL_11:
     v30 = v29;
 LABEL_14:
-    CGPathAddLineToPoint(a6, &m, v28, v30);
-    CGPathCloseSubpath(a6);
+    CGPathAddLineToPoint(path, &m, v28, v30);
+    CGPathCloseSubpath(path);
     goto LABEL_15;
   }
 
-  switch(v18)
+  switch(type)
   {
     case 3:
       m = v34;
-      CGPathMoveToPoint(a6, &m, v21, 0.0);
-      CGPathAddLineToPoint(a6, &m, 0.0, (v20 * 0.5));
+      CGPathMoveToPoint(path, &m, v21, 0.0);
+      CGPathAddLineToPoint(path, &m, 0.0, (v20 * 0.5));
       v28 = 0.0;
-      CGPathAddLineToPoint(a6, &m, -v21, 0.0);
+      CGPathAddLineToPoint(path, &m, -v21, 0.0);
       v29 = -(v20 * 0.5);
       goto LABEL_11;
     case 4:
@@ -406,7 +406,7 @@ LABEL_14:
       v38.origin.y = (v20 * -0.5);
       v38.size.width = v19;
       v38.size.height = v20;
-      CGPathAddEllipseInRect(a6, &m, v38);
+      CGPathAddEllipseInRect(path, &m, v38);
       break;
     case 5:
       v22 = atanf((sqrtf(((v20 + (v20 * -0.5)) + -0.5) + (v21 * (v21 + -1.0))) - (v20 + -0.5)) / (v21 + -1.0));
@@ -418,13 +418,13 @@ LABEL_14:
       v31 = v34;
       CGAffineTransformConcat(&v33, &t1, &v31);
       m = v33;
-      CGPathMoveToPoint(a6, &m, 0.0, v20);
+      CGPathMoveToPoint(path, &m, 0.0, v20);
       v26 = v21 + -0.5;
       v27 = cosf(v23);
-      CGPathAddLineToPoint(a6, &m, (v26 + (v27 * 0.5)), ((v24 * 0.5) + 0.5));
-      CGPathAddLineToPoint(a6, &m, 0.0, v25);
-      CGPathAddLineToPoint(a6, &m, -(v26 + (v27 * -0.5)), ((v24 * -0.5) + 0.5));
-      CGPathCloseSubpath(a6);
+      CGPathAddLineToPoint(path, &m, (v26 + (v27 * 0.5)), ((v24 * 0.5) + 0.5));
+      CGPathAddLineToPoint(path, &m, 0.0, v25);
+      CGPathAddLineToPoint(path, &m, -(v26 + (v27 * -0.5)), ((v24 * -0.5) + 0.5));
+      CGPathCloseSubpath(path);
       break;
   }
 

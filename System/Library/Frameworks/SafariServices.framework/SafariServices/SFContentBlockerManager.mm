@@ -1,60 +1,60 @@
 @interface SFContentBlockerManager
 + (WKContentRuleListStore)contentBlockerStore;
 + (id)_contentBlockerLoaderConnection;
-+ (void)_createContentExtensionsDirectoryWithURL:(id)a3;
-+ (void)_loadContentBlockerWithIdentifier:(id)a3 completionHandler:(id)a4;
++ (void)_createContentExtensionsDirectoryWithURL:(id)l;
++ (void)_loadContentBlockerWithIdentifier:(id)identifier completionHandler:(id)handler;
 + (void)getStateOfContentBlockerWithIdentifier:(NSString *)identifier completionHandler:(void *)completionHandler;
 + (void)reloadContentBlockerWithIdentifier:(NSString *)identifier completionHandler:(void *)completionHandler;
-- (BOOL)_hasRecompilationBeenAttemptedForExtension:(id)a3;
+- (BOOL)_hasRecompilationBeenAttemptedForExtension:(id)extension;
 - (BOOL)_isManagingDefaultProfile;
-- (BOOL)extensionIsEnabled:(id)a3;
-- (BOOL)hasExtensionWithComposedIdentifier:(id)a3;
-- (BOOL)isContentBlockerAllowedInPrivateBrowsing:(id)a3;
+- (BOOL)extensionIsEnabled:(id)enabled;
+- (BOOL)hasExtensionWithComposedIdentifier:(id)identifier;
+- (BOOL)isContentBlockerAllowedInPrivateBrowsing:(id)browsing;
 - (NSSet)enabledExtensions;
 - (NSSet)extensions;
 - (NSString)debugDescription;
 - (SFContentBlockerManager)init;
-- (SFContentBlockerManager)initWithUserContentController:(id)a3 webExtensionsController:(id)a4;
+- (SFContentBlockerManager)initWithUserContentController:(id)controller webExtensionsController:(id)extensionsController;
 - (SFContentBlockerManagerDelegate)delegate;
 - (id)_contentBlockerManagerForDefaultProfile;
 - (id)_contentBlockerStateURL;
-- (id)_contentBlockerWithComposedIdentifier:(id)a3;
-- (id)_contentBlockersWithAdamID:(id)a3;
+- (id)_contentBlockerWithComposedIdentifier:(id)identifier;
+- (id)_contentBlockersWithAdamID:(id)d;
 - (id)_createContentBlockerStateStore;
-- (id)_extensionsDataForExportFromContentBlockerStateStore:(id)a3 useContentBlockerWithComposedIdentifier:(BOOL)a4;
-- (id)_findNewExtensionsAdded:(id)a3 toExistingExtensions:(id)a4;
-- (id)_installationDateForExtension:(id)a3;
-- (id)cloudExtensionStateForStateManager:(id)a3;
-- (id)displayNameForExtension:(id)a3;
+- (id)_extensionsDataForExportFromContentBlockerStateStore:(id)store useContentBlockerWithComposedIdentifier:(BOOL)identifier;
+- (id)_findNewExtensionsAdded:(id)added toExistingExtensions:(id)extensions;
+- (id)_installationDateForExtension:(id)extension;
+- (id)cloudExtensionStateForStateManager:(id)manager;
+- (id)displayNameForExtension:(id)extension;
 - (id)extensionStateKeysToCopy;
 - (id)extensionsDataForExport;
 - (unint64_t)recentlyInstalledExtensionCount;
-- (void)_applyContentBlockerInPrivateBrowsing:(id)a3;
+- (void)_applyContentBlockerInPrivateBrowsing:(id)browsing;
 - (void)_beginContentBlockerDiscovery;
 - (void)_commonInit;
-- (void)_contentBlockerDiscoveryHasNewResults:(id)a3 error:(id)a4;
-- (void)_contentBlockerEnabledStateDidChange:(id)a3;
-- (void)_contentBlockerStateInPrivateBrowsingDidChange:(id)a3;
-- (void)_didDiscoverExtensions:(id)a3;
+- (void)_contentBlockerDiscoveryHasNewResults:(id)results error:(id)error;
+- (void)_contentBlockerEnabledStateDidChange:(id)change;
+- (void)_contentBlockerStateInPrivateBrowsingDidChange:(id)change;
+- (void)_didDiscoverExtensions:(id)extensions;
 - (void)_loadBuiltInContentBlockers;
 - (void)_loadContentBlockerRecompilationInformationIfNeeded;
 - (void)_loadContentBlockerStateFromDisk;
-- (void)_noteRecompilationWasAttemptedForExtension:(id)a3;
+- (void)_noteRecompilationWasAttemptedForExtension:(id)extension;
 - (void)_populateExtensionsIfNecessaryUsingManagerForDefaultProfile;
-- (void)_recompileEnabledContentBlockersIfNeeded:(id)a3;
+- (void)_recompileEnabledContentBlockersIfNeeded:(id)needed;
 - (void)_removeAllContentRuleLists;
-- (void)_removeContentBlockerInPrivateBrowsing:(id)a3;
+- (void)_removeContentBlockerInPrivateBrowsing:(id)browsing;
 - (void)_saveContentBlockerRecompilationInformation;
-- (void)_updateContentBlockerStateFromDiscoveredContentBlockers:(id)a3;
-- (void)addContentRuleList:(id)a3 forExtension:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)copyEnabledExtensionStateFromContentBlockerManager:(id)a3;
+- (void)_updateContentBlockerStateFromDiscoveredContentBlockers:(id)blockers;
+- (void)addContentRuleList:(id)list forExtension:(id)extension;
+- (void)addObserver:(id)observer;
+- (void)copyEnabledExtensionStateFromContentBlockerManager:(id)manager;
 - (void)informObserversThatContentBlockerManagerExtensionListDidChange;
-- (void)queryControllerDidUpdate:(id)a3 resultDifference:(id)a4;
-- (void)reloadUserContentControllerReadingStateFromDisk:(BOOL)a3;
-- (void)setExtension:(id)a3 isEnabled:(BOOL)a4 byUserGesture:(BOOL)a5;
-- (void)setExtension:(id)a3 isEnabledInPrivateBrowsing:(BOOL)a4 updateUserContentController:(BOOL)a5;
-- (void)setExtensionWithComposedIdentifier:(id)a3 isEnabledInCloud:(BOOL)a4;
+- (void)queryControllerDidUpdate:(id)update resultDifference:(id)difference;
+- (void)reloadUserContentControllerReadingStateFromDisk:(BOOL)disk;
+- (void)setExtension:(id)extension isEnabled:(BOOL)enabled byUserGesture:(BOOL)gesture;
+- (void)setExtension:(id)extension isEnabledInPrivateBrowsing:(BOOL)browsing updateUserContentController:(BOOL)controller;
+- (void)setExtensionWithComposedIdentifier:(id)identifier isEnabledInCloud:(BOOL)cloud;
 @end
 
 @implementation SFContentBlockerManager
@@ -64,15 +64,15 @@
   [(WKUserContentController *)self->_userContentController removeAllContentRuleLists];
   if ([(SFContentBlockerManager *)self _isManagingDefaultProfile])
   {
-    v3 = [MEMORY[0x1E6985350] safari_privateBrowsingUserContentController];
-    [v3 removeAllContentRuleLists];
+    safari_privateBrowsingUserContentController = [MEMORY[0x1E6985350] safari_privateBrowsingUserContentController];
+    [safari_privateBrowsingUserContentController removeAllContentRuleLists];
   }
 
-  v4 = [MEMORY[0x1E6985350] safari_readerUserContentController];
-  [v4 removeAllContentRuleLists];
+  safari_readerUserContentController = [MEMORY[0x1E6985350] safari_readerUserContentController];
+  [safari_readerUserContentController removeAllContentRuleLists];
 
-  v5 = [MEMORY[0x1E6985350] safari_readingListFetcherUserContentController];
-  [v5 removeAllContentRuleLists];
+  safari_readingListFetcherUserContentController = [MEMORY[0x1E6985350] safari_readingListFetcherUserContentController];
+  [safari_readingListFetcherUserContentController removeAllContentRuleLists];
 }
 
 id __57__SFContentBlockerManager_SFPrivate__contentBlockerStore__block_invoke()
@@ -91,11 +91,11 @@ id __57__SFContentBlockerManager_SFPrivate__contentBlockerStore__block_invoke()
   self->_recompilationInformationAccessQueue = v3;
 
   [(SFContentBlockerManager *)self _loadContentBlockerStateFromDisk];
-  v5 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v5 addObserver:self selector:sel__contentBlockerEnabledStateDidChange_ name:@"com.apple.SafariServices.ContentBlockerEnabledStateDidChange" object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentBlockerEnabledStateDidChange_ name:@"com.apple.SafariServices.ContentBlockerEnabledStateDidChange" object:0];
 
-  v6 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v6 addObserver:self selector:sel__contentBlockerStateInPrivateBrowsingDidChange_ name:*MEMORY[0x1E69C9138] object:0];
+  defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__contentBlockerStateInPrivateBrowsingDidChange_ name:*MEMORY[0x1E69C9138] object:0];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -119,24 +119,24 @@ id __57__SFContentBlockerManager_SFPrivate__contentBlockerStore__block_invoke()
     self->_contentBlockerStateStore = 0;
   }
 
-  v5 = [(SFContentBlockerManager *)self webExtensionsController];
-  v6 = [(SFContentBlockerManager *)self _createContentBlockerStateStore];
+  webExtensionsController = [(SFContentBlockerManager *)self webExtensionsController];
+  _createContentBlockerStateStore = [(SFContentBlockerManager *)self _createContentBlockerStateStore];
   v7 = self->_contentBlockerStateStore;
-  self->_contentBlockerStateStore = v6;
+  self->_contentBlockerStateStore = _createContentBlockerStateStore;
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__SFContentBlockerManager_SFPrivate___loadContentBlockerStateFromDisk__block_invoke;
   v9[3] = &unk_1E8490438;
-  v8 = v5;
+  v8 = webExtensionsController;
   v10 = v8;
   [(WBSPersistentPropertyListStore *)self->_contentBlockerStateStore setCreateEmptyStoreHandler:v9];
 }
 
 - (id)_createContentBlockerStateStore
 {
-  v2 = [(SFContentBlockerManager *)self _contentBlockerStateURL];
-  v3 = [objc_alloc(MEMORY[0x1E69C89C8]) initWithBackingStoreURL:v2];
+  _contentBlockerStateURL = [(SFContentBlockerManager *)self _contentBlockerStateURL];
+  v3 = [objc_alloc(MEMORY[0x1E69C89C8]) initWithBackingStoreURL:_contentBlockerStateURL];
 
   return v3;
 }
@@ -151,8 +151,8 @@ id __57__SFContentBlockerManager_SFPrivate__contentBlockerStore__block_invoke()
 
   else
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v5 safari_profileDirectoryURLWithID:self->_profileServerID createIfNeeded:1];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v6 = [defaultManager safari_profileDirectoryURLWithID:self->_profileServerID createIfNeeded:1];
 
     if (!v6)
     {
@@ -160,8 +160,8 @@ id __57__SFContentBlockerManager_SFPrivate__contentBlockerStore__block_invoke()
     }
 
     v4 = [v6 URLByAppendingPathComponent:@"ContentBlockers" isDirectory:1];
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [v7 safari_ensureDirectoryExists:v4];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    v8 = [defaultManager2 safari_ensureDirectoryExists:v4];
   }
 
   v6 = [v4 URLByAppendingPathComponent:@"ContentBlockers.plist" isDirectory:0];
@@ -181,9 +181,9 @@ LABEL_6:
       v3 = [objc_alloc(MEMORY[0x1E6966CE0]) initWithExtensionPointIdentifier:@"com.apple.Safari.content-blocker"];
       [v3 setExcludeLockedApps:1];
       v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.SafariServices.SFContentBlockerManager.%@.%p.discoveryQueue", objc_opt_class(), self];
-      v5 = [v4 UTF8String];
+      uTF8String = [v4 UTF8String];
       v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v7 = dispatch_queue_create(v5, v6);
+      v7 = dispatch_queue_create(uTF8String, v6);
       discoveryNotificationQueue = self->_discoveryNotificationQueue;
       self->_discoveryNotificationQueue = v7;
 
@@ -219,8 +219,8 @@ LABEL_6:
 - (BOOL)_isManagingDefaultProfile
 {
   v2 = MEMORY[0x1E69C98E0];
-  v3 = [(WBSWebExtensionsController *)self->_webExtensionsController profileServerID];
-  LOBYTE(v2) = [v2 isProfileServerIDForDefaultProfile:v3];
+  profileServerID = [(WBSWebExtensionsController *)self->_webExtensionsController profileServerID];
+  LOBYTE(v2) = [v2 isProfileServerIDForDefaultProfile:profileServerID];
 
   return v2;
 }
@@ -250,7 +250,7 @@ void __67__SFContentBlockerManager_SFPrivate___beginContentBlockerDiscovery__blo
 
 - (void)_loadBuiltInContentBlockers
 {
-  v2 = [objc_opt_class() contentBlockerStore];
+  contentBlockerStore = [objc_opt_class() contentBlockerStore];
   WBSLoadBuiltInContentBlockersWithStore();
 }
 
@@ -446,18 +446,18 @@ void __58__SFContentBlockerManager__contentBlockerLoaderConnection__block_invoke
   +[SFContentBlockerManager _contentBlockerLoaderConnection]::connection = 0;
 }
 
-+ (void)_loadContentBlockerWithIdentifier:(id)a3 completionHandler:(id)a4
++ (void)_loadContentBlockerWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() _contentBlockerLoaderConnection];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  _contentBlockerLoaderConnection = [objc_opt_class() _contentBlockerLoaderConnection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__SFContentBlockerManager__loadContentBlockerWithIdentifier_completionHandler___block_invoke;
   v13[3] = &unk_1E84903E8;
-  v8 = v6;
+  v8 = handlerCopy;
   v14 = v8;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v13];
+  v9 = [_contentBlockerLoaderConnection remoteObjectProxyWithErrorHandler:v13];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -465,7 +465,7 @@ void __58__SFContentBlockerManager__contentBlockerLoaderConnection__block_invoke
   v11[3] = &unk_1E84903E8;
   v10 = v8;
   v12 = v10;
-  [v9 loadContentBlockerWithIdentifier:v5 reply:v11];
+  [v9 loadContentBlockerWithIdentifier:identifierCopy reply:v11];
 }
 
 void __79__SFContentBlockerManager__loadContentBlockerWithIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -503,7 +503,7 @@ void __79__SFContentBlockerManager__loadContentBlockerWithIdentifier_completionH
     v18[2] = __80__SFContentBlockerManager_reloadContentBlockerWithIdentifier_completionHandler___block_invoke;
     v18[3] = &unk_1E84903E8;
     v19 = v7;
-    [a1 _loadContentBlockerWithIdentifier:v6 completionHandler:v18];
+    [self _loadContentBlockerWithIdentifier:v6 completionHandler:v18];
     v9 = v19;
 LABEL_6:
 
@@ -551,14 +551,14 @@ void __80__SFContentBlockerManager_reloadContentBlockerWithIdentifier_completion
   {
     if ([(NSString *)v6 length])
     {
-      v8 = [a1 _contentBlockerLoaderConnection];
+      _contentBlockerLoaderConnection = [self _contentBlockerLoaderConnection];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __84__SFContentBlockerManager_getStateOfContentBlockerWithIdentifier_completionHandler___block_invoke;
       v20[3] = &unk_1E84903E8;
       v9 = v7;
       v21 = v9;
-      v10 = [v8 remoteObjectProxyWithErrorHandler:v20];
+      v10 = [_contentBlockerLoaderConnection remoteObjectProxyWithErrorHandler:v20];
 
       [v10 getStateOfContentBlockerWithIdentifier:v6 reply:v9];
       v11 = v21;
@@ -578,22 +578,22 @@ void __80__SFContentBlockerManager_reloadContentBlockerWithIdentifier_completion
   }
 }
 
-- (SFContentBlockerManager)initWithUserContentController:(id)a3 webExtensionsController:(id)a4
+- (SFContentBlockerManager)initWithUserContentController:(id)controller webExtensionsController:(id)extensionsController
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  extensionsControllerCopy = extensionsController;
   v15.receiver = self;
   v15.super_class = SFContentBlockerManager;
   v9 = [(SFContentBlockerManager *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_userContentController, a3);
-    v11 = [v8 profileServerID];
+    objc_storeStrong(&v9->_userContentController, controller);
+    profileServerID = [extensionsControllerCopy profileServerID];
     profileServerID = v10->_profileServerID;
-    v10->_profileServerID = v11;
+    v10->_profileServerID = profileServerID;
 
-    objc_storeStrong(&v10->_webExtensionsController, a4);
+    objc_storeStrong(&v10->_webExtensionsController, extensionsController);
     [(SFContentBlockerManager *)v10 _commonInit];
     v13 = v10;
   }
@@ -608,9 +608,9 @@ void __80__SFContentBlockerManager_reloadContentBlockerWithIdentifier_completion
   v2 = [(SFContentBlockerManager *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E6985350] safari_userContentController];
+    safari_userContentController = [MEMORY[0x1E6985350] safari_userContentController];
     userContentController = v2->_userContentController;
-    v2->_userContentController = v3;
+    v2->_userContentController = safari_userContentController;
 
     [(SFContentBlockerManager *)v2 _commonInit];
     v5 = v2;
@@ -767,46 +767,46 @@ id __70__SFContentBlockerManager_SFPrivate___loadContentBlockerStateFromDisk__bl
   return v2;
 }
 
-- (void)addContentRuleList:(id)a3 forExtension:(id)a4
+- (void)addContentRuleList:(id)list forExtension:(id)extension
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  extensionCopy = extension;
   v8 = WBS_LOG_CHANNEL_PREFIXContentBlockers();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v7 identifier];
+    identifier = [extensionCopy identifier];
     v15 = 138477827;
-    v16 = v9;
+    v16 = identifier;
     _os_log_impl(&dword_1D4644000, v8, OS_LOG_TYPE_INFO, "Adding content blocker rules from %{private}@", &v15, 0xCu);
   }
 
-  [(WKUserContentController *)self->_userContentController addContentRuleList:v6];
-  if ([(SFContentBlockerManager *)self isContentBlockerAllowedInPrivateBrowsing:v7]&& [(SFContentBlockerManager *)self _isManagingDefaultProfile])
+  [(WKUserContentController *)self->_userContentController addContentRuleList:listCopy];
+  if ([(SFContentBlockerManager *)self isContentBlockerAllowedInPrivateBrowsing:extensionCopy]&& [(SFContentBlockerManager *)self _isManagingDefaultProfile])
   {
     v10 = WBS_LOG_CHANNEL_PREFIXContentBlockers();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v7 identifier];
+      identifier2 = [extensionCopy identifier];
       v15 = 138477827;
-      v16 = v11;
+      v16 = identifier2;
       _os_log_impl(&dword_1D4644000, v10, OS_LOG_TYPE_INFO, "Adding content blocker rules from %{private}@ in private browsing", &v15, 0xCu);
     }
 
-    v12 = [MEMORY[0x1E6985350] safari_privateBrowsingUserContentController];
-    [v12 addContentRuleList:v6];
+    safari_privateBrowsingUserContentController = [MEMORY[0x1E6985350] safari_privateBrowsingUserContentController];
+    [safari_privateBrowsingUserContentController addContentRuleList:listCopy];
   }
 
-  v13 = [MEMORY[0x1E6985350] safari_readerUserContentController];
-  [v13 addContentRuleList:v6];
+  safari_readerUserContentController = [MEMORY[0x1E6985350] safari_readerUserContentController];
+  [safari_readerUserContentController addContentRuleList:listCopy];
 
-  v14 = [MEMORY[0x1E6985350] safari_readingListFetcherUserContentController];
-  [v14 addContentRuleList:v6];
+  safari_readingListFetcherUserContentController = [MEMORY[0x1E6985350] safari_readingListFetcherUserContentController];
+  [safari_readingListFetcherUserContentController addContentRuleList:listCopy];
 }
 
-- (void)reloadUserContentControllerReadingStateFromDisk:(BOOL)a3
+- (void)reloadUserContentControllerReadingStateFromDisk:(BOOL)disk
 {
-  v3 = a3;
+  diskCopy = disk;
   v5 = WBS_LOG_CHANNEL_PREFIXContentBlockers();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -815,7 +815,7 @@ id __70__SFContentBlockerManager_SFPrivate___loadContentBlockerStateFromDisk__bl
   }
 
   [(SFContentBlockerManager *)self _removeAllContentRuleLists];
-  if (v3)
+  if (diskCopy)
   {
     v6 = WBS_LOG_CHANNEL_PREFIXContentBlockers();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -968,17 +968,17 @@ id __86__SFContentBlockerManager_SFPrivate__reloadUserContentControllerReadingSt
   return v2;
 }
 
-- (void)_applyContentBlockerInPrivateBrowsing:(id)a3
+- (void)_applyContentBlockerInPrivateBrowsing:(id)browsing
 {
-  v3 = a3;
-  v4 = [objc_opt_class() contentBlockerStore];
+  browsingCopy = browsing;
+  contentBlockerStore = [objc_opt_class() contentBlockerStore];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __76__SFContentBlockerManager_SFPrivate___applyContentBlockerInPrivateBrowsing___block_invoke;
   v6[3] = &unk_1E8490570;
-  v5 = v3;
+  v5 = browsingCopy;
   v7 = v5;
-  [v4 lookUpContentRuleListForIdentifier:v5 completionHandler:v6];
+  [contentBlockerStore lookUpContentRuleListForIdentifier:v5 completionHandler:v6];
 }
 
 void __76__SFContentBlockerManager_SFPrivate___applyContentBlockerInPrivateBrowsing___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1003,31 +1003,31 @@ void __76__SFContentBlockerManager_SFPrivate___applyContentBlockerInPrivateBrows
   }
 }
 
-- (void)_removeContentBlockerInPrivateBrowsing:(id)a3
+- (void)_removeContentBlockerInPrivateBrowsing:(id)browsing
 {
-  v4 = a3;
-  v3 = [MEMORY[0x1E6985350] safari_privateBrowsingUserContentController];
-  [v3 _removeUserContentFilter:v4];
+  browsingCopy = browsing;
+  safari_privateBrowsingUserContentController = [MEMORY[0x1E6985350] safari_privateBrowsingUserContentController];
+  [safari_privateBrowsingUserContentController _removeUserContentFilter:browsingCopy];
 }
 
-+ (void)_createContentExtensionsDirectoryWithURL:(id)a3
++ (void)_createContentExtensionsDirectoryWithURL:(id)l
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  [v4 createDirectoryAtURL:v3 withIntermediateDirectories:1 attributes:0 error:0];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager createDirectoryAtURL:lCopy withIntermediateDirectories:1 attributes:0 error:0];
 
   v5 = *MEMORY[0x1E695DB80];
   v10 = 0;
-  v6 = [v3 setResourceValue:MEMORY[0x1E695E118] forKey:v5 error:&v10];
+  v6 = [lCopy setResourceValue:MEMORY[0x1E695E118] forKey:v5 error:&v10];
   v7 = v10;
   if ((v6 & 1) == 0)
   {
     v8 = WBS_LOG_CHANNEL_PREFIXContentBlockers();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v7 safari_privacyPreservingDescription];
-      [(SFContentBlockerManager(SFPrivate) *)v9 _createContentExtensionsDirectoryWithURL:v11, v8];
+      safari_privacyPreservingDescription = [v7 safari_privacyPreservingDescription];
+      [(SFContentBlockerManager(SFPrivate) *)safari_privacyPreservingDescription _createContentExtensionsDirectoryWithURL:v11, v8];
     }
   }
 }
@@ -1063,11 +1063,11 @@ void *__55__SFContentBlockerManager_SFPrivate__enabledExtensions__block_invoke(u
   return v4;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
     v6 = [MEMORY[0x1E695DFA8] set];
@@ -1075,23 +1075,23 @@ void *__55__SFContentBlockerManager_SFPrivate__enabledExtensions__block_invoke(u
     self->_observers = v6;
 
     observers = self->_observers;
-    v4 = v8;
+    observerCopy = v8;
   }
 
-  [(NSMutableSet *)observers addObject:v4];
+  [(NSMutableSet *)observers addObject:observerCopy];
 }
 
-- (void)queryControllerDidUpdate:(id)a3 resultDifference:(id)a4
+- (void)queryControllerDidUpdate:(id)update resultDifference:(id)difference
 {
-  v5 = a3;
+  updateCopy = update;
   discoveryNotificationQueue = self->_discoveryNotificationQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __80__SFContentBlockerManager_SFPrivate__queryControllerDidUpdate_resultDifference___block_invoke;
   v8[3] = &unk_1E848F9B0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = updateCopy;
+  selfCopy = self;
+  v7 = updateCopy;
   dispatch_async(discoveryNotificationQueue, v8);
 }
 
@@ -1117,34 +1117,34 @@ id __80__SFContentBlockerManager_SFPrivate__queryControllerDidUpdate_resultDiffe
   return v2;
 }
 
-- (void)_contentBlockerDiscoveryHasNewResults:(id)a3 error:(id)a4
+- (void)_contentBlockerDiscoveryHasNewResults:(id)results error:(id)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  errorCopy = error;
   v8 = WBS_LOG_CHANNEL_PREFIXContentBlockers();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    v13 = v6;
+    v13 = resultsCopy;
     _os_log_impl(&dword_1D4644000, v8, OS_LOG_TYPE_INFO, "Discovered content blockers: %{private}@", buf, 0xCu);
   }
 
-  self->_lastExtensionDiscoveryHadError = v7 != 0;
-  v9 = [(SFContentBlockerManager *)self delegate];
+  self->_lastExtensionDiscoveryHadError = errorCopy != 0;
+  delegate = [(SFContentBlockerManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __82__SFContentBlockerManager_SFPrivate___contentBlockerDiscoveryHasNewResults_error___block_invoke;
     v10[3] = &unk_1E84905E8;
-    v11 = v6;
-    [v9 enumerateContentBlockerManagersUsingBlock:v10];
+    v11 = resultsCopy;
+    [delegate enumerateContentBlockerManagersUsingBlock:v10];
   }
 
   else
   {
-    [(SFContentBlockerManager *)self _didDiscoverExtensions:v6];
+    [(SFContentBlockerManager *)self _didDiscoverExtensions:resultsCopy];
   }
 }
 
@@ -1217,20 +1217,20 @@ void __97__SFContentBlockerManager_SFPrivate___populateExtensionsIfNecessaryUsin
   }
 }
 
-- (void)_didDiscoverExtensions:(id)a3
+- (void)_didDiscoverExtensions:(id)extensions
 {
-  v6 = a3;
+  extensionsCopy = extensions;
   v4 = [SFContentBlockerManager _findNewExtensionsAdded:"_findNewExtensionsAdded:toExistingExtensions:" toExistingExtensions:?];
   [(SFContentBlockerManager *)self _recompileEnabledContentBlockersIfNeeded:v4];
 
-  v5 = [MEMORY[0x1E695DFD8] setWithArray:v6];
+  v5 = [MEMORY[0x1E695DFD8] setWithArray:extensionsCopy];
   [(SFContentBlockerManager *)self _updateContentBlockerStateFromDiscoveredContentBlockers:v5];
   objc_storeStrong(&self->_extensions, v5);
   self->_hasPopulatedExtensionsFromExtensionDiscoveryAtLeastOnce = 1;
   [(SFContentBlockerManager *)self informObserversThatContentBlockerManagerExtensionListDidChange];
 }
 
-- (void)_contentBlockerEnabledStateDidChange:(id)a3
+- (void)_contentBlockerEnabledStateDidChange:(id)change
 {
   v4 = WBS_LOG_CHANNEL_PREFIXContentBlockers();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1242,14 +1242,14 @@ void __97__SFContentBlockerManager_SFPrivate___populateExtensionsIfNecessaryUsin
   self->_contentBlockerStateStoreRequiresReload = 1;
 }
 
-- (void)_contentBlockerStateInPrivateBrowsingDidChange:(id)a3
+- (void)_contentBlockerStateInPrivateBrowsingDidChange:(id)change
 {
-  v8 = a3;
-  v4 = [v8 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C9140]];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69C9140]];
 
-  v6 = [v8 userInfo];
-  v7 = [v6 safari_BOOLForKey:*MEMORY[0x1E69C9218]];
+  userInfo2 = [changeCopy userInfo];
+  v7 = [userInfo2 safari_BOOLForKey:*MEMORY[0x1E69C9218]];
 
   if (v7)
   {
@@ -1262,17 +1262,17 @@ void __97__SFContentBlockerManager_SFPrivate___populateExtensionsIfNecessaryUsin
   }
 }
 
-- (id)_findNewExtensionsAdded:(id)a3 toExistingExtensions:(id)a4
+- (id)_findNewExtensionsAdded:(id)added toExistingExtensions:(id)extensions
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  addedCopy = added;
+  extensionsCopy = extensions;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v5;
+  v8 = addedCopy;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -1287,9 +1287,9 @@ void __97__SFContentBlockerManager_SFPrivate___populateExtensionsIfNecessaryUsin
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        if (([v6 containsObject:{v12, v14}] & 1) == 0)
+        if (([extensionsCopy containsObject:{v12, v14}] & 1) == 0)
         {
-          [v7 addObject:v12];
+          [array addObject:v12];
         }
       }
 
@@ -1299,7 +1299,7 @@ void __97__SFContentBlockerManager_SFPrivate___populateExtensionsIfNecessaryUsin
     while (v9);
   }
 
-  return v7;
+  return array;
 }
 
 - (void)_saveContentBlockerRecompilationInformation
@@ -1326,8 +1326,8 @@ void __97__SFContentBlockerManager_SFPrivate___populateExtensionsIfNecessaryUsin
       v8 = WBS_LOG_CHANNEL_PREFIXContentBlockers();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v7 = [v5 safari_privacyPreservingDescription];
-        [(SFContentBlockerManager(SFPrivate) *)v7 _saveContentBlockerRecompilationInformation];
+        safari_privacyPreservingDescription = [v5 safari_privacyPreservingDescription];
+        [(SFContentBlockerManager(SFPrivate) *)safari_privacyPreservingDescription _saveContentBlockerRecompilationInformation];
       }
     }
 
@@ -1339,9 +1339,9 @@ void __97__SFContentBlockerManager_SFPrivate___populateExtensionsIfNecessaryUsin
   }
 }
 
-- (BOOL)_hasRecompilationBeenAttemptedForExtension:(id)a3
+- (BOOL)_hasRecompilationBeenAttemptedForExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1351,10 +1351,10 @@ void __97__SFContentBlockerManager_SFPrivate___populateExtensionsIfNecessaryUsin
   block[1] = 3221225472;
   block[2] = __81__SFContentBlockerManager_SFPrivate___hasRecompilationBeenAttemptedForExtension___block_invoke;
   block[3] = &unk_1E8490680;
-  v9 = v4;
+  v9 = extensionCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = extensionCopy;
   dispatch_sync(recompilationInformationAccessQueue, block);
   LOBYTE(recompilationInformationAccessQueue) = *(v12 + 24);
 
@@ -1369,17 +1369,17 @@ void __81__SFContentBlockerManager_SFPrivate___hasRecompilationBeenAttemptedForE
   *(*(*(a1 + 48) + 8) + 24) = [v2 safari_BOOLForKey:?];
 }
 
-- (void)_noteRecompilationWasAttemptedForExtension:(id)a3
+- (void)_noteRecompilationWasAttemptedForExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   recompilationInformationAccessQueue = self->_recompilationInformationAccessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __81__SFContentBlockerManager_SFPrivate___noteRecompilationWasAttemptedForExtension___block_invoke;
   v7[3] = &unk_1E848F9B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = extensionCopy;
+  v6 = extensionCopy;
   dispatch_async(recompilationInformationAccessQueue, v7);
 }
 
@@ -1394,16 +1394,16 @@ uint64_t __81__SFContentBlockerManager_SFPrivate___noteRecompilationWasAttempted
   return [v4 _saveContentBlockerRecompilationInformation];
 }
 
-- (void)_recompileEnabledContentBlockersIfNeeded:(id)a3
+- (void)_recompileEnabledContentBlockersIfNeeded:(id)needed
 {
   v27 = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  neededCopy = needed;
   [(SFContentBlockerManager *)self _loadContentBlockerRecompilationInformationIfNeeded];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = v15;
+  v4 = neededCopy;
   v5 = [v4 countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v5)
   {
@@ -1418,7 +1418,7 @@ uint64_t __81__SFContentBlockerManager_SFPrivate___noteRecompilationWasAttempted
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
-        v9 = [v8 identifier];
+        identifier = [v8 identifier];
         if ([(SFContentBlockerManager *)self _hasRecompilationBeenAttemptedForExtension:v8])
         {
           v10 = WBS_LOG_CHANNEL_PREFIXContentBlockers();
@@ -1428,7 +1428,7 @@ uint64_t __81__SFContentBlockerManager_SFPrivate___noteRecompilationWasAttempted
           }
 
           *buf = 138543362;
-          v25 = v9;
+          v25 = identifier;
           v11 = v10;
           v12 = "Already attempted to re-compile Content Blocker '%{public}@' once, no need to re-compile";
           goto LABEL_13;
@@ -1436,15 +1436,15 @@ uint64_t __81__SFContentBlockerManager_SFPrivate___noteRecompilationWasAttempted
 
         if ([(SFContentBlockerManager *)self extensionIsEnabled:v8])
         {
-          v13 = [objc_opt_class() contentBlockerStore];
+          contentBlockerStore = [objc_opt_class() contentBlockerStore];
           v16[0] = MEMORY[0x1E69E9820];
           v16[1] = 3221225472;
           v16[2] = __79__SFContentBlockerManager_SFPrivate___recompileEnabledContentBlockersIfNeeded___block_invoke;
           v16[3] = &unk_1E84904A8;
-          v17 = v9;
-          v18 = self;
+          v17 = identifier;
+          selfCopy = self;
           v19 = v8;
-          [v13 lookUpContentRuleListForIdentifier:v17 completionHandler:v16];
+          [contentBlockerStore lookUpContentRuleListForIdentifier:v17 completionHandler:v16];
 
           goto LABEL_14;
         }
@@ -1453,7 +1453,7 @@ uint64_t __81__SFContentBlockerManager_SFPrivate___noteRecompilationWasAttempted
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           *buf = 138543362;
-          v25 = v9;
+          v25 = identifier;
           v11 = v14;
           v12 = "Content Blocker '%{public}@' was disabled, no need to re-compile";
 LABEL_13:
@@ -1530,22 +1530,22 @@ void __79__SFContentBlockerManager_SFPrivate___recompileEnabledContentBlockersIf
   }
 }
 
-- (void)_updateContentBlockerStateFromDiscoveredContentBlockers:(id)a3
+- (void)_updateContentBlockerStateFromDiscoveredContentBlockers:(id)blockers
 {
   v57 = *MEMORY[0x1E69E9840];
-  v34 = a3;
-  if (!v34)
+  blockersCopy = blockers;
+  if (!blockersCopy)
   {
     goto LABEL_42;
   }
 
-  v40 = [(SFContentBlockerManager *)self webExtensionsController];
-  v42 = [MEMORY[0x1E695DF90] dictionary];
+  webExtensionsController = [(SFContentBlockerManager *)self webExtensionsController];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v34;
+  obj = blockersCopy;
   v4 = [obj countByEnumeratingWithState:&v47 objects:v56 count:16];
   if (v4)
   {
@@ -1563,13 +1563,13 @@ void __79__SFContentBlockerManager_SFPrivate___recompileEnabledContentBlockersIf
         }
 
         v8 = *(*(&v47 + 1) + 8 * i);
-        v9 = [v40 composedIdentifierForExtensionStateForExtension:v8];
-        [v42 setObject:v8 forKeyedSubscript:v9];
+        v9 = [webExtensionsController composedIdentifierForExtensionStateForExtension:v8];
+        [dictionary setObject:v8 forKeyedSubscript:v9];
         v10 = [(WBSPersistentPropertyListStore *)self->_contentBlockerStateStore dictionaryForKey:v9];
         if (!v10)
         {
-          v11 = [MEMORY[0x1E69C9778] sharedManager];
-          v12 = [v11 isExtensionEnabledInCloudWithComposedIdentifier:v9 forProfileServerID:self->_profileServerID];
+          mEMORY[0x1E69C9778] = [MEMORY[0x1E69C9778] sharedManager];
+          v12 = [mEMORY[0x1E69C9778] isExtensionEnabledInCloudWithComposedIdentifier:v9 forProfileServerID:self->_profileServerID];
 
           if (v12)
           {
@@ -1588,16 +1588,16 @@ void __79__SFContentBlockerManager_SFPrivate___recompileEnabledContentBlockersIf
         v14 = [v10 safari_dateForKey:v5];
         if (!v14)
         {
-          v15 = [v10 mutableCopy];
-          if (!v15)
+          dictionary2 = [v10 mutableCopy];
+          if (!dictionary2)
           {
-            v15 = [MEMORY[0x1E695DF90] dictionary];
+            dictionary2 = [MEMORY[0x1E695DF90] dictionary];
           }
 
           v16 = [MEMORY[0x1E695DF00] now];
-          [v15 setObject:v16 forKeyedSubscript:v5];
+          [dictionary2 setObject:v16 forKeyedSubscript:v5];
 
-          [(WBSPersistentPropertyListStore *)self->_contentBlockerStateStore setObject:v15 forKey:v9];
+          [(WBSPersistentPropertyListStore *)self->_contentBlockerStateStore setObject:dictionary2 forKey:v9];
           v41 = 1;
         }
 
@@ -1629,8 +1629,8 @@ void __79__SFContentBlockerManager_SFPrivate___recompileEnabledContentBlockersIf
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v20 = [(WBSPersistentPropertyListStore *)self->_contentBlockerStateStore allKeys];
-  v21 = [v20 countByEnumeratingWithState:&v43 objects:v53 count:16];
+  allKeys = [(WBSPersistentPropertyListStore *)self->_contentBlockerStateStore allKeys];
+  v21 = [allKeys countByEnumeratingWithState:&v43 objects:v53 count:16];
   if (!v21)
   {
 
@@ -1646,11 +1646,11 @@ void __79__SFContentBlockerManager_SFPrivate___recompileEnabledContentBlockersIf
     {
       if (*v44 != v39)
       {
-        objc_enumerationMutation(v20);
+        objc_enumerationMutation(allKeys);
       }
 
       v23 = *(*(&v43 + 1) + 8 * j);
-      v24 = [v42 objectForKeyedSubscript:v23];
+      v24 = [dictionary objectForKeyedSubscript:v23];
       v25 = v24 == 0;
 
       if (v25)
@@ -1688,15 +1688,15 @@ LABEL_32:
       }
     }
 
-    v21 = [v20 countByEnumeratingWithState:&v43 objects:v53 count:16];
+    v21 = [allKeys countByEnumeratingWithState:&v43 objects:v53 count:16];
   }
 
   while (v21);
 
   if (v35)
   {
-    v33 = [MEMORY[0x1E69C9778] sharedManager];
-    [v33 localExtensionStateDidChange];
+    mEMORY[0x1E69C9778]2 = [MEMORY[0x1E69C9778] sharedManager];
+    [mEMORY[0x1E69C9778]2 localExtensionStateDidChange];
   }
 
 LABEL_39:
@@ -1708,10 +1708,10 @@ LABEL_39:
 LABEL_42:
 }
 
-- (BOOL)extensionIsEnabled:(id)a3
+- (BOOL)extensionIsEnabled:(id)enabled
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  enabledCopy = enabled;
   if (self->_contentBlockerStateStoreRequiresReload)
   {
     v5 = WBS_LOG_CHANNEL_PREFIXContentBlockers();
@@ -1725,14 +1725,14 @@ LABEL_42:
     self->_contentBlockerStateStoreRequiresReload = 0;
   }
 
-  v6 = [(SFContentBlockerManager *)self webExtensionsController];
-  v7 = [v6 composedIdentifierForExtensionStateForExtension:v4];
+  webExtensionsController = [(SFContentBlockerManager *)self webExtensionsController];
+  v7 = [webExtensionsController composedIdentifierForExtensionStateForExtension:enabledCopy];
 
   v8 = [(WBSPersistentPropertyListStore *)self->_contentBlockerStateStore dictionaryForKey:v7];
   v9 = [v8 safari_BOOLForKey:*MEMORY[0x1E69C95F0]];
 
-  v10 = [MEMORY[0x1E69C88C8] sharedController];
-  v11 = [v10 managedExtensionStateForComposedIdentifier:v7];
+  mEMORY[0x1E69C88C8] = [MEMORY[0x1E69C88C8] sharedController];
+  v11 = [mEMORY[0x1E69C88C8] managedExtensionStateForComposedIdentifier:v7];
 
   if ((v11 != 1) | v9 & 1)
   {
@@ -1746,7 +1746,7 @@ LABEL_42:
         _os_log_impl(&dword_1D4644000, v12, OS_LOG_TYPE_INFO, "Disabling content blocker %{private}@ due to managed extension configuration", &v15, 0xCu);
       }
 
-      [(SFContentBlockerManager *)self setExtension:v4 isEnabled:0 byUserGesture:0];
+      [(SFContentBlockerManager *)self setExtension:enabledCopy isEnabled:0 byUserGesture:0];
       v9 = 0;
     }
   }
@@ -1762,40 +1762,40 @@ LABEL_42:
     }
 
     v9 = 1;
-    [(SFContentBlockerManager *)self setExtension:v4 isEnabled:1 byUserGesture:0];
+    [(SFContentBlockerManager *)self setExtension:enabledCopy isEnabled:1 byUserGesture:0];
   }
 
   return v9;
 }
 
-- (void)setExtension:(id)a3 isEnabled:(BOOL)a4 byUserGesture:(BOOL)a5
+- (void)setExtension:(id)extension isEnabled:(BOOL)enabled byUserGesture:(BOOL)gesture
 {
-  v5 = a5;
-  v6 = a4;
+  gestureCopy = gesture;
+  enabledCopy = enabled;
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(SFContentBlockerManager *)self webExtensionsController];
-  v10 = [v9 composedIdentifierForExtensionStateForExtension:v8];
+  extensionCopy = extension;
+  webExtensionsController = [(SFContentBlockerManager *)self webExtensionsController];
+  v10 = [webExtensionsController composedIdentifierForExtensionStateForExtension:extensionCopy];
 
   v11 = [(WBSPersistentPropertyListStore *)self->_contentBlockerStateStore dictionaryForKey:v10];
   v12 = [v11 mutableCopy];
   v13 = v12;
   if (v12)
   {
-    v14 = v12;
+    dictionary = v12;
   }
 
   else
   {
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v15 = v14;
+  v15 = dictionary;
 
-  v16 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+  v16 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   [v15 setObject:v16 forKeyedSubscript:*MEMORY[0x1E69C95F0]];
 
-  v17 = [MEMORY[0x1E696AD98] numberWithBool:v5];
+  v17 = [MEMORY[0x1E696AD98] numberWithBool:gestureCopy];
   [v15 setObject:v17 forKeyedSubscript:*MEMORY[0x1E69C95E8]];
 
   v18 = [MEMORY[0x1E695DF00] now];
@@ -1803,43 +1803,43 @@ LABEL_42:
 
   [(WBSPersistentPropertyListStore *)self->_contentBlockerStateStore setObject:v15 forKey:v10];
   [(WBSPersistentPropertyListStore *)self->_contentBlockerStateStore saveStoreSynchronously];
-  v19 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v19 postNotificationName:*MEMORY[0x1E69C9220] object:v8];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E69C9220] object:extensionCopy];
 
-  v20 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v20 postNotificationName:@"com.apple.SafariServices.ContentBlockerEnabledStateDidChange" object:0 userInfo:0 deliverImmediately:1];
+  defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter2 postNotificationName:@"com.apple.SafariServices.ContentBlockerEnabledStateDidChange" object:0 userInfo:0 deliverImmediately:1];
 
-  v21 = [MEMORY[0x1E69C9778] sharedManager];
-  [v21 localExtensionStateDidChange];
+  mEMORY[0x1E69C9778] = [MEMORY[0x1E69C9778] sharedManager];
+  [mEMORY[0x1E69C9778] localExtensionStateDidChange];
 
-  v22 = [v8 identifier];
+  identifier = [extensionCopy identifier];
   v23 = WBS_LOG_CHANNEL_PREFIXContentBlockers();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v32 = v22;
+    v32 = identifier;
     v33 = 1024;
-    v34 = v6;
+    v34 = enabledCopy;
     _os_log_impl(&dword_1D4644000, v23, OS_LOG_TYPE_DEFAULT, "Setting content blocker (%{public}@) to state: %d", buf, 0x12u);
   }
 
-  if (v6)
+  if (enabledCopy)
   {
-    v24 = [objc_opt_class() contentBlockerStore];
+    contentBlockerStore = [objc_opt_class() contentBlockerStore];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __75__SFContentBlockerManager_SFPrivate__setExtension_isEnabled_byUserGesture___block_invoke;
     v28[3] = &unk_1E84906F8;
-    v29 = v22;
-    v30 = self;
-    [v24 lookUpContentRuleListForIdentifier:v29 completionHandler:v28];
+    v29 = identifier;
+    selfCopy = self;
+    [contentBlockerStore lookUpContentRuleListForIdentifier:v29 completionHandler:v28];
   }
 
   else
   {
-    v25 = [objc_opt_class() _contentBlockerLoaderConnection];
-    v26 = [v25 remoteObjectProxy];
-    [v26 removeContentBlockerWithIdentifierIfNecessary:v22];
+    _contentBlockerLoaderConnection = [objc_opt_class() _contentBlockerLoaderConnection];
+    remoteObjectProxy = [_contentBlockerLoaderConnection remoteObjectProxy];
+    [remoteObjectProxy removeContentBlockerWithIdentifierIfNecessary:identifier];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.SafariServices.ContentBlockerDidChange", 0, 0, 0);
@@ -1897,9 +1897,9 @@ void __75__SFContentBlockerManager_SFPrivate__setExtension_isEnabled_byUserGestu
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.SafariServices.ContentBlockerDidChange", 0, 0, 0);
 }
 
-- (BOOL)isContentBlockerAllowedInPrivateBrowsing:(id)a3
+- (BOOL)isContentBlockerAllowedInPrivateBrowsing:(id)browsing
 {
-  v4 = a3;
+  browsingCopy = browsing;
   if ([(SFContentBlockerManager *)self _isManagingDefaultProfile])
   {
     if (self->_contentBlockerStateStoreRequiresReload)
@@ -1915,28 +1915,28 @@ void __75__SFContentBlockerManager_SFPrivate__setExtension_isEnabled_byUserGestu
       self->_contentBlockerStateStoreRequiresReload = 0;
     }
 
-    v6 = [(SFContentBlockerManager *)self webExtensionsController];
-    v7 = [v6 composedIdentifierForExtensionStateForExtension:v4];
+    webExtensionsController = [(SFContentBlockerManager *)self webExtensionsController];
+    v7 = [webExtensionsController composedIdentifierForExtensionStateForExtension:browsingCopy];
 
     v8 = [(WBSPersistentPropertyListStore *)self->_contentBlockerStateStore dictionaryForKey:v7];
     v9 = [v8 safari_numberForKey:@"AllowInPrivateBrowsing"];
 
     if (v9)
     {
-      v10 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
     }
 
     else
     {
-      v10 = 1;
+      bOOLValue = 1;
     }
 
-    v11 = [MEMORY[0x1E69C88C8] sharedController];
-    v12 = [v11 managedExtensionPrivateBrowsingStateForComposedIdentifier:v7];
+    mEMORY[0x1E69C88C8] = [MEMORY[0x1E69C88C8] sharedController];
+    v12 = [mEMORY[0x1E69C88C8] managedExtensionPrivateBrowsingStateForComposedIdentifier:v7];
 
     if (v12 == 2)
     {
-      v13 = v10;
+      v13 = bOOLValue;
     }
 
     else
@@ -1946,15 +1946,15 @@ void __75__SFContentBlockerManager_SFPrivate__setExtension_isEnabled_byUserGestu
 
     if (v13 == 1)
     {
-      [(SFContentBlockerManager *)self setExtension:v4 isEnabledInPrivateBrowsing:0 updateUserContentController:0];
-      LOBYTE(v10) = 0;
+      [(SFContentBlockerManager *)self setExtension:browsingCopy isEnabledInPrivateBrowsing:0 updateUserContentController:0];
+      LOBYTE(bOOLValue) = 0;
     }
 
     else
     {
       if (v12 == 1)
       {
-        v14 = v10;
+        v14 = bOOLValue;
       }
 
       else
@@ -1964,53 +1964,53 @@ void __75__SFContentBlockerManager_SFPrivate__setExtension_isEnabled_byUserGestu
 
       if ((v14 & 1) == 0)
       {
-        LOBYTE(v10) = 1;
-        [(SFContentBlockerManager *)self setExtension:v4 isEnabledInPrivateBrowsing:1 updateUserContentController:0];
+        LOBYTE(bOOLValue) = 1;
+        [(SFContentBlockerManager *)self setExtension:browsingCopy isEnabledInPrivateBrowsing:1 updateUserContentController:0];
       }
     }
   }
 
   else
   {
-    LOBYTE(v10) = 0;
+    LOBYTE(bOOLValue) = 0;
   }
 
-  return v10;
+  return bOOLValue;
 }
 
-- (void)setExtension:(id)a3 isEnabledInPrivateBrowsing:(BOOL)a4 updateUserContentController:(BOOL)a5
+- (void)setExtension:(id)extension isEnabledInPrivateBrowsing:(BOOL)browsing updateUserContentController:(BOOL)controller
 {
-  v6 = a4;
-  v17 = a3;
+  browsingCopy = browsing;
+  extensionCopy = extension;
   if ([(SFContentBlockerManager *)self _isManagingDefaultProfile])
   {
-    v8 = [(SFContentBlockerManager *)self webExtensionsController];
-    v9 = [v8 composedIdentifierForExtensionStateForExtension:v17];
+    webExtensionsController = [(SFContentBlockerManager *)self webExtensionsController];
+    v9 = [webExtensionsController composedIdentifierForExtensionStateForExtension:extensionCopy];
 
     v10 = [(WBSPersistentPropertyListStore *)self->_contentBlockerStateStore dictionaryForKey:v9];
     v11 = [v10 mutableCopy];
     v12 = v11;
     if (v11)
     {
-      v13 = v11;
+      dictionary = v11;
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v14 = v13;
+    v14 = dictionary;
 
-    v15 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+    v15 = [MEMORY[0x1E696AD98] numberWithBool:browsingCopy];
     [v14 setObject:v15 forKeyedSubscript:@"AllowInPrivateBrowsing"];
 
     [(WBSPersistentPropertyListStore *)self->_contentBlockerStateStore setObject:v14 forKey:v9];
     [(WBSPersistentPropertyListStore *)self->_contentBlockerStateStore saveStoreSynchronously];
-    if (a5)
+    if (controller)
     {
-      [v17 identifier];
-      if (v6)
+      [extensionCopy identifier];
+      if (browsingCopy)
         v16 = {;
         [(SFContentBlockerManager *)self _applyContentBlockerInPrivateBrowsing:v16];
       }
@@ -2023,14 +2023,14 @@ void __75__SFContentBlockerManager_SFPrivate__setExtension_isEnabled_byUserGestu
   }
 }
 
-- (id)displayNameForExtension:(id)a3
+- (id)displayNameForExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [v4 _plugIn];
-  v6 = [v5 containingUrl];
+  extensionCopy = extension;
+  _plugIn = [extensionCopy _plugIn];
+  containingUrl = [_plugIn containingUrl];
 
-  v7 = [v4 _plugIn];
-  v8 = [v7 localizedContainingName];
+  _plugIn2 = [extensionCopy _plugIn];
+  localizedContainingName = [_plugIn2 localizedContainingName];
 
   v23[0] = 0;
   v23[1] = v23;
@@ -2041,7 +2041,7 @@ void __75__SFContentBlockerManager_SFPrivate__setExtension_isEnabled_byUserGestu
   v18 = 3221225472;
   v19 = __62__SFContentBlockerManager_SFPrivate__displayNameForExtension___block_invoke;
   v20 = &unk_1E8490720;
-  v10 = v6;
+  v10 = containingUrl;
   v21 = v10;
   v22 = v23;
   v11 = [(NSSet *)extensions objectsPassingTest:&v17];
@@ -2049,15 +2049,15 @@ void __75__SFContentBlockerManager_SFPrivate__setExtension_isEnabled_byUserGestu
   {
     v12 = MEMORY[0x1E696AEC0];
     v13 = _WBSLocalizedString();
-    v14 = [v4 objectForInfoDictionaryKey:*MEMORY[0x1E695E120]];
-    v15 = [v12 localizedStringWithFormat:v13, v8, v14, v17, v18, v19, v20];
+    v14 = [extensionCopy objectForInfoDictionaryKey:*MEMORY[0x1E695E120]];
+    v15 = [v12 localizedStringWithFormat:v13, localizedContainingName, v14, v17, v18, v19, v20];
 
-    v8 = v15;
+    localizedContainingName = v15;
   }
 
   _Block_object_dispose(v23, 8);
 
-  return v8;
+  return localizedContainingName;
 }
 
 uint64_t __62__SFContentBlockerManager_SFPrivate__displayNameForExtension___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -2083,20 +2083,20 @@ uint64_t __62__SFContentBlockerManager_SFPrivate__displayNameForExtension___bloc
   return v7;
 }
 
-- (id)_contentBlockerWithComposedIdentifier:(id)a3
+- (id)_contentBlockerWithComposedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SFContentBlockerManager *)self webExtensionsController];
-  v6 = [(SFContentBlockerManager *)self extensions];
+  identifierCopy = identifier;
+  webExtensionsController = [(SFContentBlockerManager *)self webExtensionsController];
+  extensions = [(SFContentBlockerManager *)self extensions];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __76__SFContentBlockerManager_SFPrivate___contentBlockerWithComposedIdentifier___block_invoke;
   v11[3] = &unk_1E8490748;
-  v7 = v5;
+  v7 = webExtensionsController;
   v12 = v7;
-  v8 = v4;
+  v8 = identifierCopy;
   v13 = v8;
-  v9 = [v6 safari_anyObjectPassingTest:v11];
+  v9 = [extensions safari_anyObjectPassingTest:v11];
 
   return v9;
 }
@@ -2109,20 +2109,20 @@ uint64_t __76__SFContentBlockerManager_SFPrivate___contentBlockerWithComposedIde
   return v4;
 }
 
-- (id)_contentBlockersWithAdamID:(id)a3
+- (id)_contentBlockersWithAdamID:(id)d
 {
-  v4 = a3;
-  v5 = [(SFContentBlockerManager *)self extensions];
+  dCopy = d;
+  extensions = [(SFContentBlockerManager *)self extensions];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__SFContentBlockerManager_SFPrivate___contentBlockersWithAdamID___block_invoke;
   v10[3] = &unk_1E8490598;
-  v6 = v4;
+  v6 = dCopy;
   v11 = v6;
-  v7 = [v5 safari_mapAndFilterObjectsUsingBlock:v10];
-  v8 = [v7 allObjects];
+  v7 = [extensions safari_mapAndFilterObjectsUsingBlock:v10];
+  allObjects = [v7 allObjects];
 
-  return v8;
+  return allObjects;
 }
 
 id __65__SFContentBlockerManager_SFPrivate___contentBlockersWithAdamID___block_invoke(uint64_t a1, void *a2)
@@ -2154,10 +2154,10 @@ id __65__SFContentBlockerManager_SFPrivate___contentBlockersWithAdamID___block_i
   return v6;
 }
 
-- (id)cloudExtensionStateForStateManager:(id)a3
+- (id)cloudExtensionStateForStateManager:(id)manager
 {
   v30 = *MEMORY[0x1E69E9840];
-  v23 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -2181,19 +2181,19 @@ id __65__SFContentBlockerManager_SFPrivate___contentBlockersWithAdamID___block_i
         }
 
         v6 = *(*(&v25 + 1) + 8 * i);
-        v7 = [(SFContentBlockerManager *)self webExtensionsController];
-        v8 = [v7 composedIdentifierForExtensionStateForExtension:v6];
+        webExtensionsController = [(SFContentBlockerManager *)self webExtensionsController];
+        v8 = [webExtensionsController composedIdentifierForExtensionStateForExtension:v6];
 
         v9 = [(WBSPersistentPropertyListStore *)self->_contentBlockerStateStore dictionaryForKey:v8];
-        v10 = [v6 safari_containingAppAdamID];
-        if (v10 || ([v6 safari_containingAppIsTestFlightApp] & 1) != 0)
+        safari_containingAppAdamID = [v6 safari_containingAppAdamID];
+        if (safari_containingAppAdamID || ([v6 safari_containingAppIsTestFlightApp] & 1) != 0)
         {
           v11 = [(SFContentBlockerManager *)self displayNameForExtension:v6];
-          v12 = [MEMORY[0x1E695DF90] dictionary];
-          v13 = v12;
-          if (v10)
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+          v13 = dictionary2;
+          if (safari_containingAppAdamID)
           {
-            [v12 setObject:v10 forKeyedSubscript:v21];
+            [dictionary2 setObject:safari_containingAppAdamID forKeyedSubscript:v21];
           }
 
           if (v11)
@@ -2201,20 +2201,20 @@ id __65__SFContentBlockerManager_SFPrivate___contentBlockersWithAdamID___block_i
             [v13 setObject:v11 forKeyedSubscript:v20];
           }
 
-          v14 = [v6 safari_correspondingMacOSExtensionBundleIdentifier];
-          if (v14)
+          safari_correspondingMacOSExtensionBundleIdentifier = [v6 safari_correspondingMacOSExtensionBundleIdentifier];
+          if (safari_correspondingMacOSExtensionBundleIdentifier)
           {
-            [v13 setObject:v14 forKeyedSubscript:v19];
+            [v13 setObject:safari_correspondingMacOSExtensionBundleIdentifier forKeyedSubscript:v19];
           }
 
-          v15 = [v6 safari_correspondingMacOSContainingAppBundleIdentifier];
-          if (v15)
+          safari_correspondingMacOSContainingAppBundleIdentifier = [v6 safari_correspondingMacOSContainingAppBundleIdentifier];
+          if (safari_correspondingMacOSContainingAppBundleIdentifier)
           {
-            [v13 setObject:v15 forKeyedSubscript:v18];
+            [v13 setObject:safari_correspondingMacOSContainingAppBundleIdentifier forKeyedSubscript:v18];
           }
 
           v16 = [v13 safari_dictionaryByMergingWithDictionary:v9];
-          [v23 setObject:v16 forKeyedSubscript:v8];
+          [dictionary setObject:v16 forKeyedSubscript:v8];
         }
       }
 
@@ -2224,32 +2224,32 @@ id __65__SFContentBlockerManager_SFPrivate___contentBlockersWithAdamID___block_i
     while (v4);
   }
 
-  return v23;
+  return dictionary;
 }
 
-- (void)setExtensionWithComposedIdentifier:(id)a3 isEnabledInCloud:(BOOL)a4
+- (void)setExtensionWithComposedIdentifier:(id)identifier isEnabledInCloud:(BOOL)cloud
 {
-  v4 = a4;
-  v6 = [(SFContentBlockerManager *)self _contentBlockerWithComposedIdentifier:a3];
-  if ([(SFContentBlockerManager *)self extensionIsEnabled:?]!= v4)
+  cloudCopy = cloud;
+  v6 = [(SFContentBlockerManager *)self _contentBlockerWithComposedIdentifier:identifier];
+  if ([(SFContentBlockerManager *)self extensionIsEnabled:?]!= cloudCopy)
   {
-    [(SFContentBlockerManager *)self setExtension:v6 isEnabled:v4 byUserGesture:0];
+    [(SFContentBlockerManager *)self setExtension:v6 isEnabled:cloudCopy byUserGesture:0];
   }
 }
 
-- (BOOL)hasExtensionWithComposedIdentifier:(id)a3
+- (BOOL)hasExtensionWithComposedIdentifier:(id)identifier
 {
-  v3 = [(SFContentBlockerManager *)self _contentBlockerWithComposedIdentifier:a3];
+  v3 = [(SFContentBlockerManager *)self _contentBlockerWithComposedIdentifier:identifier];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)_installationDateForExtension:(id)a3
+- (id)_installationDateForExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [(SFContentBlockerManager *)self webExtensionsController];
-  v6 = [v5 composedIdentifierForExtensionStateForExtension:v4];
+  extensionCopy = extension;
+  webExtensionsController = [(SFContentBlockerManager *)self webExtensionsController];
+  v6 = [webExtensionsController composedIdentifierForExtensionStateForExtension:extensionCopy];
 
   v7 = [(WBSPersistentPropertyListStore *)self->_contentBlockerStateStore dictionaryForKey:v6];
   v8 = [v7 safari_dateForKey:*MEMORY[0x1E69C9280]];
@@ -2259,18 +2259,18 @@ id __65__SFContentBlockerManager_SFPrivate___contentBlockersWithAdamID___block_i
 
 - (unint64_t)recentlyInstalledExtensionCount
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 safari_dateForKey:*MEMORY[0x1E69C9390]];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults safari_dateForKey:*MEMORY[0x1E69C9390]];
 
-  v5 = [(NSSet *)self->_extensions allObjects];
+  allObjects = [(NSSet *)self->_extensions allObjects];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __69__SFContentBlockerManager_SFPrivate__recentlyInstalledExtensionCount__block_invoke;
   v13 = &unk_1E8490748;
-  v14 = self;
+  selfCopy = self;
   v6 = v4;
   v15 = v6;
-  v7 = [v5 safari_filterObjectsUsingBlock:&v10];
+  v7 = [allObjects safari_filterObjectsUsingBlock:&v10];
   v8 = [v7 count];
 
   return v8;
@@ -2315,18 +2315,18 @@ BOOL __69__SFContentBlockerManager_SFPrivate__recentlyInstalledExtensionCount__b
   return v6;
 }
 
-- (void)copyEnabledExtensionStateFromContentBlockerManager:(id)a3
+- (void)copyEnabledExtensionStateFromContentBlockerManager:(id)manager
 {
   v32 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v3 = [(SFContentBlockerManager *)self extensionStateKeysToCopy];
+  managerCopy = manager;
+  extensionStateKeysToCopy = [(SFContentBlockerManager *)self extensionStateKeysToCopy];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [v18[7] allKeys];
-  obj = v4;
-  v5 = [v4 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  allKeys = [managerCopy[7] allKeys];
+  obj = allKeys;
+  v5 = [allKeys countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v5)
   {
     v17 = *v27;
@@ -2341,7 +2341,7 @@ BOOL __69__SFContentBlockerManager_SFPrivate__recentlyInstalledExtensionCount__b
         }
 
         v7 = *(*(&v26 + 1) + 8 * i);
-        v20 = [v18[7] dictionaryForKey:v7];
+        v20 = [managerCopy[7] dictionaryForKey:v7];
         v8 = [(WBSPersistentPropertyListStore *)self->_contentBlockerStateStore dictionaryForKey:v7];
         v9 = [v8 mutableCopy];
 
@@ -2364,7 +2364,7 @@ BOOL __69__SFContentBlockerManager_SFPrivate__recentlyInstalledExtensionCount__b
               }
 
               v14 = *(*(&v22 + 1) + 8 * j);
-              if ([v3 containsObject:v14])
+              if ([extensionStateKeysToCopy containsObject:v14])
               {
                 v15 = [v10 objectForKeyedSubscript:v14];
                 [v9 setObject:v15 forKeyedSubscript:v14];
@@ -2380,7 +2380,7 @@ BOOL __69__SFContentBlockerManager_SFPrivate__recentlyInstalledExtensionCount__b
         [(WBSPersistentPropertyListStore *)self->_contentBlockerStateStore setObject:v9 forKey:v7];
       }
 
-      v4 = obj;
+      allKeys = obj;
       v5 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
@@ -2400,17 +2400,17 @@ BOOL __69__SFContentBlockerManager_SFPrivate__recentlyInstalledExtensionCount__b
   return v6;
 }
 
-- (id)_extensionsDataForExportFromContentBlockerStateStore:(id)a3 useContentBlockerWithComposedIdentifier:(BOOL)a4
+- (id)_extensionsDataForExportFromContentBlockerStateStore:(id)store useContentBlockerWithComposedIdentifier:(BOOL)identifier
 {
-  v20 = a4;
+  identifierCopy = identifier;
   v31 = *MEMORY[0x1E69E9840];
-  v25 = a3;
+  storeCopy = store;
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
   v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  obj = [v25 allKeys];
+  obj = [storeCopy allKeys];
   v4 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v4)
   {
@@ -2426,12 +2426,12 @@ BOOL __69__SFContentBlockerManager_SFPrivate__recentlyInstalledExtensionCount__b
         }
 
         v6 = *(*(&v26 + 1) + 8 * i);
-        v7 = [v25 dictionaryForKey:v6];
+        v7 = [storeCopy dictionaryForKey:v6];
         v8 = [v7 safari_BOOLForKey:v23];
 
         if (v8)
         {
-          if (v20)
+          if (identifierCopy)
           {
             [(SFContentBlockerManager *)self _contentBlockerWithComposedIdentifier:v6];
           }
@@ -2445,11 +2445,11 @@ BOOL __69__SFContentBlockerManager_SFPrivate__recentlyInstalledExtensionCount__b
           {
             v10 = MEMORY[0x1E69C97A0];
             v11 = [(SFContentBlockerManager *)self displayNameForExtension:v9];
-            v12 = [v9 safari_launchServicesDeveloperName];
-            v13 = [v9 safari_containingAppAdamID];
-            v14 = [v9 safari_correspondingMacOSExtensionBundleIdentifier];
-            v15 = [v9 safari_correspondingMacOSContainingAppBundleIdentifier];
-            v16 = [v10 extensionDataWithDisplayName:v11 developerName:v12 composedIdentifier:v6 adamIdentifier:v13 alternatePlatformExtensionBundleIdentifier:v14 alternatePlatformAppBundleIdentifier:v15];
+            safari_launchServicesDeveloperName = [v9 safari_launchServicesDeveloperName];
+            safari_containingAppAdamID = [v9 safari_containingAppAdamID];
+            safari_correspondingMacOSExtensionBundleIdentifier = [v9 safari_correspondingMacOSExtensionBundleIdentifier];
+            safari_correspondingMacOSContainingAppBundleIdentifier = [v9 safari_correspondingMacOSContainingAppBundleIdentifier];
+            v16 = [v10 extensionDataWithDisplayName:v11 developerName:safari_launchServicesDeveloperName composedIdentifier:v6 adamIdentifier:safari_containingAppAdamID alternatePlatformExtensionBundleIdentifier:safari_correspondingMacOSExtensionBundleIdentifier alternatePlatformAppBundleIdentifier:safari_correspondingMacOSContainingAppBundleIdentifier];
 
             [v19 addObject:v16];
           }

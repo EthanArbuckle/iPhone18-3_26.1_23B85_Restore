@@ -38,7 +38,7 @@
     }
   }
 
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = &off_1F4B0CBF8;
   v11 = objc_msgSendSuper2(&v16, sel_wf_parameterStateForIntentValue_parameterDefinition_, v9, v7);
 LABEL_8:
@@ -51,10 +51,10 @@ LABEL_8:
 - (id)wf_updatedParameterDefinition:()Workflow forCodableAttribute:localizer:
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &off_1F4B0CBF8;
   v2 = objc_msgSendSuper2(&v7, sel_wf_updatedParameterDefinition_forCodableAttribute_localizer_);
-  if ([a1 type] == 2)
+  if ([self type] == 2)
   {
     v8 = @"CurrentLocationAccuracy";
     v9[0] = @"ThreeKilometers";

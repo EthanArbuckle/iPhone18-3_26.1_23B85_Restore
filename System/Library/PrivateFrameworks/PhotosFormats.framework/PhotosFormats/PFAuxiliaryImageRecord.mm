@@ -1,6 +1,6 @@
 @interface PFAuxiliaryImageRecord
 - (CGSize)sourceImageSize;
-- (double)effectiveScaleFactorForDestinationImageSize:(CGSize)a3;
+- (double)effectiveScaleFactorForDestinationImageSize:(CGSize)size;
 - (double)sourceImageSizeMaxLength;
 @end
 
@@ -16,10 +16,10 @@
   return result;
 }
 
-- (double)effectiveScaleFactorForDestinationImageSize:(CGSize)a3
+- (double)effectiveScaleFactorForDestinationImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = [(NSDictionary *)self->_auxiliaryImageInfo objectForKeyedSubscript:*MEMORY[0x1E696D220]];
   v7 = *MEMORY[0x1E696DFB8];
   v8 = [v6 objectForKeyedSubscript:*MEMORY[0x1E696DFB8]];

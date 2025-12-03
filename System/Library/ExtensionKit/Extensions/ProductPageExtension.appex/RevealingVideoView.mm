@@ -1,15 +1,15 @@
 @interface RevealingVideoView
 - (void)layoutSubviews;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation RevealingVideoView
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v5 = a3;
-  v6 = self;
-  sub_100569AF0(a3);
+  windowCopy = window;
+  selfCopy = self;
+  sub_100569AF0(window);
 }
 
 - (void)layoutSubviews

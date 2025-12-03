@@ -2,11 +2,11 @@
 - (id)createSynchronizeMessage;
 - (int)alreadylocked_updateObservingRemoteChanges;
 - (void)dealloc;
-- (void)fullCloudSynchronizeWithCompletionHandler:(id)a3;
-- (void)mergeIntoDictionary:(__CFDictionary *)a3 sourceDictionary:(__CFDictionary *)a4 cloudKeyEvaluator:(id)a5;
-- (void)setConfigurationPath:(__CFString *)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setStoreName:(__CFString *)a3;
+- (void)fullCloudSynchronizeWithCompletionHandler:(id)handler;
+- (void)mergeIntoDictionary:(__CFDictionary *)dictionary sourceDictionary:(__CFDictionary *)sourceDictionary cloudKeyEvaluator:(id)evaluator;
+- (void)setConfigurationPath:(__CFString *)path;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setStoreName:(__CFString *)name;
 @end
 
 @implementation CFPrefsCloudSource
@@ -16,14 +16,14 @@
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = CFPrefsCloudSource;
-  v3 = [(CFPrefsPlistSource *)&v8 createSynchronizeMessage];
-  v4 = v3;
-  if (v3)
+  createSynchronizeMessage = [(CFPrefsPlistSource *)&v8 createSynchronizeMessage];
+  v4 = createSynchronizeMessage;
+  if (createSynchronizeMessage)
   {
     configPath = self->_configPath;
     if (configPath)
     {
-      xpc_dictionary_set_string(v3, "CFPreferencesCloudConfig", configPath);
+      xpc_dictionary_set_string(createSynchronizeMessage, "CFPreferencesCloudConfig", configPath);
       xpc_dictionary_set_string(v4, "CFPreferencesCloudStoreIdentifier", self->_storeName);
     }
   }
@@ -52,7 +52,7 @@
   return result;
 }
 
-- (void)fullCloudSynchronizeWithCompletionHandler:(id)a3
+- (void)fullCloudSynchronizeWithCompletionHandler:(id)handler
 {
   v9[6] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->super.super._lock);
@@ -79,14 +79,14 @@
   }
 
   containingPreferences = self->super.super._containingPreferences;
-  v7 = [(CFPrefsPlistSource *)self userIdentifier];
+  userIdentifier = [(CFPrefsPlistSource *)self userIdentifier];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__CFPrefsCloudSource_fullCloudSynchronizeWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E6DCFF38;
   v9[4] = self;
-  v9[5] = a3;
-  [(_CFXPreferences *)&containingPreferences->super.isa withConnectionForRole:v5 andUserIdentifier:v7 performBlock:v9];
+  v9[5] = handler;
+  [(_CFXPreferences *)&containingPreferences->super.isa withConnectionForRole:v5 andUserIdentifier:userIdentifier performBlock:v9];
   v8 = *MEMORY[0x1E69E9840];
 }
 
@@ -138,26 +138,26 @@ void __64__CFPrefsCloudSource_fullCloudSynchronizeWithCompletionHandler___block_
   CFRelease(v2);
 }
 
-- (void)mergeIntoDictionary:(__CFDictionary *)a3 sourceDictionary:(__CFDictionary *)a4 cloudKeyEvaluator:(id)a5
+- (void)mergeIntoDictionary:(__CFDictionary *)dictionary sourceDictionary:(__CFDictionary *)sourceDictionary cloudKeyEvaluator:(id)evaluator
 {
   context[8] = *MEMORY[0x1E69E9840];
   if (self->_enabled)
   {
     os_unfair_lock_lock(&self->super.super._lock);
-    v9 = [(CFPrefsPlistSource *)self alreadylocked_copyDictionary];
+    alreadylocked_copyDictionary = [(CFPrefsPlistSource *)self alreadylocked_copyDictionary];
     os_unfair_lock_unlock(&self->super.super._lock);
-    if (v9)
+    if (alreadylocked_copyDictionary)
     {
       context[0] = MEMORY[0x1E69E9820];
       context[1] = 3221225472;
       context[2] = __77__CFPrefsCloudSource_mergeIntoDictionary_sourceDictionary_cloudKeyEvaluator___block_invoke;
       context[3] = &unk_1E6DCFF60;
-      context[6] = a3;
-      context[7] = a4;
+      context[6] = dictionary;
+      context[7] = sourceDictionary;
       context[4] = self;
-      context[5] = a5;
-      _CFPrefsDictionaryApplyBlock(v9, context);
-      CFRelease(v9);
+      context[5] = evaluator;
+      _CFPrefsDictionaryApplyBlock(alreadylocked_copyDictionary, context);
+      CFRelease(alreadylocked_copyDictionary);
     }
   }
 
@@ -179,15 +179,15 @@ void __77__CFPrefsCloudSource_mergeIntoDictionary_sourceDictionary_cloudKeyEvalu
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v15 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->super.super._lock);
-  atomic_store(!v3, &self->super._volatile);
-  self->_enabled = v3;
+  atomic_store(!enabledCopy, &self->super._volatile);
+  self->_enabled = enabledCopy;
   p_shmemEntry = &self->super.super.shmemEntry;
-  if (!v3)
+  if (!enabledCopy)
   {
     atomic_store(&sentinelGeneration, p_shmemEntry);
   }
@@ -202,7 +202,7 @@ void __77__CFPrefsCloudSource_mergeIntoDictionary_sourceDictionary_cloudKeyEvalu
       v7 = v6;
       containingPreferences = self->super.super._containingPreferences;
       v9 = v14;
-      v10 = [(CFPrefsPlistSource *)self userIdentifier];
+      userIdentifier = [(CFPrefsPlistSource *)self userIdentifier];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __33__CFPrefsCloudSource_setEnabled___block_invoke;
@@ -210,7 +210,7 @@ void __77__CFPrefsCloudSource_mergeIntoDictionary_sourceDictionary_cloudKeyEvalu
       v13 = v14;
       v12[4] = self;
       v12[5] = v7;
-      [(_CFXPreferences *)&containingPreferences->super.isa withConnectionForRole:v9 andUserIdentifier:v10 performBlock:v12];
+      [(_CFXPreferences *)&containingPreferences->super.isa withConnectionForRole:v9 andUserIdentifier:userIdentifier performBlock:v12];
       xpc_release(v7);
     }
   }
@@ -268,7 +268,7 @@ void __33__CFPrefsCloudSource_setEnabled___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setConfigurationPath:(__CFString *)a3
+- (void)setConfigurationPath:(__CFString *)path
 {
   v8 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->super.super._lock);
@@ -279,7 +279,7 @@ void __33__CFPrefsCloudSource_setEnabled___block_invoke_2(uint64_t a1)
   }
 
   bzero(buffer, 0x402uLL);
-  if (a3 && CFStringGetCString(a3, buffer, 1026, 0x8000100u))
+  if (path && CFStringGetCString(path, buffer, 1026, 0x8000100u))
   {
     self->_configPath = strdup(buffer);
   }
@@ -288,7 +288,7 @@ void __33__CFPrefsCloudSource_setEnabled___block_invoke_2(uint64_t a1)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setStoreName:(__CFString *)a3
+- (void)setStoreName:(__CFString *)name
 {
   v8 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->super.super._lock);
@@ -299,7 +299,7 @@ void __33__CFPrefsCloudSource_setEnabled___block_invoke_2(uint64_t a1)
   }
 
   bzero(buffer, 0x402uLL);
-  if (a3 && CFStringGetCString(a3, buffer, 1026, 0x8000100u))
+  if (name && CFStringGetCString(name, buffer, 1026, 0x8000100u))
   {
     self->_storeName = strdup(buffer);
   }

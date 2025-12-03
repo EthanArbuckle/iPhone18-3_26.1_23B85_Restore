@@ -1,22 +1,22 @@
 @interface PAEAddNoise
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)parameterChanged:(unsigned int)a3;
-- (HGRef<HGNode>)noiseNodeWithWidth:(int)a3 height:(int)a4 noiseType:(int)a5 isMono:(BOOL)a6 frameNum:(double)a7 autoAnimate:(BOOL)a8 randomSeed:(int)a9 inputPixelTransform:(PCMatrix44Tmpl<double> *)a10 outputPixelTransform:(PCMatrix44Tmpl<double> *)a11 outputInvPixelTransform:(PCMatrix44Tmpl<double> *)a12 is360:(BOOL)a13;
-- (HGRef<HGNode>)translateNode:(HGRef<HGNode>)a3 byAmount:(PCVector2<double>)a4 andCropTo:(HGRect)a5;
-- (PAEAddNoise)initWithAPIManager:(id)a3;
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)parameterChanged:(unsigned int)changed;
+- (HGRef<HGNode>)noiseNodeWithWidth:(int)width height:(int)height noiseType:(int)type isMono:(BOOL)mono frameNum:(double)num autoAnimate:(BOOL)animate randomSeed:(int)seed inputPixelTransform:(PCMatrix44Tmpl<double> *)self0 outputPixelTransform:(PCMatrix44Tmpl<double> *)self1 outputInvPixelTransform:(PCMatrix44Tmpl<double> *)self2 is360:(BOOL)self3;
+- (HGRef<HGNode>)translateNode:(HGRef<HGNode>)node byAmount:(PCVector2<double>)amount andCropTo:(HGRect)to;
+- (PAEAddNoise)initWithAPIManager:(id)manager;
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error;
 - (id)properties;
 @end
 
 @implementation PAEAddNoise
 
-- (PAEAddNoise)initWithAPIManager:(id)a3
+- (PAEAddNoise)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEAddNoise;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (BOOL)addParameters
@@ -41,9 +41,9 @@
   return v3 != 0;
 }
 
-- (BOOL)parameterChanged:(unsigned int)a3
+- (BOOL)parameterChanged:(unsigned int)changed
 {
-  if (a3 != 5)
+  if (changed != 5)
   {
     return 1;
   }
@@ -91,18 +91,18 @@
   return 1;
 }
 
-- (HGRef<HGNode>)translateNode:(HGRef<HGNode>)a3 byAmount:(PCVector2<double>)a4 andCropTo:(HGRect)a5
+- (HGRef<HGNode>)translateNode:(HGRef<HGNode>)node byAmount:(PCVector2<double>)amount andCropTo:(HGRect)to
 {
   v7 = v5;
-  v8 = *&a5.var2;
-  v9 = *&a5.var0;
+  v8 = *&to.var2;
+  v9 = *&to.var0;
   v11 = v6;
   HGTransform::HGTransform(v15);
   HGTransform::LoadIdentity(v15);
   HGTransform::Translate(v15, *v9, v9[1], 0.0);
   v12 = HGObject::operator new(0x210uLL);
   HGXForm::HGXForm(v12);
-  (*(*v12 + 120))(v12, 0, *a3.var0);
+  (*(*v12 + 120))(v12, 0, *node.var0);
   (*(*v12 + 576))(v12, v15);
   v13 = HGObject::operator new(0x1A0uLL);
   HGCrop::HGCrop(v13);
@@ -114,32 +114,32 @@
   return v14;
 }
 
-- (HGRef<HGNode>)noiseNodeWithWidth:(int)a3 height:(int)a4 noiseType:(int)a5 isMono:(BOOL)a6 frameNum:(double)a7 autoAnimate:(BOOL)a8 randomSeed:(int)a9 inputPixelTransform:(PCMatrix44Tmpl<double> *)a10 outputPixelTransform:(PCMatrix44Tmpl<double> *)a11 outputInvPixelTransform:(PCMatrix44Tmpl<double> *)a12 is360:(BOOL)a13
+- (HGRef<HGNode>)noiseNodeWithWidth:(int)width height:(int)height noiseType:(int)type isMono:(BOOL)mono frameNum:(double)num autoAnimate:(BOOL)animate randomSeed:(int)seed inputPixelTransform:(PCMatrix44Tmpl<double> *)self0 outputPixelTransform:(PCMatrix44Tmpl<double> *)self1 outputInvPixelTransform:(PCMatrix44Tmpl<double> *)self2 is360:(BOOL)self3
 {
   *v13 = 0;
-  if (a13)
+  if (is360)
   {
-    PAEGenerateNoise(1.0, a7, (3 * a4 / 2), *&a4, a5, a6, a8, a9);
+    PAEGenerateNoise(1.0, num, (3 * height / 2), *&height, type, mono, animate, seed);
   }
 
-  PAEGenerateNoise(1.0, a7, *&a3, *&a4, a5, a6, a8, a9);
+  PAEGenerateNoise(1.0, num, *&width, *&height, type, mono, animate, seed);
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (v9)
   {
     v10 = v9;
-    if ([a4 imageType] == 3)
+    if ([input imageType] == 3)
     {
       v58 = 0.33;
-      [v10 getFloatValue:&v58 fromParm:1 atFxTime:a5->var0.var1];
+      [v10 getFloatValue:&v58 fromParm:1 atFxTime:info->var0.var1];
       if (v58 == 0.0)
       {
-        if (a4)
+        if (input)
         {
-          [a4 heliumRef];
+          [input heliumRef];
         }
 
         else
@@ -147,7 +147,7 @@
           *&v52[0] = 0;
         }
 
-        [a3 setHeliumRef:v52];
+        [output setHeliumRef:v52];
         if (*&v52[0])
         {
           (*(**&v52[0] + 24))(*&v52[0]);
@@ -168,22 +168,22 @@
         }
 
         v57 = 1;
-        [v10 getIntValue:&v57 fromParm:2 atFxTime:a5->var0.var1];
+        [v10 getIntValue:&v57 fromParm:2 atFxTime:info->var0.var1];
         v56 = 0;
-        [v10 getBoolValue:&v56 fromParm:3 atFxTime:a5->var0.var1];
+        [v10 getBoolValue:&v56 fromParm:3 atFxTime:info->var0.var1];
         v55 = 1;
-        [v10 getBoolValue:&v55 fromParm:5 atFxTime:a5->var0.var1];
+        [v10 getBoolValue:&v55 fromParm:5 atFxTime:info->var0.var1];
         v54 = 25;
-        [v10 getIntValue:&v54 fromParm:6 atFxTime:a5->var0.var1];
+        [v10 getIntValue:&v54 fromParm:6 atFxTime:info->var0.var1];
         v53 = 0;
-        [v10 getIntValue:&v53 fromParm:4 atFxTime:a5->var0.var1];
-        [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a4];
-        [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a3];
-        [(PAESharedDefaultBase *)self getPixelTransformForImage:a3];
-        [(PAESharedDefaultBase *)self frameFromFxTime:a5->var0.var1 forPlugIn:self];
+        [v10 getIntValue:&v53 fromParm:4 atFxTime:info->var0.var1];
+        [(PAESharedDefaultBase *)self getInversePixelTransformForImage:input];
+        [(PAESharedDefaultBase *)self getInversePixelTransformForImage:output];
+        [(PAESharedDefaultBase *)self getPixelTransformForImage:output];
+        [(PAESharedDefaultBase *)self frameFromFxTime:info->var0.var1 forPlugIn:self];
         v14 = v13;
-        v15 = [a4 width];
-        v16 = [a4 height];
+        width = [input width];
+        height = [input height];
         v34[5] = v52[5];
         v34[6] = v52[6];
         v34[7] = v52[7];
@@ -209,10 +209,10 @@
         v32[6] = v50;
         v32[4] = v48;
         LOBYTE(v28) = 0;
-        [(PAEAddNoise *)self noiseNodeWithWidth:v15 height:v16 noiseType:v57 isMono:v56 frameNum:v55 autoAnimate:v54 randomSeed:v14 inputPixelTransform:v34 outputPixelTransform:v33 outputInvPixelTransform:v32 is360:v28];
-        if (a4)
+        [(PAEAddNoise *)self noiseNodeWithWidth:width height:height noiseType:v57 isMono:v56 frameNum:v55 autoAnimate:v54 randomSeed:v14 inputPixelTransform:v34 outputPixelTransform:v33 outputInvPixelTransform:v32 is360:v28];
+        if (input)
         {
-          [a4 heliumRef];
+          [input heliumRef];
         }
 
         else
@@ -220,16 +220,16 @@
           v31 = 0;
         }
 
-        [a4 width];
-        [a4 height];
+        [input width];
+        [input height];
         v17 = HGObject::operator new(0x220uLL);
         HGHWBlendFlipped::HGHWBlendFlipped(v17);
         v30 = v17;
         [(PAESharedDefaultBase *)self getBlendingGamma];
         (*(*v17 + 96))(v17, 5);
-        if (a4)
+        if (input)
         {
-          [a4 heliumRef];
+          [input heliumRef];
         }
 
         else
@@ -284,7 +284,7 @@
           v25 = v58;
           (*(*v30 + 96))(v30, 1, v25, 0.0, 0.0, 0.0);
           (*(*v30 + 96))(v30, 2, 0.0, 0.0, 0.0, 0.0);
-          if (!a5->var5)
+          if (!info->var5)
           {
             v26 = HGObject::operator new(0x1C0uLL);
             HGColorClamp::HGColorClamp(v26);
@@ -317,8 +317,8 @@
           (*(*v19 + 24))(v19);
         }
 
-        [(PAESharedDefaultBase *)self crop:&v30 fromImage:a4 toImage:a3];
-        [a3 setHeliumRef:&v30];
+        [(PAESharedDefaultBase *)self crop:&v30 fromImage:input toImage:output];
+        [output setHeliumRef:&v30];
         if (v29)
         {
           (*(*v29 + 24))(v29);
@@ -352,15 +352,15 @@
   return v9;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 
@@ -374,10 +374,10 @@
   return [v2 dictionaryWithObjectsAndKeys:{v3, @"PositionIndependent", v4, @"MayRemapTime", v5, @"SupportsLargeRenderScale", v6, @"SupportsHeliumRendering", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", 1), @"AutoColorProcessingSupport", 0}];
 }
 
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error
 {
   v10 = 0.0;
-  if ([-[PAEFilterDefaultBase getParamAPIWithError:](self getParamAPIWithError:{a4), "getFloatValue:fromParm:atFxTime:", &v10, 1, a3.var1}])
+  if ([-[PAEFilterDefaultBase getParamAPIWithError:](self getParamAPIWithError:{error), "getFloatValue:fromParm:atFxTime:", &v10, 1, time.var1}])
   {
     if (v10 == 0.0)
     {
@@ -392,12 +392,12 @@
     return [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInt:", v6, v10), @"PixelTransformSupport", 0}];
   }
 
-  else if (a4)
+  else if (error)
   {
     v8 = objc_opt_class();
     v9 = [(PAEFilterDefaultBase *)self getParamErrorFor:NSStringFromClass(v8)];
     result = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else

@@ -1,12 +1,12 @@
 @interface HDMedicalRecordJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (HDMedicalRecordJournalEntry)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (HDMedicalRecordJournalEntry)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDMedicalRecordJournalEntry
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
   _HKInitializeLogging();
   v4 = HKLogDatabase;
@@ -16,14 +16,14 @@
   }
 }
 
-- (HDMedicalRecordJournalEntry)initWithCoder:(id)a3
+- (HDMedicalRecordJournalEntry)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = HDMedicalRecordJournalEntry;
-  return [(HDMedicalRecordJournalEntry *)&v4 initWithCoder:a3];
+  return [(HDMedicalRecordJournalEntry *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = +[NSAssertionHandler currentHandler];
   [v5 handleFailureInMethod:a2 object:self file:@"HDMedicalRecordEntity+HealthRecordsPlugin.m" lineNumber:546 description:@"Encoding is not supported"];

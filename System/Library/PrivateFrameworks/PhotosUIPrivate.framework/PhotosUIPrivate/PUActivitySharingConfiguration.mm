@@ -1,17 +1,17 @@
 @interface PUActivitySharingConfiguration
-- (PUActivitySharingConfiguration)initWithCollectionsFetchResult:(id)a3 selectionManager:(id)a4;
+- (PUActivitySharingConfiguration)initWithCollectionsFetchResult:(id)result selectionManager:(id)manager;
 @end
 
 @implementation PUActivitySharingConfiguration
 
-- (PUActivitySharingConfiguration)initWithCollectionsFetchResult:(id)a3 selectionManager:(id)a4
+- (PUActivitySharingConfiguration)initWithCollectionsFetchResult:(id)result selectionManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  resultCopy = result;
+  managerCopy = manager;
+  v10 = managerCopy;
+  if (resultCopy)
   {
-    if (v9)
+    if (managerCopy)
     {
       goto LABEL_3;
     }
@@ -19,8 +19,8 @@
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PUActivitySharingConfiguration.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"collectionListFetchResult"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivitySharingConfiguration.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"collectionListFetchResult"}];
 
     if (v10)
     {
@@ -28,8 +28,8 @@
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"PUActivitySharingConfiguration.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"selectionManager"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUActivitySharingConfiguration.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"selectionManager"}];
 
 LABEL_3:
   v16.receiver = self;
@@ -38,8 +38,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_collectionListFetchResult, a3);
-    objc_storeStrong(&v12->_selectionManager, a4);
+    objc_storeStrong(&v11->_collectionListFetchResult, result);
+    objc_storeStrong(&v12->_selectionManager, manager);
   }
 
   return v12;

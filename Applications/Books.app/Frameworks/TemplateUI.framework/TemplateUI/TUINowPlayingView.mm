@@ -1,48 +1,48 @@
 @interface TUINowPlayingView
-+ (id)renderModelWithIdentifier:(id)a3 playing:(BOOL)a4 color:(id)a5;
-- (TUINowPlayingView)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
++ (id)renderModelWithIdentifier:(id)identifier playing:(BOOL)playing color:(id)color;
+- (TUINowPlayingView)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 @end
 
 @implementation TUINowPlayingView
 
-+ (id)renderModelWithIdentifier:(id)a3 playing:(BOOL)a4 color:(id)a5
++ (id)renderModelWithIdentifier:(id)identifier playing:(BOOL)playing color:(id)color
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = a3;
+  playingCopy = playing;
+  colorCopy = color;
+  identifierCopy = identifier;
   v9 = objc_alloc_init(_TUINowPlayingRenderModel);
-  [(_TUINowPlayingRenderModel *)v9 setPlaying:v5];
-  [(_TUINowPlayingRenderModel *)v9 setColor:v7];
+  [(_TUINowPlayingRenderModel *)v9 setPlaying:playingCopy];
+  [(_TUINowPlayingRenderModel *)v9 setColor:colorCopy];
 
-  v10 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"TUIReuseIdentifierNowPlayingView" identifier:v8 submodel:v9];
+  v10 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"TUIReuseIdentifierNowPlayingView" identifier:identifierCopy submodel:v9];
 
   return v10;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v12.receiver = self;
   v12.super_class = TUINowPlayingView;
-  v4 = a3;
-  [(TUIReusableBaseView *)&v12 applyLayoutAttributes:v4];
-  v5 = [v4 renderModel];
+  attributesCopy = attributes;
+  [(TUIReusableBaseView *)&v12 applyLayoutAttributes:attributesCopy];
+  renderModel = [attributesCopy renderModel];
 
-  v6 = [v5 submodel];
+  submodel = [renderModel submodel];
   renderModel = self->_renderModel;
-  self->_renderModel = v6;
+  self->_renderModel = submodel;
 
   self->_playing = [(_TUINowPlayingRenderModel *)self->_renderModel playing];
-  v8 = [(_TUINowPlayingRenderModel *)self->_renderModel color];
-  v9 = v8;
-  if (!v8)
+  color = [(_TUINowPlayingRenderModel *)self->_renderModel color];
+  v9 = color;
+  if (!color)
   {
     v9 = +[UIColor redColor];
   }
 
   objc_storeStrong(&self->_color, v9);
-  if (!v8)
+  if (!color)
   {
   }
 
@@ -63,11 +63,11 @@
   [(MPUNowPlayingIndicatorView *)self->_nowPlayingIndicatorView setPlaybackState:v11];
 }
 
-- (TUINowPlayingView)initWithFrame:(CGRect)a3
+- (TUINowPlayingView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = TUINowPlayingView;
-  v3 = [(TUINowPlayingView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUINowPlayingView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MPUNowPlayingIndicatorView alloc];

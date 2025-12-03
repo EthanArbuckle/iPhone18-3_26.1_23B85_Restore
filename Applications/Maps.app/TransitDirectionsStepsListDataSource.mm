@@ -1,12 +1,12 @@
 @interface TransitDirectionsStepsListDataSource
-- (BOOL)_shouldHighlightItemAtIndexPath:(id)a3;
+- (BOOL)_shouldHighlightItemAtIndexPath:(id)path;
 - (BOOL)_supportsFooterItem;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (BOOL)hasIncidentItems;
 - (BOOL)pptTestHasNextStep;
 - (BOOL)pptTestMoveToBoardStep;
-- (BOOL)shouldShowSeparatorForItemAtIndexPath:(id)a3 insets:(NSDirectionalEdgeInsets *)a4;
-- (BOOL)transitDirectionsListView:(id)a3 canSelectItem:(id)a4;
+- (BOOL)shouldShowSeparatorForItemAtIndexPath:(id)path insets:(NSDirectionalEdgeInsets *)insets;
+- (BOOL)transitDirectionsListView:(id)view canSelectItem:(id)item;
 - (CGRect)frameOfDisplayedComposedRouteStepCell;
 - (GEOComposedRouteStep)activeComposedRouteStep;
 - (GEOComposedRouteStep)displayedComposedRouteStep;
@@ -18,55 +18,55 @@
 - (NSMapTable)estimatedHeightsByItem;
 - (TransitDirectionsListView)listView;
 - (TransitDirectionsStepsListDataProvider)dataProvider;
-- (TransitDirectionsStepsListDataSource)initWithRoute:(id)a3;
-- (TransitDirectionsStepsListDataSource)initWithRoute:(id)a3 delegate:(id)a4 forNavigation:(BOOL)a5;
+- (TransitDirectionsStepsListDataSource)initWithRoute:(id)route;
+- (TransitDirectionsStepsListDataSource)initWithRoute:(id)route delegate:(id)delegate forNavigation:(BOOL)navigation;
 - (TransitDirectionsStepsListDelegate)delegate;
 - (UICollectionView)collectionView;
 - (UIScrollViewDelegate)scrollViewDelegate;
 - (UITableView)tableView;
-- (_NSRange)_segementRangeForItemAtIndexPath:(id)a3;
+- (_NSRange)_segementRangeForItemAtIndexPath:(id)path;
 - (double)_availableWidth;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
 - (id)_activeItem;
-- (id)_additionalSelectionIndexPathsForIndexPath:(id)a3;
+- (id)_additionalSelectionIndexPathsForIndexPath:(id)path;
 - (id)_displayedItem;
 - (id)_expandedItemsIndices;
-- (id)_flatIndexFromIndexPath:(id)a3;
-- (id)_footerCellForIndexPath:(id)a3 inCollectionView:(id)a4;
-- (id)_footerCellForIndexPath:(id)a3 inTableView:(id)a4;
-- (id)_indexPathFromFlatIndexPath:(id)a3;
-- (id)_itemIndexPathForStepIndex:(unint64_t)a3;
+- (id)_flatIndexFromIndexPath:(id)path;
+- (id)_footerCellForIndexPath:(id)path inCollectionView:(id)view;
+- (id)_footerCellForIndexPath:(id)path inTableView:(id)view;
+- (id)_indexPathFromFlatIndexPath:(id)path;
+- (id)_itemIndexPathForStepIndex:(unint64_t)index;
 - (id)_scrollView;
-- (id)activeItemForTransitDirectionsListView:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)activeItemForTransitDirectionsListView:(id)view;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)displayedItemIndexForAnalytics;
 - (id)displayedTransitDirectionsListItemIndexPath;
-- (id)listItemForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (id)transitDirectionsListView:(id)a3 stepViewForItemAtIndexPath:(id)a4;
-- (int64_t)_cellNavStateForItem:(id)a3 atIndexPath:(id)a4;
+- (id)listItemForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (id)transitDirectionsListView:(id)view stepViewForItemAtIndexPath:(id)path;
+- (int64_t)_cellNavStateForItem:(id)item atIndexPath:(id)path;
 - (int64_t)_userInterfaceIdiom;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (int64_t)numberOfSectionsInTableView:(id)view;
 - (int64_t)pptTestCurrentStepIndex;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (unint64_t)_numberOfRowsInSection:(unint64_t)a3;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (unint64_t)_numberOfRowsInSection:(unint64_t)section;
 - (unint64_t)_numberOfSections;
-- (unint64_t)_stepViewDisplayOptionsForSection:(unint64_t)a3;
+- (unint64_t)_stepViewDisplayOptionsForSection:(unint64_t)section;
 - (unint64_t)activeItemIndex;
 - (unint64_t)displayedItemIndex;
-- (unint64_t)indexOfItem:(id)a3;
-- (void)_cacheHeightForRow:(id)a3 atIndexPath:(id)a4;
-- (void)_configureFooterView:(id)a3;
-- (void)_configureSeparatorForCell:(id)a3 forRowAtIndexPath:(id)a4;
-- (void)_configureStepView:(id)a3 forItem:(id)a4 atIndexPath:(id)a5;
-- (void)_configureTransitDirectionsCollectionViewCell:(id)a3 withItem:(id)a4 atIndexPath:(id)a5;
+- (unint64_t)indexOfItem:(id)item;
+- (void)_cacheHeightForRow:(id)row atIndexPath:(id)path;
+- (void)_configureFooterView:(id)view;
+- (void)_configureSeparatorForCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)_configureStepView:(id)view forItem:(id)item atIndexPath:(id)path;
+- (void)_configureTransitDirectionsCollectionViewCell:(id)cell withItem:(id)item atIndexPath:(id)path;
 - (void)_didFinishAnimatingListView;
-- (void)_expandItemsAtIndices:(id)a3;
+- (void)_expandItemsAtIndices:(id)indices;
 - (void)_localeDidChange;
-- (void)_measureShieldWidthForListWidth:(double)a3;
+- (void)_measureShieldWidthForListWidth:(double)width;
 - (void)_notifyDelegateOfUpdatedActiveStep;
 - (void)_notifyDelegateOfUpdatedDisplayedStep;
 - (void)_rebuildItems;
@@ -74,66 +74,66 @@
 - (void)_refreshDisplayedItemIndexPath;
 - (void)_refreshItemInstructionStrings;
 - (void)_reloadListViewForRouteChange;
-- (void)_reloadListViewForRouteChangeIfNotAnimating:(id)a3;
+- (void)_reloadListViewForRouteChangeIfNotAnimating:(id)animating;
 - (void)_reloadVisibleCells;
 - (void)_resetArtworkSizesForAdaptiveItems;
 - (void)_resetRowHeightCache;
-- (void)_scrollToDisplayedItemIfNeeded:(id)a3 animated:(BOOL)a4;
+- (void)_scrollToDisplayedItemIfNeeded:(id)needed animated:(BOOL)animated;
 - (void)_scrollToFirstCell;
-- (void)_setUseCollapsedDisplayStyle:(BOOL)a3;
-- (void)_transitDirectionsCell:(id)a3 wantsToExpandOrCollapseItem:(id)a4 inCollectionView:(id)a5;
-- (void)_transitDirectionsCell:(id)a3 wantsToExpandOrCollapseItem:(id)a4 inTableView:(id)a5;
-- (void)_transitDirectionsStepView:(id)a3 wantsToExpandOrCollapseItem:(id)a4 inListView:(id)a5;
+- (void)_setUseCollapsedDisplayStyle:(BOOL)style;
+- (void)_transitDirectionsCell:(id)cell wantsToExpandOrCollapseItem:(id)item inCollectionView:(id)view;
+- (void)_transitDirectionsCell:(id)cell wantsToExpandOrCollapseItem:(id)item inTableView:(id)view;
+- (void)_transitDirectionsStepView:(id)view wantsToExpandOrCollapseItem:(id)item inListView:(id)listView;
 - (void)_updateActiveItemInListViewIfNeeded;
 - (void)_updateDisplayStyleInVisibleCells;
 - (void)_updateFooterInListView;
-- (void)_updateListForClusteredRideOptionChangeInClusteredSegment:(id)a3;
+- (void)_updateListForClusteredRideOptionChangeInClusteredSegment:(id)segment;
 - (void)_updateRegisteredCellClasses;
 - (void)collapseAllItems;
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4;
-- (void)composedRoute:(id)a3 appliedTransitRouteUpdates:(id)a4;
-- (void)composedRoute:(id)a3 changedSelectedRideInClusteredSegment:(id)a4 fromIndex:(unint64_t)a5 toIndex:(unint64_t)a6;
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path;
+- (void)composedRoute:(id)route appliedTransitRouteUpdates:(id)updates;
+- (void)composedRoute:(id)route changedSelectedRideInClusteredSegment:(id)segment fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
 - (void)dealloc;
-- (void)didTapGetTicketsOnRoutePlanningFooterView:(id)a3;
-- (void)didTapReportAProblemButtonOnRoutePlanningFooterView:(id)a3;
-- (void)didTapShareButtonOnRoutePlanningFooterView:(id)a3;
+- (void)didTapGetTicketsOnRoutePlanningFooterView:(id)view;
+- (void)didTapReportAProblemButtonOnRoutePlanningFooterView:(id)view;
+- (void)didTapShareButtonOnRoutePlanningFooterView:(id)view;
 - (void)expandAllItems;
-- (void)navigationProvider:(id)a3 didChangeToNavigating:(BOOL)a4 withRoute:(id)a5;
-- (void)navigationProvider:(id)a3 didReceiveRealtimeUpdates:(id)a4;
-- (void)navigationProvider:(id)a3 didUpdateActiveStepIndex:(unint64_t)a4;
-- (void)navigationProvider:(id)a3 didUpdateDisplayedStepIndex:(unint64_t)a4;
-- (void)navigationProvider:(id)a3 didUpdateRoute:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)navigationProvider:(id)provider didChangeToNavigating:(BOOL)navigating withRoute:(id)route;
+- (void)navigationProvider:(id)provider didReceiveRealtimeUpdates:(id)updates;
+- (void)navigationProvider:(id)provider didUpdateActiveStepIndex:(unint64_t)index;
+- (void)navigationProvider:(id)provider didUpdateDisplayedStepIndex:(unint64_t)index;
+- (void)navigationProvider:(id)provider didUpdateRoute:(id)route;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pptTestMoveToNextStep;
-- (void)recalculateLeadingInstructionMarginForWidth:(double)a3;
-- (void)routePlanningView:(id)a3 didTapGetTicketsForURL:(id)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setActive:(BOOL)a3;
-- (void)setActiveComposedRouteStepIndex:(unint64_t)a3;
-- (void)setCollectionView:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDisplayedComposedRouteStepIndex:(unint64_t)a3;
-- (void)setEnableNavigationUpdates:(BOOL)a3;
-- (void)setFlattenToSingleSection:(BOOL)a3;
-- (void)setListView:(id)a3;
-- (void)setMatchedLocation:(id)a3;
-- (void)setRoute:(id)a3;
-- (void)setTableView:(id)a3;
-- (void)setUseCollapsedDisplayStyle:(BOOL)a3;
-- (void)tableView:(id)a3 didHighlightRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didUnhighlightRowAtIndexPath:(id)a4;
-- (void)tableViewDidFinishReload:(id)a3;
-- (void)transitDirectionsBoardingInfoStepView:(id)a3 didSelectScheduleForItem:(id)a4;
-- (void)transitDirectionsCell:(id)a3 didTapAdvisory:(id)a4;
-- (void)transitDirectionsCell:(id)a3 wantsToExpandOrCollapseItem:(id)a4;
-- (void)transitDirectionsClusteredVehiclesCellDidTapAlternateRouteButtonInCell:(id)a3;
-- (void)transitDirectionsListView:(id)a3 didDisplayAdvisory:(id)a4;
-- (void)transitDirectionsListView:(id)a3 didSelectItem:(id)a4;
+- (void)recalculateLeadingInstructionMarginForWidth:(double)width;
+- (void)routePlanningView:(id)view didTapGetTicketsForURL:(id)l;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setActive:(BOOL)active;
+- (void)setActiveComposedRouteStepIndex:(unint64_t)index;
+- (void)setCollectionView:(id)view;
+- (void)setDelegate:(id)delegate;
+- (void)setDisplayedComposedRouteStepIndex:(unint64_t)index;
+- (void)setEnableNavigationUpdates:(BOOL)updates;
+- (void)setFlattenToSingleSection:(BOOL)section;
+- (void)setListView:(id)view;
+- (void)setMatchedLocation:(id)location;
+- (void)setRoute:(id)route;
+- (void)setTableView:(id)view;
+- (void)setUseCollapsedDisplayStyle:(BOOL)style;
+- (void)tableView:(id)view didHighlightRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didUnhighlightRowAtIndexPath:(id)path;
+- (void)tableViewDidFinishReload:(id)reload;
+- (void)transitDirectionsBoardingInfoStepView:(id)view didSelectScheduleForItem:(id)item;
+- (void)transitDirectionsCell:(id)cell didTapAdvisory:(id)advisory;
+- (void)transitDirectionsCell:(id)cell wantsToExpandOrCollapseItem:(id)item;
+- (void)transitDirectionsClusteredVehiclesCellDidTapAlternateRouteButtonInCell:(id)cell;
+- (void)transitDirectionsListView:(id)view didDisplayAdvisory:(id)advisory;
+- (void)transitDirectionsListView:(id)view didSelectItem:(id)item;
 - (void)updateForClusteredLegSelectedRideIndexChange;
 @end
 
@@ -176,19 +176,19 @@
 
 - (BOOL)pptTestMoveToBoardStep
 {
-  v3 = [(TransitDirectionsStepsListDataSource *)self pptTestCurrentStepIndex];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  pptTestCurrentStepIndex = [(TransitDirectionsStepsListDataSource *)self pptTestCurrentStepIndex];
+  if (pptTestCurrentStepIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v5 = v3;
-  v6 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-  v7 = [v6 items];
+  v5 = pptTestCurrentStepIndex;
+  dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+  items = [dataProvider items];
 
-  while (v5 < [v7 count])
+  while (v5 < [items count])
   {
-    v8 = [v7 objectAtIndexedSubscript:v5];
+    v8 = [items objectAtIndexedSubscript:v5];
     if ([v8 type] == 2)
     {
       if (v8)
@@ -215,10 +215,10 @@ LABEL_10:
 {
   if ([(TransitDirectionsStepsListDataSource *)self pptTestHasNextStep])
   {
-    v3 = [(TransitDirectionsStepsListDataSource *)self pptTestCurrentStepIndex];
-    v4 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-    v5 = [NSIndexPath indexPathForItem:0 inSection:v3 + 1];
-    v7 = [v4 itemAtIndexPath:v5];
+    pptTestCurrentStepIndex = [(TransitDirectionsStepsListDataSource *)self pptTestCurrentStepIndex];
+    dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+    v5 = [NSIndexPath indexPathForItem:0 inSection:pptTestCurrentStepIndex + 1];
+    v7 = [dataProvider itemAtIndexPath:v5];
 
     v6 = v7;
     if (v7)
@@ -231,12 +231,12 @@ LABEL_10:
 
 - (BOOL)pptTestHasNextStep
 {
-  v3 = [(TransitDirectionsStepsListDataSource *)self displayedTransitDirectionsListItemIndexPath];
-  v4 = v3;
-  if (v3)
+  displayedTransitDirectionsListItemIndexPath = [(TransitDirectionsStepsListDataSource *)self displayedTransitDirectionsListItemIndexPath];
+  v4 = displayedTransitDirectionsListItemIndexPath;
+  if (displayedTransitDirectionsListItemIndexPath)
   {
-    v5 = [v3 section];
-    v6 = v5 < [(TransitDirectionsStepsListDataSource *)self _numberOfSections];
+    section = [displayedTransitDirectionsListItemIndexPath section];
+    v6 = section < [(TransitDirectionsStepsListDataSource *)self _numberOfSections];
   }
 
   else
@@ -249,53 +249,53 @@ LABEL_10:
 
 - (int64_t)pptTestCurrentStepIndex
 {
-  v2 = [(TransitDirectionsStepsListDataSource *)self displayedTransitDirectionsListItemIndexPath];
-  v3 = v2;
-  if (v2)
+  displayedTransitDirectionsListItemIndexPath = [(TransitDirectionsStepsListDataSource *)self displayedTransitDirectionsListItemIndexPath];
+  v3 = displayedTransitDirectionsListItemIndexPath;
+  if (displayedTransitDirectionsListItemIndexPath)
   {
-    v4 = [v2 section];
+    section = [displayedTransitDirectionsListItemIndexPath section];
   }
 
   else
   {
-    v4 = 0x7FFFFFFFFFFFFFFFLL;
+    section = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v4;
+  return section;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v7 = a3;
-  v4 = [(TransitDirectionsStepsListDataSource *)self scrollViewDelegate];
+  draggingCopy = dragging;
+  scrollViewDelegate = [(TransitDirectionsStepsListDataSource *)self scrollViewDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(TransitDirectionsStepsListDataSource *)self scrollViewDelegate];
-    [v6 scrollViewWillBeginDragging:v7];
+    scrollViewDelegate2 = [(TransitDirectionsStepsListDataSource *)self scrollViewDelegate];
+    [scrollViewDelegate2 scrollViewWillBeginDragging:draggingCopy];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v7 = a3;
-  v4 = [(TransitDirectionsStepsListDataSource *)self scrollViewDelegate];
+  scrollCopy = scroll;
+  scrollViewDelegate = [(TransitDirectionsStepsListDataSource *)self scrollViewDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(TransitDirectionsStepsListDataSource *)self scrollViewDelegate];
-    [v6 scrollViewDidScroll:v7];
+    scrollViewDelegate2 = [(TransitDirectionsStepsListDataSource *)self scrollViewDelegate];
+    [scrollViewDelegate2 scrollViewDidScroll:scrollCopy];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v19 = a3;
-  v9 = [(TransitDirectionsStepsListDataSource *)self delegate];
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  delegate = [(TransitDirectionsStepsListDataSource *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
@@ -311,90 +311,90 @@ LABEL_10:
     }
 
     v12 = +[MKMapService sharedService];
-    v13 = [(TransitDirectionsStepsListDataSource *)self delegate];
-    v14 = [v13 currentUITargetForAnalytics];
-    v15 = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexForAnalytics];
-    [v12 captureUserAction:v11 onTarget:v14 eventValue:0 transitStep:v15];
+    delegate2 = [(TransitDirectionsStepsListDataSource *)self delegate];
+    currentUITargetForAnalytics = [delegate2 currentUITargetForAnalytics];
+    displayedItemIndexForAnalytics = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexForAnalytics];
+    [v12 captureUserAction:v11 onTarget:currentUITargetForAnalytics eventValue:0 transitStep:displayedItemIndexForAnalytics];
   }
 
-  v16 = [(TransitDirectionsStepsListDataSource *)self scrollViewDelegate];
+  scrollViewDelegate = [(TransitDirectionsStepsListDataSource *)self scrollViewDelegate];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v18 = [(TransitDirectionsStepsListDataSource *)self scrollViewDelegate];
-    [v18 scrollViewWillEndDragging:v19 withVelocity:a5 targetContentOffset:{x, y}];
+    scrollViewDelegate2 = [(TransitDirectionsStepsListDataSource *)self scrollViewDelegate];
+    [scrollViewDelegate2 scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:{x, y}];
   }
 }
 
-- (BOOL)shouldShowSeparatorForItemAtIndexPath:(id)a3 insets:(NSDirectionalEdgeInsets *)a4
+- (BOOL)shouldShowSeparatorForItemAtIndexPath:(id)path insets:(NSDirectionalEdgeInsets *)insets
 {
-  v6 = a3;
-  top = a4->top;
-  leading = a4->leading;
-  bottom = a4->bottom;
-  trailing = a4->trailing;
-  v11 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:v6];
+  pathCopy = path;
+  top = insets->top;
+  leading = insets->leading;
+  bottom = insets->bottom;
+  trailing = insets->trailing;
+  v11 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:pathCopy];
   v12 = [(TransitDirectionsStepsListDataSource *)self listItemForIndexPath:v11];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v33 = v6;
-    v32 = [(TransitDirectionsStepsListDataSource *)self _numberOfSections];
-    v13 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-    v14 = [v13 numberOfItemsInSection:{objc_msgSend(v11, "section")}];
+    v33 = pathCopy;
+    _numberOfSections = [(TransitDirectionsStepsListDataSource *)self _numberOfSections];
+    dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+    v14 = [dataProvider numberOfItemsInSection:{objc_msgSend(v11, "section")}];
 
     v15 = v12;
     if ((-[TransitDirectionsStepsListDataSource _stepViewDisplayOptionsForSection:](self, "_stepViewDisplayOptionsForSection:", [v11 section]) & 4) != 0)
     {
-      v16 = [v15 nextItem];
-      if (v16)
+      nextItem = [v15 nextItem];
+      if (nextItem)
       {
-        v17 = v16;
+        v17 = nextItem;
         do
         {
-          v18 = [v17 parentItem];
-          v19 = v18;
-          if (v18 == v15)
+          parentItem = [v17 parentItem];
+          v19 = parentItem;
+          if (parentItem == v15)
           {
           }
 
           else
           {
-            v20 = [v17 parentItem];
-            v21 = [v15 parentItem];
+            parentItem2 = [v17 parentItem];
+            parentItem3 = [v15 parentItem];
 
-            if (v20 != v21)
+            if (parentItem2 != parentItem3)
             {
               break;
             }
           }
 
           v14 -= [v17 shouldHideInExpandedDisplayStyle];
-          v22 = [v17 nextItem];
+          nextItem2 = [v17 nextItem];
 
-          v17 = v22;
+          v17 = nextItem2;
         }
 
-        while (v22);
+        while (nextItem2);
       }
     }
 
     v23 = v14 - 1;
     v24 = [v11 row];
     LOBYTE(v14) = v14 - 1 == v24;
-    v25 = [(TransitDirectionsStepsListDataSource *)self options];
-    v26 = [(TransitDirectionsStepsListDataSource *)self _supportsFooterItem];
-    if ((v25 & 8) != 0 && v23 == v24)
+    options = [(TransitDirectionsStepsListDataSource *)self options];
+    _supportsFooterItem = [(TransitDirectionsStepsListDataSource *)self _supportsFooterItem];
+    if ((options & 8) != 0 && v23 == v24)
     {
       v27 = -2;
-      if (!v26)
+      if (!_supportsFooterItem)
       {
         v27 = -1;
       }
 
-      v6 = v33;
-      if ((v27 + v32) == [v33 section])
+      pathCopy = v33;
+      if ((v27 + _numberOfSections) == [v33 section])
       {
         LOBYTE(v14) = 1;
       }
@@ -413,12 +413,12 @@ LABEL_10:
       [(TransitDirectionsStepsListDataSource *)self leadingInstructionMargin];
       leading = v28;
       trailing = 16.0;
-      if ((v25 & 8) == 0 && v23 == v24)
+      if ((options & 8) == 0 && v23 == v24)
       {
-        LOBYTE(v14) = (v32 - 1) != [v11 section] && v23 == v24;
+        LOBYTE(v14) = (_numberOfSections - 1) != [v11 section] && v23 == v24;
       }
 
-      v6 = v33;
+      pathCopy = v33;
     }
   }
 
@@ -436,18 +436,18 @@ LABEL_10:
     }
   }
 
-  a4->top = top;
-  a4->leading = leading;
-  a4->bottom = bottom;
-  a4->trailing = trailing;
+  insets->top = top;
+  insets->leading = leading;
+  insets->bottom = bottom;
+  insets->trailing = trailing;
 
   return v14;
 }
 
-- (BOOL)_shouldHighlightItemAtIndexPath:(id)a3
+- (BOOL)_shouldHighlightItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:v4];
+  pathCopy = path;
+  v5 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:pathCopy];
   v6 = [(TransitDirectionsStepsListDataSource *)self listItemForIndexPath:v5];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -470,7 +470,7 @@ LABEL_10:
     }
 
 LABEL_14:
-    v10 = 0;
+    allowsStepSelection = 0;
     goto LABEL_15;
   }
 
@@ -481,7 +481,7 @@ LABEL_14:
 
   if (![v9 type])
   {
-    v10 = [(TransitDirectionsStepsListDataSource *)self allowsStepSelection];
+    allowsStepSelection = [(TransitDirectionsStepsListDataSource *)self allowsStepSelection];
     goto LABEL_15;
   }
 
@@ -492,33 +492,33 @@ LABEL_14:
 
   if ([v9 selectable])
   {
-    v10 = 1;
+    allowsStepSelection = 1;
   }
 
   else
   {
-    v12 = [(TransitDirectionsStepsListDataSource *)self _additionalSelectionIndexPathsForIndexPath:v4];
-    v13 = [v12 firstObject];
-    if ([v13 compare:v4] == -1)
+    v12 = [(TransitDirectionsStepsListDataSource *)self _additionalSelectionIndexPathsForIndexPath:pathCopy];
+    firstObject = [v12 firstObject];
+    if ([firstObject compare:pathCopy] == -1)
     {
-      v10 = [(TransitDirectionsStepsListDataSource *)self _shouldHighlightItemAtIndexPath:v13];
+      allowsStepSelection = [(TransitDirectionsStepsListDataSource *)self _shouldHighlightItemAtIndexPath:firstObject];
     }
 
     else
     {
-      v10 = 0;
+      allowsStepSelection = 0;
     }
   }
 
 LABEL_15:
 
-  return v10;
+  return allowsStepSelection;
 }
 
-- (id)_additionalSelectionIndexPathsForIndexPath:(id)a3
+- (id)_additionalSelectionIndexPathsForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:v4];
+  pathCopy = path;
+  v5 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:pathCopy];
   v6 = [(TransitDirectionsStepsListDataSource *)self listItemForIndexPath:v5];
   v7 = +[NSMutableArray array];
   objc_opt_class();
@@ -577,8 +577,8 @@ LABEL_6:
       }
     }
 
-    v12 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-    v13 = [v12 numberOfItemsInSection:{objc_msgSend(v10, "section")}];
+    dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+    v13 = [dataProvider numberOfItemsInSection:{objc_msgSend(v10, "section")}];
 
     v14 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v10 row] + 1, objc_msgSend(v10, "section"));
 
@@ -595,7 +595,7 @@ LABEL_6:
         }
 
         v16 = [(TransitDirectionsStepsListDataSource *)self _flatIndexFromIndexPath:v14];
-        v17 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v16 row], objc_msgSend(v4, "section"));
+        v17 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v16 row], objc_msgSend(pathCopy, "section"));
         [v7 addObject:v17];
 
         v18 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v16 row] + 1, objc_msgSend(v16, "section"));
@@ -624,33 +624,33 @@ LABEL_14:
 
 - (void)_updateActiveItemInListViewIfNeeded
 {
-  v5 = [(TransitDirectionsStepsListDataSource *)self listView];
-  v3 = [(TransitDirectionsStepsListDataSource *)self listView];
-  v4 = [(TransitDirectionsStepsListDataSource *)self activeItemForTransitDirectionsListView:v3];
-  [v5 setActiveTransitDirectionsListItem:v4];
+  listView = [(TransitDirectionsStepsListDataSource *)self listView];
+  listView2 = [(TransitDirectionsStepsListDataSource *)self listView];
+  v4 = [(TransitDirectionsStepsListDataSource *)self activeItemForTransitDirectionsListView:listView2];
+  [listView setActiveTransitDirectionsListItem:v4];
 }
 
-- (void)transitDirectionsListView:(id)a3 didDisplayAdvisory:(id)a4
+- (void)transitDirectionsListView:(id)view didDisplayAdvisory:(id)advisory
 {
-  v5 = a4;
+  advisoryCopy = advisory;
   v7 = +[MKMapService sharedService];
-  v6 = [(TransitDirectionsStepsListDataSource *)self delegate];
-  [v7 captureUserAction:247 onTarget:objc_msgSend(v6 forAdvisory:{"currentUITargetForAnalytics"), v5}];
+  delegate = [(TransitDirectionsStepsListDataSource *)self delegate];
+  [v7 captureUserAction:247 onTarget:objc_msgSend(delegate forAdvisory:{"currentUITargetForAnalytics"), advisoryCopy}];
 }
 
-- (void)transitDirectionsListView:(id)a3 didSelectItem:(id)a4
+- (void)transitDirectionsListView:(id)view didSelectItem:(id)item
 {
-  v12 = a3;
-  v6 = a4;
-  if ([v6 type] == 4 && (-[TransitDirectionsStepsListDataSource delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, (v8 & 1) != 0))
+  viewCopy = view;
+  itemCopy = item;
+  if ([itemCopy type] == 4 && (-[TransitDirectionsStepsListDataSource delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, (v8 & 1) != 0))
   {
-    v9 = [v12 stepViewForItem:v6];
-    [(TransitDirectionsStepsListDataSource *)self transitDirectionsClusteredVehiclesCellDidTapAlternateRouteButtonInCell:v9];
+    delegate2 = [viewCopy stepViewForItem:itemCopy];
+    [(TransitDirectionsStepsListDataSource *)self transitDirectionsClusteredVehiclesCellDidTapAlternateRouteButtonInCell:delegate2];
   }
 
   else
   {
-    v10 = [(TransitDirectionsStepsListDataSource *)self delegate];
+    delegate = [(TransitDirectionsStepsListDataSource *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if ((v11 & 1) == 0)
@@ -658,18 +658,18 @@ LABEL_14:
       goto LABEL_7;
     }
 
-    v9 = [(TransitDirectionsStepsListDataSource *)self delegate];
-    [v9 transitDirectionsStepsListDataSource:self didTapRowForItem:v6];
+    delegate2 = [(TransitDirectionsStepsListDataSource *)self delegate];
+    [delegate2 transitDirectionsStepsListDataSource:self didTapRowForItem:itemCopy];
   }
 
 LABEL_7:
 }
 
-- (BOOL)transitDirectionsListView:(id)a3 canSelectItem:(id)a4
+- (BOOL)transitDirectionsListView:(id)view canSelectItem:(id)item
 {
-  v5 = a4;
-  v6 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-  v7 = [v6 indexPathForItem:v5];
+  itemCopy = item;
+  dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+  v7 = [dataProvider indexPathForItem:itemCopy];
 
   v8 = [(TransitDirectionsStepsListDataSource *)self _flatIndexFromIndexPath:v7];
   LOBYTE(self) = [(TransitDirectionsStepsListDataSource *)self _shouldHighlightItemAtIndexPath:v8];
@@ -677,28 +677,28 @@ LABEL_7:
   return self;
 }
 
-- (id)activeItemForTransitDirectionsListView:(id)a3
+- (id)activeItemForTransitDirectionsListView:(id)view
 {
-  v4 = [(TransitDirectionsStepsListDataSource *)self highlightingBehaviour];
-  if (v4 == 2)
+  highlightingBehaviour = [(TransitDirectionsStepsListDataSource *)self highlightingBehaviour];
+  if (highlightingBehaviour == 2)
   {
-    v5 = [(TransitDirectionsStepsListDataSource *)self _displayedItem];
-    v6 = [(TransitDirectionsStepsListDataSource *)self _activeItem];
+    _displayedItem = [(TransitDirectionsStepsListDataSource *)self _displayedItem];
+    _activeItem = [(TransitDirectionsStepsListDataSource *)self _activeItem];
 
-    if (v5 == v6)
+    if (_displayedItem == _activeItem)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = v5;
+      v7 = _displayedItem;
     }
   }
 
   else
   {
-    if (v4 == 1)
+    if (highlightingBehaviour == 1)
     {
       [(TransitDirectionsStepsListDataSource *)self _displayedItem];
     }
@@ -713,20 +713,20 @@ LABEL_7:
   return v7;
 }
 
-- (void)_configureStepView:(id)a3 forItem:(id)a4 atIndexPath:(id)a5
+- (void)_configureStepView:(id)view forItem:(id)item atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 conformsToProtocol:&OBJC_PROTOCOL___TransitDirectionsExpandableCell])
+  viewCopy = view;
+  itemCopy = item;
+  pathCopy = path;
+  if ([viewCopy conformsToProtocol:&OBJC_PROTOCOL___TransitDirectionsExpandableCell])
   {
-    [v8 setExpandableCellDelegate:self];
+    [viewCopy setExpandableCellDelegate:self];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 setBoardingInfoDelegate:self];
+    [viewCopy setBoardingInfoDelegate:self];
   }
 
   else
@@ -734,20 +734,20 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      [v8 setDelegate:self];
+      [viewCopy setDelegate:self];
     }
   }
 
   [(TransitDirectionsStepsListDataSource *)self leadingInstructionMargin];
-  [v8 setLeadingInstructionMargin:?];
-  [v8 setUseNavigationMetrics:{-[TransitDirectionsStepsListDataSource _useNavigationMetrics](self, "_useNavigationMetrics")}];
-  [v8 setDisplayOptions:{-[TransitDirectionsStepsListDataSource _stepViewDisplayOptionsForSection:](self, "_stepViewDisplayOptionsForSection:", objc_msgSend(v10, "section"))}];
-  [v8 configureWithItem:v9];
+  [viewCopy setLeadingInstructionMargin:?];
+  [viewCopy setUseNavigationMetrics:{-[TransitDirectionsStepsListDataSource _useNavigationMetrics](self, "_useNavigationMetrics")}];
+  [viewCopy setDisplayOptions:{-[TransitDirectionsStepsListDataSource _stepViewDisplayOptionsForSection:](self, "_stepViewDisplayOptionsForSection:", objc_msgSend(pathCopy, "section"))}];
+  [viewCopy configureWithItem:itemCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v8;
-    if ([v10 row] <= 0)
+    v11 = viewCopy;
+    if ([pathCopy row] <= 0)
     {
       v15 = sub_10006D178();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -776,43 +776,43 @@ LABEL_7:
       }
     }
 
-    if ([v10 row] >= 1)
+    if ([pathCopy row] >= 1)
     {
-      v12 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v10 row] - 1, objc_msgSend(v10, "section"));
-      v13 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-      v14 = [v13 itemAtIndexPath:v12];
+      v12 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [pathCopy row] - 1, objc_msgSend(pathCopy, "section"));
+      dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+      v14 = [dataProvider itemAtIndexPath:v12];
 
       [v11 setPreviousItem:v14 withPreviousNavigationState:{-[TransitDirectionsStepsListDataSource _cellNavStateForItem:atIndexPath:](self, "_cellNavStateForItem:atIndexPath:", v14, v12)}];
     }
   }
 
-  [v8 setNavigationState:{-[TransitDirectionsStepsListDataSource _cellNavStateForItem:atIndexPath:](self, "_cellNavStateForItem:atIndexPath:", v9, v10)}];
+  [viewCopy setNavigationState:{-[TransitDirectionsStepsListDataSource _cellNavStateForItem:atIndexPath:](self, "_cellNavStateForItem:atIndexPath:", itemCopy, pathCopy)}];
 }
 
-- (id)transitDirectionsListView:(id)a3 stepViewForItemAtIndexPath:(id)a4
+- (id)transitDirectionsListView:(id)view stepViewForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:pathCopy];
   v9 = [(TransitDirectionsStepsListDataSource *)self listItemForIndexPath:v8];
-  v10 = [v7 dequeueStepViewForItem:v9];
+  v10 = [viewCopy dequeueStepViewForItem:v9];
 
-  [(TransitDirectionsStepsListDataSource *)self _configureStepView:v10 forItem:v9 atIndexPath:v6];
+  [(TransitDirectionsStepsListDataSource *)self _configureStepView:v10 forItem:v9 atIndexPath:pathCopy];
 
   return v10;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TransitDirectionsStepsListDataSource *)self _additionalSelectionIndexPathsForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(TransitDirectionsStepsListDataSource *)self _additionalSelectionIndexPathsForIndexPath:pathCopy];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v9 = [v6 indexPathsForSelectedItems];
-  v10 = [v9 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  indexPathsForSelectedItems = [viewCopy indexPathsForSelectedItems];
+  v10 = [indexPathsForSelectedItems countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v10)
   {
     v11 = v10;
@@ -823,23 +823,23 @@ LABEL_7:
       {
         if (*v38 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         v14 = *(*(&v37 + 1) + 8 * i);
-        if (([v14 isEqual:v7] & 1) == 0 && (objc_msgSend(v8, "containsObject:", v14) & 1) == 0)
+        if (([v14 isEqual:pathCopy] & 1) == 0 && (objc_msgSend(v8, "containsObject:", v14) & 1) == 0)
         {
-          [v6 deselectItemAtIndexPath:v14 animated:0];
+          [viewCopy deselectItemAtIndexPath:v14 animated:0];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v11 = [indexPathsForSelectedItems countByEnumeratingWithState:&v37 objects:v42 count:16];
     }
 
     while (v11);
   }
 
-  if (sub_10000FA08(v6) == 5)
+  if (sub_10000FA08(viewCopy) == 5)
   {
     v35 = 0u;
     v36 = 0u;
@@ -861,10 +861,10 @@ LABEL_7:
           }
 
           v20 = *(*(&v33 + 1) + 8 * j);
-          v21 = [v6 cellForItemAtIndexPath:{v20, v33}];
+          v21 = [viewCopy cellForItemAtIndexPath:{v20, v33}];
           if (([v21 isSelected] & 1) == 0)
           {
-            [v6 selectItemAtIndexPath:v20 animated:0 scrollPosition:0];
+            [viewCopy selectItemAtIndexPath:v20 animated:0 scrollPosition:0];
           }
         }
 
@@ -875,15 +875,15 @@ LABEL_7:
     }
   }
 
-  v22 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:v7, v33];
+  v22 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:pathCopy, v33];
   v23 = [(TransitDirectionsStepsListDataSource *)self listItemForIndexPath:v22];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v24 = [v8 firstObject];
-    if ([v24 compare:v7] == -1)
+    firstObject = [v8 firstObject];
+    if ([firstObject compare:pathCopy] == -1)
     {
-      v25 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:v24];
+      v25 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:firstObject];
       v26 = [(TransitDirectionsStepsListDataSource *)self listItemForIndexPath:v25];
 
       v23 = v26;
@@ -892,14 +892,14 @@ LABEL_7:
     v23 = v23;
     if ([v23 type] == 4 && (-[TransitDirectionsStepsListDataSource delegate](self, "delegate"), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_opt_respondsToSelector(), v27, (v28 & 1) != 0))
     {
-      v29 = [v6 cellForItemAtIndexPath:v7];
-      v30 = [v29 stepView];
-      [(TransitDirectionsStepsListDataSource *)self transitDirectionsClusteredVehiclesCellDidTapAlternateRouteButtonInCell:v30];
+      delegate2 = [viewCopy cellForItemAtIndexPath:pathCopy];
+      stepView = [delegate2 stepView];
+      [(TransitDirectionsStepsListDataSource *)self transitDirectionsClusteredVehiclesCellDidTapAlternateRouteButtonInCell:stepView];
     }
 
     else
     {
-      v31 = [(TransitDirectionsStepsListDataSource *)self delegate];
+      delegate = [(TransitDirectionsStepsListDataSource *)self delegate];
       v32 = objc_opt_respondsToSelector();
 
       if ((v32 & 1) == 0)
@@ -909,8 +909,8 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      v29 = [(TransitDirectionsStepsListDataSource *)self delegate];
-      [v29 transitDirectionsStepsListDataSource:self didTapRowForItem:v23];
+      delegate2 = [(TransitDirectionsStepsListDataSource *)self delegate];
+      [delegate2 transitDirectionsStepsListDataSource:self didTapRowForItem:v23];
     }
 
     goto LABEL_31;
@@ -919,10 +919,10 @@ LABEL_31:
 LABEL_32:
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(TransitDirectionsStepsListDataSource *)self _additionalSelectionIndexPathsForIndexPath:a4];
+  viewCopy = view;
+  v7 = [(TransitDirectionsStepsListDataSource *)self _additionalSelectionIndexPathsForIndexPath:path];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -942,7 +942,7 @@ LABEL_32:
           objc_enumerationMutation(v7);
         }
 
-        [v6 selectItemAtIndexPath:*(*(&v13 + 1) + 8 * v11) animated:0 scrollPosition:0];
+        [viewCopy selectItemAtIndexPath:*(*(&v13 + 1) + 8 * v11) animated:0 scrollPosition:0];
         v11 = v11 + 1;
       }
 
@@ -956,10 +956,10 @@ LABEL_32:
   return 1;
 }
 
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(TransitDirectionsStepsListDataSource *)self _additionalSelectionIndexPathsForIndexPath:a4];
+  viewCopy = view;
+  v7 = [(TransitDirectionsStepsListDataSource *)self _additionalSelectionIndexPathsForIndexPath:path];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -979,7 +979,7 @@ LABEL_32:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [v6 cellForItemAtIndexPath:*(*(&v13 + 1) + 8 * v11)];
+        v12 = [viewCopy cellForItemAtIndexPath:*(*(&v13 + 1) + 8 * v11)];
         [v12 setHighlighted:0];
 
         v11 = v11 + 1;
@@ -993,10 +993,10 @@ LABEL_32:
   }
 }
 
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(TransitDirectionsStepsListDataSource *)self _additionalSelectionIndexPathsForIndexPath:a4];
+  viewCopy = view;
+  v7 = [(TransitDirectionsStepsListDataSource *)self _additionalSelectionIndexPathsForIndexPath:path];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1016,7 +1016,7 @@ LABEL_32:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [v6 cellForItemAtIndexPath:*(*(&v13 + 1) + 8 * v11)];
+        v12 = [viewCopy cellForItemAtIndexPath:*(*(&v13 + 1) + 8 * v11)];
         [v12 setHighlighted:1];
 
         v11 = v11 + 1;
@@ -1030,21 +1030,21 @@ LABEL_32:
   }
 }
 
-- (void)_configureTransitDirectionsCollectionViewCell:(id)a3 withItem:(id)a4 atIndexPath:(id)a5
+- (void)_configureTransitDirectionsCollectionViewCell:(id)cell withItem:(id)item atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 conformsToProtocol:&OBJC_PROTOCOL___TransitDirectionsExpandableCell])
+  cellCopy = cell;
+  itemCopy = item;
+  pathCopy = path;
+  if ([cellCopy conformsToProtocol:&OBJC_PROTOCOL___TransitDirectionsExpandableCell])
   {
-    [v8 setExpandableCellDelegate:self];
+    [cellCopy setExpandableCellDelegate:self];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v8 stepView];
-    [v11 setBoardingInfoDelegate:self];
+    stepView = [cellCopy stepView];
+    [stepView setBoardingInfoDelegate:self];
 LABEL_7:
 
     goto LABEL_8;
@@ -1053,28 +1053,28 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v8 stepView];
-    [v11 setDelegate:self];
+    stepView = [cellCopy stepView];
+    [stepView setDelegate:self];
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 setDelegate:self];
+    [cellCopy setDelegate:self];
   }
 
 LABEL_8:
   [(TransitDirectionsStepsListDataSource *)self leadingInstructionMargin];
-  [v8 setLeadingInstructionMargin:?];
-  [v8 setUseNavigationMetrics:{-[TransitDirectionsStepsListDataSource _useNavigationMetrics](self, "_useNavigationMetrics")}];
-  [v8 setDisplayOptions:{-[TransitDirectionsStepsListDataSource _stepViewDisplayOptionsForSection:](self, "_stepViewDisplayOptionsForSection:", objc_msgSend(v10, "section"))}];
-  [v8 configureWithItem:v9];
+  [cellCopy setLeadingInstructionMargin:?];
+  [cellCopy setUseNavigationMetrics:{-[TransitDirectionsStepsListDataSource _useNavigationMetrics](self, "_useNavigationMetrics")}];
+  [cellCopy setDisplayOptions:{-[TransitDirectionsStepsListDataSource _stepViewDisplayOptionsForSection:](self, "_stepViewDisplayOptionsForSection:", objc_msgSend(pathCopy, "section"))}];
+  [cellCopy configureWithItem:itemCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v8 stepView];
-    if ([v10 row] <= 0)
+    stepView2 = [cellCopy stepView];
+    if ([pathCopy row] <= 0)
     {
       v16 = sub_10006D178();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1103,35 +1103,35 @@ LABEL_8:
       }
     }
 
-    if ([v10 row] >= 1)
+    if ([pathCopy row] >= 1)
     {
-      v13 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v10 row] - 1, objc_msgSend(v10, "section"));
-      v14 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-      v15 = [v14 itemAtIndexPath:v13];
+      v13 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [pathCopy row] - 1, objc_msgSend(pathCopy, "section"));
+      dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+      v15 = [dataProvider itemAtIndexPath:v13];
 
-      [v12 setPreviousItem:v15 withPreviousNavigationState:{-[TransitDirectionsStepsListDataSource _cellNavStateForItem:atIndexPath:](self, "_cellNavStateForItem:atIndexPath:", v15, v13)}];
+      [stepView2 setPreviousItem:v15 withPreviousNavigationState:{-[TransitDirectionsStepsListDataSource _cellNavStateForItem:atIndexPath:](self, "_cellNavStateForItem:atIndexPath:", v15, v13)}];
     }
   }
 
-  [v8 setNavigationState:{-[TransitDirectionsStepsListDataSource _cellNavStateForItem:atIndexPath:](self, "_cellNavStateForItem:atIndexPath:", v9, v10)}];
+  [cellCopy setNavigationState:{-[TransitDirectionsStepsListDataSource _cellNavStateForItem:atIndexPath:](self, "_cellNavStateForItem:atIndexPath:", itemCopy, pathCopy)}];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:pathCopy];
   v9 = [(TransitDirectionsStepsListDataSource *)self listItemForIndexPath:v8];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [TransitDirectionsCell dequeueCellForListItem:v9 fromCollectionView:v6 atIndexPath:v7];
-    [(TransitDirectionsStepsListDataSource *)self _configureTransitDirectionsCollectionViewCell:v10 withItem:v9 atIndexPath:v7];
+    v10 = [TransitDirectionsCell dequeueCellForListItem:v9 fromCollectionView:viewCopy atIndexPath:pathCopy];
+    [(TransitDirectionsStepsListDataSource *)self _configureTransitDirectionsCollectionViewCell:v10 withItem:v9 atIndexPath:pathCopy];
   }
 
   else if ([v9 isEqual:@"TransitDirectionsListSharingIdentifier"])
   {
-    v10 = [(TransitDirectionsStepsListDataSource *)self _footerCellForIndexPath:v7 inCollectionView:v6];
+    v10 = [(TransitDirectionsStepsListDataSource *)self _footerCellForIndexPath:pathCopy inCollectionView:viewCopy];
   }
 
   else
@@ -1162,13 +1162,13 @@ LABEL_8:
 
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v10 = [v6 dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:v7];
+    v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:pathCopy];
   }
 
   return v10;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   if ([(TransitDirectionsStepsListDataSource *)self shouldFlattenToSingleSection])
   {
@@ -1191,11 +1191,11 @@ LABEL_8:
   else
   {
 
-    return [(TransitDirectionsStepsListDataSource *)self _numberOfRowsInSection:a4];
+    return [(TransitDirectionsStepsListDataSource *)self _numberOfRowsInSection:section];
   }
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   if ([(TransitDirectionsStepsListDataSource *)self shouldFlattenToSingleSection])
   {
@@ -1205,9 +1205,9 @@ LABEL_8:
   return [(TransitDirectionsStepsListDataSource *)self _numberOfSections];
 }
 
-- (void)_updateListForClusteredRideOptionChangeInClusteredSegment:(id)a3
+- (void)_updateListForClusteredRideOptionChangeInClusteredSegment:(id)segment
 {
-  v4 = a3;
+  segmentCopy = segment;
   if (!self->_clusteredRideUpdateThrottler)
   {
     v5 = sub_100E74344();
@@ -1232,26 +1232,26 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v6 = self;
+    selfCopy = self;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(TransitDirectionsStepsListDataSource *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
     *buf = 138543362;
-    v20 = v11;
+    v20 = selfCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}@] Will prepare transit clustered ride update throttler to prevent more than one rebuild/reload per run loop", buf, 0xCu);
 
     goto LABEL_9;
@@ -1262,28 +1262,28 @@ LABEL_10:
   [(MapsThrottler *)self->_clusteredRideUpdateThrottler setValue:v16];
 }
 
-- (void)transitDirectionsClusteredVehiclesCellDidTapAlternateRouteButtonInCell:(id)a3
+- (void)transitDirectionsClusteredVehiclesCellDidTapAlternateRouteButtonInCell:(id)cell
 {
-  v7 = a3;
-  v4 = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexForAnalytics];
-  [GEOAPPortal captureUserAction:17098 target:0 value:0 transitStep:v4];
+  cellCopy = cell;
+  displayedItemIndexForAnalytics = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexForAnalytics];
+  [GEOAPPortal captureUserAction:17098 target:0 value:0 transitStep:displayedItemIndexForAnalytics];
 
-  v5 = [(TransitDirectionsStepsListDataSource *)self delegate];
-  LOBYTE(v4) = objc_opt_respondsToSelector();
+  delegate = [(TransitDirectionsStepsListDataSource *)self delegate];
+  LOBYTE(displayedItemIndexForAnalytics) = objc_opt_respondsToSelector();
 
-  if (v4)
+  if (displayedItemIndexForAnalytics)
   {
-    v6 = [(TransitDirectionsStepsListDataSource *)self delegate];
-    [v6 transitDirectionsStepsListDataSource:self didTapClusteredVehiclesCell:v7];
+    delegate2 = [(TransitDirectionsStepsListDataSource *)self delegate];
+    [delegate2 transitDirectionsStepsListDataSource:self didTapClusteredVehiclesCell:cellCopy];
   }
 }
 
-- (void)transitDirectionsBoardingInfoStepView:(id)a3 didSelectScheduleForItem:(id)a4
+- (void)transitDirectionsBoardingInfoStepView:(id)view didSelectScheduleForItem:(id)item
 {
-  v11 = a4;
-  v5 = [v11 type];
-  v6 = v11;
-  if (v11 && v5 == 9)
+  itemCopy = item;
+  type = [itemCopy type];
+  v6 = itemCopy;
+  if (itemCopy && type == 9)
   {
     while (1)
     {
@@ -1293,10 +1293,10 @@ LABEL_10:
         break;
       }
 
-      v7 = [v12 nextItem];
+      nextItem = [v12 nextItem];
 
-      v6 = v7;
-      if (!v7)
+      v6 = nextItem;
+      if (!nextItem)
       {
         goto LABEL_7;
       }
@@ -1309,121 +1309,121 @@ LABEL_7:
   v13 = v6;
   if ([v6 type] == 2)
   {
-    v8 = [(TransitDirectionsStepsListDataSource *)self delegate];
+    delegate = [(TransitDirectionsStepsListDataSource *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(TransitDirectionsStepsListDataSource *)self delegate];
-      [v10 transitDirectionsStepsListDataSource:self didSelectTrip:v13];
+      delegate2 = [(TransitDirectionsStepsListDataSource *)self delegate];
+      [delegate2 transitDirectionsStepsListDataSource:self didSelectTrip:v13];
     }
   }
 }
 
-- (void)didTapReportAProblemButtonOnRoutePlanningFooterView:(id)a3
+- (void)didTapReportAProblemButtonOnRoutePlanningFooterView:(id)view
 {
-  v4 = [(TransitDirectionsStepsListDataSource *)self delegate];
+  delegate = [(TransitDirectionsStepsListDataSource *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = +[MKMapService sharedService];
-    v7 = [(TransitDirectionsStepsListDataSource *)self delegate];
-    v8 = [v7 currentUITargetForAnalytics];
-    v9 = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexForAnalytics];
-    [v6 captureUserAction:5013 onTarget:v8 eventValue:0 transitStep:v9];
+    delegate2 = [(TransitDirectionsStepsListDataSource *)self delegate];
+    currentUITargetForAnalytics = [delegate2 currentUITargetForAnalytics];
+    displayedItemIndexForAnalytics = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexForAnalytics];
+    [v6 captureUserAction:5013 onTarget:currentUITargetForAnalytics eventValue:0 transitStep:displayedItemIndexForAnalytics];
   }
 
-  v10 = [(TransitDirectionsStepsListDataSource *)self delegate];
+  delegate3 = [(TransitDirectionsStepsListDataSource *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(TransitDirectionsStepsListDataSource *)self delegate];
-    [v12 directionsStepsListDidTapRAPButton:self];
+    delegate4 = [(TransitDirectionsStepsListDataSource *)self delegate];
+    [delegate4 directionsStepsListDidTapRAPButton:self];
   }
 }
 
-- (void)routePlanningView:(id)a3 didTapGetTicketsForURL:(id)a4
+- (void)routePlanningView:(id)view didTapGetTicketsForURL:(id)l
 {
-  v8 = a4;
-  v5 = [(TransitDirectionsStepsListDataSource *)self delegate];
+  lCopy = l;
+  delegate = [(TransitDirectionsStepsListDataSource *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(TransitDirectionsStepsListDataSource *)self delegate];
-    [v7 transitDirectionsStepsListDataSource:self didTapGetTicketsWithURL:v8];
+    delegate2 = [(TransitDirectionsStepsListDataSource *)self delegate];
+    [delegate2 transitDirectionsStepsListDataSource:self didTapGetTicketsWithURL:lCopy];
   }
 }
 
-- (void)didTapGetTicketsOnRoutePlanningFooterView:(id)a3
+- (void)didTapGetTicketsOnRoutePlanningFooterView:(id)view
 {
-  v4 = [(TransitDirectionsStepsListDataSource *)self delegate];
+  delegate = [(TransitDirectionsStepsListDataSource *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v7 = [(TransitDirectionsStepsListDataSource *)self delegate];
-    v6 = [(GEOComposedRoute *)self->_route ticketingSegmentsForSelectedRides];
-    [v7 transitDirectionsStepsListDataSource:self didTapGetTicketsForSegments:v6];
+    delegate2 = [(TransitDirectionsStepsListDataSource *)self delegate];
+    ticketingSegmentsForSelectedRides = [(GEOComposedRoute *)self->_route ticketingSegmentsForSelectedRides];
+    [delegate2 transitDirectionsStepsListDataSource:self didTapGetTicketsForSegments:ticketingSegmentsForSelectedRides];
   }
 }
 
-- (void)didTapShareButtonOnRoutePlanningFooterView:(id)a3
+- (void)didTapShareButtonOnRoutePlanningFooterView:(id)view
 {
-  v4 = [(TransitDirectionsStepsListDataSource *)self delegate];
+  delegate = [(TransitDirectionsStepsListDataSource *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = +[MKMapService sharedService];
-    v7 = [(TransitDirectionsStepsListDataSource *)self delegate];
-    v8 = [v7 currentUITargetForAnalytics];
-    v9 = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexForAnalytics];
-    [v6 captureUserAction:6013 onTarget:v8 eventValue:0 transitStep:v9];
+    delegate2 = [(TransitDirectionsStepsListDataSource *)self delegate];
+    currentUITargetForAnalytics = [delegate2 currentUITargetForAnalytics];
+    displayedItemIndexForAnalytics = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexForAnalytics];
+    [v6 captureUserAction:6013 onTarget:currentUITargetForAnalytics eventValue:0 transitStep:displayedItemIndexForAnalytics];
   }
 
-  v10 = [(TransitDirectionsStepsListDataSource *)self delegate];
+  delegate3 = [(TransitDirectionsStepsListDataSource *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(TransitDirectionsStepsListDataSource *)self delegate];
-    [v12 directionsStepsListDidTapShareButton:self];
+    delegate4 = [(TransitDirectionsStepsListDataSource *)self delegate];
+    [delegate4 directionsStepsListDidTapShareButton:self];
   }
 }
 
-- (void)_transitDirectionsStepView:(id)a3 wantsToExpandOrCollapseItem:(id)a4 inListView:(id)a5
+- (void)_transitDirectionsStepView:(id)view wantsToExpandOrCollapseItem:(id)item inListView:(id)listView
 {
-  v7 = a4;
-  if (a5)
+  itemCopy = item;
+  if (listView)
   {
-    v8 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-    v9 = [v8 indexPathForItem:v7];
+    dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+    v9 = [dataProvider indexPathForItem:itemCopy];
 
-    if (v7 && v9)
+    if (itemCopy && v9)
     {
       self->_animatingExpansion = 1;
-      v10 = [(TransitDirectionsStepsListDataSource *)self delegate];
+      delegate = [(TransitDirectionsStepsListDataSource *)self delegate];
       v11 = objc_opt_respondsToSelector();
 
       if (v11)
       {
-        v12 = [(TransitDirectionsStepsListDataSource *)self delegate];
-        [v12 transitDirectionsStepsListDataSource:self willExpandItem:v7];
+        delegate2 = [(TransitDirectionsStepsListDataSource *)self delegate];
+        [delegate2 transitDirectionsStepsListDataSource:self willExpandItem:itemCopy];
       }
 
-      [v7 setExpanded:{objc_msgSend(v7, "expanded") ^ 1}];
-      v13 = [(TransitDirectionsStepsListDataSource *)self listView];
-      v14 = [v9 section];
+      [itemCopy setExpanded:{objc_msgSend(itemCopy, "expanded") ^ 1}];
+      listView = [(TransitDirectionsStepsListDataSource *)self listView];
+      section = [v9 section];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_100E74D80;
       v18[3] = &unk_101661570;
       v18[4] = self;
-      v19 = v7;
-      [v13 reloadSectionAtIndex:v14 animated:1 completion:v18];
+      v19 = itemCopy;
+      [listView reloadSectionAtIndex:section animated:1 completion:v18];
     }
 
     else
@@ -1457,46 +1457,46 @@ LABEL_7:
   }
 }
 
-- (void)_transitDirectionsCell:(id)a3 wantsToExpandOrCollapseItem:(id)a4 inCollectionView:(id)a5
+- (void)_transitDirectionsCell:(id)cell wantsToExpandOrCollapseItem:(id)item inCollectionView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  cellCopy = cell;
+  itemCopy = item;
+  if (view)
   {
-    v10 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-    v11 = [v10 indexPathForCell:v8];
+    collectionView = [(TransitDirectionsStepsListDataSource *)self collectionView];
+    v11 = [collectionView indexPathForCell:cellCopy];
 
-    if (v9 && v11)
+    if (itemCopy && v11)
     {
       self->_animatingExpansion = 1;
-      if (([v9 expanded] & 1) == 0)
+      if (([itemCopy expanded] & 1) == 0)
       {
-        v12 = [(TransitDirectionsStepsListDataSource *)self delegate];
+        delegate = [(TransitDirectionsStepsListDataSource *)self delegate];
         v13 = objc_opt_respondsToSelector();
 
         if (v13)
         {
-          v14 = [(TransitDirectionsStepsListDataSource *)self delegate];
-          [v14 transitDirectionsStepsListDataSource:self willExpandItem:v9];
+          delegate2 = [(TransitDirectionsStepsListDataSource *)self delegate];
+          [delegate2 transitDirectionsStepsListDataSource:self willExpandItem:itemCopy];
         }
       }
 
-      v15 = [(TransitDirectionsStepsListDataSource *)self collectionView];
+      collectionView2 = [(TransitDirectionsStepsListDataSource *)self collectionView];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_100E7521C;
       v21[3] = &unk_101656A00;
       v21[4] = self;
       v22 = v11;
-      v23 = v9;
-      v24 = v8;
+      v23 = itemCopy;
+      v24 = cellCopy;
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_100E75904;
       v19[3] = &unk_101661570;
       v19[4] = self;
       v20 = v23;
-      [v15 performBatchUpdates:v21 completion:v19];
+      [collectionView2 performBatchUpdates:v21 completion:v19];
     }
 
     else
@@ -1530,43 +1530,43 @@ LABEL_7:
   }
 }
 
-- (void)_transitDirectionsCell:(id)a3 wantsToExpandOrCollapseItem:(id)a4 inTableView:(id)a5
+- (void)_transitDirectionsCell:(id)cell wantsToExpandOrCollapseItem:(id)item inTableView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  cellCopy = cell;
+  itemCopy = item;
+  if (view)
   {
-    v10 = [(TransitDirectionsStepsListDataSource *)self tableView];
-    v11 = [v10 indexPathForCell:v8];
+    tableView = [(TransitDirectionsStepsListDataSource *)self tableView];
+    v11 = [tableView indexPathForCell:cellCopy];
 
-    if (v9 && v11)
+    if (itemCopy && v11)
     {
       self->_animatingExpansion = 1;
-      v12 = [(TransitDirectionsStepsListDataSource *)self delegate];
+      delegate = [(TransitDirectionsStepsListDataSource *)self delegate];
       v13 = objc_opt_respondsToSelector();
 
       if (v13)
       {
-        v14 = [(TransitDirectionsStepsListDataSource *)self delegate];
-        [v14 transitDirectionsStepsListDataSource:self willExpandItem:v9];
+        delegate2 = [(TransitDirectionsStepsListDataSource *)self delegate];
+        [delegate2 transitDirectionsStepsListDataSource:self willExpandItem:itemCopy];
       }
 
-      v15 = [(TransitDirectionsStepsListDataSource *)self tableView];
+      tableView2 = [(TransitDirectionsStepsListDataSource *)self tableView];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_100E75D94;
       v21[3] = &unk_101656A00;
       v21[4] = self;
       v22 = v11;
-      v23 = v9;
-      v24 = v8;
+      v23 = itemCopy;
+      v24 = cellCopy;
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_100E76484;
       v19[3] = &unk_101661570;
       v19[4] = self;
       v20 = v23;
-      [v15 performBatchUpdates:v21 completion:v19];
+      [tableView2 performBatchUpdates:v21 completion:v19];
     }
 
     else
@@ -1600,50 +1600,50 @@ LABEL_7:
   }
 }
 
-- (void)transitDirectionsCell:(id)a3 wantsToExpandOrCollapseItem:(id)a4
+- (void)transitDirectionsCell:(id)cell wantsToExpandOrCollapseItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 cell];
-  v9 = [(TransitDirectionsStepsListDataSource *)self tableView];
-  [(TransitDirectionsStepsListDataSource *)self _transitDirectionsCell:v8 wantsToExpandOrCollapseItem:v6 inTableView:v9];
+  itemCopy = item;
+  cellCopy = cell;
+  cell = [cellCopy cell];
+  tableView = [(TransitDirectionsStepsListDataSource *)self tableView];
+  [(TransitDirectionsStepsListDataSource *)self _transitDirectionsCell:cell wantsToExpandOrCollapseItem:itemCopy inTableView:tableView];
 
-  v10 = [v7 cell];
-  v11 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-  [(TransitDirectionsStepsListDataSource *)self _transitDirectionsCell:v10 wantsToExpandOrCollapseItem:v6 inCollectionView:v11];
+  cell2 = [cellCopy cell];
+  collectionView = [(TransitDirectionsStepsListDataSource *)self collectionView];
+  [(TransitDirectionsStepsListDataSource *)self _transitDirectionsCell:cell2 wantsToExpandOrCollapseItem:itemCopy inCollectionView:collectionView];
 
-  v12 = [(TransitDirectionsStepsListDataSource *)self listView];
-  [(TransitDirectionsStepsListDataSource *)self _transitDirectionsStepView:v7 wantsToExpandOrCollapseItem:v6 inListView:v12];
+  listView = [(TransitDirectionsStepsListDataSource *)self listView];
+  [(TransitDirectionsStepsListDataSource *)self _transitDirectionsStepView:cellCopy wantsToExpandOrCollapseItem:itemCopy inListView:listView];
 }
 
-- (void)transitDirectionsCell:(id)a3 didTapAdvisory:(id)a4
+- (void)transitDirectionsCell:(id)cell didTapAdvisory:(id)advisory
 {
-  v11 = a3;
-  v6 = a4;
+  cellCopy = cell;
+  advisoryCopy = advisory;
   v7 = +[MKMapService sharedService];
-  v8 = [(TransitDirectionsStepsListDataSource *)self delegate];
-  [v7 captureUserAction:250 onTarget:objc_msgSend(v8 forAdvisory:{"currentUITargetForAnalytics"), v6}];
+  delegate = [(TransitDirectionsStepsListDataSource *)self delegate];
+  [v7 captureUserAction:250 onTarget:objc_msgSend(delegate forAdvisory:{"currentUITargetForAnalytics"), advisoryCopy}];
 
-  v9 = [(TransitDirectionsStepsListDataSource *)self delegate];
-  LOBYTE(v8) = objc_opt_respondsToSelector();
+  delegate2 = [(TransitDirectionsStepsListDataSource *)self delegate];
+  LOBYTE(delegate) = objc_opt_respondsToSelector();
 
-  if (v8)
+  if (delegate)
   {
-    v10 = [(TransitDirectionsStepsListDataSource *)self delegate];
-    [v10 transitDirectionsStepsListDataSource:self didTapIncidentsCell:v11 withAdvisory:v6];
+    delegate3 = [(TransitDirectionsStepsListDataSource *)self delegate];
+    [delegate3 transitDirectionsStepsListDataSource:self didTapIncidentsCell:cellCopy withAdvisory:advisoryCopy];
   }
 }
 
-- (void)_configureSeparatorForCell:(id)a3 forRowAtIndexPath:(id)a4
+- (void)_configureSeparatorForCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TransitDirectionsStepsListDataSource *)self listItemForIndexPath:v7];
+  cellCopy = cell;
+  pathCopy = path;
+  v8 = [(TransitDirectionsStepsListDataSource *)self listItemForIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ![v6 conformsToProtocol:&OBJC_PROTOCOL___TransitDirectionsCell] || (objc_opt_respondsToSelector() & 1) == 0)
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ![cellCopy conformsToProtocol:&OBJC_PROTOCOL___TransitDirectionsCell] || (objc_opt_respondsToSelector() & 1) == 0)
     {
       v24 = sub_10006D178();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -1672,8 +1672,8 @@ LABEL_7:
       }
     }
 
-    v9 = [(TransitDirectionsStepsListDataSource *)self tableView];
-    if (v9)
+    tableView = [(TransitDirectionsStepsListDataSource *)self tableView];
+    if (tableView)
     {
       [(TransitDirectionsStepsListDataSource *)self tableView];
     }
@@ -1683,40 +1683,40 @@ LABEL_7:
       [(TransitDirectionsStepsListDataSource *)self collectionView];
     }
     v10 = ;
-    v11 = [v10 numberOfSections];
+    numberOfSections = [v10 numberOfSections];
 
-    v12 = [(TransitDirectionsStepsListDataSource *)self tableView];
-    if (v12)
+    tableView2 = [(TransitDirectionsStepsListDataSource *)self tableView];
+    if (tableView2)
     {
-      v13 = [(TransitDirectionsStepsListDataSource *)self tableView];
-      v14 = -[TransitDirectionsStepsListDataSource tableView:numberOfRowsInSection:](self, "tableView:numberOfRowsInSection:", v13, [v7 section]);
+      tableView3 = [(TransitDirectionsStepsListDataSource *)self tableView];
+      v14 = -[TransitDirectionsStepsListDataSource tableView:numberOfRowsInSection:](self, "tableView:numberOfRowsInSection:", tableView3, [pathCopy section]);
     }
 
     else
     {
-      v13 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-      v14 = -[TransitDirectionsStepsListDataSource collectionView:numberOfItemsInSection:](self, "collectionView:numberOfItemsInSection:", v13, [v7 section]);
+      tableView3 = [(TransitDirectionsStepsListDataSource *)self collectionView];
+      v14 = -[TransitDirectionsStepsListDataSource collectionView:numberOfItemsInSection:](self, "collectionView:numberOfItemsInSection:", tableView3, [pathCopy section]);
     }
 
     v15 = v14;
 
     v16 = (v15 - 1);
-    v17 = [v7 row];
-    v18 = [(TransitDirectionsStepsListDataSource *)self options];
-    v19 = [(TransitDirectionsStepsListDataSource *)self _supportsFooterItem];
+    v17 = [pathCopy row];
+    options = [(TransitDirectionsStepsListDataSource *)self options];
+    _supportsFooterItem = [(TransitDirectionsStepsListDataSource *)self _supportsFooterItem];
     v20 = 1;
-    if ((v18 & 8) != 0 && v16 == v17)
+    if ((options & 8) != 0 && v16 == v17)
     {
       v21 = -2;
-      if (!v19)
+      if (!_supportsFooterItem)
       {
         v21 = -1;
       }
 
-      v20 = &v11[v21] != [v7 section];
+      v20 = &numberOfSections[v21] != [pathCopy section];
     }
 
-    v22 = v6;
+    v22 = cellCopy;
     [v22 setUseLeadingInstructionMarginAsLeadingSeparatorInset:v20];
     if (v16 == v17)
     {
@@ -1732,14 +1732,14 @@ LABEL_7:
   }
 }
 
-- (void)_configureFooterView:(id)a3
+- (void)_configureFooterView:(id)view
 {
   route = self->_route;
-  v9 = a3;
-  v5 = [(GEOComposedRoute *)route ticketingSegmentsForSelectedRides];
-  v6 = [v5 count];
+  viewCopy = view;
+  ticketingSegmentsForSelectedRides = [(GEOComposedRoute *)route ticketingSegmentsForSelectedRides];
+  v6 = [ticketingSegmentsForSelectedRides count];
 
-  v7 = sub_10000FA08(v9) != 5;
+  v7 = sub_10000FA08(viewCopy) != 5;
   if (v6)
   {
     v8 = (2 * v7) | 4;
@@ -1750,24 +1750,24 @@ LABEL_7:
     v8 = 2 * v7;
   }
 
-  [v9 setVisibleCommandSet:v8];
-  [v9 setDelegate:self];
+  [viewCopy setVisibleCommandSet:v8];
+  [viewCopy setDelegate:self];
 }
 
-- (id)_footerCellForIndexPath:(id)a3 inCollectionView:(id)a4
+- (id)_footerCellForIndexPath:(id)path inCollectionView:(id)view
 {
-  v5 = [a4 dequeueReusableCellWithReuseIdentifier:@"TransitDirectionsListSharingIdentifier" forIndexPath:a3];
-  v6 = [v5 footerView];
-  [(TransitDirectionsStepsListDataSource *)self _configureFooterView:v6];
+  v5 = [view dequeueReusableCellWithReuseIdentifier:@"TransitDirectionsListSharingIdentifier" forIndexPath:path];
+  footerView = [v5 footerView];
+  [(TransitDirectionsStepsListDataSource *)self _configureFooterView:footerView];
 
   return v5;
 }
 
-- (id)_footerCellForIndexPath:(id)a3 inTableView:(id)a4
+- (id)_footerCellForIndexPath:(id)path inTableView:(id)view
 {
-  if (a4)
+  if (view)
   {
-    v5 = [a4 dequeueReusableCellWithIdentifier:@"TransitDirectionsListSharingIdentifier" forIndexPath:a3];
+    v5 = [view dequeueReusableCellWithIdentifier:@"TransitDirectionsListSharingIdentifier" forIndexPath:path];
   }
 
   else
@@ -1777,15 +1777,15 @@ LABEL_7:
 
   v6 = v5;
   [(RoutePlanningFooterCell *)v5 set_mapkit_separatorStyleOverride:0];
-  v7 = [(RoutePlanningFooterCell *)v6 footerView];
-  [(TransitDirectionsStepsListDataSource *)self _configureFooterView:v7];
+  footerView = [(RoutePlanningFooterCell *)v6 footerView];
+  [(TransitDirectionsStepsListDataSource *)self _configureFooterView:footerView];
 
   return v6;
 }
 
-- (_NSRange)_segementRangeForItemAtIndexPath:(id)a3
+- (_NSRange)_segementRangeForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -1810,10 +1810,10 @@ LABEL_7:
           objc_enumerationMutation(obj);
         }
 
-        v12 = [*(*(&v22 + 1) + 8 * v11) rangeValue];
+        rangeValue = [*(*(&v22 + 1) + 8 * v11) rangeValue];
         v14 = v13;
-        v15 = [v4 section];
-        v17 = v15 >= v12 && v15 - v12 < v14;
+        section = [pathCopy section];
+        v17 = section >= rangeValue && section - rangeValue < v14;
         if (v10 == 0x7FFFFFFFFFFFFFFFLL)
         {
           if (v17)
@@ -1869,24 +1869,24 @@ LABEL_25:
   return result;
 }
 
-- (int64_t)_cellNavStateForItem:(id)a3 atIndexPath:(id)a4
+- (int64_t)_cellNavStateForItem:(id)item atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TransitDirectionsStepsListDataSource *)self activeItemIndexPath];
-  if (v8)
+  itemCopy = item;
+  pathCopy = path;
+  activeItemIndexPath = [(TransitDirectionsStepsListDataSource *)self activeItemIndexPath];
+  if (activeItemIndexPath)
   {
-    v9 = [(TransitDirectionsStepsListDataSource *)self matchedLocation];
-    v10 = [v9 _navigation_isStale];
+    matchedLocation = [(TransitDirectionsStepsListDataSource *)self matchedLocation];
+    _navigation_isStale = [matchedLocation _navigation_isStale];
 
-    v11 = [v7 section];
-    v12 = [v8 section];
-    v13 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:v7];
-    if (v11 != v12)
+    section = [pathCopy section];
+    section2 = [activeItemIndexPath section];
+    v13 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:pathCopy];
+    if (section != section2)
     {
-      if ([v8 compare:v13] == 1)
+      if ([activeItemIndexPath compare:v13] == 1)
       {
-        v19 = [(TransitDirectionsStepsListDataSource *)self _segementRangeForItemAtIndexPath:v8];
+        v19 = [(TransitDirectionsStepsListDataSource *)self _segementRangeForItemAtIndexPath:activeItemIndexPath];
         v21 = v20;
         v22 = [(TransitDirectionsStepsListDataSource *)self _segementRangeForItemAtIndexPath:v13];
         v24 = v23;
@@ -1904,8 +1904,8 @@ LABEL_25:
 
           else
           {
-            v26 = [v6 parentItem];
-            v27 = v26 == 0;
+            parentItem = [itemCopy parentItem];
+            v27 = parentItem == 0;
 
             v18 = 2 * v27;
           }
@@ -1925,32 +1925,32 @@ LABEL_25:
       goto LABEL_24;
     }
 
-    v14 = [v6 matchingRouteStepIndex];
+    matchingRouteStepIndex = [itemCopy matchingRouteStepIndex];
     activeComposedRouteStepIndex = self->_activeComposedRouteStepIndex;
-    v16 = [v6 parentItem];
-    if (!v16)
+    parentItem2 = [itemCopy parentItem];
+    if (!parentItem2)
     {
       goto LABEL_21;
     }
 
-    v17 = v16;
-    if ([v6 type] == 5 || objc_msgSend(v6, "type") == 14)
+    v17 = parentItem2;
+    if ([itemCopy type] == 5 || objc_msgSend(itemCopy, "type") == 14)
     {
     }
 
     else
     {
-      v28 = [v6 type];
+      type = [itemCopy type];
 
-      if (v28 != 6)
+      if (type != 6)
       {
         goto LABEL_21;
       }
     }
 
-    if (v14 <= activeComposedRouteStepIndex)
+    if (matchingRouteStepIndex <= activeComposedRouteStepIndex)
     {
-      if (v10)
+      if (_navigation_isStale)
       {
         v18 = 1;
       }
@@ -1966,7 +1966,7 @@ LABEL_24:
     }
 
 LABEL_21:
-    if (v10)
+    if (_navigation_isStale)
     {
       v18 = 0;
     }
@@ -1985,17 +1985,17 @@ LABEL_25:
   return v18;
 }
 
-- (void)_cacheHeightForRow:(id)a3 atIndexPath:(id)a4
+- (void)_cacheHeightForRow:(id)row atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:a4];
+  rowCopy = row;
+  v7 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:path];
   v8 = [(TransitDirectionsStepsListDataSource *)self listItemForIndexPath:v7];
   if (v8)
   {
-    v9 = [(TransitDirectionsStepsListDataSource *)self estimatedHeightsByItem];
-    [v6 bounds];
+    estimatedHeightsByItem = [(TransitDirectionsStepsListDataSource *)self estimatedHeightsByItem];
+    [rowCopy bounds];
     v10 = [NSNumber numberWithDouble:CGRectGetHeight(v20)];
-    [v9 setObject:v10 forKey:v8];
+    [estimatedHeightsByItem setObject:v10 forKey:v8];
     goto LABEL_3;
   }
 
@@ -2015,8 +2015,8 @@ LABEL_25:
 
   if (sub_100E03634())
   {
-    v9 = sub_10006D178();
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    estimatedHeightsByItem = sub_10006D178();
+    if (!os_log_type_enabled(estimatedHeightsByItem, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_4;
     }
@@ -2024,26 +2024,26 @@ LABEL_25:
     v10 = +[NSThread callStackSymbols];
     v12 = 138412290;
     v13 = v10;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%@", &v12, 0xCu);
+    _os_log_impl(&_mh_execute_header, estimatedHeightsByItem, OS_LOG_TYPE_ERROR, "%@", &v12, 0xCu);
 LABEL_3:
 
 LABEL_4:
   }
 }
 
-- (void)tableViewDidFinishReload:(id)a3
+- (void)tableViewDidFinishReload:(id)reload
 {
-  v4 = a3;
+  reloadCopy = reload;
   if (self->_routeSetAwaitingTableViewReload)
   {
     self->_routeSetAwaitingTableViewReload = 0;
-    v14 = v4;
-    [v4 contentOffset];
+    v14 = reloadCopy;
+    [reloadCopy contentOffset];
     v6 = v5;
     v8 = v7;
-    v9 = [(TransitDirectionsStepsListDataSource *)self tableView];
-    v10 = [v9 safeAreaLayoutGuide];
-    [v10 layoutFrame];
+    tableView = [(TransitDirectionsStepsListDataSource *)self tableView];
+    safeAreaLayoutGuide = [tableView safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     v11 = -CGRectGetMinY(v16);
     v12 = v6 == 0.0 && v8 == v11;
     if (v12 || [v14 numberOfSections] < 1)
@@ -2054,34 +2054,34 @@ LABEL_4:
     {
       v13 = [v14 numberOfRowsInSection:0];
 
-      v4 = v14;
+      reloadCopy = v14;
       if (v13 < 1)
       {
         goto LABEL_11;
       }
 
-      v9 = [NSIndexPath indexPathForRow:0 inSection:0];
-      [v14 scrollToRowAtIndexPath:v9 atScrollPosition:1 animated:0];
+      tableView = [NSIndexPath indexPathForRow:0 inSection:0];
+      [v14 scrollToRowAtIndexPath:tableView atScrollPosition:1 animated:0];
     }
 
-    v4 = v14;
+    reloadCopy = v14;
   }
 
 LABEL_11:
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TransitDirectionsStepsListDataSource *)self _additionalSelectionIndexPathsForIndexPath:v7];
-  v9 = sub_10000FA08(v6);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(TransitDirectionsStepsListDataSource *)self _additionalSelectionIndexPathsForIndexPath:pathCopy];
+  v9 = sub_10000FA08(viewCopy);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = [v6 indexPathsForSelectedRows];
-  v11 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  indexPathsForSelectedRows = [viewCopy indexPathsForSelectedRows];
+  v11 = [indexPathsForSelectedRows countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2093,34 +2093,34 @@ LABEL_11:
       {
         if (*v29 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(indexPathsForSelectedRows);
         }
 
         v15 = *(*(&v28 + 1) + 8 * v14);
-        if (v9 != 5 || ([*(*(&v28 + 1) + 8 * v14) isEqual:v7] & 1) == 0 && (objc_msgSend(v8, "containsObject:", v15) & 1) == 0)
+        if (v9 != 5 || ([*(*(&v28 + 1) + 8 * v14) isEqual:pathCopy] & 1) == 0 && (objc_msgSend(v8, "containsObject:", v15) & 1) == 0)
         {
-          [v6 deselectRowAtIndexPath:v15 animated:v9 != 5];
+          [viewCopy deselectRowAtIndexPath:v15 animated:v9 != 5];
         }
 
         v14 = v14 + 1;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v12 = [indexPathsForSelectedRows countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v12);
   }
 
-  v16 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:v7];
+  v16 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:pathCopy];
   v17 = [(TransitDirectionsStepsListDataSource *)self listItemForIndexPath:v16];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [v8 firstObject];
-    if ([v18 compare:v16] == -1)
+    firstObject = [v8 firstObject];
+    if ([firstObject compare:v16] == -1)
     {
-      v19 = [(TransitDirectionsStepsListDataSource *)self listItemForIndexPath:v18];
+      v19 = [(TransitDirectionsStepsListDataSource *)self listItemForIndexPath:firstObject];
 
       v17 = v19;
     }
@@ -2128,20 +2128,20 @@ LABEL_11:
     v17 = v17;
     if ([v17 type] == 3 && (-[TransitDirectionsStepsListDataSource delegate](self, "delegate"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_opt_respondsToSelector(), v20, (v21 & 1) != 0))
     {
-      v22 = [(TransitDirectionsStepsListDataSource *)self delegate];
-      [v22 transitDirectionsStepsListDataSource:self didSelectTrip:v17];
+      delegate = [(TransitDirectionsStepsListDataSource *)self delegate];
+      [delegate transitDirectionsStepsListDataSource:self didSelectTrip:v17];
     }
 
     else if ([v17 type] == 4 && (-[TransitDirectionsStepsListDataSource delegate](self, "delegate"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_opt_respondsToSelector(), v23, (v24 & 1) != 0))
     {
-      v22 = [v6 cellForRowAtIndexPath:v16];
-      v25 = [v22 stepView];
-      [(TransitDirectionsStepsListDataSource *)self transitDirectionsClusteredVehiclesCellDidTapAlternateRouteButtonInCell:v25];
+      delegate = [viewCopy cellForRowAtIndexPath:v16];
+      stepView = [delegate stepView];
+      [(TransitDirectionsStepsListDataSource *)self transitDirectionsClusteredVehiclesCellDidTapAlternateRouteButtonInCell:stepView];
     }
 
     else
     {
-      v26 = [(TransitDirectionsStepsListDataSource *)self delegate];
+      delegate2 = [(TransitDirectionsStepsListDataSource *)self delegate];
       v27 = objc_opt_respondsToSelector();
 
       if ((v27 & 1) == 0)
@@ -2151,8 +2151,8 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      v22 = [(TransitDirectionsStepsListDataSource *)self delegate];
-      [v22 transitDirectionsStepsListDataSource:self didTapRowForItem:v17];
+      delegate = [(TransitDirectionsStepsListDataSource *)self delegate];
+      [delegate transitDirectionsStepsListDataSource:self didTapRowForItem:v17];
     }
 
     goto LABEL_24;
@@ -2161,11 +2161,11 @@ LABEL_24:
 LABEL_25:
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TransitDirectionsStepsListDataSource *)self _additionalSelectionIndexPathsForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(TransitDirectionsStepsListDataSource *)self _additionalSelectionIndexPathsForIndexPath:pathCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -2184,7 +2184,7 @@ LABEL_25:
           objc_enumerationMutation(v8);
         }
 
-        [v6 selectRowAtIndexPath:*(*(&v14 + 1) + 8 * i) animated:0 scrollPosition:0];
+        [viewCopy selectRowAtIndexPath:*(*(&v14 + 1) + 8 * i) animated:0 scrollPosition:0];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -2193,13 +2193,13 @@ LABEL_25:
     while (v10);
   }
 
-  return v7;
+  return pathCopy;
 }
 
-- (void)tableView:(id)a3 didUnhighlightRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didUnhighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:a4];
+  viewCopy = view;
+  v7 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:path];
   v8 = [(TransitDirectionsStepsListDataSource *)self _additionalSelectionIndexPathsForIndexPath:v7];
   v14 = 0u;
   v15 = 0u;
@@ -2220,7 +2220,7 @@ LABEL_25:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [v6 cellForRowAtIndexPath:*(*(&v14 + 1) + 8 * v12)];
+        v13 = [viewCopy cellForRowAtIndexPath:*(*(&v14 + 1) + 8 * v12)];
         [v13 setHighlighted:0];
 
         v12 = v12 + 1;
@@ -2234,10 +2234,10 @@ LABEL_25:
   }
 }
 
-- (void)tableView:(id)a3 didHighlightRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(TransitDirectionsStepsListDataSource *)self _additionalSelectionIndexPathsForIndexPath:a4];
+  viewCopy = view;
+  v7 = [(TransitDirectionsStepsListDataSource *)self _additionalSelectionIndexPathsForIndexPath:path];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -2257,7 +2257,7 @@ LABEL_25:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [v6 cellForRowAtIndexPath:*(*(&v13 + 1) + 8 * v11)];
+        v12 = [viewCopy cellForRowAtIndexPath:*(*(&v13 + 1) + 8 * v11)];
         [v12 setHighlighted:1];
 
         v11 = v11 + 1;
@@ -2271,12 +2271,12 @@ LABEL_25:
   }
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v5 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:a4];
+  v5 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:path];
   v6 = [(TransitDirectionsStepsListDataSource *)self listItemForIndexPath:v5];
-  v7 = [(TransitDirectionsStepsListDataSource *)self estimatedHeightsByItem];
-  v8 = [v7 objectForKey:v6];
+  estimatedHeightsByItem = [(TransitDirectionsStepsListDataSource *)self estimatedHeightsByItem];
+  v8 = [estimatedHeightsByItem objectForKey:v6];
 
   if (v8)
   {
@@ -2302,16 +2302,16 @@ LABEL_25:
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(TransitDirectionsStepsListDataSource *)self _indexPathFromFlatIndexPath:pathCopy];
   v9 = [(TransitDirectionsStepsListDataSource *)self listItemForIndexPath:v8];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [TransitDirectionsCell dequeueCellForListItem:v9 fromTableView:v6 atIndexPath:v7];
+    v10 = [TransitDirectionsCell dequeueCellForListItem:v9 fromTableView:viewCopy atIndexPath:pathCopy];
     if ([v10 conformsToProtocol:&OBJC_PROTOCOL___TransitDirectionsExpandableCell])
     {
       [v10 setExpandableCellDelegate:self];
@@ -2320,8 +2320,8 @@ LABEL_25:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v10 stepView];
-      [v11 setBoardingInfoDelegate:self];
+      stepView = [v10 stepView];
+      [stepView setBoardingInfoDelegate:self];
     }
 
     else
@@ -2344,13 +2344,13 @@ LABEL_11:
         }
 
         [v10 setUseNavigationMetrics:{-[TransitDirectionsStepsListDataSource _useNavigationMetrics](self, "_useNavigationMetrics")}];
-        [v10 setDisplayOptions:{-[TransitDirectionsStepsListDataSource _stepViewDisplayOptionsForSection:](self, "_stepViewDisplayOptionsForSection:", objc_msgSend(v7, "section"))}];
+        [v10 setDisplayOptions:{-[TransitDirectionsStepsListDataSource _stepViewDisplayOptionsForSection:](self, "_stepViewDisplayOptionsForSection:", objc_msgSend(pathCopy, "section"))}];
         [v10 configureWithItem:v9];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v10 stepView];
-          if ([v7 row] <= 0)
+          stepView2 = [v10 stepView];
+          if ([pathCopy row] <= 0)
           {
             v23 = sub_10006D178();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -2379,17 +2379,17 @@ LABEL_11:
             }
           }
 
-          if ([v7 row] >= 1)
+          if ([pathCopy row] >= 1)
           {
-            v13 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v7 row] - 1, objc_msgSend(v7, "section"));
-            v14 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-            v15 = [v14 itemAtIndexPath:v13];
+            v13 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [pathCopy row] - 1, objc_msgSend(pathCopy, "section"));
+            dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+            v15 = [dataProvider itemAtIndexPath:v13];
 
-            [v12 setPreviousItem:v15 withPreviousNavigationState:{-[TransitDirectionsStepsListDataSource _cellNavStateForItem:atIndexPath:](self, "_cellNavStateForItem:atIndexPath:", v15, v13)}];
+            [stepView2 setPreviousItem:v15 withPreviousNavigationState:{-[TransitDirectionsStepsListDataSource _cellNavStateForItem:atIndexPath:](self, "_cellNavStateForItem:atIndexPath:", v15, v13)}];
           }
         }
 
-        [v10 setNavigationState:{-[TransitDirectionsStepsListDataSource _cellNavStateForItem:atIndexPath:](self, "_cellNavStateForItem:atIndexPath:", v9, v7)}];
+        [v10 setNavigationState:{-[TransitDirectionsStepsListDataSource _cellNavStateForItem:atIndexPath:](self, "_cellNavStateForItem:atIndexPath:", v9, pathCopy)}];
         if (v10)
         {
           goto LABEL_26;
@@ -2398,8 +2398,8 @@ LABEL_11:
         goto LABEL_19;
       }
 
-      v11 = [v10 stepView];
-      [v11 setDelegate:self];
+      stepView = [v10 stepView];
+      [stepView setDelegate:self];
     }
 
     goto LABEL_11;
@@ -2407,7 +2407,7 @@ LABEL_11:
 
   if ([v9 isEqual:@"TransitDirectionsListSharingIdentifier"])
   {
-    v10 = [(TransitDirectionsStepsListDataSource *)self _footerCellForIndexPath:v7 inTableView:v6];
+    v10 = [(TransitDirectionsStepsListDataSource *)self _footerCellForIndexPath:pathCopy inTableView:viewCopy];
     goto LABEL_27;
   }
 
@@ -2442,13 +2442,13 @@ LABEL_19:
   v10 = [v19 initWithStyle:0 reuseIdentifier:v21];
 
 LABEL_26:
-  [(TransitDirectionsStepsListDataSource *)self _configureSeparatorForCell:v10 forRowAtIndexPath:v7];
+  [(TransitDirectionsStepsListDataSource *)self _configureSeparatorForCell:v10 forRowAtIndexPath:pathCopy];
 LABEL_27:
 
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if ([(TransitDirectionsStepsListDataSource *)self shouldFlattenToSingleSection])
   {
@@ -2471,11 +2471,11 @@ LABEL_27:
   else
   {
 
-    return [(TransitDirectionsStepsListDataSource *)self _numberOfRowsInSection:a4];
+    return [(TransitDirectionsStepsListDataSource *)self _numberOfRowsInSection:section];
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if ([(TransitDirectionsStepsListDataSource *)self shouldFlattenToSingleSection])
   {
@@ -2487,8 +2487,8 @@ LABEL_27:
 
 - (void)_resetRowHeightCache
 {
-  v2 = [(TransitDirectionsStepsListDataSource *)self estimatedHeightsByItem];
-  [v2 removeAllObjects];
+  estimatedHeightsByItem = [(TransitDirectionsStepsListDataSource *)self estimatedHeightsByItem];
+  [estimatedHeightsByItem removeAllObjects];
 }
 
 - (NSMapTable)estimatedHeightsByItem
@@ -2506,9 +2506,9 @@ LABEL_27:
   return estimatedHeightsByItem;
 }
 
-- (unint64_t)_stepViewDisplayOptionsForSection:(unint64_t)a3
+- (unint64_t)_stepViewDisplayOptionsForSection:(unint64_t)section
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (section == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
@@ -2533,9 +2533,9 @@ LABEL_27:
 
   if (!v5)
   {
-    v7 = [(TransitDirectionsStepsListDataSource *)self displayedItemIndex];
+    displayedItemIndex = [(TransitDirectionsStepsListDataSource *)self displayedItemIndex];
     v3 = 2;
-    if (v7 == a3)
+    if (displayedItemIndex == section)
     {
       return 3;
     }
@@ -2546,19 +2546,19 @@ LABEL_27:
 
 - (void)_updateDisplayStyleInVisibleCells
 {
-  v3 = [(TransitDirectionsStepsListDataSource *)self collectionView];
+  collectionView = [(TransitDirectionsStepsListDataSource *)self collectionView];
 
-  if (!v3)
+  if (!collectionView)
   {
-    v11 = [(TransitDirectionsStepsListDataSource *)self tableView];
+    tableView = [(TransitDirectionsStepsListDataSource *)self tableView];
 
-    if (v11)
+    if (tableView)
     {
-      v12 = [(TransitDirectionsStepsListDataSource *)self tableView];
-      v13 = [v12 visibleCells];
+      tableView2 = [(TransitDirectionsStepsListDataSource *)self tableView];
+      visibleCells = [tableView2 visibleCells];
 
-      v14 = [(TransitDirectionsStepsListDataSource *)self tableView];
-      v15 = [v14 indexPathsForVisibleRows];
+      tableView3 = [(TransitDirectionsStepsListDataSource *)self tableView];
+      indexPathsForVisibleRows = [tableView3 indexPathsForVisibleRows];
 
       v16 = sub_100E74344();
       if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -2569,18 +2569,18 @@ LABEL_33:
         v38[1] = 3221225472;
         v38[2] = sub_100E78968;
         v38[3] = &unk_1016569B0;
-        v39 = v15;
-        v40 = self;
-        v35 = v15;
-        [v13 enumerateObjectsUsingBlock:v38];
+        v39 = indexPathsForVisibleRows;
+        selfCopy = self;
+        v35 = indexPathsForVisibleRows;
+        [visibleCells enumerateObjectsUsingBlock:v38];
         v36 = v39;
         goto LABEL_34;
       }
 
-      v17 = self;
-      if (!v17)
+      selfCopy2 = self;
+      if (!selfCopy2)
       {
-        v22 = @"<nil>";
+        selfCopy2 = @"<nil>";
         goto LABEL_32;
       }
 
@@ -2588,36 +2588,36 @@ LABEL_33:
       v19 = NSStringFromClass(v18);
       if (objc_opt_respondsToSelector())
       {
-        v20 = [(TransitDirectionsStepsListDataSource *)v17 performSelector:"accessibilityIdentifier"];
+        v20 = [(TransitDirectionsStepsListDataSource *)selfCopy2 performSelector:"accessibilityIdentifier"];
         v21 = v20;
         if (v20 && ![v20 isEqualToString:v19])
         {
-          v22 = [NSString stringWithFormat:@"%@<%p, %@>", v19, v17, v21];
+          selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v19, selfCopy2, v21];
 
           goto LABEL_18;
         }
       }
 
-      v22 = [NSString stringWithFormat:@"%@<%p>", v19, v17];
+      selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v19, selfCopy2];
 LABEL_18:
 
 LABEL_32:
       *buf = 138543362;
-      v45 = v22;
+      v45 = selfCopy2;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "[%{public}@] Updating displayStyle in individual cells in table view", buf, 0xCu);
 
       goto LABEL_33;
     }
 
-    v23 = [(TransitDirectionsStepsListDataSource *)self listView];
+    listView = [(TransitDirectionsStepsListDataSource *)self listView];
 
-    if (!v23)
+    if (!listView)
     {
       return;
     }
 
-    v24 = [(TransitDirectionsStepsListDataSource *)self listView];
-    v13 = [v24 allStepViews];
+    listView2 = [(TransitDirectionsStepsListDataSource *)self listView];
+    visibleCells = [listView2 allStepViews];
 
     v25 = sub_100E74344();
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -2629,14 +2629,14 @@ LABEL_40:
       v37[2] = sub_100E78A60;
       v37[3] = &unk_1016569D8;
       v37[4] = self;
-      [v13 enumerateObjectsUsingBlock:v37];
+      [visibleCells enumerateObjectsUsingBlock:v37];
       goto LABEL_35;
     }
 
-    v26 = self;
-    if (!v26)
+    selfCopy3 = self;
+    if (!selfCopy3)
     {
-      v31 = @"<nil>";
+      selfCopy3 = @"<nil>";
       goto LABEL_39;
     }
 
@@ -2644,22 +2644,22 @@ LABEL_40:
     v28 = NSStringFromClass(v27);
     if (objc_opt_respondsToSelector())
     {
-      v29 = [(TransitDirectionsStepsListDataSource *)v26 performSelector:"accessibilityIdentifier"];
+      v29 = [(TransitDirectionsStepsListDataSource *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v30 = v29;
       if (v29 && ![v29 isEqualToString:v28])
       {
-        v31 = [NSString stringWithFormat:@"%@<%p, %@>", v28, v26, v30];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v28, selfCopy3, v30];
 
         goto LABEL_27;
       }
     }
 
-    v31 = [NSString stringWithFormat:@"%@<%p>", v28, v26];
+    selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v28, selfCopy3];
 LABEL_27:
 
 LABEL_39:
     *buf = 138543362;
-    v45 = v31;
+    v45 = selfCopy3;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "[%{public}@] Updating displayStyle in individual step views in list view", buf, 0xCu);
 
     goto LABEL_40;
@@ -2668,10 +2668,10 @@ LABEL_39:
   v4 = sub_100E74344();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v5 = self;
-    if (!v5)
+    selfCopy4 = self;
+    if (!selfCopy4)
     {
-      v10 = @"<nil>";
+      selfCopy4 = @"<nil>";
       goto LABEL_29;
     }
 
@@ -2679,77 +2679,77 @@ LABEL_39:
     v7 = NSStringFromClass(v6);
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(TransitDirectionsStepsListDataSource *)v5 performSelector:"accessibilityIdentifier"];
+      v8 = [(TransitDirectionsStepsListDataSource *)selfCopy4 performSelector:"accessibilityIdentifier"];
       v9 = v8;
       if (v8 && ![v8 isEqualToString:v7])
       {
-        v10 = [NSString stringWithFormat:@"%@<%p, %@>", v7, v5, v9];
+        selfCopy4 = [NSString stringWithFormat:@"%@<%p, %@>", v7, selfCopy4, v9];
 
         goto LABEL_9;
       }
     }
 
-    v10 = [NSString stringWithFormat:@"%@<%p>", v7, v5];
+    selfCopy4 = [NSString stringWithFormat:@"%@<%p>", v7, selfCopy4];
 LABEL_9:
 
 LABEL_29:
     *buf = 138543362;
-    v45 = v10;
+    v45 = selfCopy4;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%{public}@] Updating displayStyle in individual visible cells in collection view", buf, 0xCu);
   }
 
-  v32 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-  v13 = [v32 visibleCells];
+  collectionView2 = [(TransitDirectionsStepsListDataSource *)self collectionView];
+  visibleCells = [collectionView2 visibleCells];
 
-  v33 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-  v34 = [v33 indexPathsForVisibleItems];
+  collectionView3 = [(TransitDirectionsStepsListDataSource *)self collectionView];
+  indexPathsForVisibleItems = [collectionView3 indexPathsForVisibleItems];
 
   v41[0] = _NSConcreteStackBlock;
   v41[1] = 3221225472;
   v41[2] = sub_100E78870;
   v41[3] = &unk_1016568E8;
-  v42 = v34;
-  v43 = self;
-  v35 = v34;
-  [v13 enumerateObjectsUsingBlock:v41];
+  v42 = indexPathsForVisibleItems;
+  selfCopy5 = self;
+  v35 = indexPathsForVisibleItems;
+  [visibleCells enumerateObjectsUsingBlock:v41];
   v36 = v42;
 LABEL_34:
 
 LABEL_35:
 }
 
-- (void)_setUseCollapsedDisplayStyle:(BOOL)a3
+- (void)_setUseCollapsedDisplayStyle:(BOOL)style
 {
-  self->_useCollapsedDisplayStyle = a3;
+  self->_useCollapsedDisplayStyle = style;
   [(TransitDirectionsStepsListDataSource *)self _updateDisplayStyleInVisibleCells];
-  v4 = [(TransitDirectionsStepsListDataSource *)self _scrollView];
-  [v4 layoutBelowIfNeeded];
+  _scrollView = [(TransitDirectionsStepsListDataSource *)self _scrollView];
+  [_scrollView layoutBelowIfNeeded];
 
-  v5 = [(TransitDirectionsStepsListDataSource *)self listView];
-  [v5 reloadSeparators];
+  listView = [(TransitDirectionsStepsListDataSource *)self listView];
+  [listView reloadSeparators];
 }
 
-- (void)setUseCollapsedDisplayStyle:(BOOL)a3
+- (void)setUseCollapsedDisplayStyle:(BOOL)style
 {
-  if (self->_useCollapsedDisplayStyle != a3)
+  if (self->_useCollapsedDisplayStyle != style)
   {
     [(TransitDirectionsStepsListDataSource *)self _setUseCollapsedDisplayStyle:?];
   }
 }
 
-- (void)setMatchedLocation:(id)a3
+- (void)setMatchedLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(TransitDirectionsStepsListDataSource *)self matchedLocationThrottler];
-  [v5 setValue:v4];
+  locationCopy = location;
+  matchedLocationThrottler = [(TransitDirectionsStepsListDataSource *)self matchedLocationThrottler];
+  [matchedLocationThrottler setValue:locationCopy];
 }
 
 - (MNLocation)matchedLocation
 {
-  v2 = [(TransitDirectionsStepsListDataSource *)self matchedLocationThrottler];
-  v3 = [v2 value];
+  matchedLocationThrottler = [(TransitDirectionsStepsListDataSource *)self matchedLocationThrottler];
+  value = [matchedLocationThrottler value];
 
-  return v3;
+  return value;
 }
 
 - (MapsThrottler)matchedLocationThrottler
@@ -2786,49 +2786,49 @@ LABEL_35:
 
 - (id)displayedItemIndexForAnalytics
 {
-  v2 = [(TransitDirectionsStepsListDataSource *)self displayedItemIndex];
-  if (v2 == 0x7FFFFFFFFFFFFFFFLL)
+  displayedItemIndex = [(TransitDirectionsStepsListDataSource *)self displayedItemIndex];
+  if (displayedItemIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = [NSNumber numberWithUnsignedInteger:v2];
+    v3 = [NSNumber numberWithUnsignedInteger:displayedItemIndex];
   }
 
   return v3;
 }
 
-- (unint64_t)indexOfItem:(id)a3
+- (unint64_t)indexOfItem:(id)item
 {
-  v4 = a3;
-  v5 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-  v6 = [v5 indexPathForItem:v4];
+  itemCopy = item;
+  dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+  v6 = [dataProvider indexPathForItem:itemCopy];
 
-  v7 = [v6 section];
-  return v7;
+  section = [v6 section];
+  return section;
 }
 
 - (unint64_t)displayedItemIndex
 {
-  v2 = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexPath];
-  v3 = [v2 section];
+  displayedItemIndexPath = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexPath];
+  section = [displayedItemIndexPath section];
 
-  return v3;
+  return section;
 }
 
 - (GEOComposedRouteStep)displayedComposedRouteStep
 {
-  v3 = [(TransitDirectionsStepsListDataSource *)self _displayedItem];
-  v4 = [v3 matchingRouteStep];
-  if (!v4 && [v3 type])
+  _displayedItem = [(TransitDirectionsStepsListDataSource *)self _displayedItem];
+  matchingRouteStep = [_displayedItem matchingRouteStep];
+  if (!matchingRouteStep && [_displayedItem type])
   {
     v6 = sub_10006D178();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(TransitDirectionsStepsListDataSource *)self activeItemIndexPath];
-      v8 = [NSString stringWithFormat:@"No step found for updated matched index path %@", v7];
+      activeItemIndexPath = [(TransitDirectionsStepsListDataSource *)self activeItemIndexPath];
+      v8 = [NSString stringWithFormat:@"No step found for updated matched index path %@", activeItemIndexPath];
       *buf = 136316162;
       v12 = "[TransitDirectionsStepsListDataSource displayedComposedRouteStep]";
       v13 = 2080;
@@ -2855,26 +2855,26 @@ LABEL_35:
     }
   }
 
-  return v4;
+  return matchingRouteStep;
 }
 
 - (id)_displayedItem
 {
-  v3 = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexPath];
+  displayedItemIndexPath = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexPath];
 
-  if (v3)
+  if (displayedItemIndexPath)
   {
-    v4 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-    v5 = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexPath];
-    v6 = [v4 itemAtIndexPath:v5];
+    dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+    displayedItemIndexPath2 = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexPath];
+    v6 = [dataProvider itemAtIndexPath:displayedItemIndexPath2];
 
-    v7 = [v6 parentItem];
+    parentItem = [v6 parentItem];
 
-    if (v7)
+    if (parentItem)
     {
-      v8 = [v6 parentItem];
+      parentItem2 = [v6 parentItem];
 
-      v6 = v8;
+      v6 = parentItem2;
     }
   }
 
@@ -2888,23 +2888,23 @@ LABEL_35:
 
 - (unint64_t)activeItemIndex
 {
-  v2 = [(TransitDirectionsStepsListDataSource *)self activeItemIndexPath];
-  v3 = [v2 section];
+  activeItemIndexPath = [(TransitDirectionsStepsListDataSource *)self activeItemIndexPath];
+  section = [activeItemIndexPath section];
 
-  return v3;
+  return section;
 }
 
 - (GEOComposedRouteStep)activeComposedRouteStep
 {
-  v3 = [(TransitDirectionsStepsListDataSource *)self _activeItem];
-  v4 = [v3 matchingRouteStep];
-  if (!v4 && [v3 type])
+  _activeItem = [(TransitDirectionsStepsListDataSource *)self _activeItem];
+  matchingRouteStep = [_activeItem matchingRouteStep];
+  if (!matchingRouteStep && [_activeItem type])
   {
     v6 = sub_10006D178();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(TransitDirectionsStepsListDataSource *)self activeItemIndexPath];
-      v8 = [NSString stringWithFormat:@"No step found for updated matched index path %@", v7];
+      activeItemIndexPath = [(TransitDirectionsStepsListDataSource *)self activeItemIndexPath];
+      v8 = [NSString stringWithFormat:@"No step found for updated matched index path %@", activeItemIndexPath];
       *buf = 136316162;
       v12 = "[TransitDirectionsStepsListDataSource activeComposedRouteStep]";
       v13 = 2080;
@@ -2931,26 +2931,26 @@ LABEL_35:
     }
   }
 
-  return v4;
+  return matchingRouteStep;
 }
 
 - (id)_activeItem
 {
-  v3 = [(TransitDirectionsStepsListDataSource *)self activeItemIndexPath];
+  activeItemIndexPath = [(TransitDirectionsStepsListDataSource *)self activeItemIndexPath];
 
-  if (v3)
+  if (activeItemIndexPath)
   {
-    v4 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-    v5 = [(TransitDirectionsStepsListDataSource *)self activeItemIndexPath];
-    v6 = [v4 itemAtIndexPath:v5];
+    dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+    activeItemIndexPath2 = [(TransitDirectionsStepsListDataSource *)self activeItemIndexPath];
+    v6 = [dataProvider itemAtIndexPath:activeItemIndexPath2];
 
-    v7 = [v6 parentItem];
+    parentItem = [v6 parentItem];
 
-    if (v7)
+    if (parentItem)
     {
-      v8 = [v6 parentItem];
+      parentItem2 = [v6 parentItem];
 
-      v6 = v8;
+      v6 = parentItem2;
     }
   }
 
@@ -2964,18 +2964,18 @@ LABEL_35:
 
 - (void)_notifyDelegateOfUpdatedDisplayedStep
 {
-  v14 = [(TransitDirectionsStepsListDataSource *)self delegate];
+  delegate = [(TransitDirectionsStepsListDataSource *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexPath];
+    displayedItemIndexPath = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexPath];
 
-    if (!v3)
+    if (!displayedItemIndexPath)
     {
       return;
     }
 
-    v4 = [(TransitDirectionsStepsListDataSource *)self displayedComposedRouteStep];
-    if (!v4)
+    displayedComposedRouteStep = [(TransitDirectionsStepsListDataSource *)self displayedComposedRouteStep];
+    if (!displayedComposedRouteStep)
     {
       goto LABEL_18;
     }
@@ -2985,17 +2985,17 @@ LABEL_35:
     {
 LABEL_17:
 
-      v13 = [(TransitDirectionsStepsListDataSource *)self delegate];
-      [v13 transitDirectionsStepsListDataSource:self didUpdateDisplayedGuidanceStep:v4];
+      delegate2 = [(TransitDirectionsStepsListDataSource *)self delegate];
+      [delegate2 transitDirectionsStepsListDataSource:self didUpdateDisplayedGuidanceStep:displayedComposedRouteStep];
 
 LABEL_18:
       return;
     }
 
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_16;
     }
 
@@ -3003,27 +3003,27 @@ LABEL_18:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(TransitDirectionsStepsListDataSource *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_11;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_11:
 
 LABEL_16:
-    displayedComposedRouteStepIndex = v6->_displayedComposedRouteStepIndex;
+    displayedComposedRouteStepIndex = selfCopy->_displayedComposedRouteStepIndex;
     *buf = 138543874;
-    v16 = v11;
+    v16 = selfCopy;
     v17 = 2048;
     v18 = displayedComposedRouteStepIndex;
     v19 = 2112;
-    v20 = v4;
+    v20 = displayedComposedRouteStep;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] Notifying delegate of updated DISPLAYED (parent) route step for index %lu: %@", buf, 0x20u);
 
     goto LABEL_17;
@@ -3032,18 +3032,18 @@ LABEL_16:
 
 - (void)_notifyDelegateOfUpdatedActiveStep
 {
-  v14 = [(TransitDirectionsStepsListDataSource *)self delegate];
+  delegate = [(TransitDirectionsStepsListDataSource *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(TransitDirectionsStepsListDataSource *)self activeItemIndexPath];
+    activeItemIndexPath = [(TransitDirectionsStepsListDataSource *)self activeItemIndexPath];
 
-    if (!v3)
+    if (!activeItemIndexPath)
     {
       return;
     }
 
-    v4 = [(TransitDirectionsStepsListDataSource *)self activeComposedRouteStep];
-    if (!v4)
+    activeComposedRouteStep = [(TransitDirectionsStepsListDataSource *)self activeComposedRouteStep];
+    if (!activeComposedRouteStep)
     {
       goto LABEL_18;
     }
@@ -3053,17 +3053,17 @@ LABEL_16:
     {
 LABEL_17:
 
-      v13 = [(TransitDirectionsStepsListDataSource *)self delegate];
-      [v13 transitDirectionsStepsListDataSource:self didUpdateActiveGuidanceStep:v4];
+      delegate2 = [(TransitDirectionsStepsListDataSource *)self delegate];
+      [delegate2 transitDirectionsStepsListDataSource:self didUpdateActiveGuidanceStep:activeComposedRouteStep];
 
 LABEL_18:
       return;
     }
 
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_16;
     }
 
@@ -3071,27 +3071,27 @@ LABEL_18:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(TransitDirectionsStepsListDataSource *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_11;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_11:
 
 LABEL_16:
-    activeComposedRouteStepIndex = v6->_activeComposedRouteStepIndex;
+    activeComposedRouteStepIndex = selfCopy->_activeComposedRouteStepIndex;
     *buf = 138543874;
-    v16 = v11;
+    v16 = selfCopy;
     v17 = 2048;
     v18 = activeComposedRouteStepIndex;
     v19 = 2112;
-    v20 = v4;
+    v20 = activeComposedRouteStep;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] Notifying delegate of updated ACTIVE (parent) route step for index %lu: %@", buf, 0x20u);
 
     goto LABEL_17;
@@ -3110,10 +3110,10 @@ LABEL_16:
   v24[3] = &unk_101656960;
   v24[4] = self;
   v7 = objc_retainBlock(v24);
-  v8 = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexPath];
-  v9 = [v8 section];
-  v10 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-  v11 = [v10 numberOfItemsInSection:v9];
+  displayedItemIndexPath = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexPath];
+  section = [displayedItemIndexPath section];
+  dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+  v11 = [dataProvider numberOfItemsInSection:section];
 
   if (v11 < 1)
   {
@@ -3124,7 +3124,7 @@ LABEL_16:
   {
     for (i = 0; i != v11; ++i)
     {
-      v13 = [NSIndexPath indexPathForRow:i inSection:v9];
+      v13 = [NSIndexPath indexPathForRow:i inSection:section];
       v14 = [(TransitDirectionsStepsListDataSource *)self _flatIndexFromIndexPath:v13];
       (v7[2])(v7, v14);
       v19 = v18;
@@ -3155,22 +3155,22 @@ LABEL_16:
   return result;
 }
 
-- (id)_itemIndexPathForStepIndex:(unint64_t)a3
+- (id)_itemIndexPathForStepIndex:(unint64_t)index
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL && [(GEOComposedRoute *)self->_route stepsCount]> a3)
+  if (index != 0x7FFFFFFFFFFFFFFFLL && [(GEOComposedRoute *)self->_route stepsCount]> index)
   {
-    v5 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-    v6 = [v5 numberOfSections];
+    dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+    numberOfSections = [dataProvider numberOfSections];
 
-    if (v6 >= 1)
+    if (numberOfSections >= 1)
     {
       v7 = 0;
       v8 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
-      v25 = v6;
+      v25 = numberOfSections;
       do
       {
-        v9 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-        v10 = [v9 numberOfItemsInSection:v7 includingHiddenSubitems:1];
+        dataProvider2 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+        v10 = [dataProvider2 numberOfItemsInSection:v7 includingHiddenSubitems:1];
 
         if (v10 >= 1)
         {
@@ -3186,7 +3186,7 @@ LABEL_16:
             if (objc_opt_isKindOfClass())
             {
               v15 = v14;
-              if ([v15 matchingRouteStepIndex] == a3)
+              if ([v15 matchingRouteStepIndex] == index)
               {
 LABEL_23:
 
@@ -3197,8 +3197,8 @@ LABEL_23:
               v31 = 0u;
               v28 = 0u;
               v29 = 0u;
-              v16 = [v15 composedRouteSteps];
-              v17 = [v16 countByEnumeratingWithState:&v28 objects:v38 count:16];
+              composedRouteSteps = [v15 composedRouteSteps];
+              v17 = [composedRouteSteps countByEnumeratingWithState:&v28 objects:v38 count:16];
               if (v17)
               {
                 v18 = v17;
@@ -3209,17 +3209,17 @@ LABEL_23:
                   {
                     if (*v29 != v19)
                     {
-                      objc_enumerationMutation(v16);
+                      objc_enumerationMutation(composedRouteSteps);
                     }
 
-                    if ([*(*(&v28 + 1) + 8 * i) stepIndex] == a3)
+                    if ([*(*(&v28 + 1) + 8 * i) stepIndex] == index)
                     {
 
                       goto LABEL_23;
                     }
                   }
 
-                  v18 = [v16 countByEnumeratingWithState:&v28 objects:v38 count:16];
+                  v18 = [composedRouteSteps countByEnumeratingWithState:&v28 objects:v38 count:16];
                   if (v18)
                   {
                     continue;
@@ -3229,7 +3229,7 @@ LABEL_23:
                 }
               }
 
-              v6 = v25;
+              numberOfSections = v25;
               v11 = v26;
               v7 = v27;
               v8 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
@@ -3244,12 +3244,12 @@ LABEL_23:
         ++v7;
       }
 
-      while (v7 != v6);
+      while (v7 != numberOfSections);
     }
 
-    if (a3)
+    if (index)
     {
-      v13 = [(TransitDirectionsStepsListDataSource *)self _itemIndexPathForStepIndex:a3 - 1];
+      v13 = [(TransitDirectionsStepsListDataSource *)self _itemIndexPathForStepIndex:index - 1];
       goto LABEL_31;
     }
 
@@ -3301,26 +3301,26 @@ LABEL_31:
       goto LABEL_28;
     }
 
-    v20 = self;
+    selfCopy = self;
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
     if (objc_opt_respondsToSelector())
     {
-      v23 = [(TransitDirectionsStepsListDataSource *)v20 performSelector:"accessibilityIdentifier"];
+      v23 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v24 = v23;
       if (v23 && ![v23 isEqualToString:v22])
       {
-        v25 = [NSString stringWithFormat:@"%@<%p, %@>", v22, v20, v24];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v22, selfCopy, v24];
 
         goto LABEL_27;
       }
     }
 
-    v25 = [NSString stringWithFormat:@"%@<%p>", v22, v20];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v22, selfCopy];
 LABEL_27:
 
     *buf = 138543362;
-    v35 = v25;
+    v35 = selfCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%{public}@] Not navigating, clearing displayed step index path", buf, 0xCu);
 
     goto LABEL_28;
@@ -3336,31 +3336,31 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v13 = self;
+    selfCopy2 = self;
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
     if (objc_opt_respondsToSelector())
     {
-      v16 = [(TransitDirectionsStepsListDataSource *)v13 performSelector:"accessibilityIdentifier"];
+      v16 = [(TransitDirectionsStepsListDataSource *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v17 = v16;
       if (v16 && ![v16 isEqualToString:v15])
       {
-        v18 = [NSString stringWithFormat:@"%@<%p, %@>", v15, v13, v17];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v15, selfCopy2, v17];
 
         goto LABEL_20;
       }
     }
 
-    v18 = [NSString stringWithFormat:@"%@<%p>", v15, v13];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v15, selfCopy2];
 LABEL_20:
 
-    v19 = [(GEOComposedRoute *)v13->_route stepsCount];
+    stepsCount = [(GEOComposedRoute *)selfCopy2->_route stepsCount];
     *buf = 138543874;
-    v35 = v18;
+    v35 = selfCopy2;
     v36 = 2048;
     v37 = displayedComposedRouteStepIndex;
     v38 = 2048;
-    *v39 = v19;
+    *v39 = stepsCount;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}@] Displayed step index %lu is out of bounds %lu", buf, 0x20u);
 
     goto LABEL_28;
@@ -3372,7 +3372,7 @@ LABEL_20:
     v30 = sub_10006D178();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      v31 = [NSString stringWithFormat:@"No indexPath found for displayed step with index %lu", displayedComposedRouteStepIndex];
+      displayedComposedRouteStepIndex = [NSString stringWithFormat:@"No indexPath found for displayed step with index %lu", displayedComposedRouteStepIndex];
       *buf = 136316162;
       v35 = "[TransitDirectionsStepsListDataSource _refreshDisplayedItemIndexPath]";
       v36 = 2080;
@@ -3382,7 +3382,7 @@ LABEL_20:
       *&v39[4] = 2080;
       *&v39[6] = "indexPath != nil";
       v40 = 2112;
-      v41 = v31;
+      v41 = displayedComposedRouteStepIndex;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "%s [%s:%d] Assertion: (%s) '%@'", buf, 0x30u);
     }
 
@@ -3402,26 +3402,26 @@ LABEL_20:
   v6 = sub_100E74344();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = self;
+    selfCopy3 = self;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(TransitDirectionsStepsListDataSource *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(TransitDirectionsStepsListDataSource *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy3, v11];
 
         goto LABEL_13;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy3];
 LABEL_13:
 
     *buf = 138543874;
-    v35 = v12;
+    v35 = selfCopy3;
     v36 = 2048;
     v37 = displayedComposedRouteStepIndex;
     v38 = 2112;
@@ -3461,47 +3461,47 @@ LABEL_29:
   return displayedItemIndexPath;
 }
 
-- (void)setDisplayedComposedRouteStepIndex:(unint64_t)a3
+- (void)setDisplayedComposedRouteStepIndex:(unint64_t)index
 {
-  if (self->_displayedComposedRouteStepIndex != a3)
+  if (self->_displayedComposedRouteStepIndex != index)
   {
-    if (![(TransitDirectionsStepsListDataSource *)self enableNavigationUpdates]|| [(DirectionsStepsListNavigationProvider *)self->_navigationProvider displayedStepIndex]== a3)
+    if (![(TransitDirectionsStepsListDataSource *)self enableNavigationUpdates]|| [(DirectionsStepsListNavigationProvider *)self->_navigationProvider displayedStepIndex]== index)
     {
       v5 = sub_100E74344();
       if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
 LABEL_11:
 
-        self->_displayedComposedRouteStepIndex = a3;
+        self->_displayedComposedRouteStepIndex = index;
         [(TransitDirectionsStepsListDataSource *)self _refreshDisplayedItemIndexPath];
         return;
       }
 
-      v6 = self;
+      selfCopy = self;
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       if (objc_opt_respondsToSelector())
       {
-        v9 = [(TransitDirectionsStepsListDataSource *)v6 performSelector:"accessibilityIdentifier"];
+        v9 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
         v10 = v9;
         if (v9 && ![v9 isEqualToString:v8])
         {
-          v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+          selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
           goto LABEL_10;
         }
       }
 
-      v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+      selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_10:
 
       displayedComposedRouteStepIndex = self->_displayedComposedRouteStepIndex;
       *buf = 138543874;
-      v21 = v11;
+      v21 = selfCopy;
       v22 = 2048;
-      v23 = displayedComposedRouteStepIndex;
+      indexCopy2 = displayedComposedRouteStepIndex;
       v24 = 2048;
-      v25 = a3;
+      indexCopy = index;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] Displayed step index changed from %lu to %lu", buf, 0x20u);
 
       goto LABEL_11;
@@ -3513,32 +3513,32 @@ LABEL_10:
       goto LABEL_19;
     }
 
-    v14 = self;
+    selfCopy2 = self;
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
     if (objc_opt_respondsToSelector())
     {
-      v17 = [(TransitDirectionsStepsListDataSource *)v14 performSelector:"accessibilityIdentifier"];
+      v17 = [(TransitDirectionsStepsListDataSource *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v18 = v17;
       if (v17 && ![v17 isEqualToString:v16])
       {
-        v19 = [NSString stringWithFormat:@"%@<%p, %@>", v16, v14, v18];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v16, selfCopy2, v18];
 
         goto LABEL_18;
       }
     }
 
-    v19 = [NSString stringWithFormat:@"%@<%p>", v16, v14];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v16, selfCopy2];
 LABEL_18:
 
     *buf = 138543618;
-    v21 = v19;
+    v21 = selfCopy2;
     v22 = 2048;
-    v23 = a3;
+    indexCopy2 = index;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[%{public}@] Updating navigation provider with updated displayed step index %lu", buf, 0x16u);
 
 LABEL_19:
-    [(DirectionsStepsListNavigationProvider *)self->_navigationProvider setDisplayedStepIndex:a3];
+    [(DirectionsStepsListNavigationProvider *)self->_navigationProvider setDisplayedStepIndex:index];
   }
 }
 
@@ -3553,26 +3553,26 @@ LABEL_19:
       goto LABEL_26;
     }
 
-    v20 = self;
+    selfCopy = self;
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
     if (objc_opt_respondsToSelector())
     {
-      v23 = [(TransitDirectionsStepsListDataSource *)v20 performSelector:"accessibilityIdentifier"];
+      v23 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v24 = v23;
       if (v23 && ![v23 isEqualToString:v22])
       {
-        v25 = [NSString stringWithFormat:@"%@<%p, %@>", v22, v20, v24];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v22, selfCopy, v24];
 
         goto LABEL_25;
       }
     }
 
-    v25 = [NSString stringWithFormat:@"%@<%p>", v22, v20];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v22, selfCopy];
 LABEL_25:
 
     *buf = 138543362;
-    v35 = v25;
+    v35 = selfCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%{public}@] Not navigating, clearing active step index path", buf, 0xCu);
 
     goto LABEL_26;
@@ -3589,31 +3589,31 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v13 = self;
+    selfCopy2 = self;
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
     if (objc_opt_respondsToSelector())
     {
-      v16 = [(TransitDirectionsStepsListDataSource *)v13 performSelector:"accessibilityIdentifier"];
+      v16 = [(TransitDirectionsStepsListDataSource *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v17 = v16;
       if (v16 && ![v16 isEqualToString:v15])
       {
-        v18 = [NSString stringWithFormat:@"%@<%p, %@>", v15, v13, v17];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v15, selfCopy2, v17];
 
         goto LABEL_18;
       }
     }
 
-    v18 = [NSString stringWithFormat:@"%@<%p>", v15, v13];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v15, selfCopy2];
 LABEL_18:
 
-    v19 = [(GEOComposedRoute *)v13->_route stepsCount];
+    stepsCount = [(GEOComposedRoute *)selfCopy2->_route stepsCount];
     *buf = 138543874;
-    v35 = v18;
+    v35 = selfCopy2;
     v36 = 2048;
     v37 = activeComposedRouteStepIndex;
     v38 = 2048;
-    *v39 = v19;
+    *v39 = stepsCount;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}@] Active step index %lu is out of bounds %lu", buf, 0x20u);
 
     goto LABEL_26;
@@ -3625,7 +3625,7 @@ LABEL_18:
     v30 = sub_10006D178();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      v31 = [NSString stringWithFormat:@"No indexPath found for active step with index %lu", activeComposedRouteStepIndex];
+      activeComposedRouteStepIndex = [NSString stringWithFormat:@"No indexPath found for active step with index %lu", activeComposedRouteStepIndex];
       *buf = 136316162;
       v35 = "[TransitDirectionsStepsListDataSource _refreshActiveItemIndexPath]";
       v36 = 2080;
@@ -3635,7 +3635,7 @@ LABEL_18:
       *&v39[4] = 2080;
       *&v39[6] = "indexPath != nil";
       v40 = 2112;
-      v41 = v31;
+      v41 = activeComposedRouteStepIndex;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "%s [%s:%d] Assertion: (%s) '%@'", buf, 0x30u);
     }
 
@@ -3655,26 +3655,26 @@ LABEL_18:
   v6 = sub_100E74344();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = self;
+    selfCopy3 = self;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(TransitDirectionsStepsListDataSource *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(TransitDirectionsStepsListDataSource *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy3, v11];
 
         goto LABEL_11;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy3];
 LABEL_11:
 
     *buf = 138543874;
-    v35 = v12;
+    v35 = selfCopy3;
     v36 = 2048;
     v37 = activeComposedRouteStepIndex;
     v38 = 2112;
@@ -3713,14 +3713,14 @@ LABEL_27:
   return activeItemIndexPath;
 }
 
-- (void)setActiveComposedRouteStepIndex:(unint64_t)a3
+- (void)setActiveComposedRouteStepIndex:(unint64_t)index
 {
   activeComposedRouteStepIndex = self->_activeComposedRouteStepIndex;
-  if (activeComposedRouteStepIndex != a3)
+  if (activeComposedRouteStepIndex != index)
   {
     v6 = sub_100E74344();
     v7 = v6;
-    if (a3 == 0x7FFFFFFFFFFFFFFFLL && activeComposedRouteStepIndex != 0x7FFFFFFFFFFFFFFFLL)
+    if (index == 0x7FFFFFFFFFFFFFFFLL && activeComposedRouteStepIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
       if (!os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
       {
@@ -3729,26 +3729,26 @@ LABEL_11:
         return;
       }
 
-      v8 = self;
+      selfCopy = self;
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
       if (objc_opt_respondsToSelector())
       {
-        v11 = [(TransitDirectionsStepsListDataSource *)v8 performSelector:"accessibilityIdentifier"];
+        v11 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
         v12 = v11;
         if (v11 && ![v11 isEqualToString:v10])
         {
-          v13 = [NSString stringWithFormat:@"%@<%p, %@>", v10, v8, v12];
+          selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v10, selfCopy, v12];
 
           goto LABEL_10;
         }
       }
 
-      v13 = [NSString stringWithFormat:@"%@<%p>", v10, v8];
+      selfCopy = [NSString stringWithFormat:@"%@<%p>", v10, selfCopy];
 LABEL_10:
 
       *buf = 138543362;
-      v22 = v13;
+      v22 = selfCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_FAULT, "[%{public}@] Suppressing attempt to set matched step index to NSNotFound", buf, 0xCu);
 
       goto LABEL_11;
@@ -3759,80 +3759,80 @@ LABEL_10:
       goto LABEL_19;
     }
 
-    v14 = self;
+    selfCopy2 = self;
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
     if (objc_opt_respondsToSelector())
     {
-      v17 = [(TransitDirectionsStepsListDataSource *)v14 performSelector:"accessibilityIdentifier"];
+      v17 = [(TransitDirectionsStepsListDataSource *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v18 = v17;
       if (v17 && ![v17 isEqualToString:v16])
       {
-        v19 = [NSString stringWithFormat:@"%@<%p, %@>", v16, v14, v18];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v16, selfCopy2, v18];
 
         goto LABEL_18;
       }
     }
 
-    v19 = [NSString stringWithFormat:@"%@<%p>", v16, v14];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v16, selfCopy2];
 LABEL_18:
 
     v20 = self->_activeComposedRouteStepIndex;
     *buf = 138543874;
-    v22 = v19;
+    v22 = selfCopy2;
     v23 = 2048;
     v24 = v20;
     v25 = 2048;
-    v26 = a3;
+    indexCopy = index;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}@] Active step index changed from %lu to %lu", buf, 0x20u);
 
 LABEL_19:
-    self->_activeComposedRouteStepIndex = a3;
+    self->_activeComposedRouteStepIndex = index;
     [(TransitDirectionsStepsListDataSource *)self _refreshActiveItemIndexPath];
     [(TransitDirectionsStepsListDataSource *)self _refreshDisplayedItemIndexPath];
   }
 }
 
-- (void)navigationProvider:(id)a3 didReceiveRealtimeUpdates:(id)a4
+- (void)navigationProvider:(id)provider didReceiveRealtimeUpdates:(id)updates
 {
-  v5 = a4;
+  updatesCopy = updates;
   [PPTNotificationCenter postNotificationIfNeededWithName:@"MapsTestingTransitRouteUpdateWillUpdateRoute" object:0 userInfo:0];
-  v6 = [(TransitDirectionsStepsListDataSource *)self route];
-  [v6 applyUpdatesToTransitRoute:v5];
+  route = [(TransitDirectionsStepsListDataSource *)self route];
+  [route applyUpdatesToTransitRoute:updatesCopy];
 
   [PPTNotificationCenter postNotificationIfNeededWithName:@"MapsTestingTransitRouteUpdateDidUpdateRoute" object:0 userInfo:0];
 }
 
-- (void)navigationProvider:(id)a3 didUpdateDisplayedStepIndex:(unint64_t)a4
+- (void)navigationProvider:(id)provider didUpdateDisplayedStepIndex:(unint64_t)index
 {
   v6 = self->_displayedItemIndexPath;
   v7 = sub_100E74344();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = self;
+    selfCopy = self;
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(TransitDirectionsStepsListDataSource *)v8 performSelector:"accessibilityIdentifier"];
+      v11 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v12 = v11;
       if (v11 && ![v11 isEqualToString:v10])
       {
-        v13 = [NSString stringWithFormat:@"%@<%p, %@>", v10, v8, v12];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v10, selfCopy, v12];
 
         goto LABEL_7;
       }
     }
 
-    v13 = [NSString stringWithFormat:@"%@<%p>", v10, v8];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v10, selfCopy];
 LABEL_7:
 
-    activeComposedRouteStepIndex = v8->_activeComposedRouteStepIndex;
-    displayedComposedRouteStepIndex = v8->_displayedComposedRouteStepIndex;
+    activeComposedRouteStepIndex = selfCopy->_activeComposedRouteStepIndex;
+    displayedComposedRouteStepIndex = selfCopy->_displayedComposedRouteStepIndex;
     *buf = 138544130;
-    v17 = v13;
+    v17 = selfCopy;
     v18 = 2048;
-    v19 = a4;
+    indexCopy = index;
     v20 = 2048;
     v21 = displayedComposedRouteStepIndex;
     v22 = 2048;
@@ -3840,15 +3840,15 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}@] Displayed step index did change to %lu (previous: %lu, activeStepIndex: %lu)", buf, 0x2Au);
   }
 
-  [(TransitDirectionsStepsListDataSource *)self setDisplayedComposedRouteStepIndex:a4];
+  [(TransitDirectionsStepsListDataSource *)self setDisplayedComposedRouteStepIndex:index];
   [(TransitDirectionsStepsListDataSource *)self _scrollToDisplayedItemIfNeeded:v6 animated:1];
 }
 
-- (void)navigationProvider:(id)a3 didUpdateActiveStepIndex:(unint64_t)a4
+- (void)navigationProvider:(id)provider didUpdateActiveStepIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  providerCopy = provider;
+  v7 = providerCopy;
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = sub_100E74344();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -3858,10 +3858,10 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v9 = self;
-    if (!v9)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v14 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_29;
     }
 
@@ -3869,43 +3869,43 @@ LABEL_30:
     v11 = NSStringFromClass(v10);
     if (objc_opt_respondsToSelector())
     {
-      v12 = [(TransitDirectionsStepsListDataSource *)v9 performSelector:"accessibilityIdentifier"];
+      v12 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v13 = v12;
       if (v12 && ![v12 isEqualToString:v11])
       {
-        v14 = [NSString stringWithFormat:@"%@<%p, %@>", v11, v9, v13];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v11, selfCopy, v13];
 
         goto LABEL_9;
       }
     }
 
-    v14 = [NSString stringWithFormat:@"%@<%p>", v11, v9];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v11, selfCopy];
 LABEL_9:
 
 LABEL_29:
     *buf = 138543362;
-    v32 = v14;
+    v32 = selfCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}@] Auto-advance step index is NSNotFound, meaning no matched step. Ignore it and maintain what we have.", buf, 0xCu);
 
     goto LABEL_30;
   }
 
-  if ([v6 displayedStepIndex] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v7, "displayedStepIndex") <= a4)
+  if ([providerCopy displayedStepIndex] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v7, "displayedStepIndex") <= index)
   {
     v24 = sub_100E74344();
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
 LABEL_36:
 
-      self->_activeComposedRouteStepIndex = a4;
+      self->_activeComposedRouteStepIndex = index;
       [v7 setDisplayedStepIndex:0x7FFFFFFFFFFFFFFFLL];
       goto LABEL_31;
     }
 
-    v25 = self;
-    if (!v25)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v30 = @"<nil>";
+      selfCopy2 = @"<nil>";
       goto LABEL_35;
     }
 
@@ -3913,102 +3913,102 @@ LABEL_36:
     v27 = NSStringFromClass(v26);
     if (objc_opt_respondsToSelector())
     {
-      v28 = [(TransitDirectionsStepsListDataSource *)v25 performSelector:"accessibilityIdentifier"];
+      v28 = [(TransitDirectionsStepsListDataSource *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v29 = v28;
       if (v28 && ![v28 isEqualToString:v27])
       {
-        v30 = [NSString stringWithFormat:@"%@<%p, %@>", v27, v25, v29];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v27, selfCopy2, v29];
 
         goto LABEL_27;
       }
     }
 
-    v30 = [NSString stringWithFormat:@"%@<%p>", v27, v25];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v27, selfCopy2];
 LABEL_27:
 
 LABEL_35:
     *buf = 138543874;
-    v32 = v30;
+    v32 = selfCopy2;
     v33 = 2048;
-    v34 = a4;
+    indexCopy2 = index;
     v35 = 2048;
-    v36 = [v7 displayedStepIndex];
+    displayedStepIndex = [v7 displayedStepIndex];
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "[%{public}@] Auto-advance step index %lu has caught up to manually-selected step index %lu", buf, 0x20u);
 
     goto LABEL_36;
   }
 
   activeComposedRouteStepIndex = self->_activeComposedRouteStepIndex;
-  v16 = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexPath];
+  displayedItemIndexPath = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexPath];
   v17 = sub_100E74344();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = self;
+    selfCopy3 = self;
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
     if (objc_opt_respondsToSelector())
     {
-      v21 = [(TransitDirectionsStepsListDataSource *)v18 performSelector:"accessibilityIdentifier"];
+      v21 = [(TransitDirectionsStepsListDataSource *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v22 = v21;
       if (v21 && ![v21 isEqualToString:v20])
       {
-        v23 = [NSString stringWithFormat:@"%@<%p, %@>", v20, v18, v22];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v20, selfCopy3, v22];
 
         goto LABEL_18;
       }
     }
 
-    v23 = [NSString stringWithFormat:@"%@<%p>", v20, v18];
+    selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v20, selfCopy3];
 LABEL_18:
 
     *buf = 138544130;
-    v32 = v23;
+    v32 = selfCopy3;
     v33 = 2048;
-    v34 = a4;
+    indexCopy2 = index;
     v35 = 2048;
-    v36 = activeComposedRouteStepIndex;
+    displayedStepIndex = activeComposedRouteStepIndex;
     v37 = 2048;
-    v38 = [v7 displayedStepIndex];
+    displayedStepIndex2 = [v7 displayedStepIndex];
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[%{public}@] Auto-advanced to step index %lu (previous: %lu, displayedStepIndex: %lu)", buf, 0x2Au);
   }
 
-  [(TransitDirectionsStepsListDataSource *)self setActiveComposedRouteStepIndex:a4];
-  [(TransitDirectionsStepsListDataSource *)self _scrollToDisplayedItemIfNeeded:v16 animated:1];
+  [(TransitDirectionsStepsListDataSource *)self setActiveComposedRouteStepIndex:index];
+  [(TransitDirectionsStepsListDataSource *)self _scrollToDisplayedItemIfNeeded:displayedItemIndexPath animated:1];
 
 LABEL_31:
 }
 
-- (void)navigationProvider:(id)a3 didUpdateRoute:(id)a4
+- (void)navigationProvider:(id)provider didUpdateRoute:(id)route
 {
-  v6 = a3;
-  [(TransitDirectionsStepsListDataSource *)self setRoute:a4];
-  -[TransitDirectionsStepsListDataSource navigationProvider:didUpdateActiveStepIndex:](self, "navigationProvider:didUpdateActiveStepIndex:", v6, [v6 activeStepIndex]);
-  -[TransitDirectionsStepsListDataSource navigationProvider:didUpdateDisplayedStepIndex:](self, "navigationProvider:didUpdateDisplayedStepIndex:", v6, [v6 displayedStepIndex]);
+  providerCopy = provider;
+  [(TransitDirectionsStepsListDataSource *)self setRoute:route];
+  -[TransitDirectionsStepsListDataSource navigationProvider:didUpdateActiveStepIndex:](self, "navigationProvider:didUpdateActiveStepIndex:", providerCopy, [providerCopy activeStepIndex]);
+  -[TransitDirectionsStepsListDataSource navigationProvider:didUpdateDisplayedStepIndex:](self, "navigationProvider:didUpdateDisplayedStepIndex:", providerCopy, [providerCopy displayedStepIndex]);
 }
 
-- (void)navigationProvider:(id)a3 didChangeToNavigating:(BOOL)a4 withRoute:(id)a5
+- (void)navigationProvider:(id)provider didChangeToNavigating:(BOOL)navigating withRoute:(id)route
 {
-  if (a4)
+  if (navigating)
   {
-    [(TransitDirectionsStepsListDataSource *)self navigationProvider:a3 didUpdateRoute:a5];
+    [(TransitDirectionsStepsListDataSource *)self navigationProvider:provider didUpdateRoute:route];
   }
 }
 
-- (void)setEnableNavigationUpdates:(BOOL)a3
+- (void)setEnableNavigationUpdates:(BOOL)updates
 {
-  if (self->_enableNavigationUpdates != a3)
+  if (self->_enableNavigationUpdates != updates)
   {
-    self->_enableNavigationUpdates = a3;
-    if (a3)
+    self->_enableNavigationUpdates = updates;
+    if (updates)
     {
       v4 = [[DirectionsStepsListNavigationProvider alloc] initWithDelegate:self];
       navigationProvider = self->_navigationProvider;
       self->_navigationProvider = v4;
 
       v6 = self->_navigationProvider;
-      v7 = [(DirectionsStepsListNavigationProvider *)v6 isNavigating];
-      v8 = [(DirectionsStepsListNavigationProvider *)self->_navigationProvider route];
-      [(TransitDirectionsStepsListDataSource *)self navigationProvider:v6 didChangeToNavigating:v7 withRoute:v8];
+      isNavigating = [(DirectionsStepsListNavigationProvider *)v6 isNavigating];
+      route = [(DirectionsStepsListNavigationProvider *)self->_navigationProvider route];
+      [(TransitDirectionsStepsListDataSource *)self navigationProvider:v6 didChangeToNavigating:isNavigating withRoute:route];
     }
 
     else
@@ -4045,9 +4045,9 @@ LABEL_31:
         }
       }
 
-      v10 = [(GEOComposedRoute *)self->_route transitDirectionsStepsListDataProvider];
+      transitDirectionsStepsListDataProvider = [(GEOComposedRoute *)self->_route transitDirectionsStepsListDataProvider];
       dataProvider = self->_dataProvider;
-      self->_dataProvider = v10;
+      self->_dataProvider = transitDirectionsStepsListDataProvider;
 
       [(TransitDirectionsStepsListDataSource *)self setActiveComposedRouteStepIndex:0x7FFFFFFFFFFFFFFFLL];
       [(TransitDirectionsStepsListDataSource *)self setDisplayedComposedRouteStepIndex:0x7FFFFFFFFFFFFFFFLL];
@@ -4057,7 +4057,7 @@ LABEL_31:
   }
 }
 
-- (void)composedRoute:(id)a3 appliedTransitRouteUpdates:(id)a4
+- (void)composedRoute:(id)route appliedTransitRouteUpdates:(id)updates
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -4067,10 +4067,10 @@ LABEL_31:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)composedRoute:(id)a3 changedSelectedRideInClusteredSegment:(id)a4 fromIndex:(unint64_t)a5 toIndex:(unint64_t)a6
+- (void)composedRoute:(id)route changedSelectedRideInClusteredSegment:(id)segment fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  v8 = a3;
-  v9 = a4;
+  routeCopy = route;
+  segmentCopy = segment;
   objc_initWeak(&location, self);
   v10 = &_dispatch_main_q;
   v17[0] = _NSConcreteStackBlock;
@@ -4078,7 +4078,7 @@ LABEL_31:
   v18 = sub_100E7BD24;
   v19 = &unk_101661340;
   objc_copyWeak(&v21, &location);
-  v11 = v9;
+  v11 = segmentCopy;
   v20 = v11;
   v12 = &_dispatch_main_q;
   v13 = v17;
@@ -4100,14 +4100,14 @@ LABEL_31:
   objc_destroyWeak(&location);
 }
 
-- (void)_expandItemsAtIndices:(id)a3
+- (void)_expandItemsAtIndices:(id)indices
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100E7BDF8;
   v3[3] = &unk_101656938;
   v3[4] = self;
-  [a3 enumerateIndexesUsingBlock:v3];
+  [indices enumerateIndexesUsingBlock:v3];
 }
 
 - (id)_expandedItemsIndices
@@ -4117,10 +4117,10 @@ LABEL_31:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-  v5 = [v4 items];
+  dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+  items = [dataProvider items];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [items countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -4132,7 +4132,7 @@ LABEL_31:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
@@ -4144,7 +4144,7 @@ LABEL_31:
         ++v8;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [items countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -4158,10 +4158,10 @@ LABEL_31:
   v3 = sub_100E74344();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -4169,30 +4169,30 @@ LABEL_31:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(TransitDirectionsStepsListDataSource *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v13 = v9;
+    v13 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}@] rebuildItems", buf, 0xCu);
   }
 
-  v10 = [(TransitDirectionsStepsListDataSource *)self _expandedItemsIndices];
-  v11 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-  [v11 forceRebuild];
+  _expandedItemsIndices = [(TransitDirectionsStepsListDataSource *)self _expandedItemsIndices];
+  dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+  [dataProvider forceRebuild];
 
-  [(TransitDirectionsStepsListDataSource *)self _expandItemsAtIndices:v10];
+  [(TransitDirectionsStepsListDataSource *)self _expandItemsAtIndices:_expandedItemsIndices];
 }
 
 - (void)updateForClusteredLegSelectedRideIndexChange
@@ -4200,10 +4200,10 @@ LABEL_10:
   v3 = sub_100E74344();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -4211,22 +4211,22 @@ LABEL_10:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(TransitDirectionsStepsListDataSource *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v11 = v9;
+    v11 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}@] updateForClusteredLegSelectedRideIndexChanage", buf, 0xCu);
   }
 
@@ -4238,10 +4238,10 @@ LABEL_10:
   v3 = sub_100E74344();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -4249,22 +4249,22 @@ LABEL_10:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(TransitDirectionsStepsListDataSource *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v11 = v9;
+    v11 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}@] refreshItemInstructionStrings", buf, 0xCu);
   }
 
@@ -4276,10 +4276,10 @@ LABEL_10:
   v3 = sub_100E74344();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -4287,22 +4287,22 @@ LABEL_10:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(TransitDirectionsStepsListDataSource *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v26 = v9;
+    v26 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}@] Expand all items", buf, 0xCu);
   }
 
@@ -4310,10 +4310,10 @@ LABEL_10:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-  v11 = [v10 items];
+  dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+  items = [dataProvider items];
 
-  v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v12 = [items countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
     v13 = v12;
@@ -4324,7 +4324,7 @@ LABEL_10:
       {
         if (*v21 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(items);
         }
 
         v16 = *(*(&v20 + 1) + 8 * i);
@@ -4334,28 +4334,28 @@ LABEL_10:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v13 = [items countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v13);
   }
 
-  v17 = [(TransitDirectionsStepsListDataSource *)self tableView];
-  [v17 reloadData];
+  tableView = [(TransitDirectionsStepsListDataSource *)self tableView];
+  [tableView reloadData];
 
-  v18 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-  [v18 reloadData];
+  collectionView = [(TransitDirectionsStepsListDataSource *)self collectionView];
+  [collectionView reloadData];
 
-  v19 = [(TransitDirectionsStepsListDataSource *)self listView];
-  [v19 reloadData];
+  listView = [(TransitDirectionsStepsListDataSource *)self listView];
+  [listView reloadData];
 }
 
 - (void)collapseAllItems
 {
-  v3 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-  v4 = [v3 hasBuiltItems];
+  dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+  hasBuiltItems = [dataProvider hasBuiltItems];
 
-  if (!v4)
+  if (!hasBuiltItems)
   {
     return;
   }
@@ -4363,10 +4363,10 @@ LABEL_10:
   v5 = sub_100E74344();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_11;
     }
 
@@ -4374,22 +4374,22 @@ LABEL_10:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(TransitDirectionsStepsListDataSource *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_9;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_9:
 
 LABEL_11:
     *buf = 138543362;
-    v28 = v11;
+    v28 = selfCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}@] Collapse all items", buf, 0xCu);
   }
 
@@ -4397,10 +4397,10 @@ LABEL_11:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-  v13 = [v12 items];
+  dataProvider2 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+  items = [dataProvider2 items];
 
-  v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v14 = [items countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v14)
   {
     v15 = v14;
@@ -4411,7 +4411,7 @@ LABEL_11:
       {
         if (*v23 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(items);
         }
 
         v18 = *(*(&v22 + 1) + 8 * i);
@@ -4421,53 +4421,53 @@ LABEL_11:
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v15 = [items countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v15);
   }
 
-  v19 = [(TransitDirectionsStepsListDataSource *)self tableView];
-  [v19 reloadData];
+  tableView = [(TransitDirectionsStepsListDataSource *)self tableView];
+  [tableView reloadData];
 
-  v20 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-  [v20 reloadData];
+  collectionView = [(TransitDirectionsStepsListDataSource *)self collectionView];
+  [collectionView reloadData];
 
-  v21 = [(TransitDirectionsStepsListDataSource *)self listView];
-  [v21 reloadData];
+  listView = [(TransitDirectionsStepsListDataSource *)self listView];
+  [listView reloadData];
 }
 
 - (BOOL)hasIncidentItems
 {
-  v2 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-  v3 = [v2 hasIncidentItems];
+  dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+  hasIncidentItems = [dataProvider hasIncidentItems];
 
-  return v3;
+  return hasIncidentItems;
 }
 
 - (NSArray)transitSegmentSectionRanges
 {
-  v2 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-  v3 = [v2 segmentRanges];
+  dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+  segmentRanges = [dataProvider segmentRanges];
 
-  return v3;
+  return segmentRanges;
 }
 
-- (id)_indexPathFromFlatIndexPath:(id)a3
+- (id)_indexPathFromFlatIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(TransitDirectionsStepsListDataSource *)self shouldFlattenToSingleSection])
   {
-    v5 = [v4 row];
-    v6 = [(TransitDirectionsStepsListDataSource *)self _numberOfSections];
-    if (!v6)
+    v5 = [pathCopy row];
+    _numberOfSections = [(TransitDirectionsStepsListDataSource *)self _numberOfSections];
+    if (!_numberOfSections)
     {
 LABEL_6:
       v10 = 0;
       goto LABEL_10;
     }
 
-    v7 = v6;
+    v7 = _numberOfSections;
     v8 = 0;
     while (1)
     {
@@ -4490,7 +4490,7 @@ LABEL_6:
 
   else
   {
-    v11 = v4;
+    v11 = pathCopy;
   }
 
   v10 = v11;
@@ -4499,16 +4499,16 @@ LABEL_10:
   return v10;
 }
 
-- (id)_flatIndexFromIndexPath:(id)a3
+- (id)_flatIndexFromIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(TransitDirectionsStepsListDataSource *)self shouldFlattenToSingleSection])
   {
-    v5 = [v4 row];
-    v6 = [v4 section];
-    if (v6)
+    v5 = [pathCopy row];
+    section = [pathCopy section];
+    if (section)
     {
-      v7 = v6;
+      v7 = section;
       for (i = 0; i != v7; ++i)
       {
         v5 = &v5[[(TransitDirectionsStepsListDataSource *)self _numberOfRowsInSection:i]];
@@ -4520,7 +4520,7 @@ LABEL_10:
 
   else
   {
-    v9 = v4;
+    v9 = pathCopy;
   }
 
   v10 = v9;
@@ -4528,48 +4528,48 @@ LABEL_10:
   return v10;
 }
 
-- (unint64_t)_numberOfRowsInSection:(unint64_t)a3
+- (unint64_t)_numberOfRowsInSection:(unint64_t)section
 {
-  v5 = [(TransitDirectionsStepsListDataSource *)self _numberOfSections];
-  if ([(TransitDirectionsStepsListDataSource *)self _supportsFooterItem]&& ([(TransitDirectionsStepsListDataSource *)self options]& 8) != 0 && v5 - 1 == a3)
+  _numberOfSections = [(TransitDirectionsStepsListDataSource *)self _numberOfSections];
+  if ([(TransitDirectionsStepsListDataSource *)self _supportsFooterItem]&& ([(TransitDirectionsStepsListDataSource *)self options]& 8) != 0 && _numberOfSections - 1 == section)
   {
     return 1;
   }
 
-  v7 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-  v8 = [v7 numberOfItemsInSection:a3];
+  dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+  v8 = [dataProvider numberOfItemsInSection:section];
 
   return v8;
 }
 
 - (unint64_t)_numberOfSections
 {
-  v3 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-  v4 = [v3 numberOfSections];
+  dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+  numberOfSections = [dataProvider numberOfSections];
 
   if ([(TransitDirectionsStepsListDataSource *)self _supportsFooterItem])
   {
-    v4 += ([(TransitDirectionsStepsListDataSource *)self options]>> 3) & 1;
+    numberOfSections += ([(TransitDirectionsStepsListDataSource *)self options]>> 3) & 1;
   }
 
-  return v4;
+  return numberOfSections;
 }
 
-- (id)listItemForIndexPath:(id)a3
+- (id)listItemForIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v5 = [(TransitDirectionsStepsListDataSource *)self _numberOfSections];
-    if (-[TransitDirectionsStepsListDataSource _supportsFooterItem](self, "_supportsFooterItem") && (-[TransitDirectionsStepsListDataSource options](self, "options") & 8) != 0 && (v5 - 1) == [v4 section])
+    _numberOfSections = [(TransitDirectionsStepsListDataSource *)self _numberOfSections];
+    if (-[TransitDirectionsStepsListDataSource _supportsFooterItem](self, "_supportsFooterItem") && (-[TransitDirectionsStepsListDataSource options](self, "options") & 8) != 0 && (_numberOfSections - 1) == [pathCopy section])
     {
       v6 = @"TransitDirectionsListSharingIdentifier";
     }
 
     else
     {
-      v7 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-      v6 = [v7 itemAtIndexPath:v4];
+      dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+      v6 = [dataProvider itemAtIndexPath:pathCopy];
     }
   }
 
@@ -4583,35 +4583,35 @@ LABEL_10:
 
 - (BOOL)_supportsFooterItem
 {
-  v3 = [(TransitDirectionsStepsListDataSource *)self tableView];
-  if (v3)
+  tableView = [(TransitDirectionsStepsListDataSource *)self tableView];
+  if (tableView)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-    v4 = v5 != 0;
+    collectionView = [(TransitDirectionsStepsListDataSource *)self collectionView];
+    v4 = collectionView != 0;
   }
 
   return v4;
 }
 
-- (void)_scrollToDisplayedItemIfNeeded:(id)a3 animated:(BOOL)a4
+- (void)_scrollToDisplayedItemIfNeeded:(id)needed animated:(BOOL)animated
 {
-  v5 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  neededCopy = needed;
   if ([(TransitDirectionsStepsListDataSource *)self automaticallyScrollToDisplayedStep])
   {
-    v8 = [(TransitDirectionsStepsListDataSource *)self _scrollView];
-    v9 = v8;
-    if (!v8)
+    _scrollView = [(TransitDirectionsStepsListDataSource *)self _scrollView];
+    v9 = _scrollView;
+    if (!_scrollView)
     {
       goto LABEL_55;
     }
 
-    [v8 bounds];
+    [_scrollView bounds];
     if (fabs(v10) <= 2.22044605e-16)
     {
       goto LABEL_55;
@@ -4623,11 +4623,11 @@ LABEL_10:
       goto LABEL_55;
     }
 
-    v12 = [(TransitDirectionsStepsListDataSource *)self tableView];
-    if (v12)
+    tableView = [(TransitDirectionsStepsListDataSource *)self tableView];
+    if (tableView)
     {
-      v4 = [(TransitDirectionsStepsListDataSource *)self tableView];
-      if ([v4 numberOfSections] >= 1)
+      tableView2 = [(TransitDirectionsStepsListDataSource *)self tableView];
+      if ([tableView2 numberOfSections] >= 1)
       {
 
 LABEL_55:
@@ -4635,34 +4635,34 @@ LABEL_55:
       }
     }
 
-    v13 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-    if (v13)
+    collectionView = [(TransitDirectionsStepsListDataSource *)self collectionView];
+    if (collectionView)
     {
-      v14 = v13;
-      v15 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-      v16 = [v15 numberOfSections];
+      v14 = collectionView;
+      collectionView2 = [(TransitDirectionsStepsListDataSource *)self collectionView];
+      numberOfSections = [collectionView2 numberOfSections];
 
-      if (v12)
+      if (tableView)
       {
       }
 
-      if (v16 > 0)
+      if (numberOfSections > 0)
       {
         goto LABEL_55;
       }
     }
 
-    else if (v12)
+    else if (tableView)
     {
     }
 
-    if (v7 || ([(TransitDirectionsStepsListDataSource *)self displayedItemIndexPath], (v20 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (neededCopy || ([(TransitDirectionsStepsListDataSource *)self displayedItemIndexPath], (v20 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v17 = [v7 section];
-      v18 = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexPath];
-      v19 = [v18 section];
+      section = [neededCopy section];
+      displayedItemIndexPath = [(TransitDirectionsStepsListDataSource *)self displayedItemIndexPath];
+      section2 = [displayedItemIndexPath section];
 
-      if (v17 == v19)
+      if (section == section2)
       {
         goto LABEL_55;
       }
@@ -4687,10 +4687,10 @@ LABEL_30:
         v33 = sub_100E74344();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
-          v34 = self;
-          if (!v34)
+          selfCopy = self;
+          if (!selfCopy)
           {
-            v39 = @"<nil>";
+            selfCopy = @"<nil>";
             goto LABEL_50;
           }
 
@@ -4698,25 +4698,25 @@ LABEL_30:
           v36 = NSStringFromClass(v35);
           if (objc_opt_respondsToSelector())
           {
-            v37 = [(TransitDirectionsStepsListDataSource *)v34 performSelector:"accessibilityIdentifier"];
+            v37 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
             v38 = v37;
             if (v37 && ![v37 isEqualToString:v36])
             {
-              v39 = [NSString stringWithFormat:@"%@<%p, %@>", v36, v34, v38];
+              selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v36, selfCopy, v38];
 
               goto LABEL_38;
             }
           }
 
-          v39 = [NSString stringWithFormat:@"%@<%p>", v36, v34];
+          selfCopy = [NSString stringWithFormat:@"%@<%p>", v36, selfCopy];
 LABEL_38:
 
 LABEL_50:
-          v48 = [(TransitDirectionsStepsListDataSource *)v34 displayedItemIndexPath];
+          displayedItemIndexPath2 = [(TransitDirectionsStepsListDataSource *)selfCopy displayedItemIndexPath];
           *buf = 138543618;
-          v51 = v39;
+          v51 = selfCopy;
           v52 = 2114;
-          v53 = v48;
+          v53 = displayedItemIndexPath2;
           v49 = "[%{public}@] Couldn't scroll to displayed step: %{public}@ (invalid frame)";
 LABEL_53:
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, v49, buf, 0x16u);
@@ -4736,7 +4736,7 @@ LABEL_54:
       v42 = MinY - v41;
       if (!__isnand())
       {
-        [v9 setContentOffset:v5 animated:{0.0, v42}];
+        [v9 setContentOffset:animatedCopy animated:{0.0, v42}];
         goto LABEL_55;
       }
 
@@ -4746,10 +4746,10 @@ LABEL_54:
         goto LABEL_54;
       }
 
-      v43 = self;
-      if (!v43)
+      selfCopy2 = self;
+      if (!selfCopy2)
       {
-        v39 = @"<nil>";
+        selfCopy = @"<nil>";
         goto LABEL_52;
       }
 
@@ -4757,33 +4757,33 @@ LABEL_54:
       v45 = NSStringFromClass(v44);
       if (objc_opt_respondsToSelector())
       {
-        v46 = [(TransitDirectionsStepsListDataSource *)v43 performSelector:"accessibilityIdentifier"];
+        v46 = [(TransitDirectionsStepsListDataSource *)selfCopy2 performSelector:"accessibilityIdentifier"];
         v47 = v46;
         if (v46 && ![v46 isEqualToString:v45])
         {
-          v39 = [NSString stringWithFormat:@"%@<%p, %@>", v45, v43, v47];
+          selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v45, selfCopy2, v47];
 
           goto LABEL_47;
         }
       }
 
-      v39 = [NSString stringWithFormat:@"%@<%p>", v45, v43];
+      selfCopy = [NSString stringWithFormat:@"%@<%p>", v45, selfCopy2];
 LABEL_47:
 
 LABEL_52:
-      v48 = [(TransitDirectionsStepsListDataSource *)v43 displayedItemIndexPath];
+      displayedItemIndexPath2 = [(TransitDirectionsStepsListDataSource *)selfCopy2 displayedItemIndexPath];
       *buf = 138543618;
-      v51 = v39;
+      v51 = selfCopy;
       v52 = 2114;
-      v53 = v48;
+      v53 = displayedItemIndexPath2;
       v49 = "[%{public}@] Couldn't scroll to displayed step: %{public}@ (invalid offset)";
       goto LABEL_53;
     }
 
-    v22 = self;
-    if (!v22)
+    selfCopy3 = self;
+    if (!selfCopy3)
     {
-      v27 = @"<nil>";
+      selfCopy3 = @"<nil>";
       goto LABEL_29;
     }
 
@@ -4791,27 +4791,27 @@ LABEL_52:
     v24 = NSStringFromClass(v23);
     if (objc_opt_respondsToSelector())
     {
-      v25 = [(TransitDirectionsStepsListDataSource *)v22 performSelector:"accessibilityIdentifier"];
+      v25 = [(TransitDirectionsStepsListDataSource *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v26 = v25;
       if (v25 && ![v25 isEqualToString:v24])
       {
-        v27 = [NSString stringWithFormat:@"%@<%p, %@>", v24, v22, v26];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v24, selfCopy3, v26];
 
         goto LABEL_27;
       }
     }
 
-    v27 = [NSString stringWithFormat:@"%@<%p>", v24, v22];
+    selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v24, selfCopy3];
 LABEL_27:
 
 LABEL_29:
-    v28 = [(TransitDirectionsStepsListDataSource *)v22 displayedItemIndexPath];
+    displayedItemIndexPath3 = [(TransitDirectionsStepsListDataSource *)selfCopy3 displayedItemIndexPath];
     *buf = 138543874;
-    v51 = v27;
+    v51 = selfCopy3;
     v52 = 2112;
-    v53 = v7;
+    v53 = neededCopy;
     v54 = 2112;
-    v55 = v28;
+    v55 = displayedItemIndexPath3;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "[%{public}@] Scrolling to updated displayed index path (previous: %@, updated: %@)", buf, 0x20u);
 
     goto LABEL_30;
@@ -4825,10 +4825,10 @@ LABEL_56:
   v3 = sub_100E74344();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -4836,97 +4836,97 @@ LABEL_56:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(TransitDirectionsStepsListDataSource *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v43 = v9;
+    v43 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}@] Scrolling to first cell", buf, 0xCu);
   }
 
-  v10 = [(TransitDirectionsStepsListDataSource *)self tableView];
-  if (!v10)
+  tableView = [(TransitDirectionsStepsListDataSource *)self tableView];
+  if (!tableView)
   {
     goto LABEL_19;
   }
 
-  v11 = v10;
-  v12 = [(TransitDirectionsStepsListDataSource *)self tableView];
-  if ([v12 numberOfSections] < 1)
+  tableView4 = tableView;
+  tableView2 = [(TransitDirectionsStepsListDataSource *)self tableView];
+  if ([tableView2 numberOfSections] < 1)
   {
     goto LABEL_18;
   }
 
-  v13 = [(TransitDirectionsStepsListDataSource *)self tableView];
-  [v13 bounds];
+  tableView3 = [(TransitDirectionsStepsListDataSource *)self tableView];
+  [tableView3 bounds];
   v15 = v14;
   v17 = v16;
   height = CGSizeZero.height;
 
   if (CGSizeZero.width != v15 || height != v17)
   {
-    v11 = [(TransitDirectionsStepsListDataSource *)self tableView];
-    v12 = [NSIndexPath indexPathForItem:0 inSection:0];
-    [v11 scrollToRowAtIndexPath:v12 atScrollPosition:1 animated:0];
+    tableView4 = [(TransitDirectionsStepsListDataSource *)self tableView];
+    tableView2 = [NSIndexPath indexPathForItem:0 inSection:0];
+    [tableView4 scrollToRowAtIndexPath:tableView2 atScrollPosition:1 animated:0];
 LABEL_18:
   }
 
 LABEL_19:
-  v20 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-  if (!v20)
+  collectionView = [(TransitDirectionsStepsListDataSource *)self collectionView];
+  if (!collectionView)
   {
     goto LABEL_27;
   }
 
-  v21 = v20;
-  v22 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-  if ([v22 numberOfSections] < 1)
+  collectionView4 = collectionView;
+  collectionView2 = [(TransitDirectionsStepsListDataSource *)self collectionView];
+  if ([collectionView2 numberOfSections] < 1)
   {
     goto LABEL_26;
   }
 
-  v23 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-  [v23 bounds];
+  collectionView3 = [(TransitDirectionsStepsListDataSource *)self collectionView];
+  [collectionView3 bounds];
   v25 = v24;
   v27 = v26;
   v28 = CGSizeZero.height;
 
   if (CGSizeZero.width != v25 || v28 != v27)
   {
-    v21 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-    v22 = [NSIndexPath indexPathForItem:0 inSection:0];
-    [v21 scrollToItemAtIndexPath:v22 atScrollPosition:1 animated:0];
+    collectionView4 = [(TransitDirectionsStepsListDataSource *)self collectionView];
+    collectionView2 = [NSIndexPath indexPathForItem:0 inSection:0];
+    [collectionView4 scrollToItemAtIndexPath:collectionView2 atScrollPosition:1 animated:0];
 LABEL_26:
   }
 
 LABEL_27:
-  v30 = [(TransitDirectionsStepsListDataSource *)self listView];
-  if (v30)
+  listView = [(TransitDirectionsStepsListDataSource *)self listView];
+  if (listView)
   {
-    v31 = v30;
-    v32 = [(TransitDirectionsStepsListDataSource *)self listView];
-    [v32 bounds];
+    v31 = listView;
+    listView2 = [(TransitDirectionsStepsListDataSource *)self listView];
+    [listView2 bounds];
     v34 = v33;
     v36 = v35;
     v37 = CGSizeZero.height;
 
     if (CGSizeZero.width != v34 || v37 != v36)
     {
-      v39 = [(TransitDirectionsStepsListDataSource *)self listView];
-      v40 = [(TransitDirectionsStepsListDataSource *)self listView];
-      [v40 contentInset];
-      [v39 setContentOffset:0 animated:{0.0, v41}];
+      listView3 = [(TransitDirectionsStepsListDataSource *)self listView];
+      listView4 = [(TransitDirectionsStepsListDataSource *)self listView];
+      [listView4 contentInset];
+      [listView3 setContentOffset:0 animated:{0.0, v41}];
     }
   }
 }
@@ -4938,10 +4938,10 @@ LABEL_27:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-  v3 = [v2 items];
+  dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+  items = [dataProvider items];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [items countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4953,7 +4953,7 @@ LABEL_27:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(items);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
@@ -4971,26 +4971,26 @@ LABEL_27:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [items countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_measureShieldWidthForListWidth:(double)a3
+- (void)_measureShieldWidthForListWidth:(double)width
 {
-  if (self->_listWidthForLeadingInset != a3)
+  if (self->_listWidthForLeadingInset != width)
   {
-    self->_listWidthForLeadingInset = a3;
-    v5 = [(TransitDirectionsStepsListDataSource *)self _scrollView];
-    v6 = dbl_101212AA0[sub_10000FA08(v5) == 5];
+    self->_listWidthForLeadingInset = width;
+    _scrollView = [(TransitDirectionsStepsListDataSource *)self _scrollView];
+    v6 = dbl_101212AA0[sub_10000FA08(_scrollView) == 5];
 
-    v7 = [(TransitDirectionsStepsListDataSource *)self _scrollView];
-    sub_10000FA08(v7);
+    _scrollView2 = [(TransitDirectionsStepsListDataSource *)self _scrollView];
+    sub_10000FA08(_scrollView2);
 
-    v8 = [(TransitDirectionsStepsListDataSource *)self _scrollView];
-    if (sub_10000FA08(v8) == 5)
+    _scrollView3 = [(TransitDirectionsStepsListDataSource *)self _scrollView];
+    if (sub_10000FA08(_scrollView3) == 5)
     {
       v9 = 30.0;
     }
@@ -5001,18 +5001,18 @@ LABEL_27:
     }
 
     v10 = +[NSMapTable strongToStrongObjectsMapTable];
-    v11 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-    v12 = [v11 items];
+    dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+    items = [dataProvider items];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_100E7DBA0;
     v31[3] = &unk_101656910;
     v13 = v10;
     v32 = v13;
-    v14 = sub_100021DB0(v12, v31);
+    v14 = sub_100021DB0(items, v31);
 
     *v28 = v9;
-    *&v28[1] = a3 - v6;
+    *&v28[1] = width - v6;
     v29 = xmmword_101212AB0;
     v30 = xmmword_101212AB0;
     v15 = [[TransitDirectionsListArtworkWidthCalculator alloc] initWithSizedArtworks:v14 sizeParameter:v28];
@@ -5049,26 +5049,26 @@ LABEL_27:
   }
 }
 
-- (void)recalculateLeadingInstructionMarginForWidth:(double)a3
+- (void)recalculateLeadingInstructionMarginForWidth:(double)width
 {
   [(TransitDirectionsStepsListDataSource *)self _resetArtworkSizesForAdaptiveItems];
-  [(TransitDirectionsStepsListDataSource *)self _measureShieldWidthForListWidth:a3];
-  self->_listWidthForCachedRowHeights = a3;
+  [(TransitDirectionsStepsListDataSource *)self _measureShieldWidthForListWidth:width];
+  self->_listWidthForCachedRowHeights = width;
 }
 
 - (int64_t)_userInterfaceIdiom
 {
-  v2 = [(TransitDirectionsStepsListDataSource *)self _scrollView];
-  v3 = [v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  _scrollView = [(TransitDirectionsStepsListDataSource *)self _scrollView];
+  traitCollection = [_scrollView traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  return v4;
+  return userInterfaceIdiom;
 }
 
 - (double)_availableWidth
 {
-  v2 = [(TransitDirectionsStepsListDataSource *)self _scrollView];
-  [v2 bounds];
+  _scrollView = [(TransitDirectionsStepsListDataSource *)self _scrollView];
+  [_scrollView bounds];
   Width = CGRectGetWidth(v5);
 
   return Width;
@@ -5087,25 +5087,25 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v4 = self;
+    selfCopy = self;
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(TransitDirectionsStepsListDataSource *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
-    if (v4->_reloadTableCompletionBlock)
+    if (selfCopy->_reloadTableCompletionBlock)
     {
       v10 = @"YES";
     }
@@ -5117,7 +5117,7 @@ LABEL_8:
 
     v11 = v10;
     *buf = 138543618;
-    v13 = v9;
+    v13 = selfCopy;
     v14 = 2112;
     v15 = v11;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}@] Will perform deferred table reload (completion block: %@)", buf, 0x16u);
@@ -5131,26 +5131,26 @@ LABEL_13:
 
 - (void)_updateFooterInListView
 {
-  v3 = [(TransitDirectionsStepsListDataSource *)self listView];
+  listView = [(TransitDirectionsStepsListDataSource *)self listView];
 
-  if (v3)
+  if (listView)
   {
-    v4 = [(TransitDirectionsStepsListDataSource *)self options];
-    v5 = [(TransitDirectionsStepsListDataSource *)self listView];
-    v6 = [v5 footerView];
-    v7 = v6;
-    if ((v4 & 8) != 0)
+    options = [(TransitDirectionsStepsListDataSource *)self options];
+    listView2 = [(TransitDirectionsStepsListDataSource *)self listView];
+    footerView = [listView2 footerView];
+    v7 = footerView;
+    if ((options & 8) != 0)
     {
 
       if (v7)
       {
-        v8 = [(TransitDirectionsStepsListDataSource *)self listView];
-        v9 = [v8 footerView];
+        listView3 = [(TransitDirectionsStepsListDataSource *)self listView];
+        footerView2 = [listView3 footerView];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = v9;
+          v10 = footerView2;
         }
 
         else
@@ -5158,20 +5158,20 @@ LABEL_13:
           v10 = 0;
         }
 
-        v13 = v10;
+        listView5 = v10;
 
-        [(TransitDirectionsStepsListDataSource *)self _configureFooterView:v13];
+        [(TransitDirectionsStepsListDataSource *)self _configureFooterView:listView5];
       }
 
       else
       {
-        v13 = [[RoutePlanningFooterView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-        [(TransitDirectionsStepsListDataSource *)self _configureFooterView:v13];
-        v11 = [(TransitDirectionsStepsListDataSource *)self listView];
-        [v11 setFooterView:v13];
+        listView5 = [[RoutePlanningFooterView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
+        [(TransitDirectionsStepsListDataSource *)self _configureFooterView:listView5];
+        listView4 = [(TransitDirectionsStepsListDataSource *)self listView];
+        [listView4 setFooterView:listView5];
 
         v12 = +[UIColor clearColor];
-        [(RoutePlanningFooterView *)v13 setBackgroundColor:v12];
+        [(RoutePlanningFooterView *)listView5 setBackgroundColor:v12];
       }
     }
 
@@ -5183,38 +5183,38 @@ LABEL_13:
         return;
       }
 
-      v13 = [(TransitDirectionsStepsListDataSource *)self listView];
-      [(RoutePlanningFooterView *)v13 setFooterView:0];
+      listView5 = [(TransitDirectionsStepsListDataSource *)self listView];
+      [(RoutePlanningFooterView *)listView5 setFooterView:0];
     }
   }
 }
 
 - (void)_reloadVisibleCells
 {
-  v3 = [(TransitDirectionsStepsListDataSource *)self collectionView];
+  collectionView = [(TransitDirectionsStepsListDataSource *)self collectionView];
 
-  if (!v3)
+  if (!collectionView)
   {
-    v11 = [(TransitDirectionsStepsListDataSource *)self tableView];
+    tableView = [(TransitDirectionsStepsListDataSource *)self tableView];
 
-    if (v11)
+    if (tableView)
     {
       v12 = sub_100E74344();
       if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
 LABEL_33:
 
-        v32 = [(TransitDirectionsStepsListDataSource *)self tableView];
+        tableView2 = [(TransitDirectionsStepsListDataSource *)self tableView];
 LABEL_38:
-        v30 = v32;
-        [v32 reloadData];
+        visibleCells = tableView2;
+        [tableView2 reloadData];
         goto LABEL_39;
       }
 
-      v13 = self;
-      if (!v13)
+      selfCopy = self;
+      if (!selfCopy)
       {
-        v18 = @"<nil>";
+        selfCopy = @"<nil>";
         goto LABEL_32;
       }
 
@@ -5222,30 +5222,30 @@ LABEL_38:
       v15 = NSStringFromClass(v14);
       if (objc_opt_respondsToSelector())
       {
-        v16 = [(TransitDirectionsStepsListDataSource *)v13 performSelector:"accessibilityIdentifier"];
+        v16 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
         v17 = v16;
         if (v16 && ![v16 isEqualToString:v15])
         {
-          v18 = [NSString stringWithFormat:@"%@<%p, %@>", v15, v13, v17];
+          selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v15, selfCopy, v17];
 
           goto LABEL_18;
         }
       }
 
-      v18 = [NSString stringWithFormat:@"%@<%p>", v15, v13];
+      selfCopy = [NSString stringWithFormat:@"%@<%p>", v15, selfCopy];
 LABEL_18:
 
 LABEL_32:
       *buf = 138543362;
-      v37 = v18;
+      v37 = selfCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "[%{public}@] Reloading visible cells in table view", buf, 0xCu);
 
       goto LABEL_33;
     }
 
-    v19 = [(TransitDirectionsStepsListDataSource *)self listView];
+    listView = [(TransitDirectionsStepsListDataSource *)self listView];
 
-    if (!v19)
+    if (!listView)
     {
       return;
     }
@@ -5255,14 +5255,14 @@ LABEL_32:
     {
 LABEL_37:
 
-      v32 = [(TransitDirectionsStepsListDataSource *)self listView];
+      tableView2 = [(TransitDirectionsStepsListDataSource *)self listView];
       goto LABEL_38;
     }
 
-    v21 = self;
-    if (!v21)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v26 = @"<nil>";
+      selfCopy2 = @"<nil>";
       goto LABEL_36;
     }
 
@@ -5270,22 +5270,22 @@ LABEL_37:
     v23 = NSStringFromClass(v22);
     if (objc_opt_respondsToSelector())
     {
-      v24 = [(TransitDirectionsStepsListDataSource *)v21 performSelector:"accessibilityIdentifier"];
+      v24 = [(TransitDirectionsStepsListDataSource *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v25 = v24;
       if (v24 && ![v24 isEqualToString:v23])
       {
-        v26 = [NSString stringWithFormat:@"%@<%p, %@>", v23, v21, v25];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v23, selfCopy2, v25];
 
         goto LABEL_27;
       }
     }
 
-    v26 = [NSString stringWithFormat:@"%@<%p>", v23, v21];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v23, selfCopy2];
 LABEL_27:
 
 LABEL_36:
     *buf = 138543362;
-    v37 = v26;
+    v37 = selfCopy2;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "[%{public}@] Reloading all cells in list view", buf, 0xCu);
 
     goto LABEL_37;
@@ -5294,10 +5294,10 @@ LABEL_36:
   v4 = sub_100E74344();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v5 = self;
-    if (!v5)
+    selfCopy3 = self;
+    if (!selfCopy3)
     {
-      v10 = @"<nil>";
+      selfCopy3 = @"<nil>";
       goto LABEL_29;
     }
 
@@ -5305,47 +5305,47 @@ LABEL_36:
     v7 = NSStringFromClass(v6);
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(TransitDirectionsStepsListDataSource *)v5 performSelector:"accessibilityIdentifier"];
+      v8 = [(TransitDirectionsStepsListDataSource *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v9 = v8;
       if (v8 && ![v8 isEqualToString:v7])
       {
-        v10 = [NSString stringWithFormat:@"%@<%p, %@>", v7, v5, v9];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v7, selfCopy3, v9];
 
         goto LABEL_9;
       }
     }
 
-    v10 = [NSString stringWithFormat:@"%@<%p>", v7, v5];
+    selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v7, selfCopy3];
 LABEL_9:
 
 LABEL_29:
     *buf = 138543362;
-    v37 = v10;
+    v37 = selfCopy3;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%{public}@] Reloading individual visible cells in collection view", buf, 0xCu);
   }
 
-  v27 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-  v28 = [v27 indexPathsForVisibleItems];
+  collectionView2 = [(TransitDirectionsStepsListDataSource *)self collectionView];
+  indexPathsForVisibleItems = [collectionView2 indexPathsForVisibleItems];
 
-  v29 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-  v30 = [v29 visibleCells];
+  collectionView3 = [(TransitDirectionsStepsListDataSource *)self collectionView];
+  visibleCells = [collectionView3 visibleCells];
 
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_100E7E530;
   v33[3] = &unk_1016568E8;
-  v34 = v28;
-  v35 = self;
-  v31 = v28;
-  [v30 enumerateObjectsUsingBlock:v33];
+  v34 = indexPathsForVisibleItems;
+  selfCopy4 = self;
+  v31 = indexPathsForVisibleItems;
+  [visibleCells enumerateObjectsUsingBlock:v33];
 
 LABEL_39:
 }
 
-- (void)_reloadListViewForRouteChangeIfNotAnimating:(id)a3
+- (void)_reloadListViewForRouteChangeIfNotAnimating:(id)animating
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  animatingCopy = animating;
+  v5 = [animatingCopy copy];
   reloadTableCompletionBlock = self->_reloadTableCompletionBlock;
   self->_reloadTableCompletionBlock = v5;
 
@@ -5359,33 +5359,33 @@ LABEL_39:
   v7 = sub_100E74344();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = self;
+    selfCopy = self;
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(TransitDirectionsStepsListDataSource *)v8 performSelector:"accessibilityIdentifier"];
+      v11 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v12 = v11;
       if (v11 && ![v11 isEqualToString:v10])
       {
-        v13 = [NSString stringWithFormat:@"%@<%p, %@>", v10, v8, v12];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v10, selfCopy, v12];
 
         goto LABEL_8;
       }
     }
 
-    v13 = [NSString stringWithFormat:@"%@<%p>", v10, v8];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v10, selfCopy];
 LABEL_8:
 
     v14 = @"YES";
-    if (!v4)
+    if (!animatingCopy)
     {
       v14 = @"NO";
     }
 
     v15 = v14;
     *buf = 138543618;
-    v17 = v13;
+    v17 = selfCopy;
     v18 = 2112;
     v19 = v15;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[%{public}@] Will defer table reload until after expansion/collapse animation (completion block: %@)", buf, 0x16u);
@@ -5396,21 +5396,21 @@ LABEL_13:
 
 - (void)_reloadListViewForRouteChange
 {
-  v3 = [(TransitDirectionsStepsListDataSource *)self _scrollView];
+  _scrollView = [(TransitDirectionsStepsListDataSource *)self _scrollView];
 
   v4 = sub_100E74344();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
-  if (!v3)
+  if (!_scrollView)
   {
     if (!v5)
     {
       goto LABEL_24;
     }
 
-    v12 = self;
-    if (!v12)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v17 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_23;
     }
 
@@ -5418,22 +5418,22 @@ LABEL_13:
     v14 = NSStringFromClass(v13);
     if (objc_opt_respondsToSelector())
     {
-      v15 = [(TransitDirectionsStepsListDataSource *)v12 performSelector:"accessibilityIdentifier"];
+      v15 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v16 = v15;
       if (v15 && ![v15 isEqualToString:v14])
       {
-        v17 = [NSString stringWithFormat:@"%@<%p, %@>", v14, v12, v16];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v14, selfCopy, v16];
 
         goto LABEL_17;
       }
     }
 
-    v17 = [NSString stringWithFormat:@"%@<%p>", v14, v12];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v14, selfCopy];
 LABEL_17:
 
 LABEL_23:
     *buf = 138543362;
-    v23 = v17;
+    v23 = selfCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%{public}@] Will not reload table for route change, no scroll view yet", buf, 0xCu);
 
     goto LABEL_24;
@@ -5444,10 +5444,10 @@ LABEL_23:
     goto LABEL_20;
   }
 
-  v6 = self;
-  if (!v6)
+  selfCopy2 = self;
+  if (!selfCopy2)
   {
-    v11 = @"<nil>";
+    selfCopy2 = @"<nil>";
     goto LABEL_19;
   }
 
@@ -5455,36 +5455,36 @@ LABEL_23:
   v8 = NSStringFromClass(v7);
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(TransitDirectionsStepsListDataSource *)v6 performSelector:"accessibilityIdentifier"];
+    v9 = [(TransitDirectionsStepsListDataSource *)selfCopy2 performSelector:"accessibilityIdentifier"];
     v10 = v9;
     if (v9 && ![v9 isEqualToString:v8])
     {
-      v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+      selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy2, v10];
 
       goto LABEL_9;
     }
   }
 
-  v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+  selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy2];
 LABEL_9:
 
 LABEL_19:
   *buf = 138543362;
-  v23 = v11;
+  v23 = selfCopy2;
   _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%{public}@] Will reload table for route change", buf, 0xCu);
 
 LABEL_20:
   [(TransitDirectionsStepsListDataSource *)self _resetRowHeightCache];
   [(TransitDirectionsStepsListDataSource *)self _availableWidth];
   [(TransitDirectionsStepsListDataSource *)self recalculateLeadingInstructionMarginForWidth:?];
-  v18 = [(TransitDirectionsStepsListDataSource *)self tableView];
-  [v18 reloadData];
+  tableView = [(TransitDirectionsStepsListDataSource *)self tableView];
+  [tableView reloadData];
 
-  v19 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-  [v19 reloadData];
+  collectionView = [(TransitDirectionsStepsListDataSource *)self collectionView];
+  [collectionView reloadData];
 
-  v20 = [(TransitDirectionsStepsListDataSource *)self listView];
-  [v20 reloadData];
+  listView = [(TransitDirectionsStepsListDataSource *)self listView];
+  [listView reloadData];
 
   [(TransitDirectionsStepsListDataSource *)self _updateFooterInListView];
   v4 = objc_retainBlock(self->_reloadTableCompletionBlock);
@@ -5501,37 +5501,37 @@ LABEL_24:
 
 - (void)_updateRegisteredCellClasses
 {
-  v3 = [(TransitDirectionsStepsListDataSource *)self tableView];
+  tableView = [(TransitDirectionsStepsListDataSource *)self tableView];
 
-  if (v3)
+  if (tableView)
   {
-    v4 = [(TransitDirectionsStepsListDataSource *)self tableView];
-    [TransitDirectionsCell registerCellsForTableView:v4];
+    tableView2 = [(TransitDirectionsStepsListDataSource *)self tableView];
+    [TransitDirectionsCell registerCellsForTableView:tableView2];
 
-    v5 = [(TransitDirectionsStepsListDataSource *)self tableView];
-    [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"TransitDirectionsListSharingIdentifier"];
+    tableView3 = [(TransitDirectionsStepsListDataSource *)self tableView];
+    [tableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"TransitDirectionsListSharingIdentifier"];
   }
 
-  v6 = [(TransitDirectionsStepsListDataSource *)self collectionView];
+  collectionView = [(TransitDirectionsStepsListDataSource *)self collectionView];
 
-  if (v6)
+  if (collectionView)
   {
-    v7 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-    [TransitDirectionsCell registerCellsForCollectionView:v7];
+    collectionView2 = [(TransitDirectionsStepsListDataSource *)self collectionView];
+    [TransitDirectionsCell registerCellsForCollectionView:collectionView2];
 
-    v8 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-    [v8 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"TransitDirectionsListSharingIdentifier"];
+    collectionView3 = [(TransitDirectionsStepsListDataSource *)self collectionView];
+    [collectionView3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"TransitDirectionsListSharingIdentifier"];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(TransitDirectionsStepsListDataSource *)self _scrollView];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  _scrollView = [(TransitDirectionsStepsListDataSource *)self _scrollView];
 
-  if (v13 == v11)
+  if (_scrollView == objectCopy)
   {
     [(TransitDirectionsStepsListDataSource *)self _availableWidth];
     v15 = v14;
@@ -5546,38 +5546,38 @@ LABEL_24:
 LABEL_11:
 
       [(TransitDirectionsStepsListDataSource *)self recalculateLeadingInstructionMarginForWidth:v15];
-      v23 = [(TransitDirectionsStepsListDataSource *)self tableView];
-      [v23 reloadData];
+      tableView = [(TransitDirectionsStepsListDataSource *)self tableView];
+      [tableView reloadData];
 
-      v24 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-      [v24 reloadData];
+      collectionView = [(TransitDirectionsStepsListDataSource *)self collectionView];
+      [collectionView reloadData];
 
-      v25 = [(TransitDirectionsStepsListDataSource *)self listView];
-      [v25 reloadData];
+      listView = [(TransitDirectionsStepsListDataSource *)self listView];
+      [listView reloadData];
 
       goto LABEL_12;
     }
 
-    v17 = self;
+    selfCopy = self;
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
     if (objc_opt_respondsToSelector())
     {
-      v20 = [(TransitDirectionsStepsListDataSource *)v17 performSelector:"accessibilityIdentifier"];
+      v20 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v21 = v20;
       if (v20 && ![v20 isEqualToString:v19])
       {
-        v22 = [NSString stringWithFormat:@"%@<%p, %@>", v19, v17, v21];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v19, selfCopy, v21];
 
         goto LABEL_10;
       }
     }
 
-    v22 = [NSString stringWithFormat:@"%@<%p>", v19, v17];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v19, selfCopy];
 LABEL_10:
 
     *buf = 138543362;
-    v28 = v22;
+    v28 = selfCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "[%{public}@] available width did change", buf, 0xCu);
 
     goto LABEL_11;
@@ -5585,22 +5585,22 @@ LABEL_10:
 
   v26.receiver = self;
   v26.super_class = TransitDirectionsStepsListDataSource;
-  [(TransitDirectionsStepsListDataSource *)&v26 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(TransitDirectionsStepsListDataSource *)&v26 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_12:
 }
 
-- (void)setFlattenToSingleSection:(BOOL)a3
+- (void)setFlattenToSingleSection:(BOOL)section
 {
-  if (self->_flattenToSingleSection != a3)
+  if (self->_flattenToSingleSection != section)
   {
-    self->_flattenToSingleSection = a3;
+    self->_flattenToSingleSection = section;
     [(TransitDirectionsStepsListDataSource *)self _reloadListViewForRouteChange];
   }
 }
 
-- (void)setListView:(id)a3
+- (void)setListView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_listView);
   if (WeakRetained != obj)
   {
@@ -5623,9 +5623,9 @@ LABEL_12:
   }
 }
 
-- (void)setCollectionView:(id)a3
+- (void)setCollectionView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_collectionView);
   if (WeakRetained != obj)
   {
@@ -5647,9 +5647,9 @@ LABEL_12:
   }
 }
 
-- (void)setTableView:(id)a3
+- (void)setTableView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_tableView);
   if (WeakRetained != obj)
   {
@@ -5673,38 +5673,38 @@ LABEL_12:
 
 - (id)_scrollView
 {
-  v3 = [(TransitDirectionsStepsListDataSource *)self tableView];
-  v4 = v3;
-  if (v3)
+  tableView = [(TransitDirectionsStepsListDataSource *)self tableView];
+  v4 = tableView;
+  if (tableView)
   {
-    v5 = v3;
+    v5 = tableView;
   }
 
   else
   {
-    v6 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-    v7 = v6;
-    if (v6)
+    collectionView = [(TransitDirectionsStepsListDataSource *)self collectionView];
+    v7 = collectionView;
+    if (collectionView)
     {
-      v8 = v6;
+      listView = collectionView;
     }
 
     else
     {
-      v8 = [(TransitDirectionsStepsListDataSource *)self listView];
+      listView = [(TransitDirectionsStepsListDataSource *)self listView];
     }
 
-    v5 = v8;
+    v5 = listView;
   }
 
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  obj = v4;
+  obj = delegateCopy;
   v6 = WeakRetained;
   if (obj | v6)
   {
@@ -5722,19 +5722,19 @@ LABEL_12:
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
+    activeCopy = active;
     v5 = sub_100E74344();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
 LABEL_11:
 
-      self->_active = v3;
-      [(MKTransitItemReferenceDateUpdater *)self->_referenceDateUpdater setActive:v3];
-      if (v3)
+      self->_active = activeCopy;
+      [(MKTransitItemReferenceDateUpdater *)self->_referenceDateUpdater setActive:activeCopy];
+      if (activeCopy)
       {
         [(TransitDirectionsStepsListDataSource *)self _reloadListViewForRouteChange];
       }
@@ -5742,33 +5742,33 @@ LABEL_11:
       return;
     }
 
-    v6 = self;
+    selfCopy = self;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(TransitDirectionsStepsListDataSource *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
     v12 = @"NO";
-    if (v3)
+    if (activeCopy)
     {
       v12 = @"YES";
     }
 
     v13 = v12;
     *buf = 138543618;
-    v15 = v11;
+    v15 = selfCopy;
     v16 = 2114;
     v17 = v13;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}@] setActive: %{public}@", buf, 0x16u);
@@ -5787,16 +5787,16 @@ LABEL_8:
     {
       if (self->_navigationProvider)
       {
-        v4 = [[TransitDirectionsStepsListDataProvider alloc] initWithRoute:self->_route forGuidance:1];
+        transitDirectionsStepsListDataProvider = [[TransitDirectionsStepsListDataProvider alloc] initWithRoute:self->_route forGuidance:1];
       }
 
       else
       {
-        v4 = [dataProvider transitDirectionsStepsListDataProvider];
+        transitDirectionsStepsListDataProvider = [dataProvider transitDirectionsStepsListDataProvider];
       }
 
       v5 = self->_dataProvider;
-      self->_dataProvider = v4;
+      self->_dataProvider = transitDirectionsStepsListDataProvider;
 
       dataProvider = self->_dataProvider;
     }
@@ -5805,17 +5805,17 @@ LABEL_8:
   return dataProvider;
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  v5 = a3;
+  routeCopy = route;
   route = self->_route;
-  if (route != v5)
+  if (route != routeCopy)
   {
     [(GEOComposedRoute *)route unregisterObserver:self];
     dataProvider = self->_dataProvider;
     self->_dataProvider = 0;
 
-    objc_storeStrong(&self->_route, a3);
+    objc_storeStrong(&self->_route, route);
     [(GEOComposedRoute *)self->_route registerObserver:self];
     v8 = sub_100E74344();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -5844,28 +5844,28 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v9 = self;
+    selfCopy = self;
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
     if (objc_opt_respondsToSelector())
     {
-      v12 = [(TransitDirectionsStepsListDataSource *)v9 performSelector:"accessibilityIdentifier"];
+      v12 = [(TransitDirectionsStepsListDataSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v13 = v12;
       if (v12 && ![v12 isEqualToString:v11])
       {
-        v14 = [NSString stringWithFormat:@"%@<%p, %@>", v11, v9, v13];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v11, selfCopy, v13];
 
         goto LABEL_8;
       }
     }
 
-    v14 = [NSString stringWithFormat:@"%@<%p>", v11, v9];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v11, selfCopy];
 LABEL_8:
 
     *buf = 138543618;
-    v20 = v14;
+    v20 = selfCopy;
     v21 = 2112;
-    v22 = v5;
+    v22 = routeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "[%{public}@] setRoute: %@", buf, 0x16u);
 
     goto LABEL_9;
@@ -5874,25 +5874,25 @@ LABEL_8:
 LABEL_10:
 }
 
-- (TransitDirectionsStepsListDataSource)initWithRoute:(id)a3 delegate:(id)a4 forNavigation:(BOOL)a5
+- (TransitDirectionsStepsListDataSource)initWithRoute:(id)route delegate:(id)delegate forNavigation:(BOOL)navigation
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [(TransitDirectionsStepsListDataSource *)self initWithRoute:a3];
+  navigationCopy = navigation;
+  delegateCopy = delegate;
+  v9 = [(TransitDirectionsStepsListDataSource *)self initWithRoute:route];
   v10 = v9;
   if (v9)
   {
-    [(TransitDirectionsStepsListDataSource *)v9 setEnableNavigationUpdates:v5];
-    [(TransitDirectionsStepsListDataSource *)v10 setAllowStepSelection:v5];
-    [(TransitDirectionsStepsListDataSource *)v10 setDelegate:v8];
+    [(TransitDirectionsStepsListDataSource *)v9 setEnableNavigationUpdates:navigationCopy];
+    [(TransitDirectionsStepsListDataSource *)v10 setAllowStepSelection:navigationCopy];
+    [(TransitDirectionsStepsListDataSource *)v10 setDelegate:delegateCopy];
   }
 
   return v10;
 }
 
-- (TransitDirectionsStepsListDataSource)initWithRoute:(id)a3
+- (TransitDirectionsStepsListDataSource)initWithRoute:(id)route
 {
-  v5 = a3;
+  routeCopy = route;
   v16.receiver = self;
   v16.super_class = TransitDirectionsStepsListDataSource;
   v6 = [(TransitDirectionsStepsListDataSource *)&v16 init];
@@ -5906,8 +5906,8 @@ LABEL_10:
     v7->_referenceDateUpdater = v8;
 
     v7->_highlightingBehaviour = 0;
-    objc_storeStrong(&v7->_route, a3);
-    if (v5 && [v5 transportType] != 1)
+    objc_storeStrong(&v7->_route, route);
+    if (routeCopy && [routeCopy transportType] != 1)
     {
       v13 = sub_10006D178();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -5946,14 +5946,14 @@ LABEL_10:
 
 - (void)dealloc
 {
-  v3 = [(TransitDirectionsStepsListDataSource *)self tableView];
-  [v3 removeObserver:self forKeyPath:@"bounds"];
+  tableView = [(TransitDirectionsStepsListDataSource *)self tableView];
+  [tableView removeObserver:self forKeyPath:@"bounds"];
 
-  v4 = [(TransitDirectionsStepsListDataSource *)self collectionView];
-  [v4 removeObserver:self forKeyPath:@"bounds"];
+  collectionView = [(TransitDirectionsStepsListDataSource *)self collectionView];
+  [collectionView removeObserver:self forKeyPath:@"bounds"];
 
-  v5 = [(TransitDirectionsStepsListDataSource *)self listView];
-  [v5 removeObserver:self forKeyPath:@"bounds"];
+  listView = [(TransitDirectionsStepsListDataSource *)self listView];
+  [listView removeObserver:self forKeyPath:@"bounds"];
 
   v6.receiver = self;
   v6.super_class = TransitDirectionsStepsListDataSource;
@@ -5962,10 +5962,10 @@ LABEL_10:
 
 - (NSArray)_transitDirectionsListItems
 {
-  v2 = [(TransitDirectionsStepsListDataSource *)self dataProvider];
-  v3 = [v2 items];
+  dataProvider = [(TransitDirectionsStepsListDataSource *)self dataProvider];
+  items = [dataProvider items];
 
-  return v3;
+  return items;
 }
 
 @end

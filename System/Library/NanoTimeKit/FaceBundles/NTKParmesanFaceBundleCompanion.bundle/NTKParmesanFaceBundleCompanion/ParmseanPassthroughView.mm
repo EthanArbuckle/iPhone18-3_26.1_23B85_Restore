@@ -1,20 +1,20 @@
 @interface ParmseanPassthroughView
-- (_TtC30NTKParmesanFaceBundleCompanion23ParmseanPassthroughView)initWithCoder:(id)a3;
-- (_TtC30NTKParmesanFaceBundleCompanion23ParmseanPassthroughView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC30NTKParmesanFaceBundleCompanion23ParmseanPassthroughView)initWithCoder:(id)coder;
+- (_TtC30NTKParmesanFaceBundleCompanion23ParmseanPassthroughView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation ParmseanPassthroughView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = type metadata accessor for ParmseanPassthroughView();
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(ParmseanPassthroughView *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(ParmseanPassthroughView *)&v13 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -37,23 +37,23 @@ LABEL_5:
   return v7;
 }
 
-- (_TtC30NTKParmesanFaceBundleCompanion23ParmseanPassthroughView)initWithFrame:(CGRect)a3
+- (_TtC30NTKParmesanFaceBundleCompanion23ParmseanPassthroughView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ParmseanPassthroughView();
   return [(ParmseanPassthroughView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC30NTKParmesanFaceBundleCompanion23ParmseanPassthroughView)initWithCoder:(id)a3
+- (_TtC30NTKParmesanFaceBundleCompanion23ParmseanPassthroughView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ParmseanPassthroughView();
-  v4 = a3;
-  v5 = [(ParmseanPassthroughView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ParmseanPassthroughView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

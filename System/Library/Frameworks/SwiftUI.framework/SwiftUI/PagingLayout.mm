@@ -1,9 +1,9 @@
 @interface PagingLayout
 - (_TtC7SwiftUIP33_8825076C2763A50452A210CBE1FA4AF012PagingLayout)init;
-- (_TtC7SwiftUIP33_8825076C2763A50452A210CBE1FA4AF012PagingLayout)initWithCoder:(id)a3;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (_TtC7SwiftUIP33_8825076C2763A50452A210CBE1FA4AF012PagingLayout)initWithCoder:(id)coder;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 @end
 
 @implementation PagingLayout
@@ -21,36 +21,36 @@
   return v2;
 }
 
-- (_TtC7SwiftUIP33_8825076C2763A50452A210CBE1FA4AF012PagingLayout)initWithCoder:(id)a3
+- (_TtC7SwiftUIP33_8825076C2763A50452A210CBE1FA4AF012PagingLayout)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   v13.receiver = self;
   v13.super_class = swift_getObjectType();
   v7 = v13.receiver;
-  v8 = [(UICollectionViewFlowLayout *)&v13 invalidationContextForBoundsChange:x, y, width, height];
+  height = [(UICollectionViewFlowLayout *)&v13 invalidationContextForBoundsChange:x, y, width, height];
   objc_opt_self();
   v9 = swift_dynamicCastObjCClass();
   if (v9)
   {
     v10 = v9;
-    v11 = v8;
+    v11 = height;
     [v10 setInvalidateFlowLayoutDelegateMetrics_];
   }
 
-  return v8;
+  return height;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   ObjectType = swift_getObjectType();
   v5 = type metadata accessor for IndexPath();
@@ -58,9 +58,9 @@
   MEMORY[0x1EEE9AC00](v5);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   isa = IndexPath._bridgeToObjectiveC()().super.isa;
-  v13.receiver = v9;
+  v13.receiver = selfCopy;
   v13.super_class = ObjectType;
   v11 = [(UICollectionViewFlowLayout *)&v13 layoutAttributesForItemAtIndexPath:isa];
 
@@ -69,13 +69,13 @@
   return v11;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   PagingLayout.layoutAttributesForElements(in:)(x, y, width, height);
   v9 = v8;
 

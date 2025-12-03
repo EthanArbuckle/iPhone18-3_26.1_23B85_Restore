@@ -1,9 +1,9 @@
 @interface IASAnalyzerErrors
-+ (id)consolidatedErrorStringFromErrors:(id)a3;
++ (id)consolidatedErrorStringFromErrors:(id)errors;
 - (IASAnalyzerErrors)init;
 - (id)errorString;
 - (void)clear;
-- (void)logErrorCodeIfNotNil:(id)a3;
+- (void)logErrorCodeIfNotNil:(id)nil;
 @end
 
 @implementation IASAnalyzerErrors
@@ -22,13 +22,13 @@
   return v2;
 }
 
-- (void)logErrorCodeIfNotNil:(id)a3
+- (void)logErrorCodeIfNotNil:(id)nil
 {
-  v4 = a3;
-  if (v4)
+  nilCopy = nil;
+  if (nilCopy)
   {
-    v7 = v4;
-    if (objc_msgSend_length(v4, v5, v6) != 1)
+    v7 = nilCopy;
+    if (objc_msgSend_length(nilCopy, v5, v6) != 1)
     {
       v10 = sub_1D4620388();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -78,12 +78,12 @@
   objc_msgSend_removeAllObjects(v5, v3, v4);
 }
 
-+ (id)consolidatedErrorStringFromErrors:(id)a3
++ (id)consolidatedErrorStringFromErrors:(id)errors
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v6 = v3;
-  if (v3 && objc_msgSend_count(v3, v4, v5))
+  errorsCopy = errors;
+  v6 = errorsCopy;
+  if (errorsCopy && objc_msgSend_count(errorsCopy, v4, v5))
   {
     v9 = objc_msgSend_array(MEMORY[0x1E695DF70], v7, v8);
     v12 = objc_msgSend_allKeys(v6, v10, v11);

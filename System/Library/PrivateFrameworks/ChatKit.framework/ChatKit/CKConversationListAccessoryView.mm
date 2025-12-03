@@ -1,24 +1,24 @@
 @interface CKConversationListAccessoryView
 + (double)defaultDiameter;
 + (id)defaultStateConfigMap;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CKConversationListAccessoryView)init;
-- (CKConversationListAccessoryView)initWithFrame:(CGRect)a3;
+- (CKConversationListAccessoryView)initWithFrame:(CGRect)frame;
 - (UIImageSymbolConfiguration)preferredSymbolConfiguration;
-- (id)configForState:(unint64_t)a3;
-- (void)_setConfig:(id)a3 forState:(unint64_t)a4;
+- (id)configForState:(unint64_t)state;
+- (void)_setConfig:(id)config forState:(unint64_t)state;
 - (void)_updateVisualAppearanceForCurrentStateIfNeeded;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3 forState:(unint64_t)a4;
-- (void)setBlurEffect:(id)a3 forState:(unint64_t)a4;
-- (void)setBlurEffect:(id)a3 withVibrancyEffectStyle:(int64_t)a4 forState:(unint64_t)a5;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3 forState:(unint64_t)a4;
-- (void)setPreferredSymbolConfiguration:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setTintColor:(id)a3 forState:(unint64_t)a4;
-- (void)setVibrancyEffectStyle:(int64_t)a3 forState:(unint64_t)a4;
+- (void)setBackgroundColor:(id)color forState:(unint64_t)state;
+- (void)setBlurEffect:(id)effect forState:(unint64_t)state;
+- (void)setBlurEffect:(id)effect withVibrancyEffectStyle:(int64_t)style forState:(unint64_t)state;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image forState:(unint64_t)state;
+- (void)setPreferredSymbolConfiguration:(id)configuration;
+- (void)setSelected:(BOOL)selected;
+- (void)setTintColor:(id)color forState:(unint64_t)state;
+- (void)setVibrancyEffectStyle:(int64_t)style forState:(unint64_t)state;
 @end
 
 @implementation CKConversationListAccessoryView
@@ -43,52 +43,52 @@
   return v3;
 }
 
-- (CKConversationListAccessoryView)initWithFrame:(CGRect)a3
+- (CKConversationListAccessoryView)initWithFrame:(CGRect)frame
 {
   v44.receiver = self;
   v44.super_class = CKConversationListAccessoryView;
-  v3 = [(CKConversationListAccessoryView *)&v44 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKConversationListAccessoryView *)&v44 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[CKConversationListAccessoryView defaultStateConfigMap];
     [(CKConversationListAccessoryView *)v3 setConfigStateMap:v4];
 
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [(CKConversationListAccessoryView *)v3 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(CKConversationListAccessoryView *)v3 setBackgroundColor:clearColor];
 
     [(CKConversationListAccessoryView *)v3 bounds];
     v7 = v6 * 0.5;
-    v8 = [(CKConversationListAccessoryView *)v3 layer];
-    [v8 setCornerRadius:v7];
+    layer = [(CKConversationListAccessoryView *)v3 layer];
+    [layer setCornerRadius:v7];
 
     v9 = objc_alloc(MEMORY[0x1E69DD250]);
     [(CKConversationListAccessoryView *)v3 bounds];
     v10 = [v9 initWithFrame:?];
     [(CKConversationListAccessoryView *)v3 setColorView:v10];
 
-    v11 = [(CKConversationListAccessoryView *)v3 colorView];
-    [v11 setClipsToBounds:1];
+    colorView = [(CKConversationListAccessoryView *)v3 colorView];
+    [colorView setClipsToBounds:1];
 
-    v12 = [(CKConversationListAccessoryView *)v3 colorView];
-    [v12 bounds];
+    colorView2 = [(CKConversationListAccessoryView *)v3 colorView];
+    [colorView2 bounds];
     v14 = v13 * 0.5;
-    v15 = [(CKConversationListAccessoryView *)v3 colorView];
-    v16 = [v15 layer];
-    [v16 setCornerRadius:v14];
+    colorView3 = [(CKConversationListAccessoryView *)v3 colorView];
+    layer2 = [colorView3 layer];
+    [layer2 setCornerRadius:v14];
 
-    v17 = [(CKConversationListAccessoryView *)v3 colorView];
-    [v17 setUserInteractionEnabled:0];
+    colorView4 = [(CKConversationListAccessoryView *)v3 colorView];
+    [colorView4 setUserInteractionEnabled:0];
 
-    v18 = [(CKConversationListAccessoryView *)v3 colorView];
-    [(CKConversationListAccessoryView *)v3 addSubview:v18];
+    colorView5 = [(CKConversationListAccessoryView *)v3 colorView];
+    [(CKConversationListAccessoryView *)v3 addSubview:colorView5];
 
     v19 = objc_alloc(MEMORY[0x1E69DCAE0]);
-    v20 = [(CKConversationListAccessoryView *)v3 imageView];
-    [v20 frame];
+    imageView = [(CKConversationListAccessoryView *)v3 imageView];
+    [imageView frame];
     v22 = v21;
     v24 = v23;
-    v25 = [(CKConversationListAccessoryView *)v3 backgroundView];
-    [v25 bounds];
+    backgroundView = [(CKConversationListAccessoryView *)v3 backgroundView];
+    [backgroundView bounds];
     v27 = v26;
     v29 = v28;
     v31 = v30;
@@ -107,20 +107,20 @@
     v35 = [v19 initWithFrame:{floor((v27 + (v31 - v22) * 0.5) * v34) / v34, floor((v29 + (v33 - v24) * 0.5) * v34) / v34, v22, v24}];
     [(CKConversationListAccessoryView *)v3 setImageView:v35];
 
-    v36 = [(CKConversationListAccessoryView *)v3 imageView];
-    [v36 setUserInteractionEnabled:0];
+    imageView2 = [(CKConversationListAccessoryView *)v3 imageView];
+    [imageView2 setUserInteractionEnabled:0];
 
-    v37 = [(CKConversationListAccessoryView *)v3 preferredSymbolConfiguration];
-    v38 = [(CKConversationListAccessoryView *)v3 imageView];
-    [v38 setPreferredSymbolConfiguration:v37];
+    preferredSymbolConfiguration = [(CKConversationListAccessoryView *)v3 preferredSymbolConfiguration];
+    imageView3 = [(CKConversationListAccessoryView *)v3 imageView];
+    [imageView3 setPreferredSymbolConfiguration:preferredSymbolConfiguration];
 
-    v39 = [(CKConversationListAccessoryView *)v3 imageNeedsEdgeAntiAliasing];
-    v40 = [(CKConversationListAccessoryView *)v3 imageView];
-    v41 = [v40 layer];
-    [v41 setAllowsEdgeAntialiasing:v39];
+    imageNeedsEdgeAntiAliasing = [(CKConversationListAccessoryView *)v3 imageNeedsEdgeAntiAliasing];
+    imageView4 = [(CKConversationListAccessoryView *)v3 imageView];
+    layer3 = [imageView4 layer];
+    [layer3 setAllowsEdgeAntialiasing:imageNeedsEdgeAntiAliasing];
 
-    v42 = [(CKConversationListAccessoryView *)v3 imageView];
-    [(CKConversationListAccessoryView *)v3 addSubview:v42];
+    imageView5 = [(CKConversationListAccessoryView *)v3 imageView];
+    [(CKConversationListAccessoryView *)v3 addSubview:imageView5];
 
     [(CKConversationListAccessoryView *)v3 _setNeedsVisualAppearanceUpdate];
     [(CKConversationListAccessoryView *)v3 _updateVisualAppearanceForCurrentStateIfNeeded];
@@ -136,11 +136,11 @@
   return [(CKConversationListAccessoryView *)self initWithDiameter:?];
 }
 
-- (id)configForState:(unint64_t)a3
+- (id)configForState:(unint64_t)state
 {
-  v4 = [(CKConversationListAccessoryView *)self configStateMap];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKey:v5];
+  configStateMap = [(CKConversationListAccessoryView *)self configStateMap];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
+  v6 = [configStateMap objectForKey:v5];
 
   if (!v6)
   {
@@ -152,10 +152,10 @@
   return v7;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  point = a3.y;
-  x = a3.x;
+  point = inside.y;
+  x = inside.x;
   [(CKConversationListAccessoryView *)self bounds];
   v7 = v6;
   v9 = v8;
@@ -196,9 +196,9 @@
 
 - (void)_updateVisualAppearanceForCurrentStateIfNeeded
 {
-  v3 = [(CKConversationListAccessoryView *)self lastKnownState];
+  lastKnownState = [(CKConversationListAccessoryView *)self lastKnownState];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CKConversationListAccessoryView state](self, "state")}];
-  v5 = [v3 isEqualToNumber:v4];
+  v5 = [lastKnownState isEqualToNumber:v4];
 
   if ((v5 & 1) == 0)
   {
@@ -206,14 +206,14 @@
     [(CKConversationListAccessoryView *)self setLastKnownState:v6];
 
     v69 = [(CKConversationListAccessoryView *)self configForState:[(CKConversationListAccessoryView *)self state]];
-    v7 = [v69 backgroundColor];
-    v8 = [(CKConversationListAccessoryView *)self colorView];
-    [v8 setBackgroundColor:v7];
+    backgroundColor = [v69 backgroundColor];
+    colorView = [(CKConversationListAccessoryView *)self colorView];
+    [colorView setBackgroundColor:backgroundColor];
 
-    LODWORD(v8) = [(CKConversationListAccessoryView *)self needsVisualEffects];
-    v9 = [(CKConversationListAccessoryView *)self backgroundView];
-    v10 = v9;
-    if (v8)
+    LODWORD(colorView) = [(CKConversationListAccessoryView *)self needsVisualEffects];
+    backgroundView = [(CKConversationListAccessoryView *)self backgroundView];
+    v10 = backgroundView;
+    if (colorView)
     {
 
       if (!v10)
@@ -223,86 +223,86 @@
         v12 = [v11 initWithFrame:?];
         [(CKConversationListAccessoryView *)self setBackgroundView:v12];
 
-        v13 = [(CKConversationListAccessoryView *)self backgroundView];
-        [v13 setClipsToBounds:1];
+        backgroundView2 = [(CKConversationListAccessoryView *)self backgroundView];
+        [backgroundView2 setClipsToBounds:1];
 
-        v14 = [(CKConversationListAccessoryView *)self backgroundView];
-        [v14 bounds];
+        backgroundView3 = [(CKConversationListAccessoryView *)self backgroundView];
+        [backgroundView3 bounds];
         v16 = v15 * 0.5;
-        v17 = [(CKConversationListAccessoryView *)self backgroundView];
-        v18 = [v17 layer];
-        [v18 setCornerRadius:v16];
+        backgroundView4 = [(CKConversationListAccessoryView *)self backgroundView];
+        layer = [backgroundView4 layer];
+        [layer setCornerRadius:v16];
 
-        v19 = [(CKConversationListAccessoryView *)self backgroundView];
-        [v19 setUserInteractionEnabled:0];
+        backgroundView5 = [(CKConversationListAccessoryView *)self backgroundView];
+        [backgroundView5 setUserInteractionEnabled:0];
 
-        v20 = [(CKConversationListAccessoryView *)self backgroundView];
-        [(CKConversationListAccessoryView *)self addSubview:v20];
+        backgroundView6 = [(CKConversationListAccessoryView *)self backgroundView];
+        [(CKConversationListAccessoryView *)self addSubview:backgroundView6];
       }
 
-      v21 = [v69 blurEffect];
-      v22 = [(CKConversationListAccessoryView *)self backgroundView];
-      [v22 setEffect:v21];
+      blurEffect = [v69 blurEffect];
+      backgroundView7 = [(CKConversationListAccessoryView *)self backgroundView];
+      [backgroundView7 setEffect:blurEffect];
     }
 
     else
     {
-      [v9 removeFromSuperview];
+      [backgroundView removeFromSuperview];
 
       [(CKConversationListAccessoryView *)self setBackgroundView:0];
     }
 
-    v23 = [v69 blurEffect];
-    if (v23 && (v24 = v23, v25 = [(CKConversationListAccessoryView *)self needsVibrancy], v24, v25))
+    blurEffect2 = [v69 blurEffect];
+    if (blurEffect2 && (v24 = blurEffect2, v25 = [(CKConversationListAccessoryView *)self needsVibrancy], v24, v25))
     {
       v26 = MEMORY[0x1E69DD248];
-      v27 = [v69 blurEffect];
-      v28 = [v26 effectForBlurEffect:v27 style:{objc_msgSend(v69, "vibrancyStyle")}];
+      blurEffect3 = [v69 blurEffect];
+      v28 = [v26 effectForBlurEffect:blurEffect3 style:{objc_msgSend(v69, "vibrancyStyle")}];
 
-      v29 = [(CKConversationListAccessoryView *)self vibrancyView];
+      vibrancyView = [(CKConversationListAccessoryView *)self vibrancyView];
 
-      if (!v29)
+      if (!vibrancyView)
       {
         v30 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v28];
         [(CKConversationListAccessoryView *)self setVibrancyView:v30];
 
-        v31 = [(CKConversationListAccessoryView *)self backgroundView];
-        [v31 bounds];
+        backgroundView8 = [(CKConversationListAccessoryView *)self backgroundView];
+        [backgroundView8 bounds];
         v33 = v32;
         v35 = v34;
         v37 = v36;
         v39 = v38;
-        v40 = [(CKConversationListAccessoryView *)self vibrancyView];
-        [v40 setFrame:{v33, v35, v37, v39}];
+        vibrancyView2 = [(CKConversationListAccessoryView *)self vibrancyView];
+        [vibrancyView2 setFrame:{v33, v35, v37, v39}];
 
-        v41 = [(CKConversationListAccessoryView *)self backgroundView];
-        v42 = [v41 contentView];
-        v43 = [(CKConversationListAccessoryView *)self vibrancyView];
-        [v42 addSubview:v43];
+        backgroundView9 = [(CKConversationListAccessoryView *)self backgroundView];
+        contentView = [backgroundView9 contentView];
+        vibrancyView3 = [(CKConversationListAccessoryView *)self vibrancyView];
+        [contentView addSubview:vibrancyView3];
       }
     }
 
     else
     {
-      v44 = [(CKConversationListAccessoryView *)self vibrancyView];
-      [v44 removeFromSuperview];
+      vibrancyView4 = [(CKConversationListAccessoryView *)self vibrancyView];
+      [vibrancyView4 removeFromSuperview];
 
       [(CKConversationListAccessoryView *)self setVibrancyView:0];
     }
 
-    v45 = [v69 image];
-    v46 = [(CKConversationListAccessoryView *)self imageView];
-    [v46 setImage:v45];
+    image = [v69 image];
+    imageView = [(CKConversationListAccessoryView *)self imageView];
+    [imageView setImage:image];
 
-    v47 = [(CKConversationListAccessoryView *)self imageView];
-    [v47 sizeToFit];
+    imageView2 = [(CKConversationListAccessoryView *)self imageView];
+    [imageView2 sizeToFit];
 
-    v48 = [(CKConversationListAccessoryView *)self imageView];
-    [v48 frame];
+    imageView3 = [(CKConversationListAccessoryView *)self imageView];
+    [imageView3 frame];
     v50 = v49;
     v52 = v51;
-    v53 = [(CKConversationListAccessoryView *)self backgroundView];
-    [v53 bounds];
+    backgroundView10 = [(CKConversationListAccessoryView *)self backgroundView];
+    [backgroundView10 bounds];
     v55 = v54;
     v57 = v56;
     v59 = v58;
@@ -320,65 +320,65 @@
 
     v63 = floor((v55 + (v59 - v50) * 0.5) * v62) / v62;
     v64 = floor((v57 + (v61 - v52) * 0.5) * v62) / v62;
-    v65 = [(CKConversationListAccessoryView *)self imageView];
-    [v65 setFrame:{v63, v64, v50, v52}];
+    imageView4 = [(CKConversationListAccessoryView *)self imageView];
+    [imageView4 setFrame:{v63, v64, v50, v52}];
 
-    v66 = [v69 tintColor];
-    v67 = [(CKConversationListAccessoryView *)self imageView];
-    [v67 setTintColor:v66];
+    tintColor = [v69 tintColor];
+    imageView5 = [(CKConversationListAccessoryView *)self imageView];
+    [imageView5 setTintColor:tintColor];
 
-    v68 = [(CKConversationListAccessoryView *)self imageView];
-    [(CKConversationListAccessoryView *)self bringSubviewToFront:v68];
+    imageView6 = [(CKConversationListAccessoryView *)self imageView];
+    [(CKConversationListAccessoryView *)self bringSubviewToFront:imageView6];
   }
 }
 
 - (UIImageSymbolConfiguration)preferredSymbolConfiguration
 {
-  v2 = [(CKConversationListAccessoryView *)self imageView];
-  v3 = [v2 preferredSymbolConfiguration];
+  imageView = [(CKConversationListAccessoryView *)self imageView];
+  preferredSymbolConfiguration = [imageView preferredSymbolConfiguration];
 
-  return v3;
+  return preferredSymbolConfiguration;
 }
 
-- (void)setPreferredSymbolConfiguration:(id)a3
+- (void)setPreferredSymbolConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CKConversationListAccessoryView *)self imageView];
-  [v5 setPreferredSymbolConfiguration:v4];
+  configurationCopy = configuration;
+  imageView = [(CKConversationListAccessoryView *)self imageView];
+  [imageView setPreferredSymbolConfiguration:configurationCopy];
 }
 
-- (void)setEnabled:(BOOL)a3
-{
-  v4.receiver = self;
-  v4.super_class = CKConversationListAccessoryView;
-  [(CKConversationListAccessoryView *)&v4 setEnabled:a3];
-  [(CKConversationListAccessoryView *)self setNeedsLayout];
-}
-
-- (void)setHighlighted:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = CKConversationListAccessoryView;
-  [(CKConversationListAccessoryView *)&v4 setHighlighted:a3];
+  [(CKConversationListAccessoryView *)&v4 setEnabled:enabled];
   [(CKConversationListAccessoryView *)self setNeedsLayout];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = CKConversationListAccessoryView;
-  [(CKConversationListAccessoryView *)&v4 setSelected:a3];
+  [(CKConversationListAccessoryView *)&v4 setHighlighted:highlighted];
   [(CKConversationListAccessoryView *)self setNeedsLayout];
 }
 
-- (void)_setConfig:(id)a3 forState:(unint64_t)a4
+- (void)setSelected:(BOOL)selected
 {
-  v6 = a3;
-  v7 = [(CKConversationListAccessoryView *)self configStateMap];
-  v10 = [v7 mutableCopy];
+  v4.receiver = self;
+  v4.super_class = CKConversationListAccessoryView;
+  [(CKConversationListAccessoryView *)&v4 setSelected:selected];
+  [(CKConversationListAccessoryView *)self setNeedsLayout];
+}
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  [v10 setObject:v6 forKey:v8];
+- (void)_setConfig:(id)config forState:(unint64_t)state
+{
+  configCopy = config;
+  configStateMap = [(CKConversationListAccessoryView *)self configStateMap];
+  v10 = [configStateMap mutableCopy];
+
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
+  [v10 setObject:configCopy forKey:v8];
 
   v9 = [v10 copy];
   [(CKConversationListAccessoryView *)self setConfigStateMap:v9];
@@ -387,23 +387,23 @@
   [(CKConversationListAccessoryView *)self setNeedsLayout];
 }
 
-- (void)setVibrancyEffectStyle:(int64_t)a3 forState:(unint64_t)a4
+- (void)setVibrancyEffectStyle:(int64_t)style forState:(unint64_t)state
 {
-  v7 = [(CKConversationListAccessoryView *)self configForState:a4];
+  v7 = [(CKConversationListAccessoryView *)self configForState:state];
   [(CKConversationListAccessoryView *)self setNeedsVibrancy:1];
-  [v7 setVibrancyStyle:a3];
-  [(CKConversationListAccessoryView *)self _setConfig:v7 forState:a4];
+  [v7 setVibrancyStyle:style];
+  [(CKConversationListAccessoryView *)self _setConfig:v7 forState:state];
 }
 
-- (void)setBlurEffect:(id)a3 withVibrancyEffectStyle:(int64_t)a4 forState:(unint64_t)a5
+- (void)setBlurEffect:(id)effect withVibrancyEffectStyle:(int64_t)style forState:(unint64_t)state
 {
-  [(CKConversationListAccessoryView *)self setBlurEffect:a3 forState:a5];
-  if (a3)
+  [(CKConversationListAccessoryView *)self setBlurEffect:effect forState:state];
+  if (effect)
   {
     [(CKConversationListAccessoryView *)self setNeedsVibrancy:1];
-    v10 = [(CKConversationListAccessoryView *)self configForState:a5];
-    [v10 setVibrancyStyle:a4];
-    [(CKConversationListAccessoryView *)self _setConfig:v10 forState:a5];
+    v10 = [(CKConversationListAccessoryView *)self configForState:state];
+    [v10 setVibrancyStyle:style];
+    [(CKConversationListAccessoryView *)self _setConfig:v10 forState:state];
   }
 
   else
@@ -411,20 +411,20 @@
     v9 = IMLogHandleForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [CKConversationListAccessoryView setBlurEffect:a5 withVibrancyEffectStyle:v9 forState:?];
+      [CKConversationListAccessoryView setBlurEffect:state withVibrancyEffectStyle:v9 forState:?];
     }
   }
 }
 
-- (void)setBlurEffect:(id)a3 forState:(unint64_t)a4
+- (void)setBlurEffect:(id)effect forState:(unint64_t)state
 {
-  v6 = a3;
-  if (v6)
+  effectCopy = effect;
+  if (effectCopy)
   {
     [(CKConversationListAccessoryView *)self setNeedsVisualEffects:1];
-    v7 = [(CKConversationListAccessoryView *)self configForState:a4];
-    [v7 setBlurEffect:v6];
-    [(CKConversationListAccessoryView *)self _setConfig:v7 forState:a4];
+    v7 = [(CKConversationListAccessoryView *)self configForState:state];
+    [v7 setBlurEffect:effectCopy];
+    [(CKConversationListAccessoryView *)self _setConfig:v7 forState:state];
   }
 
   else
@@ -432,36 +432,36 @@
     v8 = IMLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [CKConversationListAccessoryView setBlurEffect:a4 forState:v8];
+      [CKConversationListAccessoryView setBlurEffect:state forState:v8];
     }
   }
 }
 
-- (void)setBackgroundColor:(id)a3 forState:(unint64_t)a4
+- (void)setBackgroundColor:(id)color forState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = [(CKConversationListAccessoryView *)self configForState:a4];
-  [v7 setBackgroundColor:v6];
+  colorCopy = color;
+  v7 = [(CKConversationListAccessoryView *)self configForState:state];
+  [v7 setBackgroundColor:colorCopy];
 
-  [(CKConversationListAccessoryView *)self _setConfig:v7 forState:a4];
+  [(CKConversationListAccessoryView *)self _setConfig:v7 forState:state];
 }
 
-- (void)setTintColor:(id)a3 forState:(unint64_t)a4
+- (void)setTintColor:(id)color forState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = [(CKConversationListAccessoryView *)self configForState:a4];
-  [v7 setTintColor:v6];
+  colorCopy = color;
+  v7 = [(CKConversationListAccessoryView *)self configForState:state];
+  [v7 setTintColor:colorCopy];
 
-  [(CKConversationListAccessoryView *)self _setConfig:v7 forState:a4];
+  [(CKConversationListAccessoryView *)self _setConfig:v7 forState:state];
 }
 
-- (void)setImage:(id)a3 forState:(unint64_t)a4
+- (void)setImage:(id)image forState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = [(CKConversationListAccessoryView *)self configForState:a4];
-  [v7 setImage:v6];
+  imageCopy = image;
+  v7 = [(CKConversationListAccessoryView *)self configForState:state];
+  [v7 setImage:imageCopy];
 
-  [(CKConversationListAccessoryView *)self _setConfig:v7 forState:a4];
+  [(CKConversationListAccessoryView *)self _setConfig:v7 forState:state];
 }
 
 - (void)layoutSubviews
@@ -474,28 +474,28 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKConversationListAccessoryView *)self colorView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  colorView = [(CKConversationListAccessoryView *)self colorView];
+  [colorView setFrame:{v4, v6, v8, v10}];
 
   [(CKConversationListAccessoryView *)self bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(CKConversationListAccessoryView *)self backgroundView];
-  [v20 setFrame:{v13, v15, v17, v19}];
+  backgroundView = [(CKConversationListAccessoryView *)self backgroundView];
+  [backgroundView setFrame:{v13, v15, v17, v19}];
 
   v21 = [(CKConversationListAccessoryView *)self configForState:[(CKConversationListAccessoryView *)self state]];
-  v22 = [v21 tintColor];
-  v23 = [(CKConversationListAccessoryView *)self imageView];
-  [v23 setTintColor:v22];
+  tintColor = [v21 tintColor];
+  imageView = [(CKConversationListAccessoryView *)self imageView];
+  [imageView setTintColor:tintColor];
 
-  v24 = [(CKConversationListAccessoryView *)self imageView];
-  [v24 frame];
+  imageView2 = [(CKConversationListAccessoryView *)self imageView];
+  [imageView2 frame];
   v26 = v25;
   v28 = v27;
-  v29 = [(CKConversationListAccessoryView *)self backgroundView];
-  [v29 frame];
+  backgroundView2 = [(CKConversationListAccessoryView *)self backgroundView];
+  [backgroundView2 frame];
   v31 = v30;
   v33 = v32;
   v35 = v34;
@@ -513,27 +513,27 @@
 
   v39 = floor((v31 + (v35 - v26) * 0.5) * v38) / v38;
   v40 = floor((v33 + (v37 - v28) * 0.5) * v38) / v38;
-  v41 = [(CKConversationListAccessoryView *)self imageView];
-  [v41 setFrame:{v39, v40, v26, v28}];
+  imageView3 = [(CKConversationListAccessoryView *)self imageView];
+  [imageView3 setFrame:{v39, v40, v26, v28}];
 
   [(CKConversationListAccessoryView *)self bounds];
   v43 = v42 * 0.5;
-  v44 = [(CKConversationListAccessoryView *)self layer];
-  [v44 setCornerRadius:v43];
+  layer = [(CKConversationListAccessoryView *)self layer];
+  [layer setCornerRadius:v43];
 
-  v45 = [(CKConversationListAccessoryView *)self colorView];
-  [v45 bounds];
+  colorView2 = [(CKConversationListAccessoryView *)self colorView];
+  [colorView2 bounds];
   v47 = v46 * 0.5;
-  v48 = [(CKConversationListAccessoryView *)self colorView];
-  v49 = [v48 layer];
-  [v49 setCornerRadius:v47];
+  colorView3 = [(CKConversationListAccessoryView *)self colorView];
+  layer2 = [colorView3 layer];
+  [layer2 setCornerRadius:v47];
 
-  v50 = [(CKConversationListAccessoryView *)self backgroundView];
-  [v50 bounds];
+  backgroundView3 = [(CKConversationListAccessoryView *)self backgroundView];
+  [backgroundView3 bounds];
   v52 = v51 * 0.5;
-  v53 = [(CKConversationListAccessoryView *)self backgroundView];
-  v54 = [v53 layer];
-  [v54 setCornerRadius:v52];
+  backgroundView4 = [(CKConversationListAccessoryView *)self backgroundView];
+  layer3 = [backgroundView4 layer];
+  [layer3 setCornerRadius:v52];
 
   [(CKConversationListAccessoryView *)self _updateVisualAppearanceForCurrentStateIfNeeded];
 }

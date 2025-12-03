@@ -1,26 +1,26 @@
 @interface FBProcessObserver
-- (BOOL)isEqual:(id)a3;
-- (FBProcessObserver)initWithObserver:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FBProcessObserver)initWithObserver:(id)observer;
 - (FBProcessObserver)observer;
-- (void)applicationProcessDebuggingStateDidChange:(id)a3;
-- (void)applicationProcessDidLaunch:(id)a3;
-- (void)applicationProcessWillLaunch:(id)a3;
-- (void)process:(id)a3 stateDidChangeFromState:(id)a4 toState:(id)a5;
-- (void)processDidExit:(id)a3;
-- (void)processWillExit:(id)a3;
+- (void)applicationProcessDebuggingStateDidChange:(id)change;
+- (void)applicationProcessDidLaunch:(id)launch;
+- (void)applicationProcessWillLaunch:(id)launch;
+- (void)process:(id)process stateDidChangeFromState:(id)state toState:(id)toState;
+- (void)processDidExit:(id)exit;
+- (void)processWillExit:(id)exit;
 @end
 
 @implementation FBProcessObserver
 
-- (FBProcessObserver)initWithObserver:(id)a3
+- (FBProcessObserver)initWithObserver:(id)observer
 {
-  v5 = a3;
-  if (!v5)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [(FBProcessObserver *)a2 initWithObserver:?];
   }
 
-  v6 = v5;
+  v6 = observerCopy;
   v10.receiver = self;
   v10.super_class = FBProcessObserver;
   v7 = [(FBProcessObserver *)&v10 init];
@@ -42,10 +42,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -53,9 +53,9 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && v4->_observerAddress == self->_observerAddress && v4->_observerClass == self->_observerClass)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && equalCopy->_observerAddress == self->_observerAddress && equalCopy->_observerClass == self->_observerClass)
     {
-      WeakRetained = objc_loadWeakRetained(&v4->_observer);
+      WeakRetained = objc_loadWeakRetained(&equalCopy->_observer);
       v8 = objc_loadWeakRetained(&self->_observer);
       v5 = WeakRetained == v8;
     }
@@ -69,94 +69,94 @@
   return v5;
 }
 
-- (void)processWillExit:(id)a3
+- (void)processWillExit:(id)exit
 {
-  v6 = a3;
+  exitCopy = exit;
   if ((BSAtomicGetFlag() & 1) == 0 && BSAtomicSetFlag())
   {
     WeakRetained = objc_loadWeakRetained(&self->_observer);
     v5 = WeakRetained;
     if (WeakRetained && self->_supportsWillExit)
     {
-      [WeakRetained processWillExit:v6];
+      [WeakRetained processWillExit:exitCopy];
     }
   }
 }
 
-- (void)processDidExit:(id)a3
+- (void)processDidExit:(id)exit
 {
-  v6 = a3;
+  exitCopy = exit;
   if ((BSAtomicGetFlag() & 1) == 0 && BSAtomicSetFlag())
   {
     WeakRetained = objc_loadWeakRetained(&self->_observer);
     if (WeakRetained)
     {
-      if (self->_supportsApplicationDidExit && [v6 isApplicationProcess])
+      if (self->_supportsApplicationDidExit && [exitCopy isApplicationProcess])
       {
-        v5 = [v6 exitContext];
-        [WeakRetained applicationProcessDidExit:v6 withContext:v5];
+        exitContext = [exitCopy exitContext];
+        [WeakRetained applicationProcessDidExit:exitCopy withContext:exitContext];
       }
 
       if (self->_supportsDidExit)
       {
-        [WeakRetained processDidExit:v6];
+        [WeakRetained processDidExit:exitCopy];
       }
     }
   }
 }
 
-- (void)process:(id)a3 stateDidChangeFromState:(id)a4 toState:(id)a5
+- (void)process:(id)process stateDidChangeFromState:(id)state toState:(id)toState
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  processCopy = process;
+  stateCopy = state;
+  toStateCopy = toState;
   WeakRetained = objc_loadWeakRetained(&self->_observer);
   if (self->_supportsStateDidChange && (BSAtomicGetFlag() & 1) == 0 && WeakRetained)
   {
-    [WeakRetained process:v11 stateDidChangeFromState:v8 toState:v9];
+    [WeakRetained process:processCopy stateDidChangeFromState:stateCopy toState:toStateCopy];
   }
 }
 
-- (void)applicationProcessWillLaunch:(id)a3
+- (void)applicationProcessWillLaunch:(id)launch
 {
-  v5 = a3;
+  launchCopy = launch;
   if ((BSAtomicGetFlag() & 1) == 0 && BSAtomicSetFlag())
   {
     WeakRetained = objc_loadWeakRetained(&self->_observer);
-    if (self->_supportsApplicationWillLaunch && (BSAtomicGetFlag() & 1) == 0 && WeakRetained && [v5 isApplicationProcess])
+    if (self->_supportsApplicationWillLaunch && (BSAtomicGetFlag() & 1) == 0 && WeakRetained && [launchCopy isApplicationProcess])
     {
-      [WeakRetained applicationProcessWillLaunch:v5];
+      [WeakRetained applicationProcessWillLaunch:launchCopy];
     }
   }
 }
 
-- (void)applicationProcessDidLaunch:(id)a3
+- (void)applicationProcessDidLaunch:(id)launch
 {
-  v5 = a3;
+  launchCopy = launch;
   if ((BSAtomicGetFlag() & 1) == 0 && BSAtomicSetFlag())
   {
     WeakRetained = objc_loadWeakRetained(&self->_observer);
     if (WeakRetained)
     {
-      [(FBProcessObserver *)self applicationProcessWillLaunch:v5];
-      if (self->_supportsApplicationDidLaunch && (BSAtomicGetFlag() & 1) == 0 && [v5 isApplicationProcess])
+      [(FBProcessObserver *)self applicationProcessWillLaunch:launchCopy];
+      if (self->_supportsApplicationDidLaunch && (BSAtomicGetFlag() & 1) == 0 && [launchCopy isApplicationProcess])
       {
-        [WeakRetained applicationProcessDidLaunch:v5];
+        [WeakRetained applicationProcessDidLaunch:launchCopy];
       }
     }
   }
 }
 
-- (void)applicationProcessDebuggingStateDidChange:(id)a3
+- (void)applicationProcessDebuggingStateDidChange:(id)change
 {
-  v4 = a3;
-  v5 = v4;
+  changeCopy = change;
+  v5 = changeCopy;
   if (self->_supportsApplicationDebugState)
   {
-    v8 = v4;
-    v6 = [v4 isApplicationProcess];
+    v8 = changeCopy;
+    isApplicationProcess = [changeCopy isApplicationProcess];
     v5 = v8;
-    if (v6)
+    if (isApplicationProcess)
     {
       WeakRetained = objc_loadWeakRetained(&self->_observer);
       [WeakRetained applicationProcessDebuggingStateDidChange:v8];

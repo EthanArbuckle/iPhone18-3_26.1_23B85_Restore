@@ -1,5 +1,5 @@
 @interface IOGPUMetalDeviceShmem
-- (IOGPUMetalDeviceShmem)initWithDevice:(id)a3 shmemSize:(unsigned int)a4 shmemType:(int)a5;
+- (IOGPUMetalDeviceShmem)initWithDevice:(id)device shmemSize:(unsigned int)size shmemType:(int)type;
 - (void)dealloc;
 @end
 
@@ -23,7 +23,7 @@
   [(IOGPUMetalDeviceShmem *)&v3 dealloc];
 }
 
-- (IOGPUMetalDeviceShmem)initWithDevice:(id)a3 shmemSize:(unsigned int)a4 shmemType:(int)a5
+- (IOGPUMetalDeviceShmem)initWithDevice:(id)device shmemSize:(unsigned int)size shmemType:(int)type
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -37,13 +37,13 @@
   v10 = v9;
   if (v9)
   {
-    if (!a4)
+    if (!size)
     {
       [IOGPUMetalDeviceShmem initWithDevice:shmemSize:shmemType:];
     }
 
-    v9->_device = a3;
-    if (IOGPUDeviceCreateDeviceShmem([a3 deviceRef], a4, a5, &v9->_virtualAddress, &v9->_shmemSize, &v9->_shmemID))
+    v9->_device = device;
+    if (IOGPUDeviceCreateDeviceShmem([device deviceRef], size, type, &v9->_virtualAddress, &v9->_shmemSize, &v9->_shmemID))
     {
       [IOGPUMetalDeviceShmem initWithDevice:shmemSize:shmemType:];
     }

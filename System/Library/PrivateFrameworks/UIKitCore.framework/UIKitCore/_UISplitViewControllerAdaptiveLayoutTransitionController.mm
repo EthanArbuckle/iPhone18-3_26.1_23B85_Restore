@@ -4,29 +4,29 @@
 - (_UISplitViewControllerAdaptiveLayout)scheduledLayout;
 - (_UISplitViewControllerAdaptiveLayoutTransition)upcomingTransition;
 - (_UISplitViewControllerAdaptiveLayoutTransitionController)init;
-- (void)animateWithTransition:(id)a3;
-- (void)commitWithTransition:(id)a3;
-- (void)completeWithTransition:(id)a3;
-- (void)performTransitionAlongsideTransitionCoordinator:(id)a3;
-- (void)performTransitionAnimated:(BOOL)a3;
-- (void)prepareTransitionToLayout:(id)a3;
-- (void)scheduleCollapsedWillChangeHandler:(id)a3 didChangeHandler:(id)a4;
-- (void)scheduleContainerView:(id)a3;
-- (void)scheduleDisplayModeWillChangeHandler:(id)a3 didChangeHandler:(id)a4;
-- (void)scheduleSnapshot:(id)a3;
-- (void)scheduleSplitViewControllerColumnModeWillChangeHandler:(id)a3 didChangeHandler:(id)a4 splitViewControllerColumn:(int64_t)a5;
-- (void)scheduleSplitViewControllerColumnSizeWillChangeHandler:(id)a3 didChangeHandler:(id)a4 splitViewControllerColumn:(int64_t)a5;
-- (void)scheduleSplitViewControllerColumnSuspendingDelegateUpdates:(int64_t)a3;
-- (void)scheduleSplitViewControllerColumnVisibilityWillChangeHandler:(id)a3 didChangeHandler:(id)a4 splitViewControllerColumn:(int64_t)a5;
-- (void)startWithTransition:(id)a3;
+- (void)animateWithTransition:(id)transition;
+- (void)commitWithTransition:(id)transition;
+- (void)completeWithTransition:(id)transition;
+- (void)performTransitionAlongsideTransitionCoordinator:(id)coordinator;
+- (void)performTransitionAnimated:(BOOL)animated;
+- (void)prepareTransitionToLayout:(id)layout;
+- (void)scheduleCollapsedWillChangeHandler:(id)handler didChangeHandler:(id)changeHandler;
+- (void)scheduleContainerView:(id)view;
+- (void)scheduleDisplayModeWillChangeHandler:(id)handler didChangeHandler:(id)changeHandler;
+- (void)scheduleSnapshot:(id)snapshot;
+- (void)scheduleSplitViewControllerColumnModeWillChangeHandler:(id)handler didChangeHandler:(id)changeHandler splitViewControllerColumn:(int64_t)column;
+- (void)scheduleSplitViewControllerColumnSizeWillChangeHandler:(id)handler didChangeHandler:(id)changeHandler splitViewControllerColumn:(int64_t)column;
+- (void)scheduleSplitViewControllerColumnSuspendingDelegateUpdates:(int64_t)updates;
+- (void)scheduleSplitViewControllerColumnVisibilityWillChangeHandler:(id)handler didChangeHandler:(id)changeHandler splitViewControllerColumn:(int64_t)column;
+- (void)startWithTransition:(id)transition;
 @end
 
 @implementation _UISplitViewControllerAdaptiveLayoutTransitionController
 
-- (void)scheduleDisplayModeWillChangeHandler:(id)a3 didChangeHandler:(id)a4
+- (void)scheduleDisplayModeWillChangeHandler:(id)handler didChangeHandler:(id)changeHandler
 {
-  v6 = _Block_copy(a3);
-  v7 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
+  v7 = _Block_copy(changeHandler);
   v8 = v7;
   if (v6)
   {
@@ -55,7 +55,7 @@ LABEL_3:
   v11 = 0;
   v10 = 0;
 LABEL_6:
-  v12 = self;
+  selfCopy = self;
   sub_188FEAD2C(0, 3, v6, v9, v11, v10);
 
   sub_188A55B8C(v11);
@@ -63,10 +63,10 @@ LABEL_6:
   sub_188A55B8C(v6);
 }
 
-- (void)scheduleCollapsedWillChangeHandler:(id)a3 didChangeHandler:(id)a4
+- (void)scheduleCollapsedWillChangeHandler:(id)handler didChangeHandler:(id)changeHandler
 {
-  v6 = _Block_copy(a3);
-  v7 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
+  v7 = _Block_copy(changeHandler);
   v8 = v7;
   if (v6)
   {
@@ -95,7 +95,7 @@ LABEL_3:
   v11 = 0;
   v10 = 0;
 LABEL_6:
-  v12 = self;
+  selfCopy = self;
   sub_188FEAD2C(1, 3, v6, v9, v11, v10);
 
   sub_188A55B8C(v11);
@@ -103,10 +103,10 @@ LABEL_6:
   sub_188A55B8C(v6);
 }
 
-- (void)scheduleSplitViewControllerColumnVisibilityWillChangeHandler:(id)a3 didChangeHandler:(id)a4 splitViewControllerColumn:(int64_t)a5
+- (void)scheduleSplitViewControllerColumnVisibilityWillChangeHandler:(id)handler didChangeHandler:(id)changeHandler splitViewControllerColumn:(int64_t)column
 {
-  v8 = _Block_copy(a3);
-  v9 = _Block_copy(a4);
+  v8 = _Block_copy(handler);
+  v9 = _Block_copy(changeHandler);
   v10 = v9;
   if (v8)
   {
@@ -134,18 +134,18 @@ LABEL_3:
 
   v12 = 0;
 LABEL_6:
-  v13 = self;
-  sub_188FEAD2C(a5, 2, v8, v11, v10, v12);
+  selfCopy = self;
+  sub_188FEAD2C(column, 2, v8, v11, v10, v12);
 
   sub_188A55B8C(v10);
 
   sub_188A55B8C(v8);
 }
 
-- (void)scheduleSplitViewControllerColumnSizeWillChangeHandler:(id)a3 didChangeHandler:(id)a4 splitViewControllerColumn:(int64_t)a5
+- (void)scheduleSplitViewControllerColumnSizeWillChangeHandler:(id)handler didChangeHandler:(id)changeHandler splitViewControllerColumn:(int64_t)column
 {
-  v8 = _Block_copy(a3);
-  v9 = _Block_copy(a4);
+  v8 = _Block_copy(handler);
+  v9 = _Block_copy(changeHandler);
   v10 = v9;
   if (v8)
   {
@@ -173,8 +173,8 @@ LABEL_3:
 
   v12 = 0;
 LABEL_6:
-  v13 = self;
-  sub_188FEAD2C(a5, 1, v8, v11, v10, v12);
+  selfCopy = self;
+  sub_188FEAD2C(column, 1, v8, v11, v10, v12);
 
   sub_188A55B8C(v10);
 
@@ -183,7 +183,7 @@ LABEL_6:
 
 - (_UISplitViewControllerAdaptiveLayout)previousLayout
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188B169F4();
 
   return v3;
@@ -202,42 +202,42 @@ LABEL_6:
 
 - (_UISplitViewControllerAdaptiveLayout)scheduledLayout
 {
-  v3 = *(&self->super.isa + OBJC_IVAR____UISplitViewControllerAdaptiveLayoutTransitionController_mutableScheduledTransition);
-  if (v3)
+  mutableNewLayout = *(&self->super.isa + OBJC_IVAR____UISplitViewControllerAdaptiveLayoutTransitionController_mutableScheduledTransition);
+  if (mutableNewLayout)
   {
-    v3 = [v3 mutableNewLayout];
+    mutableNewLayout = [mutableNewLayout mutableNewLayout];
     v2 = vars8;
   }
 
-  return v3;
+  return mutableNewLayout;
 }
 
-- (void)commitWithTransition:(id)a3
+- (void)commitWithTransition:(id)transition
 {
-  v4 = a3;
-  v5 = self;
-  sub_188BB4838(v4);
+  transitionCopy = transition;
+  selfCopy = self;
+  sub_188BB4838(transitionCopy);
 }
 
-- (void)startWithTransition:(id)a3
+- (void)startWithTransition:(id)transition
 {
-  v4 = a3;
-  v5 = self;
-  sub_188BB4A04(v4);
+  transitionCopy = transition;
+  selfCopy = self;
+  sub_188BB4A04(transitionCopy);
 }
 
-- (void)animateWithTransition:(id)a3
+- (void)animateWithTransition:(id)transition
 {
-  v4 = a3;
-  v5 = self;
-  sub_188BB4E30(v4);
+  transitionCopy = transition;
+  selfCopy = self;
+  sub_188BB4E30(transitionCopy);
 }
 
-- (void)completeWithTransition:(id)a3
+- (void)completeWithTransition:(id)transition
 {
-  v4 = a3;
-  v5 = self;
-  sub_188C317BC(v4);
+  transitionCopy = transition;
+  selfCopy = self;
+  sub_188C317BC(transitionCopy);
 }
 
 - (UIViewControllerTransitionCoordinator)transitionCoordinator
@@ -247,62 +247,62 @@ LABEL_6:
   return v2;
 }
 
-- (void)prepareTransitionToLayout:(id)a3
+- (void)prepareTransitionToLayout:(id)layout
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = [(_UISplitViewControllerAdaptiveLayoutTransitionController *)v5 upcomingTransition];
-  [(_UISplitViewControllerAdaptiveLayoutTransition *)v6 setMutableNewLayout:a3];
+  selfCopy = self;
+  upcomingTransition = [(_UISplitViewControllerAdaptiveLayoutTransitionController *)selfCopy upcomingTransition];
+  [(_UISplitViewControllerAdaptiveLayoutTransition *)upcomingTransition setMutableNewLayout:layout];
   swift_unknownObjectRelease();
-  v7 = *(&v5->super.isa + OBJC_IVAR____UISplitViewControllerAdaptiveLayoutTransitionController_mutableUpcomingTransition);
-  *(&v5->super.isa + OBJC_IVAR____UISplitViewControllerAdaptiveLayoutTransitionController_mutableUpcomingTransition) = 0;
+  v7 = *(&selfCopy->super.isa + OBJC_IVAR____UISplitViewControllerAdaptiveLayoutTransitionController_mutableUpcomingTransition);
+  *(&selfCopy->super.isa + OBJC_IVAR____UISplitViewControllerAdaptiveLayoutTransitionController_mutableUpcomingTransition) = 0;
 
-  v8 = *(&v5->super.isa + OBJC_IVAR____UISplitViewControllerAdaptiveLayoutTransitionController_mutableScheduledTransition);
-  *(&v5->super.isa + OBJC_IVAR____UISplitViewControllerAdaptiveLayoutTransitionController_mutableScheduledTransition) = v6;
+  v8 = *(&selfCopy->super.isa + OBJC_IVAR____UISplitViewControllerAdaptiveLayoutTransitionController_mutableScheduledTransition);
+  *(&selfCopy->super.isa + OBJC_IVAR____UISplitViewControllerAdaptiveLayoutTransitionController_mutableScheduledTransition) = upcomingTransition;
 }
 
-- (void)performTransitionAnimated:(BOOL)a3
+- (void)performTransitionAnimated:(BOOL)animated
 {
-  v4 = self;
-  sub_188FEA628(a3);
+  selfCopy = self;
+  sub_188FEA628(animated);
 }
 
-- (void)performTransitionAlongsideTransitionCoordinator:(id)a3
+- (void)performTransitionAlongsideTransitionCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_188FEA728(a3);
+  selfCopy = self;
+  sub_188FEA728(coordinator);
   swift_unknownObjectRelease();
 }
 
 - (_UISplitViewControllerAdaptiveLayoutTransition)upcomingTransition
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188FEAB60();
 
   return v3;
 }
 
-- (void)scheduleContainerView:(id)a3
+- (void)scheduleContainerView:(id)view
 {
-  v4 = a3;
-  v6 = self;
-  v5 = [(_UISplitViewControllerAdaptiveLayoutTransitionController *)v6 upcomingTransition];
-  [(_UISplitViewControllerAdaptiveLayoutTransition *)v5 setMutableContainerView:v4];
+  viewCopy = view;
+  selfCopy = self;
+  upcomingTransition = [(_UISplitViewControllerAdaptiveLayoutTransitionController *)selfCopy upcomingTransition];
+  [(_UISplitViewControllerAdaptiveLayoutTransition *)upcomingTransition setMutableContainerView:viewCopy];
 }
 
-- (void)scheduleSnapshot:(id)a3
+- (void)scheduleSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [(_UISplitViewControllerAdaptiveLayoutTransitionController *)self upcomingTransition];
-  v6 = *(&v5->super.isa + OBJC_IVAR____UISplitViewControllerAdaptiveLayoutTransition_mutablePreviousLayoutSnapshotView);
-  *(&v5->super.isa + OBJC_IVAR____UISplitViewControllerAdaptiveLayoutTransition_mutablePreviousLayoutSnapshotView) = v4;
+  snapshotCopy = snapshot;
+  upcomingTransition = [(_UISplitViewControllerAdaptiveLayoutTransitionController *)self upcomingTransition];
+  v6 = *(&upcomingTransition->super.isa + OBJC_IVAR____UISplitViewControllerAdaptiveLayoutTransition_mutablePreviousLayoutSnapshotView);
+  *(&upcomingTransition->super.isa + OBJC_IVAR____UISplitViewControllerAdaptiveLayoutTransition_mutablePreviousLayoutSnapshotView) = snapshotCopy;
 }
 
-- (void)scheduleSplitViewControllerColumnModeWillChangeHandler:(id)a3 didChangeHandler:(id)a4 splitViewControllerColumn:(int64_t)a5
+- (void)scheduleSplitViewControllerColumnModeWillChangeHandler:(id)handler didChangeHandler:(id)changeHandler splitViewControllerColumn:(int64_t)column
 {
-  v8 = _Block_copy(a3);
-  v9 = _Block_copy(a4);
+  v8 = _Block_copy(handler);
+  v9 = _Block_copy(changeHandler);
   v10 = v9;
   if (v8)
   {
@@ -330,20 +330,20 @@ LABEL_3:
 
   v12 = 0;
 LABEL_6:
-  v13 = self;
-  sub_188FEAD2C(a5, 0, v8, v11, v10, v12);
+  selfCopy = self;
+  sub_188FEAD2C(column, 0, v8, v11, v10, v12);
 
   sub_188A55B8C(v10);
 
   sub_188A55B8C(v8);
 }
 
-- (void)scheduleSplitViewControllerColumnSuspendingDelegateUpdates:(int64_t)a3
+- (void)scheduleSplitViewControllerColumnSuspendingDelegateUpdates:(int64_t)updates
 {
-  v4 = self;
-  v5 = [(_UISplitViewControllerAdaptiveLayoutTransitionController *)v4 upcomingTransition];
+  selfCopy = self;
+  upcomingTransition = [(_UISplitViewControllerAdaptiveLayoutTransitionController *)selfCopy upcomingTransition];
   swift_beginAccess();
-  sub_188CC38D8(&v6, a3);
+  sub_188CC38D8(&v6, updates);
   swift_endAccess();
 }
 

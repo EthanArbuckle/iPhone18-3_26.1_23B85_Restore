@@ -1,7 +1,7 @@
 @interface NTKCDeviceConnectivityMonitor
-- (BOOL)_lock_startMonitoringWithCallback:(id)a3;
+- (BOOL)_lock_startMonitoringWithCallback:(id)callback;
 - (BOOL)_lock_stopMonitoring;
-- (BOOL)startMonitoringWithCallback:(id)a3;
+- (BOOL)startMonitoringWithCallback:(id)callback;
 - (BOOL)stopMonitoring;
 - (NTKCDeviceConnectivityMonitor)init;
 - (void)_lock_updateDeviceConnectedness;
@@ -32,32 +32,32 @@
   [(NTKCDeviceConnectivityMonitor *)&v3 dealloc];
 }
 
-- (BOOL)startMonitoringWithCallback:(id)a3
+- (BOOL)startMonitoringWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NTKCDeviceConnectivityMonitor *)self _lock_startMonitoringWithCallback:v4];
+  v5 = [(NTKCDeviceConnectivityMonitor *)self _lock_startMonitoringWithCallback:callbackCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (BOOL)_lock_startMonitoringWithCallback:(id)a3
+- (BOOL)_lock_startMonitoringWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   os_unfair_lock_assert_owner(&self->_lock);
   callback = self->_callback;
   if (!callback)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(callbackCopy);
     v7 = self->_callback;
     self->_callback = v6;
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:self selector:sel__updateDeviceConnectedness name:*MEMORY[0x277D37C08] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__updateDeviceConnectedness name:*MEMORY[0x277D37C08] object:0];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:self selector:sel__updateDeviceConnectedness name:*MEMORY[0x277D37C10] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__updateDeviceConnectedness name:*MEMORY[0x277D37C10] object:0];
 
     [(NTKCDeviceConnectivityMonitor *)self _lock_updateDeviceConnectedness];
   }
@@ -90,12 +90,12 @@
 - (BOOL)stopMonitoring
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NTKCDeviceConnectivityMonitor *)self _lock_stopMonitoring];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  _lock_stopMonitoring = [(NTKCDeviceConnectivityMonitor *)self _lock_stopMonitoring];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_stopMonitoring;
 }
 
 - (BOOL)_lock_stopMonitoring

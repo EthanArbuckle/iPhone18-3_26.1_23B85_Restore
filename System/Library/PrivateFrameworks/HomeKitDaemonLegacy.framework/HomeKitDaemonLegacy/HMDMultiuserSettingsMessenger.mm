@@ -1,10 +1,10 @@
 @interface HMDMultiuserSettingsMessenger
 + (id)logCategory;
 - (HMDHome)home;
-- (HMDMultiuserSettingsMessenger)initWithHome:(id)a3 messageDispatcher:(id)a4;
+- (HMDMultiuserSettingsMessenger)initWithHome:(id)home messageDispatcher:(id)dispatcher;
 - (NSUUID)messageTargetUUID;
 - (id)logIdentifier;
-- (void)handleFetchMultiuserSettingsRequest:(id)a3;
+- (void)handleFetchMultiuserSettingsRequest:(id)request;
 - (void)registerForMessages;
 @end
 
@@ -19,45 +19,45 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDMultiuserSettingsMessenger *)self messageTargetUUID];
-  v3 = [v2 UUIDString];
+  messageTargetUUID = [(HMDMultiuserSettingsMessenger *)self messageTargetUUID];
+  uUIDString = [messageTargetUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (NSUUID)messageTargetUUID
 {
-  v2 = [(HMDMultiuserSettingsMessenger *)self home];
-  v3 = [v2 uuid];
+  home = [(HMDMultiuserSettingsMessenger *)self home];
+  uuid = [home uuid];
 
-  return v3;
+  return uuid;
 }
 
-- (void)handleFetchMultiuserSettingsRequest:(id)a3
+- (void)handleFetchMultiuserSettingsRequest:(id)request
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [(HMDMultiuserSettingsMessenger *)v6 home];
-    v10 = [v9 multiUserSettings];
+    home = [(HMDMultiuserSettingsMessenger *)selfCopy home];
+    multiUserSettings = [home multiUserSettings];
     v15 = 138543618;
     v16 = v8;
     v17 = 2112;
-    v18 = v10;
+    v18 = multiUserSettings;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Handling fetch Multiuser Settings Request, %@", &v15, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v11 = [(HMDMultiuserSettingsMessenger *)v6 home];
-  v12 = [v11 multiUserSettings];
+  home2 = [(HMDMultiuserSettingsMessenger *)selfCopy home];
+  multiUserSettings2 = [home2 multiUserSettings];
 
-  v13 = [v12 payloadCopy];
-  [v4 respondWithPayload:v13];
+  payloadCopy = [multiUserSettings2 payloadCopy];
+  [requestCopy respondWithPayload:payloadCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -66,11 +66,11 @@
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = [HMDXPCMessagePolicy policyWithEntitlements:5];
-  v4 = [(HMDMultiuserSettingsMessenger *)self home];
-  v5 = [HMDUserMessagePolicy userMessagePolicyWithHome:v4 userPrivilege:3 remoteAccessRequired:0];
+  home = [(HMDMultiuserSettingsMessenger *)self home];
+  v5 = [HMDUserMessagePolicy userMessagePolicyWithHome:home userPrivilege:3 remoteAccessRequired:0];
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -81,28 +81,28 @@
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDMultiuserSettingsMessenger *)v7 messageDispatcher];
+  messageDispatcher = [(HMDMultiuserSettingsMessenger *)selfCopy messageDispatcher];
   v11 = *MEMORY[0x277CD09C0];
   v14[0] = v3;
   v14[1] = v5;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
-  [v10 registerForMessage:v11 receiver:v7 policies:v12 selector:sel_handleFetchMultiuserSettingsRequest_];
+  [messageDispatcher registerForMessage:v11 receiver:selfCopy policies:v12 selector:sel_handleFetchMultiuserSettingsRequest_];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMultiuserSettingsMessenger)initWithHome:(id)a3 messageDispatcher:(id)a4
+- (HMDMultiuserSettingsMessenger)initWithHome:(id)home messageDispatcher:(id)dispatcher
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  homeCopy = home;
+  dispatcherCopy = dispatcher;
+  if (!homeCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = dispatcherCopy;
+  if (!dispatcherCopy)
   {
 LABEL_7:
     v12 = _HMFPreconditionFailure();
@@ -115,8 +115,8 @@ LABEL_7:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_messageDispatcher, a4);
-    objc_storeWeak(&v10->_home, v6);
+    objc_storeStrong(&v9->_messageDispatcher, dispatcher);
+    objc_storeWeak(&v10->_home, homeCopy);
   }
 
   return v10;

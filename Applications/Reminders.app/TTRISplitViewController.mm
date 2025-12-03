@@ -9,9 +9,9 @@
 {
   v4.receiver = self;
   v4.super_class = TTRISplitViewController;
-  v2 = [(TTRISplitViewController *)&v4 detailViewController];
+  detailViewController = [(TTRISplitViewController *)&v4 detailViewController];
 
-  return v2;
+  return detailViewController;
 }
 
 - (void)setupColumnStyle_workaroundRdar58463688

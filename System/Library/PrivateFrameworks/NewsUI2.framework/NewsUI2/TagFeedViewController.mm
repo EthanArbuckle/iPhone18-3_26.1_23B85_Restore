@@ -1,21 +1,21 @@
 @interface TagFeedViewController
-- (_TtC7NewsUI221TagFeedViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7NewsUI221TagFeedViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
-- (void)didPullToRefreshWithSender:(id)a3;
+- (void)didPullToRefreshWithSender:(id)sender;
 - (void)gutterViewBoundsDidChange;
 - (void)offlineStatusBannerRequestedForceReload;
-- (void)scrollToTopAnimated:(BOOL)a3;
-- (void)scrollViewDidChangeAdjustedContentInset:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scrollToTopAnimated:(BOOL)animated;
+- (void)scrollViewDidChangeAdjustedContentInset:(id)inset;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -24,16 +24,16 @@
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
 
   sub_219BE58F4();
 
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(TagFeedViewController *)&v5 dealloc];
 }
 
-- (_TtC7NewsUI221TagFeedViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI221TagFeedViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -42,102 +42,102 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_218CEDBE0();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_218CEE9D8();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_218CEEC80(a3);
+  selfCopy = self;
+  sub_218CEEC80(appear);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(TagFeedViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
+  [(TagFeedViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
   sub_218CF67B8();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_218CEF34C(a3);
+  selfCopy = self;
+  sub_218CEF34C(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(TagFeedViewController *)&v5 viewWillDisappear:v3];
+  [(TagFeedViewController *)&v5 viewWillDisappear:disappearCopy];
   sub_219BE6AB4();
   sub_219BE5904();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(TagFeedViewController *)&v5 viewDidDisappear:v3];
+  [(TagFeedViewController *)&v5 viewDidDisappear:disappearCopy];
   [*&v4[OBJC_IVAR____TtC7NewsUI221TagFeedViewController_refreshControl] endRefreshing];
 }
 
 - (void)viewSafeAreaInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_218CEF98C();
 }
 
-- (void)didPullToRefreshWithSender:(id)a3
+- (void)didPullToRefreshWithSender:(id)sender
 {
-  v3 = self;
+  selfCopy = self;
   sub_219BE1E74();
 }
 
 - (void)offlineStatusBannerRequestedForceReload
 {
-  v2 = self;
+  selfCopy = self;
   sub_218CEE820();
 }
 
 - (void)gutterViewBoundsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_218CF1CE0();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_218CF4EA8(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_218CF4EA8(scrollCopy);
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   v5 = sub_219BEFAD4();
   v6 = *(v5 - 8);
   MEMORY[0x28223BE20](v5);
   v8 = &v14 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = a3;
-  v15 = self;
+  deceleratingCopy = decelerating;
+  selfCopy = self;
   if (sub_219BF60A4())
   {
-    v10 = *(&v15->super.super.super.isa + OBJC_IVAR____TtC7NewsUI221TagFeedViewController_eventHandler);
+    v10 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC7NewsUI221TagFeedViewController_eventHandler);
     (*(v6 + 104))(v8, *MEMORY[0x277D328C0], v5);
     v11 = *(v10 + 40);
     ObjectType = swift_getObjectType();
@@ -149,21 +149,21 @@
   else
   {
 
-    v13 = v15;
+    v13 = selfCopy;
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
   v7 = sub_219BEFAD4();
   v8 = *(v7 - 8);
   MEMORY[0x28223BE20](v7);
   v10 = &v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = a3;
-  v17 = self;
-  if ((sub_219BF60A4() & 1) != 0 && !a4)
+  draggingCopy = dragging;
+  selfCopy = self;
+  if ((sub_219BF60A4() & 1) != 0 && !decelerate)
   {
-    v13 = *(&v17->super.super.super.isa + OBJC_IVAR____TtC7NewsUI221TagFeedViewController_eventHandler);
+    v13 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC7NewsUI221TagFeedViewController_eventHandler);
     (*(v8 + 104))(v10, *MEMORY[0x277D328C0], v7);
     v14 = *(v13 + 40);
     ObjectType = swift_getObjectType();
@@ -175,25 +175,25 @@
   else
   {
 
-    v12 = v17;
+    v12 = selfCopy;
   }
 }
 
-- (void)scrollViewDidChangeAdjustedContentInset:(id)a3
+- (void)scrollViewDidChangeAdjustedContentInset:(id)inset
 {
-  v4 = a3;
-  v5 = self;
-  sub_218CF6A88(v4);
+  insetCopy = inset;
+  selfCopy = self;
+  sub_218CF6A88(insetCopy);
 }
 
-- (void)scrollToTopAnimated:(BOOL)a3
+- (void)scrollToTopAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = self;
+  animatedCopy = animated;
+  selfCopy = self;
   sub_219BE8664();
   v4 = sub_219BE7BC4();
 
-  [v4 ts:v3 scrollToTop:objc_msgSend(*(&v5->super.super.super.isa + OBJC_IVAR____TtC7NewsUI221TagFeedViewController_feedDescriptor) dismissKeyboard:sel_feedConfiguration) - 12 < 0xFFFFFFFFFFFFFFFDLL];
+  [v4 ts:animatedCopy scrollToTop:objc_msgSend(*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC7NewsUI221TagFeedViewController_feedDescriptor) dismissKeyboard:sel_feedConfiguration) - 12 < 0xFFFFFFFFFFFFFFFDLL];
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface PUAlbumListViewControllerCommonImagePickerSpec
-- (CGSize)cellSizeForBounds:(CGRect)a3;
+- (CGSize)cellSizeForBounds:(CGRect)bounds;
 - (CGSize)imageSize;
 - (CGSize)stackSize;
-- (UIEdgeInsets)sectionInsetsForLayoutReferenceSize:(CGSize)a3 safeAreaInsets:(UIEdgeInsets)a4;
+- (UIEdgeInsets)sectionInsetsForLayoutReferenceSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets;
 - (double)sectionHeaderHeight;
-- (void)configureStackViewWithGridStyle:(id)a3;
+- (void)configureStackViewWithGridStyle:(id)style;
 @end
 
 @implementation PUAlbumListViewControllerCommonImagePickerSpec
 
-- (UIEdgeInsets)sectionInsetsForLayoutReferenceSize:(CGSize)a3 safeAreaInsets:(UIEdgeInsets)a4
+- (UIEdgeInsets)sectionInsetsForLayoutReferenceSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets
 {
   UIEdgeInsetsAdd();
   result.right = v7;
@@ -21,10 +21,10 @@
 
 - (double)sectionHeaderHeight
 {
-  v2 = [(PUAlbumListViewControllerSpec *)self _fontManager];
-  v3 = [v2 albumListSectionTitleLabelFont];
+  _fontManager = [(PUAlbumListViewControllerSpec *)self _fontManager];
+  albumListSectionTitleLabelFont = [_fontManager albumListSectionTitleLabelFont];
 
-  [v3 _scaledValueForValue:34.0];
+  [albumListSectionTitleLabelFont _scaledValueForValue:34.0];
   v5 = v4;
   if (PUMainScreenScale_onceToken != -1)
   {
@@ -36,13 +36,13 @@
   return v6;
 }
 
-- (CGSize)cellSizeForBounds:(CGRect)a3
+- (CGSize)cellSizeForBounds:(CGRect)bounds
 {
-  width = a3.size.width;
-  v5 = [(PUAlbumListViewControllerSpec *)self _fontManager:a3.origin.x];
-  v6 = [v5 albumListTitleLabelFont];
+  width = bounds.size.width;
+  v5 = [(PUAlbumListViewControllerSpec *)self _fontManager:bounds.origin.x];
+  albumListTitleLabelFont = [v5 albumListTitleLabelFont];
 
-  [v6 _scaledValueForValue:40.0];
+  [albumListTitleLabelFont _scaledValueForValue:40.0];
   v8 = v7;
   if (PUMainScreenScale_onceToken != -1)
   {
@@ -50,10 +50,10 @@
   }
 
   v9 = *&PUMainScreenScale_screenScale;
-  v10 = [(PUAlbumListViewControllerSpec *)self _fontManager];
-  v11 = [v10 albumListSubtitleLabelFont];
+  _fontManager = [(PUAlbumListViewControllerSpec *)self _fontManager];
+  albumListSubtitleLabelFont = [_fontManager albumListSubtitleLabelFont];
 
-  [v11 _scaledValueForValue:20.0];
+  [albumListSubtitleLabelFont _scaledValueForValue:20.0];
   v13 = v12;
   if (PUMainScreenScale_onceToken != -1)
   {
@@ -61,7 +61,7 @@
   }
 
   v14 = *&PUMainScreenScale_screenScale;
-  [v6 _scaledValueForValue:29.0];
+  [albumListTitleLabelFont _scaledValueForValue:29.0];
   v16 = v15;
   if (PUMainScreenScale_onceToken != -1)
   {
@@ -77,15 +77,15 @@
   return result;
 }
 
-- (void)configureStackViewWithGridStyle:(id)a3
+- (void)configureStackViewWithGridStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v3 = +[PUInterfaceManager currentTheme];
-  v4 = [v3 folderCellBackgroundColor];
-  [v5 setGridBackgroundColor:v4];
+  folderCellBackgroundColor = [v3 folderCellBackgroundColor];
+  [styleCopy setGridBackgroundColor:folderCellBackgroundColor];
 
-  [v5 setGridMargin:5.0];
-  [v5 setGridItemSpacing:2.0];
+  [styleCopy setGridMargin:5.0];
+  [styleCopy setGridItemSpacing:2.0];
 }
 
 - (CGSize)stackSize

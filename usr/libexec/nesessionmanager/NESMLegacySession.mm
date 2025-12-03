@@ -1,17 +1,17 @@
 @interface NESMLegacySession
 - (BOOL)handleSleep;
-- (BOOL)handleUpdateConfiguration:(id)a3;
+- (BOOL)handleUpdateConfiguration:(id)configuration;
 - (int)type;
 - (void)dealloc;
-- (void)handleChangeEventForInterface:(id)a3 newFlags:(unint64_t)a4 previousFlags:(unint64_t)a5;
+- (void)handleChangeEventForInterface:(id)interface newFlags:(unint64_t)flags previousFlags:(unint64_t)previousFlags;
 - (void)handleDeviceLock;
 - (void)handleDeviceUnlock;
-- (void)handleGetInfoMessage:(id)a3 withType:(int)a4;
+- (void)handleGetInfoMessage:(id)message withType:(int)type;
 - (void)handleInitializeState;
 - (void)handleInstalledAppsChanged;
-- (void)handleSecuritySessionInfoRequest:(id)a3;
-- (void)handleSleepTime:(double)a3;
-- (void)handleStartMessage:(id)a3;
+- (void)handleSecuritySessionInfoRequest:(id)request;
+- (void)handleSleepTime:(double)time;
+- (void)handleStartMessage:(id)message;
 - (void)handleUserLogout;
 - (void)handleUserSwitch;
 - (void)handleWakeup;
@@ -23,21 +23,21 @@
 
 - (void)handleInitializeState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NESMSession *)v2 configuration];
-  v4 = [v3 identifier];
-  v5 = [v4 UUIDString];
-  v6 = [NSString stringWithFormat:@"%@:%d", v5, [(NESMLegacySession *)v2 type]];
-  [(NESMSession *)v2 setAuxiliaryDataKey:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NESMSession *)selfCopy configuration];
+  identifier = [configuration identifier];
+  uUIDString = [identifier UUIDString];
+  v6 = [NSString stringWithFormat:@"%@:%d", uUIDString, [(NESMLegacySession *)selfCopy type]];
+  [(NESMSession *)selfCopy setAuxiliaryDataKey:v6];
 
-  [(NESMSession *)v2 setupFromAuxiliaryData];
-  v7 = [(NESMSession *)v2 lastDisconnectError];
-  v8 = v7;
-  if (v7)
+  [(NESMSession *)selfCopy setupFromAuxiliaryData];
+  lastDisconnectError = [(NESMSession *)selfCopy lastDisconnectError];
+  v8 = lastDisconnectError;
+  if (lastDisconnectError)
   {
-    v9 = [v7 domain];
-    v10 = [v9 isEqualToString:@"NEVPNConnectionErrorDomainIPSec"];
+    domain = [lastDisconnectError domain];
+    v10 = [domain isEqualToString:@"NEVPNConnectionErrorDomainIPSec"];
 
     if (v10)
     {
@@ -50,14 +50,14 @@
       v14[1] = 3221225472;
       v14[2] = sub_10006EEDC;
       v14[3] = &unk_1000EB198;
-      v14[4] = v2;
+      v14[4] = selfCopy;
       v13 = v12;
       v15 = v13;
-      sub_10006EF70(v2, v14);
+      sub_10006EF70(selfCopy, v14);
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)handleInstalledAppsChanged
@@ -110,38 +110,38 @@
   sub_10006EF70(self, v2);
 }
 
-- (BOOL)handleUpdateConfiguration:(id)a3
+- (BOOL)handleUpdateConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
     v5 = ne_log_obj();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 VPN];
+      v6 = [configurationCopy VPN];
       *buf = 138412546;
-      v16 = self;
+      selfCopy = self;
       v17 = 1024;
-      v18 = [v6 isEnabled];
+      isEnabled = [v6 isEnabled];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@: enabled = %d", buf, 0x12u);
     }
 
     v14.receiver = self;
     v14.super_class = NESMLegacySession;
-    if ([(NESMSession *)&v14 handleUpdateConfiguration:v4])
+    if ([(NESMSession *)&v14 handleUpdateConfiguration:configurationCopy])
     {
       if (self && self->_sessionType == 2)
       {
-        v7 = [(NESMSession *)self configuration];
-        v8 = [v7 appVPN];
-        v10 = [v8 protocol];
+        configuration = [(NESMSession *)self configuration];
+        appVPN = [configuration appVPN];
+        protocol = [appVPN protocol];
       }
 
       else
       {
-        v7 = [(NESMSession *)self configuration];
-        v8 = [v7 VPN];
-        v10 = [v8 protocol];
+        configuration = [(NESMSession *)self configuration];
+        appVPN = [configuration VPN];
+        protocol = [appVPN protocol];
         if (!self)
         {
 LABEL_11:
@@ -157,7 +157,7 @@ LABEL_11:
         }
       }
 
-      objc_setProperty_atomic(self, v9, v10, 360);
+      objc_setProperty_atomic(self, v9, protocol, 360);
       goto LABEL_11;
     }
   }
@@ -188,57 +188,57 @@ LABEL_12:
   sub_10006EF70(self, v2);
 }
 
-- (void)handleGetInfoMessage:(id)a3 withType:(int)a4
+- (void)handleGetInfoMessage:(id)message withType:(int)type
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10007369C;
   v6[3] = &unk_1000EB360;
-  v9 = a4;
-  v7 = a3;
-  v8 = self;
-  v5 = v7;
+  typeCopy = type;
+  messageCopy = message;
+  selfCopy = self;
+  v5 = messageCopy;
   sub_10006EF70(self, v6);
 }
 
-- (void)handleSecuritySessionInfoRequest:(id)a3
+- (void)handleSecuritySessionInfoRequest:(id)request
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100073A60;
   v5[3] = &unk_1000EB198;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  requestCopy = request;
+  selfCopy = self;
+  v4 = requestCopy;
   sub_10006EF70(self, v5);
 }
 
-- (void)handleChangeEventForInterface:(id)a3 newFlags:(unint64_t)a4 previousFlags:(unint64_t)a5
+- (void)handleChangeEventForInterface:(id)interface newFlags:(unint64_t)flags previousFlags:(unint64_t)previousFlags
 {
-  v8 = a3;
+  interfaceCopy = interface;
   v13.receiver = self;
   v13.super_class = NESMLegacySession;
-  [(NESMSession *)&v13 handleChangeEventForInterface:v8 newFlags:a4 previousFlags:a5];
+  [(NESMSession *)&v13 handleChangeEventForInterface:interfaceCopy newFlags:flags previousFlags:previousFlags];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100073C28;
   v10[3] = &unk_1000EABA0;
   v10[4] = self;
-  v11 = v8;
-  v12 = a4;
-  v9 = v8;
+  v11 = interfaceCopy;
+  flagsCopy = flags;
+  v9 = interfaceCopy;
   sub_10006EF70(self, v10);
 }
 
 - (void)handleWakeup
 {
-  v3 = [(NESMSession *)self queue];
+  queue = [(NESMSession *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100074148;
   block[3] = &unk_1000EB1C0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -248,14 +248,14 @@ LABEL_12:
   sub_10006EF70(self, v4);
 }
 
-- (void)handleSleepTime:(double)a3
+- (void)handleSleepTime:(double)time
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100074244;
   v3[3] = &unk_1000EB0D8;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = time;
   sub_10006EF70(self, v3);
 }
 
@@ -270,10 +270,10 @@ LABEL_12:
   return 1;
 }
 
-- (void)handleStartMessage:(id)a3
+- (void)handleStartMessage:(id)message
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_value(v4, "SessionOptions");
+  messageCopy = message;
+  v5 = xpc_dictionary_get_value(messageCopy, "SessionOptions");
   if (qword_1000FD550 != -1)
   {
     dispatch_once(&qword_1000FD550, &stru_1000EA5C8);
@@ -281,7 +281,7 @@ LABEL_12:
 
   v65.receiver = self;
   v65.super_class = NESMLegacySession;
-  [(NESMSession *)&v65 handleStartMessage:v4, qword_1000FD548];
+  [(NESMSession *)&v65 handleStartMessage:messageCopy, qword_1000FD548];
   v6 = CTBundle_ptr;
   if (v5 && xpc_get_type(v5) == &_xpc_type_dictionary)
   {
@@ -310,27 +310,27 @@ LABEL_12:
   v8 = objc_alloc_init(NSMutableDictionary);
 LABEL_12:
   v58 = v5;
-  v10 = [v8 objectForKeyedSubscript:@"OutgoingInterface"];
+  server2 = [v8 objectForKeyedSubscript:@"OutgoingInterface"];
   if ((isa_nsstring() & 1) == 0)
   {
-    v11 = [(NESMSession *)self server];
-    v12 = [v11 primaryPhysicalInterface];
+    server = [(NESMSession *)self server];
+    primaryPhysicalInterface = [server primaryPhysicalInterface];
 
-    if (!v12)
+    if (!primaryPhysicalInterface)
     {
       goto LABEL_16;
     }
 
-    v10 = [(NESMSession *)self server];
-    v13 = [v10 primaryPhysicalInterface];
-    v14 = [v13 interfaceName];
-    [v8 setObject:v14 forKeyedSubscript:@"OutgoingInterface"];
+    server2 = [(NESMSession *)self server];
+    primaryPhysicalInterface2 = [server2 primaryPhysicalInterface];
+    interfaceName = [primaryPhysicalInterface2 interfaceName];
+    [v8 setObject:interfaceName forKeyedSubscript:@"OutgoingInterface"];
   }
 
 LABEL_16:
   v15 = v8;
   v17 = v15;
-  v59 = v4;
+  v59 = messageCopy;
   if (!self)
   {
 
@@ -401,12 +401,12 @@ LABEL_27:
   if (v20)
   {
 LABEL_28:
-    v60 = [v20 copyPassword];
+    copyPassword = [v20 copyPassword];
     goto LABEL_32;
   }
 
 LABEL_31:
-  v60 = 0;
+  copyPassword = 0;
 LABEL_32:
   if ((v18 - 1) <= 1)
   {
@@ -417,12 +417,12 @@ LABEL_32:
 
   if (v20)
   {
-    v28 = [v20 copyPassword];
+    copyPassword2 = [v20 copyPassword];
   }
 
   else
   {
-    v28 = 0;
+    copyPassword2 = 0;
   }
 
   if (v61)
@@ -458,7 +458,7 @@ LABEL_44:
   }
 
 LABEL_45:
-  if (v60)
+  if (copyPassword)
   {
     if (v18 == 1)
     {
@@ -470,7 +470,7 @@ LABEL_45:
       {
         v38 = v23;
 LABEL_52:
-        [v38 setObject:v60 forKeyedSubscript:v35];
+        [v38 setObject:copyPassword forKeyedSubscript:v35];
       }
     }
 
@@ -488,14 +488,14 @@ LABEL_52:
     }
   }
 
-  if (v28)
+  if (copyPassword2)
   {
     v41 = [v23 objectForKeyedSubscript:kSCPropNetIPSecSharedSecret];
     v42 = isa_nsstring();
 
     if ((v42 & 1) == 0)
     {
-      [v23 setObject:v28 forKeyedSubscript:kSCPropNetIPSecSharedSecret];
+      [v23 setObject:copyPassword2 forKeyedSubscript:kSCPropNetIPSecSharedSecret];
     }
   }
 

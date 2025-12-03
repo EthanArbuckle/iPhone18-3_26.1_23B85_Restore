@@ -1,11 +1,11 @@
 @interface WDBorder
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToBorder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToBorder:(id)border;
 - (WDBorder)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)setBorder:(id)a3;
+- (void)setBorder:(id)border;
 - (void)setNullBorder;
 - (void)setSingleBlackBorder;
 @end
@@ -27,11 +27,11 @@
   return v2;
 }
 
-- (BOOL)isEqualToBorder:(id)a3
+- (BOOL)isEqualToBorder:(id)border
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->mStyle == *(v4 + 2) && self->mWidth == *(v4 + 24) && self->mSpace == *(v4 + 25) && self->mShadow == *(v4 + 26) && self->mFrame == *(v4 + 27))
+  borderCopy = border;
+  v5 = borderCopy;
+  if (self->mStyle == *(borderCopy + 2) && self->mWidth == *(borderCopy + 24) && self->mSpace == *(borderCopy + 25) && self->mShadow == *(borderCopy + 26) && self->mFrame == *(borderCopy + 27))
   {
     mColor = self->mColor;
     if (mColor == v5[2])
@@ -53,18 +53,18 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(WDBorder *)self isEqualToBorder:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(WDBorder *)self isEqualToBorder:v5];
   }
 
   return v6;
@@ -79,17 +79,17 @@
   return ([(WDBorder *)&v5 hash]^ mSpace) + v2;
 }
 
-- (void)setBorder:(id)a3
+- (void)setBorder:(id)border
 {
-  v5 = a3;
-  -[WDBorder setStyle:](self, "setStyle:", [v5 style]);
-  v4 = [v5 color];
-  [(WDBorder *)self setColor:v4];
+  borderCopy = border;
+  -[WDBorder setStyle:](self, "setStyle:", [borderCopy style]);
+  color = [borderCopy color];
+  [(WDBorder *)self setColor:color];
 
-  -[WDBorder setWidth:](self, "setWidth:", [v5 width]);
-  -[WDBorder setSpace:](self, "setSpace:", [v5 space]);
-  -[WDBorder setShadow:](self, "setShadow:", [v5 shadow]);
-  -[WDBorder setFrame:](self, "setFrame:", [v5 frame]);
+  -[WDBorder setWidth:](self, "setWidth:", [borderCopy width]);
+  -[WDBorder setSpace:](self, "setSpace:", [borderCopy space]);
+  -[WDBorder setShadow:](self, "setShadow:", [borderCopy shadow]);
+  -[WDBorder setFrame:](self, "setFrame:", [borderCopy frame]);
 }
 
 - (void)setNullBorder
@@ -118,7 +118,7 @@
   [(WDBorder *)self setFrame:0];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[WDBorder allocWithZone:?]];
   v5 = v4;

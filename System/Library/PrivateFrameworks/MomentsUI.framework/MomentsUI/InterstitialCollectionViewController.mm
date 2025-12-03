@@ -1,15 +1,15 @@
 @interface InterstitialCollectionViewController
-- (_TtC9MomentsUI36InterstitialCollectionViewController)initWithCoder:(id)a3;
-- (_TtC9MomentsUI36InterstitialCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (_TtC9MomentsUI36InterstitialCollectionViewController)initWithCoder:(id)coder;
+- (_TtC9MomentsUI36InterstitialCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation InterstitialCollectionViewController
 
-- (_TtC9MomentsUI36InterstitialCollectionViewController)initWithCoder:(id)a3
+- (_TtC9MomentsUI36InterstitialCollectionViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9MomentsUI36InterstitialCollectionViewController_collectionView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9MomentsUI36InterstitialCollectionViewController_dataSource) = 0;
@@ -36,33 +36,33 @@
   (*((*v3 & *v2) + 0xF8))(v8, v9);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  InterstitialCollectionViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  InterstitialCollectionViewController.viewWillAppear(_:)(appear);
 }
 
-- (_TtC9MomentsUI36InterstitialCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9MomentsUI36InterstitialCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v5 = type metadata accessor for IndexPath();
   v6 = *(v5 - 8);
   MEMORY[0x28223BE20](v5);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   InterstitialCollectionViewController.toggleSelectionForAsset(at:)(v8);
 
   (*(v6 + 8))(v8, v5);
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v7 = type metadata accessor for IndexPath();
   v8 = *(v7 - 8);
@@ -70,9 +70,9 @@
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0x108);
-  v12 = a4;
-  v13 = self;
-  v11(v12, v10);
+  cellCopy = cell;
+  selfCopy = self;
+  v11(cellCopy, v10);
 
   (*(v8 + 8))(v10, v7);
 }

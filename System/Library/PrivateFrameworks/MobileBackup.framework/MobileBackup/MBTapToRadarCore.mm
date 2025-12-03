@@ -1,26 +1,26 @@
 @interface MBTapToRadarCore
-+ (BOOL)fileTapToRadarWithTitle:(id)a3 description:(id)a4 keywordID:(id)a5 attachment:(id)a6 error:(id *)a7;
++ (BOOL)fileTapToRadarWithTitle:(id)title description:(id)description keywordID:(id)d attachment:(id)attachment error:(id *)error;
 - (_TtC7backupd16MBTapToRadarCore)init;
 @end
 
 @implementation MBTapToRadarCore
 
-+ (BOOL)fileTapToRadarWithTitle:(id)a3 description:(id)a4 keywordID:(id)a5 attachment:(id)a6 error:(id *)a7
++ (BOOL)fileTapToRadarWithTitle:(id)title description:(id)description keywordID:(id)d attachment:(id)attachment error:(id *)error
 {
   v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
-  if (a4)
+  if (description)
   {
     v13 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a4 = v14;
-    if (a5)
+    description = v14;
+    if (d)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     v15 = 0;
-    if (a6)
+    if (attachment)
     {
       goto LABEL_4;
     }
@@ -31,24 +31,24 @@ LABEL_7:
   }
 
   v13 = 0;
-  if (!a5)
+  if (!d)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   v15 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-  a5 = v16;
-  if (!a6)
+  d = v16;
+  if (!attachment)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
   v17 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-  a6 = v18;
+  attachment = v18;
 LABEL_8:
-  sub_10002E9D8(v10, v12, v13, a4, v15, a5, v17, a6);
+  sub_10002E9D8(v10, v12, v13, description, v15, d, v17, attachment);
 
   return 1;
 }

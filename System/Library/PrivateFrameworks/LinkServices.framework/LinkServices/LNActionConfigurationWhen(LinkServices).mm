@@ -9,18 +9,18 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 condition];
-  v9 = [v8 parameterIdentifier];
-  if ([v9 isEqualToString:*MEMORY[0x1E69AC180]])
+  condition = [self condition];
+  parameterIdentifier = [condition parameterIdentifier];
+  if ([parameterIdentifier isEqualToString:*MEMORY[0x1E69AC180]])
   {
-    v10 = [v7 widgetFamily];
+    widgetFamily = [v7 widgetFamily];
 
-    if (v10)
+    if (widgetFamily)
     {
       v11 = objc_alloc(MEMORY[0x1E69ACA88]);
-      v12 = [v7 widgetFamily];
-      v13 = [MEMORY[0x1E69AC940] stringValueType];
-      v14 = [v11 initWithValue:v12 valueType:v13];
+      widgetFamily2 = [v7 widgetFamily];
+      stringValueType = [MEMORY[0x1E69AC940] stringValueType];
+      value = [v11 initWithValue:widgetFamily2 valueType:stringValueType];
 
 LABEL_28:
       goto LABEL_29;
@@ -31,30 +31,30 @@ LABEL_28:
   {
   }
 
-  v15 = [a1 condition];
-  v16 = [v15 parameterIdentifier];
-  v17 = [v16 isEqualToString:*MEMORY[0x1E69AC148]];
+  condition2 = [self condition];
+  parameterIdentifier2 = [condition2 parameterIdentifier];
+  v17 = [parameterIdentifier2 isEqualToString:*MEMORY[0x1E69AC148]];
 
   if (!v17)
   {
-    v24 = [v6 parameters];
+    parameters = [v6 parameters];
     v53[0] = MEMORY[0x1E69E9820];
     v53[1] = 3221225472;
     v53[2] = __66__LNActionConfigurationWhen_LinkServices__valueForAction_context___block_invoke;
     v53[3] = &unk_1E74B26A8;
-    v53[4] = a1;
-    v12 = [v24 if_firstObjectPassingTest:v53];
+    v53[4] = self;
+    widgetFamily2 = [parameters if_firstObjectPassingTest:v53];
 
-    v14 = [v12 value];
-    if (v12)
+    value = [widgetFamily2 value];
+    if (widgetFamily2)
     {
       v52 = v6;
-      v25 = [v12 value];
-      v26 = [v25 valueType];
-      v27 = [a1 condition];
-      v28 = [v27 value];
-      v29 = [v28 valueType];
-      v30 = [v26 isEqual:v29];
+      value2 = [widgetFamily2 value];
+      valueType = [value2 valueType];
+      condition3 = [self condition];
+      value3 = [condition3 value];
+      valueType2 = [value3 valueType];
+      v30 = [valueType isEqual:valueType2];
 
       if (v30)
       {
@@ -63,21 +63,21 @@ LABEL_28:
 
       else
       {
-        v31 = [v12 value];
-        v32 = [v31 value];
+        value4 = [widgetFamily2 value];
+        v31Value = [value4 value];
 
-        if (v32 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+        if (v31Value && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v33 = [a1 condition];
-          v34 = [v33 value];
-          v35 = [v34 valueType];
+          condition4 = [self condition];
+          value5 = [condition4 value];
+          valueType3 = [value5 valueType];
 
-          if (v35)
+          if (valueType3)
           {
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v36 = v35;
+              v36 = valueType3;
             }
 
             else
@@ -93,47 +93,47 @@ LABEL_28:
 
           v37 = v36;
 
-          v38 = [v37 memberValueType];
+          memberValueType = [v37 memberValueType];
 
-          if (v38)
+          if (memberValueType)
           {
-            v39 = v38;
+            valueType4 = memberValueType;
           }
 
           else
           {
-            v40 = [a1 condition];
-            v41 = [v40 value];
-            v39 = [v41 valueType];
+            condition5 = [self condition];
+            value6 = [condition5 value];
+            valueType4 = [value6 valueType];
           }
 
-          v42 = [MEMORY[0x1E69AC940] intValueType];
-          v43 = [v39 isEqual:v42];
+          intValueType = [MEMORY[0x1E69AC940] intValueType];
+          v43 = [valueType4 isEqual:intValueType];
 
           v44 = objc_alloc(MEMORY[0x1E69ACA88]);
           if (v43)
           {
             v45 = MEMORY[0x1E696AD98];
-            v46 = [v32 identifier];
-            v47 = [v46 instanceIdentifier];
-            v48 = [v45 numberWithInteger:{objc_msgSend(v47, "integerValue")}];
-            v49 = [MEMORY[0x1E69AC940] intValueType];
-            v50 = [v44 initWithValue:v48 valueType:v49];
+            identifier = [v31Value identifier];
+            instanceIdentifier = [identifier instanceIdentifier];
+            stringValueType2 = [v45 numberWithInteger:{objc_msgSend(instanceIdentifier, "integerValue")}];
+            intValueType2 = [MEMORY[0x1E69AC940] intValueType];
+            v50 = [v44 initWithValue:stringValueType2 valueType:intValueType2];
 
-            v14 = v49;
+            value = intValueType2;
           }
 
           else
           {
-            v46 = [v32 identifier];
-            v47 = [v46 instanceIdentifier];
-            v48 = [MEMORY[0x1E69AC940] stringValueType];
-            v50 = [v44 initWithValue:v47 valueType:v48];
+            identifier = [v31Value identifier];
+            instanceIdentifier = [identifier instanceIdentifier];
+            stringValueType2 = [MEMORY[0x1E69AC940] stringValueType];
+            v50 = [v44 initWithValue:instanceIdentifier valueType:stringValueType2];
           }
 
           v6 = v52;
 
-          v14 = v50;
+          value = v50;
         }
 
         else
@@ -146,34 +146,34 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v18 = [v7 origin];
-  v19 = v18;
+  origin = [v7 origin];
+  v19 = origin;
   v20 = *MEMORY[0x1E69AC150];
-  if (v18)
+  if (origin)
   {
-    v20 = v18;
+    v20 = origin;
   }
 
   v21 = v20;
 
   v22 = objc_alloc(MEMORY[0x1E69ACA88]);
-  v23 = [MEMORY[0x1E69AC940] stringValueType];
-  v14 = [v22 initWithValue:v21 valueType:v23];
+  stringValueType3 = [MEMORY[0x1E69AC940] stringValueType];
+  value = [v22 initWithValue:v21 valueType:stringValueType3];
 
 LABEL_29:
 
-  return v14;
+  return value;
 }
 
 - (id)actionConfigurationByEvaluatingAction:()LinkServices context:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 valueForAction:v6 context:v7];
-  v9 = [a1 condition];
-  v10 = [v9 comparisonOperator];
+  v8 = [self valueForAction:v6 context:v7];
+  condition = [self condition];
+  comparisonOperator = [condition comparisonOperator];
 
-  switch(v10)
+  switch(comparisonOperator)
   {
     case 0:
       if (v8)
@@ -183,18 +183,18 @@ LABEL_29:
 
       goto LABEL_42;
     case 1:
-      v13 = [a1 condition];
-      v14 = [v13 value];
-      if (![v8 isEqual:v14])
+      condition2 = [self condition];
+      value = [condition2 value];
+      if (![v8 isEqual:value])
       {
         goto LABEL_35;
       }
 
       goto LABEL_31;
     case 2:
-      v13 = [a1 condition];
-      v14 = [v13 value];
-      if ([v8 isEqual:v14])
+      condition2 = [self condition];
+      value = [condition2 value];
+      if ([v8 isEqual:value])
       {
         goto LABEL_35;
       }
@@ -206,15 +206,15 @@ LABEL_29:
         goto LABEL_54;
       }
 
-      v13 = [a1 condition];
-      v14 = [v13 value];
-      if ([v8 compare:v14] == -1)
+      condition2 = [self condition];
+      value = [condition2 value];
+      if ([v8 compare:value] == -1)
       {
         goto LABEL_35;
       }
 
 LABEL_31:
-      v23 = [a1 otherwise];
+      otherwise = [self otherwise];
       goto LABEL_36;
     case 4:
       if (!v8)
@@ -222,18 +222,18 @@ LABEL_31:
         goto LABEL_54;
       }
 
-      v13 = [a1 condition];
-      v14 = [v13 value];
-      if ([v8 compare:v14] == -1)
+      condition2 = [self condition];
+      value = [condition2 value];
+      if ([v8 compare:value] == -1)
       {
         goto LABEL_35;
       }
 
       goto LABEL_43;
     case 5:
-      v13 = [a1 condition];
-      v14 = [v13 value];
-      if ([v8 compare:v14] != 1)
+      condition2 = [self condition];
+      value = [condition2 value];
+      if ([v8 compare:value] != 1)
       {
         goto LABEL_31;
       }
@@ -245,29 +245,29 @@ LABEL_31:
         goto LABEL_42;
       }
 
-      v13 = [a1 condition];
-      v14 = [v13 value];
-      if ([v8 compare:v14] == 1)
+      condition2 = [self condition];
+      value = [condition2 value];
+      if ([v8 compare:value] == 1)
       {
 LABEL_35:
-        v23 = [a1 when];
+        otherwise = [self when];
 LABEL_36:
-        v24 = v23;
+        v24 = otherwise;
       }
 
       else
       {
 LABEL_43:
-        v28 = [a1 condition];
-        v29 = [v28 value];
-        if ([v8 compare:v29])
+        condition3 = [self condition];
+        value2 = [condition3 value];
+        if ([v8 compare:value2])
         {
-          [a1 otherwise];
+          [self otherwise];
         }
 
         else
         {
-          [a1 when];
+          [self when];
         }
         v24 = ;
 
@@ -279,16 +279,16 @@ LABEL_63:
 
       return v39;
     case 7:
-      v19 = [a1 condition];
-      v20 = [v19 value];
-      v21 = [v20 value];
+      condition4 = [self condition];
+      value3 = [condition4 value];
+      v20Value = [value3 value];
 
-      if (v21)
+      if (v20Value)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v22 = v21;
+          v22 = v20Value;
         }
 
         else
@@ -315,25 +315,25 @@ LABEL_63:
       if (v8)
       {
 LABEL_42:
-        v27 = [a1 otherwise];
+        otherwise2 = [self otherwise];
       }
 
       else
       {
 LABEL_54:
-        v27 = [a1 when];
+        otherwise2 = [self when];
       }
 
-      v24 = v27;
+      v24 = otherwise2;
       goto LABEL_63;
     case 9:
-      v17 = [v8 value];
-      if (v17)
+      value4 = [v8 value];
+      if (value4)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v18 = v17;
+          v18 = value4;
         }
 
         else
@@ -349,12 +349,12 @@ LABEL_54:
 
       v32 = v18;
 
-      v13 = [a1 condition];
-      v14 = [v13 value];
-      v28 = [v14 value];
-      v33 = [v32 containsString:v28];
+      condition2 = [self condition];
+      value = [condition2 value];
+      condition3 = [value value];
+      v33 = [v32 containsString:condition3];
 
-      v34 = a1;
+      selfCopy2 = self;
       if (!v33)
       {
         goto LABEL_51;
@@ -362,13 +362,13 @@ LABEL_54:
 
       goto LABEL_59;
     case 10:
-      v25 = [v8 value];
-      if (v25)
+      value5 = [v8 value];
+      if (value5)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v26 = v25;
+          v26 = value5;
         }
 
         else
@@ -384,19 +384,19 @@ LABEL_54:
 
       v30 = v26;
 
-      v13 = [a1 condition];
-      v14 = [v13 value];
-      v28 = [v14 value];
-      v31 = [v30 containsString:v28];
+      condition2 = [self condition];
+      value = [condition2 value];
+      condition3 = [value value];
+      v31 = [v30 containsString:condition3];
       goto LABEL_58;
     case 11:
-      v11 = [v8 value];
-      if (v11)
+      value6 = [v8 value];
+      if (value6)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = v11;
+          v12 = value6;
         }
 
         else
@@ -412,19 +412,19 @@ LABEL_54:
 
       v30 = v12;
 
-      v13 = [a1 condition];
-      v14 = [v13 value];
-      v28 = [v14 value];
-      v31 = [v30 hasPrefix:v28];
+      condition2 = [self condition];
+      value = [condition2 value];
+      condition3 = [value value];
+      v31 = [v30 hasPrefix:condition3];
       goto LABEL_58;
     case 12:
-      v15 = [v8 value];
-      if (v15)
+      value7 = [v8 value];
+      if (value7)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = v15;
+          v16 = value7;
         }
 
         else
@@ -440,27 +440,27 @@ LABEL_54:
 
       v30 = v16;
 
-      v13 = [a1 condition];
-      v14 = [v13 value];
-      v28 = [v14 value];
-      v31 = [v30 hasSuffix:v28];
+      condition2 = [self condition];
+      value = [condition2 value];
+      condition3 = [value value];
+      v31 = [v30 hasSuffix:condition3];
 LABEL_58:
       v38 = v31;
 
-      v34 = a1;
+      selfCopy2 = self;
       if (v38)
       {
 LABEL_51:
-        v35 = [v34 when];
+        when = [selfCopy2 when];
       }
 
       else
       {
 LABEL_59:
-        v35 = [v34 otherwise];
+        when = [selfCopy2 otherwise];
       }
 
-      v24 = v35;
+      v24 = when;
       goto LABEL_61;
     default:
       v24 = 0;

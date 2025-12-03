@@ -1,11 +1,11 @@
 @interface CombinedHealthSequencePredictor
 + (id)sharedPredictor;
 - (CombinedHealthSequencePredictor)init;
-- (id)getPastBatteryHealthModelPredictionsWithParams:(id)a3 forPredictionOutputName:(id)a4;
-- (id)getPayloadForCoreAnalyticsWithParams:(id)a3 forModelOutput:(id)a4;
-- (id)getPayloadForPPSWithParams:(id)a3 andFeatureValue:(id)a4 forModelOutput:(id)a5;
-- (id)parseModelOutputName:(id)a3;
-- (void)predictAndRecordWithParams:(id)a3;
+- (id)getPastBatteryHealthModelPredictionsWithParams:(id)params forPredictionOutputName:(id)name;
+- (id)getPayloadForCoreAnalyticsWithParams:(id)params forModelOutput:(id)output;
+- (id)getPayloadForPPSWithParams:(id)params andFeatureValue:(id)value forModelOutput:(id)output;
+- (id)parseModelOutputName:(id)name;
+- (void)predictAndRecordWithParams:(id)params;
 @end
 
 @implementation CombinedHealthSequencePredictor
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_100002DA0;
   block[3] = &unk_100048718;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000578A0 != -1)
   {
     dispatch_once(&qword_1000578A0, block);
@@ -63,15 +63,15 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = v12;
-      v14 = [(CombinedHealthSequencePredictor *)v4 name];
+      name = [(CombinedHealthSequencePredictor *)v4 name];
       *buf = 138412290;
-      v40 = v14;
+      v40 = name;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Unable to load ML model from trial. Loading default model for %@.", buf, 0xCu);
     }
 
     v15 = [NSBundle bundleForClass:objc_opt_class()];
-    v16 = [(CombinedHealthSequencePredictor *)v4 name];
-    v17 = [v15 pathForResource:v16 ofType:@"mlmodelc"];
+    name2 = [(CombinedHealthSequencePredictor *)v4 name];
+    v17 = [v15 pathForResource:name2 ofType:@"mlmodelc"];
 
     if (v17)
     {
@@ -81,14 +81,14 @@
       if (v11)
       {
 LABEL_9:
-        v19 = [v11 modelDescription];
-        v20 = [v19 metadata];
+        modelDescription = [v11 modelDescription];
+        metadata = [modelDescription metadata];
 
-        if (v20)
+        if (metadata)
         {
-          v21 = [v11 modelDescription];
-          v22 = [v21 metadata];
-          v23 = [v22 objectForKeyedSubscript:MLModelVersionStringKey];
+          modelDescription2 = [v11 modelDescription];
+          metadata2 = [modelDescription2 metadata];
+          v23 = [metadata2 objectForKeyedSubscript:MLModelVersionStringKey];
           [(CombinedHealthSequencePredictor *)v4 setVersion:v23];
         }
 
@@ -101,22 +101,22 @@ LABEL_9:
           }
         }
 
-        v26 = [v11 modelDescription];
-        v27 = [v26 predictedFeatureName];
+        modelDescription3 = [v11 modelDescription];
+        predictedFeatureName = [modelDescription3 predictedFeatureName];
 
-        v28 = [v11 modelDescription];
-        v29 = v28;
-        if (v27)
+        modelDescription4 = [v11 modelDescription];
+        modelDescription5 = modelDescription4;
+        if (predictedFeatureName)
         {
-          v30 = [v28 predictedFeatureName];
-          v31 = [v30 copy];
+          predictedFeatureName2 = [modelDescription4 predictedFeatureName];
+          allKeys = [predictedFeatureName2 copy];
         }
 
         else
         {
-          v32 = [v28 outputDescriptionsByName];
+          outputDescriptionsByName = [modelDescription4 outputDescriptionsByName];
 
-          if (!v32)
+          if (!outputDescriptionsByName)
           {
             v37 = v4->_logger;
             if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -127,13 +127,13 @@ LABEL_9:
             goto LABEL_21;
           }
 
-          v29 = [v11 modelDescription];
-          v30 = [v29 outputDescriptionsByName];
-          v31 = [v30 allKeys];
+          modelDescription5 = [v11 modelDescription];
+          predictedFeatureName2 = [modelDescription5 outputDescriptionsByName];
+          allKeys = [predictedFeatureName2 allKeys];
         }
 
-        v33 = v31;
-        [(CombinedHealthSequencePredictor *)v4 setPredictedFeatureNames:v31];
+        v33 = allKeys;
+        [(CombinedHealthSequencePredictor *)v4 setPredictedFeatureNames:allKeys];
 
 LABEL_21:
         v24 = v4;
@@ -173,28 +173,28 @@ LABEL_28:
   return v24;
 }
 
-- (id)parseModelOutputName:(id)a3
+- (id)parseModelOutputName:(id)name
 {
-  v3 = a3;
-  v4 = [v3 substringWithRange:{1, 2}];
-  v5 = [v4 intValue];
+  nameCopy = name;
+  v4 = [nameCopy substringWithRange:{1, 2}];
+  intValue = [v4 intValue];
 
-  v6 = [v3 componentsSeparatedByString:@"_"];
+  v6 = [nameCopy componentsSeparatedByString:@"_"];
 
   v7 = [v6 objectAtIndex:1];
   v11[0] = @"health_metric";
   v11[1] = @"quantile";
   v12[0] = v7;
-  v8 = [NSNumber numberWithInt:v5];
+  v8 = [NSNumber numberWithInt:intValue];
   v12[1] = v8;
   v9 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
 
   return v9;
 }
 
-- (void)predictAndRecordWithParams:(id)a3
+- (void)predictAndRecordWithParams:(id)params
 {
-  v4 = a3;
+  paramsCopy = params;
   v80 = os_transaction_create();
   v5 = +[NSDate now];
   v6 = +[NSDate now];
@@ -225,9 +225,9 @@ LABEL_28:
   }
 
   v75 = v9;
-  if (v4)
+  if (paramsCopy)
   {
-    v10 = [NSMutableDictionary dictionaryWithDictionary:v4];
+    v10 = [NSMutableDictionary dictionaryWithDictionary:paramsCopy];
     v115 = 0u;
     v116 = 0u;
     v117 = 0u;
@@ -275,16 +275,16 @@ LABEL_28:
   }
 
   v19 = +[BISeqPredictorCommon sharedInstance];
-  v20 = [(CombinedHealthSequencePredictor *)self name];
+  name = [(CombinedHealthSequencePredictor *)self name];
   v94 = v10;
-  v85 = [v19 runInferenceForModel:v20 withParams:v10 outputFeatureType:18];
+  v85 = [v19 runInferenceForModel:name withParams:v10 outputFeatureType:18];
 
   v113 = 0u;
   v114 = 0u;
   v111 = 0u;
   v112 = 0u;
-  v21 = [(CombinedHealthSequencePredictor *)self predictedFeatureNames];
-  v22 = [v21 countByEnumeratingWithState:&v111 objects:v129 count:16];
+  predictedFeatureNames = [(CombinedHealthSequencePredictor *)self predictedFeatureNames];
+  v22 = [predictedFeatureNames countByEnumeratingWithState:&v111 objects:v129 count:16];
   if (v22)
   {
     v23 = v22;
@@ -295,7 +295,7 @@ LABEL_28:
       {
         if (*v112 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(predictedFeatureNames);
         }
 
         v26 = *(*(&v111 + 1) + 8 * j);
@@ -311,23 +311,23 @@ LABEL_28:
         }
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v111 objects:v129 count:16];
+      v23 = [predictedFeatureNames countByEnumeratingWithState:&v111 objects:v129 count:16];
     }
 
     while (v23);
   }
 
   v29 = +[BISeqPredictorCommon sharedInstance];
-  v30 = [(CombinedHealthSequencePredictor *)self name];
-  v84 = [v29 getOutputNamesAndDimensionsForModel:v30];
+  name2 = [(CombinedHealthSequencePredictor *)self name];
+  v84 = [v29 getOutputNamesAndDimensionsForModel:name2];
 
   v87 = objc_alloc_init(NSMutableDictionary);
   v107 = 0u;
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
-  v31 = [v85 featureNames];
-  v32 = [v31 countByEnumeratingWithState:&v107 objects:v128 count:16];
+  featureNames = [v85 featureNames];
+  v32 = [featureNames countByEnumeratingWithState:&v107 objects:v128 count:16];
   if (v32)
   {
     v33 = v32;
@@ -338,19 +338,19 @@ LABEL_28:
       {
         if (*v108 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(featureNames);
         }
 
         v36 = *(*(&v107 + 1) + 8 * k);
         v37 = [v85 featureValueForName:v36];
-        v38 = [v37 multiArrayValue];
+        multiArrayValue = [v37 multiArrayValue];
         v39 = [v84 objectForKey:v36];
-        v40 = [BITensor getValuesFrom3DMultiArray:v38 withFeatureNamesForDimensions:v39];
+        v40 = [BITensor getValuesFrom3DMultiArray:multiArrayValue withFeatureNamesForDimensions:v39];
 
         [v87 addEntriesFromDictionary:v40];
       }
 
-      v33 = [v31 countByEnumeratingWithState:&v107 objects:v128 count:16];
+      v33 = [featureNames countByEnumeratingWithState:&v107 objects:v128 count:16];
     }
 
     while (v33);
@@ -361,10 +361,10 @@ LABEL_28:
   if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
   {
     v43 = v41;
-    v44 = [(CombinedHealthSequencePredictor *)self name];
+    name3 = [(CombinedHealthSequencePredictor *)self name];
     v45 = [v94 objectForKeyedSubscript:@"PredictionDurationDays"];
     *buf = 138412802;
-    v123 = v44;
+    v123 = name3;
     v124 = 2112;
     v125 = v45;
     v126 = 2112;
@@ -501,9 +501,9 @@ LABEL_28:
 
           v64 = *(*(&v95 + 1) + 8 * v63);
           v65 = [v64 substringWithRange:{1, 2}];
-          v66 = [v65 intValue];
+          intValue = [v65 intValue];
 
-          if (v66 == 50)
+          if (intValue == 50)
           {
             v67 = [v59 objectForKey:v64];
             if ([v67 count])
@@ -567,45 +567,45 @@ LABEL_28:
   }
 }
 
-- (id)getPayloadForPPSWithParams:(id)a3 andFeatureValue:(id)a4 forModelOutput:(id)a5
+- (id)getPayloadForPPSWithParams:(id)params andFeatureValue:(id)value forModelOutput:(id)output
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  outputCopy = output;
+  valueCopy = value;
+  paramsCopy = params;
   v11 = +[NSMutableDictionary dictionary];
-  v12 = [(CombinedHealthSequencePredictor *)self version];
-  [v11 setObject:v12 forKeyedSubscript:@"model_id"];
+  version = [(CombinedHealthSequencePredictor *)self version];
+  [v11 setObject:version forKeyedSubscript:@"model_id"];
 
-  v13 = [(CombinedHealthSequencePredictor *)self name];
-  [v11 setObject:v13 forKeyedSubscript:@"model_name"];
+  name = [(CombinedHealthSequencePredictor *)self name];
+  [v11 setObject:name forKeyedSubscript:@"model_name"];
 
-  [v9 doubleValue];
+  [valueCopy doubleValue];
   v15 = v14;
 
   v16 = [NSNumber numberWithDouble:v15];
   [v11 setObject:v16 forKeyedSubscript:@"model_prediction"];
 
-  v17 = [v10 objectForKeyedSubscript:@"PredictionDurationDays"];
+  v17 = [paramsCopy objectForKeyedSubscript:@"PredictionDurationDays"];
 
   [v11 setObject:v17 forKeyedSubscript:@"prediction_duration"];
-  [v11 setObject:v8 forKeyedSubscript:@"prediction_output_name"];
+  [v11 setObject:outputCopy forKeyedSubscript:@"prediction_output_name"];
 
   return v11;
 }
 
-- (id)getPastBatteryHealthModelPredictionsWithParams:(id)a3 forPredictionOutputName:(id)a4
+- (id)getPastBatteryHealthModelPredictionsWithParams:(id)params forPredictionOutputName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  paramsCopy = params;
   v8 = +[NSDate now];
-  v9 = [v7 objectForKeyedSubscript:@"PredictionDurationDays"];
+  v9 = [paramsCopy objectForKeyedSubscript:@"PredictionDurationDays"];
 
   v10 = [v8 dateByAddingTimeInterval:{(-86400 * objc_msgSend(v9, "intValue"))}];
   v11 = [v10 dateByAddingTimeInterval:-86400.0];
   v12 = v10;
   v13 = [[NSDateInterval alloc] initWithStartDate:v11 endDate:v12];
-  v14 = [(CombinedHealthSequencePredictor *)self name];
-  v15 = sub_100008EB4(v14, v13, v9, v6);
+  name = [(CombinedHealthSequencePredictor *)self name];
+  v15 = sub_100008EB4(name, v13, v9, nameCopy);
 
   if (v15 && [v15 count])
   {
@@ -639,11 +639,11 @@ LABEL_28:
   return v17;
 }
 
-- (id)getPayloadForCoreAnalyticsWithParams:(id)a3 forModelOutput:(id)a4
+- (id)getPayloadForCoreAnalyticsWithParams:(id)params forModelOutput:(id)output
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  paramsCopy = params;
+  outputCopy = output;
+  if (!paramsCopy)
   {
     logger = self->_logger;
     if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
@@ -654,7 +654,7 @@ LABEL_28:
     goto LABEL_14;
   }
 
-  v8 = [v6 objectForKey:@"PredictionDurationDays"];
+  v8 = [paramsCopy objectForKey:@"PredictionDurationDays"];
 
   if (!v8)
   {
@@ -669,18 +669,18 @@ LABEL_14:
   }
 
   v9 = +[NSMutableDictionary dictionary];
-  v10 = [(CombinedHealthSequencePredictor *)self getPastBatteryHealthModelPredictionsWithParams:v6 forPredictionOutputName:v7];
+  v10 = [(CombinedHealthSequencePredictor *)self getPastBatteryHealthModelPredictionsWithParams:paramsCopy forPredictionOutputName:outputCopy];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 firstObject];
-    v13 = [v12 valueForKey:@"model_prediction"];
+    firstObject = [v10 firstObject];
+    v13 = [firstObject valueForKey:@"model_prediction"];
 
     v14 = self->_logger;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       v33 = v14;
-      v34 = [v6 objectForKeyedSubscript:@"PredictionDurationDays"];
+      v34 = [paramsCopy objectForKeyedSubscript:@"PredictionDurationDays"];
       *buf = 138413058;
       v39 = v34;
       v40 = 2048;
@@ -692,7 +692,7 @@ LABEL_14:
       _os_log_debug_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEBUG, "For lookback days = %@, found %lu past model predictions: %@. \n Using first model prediction: %@.", buf, 0x2Au);
     }
 
-    v15 = [(CombinedHealthSequencePredictor *)self parseModelOutputName:v7];
+    v15 = [(CombinedHealthSequencePredictor *)self parseModelOutputName:outputCopy];
     v16 = [v15 objectForKey:@"health_metric"];
     v17 = sub_10001F2F8(v16);
 
@@ -708,7 +708,7 @@ LABEL_14:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
         v35 = v23;
-        v36 = [v6 objectForKeyedSubscript:@"PredictionDurationDays"];
+        v36 = [paramsCopy objectForKeyedSubscript:@"PredictionDurationDays"];
         *buf = 138413058;
         v39 = v36;
         v40 = 2112;
@@ -725,16 +725,16 @@ LABEL_14:
       v25 = [NSNumber numberWithDouble:fabs(v24)];
       [v9 setObject:v25 forKeyedSubscript:@"prediction_error_absolute"];
 
-      v26 = [(CombinedHealthSequencePredictor *)self version];
-      [v9 setObject:v26 forKeyedSubscript:@"model_id"];
+      version = [(CombinedHealthSequencePredictor *)self version];
+      [v9 setObject:version forKeyedSubscript:@"model_id"];
 
-      v27 = [(CombinedHealthSequencePredictor *)self name];
-      [v9 setObject:v27 forKeyedSubscript:@"model_name"];
+      name = [(CombinedHealthSequencePredictor *)self name];
+      [v9 setObject:name forKeyedSubscript:@"model_name"];
 
-      v28 = [v6 objectForKeyedSubscript:@"PredictionDurationDays"];
+      v28 = [paramsCopy objectForKeyedSubscript:@"PredictionDurationDays"];
       [v9 setObject:v28 forKeyedSubscript:@"prediction_duration"];
 
-      [v9 setObject:v7 forKeyedSubscript:@"prediction_output_name"];
+      [v9 setObject:outputCopy forKeyedSubscript:@"prediction_output_name"];
       v29 = v9;
 
       v13 = v37;

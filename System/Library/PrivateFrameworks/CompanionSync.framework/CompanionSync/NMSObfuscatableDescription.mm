@@ -1,8 +1,8 @@
 @interface NMSObfuscatableDescription
 - (NMSObfuscatableDescription)init;
-- (id)_descriptionObfuscated:(BOOL)a3;
-- (void)addDescription:(id)a3 value:(id)a4;
-- (void)addObfuscatedDescription:(id)a3 value:(id)a4;
+- (id)_descriptionObfuscated:(BOOL)obfuscated;
+- (void)addDescription:(id)description value:(id)value;
+- (void)addObfuscatedDescription:(id)description value:(id)value;
 @end
 
 @implementation NMSObfuscatableDescription
@@ -22,37 +22,37 @@
   return v2;
 }
 
-- (void)addDescription:(id)a3 value:(id)a4
+- (void)addDescription:(id)description value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(NMSObfuscatableDescription *)self items];
-  v8 = [[NMSObfuscatableDescriptionItem alloc] initWithPrefix:v7 value:v6 obfuscated:0];
+  valueCopy = value;
+  descriptionCopy = description;
+  items = [(NMSObfuscatableDescription *)self items];
+  v8 = [[NMSObfuscatableDescriptionItem alloc] initWithPrefix:descriptionCopy value:valueCopy obfuscated:0];
 
-  [v9 addObject:v8];
+  [items addObject:v8];
 }
 
-- (void)addObfuscatedDescription:(id)a3 value:(id)a4
+- (void)addObfuscatedDescription:(id)description value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(NMSObfuscatableDescription *)self items];
-  v8 = [[NMSObfuscatableDescriptionItem alloc] initWithPrefix:v7 value:v6 obfuscated:1];
+  valueCopy = value;
+  descriptionCopy = description;
+  items = [(NMSObfuscatableDescription *)self items];
+  v8 = [[NMSObfuscatableDescriptionItem alloc] initWithPrefix:descriptionCopy value:valueCopy obfuscated:1];
 
-  [v9 addObject:v8];
+  [items addObject:v8];
 }
 
-- (id)_descriptionObfuscated:(BOOL)a3
+- (id)_descriptionObfuscated:(BOOL)obfuscated
 {
-  v3 = a3;
+  obfuscatedCopy = obfuscated;
   v26 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v6 = [(NMSObfuscatableDescription *)self prefixString];
+  prefixString = [(NMSObfuscatableDescription *)self prefixString];
 
-  if (v6)
+  if (prefixString)
   {
-    v7 = [(NMSObfuscatableDescription *)self prefixString];
-    [v5 appendFormat:@"%@\n", v7];
+    prefixString2 = [(NMSObfuscatableDescription *)self prefixString];
+    [v5 appendFormat:@"%@\n", prefixString2];
   }
 
   [v5 appendString:@"{\n"];
@@ -60,8 +60,8 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(NMSObfuscatableDescription *)self items];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  items = [(NMSObfuscatableDescription *)self items];
+  v9 = [items countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -72,20 +72,20 @@
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(items);
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
         [v5 appendString:@"    "];
-        v14 = [v13 prefix];
-        [v5 appendString:v14];
+        prefix = [v13 prefix];
+        [v5 appendString:prefix];
 
-        LODWORD(v14) = [v13 obfuscated];
-        v15 = [v13 value];
-        v16 = v15;
-        if (v14)
+        LODWORD(prefix) = [v13 obfuscated];
+        value = [v13 value];
+        v16 = value;
+        if (prefix)
         {
-          v17 = !v3;
+          v17 = !obfuscatedCopy;
         }
 
         else
@@ -95,17 +95,17 @@
 
         if (v17)
         {
-          [v5 appendFormat:@": %@\n", v15];
+          [v5 appendFormat:@": %@\n", value];
         }
 
         else
         {
-          v18 = _SYObfuscate(v15);
+          v18 = _SYObfuscate(value);
           [v5 appendFormat:@": %@\n", v18];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [items countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);

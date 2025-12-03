@@ -14,13 +14,13 @@
 + (void)load;
 - (PLProximityAgent)init;
 - (void)initOperatorDependancies;
-- (void)logEventBackwardPowerStats:(id)a3;
-- (void)logEventForwardClientState:(id)a3;
-- (void)logEventForwardRadioState:(id)a3;
+- (void)logEventBackwardPowerStats:(id)stats;
+- (void)logEventForwardClientState:(id)state;
+- (void)logEventForwardRadioState:(id)state;
 - (void)logEventIntervalBinnedDeviceConnection;
-- (void)logEventPointDeviceConnection:(id)a3;
-- (void)logEventPointMaintenance:(id)a3;
-- (void)logEventPointTimerState:(id)a3;
+- (void)logEventPointDeviceConnection:(id)connection;
+- (void)logEventPointMaintenance:(id)maintenance;
+- (void)logEventPointTimerState:(id)state;
 @end
 
 @implementation PLProximityAgent
@@ -44,7 +44,7 @@ void __44__PLProximityAgent_initOperatorDependancies__block_invoke_158(uint64_t 
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLProximityAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -78,17 +78,17 @@ void __44__PLProximityAgent_initOperatorDependancies__block_invoke_158(uint64_t 
   v18[0] = v2;
   v17[1] = *MEMORY[0x277D3F540];
   v13[0] = @"targetInterval";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_RealFormat];
-  v14[0] = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198] commonTypeDict_RealFormat];
+  v14[0] = commonTypeDict_RealFormat;
   v13[1] = @"actualInterval";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_RealFormat];
-  v14[1] = v6;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat];
+  v14[1] = commonTypeDict_RealFormat2;
   v13[2] = @"earlypct";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v14[2] = v8;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v14[2] = commonTypeDict_IntegerFormat;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
   v18[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -108,13 +108,13 @@ void __44__PLProximityAgent_initOperatorDependancies__block_invoke_158(uint64_t 
   v16[0] = v2;
   v15[1] = *MEMORY[0x277D3F540];
   v11[0] = @"duration";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v11[1] = @"numDevices";
-  v12[0] = v4;
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v12[1] = v6;
+  v12[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v12[1] = commonTypeDict_IntegerFormat2;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v16[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -134,17 +134,17 @@ void __44__PLProximityAgent_initOperatorDependancies__block_invoke_158(uint64_t 
   v18[0] = v2;
   v17[1] = *MEMORY[0x277D3F540];
   v13[0] = @"type";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat];
-  v14[0] = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v14[0] = commonTypeDict_StringFormat;
   v13[1] = @"reason";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat];
-  v14[1] = v6;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v14[1] = commonTypeDict_StringFormat2;
   v13[2] = @"firmwareVersion";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_StringFormat];
-  v14[2] = v8;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v14[2] = commonTypeDict_StringFormat3;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
   v18[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -173,7 +173,7 @@ void __44__PLProximityAgent_initOperatorDependancies__block_invoke_158(uint64_t 
 + (id)entryEventForwardDefinitionRadioState
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  if ([a1 isProximityLiteSupported])
+  if ([self isProximityLiteSupported])
   {
     v13[0] = *MEMORY[0x277D3F4E8];
     v11 = *MEMORY[0x277D3F568];
@@ -182,9 +182,9 @@ void __44__PLProximityAgent_initOperatorDependancies__block_invoke_158(uint64_t 
     v14[0] = v2;
     v13[1] = *MEMORY[0x277D3F540];
     v9 = @"State";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
-    v10 = v4;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v10 = commonTypeDict_IntegerFormat;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v14[1] = v5;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -203,7 +203,7 @@ void __44__PLProximityAgent_initOperatorDependancies__block_invoke_158(uint64_t 
 + (id)entryEventForwardDefinitionClientState
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  if (([MEMORY[0x277D3F208] hasProximitySensor] & 1) != 0 || objc_msgSend(a1, "isProximityLiteSupported"))
+  if (([MEMORY[0x277D3F208] hasProximitySensor] & 1) != 0 || objc_msgSend(self, "isProximityLiteSupported"))
   {
     v18[0] = *MEMORY[0x277D3F4E8];
     v16 = *MEMORY[0x277D3F568];
@@ -212,17 +212,17 @@ void __44__PLProximityAgent_initOperatorDependancies__block_invoke_158(uint64_t 
     v19[0] = v3;
     v18[1] = *MEMORY[0x277D3F540];
     v14[0] = @"EventID";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_IntegerFormat];
-    v15[0] = v5;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v15[0] = commonTypeDict_IntegerFormat;
     v14[1] = @"ClientName";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_IntegerFormat];
-    v15[1] = v7;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v15[1] = commonTypeDict_IntegerFormat2;
     v14[2] = @"State";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_BoolFormat];
-    v15[2] = v9;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+    v15[2] = commonTypeDict_BoolFormat;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
     v19[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
@@ -254,7 +254,7 @@ void __44__PLProximityAgent_initOperatorDependancies__block_invoke_158(uint64_t 
 + (id)entryEventBackwardDefinitionRadioPower
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  if (([MEMORY[0x277D3F208] hasProximitySensor] & 1) != 0 || objc_msgSend(a1, "isProximityLiteSupported"))
+  if (([MEMORY[0x277D3F208] hasProximitySensor] & 1) != 0 || objc_msgSend(self, "isProximityLiteSupported"))
   {
     v36[0] = *MEMORY[0x277D3F4E8];
     v34 = *MEMORY[0x277D3F568];
@@ -263,53 +263,53 @@ void __44__PLProximityAgent_initOperatorDependancies__block_invoke_158(uint64_t 
     v37[0] = v31;
     v36[1] = *MEMORY[0x277D3F540];
     v32[0] = @"SleepDuration";
-    v30 = [MEMORY[0x277D3F198] sharedInstance];
-    v29 = [v30 commonTypeDict_IntegerFormat];
-    v33[0] = v29;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v33[0] = commonTypeDict_IntegerFormat;
     v32[1] = @"WakeDuration";
-    v28 = [MEMORY[0x277D3F198] sharedInstance];
-    v27 = [v28 commonTypeDict_IntegerFormat];
-    v33[1] = v27;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v33[1] = commonTypeDict_IntegerFormat2;
     v32[2] = @"SingleAntennaSearchDuration";
-    v26 = [MEMORY[0x277D3F198] sharedInstance];
-    v25 = [v26 commonTypeDict_IntegerFormat];
-    v33[2] = v25;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v33[2] = commonTypeDict_IntegerFormat3;
     v32[3] = @"DoubleAntennaSearchDuration";
-    v24 = [MEMORY[0x277D3F198] sharedInstance];
-    v23 = [v24 commonTypeDict_IntegerFormat];
-    v33[3] = v23;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v33[3] = commonTypeDict_IntegerFormat4;
     v32[4] = @"SingleChainRxPacketDuration";
-    v22 = [MEMORY[0x277D3F198] sharedInstance];
-    v21 = [v22 commonTypeDict_IntegerFormat];
-    v33[4] = v21;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v33[4] = commonTypeDict_IntegerFormat5;
     v32[5] = @"DoubleChainRxPacketDuration";
-    v20 = [MEMORY[0x277D3F198] sharedInstance];
-    v19 = [v20 commonTypeDict_IntegerFormat];
-    v33[5] = v19;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v33[5] = commonTypeDict_IntegerFormat6;
     v32[6] = @"TripleChainRxPacketDuration";
-    v18 = [MEMORY[0x277D3F198] sharedInstance];
-    v17 = [v18 commonTypeDict_IntegerFormat];
-    v33[6] = v17;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+    v33[6] = commonTypeDict_IntegerFormat7;
     v32[7] = @"DSPProcessingDuration";
-    v16 = [MEMORY[0x277D3F198] sharedInstance];
-    v15 = [v16 commonTypeDict_IntegerFormat];
-    v33[7] = v15;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+    v33[7] = commonTypeDict_IntegerFormat8;
     v32[8] = @"TxDuration";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
-    v33[8] = v4;
+    mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+    v33[8] = commonTypeDict_IntegerFormat9;
     v32[9] = @"ReceivedPacketsCount";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v33[9] = v6;
+    mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+    v33[9] = commonTypeDict_IntegerFormat10;
     v32[10] = @"TransmittedPacketsCount";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_IntegerFormat];
-    v33[10] = v8;
+    mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+    v33[10] = commonTypeDict_IntegerFormat11;
     v32[11] = @"DeepSleepDuration";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_IntegerFormat];
-    v33[11] = v10;
+    mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+    v33[11] = commonTypeDict_IntegerFormat12;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:12];
     v37[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
@@ -329,8 +329,8 @@ void __44__PLProximityAgent_initOperatorDependancies__block_invoke_158(uint64_t 
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"BinnedDeviceConnection";
-  v2 = [a1 entryEventIntervalDefinitionBinnedDeviceConnection];
-  v7[0] = v2;
+  entryEventIntervalDefinitionBinnedDeviceConnection = [self entryEventIntervalDefinitionBinnedDeviceConnection];
+  v7[0] = entryEventIntervalDefinitionBinnedDeviceConnection;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -348,17 +348,17 @@ void __44__PLProximityAgent_initOperatorDependancies__block_invoke_158(uint64_t 
   v18[0] = v2;
   v17[1] = *MEMORY[0x277D3F540];
   v13[0] = @"timestampEnd";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_DateFormat];
-  v14[0] = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v14[0] = commonTypeDict_DateFormat;
   v13[1] = @"connects";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v14[1] = v6;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v14[1] = commonTypeDict_IntegerFormat;
   v13[2] = @"disconnects";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v14[2] = v8;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v14[2] = commonTypeDict_IntegerFormat2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
   v18[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -404,9 +404,9 @@ uint64_t __44__PLProximityAgent_isProximityLiteSupported__block_invoke()
     v2->_numBTLines = 0;
     v2->_numConnects = 0;
     v2->_numDisconnects = 0;
-    v4 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     lastSBCTimestamp = v3->_lastSBCTimestamp;
-    v3->_lastSBCTimestamp = v4;
+    v3->_lastSBCTimestamp = monotonicDate;
   }
 
   return v3;
@@ -460,13 +460,13 @@ uint64_t __44__PLProximityAgent_isProximityLiteSupported__block_invoke()
   v12 = v11;
   v13 = objc_alloc(MEMORY[0x277D3F250]);
   v14 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v12];
-  v15 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __44__PLProximityAgent_initOperatorDependancies__block_invoke_2;
   v27[3] = &unk_278259C40;
   v27[4] = self;
-  v16 = [v13 initWithFireDate:v14 withInterval:1 withTolerance:0 repeats:v15 withUserInfo:v27 withQueue:v12 withBlock:0.0];
+  v16 = [v13 initWithFireDate:v14 withInterval:1 withTolerance:0 repeats:workQueue withUserInfo:v27 withQueue:v12 withBlock:0.0];
   runTimeAggregatorTimer = self->_runTimeAggregatorTimer;
   self->_runTimeAggregatorTimer = v16;
 
@@ -658,61 +658,61 @@ void __44__PLProximityAgent_initOperatorDependancies__block_invoke_183(uint64_t 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventForwardRadioState:(id)a3
+- (void)logEventForwardRadioState:(id)state
 {
   v4 = *MEMORY[0x277D3F5D0];
-  v5 = a3;
+  stateCopy = state;
   v7 = [(PLOperator *)PLProximityAgent entryKeyForType:v4 andName:@"State"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:stateCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventForwardClientState:(id)a3
+- (void)logEventForwardClientState:(id)state
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  stateCopy = state;
+  if (stateCopy)
   {
     v5 = [(PLOperator *)PLProximityAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"ClientState"];
     v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5];
-    v7 = [v4 objectForKeyedSubscript:@"TicketID"];
+    v7 = [stateCopy objectForKeyedSubscript:@"TicketID"];
     [v6 setObject:v7 forKeyedSubscript:@"EventID"];
 
-    v8 = [v4 objectForKeyedSubscript:@"ClientName"];
+    v8 = [stateCopy objectForKeyedSubscript:@"ClientName"];
     [v6 setObject:v8 forKeyedSubscript:@"ClientName"];
 
-    v9 = [v4 objectForKeyedSubscript:@"State"];
+    v9 = [stateCopy objectForKeyedSubscript:@"State"];
     [v6 setObject:v9 forKeyedSubscript:@"State"];
 
-    v10 = [v4 objectForKeyedSubscript:@"Timestamp"];
+    v10 = [stateCopy objectForKeyedSubscript:@"Timestamp"];
     if (v10)
     {
       v11 = v10;
-      v12 = [v4 objectForKeyedSubscript:@"Timestamp"];
-      v13 = [MEMORY[0x277CBEB68] null];
+      v12 = [stateCopy objectForKeyedSubscript:@"Timestamp"];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v12 != v13)
+      if (v12 != null)
       {
         v14 = PLLogProximity();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
-          v23 = [v6 entryDate];
-          [v23 timeIntervalSince1970];
+          entryDate = [v6 entryDate];
+          [entryDate timeIntervalSince1970];
           v28 = 134217984;
           v29 = v24;
           _os_log_debug_impl(&dword_21A4C6000, v14, OS_LOG_TYPE_DEBUG, "Previous TS: %f ", &v28, 0xCu);
         }
 
         v15 = MEMORY[0x277CBEAA8];
-        v16 = [v4 objectForKeyedSubscript:@"Timestamp"];
+        v16 = [stateCopy objectForKeyedSubscript:@"Timestamp"];
         [v16 doubleValue];
         v17 = [v15 dateWithTimeIntervalSinceReferenceDate:?];
         [v6 setObject:v17 forKeyedSubscript:@"entryDate"];
 
         v18 = MEMORY[0x277CCABB0];
-        v19 = [v6 entryDate];
-        [v19 timeIntervalSince1970];
+        entryDate2 = [v6 entryDate];
+        [entryDate2 timeIntervalSince1970];
         v20 = [v18 numberWithDouble:?];
         [v6 setObject:v20 forKeyedSubscript:@"timestamp"];
 
@@ -720,7 +720,7 @@ void __44__PLProximityAgent_initOperatorDependancies__block_invoke_183(uint64_t 
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
           v25 = [v6 objectForKeyedSubscript:@"timestamp"];
-          v26 = [v4 objectForKeyedSubscript:@"Timestamp"];
+          v26 = [stateCopy objectForKeyedSubscript:@"Timestamp"];
           [v26 doubleValue];
           v28 = 138412546;
           v29 = v25;
@@ -747,33 +747,33 @@ void __44__PLProximityAgent_initOperatorDependancies__block_invoke_183(uint64_t 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventBackwardPowerStats:(id)a3
+- (void)logEventBackwardPowerStats:(id)stats
 {
   v4 = *MEMORY[0x277D3F5C8];
-  v5 = a3;
+  statsCopy = stats;
   v7 = [(PLOperator *)PLProximityAgent entryKeyForType:v4 andName:@"PowerStatistics"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:statsCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventPointTimerState:(id)a3
+- (void)logEventPointTimerState:(id)state
 {
   v4 = *MEMORY[0x277D3F5E8];
-  v5 = a3;
+  stateCopy = state;
   v7 = [(PLOperator *)PLProximityAgent entryKeyForType:v4 andName:@"TimerState"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:stateCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventPointDeviceConnection:(id)a3
+- (void)logEventPointDeviceConnection:(id)connection
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D3F5E8];
-  v5 = a3;
+  connectionCopy = connection;
   v6 = [(PLOperator *)PLProximityAgent entryKeyForType:v4 andName:@"DeviceConnection"];
-  v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6 withRawData:v5];
+  v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6 withRawData:connectionCopy];
 
   v8 = self->_numBTLines + 1;
   self->_numBTLines = v8;
@@ -831,9 +831,9 @@ LABEL_10:
   v19 = *MEMORY[0x277D85DE8];
   v3 = [(PLOperator *)PLProximityAgent entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"BinnedDeviceConnection"];
   v4 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v3];
-  v5 = [v4 entryDate];
+  entryDate = [v4 entryDate];
   [v4 setEntryDate:self->_lastSBCTimestamp];
-  [v4 setObject:v5 forKeyedSubscript:@"timestampEnd"];
+  [v4 setObject:entryDate forKeyedSubscript:@"timestampEnd"];
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:self->_numConnects];
   [v4 setObject:v6 forKeyedSubscript:@"connects"];
 
@@ -859,27 +859,27 @@ LABEL_10:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventPointMaintenance:(id)a3
+- (void)logEventPointMaintenance:(id)maintenance
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D3F5E8];
-  v5 = a3;
+  maintenanceCopy = maintenance;
   v6 = [(PLOperator *)PLProximityAgent entryKeyForType:v4 andName:@"MaintainedDevices"];
-  v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6 withRawData:v5];
-  v8 = [v5 objectForKeyedSubscript:@"numDevices"];
+  v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6 withRawData:maintenanceCopy];
+  v8 = [maintenanceCopy objectForKeyedSubscript:@"numDevices"];
 
-  v9 = [v8 intValue];
-  if (v9 >= 20)
+  intValue = [v8 intValue];
+  if (intValue >= 20)
   {
     v10 = 20;
   }
 
   else
   {
-    v10 = v9;
+    v10 = intValue;
   }
 
-  if ((v9 - 10) >= 0xA)
+  if ((intValue - 10) >= 0xA)
   {
     v11 = v10;
   }
@@ -889,7 +889,7 @@ LABEL_10:
     v11 = 10;
   }
 
-  if ((v9 - 5) >= 5)
+  if ((intValue - 5) >= 5)
   {
     v12 = v11;
   }

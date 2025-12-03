@@ -1,6 +1,6 @@
 @interface DMDAssetRemoveOperation
 - (void)main;
-- (void)removeOperationDidFinish:(id)a3 asset:(id)a4;
+- (void)removeOperationDidFinish:(id)finish asset:(id)asset;
 @end
 
 @implementation DMDAssetRemoveOperation
@@ -15,9 +15,9 @@
   [(DMDPayloadActionOperation *)self performBackgroundContextBlock:v2];
 }
 
-- (void)removeOperationDidFinish:(id)a3 asset:(id)a4
+- (void)removeOperationDidFinish:(id)finish asset:(id)asset
 {
-  [a3 error];
+  [finish error];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100023B40;

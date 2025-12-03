@@ -1,24 +1,24 @@
 @interface ADRemoteContextStore
-- (ADRemoteContextStore)initWithRapportLink:(id)a3 queue:(id)a4;
+- (ADRemoteContextStore)initWithRapportLink:(id)link queue:(id)queue;
 - (id)_contextLinkMessageOptions;
-- (id)_initWithRapportLink:(id)a3 queue:(id)a4 deviceCircleManager:(id)a5;
-- (void)_activateOnDemandRapportConnectionAndFetchContext:(id)a3;
-- (void)_dumpStateForReason:(id)a3;
-- (void)_enumerateDeviceContextsUsingBlock:(id)a3;
-- (void)_fetchContextFromCollectorAndForceFetchingFromDevicesWithPeerInfo:(id)a3 completion:(id)a4;
-- (void)_fetchContextFromCollectorThroughOnDemandConnection:(id)a3;
-- (void)_fetchContextFromDeviceWithPeerInfo:(id)a3 completion:(id)a4;
-- (void)_setContextCollectionAllowed:(BOOL)a3;
-- (void)fetchContextSnapshotFromAllDevicesWithCompletion:(id)a3;
-- (void)fetchContextSnapshotFromDevicesWithPeerInfo:(id)a3 completion:(id)a4;
-- (void)getContextSnapshotIncludingKeys:(id)a3 excludingMandatoryKeys:(id)a4 completion:(id)a5;
-- (void)getSerializedDeviceContextSnapshotIncludingKeys:(id)a3 excludingMandatoryKeys:(id)a4 completion:(id)a5;
-- (void)rapportLink:(id)a3 didLoseDevice:(id)a4;
-- (void)setDeviceContext:(id)a3 includedKeys:(id)a4 excludedKeys:(id)a5 forDeviceWithPeerInfo:(id)a6 completion:(id)a7;
-- (void)setDeviceContext:(id)a3 withIncludedKeys:(id)a4 excludedKeys:(id)a5 forDeviceWithIDSDeviceUniqueIdentifier:(id)a6 withCompletion:(id)a7;
+- (id)_initWithRapportLink:(id)link queue:(id)queue deviceCircleManager:(id)manager;
+- (void)_activateOnDemandRapportConnectionAndFetchContext:(id)context;
+- (void)_dumpStateForReason:(id)reason;
+- (void)_enumerateDeviceContextsUsingBlock:(id)block;
+- (void)_fetchContextFromCollectorAndForceFetchingFromDevicesWithPeerInfo:(id)info completion:(id)completion;
+- (void)_fetchContextFromCollectorThroughOnDemandConnection:(id)connection;
+- (void)_fetchContextFromDeviceWithPeerInfo:(id)info completion:(id)completion;
+- (void)_setContextCollectionAllowed:(BOOL)allowed;
+- (void)fetchContextSnapshotFromAllDevicesWithCompletion:(id)completion;
+- (void)fetchContextSnapshotFromDevicesWithPeerInfo:(id)info completion:(id)completion;
+- (void)getContextSnapshotIncludingKeys:(id)keys excludingMandatoryKeys:(id)mandatoryKeys completion:(id)completion;
+- (void)getSerializedDeviceContextSnapshotIncludingKeys:(id)keys excludingMandatoryKeys:(id)mandatoryKeys completion:(id)completion;
+- (void)rapportLink:(id)link didLoseDevice:(id)device;
+- (void)setDeviceContext:(id)context includedKeys:(id)keys excludedKeys:(id)excludedKeys forDeviceWithPeerInfo:(id)info completion:(id)completion;
+- (void)setDeviceContext:(id)context withIncludedKeys:(id)keys excludedKeys:(id)excludedKeys forDeviceWithIDSDeviceUniqueIdentifier:(id)identifier withCompletion:(id)completion;
 - (void)startCollectingContext;
 - (void)stopCollectingContext;
-- (void)updateRapportLink:(id)a3;
+- (void)updateRapportLink:(id)link;
 @end
 
 @implementation ADRemoteContextStore
@@ -32,120 +32,120 @@
   return v2;
 }
 
-- (void)_dumpStateForReason:(id)a3
+- (void)_dumpStateForReason:(id)reason
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10017E15C;
   v5[3] = &unk_100513F18;
-  v6 = a3;
-  v4 = v6;
+  reasonCopy = reason;
+  v4 = reasonCopy;
   [(ADRemoteContextStore *)self _enumerateDeviceContextsUsingBlock:v5];
 }
 
-- (void)rapportLink:(id)a3 didLoseDevice:(id)a4
+- (void)rapportLink:(id)link didLoseDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10017E2D4;
   v8[3] = &unk_10051E010;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = deviceCopy;
+  v7 = deviceCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)getSerializedDeviceContextSnapshotIncludingKeys:(id)a3 excludingMandatoryKeys:(id)a4 completion:(id)a5
+- (void)getSerializedDeviceContextSnapshotIncludingKeys:(id)keys excludingMandatoryKeys:(id)mandatoryKeys completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  keysCopy = keys;
+  mandatoryKeysCopy = mandatoryKeys;
+  completionCopy = completion;
+  if (completionCopy)
   {
     queue = self->_queue;
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10017E524;
     v12[3] = &unk_10051E0D8;
-    v13 = v8;
-    v16 = v10;
-    v14 = self;
-    v15 = v9;
+    v13 = keysCopy;
+    v16 = completionCopy;
+    selfCopy = self;
+    v15 = mandatoryKeysCopy;
     dispatch_async(queue, v12);
   }
 }
 
-- (void)setDeviceContext:(id)a3 includedKeys:(id)a4 excludedKeys:(id)a5 forDeviceWithPeerInfo:(id)a6 completion:(id)a7
+- (void)setDeviceContext:(id)context includedKeys:(id)keys excludedKeys:(id)excludedKeys forDeviceWithPeerInfo:(id)info completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (v15)
+  contextCopy = context;
+  keysCopy = keys;
+  excludedKeysCopy = excludedKeys;
+  infoCopy = info;
+  completionCopy = completion;
+  v17 = completionCopy;
+  if (infoCopy)
   {
     queue = self->_queue;
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10017E9E4;
     v19[3] = &unk_1005183C8;
-    v20 = v12;
-    v21 = v15;
-    v22 = v13;
-    v23 = v14;
-    v24 = self;
+    v20 = contextCopy;
+    v21 = infoCopy;
+    v22 = keysCopy;
+    v23 = excludedKeysCopy;
+    selfCopy = self;
     v25 = v17;
     dispatch_async(queue, v19);
   }
 
-  else if (v16)
+  else if (completionCopy)
   {
-    (*(v16 + 2))(v16);
+    (*(completionCopy + 2))(completionCopy);
   }
 }
 
-- (void)setDeviceContext:(id)a3 withIncludedKeys:(id)a4 excludedKeys:(id)a5 forDeviceWithIDSDeviceUniqueIdentifier:(id)a6 withCompletion:(id)a7
+- (void)setDeviceContext:(id)context withIncludedKeys:(id)keys excludedKeys:(id)excludedKeys forDeviceWithIDSDeviceUniqueIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v18 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
-  if (v14)
+  contextCopy = context;
+  keysCopy = keys;
+  excludedKeysCopy = excludedKeys;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v16 = completionCopy;
+  if (identifierCopy)
   {
-    v17 = sub_100188240(v14);
-    [(ADRemoteContextStore *)self setDeviceContext:v18 includedKeys:v12 excludedKeys:v13 forDeviceWithPeerInfo:v17 completion:v16];
+    v17 = sub_100188240(identifierCopy);
+    [(ADRemoteContextStore *)self setDeviceContext:contextCopy includedKeys:keysCopy excludedKeys:excludedKeysCopy forDeviceWithPeerInfo:v17 completion:v16];
   }
 
-  else if (v15)
+  else if (completionCopy)
   {
-    (*(v15 + 2))(v15);
+    (*(completionCopy + 2))(completionCopy);
   }
 }
 
-- (void)updateRapportLink:(id)a3
+- (void)updateRapportLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10017EDE0;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = linkCopy;
+  v6 = linkCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_fetchContextFromCollectorAndForceFetchingFromDevicesWithPeerInfo:(id)a3 completion:(id)a4
+- (void)_fetchContextFromCollectorAndForceFetchingFromDevicesWithPeerInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  infoCopy = info;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -153,7 +153,7 @@
       *buf = 136315394;
       v14 = "[ADRemoteContextStore _fetchContextFromCollectorAndForceFetchingFromDevicesWithPeerInfo:completion:]";
       v15 = 2112;
-      v16 = v6;
+      v16 = infoCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s #hal Force fetching from devices through collector: %@", buf, 0x16u);
     }
 
@@ -163,23 +163,23 @@
     v10[2] = sub_10017EF88;
     v10[3] = &unk_100514EF8;
     v10[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = infoCopy;
+    v12 = completionCopy;
     [(ADDeviceCircleManager *)deviceCircleManager getContextCollectorDeviceIdentifiersWithCompletion:v10];
   }
 }
 
-- (void)_fetchContextFromDeviceWithPeerInfo:(id)a3 completion:(id)a4
+- (void)_fetchContextFromDeviceWithPeerInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v24 = "[ADRemoteContextStore _fetchContextFromDeviceWithPeerInfo:completion:]";
     v25 = 2112;
-    v26 = v6;
+    v26 = infoCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s #hal Force fetching context directly from %@", buf, 0x16u);
   }
 
@@ -187,25 +187,25 @@
   v21 = @"prefers_assistant_identifiers";
   v22 = &__kCFBooleanTrue;
   v10 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-  v11 = [(ADRemoteContextStore *)self _contextLinkMessageOptions];
+  _contextLinkMessageOptions = [(ADRemoteContextStore *)self _contextLinkMessageOptions];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_10017FB4C;
   v18 = &unk_100514DE0;
-  v19 = v6;
-  v20 = v7;
-  v12 = v7;
-  v13 = v6;
-  [(ADRapportLink *)rapportLink sendRequestID:@"com.apple.siri.rapport-link.request.generic" messageType:@"agg_context_fetch" messagePayload:v10 toPeer:v13 options:v11 completion:&v15];
+  v19 = infoCopy;
+  v20 = completionCopy;
+  v12 = completionCopy;
+  v13 = infoCopy;
+  [(ADRapportLink *)rapportLink sendRequestID:@"com.apple.siri.rapport-link.request.generic" messageType:@"agg_context_fetch" messagePayload:v10 toPeer:v13 options:_contextLinkMessageOptions completion:&v15];
 
   v14 = [AFAnalytics sharedAnalytics:v15];
   [v14 logEventWithType:4585 context:0];
 }
 
-- (void)_fetchContextFromCollectorThroughOnDemandConnection:(id)a3
+- (void)_fetchContextFromCollectorThroughOnDemandConnection:(id)connection
 {
-  v4 = a3;
-  if (v4)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
     if (AFSupportsHALOnDemandRapportConnection())
     {
@@ -215,33 +215,33 @@
       v6[2] = sub_10017FE98;
       v6[3] = &unk_10051E038;
       v6[4] = self;
-      v7 = v4;
+      v7 = connectionCopy;
       dispatch_async(queue, v6);
     }
 
     else
     {
-      (*(v4 + 2))(v4, 0, 0);
+      (*(connectionCopy + 2))(connectionCopy, 0, 0);
     }
   }
 }
 
-- (void)_activateOnDemandRapportConnectionAndFetchContext:(id)a3
+- (void)_activateOnDemandRapportConnectionAndFetchContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ((AFSupportsHALOnDemandRapportConnection() & 1) == 0)
   {
 LABEL_8:
-    (*(v4 + 2))(v4, 0, 0);
+    (*(contextCopy + 2))(contextCopy, 0, 0);
     goto LABEL_9;
   }
 
-  v5 = [(ADRapportLink *)self->_rapportLink configuration];
-  v6 = [v5 connectionOptions];
-  v7 = [v6 usesOnDemandConnection];
+  configuration = [(ADRapportLink *)self->_rapportLink configuration];
+  connectionOptions = [configuration connectionOptions];
+  usesOnDemandConnection = [connectionOptions usesOnDemandConnection];
 
   v8 = AFSiriLogContextDaemon;
-  if (v7 != 2)
+  if (usesOnDemandConnection != 2)
   {
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
     {
@@ -272,33 +272,33 @@ LABEL_8:
   v12[2] = sub_1001806E0;
   v12[3] = &unk_10051DD98;
   v12[4] = self;
-  v13 = v4;
+  v13 = contextCopy;
   [(ADRapportLink *)v10 activateWithCompletion:v12];
 
 LABEL_9:
 }
 
-- (void)fetchContextSnapshotFromAllDevicesWithCompletion:(id)a3
+- (void)fetchContextSnapshotFromAllDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001809A8;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)fetchContextSnapshotFromDevicesWithPeerInfo:(id)a3 completion:(id)a4
+- (void)fetchContextSnapshotFromDevicesWithPeerInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  infoCopy = info;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([v6 count])
+    if ([infoCopy count])
     {
       queue = self->_queue;
       block[0] = _NSConcreteStackBlock;
@@ -306,23 +306,23 @@ LABEL_9:
       block[2] = sub_100180BD8;
       block[3] = &unk_10051E088;
       block[4] = self;
-      v10 = v6;
-      v11 = v7;
+      v10 = infoCopy;
+      v11 = completionCopy;
       dispatch_async(queue, block);
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }
 
-- (void)getContextSnapshotIncludingKeys:(id)a3 excludingMandatoryKeys:(id)a4 completion:(id)a5
+- (void)getContextSnapshotIncludingKeys:(id)keys excludingMandatoryKeys:(id)mandatoryKeys completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keysCopy = keys;
+  mandatoryKeysCopy = mandatoryKeys;
+  completionCopy = completion;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -331,7 +331,7 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s #hal", buf, 0xCu);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     queue = self->_queue;
     v13[0] = _NSConcreteStackBlock;
@@ -339,37 +339,37 @@ LABEL_9:
     v13[2] = sub_1001818A4;
     v13[3] = &unk_10051E0D8;
     v13[4] = self;
-    v14 = v8;
-    v15 = v9;
-    v16 = v10;
+    v14 = keysCopy;
+    v15 = mandatoryKeysCopy;
+    v16 = completionCopy;
     dispatch_async(queue, v13);
   }
 }
 
-- (void)_enumerateDeviceContextsUsingBlock:(id)a3
+- (void)_enumerateDeviceContextsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     deviceContextMap = self->_deviceContextMap;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100181DA0;
     v7[3] = &unk_100513EC8;
-    v8 = v4;
+    v8 = blockCopy;
     [(AFPeerMap *)deviceContextMap enumerateObjectsUsingBlock:v7];
   }
 }
 
-- (void)_setContextCollectionAllowed:(BOOL)a3
+- (void)_setContextCollectionAllowed:(BOOL)allowed
 {
-  v3 = a3;
+  allowedCopy = allowed;
   dispatch_assert_queue_V2(self->_queue);
-  if (self->_contextCollectionAllowed != v3)
+  if (self->_contextCollectionAllowed != allowedCopy)
   {
-    self->_contextCollectionAllowed = v3;
-    if (v3)
+    self->_contextCollectionAllowed = allowedCopy;
+    if (allowedCopy)
     {
       v5 = objc_alloc_init(AFPeerMap);
       deviceContextMap = self->_deviceContextMap;
@@ -414,21 +414,21 @@ LABEL_9:
   dispatch_async(queue, block);
 }
 
-- (id)_initWithRapportLink:(id)a3 queue:(id)a4 deviceCircleManager:(id)a5
+- (id)_initWithRapportLink:(id)link queue:(id)queue deviceCircleManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  linkCopy = link;
+  queueCopy = queue;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = ADRemoteContextStore;
   v12 = [(ADRemoteContextStore *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_rapportLink, a3);
-    if (v10)
+    objc_storeStrong(&v12->_rapportLink, link);
+    if (queueCopy)
     {
-      v14 = v10;
+      v14 = queueCopy;
       queue = v13->_queue;
       v13->_queue = v14;
     }
@@ -443,18 +443,18 @@ LABEL_9:
       v13->_queue = v18;
     }
 
-    objc_storeStrong(&v13->_deviceCircleManager, a5);
+    objc_storeStrong(&v13->_deviceCircleManager, manager);
   }
 
   return v13;
 }
 
-- (ADRemoteContextStore)initWithRapportLink:(id)a3 queue:(id)a4
+- (ADRemoteContextStore)initWithRapportLink:(id)link queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
+  queueCopy = queue;
+  linkCopy = link;
   v8 = +[ADDeviceCircleManager sharedInstance];
-  v9 = [(ADRemoteContextStore *)self _initWithRapportLink:v7 queue:v6 deviceCircleManager:v8];
+  v9 = [(ADRemoteContextStore *)self _initWithRapportLink:linkCopy queue:queueCopy deviceCircleManager:v8];
 
   return v9;
 }

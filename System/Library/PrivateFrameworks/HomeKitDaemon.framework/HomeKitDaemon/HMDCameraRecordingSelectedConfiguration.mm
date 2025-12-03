@@ -1,44 +1,44 @@
 @interface HMDCameraRecordingSelectedConfiguration
 - (BOOL)_parseFromTLVData;
-- (HMDCameraRecordingSelectedConfiguration)initWithCoder:(id)a3;
-- (HMDCameraRecordingSelectedConfiguration)initWithGeneralConfiguration:(id)a3 videoCodecConfiguration:(id)a4 audioCodecConfiguration:(id)a5;
+- (HMDCameraRecordingSelectedConfiguration)initWithCoder:(id)coder;
+- (HMDCameraRecordingSelectedConfiguration)initWithGeneralConfiguration:(id)configuration videoCodecConfiguration:(id)codecConfiguration audioCodecConfiguration:(id)audioCodecConfiguration;
 - (NSData)tlvData;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDCameraRecordingSelectedConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSelectedConfiguration *)self generalConfiguration];
-  [v4 encodeObject:v5 forKey:@"kSelectedConfigurationGeneral"];
+  coderCopy = coder;
+  generalConfiguration = [(HMDCameraRecordingSelectedConfiguration *)self generalConfiguration];
+  [coderCopy encodeObject:generalConfiguration forKey:@"kSelectedConfigurationGeneral"];
 
-  v6 = [(HMDCameraRecordingSelectedConfiguration *)self videoConfiguration];
-  [v4 encodeObject:v6 forKey:@"kSelectedConfigurationVideo"];
+  videoConfiguration = [(HMDCameraRecordingSelectedConfiguration *)self videoConfiguration];
+  [coderCopy encodeObject:videoConfiguration forKey:@"kSelectedConfigurationVideo"];
 
-  v7 = [(HMDCameraRecordingSelectedConfiguration *)self audioConfiguration];
-  [v4 encodeObject:v7 forKey:@"kSelectedConfigurationAudio"];
+  audioConfiguration = [(HMDCameraRecordingSelectedConfiguration *)self audioConfiguration];
+  [coderCopy encodeObject:audioConfiguration forKey:@"kSelectedConfigurationAudio"];
 }
 
-- (HMDCameraRecordingSelectedConfiguration)initWithCoder:(id)a3
+- (HMDCameraRecordingSelectedConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HMDCameraRecordingSelectedConfiguration;
   v5 = [(HMDCameraRecordingSelectedConfiguration *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSelectedConfigurationGeneral"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSelectedConfigurationGeneral"];
     generalConfiguration = v5->_generalConfiguration;
     v5->_generalConfiguration = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSelectedConfigurationVideo"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSelectedConfigurationVideo"];
     videoConfiguration = v5->_videoConfiguration;
     v5->_videoConfiguration = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSelectedConfigurationAudio"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSelectedConfigurationAudio"];
     audioConfiguration = v5->_audioConfiguration;
     v5->_audioConfiguration = v10;
   }
@@ -46,44 +46,44 @@
   return v5;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HAPTLVBase *)self tlvDatablob];
-  [v7 appendFormat:@"\n%@tlvDatablob = %@ ", v6, v8];
+  indentCopy = indent;
+  descriptionCopy = description;
+  tlvDatablob = [(HAPTLVBase *)self tlvDatablob];
+  [descriptionCopy appendFormat:@"\n%@tlvDatablob = %@ ", indentCopy, tlvDatablob];
 
-  v9 = [(HMDCameraRecordingSelectedConfiguration *)self generalConfiguration];
-  v10 = [v9 descriptionWithIndent:v6];
-  [v7 appendFormat:@"\n%@generalConfiguration = %@ ", v6, v10];
+  generalConfiguration = [(HMDCameraRecordingSelectedConfiguration *)self generalConfiguration];
+  v10 = [generalConfiguration descriptionWithIndent:indentCopy];
+  [descriptionCopy appendFormat:@"\n%@generalConfiguration = %@ ", indentCopy, v10];
 
-  v11 = [(HMDCameraRecordingSelectedConfiguration *)self videoConfiguration];
-  v12 = [v11 descriptionWithIndent:v6];
-  [v7 appendFormat:@"\n%@videoConfiguration = %@ ", v6, v12];
+  videoConfiguration = [(HMDCameraRecordingSelectedConfiguration *)self videoConfiguration];
+  v12 = [videoConfiguration descriptionWithIndent:indentCopy];
+  [descriptionCopy appendFormat:@"\n%@videoConfiguration = %@ ", indentCopy, v12];
 
-  v14 = [(HMDCameraRecordingSelectedConfiguration *)self audioConfiguration];
-  v13 = [v14 descriptionWithIndent:v6];
-  [v7 appendFormat:@"\n%@audioConfiguration = %@ ", v6, v13];
+  audioConfiguration = [(HMDCameraRecordingSelectedConfiguration *)self audioConfiguration];
+  v13 = [audioConfiguration descriptionWithIndent:indentCopy];
+  [descriptionCopy appendFormat:@"\n%@audioConfiguration = %@ ", indentCopy, v13];
 }
 
 - (NSData)tlvData
 {
-  v3 = [MEMORY[0x277CFEC80] creator];
-  v4 = [(HMDCameraRecordingSelectedConfiguration *)self generalConfiguration];
-  v5 = [v4 tlvData];
-  [v3 addTLV:1 data:v5];
+  creator = [MEMORY[0x277CFEC80] creator];
+  generalConfiguration = [(HMDCameraRecordingSelectedConfiguration *)self generalConfiguration];
+  tlvData = [generalConfiguration tlvData];
+  [creator addTLV:1 data:tlvData];
 
-  v6 = [(HMDCameraRecordingSelectedConfiguration *)self videoConfiguration];
-  v7 = [v6 tlvData];
-  [v3 addTLV:2 data:v7];
+  videoConfiguration = [(HMDCameraRecordingSelectedConfiguration *)self videoConfiguration];
+  tlvData2 = [videoConfiguration tlvData];
+  [creator addTLV:2 data:tlvData2];
 
-  v8 = [(HMDCameraRecordingSelectedConfiguration *)self audioConfiguration];
-  v9 = [v8 tlvData];
-  [v3 addTLV:3 data:v9];
+  audioConfiguration = [(HMDCameraRecordingSelectedConfiguration *)self audioConfiguration];
+  tlvData3 = [audioConfiguration tlvData];
+  [creator addTLV:3 data:tlvData3];
 
-  v10 = [v3 serialize];
+  serialize = [creator serialize];
 
-  return v10;
+  return serialize;
 }
 
 - (BOOL)_parseFromTLVData
@@ -100,20 +100,20 @@
   if (v7)
   {
     v8 = [HMDCameraRecordingGeneralConfiguration alloc];
-    v9 = [v3 field];
-    v10 = [(HAPTLVBase *)v8 initWithTLVData:v9];
+    field = [v3 field];
+    v10 = [(HAPTLVBase *)v8 initWithTLVData:field];
     generalConfiguration = self->_generalConfiguration;
     self->_generalConfiguration = v10;
 
     v12 = [HMDCameraRecordingVideoCodecConfiguration alloc];
-    v13 = [v4 field];
-    v14 = [(HAPTLVBase *)v12 initWithTLVData:v13];
+    field2 = [v4 field];
+    v14 = [(HAPTLVBase *)v12 initWithTLVData:field2];
     videoConfiguration = self->_videoConfiguration;
     self->_videoConfiguration = v14;
 
     v16 = [HMDCameraRecordingAudioCodecConfiguration alloc];
-    v17 = [v5 field];
-    v18 = [(HAPTLVBase *)v16 initWithTLVData:v17];
+    field3 = [v5 field];
+    v18 = [(HAPTLVBase *)v16 initWithTLVData:field3];
     audioConfiguration = self->_audioConfiguration;
     self->_audioConfiguration = v18;
   }
@@ -122,20 +122,20 @@
   return v7;
 }
 
-- (HMDCameraRecordingSelectedConfiguration)initWithGeneralConfiguration:(id)a3 videoCodecConfiguration:(id)a4 audioCodecConfiguration:(id)a5
+- (HMDCameraRecordingSelectedConfiguration)initWithGeneralConfiguration:(id)configuration videoCodecConfiguration:(id)codecConfiguration audioCodecConfiguration:(id)audioCodecConfiguration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configurationCopy = configuration;
+  codecConfigurationCopy = codecConfiguration;
+  audioCodecConfigurationCopy = audioCodecConfiguration;
   v15.receiver = self;
   v15.super_class = HMDCameraRecordingSelectedConfiguration;
   v12 = [(HMDCameraRecordingSelectedConfiguration *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_generalConfiguration, a3);
-    objc_storeStrong(&v13->_videoConfiguration, a4);
-    objc_storeStrong(&v13->_audioConfiguration, a5);
+    objc_storeStrong(&v12->_generalConfiguration, configuration);
+    objc_storeStrong(&v13->_videoConfiguration, codecConfiguration);
+    objc_storeStrong(&v13->_audioConfiguration, audioCodecConfiguration);
   }
 
   return v13;

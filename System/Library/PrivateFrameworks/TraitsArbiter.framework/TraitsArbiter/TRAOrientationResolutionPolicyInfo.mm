@@ -1,131 +1,131 @@
 @interface TRAOrientationResolutionPolicyInfo
 + (id)resolutionPolicyInfoDeviceOrientation;
-+ (id)resolutionPolicyInfoDeviceOrientationWithStateTypes:(id)a3;
-+ (id)resolutionPolicyInfoDeviceOrientationWithStateTypesBySupportedOrientationMask:(id)a3;
-+ (id)resolutionPolicyInfoForAssociatedParticipantWithRole:(id)a3;
-+ (id)resolutionPolicyInfoForAssociatedParticipantWithUniqueID:(id)a3;
++ (id)resolutionPolicyInfoDeviceOrientationWithStateTypes:(id)types;
++ (id)resolutionPolicyInfoDeviceOrientationWithStateTypesBySupportedOrientationMask:(id)mask;
++ (id)resolutionPolicyInfoForAssociatedParticipantWithRole:(id)role;
++ (id)resolutionPolicyInfoForAssociatedParticipantWithUniqueID:(id)d;
 + (id)resolutionPolicyInfoIsolation;
 + (id)resolutionPolicyInfoOrientationBelow;
-+ (id)resolutionPolicyInfoOrientationBelowParticipantWithRole:(id)a3;
-+ (id)resolutionPolicyInfoOrientationBelowParticipantWithUniqueID:(id)a3;
-- (TRAOrientationResolutionPolicyInfo)initWithResolutionPolicy:(int64_t)a3 associatedParticipantUniqueID:(id)a4 associatedParticipantRole:(id)a5 associatedAccStateTypes:(id)a6 associatedAccStateTypesByMask:(id)a7;
-- (TRAOrientationResolutionPolicyInfo)initWithResolutionPolicyInfo:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)resolutionPolicyInfoOrientationBelowParticipantWithRole:(id)role;
++ (id)resolutionPolicyInfoOrientationBelowParticipantWithUniqueID:(id)d;
+- (TRAOrientationResolutionPolicyInfo)initWithResolutionPolicy:(int64_t)policy associatedParticipantUniqueID:(id)d associatedParticipantRole:(id)role associatedAccStateTypes:(id)types associatedAccStateTypesByMask:(id)mask;
+- (TRAOrientationResolutionPolicyInfo)initWithResolutionPolicyInfo:(id)info;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)setAssociatedDeviceOrientationStateTypes:(id)a3;
+- (void)setAssociatedDeviceOrientationStateTypes:(id)types;
 @end
 
 @implementation TRAOrientationResolutionPolicyInfo
 
 + (id)resolutionPolicyInfoOrientationBelow
 {
-  v2 = [[a1 alloc] initWithResolutionPolicy:2];
+  v2 = [[self alloc] initWithResolutionPolicy:2];
 
   return v2;
 }
 
 + (id)resolutionPolicyInfoDeviceOrientation
 {
-  v2 = [[a1 alloc] initWithResolutionPolicy:1];
+  v2 = [[self alloc] initWithResolutionPolicy:1];
 
   return v2;
 }
 
 + (id)resolutionPolicyInfoIsolation
 {
-  v2 = [[a1 alloc] initWithResolutionPolicy:0];
+  v2 = [[self alloc] initWithResolutionPolicy:0];
 
   return v2;
 }
 
-+ (id)resolutionPolicyInfoDeviceOrientationWithStateTypes:(id)a3
++ (id)resolutionPolicyInfoDeviceOrientationWithStateTypes:(id)types
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithResolutionPolicy:1 associatedAccStateTypes:v4];
+  typesCopy = types;
+  v5 = [[self alloc] initWithResolutionPolicy:1 associatedAccStateTypes:typesCopy];
 
   return v5;
 }
 
-+ (id)resolutionPolicyInfoDeviceOrientationWithStateTypesBySupportedOrientationMask:(id)a3
++ (id)resolutionPolicyInfoDeviceOrientationWithStateTypesBySupportedOrientationMask:(id)mask
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithResolutionPolicy:1 associatedAccStateTypesByMask:v4];
+  maskCopy = mask;
+  v5 = [[self alloc] initWithResolutionPolicy:1 associatedAccStateTypesByMask:maskCopy];
 
   return v5;
 }
 
-+ (id)resolutionPolicyInfoOrientationBelowParticipantWithUniqueID:(id)a3
++ (id)resolutionPolicyInfoOrientationBelowParticipantWithUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithResolutionPolicy:2 associatedParticipantUniqueID:v4];
+  dCopy = d;
+  v5 = [[self alloc] initWithResolutionPolicy:2 associatedParticipantUniqueID:dCopy];
 
   return v5;
 }
 
-+ (id)resolutionPolicyInfoOrientationBelowParticipantWithRole:(id)a3
++ (id)resolutionPolicyInfoOrientationBelowParticipantWithRole:(id)role
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithResolutionPolicy:2 associatedParticipantRole:v4];
+  roleCopy = role;
+  v5 = [[self alloc] initWithResolutionPolicy:2 associatedParticipantRole:roleCopy];
 
   return v5;
 }
 
-+ (id)resolutionPolicyInfoForAssociatedParticipantWithUniqueID:(id)a3
++ (id)resolutionPolicyInfoForAssociatedParticipantWithUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithResolutionPolicy:3 associatedParticipantUniqueID:v4];
+  dCopy = d;
+  v5 = [[self alloc] initWithResolutionPolicy:3 associatedParticipantUniqueID:dCopy];
 
   return v5;
 }
 
-+ (id)resolutionPolicyInfoForAssociatedParticipantWithRole:(id)a3
++ (id)resolutionPolicyInfoForAssociatedParticipantWithRole:(id)role
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithResolutionPolicy:3 associatedParticipantRole:v4];
+  roleCopy = role;
+  v5 = [[self alloc] initWithResolutionPolicy:3 associatedParticipantRole:roleCopy];
 
   return v5;
 }
 
-- (TRAOrientationResolutionPolicyInfo)initWithResolutionPolicyInfo:(id)a3
+- (TRAOrientationResolutionPolicyInfo)initWithResolutionPolicyInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 resolutionPolicy];
-  v6 = [v4 associatedParticipantUniqueIdentifier];
-  v7 = [v4 associatedParticipantRole];
-  v8 = [v4 associatedDeviceOrientationStateTypes];
+  infoCopy = info;
+  resolutionPolicy = [infoCopy resolutionPolicy];
+  associatedParticipantUniqueIdentifier = [infoCopy associatedParticipantUniqueIdentifier];
+  associatedParticipantRole = [infoCopy associatedParticipantRole];
+  associatedDeviceOrientationStateTypes = [infoCopy associatedDeviceOrientationStateTypes];
 
-  v9 = [(TRAOrientationResolutionPolicyInfo *)self initWithResolutionPolicy:v5 associatedParticipantUniqueID:v6 associatedParticipantRole:v7 associatedAccStateTypes:v8];
+  v9 = [(TRAOrientationResolutionPolicyInfo *)self initWithResolutionPolicy:resolutionPolicy associatedParticipantUniqueID:associatedParticipantUniqueIdentifier associatedParticipantRole:associatedParticipantRole associatedAccStateTypes:associatedDeviceOrientationStateTypes];
   return v9;
 }
 
-- (TRAOrientationResolutionPolicyInfo)initWithResolutionPolicy:(int64_t)a3 associatedParticipantUniqueID:(id)a4 associatedParticipantRole:(id)a5 associatedAccStateTypes:(id)a6 associatedAccStateTypesByMask:(id)a7
+- (TRAOrientationResolutionPolicyInfo)initWithResolutionPolicy:(int64_t)policy associatedParticipantUniqueID:(id)d associatedParticipantRole:(id)role associatedAccStateTypes:(id)types associatedAccStateTypesByMask:(id)mask
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  roleCopy = role;
+  typesCopy = types;
+  maskCopy = mask;
   v26.receiver = self;
   v26.super_class = TRAOrientationResolutionPolicyInfo;
   v17 = [(TRAOrientationResolutionPolicyInfo *)&v26 init];
   v18 = v17;
   if (v17)
   {
-    v17->_resolutionPolicy = a3;
-    if (a3 != 3)
+    v17->_resolutionPolicy = policy;
+    if (policy != 3)
     {
       goto LABEL_6;
     }
 
-    if (!(v13 | v14))
+    if (!(dCopy | roleCopy))
     {
       [TRAOrientationResolutionPolicyInfo initWithResolutionPolicy:a2 associatedParticipantUniqueID:v17 associatedParticipantRole:? associatedAccStateTypes:? associatedAccStateTypesByMask:?];
     }
 
-    if ((v14 != 0) == (v13 != 0))
+    if ((roleCopy != 0) == (dCopy != 0))
     {
       [TRAOrientationResolutionPolicyInfo initWithResolutionPolicy:a2 associatedParticipantUniqueID:v18 associatedParticipantRole:? associatedAccStateTypes:? associatedAccStateTypesByMask:?];
-      if (v15)
+      if (typesCopy)
       {
         goto LABEL_7;
       }
@@ -134,43 +134,43 @@
     else
     {
 LABEL_6:
-      if (v15)
+      if (typesCopy)
       {
 LABEL_7:
-        if (v18->_resolutionPolicy == 1 && ![v15 count])
+        if (v18->_resolutionPolicy == 1 && ![typesCopy count])
         {
           [TRAOrientationResolutionPolicyInfo initWithResolutionPolicy:a2 associatedParticipantUniqueID:v18 associatedParticipantRole:? associatedAccStateTypes:? associatedAccStateTypesByMask:?];
         }
       }
     }
 
-    v19 = [v13 copy];
+    v19 = [dCopy copy];
     associatedParticipantUniqueIdentifier = v18->_associatedParticipantUniqueIdentifier;
     v18->_associatedParticipantUniqueIdentifier = v19;
 
-    v21 = [v14 copy];
+    v21 = [roleCopy copy];
     associatedParticipantRole = v18->_associatedParticipantRole;
     v18->_associatedParticipantRole = v21;
 
-    v23 = [v16 copy];
+    v23 = [maskCopy copy];
     associatedDeviceOrientationStateTypesBySupportedOrientationMask = v18->_associatedDeviceOrientationStateTypesBySupportedOrientationMask;
     v18->_associatedDeviceOrientationStateTypesBySupportedOrientationMask = v23;
 
-    [(TRAOrientationResolutionPolicyInfo *)v18 setAssociatedDeviceOrientationStateTypes:v15];
+    [(TRAOrientationResolutionPolicyInfo *)v18 setAssociatedDeviceOrientationStateTypes:typesCopy];
   }
 
   return v18;
 }
 
-- (void)setAssociatedDeviceOrientationStateTypes:(id)a3
+- (void)setAssociatedDeviceOrientationStateTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   if (self->_resolutionPolicy == 1)
   {
-    v7 = v4;
-    if (v4)
+    v7 = typesCopy;
+    if (typesCopy)
     {
-      v5 = [v4 copy];
+      v5 = [typesCopy copy];
     }
 
     else
@@ -181,23 +181,23 @@ LABEL_7:
     associatedDeviceOrientationStateTypes = self->_associatedDeviceOrientationStateTypes;
     self->_associatedDeviceOrientationStateTypes = v5;
 
-    v4 = v7;
+    typesCopy = v7;
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(TRAOrientationResolutionPolicyInfo *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(TRAOrientationResolutionPolicyInfo *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v70 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v54 = self;
+  selfCopy = self;
   v4 = self->_resolutionPolicy - 1;
   if (v4 > 2)
   {
@@ -287,9 +287,9 @@ LABEL_7:
 
   v21 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@-(%@)", v5, v20];
 
-  if (v54->_resolutionPolicy == 1)
+  if (selfCopy->_resolutionPolicy == 1)
   {
-    associatedDeviceOrientationStateTypesBySupportedOrientationMask = v54->_associatedDeviceOrientationStateTypesBySupportedOrientationMask;
+    associatedDeviceOrientationStateTypesBySupportedOrientationMask = selfCopy->_associatedDeviceOrientationStateTypesBySupportedOrientationMask;
     if (associatedDeviceOrientationStateTypesBySupportedOrientationMask)
     {
       v46 = v10;
@@ -301,7 +301,7 @@ LABEL_7:
       v60 = 0u;
       v61 = 0u;
       v62 = 0u;
-      obj = [(NSDictionary *)v54->_associatedDeviceOrientationStateTypesBySupportedOrientationMask allKeys];
+      obj = [(NSDictionary *)selfCopy->_associatedDeviceOrientationStateTypesBySupportedOrientationMask allKeys];
       v23 = [obj countByEnumeratingWithState:&v59 objects:v68 count:16];
       if (v23)
       {
@@ -317,8 +317,8 @@ LABEL_7:
             }
 
             v26 = *(*(&v59 + 1) + 8 * j);
-            v27 = [(NSDictionary *)v54->_associatedDeviceOrientationStateTypesBySupportedOrientationMask objectForKey:v26];
-            v28 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](v54->_associatedDeviceOrientationStateTypes, "count")}];
+            v27 = [(NSDictionary *)selfCopy->_associatedDeviceOrientationStateTypesBySupportedOrientationMask objectForKey:v26];
+            v28 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](selfCopy->_associatedDeviceOrientationStateTypes, "count")}];
             v55 = 0u;
             v56 = 0u;
             v57 = 0u;
@@ -380,12 +380,12 @@ LABEL_7:
 
 LABEL_43:
   [v3 appendString:v21 withName:@"Policy"];
-  if (v54->_forceResolution)
+  if (selfCopy->_forceResolution)
   {
     v41 = [v3 appendBool:1 withName:@"Force Resolution"];
   }
 
-  actuationContext = v54->_actuationContext;
+  actuationContext = selfCopy->_actuationContext;
   if (actuationContext)
   {
     v43 = [v3 appendObject:actuationContext withName:@"Actuation Context"];
@@ -396,12 +396,12 @@ LABEL_43:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(TRAOrientationResolutionPolicyInfo *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(TRAOrientationResolutionPolicyInfo *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)initWithResolutionPolicy:(uint64_t)a1 associatedParticipantUniqueID:(uint64_t)a2 associatedParticipantRole:associatedAccStateTypes:associatedAccStateTypesByMask:.cold.1(uint64_t a1, uint64_t a2)

@@ -7,16 +7,16 @@
 
 - (id)displayIdentity
 {
-  v1 = [a1 settings];
-  v2 = [v1 sb_displayIdentityForSceneManagers];
+  settings = [self settings];
+  sb_displayIdentityForSceneManagers = [settings sb_displayIdentityForSceneManagers];
 
-  return v2;
+  return sb_displayIdentityForSceneManagers;
 }
 
 - (void)handleProductivityGestureAction:()SBProductivityGestureDestination
 {
   v2 = [MEMORY[0x277CBEB98] setWithObject:?];
-  [a1 sendActions:v2];
+  [self sendActions:v2];
 }
 
 @end

@@ -3,50 +3,50 @@
 - (BOOL)isScrollEnabled;
 - (NSString)debugDescription;
 - (_UISceneHostingController)_sceneHostingController;
-- (_UISceneHostingView)initWithSceneHostingController:(id)a3;
-- (id)_hitTest:(CGPoint)a3 withEvent:(id)a4 windowServerHitTestWindow:(id)a5;
+- (_UISceneHostingView)initWithSceneHostingController:(id)controller;
+- (id)_hitTest:(CGPoint)test withEvent:(id)event windowServerHitTestWindow:(id)window;
 - (id)_isSceneSized;
 - (id)parentWindow;
 - (id)succinctDescription;
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4;
-- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)a3 resultHandler:(id)a4;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)applyViewGeometryToSettings:(id)a3;
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor;
+- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)location resultHandler:(id)handler;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)applyViewGeometryToSettings:(id)settings;
 - (void)layoutSubviews;
 - (void)requestSceneSettingsUpdateIfNecessary;
-- (void)setInheritsSecurity:(BOOL)a3;
-- (void)setPresentedScene:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setInheritsSecurity:(BOOL)security;
+- (void)setPresentedScene:(id)scene;
+- (void)traitCollectionDidChange:(id)change;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _UISceneHostingView
 
 - (void)requestSceneSettingsUpdateIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    v2 = _UIPortraitFrameForSceneHosting(a1);
+    v2 = _UIPortraitFrameForSceneHosting(self);
     v4 = v3;
     v6 = v5;
     v8 = v7;
-    v9 = [a1 traitCollection];
-    [a1 safeAreaInsets];
+    traitCollection = [self traitCollection];
+    [self safeAreaInsets];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    [a1 _safeAreaCornerInsets];
-    v18 = [a1 tintColor];
-    v19 = [(_UISceneHostingView *)a1 _isSceneSized];
-    v20 = [a1 _window];
-    v21 = [v20 interfaceOrientation];
+    [self _safeAreaCornerInsets];
+    tintColor = [self tintColor];
+    _isSceneSized = [(_UISceneHostingView *)self _isSceneSized];
+    _window = [self _window];
+    interfaceOrientation = [_window interfaceOrientation];
 
     v38.origin.x = v2;
     v38.origin.y = v4;
     v38.size.width = v6;
     v38.size.height = v8;
-    if (CGRectEqualToRect(v38, *(a1 + 424)))
+    if (CGRectEqualToRect(v38, *(self + 424)))
     {
       v22 = 0;
       v23 = 0;
@@ -54,14 +54,14 @@
 
     else
     {
-      v22 = v8 == *(a1 + 448) && v6 == *(a1 + 440);
+      v22 = v8 == *(self + 448) && v6 == *(self + 440);
       v23 = !v22;
     }
 
-    v24 = [v9 isEqual:*(a1 + 408)];
-    if (v13 == *(a1 + 464) && v11 == *(a1 + 456) && v17 == *(a1 + 480))
+    v24 = [traitCollection isEqual:*(self + 408)];
+    if (v13 == *(self + 464) && v11 == *(self + 456) && v17 == *(self + 480))
     {
-      v27 = !((v15 == *(a1 + 472)) & v24) | v23;
+      v27 = !((v15 == *(self + 472)) & v24) | v23;
     }
 
     else
@@ -70,41 +70,41 @@
     }
 
     v28 = 1;
-    if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(0, *(a1 + 488)), vceqq_f64(0, *(a1 + 536))))))
+    if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(0, *(self + 488)), vceqq_f64(0, *(self + 536))))))
     {
-      v29 = *(a1 + 504) != 0.0 || *(a1 + 512) != 0.0;
-      if (!v29 && *(a1 + 520) == 0.0)
+      v29 = *(self + 504) != 0.0 || *(self + 512) != 0.0;
+      if (!v29 && *(self + 520) == 0.0)
       {
-        v28 = (*(a1 + 528) != 0.0) | v27;
+        v28 = (*(self + 528) != 0.0) | v27;
       }
     }
 
-    v31 = [v18 isEqual:*(a1 + 416)] ^ 1;
-    v33 = v21 != *(a1 + 560) || *(a1 + 552) != v19;
+    v31 = [tintColor isEqual:*(self + 416)] ^ 1;
+    v33 = interfaceOrientation != *(self + 560) || *(self + 552) != _isSceneSized;
     v34 = v33 | v31 | v28;
     if ((v22 | v34))
     {
-      *(a1 + 424) = v2;
-      *(a1 + 432) = v4;
-      *(a1 + 440) = v6;
-      *(a1 + 448) = v8;
-      objc_storeStrong((a1 + 408), v9);
-      *(a1 + 456) = v11;
-      *(a1 + 464) = v13;
-      *(a1 + 472) = v15;
-      *(a1 + 480) = v17;
-      *(a1 + 488) = 0u;
-      *(a1 + 504) = 0u;
-      *(a1 + 520) = 0u;
-      *(a1 + 536) = 0u;
-      objc_storeStrong((a1 + 416), v18);
-      *(a1 + 552) = v19;
-      *(a1 + 560) = v21;
-      WeakRetained = objc_loadWeakRetained((a1 + 592));
+      *(self + 424) = v2;
+      *(self + 432) = v4;
+      *(self + 440) = v6;
+      *(self + 448) = v8;
+      objc_storeStrong((self + 408), traitCollection);
+      *(self + 456) = v11;
+      *(self + 464) = v13;
+      *(self + 472) = v15;
+      *(self + 480) = v17;
+      *(self + 488) = 0u;
+      *(self + 504) = 0u;
+      *(self + 520) = 0u;
+      *(self + 536) = 0u;
+      objc_storeStrong((self + 416), tintColor);
+      *(self + 552) = _isSceneSized;
+      *(self + 560) = interfaceOrientation;
+      WeakRetained = objc_loadWeakRetained((self + 592));
       v36 = WeakRetained;
       if (v34)
       {
-        v37 = *(a1 + 576) ^ 1;
+        v37 = *(self + 576) ^ 1;
       }
 
       else
@@ -125,87 +125,87 @@
   v5.receiver = self;
   v5.super_class = _UISceneHostingView;
   [(UIView *)&v5 layoutSubviews];
-  v3 = [(UIView *)self window];
-  v4 = [v3 windowScene];
+  window = [(UIView *)self window];
+  windowScene = [window windowScene];
 
-  if (v4)
+  if (windowScene)
   {
     [(_UISceneHostingView *)self requestSceneSettingsUpdateIfNecessary];
   }
 }
 
-- (_UISceneHostingView)initWithSceneHostingController:(id)a3
+- (_UISceneHostingView)initWithSceneHostingController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = _UISceneHostingView;
   v5 = [(UIView *)&v8 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_sceneHostingController, v4);
+    objc_storeWeak(&v5->_sceneHostingController, controllerCopy);
     [(UIView *)v6 _addGeometryChangeObserver:v6];
   }
 
   return v6;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHostingController);
-  v4 = [WeakRetained traitCollectionReceiver];
-  v5 = [(UIView *)self traitCollection];
-  [v4 setTraitCollection:v5];
+  traitCollectionReceiver = [WeakRetained traitCollectionReceiver];
+  traitCollection = [(UIView *)self traitCollection];
+  [traitCollectionReceiver setTraitCollection:traitCollection];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v10.receiver = self;
   v10.super_class = _UISceneHostingView;
-  [(UIView *)&v10 willMoveToWindow:v4];
+  [(UIView *)&v10 willMoveToWindow:windowCopy];
   if ([UIApp _supportedOnLockScreen])
   {
-    v5 = [objc_opt_class() _isSecure];
+    _isSecure = [objc_opt_class() _isSecure];
   }
 
   else
   {
-    v5 = 0;
+    _isSecure = 0;
   }
 
-  v6 = [(UIView *)self layer];
-  v7 = v6;
+  layer = [(UIView *)self layer];
+  v7 = layer;
   v8 = MEMORY[0x1E6979E60];
-  if ((v5 & 1) == 0)
+  if ((_isSecure & 1) == 0)
   {
     v8 = MEMORY[0x1E6979E58];
   }
 
-  [v6 setSecurityMode:*v8];
+  [layer setSecurityMode:*v8];
 
-  v9 = [(UIView *)self window];
-  [v9 _unregisterScrollToTopView:self];
+  window = [(UIView *)self window];
+  [window _unregisterScrollToTopView:self];
 
-  [v4 _registerScrollToTopView:self];
+  [windowCopy _registerScrollToTopView:self];
 }
 
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor
 {
-  var0 = a3->var0;
-  v25 = [(_UISceneHostingView *)&self->super.super.super.isa parentWindow];
-  [v25 frame];
+  var0 = changed->var0;
+  parentWindow = [(_UISceneHostingView *)&self->super.super.super.isa parentWindow];
+  [parentWindow frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
   if ((var0 & 0x1000) != 0)
   {
-    v15 = [v25 interfaceOrientation];
-    var6 = a3->var6;
-    v17 = (v15 - 3) <= 1 && (var6 - 3) < 2;
+    interfaceOrientation = [parentWindow interfaceOrientation];
+    var6 = changed->var6;
+    v17 = (interfaceOrientation - 3) <= 1 && (var6 - 3) < 2;
     v18 = (var6 - 1) < 2;
-    if ((v15 - 1) > 1)
+    if ((interfaceOrientation - 1) > 1)
     {
       v18 = v17;
     }
@@ -226,8 +226,8 @@
   v27.size.width = v12;
   v27.size.height = v14;
   v23 = CGRectEqualToRect(v27, v28);
-  v24 = [v25 isRotating];
-  if ((var0 & 0x3E) != 0 && (v24 & ((var0 >> 3) & 1 | v23) & 1) == 0)
+  isRotating = [parentWindow isRotating];
+  if ((var0 & 0x3E) != 0 && (isRotating & ((var0 >> 3) & 1 | v23) & 1) == 0)
   {
 LABEL_11:
     [(_UISceneHostingView *)self requestSceneSettingsUpdateIfNecessary];
@@ -236,35 +236,35 @@ LABEL_11:
 
 - (id)parentWindow
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 _window];
-    v3 = v2;
-    if (v2)
+    _window = [self _window];
+    v3 = _window;
+    if (_window)
     {
-      v1 = v2;
+      selfCopy = _window;
     }
 
     else
     {
-      WeakRetained = objc_loadWeakRetained(v1 + 74);
-      v5 = [WeakRetained sceneViewController];
-      v1 = [v5 _window];
+      WeakRetained = objc_loadWeakRetained(selfCopy + 74);
+      sceneViewController = [WeakRetained sceneViewController];
+      selfCopy = [sceneViewController _window];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)setPresentedScene:(id)a3
+- (void)setPresentedScene:(id)scene
 {
   v64 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"_UISceneHostingView.m" lineNumber:157 description:@"Can not set up _UISceneHostingView with a nil scene"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneHostingView.m" lineNumber:157 description:@"Can not set up _UISceneHostingView with a nil scene"];
   }
 
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("UISceneHosting", &setPresentedScene____s_category);
@@ -276,49 +276,49 @@ LABEL_11:
       if (self)
       {
         v28 = MEMORY[0x1E696AEC0];
-        v29 = self;
+        selfCopy = self;
         v30 = objc_opt_class();
         v31 = NSStringFromClass(v30);
-        v32 = [v28 stringWithFormat:@"<%@: %p>", v31, v29];
+        selfCopy = [v28 stringWithFormat:@"<%@: %p>", v31, selfCopy];
       }
 
       else
       {
-        v32 = @"(nil)";
+        selfCopy = @"(nil)";
       }
 
-      v34 = v32;
-      v35 = [v5 identityToken];
+      v34 = selfCopy;
+      identityToken = [sceneCopy identityToken];
       *buf = 138412546;
-      v61 = v32;
+      v61 = selfCopy;
       v62 = 2112;
-      v63 = v35;
+      v63 = identityToken;
       _os_log_impl(&dword_188A29000, v27, OS_LOG_TYPE_ERROR, "%@ Presenting scene: %@", buf, 0x16u);
     }
   }
 
-  v7 = [v5 uiPresentationManager];
+  uiPresentationManager = [sceneCopy uiPresentationManager];
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [v5 identifier];
-  v10 = [v8 stringWithFormat:@"UISceneHostingView-%@", v9];
+  identifier = [sceneCopy identifier];
+  v10 = [v8 stringWithFormat:@"UISceneHostingView-%@", identifier];
 
-  v11 = [v7 createPresenterWithIdentifier:v10];
+  v11 = [uiPresentationManager createPresenterWithIdentifier:v10];
   scenePresenter = self->_scenePresenter;
   self->_scenePresenter = v11;
 
   [(UIScenePresenter *)self->_scenePresenter modifyPresentationContext:&__block_literal_global_649];
   [(UIScenePresenter *)self->_scenePresenter activate];
-  v13 = [(UIScenePresenter *)self->_scenePresenter presentationView];
+  presentationView = [(UIScenePresenter *)self->_scenePresenter presentationView];
   [(UIView *)self frame];
-  [v13 setFrame:?];
-  [v13 setAutoresizingMask:18];
+  [presentationView setFrame:?];
+  [presentationView setAutoresizingMask:18];
   [(UIView *)self setClipsToBounds:1];
-  [(UIView *)self addSubview:v13];
-  [(UIView *)self sendSubviewToBack:v13];
+  [(UIView *)self addSubview:presentationView];
+  [(UIView *)self sendSubviewToBack:presentationView];
   WeakRetained = objc_loadWeakRetained(&self->_sceneHostingController);
-  v15 = [WeakRetained traitCollectionReceiver];
-  v16 = [(UIView *)self traitCollection];
-  [v15 setTraitCollection:v16];
+  traitCollectionReceiver = [WeakRetained traitCollectionReceiver];
+  traitCollection = [(UIView *)self traitCollection];
+  [traitCollectionReceiver setTraitCollection:traitCollection];
 
   if (_UIInternalPreferencesRevisionOnce != -1)
   {
@@ -350,8 +350,8 @@ LABEL_11:
 
         v38 = MEMORY[0x1E696AEC0];
         v39 = _UIMainBundleIdentifier();
-        v40 = [v5 identifier];
-        v41 = [v38 stringWithFormat:@"%@ → %@", v39, v40];
+        identifier2 = [sceneCopy identifier];
+        v41 = [v38 stringWithFormat:@"%@ → %@", v39, identifier2];
         [(UILabel *)v36 setText:v41];
 
         [(UIView *)v36 sizeToFit];
@@ -365,23 +365,23 @@ LABEL_11:
         self->_debugLabel = v36;
         v45 = v36;
 
-        v46 = [(UIView *)self->_debugLabel layer];
-        [v46 setAllowsHitTesting:0];
+        layer = [(UIView *)self->_debugLabel layer];
+        [layer setAllowsHitTesting:0];
 
         [(UIView *)v45 setTranslatesAutoresizingMaskIntoConstraints:0];
         v53 = MEMORY[0x1E69977A0];
-        v58 = [(UIView *)v45 leftAnchor];
-        v57 = [(UIView *)self leftAnchor];
-        v56 = [v58 constraintEqualToAnchor:v57];
+        leftAnchor = [(UIView *)v45 leftAnchor];
+        leftAnchor2 = [(UIView *)self leftAnchor];
+        v56 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
         v59[0] = v56;
-        v54 = [(UIView *)v45 topAnchor];
-        v55 = [(UIView *)self safeAreaLayoutGuide];
-        v52 = [v55 topAnchor];
-        v51 = [v54 constraintEqualToAnchor:v52];
+        topAnchor = [(UIView *)v45 topAnchor];
+        safeAreaLayoutGuide = [(UIView *)self safeAreaLayoutGuide];
+        topAnchor2 = [safeAreaLayoutGuide topAnchor];
+        v51 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v59[1] = v51;
-        v50 = [(UIView *)v45 rightAnchor];
-        v47 = [(UIView *)self rightAnchor];
-        v48 = [v50 constraintLessThanOrEqualToAnchor:v47];
+        rightAnchor = [(UIView *)v45 rightAnchor];
+        rightAnchor2 = [(UIView *)self rightAnchor];
+        v48 = [rightAnchor constraintLessThanOrEqualToAnchor:rightAnchor2];
         v59[2] = v48;
         v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:3];
         [v53 activateConstraints:v49];
@@ -403,50 +403,50 @@ LABEL_7:
   }
 
   v21 = v20;
-  v22 = [v21 definition];
-  v23 = [v22 clientIdentity];
-  v24 = [v23 processIdentity];
+  definition = [v21 definition];
+  clientIdentity = [definition clientIdentity];
+  processIdentity = [clientIdentity processIdentity];
 
-  v25 = [v24 xpcServiceIdentifier];
-  self->_requiresFencingHack = [v25 isEqualToString:@"com.apple.ScreenTime.ScreenTimeWebExtension"];
+  xpcServiceIdentifier = [processIdentity xpcServiceIdentifier];
+  self->_requiresFencingHack = [xpcServiceIdentifier isEqualToString:@"com.apple.ScreenTime.ScreenTimeWebExtension"];
 }
 
 - (BOOL)inheritsSecurity
 {
-  v2 = [(UIScenePresenter *)self->_scenePresenter presentationContext];
-  v3 = [v2 inheritsSecurity];
+  presentationContext = [(UIScenePresenter *)self->_scenePresenter presentationContext];
+  inheritsSecurity = [presentationContext inheritsSecurity];
 
-  return v3;
+  return inheritsSecurity;
 }
 
-- (void)setInheritsSecurity:(BOOL)a3
+- (void)setInheritsSecurity:(BOOL)security
 {
   scenePresenter = self->_scenePresenter;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __43___UISceneHostingView_setInheritsSecurity___block_invoke;
   v4[3] = &__block_descriptor_33_e43_v16__0__UIMutableScenePresentationContext_8l;
-  v5 = a3;
+  securityCopy = security;
   [(UIScenePresenter *)scenePresenter modifyPresentationContext:v4];
 }
 
-- (id)_hitTest:(CGPoint)a3 withEvent:(id)a4 windowServerHitTestWindow:(id)a5
+- (id)_hitTest:(CGPoint)test withEvent:(id)event windowServerHitTestWindow:(id)window
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UIView *)self window];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  windowCopy = window;
+  window = [(UIView *)self window];
 
-  if (v11 == v10)
+  if (window == windowCopy)
   {
     v18.receiver = self;
     v18.super_class = _UISceneHostingView;
-    v13 = [(UIView *)&v18 _hitTest:v9 withEvent:v10 windowServerHitTestWindow:x, y];
-    v14 = [(UIScenePresenter *)self->_scenePresenter presentationContext];
-    v15 = [v14 shouldPassthroughHitTestEventsIfTransparent];
+    v13 = [(UIView *)&v18 _hitTest:eventCopy withEvent:windowCopy windowServerHitTestWindow:x, y];
+    presentationContext = [(UIScenePresenter *)self->_scenePresenter presentationContext];
+    shouldPassthroughHitTestEventsIfTransparent = [presentationContext shouldPassthroughHitTestEventsIfTransparent];
 
-    if (v15)
+    if (shouldPassthroughHitTestEventsIfTransparent)
     {
       v16 = v13 == self;
     }
@@ -477,62 +477,62 @@ LABEL_7:
 
 - (id)_isSceneSized
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [(_UISceneHostingView *)a1 parentWindow];
-    v3 = [v2 _windowHostingScene];
+    parentWindow = [(_UISceneHostingView *)self parentWindow];
+    _windowHostingScene = [parentWindow _windowHostingScene];
 
-    if (v3)
+    if (_windowHostingScene)
     {
-      v4 = [v3 _coordinateSpace];
-      [v4 bounds];
+      _coordinateSpace = [_windowHostingScene _coordinateSpace];
+      [_coordinateSpace bounds];
       v6 = v5;
       v8 = v7;
       v10 = v9;
       v12 = v11;
 
-      [v1 bounds];
-      v1 = _UIRectEquivalentToRectWithAccuracy(v13, v14, v15, v16, v6, v8, v10, v12, 0.1);
+      [selfCopy bounds];
+      selfCopy = _UIRectEquivalentToRectWithAccuracy(v13, v14, v15, v16, v6, v8, v10, v12, 0.1);
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)applyViewGeometryToSettings:(id)a3
+- (void)applyViewGeometryToSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v5 = _UIPortraitFrameForSceneHosting(self);
   if (v7 != *MEMORY[0x1E695F060] || v6 != *(MEMORY[0x1E695F060] + 8))
   {
-    [v4 setFrame:v5];
+    [settingsCopy setFrame:v5];
   }
 
-  if ([v4 isUISubclass])
+  if ([settingsCopy isUISubclass])
   {
-    v9 = v4;
-    v10 = [(_UISceneHostingView *)&self->super.super.super.isa parentWindow];
-    v11 = [v9 ui_safeAreaSettings];
-    if (v11)
+    v9 = settingsCopy;
+    parentWindow = [(_UISceneHostingView *)&self->super.super.super.isa parentWindow];
+    ui_safeAreaSettings = [v9 ui_safeAreaSettings];
+    if (ui_safeAreaSettings)
     {
       v12 = [_UISceneSafeAreaEdgeInsetConcreteResolver alloc];
       [(UIView *)self safeAreaInsets];
       v13 = [(_UISceneSafeAreaEdgeInsetConcreteResolver *)v12 initWithSafeAreaEdgeInsets:?];
-      [v11 setSafeAreaEdgeInsetResolver:v13];
+      [ui_safeAreaSettings setSafeAreaEdgeInsetResolver:v13];
       v14 = [_UISceneSafeAreaCornerInsetConcreteResolver alloc];
       [(UIView *)self _safeAreaCornerInsets];
       v15 = [(_UISceneSafeAreaCornerInsetConcreteResolver *)v14 initWithSafeAreaCornerInsets:&v26];
-      [v11 setSafeAreaCornerInsetResolver:v15];
+      [ui_safeAreaSettings setSafeAreaCornerInsetResolver:v15];
     }
 
-    v16 = [v10 interfaceOrientation];
-    if (!v16)
+    interfaceOrientation = [parentWindow interfaceOrientation];
+    if (!interfaceOrientation)
     {
       WeakRetained = objc_loadWeakRetained(&self->_sceneHostingController);
       v18 = WeakRetained;
@@ -547,39 +547,39 @@ LABEL_7:
       }
 
       v20 = v19;
-      v21 = [v20 settings];
-      v22 = [v21 interfaceOrientation];
+      settings = [v20 settings];
+      interfaceOrientation2 = [settings interfaceOrientation];
 
-      if (v22)
+      if (interfaceOrientation2)
       {
         goto LABEL_14;
       }
 
-      v16 = 1;
+      interfaceOrientation = 1;
     }
 
-    [v9 setInterfaceOrientation:v16];
+    [v9 setInterfaceOrientation:interfaceOrientation];
 LABEL_14:
     if ([(_UISceneHostingView *)&self->super.super.super.isa _isSceneSized])
     {
-      v23 = [v10 windowScene];
-      v24 = [v23 _effectiveUISettings];
-      v25 = [v24 cornerRadiusConfiguration];
-      [v9 setCornerRadiusConfiguration:v25];
+      windowScene = [parentWindow windowScene];
+      _effectiveUISettings = [windowScene _effectiveUISettings];
+      cornerRadiusConfiguration = [_effectiveUISettings cornerRadiusConfiguration];
+      [v9 setCornerRadiusConfiguration:cornerRadiusConfiguration];
     }
 
     else
     {
-      v23 = [objc_alloc(MEMORY[0x1E698E668]) initWithCornerRadius:0.0];
-      [v9 setCornerRadiusConfiguration:v23];
+      windowScene = [objc_alloc(MEMORY[0x1E698E668]) initWithCornerRadius:0.0];
+      [v9 setCornerRadiusConfiguration:windowScene];
     }
   }
 }
 
 - (BOOL)isScrollEnabled
 {
-  v3 = [(_UISceneHostingView *)&self->super.super.super.isa _isSceneSized];
-  if (v3)
+  _isSceneSized = [(_UISceneHostingView *)&self->super.super.super.isa _isSceneSized];
+  if (_isSceneSized)
   {
     WeakRetained = objc_loadWeakRetained(&self->_sceneHostingController);
     v5 = WeakRetained;
@@ -594,18 +594,18 @@ LABEL_14:
     }
 
     v7 = v6;
-    v8 = [v7 isActive];
+    isActive = [v7 isActive];
 
-    LOBYTE(v3) = v8;
+    LOBYTE(_isSceneSized) = isActive;
   }
 
-  return v3;
+  return _isSceneSized;
 }
 
-- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)a3 resultHandler:(id)a4
+- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)location resultHandler:(id)handler
 {
-  x = a3.x;
-  v13 = a4;
+  x = location.x;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_sceneHostingController);
   v7 = WeakRetained;
   if (WeakRetained)
@@ -620,49 +620,49 @@ LABEL_14:
 
   v9 = v8;
 
-  v10 = [(_UISceneHostingView *)self isScrollEnabled];
-  if (v10)
+  isScrollEnabled = [(_UISceneHostingView *)self isScrollEnabled];
+  if (isScrollEnabled)
   {
     v11 = [[UIStatusBarTapAction alloc] initWithType:0 xPosition:x];
     v12 = [MEMORY[0x1E695DFD8] setWithObject:v11];
     [v9 sendActions:v12];
   }
 
-  v13[2](v13, v10);
+  handlerCopy[2](handlerCopy, isScrollEnabled);
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __49___UISceneHostingView_appendDescriptionToStream___block_invoke;
   v12[3] = &unk_1E70F35B8;
-  v5 = v4;
+  v5 = streamCopy;
   v13 = v5;
-  v14 = self;
+  selfCopy = self;
   [v5 appendProem:self block:v12];
-  v6 = [v5 style];
-  v7 = [v6 verbosity];
+  style = [v5 style];
+  verbosity = [style verbosity];
 
-  if (v7 != 2)
+  if (verbosity != 2)
   {
-    v8 = [MEMORY[0x1E698E690] succinctStyle];
+    succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __49___UISceneHostingView_appendDescriptionToStream___block_invoke_2;
     v9[3] = &unk_1E70F35B8;
     v10 = v5;
-    v11 = self;
-    [v10 overlayStyle:v8 block:v9];
+    selfCopy2 = self;
+    [v10 overlayStyle:succinctStyle block:v9];
   }
 }
 
 - (id)succinctDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
@@ -670,8 +670,8 @@ LABEL_14:
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x1E698E690] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }

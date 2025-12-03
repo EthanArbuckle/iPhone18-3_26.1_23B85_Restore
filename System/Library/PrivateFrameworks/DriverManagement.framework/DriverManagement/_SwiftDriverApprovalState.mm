@@ -54,7 +54,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_21C581FBC();
 
   if (v5)
@@ -66,7 +66,7 @@
 
 - (BOOL)driverIsApproved
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DriverApprovalState.driverIsApproved()();
 
   return v3;

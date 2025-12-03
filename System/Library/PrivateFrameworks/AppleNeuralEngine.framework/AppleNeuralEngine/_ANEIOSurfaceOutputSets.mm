@@ -1,28 +1,28 @@
 @interface _ANEIOSurfaceOutputSets
-+ (id)objectWithstatsSurRef:(__IOSurface *)a3 outputBuffer:(id)a4;
-- (_ANEIOSurfaceOutputSets)initWithCoder:(id)a3;
-- (_ANEIOSurfaceOutputSets)initWithstatsSurRef:(__IOSurface *)a3 outputBuffer:(id)a4;
++ (id)objectWithstatsSurRef:(__IOSurface *)ref outputBuffer:(id)buffer;
+- (_ANEIOSurfaceOutputSets)initWithCoder:(id)coder;
+- (_ANEIOSurfaceOutputSets)initWithstatsSurRef:(__IOSurface *)ref outputBuffer:(id)buffer;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _ANEIOSurfaceOutputSets
 
-+ (id)objectWithstatsSurRef:(__IOSurface *)a3 outputBuffer:(id)a4
++ (id)objectWithstatsSurRef:(__IOSurface *)ref outputBuffer:(id)buffer
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithstatsSurRef:a3 outputBuffer:v6];
+  bufferCopy = buffer;
+  v7 = [[self alloc] initWithstatsSurRef:ref outputBuffer:bufferCopy];
 
   return v7;
 }
 
-- (_ANEIOSurfaceOutputSets)initWithstatsSurRef:(__IOSurface *)a3 outputBuffer:(id)a4
+- (_ANEIOSurfaceOutputSets)initWithstatsSurRef:(__IOSurface *)ref outputBuffer:(id)buffer
 {
-  v7 = a4;
-  v8 = v7;
-  v9 = 0;
-  if (a3 && v7)
+  bufferCopy = buffer;
+  v8 = bufferCopy;
+  selfCopy = 0;
+  if (ref && bufferCopy)
   {
     v13.receiver = self;
     v13.super_class = _ANEIOSurfaceOutputSets;
@@ -30,15 +30,15 @@
     v11 = v10;
     if (v10)
     {
-      v10->_statsSurRef = a3;
-      objc_storeStrong(&v10->_outputBuffer, a4);
+      v10->_statsSurRef = ref;
+      objc_storeStrong(&v10->_outputBuffer, buffer);
     }
 
     self = v11;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -53,50 +53,50 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_ANEIOSurfaceOutputSets *)self statsSurRef];
-  v7 = [(_ANEIOSurfaceOutputSets *)self outputBuffer];
-  v8 = [v3 stringWithFormat:@"%@: { statsSurRef=%@  outputBuffer=%@}", v5, v6, v7];;
+  statsSurRef = [(_ANEIOSurfaceOutputSets *)self statsSurRef];
+  outputBuffer = [(_ANEIOSurfaceOutputSets *)self outputBuffer];
+  v8 = [v3 stringWithFormat:@"%@: { statsSurRef=%@  outputBuffer=%@}", v5, statsSurRef, outputBuffer];;
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   XPCObject = IOSurfaceCreateXPCObject([(_ANEIOSurfaceOutputSets *)self statsSurRef]);
-  [v4 encodeXPCObject:XPCObject forKey:@"statsSurRef"];
-  v5 = [(_ANEIOSurfaceOutputSets *)self outputBuffer];
-  [v4 encodeObject:v5 forKey:@"outputs"];
+  [coderCopy encodeXPCObject:XPCObject forKey:@"statsSurRef"];
+  outputBuffer = [(_ANEIOSurfaceOutputSets *)self outputBuffer];
+  [coderCopy encodeObject:outputBuffer forKey:@"outputs"];
 }
 
-- (_ANEIOSurfaceOutputSets)initWithCoder:(id)a3
+- (_ANEIOSurfaceOutputSets)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v14[0] = objc_opt_class();
   v14[1] = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
   v7 = [v4 setWithArray:v6];
 
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"outputs"];
-  v9 = [v5 decodeXPCObjectForKey:@"statsSurRef"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"outputs"];
+  v9 = [coderCopy decodeXPCObjectForKey:@"statsSurRef"];
 
   if (v9)
   {
     v10 = IOSurfaceLookupFromXPCObject(v9);
     self = [(_ANEIOSurfaceOutputSets *)self initWithstatsSurRef:v10 outputBuffer:v8];
     CFRelease(v10);
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 @end

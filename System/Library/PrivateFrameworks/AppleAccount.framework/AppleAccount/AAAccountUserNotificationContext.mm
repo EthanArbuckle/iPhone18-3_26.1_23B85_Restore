@@ -1,48 +1,48 @@
 @interface AAAccountUserNotificationContext
-- (AAAccountUserNotificationContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AAAccountUserNotificationContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AAAccountUserNotificationContext
 
-- (AAAccountUserNotificationContext)initWithCoder:(id)a3
+- (AAAccountUserNotificationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = AAAccountUserNotificationContext;
   v5 = [(AAAccountUserNotificationContext *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_message"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_message"];
     message = v5->_message;
     v5->_message = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_altDSID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v10;
 
-    v5->_action = [v4 decodeIntegerForKey:@"_action"];
+    v5->_action = [coderCopy decodeIntegerForKey:@"_action"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"_title"];
-  [v5 encodeObject:self->_message forKey:@"_message"];
-  [v5 encodeObject:self->_altDSID forKey:@"_altDSID"];
-  [v5 encodeInteger:self->_action forKey:@"_action"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"_title"];
+  [coderCopy encodeObject:self->_message forKey:@"_message"];
+  [coderCopy encodeObject:self->_altDSID forKey:@"_altDSID"];
+  [coderCopy encodeInteger:self->_action forKey:@"_action"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[AAAccountUserNotificationContext allocWithZone:?]];
   v5 = [(NSString *)self->_title copy];

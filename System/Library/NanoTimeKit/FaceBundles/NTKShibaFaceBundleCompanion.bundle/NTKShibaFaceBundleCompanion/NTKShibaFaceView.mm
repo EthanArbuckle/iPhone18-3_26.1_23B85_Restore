@@ -1,20 +1,20 @@
 @interface NTKShibaFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
 + (int64_t)uiSensitivity;
 - (BOOL)_wantsStatusBarIconShadow;
 - (NTKShibaColorPalette)multicolorPaletteReplacement;
-- (id)_renderDialSwatchImageForStyle:(id)a3 colorOption:(id)a4;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
+- (id)_renderDialSwatchImageForStyle:(id)style colorOption:(id)option;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)createFaceColorPalette;
 - (id)dialView;
 - (id)palette;
 - (void)_applyDataMode;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_applyTransitionFraction:(double)a3 fromView:(id)a4 toView:(id)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromView:(id)view toView:(id)toView;
 - (void)_cleanupAfterEditing;
 - (void)_cleanupTransitions;
-- (void)_configureForEditMode:(int64_t)a3;
+- (void)_configureForEditMode:(int64_t)mode;
 - (void)_createAnalogBackgroundIfNeeded;
 - (void)_createAndRemoveViewsForCurrentStateIfNeeded;
 - (void)_createOlympusViewIfNeeded;
@@ -29,13 +29,13 @@
 - (void)_tearDownOlympusView;
 - (void)_unloadSnapshotContentViews;
 - (void)_updateBackgroundViewAlpha;
-- (void)_updateComplicationsWithColor:(id)a3 alternateColor:(id)a4 isMulticolor:(BOOL)a5;
+- (void)_updateComplicationsWithColor:(id)color alternateColor:(id)alternateColor isMulticolor:(BOOL)multicolor;
 - (void)configureViewsForEditing;
 - (void)layoutOlympusView;
 - (void)layoutSubviews;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setTimeOffset:(double)a3;
-- (void)updateMonochromeColorForRichComplicationView:(id)a3;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setTimeOffset:(double)offset;
+- (void)updateMonochromeColorForRichComplicationView:(id)view;
 @end
 
 @implementation NTKShibaFaceView
@@ -43,7 +43,7 @@
 + (int64_t)uiSensitivity
 {
   v2 = +[CLKRenderingContext sharedRenderingContext];
-  v3 = [v2 device];
+  device = [v2 device];
   v4 = NTKSensitivityForVictoryFaces();
 
   return v4;
@@ -59,17 +59,17 @@
 
 - (id)palette
 {
-  v3 = [(NTKShibaFaceView *)self faceColorPalette];
-  if ([v3 isMulticolor])
+  faceColorPalette = [(NTKShibaFaceView *)self faceColorPalette];
+  if ([faceColorPalette isMulticolor])
   {
-    v4 = [(NTKShibaFaceView *)self multicolorPaletteReplacement];
+    multicolorPaletteReplacement = [(NTKShibaFaceView *)self multicolorPaletteReplacement];
 
-    v3 = v4;
+    faceColorPalette = multicolorPaletteReplacement;
   }
 
-  [v3 setStyle:self->_currentStyle];
+  [faceColorPalette setStyle:self->_currentStyle];
 
-  return v3;
+  return faceColorPalette;
 }
 
 - (void)layoutSubviews
@@ -79,22 +79,22 @@
   [(NTKShibaFaceView *)&v5 layoutSubviews];
   [(NTKShibaFaceView *)self layoutOlympusView];
   analogBackgroundView = self->_analogBackgroundView;
-  v4 = [(NTKShibaFaceView *)self timeView];
-  [v4 bounds];
+  timeView = [(NTKShibaFaceView *)self timeView];
+  [timeView bounds];
   [(NTKVictoryAnalogBackgroundView *)analogBackgroundView ntk_setBoundsAndPositionFromFrame:?];
 }
 
 - (void)layoutOlympusView
 {
   olympusView = self->_olympusView;
-  v4 = [(NTKShibaFaceView *)self timeView];
-  [v4 bounds];
+  timeView = [(NTKShibaFaceView *)self timeView];
+  [timeView bounds];
   [(NTKOlympusTimeView *)olympusView ntk_setBoundsAndPositionFromFrame:?];
 
   [CATransaction setDisableActions:1];
-  v5 = [(NTKOlympusTimeView *)self->_olympusView layer];
+  layer = [(NTKOlympusTimeView *)self->_olympusView layer];
   [(NTKOlympusTimeView *)self->_olympusView bounds];
-  [v5 setCornerRadius:v6 * 0.5];
+  [layer setCornerRadius:v6 * 0.5];
 
   [CATransaction setDisableActions:0];
 }
@@ -121,9 +121,9 @@
   v3 = [(NTKShibaFaceView *)self optionForCustomEditMode:15 slot:0];
   self->_currentStyle = [v3 style];
 
-  v4 = [(NTKShibaFaceView *)self palette];
-  v5 = [(NTKShibaFaceView *)self faceColorPalette];
-  -[NTKShibaFaceView updateWithPalette:isMulticolor:](self, "updateWithPalette:isMulticolor:", v4, [v5 isMulticolor]);
+  palette = [(NTKShibaFaceView *)self palette];
+  faceColorPalette = [(NTKShibaFaceView *)self faceColorPalette];
+  -[NTKShibaFaceView updateWithPalette:isMulticolor:](self, "updateWithPalette:isMulticolor:", palette, [faceColorPalette isMulticolor]);
 
   [(NTKShibaFaceView *)self _createAndRemoveViewsForCurrentStateIfNeeded];
   [(NTKShibaFaceView *)self _setupController];
@@ -132,41 +132,41 @@
   self->_tapGesture = v6;
 
   [(UITapGestureRecognizer *)self->_tapGesture addTarget:self action:"_handleTapGesture"];
-  v8 = [(NTKShibaFaceView *)self timeView];
-  [v8 addGestureRecognizer:self->_tapGesture];
+  timeView = [(NTKShibaFaceView *)self timeView];
+  [timeView addGestureRecognizer:self->_tapGesture];
 
   v9 = [UIView alloc];
-  v10 = [(NTKShibaFaceView *)self device];
-  [v10 screenBounds];
+  device = [(NTKShibaFaceView *)self device];
+  [device screenBounds];
   v11 = [v9 initWithFrame:?];
   [(NTKShibaFaceView *)self setBackgroundView:v11];
 
-  v13 = [(NTKShibaFaceView *)self contentView];
-  v12 = [(NTKShibaFaceView *)self backgroundView];
-  [v13 insertSubview:v12 atIndex:0];
+  contentView = [(NTKShibaFaceView *)self contentView];
+  backgroundView = [(NTKShibaFaceView *)self backgroundView];
+  [contentView insertSubview:backgroundView atIndex:0];
 }
 
 - (void)_handleTapGesture
 {
-  v3 = [(NTKShibaFaceView *)self delegate];
-  [NTKVictoryAppLauncher attemptLaunchWithDelegate:v3];
+  delegate = [(NTKShibaFaceView *)self delegate];
+  [NTKVictoryAppLauncher attemptLaunchWithDelegate:delegate];
 
-  v4 = [(NTKShibaFaceView *)self timeView];
-  v5 = [(NTKShibaFaceView *)self timeView];
-  [v5 bounds];
+  timeView = [(NTKShibaFaceView *)self timeView];
+  timeView2 = [(NTKShibaFaceView *)self timeView];
+  [timeView2 bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(NTKShibaFaceView *)self contentView];
-  [v4 convertRect:v14 toView:{v7, v9, v11, v13}];
+  contentView = [(NTKShibaFaceView *)self contentView];
+  [timeView convertRect:contentView toView:{v7, v9, v11, v13}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  v23 = [(NTKShibaFaceView *)self delegate];
-  [v23 faceViewRequestedLaunchFromRect:{v16, v18, v20, v22}];
+  delegate2 = [(NTKShibaFaceView *)self delegate];
+  [delegate2 faceViewRequestedLaunchFromRect:{v16, v18, v20, v22}];
 }
 
 - (void)_setupController
@@ -189,29 +189,29 @@
   olympusController = self->_olympusController;
   self->_olympusController = 0;
 
-  v4 = [(NTKShibaFaceView *)self timeView];
-  [v4 removeGestureRecognizer:self->_tapGesture];
+  timeView = [(NTKShibaFaceView *)self timeView];
+  [timeView removeGestureRecognizer:self->_tapGesture];
 
   tapGesture = self->_tapGesture;
   self->_tapGesture = 0;
 
-  v6 = [(NTKShibaFaceView *)self backgroundView];
-  [v6 removeFromSuperview];
+  backgroundView = [(NTKShibaFaceView *)self backgroundView];
+  [backgroundView removeFromSuperview];
 
   [(NTKShibaFaceView *)self setBackgroundView:0];
 }
 
 - (id)dialView
 {
-  v3 = [(NTKShibaFaceView *)self device];
-  v4 = sub_49AC(v3, v3);
+  device = [(NTKShibaFaceView *)self device];
+  v4 = sub_49AC(device, device);
 
   v5 = [NTKShibaTimeView alloc];
-  v6 = [(NTKShibaFaceView *)self device];
-  v7 = [(NTKShibaTimeView *)v5 initWithFrame:0 style:v6 andDevice:0.0, 0.0, v4, v4];
+  device2 = [(NTKShibaFaceView *)self device];
+  v7 = [(NTKShibaTimeView *)v5 initWithFrame:0 style:device2 andDevice:0.0, 0.0, v4, v4];
 
-  v8 = [(NTKShibaFaceView *)self palette];
-  [(NTKShibaTimeView *)v7 setPalette:v8];
+  palette = [(NTKShibaFaceView *)self palette];
+  [(NTKShibaTimeView *)v7 setPalette:palette];
 
   return v7;
 }
@@ -249,8 +249,8 @@ LABEL_5:
   if (self->_analogBackgroundView)
   {
     v3 = [NTKOlympusAnalogBackgroundPalette alloc];
-    v4 = [(NTKShibaFaceView *)self palette];
-    v5 = [v3 initWithOlympusColorPalette:v4];
+    palette = [(NTKShibaFaceView *)self palette];
+    v5 = [v3 initWithOlympusColorPalette:palette];
 
     [(NTKVictoryAnalogBackgroundView *)self->_analogBackgroundView applyTransitionFraction:self->_currentStyle fromOlympusStyle:self->_currentStyle toOlympusStyle:1.0];
     [(NTKVictoryAnalogBackgroundView *)self->_analogBackgroundView setPalette:v5];
@@ -263,30 +263,30 @@ LABEL_5:
   if (!self->_olympusView)
   {
     v3 = [NTKOlympusTimeView alloc];
-    v4 = [(NTKShibaFaceView *)self device];
+    device = [(NTKShibaFaceView *)self device];
     currentStyle = self->_currentStyle;
-    v6 = [(NTKShibaFaceView *)self palette];
-    v7 = [(NTKShibaFaceView *)self currentDisplayDate];
+    palette = [(NTKShibaFaceView *)self palette];
+    currentDisplayDate = [(NTKShibaFaceView *)self currentDisplayDate];
     v8 = [NTKShibaFaceBundle imageWithName:@"Victory-logo-small"];
-    v9 = [v3 initWithDevice:v4 dial:0 style:currentStyle colorPalette:v6 date:v7 useSmallFont:1 circularLogoImage:v8];
+    v9 = [v3 initWithDevice:device dial:0 style:currentStyle colorPalette:palette date:currentDisplayDate useSmallFont:1 circularLogoImage:v8];
     olympusView = self->_olympusView;
     self->_olympusView = v9;
 
     [(NTKOlympusTimeView *)self->_olympusView setClipsToBounds:1];
     [(NTKOlympusController *)self->_olympusController setOlympusView:self->_olympusView];
-    v11 = [(NTKShibaFaceView *)self shibaTimeView];
-    v13 = [v11 dialBackgroundView];
+    shibaTimeView = [(NTKShibaFaceView *)self shibaTimeView];
+    dialBackgroundView = [shibaTimeView dialBackgroundView];
 
     v12 = self->_olympusView;
     if (self->_analogBackgroundView)
     {
-      [v13 insertSubview:v12 belowSubview:?];
+      [dialBackgroundView insertSubview:v12 belowSubview:?];
     }
 
     else
     {
-      [v13 addSubview:v12];
-      [v13 sendSubviewToBack:self->_olympusView];
+      [dialBackgroundView addSubview:v12];
+      [dialBackgroundView sendSubviewToBack:self->_olympusView];
     }
 
     [(NTKShibaFaceView *)self layoutOlympusView];
@@ -298,14 +298,14 @@ LABEL_5:
   if (!self->_analogBackgroundView)
   {
     v3 = [NTKVictoryAnalogBackgroundView alloc];
-    v4 = [(NTKShibaFaceView *)self timeView];
-    [v4 bounds];
+    timeView = [(NTKShibaFaceView *)self timeView];
+    [timeView bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(NTKShibaFaceView *)self device];
-    v14 = [v3 initWithFrame:v13 forDevice:{v6, v8, v10, v12}];
+    device = [(NTKShibaFaceView *)self device];
+    v14 = [v3 initWithFrame:device forDevice:{v6, v8, v10, v12}];
     analogBackgroundView = self->_analogBackgroundView;
     self->_analogBackgroundView = v14;
 
@@ -313,25 +313,25 @@ LABEL_5:
     [(NTKVictoryAnalogBackgroundView *)self->_analogBackgroundView setLogoImage:v16];
 
     [(NTKVictoryAnalogBackgroundView *)self->_analogBackgroundView setStyle:5];
-    v17 = [(NTKShibaFaceView *)self timeView];
-    [v17 bounds];
+    timeView2 = [(NTKShibaFaceView *)self timeView];
+    [timeView2 bounds];
     v18 = CGRectGetWidth(v24) * 0.5;
-    v19 = [(NTKVictoryAnalogBackgroundView *)self->_analogBackgroundView layer];
-    [v19 setCornerRadius:v18];
+    layer = [(NTKVictoryAnalogBackgroundView *)self->_analogBackgroundView layer];
+    [layer setCornerRadius:v18];
 
-    v20 = [(NTKShibaFaceView *)self shibaTimeView];
-    v22 = [v20 dialBackgroundView];
+    shibaTimeView = [(NTKShibaFaceView *)self shibaTimeView];
+    dialBackgroundView = [shibaTimeView dialBackgroundView];
 
     v21 = self->_analogBackgroundView;
     if (self->_olympusView)
     {
-      [v22 insertSubview:v21 aboveSubview:?];
+      [dialBackgroundView insertSubview:v21 aboveSubview:?];
     }
 
     else
     {
-      [v22 addSubview:v21];
-      [v22 sendSubviewToBack:self->_analogBackgroundView];
+      [dialBackgroundView addSubview:v21];
+      [dialBackgroundView sendSubviewToBack:self->_analogBackgroundView];
     }
   }
 }
@@ -352,69 +352,69 @@ LABEL_5:
 
 - (void)_applyDataMode
 {
-  v3 = [(NTKShibaFaceView *)self dataMode];
-  [(NTKOlympusController *)self->_olympusController applyDataMode:v3];
-  v4 = [(NTKShibaFaceView *)self timeView];
-  [v4 setUserInteractionEnabled:v3 == &dword_0 + 1];
+  dataMode = [(NTKShibaFaceView *)self dataMode];
+  [(NTKOlympusController *)self->_olympusController applyDataMode:dataMode];
+  timeView = [(NTKShibaFaceView *)self timeView];
+  [timeView setUserInteractionEnabled:dataMode == &dword_0 + 1];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = NTKShibaFaceView;
-  v6 = a3;
-  [(NTKShibaFaceView *)&v7 setOverrideDate:v6 duration:a4];
-  [(NTKOlympusController *)self->_olympusController setOverrideDate:v6 duration:a4, v7.receiver, v7.super_class];
+  dateCopy = date;
+  [(NTKShibaFaceView *)&v7 setOverrideDate:dateCopy duration:duration];
+  [(NTKOlympusController *)self->_olympusController setOverrideDate:dateCopy duration:duration, v7.receiver, v7.super_class];
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
   v5.receiver = self;
   v5.super_class = NTKShibaFaceView;
   [(NTKShibaFaceView *)&v5 setTimeOffset:?];
-  [(NTKOlympusTimeView *)self->_olympusView setTimeOffset:a3];
+  [(NTKOlympusTimeView *)self->_olympusView setTimeOffset:offset];
 }
 
 - (BOOL)_wantsStatusBarIconShadow
 {
-  v2 = [(NTKShibaFaceView *)self palette];
-  v3 = [v2 background];
+  palette = [(NTKShibaFaceView *)self palette];
+  background = [palette background];
   v4 = CLKIsBlackColor();
 
   return v4 ^ 1;
 }
 
-- (void)updateMonochromeColorForRichComplicationView:(id)a3
+- (void)updateMonochromeColorForRichComplicationView:(id)view
 {
-  v11 = a3;
-  v4 = [(NTKShibaFaceView *)self palette];
-  v5 = [v4 cornerComplicationsAccentColor];
-  [(NTKShibaFaceView *)self setComplicationColor:v5];
+  viewCopy = view;
+  palette = [(NTKShibaFaceView *)self palette];
+  cornerComplicationsAccentColor = [palette cornerComplicationsAccentColor];
+  [(NTKShibaFaceView *)self setComplicationColor:cornerComplicationsAccentColor];
 
-  v6 = [(NTKShibaFaceView *)self complicationColor];
-  [(NTKShibaFaceView *)self setInterpolatedComplicationColor:v6];
+  complicationColor = [(NTKShibaFaceView *)self complicationColor];
+  [(NTKShibaFaceView *)self setInterpolatedComplicationColor:complicationColor];
 
-  v7 = [(NTKShibaFaceView *)self palette];
-  v8 = [v7 complicationsAlternateColor];
-  [(NTKShibaFaceView *)self setAlternateComplicationColor:v8];
+  palette2 = [(NTKShibaFaceView *)self palette];
+  complicationsAlternateColor = [palette2 complicationsAlternateColor];
+  [(NTKShibaFaceView *)self setAlternateComplicationColor:complicationsAlternateColor];
 
-  v9 = [(NTKShibaFaceView *)self faceColorPalette];
-  LODWORD(v7) = [v9 isMulticolor];
+  faceColorPalette = [(NTKShibaFaceView *)self faceColorPalette];
+  LODWORD(palette2) = [faceColorPalette isMulticolor];
 
-  if (v7)
+  if (palette2)
   {
-    [v11 transitionToMonochromeWithFraction:0.0];
+    [viewCopy transitionToMonochromeWithFraction:0.0];
   }
 
   else
   {
-    [v11 updateMonochromeColor];
+    [viewCopy updateMonochromeColor];
   }
 
   if (objc_opt_respondsToSelector())
   {
     v10 = +[UIColor clearColor];
-    [v11 setPlatterColor:v10];
+    [viewCopy setPlatterColor:v10];
   }
 }
 
@@ -450,8 +450,8 @@ LABEL_5:
   [(NTKVictoryAnalogBackgroundView *)analogBackgroundView setTransform:&v14];
   [(NTKOlympusTimeView *)self->_olympusView setCurrentStyle:self->_currentStyle];
   [(NTKOlympusTimeView *)self->_olympusView applyTransitionFraction:self->_currentStyle fromStyle:self->_currentStyle toStyle:1.0];
-  v4 = [(NTKShibaFaceView *)self palette];
-  [(NTKOlympusTimeView *)self->_olympusView setCurrentColorPalette:v4];
+  palette = [(NTKShibaFaceView *)self palette];
+  [(NTKOlympusTimeView *)self->_olympusView setCurrentColorPalette:palette];
 
   olympusView = self->_olympusView;
   v14 = v13;
@@ -463,12 +463,12 @@ LABEL_5:
   self->_transitionOlympusView = 0;
 
   v7 = [(NTKShibaFaceView *)self _dualTimeStyleForOlympusStyle:self->_currentStyle];
-  v8 = [(NTKShibaFaceView *)self shibaTimeView];
-  [v8 setStyle:v7];
+  shibaTimeView = [(NTKShibaFaceView *)self shibaTimeView];
+  [shibaTimeView setStyle:v7];
 
-  v9 = [(NTKShibaFaceView *)self palette];
-  v10 = [(NTKShibaFaceView *)self shibaTimeView];
-  [v10 setPalette:v9];
+  palette2 = [(NTKShibaFaceView *)self palette];
+  shibaTimeView2 = [(NTKShibaFaceView *)self shibaTimeView];
+  [shibaTimeView2 setPalette:palette2];
 }
 
 - (void)_prepareForEditing
@@ -493,11 +493,11 @@ LABEL_5:
   }
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v4.receiver = self;
   v4.super_class = NTKShibaFaceView;
-  [(NTKShibaFaceView *)&v4 _configureForEditMode:a3];
+  [(NTKShibaFaceView *)&v4 _configureForEditMode:mode];
   [(NTKShibaFaceView *)self _cleanupTransitions];
 }
 
@@ -510,63 +510,63 @@ LABEL_5:
   [(NTKShibaFaceView *)self _createAndRemoveViewsForCurrentStateIfNeeded];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (a6 == 10)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  if (mode == 10)
   {
-    v23 = [(NTKShibaFaceView *)self interpolatedColorPalette];
-    v24 = [v23 fromPalette];
+    interpolatedColorPalette = [(NTKShibaFaceView *)self interpolatedColorPalette];
+    fromPalette = [interpolatedColorPalette fromPalette];
 
-    v25 = [(NTKShibaFaceView *)self interpolatedColorPalette];
-    v26 = [v25 toPalette];
+    interpolatedColorPalette2 = [(NTKShibaFaceView *)self interpolatedColorPalette];
+    toPalette = [interpolatedColorPalette2 toPalette];
 
-    v27 = [v24 isMulticolor];
-    v28 = [v26 isMulticolor];
-    v52 = v27 & v28;
-    v29 = 0.0;
-    if ((v27 & v28) == 0)
+    isMulticolor = [fromPalette isMulticolor];
+    isMulticolor2 = [toPalette isMulticolor];
+    v52 = isMulticolor & isMulticolor2;
+    fractionCopy = 0.0;
+    if ((isMulticolor & isMulticolor2) == 0)
     {
-      v29 = a3;
+      fractionCopy = fraction;
     }
 
-    if (v27 | v28 ^ 1)
+    if (isMulticolor | isMulticolor2 ^ 1)
     {
-      v30 = v29;
+      v30 = fractionCopy;
     }
 
     else
     {
-      v30 = 1.0 - a3;
+      v30 = 1.0 - fraction;
     }
 
-    v53 = v13;
-    if ([v24 isMulticolor])
+    v53 = toOptionCopy;
+    if ([fromPalette isMulticolor])
     {
-      v31 = [(NTKShibaFaceView *)self multicolorPaletteReplacement];
+      multicolorPaletteReplacement = [(NTKShibaFaceView *)self multicolorPaletteReplacement];
 
-      v24 = v31;
+      fromPalette = multicolorPaletteReplacement;
     }
 
-    v32 = v27 ^ v28;
-    v54 = v14;
-    v55 = v12;
-    if ([v26 isMulticolor])
+    v32 = isMulticolor ^ isMulticolor2;
+    v54 = slotCopy;
+    v55 = optionCopy;
+    if ([toPalette isMulticolor])
     {
-      v33 = [(NTKShibaFaceView *)self multicolorPaletteReplacement];
+      multicolorPaletteReplacement2 = [(NTKShibaFaceView *)self multicolorPaletteReplacement];
 
-      v26 = v33;
+      toPalette = multicolorPaletteReplacement2;
     }
 
-    v34 = [v24 cornerComplicationsAccentColor];
-    v35 = [v26 cornerComplicationsAccentColor];
+    cornerComplicationsAccentColor = [fromPalette cornerComplicationsAccentColor];
+    cornerComplicationsAccentColor2 = [toPalette cornerComplicationsAccentColor];
     v36 = NTKInterpolateBetweenColors();
     [(NTKShibaFaceView *)self setComplicationColor:v36];
     [(NTKShibaFaceView *)self setInterpolatedComplicationColor:v36];
-    v37 = [v24 complicationsAlternateColor];
-    v38 = [v26 complicationsAlternateColor];
+    complicationsAlternateColor = [fromPalette complicationsAlternateColor];
+    complicationsAlternateColor2 = [toPalette complicationsAlternateColor];
     v39 = NTKInterpolateBetweenColors();
     [(NTKShibaFaceView *)self setAlternateComplicationColor:v39];
 
@@ -578,51 +578,51 @@ LABEL_5:
     v58 = v52;
     *&v56[4] = v30;
     [(NTKShibaFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v56];
-    v13 = v53;
+    toOptionCopy = v53;
     if ([v55 isEqual:v53])
     {
       [(NTKVictoryAnalogBackgroundView *)self->_analogBackgroundView setStyle:5];
-      v40 = [[NTKOlympusAnalogBackgroundPalette alloc] initWithOlympusColorPalette:v26];
-      [(NTKVictoryAnalogBackgroundView *)self->_analogBackgroundView setPalette:v40];
+      background = [[NTKOlympusAnalogBackgroundPalette alloc] initWithOlympusColorPalette:toPalette];
+      [(NTKVictoryAnalogBackgroundView *)self->_analogBackgroundView setPalette:background];
     }
 
     else
     {
-      [(NTKShibaFaceView *)self _applyTransitionFraction:v24 fromColorPalette:v26 toColorPalette:1 animateElements:a3];
-      v40 = [v24 background];
-      v41 = [v26 background];
+      [(NTKShibaFaceView *)self _applyTransitionFraction:fromPalette fromColorPalette:toPalette toColorPalette:1 animateElements:fraction];
+      background = [fromPalette background];
+      background2 = [toPalette background];
       v42 = NTKInterpolateBetweenColors();
-      v43 = [(NTKShibaFaceView *)self backgroundView];
-      [v43 setBackgroundColor:v42];
+      backgroundView = [(NTKShibaFaceView *)self backgroundView];
+      [backgroundView setBackgroundColor:v42];
     }
 
-    v14 = v54;
+    slotCopy = v54;
 
-    v12 = v55;
+    optionCopy = v55;
   }
 
-  else if (a6 == 15)
+  else if (mode == 15)
   {
-    v15 = [v12 style];
-    v16 = [v13 style];
-    if (v15 != v16)
+    style = [optionCopy style];
+    style2 = [toOptionCopy style];
+    if (style != style2)
     {
-      v17 = v16;
-      v18 = [(NTKShibaFaceView *)self palette];
-      v19 = [v18 copy];
+      v17 = style2;
+      palette = [(NTKShibaFaceView *)self palette];
+      v19 = [palette copy];
 
-      [v19 setStyle:v15];
-      v20 = [(NTKShibaFaceView *)self palette];
-      v21 = [v20 copy];
+      [v19 setStyle:style];
+      palette2 = [(NTKShibaFaceView *)self palette];
+      v21 = [palette2 copy];
 
       [v21 setStyle:v17];
-      if (v15 == &dword_0 + 3)
+      if (style == &dword_0 + 3)
       {
-        [(NTKOlympusTimeView *)self->_olympusView applyTransitionFraction:3 fromStyle:v17 toStyle:a3];
-        [(NTKShibaFaceView *)self _applyTransitionFraction:self->_analogBackgroundView fromView:self->_olympusView toView:a3];
-        [(NTKShibaFaceView *)self _applyTransitionFraction:v19 fromColorPalette:v21 toColorPalette:0 animateElements:a3];
-        v22 = [(NTKShibaFaceView *)self shibaTimeView];
-        [v22 setStyle:0];
+        [(NTKOlympusTimeView *)self->_olympusView applyTransitionFraction:3 fromStyle:v17 toStyle:fraction];
+        [(NTKShibaFaceView *)self _applyTransitionFraction:self->_analogBackgroundView fromView:self->_olympusView toView:fraction];
+        [(NTKShibaFaceView *)self _applyTransitionFraction:v19 fromColorPalette:v21 toColorPalette:0 animateElements:fraction];
+        shibaTimeView = [(NTKShibaFaceView *)self shibaTimeView];
+        [shibaTimeView setStyle:0];
       }
 
       else
@@ -639,33 +639,33 @@ LABEL_24:
         {
           [(NTKOlympusTimeView *)self->_olympusView setAlpha:1.0];
           [(NTKOlympusTimeView *)self->_olympusView setCurrentStyle:0];
-          [(NTKOlympusTimeView *)self->_olympusView applyTransitionFraction:v15 fromStyle:0 toStyle:1.0];
+          [(NTKOlympusTimeView *)self->_olympusView applyTransitionFraction:style fromStyle:0 toStyle:1.0];
           [(NTKOlympusTimeView *)self->_olympusView applyTransitionFraction:v19 fromColorPalette:v21 toColorPalette:0 animateElements:1.0];
           v45 = [(NTKOlympusTimeView *)self->_olympusView snapshotViewAfterScreenUpdates:1];
           v46 = self->_transitionOlympusView;
           self->_transitionOlympusView = v45;
 
-          v47 = [(NTKShibaFaceView *)self shibaTimeView];
-          v48 = [v47 dialBackgroundView];
-          [v48 insertSubview:self->_transitionOlympusView aboveSubview:self->_olympusView];
+          shibaTimeView2 = [(NTKShibaFaceView *)self shibaTimeView];
+          dialBackgroundView = [shibaTimeView2 dialBackgroundView];
+          [dialBackgroundView insertSubview:self->_transitionOlympusView aboveSubview:self->_olympusView];
 
           [(NTKOlympusTimeView *)self->_olympusView center];
           [(UIView *)self->_transitionOlympusView setCenter:?];
           [(UIView *)self->_transitionOlympusView setAlpha:0.0];
-          [(NTKOlympusTimeView *)self->_olympusView setCurrentStyle:v15];
-          [(NTKOlympusTimeView *)self->_olympusView applyTransitionFraction:v15 fromStyle:0 toStyle:0.0];
+          [(NTKOlympusTimeView *)self->_olympusView setCurrentStyle:style];
+          [(NTKOlympusTimeView *)self->_olympusView applyTransitionFraction:style fromStyle:0 toStyle:0.0];
           [(NTKOlympusTimeView *)self->_olympusView applyTransitionFraction:v19 fromColorPalette:v21 toColorPalette:0 animateElements:0.0];
           transitionOlympusView = self->_transitionOlympusView;
         }
 
-        [(NTKShibaFaceView *)self _applyTransitionFraction:self->_olympusView fromView:transitionOlympusView toView:a3];
-        v49 = [(NTKShibaFaceView *)self shibaTimeView];
-        v22 = [v49 analogHandsView];
+        [(NTKShibaFaceView *)self _applyTransitionFraction:self->_olympusView fromView:transitionOlympusView toView:fraction];
+        shibaTimeView3 = [(NTKShibaFaceView *)self shibaTimeView];
+        shibaTimeView = [shibaTimeView3 analogHandsView];
 
-        v50 = [(NTKShibaFaceView *)self shibaTimeView];
-        v51 = [v50 digitalContainerView];
+        shibaTimeView4 = [(NTKShibaFaceView *)self shibaTimeView];
+        digitalContainerView = [shibaTimeView4 digitalContainerView];
 
-        [(NTKShibaFaceView *)self _applyTransitionFraction:v22 fromView:v51 toView:a3];
+        [(NTKShibaFaceView *)self _applyTransitionFraction:shibaTimeView fromView:digitalContainerView toView:fraction];
       }
 
       goto LABEL_24;
@@ -675,11 +675,11 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromView:(id)a4 toView:(id)a5
+- (void)_applyTransitionFraction:(double)fraction fromView:(id)view toView:(id)toView
 {
-  v6 = a4;
-  v7 = a5;
-  if (v6)
+  viewCopy = view;
+  toViewCopy = toView;
+  if (viewCopy)
   {
     CLKCompressFraction();
     CLKInterpolateBetweenFloatsClipped();
@@ -688,11 +688,11 @@ LABEL_25:
     v11 = v10;
     CGAffineTransformMakeScale(&v18, v9, v9);
     v17 = v18;
-    [v6 setTransform:&v17];
-    [v6 setAlpha:v11];
+    [viewCopy setTransform:&v17];
+    [viewCopy setAlpha:v11];
   }
 
-  if (v7)
+  if (toViewCopy)
   {
     CLKCompressFraction();
     CLKInterpolateBetweenFloatsClipped();
@@ -701,24 +701,24 @@ LABEL_25:
     v15 = v14;
     CGAffineTransformMakeScale(&v16, v13, v13);
     v17 = v16;
-    [v7 setTransform:&v17];
-    [v7 setAlpha:v15];
+    [toViewCopy setTransform:&v17];
+    [toViewCopy setAlpha:v15];
   }
 }
 
-- (void)_updateComplicationsWithColor:(id)a3 alternateColor:(id)a4 isMulticolor:(BOOL)a5
+- (void)_updateComplicationsWithColor:(id)color alternateColor:(id)alternateColor isMulticolor:(BOOL)multicolor
 {
-  v8 = a4;
-  v9 = a3;
-  [(NTKShibaFaceView *)self setComplicationColor:v9];
-  [(NTKShibaFaceView *)self setInterpolatedComplicationColor:v9];
+  alternateColorCopy = alternateColor;
+  colorCopy = color;
+  [(NTKShibaFaceView *)self setComplicationColor:colorCopy];
+  [(NTKShibaFaceView *)self setInterpolatedComplicationColor:colorCopy];
 
-  [(NTKShibaFaceView *)self setAlternateComplicationColor:v8];
+  [(NTKShibaFaceView *)self setAlternateComplicationColor:alternateColorCopy];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_413C;
   v10[3] = &unk_C380;
-  v11 = a5;
+  multicolorCopy = multicolor;
   [(NTKShibaFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v10];
 }
 
@@ -727,8 +727,8 @@ LABEL_25:
   multicolorPaletteReplacement = self->_multicolorPaletteReplacement;
   if (!multicolorPaletteReplacement)
   {
-    v4 = [(NTKShibaFaceView *)self faceColorPalette];
-    v5 = [v4 copy];
+    faceColorPalette = [(NTKShibaFaceView *)self faceColorPalette];
+    v5 = [faceColorPalette copy];
     v6 = self->_multicolorPaletteReplacement;
     self->_multicolorPaletteReplacement = v5;
 
@@ -744,23 +744,23 @@ LABEL_25:
   return multicolorPaletteReplacement;
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v12 = a3;
-  v8 = a5;
-  if (a4 == 10)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 10)
   {
-    v9 = [(NTKShibaFaceView *)self palette];
-    v10 = [(NTKShibaFaceView *)self faceColorPalette];
-    -[NTKShibaFaceView updateWithPalette:isMulticolor:](self, "updateWithPalette:isMulticolor:", v9, [v10 isMulticolor]);
+    palette = [(NTKShibaFaceView *)self palette];
+    faceColorPalette = [(NTKShibaFaceView *)self faceColorPalette];
+    -[NTKShibaFaceView updateWithPalette:isMulticolor:](self, "updateWithPalette:isMulticolor:", palette, [faceColorPalette isMulticolor]);
 
-    v11 = [(NTKShibaFaceView *)self delegate];
-    [v11 faceViewDidChangeWantsStatusBarIconShadow];
+    delegate = [(NTKShibaFaceView *)self delegate];
+    [delegate faceViewDidChangeWantsStatusBarIconShadow];
   }
 
-  else if (a4 == 15)
+  else if (mode == 15)
   {
-    -[NTKShibaFaceView setCurrentStyle:](self, "setCurrentStyle:", [v12 style]);
+    -[NTKShibaFaceView setCurrentStyle:](self, "setCurrentStyle:", [optionCopy style]);
   }
 
   if ([(NTKShibaFaceView *)self editing])
@@ -775,9 +775,9 @@ LABEL_25:
   }
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if (a3 == 15)
+  if (options == 15)
   {
     return &off_CBA0;
   }
@@ -788,10 +788,10 @@ LABEL_25:
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
+  optionCopy = option;
+  optionsCopy = options;
   if (!qword_11A08)
   {
     v10 = objc_opt_new();
@@ -799,20 +799,20 @@ LABEL_25:
     qword_11A08 = v10;
   }
 
-  if (a4 == 15)
+  if (mode == 15)
   {
-    v12 = v8;
-    v13 = [v9 objectForKeyedSubscript:&off_C9A8];
-    v14 = [v13 pigmentEditOption];
+    v12 = optionCopy;
+    v13 = [optionsCopy objectForKeyedSubscript:&off_C9A8];
+    pigmentEditOption = [v13 pigmentEditOption];
 
     v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v12 style]);
-    v16 = [v14 identifier];
-    v17 = [NSString stringWithFormat:@"%@-%@", v15, v16];
+    identifier = [pigmentEditOption identifier];
+    v17 = [NSString stringWithFormat:@"%@-%@", v15, identifier];
 
     v18 = [qword_11A08 objectForKey:v17];
     if (!v18)
     {
-      v18 = [(NTKShibaFaceView *)self _renderDialSwatchImageForStyle:v12 colorOption:v14];
+      v18 = [(NTKShibaFaceView *)self _renderDialSwatchImageForStyle:v12 colorOption:pigmentEditOption];
       [qword_11A08 setObject:v18 forKey:v17];
     }
   }
@@ -821,37 +821,37 @@ LABEL_25:
   {
     v20.receiver = self;
     v20.super_class = NTKShibaFaceView;
-    v18 = [(NTKShibaFaceView *)&v20 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v9];
+    v18 = [(NTKShibaFaceView *)&v20 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
   }
 
   return v18;
 }
 
-- (id)_renderDialSwatchImageForStyle:(id)a3 colorOption:(id)a4
+- (id)_renderDialSwatchImageForStyle:(id)style colorOption:(id)option
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NTKShibaFaceView *)self timeView];
+  optionCopy = option;
+  styleCopy = style;
+  timeView = [(NTKShibaFaceView *)self timeView];
 
-  if (!v8)
+  if (!timeView)
   {
     [(NTKShibaFaceView *)self _loadSnapshotContentViews];
   }
 
   v9 = [(NTKShibaFaceView *)self optionForCustomEditMode:15 slot:0];
-  [(NTKShibaFaceView *)self setOption:v7 forCustomEditMode:15 slot:0];
+  [(NTKShibaFaceView *)self setOption:styleCopy forCustomEditMode:15 slot:0];
 
-  [(NTKShibaFaceView *)self setOption:v6 forCustomEditMode:10 slot:0];
-  v10 = [(NTKShibaFaceView *)self timeView];
-  [v10 bounds];
+  [(NTKShibaFaceView *)self setOption:optionCopy forCustomEditMode:10 slot:0];
+  timeView2 = [(NTKShibaFaceView *)self timeView];
+  [timeView2 bounds];
   v15 = [[UIGraphicsImageRenderer alloc] initWithBounds:{v11, v12, v13, v14}];
   [(NTKShibaFaceView *)self layoutIfNeeded];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_4768;
   v19[3] = &unk_C3A8;
-  v20 = v10;
-  v16 = v10;
+  v20 = timeView2;
+  v16 = timeView2;
   v17 = [v15 imageWithActions:v19];
   [(NTKShibaFaceView *)self setOption:v9 forCustomEditMode:15 slot:0];
 

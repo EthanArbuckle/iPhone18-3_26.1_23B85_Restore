@@ -13,8 +13,8 @@
 
 - (id)description
 {
-  v2 = [(FPActionOperationLocator *)self asFPItem];
-  v3 = [v2 description];
+  asFPItem = [(FPActionOperationLocator *)self asFPItem];
+  v3 = [asFPItem description];
 
   return v3;
 }
@@ -22,8 +22,8 @@
 - (id)identifier
 {
   v3 = [_FPLocationAgnosticID alloc];
-  v4 = [(FPActionOperationLocator *)self asFPItem];
-  v5 = [(_FPLocationAgnosticID *)v3 initWithItem:v4];
+  asFPItem = [(FPActionOperationLocator *)self asFPItem];
+  v5 = [(_FPLocationAgnosticID *)v3 initWithItem:asFPItem];
 
   return v5;
 }
@@ -31,19 +31,19 @@
 - (id)parentIdentifier
 {
   v3 = [_FPLocationAgnosticID alloc];
-  v4 = [(FPActionOperationLocator *)self asFPItem];
-  v5 = [v4 parentItemID];
-  v6 = [(_FPLocationAgnosticID *)v3 initWithItemID:v5];
+  asFPItem = [(FPActionOperationLocator *)self asFPItem];
+  parentItemID = [asFPItem parentItemID];
+  v6 = [(_FPLocationAgnosticID *)v3 initWithItemID:parentItemID];
 
   return v6;
 }
 
 - (id)filename
 {
-  v2 = [(FPActionOperationLocator *)self asFPItem];
-  v3 = [v2 filename];
+  asFPItem = [(FPActionOperationLocator *)self asFPItem];
+  filename = [asFPItem filename];
 
-  return v3;
+  return filename;
 }
 
 - (unint64_t)size
@@ -53,42 +53,42 @@
     return 0;
   }
 
-  v4 = [(FPActionOperationLocator *)self asFPItem];
-  v5 = [v4 documentSize];
-  v6 = [v5 unsignedIntegerValue];
+  asFPItem = [(FPActionOperationLocator *)self asFPItem];
+  documentSize = [asFPItem documentSize];
+  unsignedIntegerValue = [documentSize unsignedIntegerValue];
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)isDownloaded
 {
-  v2 = [(FPActionOperationLocator *)self asFPItem];
-  v3 = [v2 isDownloaded];
+  asFPItem = [(FPActionOperationLocator *)self asFPItem];
+  isDownloaded = [asFPItem isDownloaded];
 
-  return v3;
+  return isDownloaded;
 }
 
 - (BOOL)isFolder
 {
-  v2 = [(FPActionOperationLocator *)self asFPItem];
-  v3 = [v2 isFolder];
+  asFPItem = [(FPActionOperationLocator *)self asFPItem];
+  isFolder = [asFPItem isFolder];
 
-  return v3;
+  return isFolder;
 }
 
 - (BOOL)requiresCrossDeviceCopy
 {
-  v2 = [(FPActionOperationLocator *)self asFPItem];
-  v3 = [v2 providerID];
+  asFPItem = [(FPActionOperationLocator *)self asFPItem];
+  providerID = [asFPItem providerID];
 
-  if ([v3 isEqualToString:@"com.apple.filesystems.UserFS.FileProvider"])
+  if ([providerID isEqualToString:@"com.apple.filesystems.UserFS.FileProvider"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"com.apple.SMBClientProvider.FileProvider"];
+    v4 = [providerID isEqualToString:@"com.apple.SMBClientProvider.FileProvider"];
   }
 
   return v4;

@@ -1,5 +1,5 @@
 @interface HearingTestSessionManagerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_axResumeSession;
 - (void)_axStartSession;
 - (void)resume;
@@ -8,11 +8,11 @@
 
 @implementation HearingTestSessionManagerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HearingTestUI.SessionManager" hasInstanceMethod:@"startTest" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"HearingTestUI.SessionManager" hasInstanceMethod:@"resume" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HearingTestUI.SessionManager" hasInstanceMethod:@"startTest" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"HearingTestUI.SessionManager" hasInstanceMethod:@"resume" withFullSignature:{"v", 0}];
 }
 
 - (void)_axStartSession

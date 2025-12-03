@@ -1,19 +1,19 @@
 @interface PXTimelineSchedulerOptions
-+ (id)_sortTimelineSizesFromSet:(id)a3;
++ (id)_sortTimelineSizesFromSet:(id)set;
 - (PXTimelineSchedulerOptions)init;
-- (void)updateOptionsForTimelineSize:(unint64_t)a3 withTimelineSizes:(id)a4;
+- (void)updateOptionsForTimelineSize:(unint64_t)size withTimelineSizes:(id)sizes;
 @end
 
 @implementation PXTimelineSchedulerOptions
 
-- (void)updateOptionsForTimelineSize:(unint64_t)a3 withTimelineSizes:(id)a4
+- (void)updateOptionsForTimelineSize:(unint64_t)size withTimelineSizes:(id)sizes
 {
-  v6 = a4;
-  v10 = [objc_opt_class() _sortTimelineSizesFromSet:v6];
+  sizesCopy = sizes;
+  v10 = [objc_opt_class() _sortTimelineSizesFromSet:sizesCopy];
 
-  [(PXTimelineSchedulerOptions *)self setTimelineForSize:a3];
+  [(PXTimelineSchedulerOptions *)self setTimelineForSize:size];
   -[PXTimelineSchedulerOptions setNumberOfTimelines:](self, "setNumberOfTimelines:", [v10 count]);
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
   v8 = [v10 indexOfObject:v7];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -52,10 +52,10 @@
   return v3;
 }
 
-+ (id)_sortTimelineSizesFromSet:(id)a3
++ (id)_sortTimelineSizesFromSet:(id)set
 {
-  v5 = [a3 allObjects];
-  v6 = [v5 mutableCopy];
+  allObjects = [set allObjects];
+  v6 = [allObjects mutableCopy];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -63,7 +63,7 @@
   v8[3] = &unk_1E773B870;
   v9 = &unk_1F1910D80;
   v10 = a2;
-  v11 = a1;
+  selfCopy = self;
   [v6 sortUsingComparator:v8];
 
   return v6;

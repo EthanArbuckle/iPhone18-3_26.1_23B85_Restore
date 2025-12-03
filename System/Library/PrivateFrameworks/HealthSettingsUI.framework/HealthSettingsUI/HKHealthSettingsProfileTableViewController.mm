@@ -2,10 +2,10 @@
 - (HKHealthSettingsProfileTableViewController)init;
 - (PSController)parentController;
 - (PSRootController)rootController;
-- (id)readPreferenceValue:(id)a3;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)showController:(id)a3;
+- (id)readPreferenceValue:(id)value;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)showController:(id)controller;
 @end
 
 @implementation HKHealthSettingsProfileTableViewController
@@ -14,44 +14,44 @@
 {
   v3 = +[HKHealthSettingsProfile sharedProfile];
   [(ProfileCharacteristicsViewController *)self setAccessType:5];
-  v4 = [v3 healthStore];
+  healthStore = [v3 healthStore];
   v7.receiver = self;
   v7.super_class = HKHealthSettingsProfileTableViewController;
-  v5 = [(ProfileCharacteristicsViewController *)&v7 initWithHealthStore:v4];
+  v5 = [(ProfileCharacteristicsViewController *)&v7 initWithHealthStore:healthStore];
 
   return v5;
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
-  [WeakRetained handleURL:v7 withCompletion:v6];
+  [WeakRetained handleURL:lCopy withCompletion:completionCopy];
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  valueCopy = value;
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
-  [WeakRetained setPreferenceValue:v7 specifier:v6];
+  [WeakRetained setPreferenceValue:valueCopy specifier:specifierCopy];
 }
 
-- (id)readPreferenceValue:(id)a3
+- (id)readPreferenceValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
-  v6 = [WeakRetained readPreferenceValue:v4];
+  v6 = [WeakRetained readPreferenceValue:valueCopy];
 
   return v6;
 }
 
-- (void)showController:(id)a3
+- (void)showController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
-  [WeakRetained showController:v4];
+  [WeakRetained showController:controllerCopy];
 }
 
 - (PSController)parentController

@@ -1,22 +1,22 @@
 @interface SRAuthorizationPromptViewController
 + (void)initialize;
 - (id)authorizationTableCompletedPromptSuccessfully:(id)result;
-- (void)authorizationTable:(id)a3 foundIssueWithApp:(id)a4;
-- (void)authorizationTable:(id)a3 openURL:(id)a4;
+- (void)authorizationTable:(id)table foundIssueWithApp:(id)app;
+- (void)authorizationTable:(id)table openURL:(id)l;
 - (void)dealloc;
-- (void)requestAuthorizationForBundle:(id)a3 services:(id)a4;
-- (void)requestAuthorizationMigrationForBundle:(id)a3 services:(id)a4;
+- (void)requestAuthorizationForBundle:(id)bundle services:(id)services;
+- (void)requestAuthorizationMigrationForBundle:(id)bundle services:(id)services;
 - (void)showAppsAndStudies;
 - (void)showFirstRunOnboarding;
 - (void)showResearchData;
-- (void)showStudyAuthorizationForBundlePath:(id)a3;
+- (void)showStudyAuthorizationForBundlePath:(id)path;
 @end
 
 @implementation SRAuthorizationPromptViewController
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100015F30 = os_log_create("com.apple.SensorKit", "AuthorizationPromptViewController");
   }
@@ -33,9 +33,9 @@
   [(SRAuthorizationPromptViewController *)&v3 dealloc];
 }
 
-- (void)requestAuthorizationForBundle:(id)a3 services:(id)a4
+- (void)requestAuthorizationForBundle:(id)bundle services:(id)services
 {
-  if (![a3 length])
+  if (![bundle length])
   {
     v31 = qword_100015F30;
     if (os_log_type_enabled(qword_100015F30, OS_LOG_TYPE_ERROR))
@@ -45,18 +45,18 @@
     }
 
     [(SRAuthorizationPromptViewController *)self setError:[SRError errorWithCode:8200]];
-    v32 = self;
+    selfCopy = self;
     goto LABEL_60;
   }
 
-  v42 = a3;
-  v43 = self;
+  bundleCopy = bundle;
+  selfCopy2 = self;
   v7 = +[NSMutableSet set];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v8 = [a4 countByEnumeratingWithState:&v45 objects:v53 count:16];
+  v8 = [services countByEnumeratingWithState:&v45 objects:v53 count:16];
   if (v8)
   {
     v9 = v8;
@@ -68,7 +68,7 @@
       {
         if (*v46 != v10)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(services);
         }
 
         v13 = *(*(&v45 + 1) + 8 * i);
@@ -96,20 +96,20 @@
         }
       }
 
-      v9 = [a4 countByEnumeratingWithState:&v45 objects:v53 count:16];
+      v9 = [services countByEnumeratingWithState:&v45 objects:v53 count:16];
     }
 
     while (v9);
   }
 
-  v17 = v43;
-  if (!v43)
+  v17 = selfCopy2;
+  if (!selfCopy2)
   {
     goto LABEL_56;
   }
 
-  v18 = [-[SRAuthorizationPromptViewController extensionContext](v43 "extensionContext")];
-  if ([(SRAuthorizationPromptViewController *)v43 migrationMode])
+  v18 = [-[SRAuthorizationPromptViewController extensionContext](selfCopy2 "extensionContext")];
+  if ([(SRAuthorizationPromptViewController *)selfCopy2 migrationMode])
   {
     v19 = &off_100010578;
 LABEL_18:
@@ -189,7 +189,7 @@ LABEL_56:
 
 LABEL_55:
           objc_autoreleasePoolPop(v28);
-          v17 = v43;
+          v17 = selfCopy2;
           goto LABEL_56;
         }
 
@@ -203,7 +203,7 @@ LABEL_55:
       }
 
       v24 = [v7 countByEnumeratingWithState:&v49 objects:buf count:16];
-      v17 = v43;
+      v17 = selfCopy2;
       if (v24)
       {
         continue;
@@ -215,9 +215,9 @@ LABEL_55:
 
 LABEL_38:
   [(SRAuthorizationPromptViewController *)v17 setRequestedServices:v7];
-  [(SRAuthorizationPromptViewController *)v17 setAppBundle:[NSBundle sk_bundleWithIdentifier:v42]];
-  v33 = [(SRAuthorizationPromptViewController *)v17 appBundle];
-  if (!v33)
+  [(SRAuthorizationPromptViewController *)v17 setAppBundle:[NSBundle sk_bundleWithIdentifier:bundleCopy]];
+  appBundle = [(SRAuthorizationPromptViewController *)v17 appBundle];
+  if (!appBundle)
   {
     v34 = [-[SRAuthorizationPromptViewController extensionContext](v17 "extensionContext")];
     if (v34)
@@ -230,41 +230,41 @@ LABEL_38:
       memset(buf, 0, 32);
     }
 
-    v33 = sub_1000010D0(NSBundle, buf);
+    appBundle = sub_1000010D0(NSBundle, buf);
   }
 
-  [(SRAuthorizationPromptViewController *)v17 setAppBundle:v33];
-  v35 = [(SRAuthorizationPromptViewController *)v17 appBundle];
+  [(SRAuthorizationPromptViewController *)v17 setAppBundle:appBundle];
+  appBundle2 = [(SRAuthorizationPromptViewController *)v17 appBundle];
   v36 = qword_100015F30;
   v37 = os_log_type_enabled(qword_100015F30, OS_LOG_TYPE_DEFAULT);
-  if (!v35)
+  if (!appBundle2)
   {
     if (v37)
     {
       *buf = 138543362;
-      *&buf[4] = v42;
+      *&buf[4] = bundleCopy;
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Bundle not found for %{public}@, Exiting prompt", buf, 0xCu);
     }
 
     v39 = 8200;
 LABEL_59:
     [(SRAuthorizationPromptViewController *)v17 setError:[SRError errorWithCode:v39]];
-    v32 = v17;
+    selfCopy = v17;
 LABEL_60:
-    [SRAuthorizationPromptViewController authorizationTableCompletedPromptSuccessfully:]_0(v32);
+    [SRAuthorizationPromptViewController authorizationTableCompletedPromptSuccessfully:]_0(selfCopy);
     return;
   }
 
   if (v37)
   {
     *buf = 138543618;
-    *&buf[4] = a4;
+    *&buf[4] = services;
     *&buf[12] = 2114;
-    *&buf[14] = v42;
+    *&buf[14] = bundleCopy;
     _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Got prompt request %{public}@ for %{public}@", buf, 0x16u);
   }
 
-  v38 = [[SRAuthorizationStore alloc] initWithSensors:a4];
+  v38 = [[SRAuthorizationStore alloc] initWithSensors:services];
   [(SRAuthorizationPromptViewController *)v17 setAuthorizationStore:v38];
 
   [(SRAuthorizationStore *)[(SRAuthorizationPromptViewController *)v17 authorizationStore] listenForAuthorizationUpdates:0];
@@ -285,31 +285,31 @@ LABEL_60:
     if (os_log_type_enabled(qword_100015F30, OS_LOG_TYPE_INFO))
     {
       v5 = 138543362;
-      v6 = [v1 error];
+      error = [v1 error];
       _os_log_impl(&_mh_execute_header, v2, OS_LOG_TYPE_INFO, "Telling host application that the prompt is complete with error: %{public}@", &v5, 0xCu);
     }
 
-    v3 = [v1 error];
-    v4 = [v1 _remoteViewControllerProxy];
-    if (v3)
+    error2 = [v1 error];
+    _remoteViewControllerProxy = [v1 _remoteViewControllerProxy];
+    if (error2)
     {
-      return [v4 authorizationRequestFailedWithError:{objc_msgSend(v1, "error")}];
+      return [_remoteViewControllerProxy authorizationRequestFailedWithError:{objc_msgSend(v1, "error")}];
     }
 
     else
     {
-      return [v4 authorizationRequestCompleted];
+      return [_remoteViewControllerProxy authorizationRequestCompleted];
     }
   }
 
   return result;
 }
 
-- (void)requestAuthorizationMigrationForBundle:(id)a3 services:(id)a4
+- (void)requestAuthorizationMigrationForBundle:(id)bundle services:(id)services
 {
   [(SRAuthorizationPromptViewController *)self setMigrationMode:1];
 
-  [(SRAuthorizationPromptViewController *)self requestAuthorizationForBundle:a3 services:a4];
+  [(SRAuthorizationPromptViewController *)self requestAuthorizationForBundle:bundle services:services];
 }
 
 - (void)showAppsAndStudies
@@ -331,7 +331,7 @@ LABEL_60:
   [SRAuthorizationPromptViewController authorizationTableCompletedPromptSuccessfully:]_0(self);
 }
 
-- (void)showStudyAuthorizationForBundlePath:(id)a3
+- (void)showStudyAuthorizationForBundlePath:(id)path
 {
   v6 = 0;
   [+[LSApplicationWorkspace defaultWorkspace](LSApplicationWorkspace defaultWorkspace];
@@ -414,20 +414,20 @@ LABEL_60:
   }
 }
 
-- (void)authorizationTable:(id)a3 foundIssueWithApp:(id)a4
+- (void)authorizationTable:(id)table foundIssueWithApp:(id)app
 {
   if (![(SRAuthorizationPromptViewController *)self error])
   {
 
-    [(SRAuthorizationPromptViewController *)self setError:a4];
+    [(SRAuthorizationPromptViewController *)self setError:app];
   }
 }
 
-- (void)authorizationTable:(id)a3 openURL:(id)a4
+- (void)authorizationTable:(id)table openURL:(id)l
 {
-  v5 = [(SRAuthorizationPromptViewController *)self extensionContext];
+  extensionContext = [(SRAuthorizationPromptViewController *)self extensionContext];
 
-  [v5 openURL:a4 completionHandler:&stru_1000104E8];
+  [extensionContext openURL:l completionHandler:&stru_1000104E8];
 }
 
 @end

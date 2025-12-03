@@ -1,17 +1,17 @@
 @interface ATXSpotlightFeedbackManager
 - (ATXSpotlightFeedbackManager)init;
-- (ATXSpotlightFeedbackManager)initWithEngagementRecordManager:(id)a3;
-- (BOOL)autoShortcutHasBeenHiddenForIdentifier:(id)a3;
-- (BOOL)contextHasBeenHiddenForContextIdentifier:(id)a3;
-- (BOOL)contextHasBeenHiddenForSuggestion:(id)a3;
-- (BOOL)hasBeenHiddenEntityWithIdentifier:(id)a3;
-- (BOOL)hasBeenHiddenSuggestion:(id)a3;
-- (unint64_t)combineReasons:(unint64_t)a3;
-- (void)_toggleSiriSearchSettingsOffForAppSuggestion:(id)a3;
-- (void)addHiddenActionExecutableIdentifier:(id)a3;
-- (void)addHiddenAppSuggestionBundleIdentifier:(id)a3;
-- (void)addHiddenAutoShortcutIdentifier:(id)a3;
-- (void)addHiddenContextIdentifier:(id)a3;
+- (ATXSpotlightFeedbackManager)initWithEngagementRecordManager:(id)manager;
+- (BOOL)autoShortcutHasBeenHiddenForIdentifier:(id)identifier;
+- (BOOL)contextHasBeenHiddenForContextIdentifier:(id)identifier;
+- (BOOL)contextHasBeenHiddenForSuggestion:(id)suggestion;
+- (BOOL)hasBeenHiddenEntityWithIdentifier:(id)identifier;
+- (BOOL)hasBeenHiddenSuggestion:(id)suggestion;
+- (unint64_t)combineReasons:(unint64_t)reasons;
+- (void)_toggleSiriSearchSettingsOffForAppSuggestion:(id)suggestion;
+- (void)addHiddenActionExecutableIdentifier:(id)identifier;
+- (void)addHiddenAppSuggestionBundleIdentifier:(id)identifier;
+- (void)addHiddenAutoShortcutIdentifier:(id)identifier;
+- (void)addHiddenContextIdentifier:(id)identifier;
 - (void)clearHiddenSuggestions;
 @end
 
@@ -25,16 +25,16 @@
   return v4;
 }
 
-- (ATXSpotlightFeedbackManager)initWithEngagementRecordManager:(id)a3
+- (ATXSpotlightFeedbackManager)initWithEngagementRecordManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = ATXSpotlightFeedbackManager;
   v6 = [(ATXSpotlightFeedbackManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_engagementRecordManager, a3);
+    objc_storeStrong(&v6->_engagementRecordManager, manager);
     v8 = [MEMORY[0x1E69C5BB8] clientModelIdFromClientModelType:44];
     clientModelId = v7->_clientModelId;
     v7->_clientModelId = v8;
@@ -43,66 +43,66 @@
   return v7;
 }
 
-- (void)addHiddenActionExecutableIdentifier:(id)a3
+- (void)addHiddenActionExecutableIdentifier:(id)identifier
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = __atxlog_handle_zkw_hide();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = identifierCopy;
     _os_log_impl(&dword_1BF549000, v5, OS_LOG_TYPE_DEFAULT, "ATXSpotlightFeedbackManager: addHiddenActionExecutableIdentifier: %@", &v6, 0xCu);
   }
 
-  [(ATXEngagementRecordManager *)self->_engagementRecordManager addEngagedExecutable:v4 clientModelId:self->_clientModelId engagementRecordType:128];
+  [(ATXEngagementRecordManager *)self->_engagementRecordManager addEngagedExecutable:identifierCopy clientModelId:self->_clientModelId engagementRecordType:128];
 }
 
-- (void)addHiddenContextIdentifier:(id)a3
+- (void)addHiddenContextIdentifier:(id)identifier
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = __atxlog_handle_zkw_hide();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = identifierCopy;
     _os_log_impl(&dword_1BF549000, v5, OS_LOG_TYPE_DEFAULT, "ATXSpotlightFeedbackManager: addHiddenContext: %@", &v6, 0xCu);
   }
 
-  [(ATXEngagementRecordManager *)self->_engagementRecordManager addEngagedExecutable:v4 clientModelId:self->_clientModelId engagementRecordType:256];
+  [(ATXEngagementRecordManager *)self->_engagementRecordManager addEngagedExecutable:identifierCopy clientModelId:self->_clientModelId engagementRecordType:256];
 }
 
-- (void)addHiddenAutoShortcutIdentifier:(id)a3
+- (void)addHiddenAutoShortcutIdentifier:(id)identifier
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = __atxlog_handle_zkw_hide();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = identifierCopy;
     _os_log_impl(&dword_1BF549000, v5, OS_LOG_TYPE_DEFAULT, "ATXSpotlightFeedbackManager: addHiddenAutoShortcut: %@", &v6, 0xCu);
   }
 
-  [(ATXEngagementRecordManager *)self->_engagementRecordManager addEngagedExecutable:v4 clientModelId:self->_clientModelId engagementRecordType:512];
+  [(ATXEngagementRecordManager *)self->_engagementRecordManager addEngagedExecutable:identifierCopy clientModelId:self->_clientModelId engagementRecordType:512];
 }
 
-- (void)addHiddenAppSuggestionBundleIdentifier:(id)a3
+- (void)addHiddenAppSuggestionBundleIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = __atxlog_handle_zkw_hide();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 uuid];
+    uuid = [identifierCopy uuid];
     v7 = 138412290;
-    v8 = v6;
+    v8 = uuid;
     _os_log_impl(&dword_1BF549000, v5, OS_LOG_TYPE_DEFAULT, "ATXSpotlightFeedbackManager: addHiddenAppSuggestion: %@", &v7, 0xCu);
   }
 
-  [(ATXEngagementRecordManager *)self->_engagementRecordManager addHiddenSuggestion:v4 duration:120 engagementRecordType:86400.0];
-  [(ATXSpotlightFeedbackManager *)self _toggleSiriSearchSettingsOffForAppSuggestion:v4];
+  [(ATXEngagementRecordManager *)self->_engagementRecordManager addHiddenSuggestion:identifierCopy duration:120 engagementRecordType:86400.0];
+  [(ATXSpotlightFeedbackManager *)self _toggleSiriSearchSettingsOffForAppSuggestion:identifierCopy];
 }
 
 - (void)clearHiddenSuggestions
@@ -119,13 +119,13 @@
   }
 }
 
-- (BOOL)hasBeenHiddenSuggestion:(id)a3
+- (BOOL)hasBeenHiddenSuggestion:(id)suggestion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [a3 executableSpecification];
-  v5 = [v4 executableIdentifier];
+  executableSpecification = [suggestion executableSpecification];
+  executableIdentifier = [executableSpecification executableIdentifier];
 
-  v6 = [ATXSpotlightHidingUIController normalizedIdentifier:v5];
+  v6 = [ATXSpotlightHidingUIController normalizedIdentifier:executableIdentifier];
 
   v7 = [(ATXEngagementRecordManager *)self->_engagementRecordManager hasEngagedWithExecutable:v6 engagementRecordType:128];
   v8 = __atxlog_handle_zkw_hide();
@@ -141,18 +141,18 @@
   return v7;
 }
 
-- (BOOL)hasBeenHiddenEntityWithIdentifier:(id)a3
+- (BOOL)hasBeenHiddenEntityWithIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(ATXEngagementRecordManager *)self->_engagementRecordManager hasEngagedWithExecutable:v4 engagementRecordType:128];
+    v5 = [(ATXEngagementRecordManager *)self->_engagementRecordManager hasEngagedWithExecutable:identifierCopy engagementRecordType:128];
     v6 = __atxlog_handle_zkw_hide();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412546;
-      v9 = v4;
+      v9 = identifierCopy;
       v10 = 1024;
       v11 = v5;
       _os_log_impl(&dword_1BF549000, v6, OS_LOG_TYPE_DEFAULT, "ATXSpotlightFeedbackManager: hasBeenHiddenEntityWithIdentifier:%@ ---> %{BOOL}d", &v8, 0x12u);
@@ -174,27 +174,27 @@
   return v5;
 }
 
-- (BOOL)contextHasBeenHiddenForSuggestion:(id)a3
+- (BOOL)contextHasBeenHiddenForSuggestion:(id)suggestion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 uiSpecification];
-  -[ATXSpotlightFeedbackManager combineReasons:](self, "combineReasons:", [v5 predictionReasons]);
+  suggestionCopy = suggestion;
+  uiSpecification = [suggestionCopy uiSpecification];
+  -[ATXSpotlightFeedbackManager combineReasons:](self, "combineReasons:", [uiSpecification predictionReasons]);
 
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v6 = v4;
+  v6 = suggestionCopy;
   ATXSuggestionPredictionReasonEnumerateReasonCodes();
   v7 = __atxlog_handle_zkw_hide();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 uiSpecification];
-    v9 = [v8 title];
+    uiSpecification2 = [v6 uiSpecification];
+    title = [uiSpecification2 title];
     v10 = *(v14 + 24);
     *buf = 138412546;
-    v18 = v9;
+    v18 = title;
     v19 = 1024;
     v20 = v10;
     _os_log_impl(&dword_1BF549000, v7, OS_LOG_TYPE_DEFAULT, "ATXSpotlightFeedbackManager: contextHasBeenHiddenForSuggestion %@:no context --->  %{BOOL}d", buf, 0x12u);
@@ -239,9 +239,9 @@ void __65__ATXSpotlightFeedbackManager_contextHasBeenHiddenForSuggestion___block
   }
 }
 
-- (BOOL)contextHasBeenHiddenForContextIdentifier:(id)a3
+- (BOOL)contextHasBeenHiddenForContextIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     engagementRecordManager = self->_engagementRecordManager;
 
@@ -260,18 +260,18 @@ void __65__ATXSpotlightFeedbackManager_contextHasBeenHiddenForSuggestion___block
   }
 }
 
-- (BOOL)autoShortcutHasBeenHiddenForIdentifier:(id)a3
+- (BOOL)autoShortcutHasBeenHiddenForIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(ATXEngagementRecordManager *)self->_engagementRecordManager hasEngagedWithExecutable:v4 engagementRecordType:512];
+    v5 = [(ATXEngagementRecordManager *)self->_engagementRecordManager hasEngagedWithExecutable:identifierCopy engagementRecordType:512];
     v6 = __atxlog_handle_zkw_hide();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412546;
-      v9 = v4;
+      v9 = identifierCopy;
       v10 = 1024;
       v11 = v5;
       _os_log_impl(&dword_1BF549000, v6, OS_LOG_TYPE_DEFAULT, "ATXSpotlightFeedbackManager: autoShortcutHasBeenHiddenForIdentifier %@ --->  %{BOOL}d", &v8, 0x12u);
@@ -292,43 +292,43 @@ void __65__ATXSpotlightFeedbackManager_contextHasBeenHiddenForSuggestion___block
   return v5;
 }
 
-- (unint64_t)combineReasons:(unint64_t)a3
+- (unint64_t)combineReasons:(unint64_t)reasons
 {
-  v3 = 0x3000000000;
-  if ((a3 & 0x3000000000) == 0)
+  reasonsCopy = 0x3000000000;
+  if ((reasons & 0x3000000000) == 0)
   {
-    v3 = a3;
+    reasonsCopy = reasons;
   }
 
-  if ((a3 & 0x380000000) != 0)
+  if ((reasons & 0x380000000) != 0)
   {
-    v3 = 0x380000000;
+    reasonsCopy = 0x380000000;
   }
 
-  if ((a3 & 0x700000) != 0)
+  if ((reasons & 0x700000) != 0)
   {
     return 7340032;
   }
 
   else
   {
-    return v3;
+    return reasonsCopy;
   }
 }
 
-- (void)_toggleSiriSearchSettingsOffForAppSuggestion:(id)a3
+- (void)_toggleSiriSearchSettingsOffForAppSuggestion:(id)suggestion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 executableSpecification];
-  v5 = [v4 executableType];
+  suggestionCopy = suggestion;
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableType = [executableSpecification executableType];
 
-  v6 = [v3 executableSpecification];
-  v7 = [v6 executableObject];
+  executableSpecification2 = [suggestionCopy executableSpecification];
+  executableObject = [executableSpecification2 executableObject];
 
-  if (v5 == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (executableType == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = v7;
+    v8 = executableObject;
     v9 = objc_alloc(MEMORY[0x1E695DFA8]);
     v10 = *MEMORY[0x1E695E8B8];
     v11 = *MEMORY[0x1E695E898];
@@ -367,7 +367,7 @@ void __65__ATXSpotlightFeedbackManager_contextHasBeenHiddenForSuggestion___block
     v8 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(ATXSpotlightFeedbackManager *)v3 _toggleSiriSearchSettingsOffForAppSuggestion:v7, v8];
+      [(ATXSpotlightFeedbackManager *)suggestionCopy _toggleSiriSearchSettingsOffForAppSuggestion:executableObject, v8];
     }
   }
 }

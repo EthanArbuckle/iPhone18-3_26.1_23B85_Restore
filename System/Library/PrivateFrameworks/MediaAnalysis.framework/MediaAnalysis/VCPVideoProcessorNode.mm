@@ -1,12 +1,12 @@
 @interface VCPVideoProcessorNode
-+ (BOOL)validateConfiguration:(id)a3 withError:(id *)a4;
-+ (id)nodeWithFrameProcessor:(id)a3 andConfiguration:(id)a4;
-+ (id)nodeWithRequest:(id)a3 andConfiguration:(id)a4;
++ (BOOL)validateConfiguration:(id)configuration withError:(id *)error;
++ (id)nodeWithFrameProcessor:(id)processor andConfiguration:(id)configuration;
++ (id)nodeWithRequest:(id)request andConfiguration:(id)configuration;
 - (BOOL)finished;
 - (NSString)typeDescription;
-- (VCPVideoProcessorNode)initWithFrameProcessor:(id)a3 andConfiguration:(id)a4;
-- (VCPVideoProcessorNode)initWithRequest:(id)a3 andConfiguration:(id)a4;
-- (void)_processConfiguration:(id)a3;
+- (VCPVideoProcessorNode)initWithFrameProcessor:(id)processor andConfiguration:(id)configuration;
+- (VCPVideoProcessorNode)initWithRequest:(id)request andConfiguration:(id)configuration;
+- (void)_processConfiguration:(id)configuration;
 @end
 
 @implementation VCPVideoProcessorNode
@@ -27,10 +27,10 @@
   return v4;
 }
 
-+ (BOOL)validateConfiguration:(id)a3 withError:(id *)a4
++ (BOOL)validateConfiguration:(id)configuration withError:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  configurationCopy = configuration;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x2020000000;
@@ -47,22 +47,22 @@
   v10[3] = &unk_1E834C3F8;
   v10[4] = v17;
   v10[5] = &v11;
-  [v5 enumerateKeysAndObjectsUsingBlock:v10];
+  [configurationCopy enumerateKeysAndObjectsUsingBlock:v10];
   v6 = v12;
   if (v12[5])
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v7 = [v12[5] localizedDescription];
+      localizedDescription = [v12[5] localizedDescription];
       *buf = 138412290;
-      v20 = v7;
+      v20 = localizedDescription;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Invalid request configuration (%@)", buf, 0xCu);
     }
 
     v6 = v12;
-    if (a4)
+    if (error)
     {
-      *a4 = v12[5];
+      *error = v12[5];
       v6 = v12;
     }
   }
@@ -175,15 +175,15 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)_processConfiguration:(id)a3
+- (void)_processConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = *MEMORY[0x1E6984A00];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6984A00]];
+  v6 = [configurationCopy objectForKeyedSubscript:*MEMORY[0x1E6984A00]];
 
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:v5];
+    v7 = [configurationCopy objectForKeyedSubscript:v5];
     self->_frameInterval = [v7 unsignedIntegerValue];
   }
 
@@ -192,11 +192,11 @@ LABEL_14:
     self->_frameInterval = 0;
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"FramesPerSecond"];
+  v8 = [configurationCopy objectForKeyedSubscript:@"FramesPerSecond"];
 
   if (v8)
   {
-    v9 = [v4 objectForKeyedSubscript:@"FramesPerSecond"];
+    v9 = [configurationCopy objectForKeyedSubscript:@"FramesPerSecond"];
     [v9 doubleValue];
     v11 = v10;
 
@@ -208,11 +208,11 @@ LABEL_8:
   }
 
   v12 = *MEMORY[0x1E6984A08];
-  v13 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6984A08]];
+  v13 = [configurationCopy objectForKeyedSubscript:*MEMORY[0x1E6984A08]];
 
   if (v13)
   {
-    v14 = [v4 objectForKeyedSubscript:v12];
+    v14 = [configurationCopy objectForKeyedSubscript:v12];
     [v14 floatValue];
     v16 = v15;
 
@@ -225,21 +225,21 @@ LABEL_8:
   epoch = *(v21 + 16);
 LABEL_9:
   self->_timeInterval.epoch = epoch;
-  v18 = [v4 objectForKeyedSubscript:@"FrameLimit"];
+  v18 = [configurationCopy objectForKeyedSubscript:@"FrameLimit"];
 
   if (v18)
   {
-    v19 = [v4 objectForKeyedSubscript:@"FrameLimit"];
+    v19 = [configurationCopy objectForKeyedSubscript:@"FrameLimit"];
     frameLimit = self->_frameLimit;
     self->_frameLimit = v19;
   }
 }
 
-- (VCPVideoProcessorNode)initWithRequest:(id)a3 andConfiguration:(id)a4
+- (VCPVideoProcessorNode)initWithRequest:(id)request andConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  requestCopy = request;
+  configurationCopy = configuration;
+  if (requestCopy)
   {
     v13.receiver = self;
     v13.super_class = VCPVideoProcessorNode;
@@ -247,12 +247,12 @@ LABEL_9:
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_request, a3);
-      [(VCPVideoProcessorNode *)v10 _processConfiguration:v8];
+      objc_storeStrong(&v9->_request, request);
+      [(VCPVideoProcessorNode *)v10 _processConfiguration:configurationCopy];
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -263,41 +263,41 @@ LABEL_9:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "VNRequest must be non-nil", buf, 2u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-+ (id)nodeWithRequest:(id)a3 andConfiguration:(id)a4
++ (id)nodeWithRequest:(id)request andConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(objc_opt_class()) initWithRequest:v5 andConfiguration:v6];
+  requestCopy = request;
+  configurationCopy = configuration;
+  v7 = [objc_alloc(objc_opt_class()) initWithRequest:requestCopy andConfiguration:configurationCopy];
 
   return v7;
 }
 
-- (VCPVideoProcessorNode)initWithFrameProcessor:(id)a3 andConfiguration:(id)a4
+- (VCPVideoProcessorNode)initWithFrameProcessor:(id)processor andConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  processorCopy = processor;
+  configurationCopy = configuration;
+  if (processorCopy)
   {
     v13.receiver = self;
     v13.super_class = VCPVideoProcessorNode;
     v8 = [(VCPVideoProcessorNode *)&v13 init];
     if (v8)
     {
-      v9 = _Block_copy(v6);
+      v9 = _Block_copy(processorCopy);
       frameProcessor = v8->_frameProcessor;
       v8->_frameProcessor = v9;
 
-      [(VCPVideoProcessorNode *)v8 _processConfiguration:v7];
+      [(VCPVideoProcessorNode *)v8 _processConfiguration:configurationCopy];
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -308,17 +308,17 @@ LABEL_9:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Frame processor must be non-nil", buf, 2u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-+ (id)nodeWithFrameProcessor:(id)a3 andConfiguration:(id)a4
++ (id)nodeWithFrameProcessor:(id)processor andConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(objc_opt_class()) initWithFrameProcessor:v5 andConfiguration:v6];
+  processorCopy = processor;
+  configurationCopy = configuration;
+  v7 = [objc_alloc(objc_opt_class()) initWithFrameProcessor:processorCopy andConfiguration:configurationCopy];
 
   return v7;
 }

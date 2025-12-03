@@ -1,22 +1,22 @@
 @interface ARCoachingHeuristicGeoTracking
-- (void)updateWithFrame:(id)a3 cache:(id)a4;
+- (void)updateWithFrame:(id)frame cache:(id)cache;
 @end
 
 @implementation ARCoachingHeuristicGeoTracking
 
-- (void)updateWithFrame:(id)a3 cache:(id)a4
+- (void)updateWithFrame:(id)frame cache:(id)cache
 {
-  v8 = a3;
-  v5 = [v8 geoTrackingStatus];
+  frameCopy = frame;
+  geoTrackingStatus = [frameCopy geoTrackingStatus];
 
-  if (v5)
+  if (geoTrackingStatus)
   {
-    v6 = [v8 geoTrackingStatus];
-    v7 = [v6 state];
+    geoTrackingStatus2 = [frameCopy geoTrackingStatus];
+    state = [geoTrackingStatus2 state];
 
-    if (v7 <= 3)
+    if (state <= 3)
     {
-      self->_requirements = qword_23D3DC500[v7];
+      self->_requirements = qword_23D3DC500[state];
     }
   }
 }

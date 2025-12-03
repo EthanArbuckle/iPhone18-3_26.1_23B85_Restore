@@ -1,7 +1,7 @@
 @interface ATXGlobalAppScorePredictor
 + (id)sharedInstance;
 - (ATXGlobalAppScorePredictor)init;
-- (id)globalPopularityForBundleIdsGivenTimeDayAndLocation:(id)a3 context:(id)a4;
+- (id)globalPopularityForBundleIdsGivenTimeDayAndLocation:(id)location context:(id)context;
 @end
 
 @implementation ATXGlobalAppScorePredictor
@@ -47,27 +47,27 @@ void __44__ATXGlobalAppScorePredictor_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)globalPopularityForBundleIdsGivenTimeDayAndLocation:(id)a3 context:(id)a4
+- (id)globalPopularityForBundleIdsGivenTimeDayAndLocation:(id)location context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 locationMotionContext];
-  v9 = [v8 currentLOI];
+  contextCopy = context;
+  locationCopy = location;
+  locationMotionContext = [contextCopy locationMotionContext];
+  currentLOI = [locationMotionContext currentLOI];
 
-  if (v9)
+  if (currentLOI)
   {
-    v10 = [v9 type];
+    type = [currentLOI type];
   }
 
   else
   {
-    v10 = -1;
+    type = -1;
   }
 
-  v11 = [v6 timeContext];
-  v12 = [v11 date];
+  timeContext = [contextCopy timeContext];
+  date = [timeContext date];
 
-  v13 = [(ATXGlobalAppScorePredictor *)self globalPopularitiesForBundleIds:v7 atTimeOfDayIndex:[ATXGlobalAppScoresUtil timeOfDayIndexFromDate:?], [ATXGlobalAppScoresUtil dayOfWeekIndexFromDate:v12], [ATXGlobalAppScoresUtil locationTypeIndexFromRTLocationOfInterestType:v10]];
+  v13 = [(ATXGlobalAppScorePredictor *)self globalPopularitiesForBundleIds:locationCopy atTimeOfDayIndex:[ATXGlobalAppScoresUtil timeOfDayIndexFromDate:?], [ATXGlobalAppScoresUtil dayOfWeekIndexFromDate:date], [ATXGlobalAppScoresUtil locationTypeIndexFromRTLocationOfInterestType:type]];
 
   return v13;
 }

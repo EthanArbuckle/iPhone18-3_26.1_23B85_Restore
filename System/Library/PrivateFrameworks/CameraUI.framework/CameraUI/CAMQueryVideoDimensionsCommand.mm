@@ -1,38 +1,38 @@
 @interface CAMQueryVideoDimensionsCommand
-- (CAMQueryVideoDimensionsCommand)initWithCoder:(id)a3;
-- (CAMQueryVideoDimensionsCommand)initWithCompletionBlock:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMQueryVideoDimensionsCommand)initWithCoder:(id)coder;
+- (CAMQueryVideoDimensionsCommand)initWithCompletionBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMQueryVideoDimensionsCommand
 
-- (CAMQueryVideoDimensionsCommand)initWithCompletionBlock:(id)a3
+- (CAMQueryVideoDimensionsCommand)initWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = CAMQueryVideoDimensionsCommand;
   v5 = [(CAMCaptureCommand *)&v9 initWithSubcommands:0];
   v6 = v5;
   if (v5)
   {
-    [(CAMQueryVideoDimensionsCommand *)v5 _setCompletionBlock:v4];
+    [(CAMQueryVideoDimensionsCommand *)v5 _setCompletionBlock:blockCopy];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (CAMQueryVideoDimensionsCommand)initWithCoder:(id)a3
+- (CAMQueryVideoDimensionsCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CAMQueryVideoDimensionsCommand;
-  v5 = [(CAMCaptureCommand *)&v8 initWithCoder:v4];
+  v5 = [(CAMCaptureCommand *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    if ([v4 decodeBoolForKey:@"CAMQueryVideoDimensionsCommandUnserializedCompletionBlock"])
+    if ([coderCopy decodeBoolForKey:@"CAMQueryVideoDimensionsCommandUnserializedCompletionBlock"])
     {
       [(CAMQueryVideoDimensionsCommand *)v5 _setCompletionBlock:&__block_literal_global_1];
     }
@@ -53,37 +53,37 @@ void __48__CAMQueryVideoDimensionsCommand_initWithCoder___block_invoke()
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = CAMQueryVideoDimensionsCommand;
-  [(CAMCaptureCommand *)&v5 encodeWithCoder:v4];
+  [(CAMCaptureCommand *)&v5 encodeWithCoder:coderCopy];
   if (self->__completionBlock)
   {
-    [v4 encodeBool:1 forKey:@"CAMQueryVideoDimensionsCommandUnserializedCompletionBlock"];
+    [coderCopy encodeBool:1 forKey:@"CAMQueryVideoDimensionsCommandUnserializedCompletionBlock"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CAMQueryVideoDimensionsCommand;
-  v4 = [(CAMCaptureCommand *)&v7 copyWithZone:a3];
-  v5 = [(CAMQueryVideoDimensionsCommand *)self _completionBlock];
-  [v4 _setCompletionBlock:v5];
+  v4 = [(CAMCaptureCommand *)&v7 copyWithZone:zone];
+  _completionBlock = [(CAMQueryVideoDimensionsCommand *)self _completionBlock];
+  [v4 _setCompletionBlock:_completionBlock];
 
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = [a3 currentVideoDevice];
-  v5 = [v4 activeFormat];
-  v6 = [v5 formatDescription];
-  if (v6)
+  currentVideoDevice = [context currentVideoDevice];
+  activeFormat = [currentVideoDevice activeFormat];
+  formatDescription = [activeFormat formatDescription];
+  if (formatDescription)
   {
-    Dimensions = CMVideoFormatDescriptionGetDimensions(v6);
+    Dimensions = CMVideoFormatDescriptionGetDimensions(formatDescription);
     v8 = Dimensions;
     v9 = Dimensions >> 32;
     v10 = os_log_create("com.apple.camera", "Camera");

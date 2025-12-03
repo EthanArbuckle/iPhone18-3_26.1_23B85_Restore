@@ -1,18 +1,18 @@
 @interface SASettingGetBool
-- (void)_ad_getSettingsRequestForHandler:(id)a3 completion:(id)a4;
+- (void)_ad_getSettingsRequestForHandler:(id)handler completion:(id)completion;
 @end
 
 @implementation SASettingGetBool
 
-- (void)_ad_getSettingsRequestForHandler:(id)a3 completion:(id)a4
+- (void)_ad_getSettingsRequestForHandler:(id)handler completion:(id)completion
 {
-  v5 = a4;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v6 = [(SASettingGetBool *)self _ad_settingType];
-    if (v6)
+    _ad_settingType = [(SASettingGetBool *)self _ad_settingType];
+    if (_ad_settingType)
     {
-      v7 = v6;
+      v7 = _ad_settingType;
       v8 = objc_alloc_init(AFGetSettingsRequest);
       v9 = [NSNumber numberWithInteger:v7];
       v11 = v9;
@@ -25,7 +25,7 @@
       v8 = 0;
     }
 
-    v5[2](v5, v8);
+    completionCopy[2](completionCopy, v8);
   }
 }
 

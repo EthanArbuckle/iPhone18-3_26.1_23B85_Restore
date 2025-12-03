@@ -1,6 +1,6 @@
 @interface _HKBridgeSetupConfiguration
 - (_HKBridgeSetupConfiguration)init;
-- (_HKBridgeSetupConfiguration)initWithFamilyMember:(id)a3 device:(id)a4 healthStore:(id)a5;
+- (_HKBridgeSetupConfiguration)initWithFamilyMember:(id)member device:(id)device healthStore:(id)store;
 @end
 
 @implementation _HKBridgeSetupConfiguration
@@ -13,20 +13,20 @@
   return 0;
 }
 
-- (_HKBridgeSetupConfiguration)initWithFamilyMember:(id)a3 device:(id)a4 healthStore:(id)a5
+- (_HKBridgeSetupConfiguration)initWithFamilyMember:(id)member device:(id)device healthStore:(id)store
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  memberCopy = member;
+  deviceCopy = device;
+  storeCopy = store;
   v17.receiver = self;
   v17.super_class = _HKBridgeSetupConfiguration;
   v12 = [(_HKBridgeSetupConfiguration *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_familyMember, a3);
-    objc_storeStrong(&v13->_device, a4);
-    objc_storeStrong(&v13->_healthStore, a5);
+    objc_storeStrong(&v12->_familyMember, member);
+    objc_storeStrong(&v13->_device, device);
+    objc_storeStrong(&v13->_healthStore, store);
     v14 = [[HKMedicalIDStore alloc] initWithHealthStore:v13->_healthStore];
     medicalIDStore = v13->_medicalIDStore;
     v13->_medicalIDStore = v14;

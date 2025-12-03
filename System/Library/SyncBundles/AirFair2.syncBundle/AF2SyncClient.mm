@@ -1,43 +1,43 @@
 @interface AF2SyncClient
 - (AF2SyncClient)init;
-- (BOOL)_hasValidOfflineKeyWithAccountID:(unint64_t)a3;
+- (BOOL)_hasValidOfflineKeyWithAccountID:(unint64_t)d;
 - (DeviceKeyTypeSupport)_getDeviceKeyTypeSupportInfo;
 - (double)_getSubscriptionStatusRefreshInterval;
-- (id)_endProvisioningWithPtm:(id)a3 tk:(id)a4;
+- (id)_endProvisioningWithPtm:(id)ptm tk:(id)tk;
 - (id)_eraseProvisioning;
-- (id)_generateClientInfoWithMachineID:(id)a3 hostInfoData:(id)a4 clientData:(id *)a5;
-- (id)_generateKeybagRequest:(id *)a3;
+- (id)_generateClientInfoWithMachineID:(id)d hostInfoData:(id)data clientData:(id *)clientData;
+- (id)_generateKeybagRequest:(id *)request;
 - (id)_getApplicationAccountIds;
-- (id)_getDeviceCertificate:(id *)a3;
+- (id)_getDeviceCertificate:(id *)certificate;
 - (id)_getHWInfoString;
 - (id)_getKeybagAccountIds;
 - (id)_getMediaAccountIds;
-- (id)_hostSyncPrepareKeybagResponseForRequest:(id)a3 withDeviceCertificate:(id)a4 hwInfoString:(id)a5 deviceType:(unsigned int)a6 supportVersion:(unsigned int)a7 requestedDSIDs:(id)a8 keyBagResponseData:(id *)a9;
-- (id)_importKeybag:(id)a3;
-- (id)_importSubsBag:(id)a3;
-- (id)_initiateBeginKeybagSyncOnMessageLink:(id)a3;
-- (id)_initiateKeybagRequestOnMessageLink:(id)a3;
-- (id)_provisionDeviceWithData:(id)a3 clientData:(id *)a4;
-- (id)_syncDeviceProvisioningWithSim:(id)a3 srm:(id *)a4;
+- (id)_hostSyncPrepareKeybagResponseForRequest:(id)request withDeviceCertificate:(id)certificate hwInfoString:(id)string deviceType:(unsigned int)type supportVersion:(unsigned int)version requestedDSIDs:(id)ds keyBagResponseData:(id *)data;
+- (id)_importKeybag:(id)keybag;
+- (id)_importSubsBag:(id)bag;
+- (id)_initiateBeginKeybagSyncOnMessageLink:(id)link;
+- (id)_initiateKeybagRequestOnMessageLink:(id)link;
+- (id)_provisionDeviceWithData:(id)data clientData:(id *)clientData;
+- (id)_syncDeviceProvisioningWithSim:(id)sim srm:(id *)srm;
 - (unsigned)_fairPlayContext;
 - (void)_checkForNewAccountIds;
 - (void)_destroyFairPlayContext;
 - (void)_destroyProvisioningContext;
-- (void)_getMid:(id *)a3 otp:(id *)a4;
-- (void)_handleAirTrafficStartedEvent:(id)a3;
-- (void)_handleBeginKeybagSyncRequest:(id)a3 onMessageLink:(id)a4;
-- (void)_handleKeybagRequest:(id)a3 onMessageLink:(id)a4;
-- (void)_handleProvisioningRequest:(id)a3 onMessageLink:(id)a4;
-- (void)_handleSubscriptionClientInfoRequest:(id)a3 onMessageLink:(id)a4;
-- (void)_handleSubscriptionImportSubsBagRequest:(id)a3 onMessageLink:(id)a4;
-- (void)_initiateKeybagSyncWithPriority:(int)a3;
-- (void)_processKeybagResponse:(id)a3 onMessageLink:(id)a4;
-- (void)applicationsDidInstall:(id)a3;
+- (void)_getMid:(id *)mid otp:(id *)otp;
+- (void)_handleAirTrafficStartedEvent:(id)event;
+- (void)_handleBeginKeybagSyncRequest:(id)request onMessageLink:(id)link;
+- (void)_handleKeybagRequest:(id)request onMessageLink:(id)link;
+- (void)_handleProvisioningRequest:(id)request onMessageLink:(id)link;
+- (void)_handleSubscriptionClientInfoRequest:(id)request onMessageLink:(id)link;
+- (void)_handleSubscriptionImportSubsBagRequest:(id)request onMessageLink:(id)link;
+- (void)_initiateKeybagSyncWithPriority:(int)priority;
+- (void)_processKeybagResponse:(id)response onMessageLink:(id)link;
+- (void)applicationsDidInstall:(id)install;
 - (void)dealloc;
-- (void)messageLink:(id)a3 didReceiveRequest:(id)a4;
-- (void)messageLinkWasClosed:(id)a3;
-- (void)messageLinkWasInitialized:(id)a3;
-- (void)messageLinkWasOpened:(id)a3;
+- (void)messageLink:(id)link didReceiveRequest:(id)request;
+- (void)messageLinkWasClosed:(id)closed;
+- (void)messageLinkWasInitialized:(id)initialized;
+- (void)messageLinkWasOpened:(id)opened;
 @end
 
 @implementation AF2SyncClient
@@ -112,14 +112,14 @@ LABEL_5:
   return v12;
 }
 
-- (id)_importSubsBag:(id)a3
+- (id)_importSubsBag:(id)bag
 {
-  v4 = a3;
-  if ([v4 length])
+  bagCopy = bag;
+  if ([bagCopy length])
   {
     [(AF2SyncClient *)self _fairPlayContext];
-    [v4 bytes];
-    [v4 length];
+    [bagCopy bytes];
+    [bagCopy length];
     sub_4A050();
     v6 = v5;
     v7 = _ATLogCategorySyncBundle();
@@ -157,7 +157,7 @@ LABEL_5:
   return v9;
 }
 
-- (BOOL)_hasValidOfflineKeyWithAccountID:(unint64_t)a3
+- (BOOL)_hasValidOfflineKeyWithAccountID:(unint64_t)d
 {
   [(AF2SyncClient *)self _fairPlayContext];
   sub_6F084();
@@ -176,20 +176,20 @@ LABEL_5:
   return 0;
 }
 
-- (id)_generateClientInfoWithMachineID:(id)a3 hostInfoData:(id)a4 clientData:(id *)a5
+- (id)_generateClientInfoWithMachineID:(id)d hostInfoData:(id)data clientData:(id *)clientData
 {
   v25 = 0;
   v24 = 0;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(AF2SyncClient *)self _fairPlayContext];
-  v11 = [v9 bytes];
-  v12 = [v9 length];
+  dataCopy = data;
+  dCopy = d;
+  _fairPlayContext = [(AF2SyncClient *)self _fairPlayContext];
+  bytes = [dCopy bytes];
+  v12 = [dCopy length];
 
-  v13 = [v8 bytes];
-  v14 = [v8 length];
+  bytes2 = [dataCopy bytes];
+  v14 = [dataCopy length];
 
-  sub_6C824(v10, v11, v12, v13, v14, &v25, &v24);
+  sub_6C824(_fairPlayContext, bytes, v12, bytes2, v14, &v25, &v24);
   v16 = v15;
   if (v15 == -42586)
   {
@@ -211,7 +211,7 @@ LABEL_8:
     if (!v15)
     {
       [NSData dataWithBytes:v25 length:v24];
-      *a5 = v17 = 0;
+      *clientData = v17 = 0;
       goto LABEL_10;
     }
 
@@ -249,9 +249,9 @@ LABEL_10:
   v8 = v2;
   v4 = v2;
   [v3 enumerateBundlesOfType:1 block:v7];
-  v5 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
-  return v5;
+  return allObjects;
 }
 
 - (id)_getMediaAccountIds
@@ -266,22 +266,22 @@ LABEL_10:
   v4 = v2;
   [v3 databaseConnectionAllowingWrites:0 withBlock:v7];
 
-  v5 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
-  return v5;
+  return allObjects;
 }
 
 - (id)_getKeybagAccountIds
 {
-  v3 = [(AF2SyncClient *)self _getApplicationAccountIds];
-  v4 = [v3 mutableCopy];
+  _getApplicationAccountIds = [(AF2SyncClient *)self _getApplicationAccountIds];
+  v4 = [_getApplicationAccountIds mutableCopy];
 
-  v5 = [(AF2SyncClient *)self _getMediaAccountIds];
+  _getMediaAccountIds = [(AF2SyncClient *)self _getMediaAccountIds];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [_getMediaAccountIds countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -292,7 +292,7 @@ LABEL_10:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_getMediaAccountIds);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -302,7 +302,7 @@ LABEL_10:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [_getMediaAccountIds countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -311,9 +311,9 @@ LABEL_10:
   return v4;
 }
 
-- (void)_initiateKeybagSyncWithPriority:(int)a3
+- (void)_initiateKeybagSyncWithPriority:(int)priority
 {
-  v3 = *&a3;
+  v3 = *&priority;
   v5 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -325,9 +325,9 @@ LABEL_10:
   currentMessageLink = self->_currentMessageLink;
   if (currentMessageLink)
   {
-    v7 = [(ATConcreteMessageLink *)currentMessageLink endpointType];
+    endpointType = [(ATConcreteMessageLink *)currentMessageLink endpointType];
     v8 = self->_currentMessageLink;
-    if (v7)
+    if (endpointType)
     {
       v9 = [(AF2SyncClient *)self _initiateBeginKeybagSyncOnMessageLink:v8];
     }
@@ -356,15 +356,15 @@ LABEL_10:
     {
       +[NSDate timeIntervalSinceReferenceDate];
       self->_lastAccountChangeCheckTime = v6;
-      v7 = [(AF2SyncClient *)self _getKeybagAccountIds];
+      _getKeybagAccountIds = [(AF2SyncClient *)self _getKeybagAccountIds];
       currentSyncedAccountIds = self->_currentSyncedAccountIds;
-      if (!currentSyncedAccountIds || ![(NSArray *)currentSyncedAccountIds isEqualToArray:v7])
+      if (!currentSyncedAccountIds || ![(NSArray *)currentSyncedAccountIds isEqualToArray:_getKeybagAccountIds])
       {
         v9 = _ATLogCategorySyncBundle();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           v10 = 138543362;
-          v11 = v7;
+          v11 = _getKeybagAccountIds;
           _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "accounts have changed. accountIds=%{public}@", &v10, 0xCu);
         }
 
@@ -379,12 +379,12 @@ LABEL_10:
   }
 }
 
-- (id)_hostSyncPrepareKeybagResponseForRequest:(id)a3 withDeviceCertificate:(id)a4 hwInfoString:(id)a5 deviceType:(unsigned int)a6 supportVersion:(unsigned int)a7 requestedDSIDs:(id)a8 keyBagResponseData:(id *)a9
+- (id)_hostSyncPrepareKeybagResponseForRequest:(id)request withDeviceCertificate:(id)certificate hwInfoString:(id)string deviceType:(unsigned int)type supportVersion:(unsigned int)version requestedDSIDs:(id)ds keyBagResponseData:(id *)data
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
+  requestCopy = request;
+  certificateCopy = certificate;
+  stringCopy = string;
+  dsCopy = ds;
   memset(v71, 0, sizeof(v71));
   v58 = 0;
   v59 = &v58;
@@ -411,12 +411,12 @@ LABEL_10:
     goto LABEL_15;
   }
 
-  v57[0] = a6;
-  v57[1] = a7;
+  v57[0] = type;
+  v57[1] = version;
   v56 = 0;
-  v23 = [(AF2SyncClient *)self _fairPlayContext];
-  v24 = v16;
-  sub_7C068(v23, [v16 bytes], objc_msgSend(v16, "length"), v71, v57);
+  _fairPlayContext = [(AF2SyncClient *)self _fairPlayContext];
+  v24 = certificateCopy;
+  sub_7C068(_fairPlayContext, [certificateCopy bytes], objc_msgSend(certificateCopy, "length"), v71, v57);
   *(v59 + 6) = v25;
   if (v25)
   {
@@ -434,16 +434,16 @@ LABEL_12:
 
   else
   {
-    v29 = v15;
-    [v15 bytes];
-    [v15 length];
+    v29 = requestCopy;
+    [requestCopy bytes];
+    [requestCopy length];
     sub_37DD0(v56);
     *(v59 + 6) = v30;
     if (!v30)
     {
-      if (v18)
+      if (dsCopy)
       {
-        v35 = [v18 mutableCopy];
+        v35 = [dsCopy mutableCopy];
       }
 
       else
@@ -461,22 +461,22 @@ LABEL_12:
         [v26 addObject:v50];
       }
 
-      v38 = [(AF2SyncClient *)self _getKeybagAccountIds];
-      [v26 addObjectsFromArray:v38];
-      v49 = v38;
+      _getKeybagAccountIds = [(AF2SyncClient *)self _getKeybagAccountIds];
+      [v26 addObjectsFromArray:_getKeybagAccountIds];
+      v49 = _getKeybagAccountIds;
       v39 = _ATLogCategorySyncBundle();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
-        v48 = [v18 count];
-        v40 = [v38 count];
+        v48 = [dsCopy count];
+        v40 = [_getKeybagAccountIds count];
         *buf = 134218754;
         *&buf[4] = v48;
         v65 = 2112;
-        v66 = v18;
+        v66 = dsCopy;
         v67 = 2048;
         v68 = v40;
         v69 = 2112;
-        v70 = v38;
+        v70 = _getKeybagAccountIds;
         _os_log_impl(&dword_0, v39, OS_LOG_TYPE_DEFAULT, "building keybag with %lu watch DSIDs %@ and %lu companion DSIDs %@", buf, 0x2Au);
       }
 
@@ -549,7 +549,7 @@ LABEL_15:
   if (v32)
   {
     v21 = [NSError errorWithDomain:@"AirFair2" code:v32 userInfo:0];
-    if (!a9)
+    if (!data)
     {
       goto LABEL_21;
     }
@@ -558,7 +558,7 @@ LABEL_15:
   else
   {
     v21 = 0;
-    if (!a9)
+    if (!data)
     {
       goto LABEL_21;
     }
@@ -568,7 +568,7 @@ LABEL_15:
   {
     v33 = v22;
     v21 = 0;
-    *a9 = v22;
+    *data = v22;
   }
 
 LABEL_21:
@@ -577,10 +577,10 @@ LABEL_21:
   return v21;
 }
 
-- (id)_importKeybag:(id)a3
+- (id)_importKeybag:(id)keybag
 {
-  v4 = a3;
-  if ([v4 length] && (-[AF2SyncClient _fairPlayContext](self, "_fairPlayContext"), objc_msgSend(v4, "bytes"), objc_msgSend(v4, "length"), sub_2C9A0(), v5))
+  keybagCopy = keybag;
+  if ([keybagCopy length] && (-[AF2SyncClient _fairPlayContext](self, "_fairPlayContext"), objc_msgSend(keybagCopy, "bytes"), objc_msgSend(keybagCopy, "length"), sub_2C9A0(), v5))
   {
     v6 = v5;
     v7 = _ATLogCategorySyncBundle();
@@ -602,16 +602,16 @@ LABEL_21:
   return v8;
 }
 
-- (id)_generateKeybagRequest:(id *)a3
+- (id)_generateKeybagRequest:(id *)request
 {
   v5 = +[SSAccountStore defaultStore];
-  v6 = [v5 activeLockerAccount];
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v7 unsignedLongLongValue];
+  activeLockerAccount = [v5 activeLockerAccount];
+  uniqueIdentifier = [activeLockerAccount uniqueIdentifier];
+  unsignedLongLongValue = [uniqueIdentifier unsignedLongLongValue];
 
   v15 = 0;
   v14 = 0;
-  sub_42668([(AF2SyncClient *)self _fairPlayContext], v8, 110103, 7, &v15, &v14);
+  sub_42668([(AF2SyncClient *)self _fairPlayContext], unsignedLongLongValue, 110103, 7, &v15, &v14);
   if (v9)
   {
     v10 = v9;
@@ -628,7 +628,7 @@ LABEL_21:
 
   else
   {
-    *a3 = [NSData dataWithBytes:v15 length:v14];
+    *request = [NSData dataWithBytes:v15 length:v14];
     sub_23160(v15);
     v12 = 0;
   }
@@ -636,7 +636,7 @@ LABEL_21:
   return v12;
 }
 
-- (id)_getDeviceCertificate:(id *)a3
+- (id)_getDeviceCertificate:(id *)certificate
 {
   v11 = 4096;
   sub_7962C([(AF2SyncClient *)self _fairPlayContext], 16777221, v14, &v11);
@@ -659,7 +659,7 @@ LABEL_21:
     v7 = [NSData dataWithBytes:v14 length:v11];
     v8 = v7;
     v9 = 0;
-    *a3 = v7;
+    *certificate = v7;
   }
 
   return v9;
@@ -731,17 +731,17 @@ LABEL_5:
   return result;
 }
 
-- (id)_syncDeviceProvisioningWithSim:(id)a3 srm:(id *)a4
+- (id)_syncDeviceProvisioningWithSim:(id)sim srm:(id *)srm
 {
   v16 = 0;
   v15 = 0;
   v14 = 0;
   v13 = 0;
-  v5 = a3;
-  v6 = [v5 bytes];
-  v7 = [v5 length];
+  simCopy = sim;
+  bytes = [simCopy bytes];
+  v7 = [simCopy length];
 
-  sub_87CF8(-1, v6, v7, &v16, &v15, &v14, &v13);
+  sub_87CF8(-1, bytes, v7, &v16, &v15, &v14, &v13);
   if (v8)
   {
     v9 = v8;
@@ -759,7 +759,7 @@ LABEL_5:
   else
   {
     [NSData dataWithBytes:v14 length:v13];
-    *a4 = v11 = 0;
+    *srm = v11 = 0;
   }
 
   if (v14)
@@ -800,16 +800,16 @@ LABEL_5:
   return v5;
 }
 
-- (id)_endProvisioningWithPtm:(id)a3 tk:(id)a4
+- (id)_endProvisioningWithPtm:(id)ptm tk:(id)tk
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a3;
-  [v8 bytes];
-  [v8 length];
+  ptmCopy = ptm;
+  tkCopy = tk;
+  ptmCopy2 = ptm;
+  [ptmCopy2 bytes];
+  [ptmCopy2 length];
 
-  [v7 bytes];
-  [v7 length];
+  [tkCopy bytes];
+  [tkCopy length];
 
   sub_96198();
   if (v9)
@@ -834,16 +834,16 @@ LABEL_5:
   return v12;
 }
 
-- (id)_provisionDeviceWithData:(id)a3 clientData:(id *)a4
+- (id)_provisionDeviceWithData:(id)data clientData:(id *)clientData
 {
   v15 = 0;
   v14 = 0;
-  v6 = a3;
+  dataCopy = data;
   [(AF2SyncClient *)self _destroyProvisioningContext];
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
 
-  sub_A25B8(-1, v7, v8, &v15, &v14, &self->_provisioningContextId);
+  sub_A25B8(-1, bytes, v8, &v15, &v14, &self->_provisioningContextId);
   if (v9)
   {
     v10 = v9;
@@ -861,7 +861,7 @@ LABEL_5:
   else
   {
     [NSData dataWithBytes:v15 length:v14];
-    *a4 = v12 = 0;
+    *clientData = v12 = 0;
   }
 
   if (v15)
@@ -872,7 +872,7 @@ LABEL_5:
   return v12;
 }
 
-- (void)_getMid:(id *)a3 otp:(id *)a4
+- (void)_getMid:(id *)mid otp:(id *)otp
 {
   v11 = 0;
   v12 = 0;
@@ -890,16 +890,16 @@ LABEL_5:
     }
 
     v9 = 0;
-    *a3 = 0;
+    *mid = 0;
   }
 
   else
   {
-    *a3 = [NSData dataWithBytes:v12 length:HIDWORD(v10)];
+    *mid = [NSData dataWithBytes:v12 length:HIDWORD(v10)];
     v9 = [NSData dataWithBytes:v11 length:v10];
   }
 
-  *a4 = v9;
+  *otp = v9;
   if (v12)
   {
     sub_9EA70(v12);
@@ -920,18 +920,18 @@ LABEL_5:
   }
 }
 
-- (void)_handleProvisioningRequest:(id)a3 onMessageLink:(id)a4
+- (void)_handleProvisioningRequest:(id)request onMessageLink:(id)link
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 parameters];
-  v9 = [v8 objectForKey:@"provisioningAction"];
+  requestCopy = request;
+  linkCopy = link;
+  parameters = [requestCopy parameters];
+  v9 = [parameters objectForKey:@"provisioningAction"];
   if ([v9 isEqualToString:@"syncProvisioning"])
   {
     v10 = +[NSMutableDictionary dictionary];
-    v11 = [v8 objectForKey:@"sim"];
+    v11 = [parameters objectForKey:@"sim"];
     v25 = 0;
-    v12 = [(AF2SyncClient *)self _syncDeviceProvisioningWithSim:v11 srm:&v25];
+    _eraseProvisioning = [(AF2SyncClient *)self _syncDeviceProvisioningWithSim:v11 srm:&v25];
     v13 = v25;
 
     v23 = 0;
@@ -952,11 +952,11 @@ LABEL_5:
 
   else if ([v9 isEqualToString:@"startProvisioning"])
   {
-    v16 = [(AF2SyncClient *)self _getHWInfoString];
+    _getHWInfoString = [(AF2SyncClient *)self _getHWInfoString];
     v10 = +[NSMutableDictionary dictionary];
-    v17 = [v8 objectForKey:@"spim"];
+    v17 = [parameters objectForKey:@"spim"];
     v22 = 0;
-    v12 = [(AF2SyncClient *)self _provisionDeviceWithData:v17 clientData:&v22];
+    _eraseProvisioning = [(AF2SyncClient *)self _provisionDeviceWithData:v17 clientData:&v22];
     v18 = v22;
 
     if (v18)
@@ -964,9 +964,9 @@ LABEL_5:
       [v10 setObject:v18 forKey:@"cpim"];
     }
 
-    if (v16)
+    if (_getHWInfoString)
     {
-      [v10 setObject:v16 forKey:@"clientHWInfoString"];
+      [v10 setObject:_getHWInfoString forKey:@"clientHWInfoString"];
     }
   }
 
@@ -974,9 +974,9 @@ LABEL_5:
   {
     if ([v9 isEqualToString:@"endProvisioning"])
     {
-      v19 = [v8 objectForKey:@"ptm"];
-      v20 = [v8 objectForKey:@"tk"];
-      v12 = [(AF2SyncClient *)self _endProvisioningWithPtm:v19 tk:v20];
+      v19 = [parameters objectForKey:@"ptm"];
+      v20 = [parameters objectForKey:@"tk"];
+      _eraseProvisioning = [(AF2SyncClient *)self _endProvisioningWithPtm:v19 tk:v20];
     }
 
     else
@@ -984,42 +984,42 @@ LABEL_5:
       if (![v9 isEqualToString:@"eraseProvisioning"])
       {
         v10 = 0;
-        v12 = 0;
+        _eraseProvisioning = 0;
         goto LABEL_19;
       }
 
-      v12 = [(AF2SyncClient *)self _eraseProvisioning];
+      _eraseProvisioning = [(AF2SyncClient *)self _eraseProvisioning];
     }
 
     v10 = 0;
   }
 
 LABEL_19:
-  v21 = [v6 responseWithError:v12 parameters:v10];
-  [v7 sendResponse:v21 withCompletion:0];
+  v21 = [requestCopy responseWithError:_eraseProvisioning parameters:v10];
+  [linkCopy sendResponse:v21 withCompletion:0];
 }
 
-- (void)_handleSubscriptionImportSubsBagRequest:(id)a3 onMessageLink:(id)a4
+- (void)_handleSubscriptionImportSubsBagRequest:(id)request onMessageLink:(id)link
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 parameters];
-  v9 = [v8 objectForKey:@"SubsBagData"];
+  linkCopy = link;
+  requestCopy = request;
+  parameters = [requestCopy parameters];
+  v9 = [parameters objectForKey:@"SubsBagData"];
   v11 = [(AF2SyncClient *)self _importSubsBag:v9];
-  v10 = [v7 responseWithError:v11 parameters:0];
+  v10 = [requestCopy responseWithError:v11 parameters:0];
 
-  [v6 sendResponse:v10 withCompletion:0];
+  [linkCopy sendResponse:v10 withCompletion:0];
 }
 
-- (void)_handleSubscriptionClientInfoRequest:(id)a3 onMessageLink:(id)a4
+- (void)_handleSubscriptionClientInfoRequest:(id)request onMessageLink:(id)link
 {
-  v21 = a4;
-  v6 = a3;
-  v7 = [v6 parameters];
-  v8 = [v7 objectForKey:@"hostInfoData"];
-  v9 = [(AF2SyncClient *)self _getHWInfoString];
-  v10 = [v7 objectForKey:@"accountId"];
-  v19 = [v10 unsignedLongLongValue];
+  linkCopy = link;
+  requestCopy = request;
+  parameters = [requestCopy parameters];
+  v8 = [parameters objectForKey:@"hostInfoData"];
+  _getHWInfoString = [(AF2SyncClient *)self _getHWInfoString];
+  v10 = [parameters objectForKey:@"accountId"];
+  unsignedLongLongValue = [v10 unsignedLongLongValue];
 
   v24 = 0;
   v25 = 0;
@@ -1042,9 +1042,9 @@ LABEL_19:
 
   v14 = +[NSMutableDictionary dictionary];
   v15 = [NSNumber numberWithUnsignedInt:[(AF2SyncClient *)self _getDeviceKeyTypeSupportInfo]];
-  if (v9)
+  if (_getHWInfoString)
   {
-    [v14 setObject:v9 forKey:@"clientHWInfoString"];
+    [v14 setObject:_getHWInfoString forKey:@"clientHWInfoString"];
   }
 
   if (v13)
@@ -1066,33 +1066,33 @@ LABEL_19:
   v16 = MGCopyAnswer();
   [v14 setObject:v16 forKey:@"clientVersion"];
 
-  v17 = [NSNumber numberWithBool:[(AF2SyncClient *)self _hasValidOfflineKeyWithAccountID:v19]];
+  v17 = [NSNumber numberWithBool:[(AF2SyncClient *)self _hasValidOfflineKeyWithAccountID:unsignedLongLongValue]];
   [v14 setObject:v17 forKey:@"clientState"];
 
-  v18 = [v6 responseWithError:v20 parameters:v14];
+  v18 = [requestCopy responseWithError:v20 parameters:v14];
 
-  [v21 sendResponse:v18 withCompletion:&stru_E35F8];
+  [linkCopy sendResponse:v18 withCompletion:&stru_E35F8];
 }
 
-- (void)_processKeybagResponse:(id)a3 onMessageLink:(id)a4
+- (void)_processKeybagResponse:(id)response onMessageLink:(id)link
 {
-  v5 = a3;
-  v6 = [v5 error];
+  responseCopy = response;
+  error = [responseCopy error];
 
-  if (!v6)
+  if (!error)
   {
-    v9 = [v5 parameters];
-    v7 = [v9 objectForKey:@"KeybagData"];
+    parameters = [responseCopy parameters];
+    v7 = [parameters objectForKey:@"KeybagData"];
 
-    v8 = [(AF2SyncClient *)self _importKeybag:v7];
+    error2 = [(AF2SyncClient *)self _importKeybag:v7];
     v10 = _ATLogCategorySyncBundle();
     v11 = v10;
-    if (v8)
+    if (error2)
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v16 = 138543362;
-        v17 = v8;
+        v17 = error2;
         v12 = "failed to import keybag response data. err=%{public}@";
         v13 = v11;
         v14 = OS_LOG_TYPE_ERROR;
@@ -1118,43 +1118,43 @@ LABEL_9:
   v7 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v8 = [v5 error];
+    error2 = [responseCopy error];
     v16 = 138543362;
-    v17 = v8;
+    v17 = error2;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "host failed to process keybag request. err=%{public}@", &v16, 0xCu);
 LABEL_11:
   }
 }
 
-- (void)_handleKeybagRequest:(id)a3 onMessageLink:(id)a4
+- (void)_handleKeybagRequest:(id)request onMessageLink:(id)link
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [v6 parameters];
-  v10 = [v9 objectForKey:@"DeviceCert"];
-  v11 = [v9 objectForKey:@"KeybagData"];
-  v12 = [v9 objectForKey:@"KeybagSig"];
-  v32 = [v9 objectForKey:@"HWInfoString"];
-  v13 = [v9 objectForKey:@"KeyTypeDeviceType"];
-  v14 = [v13 intValue];
+  requestCopy = request;
+  linkCopy = link;
+  v8 = requestCopy;
+  parameters = [requestCopy parameters];
+  v10 = [parameters objectForKey:@"DeviceCert"];
+  v11 = [parameters objectForKey:@"KeybagData"];
+  v12 = [parameters objectForKey:@"KeybagSig"];
+  v32 = [parameters objectForKey:@"HWInfoString"];
+  v13 = [parameters objectForKey:@"KeyTypeDeviceType"];
+  intValue = [v13 intValue];
 
-  v15 = [v9 objectForKey:@"KeyTypeVersion"];
-  v16 = [v15 intValue];
+  v15 = [parameters objectForKey:@"KeyTypeVersion"];
+  intValue2 = [v15 intValue];
 
-  [v9 objectForKey:@"AccountDSIDs"];
-  v31 = v30 = v7;
-  v17 = [v7 signatureProvider];
-  v18 = v17;
+  [parameters objectForKey:@"AccountDSIDs"];
+  v31 = v30 = linkCopy;
+  signatureProvider = [linkCopy signatureProvider];
+  v18 = signatureProvider;
   v29 = v12;
-  if (v17)
+  if (signatureProvider)
   {
-    v19 = [v17 verifySignature:v12 forData:v11];
+    v19 = [signatureProvider verifySignature:v12 forData:v11];
     if (v19)
     {
       v20 = v19;
       v21 = _ATLogCategorySyncBundle();
-      v22 = self;
+      selfCopy3 = self;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
@@ -1171,12 +1171,12 @@ LABEL_9:
   }
 
   v34 = 0;
-  v20 = [(AF2SyncClient *)self _hostSyncPrepareKeybagResponseForRequest:v11 withDeviceCertificate:v10 hwInfoString:v32 deviceType:v14 supportVersion:v16 requestedDSIDs:v31 keyBagResponseData:&v34];
+  v20 = [(AF2SyncClient *)self _hostSyncPrepareKeybagResponseForRequest:v11 withDeviceCertificate:v10 hwInfoString:v32 deviceType:intValue supportVersion:intValue2 requestedDSIDs:v31 keyBagResponseData:&v34];
   v23 = v34;
   if (v20)
   {
     v21 = _ATLogCategorySyncBundle();
-    v22 = self;
+    selfCopy3 = self;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
@@ -1187,7 +1187,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v22 = self;
+  selfCopy3 = self;
   v24 = v11;
 LABEL_11:
   v25 = v10;
@@ -1203,13 +1203,13 @@ LABEL_11:
   v33[1] = 3221225472;
   v33[2] = sub_B9BA4;
   v33[3] = &unk_E35B8;
-  v33[4] = v22;
+  v33[4] = selfCopy3;
   [v30 sendResponse:v28 withCompletion:v33];
 }
 
-- (id)_initiateKeybagRequestOnMessageLink:(id)a3
+- (id)_initiateKeybagRequestOnMessageLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   v5 = +[NSMutableDictionary dictionary];
   v24 = 0;
   v6 = [(AF2SyncClient *)self _getDeviceCertificate:&v24];
@@ -1220,29 +1220,29 @@ LABEL_11:
   }
 
   [v5 setObject:v7 forKey:@"DeviceCert"];
-  v8 = [(AF2SyncClient *)self _getHWInfoString];
-  v9 = [(AF2SyncClient *)self _getDeviceKeyTypeSupportInfo];
-  v10 = HIDWORD(*&v9);
-  [v5 setObject:v8 forKey:@"HWInfoString"];
-  v11 = [NSNumber numberWithUnsignedInt:v9];
+  _getHWInfoString = [(AF2SyncClient *)self _getHWInfoString];
+  _getDeviceKeyTypeSupportInfo = [(AF2SyncClient *)self _getDeviceKeyTypeSupportInfo];
+  v10 = HIDWORD(*&_getDeviceKeyTypeSupportInfo);
+  [v5 setObject:_getHWInfoString forKey:@"HWInfoString"];
+  v11 = [NSNumber numberWithUnsignedInt:_getDeviceKeyTypeSupportInfo];
   [v5 setObject:v11 forKey:@"KeyTypeDeviceType"];
 
   v12 = [NSNumber numberWithUnsignedInt:v10];
   [v5 setObject:v12 forKey:@"KeyTypeVersion"];
 
-  v13 = [(AF2SyncClient *)self _getKeybagAccountIds];
-  [v5 setObject:v13 forKey:@"AccountDSIDs"];
+  _getKeybagAccountIds = [(AF2SyncClient *)self _getKeybagAccountIds];
+  [v5 setObject:_getKeybagAccountIds forKey:@"AccountDSIDs"];
   v23 = 0;
   v6 = [(AF2SyncClient *)self _generateKeybagRequest:&v23];
   v14 = v23;
   if (!v6)
   {
-    v15 = [v4 signatureProvider];
-    v16 = v15;
-    if (v15)
+    signatureProvider = [linkCopy signatureProvider];
+    v16 = signatureProvider;
+    if (signatureProvider)
     {
       v22 = 0;
-      v6 = [v15 createSignature:&v22 forData:v14];
+      v6 = [signatureProvider createSignature:&v22 forData:v14];
       v17 = v22;
       if (v6)
       {
@@ -1281,7 +1281,7 @@ LABEL_13:
     v20[2] = sub_B9FAC;
     v20[3] = &unk_E3590;
     v20[4] = self;
-    v21 = v4;
+    v21 = linkCopy;
     [v21 sendRequest:v18 withCompletion:v20];
 
     goto LABEL_17;
@@ -1301,25 +1301,25 @@ LABEL_17:
   return v6;
 }
 
-- (void)_handleBeginKeybagSyncRequest:(id)a3 onMessageLink:(id)a4
+- (void)_handleBeginKeybagSyncRequest:(id)request onMessageLink:(id)link
 {
-  v8 = a4;
-  v6 = [a3 responseWithError:0 parameters:0];
-  [v8 sendResponse:v6 withCompletion:0];
+  linkCopy = link;
+  v6 = [request responseWithError:0 parameters:0];
+  [linkCopy sendResponse:v6 withCompletion:0];
 
-  v7 = [(AF2SyncClient *)self _initiateKeybagRequestOnMessageLink:v8];
+  v7 = [(AF2SyncClient *)self _initiateKeybagRequestOnMessageLink:linkCopy];
 }
 
-- (id)_initiateBeginKeybagSyncOnMessageLink:(id)a3
+- (id)_initiateBeginKeybagSyncOnMessageLink:(id)link
 {
-  v3 = a3;
+  linkCopy = link;
   v4 = [[ATRequest alloc] initWithCommand:@"BeginKeybagSync" dataClass:@"AirFair2" parameters:0];
-  [v3 sendRequest:v4 withCompletion:&stru_E3568];
+  [linkCopy sendRequest:v4 withCompletion:&stru_E3568];
 
   return 0;
 }
 
-- (void)_handleAirTrafficStartedEvent:(id)a3
+- (void)_handleAirTrafficStartedEvent:(id)event
 {
   v4 = +[LSApplicationWorkspace defaultWorkspace];
   applicationWorkspace = self->_applicationWorkspace;
@@ -1333,18 +1333,18 @@ LABEL_17:
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, sub_BA2F8, @"com.apple.fairplayd.resync-fpkeybag", 0, CFNotificationSuspensionBehaviorDrop);
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = a3;
+  installCopy = install;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v5 = [installCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
-    v17 = self;
+    selfCopy = self;
     v7 = 0;
     v8 = *v20;
     do
@@ -1353,23 +1353,23 @@ LABEL_17:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(installCopy);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
         buf[0] = 0;
-        v11 = [v10 bundleURL];
-        v12 = [v11 path];
-        v13 = [v12 stringByAppendingPathComponent:@"Watch"];
+        bundleURL = [v10 bundleURL];
+        path = [bundleURL path];
+        v13 = [path stringByAppendingPathComponent:@"Watch"];
 
         v14 = +[NSFileManager defaultManager];
         v15 = [v14 fileExistsAtPath:v13 isDirectory:buf];
-        LOBYTE(v12) = v15 & buf[0];
+        LOBYTE(path) = v15 & buf[0];
 
-        v7 |= v12;
+        v7 |= path;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [installCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);
@@ -1382,61 +1382,61 @@ LABEL_17:
         _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "watchkit app installed - initiating key sync now", buf, 2u);
       }
 
-      [(AF2SyncClient *)v17 _initiateKeybagSyncWithPriority:0];
+      [(AF2SyncClient *)selfCopy _initiateKeybagSyncWithPriority:0];
     }
   }
 }
 
-- (void)messageLink:(id)a3 didReceiveRequest:(id)a4
+- (void)messageLink:(id)link didReceiveRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 command];
-  v9 = [v8 isEqualToString:@"SyncKeybag"];
+  linkCopy = link;
+  requestCopy = request;
+  command = [requestCopy command];
+  v9 = [command isEqualToString:@"SyncKeybag"];
 
   if (v9)
   {
-    [(AF2SyncClient *)self _handleKeybagRequest:v7 onMessageLink:v6];
+    [(AF2SyncClient *)self _handleKeybagRequest:requestCopy onMessageLink:linkCopy];
   }
 
   else
   {
-    v10 = [v7 command];
-    v11 = [v10 isEqualToString:@"GetClientInfo"];
+    command2 = [requestCopy command];
+    v11 = [command2 isEqualToString:@"GetClientInfo"];
 
     if (v11)
     {
-      [(AF2SyncClient *)self _handleSubscriptionClientInfoRequest:v7 onMessageLink:v6];
+      [(AF2SyncClient *)self _handleSubscriptionClientInfoRequest:requestCopy onMessageLink:linkCopy];
     }
 
     else
     {
-      v12 = [v7 command];
-      v13 = [v12 isEqualToString:@"ImportSubsBag"];
+      command3 = [requestCopy command];
+      v13 = [command3 isEqualToString:@"ImportSubsBag"];
 
       if (v13)
       {
-        [(AF2SyncClient *)self _handleSubscriptionImportSubsBagRequest:v7 onMessageLink:v6];
+        [(AF2SyncClient *)self _handleSubscriptionImportSubsBagRequest:requestCopy onMessageLink:linkCopy];
       }
 
       else
       {
-        v14 = [v7 command];
-        v15 = [v14 isEqualToString:@"ProvisionAction"];
+        command4 = [requestCopy command];
+        v15 = [command4 isEqualToString:@"ProvisionAction"];
 
         if (v15)
         {
-          [(AF2SyncClient *)self _handleProvisioningRequest:v7 onMessageLink:v6];
+          [(AF2SyncClient *)self _handleProvisioningRequest:requestCopy onMessageLink:linkCopy];
         }
 
         else
         {
-          v16 = [v7 command];
-          v17 = [v16 isEqualToString:@"BeginKeybagSync"];
+          command5 = [requestCopy command];
+          v17 = [command5 isEqualToString:@"BeginKeybagSync"];
 
           if (v17)
           {
-            [(AF2SyncClient *)self _handleBeginKeybagSyncRequest:v7 onMessageLink:v6];
+            [(AF2SyncClient *)self _handleBeginKeybagSyncRequest:requestCopy onMessageLink:linkCopy];
           }
 
           else
@@ -1444,15 +1444,15 @@ LABEL_17:
             v18 = _ATLogCategorySyncBundle();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
-              v19 = [v7 command];
+              command6 = [requestCopy command];
               v22 = 138543362;
-              v23 = v19;
+              v23 = command6;
               _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "received unknown request %{public}@", &v22, 0xCu);
             }
 
             v20 = [NSError errorWithDomain:@"ATError" code:23 userInfo:0];
-            v21 = [v7 responseWithError:v20 parameters:0];
-            [v6 sendResponse:v21 withCompletion:0];
+            v21 = [requestCopy responseWithError:v20 parameters:0];
+            [linkCopy sendResponse:v21 withCompletion:0];
           }
         }
       }
@@ -1460,33 +1460,33 @@ LABEL_17:
   }
 }
 
-- (void)messageLinkWasClosed:(id)a3
+- (void)messageLinkWasClosed:(id)closed
 {
-  v4 = a3;
+  closedCopy = closed;
   [(AF2SyncClient *)self _destroyFairPlayContext];
   currentMessageLink = self->_currentMessageLink;
 
-  if (currentMessageLink == v4)
+  if (currentMessageLink == closedCopy)
   {
     self->_currentMessageLink = 0;
   }
 }
 
-- (void)messageLinkWasInitialized:(id)a3
+- (void)messageLinkWasInitialized:(id)initialized
 {
-  v5 = a3;
-  if (![v5 endpointType])
+  initializedCopy = initialized;
+  if (![initializedCopy endpointType])
   {
-    v4 = [(AF2SyncClient *)self _initiateKeybagRequestOnMessageLink:v5];
+    v4 = [(AF2SyncClient *)self _initiateKeybagRequestOnMessageLink:initializedCopy];
   }
 }
 
-- (void)messageLinkWasOpened:(id)a3
+- (void)messageLinkWasOpened:(id)opened
 {
-  v4 = a3;
-  [v4 addRequestHandler:self forDataClass:@"AirFair2"];
+  openedCopy = opened;
+  [openedCopy addRequestHandler:self forDataClass:@"AirFair2"];
   currentMessageLink = self->_currentMessageLink;
-  self->_currentMessageLink = v4;
+  self->_currentMessageLink = openedCopy;
 }
 
 - (void)dealloc

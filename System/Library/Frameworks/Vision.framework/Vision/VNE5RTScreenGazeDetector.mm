@@ -1,19 +1,19 @@
 @interface VNE5RTScreenGazeDetector
-+ (CGRect)normalizedScaledFaceBoundingBox:(id)a3;
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4;
-+ (id)E5RTFunctionDescriptorForConfigurationOptions:(id)a3 error:(id *)a4;
++ (CGRect)normalizedScaledFaceBoundingBox:(id)box;
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error;
++ (id)E5RTFunctionDescriptorForConfigurationOptions:(id)options error:(id *)error;
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)modelURLForConfigurationOptions:(id)a3 error:(id *)a4;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-- (id)observationsFromE5RTExecutionOutputs:(id)a3 forFunctionDescriptor:(id)a4 originatingRequestSpecifier:(id)a5 options:(id)a6 error:(id *)a7;
++ (id)modelURLForConfigurationOptions:(id)options error:(id *)error;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
+- (id)observationsFromE5RTExecutionOutputs:(id)outputs forFunctionDescriptor:(id)descriptor originatingRequestSpecifier:(id)specifier options:(id)options error:(id *)error;
 @end
 
 @implementation VNE5RTScreenGazeDetector
 
-+ (CGRect)normalizedScaledFaceBoundingBox:(id)a3
++ (CGRect)normalizedScaledFaceBoundingBox:(id)box
 {
-  v3 = a3;
-  [v3 unalignedBoundingBox];
+  boxCopy = box;
+  [boxCopy unalignedBoundingBox];
   v13 = CGRectInset(v12, v12.size.width * -0.200000048 * 0.5, v12.size.height * -0.200000048 * 0.5);
   x = v13.origin.x;
   y = v13.origin.y;
@@ -31,39 +31,39 @@
   return result;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allNeuralEngineComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allNeuralEngineComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   return v5;
 }
 
-+ (id)E5RTFunctionDescriptorForConfigurationOptions:(id)a3 error:(id *)a4
++ (id)E5RTFunctionDescriptorForConfigurationOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   aBlock = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __80__VNE5RTScreenGazeDetector_E5RTFunctionDescriptorForConfigurationOptions_error___block_invoke;
   v21 = &unk_1E77B6848;
-  v23 = a1;
-  v7 = v6;
+  selfCopy = self;
+  v7 = optionsCopy;
   v22 = v7;
   v8 = _Block_copy(&aBlock);
-  v9 = [a1 modelURLForConfigurationOptions:v7 error:a4];
+  v9 = [self modelURLForConfigurationOptions:v7 error:error];
   if (v9)
   {
     v10 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v11 = NSStringFromClass(a1);
-    v12 = [a1 modelFileName];
-    v13 = [v10 initWithFormat:@"%@:%@", v11, v12, aBlock, v19, v20, v21];
+    v11 = NSStringFromClass(self);
+    modelFileName = [self modelFileName];
+    v13 = [v10 initWithFormat:@"%@:%@", v11, modelFileName, aBlock, v19, v20, v21];
 
     v14 = +[VNFrameworkManager manager];
-    v15 = [v14 detectorDescriptorsCache];
-    v16 = [v15 objectForIdentifier:v13 creationBlock:v8 error:a4];
+    detectorDescriptorsCache = [v14 detectorDescriptorsCache];
+    v16 = [detectorDescriptorsCache objectForIdentifier:v13 creationBlock:v8 error:error];
   }
 
   else
@@ -98,10 +98,10 @@ id __80__VNE5RTScreenGazeDetector_E5RTFunctionDescriptorForConfigurationOptions_
   return v10;
 }
 
-+ (id)modelURLForConfigurationOptions:(id)a3 error:(id *)a4
++ (id)modelURLForConfigurationOptions:(id)options error:(id *)error
 {
-  v5 = [a1 modelFileName];
-  v6 = [VNEspressoHelpers pathForEspressoResourceWithFilename:v5 error:a4];
+  modelFileName = [self modelFileName];
+  v6 = [VNEspressoHelpers pathForEspressoResourceWithFilename:modelFileName error:error];
 
   if (v6)
   {
@@ -116,17 +116,17 @@ id __80__VNE5RTScreenGazeDetector_E5RTFunctionDescriptorForConfigurationOptions_
   return v7;
 }
 
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error
 {
-  v5 = a3;
-  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:v5 specifyingRequestClass:objc_opt_class() error:a4];
+  optionsCopy = options;
+  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy specifyingRequestClass:objc_opt_class() error:error];
   v7 = v6;
   if (v6)
   {
     if ([v6 requestRevision] == 2)
     {
       v11 = 0;
-      if ([VNValidationUtilities getNSUIntegerValue:&v11 forKey:@"VNScreenGazeDetectorInitOption_ScreenSize" inOptions:v5 error:a4])
+      if ([VNValidationUtilities getNSUIntegerValue:&v11 forKey:@"VNScreenGazeDetectorInitOption_ScreenSize" inOptions:optionsCopy error:error])
       {
         if (v11 == 1 || v11 == 2)
         {
@@ -134,7 +134,7 @@ id __80__VNE5RTScreenGazeDetector_E5RTFunctionDescriptorForConfigurationOptions_
           goto LABEL_14;
         }
 
-        if (a4)
+        if (error)
         {
           v8 = [VNError errorForUnsupportedRequestSpecifier:v7];
           goto LABEL_9;
@@ -142,12 +142,12 @@ id __80__VNE5RTScreenGazeDetector_E5RTFunctionDescriptorForConfigurationOptions_
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       v8 = [VNError errorForUnsupportedRequestSpecifier:v7];
 LABEL_9:
       v9 = 0;
-      *a4 = v8;
+      *error = v8;
       goto LABEL_14;
     }
   }
@@ -164,7 +164,7 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __65__VNE5RTScreenGazeDetector_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNE5RTScreenGazeDetector configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNE5RTScreenGazeDetector configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -188,33 +188,33 @@ void __65__VNE5RTScreenGazeDetector_configurationOptionKeysForDetectorKey__block
   +[VNE5RTScreenGazeDetector configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-- (id)observationsFromE5RTExecutionOutputs:(id)a3 forFunctionDescriptor:(id)a4 originatingRequestSpecifier:(id)a5 options:(id)a6 error:(id *)a7
+- (id)observationsFromE5RTExecutionOutputs:(id)outputs forFunctionDescriptor:(id)descriptor originatingRequestSpecifier:(id)specifier options:(id)options error:(id *)error
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNScreenGazeDetectorProcessOption_FaceObjectState" inOptions:v13 error:a7];
+  outputsCopy = outputs;
+  specifierCopy = specifier;
+  optionsCopy = options;
+  v14 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNScreenGazeDetectorProcessOption_FaceObjectState" inOptions:optionsCopy error:error];
   if (!v14)
   {
     goto LABEL_10;
   }
 
   v43 = xmmword_1A6038B10;
-  v15 = v11;
-  if (!self || ([objc_opt_class() modelOutputXYName], v16 = objc_claimAutoreleasedReturnValue(), v45.i64[0] = MEMORY[0x1E69E9820], v45.i64[1] = 3221225472, v46 = __71__VNE5RTScreenGazeDetector__screenGazeResultForOutput_resultOut_error___block_invoke, v47 = &__block_descriptor_40_e20_B24__0__NSData_8__16l, v48 = &v43, v17 = objc_msgSend(v15, "accessReadOnlyDataForName:usingBlock:error:", v16, &v45, a7), v16, (v17 & 1) == 0))
+  v15 = outputsCopy;
+  if (!self || ([objc_opt_class() modelOutputXYName], v16 = objc_claimAutoreleasedReturnValue(), v45.i64[0] = MEMORY[0x1E69E9820], v45.i64[1] = 3221225472, v46 = __71__VNE5RTScreenGazeDetector__screenGazeResultForOutput_resultOut_error___block_invoke, v47 = &__block_descriptor_40_e20_B24__0__NSData_8__16l, v48 = &v43, v17 = objc_msgSend(v15, "accessReadOnlyDataForName:usingBlock:error:", v16, &v45, error), v16, (v17 & 1) == 0))
   {
 
     goto LABEL_10;
   }
 
-  v18 = [objc_opt_class() modelOutputDeviceGazeProbabilitiesName];
+  modelOutputDeviceGazeProbabilitiesName = [objc_opt_class() modelOutputDeviceGazeProbabilitiesName];
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
   v44[2] = __71__VNE5RTScreenGazeDetector__screenGazeResultForOutput_resultOut_error___block_invoke_2;
   v44[3] = &__block_descriptor_40_e20_B24__0__NSData_8__16l;
   v44[4] = &v43;
-  v19 = [v15 accessReadOnlyDataForName:v18 usingBlock:v44 error:a7];
+  v19 = [v15 accessReadOnlyDataForName:modelOutputDeviceGazeProbabilitiesName usingBlock:v44 error:error];
 
   if ((v19 & 1) == 0)
   {
@@ -318,21 +318,21 @@ LABEL_10:
   }
 
   v45 = v27;
-  v41 = [[VNFaceScreenGaze alloc] initWithScreenGaze:v12 originatingRequestSpecifier:?];
-  v42 = [*(v14 + 8) vn_cloneObject];
-  [v42 setUUID:*(v14 + 40)];
-  [v42 setFaceScreenGaze:v41];
+  v41 = [[VNFaceScreenGaze alloc] initWithScreenGaze:specifierCopy originatingRequestSpecifier:?];
+  vn_cloneObject = [*(v14 + 8) vn_cloneObject];
+  [vn_cloneObject setUUID:*(v14 + 40)];
+  [vn_cloneObject setFaceScreenGaze:v41];
 
-  if (v42)
+  if (vn_cloneObject)
   {
-    v49[0] = v42;
+    v49[0] = vn_cloneObject;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:1];
   }
 
-  else if (a7)
+  else if (error)
   {
     [VNError errorForInternalErrorWithLocalizedDescription:@"Failed to create screen gaze observation"];
-    *a7 = v25 = 0;
+    *error = v25 = 0;
   }
 
   else

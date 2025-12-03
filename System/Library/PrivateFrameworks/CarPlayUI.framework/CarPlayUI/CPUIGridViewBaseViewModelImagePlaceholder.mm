@@ -1,11 +1,11 @@
 @interface CPUIGridViewBaseViewModelImagePlaceholder
-+ (id)cpuiPlaceholder:(int64_t)a3;
-+ (id)image:(id)a3;
-+ (id)systemImage:(id)a3;
++ (id)cpuiPlaceholder:(int64_t)placeholder;
++ (id)image:(id)image;
++ (id)systemImage:(id)image;
 - (CPUIGridViewBaseViewModelImagePlaceholder)init;
-- (CPUIGridViewBaseViewModelImagePlaceholder)initWithCPUIPlaceholder:(int64_t)a3;
-- (CPUIGridViewBaseViewModelImagePlaceholder)initWithImage:(id)a3;
-- (CPUIGridViewBaseViewModelImagePlaceholder)initWithSystemImage:(id)a3;
+- (CPUIGridViewBaseViewModelImagePlaceholder)initWithCPUIPlaceholder:(int64_t)placeholder;
+- (CPUIGridViewBaseViewModelImagePlaceholder)initWithImage:(id)image;
+- (CPUIGridViewBaseViewModelImagePlaceholder)initWithSystemImage:(id)image;
 - (NSString)systemImage;
 @end
 
@@ -29,10 +29,10 @@
   return v4;
 }
 
-- (CPUIGridViewBaseViewModelImagePlaceholder)initWithImage:(id)a3
+- (CPUIGridViewBaseViewModelImagePlaceholder)initWithImage:(id)image
 {
   *(self + OBJC_IVAR___CPUIGridViewBaseViewModelImagePlaceholder_type) = 0;
-  *(self + OBJC_IVAR___CPUIGridViewBaseViewModelImagePlaceholder_image) = a3;
+  *(self + OBJC_IVAR___CPUIGridViewBaseViewModelImagePlaceholder_image) = image;
   v3 = (self + OBJC_IVAR___CPUIGridViewBaseViewModelImagePlaceholder_systemImage);
   *v3 = 0;
   v3[1] = 0;
@@ -41,11 +41,11 @@
   v4[8] = 1;
   v7.receiver = self;
   v7.super_class = CPUIGridViewBaseViewModelImagePlaceholder;
-  v5 = a3;
+  imageCopy = image;
   return [(CPUIGridViewBaseViewModelImagePlaceholder *)&v7 init];
 }
 
-- (CPUIGridViewBaseViewModelImagePlaceholder)initWithSystemImage:(id)a3
+- (CPUIGridViewBaseViewModelImagePlaceholder)initWithSystemImage:(id)image
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   *(self + OBJC_IVAR___CPUIGridViewBaseViewModelImagePlaceholder_type) = 1;
@@ -61,7 +61,7 @@
   return [(CPUIGridViewBaseViewModelImagePlaceholder *)&v9 init];
 }
 
-- (CPUIGridViewBaseViewModelImagePlaceholder)initWithCPUIPlaceholder:(int64_t)a3
+- (CPUIGridViewBaseViewModelImagePlaceholder)initWithCPUIPlaceholder:(int64_t)placeholder
 {
   *(self + OBJC_IVAR___CPUIGridViewBaseViewModelImagePlaceholder_type) = 2;
   *(self + OBJC_IVAR___CPUIGridViewBaseViewModelImagePlaceholder_image) = 0;
@@ -69,23 +69,23 @@
   *v3 = 0;
   v3[1] = 0;
   v4 = self + OBJC_IVAR___CPUIGridViewBaseViewModelImagePlaceholder_cpuiPlaceholder;
-  *v4 = a3;
+  *v4 = placeholder;
   v4[8] = 0;
   v6.receiver = self;
   v6.super_class = CPUIGridViewBaseViewModelImagePlaceholder;
   return [(CPUIGridViewBaseViewModelImagePlaceholder *)&v6 init];
 }
 
-+ (id)image:(id)a3
++ (id)image:(id)image
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static CPUIGridViewBaseViewModelImagePlaceholder.image(_:)(v4, &selRef_initWithImage_);
+  imageCopy = image;
+  v5 = static CPUIGridViewBaseViewModelImagePlaceholder.image(_:)(imageCopy, &selRef_initWithImage_);
 
   return v5;
 }
 
-+ (id)systemImage:(id)a3
++ (id)systemImage:(id)image
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;
@@ -95,10 +95,10 @@
   return v6;
 }
 
-+ (id)cpuiPlaceholder:(int64_t)a3
++ (id)cpuiPlaceholder:(int64_t)placeholder
 {
   swift_getObjCClassMetadata();
-  v4 = static CPUIGridViewBaseViewModelImagePlaceholder.image(_:)(a3, &selRef_initWithCPUIPlaceholder_);
+  v4 = static CPUIGridViewBaseViewModelImagePlaceholder.image(_:)(placeholder, &selRef_initWithCPUIPlaceholder_);
 
   return v4;
 }

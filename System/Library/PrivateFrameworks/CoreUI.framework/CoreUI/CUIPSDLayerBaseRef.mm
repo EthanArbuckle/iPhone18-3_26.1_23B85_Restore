@@ -1,6 +1,6 @@
 @interface CUIPSDLayerBaseRef
 - (BOOL)hasVectorMask;
-- (CGImage)_createMaskFromAlphaChannel:(int64_t)a3;
+- (CGImage)_createMaskFromAlphaChannel:(int64_t)channel;
 - (CGRect)bounds;
 - (id)layerMaskRef;
 - (id)vectorMaskRef;
@@ -28,12 +28,12 @@
 
 - (BOOL)hasVectorMask
 {
-  v2 = [(CUIPSDLayerBaseRef *)self _psdLayerRecord];
-  if (v2)
+  _psdLayerRecord = [(CUIPSDLayerBaseRef *)self _psdLayerRecord];
+  if (_psdLayerRecord)
   {
   }
 
-  return v2;
+  return _psdLayerRecord;
 }
 
 - (id)layerMaskRef
@@ -60,20 +60,20 @@
   return v3;
 }
 
-- (CGImage)_createMaskFromAlphaChannel:(int64_t)a3
+- (CGImage)_createMaskFromAlphaChannel:(int64_t)channel
 {
-  v5 = [(CUIPSDImageRef *)self->_imageRef psdFile];
-  v6 = [(CUIPSDLayerBaseRef *)self _psdLayerRecord];
-  v7 = v6[16];
-  v8 = v5[77];
-  if (CPSDLayerRecord::GetTransparencyMask(v6))
+  psdFile = [(CUIPSDImageRef *)self->_imageRef psdFile];
+  _psdLayerRecord = [(CUIPSDLayerBaseRef *)self _psdLayerRecord];
+  v7 = _psdLayerRecord[16];
+  v8 = psdFile[77];
+  if (CPSDLayerRecord::GetTransparencyMask(_psdLayerRecord))
   {
-    v9 = v8 + a3 + 1;
+    v9 = v8 + channel + 1;
   }
 
   else
   {
-    v9 = v8 + a3;
+    v9 = v8 + channel;
   }
 
   if (v9 >= v7)
@@ -81,7 +81,7 @@
     return 0;
   }
 
-  CPSDLayerInfo::CreateImageAtLayer((v5 + 124), self->_layerIndex);
+  CPSDLayerInfo::CreateImageAtLayer((psdFile + 124), self->_layerIndex);
   if (result)
   {
     v11 = (*(*result + 24))(result, v9);

@@ -6,7 +6,7 @@
 
 - (BOOL)axItemIsFavorited
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B9FE9F60();
 
   return v3 & 1;

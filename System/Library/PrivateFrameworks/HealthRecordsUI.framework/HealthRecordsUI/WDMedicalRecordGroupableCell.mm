@@ -1,28 +1,28 @@
 @interface WDMedicalRecordGroupableCell
 - (UIEdgeInsets)separatorInsets;
-- (WDMedicalRecordGroupableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_traitCollectionDidChange:(id)a3;
+- (WDMedicalRecordGroupableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_traitCollectionDidChange:(id)change;
 - (void)_updateForCurrentSizeCategory;
 - (void)_updateForIntendedPlacement;
 - (void)prepareForReuse;
-- (void)setExtraTopPadding:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIntendedPlacement:(int64_t)a3;
-- (void)setPillBackgroundColorOverride:(id)a3;
-- (void)setSeparatorDashStyle:(int64_t)a3 hidden:(BOOL)a4;
-- (void)setSeparatorInsets:(UIEdgeInsets)a3;
+- (void)setExtraTopPadding:(BOOL)padding;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setIntendedPlacement:(int64_t)placement;
+- (void)setPillBackgroundColorOverride:(id)override;
+- (void)setSeparatorDashStyle:(int64_t)style hidden:(BOOL)hidden;
+- (void)setSeparatorInsets:(UIEdgeInsets)insets;
 - (void)setUpConstraints;
 - (void)setupSubviews;
 @end
 
 @implementation WDMedicalRecordGroupableCell
 
-- (WDMedicalRecordGroupableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WDMedicalRecordGroupableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = WDMedicalRecordGroupableCell;
-  v4 = [(WDMedicalRecordGroupableCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WDMedicalRecordGroupableCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -51,140 +51,140 @@
   v3 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [(WDMedicalRecordGroupableCell *)self setPillBackgroundView:v3];
 
-  v4 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-  [(WDMedicalRecordGroupableCell *)self setPillBackgroundColor:v4];
+  secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+  [(WDMedicalRecordGroupableCell *)self setPillBackgroundColor:secondarySystemGroupedBackgroundColor];
 
-  v5 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  pillBackgroundView = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  [pillBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(WDMedicalRecordGroupableCell *)self contentView];
-  v7 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  [v6 addSubview:v7];
+  contentView = [(WDMedicalRecordGroupableCell *)self contentView];
+  pillBackgroundView2 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  [contentView addSubview:pillBackgroundView2];
 
   [(WDMedicalRecordGroupableCell *)self setSeparatorInsets:0.0, 16.0, 0.0, 16.0];
   v8 = objc_alloc(MEMORY[0x1E69A44A8]);
   v9 = [v8 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(WDMedicalRecordGroupableCell *)self setSeparatorView:v9];
 
-  v10 = [(WDMedicalRecordGroupableCell *)self separatorView];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  separatorView = [(WDMedicalRecordGroupableCell *)self separatorView];
+  [separatorView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(WDMedicalRecordGroupableCell *)self traitCollection];
-  [v11 displayPixel];
+  traitCollection = [(WDMedicalRecordGroupableCell *)self traitCollection];
+  [traitCollection displayPixel];
   v13 = v12;
-  v14 = [(WDMedicalRecordGroupableCell *)self separatorView];
-  [v14 setSeparatorThickness:v13];
+  separatorView2 = [(WDMedicalRecordGroupableCell *)self separatorView];
+  [separatorView2 setSeparatorThickness:v13];
 
-  v15 = [MEMORY[0x1E69DC888] hk_clinicalRecordSeparatorColor];
-  v16 = [(WDMedicalRecordGroupableCell *)self separatorView];
-  [v16 setColor:v15];
+  hk_clinicalRecordSeparatorColor = [MEMORY[0x1E69DC888] hk_clinicalRecordSeparatorColor];
+  separatorView3 = [(WDMedicalRecordGroupableCell *)self separatorView];
+  [separatorView3 setColor:hk_clinicalRecordSeparatorColor];
 
-  v17 = [(WDMedicalRecordGroupableCell *)self separatorView];
-  [v17 setDashStyle:1];
+  separatorView4 = [(WDMedicalRecordGroupableCell *)self separatorView];
+  [separatorView4 setDashStyle:1];
 
-  v18 = [(WDMedicalRecordGroupableCell *)self contentView];
-  v19 = [(WDMedicalRecordGroupableCell *)self separatorView];
-  [v18 addSubview:v19];
+  contentView2 = [(WDMedicalRecordGroupableCell *)self contentView];
+  separatorView5 = [(WDMedicalRecordGroupableCell *)self separatorView];
+  [contentView2 addSubview:separatorView5];
 
-  v20 = [(WDMedicalRecordGroupableCell *)self separatorView];
-  -[WDMedicalRecordGroupableCell setSeparatorDashStyle:hidden:](self, "setSeparatorDashStyle:hidden:", [v20 dashStyle], 1);
+  separatorView6 = [(WDMedicalRecordGroupableCell *)self separatorView];
+  -[WDMedicalRecordGroupableCell setSeparatorDashStyle:hidden:](self, "setSeparatorDashStyle:hidden:", [separatorView6 dashStyle], 1);
 }
 
 - (void)setUpConstraints
 {
   v48[7] = *MEMORY[0x1E69E9840];
-  v3 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v4 = [v3 topAnchor];
-  v5 = [(WDMedicalRecordGroupableCell *)self contentView];
-  v6 = [v5 topAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  pillBackgroundView = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  topAnchor = [pillBackgroundView topAnchor];
+  contentView = [(WDMedicalRecordGroupableCell *)self contentView];
+  topAnchor2 = [contentView topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [(WDMedicalRecordGroupableCell *)self setTopConstraint:v7];
 
-  v8 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v9 = [v8 bottomAnchor];
-  v10 = [(WDMedicalRecordGroupableCell *)self contentView];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  pillBackgroundView2 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  bottomAnchor = [pillBackgroundView2 bottomAnchor];
+  contentView2 = [(WDMedicalRecordGroupableCell *)self contentView];
+  bottomAnchor2 = [contentView2 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [(WDMedicalRecordGroupableCell *)self setBottomConstraint:v12];
 
-  v13 = [(WDMedicalRecordGroupableCell *)self separatorView];
-  v14 = [v13 leadingAnchor];
-  v15 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v16 = [v15 leadingAnchor];
+  separatorView = [(WDMedicalRecordGroupableCell *)self separatorView];
+  leadingAnchor = [separatorView leadingAnchor];
+  pillBackgroundView3 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  leadingAnchor2 = [pillBackgroundView3 leadingAnchor];
   [(WDMedicalRecordGroupableCell *)self separatorInsets];
-  v18 = [v14 constraintEqualToAnchor:v16 constant:v17];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v17];
   [(WDMedicalRecordGroupableCell *)self setSeparatorLeadingConstant:v18];
 
-  v19 = [(WDMedicalRecordGroupableCell *)self separatorView];
-  v20 = [v19 trailingAnchor];
-  v21 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v22 = [v21 trailingAnchor];
+  separatorView2 = [(WDMedicalRecordGroupableCell *)self separatorView];
+  trailingAnchor = [separatorView2 trailingAnchor];
+  pillBackgroundView4 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  trailingAnchor2 = [pillBackgroundView4 trailingAnchor];
   [(WDMedicalRecordGroupableCell *)self separatorInsets];
-  v24 = [v20 constraintEqualToAnchor:v22 constant:-v23];
+  v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v23];
   [(WDMedicalRecordGroupableCell *)self setSeparatorTrailingConstraint:v24];
 
   v38 = MEMORY[0x1E696ACD8];
-  v47 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v45 = [v47 leadingAnchor];
-  v46 = [(WDMedicalRecordGroupableCell *)self contentView];
-  v44 = [v46 layoutMarginsGuide];
-  v43 = [v44 leadingAnchor];
-  v42 = [v45 constraintEqualToAnchor:v43];
+  pillBackgroundView5 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  leadingAnchor3 = [pillBackgroundView5 leadingAnchor];
+  contentView3 = [(WDMedicalRecordGroupableCell *)self contentView];
+  layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+  leadingAnchor4 = [layoutMarginsGuide leadingAnchor];
+  v42 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v48[0] = v42;
-  v41 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v39 = [v41 trailingAnchor];
-  v40 = [(WDMedicalRecordGroupableCell *)self contentView];
-  v37 = [v40 layoutMarginsGuide];
-  v36 = [v37 trailingAnchor];
-  v35 = [v39 constraintEqualToAnchor:v36];
+  pillBackgroundView6 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  trailingAnchor3 = [pillBackgroundView6 trailingAnchor];
+  contentView4 = [(WDMedicalRecordGroupableCell *)self contentView];
+  layoutMarginsGuide2 = [contentView4 layoutMarginsGuide];
+  trailingAnchor4 = [layoutMarginsGuide2 trailingAnchor];
+  v35 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v48[1] = v35;
-  v25 = [(WDMedicalRecordGroupableCell *)self topConstraint];
-  v48[2] = v25;
-  v26 = [(WDMedicalRecordGroupableCell *)self bottomConstraint];
-  v48[3] = v26;
-  v27 = [(WDMedicalRecordGroupableCell *)self separatorView];
-  v28 = [v27 bottomAnchor];
-  v29 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v30 = [v29 bottomAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30];
+  topConstraint = [(WDMedicalRecordGroupableCell *)self topConstraint];
+  v48[2] = topConstraint;
+  bottomConstraint = [(WDMedicalRecordGroupableCell *)self bottomConstraint];
+  v48[3] = bottomConstraint;
+  separatorView3 = [(WDMedicalRecordGroupableCell *)self separatorView];
+  bottomAnchor3 = [separatorView3 bottomAnchor];
+  pillBackgroundView7 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  bottomAnchor4 = [pillBackgroundView7 bottomAnchor];
+  v31 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v48[4] = v31;
-  v32 = [(WDMedicalRecordGroupableCell *)self separatorLeadingConstant];
-  v48[5] = v32;
-  v33 = [(WDMedicalRecordGroupableCell *)self separatorTrailingConstraint];
-  v48[6] = v33;
+  separatorLeadingConstant = [(WDMedicalRecordGroupableCell *)self separatorLeadingConstant];
+  v48[5] = separatorLeadingConstant;
+  separatorTrailingConstraint = [(WDMedicalRecordGroupableCell *)self separatorTrailingConstraint];
+  v48[6] = separatorTrailingConstraint;
   v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:7];
   [v38 activateConstraints:v34];
 }
 
-- (void)setSeparatorDashStyle:(int64_t)a3 hidden:(BOOL)a4
+- (void)setSeparatorDashStyle:(int64_t)style hidden:(BOOL)hidden
 {
-  v4 = a4;
-  v7 = [(WDMedicalRecordGroupableCell *)self separatorView];
-  [v7 setDashStyle:a3];
+  hiddenCopy = hidden;
+  separatorView = [(WDMedicalRecordGroupableCell *)self separatorView];
+  [separatorView setDashStyle:style];
 
-  v8 = [(WDMedicalRecordGroupableCell *)self separatorView];
-  [v8 setHidden:v4];
+  separatorView2 = [(WDMedicalRecordGroupableCell *)self separatorView];
+  [separatorView2 setHidden:hiddenCopy];
 }
 
-- (void)setSeparatorInsets:(UIEdgeInsets)a3
+- (void)setSeparatorInsets:(UIEdgeInsets)insets
 {
-  self->_separatorInsets = a3;
+  self->_separatorInsets = insets;
   [(WDMedicalRecordGroupableCell *)self separatorInsets];
   v5 = v4;
-  v6 = [(WDMedicalRecordGroupableCell *)self separatorLeadingConstant];
-  [v6 setConstant:v5];
+  separatorLeadingConstant = [(WDMedicalRecordGroupableCell *)self separatorLeadingConstant];
+  [separatorLeadingConstant setConstant:v5];
 
   [(WDMedicalRecordGroupableCell *)self separatorInsets];
   v8 = -v7;
-  v9 = [(WDMedicalRecordGroupableCell *)self separatorTrailingConstraint];
-  [v9 setConstant:v8];
+  separatorTrailingConstraint = [(WDMedicalRecordGroupableCell *)self separatorTrailingConstraint];
+  [separatorTrailingConstraint setConstant:v8];
 }
 
-- (void)setExtraTopPadding:(BOOL)a3
+- (void)setExtraTopPadding:(BOOL)padding
 {
-  self->_extraTopPadding = a3;
+  self->_extraTopPadding = padding;
   v4 = 0.0;
-  if (a3)
+  if (padding)
   {
     v4 = 10.0;
   }
@@ -192,31 +192,31 @@
   [(WDMedicalRecordGroupableCell *)self setSectionTopPadding:v4];
   [(WDMedicalRecordGroupableCell *)self _topPadding];
   v6 = v5;
-  v7 = [(WDMedicalRecordGroupableCell *)self topConstraint];
-  [v7 setConstant:v6];
+  topConstraint = [(WDMedicalRecordGroupableCell *)self topConstraint];
+  [topConstraint setConstant:v6];
 }
 
-- (void)setPillBackgroundColorOverride:(id)a3
+- (void)setPillBackgroundColorOverride:(id)override
 {
-  v5 = a3;
-  if (self->_pillBackgroundColorOverride != v5)
+  overrideCopy = override;
+  if (self->_pillBackgroundColorOverride != overrideCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_pillBackgroundColorOverride, a3);
+    v6 = overrideCopy;
+    objc_storeStrong(&self->_pillBackgroundColorOverride, override);
     [(WDMedicalRecordGroupableCell *)self _updateForIntendedPlacement];
-    v5 = v6;
+    overrideCopy = v6;
   }
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  highlightedCopy = highlighted;
   if ([(WDMedicalRecordGroupableCell *)self selectionStyle]== 3)
   {
     v11.receiver = self;
     v11.super_class = WDMedicalRecordGroupableCell;
-    [(WDMedicalRecordGroupableCell *)&v11 setHighlighted:v5 animated:v4];
+    [(WDMedicalRecordGroupableCell *)&v11 setHighlighted:highlightedCopy animated:animatedCopy];
   }
 
   else
@@ -226,10 +226,10 @@
     v9[2] = __56__WDMedicalRecordGroupableCell_setHighlighted_animated___block_invoke;
     v9[3] = &unk_1E83DCF40;
     v9[4] = self;
-    v10 = v5;
+    v10 = highlightedCopy;
     v7 = _Block_copy(v9);
     v8 = v7;
-    if (v4)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] animateWithDuration:v7 animations:0.5];
     }
@@ -257,11 +257,11 @@ void __56__WDMedicalRecordGroupableCell_setHighlighted_animated___block_invoke(u
   [v2 setBackgroundColor:v3];
 }
 
-- (void)setIntendedPlacement:(int64_t)a3
+- (void)setIntendedPlacement:(int64_t)placement
 {
-  if (self->_intendedPlacement != a3)
+  if (self->_intendedPlacement != placement)
   {
-    self->_intendedPlacement = a3;
+    self->_intendedPlacement = placement;
     [(WDMedicalRecordGroupableCell *)self _updateForIntendedPlacement];
   }
 }
@@ -271,31 +271,31 @@ void __56__WDMedicalRecordGroupableCell_setHighlighted_animated___block_invoke(u
   intendedPlacement = self->_intendedPlacement;
   if (intendedPlacement == 1)
   {
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    v8 = [(WDMedicalRecordGroupableCell *)self contentView];
-    [v8 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    contentView = [(WDMedicalRecordGroupableCell *)self contentView];
+    [contentView setBackgroundColor:clearColor];
 
-    v9 = [MEMORY[0x1E69DC888] clearColor];
-    [(WDMedicalRecordGroupableCell *)self setBackgroundColor:v9];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(WDMedicalRecordGroupableCell *)self setBackgroundColor:clearColor2];
 
     if (self->_pillBackgroundColorOverride)
     {
       goto LABEL_8;
     }
 
-    v10 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor3 = [MEMORY[0x1E69DC888] clearColor];
   }
 
   else
   {
     if (!intendedPlacement)
     {
-      v4 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-      v5 = [(WDMedicalRecordGroupableCell *)self contentView];
-      [v5 setBackgroundColor:v4];
+      secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+      contentView2 = [(WDMedicalRecordGroupableCell *)self contentView];
+      [contentView2 setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
-      v6 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-      [(WDMedicalRecordGroupableCell *)self setBackgroundColor:v6];
+      secondarySystemGroupedBackgroundColor2 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+      [(WDMedicalRecordGroupableCell *)self setBackgroundColor:secondarySystemGroupedBackgroundColor2];
 
       if (self->_pillBackgroundColorOverride)
       {
@@ -304,26 +304,26 @@ void __56__WDMedicalRecordGroupableCell_setHighlighted_animated___block_invoke(u
 
       else
       {
-        v14 = [MEMORY[0x1E69DC888] clearColor];
-        [(WDMedicalRecordGroupableCell *)self setPillBackgroundColor:v14];
+        clearColor4 = [MEMORY[0x1E69DC888] clearColor];
+        [(WDMedicalRecordGroupableCell *)self setPillBackgroundColor:clearColor4];
       }
 
       [(WDMedicalRecordGroupableCell *)self _topPadding];
       v16 = v15;
-      v17 = [(WDMedicalRecordGroupableCell *)self topConstraint];
-      [v17 setConstant:v16];
+      topConstraint = [(WDMedicalRecordGroupableCell *)self topConstraint];
+      [topConstraint setConstant:v16];
 
-      v18 = [(WDMedicalRecordGroupableCell *)self bottomConstraint];
-      [v18 setConstant:0.0];
+      bottomConstraint = [(WDMedicalRecordGroupableCell *)self bottomConstraint];
+      [bottomConstraint setConstant:0.0];
       goto LABEL_13;
     }
 
-    v11 = [MEMORY[0x1E69DC888] clearColor];
-    v12 = [(WDMedicalRecordGroupableCell *)self contentView];
-    [v12 setBackgroundColor:v11];
+    clearColor5 = [MEMORY[0x1E69DC888] clearColor];
+    contentView3 = [(WDMedicalRecordGroupableCell *)self contentView];
+    [contentView3 setBackgroundColor:clearColor5];
 
-    v13 = [MEMORY[0x1E69DC888] clearColor];
-    [(WDMedicalRecordGroupableCell *)self setBackgroundColor:v13];
+    clearColor6 = [MEMORY[0x1E69DC888] clearColor];
+    [(WDMedicalRecordGroupableCell *)self setBackgroundColor:clearColor6];
 
     if (self->_pillBackgroundColorOverride)
     {
@@ -332,11 +332,11 @@ LABEL_8:
       goto LABEL_14;
     }
 
-    v10 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+    clearColor3 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
   }
 
-  v18 = v10;
-  [(WDMedicalRecordGroupableCell *)self setPillBackgroundColor:v10];
+  bottomConstraint = clearColor3;
+  [(WDMedicalRecordGroupableCell *)self setPillBackgroundColor:clearColor3];
 LABEL_13:
 
 LABEL_14:
@@ -345,9 +345,9 @@ LABEL_14:
   {
     if (v19 == 4)
     {
-      v24 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-      v26 = [v24 layer];
-      [v26 setCornerRadius:0.0];
+      pillBackgroundView = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+      layer = [pillBackgroundView layer];
+      [layer setCornerRadius:0.0];
       goto LABEL_24;
     }
 
@@ -358,13 +358,13 @@ LABEL_14:
 
     [(WDMedicalRecordGroupableCell *)self _cornerRadius];
     v29 = v28;
-    v30 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-    v31 = [v30 layer];
-    [v31 setCornerRadius:v29];
+    pillBackgroundView2 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+    layer2 = [pillBackgroundView2 layer];
+    [layer2 setCornerRadius:v29];
 
-    v24 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-    v25 = [v24 layer];
-    v26 = v25;
+    pillBackgroundView = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+    layer3 = [pillBackgroundView layer];
+    layer = layer3;
     v27 = 12;
   }
 
@@ -372,13 +372,13 @@ LABEL_14:
   {
     [(WDMedicalRecordGroupableCell *)self _cornerRadius];
     v33 = v32;
-    v34 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-    v35 = [v34 layer];
-    [v35 setCornerRadius:v33];
+    pillBackgroundView3 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+    layer4 = [pillBackgroundView3 layer];
+    [layer4 setCornerRadius:v33];
 
-    v24 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-    v25 = [v24 layer];
-    v26 = v25;
+    pillBackgroundView = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+    layer3 = [pillBackgroundView layer];
+    layer = layer3;
     v27 = 15;
   }
 
@@ -391,31 +391,31 @@ LABEL_14:
 
     [(WDMedicalRecordGroupableCell *)self _cornerRadius];
     v21 = v20;
-    v22 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-    v23 = [v22 layer];
-    [v23 setCornerRadius:v21];
+    pillBackgroundView4 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+    layer5 = [pillBackgroundView4 layer];
+    [layer5 setCornerRadius:v21];
 
-    v24 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-    v25 = [v24 layer];
-    v26 = v25;
+    pillBackgroundView = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+    layer3 = [pillBackgroundView layer];
+    layer = layer3;
     v27 = 3;
   }
 
-  [v25 setMaskedCorners:v27];
+  [layer3 setMaskedCorners:v27];
 LABEL_24:
 
   [(WDMedicalRecordGroupableCell *)self _topPadding];
   v37 = v36;
-  v38 = [(WDMedicalRecordGroupableCell *)self topConstraint];
-  [v38 setConstant:v37];
+  topConstraint2 = [(WDMedicalRecordGroupableCell *)self topConstraint];
+  [topConstraint2 setConstant:v37];
 
-  v39 = [(WDMedicalRecordGroupableCell *)self bottomConstraint];
-  [v39 setConstant:0.0];
+  bottomConstraint2 = [(WDMedicalRecordGroupableCell *)self bottomConstraint];
+  [bottomConstraint2 setConstant:0.0];
 
 LABEL_25:
-  v41 = [(WDMedicalRecordGroupableCell *)self pillBackgroundColor];
-  v40 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  [v40 setBackgroundColor:v41];
+  pillBackgroundColor = [(WDMedicalRecordGroupableCell *)self pillBackgroundColor];
+  pillBackgroundView5 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  [pillBackgroundView5 setBackgroundColor:pillBackgroundColor];
 }
 
 - (void)_updateForCurrentSizeCategory
@@ -423,48 +423,48 @@ LABEL_25:
   v6.receiver = self;
   v6.super_class = WDMedicalRecordGroupableCell;
   [(WDMedicalRecordGroupableCell *)&v6 _updateForCurrentSizeCategory];
-  v3 = [(WDMedicalRecordGroupableCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(WDMedicalRecordGroupableCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   v5 = HKUIContentSizeCategoryMin();
 
   [(WDMedicalRecordGroupableCell *)self _updateForContentSizeCategory:v5];
   [(WDMedicalRecordGroupableCell *)self _updateBasedOnAccessibilityCategory:UIContentSizeCategoryIsAccessibilityCategory(v5)];
 }
 
-- (void)_traitCollectionDidChange:(id)a3
+- (void)_traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v16 = v4;
-  if (v4)
+  changeCopy = change;
+  v16 = changeCopy;
+  if (changeCopy)
   {
-    v5 = [(WDMedicalRecordGroupableCell *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v16 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(WDMedicalRecordGroupableCell *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [v16 preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
-    v4 = v16;
+    changeCopy = v16;
     if ((v8 & 1) == 0)
     {
       [(WDMedicalRecordGroupableCell *)self _updateForCurrentSizeCategory];
-      v4 = v16;
+      changeCopy = v16;
     }
   }
 
-  [v4 displayPixel];
-  v9 = [(WDMedicalRecordGroupableCell *)self traitCollection];
-  [v9 displayPixel];
+  [changeCopy displayPixel];
+  traitCollection2 = [(WDMedicalRecordGroupableCell *)self traitCollection];
+  [traitCollection2 displayPixel];
   v10 = HKUIEqualCGFloats();
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(WDMedicalRecordGroupableCell *)self traitCollection];
-    [v11 displayPixel];
+    traitCollection3 = [(WDMedicalRecordGroupableCell *)self traitCollection];
+    [traitCollection3 displayPixel];
     v13 = v12;
-    v14 = [(WDMedicalRecordGroupableCell *)self separatorView];
-    [v14 setSeparatorThickness:v13];
+    separatorView = [(WDMedicalRecordGroupableCell *)self separatorView];
+    [separatorView setSeparatorThickness:v13];
 
-    v15 = [(WDMedicalRecordGroupableCell *)self separatorView];
-    [v15 setNeedsDisplay];
+    separatorView2 = [(WDMedicalRecordGroupableCell *)self separatorView];
+    [separatorView2 setNeedsDisplay];
   }
 }
 

@@ -1,79 +1,79 @@
 @interface PKAccountUserDetailViewController
 - (BOOL)_hasPhysicalCardAction;
 - (BOOL)_shouldShowRewardsBalance;
-- (PKAccountUserDetailViewController)initWithPaymentPass:(id)a3 style:(int64_t)a4 account:(id)a5 accountUser:(id)a6 familyMemberCollection:(id)a7 avatarManager:(id)a8 contactResolver:(id)a9 hideUserDetailHeader:(BOOL)a10;
-- (PKAccountUserDetailViewController)initWithPaymentPass:(id)a3 style:(int64_t)a4 account:(id)a5 accountUserInvitation:(id)a6 familyMemberCollection:(id)a7 avatarManager:(id)a8 contactResolver:(id)a9 hideUserDetailHeader:(BOOL)a10;
-- (PKAccountUserDetailViewController)initWithPaymentPass:(id)a3 style:(int64_t)a4 account:(id)a5 familyMemberCollection:(id)a6 avatarManager:(id)a7 contactResolver:(id)a8 hideUserDetailHeader:(BOOL)a9;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (PKAccountUserDetailViewController)initWithPaymentPass:(id)pass style:(int64_t)style account:(id)account accountUser:(id)user familyMemberCollection:(id)collection avatarManager:(id)manager contactResolver:(id)resolver hideUserDetailHeader:(BOOL)self0;
+- (PKAccountUserDetailViewController)initWithPaymentPass:(id)pass style:(int64_t)style account:(id)account accountUserInvitation:(id)invitation familyMemberCollection:(id)collection avatarManager:(id)manager contactResolver:(id)resolver hideUserDetailHeader:(BOOL)self0;
+- (PKAccountUserDetailViewController)initWithPaymentPass:(id)pass style:(int64_t)style account:(id)account familyMemberCollection:(id)collection avatarManager:(id)manager contactResolver:(id)resolver hideUserDetailHeader:(BOOL)header;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)_currentConfigurationForAccountUser;
 - (id)_currentConfigurationForAccountUserInvitation;
 - (id)_footerForTransactionLimitSection;
 - (id)_footerViewForPeerPaymentAccountSetup;
-- (id)presentationSceneIdentifierForPhysicalCardActionController:(id)a3;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (void)_appendActionsSectionToConfiguration:(id)a3;
-- (void)_appendNotificationsSectionToConfiguration:(id)a3;
-- (void)_appendPhysicalCardSectionToConfiguration:(id)a3;
-- (void)_appendRewardsBalanceToConfiguration:(id)a3;
-- (void)_appendShowAvailableCreditToConfiguration:(id)a3;
-- (void)_appendSpendNotificationsSectionToConfiguration:(id)a3;
-- (void)_appendTransactionLimitToConfiguration:(id)a3;
+- (id)presentationSceneIdentifierForPhysicalCardActionController:(id)controller;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (void)_appendActionsSectionToConfiguration:(id)configuration;
+- (void)_appendNotificationsSectionToConfiguration:(id)configuration;
+- (void)_appendPhysicalCardSectionToConfiguration:(id)configuration;
+- (void)_appendRewardsBalanceToConfiguration:(id)configuration;
+- (void)_appendShowAvailableCreditToConfiguration:(id)configuration;
+- (void)_appendSpendNotificationsSectionToConfiguration:(id)configuration;
+- (void)_appendTransactionLimitToConfiguration:(id)configuration;
 - (void)_loadPeerPaymentAccount;
 - (void)_presentAccountUserInvitation;
 - (void)_presentCancelInvitationAlert;
-- (void)_presentDisplayableError:(id)a3;
-- (void)_presentPasswordAuthorizationWithReason:(id)a3 completion:(id)a4;
-- (void)_presentPeerPaymentFamilySharingSetupForFamilyMember:(id)a3;
+- (void)_presentDisplayableError:(id)error;
+- (void)_presentPasswordAuthorizationWithReason:(id)reason completion:(id)completion;
+- (void)_presentPeerPaymentFamilySharingSetupForFamilyMember:(id)member;
 - (void)_presentStopSharingAlert;
-- (void)_setPerformingAction:(BOOL)a3 animated:(BOOL)a4;
-- (void)_updateConfigurationAnimated:(BOOL)a3;
-- (void)_updateContactInfoAndHeaderViewAnimated:(BOOL)a3;
-- (void)_updateMonthlySpendLimit:(id)a3;
-- (void)_updateMonthlySpendNotificationThreshold:(id)a3;
-- (void)_updateNotificationSettings:(id)a3;
-- (void)_updatePreferences:(id)a3;
-- (void)_updateShowAvailableCredit:(BOOL)a3;
-- (void)_updateSpendingEnabled:(BOOL)a3;
-- (void)_updateTransactionLimit:(id)a3;
-- (void)_updateTransactionNotificationThreshold:(id)a3;
-- (void)_updateTransactionNotificationsEnabled:(BOOL)a3;
-- (void)accountChanged:(id)a3;
-- (void)accountUsersChanged:(id)a3 forAccountIdentifier:(id)a4;
+- (void)_setPerformingAction:(BOOL)action animated:(BOOL)animated;
+- (void)_updateConfigurationAnimated:(BOOL)animated;
+- (void)_updateContactInfoAndHeaderViewAnimated:(BOOL)animated;
+- (void)_updateMonthlySpendLimit:(id)limit;
+- (void)_updateMonthlySpendNotificationThreshold:(id)threshold;
+- (void)_updateNotificationSettings:(id)settings;
+- (void)_updatePreferences:(id)preferences;
+- (void)_updateShowAvailableCredit:(BOOL)credit;
+- (void)_updateSpendingEnabled:(BOOL)enabled;
+- (void)_updateTransactionLimit:(id)limit;
+- (void)_updateTransactionNotificationThreshold:(id)threshold;
+- (void)_updateTransactionNotificationsEnabled:(BOOL)enabled;
+- (void)accountChanged:(id)changed;
+- (void)accountUsersChanged:(id)changed forAccountIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)featureApplicationChanged:(id)a3;
-- (void)featureApplicationRemoved:(id)a3;
-- (void)physicalCardActionController:(id)a3 didChangeToState:(int64_t)a4 withError:(id)a5;
-- (void)physicalCardsChanged:(id)a3 forAccountIdentifier:(id)a4;
+- (void)featureApplicationChanged:(id)changed;
+- (void)featureApplicationRemoved:(id)removed;
+- (void)physicalCardActionController:(id)controller didChangeToState:(int64_t)state withError:(id)error;
+- (void)physicalCardsChanged:(id)changed forAccountIdentifier:(id)identifier;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKAccountUserDetailViewController
 
-- (PKAccountUserDetailViewController)initWithPaymentPass:(id)a3 style:(int64_t)a4 account:(id)a5 accountUser:(id)a6 familyMemberCollection:(id)a7 avatarManager:(id)a8 contactResolver:(id)a9 hideUserDetailHeader:(BOOL)a10
+- (PKAccountUserDetailViewController)initWithPaymentPass:(id)pass style:(int64_t)style account:(id)account accountUser:(id)user familyMemberCollection:(id)collection avatarManager:(id)manager contactResolver:(id)resolver hideUserDetailHeader:(BOOL)self0
 {
-  v16 = a5;
-  v17 = a6;
-  LOBYTE(v26) = a10;
-  v18 = [(PKAccountUserDetailViewController *)self initWithPaymentPass:a3 style:a4 account:v16 familyMemberCollection:a7 avatarManager:a8 contactResolver:a9 hideUserDetailHeader:v26];
+  accountCopy = account;
+  userCopy = user;
+  LOBYTE(v26) = header;
+  v18 = [(PKAccountUserDetailViewController *)self initWithPaymentPass:pass style:style account:accountCopy familyMemberCollection:collection avatarManager:manager contactResolver:resolver hideUserDetailHeader:v26];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_accountUser, a6);
-    v20 = [MEMORY[0x1E69B8EF8] sharedService];
-    v21 = [v20 _appleAccountInformation];
+    objc_storeStrong(&v18->_accountUser, user);
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    _appleAccountInformation = [mEMORY[0x1E69B8EF8] _appleAccountInformation];
     appleAccountInformation = v19->_appleAccountInformation;
-    v19->_appleAccountInformation = v21;
+    v19->_appleAccountInformation = _appleAccountInformation;
 
     accountService = v19->_accountService;
-    v24 = [v16 accountIdentifier];
+    accountIdentifier = [accountCopy accountIdentifier];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __157__PKAccountUserDetailViewController_initWithPaymentPass_style_account_accountUser_familyMemberCollection_avatarManager_contactResolver_hideUserDetailHeader___block_invoke;
     v27[3] = &unk_1E8013E48;
     v28 = v19;
-    [(PKAccountService *)accountService physicalCardsForAccountWithIdentifier:v24 completion:v27];
+    [(PKAccountService *)accountService physicalCardsForAccountWithIdentifier:accountIdentifier completion:v27];
   }
 
   return v19;
@@ -109,61 +109,61 @@ uint64_t __157__PKAccountUserDetailViewController_initWithPaymentPass_style_acco
   return [v8 _updateConfigurationAnimated:1];
 }
 
-- (PKAccountUserDetailViewController)initWithPaymentPass:(id)a3 style:(int64_t)a4 account:(id)a5 accountUserInvitation:(id)a6 familyMemberCollection:(id)a7 avatarManager:(id)a8 contactResolver:(id)a9 hideUserDetailHeader:(BOOL)a10
+- (PKAccountUserDetailViewController)initWithPaymentPass:(id)pass style:(int64_t)style account:(id)account accountUserInvitation:(id)invitation familyMemberCollection:(id)collection avatarManager:(id)manager contactResolver:(id)resolver hideUserDetailHeader:(BOOL)self0
 {
-  v17 = a6;
-  LOBYTE(v21) = a10;
-  v18 = [(PKAccountUserDetailViewController *)self initWithPaymentPass:a3 style:a4 account:a5 familyMemberCollection:a7 avatarManager:a8 contactResolver:a9 hideUserDetailHeader:v21];
+  invitationCopy = invitation;
+  LOBYTE(v21) = header;
+  v18 = [(PKAccountUserDetailViewController *)self initWithPaymentPass:pass style:style account:account familyMemberCollection:collection avatarManager:manager contactResolver:resolver hideUserDetailHeader:v21];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_accountUserInvitation, a6);
+    objc_storeStrong(&v18->_accountUserInvitation, invitation);
   }
 
   return v19;
 }
 
-- (PKAccountUserDetailViewController)initWithPaymentPass:(id)a3 style:(int64_t)a4 account:(id)a5 familyMemberCollection:(id)a6 avatarManager:(id)a7 contactResolver:(id)a8 hideUserDetailHeader:(BOOL)a9
+- (PKAccountUserDetailViewController)initWithPaymentPass:(id)pass style:(int64_t)style account:(id)account familyMemberCollection:(id)collection avatarManager:(id)manager contactResolver:(id)resolver hideUserDetailHeader:(BOOL)header
 {
-  v16 = a3;
-  v17 = a5;
-  v29 = a6;
-  v28 = a7;
-  v18 = a8;
+  passCopy = pass;
+  accountCopy = account;
+  collectionCopy = collection;
+  managerCopy = manager;
+  resolverCopy = resolver;
   v30.receiver = self;
   v30.super_class = PKAccountUserDetailViewController;
   v19 = -[PKAccountUserDetailViewController initWithStyle:](&v30, sel_initWithStyle_, [MEMORY[0x1E69DD020] pkui_groupedStyleWithRoundedCorners:1]);
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_paymentPass, a3);
-    v20->_style = a4;
-    objc_storeStrong(&v20->_account, a5);
-    objc_storeStrong(&v20->_familyMemberCollection, a6);
-    objc_storeStrong(&v20->_avatarManager, a7);
-    objc_storeStrong(&v20->_contactResolver, a8);
-    v20->_hideUserDetailHeader = a9;
-    v21 = [MEMORY[0x1E69B8400] sharedInstance];
+    objc_storeStrong(&v19->_paymentPass, pass);
+    v20->_style = style;
+    objc_storeStrong(&v20->_account, account);
+    objc_storeStrong(&v20->_familyMemberCollection, collection);
+    objc_storeStrong(&v20->_avatarManager, manager);
+    objc_storeStrong(&v20->_contactResolver, resolver);
+    v20->_hideUserDetailHeader = header;
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     accountService = v20->_accountService;
-    v20->_accountService = v21;
+    v20->_accountService = mEMORY[0x1E69B8400];
 
     [(PKAccountService *)v20->_accountService registerObserver:v20];
-    v23 = [MEMORY[0x1E69B8DB8] paymentService];
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     paymentService = v20->_paymentService;
-    v20->_paymentService = v23;
+    v20->_paymentService = paymentService;
 
     [(PKPaymentService *)v20->_paymentService registerObserver:v20];
-    v25 = [(PKAccountUserDetailViewController *)v20 navigationItem];
+    navigationItem = [(PKAccountUserDetailViewController *)v20 navigationItem];
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      [v25 pkui_setupScrollEdgeChromelessAppearance];
-      [v25 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+      [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+      [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
     }
 
     if (v20->_hideUserDetailHeader)
     {
       v26 = PKLocalizedFeatureString();
-      [v25 setTitle:v26];
+      [navigationItem setTitle:v26];
     }
   }
 
@@ -184,7 +184,7 @@ uint64_t __157__PKAccountUserDetailViewController_initWithPaymentPass_style_acco
   v7.receiver = self;
   v7.super_class = PKAccountUserDetailViewController;
   [(PKSettingsTableViewController *)&v7 viewDidLoad];
-  v3 = [(PKAccountUserDetailViewController *)self tableView];
+  tableView = [(PKAccountUserDetailViewController *)self tableView];
   if (!self->_hideUserDetailHeader)
   {
     v4 = [PKAccountUserDetailHeaderView alloc];
@@ -192,13 +192,13 @@ uint64_t __157__PKAccountUserDetailViewController_initWithPaymentPass_style_acco
     headerView = self->_headerView;
     self->_headerView = v5;
 
-    [v3 setTableHeaderView:self->_headerView];
+    [tableView setTableHeaderView:self->_headerView];
   }
 
   [(PKAccountUserDetailViewController *)self _loadPeerPaymentAccount];
   [(PKAccountUserDetailViewController *)self _updateContactInfoAndHeaderViewAnimated:0];
   [(PKAccountUserDetailViewController *)self _updateConfigurationAnimated:0];
-  [v3 setAccessibilityIdentifier:*MEMORY[0x1E69B93C0]];
+  [tableView setAccessibilityIdentifier:*MEMORY[0x1E69B93C0]];
 }
 
 - (void)viewWillLayoutSubviews
@@ -209,8 +209,8 @@ uint64_t __157__PKAccountUserDetailViewController_initWithPaymentPass_style_acco
   if (!self->_hideUserDetailHeader)
   {
     headerView = self->_headerView;
-    v4 = [(PKAccountUserDetailViewController *)self view];
-    [v4 bounds];
+    view = [(PKAccountUserDetailViewController *)self view];
+    [view bounds];
     [(PKAccountUserDetailHeaderView *)headerView sizeThatFits:CGRectGetWidth(v13), 1.79769313e308];
     v6 = v5;
     v8 = v7;
@@ -219,26 +219,26 @@ uint64_t __157__PKAccountUserDetailViewController_initWithPaymentPass_style_acco
     {
       self->_previousHeaderHeight = v8;
       [(PKAccountUserDetailHeaderView *)self->_headerView setFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v6, v8];
-      v9 = [(PKAccountUserDetailViewController *)self tableView];
-      [v9 _tableHeaderHeightDidChangeToHeight:v8];
+      tableView = [(PKAccountUserDetailViewController *)self tableView];
+      [tableView _tableHeaderHeightDidChangeToHeight:v8];
     }
   }
 
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v10 = [(PKAccountUserDetailViewController *)self tableView];
-    v11 = [(PKAccountUserDetailViewController *)self navigationItem];
-    [v10 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v11];
+    tableView2 = [(PKAccountUserDetailViewController *)self tableView];
+    navigationItem = [(PKAccountUserDetailViewController *)self navigationItem];
+    [tableView2 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v5 = a3;
-  v6 = [v5 dataSource];
-  v7 = [v6 tableView:v5 titleForHeaderInSection:a4];
+  viewCopy = view;
+  dataSource = [viewCopy dataSource];
+  v7 = [dataSource tableView:viewCopy titleForHeaderInSection:section];
 
-  if (a4 | v7)
+  if (section | v7)
   {
     v8 = *MEMORY[0x1E69DE3D0];
   }
@@ -251,14 +251,14 @@ uint64_t __157__PKAccountUserDetailViewController_initWithPaymentPass_style_acco
   return v8;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v5 = a3;
-  v6 = [v5 dataSource];
-  v7 = [v6 tableView:v5 titleForHeaderInSection:a4];
+  viewCopy = view;
+  dataSource = [viewCopy dataSource];
+  v7 = [dataSource tableView:viewCopy titleForHeaderInSection:section];
 
   v8 = 0;
-  if (!a4 && !v7)
+  if (!section && !v7)
   {
     v8 = objc_alloc_init(MEMORY[0x1E69DD250]);
   }
@@ -266,35 +266,35 @@ uint64_t __157__PKAccountUserDetailViewController_initWithPaymentPass_style_acco
   return v8;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [v6 dataSource];
-  v8 = [v7 tableView:v6 titleForFooterInSection:a4];
+  viewCopy = view;
+  dataSource = [viewCopy dataSource];
+  v8 = [dataSource tableView:viewCopy titleForFooterInSection:section];
 
-  if (v8 || [(PKSettingsTableViewController *)self indexOfSectionWithIdentifier:@"rewardsBalance"]!= a4)
+  if (v8 || [(PKSettingsTableViewController *)self indexOfSectionWithIdentifier:@"rewardsBalance"]!= section)
   {
-    v9 = 0;
+    _footerViewForPeerPaymentAccountSetup = 0;
   }
 
   else
   {
-    v9 = [(PKAccountUserDetailViewController *)self _footerViewForPeerPaymentAccountSetup];
+    _footerViewForPeerPaymentAccountSetup = [(PKAccountUserDetailViewController *)self _footerViewForPeerPaymentAccountSetup];
   }
 
-  return v9;
+  return _footerViewForPeerPaymentAccountSetup;
 }
 
-- (void)featureApplicationChanged:(id)a3
+- (void)featureApplicationChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__PKAccountUserDetailViewController_featureApplicationChanged___block_invoke;
   v6[3] = &unk_1E8010A10;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = changedCopy;
+  selfCopy = self;
+  v5 = changedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -352,16 +352,16 @@ LABEL_13:
   [v9 _updateConfigurationAnimated:1];
 }
 
-- (void)featureApplicationRemoved:(id)a3
+- (void)featureApplicationRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__PKAccountUserDetailViewController_featureApplicationRemoved___block_invoke;
   v6[3] = &unk_1E8010A10;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = removedCopy;
+  selfCopy = self;
+  v5 = removedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -405,16 +405,16 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)accountChanged:(id)a3
+- (void)accountChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__PKAccountUserDetailViewController_accountChanged___block_invoke;
   v6[3] = &unk_1E8010A10;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = changedCopy;
+  selfCopy = self;
+  v5 = changedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -463,19 +463,19 @@ LABEL_12:
   }
 }
 
-- (void)physicalCardsChanged:(id)a3 forAccountIdentifier:(id)a4
+- (void)physicalCardsChanged:(id)changed forAccountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  identifierCopy = identifier;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__PKAccountUserDetailViewController_physicalCardsChanged_forAccountIdentifier___block_invoke;
   block[3] = &unk_1E8010A88;
-  v11 = v7;
-  v12 = self;
-  v13 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = identifierCopy;
+  selfCopy = self;
+  v13 = changedCopy;
+  v8 = changedCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -520,19 +520,19 @@ LABEL_12:
   }
 }
 
-- (void)accountUsersChanged:(id)a3 forAccountIdentifier:(id)a4
+- (void)accountUsersChanged:(id)changed forAccountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  identifierCopy = identifier;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__PKAccountUserDetailViewController_accountUsersChanged_forAccountIdentifier___block_invoke;
   block[3] = &unk_1E8010A88;
-  v11 = v7;
-  v12 = self;
-  v13 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = identifierCopy;
+  selfCopy = self;
+  v13 = changedCopy;
+  v8 = changedCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -661,17 +661,17 @@ LABEL_32:
   }
 }
 
-- (void)physicalCardActionController:(id)a3 didChangeToState:(int64_t)a4 withError:(id)a5
+- (void)physicalCardActionController:(id)controller didChangeToState:(int64_t)state withError:(id)error
 {
-  v7 = a5;
+  errorCopy = error;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __93__PKAccountUserDetailViewController_physicalCardActionController_didChangeToState_withError___block_invoke;
   block[3] = &unk_1E8012C50;
-  v10 = v7;
-  v11 = a4;
+  v10 = errorCopy;
+  stateCopy = state;
   block[4] = self;
-  v8 = v7;
+  v8 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -720,31 +720,31 @@ LABEL_12:
   return result;
 }
 
-- (id)presentationSceneIdentifierForPhysicalCardActionController:(id)a3
+- (id)presentationSceneIdentifierForPhysicalCardActionController:(id)controller
 {
-  v3 = [(PKAccountUserDetailViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _sceneIdentifier];
+  view = [(PKAccountUserDetailViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
 
-  return v6;
+  return _sceneIdentifier;
 }
 
-- (void)_updateContactInfoAndHeaderViewAnimated:(BOOL)a3
+- (void)_updateContactInfoAndHeaderViewAnimated:(BOOL)animated
 {
-  v4 = [(PKFeatureApplication *)self->_accountUserInvitation invitationDetails];
-  v5 = [(PKAccountUser *)self->_accountUser altDSID];
-  if (!v5)
+  invitationDetails = [(PKFeatureApplication *)self->_accountUserInvitation invitationDetails];
+  altDSID = [(PKAccountUser *)self->_accountUser altDSID];
+  if (!altDSID)
   {
-    v5 = [v4 accountUserAltDSID];
-    if (!v5)
+    altDSID = [invitationDetails accountUserAltDSID];
+    if (!altDSID)
     {
       goto LABEL_22;
     }
   }
 
-  v6 = v5;
-  v7 = [(PKContactAvatarManager *)self->_avatarManager cachedAvatarForAltDSID:v5];
+  v6 = altDSID;
+  v7 = [(PKContactAvatarManager *)self->_avatarManager cachedAvatarForAltDSID:altDSID];
   v8 = [(PKFamilyMemberCollection *)self->_familyMemberCollection familyMemberForAltDSID:v6];
   if (!v7)
   {
@@ -768,9 +768,9 @@ LABEL_12:
   if (v12)
   {
     v13 = MEMORY[0x1E69B8740];
-    v14 = [(PKAccountUser *)v12 nameComponents];
+    nameComponents = [(PKAccountUser *)v12 nameComponents];
 LABEL_9:
-    v15 = v14;
+    v15 = nameComponents;
     if (v7)
     {
       v16 = UIImagePNGRepresentation(v7);
@@ -792,10 +792,10 @@ LABEL_9:
     goto LABEL_15;
   }
 
-  if (v4)
+  if (invitationDetails)
   {
     v13 = MEMORY[0x1E69B8740];
-    v14 = [v4 accountUserNameComponents];
+    nameComponents = [invitationDetails accountUserNameComponents];
     goto LABEL_9;
   }
 
@@ -899,21 +899,21 @@ void __77__PKAccountUserDetailViewController__updateContactInfoAndHeaderViewAnim
   dispatch_async(MEMORY[0x1E69E96A0], v5);
 }
 
-- (void)_updateConfigurationAnimated:(BOOL)a3
+- (void)_updateConfigurationAnimated:(BOOL)animated
 {
   v28 = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  animatedCopy = animated;
   if (self->_accountUser)
   {
-    v4 = [(PKAccountUserDetailViewController *)self _currentConfigurationForAccountUser];
+    _currentConfigurationForAccountUser = [(PKAccountUserDetailViewController *)self _currentConfigurationForAccountUser];
 LABEL_5:
-    v5 = v4;
+    v5 = _currentConfigurationForAccountUser;
     goto LABEL_6;
   }
 
   if (self->_accountUserInvitation)
   {
-    v4 = [(PKAccountUserDetailViewController *)self _currentConfigurationForAccountUserInvitation];
+    _currentConfigurationForAccountUser = [(PKAccountUserDetailViewController *)self _currentConfigurationForAccountUserInvitation];
     goto LABEL_5;
   }
 
@@ -983,7 +983,7 @@ LABEL_6:
 
   if (v5)
   {
-    [(PKSettingsTableViewController *)self applyConfiguration:v5 animated:v15];
+    [(PKSettingsTableViewController *)self applyConfiguration:v5 animated:animatedCopy];
   }
 }
 
@@ -991,15 +991,15 @@ LABEL_6:
 {
   v3 = objc_alloc_init(PKSettingsTableViewConfiguration);
   v4 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"actions"];
-  v5 = [(CNContact *)self->_contact givenName];
-  v6 = [(PKFeatureApplication *)self->_accountUserInvitation applicationState];
-  if (v6 == 8)
+  givenName = [(CNContact *)self->_contact givenName];
+  applicationState = [(PKFeatureApplication *)self->_accountUserInvitation applicationState];
+  if (applicationState == 8)
   {
-    v14 = [(PKFeatureApplication *)self->_accountUserInvitation applicationStateReason];
-    if (v14 == 11 || v14 == 10)
+    applicationStateReason = [(PKFeatureApplication *)self->_accountUserInvitation applicationStateReason];
+    if (applicationStateReason == 11 || applicationStateReason == 10)
     {
       v7 = PKLocalizedFeatureString();
-      v21 = v5;
+      v21 = givenName;
       v15 = PKLocalizedFeatureString();
 LABEL_14:
       v8 = v15;
@@ -1021,7 +1021,7 @@ LABEL_11:
     goto LABEL_18;
   }
 
-  if (v6 == 6)
+  if (applicationState == 6)
   {
     v7 = PKLocalizedFeatureString();
     v8 = PKLocalizedFeatureString();
@@ -1042,7 +1042,7 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  if (v6 != 5)
+  if (applicationState != 5)
   {
     goto LABEL_11;
   }
@@ -1063,7 +1063,7 @@ LABEL_11:
   v23[2] = __82__PKAccountUserDetailViewController__currentConfigurationForAccountUserInvitation__block_invoke;
   v23[3] = &unk_1E80207A8;
   v23[4] = self;
-  v11 = [(PKButtonTableViewSettingsRow *)v9 initWithIdentifier:@"invitationCancel" title:v10 tapHandler:v23, v5];
+  v11 = [(PKButtonTableViewSettingsRow *)v9 initWithIdentifier:@"invitationCancel" title:v10 tapHandler:v23, givenName];
 
   [(PKButtonTableViewSettingsRow *)v11 setStyle:1];
   if (!v7)
@@ -1103,12 +1103,12 @@ LABEL_19:
 - (id)_currentConfigurationForAccountUser
 {
   v3 = objc_alloc_init(PKSettingsTableViewConfiguration);
-  v4 = [(PKAccount *)self->_account accessLevel];
-  v5 = [(PKAccountUser *)self->_accountUser accessLevel];
-  if (v4 == 1)
+  accessLevel = [(PKAccount *)self->_account accessLevel];
+  accessLevel2 = [(PKAccountUser *)self->_accountUser accessLevel];
+  if (accessLevel == 1)
   {
-    v6 = v5;
-    if (v5 == 2)
+    v6 = accessLevel2;
+    if (accessLevel2 == 2)
     {
       [(PKAccountUserDetailViewController *)self _appendTransactionLimitToConfiguration:v3];
       if ([(PKAccountUserDetailViewController *)self _shouldShowRewardsBalance])
@@ -1123,10 +1123,10 @@ LABEL_19:
     }
 
     [(PKAccountUserDetailViewController *)self _appendNotificationsSectionToConfiguration:v3];
-    v7 = [(PKAccountUser *)self->_accountUser notificationSettings];
-    v8 = [v7 transactionNotificationsEnabled];
+    notificationSettings = [(PKAccountUser *)self->_accountUser notificationSettings];
+    transactionNotificationsEnabled = [notificationSettings transactionNotificationsEnabled];
 
-    if (v8)
+    if (transactionNotificationsEnabled)
     {
       [(PKAccountUserDetailViewController *)self _appendSpendNotificationsSectionToConfiguration:v3];
     }
@@ -1153,32 +1153,32 @@ LABEL_19:
     return 0;
   }
 
-  v4 = [(PKPhysicalCardController *)physicalCardController hasPrimaryPhysicalCard];
-  v5 = [(PKPhysicalCardController *)self->_physicalCardController primaryPhysicalCard];
-  v6 = ([v5 state] & 0xFFFFFFFFFFFFFFFELL) == 2;
-  v8 = v4 && v5 != 0 && v6;
-  v9 = [(PKPhysicalCardController *)self->_physicalCardController canRequestNewPhysicalCard]|| [(PKPhysicalCardController *)self->_physicalCardController canReplacePhysicalCard]|| v8 || [(PKPhysicalCardController *)self->_physicalCardController canActivatePhysicalCard];
+  hasPrimaryPhysicalCard = [(PKPhysicalCardController *)physicalCardController hasPrimaryPhysicalCard];
+  primaryPhysicalCard = [(PKPhysicalCardController *)self->_physicalCardController primaryPhysicalCard];
+  v6 = ([primaryPhysicalCard state] & 0xFFFFFFFFFFFFFFFELL) == 2;
+  v8 = hasPrimaryPhysicalCard && primaryPhysicalCard != 0 && v6;
+  canActivatePhysicalCard = [(PKPhysicalCardController *)self->_physicalCardController canRequestNewPhysicalCard]|| [(PKPhysicalCardController *)self->_physicalCardController canReplacePhysicalCard]|| v8 || [(PKPhysicalCardController *)self->_physicalCardController canActivatePhysicalCard];
 
-  return v9;
+  return canActivatePhysicalCard;
 }
 
 - (BOOL)_shouldShowRewardsBalance
 {
   if (self->_peerPaymentAccount && (accountUser = self->_accountUser) != 0 && self->_familyMemberCollection && ((v4 = -[PKAccountUser accessLevel](accountUser, "accessLevel"), -[PKFamilyMemberCollection currentUser](self->_familyMemberCollection, "currentUser"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isOrganizer], v5, v7 = -[PKPeerPaymentAccount supportsFamilySharing](self->_peerPaymentAccount, "supportsFamilySharing"), v4 == 2) ? (v8 = v6 == 0) : (v8 = 1), !v8 ? (v9 = v7 == 0) : (v9 = 1), !v9))
   {
-    v12 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v13 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount associatedPassUniqueID];
-    v14 = [v12 passWithUniqueID:v13];
-    v15 = [v14 paymentPass];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    associatedPassUniqueID = [(PKPeerPaymentAccount *)self->_peerPaymentAccount associatedPassUniqueID];
+    v14 = [mEMORY[0x1E69B8A58] passWithUniqueID:associatedPassUniqueID];
+    paymentPass = [v14 paymentPass];
 
-    if (v15)
+    if (paymentPass)
     {
-      v16 = [(PKAccountUser *)self->_accountUser altDSID];
-      v17 = [(PKFamilyMemberCollection *)self->_familyMemberCollection familyMemberForAltDSID:v16];
+      altDSID = [(PKAccountUser *)self->_accountUser altDSID];
+      v17 = [(PKFamilyMemberCollection *)self->_familyMemberCollection familyMemberForAltDSID:altDSID];
       if (([v17 memberType] - 3) >= 0xFFFFFFFFFFFFFFFELL)
       {
-        v18 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount peerPaymentAccountWithAltDSID:v16];
-        v19 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount accountInvitationWithAltDSID:v16];
+        v18 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount peerPaymentAccountWithAltDSID:altDSID];
+        v19 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount accountInvitationWithAltDSID:altDSID];
         if (v18 | v19)
         {
           LOBYTE(v10) = 0;
@@ -1186,14 +1186,14 @@ LABEL_19:
 
         else
         {
-          v20 = [(PKAccount *)self->_account creditDetails];
-          v21 = [v20 accountSummary];
-          v22 = [v21 redeemableRewardsBalanceForUser:self->_accountUser];
+          creditDetails = [(PKAccount *)self->_account creditDetails];
+          accountSummary = [creditDetails accountSummary];
+          v22 = [accountSummary redeemableRewardsBalanceForUser:self->_accountUser];
 
           if (v22)
           {
-            v23 = [MEMORY[0x1E696AB90] zero];
-            v10 = [v22 isEqualToNumber:v23] ^ 1;
+            zero = [MEMORY[0x1E696AB90] zero];
+            v10 = [v22 isEqualToNumber:zero] ^ 1;
           }
 
           else
@@ -1229,13 +1229,13 @@ LABEL_19:
   {
     v6[7] = v2;
     v6[8] = v3;
-    v5 = [MEMORY[0x1E69B9000] sharedInstance];
+    mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __60__PKAccountUserDetailViewController__loadPeerPaymentAccount__block_invoke;
     v6[3] = &unk_1E80140E8;
     v6[4] = self;
-    [v5 accountWithCompletion:v6];
+    [mEMORY[0x1E69B9000] accountWithCompletion:v6];
   }
 }
 
@@ -1268,26 +1268,26 @@ uint64_t __60__PKAccountUserDetailViewController__loadPeerPaymentAccount__block_
   return result;
 }
 
-- (void)_appendTransactionLimitToConfiguration:(id)a3
+- (void)_appendTransactionLimitToConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"transactionLimit"];
-  v6 = [(PKAccountUserDetailViewController *)self _footerForTransactionLimitSection];
-  [(PKTableViewDiffableDataSourceSection *)v5 setFooter:v6];
+  _footerForTransactionLimitSection = [(PKAccountUserDetailViewController *)self _footerForTransactionLimitSection];
+  [(PKTableViewDiffableDataSourceSection *)v5 setFooter:_footerForTransactionLimitSection];
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [(PKAccount *)self->_account creditDetails];
-  v9 = [v8 currencyCode];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  currencyCode = [creditDetails currencyCode];
 
   if ([(PKAccountUser *)self->_accountUser supportsMonthlySpendLimit])
   {
-    v10 = v9;
-    v11 = [[PKCurrencyAmountSelectorOptionProvider alloc] initWithType:0 accountUser:self->_accountUser currencyCode:v9];
+    v10 = currencyCode;
+    v11 = [[PKCurrencyAmountSelectorOptionProvider alloc] initWithType:0 accountUser:self->_accountUser currencyCode:currencyCode];
     v12 = PKLocalizedFeatureString();
     objc_initWeak(location, self);
     v13 = [PKSelectionTableViewSettingsRow alloc];
-    v14 = [(PKCurrencyAmountSelectorOptionProvider *)v11 selectedOption];
-    v15 = [v14 displayValue];
+    selectedOption = [(PKCurrencyAmountSelectorOptionProvider *)v11 selectedOption];
+    displayValue = [selectedOption displayValue];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __76__PKAccountUserDetailViewController__appendTransactionLimitToConfiguration___block_invoke;
@@ -1296,24 +1296,24 @@ uint64_t __60__PKAccountUserDetailViewController__loadPeerPaymentAccount__block_
     v35 = v16;
     v17 = v11;
     v36 = v17;
-    v37 = self;
+    selfCopy = self;
     objc_copyWeak(&v38, location);
-    v18 = [(PKSelectionTableViewSettingsRow *)v13 initWithIdentifier:@"monthlySpendLimit" title:v16 value:v15 tapHandler:v34];
+    v18 = [(PKSelectionTableViewSettingsRow *)v13 initWithIdentifier:@"monthlySpendLimit" title:v16 value:displayValue tapHandler:v34];
 
     [v7 addObject:v18];
     objc_destroyWeak(&v38);
 
     objc_destroyWeak(location);
-    v9 = v10;
+    currencyCode = v10;
   }
 
-  v19 = v9;
-  v20 = [[PKCurrencyAmountSelectorOptionProvider alloc] initWithType:0 accountUser:self->_accountUser currencyCode:v9];
+  v19 = currencyCode;
+  v20 = [[PKCurrencyAmountSelectorOptionProvider alloc] initWithType:0 accountUser:self->_accountUser currencyCode:currencyCode];
   v21 = PKLocalizedFeatureString();
   objc_initWeak(location, self);
   v22 = [PKSelectionTableViewSettingsRow alloc];
-  v23 = [(PKCurrencyAmountSelectorOptionProvider *)v20 selectedOption];
-  v24 = [v23 displayValue];
+  selectedOption2 = [(PKCurrencyAmountSelectorOptionProvider *)v20 selectedOption];
+  displayValue2 = [selectedOption2 displayValue];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __76__PKAccountUserDetailViewController__appendTransactionLimitToConfiguration___block_invoke_3;
@@ -1322,13 +1322,13 @@ uint64_t __60__PKAccountUserDetailViewController__loadPeerPaymentAccount__block_
   v30 = v25;
   v26 = v20;
   v31 = v26;
-  v32 = self;
+  selfCopy2 = self;
   objc_copyWeak(&v33, location);
-  v27 = [(PKSelectionTableViewSettingsRow *)v22 initWithIdentifier:@"transactionLimitSwitch" title:v25 value:v24 tapHandler:v29];
+  v27 = [(PKSelectionTableViewSettingsRow *)v22 initWithIdentifier:@"transactionLimitSwitch" title:v25 value:displayValue2 tapHandler:v29];
 
   [v7 addObject:v27];
   v28 = [v7 copy];
-  [v4 appendSection:v5 rows:v28];
+  [configurationCopy appendSection:v5 rows:v28];
 
   objc_destroyWeak(&v33);
   objc_destroyWeak(location);
@@ -1406,15 +1406,15 @@ void __76__PKAccountUserDetailViewController__appendTransactionLimitToConfigurat
 
 - (id)_footerForTransactionLimitSection
 {
-  v3 = [(PKAccountUser *)self->_accountUser preferences];
-  v4 = [(PKAccount *)self->_account creditDetails];
-  v5 = [v4 currencyCode];
+  preferences = [(PKAccountUser *)self->_accountUser preferences];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  currencyCode = [creditDetails currencyCode];
 
-  v6 = [v3 transactionSpendLimitAmount];
-  v7 = [v3 transactionSpendLimitEnabled];
-  if (v6)
+  transactionSpendLimitAmount = [preferences transactionSpendLimitAmount];
+  transactionSpendLimitEnabled = [preferences transactionSpendLimitEnabled];
+  if (transactionSpendLimitAmount)
   {
-    v8 = v5 == 0;
+    v8 = currencyCode == 0;
   }
 
   else
@@ -1423,7 +1423,7 @@ void __76__PKAccountUserDetailViewController__appendTransactionLimitToConfigurat
   }
 
   v9 = !v8;
-  if (v7)
+  if (transactionSpendLimitEnabled)
   {
     v10 = v9;
   }
@@ -1433,12 +1433,12 @@ void __76__PKAccountUserDetailViewController__appendTransactionLimitToConfigurat
     v10 = 0;
   }
 
-  v11 = [v3 monthlySpendLimitAmount];
-  v12 = [(PKAccountUser *)self->_accountUser supportsMonthlySpendLimit];
-  v13 = [v3 monthlySpendLimitEnabled];
-  if (v11)
+  monthlySpendLimitAmount = [preferences monthlySpendLimitAmount];
+  supportsMonthlySpendLimit = [(PKAccountUser *)self->_accountUser supportsMonthlySpendLimit];
+  monthlySpendLimitEnabled = [preferences monthlySpendLimitEnabled];
+  if (monthlySpendLimitAmount)
   {
-    v14 = v5 == 0;
+    v14 = currencyCode == 0;
   }
 
   else
@@ -1447,9 +1447,9 @@ void __76__PKAccountUserDetailViewController__appendTransactionLimitToConfigurat
   }
 
   v15 = !v14;
-  if (v13)
+  if (monthlySpendLimitEnabled)
   {
-    v16 = v12 == 0;
+    v16 = supportsMonthlySpendLimit == 0;
   }
 
   else
@@ -1467,13 +1467,13 @@ void __76__PKAccountUserDetailViewController__appendTransactionLimitToConfigurat
     v17 = v15;
   }
 
-  v18 = [(CNContact *)self->_contact givenName];
+  givenName = [(CNContact *)self->_contact givenName];
   if ((v17 & v10) == 1)
   {
     v19 = PKCurrencyAmountMake();
-    v20 = PKCurrencyAmountMake();
-    v21 = [v19 formattedStringValue];
-    v24 = [v20 formattedStringValue];
+    formattedStringValue3 = PKCurrencyAmountMake();
+    formattedStringValue = [v19 formattedStringValue];
+    formattedStringValue2 = [formattedStringValue3 formattedStringValue];
     v22 = PKLocalizedFeatureString();
 
 LABEL_27:
@@ -1483,7 +1483,7 @@ LABEL_27:
   if (v17 || v10)
   {
     v19 = PKCurrencyAmountMake();
-    v20 = [v19 formattedStringValue];
+    formattedStringValue3 = [v19 formattedStringValue];
     v22 = PKLocalizedFeatureString();
     goto LABEL_27;
   }
@@ -1494,20 +1494,20 @@ LABEL_28:
   return v22;
 }
 
-- (void)_appendRewardsBalanceToConfiguration:(id)a3
+- (void)_appendRewardsBalanceToConfiguration:(id)configuration
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"rewardsBalance"];
   v6 = PKLocalizedFeatureString();
-  v7 = [(PKAccount *)self->_account creditDetails];
-  v8 = [v7 currencyCode];
-  v9 = [v7 accountSummary];
-  v10 = [v9 redeemableRewardsBalanceForUser:self->_accountUser];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  currencyCode = [creditDetails currencyCode];
+  accountSummary = [creditDetails accountSummary];
+  v10 = [accountSummary redeemableRewardsBalanceForUser:self->_accountUser];
 
   if (v10)
   {
-    v11 = v8 == 0;
+    v11 = currencyCode == 0;
   }
 
   else
@@ -1517,37 +1517,37 @@ LABEL_28:
 
   if (v11)
   {
-    v13 = 0;
+    formattedStringValue = 0;
   }
 
   else
   {
     v12 = PKCurrencyAmountMake();
-    v13 = [v12 formattedStringValue];
+    formattedStringValue = [v12 formattedStringValue];
   }
 
-  v14 = [[PKKeyValueTableViewSettingsRow alloc] initWithIdentifier:@"rewardsBalance" title:v6 value:v13];
+  v14 = [[PKKeyValueTableViewSettingsRow alloc] initWithIdentifier:@"rewardsBalance" title:v6 value:formattedStringValue];
   v16[0] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  [v4 appendSection:v5 rows:v15];
+  [configurationCopy appendSection:v5 rows:v15];
 }
 
-- (void)_appendShowAvailableCreditToConfiguration:(id)a3
+- (void)_appendShowAvailableCreditToConfiguration:(id)configuration
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v14 = [(CNContact *)self->_contact givenName];
+  configurationCopy = configuration;
+  givenName = [(CNContact *)self->_contact givenName];
   v5 = PKLocalizedFeatureString();
 
-  v6 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"showAvailableCredit", v14];
+  v6 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"showAvailableCredit", givenName];
   [(PKTableViewDiffableDataSourceSection *)v6 setFooter:v5];
-  v7 = [(PKAccountUser *)self->_accountUser preferences];
-  v8 = [v7 showAvailableCredit];
+  preferences = [(PKAccountUser *)self->_accountUser preferences];
+  showAvailableCredit = [preferences showAvailableCredit];
 
   pendingAccountUserPreferences = self->_pendingAccountUserPreferences;
   if (pendingAccountUserPreferences)
   {
-    v8 = [(PKMutableAccountUserPreferences *)pendingAccountUserPreferences showAvailableCredit];
+    showAvailableCredit = [(PKMutableAccountUserPreferences *)pendingAccountUserPreferences showAvailableCredit];
   }
 
   objc_initWeak(&location, self);
@@ -1558,11 +1558,11 @@ LABEL_28:
   v15[2] = __79__PKAccountUserDetailViewController__appendShowAvailableCreditToConfiguration___block_invoke;
   v15[3] = &unk_1E8020820;
   objc_copyWeak(&v16, &location);
-  v12 = [(PKSwitchTableViewSettingsRow *)v10 initWithIdentifier:@"showAvailableCreditSwitch" title:v11 value:v8 changeHandler:v15];
+  v12 = [(PKSwitchTableViewSettingsRow *)v10 initWithIdentifier:@"showAvailableCreditSwitch" title:v11 value:showAvailableCredit changeHandler:v15];
 
   v18[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-  [v4 appendSection:v6 rows:v13];
+  [configurationCopy appendSection:v6 rows:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -1578,38 +1578,38 @@ void __79__PKAccountUserDetailViewController__appendShowAvailableCreditToConfigu
   }
 }
 
-- (void)_appendNotificationsSectionToConfiguration:(id)a3
+- (void)_appendNotificationsSectionToConfiguration:(id)configuration
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v15 = [(CNContact *)self->_contact givenName];
+  configurationCopy = configuration;
+  givenName = [(CNContact *)self->_contact givenName];
   v5 = PKLocalizedFeatureString();
 
-  v6 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"notifications", v15];
+  v6 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"notifications", givenName];
   [(PKTableViewDiffableDataSourceSection *)v6 setFooter:v5];
-  v7 = [(PKAccountUser *)self->_accountUser notificationSettings];
+  notificationSettings = [(PKAccountUser *)self->_accountUser notificationSettings];
   pendingAccountUserNotificationSettings = self->_pendingAccountUserNotificationSettings;
   if (pendingAccountUserNotificationSettings)
   {
     v9 = pendingAccountUserNotificationSettings;
 
-    v7 = v9;
+    notificationSettings = v9;
   }
 
   objc_initWeak(&location, self);
   v10 = [PKSwitchTableViewSettingsRow alloc];
   v11 = PKLocalizedFeatureString();
-  v12 = [v7 transactionNotificationsEnabled];
+  transactionNotificationsEnabled = [notificationSettings transactionNotificationsEnabled];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __80__PKAccountUserDetailViewController__appendNotificationsSectionToConfiguration___block_invoke;
   v16[3] = &unk_1E8020820;
   objc_copyWeak(&v17, &location);
-  v13 = [(PKSwitchTableViewSettingsRow *)v10 initWithIdentifier:@"notificationsSwitch" title:v11 value:v12 changeHandler:v16];
+  v13 = [(PKSwitchTableViewSettingsRow *)v10 initWithIdentifier:@"notificationsSwitch" title:v11 value:transactionNotificationsEnabled changeHandler:v16];
 
   v19[0] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-  [v4 appendSection:v6 rows:v14];
+  [configurationCopy appendSection:v6 rows:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -1625,23 +1625,23 @@ void __80__PKAccountUserDetailViewController__appendNotificationsSectionToConfig
   }
 }
 
-- (void)_appendSpendNotificationsSectionToConfiguration:(id)a3
+- (void)_appendSpendNotificationsSectionToConfiguration:(id)configuration
 {
   v41[2] = *MEMORY[0x1E69E9840];
-  v26 = a3;
+  configurationCopy = configuration;
   v27 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"spendNotifications"];
   v4 = PKLocalizedFeatureString();
   [(PKTableViewDiffableDataSourceSection *)v27 setTitle:v4];
 
-  v5 = [(PKAccount *)self->_account creditDetails];
-  v28 = [v5 currencyCode];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  currencyCode = [creditDetails currencyCode];
 
   objc_initWeak(&location, self);
-  v6 = [[PKCurrencyAmountSelectorOptionProvider alloc] initWithType:2 accountUser:self->_accountUser currencyCode:v28];
+  v6 = [[PKCurrencyAmountSelectorOptionProvider alloc] initWithType:2 accountUser:self->_accountUser currencyCode:currencyCode];
   v7 = PKLocalizedFeatureString();
   v8 = [PKSelectionTableViewSettingsRow alloc];
-  v9 = [(PKCurrencyAmountSelectorOptionProvider *)v6 selectedOption];
-  v10 = [v9 displayValue];
+  selectedOption = [(PKCurrencyAmountSelectorOptionProvider *)v6 selectedOption];
+  displayValue = [selectedOption displayValue];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __85__PKAccountUserDetailViewController__appendSpendNotificationsSectionToConfiguration___block_invoke;
@@ -1650,18 +1650,18 @@ void __80__PKAccountUserDetailViewController__appendNotificationsSectionToConfig
   v36 = v11;
   v25 = v6;
   v37 = v25;
-  v38 = self;
+  selfCopy = self;
   objc_copyWeak(&v39, &location);
-  v12 = [(PKSelectionTableViewSettingsRow *)v8 initWithIdentifier:@"transactionThreshold" title:v11 value:v10 tapHandler:v35];
+  v12 = [(PKSelectionTableViewSettingsRow *)v8 initWithIdentifier:@"transactionThreshold" title:v11 value:displayValue tapHandler:v35];
 
-  v13 = [[PKCurrencyAmountSelectorOptionProvider alloc] initWithType:1 accountUser:self->_accountUser currencyCode:v28];
+  v13 = [[PKCurrencyAmountSelectorOptionProvider alloc] initWithType:1 accountUser:self->_accountUser currencyCode:currencyCode];
   v14 = PKLocalizedFeatureString();
-  v24 = [(CNContact *)self->_contact givenName];
+  givenName = [(CNContact *)self->_contact givenName];
   v15 = PKLocalizedFeatureString();
 
   v16 = [PKSelectionTableViewSettingsRow alloc];
-  v17 = [(PKCurrencyAmountSelectorOptionProvider *)v13 selectedOption];
-  v18 = [v17 displayValue];
+  selectedOption2 = [(PKCurrencyAmountSelectorOptionProvider *)v13 selectedOption];
+  displayValue2 = [selectedOption2 displayValue];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __85__PKAccountUserDetailViewController__appendSpendNotificationsSectionToConfiguration___block_invoke_3;
@@ -1672,14 +1672,14 @@ void __80__PKAccountUserDetailViewController__appendNotificationsSectionToConfig
   v31 = v20;
   v21 = v13;
   v32 = v21;
-  v33 = self;
+  selfCopy2 = self;
   objc_copyWeak(&v34, &location);
-  v22 = [(PKSelectionTableViewSettingsRow *)v16 initWithIdentifier:@"monthlySpendThreshold" title:v19 value:v18 tapHandler:v29];
+  v22 = [(PKSelectionTableViewSettingsRow *)v16 initWithIdentifier:@"monthlySpendThreshold" title:v19 value:displayValue2 tapHandler:v29];
 
   v41[0] = v12;
   v41[1] = v22;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
-  [v26 appendSection:v27 rows:v23];
+  [configurationCopy appendSection:v27 rows:v23];
 
   objc_destroyWeak(&v34);
   objc_destroyWeak(&v39);
@@ -1757,18 +1757,18 @@ void __85__PKAccountUserDetailViewController__appendSpendNotificationsSectionToC
   }
 }
 
-- (void)_appendPhysicalCardSectionToConfiguration:(id)a3
+- (void)_appendPhysicalCardSectionToConfiguration:(id)configuration
 {
-  v35 = a3;
+  configurationCopy = configuration;
   [(PKAccount *)self->_account feature];
-  v4 = [(PKPhysicalCardController *)self->_physicalCardController canRequestNewPhysicalCard];
-  v5 = [(PKPhysicalCardController *)self->_physicalCardController canReplacePhysicalCard];
-  v6 = [(PKPhysicalCardController *)self->_physicalCardController hasPrimaryPhysicalCard];
-  v7 = [(PKPhysicalCardController *)self->_physicalCardController canActivatePhysicalCard];
-  v34 = v4;
-  if (v4)
+  canRequestNewPhysicalCard = [(PKPhysicalCardController *)self->_physicalCardController canRequestNewPhysicalCard];
+  canReplacePhysicalCard = [(PKPhysicalCardController *)self->_physicalCardController canReplacePhysicalCard];
+  hasPrimaryPhysicalCard = [(PKPhysicalCardController *)self->_physicalCardController hasPrimaryPhysicalCard];
+  canActivatePhysicalCard = [(PKPhysicalCardController *)self->_physicalCardController canActivatePhysicalCard];
+  v34 = canRequestNewPhysicalCard;
+  if (canRequestNewPhysicalCard)
   {
-    v32 = [(CNContact *)self->_contact givenName];
+    givenName = [(CNContact *)self->_contact givenName];
     v8 = PKLocalizedFeatureString();
   }
 
@@ -1784,9 +1784,9 @@ void __85__PKAccountUserDetailViewController__appendSpendNotificationsSectionToC
   v33 = v8;
   [(PKTableViewDiffableDataSourceSection *)v9 setFooter:v8];
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v36 = [(PKPhysicalCardController *)self->_physicalCardController primaryPhysicalCard];
+  primaryPhysicalCard = [(PKPhysicalCardController *)self->_physicalCardController primaryPhysicalCard];
   objc_initWeak(location, self);
-  if (v6 && ([v36 state] & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if (hasPrimaryPhysicalCard && ([primaryPhysicalCard state] & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v12 = PKLocalizedFeatureString();
     v13 = [PKButtonTableViewSettingsRow alloc];
@@ -1795,15 +1795,15 @@ void __85__PKAccountUserDetailViewController__appendSpendNotificationsSectionToC
     v45[2] = __79__PKAccountUserDetailViewController__appendPhysicalCardSectionToConfiguration___block_invoke;
     v45[3] = &unk_1E8020870;
     objc_copyWeak(&v48, location);
-    v46 = v36;
-    v47 = self;
+    v46 = primaryPhysicalCard;
+    selfCopy = self;
     v14 = [(PKButtonTableViewSettingsRow *)v13 initWithIdentifier:@"lockUnlockPhysicalCard" title:v12 tapHandler:v45];
     [v11 addObject:v14];
 
     objc_destroyWeak(&v48);
   }
 
-  if (v7)
+  if (canActivatePhysicalCard)
   {
     v15 = [PKButtonTableViewSettingsRow alloc];
     v16 = PKLocalizedFeatureString();
@@ -1818,7 +1818,7 @@ void __85__PKAccountUserDetailViewController__appendSpendNotificationsSectionToC
     objc_destroyWeak(&v44);
   }
 
-  if (v5)
+  if (canReplacePhysicalCard)
   {
     v18 = [PKButtonTableViewSettingsRow alloc];
     v19 = PKLocalizedFeatureString();
@@ -1833,21 +1833,21 @@ void __85__PKAccountUserDetailViewController__appendSpendNotificationsSectionToC
     objc_destroyWeak(&v42);
   }
 
-  v21 = [(PKPhysicalCardController *)self->_physicalCardController unactivatedPhysicalCard];
-  v22 = v21;
-  if (v21)
+  unactivatedPhysicalCard = [(PKPhysicalCardController *)self->_physicalCardController unactivatedPhysicalCard];
+  v22 = unactivatedPhysicalCard;
+  if (unactivatedPhysicalCard)
   {
-    v23 = [v21 latestShippingActivity];
-    v24 = [v23 shipmentTrackingURL];
-    if (v24)
+    latestShippingActivity = [unactivatedPhysicalCard latestShippingActivity];
+    shipmentTrackingURL = [latestShippingActivity shipmentTrackingURL];
+    if (shipmentTrackingURL)
     {
     }
 
     else
     {
-      v24 = [v22 shipmentTrackingURL];
+      shipmentTrackingURL = [v22 shipmentTrackingURL];
 
-      if (!v24)
+      if (!shipmentTrackingURL)
       {
         goto LABEL_16;
       }
@@ -1859,7 +1859,7 @@ void __85__PKAccountUserDetailViewController__appendSpendNotificationsSectionToC
     v39[1] = 3221225472;
     v39[2] = __79__PKAccountUserDetailViewController__appendPhysicalCardSectionToConfiguration___block_invoke_6;
     v39[3] = &unk_1E80207A8;
-    v27 = v24;
+    v27 = shipmentTrackingURL;
     v40 = v27;
     v28 = [(PKButtonTableViewSettingsRow *)v25 initWithIdentifier:@"trackPhysicalCard" title:v26 tapHandler:v39];
 
@@ -1882,7 +1882,7 @@ LABEL_16:
     objc_destroyWeak(&v38);
   }
 
-  [v35 appendSection:v9 rows:v11];
+  [configurationCopy appendSection:v9 rows:v11];
 
   objc_destroyWeak(location);
 }
@@ -2071,16 +2071,16 @@ void __79__PKAccountUserDetailViewController__appendPhysicalCardSectionToConfigu
   }
 }
 
-- (void)_appendActionsSectionToConfiguration:(id)a3
+- (void)_appendActionsSectionToConfiguration:(id)configuration
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"actions"];
-  v6 = [(PKAccountUser *)self->_accountUser preferences];
-  v7 = [v6 spendingEnabled];
+  preferences = [(PKAccountUser *)self->_accountUser preferences];
+  spendingEnabled = [preferences spendingEnabled];
 
   v8 = @"UNLOCK_USER_BUTTON";
-  if (v7)
+  if (spendingEnabled)
   {
     v8 = @"LOCK_USER_BUTTON";
   }
@@ -2094,7 +2094,7 @@ void __79__PKAccountUserDetailViewController__appendPhysicalCardSectionToConfigu
   v19[2] = __74__PKAccountUserDetailViewController__appendActionsSectionToConfiguration___block_invoke;
   v19[3] = &unk_1E8020898;
   objc_copyWeak(&v20, &location);
-  v21 = v7;
+  v21 = spendingEnabled;
   v12 = [(PKButtonTableViewSettingsRow *)v10 initWithIdentifier:@"lockUnlockAccountUser" title:v11 tapHandler:v19];
 
   v13 = [PKButtonTableViewSettingsRow alloc];
@@ -2110,7 +2110,7 @@ void __79__PKAccountUserDetailViewController__appendPhysicalCardSectionToConfigu
   v23[0] = v12;
   v23[1] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
-  [v4 appendSection:v5 rows:v16];
+  [configurationCopy appendSection:v5 rows:v16];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&v20);
@@ -2189,10 +2189,10 @@ void __74__PKAccountUserDetailViewController__appendActionsSectionToConfiguratio
 
 - (void)_presentCancelInvitationAlert
 {
-  v3 = [(CNContact *)self->_contact givenName];
+  givenName = [(CNContact *)self->_contact givenName];
   v4 = PKLocalizedFeatureString();
   v5 = PKLocalizedFeatureString();
-  v6 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v4 message:v5 preferredStyle:{0, v3}];
+  v6 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v4 message:v5 preferredStyle:{0, givenName}];
   v7 = MEMORY[0x1E69DC648];
   v8 = PKLocalizedString(&cfstr_Cancel.isa);
   v9 = [v7 actionWithTitle:v8 style:1 handler:0];
@@ -2256,10 +2256,10 @@ uint64_t __66__PKAccountUserDetailViewController__presentCancelInvitationAlert__
 
 - (void)_presentStopSharingAlert
 {
-  v3 = [(CNContact *)self->_contact givenName];
+  givenName = [(CNContact *)self->_contact givenName];
   v4 = PKLocalizedFeatureString();
   v5 = PKLocalizedFeatureString();
-  v6 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v4 message:v5 preferredStyle:{0, v3, v3}];
+  v6 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v4 message:v5 preferredStyle:{0, givenName, givenName}];
   v7 = MEMORY[0x1E69DC648];
   v8 = PKLocalizedString(&cfstr_Cancel.isa);
   v9 = [v7 actionWithTitle:v8 style:1 handler:0];
@@ -2329,8 +2329,8 @@ void __61__PKAccountUserDetailViewController__presentStopSharingAlert__block_inv
   {
     [(PKAccountUserDetailViewController *)self _setPerformingAction:1 animated:1];
     v3 = objc_alloc(MEMORY[0x1E69B8D48]);
-    v4 = [MEMORY[0x1E69B8EF8] sharedService];
-    v5 = [v3 initWithWebService:v4];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    v5 = [v3 initWithWebService:mEMORY[0x1E69B8EF8]];
 
     v6 = [PKApplyControllerConfiguration alloc];
     style = self->_style;
@@ -2396,89 +2396,89 @@ LABEL_6:
   [*(a1 + 32) _setPerformingAction:0 animated:1];
 }
 
-- (void)_updateTransactionLimit:(id)a3
+- (void)_updateTransactionLimit:(id)limit
 {
-  v4 = a3 != 0;
+  v4 = limit != 0;
   accountUser = self->_accountUser;
-  v6 = a3;
-  v7 = [(PKAccountUser *)accountUser preferences];
-  v9 = [v7 mutableCopy];
+  limitCopy = limit;
+  preferences = [(PKAccountUser *)accountUser preferences];
+  v9 = [preferences mutableCopy];
 
   [v9 setTransactionSpendLimitEnabled:v4];
-  [v9 setTransactionSpendLimitAmount:v6];
+  [v9 setTransactionSpendLimitAmount:limitCopy];
 
   v8 = [v9 copy];
   [(PKAccountUserDetailViewController *)self _updatePreferences:v8];
 }
 
-- (void)_updateMonthlySpendLimit:(id)a3
+- (void)_updateMonthlySpendLimit:(id)limit
 {
-  v4 = a3 != 0;
+  v4 = limit != 0;
   accountUser = self->_accountUser;
-  v6 = a3;
-  v7 = [(PKAccountUser *)accountUser preferences];
-  v9 = [v7 mutableCopy];
+  limitCopy = limit;
+  preferences = [(PKAccountUser *)accountUser preferences];
+  v9 = [preferences mutableCopy];
 
   [v9 setMonthlySpendLimitEnabled:v4];
-  [v9 setMonthlySpendLimitAmount:v6];
+  [v9 setMonthlySpendLimitAmount:limitCopy];
 
   v8 = [v9 copy];
   [(PKAccountUserDetailViewController *)self _updatePreferences:v8];
 }
 
-- (void)_updateShowAvailableCredit:(BOOL)a3
+- (void)_updateShowAvailableCredit:(BOOL)credit
 {
-  v3 = a3;
-  v5 = [(PKAccountUser *)self->_accountUser preferences];
-  v7 = [v5 mutableCopy];
+  creditCopy = credit;
+  preferences = [(PKAccountUser *)self->_accountUser preferences];
+  v7 = [preferences mutableCopy];
 
-  [v7 setShowAvailableCredit:v3];
+  [v7 setShowAvailableCredit:creditCopy];
   v6 = [v7 copy];
   [(PKAccountUserDetailViewController *)self _updatePreferences:v6];
 }
 
-- (void)_updateSpendingEnabled:(BOOL)a3
+- (void)_updateSpendingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(PKAccountUser *)self->_accountUser preferences];
-  v7 = [v5 mutableCopy];
+  enabledCopy = enabled;
+  preferences = [(PKAccountUser *)self->_accountUser preferences];
+  v7 = [preferences mutableCopy];
 
-  [v7 setSpendingEnabled:v3];
+  [v7 setSpendingEnabled:enabledCopy];
   v6 = [v7 copy];
   [(PKAccountUserDetailViewController *)self _updatePreferences:v6];
 }
 
-- (void)_updateMonthlySpendNotificationThreshold:(id)a3
+- (void)_updateMonthlySpendNotificationThreshold:(id)threshold
 {
   accountUser = self->_accountUser;
-  v5 = a3;
-  v6 = [(PKAccountUser *)accountUser notificationSettings];
-  v8 = [v6 mutableCopy];
+  thresholdCopy = threshold;
+  notificationSettings = [(PKAccountUser *)accountUser notificationSettings];
+  v8 = [notificationSettings mutableCopy];
 
-  [v8 setMonthlySpendNotificationThreshold:v5];
+  [v8 setMonthlySpendNotificationThreshold:thresholdCopy];
   v7 = [v8 copy];
   [(PKAccountUserDetailViewController *)self _updateNotificationSettings:v7];
 }
 
-- (void)_updatePreferences:(id)a3
+- (void)_updatePreferences:(id)preferences
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  preferencesCopy = preferences;
+  v5 = [preferencesCopy copy];
   pendingAccountUserPreferences = self->_pendingAccountUserPreferences;
   self->_pendingAccountUserPreferences = v5;
 
   [(PKAccountUserDetailViewController *)self _setPerformingAction:1 animated:1];
   accountService = self->_accountService;
-  v8 = [v4 copy];
+  v8 = [preferencesCopy copy];
 
-  v9 = [(PKAccountUser *)self->_accountUser altDSID];
-  v10 = [(PKAccount *)self->_account accountIdentifier];
+  altDSID = [(PKAccountUser *)self->_accountUser altDSID];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __56__PKAccountUserDetailViewController__updatePreferences___block_invoke;
   v11[3] = &unk_1E80208C0;
   v11[4] = self;
-  [(PKAccountService *)accountService updateAccountUserPreferences:v8 forAccountUserWithAltDSID:v9 forAccountWithIdentifier:v10 completion:v11];
+  [(PKAccountService *)accountService updateAccountUserPreferences:v8 forAccountUserWithAltDSID:altDSID forAccountWithIdentifier:accountIdentifier completion:v11];
 }
 
 void __56__PKAccountUserDetailViewController__updatePreferences___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2525,46 +2525,46 @@ uint64_t __56__PKAccountUserDetailViewController__updatePreferences___block_invo
   return [v8 _updateConfigurationAnimated:1];
 }
 
-- (void)_updateTransactionNotificationsEnabled:(BOOL)a3
+- (void)_updateTransactionNotificationsEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(PKAccountUser *)self->_accountUser notificationSettings];
-  v7 = [v5 mutableCopy];
+  enabledCopy = enabled;
+  notificationSettings = [(PKAccountUser *)self->_accountUser notificationSettings];
+  v7 = [notificationSettings mutableCopy];
 
-  [v7 setTransactionNotificationsEnabled:v3];
+  [v7 setTransactionNotificationsEnabled:enabledCopy];
   v6 = [v7 copy];
   [(PKAccountUserDetailViewController *)self _updateNotificationSettings:v6];
 }
 
-- (void)_updateTransactionNotificationThreshold:(id)a3
+- (void)_updateTransactionNotificationThreshold:(id)threshold
 {
   accountUser = self->_accountUser;
-  v5 = a3;
-  v6 = [(PKAccountUser *)accountUser notificationSettings];
-  v8 = [v6 mutableCopy];
+  thresholdCopy = threshold;
+  notificationSettings = [(PKAccountUser *)accountUser notificationSettings];
+  v8 = [notificationSettings mutableCopy];
 
-  [v8 setTransactionNotificationThreshold:v5];
+  [v8 setTransactionNotificationThreshold:thresholdCopy];
   v7 = [v8 copy];
   [(PKAccountUserDetailViewController *)self _updateNotificationSettings:v7];
 }
 
-- (void)_updateNotificationSettings:(id)a3
+- (void)_updateNotificationSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  settingsCopy = settings;
+  v5 = [settingsCopy copy];
   pendingAccountUserNotificationSettings = self->_pendingAccountUserNotificationSettings;
   self->_pendingAccountUserNotificationSettings = v5;
 
   [(PKAccountUserDetailViewController *)self _setPerformingAction:1 animated:1];
   accountService = self->_accountService;
-  v8 = [(PKAccountUser *)self->_accountUser altDSID];
-  v9 = [(PKAccount *)self->_account accountIdentifier];
+  altDSID = [(PKAccountUser *)self->_accountUser altDSID];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__PKAccountUserDetailViewController__updateNotificationSettings___block_invoke;
   v10[3] = &unk_1E80208C0;
   v10[4] = self;
-  [(PKAccountService *)accountService updateAccountUserNotificationSettings:v4 forAccountUserWithAltDSID:v8 forAccountWithIdentifier:v9 completion:v10];
+  [(PKAccountService *)accountService updateAccountUserNotificationSettings:settingsCopy forAccountUserWithAltDSID:altDSID forAccountWithIdentifier:accountIdentifier completion:v10];
 }
 
 void __65__PKAccountUserDetailViewController__updateNotificationSettings___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2611,26 +2611,26 @@ uint64_t __65__PKAccountUserDetailViewController__updateNotificationSettings___b
   return [v8 _updateConfigurationAnimated:1];
 }
 
-- (void)_setPerformingAction:(BOOL)a3 animated:(BOOL)a4
+- (void)_setPerformingAction:(BOOL)action animated:(BOOL)animated
 {
-  if (self->_performingAction == !a3)
+  if (self->_performingAction == !action)
   {
-    self->_performingAction = a3;
-    [(PKAccountUserDetailViewController *)self _updateConfigurationAnimated:a4];
+    self->_performingAction = action;
+    [(PKAccountUserDetailViewController *)self _updateConfigurationAnimated:animated];
   }
 }
 
-- (void)_presentDisplayableError:(id)a3
+- (void)_presentDisplayableError:(id)error
 {
-  v4 = PKAlertForDisplayableErrorWithHandlers(a3, 0, 0, 0);
+  v4 = PKAlertForDisplayableErrorWithHandlers(error, 0, 0, 0);
   [(PKAccountUserDetailViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)_presentPeerPaymentFamilySharingSetupForFamilyMember:(id)a3
+- (void)_presentPeerPaymentFamilySharingSetupForFamilyMember:(id)member
 {
-  if (a3)
+  if (member)
   {
-    v4 = a3;
+    memberCopy = member;
     v5 = [PKPeerPaymentAssociatedAccountsController alloc];
     familyMemberCollection = self->_familyMemberCollection;
     avatarManager = self->_avatarManager;
@@ -2656,32 +2656,32 @@ uint64_t __65__PKAccountUserDetailViewController__updateNotificationSettings___b
     associatedAccountsController = self->_associatedAccountsController;
     self->_associatedAccountsController = v12;
 
-    v16 = [[PKPeerPaymentAssociatedAccountPresentationContext alloc] initWithPKFamilyMember:v4 setupType:1];
+    v16 = [[PKPeerPaymentAssociatedAccountPresentationContext alloc] initWithPKFamilyMember:memberCopy setupType:1];
     v14 = self->_associatedAccountsController;
-    v15 = [(PKAccountUserDetailViewController *)self navigationController];
-    [(PKPeerPaymentAssociatedAccountsController *)v14 presentAssociatedAccountsFlowWithPresentationContext:v16 fromNavigationController:v15];
+    navigationController = [(PKAccountUserDetailViewController *)self navigationController];
+    [(PKPeerPaymentAssociatedAccountsController *)v14 presentAssociatedAccountsFlowWithPresentationContext:v16 fromNavigationController:navigationController];
   }
 }
 
-- (void)_presentPasswordAuthorizationWithReason:(id)a3 completion:(id)a4
+- (void)_presentPasswordAuthorizationWithReason:(id)reason completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v7 = MEMORY[0x1E698DE80];
-    v8 = a3;
+    reasonCopy = reason;
     v9 = objc_alloc_init(v7);
     [v9 setPresentingViewController:self];
-    v10 = [(PKAppleAccountInformation *)self->_appleAccountInformation appleID];
-    [v9 setUsername:v10];
+    appleID = [(PKAppleAccountInformation *)self->_appleAccountInformation appleID];
+    [v9 setUsername:appleID];
 
-    v11 = [(PKAppleAccountInformation *)self->_appleAccountInformation aaAlternateDSID];
-    [v9 setAltDSID:v11];
+    aaAlternateDSID = [(PKAppleAccountInformation *)self->_appleAccountInformation aaAlternateDSID];
+    [v9 setAltDSID:aaAlternateDSID];
 
     [v9 setIsUsernameEditable:0];
     [v9 setShouldPromptForPasswordOnly:1];
     [v9 setAuthenticationType:2];
-    [v9 setReason:v8];
+    [v9 setReason:reasonCopy];
 
     v12 = objc_alloc_init(MEMORY[0x1E698DCC0]);
     v13[0] = MEMORY[0x1E69E9820];
@@ -2689,7 +2689,7 @@ uint64_t __65__PKAccountUserDetailViewController__updateNotificationSettings___b
     v13[2] = __88__PKAccountUserDetailViewController__presentPasswordAuthorizationWithReason_completion___block_invoke;
     v13[3] = &unk_1E80208E8;
     v13[4] = self;
-    v14 = v6;
+    v14 = completionCopy;
     [v12 authenticateWithContext:v9 completion:v13];
   }
 }
@@ -2774,13 +2774,13 @@ LABEL_8:
 - (id)_footerViewForPeerPaymentAccountSetup
 {
   v3 = objc_alloc_init(PKFooterHyperlinkView);
-  v4 = [(CNContact *)self->_contact givenName];
-  v5 = [(PKFamilyMemberCollection *)self->_familyMemberCollection currentUser];
-  v6 = [v5 isOrganizer];
+  givenName = [(CNContact *)self->_contact givenName];
+  currentUser = [(PKFamilyMemberCollection *)self->_familyMemberCollection currentUser];
+  isOrganizer = [currentUser isOrganizer];
 
   v7 = PKLocalizedFeatureString();
   PKLocalizedFeatureString();
-  if (v6)
+  if (isOrganizer)
     v8 = {;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -2796,7 +2796,7 @@ LABEL_8:
   }
 
   v10 = PKAttributedStringByAddingLinkToSubstring(v8, v7, 0);
-  [(PKFooterHyperlinkView *)v3 setAttributedText:v10, v4, v7];
+  [(PKFooterHyperlinkView *)v3 setAttributedText:v10, givenName, v7];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;

@@ -2,32 +2,32 @@
 + (id)allServicesPrintableState;
 + (id)servicePoolPrintableState;
 - (BOOL)_doesClientWantFinderObserverSession;
-- (BOOL)updateConfiguration:(id)a3;
-- (NIServerFindingSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (id)_processFindingEvent:(id)a3;
+- (BOOL)updateConfiguration:(id)configuration;
+- (NIServerFindingSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error;
+- (id)_processFindingEvent:(id)event;
 - (id)configure;
-- (id)pauseWithSource:(int64_t)a3;
+- (id)pauseWithSource:(int64_t)source;
 - (id)run;
 - (unint64_t)requiresNarrowbandToRun;
 - (unint64_t)requiresUWBToRun;
-- (void)_resetSessionStateForOperation:(int)a3;
+- (void)_resetSessionStateForOperation:(int)operation;
 - (void)_startRunawayFindingBackstopTimer;
 - (void)dealloc;
-- (void)didGenerateShareableConfigurationData:(id)a3 forToken:(id)a4;
+- (void)didGenerateShareableConfigurationData:(id)data forToken:(id)token;
 - (void)invalidate;
-- (void)serviceDidDiscoverNearbyObject:(id)a3;
-- (void)serviceDidGenerateShareableConfigurationData:(id)a3 forObject:(id)a4;
-- (void)serviceDidRemoveNearbyObject:(id)a3;
-- (void)serviceDidUpdateAlgorithmConvergenceState:(id)a3 forObject:(id)a4;
-- (void)serviceDidUpdateNearbyObjects:(id)a3;
+- (void)serviceDidDiscoverNearbyObject:(id)object;
+- (void)serviceDidGenerateShareableConfigurationData:(id)data forObject:(id)object;
+- (void)serviceDidRemoveNearbyObject:(id)object;
+- (void)serviceDidUpdateAlgorithmConvergenceState:(id)state forObject:(id)object;
+- (void)serviceDidUpdateNearbyObjects:(id)objects;
 @end
 
 @implementation NIServerFindingSession
 
-- (NIServerFindingSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5
+- (NIServerFindingSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  managerCopy = manager;
+  configurationCopy = configuration;
   v11 = objc_opt_class();
   if (v11 != objc_opt_class())
   {
@@ -35,9 +35,9 @@
     [v29 handleFailureInMethod:a2 object:self file:@"NIServerFindingSession.mm" lineNumber:2710 description:@"Invalid configuration type."];
   }
 
-  v12 = [v9 serverSessionIdentifier];
+  serverSessionIdentifier = [managerCopy serverSessionIdentifier];
 
-  if (!v12)
+  if (!serverSessionIdentifier)
   {
     v30 = +[NSAssertionHandler currentHandler];
     [v30 handleFailureInMethod:a2 object:self file:@"NIServerFindingSession.mm" lineNumber:2711 description:{@"Invalid parameter not satisfying: %@", @"resourcesManager.serverSessionIdentifier"}];
@@ -45,24 +45,24 @@
 
   v32.receiver = self;
   v32.super_class = NIServerFindingSession;
-  v13 = [(NIServerBaseSession *)&v32 initWithResourcesManager:v9 configuration:v10 error:a5];
+  v13 = [(NIServerBaseSession *)&v32 initWithResourcesManager:managerCopy configuration:configurationCopy error:error];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [configurationCopy copy];
     configuration = v13->_configuration;
     v13->_configuration = v14;
 
     v13->_isRunning = 0;
     v13->_shouldDeliverUpdates = 0;
     v13->_deliveredFirstUpdate = 0;
-    v16 = [v9 clientConnectionQueue];
+    clientConnectionQueue = [managerCopy clientConnectionQueue];
     clientQueue = v13->_clientQueue;
-    v13->_clientQueue = v16;
+    v13->_clientQueue = clientConnectionQueue;
 
-    v18 = [v9 serverSessionIdentifier];
-    v19 = [v18 UUIDString];
+    serverSessionIdentifier2 = [managerCopy serverSessionIdentifier];
+    uUIDString = [serverSessionIdentifier2 UUIDString];
     sessionIdentifier = v13->_sessionIdentifier;
-    v13->_sessionIdentifier = v19;
+    v13->_sessionIdentifier = uUIDString;
 
     findingToken = v13->_findingToken;
     v13->_findingToken = 0;
@@ -149,9 +149,9 @@
 
   if ([(NIFindingConfiguration *)self->_configuration configType]== 1)
   {
-    v6 = [(NIFindingConfiguration *)self->_configuration specifiedToken];
+    specifiedToken = [(NIFindingConfiguration *)self->_configuration specifiedToken];
     findingToken = self->_findingToken;
-    self->_findingToken = v6;
+    self->_findingToken = specifiedToken;
 
     if (self->_findingToken)
     {
@@ -185,16 +185,16 @@ LABEL_10:
   dispatch_assert_queue_V2(self->_clientQueue);
   v22.receiver = self;
   v22.super_class = NIServerFindingSession;
-  v3 = [(NIServerBaseSession *)&v22 resourcesManager];
+  resourcesManager = [(NIServerBaseSession *)&v22 resourcesManager];
   v4 = qword_1009F9820;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     sessionIdentifier = self->_sessionIdentifier;
-    v6 = [v3 clientProcessNameBestGuess];
+    clientProcessNameBestGuess = [resourcesManager clientProcessNameBestGuess];
     *buf = 138543619;
     v24 = sessionIdentifier;
     v25 = 2113;
-    v26 = v6;
+    v26 = clientProcessNameBestGuess;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#find-ses,Run [%{public}@]. Process: %{private}@", buf, 0x16u);
   }
 
@@ -250,15 +250,15 @@ LABEL_10:
         }
 
         [(NIServerFindingSession *)self _startRunawayFindingBackstopTimer];
-        if (v3)
+        if (resourcesManager)
         {
-          v19 = [v3 appStateMonitor];
-          v20 = [v19 isRunningBoardApp];
+          appStateMonitor = [resourcesManager appStateMonitor];
+          isRunningBoardApp = [appStateMonitor isRunningBoardApp];
 
-          if (v20)
+          if (isRunningBoardApp)
           {
             systemStatusPublisher = self->_systemStatusPublisher;
-            [v3 clientAuditToken];
+            [resourcesManager clientAuditToken];
             [(NIServerSystemStatusPublisher *)systemStatusPublisher publishWithAuditToken:buf];
           }
         }
@@ -275,7 +275,7 @@ LABEL_10:
   return 0;
 }
 
-- (id)pauseWithSource:(int64_t)a3
+- (id)pauseWithSource:(int64_t)source
 {
   dispatch_assert_queue_V2(self->_clientQueue);
   v4 = qword_1009F9820;
@@ -291,13 +291,13 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)updateConfiguration:(id)a3
+- (BOOL)updateConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   dispatch_assert_queue_V2(self->_clientQueue);
-  if (v4 && self->_configuration && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (configurationCopy && self->_configuration && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 copy];
+    v5 = [configurationCopy copy];
     v6 = [(NIFindingConfiguration *)self->_configuration canUpdateToConfiguration:v5];
     v7 = qword_1009F9820;
     v8 = os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT);
@@ -310,7 +310,7 @@ LABEL_10:
         v17 = 138543874;
         v18 = sessionIdentifier;
         v19 = 2114;
-        v20 = configuration;
+        configurationCopy2 = configuration;
         v21 = 2114;
         v22 = v5;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#find-ses,Update configuration [%{public}@]\nOld: %{public}@\nNew: %{public}@", &v17, 0x20u);
@@ -326,7 +326,7 @@ LABEL_10:
       v17 = 138412802;
       v18 = v14;
       v19 = 2112;
-      v20 = v15;
+      configurationCopy2 = v15;
       v21 = 2112;
       v22 = v5;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#find-ses,Can't update configuration, parameters are too different [%@]\nOld: %@\nNew: %@", &v17, 0x20u);
@@ -344,9 +344,9 @@ LABEL_10:
       v17 = 138412802;
       v18 = v12;
       v19 = 2112;
-      v20 = v13;
+      configurationCopy2 = v13;
       v21 = 2112;
-      v22 = v4;
+      v22 = configurationCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "#find-ses,Can't update configuration, one is nil or wrong type [%@]\nOld: %@\nNew: %@", &v17, 0x20u);
       v6 = 0;
     }
@@ -393,9 +393,9 @@ LABEL_10:
   [(NIServerFindingSession *)self _resetSessionStateForOperation:2];
 }
 
-- (void)_resetSessionStateForOperation:(int)a3
+- (void)_resetSessionStateForOperation:(int)operation
 {
-  if (a3 > 1)
+  if (operation > 1)
   {
     goto LABEL_4;
   }
@@ -410,14 +410,14 @@ LABEL_10:
 
   v17.receiver = self;
   v17.super_class = NIServerFindingSession;
-  v7 = [(NIServerBaseSession *)&v17 resourcesManager];
-  v8 = [v7 clientProcessNameBestGuess];
-  v9 = [v8 isEqualToString:@"com.apple.NanoSettingsViewService"];
+  resourcesManager = [(NIServerBaseSession *)&v17 resourcesManager];
+  clientProcessNameBestGuess = [resourcesManager clientProcessNameBestGuess];
+  v9 = [clientProcessNameBestGuess isEqualToString:@"com.apple.NanoSettingsViewService"];
 
   if (v9)
   {
 LABEL_4:
-    [(NIServerFindingService *)self->_findingService removeClientWithIdentifier:self->_sessionIdentifier dueToTimeout:a3 == 1];
+    [(NIServerFindingService *)self->_findingService removeClientWithIdentifier:self->_sessionIdentifier dueToTimeout:operation == 1];
     findingService = self->_findingService;
     self->_findingService = 0;
 
@@ -427,7 +427,7 @@ LABEL_4:
     configuration = self->_configuration;
     self->_configuration = 0;
 
-    if (a3 == 3)
+    if (operation == 3)
     {
       goto LABEL_8;
     }
@@ -441,7 +441,7 @@ LABEL_4:
 
   else
   {
-    [(NIServerFindingService *)self->_findingService clientWithIdentifier:self->_sessionIdentifier updatedStateToRunning:0 dueToTimeout:a3 == 1];
+    [(NIServerFindingService *)self->_findingService clientWithIdentifier:self->_sessionIdentifier updatedStateToRunning:0 dueToTimeout:operation == 1];
   }
 
   [(NIServerSystemStatusPublisher *)self->_systemStatusPublisher unpublish];
@@ -522,7 +522,7 @@ LABEL_8:
 
   v8.receiver = self;
   v8.super_class = NIServerFindingSession;
-  v4 = [(NIServerBaseSession *)&v8 resourcesManager];
+  resourcesManager = [(NIServerBaseSession *)&v8 resourcesManager];
   if ([(NIFindingConfiguration *)self->_configuration isObserver])
   {
     v5 = 1;
@@ -530,31 +530,31 @@ LABEL_8:
 
   else
   {
-    v6 = [v4 clientProcessNameBestGuess];
-    v5 = [v6 isEqualToString:@"com.apple.nanofindlocallyd"];
+    clientProcessNameBestGuess = [resourcesManager clientProcessNameBestGuess];
+    v5 = [clientProcessNameBestGuess isEqualToString:@"com.apple.nanofindlocallyd"];
   }
 
   return v5;
 }
 
-- (id)_processFindingEvent:(id)a3
+- (id)_processFindingEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_clientQueue);
-  if (!v4)
+  if (!eventCopy)
   {
     __assert_rtn("[NIServerFindingSession _processFindingEvent:]", "NIServerFindingSession.mm", 3031, "event");
   }
 
   if (self->_configuration)
   {
-    v5 = [v4 objectForKeyedSubscript:@"FindingEventDictKey_EventType"];
-    v6 = [v5 integerValue];
+    v5 = [eventCopy objectForKeyedSubscript:@"FindingEventDictKey_EventType"];
+    integerValue = [v5 integerValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"FindingEventDictKey_ObjectDiscoveryToken"];
-    v8 = [v4 objectForKeyedSubscript:@"FindingEventDictKey_SharedConfigurationData"];
-    v9 = [v4 objectForKeyedSubscript:@"FindingEventDictKey_Location"];
-    v10 = [v4 objectForKeyedSubscript:@"FindingEventDictKey_Heading"];
+    v7 = [eventCopy objectForKeyedSubscript:@"FindingEventDictKey_ObjectDiscoveryToken"];
+    v8 = [eventCopy objectForKeyedSubscript:@"FindingEventDictKey_SharedConfigurationData"];
+    v9 = [eventCopy objectForKeyedSubscript:@"FindingEventDictKey_Location"];
+    v10 = [eventCopy objectForKeyedSubscript:@"FindingEventDictKey_Heading"];
     if ([(NIFindingConfiguration *)self->_configuration isFinder])
     {
       findingService = self->_findingService;
@@ -569,9 +569,9 @@ LABEL_8:
         v12 = [v13 serviceForToken:self->_findingToken createIfNotExists:0];
       }
 
-      if (v6 <= 3)
+      if (integerValue <= 3)
       {
-        if (v6 == 2)
+        if (integerValue == 2)
         {
           if (v9)
           {
@@ -579,13 +579,13 @@ LABEL_8:
           }
         }
 
-        else if (v6 == 3 && v10)
+        else if (integerValue == 3 && v10)
         {
           [(NIServerFindingService *)v12 processSelfHeading:v10];
         }
       }
 
-      else if (v6 == 4)
+      else if (integerValue == 4)
       {
         if (v9 && [(NIDiscoveryToken *)self->_findingToken isEqual:v7])
         {
@@ -593,7 +593,7 @@ LABEL_8:
         }
       }
 
-      else if (v6 == 6)
+      else if (integerValue == 6)
       {
         if (v7 && [(NIDiscoveryToken *)self->_findingToken isEqual:v7])
         {
@@ -601,13 +601,13 @@ LABEL_8:
         }
       }
 
-      else if (v6 == 5 && v7 && v8 && [(NIDiscoveryToken *)self->_findingToken isEqual:v7])
+      else if (integerValue == 5 && v7 && v8 && [(NIDiscoveryToken *)self->_findingToken isEqual:v7])
       {
         [(NIServerFindingService *)v12 processClientDiscoveryEventWithSharedConfigurationData:v8];
       }
     }
 
-    else if (v6 == 6)
+    else if (integerValue == 6)
     {
       if (!v7 || ![(NIDiscoveryToken *)self->_findingToken isEqual:v7])
       {
@@ -620,7 +620,7 @@ LABEL_8:
 
     else
     {
-      if (v6 != 5 || !v7 || !v8 || ![(NIDiscoveryToken *)self->_findingToken isEqual:v7])
+      if (integerValue != 5 || !v7 || !v8 || ![(NIDiscoveryToken *)self->_findingToken isEqual:v7])
       {
         goto LABEL_39;
       }
@@ -643,95 +643,95 @@ LABEL_40:
   return 0;
 }
 
-- (void)serviceDidGenerateShareableConfigurationData:(id)a3 forObject:(id)a4
+- (void)serviceDidGenerateShareableConfigurationData:(id)data forObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  objectCopy = object;
   clientQueue = self->_clientQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10024D91C;
   block[3] = &unk_10099BB28;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  v13 = objectCopy;
+  v9 = objectCopy;
+  v10 = dataCopy;
   dispatch_async(clientQueue, block);
 }
 
-- (void)serviceDidDiscoverNearbyObject:(id)a3
+- (void)serviceDidDiscoverNearbyObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   clientQueue = self->_clientQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10024DA4C;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   dispatch_async(clientQueue, v7);
 }
 
-- (void)serviceDidRemoveNearbyObject:(id)a3
+- (void)serviceDidRemoveNearbyObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   clientQueue = self->_clientQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10024DB7C;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   dispatch_async(clientQueue, v7);
 }
 
-- (void)serviceDidUpdateNearbyObjects:(id)a3
+- (void)serviceDidUpdateNearbyObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   clientQueue = self->_clientQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10024DD20;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectsCopy;
+  v6 = objectsCopy;
   dispatch_async(clientQueue, v7);
 }
 
-- (void)serviceDidUpdateAlgorithmConvergenceState:(id)a3 forObject:(id)a4
+- (void)serviceDidUpdateAlgorithmConvergenceState:(id)state forObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  objectCopy = object;
   clientQueue = self->_clientQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10024DFA0;
   block[3] = &unk_10099BB28;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = stateCopy;
+  v13 = objectCopy;
+  v9 = objectCopy;
+  v10 = stateCopy;
   dispatch_async(clientQueue, block);
 }
 
-- (void)didGenerateShareableConfigurationData:(id)a3 forToken:(id)a4
+- (void)didGenerateShareableConfigurationData:(id)data forToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_clientQueue);
-  if ([(NIDiscoveryToken *)self->_findingToken isEqual:v7])
+  if ([(NIDiscoveryToken *)self->_findingToken isEqual:tokenCopy])
   {
     v8 = [[NINearbyObject alloc] initWithToken:self->_findingToken];
     v11.receiver = self;
     v11.super_class = NIServerFindingSession;
-    v9 = [(NIServerBaseSession *)&v11 resourcesManager];
-    v10 = [v9 remote];
-    [v10 didGenerateShareableConfigurationData:v6 forObject:v8];
+    resourcesManager = [(NIServerBaseSession *)&v11 resourcesManager];
+    remote = [resourcesManager remote];
+    [remote didGenerateShareableConfigurationData:dataCopy forObject:v8];
   }
 }
 
@@ -745,9 +745,9 @@ LABEL_40:
   }
 
   v3 = +[NIServerFindingServicePool sharedInstance];
-  v4 = [v3 servicePoolPrintableState];
+  servicePoolPrintableState = [v3 servicePoolPrintableState];
 
-  return v4;
+  return servicePoolPrintableState;
 }
 
 + (id)allServicesPrintableState
@@ -760,9 +760,9 @@ LABEL_40:
   }
 
   v3 = +[NIServerFindingServicePool sharedInstance];
-  v4 = [v3 allServicesPrintableState];
+  allServicesPrintableState = [v3 allServicesPrintableState];
 
-  return v4;
+  return allServicesPrintableState;
 }
 
 @end

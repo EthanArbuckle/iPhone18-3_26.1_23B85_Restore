@@ -1,15 +1,15 @@
 @interface SponsorshipArchive
 - (_TtC17AdPlatformsCommon18SponsorshipArchive)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SponsorshipArchive
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SponsorshipArchive.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SponsorshipArchive.encode(with:)(coderCopy);
 }
 
 - (_TtC17AdPlatformsCommon18SponsorshipArchive)init

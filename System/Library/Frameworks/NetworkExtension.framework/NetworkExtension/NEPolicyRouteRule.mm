@@ -1,8 +1,8 @@
 @interface NEPolicyRouteRule
-+ (id)routeRuleWithAction:(int64_t)a3 forInterfaceName:(id)a4;
-+ (id)routeRuleWithAction:(int64_t)a3 forNetworkAgent:(id)a4;
-+ (id)routeRuleWithAction:(int64_t)a3 forNetworkAgent:(id)a4 forInterfaceName:(id)a5;
-+ (id)routeRuleWithAction:(int64_t)a3 forType:(int64_t)a4;
++ (id)routeRuleWithAction:(int64_t)action forInterfaceName:(id)name;
++ (id)routeRuleWithAction:(int64_t)action forNetworkAgent:(id)agent;
++ (id)routeRuleWithAction:(int64_t)action forNetworkAgent:(id)agent forInterfaceName:(id)name;
++ (id)routeRuleWithAction:(int64_t)action forType:(int64_t)type;
 - (NEPolicyRouteRule)init;
 @end
 
@@ -20,10 +20,10 @@
   return 0;
 }
 
-+ (id)routeRuleWithAction:(int64_t)a3 forNetworkAgent:(id)a4 forInterfaceName:(id)a5
++ (id)routeRuleWithAction:(int64_t)action forNetworkAgent:(id)agent forInterfaceName:(id)name
 {
-  v7 = a4;
-  v8 = a5;
+  agentCopy = agent;
+  nameCopy = name;
   v9 = [NEPolicyRouteRule alloc];
   if (v9)
   {
@@ -33,9 +33,9 @@
     v12 = v10;
     if (v10)
     {
-      v10[3] = a3;
-      objc_setProperty_atomic_copy(v10, v11, v7, 40);
-      objc_setProperty_atomic_copy(v12, v13, v8, 32);
+      v10[3] = action;
+      objc_setProperty_atomic_copy(v10, v11, agentCopy, 40);
+      objc_setProperty_atomic_copy(v12, v13, nameCopy, 32);
     }
   }
 
@@ -47,9 +47,9 @@
   return v12;
 }
 
-+ (id)routeRuleWithAction:(int64_t)a3 forNetworkAgent:(id)a4
++ (id)routeRuleWithAction:(int64_t)action forNetworkAgent:(id)agent
 {
-  v5 = a4;
+  agentCopy = agent;
   v6 = [NEPolicyRouteRule alloc];
   if (v6)
   {
@@ -59,8 +59,8 @@
     v9 = v7;
     if (v7)
     {
-      v7[3] = a3;
-      objc_setProperty_atomic_copy(v7, v8, v5, 40);
+      v7[3] = action;
+      objc_setProperty_atomic_copy(v7, v8, agentCopy, 40);
     }
   }
 
@@ -72,7 +72,7 @@
   return v9;
 }
 
-+ (id)routeRuleWithAction:(int64_t)a3 forType:(int64_t)a4
++ (id)routeRuleWithAction:(int64_t)action forType:(int64_t)type
 {
   v6 = [NEPolicyRouteRule alloc];
   if (v6)
@@ -82,17 +82,17 @@
     v6 = objc_msgSendSuper2(&v8, sel_init);
     if (v6)
     {
-      v6->_action = a3;
-      v6->_type = a4;
+      v6->_action = action;
+      v6->_type = type;
     }
   }
 
   return v6;
 }
 
-+ (id)routeRuleWithAction:(int64_t)a3 forInterfaceName:(id)a4
++ (id)routeRuleWithAction:(int64_t)action forInterfaceName:(id)name
 {
-  v5 = a4;
+  nameCopy = name;
   v6 = [NEPolicyRouteRule alloc];
   if (v6)
   {
@@ -102,8 +102,8 @@
     v9 = v7;
     if (v7)
     {
-      v7[3] = a3;
-      objc_setProperty_atomic_copy(v7, v8, v5, 32);
+      v7[3] = action;
+      objc_setProperty_atomic_copy(v7, v8, nameCopy, 32);
     }
   }
 

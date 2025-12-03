@@ -1,20 +1,20 @@
 @interface SHShazamMenuModuleViewController
 - (BOOL)isShazamAppInstalled;
-- (SHShazamMenuModuleViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SHShazamMenuModuleViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)historyMenuItem;
 - (id)recognizeMusicMenuItem;
-- (void)buttonTapped:(id)a3 forEvent:(id)a4;
+- (void)buttonTapped:(id)tapped forEvent:(id)event;
 - (void)configureMenuItems;
 - (void)dealloc;
 - (void)dismissModule;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)presentHistoryWithAuthentication;
 - (void)refreshState;
-- (void)refreshStateWithSelected:(BOOL)a3 expanded:(BOOL)a4;
-- (void)requestAuthenticationIfLockedWithCompletionHandler:(id)a3;
-- (void)requestAuthenticationIfShazamIsInstalledAndProtected:(id)a3;
-- (void)setContentModuleContext:(id)a3;
-- (void)toggleManager:(id)a3 didToggleToState:(int64_t)a4;
+- (void)refreshStateWithSelected:(BOOL)selected expanded:(BOOL)expanded;
+- (void)requestAuthenticationIfLockedWithCompletionHandler:(id)handler;
+- (void)requestAuthenticationIfShazamIsInstalledAndProtected:(id)protected;
+- (void)setContentModuleContext:(id)context;
+- (void)toggleManager:(id)manager didToggleToState:(int64_t)state;
 - (void)updateStatusMessage;
 - (void)viewDidLoad;
 @end
@@ -29,11 +29,11 @@
   [(SHShazamMenuModuleViewController *)&v3 dealloc];
 }
 
-- (SHShazamMenuModuleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SHShazamMenuModuleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = SHShazamMenuModuleViewController;
-  v4 = [(CCUIMenuModuleViewController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(CCUIMenuModuleViewController *)&v10 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(SHToggleManager);
@@ -74,23 +74,23 @@
   [(SHShazamMenuModuleViewController *)self configureMenuItems];
 }
 
-- (void)buttonTapped:(id)a3 forEvent:(id)a4
+- (void)buttonTapped:(id)tapped forEvent:(id)event
 {
-  v4 = [(SHShazamMenuModuleViewController *)self toggleManager:a3];
+  v4 = [(SHShazamMenuModuleViewController *)self toggleManager:tapped];
   [v4 toggleRecognitionState];
 }
 
-- (void)setContentModuleContext:(id)a3
+- (void)setContentModuleContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6.receiver = self;
   v6.super_class = SHShazamMenuModuleViewController;
-  [(CCUIMenuModuleViewController *)&v6 setContentModuleContext:v4];
+  [(CCUIMenuModuleViewController *)&v6 setContentModuleContext:contextCopy];
   contentModuleContext = self->_contentModuleContext;
-  self->_contentModuleContext = v4;
+  self->_contentModuleContext = contextCopy;
 }
 
-- (void)toggleManager:(id)a3 didToggleToState:(int64_t)a4
+- (void)toggleManager:(id)manager didToggleToState:(int64_t)state
 {
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
@@ -102,28 +102,28 @@
 
 - (void)refreshState
 {
-  v3 = [(SHShazamMenuModuleViewController *)self toggleManager];
-  -[SHShazamMenuModuleViewController refreshStateWithSelected:expanded:](self, "refreshStateWithSelected:expanded:", [v3 isToggleOn], -[CCUIButtonModuleViewController isExpanded](self, "isExpanded"));
+  toggleManager = [(SHShazamMenuModuleViewController *)self toggleManager];
+  -[SHShazamMenuModuleViewController refreshStateWithSelected:expanded:](self, "refreshStateWithSelected:expanded:", [toggleManager isToggleOn], -[CCUIButtonModuleViewController isExpanded](self, "isExpanded"));
 }
 
-- (void)refreshStateWithSelected:(BOOL)a3 expanded:(BOOL)a4
+- (void)refreshStateWithSelected:(BOOL)selected expanded:(BOOL)expanded
 {
   v4[0] = MEMORY[0x29EDCA5F8];
   v4[1] = 3221225472;
   v4[2] = sub_29C9E8734;
   v4[3] = &unk_29F33E528;
-  v5 = a4;
+  expandedCopy = expanded;
   v4[4] = self;
-  v6 = a3;
+  selectedCopy = selected;
   [MEMORY[0x29EDC7DA0] performWithoutAnimation:v4];
 }
 
 - (void)updateStatusMessage
 {
-  v3 = [(SHShazamMenuModuleViewController *)self toggleManager];
-  v4 = [v3 isToggleOn];
+  toggleManager = [(SHShazamMenuModuleViewController *)self toggleManager];
+  isToggleOn = [toggleManager isToggleOn];
 
-  if (v4)
+  if (isToggleOn)
   {
     v5 = @"SHAZAM_MODULE_STATUS_MESSAGE_ON";
   }
@@ -133,7 +133,7 @@
     v5 = @"SHAZAM_MODULE_STATUS_MESSAGE_OFF";
   }
 
-  if (v4)
+  if (isToggleOn)
   {
     v6 = 1;
   }
@@ -168,12 +168,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)requestAuthenticationIfLockedWithCompletionHandler:(id)a3
+- (void)requestAuthenticationIfLockedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(SHShazamMenuModuleViewController *)self isDeviceUnlocked])
   {
-    v4[2](v4, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
   else
@@ -183,14 +183,14 @@
     v6[1] = 3221225472;
     v6[2] = sub_29C9E8ACC;
     v6[3] = &unk_29F33E5A0;
-    v7 = v4;
+    v7 = handlerCopy;
     [(CCUIContentModuleContext *)contentModuleContext requestAuthenticationWithCompletionHandler:v6];
   }
 }
 
-- (void)requestAuthenticationIfShazamIsInstalledAndProtected:(id)a3
+- (void)requestAuthenticationIfShazamIsInstalledAndProtected:(id)protected
 {
-  v4 = a3;
+  protectedCopy = protected;
   if ([(SHShazamMenuModuleViewController *)self isShazamAppInstalled])
   {
     v5 = [MEMORY[0x29EDBE288] applicationWithBundleIdentifier:@"com.shazam.Shazam"];
@@ -203,24 +203,24 @@
         _os_log_impl(&dword_29C9E7000, v6, OS_LOG_TYPE_DEFAULT, "Shazam is protected, requesting authentication", buf, 2u);
       }
 
-      v7 = [MEMORY[0x29EDBE290] sharedGuard];
+      mEMORY[0x29EDBE290] = [MEMORY[0x29EDBE290] sharedGuard];
       v8[0] = MEMORY[0x29EDCA5F8];
       v8[1] = 3221225472;
       v8[2] = sub_29C9E8C70;
       v8[3] = &unk_29F33E5C8;
-      v9 = v4;
-      [v7 authenticateForSubject:v5 completion:v8];
+      v9 = protectedCopy;
+      [mEMORY[0x29EDBE290] authenticateForSubject:v5 completion:v8];
     }
 
     else
     {
-      (*(v4 + 2))(v4, 1);
+      (*(protectedCopy + 2))(protectedCopy, 1);
     }
   }
 
   else
   {
-    (*(v4 + 2))(v4, 1);
+    (*(protectedCopy + 2))(protectedCopy, 1);
   }
 }
 
@@ -235,9 +235,9 @@
     v4 = shcore_log_object();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v5 = [0 bundleIdentifier];
+      bundleIdentifier = [0 bundleIdentifier];
       *buf = 138412546;
-      v10 = v5;
+      v10 = bundleIdentifier;
       v11 = 2112;
       v12 = v3;
       _os_log_impl(&dword_29C9E7000, v4, OS_LOG_TYPE_ERROR, "No application record for %@ found with error: %@", buf, 0x16u);
@@ -251,10 +251,10 @@
 - (void)configureMenuItems
 {
   v7[2] = *MEMORY[0x29EDCA608];
-  v3 = [(SHShazamMenuModuleViewController *)self recognizeMusicMenuItem];
-  v4 = [(SHShazamMenuModuleViewController *)self historyMenuItem];
-  v7[0] = v3;
-  v7[1] = v4;
+  recognizeMusicMenuItem = [(SHShazamMenuModuleViewController *)self recognizeMusicMenuItem];
+  historyMenuItem = [(SHShazamMenuModuleViewController *)self historyMenuItem];
+  v7[0] = recognizeMusicMenuItem;
+  v7[1] = historyMenuItem;
   v5 = [MEMORY[0x29EDB8D80] arrayWithObjects:v7 count:2];
   [(CCUIMenuModuleViewController *)self setMenuItems:v5];
 
@@ -264,8 +264,8 @@
 - (id)recognizeMusicMenuItem
 {
   objc_initWeak(&location, self);
-  v3 = [(SHShazamMenuModuleViewController *)self toggleManager];
-  if ([v3 isToggleOn])
+  toggleManager = [(SHShazamMenuModuleViewController *)self toggleManager];
+  if ([toggleManager isToggleOn])
   {
     v4 = @"SHAZAM_MODULE_STOP_RECOGNITION";
   }
@@ -277,10 +277,10 @@
 
   v5 = [MEMORY[0x29EDC66B8] localizedStringForKey:v4];
 
-  v6 = [(SHShazamMenuModuleViewController *)self toggleManager];
-  v7 = [v6 isToggleOn];
+  toggleManager2 = [(SHShazamMenuModuleViewController *)self toggleManager];
+  isToggleOn = [toggleManager2 isToggleOn];
   v8 = @"shazam.logo.fill";
-  if (v7)
+  if (isToggleOn)
   {
     v8 = @"xmark";
   }
@@ -334,16 +334,16 @@
   objc_destroyWeak(&location);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = a5;
-  if ([a3 isEqualToString:@"isControlToggleOn"])
+  changeCopy = change;
+  if ([path isEqualToString:@"isControlToggleOn"])
   {
-    v8 = [v11 objectForKeyedSubscript:*MEMORY[0x29EDB9EA8]];
-    v9 = [v8 BOOLValue];
+    v8 = [changeCopy objectForKeyedSubscript:*MEMORY[0x29EDB9EA8]];
+    bOOLValue = [v8 BOOLValue];
 
-    v10 = [(SHShazamMenuModuleViewController *)self toggleManager];
-    [v10 toggleToState:v9 ^ 1u];
+    toggleManager = [(SHShazamMenuModuleViewController *)self toggleManager];
+    [toggleManager toggleToState:bOOLValue ^ 1u];
   }
 }
 

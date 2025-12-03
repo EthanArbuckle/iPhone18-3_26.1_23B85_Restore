@@ -1,13 +1,13 @@
 @interface UNCNotificationServiceExtension
-+ (BOOL)isAccessToNotificationCenterAllowedForServiceExtensionWithIdentifier:(id)a3;
++ (BOOL)isAccessToNotificationCenterAllowedForServiceExtensionWithIdentifier:(id)identifier;
 + (id)_extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter;
 + (id)_extensionIdentifiersToPerExtensionQueues;
-+ (void)_allowAccessToNotificationCenterForServiceExtensionWithIdentifier:(id)a3;
-+ (void)_disallowAccessToNotificationCenterForServiceExtensionWithIdentifier:(id)a3;
++ (void)_allowAccessToNotificationCenterForServiceExtensionWithIdentifier:(id)identifier;
++ (void)_disallowAccessToNotificationCenterForServiceExtensionWithIdentifier:(id)identifier;
 - (LSPlugInKitProxy)proxy;
 - (OS_dispatch_queue)queue;
-- (id)_initWithExtension:(id)a3 serviceTime:(double)a4 graceTime:(double)a5;
-- (id)mutateContentForNotificationRequest:(id)a3 error:(id *)a4;
+- (id)_initWithExtension:(id)extension serviceTime:(double)time graceTime:(double)graceTime;
+- (id)mutateContentForNotificationRequest:(id)request error:(id *)error;
 - (void)cleanUp;
 @end
 
@@ -51,71 +51,71 @@ uint64_t __76__UNCNotificationServiceExtension__extensionIdentifiersToPerExtensi
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)isAccessToNotificationCenterAllowedForServiceExtensionWithIdentifier:(id)a3
++ (BOOL)isAccessToNotificationCenterAllowedForServiceExtensionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter];
-  objc_sync_enter(v5);
-  v6 = [v5 countForObject:v4] != 0;
-  objc_sync_exit(v5);
+  identifierCopy = identifier;
+  _extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter = [self _extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter];
+  objc_sync_enter(_extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter);
+  v6 = [_extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter countForObject:identifierCopy] != 0;
+  objc_sync_exit(_extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter);
 
   return v6;
 }
 
-+ (void)_allowAccessToNotificationCenterForServiceExtensionWithIdentifier:(id)a3
++ (void)_allowAccessToNotificationCenterForServiceExtensionWithIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 _extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter];
-  objc_sync_enter(v5);
-  [v5 addObject:v4];
+  identifierCopy = identifier;
+  _extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter = [self _extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter];
+  objc_sync_enter(_extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter);
+  [_extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter addObject:identifierCopy];
   v6 = *MEMORY[0x1E6983398];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = v4;
+    v9 = identifierCopy;
     v10 = 2048;
-    v11 = [v5 countForObject:v4];
+    v11 = [_extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter countForObject:identifierCopy];
     _os_log_impl(&dword_1DA7A9000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Incremented notification center access to service extension: %ld", &v8, 0x16u);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(_extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter);
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_disallowAccessToNotificationCenterForServiceExtensionWithIdentifier:(id)a3
++ (void)_disallowAccessToNotificationCenterForServiceExtensionWithIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 _extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter];
-  objc_sync_enter(v5);
-  [v5 removeObject:v4];
+  identifierCopy = identifier;
+  _extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter = [self _extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter];
+  objc_sync_enter(_extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter);
+  [_extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter removeObject:identifierCopy];
   v6 = *MEMORY[0x1E6983398];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = v4;
+    v9 = identifierCopy;
     v10 = 2048;
-    v11 = [v5 countForObject:v4];
+    v11 = [_extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter countForObject:identifierCopy];
     _os_log_impl(&dword_1DA7A9000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Decremented notification center access to service extension: %ld", &v8, 0x16u);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(_extensionIdentifiersCurrentlyAllowedAccessToNotificationCenter);
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_initWithExtension:(id)a3 serviceTime:(double)a4 graceTime:(double)a5
+- (id)_initWithExtension:(id)extension serviceTime:(double)time graceTime:(double)graceTime
 {
-  v9 = a3;
+  extensionCopy = extension;
   v13.receiver = self;
   v13.super_class = UNCNotificationServiceExtension;
   v10 = [(UNCNotificationServiceExtension *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_extension, a3);
-    v11[4] = a4;
-    v11[5] = a5;
+    objc_storeStrong(&v10->_extension, extension);
+    v11[4] = time;
+    v11[5] = graceTime;
   }
 
   return v11;
@@ -123,44 +123,44 @@ uint64_t __76__UNCNotificationServiceExtension__extensionIdentifiersToPerExtensi
 
 - (LSPlugInKitProxy)proxy
 {
-  v2 = [(NSExtension *)self->_extension identifier];
-  v3 = [MEMORY[0x1E6963678] pluginKitProxyForIdentifier:v2];
+  identifier = [(NSExtension *)self->_extension identifier];
+  v3 = [MEMORY[0x1E6963678] pluginKitProxyForIdentifier:identifier];
 
   return v3;
 }
 
 - (OS_dispatch_queue)queue
 {
-  v2 = [(NSExtension *)self->_extension identifier];
-  v3 = [objc_opt_class() _extensionIdentifiersToPerExtensionQueues];
-  objc_sync_enter(v3);
-  v4 = [v3 objectForKeyedSubscript:v2];
+  identifier = [(NSExtension *)self->_extension identifier];
+  _extensionIdentifiersToPerExtensionQueues = [objc_opt_class() _extensionIdentifiersToPerExtensionQueues];
+  objc_sync_enter(_extensionIdentifiersToPerExtensionQueues);
+  v4 = [_extensionIdentifiersToPerExtensionQueues objectForKeyedSubscript:identifier];
   if (!v4)
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.usernotifications.serviceextension.%@", v2];
-    v6 = [v5 UTF8String];
+    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.usernotifications.serviceextension.%@", identifier];
+    uTF8String = [v5 UTF8String];
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v4 = dispatch_queue_create(v6, v7);
+    v4 = dispatch_queue_create(uTF8String, v7);
 
-    [v3 setObject:v4 forKeyedSubscript:v2];
+    [_extensionIdentifiersToPerExtensionQueues setObject:v4 forKeyedSubscript:identifier];
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(_extensionIdentifiersToPerExtensionQueues);
 
   return v4;
 }
 
-- (id)mutateContentForNotificationRequest:(id)a3 error:(id *)a4
+- (id)mutateContentForNotificationRequest:(id)request error:(id *)error
 {
   v78 = *MEMORY[0x1E69E9840];
-  v44 = a3;
+  requestCopy = request;
   v67 = 0;
   v68[0] = &v67;
   v68[1] = 0x3032000000;
   v68[2] = __Block_byref_object_copy__11;
   v68[3] = __Block_byref_object_dispose__11;
   v69 = 0;
-  v5 = [(NSExtension *)self->_extension identifier];
+  identifier = [(NSExtension *)self->_extension identifier];
   v6 = dispatch_get_global_queue(21, 0);
   v7 = [objc_alloc(MEMORY[0x1E698E5E8]) initWithIdentifier:@"com.apple.usernotifications.serviceextension.startuptimer"];
   serviceTime = self->_serviceTime;
@@ -168,9 +168,9 @@ uint64_t __76__UNCNotificationServiceExtension__extensionIdentifiersToPerExtensi
   v64[1] = 3221225472;
   v64[2] = __77__UNCNotificationServiceExtension_mutateContentForNotificationRequest_error___block_invoke;
   v64[3] = &unk_1E85D7C58;
-  v9 = v5;
+  v9 = identifier;
   v65 = v9;
-  v66 = self;
+  selfCopy = self;
   [v7 scheduleWithFireInterval:v6 leewayInterval:v64 queue:serviceTime handler:0.0];
   v45 = v6;
   BSAbsoluteMachTimeNow();
@@ -277,7 +277,7 @@ uint64_t __76__UNCNotificationServiceExtension__extensionIdentifiersToPerExtensi
     }
 
     [objc_opt_class() _allowAccessToNotificationCenterForServiceExtensionWithIdentifier:v9];
-    v34 = [(NSExtensionContext *)self->_hostContext _auxiliaryConnection];
+    _auxiliaryConnection = [(NSExtensionContext *)self->_hostContext _auxiliaryConnection];
     v50[0] = MEMORY[0x1E69E9820];
     v50[1] = 3221225472;
     v50[2] = __77__UNCNotificationServiceExtension_mutateContentForNotificationRequest_error___block_invoke_27;
@@ -289,7 +289,7 @@ uint64_t __76__UNCNotificationServiceExtension__extensionIdentifiersToPerExtensi
     v54 = &v67;
     v36 = v18;
     v52 = v36;
-    v37 = [v34 synchronousRemoteObjectProxyWithErrorHandler:v50];
+    v37 = [_auxiliaryConnection synchronousRemoteObjectProxyWithErrorHandler:v50];
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
     v46[2] = __77__UNCNotificationServiceExtension_mutateContentForNotificationRequest_error___block_invoke_29;
@@ -298,7 +298,7 @@ uint64_t __76__UNCNotificationServiceExtension__extensionIdentifiersToPerExtensi
     v47 = v35;
     v49 = v61;
     v48 = v36;
-    [v37 didReceiveNotificationRequest:v44 withCompletionHandler:v46];
+    [v37 didReceiveNotificationRequest:requestCopy withCompletionHandler:v46];
 
     [v23 invalidate];
     [v42 invalidate];
@@ -315,12 +315,12 @@ uint64_t __76__UNCNotificationServiceExtension__extensionIdentifiersToPerExtensi
     }
   }
 
-  if (a4)
+  if (error)
   {
     v38 = *(v68[0] + 40);
     if (v38)
     {
-      *a4 = v38;
+      *error = v38;
     }
   }
 
@@ -452,17 +452,17 @@ void __77__UNCNotificationServiceExtension_mutateContentForNotificationRequest_e
 {
   if (self->_mutatedContent)
   {
-    v3 = [(NSExtensionContext *)self->_hostContext _auxiliaryConnection];
-    v4 = [v3 remoteObjectProxy];
-    [v4 deleteAttachmentFilesInContentIfNecessary:self->_mutatedContent];
+    _auxiliaryConnection = [(NSExtensionContext *)self->_hostContext _auxiliaryConnection];
+    remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
+    [remoteObjectProxy deleteAttachmentFilesInContentIfNecessary:self->_mutatedContent];
 
     mutatedContent = self->_mutatedContent;
     self->_mutatedContent = 0;
   }
 
-  v6 = [(NSExtensionContext *)self->_hostContext _auxiliaryConnection];
-  v7 = [v6 remoteObjectProxy];
-  [v7 serviceExtensionPerformCleanup];
+  _auxiliaryConnection2 = [(NSExtensionContext *)self->_hostContext _auxiliaryConnection];
+  remoteObjectProxy2 = [_auxiliaryConnection2 remoteObjectProxy];
+  [remoteObjectProxy2 serviceExtensionPerformCleanup];
 
   hostContext = self->_hostContext;
   self->_hostContext = 0;

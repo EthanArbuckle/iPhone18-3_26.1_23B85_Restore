@@ -17,7 +17,7 @@
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69C6638];
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___SBHUnlockSettings;
   v3 = objc_msgSendSuper2(&v9, sel_settingsControllerModule);
   v4 = [v2 submoduleWithModule:v3 childSettingsKeyPath:0];

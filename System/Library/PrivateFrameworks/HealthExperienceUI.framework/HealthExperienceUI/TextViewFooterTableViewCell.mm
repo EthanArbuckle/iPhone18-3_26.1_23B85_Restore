@@ -1,14 +1,14 @@
 @interface TextViewFooterTableViewCell
-- (_TtC18HealthExperienceUI27TextViewFooterTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC18HealthExperienceUI27TextViewFooterTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation TextViewFooterTableViewCell
 
-- (_TtC18HealthExperienceUI27TextViewFooterTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18HealthExperienceUI27TextViewFooterTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = _sSo19HKFeatureIdentifiera18HealthExperienceUIE2idSSvg_0();
+    identifier = _sSo19HKFeatureIdentifiera18HealthExperienceUIE2idSSvg_0();
     v6 = v5;
   }
 
@@ -17,7 +17,7 @@
     v6 = 0;
   }
 
-  return TextViewFooterTableViewCell.init(style:reuseIdentifier:)(a3, a4, v6);
+  return TextViewFooterTableViewCell.init(style:reuseIdentifier:)(style, identifier, v6);
 }
 
 @end

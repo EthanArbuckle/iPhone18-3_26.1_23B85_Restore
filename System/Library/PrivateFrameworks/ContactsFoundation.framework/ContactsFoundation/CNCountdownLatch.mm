@@ -1,16 +1,16 @@
 @interface CNCountdownLatch
-- (BOOL)awaitOnSemaphoreWithTimeout:(double)a3;
-- (BOOL)awaitWhileSpinningRunloopWithTimeout:(double)a3;
-- (BOOL)awaitWithTimeout:(double)a3 strategy:(unint64_t)a4;
+- (BOOL)awaitOnSemaphoreWithTimeout:(double)timeout;
+- (BOOL)awaitWhileSpinningRunloopWithTimeout:(double)timeout;
+- (BOOL)awaitWithTimeout:(double)timeout strategy:(unint64_t)strategy;
 - (BOOL)hasLatched;
-- (CNCountdownLatch)initWithStartingCount:(unint64_t)a3;
+- (CNCountdownLatch)initWithStartingCount:(unint64_t)count;
 - (id)description;
 - (void)countDown;
 @end
 
 @implementation CNCountdownLatch
 
-- (CNCountdownLatch)initWithStartingCount:(unint64_t)a3
+- (CNCountdownLatch)initWithStartingCount:(unint64_t)count
 {
   v12.receiver = self;
   v12.super_class = CNCountdownLatch;
@@ -18,7 +18,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_count = a3;
+    v4->_count = count;
     v6 = objc_alloc_init(CNUnfairLock);
     lock = v5->_lock;
     v5->_lock = v6;
@@ -37,9 +37,9 @@
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"count" unsignedInteger:self->_count];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 - (void)countDown
@@ -70,14 +70,14 @@ intptr_t __29__CNCountdownLatch_countDown__block_invoke(intptr_t result)
   return result;
 }
 
-- (BOOL)awaitWithTimeout:(double)a3 strategy:(unint64_t)a4
+- (BOOL)awaitWithTimeout:(double)timeout strategy:(unint64_t)strategy
 {
-  if (a3 <= 0.0)
+  if (timeout <= 0.0)
   {
     return [(CNCountdownLatch *)self awaitImmediate];
   }
 
-  if (a4 == 1)
+  if (strategy == 1)
   {
     return [(CNCountdownLatch *)self awaitWhileSpinningRunloopWithTimeout:?];
   }
@@ -104,9 +104,9 @@ intptr_t __29__CNCountdownLatch_countDown__block_invoke(intptr_t result)
   return v3;
 }
 
-- (BOOL)awaitOnSemaphoreWithTimeout:(double)a3
+- (BOOL)awaitOnSemaphoreWithTimeout:(double)timeout
 {
-  v4 = CNDispatchSemaphoreWait(self->_latchedSemaphore, a3);
+  v4 = CNDispatchSemaphoreWait(self->_latchedSemaphore, timeout);
   if (v4)
   {
     dispatch_semaphore_signal(self->_latchedSemaphore);
@@ -115,22 +115,22 @@ intptr_t __29__CNCountdownLatch_countDown__block_invoke(intptr_t result)
   return v4;
 }
 
-- (BOOL)awaitWhileSpinningRunloopWithTimeout:(double)a3
+- (BOOL)awaitWhileSpinningRunloopWithTimeout:(double)timeout
 {
-  v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:a3];
+  v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:timeout];
   do
   {
     v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:0.1];
-    v6 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [v6 runUntilDate:v5];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [currentRunLoop runUntilDate:v5];
 
-    v7 = [(CNCountdownLatch *)self hasLatched];
+    hasLatched = [(CNCountdownLatch *)self hasLatched];
     [v4 timeIntervalSinceNow];
   }
 
-  while (v8 > 0.0 && !v7);
+  while (v8 > 0.0 && !hasLatched);
 
-  return v7;
+  return hasLatched;
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface CLKGaugeSegment
-- (CLKGaugeSegment)initWithColor:(id)a3 state:(int64_t)a4;
+- (CLKGaugeSegment)initWithColor:(id)color state:(int64_t)state;
 @end
 
 @implementation CLKGaugeSegment
 
-- (CLKGaugeSegment)initWithColor:(id)a3 state:(int64_t)a4
+- (CLKGaugeSegment)initWithColor:(id)color state:(int64_t)state
 {
-  v7 = a3;
+  colorCopy = color;
   v11.receiver = self;
   v11.super_class = CLKGaugeSegment;
   v8 = [(CLKGaugeSegment *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_color, a3);
-    v9->_state = a4;
+    objc_storeStrong(&v8->_color, color);
+    v9->_state = state;
   }
 
   return v9;

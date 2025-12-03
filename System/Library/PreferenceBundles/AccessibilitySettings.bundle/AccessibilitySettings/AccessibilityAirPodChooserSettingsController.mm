@@ -1,5 +1,5 @@
 @interface AccessibilityAirPodChooserSettingsController
-- (id)_deviceConnected:(id)a3;
+- (id)_deviceConnected:(id)connected;
 - (id)specifiers;
 @end
 
@@ -13,13 +13,13 @@
     v21 = OBJC_IVAR___PSListController__specifiers;
     v4 = objc_alloc_init(NSMutableArray);
     v5 = +[AXAirPodSettingsManager sharedInstance];
-    v6 = [v5 disambiguationString];
-    v7 = [PSSpecifier groupSpecifierWithName:v6];
+    disambiguationString = [v5 disambiguationString];
+    v7 = [PSSpecifier groupSpecifierWithName:disambiguationString];
 
     v20 = v7;
     [v4 addObject:v7];
-    v8 = [(AccessibilityAirPodChooserSettingsController *)self specifier];
-    v9 = [v8 propertyForKey:@"AirPods"];
+    specifier = [(AccessibilityAirPodChooserSettingsController *)self specifier];
+    v9 = [specifier propertyForKey:@"AirPods"];
 
     v25 = 0u;
     v26 = 0u;
@@ -41,8 +41,8 @@
           }
 
           v14 = *(*(&v23 + 1) + 8 * i);
-          v15 = [v14 name];
-          v16 = [PSSpecifier preferenceSpecifierNamed:v15 target:self set:0 get:"_deviceConnected:" detail:objc_opt_class() cell:2 edit:0];
+          name = [v14 name];
+          v16 = [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:"_deviceConnected:" detail:objc_opt_class() cell:2 edit:0];
 
           v27 = v14;
           v17 = [NSArray arrayWithObjects:&v27 count:1];
@@ -66,12 +66,12 @@
   return v3;
 }
 
-- (id)_deviceConnected:(id)a3
+- (id)_deviceConnected:(id)connected
 {
-  v3 = [a3 propertyForKey:@"AirPods"];
-  v4 = [v3 firstObject];
+  v3 = [connected propertyForKey:@"AirPods"];
+  firstObject = [v3 firstObject];
 
-  if ([v4 connected])
+  if ([firstObject connected])
   {
     v5 = AXAirPodsLocalizedStringForKey();
   }

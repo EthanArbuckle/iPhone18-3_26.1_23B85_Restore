@@ -1,34 +1,34 @@
 @interface TSCH3DRayPickPipeline
-+ (id)pipelineWithScene:(id)a3 position:(void *)a4;
-- (Class)labelsMeshRendererClassForLabelsRenderer:(id)a3;
++ (id)pipelineWithScene:(id)scene position:(void *)position;
+- (Class)labelsMeshRendererClassForLabelsRenderer:(id)renderer;
 - (NSArray)pickedPoints;
 - (TSCH3DPickedPoint)pickedPoint;
-- (TSCH3DRayPickPipeline)initWithScene:(id)a3 position:(void *)a4;
+- (TSCH3DRayPickPipeline)initWithScene:(id)scene position:(void *)position;
 - (float)slack;
 - (id)p_closestPickedPoint;
 - (id)p_frontMostPickedPoint;
 - (id)p_renderProcessor;
 - (id)p_unsortedPickedPoints;
-- (void)rayPick:(id)a3;
-- (void)setSlack:(float)a3;
+- (void)rayPick:(id)pick;
+- (void)setSlack:(float)slack;
 @end
 
 @implementation TSCH3DRayPickPipeline
 
-+ (id)pipelineWithScene:(id)a3 position:(void *)a4
++ (id)pipelineWithScene:(id)scene position:(void *)position
 {
-  v6 = a3;
-  v7 = [a1 alloc];
-  v12 = objc_msgSend_initWithScene_position_(v7, v8, v9, v10, v11, v6, a4);
+  sceneCopy = scene;
+  v7 = [self alloc];
+  v12 = objc_msgSend_initWithScene_position_(v7, v8, v9, v10, v11, sceneCopy, position);
 
   return v12;
 }
 
-- (TSCH3DRayPickPipeline)initWithScene:(id)a3 position:(void *)a4
+- (TSCH3DRayPickPipeline)initWithScene:(id)scene position:(void *)position
 {
-  v6 = a3;
+  sceneCopy = scene;
   v11 = objc_msgSend_processor(TSCH3DRayPickRenderProcessor, v7, v8, v9, v10);
-  v16 = objc_msgSend_clone(v6, v12, v13, v14, v15);
+  v16 = objc_msgSend_clone(sceneCopy, v12, v13, v14, v15);
   v42.receiver = self;
   v42.super_class = TSCH3DRayPickPipeline;
   v18 = [(TSCH3DSceneRenderPipeline *)&v42 initWithProcessor:v11 session:0 scene:v16];
@@ -37,14 +37,14 @@
     v22 = objc_msgSend_cameraAndSceneTransform(TSCH3DSceneRenderSetup, v17, v19, v20, v21);
     objc_msgSend_setSetup_(v18, v23, v24, v25, v26, v22);
 
-    v18->_pickPosition.var0.var0 = *a4;
-    v18->_pickPosition.var1.var0 = *(a4 + 1);
+    v18->_pickPosition.var0.var0 = *position;
+    v18->_pickPosition.var1.var0 = *(position + 1);
     v27 = objc_alloc_init(TSCH3DRayPickPipelineDelegate);
     sceneObjectDelegate = v18->_sceneObjectDelegate;
     v18->_sceneObjectDelegate = v27;
 
     objc_msgSend_makeDelegatesFromDelegator_(v16, v29, v30, v31, v32, v18);
-    v41 = *a4;
+    v41 = *position;
     objc_msgSend_setPosition_(v11, v33, v41, v34, v35, &v41);
     objc_msgSend_setSceneObjectDelegate_(v11, v36, v37, v38, v39, v18->_sceneObjectDelegate);
   }
@@ -52,16 +52,16 @@
   return v18;
 }
 
-- (void)rayPick:(id)a3
+- (void)rayPick:(id)pick
 {
-  v4 = a3;
+  pickCopy = pick;
   objc_msgSend_setupRendering(self, v5, v6, v7, v8);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_276166A1C;
   v12[3] = &unk_27A6B62E8;
   v12[4] = self;
-  objc_msgSend_enumerateObjectsUsingBlock_(v4, v9, COERCE_DOUBLE(3221225472), v10, v11, v12);
+  objc_msgSend_enumerateObjectsUsingBlock_(pickCopy, v9, COERCE_DOUBLE(3221225472), v10, v11, v12);
 }
 
 - (id)p_unsortedPickedPoints
@@ -108,10 +108,10 @@
   return v11;
 }
 
-- (void)setSlack:(float)a3
+- (void)setSlack:(float)slack
 {
-  v10 = objc_msgSend_p_renderProcessor(self, a2, *&a3, v3, v4);
-  *&v6 = a3;
+  v10 = objc_msgSend_p_renderProcessor(self, a2, *&slack, v3, v4);
+  *&v6 = slack;
   objc_msgSend_setSlack_(v10, v7, v6, v8, v9);
 }
 
@@ -220,7 +220,7 @@
   return v10;
 }
 
-- (Class)labelsMeshRendererClassForLabelsRenderer:(id)a3
+- (Class)labelsMeshRendererClassForLabelsRenderer:(id)renderer
 {
   v3 = objc_opt_class();
 

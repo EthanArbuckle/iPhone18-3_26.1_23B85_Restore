@@ -1,18 +1,18 @@
 @interface CKAnimatedImage
-+ (id)animatedImageFromOptimizedBitmapAtFileURL:(id)a3 error:(id *)a4;
++ (id)animatedImageFromOptimizedBitmapAtFileURL:(id)l error:(id *)error;
 - (CGSize)size;
-- (CKAnimatedImage)initWithImages:(id)a3 durations:(id)a4;
-- (CKAnimatedImage)initWithMultiFrameImage:(id)a3;
+- (CKAnimatedImage)initWithImages:(id)images durations:(id)durations;
+- (CKAnimatedImage)initWithMultiFrameImage:(id)image;
 - (NSArray)frameEndTimestamps;
 - (NSArray)frameStartTimestamps;
 - (NSArray)frames;
 - (UIImage)image;
-- (double)endTimestampForFrameIndex:(unint64_t)a3;
+- (double)endTimestampForFrameIndex:(unint64_t)index;
 - (double)scale;
-- (double)timeInLoopForTime:(double)a3;
+- (double)timeInLoopForTime:(double)time;
 - (id)description;
-- (id)frameForAnimationTime:(double)a3;
-- (int64_t)frameIndexForAnimationTime:(double)a3;
+- (id)frameForAnimationTime:(double)time;
+- (int64_t)frameIndexForAnimationTime:(double)time;
 - (void)_calculateFrameTimestamps;
 @end
 
@@ -23,29 +23,29 @@
   v14.receiver = self;
   v14.super_class = CKAnimatedImage;
   v3 = [(CKAnimatedImage *)&v14 description];
-  v4 = [(CKAnimatedImage *)self image];
-  v5 = [(CKAnimatedImage *)self image];
-  v6 = [v5 images];
-  v7 = [v6 count];
-  v8 = [(CKAnimatedImage *)self image];
-  [v8 duration];
+  image = [(CKAnimatedImage *)self image];
+  image2 = [(CKAnimatedImage *)self image];
+  images = [image2 images];
+  v7 = [images count];
+  image3 = [(CKAnimatedImage *)self image];
+  [image3 duration];
   v10 = v9;
-  v11 = [(CKAnimatedImage *)self durations];
-  v12 = [v3 stringByAppendingFormat:@" (image:%@ #images:%ld duration:%f #durations:%ld)", v4, v7, v10, objc_msgSend(v11, "count")];
+  durations = [(CKAnimatedImage *)self durations];
+  v12 = [v3 stringByAppendingFormat:@" (image:%@ #images:%ld duration:%f #durations:%ld)", image, v7, v10, objc_msgSend(durations, "count")];
 
   return v12;
 }
 
-- (CKAnimatedImage)initWithImages:(id)a3 durations:(id)a4
+- (CKAnimatedImage)initWithImages:(id)images durations:(id)durations
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CKMultiFrameImage alloc] initWithFrameImages:v7 frameDurations:v6];
+  durationsCopy = durations;
+  imagesCopy = images;
+  v8 = [[CKMultiFrameImage alloc] initWithFrameImages:imagesCopy frameDurations:durationsCopy];
 
   if (v8)
   {
     self = [(CKAnimatedImage *)self initWithMultiFrameImage:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -56,16 +56,16 @@
       [CKAnimatedImage initWithImages:durations:];
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (CKAnimatedImage)initWithMultiFrameImage:(id)a3
+- (CKAnimatedImage)initWithMultiFrameImage:(id)image
 {
-  v5 = a3;
-  if (![v5 frameCount])
+  imageCopy = image;
+  if (![imageCopy frameCount])
   {
     v12 = IMLogHandleForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -76,11 +76,11 @@
     goto LABEL_10;
   }
 
-  v6 = [v5 frameCount];
-  v7 = [v5 frameDurations];
-  v8 = [v7 count];
+  frameCount = [imageCopy frameCount];
+  frameDurations = [imageCopy frameDurations];
+  v8 = [frameDurations count];
 
-  if (v6 != v8)
+  if (frameCount != v8)
   {
     v12 = IMLogHandleForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -90,7 +90,7 @@
 
 LABEL_10:
 
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -100,14 +100,14 @@ LABEL_10:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_multiFrameImage, a3);
+    objc_storeStrong(&v9->_multiFrameImage, image);
   }
 
   self = v10;
-  v11 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v11;
+  return selfCopy;
 }
 
 - (UIImage)image
@@ -119,16 +119,16 @@ LABEL_11:
     v11 = &v10;
     v12 = 0x2020000000;
     v13 = 0;
-    v4 = [(CKMultiFrameImage *)self->_multiFrameImage frameDurations];
+    frameDurations = [(CKMultiFrameImage *)self->_multiFrameImage frameDurations];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __24__CKAnimatedImage_image__block_invoke;
     v9[3] = &unk_1E72F5AB0;
     v9[4] = &v10;
-    [v4 enumerateObjectsUsingBlock:v9];
+    [frameDurations enumerateObjectsUsingBlock:v9];
 
-    v5 = [(CKMultiFrameImage *)self->_multiFrameImage loadAllFrameImages];
-    v6 = [MEMORY[0x1E69DCAB8] animatedImageWithImages:v5 duration:v11[3]];
+    loadAllFrameImages = [(CKMultiFrameImage *)self->_multiFrameImage loadAllFrameImages];
+    v6 = [MEMORY[0x1E69DCAB8] animatedImageWithImages:loadAllFrameImages duration:v11[3]];
     v7 = self->_cachedMultiFrameUIImage;
     self->_cachedMultiFrameUIImage = v6;
 
@@ -150,16 +150,16 @@ double __24__CKAnimatedImage_image__block_invoke(uint64_t a1, void *a2)
 
 - (NSArray)frames
 {
-  v2 = [(CKAnimatedImage *)self image];
-  v3 = [v2 images];
+  image = [(CKAnimatedImage *)self image];
+  images = [image images];
 
-  return v3;
+  return images;
 }
 
 - (CGSize)size
 {
-  v2 = [(CKAnimatedImage *)self image];
-  [v2 size];
+  image = [(CKAnimatedImage *)self image];
+  [image size];
   v4 = v3;
   v6 = v5;
 
@@ -172,17 +172,17 @@ double __24__CKAnimatedImage_image__block_invoke(uint64_t a1, void *a2)
 
 - (double)scale
 {
-  v2 = [(CKAnimatedImage *)self image];
-  [v2 scale];
+  image = [(CKAnimatedImage *)self image];
+  [image scale];
   v4 = v3;
 
   return v4;
 }
 
-+ (id)animatedImageFromOptimizedBitmapAtFileURL:(id)a3 error:(id *)a4
++ (id)animatedImageFromOptimizedBitmapAtFileURL:(id)l error:(id *)error
 {
   v11 = 0;
-  v5 = [CKMultiFrameImage multiFrameImageFromOptimizedBitmapAtFileURL:a3 error:&v11];
+  v5 = [CKMultiFrameImage multiFrameImageFromOptimizedBitmapAtFileURL:l error:&v11];
   v6 = v11;
   if (v5)
   {
@@ -197,11 +197,11 @@ double __24__CKAnimatedImage_image__block_invoke(uint64_t a1, void *a2)
       +[CKAnimatedImage animatedImageFromOptimizedBitmapAtFileURL:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v9 = v6;
       v7 = 0;
-      *a4 = v6;
+      *error = v6;
     }
 
     else
@@ -240,14 +240,14 @@ double __24__CKAnimatedImage_image__block_invoke(uint64_t a1, void *a2)
 - (void)_calculateFrameTimestamps
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(CKAnimatedImage *)self durations];
+  durations = [(CKAnimatedImage *)self durations];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v3;
+  v6 = durations;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -292,31 +292,31 @@ double __24__CKAnimatedImage_image__block_invoke(uint64_t a1, void *a2)
   self->_frameEndTimestamps = v18;
 }
 
-- (double)timeInLoopForTime:(double)a3
+- (double)timeInLoopForTime:(double)time
 {
-  v5 = [(CKAnimatedImage *)self frameEndTimestamps];
-  v6 = [v5 lastObject];
-  [v6 doubleValue];
+  frameEndTimestamps = [(CKAnimatedImage *)self frameEndTimestamps];
+  lastObject = [frameEndTimestamps lastObject];
+  [lastObject doubleValue];
   v8 = v7;
 
   [(CKAnimatedImage *)self animationStartTimeOffset];
-  v10 = a3 - fmax(fmin(v9, a3), 0.0);
+  v10 = time - fmax(fmin(v9, time), 0.0);
 
   return fmod(v10, v8);
 }
 
-- (double)endTimestampForFrameIndex:(unint64_t)a3
+- (double)endTimestampForFrameIndex:(unint64_t)index
 {
-  v5 = [(CKAnimatedImage *)self frameEndTimestamps];
-  v6 = [v5 count];
+  frameEndTimestamps = [(CKAnimatedImage *)self frameEndTimestamps];
+  v6 = [frameEndTimestamps count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     return 0.0;
   }
 
-  v7 = [(CKAnimatedImage *)self frameEndTimestamps];
-  v8 = [v7 objectAtIndex:a3];
+  frameEndTimestamps2 = [(CKAnimatedImage *)self frameEndTimestamps];
+  v8 = [frameEndTimestamps2 objectAtIndex:index];
 
   [v8 doubleValue];
   v10 = v9;
@@ -324,13 +324,13 @@ double __24__CKAnimatedImage_image__block_invoke(uint64_t a1, void *a2)
   return v10;
 }
 
-- (int64_t)frameIndexForAnimationTime:(double)a3
+- (int64_t)frameIndexForAnimationTime:(double)time
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = [(CKAnimatedImage *)self frameStartTimestamps];
-  v6 = [(CKAnimatedImage *)self frameEndTimestamps];
-  v7 = [v5 count];
-  [(CKAnimatedImage *)self timeInLoopForTime:a3];
+  frameStartTimestamps = [(CKAnimatedImage *)self frameStartTimestamps];
+  frameEndTimestamps = [(CKAnimatedImage *)self frameEndTimestamps];
+  v7 = [frameStartTimestamps count];
+  [(CKAnimatedImage *)self timeInLoopForTime:time];
   if (v8 == 0.0)
   {
 LABEL_2:
@@ -345,14 +345,14 @@ LABEL_2:
   if (v12 < previouslyReturnedFrameIndexHint)
   {
 LABEL_15:
-    if ([v6 count])
+    if ([frameEndTimestamps count])
     {
-      v22 = [v5 firstObject];
-      [v22 doubleValue];
+      firstObject = [frameStartTimestamps firstObject];
+      [firstObject doubleValue];
       v24 = v23;
 
-      v25 = [v6 firstObject];
-      [v25 doubleValue];
+      firstObject2 = [frameEndTimestamps firstObject];
+      [firstObject2 doubleValue];
       v27 = v26;
 
       if (v11 >= v24 && v11 < v27)
@@ -362,14 +362,14 @@ LABEL_15:
     }
 
     v28 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
-    v29 = [v5 indexOfObject:v28 inSortedRange:0 options:objc_msgSend(v5 usingComparator:{"count"), 1280, &__block_literal_global_208}];
+    v29 = [frameStartTimestamps indexOfObject:v28 inSortedRange:0 options:objc_msgSend(frameStartTimestamps usingComparator:{"count"), 1280, &__block_literal_global_208}];
 
     if (v29 <= 0)
     {
       goto LABEL_2;
     }
 
-    if (v29 <= [v5 count])
+    if (v29 <= [frameStartTimestamps count])
     {
       previouslyReturnedFrameIndexHint = v29 - 1;
       self->_previouslyReturnedFrameIndexHint = v29 - 1;
@@ -408,11 +408,11 @@ LABEL_15:
     v14 = v13 + 1;
     while (1)
     {
-      v15 = [v5 objectAtIndexedSubscript:previouslyReturnedFrameIndexHint];
+      v15 = [frameStartTimestamps objectAtIndexedSubscript:previouslyReturnedFrameIndexHint];
       [v15 doubleValue];
       v17 = v16;
 
-      v18 = [v6 objectAtIndexedSubscript:previouslyReturnedFrameIndexHint];
+      v18 = [frameEndTimestamps objectAtIndexedSubscript:previouslyReturnedFrameIndexHint];
       [v18 doubleValue];
       v20 = v19;
 
@@ -435,12 +435,12 @@ LABEL_3:
   return previouslyReturnedFrameIndexHint;
 }
 
-- (id)frameForAnimationTime:(double)a3
+- (id)frameForAnimationTime:(double)time
 {
-  v4 = [(CKAnimatedImage *)self frameIndexForAnimationTime:a3];
-  v5 = [(CKAnimatedImage *)self frames];
-  v6 = v5;
-  if ((v4 & 0x8000000000000000) != 0 || v4 >= [v5 count])
+  v4 = [(CKAnimatedImage *)self frameIndexForAnimationTime:time];
+  frames = [(CKAnimatedImage *)self frames];
+  v6 = frames;
+  if ((v4 & 0x8000000000000000) != 0 || v4 >= [frames count])
   {
     v8 = IMLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -448,15 +448,15 @@ LABEL_3:
       [CKAnimatedImage frameForAnimationTime:];
     }
 
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
   else
   {
-    v7 = [v6 objectAtIndexedSubscript:v4];
+    firstObject = [v6 objectAtIndexedSubscript:v4];
   }
 
-  v9 = v7;
+  v9 = firstObject;
 
   return v9;
 }

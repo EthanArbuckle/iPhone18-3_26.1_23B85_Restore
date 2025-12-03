@@ -1,9 +1,9 @@
 @interface SUShortLinkCellConfiguration
-+ (double)rowHeightForContext:(id)a3 representedObject:(id)a4;
++ (double)rowHeightForContext:(id)context representedObject:(id)object;
 + (id)copyDefaultContext;
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4;
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers;
 - (id)copyImageDataProvider;
-- (id)fontForLabelAtIndex:(unint64_t)a3;
+- (id)fontForLabelAtIndex:(unint64_t)index;
 - (void)reloadLayoutInformation;
 - (void)reloadStrings;
 @end
@@ -12,7 +12,7 @@
 
 + (id)copyDefaultContext
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___SUShortLinkCellConfiguration;
   v2 = objc_msgSendSuper2(&v6, sel_copyDefaultContext);
   v3 = SUTableCellCopyImageProviderForSize(55.0, 55.0);
@@ -24,12 +24,12 @@
   return v2;
 }
 
-+ (double)rowHeightForContext:(id)a3 representedObject:(id)a4
++ (double)rowHeightForContext:(id)context representedObject:(id)object
 {
-  if ([a4 secondaryTitle] || objc_msgSend(a4, "artistName"))
+  if ([object secondaryTitle] || objc_msgSend(object, "artistName"))
   {
     v6 = 1;
-    if (a3)
+    if (context)
     {
       goto LABEL_4;
     }
@@ -37,16 +37,16 @@
     return 56.0;
   }
 
-  v6 = [a4 containerName] != 0;
-  if (!a3)
+  v6 = [object containerName] != 0;
+  if (!context)
   {
     return 56.0;
   }
 
 LABEL_4:
-  v7 = [a3 itemsHaveArtwork];
+  itemsHaveArtwork = [context itemsHaveArtwork];
   result = 45.0;
-  if ((v7 | v6))
+  if ((itemsHaveArtwork | v6))
   {
     return 56.0;
   }
@@ -54,14 +54,14 @@ LABEL_4:
   return result;
 }
 
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers
 {
-  if (a4)
+  if (modifiers)
   {
     return [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  if ((a4 & 2) != 0)
+  if ((modifiers & 2) != 0)
   {
     v4 = MEMORY[0x1E69DC888];
   }
@@ -69,7 +69,7 @@ LABEL_4:
   else
   {
     v4 = MEMORY[0x1E69DC888];
-    if (a3 == 2)
+    if (index == 2)
     {
       return [MEMORY[0x1E69DC888] blackColor];
     }
@@ -82,18 +82,18 @@ LABEL_4:
 {
   v5.receiver = self;
   v5.super_class = SUShortLinkCellConfiguration;
-  v3 = [(SUMediaItemCellConfiguration *)&v5 copyImageDataProvider];
+  copyImageDataProvider = [(SUMediaItemCellConfiguration *)&v5 copyImageDataProvider];
   if (SUItemTypeIsVideoType([self->super.super.super.super.super._representedObject itemType]))
   {
-    [v3 setFillColor:{objc_msgSend(MEMORY[0x1E69DC888], "blackColor")}];
+    [copyImageDataProvider setFillColor:{objc_msgSend(MEMORY[0x1E69DC888], "blackColor")}];
   }
 
-  return v3;
+  return copyImageDataProvider;
 }
 
-- (id)fontForLabelAtIndex:(unint64_t)a3
+- (id)fontForLabelAtIndex:(unint64_t)index
 {
-  if (a3 == 3)
+  if (index == 3)
   {
 LABEL_4:
     v3 = MEMORY[0x1E69DB878];
@@ -101,9 +101,9 @@ LABEL_4:
     return [v3 systemFontOfSize:13.0];
   }
 
-  if (a3 != 2)
+  if (index != 2)
   {
-    if (a3 != 1)
+    if (index != 1)
     {
       return 0;
     }
@@ -212,10 +212,10 @@ LABEL_7:
 
   else
   {
-    v20 = [self->super.super.super.super.super._context itemsHaveArtwork];
+    itemsHaveArtwork = [self->super.super.super.super.super._context itemsHaveArtwork];
     v21 = self->super.super.super.super._stringFrames;
     v21[2].origin.x = v11;
-    if (v20)
+    if (itemsHaveArtwork)
     {
       v22 = 0x4030000000000000;
     }
@@ -236,34 +236,34 @@ LABEL_7:
   v9.receiver = self;
   v9.super_class = SUShortLinkCellConfiguration;
   [(SUMediaItemCellConfiguration *)&v9 reloadStrings];
-  v3 = [self->super.super.super.super.super._representedObject title];
+  title = [self->super.super.super.super.super._representedObject title];
 
-  v4 = [v3 length];
+  v4 = [title length];
   if (v4)
   {
-    v4 = v3;
+    v4 = title;
   }
 
   *(self->super.super.super.super._strings + 2) = v4;
-  v5 = [self->super.super.super.super.super._representedObject containerName];
-  if (![v5 length])
+  containerName = [self->super.super.super.super.super._representedObject containerName];
+  if (![containerName length])
   {
-    v5 = [self->super.super.super.super.super._representedObject artistName];
+    containerName = [self->super.super.super.super.super._representedObject artistName];
   }
 
-  v6 = [v5 length];
+  v6 = [containerName length];
   if (v6)
   {
-    v6 = v5;
+    v6 = containerName;
   }
 
   *(self->super.super.super.super._strings + 1) = v6;
-  v7 = [self->super.super.super.super.super._representedObject secondaryTitle];
+  secondaryTitle = [self->super.super.super.super.super._representedObject secondaryTitle];
 
-  v8 = [v7 length];
+  v8 = [secondaryTitle length];
   if (v8)
   {
-    v8 = v7;
+    v8 = secondaryTitle;
   }
 
   *(self->super.super.super.super._strings + 3) = v8;

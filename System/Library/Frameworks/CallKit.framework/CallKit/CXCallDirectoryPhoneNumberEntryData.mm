@@ -1,8 +1,8 @@
 @interface CXCallDirectoryPhoneNumberEntryData
 - (CXCallDirectoryPhoneNumberEntryData)init;
-- (CXCallDirectoryPhoneNumberEntryData)initWithCoder:(id)a3;
-- (int64_t)phoneNumberAtIndex:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CXCallDirectoryPhoneNumberEntryData)initWithCoder:(id)coder;
+- (int64_t)phoneNumberAtIndex:(unint64_t)index;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CXCallDirectoryPhoneNumberEntryData
@@ -14,24 +14,24 @@
   v2 = [(CXCallDirectoryPhoneNumberEntryData *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
     phoneNumberData = v2->_phoneNumberData;
-    v2->_phoneNumberData = v3;
+    v2->_phoneNumberData = data;
   }
 
   return v2;
 }
 
-- (int64_t)phoneNumberAtIndex:(unint64_t)a3
+- (int64_t)phoneNumberAtIndex:(unint64_t)index
 {
   v4 = 0;
-  [(NSData *)self->_phoneNumberData getBytes:&v4 range:8 * a3, 8];
+  [(NSData *)self->_phoneNumberData getBytes:&v4 range:8 * index, 8];
   return v4;
 }
 
-- (CXCallDirectoryPhoneNumberEntryData)initWithCoder:(id)a3
+- (CXCallDirectoryPhoneNumberEntryData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CXCallDirectoryPhoneNumberEntryData;
   v5 = [(CXCallDirectoryPhoneNumberEntryData *)&v11 init];
@@ -39,7 +39,7 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_phoneNumberData);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     phoneNumberData = v5->_phoneNumberData;
     v5->_phoneNumberData = v8;
   }
@@ -47,12 +47,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(CXCallDirectoryPhoneNumberEntryData *)self phoneNumberData];
+  coderCopy = coder;
+  phoneNumberData = [(CXCallDirectoryPhoneNumberEntryData *)self phoneNumberData];
   v5 = NSStringFromSelector(sel_phoneNumberData);
-  [v4 encodeObject:v6 forKey:v5];
+  [coderCopy encodeObject:phoneNumberData forKey:v5];
 }
 
 @end

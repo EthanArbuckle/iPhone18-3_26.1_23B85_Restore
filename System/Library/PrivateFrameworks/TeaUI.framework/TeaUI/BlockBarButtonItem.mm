@@ -1,21 +1,21 @@
 @interface BlockBarButtonItem
 - (NSString)accessibilityLabel;
-- (void)barButtonItemPressedWithSender:(id)a3;
-- (void)setAccessibilityLabel:(id)a3;
+- (void)barButtonItemPressedWithSender:(id)sender;
+- (void)setAccessibilityLabel:(id)label;
 @end
 
 @implementation BlockBarButtonItem
 
-- (void)barButtonItemPressedWithSender:(id)a3
+- (void)barButtonItemPressedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_1D806ABF8();
 }
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D806AD4C();
   v4 = v3;
 
@@ -32,9 +32,9 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     v4 = sub_1D8190F14();
     v6 = v5;
@@ -46,7 +46,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1D806AE6C(v4, v6);
 }
 

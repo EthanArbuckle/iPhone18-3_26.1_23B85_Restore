@@ -1,6 +1,6 @@
 @interface MTRDeviceEnergyManagementClusterConstraintsStruct
 - (MTRDeviceEnergyManagementClusterConstraintsStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,23 +33,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDeviceEnergyManagementClusterConstraintsStruct);
-  v5 = [(MTRDeviceEnergyManagementClusterConstraintsStruct *)self startTime];
-  [(MTRDeviceEnergyManagementClusterConstraintsStruct *)v4 setStartTime:v5];
+  startTime = [(MTRDeviceEnergyManagementClusterConstraintsStruct *)self startTime];
+  [(MTRDeviceEnergyManagementClusterConstraintsStruct *)v4 setStartTime:startTime];
 
-  v6 = [(MTRDeviceEnergyManagementClusterConstraintsStruct *)self duration];
-  [(MTRDeviceEnergyManagementClusterConstraintsStruct *)v4 setDuration:v6];
+  duration = [(MTRDeviceEnergyManagementClusterConstraintsStruct *)self duration];
+  [(MTRDeviceEnergyManagementClusterConstraintsStruct *)v4 setDuration:duration];
 
-  v7 = [(MTRDeviceEnergyManagementClusterConstraintsStruct *)self nominalPower];
-  [(MTRDeviceEnergyManagementClusterConstraintsStruct *)v4 setNominalPower:v7];
+  nominalPower = [(MTRDeviceEnergyManagementClusterConstraintsStruct *)self nominalPower];
+  [(MTRDeviceEnergyManagementClusterConstraintsStruct *)v4 setNominalPower:nominalPower];
 
-  v8 = [(MTRDeviceEnergyManagementClusterConstraintsStruct *)self maximumEnergy];
-  [(MTRDeviceEnergyManagementClusterConstraintsStruct *)v4 setMaximumEnergy:v8];
+  maximumEnergy = [(MTRDeviceEnergyManagementClusterConstraintsStruct *)self maximumEnergy];
+  [(MTRDeviceEnergyManagementClusterConstraintsStruct *)v4 setMaximumEnergy:maximumEnergy];
 
-  v9 = [(MTRDeviceEnergyManagementClusterConstraintsStruct *)self loadControl];
-  [(MTRDeviceEnergyManagementClusterConstraintsStruct *)v4 setLoadControl:v9];
+  loadControl = [(MTRDeviceEnergyManagementClusterConstraintsStruct *)self loadControl];
+  [(MTRDeviceEnergyManagementClusterConstraintsStruct *)v4 setLoadControl:loadControl];
 
   return v4;
 }

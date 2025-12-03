@@ -1,13 +1,13 @@
 @interface MoreMenuBarButtonItem
 - (UIMenu)menu;
 - (_TtC7Journal21MoreMenuBarButtonItem)init;
-- (_TtC7Journal21MoreMenuBarButtonItem)initWithCoder:(id)a3;
-- (void)setMenu:(id)a3;
+- (_TtC7Journal21MoreMenuBarButtonItem)initWithCoder:(id)coder;
+- (void)setMenu:(id)menu;
 @end
 
 @implementation MoreMenuBarButtonItem
 
-- (_TtC7Journal21MoreMenuBarButtonItem)initWithCoder:(id)a3
+- (_TtC7Journal21MoreMenuBarButtonItem)initWithCoder:(id)coder
 {
   type metadata accessor for MoreMenuBarButtonItem();
   swift_deallocPartialClassInstance();
@@ -18,18 +18,18 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for MoreMenuBarButtonItem();
-  v2 = [(MoreMenuBarButtonItem *)&v4 menu];
+  menu = [(MoreMenuBarButtonItem *)&v4 menu];
 
-  return v2;
+  return menu;
 }
 
-- (void)setMenu:(id)a3
+- (void)setMenu:(id)menu
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for MoreMenuBarButtonItem();
-  v4 = a3;
+  menuCopy = menu;
   v5 = v6.receiver;
-  [(MoreMenuBarButtonItem *)&v6 setMenu:v4];
+  [(MoreMenuBarButtonItem *)&v6 setMenu:menuCopy];
   sub_100246E64();
 }
 

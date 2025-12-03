@@ -1,5 +1,5 @@
 @interface __NSArrayReverseEnumerator
-- (__NSArrayReverseEnumerator)initWithObject:(id)a3;
+- (__NSArrayReverseEnumerator)initWithObject:(id)object;
 - (id)nextObject;
 - (void)dealloc;
 @end
@@ -38,7 +38,7 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (__NSArrayReverseEnumerator)initWithObject:(id)a3
+- (__NSArrayReverseEnumerator)initWithObject:(id)object
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -46,8 +46,8 @@
   v4 = [(__NSArrayReverseEnumerator *)&v7 init];
   if (v4)
   {
-    v4->_obj = a3;
-    v4->_idx = [a3 count];
+    v4->_obj = object;
+    v4->_idx = [object count];
   }
 
   v5 = *MEMORY[0x1E69E9840];

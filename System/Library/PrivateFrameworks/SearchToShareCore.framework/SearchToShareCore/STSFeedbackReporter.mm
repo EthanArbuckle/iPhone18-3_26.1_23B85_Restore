@@ -1,27 +1,27 @@
 @interface STSFeedbackReporter
 + (STSFeedbackReporter)sharedInstance;
-- (id)didStartNetworkRequest:(id)a3 query:(id)a4 queryId:(unint64_t)a5;
+- (id)didStartNetworkRequest:(id)request query:(id)query queryId:(unint64_t)id;
 - (void)didClearRecents;
 - (void)didClearSearchBarInput;
-- (void)didEndNetworkRequest:(id)a3 infoDict:(id)a4;
-- (void)didEngageCategoryResult:(id)a3 suggestion:(id)a4;
+- (void)didEndNetworkRequest:(id)request infoDict:(id)dict;
+- (void)didEngageCategoryResult:(id)result suggestion:(id)suggestion;
 - (void)didEngageProviderLogo;
-- (void)didEngageResult:(id)a3;
-- (void)didGoToSearch:(id)a3;
-- (void)didLoadCategoryResults:(id)a3 recents:(id)a4 queryId:(unint64_t)a5;
-- (void)didLoadResults:(id)a3 indexPaths:(id)a4 queryId:(unint64_t)a5;
-- (void)didPreviewResult:(id)a3 peek:(BOOL)a4;
-- (void)didPreviewResultLongPress:(id)a3;
-- (void)didReportConcern:(id)a3 punchout:(id)a4;
-- (void)didSearchWithCustomQuery:(id)a3;
-- (void)didSearchWithSuggestedQuery:(id)a3;
-- (void)didShowProactiveCategories:(id)a3 conversationId:(id)a4;
-- (void)didShowProactiveSuggestions:(id)a3 conversationId:(id)a4;
-- (void)didShowQuerySuggestions:(id)a3 queryId:(unint64_t)a4;
-- (void)didShowResults:(id)a3 scrolling:(BOOL)a4;
-- (void)didShowResults:(id)a3 trigger:(unint64_t)a4;
+- (void)didEngageResult:(id)result;
+- (void)didGoToSearch:(id)search;
+- (void)didLoadCategoryResults:(id)results recents:(id)recents queryId:(unint64_t)id;
+- (void)didLoadResults:(id)results indexPaths:(id)paths queryId:(unint64_t)id;
+- (void)didPreviewResult:(id)result peek:(BOOL)peek;
+- (void)didPreviewResultLongPress:(id)press;
+- (void)didReportConcern:(id)concern punchout:(id)punchout;
+- (void)didSearchWithCustomQuery:(id)query;
+- (void)didSearchWithSuggestedQuery:(id)query;
+- (void)didShowProactiveCategories:(id)categories conversationId:(id)id;
+- (void)didShowProactiveSuggestions:(id)suggestions conversationId:(id)id;
+- (void)didShowQuerySuggestions:(id)suggestions queryId:(unint64_t)id;
+- (void)didShowResults:(id)results scrolling:(BOOL)scrolling;
+- (void)didShowResults:(id)results trigger:(unint64_t)trigger;
 - (void)searchBarDidCancel;
-- (void)searchViewDidAppearWithEvent:(unint64_t)a3;
+- (void)searchViewDidAppearWithEvent:(unint64_t)event;
 - (void)searchViewDidDisappear;
 @end
 
@@ -48,9 +48,9 @@ uint64_t __37__STSFeedbackReporter_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)searchViewDidAppearWithEvent:(unint64_t)a3
+- (void)searchViewDidAppearWithEvent:(unint64_t)event
 {
-  v4 = [objc_alloc(MEMORY[0x277D4C5E0]) initWithEvent:a3];
+  v4 = [objc_alloc(MEMORY[0x277D4C5E0]) initWithEvent:event];
   [(PARSession *)self->_parsecSession reportFeedback:v4 queryId:+[STSSearchModel clientQueryId]];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -59,17 +59,17 @@ uint64_t __37__STSFeedbackReporter_sharedInstance__block_invoke()
   }
 }
 
-- (void)didLoadCategoryResults:(id)a3 recents:(id)a4 queryId:(unint64_t)a5
+- (void)didLoadCategoryResults:(id)results recents:(id)recents queryId:(unint64_t)id
 {
-  v16 = a3;
-  v7 = a4;
-  v8 = [v7 sts_map:&__block_literal_global_6];
-  v9 = [v16 sts_map:&__block_literal_global_9];
-  if ([v7 count])
+  resultsCopy = results;
+  recentsCopy = recents;
+  v8 = [recentsCopy sts_map:&__block_literal_global_6];
+  v9 = [resultsCopy sts_map:&__block_literal_global_9];
+  if ([recentsCopy count])
   {
     v10 = objc_alloc_init(MEMORY[0x277D4C588]);
     [v10 setBundleIdentifier:@"com.apple.hashtagimages.categorylist.recents"];
-    [v10 setResults:v7];
+    [v10 setResults:recentsCopy];
   }
 
   else
@@ -77,11 +77,11 @@ uint64_t __37__STSFeedbackReporter_sharedInstance__block_invoke()
     v10 = 0;
   }
 
-  if ([v16 count])
+  if ([resultsCopy count])
   {
     v11 = objc_alloc_init(MEMORY[0x277D4C588]);
     [v11 setBundleIdentifier:@"com.apple.hashtagimages.categorylist.categories"];
-    [v11 setResults:v16];
+    [v11 setResults:resultsCopy];
   }
 
   else
@@ -127,24 +127,24 @@ id __62__STSFeedbackReporter_didLoadCategoryResults_recents_queryId___block_invo
   return v6;
 }
 
-- (void)didLoadResults:(id)a3 indexPaths:(id)a4 queryId:(unint64_t)a5
+- (void)didLoadResults:(id)results indexPaths:(id)paths queryId:(unint64_t)id
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  pathsCopy = paths;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __57__STSFeedbackReporter_didLoadResults_indexPaths_queryId___block_invoke;
   v18[3] = &unk_279B8B938;
-  v19 = v7;
-  v8 = v7;
-  v9 = a3;
-  v10 = [v9 sts_map:v18];
+  v19 = pathsCopy;
+  v8 = pathsCopy;
+  resultsCopy = results;
+  v10 = [resultsCopy sts_map:v18];
   v11 = objc_alloc_init(MEMORY[0x277D4C588]);
-  v12 = [v9 firstObject];
-  v13 = [v12 sectionBundleIdentifier];
-  [v11 setBundleIdentifier:v13];
+  firstObject = [resultsCopy firstObject];
+  sectionBundleIdentifier = [firstObject sectionBundleIdentifier];
+  [v11 setBundleIdentifier:sectionBundleIdentifier];
 
-  [v11 setResults:v9];
+  [v11 setResults:resultsCopy];
   v14 = [objc_alloc(MEMORY[0x277D4C608]) initWithResults:v10 section:v11 localSectionPosition:0 personalizationScore:0.0];
   v15 = objc_alloc(MEMORY[0x277D4C568]);
   v20[0] = v14;
@@ -165,9 +165,9 @@ id __57__STSFeedbackReporter_didLoadResults_indexPaths_queryId___block_invoke(ui
   return v9;
 }
 
-- (void)didShowResults:(id)a3 scrolling:(BOOL)a4
+- (void)didShowResults:(id)results scrolling:(BOOL)scrolling
 {
-  if (a4)
+  if (scrolling)
   {
     v5 = 2;
   }
@@ -178,28 +178,28 @@ id __57__STSFeedbackReporter_didLoadResults_indexPaths_queryId___block_invoke(ui
   }
 
   v6 = MEMORY[0x277D4C6F0];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithResults:v7 triggerEvent:v5];
+  resultsCopy = results;
+  v8 = [[v6 alloc] initWithResults:resultsCopy triggerEvent:v5];
 
   [(PARSession *)self->_parsecSession reportFeedback:v8 queryId:+[STSSearchModel clientQueryId]];
 }
 
-- (void)didShowResults:(id)a3 trigger:(unint64_t)a4
+- (void)didShowResults:(id)results trigger:(unint64_t)trigger
 {
   v6 = MEMORY[0x277D4C6F0];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithResults:v7 triggerEvent:a4];
+  resultsCopy = results;
+  v8 = [[v6 alloc] initWithResults:resultsCopy triggerEvent:trigger];
 
   [(PARSession *)self->_parsecSession reportFeedback:v8 queryId:+[STSSearchModel clientQueryId]];
 }
 
-- (void)didPreviewResult:(id)a3 peek:(BOOL)a4
+- (void)didPreviewResult:(id)result peek:(BOOL)peek
 {
-  v4 = a4;
+  peekCopy = peek;
   v6 = MEMORY[0x277D4C578];
-  v7 = a3;
+  resultCopy = result;
   v8 = [v6 alloc];
-  if (v4)
+  if (peekCopy)
   {
     v9 = 5;
   }
@@ -209,35 +209,35 @@ id __57__STSFeedbackReporter_didLoadResults_indexPaths_queryId___block_invoke(ui
     v9 = 6;
   }
 
-  v10 = [v8 initWithResult:v7 triggerEvent:v9 destination:3];
+  v10 = [v8 initWithResult:resultCopy triggerEvent:v9 destination:3];
 
   [(PARSession *)self->_parsecSession reportFeedback:v10 queryId:+[STSSearchModel clientQueryId]];
 }
 
-- (void)didPreviewResultLongPress:(id)a3
+- (void)didPreviewResultLongPress:(id)press
 {
   v4 = MEMORY[0x277D4C578];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithResult:v5 triggerEvent:7 destination:3];
+  pressCopy = press;
+  v6 = [[v4 alloc] initWithResult:pressCopy triggerEvent:7 destination:3];
 
   [(PARSession *)self->_parsecSession reportFeedback:v6 queryId:+[STSSearchModel clientQueryId]];
 }
 
-- (void)didShowProactiveSuggestions:(id)a3 conversationId:(id)a4
+- (void)didShowProactiveSuggestions:(id)suggestions conversationId:(id)id
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  [(STSFeedbackReporter *)self didShowQuerySuggestions:v7 queryId:0];
+  idCopy = id;
+  suggestionsCopy = suggestions;
+  [(STSFeedbackReporter *)self didShowQuerySuggestions:suggestionsCopy queryId:0];
   v8 = &stru_2876AE098;
-  if (v6)
+  if (idCopy)
   {
-    v8 = v6;
+    v8 = idCopy;
   }
 
   v9 = v8;
 
-  v10 = [v7 sts_map:&__block_literal_global_28];
+  v10 = [suggestionsCopy sts_map:&__block_literal_global_28];
 
   v20[0] = @"name";
   v20[1] = @"predictions";
@@ -255,20 +255,20 @@ id __57__STSFeedbackReporter_didLoadResults_indexPaths_queryId___block_invoke(ui
   v13 = [objc_alloc(MEMORY[0x277D4C310]) initWithType:0 jsonFeedback:v12];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(__CFString *)v9 UTF8String];
+    uTF8String = [(__CFString *)v9 UTF8String];
     v15 = [v10 componentsJoinedByString:{@", "}];
     v16 = 136315394;
-    v17 = v14;
+    v17 = uTF8String;
     v18 = 2080;
-    v19 = [v15 UTF8String];
+    uTF8String2 = [v15 UTF8String];
     _os_log_impl(&dword_264E95000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Feedback: Showed predictions(%s): %s", &v16, 0x16u);
   }
 }
 
-- (void)didShowQuerySuggestions:(id)a3 queryId:(unint64_t)a4
+- (void)didShowQuerySuggestions:(id)suggestions queryId:(unint64_t)id
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = [a3 sts_map:&__block_literal_global_48];
+  v6 = [suggestions sts_map:&__block_literal_global_48];
   v7 = [v6 sts_map:&__block_literal_global_66];
   v8 = objc_alloc_init(MEMORY[0x277D4C588]);
   [v8 setBundleIdentifier:@"com.apple.hashtagimages.querysuggestions"];
@@ -279,7 +279,7 @@ id __57__STSFeedbackReporter_didLoadResults_indexPaths_queryId___block_invoke(ui
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
   v12 = [v10 initWithSections:v11 blendingDuration:0.0];
 
-  [(PARSession *)self->_parsecSession reportFeedback:v12 queryId:a4];
+  [(PARSession *)self->_parsecSession reportFeedback:v12 queryId:id];
   v13 = [objc_alloc(MEMORY[0x277D4C6F0]) initWithResults:v6 triggerEvent:1];
   [(PARSession *)self->_parsecSession reportFeedback:v13 queryId:+[STSSearchModel clientQueryId]];
 }
@@ -320,11 +320,11 @@ id __55__STSFeedbackReporter_didShowQuerySuggestions_queryId___block_invoke_2(ui
   return v6;
 }
 
-- (void)didShowProactiveCategories:(id)a3 conversationId:(id)a4
+- (void)didShowProactiveCategories:(id)categories conversationId:(id)id
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 sts_map:&__block_literal_global_68];
+  idCopy = id;
+  v6 = [categories sts_map:&__block_literal_global_68];
   v7 = v6;
   v18[0] = @"name";
   v18[1] = @"categories";
@@ -337,9 +337,9 @@ id __55__STSFeedbackReporter_didShowQuerySuggestions_queryId___block_invoke_2(ui
   v19[0] = @"com.apple.suggestd.categoriesshowed";
   v19[1] = v8;
   v18[2] = @"conversationId";
-  if (v5)
+  if (idCopy)
   {
-    v9 = v5;
+    v9 = idCopy;
   }
 
   else
@@ -352,12 +352,12 @@ id __55__STSFeedbackReporter_didShowQuerySuggestions_queryId___block_invoke_2(ui
   v11 = [objc_alloc(MEMORY[0x277D4C310]) initWithType:0 jsonFeedback:v10];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(__CFString *)v5 UTF8String];
+    uTF8String = [(__CFString *)idCopy UTF8String];
     v13 = [v7 componentsJoinedByString:{@", "}];
     v14 = 136315394;
-    v15 = v12;
+    v15 = uTF8String;
     v16 = 2080;
-    v17 = [v13 UTF8String];
+    uTF8String2 = [v13 UTF8String];
     _os_log_impl(&dword_264E95000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Feedback: Showed categories(%s): %s", &v14, 0x16u);
   }
 }
@@ -382,41 +382,41 @@ __CFString *__65__STSFeedbackReporter_didShowProactiveCategories_conversationId_
   return v5;
 }
 
-- (void)didSearchWithCustomQuery:(id)a3
+- (void)didSearchWithCustomQuery:(id)query
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  queryCopy = query;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315138;
-    v6 = [v3 UTF8String];
+    uTF8String = [queryCopy UTF8String];
     _os_log_impl(&dword_264E95000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Feedback: Search custom query: %s", &v5, 0xCu);
   }
 
-  v4 = [objc_alloc(MEMORY[0x277D4C668]) initWithInput:v3 triggerEvent:2];
+  v4 = [objc_alloc(MEMORY[0x277D4C668]) initWithInput:queryCopy triggerEvent:2];
   ADClientAddValueForScalarKey();
 }
 
-- (void)didSearchWithSuggestedQuery:(id)a3
+- (void)didSearchWithSuggestedQuery:(id)query
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277D4C680]) initWithSuggestion:v4];
-  v6 = [v4 suggestion];
-  v7 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v8 = [v6 componentsSeparatedByCharactersInSet:v7];
+  queryCopy = query;
+  v5 = [objc_alloc(MEMORY[0x277D4C680]) initWithSuggestion:queryCopy];
+  suggestion = [queryCopy suggestion];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v8 = [suggestion componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
   v9 = [v8 componentsJoinedByString:@"_"];
   v10 = objc_alloc_init(MEMORY[0x277D4C5D0]);
   v11 = MEMORY[0x277D4C690];
-  v12 = [v4 suggestion];
-  v13 = [v11 textWithString:v12];
+  suggestion2 = [queryCopy suggestion];
+  v13 = [v11 textWithString:suggestion2];
   [v10 setTitle:v13];
 
   v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"msgs-sug:%@", v9];
   [v10 setIdentifier:v14];
 
-  v15 = [v4 fbr];
+  v15 = [queryCopy fbr];
   [v10 setFbr:v15];
 
   [v10 setSectionBundleIdentifier:@"com.apple.hashtagimages.querysuggestions"];
@@ -428,53 +428,53 @@ __CFString *__65__STSFeedbackReporter_didShowProactiveCategories_conversationId_
   ADClientAddValueForScalarKey();
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v4 suggestion];
+    suggestion3 = [queryCopy suggestion];
     *buf = 136315138;
-    v19 = [v17 UTF8String];
+    uTF8String = [suggestion3 UTF8String];
     _os_log_impl(&dword_264E95000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Feedback: Search suggestion %s", buf, 0xCu);
   }
 }
 
-- (void)didEngageResult:(id)a3
+- (void)didEngageResult:(id)result
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277D4C578]) initWithResult:v4 triggerEvent:2 destination:4];
+  resultCopy = result;
+  v5 = [objc_alloc(MEMORY[0x277D4C578]) initWithResult:resultCopy triggerEvent:2 destination:4];
   [v5 setQueryId:{+[STSSearchModel clientQueryId](STSSearchModel, "clientQueryId")}];
   [(PARSession *)self->_parsecSession reportEvent:v5];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 title];
-    v7 = [v6 text];
+    title = [resultCopy title];
+    text = [title text];
     v8 = 136315138;
-    v9 = [v7 UTF8String];
+    uTF8String = [text UTF8String];
     _os_log_impl(&dword_264E95000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Feedback: Engaged result %s", &v8, 0xCu);
   }
 }
 
-- (void)didEngageCategoryResult:(id)a3 suggestion:(id)a4
+- (void)didEngageCategoryResult:(id)result suggestion:(id)suggestion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277D4C578]) initWithResult:v6 triggerEvent:2 destination:0];
+  resultCopy = result;
+  suggestionCopy = suggestion;
+  v8 = [objc_alloc(MEMORY[0x277D4C578]) initWithResult:resultCopy triggerEvent:2 destination:0];
   [v8 setQueryId:{+[STSSearchModel clientQueryId](STSSearchModel, "clientQueryId")}];
   [(PARSession *)self->_parsecSession reportEvent:v8];
-  v9 = [v7 prediction];
+  prediction = [suggestionCopy prediction];
 
-  if (v9)
+  if (prediction)
   {
-    v10 = [v7 prediction];
+    prediction2 = [suggestionCopy prediction];
 
-    v7 = v10;
+    suggestionCopy = prediction2;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 title];
-    v12 = [v11 text];
+    title = [resultCopy title];
+    text = [title text];
     v13 = 136315138;
-    v14 = [v12 UTF8String];
+    uTF8String = [text UTF8String];
     _os_log_impl(&dword_264E95000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Feedback: Engaged category %s", &v13, 0xCu);
   }
 }
@@ -515,30 +515,30 @@ __CFString *__65__STSFeedbackReporter_didShowProactiveCategories_conversationId_
   }
 }
 
-- (id)didStartNetworkRequest:(id)a3 query:(id)a4 queryId:(unint64_t)a5
+- (id)didStartNetworkRequest:(id)request query:(id)query queryId:(unint64_t)id
 {
   v7 = MEMORY[0x277D4C660];
-  v8 = a4;
-  v9 = a3;
+  queryCopy = query;
+  requestCopy = request;
   v10 = [v7 alloc];
-  v11 = [v9 absoluteString];
+  absoluteString = [requestCopy absoluteString];
 
-  v12 = [v10 initWithInput:v8 url:v11 headers:MEMORY[0x277CBEC10] triggerEvent:15 endpoint:7];
+  v12 = [v10 initWithInput:queryCopy url:absoluteString headers:MEMORY[0x277CBEC10] triggerEvent:15 endpoint:7];
   [v12 setQueryId:{+[STSSearchModel clientQueryId](STSSearchModel, "clientQueryId")}];
   [(PARSession *)self->_parsecSession didStartSearch:v12];
 
   return v12;
 }
 
-- (void)didEndNetworkRequest:(id)a3 infoDict:(id)a4
+- (void)didEndNetworkRequest:(id)request infoDict:(id)dict
 {
-  v15 = a4;
+  dictCopy = dict;
   parsecSession = self->_parsecSession;
-  v7 = a3;
+  requestCopy = request;
   v8 = [(PARSession *)parsecSession bag];
   if ([v8 imageTimingFeedbackEnabled])
   {
-    v9 = [v15 objectForKey:@"STSImageDownloadOperationTimingData"];
+    v9 = [dictCopy objectForKey:@"STSImageDownloadOperationTimingData"];
   }
 
   else
@@ -547,10 +547,10 @@ __CFString *__65__STSFeedbackReporter_didShowProactiveCategories_conversationId_
   }
 
   v10 = objc_alloc(MEMORY[0x277D4C350]);
-  v11 = [v15 objectForKey:@"STSImageDownloadOperationSize"];
-  v12 = [v11 intValue];
-  v13 = [v15 objectForKey:@"STSImageDownloadOperationStatusCode"];
-  v14 = [v10 initWithStartSearch:v7 responseSize:v12 statusCode:objc_msgSend(v13 networkTimingData:{"intValue"), v9}];
+  v11 = [dictCopy objectForKey:@"STSImageDownloadOperationSize"];
+  intValue = [v11 intValue];
+  v13 = [dictCopy objectForKey:@"STSImageDownloadOperationStatusCode"];
+  v14 = [v10 initWithStartSearch:requestCopy responseSize:intValue statusCode:objc_msgSend(v13 networkTimingData:{"intValue"), v9}];
 
   [v14 setQueryId:{+[STSSearchModel clientQueryId](STSSearchModel, "clientQueryId")}];
   [(PARSession *)self->_parsecSession didEndSearch:v14];
@@ -571,22 +571,22 @@ __CFString *__65__STSFeedbackReporter_didShowProactiveCategories_conversationId_
   [(PARSession *)self->_parsecSession reportEvent:v3];
 }
 
-- (void)didGoToSearch:(id)a3
+- (void)didGoToSearch:(id)search
 {
   v4 = MEMORY[0x277D4C330];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithInput:v5 endpoint:6];
+  searchCopy = search;
+  v6 = [[v4 alloc] initWithInput:searchCopy endpoint:6];
 
   [v6 setQueryId:{+[STSSearchModel clientQueryId](STSSearchModel, "clientQueryId")}];
   [(PARSession *)self->_parsecSession reportEvent:v6];
 }
 
-- (void)didReportConcern:(id)a3 punchout:(id)a4
+- (void)didReportConcern:(id)concern punchout:(id)punchout
 {
   v6 = MEMORY[0x277D4C6D8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithSelection:v7 result:v8 cardSection:0 resultSections:0 uploadedDataIdentifier:0 userReportRequestType:2];
+  punchoutCopy = punchout;
+  concernCopy = concern;
+  v9 = [[v6 alloc] initWithSelection:punchoutCopy result:concernCopy cardSection:0 resultSections:0 uploadedDataIdentifier:0 userReportRequestType:2];
 
   [v9 setQueryId:{+[STSSearchModel clientQueryId](STSSearchModel, "clientQueryId")}];
   [(PARSession *)self->_parsecSession reportEvent:v9];

@@ -1,26 +1,26 @@
 @interface CKAtomReference
-- (BOOL)isEqual:(id)a3;
-- (CKAtomReference)initWithMergeableValueID:(id)a3 timestamp:(id)a4;
-- (CKAtomReference)initWithMergeableValueID:(id)a3 timestamp:(id)a4 type:(unsigned __int8)a5;
+- (BOOL)isEqual:(id)equal;
+- (CKAtomReference)initWithMergeableValueID:(id)d timestamp:(id)timestamp;
+- (CKAtomReference)initWithMergeableValueID:(id)d timestamp:(id)timestamp type:(unsigned __int8)type;
 - (unint64_t)hash;
 @end
 
 @implementation CKAtomReference
 
-- (CKAtomReference)initWithMergeableValueID:(id)a3 timestamp:(id)a4
+- (CKAtomReference)initWithMergeableValueID:(id)d timestamp:(id)timestamp
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  timestampCopy = timestamp;
   v26.receiver = self;
   v26.super_class = CKAtomReference;
   v14 = [(CKAtomReference *)&v26 init];
   if (v14)
   {
-    v15 = objc_msgSend_copy(v6, v8, v9, v10, v11, v12, v13);
+    v15 = objc_msgSend_copy(dCopy, v8, v9, v10, v11, v12, v13);
     mergeableValueID = v14->_mergeableValueID;
     v14->_mergeableValueID = v15;
 
-    v23 = objc_msgSend_copy(v7, v17, v18, v19, v20, v21, v22);
+    v23 = objc_msgSend_copy(timestampCopy, v17, v18, v19, v20, v21, v22);
     timestamp = v14->_timestamp;
     v14->_timestamp = v23;
 
@@ -30,33 +30,33 @@
   return v14;
 }
 
-- (CKAtomReference)initWithMergeableValueID:(id)a3 timestamp:(id)a4 type:(unsigned __int8)a5
+- (CKAtomReference)initWithMergeableValueID:(id)d timestamp:(id)timestamp type:(unsigned __int8)type
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  timestampCopy = timestamp;
   v28.receiver = self;
   v28.super_class = CKAtomReference;
   v16 = [(CKAtomReference *)&v28 init];
   if (v16)
   {
-    v17 = objc_msgSend_copy(v8, v10, v11, v12, v13, v14, v15);
+    v17 = objc_msgSend_copy(dCopy, v10, v11, v12, v13, v14, v15);
     mergeableValueID = v16->_mergeableValueID;
     v16->_mergeableValueID = v17;
 
-    v25 = objc_msgSend_copy(v9, v19, v20, v21, v22, v23, v24);
+    v25 = objc_msgSend_copy(timestampCopy, v19, v20, v21, v22, v23, v24);
     timestamp = v16->_timestamp;
     v16->_timestamp = v25;
 
-    v16->_type = a5;
+    v16->_type = type;
   }
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     isEqual = 1;
   }
@@ -66,7 +66,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       v13 = objc_msgSend_type(self, v7, v8, v9, v10, v11, v12);
       if (v13 != objc_msgSend_type(v6, v14, v15, v16, v17, v18, v19))
       {

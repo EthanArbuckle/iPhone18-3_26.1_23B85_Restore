@@ -6,18 +6,18 @@
 
 - (id)MPC_storeFrontIdentifierKey
 {
-  v2 = [a1 rangeOfString:{@", "}];
+  v2 = [self rangeOfString:{@", "}];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [a1 substringToIndex:v2];
+    selfCopy = [self substringToIndex:v2];
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

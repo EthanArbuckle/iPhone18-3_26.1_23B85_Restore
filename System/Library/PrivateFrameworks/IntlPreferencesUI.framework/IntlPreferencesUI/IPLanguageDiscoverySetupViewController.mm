@@ -1,11 +1,11 @@
 @interface IPLanguageDiscoverySetupViewController
-- (IPLanguageDiscoverySetupViewController)initWithCoder:(id)a3;
-- (IPLanguageDiscoverySetupViewController)initWithLocaleIdentifier:(id)a3 completionHandler:(id)a4;
-- (IPLanguageDiscoverySetupViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (IPLanguageDiscoverySetupViewController)initWithCoder:(id)coder;
+- (IPLanguageDiscoverySetupViewController)initWithLocaleIdentifier:(id)identifier completionHandler:(id)handler;
+- (IPLanguageDiscoverySetupViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (NSString)localeIdentifier;
 - (id)completionHandler;
-- (void)setCompletionHandler:(id)a3;
-- (void)setLocaleIdentifier:(id)a3;
+- (void)setCompletionHandler:(id)handler;
+- (void)setLocaleIdentifier:(id)identifier;
 - (void)viewDidLoad;
 @end
 
@@ -23,7 +23,7 @@
   return v5;
 }
 
-- (void)setLocaleIdentifier:(id)a3
+- (void)setLocaleIdentifier:(id)identifier
 {
   v4 = sub_25556D6EC();
   v6 = v5;
@@ -51,9 +51,9 @@
   return v5;
 }
 
-- (void)setCompletionHandler:(id)a3
+- (void)setCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR___IPLanguageDiscoverySetupViewController_completionHandler);
@@ -63,9 +63,9 @@
   v6[1] = v5;
 }
 
-- (IPLanguageDiscoverySetupViewController)initWithLocaleIdentifier:(id)a3 completionHandler:(id)a4
+- (IPLanguageDiscoverySetupViewController)initWithLocaleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = sub_25556D6EC();
   v8 = v7;
   v9 = swift_allocObject();
@@ -81,7 +81,7 @@
   return [(IPLanguageDiscoverySetupViewController *)&v13 initWithNibName:0 bundle:0];
 }
 
-- (IPLanguageDiscoverySetupViewController)initWithCoder:(id)a3
+- (IPLanguageDiscoverySetupViewController)initWithCoder:(id)coder
 {
   result = sub_25556D73C();
   __break(1u);
@@ -90,11 +90,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   IPLanguageDiscoverySetupViewController.viewDidLoad()();
 }
 
-- (IPLanguageDiscoverySetupViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (IPLanguageDiscoverySetupViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

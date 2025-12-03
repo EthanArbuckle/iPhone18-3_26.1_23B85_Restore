@@ -1,19 +1,19 @@
 @interface FMBorderedField
-- (FMBorderedField)initWithCoder:(id)a3;
-- (FMBorderedField)initWithFrame:(CGRect)a3;
+- (FMBorderedField)initWithCoder:(id)coder;
+- (FMBorderedField)initWithFrame:(CGRect)frame;
 - (void)awakeFromNib;
 - (void)commonSetup;
 - (void)prepareForInterfaceBuilder;
-- (void)setBorderColor:(id)a3;
+- (void)setBorderColor:(id)color;
 @end
 
 @implementation FMBorderedField
 
-- (FMBorderedField)initWithFrame:(CGRect)a3
+- (FMBorderedField)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = FMBorderedField;
-  v3 = [(FMBorderedField *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FMBorderedField *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,11 +23,11 @@
   return v4;
 }
 
-- (FMBorderedField)initWithCoder:(id)a3
+- (FMBorderedField)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = FMBorderedField;
-  v3 = [(FMBorderedField *)&v6 initWithCoder:a3];
+  v3 = [(FMBorderedField *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -72,66 +72,66 @@
 
     [(FMHorizontalRule *)self->_topRule setTranslatesAutoresizingMaskIntoConstraints:0];
     [(FMHorizontalRule *)self->_bottomRule setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [MEMORY[0x277D75348] clearColor];
-    [(FMHorizontalRule *)self->_topRule setBackgroundColor:v13];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(FMHorizontalRule *)self->_topRule setBackgroundColor:clearColor];
 
-    v14 = [MEMORY[0x277D75348] clearColor];
-    [(FMHorizontalRule *)self->_bottomRule setBackgroundColor:v14];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(FMHorizontalRule *)self->_bottomRule setBackgroundColor:clearColor2];
 
     [(FMBorderedField *)self addSubview:self->_topRule];
     [(FMBorderedField *)self addSubview:self->_bottomRule];
     [(FMRule *)self->_topRule setLeading:1];
-    v15 = [(FMHorizontalRule *)self->_topRule topAnchor];
-    v16 = [(FMBorderedField *)self topAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    topAnchor = [(FMHorizontalRule *)self->_topRule topAnchor];
+    topAnchor2 = [(FMBorderedField *)self topAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v17 setActive:1];
 
-    v18 = [(FMHorizontalRule *)self->_topRule leftAnchor];
-    v19 = [(FMBorderedField *)self leftAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    leftAnchor = [(FMHorizontalRule *)self->_topRule leftAnchor];
+    leftAnchor2 = [(FMBorderedField *)self leftAnchor];
+    v20 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [v20 setActive:1];
 
-    v21 = [(FMHorizontalRule *)self->_topRule rightAnchor];
-    v22 = [(FMBorderedField *)self rightAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    rightAnchor = [(FMHorizontalRule *)self->_topRule rightAnchor];
+    rightAnchor2 = [(FMBorderedField *)self rightAnchor];
+    v23 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     [v23 setActive:1];
 
-    v24 = [(FMHorizontalRule *)self->_topRule heightAnchor];
-    v25 = [v24 constraintEqualToConstant:1.0];
+    heightAnchor = [(FMHorizontalRule *)self->_topRule heightAnchor];
+    v25 = [heightAnchor constraintEqualToConstant:1.0];
     [v25 setActive:1];
 
-    v26 = [(FMHorizontalRule *)self->_bottomRule bottomAnchor];
-    v27 = [(FMBorderedField *)self bottomAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    bottomAnchor = [(FMHorizontalRule *)self->_bottomRule bottomAnchor];
+    bottomAnchor2 = [(FMBorderedField *)self bottomAnchor];
+    v28 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v28 setActive:1];
 
-    v29 = [(FMHorizontalRule *)self->_bottomRule leftAnchor];
-    v30 = [(FMBorderedField *)self leftAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    leftAnchor3 = [(FMHorizontalRule *)self->_bottomRule leftAnchor];
+    leftAnchor4 = [(FMBorderedField *)self leftAnchor];
+    v31 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
     [v31 setActive:1];
 
-    v32 = [(FMHorizontalRule *)self->_bottomRule rightAnchor];
-    v33 = [(FMBorderedField *)self rightAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    rightAnchor3 = [(FMHorizontalRule *)self->_bottomRule rightAnchor];
+    rightAnchor4 = [(FMBorderedField *)self rightAnchor];
+    v34 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
     [v34 setActive:1];
 
-    v35 = [(FMHorizontalRule *)self->_bottomRule heightAnchor];
-    v36 = [v35 constraintEqualToConstant:1.0];
+    heightAnchor2 = [(FMHorizontalRule *)self->_bottomRule heightAnchor];
+    v36 = [heightAnchor2 constraintEqualToConstant:1.0];
     [v36 setActive:1];
 
     self->_isConfigured = 1;
   }
 }
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
-  objc_storeStrong(&self->_borderColor, a3);
-  v5 = a3;
-  v6 = [(FMBorderedField *)self topRule];
-  [v6 setColor:v5];
+  objc_storeStrong(&self->_borderColor, color);
+  colorCopy = color;
+  topRule = [(FMBorderedField *)self topRule];
+  [topRule setColor:colorCopy];
 
-  v7 = [(FMBorderedField *)self bottomRule];
-  [v7 setColor:v5];
+  bottomRule = [(FMBorderedField *)self bottomRule];
+  [bottomRule setColor:colorCopy];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface CLAvailableVenuesStateMachine
-+ (double)distBetweenLatLon:(id)a3 latlon1:(id)a4;
-+ (int64_t)getLocationContextFromVenueBounds:(const void *)a3;
-- (BOOL)isVenueDisabled:(id)a3 locationId:(id)a4;
-- (BOOL)shouldRecompute:(id)a3;
++ (double)distBetweenLatLon:(id)lon latlon1:(id)latlon1;
++ (int64_t)getLocationContextFromVenueBounds:(const void *)bounds;
+- (BOOL)isVenueDisabled:(id)disabled locationId:(id)id;
+- (BOOL)shouldRecompute:(id)recompute;
 - (CLAvailableVenuesStateMachine)init;
-- (id)computeAvailableVenues:(id)a3 nearCoordinates:(id)a4;
-- (id)computeAvailableVenues:(id)a3 nearCoordinates:(id)a4 withError:(BOOL *)a5;
-- (id)getNearbyLocationGroups:(id)a3 withUpdatedPos:(id)a4;
-- (id)getNearbyLocationGroups:(id)a3 withUpdatedPos:(id)a4 nearLocationsOfInterest:(id)a5;
-- (id)getNearbyLocationGroupsForTile:(id)a3 withUpdatedPos:(id)a4;
-- (id)getNearbyLocationGroupsForTile:(id)a3 withUpdatedPos:(id)a4 nearLocationsOfInterest:(id)a5;
-- (id)openTileParserAtPath:(id)a3;
-- (id)recomputeIfNecessary:(id)a3 withGlobalAvailabilityTile:(id)a4 andAdditionalLOIs:(id)a5;
+- (id)computeAvailableVenues:(id)venues nearCoordinates:(id)coordinates;
+- (id)computeAvailableVenues:(id)venues nearCoordinates:(id)coordinates withError:(BOOL *)error;
+- (id)getNearbyLocationGroups:(id)groups withUpdatedPos:(id)pos;
+- (id)getNearbyLocationGroups:(id)groups withUpdatedPos:(id)pos nearLocationsOfInterest:(id)interest;
+- (id)getNearbyLocationGroupsForTile:(id)tile withUpdatedPos:(id)pos;
+- (id)getNearbyLocationGroupsForTile:(id)tile withUpdatedPos:(id)pos nearLocationsOfInterest:(id)interest;
+- (id)openTileParserAtPath:(id)path;
+- (id)recomputeIfNecessary:(id)necessary withGlobalAvailabilityTile:(id)tile andAdditionalLOIs:(id)is;
 - (void)clearLastFix;
 @end
 
@@ -39,12 +39,12 @@
   return v3;
 }
 
-+ (double)distBetweenLatLon:(id)a3 latlon1:(id)a4
++ (double)distBetweenLatLon:(id)lon latlon1:(id)latlon1
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  lonCopy = lon;
+  latlon1Copy = latlon1;
+  v7 = latlon1Copy;
+  if (!lonCopy)
   {
     v25 = sub_100024218();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
@@ -94,7 +94,7 @@ LABEL_17:
     __break(1u);
   }
 
-  if (!v6)
+  if (!latlon1Copy)
   {
     v28 = sub_100024218();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_FAULT))
@@ -141,10 +141,10 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  [v5 latitude];
+  [lonCopy latitude];
   [CLAvailableVenuesStateMachine deg2rad:?];
   v9 = v8;
-  [v5 longitude];
+  [lonCopy longitude];
   [CLAvailableVenuesStateMachine deg2rad:?];
   v11 = v10;
   [v7 latitude];
@@ -165,14 +165,14 @@ LABEL_17:
   return v23;
 }
 
-- (BOOL)isVenueDisabled:(id)a3 locationId:(id)a4
+- (BOOL)isVenueDisabled:(id)disabled locationId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  disabledCopy = disabled;
+  idCopy = id;
   disabledVenues = self->_disabledVenues;
   if (disabledVenues)
   {
-    v9 = [(NSSet *)disabledVenues member:v6];
+    v9 = [(NSSet *)disabledVenues member:disabledCopy];
     if (v9)
     {
       v10 = 1;
@@ -180,7 +180,7 @@ LABEL_17:
 
     else
     {
-      v11 = [(NSSet *)self->_disabledVenues member:v7];
+      v11 = [(NSSet *)self->_disabledVenues member:idCopy];
       v10 = v11 != 0;
 
       v9 = 0;
@@ -195,26 +195,26 @@ LABEL_17:
   return v10;
 }
 
-- (id)computeAvailableVenues:(id)a3 nearCoordinates:(id)a4
+- (id)computeAvailableVenues:(id)venues nearCoordinates:(id)coordinates
 {
-  v6 = a3;
-  v7 = a4;
+  venuesCopy = venues;
+  coordinatesCopy = coordinates;
   v12 = 0;
-  v8 = [(CLAvailableVenuesStateMachine *)self computeAvailableVenues:v6 nearCoordinates:v7 withError:&v12];
+  v8 = [(CLAvailableVenuesStateMachine *)self computeAvailableVenues:venuesCopy nearCoordinates:coordinatesCopy withError:&v12];
   if (v12 == 1)
   {
     sub_1000244EC();
-    v9 = [(CLAvailableVenuesStateMachine *)self computeAvailableVenues:v6 nearCoordinates:v7 withError:&v12];
+    v9 = [(CLAvailableVenuesStateMachine *)self computeAvailableVenues:venuesCopy nearCoordinates:coordinatesCopy withError:&v12];
 
     if (v12 == 1)
     {
       sub_1000244EC();
-      v8 = [(CLAvailableVenuesStateMachine *)self computeAvailableVenues:v6 nearCoordinates:v7 withError:&v12];
+      v8 = [(CLAvailableVenuesStateMachine *)self computeAvailableVenues:venuesCopy nearCoordinates:coordinatesCopy withError:&v12];
 
       if (v12 == 1)
       {
         sub_1000244EC();
-        v10 = [(CLAvailableVenuesStateMachine *)self computeAvailableVenues:v6 nearCoordinates:v7 withError:&v12];
+        v10 = [(CLAvailableVenuesStateMachine *)self computeAvailableVenues:venuesCopy nearCoordinates:coordinatesCopy withError:&v12];
 
         if (v12 == 1)
         {
@@ -238,12 +238,12 @@ LABEL_17:
   return v8;
 }
 
-- (id)computeAvailableVenues:(id)a3 nearCoordinates:(id)a4 withError:(BOOL *)a5
+- (id)computeAvailableVenues:(id)venues nearCoordinates:(id)coordinates withError:(BOOL *)error
 {
-  v128 = a3;
-  v117 = a4;
-  v118 = a5;
-  *a5 = 0;
+  venuesCopy = venues;
+  coordinatesCopy = coordinates;
+  errorCopy = error;
+  *error = 0;
   v7 = [[NSMutableArray alloc] initWithCapacity:120];
   v8 = 120;
   do
@@ -261,9 +261,9 @@ LABEL_17:
   v137 = objc_alloc_init(ENUCoordinate);
   v120 = objc_alloc_init(ECEFCoordinate);
   v124 = objc_alloc_init(GeographicCoordinate);
-  v123 = [v128 numVenuesExpected];
-  v125 = [NSMutableArray arrayWithCapacity:v123];
-  v10 = [v128 numTotalExpectedExteriorsInVenues];
+  numVenuesExpected = [venuesCopy numVenuesExpected];
+  v125 = [NSMutableArray arrayWithCapacity:numVenuesExpected];
+  numTotalExpectedExteriorsInVenues = [venuesCopy numTotalExpectedExteriorsInVenues];
   if (qword_10045B060 != -1)
   {
     sub_100382910();
@@ -273,11 +273,11 @@ LABEL_17:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v156 = v10;
+    v156 = numTotalExpectedExteriorsInVenues;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "@IndoorAvl, load, Reserving %zu entries for AvailabilityTile entries in result", buf, 0xCu);
   }
 
-  v115 = [NSMutableArray arrayWithCapacity:v10];
+  v115 = [NSMutableArray arrayWithCapacity:numTotalExpectedExteriorsInVenues];
   if (qword_10045B060 != -1)
   {
     sub_100382AAC();
@@ -287,11 +287,11 @@ LABEL_17:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    LODWORD(v156) = v123;
+    LODWORD(v156) = numVenuesExpected;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "@IndoorAvl, load, iterating over %d venues in the availability tile", buf, 8u);
   }
 
-  if (v123 >= 1)
+  if (numVenuesExpected >= 1)
   {
     v116 = 0;
     v114 = 0;
@@ -300,9 +300,9 @@ LABEL_17:
     {
       context = objc_autoreleasePoolPush();
       sub_1003421A8(buf);
-      if ([v128 tileIsOpenForIncrementalIO])
+      if ([venuesCopy tileIsOpenForIncrementalIO])
       {
-        if (([v128 getNextVenueBoundsIncrementally:buf] & 1) == 0)
+        if (([venuesCopy getNextVenueBoundsIncrementally:buf] & 1) == 0)
         {
           if (qword_10045B060 != -1)
           {
@@ -317,14 +317,14 @@ LABEL_17:
           }
 
           v14 = 1;
-          *v118 = 1;
+          *errorCopy = 1;
           goto LABEL_174;
         }
       }
 
       else
       {
-        sub_100170790([v128 getAvlTile], v129, v154);
+        sub_100170790([venuesCopy getAvlTile], v129, v154);
         sub_100345A64(buf, v154);
         sub_100344504(v154);
       }
@@ -450,9 +450,9 @@ LABEL_35:
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
             {
               v30 = v26;
-              v31 = [v26 UTF8String];
+              uTF8String = [v26 UTF8String];
               *v154 = 136315138;
-              *&v154[4] = v31;
+              *&v154[4] = uTF8String;
               _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "#Warning Encountered invalid venue id %s in availability tile. Skipping", v154, 0xCu);
             }
 
@@ -470,9 +470,9 @@ LABEL_35:
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
             {
               v28 = v26;
-              v29 = [v26 UTF8String];
+              uTF8String2 = [v26 UTF8String];
               *v154 = 136315138;
-              *&v154[4] = v29;
+              *&v154[4] = uTF8String2;
               _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEBUG, "%s in availability tile is disabled by settings", v154, 0xCu);
             }
 
@@ -660,9 +660,9 @@ LABEL_215:
           if (os_log_type_enabled(v91, OS_LOG_TYPE_DEBUG))
           {
             v92 = v26;
-            v93 = [v26 UTF8String];
+            uTF8String3 = [v26 UTF8String];
             *v154 = 136315138;
-            *&v154[4] = v93;
+            *&v154[4] = uTF8String3;
             _os_log_impl(&_mh_execute_header, v91, OS_LOG_TYPE_DEBUG, "%s in availability tile is disabled by settings", v154, 0xCu);
           }
 
@@ -818,10 +818,10 @@ LABEL_63:
                   do
                   {
                     [(GeographicCoordinate *)v131 setFromLatitude:*(*(v127 + 16) + v47) longitude:*(*(v127 + 40) + v47) andAltitude:0.0];
-                    v49 = [v7 lastObject];
+                    lastObject = [v7 lastObject];
                     [v7 removeLastObject];
-                    [v49 setFromLatLon:v131];
-                    [v130 addObject:v49];
+                    [lastObject setFromLatLon:v131];
+                    [v130 addObject:lastObject];
 
                     v47 += 8;
                   }
@@ -831,13 +831,13 @@ LABEL_63:
 
                 [CLLocationGroup storeAverage:v120 ofVertices:v130];
                 [(GeographicCoordinate *)v124 setFromECEFCoordinate:v120];
-                if ([v117 count])
+                if ([coordinatesCopy count])
                 {
                   v144 = 0u;
                   v145 = 0u;
                   v142 = 0u;
                   v143 = 0u;
-                  v50 = v117;
+                  v50 = coordinatesCopy;
                   v51 = [v50 countByEnumeratingWithState:&v142 objects:v153 count:16];
                   if (v51)
                   {
@@ -896,7 +896,7 @@ LABEL_107:
                 {
                   v63 = [[CLLocationGroup alloc] initWithGroupId:v113 locationIds:v125 center:v120 wifiOnlyDownloadLocIdxs:&v148 locationContext:v112 andTolerance:*(v127 + 64)];
                   v136 = v63;
-                  v64 = [(CLLocationGroup *)v63 getVertices];
+                  getVertices = [(CLLocationGroup *)v63 getVertices];
                   v140 = 0u;
                   v141 = 0u;
                   v138 = 0u;
@@ -918,10 +918,10 @@ LABEL_107:
                         }
 
                         v68 = *(*(&v138 + 1) + 8 * v67);
-                        v69 = *v64;
-                        v70 = [(CLLocationGroup *)v63 centerLatLon];
-                        v71 = [(CLLocationGroup *)v63 centerECEF];
-                        [v68 toBoostEnuWithLatLonOrigin:v70 andEcefOrigin:v71 usingENU:v137];
+                        v69 = *getVertices;
+                        centerLatLon = [(CLLocationGroup *)v63 centerLatLon];
+                        centerECEF = [(CLLocationGroup *)v63 centerECEF];
+                        [v68 toBoostEnuWithLatLonOrigin:centerLatLon andEcefOrigin:centerECEF usingENU:v137];
                         v75 = v69[1];
                         v74 = v69[2];
                         if (v75 >= v74)
@@ -986,7 +986,7 @@ LABEL_107:
 
                         v69[1] = v76;
 
-                        v84 = (*v64)[1];
+                        v84 = (*getVertices)[1];
                         v85 = *(v84 - 16);
                         v63 = v136;
                         v67 = v67 + 1;
@@ -999,7 +999,7 @@ LABEL_107:
                     while (v66);
                   }
 
-                  if (*(v127 + 48) != ((*v64)[1] - **v64) >> 4)
+                  if (*(v127 + 48) != ((*getVertices)[1] - **getVertices) >> 4)
                   {
                     sub_100382CB4(v154);
 
@@ -1007,7 +1007,7 @@ LABEL_107:
                     goto LABEL_227;
                   }
 
-                  sub_100027918(*v64);
+                  sub_100027918(*getVertices);
                   [v115 addObject:v136];
 
                   ++v114;
@@ -1104,7 +1104,7 @@ LABEL_174:
         goto LABEL_203;
       }
 
-      if (++v129 == v123)
+      if (++v129 == numVenuesExpected)
       {
         goto LABEL_186;
       }
@@ -1114,7 +1114,7 @@ LABEL_174:
   v114 = 0;
   v116 = 0;
 LABEL_186:
-  if ([v128 tileIsOpenForIncrementalIO])
+  if ([venuesCopy tileIsOpenForIncrementalIO])
   {
     sub_1003421A8(buf);
     if (qword_10045B060 != -1)
@@ -1129,7 +1129,7 @@ LABEL_186:
       _os_log_impl(&_mh_execute_header, v98, OS_LOG_TYPE_INFO, "@IndoorAvl, load, make sure we have no more venue bounds to read", v154, 2u);
     }
 
-    if ([v128 getNextVenueBoundsIncrementally:buf])
+    if ([venuesCopy getNextVenueBoundsIncrementally:buf])
     {
       if (qword_10045B060 != -1)
       {
@@ -1169,16 +1169,16 @@ LABEL_203:
   return v102;
 }
 
-- (id)getNearbyLocationGroupsForTile:(id)a3 withUpdatedPos:(id)a4
+- (id)getNearbyLocationGroupsForTile:(id)tile withUpdatedPos:(id)pos
 {
-  v4 = [(CLAvailableVenuesStateMachine *)self getNearbyLocationGroupsForTile:a3 withUpdatedPos:a4 nearLocationsOfInterest:0];
+  v4 = [(CLAvailableVenuesStateMachine *)self getNearbyLocationGroupsForTile:tile withUpdatedPos:pos nearLocationsOfInterest:0];
 
   return v4;
 }
 
-- (id)openTileParserAtPath:(id)a3
+- (id)openTileParserAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   if (qword_10045B060 != -1)
   {
     sub_100382910();
@@ -1187,19 +1187,19 @@ LABEL_203:
   v4 = qword_10045B068;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [v3 absoluteString];
+    absoluteString = [pathCopy absoluteString];
     v17 = 136315138;
-    v18 = [v5 UTF8String];
+    uTF8String = [absoluteString UTF8String];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Request to get nearby location groups from availability tile at %s", &v17, 0xCu);
   }
 
   v6 = +[NSFileManager defaultManager];
-  v7 = [v3 path];
-  v8 = [v6 fileExistsAtPath:v7];
+  path = [pathCopy path];
+  v8 = [v6 fileExistsAtPath:path];
 
   if (v8)
   {
-    v9 = [[CLAvailabilityTileParser alloc] initWithTilePathIncrementalIO:v3];
+    v9 = [[CLAvailabilityTileParser alloc] initWithTilePathIncrementalIO:pathCopy];
     p_super = &v9->super;
     if (v9)
     {
@@ -1235,11 +1235,11 @@ LABEL_203:
     p_super = qword_10045B068;
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_INFO))
     {
-      v12 = [v3 path];
-      v13 = v12;
-      v14 = [v12 UTF8String];
+      path2 = [pathCopy path];
+      v13 = path2;
+      uTF8String2 = [path2 UTF8String];
       v17 = 136315138;
-      v18 = v14;
+      uTF8String = uTF8String2;
       _os_log_impl(&_mh_execute_header, p_super, OS_LOG_TYPE_INFO, "#warning, cannot find file %s on-disk", &v17, 0xCu);
     }
 
@@ -1249,21 +1249,21 @@ LABEL_203:
   return v11;
 }
 
-- (id)getNearbyLocationGroups:(id)a3 withUpdatedPos:(id)a4
+- (id)getNearbyLocationGroups:(id)groups withUpdatedPos:(id)pos
 {
-  v4 = [(CLAvailableVenuesStateMachine *)self getNearbyLocationGroups:a3 withUpdatedPos:a4 nearLocationsOfInterest:0];
+  v4 = [(CLAvailableVenuesStateMachine *)self getNearbyLocationGroups:groups withUpdatedPos:pos nearLocationsOfInterest:0];
 
   return v4;
 }
 
-- (id)getNearbyLocationGroups:(id)a3 withUpdatedPos:(id)a4 nearLocationsOfInterest:(id)a5
+- (id)getNearbyLocationGroups:(id)groups withUpdatedPos:(id)pos nearLocationsOfInterest:(id)interest
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(CLAvailableVenuesStateMachine *)self openTileParserAtPath:a3];
+  posCopy = pos;
+  interestCopy = interest;
+  v10 = [(CLAvailableVenuesStateMachine *)self openTileParserAtPath:groups];
   if (v10)
   {
-    v11 = [(CLAvailableVenuesStateMachine *)self getNearbyLocationGroupsForTile:v10 withUpdatedPos:v8 nearLocationsOfInterest:v9];
+    v11 = [(CLAvailableVenuesStateMachine *)self getNearbyLocationGroupsForTile:v10 withUpdatedPos:posCopy nearLocationsOfInterest:interestCopy];
   }
 
   else
@@ -1280,13 +1280,13 @@ LABEL_203:
   self->_lastFix = 0;
 }
 
-- (BOOL)shouldRecompute:(id)a3
+- (BOOL)shouldRecompute:(id)recompute
 {
-  v4 = a3;
+  recomputeCopy = recompute;
   lastFix = self->_lastFix;
   if (lastFix)
   {
-    [CLAvailableVenuesStateMachine distBetweenLatLon:lastFix latlon1:v4];
+    [CLAvailableVenuesStateMachine distBetweenLatLon:lastFix latlon1:recomputeCopy];
     v7 = v6;
     if (qword_10045B060 != -1)
     {
@@ -1312,12 +1312,12 @@ LABEL_203:
   return v9;
 }
 
-- (id)getNearbyLocationGroupsForTile:(id)a3 withUpdatedPos:(id)a4 nearLocationsOfInterest:(id)a5
+- (id)getNearbyLocationGroupsForTile:(id)tile withUpdatedPos:(id)pos nearLocationsOfInterest:(id)interest
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = -[CLIndoorAvailabilityTileParams initWithAvailabilityTile:]([CLIndoorAvailabilityTileParams alloc], "initWithAvailabilityTile:", [v8 getAvlTile]);
+  tileCopy = tile;
+  posCopy = pos;
+  interestCopy = interest;
+  v11 = -[CLIndoorAvailabilityTileParams initWithAvailabilityTile:]([CLIndoorAvailabilityTileParams alloc], "initWithAvailabilityTile:", [tileCopy getAvlTile]);
   availabilityTileParams = self->_availabilityTileParams;
   self->_availabilityTileParams = v11;
 
@@ -1357,18 +1357,18 @@ LABEL_203:
     }
   }
 
-  v18 = [(CLAvailableVenuesStateMachine *)self recomputeIfNecessary:v9 withGlobalAvailabilityTile:v8 andAdditionalLOIs:v10];
+  v18 = [(CLAvailableVenuesStateMachine *)self recomputeIfNecessary:posCopy withGlobalAvailabilityTile:tileCopy andAdditionalLOIs:interestCopy];
 
   return v18;
 }
 
-- (id)recomputeIfNecessary:(id)a3 withGlobalAvailabilityTile:(id)a4 andAdditionalLOIs:(id)a5
+- (id)recomputeIfNecessary:(id)necessary withGlobalAvailabilityTile:(id)tile andAdditionalLOIs:(id)is
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  necessaryCopy = necessary;
+  tileCopy = tile;
+  isCopy = is;
+  v12 = isCopy;
+  if (!necessaryCopy)
   {
     if (qword_10045B060 != -1)
     {
@@ -1385,7 +1385,7 @@ LABEL_203:
     goto LABEL_18;
   }
 
-  if (v11)
+  if (isCopy)
   {
     if (qword_10045B060 != -1)
     {
@@ -1403,21 +1403,21 @@ LABEL_203:
 LABEL_16:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, v14, &v22, 2u);
 LABEL_17:
-    objc_storeStrong(&self->_lastFix, a3);
+    objc_storeStrong(&self->_lastFix, necessary);
 LABEL_18:
     v16 = [[NSMutableArray alloc] initWithArray:v12];
     v17 = v16;
-    if (v9)
+    if (necessaryCopy)
     {
-      [v16 addObject:v9];
+      [v16 addObject:necessaryCopy];
     }
 
-    v18 = [(CLAvailableVenuesStateMachine *)self computeAvailableVenues:v10 nearCoordinates:v17, v22];
+    v18 = [(CLAvailableVenuesStateMachine *)self computeAvailableVenues:tileCopy nearCoordinates:v17, v22];
 
     goto LABEL_21;
   }
 
-  if ([(CLAvailableVenuesStateMachine *)self shouldRecompute:v9])
+  if ([(CLAvailableVenuesStateMachine *)self shouldRecompute:necessaryCopy])
   {
     if (qword_10045B060 != -1)
     {
@@ -1455,20 +1455,20 @@ LABEL_21:
   return v18;
 }
 
-+ (int64_t)getLocationContextFromVenueBounds:(const void *)a3
++ (int64_t)getLocationContextFromVenueBounds:(const void *)bounds
 {
-  if ((*(a3 + 104) & 8) != 0)
+  if ((*(bounds + 104) & 8) != 0)
   {
-    return *(a3 + 24) != 1;
+    return *(bounds + 24) != 1;
   }
 
-  v3 = *(a3 + 6);
+  v3 = *(bounds + 6);
   if (!v3)
   {
     return 0;
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(bounds + 2);
   v5 = 8 * v3;
   while (1)
   {

@@ -1,11 +1,11 @@
 @interface PEAdjustmentExposure
-- (PEAdjustmentExposure)initWithModifier:(id)a3;
-- (void)applyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 livePortraitBehaviorDelegate:(id)a6 completionHandler:(id)a7;
+- (PEAdjustmentExposure)initWithModifier:(id)modifier;
+- (void)applyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset livePortraitBehaviorDelegate:(id)delegate completionHandler:(id)handler;
 @end
 
 @implementation PEAdjustmentExposure
 
-- (void)applyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 livePortraitBehaviorDelegate:(id)a6 completionHandler:(id)a7
+- (void)applyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset livePortraitBehaviorDelegate:(id)delegate completionHandler:(id)handler
 {
   v8 = *MEMORY[0x277D3ABC0];
   v10[0] = MEMORY[0x277D85DD0];
@@ -13,9 +13,9 @@
   v10[2] = __123__PEAdjustmentExposure_applyToCompositionController_valuesCalculator_asset_livePortraitBehaviorDelegate_completionHandler___block_invoke;
   v10[3] = &unk_279A302D0;
   v10[4] = self;
-  v9 = a7;
-  [a3 modifyAdjustmentWithKey:v8 modificationBlock:v10];
-  v9[2](v9, 1, 0);
+  handlerCopy = handler;
+  [controller modifyAdjustmentWithKey:v8 modificationBlock:v10];
+  handlerCopy[2](handlerCopy, 1, 0);
 }
 
 void __123__PEAdjustmentExposure_applyToCompositionController_valuesCalculator_asset_livePortraitBehaviorDelegate_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -29,15 +29,15 @@ void __123__PEAdjustmentExposure_applyToCompositionController_valuesCalculator_a
   [v5 setOffsetExposure:{fmax(fmin(v4, 1.0), -1.0)}];
 }
 
-- (PEAdjustmentExposure)initWithModifier:(id)a3
+- (PEAdjustmentExposure)initWithModifier:(id)modifier
 {
-  v4 = a3;
+  modifierCopy = modifier;
   v9.receiver = self;
   v9.super_class = PEAdjustmentExposure;
   v5 = [(PEAdjustmentExposure *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(modifierCopy);
     modifier = v5->_modifier;
     v5->_modifier = v6;
   }

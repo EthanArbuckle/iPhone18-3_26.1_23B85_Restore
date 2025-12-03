@@ -1,44 +1,44 @@
 @interface RFTableColumnDefinition
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFTableColumnDefinition)initWithCoder:(id)a3;
-- (RFTableColumnDefinition)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFTableColumnDefinition)initWithCoder:(id)coder;
+- (RFTableColumnDefinition)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContent:(id)a3;
-- (void)setSpacer:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContent:(id)content;
+- (void)setSpacer:(id)spacer;
 @end
 
 @implementation RFTableColumnDefinition
 
 - (unint64_t)hash
 {
-  v3 = [(RFTableColumnDefinition *)self spacer];
-  v4 = [v3 hash];
-  v5 = [(RFTableColumnDefinition *)self content];
-  v6 = [v5 hash];
+  spacer = [(RFTableColumnDefinition *)self spacer];
+  v4 = [spacer hash];
+  content = [(RFTableColumnDefinition *)self content];
+  v6 = [content hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(RFTableColumnDefinition *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(RFTableColumnDefinition *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(RFTableColumnDefinition *)self spacer];
-      v8 = [(RFTableColumnDefinition *)v6 spacer];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      spacer = [(RFTableColumnDefinition *)self spacer];
+      spacer2 = [(RFTableColumnDefinition *)v6 spacer];
+      if ((spacer != 0) == (spacer2 == 0))
       {
         v11 = 0;
 LABEL_19:
@@ -46,12 +46,12 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v9 = [(RFTableColumnDefinition *)self spacer];
-      if (v9)
+      spacer3 = [(RFTableColumnDefinition *)self spacer];
+      if (spacer3)
       {
-        v3 = [(RFTableColumnDefinition *)self spacer];
-        v10 = [(RFTableColumnDefinition *)v6 spacer];
-        if (![v3 isEqual:v10])
+        spacer4 = [(RFTableColumnDefinition *)self spacer];
+        spacer5 = [(RFTableColumnDefinition *)v6 spacer];
+        if (![spacer4 isEqual:spacer5])
         {
           v11 = 0;
 LABEL_17:
@@ -60,13 +60,13 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v21 = v10;
+        v21 = spacer5;
       }
 
-      v12 = [(RFTableColumnDefinition *)self content];
-      v13 = [(RFTableColumnDefinition *)v6 content];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      content = [(RFTableColumnDefinition *)self content];
+      content2 = [(RFTableColumnDefinition *)v6 content];
+      v14 = content2;
+      if ((content != 0) == (content2 == 0))
       {
 
         v11 = 0;
@@ -74,16 +74,16 @@ LABEL_18:
 
       else
       {
-        v15 = [(RFTableColumnDefinition *)self content];
-        if (v15)
+        content3 = [(RFTableColumnDefinition *)self content];
+        if (content3)
         {
-          v16 = v15;
-          v19 = [(RFTableColumnDefinition *)self content];
+          v16 = content3;
+          content4 = [(RFTableColumnDefinition *)self content];
           [(RFTableColumnDefinition *)v6 content];
-          v17 = v20 = v3;
-          v11 = [v19 isEqual:v17];
+          v17 = v20 = spacer4;
+          v11 = [content4 isEqual:v17];
 
-          v3 = v20;
+          spacer4 = v20;
         }
 
         else
@@ -93,8 +93,8 @@ LABEL_18:
         }
       }
 
-      v10 = v21;
-      if (!v9)
+      spacer5 = v21;
+      if (!spacer3)
       {
         goto LABEL_18;
       }
@@ -110,20 +110,20 @@ LABEL_20:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if ([(RFTableColumnDefinition *)self hasSpacer])
   {
-    v5 = [(RFTableColumnDefinition *)self spacer];
-    v6 = [v5 copy];
+    spacer = [(RFTableColumnDefinition *)self spacer];
+    v6 = [spacer copy];
     [v4 setSpacer:v6];
   }
 
   if ([(RFTableColumnDefinition *)self hasContent])
   {
-    v7 = [(RFTableColumnDefinition *)self content];
-    v8 = [v7 copy];
+    content = [(RFTableColumnDefinition *)self content];
+    v8 = [content copy];
     [v4 setContent:v8];
   }
 
@@ -133,31 +133,31 @@ LABEL_20:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFTableColumnDefinition alloc] initWithFacade:self];
-  v3 = [(_SFPBRFTableColumnDefinition *)v2 jsonData];
+  jsonData = [(_SFPBRFTableColumnDefinition *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFTableColumnDefinition alloc] initWithFacade:self];
-  v3 = [(_SFPBRFTableColumnDefinition *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFTableColumnDefinition *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFTableColumnDefinition alloc] initWithFacade:self];
-  v5 = [(_SFPBRFTableColumnDefinition *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFTableColumnDefinition *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFTableColumnDefinition)initWithCoder:(id)a3
+- (RFTableColumnDefinition)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFTableColumnDefinition alloc] initWithData:v5];
   v7 = [(RFTableColumnDefinition *)self initWithProtobuf:v6];
@@ -165,51 +165,51 @@ LABEL_20:
   return v7;
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
   *&self->_has |= 2u;
-  objc_storeStrong(&self->_content, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_content, content);
+  contentCopy = content;
   *&self->_has &= ~1u;
   spacer = self->_spacer;
   self->_spacer = 0;
 }
 
-- (void)setSpacer:(id)a3
+- (void)setSpacer:(id)spacer
 {
   *&self->_has |= 1u;
-  objc_storeStrong(&self->_spacer, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_spacer, spacer);
+  spacerCopy = spacer;
   *&self->_has &= ~2u;
   content = self->_content;
   self->_content = 0;
 }
 
-- (RFTableColumnDefinition)initWithProtobuf:(id)a3
+- (RFTableColumnDefinition)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v16.receiver = self;
   v16.super_class = RFTableColumnDefinition;
   v5 = [(RFTableColumnDefinition *)&v16 init];
   if (v5)
   {
-    v6 = [v4 spacer];
+    spacer = [protobufCopy spacer];
 
-    if (v6)
+    if (spacer)
     {
       v7 = [RFTableSpacerColumnDefinition alloc];
-      v8 = [v4 spacer];
-      v9 = [(RFTableSpacerColumnDefinition *)v7 initWithProtobuf:v8];
+      spacer2 = [protobufCopy spacer];
+      v9 = [(RFTableSpacerColumnDefinition *)v7 initWithProtobuf:spacer2];
       [(RFTableColumnDefinition *)v5 setSpacer:v9];
     }
 
-    v10 = [v4 content];
+    content = [protobufCopy content];
 
-    if (v10)
+    if (content)
     {
       v11 = [RFTableContentColumnDefinition alloc];
-      v12 = [v4 content];
-      v13 = [(RFTableContentColumnDefinition *)v11 initWithProtobuf:v12];
+      content2 = [protobufCopy content];
+      v13 = [(RFTableContentColumnDefinition *)v11 initWithProtobuf:content2];
       [(RFTableColumnDefinition *)v5 setContent:v13];
     }
 

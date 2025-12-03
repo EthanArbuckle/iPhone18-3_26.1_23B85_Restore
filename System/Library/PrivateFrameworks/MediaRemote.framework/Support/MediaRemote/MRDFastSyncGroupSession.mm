@@ -1,20 +1,20 @@
 @interface MRDFastSyncGroupSession
-+ (id)createSessionWithNearbyGroup:(id)a3 asUser:(id)a4 delegate:(id)a5;
-+ (id)joinSessionWithNearbyGroup:(id)a3 asUser:(id)a4 hostSigningKey:(id)a5 delegate:(id)a6;
-+ (id)stateToString:(int64_t)a3;
-- (BOOL)shouldAutomaticallyApproveWithIdentity:(id)a3;
++ (id)createSessionWithNearbyGroup:(id)group asUser:(id)user delegate:(id)delegate;
++ (id)joinSessionWithNearbyGroup:(id)group asUser:(id)user hostSigningKey:(id)key delegate:(id)delegate;
++ (id)stateToString:(int64_t)string;
+- (BOOL)shouldAutomaticallyApproveWithIdentity:(id)identity;
 - (MRDFastSyncGroupSession)init;
 - (MRDFastSyncGroupSessionParticipant)leaderParticipant;
 - (MRDFastSyncGroupSessionParticipant)localParticipant;
 - (NSString)identifier;
-- (id)prewarmForIdentity:(id)a3;
+- (id)prewarmForIdentity:(id)identity;
 - (int64_t)state;
-- (void)cancelPrewarmedIdentifier:(id)a3 forIdentity:(id)a4;
+- (void)cancelPrewarmedIdentifier:(id)identifier forIdentity:(id)identity;
 - (void)end;
 - (void)prepareForAddedMember;
 - (void)remoteRemoveAllParticipants;
-- (void)sendRemoteControlMessage:(id)a3 to:(id)a4 completion:(id)a5;
-- (void)setLeaderParticipant:(id)a3;
+- (void)sendRemoteControlMessage:(id)message to:(id)to completion:(id)completion;
+- (void)setLeaderParticipant:(id)participant;
 - (void)start;
 @end
 
@@ -22,7 +22,7 @@
 
 - (int64_t)state
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MRDFastSyncGroupSession.state.getter();
 
   return v3;
@@ -30,7 +30,7 @@
 
 - (MRDFastSyncGroupSessionParticipant)localParticipant
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MRDFastSyncGroupSession.localParticipant.getter();
 
   return v3;
@@ -43,13 +43,13 @@
   return *(self + v3);
 }
 
-- (void)setLeaderParticipant:(id)a3
+- (void)setLeaderParticipant:(id)participant
 {
   v5 = OBJC_IVAR___MRDFastSyncGroupSession_leaderParticipant;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = participant;
+  participantCopy = participant;
 }
 
 - (NSString)identifier
@@ -62,12 +62,12 @@
   return v4;
 }
 
-+ (id)createSessionWithNearbyGroup:(id)a3 asUser:(id)a4 delegate:(id)a5
++ (id)createSessionWithNearbyGroup:(id)group asUser:(id)user delegate:(id)delegate
 {
-  v7 = *(a3 + OBJC_IVAR____TtC12mediaremoted14MRDNearbyGroup_nearbyGroup);
-  v8 = *((swift_isaMask & *a3) + 0x68);
-  v9 = a3;
-  v10 = a4;
+  v7 = *(group + OBJC_IVAR____TtC12mediaremoted14MRDNearbyGroup_nearbyGroup);
+  v8 = *((swift_isaMask & *group) + 0x68);
+  groupCopy = group;
+  userCopy = user;
   swift_unknownObjectRetain();
 
   v12 = v8(v11);
@@ -82,22 +82,22 @@
   swift_allocObject();
   v19 = NearbyGroupSessionProvider.init(nearbyGroup:activity:)();
   v20 = objc_allocWithZone(type metadata accessor for MRDFastSyncGroupSession());
-  v21 = sub_1001E7E74(1, v10, v19, a5);
+  v21 = sub_1001E7E74(1, userCopy, v19, delegate);
 
   return v21;
 }
 
-+ (id)joinSessionWithNearbyGroup:(id)a3 asUser:(id)a4 hostSigningKey:(id)a5 delegate:(id)a6
++ (id)joinSessionWithNearbyGroup:(id)group asUser:(id)user hostSigningKey:(id)key delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  groupCopy = group;
+  userCopy = user;
+  keyCopy = key;
   swift_unknownObjectRetain();
   v12 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   sub_1001C4034(v12, v13);
 
-  v14 = *(v9 + OBJC_IVAR____TtC12mediaremoted14MRDNearbyGroup_nearbyGroup);
-  v15 = *((swift_isaMask & *v9) + 0x68);
+  v14 = *(groupCopy + OBJC_IVAR____TtC12mediaremoted14MRDNearbyGroup_nearbyGroup);
+  v15 = *((swift_isaMask & *groupCopy) + 0x68);
 
   v17 = v15(v16);
   v19 = v18;
@@ -111,16 +111,16 @@
   swift_allocObject();
   v24 = NearbyGroupSessionProvider.init(nearbyGroup:activity:)();
   v25 = objc_allocWithZone(type metadata accessor for MRDFastSyncGroupSession());
-  v26 = sub_1001E7E74(0, v10, v24, a6);
+  v26 = sub_1001E7E74(0, userCopy, v24, delegate);
 
   return v26;
 }
 
-+ (id)stateToString:(int64_t)a3
++ (id)stateToString:(int64_t)string
 {
-  if (a3 > 1)
+  if (string > 1)
   {
-    if (a3 == 2 || a3 == 3 || a3 == 4)
+    if (string == 2 || string == 3 || string == 4)
     {
       goto LABEL_11;
     }
@@ -131,7 +131,7 @@ LABEL_14:
     return result;
   }
 
-  if (a3 && a3 != 1)
+  if (string && string != 1)
   {
     goto LABEL_14;
   }
@@ -144,63 +144,63 @@ LABEL_11:
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   MRDFastSyncGroupSession.start()();
 }
 
 - (void)end
 {
-  v2 = self;
+  selfCopy = self;
   MRDFastSyncGroupSession.end()();
 }
 
-- (id)prewarmForIdentity:(id)a3
+- (id)prewarmForIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = self;
-  MRDFastSyncGroupSession.prewarm(for:)(v4);
+  identityCopy = identity;
+  selfCopy = self;
+  MRDFastSyncGroupSession.prewarm(for:)(identityCopy);
 
   v6 = String._bridgeToObjectiveC()();
 
   return v6;
 }
 
-- (void)cancelPrewarmedIdentifier:(id)a3 forIdentity:(id)a4
+- (void)cancelPrewarmedIdentifier:(id)identifier forIdentity:(id)identity
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
-  MRDFastSyncGroupSession.cancel(prewarmedIdentifier:for:)(v6, v8, v9);
+  identityCopy = identity;
+  selfCopy = self;
+  MRDFastSyncGroupSession.cancel(prewarmedIdentifier:for:)(v6, v8, identityCopy);
 }
 
 - (void)prepareForAddedMember
 {
-  v2 = self;
+  selfCopy = self;
   MRDFastSyncGroupSession.prepareForAddedMember()();
 }
 
-- (BOOL)shouldAutomaticallyApproveWithIdentity:(id)a3
+- (BOOL)shouldAutomaticallyApproveWithIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = MRDFastSyncGroupSession.shouldAutomaticallyApprove(identity:)(v4);
+  identityCopy = identity;
+  selfCopy = self;
+  LOBYTE(self) = MRDFastSyncGroupSession.shouldAutomaticallyApprove(identity:)(identityCopy);
 
   return self & 1;
 }
 
 - (void)remoteRemoveAllParticipants
 {
-  v2 = self;
+  selfCopy = self;
   MRDFastSyncGroupSession.remoteRemoveAllParticipants()();
 }
 
-- (void)sendRemoteControlMessage:(id)a3 to:(id)a4 completion:(id)a5
+- (void)sendRemoteControlMessage:(id)message to:(id)to completion:(id)completion
 {
-  v8 = _Block_copy(a5);
-  v9 = a3;
-  v10 = a4;
-  v16 = self;
+  v8 = _Block_copy(completion);
+  messageCopy = message;
+  toCopy = to;
+  selfCopy = self;
   v11 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
 

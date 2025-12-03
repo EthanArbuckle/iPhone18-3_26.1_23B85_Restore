@@ -1,19 +1,19 @@
 @interface PUPickerContainerController
-- (BOOL)_actionPerformer:(id)a3 presentViewController:(id)a4;
+- (BOOL)_actionPerformer:(id)performer presentViewController:(id)controller;
 - (BOOL)_isConfiguredForStickerSuggestionGroup;
-- (BOOL)actionPerformer:(id)a3 transitionToViewController:(id)a4 transitionType:(int64_t)a5;
-- (BOOL)allowsContextMenuInteractionForPhotosViewController:(id)a3;
+- (BOOL)actionPerformer:(id)performer transitionToViewController:(id)controller transitionType:(int64_t)type;
+- (BOOL)allowsContextMenuInteractionForPhotosViewController:(id)controller;
 - (BOOL)hasContent;
 - (BOOL)isCompactWidthOrHeight;
 - (BOOL)isShowingLiveWallpaperSuggestions;
 - (BOOL)isShowingSpatialWallpaperSuggestions;
-- (BOOL)photosViewController:(id)a3 canPlayAssetInline:(id)a4;
-- (BOOL)photosViewController:(id)a3 isAssetEligibleForPlaybackWithSettlingEffect:(id)a4;
+- (BOOL)photosViewController:(id)controller canPlayAssetInline:(id)inline;
+- (BOOL)photosViewController:(id)controller isAssetEligibleForPlaybackWithSettlingEffect:(id)effect;
 - (BOOL)searchBarIsFirstResponder;
-- (BOOL)shouldAnimateFromHeaderView:(id)a3 toHeaderView:(id)a4;
-- (CGRect)preferredCropForAsset:(id)a3 withAspectRatio:(double)a4;
+- (BOOL)shouldAnimateFromHeaderView:(id)view toHeaderView:(id)headerView;
+- (CGRect)preferredCropForAsset:(id)asset withAspectRatio:(double)ratio;
 - (NSString)selectedSuggestionAnalyticsName;
-- (PUPickerContainerController)initWithConfiguration:(id)a3 loadingStatusManager:(id)a4 selectionCoordinator:(id)a5 additionalSelectionState:(id)a6 actionHandler:(id)a7;
+- (PUPickerContainerController)initWithConfiguration:(id)configuration loadingStatusManager:(id)manager selectionCoordinator:(id)coordinator additionalSelectionState:(id)state actionHandler:(id)handler;
 - (PUPickerContainerControllerActionHandler)containerControllerActionHandler;
 - (PUPickerOnboardingHeaderView)onboardingHeaderView;
 - (PUPickerPrivacyBadge)photosIndicator;
@@ -25,38 +25,38 @@
 - (UIViewController)albumsViewController;
 - (UIViewController)collectionsViewController;
 - (UIViewController)itemsViewController;
-- (id)_albumsPickerViewControllerWithConfiguration:(id)a3 sessionInfo:(id)a4 collectionList:(id)a5 selectionCoordinator:(id)a6;
-- (id)_animationForNavigationBarVisible:(BOOL)a3 fromCurrentOpacity:(double)a4;
+- (id)_albumsPickerViewControllerWithConfiguration:(id)configuration sessionInfo:(id)info collectionList:(id)list selectionCoordinator:(id)coordinator;
+- (id)_animationForNavigationBarVisible:(BOOL)visible fromCurrentOpacity:(double)opacity;
 - (id)_containerForTopViewController;
 - (id)_currentContainerViewForInteractionBarTransition;
-- (id)_peoplePickerViewControllerWithPhotoLibrary:(id)a3 personIdentifiers:(id)a4 preselectedLocalIdentifiers:(id)a5 disabledLocalIdentifiers:(id)a6 selectionLimit:(int64_t)a7 compactMode:(BOOL)a8 transparentBackground:(BOOL)a9 wantsPets:(BOOL)a10;
+- (id)_peoplePickerViewControllerWithPhotoLibrary:(id)library personIdentifiers:(id)identifiers preselectedLocalIdentifiers:(id)localIdentifiers disabledLocalIdentifiers:(id)disabledLocalIdentifiers selectionLimit:(int64_t)limit compactMode:(BOOL)mode transparentBackground:(BOOL)background wantsPets:(BOOL)self0;
 - (id)_peopleSortAndFilterMenu;
-- (id)_viewControllerWithSidebarNavigationDestination:(id)a3 configuration:(id)a4 sessionInfo:(id)a5 selectionCoordinator:(id)a6;
-- (id)collectionListForAlbumIdentifier:(id)a3 configuration:(id)a4;
-- (id)headerViewForPhotosViewController:(id)a3;
-- (id)photosViewController:(id)a3 animationForProposedAnimation:(id)a4;
-- (id)preferredColumnCounts:(id)a3;
+- (id)_viewControllerWithSidebarNavigationDestination:(id)destination configuration:(id)configuration sessionInfo:(id)info selectionCoordinator:(id)coordinator;
+- (id)collectionListForAlbumIdentifier:(id)identifier configuration:(id)configuration;
+- (id)headerViewForPhotosViewController:(id)controller;
+- (id)photosViewController:(id)controller animationForProposedAnimation:(id)animation;
+- (id)preferredColumnCounts:(id)counts;
 - (id)px_gridPresentation;
 - (id)px_navigationDestination;
-- (id)sessionInfoForConfiguration:(id)a3 loadingStatusManager:(id)a4 selectionCoordinator:(id)a5;
-- (id)undoManagerForActionPerformer:(id)a3;
-- (int64_t)_currentPeopleSortOrderForPhotoLibrary:(id)a3;
-- (unint64_t)photosViewControllerFilterSortedRecordsStrategy:(id)a3;
-- (unint64_t)routingOptionsForDestination:(id)a3;
-- (void)_addOrReplaceItemViewControllerWithViewController:(id)a3;
+- (id)sessionInfoForConfiguration:(id)configuration loadingStatusManager:(id)manager selectionCoordinator:(id)coordinator;
+- (id)undoManagerForActionPerformer:(id)performer;
+- (int64_t)_currentPeopleSortOrderForPhotoLibrary:(id)library;
+- (unint64_t)photosViewControllerFilterSortedRecordsStrategy:(id)strategy;
+- (unint64_t)routingOptionsForDestination:(id)destination;
+- (void)_addOrReplaceItemViewControllerWithViewController:(id)controller;
 - (void)_cleanUpInteractiveBarTransitionIfNeeded;
-- (void)_filterWithSearchResultUUIDs:(id)a3;
-- (void)_filterWithSuggestionResult:(id)a3;
-- (void)_performCancellationAction:(id)a3;
-- (void)_performConfirmationAction:(id)a3;
-- (void)_performSelectionStatusAction:(id)a3;
-- (void)_setupAlbumsViewControllerWithPickerConfiguration:(id)a3 loadingStatusManager:(id)a4 selectionCoordinator:(id)a5 sessionInfo:(id)a6 photosViewConfiguration:(id)a7;
-- (void)_setupCollectionsViewControllerWithPickerConfiguration:(id)a3 sessionInfo:(id)a4 photosViewConfiguration:(id)a5;
-- (void)_setupPeopleOrPetsPickerWithPickerConfiguration:(id)a3;
-- (void)_setupPhotosTabWithPhotosViewConfiguration:(id)a3;
-- (void)_setupViewControllersWithConfiguration:(id)a3 loadingStatusManager:(id)a4 selectionCoordinator:(id)a5;
+- (void)_filterWithSearchResultUUIDs:(id)ds;
+- (void)_filterWithSuggestionResult:(id)result;
+- (void)_performCancellationAction:(id)action;
+- (void)_performConfirmationAction:(id)action;
+- (void)_performSelectionStatusAction:(id)action;
+- (void)_setupAlbumsViewControllerWithPickerConfiguration:(id)configuration loadingStatusManager:(id)manager selectionCoordinator:(id)coordinator sessionInfo:(id)info photosViewConfiguration:(id)viewConfiguration;
+- (void)_setupCollectionsViewControllerWithPickerConfiguration:(id)configuration sessionInfo:(id)info photosViewConfiguration:(id)viewConfiguration;
+- (void)_setupPeopleOrPetsPickerWithPickerConfiguration:(id)configuration;
+- (void)_setupPhotosTabWithPhotosViewConfiguration:(id)configuration;
+- (void)_setupViewControllersWithConfiguration:(id)configuration loadingStatusManager:(id)manager selectionCoordinator:(id)coordinator;
 - (void)_showPhotosIndicatorBrieflyIfNeeded;
-- (void)_updateAllowedUUIDsForceReload:(BOOL)a3;
+- (void)_updateAllowedUUIDsForceReload:(BOOL)reload;
 - (void)_updateCancellationBarButtonItem;
 - (void)_updateConfirmationBarButtonItem;
 - (void)_updateEnableSpatialPhotoPlayback;
@@ -65,43 +65,43 @@
 - (void)_updateNumberOfItemsToPlayInline;
 - (void)_updatePeopleSort;
 - (void)_updatePhotosViewControllerNoContentPlaceholder;
-- (void)_updateSearchResultContextualVideoThumbnailIdentifiers:(id)a3;
-- (void)_updateSelectionStatusBarButtonItem:(BOOL)a3;
+- (void)_updateSearchResultContextualVideoThumbnailIdentifiers:(id)identifiers;
+- (void)_updateSelectionStatusBarButtonItem:(BOOL)item;
 - (void)_updateSortDescriptors;
 - (void)_updateSortOrder;
 - (void)_updateToolbar;
 - (void)_updateToolbarSortAndFilterBarButtonItemMenu;
 - (void)dealloc;
-- (void)handleItemCreationBarButtonItemAction:(id)a3;
-- (void)handleNavigationBarSegmentedControl:(id)a3;
-- (void)handleToolbarOptionsButton:(id)a3;
+- (void)handleItemCreationBarButtonItemAction:(id)action;
+- (void)handleNavigationBarSegmentedControl:(id)control;
+- (void)handleToolbarOptionsButton:(id)button;
 - (void)makeSearchBarAsFirstResponder;
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)navigationWillPresentViewController:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler;
+- (void)navigationWillPresentViewController:(id)controller;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)performCancellationAction;
 - (void)performConfirmationAction;
-- (void)photosGridActionPerformer:(id)a3 contentFilterStateChanged:(id)a4;
-- (void)pickerOnboardingHeaderViewWantsToLearnMoreAboutDataAccess:(id)a3;
-- (void)pickerSuggestionsView:(id)a3 didSelectSuggestion:(id)a4;
-- (void)pickerSuggestionsViewDidSelectSameSuggestion:(id)a3;
+- (void)photosGridActionPerformer:(id)performer contentFilterStateChanged:(id)changed;
+- (void)pickerOnboardingHeaderViewWantsToLearnMoreAboutDataAccess:(id)access;
+- (void)pickerSuggestionsView:(id)view didSelectSuggestion:(id)suggestion;
+- (void)pickerSuggestionsViewDidSelectSameSuggestion:(id)suggestion;
 - (void)ppt_switchToAlbumsTab;
 - (void)resignSearchBarAsFirstResponder;
 - (void)scrollContentToInitialPosition;
-- (void)scrollViewControllerDidScroll:(id)a3;
-- (void)searchWithString:(id)a3;
-- (void)sessionInfoStatusDidChange:(id)a3;
-- (void)setReplacesConfirmationButtonWithActivityIndicator:(BOOL)a3;
-- (void)setSidebarViewController:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)scrollViewControllerDidScroll:(id)scroll;
+- (void)searchWithString:(id)string;
+- (void)sessionInfoStatusDidChange:(id)change;
+- (void)setReplacesConfirmationButtonWithActivityIndicator:(BOOL)indicator;
+- (void)setSidebarViewController:(id)controller;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateBars;
-- (void)updateSelectionStatusViewWithTitle:(id)a3 titleSystemImage:(id)a4 subtitle:(id)a5 subtitleSystemImage:(id)a6 asset:(id)a7 allowsOpeningStagingArea:(BOOL)a8 centerAlignment:(BOOL)a9;
+- (void)updateSelectionStatusViewWithTitle:(id)title titleSystemImage:(id)image subtitle:(id)subtitle subtitleSystemImage:(id)systemImage asset:(id)asset allowsOpeningStagingArea:(BOOL)area centerAlignment:(BOOL)alignment;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewSafeAreaInsetsDidChange;
 - (void)zoomInContent;
 - (void)zoomOutContent;
@@ -111,53 +111,53 @@
 
 - (id)_containerForTopViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PUPickerContainerController._containerForTopViewController()();
 
   return v3;
 }
 
-- (id)_albumsPickerViewControllerWithConfiguration:(id)a3 sessionInfo:(id)a4 collectionList:(id)a5 selectionCoordinator:(id)a6
+- (id)_albumsPickerViewControllerWithConfiguration:(id)configuration sessionInfo:(id)info collectionList:(id)list selectionCoordinator:(id)coordinator
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  v15 = PUPickerContainerController._albumsPickerViewController(configuration:sessionInfo:collectionList:selectionCoordinator:)(v10, v11, a5, a6);
+  configurationCopy = configuration;
+  infoCopy = info;
+  listCopy = list;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  v15 = PUPickerContainerController._albumsPickerViewController(configuration:sessionInfo:collectionList:selectionCoordinator:)(configurationCopy, infoCopy, list, coordinator);
 
   return v15;
 }
 
-- (id)_viewControllerWithSidebarNavigationDestination:(id)a3 configuration:(id)a4 sessionInfo:(id)a5 selectionCoordinator:(id)a6
+- (id)_viewControllerWithSidebarNavigationDestination:(id)destination configuration:(id)configuration sessionInfo:(id)info selectionCoordinator:(id)coordinator
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  v15 = PUPickerContainerController._viewController(sidebarNavigationDestination:configuration:sessionInfo:selectionCoordinator:)(v10, v11, v12, a6);
+  destinationCopy = destination;
+  configurationCopy = configuration;
+  infoCopy = info;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  v15 = PUPickerContainerController._viewController(sidebarNavigationDestination:configuration:sessionInfo:selectionCoordinator:)(destinationCopy, configurationCopy, infoCopy, coordinator);
 
   return v15;
 }
 
-- (void)updateSelectionStatusViewWithTitle:(id)a3 titleSystemImage:(id)a4 subtitle:(id)a5 subtitleSystemImage:(id)a6 asset:(id)a7 allowsOpeningStagingArea:(BOOL)a8 centerAlignment:(BOOL)a9
+- (void)updateSelectionStatusViewWithTitle:(id)title titleSystemImage:(id)image subtitle:(id)subtitle subtitleSystemImage:(id)systemImage asset:(id)asset allowsOpeningStagingArea:(BOOL)area centerAlignment:(BOOL)alignment
 {
-  HIDWORD(v27) = a8;
-  v12 = a4;
-  LODWORD(v27) = a9;
-  if (a3)
+  HIDWORD(v27) = area;
+  imageCopy = image;
+  LODWORD(v27) = alignment;
+  if (title)
   {
     v26 = sub_1B3C9C5E8();
     v15 = v14;
-    if (v12)
+    if (imageCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     v16 = 0;
-    if (a5)
+    if (subtitle)
     {
       goto LABEL_4;
     }
@@ -167,29 +167,29 @@ LABEL_6:
 
   v26 = 0;
   v15 = 0;
-  if (!a4)
+  if (!image)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   v16 = sub_1B3C9C5E8();
-  v12 = v17;
-  if (a5)
+  imageCopy = v17;
+  if (subtitle)
   {
 LABEL_4:
     v18 = sub_1B3C9C5E8();
-    a5 = v19;
+    subtitle = v19;
     goto LABEL_8;
   }
 
 LABEL_7:
   v18 = 0;
 LABEL_8:
-  v20 = a6;
+  systemImageCopy = systemImage;
   swift_unknownObjectRetain();
-  v21 = self;
-  if (v20)
+  selfCopy = self;
+  if (systemImageCopy)
   {
     v22 = sub_1B3C9C5E8();
     v24 = v23;
@@ -201,15 +201,15 @@ LABEL_8:
     v24 = 0;
   }
 
-  BYTE1(v25) = a9;
+  BYTE1(v25) = alignment;
   LOBYTE(v25) = BYTE4(v27);
-  sub_1B370CF98(v26, v15, v16, v12, v18, a5, v22, v24, a7, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, HIBYTE(v37));
+  sub_1B370CF98(v26, v15, v16, imageCopy, v18, subtitle, v22, v24, asset, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, HIBYTE(v37));
   swift_unknownObjectRelease();
 }
 
-- (id)_peoplePickerViewControllerWithPhotoLibrary:(id)a3 personIdentifiers:(id)a4 preselectedLocalIdentifiers:(id)a5 disabledLocalIdentifiers:(id)a6 selectionLimit:(int64_t)a7 compactMode:(BOOL)a8 transparentBackground:(BOOL)a9 wantsPets:(BOOL)a10
+- (id)_peoplePickerViewControllerWithPhotoLibrary:(id)library personIdentifiers:(id)identifiers preselectedLocalIdentifiers:(id)localIdentifiers disabledLocalIdentifiers:(id)disabledLocalIdentifiers selectionLimit:(int64_t)limit compactMode:(BOOL)mode transparentBackground:(BOOL)background wantsPets:(BOOL)self0
 {
-  if (a4)
+  if (identifiers)
   {
     v15 = sub_1B3C9C788();
   }
@@ -220,18 +220,18 @@ LABEL_8:
   }
 
   v16 = sub_1B3C9C788();
-  if (a6)
+  if (disabledLocalIdentifiers)
   {
-    a6 = sub_1B3C9C788();
+    disabledLocalIdentifiers = sub_1B3C9C788();
   }
 
-  v17 = a3;
-  v18 = self;
+  libraryCopy = library;
+  selfCopy = self;
   v25.value._rawValue = v15;
   v25.is_nil = v16;
-  v26.value._rawValue = a7;
-  v26.is_nil = a8;
-  PUPickerContainerController._peoplePickerViewController(photoLibrary:personIdentifiers:preselectedLocalIdentifiers:disabledLocalIdentifiers:selectionLimit:compactMode:transparentBackground:wantsPets:)(v19, v17, v25, a6, v26, a9, a10, v23, SHIBYTE(v23));
+  v26.value._rawValue = limit;
+  v26.is_nil = mode;
+  PUPickerContainerController._peoplePickerViewController(photoLibrary:personIdentifiers:preselectedLocalIdentifiers:disabledLocalIdentifiers:selectionLimit:compactMode:transparentBackground:wantsPets:)(v19, libraryCopy, v25, disabledLocalIdentifiers, v26, background, pets, v23, SHIBYTE(v23));
   v21 = v20;
 
   return v21;
@@ -240,8 +240,8 @@ LABEL_8:
 - (id)px_gridPresentation
 {
   v3 = objc_alloc_init(PUPXGridPresentation);
-  v4 = [(PUPickerContainerController *)self sessionInfo];
-  [(PUPXGridPresentation *)v3 setSessionInfo:v4];
+  sessionInfo = [(PUPickerContainerController *)self sessionInfo];
+  [(PUPXGridPresentation *)v3 setSessionInfo:sessionInfo];
 
   return v3;
 }
@@ -260,55 +260,55 @@ LABEL_8:
   return WeakRetained;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{*MEMORY[0x1E69C4120], a4, a5, a6}])
+  if ([path isEqualToString:{*MEMORY[0x1E69C4120], object, change, context}])
   {
 
     [(PUPickerContainerController *)self _updateToolbarSortAndFilterBarButtonItemMenu];
   }
 }
 
-- (void)pickerOnboardingHeaderViewWantsToLearnMoreAboutDataAccess:(id)a3
+- (void)pickerOnboardingHeaderViewWantsToLearnMoreAboutDataAccess:(id)access
 {
-  v4 = [(PUPickerContainerController *)self containerControllerActionHandler];
-  [v4 containerControllerWantsToLearnMoreAboutDataAccess:self];
+  containerControllerActionHandler = [(PUPickerContainerController *)self containerControllerActionHandler];
+  [containerControllerActionHandler containerControllerWantsToLearnMoreAboutDataAccess:self];
 }
 
-- (void)pickerSuggestionsViewDidSelectSameSuggestion:(id)a3
+- (void)pickerSuggestionsViewDidSelectSameSuggestion:(id)suggestion
 {
-  v3 = [(PUPickerContainerController *)self itemsViewController];
-  [v3 px_scrollToInitialPositionAnimated:1];
+  itemsViewController = [(PUPickerContainerController *)self itemsViewController];
+  [itemsViewController px_scrollToInitialPositionAnimated:1];
 }
 
-- (void)pickerSuggestionsView:(id)a3 didSelectSuggestion:(id)a4
+- (void)pickerSuggestionsView:(id)view didSelectSuggestion:(id)suggestion
 {
-  v5 = a4;
-  v6 = [(PUPickerContainerController *)self pickerSuggestionResultFetcher];
-  [v6 setCurrentSuggestion:v5];
+  suggestionCopy = suggestion;
+  pickerSuggestionResultFetcher = [(PUPickerContainerController *)self pickerSuggestionResultFetcher];
+  [pickerSuggestionResultFetcher setCurrentSuggestion:suggestionCopy];
 }
 
-- (id)preferredColumnCounts:(id)a3
+- (id)preferredColumnCounts:(id)counts
 {
-  v3 = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
-  v4 = [v3 allowedColumnsOverride];
+  pickerSuggestionResultFetcherResult = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
+  allowedColumnsOverride = [pickerSuggestionResultFetcherResult allowedColumnsOverride];
 
-  return v4;
+  return allowedColumnsOverride;
 }
 
-- (CGRect)preferredCropForAsset:(id)a3 withAspectRatio:(double)a4
+- (CGRect)preferredCropForAsset:(id)asset withAspectRatio:(double)ratio
 {
-  v5 = a3;
-  v6 = [(PUPickerContainerController *)self configuration];
-  v7 = [v6 showsWallpaperSuggestions];
+  assetCopy = asset;
+  configuration = [(PUPickerContainerController *)self configuration];
+  showsWallpaperSuggestions = [configuration showsWallpaperSuggestions];
 
   v8 = *MEMORY[0x1E695F050];
   v9 = *(MEMORY[0x1E695F050] + 8);
   v10 = *(MEMORY[0x1E695F050] + 16);
   v11 = *(MEMORY[0x1E695F050] + 24);
-  if (v7)
+  if (showsWallpaperSuggestions)
   {
-    v12 = v5;
+    v12 = assetCopy;
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v13 = v12;
@@ -319,29 +319,29 @@ LABEL_8:
       v13 = 0;
     }
 
-    v14 = [(PUPickerContainerController *)self pickerSuggestionResultFetcher];
+    pickerSuggestionResultFetcher = [(PUPickerContainerController *)self pickerSuggestionResultFetcher];
 
-    if (v13 && v14)
+    if (v13 && pickerSuggestionResultFetcher)
     {
-      v15 = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
-      v16 = [v15 suggestionSubtypeByAssetUUID];
-      v17 = [v13 uuid];
-      v18 = [v16 objectForKeyedSubscript:v17];
+      pickerSuggestionResultFetcherResult = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
+      suggestionSubtypeByAssetUUID = [pickerSuggestionResultFetcherResult suggestionSubtypeByAssetUUID];
+      uuid = [v13 uuid];
+      v18 = [suggestionSubtypeByAssetUUID objectForKeyedSubscript:uuid];
 
       if (v18)
       {
-        v19 = [v18 integerValue];
-        v20 = [MEMORY[0x1E69C15B0] posterClassificationForSuggestionSubtype:v19];
+        integerValue = [v18 integerValue];
+        posterClassification = [MEMORY[0x1E69C15B0] posterClassificationForSuggestionSubtype:integerValue];
       }
 
       else
       {
-        v21 = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
-        v20 = [v21 posterClassification];
+        pickerSuggestionResultFetcherResult2 = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
+        posterClassification = [pickerSuggestionResultFetcherResult2 posterClassification];
       }
 
-      v22 = [(PUPickerContainerController *)self px_screen];
-      [v22 bounds];
+      px_screen = [(PUPickerContainerController *)self px_screen];
+      [px_screen bounds];
       v24 = v23;
       v26 = v25;
 
@@ -356,7 +356,7 @@ LABEL_8:
       }
 
       v28 = [MEMORY[0x1E69C0790] deviceConfigurationForOrientation:v27];
-      [MEMORY[0x1E69C15B0] bestWallpaperCropForAsset:v13 classification:v20 outputCropScore:0 outputLayoutAcceptable:0 layoutConfiguration:v28];
+      [MEMORY[0x1E69C15B0] bestWallpaperCropForAsset:v13 classification:posterClassification outputCropScore:0 outputLayoutAcceptable:0 layoutConfiguration:v28];
       v8 = v29;
       v9 = v30;
       v10 = v31;
@@ -375,29 +375,29 @@ LABEL_8:
   return result;
 }
 
-- (void)scrollViewControllerDidScroll:(id)a3
+- (void)scrollViewControllerDidScroll:(id)scroll
 {
-  if ([a3 isTracking])
+  if ([scroll isTracking])
   {
 
     [(PUPickerContainerController *)self resignSearchBarAsFirstResponder];
   }
 }
 
-- (void)sessionInfoStatusDidChange:(id)a3
+- (void)sessionInfoStatusDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(PUPickerContainerController *)self configuration];
-  v6 = [v5 sourceType];
+  changeCopy = change;
+  configuration = [(PUPickerContainerController *)self configuration];
+  sourceType = [configuration sourceType];
 
-  if (v6 == 2)
+  if (sourceType == 2)
   {
-    v7 = [v4 targetAlbum];
-    v8 = [v7 objectID];
+    targetAlbum = [changeCopy targetAlbum];
+    objectID = [targetAlbum objectID];
 
-    if (v8)
+    if (objectID)
     {
-      [MEMORY[0x1E695DFB8] orderedSetWithObject:v8];
+      [MEMORY[0x1E695DFB8] orderedSetWithObject:objectID];
     }
 
     else
@@ -424,14 +424,14 @@ void __58__PUPickerContainerController_sessionInfoStatusDidChange___block_invoke
   [v4 modifySelectionWithRemovedOIDs:v3 insertedOIDs:*(a1 + 40)];
 }
 
-- (id)_animationForNavigationBarVisible:(BOOL)a3 fromCurrentOpacity:(double)a4
+- (id)_animationForNavigationBarVisible:(BOOL)visible fromCurrentOpacity:(double)opacity
 {
-  v5 = a3;
+  visibleCopy = visible;
   v6 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"opacity"];
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:opacity];
   [v6 setFromValue:v7];
 
-  if (v5)
+  if (visibleCopy)
   {
     v8 = &unk_1F2B7F518;
   }
@@ -443,7 +443,7 @@ void __58__PUPickerContainerController_sessionInfoStatusDidChange___block_invoke
 
   [v6 setToValue:v8];
   [v6 setFillMode:*MEMORY[0x1E69797E8]];
-  [v6 setRemovedOnCompletion:v5];
+  [v6 setRemovedOnCompletion:visibleCopy];
   [v6 setStiffness:246.7];
   [v6 setDamping:31.4];
   [v6 settlingDuration];
@@ -456,56 +456,56 @@ void __58__PUPickerContainerController_sessionInfoStatusDidChange___block_invoke
 
 - (id)_currentContainerViewForInteractionBarTransition
 {
-  v3 = [(PUPickerContainerController *)self childViewControllers];
-  v4 = [(PUPickerContainerController *)self photosViewController];
-  v5 = [v3 containsObject:v4];
+  childViewControllers = [(PUPickerContainerController *)self childViewControllers];
+  photosViewController = [(PUPickerContainerController *)self photosViewController];
+  v5 = [childViewControllers containsObject:photosViewController];
 
   if (v5)
   {
-    v6 = [(PUPickerContainerController *)self photosViewController];
+    photosViewController2 = [(PUPickerContainerController *)self photosViewController];
 LABEL_5:
-    v10 = v6;
-    v11 = [v6 view];
+    v10 = photosViewController2;
+    view = [photosViewController2 view];
 
     goto LABEL_7;
   }
 
-  v7 = [(PUPickerContainerController *)self childViewControllers];
-  v8 = [(PUPickerContainerController *)self albumsViewController];
-  v9 = [v7 containsObject:v8];
+  childViewControllers2 = [(PUPickerContainerController *)self childViewControllers];
+  albumsViewController = [(PUPickerContainerController *)self albumsViewController];
+  v9 = [childViewControllers2 containsObject:albumsViewController];
 
   if (v9)
   {
-    v6 = [(PUPickerContainerController *)self albumsViewController];
+    photosViewController2 = [(PUPickerContainerController *)self albumsViewController];
     goto LABEL_5;
   }
 
-  v11 = 0;
+  view = 0;
 LABEL_7:
 
-  return v11;
+  return view;
 }
 
 - (void)_updateInteractiveBarTransition
 {
   v56 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPickerContainerController *)self configuration];
-  v4 = [v3 supportsInteractiveBarTransition];
+  configuration = [(PUPickerContainerController *)self configuration];
+  supportsInteractiveBarTransition = [configuration supportsInteractiveBarTransition];
 
-  if (v4)
+  if (supportsInteractiveBarTransition)
   {
-    v5 = [(PUPickerContainerController *)self _currentContainerViewForInteractionBarTransition];
-    if (v5)
+    _currentContainerViewForInteractionBarTransition = [(PUPickerContainerController *)self _currentContainerViewForInteractionBarTransition];
+    if (_currentContainerViewForInteractionBarTransition)
     {
       self->_hasNavigationBarTransitionPending = 0;
-      v6 = [(PUPickerContainerController *)self photosViewController];
-      v7 = [v6 contentController];
-      v8 = [v7 gridView];
-      [v8 setAvoidSnapshotOnHeightChanges:1];
+      photosViewController = [(PUPickerContainerController *)self photosViewController];
+      contentController = [photosViewController contentController];
+      gridView = [contentController gridView];
+      [gridView setAvoidSnapshotOnHeightChanges:1];
 
-      v9 = [(PUPickerContainerController *)self navigationController];
-      v10 = [(PUPickerContainerController *)self configuration];
-      [v10 interactiveBarTransitionFractionExpanded];
+      navigationController = [(PUPickerContainerController *)self navigationController];
+      configuration2 = [(PUPickerContainerController *)self configuration];
+      [configuration2 interactiveBarTransitionFractionExpanded];
       v12 = v11;
 
       v13 = *(MEMORY[0x1E695EFD0] + 16);
@@ -518,23 +518,23 @@ LABEL_7:
       *&v52.a = *&v54.a;
       *&v52.c = v13;
       *&v52.tx = *&v54.tx;
-      v14 = [v9 childViewControllers];
-      v15 = [v14 count];
+      childViewControllers = [navigationController childViewControllers];
+      v15 = [childViewControllers count];
 
       if (v15 == 1)
       {
-        v16 = [v9 topViewController];
-        v17 = [v16 view];
-        [v17 safeAreaInsets];
+        topViewController = [navigationController topViewController];
+        view = [topViewController view];
+        [view safeAreaInsets];
         v19 = v18;
 
         v20 = (1.0 - v12) * v19;
-        v21 = [(PUPickerContainerController *)self view];
-        [v21 safeAreaInsets];
+        view2 = [(PUPickerContainerController *)self view];
+        [view2 safeAreaInsets];
         v23 = v22;
 
-        v24 = [v9 toolbar];
-        [v24 bounds];
+        toolbar = [navigationController toolbar];
+        [toolbar bounds];
         v26 = v25;
 
         v27 = PLPickerGetLog();
@@ -565,40 +565,40 @@ LABEL_7:
       else
       {
         v29 = v12 <= 0.8;
-        v30 = [v9 navigationBar];
-        [v30 setHidden:v29];
+        navigationBar = [navigationController navigationBar];
+        [navigationBar setHidden:v29];
 
-        v31 = [v9 toolbar];
-        [v31 setHidden:v29];
+        toolbar2 = [navigationController toolbar];
+        [toolbar2 setHidden:v29];
       }
 
       v48 = v54;
-      v32 = [v9 navigationBar];
+      navigationBar2 = [navigationController navigationBar];
       buf = v48;
-      [v32 setTransform:&buf];
+      [navigationBar2 setTransform:&buf];
 
       v47 = v53;
-      v33 = [v9 toolbar];
+      toolbar3 = [navigationController toolbar];
       buf = v47;
-      [v33 setTransform:&buf];
+      [toolbar3 setTransform:&buf];
 
       buf = v52;
-      [v5 setTransform:&buf];
-      v34 = [v9 navigationBar];
-      v35 = [v34 layer];
-      v36 = [v35 animationForKey:@"navBarOpacity"];
+      [_currentContainerViewForInteractionBarTransition setTransform:&buf];
+      navigationBar3 = [navigationController navigationBar];
+      layer = [navigationBar3 layer];
+      v36 = [layer animationForKey:@"navBarOpacity"];
 
       if (v36)
       {
-        v37 = [v36 toValue];
-        [v37 floatValue];
+        toValue = [v36 toValue];
+        [toValue floatValue];
         v39 = v38;
       }
 
       else
       {
-        v37 = [v9 navigationBar];
-        [v37 alpha];
+        toValue = [navigationController navigationBar];
+        [toValue alpha];
         v39 = v40;
       }
 
@@ -606,15 +606,15 @@ LABEL_7:
       if (v41 || v39 > 0.0 && v12 < 0.8)
       {
         v42 = [(PUPickerContainerController *)self _animationForNavigationBarVisible:v41 fromCurrentOpacity:v39];
-        v43 = [v9 navigationBar];
-        v44 = [v43 layer];
-        [v44 addAnimation:v42 forKey:@"navBarOpacity"];
+        navigationBar4 = [navigationController navigationBar];
+        layer2 = [navigationBar4 layer];
+        [layer2 addAnimation:v42 forKey:@"navBarOpacity"];
 
-        v45 = [v9 navigationBar];
-        [v45 setUserInteractionEnabled:v41];
+        navigationBar5 = [navigationController navigationBar];
+        [navigationBar5 setUserInteractionEnabled:v41];
 
-        v46 = [v9 toolbar];
-        [v46 setUserInteractionEnabled:v41];
+        toolbar4 = [navigationController toolbar];
+        [toolbar4 setUserInteractionEnabled:v41];
       }
     }
 
@@ -632,45 +632,45 @@ LABEL_7:
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (PUPhotoPickerPhotosViewControllerViewModelObservationContext == a5)
+  observableCopy = observable;
+  if (PUPhotoPickerPhotosViewControllerViewModelObservationContext == context)
   {
-    if ((a4 & 0x200000000) != 0)
+    if ((change & 0x200000000) != 0)
     {
       [(PUPickerContainerController *)self updateBars];
     }
   }
 
-  else if (PUPhotoPickerConfigurationObservationContext == a5)
+  else if (PUPhotoPickerConfigurationObservationContext == context)
   {
-    if ((a4 & 0x1F23) != 0)
+    if ((change & 0x1F23) != 0)
     {
       [(PUPickerContainerController *)self updateBars];
     }
 
-    if ((a4 & 0x29) != 0)
+    if ((change & 0x29) != 0)
     {
-      v13 = [(PUPickerContainerController *)self photosViewController];
-      [v13 invalidateHeaderView];
+      photosViewController = [(PUPickerContainerController *)self photosViewController];
+      [photosViewController invalidateHeaderView];
     }
 
-    if ((a4 & 0xE0) != 0)
+    if ((change & 0xE0) != 0)
     {
       [(PUPickerContainerController *)self _updateInteractiveBarTransition];
       [(PUPickerContainerController *)self _showPhotosIndicatorBrieflyIfNeeded];
-      v14 = [(PUPickerContainerController *)self view];
-      [v14 setNeedsUpdateConstraints];
+      view = [(PUPickerContainerController *)self view];
+      [view setNeedsUpdateConstraints];
     }
   }
 
   else
   {
-    if (PUPhotoPickerAdditionalSelectionStateObservationContext != a5)
+    if (PUPhotoPickerAdditionalSelectionStateObservationContext != context)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:2320 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:2320 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -683,10 +683,10 @@ LABEL_7:
     }
 
     [(PUPickerContainerController *)self _updateToolbar];
-    v11 = [(PUPickerContainerController *)self configuration];
-    v12 = [v11 confirmationBehavior];
+    configuration = [(PUPickerContainerController *)self configuration];
+    confirmationBehavior = [configuration confirmationBehavior];
 
-    if ((v12 - 2) <= 2)
+    if ((confirmationBehavior - 2) <= 2)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -715,7 +715,7 @@ void __60__PUPickerContainerController_observable_didChange_context___block_invo
   }
 }
 
-- (unint64_t)photosViewControllerFilterSortedRecordsStrategy:(id)a3
+- (unint64_t)photosViewControllerFilterSortedRecordsStrategy:(id)strategy
 {
   if ([(PUPickerContainerController *)self _isConfiguredForStickerSuggestionGroup])
   {
@@ -728,31 +728,31 @@ void __60__PUPickerContainerController_observable_didChange_context___block_invo
   }
 }
 
-- (BOOL)photosViewController:(id)a3 isAssetEligibleForPlaybackWithSettlingEffect:(id)a4
+- (BOOL)photosViewController:(id)controller isAssetEligibleForPlaybackWithSettlingEffect:(id)effect
 {
-  v4 = [(PUPickerContainerController *)self configuration:a3];
-  v5 = [v4 showsWallpaperSuggestions];
+  v4 = [(PUPickerContainerController *)self configuration:controller];
+  showsWallpaperSuggestions = [v4 showsWallpaperSuggestions];
 
-  return v5;
+  return showsWallpaperSuggestions;
 }
 
-- (BOOL)photosViewController:(id)a3 canPlayAssetInline:(id)a4
+- (BOOL)photosViewController:(id)controller canPlayAssetInline:(id)inline
 {
-  v5 = a4;
-  if ([v5 playbackStyle] != 3)
+  inlineCopy = inline;
+  if ([inlineCopy playbackStyle] != 3)
   {
-    v6 = [(PUPickerContainerController *)self photosViewController];
-    v7 = [v6 contentController];
-    v8 = [v7 enableSpatialPhotoPlayback];
+    photosViewController = [(PUPickerContainerController *)self photosViewController];
+    contentController = [photosViewController contentController];
+    enableSpatialPhotoPlayback = [contentController enableSpatialPhotoPlayback];
 
-    if (!v8)
+    if (!enableSpatialPhotoPlayback)
     {
       LOBYTE(v16) = 0;
       goto LABEL_12;
     }
   }
 
-  v9 = v5;
+  v9 = inlineCopy;
   if (!objc_opt_class() || (objc_opt_isKindOfClass() & 1) == 0)
   {
 
@@ -769,10 +769,10 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v11 = [(PUPickerContainerController *)self configuration];
-  v12 = [v11 showsWallpaperSuggestions];
+  configuration = [(PUPickerContainerController *)self configuration];
+  showsWallpaperSuggestions = [configuration showsWallpaperSuggestions];
 
-  if (!v12)
+  if (!showsWallpaperSuggestions)
   {
     if ([(PUPickerContainerController *)self _isConfiguredForStickerSuggestionGroup])
     {
@@ -783,10 +783,10 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v13 = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
-  v14 = [v13 inlinePlaybackDisallowedAssetUUIDs];
-  v15 = [v10 uuid];
-  v16 = [v14 containsObject:v15] ^ 1;
+  pickerSuggestionResultFetcherResult = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
+  inlinePlaybackDisallowedAssetUUIDs = [pickerSuggestionResultFetcherResult inlinePlaybackDisallowedAssetUUIDs];
+  uuid = [v10 uuid];
+  v16 = [inlinePlaybackDisallowedAssetUUIDs containsObject:uuid] ^ 1;
 
 LABEL_10:
 LABEL_12:
@@ -794,33 +794,33 @@ LABEL_12:
   return v16;
 }
 
-- (BOOL)shouldAnimateFromHeaderView:(id)a3 toHeaderView:(id)a4
+- (BOOL)shouldAnimateFromHeaderView:(id)view toHeaderView:(id)headerView
 {
-  v5 = a3;
+  viewCopy = view;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  return (a4 == 0) & isKindOfClass;
+  return (headerView == 0) & isKindOfClass;
 }
 
-- (id)headerViewForPhotosViewController:(id)a3
+- (id)headerViewForPhotosViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PUPickerContainerController *)self photosViewController];
+  controllerCopy = controller;
+  photosViewController = [(PUPickerContainerController *)self photosViewController];
 
-  if (v5 == v4)
+  if (photosViewController == controllerCopy)
   {
-    v6 = [(PUPickerContainerController *)self configuration];
-    v7 = [v6 mode];
+    configuration = [(PUPickerContainerController *)self configuration];
+    mode = [configuration mode];
 
-    if (v7 != 1)
+    if (mode != 1)
     {
-      v8 = [(PUPickerContainerController *)self configuration];
-      v9 = [v8 shouldShowOnboardingHeaderView];
+      configuration2 = [(PUPickerContainerController *)self configuration];
+      shouldShowOnboardingHeaderView = [configuration2 shouldShowOnboardingHeaderView];
 
-      if (v9)
+      if (shouldShowOnboardingHeaderView)
       {
-        v10 = [(PUPickerContainerController *)self onboardingHeaderView];
+        onboardingHeaderView = [(PUPickerContainerController *)self onboardingHeaderView];
         goto LABEL_7;
       }
 
@@ -828,15 +828,15 @@ LABEL_12:
     }
   }
 
-  v10 = 0;
+  onboardingHeaderView = 0;
 LABEL_7:
 
-  return v10;
+  return onboardingHeaderView;
 }
 
-- (id)photosViewController:(id)a3 animationForProposedAnimation:(id)a4
+- (id)photosViewController:(id)controller animationForProposedAnimation:(id)animation
 {
-  v5 = a4;
+  animationCopy = animation;
   if ([(PUPickerContainerController *)self searchBarIsFirstResponder])
   {
     v6 = 0;
@@ -844,7 +844,7 @@ LABEL_7:
 
   else
   {
-    v6 = v5;
+    v6 = animationCopy;
   }
 
   v7 = v6;
@@ -852,39 +852,39 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)allowsContextMenuInteractionForPhotosViewController:(id)a3
+- (BOOL)allowsContextMenuInteractionForPhotosViewController:(id)controller
 {
-  v3 = [(PUPickerContainerController *)self configuration];
-  v4 = [v3 allowsContextMenuInteraction];
+  configuration = [(PUPickerContainerController *)self configuration];
+  allowsContextMenuInteraction = [configuration allowsContextMenuInteraction];
 
-  return v4;
+  return allowsContextMenuInteraction;
 }
 
 - (id)px_navigationDestination
 {
-  v4 = [(PUPickerContainerController *)self childViewControllers];
-  v5 = [v4 count];
+  childViewControllers = [(PUPickerContainerController *)self childViewControllers];
+  v5 = [childViewControllers count];
 
   if (v5 >= 2)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:2184 description:{@"Invalid parameter not satisfying: %@", @"self.childViewControllers.count <= 1"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:2184 description:{@"Invalid parameter not satisfying: %@", @"self.childViewControllers.count <= 1"}];
   }
 
-  v6 = [(PUPickerContainerController *)self childViewControllers];
-  v7 = [v6 firstObject];
+  childViewControllers2 = [(PUPickerContainerController *)self childViewControllers];
+  firstObject = [childViewControllers2 firstObject];
 
-  if (!v7 || (-[PUPickerContainerController itemsViewController](self, "itemsViewController"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 isEqual:v8], v8, v9))
+  if (!firstObject || (-[PUPickerContainerController itemsViewController](self, "itemsViewController"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [firstObject isEqual:v8], v8, v9))
   {
     v10 = objc_alloc(MEMORY[0x1E69C3930]);
     v11 = 22;
 LABEL_6:
-    v12 = [v10 initWithType:v11 revealMode:0];
+    px_navigationDestination = [v10 initWithType:v11 revealMode:0];
     goto LABEL_7;
   }
 
-  v15 = [(PUPickerContainerController *)self albumsViewController];
-  v16 = [v7 isEqual:v15];
+  albumsViewController = [(PUPickerContainerController *)self albumsViewController];
+  v16 = [firstObject isEqual:albumsViewController];
 
   if (v16)
   {
@@ -893,32 +893,32 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v12 = [v7 px_navigationDestination];
+  px_navigationDestination = [firstObject px_navigationDestination];
 LABEL_7:
-  v13 = v12;
+  v13 = px_navigationDestination;
 
   return v13;
 }
 
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler
 {
   v61 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (![v9 revealMode] || objc_msgSend(v9, "revealMode") == 1)
+  destinationCopy = destination;
+  handlerCopy = handler;
+  if (![destinationCopy revealMode] || objc_msgSend(destinationCopy, "revealMode") == 1)
   {
-    if ([v9 type] == 22)
+    if ([destinationCopy type] == 22)
     {
-      v11 = [(PUPickerContainerController *)self itemsViewController];
+      itemsViewController = [(PUPickerContainerController *)self itemsViewController];
 LABEL_5:
-      v12 = v11;
+      v12 = itemsViewController;
 LABEL_39:
       v44 = 0;
 LABEL_40:
       if (v12)
       {
-        v50 = [(PUPickerContainerController *)self childViewControllers];
-        v51 = [v50 containsObject:v12];
+        childViewControllers = [(PUPickerContainerController *)self childViewControllers];
+        v51 = [childViewControllers containsObject:v12];
 
         if ((v51 & 1) == 0)
         {
@@ -928,15 +928,15 @@ LABEL_40:
         [(PUPickerContainerController *)self updateBars];
         if (v44)
         {
-          [v12 navigateToDestination:v9 options:a4 completionHandler:v10];
+          [v12 navigateToDestination:destinationCopy options:options completionHandler:handlerCopy];
         }
 
         else
         {
-          v52 = [(PUPickerContainerController *)self navigationController];
-          v53 = [v52 popToRootViewControllerAnimated:0];
+          navigationController = [(PUPickerContainerController *)self navigationController];
+          v53 = [navigationController popToRootViewControllerAnimated:0];
 
-          v10[2](v10, 1, 0);
+          handlerCopy[2](handlerCopy, 1, 0);
         }
 
         goto LABEL_51;
@@ -947,7 +947,7 @@ LABEL_45:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v60 = v9;
+        v60 = destinationCopy;
         v21 = "Unsupported destination: %@";
         goto LABEL_47;
       }
@@ -955,147 +955,147 @@ LABEL_45:
       goto LABEL_48;
     }
 
-    if ([v9 type] == 23)
+    if ([destinationCopy type] == 23)
     {
-      v13 = [(PUPickerContainerController *)self sidebarViewController];
+      sidebarViewController = [(PUPickerContainerController *)self sidebarViewController];
 
-      if (!v13)
+      if (!sidebarViewController)
       {
-        v11 = [(PUPickerContainerController *)self albumsViewController];
+        itemsViewController = [(PUPickerContainerController *)self albumsViewController];
         goto LABEL_5;
       }
     }
 
-    if ([v9 isCollectionsHome])
+    if ([destinationCopy isCollectionsHome])
     {
 LABEL_9:
-      v14 = [(PUPickerContainerController *)self configuration];
-      v15 = [(PUPickerContainerController *)self sessionInfo];
-      v16 = [(PUPickerContainerController *)self selectionCoordinator];
-      v12 = [(PUPickerContainerController *)self _viewControllerWithSidebarNavigationDestination:v9 configuration:v14 sessionInfo:v15 selectionCoordinator:v16];
+      configuration = [(PUPickerContainerController *)self configuration];
+      sessionInfo = [(PUPickerContainerController *)self sessionInfo];
+      selectionCoordinator = [(PUPickerContainerController *)self selectionCoordinator];
+      v12 = [(PUPickerContainerController *)self _viewControllerWithSidebarNavigationDestination:destinationCopy configuration:configuration sessionInfo:sessionInfo selectionCoordinator:selectionCoordinator];
 
       goto LABEL_39;
     }
 
-    if (!v9)
+    if (!destinationCopy)
     {
       goto LABEL_45;
     }
 
-    v22 = [(PUPickerContainerController *)self sidebarViewController];
+    sidebarViewController2 = [(PUPickerContainerController *)self sidebarViewController];
 
-    if (v22)
+    if (sidebarViewController2)
     {
-      v23 = [(PUPickerContainerController *)self configuration];
-      v24 = [(PUPickerContainerController *)self sessionInfo];
-      v25 = [(PUPickerContainerController *)self selectionCoordinator];
-      v12 = [(PUPickerContainerController *)self _viewControllerWithSidebarNavigationDestination:v9 configuration:v23 sessionInfo:v24 selectionCoordinator:v25];
+      configuration2 = [(PUPickerContainerController *)self configuration];
+      sessionInfo2 = [(PUPickerContainerController *)self sessionInfo];
+      selectionCoordinator2 = [(PUPickerContainerController *)self selectionCoordinator];
+      v12 = [(PUPickerContainerController *)self _viewControllerWithSidebarNavigationDestination:destinationCopy configuration:configuration2 sessionInfo:sessionInfo2 selectionCoordinator:selectionCoordinator2];
 
-      v26 = [v9 collection];
-      v27 = [v26 localizedSubtitle];
+      collection = [destinationCopy collection];
+      localizedSubtitle = [collection localizedSubtitle];
 
-      v28 = [v9 collection];
-      v29 = [v28 localizedTitle];
+      collection2 = [destinationCopy collection];
+      localizedTitle = [collection2 localizedTitle];
 
-      if (v27)
+      if (localizedSubtitle)
       {
         v30 = MEMORY[0x1E696AEC0];
-        v31 = [v9 collection];
-        v32 = v31;
-        if (v29)
+        collection3 = [destinationCopy collection];
+        collection5 = collection3;
+        if (localizedTitle)
         {
-          v33 = [v31 localizedTitle];
-          v34 = [v9 collection];
-          v35 = [v34 localizedSubtitle];
-          v36 = [v30 stringWithFormat:@"%@ - %@", v33, v35];
+          localizedTitle2 = [collection3 localizedTitle];
+          collection4 = [destinationCopy collection];
+          localizedSubtitle2 = [collection4 localizedSubtitle];
+          v36 = [v30 stringWithFormat:@"%@ - %@", localizedTitle2, localizedSubtitle2];
 
 LABEL_37:
 LABEL_38:
           [v12 setTitle:v36];
-          v46 = [(PUPickerContainerController *)self configuration];
-          v47 = [v46 hasClearBackgroundColor];
-          v48 = [v12 view];
-          v49 = [v48 layer];
-          [v49 setHitTestsAsOpaque:v47];
+          configuration3 = [(PUPickerContainerController *)self configuration];
+          hasClearBackgroundColor = [configuration3 hasClearBackgroundColor];
+          view = [v12 view];
+          layer = [view layer];
+          [layer setHitTestsAsOpaque:hasClearBackgroundColor];
 
           goto LABEL_39;
         }
 
-        v45 = [v31 localizedSubtitle];
+        localizedSubtitle3 = [collection3 localizedSubtitle];
       }
 
       else
       {
-        if (!v29)
+        if (!localizedTitle)
         {
           v36 = 0;
           goto LABEL_38;
         }
 
         v30 = MEMORY[0x1E696AEC0];
-        v32 = [v9 collection];
-        v45 = [v32 localizedTitle];
+        collection5 = [destinationCopy collection];
+        localizedSubtitle3 = [collection5 localizedTitle];
       }
 
-      v33 = v45;
-      v36 = [v30 stringWithFormat:@"%@", v45];
+      localizedTitle2 = localizedSubtitle3;
+      v36 = [v30 stringWithFormat:@"%@", localizedSubtitle3];
       goto LABEL_37;
     }
 
-    v38 = [v9 collection];
-    if (!v38)
+    collection6 = [destinationCopy collection];
+    if (!collection6)
     {
       goto LABEL_9;
     }
 
-    v39 = v38;
-    v40 = [(PUPickerContainerController *)self navigationBarSegmentedControl];
-    v41 = [v40 selectedSegmentIndex];
+    v39 = collection6;
+    navigationBarSegmentedControl = [(PUPickerContainerController *)self navigationBarSegmentedControl];
+    selectedSegmentIndex = [navigationBarSegmentedControl selectedSegmentIndex];
 
-    if (v41 == 1)
+    if (selectedSegmentIndex == 1)
     {
       goto LABEL_9;
     }
 
-    v42 = [(PUPickerContainerController *)self px_gridPresentation];
-    v43 = [v9 collection];
-    if (v43)
+    px_gridPresentation = [(PUPickerContainerController *)self px_gridPresentation];
+    collection7 = [destinationCopy collection];
+    if (collection7)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_32:
-        v12 = [v42 createViewControllerForAssetCollection:v43 hostViewController:self];
+        v12 = [px_gridPresentation createViewControllerForAssetCollection:collection7 hostViewController:self];
 
         v44 = 1;
         goto LABEL_40;
       }
 
-      v54 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v57 = objc_opt_class();
       v56 = NSStringFromClass(v57);
-      v58 = [v43 px_descriptionForAssertionMessage];
-      [v54 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:2142 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"destination.collection", v56, v58}];
+      px_descriptionForAssertionMessage = [collection7 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:2142 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"destination.collection", v56, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v54 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v55 = objc_opt_class();
       v56 = NSStringFromClass(v55);
-      [v54 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:2142 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"destination.collection", v56}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:2142 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"destination.collection", v56}];
     }
 
     goto LABEL_32;
   }
 
-  if ([v9 revealMode] != 3)
+  if ([destinationCopy revealMode] != 3)
   {
     v20 = PLPickerGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v60 = v9;
+      v60 = destinationCopy;
       v21 = "Unsupported destination reveal mode: %@";
 LABEL_47:
       _os_log_impl(&dword_1B36F3000, v20, OS_LOG_TYPE_ERROR, v21, buf, 0xCu);
@@ -1103,16 +1103,16 @@ LABEL_47:
 
 LABEL_48:
 
-    v10[2](v10, 2, 0);
+    handlerCopy[2](handlerCopy, 2, 0);
     goto LABEL_51;
   }
 
-  v17 = [(PUPickerContainerController *)self childViewControllers];
-  v18 = [v17 firstObject];
+  childViewControllers2 = [(PUPickerContainerController *)self childViewControllers];
+  firstObject = [childViewControllers2 firstObject];
 
-  if (v18)
+  if (firstObject)
   {
-    if ([v18 px_scrollToInitialPositionAnimated:(a4 >> 1) & 1])
+    if ([firstObject px_scrollToInitialPositionAnimated:(options >> 1) & 1])
     {
       v19 = 1;
     }
@@ -1122,7 +1122,7 @@ LABEL_48:
       v19 = 5;
     }
 
-    v10[2](v10, v19, 0);
+    handlerCopy[2](handlerCopy, v19, 0);
   }
 
   else
@@ -1131,93 +1131,93 @@ LABEL_48:
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v60 = v9;
+      v60 = destinationCopy;
       _os_log_impl(&dword_1B36F3000, v37, OS_LOG_TYPE_ERROR, "Unsupported scrolling to top (can't find child view controller): %@", buf, 0xCu);
     }
 
-    v10[2](v10, 2, 0);
+    handlerCopy[2](handlerCopy, 2, 0);
   }
 
 LABEL_51:
 }
 
-- (unint64_t)routingOptionsForDestination:(id)a3
+- (unint64_t)routingOptionsForDestination:(id)destination
 {
-  v3 = [a3 type];
-  if ((v3 - 8) > 0x15)
+  type = [destination type];
+  if ((type - 8) > 0x15)
   {
     return 0;
   }
 
   else
   {
-    return qword_1B3D0D530[v3 - 8];
+    return qword_1B3D0D530[type - 8];
   }
 }
 
-- (BOOL)_actionPerformer:(id)a3 presentViewController:(id)a4
+- (BOOL)_actionPerformer:(id)performer presentViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  performerCopy = performer;
+  controllerCopy = controller;
+  v8 = controllerCopy;
+  if (controllerCopy)
   {
-    v9 = v7;
-    v10 = [v9 popoverPresentationController];
-    if (v10)
+    v9 = controllerCopy;
+    popoverPresentationController = [v9 popoverPresentationController];
+    if (popoverPresentationController)
     {
-      v11 = [v6 actionType];
-      if (v11 == *MEMORY[0x1E69A2920])
+      actionType = [performerCopy actionType];
+      if (actionType == *MEMORY[0x1E69A2920])
       {
-        v12 = [(PUPickerContainerController *)self toolbarSortAndFilterBarButtonItem];
-        [v10 setBarButtonItem:v12];
+        toolbarSortAndFilterBarButtonItem = [(PUPickerContainerController *)self toolbarSortAndFilterBarButtonItem];
+        [popoverPresentationController setBarButtonItem:toolbarSortAndFilterBarButtonItem];
       }
 
       else
       {
-        v12 = [(PUPickerContainerController *)self navigationController];
-        v13 = [v12 view];
-        [v10 setSourceView:v13];
+        toolbarSortAndFilterBarButtonItem = [(PUPickerContainerController *)self navigationController];
+        view = [toolbarSortAndFilterBarButtonItem view];
+        [popoverPresentationController setSourceView:view];
       }
     }
 
-    v15 = [(PUPickerContainerController *)self navigationController];
-    v14 = 1;
-    [v15 presentViewController:v9 animated:1 completion:0];
+    navigationController = [(PUPickerContainerController *)self navigationController];
+    px_isDelayingPresentation = 1;
+    [navigationController presentViewController:v9 animated:1 completion:0];
 
-    v16 = [v9 presentingViewController];
-    if (!v16)
+    presentingViewController = [v9 presentingViewController];
+    if (!presentingViewController)
     {
-      v14 = [v9 px_isDelayingPresentation];
+      px_isDelayingPresentation = [v9 px_isDelayingPresentation];
     }
   }
 
   else
   {
-    v14 = 0;
+    px_isDelayingPresentation = 0;
   }
 
-  return v14;
+  return px_isDelayingPresentation;
 }
 
-- (BOOL)actionPerformer:(id)a3 transitionToViewController:(id)a4 transitionType:(int64_t)a5
+- (BOOL)actionPerformer:(id)performer transitionToViewController:(id)controller transitionType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
-  switch(a5)
+  performerCopy = performer;
+  controllerCopy = controller;
+  switch(type)
   {
     case 1:
-      v12 = [(PUPickerContainerController *)self navigationController];
+      navigationController = [(PUPickerContainerController *)self navigationController];
       v11 = 1;
-      [v12 px_pushViewController:v10 animated:1 completion:0];
+      [navigationController px_pushViewController:controllerCopy animated:1 completion:0];
 
       break;
     case 2:
-      v11 = [(PUPickerContainerController *)self _actionPerformer:v9 presentViewController:v10];
+      v11 = [(PUPickerContainerController *)self _actionPerformer:performerCopy presentViewController:controllerCopy];
       break;
     case 0:
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:2055 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:2055 description:@"Code which should be unreachable has been reached"];
 
       abort();
     default:
@@ -1228,58 +1228,58 @@ LABEL_51:
   return v11;
 }
 
-- (id)undoManagerForActionPerformer:(id)a3
+- (id)undoManagerForActionPerformer:(id)performer
 {
-  v3 = [(PUPickerContainerController *)self navigationController];
-  v4 = [v3 topViewController];
+  navigationController = [(PUPickerContainerController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  v5 = [v4 undoManager];
+  undoManager = [topViewController undoManager];
 
-  return v5;
+  return undoManager;
 }
 
-- (void)handleItemCreationBarButtonItemAction:(id)a3
+- (void)handleItemCreationBarButtonItemAction:(id)action
 {
-  v5 = [(PUPickerContainerController *)self configuration];
-  v6 = [v5 sourceType];
+  configuration = [(PUPickerContainerController *)self configuration];
+  sourceType = [configuration sourceType];
 
-  if (v6 != 2)
+  if (sourceType != 2)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:2005 description:{@"Invalid parameter not satisfying: %@", @"self.configuration.sourceType == _PHPickerSourceTypeAlbums"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:2005 description:{@"Invalid parameter not satisfying: %@", @"self.configuration.sourceType == _PHPickerSourceTypeAlbums"}];
   }
 
-  v7 = [(PUPickerContainerController *)self _containerForTopViewController];
-  v8 = v7;
-  if (v7)
+  _containerForTopViewController = [(PUPickerContainerController *)self _containerForTopViewController];
+  v8 = _containerForTopViewController;
+  if (_containerForTopViewController)
   {
-    v9 = v7;
+    rootAlbumCollectionList = _containerForTopViewController;
   }
 
   else
   {
-    v10 = [(PUPickerContainerController *)self configuration];
-    v11 = [v10 photoLibrary];
-    v12 = [v11 px_virtualCollections];
-    v9 = [v12 rootAlbumCollectionList];
+    configuration2 = [(PUPickerContainerController *)self configuration];
+    photoLibrary = [configuration2 photoLibrary];
+    px_virtualCollections = [photoLibrary px_virtualCollections];
+    rootAlbumCollectionList = [px_virtualCollections rootAlbumCollectionList];
   }
 
   v13 = objc_alloc(MEMORY[0x1E69C37E0]);
-  v14 = [v13 initWithActionType:*MEMORY[0x1E69C3FE8] collectionList:v9];
+  v14 = [v13 initWithActionType:*MEMORY[0x1E69C3FE8] collectionList:rootAlbumCollectionList];
   [v14 setDelegate:self];
-  v15 = [(PUPickerContainerController *)self configuration];
-  v16 = [v15 albumsConfiguration];
-  v17 = [v16 assetsToAddIdentifiers];
+  configuration3 = [(PUPickerContainerController *)self configuration];
+  albumsConfiguration = [configuration3 albumsConfiguration];
+  assetsToAddIdentifiers = [albumsConfiguration assetsToAddIdentifiers];
 
-  if ([v17 count])
+  if ([assetsToAddIdentifiers count])
   {
     v18 = MEMORY[0x1E6978630];
-    v19 = [(PUPickerContainerController *)self configuration];
-    v20 = [v19 photoLibrary];
-    v21 = [v20 librarySpecificFetchOptions];
-    v22 = [v18 fetchAssetsWithLocalIdentifiers:v17 options:v21];
-    v23 = [v22 fetchedObjects];
-    [v14 setPreselectedAssets:v23];
+    configuration4 = [(PUPickerContainerController *)self configuration];
+    photoLibrary2 = [configuration4 photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary2 librarySpecificFetchOptions];
+    v22 = [v18 fetchAssetsWithLocalIdentifiers:assetsToAddIdentifiers options:librarySpecificFetchOptions];
+    fetchedObjects = [v22 fetchedObjects];
+    [v14 setPreselectedAssets:fetchedObjects];
   }
 
   v26[0] = MEMORY[0x1E69E9820];
@@ -1287,7 +1287,7 @@ LABEL_51:
   v26[2] = __69__PUPickerContainerController_handleItemCreationBarButtonItemAction___block_invoke;
   v26[3] = &unk_1E7B7FB70;
   v27 = v14;
-  v28 = self;
+  selfCopy = self;
   v24 = v14;
   [v24 performActionWithCompletionHandler:v26];
 }
@@ -1338,25 +1338,25 @@ void __69__PUPickerContainerController_handleItemCreationBarButtonItemAction___b
   [v4 modifySelectionWithRemovedOIDs:v3 insertedOIDs:*(a1 + 40)];
 }
 
-- (void)handleToolbarOptionsButton:(id)a3
+- (void)handleToolbarOptionsButton:(id)button
 {
-  v5 = a3;
-  v6 = [(PUPickerContainerController *)self configuration];
-  v7 = [v6 excludesOptionsMenu];
+  buttonCopy = button;
+  configuration = [(PUPickerContainerController *)self configuration];
+  excludesOptionsMenu = [configuration excludesOptionsMenu];
 
-  if (v7)
+  if (excludesOptionsMenu)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1959 description:{@"Invalid parameter not satisfying: %@", @"!self.configuration.excludesOptionsMenu"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1959 description:{@"Invalid parameter not satisfying: %@", @"!self.configuration.excludesOptionsMenu"}];
   }
 
-  v8 = [(PUPickerContainerController *)self navigationController];
-  v9 = [v8 topViewController];
+  navigationController = [(PUPickerContainerController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  v10 = [(PUPickerContainerController *)self configuration];
-  v11 = [(PUPickerContainerController *)self selectionCoordinator];
-  v12 = [(PUPickerContainerController *)self additionalSelectionState];
-  v13 = [PUPickerOptionsViewFactory viewControllerWithConfiguration:v10 selectionCoordinator:v11 additionalSelectionState:v12];
+  configuration2 = [(PUPickerContainerController *)self configuration];
+  selectionCoordinator = [(PUPickerContainerController *)self selectionCoordinator];
+  additionalSelectionState = [(PUPickerContainerController *)self additionalSelectionState];
+  v13 = [PUPickerOptionsViewFactory viewControllerWithConfiguration:configuration2 selectionCoordinator:selectionCoordinator additionalSelectionState:additionalSelectionState];
 
   v14 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v13];
   v15 = PULocalizedString(@"OPTIONS_BUTTON_TITLE");
@@ -1368,13 +1368,13 @@ void __69__PUPickerContainerController_handleItemCreationBarButtonItemAction___b
   v22[1] = 3221225472;
   v22[2] = __58__PUPickerContainerController_handleToolbarOptionsButton___block_invoke;
   v22[3] = &unk_1E7B7F4F0;
-  v17 = v9;
+  v17 = topViewController;
   v23 = v17;
   objc_copyWeak(&v24, &location);
   v18 = [v16 actionWithTitle:&stru_1F2AC6818 image:0 identifier:0 handler:v22];
   v19 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 primaryAction:v18 menu:0];
-  v20 = [v13 navigationItem];
-  [v20 setRightBarButtonItem:v19];
+  navigationItem = [v13 navigationItem];
+  [navigationItem setRightBarButtonItem:v19];
 
   [v17 presentViewController:v14 animated:1 completion:0];
   objc_destroyWeak(&v24);
@@ -1401,18 +1401,18 @@ void __58__PUPickerContainerController_handleToolbarOptionsButton___block_invoke
   [WeakRetained _updateToolbar];
 }
 
-- (void)handleNavigationBarSegmentedControl:(id)a3
+- (void)handleNavigationBarSegmentedControl:(id)control
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = [a3 selectedSegmentIndex];
-  v5 = v4;
-  if (v4)
+  selectedSegmentIndex = [control selectedSegmentIndex];
+  v5 = selectedSegmentIndex;
+  if (selectedSegmentIndex)
   {
-    if (v4 == 1)
+    if (selectedSegmentIndex == 1)
     {
-      v6 = [(PUPickerContainerController *)self childViewControllers];
-      v7 = [(PUPickerContainerController *)self albumsViewController];
-      v8 = [v6 containsObject:v7];
+      childViewControllers = [(PUPickerContainerController *)self childViewControllers];
+      albumsViewController = [(PUPickerContainerController *)self albumsViewController];
+      v8 = [childViewControllers containsObject:albumsViewController];
 
       v9 = 23;
       if ((v8 & 1) == 0)
@@ -1431,9 +1431,9 @@ LABEL_6:
 
   else
   {
-    v10 = [(PUPickerContainerController *)self childViewControllers];
-    v11 = [(PUPickerContainerController *)self itemsViewController];
-    v12 = [v10 containsObject:v11];
+    childViewControllers2 = [(PUPickerContainerController *)self childViewControllers];
+    itemsViewController = [(PUPickerContainerController *)self itemsViewController];
+    v12 = [childViewControllers2 containsObject:itemsViewController];
 
     v9 = 22;
     if (v12)
@@ -1447,10 +1447,10 @@ LABEL_8:
   v14 = 0;
 LABEL_9:
   v15 = [objc_alloc(MEMORY[0x1E69C3930]) initWithType:v9 revealMode:v14];
-  v16 = [v15 type];
+  type = [v15 type];
   v17 = PLPickerGetLog();
   v18 = v17;
-  if (v16)
+  if (type)
   {
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -1566,50 +1566,50 @@ void __67__PUPickerContainerController_handleNavigationBarSegmentedControl___blo
   }
 }
 
-- (void)_performSelectionStatusAction:(id)a3
+- (void)_performSelectionStatusAction:(id)action
 {
-  v5 = a3;
-  v6 = [(PUPickerContainerController *)self selectionCoordinator];
-  v7 = [v6 selectedObjectIDs];
-  v8 = [v7 count];
+  actionCopy = action;
+  selectionCoordinator = [(PUPickerContainerController *)self selectionCoordinator];
+  selectedObjectIDs = [selectionCoordinator selectedObjectIDs];
+  v8 = [selectedObjectIDs count];
 
   if (!v8)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1917 description:{@"Invalid parameter not satisfying: %@", @"self.selectionCoordinator.selectedObjectIDs.count > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1917 description:{@"Invalid parameter not satisfying: %@", @"self.selectionCoordinator.selectedObjectIDs.count > 0"}];
   }
 
-  v10 = [(PUPickerContainerController *)self containerControllerActionHandler];
-  [v10 containerController:self didTapShowSelectedButton:v5];
+  containerControllerActionHandler = [(PUPickerContainerController *)self containerControllerActionHandler];
+  [containerControllerActionHandler containerController:self didTapShowSelectedButton:actionCopy];
 }
 
-- (void)_performConfirmationAction:(id)a3
+- (void)_performConfirmationAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PUPickerContainerController *)self containerControllerActionHandler];
-  [v5 containerController:self didTapAddButton:v4];
+  actionCopy = action;
+  containerControllerActionHandler = [(PUPickerContainerController *)self containerControllerActionHandler];
+  [containerControllerActionHandler containerController:self didTapAddButton:actionCopy];
 }
 
-- (void)_performCancellationAction:(id)a3
+- (void)_performCancellationAction:(id)action
 {
-  v8 = a3;
-  v4 = [(PUPickerContainerController *)self configuration];
-  v5 = [(PUPickerContainerController *)self traitCollection];
-  v6 = [v4 cancellationBehaviorWithTraitCollection:v5];
+  actionCopy = action;
+  configuration = [(PUPickerContainerController *)self configuration];
+  traitCollection = [(PUPickerContainerController *)self traitCollection];
+  v6 = [configuration cancellationBehaviorWithTraitCollection:traitCollection];
 
   switch(v6)
   {
     case 3:
-      v7 = [(PUPickerContainerController *)self containerControllerActionHandler];
-      [v7 containerController:self didTapAddButton:v8];
+      containerControllerActionHandler = [(PUPickerContainerController *)self containerControllerActionHandler];
+      [containerControllerActionHandler containerController:self didTapAddButton:actionCopy];
       break;
     case 2:
-      v7 = [(PUPickerContainerController *)self containerControllerActionHandler];
-      [v7 containerController:self didTapCancelButton:v8];
+      containerControllerActionHandler = [(PUPickerContainerController *)self containerControllerActionHandler];
+      [containerControllerActionHandler containerController:self didTapCancelButton:actionCopy];
       break;
     case 1:
-      v7 = [(PUPickerContainerController *)self containerControllerActionHandler];
-      [v7 containerController:self didTapClearButton:v8];
+      containerControllerActionHandler = [(PUPickerContainerController *)self containerControllerActionHandler];
+      [containerControllerActionHandler containerController:self didTapClearButton:actionCopy];
       break;
     default:
       goto LABEL_8;
@@ -1620,24 +1620,24 @@ LABEL_8:
 
 - (void)_cleanUpInteractiveBarTransitionIfNeeded
 {
-  v18 = [(PUPickerContainerController *)self configuration];
-  if ([v18 supportsInteractiveBarTransition])
+  configuration = [(PUPickerContainerController *)self configuration];
+  if ([configuration supportsInteractiveBarTransition])
   {
   }
 
   else
   {
-    v3 = [(PUPickerContainerController *)self viewIfLoaded];
+    viewIfLoaded = [(PUPickerContainerController *)self viewIfLoaded];
 
-    if (v3)
+    if (viewIfLoaded)
     {
-      v4 = [(PUPickerContainerController *)self photosViewController];
-      v5 = [v4 contentController];
-      v6 = [v5 gridView];
-      [v6 setAvoidSnapshotOnHeightChanges:0];
+      photosViewController = [(PUPickerContainerController *)self photosViewController];
+      contentController = [photosViewController contentController];
+      gridView = [contentController gridView];
+      [gridView setAvoidSnapshotOnHeightChanges:0];
 
-      v7 = [(PUPickerContainerController *)self navigationController];
-      v8 = [v7 navigationBar];
+      navigationController = [(PUPickerContainerController *)self navigationController];
+      navigationBar = [navigationController navigationBar];
 
       v9 = *(MEMORY[0x1E695EFD0] + 16);
       *v19 = *MEMORY[0x1E695EFD0];
@@ -1646,130 +1646,130 @@ LABEL_8:
       v17 = v9;
       v21 = v9;
       v22 = v16;
-      [v8 setTransform:&v20];
-      [v8 setUserInteractionEnabled:1];
-      v10 = [v8 layer];
-      [v10 removeAllAnimations];
+      [navigationBar setTransform:&v20];
+      [navigationBar setUserInteractionEnabled:1];
+      layer = [navigationBar layer];
+      [layer removeAllAnimations];
 
-      v11 = [(PUPickerContainerController *)self navigationController];
-      LOBYTE(v6) = [v11 isToolbarHidden];
+      navigationController2 = [(PUPickerContainerController *)self navigationController];
+      LOBYTE(gridView) = [navigationController2 isToolbarHidden];
 
-      if ((v6 & 1) == 0)
+      if ((gridView & 1) == 0)
       {
-        v12 = [(PUPickerContainerController *)self navigationController];
-        v13 = [v12 toolbar];
+        navigationController3 = [(PUPickerContainerController *)self navigationController];
+        toolbar = [navigationController3 toolbar];
 
         v20 = *v19;
         v21 = v17;
         v22 = v16;
-        [v13 setTransform:&v20];
-        [v13 setUserInteractionEnabled:1];
-        v14 = [v13 layer];
-        [v14 removeAllAnimations];
+        [toolbar setTransform:&v20];
+        [toolbar setUserInteractionEnabled:1];
+        layer2 = [toolbar layer];
+        [layer2 removeAllAnimations];
       }
 
-      v15 = [(PUPickerContainerController *)self _currentContainerViewForInteractionBarTransition];
+      _currentContainerViewForInteractionBarTransition = [(PUPickerContainerController *)self _currentContainerViewForInteractionBarTransition];
       v20 = *v19;
       v21 = v17;
       v22 = v16;
-      [v15 setTransform:&v20];
+      [_currentContainerViewForInteractionBarTransition setTransform:&v20];
     }
   }
 }
 
 - (BOOL)_isConfiguredForStickerSuggestionGroup
 {
-  v2 = [(PUPickerContainerController *)self configuration];
-  v3 = [v2 suggestionGroup];
-  v4 = [MEMORY[0x1E6979178] stickersSuggestionGroup];
-  v5 = [v3 isEqual:v4];
+  configuration = [(PUPickerContainerController *)self configuration];
+  suggestionGroup = [configuration suggestionGroup];
+  stickersSuggestionGroup = [MEMORY[0x1E6979178] stickersSuggestionGroup];
+  v5 = [suggestionGroup isEqual:stickersSuggestionGroup];
 
   return v5;
 }
 
-- (void)_updateSearchResultContextualVideoThumbnailIdentifiers:(id)a3
+- (void)_updateSearchResultContextualVideoThumbnailIdentifiers:(id)identifiers
 {
   v5 = MEMORY[0x1E696AF00];
-  v6 = a3;
+  identifiersCopy = identifiers;
   if (([v5 isMainThread] & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1862 description:{@"%s must be called on the main thread", "-[PUPickerContainerController _updateSearchResultContextualVideoThumbnailIdentifiers:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1862 description:{@"%s must be called on the main thread", "-[PUPickerContainerController _updateSearchResultContextualVideoThumbnailIdentifiers:]"}];
   }
 
-  v7 = [(PUPickerContainerController *)self photosViewController];
-  v8 = [v7 viewModel];
-  [v8 setSearchContextualVideoThumbnailIdentifiers:v6];
+  photosViewController = [(PUPickerContainerController *)self photosViewController];
+  viewModel = [photosViewController viewModel];
+  [viewModel setSearchContextualVideoThumbnailIdentifiers:identifiersCopy];
 
-  v11 = [(PUPickerContainerController *)self photosViewController];
-  v9 = [v11 contentControllerIfLoaded];
-  [v9 reloadVideoThumbnails];
+  photosViewController2 = [(PUPickerContainerController *)self photosViewController];
+  contentControllerIfLoaded = [photosViewController2 contentControllerIfLoaded];
+  [contentControllerIfLoaded reloadVideoThumbnails];
 }
 
-- (void)_filterWithSearchResultUUIDs:(id)a3
+- (void)_filterWithSearchResultUUIDs:(id)ds
 {
-  v6 = a3;
+  dsCopy = ds;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1855 description:{@"%s must be called on the main thread", "-[PUPickerContainerController _filterWithSearchResultUUIDs:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1855 description:{@"%s must be called on the main thread", "-[PUPickerContainerController _filterWithSearchResultUUIDs:]"}];
   }
 
-  [(PUPickerContainerController *)self setSearchResultUUIDs:v6];
+  [(PUPickerContainerController *)self setSearchResultUUIDs:dsCopy];
   [(PUPickerContainerController *)self _updateAllowedUUIDsForceReload:0];
 }
 
-- (void)_filterWithSuggestionResult:(id)a3
+- (void)_filterWithSuggestionResult:(id)result
 {
-  v26 = a3;
-  if (!v26)
+  resultCopy = result;
+  if (!resultCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1815 description:{@"Invalid parameter not satisfying: %@", @"result != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1815 description:{@"Invalid parameter not satisfying: %@", @"result != nil"}];
   }
 
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1816 description:{@"%s must be called on the main thread", "-[PUPickerContainerController _filterWithSuggestionResult:]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1816 description:{@"%s must be called on the main thread", "-[PUPickerContainerController _filterWithSuggestionResult:]"}];
   }
 
-  v5 = [(PUPickerContainerController *)self photosViewController];
-  v6 = [v5 configuration];
-  v7 = [v6 showLoadingPlaceholderWhenEmpty];
+  photosViewController = [(PUPickerContainerController *)self photosViewController];
+  configuration = [photosViewController configuration];
+  showLoadingPlaceholderWhenEmpty = [configuration showLoadingPlaceholderWhenEmpty];
 
-  if (v7)
+  if (showLoadingPlaceholderWhenEmpty)
   {
-    v8 = [(PUPickerContainerController *)self photosViewController];
-    v9 = [v8 viewModelIfLoaded];
+    photosViewController2 = [(PUPickerContainerController *)self photosViewController];
+    viewModelIfLoaded = [photosViewController2 viewModelIfLoaded];
 
-    if ([v9 showLoadingPlaceholderWhenEmpty])
+    if ([viewModelIfLoaded showLoadingPlaceholderWhenEmpty])
     {
-      [v9 performChanges:&__block_literal_global_500];
+      [viewModelIfLoaded performChanges:&__block_literal_global_500];
     }
 
-    v10 = [(PUPickerContainerController *)self photosDataSourceManager];
-    v11 = [v10 filterPredicate];
-    if (v11)
+    photosDataSourceManager = [(PUPickerContainerController *)self photosDataSourceManager];
+    filterPredicate = [photosDataSourceManager filterPredicate];
+    if (filterPredicate)
     {
-      v12 = v11;
-      v13 = [v10 filterPredicate];
+      v12 = filterPredicate;
+      filterPredicate2 = [photosDataSourceManager filterPredicate];
       v14 = [MEMORY[0x1E696AE18] predicateWithValue:0];
-      v15 = [v13 isEqual:v14];
+      v15 = [filterPredicate2 isEqual:v14];
 
       if (v15)
       {
-        [v10 performChanges:&__block_literal_global_503];
+        [photosDataSourceManager performChanges:&__block_literal_global_503];
       }
     }
   }
 
-  v16 = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
-  if (v16)
+  pickerSuggestionResultFetcherResult = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
+  if (pickerSuggestionResultFetcherResult)
   {
-    v17 = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
-    v18 = [v17 isSpatialPhotoWallpaperSuggestion];
-    v19 = v18 ^ [v26 isSpatialPhotoWallpaperSuggestion];
+    pickerSuggestionResultFetcherResult2 = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
+    isSpatialPhotoWallpaperSuggestion = [pickerSuggestionResultFetcherResult2 isSpatialPhotoWallpaperSuggestion];
+    v19 = isSpatialPhotoWallpaperSuggestion ^ [resultCopy isSpatialPhotoWallpaperSuggestion];
   }
 
   else
@@ -1777,38 +1777,38 @@ LABEL_8:
     v19 = 0;
   }
 
-  [(PUPickerContainerController *)self setPickerSuggestionResultFetcherResult:v26];
-  v20 = [v26 selectedFilterableSuggestion];
-  v21 = [(PUPickerContainerController *)self _shouldUseSolariumPickerSearch];
-  if (v20)
+  [(PUPickerContainerController *)self setPickerSuggestionResultFetcherResult:resultCopy];
+  selectedFilterableSuggestion = [resultCopy selectedFilterableSuggestion];
+  _shouldUseSolariumPickerSearch = [(PUPickerContainerController *)self _shouldUseSolariumPickerSearch];
+  if (selectedFilterableSuggestion)
   {
-    if (v21)
+    if (_shouldUseSolariumPickerSearch)
     {
-      v22 = [(PUPickerContainerController *)self searchCoordinator];
-      [v22 setContainerFromSuggestion:v26];
+      searchCoordinator = [(PUPickerContainerController *)self searchCoordinator];
+      [searchCoordinator setContainerFromSuggestion:resultCopy];
     }
 
     else
     {
-      v22 = [(PUPickerContainerController *)self searchBar];
-      [v22 updateContainerFromSuggestion:v26];
+      searchCoordinator = [(PUPickerContainerController *)self searchBar];
+      [searchCoordinator updateContainerFromSuggestion:resultCopy];
     }
   }
 
   else
   {
-    if (v21)
+    if (_shouldUseSolariumPickerSearch)
     {
-      v22 = [(PUPickerContainerController *)self searchCoordinator];
-      v23 = [(PUPickerContainerController *)self configuration];
-      [v22 setContainerFromPickerConfiguration:v23];
+      searchCoordinator = [(PUPickerContainerController *)self searchCoordinator];
+      configuration2 = [(PUPickerContainerController *)self configuration];
+      [searchCoordinator setContainerFromPickerConfiguration:configuration2];
     }
 
     else
     {
-      v22 = [(PUPickerContainerController *)self searchBar];
-      v23 = [(PUPickerContainerController *)self configuration];
-      [v22 updateContainerFromPickerConfiguration:v23];
+      searchCoordinator = [(PUPickerContainerController *)self searchBar];
+      configuration2 = [(PUPickerContainerController *)self configuration];
+      [searchCoordinator updateContainerFromPickerConfiguration:configuration2];
     }
   }
 
@@ -1826,68 +1826,68 @@ void __59__PUPickerContainerController__filterWithSuggestionResult___block_invok
 
 - (void)_showPhotosIndicatorBrieflyIfNeeded
 {
-  v35 = [(PUPickerContainerController *)self configuration];
-  if (([v35 shouldShowPhotosIndicator] & 1) == 0)
+  configuration = [(PUPickerContainerController *)self configuration];
+  if (([configuration shouldShowPhotosIndicator] & 1) == 0)
   {
 LABEL_4:
 
     return;
   }
 
-  v3 = [(PUPickerContainerController *)self configuration];
-  if ([v3 shouldShowOnboardingOverlayView])
+  configuration2 = [(PUPickerContainerController *)self configuration];
+  if ([configuration2 shouldShowOnboardingOverlayView])
   {
 
     goto LABEL_4;
   }
 
-  v4 = [(PUPickerContainerController *)self configuration];
-  v5 = [v4 shouldShowOnboardingHeaderView];
+  configuration3 = [(PUPickerContainerController *)self configuration];
+  shouldShowOnboardingHeaderView = [configuration3 shouldShowOnboardingHeaderView];
 
-  if ((v5 & 1) == 0)
+  if ((shouldShowOnboardingHeaderView & 1) == 0)
   {
-    v6 = [(PUPickerContainerController *)self configuration];
-    [v6 performChanges:&__block_literal_global_492];
+    configuration4 = [(PUPickerContainerController *)self configuration];
+    [configuration4 performChanges:&__block_literal_global_492];
 
-    v7 = [(PUPickerContainerController *)self photosIndicator];
-    [v7 removeFromSuperview];
+    photosIndicator = [(PUPickerContainerController *)self photosIndicator];
+    [photosIndicator removeFromSuperview];
 
-    v8 = [(PUPickerContainerController *)self view];
-    v9 = [(PUPickerContainerController *)self photosIndicator];
-    [v8 addSubview:v9];
+    view = [(PUPickerContainerController *)self view];
+    photosIndicator2 = [(PUPickerContainerController *)self photosIndicator];
+    [view addSubview:photosIndicator2];
 
-    v10 = [(PUPickerContainerController *)self photosIndicator];
-    v11 = [v10 topAnchor];
-    v12 = [(PUPickerContainerController *)self view];
-    v13 = [v12 topAnchor];
-    v14 = [v11 constraintEqualToSystemSpacingBelowAnchor:v13 multiplier:1.0];
+    photosIndicator3 = [(PUPickerContainerController *)self photosIndicator];
+    topAnchor = [photosIndicator3 topAnchor];
+    view2 = [(PUPickerContainerController *)self view];
+    topAnchor2 = [view2 topAnchor];
+    v14 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
     [(PUPickerContainerController *)self setPhotosIndicatorTopConstraint:v14];
 
-    v15 = [(PUPickerContainerController *)self photosIndicator];
-    v16 = [v15 topAnchor];
-    v17 = [(PUPickerContainerController *)self view];
-    v18 = [v17 safeAreaLayoutGuide];
-    v19 = [v18 topAnchor];
-    v20 = [v16 constraintEqualToSystemSpacingBelowAnchor:v19 multiplier:1.0];
+    photosIndicator4 = [(PUPickerContainerController *)self photosIndicator];
+    topAnchor3 = [photosIndicator4 topAnchor];
+    view3 = [(PUPickerContainerController *)self view];
+    safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+    topAnchor4 = [safeAreaLayoutGuide topAnchor];
+    v20 = [topAnchor3 constraintEqualToSystemSpacingBelowAnchor:topAnchor4 multiplier:1.0];
     [(PUPickerContainerController *)self setPhotosIndicatorTopSafeAreaConstraint:v20];
 
-    v21 = [(PUPickerContainerController *)self photosIndicator];
-    v22 = [v21 leadingAnchor];
-    v23 = [(PUPickerContainerController *)self view];
-    v24 = [v23 leadingAnchor];
-    v25 = [v22 constraintEqualToSystemSpacingAfterAnchor:v24 multiplier:1.0];
+    photosIndicator5 = [(PUPickerContainerController *)self photosIndicator];
+    leadingAnchor = [photosIndicator5 leadingAnchor];
+    view4 = [(PUPickerContainerController *)self view];
+    leadingAnchor2 = [view4 leadingAnchor];
+    v25 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:leadingAnchor2 multiplier:1.0];
     [(PUPickerContainerController *)self setPhotosIndicatorLeadingConstraint:v25];
 
-    v26 = [(PUPickerContainerController *)self photosIndicator];
-    v27 = [v26 leadingAnchor];
-    v28 = [(PUPickerContainerController *)self view];
-    v29 = [v28 safeAreaLayoutGuide];
-    v30 = [v29 leadingAnchor];
-    v31 = [v27 constraintEqualToSystemSpacingAfterAnchor:v30 multiplier:1.0];
+    photosIndicator6 = [(PUPickerContainerController *)self photosIndicator];
+    leadingAnchor3 = [photosIndicator6 leadingAnchor];
+    view5 = [(PUPickerContainerController *)self view];
+    safeAreaLayoutGuide2 = [view5 safeAreaLayoutGuide];
+    leadingAnchor4 = [safeAreaLayoutGuide2 leadingAnchor];
+    v31 = [leadingAnchor3 constraintEqualToSystemSpacingAfterAnchor:leadingAnchor4 multiplier:1.0];
     [(PUPickerContainerController *)self setPhotosIndicatorLeadingSafeAreaConstraint:v31];
 
-    v32 = [(PUPickerContainerController *)self view];
-    [v32 setNeedsUpdateConstraints];
+    view6 = [(PUPickerContainerController *)self view];
+    [view6 setNeedsUpdateConstraints];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -1895,8 +1895,8 @@ LABEL_4:
     aBlock[3] = &unk_1E7B7F020;
     aBlock[4] = self;
     v33 = _Block_copy(aBlock);
-    v34 = [(PUPickerContainerController *)self photosIndicator];
-    [v34 flipToPrivacyIconAndDismissAfterDelay:v33 completion:1.0];
+    photosIndicator7 = [(PUPickerContainerController *)self photosIndicator];
+    [photosIndicator7 flipToPrivacyIconAndDismissAfterDelay:v33 completion:1.0];
   }
 }
 
@@ -1914,26 +1914,26 @@ uint64_t __66__PUPickerContainerController__showPhotosIndicatorBrieflyIfNeeded__
   return [v3 setPhotosIndicatorLeadingSafeAreaConstraint:0];
 }
 
-- (void)_updateSelectionStatusBarButtonItem:(BOOL)a3
+- (void)_updateSelectionStatusBarButtonItem:(BOOL)item
 {
   v55[1] = *MEMORY[0x1E69E9840];
   if ([(PUPickerContainerController *)self hasContent])
   {
-    v49 = a3;
-    v5 = [(PUPickerContainerController *)self configuration];
-    v6 = [(PUPickerContainerController *)self selectionCoordinator];
-    v7 = [v6 selectedObjectIDs];
-    v8 = [v7 array];
+    itemCopy = item;
+    configuration = [(PUPickerContainerController *)self configuration];
+    selectionCoordinator = [(PUPickerContainerController *)self selectionCoordinator];
+    selectedObjectIDs = [selectionCoordinator selectedObjectIDs];
+    array = [selectedObjectIDs array];
 
-    v9 = [v8 count];
-    v10 = [v5 generatedFilter];
-    v11 = [v5 photoLibrary];
-    v12 = [v10 displayAssetMediaTypeConsideringAssetObjectIDs:v8 photoLibrary:v11];
+    v9 = [array count];
+    generatedFilter = [configuration generatedFilter];
+    photoLibrary = [configuration photoLibrary];
+    v12 = [generatedFilter displayAssetMediaTypeConsideringAssetObjectIDs:array photoLibrary:photoLibrary];
 
-    v13 = [v5 stagingTitleWithSelectionCount:v9 selectionMediaType:v12];
-    v14 = [(PUPickerContainerController *)self additionalSelectionState];
+    v13 = [configuration stagingTitleWithSelectionCount:v9 selectionMediaType:v12];
+    additionalSelectionState = [(PUPickerContainerController *)self additionalSelectionState];
     v54 = 0;
-    v15 = [v5 stagingSubtitleWithSelectionCount:v9 includesLocation:objc_msgSend(v14 subtitleLeadingImageName:{"shouldIncludeLocation"), &v54}];
+    v15 = [configuration stagingSubtitleWithSelectionCount:v9 includesLocation:objc_msgSend(additionalSelectionState subtitleLeadingImageName:{"shouldIncludeLocation"), &v54}];
     v16 = v54;
 
     if (v13)
@@ -1980,11 +1980,11 @@ uint64_t __66__PUPickerContainerController__showPhotosIndicatorBrieflyIfNeeded__
     v52 = v18;
     v21 = v19;
     v22 = v20;
-    v23 = [(PUPickerContainerController *)self configuration];
-    v24 = [v23 allowsOpeningStagingArea];
+    configuration2 = [(PUPickerContainerController *)self configuration];
+    allowsOpeningStagingArea = [configuration2 allowsOpeningStagingArea];
     if (v9 > 0)
     {
-      v25 = v24;
+      v25 = allowsOpeningStagingArea;
     }
 
     else
@@ -1995,12 +1995,12 @@ uint64_t __66__PUPickerContainerController__showPhotosIndicatorBrieflyIfNeeded__
     v51 = v22;
     if (v25 == 1 && MEMORY[0x1B8C6D660]())
     {
-      v26 = [v8 lastObject];
+      lastObject = [array lastObject];
       v46 = objc_alloc(MEMORY[0x1E69788E0]);
-      v48 = v8;
-      if (v26)
+      v48 = array;
+      if (lastObject)
       {
-        v55[0] = v26;
+        v55[0] = lastObject;
         v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:1];
       }
 
@@ -2009,54 +2009,54 @@ uint64_t __66__PUPickerContainerController__showPhotosIndicatorBrieflyIfNeeded__
         v27 = MEMORY[0x1E695E0F0];
       }
 
-      v29 = [(PUPickerContainerController *)self configuration];
-      v30 = [v29 photoLibrary];
+      configuration3 = [(PUPickerContainerController *)self configuration];
+      photoLibrary2 = [configuration3 photoLibrary];
       v31 = v46;
       v47 = v27;
-      v32 = [v31 initWithOids:v27 photoLibrary:v30 fetchType:*MEMORY[0x1E6978D98] fetchPropertySets:0 identifier:0 registerIfNeeded:1];
+      v32 = [v31 initWithOids:v27 photoLibrary:photoLibrary2 fetchType:*MEMORY[0x1E6978D98] fetchPropertySets:0 identifier:0 registerIfNeeded:1];
 
-      if (v26)
+      if (lastObject)
       {
       }
 
-      v28 = [v32 lastObject];
+      lastObject2 = [v32 lastObject];
 
-      v8 = v48;
+      array = v48;
       v22 = v51;
       v25 = 1;
     }
 
     else
     {
-      v28 = 0;
+      lastObject2 = 0;
     }
 
-    LOBYTE(v45) = v49;
-    [(PUPickerContainerController *)self updateSelectionStatusViewWithTitle:v53 titleSystemImage:v52 subtitle:v21 subtitleSystemImage:v22 asset:v28 allowsOpeningStagingArea:v25 centerAlignment:v45];
-    v33 = [(PUPickerContainerController *)self selectionStatusView];
+    LOBYTE(v45) = itemCopy;
+    [(PUPickerContainerController *)self updateSelectionStatusViewWithTitle:v53 titleSystemImage:v52 subtitle:v21 subtitleSystemImage:v22 asset:lastObject2 allowsOpeningStagingArea:v25 centerAlignment:v45];
+    selectionStatusView = [(PUPickerContainerController *)self selectionStatusView];
 
-    if (v33)
+    if (selectionStatusView)
     {
       v34 = objc_alloc(MEMORY[0x1E69DC708]);
       [(PUPickerContainerController *)self selectionStatusView];
-      v50 = v28;
+      v50 = lastObject2;
       v35 = v25;
-      v36 = v5;
+      v36 = configuration;
       v37 = v16;
       v38 = v15;
       v39 = v21;
       v40 = v13;
-      v42 = v41 = v8;
+      v42 = v41 = array;
       v43 = [v34 initWithCustomView:v42];
 
-      v8 = v41;
+      array = v41;
       v13 = v40;
       v21 = v39;
       v15 = v38;
       v16 = v37;
-      v5 = v36;
+      configuration = v36;
       v44 = v35 ^ 1u;
-      v28 = v50;
+      lastObject2 = v50;
       [v43 setHidesSharedBackground:v44];
       [(PUPickerContainerController *)self setSelectionStatusBarButtonItem:v43];
     }
@@ -2077,17 +2077,17 @@ uint64_t __66__PUPickerContainerController__showPhotosIndicatorBrieflyIfNeeded__
 - (void)_updateConfirmationBarButtonItem
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUPickerContainerController *)self configuration];
-  v4 = [v3 phPickerConfiguration];
-  v5 = [v4 _disabledPrivateCapabilities];
+  configuration = [(PUPickerContainerController *)self configuration];
+  phPickerConfiguration = [configuration phPickerConfiguration];
+  _disabledPrivateCapabilities = [phPickerConfiguration _disabledPrivateCapabilities];
 
-  if ((v5 & 0x400) == 0)
+  if ((_disabledPrivateCapabilities & 0x400) == 0)
   {
-    v6 = [(PUPickerContainerController *)self selectionCoordinator];
-    v7 = [v6 selectedObjectIDs];
-    v8 = [v7 count];
+    selectionCoordinator = [(PUPickerContainerController *)self selectionCoordinator];
+    selectedObjectIDs = [selectionCoordinator selectedObjectIDs];
+    v8 = [selectedObjectIDs count];
 
-    if (!-[PUPickerContainerController hasContent](self, "hasContent") || ([v3 confirmationTitle], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!-[PUPickerContainerController hasContent](self, "hasContent") || ([configuration confirmationTitle], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v21 = 0;
       goto LABEL_10;
@@ -2112,14 +2112,14 @@ uint64_t __66__PUPickerContainerController__showPhotosIndicatorBrieflyIfNeeded__
 
     if (v13)
     {
-      v14 = [MEMORY[0x1E69DC740] tintedButtonConfiguration];
-      v15 = [MEMORY[0x1E69DC888] whiteColor];
-      [v14 setBaseForegroundColor:v15];
+      tintedButtonConfiguration = [MEMORY[0x1E69DC740] tintedButtonConfiguration];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [tintedButtonConfiguration setBaseForegroundColor:whiteColor];
 
-      [v14 setShowsActivityIndicator:{-[PUPickerContainerController replacesConfirmationButtonWithActivityIndicator](self, "replacesConfirmationButtonWithActivityIndicator")}];
-      v16 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v14 primaryAction:v11];
-      v17 = [v16 widthAnchor];
-      v18 = [v17 constraintGreaterThanOrEqualToConstant:72.0];
+      [tintedButtonConfiguration setShowsActivityIndicator:{-[PUPickerContainerController replacesConfirmationButtonWithActivityIndicator](self, "replacesConfirmationButtonWithActivityIndicator")}];
+      v16 = [MEMORY[0x1E69DC738] buttonWithConfiguration:tintedButtonConfiguration primaryAction:v11];
+      widthAnchor = [v16 widthAnchor];
+      v18 = [widthAnchor constraintGreaterThanOrEqualToConstant:72.0];
       v36[0] = v18;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
       [v16 addConstraints:v19];
@@ -2131,17 +2131,17 @@ uint64_t __66__PUPickerContainerController__showPhotosIndicatorBrieflyIfNeeded__
     {
       if (![(PUPickerContainerController *)self replacesConfirmationButtonWithActivityIndicator])
       {
-        v22 = [(PUPickerContainerController *)self configuration];
-        v23 = [v22 confirmationSystemItem];
+        configuration2 = [(PUPickerContainerController *)self configuration];
+        confirmationSystemItem = [configuration2 confirmationSystemItem];
 
-        if (v23 == 0x7FFFFFFFFFFFFFFFLL)
+        if (confirmationSystemItem == 0x7FFFFFFFFFFFFFFFLL)
         {
           v24 = [objc_alloc(MEMORY[0x1E69DC708]) initWithPrimaryAction:v11];
         }
 
         else
         {
-          v24 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:v23 primaryAction:v11];
+          v24 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:confirmationSystemItem primaryAction:v11];
         }
 
         v21 = v24;
@@ -2153,10 +2153,10 @@ LABEL_19:
 
         if (v21)
         {
-          v25 = [v3 confirmationBehavior];
-          if (v25 >= 2)
+          confirmationBehavior = [configuration confirmationBehavior];
+          if (confirmationBehavior >= 2)
           {
-            if (v25 != 3)
+            if (confirmationBehavior != 3)
             {
 LABEL_28:
               if ([v21 isEnabled])
@@ -2172,10 +2172,10 @@ LABEL_28:
               [v21 setEnabled:v28];
               if ([v21 isEnabled])
               {
-                v29 = [v3 confirmationBehavior];
-                if (v29 <= 4)
+                confirmationBehavior2 = [configuration confirmationBehavior];
+                if (confirmationBehavior2 <= 4)
                 {
-                  [v21 setAccessibilityIdentifier:off_1E7B7D120[v29]];
+                  [v21 setAccessibilityIdentifier:off_1E7B7D120[confirmationBehavior2]];
                 }
               }
 
@@ -2187,8 +2187,8 @@ LABEL_28:
 
           else
           {
-            v26 = ([v3 allowsUnlimitedMultipleSelection] & 1) != 0 || v8 <= objc_msgSend(v3, "selectionLimit");
-            v27 = (v8 >= [v3 minimumSelectionLimit]) & v26;
+            v26 = ([configuration allowsUnlimitedMultipleSelection] & 1) != 0 || v8 <= objc_msgSend(configuration, "selectionLimit");
+            v27 = (v8 >= [configuration minimumSelectionLimit]) & v26;
           }
 
           [v21 setEnabled:v27];
@@ -2201,9 +2201,9 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      v14 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-      [v14 setShowsActivityIndicator:1];
-      v16 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v14 primaryAction:v11];
+      tintedButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+      [tintedButtonConfiguration setShowsActivityIndicator:1];
+      v16 = [MEMORY[0x1E69DC738] buttonWithConfiguration:tintedButtonConfiguration primaryAction:v11];
       v20 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v16];
     }
 
@@ -2229,9 +2229,9 @@ void __63__PUPickerContainerController__updateConfirmationBarButtonItem__block_i
 
 - (void)_updateCancellationBarButtonItem
 {
-  v3 = [(PUPickerContainerController *)self configuration];
-  v4 = [(PUPickerContainerController *)self traitCollection];
-  v5 = [v3 cancellationBehaviorWithTraitCollection:v4];
+  configuration = [(PUPickerContainerController *)self configuration];
+  traitCollection = [(PUPickerContainerController *)self traitCollection];
+  v5 = [configuration cancellationBehaviorWithTraitCollection:traitCollection];
 
   if (!v5)
   {
@@ -2239,11 +2239,11 @@ void __63__PUPickerContainerController__updateConfirmationBarButtonItem__block_i
     goto LABEL_21;
   }
 
-  v6 = [(PUPickerContainerController *)self configuration];
-  v7 = [v6 cancellationTitleWithBehavior:v5];
+  configuration2 = [(PUPickerContainerController *)self configuration];
+  v7 = [configuration2 cancellationTitleWithBehavior:v5];
 
-  v8 = [(PUPickerContainerController *)self configuration];
-  v9 = [v8 cancellationImageNameWithBehavior:v5];
+  configuration3 = [(PUPickerContainerController *)self configuration];
+  v9 = [configuration3 cancellationImageNameWithBehavior:v5];
 
   if (v9)
   {
@@ -2274,9 +2274,9 @@ void __63__PUPickerContainerController__updateConfirmationBarButtonItem__block_i
   objc_copyWeak(&v27, &location);
   v14 = [v12 actionWithTitle:v13 image:v10 identifier:0 handler:&v23];
   v15 = [(PUPickerContainerController *)self traitCollection:v23];
-  v16 = [v15 userInterfaceIdiom];
+  userInterfaceIdiom = [v15 userInterfaceIdiom];
 
-  if (v16 == 5 || (-[PUPickerContainerController configuration](self, "configuration"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 cancellationSystemItemWithBehavior:v5], v18, v19 == 0x7FFFFFFFFFFFFFFFLL))
+  if (userInterfaceIdiom == 5 || (-[PUPickerContainerController configuration](self, "configuration"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 cancellationSystemItemWithBehavior:v5], v18, v19 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v17 = [objc_alloc(MEMORY[0x1E69DC708]) initWithPrimaryAction:v14];
   }
@@ -2304,9 +2304,9 @@ void __63__PUPickerContainerController__updateConfirmationBarButtonItem__block_i
       {
         if (v5 == 1)
         {
-          v20 = [(PUPickerContainerController *)self selectionCoordinator];
-          v21 = [v20 selectedObjectIDs];
-          [v11 setEnabled:{objc_msgSend(v21, "count") != 0}];
+          selectionCoordinator = [(PUPickerContainerController *)self selectionCoordinator];
+          selectedObjectIDs = [selectionCoordinator selectedObjectIDs];
+          [v11 setEnabled:{objc_msgSend(selectedObjectIDs, "count") != 0}];
 
           [v11 setAccessibilityIdentifier:@"Clear"];
         }
@@ -2337,40 +2337,40 @@ void __63__PUPickerContainerController__updateCancellationBarButtonItem__block_i
 - (void)_updateToolbar
 {
   v78[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PUPickerContainerController *)self configuration];
-  if ([v4 excludesSortAndFilterMenu])
+  configuration = [(PUPickerContainerController *)self configuration];
+  if ([configuration excludesSortAndFilterMenu])
   {
 
 LABEL_7:
-    v7 = 0;
+    toolbarSortAndFilterBarButtonItem = 0;
     goto LABEL_8;
   }
 
-  v5 = [(PUPickerContainerController *)self childViewControllers];
-  v6 = [(PUPickerContainerController *)self itemsViewController];
-  v2 = [v5 containsObject:v6];
+  childViewControllers = [(PUPickerContainerController *)self childViewControllers];
+  itemsViewController = [(PUPickerContainerController *)self itemsViewController];
+  photosViewController = [childViewControllers containsObject:itemsViewController];
 
-  if (!v2)
+  if (!photosViewController)
   {
     goto LABEL_7;
   }
 
-  v7 = [(PUPickerContainerController *)self toolbarSortAndFilterBarButtonItem];
+  toolbarSortAndFilterBarButtonItem = [(PUPickerContainerController *)self toolbarSortAndFilterBarButtonItem];
   if (MEMORY[0x1B8C6D660]())
   {
-    v8 = v7;
-    v9 = [(PUPickerContainerController *)self configuration];
-    v10 = [(PUPickerContainerController *)self selectionCoordinator];
-    v11 = [v10 selectedObjectIDs];
-    v12 = [v11 count];
-    v13 = [(PUPickerContainerController *)self additionalSelectionState];
-    v2 = [v9 locationMetadataSubtitleWithSelectionCount:v12 includesLocation:objc_msgSend(v13 usesShortVersion:"shouldIncludeLocation") leadingImageName:{0, 0}];
-    v14 = [(PUPickerContainerController *)self optionsAction];
-    [v14 setSubtitle:v2];
+    v8 = toolbarSortAndFilterBarButtonItem;
+    configuration2 = [(PUPickerContainerController *)self configuration];
+    selectionCoordinator = [(PUPickerContainerController *)self selectionCoordinator];
+    selectedObjectIDs = [selectionCoordinator selectedObjectIDs];
+    v12 = [selectedObjectIDs count];
+    additionalSelectionState = [(PUPickerContainerController *)self additionalSelectionState];
+    photosViewController = [configuration2 locationMetadataSubtitleWithSelectionCount:v12 includesLocation:objc_msgSend(additionalSelectionState usesShortVersion:"shouldIncludeLocation") leadingImageName:{0, 0}];
+    optionsAction = [(PUPickerContainerController *)self optionsAction];
+    [optionsAction setSubtitle:photosViewController];
 
-    v15 = [(PUPickerContainerController *)self configuration];
-    v16 = [v15 excludesOptionsMenu];
-    if (v16)
+    configuration3 = [(PUPickerContainerController *)self configuration];
+    excludesOptionsMenu = [configuration3 excludesOptionsMenu];
+    if (excludesOptionsMenu)
     {
       v17 = 0;
     }
@@ -2378,64 +2378,64 @@ LABEL_7:
     else
     {
       v63 = MEMORY[0x1E69DCC60];
-      v10 = [(PUPickerContainerController *)self optionsAction];
-      v77 = v10;
-      v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v77 count:1];
-      v13 = [v63 menuWithTitle:&stru_1F2AC6818 image:0 identifier:0 options:1 children:v2];
-      v78[0] = v13;
+      selectionCoordinator = [(PUPickerContainerController *)self optionsAction];
+      v77 = selectionCoordinator;
+      photosViewController = [MEMORY[0x1E695DEC8] arrayWithObjects:&v77 count:1];
+      additionalSelectionState = [v63 menuWithTitle:&stru_1F2AC6818 image:0 identifier:0 options:1 children:photosViewController];
+      v78[0] = additionalSelectionState;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v78 count:1];
     }
 
-    v64 = [(PUPickerContainerController *)self filterButtonController];
-    [v64 setAdditionalMenuItems:v17];
+    filterButtonController = [(PUPickerContainerController *)self filterButtonController];
+    [filterButtonController setAdditionalMenuItems:v17];
 
-    if ((v16 & 1) == 0)
+    if ((excludesOptionsMenu & 1) == 0)
     {
     }
 
-    v7 = v8;
+    toolbarSortAndFilterBarButtonItem = v8;
   }
 
 LABEL_8:
-  v18 = MEMORY[0x1B8C6D660]();
-  v19 = [(PUPickerContainerController *)self configuration];
-  v20 = [v19 excludesOptionsMenu];
-  v21 = v20;
-  if (v18)
+  childViewControllers2 = MEMORY[0x1B8C6D660]();
+  configuration4 = [(PUPickerContainerController *)self configuration];
+  excludesOptionsMenu2 = [configuration4 excludesOptionsMenu];
+  configuration5 = excludesOptionsMenu2;
+  if (childViewControllers2)
   {
-    if (v7)
+    if (toolbarSortAndFilterBarButtonItem)
     {
-      v21 = 1;
+      configuration5 = 1;
     }
 
     else
     {
-      v21 = v20;
+      configuration5 = excludesOptionsMenu2;
     }
   }
 
-  if (v21)
+  if (configuration5)
   {
-    v22 = 0;
+    toolbarOptionsBarButton = 0;
   }
 
   else
   {
-    v22 = [(PUPickerContainerController *)self toolbarOptionsBarButton];
+    toolbarOptionsBarButton = [(PUPickerContainerController *)self toolbarOptionsBarButton];
   }
 
   if ([(PUPickerContainerController *)self isCompactWidthOrHeight])
   {
-    v23 = [(PUPickerContainerController *)self hasContent];
-    v24 = v7;
-    if (v23)
+    hasContent = [(PUPickerContainerController *)self hasContent];
+    v24 = toolbarSortAndFilterBarButtonItem;
+    if (hasContent)
     {
-      v21 = [(PUPickerContainerController *)self configuration];
-      if ([v21 allowsSearchBar])
+      configuration5 = [(PUPickerContainerController *)self configuration];
+      if ([configuration5 allowsSearchBar])
       {
-        v18 = [(PUPickerContainerController *)self childViewControllers];
-        v2 = [(PUPickerContainerController *)self photosViewController];
-        v25 = [v18 containsObject:v2];
+        childViewControllers2 = [(PUPickerContainerController *)self childViewControllers];
+        photosViewController = [(PUPickerContainerController *)self photosViewController];
+        v25 = [childViewControllers2 containsObject:photosViewController];
         v26 = 1;
       }
 
@@ -2452,33 +2452,33 @@ LABEL_8:
       v25 = 0;
     }
 
-    v28 = [(PUPickerContainerController *)self searchCoordinator];
-    [v28 setIsVisible:v25];
+    searchCoordinator = [(PUPickerContainerController *)self searchCoordinator];
+    [searchCoordinator setIsVisible:v25];
 
     if (v26)
     {
     }
 
-    v7 = v24;
-    if (v23)
+    toolbarSortAndFilterBarButtonItem = v24;
+    if (hasContent)
     {
     }
 
     if ([(PUPickerContainerController *)self _shouldUseSolariumPickerSearch])
     {
-      v29 = [(PUPickerContainerController *)self searchCoordinator];
-      v27 = [v29 regularSearchBarButtonItems];
+      searchCoordinator2 = [(PUPickerContainerController *)self searchCoordinator];
+      regularSearchBarButtonItems = [searchCoordinator2 regularSearchBarButtonItems];
     }
 
     else
     {
-      v27 = 0;
+      regularSearchBarButtonItems = 0;
     }
 
     if ([(PUPickerContainerController *)self _shouldUseSolariumPickerSearch])
     {
-      v30 = [(PUPickerContainerController *)self searchCoordinator];
-      v31 = [v30 compactSearchBarButtonItem];
+      searchCoordinator3 = [(PUPickerContainerController *)self searchCoordinator];
+      compactSearchBarButtonItem = [searchCoordinator3 compactSearchBarButtonItem];
 
       goto LABEL_32;
     }
@@ -2486,150 +2486,150 @@ LABEL_8:
 
   else
   {
-    v27 = 0;
+    regularSearchBarButtonItems = 0;
   }
 
-  v31 = 0;
+  compactSearchBarButtonItem = 0;
 LABEL_32:
-  v32 = [(PUPickerContainerController *)self traitCollection];
-  v33 = [v32 userInterfaceIdiom];
+  traitCollection = [(PUPickerContainerController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v33 == 5)
+  if (userInterfaceIdiom == 5)
   {
     [(PUPickerContainerController *)self _updateCancellationBarButtonItem];
     [(PUPickerContainerController *)self _updateConfirmationBarButtonItem];
-    v34 = [(PUPickerContainerController *)self cancellationBarButtonItem];
-    v35 = [(PUPickerContainerController *)self confirmationBarButtonItem];
+    cancellationBarButtonItem = [(PUPickerContainerController *)self cancellationBarButtonItem];
+    confirmationBarButtonItem = [(PUPickerContainerController *)self confirmationBarButtonItem];
   }
 
   else
   {
-    v34 = 0;
-    v35 = 0;
+    cancellationBarButtonItem = 0;
+    confirmationBarButtonItem = 0;
   }
 
   [(PUPickerContainerController *)self _updateSelectionStatusBarButtonItem:1];
-  v36 = [(PUPickerContainerController *)self selectionStatusBarButtonItem];
-  v67 = v27;
-  v68 = v31;
-  v69 = v22;
-  if ([v27 count])
+  selectionStatusBarButtonItem = [(PUPickerContainerController *)self selectionStatusBarButtonItem];
+  v67 = regularSearchBarButtonItems;
+  v68 = compactSearchBarButtonItem;
+  v69 = toolbarOptionsBarButton;
+  if ([regularSearchBarButtonItems count])
   {
-    v37 = v27;
-    v38 = v36;
+    v37 = regularSearchBarButtonItems;
+    selectionStatusBarButtonItem2 = selectionStatusBarButtonItem;
   }
 
   else
   {
     v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v40 = v39;
-    if (v34)
+    if (cancellationBarButtonItem)
     {
-      [v39 addObject:v34];
+      [v39 addObject:cancellationBarButtonItem];
     }
 
-    if (v35)
+    if (confirmationBarButtonItem)
     {
-      [v40 addObject:v35];
+      [v40 addObject:confirmationBarButtonItem];
     }
 
-    if (!MEMORY[0x1B8C6D660]() && v22 && ![v40 count])
+    if (!MEMORY[0x1B8C6D660]() && toolbarOptionsBarButton && ![v40 count])
     {
-      [v40 addObject:v22];
+      [v40 addObject:toolbarOptionsBarButton];
     }
 
-    if (v31)
+    if (compactSearchBarButtonItem)
     {
-      [v40 addObject:v31];
+      [v40 addObject:compactSearchBarButtonItem];
     }
 
     v41 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v42 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v43 = v42;
-    if (v7)
+    if (toolbarSortAndFilterBarButtonItem)
     {
-      [v42 addObject:v7];
+      [v42 addObject:toolbarSortAndFilterBarButtonItem];
     }
 
-    if (MEMORY[0x1B8C6D660]() && v22)
+    if (MEMORY[0x1B8C6D660]() && toolbarOptionsBarButton)
     {
-      [v43 addObject:v22];
+      [v43 addObject:toolbarOptionsBarButton];
     }
 
     [(PUPickerContainerController *)self _updateSelectionStatusBarButtonItem:1];
-    v38 = [(PUPickerContainerController *)self selectionStatusBarButtonItem];
+    selectionStatusBarButtonItem2 = [(PUPickerContainerController *)self selectionStatusBarButtonItem];
 
-    if (v38)
+    if (selectionStatusBarButtonItem2)
     {
-      [v41 addObject:v38];
+      [v41 addObject:selectionStatusBarButtonItem2];
     }
 
     if (![v40 count] && MEMORY[0x1B8C6D660]())
     {
-      v44 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
-      [v40 addObject:v44];
+      flexibleSpaceItem = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+      [v40 addObject:flexibleSpaceItem];
     }
 
     if (![v41 count])
     {
-      v45 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
-      [v41 addObject:v45];
+      flexibleSpaceItem2 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+      [v41 addObject:flexibleSpaceItem2];
     }
 
-    v46 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
-    [v41 addObject:v46];
+    flexibleSpaceItem3 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+    [v41 addObject:flexibleSpaceItem3];
 
     if (![v43 count])
     {
-      v47 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
-      [v43 addObject:v47];
+      flexibleSpaceItem4 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+      [v43 addObject:flexibleSpaceItem4];
     }
 
-    v48 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
-    [v43 addObject:v48];
+    flexibleSpaceItem5 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+    [v43 addObject:flexibleSpaceItem5];
 
     v49 = [v43 arrayByAddingObjectsFromArray:v41];
     v37 = [v49 arrayByAddingObjectsFromArray:v40];
 
-    v27 = v67;
+    regularSearchBarButtonItems = v67;
   }
 
   v50 = 1;
-  v65 = v35;
-  if (v38 || v34 || v35)
+  v65 = confirmationBarButtonItem;
+  if (selectionStatusBarButtonItem2 || cancellationBarButtonItem || confirmationBarButtonItem)
   {
-    v51 = v7;
+    v51 = toolbarSortAndFilterBarButtonItem;
   }
 
   else
   {
-    v51 = v7;
-    if (!v7)
+    v51 = toolbarSortAndFilterBarButtonItem;
+    if (!toolbarSortAndFilterBarButtonItem)
     {
-      v50 = ([v27 count] | v68 | v69) != 0;
+      v50 = ([regularSearchBarButtonItems count] | v68 | v69) != 0;
     }
   }
 
-  v52 = [(PUPickerContainerController *)self configuration];
-  v53 = [v52 allowsToolbar] & v50;
+  configuration6 = [(PUPickerContainerController *)self configuration];
+  v53 = [configuration6 allowsToolbar] & v50;
 
-  v54 = [(PUPickerContainerController *)self albumsViewControllerIfLoaded];
-  v55 = [v54 px_barAppearance];
+  albumsViewControllerIfLoaded = [(PUPickerContainerController *)self albumsViewControllerIfLoaded];
+  px_barAppearance = [albumsViewControllerIfLoaded px_barAppearance];
   v74[0] = MEMORY[0x1E69E9820];
   v74[1] = 3221225472;
   v74[2] = __45__PUPickerContainerController__updateToolbar__block_invoke;
   v74[3] = &__block_descriptor_33_e34_v16__0___PXMutableBarAppearance__8l;
   v75 = v53;
-  [v55 performChangesWithAnimationOptions:0 changes:v74];
+  [px_barAppearance performChangesWithAnimationOptions:0 changes:v74];
 
   v72 = 0u;
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v56 = [(PUPickerContainerController *)self navigationController];
-  v57 = [v56 viewControllers];
+  navigationController = [(PUPickerContainerController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
 
-  v58 = [v57 countByEnumeratingWithState:&v70 objects:v76 count:16];
+  v58 = [viewControllers countByEnumeratingWithState:&v70 objects:v76 count:16];
   if (v58)
   {
     v59 = v58;
@@ -2640,20 +2640,20 @@ LABEL_32:
       {
         if (*v71 != v60)
         {
-          objc_enumerationMutation(v57);
+          objc_enumerationMutation(viewControllers);
         }
 
         [*(*(&v70 + 1) + 8 * i) setToolbarItems:v37];
       }
 
-      v59 = [v57 countByEnumeratingWithState:&v70 objects:v76 count:16];
+      v59 = [viewControllers countByEnumeratingWithState:&v70 objects:v76 count:16];
     }
 
     while (v59);
   }
 
-  v62 = [(PUPickerContainerController *)self navigationController];
-  [v62 setToolbarHidden:v53 ^ 1u animated:0];
+  navigationController2 = [(PUPickerContainerController *)self navigationController];
+  [navigationController2 setToolbarHidden:v53 ^ 1u animated:0];
 }
 
 void __45__PUPickerContainerController__updateToolbar__block_invoke(uint64_t a1, void *a2)
@@ -2667,32 +2667,32 @@ void __45__PUPickerContainerController__updateToolbar__block_invoke(uint64_t a1,
 - (void)_updateNavigationBar
 {
   v125[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PUPickerContainerController *)self configuration];
-  v113 = [(PUPickerContainerController *)self sidebarViewController];
+  configuration = [(PUPickerContainerController *)self configuration];
+  sidebarViewController = [(PUPickerContainerController *)self sidebarViewController];
 
-  v5 = [(PUPickerContainerController *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [(PUPickerContainerController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v7 = [(PUPickerContainerController *)self childViewControllers];
-  v8 = [(PUPickerContainerController *)self photosViewController];
-  v9 = [v7 containsObject:v8];
+  childViewControllers = [(PUPickerContainerController *)self childViewControllers];
+  photosViewController = [(PUPickerContainerController *)self photosViewController];
+  v9 = [childViewControllers containsObject:photosViewController];
 
-  v10 = 0;
+  allowsSearchBar = 0;
   if ([(PUPickerContainerController *)self hasContent]&& v9)
   {
-    v10 = [v4 allowsSearchBar];
+    allowsSearchBar = [configuration allowsSearchBar];
   }
 
-  v11 = 0;
-  if ([(PUPickerContainerController *)self hasContent]&& !v113)
+  allowsSegmentedControl = 0;
+  if ([(PUPickerContainerController *)self hasContent]&& !sidebarViewController)
   {
-    v11 = [v4 allowsSegmentedControl];
+    allowsSegmentedControl = [configuration allowsSegmentedControl];
   }
 
   if (v9)
   {
-    v12 = [v4 suggestionGroup];
-    v101 = v12 == 0;
+    suggestionGroup = [configuration suggestionGroup];
+    v101 = suggestionGroup == 0;
   }
 
   else
@@ -2701,69 +2701,69 @@ void __45__PUPickerContainerController__updateToolbar__block_invoke(uint64_t a1,
   }
 
   v102 = v9;
-  v97 = v10;
-  if (v6 == 5 && ([v4 allowsToolbar] & 1) != 0)
+  v97 = allowsSearchBar;
+  if (userInterfaceIdiom == 5 && ([configuration allowsToolbar] & 1) != 0)
   {
-    v13 = 0;
-    v14 = 0;
+    confirmationBarButtonItem = 0;
+    cancellationBarButtonItem = 0;
   }
 
   else
   {
     [(PUPickerContainerController *)self _updateCancellationBarButtonItem];
     [(PUPickerContainerController *)self _updateConfirmationBarButtonItem];
-    v14 = [(PUPickerContainerController *)self cancellationBarButtonItem];
-    v13 = [(PUPickerContainerController *)self confirmationBarButtonItem];
+    cancellationBarButtonItem = [(PUPickerContainerController *)self cancellationBarButtonItem];
+    confirmationBarButtonItem = [(PUPickerContainerController *)self confirmationBarButtonItem];
   }
 
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v104 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v4 allowsNewItemCreation])
+  if ([configuration allowsNewItemCreation])
   {
-    v16 = [(PUPickerContainerController *)self itemCreationBarButtonItem];
-    [v15 addObject:v16];
+    itemCreationBarButtonItem = [(PUPickerContainerController *)self itemCreationBarButtonItem];
+    [v15 addObject:itemCreationBarButtonItem];
   }
 
-  if (v13)
+  if (confirmationBarButtonItem)
   {
-    [v15 addObject:v13];
+    [v15 addObject:confirmationBarButtonItem];
   }
 
-  v105 = v13;
-  v17 = [(PUPickerContainerController *)self configuration];
-  v107 = v4;
-  if ([v17 excludesSortAndFilterMenu])
+  v105 = confirmationBarButtonItem;
+  configuration2 = [(PUPickerContainerController *)self configuration];
+  v107 = configuration;
+  if ([configuration2 excludesSortAndFilterMenu])
   {
 
 LABEL_24:
-    v106 = 0;
+    toolbarSortAndFilterBarButtonItem = 0;
     goto LABEL_25;
   }
 
-  v18 = [(PUPickerContainerController *)self childViewControllers];
-  v19 = [(PUPickerContainerController *)self itemsViewController];
-  v2 = [v18 containsObject:v19];
+  childViewControllers2 = [(PUPickerContainerController *)self childViewControllers];
+  itemsViewController = [(PUPickerContainerController *)self itemsViewController];
+  photosViewController2 = [childViewControllers2 containsObject:itemsViewController];
 
-  if (!v2)
+  if (!photosViewController2)
   {
     goto LABEL_24;
   }
 
-  v106 = [(PUPickerContainerController *)self toolbarSortAndFilterBarButtonItem];
+  toolbarSortAndFilterBarButtonItem = [(PUPickerContainerController *)self toolbarSortAndFilterBarButtonItem];
   if (MEMORY[0x1B8C6D660]())
   {
-    v20 = [(PUPickerContainerController *)self configuration];
-    v21 = [(PUPickerContainerController *)self selectionCoordinator];
-    v22 = [v21 selectedObjectIDs];
-    v23 = [v22 count];
-    v24 = [(PUPickerContainerController *)self additionalSelectionState];
-    v2 = [v20 locationMetadataSubtitleWithSelectionCount:v23 includesLocation:objc_msgSend(v24 usesShortVersion:"shouldIncludeLocation") leadingImageName:{0, 0}];
-    v25 = [(PUPickerContainerController *)self optionsAction];
-    [v25 setSubtitle:v2];
+    configuration3 = [(PUPickerContainerController *)self configuration];
+    selectionCoordinator = [(PUPickerContainerController *)self selectionCoordinator];
+    selectedObjectIDs = [selectionCoordinator selectedObjectIDs];
+    v23 = [selectedObjectIDs count];
+    additionalSelectionState = [(PUPickerContainerController *)self additionalSelectionState];
+    photosViewController2 = [configuration3 locationMetadataSubtitleWithSelectionCount:v23 includesLocation:objc_msgSend(additionalSelectionState usesShortVersion:"shouldIncludeLocation") leadingImageName:{0, 0}];
+    optionsAction = [(PUPickerContainerController *)self optionsAction];
+    [optionsAction setSubtitle:photosViewController2];
 
-    v26 = [(PUPickerContainerController *)self configuration];
-    v27 = [v26 excludesOptionsMenu];
-    if (v27)
+    configuration4 = [(PUPickerContainerController *)self configuration];
+    excludesOptionsMenu = [configuration4 excludesOptionsMenu];
+    if (excludesOptionsMenu)
     {
       v28 = 0;
     }
@@ -2771,65 +2771,65 @@ LABEL_24:
     else
     {
       v95 = MEMORY[0x1E69DCC60];
-      v111 = [(PUPickerContainerController *)self optionsAction];
-      v124 = v111;
-      v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v124 count:1];
-      v24 = [v95 menuWithTitle:&stru_1F2AC6818 image:0 identifier:0 options:1 children:v2];
-      v125[0] = v24;
+      optionsAction2 = [(PUPickerContainerController *)self optionsAction];
+      v124 = optionsAction2;
+      photosViewController2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v124 count:1];
+      additionalSelectionState = [v95 menuWithTitle:&stru_1F2AC6818 image:0 identifier:0 options:1 children:photosViewController2];
+      v125[0] = additionalSelectionState;
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v125 count:1];
     }
 
-    v96 = [(PUPickerContainerController *)self filterButtonController];
-    [v96 setAdditionalMenuItems:v28];
+    filterButtonController = [(PUPickerContainerController *)self filterButtonController];
+    [filterButtonController setAdditionalMenuItems:v28];
 
-    if ((v27 & 1) == 0)
+    if ((excludesOptionsMenu & 1) == 0)
     {
     }
 
-    v4 = v107;
+    configuration = v107;
   }
 
 LABEL_25:
-  v29 = MEMORY[0x1B8C6D660]();
-  v30 = [(PUPickerContainerController *)self configuration];
-  v31 = [v30 excludesOptionsMenu];
-  v32 = v31;
-  if (v29)
+  childViewControllers3 = MEMORY[0x1B8C6D660]();
+  configuration5 = [(PUPickerContainerController *)self configuration];
+  excludesOptionsMenu2 = [configuration5 excludesOptionsMenu];
+  configuration6 = excludesOptionsMenu2;
+  if (childViewControllers3)
   {
-    if (v106)
+    if (toolbarSortAndFilterBarButtonItem)
     {
-      v32 = 1;
+      configuration6 = 1;
     }
 
     else
     {
-      v32 = v31;
+      configuration6 = excludesOptionsMenu2;
     }
   }
 
-  if ((v32 & 1) == 0)
+  if ((configuration6 & 1) == 0)
   {
     [(PUPickerContainerController *)self toolbarOptionsBarButton];
   }
 
-  v108 = v14;
+  v108 = cancellationBarButtonItem;
   if (![(PUPickerContainerController *)self isCompactWidthOrHeight])
   {
-    if (v113 && [v15 count])
+    if (sidebarViewController && [v15 count])
     {
       v33 = [MEMORY[0x1E69DC708] fixedSpaceItemOfWidth:0.0];
       [v15 addObject:v33];
     }
 
-    v34 = [(PUPickerContainerController *)self hasContent];
-    if (v34)
+    hasContent = [(PUPickerContainerController *)self hasContent];
+    if (hasContent)
     {
-      v32 = [(PUPickerContainerController *)self configuration];
-      if ([v32 allowsSearchBar])
+      configuration6 = [(PUPickerContainerController *)self configuration];
+      if ([configuration6 allowsSearchBar])
       {
-        v29 = [(PUPickerContainerController *)self childViewControllers];
-        v2 = [(PUPickerContainerController *)self photosViewController];
-        v35 = [v29 containsObject:v2];
+        childViewControllers3 = [(PUPickerContainerController *)self childViewControllers];
+        photosViewController2 = [(PUPickerContainerController *)self photosViewController];
+        v35 = [childViewControllers3 containsObject:photosViewController2];
         v36 = 1;
       }
 
@@ -2846,29 +2846,29 @@ LABEL_25:
       v35 = 0;
     }
 
-    v37 = [(PUPickerContainerController *)self searchCoordinator];
-    [v37 setIsVisible:v35];
+    searchCoordinator = [(PUPickerContainerController *)self searchCoordinator];
+    [searchCoordinator setIsVisible:v35];
 
     if (v36)
     {
     }
 
-    if (v34)
+    if (hasContent)
     {
     }
 
-    v38 = [(PUPickerContainerController *)self searchCoordinator];
-    v39 = v38;
-    v4 = v107;
-    v14 = v108;
-    if (v113)
+    searchCoordinator2 = [(PUPickerContainerController *)self searchCoordinator];
+    v39 = searchCoordinator2;
+    configuration = v107;
+    cancellationBarButtonItem = v108;
+    if (sidebarViewController)
     {
-      [v38 regularHasSidebarSearchBarButtonItems];
+      [searchCoordinator2 regularHasSidebarSearchBarButtonItems];
     }
 
     else
     {
-      [v38 regularSearchBarButtonItems];
+      [searchCoordinator2 regularSearchBarButtonItems];
     }
     v40 = ;
 
@@ -2902,98 +2902,98 @@ LABEL_25:
         while (v43);
       }
 
-      v14 = v108;
+      cancellationBarButtonItem = v108;
     }
 
-    if (!v113)
+    if (!sidebarViewController)
     {
       if ([(PUPickerContainerController *)self _shouldUseSolariumPickerSearch])
       {
-        v46 = [(PUPickerContainerController *)self searchCoordinator];
-        v47 = [v46 compactSearchBarButtonItem];
+        searchCoordinator3 = [(PUPickerContainerController *)self searchCoordinator];
+        compactSearchBarButtonItem = [searchCoordinator3 compactSearchBarButtonItem];
 
-        if (v47)
+        if (compactSearchBarButtonItem)
         {
-          [v15 addObject:v47];
+          [v15 addObject:compactSearchBarButtonItem];
         }
       }
     }
   }
 
-  if (v11)
+  if (allowsSegmentedControl)
   {
-    v112 = [(PUPickerContainerController *)self navigationBarSegmentedControl];
+    navigationBarSegmentedControl = [(PUPickerContainerController *)self navigationBarSegmentedControl];
   }
 
   else
   {
-    v112 = 0;
+    navigationBarSegmentedControl = 0;
   }
 
-  v48 = [v4 allowsNavigationBar];
-  v49 = [(PUPickerContainerController *)self sidebarViewController];
-  v50 = [v49 navigationController];
-  v110 = [v50 navigationBar];
+  allowsNavigationBar = [configuration allowsNavigationBar];
+  sidebarViewController2 = [(PUPickerContainerController *)self sidebarViewController];
+  navigationController = [sidebarViewController2 navigationController];
+  navigationBar = [navigationController navigationBar];
 
-  v51 = [(PUPickerContainerController *)self navigationController];
-  v52 = [v51 navigationBar];
+  navigationController2 = [(PUPickerContainerController *)self navigationController];
+  navigationBar2 = [navigationController2 navigationBar];
 
-  v53 = [(PUPickerContainerController *)self sidebarViewController];
-  v109 = [v53 navigationItem];
+  sidebarViewController3 = [(PUPickerContainerController *)self sidebarViewController];
+  navigationItem = [sidebarViewController3 navigationItem];
 
-  v54 = [(PUPickerContainerController *)self navigationItem];
-  if (([v4 supportsInteractiveBarTransition] & 1) == 0)
+  navigationItem2 = [(PUPickerContainerController *)self navigationItem];
+  if (([configuration supportsInteractiveBarTransition] & 1) == 0)
   {
-    [v52 setHidden:v48 ^ 1u];
+    [navigationBar2 setHidden:allowsNavigationBar ^ 1u];
   }
 
-  v100 = v52;
-  v55 = [(PUPickerContainerController *)self configuration];
-  v56 = [v55 title];
+  v100 = navigationBar2;
+  configuration7 = [(PUPickerContainerController *)self configuration];
+  title = [configuration7 title];
 
-  v57 = [(PUPickerContainerController *)self searchCoordinator];
-  v99 = v56;
-  if (([v57 isEditing] & (v113 == 0)) != 0)
+  searchCoordinator4 = [(PUPickerContainerController *)self searchCoordinator];
+  v99 = title;
+  if (([searchCoordinator4 isEditing] & (sidebarViewController == 0)) != 0)
   {
-    v56 = 0;
+    title = 0;
   }
 
-  v58 = [(PUPickerContainerController *)self itemsViewController];
-  [v58 setTitle:v56];
+  itemsViewController2 = [(PUPickerContainerController *)self itemsViewController];
+  [itemsViewController2 setTitle:title];
 
-  v59 = [(PUPickerContainerController *)self childViewControllers];
-  v60 = [v59 firstObject];
-  v61 = [v60 title];
-  [(PUPickerContainerController *)self setTitle:v61];
+  childViewControllers4 = [(PUPickerContainerController *)self childViewControllers];
+  firstObject = [childViewControllers4 firstObject];
+  title2 = [firstObject title];
+  [(PUPickerContainerController *)self setTitle:title2];
 
-  [v109 setLeftBarButtonItem:v14];
-  v62 = [v109 leftBarButtonItem];
-  if (v62)
+  [navigationItem setLeftBarButtonItem:cancellationBarButtonItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  if (leftBarButtonItem)
   {
-    [v110 setHidden:0];
+    [navigationBar setHidden:0];
   }
 
   else
   {
-    v63 = [v109 rightBarButtonItem];
-    [v110 setHidden:v63 == 0];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [navigationBar setHidden:rightBarButtonItem == 0];
   }
 
-  if (v109)
+  if (navigationItem)
   {
     v64 = 0;
   }
 
   else
   {
-    v64 = v14;
+    v64 = cancellationBarButtonItem;
   }
 
-  [v54 setLeftBarButtonItem:v64];
-  [v54 setTitleView:v112];
-  v65 = [(PUPickerContainerController *)self selectionCoordinator];
-  v66 = [v65 selectedObjectIDs];
-  v67 = [v4 promptWithSelectionCount:{objc_msgSend(v66, "count")}];
+  [navigationItem2 setLeftBarButtonItem:v64];
+  [navigationItem2 setTitleView:navigationBarSegmentedControl];
+  selectionCoordinator2 = [(PUPickerContainerController *)self selectionCoordinator];
+  selectedObjectIDs2 = [selectionCoordinator2 selectedObjectIDs];
+  v67 = [configuration promptWithSelectionCount:{objc_msgSend(selectedObjectIDs2, "count")}];
 
   if (v67)
   {
@@ -3005,18 +3005,18 @@ LABEL_25:
     v68 = 0;
   }
 
-  [v109 setPrompt:v68];
-  [v54 setPrompt:v67];
-  v69 = [(PUPickerContainerController *)self navigationController];
-  v70 = [v69 navigationBar];
-  [v70 setNeedsLayout];
+  [navigationItem setPrompt:v68];
+  [navigationItem2 setPrompt:v67];
+  navigationController3 = [(PUPickerContainerController *)self navigationController];
+  navigationBar3 = [navigationController3 navigationBar];
+  [navigationBar3 setNeedsLayout];
 
   v98 = v67;
   if ([(PUPickerContainerController *)self _shouldUseSolariumPickerSearch])
   {
-    v71 = [(PUPickerContainerController *)self pickerSuggestionsView];
+    pickerSuggestionsView = [(PUPickerContainerController *)self pickerSuggestionsView];
     v72 = v101;
-    [v71 setHidden:v101];
+    [pickerSuggestionsView setHidden:v101];
 
     v73 = v102;
   }
@@ -3024,34 +3024,34 @@ LABEL_25:
   else
   {
     v74 = v97 ^ 1u;
-    v75 = [(PUPickerContainerController *)self searchBar];
-    [v75 setHidden:v74];
+    searchBar = [(PUPickerContainerController *)self searchBar];
+    [searchBar setHidden:v74];
 
     v73 = v102;
     if ((v97 & 1) == 0)
     {
-      v76 = [(PUPickerContainerController *)self searchBar];
-      [v76 updateIsEditing:0];
+      searchBar2 = [(PUPickerContainerController *)self searchBar];
+      [searchBar2 updateIsEditing:0];
     }
 
-    v77 = [(PUPickerContainerController *)self pickerSuggestionsView];
-    [v77 setHidden:v101];
+    pickerSuggestionsView2 = [(PUPickerContainerController *)self pickerSuggestionsView];
+    [pickerSuggestionsView2 setHidden:v101];
 
     v72 = v74 & v101;
   }
 
   v103 = v73 ^ 1u;
-  v78 = [(PUPickerContainerController *)self navigationBarBottomPalette];
-  [v78 setHidden:v72];
+  navigationBarBottomPalette = [(PUPickerContainerController *)self navigationBarBottomPalette];
+  [navigationBarBottomPalette setHidden:v72];
 
   v116 = 0u;
   v117 = 0u;
   v114 = 0u;
   v115 = 0u;
-  v79 = [(PUPickerContainerController *)self navigationController];
-  v80 = [v79 viewControllers];
+  navigationController4 = [(PUPickerContainerController *)self navigationController];
+  viewControllers = [navigationController4 viewControllers];
 
-  v81 = [v80 countByEnumeratingWithState:&v114 objects:v122 count:16];
+  v81 = [viewControllers countByEnumeratingWithState:&v114 objects:v122 count:16];
   if (v81)
   {
     v82 = v81;
@@ -3062,75 +3062,75 @@ LABEL_25:
       {
         if (*v115 != v83)
         {
-          objc_enumerationMutation(v80);
+          objc_enumerationMutation(viewControllers);
         }
 
         v85 = *(*(&v114 + 1) + 8 * j);
-        v86 = [v85 navigationItem];
-        [v86 setRightBarButtonItems:v15];
+        navigationItem3 = [v85 navigationItem];
+        [navigationItem3 setRightBarButtonItems:v15];
 
-        v87 = [(PUPickerContainerController *)self searchCoordinator];
-        v88 = [v87 isEditing];
+        searchCoordinator5 = [(PUPickerContainerController *)self searchCoordinator];
+        isEditing = [searchCoordinator5 isEditing];
 
-        if (v88 && !v113)
+        if (isEditing && !sidebarViewController)
         {
-          v89 = [v54 prompt];
-          v90 = [v85 navigationItem];
-          [v90 setPrompt:v89];
+          prompt = [navigationItem2 prompt];
+          navigationItem4 = [v85 navigationItem];
+          [navigationItem4 setPrompt:prompt];
         }
       }
 
-      v82 = [v80 countByEnumeratingWithState:&v114 objects:v122 count:16];
+      v82 = [viewControllers countByEnumeratingWithState:&v114 objects:v122 count:16];
     }
 
     while (v82);
   }
 
-  v91 = [(PUPickerContainerController *)self navigationBarSegmentedControl];
-  [v91 setSelectedSegmentIndex:v103];
+  navigationBarSegmentedControl2 = [(PUPickerContainerController *)self navigationBarSegmentedControl];
+  [navigationBarSegmentedControl2 setSelectedSegmentIndex:v103];
 
   if (![(PUPickerContainerController *)self _shouldUseSolariumPickerSearch])
   {
-    v92 = [(PUPickerContainerController *)self pickerSuggestionsView];
-    if (v92)
+    pickerSuggestionsView3 = [(PUPickerContainerController *)self pickerSuggestionsView];
+    if (pickerSuggestionsView3)
     {
-      v93 = [(PUPickerContainerController *)self pickerSuggestionsView];
-      v94 = [v93 isHidden];
+      pickerSuggestionsView4 = [(PUPickerContainerController *)self pickerSuggestionsView];
+      isHidden = [pickerSuggestionsView4 isHidden];
 
-      if (v94)
+      if (isHidden)
       {
-        v92 = 0;
+        pickerSuggestionsView3 = 0;
       }
 
       else
       {
-        v92 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
-        [v92 configureWithDefaultBackground];
-        [v100 setStandardAppearance:v92];
-        [v100 setCompactAppearance:v92];
-        [v100 setCompactScrollEdgeAppearance:v92];
+        pickerSuggestionsView3 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
+        [pickerSuggestionsView3 configureWithDefaultBackground];
+        [v100 setStandardAppearance:pickerSuggestionsView3];
+        [v100 setCompactAppearance:pickerSuggestionsView3];
+        [v100 setCompactScrollEdgeAppearance:pickerSuggestionsView3];
       }
     }
 
-    [v100 setScrollEdgeAppearance:v92];
+    [v100 setScrollEdgeAppearance:pickerSuggestionsView3];
   }
 }
 
 - (void)_updateEnableSpatialPhotoPlayback
 {
-  v6 = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
-  v3 = [v6 isSpatialPhotoWallpaperSuggestion];
-  v4 = [(PUPickerContainerController *)self photosViewController];
-  v5 = [v4 contentController];
-  [v5 setEnableSpatialPhotoPlayback:v3];
+  pickerSuggestionResultFetcherResult = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
+  isSpatialPhotoWallpaperSuggestion = [pickerSuggestionResultFetcherResult isSpatialPhotoWallpaperSuggestion];
+  photosViewController = [(PUPickerContainerController *)self photosViewController];
+  contentController = [photosViewController contentController];
+  [contentController setEnableSpatialPhotoPlayback:isSpatialPhotoWallpaperSuggestion];
 }
 
 - (void)_updateNumberOfItemsToPlayInline
 {
-  v3 = [(PUPickerContainerController *)self configuration];
-  if ([v3 shouldDisableInlinePlayback])
+  configuration = [(PUPickerContainerController *)self configuration];
+  if ([configuration shouldDisableInlinePlayback])
   {
-    v4 = 0;
+    numberOfItemsToPlayInline = 0;
 LABEL_3:
 
     goto LABEL_8;
@@ -3140,147 +3140,147 @@ LABEL_3:
 
   if (IsReduceMotionEnabled)
   {
-    v4 = 0;
+    numberOfItemsToPlayInline = 0;
   }
 
   else
   {
     if (![(PUPickerContainerController *)self _isConfiguredForStickerSuggestionGroup])
     {
-      v3 = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
-      v4 = [v3 numberOfItemsToPlayInline];
+      configuration = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
+      numberOfItemsToPlayInline = [configuration numberOfItemsToPlayInline];
       goto LABEL_3;
     }
 
-    v4 = 3;
+    numberOfItemsToPlayInline = 3;
   }
 
 LABEL_8:
-  v7 = [(PUPickerContainerController *)self photosViewController];
-  v6 = [v7 contentController];
-  [v6 setNumberOfItemsToPlayInline:v4];
+  photosViewController = [(PUPickerContainerController *)self photosViewController];
+  contentController = [photosViewController contentController];
+  [contentController setNumberOfItemsToPlayInline:numberOfItemsToPlayInline];
 }
 
 - (void)_updatePeopleSort
 {
-  v3 = [(PUPickerContainerController *)self peopleSortOrderType];
-  if (v3 == 2)
+  peopleSortOrderType = [(PUPickerContainerController *)self peopleSortOrderType];
+  if (peopleSortOrderType == 2)
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = v3 == 1;
+    v4 = peopleSortOrderType == 1;
   }
 
   v5 = MEMORY[0x1E69C3790];
-  v7 = [(PUPickerContainerController *)self configuration];
-  v6 = [v7 photoLibrary];
-  [v5 setSortOrder:v4 toPhotoLibrary:v6];
+  configuration = [(PUPickerContainerController *)self configuration];
+  photoLibrary = [configuration photoLibrary];
+  [v5 setSortOrder:v4 toPhotoLibrary:photoLibrary];
 }
 
 - (void)_updateSortDescriptors
 {
   v28[5] = *MEMORY[0x1E69E9840];
-  v3 = [(PUPickerContainerController *)self photosDataSourceManager];
+  photosDataSourceManager = [(PUPickerContainerController *)self photosDataSourceManager];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = photosDataSourceManager;
 
     if (v4)
     {
       if ([(PUPickerContainerController *)self isShowingLiveWallpaperSuggestions])
       {
-        v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"mediaAnalysisAttributes.activityScore" ascending:1];
-        v28[0] = v5;
-        v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"mediaAnalysisAttributes.wallpaperScore" ascending:1];
-        v28[1] = v6;
-        v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"favorite" ascending:1];
-        v28[2] = v7;
-        v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateCreated" ascending:1];
-        v28[3] = v8;
-        v9 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:1];
-        v28[4] = v9;
+        configuration3 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"mediaAnalysisAttributes.activityScore" ascending:1];
+        v28[0] = configuration3;
+        customSortDescriptors2 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"mediaAnalysisAttributes.wallpaperScore" ascending:1];
+        v28[1] = customSortDescriptors2;
+        photosDataSource2 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"favorite" ascending:1];
+        v28[2] = photosDataSource2;
+        photosDataSource3 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateCreated" ascending:1];
+        v28[3] = photosDataSource3;
+        photosDataSource4 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:1];
+        v28[4] = photosDataSource4;
         v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:5];
-        v11 = [v4 photosDataSource];
-        [v11 setSortDescriptors:v10];
+        photosDataSource = [v4 photosDataSource];
+        [photosDataSource setSortDescriptors:v10];
       }
 
       else
       {
-        v14 = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
-        v15 = [v14 isFilteredBackdropSuggestions];
+        pickerSuggestionResultFetcherResult = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
+        isFilteredBackdropSuggestions = [pickerSuggestionResultFetcherResult isFilteredBackdropSuggestions];
 
-        if (v15)
+        if (isFilteredBackdropSuggestions)
         {
-          v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"mediaAnalysisAttributes.faceCount" ascending:0];
-          v27[0] = v5;
-          v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateCreated" ascending:1];
-          v27[1] = v6;
-          v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:1];
-          v27[2] = v7;
+          configuration3 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"mediaAnalysisAttributes.faceCount" ascending:0];
+          v27[0] = configuration3;
+          customSortDescriptors2 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateCreated" ascending:1];
+          v27[1] = customSortDescriptors2;
+          photosDataSource2 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:1];
+          v27[2] = photosDataSource2;
           v16 = MEMORY[0x1E695DEC8];
           v17 = v27;
         }
 
         else
         {
-          v18 = [(PUPickerContainerController *)self configuration];
-          v19 = [v18 showsWallpaperSuggestions];
+          configuration = [(PUPickerContainerController *)self configuration];
+          showsWallpaperSuggestions = [configuration showsWallpaperSuggestions];
 
-          if (v19)
+          if (showsWallpaperSuggestions)
           {
-            v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateCreated" ascending:1];
-            v26[0] = v5;
-            v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"addedDate" ascending:1];
-            v26[1] = v6;
-            v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"objectID" ascending:1];
-            v26[2] = v7;
+            configuration3 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateCreated" ascending:1];
+            v26[0] = configuration3;
+            customSortDescriptors2 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"addedDate" ascending:1];
+            v26[1] = customSortDescriptors2;
+            photosDataSource2 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"objectID" ascending:1];
+            v26[2] = photosDataSource2;
             v16 = MEMORY[0x1E695DEC8];
             v17 = v26;
           }
 
           else
           {
-            v20 = [(PUPickerContainerController *)self configuration];
-            v21 = [v20 customSortDescriptors];
+            configuration2 = [(PUPickerContainerController *)self configuration];
+            customSortDescriptors = [configuration2 customSortDescriptors];
 
-            if (v21)
+            if (customSortDescriptors)
             {
-              v5 = [(PUPickerContainerController *)self configuration];
-              v6 = [v5 customSortDescriptors];
-              v7 = [v4 photosDataSource];
-              [v7 setSortDescriptors:v6];
+              configuration3 = [(PUPickerContainerController *)self configuration];
+              customSortDescriptors2 = [configuration3 customSortDescriptors];
+              photosDataSource2 = [v4 photosDataSource];
+              [photosDataSource2 setSortDescriptors:customSortDescriptors2];
               goto LABEL_18;
             }
 
             if ([(PUPickerContainerController *)self assetSortOrderType]!= 1)
             {
-              v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"addedDate" ascending:1];
-              v24[0] = v5;
-              v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"sortToken" ascending:1];
-              v24[1] = v6;
-              v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
-              v8 = [v4 photosDataSource];
-              [v8 setSortDescriptors:v7];
+              configuration3 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"addedDate" ascending:1];
+              v24[0] = configuration3;
+              customSortDescriptors2 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"sortToken" ascending:1];
+              v24[1] = customSortDescriptors2;
+              photosDataSource2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
+              photosDataSource3 = [v4 photosDataSource];
+              [photosDataSource3 setSortDescriptors:photosDataSource2];
               goto LABEL_17;
             }
 
-            v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateCreated" ascending:1];
-            v25[0] = v5;
-            v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"addedDate" ascending:1];
-            v25[1] = v6;
-            v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"objectID" ascending:1];
-            v25[2] = v7;
+            configuration3 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateCreated" ascending:1];
+            v25[0] = configuration3;
+            customSortDescriptors2 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"addedDate" ascending:1];
+            v25[1] = customSortDescriptors2;
+            photosDataSource2 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"objectID" ascending:1];
+            v25[2] = photosDataSource2;
             v16 = MEMORY[0x1E695DEC8];
             v17 = v25;
           }
         }
 
-        v8 = [v16 arrayWithObjects:v17 count:3];
-        v9 = [v4 photosDataSource];
-        [v9 setSortDescriptors:v8];
+        photosDataSource3 = [v16 arrayWithObjects:v17 count:3];
+        photosDataSource4 = [v4 photosDataSource];
+        [photosDataSource4 setSortDescriptors:photosDataSource3];
       }
 
 LABEL_17:
@@ -3304,25 +3304,25 @@ LABEL_18:
 
   v4 = 0;
 LABEL_10:
-  v13 = [(PUPickerContainerController *)self photosViewController];
-  [v13 invalidateHeaderView];
+  photosViewController = [(PUPickerContainerController *)self photosViewController];
+  [photosViewController invalidateHeaderView];
 }
 
 - (void)_updateSortOrder
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPickerContainerController *)self photosDataSourceManager];
+  photosDataSourceManager = [(PUPickerContainerController *)self photosDataSourceManager];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = photosDataSourceManager;
 
     if (v4)
     {
-      v5 = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
-      v6 = [v5 shouldReverseSortOrder];
+      pickerSuggestionResultFetcherResult = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
+      shouldReverseSortOrder = [pickerSuggestionResultFetcherResult shouldReverseSortOrder];
 
-      v7 = [v4 photosDataSource];
-      [v7 setReverseSortOrder:v6 == 0];
+      photosDataSource = [v4 photosDataSource];
+      [photosDataSource setReverseSortOrder:shouldReverseSortOrder == 0];
 
       goto LABEL_9;
     }
@@ -3346,19 +3346,19 @@ LABEL_9:
 
 - (void)_updatePhotosViewControllerNoContentPlaceholder
 {
-  v3 = [(PUPickerContainerController *)self searchResultUUIDs];
+  searchResultUUIDs = [(PUPickerContainerController *)self searchResultUUIDs];
 
-  if (v3)
+  if (searchResultUUIDs)
   {
     v4 = PXLocalizedString();
   }
 
   else
   {
-    v6 = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
-    v7 = [v6 selectedFilterableSuggestion];
+    pickerSuggestionResultFetcherResult = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
+    selectedFilterableSuggestion = [pickerSuggestionResultFetcherResult selectedFilterableSuggestion];
 
-    if (!v7 || (-[PUPickerContainerController configuration](self, "configuration"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isProcessingSuggestions], v8, !v9))
+    if (!selectedFilterableSuggestion || (-[PUPickerContainerController configuration](self, "configuration"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isProcessingSuggestions], v8, !v9))
     {
       v5 = 0;
       v4 = 0;
@@ -3366,17 +3366,17 @@ LABEL_9:
     }
 
     v4 = PXLocalizedString();
-    v10 = [(PUPickerContainerController *)self configuration];
-    v11 = [v10 suggestionGroup];
-    v12 = [v11 isForWallpaper];
+    configuration = [(PUPickerContainerController *)self configuration];
+    suggestionGroup = [configuration suggestionGroup];
+    isForWallpaper = [suggestionGroup isForWallpaper];
 
-    if ((v12 & 1) == 0)
+    if ((isForWallpaper & 1) == 0)
     {
-      v17 = [(PUPickerContainerController *)self configuration];
-      v18 = [v17 generatedFilter];
-      v19 = [v18 containsStickersFilter];
+      configuration2 = [(PUPickerContainerController *)self configuration];
+      generatedFilter = [configuration2 generatedFilter];
+      containsStickersFilter = [generatedFilter containsStickersFilter];
 
-      if (!v19)
+      if (!containsStickersFilter)
       {
         v5 = 0;
         goto LABEL_9;
@@ -3386,8 +3386,8 @@ LABEL_9:
 
   v5 = PXLocalizedString();
 LABEL_9:
-  v13 = [(PUPickerContainerController *)self photosViewController];
-  v14 = [v13 viewModelIfLoaded];
+  photosViewController = [(PUPickerContainerController *)self photosViewController];
+  viewModelIfLoaded = [photosViewController viewModelIfLoaded];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __78__PUPickerContainerController__updatePhotosViewControllerNoContentPlaceholder__block_invoke;
@@ -3396,7 +3396,7 @@ LABEL_9:
   v22 = v5;
   v15 = v5;
   v16 = v4;
-  [v14 performChanges:v20];
+  [viewModelIfLoaded performChanges:v20];
 }
 
 void __78__PUPickerContainerController__updatePhotosViewControllerNoContentPlaceholder__block_invoke(uint64_t a1, void *a2)
@@ -3407,20 +3407,20 @@ void __78__PUPickerContainerController__updatePhotosViewControllerNoContentPlace
   [v4 setNoContentPlaceholderFallbackMessage:*(a1 + 40)];
 }
 
-- (void)_updateAllowedUUIDsForceReload:(BOOL)a3
+- (void)_updateAllowedUUIDsForceReload:(BOOL)reload
 {
-  v5 = [(PUPickerContainerController *)self searchResultUUIDs];
-  if (v5)
+  searchResultUUIDs = [(PUPickerContainerController *)self searchResultUUIDs];
+  if (searchResultUUIDs)
   {
 LABEL_6:
     [(PUPickerContainerController *)self _updatePhotosViewControllerNoContentPlaceholder];
     goto LABEL_7;
   }
 
-  v6 = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
-  v7 = [v6 fetchResult];
+  pickerSuggestionResultFetcherResult = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
+  fetchResult = [pickerSuggestionResultFetcherResult fetchResult];
 
-  if (v7)
+  if (fetchResult)
   {
     v8 = PXMap();
     v9 = v8;
@@ -3430,39 +3430,39 @@ LABEL_6:
       v10 = v8;
     }
 
-    v5 = v10;
+    searchResultUUIDs = v10;
 
     goto LABEL_6;
   }
 
-  v5 = 0;
+  searchResultUUIDs = 0;
 LABEL_7:
-  v11 = [(PUPickerContainerController *)self photosDataSourceManager];
+  photosDataSourceManager = [(PUPickerContainerController *)self photosDataSourceManager];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __62__PUPickerContainerController__updateAllowedUUIDsForceReload___block_invoke_2;
   v21 = &unk_1E7B7D058;
-  v22 = v5;
-  v23 = a3;
-  v12 = v5;
-  [v11 performChanges:&v18];
+  v22 = searchResultUUIDs;
+  reloadCopy = reload;
+  v12 = searchResultUUIDs;
+  [photosDataSourceManager performChanges:&v18];
 
   [(PUPickerContainerController *)self _updateSortOrder:v18];
   [(PUPickerContainerController *)self _updateSortDescriptors];
   [(PUPickerContainerController *)self _updateNumberOfItemsToPlayInline];
   [(PUPickerContainerController *)self _updateNavigationBar];
-  v13 = [(PUPickerContainerController *)self searchResultUUIDs];
-  v14 = [(PUPickerContainerController *)self previousSearchResultUUIDs];
-  v15 = [v13 isEqualToArray:v14];
+  searchResultUUIDs2 = [(PUPickerContainerController *)self searchResultUUIDs];
+  previousSearchResultUUIDs = [(PUPickerContainerController *)self previousSearchResultUUIDs];
+  v15 = [searchResultUUIDs2 isEqualToArray:previousSearchResultUUIDs];
 
   if ((v15 & 1) == 0)
   {
-    v16 = [(PUPickerContainerController *)self photosViewController];
-    [v16 px_scrollToInitialPositionAnimated:0];
+    photosViewController = [(PUPickerContainerController *)self photosViewController];
+    [photosViewController px_scrollToInitialPositionAnimated:0];
   }
 
-  v17 = [(PUPickerContainerController *)self searchResultUUIDs];
-  [(PUPickerContainerController *)self setPreviousSearchResultUUIDs:v17];
+  searchResultUUIDs3 = [(PUPickerContainerController *)self searchResultUUIDs];
+  [(PUPickerContainerController *)self setPreviousSearchResultUUIDs:searchResultUUIDs3];
 }
 
 void __62__PUPickerContainerController__updateAllowedUUIDsForceReload___block_invoke_2(uint64_t a1, void *a2)
@@ -3501,36 +3501,36 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_addOrReplaceItemViewControllerWithViewController:(id)a3
+- (void)_addOrReplaceItemViewControllerWithViewController:(id)controller
 {
-  v37 = a3;
-  [(PUPickerContainerController *)self px_addOrReplaceChildViewController:v37 activateConstraints:0];
-  v4 = [(PUPickerContainerController *)self view];
-  v5 = [v37 view];
-  v6 = [(PUPickerContainerController *)self traitCollection];
-  if ([v6 userInterfaceIdiom] == 6)
+  controllerCopy = controller;
+  [(PUPickerContainerController *)self px_addOrReplaceChildViewController:controllerCopy activateConstraints:0];
+  view = [(PUPickerContainerController *)self view];
+  view2 = [controllerCopy view];
+  traitCollection = [(PUPickerContainerController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 6)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v8 = [v4 safeAreaLayoutGuide];
-      v9 = [v8 topAnchor];
-      v10 = [v5 topAnchor];
-      v11 = [v9 constraintEqualToAnchor:v10];
+      safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+      topAnchor = [safeAreaLayoutGuide topAnchor];
+      topAnchor2 = [view2 topAnchor];
+      v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
       [(PUPickerContainerController *)self setTopConstraint:v11];
 
-      v12 = [v4 safeAreaLayoutGuide];
-      v13 = [v12 bottomAnchor];
-      v14 = [v5 bottomAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14];
+      safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+      bottomAnchor = [safeAreaLayoutGuide2 bottomAnchor];
+      bottomAnchor2 = [view2 bottomAnchor];
+      v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [(PUPickerContainerController *)self setBottomConstraint:v15];
 
-      v16 = [v4 safeAreaLayoutGuide];
-      v17 = [v16 leadingAnchor];
-      v18 = [v5 leadingAnchor];
-      v19 = [v17 constraintEqualToAnchor:v18];
+      safeAreaLayoutGuide3 = [view safeAreaLayoutGuide];
+      leadingAnchor = [safeAreaLayoutGuide3 leadingAnchor];
+      leadingAnchor2 = [view2 leadingAnchor];
+      v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [(PUPickerContainerController *)self setLeadingConstraint:v19];
 
       goto LABEL_6;
@@ -3541,57 +3541,57 @@ LABEL_9:
   {
   }
 
-  v20 = [v4 topAnchor];
-  v21 = [v5 topAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  topAnchor3 = [view topAnchor];
+  topAnchor4 = [view2 topAnchor];
+  v22 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [(PUPickerContainerController *)self setTopConstraint:v22];
 
-  v23 = [v4 bottomAnchor];
-  v24 = [v5 bottomAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  bottomAnchor3 = [view bottomAnchor];
+  bottomAnchor4 = [view2 bottomAnchor];
+  v25 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   [(PUPickerContainerController *)self setBottomConstraint:v25];
 
-  v16 = [v4 leadingAnchor];
-  v17 = [v5 leadingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
-  [(PUPickerContainerController *)self setLeadingConstraint:v18];
+  safeAreaLayoutGuide3 = [view leadingAnchor];
+  leadingAnchor = [view2 leadingAnchor];
+  leadingAnchor2 = [safeAreaLayoutGuide3 constraintEqualToAnchor:leadingAnchor];
+  [(PUPickerContainerController *)self setLeadingConstraint:leadingAnchor2];
 LABEL_6:
 
-  v26 = [v4 trailingAnchor];
-  v27 = [v5 trailingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  trailingAnchor = [view trailingAnchor];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [(PUPickerContainerController *)self setTrailingConstraint:v28];
 
-  v29 = [v4 safeAreaLayoutGuide];
-  v30 = [v29 topAnchor];
-  v31 = [v5 topAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  safeAreaLayoutGuide4 = [view safeAreaLayoutGuide];
+  topAnchor5 = [safeAreaLayoutGuide4 topAnchor];
+  topAnchor6 = [view2 topAnchor];
+  v32 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   [(PUPickerContainerController *)self setTopSafeAreaConstraint:v32];
 
-  v33 = [v4 safeAreaLayoutGuide];
-  v34 = [v33 bottomAnchor];
-  v35 = [v5 bottomAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35];
+  safeAreaLayoutGuide5 = [view safeAreaLayoutGuide];
+  bottomAnchor5 = [safeAreaLayoutGuide5 bottomAnchor];
+  bottomAnchor6 = [view2 bottomAnchor];
+  v36 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   [(PUPickerContainerController *)self setBottomSafeAreaConstraint:v36];
 
-  [v4 setNeedsUpdateConstraints];
+  [view setNeedsUpdateConstraints];
 }
 
 - (PXPhotosUIViewController)actionResponderPhotosViewController
 {
-  v4 = [(PUPickerContainerController *)self actionResponderViewController];
-  v5 = [v4 px_descendantViewControllerWithClass:objc_opt_class()];
+  actionResponderViewController = [(PUPickerContainerController *)self actionResponderViewController];
+  v5 = [actionResponderViewController px_descendantViewControllerWithClass:objc_opt_class()];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [v5 px_descriptionForAssertionMessage];
-      [v7 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1083 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[self.actionResponderViewController px_descendantViewControllerWithClass:[PXPhotosUIViewController class]]", v9, v10}];
+      px_descriptionForAssertionMessage = [v5 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1083 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[self.actionResponderViewController px_descendantViewControllerWithClass:[PXPhotosUIViewController class]]", v9, px_descriptionForAssertionMessage}];
     }
   }
 
@@ -3600,31 +3600,31 @@ LABEL_6:
 
 - (UIViewController)actionResponderViewController
 {
-  v3 = [(PUPickerContainerController *)self navigationController];
-  v4 = [v3 visibleViewController];
-  v5 = [v4 px_topmostPresentedViewController];
-  v6 = v5;
-  if (v5)
+  navigationController = [(PUPickerContainerController *)self navigationController];
+  visibleViewController = [navigationController visibleViewController];
+  px_topmostPresentedViewController = [visibleViewController px_topmostPresentedViewController];
+  v6 = px_topmostPresentedViewController;
+  if (px_topmostPresentedViewController)
   {
-    v7 = v5;
+    v7 = px_topmostPresentedViewController;
   }
 
   else
   {
-    v8 = [(PUPickerContainerController *)self navigationController];
-    v9 = [v8 visibleViewController];
-    v10 = v9;
-    if (v9)
+    navigationController2 = [(PUPickerContainerController *)self navigationController];
+    visibleViewController2 = [navigationController2 visibleViewController];
+    v10 = visibleViewController2;
+    if (visibleViewController2)
     {
-      v11 = v9;
+      selfCopy = visibleViewController2;
     }
 
     else
     {
-      v11 = self;
+      selfCopy = self;
     }
 
-    v7 = v11;
+    v7 = selfCopy;
   }
 
   return v7;
@@ -3632,155 +3632,155 @@ LABEL_6:
 
 - (UIViewController)itemsViewController
 {
-  v3 = [(PUPickerContainerController *)self unavailableViewController];
+  unavailableViewController = [(PUPickerContainerController *)self unavailableViewController];
 
-  if (v3)
+  if (unavailableViewController)
   {
-    v4 = [(PUPickerContainerController *)self unavailableViewController];
+    unavailableViewController2 = [(PUPickerContainerController *)self unavailableViewController];
     goto LABEL_3;
   }
 
-  v6 = [(PUPickerContainerController *)self configuration];
-  v7 = [v6 sourceType];
+  configuration = [(PUPickerContainerController *)self configuration];
+  sourceType = [configuration sourceType];
 
-  if (v7 > 6)
+  if (sourceType > 6)
   {
     goto LABEL_13;
   }
 
-  if (((1 << v7) & 0x1A) != 0)
+  if (((1 << sourceType) & 0x1A) != 0)
   {
-    v4 = [(PUPickerContainerController *)self peopleViewController];
+    unavailableViewController2 = [(PUPickerContainerController *)self peopleViewController];
     goto LABEL_3;
   }
 
-  if (((1 << v7) & 0x44) != 0)
+  if (((1 << sourceType) & 0x44) != 0)
   {
-    v4 = [(PUPickerContainerController *)self albumsViewController];
+    unavailableViewController2 = [(PUPickerContainerController *)self albumsViewController];
     goto LABEL_3;
   }
 
-  if (v7 == 5)
+  if (sourceType == 5)
   {
-    v4 = [(PUPickerContainerController *)self collectionsViewController];
+    unavailableViewController2 = [(PUPickerContainerController *)self collectionsViewController];
   }
 
   else
   {
 LABEL_13:
-    if (!v7)
+    if (!sourceType)
     {
-      v4 = [(PUPickerContainerController *)self photosViewController];
+      unavailableViewController2 = [(PUPickerContainerController *)self photosViewController];
     }
   }
 
 LABEL_3:
 
-  return v4;
+  return unavailableViewController2;
 }
 
 - (BOOL)searchBarIsFirstResponder
 {
   if ([(PUPickerContainerController *)self _shouldUseSolariumPickerSearch])
   {
-    v3 = [(PUPickerContainerController *)self searchCoordinator];
-    v4 = [v3 isEditing];
+    searchCoordinator = [(PUPickerContainerController *)self searchCoordinator];
+    isEditing = [searchCoordinator isEditing];
   }
 
   else
   {
-    v3 = [(PUPickerContainerController *)self searchBar];
-    if (v3)
+    searchCoordinator = [(PUPickerContainerController *)self searchBar];
+    if (searchCoordinator)
     {
-      v5 = [(PUPickerContainerController *)self firstResponder];
-      if (v5)
+      firstResponder = [(PUPickerContainerController *)self firstResponder];
+      if (firstResponder)
       {
-        v6 = [(PUPickerContainerController *)self searchBar];
-        v7 = [(PUPickerContainerController *)self firstResponder];
-        v4 = [v6 _containsResponder:v7];
+        searchBar = [(PUPickerContainerController *)self searchBar];
+        firstResponder2 = [(PUPickerContainerController *)self firstResponder];
+        isEditing = [searchBar _containsResponder:firstResponder2];
       }
 
       else
       {
-        v4 = 0;
+        isEditing = 0;
       }
     }
 
     else
     {
-      v4 = 0;
+      isEditing = 0;
     }
   }
 
-  return v4;
+  return isEditing;
 }
 
-- (void)photosGridActionPerformer:(id)a3 contentFilterStateChanged:(id)a4
+- (void)photosGridActionPerformer:(id)performer contentFilterStateChanged:(id)changed
 {
-  v5 = a4;
-  v6 = [(PUPickerContainerController *)self photosViewController];
-  v7 = [v6 viewModel];
+  changedCopy = changed;
+  photosViewController = [(PUPickerContainerController *)self photosViewController];
+  viewModel = [photosViewController viewModel];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __83__PUPickerContainerController_photosGridActionPerformer_contentFilterStateChanged___block_invoke;
   v9[3] = &unk_1E7B7D010;
-  v10 = v5;
-  v8 = v5;
-  [v7 performChanges:v9];
+  v10 = changedCopy;
+  v8 = changedCopy;
+  [viewModel performChanges:v9];
 }
 
 - (UIViewController)collectionsViewController
 {
   if (!self->_collectionsViewController)
   {
-    v4 = [(PUPickerContainerController *)self photosViewConfiguration];
-    if (v4)
+    photosViewConfiguration = [(PUPickerContainerController *)self photosViewConfiguration];
+    if (photosViewConfiguration)
     {
-      v5 = v4;
-      v6 = [(PUPickerContainerController *)self sessionInfo];
-      if (!v6)
+      configuration2 = photosViewConfiguration;
+      sessionInfo = [(PUPickerContainerController *)self sessionInfo];
+      if (!sessionInfo)
       {
 LABEL_8:
 
         goto LABEL_9;
       }
 
-      v7 = v6;
-      v8 = [(PUPickerContainerController *)self configuration];
-      v9 = [v8 sourceType];
+      v7 = sessionInfo;
+      configuration = [(PUPickerContainerController *)self configuration];
+      sourceType = [configuration sourceType];
 
-      if (v9 != 5)
+      if (sourceType != 5)
       {
         goto LABEL_9;
       }
 
-      v5 = [(PUPickerContainerController *)self configuration];
-      v10 = [(PUPickerContainerController *)self sessionInfo];
-      if (v10)
+      configuration2 = [(PUPickerContainerController *)self configuration];
+      sessionInfo2 = [(PUPickerContainerController *)self sessionInfo];
+      if (sessionInfo2)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
 LABEL_7:
-          v11 = [(PUPickerContainerController *)self photosViewConfiguration];
-          [(PUPickerContainerController *)self _setupCollectionsViewControllerWithPickerConfiguration:v5 sessionInfo:v10 photosViewConfiguration:v11];
+          photosViewConfiguration2 = [(PUPickerContainerController *)self photosViewConfiguration];
+          [(PUPickerContainerController *)self _setupCollectionsViewControllerWithPickerConfiguration:configuration2 sessionInfo:sessionInfo2 photosViewConfiguration:photosViewConfiguration2];
 
           goto LABEL_8;
         }
 
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v17 = objc_opt_class();
         v16 = NSStringFromClass(v17);
-        v18 = [v10 px_descriptionForAssertionMessage];
-        [v14 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1026 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.sessionInfo", v16, v18}];
+        px_descriptionForAssertionMessage = [sessionInfo2 px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1026 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.sessionInfo", v16, px_descriptionForAssertionMessage}];
       }
 
       else
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v15 = objc_opt_class();
         v16 = NSStringFromClass(v15);
-        [v14 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1026 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.sessionInfo", v16}];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1026 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.sessionInfo", v16}];
       }
 
       goto LABEL_7;
@@ -3797,45 +3797,45 @@ LABEL_9:
 {
   if (!self->_albumsViewController)
   {
-    v6 = [(PUPickerContainerController *)self photosViewConfiguration];
-    if (v6)
+    photosViewConfiguration = [(PUPickerContainerController *)self photosViewConfiguration];
+    if (photosViewConfiguration)
     {
-      v7 = v6;
-      v8 = [(PUPickerContainerController *)self sessionInfo];
+      v7 = photosViewConfiguration;
+      sessionInfo = [(PUPickerContainerController *)self sessionInfo];
 
-      if (v8)
+      if (sessionInfo)
       {
-        v9 = [(PUPickerContainerController *)self configuration];
-        v10 = [(PUPickerContainerController *)self photosViewConfiguration];
-        v11 = [v10 loadingStatusManager];
-        v12 = [(PUPickerContainerController *)self selectionCoordinator];
-        v13 = [(PUPickerContainerController *)self sessionInfo];
-        if (v13)
+        configuration = [(PUPickerContainerController *)self configuration];
+        photosViewConfiguration2 = [(PUPickerContainerController *)self photosViewConfiguration];
+        loadingStatusManager = [photosViewConfiguration2 loadingStatusManager];
+        selectionCoordinator = [(PUPickerContainerController *)self selectionCoordinator];
+        sessionInfo2 = [(PUPickerContainerController *)self sessionInfo];
+        if (sessionInfo2)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
 LABEL_9:
-            v14 = [(PUPickerContainerController *)self photosViewConfiguration];
-            [(PUPickerContainerController *)self _setupAlbumsViewControllerWithPickerConfiguration:v9 loadingStatusManager:v11 selectionCoordinator:v12 sessionInfo:v13 photosViewConfiguration:v14];
+            photosViewConfiguration3 = [(PUPickerContainerController *)self photosViewConfiguration];
+            [(PUPickerContainerController *)self _setupAlbumsViewControllerWithPickerConfiguration:configuration loadingStatusManager:loadingStatusManager selectionCoordinator:selectionCoordinator sessionInfo:sessionInfo2 photosViewConfiguration:photosViewConfiguration3];
 
             [(PUPickerContainerController *)self updateBars];
             goto LABEL_2;
           }
 
-          v15 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v18 = objc_opt_class();
           v17 = NSStringFromClass(v18);
-          v19 = [v13 px_descriptionForAssertionMessage];
-          [v15 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1011 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.sessionInfo", v17, v19}];
+          px_descriptionForAssertionMessage = [sessionInfo2 px_descriptionForAssertionMessage];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1011 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.sessionInfo", v17, px_descriptionForAssertionMessage}];
         }
 
         else
         {
-          v15 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v16 = objc_opt_class();
           v17 = NSStringFromClass(v16);
-          [v15 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1011 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.sessionInfo", v17}];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:1011 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.sessionInfo", v17}];
         }
 
         goto LABEL_9;
@@ -3853,17 +3853,17 @@ LABEL_2:
 {
   if (!self->_onboardingHeaderView)
   {
-    v3 = [(PUPickerContainerController *)self configuration];
-    v4 = [v3 shouldShowOnboardingHeaderView];
+    configuration = [(PUPickerContainerController *)self configuration];
+    shouldShowOnboardingHeaderView = [configuration shouldShowOnboardingHeaderView];
 
-    if (v4)
+    if (shouldShowOnboardingHeaderView)
     {
       objc_initWeak(&location, self);
       v5 = [PUPickerOnboardingHeaderView alloc];
-      v6 = [(PUPickerContainerController *)self configuration];
-      v7 = [v6 pickerClientDisplayName];
-      v8 = [(PUPickerContainerController *)self configuration];
-      v9 = [v8 isLimitedLibraryPicker];
+      configuration2 = [(PUPickerContainerController *)self configuration];
+      pickerClientDisplayName = [configuration2 pickerClientDisplayName];
+      configuration3 = [(PUPickerContainerController *)self configuration];
+      isLimitedLibraryPicker = [configuration3 isLimitedLibraryPicker];
       v10 = MEMORY[0x1E69DC628];
       v16 = MEMORY[0x1E69E9820];
       v17 = 3221225472;
@@ -3871,7 +3871,7 @@ LABEL_2:
       v19 = &unk_1E7B80890;
       objc_copyWeak(&v20, &location);
       v11 = [v10 actionWithHandler:&v16];
-      v12 = [(PUPickerOnboardingHeaderView *)v5 initWithClientDisplayName:v7 isLimitedLibraryPicker:v9 closeAction:v11, v16, v17, v18, v19];
+      v12 = [(PUPickerOnboardingHeaderView *)v5 initWithClientDisplayName:pickerClientDisplayName isLimitedLibraryPicker:isLimitedLibraryPicker closeAction:v11, v16, v17, v18, v19];
       onboardingHeaderView = self->_onboardingHeaderView;
       self->_onboardingHeaderView = v12;
 
@@ -3897,10 +3897,10 @@ void __51__PUPickerContainerController_onboardingHeaderView__block_invoke(uint64
 {
   if (!self->_photosIndicator)
   {
-    v3 = [(PUPickerContainerController *)self configuration];
-    v4 = [v3 shouldShowPhotosIndicator];
+    configuration = [(PUPickerContainerController *)self configuration];
+    shouldShowPhotosIndicator = [configuration shouldShowPhotosIndicator];
 
-    if (v4)
+    if (shouldShowPhotosIndicator)
     {
       v5 = objc_alloc_init(PUPickerPrivacyBadge);
       [(PUPickerPrivacyBadge *)v5 setUserInteractionEnabled:0];
@@ -3919,43 +3919,43 @@ void __51__PUPickerContainerController_onboardingHeaderView__block_invoke(uint64
 
 - (void)performConfirmationAction
 {
-  v3 = [(PUPickerContainerController *)self confirmationBarButtonItem];
-  v4 = [v3 isEnabled];
+  confirmationBarButtonItem = [(PUPickerContainerController *)self confirmationBarButtonItem];
+  isEnabled = [confirmationBarButtonItem isEnabled];
 
-  if (v4)
+  if (isEnabled)
   {
-    v5 = [(PUPickerContainerController *)self confirmationBarButtonItem];
-    [(PUPickerContainerController *)self _performConfirmationAction:v5];
+    confirmationBarButtonItem2 = [(PUPickerContainerController *)self confirmationBarButtonItem];
+    [(PUPickerContainerController *)self _performConfirmationAction:confirmationBarButtonItem2];
   }
 }
 
 - (void)performCancellationAction
 {
-  v3 = [(PUPickerContainerController *)self cancellationBarButtonItem];
-  v4 = [v3 isEnabled];
+  cancellationBarButtonItem = [(PUPickerContainerController *)self cancellationBarButtonItem];
+  isEnabled = [cancellationBarButtonItem isEnabled];
 
-  if (v4)
+  if (isEnabled)
   {
-    v5 = [(PUPickerContainerController *)self cancellationBarButtonItem];
-    [(PUPickerContainerController *)self _performCancellationAction:v5];
+    cancellationBarButtonItem2 = [(PUPickerContainerController *)self cancellationBarButtonItem];
+    [(PUPickerContainerController *)self _performCancellationAction:cancellationBarButtonItem2];
   }
 }
 
 - (void)zoomOutContent
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = [(PUPickerContainerController *)self actionResponderPhotosViewController];
+  actionResponderPhotosViewController = [(PUPickerContainerController *)self actionResponderPhotosViewController];
   v3 = PLPickerGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v2;
+    v8 = actionResponderPhotosViewController;
     _os_log_impl(&dword_1B36F3000, v3, OS_LOG_TYPE_DEFAULT, "Found %@ as the responder view controller for action zoomOutContent", &v7, 0xCu);
   }
 
-  v4 = [v2 viewModel];
-  v5 = [v4 gridActionManager];
-  v6 = [v5 actionPerformerForActionType:*MEMORY[0x1E69A2930]];
+  viewModel = [actionResponderPhotosViewController viewModel];
+  gridActionManager = [viewModel gridActionManager];
+  v6 = [gridActionManager actionPerformerForActionType:*MEMORY[0x1E69A2930]];
   [v6 performActionWithCompletionHandler:&__block_literal_global_405_68190];
 }
 
@@ -3984,18 +3984,18 @@ void __45__PUPickerContainerController_zoomOutContent__block_invoke(uint64_t a1,
 - (void)zoomInContent
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = [(PUPickerContainerController *)self actionResponderPhotosViewController];
+  actionResponderPhotosViewController = [(PUPickerContainerController *)self actionResponderPhotosViewController];
   v3 = PLPickerGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v2;
+    v8 = actionResponderPhotosViewController;
     _os_log_impl(&dword_1B36F3000, v3, OS_LOG_TYPE_DEFAULT, "Found %@ as the responder view controller for action zoomInContent", &v7, 0xCu);
   }
 
-  v4 = [v2 viewModel];
-  v5 = [v4 gridActionManager];
-  v6 = [v5 actionPerformerForActionType:*MEMORY[0x1E69A2928]];
+  viewModel = [actionResponderPhotosViewController viewModel];
+  gridActionManager = [viewModel gridActionManager];
+  v6 = [gridActionManager actionPerformerForActionType:*MEMORY[0x1E69A2928]];
   [v6 performActionWithCompletionHandler:&__block_literal_global_403];
 }
 
@@ -4024,38 +4024,38 @@ void __44__PUPickerContainerController_zoomInContent__block_invoke(uint64_t a1, 
 - (void)scrollContentToInitialPosition
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = [(PUPickerContainerController *)self actionResponderPhotosViewController];
+  actionResponderPhotosViewController = [(PUPickerContainerController *)self actionResponderPhotosViewController];
   v3 = PLPickerGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = v2;
+    v5 = actionResponderPhotosViewController;
     _os_log_impl(&dword_1B36F3000, v3, OS_LOG_TYPE_DEFAULT, "Found %@ as the responder view controller for action scrollContentToInitialPosition", &v4, 0xCu);
   }
 
-  [v2 px_scrollToInitialPositionAnimated:1];
+  [actionResponderPhotosViewController px_scrollToInitialPositionAnimated:1];
 }
 
-- (void)setSidebarViewController:(id)a3
+- (void)setSidebarViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:919 description:{@"%s must be called on the main thread", "-[PUPickerContainerController setSidebarViewController:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:919 description:{@"%s must be called on the main thread", "-[PUPickerContainerController setSidebarViewController:]"}];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_sidebarViewController);
 
-  if (WeakRetained != v5)
+  if (WeakRetained != controllerCopy)
   {
-    objc_storeWeak(&self->_sidebarViewController, v5);
+    objc_storeWeak(&self->_sidebarViewController, controllerCopy);
     [(PUPickerContainerController *)self updateBars];
-    v7 = [(PUPickerContainerController *)self navigationController];
-    v8 = [v7 topViewController];
-    v9 = [v8 px_navigationDestination];
+    navigationController = [(PUPickerContainerController *)self navigationController];
+    topViewController = [navigationController topViewController];
+    px_navigationDestination = [topViewController px_navigationDestination];
 
-    [v5 selectItemForDestination:v9];
+    [controllerCopy selectItemForDestination:px_navigationDestination];
     objc_initWeak(&location, self);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -4063,7 +4063,7 @@ void __44__PUPickerContainerController_zoomInContent__block_invoke(uint64_t a1, 
     v11[3] = &unk_1E7B7CFC8;
     v11[4] = self;
     objc_copyWeak(&v12, &location);
-    [(PUPickerContainerController *)self navigateToDestination:v9 options:0 completionHandler:v11];
+    [(PUPickerContainerController *)self navigateToDestination:px_navigationDestination options:0 completionHandler:v11];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
@@ -4111,119 +4111,119 @@ void __56__PUPickerContainerController_setSidebarViewController___block_invoke_2
 
 - (NSString)selectedSuggestionAnalyticsName
 {
-  v2 = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
-  v3 = [v2 analyticsName];
+  pickerSuggestionResultFetcherResult = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
+  analyticsName = [pickerSuggestionResultFetcherResult analyticsName];
 
-  return v3;
+  return analyticsName;
 }
 
 - (BOOL)isShowingSpatialWallpaperSuggestions
 {
-  v3 = [(PUPickerContainerController *)self childViewControllers];
-  v4 = [(PUPickerContainerController *)self photosViewController];
-  if ([v3 containsObject:v4])
+  childViewControllers = [(PUPickerContainerController *)self childViewControllers];
+  photosViewController = [(PUPickerContainerController *)self photosViewController];
+  if ([childViewControllers containsObject:photosViewController])
   {
-    v5 = [(PUPickerContainerController *)self configuration];
-    if ([v5 showsWallpaperSuggestions])
+    configuration = [(PUPickerContainerController *)self configuration];
+    if ([configuration showsWallpaperSuggestions])
     {
-      v6 = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
-      v7 = [v6 isSpatialPhotoWallpaperSuggestion];
+      pickerSuggestionResultFetcherResult = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
+      isSpatialPhotoWallpaperSuggestion = [pickerSuggestionResultFetcherResult isSpatialPhotoWallpaperSuggestion];
     }
 
     else
     {
-      v7 = 0;
+      isSpatialPhotoWallpaperSuggestion = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    isSpatialPhotoWallpaperSuggestion = 0;
   }
 
-  return v7;
+  return isSpatialPhotoWallpaperSuggestion;
 }
 
 - (BOOL)isShowingLiveWallpaperSuggestions
 {
-  v3 = [(PUPickerContainerController *)self childViewControllers];
-  v4 = [(PUPickerContainerController *)self photosViewController];
-  if ([v3 containsObject:v4])
+  childViewControllers = [(PUPickerContainerController *)self childViewControllers];
+  photosViewController = [(PUPickerContainerController *)self photosViewController];
+  if ([childViewControllers containsObject:photosViewController])
   {
-    v5 = [(PUPickerContainerController *)self configuration];
-    if ([v5 showsWallpaperSuggestions])
+    configuration = [(PUPickerContainerController *)self configuration];
+    if ([configuration showsWallpaperSuggestions])
     {
-      v6 = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
-      v7 = [v6 isLiveWallpaperSuggestion];
+      pickerSuggestionResultFetcherResult = [(PUPickerContainerController *)self pickerSuggestionResultFetcherResult];
+      isLiveWallpaperSuggestion = [pickerSuggestionResultFetcherResult isLiveWallpaperSuggestion];
     }
 
     else
     {
-      v7 = 0;
+      isLiveWallpaperSuggestion = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    isLiveWallpaperSuggestion = 0;
   }
 
-  return v7;
+  return isLiveWallpaperSuggestion;
 }
 
 - (BOOL)hasContent
 {
-  v3 = [(PUPickerContainerController *)self photosViewController];
+  photosViewController = [(PUPickerContainerController *)self photosViewController];
 
-  if (v3)
+  if (photosViewController)
   {
-    v4 = [(PUPickerContainerController *)self photosDataSourceManager];
-    v5 = [v4 dataSource];
-    if ([v5 containsAnyItems])
+    photosDataSourceManager = [(PUPickerContainerController *)self photosDataSourceManager];
+    dataSource = [photosDataSourceManager dataSource];
+    if ([dataSource containsAnyItems])
     {
-      v6 = 1;
+      isFiltered = 1;
     }
 
     else
     {
-      v8 = [(PUPickerContainerController *)self photosDataSourceManager];
-      v9 = [v8 dataSource];
-      v6 = [v9 isFiltered];
+      photosDataSourceManager2 = [(PUPickerContainerController *)self photosDataSourceManager];
+      dataSource2 = [photosDataSourceManager2 dataSource];
+      isFiltered = [dataSource2 isFiltered];
     }
 
     goto LABEL_11;
   }
 
-  v7 = [(PUPickerContainerController *)self configuration];
-  if ([v7 sourceType] != 2)
+  configuration = [(PUPickerContainerController *)self configuration];
+  if ([configuration sourceType] != 2)
   {
-    v10 = [(PUPickerContainerController *)self configuration];
-    v11 = [v10 sourceType];
+    configuration2 = [(PUPickerContainerController *)self configuration];
+    sourceType = [configuration2 sourceType];
 
-    if (v11 == 6)
+    if (sourceType == 6)
     {
       goto LABEL_9;
     }
 
-    v14 = [(PUPickerContainerController *)self configuration];
-    v15 = [v14 sourceType];
+    configuration3 = [(PUPickerContainerController *)self configuration];
+    sourceType2 = [configuration3 sourceType];
 
-    if (v15 == 5)
+    if (sourceType2 == 5)
     {
-      v12 = [(PUPickerContainerController *)self collectionsViewController];
+      collectionsViewController = [(PUPickerContainerController *)self collectionsViewController];
       goto LABEL_10;
     }
 
-    v16 = [(PUPickerContainerController *)self configuration];
-    if ([v16 sourceType] != 4)
+    configuration4 = [(PUPickerContainerController *)self configuration];
+    if ([configuration4 sourceType] != 4)
     {
-      v17 = [(PUPickerContainerController *)self configuration];
-      if ([v17 sourceType] != 1)
+      configuration5 = [(PUPickerContainerController *)self configuration];
+      if ([configuration5 sourceType] != 1)
       {
-        v18 = [(PUPickerContainerController *)self configuration];
-        v19 = [v18 sourceType];
+        configuration6 = [(PUPickerContainerController *)self configuration];
+        sourceType3 = [configuration6 sourceType];
 
-        if (v19 != 3)
+        if (sourceType3 != 3)
         {
           return 0;
         }
@@ -4233,35 +4233,35 @@ void __56__PUPickerContainerController_setSidebarViewController___block_invoke_2
     }
 
 LABEL_19:
-    v12 = [(PUPickerContainerController *)self peopleViewController];
+    collectionsViewController = [(PUPickerContainerController *)self peopleViewController];
     goto LABEL_10;
   }
 
 LABEL_9:
-  v12 = [(PUPickerContainerController *)self albumsViewController];
+  collectionsViewController = [(PUPickerContainerController *)self albumsViewController];
 LABEL_10:
-  v4 = v12;
-  v6 = v12 != 0;
+  photosDataSourceManager = collectionsViewController;
+  isFiltered = collectionsViewController != 0;
 LABEL_11:
 
-  return v6;
+  return isFiltered;
 }
 
 - (void)resignSearchBarAsFirstResponder
 {
   if ([(PUPickerContainerController *)self searchBarIsFirstResponder])
   {
-    v3 = [(PUPickerContainerController *)self firstResponder];
-    [v3 resignFirstResponder];
+    firstResponder = [(PUPickerContainerController *)self firstResponder];
+    [firstResponder resignFirstResponder];
   }
 }
 
 - (void)makeSearchBarAsFirstResponder
 {
-  v3 = [(PUPickerContainerController *)self configuration];
-  v4 = [v3 allowsSearchBar];
+  configuration = [(PUPickerContainerController *)self configuration];
+  allowsSearchBar = [configuration allowsSearchBar];
 
-  if (v4)
+  if (allowsSearchBar)
   {
     objc_initWeak(&location, self);
     v5 = [objc_alloc(MEMORY[0x1E69C3930]) initWithType:22 revealMode:0];
@@ -4308,23 +4308,23 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
   }
 }
 
-- (void)searchWithString:(id)a3
+- (void)searchWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(PUPickerContainerController *)self _shouldUseSolariumPickerSearch])
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v4];
+    searchBar = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:stringCopy];
 
-    v5 = [(PUPickerContainerController *)self searchCoordinator];
-    [v5 setSearchText:v6];
+    searchCoordinator = [(PUPickerContainerController *)self searchCoordinator];
+    [searchCoordinator setSearchText:searchBar];
   }
 
   else
   {
-    v6 = [(PUPickerContainerController *)self searchBar];
-    v5 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v4];
+    searchBar = [(PUPickerContainerController *)self searchBar];
+    searchCoordinator = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:stringCopy];
 
-    [v6 updateSearchText:v5];
+    [searchBar updateSearchText:searchCoordinator];
   }
 }
 
@@ -4332,8 +4332,8 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:852 description:{@"%s must be called on the main thread", "-[PUPickerContainerController updateBars]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerContainerController.m" lineNumber:852 description:{@"%s must be called on the main thread", "-[PUPickerContainerController updateBars]"}];
   }
 
   [(PUPickerContainerController *)self _cleanUpInteractiveBarTransitionIfNeeded];
@@ -4342,38 +4342,38 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
   [(PUPickerContainerController *)self _updateToolbar];
 }
 
-- (void)navigationWillPresentViewController:(id)a3
+- (void)navigationWillPresentViewController:(id)controller
 {
   [(PUPickerContainerController *)self updateBars];
 
   [(PUPickerContainerController *)self _updateInteractiveBarTransition];
 }
 
-- (void)setReplacesConfirmationButtonWithActivityIndicator:(BOOL)a3
+- (void)setReplacesConfirmationButtonWithActivityIndicator:(BOOL)indicator
 {
-  if (self->_replacesConfirmationButtonWithActivityIndicator != a3)
+  if (self->_replacesConfirmationButtonWithActivityIndicator != indicator)
   {
-    self->_replacesConfirmationButtonWithActivityIndicator = a3;
+    self->_replacesConfirmationButtonWithActivityIndicator = indicator;
     [(PUPickerContainerController *)self updateBars];
   }
 }
 
-- (id)collectionListForAlbumIdentifier:(id)a3 configuration:(id)a4
+- (id)collectionListForAlbumIdentifier:(id)identifier configuration:(id)configuration
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 photoLibrary];
-  v8 = [v7 librarySpecificFetchOptions];
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  photoLibrary = [configurationCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v8 setIncludeAllPhotosSmartAlbum:1];
-  v9 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithLocalIdentifiers:v6 options:v8];
-  v10 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithArray:v6];
+  [librarySpecificFetchOptions setIncludeAllPhotosSmartAlbum:1];
+  v9 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithLocalIdentifiers:identifierCopy options:librarySpecificFetchOptions];
+  v10 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithArray:identifierCopy];
 
   v11 = [v9 px_fetchedObjectIDsSortedByLocalIdentifiers:v10];
   v12 = objc_alloc(MEMORY[0x1E69788E0]);
-  v13 = [v5 photoLibrary];
+  photoLibrary2 = [configurationCopy photoLibrary];
 
-  v14 = [v12 initWithOids:v11 photoLibrary:v13 fetchType:0 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
+  v14 = [v12 initWithOids:v11 photoLibrary:photoLibrary2 fetchType:0 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
   v15 = MEMORY[0x1E6978760];
   v16 = PXLocalizedString();
   v17 = [v15 transientCollectionListWithCollectionsFetchResult:v14 title:v16];
@@ -4381,9 +4381,9 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
   return v17;
 }
 
-- (int64_t)_currentPeopleSortOrderForPhotoLibrary:(id)a3
+- (int64_t)_currentPeopleSortOrderForPhotoLibrary:(id)library
 {
-  result = [MEMORY[0x1E69C3790] currentSortOrderFor:a3];
+  result = [MEMORY[0x1E69C3790] currentSortOrderFor:library];
   if (result != 2)
   {
     return result == 1;
@@ -4392,32 +4392,32 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
   return result;
 }
 
-- (void)_setupPeopleOrPetsPickerWithPickerConfiguration:(id)a3
+- (void)_setupPeopleOrPetsPickerWithPickerConfiguration:(id)configuration
 {
-  v22 = a3;
-  v4 = [v22 sourceType] == 4 || objc_msgSend(v22, "sourceType") == 3;
+  configurationCopy = configuration;
+  v4 = [configurationCopy sourceType] == 4 || objc_msgSend(configurationCopy, "sourceType") == 3;
   v20 = v4;
-  v5 = [v22 preselectedItemIdentifiers];
-  v6 = [v5 array];
+  preselectedItemIdentifiers = [configurationCopy preselectedItemIdentifiers];
+  array = [preselectedItemIdentifiers array];
 
-  v21 = [v22 photoLibrary];
-  v7 = [v22 allPersonIdentifiers];
-  v8 = [v7 array];
-  v9 = [v6 count];
-  v10 = v6;
+  photoLibrary = [configurationCopy photoLibrary];
+  allPersonIdentifiers = [configurationCopy allPersonIdentifiers];
+  array2 = [allPersonIdentifiers array];
+  v9 = [array count];
+  suggestedIdentifiers = array;
   if (!v9)
   {
-    v19 = [v22 peopleConfiguration];
-    v10 = [v19 suggestedIdentifiers];
+    peopleConfiguration = [configurationCopy peopleConfiguration];
+    suggestedIdentifiers = [peopleConfiguration suggestedIdentifiers];
   }
 
-  v11 = [v22 peopleConfiguration];
-  v12 = [v11 disabledIdentifiers];
-  v13 = [v22 selectionLimit];
-  v14 = [v22 mode] == 1;
+  peopleConfiguration2 = [configurationCopy peopleConfiguration];
+  disabledIdentifiers = [peopleConfiguration2 disabledIdentifiers];
+  selectionLimit = [configurationCopy selectionLimit];
+  v14 = [configurationCopy mode] == 1;
   BYTE1(v18) = v20;
-  LOBYTE(v18) = [v22 hasClearBackgroundColor];
-  v15 = [(PUPickerContainerController *)self _peoplePickerViewControllerWithPhotoLibrary:v21 personIdentifiers:v8 preselectedLocalIdentifiers:v10 disabledLocalIdentifiers:v12 selectionLimit:v13 compactMode:v14 transparentBackground:v18 wantsPets:?];
+  LOBYTE(v18) = [configurationCopy hasClearBackgroundColor];
+  v15 = [(PUPickerContainerController *)self _peoplePickerViewControllerWithPhotoLibrary:photoLibrary personIdentifiers:array2 preselectedLocalIdentifiers:suggestedIdentifiers disabledLocalIdentifiers:disabledIdentifiers selectionLimit:selectionLimit compactMode:v14 transparentBackground:v18 wantsPets:?];
 
   if (!v9)
   {
@@ -4426,69 +4426,69 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
   peopleViewController = self->_peopleViewController;
   self->_peopleViewController = v15;
 
-  v17 = [v22 photoLibrary];
-  [(PUPickerContainerController *)self setPeopleSortOrderType:[(PUPickerContainerController *)self _currentPeopleSortOrderForPhotoLibrary:v17]];
+  photoLibrary2 = [configurationCopy photoLibrary];
+  [(PUPickerContainerController *)self setPeopleSortOrderType:[(PUPickerContainerController *)self _currentPeopleSortOrderForPhotoLibrary:photoLibrary2]];
 }
 
-- (void)_setupCollectionsViewControllerWithPickerConfiguration:(id)a3 sessionInfo:(id)a4 photosViewConfiguration:(id)a5
+- (void)_setupCollectionsViewControllerWithPickerConfiguration:(id)configuration sessionInfo:(id)info photosViewConfiguration:(id)viewConfiguration
 {
-  if (a5)
+  if (viewConfiguration)
   {
-    v7 = a4;
-    v8 = a3;
-    v9 = [(PUPickerContainerController *)self selectionCoordinator];
-    v10 = [(PUPickerContainerController *)self _albumsPickerViewControllerWithConfiguration:v8 sessionInfo:v7 collectionList:0 selectionCoordinator:v9];
+    infoCopy = info;
+    configurationCopy = configuration;
+    selectionCoordinator = [(PUPickerContainerController *)self selectionCoordinator];
+    v10 = [(PUPickerContainerController *)self _albumsPickerViewControllerWithConfiguration:configurationCopy sessionInfo:infoCopy collectionList:0 selectionCoordinator:selectionCoordinator];
 
     collectionsViewController = self->_collectionsViewController;
     self->_collectionsViewController = v10;
   }
 }
 
-- (void)_setupAlbumsViewControllerWithPickerConfiguration:(id)a3 loadingStatusManager:(id)a4 selectionCoordinator:(id)a5 sessionInfo:(id)a6 photosViewConfiguration:(id)a7
+- (void)_setupAlbumsViewControllerWithPickerConfiguration:(id)configuration loadingStatusManager:(id)manager selectionCoordinator:(id)coordinator sessionInfo:(id)info photosViewConfiguration:(id)viewConfiguration
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  if (a7)
+  configurationCopy = configuration;
+  infoCopy = info;
+  if (viewConfiguration)
   {
-    if (([v10 isAlbumPicker] & 1) != 0 || objc_msgSend(v10, "isCollectionsPicker"))
+    if (([configurationCopy isAlbumPicker] & 1) != 0 || objc_msgSend(configurationCopy, "isCollectionsPicker"))
     {
-      v12 = [v10 preselectedItemIdentifiers];
-      v13 = [v12 count];
+      preselectedItemIdentifiers = [configurationCopy preselectedItemIdentifiers];
+      v13 = [preselectedItemIdentifiers count];
 
       if (v13)
       {
-        v14 = [v10 photoLibrary];
-        v15 = [v14 librarySpecificFetchOptions];
+        photoLibrary = [configurationCopy photoLibrary];
+        librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-        v16 = [v10 preselectedItemIdentifiers];
-        v17 = [v16 firstObject];
+        preselectedItemIdentifiers2 = [configurationCopy preselectedItemIdentifiers];
+        firstObject = [preselectedItemIdentifiers2 firstObject];
 
         v18 = MEMORY[0x1E6978650];
-        v34[0] = v17;
+        v34[0] = firstObject;
         v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
-        v20 = [v18 fetchAssetCollectionsWithLocalIdentifiers:v19 options:v15];
-        v21 = [v20 firstObject];
+        v20 = [v18 fetchAssetCollectionsWithLocalIdentifiers:v19 options:librarySpecificFetchOptions];
+        firstObject2 = [v20 firstObject];
 
-        if (v21)
+        if (firstObject2)
         {
-          [v11 setSourceAlbum:v21];
-          [v11 setScrollToSourceAlbumWhenPresented:1];
-          [v11 setShowCheckmarkOnSourceAlbum:1];
+          [infoCopy setSourceAlbum:firstObject2];
+          [infoCopy setScrollToSourceAlbumWhenPresented:1];
+          [infoCopy setShowCheckmarkOnSourceAlbum:1];
         }
       }
     }
 
-    v22 = [v10 albumsConfiguration];
-    v23 = [v22 _identifiers];
-    v24 = [v23 count];
+    albumsConfiguration = [configurationCopy albumsConfiguration];
+    _identifiers = [albumsConfiguration _identifiers];
+    v24 = [_identifiers count];
 
     if (v24)
     {
-      [v11 setAllowSelectingNonEditableAlbums:1];
-      v25 = [v10 albumsConfiguration];
-      v26 = [v25 _identifiers];
-      v27 = [(PUPickerContainerController *)self collectionListForAlbumIdentifier:v26 configuration:v10];
+      [infoCopy setAllowSelectingNonEditableAlbums:1];
+      albumsConfiguration2 = [configurationCopy albumsConfiguration];
+      _identifiers2 = [albumsConfiguration2 _identifiers];
+      v27 = [(PUPickerContainerController *)self collectionListForAlbumIdentifier:_identifiers2 configuration:configurationCopy];
     }
 
     else
@@ -4496,58 +4496,58 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
       v27 = 0;
     }
 
-    v28 = [(PUPickerContainerController *)self selectionCoordinator];
-    v29 = [(PUPickerContainerController *)self _albumsPickerViewControllerWithConfiguration:v10 sessionInfo:v11 collectionList:v27 selectionCoordinator:v28];
+    selectionCoordinator = [(PUPickerContainerController *)self selectionCoordinator];
+    v29 = [(PUPickerContainerController *)self _albumsPickerViewControllerWithConfiguration:configurationCopy sessionInfo:infoCopy collectionList:v27 selectionCoordinator:selectionCoordinator];
 
-    v30 = [v10 hasClearBackgroundColor];
-    v31 = [(UIViewController *)v29 view];
-    v32 = [v31 layer];
-    [v32 setHitTestsAsOpaque:v30];
+    hasClearBackgroundColor = [configurationCopy hasClearBackgroundColor];
+    view = [(UIViewController *)v29 view];
+    layer = [view layer];
+    [layer setHitTestsAsOpaque:hasClearBackgroundColor];
 
     albumsViewController = self->_albumsViewController;
     self->_albumsViewController = v29;
   }
 }
 
-- (void)_setupPhotosTabWithPhotosViewConfiguration:(id)a3
+- (void)_setupPhotosTabWithPhotosViewConfiguration:(id)configuration
 {
-  if (a3)
+  if (configuration)
   {
     v4 = MEMORY[0x1E69C38F8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithConfiguration:v5];
+    configurationCopy = configuration;
+    v6 = [[v4 alloc] initWithConfiguration:configurationCopy];
 
-    v7 = [(PUPickerContainerController *)self configuration];
-    v8 = [v7 hasClearBackgroundColor];
-    v9 = [v6 view];
-    v10 = [v9 layer];
-    [v10 setHitTestsAsOpaque:v8];
+    configuration = [(PUPickerContainerController *)self configuration];
+    hasClearBackgroundColor = [configuration hasClearBackgroundColor];
+    view = [v6 view];
+    layer = [view layer];
+    [layer setHitTestsAsOpaque:hasClearBackgroundColor];
 
     photosViewController = self->_photosViewController;
     self->_photosViewController = v6;
   }
 }
 
-- (void)_setupViewControllersWithConfiguration:(id)a3 loadingStatusManager:(id)a4 selectionCoordinator:(id)a5
+- (void)_setupViewControllersWithConfiguration:(id)configuration loadingStatusManager:(id)manager selectionCoordinator:(id)coordinator
 {
   v82 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
-  v74 = v9;
-  v75 = v10;
-  v12 = self;
+  configurationCopy = configuration;
+  managerCopy = manager;
+  coordinatorCopy = coordinator;
+  v11 = configurationCopy;
+  v74 = managerCopy;
+  v75 = coordinatorCopy;
+  selfCopy = self;
   v76 = v11;
-  v13 = [v11 containerCollectionFetchResult];
-  v14 = [v13 firstObject];
-  if (v14 && (v15 = [v11 isPeopleOrPetsPicker], v14, (v15 & 1) == 0))
+  containerCollectionFetchResult = [v11 containerCollectionFetchResult];
+  firstObject = [containerCollectionFetchResult firstObject];
+  if (firstObject && (v15 = [v11 isPeopleOrPetsPicker], firstObject, (v15 & 1) == 0))
   {
-    v17 = [v11 generatedFilter];
-    v18 = [v17 assetPredicate];
+    generatedFilter = [v11 generatedFilter];
+    assetPredicate = [generatedFilter assetPredicate];
 
-    v19 = [v11 suggestionGroup];
-    if (v19)
+    suggestionGroup = [v11 suggestionGroup];
+    if (suggestionGroup)
     {
       v20 = [MEMORY[0x1E696AE18] predicateWithValue:0];
     }
@@ -4557,11 +4557,11 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
       v20 = 0;
     }
 
-    v21 = [v11 customSortDescriptors];
+    customSortDescriptors = [v11 customSortDescriptors];
 
-    if (v21)
+    if (customSortDescriptors)
     {
-      v22 = [v11 customSortDescriptors];
+      customSortDescriptors2 = [v11 customSortDescriptors];
     }
 
     else
@@ -4574,7 +4574,7 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
         v80 = v24;
         v25 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"objectID" ascending:1];
         v81 = v25;
-        v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&location count:3];
+        customSortDescriptors2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&location count:3];
       }
 
       else
@@ -4583,11 +4583,11 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
         location = v23;
         v26 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"sortToken" ascending:1];
         v80 = v26;
-        v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&location count:2];
+        customSortDescriptors2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&location count:2];
       }
     }
 
-    v27 = [v11 containerCollectionFetchResult];
+    containerCollectionFetchResult2 = [v11 containerCollectionFetchResult];
     BYTE2(v71) = 0;
     BYTE1(v71) = [v11 allowsSwipeToSelect];
     LOBYTE(v71) = 1;
@@ -4597,11 +4597,11 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
     [v16 setIgnoreFilterStateWhenNotFiltering:v20 != 0];
     [v16 setStartsInSelectMode:1];
     [v16 setWantsNumberedSelectionStyle:{objc_msgSend(v76, "isOrderedSelection")}];
-    v28 = [v76 generatedFilter];
-    [v16 setNoContentPlaceholderType:{objc_msgSend(v28, "noContentPlaceholderType")}];
+    generatedFilter2 = [v76 generatedFilter];
+    [v16 setNoContentPlaceholderType:{objc_msgSend(generatedFilter2, "noContentPlaceholderType")}];
 
     [v16 setLoadingStatusManager:v74];
-    [v16 setDelegate:v12];
+    [v16 setDelegate:selfCopy];
     [v16 setContentStartingPosition:2];
     if ([v76 hasClearBackgroundColor])
     {
@@ -4614,22 +4614,22 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
     }
 
     [v16 setBackgroundStyle:v29];
-    v30 = [v76 pickerClientBundleIdentifier];
-    [v16 setPickerClientBundleIdentifier:v30];
+    pickerClientBundleIdentifier = [v76 pickerClientBundleIdentifier];
+    [v16 setPickerClientBundleIdentifier:pickerClientBundleIdentifier];
 
     v31 = objc_alloc(MEMORY[0x1E69C3900]);
-    v32 = [v76 photoLibrary];
-    v33 = [v31 initWithPhotoLibrary:v32];
-    v34 = [v16 photosAppConfiguration];
-    [v34 setViewOptionsModel:v33];
+    photoLibrary = [v76 photoLibrary];
+    v33 = [v31 initWithPhotoLibrary:photoLibrary];
+    photosAppConfiguration = [v16 photosAppConfiguration];
+    [photosAppConfiguration setViewOptionsModel:v33];
 
     [v16 setIgnoreFilterPredicateAssert:1];
-    v35 = [v76 phPickerConfiguration];
-    v36 = [v35 _aspectRatio];
+    phPickerConfiguration = [v76 phPickerConfiguration];
+    _aspectRatio = [phPickerConfiguration _aspectRatio];
 
-    if (v36)
+    if (_aspectRatio)
     {
-      [v36 _aspectRatio];
+      [_aspectRatio _aspectRatio];
       if (v37 == *MEMORY[0x1E6979180])
       {
         v38 = *MEMORY[0x1E69A2948];
@@ -4637,7 +4637,7 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
 
       else
       {
-        [v36 _aspectRatio];
+        [_aspectRatio _aspectRatio];
       }
 
       [v16 setItemAspectRatio:v38];
@@ -4647,10 +4647,10 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
     if ([v76 showsWallpaperSuggestions])
     {
       [v16 setOverrideDefaultNumberOfColumns:3];
-      [v16 setPreferredColumnCountsDelegate:v12];
+      [v16 setPreferredColumnCountsDelegate:selfCopy];
       [v16 setUseLowMemoryDecode:1];
       [v16 setItemAspectRatio:*MEMORY[0x1E69A2948]];
-      [v16 setPreferredAssetCropDelegate:v12];
+      [v16 setPreferredAssetCropDelegate:selfCopy];
     }
 
     if ([v76 mode] == 1)
@@ -4663,10 +4663,10 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
     if (![v76 sourceType])
     {
       [v16 setAllowedActions:{objc_msgSend(v16, "allowedActions") | 0x200}];
-      v39 = [v76 generatedFilter];
-      v40 = [v39 possibleAssetTypes];
+      generatedFilter3 = [v76 generatedFilter];
+      possibleAssetTypes = [generatedFilter3 possibleAssetTypes];
 
-      if (v40 == 16)
+      if (possibleAssetTypes == 16)
       {
         [v16 setOverrideDefaultNumberOfColumns:1];
       }
@@ -4681,34 +4681,34 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
     v16 = 0;
   }
 
-  objc_storeStrong(&v12->_photosViewConfiguration, v16);
+  objc_storeStrong(&selfCopy->_photosViewConfiguration, v16);
   if (v16)
   {
-    obj = [(PUPickerContainerController *)v12 sessionInfoForConfiguration:v76 loadingStatusManager:v74 selectionCoordinator:v75];
-    objc_storeStrong(&v12->_sessionInfo, obj);
+    obj = [(PUPickerContainerController *)selfCopy sessionInfoForConfiguration:v76 loadingStatusManager:v74 selectionCoordinator:v75];
+    objc_storeStrong(&selfCopy->_sessionInfo, obj);
     if (![v76 sourceType])
     {
-      [(PUPickerContainerController *)v12 _setupPhotosTabWithPhotosViewConfiguration:v16];
+      [(PUPickerContainerController *)selfCopy _setupPhotosTabWithPhotosViewConfiguration:v16];
     }
 
-    v72 = [v16 dataSourceManager];
-    objc_storeStrong(&v12->_photosDataSourceManager, v72);
-    v41 = [v16 selectionManager];
-    photosSelectionManager = v12->_photosSelectionManager;
-    v12->_photosSelectionManager = v41;
+    dataSourceManager = [v16 dataSourceManager];
+    objc_storeStrong(&selfCopy->_photosDataSourceManager, dataSourceManager);
+    selectionManager = [v16 selectionManager];
+    photosSelectionManager = selfCopy->_photosSelectionManager;
+    selfCopy->_photosSelectionManager = selectionManager;
 
-    objc_initWeak(&location, v12);
+    objc_initWeak(&location, selfCopy);
     v43 = v76;
-    v44 = v12;
-    v45 = [v43 suggestionGroup];
-    if (v45)
+    v44 = selfCopy;
+    suggestionGroup2 = [v43 suggestionGroup];
+    if (suggestionGroup2)
     {
       v46 = [PUPickerSuggestionsView alloc];
-      v47 = [v43 photoLibrary];
-      v48 = [v43 isProcessingSuggestions];
-      v49 = [v43 showsWallpaperSuggestions];
-      v50 = [v43 generatedFilter];
-      v51 = -[PUPickerSuggestionsView initWithPhotoLibrary:suggestionGroup:isProcessing:isDeviceAspectRatioContentMode:contentHasSpecialFilter:](v46, "initWithPhotoLibrary:suggestionGroup:isProcessing:isDeviceAspectRatioContentMode:contentHasSpecialFilter:", v47, v45, v48, v49, [v50 containsStickersFilter]);
+      photoLibrary2 = [v43 photoLibrary];
+      isProcessingSuggestions = [v43 isProcessingSuggestions];
+      showsWallpaperSuggestions = [v43 showsWallpaperSuggestions];
+      generatedFilter4 = [v43 generatedFilter];
+      v51 = -[PUPickerSuggestionsView initWithPhotoLibrary:suggestionGroup:isProcessing:isDeviceAspectRatioContentMode:contentHasSpecialFilter:](v46, "initWithPhotoLibrary:suggestionGroup:isProcessing:isDeviceAspectRatioContentMode:contentHasSpecialFilter:", photoLibrary2, suggestionGroup2, isProcessingSuggestions, showsWallpaperSuggestions, [generatedFilter4 containsStickersFilter]);
 
       [(PUPickerSuggestionsView *)v51 setDelegate:v44];
     }
@@ -4725,16 +4725,16 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
     objc_copyWeak(&v78, &location);
     v52 = v43;
     v53 = v77;
-    v54 = [v52 suggestionGroup];
+    suggestionGroup3 = [v52 suggestionGroup];
 
-    if (v54)
+    if (suggestionGroup3)
     {
       v55 = [PUPickerSuggestionResultFetcher alloc];
-      v56 = [v52 photoLibrary];
-      v57 = [v52 isProcessingSuggestions];
-      v58 = [v52 showsWallpaperSuggestions];
-      v59 = [v52 generatedFilter];
-      v60 = -[PUPickerSuggestionResultFetcher initWithPhotoLibrary:isProcessing:isDeviceAspectRatioContentMode:contentHasSpecialFilter:updateHandler:](v55, "initWithPhotoLibrary:isProcessing:isDeviceAspectRatioContentMode:contentHasSpecialFilter:updateHandler:", v56, v57, v58, [v59 containsStickersFilter], v53);
+      photoLibrary3 = [v52 photoLibrary];
+      isProcessingSuggestions2 = [v52 isProcessingSuggestions];
+      showsWallpaperSuggestions2 = [v52 showsWallpaperSuggestions];
+      generatedFilter5 = [v52 generatedFilter];
+      v60 = -[PUPickerSuggestionResultFetcher initWithPhotoLibrary:isProcessing:isDeviceAspectRatioContentMode:contentHasSpecialFilter:updateHandler:](v55, "initWithPhotoLibrary:isProcessing:isDeviceAspectRatioContentMode:contentHasSpecialFilter:updateHandler:", photoLibrary3, isProcessingSuggestions2, showsWallpaperSuggestions2, [generatedFilter5 containsStickersFilter], v53);
     }
 
     else
@@ -4742,8 +4742,8 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
       v60 = 0;
     }
 
-    v61 = [(PUPickerSuggestionsView *)v51 selectedSuggestion];
-    [(PUPickerSuggestionResultFetcher *)v60 setCurrentSuggestion:v61];
+    selectedSuggestion = [(PUPickerSuggestionsView *)v51 selectedSuggestion];
+    [(PUPickerSuggestionResultFetcher *)v60 setCurrentSuggestion:selectedSuggestion];
 
     objc_storeStrong(&v44->_pickerSuggestionsView, v51);
     objc_storeStrong(&v44->_pickerSuggestionResultFetcher, v60);
@@ -4769,16 +4769,16 @@ void __60__PUPickerContainerController_makeSearchBarAsFirstResponder__block_invo
 
   else if ([v76 isPeopleOrPetsPicker])
   {
-    [(PUPickerContainerController *)v12 _setupPeopleOrPetsPickerWithPickerConfiguration:v76];
+    [(PUPickerContainerController *)selfCopy _setupPeopleOrPetsPickerWithPickerConfiguration:v76];
   }
 
   else
   {
     v67 = MEMORY[0x1E6979158];
-    v68 = [v76 phPickerConfiguration];
-    v69 = [v67 unavailableViewController:4 configuration:v68 error:0 delegate:0];
-    unavailableViewController = v12->_unavailableViewController;
-    v12->_unavailableViewController = v69;
+    phPickerConfiguration2 = [v76 phPickerConfiguration];
+    v69 = [v67 unavailableViewController:4 configuration:phPickerConfiguration2 error:0 delegate:0];
+    unavailableViewController = selfCopy->_unavailableViewController;
+    selfCopy->_unavailableViewController = v69;
   }
 }
 
@@ -4798,36 +4798,36 @@ void __112__PUPickerContainerController__setupViewControllersWithConfiguration_l
   [WeakRetained _filterWithSuggestionResult:*(a1 + 32)];
 }
 
-- (id)sessionInfoForConfiguration:(id)a3 loadingStatusManager:(id)a4 selectionCoordinator:(id)a5
+- (id)sessionInfoForConfiguration:(id)configuration loadingStatusManager:(id)manager selectionCoordinator:(id)coordinator
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = -[PUImagePickerSessionInfo initWithPhotosViewDelegate:loadingStatusManager:allowMultipleSelection:limitedLibrary:]([PUImagePickerSessionInfo alloc], "initWithPhotosViewDelegate:loadingStatusManager:allowMultipleSelection:limitedLibrary:", self, v9, 1, [v10 isLimitedLibraryPicker]);
+  coordinatorCopy = coordinator;
+  managerCopy = manager;
+  configurationCopy = configuration;
+  v11 = -[PUImagePickerSessionInfo initWithPhotosViewDelegate:loadingStatusManager:allowMultipleSelection:limitedLibrary:]([PUImagePickerSessionInfo alloc], "initWithPhotosViewDelegate:loadingStatusManager:allowMultipleSelection:limitedLibrary:", self, managerCopy, 1, [configurationCopy isLimitedLibraryPicker]);
 
-  [(PUSessionInfo *)v11 setSelectionCoordinator:v8];
-  -[PUSessionInfo setAllowsSwipeToSelect:](v11, "setAllowsSwipeToSelect:", [v10 allowsSwipeToSelect]);
-  v12 = [v10 generatedFilter];
-  v13 = [v12 assetPredicate];
-  [(PUSessionInfo *)v11 setAssetsFilterPredicate:v13];
+  [(PUSessionInfo *)v11 setSelectionCoordinator:coordinatorCopy];
+  -[PUSessionInfo setAllowsSwipeToSelect:](v11, "setAllowsSwipeToSelect:", [configurationCopy allowsSwipeToSelect]);
+  generatedFilter = [configurationCopy generatedFilter];
+  assetPredicate = [generatedFilter assetPredicate];
+  [(PUSessionInfo *)v11 setAssetsFilterPredicate:assetPredicate];
 
-  v14 = [v10 generatedFilter];
-  -[PUSessionInfo setAssetTypesToInclude:](v11, "setAssetTypesToInclude:", [v14 genericAssetTypes]);
+  generatedFilter2 = [configurationCopy generatedFilter];
+  -[PUSessionInfo setAssetTypesToInclude:](v11, "setAssetTypesToInclude:", [generatedFilter2 genericAssetTypes]);
 
-  v15 = [v10 generatedFilter];
-  -[PUSessionInfo setNoContentPlaceholderType:](v11, "setNoContentPlaceholderType:", [v15 noContentPlaceholderType]);
+  generatedFilter3 = [configurationCopy generatedFilter];
+  -[PUSessionInfo setNoContentPlaceholderType:](v11, "setNoContentPlaceholderType:", [generatedFilter3 noContentPlaceholderType]);
 
-  -[PUSessionInfo setWantsNumberedSelectionStyle:](v11, "setWantsNumberedSelectionStyle:", [v10 isOrderedSelection]);
-  -[PUSessionInfo setExcludesSharedAlbums:](v11, "setExcludesSharedAlbums:", [v10 excludesSharedAlbums]);
-  -[PUSessionInfo setExcludesHiddenAlbum:](v11, "setExcludesHiddenAlbum:", [v10 excludesHiddenAlbum]);
-  -[PUSessionInfo setExcludesNewAlbumCreation:](v11, "setExcludesNewAlbumCreation:", [v10 allowsNewItemCreation] ^ 1);
+  -[PUSessionInfo setWantsNumberedSelectionStyle:](v11, "setWantsNumberedSelectionStyle:", [configurationCopy isOrderedSelection]);
+  -[PUSessionInfo setExcludesSharedAlbums:](v11, "setExcludesSharedAlbums:", [configurationCopy excludesSharedAlbums]);
+  -[PUSessionInfo setExcludesHiddenAlbum:](v11, "setExcludesHiddenAlbum:", [configurationCopy excludesHiddenAlbum]);
+  -[PUSessionInfo setExcludesNewAlbumCreation:](v11, "setExcludesNewAlbumCreation:", [configurationCopy allowsNewItemCreation] ^ 1);
   [(PUSessionInfo *)v11 setReverseSortOrder:1];
-  -[PUSessionInfo setHasClearBackgroundColor:](v11, "setHasClearBackgroundColor:", [v10 hasClearBackgroundColor]);
+  -[PUSessionInfo setHasClearBackgroundColor:](v11, "setHasClearBackgroundColor:", [configurationCopy hasClearBackgroundColor]);
   [(PUSessionInfo *)v11 setContentStartingPosition:2];
-  -[PUSessionInfo setSelectingTargetAlbum:](v11, "setSelectingTargetAlbum:", [v10 sourceType] == 2);
-  v16 = [v10 pickerClientBundleIdentifier];
+  -[PUSessionInfo setSelectingTargetAlbum:](v11, "setSelectingTargetAlbum:", [configurationCopy sourceType] == 2);
+  pickerClientBundleIdentifier = [configurationCopy pickerClientBundleIdentifier];
 
-  [(PUSessionInfo *)v11 setPickerClientBundleIdentifier:v16];
+  [(PUSessionInfo *)v11 setPickerClientBundleIdentifier:pickerClientBundleIdentifier];
   [(PUSessionInfo *)v11 addSessionInfoObserver:self];
 
   return v11;
@@ -4838,27 +4838,27 @@ void __112__PUPickerContainerController__setupViewControllersWithConfiguration_l
   filterButtonController = self->_filterButtonController;
   if (!filterButtonController)
   {
-    v4 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
     if ((MEMORY[0x1B8C6D660]() & 1) == 0)
     {
-      [v4 setButtonSize:2];
-      [v4 setCornerStyle:4];
-      v5 = [MEMORY[0x1E69DC888] tintColor];
-      [v4 setBaseBackgroundColor:v5];
+      [plainButtonConfiguration setButtonSize:2];
+      [plainButtonConfiguration setCornerStyle:4];
+      tintColor = [MEMORY[0x1E69DC888] tintColor];
+      [plainButtonConfiguration setBaseBackgroundColor:tintColor];
 
       v6 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"line.horizontal.3.decrease"];
-      [v4 setImage:v6];
+      [plainButtonConfiguration setImage:v6];
     }
 
     v7 = objc_alloc(MEMORY[0x1E69C38D8]);
-    v8 = [(PUPickerContainerController *)self photosViewController];
-    v9 = [v8 viewModelIfLoaded];
-    v10 = [v7 initWithViewModel:v9 actionType:*MEMORY[0x1E69A2938]];
+    photosViewController = [(PUPickerContainerController *)self photosViewController];
+    viewModelIfLoaded = [photosViewController viewModelIfLoaded];
+    v10 = [v7 initWithViewModel:viewModelIfLoaded actionType:*MEMORY[0x1E69A2938]];
 
     v11 = objc_alloc(MEMORY[0x1E69C38C8]);
-    v12 = [(PUPickerContainerController *)self photosViewController];
-    v13 = [v12 viewModelIfLoaded];
-    v14 = [v11 initWithViewModel:v13 buttonConfiguration:v4 actionPerformer:v10];
+    photosViewController2 = [(PUPickerContainerController *)self photosViewController];
+    viewModelIfLoaded2 = [photosViewController2 viewModelIfLoaded];
+    v14 = [v11 initWithViewModel:viewModelIfLoaded2 buttonConfiguration:plainButtonConfiguration actionPerformer:v10];
 
     if ((MEMORY[0x1B8C6D660]() & 1) == 0)
     {
@@ -4879,14 +4879,14 @@ void __112__PUPickerContainerController__setupViewControllersWithConfiguration_l
 {
   objc_initWeak(&location, self);
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PUPickerContainerController *)self peopleSortOrderType];
-  if (v4 == 1)
+  peopleSortOrderType = [(PUPickerContainerController *)self peopleSortOrderType];
+  if (peopleSortOrderType == 1)
   {
     v5 = @"arrow.up.to.line";
     goto LABEL_5;
   }
 
-  if (v4 == 2)
+  if (peopleSortOrderType == 2)
   {
     v5 = @"arrow.down.to.line";
 LABEL_5:
@@ -4914,10 +4914,10 @@ LABEL_7:
   objc_copyWeak(&v18, &location);
   v12 = [v10 actionWithTitle:v11 image:0 identifier:0 handler:v17];
 
-  v13 = [(PUPickerContainerController *)self peopleSortOrderType];
-  if ((v13 - 1) >= 2)
+  peopleSortOrderType2 = [(PUPickerContainerController *)self peopleSortOrderType];
+  if ((peopleSortOrderType2 - 1) >= 2)
   {
-    if (v13)
+    if (peopleSortOrderType2)
     {
       goto LABEL_12;
     }
@@ -4973,13 +4973,13 @@ void __55__PUPickerContainerController__peopleSortAndFilterMenu__block_invoke_2(
 
 - (void)_updateToolbarSortAndFilterBarButtonItemMenu
 {
-  v3 = [(PUPickerContainerController *)self configuration];
-  v4 = [v3 sourceType];
+  configuration = [(PUPickerContainerController *)self configuration];
+  sourceType = [configuration sourceType];
 
-  if (v4 <= 4 && ((1 << v4) & 0x1A) != 0)
+  if (sourceType <= 4 && ((1 << sourceType) & 0x1A) != 0)
   {
-    v6 = [(PUPickerContainerController *)self _peopleSortAndFilterMenu];
-    [(UIBarButtonItem *)self->_toolbarSortAndFilterBarButtonItem setMenu:v6];
+    _peopleSortAndFilterMenu = [(PUPickerContainerController *)self _peopleSortAndFilterMenu];
+    [(UIBarButtonItem *)self->_toolbarSortAndFilterBarButtonItem setMenu:_peopleSortAndFilterMenu];
   }
 }
 
@@ -4988,10 +4988,10 @@ void __55__PUPickerContainerController__peopleSortAndFilterMenu__block_invoke_2(
   toolbarSortAndFilterBarButtonItem = self->_toolbarSortAndFilterBarButtonItem;
   if (!toolbarSortAndFilterBarButtonItem)
   {
-    v4 = [(PUPickerContainerController *)self configuration];
-    v5 = [v4 sourceType];
+    configuration = [(PUPickerContainerController *)self configuration];
+    sourceType = [configuration sourceType];
 
-    if (v5 <= 4 && ((1 << v5) & 0x1A) != 0)
+    if (sourceType <= 4 && ((1 << sourceType) & 0x1A) != 0)
     {
       v6 = objc_alloc(MEMORY[0x1E69DC708]);
       v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"line.horizontal.3.decrease"];
@@ -5007,10 +5007,10 @@ void __55__PUPickerContainerController__peopleSortAndFilterMenu__block_invoke_2(
 
     else
     {
-      v11 = [(PUPickerContainerController *)self filterButtonController];
-      v12 = [v11 barButtonItem];
+      filterButtonController = [(PUPickerContainerController *)self filterButtonController];
+      barButtonItem = [filterButtonController barButtonItem];
       v13 = self->_toolbarSortAndFilterBarButtonItem;
-      self->_toolbarSortAndFilterBarButtonItem = v12;
+      self->_toolbarSortAndFilterBarButtonItem = barButtonItem;
 
       v14 = PXLocalizedString();
       [(UIBarButtonItem *)self->_toolbarSortAndFilterBarButtonItem setAccessibilityLabel:v14];
@@ -5027,99 +5027,99 @@ void __55__PUPickerContainerController__peopleSortAndFilterMenu__block_invoke_2(
 
 - (BOOL)isCompactWidthOrHeight
 {
-  v3 = [(PUPickerContainerController *)self traitCollection];
-  if ([v3 horizontalSizeClass] == 1)
+  traitCollection = [(PUPickerContainerController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 1)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(PUPickerContainerController *)self traitCollection];
-    v4 = [v5 verticalSizeClass] == 1;
+    traitCollection2 = [(PUPickerContainerController *)self traitCollection];
+    v4 = [traitCollection2 verticalSizeClass] == 1;
   }
 
   return v4;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v19.receiver = self;
   v19.super_class = PUPickerContainerController;
-  [(PUPickerContainerController *)&v19 traitCollectionDidChange:v4];
-  v5 = [(PUPickerContainerController *)self traitCollection];
-  v6 = [v5 _presentationSemanticContext];
-  v7 = [v4 _presentationSemanticContext];
+  [(PUPickerContainerController *)&v19 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PUPickerContainerController *)self traitCollection];
+  _presentationSemanticContext = [traitCollection _presentationSemanticContext];
+  _presentationSemanticContext2 = [changeCopy _presentationSemanticContext];
 
-  if (v6 != v7)
+  if (_presentationSemanticContext != _presentationSemanticContext2)
   {
     [(PUPickerContainerController *)self updateBars];
   }
 
-  v8 = [(PUPickerContainerController *)self traitCollection];
-  v9 = [v8 horizontalSizeClass];
-  if (v9 != [v4 horizontalSizeClass])
+  traitCollection2 = [(PUPickerContainerController *)self traitCollection];
+  horizontalSizeClass = [traitCollection2 horizontalSizeClass];
+  if (horizontalSizeClass != [changeCopy horizontalSizeClass])
   {
 
     goto LABEL_7;
   }
 
-  v10 = [(PUPickerContainerController *)self traitCollection];
-  v11 = [v10 verticalSizeClass];
-  v12 = [v4 verticalSizeClass];
+  traitCollection3 = [(PUPickerContainerController *)self traitCollection];
+  verticalSizeClass = [traitCollection3 verticalSizeClass];
+  verticalSizeClass2 = [changeCopy verticalSizeClass];
 
-  if (v11 != v12)
+  if (verticalSizeClass != verticalSizeClass2)
   {
 LABEL_7:
-    v13 = [(PUPickerContainerController *)self isCompactWidthOrHeight];
-    v14 = [(PUPickerContainerController *)self searchCoordinator];
-    [v14 setIsCompact:v13];
+    isCompactWidthOrHeight = [(PUPickerContainerController *)self isCompactWidthOrHeight];
+    searchCoordinator = [(PUPickerContainerController *)self searchCoordinator];
+    [searchCoordinator setIsCompact:isCompactWidthOrHeight];
 
     [(PUPickerContainerController *)self updateBars];
   }
 
-  v15 = [(PUPickerContainerController *)self traitCollection];
-  v16 = [v15 preferredContentSizeCategory];
-  v17 = [v4 preferredContentSizeCategory];
+  traitCollection4 = [(PUPickerContainerController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection4 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v16 != v17)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
-    v18 = [(PUPickerContainerController *)self photosViewController];
-    [v18 invalidateHeaderView];
+    photosViewController = [(PUPickerContainerController *)self photosViewController];
+    [photosViewController invalidateHeaderView];
   }
 }
 
 - (void)updateViewConstraints
 {
-  v3 = [(PUPickerContainerController *)self configuration];
-  v4 = [v3 mode];
-  v5 = v4 == 1;
-  v6 = v4 != 1;
+  configuration = [(PUPickerContainerController *)self configuration];
+  mode = [configuration mode];
+  v5 = mode == 1;
+  v6 = mode != 1;
 
-  v7 = [(PUPickerContainerController *)self topConstraint];
-  [v7 setActive:v6];
+  topConstraint = [(PUPickerContainerController *)self topConstraint];
+  [topConstraint setActive:v6];
 
-  v8 = [(PUPickerContainerController *)self bottomConstraint];
-  [v8 setActive:v6];
+  bottomConstraint = [(PUPickerContainerController *)self bottomConstraint];
+  [bottomConstraint setActive:v6];
 
-  v9 = [(PUPickerContainerController *)self topSafeAreaConstraint];
-  [v9 setActive:v5];
+  topSafeAreaConstraint = [(PUPickerContainerController *)self topSafeAreaConstraint];
+  [topSafeAreaConstraint setActive:v5];
 
-  v10 = [(PUPickerContainerController *)self bottomSafeAreaConstraint];
-  [v10 setActive:v5];
+  bottomSafeAreaConstraint = [(PUPickerContainerController *)self bottomSafeAreaConstraint];
+  [bottomSafeAreaConstraint setActive:v5];
 
-  v11 = [(PUPickerContainerController *)self leadingConstraint];
-  [v11 setActive:1];
+  leadingConstraint = [(PUPickerContainerController *)self leadingConstraint];
+  [leadingConstraint setActive:1];
 
-  v12 = [(PUPickerContainerController *)self trailingConstraint];
-  [v12 setActive:1];
+  trailingConstraint = [(PUPickerContainerController *)self trailingConstraint];
+  [trailingConstraint setActive:1];
 
-  v13 = [(PUPickerContainerController *)self configuration];
-  if ([v13 supportsInteractiveBarTransition])
+  configuration2 = [(PUPickerContainerController *)self configuration];
+  if ([configuration2 supportsInteractiveBarTransition])
   {
-    v14 = [(PUPickerContainerController *)self configuration];
-    [v14 interactiveBarTransitionFractionExpanded];
+    configuration3 = [(PUPickerContainerController *)self configuration];
+    [configuration3 interactiveBarTransitionFractionExpanded];
     v16 = v15 < 0.8;
   }
 
@@ -5128,17 +5128,17 @@ LABEL_7:
     v16 = 0;
   }
 
-  v17 = [(PUPickerContainerController *)self photosIndicatorTopConstraint];
-  [v17 setActive:v16];
+  photosIndicatorTopConstraint = [(PUPickerContainerController *)self photosIndicatorTopConstraint];
+  [photosIndicatorTopConstraint setActive:v16];
 
-  v18 = [(PUPickerContainerController *)self photosIndicatorLeadingConstraint];
-  [v18 setActive:v16];
+  photosIndicatorLeadingConstraint = [(PUPickerContainerController *)self photosIndicatorLeadingConstraint];
+  [photosIndicatorLeadingConstraint setActive:v16];
 
-  v19 = [(PUPickerContainerController *)self photosIndicatorTopSafeAreaConstraint];
-  [v19 setActive:v16 ^ 1];
+  photosIndicatorTopSafeAreaConstraint = [(PUPickerContainerController *)self photosIndicatorTopSafeAreaConstraint];
+  [photosIndicatorTopSafeAreaConstraint setActive:v16 ^ 1];
 
-  v20 = [(PUPickerContainerController *)self photosIndicatorLeadingSafeAreaConstraint];
-  [v20 setActive:v16 ^ 1];
+  photosIndicatorLeadingSafeAreaConstraint = [(PUPickerContainerController *)self photosIndicatorLeadingSafeAreaConstraint];
+  [photosIndicatorLeadingSafeAreaConstraint setActive:v16 ^ 1];
 
   v21.receiver = self;
   v21.super_class = PUPickerContainerController;
@@ -5154,8 +5154,8 @@ LABEL_7:
   v3 = PLPickerGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PUPickerContainerController *)self view];
-    [v4 safeAreaInsets];
+    view = [(PUPickerContainerController *)self view];
+    [view safeAreaInsets];
     v5 = NSStringFromUIEdgeInsets(v10);
     *buf = 138412290;
     v8 = v5;
@@ -5170,20 +5170,20 @@ LABEL_7:
   v16.receiver = self;
   v16.super_class = PUPickerContainerController;
   [(PUPickerContainerController *)&v16 viewDidLayoutSubviews];
-  v3 = [(PUPickerContainerController *)self photosIndicator];
-  v4 = [v3 superview];
-  v5 = [(PUPickerContainerController *)self photosIndicator];
-  [v4 bringSubviewToFront:v5];
+  photosIndicator = [(PUPickerContainerController *)self photosIndicator];
+  superview = [photosIndicator superview];
+  photosIndicator2 = [(PUPickerContainerController *)self photosIndicator];
+  [superview bringSubviewToFront:photosIndicator2];
 
   if ([(PUPickerContainerController *)self shouldStopScrollingItemsViewControllerToTop])
   {
     goto LABEL_13;
   }
 
-  v6 = [(PUPickerContainerController *)self itemsViewController];
+  itemsViewController = [(PUPickerContainerController *)self itemsViewController];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v7 = v6;
+    v7 = itemsViewController;
   }
 
   else
@@ -5191,26 +5191,26 @@ LABEL_7:
     v7 = 0;
   }
 
-  v8 = [v7 viewModel];
-  v9 = [v8 firstSelectedAssetReference];
+  viewModel = [v7 viewModel];
+  firstSelectedAssetReference = [viewModel firstSelectedAssetReference];
 
-  v10 = [(PUPickerContainerController *)self configuration];
-  if (![v10 shouldScrollToSelectedItemInitially] || !v7)
+  configuration = [(PUPickerContainerController *)self configuration];
+  if (![configuration shouldScrollToSelectedItemInitially] || !v7)
   {
 
     goto LABEL_11;
   }
 
-  if (!v9)
+  if (!firstSelectedAssetReference)
   {
 LABEL_11:
-    v11 = [(PUPickerContainerController *)self itemsViewController];
-    [v11 px_scrollToInitialPositionAnimated:0];
+    itemsViewController2 = [(PUPickerContainerController *)self itemsViewController];
+    [itemsViewController2 px_scrollToInitialPositionAnimated:0];
 
     goto LABEL_12;
   }
 
-  [v7 scrollToRevealAssetReference:v9 completion:0];
+  [v7 scrollToRevealAssetReference:firstSelectedAssetReference completion:0];
 LABEL_12:
   objc_initWeak(&location, self);
   v12 = dispatch_time(0, 1000000000);
@@ -5236,34 +5236,34 @@ void __52__PUPickerContainerController_viewDidLayoutSubviews__block_invoke(uint6
   [WeakRetained setShouldStopScrollingItemsViewControllerToTop:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PUPickerContainerController;
-  [(PUPickerContainerController *)&v5 viewDidAppear:a3];
-  v4 = [(PUPickerContainerController *)self containerControllerActionHandler];
-  [v4 containerControllerDidAppear:self];
+  [(PUPickerContainerController *)&v5 viewDidAppear:appear];
+  containerControllerActionHandler = [(PUPickerContainerController *)self containerControllerActionHandler];
+  [containerControllerActionHandler containerControllerDidAppear:self];
 
   [(PUPickerContainerController *)self _showPhotosIndicatorBrieflyIfNeeded];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v11.receiver = self;
   v11.super_class = PUPickerContainerController;
-  [(PUPickerContainerController *)&v11 viewIsAppearing:a3];
-  v4 = [(PUPickerContainerController *)self photosViewController];
-  v5 = [v4 viewModel];
-  [v5 registerChangeObserver:self context:PUPhotoPickerPhotosViewControllerViewModelObservationContext];
+  [(PUPickerContainerController *)&v11 viewIsAppearing:appearing];
+  photosViewController = [(PUPickerContainerController *)self photosViewController];
+  viewModel = [photosViewController viewModel];
+  [viewModel registerChangeObserver:self context:PUPhotoPickerPhotosViewControllerViewModelObservationContext];
 
-  v6 = [(PUPickerContainerController *)self photosViewController];
-  v7 = [v6 contentController];
-  v8 = [v7 gridView];
-  v9 = [v8 scrollViewController];
-  [v9 registerObserver:self];
+  photosViewController2 = [(PUPickerContainerController *)self photosViewController];
+  contentController = [photosViewController2 contentController];
+  gridView = [contentController gridView];
+  scrollViewController = [gridView scrollViewController];
+  [scrollViewController registerObserver:self];
 
-  v10 = [(PUPickerContainerController *)self pickerSuggestionsView];
-  [v10 setNeedsRTLInitialOffsetCorrection];
+  pickerSuggestionsView = [(PUPickerContainerController *)self pickerSuggestionsView];
+  [pickerSuggestionsView setNeedsRTLInitialOffsetCorrection];
 }
 
 - (void)viewDidLoad
@@ -5272,9 +5272,9 @@ void __52__PUPickerContainerController_viewDidLayoutSubviews__block_invoke(uint6
   v21.super_class = PUPickerContainerController;
   [(PUPickerContainerController *)&v21 viewDidLoad];
   [(PUPickerContainerController *)self px_enableExtendedTraitCollection];
-  v3 = [(PUPickerContainerController *)self navigationBarBottomPalette];
-  v4 = [(PUPickerContainerController *)self navigationItem];
-  [v4 _setBottomPalette:v3];
+  navigationBarBottomPalette = [(PUPickerContainerController *)self navigationBarBottomPalette];
+  navigationItem = [(PUPickerContainerController *)self navigationItem];
+  [navigationItem _setBottomPalette:navigationBarBottomPalette];
 
   if ([(PUPickerContainerController *)self _isConfiguredForStickerSuggestionGroup])
   {
@@ -5283,61 +5283,61 @@ void __52__PUPickerContainerController_viewDidLayoutSubviews__block_invoke(uint6
 
   if ([(PUPickerContainerController *)self _shouldUseSolariumPickerSearch])
   {
-    v5 = [(PUPickerContainerController *)self configuration];
-    v6 = [v5 allowsSearch];
+    configuration = [(PUPickerContainerController *)self configuration];
+    allowsSearch = [configuration allowsSearch];
 
-    if (v6)
+    if (allowsSearch)
     {
-      v7 = [(PUPickerContainerController *)self navigationController];
-      v8 = [(PUPickerContainerController *)self searchCoordinator];
-      [v8 setSuggestionViewContainerController:v7];
+      navigationController = [(PUPickerContainerController *)self navigationController];
+      searchCoordinator = [(PUPickerContainerController *)self searchCoordinator];
+      [searchCoordinator setSuggestionViewContainerController:navigationController];
     }
   }
 
-  v9 = [(PUPickerContainerController *)self photosViewController];
-  v10 = [v9 viewModel];
-  v11 = [v10 gridActionManager];
-  [v11 setPerformerDelegate:self];
+  photosViewController = [(PUPickerContainerController *)self photosViewController];
+  viewModel = [photosViewController viewModel];
+  gridActionManager = [viewModel gridActionManager];
+  [gridActionManager setPerformerDelegate:self];
 
-  v12 = [(PUPickerContainerController *)self configuration];
-  v13 = [v12 albumsConfiguration];
-  if (v13 || (-[PUPickerContainerController configuration](self, "configuration"), v13 = objc_claimAutoreleasedReturnValue(), ([v13 isAlbumPicker] & 1) != 0))
+  configuration2 = [(PUPickerContainerController *)self configuration];
+  albumsConfiguration = [configuration2 albumsConfiguration];
+  if (albumsConfiguration || (-[PUPickerContainerController configuration](self, "configuration"), albumsConfiguration = objc_claimAutoreleasedReturnValue(), ([albumsConfiguration isAlbumPicker] & 1) != 0))
   {
 
 LABEL_9:
-    v14 = [(PUPickerContainerController *)self albumsViewController];
+    albumsViewController = [(PUPickerContainerController *)self albumsViewController];
     goto LABEL_10;
   }
 
-  v16 = [(PUPickerContainerController *)self configuration];
-  v17 = [v16 isSharedAlbumPicker];
+  configuration3 = [(PUPickerContainerController *)self configuration];
+  isSharedAlbumPicker = [configuration3 isSharedAlbumPicker];
 
-  if (v17)
+  if (isSharedAlbumPicker)
   {
     goto LABEL_9;
   }
 
-  v18 = [(PUPickerContainerController *)self photosViewController];
+  photosViewController2 = [(PUPickerContainerController *)self photosViewController];
 
-  if (v18)
+  if (photosViewController2)
   {
-    v14 = [(PUPickerContainerController *)self photosViewController];
+    albumsViewController = [(PUPickerContainerController *)self photosViewController];
   }
 
   else
   {
-    v19 = [(PUPickerContainerController *)self peopleViewController];
+    peopleViewController = [(PUPickerContainerController *)self peopleViewController];
 
-    if (v19)
+    if (peopleViewController)
     {
-      v14 = [(PUPickerContainerController *)self peopleViewController];
+      albumsViewController = [(PUPickerContainerController *)self peopleViewController];
     }
 
     else
     {
-      v20 = [(PUPickerContainerController *)self collectionsViewController];
+      collectionsViewController = [(PUPickerContainerController *)self collectionsViewController];
 
-      if (v20)
+      if (collectionsViewController)
       {
         [(PUPickerContainerController *)self collectionsViewController];
       }
@@ -5346,13 +5346,13 @@ LABEL_9:
       {
         [(PUPickerContainerController *)self unavailableViewController];
       }
-      v14 = ;
+      albumsViewController = ;
     }
   }
 
 LABEL_10:
-  v15 = v14;
-  [(PUPickerContainerController *)self _addOrReplaceItemViewControllerWithViewController:v14];
+  v15 = albumsViewController;
+  [(PUPickerContainerController *)self _addOrReplaceItemViewControllerWithViewController:albumsViewController];
   [(PUPickerContainerController *)self updateBars];
 }
 
@@ -5364,31 +5364,31 @@ LABEL_10:
   [(PUPickerContainerController *)&v3 dealloc];
 }
 
-- (PUPickerContainerController)initWithConfiguration:(id)a3 loadingStatusManager:(id)a4 selectionCoordinator:(id)a5 additionalSelectionState:(id)a6 actionHandler:(id)a7
+- (PUPickerContainerController)initWithConfiguration:(id)configuration loadingStatusManager:(id)manager selectionCoordinator:(id)coordinator additionalSelectionState:(id)state actionHandler:(id)handler
 {
   v76[2] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v56 = a4;
-  v57 = a5;
-  v14 = a6;
-  v15 = a7;
+  configurationCopy = configuration;
+  managerCopy = manager;
+  coordinatorCopy = coordinator;
+  stateCopy = state;
+  handlerCopy = handler;
   v75.receiver = self;
   v75.super_class = PUPickerContainerController;
   v16 = [(PUPickerContainerController *)&v75 initWithNibName:0 bundle:0];
   if (v16)
   {
-    [v13 registerChangeObserver:v16 context:PUPhotoPickerConfigurationObservationContext];
-    v17 = [v14 observable];
-    [v17 registerChangeObserver:v16 context:PUPhotoPickerAdditionalSelectionStateObservationContext];
+    [configurationCopy registerChangeObserver:v16 context:PUPhotoPickerConfigurationObservationContext];
+    observable = [stateCopy observable];
+    [observable registerChangeObserver:v16 context:PUPhotoPickerAdditionalSelectionStateObservationContext];
 
-    objc_storeStrong(&v16->_configuration, a3);
-    objc_storeStrong(&v16->_selectionCoordinator, a5);
-    objc_storeStrong(&v16->_additionalSelectionState, a6);
-    objc_storeWeak(&v16->_containerControllerActionHandler, v15);
+    objc_storeStrong(&v16->_configuration, configuration);
+    objc_storeStrong(&v16->_selectionCoordinator, coordinator);
+    objc_storeStrong(&v16->_additionalSelectionState, state);
+    objc_storeWeak(&v16->_containerControllerActionHandler, handlerCopy);
     v18 = objc_alloc(MEMORY[0x1E69DCF38]);
-    v19 = [v13 allPhotosVirtualCollection];
-    v20 = [v19 title];
-    v76[0] = v20;
+    allPhotosVirtualCollection = [configurationCopy allPhotosVirtualCollection];
+    title = [allPhotosVirtualCollection title];
+    v76[0] = title;
     v21 = PXLemonadeLocalizedString();
     v76[1] = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:2];
@@ -5399,14 +5399,14 @@ LABEL_10:
     [v23 addTarget:v16 action:sel_handleNavigationBarSegmentedControl_ forControlEvents:4096];
     [v23 setSelectedSegmentIndex:0];
     objc_storeStrong(&v16->_navigationBarSegmentedControl, v23);
-    if ([v13 allowsSearch])
+    if ([configurationCopy allowsSearch])
     {
       objc_initWeak(&location, v16);
       if ([(PUPickerContainerController *)v16 _shouldUseSolariumPickerSearch])
       {
         v54 = [PUPickerSearchCoordinator alloc];
-        v24 = [v13 photoLibrary];
-        v53 = [(PUPickerContainerController *)v16 isCompactWidthOrHeight];
+        photoLibrary = [configurationCopy photoLibrary];
+        isCompactWidthOrHeight = [(PUPickerContainerController *)v16 isCompactWidthOrHeight];
         v72[0] = MEMORY[0x1E69E9820];
         v72[1] = 3221225472;
         v72[2] = __134__PUPickerContainerController_initWithConfiguration_loadingStatusManager_selectionCoordinator_additionalSelectionState_actionHandler___block_invoke;
@@ -5430,7 +5430,7 @@ LABEL_10:
         v66[2] = __134__PUPickerContainerController_initWithConfiguration_loadingStatusManager_selectionCoordinator_additionalSelectionState_actionHandler___block_invoke_4;
         v66[3] = &unk_1E7B7F988;
         objc_copyWeak(&v67, &location);
-        v27 = [(PUPickerSearchCoordinator *)v54 initWithPhotoLibrary:v24 configuration:v13 isCompact:v53 searchHandler:v72 contextualVideoThumbnailsHandler:v70 scopeHandler:v68 editingHandler:v66];
+        v27 = [(PUPickerSearchCoordinator *)v54 initWithPhotoLibrary:photoLibrary configuration:configurationCopy isCompact:isCompactWidthOrHeight searchHandler:v72 contextualVideoThumbnailsHandler:v70 scopeHandler:v68 editingHandler:v66];
 
         searchCoordinator = v16->_searchCoordinator;
         v16->_searchCoordinator = v27;
@@ -5441,7 +5441,7 @@ LABEL_10:
       else
       {
         v29 = [PUPickerSearchBar alloc];
-        v30 = [v13 photoLibrary];
+        photoLibrary2 = [configurationCopy photoLibrary];
         v64[0] = MEMORY[0x1E69E9820];
         v64[1] = 3221225472;
         v64[2] = __134__PUPickerContainerController_initWithConfiguration_loadingStatusManager_selectionCoordinator_additionalSelectionState_actionHandler___block_invoke_5;
@@ -5460,16 +5460,16 @@ LABEL_10:
         v60[3] = &unk_1E7B7F988;
         v26 = &v61;
         objc_copyWeak(&v61, &location);
-        v31 = [(PUPickerSearchBar *)v29 initWithPhotoLibrary:v30 searchHandler:v64 searchContextualVideoThumbnailHandler:v62 scopeHandler:v60];
+        v31 = [(PUPickerSearchBar *)v29 initWithPhotoLibrary:photoLibrary2 searchHandler:v64 searchContextualVideoThumbnailHandler:v62 scopeHandler:v60];
 
-        [(PUPickerSearchBar *)v31 updateContainerFromPickerConfiguration:v13];
-        v32 = [v13 initialSearchText];
+        [(PUPickerSearchBar *)v31 updateContainerFromPickerConfiguration:configurationCopy];
+        initialSearchText = [configurationCopy initialSearchText];
 
-        if (v32)
+        if (initialSearchText)
         {
           v33 = objc_alloc(MEMORY[0x1E696AAB0]);
-          v34 = [v13 initialSearchText];
-          v35 = [v33 initWithString:v34];
+          initialSearchText2 = [configurationCopy initialSearchText];
+          v35 = [v33 initWithString:initialSearchText2];
           [(PUPickerSearchBar *)v31 updateSearchText:v35];
         }
 
@@ -5520,12 +5520,12 @@ LABEL_10:
     itemCreationBarButtonItem = v16->_itemCreationBarButtonItem;
     v16->_itemCreationBarButtonItem = v48;
 
-    [(PUPickerContainerController *)v16 _setupViewControllersWithConfiguration:v13 loadingStatusManager:v56 selectionCoordinator:v57];
-    if ([v13 isPeopleOrPetsPicker])
+    [(PUPickerContainerController *)v16 _setupViewControllersWithConfiguration:configurationCopy loadingStatusManager:managerCopy selectionCoordinator:coordinatorCopy];
+    if ([configurationCopy isPeopleOrPetsPicker])
     {
-      v50 = [v13 photoLibrary];
-      v51 = [v50 px_localDefaults];
-      [v51 addObserver:v16 forKeyPath:*MEMORY[0x1E69C4120] options:0 context:0];
+      photoLibrary3 = [configurationCopy photoLibrary];
+      px_localDefaults = [photoLibrary3 px_localDefaults];
+      [px_localDefaults addObserver:v16 forKeyPath:*MEMORY[0x1E69C4120] options:0 context:0];
     }
 
     objc_destroyWeak(&v59);
@@ -5598,9 +5598,9 @@ void __134__PUPickerContainerController_initWithConfiguration_loadingStatusManag
 
 - (void)ppt_switchToAlbumsTab
 {
-  v3 = [(PUPickerContainerController *)self navigationBarSegmentedControl];
-  [v3 setSelectedSegmentIndex:1];
-  [(PUPickerContainerController *)self handleNavigationBarSegmentedControl:v3];
+  navigationBarSegmentedControl = [(PUPickerContainerController *)self navigationBarSegmentedControl];
+  [navigationBarSegmentedControl setSelectedSegmentIndex:1];
+  [(PUPickerContainerController *)self handleNavigationBarSegmentedControl:navigationBarSegmentedControl];
 }
 
 @end
